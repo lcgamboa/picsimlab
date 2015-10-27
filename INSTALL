@@ -1,0 +1,10 @@
+
+Dependencies:
+
+lib lxrad: http://sourceforge.net/projects/lxrad/
+
+Installation:
+
+make         - Compile the picsimlab1 simulator
+
+this version is not installable

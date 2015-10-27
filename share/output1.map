@@ -1,0 +1,39 @@
+<img src="picsimlab1.png" width="576" height="420" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:Luis Claudio Gamboa Lopes     -->
+<area shape="circle" coords="334,48,9" href="RB0" />
+<area shape="circle" coords="334,72,9" href="RB1" />
+<area shape="circle" coords="334,97,9" href="RB2" />
+<area shape="circle" coords="334,122,9" href="RB3" />
+<area shape="circle" coords="334,146,9" href="RB4" />
+<area shape="circle" coords="334,171,9" href="RB5" />
+<area shape="circle" coords="334,195,9" href="RB6" />
+<area shape="circle" coords="334,220,9" href="RB7" />
+<area shape="circle" coords="308,279,9" href="RA1" />
+<area shape="circle" coords="368,279,9" href="RA2" />
+<area shape="circle" coords="430,279,9" href="RA3" />
+<area shape="circle" coords="69,366,28" href="RA0L" />
+<area shape="circle" coords="115,271,8" href="RA0" />
+<area shape="rect" coords="418,79,442,84" href="A1" />
+<area shape="rect" coords="443,84,448,103" href="B1" />
+<area shape="rect" coords="443,108,448,129" href="C1" />
+<area shape="rect" coords="418,129,442,134" href="D1" />
+<area shape="rect" coords="412,108,417,128" href="E1" />
+<area shape="rect" coords="412,84,417,103" href="F1" />
+<area shape="rect" coords="418,103,442,108" href="G1" />
+<area shape="rect" coords="449,132,453,136" href="P1" />
+<area shape="rect" coords="481,78,505,83" href="A2" />
+<area shape="rect" coords="506,84,511,103" href="B2" />
+<area shape="rect" coords="506,108,511,129" href="C2" />
+<area shape="rect" coords="481,129,505,134" href="D2" />
+<area shape="rect" coords="475,108,480,128" href="E2" />
+<area shape="rect" coords="475,83,480,103" href="F2" />
+<area shape="rect" coords="481,103,505,108" href="G2" />
+<area shape="rect" coords="511,132,515,136" href="P2" />
+<area shape="rect" coords="421,39,472,52" href="JP1" />
+</map>

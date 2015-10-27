@@ -1,0 +1,51 @@
+<img src="picsimlab2.png" width="972" height="775" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:Luis Claudio Gamboa Lopes         -->
+<area shape="rect" coords="742,627,769,653" href="RST" />
+<area shape="rect" coords="382,405,413,434" href="RB0" />
+<area shape="rect" coords="382,363,412,391" href="RB1" />
+<area shape="rect" coords="381,324,412,352" href="RB2" />
+<area shape="rect" coords="200,484,232,513" href="RB3" />
+<area shape="rect" coords="200,535,232,564" href="RB4" />
+<area shape="rect" coords="202,589,234,618" href="RB5" />
+<area shape="rect" coords="201,640,233,669" href="RA5" />
+<area shape="rect" coords="846,713,894,772" href="PWR" />
+<area shape="rect" coords="262,709,381,771" href="ICSP" />
+<area shape="rect" coords="25,482,56,511" href="TC1" />
+<area shape="rect" coords="86,482,116,511" href="TC2" />
+<area shape="rect" coords="144,484,175,512" href="TC3" />
+<area shape="rect" coords="27,534,58,563" href="TC4" />
+<area shape="rect" coords="87,533,117,562" href="TC5" />
+<area shape="rect" coords="143,533,174,562" href="TC6" />
+<area shape="rect" coords="28,588,59,615" href="TC7" />
+<area shape="rect" coords="87,589,117,616" href="TC8" />
+<area shape="rect" coords="144,590,175,617" href="TC9" />
+<area shape="rect" coords="28,640,59,669" href="TC*" />
+<area shape="rect" coords="85,640,117,670" href="TC0" />
+<area shape="rect" coords="143,641,176,670" href="TC#" />
+<area shape="rect" coords="488,374,497,403" href="DP01" />
+<area shape="rect" coords="499,374,508,403" href="DP02" />
+<area shape="rect" coords="510,374,519,403" href="DP03" />
+<area shape="rect" coords="521,374,530,403" href="DP04" />
+<area shape="rect" coords="533,374,542,403" href="DP05" />
+<area shape="rect" coords="544,374,553,403" href="DP06" />
+<area shape="rect" coords="556,374,565,403" href="DP07" />
+<area shape="rect" coords="568,374,577,403" href="DP08" />
+<area shape="rect" coords="580,374,589,403" href="DP09" />
+<area shape="rect" coords="591,374,600,403" href="DP10" />
+<area shape="rect" coords="619,374,628,403" href="DP11" />
+<area shape="rect" coords="630,374,639,403" href="DP12" />
+<area shape="rect" coords="641,374,650,403" href="DP13" />
+<area shape="rect" coords="652,374,661,403" href="DP14" />
+<area shape="rect" coords="664,374,673,403" href="DP15" />
+<area shape="rect" coords="675,374,684,403" href="DP16" />
+<area shape="rect" coords="687,374,696,403" href="DP17" />
+<area shape="rect" coords="698,374,707,403" href="DP18" />
+<area shape="rect" coords="709,374,719,403" href="DP19" />
+<area shape="rect" coords="721,374,730,403" href="DP20" />
+</map>

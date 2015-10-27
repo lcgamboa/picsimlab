@@ -1,0 +1,188 @@
+[Header]
+MagicCookie={0b13fe8c-dfe0-40eb-8900-6712719559a7}
+Version=1.0
+[File000]
+Location=Y:\projetos\picsim\lab\share\examples\b6_c18\adc.o
+Folder=Intermediary
+DeviceName=PIC18F452
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\bin\mcc18.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\h||$(LIBDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\lib||$(LKRDIR)||
+SOLK=<src>|adc.c|atraso.c|display7s.c|eeprom.c|eeprom_ext.c|i2c.c|itoa.c|lcd.c|rtc_r.c|serial.c|teclado.c|teste_b6.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File001]
+Location=Y:\projetos\picsim\lab\share\examples\b6_c18\atraso.o
+Folder=Intermediary
+DeviceName=PIC18F452
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\bin\mcc18.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\h||$(LIBDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\lib||$(LKRDIR)||
+SOLK=<src>|adc.c|atraso.c|display7s.c|eeprom.c|eeprom_ext.c|i2c.c|itoa.c|lcd.c|rtc_r.c|serial.c|teclado.c|teste_b6.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File002]
+Location=Y:\projetos\picsim\lab\share\examples\b6_c18\display7s.o
+Folder=Intermediary
+DeviceName=PIC18F452
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\bin\mcc18.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\h||$(LIBDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\lib||$(LKRDIR)||
+SOLK=<src>|adc.c|atraso.c|display7s.c|eeprom.c|eeprom_ext.c|i2c.c|itoa.c|lcd.c|rtc_r.c|serial.c|teclado.c|teste_b6.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File003]
+Location=Y:\projetos\picsim\lab\share\examples\b6_c18\eeprom.o
+Folder=Intermediary
+DeviceName=PIC18F452
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\bin\mcc18.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\h||$(LIBDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\lib||$(LKRDIR)||
+SOLK=<src>|adc.c|atraso.c|display7s.c|eeprom.c|eeprom_ext.c|i2c.c|itoa.c|lcd.c|rtc_r.c|serial.c|teclado.c|teste_b6.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File004]
+Location=Y:\projetos\picsim\lab\share\examples\b6_c18\eeprom_ext.o
+Folder=Intermediary
+DeviceName=PIC18F452
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\bin\mcc18.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\h||$(LIBDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\lib||$(LKRDIR)||
+SOLK=<src>|adc.c|atraso.c|display7s.c|eeprom.c|eeprom_ext.c|i2c.c|itoa.c|lcd.c|rtc_r.c|serial.c|teclado.c|teste_b6.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File005]
+Location=Y:\projetos\picsim\lab\share\examples\b6_c18\i2c.o
+Folder=Intermediary
+DeviceName=PIC18F452
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\bin\mcc18.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\h||$(LIBDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\lib||$(LKRDIR)||
+SOLK=<src>|adc.c|atraso.c|display7s.c|eeprom.c|eeprom_ext.c|i2c.c|itoa.c|lcd.c|rtc_r.c|serial.c|teclado.c|teste_b6.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File006]
+Location=Y:\projetos\picsim\lab\share\examples\b6_c18\itoa.o
+Folder=Intermediary
+DeviceName=PIC18F452
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\bin\mcc18.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\h||$(LIBDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\lib||$(LKRDIR)||
+SOLK=<src>|adc.c|atraso.c|display7s.c|eeprom.c|eeprom_ext.c|i2c.c|itoa.c|lcd.c|rtc_r.c|serial.c|teclado.c|teste_b6.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File007]
+Location=Y:\projetos\picsim\lab\share\examples\b6_c18\lcd.o
+Folder=Intermediary
+DeviceName=PIC18F452
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\bin\mcc18.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\h||$(LIBDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\lib||$(LKRDIR)||
+SOLK=<src>|adc.c|atraso.c|display7s.c|eeprom.c|eeprom_ext.c|i2c.c|itoa.c|lcd.c|rtc_r.c|serial.c|teclado.c|teste_b6.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File008]
+Location=Y:\projetos\picsim\lab\share\examples\b6_c18\rtc_r.o
+Folder=Intermediary
+DeviceName=PIC18F452
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\bin\mcc18.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\h||$(LIBDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\lib||$(LKRDIR)||
+SOLK=<src>|adc.c|atraso.c|display7s.c|eeprom.c|eeprom_ext.c|i2c.c|itoa.c|lcd.c|rtc_r.c|serial.c|teclado.c|teste_b6.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File009]
+Location=Y:\projetos\picsim\lab\share\examples\b6_c18\serial.o
+Folder=Intermediary
+DeviceName=PIC18F452
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\bin\mcc18.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\h||$(LIBDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\lib||$(LKRDIR)||
+SOLK=<src>|adc.c|atraso.c|display7s.c|eeprom.c|eeprom_ext.c|i2c.c|itoa.c|lcd.c|rtc_r.c|serial.c|teclado.c|teste_b6.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File010]
+Location=Y:\projetos\picsim\lab\share\examples\b6_c18\teclado.o
+Folder=Intermediary
+DeviceName=PIC18F452
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\bin\mcc18.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\h||$(LIBDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\lib||$(LKRDIR)||
+SOLK=<src>|adc.c|atraso.c|display7s.c|eeprom.c|eeprom_ext.c|i2c.c|itoa.c|lcd.c|rtc_r.c|serial.c|teclado.c|teste_b6.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File011]
+Location=Y:\projetos\picsim\lab\share\examples\b6_c18\teste_b6.o
+Folder=Intermediary
+DeviceName=PIC18F452
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\bin\mcc18.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\h||$(LIBDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\lib||$(LKRDIR)||
+SOLK=<src>|adc.c|atraso.c|display7s.c|eeprom.c|eeprom_ext.c|i2c.c|itoa.c|lcd.c|rtc_r.c|serial.c|teclado.c|teste_b6.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File012]
+Location=Y:\projetos\picsim\lab\share\examples\b6_c18\teste_b6.cof
+Folder=Output
+DeviceName=PIC18F452
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\bin\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\h||$(LIBDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\lib||$(LKRDIR)||
+SOLK=<src>|adc.c|atraso.c|display7s.c|eeprom.c|eeprom_ext.c|i2c.c|itoa.c|lcd.c|rtc_r.c|serial.c|teclado.c|teste_b6.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=/o"$(BINDIR_)$(TARGETBASE).cof" /M"$(BINDIR_)$(TARGETBASE).map" /W
+TraceCmdString=
+DebugOptions=/z__MPLAB_DEBUG=1
+[File013]
+Location=Y:\projetos\picsim\lab\share\examples\b6_c18\teste_b6.hex
+Folder=Output
+DeviceName=PIC18F452
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\bin\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\h||$(LIBDIR)|C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\lib||$(LKRDIR)||
+SOLK=<src>|adc.c|atraso.c|display7s.c|eeprom.c|eeprom_ext.c|i2c.c|itoa.c|lcd.c|rtc_r.c|serial.c|teclado.c|teste_b6.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=/o"$(BINDIR_)$(TARGETBASE).cof" /M"$(BINDIR_)$(TARGETBASE).map" /W
+TraceCmdString=
+DebugOptions=/z__MPLAB_DEBUG=1
+[TOOL_LOC_STAMPS]
+tool_loc{96C98149-AA1B-4CF9-B967-FAE79CAB663C}=C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\bin\mplink.exe
+tool_loc{E56A1C86-9D32-4DF6-8C34-FE0388B1B644}=C:\Arquivos de programas\Microchip\mplabc18\v3.37.01\bin\mcc18.exe
