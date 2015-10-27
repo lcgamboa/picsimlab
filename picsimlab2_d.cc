@@ -14,13 +14,14 @@ CPWindow2::CPWindow2(void)
   SetPopupMenu(NULL);
   SetTitle(wxT("picsimlab - Help"));
   SetOverrideRedirect(0);
+  EvOnShow=EVONSHOW & CPWindow2::_EvOnShow;
   //html1
   html1.SetFOwner(this);
   html1.SetClass(wxT("CHtml"));
   html1.SetName(wxT("html1"));
   html1.SetTag(0);
-  html1.SetX(18);
-  html1.SetY(18);
+  html1.SetX(5);
+  html1.SetY(5);
   html1.SetWidth(695);
   html1.SetHeight(713);
   html1.SetHint(wxT(""));

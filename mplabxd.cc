@@ -23,6 +23,7 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+
 #include"picsimlab1.h"
 
 //system headers dependent
@@ -74,10 +75,12 @@ typedef struct sockaddr sockaddr;
 #define PROGP 0x45
 #define PROGC 0x50
 #define PROGI 0x55
+#define PROGE 0x57
 #define READD 0x60
 #define READP 0x65
 #define READC 0x70
 #define READI 0x75
+#define READE 0x80
 
 
 
@@ -395,7 +398,7 @@ int mplabxd_loop(_pic *pic)
              reply=0x01; 
            };
 #ifdef _DEBUG_
-	   printf("STRUN cmd =%i\n",Window1.picdbg);	
+	   printf("STRUN cmd =%i\n",Window1.Get_picdbg());	
 #endif
            break;
          case GETID:
@@ -452,9 +455,22 @@ int mplabxd_loop(_pic *pic)
              reply=0x01; 
            };   
 #ifdef _DEBUG_
+           for(i=0;i< (int)pic->IDSIZE;i++)printf("%#02X ",pic->id[i]);
 	   printf("PROGI cmd\n");	
 #endif
            break;
+         case PROGE:
+           if ((n = recv (sockfd, (char *)pic->eeprom, pic->EEPROMSIZE,MSG_WAITALL )) !=  (int)pic->EEPROMSIZE)
+           {
+             printf ("receive error : %s \n", strerror (errno));
+             ret=1;
+             reply=0x01; 
+           };   
+#ifdef _DEBUG_
+           for(i=0;i< (int)pic->EEPROMSIZE;i++)printf("%#02X ",pic->eeprom[i]);
+	   printf("PROGE cmd\n");	
+#endif
+           break;           
          case READD:
            if (send (sockfd, (char *)pic->ram, pic->RAMSIZE, 0) != (int)pic->RAMSIZE)
            { 
@@ -499,6 +515,17 @@ int mplabxd_loop(_pic *pic)
 	   printf("READI cmd\n");	
 #endif
            break;
+         case READE: 
+           if (send (sockfd, (char *)pic->eeprom, pic->EEPROMSIZE, 0) !=  (int)pic->EEPROMSIZE)
+           { 
+             printf ("send error : %s \n", strerror (errno));
+             ret=1;
+             reply=0x01; 
+           };   
+#ifdef _DEBUG_
+	   printf("READI cmd\n");	
+#endif
+           break;           
          default:
 #ifdef _DEBUG_
 	   printf("UNKNOWN cmd !!!!!!!!!!!!!\n");	

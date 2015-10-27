@@ -8,8 +8,8 @@
 #ifndef BOARD_H
 #define	BOARD_H
     
-#include<lxrad/lxrad.h>    
-#include "../picsim.h"    
+#include <lxrad/lxrad.h>    
+#include <picsim/picsim.h>    
     
 typedef struct
 {

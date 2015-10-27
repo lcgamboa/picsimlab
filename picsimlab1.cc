@@ -4,11 +4,7 @@
 #include"picsimlab1.h"
 #include"picsimlab1_d.cc"
 
-#include"board_1.h" //FIXME create a external header
-#include"board_2.h"
-#include"board_3.h"
-#include"board_4.h"
-
+#include"boards_defs.h"
 
 CPWindow1 Window1;
 
@@ -100,12 +96,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
 void
 CPWindow1::timer2_EvOnTime(CControl * control)
 {
-#ifdef _WIN_    
-   char fname[256]; 
-   if(combo3.GetText().size() < 3)combo3.SetText(String::FromAscii(getnamebyproc(pboard->proc,fname))); 
-#endif   
-   pboard->RefreshStatus(&pic);
-   
+   pboard->RefreshStatus(&pic); 
 };
 
 
@@ -194,8 +185,6 @@ if(!create)
     share=wxGetCwd()+wxT("/")+String(_SHARE_);
 #endif
     
-  //Window2.html1.SetLoadFile(String::FromAscii(share)+wxT("doc/HELP.html"));//FIXME clean code
-  Window2.html1.SetLoadFile(String::FromAscii(share)+wxT("doc/latex/picsimlab/picsimlab.html"));
 
 #ifdef _WIN_
  Window3.combo1.SetItems(wxT("COM1,COM2,COM3,COM4,COM5,COM6,COM7,COM8,COM9,COM10,"));
@@ -246,30 +235,9 @@ create++;
         combo2.SetText(itoa(i));
         lab=i;
         lab_=i; 
-        
-        switch(lab)
-        {
-          case 1:
-            pboard= new cboard_1();
-            break;
-          case 2:
-            pboard= new cboard_2();
-            break;
-          case 3:
-            pboard= new cboard_3();
-            break;
-          case 4:
-            pboard= new cboard_4();
-            break;       
-          default:
-            //Message(wxT("Invalid Board! Using Default."));
-            mprint(wxT("Invalid Board! Using Default!\n"));
-            lab=1;//default  
-            lab_=1;//default  
-            combo2.SetText(wxT("1"));
-            pboard= new cboard_1();
-          break;
-        }
+
+        pboard = create_board(&lab,&lab_);         
+
         combo3.SetItems(pboard->GetSupportedDevices());
       }
       if(!strcmp(name,"clock"))
@@ -548,6 +516,7 @@ CPWindow1::menu1_File_Exit_EvMenuActive(CControl * control)
 void
 CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
 {
+  Window2.html1.SetLoadFile(share+wxT("doc/picsimlab.html"));   
   Window2.Show();
 };
 
@@ -566,7 +535,7 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
         pa=picpwr; 
         picpwr=0;
         
-        filedialog1.SetDir(String::FromAscii(share)+wxT("/examples/hex/"));
+        filedialog1.SetDir(share+wxT("/examples/hex/"));
 
         if(filedialog1.Run())
         {

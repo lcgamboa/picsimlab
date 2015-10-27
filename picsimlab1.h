@@ -8,8 +8,8 @@
 
 extern char SERIALDEVICE[100];
 
-#include<lxrad/lxrad.h>
-#include "../picsim.h"
+#include <lxrad/lxrad.h>
+#include <picsim/picsim.h>
 #include "lcd.h"
 #include "mi2c.h"
 #include "rtc.h"

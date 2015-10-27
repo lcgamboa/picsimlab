@@ -9,7 +9,7 @@ class CPWindow2:public CPWindow
   /*#Controls*/
   CHtml html1;
   /*#Events*/
-
+  void _EvOnShow(CControl * control);
   /*#Others*/
   CPWindow2(void);
 };
