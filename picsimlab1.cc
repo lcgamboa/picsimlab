@@ -331,7 +331,7 @@ CPWindow1::combo1_EvOnComboChange(CControl * control)
 
   NSTEP= (int)(atof(combo1.GetText())*NSTEPKT); 
   
-  NSTEPJ=NSTEP/JUMP;
+  NSTEPJ=NSTEP/JUMPSTEPS;
 
   pic.freq=NSTEP*NSTEPKF;
          
@@ -472,6 +472,10 @@ CPWindow1::_EvOnDestroy(CControl * control)
   
   delete pboard;
   pboard =NULL;
+  
+  //refresh window position to window reopen in same position
+  GetX();
+  GetY();
 
 };
 

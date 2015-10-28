@@ -2,6 +2,7 @@
 Dependencies:
 
 lib lxrad: http://sourceforge.net/projects/lxrad/
+lib picsim: http://sourceforge.net/projects/picsim/
 
 Installation:
 

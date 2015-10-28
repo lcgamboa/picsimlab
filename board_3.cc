@@ -219,6 +219,9 @@ void cboard_3::Draw(_pic *pic, CDraw *draw,double scale)
   unsigned char pinv;
   const picpin * pins;
   
+  int JUMPSTEPS = Window1.GetJUMPSTEPS();
+  long int NSTEPJ=Window1.GetNSTEPJ();
+  
   draw->Canvas.Init(scale,scale);
   
           
@@ -342,7 +345,7 @@ void cboard_3::Draw(_pic *pic, CDraw *draw,double scale)
  pins = pic->pins;
 
 
- j=JUMP+1;
+ j=JUMPSTEPS+1;
  if(Window1.Get_picpwr())
    for(i=0;i<Window1.GetNSTEP();i++)
       {
@@ -352,7 +355,7 @@ void cboard_3::Draw(_pic *pic, CDraw *draw,double scale)
           pic_set_pin(pic,35,p_BT3); 
           pic_set_pin(pic,36,p_BT4);
  
-          if(j >JUMP)
+          if(j > JUMPSTEPS)
           {  
           
           rpmc++;
@@ -365,7 +368,7 @@ void cboard_3::Draw(_pic *pic, CDraw *draw,double scale)
          
           if(!mplabxd_testbp(pic))pic_step(pic,0);
 
-          if(j >JUMP)
+          if(j > JUMPSTEPS)
           {  
 /*
         for(pi=0;pi < pic->PINCOUNT;pi++)
@@ -483,7 +486,7 @@ void cboard_3::Draw(_pic *pic, CDraw *draw,double scale)
    //fim STEP
    
 
-     if( ((100.0*lm[6])/Window1.GetNSTEPJ()) > 40)
+     if( ((100.0*lm[6])/NSTEPJ) > 40)
      {
        if(!sound_on)
        {
@@ -498,18 +501,18 @@ void cboard_3::Draw(_pic *pic, CDraw *draw,double scale)
      }
 
      //Ventilador
-     gauge1->SetValue((100.0*lm[15])/Window1.GetNSTEPJ()); 
+     gauge1->SetValue((100.0*lm[15])/NSTEPJ); 
      //Aquecedor
-     gauge2->SetValue((100.0*lm[16])/Window1.GetNSTEPJ()); 
+     gauge2->SetValue((100.0*lm[16])/NSTEPJ); 
 
      //sensor ventilador
-     rpmstp=((float)Window1.GetNSTEPJ()*Window1.GetNSTEPJ())/(144.0*(lm[15]+1));
+     rpmstp=((float)NSTEPJ*NSTEPJ)/(144.0*(lm[15]+1));
    
      //tensão p2
      vp2in=((5.0*(scroll1->GetPosition()))/(scroll1->GetRange()-1));
 
      //temperatura 
-     ref=((50.0*lm[16])/Window1.GetNSTEPJ())-((50.0*lm[15])/Window1.GetNSTEPJ()); 
+     ref=((50.0*lm[16])/NSTEPJ)-((50.0*lm[15])/NSTEPJ); 
 
      if(ref < 0)
        ref=0; 
@@ -524,12 +527,12 @@ void cboard_3::Draw(_pic *pic, CDraw *draw,double scale)
 
      for(pi=0;pi < pic->PINCOUNT;pi++)
      { 
-      lm[pi]= (int)(((225.0*lm[pi])/Window1.GetNSTEPJ())+30);
+      lm[pi]= (int)(((225.0*lm[pi])/NSTEPJ)+30);
 
-      lm1[pi]= (int)(((600.0*lm1[pi])/Window1.GetNSTEPJ())+30);
-      lm2[pi]= (int)(((600.0*lm2[pi])/Window1.GetNSTEPJ())+30);
-      lm3[pi]= (int)(((600.0*lm3[pi])/Window1.GetNSTEPJ())+30);
-      lm4[pi]= (int)(((600.0*lm4[pi])/Window1.GetNSTEPJ())+30);
+      lm1[pi]= (int)(((600.0*lm1[pi])/NSTEPJ)+30);
+      lm2[pi]= (int)(((600.0*lm2[pi])/NSTEPJ)+30);
+      lm3[pi]= (int)(((600.0*lm3[pi])/NSTEPJ)+30);
+      lm4[pi]= (int)(((600.0*lm4[pi])/NSTEPJ)+30);
       if(lm1[pi] > 255)lm1[pi]=255;
       if(lm2[pi] > 255)lm2[pi]=255;
       if(lm3[pi] > 255)lm3[pi]=255;

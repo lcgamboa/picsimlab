@@ -5,6 +5,7 @@
 #define CPUTUSEMAX      0.1      //max period cpu use in s 
 #define NSTEPKT     25000.0      //TIMER constant 1MHz/(4.0*timer_freq) 
 #define NSTEPKF        40.0      //Freq constant 4.0*timer_freq
+#define DEFAULTJS       100       //IO refresh rate
 
 extern char SERIALDEVICE[100];
 
@@ -19,7 +20,6 @@ extern char SERIALDEVICE[100];
 #include<wx/sound.h>
 #include "wx/stdpaths.h"
 
-#define JUMP 100 //sampled IO refresh
 
 int mplabxd_testbp(_pic *pic);
 
@@ -91,6 +91,8 @@ class CPWindow1:public CPWindow
   void SetFNAME(String fname){FNAME=fname;};
   long int GetNSTEP(void){return NSTEP;};
   long int GetNSTEPJ(void){return NSTEPJ;};
+  int GetJUMPSTEPS(void){return JUMPSTEPS;};
+  void SetJUMPSTEPS(int js){JUMPSTEPS=js;NSTEPJ=NSTEP/JUMPSTEPS;};
  private: 
   String share;
  
@@ -104,6 +106,7 @@ class CPWindow1:public CPWindow
   double scale;
   long int NSTEP;
   long int NSTEPJ;
+  int JUMPSTEPS;
   String PATH;
   String FNAME;
   

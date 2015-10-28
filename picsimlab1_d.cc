@@ -79,6 +79,7 @@ CPWindow1::CPWindow1(void)
   combo1.SetPopupMenu(NULL);
   combo1.SetText(wxT("2"));
   combo1.SetItems(wxT("40,32,20,16,10,8,4,2,1,"));
+  combo1.SetReadOnly(0);
   combo1.EvOnComboChange=EVONCOMBOCHANGE & CPWindow1::combo1_EvOnComboChange;
   CreateChild(&combo1);
   //label1
@@ -112,6 +113,7 @@ CPWindow1::CPWindow1(void)
   combo2.SetPopupMenu(NULL);
   combo2.SetText(wxT("1"));
   combo2.SetItems(wxT("1,2,3,4,"));
+  combo2.SetReadOnly(1);
   combo2.EvOnComboChange=EVONCOMBOCHANGE & CPWindow1::combo2_EvOnComboChange;
   CreateChild(&combo2);
   //menu1
@@ -255,13 +257,16 @@ CPWindow1::CPWindow1(void)
   combo3.SetPopupMenu(NULL);
   combo3.SetText(wxT("PIC16F628"));
   combo3.SetItems(wxT("PIC16F628A,PIC16F648A,"));
+  combo3.SetReadOnly(1);
   combo3.EvOnComboChange=EVONCOMBOCHANGE & CPWindow1::combo3_EvOnComboChange;
   CreateChild(&combo3);
 
 
+  JUMPSTEPS=DEFAULTJS;
+  
   NSTEP=NSTEPKT;
 
-  NSTEPJ=NSTEP/JUMP;
+  NSTEPJ=NSTEP/JUMPSTEPS;
 
 picrun=1;
 picpwr=1;

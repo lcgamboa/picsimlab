@@ -1,0 +1,20 @@
+
+
+PICsimLab - PIC Simulator Laboratory
+
+
+Requirements:
+
+
+wxwidget 	- For graphic suport		   http://www.wxwidgets.org
+picsim          - Pic simulator                    http://sourceforge.net/projects/picsim 
+lxrad           - Graphic library                  http://sourceforge.net/projects/lxrad
+
+
+Utils:
+
+com0com		- For serial emulation in windows  http://com0com.sourceforge.net/ 
+tty0tty 	- For serial emulation in linux    http://tty0tty.sourceforge.net/
+
+
+

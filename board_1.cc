@@ -71,6 +71,9 @@ void cboard_1::Draw(_pic *pic, CDraw *draw,double scale)
   unsigned char pinv;
   const picpin * pins;
   
+  int JUMPSTEPS = Window1.GetJUMPSTEPS();
+  long int NSTEPJ=Window1.GetNSTEPJ();
+  
   draw->Canvas.Init(scale,scale);
   
 
@@ -187,12 +190,12 @@ void cboard_1::Draw(_pic *pic, CDraw *draw,double scale)
  pins = pic->pins;
 
   
- j=JUMP+1;
+ j=JUMPSTEPS+1;
  if(Window1.Get_picpwr())
    for(i=0;i<Window1.GetNSTEP();i++)
       {
  
-          if(j >JUMP)
+          if(j > JUMPSTEPS)
           {  
           pic_set_pin(pic,18,p_BT1); 
           pic_set_pin(pic,1,p_BT2); 
@@ -202,7 +205,7 @@ void cboard_1::Draw(_pic *pic, CDraw *draw,double scale)
         
         if(!mplabxd_testbp(pic))pic_step(pic,0);
 
-          if(j >JUMP)
+          if(j > JUMPSTEPS)
           {  
         for(pi=0;pi < pic->PINCOUNT;pi++)
         {
@@ -232,9 +235,9 @@ void cboard_1::Draw(_pic *pic, CDraw *draw,double scale)
    
      for(pi=0;pi < pic->PINCOUNT;pi++)
      { 
-      lm[pi]= (int)(((225.0*lm[pi])/Window1.GetNSTEPJ())+30);
-      lm1[pi]= (int)(((600.0*lm1[pi])/Window1.GetNSTEPJ())+30);
-      lm2[pi]= (int)(((600.0*lm2[pi])/Window1.GetNSTEPJ())+30);
+      lm[pi]= (int)(((225.0*lm[pi])/NSTEPJ)+30);
+      lm1[pi]= (int)(((600.0*lm1[pi])/NSTEPJ)+30);
+      lm2[pi]= (int)(((600.0*lm2[pi])/NSTEPJ)+30);
       if(lm1[pi] > 255)lm1[pi]=255;
       if(lm2[pi] > 255)lm2[pi]=255;
      }

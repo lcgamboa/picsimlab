@@ -325,6 +325,7 @@ int mplabxd_loop(_pic *pic)
            break;
          case RUN:
            Window1.Set_picdbg(0);
+           Window1.SetJUMPSTEPS(DEFAULTJS);
 #ifdef _DEBUG_
 	   printf("RUN cmd\n");	
 #endif
@@ -334,6 +335,7 @@ int mplabxd_loop(_pic *pic)
          case HALT:
            Window1.Set_picdbg(1);
            if(pic->s2 == 1)pic_step(pic,0);
+           Window1.SetJUMPSTEPS(1);
 #ifdef _DEBUG_
 	   printf("HALT cmd\n");	
 #endif
