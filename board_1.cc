@@ -270,7 +270,7 @@ void
 cboard_1::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
 {
  
-  int i,pa;
+  int i;
     
   for(i=0;i<inputc;i++)
   {
@@ -281,28 +281,7 @@ cboard_1::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
       { 
       case I_ICSP:
       {
-        pa=Window1.Get_picpwr(); 
-        Window1.Set_picpwr(0);
-        if(Window1.filedialog1.Run())
-        {
-  	  pic_end(pic);
-
-          pic_set_serial(pic,SERIALDEVICE,0,0,0);
-          Window1.Set_picrun(pic_init(pic,getfprocbynumber(proc),proc,Window1.filedialog1.GetFileName().char_str(),1,Window1.GetNSTEP()*NSTEPKF));
-          pic->config[0] |= 0x0800; //disable DEBUG
-     
-          Reset(pic);
-     
- 
-          if(Window1.Get_picrun()) 
-            Window1.SetTitle(wxT("PicsimLab - ")+basename(Window1.filedialog1.GetFileName()));          
-          else
-            Window1.SetTitle(wxT("PicsimLab"));
-          
-          Window1.SetPATH(Window1.filedialog1.GetDir());
-          Window1.SetFNAME(Window1.filedialog1.GetFileName());
-        }
-        Window1.Set_picpwr(pa);
+         Window1.menu1_File_LoadHex_EvMenuActive(NULL);
       };break;  
       
       case I_JP1:
@@ -319,6 +298,7 @@ cboard_1::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
           Window1.Set_picrun(0); 
           Window1.Set_picpwr(0); 
           pic_reset(pic,1);
+          Reset(pic);
 
           p_BT1=0; 
           p_BT2=0; 
