@@ -6,6 +6,9 @@ lib picsim: http://sourceforge.net/projects/picsim/
 
 Installation:
 
-make         - Compile the picsimlab1 simulator
+make           - Compile the picsimlab simulator
 
-this version is not installable
+make install   - Install picsimlab in system 
+
+make uninstall - Remove picsimlab 
+
