@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=PICsimLab
+Comment=PICsimLab
+Exec=picsimlab
+Icon=/usr/share/picsimlab/logo.png
+Terminal=0
+Type=Application
+Encoding=UTF-8
+Categories=Engineering;Electronics;
