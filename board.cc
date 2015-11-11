@@ -57,13 +57,13 @@ board::ReadInputMap(String fname)
   char line[256];
   
   char *it;
-//  char *shape;
+  char *shape;
   char *coords;
   char *name;
   char *value;
 
   
-  int x1,y1,x2,y2;
+  int x1,y1,x2,y2,r;
   
   
   fin=fopen(fname.c_str(),"r");
@@ -78,7 +78,7 @@ board::ReadInputMap(String fname)
         do
         { 
           name=strtok(NULL,"< =\"");
-          value=strtok(NULL,"< =\"");
+          value=strtok(NULL,"<=\"");
 
           if(!strcmp("width",name))
           {
@@ -109,7 +109,7 @@ board::ReadInputMap(String fname)
       else if(!strcmp("area",it))
       {
         strtok(NULL,"< =\"");
-        /*shape=*/strtok(NULL,"< =\"");
+        shape=strtok(NULL,"< =\"");
         strtok(NULL,"< =\"");
         coords=strtok(NULL,"< =\"");
         strtok(NULL,"< =\"");
@@ -117,8 +117,8 @@ board::ReadInputMap(String fname)
         
 //        printf("%s %s %s\n",name,shape,coords);
        
-//        if(strcmp("rect",shape)== 0)
-//        {
+        if(strcmp("rect",shape)== 0)
+        {
           sscanf(coords,"%i,%i,%i,%i\n",&x1,&y1,&x2,&y2);
 //          printf("rect=%i,%i,%i,%i\n",x1,y1,x2,y2);
 
@@ -126,15 +126,21 @@ board::ReadInputMap(String fname)
           input[inputc].y1=y1; 
           input[inputc].x2=x2; 
           input[inputc].y2=y2;
-          strcpy(input[inputc].name,name); 
-          input[inputc].id=get_in_id(input[inputc].name);
-          inputc++;
-//        }
-//        else 
-//        {
-//          sscanf(coords,"%i,%i,%i\n",&x1,&y1,&r);
+          }
+        else 
+        {
+          sscanf(coords,"%i,%i,%i\n",&x1,&y1,&r);
 //          printf("circle=%i,%i,%i\n",x1,y1,r);
-//        }
+          input[inputc].x1=x1-r; 
+          input[inputc].y1=y1-r; 
+          input[inputc].x2=x1+r; 
+          input[inputc].y2=y1+r;
+        
+        }
+        strcpy(input[inputc].name,name); 
+        input[inputc].id=get_in_id(input[inputc].name);
+        inputc++;
+        
       }
     } 
     fclose(fin);

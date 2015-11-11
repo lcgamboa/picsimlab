@@ -66,7 +66,7 @@ class board
       virtual void KeyRelease(_pic *pic,uint key, uint x, uint y,uint mask)=0;//Event on the board
       virtual void OnShow(void){};               //Event on the board when windows is show or resized
       virtual void RefreshStatus(_pic *pic);   //Called ever 1s to refresh status
-      virtual void WritePreferences(void){};     //Called to save board preferences in configuration file
+      virtual void WritePreferences(void){};   //Called to save board preferences in configuration file
       virtual void ReadPreferences(char *name,char *value){}; //Called whe configuration file load  preferences 
       virtual unsigned short get_in_id(char * name)=0; //return the input ids numbers of names used in input map
       virtual unsigned short get_out_id(char * name)=0; //return the output ids numbers of names used in output map
@@ -78,8 +78,8 @@ class board
  protected:
       input_t  input[100];  //input map elements
       output_t output[100]; //output map elements 
-      int inputc; //input map elements counter 
-      int outputc; //output map elements counter   
+      int inputc;           //input map elements counter 
+      int outputc;          //output map elements counter   
       void ReadMaps(void); //read maps 
  private:      
       void ReadInputMap(String fname);

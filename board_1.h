@@ -39,7 +39,6 @@ class cboard_1:public board
      unsigned int lm[50]; //luminosidade media
      unsigned int lm1[50]; //luminosidade media display
      unsigned int lm2[50]; //luminosidade media display
-     CButton *button;
  
    public:
       cboard_1(void);

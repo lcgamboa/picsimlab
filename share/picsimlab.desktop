@@ -1,9 +1,8 @@
 [Desktop Entry]
 Name=PICsimLab
-Comment=PICsimLab
+Comment="Pic simulator Laboratory"
 Exec=picsimlab
 Icon=/usr/share/picsimlab/logo.png
-Terminal=0
+Terminal=false
 Type=Application
-Encoding=UTF-8
-Categories=Engineering;Electronics;
+Categories=Development;Engineering;Electronics;
