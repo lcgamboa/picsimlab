@@ -1,8 +1,8 @@
 
 Dependencies:
 
-lib lxrad: http://sourceforge.net/projects/lxrad/
-lib picsim: http://sourceforge.net/projects/picsim/
+lib lxrad: https://github.com/lcgamboa/lxrad or http://sourceforge.net/projects/lxrad/
+lib picsim: https://github.com/lcgamboa/picsim or http://sourceforge.net/projects/picsim/
 
 Installation:
 
