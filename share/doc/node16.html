@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Programmer Connection</TITLE>
+<META NAME="description" CONTENT="Programmer Connection">
+<META NAME="keywords" CONTENT="picsimlab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="picsimlab.css">
+
+<LINK REL="next" HREF="node17.html">
+<LINK REL="previous" HREF="node15.html">
+<LINK REL="up" HREF="node10.html">
+<LINK REL="next" HREF="node17.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html287"
+  HREF="node17.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html283"
+  HREF="node10.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html277"
+  HREF="node15.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A> 
+<A NAME="tex2html285"
+  HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/usr/share/latex2html/icons/contents.png"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html288"
+  HREF="node17.html">MPLABX Integrated Debug</A>
+<B> Up:</B> <A NAME="tex2html284"
+  HREF="node10.html">Help</A>
+<B> Previous:</B> <A NAME="tex2html278"
+  HREF="node15.html">Features of board 4</A>
+ &nbsp; <B>  <A NAME="tex2html286"
+  HREF="node1.html">Contents</A></B> 
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00360000000000000000">
+Programmer Connection</A>
+</H1>
+
+<P>
+To use the embedded picstart+ emulator, install an NULL-MODEM emulator:
+
+<P>
+
+<UL>
+<LI>Windows: com0com <TT><A NAME="tex2html41"
+  HREF="http://sourceforge.net/projects/com0com/">http://sourceforge.net/projects/com0com/</A></TT>
+</LI>
+<LI>Linux: tty0tty <TT><A NAME="tex2html42"
+  HREF="http://sourceforge.net/projects/tty0tty/">http://sourceforge.net/projects/tty0tty/</A></TT> or 
+<BR>  <TT><A NAME="tex2html43"
+  HREF="https://github.com/lcgamboa/tty0tty">https://github.com/lcgamboa/tty0tty</A></TT>
+</LI>
+</UL>
+
+<P>
+Configuration examples:
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="CENTER">OS</TD>
+<TD ALIGN="CENTER">PicsimLab port</TD>
+<TD ALIGN="CENTER">IDE port</TD>
+<TD ALIGN="CENTER">NULL-Modem prog.</TD>
+<TD ALIGN="CENTER">Connection</TD>
+</TR>
+<TR><TD ALIGN="CENTER">Windows</TD>
+<TD ALIGN="CENTER">wport=com8</TD>
+<TD ALIGN="CENTER">Mplab=com2</TD>
+<TD ALIGN="CENTER">com0com</TD>
+<TD ALIGN="CENTER">com2&lt;=&gt;com8</TD>
+</TR>
+<TR><TD ALIGN="CENTER">Linux</TD>
+<TD ALIGN="CENTER">lport=/dev/tnt4</TD>
+<TD ALIGN="CENTER">Piklab=/dev/tnt5</TD>
+<TD ALIGN="CENTER">tty0tty</TD>
+<TD ALIGN="CENTER">/dev/tnt4&lt;=&gt;/dev/tnt5</TD>
+</TR>
+</TABLE>
+
+<P>
+<BR><HR>
+<ADDRESS>
+Luis Claudio Gamboa Lopes
+2015-11-16
+</ADDRESS>
+</BODY>
+</HTML>
