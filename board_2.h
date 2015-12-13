@@ -51,7 +51,7 @@ class cboard_2:public board
       cboard_2(void);
       ~cboard_2(void);
       void Draw(_pic *pic, CDraw *draw,double scale);
-      String GetSupportedDevices(void){return wxT("PIC16F628A,PIC16F648A,");};
+      String GetSupportedDevices(void){return wxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
       String GetPictureFileName(void){return wxT("picsimlab2.png");};
       String GetInputMapFile(void){return wxT("input2.map");};
       String GetOutputMapFile(void){return wxT("output2.map");};

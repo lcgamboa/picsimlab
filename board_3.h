@@ -75,7 +75,7 @@ class cboard_3:public board
       cboard_3(void);
       ~cboard_3(void);
       void Draw(_pic *pic, CDraw *draw,double scale);
-      String GetSupportedDevices(void){return wxT("PIC16F777,PIC16F877A,PIC18F452,PIC18F4550,PIC18F4620,");};
+      String GetSupportedDevices(void){return wxT("PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F4620,");};
       String GetPictureFileName(void){return wxT("picsimlab3.png");};
       String GetInputMapFile(void){return wxT("input3.map");};
       String GetOutputMapFile(void){return wxT("output3.map");};
