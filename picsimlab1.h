@@ -30,7 +30,7 @@
 #define CPUTUSEMAX      0.1      //max period cpu use in s 
 #define NSTEPKT     25000.0      //TIMER constant 1MHz/(4.0*timer_freq) 
 #define NSTEPKF        40.0      //Freq constant 4.0*timer_freq
-#define DEFAULTJS       100       //IO refresh rate
+#define DEFAULTJS       100      //IO refresh rate
 
 extern char SERIALDEVICE[100];
 

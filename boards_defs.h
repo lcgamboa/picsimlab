@@ -33,10 +33,11 @@
 #include"board_2.h"
 #include"board_3.h"
 #include"board_4.h"
+#include"board_5.h"
 #include"board_x.h"
 
 //number of last board
-#define BOARDS_LAST 5
+#define BOARDS_LAST 6
 
 //boards object creation
 board * create_board(int *lab,int *lab_)
@@ -57,6 +58,9 @@ board * create_board(int *lab,int *lab_)
             pboard= new cboard_4();
             break;    
           case 5:
+            pboard= new cboard_5();
+            break;     
+          case 6:
             pboard= new cboard_x();
             break;     
           default:

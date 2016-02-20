@@ -187,6 +187,7 @@ CPWindow1::_EvOnCreate(CControl * control)
     
   int i;
   int lc;
+  float clk;
   
   String status;
 
@@ -270,8 +271,15 @@ create++;
       }
       if(!strcmp(name,"clock"))
       {
-        sscanf(value,"%i",&i);
-        combo1.SetText(itoa(i)); 
+        sscanf(value,"%f",&clk);
+        if(clk < 1)
+        {
+          combo1.SetText(String::Format("%2.1f",clk)); 
+        }
+        else
+        {
+          combo1.SetText(String::Format("%2.0f",clk));
+        }
         combo1_EvOnComboChange(control);
       }
 
@@ -353,6 +361,8 @@ create++;
   timer2.SetRunState(1);
 };
 
+
+//Change  frequency
 void
 CPWindow1::combo1_EvOnComboChange(CControl * control)
 {
@@ -370,7 +380,7 @@ CPWindow1::combo1_EvOnComboChange(CControl * control)
 
 
 
-
+//Change board
 void
 CPWindow1::combo2_EvOnComboChange(CControl * control)
 {
@@ -487,6 +497,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
   switch(getfprocbynumber(proc_))
   {
     case P16:
+    case P16E: //FIXME P16E verificar    
       write_ihx(&pic,fname);
       break;
     case P18:
@@ -633,11 +644,15 @@ CPWindow1::menu1_File_Configure_EvMenuActive(CControl * control)
 };
 
 
+//change processor
 void
 CPWindow1::combo3_EvOnComboChange(CControl * control)
 {
    proc_=pboard->proc;
    pboard->proc=getprocbyname((char *)combo3.GetText().char_str());
+   
+   if(pboard->proc == 0)
+     printf("Unknown processor %s !!\n",(char *)combo3.GetText().char_str()) ;  
 
   _EvOnDestroy(control);
   _EvOnCreate(control);
