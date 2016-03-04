@@ -335,7 +335,7 @@ create++;
   
   sprintf(fname,"%s/mdump_%02i_%s.hex",home,lab,getnamebyproc(pboard->proc,line));
  
-  pic_init(&pic,getfprocbynumber(pboard->proc),pboard->proc,fname,1,NSTEP*NSTEPKF);
+  pic_init(&pic,pboard->proc,fname,1,NSTEP*NSTEPKF);
 
   pboard->Reset(&pic);
       
@@ -530,7 +530,7 @@ CPWindow1::menu1_File_LoadHex_EvMenuActive(CControl * control)
         {
   	  pic_end(&pic);
           pic_set_serial(&pic,SERIALDEVICE,0,0,0);
-          picrun=pic_init(&pic,getfprocbynumber(pboard->proc),pboard->proc,filedialog1.GetFileName().char_str(),1,NSTEP*NSTEPKF);
+          picrun=pic_init(&pic,pboard->proc,filedialog1.GetFileName().char_str(),1,NSTEP*NSTEPKF);
           pic.config[0] |= 0x0800; //disable DEBUG
           
           
@@ -584,7 +584,7 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
         {
   	  pic_end(&pic);
           pic_set_serial(&pic,SERIALDEVICE,0,0,0);
-          picrun=pic_init(&pic,getfprocbynumber(pboard->proc),pboard->proc,filedialog1.GetFileName().char_str(),1,NSTEP*NSTEPKF);
+          picrun=pic_init(&pic,pboard->proc,filedialog1.GetFileName().char_str(),1,NSTEP*NSTEPKF);
           pic.config[0] |= 0x0800; //disable DEBUG
           
           pboard->Reset(&pic);
@@ -673,7 +673,7 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
         //{
   	  pic_end(&pic);
   	  pic_set_serial(&pic,SERIALDEVICE,0,0,0);
-          picrun=pic_init(&pic,getfprocbynumber(pboard->proc),pboard->proc,FNAME.char_str(),1,NSTEP*NSTEPKF);
+          picrun=pic_init(&pic,pboard->proc,FNAME.char_str(),1,NSTEP*NSTEPKF);
           pic.config[0] |= 0x0800; //disable DEBUG
     
           pboard->Reset(&pic);
