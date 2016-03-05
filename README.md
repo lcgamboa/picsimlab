@@ -4,7 +4,7 @@
 PicsimLab is a realtime emulator of development boards with integrated MPLABX debugger.
 PicsimLab supports picsim  microcontrollers PIC16F628/16F777/16F877A/18F452/18F4550/18F4620.
 
-![PICsimLab](share/doc/picsimlab4.png.png?raw=true "PICsimLab")
+![PICsimLab](share/doc/picsimlab4.png?raw=true "PICsimLab")
 
 ## Requirements for compiling:
 
