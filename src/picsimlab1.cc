@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2016  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -497,7 +497,8 @@ CPWindow1::_EvOnDestroy(CControl * control)
   switch(getfprocbynumber(proc_))
   {
     case P16:
-    case P16E: //FIXME P16E verificar    
+    case P16E:
+    case P16E2:    
       write_ihx(&pic,fname);
       break;
     case P18:

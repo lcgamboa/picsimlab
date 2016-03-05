@@ -34,10 +34,11 @@
 #include"board_3.h"
 #include"board_4.h"
 #include"board_5.h"
+#include"board_6.h"
 #include"board_x.h"
 
 //number of last board
-#define BOARDS_LAST 6
+#define BOARDS_LAST 7
 
 //boards object creation
 board * create_board(int *lab,int *lab_)
@@ -61,8 +62,11 @@ board * create_board(int *lab,int *lab_)
             pboard= new cboard_5();
             break;     
           case 6:
-            pboard= new cboard_x();
+            pboard= new cboard_6();
             break;     
+          case 7:
+            pboard= new cboard_x();
+            break;                
           default:
             mprint(wxT("Invalid Board! Using Default!\n"));
             *lab=1;//default  

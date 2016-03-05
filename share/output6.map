@@ -1,0 +1,14 @@
+<img src="picsimlab5.xcf" width="441" height="326" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:Luis Claudio Gamboa Lopes      -->
+<area shape="rect" coords="100,85,110,95" href="O_D1" />
+<area shape="rect" coords="206,140,221,146" href="O_D2" />
+<area shape="rect" coords="206,155,221,161" href="O_D3" />
+<area shape="rect" coords="206,169,221,175" href="O_D4" />
+<area shape="rect" coords="206,183,221,189" href="O_D5" />
+</map>
