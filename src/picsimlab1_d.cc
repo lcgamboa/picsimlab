@@ -285,7 +285,14 @@ CPWindow1::CPWindow1(void)
   combo3.SetReadOnly(1);
   combo3.EvOnComboChange=EVONCOMBOCHANGE & CPWindow1::combo3_EvOnComboChange;
   CreateChild(&combo3);
-
+  //thread1
+  thread1.SetFOwner(this);
+  thread1.SetClass(wxT("CThread"));
+  thread1.SetName(wxT("thread1"));
+  thread1.SetTag(0);
+  thread1.EvThreadRun=EVTHREADRUN & CPWindow1::thread1_EvThreadRun;
+  thread1.EvThreadEnd=EVTHREADEND & CPWindow1::thread1_EvThreadEnd;
+  CreateChild(&thread1);
 
   JUMPSTEPS=DEFAULTJS;
   
@@ -311,5 +318,6 @@ create=0;
 
 FNAME=wxT(" ");
 
-
+ondraw=0;    
+ 
 };

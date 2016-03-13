@@ -54,27 +54,46 @@ int mplabxd_loop(_pic *pic);
 void mplabxd_end(void);
 int mplabxd_testbp(_pic *pic);
 
+int crt;
+
 void
 CPWindow1::timer1_EvOnTime(CControl * control)
 {
 
- clock_t cstart=0, cend=0;
- double cpu_time_used;
+    if(!ondraw)
+    {
+     ondraw=1;   
+     if(!crt)   
+       label1.SetColor(wxT("black"));
+     crt=0;
+     thread1.Run();//parallel thread
+     pboard->Draw(&pic,&draw1,scale);
+    }
+    else
+    {
+      label1.SetColor(wxT("red"));
+      crt=1;
+    }
+};
 
-  //TODO implement loop in one separed thread
-  cstart = clock();
+void
+CPWindow1::thread1_EvThreadRun(CControl*)
+{
+ //clock_t cstart=0, cend=0;
+ //double cpu_time_used;
 
- 
-   pboard->Draw(&pic,&draw1,scale);
+  //cstart = clock();
 
+  pboard->Run_CPU(&pic);
 
-   cend = clock();
-   cpu_time_used = ((double) (cend - cstart)) / CLOCKS_PER_SEC;
+  //cend = clock();
+  //cpu_time_used = ((double) (cend - cstart)) / CLOCKS_PER_SEC;
 
 
    //printf("time=%f \n",cpu_time_used);
 
-
+//FIXME verificar real time   
+/*
    if(cpu_time_used > CPUTUSEMAX)
    {
       over+=(cpu_time_used-CPUTUSEMAX);
@@ -102,18 +121,24 @@ CPWindow1::timer1_EvOnTime(CControl * control)
    {
       over=0;
    }
+*/  
   
+//   cstart=0;
+  // Application->ProcessEvents();
+
+  
+}
+
+void
+CPWindow1::thread1_EvThreadEnd(CControl*)
+{
    if(picpwr)
    { 
       prog_loop(&pic);
       mplabxd_loop(&pic);
    }
-
-   cstart=0;
-  // Application->ProcessEvents();
-
-
-};
+   ondraw=0;
+}
 
 
 void
@@ -438,6 +463,10 @@ CPWindow1::_EvOnDestroy(CControl * control)
   timer1.SetRunState(0);
   timer2.SetRunState(0);
   
+  while(ondraw) //Wait thread finish
+  {
+      usleep(100);
+  }
   
 
 /*

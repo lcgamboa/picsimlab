@@ -74,6 +74,7 @@ class CPWindow1:public CPWindow
   CLabel label2;
   CLabel label7;
   CCombo combo3;
+  CThread thread1;
 
   /*#Events*/
   void _EvOnCreate(CControl * control);
@@ -99,6 +100,9 @@ class CPWindow1:public CPWindow
   /*#Others*/
   CPWindow1(void);
   void saveprefs(String name, String value);
+  
+  void thread1_EvThreadRun(CControl * control);
+  void thread1_EvThreadEnd(CControl * control);
 
   String GetSharePath(void){return share;};
   void SetplWidth(int pw){plWidth=pw;};
@@ -148,6 +152,8 @@ class CPWindow1:public CPWindow
 
   float over;
   int create;
+
+  int ondraw;    
 };
 
 extern CPWindow1 Window1 ;

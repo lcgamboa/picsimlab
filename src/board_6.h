@@ -55,6 +55,7 @@ class cboard_6:public board
       ~cboard_6(void); 
       //Called ever 100ms to draw board
       void Draw(_pic *pic, CDraw *draw,double scale);
+      void Run_CPU(_pic *pic);
       //Return a list of board supported microcontrollers
       String GetSupportedDevices(void){return wxT("PIC16F18855,");};
       //Return the filename of board picture 

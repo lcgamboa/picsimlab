@@ -68,11 +68,11 @@ class cboard_4:public board
     unsigned char sda,sck;
 
     int dip[20];
-    unsigned int lm[50]; //luminosidade media
-    unsigned int lm1[50]; //luminosidade media display
-    unsigned int lm2[50]; //luminosidade media display
-    unsigned int lm3[50]; //luminosidade media display
-    unsigned int lm4[50]; //luminosidade media display
+    unsigned int lm[40]; //luminosidade media
+    unsigned int lm1[40]; //luminosidade media display
+    unsigned int lm2[40]; //luminosidade media display
+    unsigned int lm3[40]; //luminosidade media display
+    unsigned int lm4[40]; //luminosidade media display
     wxBitmap * vent[2];
     
     CGauge *gauge1;
@@ -89,6 +89,7 @@ class cboard_4:public board
       cboard_4(void);
       ~cboard_4(void);
       void Draw(_pic *pic, CDraw *draw,double scale);
+      void Run_CPU(_pic *pic);
       String GetSupportedDevices(void){return wxT("PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,");};
       String GetPictureFileName(void){return wxT("picsimlab4.png");};
       String GetInputMapFile(void){return wxT("input4.map");};

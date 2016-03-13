@@ -54,7 +54,8 @@ unsigned short id;
 class board
 {
   public:
-      virtual void Draw(_pic *pic, CDraw *draw,double scale)=0; //Called ever 100ms to draw board
+      virtual void Draw(_pic *pic, CDraw *draw,double scale)=0; //Called ever 100ms to draw board 
+      virtual void Run_CPU(_pic *pic)=0; //Paralle thread called ever 100ms to run cpu code
       virtual String GetSupportedDevices(void)=0;//Return a list of supported microcontrollers
       virtual String GetPictureFileName(void)=0; //Return the filename of board picture 
       virtual String GetInputMapFile(void)=0;    //Return the filename of board picture input map  

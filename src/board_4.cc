@@ -346,16 +346,6 @@ cboard_4::~cboard_4(void)
 void cboard_4::Draw(_pic *pic, CDraw *draw,double scale)
 {
   int i;
-  int j;
-  unsigned char pi;
-  unsigned char pinv;
-  const picpin * pins;
- 
-  unsigned char L[4];
-  
-  int JUMPSTEPS = Window1.GetJUMPSTEPS();
-  long int NSTEPJ=Window1.GetNSTEPJ();
-
  
           pic_set_pin(pic,39,1);
           pic_set_pin(pic,40,1);
@@ -541,18 +531,85 @@ void cboard_4::Draw(_pic *pic, CDraw *draw,double scale)
 
   draw->Canvas.End();
   draw->Update ();
-  
-     for(pi=0;pi < pic->PINCOUNT;pi++)
+
+   
+   if( (0.4444*(lm[15]-30)) > 40)
+   {
+     if(!sound_on)
      {
-       lm[pi]=0;
-       lm1[pi]=0;
-       lm2[pi]=0;
-       lm3[pi]=0;
-       lm4[pi]=0;
-     };
+       buzz.Play(wxSOUND_ASYNC|wxSOUND_LOOP); 
+       sound_on=1;
+     }
+   }
+   else
+   {
+     buzz.Stop(); 
+     sound_on=0;
+   }
 
- pins = pic->pins;
+   
 
+   //Ventilador
+   gauge1->SetValue(0.4444*(lm[16]-30)); 
+   //Aquecedor
+   gauge2->SetValue(0.4444*(lm[23]-30)); 
+
+   //sensor ventilador
+   rpmstp=((float)Window1.GetNSTEPJ())/(0.64*(lm[16]-29));
+   
+   //tensão p2
+   vp2in=((5.0*(scroll1->GetPosition()))/(scroll1->GetRange()-1));
+   vp1in=((5.0*(scroll2->GetPosition()))/(scroll2->GetRange()-1));
+
+   //temperatura 
+   ref=((0.2222*(lm[23]-30)))-(0.2222*(lm[16]-30)); 
+
+   if(ref < 0)
+      ref=0; 
+ 
+   temp[1]=temp[0];    
+   temp[0]=((27.5+ref)*0.003)+temp[1]*(0.997);
+
+   if(dip[16])
+     pic_set_apin(pic,4,temp[0]/100.0);
+   else
+     pic_set_apin(pic,4,0);
+
+   //referencia
+   //pic_set_apin(pic,5,2.5);
+
+}     
+     
+void cboard_4::Run_CPU(_pic *pic)
+{
+  int i;  
+  int j;
+  unsigned char pi;
+  unsigned char pinv;
+  const picpin * pins;     
+  unsigned char L[4];
+  
+  unsigned int alm[40]; //luminosidade media
+  unsigned int alm1[40]; //luminosidade media display
+  unsigned int alm2[40]; //luminosidade media display
+  unsigned int alm3[40]; //luminosidade media display
+  unsigned int alm4[40]; //luminosidade media display
+ 
+  int JUMPSTEPS = Window1.GetJUMPSTEPS();
+  long int NSTEPJ=Window1.GetNSTEPJ();  
+
+
+  for(i=0;i < pic->PINCOUNT;i++)
+  {
+     alm[i]=0;
+     alm1[i]=0;
+     alm2[i]=0;
+     alm3[i]=0;
+     alm4[i]=0;
+  };
+  
+  pins = pic->pins;
+  
 
   j=JUMPSTEPS+1;
 
@@ -642,69 +699,69 @@ void cboard_4::Draw(_pic *pic, CDraw *draw,double scale)
 /*
         for(pi=0;pi < pic.PINCOUNT;pi++)
         {
-           lm[pi]+=pins[pi].value;
-           //if((!pins[pi].dir)&&(pins[pi].value)) lm[pi]++;
+           alm[pi]+=pins[pi].value;
+           //if((!pins[pi].dir)&&(pins[pi].value)) alm[pi]++;
         }
 */
 
         if(j > JUMPSTEPS)
         {       
 //outputs     
-          lm[32]+=pins[32].value;
-          lm[33]+=pins[33].value;
-          lm[34]+=pins[34].value;
-          lm[35]+=pins[35].value;
-          lm[36]+=pins[36].value;
-          lm[37]+=pins[37].value;
-          lm[38]+=pins[38].value;
-          lm[39]+=pins[39].value;
+          alm[32]+=pins[32].value;
+          alm[33]+=pins[33].value;
+          alm[34]+=pins[34].value;
+          alm[35]+=pins[35].value;
+          alm[36]+=pins[36].value;
+          alm[37]+=pins[37].value;
+          alm[38]+=pins[38].value;
+          alm[39]+=pins[39].value;
 
-          lm[18]+=pins[18].value;
-          lm[19]+=pins[19].value;
-          lm[20]+=pins[20].value;
-          lm[21]+=pins[21].value;
-          lm[26]+=pins[26].value;
-          lm[27]+=pins[27].value;
-          lm[28]+=pins[28].value;
-          lm[29]+=pins[29].value;
+          alm[18]+=pins[18].value;
+          alm[19]+=pins[19].value;
+          alm[20]+=pins[20].value;
+          alm[21]+=pins[21].value;
+          alm[26]+=pins[26].value;
+          alm[27]+=pins[27].value;
+          alm[28]+=pins[28].value;
+          alm[29]+=pins[29].value;
         
-          lm[23]+=pins[23].value;
-          lm[16]+=pins[16].value;
-          lm[14]+=pins[14].value;
-          lm[7]+=pins[7].value;
-          lm[15]+=pins[15].value;
+          alm[23]+=pins[23].value;
+          alm[16]+=pins[16].value;
+          alm[14]+=pins[14].value;
+          alm[7]+=pins[7].value;
+          alm[15]+=pins[15].value;
 
 //inputs
-          if((pins[32].dir)&&(p_BT1))lm[32]++; 
-          if((pins[33].dir)&&(p_BT2))lm[33]++; 
-          if((pins[34].dir)&&(p_BT3))lm[34]++; 
-          if((pins[35].dir)&&(p_BT4))lm[35]++; 
+          if((pins[32].dir)&&(p_BT1))alm[32]++; 
+          if((pins[33].dir)&&(p_BT2))alm[33]++; 
+          if((pins[34].dir)&&(p_BT3))alm[34]++; 
+          if((pins[35].dir)&&(p_BT4))alm[35]++; 
 
-          if((pins[36].dir)&&(p_BT5))lm[36]++; 
-          if((pins[37].dir)&&(p_BT6))lm[37]++; 
+          if((pins[36].dir)&&(p_BT5))alm[36]++; 
+          if((pins[37].dir)&&(p_BT6))alm[37]++; 
           
-          if((pins[38].dir))lm[38]++; 
-          if((pins[39].dir))lm[39]++; 
+          if((pins[38].dir))alm[38]++; 
+          if((pins[39].dir))alm[39]++; 
 
-          if((pins[18].dir))lm[18]++; 
-          if((pins[19].dir))lm[19]++; 
-          if((pins[20].dir))lm[20]++; 
-          if((pins[21].dir))lm[21]++; 
-          if((pins[26].dir))lm[26]++; 
-          if((pins[27].dir))lm[27]++; 
-          if((pins[28].dir))lm[28]++; 
-          if((pins[29].dir))lm[29]++; 
+          if((pins[18].dir))alm[18]++; 
+          if((pins[19].dir))alm[19]++; 
+          if((pins[20].dir))alm[20]++; 
+          if((pins[21].dir))alm[21]++; 
+          if((pins[26].dir))alm[26]++; 
+          if((pins[27].dir))alm[27]++; 
+          if((pins[28].dir))alm[28]++; 
+          if((pins[29].dir))alm[29]++; 
 
             for(pi=18;pi<30;pi++)
             {
               pinv=pins[pi].value;
-              if((pinv)&&(pins[3].value)&&(dip[10])) lm1[pi]++;
-              if((pinv)&&(pins[4].value)&&(dip[11])) lm2[pi]++;
-              if((pinv)&&(pins[5].value)&&(dip[12])) lm3[pi]++;
-              if((pinv)&&(pins[6].value)&&(dip[13])) lm4[pi]++;
+              if((pinv)&&(pins[3].value)&&(dip[10])) alm1[pi]++;
+              if((pinv)&&(pins[4].value)&&(dip[11])) alm2[pi]++;
+              if((pinv)&&(pins[5].value)&&(dip[12])) alm3[pi]++;
+              if((pinv)&&(pins[6].value)&&(dip[13])) alm4[pi]++;
             }
 
-	if(dip[7])lm[32]=0;
+	if(dip[7])alm[32]=0;
 
     
 // potenciometro p1 e p2
@@ -774,70 +831,28 @@ void cboard_4::Draw(_pic *pic, CDraw *draw,double scale)
 
    //fim STEP
 
+     if(!dip[15])alm[23]=0;//aquecedor
+     if(!dip[17])alm[16]=0;//ventilador
 
-     if( ((100.0*lm[15])/NSTEPJ) > 40)
-     {
-       if(!sound_on)
-       {
-         buzz.Play(wxSOUND_ASYNC|wxSOUND_LOOP); 
-         sound_on=1;
-       }
-     }
-     else
-     {
-       buzz.Stop(); 
-       sound_on=0;
-     }
-
-     if(!dip[15])lm[23]=0;//aquecedor
-     if(!dip[17])lm[16]=0;//ventilador
-
-
-     //Ventilador
-     gauge1->SetValue((100.0*lm[16])/NSTEPJ); 
-     //Aquecedor
-     gauge2->SetValue((100.0*lm[23])/NSTEPJ); 
-
-     //sensor ventilador
-     rpmstp=((float)NSTEPJ*NSTEPJ)/(144.0*(lm[16]+1));
-   
-     //tensão p2
-     vp2in=((5.0*(scroll1->GetPosition()))/(scroll1->GetRange()-1));
-     vp1in=((5.0*(scroll2->GetPosition()))/(scroll2->GetRange()-1));
-
-     //temperatura 
-     ref=((50.0*lm[23])/NSTEPJ)-((50.0*lm[16])/NSTEPJ); 
-
-     if(ref < 0)
-       ref=0; 
- 
-       temp[1]=temp[0];    
-       temp[0]=((27.5+ref)*0.003)+temp[1]*(0.997);
-
-     if(dip[16])
-       pic_set_apin(pic,4,temp[0]/100.0);
-     else
-       pic_set_apin(pic,4,0);
-
-     //referencia
-     //pic_set_apin(pic,5,2.5);
-
-     for(pi=0;pi < pic->PINCOUNT;pi++)
+  
+     for(i=0;i < pic->PINCOUNT;i++)
      { 
-      lm[pi]= (int)(((225.0*lm[pi])/NSTEPJ)+30);
+      lm[i]= (int)(((225.0*alm[i])/NSTEPJ)+30);
 
-      lm1[pi]= (int)(((600.0*lm1[pi])/NSTEPJ)+30);
-      lm2[pi]= (int)(((600.0*lm2[pi])/NSTEPJ)+30);
-      lm3[pi]= (int)(((600.0*lm3[pi])/NSTEPJ)+30);
-      lm4[pi]= (int)(((600.0*lm4[pi])/NSTEPJ)+30);
-      if(lm1[pi] > 255)lm1[pi]=255;
-      if(lm2[pi] > 255)lm2[pi]=255;
-      if(lm3[pi] > 255)lm3[pi]=255;
-      if(lm4[pi] > 255)lm4[pi]=255;
+      lm1[i]= (int)(((600.0*alm1[i])/NSTEPJ)+30);
+      lm2[i]= (int)(((600.0*alm2[i])/NSTEPJ)+30);
+      lm3[i]= (int)(((600.0*alm3[i])/NSTEPJ)+30);
+      lm4[i]= (int)(((600.0*alm4[i])/NSTEPJ)+30);
+      if(lm1[i] > 255)lm1[i]=255;
+      if(lm2[i] > 255)lm2[i]=255;
+      if(lm3[i] > 255)lm3[i]=255;
+      if(lm4[i] > 255)lm4[i]=255;
      }
   
- 
-};
+}
+
+
+
 
 void 
 cboard_4::Reset(_pic *pic)

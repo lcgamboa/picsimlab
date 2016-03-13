@@ -90,13 +90,6 @@ cboard_1::~cboard_1(void)
 void cboard_1::Draw(_pic *pic, CDraw *draw,double scale)
 {
   int i;
-  int j;
-  unsigned char pi;
-  unsigned char pinv;
-  const picpin * pins;
-  
-  int JUMPSTEPS = Window1.GetJUMPSTEPS();
-  long int NSTEPJ=Window1.GetNSTEPJ();
   
   draw->Canvas.Init(scale,scale);
   
@@ -204,16 +197,34 @@ void cboard_1::Draw(_pic *pic, CDraw *draw,double scale)
   draw->Canvas.End();
   draw->Update ();
   
-     for(pi=0;pi < pic->PINCOUNT;pi++)
-     {
-       lm[pi]=0;
-       lm1[pi]=0;
-       lm2[pi]=0;
-     };
+}
 
- pins = pic->pins;
-
+ 
+void cboard_1::Run_CPU(_pic *pic)
+{
+  int i;
+  int j;
+  unsigned char pi;
+  unsigned char pinv;
+  const picpin * pins;
+  unsigned int alm[18]; //luminosidade media
+  unsigned int alm1[18]; //luminosidade media display
+  unsigned int alm2[18]; //luminosidade media display
+     
+     
+  int JUMPSTEPS = Window1.GetJUMPSTEPS();
+  long int NSTEPJ=Window1.GetNSTEPJ();
   
+  for(i=0;i < pic->PINCOUNT;i++)
+  {
+     alm[i]=0;
+     alm1[i]=0;
+     alm2[i]=0;
+  };
+
+    
+ pins = pic->pins;
+ 
  j=JUMPSTEPS+1;
  if(Window1.Get_picpwr())
    for(i=0;i<Window1.GetNSTEP();i++)
@@ -233,43 +244,42 @@ void cboard_1::Draw(_pic *pic, CDraw *draw,double scale)
           {  
         for(pi=0;pi < pic->PINCOUNT;pi++)
         {
-           lm[pi]+=pins[pi].value;
-           //if((!pins[pi].dir)&&(pins[pi].value)) lm[pi]++;
+           alm[pi]+=pins[pi].value;
+           //if((!pins[pi].dir)&&(pins[pi].value)) alm[pi]++;
         }
         
           //pull-up extern 
-          if((pins[17].dir)&&(p_BT1))lm[17]++; 
-          if((pins[0].dir)&&(p_BT2))lm[0]++; 
-          if((pins[1].dir)&&(p_BT3))lm[1]++;
+          if((pins[17].dir)&&(p_BT1))alm[17]++; 
+          if((pins[0].dir)&&(p_BT2))alm[0]++; 
+          if((pins[1].dir)&&(p_BT3))alm[1]++;
 
             if(jmp[0])
             {
               for(pi=5;pi<13;pi++)
               {
                 pinv=pic_get_pin(pic,pi+1);
-                if((pinv)&&(!pins[9].value)) lm1[pi]++;
-                if((pinv)&&(pins[9].value)) lm2[pi]++;
+                if((pinv)&&(!pins[9].value)) alm1[pi]++;
+                if((pinv)&&(pins[9].value)) alm2[pi]++;
               }
             }
           j=0;
           } 
           j++;
      }
-   //fim STEP
-   
-     for(pi=0;pi < pic->PINCOUNT;pi++)
+    
+     for(i=0;i < pic->PINCOUNT;i++)
      { 
-      lm[pi]= (int)(((225.0*lm[pi])/NSTEPJ)+30);
-      lm1[pi]= (int)(((600.0*lm1[pi])/NSTEPJ)+30);
-      lm2[pi]= (int)(((600.0*lm2[pi])/NSTEPJ)+30);
-      if(lm1[pi] > 255)lm1[pi]=255;
-      if(lm2[pi] > 255)lm2[pi]=255;
+      lm[i]= (int)(((225.0*alm[i])/NSTEPJ)+30);
+      lm1[i]= (int)(((600.0*alm1[i])/NSTEPJ)+30);
+      lm2[i]= (int)(((600.0*alm2[i])/NSTEPJ)+30);
+      if(lm1[i] > 255)lm1[i]=255;
+      if(lm2[i] > 255)lm2[i]=255;
      }
 
      lm1[9]=30; 
      lm2[9]=30;
-
-};
+}
+ 
 
 void 
 cboard_1::Reset(_pic *pic)

@@ -36,14 +36,15 @@ class cboard_1:public board
      int p_BT3; 
      int p_BT4;     
      int jmp[1];
-     unsigned int lm[50]; //luminosidade media
-     unsigned int lm1[50]; //luminosidade media display
-     unsigned int lm2[50]; //luminosidade media display
+     unsigned int lm[18]; //luminosidade media
+     unsigned int lm1[18]; //luminosidade media display
+     unsigned int lm2[18]; //luminosidade media display
  
    public:
       cboard_1(void);
       ~cboard_1(void);
       void Draw(_pic *pic, CDraw *draw,double scale);
+      void Run_CPU(_pic *pic);
       String GetSupportedDevices(void){return wxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
       String GetPictureFileName(void){return wxT("picsimlab1.png");};
       String GetInputMapFile(void){return wxT("input1.map");};

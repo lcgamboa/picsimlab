@@ -45,12 +45,13 @@ class cboard_2:public board
      unsigned char d;
      unsigned char sda,sck;
      
-     unsigned int lm[50]; //luminosidade media    
+     unsigned int lm[18]; //luminosidade media    
     
   public:
       cboard_2(void);
       ~cboard_2(void);
       void Draw(_pic *pic, CDraw *draw,double scale);
+      void Run_CPU(_pic *pic);
       String GetSupportedDevices(void){return wxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
       String GetPictureFileName(void){return wxT("picsimlab2.png");};
       String GetInputMapFile(void){return wxT("input2.map");};
