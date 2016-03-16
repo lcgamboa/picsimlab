@@ -77,16 +77,6 @@ cboard_2::~cboard_2(void)
 void cboard_2::Draw(_pic *pic, CDraw *draw,double scale)
 {
   int i;
-  int j;
-
-  unsigned char pi;
-  const picpin * pins;
-  
-  unsigned char L[4];
-  
-  int JUMPSTEPS = Window1.GetJUMPSTEPS();
-  long int NSTEPJ=Window1.GetNSTEPJ();
-
   
   draw->Canvas.Init(scale,scale);
   
@@ -145,12 +135,29 @@ void cboard_2::Draw(_pic *pic, CDraw *draw,double scale)
   draw->Canvas.End();
   draw->Update ();
   
-     for(pi=0;pi < pic->PINCOUNT;pi++)
-     {
-       lm[pi]=0;
-     };
+ 
+};
 
- pins = pic->pins;
+void cboard_2::Run_CPU(_pic *pic)
+{
+  int i;
+  int j;
+  unsigned char pi;
+  const picpin * pins;
+  unsigned char L[4];
+  unsigned int alm[18]; //luminosidade media
+  
+
+  int JUMPSTEPS = Window1.GetJUMPSTEPS();
+  long int NSTEPJ=Window1.GetNSTEPJ();  
+    
+pins = pic->pins;
+  
+
+for(pi=0;pi < pic->PINCOUNT;pi++)
+     {
+       alm[pi]=0;
+     };
 
 
  j=JUMPSTEPS+1;
@@ -202,7 +209,7 @@ void cboard_2::Draw(_pic *pic, CDraw *draw,double scale)
           {  
         for(pi=0;pi < pic->PINCOUNT;pi++)
         {
-           lm[pi]+=pins[pi].value;
+           alm[pi]+=pins[pi].value;
            //if((!pins[pi].dir)&&(pins[pi].value)) lm[pi]++;
         }
         
@@ -266,10 +273,11 @@ void cboard_2::Draw(_pic *pic, CDraw *draw,double scale)
 
      for(pi=0;pi < pic->PINCOUNT;pi++)
      { 
-      lm[pi]= (int)(((225.0*lm[pi])/NSTEPJ)+30);
+      lm[pi]= (int)(((225.0*alm[pi])/NSTEPJ)+30);
      }
+    
+}
 
-};
 
 void 
 cboard_2::Reset(_pic *pic)
@@ -300,6 +308,11 @@ cboard_2::Reset(_pic *pic)
       Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic->serialbaud)+wxT("(")+String().Format("%4.1f",fabs((100.0*pic->serialexbaud-100.0*pic->serialbaud)/pic->serialexbaud))+wxT("%)"));
     else  
       Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
+
+  for(int pi=0;pi < pic->PINCOUNT;pi++)
+     {
+       lm[pi]=0;
+     };
     
 };
 

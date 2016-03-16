@@ -462,12 +462,14 @@ CPWindow1::_EvOnDestroy(CControl * control)
   
   timer1.SetRunState(0);
   timer2.SetRunState(0);
-  
-  while(ondraw) //Wait thread finish
+ 
+ 
+  //while(ondraw) //Wait thread finish
+  while(thread1.runstate) //Wait thread finish
   {
       usleep(100);
   }
-  
+
 
 /*
 #ifndef _WIN_

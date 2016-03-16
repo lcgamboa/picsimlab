@@ -245,7 +245,7 @@ int i;
 #ifdef _DEBUG_
           printf("breakpoint 0x%04X!!!!!=========================\n",bp[i]);
 #endif
-          Window1.statusbar1.SetField(0,wxT("BreakPoint!"));
+          //Window1.statusbar1.SetField(0,wxT("BreakPoint!")); //FIXME crash on separated thread
           Window1.Set_picdbg(1);
           return Window1.Get_picdbg();
         } 
@@ -304,6 +304,7 @@ int mplabxd_loop(_pic *pic)
            Window1.Set_picdbg(0); 	
            Window1.statusbar1.SetField(0,wxT("Running..."));
            bpc=0;
+           Window1.SetJUMPSTEPS(DEFAULTJS);
            break;
          case STEP:
 #ifdef _DEBUG_

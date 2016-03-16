@@ -238,13 +238,6 @@ cboard_3::~cboard_3(void)
 void cboard_3::Draw(_pic *pic, CDraw *draw,double scale)
 {
   int i;
-  int j;
-  unsigned char pi;
-  unsigned char pinv;
-  const picpin * pins;
-  
-  int JUMPSTEPS = Window1.GetJUMPSTEPS();
-  long int NSTEPJ=Window1.GetNSTEPJ();
   
   draw->Canvas.Init(scale,scale);
   
@@ -356,13 +349,73 @@ void cboard_3::Draw(_pic *pic, CDraw *draw,double scale)
   draw->Canvas.End();
   draw->Update ();
   
-     for(pi=0;pi < pic->PINCOUNT;pi++)
+   
+
+     if( (0.4444*(lm[6]-30)) > 40)
      {
-       lm[pi]=0;
-       lm1[pi]=0;
-       lm2[pi]=0;
-       lm3[pi]=0;
-       lm4[pi]=0;
+       if(!sound_on)
+       {
+         buzz.Play(wxSOUND_ASYNC|wxSOUND_LOOP); 
+         sound_on=1;
+       }
+     }
+     else
+     {
+       buzz.Stop(); 
+       sound_on=0;
+     }
+
+     //Ventilador
+     gauge1->SetValue(0.4444*(lm[15]-30)); 
+     //Aquecedor
+     gauge2->SetValue(0.4444*(lm[16]-30)); 
+
+     //sensor ventilador)
+     rpmstp=((float)Window1.GetNSTEPJ())/(0.64*(lm[15]-29));
+   
+     //tensão p2
+     vp2in=((5.0*(scroll1->GetPosition()))/(scroll1->GetRange()-1));
+
+     //temperatura 
+     ref=(0.2222*(lm[16]-30))-(0.2222*(lm[15]-30)); 
+
+     if(ref < 0)
+       ref=0; 
+ 
+       temp[1]=temp[0];    
+       temp[0]=((27.5+ref)*0.003)+temp[1]*(0.997);
+
+     pic_set_apin(pic,2,(10.0/255.0)*(temp[0]+15.0));
+    
+     //referencia
+     pic_set_apin(pic,5,2.5);
+
+};
+
+void cboard_3::Run_CPU(_pic *pic)
+{
+  int i;   
+  int j;
+  unsigned char pi;
+  unsigned char pinv;
+  const picpin * pins;
+  unsigned int alm[40]; //luminosidade media
+  unsigned int alm1[40]; //luminosidade media display
+  unsigned int alm2[40]; //luminosidade media display
+  unsigned int alm3[40]; //luminosidade media display
+  unsigned int alm4[40]; //luminosidade media display     
+   
+  
+  int JUMPSTEPS = Window1.GetJUMPSTEPS();
+  long int NSTEPJ=Window1.GetNSTEPJ();
+   
+  for(pi=0;pi < pic->PINCOUNT;pi++)
+     {
+       alm[pi]=0;
+       alm1[pi]=0;
+       alm2[pi]=0;
+       alm3[pi]=0;
+       alm4[pi]=0;
      };
    
         
@@ -397,36 +450,36 @@ void cboard_3::Draw(_pic *pic, CDraw *draw,double scale)
 /*
         for(pi=0;pi < pic->PINCOUNT;pi++)
         {
-           //if((!pins[pi].dir)&&(pins[pi].value)) lm[pi]++;
-           lm[pi]+=pins[pi].value;
+           //if((!pins[pi].dir)&&(pins[pi].value)) alm[pi]++;
+           alm[pi]+=pins[pi].value;
         }
 */       
 
 //output 
-          lm[32]+=pins[32].value;
-          lm[33]+=pins[33].value;
-          lm[34]+=pins[34].value;
-          lm[35]+=pins[35].value;
+          alm[32]+=pins[32].value;
+          alm[33]+=pins[33].value;
+          alm[34]+=pins[34].value;
+          alm[35]+=pins[35].value;
 
-          lm[6]+=pins[6].value;
-          lm[15]+=pins[15].value;
-          lm[16]+=pins[16].value;
+          alm[6]+=pins[6].value;
+          alm[15]+=pins[15].value;
+          alm[16]+=pins[16].value;
 
 
 //input
-          if((pins[32].dir)&&(p_BT1))lm[32]++; 
-          if((pins[33].dir)&&(p_BT2))lm[33]++; 
-          if((pins[34].dir)&&(p_BT3))lm[34]++; 
-          if((pins[35].dir)&&(p_BT4))lm[35]++; 
+          if((pins[32].dir)&&(p_BT1))alm[32]++; 
+          if((pins[33].dir)&&(p_BT2))alm[33]++; 
+          if((pins[34].dir)&&(p_BT3))alm[34]++; 
+          if((pins[35].dir)&&(p_BT4))alm[35]++; 
 
   
             for(pi=18;pi<30;pi++)
             {
               pinv=pins[pi].value;
-              if((pinv)&&(pins[39].value)) lm1[pi]++;
-              if((pinv)&&(pins[38].value)) lm2[pi]++;
-              if((pinv)&&(pins[37].value)) lm3[pi]++;
-              if((pinv)&&(pins[36].value)) lm4[pi]++;
+              if((pinv)&&(pins[39].value)) alm1[pi]++;
+              if((pinv)&&(pins[38].value)) alm2[pi]++;
+              if((pinv)&&(pins[37].value)) alm3[pi]++;
+              if((pinv)&&(pins[36].value)) alm4[pi]++;
             }
      
 
@@ -508,62 +561,23 @@ void cboard_3::Draw(_pic *pic, CDraw *draw,double scale)
 
  }
    //fim STEP
-   
 
-     if( ((100.0*lm[6])/NSTEPJ) > 40)
-     {
-       if(!sound_on)
-       {
-         buzz.Play(wxSOUND_ASYNC|wxSOUND_LOOP); 
-         sound_on=1;
-       }
-     }
-     else
-     {
-       buzz.Stop(); 
-       sound_on=0;
-     }
-
-     //Ventilador
-     gauge1->SetValue((100.0*lm[15])/NSTEPJ); 
-     //Aquecedor
-     gauge2->SetValue((100.0*lm[16])/NSTEPJ); 
-
-     //sensor ventilador
-     rpmstp=((float)NSTEPJ*NSTEPJ)/(144.0*(lm[15]+1));
-   
-     //tensão p2
-     vp2in=((5.0*(scroll1->GetPosition()))/(scroll1->GetRange()-1));
-
-     //temperatura 
-     ref=((50.0*lm[16])/NSTEPJ)-((50.0*lm[15])/NSTEPJ); 
-
-     if(ref < 0)
-       ref=0; 
- 
-       temp[1]=temp[0];    
-       temp[0]=((27.5+ref)*0.003)+temp[1]*(0.997);
-
-     pic_set_apin(pic,2,(10.0/255.0)*(temp[0]+15.0));
-    
-     //referencia
-     pic_set_apin(pic,5,2.5);
-
-     for(pi=0;pi < pic->PINCOUNT;pi++)
+      for(pi=0;pi < pic->PINCOUNT;pi++)
      { 
-      lm[pi]= (int)(((225.0*lm[pi])/NSTEPJ)+30);
+      lm[pi]= (int)(((225.0*alm[pi])/NSTEPJ)+30);
 
-      lm1[pi]= (int)(((600.0*lm1[pi])/NSTEPJ)+30);
-      lm2[pi]= (int)(((600.0*lm2[pi])/NSTEPJ)+30);
-      lm3[pi]= (int)(((600.0*lm3[pi])/NSTEPJ)+30);
-      lm4[pi]= (int)(((600.0*lm4[pi])/NSTEPJ)+30);
+      lm1[pi]= (int)(((600.0*alm1[pi])/NSTEPJ)+30);
+      lm2[pi]= (int)(((600.0*alm2[pi])/NSTEPJ)+30);
+      lm3[pi]= (int)(((600.0*alm3[pi])/NSTEPJ)+30);
+      lm4[pi]= (int)(((600.0*alm4[pi])/NSTEPJ)+30);
       if(lm1[pi] > 255)lm1[pi]=255;
       if(lm2[pi] > 255)lm2[pi]=255;
       if(lm3[pi] > 255)lm3[pi]=255;
       if(lm4[pi] > 255)lm4[pi]=255;
      }
 
-};
+}
+
 
 void 
 cboard_3::Reset(_pic *pic)
@@ -592,7 +606,16 @@ cboard_3::Reset(_pic *pic)
       Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic->serialbaud)+wxT("(")+String().Format("%4.1f",fabs((100.0*pic->serialexbaud-100.0*pic->serialbaud)/pic->serialexbaud))+wxT("%)"));
     else  
       Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
-    
+
+  for(int pi=0;pi < pic->PINCOUNT;pi++)
+     {
+       lm[pi]=0;
+       lm1[pi]=0;
+       lm2[pi]=0;
+       lm3[pi]=0;
+       lm4[pi]=0;
+     };
+       
 };
 
 void 

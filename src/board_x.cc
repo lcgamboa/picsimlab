@@ -203,6 +203,12 @@ cboard_x::Reset(_pic *pic)
         String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
         
 
+  //reset mean value
+  for(int pi=0;pi < pic->PINCOUNT;pi++)
+  {
+    lm[pi]=0;
+  };
+
 };
 
 //Called ever 1s to refresh status
@@ -391,12 +397,6 @@ cboard_x::MouseButtonRelease(_pic *pic, uint button, uint x, uint y,uint state)
 void cboard_x::Draw(_pic *pic, CDraw *draw,double scale)
 {
   int i;
-  int j;
-  unsigned char pi;
-  const picpin * pins;
-  
-  int JUMPSTEPS = Window1.GetJUMPSTEPS(); //number of steps skipped
-  long int NSTEPJ=Window1.GetNSTEPJ();  //number of steps in 100ms
   
   draw->Canvas.Init(scale,scale); //initialize draw context
   
@@ -465,10 +465,32 @@ void cboard_x::Draw(_pic *pic, CDraw *draw,double scale)
   draw->Update ();
   
   
+ 
+     //RB0 mean value to gauge1
+     gauge1->SetValue(0.4444*(lm[33]-30)); 
+     //RB1 mean value to gauge2
+     gauge2->SetValue(0.44444*(lm[32]-30)); 
+   
+
+};
+
+
+void cboard_x::Run_CPU(_pic *pic)
+{
+  int i;
+  int j;
+  unsigned char pi;
+  const picpin * pins;
+  unsigned int alm[40];
+       
+  int JUMPSTEPS = Window1.GetJUMPSTEPS(); //number of steps skipped
+  long int NSTEPJ=Window1.GetNSTEPJ();  //number of steps in 100ms
+
+  
   //reset mean value
   for(pi=0;pi < pic->PINCOUNT;pi++)
   {
-    lm[pi]=0;
+    alm[pi]=0;
   };
 
  //read pic.pins to a local variable to speed up 
@@ -494,7 +516,7 @@ void cboard_x::Draw(_pic *pic, CDraw *draw,double scale)
           //increment mean value counter if pin is high  
           for(pi=0;pi < pic->PINCOUNT;pi++)
           {
-           lm[pi]+=pins[pi].value;
+           alm[pi]+=pins[pi].value;
           }
         
           //set analog pin 2 (AN0) with value from scroll  
@@ -506,16 +528,10 @@ void cboard_x::Draw(_pic *pic, CDraw *draw,double scale)
         j++;//counter increment
      }
 
- 
-     //RB0 mean value to gauge1
-     gauge1->SetValue((100.0*lm[33])/NSTEPJ); 
-     //RB1 mean value to gauge2
-     gauge2->SetValue((100.0*lm[32])/NSTEPJ); 
-   
      //calculate mean value
      for(pi=0;pi < pic->PINCOUNT;pi++)
      { 
-      lm[pi]= (int)(((225.0*lm[pi])/NSTEPJ)+30);
+      lm[pi]= (int)(((225.0*alm[pi])/NSTEPJ)+30);
      }
-
-};
+    
+}

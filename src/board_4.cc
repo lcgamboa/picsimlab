@@ -893,6 +893,16 @@ cboard_4::Reset(_pic *pic)
     else  
       Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
         
+  
+  for(int i=0;i < pic->PINCOUNT;i++)
+  {
+     lm[i]=0;
+     lm1[i]=0;
+     lm2[i]=0;
+     lm3[i]=0;
+     lm4[i]=0;
+  };
+    
 };
 
 void 

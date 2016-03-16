@@ -295,6 +295,14 @@ cboard_1::Reset(_pic *pic)
     pic_set_pin(pic,3,p_BT4); 
     
     Window1.statusbar1.SetField(2,wxT(""));
+
+   for(int i=0;i < pic->PINCOUNT;i++)
+   {
+     lm[i]=0;
+     lm1[i]=0;
+     lm2[i]=0;
+   };
+
 };
 
 

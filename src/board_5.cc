@@ -262,7 +262,11 @@ cboard_5::Reset(_pic *pic)
       Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
         String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
         
-
+  //reset mean value
+  for(int pi=0;pi < pic->PINCOUNT;pi++)
+  {
+    lm[pi]=0;
+  };
 };
 
 //Called ever 1s to refresh status
@@ -449,14 +453,7 @@ cboard_5::MouseButtonRelease(_pic *pic, uint button, uint x, uint y,uint state)
 void cboard_5::Draw(_pic *pic, CDraw *draw,double scale)
 {
   int i;
-  int j;
-  unsigned char pi;
-  const picpin * pins;
-  
-  int JUMPSTEPS = Window1.GetJUMPSTEPS(); //number of steps skipped
-  long int NSTEPJ=Window1.GetNSTEPJ();  //number of steps in 100ms
-  
-  
+   
   draw->Canvas.Init(scale,scale); //initialize draw context
   
 //board_5 draw 
@@ -525,10 +522,35 @@ void cboard_5::Draw(_pic *pic, CDraw *draw,double scale)
   draw->Update ();
   
   
+
+     //RA5 mean value to gauge1
+     gauge1->SetValue(0.4444*(lm[1]-30)); 
+     //RA1 mean value to gauge2
+     gauge2->SetValue(0.4444*(lm[17]-30)); 
+     //RA2 mean value to gauge3
+     gauge3->SetValue(0.4444*(lm[16]-30)); 
+     //RC5 mean value to gauge4
+     gauge4->SetValue(0.4444*(lm[4]-30)); 
+   
+
+};
+
+void cboard_5::Run_CPU(_pic *pic)
+{
+  int i;  
+  int j;
+  unsigned char pi;
+  const picpin * pins;
+  unsigned int alm[20];
+  
+  int JUMPSTEPS = Window1.GetJUMPSTEPS(); //number of steps skipped
+  long int NSTEPJ=Window1.GetNSTEPJ();  //number of steps in 100ms
+ 
+  
   //reset mean value
   for(pi=0;pi < pic->PINCOUNT;pi++)
   {
-    lm[pi]=0;
+    alm[pi]=0;
   };
 
  //read pic.pins to a local variable to speed up 
@@ -553,7 +575,7 @@ void cboard_5::Draw(_pic *pic, CDraw *draw,double scale)
           //increment mean value counter if pin is high  
           for(pi=0;pi < pic->PINCOUNT;pi++)
           {
-           lm[pi]+=pins[pi].value;
+           alm[pi]+=pins[pi].value;
           }
           
           //set analog pin 16 (RC0 AN4) with value from scroll  
@@ -566,21 +588,12 @@ void cboard_5::Draw(_pic *pic, CDraw *draw,double scale)
         j++;//counter increment
      }
 
-
-     //RA5 mean value to gauge1
-     gauge1->SetValue((100.0*lm[1])/NSTEPJ); 
-     //RA1 mean value to gauge2
-     gauge2->SetValue((100.0*lm[17])/NSTEPJ); 
-     //RA2 mean value to gauge3
-     gauge3->SetValue((100.0*lm[16])/NSTEPJ); 
-     //RC5 mean value to gauge4
-     gauge4->SetValue((100.0*lm[4])/NSTEPJ); 
-   
-
-     //calculate mean value
+ //calculate mean value
      for(pi=0;pi < pic->PINCOUNT;pi++)
      { 
-      lm[pi]= (int)(((225.0*lm[pi])/NSTEPJ)+30);
+      lm[pi]= (int)(((225.0*alm[pi])/NSTEPJ)+30);
      }
+    
+    
+}
 
-};
