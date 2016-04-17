@@ -80,11 +80,40 @@ cboard_1::cboard_1(void)
     proc=P16F628A;
     ReadMaps();
     jmp[0]=0;    
+    
+  //gauge1
+  gauge1=new CGauge();
+  gauge1->SetFOwner(&Window1);
+  gauge1->SetName(wxT("gauge1_p1"));
+  gauge1->SetX(13);
+  gauge1->SetY(242);
+  gauge1->SetWidth(140);
+  gauge1->SetHeight(20);
+  gauge1->SetEnable(1);
+  gauge1->SetVisible(1);
+  gauge1->SetRange(100);
+  gauge1->SetValue(0);
+  gauge1->SetType(4);
+  Window1.CreateChild(gauge1);
+  //label1
+  label1=new CLabel();
+  label1->SetFOwner(&Window1);
+  label1->SetName(wxT("label1_p1"));
+  label1->SetX(12);
+  label1->SetY(220);
+  label1->SetWidth(60);
+  label1->SetHeight(20);
+  label1->SetEnable(1);
+  label1->SetVisible(1);
+  label1->SetText(wxT("LAMP"));
+  label1->SetAlign(1);
+  Window1.CreateChild(label1);   
 };
 
 cboard_1::~cboard_1(void)
 {
-
+      Window1.DestroyChild(gauge1);
+      Window1.DestroyChild(label1);
 }
 
 void cboard_1::Draw(_pic *pic, CDraw *draw,double scale)
@@ -196,6 +225,9 @@ void cboard_1::Draw(_pic *pic, CDraw *draw,double scale)
 
   draw->Canvas.End();
   draw->Update ();
+  
+//Lâmpada
+  gauge1->SetValue(0.4444*(lm[16]-30)); 
   
 }
 

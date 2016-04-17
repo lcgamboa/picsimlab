@@ -39,6 +39,10 @@ class cboard_1:public board
      unsigned int lm[18]; //luminosidade media
      unsigned int lm1[18]; //luminosidade media display
      unsigned int lm2[18]; //luminosidade media display
+     
+     
+     CGauge *gauge1;
+     CLabel *label1;
  
    public:
       cboard_1(void);
