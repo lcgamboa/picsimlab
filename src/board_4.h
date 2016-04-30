@@ -67,6 +67,7 @@ class cboard_4:public board
     unsigned char d;
     unsigned char sda,sck;
 
+    int jmp[1];
     int dip[20];
     unsigned int lm[40]; //luminosidade media
     unsigned int lm1[40]; //luminosidade media display

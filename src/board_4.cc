@@ -103,6 +103,7 @@
 #define O_VT	73
 #define O_PRG   74
 #define O_RUN   75
+#define O_JP1   76
 
 
 
@@ -154,6 +155,7 @@
 #define I_D18	44
 #define I_D19	45
 #define I_D20	46
+#define I_JP1	47
 
 
 cboard_4::cboard_4(void)
@@ -192,6 +194,8 @@ cboard_4::cboard_4(void)
      rtc2_init(&rtc2);
       
      ReadMaps();
+     
+     jmp[0]=0;
      
      for(int i=0;i<20;i++)
         dip[i]=1;
@@ -435,7 +439,8 @@ void cboard_4::Draw(_pic *pic, CDraw *draw,double scale)
              draw->Canvas.SetBgColor (250, 250, 250);break;
            };
       }
-     
+      if(output[i].id == O_JP1) draw->Canvas.SetColor (150, 150, 150);
+
       if((output[i].id != O_LCD)&&(output[i].id != O_VT))  
         draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2-output[i].x1,output[i].y2-output[i].y1 );
 
@@ -483,7 +488,28 @@ void cboard_4::Draw(_pic *pic, CDraw *draw,double scale)
          //draw->Canvas.SetColor (220, 220, 0);
          //draw->Canvas.Circle (1,output[i].x1+(int)((output[i].x2-output[i].x1)*0.80), output[i].y1+((output[i].y2-output[i].y1)/2),3);
        };
-      }       
+      } 
+
+   
+      
+       
+      if(output[i].id == O_JP1)
+      {
+       if(!jmp[0])
+       {
+         draw->Canvas.SetColor (70, 70, 70);
+         draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, (int)((output[i].x2-output[i].x1)*0.65),output[i].y2-output[i].y1 );
+         draw->Canvas.SetColor (220, 220, 0);
+         draw->Canvas.Circle (1,output[i].x1+(int)((output[i].x2-output[i].x1)*0.80), output[i].y1+((output[i].y2-output[i].y1)/2),3);
+       }
+       else
+       {
+         draw->Canvas.SetColor (70, 70, 70);
+         draw->Canvas.Rectangle (1, output[i].x1+((int)((output[i].x2-output[i].x1)*0.35)), output[i].y1, (int)((output[i].x2-output[i].x1)*0.65),output[i].y2-output[i].y1 );
+         draw->Canvas.SetColor (220, 220, 0);
+         draw->Canvas.Circle (1,output[i].x1+(int)((output[i].x2-output[i].x1)*0.20), output[i].y1+((output[i].y2-output[i].y1)/2),3);
+       };
+      }             
         
     }
     else
@@ -533,9 +559,9 @@ void cboard_4::Draw(_pic *pic, CDraw *draw,double scale)
   draw->Update ();
 
    
-   if( (0.4444*(lm[15]-30)) < 10)
+   if(((0.4444*(lm[15]-30)) < 10)&&(Window1.Get_picpwr())&& jmp[0])
    {
-     if((!sound_on)&&(Window1.Get_picpwr()))
+     if(!sound_on)
      {
        buzz.Play(wxSOUND_ASYNC|wxSOUND_LOOP); 
        sound_on=1;
@@ -1042,6 +1068,11 @@ cboard_4::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
           } 
       };break;
       
+      case I_JP1:
+      {
+        jmp[0]^=0x01; 
+      };break;
+      
       case I_RA1:
         {
           p_BT1=0;
@@ -1385,6 +1416,8 @@ cboard_4::get_in_id(char * name)
   if(strcmp(name,"DP18")==0)return I_D18;
   if(strcmp(name,"DP19")==0)return I_D19;
   if(strcmp(name,"DP20")==0)return I_D20;
+  
+  if(strcmp(name,"JP1")==0)return I_JP1;
 
   printf("Erro input '%s' don't have a valid id! \n",name);
   return -1;
@@ -1479,6 +1512,8 @@ cboard_4::get_out_id(char * name)
   if(strcmp(name,"DP19")==0)return O_D19;
   if(strcmp(name,"DP20")==0)return O_D20;
   if(strcmp(name,"VT")==0)  return O_VT;
+  
+  if(strcmp(name,"JP1")==0)return O_JP1;
 
   printf("Erro output '%s' don't have a valid id! \n",name);
   return 1;
@@ -1507,6 +1542,7 @@ cboard_4::WritePreferences(void)
     char line[100];
     Window1.saveprefs(wxT("p4_proc"),getnamebyproc(proc,line));
 
+    Window1.saveprefs(wxT("p4_jmp"),String::Format("%i",jmp[0]));
 
     line[0]=0;
     for(int i=0;i<20;i++)
@@ -1519,12 +1555,25 @@ cboard_4::WritePreferences(void)
 void 
 cboard_4::ReadPreferences(char *name,char *value)
 {
+  int i; 
+      
    if(!strcmp(name,"p4_proc"))
    {
       proc=getprocbyname(value); 
     }    
    
-  int i;  
+   if(!strcmp(name,"p4_jmp"))
+   {
+     for(i=0;i<1;i++)
+     {
+       if(value[i] == '0')      
+         jmp[i]=0;
+       else
+         jmp[i]=1;
+      } 
+   }
+
+ 
       if(!strcmp(name,"p4_dip"))
       {
         for(i=0;i<20;i++) 

@@ -351,9 +351,9 @@ void cboard_3::Draw(_pic *pic, CDraw *draw,double scale)
   
    
 
-     if( (0.4444*(lm[6]-30)) > 40)
+     if(( (0.4444*(lm[6]-30)) > 40)&& Window1.Get_picpwr())
      {
-       if((!sound_on)&&(Window1.Get_picpwr()))
+       if(!sound_on)
        {
          buzz.Play(wxSOUND_ASYNC|wxSOUND_LOOP); 
          sound_on=1;
