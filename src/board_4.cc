@@ -189,7 +189,7 @@ cboard_4::cboard_4(void)
      image.LoadFile(Window1.GetSharePath()+wxT("VT2.png"));
      vent[1] = new wxBitmap(image);
      
-      
+     lcd_init(&lcd,2); 
      mi2c_init(&mi2c,4);
      rtc2_init(&rtc2);
       

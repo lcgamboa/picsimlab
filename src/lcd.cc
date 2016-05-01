@@ -392,6 +392,14 @@ int i,j;
     return;
 };
 
+void lcd_init(lcd_t * lcd, unsigned char lnum)
+{
+    if((lnum >0)&&(lnum <= 4 ))
+      lcd->lnum=lnum;
+    else
+      lcd->lnum=2;  
+};
+
 void lcd_on(lcd_t * lcd,int onoff)
 {
   if(onoff == 1 )
@@ -422,13 +430,28 @@ void lcd_blink(lcd_t * lcd)
 void lcd_draw(lcd_t * lcd, CDraw *draw,int x1,int y1,int w1,int h1,int picpwr)
 {
   int l,c,x,y;
-  
+  int loff=0;
          draw->Canvas.Rectangle (1, x1, y1, w1,h1);
          lcd->update=0;
 
          
-         for(l=0;l<2;l++)
+         for(l=0;l< lcd->lnum;l++)
          {
+           switch(l)
+           {
+             case 0:
+               loff=0;    
+               break;
+             case 1:
+               loff=40;    
+               break;
+             case 2:
+               loff=16;    
+               break;
+             case 3:
+               loff=56;    
+               break;  
+           }
            for(c=0;c<16;c++)
            {
              for(x=0;x<5;x++)
@@ -439,7 +462,7 @@ void lcd_draw(lcd_t * lcd, CDraw *draw,int x1,int y1,int w1,int h1,int picpwr)
                  if(cs < 0) cs= 40+(cs%40);
                  if(cs >= 40 )cs=cs%40;
             
-                 if((lcd->ddram[cs+(40*l)][x]  & (0x01<<y))&& (lcd->flags & L_DON))
+                 if((lcd->ddram[cs+loff][x]  & (0x01<<y))&& (lcd->flags & L_DON))
                  {  
                     draw->Canvas.SetFgColor (0, 35 , 0);
                     draw->Canvas.SetColor (0, 35 , 0);
