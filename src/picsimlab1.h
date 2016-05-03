@@ -96,7 +96,7 @@ class CPWindow1:public CPWindow
   void menu1_Help_Examples_EvMenuActive(CControl * control);
   void menu1_Help_About_EvMenuActive(CControl * control);
   void combo3_EvOnComboChange(CControl * control);
-
+  void board_Event(CControl * control);
   /*#Others*/
   CPWindow1(void);
   void saveprefs(String name, String value);

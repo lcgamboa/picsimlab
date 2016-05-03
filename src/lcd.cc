@@ -431,7 +431,11 @@ void lcd_draw(lcd_t * lcd, CDraw *draw,int x1,int y1,int w1,int h1,int picpwr)
 {
   int l,c,x,y;
   int loff=0;
-         draw->Canvas.Rectangle (1, x1, y1, w1,h1);
+  
+         if(lcd->lnum == 2)
+           draw->Canvas.Rectangle (1, x1, y1, w1,h1);
+         else
+           draw->Canvas.Rectangle (1, x1, y1, w1,(h1*2)-14);  
          lcd->update=0;
 
          

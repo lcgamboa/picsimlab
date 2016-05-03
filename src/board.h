@@ -71,7 +71,8 @@ class board
       virtual void ReadPreferences(char *name,char *value){}; //Called whe configuration file load  preferences 
       virtual unsigned short get_in_id(char * name)=0; //return the input ids numbers of names used in input map
       virtual unsigned short get_out_id(char * name)=0; //return the output ids numbers of names used in output map
-
+      virtual void board_Event(CControl * control){};
+      
       board(void);           //Called once on board creation
       virtual ~board(void);  //Called once on board destruction 
       

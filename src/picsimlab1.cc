@@ -721,3 +721,8 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
         picpwr=pa;
 };
 
+void 
+CPWindow1::board_Event(CControl * control)
+{
+  pboard->board_Event(control);
+};

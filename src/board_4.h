@@ -75,6 +75,7 @@ class cboard_4:public board
     unsigned int lm3[40]; //luminosidade media display
     unsigned int lm4[40]; //luminosidade media display
     wxBitmap * vent[2];
+    wxBitmap * lcdbmp[2];
     
     CGauge *gauge1;
     CGauge *gauge2;
@@ -85,7 +86,8 @@ class cboard_4:public board
     CLabel *label3;
     CLabel *label4;
     CLabel *label5;
-     
+    CLabel *label6;
+    CCombo *combo1; 
   public:
       cboard_4(void);
       ~cboard_4(void);
@@ -106,6 +108,8 @@ class cboard_4:public board
       void ReadPreferences(char *name,char *value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
+      
+      void board_Event(CControl * control);
 };
 
 

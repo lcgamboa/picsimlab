@@ -10,7 +10,7 @@ appdir= ${prefix}/share/applications/
 sharedir= ${prefix}/share/picsimlab/
 execdir= ${prefix}/bin/
 
-FLAGS = -D_VERSION_=\"0.6.0\" -Wall -O3 -D_SHARE_=\"${sharedir}\"   \
+FLAGS = -D_VERSION_=\"0.6.5\" -Wall -O3 -D_SHARE_=\"${sharedir}\"   \
  -fomit-frame-pointer `lxrad-config --cxxflags`
 
 OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o board.o \
