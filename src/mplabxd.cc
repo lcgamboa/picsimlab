@@ -85,7 +85,7 @@ typedef struct sockaddr sockaddr;
 
 
 int sockfd=-1;
-int listenfd;
+int listenfd=-1;
 
 
 
@@ -162,6 +162,16 @@ if(!server_started)
       printf ("socket error : %s \n", strerror (errno));
       return 1;
     };
+    
+    int reuse = 1;
+    if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, (const char*)&reuse, sizeof(reuse)) < 0)
+        perror("setsockopt(SO_REUSEADDR) failed");
+
+#ifdef SO_REUSEPORT
+    if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEPORT, (const char*)&reuse, sizeof(reuse)) < 0) 
+        perror("setsockopt(SO_REUSEPORT) failed");
+#endif
+      
   memset (&serv, 0, sizeof (serv));
   serv.sin_family = AF_INET;
   serv.sin_addr.s_addr = htonl (INADDR_ANY);
@@ -224,9 +234,12 @@ void mplabxd_stop(void)
 
 void mplabxd_end(void)
 {
-//#ifdef _WIN_
-//  WSACleanup ();
-//#endif
+    close (listenfd);
+    listenfd=-1;
+    server_started=0;
+#ifdef _WIN_
+  WSACleanup ();
+#endif
 };
 
 
