@@ -77,6 +77,7 @@ typedef struct sockaddr sockaddr;
 #define PROGI 0x55
 #define PROGE 0x57
 #define READD 0x60
+#define READDV 0x61
 #define READP 0x65
 #define READC 0x70
 #define READI 0x75
@@ -496,6 +497,26 @@ int mplabxd_loop(_pic *pic)
            };
 #ifdef _DEBUG_
 	   printf("READD cmd\n");	
+#endif
+           break;
+         case READDV:
+           if ((n = recv (sockfd, (char *)&bp, 4,MSG_WAITALL )) != 4)
+           {
+             printf ("receive error : %s \n", strerror (errno));
+             ret=1;
+             reply=0x01; 
+           };
+#ifdef _DEBUG_
+           printf("address=%02X  values=%i \n",bp[0],bp[1]);  
+#endif
+           if (send (sockfd, (char *)&pic->ram[bp[0]], bp[1], 0) != bp[1])
+           { 
+             printf ("send error : %s \n", strerror (errno));
+             ret=1;
+             reply=0x01; 
+           };
+#ifdef _DEBUG_
+	   printf("READDV cmd\n");	
 #endif
            break;
          case READP:

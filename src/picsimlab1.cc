@@ -467,7 +467,11 @@ CPWindow1::_EvOnDestroy(CControl * control)
   //while(ondraw) //Wait thread finish
   while(thread1.runstate) //Wait thread finish
   {
+#ifndef _WIN_
       usleep(100);
+#else
+      Sleep(1);
+#endif 
   }
 
 
