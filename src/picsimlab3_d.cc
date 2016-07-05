@@ -114,7 +114,7 @@ CPWindow3::CPWindow3(void)
   combo2.SetWidth(137);
   combo2.SetHeight(26);
   combo2.SetHint(wxT(""));
-  combo2.SetEnable(1);
+  combo2.SetEnable(0);
   combo2.SetVisible(1);
   combo2.SetPopupMenu(NULL);
   combo2.SetText(wxT(""));

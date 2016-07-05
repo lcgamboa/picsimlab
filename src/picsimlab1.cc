@@ -39,14 +39,15 @@ CPWindow1 Window1;
 
 #include<dirent.h>
 
-extern char PROGDEVICE[100];
+//extern char PROGDEVICE[100];
 char SERIALDEVICE[100];
 
-
+/*
 //picstart plus
 int prog_init(void);
 int prog_loop(_pic * pic);
 int prog_end(void);
+*/
 
 //mplabx debugger
 int mplabxd_init(void);
@@ -134,7 +135,7 @@ CPWindow1::thread1_EvThreadEnd(CControl*)
 {
    if(picpwr)
    { 
-      prog_loop(&pic);
+      //prog_loop(&pic);
       mplabxd_loop(&pic);
    }
    ondraw=0;
@@ -260,7 +261,7 @@ create++;
    sprintf(fname,"%s/picsimlab.ini",home);
   
    SERIALDEVICE[0]=0;
-   PROGDEVICE[0]=0;
+   //PROGDEVICE[0]=0;
    pboard=NULL;
    
   prefs.Clear(); 
@@ -277,10 +278,10 @@ create++;
       if((name == NULL)||(value==NULL))continue;
 #ifndef _WIN_
       if(!strcmp("lser",name))strcpy(SERIALDEVICE,value);
-      if(!strcmp("lprog",name))strcpy(PROGDEVICE,value);
+      //if(!strcmp("lprog",name))strcpy(PROGDEVICE,value);
 #else
       if(!strcmp("wser",name))strcpy(SERIALDEVICE,value);
-      if(!strcmp("wprog",name))strcpy(PROGDEVICE,value);
+      //if(!strcmp("wprog",name))strcpy(PROGDEVICE,value);
 #endif
       
       if(!strcmp(name,"lab"))
@@ -335,10 +336,10 @@ create++;
 
 #ifndef _WIN_   
    strcpy(SERIALDEVICE,"/dev/tnt2");
-   strcpy(PROGDEVICE,"/dev/tnt4");
+   //strcpy(PROGDEVICE,"/dev/tnt4");
 #else
    strcpy(SERIALDEVICE,"com6");
-   strcpy(PROGDEVICE,"com8");
+   //strcpy(PROGDEVICE,"com8");
 #endif
   }
    
@@ -365,11 +366,13 @@ create++;
   pboard->Reset(&pic);
       
 
-  
+  /*
   if(prog_init() >= 0 ) 
      status=wxT("PStart:  Ok ");
   else
      status=wxT("PStart:Error");
+  */
+  status=wxT("");  
 
   if(mplabxd_init() == 0 ) 
      statusbar1.SetField(1,status+wxT("    MplabxD:  Ok "));
@@ -513,10 +516,10 @@ CPWindow1::_EvOnDestroy(CControl * control)
 
 #ifndef _WIN_
     saveprefs(wxT("lser"),SERIALDEVICE);
-    saveprefs(wxT("lprog"),PROGDEVICE);
+    //saveprefs(wxT("lprog"),PROGDEVICE);
 #else
     saveprefs("wser",SERIALDEVICE);
-    saveprefs("wprog",PROGDEVICE);
+    //saveprefs("wprog",PROGDEVICE);
 #endif
     saveprefs(wxT("lpath"),PATH);
     saveprefs(wxT("lfile"),FNAME);
@@ -542,7 +545,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
   }
 
   pic_end(&pic);
-  prog_end();
+  //prog_end();
   mplabxd_end();
   
   delete pboard;

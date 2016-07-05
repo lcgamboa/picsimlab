@@ -30,7 +30,7 @@
 
 CPWindow3 Window3;
 
-extern char PROGDEVICE[100];
+//extern char PROGDEVICE[100];
 
 extern char SERIALDEVICE[100];
 
@@ -41,7 +41,7 @@ void
 CPWindow3::_EvOnCreate(CControl * control)
 {
   combo1.SetText(String::FromAscii(SERIALDEVICE));
-  combo2.SetText(String::FromAscii(PROGDEVICE));
+  //combo2.SetText(String::FromAscii(PROGDEVICE));
 };
 
 
@@ -56,7 +56,7 @@ CPWindow3::button1_EvMouseButtonClick(CControl * control, uint button, uint x, u
   }	
 
   strcpy(SERIALDEVICE,(char*)combo1.GetText().char_str());
-  strcpy(PROGDEVICE,(char*)combo2.GetText().char_str());
+  //strcpy(PROGDEVICE,(char*)combo2.GetText().char_str());
   
   Window1._EvOnDestroy(control);
   Window1._EvOnCreate(control);

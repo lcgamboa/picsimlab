@@ -142,7 +142,7 @@
   <Width type="uint">137</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
-  <Enable type="bool">1</Enable>
+  <Enable type="bool">0</Enable>
   <Visible type="bool">1</Visible>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">FALSE</EvMouseMove>
