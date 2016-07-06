@@ -156,6 +156,14 @@ CPWindow1::CPWindow1(void)
   menu1_File.SetText(wxT("File"));
   menu1_File.SetMenuItems(wxT("Load Hex,Reload Last,Configure,Exit,"));
   menu1.CreateChild(&menu1_File);
+  //menu1_Modules
+  menu1_Modules.SetFOwner(this);
+  menu1_Modules.SetClass(wxT("CPMenu"));
+  menu1_Modules.SetName(wxT("menu1_Modules"));
+  menu1_Modules.SetTag(0);
+  menu1_Modules.SetText(wxT("Modules"));
+  menu1_Modules.SetMenuItems(wxT("Oscilloscope,"));
+  menu1.CreateChild(&menu1_Modules);
   //menu1_Help
   menu1_Help.SetFOwner(this);
   menu1_Help.SetClass(wxT("CPMenu"));
@@ -200,6 +208,15 @@ CPWindow1::CPWindow1(void)
   menu1_File_Exit.SetSubMenu(NULL);
   menu1_File_Exit.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_File_Exit_EvMenuActive;
   menu1_File.CreateChild(&menu1_File_Exit);
+  //menu1_File_Exit
+  menu1_Modules_Oscilloscope.SetFOwner(this);
+  menu1_Modules_Oscilloscope.SetClass(wxT("CItemMenu"));
+  menu1_Modules_Oscilloscope.SetName(wxT("menu1_Modules_Oscilloscope"));
+  menu1_Modules_Oscilloscope.SetTag(0);
+  menu1_Modules_Oscilloscope.SetText(wxT("Oscilloscope"));
+  menu1_Modules_Oscilloscope.SetSubMenu(NULL);
+  menu1_Modules_Oscilloscope.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Modules_Oscilloscope_EvMenuActive;
+  menu1_Modules.CreateChild(&menu1_Modules_Oscilloscope);
   //menu1_Help_Contents
   menu1_Help_Contents.SetFOwner(this);
   menu1_Help_Contents.SetClass(wxT("CItemMenu"));

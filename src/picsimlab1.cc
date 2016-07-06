@@ -733,3 +733,11 @@ CPWindow1::board_Event(CControl * control)
 {
   pboard->board_Event(control);
 };
+
+
+void
+CPWindow1::menu1_Modules_Oscilloscope_EvMenuActive(CControl * control)
+{
+  //Window3.ShowExclusive();
+  printf("Oscilloscope not implemented yet!\n");
+};

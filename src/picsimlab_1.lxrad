@@ -163,7 +163,7 @@
   <Class type="String">CMenu</Class>
   <Name type="String">menu1</Name>
   <Tag type="int">0</Tag>
-  <MenuItems type="MenuItems">File,Help,</MenuItems>
+  <MenuItems type="MenuItems">File,Modules,Help,</MenuItems>
 </menu1>
 <menu1_File>
   <Class type="String">CPMenu</Class>
@@ -172,6 +172,13 @@
   <Text type="String">File</Text>
   <MenuItems type="MenuItems">Load Hex,Reload Last,Configure,Exit,</MenuItems>
 </menu1_File>
+<menu1_Modules>
+  <Class type="String">CPMenu</Class>
+  <Name type="String">menu1_Modules</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Modules</Text>
+  <MenuItems type="MenuItems">Oscilloscope,</MenuItems>
+</menu1_Modules>
 <menu1_Help>
   <Class type="String">CPMenu</Class>
   <Name type="String">menu1_Help</Name>
@@ -211,6 +218,14 @@
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_File_Exit>
+<menu1_Modules_Oscilloscope>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Modules_Oscilloscope</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Oscilloscope</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">True</EvMenuActive>
+</menu1_Modules_Oscilloscope>
 <menu1_Help_Contents>
   <Class type="String">CItemMenu</Class>
   <Name type="String">menu1_Help_Contents</Name>
