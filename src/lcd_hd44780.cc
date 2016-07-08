@@ -23,7 +23,7 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include"lcd.h"
+#include"lcd_hd44780.h"
 #include<stdio.h>
 
 

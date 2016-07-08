@@ -24,7 +24,7 @@
    ######################################################################## */
 
 
-#include"rtc.h"
+#include"rtc_pfc8563.h"
 
 #include<stdio.h>
 #include<string.h>

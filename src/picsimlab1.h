@@ -36,10 +36,10 @@ extern char SERIALDEVICE[100];
 
 #include <lxrad/lxrad.h>
 #include <picsim/picsim.h>
-#include "lcd.h"
-#include "mi2c.h"
-#include "rtc.h"
-#include "rtc2.h"
+#include "lcd_hd44780.h"
+#include "mi2c_24CXXX.h"
+#include "rtc_ds1307.h"
+#include "rtc_pfc8563.h"
 #include "board.h"
 
 #include<wx/sound.h>

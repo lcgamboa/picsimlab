@@ -24,7 +24,7 @@
    ######################################################################## */
 
 
-#include"mi2c.h"
+#include"mi2c_24CXXX.h"
 
 #include<stdio.h>
 #include<string.h>

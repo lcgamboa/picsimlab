@@ -24,7 +24,7 @@
    ######################################################################## */
 
 
-#include"rtc2.h"
+#include"rtc_ds1307.h"
 
 #include<stdio.h>
 #include<string.h>
