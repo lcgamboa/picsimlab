@@ -25,6 +25,7 @@
 
 CPWindow2::CPWindow2(void)
 {
+//lxrad automatic generated block start, don't edit below!
   SetFOwner(this);
   SetClass(wxT("CPWindow"));
   SetName(wxT("window2"));
@@ -57,4 +58,6 @@ CPWindow2::CPWindow2(void)
   html1.SetLoadUrl(wxT(""));
   html1.SetLoadFile(wxT(""));
   CreateChild(&html1);
+  /*#Others*/
+//lxrad automatic generated block end, don't edit above!
 };

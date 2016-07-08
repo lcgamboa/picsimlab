@@ -25,12 +25,13 @@
 
 CPWindow1::CPWindow1(void)
 {
+//lxrad automatic generated block start, don't edit below!
   SetFOwner(this);
   SetClass(wxT("CPWindow"));
   SetName(wxT("window1"));
   SetTag(0);
-  SetX(254);
-  SetY(181);
+  SetX(245);
+  SetY(140);
   SetWidth(1110);
   SetHeight(505);
   SetHint(wxT(""));
@@ -47,7 +48,7 @@ CPWindow1::CPWindow1(void)
   timer1.SetClass(wxT("CTimer"));
   timer1.SetName(wxT("timer1"));
   timer1.SetTag(0);
-  timer1.SetTime(TIMER*1000.0);
+  timer1.SetTime(100);
   timer1.SetRunState(0);
   timer1.EvOnTime=EVONTIME & CPWindow1::timer1_EvOnTime;
   CreateChild(&timer1);
@@ -102,8 +103,8 @@ CPWindow1::CPWindow1(void)
   combo1.SetEnable(1);
   combo1.SetVisible(1);
   combo1.SetPopupMenu(NULL);
-  combo1.SetText(wxT("2"));
   combo1.SetItems(wxT("40,32,20,16,10,8,4,2,1,"));
+  combo1.SetText(wxT("2"));
   combo1.SetReadOnly(0);
   combo1.EvOnComboChange=EVONCOMBOCHANGE & CPWindow1::combo1_EvOnComboChange;
   CreateChild(&combo1);
@@ -136,8 +137,8 @@ CPWindow1::CPWindow1(void)
   combo2.SetEnable(1);
   combo2.SetVisible(1);
   combo2.SetPopupMenu(NULL);
-  combo2.SetText(wxT("1"));
   combo2.SetItems(wxT("1,2,3,4,"));
+  combo2.SetText(wxT("1"));
   combo2.SetReadOnly(1);
   combo2.EvOnComboChange=EVONCOMBOCHANGE & CPWindow1::combo2_EvOnComboChange;
   CreateChild(&combo2);
@@ -146,7 +147,7 @@ CPWindow1::CPWindow1(void)
   menu1.SetClass(wxT("CMenu"));
   menu1.SetName(wxT("menu1"));
   menu1.SetTag(0);
-  menu1.SetMenuItems(wxT("File,Help,"));
+  menu1.SetMenuItems(wxT("File,Modules,Help,"));
   CreateChild(&menu1);
   //menu1_File
   menu1_File.SetFOwner(this);
@@ -208,7 +209,7 @@ CPWindow1::CPWindow1(void)
   menu1_File_Exit.SetSubMenu(NULL);
   menu1_File_Exit.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_File_Exit_EvMenuActive;
   menu1_File.CreateChild(&menu1_File_Exit);
-  //menu1_File_Exit
+  //menu1_Modules_Oscilloscope
   menu1_Modules_Oscilloscope.SetFOwner(this);
   menu1_Modules_Oscilloscope.SetClass(wxT("CItemMenu"));
   menu1_Modules_Oscilloscope.SetName(wxT("menu1_Modules_Oscilloscope"));
@@ -251,7 +252,6 @@ CPWindow1::CPWindow1(void)
   statusbar1.SetTag(0);
   statusbar1.SetFields(wxT("port,stats,serial,"));
   CreateChild(&statusbar1);
-
   //label2
   label2.SetFOwner(this);
   label2.SetClass(wxT("CLabel"));
@@ -297,11 +297,16 @@ CPWindow1::CPWindow1(void)
   combo3.SetEnable(1);
   combo3.SetVisible(1);
   combo3.SetPopupMenu(NULL);
-  combo3.SetText(wxT("PIC16F628"));
   combo3.SetItems(wxT("PIC16F628A,PIC16F648A,"));
+  combo3.SetText(wxT("PIC16F628"));
   combo3.SetReadOnly(1);
   combo3.EvOnComboChange=EVONCOMBOCHANGE & CPWindow1::combo3_EvOnComboChange;
   CreateChild(&combo3);
+  /*#Others*/
+//lxrad automatic generated block end, don't edit above!
+  
+  timer1.SetTime(TIMER*1000.0);
+
   //thread1
   thread1.SetFOwner(this);
   thread1.SetClass(wxT("CThread"));

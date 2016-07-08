@@ -1,7 +1,7 @@
 <LXRAD_Project>
-  <Version type="String">0.7</Version>
+  <Version type="String">0.8</Version>
   <PName type="String">picsimlab</PName>
-  <POptions type="String">-D_VERSION_=\"0.5.0\" -Wall -O2 -D_SHARE_=\"`pwd`/share/\"   -fomit-frame-pointer</POptions>
-  <PIncludeFile type="String">id.o lcd.o mi2c.o rtc.o rtc2.o ../libpicsim.a prog_psp.o</PIncludeFile>
+  <POptions type="String">-D_VERSION_=\"0.6.0\" -Wall -O2 -D_SHARE_=\"/usr/share/picsimlab/\"   -fomit-frame-pointer -lpicsim</POptions>
+  <PIncludeFile type="String">board.o lcd.o mi2c.o rtc.o rtc2.o board_1.o board_2.o board_3.o board_4.o board_5.o board_6.o mplabxd.o board_x.o</PIncludeFile>
   <PNW type="String">3</PNW>
 </LXRAD_Project>

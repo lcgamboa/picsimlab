@@ -25,6 +25,7 @@
 
 CPWindow3::CPWindow3(void)
 {
+//lxrad automatic generated block start, don't edit below!
   SetFOwner(this);
   SetClass(wxT("CPWindow"));
   SetName(wxT("window3"));
@@ -120,4 +121,6 @@ CPWindow3::CPWindow3(void)
   combo2.SetText(wxT(""));
   combo2.SetItems(wxT(""));
   CreateChild(&combo2);
+  /*#Others*/
+//lxrad automatic generated block end, don't edit above!
 };

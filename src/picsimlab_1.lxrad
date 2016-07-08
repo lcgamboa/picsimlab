@@ -2,8 +2,8 @@
   <Class type="String">CPWindow</Class>
   <Name type="String">window1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">254</X>
-  <Y type="int">181</Y>
+  <X type="int">245</X>
+  <Y type="int">140</Y>
   <Width type="uint">1110</Width>
   <Height type="uint">505</Height>
   <Hint type="String"></Hint>
@@ -102,8 +102,9 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">2</Text>
   <Items type="StringList">40,32,20,16,10,8,4,2,1,</Items>
+  <Text type="String">2</Text>
+  <ReadOnly type="bool">0</ReadOnly>
   <EvOnComboChange type="Event">TRUE</EvOnComboChange>
 </combo1>
 <label1>
@@ -155,8 +156,9 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">1</Text>
   <Items type="StringList">1,2,3,4,</Items>
+  <Text type="String">1</Text>
+  <ReadOnly type="bool">1</ReadOnly>
   <EvOnComboChange type="Event">TRUE</EvOnComboChange>
 </combo2>
 <menu1>
@@ -224,7 +226,7 @@
   <Tag type="int">0</Tag>
   <Text type="String">Oscilloscope</Text>
   <SubMenu type="SubMenu">NULL</SubMenu>
-  <EvMenuActive type="Event">True</EvMenuActive>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_Modules_Oscilloscope>
 <menu1_Help_Contents>
   <Class type="String">CItemMenu</Class>
@@ -254,7 +256,7 @@
   <Class type="String">CStatusbar</Class>
   <Name type="String">statusbar1</Name>
   <Tag type="int">0</Tag>
-  <Fields type="StringList">port,stats,serial,temp</Fields>
+  <Fields type="StringList">port,stats,serial,</Fields>
 </statusbar1>
 <label2>
   <Class type="String">CLabel</Class>
@@ -280,7 +282,7 @@
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
   <Text type="String">Board</Text>
-  <Align type="CAlign">3</Align>
+  <Align type="CAlign">1</Align>
 </label2>
 <label7>
   <Class type="String">CLabel</Class>
@@ -331,8 +333,9 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Items type="StringList">PIC16F628A,PIC16F648A,</Items>
   <Text type="String">PIC16F628</Text>
-  <Items type="StringList">PIC16F628A,PIC16F648A,PIC16F648AICD,</Items>
+  <ReadOnly type="bool">1</ReadOnly>
   <EvOnComboChange type="Event">TRUE</EvOnComboChange>
 </combo3>
 </window1>
