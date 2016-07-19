@@ -27,6 +27,7 @@
 #include"picsimlab1.h"
 #include"picsimlab2.h"
 #include"picsimlab3.h"
+#include"oscilloscope/oscilloscope1.h"
 
 //Program____________________________________________________________
 
@@ -36,6 +37,8 @@ Initialize
   Application->ACreateWindow (&Window1);
   Application->ACreateWindow (&Window2);
   Application->ACreateWindow (&Window3);
+  oscilloscope::Window1.SetVisible (0);
+  Application->ACreateWindow (&oscilloscope::Window1);
   Application->Load ();
 
   return 0;

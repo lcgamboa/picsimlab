@@ -25,6 +25,7 @@
 
 #include"picsimlab1.h"
 #include"board_3.h"
+#include"oscilloscope/oscilloscope1.h"
 
 /* outputs */
 
@@ -444,7 +445,8 @@ void cboard_3::Run_CPU(_pic *pic)
           }
          
           if(!mplabxd_testbp(pic))pic_step(pic,0);
-
+          oscilloscope::Window1.SetSample(pic);
+          
           if(j > JUMPSTEPS)
           {  
 /*

@@ -24,6 +24,8 @@
    ######################################################################## */
 
 #include"picsimlab1.h"
+#include"oscilloscope/oscilloscope1.h"
+
 #include"board_4.h"
 
 /* outputs */
@@ -769,6 +771,8 @@ void cboard_4::Run_CPU(_pic *pic)
         }    
 
         if(!mplabxd_testbp(pic))pic_step(pic,0);
+        
+        oscilloscope::Window1.SetSample(pic);
 /*
         for(pi=0;pi < pic.PINCOUNT;pi++)
         {
@@ -921,7 +925,6 @@ void cboard_4::Run_CPU(_pic *pic)
       if(lm3[i] > 255)lm3[i]=255;
       if(lm4[i] > 255)lm4[i]=255;
      }
-  
 }
 
 

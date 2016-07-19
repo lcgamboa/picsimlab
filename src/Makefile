@@ -10,14 +10,15 @@ appdir= ${prefix}/share/applications/
 sharedir= ${prefix}/share/picsimlab/
 execdir= ${prefix}/bin/
 
-FLAGS = -D_VERSION_=\"0.6.5\" -Wall -O3 -D_SHARE_=\"${sharedir}\"   \
- -fomit-frame-pointer `lxrad-config --cxxflags`
+#lxrad automatic generated block start, don't edit below!
 
-OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o board.o \
- lcd_hd44780.o mi2c_24CXXX.o rtc_ds1307.o rtc_pfc8563.o board_1.o board_2.o board_3.o\
- board_4.o board_5.o board_6.o mplabxd.o board_x.o
+FLAGS = -D_VERSION_=\"0.6.5\" -Wall -O3 -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer `lxrad-config --cxxflags`
 
-LIBS = -lpicsim `lxrad-config --libs`
+LIBS = `lxrad-config --libs` -lpicsim
+
+OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o board.o lcd_hd44780.o mi2c_24CXXX.o rtc_ds1307.o rtc_pfc8563.o board_1.o board_2.o board_3.o board_4.o board_5.o board_6.o mplabxd.o board_x.o oscilloscope/oscilloscope1.cc 
+
+#lxrad automatic generated block end, don't edit above!
 
 all: $(OBJS)
 	$(CC) $(FLAGS) $(OBJS) -opicsimlab $(LIBS) 
@@ -36,7 +37,8 @@ uninstall:
 	$(RM) -dvf ${execdir}picsimlab
 	$(RM) -dvf ${appdir}picsimlab.desktop
 
-
+run: all
+	./picsimlab
 
 clean:
-	$(RM) picsimlab *.o core
+	$(RM) picsimlab *.o core oscilloscope/*.o

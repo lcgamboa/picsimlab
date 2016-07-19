@@ -26,7 +26,7 @@
 //include files
 #include"picsimlab1.h"
 #include"board_5.h"
-
+#include"oscilloscope/oscilloscope1.h"
 
 /* ids of inputs of input map*/
 #define I_ICSP	1  //ICSP connector
@@ -569,7 +569,8 @@ void cboard_5::Run_CPU(_pic *pic)
         
         //verify if a breakpoint is reached if not run one instruction 
         if(!mplabxd_testbp(pic))pic_step(pic,0);
-
+        oscilloscope::Window1.SetSample(pic);
+        
         if(j > JUMPSTEPS)//if number of step is bigger than steps to skip 
         {  
           //increment mean value counter if pin is high  

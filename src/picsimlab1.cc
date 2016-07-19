@@ -27,6 +27,9 @@
 #include"picsimlab1.h"
 #include"picsimlab1_d.cc"
 
+#include"oscilloscope/oscilloscope1.h"
+
+
 #include"boards_defs.h"
 
 CPWindow1 Window1;
@@ -387,6 +390,8 @@ create++;
 
   timer1.SetRunState(1);
   timer2.SetRunState(1);
+  
+  oscilloscope::Window1.SetBaseTimer(&pic);
 };
 
 
@@ -401,7 +406,8 @@ CPWindow1::combo1_EvOnComboChange(CControl * control)
 
   pic.freq=NSTEP*NSTEPKF;
          
-
+  oscilloscope::Window1.SetBaseTimer(&pic);
+  
   Application->ProcessEvents();
 };
 
@@ -419,6 +425,7 @@ CPWindow1::combo2_EvOnComboChange(CControl * control)
   _EvOnDestroy(control);
   _EvOnCreate(control);
   _EvOnShow(control);
+  
 };
 
 
@@ -738,6 +745,6 @@ CPWindow1::board_Event(CControl * control)
 void
 CPWindow1::menu1_Modules_Oscilloscope_EvMenuActive(CControl * control)
 {
-  //Window3.ShowExclusive();
-  printf("Oscilloscope not implemented yet!\n");
+  oscilloscope::Window1.Show ();
+  //TODO disable oscilloscope when oscilloscope window is close
 };

@@ -25,7 +25,7 @@
 
 #include"picsimlab1.h"
 #include"board_2.h"
-
+#include"oscilloscope/oscilloscope1.h"
 
 /* outputs */
 #define O_RA1	1
@@ -205,7 +205,8 @@ for(pi=0;pi < pic->PINCOUNT;pi++)
           //} 
   
         if(!mplabxd_testbp(pic))pic_step(pic,0);
-
+        oscilloscope::Window1.SetSample(pic);
+        
           if(j > JUMPSTEPS)
           {  
         for(pi=0;pi < pic->PINCOUNT;pi++)
