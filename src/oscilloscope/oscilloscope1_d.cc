@@ -7,8 +7,8 @@ CPWindow1::CPWindow1(void)
   SetClass(wxT("CPWindow"));
   SetName(wxT("window1"));
   SetTag(0);
-  SetX(317);
-  SetY(153);
+  SetX(283);
+  SetY(159);
   SetWidth(1026);
   SetHeight(476);
   SetHint(wxT(""));

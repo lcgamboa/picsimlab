@@ -154,6 +154,7 @@ CPWindow1::SetBaseTimer(_pic * pic)
 {
   Dt=4.0/pic->freq;
   int ch[2];
+  char cbuf[10];
 
  //printf("Dt=%e  Rt=%e  Rt/Dt=%f\n",Dt,Rt,Rt/Dt); 
  
@@ -165,17 +166,28 @@ CPWindow1::SetBaseTimer(_pic * pic)
   combo3.DeleteItems ();
   for(int i=1; i<= pic->PINCOUNT;i++ )
     {
-      combo2.AddItem (itoa(i));
-      combo3.AddItem (itoa(i));
+      String spin= getPinName(pic,i,cbuf);
+      
+      if(spin.Cmp(wxT("error")))
+      {
+        combo2.AddItem (itoa(i)+"  "+spin);
+        combo3.AddItem (itoa(i)+"  "+spin);
+      }
     }
   
   if(ch[0] < pic->PINCOUNT)
-    combo2.SetText (itoa(ch[0]));
+    {
+      String spin= getPinName(pic,ch[0],cbuf);  
+      combo2.SetText (itoa(ch[0])+"  "+spin);
+    }
   else
     combo2.SetText ("1");
   
   if(ch[1] < pic->PINCOUNT)
-    combo3.SetText (itoa(ch[1]));
+    {
+      String spin= getPinName(pic,ch[1],cbuf);  
+      combo3.SetText (itoa(ch[1])+"  "+spin);
+    }
   else
     combo3.SetText ("2");
   
