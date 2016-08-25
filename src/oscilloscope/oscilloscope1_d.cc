@@ -1,5 +1,4 @@
-using namespace oscilloscope;
-
+namespace oscilloscope{
 CPWindow1::CPWindow1(void)
 {
 //lxrad automatic generated block start, don't edit below!
@@ -17,6 +16,9 @@ CPWindow1::CPWindow1(void)
   SetPopupMenu(NULL);
   SetTitle(wxT("oscilloscope"));
   SetOverrideRedirect(0);
+  EvOnDestroy=EVONDESTROY & CPWindow1::_EvOnDestroy;
+  EvOnShow=EVONSHOW & CPWindow1::_EvOnShow;
+  EvOnHide=EVONHIDE & CPWindow1::_EvOnHide;
   //draw1
   draw1.SetFOwner(this);
   draw1.SetClass(wxT("CDraw"));
@@ -115,8 +117,8 @@ CPWindow1::CPWindow1(void)
   spind5.SetClass(wxT("CSpind"));
   spind5.SetName(wxT("spind5"));
   spind5.SetTag(0);
-  spind5.SetX(859);
-  spind5.SetY(69);
+  spind5.SetX(855);
+  spind5.SetY(65);
   spind5.SetWidth(80);
   spind5.SetHeight(26);
   spind5.SetHint(wxT(""));
@@ -186,8 +188,8 @@ CPWindow1::CPWindow1(void)
   togglebutton2.SetClass(wxT("CToggleButton"));
   togglebutton2.SetName(wxT("togglebutton2"));
   togglebutton2.SetTag(0);
-  togglebutton2.SetX(705);
-  togglebutton2.SetY(182);
+  togglebutton2.SetX(709);
+  togglebutton2.SetY(181);
   togglebutton2.SetWidth(65);
   togglebutton2.SetHeight(28);
   togglebutton2.SetHint(wxT(""));
@@ -202,8 +204,8 @@ CPWindow1::CPWindow1(void)
   button2.SetClass(wxT("CButton"));
   button2.SetName(wxT("button2"));
   button2.SetTag(0);
-  button2.SetX(703);
-  button2.SetY(225);
+  button2.SetX(708);
+  button2.SetY(223);
   button2.SetWidth(65);
   button2.SetHeight(28);
   button2.SetHint(wxT(""));
@@ -218,8 +220,8 @@ CPWindow1::CPWindow1(void)
   togglebutton3.SetClass(wxT("CToggleButton"));
   togglebutton3.SetName(wxT("togglebutton3"));
   togglebutton3.SetTag(0);
-  togglebutton3.SetX(580);
-  togglebutton3.SetY(275);
+  togglebutton3.SetX(578);
+  togglebutton3.SetY(274);
   togglebutton3.SetWidth(65);
   togglebutton3.SetHeight(28);
   togglebutton3.SetHint(wxT(""));
@@ -234,8 +236,8 @@ CPWindow1::CPWindow1(void)
   togglebutton4.SetClass(wxT("CToggleButton"));
   togglebutton4.SetName(wxT("togglebutton4"));
   togglebutton4.SetTag(0);
-  togglebutton4.SetX(704);
-  togglebutton4.SetY(273);
+  togglebutton4.SetX(708);
+  togglebutton4.SetY(272);
   togglebutton4.SetWidth(65);
   togglebutton4.SetHeight(28);
   togglebutton4.SetHint(wxT(""));
@@ -257,8 +259,8 @@ CPWindow1::CPWindow1(void)
   togglebutton5.SetClass(wxT("CToggleButton"));
   togglebutton5.SetName(wxT("togglebutton5"));
   togglebutton5.SetTag(0);
-  togglebutton5.SetX(867);
-  togglebutton5.SetY(179);
+  togglebutton5.SetX(865);
+  togglebutton5.SetY(221);
   togglebutton5.SetWidth(65);
   togglebutton5.SetHeight(28);
   togglebutton5.SetHint(wxT(""));
@@ -274,8 +276,8 @@ CPWindow1::CPWindow1(void)
   spind7.SetClass(wxT("CSpind"));
   spind7.SetName(wxT("spind7"));
   spind7.SetTag(0);
-  spind7.SetX(866);
-  spind7.SetY(277);
+  spind7.SetX(862);
+  spind7.SetY(364);
   spind7.SetWidth(80);
   spind7.SetHeight(26);
   spind7.SetHint(wxT(""));
@@ -294,8 +296,8 @@ CPWindow1::CPWindow1(void)
   combo1.SetClass(wxT("CCombo"));
   combo1.SetName(wxT("combo1"));
   combo1.SetTag(0);
-  combo1.SetX(864);
-  combo1.SetY(232);
+  combo1.SetX(859);
+  combo1.SetY(297);
   combo1.SetWidth(80);
   combo1.SetHeight(26);
   combo1.SetHint(wxT(""));
@@ -320,8 +322,8 @@ CPWindow1::CPWindow1(void)
   combo2.SetClass(wxT("CCombo"));
   combo2.SetName(wxT("combo2"));
   combo2.SetTag(0);
-  combo2.SetX(573);
-  combo2.SetY(348);
+  combo2.SetX(574);
+  combo2.SetY(350);
   combo2.SetWidth(80);
   combo2.SetHeight(26);
   combo2.SetHint(wxT(""));
@@ -338,8 +340,8 @@ CPWindow1::CPWindow1(void)
   combo3.SetClass(wxT("CCombo"));
   combo3.SetName(wxT("combo3"));
   combo3.SetTag(0);
-  combo3.SetX(697);
-  combo3.SetY(347);
+  combo3.SetX(703);
+  combo3.SetY(350);
   combo3.SetWidth(80);
   combo3.SetHeight(26);
   combo3.SetHint(wxT(""));
@@ -351,6 +353,182 @@ CPWindow1::CPWindow1(void)
   combo3.SetReadOnly(0);
   combo3.EvOnComboChange=EVONCOMBOCHANGE & CPWindow1::combo3_EvOnComboChange;
   CreateChild(&combo3);
+  //label1
+  label1.SetFOwner(this);
+  label1.SetClass(wxT("CLabel"));
+  label1.SetName(wxT("label1"));
+  label1.SetTag(0);
+  label1.SetX(549);
+  label1.SetY(35);
+  label1.SetWidth(128);
+  label1.SetHeight(20);
+  label1.SetHint(wxT(""));
+  label1.SetEnable(1);
+  label1.SetVisible(1);
+  label1.SetPopupMenu(NULL);
+  label1.SetText(wxT("Ch 1 scale (V/div)"));
+  label1.SetAlign(1);
+  CreateChild(&label1);
+  //label2
+  label2.SetFOwner(this);
+  label2.SetClass(wxT("CLabel"));
+  label2.SetName(wxT("label2"));
+  label2.SetTag(0);
+  label2.SetX(686);
+  label2.SetY(35);
+  label2.SetWidth(130);
+  label2.SetHeight(20);
+  label2.SetHint(wxT(""));
+  label2.SetEnable(1);
+  label2.SetVisible(1);
+  label2.SetPopupMenu(NULL);
+  label2.SetText(wxT("Ch 2 scale (V/div)"));
+  label2.SetAlign(1);
+  CreateChild(&label2);
+  //label3
+  label3.SetFOwner(this);
+  label3.SetClass(wxT("CLabel"));
+  label3.SetName(wxT("label3"));
+  label3.SetTag(0);
+  label3.SetX(846);
+  label3.SetY(191);
+  label3.SetWidth(119);
+  label3.SetHeight(20);
+  label3.SetHint(wxT(""));
+  label3.SetEnable(1);
+  label3.SetVisible(1);
+  label3.SetPopupMenu(NULL);
+  label3.SetText(wxT("Trigger On/Off"));
+  label3.SetAlign(1);
+  CreateChild(&label3);
+  //label4
+  label4.SetFOwner(this);
+  label4.SetClass(wxT("CLabel"));
+  label4.SetName(wxT("label4"));
+  label4.SetTag(0);
+  label4.SetX(826);
+  label4.SetY(35);
+  label4.SetWidth(147);
+  label4.SetHeight(20);
+  label4.SetHint(wxT(""));
+  label4.SetEnable(1);
+  label4.SetVisible(1);
+  label4.SetPopupMenu(NULL);
+  label4.SetText(wxT("Time Scale (ms/div)"));
+  label4.SetAlign(1);
+  CreateChild(&label4);
+  //label5
+  label5.SetFOwner(this);
+  label5.SetClass(wxT("CLabel"));
+  label5.SetName(wxT("label5"));
+  label5.SetTag(0);
+  label5.SetX(836);
+  label5.SetY(105);
+  label5.SetWidth(128);
+  label5.SetHeight(20);
+  label5.SetHint(wxT(""));
+  label5.SetEnable(1);
+  label5.SetVisible(1);
+  label5.SetPopupMenu(NULL);
+  label5.SetText(wxT("Time offset (ms)"));
+  label5.SetAlign(1);
+  CreateChild(&label5);
+  //label6
+  label6.SetFOwner(this);
+  label6.SetClass(wxT("CLabel"));
+  label6.SetName(wxT("label6"));
+  label6.SetTag(0);
+  label6.SetX(846);
+  label6.SetY(266);
+  label6.SetWidth(122);
+  label6.SetHeight(20);
+  label6.SetHint(wxT(""));
+  label6.SetEnable(1);
+  label6.SetVisible(1);
+  label6.SetPopupMenu(NULL);
+  label6.SetText(wxT("Trigger channel"));
+  label6.SetAlign(1);
+  CreateChild(&label6);
+  //label7
+  label7.SetFOwner(this);
+  label7.SetClass(wxT("CLabel"));
+  label7.SetName(wxT("label7"));
+  label7.SetTag(0);
+  label7.SetX(841);
+  label7.SetY(333);
+  label7.SetWidth(128);
+  label7.SetHeight(20);
+  label7.SetHint(wxT(""));
+  label7.SetEnable(1);
+  label7.SetVisible(1);
+  label7.SetPopupMenu(NULL);
+  label7.SetText(wxT("Trigger level (V)"));
+  label7.SetAlign(1);
+  CreateChild(&label7);
+  //label8
+  label8.SetFOwner(this);
+  label8.SetClass(wxT("CLabel"));
+  label8.SetName(wxT("label8"));
+  label8.SetTag(0);
+  label8.SetX(562);
+  label8.SetY(105);
+  label8.SetWidth(113);
+  label8.SetHeight(20);
+  label8.SetHint(wxT(""));
+  label8.SetEnable(1);
+  label8.SetVisible(1);
+  label8.SetPopupMenu(NULL);
+  label8.SetText(wxT("Ch 1 offset (V)"));
+  label8.SetAlign(1);
+  CreateChild(&label8);
+  //label9
+  label9.SetFOwner(this);
+  label9.SetClass(wxT("CLabel"));
+  label9.SetName(wxT("label9"));
+  label9.SetTag(0);
+  label9.SetX(692);
+  label9.SetY(105);
+  label9.SetWidth(115);
+  label9.SetHeight(20);
+  label9.SetHint(wxT(""));
+  label9.SetEnable(1);
+  label9.SetVisible(1);
+  label9.SetPopupMenu(NULL);
+  label9.SetText(wxT("Ch 2 offset (V)"));
+  label9.SetAlign(1);
+  CreateChild(&label9);
+  //label10
+  label10.SetFOwner(this);
+  label10.SetClass(wxT("CLabel"));
+  label10.SetName(wxT("label10"));
+  label10.SetTag(0);
+  label10.SetX(584);
+  label10.SetY(325);
+  label10.SetWidth(60);
+  label10.SetHeight(20);
+  label10.SetHint(wxT(""));
+  label10.SetEnable(1);
+  label10.SetVisible(1);
+  label10.SetPopupMenu(NULL);
+  label10.SetText(wxT("Ch 1"));
+  label10.SetAlign(1);
+  CreateChild(&label10);
+  //label11
+  label11.SetFOwner(this);
+  label11.SetClass(wxT("CLabel"));
+  label11.SetName(wxT("label11"));
+  label11.SetTag(0);
+  label11.SetX(709);
+  label11.SetY(325);
+  label11.SetWidth(60);
+  label11.SetHeight(20);
+  label11.SetHint(wxT(""));
+  label11.SetEnable(1);
+  label11.SetVisible(1);
+  label11.SetPopupMenu(NULL);
+  label11.SetText(wxT("Ch 2"));
+  label11.SetAlign(1);
+  CreateChild(&label11);
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!
   button1.SetColor(255,0,0);
@@ -363,3 +541,4 @@ CPWindow1::CPWindow1(void)
   chpin[0]=0;
   chpin[1]=1;
 };
+}

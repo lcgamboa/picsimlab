@@ -1,15 +1,15 @@
 #include <wx-3.0/wx/string.h>
 
 #include"oscilloscope1.h"
-#include"oscilloscope1_d.cc"
-
+#include"../picsimlab1.h"
 
 using namespace oscilloscope;
+#include"oscilloscope1_d.cc"
 
 
 namespace oscilloscope{
 CPWindow1 Window1;
-}
+
 
 //Implementation
 
@@ -17,7 +17,11 @@ CPWindow1 Window1;
 #define WMAX 500
 #define HMAX 400
 
-double ch[2][500];
+//flip buffers+ 2 channels + 500 points
+double data[2][2][500];
+int fp=0;
+
+double *ch[2];
 
 int tch=0;
     
@@ -153,13 +157,13 @@ void
 CPWindow1::SetBaseTimer(_pic * pic)
 {
   Dt=4.0/pic->freq;
-  int ch[2];
+  int chp[2];
   char cbuf[10];
 
  //printf("Dt=%e  Rt=%e  Rt/Dt=%f\n",Dt,Rt,Rt/Dt); 
  
- ch[0]=atoi(combo2.GetText ());
- ch[1]=atoi(combo3.GetText ());
+ chp[0]=atoi(combo2.GetText ());
+ chp[1]=atoi(combo3.GetText ());
  
  
   combo2.DeleteItems ();
@@ -175,18 +179,18 @@ CPWindow1::SetBaseTimer(_pic * pic)
       }
     }
   
-  if(ch[0] < pic->PINCOUNT)
+  if(chp[0] < pic->PINCOUNT)
     {
-      String spin= getPinName(pic,ch[0],cbuf);  
-      combo2.SetText (itoa(ch[0])+"  "+spin);
+      String spin= getPinName(pic,chp[0],cbuf);  
+      combo2.SetText (itoa(chp[0])+"  "+spin);
     }
   else
     combo2.SetText ("1");
   
-  if(ch[1] < pic->PINCOUNT)
+  if(chp[1] < pic->PINCOUNT)
     {
-      String spin= getPinName(pic,ch[1],cbuf);  
-      combo3.SetText (itoa(ch[1])+"  "+spin);
+      String spin= getPinName(pic,chp[1],cbuf);  
+      combo3.SetText (itoa(chp[1])+"  "+spin);
     }
   else
     combo3.SetText ("2");
@@ -217,13 +221,16 @@ CPWindow1::SetSample(_pic  * pic)
   if(t > Rt)
   {
     t-=Rt;
-    ch[0][is]=-pins[0]+((1.0*rand()/RAND_MAX)-0.5)*0.1;
-    ch[1][is]=-pins[1]+((1.0*rand()/RAND_MAX)-0.5)*0.1;
+    data[fp][0][is]=-pins[0]+((1.0*rand()/RAND_MAX)-0.5)*0.1;
+    data[fp][1][is]=-pins[1]+((1.0*rand()/RAND_MAX)-0.5)*0.1;
     is++;
     if(is >= 500)
     {
         is=0;
         tr=0;
+        ch[0]=data[fp][0];
+        ch[1]=data[fp][1];
+        fp=!fp;//togle fp
         update=1;
        // DrawScreen();
     }
@@ -246,13 +253,6 @@ CPWindow1::SetSample(_pic  * pic)
   
   pins_[0]=pins[0];
   pins_[1]=pins[1];
-/*  
-      for(int t=0;t<500;t++)
-      {
-        ch[0][t]=4*sin((t*1.0/spind5.GetValue ())+spind6.GetValue ())+((1.0*rand()/RAND_MAX)-0.5)*0.1; 
-        ch[1][t]=3*cos((t*1.0/spind5.GetValue ())+spind6.GetValue ())+((1.0*rand()/RAND_MAX)-0.5)*0.1;
-      }
-  */    
 }
 
 void
@@ -301,4 +301,49 @@ CPWindow1::combo3_EvOnComboChange(CControl * control)
   chpin[1]=atoi(combo3.GetText ())-1; 
 };
 
+void 
+CPWindow1::WritePreferences(void)
+{
+    //TODO write all preferences
+    picsimlab::Window1.saveprefs(wxT("osc_ch1"),combo2.GetText());
+    picsimlab::Window1.saveprefs(wxT("osc_ch2"),combo3.GetText());
 
+};
+
+
+void 
+CPWindow1::ReadPreferences(char *name,char *value)
+{  
+    if(!strcmp(name,"osc_ch1"))
+    {
+      combo2.SetText(value); 
+    }
+    if(!strcmp(name,"osc_ch2"))
+    {
+      combo3.SetText(value); 
+    }
+};
+
+
+void
+CPWindow1::_EvOnDestroy(CControl * control)
+{
+  //code here:)
+  //mprint(wxT("_EvOnDestroy\n"));
+};
+
+void
+CPWindow1::_EvOnShow(CControl * control)
+{
+  //code here:)
+  //mprint(wxT("_EvOnShow\n"));
+};
+
+void
+CPWindow1::_EvOnHide(CControl * control)
+{
+  picsimlab::Window1.GetBoard ()->SetUseOscilloscope (0);
+};
+
+
+}

@@ -31,7 +31,21 @@ class CPWindow1:public CPWindow
   CTimer timer1;
   CCombo combo2;
   CCombo combo3;
+  CLabel label1;
+  CLabel label2;
+  CLabel label3;
+  CLabel label4;
+  CLabel label5;
+  CLabel label6;
+  CLabel label7;
+  CLabel label8;
+  CLabel label9;
+  CLabel label10;
+  CLabel label11;
   /*#Events*/
+  void _EvOnDestroy(CControl * control);
+  void _EvOnShow(CControl * control);
+  void _EvOnHide(CControl * control);
   void draw1_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state);
   void spind5_EvOnChangeSpinDouble(CControl * control);
   void button1_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state);
@@ -45,7 +59,9 @@ class CPWindow1:public CPWindow
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!
   CPWindow1(void);
-  
+          
+  void WritePreferences(void);
+  void ReadPreferences(char *name,char *value);
   void SetBaseTimer(_pic * pic);
   void SetSample(_pic * pic);    
   void DrawScreen(void);

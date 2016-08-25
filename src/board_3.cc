@@ -383,8 +383,8 @@ void cboard_3::Draw(_pic *pic, CDraw *draw,double scale)
      if(ref < 0)
        ref=0; 
  
-       temp[1]=temp[0];    
-       temp[0]=((27.5+ref)*0.003)+temp[1]*(0.997);
+     temp[1]=temp[0];    
+     temp[0]=((27.5+ref)*0.003)+temp[1]*(0.997);
 
      pic_set_apin(pic,2,(10.0/255.0)*(temp[0]+15.0));
     
@@ -445,7 +445,7 @@ void cboard_3::Run_CPU(_pic *pic)
           }
          
           if(!mplabxd_testbp(pic))pic_step(pic,0);
-          oscilloscope::Window1.SetSample(pic);
+          if(use_oscope)oscilloscope::Window1.SetSample(pic);
           
           if(j > JUMPSTEPS)
           {  

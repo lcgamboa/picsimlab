@@ -25,15 +25,14 @@
 
 
 #include"picsimlab1.h"
-#include"picsimlab1_d.cc"
-
 #include"oscilloscope/oscilloscope1.h"
-
+#include"picsimlab1_d.cc"
 
 #include"boards_defs.h"
 
+namespace picsimlab{
 CPWindow1 Window1;
-
+}
 
 //Implementation
 
@@ -95,8 +94,7 @@ CPWindow1::thread1_EvThreadRun(CControl*)
 
 
    //printf("time=%f \n",cpu_time_used);
-
-//FIXME verificar real time   
+  
 /*
    if(cpu_time_used > CPUTUSEMAX)
    {
@@ -325,7 +323,7 @@ create++;
       if(pboard != NULL)
         pboard->ReadPreferences(name,value); 
 
-
+      oscilloscope::Window1.ReadPreferences(name,value);
     }
   }
   else
@@ -532,6 +530,8 @@ CPWindow1::_EvOnDestroy(CControl * control)
     saveprefs(wxT("lfile"),FNAME);
         
     pboard->WritePreferences();
+    
+    oscilloscope::Window1.WritePreferences ();
     
     prefs.SaveToFile(fname);
     
@@ -745,6 +745,13 @@ CPWindow1::board_Event(CControl * control)
 void
 CPWindow1::menu1_Modules_Oscilloscope_EvMenuActive(CControl * control)
 {
+  pboard->SetUseOscilloscope (1);
   oscilloscope::Window1.Show ();
-  //TODO disable oscilloscope when oscilloscope window is close
 };
+
+
+board * 
+CPWindow1::GetBoard(void)
+{
+  return pboard;
+}

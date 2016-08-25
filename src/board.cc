@@ -31,6 +31,7 @@ board::board(void)
 {
   inputc=0;
   outputc=0;
+  use_oscope=0;
 };
 
 
@@ -232,3 +233,10 @@ board::RefreshStatus(_pic *pic)
 {
   Window1.statusbar1.SetField(2,wxT(""));
 }
+
+void 
+board::SetUseOscilloscope(int uo)
+{
+  use_oscope=uo;
+  
+};

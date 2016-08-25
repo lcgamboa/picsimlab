@@ -25,7 +25,7 @@
 
 #ifndef CPWINDOW1 
 #define CPWINDOW1
-
+   
 #define TIMER           0.1      //timer period in s
 #define CPUTUSEMAX      0.1      //max period cpu use in s 
 #define NSTEPKT     25000.0      //TIMER constant 1MHz/(4.0*timer_freq) 
@@ -48,7 +48,8 @@ extern char SERIALDEVICE[100];
 
 int mplabxd_testbp(_pic *pic);
 
-
+namespace picsimlab{
+    
 class CPWindow1:public CPWindow
 {
   public:
@@ -129,6 +130,7 @@ class CPWindow1:public CPWindow
   long int GetNSTEPJ(void){return NSTEPJ;};
   int GetJUMPSTEPS(void){return JUMPSTEPS;};
   void SetJUMPSTEPS(int js){JUMPSTEPS=js;NSTEPJ=NSTEP/JUMPSTEPS;};
+  board * GetBoard(void);
  private: 
   String share;
  
@@ -164,6 +166,9 @@ class CPWindow1:public CPWindow
 };
 
 extern CPWindow1 Window1 ;
+}
+
+using namespace picsimlab;
 
 #endif /*#CPWINDOW1*/
 

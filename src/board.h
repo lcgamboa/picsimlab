@@ -75,7 +75,7 @@ class board
       
       board(void);           //Called once on board creation
       virtual ~board(void);  //Called once on board destruction 
-      
+      void SetUseOscilloscope(int uo); //Enable/disable oscilloscope measurement
       int proc;             //ID of processor in use
  protected:
       input_t  input[100];  //input map elements
@@ -83,6 +83,7 @@ class board
       int inputc;           //input map elements counter 
       int outputc;          //output map elements counter   
       void ReadMaps(void); //read maps 
+      int use_oscope;
  private:      
       void ReadInputMap(String fname);
       void ReadOutputMap(String fname);

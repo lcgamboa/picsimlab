@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2016  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
 #include"lcd_hd44780.h"
 #include<stdio.h>
 
-
+//#define _DEBUG
 
 
 void lcd_cmd(lcd_t * lcd, char cmd)
@@ -49,9 +49,9 @@ void lcd_cmd(lcd_t * lcd, char cmd)
        return;
      }
   }
-
-  //printf("LCD cmd=%#04X\n",(unsigned char)cmd);
-  
+#ifdef _DEBUG
+  printf("LCD cmd=%#04X\n",(unsigned char)cmd);
+#endif  
 
 //Set DDRAM address  
   if(cmd & 0x80 )
@@ -298,9 +298,9 @@ void lcd_data(lcd_t * lcd, char data)
 */
   fp=((unsigned char)data)-0x20;
 
-
-//  printf("LCD dat=%#04X  (%c)\n",(unsigned char)data,data);
-
+#ifdef _DEBUG
+  printf("LCD dat=%#04X  (%c)\n",(unsigned char)data,data);
+#endif
   if(lcd->cgram_ad == 0xFF)
   {
     for(j=0;j<5;j++)
@@ -364,8 +364,9 @@ void lcd_rst(lcd_t * lcd)
 {
 int i,j;
 
-//    printf("LCD rst--------------------------\n");
-
+#ifdef _DEBUG
+    printf("LCD rst--------------------------\n");
+#endif
     for(i=0;i<DDRMAX;i++)
     {
       for(j=0;j<5;j++)
