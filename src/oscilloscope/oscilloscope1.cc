@@ -52,6 +52,7 @@ CPWindow1::DrawScreen (void)
     float gain[3],nivel[3];
     wxPoint pts[3]; 
         
+    
     //draw ch 0
     if(togglebutton1.GetCheck ())
       {
@@ -68,13 +69,13 @@ CPWindow1::DrawScreen (void)
         pts[2].y=nivel[0]+8;        
         draw1.Canvas.Polygon (1,pts,3);
                 
-        
+        draw1.Canvas.SetLineWidth (2);
         for(int t=0;t<499;t++)
         {
           draw1.Canvas.Line (t,gain[0]*ch[0][t]+nivel[0],t+1,gain[0]*ch[0][t+1]+nivel[0]);    
         }
       }
-    
+    draw1.Canvas.SetLineWidth (1);
     //draw ch 1
     if(togglebutton2.GetCheck ())
       {
@@ -91,13 +92,15 @@ CPWindow1::DrawScreen (void)
         pts[2].y=nivel[1]+5;        
         draw1.Canvas.Polygon (1,pts,3);
        
+        draw1.Canvas.SetLineWidth (2);
         for(int t=0;t<499;t++)
         {
           draw1.Canvas.Line (t,gain[1]*ch[1][t]+nivel[1],t+1,gain[1]*ch[1][t+1]+nivel[1]);    
         }
       }
+      draw1.Canvas.SetLineWidth (1);
     
-    //trigger
+    //draw trigger level
     if(combo1.GetText().compare (wxT("1")) == 0)
       tch=0;
     else
@@ -317,10 +320,12 @@ CPWindow1::ReadPreferences(char *name,char *value)
     if(!strcmp(name,"osc_ch1"))
     {
       combo2.SetText(value); 
+      chpin[0]=atoi(combo2.GetText ())-1;
     }
     if(!strcmp(name,"osc_ch2"))
     {
       combo3.SetText(value); 
+      chpin[1]=atoi(combo3.GetText ())-1;
     }
 };
 
