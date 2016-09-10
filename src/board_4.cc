@@ -770,7 +770,7 @@ void cboard_4::Run_CPU(_pic *pic)
 
         }    
 
-        if(!mplabxd_testbp(pic))pic_step(pic,0);
+        if(!mplabxd_testbp(pic))pic_step(pic);
         
         if(use_oscope)oscilloscope::Window1.SetSample(pic);
 /*

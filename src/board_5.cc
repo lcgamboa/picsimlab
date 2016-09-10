@@ -568,7 +568,7 @@ void cboard_5::Run_CPU(_pic *pic)
         } 
         
         //verify if a breakpoint is reached if not run one instruction 
-        if(!mplabxd_testbp(pic))pic_step(pic,0);
+        if(!mplabxd_testbp(pic))pic_step(pic);
         if(use_oscope)oscilloscope::Window1.SetSample(pic);
         
         if(j > JUMPSTEPS)//if number of step is bigger than steps to skip 

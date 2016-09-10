@@ -271,7 +271,7 @@ void cboard_1::Run_CPU(_pic *pic)
           pic_set_pin(pic,3,p_BT4);
           } 
         
-        if(!mplabxd_testbp(pic))pic_step(pic,0);
+        if(!mplabxd_testbp(pic))pic_step(pic);
         if(use_oscope)oscilloscope::Window1.SetSample(pic);
         
           if(j > JUMPSTEPS)
