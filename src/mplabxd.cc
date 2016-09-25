@@ -168,11 +168,6 @@ if(!server_started)
     if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, (const char*)&reuse, sizeof(reuse)) < 0)
         perror("setsockopt(SO_REUSEADDR) failed");
 
-#ifdef SO_REUSEPORT
-    if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEPORT, (const char*)&reuse, sizeof(reuse)) < 0) 
-        perror("setsockopt(SO_REUSEPORT) failed");
-#endif
-      
   memset (&serv, 0, sizeof (serv));
   serv.sin_family = AF_INET;
   serv.sin_addr.s_addr = htonl (INADDR_ANY);
