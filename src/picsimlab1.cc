@@ -361,14 +361,15 @@ create++;
 
   
   sprintf(fname,"%s/mdump_%02i_%s.hex",home,lab,getnamebyproc(pboard->proc,line));
+
  
   switch(pic_init(&pic,pboard->proc,fname,1,NSTEP*NSTEPKF))
   {
     case HEX_NFOUND:
-      Message(wxT("File not found!")); 
+      printf("File not found!\n"); 
       break;
     case HEX_CHKSUM:
-      Message(wxT("File checksum error!")); 
+      printf("File checksum error!\n"); 
       pic_erase_flash(&pic);
       break;
   }
