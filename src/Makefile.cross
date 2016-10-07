@@ -3,14 +3,14 @@ WINDRES =  x86_64-w64-mingw32-windres
 
 FLAGS = -Wall -O3 -D_WIN_ -D_VERSION_=\"0.6.0\" -D_SHARE_=\"share/\"  `x86_64-w64-mingw32-msw-unicode-3.0  --cxxflags` -fomit-frame-pointer
 
-OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o board.o lcd.o mi2c.o rtc.o rtc2.o board_1.o board_2.o board_3.o board_4.o board_5.o board_x.o  prog_psp.o mplabxd.o
 
+OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o board.o lcd_hd44780.o mi2c_24CXXX.o rtc_ds1307.o rtc_pfc8563.o board_1.o board_2.o board_3.o board_4.o board_5.o board_6.o mplabxd.o board_x.o oscilloscope/oscilloscope1.cc 
 
 all: $(OBJS)
 	$(WINDRES) picsimlab_res.rc  -O coff -o picsimlab_res.o
 	$(CC) $(FLAGS) $(OBJS) picsimlab_res.o -opicsimlab.exe  -llxrad  -lpicsim `x86_64-w64-mingw32-msw-unicode-3.0 --libs` -lws2_32 
 	#$(CC) $(FLAGS) $(OBJS) picsimlab_res.o -opicsimlab_st.exe  ../../LXRAD_WX/libteste/liblxrad.aw  `x86_64-w64-mingw32-msw-unicode-3.0 --libs` -lws2_32
-	mv *.exe picsimlab_0.6.0_win64
+	mv *.exe ../picsimlab_0.6.0_win64/
 
 %.o: %.cc
 	$(CC) -c $(FLAGS) $< 

@@ -461,7 +461,7 @@ void cboard_4::Draw(_pic *pic, CDraw *draw,double scale)
                  if(dip[3])
                     draw->Canvas.SetColor (0,lm[14], 0);
                  else
-                    draw->Canvas.SetColor (0,15, 0);
+                    draw->Canvas.SetColor (0,15, 0); 
                  break;
         case O_RL2: 
                  if(dip[4])
@@ -760,13 +760,19 @@ void cboard_4::Run_CPU(_pic *pic)
                           
 
 
-          rpmc++;
-          if(rpmc > rpmstp) 
+          if(lm[16] > 30 )
           {
-             rpmc=0;
-             if(dip[14]) 
+            rpmc++;
+            if(rpmc > rpmstp) 
+            {
+              printf("lm[16]=%i\n",lm[16]); 
+              printf("rpmstp=%i\n",rpmstp);
+              rpmc=0;
+              if(dip[14]) 
                  pic_set_pin(pic,15, !pic_get_pin(pic,15));
+            }
           }
+          
 
         }    
 
