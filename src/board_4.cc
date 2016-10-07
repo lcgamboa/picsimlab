@@ -772,6 +772,8 @@ void cboard_4::Run_CPU(_pic *pic)
                  pic_set_pin(pic,15, !pic_get_pin(pic,15));
             }
           }
+          else
+            pic_set_pin(pic,15, 0);
           
 
         }    
