@@ -765,8 +765,6 @@ void cboard_4::Run_CPU(_pic *pic)
             rpmc++;
             if(rpmc > rpmstp) 
             {
-              printf("lm[16]=%i\n",lm[16]); 
-              printf("rpmstp=%i\n",rpmstp);
               rpmc=0;
               if(dip[14]) 
                  pic_set_pin(pic,15, !pic_get_pin(pic,15));
