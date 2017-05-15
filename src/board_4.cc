@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -662,7 +662,6 @@ void cboard_4::Run_CPU(_pic *pic)
   unsigned char pi;
   unsigned char pinv;
   const picpin * pins;     
-  unsigned char L[4];
   
   unsigned int alm[40]; //luminosidade media
   unsigned int alm1[40]; //luminosidade media display
@@ -715,50 +714,81 @@ void cboard_4::Run_CPU(_pic *pic)
           pic_set_pin(pic,29,1);
           pic_set_pin(pic,30,1);
           */
-          L[0]=!pic_get_pin(pic,33);
-          L[1]=!pic_get_pin(pic,34);
-          L[2]=!pic_get_pin(pic,35);
-
-
-
-          if(((L[0])&&(p_CL1 == 1))||((L[1])&&(p_CL2 == 1))||((L[2])&&(p_CL3 == 1)))
+          
+          
+         //keyboard 
+          
+          if(p_KEY1)
           {
-             pic_set_pin(pic,22,0); 
+            pic_set_pin(pic,22 , pic_get_pin(pic,33));  
+            pic_set_pin(pic,33 , pic_get_pin(pic,22)); 
           }
-          else
+          
+          if(p_KEY2)
           {
-             pic_set_pin(pic,22,1);
+            pic_set_pin(pic,22 , pic_get_pin(pic,34));  
+            pic_set_pin(pic,34 , pic_get_pin(pic,22));
           }
-
-          if(((L[0])&&(p_CL1 == 2))||((L[1])&&(p_CL2 == 2))||((L[2])&&(p_CL3 == 2)))
+          
+          if(p_KEY3)
           {
-             pic_set_pin(pic,21,0); 
+            pic_set_pin(pic,22 , pic_get_pin(pic,35));
+            pic_set_pin(pic,35 , pic_get_pin(pic,22));
           }
-          else
-          {
-             pic_set_pin(pic,21,1);
-          }
-
-          if(((L[0])&&(p_CL1 == 3))||((L[1])&&(p_CL2 == 3))||((L[2])&&(p_CL3 == 3)))
-          {
-             pic_set_pin(pic,20,0); 
-          }
-          else
-          {
-             pic_set_pin(pic,20,1);
-          }
-
-          if(((L[0])&&(p_CL1 == 4))||((L[1])&&(p_CL2 == 4))||((L[2])&&(p_CL3 == 4)))
-          {
-             pic_set_pin(pic,19,0); 
-          }
-          else
-          {
-             pic_set_pin(pic,19,1);
-          }
-
                           
-
+         if(p_KEY4)
+          {
+            pic_set_pin(pic,21 , pic_get_pin(pic,33));
+            pic_set_pin(pic,33 , pic_get_pin(pic,21));
+          }
+          
+          if(p_KEY5)
+          {
+            pic_set_pin(pic,21 , pic_get_pin(pic,34));  
+            pic_set_pin(pic,34 , pic_get_pin(pic,21));
+          }
+          
+          if(p_KEY6)
+          {
+            pic_set_pin(pic,21 , pic_get_pin(pic,35));
+            pic_set_pin(pic,35 , pic_get_pin(pic,21));
+          }
+          
+          if(p_KEY7)
+          {
+            pic_set_pin(pic,20 , pic_get_pin(pic,33));  
+            pic_set_pin(pic,33 , pic_get_pin(pic,20));
+          }
+          
+          if(p_KEY8)
+          {
+            pic_set_pin(pic,20 , pic_get_pin(pic,34));  
+            pic_set_pin(pic,34 , pic_get_pin(pic,20));
+          }
+          
+          if(p_KEY9)
+          {
+            pic_set_pin(pic,20 , pic_get_pin(pic,35)); 
+            pic_set_pin(pic,35 , pic_get_pin(pic,20));
+          }
+          
+          if(p_KEY10)
+          {
+            pic_set_pin(pic,19 , pic_get_pin(pic,33));  
+            pic_set_pin(pic,33 , pic_get_pin(pic,19));
+          }
+          
+          if(p_KEY11)
+          {
+            pic_set_pin(pic,19 , pic_get_pin(pic,34));  
+            pic_set_pin(pic,34 , pic_get_pin(pic,19));
+          }
+          
+          if(p_KEY12)
+          {
+            pic_set_pin(pic,19 , pic_get_pin(pic,35));  
+            pic_set_pin(pic,35 , pic_get_pin(pic,19));
+          }
 
           if(lm[16] > 30 )
           {
@@ -959,12 +989,27 @@ cboard_4::Reset(_pic *pic)
     pic_set_pin(pic,37,p_BT5); 
     pic_set_pin(pic,38,p_BT6); 
     pic_set_pin(pic,7,p_BT7); 
-    p_CL1=0; 
-    p_CL2=0; 
-    p_CL3=0; 
-    pic_set_pin(pic,33,p_CL1); 
-    pic_set_pin(pic,34,p_CL2); 
-    pic_set_pin(pic,35,p_CL3); 
+    p_KEY1=0; 
+    p_KEY2=0; 
+    p_KEY3=0;
+    p_KEY4=0; 
+    p_KEY5=0; 
+    p_KEY6=0;
+    p_KEY7=0; 
+    p_KEY8=0; 
+    p_KEY9=0;
+    p_KEY10=0; 
+    p_KEY11=0; 
+    p_KEY12=0;
+    pic_set_pin(pic,33,0); 
+    pic_set_pin(pic,34,0); 
+    pic_set_pin(pic,35,0); 
+    
+    pic_set_pin(pic,20,0); 
+    pic_set_pin(pic,21,0); 
+    pic_set_pin(pic,22,0); 
+    pic_set_pin(pic,23,0); 
+    
     
 #ifndef _WIN_
     if(pic->serialfd > 0)
@@ -1128,7 +1173,7 @@ cboard_4::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
       {
         jmp[0]^=0x01; 
       };break;
-      
+      /*
       case I_RA1:
         {
           p_BT1=0;
@@ -1145,6 +1190,7 @@ cboard_4::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
         {
           p_BT4=0; 
         };break;
+      */ 
       case I_RA5:
         {
           p_BT7=0; 
@@ -1176,54 +1222,54 @@ cboard_4::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
 
       case I_TC1:
         {
-          p_CL1=1;
+          p_KEY1=1;
         };break;
       case I_TC2:
         {
-          p_CL2=1; 
+          p_KEY2=1; 
         };break;
       case I_TC3:
         {
-          p_CL3=1; 
+          p_KEY3=1; 
         };break;
 
       case I_TC4:
         {
-          p_CL1=2; 
+          p_KEY4=1; 
         };break;
       case I_TC5:
         {
-          p_CL2=2; 
+          p_KEY5=1; 
         };break;
       case I_TC6:
         {
-          p_CL3=2; 
+          p_KEY6=1; 
         };break;
 
       case I_TC7:
         {
-          p_CL1=3; 
+          p_KEY7=1; 
         };break;
       case I_TC8:
         {
-          p_CL2=3; 
+          p_KEY8=1; 
         };break;
       case I_TC9:
         {
-          p_CL3=3; 
+          p_KEY9=1; 
         };break;
       
       case I_TCA:
         {
-          p_CL1=4; 
+          p_KEY10=1; 
         };break;
       case I_TC0:
         {
-          p_CL2=4; 
+          p_KEY11=1; 
         };break;
       case I_TCT:
         {
-          p_CL3=4; 
+          p_KEY12=1; 
         };break;
 
       }
@@ -1263,7 +1309,7 @@ cboard_4::MouseButtonRelease(_pic *pic, uint button, uint x, uint y,uint state)
             }
           } 
       };break;
-      
+      /*
         case I_RA1:
         {
           p_BT1=1; 
@@ -1280,6 +1326,7 @@ cboard_4::MouseButtonRelease(_pic *pic, uint button, uint x, uint y,uint state)
         {
           p_BT4=1; 
         };break;
+       */ 
         case I_RA5:
         {
           p_BT7=1; 
@@ -1309,28 +1356,56 @@ cboard_4::MouseButtonRelease(_pic *pic, uint button, uint x, uint y,uint state)
           p_BT6=1; 
         };break;
 
-        case I_TC1:
-        case I_TC4:
-        case I_TC7:
-        case I_TCA:
+      case I_TC1:
         {
-          p_CL1=0; 
+          p_KEY1=0;
+        };break;
+      case I_TC2:
+        {
+          p_KEY2=0; 
+        };break;
+      case I_TC3:
+        {
+          p_KEY3=0; 
         };break;
 
-        case I_TC2:
-        case I_TC5:
-        case I_TC8:
-        case I_TC0:
+      case I_TC4:
         {
-          p_CL2=0; 
+          p_KEY4=0; 
+        };break;
+      case I_TC5:
+        {
+          p_KEY5=0; 
+        };break;
+      case I_TC6:
+        {
+          p_KEY6=0; 
         };break;
 
-        case I_TC3:
-        case I_TC6:
-        case I_TC9:
-        case I_TCT:
+      case I_TC7:
         {
-          p_CL3=0; 
+          p_KEY7=0; 
+        };break;
+      case I_TC8:
+        {
+          p_KEY8=0; 
+        };break;
+      case I_TC9:
+        {
+          p_KEY9=0; 
+        };break;
+      
+      case I_TCA:
+        {
+          p_KEY10=0; 
+        };break;
+      case I_TC0:
+        {
+          p_KEY11=0; 
+        };break;
+      case I_TCT:
+        {
+          p_KEY12=0; 
         };break;
       }
     } 
@@ -1342,75 +1417,164 @@ cboard_4::MouseButtonRelease(_pic *pic, uint button, uint x, uint y,uint state)
 
 void 
 cboard_4::KeyPress(_pic *pic, uint key, uint x, uint y,uint mask)
-{
+{ 
   if(key == '1')
   {
-    p_CL1=1; 
+    p_KEY1=1; 
   }
   if(key == '2')
   {
-    p_CL2=1; 
+    p_KEY2=1; 
   }
   if(key == '3')
   {
-    p_CL3=1; 
+    p_KEY3=1; 
   }
 
   if(key == '4')
   {
-    p_CL1=2; 
+    p_KEY4=1; 
   }
   if(key == '5')
   {
-    p_CL2=2; 
+    p_KEY5=1; 
   }
   if(key == '6')
   {
-    p_CL3=2; 
+    p_KEY6=1; 
   }
 
   if(key == '7')
   {
-    p_CL1=3; 
+    p_KEY7=1; 
   }
   if(key == '8')
   {
-    p_CL2=3; 
+    p_KEY8=1; 
   }
   if(key == '9')
   {
-    p_CL3=3; 
+    p_KEY9=1; 
   }
 
   if(key == '*')
   {
-    p_CL1=4; 
+    p_KEY10=1; 
   }
   if(key == '0')
   {
-    p_CL2=4; 
+    p_KEY11=1; 
   }
   if(key == '#')
   {
-    p_CL3=4; 
+    p_KEY12=1; 
   }
 
+  if(key == 'Q')
+  {
+    p_BT1=0; 
+  }
+  if(key == 'W')
+  {
+    p_BT2=0; 
+  }
+  if(key == 'E')
+  {
+    p_BT3=0; 
+  }
+  if(key == 'R')
+  {
+    p_BT4=0; 
+  }
+  if(key == 'T')
+  {
+    p_BT5=0; 
+  }
+  if(key == 'Y')
+  {
+    p_BT6=0; 
+  }
 };
 
 void
 cboard_4::KeyRelease(_pic *pic, uint key, uint x, uint y,uint mask)
 {
-  if((key == '1')||(key == '4')||(key == '7')||(key == '*'))
+  
+  if(key == '1')
   {
-    p_CL1=0; 
+    p_KEY1=0; 
   }
-  if((key == '2')||(key == '5')||(key == '8')||(key == '0'))
+  if(key == '2')
   {
-    p_CL2=0; 
+    p_KEY2=0; 
   }
-  if((key == '3')||(key == '6')||(key == '9')||(key == '#'))
+  if(key == '3')
   {
-    p_CL3=0; 
+    p_KEY3=0; 
+  }
+
+  if(key == '4')
+  {
+    p_KEY4=0; 
+  }
+  if(key == '5')
+  {
+    p_KEY5=0; 
+  }
+  if(key == '6')
+  {
+    p_KEY6=0; 
+  }
+
+  if(key == '7')
+  {
+    p_KEY7=0; 
+  }
+  if(key == '8')
+  {
+    p_KEY8=0; 
+  }
+  if(key == '9')
+  {
+    p_KEY9=0; 
+  }
+
+  if(key == '*')
+  {
+    p_KEY10=0; 
+  }
+  if(key == '0')
+  {
+    p_KEY11=0; 
+  }
+  if(key == '#')
+  {
+    p_KEY12=0; 
+  }
+  
+  if(key == 'Q')
+  {
+    p_BT1=1; 
+  }
+  if(key == 'W')
+  {
+    p_BT2=1; 
+  }
+  if(key == 'E')
+  {
+    p_BT3=1; 
+  }
+  if(key == 'R')
+  {
+    p_BT4=1; 
+  }
+  if(key == 'T')
+  {
+    p_BT5=1; 
+  }
+  if(key == 'Y')
+  {
+    p_BT6=1; 
   }
 };
 

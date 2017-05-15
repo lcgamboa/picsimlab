@@ -38,9 +38,18 @@ class cboard_4:public board
      int p_BT6; 
      int p_BT7;  
      
-     int p_CL1; 
-     int p_CL2; 
-     int p_CL3; 
+     int p_KEY1; 
+     int p_KEY2; 
+     int p_KEY3; 
+     int p_KEY4; 
+     int p_KEY5; 
+     int p_KEY6; 
+     int p_KEY7; 
+     int p_KEY8; 
+     int p_KEY9; 
+     int p_KEY10; 
+     int p_KEY11; 
+     int p_KEY12; 
      
      int vtc;
      int vt;

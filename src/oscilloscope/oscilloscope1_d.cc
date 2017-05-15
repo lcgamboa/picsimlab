@@ -535,7 +535,7 @@ CPWindow1::CPWindow1(void)
   button2.SetColor(0,255,0);
 
   Dt=0;
-  Rt=8e-5*10;
+  Rt=2e-5*10;
   usetrigger=1;
   triggerlv=2.5;
   chpin[0]=0;

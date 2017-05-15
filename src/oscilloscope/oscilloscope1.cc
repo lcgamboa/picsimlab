@@ -261,7 +261,7 @@ CPWindow1::SetSample(_pic  * pic)
 void
 CPWindow1::spind5_EvOnChangeSpinDouble(CControl * control)
 {
-  Rt=8e-5*spind5.GetValue ();
+  Rt=2e-5*spind5.GetValue ();
   
   //printf("Dt=%e Rt=%e  Rt/Dt=%f\n",Dt,Rt,Rt/Dt);
 };
