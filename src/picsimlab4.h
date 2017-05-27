@@ -1,12 +1,11 @@
-#ifndef CPWINDOW1O 
-#define CPWINDOW1O
+#ifndef CPWINDOW4 
+#define CPWINDOW4
 
 #include<lxrad/lxrad.h>
 #include <picsim/picsim.h>
 
-namespace oscilloscope{
     
-class CPWindow1:public CPWindow
+class CPWindow4:public CPWindow
 {
   public:
 //lxrad automatic generated block start, don't edit below!
@@ -48,6 +47,7 @@ class CPWindow1:public CPWindow
   void _EvOnHide(CControl * control);
   void draw1_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state);
   void spind5_EvOnChangeSpinDouble(CControl * control);
+  void spind6_EvOnChangeSpinDouble(CControl * control);
   void button1_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state);
   void button2_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state);
   void togglebutton5_EvOnToggleButton(CControl * control);
@@ -58,12 +58,12 @@ class CPWindow1:public CPWindow
 
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!
-  CPWindow1(void);
+  CPWindow4(void);
           
   void WritePreferences(void);
   void ReadPreferences(char *name,char *value);
-  void SetBaseTimer(_pic * pic);
-  void SetSample(_pic * pic);    
+  void SetBaseTimer(void);
+  void SetSample(void);    
   void DrawScreen(void);
 private:
   double Dt;   
@@ -71,12 +71,11 @@ private:
   int usetrigger;
   double triggerlv;
   int chpin[2];
+  int toffset;
 };
 
-extern CPWindow1 Window1;
-
-}
+extern CPWindow4 Window4;
 
 
-#endif /*#CPWINDOW1*/
+#endif /*#CPWINDOW4*/
 

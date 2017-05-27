@@ -24,7 +24,7 @@
    ######################################################################## */
 
 #include"picsimlab1.h"
-#include"oscilloscope/oscilloscope1.h"
+#include"picsimlab4.h"
 
 #include"board_4.h"
 
@@ -387,21 +387,21 @@ cboard_4::~cboard_4(void)
       Window1.DestroyChild(combo1);
 }
 
-void cboard_4::Draw(_pic *pic, CDraw *draw,double scale)
+void cboard_4::Draw( CDraw *draw,double scale)
 {
   int i;
  
-          pic_set_pin(pic,39,1);
-          pic_set_pin(pic,40,1);
+          pic_set_pin(39,1);
+          pic_set_pin(40,1);
           
-          pic_set_pin(pic,19,1);
-          pic_set_pin(pic,20,1);
-          pic_set_pin(pic,21,1);
-          pic_set_pin(pic,22,1);
-          pic_set_pin(pic,27,1);
-          pic_set_pin(pic,28,1);
-          pic_set_pin(pic,29,1);
-          pic_set_pin(pic,30,1);
+          pic_set_pin(19,1);
+          pic_set_pin(20,1);
+          pic_set_pin(21,1);
+          pic_set_pin(22,1);
+          pic_set_pin(27,1);
+          pic_set_pin(28,1);
+          pic_set_pin(29,1);
+          pic_set_pin(30,1);
  
 
   
@@ -646,16 +646,16 @@ void cboard_4::Draw(_pic *pic, CDraw *draw,double scale)
    temp[0]=((27.5+ref)*0.003)+temp[1]*(0.997);
 
    if(dip[16])
-     pic_set_apin(pic,4,temp[0]/100.0);
+     pic_set_apin(4,temp[0]/100.0);
    else
-     pic_set_apin(pic,4,0);
+     pic_set_apin(4,0);
 
    //referencia
    //pic_set_apin(pic,5,2.5);
 
 }     
      
-void cboard_4::Run_CPU(_pic *pic)
+void cboard_4::Run_CPU(void)
 {
   int i;  
   int j;
@@ -693,26 +693,26 @@ void cboard_4::Run_CPU(_pic *pic)
 
         if(j > JUMPSTEPS)
           {     
-          pic_set_pin(pic,33,p_BT1); 
-          pic_set_pin(pic,34,p_BT2); 
-          pic_set_pin(pic,35,p_BT3); 
-          pic_set_pin(pic,36,p_BT4);
-          pic_set_pin(pic,37,p_BT5);
-          pic_set_pin(pic,38,p_BT6);
-          pic_set_pin(pic,7,p_BT7);
+          pic_set_pin(33,p_BT1); 
+          pic_set_pin(34,p_BT2); 
+          pic_set_pin(35,p_BT3); 
+          pic_set_pin(36,p_BT4);
+          pic_set_pin(37,p_BT5);
+          pic_set_pin(38,p_BT6);
+          pic_set_pin(7,p_BT7);
           
-          pic_set_pin(pic,39,1);
-          pic_set_pin(pic,40,1);
+          pic_set_pin(39,1);
+          pic_set_pin(40,1);
           
           /*
-          pic_set_pin(pic,19,1);
-          pic_set_pin(pic,20,1);
-          pic_set_pin(pic,21,1);
-          pic_set_pin(pic,22,1);
-          pic_set_pin(pic,27,1);
-          pic_set_pin(pic,28,1);
-          pic_set_pin(pic,29,1);
-          pic_set_pin(pic,30,1);
+          pic_set_pin(19,1);
+          pic_set_pin(20,1);
+          pic_set_pin(21,1);
+          pic_set_pin(22,1);
+          pic_set_pin(27,1);
+          pic_set_pin(28,1);
+          pic_set_pin(29,1);
+          pic_set_pin(30,1);
           */
           
           
@@ -720,74 +720,74 @@ void cboard_4::Run_CPU(_pic *pic)
           
           if(p_KEY1)
           {
-            pic_set_pin(pic,22 , pic_get_pin(pic,33));  
-            pic_set_pin(pic,33 , pic_get_pin(pic,22)); 
+            pic_set_pin(22 , pic_get_pin(33));  
+            pic_set_pin(33 , pic_get_pin(22)); 
           }
           
           if(p_KEY2)
           {
-            pic_set_pin(pic,22 , pic_get_pin(pic,34));  
-            pic_set_pin(pic,34 , pic_get_pin(pic,22));
+            pic_set_pin(22 , pic_get_pin(34));  
+            pic_set_pin(34 , pic_get_pin(22));
           }
           
           if(p_KEY3)
           {
-            pic_set_pin(pic,22 , pic_get_pin(pic,35));
-            pic_set_pin(pic,35 , pic_get_pin(pic,22));
+            pic_set_pin(22 , pic_get_pin(35));
+            pic_set_pin(35 , pic_get_pin(22));
           }
                           
          if(p_KEY4)
           {
-            pic_set_pin(pic,21 , pic_get_pin(pic,33));
-            pic_set_pin(pic,33 , pic_get_pin(pic,21));
+            pic_set_pin(21 , pic_get_pin(33));
+            pic_set_pin(33 , pic_get_pin(21));
           }
           
           if(p_KEY5)
           {
-            pic_set_pin(pic,21 , pic_get_pin(pic,34));  
-            pic_set_pin(pic,34 , pic_get_pin(pic,21));
+            pic_set_pin(21 , pic_get_pin(34));  
+            pic_set_pin(34 , pic_get_pin(21));
           }
           
           if(p_KEY6)
           {
-            pic_set_pin(pic,21 , pic_get_pin(pic,35));
-            pic_set_pin(pic,35 , pic_get_pin(pic,21));
+            pic_set_pin(21 , pic_get_pin(35));
+            pic_set_pin(35 , pic_get_pin(21));
           }
           
           if(p_KEY7)
           {
-            pic_set_pin(pic,20 , pic_get_pin(pic,33));  
-            pic_set_pin(pic,33 , pic_get_pin(pic,20));
+            pic_set_pin(20 , pic_get_pin(33));  
+            pic_set_pin(33 , pic_get_pin(20));
           }
           
           if(p_KEY8)
           {
-            pic_set_pin(pic,20 , pic_get_pin(pic,34));  
-            pic_set_pin(pic,34 , pic_get_pin(pic,20));
+            pic_set_pin(20 , pic_get_pin(34));  
+            pic_set_pin(34 , pic_get_pin(20));
           }
           
           if(p_KEY9)
           {
-            pic_set_pin(pic,20 , pic_get_pin(pic,35)); 
-            pic_set_pin(pic,35 , pic_get_pin(pic,20));
+            pic_set_pin(20 , pic_get_pin(35)); 
+            pic_set_pin(35 , pic_get_pin(20));
           }
           
           if(p_KEY10)
           {
-            pic_set_pin(pic,19 , pic_get_pin(pic,33));  
-            pic_set_pin(pic,33 , pic_get_pin(pic,19));
+            pic_set_pin(19 , pic_get_pin(33));  
+            pic_set_pin(33 , pic_get_pin(19));
           }
           
           if(p_KEY11)
           {
-            pic_set_pin(pic,19 , pic_get_pin(pic,34));  
-            pic_set_pin(pic,34 , pic_get_pin(pic,19));
+            pic_set_pin(19 , pic_get_pin(34));  
+            pic_set_pin(34 , pic_get_pin(19));
           }
           
           if(p_KEY12)
           {
-            pic_set_pin(pic,19 , pic_get_pin(pic,35));  
-            pic_set_pin(pic,35 , pic_get_pin(pic,19));
+            pic_set_pin(19 , pic_get_pin(35));  
+            pic_set_pin(35 , pic_get_pin(19));
           }
 
           if(lm[16] > 30 )
@@ -797,18 +797,18 @@ void cboard_4::Run_CPU(_pic *pic)
             {
               rpmc=0;
               if(dip[14]) 
-                 pic_set_pin(pic,15, !pic_get_pin(pic,15));
+                 pic_set_pin(15, !pic_get_pin(15));
             }
           }
           else
-            pic_set_pin(pic,15, 0);
+            pic_set_pin(15, 0);
           
 
         }    
 
-        if(!mplabxd_testbp(pic))pic_step(pic);
+        if(!mplabxd_testbp())pic_step();
         
-        if(use_oscope)oscilloscope::Window1.SetSample(pic);
+        if(use_oscope)Window4.SetSample();
 /*
         for(pi=0;pi < pic.PINCOUNT;pi++)
         {
@@ -878,8 +878,8 @@ void cboard_4::Run_CPU(_pic *pic)
 
     
 // potenciometro p1 e p2
-      if(dip[18])pic_set_apin(pic,2,vp1in);
-      if(dip[19])pic_set_apin(pic,3,vp2in);
+      if(dip[18])pic_set_apin(2,vp1in);
+      if(dip[19])pic_set_apin(3,vp2in);
 
 
     j=0;
@@ -932,13 +932,13 @@ void cboard_4::Run_CPU(_pic *pic)
         if(pins[17].dir)
         {
           sck=1;
-	  pic_set_pin(pic,18,1);
+	  pic_set_pin(18,1);
         }
         else
         {
           sck=pins[17].value;
         }
-	pic_set_pin(pic,23,mi2c_io(&mi2c,sck,sda) | rtc2_io(&rtc2,sck,sda));
+	pic_set_pin(23,mi2c_io(&mi2c,sck,sda) | rtc2_io(&rtc2,sck,sda));
      
      }
 
@@ -967,7 +967,7 @@ void cboard_4::Run_CPU(_pic *pic)
 
 
 void 
-cboard_4::Reset(_pic *pic)
+cboard_4::Reset(void)
 {
           
    lcd_rst(&lcd);   
@@ -982,13 +982,13 @@ cboard_4::Reset(_pic *pic)
     p_BT6=1; 
     p_BT7=1; 
   
-    pic_set_pin(pic,33,p_BT1); 
-    pic_set_pin(pic,34,p_BT2); 
-    pic_set_pin(pic,35,p_BT3); 
-    pic_set_pin(pic,36,p_BT4); 
-    pic_set_pin(pic,37,p_BT5); 
-    pic_set_pin(pic,38,p_BT6); 
-    pic_set_pin(pic,7,p_BT7); 
+    pic_set_pin(33,p_BT1); 
+    pic_set_pin(34,p_BT2); 
+    pic_set_pin(35,p_BT3); 
+    pic_set_pin(36,p_BT4); 
+    pic_set_pin(37,p_BT5); 
+    pic_set_pin(38,p_BT6); 
+    pic_set_pin(7,p_BT7); 
     p_KEY1=0; 
     p_KEY2=0; 
     p_KEY3=0;
@@ -1001,14 +1001,14 @@ cboard_4::Reset(_pic *pic)
     p_KEY10=0; 
     p_KEY11=0; 
     p_KEY12=0;
-    pic_set_pin(pic,33,0); 
-    pic_set_pin(pic,34,0); 
-    pic_set_pin(pic,35,0); 
+    pic_set_pin(33,0); 
+    pic_set_pin(34,0); 
+    pic_set_pin(35,0); 
     
-    pic_set_pin(pic,20,0); 
-    pic_set_pin(pic,21,0); 
-    pic_set_pin(pic,22,0); 
-    pic_set_pin(pic,23,0); 
+    pic_set_pin(20,0); 
+    pic_set_pin(21,0); 
+    pic_set_pin(22,0); 
+    pic_set_pin(23,0); 
     
     
 #ifndef _WIN_
@@ -1033,7 +1033,7 @@ cboard_4::Reset(_pic *pic)
 };
 
 void 
-cboard_4::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
+cboard_4::MouseButtonPress(uint button, uint x, uint y,uint state)
 {
  
   int i;
@@ -1138,8 +1138,8 @@ cboard_4::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
         { 
           Window1.Set_picrun(0); 
           Window1.Set_picpwr(0); 
-          pic_reset(pic,1);
-          Reset(pic);
+          pic_reset(1);
+          Reset();
 
           p_BT1=0; 
           p_BT2=0; 
@@ -1151,9 +1151,9 @@ cboard_4::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
         {
           Window1.Set_picpwr(1);
           Window1.Set_picrun(1);
-          pic_reset(pic,1);  
+          pic_reset(1);  
 	
-          Reset(pic);
+          Reset();
      
           
           Window1.statusbar1.SetField(0,wxT("Running..."));
@@ -1281,7 +1281,7 @@ cboard_4::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
 
 
 void 
-cboard_4::MouseButtonRelease(_pic *pic, uint button, uint x, uint y,uint state)
+cboard_4::MouseButtonRelease(uint button, uint x, uint y,uint state)
 {    
   int i;
 
@@ -1298,13 +1298,13 @@ cboard_4::MouseButtonRelease(_pic *pic, uint button, uint x, uint y,uint state)
             Window1.Set_picpwr(1);
             Window1.Set_picrst(0);
 
-            if(pic_reset(pic,-1))
+            if(pic_reset(-1))
             { 
               lcd_rst(&lcd);
 	      mi2c_rst(&mi2c);
 	      rtc2_rst(&rtc2);
               
-              Reset(pic);
+              Reset();
         
             }
           } 
@@ -1416,7 +1416,7 @@ cboard_4::MouseButtonRelease(_pic *pic, uint button, uint x, uint y,uint state)
 
 
 void 
-cboard_4::KeyPress(_pic *pic, uint key, uint x, uint y,uint mask)
+cboard_4::KeyPress(uint key, uint x, uint y,uint mask)
 { 
   if(key == '1')
   {
@@ -1497,7 +1497,7 @@ cboard_4::KeyPress(_pic *pic, uint key, uint x, uint y,uint mask)
 };
 
 void
-cboard_4::KeyRelease(_pic *pic, uint key, uint x, uint y,uint mask)
+cboard_4::KeyRelease( uint key, uint x, uint y,uint mask)
 {
   
   if(key == '1')
@@ -1741,7 +1741,7 @@ cboard_4::get_out_id(char * name)
 
 
 void 
-cboard_4::RefreshStatus(_pic *pic)
+cboard_4::RefreshStatus(void)
 {
     label5->SetText(wxT("Temp: ")+String().Format("%5.2f",temp[0])+wxT("°C"));
     
@@ -1826,6 +1826,6 @@ cboard_4::board_Event(CControl * control)
     lcd_init(&lcd,2);
   else
     lcd_init(&lcd,4);  
-  
+
 };
 

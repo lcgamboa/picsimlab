@@ -24,8 +24,8 @@
    ######################################################################## */
 
 #include"picsimlab1.h"
+#include"picsimlab4.h"
 #include"board_2.h"
-#include"oscilloscope/oscilloscope1.h"
 
 /* outputs */
 #define O_RA1	1
@@ -75,7 +75,7 @@ cboard_2::~cboard_2(void)
 }
 
       
-void cboard_2::Draw(_pic *pic, CDraw *draw,double scale)
+void cboard_2::Draw(CDraw *draw,double scale)
 {
   int i;
   
@@ -139,7 +139,7 @@ void cboard_2::Draw(_pic *pic, CDraw *draw,double scale)
  
 };
 
-void cboard_2::Run_CPU(_pic *pic)
+void cboard_2::Run_CPU(void)
 {
   int i;
   int j;
@@ -168,44 +168,44 @@ for(pi=0;pi < pic->PINCOUNT;pi++)
           //if(j > JUMPSTEPS)
           //{  
  
-          L[0]=pic_get_pin(pic,18);
-          L[1]=pic_get_pin(pic,1);
-          L[2]=pic_get_pin(pic,15);
-          L[3]=pic_get_pin(pic,16);
+          L[0]=pic_get_pin(18);
+          L[1]=pic_get_pin(1);
+          L[2]=pic_get_pin(15);
+          L[3]=pic_get_pin(16);
 
           if(((L[0])&&(p_CL1 == 1))||((L[1])&&(p_CL1 == 2))||
            ((L[2])&&(p_CL1 == 3))||((L[3])&&(p_CL1 == 4)))
           {
-             pic_set_pin(pic,13,1); 
+             pic_set_pin(13,1); 
           }
           else
           {
-             pic_set_pin(pic,13,0);
+             pic_set_pin(13,0);
           }
 
           if(((L[0])&&(p_CL2 == 1))||((L[1])&&(p_CL2 == 2))||
            ((L[2])&&(p_CL2 == 3))||((L[3])&&(p_CL2 == 4)))
           {
-             pic_set_pin(pic,12,1); 
+             pic_set_pin(12,1); 
           }
           else
           {
-             pic_set_pin(pic,12,0);
+             pic_set_pin(12,0);
           }
 
           if(((L[0])&&(p_CL3 == 1))||((L[1])&&(p_CL3 == 2))||
            ((L[2])&&(p_CL3 == 3))||((L[3])&&(p_CL3 == 4)))
           {
-             pic_set_pin(pic,11,1); 
+             pic_set_pin(11,1); 
           }
           else
           {
-             pic_set_pin(pic,11,0);
+             pic_set_pin(11,0);
           }
           //} 
   
-        if(!mplabxd_testbp(pic))pic_step(pic);
-        if(use_oscope)oscilloscope::Window1.SetSample(pic);
+        if(!mplabxd_testbp())pic_step();
+        if(use_oscope)Window4.SetSample();
         
           if(j > JUMPSTEPS)
           {  
@@ -262,13 +262,13 @@ for(pi=0;pi < pic->PINCOUNT;pi++)
         if(pins[1].dir)
         {
           sck=1;
-	  pic_set_pin(pic,2,1);
+	  pic_set_pin(2,1);
         }
         else
         {
           sck=pins[1].value;
         }
-	pic_set_pin(pic,3, mi2c_io(&mi2c,sck,sda) | rtc_io(&rtc,sck,sda));
+	pic_set_pin(3, mi2c_io(&mi2c,sck,sda) | rtc_io(&rtc,sck,sda));
   };
    //fim STEP
    
@@ -282,25 +282,25 @@ for(pi=0;pi < pic->PINCOUNT;pi++)
 
 
 void 
-cboard_2::Reset(_pic *pic)
+cboard_2::Reset(void)
 {  
 
                 
   lcd_rst(&lcd);  
   mi2c_rst(&mi2c);
   rtc_rst(&rtc);
-  pic_set_pin_DOV(pic,18,0);
-  pic_set_pin_DOV(pic,1,0);
-  pic_set_pin_DOV(pic,15,0);
-  pic_set_pin_DOV(pic,16,0);
+  pic_set_pin_DOV(18,0);
+  pic_set_pin_DOV(1,0);
+  pic_set_pin_DOV(15,0);
+  pic_set_pin_DOV(16,0);
   
     
   p_CL1=0; 
   p_CL2=0; 
   p_CL3=0; 
-  pic_set_pin(pic,13,p_CL1); 
-  pic_set_pin(pic,12,p_CL2); 
-  pic_set_pin(pic,11,p_CL3); 
+  pic_set_pin(13,p_CL1); 
+  pic_set_pin(12,p_CL2); 
+  pic_set_pin(11,p_CL3); 
   
 #ifndef _WIN_
     if(pic->serialfd > 0)
@@ -320,7 +320,7 @@ cboard_2::Reset(_pic *pic)
 
 
 void 
-cboard_2::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
+cboard_2::MouseButtonPress( uint button, uint x, uint y,uint state)
 {
  
   int i;
@@ -343,8 +343,8 @@ cboard_2::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
         { 
           Window1.Set_picrun(0); 
           Window1.Set_picpwr(0); 
-          pic_reset(pic,1);
-          Reset(pic);
+          pic_reset(1);
+          Reset();
           
           Window1.statusbar1.SetField(0,wxT("Stoped"));
         }
@@ -352,9 +352,9 @@ cboard_2::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
         {
           Window1.Set_picpwr(1);
           Window1.Set_picrun(1);
-          pic_reset(pic,1);  
+          pic_reset(1);  
         
-          Reset(pic);
+          Reset();
      
           
           Window1.statusbar1.SetField(0,wxT("Running..."));
@@ -431,7 +431,7 @@ cboard_2::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
 };
 
 void 
-cboard_2::MouseButtonRelease(_pic *pic, uint button, uint x, uint y,uint state)
+cboard_2::MouseButtonRelease( uint button, uint x, uint y,uint state)
 {
   int i;
 
@@ -448,14 +448,14 @@ cboard_2::MouseButtonRelease(_pic *pic, uint button, uint x, uint y,uint state)
             Window1.Set_picpwr(1);
             Window1.Set_picrst(0);
 
-            if(pic_reset(pic,-1))
+            if(pic_reset(-1))
             { 
               lcd_rst(&lcd);
 	      mi2c_rst(&mi2c);
 	      rtc_rst(&rtc);
 
               
-              Reset(pic);
+              Reset();
         
             }
           } 
@@ -492,7 +492,7 @@ cboard_2::MouseButtonRelease(_pic *pic, uint button, uint x, uint y,uint state)
 
 
 void 
-cboard_2::KeyPress(_pic *pic, uint key, uint x, uint y,uint mask)
+cboard_2::KeyPress( uint key, uint x, uint y,uint mask)
 {
   if(key == '1')
   {
@@ -549,7 +549,7 @@ cboard_2::KeyPress(_pic *pic, uint key, uint x, uint y,uint mask)
 };
 
 void
-cboard_2::KeyRelease(_pic *pic, uint key, uint x, uint y,uint mask)
+cboard_2::KeyRelease(uint key, uint x, uint y,uint mask)
 {
   if((key == '1')||(key == '4')||(key == '7')||(key == '*'))
   {
@@ -630,7 +630,7 @@ cboard_2::ReadPreferences(char *name,char *value)
 };
 
 void 
-cboard_2::RefreshStatus(_pic *pic)
+cboard_2::RefreshStatus(void)
 {
     
 #ifndef _WIN_

@@ -16,7 +16,7 @@ FLAGS = -D_VERSION_=\"0.6.5\" -Wall -O3 -D_SHARE_=\"${sharedir}\"   -fomit-frame
 
 LIBS = `lxrad-config --libs` -lpicsim
 
-OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o board.o lcd_hd44780.o mi2c_24CXXX.o rtc_ds1307.o rtc_pfc8563.o board_1.o board_2.o board_3.o board_4.o board_5.o board_6.o mplabxd.o board_x.o oscilloscope/oscilloscope1.cc 
+OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o board.o lcd_hd44780.o mi2c_24CXXX.o rtc_ds1307.o rtc_pfc8563.o board_1.o board_2.o board_3.o board_4.o board_5.o board_6.o mplabxd.o board_x.o
 
 #lxrad automatic generated block end, don't edit above!
 
@@ -41,4 +41,4 @@ run: all
 	./picsimlab
 
 clean:
-	$(RM) picsimlab *.o core oscilloscope/*.o
+	$(RM) picsimlab *.o core 

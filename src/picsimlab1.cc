@@ -25,19 +25,17 @@
 
 
 #include"picsimlab1.h"
-#include"oscilloscope/oscilloscope1.h"
 #include"picsimlab1_d.cc"
 
 #include"boards_defs.h"
 
-namespace picsimlab{
 CPWindow1 Window1;
-}
 
 //Implementation
 
 #include"picsimlab2.h"
 #include"picsimlab3.h"
+#include"picsimlab4.h"
 
 #include<dirent.h>
 
@@ -53,9 +51,9 @@ int prog_end(void);
 
 //mplabx debugger
 int mplabxd_init(void);
-int mplabxd_loop(_pic *pic);
+int mplabxd_loop(void);
 void mplabxd_end(void);
-int mplabxd_testbp(_pic *pic);
+int mplabxd_testbp(void);
 
 int crt;
 
@@ -70,7 +68,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
        label1.SetColor(wxT("black"));
      crt=0;
      thread1.Run();//parallel thread
-     pboard->Draw(&pic,&draw1,scale);
+     pboard->Draw(&draw1,scale);
     }
     else
     {
@@ -87,7 +85,7 @@ CPWindow1::thread1_EvThreadRun(CControl*)
 
   //cstart = clock();
 
-  pboard->Run_CPU(&pic);
+  pboard->Run_CPU();
 
   //cend = clock();
   //cpu_time_used = ((double) (cend - cstart)) / CLOCKS_PER_SEC;
@@ -137,7 +135,7 @@ CPWindow1::thread1_EvThreadEnd(CControl*)
    if(picpwr)
    { 
       //prog_loop(&pic);
-      mplabxd_loop(&pic);
+      mplabxd_loop();
    }
    ondraw=0;
 }
@@ -146,7 +144,7 @@ CPWindow1::thread1_EvThreadEnd(CControl*)
 void
 CPWindow1::timer2_EvOnTime(CControl * control)
 {
-   pboard->RefreshStatus(&pic); 
+   pboard->RefreshStatus(); 
 };
 
 
@@ -158,7 +156,7 @@ CPWindow1::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
   x=x/scale;
   y=y/scale;
 
-  pboard->MouseButtonPress(&pic,button,x,y,state);
+  pboard->MouseButtonPress(button,x,y,state);
  
 };
 
@@ -170,7 +168,7 @@ CPWindow1::draw1_EvMouseButtonRelease(CControl * control, uint button, uint x, u
   x=x/scale;
   y=y/scale;
   
-  pboard->MouseButtonRelease(&pic,button,x,y,state);
+  pboard->MouseButtonRelease(button,x,y,state);
 
 };
 
@@ -181,7 +179,7 @@ CPWindow1::draw1_EvKeyboardPress(CControl * control, uint key, uint x, uint y,ui
   x=x/scale;
   y=y/scale;   
     
-  pboard->KeyPress(&pic, key, x, y, mask); 
+  pboard->KeyPress(key, x, y, mask); 
 
  
 };
@@ -193,7 +191,7 @@ CPWindow1::draw1_EvKeyboardRelease(CControl * control, uint key, uint x, uint y,
   x=x/scale;
   y=y/scale;  
 
-  pboard->KeyRelease(&pic, key, x, y, mask);
+  pboard->KeyRelease(key, x, y, mask);
 
 };
 
@@ -323,7 +321,7 @@ create++;
       if(pboard != NULL)
         pboard->ReadPreferences(name,value); 
 
-      oscilloscope::Window1.ReadPreferences(name,value);
+       Window4.ReadPreferences(name,value);
     }
   }
   else
@@ -370,11 +368,11 @@ create++;
       break;
     case HEX_CHKSUM:
       printf("File checksum error!\n"); 
-      pic_erase_flash(&pic);
+      pic_erase_flash();
       break;
   }
 
-  pboard->Reset(&pic);
+  pboard->Reset();
       
 
   /*
@@ -399,7 +397,7 @@ create++;
   timer1.SetRunState(1);
   timer2.SetRunState(1);
   
-  oscilloscope::Window1.SetBaseTimer(&pic);
+  Window4.SetBaseTimer();
 };
 
 
@@ -414,7 +412,7 @@ CPWindow1::combo1_EvOnComboChange(CControl * control)
 
   pic.freq=NSTEP*NSTEPKF;
          
-  oscilloscope::Window1.SetBaseTimer(&pic);
+  Window4.SetBaseTimer();
   
   Application->ProcessEvents();
 };
@@ -477,6 +475,8 @@ CPWindow1::_EvOnDestroy(CControl * control)
   //FILE * fout; 
   DIR  *dp;
   //int i; 
+  
+  Window4.Hide ();
   
   timer1.SetRunState(0);
   timer2.SetRunState(0);
@@ -541,7 +541,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
         
     pboard->WritePreferences();
     
-    oscilloscope::Window1.WritePreferences ();
+    Window4.WritePreferences ();
     
     prefs.SaveToFile(fname);
     
@@ -554,14 +554,14 @@ CPWindow1::_EvOnDestroy(CControl * control)
     case P16:
     case P16E:
     case P16E2:    
-      write_ihx(&pic,fname);
+      write_ihx(fname);
       break;
     case P18:
-      write_ihx18(&pic,fname);
+      write_ihx18(fname);
       break;
   }
 
-  pic_end(&pic);
+  pic_end();
   //prog_end();
   mplabxd_end();
   
@@ -584,7 +584,7 @@ CPWindow1::menu1_File_LoadHex_EvMenuActive(CControl * control)
         picpwr=0;
         if(filedialog1.Run())
         {
-  	  pic_end(&pic);
+  	  pic_end();
           pic_set_serial(&pic,SERIALDEVICE,0,0,0);
           switch(pic_init(&pic,pboard->proc,filedialog1.GetFileName().char_str(),1,NSTEP*NSTEPKF))
           {
@@ -594,7 +594,7 @@ CPWindow1::menu1_File_LoadHex_EvMenuActive(CControl * control)
               break;
             case HEX_CHKSUM:
               Message(wxT("File checksum error!")); 
-              pic_erase_flash(&pic);
+              pic_erase_flash();
               picrun=0;
               break;
             case 0:
@@ -605,7 +605,7 @@ CPWindow1::menu1_File_LoadHex_EvMenuActive(CControl * control)
           pic.config[0] |= 0x0800; //disable DEBUG
           
           
-          pboard->Reset(&pic);
+          pboard->Reset();
   
           
  
@@ -653,7 +653,7 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
 
         if(filedialog1.Run())
         {
-  	  pic_end(&pic);
+  	  pic_end();
           pic_set_serial(&pic,SERIALDEVICE,0,0,0);
           switch(pic_init(&pic,pboard->proc,filedialog1.GetFileName().char_str(),1,NSTEP*NSTEPKF))
           {
@@ -663,7 +663,7 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
               break;
             case HEX_CHKSUM:
               Message(wxT("File checksum error!")); 
-              pic_erase_flash(&pic);
+              pic_erase_flash();
               picrun=0;
               break;
             case 0:
@@ -672,7 +672,7 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
           } 
           pic.config[0] |= 0x0800; //disable DEBUG
           
-          pboard->Reset(&pic);
+          pboard->Reset();
   
  
           if(picrun) 
@@ -756,7 +756,7 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
 
         //if(filedialog1.Run())
         //{
-  	  pic_end(&pic);
+  	  pic_end();
   	  pic_set_serial(&pic,SERIALDEVICE,0,0,0);
           switch(pic_init(&pic,pboard->proc,FNAME.char_str(),1,NSTEP*NSTEPKF))
           {
@@ -766,7 +766,7 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
               break;
             case HEX_CHKSUM:
               Message(wxT("File checksum error!")); 
-              pic_erase_flash(&pic);
+              pic_erase_flash();
               picrun=0;
               break;
             case 0:
@@ -775,7 +775,7 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
           } 
           pic.config[0] |= 0x0800; //disable DEBUG
     
-          pboard->Reset(&pic);
+          pboard->Reset();
     
  
           if(picrun) 
@@ -799,7 +799,7 @@ void
 CPWindow1::menu1_Modules_Oscilloscope_EvMenuActive(CControl * control)
 {
   pboard->SetUseOscilloscope (1);
-  oscilloscope::Window1.Show ();
+  Window4.Show ();
 };
 
 

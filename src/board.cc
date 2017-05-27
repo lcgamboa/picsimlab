@@ -229,7 +229,7 @@ board::ReadOutputMap(String fname)
 };
 
 void 
-board::RefreshStatus(_pic *pic)
+board::RefreshStatus(void)
 {
   Window1.statusbar1.SetField(2,wxT(""));
 }

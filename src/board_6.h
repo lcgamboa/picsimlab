@@ -54,8 +54,8 @@ class cboard_6:public board
       //Destructor called once on board destruction 
       ~cboard_6(void); 
       //Called ever 100ms to draw board
-      void Draw(_pic *pic, CDraw *draw,double scale);
-      void Run_CPU(_pic *pic);
+      void Draw(CDraw *draw,double scale);
+      void Run_CPU(void);
       //Return a list of board supported microcontrollers
       String GetSupportedDevices(void){return wxT("PIC16F18855,");};
       //Return the filename of board picture 
@@ -65,17 +65,17 @@ class cboard_6:public board
       //Return the filename of board picture output map 
       String GetOutputMapFile(void){return wxT("output6.map");};
       //Reset board status
-      void Reset(_pic *pic);
+      void Reset(void);
       //Event on the board
-      void MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state);
+      void MouseButtonPress(uint button, uint x, uint y,uint state);
       //Event on the board
-      void MouseButtonRelease(_pic *pic, uint button, uint x, uint y,uint state);
+      void MouseButtonRelease(uint button, uint x, uint y,uint state);
       //Event on the board
-      void KeyPress(_pic *pic, uint key, uint x, uint y,uint mask);
+      void KeyPress(uint key, uint x, uint y,uint mask);
       //Event on the board
-      void KeyRelease(_pic *pic, uint key, uint x, uint y,uint mask);
+      void KeyRelease(uint key, uint x, uint y,uint mask);
       //Called ever 1s to refresh status
-      void RefreshStatus(_pic *pic);
+      void RefreshStatus(void);
       //Called to save board preferences in configuration file
       void WritePreferences(void);
       //Called whe configuration file load  preferences 

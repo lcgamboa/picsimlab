@@ -1,10 +1,9 @@
-namespace oscilloscope{
-CPWindow1::CPWindow1(void)
+CPWindow4::CPWindow4(void)
 {
 //lxrad automatic generated block start, don't edit below!
   SetFOwner(this);
   SetClass(wxT("CPWindow"));
-  SetName(wxT("window1"));
+  SetName(wxT("window4"));
   SetTag(0);
   SetX(283);
   SetY(159);
@@ -16,9 +15,9 @@ CPWindow1::CPWindow1(void)
   SetPopupMenu(NULL);
   SetTitle(wxT("oscilloscope"));
   SetOverrideRedirect(0);
-  EvOnDestroy=EVONDESTROY & CPWindow1::_EvOnDestroy;
-  EvOnShow=EVONSHOW & CPWindow1::_EvOnShow;
-  EvOnHide=EVONHIDE & CPWindow1::_EvOnHide;
+  EvOnDestroy=EVONDESTROY & CPWindow4::_EvOnDestroy;
+  EvOnShow=EVONSHOW & CPWindow4::_EvOnShow;
+  EvOnHide=EVONHIDE & CPWindow4::_EvOnHide;
   //draw1
   draw1.SetFOwner(this);
   draw1.SetClass(wxT("CDraw"));
@@ -32,7 +31,7 @@ CPWindow1::CPWindow1(void)
   draw1.SetEnable(1);
   draw1.SetVisible(1);
   draw1.SetPopupMenu(NULL);
-  draw1.EvMouseButtonClick=EVMOUSEBUTTONCLICK & CPWindow1::draw1_EvMouseButtonClick;
+  draw1.EvMouseButtonClick=EVMOUSEBUTTONCLICK & CPWindow4::draw1_EvMouseButtonClick;
   draw1.SetTransparent(0);
   draw1.SetImgFileName(wxT(""));
   CreateChild(&draw1);
@@ -52,8 +51,8 @@ CPWindow1::CPWindow1(void)
   spind1.SetValue(2.000000);
   spind1.SetMin(0.100000);
   spind1.SetMax(100.000000);
-  spind1.SetInc(0.100000);
-  spind1.SetDigits(1);
+  spind1.SetInc(0.010000);
+  spind1.SetDigits(2);
   CreateChild(&spind1);
   //spind2
   spind2.SetFOwner(this);
@@ -71,8 +70,8 @@ CPWindow1::CPWindow1(void)
   spind2.SetValue(0.000000);
   spind2.SetMin(-100.000000);
   spind2.SetMax(100.000000);
-  spind2.SetInc(0.500000);
-  spind2.SetDigits(1);
+  spind2.SetInc(0.010000);
+  spind2.SetDigits(2);
   CreateChild(&spind2);
   //spind3
   spind3.SetFOwner(this);
@@ -90,15 +89,15 @@ CPWindow1::CPWindow1(void)
   spind3.SetValue(2.000000);
   spind3.SetMin(0.100000);
   spind3.SetMax(100.000000);
-  spind3.SetInc(0.100000);
-  spind3.SetDigits(1);
+  spind3.SetInc(0.010000);
+  spind3.SetDigits(2);
   CreateChild(&spind3);
   //spind4
   spind4.SetFOwner(this);
   spind4.SetClass(wxT("CSpind"));
   spind4.SetName(wxT("spind4"));
   spind4.SetTag(0);
-  spind4.SetX(703);
+  spind4.SetX(704);
   spind4.SetY(131);
   spind4.SetWidth(80);
   spind4.SetHeight(26);
@@ -109,8 +108,8 @@ CPWindow1::CPWindow1(void)
   spind4.SetValue(0.000000);
   spind4.SetMin(-100.000000);
   spind4.SetMax(100.000000);
-  spind4.SetInc(0.500000);
-  spind4.SetDigits(1);
+  spind4.SetInc(0.010000);
+  spind4.SetDigits(2);
   CreateChild(&spind4);
   //spind5
   spind5.SetFOwner(this);
@@ -130,7 +129,7 @@ CPWindow1::CPWindow1(void)
   spind5.SetMax(200.000000);
   spind5.SetInc(0.010000);
   spind5.SetDigits(2);
-  spind5.EvOnChangeSpinDouble=EVONCHANGESPINDOUBLE & CPWindow1::spind5_EvOnChangeSpinDouble;
+  spind5.EvOnChangeSpinDouble=EVONCHANGESPINDOUBLE & CPWindow4::spind5_EvOnChangeSpinDouble;
   CreateChild(&spind5);
   //spind6
   spind6.SetFOwner(this);
@@ -142,14 +141,15 @@ CPWindow1::CPWindow1(void)
   spind6.SetWidth(80);
   spind6.SetHeight(26);
   spind6.SetHint(wxT(""));
-  spind6.SetEnable(0);
+  spind6.SetEnable(1);
   spind6.SetVisible(1);
   spind6.SetPopupMenu(NULL);
   spind6.SetValue(0.000000);
   spind6.SetMin(-100.000000);
   spind6.SetMax(100.000000);
-  spind6.SetInc(0.500000);
-  spind6.SetDigits(1);
+  spind6.SetInc(0.010000);
+  spind6.SetDigits(2);
+  spind6.EvOnChangeSpinDouble=EVONCHANGESPINDOUBLE & CPWindow4::spind6_EvOnChangeSpinDouble;
   CreateChild(&spind6);
   //togglebutton1
   togglebutton1.SetFOwner(this);
@@ -180,7 +180,7 @@ CPWindow1::CPWindow1(void)
   button1.SetEnable(1);
   button1.SetVisible(1);
   button1.SetPopupMenu(NULL);
-  button1.EvMouseButtonClick=EVMOUSEBUTTONCLICK & CPWindow1::button1_EvMouseButtonClick;
+  button1.EvMouseButtonClick=EVMOUSEBUTTONCLICK & CPWindow4::button1_EvMouseButtonClick;
   button1.SetText(wxT("Color"));
   CreateChild(&button1);
   //togglebutton2
@@ -212,7 +212,7 @@ CPWindow1::CPWindow1(void)
   button2.SetEnable(1);
   button2.SetVisible(1);
   button2.SetPopupMenu(NULL);
-  button2.EvMouseButtonClick=EVMOUSEBUTTONCLICK & CPWindow1::button2_EvMouseButtonClick;
+  button2.EvMouseButtonClick=EVMOUSEBUTTONCLICK & CPWindow4::button2_EvMouseButtonClick;
   button2.SetText(wxT("Color"));
   CreateChild(&button2);
   //togglebutton3
@@ -269,7 +269,7 @@ CPWindow1::CPWindow1(void)
   togglebutton5.SetPopupMenu(NULL);
   togglebutton5.SetText(wxT("Trigger"));
   togglebutton5.SetCheck(1);
-  togglebutton5.EvOnToggleButton=EVONTOGGLEBUTTON & CPWindow1::togglebutton5_EvOnToggleButton;
+  togglebutton5.EvOnToggleButton=EVONTOGGLEBUTTON & CPWindow4::togglebutton5_EvOnToggleButton;
   CreateChild(&togglebutton5);
   //spind7
   spind7.SetFOwner(this);
@@ -287,9 +287,9 @@ CPWindow1::CPWindow1(void)
   spind7.SetValue(2.500000);
   spind7.SetMin(-100.000000);
   spind7.SetMax(100.000000);
-  spind7.SetInc(0.500000);
-  spind7.SetDigits(1);
-  spind7.EvOnChangeSpinDouble=EVONCHANGESPINDOUBLE & CPWindow1::spind7_EvOnChangeSpinDouble;
+  spind7.SetInc(0.010000);
+  spind7.SetDigits(2);
+  spind7.EvOnChangeSpinDouble=EVONCHANGESPINDOUBLE & CPWindow4::spind7_EvOnChangeSpinDouble;
   CreateChild(&spind7);
   //combo1
   combo1.SetFOwner(this);
@@ -315,16 +315,16 @@ CPWindow1::CPWindow1(void)
   timer1.SetTag(0);
   timer1.SetTime(33);
   timer1.SetRunState(1);
-  timer1.EvOnTime=EVONTIME & CPWindow1::timer1_EvOnTime;
+  timer1.EvOnTime=EVONTIME & CPWindow4::timer1_EvOnTime;
   CreateChild(&timer1);
   //combo2
   combo2.SetFOwner(this);
   combo2.SetClass(wxT("CCombo"));
   combo2.SetName(wxT("combo2"));
   combo2.SetTag(0);
-  combo2.SetX(574);
-  combo2.SetY(350);
-  combo2.SetWidth(80);
+  combo2.SetX(566);
+  combo2.SetY(349);
+  combo2.SetWidth(100);
   combo2.SetHeight(26);
   combo2.SetHint(wxT(""));
   combo2.SetEnable(1);
@@ -333,16 +333,16 @@ CPWindow1::CPWindow1(void)
   combo2.SetItems(wxT(""));
   combo2.SetText(wxT("1"));
   combo2.SetReadOnly(0);
-  combo2.EvOnComboChange=EVONCOMBOCHANGE & CPWindow1::combo2_EvOnComboChange;
+  combo2.EvOnComboChange=EVONCOMBOCHANGE & CPWindow4::combo2_EvOnComboChange;
   CreateChild(&combo2);
   //combo3
   combo3.SetFOwner(this);
   combo3.SetClass(wxT("CCombo"));
   combo3.SetName(wxT("combo3"));
   combo3.SetTag(0);
-  combo3.SetX(703);
-  combo3.SetY(350);
-  combo3.SetWidth(80);
+  combo3.SetX(701);
+  combo3.SetY(349);
+  combo3.SetWidth(100);
   combo3.SetHeight(26);
   combo3.SetHint(wxT(""));
   combo3.SetEnable(1);
@@ -351,7 +351,7 @@ CPWindow1::CPWindow1(void)
   combo3.SetItems(wxT(""));
   combo3.SetText(wxT("2"));
   combo3.SetReadOnly(0);
-  combo3.EvOnComboChange=EVONCOMBOCHANGE & CPWindow1::combo3_EvOnComboChange;
+  combo3.EvOnComboChange=EVONCOMBOCHANGE & CPWindow4::combo3_EvOnComboChange;
   CreateChild(&combo3);
   //label1
   label1.SetFOwner(this);
@@ -535,10 +535,10 @@ CPWindow1::CPWindow1(void)
   button2.SetColor(0,255,0);
 
   Dt=0;
-  Rt=2e-5*10;
+  Rt=0;
   usetrigger=1;
   triggerlv=2.5;
   chpin[0]=0;
   chpin[1]=1;
+  toffset=250;
 };
-}

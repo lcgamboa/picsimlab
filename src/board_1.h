@@ -47,17 +47,17 @@ class cboard_1:public board
    public:
       cboard_1(void);
       ~cboard_1(void);
-      void Draw(_pic *pic, CDraw *draw,double scale);
-      void Run_CPU(_pic *pic);
+      void Draw(CDraw *draw,double scale);
+      void Run_CPU(void);
       String GetSupportedDevices(void){return wxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
       String GetPictureFileName(void){return wxT("picsimlab1.png");};
       String GetInputMapFile(void){return wxT("input1.map");};
       String GetOutputMapFile(void){return wxT("output1.map");};
-      void Reset(_pic *pic);
-      void MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state);
-      void MouseButtonRelease(_pic *pic, uint button, uint x, uint y,uint state);
-      void KeyPress(_pic *pic, uint key, uint x, uint y,uint mask);
-      void KeyRelease(_pic *pic, uint key, uint x, uint y,uint mask);
+      void Reset(void);
+      void MouseButtonPress(uint button, uint x, uint y,uint state);
+      void MouseButtonRelease(uint button, uint x, uint y,uint state);
+      void KeyPress(uint key, uint x, uint y,uint mask);
+      void KeyRelease(uint key, uint x, uint y,uint mask);
       void WritePreferences(void);
       void ReadPreferences(char *name,char *value);
       unsigned short get_in_id(char * name);

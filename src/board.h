@@ -54,19 +54,19 @@ unsigned short id;
 class board
 {
   public:
-      virtual void Draw(_pic *pic, CDraw *draw,double scale)=0; //Called ever 100ms to draw board 
-      virtual void Run_CPU(_pic *pic)=0; //Paralle thread called ever 100ms to run cpu code
+      virtual void Draw(CDraw *draw,double scale)=0; //Called ever 100ms to draw board 
+      virtual void Run_CPU(void)=0; //Paralle thread called ever 100ms to run cpu code
       virtual String GetSupportedDevices(void)=0;//Return a list of supported microcontrollers
       virtual String GetPictureFileName(void)=0; //Return the filename of board picture 
       virtual String GetInputMapFile(void)=0;    //Return the filename of board picture input map  
       virtual String GetOutputMapFile(void)=0;   //Return the filename of board picture output map  
-      virtual void Reset(_pic *pic)=0;           //Reset board status
-      virtual void MouseButtonPress(_pic *pic,uint button, uint x, uint y,uint state)=0;    //Event on the board
-      virtual void MouseButtonRelease(_pic *pic,uint button, uint x, uint y,uint state)=0;  //Event on the board
-      virtual void KeyPress(_pic *pic,uint key, uint x, uint y,uint mask)=0;  //Event on the board
-      virtual void KeyRelease(_pic *pic,uint key, uint x, uint y,uint mask)=0;//Event on the board
+      virtual void Reset(void)=0;           //Reset board status
+      virtual void MouseButtonPress(uint button, uint x, uint y,uint state)=0;    //Event on the board
+      virtual void MouseButtonRelease(uint button, uint x, uint y,uint state)=0;  //Event on the board
+      virtual void KeyPress(uint key, uint x, uint y,uint mask)=0;  //Event on the board
+      virtual void KeyRelease(uint key, uint x, uint y,uint mask)=0;//Event on the board
       virtual void OnShow(void){};               //Event on the board when windows is show or resized
-      virtual void RefreshStatus(_pic *pic);   //Called ever 1s to refresh status
+      virtual void RefreshStatus(void);   //Called ever 1s to refresh status
       virtual void WritePreferences(void){};   //Called to save board preferences in configuration file
       virtual void ReadPreferences(char *name,char *value){}; //Called whe configuration file load  preferences 
       virtual unsigned short get_in_id(char * name)=0; //return the input ids numbers of names used in input map

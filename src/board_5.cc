@@ -25,8 +25,8 @@
 
 //include files
 #include"picsimlab1.h"
+#include"picsimlab4.h"
 #include"board_5.h"
-#include"oscilloscope/oscilloscope1.h"
 
 /* ids of inputs of input map*/
 #define I_ICSP	1  //ICSP connector
@@ -239,13 +239,13 @@ cboard_5::~cboard_5(void)
 
 //Reset board status
 void 
-cboard_5::Reset(_pic *pic)
+cboard_5::Reset(void)
 {
    
     p_BT1=1;//set push button  in default state (high) 
        
     //write button state to pic pin 6 (RC4)
-    pic_set_pin(pic,6,p_BT1); 
+    pic_set_pin(6,p_BT1); 
 
         
   //verify serial port state and refresh status bar  
@@ -271,7 +271,7 @@ cboard_5::Reset(_pic *pic)
 
 //Called ever 1s to refresh status
 void 
-cboard_5::RefreshStatus(_pic *pic)
+cboard_5::RefreshStatus(void)
 {
    //verify serial port state and refresh status bar   
 #ifndef _WIN_
@@ -325,7 +325,7 @@ cboard_5::ReadPreferences(char *name,char *value)
 
 //Event on the board
 void 
-cboard_5::KeyPress(_pic *pic, uint key, uint x, uint y,uint mask)
+cboard_5::KeyPress(uint key, uint x, uint y,uint mask)
 {
   //if keyboard key 1 is pressed then activate button (state=0)   
   if(key == '1')
@@ -338,7 +338,7 @@ cboard_5::KeyPress(_pic *pic, uint key, uint x, uint y,uint mask)
 
 //Event on the board
 void
-cboard_5::KeyRelease(_pic *pic, uint key, uint x, uint y,uint mask)
+cboard_5::KeyRelease(uint key, uint x, uint y,uint mask)
 {
   //if keyboard key 1 is pressed then deactivate button (state=1)     
   if(key == '1')
@@ -350,7 +350,7 @@ cboard_5::KeyRelease(_pic *pic, uint key, uint x, uint y,uint mask)
 
 //Event on the board
 void 
-cboard_5::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
+cboard_5::MouseButtonPress(uint button, uint x, uint y,uint state)
 {
  
   int i;
@@ -374,8 +374,8 @@ cboard_5::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
           { 
             Window1.Set_picrun(0); 
             Window1.Set_picpwr(0); 
-            pic_reset(pic,1);
-            Reset(pic);
+            pic_reset(1);
+            Reset();
             p_BT1=1; 
             Window1.statusbar1.SetField(0,wxT("Stoped"));
           }
@@ -383,8 +383,8 @@ cboard_5::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
           {
             Window1.Set_picpwr(1);
             Window1.Set_picrun(1);
-            pic_reset(pic,1);          
-            Reset(pic);
+            pic_reset(1);          
+            Reset();
             Window1.statusbar1.SetField(0,wxT("Running..."));
           } 
           break;
@@ -412,7 +412,7 @@ cboard_5::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
 
 //Event on the board
 void 
-cboard_5::MouseButtonRelease(_pic *pic, uint button, uint x, uint y,uint state)
+cboard_5::MouseButtonRelease(uint button, uint x, uint y,uint state)
 {
   int i;
 
@@ -431,9 +431,9 @@ cboard_5::MouseButtonRelease(_pic *pic, uint button, uint x, uint y,uint state)
             Window1.Set_picpwr(1);
             Window1.Set_picrst(0);
 
-            if(pic_reset(pic,-1))
+            if(pic_reset(-1))
             {  
-              Reset(pic);
+              Reset();
             }
           } 
           break;
@@ -450,7 +450,7 @@ cboard_5::MouseButtonRelease(_pic *pic, uint button, uint x, uint y,uint state)
 
 //Called ever 100ms to draw board
 //This is the critical code for simulator running speed
-void cboard_5::Draw(_pic *pic, CDraw *draw,double scale)
+void cboard_5::Draw(CDraw *draw,double scale)
 {
   int i;
    
@@ -535,7 +535,7 @@ void cboard_5::Draw(_pic *pic, CDraw *draw,double scale)
 
 };
 
-void cboard_5::Run_CPU(_pic *pic)
+void cboard_5::Run_CPU(void)
 {
   int i;  
   int j;
@@ -564,12 +564,12 @@ void cboard_5::Run_CPU(_pic *pic)
  
         if(j > JUMPSTEPS)//if number of step is bigger than steps to skip 
         {  
-          pic_set_pin(pic,6,p_BT1);//Set pin 6 (RC4) with button state 
+          pic_set_pin(6,p_BT1);//Set pin 6 (RC4) with button state 
         } 
         
         //verify if a breakpoint is reached if not run one instruction 
-        if(!mplabxd_testbp(pic))pic_step(pic);
-        if(use_oscope)oscilloscope::Window1.SetSample(pic);
+        if(!mplabxd_testbp())pic_step();
+        if(use_oscope)Window4.SetSample();
         
         if(j > JUMPSTEPS)//if number of step is bigger than steps to skip 
         {  
@@ -580,7 +580,7 @@ void cboard_5::Run_CPU(_pic *pic)
           }
           
           //set analog pin 16 (RC0 AN4) with value from scroll  
-          pic_set_apin(pic,16,((5.0*(scroll1->GetPosition()))/
+          pic_set_apin(16,((5.0*(scroll1->GetPosition()))/
             (scroll1->GetRange()-1)));
           
           j=0;//reset counter

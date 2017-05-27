@@ -1,6 +1,6 @@
-<window1>
+<window4>
   <Class type="String">CPWindow</Class>
-  <Name type="String">window1</Name>
+  <Name type="String">window4</Name>
   <Tag type="int">0</Tag>
   <X type="int">283</X>
   <Y type="int">159</Y>
@@ -81,8 +81,8 @@
   <Value type="double">2.000000</Value>
   <Min type="double">0.100000</Min>
   <Max type="double">100.000000</Max>
-  <Inc type="double">0.100000</Inc>
-  <Digits type="int">1</Digits>
+  <Inc type="double">0.010000</Inc>
+  <Digits type="int">2</Digits>
   <EvOnChangeSpinDouble type="Event">FALSE</EvOnChangeSpinDouble>
 </spind1>
 <spind2>
@@ -111,8 +111,8 @@
   <Value type="double">0.000000</Value>
   <Min type="double">-100.000000</Min>
   <Max type="double">100.000000</Max>
-  <Inc type="double">0.500000</Inc>
-  <Digits type="int">1</Digits>
+  <Inc type="double">0.010000</Inc>
+  <Digits type="int">2</Digits>
   <EvOnChangeSpinDouble type="Event">FALSE</EvOnChangeSpinDouble>
 </spind2>
 <spind3>
@@ -141,15 +141,15 @@
   <Value type="double">2.000000</Value>
   <Min type="double">0.100000</Min>
   <Max type="double">100.000000</Max>
-  <Inc type="double">0.100000</Inc>
-  <Digits type="int">1</Digits>
+  <Inc type="double">0.010000</Inc>
+  <Digits type="int">2</Digits>
   <EvOnChangeSpinDouble type="Event">FALSE</EvOnChangeSpinDouble>
 </spind3>
 <spind4>
   <Class type="String">CSpind</Class>
   <Name type="String">spind4</Name>
   <Tag type="int">0</Tag>
-  <X type="int">703</X>
+  <X type="int">704</X>
   <Y type="int">131</Y>
   <Width type="uint">80</Width>
   <Height type="uint">26</Height>
@@ -171,8 +171,8 @@
   <Value type="double">0.000000</Value>
   <Min type="double">-100.000000</Min>
   <Max type="double">100.000000</Max>
-  <Inc type="double">0.500000</Inc>
-  <Digits type="int">1</Digits>
+  <Inc type="double">0.010000</Inc>
+  <Digits type="int">2</Digits>
   <EvOnChangeSpinDouble type="Event">FALSE</EvOnChangeSpinDouble>
 </spind4>
 <spind5>
@@ -214,7 +214,7 @@
   <Width type="uint">80</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
-  <Enable type="bool">0</Enable>
+  <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">FALSE</EvMouseMove>
@@ -231,9 +231,9 @@
   <Value type="double">0.000000</Value>
   <Min type="double">-100.000000</Min>
   <Max type="double">100.000000</Max>
-  <Inc type="double">0.500000</Inc>
-  <Digits type="int">1</Digits>
-  <EvOnChangeSpinDouble type="Event">FALSE</EvOnChangeSpinDouble>
+  <Inc type="double">0.010000</Inc>
+  <Digits type="int">2</Digits>
+  <EvOnChangeSpinDouble type="Event">TRUE</EvOnChangeSpinDouble>
 </spind6>
 <togglebutton1>
   <Class type="String">CToggleButton</Class>
@@ -452,8 +452,8 @@
   <Value type="double">2.500000</Value>
   <Min type="double">-100.000000</Min>
   <Max type="double">100.000000</Max>
-  <Inc type="double">0.500000</Inc>
-  <Digits type="int">1</Digits>
+  <Inc type="double">0.010000</Inc>
+  <Digits type="int">2</Digits>
   <EvOnChangeSpinDouble type="Event">TRUE</EvOnChangeSpinDouble>
 </spind7>
 <combo1>
@@ -496,9 +496,9 @@
   <Class type="String">CCombo</Class>
   <Name type="String">combo2</Name>
   <Tag type="int">0</Tag>
-  <X type="int">574</X>
-  <Y type="int">350</Y>
-  <Width type="uint">80</Width>
+  <X type="int">566</X>
+  <Y type="int">349</Y>
+  <Width type="uint">100</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -524,9 +524,9 @@
   <Class type="String">CCombo</Class>
   <Name type="String">combo3</Name>
   <Tag type="int">0</Tag>
-  <X type="int">703</X>
-  <Y type="int">350</Y>
-  <Width type="uint">80</Width>
+  <X type="int">701</X>
+  <Y type="int">349</Y>
+  <Width type="uint">100</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -834,4 +834,4 @@
   <Text type="String">Ch 2</Text>
   <Align type="CAlign">1</Align>
 </label11>
-</window1>
+</window4>

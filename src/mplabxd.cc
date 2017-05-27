@@ -243,7 +243,7 @@ int bpc=0;
 unsigned short bp[100];
 
 
-int mplabxd_testbp(_pic *pic)
+int mplabxd_testbp(void)
 {
 int i; 
       if(!Window1.Get_picdbg())
@@ -264,7 +264,7 @@ int i;
 }
 
 
-int mplabxd_loop(_pic *pic)
+int mplabxd_loop(void)
 {
 
    int i;
@@ -319,8 +319,8 @@ int mplabxd_loop(_pic *pic)
 #ifdef _DEBUG_
 	   printf("STEP cmd\n");
 #endif
-           pic_step(pic);
-           if(pic->s2 == 1)pic_step(pic);
+           pic_step();
+           if(pic->s2 == 1)pic_step();
            Window1.statusbar1.SetField(0,wxT("Stepping..."));
            break;
          case RESET:
@@ -328,10 +328,10 @@ int mplabxd_loop(_pic *pic)
 #ifdef _DEBUG_
 	   printf("RESET cmd\n");
 #endif
-           if(pic->s2 == 1)pic_step(pic);
-           pic_reset(pic,1);
-           pic_step(pic);
-           if(pic->s2 == 1)pic_step(pic);
+           if(pic->s2 == 1)pic_step();
+           pic_reset(1);
+           pic_step();
+           if(pic->s2 == 1)pic_step();
            break;
          case RUN:
            Window1.Set_picdbg(0);
@@ -339,12 +339,12 @@ int mplabxd_loop(_pic *pic)
 #ifdef _DEBUG_
 	   printf("RUN cmd\n");	
 #endif
-           pic_step(pic);//to go out break point
+           pic_step();//to go out break point
            Window1.statusbar1.SetField(0,wxT("Running..."));
            break;
          case HALT:
            Window1.Set_picdbg(1);
-           if(pic->s2 == 1)pic_step(pic);
+           if(pic->s2 == 1)pic_step();
            Window1.SetJUMPSTEPS(1);
 #ifdef _DEBUG_
 	   printf("HALT cmd\n");	

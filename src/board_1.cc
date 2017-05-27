@@ -24,8 +24,8 @@
    ######################################################################## */
 
 #include"picsimlab1.h"
+#include"picsimlab4.h"
 #include"board_1.h"
-#include"oscilloscope/oscilloscope1.h"
 
 /* outputs */
 #define O_RB0	1
@@ -117,7 +117,7 @@ cboard_1::~cboard_1(void)
       Window1.DestroyChild(label1);
 }
 
-void cboard_1::Draw(_pic *pic, CDraw *draw,double scale)
+void cboard_1::Draw(CDraw *draw,double scale)
 {
   int i;
   
@@ -233,7 +233,7 @@ void cboard_1::Draw(_pic *pic, CDraw *draw,double scale)
 }
 
  
-void cboard_1::Run_CPU(_pic *pic)
+void cboard_1::Run_CPU(void)
 {
   int i;
   int j;
@@ -265,14 +265,14 @@ void cboard_1::Run_CPU(_pic *pic)
  
           if(j > JUMPSTEPS)
           {  
-          pic_set_pin(pic,18,p_BT1); 
-          pic_set_pin(pic,1,p_BT2); 
-          pic_set_pin(pic,2,p_BT3); 
-          pic_set_pin(pic,3,p_BT4);
+          pic_set_pin(18,p_BT1); 
+          pic_set_pin(1,p_BT2); 
+          pic_set_pin(2,p_BT3); 
+          pic_set_pin(3,p_BT4);
           } 
         
-        if(!mplabxd_testbp(pic))pic_step(pic);
-        if(use_oscope)oscilloscope::Window1.SetSample(pic);
+        if(!mplabxd_testbp())pic_step();
+        if(use_oscope)Window4.SetSample();
         
           if(j > JUMPSTEPS)
           {  
@@ -291,7 +291,7 @@ void cboard_1::Run_CPU(_pic *pic)
             {
               for(pi=5;pi<13;pi++)
               {
-                pinv=pic_get_pin(pic,pi+1);
+                pinv=pic_get_pin(pi+1);
                 if((pinv)&&(!pins[9].value)) alm1[pi]++;
                 if((pinv)&&(pins[9].value)) alm2[pi]++;
               }
@@ -316,17 +316,17 @@ void cboard_1::Run_CPU(_pic *pic)
  
 
 void 
-cboard_1::Reset(_pic *pic)
+cboard_1::Reset(void)
 {          
     p_BT1=1; 
     p_BT2=1; 
     p_BT3=1; 
     p_BT4=1; 
           
-    pic_set_pin(pic,18,p_BT1); 
-    pic_set_pin(pic,1,p_BT2); 
-    pic_set_pin(pic,2,p_BT3); 
-    pic_set_pin(pic,3,p_BT4); 
+    pic_set_pin(18,p_BT1); 
+    pic_set_pin(1,p_BT2); 
+    pic_set_pin(2,p_BT3); 
+    pic_set_pin(3,p_BT4); 
     
     Window1.statusbar1.SetField(2,wxT(""));
 
@@ -343,7 +343,7 @@ cboard_1::Reset(_pic *pic)
 
 
 void 
-cboard_1::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
+cboard_1::MouseButtonPress(uint button, uint x, uint y,uint state)
 {
  
   int i;
@@ -373,8 +373,8 @@ cboard_1::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
         { 
           Window1.Set_picrun(0); 
           Window1.Set_picpwr(0); 
-          pic_reset(pic,1);
-          Reset(pic);
+          pic_reset(1);
+          Reset();
 
           p_BT1=0; 
           p_BT2=0; 
@@ -386,8 +386,8 @@ cboard_1::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
         {
           Window1.Set_picpwr(1);
           Window1.Set_picrun(1);
-          pic_reset(pic,1);          
-          Reset(pic);
+          pic_reset(1);          
+          Reset();
      
           Window1.statusbar1.SetField(0,wxT("Running..."));
         } 
@@ -427,7 +427,7 @@ cboard_1::MouseButtonPress(_pic *pic, uint button, uint x, uint y,uint state)
 
 
 void 
-cboard_1::MouseButtonRelease(_pic *pic, uint button, uint x, uint y,uint state)
+cboard_1::MouseButtonRelease(uint button, uint x, uint y,uint state)
 {
   int i;
 
@@ -444,9 +444,9 @@ cboard_1::MouseButtonRelease(_pic *pic, uint button, uint x, uint y,uint state)
             Window1.Set_picpwr(1);
             Window1.Set_picrst(0);
 
-            if(pic_reset(pic,-1))
+            if(pic_reset(-1))
             {  
-              Reset(pic);
+              Reset();
             }
           } 
       };break;
@@ -478,7 +478,7 @@ cboard_1::MouseButtonRelease(_pic *pic, uint button, uint x, uint y,uint state)
 
 
 void 
-cboard_1::KeyPress(_pic *pic, uint key, uint x, uint y,uint mask)
+cboard_1::KeyPress( uint key, uint x, uint y,uint mask)
 {
   if(key == '1')
   {
@@ -499,7 +499,7 @@ cboard_1::KeyPress(_pic *pic, uint key, uint x, uint y,uint mask)
 };
 
 void
-cboard_1::KeyRelease(_pic *pic, uint key, uint x, uint y,uint mask)
+cboard_1::KeyRelease(uint key, uint x, uint y,uint mask)
 {
   if(key == '1')
   {

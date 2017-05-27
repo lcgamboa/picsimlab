@@ -46,9 +46,8 @@ extern char SERIALDEVICE[100];
 #include "wx/stdpaths.h"
 
 
-int mplabxd_testbp(_pic *pic);
+int mplabxd_testbp(void);
 
-namespace picsimlab{
     
 class CPWindow1:public CPWindow
 {
@@ -166,9 +165,7 @@ class CPWindow1:public CPWindow
 };
 
 extern CPWindow1 Window1 ;
-}
 
-using namespace picsimlab;
 
 #endif /*#CPWINDOW1*/
 
