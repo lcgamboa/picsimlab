@@ -58,6 +58,7 @@ class cboard_1:public board
       void MouseButtonRelease(uint button, uint x, uint y,uint state);
       void KeyPress(uint key, uint x, uint y,uint mask);
       void KeyRelease(uint key, uint x, uint y,uint mask);
+      void OnShow(void){};
       void WritePreferences(void);
       void ReadPreferences(char *name,char *value);
       unsigned short get_in_id(char * name);

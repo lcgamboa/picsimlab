@@ -25,6 +25,7 @@
 
 #include"picsimlab1.h"
 #include"picsimlab4.h"
+#include"picsimlab5.h"
 #include"board_1.h"
 
 /* outputs */
@@ -273,6 +274,7 @@ void cboard_1::Run_CPU(void)
         
         if(!mplabxd_testbp())pic_step();
         if(use_oscope)Window4.SetSample();
+        if(use_spare)Window5.Process();
         
           if(j > JUMPSTEPS)
           {  

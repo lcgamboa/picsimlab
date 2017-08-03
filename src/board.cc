@@ -32,6 +32,7 @@ board::board(void)
   inputc=0;
   outputc=0;
   use_oscope=0;
+  use_spare=0;
 };
 
 
@@ -238,5 +239,12 @@ void
 board::SetUseOscilloscope(int uo)
 {
   use_oscope=uo;
+  
+};
+
+void 
+board::SetUseSpareParts(int sp)
+{
+  use_spare=sp;
   
 };

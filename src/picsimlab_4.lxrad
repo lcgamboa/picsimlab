@@ -8,7 +8,7 @@
   <Height type="uint">476</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
-  <Visible type="bool">1</Visible>
+  <Visible type="bool">0</Visible>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">FALSE</EvMouseMove>
   <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>

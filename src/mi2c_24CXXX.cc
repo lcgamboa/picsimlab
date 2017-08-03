@@ -35,6 +35,7 @@ mi2c_rst(mi2c_t *mem)
 {
 //int i;
 
+mem->sdao=0;
 mem->sclo=1;
 mem->bit=0xFF;
 mem->byte=0xFF;

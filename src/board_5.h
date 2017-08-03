@@ -75,6 +75,7 @@ class cboard_5:public board
       void KeyPress(uint key, uint x, uint y,uint mask);
       //Event on the board
       void KeyRelease(uint key, uint x, uint y,uint mask);
+      void OnShow(void){};
       //Called ever 1s to refresh status
       void RefreshStatus(void);
       //Called to save board preferences in configuration file

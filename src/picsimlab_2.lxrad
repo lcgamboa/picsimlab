@@ -25,7 +25,7 @@
   <OverrideRedirect type="bool">0</OverrideRedirect>
   <EvOnCreate type="Event">FALSE</EvOnCreate>
   <EvOnDestroy type="Event">FALSE</EvOnDestroy>
-  <EvOnShow type="Event">FALSE</EvOnShow>
+  <EvOnShow type="Event">TRUE</EvOnShow>
   <EvOnHide type="Event">FALSE</EvOnHide>
   <EvOnEnter type="Event">FALSE</EvOnEnter>
   <EvOnLeave type="Event">FALSE</EvOnLeave>

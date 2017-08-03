@@ -39,7 +39,7 @@ void
 rtc2_rst(rtc2_t *rtc)
 {
 //int i;
-
+rtc->sdao=0;
 rtc->sclo=1;
 rtc->bit=0xFF;
 rtc->byte=0xFF;

@@ -1,0 +1,133 @@
+<window5>
+  <Class type="String">CPWindow</Class>
+  <Name type="String">window5</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">118</X>
+  <Y type="int">52</Y>
+  <Width type="uint">1248</Width>
+  <Height type="uint">685</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">0</Visible>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Title type="String">picsimlab</Title>
+  <OverrideRedirect type="bool">0</OverrideRedirect>
+  <EvOnCreate type="Event">TRUE</EvOnCreate>
+  <EvOnDestroy type="Event">FALSE</EvOnDestroy>
+  <EvOnShow type="Event">TRUE</EvOnShow>
+  <EvOnHide type="Event">TRUE</EvOnHide>
+  <EvOnEnter type="Event">FALSE</EvOnEnter>
+  <EvOnLeave type="Event">FALSE</EvOnLeave>
+<menu1>
+  <Class type="String">CMenu</Class>
+  <Name type="String">menu1</Name>
+  <Tag type="int">0</Tag>
+  <MenuItems type="MenuItems">File,Add,</MenuItems>
+</menu1>
+<draw1>
+  <Class type="String">CDraw</Class>
+  <Name type="String">draw1</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">7</X>
+  <Y type="int">5</Y>
+  <Width type="uint">827</Width>
+  <Height type="uint">356</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">TRUE</EvMouseMove>
+  <EvMouseButtonPress type="Event">TRUE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">TRUE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">TRUE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">TRUE</EvKeyboardRelease>
+  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Transparent type="bool">0</Transparent>
+  <ImgFileName type="File"></ImgFileName>
+</draw1>
+<menu1_File>
+  <Class type="String">CPMenu</Class>
+  <Name type="String">menu1_File</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">File</Text>
+  <MenuItems type="MenuItems">Save configuration,Load configuration,</MenuItems>
+</menu1_File>
+<menu1_Add>
+  <Class type="String">CPMenu</Class>
+  <Name type="String">menu1_Add</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Add</Text>
+  <MenuItems type="MenuItems"></MenuItems>
+</menu1_Add>
+<pmenu2>
+  <Class type="String">CPMenu</Class>
+  <Name type="String">pmenu2</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String"></Text>
+  <MenuItems type="MenuItems">Propierties,Move,Delete,</MenuItems>
+</pmenu2>
+<pmenu2_Propierties>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">pmenu2_Propierties</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Propierties</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</pmenu2_Propierties>
+<timer1>
+  <Class type="String">CTimer</Class>
+  <Name type="String">timer1</Name>
+  <Tag type="int">0</Tag>
+  <Time type="int">100</Time>
+  <RunState type="int">1</RunState>
+  <EvOnTime type="Event">TRUE</EvOnTime>
+</timer1>
+<menu1_File_Saveconfiguration>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_File_Saveconfiguration</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Save configuration</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_File_Saveconfiguration>
+<menu1_File_Loadconfiguration>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_File_Loadconfiguration</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Load configuration</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_File_Loadconfiguration>
+<pmenu2_Move>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">pmenu2_Move</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Move</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</pmenu2_Move>
+<pmenu2_Delete>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">pmenu2_Delete</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Delete</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</pmenu2_Delete>
+</window5>

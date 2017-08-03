@@ -102,8 +102,9 @@ CPWindow3::CPWindow3(void)
   combo1.SetEnable(1);
   combo1.SetVisible(1);
   combo1.SetPopupMenu(NULL);
-  combo1.SetText(wxT(""));
   combo1.SetItems(wxT(""));
+  combo1.SetText(wxT(""));
+  combo1.SetReadOnly(0);
   CreateChild(&combo1);
   //combo2
   combo2.SetFOwner(this);
@@ -118,8 +119,9 @@ CPWindow3::CPWindow3(void)
   combo2.SetEnable(0);
   combo2.SetVisible(1);
   combo2.SetPopupMenu(NULL);
-  combo2.SetText(wxT(""));
   combo2.SetItems(wxT(""));
+  combo2.SetText(wxT(""));
+  combo2.SetReadOnly(0);
   CreateChild(&combo2);
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!

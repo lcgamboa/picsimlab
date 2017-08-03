@@ -25,6 +25,7 @@
 
 #include"picsimlab1.h"
 #include"picsimlab4.h"
+#include"picsimlab5.h"
 #include"board_2.h"
 
 /* outputs */
@@ -206,6 +207,7 @@ for(pi=0;pi < pic->PINCOUNT;pi++)
   
         if(!mplabxd_testbp())pic_step();
         if(use_oscope)Window4.SetSample();
+        if(use_spare)Window5.Process();  
         
           if(j > JUMPSTEPS)
           {  

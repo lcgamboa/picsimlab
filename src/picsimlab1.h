@@ -77,6 +77,7 @@ class CPWindow1:public CPWindow
   CLabel label2;
   CLabel label7;
   CCombo combo3;
+  CItemMenu menu1_Modules_Spareparts;
   /*#Events*/
   void _EvOnCreate(CControl * control);
   void _EvOnDestroy(CControl * control);
@@ -98,6 +99,7 @@ class CPWindow1:public CPWindow
   void menu1_Help_Examples_EvMenuActive(CControl * control);
   void menu1_Help_About_EvMenuActive(CControl * control);
   void combo3_EvOnComboChange(CControl * control);
+  void menu1_Modules_Spareparts_EvMenuActive(CControl * control);
 
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!

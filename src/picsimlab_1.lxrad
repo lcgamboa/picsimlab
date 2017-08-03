@@ -2,13 +2,14 @@
   <Class type="String">CPWindow</Class>
   <Name type="String">window1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">245</X>
-  <Y type="int">140</Y>
+  <X type="int">50</X>
+  <Y type="int">50</Y>
   <Width type="uint">1110</Width>
   <Height type="uint">505</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">FALSE</EvMouseMove>
   <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
@@ -64,6 +65,7 @@
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">FALSE</EvMouseMove>
   <EvMouseButtonPress type="Event">TRUE</EvMouseButtonPress>
@@ -90,6 +92,7 @@
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">FALSE</EvMouseMove>
   <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
@@ -118,6 +121,7 @@
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">FALSE</EvMouseMove>
   <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
@@ -144,6 +148,7 @@
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">FALSE</EvMouseMove>
   <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
@@ -179,7 +184,7 @@
   <Name type="String">menu1_Modules</Name>
   <Tag type="int">0</Tag>
   <Text type="String">Modules</Text>
-  <MenuItems type="MenuItems">Oscilloscope,</MenuItems>
+  <MenuItems type="MenuItems">Oscilloscope,Spare parts,</MenuItems>
 </menu1_Modules>
 <menu1_Help>
   <Class type="String">CPMenu</Class>
@@ -269,6 +274,7 @@
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">FALSE</EvMouseMove>
   <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
@@ -295,6 +301,7 @@
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">FALSE</EvMouseMove>
   <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
@@ -321,6 +328,7 @@
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">FALSE</EvMouseMove>
   <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
@@ -338,4 +346,12 @@
   <ReadOnly type="bool">1</ReadOnly>
   <EvOnComboChange type="Event">TRUE</EvOnComboChange>
 </combo3>
+<menu1_Modules_Spareparts>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Modules_Spareparts</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Spare parts</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Modules_Spareparts>
 </window1>

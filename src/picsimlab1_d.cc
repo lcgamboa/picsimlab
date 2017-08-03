@@ -30,13 +30,14 @@ CPWindow1::CPWindow1(void)
   SetClass(wxT("CPWindow"));
   SetName(wxT("window1"));
   SetTag(0);
-  SetX(245);
-  SetY(140);
+  SetX(50);
+  SetY(50);
   SetWidth(1110);
   SetHeight(505);
   SetHint(wxT(""));
   SetEnable(1);
   SetVisible(1);
+  SetColor(wxT("#000001"));
   SetPopupMenu(NULL);
   SetTitle(wxT("Picsimlab"));
   SetOverrideRedirect(0);
@@ -82,6 +83,7 @@ CPWindow1::CPWindow1(void)
   draw1.SetHint(wxT(""));
   draw1.SetEnable(1);
   draw1.SetVisible(1);
+  draw1.SetColor(wxT("#000001"));
   draw1.SetPopupMenu(NULL);
   draw1.EvMouseButtonPress=EVMOUSEBUTTONPRESS & CPWindow1::draw1_EvMouseButtonPress;
   draw1.EvMouseButtonRelease=EVMOUSEBUTTONRELEASE & CPWindow1::draw1_EvMouseButtonRelease;
@@ -102,6 +104,7 @@ CPWindow1::CPWindow1(void)
   combo1.SetHint(wxT(""));
   combo1.SetEnable(1);
   combo1.SetVisible(1);
+  combo1.SetColor(wxT("#000001"));
   combo1.SetPopupMenu(NULL);
   combo1.SetItems(wxT("40,32,20,16,10,8,4,2,1,"));
   combo1.SetText(wxT("2"));
@@ -120,6 +123,7 @@ CPWindow1::CPWindow1(void)
   label1.SetHint(wxT(""));
   label1.SetEnable(1);
   label1.SetVisible(1);
+  label1.SetColor(wxT("#000001"));
   label1.SetPopupMenu(NULL);
   label1.SetText(wxT("Clock (MHz)"));
   label1.SetAlign(1);
@@ -136,6 +140,7 @@ CPWindow1::CPWindow1(void)
   combo2.SetHint(wxT(""));
   combo2.SetEnable(1);
   combo2.SetVisible(1);
+  combo2.SetColor(wxT("#000001"));
   combo2.SetPopupMenu(NULL);
   combo2.SetItems(wxT("1,2,3,4,"));
   combo2.SetText(wxT("1"));
@@ -163,7 +168,7 @@ CPWindow1::CPWindow1(void)
   menu1_Modules.SetName(wxT("menu1_Modules"));
   menu1_Modules.SetTag(0);
   menu1_Modules.SetText(wxT("Modules"));
-  menu1_Modules.SetMenuItems(wxT("Oscilloscope,"));
+  menu1_Modules.SetMenuItems(wxT("Oscilloscope,Spare parts,"));
   menu1.CreateChild(&menu1_Modules);
   //menu1_Help
   menu1_Help.SetFOwner(this);
@@ -264,6 +269,7 @@ CPWindow1::CPWindow1(void)
   label2.SetHint(wxT(""));
   label2.SetEnable(1);
   label2.SetVisible(1);
+  label2.SetColor(wxT("#000001"));
   label2.SetPopupMenu(NULL);
   label2.SetText(wxT("Board"));
   label2.SetAlign(1);
@@ -280,6 +286,7 @@ CPWindow1::CPWindow1(void)
   label7.SetHint(wxT(""));
   label7.SetEnable(1);
   label7.SetVisible(1);
+  label7.SetColor(wxT("#000001"));
   label7.SetPopupMenu(NULL);
   label7.SetText(wxT("Processor"));
   label7.SetAlign(1);
@@ -296,12 +303,22 @@ CPWindow1::CPWindow1(void)
   combo3.SetHint(wxT(""));
   combo3.SetEnable(1);
   combo3.SetVisible(1);
+  combo3.SetColor(wxT("#000001"));
   combo3.SetPopupMenu(NULL);
   combo3.SetItems(wxT("PIC16F628A,PIC16F648A,"));
   combo3.SetText(wxT("PIC16F628"));
   combo3.SetReadOnly(1);
   combo3.EvOnComboChange=EVONCOMBOCHANGE & CPWindow1::combo3_EvOnComboChange;
   CreateChild(&combo3);
+  //menu1_Modules_Spareparts
+  menu1_Modules_Spareparts.SetFOwner(this);
+  menu1_Modules_Spareparts.SetClass(wxT("CItemMenu"));
+  menu1_Modules_Spareparts.SetName(wxT("menu1_Modules_Spareparts"));
+  menu1_Modules_Spareparts.SetTag(0);
+  menu1_Modules_Spareparts.SetText(wxT("Spare parts"));
+  menu1_Modules_Spareparts.SetSubMenu(NULL);
+  menu1_Modules_Spareparts.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Modules_Spareparts_EvMenuActive;
+  menu1_Modules.CreateChild(&menu1_Modules_Spareparts);
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!
   

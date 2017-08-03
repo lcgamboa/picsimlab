@@ -65,7 +65,7 @@ class board
       virtual void MouseButtonRelease(uint button, uint x, uint y,uint state)=0;  //Event on the board
       virtual void KeyPress(uint key, uint x, uint y,uint mask)=0;  //Event on the board
       virtual void KeyRelease(uint key, uint x, uint y,uint mask)=0;//Event on the board
-      virtual void OnShow(void){};               //Event on the board when windows is show or resized
+      virtual void OnShow(void)=0;//Event on the board
       virtual void RefreshStatus(void);   //Called ever 1s to refresh status
       virtual void WritePreferences(void){};   //Called to save board preferences in configuration file
       virtual void ReadPreferences(char *name,char *value){}; //Called whe configuration file load  preferences 
@@ -76,6 +76,7 @@ class board
       board(void);           //Called once on board creation
       virtual ~board(void);  //Called once on board destruction 
       void SetUseOscilloscope(int uo); //Enable/disable oscilloscope measurement
+      void SetUseSpareParts(int sp); //Enable/disable spare parts 
       int proc;             //ID of processor in use
  protected:
       input_t  input[100];  //input map elements
@@ -84,6 +85,7 @@ class board
       int outputc;          //output map elements counter   
       void ReadMaps(void); //read maps 
       int use_oscope;
+      int use_spare;
  private:      
       void ReadInputMap(String fname);
       void ReadOutputMap(String fname);

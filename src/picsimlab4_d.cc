@@ -11,7 +11,7 @@ CPWindow4::CPWindow4(void)
   SetHeight(476);
   SetHint(wxT(""));
   SetEnable(1);
-  SetVisible(1);
+  SetVisible(0);
   SetPopupMenu(NULL);
   SetTitle(wxT("oscilloscope"));
   SetOverrideRedirect(0);

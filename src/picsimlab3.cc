@@ -23,6 +23,8 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+//Configuration window
+
 #include"picsimlab3.h"
 #include"picsimlab3_d.cc"
 

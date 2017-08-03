@@ -28,6 +28,7 @@
 #include"picsimlab2.h"
 #include"picsimlab3.h"
 #include"picsimlab4.h"
+#include"picsimlab5.h"
 
 //Program____________________________________________________________
 
@@ -39,6 +40,7 @@ Initialize
   Application->ACreateWindow (&Window3);
   Window4.SetVisible (0);
   Application->ACreateWindow (&Window4);
+  Application->ACreateWindow (&Window5);
   Application->Load ();
 
   return 0;

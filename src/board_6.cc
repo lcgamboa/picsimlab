@@ -26,6 +26,7 @@
 //include files
 #include"picsimlab1.h"
 #include"picsimlab4.h"
+#include"picsimlab5.h"
 #include"board_6.h"
 
 /* ids of inputs of input map*/
@@ -532,6 +533,7 @@ void cboard_6::Run_CPU(void)
         //verify if a breakpoint is reached if not run one instruction 
         if(!mplabxd_testbp())pic_step();
         if(use_oscope)Window4.SetSample();
+        if(use_spare)Window5.Process();
         
         if(j > JUMPSTEPS)//if number of step is bigger than steps to skip 
         {  

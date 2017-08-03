@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@
 
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
+
+//Help window
 
 #include"picsimlab2.h"
 #include"picsimlab2_d.cc"

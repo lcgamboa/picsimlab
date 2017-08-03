@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2016  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+//main window
 
 #include"picsimlab1.h"
 #include"picsimlab1_d.cc"
@@ -36,6 +37,7 @@ CPWindow1 Window1;
 #include"picsimlab2.h"
 #include"picsimlab3.h"
 #include"picsimlab4.h"
+#include"picsimlab5.h"
 
 #include<dirent.h>
 
@@ -711,12 +713,8 @@ if(timer1.GetRunState())
   draw1.SetHeight(plHeight*scale);
   
 
-
-  pboard->OnShow();
-
-   
-
   draw1.SetImgFileName(share+pboard->GetPictureFileName(),scale,scale);
+  pboard->OnShow();
 };
 
 };
@@ -808,3 +806,11 @@ CPWindow1::GetBoard(void)
 {
   return pboard;
 }
+void
+CPWindow1::menu1_Modules_Spareparts_EvMenuActive(CControl * control)
+{
+  pboard->SetUseSpareParts (1);
+  Window5.Show ();
+};
+
+
