@@ -26,8 +26,10 @@
 #ifndef BOARD_2_H
 #define	BOARD_2_H
 
+#include "board_pic.h"
 
-class cboard_2:public board
+
+class cboard_2:public board_pic
 {
   private:
     int p_CL1; 
@@ -44,8 +46,7 @@ class cboard_2:public board
      unsigned char clko;
      unsigned char d;
      unsigned char sda,sck;
-     
-     unsigned int lm[18]; //luminosidade media    
+       
     
   public:
       cboard_2(void);

@@ -200,11 +200,15 @@ CPWindow4::draw1_EvMouseButtonClick(CControl * control, uint button, uint x, uin
 void 
 CPWindow4::SetBaseTimer(void)
 {
-  if(pic == NULL)return;
-
-  Dt=4.0/pic->freq;
+  board * pboard= Window1.GetBoard();
+  
+  int PinCount= pboard->MGetPinCount();
+  
+  if(pboard->CpuInitialized () == 0)return;
+  
+  Dt=4.0/pboard->MGetFreq();;
+  
   int chp[2];
-  char cbuf[10];
 
  //printf("Dt=%e  Rt=%e  Rt/Dt=%f\n",Dt,Rt,Rt/Dt); 
  
@@ -214,9 +218,9 @@ CPWindow4::SetBaseTimer(void)
  
   combo2.DeleteItems ();
   combo3.DeleteItems ();
-  for(int i=1; i<= pic->PINCOUNT;i++ )
+  for(int i=1; i<= PinCount;i++ )
     {
-      String spin= getPinName(pic,i,cbuf);
+      String spin= pboard->MGetPinName(i);
       
       if(spin.Cmp(wxT("error")))
       {
@@ -225,17 +229,17 @@ CPWindow4::SetBaseTimer(void)
       }
     }
   
-  if(chp[0] < pic->PINCOUNT)
+  if(chp[0] < PinCount)
     {
-      String spin= getPinName(pic,chp[0],cbuf);  
+      String spin= pboard->MGetPinName(chp[0]);  
       combo2.SetText (itoa(chp[0])+"  "+spin);
     }
   else
     combo2.SetText ("1");
   
-  if(chp[1] < pic->PINCOUNT)
+  if(chp[1] < PinCount)
     {
-      String spin= getPinName(pic,chp[1],cbuf);  
+      String spin= pboard->MGetPinName(chp[1]);  
       combo3.SetText (itoa(chp[1])+"  "+spin);
     }
   else
@@ -255,15 +259,17 @@ CPWindow4::SetSample(void)
 {
   double pins[2];
   
-  if(pic->pins[chpin[0]].ptype == PT_ANALOG)
-    pins[0]=pic->pins[chpin[0]].avalue;
-  else
-    pins[0]=pic->pins[chpin[0]].value*5.0;
+  const picpin * ppins=Window1.GetBoard ()->MGetPinsValues();
   
-  if(pic->pins[chpin[1]].ptype == PT_ANALOG)
-    pins[1]=pic->pins[chpin[1]].avalue;
+  if(ppins[chpin[0]].ptype == PT_ANALOG)
+    pins[0]=ppins[chpin[0]].avalue;
   else
-    pins[1]=pic->pins[chpin[1]].value*5.0;
+    pins[0]=ppins[chpin[0]].value*5.0;
+  
+  if(ppins[chpin[1]].ptype == PT_ANALOG)
+    pins[1]=ppins[chpin[1]].avalue;
+  else
+    pins[1]=ppins[chpin[1]].value*5.0;
   
   if(t > Rt)
   {

@@ -25,10 +25,17 @@
 
 #ifndef BOARD_H
 #define	BOARD_H
-    
+
+#include <wx/sound.h>    
 #include <lxrad/lxrad.h>    
-#include <picsim/picsim.h>    
-    
+#include <picsim/picsim.h>
+#include "lcd_hd44780.h"
+#include "mi2c_24CXXX.h"
+#include "rtc_ds1307.h"
+#include "rtc_pfc8563.h"
+
+
+
 typedef struct
 {
 unsigned int x1;
@@ -77,7 +84,24 @@ class board
       virtual ~board(void);  //Called once on board destruction 
       void SetUseOscilloscope(int uo); //Enable/disable oscilloscope measurement
       void SetUseSpareParts(int sp); //Enable/disable spare parts 
-      int proc;             //ID of processor in use
+      
+      virtual int DebugInit(void)=0;
+      virtual void DebugLoop(void)=0;
+      virtual int CpuInitialized(void)=0;
+      virtual void MSetSerial(const char * port)=0;
+      virtual int MInit(const char* processor, const char * fname, float freq)=0;
+      virtual void MEnd(void)=0;
+      virtual void MDumpMemory(const char * fname)=0;
+      virtual void MEraseFlash(void)=0;
+      virtual void MSetFreq(float freq)=0;
+      virtual float MGetFreq(void)=0;
+      virtual int MGetPinCount(void)=0;
+      virtual String MGetPinName(int pin)=0;
+      virtual void MSetPin(int pin, unsigned char value)=0;
+      virtual void MSetAPin(int pin, float value)=0;
+      virtual unsigned char MGetPin(int pin)=0;  
+      virtual const picpin * MGetPinsValues(void)=0;  
+      String proc;             //ID of processor in use
  protected:
       input_t  input[100];  //input map elements
       output_t output[100]; //output map elements 
@@ -89,6 +113,7 @@ class board
  private:      
       void ReadInputMap(String fname);
       void ReadOutputMap(String fname);
+
 };
 
 

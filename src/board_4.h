@@ -26,8 +26,10 @@
 #ifndef BOARD_4_H
 #define	BOARD_4_H
 
+#include "board_pic.h"
 
-class cboard_4:public board
+
+class cboard_4:public board_pic
 {
   private:
      int p_BT1; 
@@ -78,7 +80,7 @@ class cboard_4:public board
 
     int jmp[1];
     int dip[20];
-    unsigned int lm[40]; //luminosidade media
+
     unsigned int lm1[40]; //luminosidade media display
     unsigned int lm2[40]; //luminosidade media display
     unsigned int lm3[40]; //luminosidade media display

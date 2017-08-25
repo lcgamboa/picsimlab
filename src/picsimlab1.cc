@@ -50,12 +50,13 @@ int prog_init(void);
 int prog_loop(_pic * pic);
 int prog_end(void);
 */
-
+/*
 //mplabx debugger
 int mplabxd_init(void);
 int mplabxd_loop(void);
 void mplabxd_end(void);
 int mplabxd_testbp(void);
+*/
 
 int crt;
 
@@ -134,11 +135,7 @@ CPWindow1::thread1_EvThreadRun(CControl*)
 void
 CPWindow1::thread1_EvThreadEnd(CControl*)
 {
-   if(picpwr)
-   { 
-      //prog_loop(&pic);
-      mplabxd_loop();
-   }
+   pboard->DebugLoop();
    ondraw=0;
 }
 
@@ -345,32 +342,28 @@ create++;
   }
    
  
-  combo3.SetText(String::FromAscii(getnamebyproc(pboard->proc,fname)));   
+  combo3.SetText(pboard->proc);   
   proc_=pboard->proc;
  
 
   filedialog1.SetDir(PATH);
  
-     
- 
   
   draw1.SetImgFileName(share+pboard->GetPictureFileName(),scale,scale);
-
-  //picrun=
-  pic_set_serial(&pic,SERIALDEVICE,0,0,0);
-
   
-  sprintf(fname,"%s/mdump_%02i_%s.hex",home,lab,getnamebyproc(pboard->proc,line));
+  pboard->MSetSerial(SERIALDEVICE);
+  
+  sprintf(fname,"%s/mdump_%02i_%s.hex",home,lab,(const char *)pboard->proc.c_str ());
 
  
-  switch(pic_init(&pic,pboard->proc,fname,1,NSTEP*NSTEPKF))
+  switch(pboard->MInit(pboard->proc,fname,NSTEP*NSTEPKF))
   {
     case HEX_NFOUND:
       printf("File not found!\n"); 
       break;
     case HEX_CHKSUM:
       printf("File checksum error!\n"); 
-      pic_erase_flash();
+      pboard->MEraseFlash();
       break;
   }
 
@@ -385,7 +378,7 @@ create++;
   */
   status=wxT("");  
 
-  if(mplabxd_init() == 0 ) 
+  if(pboard->DebugInit() == 0 ) 
      statusbar1.SetField(1,status+wxT("    MplabxD:  Ok "));
   else
      statusbar1.SetField(1,status+wxT("    MplabxD:Error"));
@@ -400,6 +393,9 @@ create++;
   timer2.SetRunState(1);
   
   Window4.SetBaseTimer();
+  
+  sprintf(fname,"%s/parts_%02i.cfg",home,lab);
+  Window5.LoadConfig (fname);
 };
 
 
@@ -412,8 +408,7 @@ CPWindow1::combo1_EvOnComboChange(CControl * control)
   
   NSTEPJ=NSTEP/JUMPSTEPS;
 
-  pic.freq=NSTEP*NSTEPKF;
-         
+  pboard->MSetFreq(NSTEP*NSTEPKF);       
   Window4.SetBaseTimer();
   
   Application->ProcessEvents();
@@ -471,14 +466,15 @@ CPWindow1::_EvOnDestroy(CControl * control)
 {
   //code here:)
   //mprint(wxT("_EvOnDestroy\n"));
-  char home[256];
-  char fname[256];
-  char line[256];
+  char home[1024];
+  char fname[1024];
+  //char line[256];
   //FILE * fout; 
   DIR  *dp;
   //int i; 
   
   Window4.Hide ();
+  Window5.Hide ();
   
   timer1.SetRunState(0);
   timer2.SetRunState(0);
@@ -549,23 +545,17 @@ CPWindow1::_EvOnDestroy(CControl * control)
     
 //write memory
 
-  sprintf(fname,"%s/mdump_%02i_%s.hex",home,lab_,getnamebyproc(proc_,line));
+  sprintf(fname,"%s/mdump_%02i_%s.hex",home,lab_,(const char*)proc_.c_str ());
   
-  switch(getfprocbynumber(proc_))
-  {
-    case P16:
-    case P16E:
-    case P16E2:    
-      write_ihx(fname);
-      break;
-    case P18:
-      write_ihx18(fname);
-      break;
-  }
+  pboard->MDumpMemory(fname);
+  
+  
+  pboard->MEnd();
 
-  pic_end();
-  //prog_end();
-  mplabxd_end();
+  
+  sprintf(fname,"%s/parts_%02i.cfg",home,lab_);
+  Window5.SaveConfig (fname);
+  Window5.DeleteParts();
   
   delete pboard;
   pboard =NULL;
@@ -586,9 +576,10 @@ CPWindow1::menu1_File_LoadHex_EvMenuActive(CControl * control)
         picpwr=0;
         if(filedialog1.Run())
         {
-  	  pic_end();
-          pic_set_serial(&pic,SERIALDEVICE,0,0,0);
-          switch(pic_init(&pic,pboard->proc,filedialog1.GetFileName().char_str(),1,NSTEP*NSTEPKF))
+  	  pboard->MEnd ();
+          pboard->MSetSerial(SERIALDEVICE);
+          
+          switch(pboard->MInit(pboard->proc,filedialog1.GetFileName().char_str(),NSTEP*NSTEPKF))
           {
             case HEX_NFOUND:
               Message(wxT("File not found!")); 
@@ -596,20 +587,17 @@ CPWindow1::menu1_File_LoadHex_EvMenuActive(CControl * control)
               break;
             case HEX_CHKSUM:
               Message(wxT("File checksum error!")); 
-              pic_erase_flash();
+              pboard->MEraseFlash ();
               picrun=0;
               break;
             case 0:
               picrun=1;
               break; 
           } 
-
-          pic.config[0] |= 0x0800; //disable DEBUG
-          
+ 
           
           pboard->Reset();
-  
-          
+            
  
           if(picrun) 
             Window1.SetTitle(wxT("PicsimLab - ")+basename(filedialog1.GetFileName()));          
@@ -655,9 +643,9 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
 
         if(filedialog1.Run())
         {
-  	  pic_end();
-          pic_set_serial(&pic,SERIALDEVICE,0,0,0);
-          switch(pic_init(&pic,pboard->proc,filedialog1.GetFileName().char_str(),1,NSTEP*NSTEPKF))
+          pboard->MEnd ();
+          pboard->MSetSerial(SERIALDEVICE);
+  	  switch(pboard->MInit (pboard->proc,filedialog1.GetFileName().char_str(),NSTEP*NSTEPKF))
           {
             case HEX_NFOUND:
               Message(wxT("File not found!")); 
@@ -665,14 +653,14 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
               break;
             case HEX_CHKSUM:
               Message(wxT("File checksum error!")); 
-              pic_erase_flash();
+              pboard->MEraseFlash ();
               picrun=0;
               break;
             case 0:
               picrun=1;
               break; 
           } 
-          pic.config[0] |= 0x0800; //disable DEBUG
+          
           
           pboard->Reset();
   
@@ -732,11 +720,9 @@ void
 CPWindow1::combo3_EvOnComboChange(CControl * control)
 {
    proc_=pboard->proc;
-   pboard->proc=getprocbyname((char *)combo3.GetText().char_str());
+   pboard->proc=combo3.GetText();
    
-   if(pboard->proc == 0)
-     printf("Unknown processor %s !!\n",(char *)combo3.GetText().char_str()) ;  
-
+   
   _EvOnDestroy(control);
   _EvOnCreate(control);
   _EvOnShow(control);
@@ -754,9 +740,10 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
 
         //if(filedialog1.Run())
         //{
-  	  pic_end();
-  	  pic_set_serial(&pic,SERIALDEVICE,0,0,0);
-          switch(pic_init(&pic,pboard->proc,FNAME.char_str(),1,NSTEP*NSTEPKF))
+          pboard->MEnd ();
+          pboard->MSetSerial(SERIALDEVICE);
+  	  
+          switch(pboard->MInit (pboard->proc,FNAME.char_str(),NSTEP*NSTEPKF))
           {
             case HEX_NFOUND:
               Message(wxT("File not found!")); 
@@ -764,15 +751,14 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
               break;
             case HEX_CHKSUM:
               Message(wxT("File checksum error!")); 
-              pic_erase_flash();
+              pboard->MEraseFlash ();
               picrun=0;
               break;
             case 0:
               picrun=1;
               break; 
           } 
-          pic.config[0] |= 0x0800; //disable DEBUG
-    
+          
           pboard->Reset();
     
  
@@ -806,11 +792,16 @@ CPWindow1::GetBoard(void)
 {
   return pboard;
 }
+
 void
 CPWindow1::menu1_Modules_Spareparts_EvMenuActive(CControl * control)
 {
+  
+ 
   pboard->SetUseSpareParts (1);
   Window5.Show ();
+  
+
 };
 
 

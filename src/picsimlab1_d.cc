@@ -358,5 +358,7 @@ create=0;
 FNAME=wxT(" ");
 
 ondraw=0;    
+
+pboard=NULL;
  
 };

@@ -79,7 +79,7 @@
 
 cboard_1::cboard_1(void)
 {
-    proc=P16F628A;
+    proc="PIC16F628A";
     ReadMaps();
     jmp[0]=0;    
     
@@ -193,14 +193,14 @@ void cboard_1::Draw(CDraw *draw,double scale)
       {
         switch(output[i].id)
         {
-          case O_RB0: draw->Canvas.SetColor (lm[5], 0, 0);break;
-          case O_RB1: draw->Canvas.SetColor (lm[6], 0, 0);break;
-          case O_RB2: draw->Canvas.SetColor (lm[7], 0, 0);break;
-          case O_RB3: draw->Canvas.SetColor (lm[8], 0, 0);break;
-          case O_RB4: draw->Canvas.SetColor (lm[9], 0, 0);break;
-          case O_RB5: draw->Canvas.SetColor (lm[10], 0, 0);break;
-          case O_RB6: draw->Canvas.SetColor (lm[11], 0, 0);break;
-          case O_RB7: draw->Canvas.SetColor (lm[12], 0, 0);break;
+          case O_RB0: draw->Canvas.SetColor (pic.pins[5].oavalue, 0, 0);break;
+          case O_RB1: draw->Canvas.SetColor (pic.pins[6].oavalue, 0, 0);break;
+          case O_RB2: draw->Canvas.SetColor (pic.pins[7].oavalue, 0, 0);break;
+          case O_RB3: draw->Canvas.SetColor (pic.pins[8].oavalue, 0, 0);break;
+          case O_RB4: draw->Canvas.SetColor (pic.pins[9].oavalue, 0, 0);break;
+          case O_RB5: draw->Canvas.SetColor (pic.pins[10].oavalue, 0, 0);break;
+          case O_RB6: draw->Canvas.SetColor (pic.pins[11].oavalue, 0, 0);break;
+          case O_RB7: draw->Canvas.SetColor (pic.pins[12].oavalue, 0, 0);break;
         }
       }
       else
@@ -211,11 +211,11 @@ void cboard_1::Draw(CDraw *draw,double scale)
 
       switch(output[i].id)
       {
-        case O_RA0: draw->Canvas.SetColor (0, lm[16], 0);break;
-        case O_RA1: draw->Canvas.SetColor (0, lm[17], 0);break;
-        case O_RA2: draw->Canvas.SetColor (0, lm[0], 0);break;
-        case O_RA3: draw->Canvas.SetColor (0, lm[1], 0);break;
-        case O_RA0L: draw->Canvas.SetColor (lm[16],lm[16], 0);break;
+        case O_RA0: draw->Canvas.SetColor (0, pic.pins[16].oavalue, 0);break;
+        case O_RA1: draw->Canvas.SetColor (0, pic.pins[17].oavalue, 0);break;
+        case O_RA2: draw->Canvas.SetColor (0, pic.pins[0].oavalue, 0);break;
+        case O_RA3: draw->Canvas.SetColor (0, pic.pins[1].oavalue, 0);break;
+        case O_RA0L: draw->Canvas.SetColor (pic.pins[16].oavalue,pic.pins[16].oavalue, 0);break;
       }
       
       draw->Canvas.Circle (1,output[i].x1, output[i].y1,output[i].r );
@@ -229,7 +229,7 @@ void cboard_1::Draw(CDraw *draw,double scale)
   draw->Update ();
   
 //Lâmpada
-  gauge1->SetValue(0.4444*(lm[16]-30)); 
+  gauge1->SetValue(0.4444*(pic.pins[16].oavalue-30)); 
   
 }
 
@@ -238,7 +238,7 @@ void cboard_1::Run_CPU(void)
 {
   int i;
   int j;
-  unsigned char pi;
+  unsigned char pi; 
   unsigned char pinv;
   const picpin * pins;
   unsigned int alm[18]; //luminosidade media
@@ -249,7 +249,7 @@ void cboard_1::Run_CPU(void)
   int JUMPSTEPS = Window1.GetJUMPSTEPS();
   long int NSTEPJ=Window1.GetNSTEPJ();
   
-  for(i=0;i < pic->PINCOUNT;i++)
+  for(i=0;i < pic.PINCOUNT;i++)
   {
      alm[i]=0;
      alm1[i]=0;
@@ -257,7 +257,7 @@ void cboard_1::Run_CPU(void)
   };
 
     
- pins = pic->pins;
+ pins = pic.pins;
  
  j=JUMPSTEPS+1;
  if(Window1.Get_picpwr())
@@ -278,7 +278,7 @@ void cboard_1::Run_CPU(void)
         
           if(j > JUMPSTEPS)
           {  
-        for(pi=0;pi < pic->PINCOUNT;pi++)
+        for(pi=0;pi < pic.PINCOUNT;pi++)
         {
            alm[pi]+=pins[pi].value;
            //if((!pins[pi].dir)&&(pins[pi].value)) alm[pi]++;
@@ -303,9 +303,9 @@ void cboard_1::Run_CPU(void)
           j++;
      }
     
-     for(i=0;i < pic->PINCOUNT;i++)
+     for(i=0;i < pic.PINCOUNT;i++)
      { 
-      lm[i]= (int)(((225.0*alm[i])/NSTEPJ)+30);
+      pic.pins[i].oavalue= (int)(((225.0*alm[i])/NSTEPJ)+30);
       lm1[i]= (int)(((600.0*alm1[i])/NSTEPJ)+30);
       lm2[i]= (int)(((600.0*alm2[i])/NSTEPJ)+30);
       if(lm1[i] > 255)lm1[i]=255;
@@ -313,7 +313,7 @@ void cboard_1::Run_CPU(void)
      }
 
      lm1[9]=30; 
-     lm2[9]=30;
+     lm2[9]=30;   
 }
  
 
@@ -332,9 +332,9 @@ cboard_1::Reset(void)
     
     Window1.statusbar1.SetField(2,wxT(""));
 
-   for(int i=0;i < pic->PINCOUNT;i++)
+   for(int i=0;i < pic.PINCOUNT;i++)
    {
-     lm[i]=0;
+     pic.pins[i].oavalue=0;
      lm1[i]=0;
      lm2[i]=0;
    };
@@ -588,8 +588,7 @@ cboard_1::get_out_id(char * name)
 void 
 cboard_1::WritePreferences(void)
 {
-    char line[100];
-    Window1.saveprefs(wxT("p1_proc"),getnamebyproc(proc,line));
+    Window1.saveprefs(wxT("p1_proc"),proc);
     Window1.saveprefs(wxT("p1_jmp"),String::Format("%i",jmp[0]));
 };
 
@@ -611,6 +610,6 @@ cboard_1::ReadPreferences(char *name,char *value)
     
     if(!strcmp(name,"p1_proc"))
     {
-      proc=getprocbyname(value); 
+      proc=value; 
     }
 };

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2017  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,44 +23,51 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_x_H
-#define	BOARD_x_H
+#ifndef BOARD_7_H
+#define	BOARD_7_H
 
 #include<lxrad/lxrad.h>
 
-#include "board_pic.h"
+#include "board_avr.h"
 
 //new board class must be derived from board class defined in board.h
-class cboard_x:public board_pic
+class cboard_7:public board_avr
 {
-  private:
-     int p_BT1;           //first board switch in RD0
-     int p_BT2;           //second board switch in RD1  
+  private: 
 
-     //controls to be added in simulator window
-     CScroll *scroll1; //scroll for analog input AN0    
-     CGauge *gauge1;   //gauge to show mean value of RB0
-     CGauge *gauge2;   //gauge to show mean value of RB1
-     CLabel *label1;   //label of scroll AN0
-     CLabel *label2;   //label of gauge RB0
-     CLabel *label3;   //label of gauge RB1
+     //controls to be added in simulator window   
+     CGauge *gauge1;   //gauge to show mean value of 3
+     CGauge *gauge2;   //gauge to show mean value of 5
+     CGauge *gauge3;   //gauge to show mean value of 6
+     CGauge *gauge4;   //gauge to show mean value of 9
+     CGauge *gauge5;   //gauge to show mean value of 10
+     CGauge *gauge6;   //gauge to show mean value of 11
+     
+     
+     CLabel *label1;   //label of gauge 3
+     CLabel *label2;   //label of gauge 5
+     CLabel *label3;   //label of gauge 6
+     CLabel *label4;   //label of gauge 9
+     CLabel *label5;   //label of gauge 10
+     CLabel *label6;   //label of gauge 11
+     
  
    public:
       //Constructor called once on board creation 
-      cboard_x(void);
+      cboard_7(void);
       //Destructor called once on board destruction 
-      ~cboard_x(void); 
+      ~cboard_7(void); 
       //Called ever 100ms to draw board
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
-      String GetSupportedDevices(void){return wxT("PIC18F4550,PIC16F877A,");};
+      String GetSupportedDevices(void){return wxT("atmega328,");};
       //Return the filename of board picture 
-      String GetPictureFileName(void){return wxT("board_x.png");};
+      String GetPictureFileName(void){return wxT("picsimlab7.png");};
       //Return the filename of board picture input map 
-      String GetInputMapFile(void){return wxT("input_boardx.map");};
+      String GetInputMapFile(void){return wxT("input7.map");};
       //Return the filename of board picture output map 
-      String GetOutputMapFile(void){return wxT("output_boardx.map");};
+      String GetOutputMapFile(void){return wxT("output7.map");};
       //Reset board status
       void Reset(void);
       //Event on the board
@@ -84,5 +91,5 @@ class cboard_x:public board_pic
       unsigned short get_out_id(char * name);
 };
 
-#endif	/* BOARD_x_H */
+#endif	/* BOARD_7_H */
 

@@ -35,15 +35,17 @@
 #include"board_4.h"
 #include"board_5.h"
 #include"board_6.h"
+#include"board_7.h"
 #include"board_x.h"
 
 //number of last board
-#define BOARDS_LAST 7
+#define BOARDS_LAST 8
 
 //boards object creation
 board * create_board(int *lab,int *lab_)
 {
-   board * pboard; 
+   board * pboard=NULL;
+
         switch(*lab)
         {
           case 1:
@@ -65,8 +67,11 @@ board * create_board(int *lab,int *lab_)
             pboard= new cboard_6();
             break;     
           case 7:
+            pboard= new cboard_7();
+            break;  
+          case 8:
             pboard= new cboard_x();
-            break;                
+            break;   
           default:
             mprint(wxT("Invalid Board! Using Default!\n"));
             *lab=1;//default  

@@ -57,7 +57,7 @@
 
 cboard_2::cboard_2(void)
 {
-      proc=P16F628A;
+      proc="PIC16F628A";
           
       clko=0;
       d=0;
@@ -118,10 +118,10 @@ void cboard_2::Draw(CDraw *draw,double scale)
  
       switch(output[i].id)
       {
-        case O_RA1: draw->Canvas.SetColor (lm[17], 0, 0);break;
-        case O_RA2: draw->Canvas.SetColor (lm[0], 0, 0);break;
-        case O_RA6: draw->Canvas.SetColor (lm[14], 0, 0);break;
-        case O_RA7: draw->Canvas.SetColor (lm[15], 0, 0);break;
+        case O_RA1: draw->Canvas.SetColor (pic.pins[17].oavalue, 0, 0);break;
+        case O_RA2: draw->Canvas.SetColor (pic.pins[0].oavalue, 0, 0);break;
+        case O_RA6: draw->Canvas.SetColor (pic.pins[14].oavalue, 0, 0);break;
+        case O_RA7: draw->Canvas.SetColor (pic.pins[15].oavalue, 0, 0);break;
       }
 
       if(output[i].id == O_LPWR)draw->Canvas.SetColor (0,255*Window1.Get_picpwr(), 0);
@@ -153,10 +153,10 @@ void cboard_2::Run_CPU(void)
   int JUMPSTEPS = Window1.GetJUMPSTEPS();
   long int NSTEPJ=Window1.GetNSTEPJ();  
     
-pins = pic->pins;
+pins = pic.pins;
   
 
-for(pi=0;pi < pic->PINCOUNT;pi++)
+for(pi=0;pi < pic.PINCOUNT;pi++)
      {
        alm[pi]=0;
      };
@@ -211,7 +211,7 @@ for(pi=0;pi < pic->PINCOUNT;pi++)
         
           if(j > JUMPSTEPS)
           {  
-        for(pi=0;pi < pic->PINCOUNT;pi++)
+        for(pi=0;pi < pic.PINCOUNT;pi++)
         {
            alm[pi]+=pins[pi].value;
            //if((!pins[pi].dir)&&(pins[pi].value)) lm[pi]++;
@@ -275,11 +275,11 @@ for(pi=0;pi < pic->PINCOUNT;pi++)
    //fim STEP
    
 
-     for(pi=0;pi < pic->PINCOUNT;pi++)
+     for(pi=0;pi < pic.PINCOUNT;pi++)
      { 
-      lm[pi]= (int)(((225.0*alm[pi])/NSTEPJ)+30);
+      pic.pins[pi].oavalue= (int)(((225.0*alm[pi])/NSTEPJ)+30);
      }
-    
+       
 }
 
 
@@ -305,17 +305,17 @@ cboard_2::Reset(void)
   pic_set_pin(11,p_CL3); 
   
 #ifndef _WIN_
-    if(pic->serialfd > 0)
+    if(pic.serialfd > 0)
 #else
-    if(pic->serialfd != INVALID_HANDLE_VALUE)
+    if(pic.serialfd != INVALID_HANDLE_VALUE)
 #endif
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic->serialbaud)+wxT("(")+String().Format("%4.1f",fabs((100.0*pic->serialexbaud-100.0*pic->serialbaud)/pic->serialexbaud))+wxT("%)"));
+      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic.serialbaud)+wxT("(")+String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*pic.serialbaud)/pic.serialexbaud))+wxT("%)"));
     else  
       Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
 
-  for(int pi=0;pi < pic->PINCOUNT;pi++)
+  for(int pi=0;pi < pic.PINCOUNT;pi++)
      {
-       lm[pi]=0;
+       pic.pins[pi].oavalue=0;
      };
     
 };
@@ -617,8 +617,7 @@ cboard_2::get_out_id(char * name)
 void 
 cboard_2::WritePreferences(void)
 {
-    char line[100];
-    Window1.saveprefs(wxT("p2_proc"),getnamebyproc(proc,line));
+    Window1.saveprefs(wxT("p2_proc"),proc);
 };
 
 void 
@@ -627,7 +626,7 @@ cboard_2::ReadPreferences(char *name,char *value)
     
       if(!strcmp(name,"p2_proc"))
       {
-         proc=getprocbyname(value); 
+         proc=value; 
       }
 };
 
@@ -636,11 +635,11 @@ cboard_2::RefreshStatus(void)
 {
     
 #ifndef _WIN_
-    if(pic->serialfd > 0)
+    if(pic.serialfd > 0)
 #else
-    if(pic->serialfd != INVALID_HANDLE_VALUE)
+    if(pic.serialfd != INVALID_HANDLE_VALUE)
 #endif
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic->serialbaud)+wxT("(")+String().Format("%4.1f",fabs((100.0*pic->serialexbaud-100.0*pic->serialbaud)/pic->serialexbaud))+wxT("%)"));
+      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic.serialbaud)+wxT("(")+String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*pic.serialbaud)/pic.serialexbaud))+wxT("%)"));
     else  
       Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
 

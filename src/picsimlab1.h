@@ -35,18 +35,10 @@
 extern char SERIALDEVICE[100];
 
 #include <lxrad/lxrad.h>
-#include <picsim/picsim.h>
-#include "lcd_hd44780.h"
-#include "mi2c_24CXXX.h"
-#include "rtc_ds1307.h"
-#include "rtc_pfc8563.h"
+
 #include "board.h"
 
-#include<wx/sound.h>
 #include "wx/stdpaths.h"
-
-
-int mplabxd_testbp(void);
 
     
 class CPWindow1:public CPWindow
@@ -154,9 +146,7 @@ class CPWindow1:public CPWindow
   int lab;
   int lab_;
 
-  int proc_;
-
-  _pic pic;
+  String proc_;
 
   board *pboard;
 

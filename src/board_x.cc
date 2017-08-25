@@ -77,7 +77,7 @@ cboard_x::get_out_id(char * name)
 //Constructor called once on board creation 
 cboard_x::cboard_x(void)
 {
-  proc=P18F4550;  //default microcontroller if none defined in preferences
+  proc="PIC18F4550";  //default microcontroller if none defined in preferences
   ReadMaps();     //Read input and output board maps
 
   //controls propierties and creation
@@ -191,23 +191,23 @@ cboard_x::Reset(void)
         
   //verify serial port state and refresh status bar  
 #ifndef _WIN_
-    if(pic->serialfd > 0)
+    if(pic.serialfd > 0)
 #else
-    if(pic->serialfd != INVALID_HANDLE_VALUE)
+    if(pic.serialfd != INVALID_HANDLE_VALUE)
 #endif
       Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
-        String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic->serialbaud)+wxT("(")+
-        String().Format("%4.1f",fabs((100.0*pic->serialexbaud-100.0*
-        pic->serialbaud)/pic->serialexbaud))+wxT("%)"));
+        String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic.serialbaud)+wxT("(")+
+        String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*
+        pic.serialbaud)/pic.serialexbaud))+wxT("%)"));
     else  
       Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
         String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
         
 
   //reset mean value
-  for(int pi=0;pi < pic->PINCOUNT;pi++)
+  for(int pi=0;pi < pic.PINCOUNT;pi++)
   {
-    lm[pi]=0;
+    pic.pins[pi].oavalue=0;
   };
 
 };
@@ -218,14 +218,14 @@ cboard_x::RefreshStatus(void)
 {
    //verify serial port state and refresh status bar   
 #ifndef _WIN_
-    if(pic->serialfd > 0)
+    if(pic.serialfd > 0)
 #else
-    if(pic->serialfd != INVALID_HANDLE_VALUE)
+    if(pic.serialfd != INVALID_HANDLE_VALUE)
 #endif
       Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
-        String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic->serialbaud)+wxT("(")+
-        String().Format("%4.1f",fabs((100.0*pic->serialexbaud-100.0*
-        pic->serialbaud)/pic->serialexbaud))+wxT("%)"));
+        String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic.serialbaud)+wxT("(")+
+        String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*
+        pic.serialbaud)/pic.serialexbaud))+wxT("%)"));
     else  
       Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
         String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
@@ -236,9 +236,8 @@ cboard_x::RefreshStatus(void)
 void 
 cboard_x::WritePreferences(void)
 {
-    char line[100];
     //write selected microcontroller of board_x to preferences
-    Window1.saveprefs(wxT("px_proc"),getnamebyproc(proc,line));
+    Window1.saveprefs(wxT("px_proc"),proc);
     //write switch state of board_x to preferences 
     Window1.saveprefs(wxT("px_bt2"),String::Format("%i",p_BT2));
 };
@@ -258,7 +257,7 @@ cboard_x::ReadPreferences(char *name,char *value)
     //read microcontroller of preferences
     if(!strcmp(name,"px_proc"))
     {
-      proc=getprocbyname(value); 
+      proc=value; 
     }
 };
 
@@ -439,19 +438,19 @@ void cboard_x::Draw(CDraw *draw,double scale)
         switch(output[i].id)//search for color of output
         {
           case O_LD0: //White using pin 19 mean value (RD0)
-            draw->Canvas.SetColor (lm[18], lm[18], lm[18]);
+            draw->Canvas.SetColor (pic.pins[18].oavalue, pic.pins[18].oavalue, pic.pins[18].oavalue);
             break;
           case O_LD1: //Yelllow using pin 20 mean value (RD1)
-            draw->Canvas.SetColor (lm[19], lm[19], 0);
+            draw->Canvas.SetColor (pic.pins[19].oavalue, pic.pins[19].oavalue, 0);
             break;
           case O_LPWR: //Blue using picpwr value
             draw->Canvas.SetColor(0,0,225*Window1.Get_picpwr()+30);
             break;
           case O_RB0: //Green using pin 33 mean value (RB0)
-            draw->Canvas.SetColor (0, lm[32], 0);
+            draw->Canvas.SetColor (0, pic.pins[32].oavalue, 0);
             break;
           case O_RB1: //Red using pin 34 mean value (RB1)
-            draw->Canvas.SetColor (lm[33],0 , 0);
+            draw->Canvas.SetColor (pic.pins[33].oavalue,0 , 0);
             break;
         }
         
@@ -468,9 +467,9 @@ void cboard_x::Draw(CDraw *draw,double scale)
   
  
      //RB0 mean value to gauge1
-     gauge1->SetValue(0.4444*(lm[33]-30)); 
+     gauge1->SetValue(0.4444*(pic.pins[33].oavalue-30)); 
      //RB1 mean value to gauge2
-     gauge2->SetValue(0.44444*(lm[32]-30)); 
+     gauge2->SetValue(0.44444*(pic.pins[32].oavalue-30)); 
    
 
 };
@@ -489,13 +488,13 @@ void cboard_x::Run_CPU(void)
 
   
   //reset mean value
-  for(pi=0;pi < pic->PINCOUNT;pi++)
+  for(pi=0;pi < pic.PINCOUNT;pi++)
   {
     alm[pi]=0;
   };
 
  //read pic.pins to a local variable to speed up 
- pins = pic->pins;
+ pins = pic.pins;
 
   
  j=JUMPSTEPS+1;//step counter
@@ -517,7 +516,7 @@ void cboard_x::Run_CPU(void)
         if(j > JUMPSTEPS)//if number of step is bigger than steps to skip 
         {  
           //increment mean value counter if pin is high  
-          for(pi=0;pi < pic->PINCOUNT;pi++)
+          for(pi=0;pi < pic.PINCOUNT;pi++)
           {
            alm[pi]+=pins[pi].value;
           }
@@ -532,9 +531,9 @@ void cboard_x::Run_CPU(void)
      }
 
      //calculate mean value
-     for(pi=0;pi < pic->PINCOUNT;pi++)
+     for(pi=0;pi < pic.PINCOUNT;pi++)
      { 
-      lm[pi]= (int)(((225.0*alm[pi])/NSTEPJ)+30);
+       pic.pins[pi].oavalue= (int)(((225.0*alm[pi])/NSTEPJ)+30);
      }
-    
+       
 }

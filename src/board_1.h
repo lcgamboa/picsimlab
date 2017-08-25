@@ -27,8 +27,9 @@
 #define	BOARD_1_H
 
 #include<lxrad/lxrad.h>
+#include "board_pic.h"
 
-class cboard_1:public board
+class cboard_1:public board_pic
 {
   private:
      int p_BT1; 
@@ -36,7 +37,6 @@ class cboard_1:public board
      int p_BT3; 
      int p_BT4;     
      int jmp[1];
-     unsigned int lm[18]; //luminosidade media
      unsigned int lm1[18]; //luminosidade media display
      unsigned int lm2[18]; //luminosidade media display
      

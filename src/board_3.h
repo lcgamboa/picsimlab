@@ -26,8 +26,9 @@
 #ifndef BOARD_3_H
 #define	BOARD_3_H
 
+#include "board_pic.h"
 
-class cboard_3:public board
+class cboard_3:public board_pic
 {
    private:
      int p_BT1; 
@@ -56,7 +57,6 @@ class cboard_3:public board
      unsigned char sda,sck;
  
     int jmp[8];
-    unsigned int lm[40]; //luminosidade media
     unsigned int lm1[40]; //luminosidade media display
     unsigned int lm2[40]; //luminosidade media display
     unsigned int lm3[40]; //luminosidade media display

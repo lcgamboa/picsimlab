@@ -93,7 +93,7 @@
 
 cboard_3::cboard_3(void)
 {
-      proc=P18F452;
+      proc="PIC18F452";
           
       vp2in=2.5;
       vp2[0]=2.5;
@@ -335,10 +335,10 @@ void cboard_3::Draw( CDraw *draw,double scale)
  
         switch(output[i].id)
         {
-          case O_RB0: draw->Canvas.SetColor (lm[32], 0, 0);break;
-          case O_RB1: draw->Canvas.SetColor (lm[33], 0, 0);break;
-          case O_RB2: draw->Canvas.SetColor (lm[34], 0, 0);break;
-          case O_RB3: draw->Canvas.SetColor (lm[35], 0, 0);break;
+          case O_RB0: draw->Canvas.SetColor (pic.pins[32].oavalue, 0, 0);break;
+          case O_RB1: draw->Canvas.SetColor (pic.pins[33].oavalue, 0, 0);break;
+          case O_RB2: draw->Canvas.SetColor (pic.pins[34].oavalue, 0, 0);break;
+          case O_RB3: draw->Canvas.SetColor (pic.pins[35].oavalue, 0, 0);break;
         }
       if(output[i].id == O_LPWR)draw->Canvas.SetColor (0,255*Window1.Get_picpwr(), 0);
       
@@ -353,7 +353,7 @@ void cboard_3::Draw( CDraw *draw,double scale)
   
    
 
-     if(( (0.4444*(lm[6]-30)) > 40)&& Window1.Get_picpwr())
+     if(( (0.4444*(pic.pins[6].oavalue-30)) > 40)&& Window1.Get_picpwr())
      {
        if(!sound_on)
        {
@@ -368,18 +368,18 @@ void cboard_3::Draw( CDraw *draw,double scale)
      }
 
      //Ventilador
-     gauge1->SetValue(0.4444*(lm[15]-30)); 
+     gauge1->SetValue(0.4444*(pic.pins[15].oavalue-30)); 
      //Aquecedor
-     gauge2->SetValue(0.4444*(lm[16]-30)); 
+     gauge2->SetValue(0.4444*(pic.pins[16].oavalue-30)); 
 
      //sensor ventilador)
-     rpmstp=((float)Window1.GetNSTEPJ())/(0.64*(lm[15]-29));
+     rpmstp=((float)Window1.GetNSTEPJ())/(0.64*(pic.pins[15].oavalue-29));
    
      //tensão p2
      vp2in=((5.0*(scroll1->GetPosition()))/(scroll1->GetRange()-1));
 
      //temperatura 
-     ref=(0.2222*(lm[16]-30))-(0.2222*(lm[15]-30)); 
+     ref=(0.2222*(pic.pins[16].oavalue-30))-(0.2222*(pic.pins[15].oavalue-30)); 
 
      if(ref < 0)
        ref=0; 
@@ -411,7 +411,7 @@ void cboard_3::Run_CPU(void)
   int JUMPSTEPS = Window1.GetJUMPSTEPS();
   long int NSTEPJ=Window1.GetNSTEPJ();
    
-  for(pi=0;pi < pic->PINCOUNT;pi++)
+  for(pi=0;pi < pic.PINCOUNT;pi++)
      {
        alm[pi]=0;
        alm1[pi]=0;
@@ -421,7 +421,7 @@ void cboard_3::Run_CPU(void)
      };
    
         
- pins = pic->pins;
+ pins = pic.pins;
 
 
  j=JUMPSTEPS+1;
@@ -452,7 +452,7 @@ void cboard_3::Run_CPU(void)
           if(j > JUMPSTEPS)
           {  
 /*
-        for(pi=0;pi < pic->PINCOUNT;pi++)
+        for(pi=0;pi < pic.PINCOUNT;pi++)
         {
            //if((!pins[pi].dir)&&(pins[pi].value)) alm[pi]++;
            alm[pi]+=pins[pi].value;
@@ -566,9 +566,9 @@ void cboard_3::Run_CPU(void)
  }
    //fim STEP
 
-      for(pi=0;pi < pic->PINCOUNT;pi++)
+      for(pi=0;pi < pic.PINCOUNT;pi++)
      { 
-      lm[pi]= (int)(((225.0*alm[pi])/NSTEPJ)+30);
+      pic.pins[pi].oavalue= (int)(((225.0*alm[pi])/NSTEPJ)+30);
 
       lm1[pi]= (int)(((600.0*alm1[pi])/NSTEPJ)+30);
       lm2[pi]= (int)(((600.0*alm2[pi])/NSTEPJ)+30);
@@ -603,17 +603,17 @@ cboard_3::Reset(void)
     pic_set_pin(36,p_BT4); 
     
 #ifndef _WIN_
-    if(pic->serialfd > 0)
+    if(pic.serialfd > 0)
 #else
-    if(pic->serialfd != INVALID_HANDLE_VALUE)
+    if(pic.serialfd != INVALID_HANDLE_VALUE)
 #endif
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic->serialbaud)+wxT("(")+String().Format("%4.1f",fabs((100.0*pic->serialexbaud-100.0*pic->serialbaud)/pic->serialexbaud))+wxT("%)"));
+      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic.serialbaud)+wxT("(")+String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*pic.serialbaud)/pic.serialexbaud))+wxT("%)"));
     else  
       Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
 
-  for(int pi=0;pi < pic->PINCOUNT;pi++)
+  for(int pi=0;pi < pic.PINCOUNT;pi++)
      {
-       lm[pi]=0;
+       pic.pins[pi].oavalue=0;
        lm1[pi]=0;
        lm2[pi]=0;
        lm3[pi]=0;
@@ -924,11 +924,11 @@ cboard_3::RefreshStatus(void)
     label4->SetText(wxT("Temp: ")+String().Format("%5.2f",temp[0])+wxT("°C"));
     
 #ifndef _WIN_
-    if(pic->serialfd > 0)
+    if(pic.serialfd > 0)
 #else
-    if(pic->serialfd != INVALID_HANDLE_VALUE)
+    if(pic.serialfd != INVALID_HANDLE_VALUE)
 #endif
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic->serialbaud)+wxT("(")+String().Format("%4.1f",fabs((100.0*pic->serialexbaud-100.0*pic->serialbaud)/pic->serialexbaud))+wxT("%)"));
+      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic.serialbaud)+wxT("(")+String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*pic.serialbaud)/pic.serialexbaud))+wxT("%)"));
     else  
       Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
 
@@ -938,7 +938,7 @@ void
 cboard_3::WritePreferences(void)
 {
     char line[100];
-    Window1.saveprefs(wxT("p3_proc"),getnamebyproc(proc,line));
+    Window1.saveprefs(wxT("p3_proc"),proc);
    
     line[0]=0;
     for(int i=0;i<6;i++)
@@ -952,7 +952,7 @@ cboard_3::ReadPreferences(char *name,char *value)
 {
     if(!strcmp(name,"p3_proc"))
     {
-      proc=getprocbyname(value); 
+      proc=value; 
     }
     
       int i;  

@@ -28,12 +28,14 @@
 
 #include<lxrad/lxrad.h>
 
+#include "board_pic.h"
+
 //new board class must be derived from board class defined in board.h
-class cboard_5:public board
+class cboard_5:public board_pic
 {
   private:
      int p_BT1;           //S1 switch
-     unsigned int lm[20]; //pins mean value (for PWM outputs)
+
      int jmp[1];             //jmp
           
      //controls to be added in simulator window
