@@ -42,7 +42,7 @@ CPWindow5::_EvOnShow(CControl * control)
 {
   draw1.SetWidth (GetWidth () - 15);
   draw1.SetHeight (GetHeight () - 40);
-
+  timer1.SetRunState (1); 
 };
 
 void
@@ -55,19 +55,7 @@ CPWindow5::menu1_EvMenuActive(CControl * control)
 void
 CPWindow5::_EvOnCreate(CControl * control)
 {
-  char cbuf[10];
-   
-  PinNames.Clear ();
-  
-  for(int i=1; i<= pic->PINCOUNT;i++ )
-    {
-      String spin= getPinName(pic,i,cbuf);
-      
-      if(spin.Cmp(wxT("error")))
-      {
-        PinNames.AddLine (itoa(i)+"  "+spin);
-      }
-    }
+
 };
 
 
@@ -166,7 +154,7 @@ void
 CPWindow5::timer1_EvOnTime(CControl * control)
 {
 
-  draw1.Canvas.Init (1.0, 1.0);
+  draw1.Canvas.Init (scale, scale);
 
   draw1.Canvas.SetFgColor (50, 50, 50);
   draw1.Canvas.SetBgColor (50, 50, 50);
@@ -212,6 +200,19 @@ CPWindow5::draw1_EvKeyboardPress(CControl * control, uint key, uint x, uint y,ui
 {
   //code here:)
   mprint(wxT("draw1_EvKeyboardPress\n"));
+  
+  switch(key)
+  {
+    case '='://+
+      scale+=0.1;
+      if(scale > 2)scale=2;
+      break;  
+    case '-':
+      scale-=0.1;
+      if(scale < 0.1)scale=0.1;
+      break;
+  }
+  
 };
 
 void
@@ -221,18 +222,81 @@ CPWindow5::draw1_EvKeyboardRelease(CControl * control, uint key, uint x, uint y,
   mprint(wxT("draw1_EvKeyboardRelease\n"));
 };
 
+bool 
+CPWindow5::SaveConfig(String fname)
+{
+  String temp;
+  
+    CStringList prefs;
+    prefs.Clear();
+    for (int i = 0; i < partsc; i++)
+    {
+      temp.Printf ("%s,%i,%i:%s",parts[i]->GetName(),parts[i]->GetX(),parts[i]->GetY(),parts[i]->WritePreferences());  
+      prefs.AddLine(temp);
+    }
+    
+    return prefs.SaveToFile(fname);
+}
+
+bool 
+CPWindow5::LoadConfig(String fname)
+{
+    char name[256];  
+    char temp[256]; 
+    unsigned int x,y;
+    CStringList prefs;
+    
+    bool ret=wxFileExists(fname);
+    
+    if(ret)
+    {
+      prefs.LoadFromFile(fname);
+      
+      DeleteParts();
+    
+      for (unsigned int i = 0; i < prefs.GetLinesCount (); i++)
+      {
+        sscanf(prefs.GetLine (i).c_str (),"%256[^,],%i,%i,%256[^,]",name,&x,&y,temp);
+              
+        parts[i]=create_part(name,x,y);
+        parts[i]->ReadPreferences(temp);
+      }
+      partsc=prefs.GetLinesCount ();
+    }
+    
+    return ret;
+}
+  
+void 
+CPWindow5::DeleteParts(void)
+{
+     int runstate=0;
+    
+    //delete previous parts
+    
+    runstate=timer1.GetRunState ();
+    timer1.SetRunState(0);
+    usleep(100000);//wait for thread end 
+    
+    for (int i = 0; i < partsc; i++)
+    {
+        delete parts[i];
+    } 
+    partsc=0;
+    timer1.SetRunState (runstate);
+}
+
+
 void
 CPWindow5::menu1_File_Saveconfiguration_EvMenuActive(CControl * control)
 {
-  //code here:)
-  mprint(wxT("menu1_File_Saveconfiguration_EvMenuActive\n"));
+  //SaveConfig("parts.txt");  
 };
 
 void
 CPWindow5::menu1_File_Loadconfiguration_EvMenuActive(CControl * control)
 {
-  //code here:)
-  mprint(wxT("menu1_File_Loadconfiguration_EvMenuActive\n"));
+    //LoadConfig("parts.txt");
 };
 
 
@@ -249,7 +313,8 @@ CPWindow5::Process(void)
 void
 CPWindow5::_EvOnHide(CControl * control)
 {
-   Window1.GetBoard ()->SetUseSpareParts (0);
+  timer1.SetRunState (0);
+  Window1.GetBoard ()->SetUseSpareParts (0);
 };
 
 
@@ -264,6 +329,7 @@ void
 CPWindow5::pmenu2_Delete_EvMenuActive(CControl * control)
 {
     timer1.SetRunState (0);
+    usleep(100000);//wait for thread end 
     delete  parts[PartSelected];
   
     for (int i = PartSelected; i < partsc-1; i++)

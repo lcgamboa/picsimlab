@@ -85,7 +85,7 @@ CPWindow5::CPWindow5(void)
   timer1.SetName(wxT("timer1"));
   timer1.SetTag(0);
   timer1.SetTime(100);
-  timer1.SetRunState(1);
+  timer1.SetRunState(0);
   timer1.EvOnTime=EVONTIME & CPWindow5::timer1_EvOnTime;
   CreateChild(&timer1);
   //menu1_File_Saveconfiguration
@@ -142,5 +142,5 @@ CPWindow5::CPWindow5(void)
   PartSelected=-1;
   mdx=0;
   mdy=0;
- 
+  scale=1.0;
 };

@@ -25,13 +25,15 @@
 
 #include"picsimlab1.h"
 #include"picsimlab4.h"
-#include"part_step.h"
+#include"part_pot.h"
 
 /* outputs */
-enum {O_P1, O_P2, O_P3, O_P4, O_L1, O_L2, O_L3, O_L4, O_ROT} ;
+enum {O_P1, O_P2, O_P3, O_P4, O_PO1, O_PO2, O_PO3, O_PO4} ;
 
+/* inputs */
+enum {I_PO1, I_PO2, I_PO3, I_PO4};
 
-cpart_step::cpart_step(unsigned x, unsigned y)
+cpart_pot::cpart_pot(unsigned x, unsigned y)
 {
    X=x;
    Y=y;        
@@ -44,19 +46,20 @@ cpart_step::cpart_step(unsigned x, unsigned y)
    
    canvas.Create(Bitmap);
    
-   angle =0;
    
-   input_pins[0]=0;
-   input_pins[1]=0;
-   input_pins[2]=0;
-   input_pins[3]=0;      
-   
-   b1[0]=0;b1[1]=0;
-   b2[0]=0;b2[1]=0;
+   output_pins[0]=0;
+   output_pins[1]=0;
+   output_pins[2]=0;
+   output_pins[3]=0;      
+   output_pins[4]=0;
+   output_pins[5]=0;
+   output_pins[6]=0;
+   output_pins[7]=0;  
+  
 
 };
 
-cpart_step::~cpart_step(void)
+cpart_pot::~cpart_pot(void)
 {
     delete Bitmap;
 }
@@ -64,17 +67,14 @@ cpart_step::~cpart_step(void)
  
 
 
-void cpart_step::Draw(void)
+void cpart_pot::Draw(void)
 { 
  
   
    
   int i;
   board *pboard=Window1.GetBoard();
-  const picpin * ppins=pboard->MGetPinsValues();
-  
-
-          
+   
   canvas.Init();
   
   wxFont font(12, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );
@@ -87,40 +87,40 @@ void cpart_step::Draw(void)
          case O_P1:
          case O_P2:
          case O_P3:
-         case O_P4:    
+         case O_P4:                 
            canvas.SetFont (font);
            canvas.SetColor (49, 61, 99);
            canvas.Rectangle (1,output[i].x1,output[i].y1,output[i].x2-output[i].x1,output[i].y2-output[i].y1);
            canvas.SetFgColor (255, 255, 255);
            if(output[i].id == O_P1)
            {
-             if(input_pins[0] == 0)
+             if(output_pins[0] == 0)
                canvas.Text ("NC",output[i].x1,output[i].y1);
              else
-               canvas.Text (pboard->MGetPinName(input_pins[0]),output[i].x1,output[i].y1);  
+               canvas.Text (pboard->MGetPinName(output_pins[0]),output[i].x1,output[i].y1);  
            }
            if(output[i].id == O_P2)
            {
-             if(input_pins[1] == 0)
+             if(output_pins[1] == 0)
                canvas.Text ("NC",output[i].x1,output[i].y1);
              else  
-               canvas.Text (pboard->MGetPinName(input_pins[1]),output[i].x1,output[i].y1);
+               canvas.Text (pboard->MGetPinName(output_pins[1]),output[i].x1,output[i].y1);
            }
            if(output[i].id == O_P3)
            {
-             if(input_pins[2] == 0)
+             if(output_pins[2] == 0)
                canvas.Text ("NC",output[i].x1,output[i].y1);
              else  
-               canvas.Text (pboard->MGetPinName(input_pins[2]),output[i].x1,output[i].y1);
+               canvas.Text (pboard->MGetPinName(output_pins[2]),output[i].x1,output[i].y1);
            }
            if(output[i].id == O_P4)
            {
-             if(input_pins[3] == 0)
+             if(output_pins[3] == 0)
                canvas.Text ("NC",output[i].x1,output[i].y1);
              else  
-               canvas.Text (pboard->MGetPinName(input_pins[3]),output[i].x1,output[i].y1);
+               canvas.Text (pboard->MGetPinName(output_pins[3]),output[i].x1,output[i].y1);
            }
-           break;
+           /*
          case O_ROT:
            canvas.SetLineWidth (8);
            canvas.SetColor (250, 250, 250);
@@ -136,16 +136,18 @@ void cpart_step::Draw(void)
          case O_L3:
          case O_L4: //FIXME it must use mean value!
            if(output[i].id == O_L1)
-             canvas.SetColor (ppins[input_pins[0]-1].oavalue, 0, 0);
+             canvas.SetColor (pic->pins[output_pins[0]-1].value*250, 0, 0);
            if(output[i].id == O_L2)
-             canvas.SetColor (ppins[input_pins[1]-1].oavalue, 0, 0);
+             canvas.SetColor (pic->pins[output_pins[1]-1].value*250, 0, 0);
            if(output[i].id == O_L3)
-             canvas.SetColor (ppins[input_pins[2]-1].oavalue, 0, 0);
+             canvas.SetColor (pic->pins[output_pins[2]-1].value*250, 0, 0);
            if(output[i].id == O_L4)
-             canvas.SetColor (ppins[input_pins[3]-1].oavalue, 0, 0);
+             canvas.SetColor (pic->pins[output_pins[3]-1].value*250, 0, 0);
            canvas.Circle (1,output[i].x1,output[i].y1,output[i].r);
            break;
-        }
+
+            */
+      }
 
       
   };
@@ -166,55 +168,17 @@ void cpart_step::Draw(void)
 }
 
  
-void cpart_step::Process(void)
+void cpart_pot::Process(void)
 {
-   const picpin * ppins=Window1.GetBoard()->MGetPinsValues();
 
-   b1[1]=b1[0];
-   b1[0]=ppins[input_pins[0]-1].value-ppins[input_pins[2]-1].value;
-   b2[1]=b2[0];
-   b2[0]=ppins[input_pins[1]-1].value-ppins[input_pins[3]-1].value;
-   
-   
-   //printf("%i %i \n",b1[0],b2[0]);
-   
-   //foward full step
-   if((b1[0]==1) && (b2[0]==0) && (b1[1]==0) && (b2[1]==-1) )
-       angle+=0.5;
-     
-    if((b1[0]==0) && (b2[0]==1) && (b1[1]==1) && (b2[1]==0) )
-       angle+=0.5;
-        
-    if((b1[0]==-1) && (b2[0]==0) && (b1[1]==0) && (b2[1]==1) )
-       angle+=0.5;
-        
-    if((b1[0]==0 )&& (b2[0]==-1) && (b1[1]==-1) && (b2[1]==0) )
-       angle+=0.5;
-   
-   
-   //backward full step
-    if((b1[1]==1) && (b2[1]==0) && (b1[0]==0) && (b2[0]==-1) )
-       angle-=0.5;
-     
-    if((b1[1]==0) && (b2[1]==1) && (b1[0]==1) && (b2[0]==0) )
-       angle-=0.5;
-        
-    if((b1[1]==-1) && (b2[1]==0) && (b1[0]==0) && (b2[0]==1) )
-       angle-=0.5;
-        
-    if((b1[1]==0 )&& (b2[1]==-1) && (b1[0]==-1) && (b2[0]==0) )
-       angle-=0.5;
-   
-   
+  // b1[0]=pic->pins[output_pins[0]-1].value-pic->pins[output_pins[2]-1].value;
     
-   if(angle >= 2*M_PI)angle-=2*M_PI;
-   
      
 }
  
 
 void 
-cpart_step::Reset(void)
+cpart_pot::Reset(void)
 {          
 
 };
@@ -223,7 +187,7 @@ cpart_step::Reset(void)
 
 
 void 
-cpart_step::MouseButtonPress(uint button, uint x, uint y,uint state)
+cpart_pot::MouseButtonPress(uint button, uint x, uint y,uint state)
 {
  /*
   int i;
@@ -246,7 +210,7 @@ cpart_step::MouseButtonPress(uint button, uint x, uint y,uint state)
 
 
 void 
-cpart_step::MouseButtonRelease(uint button, uint x, uint y,uint state)
+cpart_pot::MouseButtonRelease(uint button, uint x, uint y,uint state)
 {
   /*  
   int i;
@@ -268,7 +232,7 @@ cpart_step::MouseButtonRelease(uint button, uint x, uint y,uint state)
 
 
 void 
-cpart_step::KeyPress( uint key, uint x, uint y,uint mask)
+cpart_pot::KeyPress( uint key, uint x, uint y,uint mask)
 {
   /*
   if(key == '1')
@@ -291,7 +255,7 @@ cpart_step::KeyPress( uint key, uint x, uint y,uint mask)
 };
 
 void
-cpart_step::KeyRelease(uint key, uint x, uint y,uint mask)
+cpart_pot::KeyRelease(uint key, uint x, uint y,uint mask)
 {
   /*
   if(key == '1')
@@ -317,33 +281,39 @@ cpart_step::KeyRelease(uint key, uint x, uint y,uint mask)
 };
 
 unsigned short 
-cpart_step::get_in_id(char * name)
+cpart_pot::get_in_id(char * name)
 {  
+
+  if(strcmp(name,"PO1")==0)return I_PO1;
+  if(strcmp(name,"PO2")==0)return I_PO2;
+  if(strcmp(name,"PO3")==0)return I_PO3;
+  if(strcmp(name,"PO4")==0)return I_PO4;
+  
   printf("Erro input '%s' don't have a valid id! \n",name);
   return -1;
 };
 
 unsigned short 
-cpart_step::get_out_id(char * name)
+cpart_pot::get_out_id(char * name)
 {
 
   if(strcmp(name,"P1")==0)return O_P1;
   if(strcmp(name,"P2")==0)return O_P2;
   if(strcmp(name,"P3")==0)return O_P3;
   if(strcmp(name,"P4")==0)return O_P4;
-  if(strcmp(name,"L1")==0)return O_L1;
-  if(strcmp(name,"L2")==0)return O_L2;
-  if(strcmp(name,"L3")==0)return O_L3;
-  if(strcmp(name,"L4")==0)return O_L4;
-  if(strcmp(name,"ROT")==0)return O_ROT;
+  
+  if(strcmp(name,"PO1")==0)return O_PO1;
+  if(strcmp(name,"PO2")==0)return O_PO2;
+  if(strcmp(name,"PO3")==0)return O_PO3;
+  if(strcmp(name,"PO4")==0)return O_PO4;
 
   printf("Erro output '%s' don't have a valid id! \n",name);
   return 1;
 };
 
 
-String
-cpart_step::WritePreferences(void)
+String 
+cpart_pot::WritePreferences(void)
 {
   /*
     char line[100];
@@ -354,7 +324,7 @@ cpart_step::WritePreferences(void)
 };
 
 void 
-cpart_step::ReadPreferences(String value)
+cpart_pot::ReadPreferences(String value)
 {
   /*
     int i;
@@ -377,14 +347,14 @@ cpart_step::ReadPreferences(String value)
     */
 };
 
-CPWindow * WProp_step;
+CPWindow * WProp_pot;
       
 void 
-cpart_step::ConfigurePropiertsWindow(CPWindow *  wprop)
+cpart_pot::ConfigurePropiertsWindow(CPWindow *  wprop)
 {
     String Items="0  NC,";
     String spin;
-    WProp_step=wprop;
+    WProp_pot=wprop;
     board *pboard=Window1.GetBoard();
     
     for(int i=1; i<= pboard->MGetPinCount();i++ )
@@ -397,64 +367,65 @@ cpart_step::ConfigurePropiertsWindow(CPWindow *  wprop)
       }
     }
     
-    ((CCombo*)WProp_step->GetChildByName("combo1"))->SetItems(Items);
-    if(input_pins[0] == 0)
-        ((CCombo*)WProp_step->GetChildByName("combo1"))->SetText("0  NC");
+    ((CCombo*)WProp_pot->GetChildByName("combo1"))->SetItems(Items);
+    if(output_pins[0] == 0)
+        ((CCombo*)WProp_pot->GetChildByName("combo1"))->SetText("0  NC");
     else
     {
-        spin= pboard->MGetPinName (input_pins[0]);
-        ((CCombo*)WProp_step->GetChildByName("combo1"))->SetText(itoa(input_pins[0])+"  "+spin);
+        spin= pboard->MGetPinName(output_pins[0]);
+        ((CCombo*)WProp_pot->GetChildByName("combo1"))->SetText(itoa(output_pins[0])+"  "+spin);
     }
     
-    ((CCombo*)WProp_step->GetChildByName("combo2"))->SetItems(Items);
-    if(input_pins[1] == 0)
-        ((CCombo*)WProp_step->GetChildByName("combo2"))->SetText("0  NC");
+    ((CCombo*)WProp_pot->GetChildByName("combo2"))->SetItems(Items);
+    if(output_pins[1] == 0)
+        ((CCombo*)WProp_pot->GetChildByName("combo2"))->SetText("0  NC");
     else
     {
-        spin= pboard->MGetPinName (input_pins[1]);
-        ((CCombo*)WProp_step->GetChildByName("combo2"))->SetText(itoa(input_pins[1])+"  "+spin);
+        spin= pboard->MGetPinName(output_pins[1]);
+        ((CCombo*)WProp_pot->GetChildByName("combo2"))->SetText(itoa(output_pins[1])+"  "+spin);
     }
     
-    ((CCombo*)WProp_step->GetChildByName("combo3"))->SetItems(Items);
-    if(input_pins[2] == 0)
-        ((CCombo*)WProp_step->GetChildByName("combo3"))->SetText("0  NC");
+    ((CCombo*)WProp_pot->GetChildByName("combo3"))->SetItems(Items);
+    if(output_pins[3] == 0)
+        ((CCombo*)WProp_pot->GetChildByName("combo3"))->SetText("0  NC");
     else
     {
-        spin= pboard->MGetPinName (input_pins[2]);
-        ((CCombo*)WProp_step->GetChildByName("combo3"))->SetText(itoa(input_pins[2])+"  "+spin);
+        spin= pboard->MGetPinName(output_pins[2]);
+        ((CCombo*)WProp_pot->GetChildByName("combo3"))->SetText(itoa(output_pins[2])+"  "+spin);
     }
     
-    ((CCombo*)WProp_step->GetChildByName("combo4"))->SetItems(Items);
-    if(input_pins[3] == 0)
-        ((CCombo*)WProp_step->GetChildByName("combo4"))->SetText("0  NC");
+    ((CCombo*)WProp_pot->GetChildByName("combo4"))->SetItems(Items);
+    if(output_pins[3] == 0)
+        ((CCombo*)WProp_pot->GetChildByName("combo4"))->SetText("0  NC");
     else
     {
-        spin= pboard->MGetPinName (input_pins[3]);
-        ((CCombo*)WProp_step->GetChildByName("combo4"))->SetText(itoa(input_pins[3])+"  "+spin);
+        spin= pboard->MGetPinName(output_pins[3]);
+        ((CCombo*)WProp_pot->GetChildByName("combo4"))->SetText(itoa(output_pins[3])+"  "+spin);
     }
     
-    ((CButton*)WProp_step->GetChildByName("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & cpart_step::PropButton;
-    ((CButton*)WProp_step->GetChildByName("button1"))->SetTag(1);
+       
+    ((CButton*)WProp_pot->GetChildByName("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & cpart_pot::PropButton;
+    ((CButton*)WProp_pot->GetChildByName("button1"))->SetTag(1);
     
-    ((CButton*)WProp_step->GetChildByName("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & cpart_step::PropButton;
+    ((CButton*)WProp_pot->GetChildByName("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & cpart_pot::PropButton;
 }
 
 void 
-cpart_step::ReadPropiertsWindow(void)
+cpart_pot::ReadPropiertsWindow(void)
 {
-   if(WProp_step->GetTag())
+   if(WProp_pot->GetTag())
    {
-      input_pins[0]=atoi(((CCombo*)WProp_step->GetChildByName("combo1"))->GetText());
-      input_pins[1]=atoi(((CCombo*)WProp_step->GetChildByName("combo2"))->GetText());
-      input_pins[2]=atoi(((CCombo*)WProp_step->GetChildByName("combo3"))->GetText());
-      input_pins[3]=atoi(((CCombo*)WProp_step->GetChildByName("combo4"))->GetText());
+      output_pins[0]=atoi(((CCombo*)WProp_pot->GetChildByName("combo1"))->GetText());
+      output_pins[1]=atoi(((CCombo*)WProp_pot->GetChildByName("combo2"))->GetText());
+      output_pins[2]=atoi(((CCombo*)WProp_pot->GetChildByName("combo3"))->GetText());
+      output_pins[3]=atoi(((CCombo*)WProp_pot->GetChildByName("combo4"))->GetText());
    }
 } 
 
 
 void
-cpart_step::PropButton (CControl * control, uint button, uint x, uint y, uint state)
+cpart_pot::PropButton (CControl * control, uint button, uint x, uint y, uint state)
 {
-   WProp_step->SetTag(control->GetTag()); 
-   WProp_step->HideExclusive ();
+   WProp_pot->SetTag(control->GetTag()); 
+   WProp_pot->HideExclusive ();
 };

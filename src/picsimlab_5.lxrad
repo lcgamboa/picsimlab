@@ -95,7 +95,7 @@
   <Name type="String">timer1</Name>
   <Tag type="int">0</Tag>
   <Time type="int">100</Time>
-  <RunState type="int">1</RunState>
+  <RunState type="int">0</RunState>
   <EvOnTime type="Event">TRUE</EvOnTime>
 </timer1>
 <menu1_File_Saveconfiguration>

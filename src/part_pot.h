@@ -23,25 +23,25 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef PART_SERVO_H
-#define	PART_SERVO_H
+#ifndef PART_POT_H
+#define	PART_POT_H
 
 #include<lxrad/lxrad.h>
 #include"part.h"
 
 
-class cpart_servo:public part
+class cpart_pot:public part
 {
    public:
-      String GetName(void){return wxT("Servo motor");};
-      cpart_servo(unsigned x, unsigned y);
-      ~cpart_servo(void);
+      String GetName(void){return wxT("Potentiometers");};
+      cpart_pot(unsigned x, unsigned y);
+      ~cpart_pot(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return wxT("parts/servo_motor.png");};
-      String GetInputMapFile(void){return wxT("parts/servo_motor_i.map");};
-      String GetOutputMapFile(void){return wxT("parts/servo_motor_o.map");};
-      String GetPropiertiesWindowFile(void){return wxT("parts/servo_motor.lxrad");};
+      String GetPictureFileName(void){return wxT("parts/pot.png");};
+      String GetInputMapFile(void){return wxT("parts/pot_i.map");};
+      String GetOutputMapFile(void){return wxT("parts/pot_o.map");};
+      String GetPropiertiesWindowFile(void){return wxT("parts/pot.lxrad");};
       void Reset(void);
       void MouseButtonPress(uint button, uint x, uint y,uint state);
       void MouseButtonRelease(uint button, uint x, uint y,uint state);
@@ -54,13 +54,12 @@ class cpart_servo:public part
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
       void PropButton (CControl * control, uint button, uint x, uint y, uint state);
-    private:  
-      unsigned char input_pin;   
-      wxBitmap * BackGround;  //Background image
+    private:
+      unsigned char output_pins[4];    
 };
 
 
 
 
-#endif	/* PART_SERVO */
+#endif	/* POT */
 

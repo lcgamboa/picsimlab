@@ -222,7 +222,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Pin 1</Text>
+  <Text type="String">Pot. 1</Text>
   <Align type="CAlign">1</Align>
 </label1>
 <label2>
@@ -249,7 +249,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Pin 2</Text>
+  <Text type="String">Pot. 2</Text>
   <Align type="CAlign">1</Align>
 </label2>
 <label3>
@@ -276,7 +276,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Pin 3</Text>
+  <Text type="String">Pot. 3</Text>
   <Align type="CAlign">1</Align>
 </label3>
 <label4>
@@ -303,7 +303,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Pin 4</Text>
+  <Text type="String">Pot. 4</Text>
   <Align type="CAlign">1</Align>
 </label4>
 </window1>

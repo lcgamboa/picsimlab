@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -25,216 +25,85 @@
 
 #include"picsimlab1.h"
 #include"picsimlab4.h"
-#include"board_1.h"
+#include"part_servo.h"
 
 /* outputs */
-#define O_RB0	1
-#define O_RB1	2
-#define O_RB2	3
-#define O_RB3	4
-#define O_RB4	5
-#define O_RB5	6
-#define O_RB6	7
-#define O_RB7	8
-
-#define O_RA0	9
-#define O_RA1	10
-#define O_RA2	11
-#define O_RA3	12
-
-#define O_RA0L	13
-
-#define O_A1	14
-#define O_B1	15
-#define O_C1	16
-#define O_D1	17
-#define O_E1	18
-#define O_F1	19
-#define O_G1	20
-#define O_P1	21
-
-#define O_A2	22
-#define O_B2	23
-#define O_C2	24
-#define O_D2	25
-#define O_E2	26
-#define O_F2	27
-#define O_G2	28
-#define O_P2	29
-#define O_JP1	30
-
-
-/*inputs*/
-#define I_RST	1
-#define I_RA1	2
-#define I_RA2	3
-#define I_RA3	4
-#define I_RA4	5
-#define I_PWR	6 
-#define I_ICSP	7
-#define I_JP1	8
+enum {O_P1,O_AXIS};
 
 
 
-cboard_1::cboard_1(void)
+cpart_servo::cpart_servo(unsigned x, unsigned y)
 {
-    proc=P16F628A;
-    ReadMaps();
-    jmp[0]=0;    
-    
-  //gauge1
-  gauge1=new CGauge();
-  gauge1->SetFOwner(&Window1);
-  gauge1->SetName(wxT("gauge1_p1"));
-  gauge1->SetX(13);
-  gauge1->SetY(242);
-  gauge1->SetWidth(140);
-  gauge1->SetHeight(20);
-  gauge1->SetEnable(1);
-  gauge1->SetVisible(1);
-  gauge1->SetRange(100);
-  gauge1->SetValue(0);
-  gauge1->SetType(4);
-  Window1.CreateChild(gauge1);
-  //label1
-  label1=new CLabel();
-  label1->SetFOwner(&Window1);
-  label1->SetName(wxT("label1_p1"));
-  label1->SetX(12);
-  label1->SetY(220);
-  label1->SetWidth(60);
-  label1->SetHeight(20);
-  label1->SetEnable(1);
-  label1->SetVisible(1);
-  label1->SetText(wxT("LAMP"));
-  label1->SetAlign(1);
-  Window1.CreateChild(label1);   
+   X=x;
+   Y=y;      
+   input_pin=0;
+           
+   ReadMaps();   
+     
+   wxImage image;
+   image.LoadFile(Window1.GetSharePath()+GetPictureFileName());
+
+   Bitmap = new wxBitmap(image);
+   BackGround = new wxBitmap(image);
+   
+   canvas.Create(Bitmap);
 };
 
-cboard_1::~cboard_1(void)
+cpart_servo::~cpart_servo(void)
 {
-      Window1.DestroyChild(gauge1);
-      Window1.DestroyChild(label1);
+    delete Bitmap;
+    delete BackGround;
 }
 
-void cboard_1::Draw(CDraw *draw,double scale)
-{
+ 
+float angle;
+
+void cpart_servo::Draw(void)
+{ 
+   board *pboard=Window1.GetBoard();
+  
+   canvas.SetBitmap (BackGround,1.0,1.0);
+  
+   angle+=0.1;
+   
+   if(angle >= 360)angle-=360;
+   
+   
   int i;
   
-  draw->Canvas.Init(scale,scale);
+  canvas.Init();
   
-
-
-//lab1 draw 
+ 
   for(i=0;i<outputc;i++)
   {
-    if(!output[i].r)
-    {
-      draw->Canvas.SetFgColor (30, 0, 0);
-      
-      if(jmp[0])
-      {
-          switch(output[i].id)
-          {         
-            case O_A1: draw->Canvas.SetColor (lm1[7], 0, 0);break;
-            case O_B1: draw->Canvas.SetColor (lm1[8], 0, 0);break;
-            case O_C1: draw->Canvas.SetColor (lm1[10], 0, 0);break;
-            case O_D1: draw->Canvas.SetColor (lm1[11], 0, 0);break;
-            case O_E1: draw->Canvas.SetColor (lm1[12], 0, 0);break;
-            case O_F1: draw->Canvas.SetColor (lm1[6], 0, 0);break;
-            case O_G1: draw->Canvas.SetColor (lm1[5], 0, 0);break;
-            case O_P1: draw->Canvas.SetColor (lm1[9], 0, 0);break;
-            case O_A2: draw->Canvas.SetColor (lm2[7], 0, 0);break;
-            case O_B2: draw->Canvas.SetColor (lm2[8], 0, 0);break;
-            case O_C2: draw->Canvas.SetColor (lm2[10], 0, 0);break;
-            case O_D2: draw->Canvas.SetColor (lm2[11], 0, 0);break;
-            case O_E2: draw->Canvas.SetColor (lm2[12], 0, 0);break;
-            case O_F2: draw->Canvas.SetColor (lm2[6], 0, 0);break;
-            case O_G2: draw->Canvas.SetColor (lm2[5], 0, 0);break;
-            case O_P2: draw->Canvas.SetColor (lm2[9], 0, 0);break;
-          }
-      }
-      else
-      {
-        draw->Canvas.SetColor (30, 0, 0);
-      } 
 
-      if(output[i].id == O_JP1) draw->Canvas.SetColor (150, 150, 150);
-
-      draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2-output[i].x1,output[i].y2-output[i].y1 );
-
-       
-      if(output[i].id == O_JP1)
-      {
-       if(!jmp[0])
-       {
-         draw->Canvas.SetColor (70, 70, 70);
-         draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, (int)((output[i].x2-output[i].x1)*0.65),output[i].y2-output[i].y1 );
-         draw->Canvas.SetColor (220, 220, 0);
-         draw->Canvas.Circle (1,output[i].x1+(int)((output[i].x2-output[i].x1)*0.80), output[i].y1+((output[i].y2-output[i].y1)/2),3);
-       }
-       else
-       {
-         draw->Canvas.SetColor (70, 70, 70);
-         draw->Canvas.Rectangle (1, output[i].x1+((int)((output[i].x2-output[i].x1)*0.35)), output[i].y1, (int)((output[i].x2-output[i].x1)*0.65),output[i].y2-output[i].y1 );
-         draw->Canvas.SetColor (220, 220, 0);
-         draw->Canvas.Circle (1,output[i].x1+(int)((output[i].x2-output[i].x1)*0.20), output[i].y1+((output[i].y2-output[i].y1)/2),3);
-       };
-      }       
- 
-    }
-    else
-    {
-      draw->Canvas.SetFgColor (0, 0, 0);
-      
- 
-      if(!jmp[0])
-      {
-        switch(output[i].id)
+      if(output[i].id == O_P1)
         {
-          case O_RB0: draw->Canvas.SetColor (lm[5], 0, 0);break;
-          case O_RB1: draw->Canvas.SetColor (lm[6], 0, 0);break;
-          case O_RB2: draw->Canvas.SetColor (lm[7], 0, 0);break;
-          case O_RB3: draw->Canvas.SetColor (lm[8], 0, 0);break;
-          case O_RB4: draw->Canvas.SetColor (lm[9], 0, 0);break;
-          case O_RB5: draw->Canvas.SetColor (lm[10], 0, 0);break;
-          case O_RB6: draw->Canvas.SetColor (lm[11], 0, 0);break;
-          case O_RB7: draw->Canvas.SetColor (lm[12], 0, 0);break;
+         canvas.SetFgColor (255, 255, 255);
+         if(input_pin == 0)
+            canvas.Text ("NC",output[i].x1,output[i].y1);
+         else
+            canvas.Text (pboard->MGetPinName (input_pin),output[i].x1,output[i].y1);  
         }
-      }
-      else
-      {
-         if((output[i].name[0]=='R')&&(output[i].name[1]=='B'))
-            draw->Canvas.SetColor (30, 0, 0);
-      }
 
-      switch(output[i].id)
-      {
-        case O_RA0: draw->Canvas.SetColor (0, lm[16], 0);break;
-        case O_RA1: draw->Canvas.SetColor (0, lm[17], 0);break;
-        case O_RA2: draw->Canvas.SetColor (0, lm[0], 0);break;
-        case O_RA3: draw->Canvas.SetColor (0, lm[1], 0);break;
-        case O_RA0L: draw->Canvas.SetColor (lm[16],lm[16], 0);break;
-      }
+      if(output[i].id == O_AXIS)
+        {
+         canvas.SetFgColor (255, 255, 255);
+         canvas.SetLineWidth (20);
+         canvas.Line (output[i].x1,output[i].y1,output[i].x1+output[i].r*sin(angle),output[i].y1+output[i].r*cos(angle));
+        }
+
       
-      draw->Canvas.Circle (1,output[i].x1, output[i].y1,output[i].r );
-    };    
-
   };
 
-//end draw
-
-  draw->Canvas.End();
-  draw->Update ();
-  
-//Lâmpada
-  gauge1->SetValue(0.4444*(lm[16]-30)); 
-  
+  canvas.End();
+    
 }
 
  
-void cboard_1::Run_CPU(void)
+void cpart_servo::Process(void)
 {
+  /*
   int i;
   int j;
   unsigned char pi;
@@ -312,12 +181,14 @@ void cboard_1::Run_CPU(void)
 
      lm1[9]=30; 
      lm2[9]=30;
+     */
 }
  
 
 void 
-cboard_1::Reset(void)
+cpart_servo::Reset(void)
 {          
+  /*
     p_BT1=1; 
     p_BT2=1; 
     p_BT3=1; 
@@ -336,16 +207,16 @@ cboard_1::Reset(void)
      lm1[i]=0;
      lm2[i]=0;
    };
-
+*/
 };
 
 
 
 
 void 
-cboard_1::MouseButtonPress(uint button, uint x, uint y,uint state)
+cpart_servo::MouseButtonPress(uint button, uint x, uint y,uint state)
 {
- 
+ /*
   int i;
     
   for(i=0;i<inputc;i++)
@@ -354,81 +225,21 @@ cboard_1::MouseButtonPress(uint button, uint x, uint y,uint state)
     {
    
       switch(input[i].id) 
-      { 
-      case I_ICSP:
-      {
-         Window1.menu1_File_LoadHex_EvMenuActive(NULL);
-      };break;  
-      
-      case I_JP1:
-      {
-        jmp[0]^=0x01; 
-      };break;
- 
-
-   
-      case I_PWR:
-      {
-        if(Window1.Get_picpwr()) 
-        { 
-          Window1.Set_picrun(0); 
-          Window1.Set_picpwr(0); 
-          pic_reset(1);
-          Reset();
-
-          p_BT1=0; 
-          p_BT2=0; 
-          p_BT3=0; 
-          p_BT4=0; 
-          Window1.statusbar1.SetField(0,wxT("Stoped"));
-        }
-        else
-        {
-          Window1.Set_picpwr(1);
-          Window1.Set_picrun(1);
-          pic_reset(1);          
-          Reset();
-     
-          Window1.statusbar1.SetField(0,wxT("Running..."));
-        } 
-      };break;
-      
-      case I_RST:
-      {
-          if(Window1.Get_picpwr())
-          {
-             Window1.Set_picpwr(0);
-             Window1.Set_picrst(1);
-          } 
-      };break;
-      
-      case I_RA1:
-        {
-          p_BT1=0;
-        };break;
-      case I_RA2:
-        {
-          p_BT2=0; 
-        };break;
-      case I_RA3:
-        {
-          p_BT3=0; 
-        };break;
-      case I_RA4:
-        {
-          p_BT4=0; 
-        };break;
-    
+      {   
+        case I_P1:
+           Message("P1");
+           break; 
       }
     }
   }
-    
+ */
 };
 
 
 void 
-cboard_1::MouseButtonRelease(uint button, uint x, uint y,uint state)
+cpart_servo::MouseButtonRelease(uint button, uint x, uint y,uint state)
 {
+  /*  
   int i;
 
   for(i=0;i<inputc;i++)
@@ -437,49 +248,20 @@ cboard_1::MouseButtonRelease(uint button, uint x, uint y,uint state)
     {
       switch(input[i].id)
       {
-      case I_RST:
-      {
-          if(Window1.Get_picrst())
-          {
-            Window1.Set_picpwr(1);
-            Window1.Set_picrst(0);
-
-            if(pic_reset(-1))
-            {  
-              Reset();
-            }
-          } 
-      };break;
-      
-        case I_RA1:
-        {
-          p_BT1=1; 
-        };break;
-        case I_RA2:
-        {
-          p_BT2=1; 
-        };break;
-        case I_RA3:
-        {
-          p_BT3=1; 
-        };break;
-        case I_RA4:
-        {
-          p_BT4=1; 
-        };break;
-   
-
+        case I_P1:
+        break;
       }
     } 
   }
-
+   */ 
 };
 
 
 
 void 
-cboard_1::KeyPress( uint key, uint x, uint y,uint mask)
+cpart_servo::KeyPress( uint key, uint x, uint y,uint mask)
 {
+  /*
   if(key == '1')
   {
     p_BT1=0; 
@@ -496,11 +278,13 @@ cboard_1::KeyPress( uint key, uint x, uint y,uint mask)
   {
     p_BT4=0; 
   }
+  */
 };
 
 void
-cboard_1::KeyRelease(uint key, uint x, uint y,uint mask)
+cpart_servo::KeyRelease(uint key, uint x, uint y,uint mask)
 {
+  /*
   if(key == '1')
   {
     p_BT1=1; 
@@ -520,80 +304,43 @@ cboard_1::KeyRelease(uint key, uint x, uint y,uint mask)
   {
     p_BT4=1; 
   }
+  */
 };
 
 unsigned short 
-cboard_1::get_in_id(char * name)
+cpart_servo::get_in_id(char * name)
 {
-  if(strcmp(name,"RST")==0)return I_RST; 
-  if(strcmp(name,"RA1")==0)return I_RA1;
-  if(strcmp(name,"RA2")==0)return I_RA2;
-  if(strcmp(name,"RA3")==0)return I_RA3;
-  if(strcmp(name,"RA4")==0)return I_RA4;
-  if(strcmp(name,"PWR")==0)return I_PWR;
-  if(strcmp(name,"ICSP")==0)return I_ICSP;
-  if(strcmp(name,"JP1")==0)return I_JP1;
-  
   printf("Erro input '%s' don't have a valid id! \n",name);
   return -1;
 };
 
 unsigned short 
-cboard_1::get_out_id(char * name)
+cpart_servo::get_out_id(char * name)
 {
 
-  if(strcmp(name,"RB0")==0)return O_RB0;
-  if(strcmp(name,"RB1")==0)return O_RB1;
-  if(strcmp(name,"RB2")==0)return O_RB2;
-  if(strcmp(name,"RB3")==0)return O_RB3;
-  if(strcmp(name,"RB4")==0)return O_RB4;
-  if(strcmp(name,"RB5")==0)return O_RB5;
-  if(strcmp(name,"RB6")==0)return O_RB6;
-  if(strcmp(name,"RB7")==0)return O_RB7;
-  
-  if(strcmp(name,"RA0")==0)return O_RA0;	
-  if(strcmp(name,"RA1")==0)return O_RA1;	
-  if(strcmp(name,"RA2")==0)return O_RA2;	
-  if(strcmp(name,"RA3")==0)return O_RA3;		
-
-  if(strcmp(name,"RA0L")==0)return O_RA0L;	
-
-  if(strcmp(name,"A1")==0)return O_A1;	
-  if(strcmp(name,"B1")==0)return O_B1;	
-  if(strcmp(name,"C1")==0)return O_C1;	
-  if(strcmp(name,"D1")==0)return O_D1;	
-  if(strcmp(name,"E1")==0)return O_E1;	
-  if(strcmp(name,"F1")==0)return O_F1;	
-  if(strcmp(name,"G1")==0)return O_G1;	
-  if(strcmp(name,"P1")==0)return O_P1;	
-
-  if(strcmp(name,"A2")==0)return O_A2;	
-  if(strcmp(name,"B2")==0)return O_B2;	
-  if(strcmp(name,"C2")==0)return O_C2;	
-  if(strcmp(name,"D2")==0)return O_D2;	
-  if(strcmp(name,"E2")==0)return O_E2;	
-  if(strcmp(name,"F2")==0)return O_F2;	
-  if(strcmp(name,"G2")==0)return O_G2;	
-  if(strcmp(name,"P2")==0)return O_P2;	
-  
-  if(strcmp(name,"JP1")==0)return O_JP1;	
+  if(strcmp(name,"P1")==0)return O_P1;
+  if(strcmp(name,"AXIS")==0)return O_AXIS;
 
   printf("Erro output '%s' don't have a valid id! \n",name);
   return 1;
 };
 
 
-void 
-cboard_1::WritePreferences(void)
+String
+cpart_servo::WritePreferences(void)
 {
+  /*
     char line[100];
     Window1.saveprefs(wxT("p1_proc"),getnamebyproc(proc,line));
     Window1.saveprefs(wxT("p1_jmp"),String::Format("%i",jmp[0]));
+    */
+  return "";
 };
 
 void 
-cboard_1::ReadPreferences(char *name,char *value)
+cpart_servo::ReadPreferences(String value)
 {
+  /*
     int i;
     
      if(!strcmp(name,"p1_jmp"))
@@ -611,4 +358,57 @@ cboard_1::ReadPreferences(char *name,char *value)
     {
       proc=getprocbyname(value); 
     }
+    */
+};
+
+CPWindow * WProp_servo;
+
+void 
+cpart_servo::ConfigurePropiertsWindow(CPWindow *  wprop)
+{
+    String Items="0  NC,";
+    String spin;
+    WProp_servo=wprop;
+    board *pboard=Window1.GetBoard();
+    
+    for(int i=1; i<= pboard->MGetPinCount();i++ )
+    {
+       spin= pboard->MGetPinName(i);
+      
+      if(spin.Cmp(wxT("error")))
+      {
+        Items=Items+itoa(i)+"  "+spin+",";
+      }
+    }
+    
+    ((CCombo*)WProp_servo->GetChildByName("combo1"))->SetItems(Items);
+    if(input_pin == 0)
+        ((CCombo*)WProp_servo->GetChildByName("combo1"))->SetText("0  NC");
+    else
+    {
+        spin= pboard->MGetPinName(input_pin);
+        ((CCombo*)WProp_servo->GetChildByName("combo1"))->SetText(itoa(input_pin)+"  "+spin);
+    }
+    
+  
+    ((CButton*)WProp_servo->GetChildByName("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & cpart_servo::PropButton;
+    ((CButton*)WProp_servo->GetChildByName("button1"))->SetTag(1);
+    
+    ((CButton*)WProp_servo->GetChildByName("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & cpart_servo::PropButton;
+}
+
+void 
+cpart_servo::ReadPropiertsWindow(void)
+{
+   if(WProp_servo->GetTag())
+   {
+      input_pin=atoi(((CCombo*)WProp_servo->GetChildByName("combo1"))->GetText());
+   }
+} 
+
+void
+cpart_servo::PropButton (CControl * control, uint button, uint x, uint y, uint state)
+{
+  WProp_servo->SetTag(control->GetTag());   
+  WProp_servo->HideExclusive ();
 };

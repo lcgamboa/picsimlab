@@ -67,6 +67,9 @@ class CPWindow5:public CPWindow
 //lxrad automatic generated block end, don't edit above!
   void menu1_EvMenuActive(CControl * control);
   void Process(void);
+  bool SaveConfig(String fname);
+  bool LoadConfig(String fname);
+  void DeleteParts(void);
   private:
     int partsc;  
     part *parts[MAX_PARTS];
@@ -75,7 +78,7 @@ class CPWindow5:public CPWindow
     int PartSelected;
     int PartToMove;
     int mdx,mdy;
-    CStringList PinNames;
+    float scale;
 };
 
 extern CPWindow5 Window5 ;

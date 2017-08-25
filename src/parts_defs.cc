@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,61 +23,41 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARDS_DEFS_H
-#define	BOARDS_DEFS_H
 
-#include"picsimlab1.h"
+#include"parts_defs.h" 
 
-//includes of boards
-#include"board_1.h" 
-#include"board_2.h"
-#include"board_3.h"
-#include"board_4.h"
-#include"board_5.h"
-#include"board_6.h"
-#include"board_x.h"
+//includes of parts
+#include"part_servo.h" 
+#include"part_step.h" 
+#include"part_d_transfer_function.h"
+#include"part_push_buttons.h"
+#include"part_switchs.h"
+#include"part_LEDs.h"
+#include"part_pot.h"
 
-//number of last board
-#define BOARDS_LAST 7
+
+
+const char parts_list[NUM_PARTS][30]={"Servo motor","Step motor","D. Transfer function","Push buttons", "Switchs","LEDs","Potentiometers",};
+
 
 //boards object creation
-board * create_board(int *lab,int *lab_)
+part * create_part(String name, unsigned int x, unsigned int y)
 {
-   board * pboard; 
-        switch(*lab)
-        {
-          case 1:
-            pboard= new cboard_1();
-            break;
-          case 2:
-            pboard= new cboard_2();
-            break;
-          case 3:
-            pboard= new cboard_3();
-            break;
-          case 4:
-            pboard= new cboard_4();
-            break;    
-          case 5:
-            pboard= new cboard_5();
-            break;     
-          case 6:
-            pboard= new cboard_6();
-            break;     
-          case 7:
-            pboard= new cboard_x();
-            break;                
-          default:
-            mprint(wxT("Invalid Board! Using Default!\n"));
-            *lab=1;//default  
-            *lab_=1;//default  
-            Window1.combo2.SetText(wxT("1"));
-            pboard= new cboard_1();
-          break;
-        }
+   part * part_=NULL; 
+ 
+   if(name.compare(wxT("Servo motor")) == 0 )part_= new cpart_servo(x,y);
 
-    return pboard; 
+   if(name.compare(wxT("Step motor")) == 0 )part_= new cpart_step(x,y);
+   
+   if(name.compare(wxT("D. Transfer function")) == 0 )part_= new cpart_dtfunc(x,y);
+
+   if(name.compare(wxT("Push buttons")) == 0 )part_= new cpart_pbuttons(x,y);
+   
+   if(name.compare(wxT("Switchs")) == 0 )part_= new cpart_switchs(x,y);
+   
+   if(name.compare(wxT("LEDs")) == 0 )part_= new cpart_leds(x,y);
+   
+   if(name.compare(wxT("Potentiometers")) == 0 )part_= new cpart_pot(x,y);
+   
+   return part_; 
 }
-
-#endif	/* BOARDS_DEFS_H */
-

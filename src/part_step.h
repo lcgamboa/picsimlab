@@ -23,50 +23,46 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_1_H
-#define	BOARD_1_H
+#ifndef PART_STEP_H
+#define	PART_STEP_H
 
 #include<lxrad/lxrad.h>
+#include"part.h"
 
-class cboard_1:public board
+
+class cpart_step:public part
 {
-  private:
-     int p_BT1; 
-     int p_BT2;  
-     int p_BT3; 
-     int p_BT4;     
-     int jmp[1];
-     unsigned int lm[18]; //luminosidade media
-     unsigned int lm1[18]; //luminosidade media display
-     unsigned int lm2[18]; //luminosidade media display
-     
-     
-     CGauge *gauge1;
-     CLabel *label1;
- 
    public:
-      cboard_1(void);
-      ~cboard_1(void);
-      void Draw(CDraw *draw,double scale);
-      void Run_CPU(void);
-      String GetSupportedDevices(void){return wxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
-      String GetPictureFileName(void){return wxT("picsimlab1.png");};
-      String GetInputMapFile(void){return wxT("input1.map");};
-      String GetOutputMapFile(void){return wxT("output1.map");};
+      String GetName(void){return wxT("Step motor");}; 
+      cpart_step(unsigned x, unsigned y);
+      ~cpart_step(void);
+      void Draw(void);
+      void Process(void);
+      String GetPictureFileName(void){return wxT("parts/step_motor.png");};
+      String GetInputMapFile(void){return wxT("parts/step_motor_i.map");};
+      String GetOutputMapFile(void){return wxT("parts/step_motor_o.map");};
+      String GetPropiertiesWindowFile(void){return wxT("parts/step_motor.lxrad");};
       void Reset(void);
       void MouseButtonPress(uint button, uint x, uint y,uint state);
       void MouseButtonRelease(uint button, uint x, uint y,uint state);
       void KeyPress(uint key, uint x, uint y,uint mask);
       void KeyRelease(uint key, uint x, uint y,uint mask);
-      void WritePreferences(void);
-      void ReadPreferences(char *name,char *value);
+      void ConfigurePropiertsWindow(CPWindow *  wprop);
+      void ReadPropiertsWindow(void);
+      String WritePreferences(void);
+      void ReadPreferences(String value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
+      void PropButton (CControl * control, uint button, uint x, uint y, uint state);
+    private:
+      unsigned char input_pins[4];    
+      float angle;
+      int b1[2];
+      int b2[2];
 };
 
 
 
 
-
-#endif	/* BOARD_1_H */
+#endif	/* PART_STEP */
 

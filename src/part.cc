@@ -24,25 +24,19 @@
    ######################################################################## */
 
 #include "picsimlab1.h"
-#include "board.h"
+#include "part.h"
 
 
-board::board(void)
+part::part()
 {
   inputc=0;
   outputc=0;
-  use_oscope=0;
 };
 
-
-board::~board(void)
-{
-
-};
 
 
 void 
-board::ReadMaps(void)
+part::ReadMaps(void)
 {
   inputc=0;
   outputc=0;  
@@ -51,7 +45,7 @@ board::ReadMaps(void)
 }
 
 void 
-board::ReadInputMap(String fname)
+part::ReadInputMap(String fname)
 {
   FILE *fin;
 
@@ -84,21 +78,25 @@ board::ReadInputMap(String fname)
           if(!strcmp("width",name))
           {
             sscanf(value,"%i",&x1);
-            Window1.SetplWidth(x1);
-	    Window1.draw1.SetWidth(x1*Window1.GetScale());
-	    Window1.SetWidth(185+x1*Window1.GetScale());
+            Width=x1;
+            //Window1.SetplWidth(x1);
+	    //Window1.draw1.SetWidth(x1*Window1.GetScale());
+	    //Window1.SetWidth(185+x1*Window1.GetScale());
           }
           
  	  if(!strcmp("height",name))
           {
             sscanf(value,"%i",&y1);
-            Window1.SetplHeight(y1);
-	    Window1.draw1.SetHeight(y1*Window1.GetScale());
+            Height=y1;
+            //Window1.SetplHeight(y1);
+	    //Window1.draw1.SetHeight(y1*Window1.GetScale());
+/*
 #ifdef _WIN_
 	    Window1.SetHeight(75+y1*Window1.GetScale());
 #else
 	    Window1.SetHeight(90+y1*Window1.GetScale());
 #endif
+           */ 
           }
 
         }
@@ -155,7 +153,7 @@ board::ReadInputMap(String fname)
 };
 
 void 
-board::ReadOutputMap(String fname)
+part::ReadOutputMap(String fname)
 {
   FILE *fin;
 
@@ -228,15 +226,14 @@ board::ReadOutputMap(String fname)
     
 };
 
-void 
-board::RefreshStatus(void)
-{
-  Window1.statusbar1.SetField(2,wxT(""));
-}
 
-void 
-board::SetUseOscilloscope(int uo)
+int 
+part::PointInside(unsigned int x, unsigned int y)
 {
-  use_oscope=uo;
-  
-};
+
+if ((( X  <= x)&&( X +Width >= x))&&(( Y <= y)&&( Y+ Height >= y)))
+  return 1;
+else
+  return 0;
+       
+}
