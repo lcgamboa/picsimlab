@@ -1,15 +1,15 @@
 CC = x86_64-w64-mingw32-g++
 WINDRES =  x86_64-w64-mingw32-windres  
 
-FLAGS = -Wall -O3 -D_WIN_ -D_VERSION_=\"0.6.0\" -D_SHARE_=\"share/\"  `x86_64-w64-mingw32-msw-unicode-3.0  --cxxflags` -fomit-frame-pointer
+FLAGS = -Wall -O3 -D_WIN_ -D_VERSION_=\"0.6.0\" -D_SHARE_=\"share/\"  `x86_64-w64-mingw32-msw-unicode-3.0  --cxxflags` -fomit-frame-pointer -I"../../simavr_win/simavr/sim/"
 
 
-OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimlab5.o board.o lcd_hd44780.o mi2c_24CXXX.o rtc_ds1307.o rtc_pfc8563.o board_1.o board_2.o board_3.o board_4.o board_5.o board_6.o mplabxd.o board_x.o parts_defs.o part.o part_servo.o part_step.o
+OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimlab5.o board.o board_pic.o board_avr.o lcd_hd44780.o mi2c_24CXXX.o rtc_ds1307.o rtc_pfc8563.o board_1.o board_2.o board_3.o board_4.o board_5.o board_6.o board_7.o mplabxd.o board_x.o parts_defs.o part.o part_servo.o part_step.o part_d_transfer_function.o part_LEDs.o part_push_buttons.o part_switchs.o part_pot.o
 
 all: $(OBJS)
 	$(WINDRES) picsimlab_res.rc  -O coff -o picsimlab_res.o
-	$(CC) $(FLAGS) $(OBJS) picsimlab_res.o -opicsimlab.exe  -llxrad  -lpicsim `x86_64-w64-mingw32-msw-unicode-3.0 --libs` -lws2_32 
-	#$(CC) $(FLAGS) $(OBJS) picsimlab_res.o -opicsimlab_st.exe  ../../LXRAD_WX/libteste/liblxrad.aw  `x86_64-w64-mingw32-msw-unicode-3.0 --libs` -lws2_32
+	$(CC) $(FLAGS) $(OBJS) picsimlab_res.o -opicsimlab.exe  -llxrad  -lpicsim `x86_64-w64-mingw32-msw-unicode-3.0 --libs` ../../simavr_win/simavr/obj-x86_64-w64-mingw32/libsimavr.a -lws2_32 
+	#$(CC) $(FLAGS) $(OBJS) picsimlab_res.o -opicsimlab_st.exe  ../../LXRAD_WX/libteste/liblxrad.aw  `x86_64-w64-mingw32-msw-unicode-3.0 --libs` -l../../simavr/simavr/obj-x86_64-w64-mingw32/libsimavr.a -lws2_32
 	mv *.exe ../picsimlab_0.6.0_win64/
 
 %.o: %.cc

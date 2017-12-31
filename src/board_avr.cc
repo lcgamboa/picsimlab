@@ -119,8 +119,9 @@ void
 board_avr::MEnd(void)
 {
   avr_terminate(avr); 	
-  delete avr;
+  //delete avr;
   avr=NULL;
+  
   //pic_end();
   //mplabxd_end();
 };
@@ -144,7 +145,14 @@ float
 board_avr::MGetFreq(void)
 {	
    return avr->frequency;
-};        
+}        
+
+float
+board_avr::MGetInstClock(void)
+{	
+   return avr->frequency;
+}        
+
 
 void 
 board_avr::MDumpMemory(const char * fname)

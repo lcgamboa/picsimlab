@@ -12,11 +12,11 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-FLAGS = -D_VERSION_=\"0.6.5\" -Wall -ggdb -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer `lxrad-config --cxxflags` -I"../../simavr/simavr/sim/"
+FLAGS = -D_VERSION_=\"0.6.5\" -Wall -O2 -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer `lxrad-config --cxxflags` -I"../../simavr/simavr/sim/"
 
 
 LIBS = `lxrad-config --libs` -lpicsim ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a 
-#LIBS= `wx-config --libs` ../../picsim/src/libpicsim.a ../../LXRAD_WX/libteste/liblxrad.a
+#LIBS= `wx-config --libs` ../../picsim/src/libpicsim.a ../../LXRAD_WX/libteste/liblxrad.a  ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a 
 
 OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimlab5.o board.o board_pic.o board_avr.o lcd_hd44780.o mi2c_24CXXX.o rtc_ds1307.o rtc_pfc8563.o board_1.o board_2.o board_3.o board_4.o board_5.o board_6.o board_7.o mplabxd.o board_x.o parts_defs.o part.o part_servo.o part_step.o part_d_transfer_function.o part_LEDs.o part_push_buttons.o part_switchs.o part_pot.o
 

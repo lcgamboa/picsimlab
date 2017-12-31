@@ -95,6 +95,7 @@ class board
       virtual void MEraseFlash(void)=0;
       virtual void MSetFreq(float freq)=0;
       virtual float MGetFreq(void)=0;
+      virtual float MGetInstClock(void)=0;
       virtual int MGetPinCount(void)=0;
       virtual String MGetPinName(int pin)=0;
       virtual void MSetPin(int pin, unsigned char value)=0;

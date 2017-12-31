@@ -83,6 +83,12 @@ board_pic::MGetFreq(void)
   return pic.freq;
 }
 
+float 
+board_pic::MGetInstClock(void)
+{
+  return pic.freq/4.0;
+}
+
 int 
 board_pic::CpuInitialized(void)
 {

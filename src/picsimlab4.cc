@@ -200,9 +200,9 @@ CPWindow4::draw1_EvMouseButtonClick(CControl * control, uint button, uint x, uin
 void 
 CPWindow4::SetBaseTimer(void)
 {
-  board * pboard= Window1.GetBoard();
+  board * pboard=Window1.GetBoard();
   
-  int PinCount= pboard->MGetPinCount();
+  int PinCount=pboard->MGetPinCount();
   
   if(pboard->CpuInitialized () == 0)return;
   

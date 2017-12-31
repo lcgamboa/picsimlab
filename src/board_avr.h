@@ -52,6 +52,7 @@ class board_avr: public board
       void MEraseFlash(void);
       void MSetFreq(float freq);
       float MGetFreq(void);
+      float MGetInstClock(void);
       int MGetPinCount(void);
       String MGetPinName(int pin);
       void MSetPin(int pin, unsigned char value);

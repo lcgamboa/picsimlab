@@ -256,7 +256,7 @@ CPWindow5::LoadConfig(String fname)
     
       for (unsigned int i = 0; i < prefs.GetLinesCount (); i++)
       {
-        sscanf(prefs.GetLine (i).c_str (),"%256[^,],%i,%i,%256[^,]",name,&x,&y,temp);
+        sscanf(prefs.GetLine (i).c_str (),"%256[^,],%i,%i:%256[^\n]",name,&x,&y,temp);
               
         parts[i]=create_part(name,x,y);
         parts[i]->ReadPreferences(temp);
@@ -276,7 +276,11 @@ CPWindow5::DeleteParts(void)
     
     runstate=timer1.GetRunState ();
     timer1.SetRunState(0);
+#ifndef _WIN_
     usleep(100000);//wait for thread end 
+#else
+    Sleep(100);
+#endif    
     
     for (int i = 0; i < partsc; i++)
     {
@@ -329,7 +333,11 @@ void
 CPWindow5::pmenu2_Delete_EvMenuActive(CControl * control)
 {
     timer1.SetRunState (0);
+#ifndef _WIN_
     usleep(100000);//wait for thread end 
+#else
+    Sleep(100);
+#endif    
     delete  parts[PartSelected];
   
     for (int i = PartSelected; i < partsc-1; i++)
