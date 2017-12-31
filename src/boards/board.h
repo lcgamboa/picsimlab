@@ -29,10 +29,10 @@
 #include <wx/sound.h>    
 #include <lxrad/lxrad.h>    
 #include <picsim/picsim.h>
-#include "lcd_hd44780.h"
-#include "mi2c_24CXXX.h"
-#include "rtc_ds1307.h"
-#include "rtc_pfc8563.h"
+#include "../devices/lcd_hd44780.h"
+#include "../devices/mi2c_24CXXX.h"
+#include "../devices/rtc_ds1307.h"
+#include "../devices/rtc_pfc8563.h"
 
 
 

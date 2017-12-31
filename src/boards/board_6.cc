@@ -24,9 +24,9 @@
    ######################################################################## */
 
 //include files
-#include"picsimlab1.h"
-#include"picsimlab4.h"
-#include"picsimlab5.h"
+#include"../picsimlab1.h"
+#include"../picsimlab4.h"
+#include"../picsimlab5.h"
 #include"board_6.h"
 
 /* ids of inputs of input map*/

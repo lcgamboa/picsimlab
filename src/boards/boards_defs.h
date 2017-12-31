@@ -26,7 +26,7 @@
 #ifndef BOARDS_DEFS_H
 #define	BOARDS_DEFS_H
 
-#include"picsimlab1.h"
+#include"../picsimlab1.h"
 
 //includes of boards
 #include"board_1.h" 

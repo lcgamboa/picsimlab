@@ -26,7 +26,7 @@
 
 #include "board_avr.h"
 
-#include"picsimlab1.h"
+#include"../picsimlab1.h"
 
 board_avr::board_avr(void)
 {

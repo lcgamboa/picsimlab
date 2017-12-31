@@ -27,8 +27,8 @@
 #define CPWINDOW5
 
 #include<lxrad/lxrad.h>
-#include"part.h"
-#include"parts_defs.h"
+#include"parts/part.h"
+#include"parts/parts_defs.h"
 
 class CPWindow5:public CPWindow
 {

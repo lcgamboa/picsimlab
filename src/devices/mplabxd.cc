@@ -24,7 +24,7 @@
    ######################################################################## */
 
 
-#include"picsimlab1.h"
+#include"../picsimlab1.h"
 
 //system headers dependent
 #ifndef _WIN_

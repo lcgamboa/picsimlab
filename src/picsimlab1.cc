@@ -28,7 +28,7 @@
 #include"picsimlab1.h"
 #include"picsimlab1_d.cc"
 
-#include"boards_defs.h"
+#include"boards/boards_defs.h"
 
 CPWindow1 Window1;
 

@@ -23,7 +23,7 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include "picsimlab1.h"
+#include "../picsimlab1.h"
 #include "part.h"
 
 

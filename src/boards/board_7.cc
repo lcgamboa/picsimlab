@@ -24,9 +24,9 @@
    ######################################################################## */
 
 //include files
-#include"picsimlab1.h"
-#include"picsimlab4.h" //Oscilloscope
-#include"picsimlab5.h" //Spare Parts
+#include"../picsimlab1.h"
+#include"../picsimlab4.h" //Oscilloscope
+#include"../picsimlab5.h" //Spare Parts
 #include"board_7.h"
 
 /* ids of inputs of input map*/

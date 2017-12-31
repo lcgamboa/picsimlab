@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2015-2016  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -24,35 +24,37 @@
    ######################################################################## */
 
 //include files
-#include"picsimlab1.h"
-#include"picsimlab4.h" //Oscilloscope
-#include"picsimlab5.h" //Spare Parts
-#include"board_x.h"
+#include"../picsimlab1.h"
+#include"../picsimlab4.h"
+#include"../picsimlab5.h"
+#include"board_5.h"
 
 /* ids of inputs of input map*/
 #define I_ICSP	1  //ICSP connector
 #define I_PWR	2  //Power button
 #define I_RST	3  //Reset button
-#define I_D0	4  //RD0 push button
-#define I_D1	5  //RD1 switch
+#define I_S1	4  //S1 push button
+#define I_JMP	5  //JMP
+
 
 /* ids of outputs of output map*/
-#define O_SD1	1  //switch position (On/Off)
-#define O_LD0	2  //LED on RD0 push button
-#define O_LD1	3  //LED on RD1 switch
-#define O_LPWR	4  //Power LED
-#define O_RB0	5  //LED on RB0 output
-#define O_RB1	6  //LED on RB1 output
+#define O_JMP	1  //JMP
+#define O_D1	2  //LED D1
+#define O_D2	3  //LED D2 
+#define O_D4	4  //LED D4 
+#define O_D5	5  //LED D5 
+#define O_D6	6  //LED D6 
+#define O_D7	7  //LED D7 
 
 //return the input ids numbers of names used in input map
 unsigned short 
-cboard_x::get_in_id(char * name)
+cboard_5::get_in_id(char * name)
 {
   if(strcmp(name,"I_ICSP")==0)return I_ICSP;
   if(strcmp(name,"I_PWR")==0)return I_PWR;  
   if(strcmp(name,"I_RST")==0)return I_RST; 
-  if(strcmp(name,"I_D0")==0)return I_D0;
-  if(strcmp(name,"I_D1")==0)return I_D1;
+  if(strcmp(name,"I_S1")==0)return I_S1;
+  if(strcmp(name,"I_JMP")==0)return I_JMP;
   
   printf("Erro input '%s' don't have a valid id! \n",name);
   return -1;
@@ -60,34 +62,36 @@ cboard_x::get_in_id(char * name)
 
 //return the output ids numbers of names used in output map
 unsigned short 
-cboard_x::get_out_id(char * name)
+cboard_5::get_out_id(char * name)
 { 
     
-  if(strcmp(name,"O_SD1")==0)return O_SD1;
-  if(strcmp(name,"O_LD0")==0)return O_LD0;
-  if(strcmp(name,"O_LD1")==0)return O_LD1;
-  if(strcmp(name,"O_LPWR")==0)return O_LPWR;
-  if(strcmp(name,"O_RB1")==0)return O_RB1;
-  if(strcmp(name,"O_RB0")==0)return O_RB0;
+  if(strcmp(name,"O_JMP")==0)return O_JMP;
+  if(strcmp(name,"O_D1")==0)return O_D1;
+  if(strcmp(name,"O_D2")==0)return O_D2;
+  if(strcmp(name,"O_D4")==0)return O_D4;
+  if(strcmp(name,"O_D5")==0)return O_D5;
+  if(strcmp(name,"O_D6")==0)return O_D6;
+  if(strcmp(name,"O_D7")==0)return O_D7;
   
   printf("Erro output '%s' don't have a valid id! \n",name);
   return 1;
 };
 
 //Constructor called once on board creation 
-cboard_x::cboard_x(void)
+cboard_5::cboard_5(void)
 {
-  proc="PIC18F4550";  //default microcontroller if none defined in preferences
+  proc="PIC16F1619";  //default microcontroller if none defined in preferences
   ReadMaps();     //Read input and output board maps
-
+  jmp[0]=0; 
+      
   //controls propierties and creation
   //scroll1
   scroll1=new CScroll();   
   scroll1->SetFOwner(&Window1);
-  scroll1->SetName(wxT("scroll1_px"));
-  scroll1->SetX(12);
-  scroll1->SetY(273);
-  scroll1->SetWidth(140);
+  scroll1->SetName(wxT("scroll1_p5"));
+  scroll1->SetX(48);
+  scroll1->SetY(200);
+  scroll1->SetWidth(110);
   scroll1->SetHeight(22);
   scroll1->SetEnable(1);
   scroll1->SetVisible(1);
@@ -98,10 +102,10 @@ cboard_x::cboard_x(void)
   //gauge1
   gauge1=new CGauge();
   gauge1->SetFOwner(&Window1);
-  gauge1->SetName(wxT("gauge1_px"));
-  gauge1->SetX(13);
-  gauge1->SetY(382);
-  gauge1->SetWidth(140);
+  gauge1->SetName(wxT("gauge1_p5"));
+  gauge1->SetX(48);
+  gauge1->SetY(230);
+  gauge1->SetWidth(110);
   gauge1->SetHeight(20);
   gauge1->SetEnable(1);
   gauge1->SetVisible(1);
@@ -112,10 +116,10 @@ cboard_x::cboard_x(void)
   //gauge2
   gauge2=new CGauge();
   gauge2->SetFOwner(&Window1);
-  gauge2->SetName(wxT("gauge2_px"));
-  gauge2->SetX(12);
-  gauge2->SetY(330);
-  gauge2->SetWidth(140);
+  gauge2->SetName(wxT("gauge2_p5"));
+  gauge2->SetX(48);
+  gauge2->SetY(255);
+  gauge2->SetWidth(110);
   gauge2->SetHeight(20);
   gauge2->SetEnable(1);
   gauge2->SetVisible(1);
@@ -123,70 +127,126 @@ cboard_x::cboard_x(void)
   gauge2->SetValue(0);
   gauge2->SetType(4);
   Window1.CreateChild(gauge2);   
+  //gauge3
+  gauge3=new CGauge();
+  gauge3->SetFOwner(&Window1);
+  gauge3->SetName(wxT("gauge3_p5"));
+  gauge3->SetX(48);
+  gauge3->SetY(280);
+  gauge3->SetWidth(110);
+  gauge3->SetHeight(20);
+  gauge3->SetEnable(1);
+  gauge3->SetVisible(1);
+  gauge3->SetRange(100);
+  gauge3->SetValue(0);
+  gauge3->SetType(4);
+  Window1.CreateChild(gauge3);   
+  //gauge4
+  gauge4=new CGauge();
+  gauge4->SetFOwner(&Window1);
+  gauge4->SetName(wxT("gauge4_p5"));
+  gauge4->SetX(48);
+  gauge4->SetY(305);
+  gauge4->SetWidth(110);
+  gauge4->SetHeight(20);
+  gauge4->SetEnable(1);
+  gauge4->SetVisible(1);
+  gauge4->SetRange(100);
+  gauge4->SetValue(0);
+  gauge4->SetType(4);
+  Window1.CreateChild(gauge4);   
   //label1
   label1=new CLabel();
   label1->SetFOwner(&Window1);
-  label1->SetName(wxT("label1_px"));
+  label1->SetName(wxT("label1_p5"));
   label1->SetX(12);
-  label1->SetY(249);
+  label1->SetY(200);
   label1->SetWidth(60);
   label1->SetHeight(20);
   label1->SetEnable(1);
   label1->SetVisible(1);
-  label1->SetText(wxT("AN0"));
+  label1->SetText(wxT("AN4"));
   label1->SetAlign(1);
   Window1.CreateChild(label1); 
   //label2
   label2=new CLabel();
   label2->SetFOwner(&Window1);
-  label2->SetName(wxT("label2_px"));
+  label2->SetName(wxT("label2_p5"));
   label2->SetX(12);
-  label2->SetY(306);
+  label2->SetY(230);
   label2->SetWidth(60);
   label2->SetHeight(20);
   label2->SetEnable(1);
   label2->SetVisible(1);
-  label2->SetText(wxT("RB0"));
+  label2->SetText(wxT("RA5"));
   label2->SetAlign(1);
   Window1.CreateChild(label2);    
   //label3
   label3=new CLabel();
   label3->SetFOwner(&Window1);
-  label3->SetName(wxT("label3_px"));
+  label3->SetName(wxT("label3_p5"));
   label3->SetX(13);
-  label3->SetY(357);
+  label3->SetY(255);
   label3->SetWidth(60);
   label3->SetHeight(20);
   label3->SetEnable(1);
   label3->SetVisible(1);
-  label3->SetText(wxT("RB1"));
+  label3->SetText(wxT("RA1"));
   label3->SetAlign(1);
   Window1.CreateChild(label3);    
+  //label4
+  label4=new CLabel();
+  label4->SetFOwner(&Window1);
+  label4->SetName(wxT("label4_p5"));
+  label4->SetX(13);
+  label4->SetY(280);
+  label4->SetWidth(60);
+  label4->SetHeight(20);
+  label4->SetEnable(1);
+  label4->SetVisible(1);
+  label4->SetText(wxT("RA2"));
+  label4->SetAlign(1);
+  Window1.CreateChild(label4);  
+  //label5
+  label5=new CLabel();
+  label5->SetFOwner(&Window1);
+  label5->SetName(wxT("label5_p5"));
+  label5->SetX(13);
+  label5->SetY(305);
+  label5->SetWidth(60);
+  label5->SetHeight(20);
+  label5->SetEnable(1);
+  label5->SetVisible(1);
+  label5->SetText(wxT("RC5"));
+  label5->SetAlign(1);
+  Window1.CreateChild(label5);  
 };
 
 //Destructor called once on board destruction 
-cboard_x::~cboard_x(void)
+cboard_5::~cboard_5(void)
 {
     //controls destruction 
     Window1.DestroyChild(scroll1);
     Window1.DestroyChild(gauge1);
     Window1.DestroyChild(gauge2);
+    Window1.DestroyChild(gauge3);
+    Window1.DestroyChild(gauge4);
     Window1.DestroyChild(label1);
     Window1.DestroyChild(label2);
     Window1.DestroyChild(label3);
+    Window1.DestroyChild(label4);
+    Window1.DestroyChild(label5);
 }
 
 //Reset board status
 void 
-cboard_x::Reset(void)
+cboard_5::Reset(void)
 {
    
     p_BT1=1;//set push button  in default state (high) 
        
-    //write button state to pic pin 19 (RD0)
-    pic_set_pin(19,p_BT1); 
-    //write switch state to pic pin 20 (RD1)
-    pic_set_pin(20,p_BT2); 
+    //write button state to pic pin 6 (RC4)
+    pic_set_pin(6,p_BT1); 
 
         
   //verify serial port state and refresh status bar  
@@ -203,18 +263,16 @@ cboard_x::Reset(void)
       Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
         String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
         
-
   //reset mean value
   for(int pi=0;pi < pic.PINCOUNT;pi++)
   {
     pic.pins[pi].oavalue=0;
   };
-
 };
 
 //Called ever 1s to refresh status
 void 
-cboard_x::RefreshStatus(void)
+cboard_5::RefreshStatus(void)
 {
    //verify serial port state and refresh status bar   
 #ifndef _WIN_
@@ -234,37 +292,40 @@ cboard_x::RefreshStatus(void)
 
 //Called to save board preferences in configuration file
 void 
-cboard_x::WritePreferences(void)
+cboard_5::WritePreferences(void)
 {
-    //write selected microcontroller of board_x to preferences
-    Window1.saveprefs(wxT("px_proc"),proc);
-    //write switch state of board_x to preferences 
-    Window1.saveprefs(wxT("px_bt2"),String::Format("%i",p_BT2));
+    //write selected microcontroller of board_5 to preferences
+    Window1.saveprefs(wxT("p5_proc"),proc);
+    Window1.saveprefs(wxT("p5_jmp"),String::Format("%i",jmp[0]));
 };
 
 //Called whe configuration file load  preferences 
 void 
-cboard_x::ReadPreferences(char *name,char *value)
+cboard_5::ReadPreferences(char *name,char *value)
 {
-     //read switch state of board_x of preferences 
-     if(!strcmp(name,"px_bt2"))
-      {
-        if(value[0] == '0')      
-          p_BT2=0;
-        else
-          p_BT2=1; 
-      }
     //read microcontroller of preferences
-    if(!strcmp(name,"px_proc"))
+    if(!strcmp(name,"p5_proc"))
     {
       proc=value; 
+    }
+    
+    if(!strcmp(name,"p5_jmp"))
+    {
+      int i;  
+      for(i=0;i<1;i++)
+      {
+        if(value[i] == '0')      
+          jmp[i]=0;
+        else
+          jmp[i]=1;
+      } 
     }
 };
 
 
 //Event on the board
 void 
-cboard_x::KeyPress(uint key, uint x, uint y,uint mask)
+cboard_5::KeyPress(uint key, uint x, uint y,uint mask)
 {
   //if keyboard key 1 is pressed then activate button (state=0)   
   if(key == '1')
@@ -272,17 +333,12 @@ cboard_x::KeyPress(uint key, uint x, uint y,uint mask)
     p_BT1=0; 
   }
   
-  //if keyboard key 2 is pressed then toggle switch state   
-  if(key == '2')
-  {
-    p_BT2^=1; 
-  }
   
 };
 
 //Event on the board
 void
-cboard_x::KeyRelease(uint key, uint x, uint y,uint mask)
+cboard_5::KeyRelease(uint key, uint x, uint y,uint mask)
 {
   //if keyboard key 1 is pressed then deactivate button (state=1)     
   if(key == '1')
@@ -294,7 +350,7 @@ cboard_x::KeyRelease(uint key, uint x, uint y,uint mask)
 
 //Event on the board
 void 
-cboard_x::MouseButtonPress(uint button, uint x, uint y,uint state)
+cboard_5::MouseButtonPress(uint button, uint x, uint y,uint state)
 {
  
   int i;
@@ -340,14 +396,14 @@ cboard_x::MouseButtonPress(uint button, uint x, uint y,uint state)
             Window1.Set_picrst(1);
           } 
           break;
-        //if event is over I_D0 area then activate button (state=0) 
-        case I_D0:
+        //if event is over I_S1 area then activate button (state=0) 
+        case I_S1:
           p_BT1=0;
           break;
-        //if event is over I_D1 area then toggle switch state   
-        case I_D1:
-          p_BT2^=1; 
-          break;
+        case I_JMP:
+          jmp[0]^=0x01;
+          break;  
+
       }
     }
   }
@@ -356,7 +412,7 @@ cboard_x::MouseButtonPress(uint button, uint x, uint y,uint state)
 
 //Event on the board
 void 
-cboard_x::MouseButtonRelease(uint button, uint x, uint y,uint state)
+cboard_5::MouseButtonRelease(uint button, uint x, uint y,uint state)
 {
   int i;
 
@@ -381,8 +437,8 @@ cboard_x::MouseButtonRelease(uint button, uint x, uint y,uint state)
             }
           } 
           break;
-        //if event is over I_D0 area then deactivate button (state=1) 
-        case I_D0:
+        //if event is over I_S1 area then deactivate button (state=1) 
+        case I_S1:
           p_BT1=1; 
           break;
       }
@@ -394,68 +450,69 @@ cboard_x::MouseButtonRelease(uint button, uint x, uint y,uint state)
 
 //Called ever 100ms to draw board
 //This is the critical code for simulator running speed
-void cboard_x::Draw(CDraw *draw,double scale)
+void cboard_5::Draw(CDraw *draw,double scale)
 {
   int i;
-  
+   
   draw->Canvas.Init(scale,scale); //initialize draw context
   
-//board_x draw 
+//board_5 draw 
   for(i=0;i<outputc;i++) //run over all outputs
   {
     if(!output[i].r)//if output shape is a rectangle
     {
-      if(output[i].id == O_SD1)//if output is switch
-      {
-       //draw a background white rectangle   
-       draw->Canvas.SetBgColor (255, 255, 255);   
-       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, 
-          output[i].x2-output[i].x1,output[i].y2-output[i].y1 );
-   
-       if(!p_BT2) //draw switch off
-       {
-         //draw a grey rectangle  
-         draw->Canvas.SetBgColor (70, 70, 70);
-         draw->Canvas.Rectangle (1, output[i].x1,output[i].y1+
-         ((int)((output[i].y2-output[i].y1)*0.35)),output[i].x2-output[i].x1 , 
-         (int)((output[i].y2-output[i].y1)*0.65) );
-       }
-       else //draw switch on
-       {
-         //draw a grey rectangle  
-         draw->Canvas.SetBgColor (70, 70, 70);
-         draw->Canvas.Rectangle (1, output[i].x1, 
-          output[i].y1,output[i].x2-output[i].x1 , 
-          (int)((output[i].y2-output[i].y1)*0.65));
-       };
-      }
-    }
-    else //if output shape is a circle
-    {
-      
         draw->Canvas.SetFgColor (0, 0, 0);//black
  
         switch(output[i].id)//search for color of output
         {
-          case O_LD0: //White using pin 19 mean value (RD0)
-            draw->Canvas.SetColor (pic.pins[18].oavalue, pic.pins[18].oavalue, pic.pins[18].oavalue);
+          case O_D1: //green using picpwr value
+            draw->Canvas.SetColor (0 , 225*Window1.Get_picpwr()+30, 0 );
             break;
-          case O_LD1: //Yelllow using pin 20 mean value (RD1)
-            draw->Canvas.SetColor (pic.pins[19].oavalue, pic.pins[19].oavalue, 0);
+          case O_D2: //green using picpwr value
+            draw->Canvas.SetColor (0 , 225*Window1.Get_picpwr()+30, 0);
             break;
-          case O_LPWR: //Blue using picpwr value
-            draw->Canvas.SetColor(0,0,225*Window1.Get_picpwr()+30);
+          case O_D4: //Red using pin 2 mean  value (RA5) 
+            draw->Canvas.SetColor (pic.pins[1].oavalue, 0, 0);
             break;
-          case O_RB0: //Green using pin 33 mean value (RB0)
-            draw->Canvas.SetColor (0, pic.pins[32].oavalue, 0);
+          case O_D5: //Red using pin 18 mean value (RA1)
+            draw->Canvas.SetColor (pic.pins[17].oavalue, 0, 0);
             break;
-          case O_RB1: //Red using pin 34 mean value (RB1)
-            draw->Canvas.SetColor (pic.pins[33].oavalue,0 , 0);
+          case O_D6: //Red using pin 17 mean value (RA2)
+            draw->Canvas.SetColor (pic.pins[16].oavalue,0 , 0);
+            break;
+          case O_D7: //Red using pin 5 mean value (RC5)
+            draw->Canvas.SetColor (pic.pins[4].oavalue,0 , 0);
+            break;   
+          case O_JMP:
+            draw->Canvas.SetColor (150, 150, 150);  
             break;
         }
         
-        //draw a circle
-        draw->Canvas.Circle (1,output[i].x1, output[i].y1,output[i].r );
+        //draw a rectangle
+        draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2-output[i].x1,output[i].y2-output[i].y1 );       
+
+        if(output[i].id == O_JMP)
+        {
+         if(!jmp[0])
+         {
+           draw->Canvas.SetColor (70, 70, 70);
+           draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, (int)((output[i].x2-output[i].x1)*0.65),output[i].y2-output[i].y1 );
+           draw->Canvas.SetColor (220, 220, 0);
+           draw->Canvas.Circle (1,output[i].x1+(int)((output[i].x2-output[i].x1)*0.80), output[i].y1+((output[i].y2-output[i].y1)/2),3);
+         }
+         else
+         {
+           draw->Canvas.SetColor (70, 70, 70);
+           draw->Canvas.Rectangle (1, output[i].x1+((int)((output[i].x2-output[i].x1)*0.35)), output[i].y1, (int)((output[i].x2-output[i].x1)*0.65),output[i].y2-output[i].y1 );
+           draw->Canvas.SetColor (220, 220, 0);
+           draw->Canvas.Circle (1,output[i].x1+(int)((output[i].x2-output[i].x1)*0.20), output[i].y1+((output[i].y2-output[i].y1)/2),3);
+         };
+        } 
+      
+    }
+    else //if output shape is a circle
+    {
+      
     };    
 
   };
@@ -465,27 +522,30 @@ void cboard_x::Draw(CDraw *draw,double scale)
   draw->Update ();
   
   
- 
-     //RB0 mean value to gauge1
-     gauge1->SetValue(0.4444*(pic.pins[33].oavalue-30)); 
-     //RB1 mean value to gauge2
-     gauge2->SetValue(0.44444*(pic.pins[32].oavalue-30)); 
+
+     //RA5 mean value to gauge1
+     gauge1->SetValue(0.4444*(pic.pins[1].oavalue-30)); 
+     //RA1 mean value to gauge2
+     gauge2->SetValue(0.4444*(pic.pins[17].oavalue-30)); 
+     //RA2 mean value to gauge3
+     gauge3->SetValue(0.4444*(pic.pins[16].oavalue-30)); 
+     //RC5 mean value to gauge4
+     gauge4->SetValue(0.4444*(pic.pins[4].oavalue-30)); 
    
 
 };
 
-
-void cboard_x::Run_CPU(void)
+void cboard_5::Run_CPU(void)
 {
-  int i;
+  int i;  
   int j;
   unsigned char pi;
   const picpin * pins;
-  unsigned int alm[40];
-       
+  unsigned int alm[20];
+  
   int JUMPSTEPS = Window1.GetJUMPSTEPS(); //number of steps skipped
   long int NSTEPJ=Window1.GetNSTEPJ();  //number of steps in 100ms
-
+ 
   
   //reset mean value
   for(pi=0;pi < pic.PINCOUNT;pi++)
@@ -504,8 +564,7 @@ void cboard_x::Run_CPU(void)
  
         if(j > JUMPSTEPS)//if number of step is bigger than steps to skip 
         {  
-          pic_set_pin(19,p_BT1);//Set pin 19 (RD0) with button state 
-          pic_set_pin(20,p_BT2);//Set pin 20 (RD1) with switch state 
+          pic_set_pin(6,p_BT1);//Set pin 6 (RC4) with button state 
         } 
         
         //verify if a breakpoint is reached if not run one instruction 
@@ -520,20 +579,22 @@ void cboard_x::Run_CPU(void)
           {
            alm[pi]+=pins[pi].value;
           }
-        
-          //set analog pin 2 (AN0) with value from scroll  
-          pic_set_apin(2,((5.0*(scroll1->GetPosition()))/
+          
+          //set analog pin 16 (RC0 AN4) with value from scroll  
+          pic_set_apin(16,((5.0*(scroll1->GetPosition()))/
             (scroll1->GetRange()-1)));
           
           j=0;//reset counter
-        } 
+        }
+        
         j++;//counter increment
      }
 
-     //calculate mean value
+ //calculate mean value
      for(pi=0;pi < pic.PINCOUNT;pi++)
      { 
-       pic.pins[pi].oavalue= (int)(((225.0*alm[pi])/NSTEPJ)+30);
+      pic.pins[pi].oavalue= (int)(((225.0*alm[pi])/NSTEPJ)+30);
      }
-       
+    
 }
+

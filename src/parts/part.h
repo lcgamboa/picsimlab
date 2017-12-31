@@ -26,7 +26,7 @@
 #ifndef PART_H
 #define	PART_H
     
-#include "board.h"
+#include "../boards/board.h"
 //#include <lxrad/lxrad.h>    
 //#include <picsim/picsim.h>    
     

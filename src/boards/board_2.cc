@@ -23,9 +23,9 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include"picsimlab1.h"
-#include"picsimlab4.h"
-#include"picsimlab5.h"
+#include"../picsimlab1.h"
+#include"../picsimlab4.h"
+#include"../picsimlab5.h"
 #include"board_2.h"
 
 /* outputs */

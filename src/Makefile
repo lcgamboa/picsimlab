@@ -18,7 +18,7 @@ FLAGS = -D_VERSION_=\"0.6.5\" -Wall -O2 -D_SHARE_=\"${sharedir}\"   -fomit-frame
 LIBS = `lxrad-config --libs` -lpicsim ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a 
 #LIBS= `wx-config --libs` ../../picsim/src/libpicsim.a ../../LXRAD_WX/libteste/liblxrad.a  ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a 
 
-OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimlab5.o board.o board_pic.o board_avr.o lcd_hd44780.o mi2c_24CXXX.o rtc_ds1307.o rtc_pfc8563.o board_1.o board_2.o board_3.o board_4.o board_5.o board_6.o board_7.o mplabxd.o board_x.o parts_defs.o part.o part_servo.o part_step.o part_d_transfer_function.o part_LEDs.o part_push_buttons.o part_switchs.o part_pot.o
+OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimlab5.o boards/board.o boards/board_pic.o boards/board_avr.o devices/lcd_hd44780.o devices/mi2c_24CXXX.o devices/rtc_ds1307.o devices/rtc_pfc8563.o boards/board_1.o boards/board_2.o boards/board_3.o boards/board_4.o boards/board_5.o boards/board_6.o boards/board_7.o devices/mplabxd.o boards/board_x.o parts/parts_defs.o parts/part.o parts/part_servo.o parts/part_step.o parts/part_d_transfer_function.o parts/part_LEDs.o parts/part_push_buttons.o parts/part_switchs.o parts/part_pot.o
 
 #lxrad automatic generated block end, don't edit above!
 
@@ -26,7 +26,7 @@ all: $(OBJS)
 	$(CC) $(FLAGS) $(OBJS) -opicsimlab $(LIBS) 
 
 %.o: %.cc
-	$(CC) -c $(FLAGS) $< 
+	$(CC) -c $(FLAGS) $< -o $@ 
 
 install: all
 	${MKDIR} ${sharedir}
@@ -43,4 +43,4 @@ run: all
 	./picsimlab
 
 clean:
-	$(RM) picsimlab *.o core 
+	$(RM) picsimlab *.o core */*.o 

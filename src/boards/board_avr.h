@@ -34,7 +34,7 @@
 #include "sim_hex.h"
 #include "sim_gdb.h"
 #include "avr_adc.h"
-#include "picsimlab1.h"
+#include "../picsimlab1.h"
 
 
 

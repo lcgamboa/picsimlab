@@ -26,7 +26,7 @@
 
 #include "board_pic.h"
 
-#include"picsimlab1.h"
+#include"../picsimlab1.h"
 
 //mplabx debugger
 int mplabxd_init(void);

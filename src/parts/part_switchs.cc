@@ -23,18 +23,17 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include"picsimlab1.h"
-#include"picsimlab4.h"
-#include"part_push_buttons.h"
+#include"../picsimlab1.h"
+#include"../picsimlab4.h"
+#include"part_switchs.h"
 
 /* outputs */
-enum {O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_B1, O_B2, O_B3, O_B4, O_B5, O_B6, O_B7, O_B8, O_J1} ;
+enum {O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_S1, O_S2, O_S3, O_S4, O_S5, O_S6, O_S7, O_S8} ;
 
 /* inputs */
-enum {I_B1, I_B2, I_B3, I_B4, I_B5, I_B6, I_B7, I_B8, I_J1} ;
+enum {I_S1, I_S2, I_S3, I_S4, I_S5, I_S6, I_S7, I_S8};
 
-
-cpart_pbuttons::cpart_pbuttons(unsigned x, unsigned y)
+cpart_switchs::cpart_switchs(unsigned x, unsigned y)
 {
    X=x;
    Y=y;        
@@ -47,7 +46,6 @@ cpart_pbuttons::cpart_pbuttons(unsigned x, unsigned y)
    
    canvas.Create(Bitmap);
    
-
    
    output_pins[0]=0;
    output_pins[1]=0;
@@ -57,10 +55,11 @@ cpart_pbuttons::cpart_pbuttons(unsigned x, unsigned y)
    output_pins[5]=0;
    output_pins[6]=0;
    output_pins[7]=0;  
+  
 
 };
 
-cpart_pbuttons::~cpart_pbuttons(void)
+cpart_switchs::~cpart_switchs(void)
 {
     delete Bitmap;
 }
@@ -68,13 +67,14 @@ cpart_pbuttons::~cpart_pbuttons(void)
  
 
 
-void cpart_pbuttons::Draw(void)
+void cpart_switchs::Draw(void)
 { 
  
+  
+   
   int i;
-  
   board *pboard=Window1.GetBoard();
-  
+   
   canvas.Init();
   
   wxFont font(12, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );
@@ -178,8 +178,9 @@ void cpart_pbuttons::Draw(void)
              canvas.SetColor (pic->pins[output_pins[3]-1].value*250, 0, 0);
            canvas.Circle (1,output[i].x1,output[i].y1,output[i].r);
            break;
-            */ 
-        }
+
+            */
+      }
 
       
   };
@@ -200,16 +201,17 @@ void cpart_pbuttons::Draw(void)
 }
 
  
-void cpart_pbuttons::Process(void)
+void cpart_switchs::Process(void)
 {
 
-//   b1[0]=pic->pins[output_pins[0]-1].value-pic->pins[output_pins[2]-1].value;
-
+  // b1[0]=pic->pins[output_pins[0]-1].value-pic->pins[output_pins[2]-1].value;
+    
+     
 }
  
 
 void 
-cpart_pbuttons::Reset(void)
+cpart_switchs::Reset(void)
 {          
 
 };
@@ -218,7 +220,7 @@ cpart_pbuttons::Reset(void)
 
 
 void 
-cpart_pbuttons::MouseButtonPress(uint button, uint x, uint y,uint state)
+cpart_switchs::MouseButtonPress(uint button, uint x, uint y,uint state)
 {
  /*
   int i;
@@ -241,7 +243,7 @@ cpart_pbuttons::MouseButtonPress(uint button, uint x, uint y,uint state)
 
 
 void 
-cpart_pbuttons::MouseButtonRelease(uint button, uint x, uint y,uint state)
+cpart_switchs::MouseButtonRelease(uint button, uint x, uint y,uint state)
 {
   /*  
   int i;
@@ -263,7 +265,7 @@ cpart_pbuttons::MouseButtonRelease(uint button, uint x, uint y,uint state)
 
 
 void 
-cpart_pbuttons::KeyPress( uint key, uint x, uint y,uint mask)
+cpart_switchs::KeyPress( uint key, uint x, uint y,uint mask)
 {
   /*
   if(key == '1')
@@ -286,7 +288,7 @@ cpart_pbuttons::KeyPress( uint key, uint x, uint y,uint mask)
 };
 
 void
-cpart_pbuttons::KeyRelease(uint key, uint x, uint y,uint mask)
+cpart_switchs::KeyRelease(uint key, uint x, uint y,uint mask)
 {
   /*
   if(key == '1')
@@ -312,25 +314,24 @@ cpart_pbuttons::KeyRelease(uint key, uint x, uint y,uint mask)
 };
 
 unsigned short 
-cpart_pbuttons::get_in_id(char * name)
+cpart_switchs::get_in_id(char * name)
 {  
-  if(strcmp(name,"B1")==0)return I_B1;
-  if(strcmp(name,"B2")==0)return I_B2;
-  if(strcmp(name,"B3")==0)return I_B3;
-  if(strcmp(name,"B4")==0)return I_B4;
-  if(strcmp(name,"B5")==0)return I_B5;
-  if(strcmp(name,"B6")==0)return I_B6;
-  if(strcmp(name,"B7")==0)return I_B7;
-  if(strcmp(name,"B8")==0)return I_B8;
+
+  if(strcmp(name,"S1")==0)return I_S1;
+  if(strcmp(name,"S2")==0)return I_S2;
+  if(strcmp(name,"S3")==0)return I_S3;
+  if(strcmp(name,"S4")==0)return I_S4;
+  if(strcmp(name,"S5")==0)return I_S5;
+  if(strcmp(name,"S6")==0)return I_S6;
+  if(strcmp(name,"S7")==0)return I_S7;
+  if(strcmp(name,"S8")==0)return I_S8;
   
-  if(strcmp(name,"J1")==0)return O_J1;
-    
   printf("Erro input '%s' don't have a valid id! \n",name);
   return -1;
 };
 
 unsigned short 
-cpart_pbuttons::get_out_id(char * name)
+cpart_switchs::get_out_id(char * name)
 {
 
   if(strcmp(name,"P1")==0)return O_P1;
@@ -342,16 +343,14 @@ cpart_pbuttons::get_out_id(char * name)
   if(strcmp(name,"P7")==0)return O_P7;
   if(strcmp(name,"P8")==0)return O_P8;
   
-  if(strcmp(name,"B1")==0)return O_B1;
-  if(strcmp(name,"B2")==0)return O_B2;
-  if(strcmp(name,"B3")==0)return O_B3;
-  if(strcmp(name,"B4")==0)return O_B4;
-  if(strcmp(name,"B5")==0)return O_B5;
-  if(strcmp(name,"B6")==0)return O_B6;
-  if(strcmp(name,"B7")==0)return O_B7;
-  if(strcmp(name,"B8")==0)return O_B8;
-  
-  if(strcmp(name,"J1")==0)return O_J1;
+  if(strcmp(name,"S1")==0)return O_S1;
+  if(strcmp(name,"S2")==0)return O_S2;
+  if(strcmp(name,"S3")==0)return O_S3;
+  if(strcmp(name,"S4")==0)return O_S4;
+  if(strcmp(name,"S5")==0)return O_S5;
+  if(strcmp(name,"S6")==0)return O_S6;
+  if(strcmp(name,"S7")==0)return O_S7;
+  if(strcmp(name,"S8")==0)return O_S8;
 
   printf("Erro output '%s' don't have a valid id! \n",name);
   return 1;
@@ -359,9 +358,9 @@ cpart_pbuttons::get_out_id(char * name)
 
 
 String 
-cpart_pbuttons::WritePreferences(void)
+cpart_switchs::WritePreferences(void)
 {
-  char prefs[256];
+   char prefs[256];
   
   sprintf(prefs,"%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",output_pins[0],output_pins[1],output_pins[2],output_pins[3],output_pins[4],output_pins[5],output_pins[6],output_pins[7]);
   
@@ -369,19 +368,19 @@ cpart_pbuttons::WritePreferences(void)
 };
 
 void 
-cpart_pbuttons::ReadPreferences(String value)
+cpart_switchs::ReadPreferences(String value)
 {
-   sscanf(value.c_str (),"%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",&output_pins[0],&output_pins[1],&output_pins[2],&output_pins[3],&output_pins[4],&output_pins[5],&output_pins[6],&output_pins[7]);      
+  sscanf(value.c_str (),"%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",&output_pins[0],&output_pins[1],&output_pins[2],&output_pins[3],&output_pins[4],&output_pins[5],&output_pins[6],&output_pins[7]);      
 };
 
-CPWindow * WProp_pbuttons;
+CPWindow * WProp_switchs;
       
 void 
-cpart_pbuttons::ConfigurePropiertsWindow(CPWindow *  wprop)
+cpart_switchs::ConfigurePropiertsWindow(CPWindow *  wprop)
 {
     String Items="0  NC,";
     String spin;
-    WProp_pbuttons=wprop;
+    WProp_switchs=wprop;
     board *pboard=Window1.GetBoard();
     
     for(int i=1; i<= pboard->MGetPinCount();i++ )
@@ -394,104 +393,105 @@ cpart_pbuttons::ConfigurePropiertsWindow(CPWindow *  wprop)
       }
     }
     
-    ((CCombo*)WProp_pbuttons->GetChildByName("combo1"))->SetItems(Items);
+    ((CCombo*)WProp_switchs->GetChildByName("combo1"))->SetItems(Items);
     if(output_pins[0] == 0)
-        ((CCombo*)WProp_pbuttons->GetChildByName("combo1"))->SetText("0  NC");
+        ((CCombo*)WProp_switchs->GetChildByName("combo1"))->SetText("0  NC");
     else
     {
         spin= pboard->MGetPinName(output_pins[0]);
-        ((CCombo*)WProp_pbuttons->GetChildByName("combo1"))->SetText(itoa(output_pins[0])+"  "+spin);
+        ((CCombo*)WProp_switchs->GetChildByName("combo1"))->SetText(itoa(output_pins[0])+"  "+spin);
     }
     
-    ((CCombo*)WProp_pbuttons->GetChildByName("combo2"))->SetItems(Items);
+    ((CCombo*)WProp_switchs->GetChildByName("combo2"))->SetItems(Items);
     if(output_pins[1] == 0)
-        ((CCombo*)WProp_pbuttons->GetChildByName("combo2"))->SetText("0  NC");
+        ((CCombo*)WProp_switchs->GetChildByName("combo2"))->SetText("0  NC");
     else
     {
         spin= pboard->MGetPinName(output_pins[1]);
-        ((CCombo*)WProp_pbuttons->GetChildByName("combo2"))->SetText(itoa(output_pins[1])+"  "+spin);
+        ((CCombo*)WProp_switchs->GetChildByName("combo2"))->SetText(itoa(output_pins[1])+"  "+spin);
     }
     
-    ((CCombo*)WProp_pbuttons->GetChildByName("combo3"))->SetItems(Items);
+    ((CCombo*)WProp_switchs->GetChildByName("combo3"))->SetItems(Items);
     if(output_pins[3] == 0)
-        ((CCombo*)WProp_pbuttons->GetChildByName("combo3"))->SetText("0  NC");
+        ((CCombo*)WProp_switchs->GetChildByName("combo3"))->SetText("0  NC");
     else
     {
         spin= pboard->MGetPinName(output_pins[2]);
-        ((CCombo*)WProp_pbuttons->GetChildByName("combo3"))->SetText(itoa(output_pins[2])+"  "+spin);
+        ((CCombo*)WProp_switchs->GetChildByName("combo3"))->SetText(itoa(output_pins[2])+"  "+spin);
     }
     
-    ((CCombo*)WProp_pbuttons->GetChildByName("combo4"))->SetItems(Items);
+    ((CCombo*)WProp_switchs->GetChildByName("combo4"))->SetItems(Items);
     if(output_pins[3] == 0)
-        ((CCombo*)WProp_pbuttons->GetChildByName("combo4"))->SetText("0  NC");
+        ((CCombo*)WProp_switchs->GetChildByName("combo4"))->SetText("0  NC");
     else
     {
         spin= pboard->MGetPinName(output_pins[3]);
-        ((CCombo*)WProp_pbuttons->GetChildByName("combo4"))->SetText(itoa(output_pins[3])+"  "+spin);
+        ((CCombo*)WProp_switchs->GetChildByName("combo4"))->SetText(itoa(output_pins[3])+"  "+spin);
     }
     
-    ((CCombo*)WProp_pbuttons->GetChildByName("combo5"))->SetItems(Items);
+    ((CCombo*)WProp_switchs->GetChildByName("combo5"))->SetItems(Items);
     if(output_pins[4] == 0)
-        ((CCombo*)WProp_pbuttons->GetChildByName("combo5"))->SetText("0  NC");
+        ((CCombo*)WProp_switchs->GetChildByName("combo5"))->SetText("0  NC");
     else
     {
         spin= pboard->MGetPinName(output_pins[4]);
-        ((CCombo*)WProp_pbuttons->GetChildByName("combo5"))->SetText(itoa(output_pins[4])+"  "+spin);
+        ((CCombo*)WProp_switchs->GetChildByName("combo5"))->SetText(itoa(output_pins[4])+"  "+spin);
     }
     
-    ((CCombo*)WProp_pbuttons->GetChildByName("combo6"))->SetItems(Items);
+    ((CCombo*)WProp_switchs->GetChildByName("combo6"))->SetItems(Items);
     if(output_pins[5] == 0)
-        ((CCombo*)WProp_pbuttons->GetChildByName("combo6"))->SetText("0  NC");
+        ((CCombo*)WProp_switchs->GetChildByName("combo6"))->SetText("0  NC");
     else
     {
         spin= pboard->MGetPinName(output_pins[5]);
-        ((CCombo*)WProp_pbuttons->GetChildByName("combo6"))->SetText(itoa(output_pins[5])+"  "+spin);
+        ((CCombo*)WProp_switchs->GetChildByName("combo6"))->SetText(itoa(output_pins[5])+"  "+spin);
     }
     
-    ((CCombo*)WProp_pbuttons->GetChildByName("combo7"))->SetItems(Items);
+    ((CCombo*)WProp_switchs->GetChildByName("combo7"))->SetItems(Items);
     if(output_pins[6] == 0)
-        ((CCombo*)WProp_pbuttons->GetChildByName("combo7"))->SetText("0  NC");
+        ((CCombo*)WProp_switchs->GetChildByName("combo7"))->SetText("0  NC");
     else
     {
         spin= pboard->MGetPinName(output_pins[6]);
-        ((CCombo*)WProp_pbuttons->GetChildByName("combo7"))->SetText(itoa(output_pins[6])+"  "+spin);
+        ((CCombo*)WProp_switchs->GetChildByName("combo7"))->SetText(itoa(output_pins[6])+"  "+spin);
     }
     
-    ((CCombo*)WProp_pbuttons->GetChildByName("combo8"))->SetItems(Items);
+    ((CCombo*)WProp_switchs->GetChildByName("combo8"))->SetItems(Items);
     if(output_pins[7] == 0)
-        ((CCombo*)WProp_pbuttons->GetChildByName("combo8"))->SetText("0  NC");
+        ((CCombo*)WProp_switchs->GetChildByName("combo8"))->SetText("0  NC");
     else
     {
         spin= pboard->MGetPinName(output_pins[7]);
-        ((CCombo*)WProp_pbuttons->GetChildByName("combo8"))->SetText(itoa(output_pins[7])+"  "+spin);
+        ((CCombo*)WProp_switchs->GetChildByName("combo8"))->SetText(itoa(output_pins[7])+"  "+spin);
     }
     
-    ((CButton*)WProp_pbuttons->GetChildByName("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & cpart_pbuttons::PropButton;
-    ((CButton*)WProp_pbuttons->GetChildByName("button1"))->SetTag(1);
     
-    ((CButton*)WProp_pbuttons->GetChildByName("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & cpart_pbuttons::PropButton;
+    ((CButton*)WProp_switchs->GetChildByName("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & cpart_switchs::PropButton;
+    ((CButton*)WProp_switchs->GetChildByName("button1"))->SetTag(1);
+    
+    ((CButton*)WProp_switchs->GetChildByName("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & cpart_switchs::PropButton;
 }
 
 void 
-cpart_pbuttons::ReadPropiertsWindow(void)
+cpart_switchs::ReadPropiertsWindow(void)
 {
-   if(WProp_pbuttons->GetTag())
+   if(WProp_switchs->GetTag())
    {
-      output_pins[0]=atoi(((CCombo*)WProp_pbuttons->GetChildByName("combo1"))->GetText());
-      output_pins[1]=atoi(((CCombo*)WProp_pbuttons->GetChildByName("combo2"))->GetText());
-      output_pins[2]=atoi(((CCombo*)WProp_pbuttons->GetChildByName("combo3"))->GetText());
-      output_pins[3]=atoi(((CCombo*)WProp_pbuttons->GetChildByName("combo4"))->GetText());
-      output_pins[4]=atoi(((CCombo*)WProp_pbuttons->GetChildByName("combo5"))->GetText());
-      output_pins[5]=atoi(((CCombo*)WProp_pbuttons->GetChildByName("combo6"))->GetText());
-      output_pins[6]=atoi(((CCombo*)WProp_pbuttons->GetChildByName("combo7"))->GetText());
-      output_pins[7]=atoi(((CCombo*)WProp_pbuttons->GetChildByName("combo8"))->GetText());      
+      output_pins[0]=atoi(((CCombo*)WProp_switchs->GetChildByName("combo1"))->GetText());
+      output_pins[1]=atoi(((CCombo*)WProp_switchs->GetChildByName("combo2"))->GetText());
+      output_pins[2]=atoi(((CCombo*)WProp_switchs->GetChildByName("combo3"))->GetText());
+      output_pins[3]=atoi(((CCombo*)WProp_switchs->GetChildByName("combo4"))->GetText());
+      output_pins[4]=atoi(((CCombo*)WProp_switchs->GetChildByName("combo5"))->GetText());
+      output_pins[5]=atoi(((CCombo*)WProp_switchs->GetChildByName("combo6"))->GetText());
+      output_pins[6]=atoi(((CCombo*)WProp_switchs->GetChildByName("combo7"))->GetText());
+      output_pins[7]=atoi(((CCombo*)WProp_switchs->GetChildByName("combo8"))->GetText());      
    }
 } 
 
 
 void
-cpart_pbuttons::PropButton (CControl * control, uint button, uint x, uint y, uint state)
+cpart_switchs::PropButton (CControl * control, uint button, uint x, uint y, uint state)
 {
-   WProp_pbuttons->SetTag(control->GetTag()); 
-   WProp_pbuttons->HideExclusive ();
+   WProp_switchs->SetTag(control->GetTag()); 
+   WProp_switchs->HideExclusive ();
 };

@@ -36,7 +36,7 @@ extern char SERIALDEVICE[100];
 
 #include <lxrad/lxrad.h>
 
-#include "board.h"
+#include "boards/board.h"
 
 #include "wx/stdpaths.h"
 
