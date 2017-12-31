@@ -639,7 +639,7 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
         pa=picpwr; 
         picpwr=0;
         
-        filedialog1.SetDir(share+wxT("/examples/hex/"));
+        filedialog1.SetDir(share+wxT("/examples/hex/board_")+itoa(lab)+wxT("/")+pboard->proc+wxT("/"));
 
         if(filedialog1.Run())
         {
