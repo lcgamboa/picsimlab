@@ -360,36 +360,17 @@ cpart_switchs::get_out_id(char * name)
 String 
 cpart_switchs::WritePreferences(void)
 {
-  /*
-    char line[100];
-    Window1.saveprefs(wxT("p1_proc"),getnamebyproc(proc,line));
-    Window1.saveprefs(wxT("p1_jmp"),String::Format("%i",jmp[0]));
-    */
-  return "";
+   char prefs[256];
+  
+  sprintf(prefs,"%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",output_pins[0],output_pins[1],output_pins[2],output_pins[3],output_pins[4],output_pins[5],output_pins[6],output_pins[7]);
+  
+  return prefs;
 };
 
 void 
 cpart_switchs::ReadPreferences(String value)
 {
-  /*
-    int i;
-    
-     if(!strcmp(name,"p1_jmp"))
-      {
-        for(i=0;i<1;i++)
-        {
-          if(value[i] == '0')      
-            jmp[i]=0;
-          else
-            jmp[i]=1;
-        } 
-      }
-    
-    if(!strcmp(name,"p1_proc"))
-    {
-      proc=getprocbyname(value); 
-    }
-    */
+  sscanf(value.c_str (),"%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",&output_pins[0],&output_pins[1],&output_pins[2],&output_pins[3],&output_pins[4],&output_pins[5],&output_pins[6],&output_pins[7]);      
 };
 
 CPWindow * WProp_switchs;

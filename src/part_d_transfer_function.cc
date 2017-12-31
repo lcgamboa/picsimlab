@@ -274,36 +274,17 @@ cpart_dtfunc::get_out_id(char * name)
 String 
 cpart_dtfunc::WritePreferences(void)
 {
-  /*
-    char line[100];
-    Window1.saveprefs(wxT("p1_proc"),getnamebyproc(proc,line));
-    Window1.saveprefs(wxT("p1_jmp"),String::Format("%i",jmp[0]));
-    */
-  return "";
+  char prefs[256];
+  
+  sprintf(prefs,"%hhu,%hhu",input_pin,output_pin);
+  
+  return prefs;
 };
 
 void 
 cpart_dtfunc::ReadPreferences(String value)
 {
-  /*
-    int i;
-    
-     if(!strcmp(name,"p1_jmp"))
-      {
-        for(i=0;i<1;i++)
-        {
-          if(value[i] == '0')      
-            jmp[i]=0;
-          else
-            jmp[i]=1;
-        } 
-      }
-    
-    if(!strcmp(name,"p1_proc"))
-    {
-      proc=getprocbyname(value); 
-    }
-    */
+   sscanf(value.c_str (),"%hhu,%hhu",&input_pin,&output_pin);      
 };
 
 CPWindow * WProp_dtfunc;

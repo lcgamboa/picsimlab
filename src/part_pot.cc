@@ -47,16 +47,11 @@ cpart_pot::cpart_pot(unsigned x, unsigned y)
    canvas.Create(Bitmap);
    
    
-   output_pins[0]=0;
-   output_pins[1]=0;
-   output_pins[2]=0;
-   output_pins[3]=0;      
-   output_pins[4]=0;
-   output_pins[5]=0;
-   output_pins[6]=0;
-   output_pins[7]=0;  
+   input_pins[0]=0;
+   input_pins[1]=0;
+   input_pins[2]=0;
+   input_pins[3]=0;      
   
-
 };
 
 cpart_pot::~cpart_pot(void)
@@ -94,31 +89,31 @@ void cpart_pot::Draw(void)
            canvas.SetFgColor (255, 255, 255);
            if(output[i].id == O_P1)
            {
-             if(output_pins[0] == 0)
+             if(input_pins[0] == 0)
                canvas.Text ("NC",output[i].x1,output[i].y1);
              else
-               canvas.Text (pboard->MGetPinName(output_pins[0]),output[i].x1,output[i].y1);  
+               canvas.Text (pboard->MGetPinName(input_pins[0]),output[i].x1,output[i].y1);  
            }
            if(output[i].id == O_P2)
            {
-             if(output_pins[1] == 0)
+             if(input_pins[1] == 0)
                canvas.Text ("NC",output[i].x1,output[i].y1);
              else  
-               canvas.Text (pboard->MGetPinName(output_pins[1]),output[i].x1,output[i].y1);
+               canvas.Text (pboard->MGetPinName(input_pins[1]),output[i].x1,output[i].y1);
            }
            if(output[i].id == O_P3)
            {
-             if(output_pins[2] == 0)
+             if(input_pins[2] == 0)
                canvas.Text ("NC",output[i].x1,output[i].y1);
              else  
-               canvas.Text (pboard->MGetPinName(output_pins[2]),output[i].x1,output[i].y1);
+               canvas.Text (pboard->MGetPinName(input_pins[2]),output[i].x1,output[i].y1);
            }
            if(output[i].id == O_P4)
            {
-             if(output_pins[3] == 0)
+             if(input_pins[3] == 0)
                canvas.Text ("NC",output[i].x1,output[i].y1);
              else  
-               canvas.Text (pboard->MGetPinName(output_pins[3]),output[i].x1,output[i].y1);
+               canvas.Text (pboard->MGetPinName(input_pins[3]),output[i].x1,output[i].y1);
            }
            /*
          case O_ROT:
@@ -315,36 +310,17 @@ cpart_pot::get_out_id(char * name)
 String 
 cpart_pot::WritePreferences(void)
 {
-  /*
-    char line[100];
-    Window1.saveprefs(wxT("p1_proc"),getnamebyproc(proc,line));
-    Window1.saveprefs(wxT("p1_jmp"),String::Format("%i",jmp[0]));
-    */
-  return "";
+  char prefs[256];
+  
+  sprintf(prefs,"%hhu,%hhu,%hhu,%hhu",input_pins[0],input_pins[1],input_pins[2],input_pins[3]);
+  
+  return prefs;
 };
 
 void 
 cpart_pot::ReadPreferences(String value)
 {
-  /*
-    int i;
-    
-     if(!strcmp(name,"p1_jmp"))
-      {
-        for(i=0;i<1;i++)
-        {
-          if(value[i] == '0')      
-            jmp[i]=0;
-          else
-            jmp[i]=1;
-        } 
-      }
-    
-    if(!strcmp(name,"p1_proc"))
-    {
-      proc=getprocbyname(value); 
-    }
-    */
+    sscanf(value.c_str (),"%hhu,%hhu,%hhu,%hhu",&input_pins[0],&input_pins[1],&input_pins[2],&input_pins[3]);      
 };
 
 CPWindow * WProp_pot;
@@ -368,39 +344,39 @@ cpart_pot::ConfigurePropiertsWindow(CPWindow *  wprop)
     }
     
     ((CCombo*)WProp_pot->GetChildByName("combo1"))->SetItems(Items);
-    if(output_pins[0] == 0)
+    if(input_pins[0] == 0)
         ((CCombo*)WProp_pot->GetChildByName("combo1"))->SetText("0  NC");
     else
     {
-        spin= pboard->MGetPinName(output_pins[0]);
-        ((CCombo*)WProp_pot->GetChildByName("combo1"))->SetText(itoa(output_pins[0])+"  "+spin);
+        spin= pboard->MGetPinName(input_pins[0]);
+        ((CCombo*)WProp_pot->GetChildByName("combo1"))->SetText(itoa(input_pins[0])+"  "+spin);
     }
     
     ((CCombo*)WProp_pot->GetChildByName("combo2"))->SetItems(Items);
-    if(output_pins[1] == 0)
+    if(input_pins[1] == 0)
         ((CCombo*)WProp_pot->GetChildByName("combo2"))->SetText("0  NC");
     else
     {
-        spin= pboard->MGetPinName(output_pins[1]);
-        ((CCombo*)WProp_pot->GetChildByName("combo2"))->SetText(itoa(output_pins[1])+"  "+spin);
+        spin= pboard->MGetPinName(input_pins[1]);
+        ((CCombo*)WProp_pot->GetChildByName("combo2"))->SetText(itoa(input_pins[1])+"  "+spin);
     }
     
     ((CCombo*)WProp_pot->GetChildByName("combo3"))->SetItems(Items);
-    if(output_pins[3] == 0)
+    if(input_pins[3] == 0)
         ((CCombo*)WProp_pot->GetChildByName("combo3"))->SetText("0  NC");
     else
     {
-        spin= pboard->MGetPinName(output_pins[2]);
-        ((CCombo*)WProp_pot->GetChildByName("combo3"))->SetText(itoa(output_pins[2])+"  "+spin);
+        spin= pboard->MGetPinName(input_pins[2]);
+        ((CCombo*)WProp_pot->GetChildByName("combo3"))->SetText(itoa(input_pins[2])+"  "+spin);
     }
     
     ((CCombo*)WProp_pot->GetChildByName("combo4"))->SetItems(Items);
-    if(output_pins[3] == 0)
+    if(input_pins[3] == 0)
         ((CCombo*)WProp_pot->GetChildByName("combo4"))->SetText("0  NC");
     else
     {
-        spin= pboard->MGetPinName(output_pins[3]);
-        ((CCombo*)WProp_pot->GetChildByName("combo4"))->SetText(itoa(output_pins[3])+"  "+spin);
+        spin= pboard->MGetPinName(input_pins[3]);
+        ((CCombo*)WProp_pot->GetChildByName("combo4"))->SetText(itoa(input_pins[3])+"  "+spin);
     }
     
        
@@ -415,10 +391,10 @@ cpart_pot::ReadPropiertsWindow(void)
 {
    if(WProp_pot->GetTag())
    {
-      output_pins[0]=atoi(((CCombo*)WProp_pot->GetChildByName("combo1"))->GetText());
-      output_pins[1]=atoi(((CCombo*)WProp_pot->GetChildByName("combo2"))->GetText());
-      output_pins[2]=atoi(((CCombo*)WProp_pot->GetChildByName("combo3"))->GetText());
-      output_pins[3]=atoi(((CCombo*)WProp_pot->GetChildByName("combo4"))->GetText());
+      input_pins[0]=atoi(((CCombo*)WProp_pot->GetChildByName("combo1"))->GetText());
+      input_pins[1]=atoi(((CCombo*)WProp_pot->GetChildByName("combo2"))->GetText());
+      input_pins[2]=atoi(((CCombo*)WProp_pot->GetChildByName("combo3"))->GetText());
+      input_pins[3]=atoi(((CCombo*)WProp_pot->GetChildByName("combo4"))->GetText());
    }
 } 
 

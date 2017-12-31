@@ -37,7 +37,12 @@ cpart_servo::cpart_servo(unsigned x, unsigned y)
    X=x;
    Y=y;      
    input_pin=0;
-           
+   angle=0;
+   angle_=0;
+   in_[0]=0;
+   in_[1]=0;
+   time=0;
+   
    ReadMaps();   
      
    wxImage image;
@@ -56,7 +61,7 @@ cpart_servo::~cpart_servo(void)
 }
 
  
-float angle;
+
 
 void cpart_servo::Draw(void)
 { 
@@ -64,12 +69,11 @@ void cpart_servo::Draw(void)
   
    canvas.SetBitmap (BackGround,1.0,1.0);
   
-   angle+=0.1;
-   
-   if(angle >= 360)angle-=360;
-   
-   
   int i;
+  
+  if(angle > angle_)angle-=0.2;
+  
+  if(angle < angle_)angle+=0.2;
   
   canvas.Init();
   
@@ -90,7 +94,7 @@ void cpart_servo::Draw(void)
         {
          canvas.SetFgColor (255, 255, 255);
          canvas.SetLineWidth (20);
-         canvas.Line (output[i].x1,output[i].y1,output[i].x1+output[i].r*sin(angle),output[i].y1+output[i].r*cos(angle));
+         canvas.Line (output[i].x1,output[i].y1,output[i].x1+output[i].r*sin(angle),output[i].y1-output[i].r*cos(angle));
         }
 
       
@@ -103,85 +107,26 @@ void cpart_servo::Draw(void)
  
 void cpart_servo::Process(void)
 {
-  /*
-  int i;
-  int j;
-  unsigned char pi;
-  unsigned char pinv;
-  const picpin * pins;
-  unsigned int alm[18]; //luminosidade media
-  unsigned int alm1[18]; //luminosidade media display
-  unsigned int alm2[18]; //luminosidade media display
-     
-     
-  int JUMPSTEPS = Window1.GetJUMPSTEPS();
-  long int NSTEPJ=Window1.GetNSTEPJ();
+
+     const picpin * ppins=Window1.GetBoard()->MGetPinsValues();
+
+   in_[1]=in_[0];
+   in_[0]=ppins[input_pin-1].value;
+   
+   if((in_[0]==1)&&(in_[1]==0))//rise
+   {
+       time=0;
+   }
   
-  for(i=0;i < pic->PINCOUNT;i++)
-  {
-     alm[i]=0;
-     alm1[i]=0;
-     alm2[i]=0;
-  };
-
-    
- pins = pic->pins;
- 
- j=JUMPSTEPS+1;
- if(Window1.Get_picpwr())
-   for(i=0;i<Window1.GetNSTEP();i++)
-      {
- 
-          if(j > JUMPSTEPS)
-          {  
-          pic_set_pin(18,p_BT1); 
-          pic_set_pin(1,p_BT2); 
-          pic_set_pin(2,p_BT3); 
-          pic_set_pin(3,p_BT4);
-          } 
-        
-        if(!mplabxd_testbp())pic_step();
-        if(use_oscope)Window4.SetSample();
-        
-          if(j > JUMPSTEPS)
-          {  
-        for(pi=0;pi < pic->PINCOUNT;pi++)
-        {
-           alm[pi]+=pins[pi].value;
-           //if((!pins[pi].dir)&&(pins[pi].value)) alm[pi]++;
-        }
-        
-          //pull-up extern 
-          if((pins[17].dir)&&(p_BT1))alm[17]++; 
-          if((pins[0].dir)&&(p_BT2))alm[0]++; 
-          if((pins[1].dir)&&(p_BT3))alm[1]++;
-
-            if(jmp[0])
-            {
-              for(pi=5;pi<13;pi++)
-              {
-                pinv=pic_get_pin(pi+1);
-                if((pinv)&&(!pins[9].value)) alm1[pi]++;
-                if((pinv)&&(pins[9].value)) alm2[pi]++;
-              }
-            }
-          j=0;
-          } 
-          j++;
-     }
-    
-     for(i=0;i < pic->PINCOUNT;i++)
-     { 
-      lm[i]= (int)(((225.0*alm[i])/NSTEPJ)+30);
-      lm1[i]= (int)(((600.0*alm1[i])/NSTEPJ)+30);
-      lm2[i]= (int)(((600.0*alm2[i])/NSTEPJ)+30);
-      if(lm1[i] > 255)lm1[i]=255;
-      if(lm2[i] > 255)lm2[i]=255;
-     }
-
-     lm1[9]=30; 
-     lm2[9]=30;
-     */
+   if((in_[0]==0)&&(in_[1]==1))//low
+   {
+     angle_=((time/Window1.GetBoard()->MGetInstClock())-0.0015)*1570.79632679;
+   
+     if(angle_ > M_PI/2)angle_ =M_PI/2;
+     if(angle_ < -M_PI/2)angle_ =-M_PI/2;
+   }
+   
+   time++;
 }
  
 
@@ -329,36 +274,17 @@ cpart_servo::get_out_id(char * name)
 String
 cpart_servo::WritePreferences(void)
 {
-  /*
-    char line[100];
-    Window1.saveprefs(wxT("p1_proc"),getnamebyproc(proc,line));
-    Window1.saveprefs(wxT("p1_jmp"),String::Format("%i",jmp[0]));
-    */
-  return "";
+  char prefs[256];
+  
+  sprintf(prefs,"%hhu",input_pin);
+  
+  return prefs;
 };
 
 void 
 cpart_servo::ReadPreferences(String value)
 {
-  /*
-    int i;
-    
-     if(!strcmp(name,"p1_jmp"))
-      {
-        for(i=0;i<1;i++)
-        {
-          if(value[i] == '0')      
-            jmp[i]=0;
-          else
-            jmp[i]=1;
-        } 
-      }
-    
-    if(!strcmp(name,"p1_proc"))
-    {
-      proc=getprocbyname(value); 
-    }
-    */
+    sscanf(value.c_str (),"%hhu",&input_pin);      
 };
 
 CPWindow * WProp_servo;

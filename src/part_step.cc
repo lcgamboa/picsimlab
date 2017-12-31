@@ -191,6 +191,32 @@ void cpart_step::Process(void)
     if((b1[0]==0 )&& (b2[0]==-1) && (b1[1]==-1) && (b2[1]==0) )
        angle+=0.5;
    
+    //foward half step
+   
+    if((b1[0]==1) && (b2[0]==0) && (b1[1]==1) && (b2[1]==-1) )
+       angle+=0.25;
+    
+    if((b1[0]==1) && (b2[0]==1) && (b1[1]==1) && (b2[1]==0) )
+       angle+=0.25;
+   
+    if((b1[0]==0) && (b2[0]==1) && (b1[1]==1) && (b2[1]==1) )
+       angle+=0.25;
+   
+    if((b1[0]==-1) && (b2[0]==1) && (b1[1]==0) && (b2[1]==1) )
+       angle+=0.25;
+   
+    if((b1[0]==-1) && (b2[0]==0) && (b1[1]==-1) && (b2[1]==1) )
+       angle+=0.25;
+   
+    if((b1[0]==-1) && (b2[0]==-1) && (b1[1]==-1) && (b2[1]==0) )
+       angle+=0.25;
+        
+    if((b1[0]==0 )&& (b2[0]==-1) && (b1[1]==-1) && (b2[1]=-1) )
+       angle+=0.25;
+   
+    if((b1[0]==1 )&& (b2[0]==-1) && (b1[1]==0) && (b2[1]==-1) )
+       angle+=0.25; 
+    
    
    //backward full step
     if((b1[1]==1) && (b2[1]==0) && (b1[0]==0) && (b2[0]==-1) )
@@ -205,9 +231,33 @@ void cpart_step::Process(void)
     if((b1[1]==0 )&& (b2[1]==-1) && (b1[0]==-1) && (b2[0]==0) )
        angle-=0.5;
    
-   
+   //backward half step
+    if((b1[1]==1) && (b2[1]==0) && (b1[0]==1) && (b2[0]==-1) )
+       angle-=0.25;
     
-   if(angle >= 2*M_PI)angle-=2*M_PI;
+    if((b1[1]==1) && (b2[1]==1) && (b1[0]==1) && (b2[0]==0) )
+       angle-=0.25;
+   
+    if((b1[1]==0) && (b2[1]==1) && (b1[0]==1) && (b2[0]==1) )
+       angle-=0.25;
+   
+    if((b1[1]==-1) && (b2[1]==1) && (b1[0]==0) && (b2[0]==1) )
+       angle-=0.25;
+   
+    if((b1[1]==-1) && (b2[1]==0) && (b1[0]==-1) && (b2[0]==1) )
+       angle-=0.25;
+   
+    if((b1[1]==-1) && (b2[1]==-1) && (b1[0]==-1) && (b2[0]==0) )
+       angle-=0.25;
+        
+    if((b1[1]==0 )&& (b2[1]==-1) && (b1[0]==-1) && (b2[0]=-1) )
+       angle-=0.25;
+   
+    if((b1[1]==1 )&& (b2[1]==-1) && (b1[0]==0) && (b2[0]==-1) )
+       angle-=0.25; 
+    
+    
+    if(angle >= 2*M_PI)angle-=2*M_PI;
    
      
 }
@@ -345,36 +395,17 @@ cpart_step::get_out_id(char * name)
 String
 cpart_step::WritePreferences(void)
 {
-  /*
-    char line[100];
-    Window1.saveprefs(wxT("p1_proc"),getnamebyproc(proc,line));
-    Window1.saveprefs(wxT("p1_jmp"),String::Format("%i",jmp[0]));
-    */
-  return "";
+  char prefs[256];
+  
+  sprintf(prefs,"%hhu,%hhu,%hhu,%hhu",input_pins[0],input_pins[1],input_pins[2],input_pins[3]);
+  
+  return prefs;
 };
 
 void 
 cpart_step::ReadPreferences(String value)
 {
-  /*
-    int i;
-    
-     if(!strcmp(name,"p1_jmp"))
-      {
-        for(i=0;i<1;i++)
-        {
-          if(value[i] == '0')      
-            jmp[i]=0;
-          else
-            jmp[i]=1;
-        } 
-      }
-    
-    if(!strcmp(name,"p1_proc"))
-    {
-      proc=getprocbyname(value); 
-    }
-    */
+   sscanf(value.c_str (),"%hhu,%hhu,%hhu,%hhu",&input_pins[0],&input_pins[1],&input_pins[2],&input_pins[3]);      
 };
 
 CPWindow * WProp_step;

@@ -57,6 +57,10 @@ class cpart_servo:public part
     private:  
       unsigned char input_pin;   
       wxBitmap * BackGround;  //Background image
+      float angle;
+      float angle_;
+      unsigned char in_[2];
+      int time;
 };
 
 
