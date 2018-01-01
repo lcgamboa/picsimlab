@@ -25,7 +25,6 @@
 
 //Oscilloscope
 
-#include <wx-3.0/wx/string.h>
 
 #include"picsimlab4.h"
 #include"picsimlab1.h"
@@ -167,11 +166,13 @@ CPWindow4::DrawScreen (void)
 void
 CPWindow4::button1_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state)
 {
+#ifndef __WXX11__	
   colordialog1.SetColor (button1.GetColor());
   if(colordialog1.Run ())
     {
       button1.SetColor (colordialog1.GetColor ());
     }
+#endif  
 };
 
 
@@ -179,11 +180,13 @@ CPWindow4::button1_EvMouseButtonClick(CControl * control, uint button, uint x, u
 void
 CPWindow4::button2_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state)
 {
+#ifndef __WXX11__	
   colordialog1.SetColor (button2.GetColor());
   if(colordialog1.Run ())
     {
       button2.SetColor (colordialog1.GetColor ());
     }
+#endif
 };
 
 

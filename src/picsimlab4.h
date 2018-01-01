@@ -48,7 +48,9 @@ class CPWindow4:public CPWindow
   CButton button2;
   CToggleButton togglebutton3;
   CToggleButton togglebutton4;
+#ifndef __WXX11__
   CColorDialog colordialog1;
+#endif  
   CToggleButton togglebutton5;
   CSpind spind7;
   CCombo combo1;

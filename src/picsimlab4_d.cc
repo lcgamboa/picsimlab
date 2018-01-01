@@ -247,6 +247,7 @@ CPWindow4::CPWindow4(void)
   togglebutton4.SetText(wxT("Inv"));
   togglebutton4.SetCheck(0);
   CreateChild(&togglebutton4);
+#ifndef __WXX11__
   //colordialog1
   colordialog1.SetFOwner(this);
   colordialog1.SetClass(wxT("CColorDialog"));
@@ -254,6 +255,7 @@ CPWindow4::CPWindow4(void)
   colordialog1.SetTag(0);
   colordialog1.SetColorName(wxT("RED"));
   CreateChild(&colordialog1);
+#endif
   //togglebutton5
   togglebutton5.SetFOwner(this);
   togglebutton5.SetClass(wxT("CToggleButton"));
