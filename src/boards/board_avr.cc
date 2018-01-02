@@ -28,6 +28,24 @@
 
 #include"../picsimlab1.h"
 
+//serial stuff
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+
+#ifdef _WIN_
+#include <conio.h>
+#include <time.h>
+#include <windows.h>
+#else
+#include <termios.h>
+#include <sys/ioctl.h>
+#endif
+
 board_avr::board_avr(void)
 {
   avr=NULL;
@@ -66,6 +84,9 @@ static void uart_udp_xon_hook(struct avr_irq_t * irq, uint32_t value, void * par
  */
 static void uart_udp_xoff_hook(struct avr_irq_t * irq, uint32_t value, void * param);
         
+int  avr_serial_open(void);
+int  avr_serial_cfg(void);
+
 int
 board_avr::MInit(const char * processor, const char * fname, float freq)
 {
@@ -160,6 +181,10 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
    avr_irq_register_notify(xon, uart_udp_xon_hook, serial_irq);
   if (xoff)
    avr_irq_register_notify(xoff, uart_udp_xoff_hook, NULL); 
+  
+  avr_serial_open();
+  avr_serial_cfg();
+
   return ret;
 }
 
@@ -701,63 +726,60 @@ board_avr::write_ihx_avr(const char * fname)
 
 //uart support ============================================================
 
+int serialfd;
+
 int 
-serial_open(void)
+avr_serial_open(void)
 {
-      if(pic->SERIALDEVICE[0] == 0)
+      if(SERIALDEVICE[0] == 0)
       { 	
 #ifdef _WIN_
-        strcpy(pic->SERIALDEVICE,"COM2");
+        strcpy(SERIALDEVICE,"COM2");
 #else
-        strcpy(pic->SERIALDEVICE,"/dev/tnt2");
+        strcpy(SERIALDEVICE,"/dev/tnt2");
 #endif
       }
 
-  pic->bc=0;
-  pic->sr=0;
-  pic->serialc=0;
-  pic->recb=0;
-  pic->s_open=0;
 
 #ifdef _WIN_
-  pic->serialfd = CreateFile(pic->SERIALDEVICE, GENERIC_READ | GENERIC_WRITE,
+  serialfd = CreateFile(SERIALDEVICE, GENERIC_READ | GENERIC_WRITE,
 0, // exclusive access
 NULL, // no security
 OPEN_EXISTING,
 0, // no overlapped I/O
 NULL); // null template
-  if( pic->serialfd == INVALID_HANDLE_VALUE)
+  if( serialfd == INVALID_HANDLE_VALUE)
   {
-     pic->serialfd=0;
-//     printf("Erro on Port Open:%s!\n",pic->SERIALDEVICE);
+     serialfd=0;
+//     printf("Erro on Port Open:%s!\n",SERIALDEVICE);
      return 0; 
   }
 #else
-  pic->serialfd = open(pic->SERIALDEVICE, O_RDWR | O_NOCTTY | O_NONBLOCK);
+  serialfd = open(SERIALDEVICE, O_RDWR | O_NOCTTY | O_NONBLOCK);
  
-  if (pic->serialfd < 0) 
+  if (serialfd < 0) 
   {
-    pic->serialfd=0;
-    perror(pic->SERIALDEVICE); 
-//    printf("Erro on Port Open:%s!\n",pic->SERIALDEVICE);
+    serialfd=0;
+    perror(SERIALDEVICE); 
+//    printf("Erro on Port Open:%s!\n",SERIALDEVICE);
     return 0; 
   }
-//  printf("Port Open:%s!\n",pic->SERIALDEVICE);
+//  printf("Port Open:%s!\n",SERIALDEVICE);
 #endif
   return 1;
 }
 
 int 
-serial_close(void)
+avr_serial_close(void)
 {
-  if (pic->serialfd != 0) 
+  if (serialfd != 0) 
   {
 #ifdef _WIN_
-  CloseHandle(pic->serialfd);
+  CloseHandle(serialfd);
 #else    
-    close(pic->serialfd);
+    close(serialfd);
 #endif
-    pic->serialfd=0;
+    serialfd=0;
   }
   return 0;
 }
@@ -765,23 +787,28 @@ serial_close(void)
 
 
 int
-serial_cfg(void)
+avr_serial_cfg(void)
 {
     unsigned int BAUDRATE;
    
-    
-    if(*pic->serial_TXSTA & 0x04) //BRGH=1 
+    /*
+    if(*serial_TXSTA & 0x04) //BRGH=1 
     {
-        pic->serialexbaud=pic->freq/(16*((*pic->serial_SPBRG) +1));
+       serialexbaud=pic->freq/(16*((*pic->serial_SPBRG) +1));
     }
     else
     {
-        pic->serialexbaud=pic->freq/(64*((*pic->serial_SPBRG) +1));
+        serialexbaud=pic->freq/(64*((*pic->serial_SPBRG) +1));
     }
+    */
       
+          #ifndef _WIN_
+          BAUDRATE=B9600;
+          #else
+          BAUDRATE=9600;
+          #endif 
 
-
-
+/*
     switch(((int)((pic->serialexbaud/300.0)+0.5))) 
     {
        case 0 ... 1:
@@ -865,13 +892,14 @@ serial_cfg(void)
           #endif  
           break; 
     } 
-
+*/
+    
 #ifdef _WIN_
   BOOL bPortReady;
   DCB dcb;
   COMMTIMEOUTS CommTimeouts;
 
-bPortReady = GetCommState(pic->serialfd , &dcb);
+bPortReady = GetCommState(serialfd , &dcb);
 dcb.BaudRate = BAUDRATE;
 dcb.ByteSize = 8;
 dcb.Parity = NOPARITY;
@@ -891,11 +919,11 @@ dcb.fOutxDsrFlow = FALSE; // turn off DSR flow control
 dcb.fDtrControl = DTR_CONTROL_DISABLE; //
 // dcb.fDtrControl = DTR_CONTROL_HANDSHAKE; //
 
-bPortReady = SetCommState(pic->serialfd , &dcb);
+bPortReady = SetCommState(serialfd , &dcb);
 
 // Communication timeouts are optional
 
-bPortReady = GetCommTimeouts (pic->serialfd , &CommTimeouts);
+bPortReady = GetCommTimeouts (serialfd , &CommTimeouts);
 
 CommTimeouts.ReadIntervalTimeout = MAXDWORD;
 CommTimeouts.ReadTotalTimeoutConstant = 0;
@@ -903,10 +931,10 @@ CommTimeouts.ReadTotalTimeoutMultiplier = 0;
 CommTimeouts.WriteTotalTimeoutConstant = 0;
 CommTimeouts.WriteTotalTimeoutMultiplier = 0;
 
-bPortReady = SetCommTimeouts (pic->serialfd , &CommTimeouts);
+bPortReady = SetCommTimeouts (serialfd , &CommTimeouts);
 	
 
-EscapeCommFunction(pic->serialfd ,SETRTS );
+EscapeCommFunction(serialfd ,SETRTS );
 
 #else
    struct termios newtio;
@@ -925,11 +953,11 @@ EscapeCommFunction(pic->serialfd ,SETRTS );
         newtio.c_cc[VTIME]    = 0;   /* inter-character timer unused */
         newtio.c_cc[VMIN]     = 5;   /* blocking read until 5 chars received */
         
-        tcflush(pic->serialfd, TCIFLUSH);
-        tcsetattr(pic->serialfd,TCSANOW,&newtio);
+        tcflush(serialfd, TCIFLUSH);
+        tcsetattr(serialfd,TCSANOW,&newtio);
         
 	cmd=TIOCM_RTS;
-	ioctl(pic->serialfd, TIOCMBIS ,&cmd);
+	ioctl(serialfd, TIOCMBIS ,&cmd);
 #endif
 
 	return 0; 
@@ -937,35 +965,35 @@ EscapeCommFunction(pic->serialfd ,SETRTS );
 
 
       
-unsigned long serial_send(unsigned char c)
+unsigned long avr_serial_send(unsigned char c)
 {
-  if(pic->serialfd)
+  if(serialfd)
   {
 #ifdef _WIN_
    unsigned long nbytes;
     
-   WriteFile(pic->serialfd, &c, 1, &nbytes,NULL);
+   WriteFile(serialfd, &c, 1, &nbytes,NULL);
    return nbytes;
 #else
-  return write (pic->serialfd,&c,1);   
+  return write (serialfd,&c,1);   
 #endif
   }
   else
     return 0;
 }
 
-unsigned long serial_rec(_pic * pic, unsigned char * c)
+unsigned long avr_serial_rec( unsigned char * c)
 {
-  if(pic->serialfd)
+  if(serialfd)
   {
 #ifdef _WIN_
     unsigned long nbytes;
       
-    ReadFile(pic->serialfd, c, 1,&nbytes, NULL);
+    ReadFile(serialfd, c, 1,&nbytes, NULL);
 #else
     long nbytes;
 
-     nbytes = read (pic->serialfd,c,1);   
+     nbytes = read (serialfd,c,1);   
      if(nbytes<0)nbytes=0;
 #endif    
     return nbytes;
@@ -974,24 +1002,24 @@ unsigned long serial_rec(_pic * pic, unsigned char * c)
      return 0;
 }
 
-unsigned long serial_rec_tout( unsigned char * c)
+unsigned long avr_serial_rec_tout( unsigned char * c)
 {
  unsigned int tout=0;
 
-  if(pic->serialfd)
+  if(serialfd)
   {
 #ifdef _WIN_
     unsigned long nbytes;
     do
     { 
       Sleep(1);	
-      ReadFile(pic->serialfd, c, 1,&nbytes, NULL);
+      ReadFile(serialfd, c, 1,&nbytes, NULL);
 #else
     long nbytes;
     do
     { 
       usleep(100);
-      nbytes = read (pic->serialfd,c,1);   
+      nbytes = read (serialfd,c,1);   
       if(nbytes<0)nbytes=0;
 #endif    
       tout++;
@@ -1003,46 +1031,9 @@ unsigned long serial_rec_tout( unsigned char * c)
 }
 
 
-unsigned long serial_recbuff( unsigned char * c)
+unsigned long avr_serial_recbuff( unsigned char * c)
 {
-int i;
-
-
-  if(pic->flowcontrol)
-  {
-  
-   if(serial_rec(pic,&pic->buff[pic->bc]) == 1)
-    {
-     pic->bc++;
-
-     if(pic->bc > BUFFMAX)
-     {
-       printf("serial buffer overflow \n") ;
-       pic->bc = BUFFMAX-1;  
-//       getchar();	
-     };
-    }
-
-
-    if((pic_get_pin(pic->ctspin) == 0)&&(pic->bc > 0))
-    {
-      *c=pic->buff[0];
-
-      pic->bc--;
-      for(i=0;i<pic->bc;i++)
-        pic->buff[i]=pic->buff[i+1]; 
-      return 1;
-    }
-    else
-    {
-      return 0;
-    }
-  }
-  else
-  {
-     return serial_rec(pic,c);
-  }
-  
+   return avr_serial_rec(c);
 }
 
 
@@ -1050,13 +1041,9 @@ int i;
  * called when a byte is send via the uart on the AVR
  */
 static void
-uart_udp_in_hook(
-		struct avr_irq_t * irq,
-		uint32_t value,
-		void * param)
+uart_udp_in_hook(struct avr_irq_t * irq, uint32_t value, void * param)
 {
-  printf("%c",value);	
-  fflush(stdout);
+  avr_serial_send(value);
 }
 
 /*
@@ -1064,10 +1051,7 @@ uart_udp_in_hook(
  * if necessary, while the xoff is called only when the uart fifo is FULL
  */
 static void
-uart_udp_xon_hook(
-		struct avr_irq_t * irq,
-		uint32_t value,
-		void * param)
+uart_udp_xon_hook(struct avr_irq_t * irq, uint32_t value, void * param)
 {
    avr_irq_t * serial_irq= (avr_irq_t *)param;
    avr_raise_irq(serial_irq + IRQ_UART_UDP_BYTE_OUT, 123);  
@@ -1077,12 +1061,9 @@ uart_udp_xon_hook(
  * Called when the uart ran out of room in it's input buffer
  */
 static void
-uart_udp_xoff_hook(
-		struct avr_irq_t * irq,
-		uint32_t value,
-		void * param)
+uart_udp_xoff_hook( struct avr_irq_t * irq, uint32_t value, void * param)
 {
-    printf("uart_pty_xoff_hook %i\n",value);
+    printf("uart_xoff_hook %i\n",value);
     fflush(stdout);
 }
  
