@@ -1,11 +1,7 @@
 
 ######### ALL     #################
 
-OSCOPE window 
-
 LCD -> read and busy flag
-
-MOTOR control step, servo and DC
 
 graphic LCD
 
@@ -21,10 +17,11 @@ RTC -> Countdown timer
 ######### board 3 ##############
 BUZZER freq. sound output
 JUMPERS
-TEMP cooler must don't work with AQUE=0
 
 ######### board 4 ##############
 BUZZER freq. sound output
 RTC -> int output
-TEMP cooler don't work with AQUE=0
+TEMP cooler must don't work with AQUE=0
+
+######### board 5 ##############
 

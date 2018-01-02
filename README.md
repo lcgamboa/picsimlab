@@ -10,10 +10,11 @@ PicsimLab supports picsim  microcontrollers PIC16F628/16F777/16F877A/18F452/18F4
 
 wxwidget 	- For graphic suport		   http://www.wxwidgets.org
 
-picsim          - Pic simulator                    https://github.com/lcgamboa/picsim 
+picsim          - PIC simulator                    https://github.com/lcgamboa/picsim 
 
 lxrad           - Graphic library                  https://github.com/lcgamboa/lxrad 
 
+simavr          - AVR simulator                    https://github.com/buserror/simavr
 
 ## Utils:
 

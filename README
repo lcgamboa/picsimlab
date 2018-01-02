@@ -3,15 +3,15 @@
 PICsimLab - PIC Simulator Laboratory
 
 PicsimLab is a realtime emulator of development boards with integrated MPLABX debugger.
-PicsimLab supports picsim  microcontrollers PIC16F628/16F777/16F877A/18F452/18F4550/18F4620.
+PicsimLab supports picsim  microcontrollers PIC16F84A, 16F628A, 16F648A, 16F777, 16F777, 16F877A, 18F452, 18F4520, 18F4550, 18F4620 and ATMEGA328P.
 
 
 Requirements:
 
 wxwidget 	- For graphic suport		   http://www.wxwidgets.org
-picsim          - Pic simulator                    https://github.com/lcgamboa/picsim or http://sourceforge.net/projects/picsim 
+picsim          - PIC simulator                    https://github.com/lcgamboa/picsim or http://sourceforge.net/projects/picsim 
 lxrad           - Graphic library                  https://github.com/lcgamboa/lxrad or http://sourceforge.net/projects/lxrad
-
+simavr		- AVR simulator                    https://github.com/buserror/simavr
 
 Utils:
 

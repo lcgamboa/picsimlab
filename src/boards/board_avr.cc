@@ -31,6 +31,7 @@
 board_avr::board_avr(void)
 {
   avr=NULL;
+  serial_irq=NULL;
 }
 
 
@@ -40,7 +41,31 @@ board_avr::MSetSerial(const char * port)
    //pic_set_serial(&pic,port,0,0,0);
 }
 
+enum {
+	IRQ_UART_UDP_BYTE_IN = 0,
+	IRQ_UART_UDP_BYTE_OUT,
+	IRQ_UART_UDP_COUNT
+};
 
+static const char * irq_names[IRQ_UART_UDP_COUNT] = {
+	[IRQ_UART_UDP_BYTE_IN] = "8<uart_udp.in",
+	[IRQ_UART_UDP_BYTE_OUT] = "8>uart_udp.out",
+};
+
+/*
+ * called when a byte is send via the uart on the AVR
+ */
+static void uart_udp_in_hook(struct avr_irq_t * irq, uint32_t value, void * param);
+/*
+ * Called when the uart has room in it's input buffer. This is called repeateadly
+ * if necessary, while the xoff is called only when the uart fifo is FULL
+ */
+static void uart_udp_xon_hook(struct avr_irq_t * irq, uint32_t value, void * param);
+/*
+ * Called when the uart ran out of room in it's input buffer
+ */
+static void uart_udp_xoff_hook(struct avr_irq_t * irq, uint32_t value, void * param);
+        
 int
 board_avr::MInit(const char * processor, const char * fname, float freq)
 {
@@ -64,8 +89,9 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
   ret=read_ihx_avr(fname,1);
   
   avr->frequency = freq;
+ 
+  avr->reset_pc = 0x07000; // bootloader 0x3800
   
-  //avr->reset_pc = bootloader
   
   avr_reset(avr);
 
@@ -85,7 +111,7 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
           avr_irq_t* directionIrq = avr_io_getirq( avr, AVR_IOCTL_IOPORT_GETIRQ(pins[p].port), IOPORT_IRQ_DIRECTION_ALL );
           avr_irq_register_notify( directionIrq, ddr_hook, &pins[p] );
 
-          //FIXME
+          
           
           const char* name = (const char *)pname.c_str ();
           Write_stat_irq[p] = avr_alloc_irq( &avr->irq_pool, 0, 1, &name );
@@ -93,6 +119,7 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
           avr_irq_t* writeIrq = avr_io_getirq( avr, AVR_IOCTL_IOPORT_GETIRQ(pins[p].port), pins[p].pord );
           avr_connect_irq(Write_stat_irq[p], writeIrq );
           
+          //FIXME
           
           /*  
           avr_irq_t* adcIrq = avr_io_getirq( avr, AVR_IOCTL_ADC_GETIRQ, ADC_IRQ_OUT_TRIGGER );
@@ -111,7 +138,28 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
   //avr_ioctl( avr, AVR_IOCTL_IOPORT_GETSTATE('B'),&iostate);
   
   
-          
+  // disable the uart stdio 
+  uint32_t f = 0;
+  avr_ioctl(avr, AVR_IOCTL_UART_GET_FLAGS('0'), &f);
+  f &= ~AVR_UART_FLAG_STDIO;
+  f &= ~AVR_UART_FLAG_POLL_SLEEP;
+  avr_ioctl(avr, AVR_IOCTL_UART_SET_FLAGS('0'), &f);
+  
+  serial_irq = avr_alloc_irq(&avr->irq_pool, 0, IRQ_UART_UDP_COUNT, irq_names);
+  avr_irq_register_notify(serial_irq + IRQ_UART_UDP_BYTE_IN, uart_udp_in_hook, NULL);
+        
+  avr_irq_t * src = avr_io_getirq(avr, AVR_IOCTL_UART_GETIRQ('0'), UART_IRQ_OUTPUT);
+  avr_irq_t * dst = avr_io_getirq(avr, AVR_IOCTL_UART_GETIRQ('0'), UART_IRQ_INPUT);
+  avr_irq_t * xon = avr_io_getirq(avr, AVR_IOCTL_UART_GETIRQ('0'), UART_IRQ_OUT_XON);
+  avr_irq_t * xoff = avr_io_getirq(avr, AVR_IOCTL_UART_GETIRQ('0'), UART_IRQ_OUT_XOFF);
+  if (src && dst) {
+    avr_connect_irq(src, serial_irq + IRQ_UART_UDP_BYTE_IN);
+    avr_connect_irq(serial_irq + IRQ_UART_UDP_BYTE_OUT, dst);
+  }
+  if (xon)
+   avr_irq_register_notify(xon, uart_udp_xon_hook, serial_irq);
+  if (xoff)
+   avr_irq_register_notify(xoff, uart_udp_xoff_hook, NULL); 
   return ret;
 }
 
@@ -163,12 +211,11 @@ board_avr::MDumpMemory(const char * fname)
 int
 board_avr::DebugInit(void)
 {
-  /*
-     avr->gdb_port = 1234;
+  
+   //avr->gdb_port = 1234;
    //avr->state = cpu_Stopped;
-   return avr_gdb_init(avr);
-   */
-   return 0;
+   //return avr_gdb_init(avr);
+    return 0;
 }
 
 void
@@ -296,7 +343,7 @@ board_avr::MGetPinsValues(void)
       
       
       
-//hexfile support
+//hexfile support ============================================================
 
 
 #include<stdio.h>
@@ -652,5 +699,396 @@ board_avr::write_ihx_avr(const char * fname)
   return 0;//no error
 }
 
+//uart support ============================================================
 
+int 
+serial_open(void)
+{
+      if(pic->SERIALDEVICE[0] == 0)
+      { 	
+#ifdef _WIN_
+        strcpy(pic->SERIALDEVICE,"COM2");
+#else
+        strcpy(pic->SERIALDEVICE,"/dev/tnt2");
+#endif
+      }
+
+  pic->bc=0;
+  pic->sr=0;
+  pic->serialc=0;
+  pic->recb=0;
+  pic->s_open=0;
+
+#ifdef _WIN_
+  pic->serialfd = CreateFile(pic->SERIALDEVICE, GENERIC_READ | GENERIC_WRITE,
+0, // exclusive access
+NULL, // no security
+OPEN_EXISTING,
+0, // no overlapped I/O
+NULL); // null template
+  if( pic->serialfd == INVALID_HANDLE_VALUE)
+  {
+     pic->serialfd=0;
+//     printf("Erro on Port Open:%s!\n",pic->SERIALDEVICE);
+     return 0; 
+  }
+#else
+  pic->serialfd = open(pic->SERIALDEVICE, O_RDWR | O_NOCTTY | O_NONBLOCK);
  
+  if (pic->serialfd < 0) 
+  {
+    pic->serialfd=0;
+    perror(pic->SERIALDEVICE); 
+//    printf("Erro on Port Open:%s!\n",pic->SERIALDEVICE);
+    return 0; 
+  }
+//  printf("Port Open:%s!\n",pic->SERIALDEVICE);
+#endif
+  return 1;
+}
+
+int 
+serial_close(void)
+{
+  if (pic->serialfd != 0) 
+  {
+#ifdef _WIN_
+  CloseHandle(pic->serialfd);
+#else    
+    close(pic->serialfd);
+#endif
+    pic->serialfd=0;
+  }
+  return 0;
+}
+
+
+
+int
+serial_cfg(void)
+{
+    unsigned int BAUDRATE;
+   
+    
+    if(*pic->serial_TXSTA & 0x04) //BRGH=1 
+    {
+        pic->serialexbaud=pic->freq/(16*((*pic->serial_SPBRG) +1));
+    }
+    else
+    {
+        pic->serialexbaud=pic->freq/(64*((*pic->serial_SPBRG) +1));
+    }
+      
+
+
+
+    switch(((int)((pic->serialexbaud/300.0)+0.5))) 
+    {
+       case 0 ... 1:
+          pic->serialbaud=300;
+          #ifndef _WIN_
+          BAUDRATE=B300;
+          #else
+          BAUDRATE=300;
+          #endif  
+          break; 
+       case 2 ... 3:
+          pic->serialbaud=600;
+          #ifndef _WIN_
+          BAUDRATE=B600;
+          #else
+          BAUDRATE=600;
+          #endif  
+          break; 
+       case 4 ... 7:
+          pic->serialbaud=1200;
+          #ifndef _WIN_
+          BAUDRATE=B1200;
+          #else
+          BAUDRATE=1200;
+          #endif  
+          break; 
+       case 8 ... 15:
+          pic->serialbaud=2400;
+          #ifndef _WIN_
+          BAUDRATE=B2400;
+          #else
+          BAUDRATE=2400;
+          #endif  
+          break; 
+       case 16 ... 31:
+          pic->serialbaud=4800;
+          #ifndef _WIN_
+          BAUDRATE=B4800;
+          #else
+          BAUDRATE=4800;
+          #endif  
+          break; 
+       case 32 ... 63:
+          pic->serialbaud=9600;
+          #ifndef _WIN_
+          BAUDRATE=B9600;
+          #else
+          BAUDRATE=9600;
+          #endif  
+          break; 
+       case 64 ... 127:
+          pic->serialbaud=19200;
+          #ifndef _WIN_
+          BAUDRATE=B19200;
+          #else
+          BAUDRATE=19200;
+          #endif  
+          break; 
+       case 128 ... 191:
+          pic->serialbaud=38400;
+          #ifndef _WIN_
+          BAUDRATE=B38400;
+          #else
+          BAUDRATE=38400;
+          #endif  
+          break; 
+       case 192 ... 383:
+          pic->serialbaud=57600;
+          #ifndef _WIN_
+          BAUDRATE=B57600;
+          #else
+          BAUDRATE=57600;
+          #endif  
+          break; 
+       default:
+          pic->serialbaud=115200;
+          #ifndef _WIN_
+          BAUDRATE=B115200;
+          #else
+          BAUDRATE=115200;
+          #endif  
+          break; 
+    } 
+
+#ifdef _WIN_
+  BOOL bPortReady;
+  DCB dcb;
+  COMMTIMEOUTS CommTimeouts;
+
+bPortReady = GetCommState(pic->serialfd , &dcb);
+dcb.BaudRate = BAUDRATE;
+dcb.ByteSize = 8;
+dcb.Parity = NOPARITY;
+dcb.StopBits = ONESTOPBIT;
+dcb.fAbortOnError = TRUE;
+
+// set XON/XOFF
+dcb.fOutX = FALSE; // XON/XOFF off for transmit
+dcb.fInX = FALSE; // XON/XOFF off for receive
+// set RTSCTS
+dcb.fOutxCtsFlow = FALSE; // turn off CTS flow control
+//dcb.fRtsControl = RTS_CONTROL_HANDSHAKE; //
+dcb.fRtsControl = RTS_CONTROL_DISABLE; //
+// set DSRDTR
+dcb.fOutxDsrFlow = FALSE; // turn off DSR flow control
+//dcb.fDtrControl = DTR_CONTROL_ENABLE; //
+dcb.fDtrControl = DTR_CONTROL_DISABLE; //
+// dcb.fDtrControl = DTR_CONTROL_HANDSHAKE; //
+
+bPortReady = SetCommState(pic->serialfd , &dcb);
+
+// Communication timeouts are optional
+
+bPortReady = GetCommTimeouts (pic->serialfd , &CommTimeouts);
+
+CommTimeouts.ReadIntervalTimeout = MAXDWORD;
+CommTimeouts.ReadTotalTimeoutConstant = 0;
+CommTimeouts.ReadTotalTimeoutMultiplier = 0;
+CommTimeouts.WriteTotalTimeoutConstant = 0;
+CommTimeouts.WriteTotalTimeoutMultiplier = 0;
+
+bPortReady = SetCommTimeouts (pic->serialfd , &CommTimeouts);
+	
+
+EscapeCommFunction(pic->serialfd ,SETRTS );
+
+#else
+   struct termios newtio;
+   int cmd;   
+        
+//        tcgetattr(fd,&oldtio); /* save current port settings */
+        
+        bzero(&newtio, sizeof(newtio));
+        newtio.c_cflag = BAUDRATE |CS8 | CLOCAL | CREAD;
+        newtio.c_iflag = IGNPAR|IGNBRK;
+        newtio.c_oflag = 0;
+        
+        /* set input mode (non-canonical, no echo,...) */
+        newtio.c_lflag = 0;
+         
+        newtio.c_cc[VTIME]    = 0;   /* inter-character timer unused */
+        newtio.c_cc[VMIN]     = 5;   /* blocking read until 5 chars received */
+        
+        tcflush(pic->serialfd, TCIFLUSH);
+        tcsetattr(pic->serialfd,TCSANOW,&newtio);
+        
+	cmd=TIOCM_RTS;
+	ioctl(pic->serialfd, TIOCMBIS ,&cmd);
+#endif
+
+	return 0; 
+}
+
+
+      
+unsigned long serial_send(unsigned char c)
+{
+  if(pic->serialfd)
+  {
+#ifdef _WIN_
+   unsigned long nbytes;
+    
+   WriteFile(pic->serialfd, &c, 1, &nbytes,NULL);
+   return nbytes;
+#else
+  return write (pic->serialfd,&c,1);   
+#endif
+  }
+  else
+    return 0;
+}
+
+unsigned long serial_rec(_pic * pic, unsigned char * c)
+{
+  if(pic->serialfd)
+  {
+#ifdef _WIN_
+    unsigned long nbytes;
+      
+    ReadFile(pic->serialfd, c, 1,&nbytes, NULL);
+#else
+    long nbytes;
+
+     nbytes = read (pic->serialfd,c,1);   
+     if(nbytes<0)nbytes=0;
+#endif    
+    return nbytes;
+   }
+   else
+     return 0;
+}
+
+unsigned long serial_rec_tout( unsigned char * c)
+{
+ unsigned int tout=0;
+
+  if(pic->serialfd)
+  {
+#ifdef _WIN_
+    unsigned long nbytes;
+    do
+    { 
+      Sleep(1);	
+      ReadFile(pic->serialfd, c, 1,&nbytes, NULL);
+#else
+    long nbytes;
+    do
+    { 
+      usleep(100);
+      nbytes = read (pic->serialfd,c,1);   
+      if(nbytes<0)nbytes=0;
+#endif    
+      tout++;
+    }while((nbytes == 0 )&&(tout < 1000));
+    return nbytes;
+   }
+   else
+     return 0;
+}
+
+
+unsigned long serial_recbuff( unsigned char * c)
+{
+int i;
+
+
+  if(pic->flowcontrol)
+  {
+  
+   if(serial_rec(pic,&pic->buff[pic->bc]) == 1)
+    {
+     pic->bc++;
+
+     if(pic->bc > BUFFMAX)
+     {
+       printf("serial buffer overflow \n") ;
+       pic->bc = BUFFMAX-1;  
+//       getchar();	
+     };
+    }
+
+
+    if((pic_get_pin(pic->ctspin) == 0)&&(pic->bc > 0))
+    {
+      *c=pic->buff[0];
+
+      pic->bc--;
+      for(i=0;i<pic->bc;i++)
+        pic->buff[i]=pic->buff[i+1]; 
+      return 1;
+    }
+    else
+    {
+      return 0;
+    }
+  }
+  else
+  {
+     return serial_rec(pic,c);
+  }
+  
+}
+
+
+/*
+ * called when a byte is send via the uart on the AVR
+ */
+static void
+uart_udp_in_hook(
+		struct avr_irq_t * irq,
+		uint32_t value,
+		void * param)
+{
+  printf("%c",value);	
+  fflush(stdout);
+}
+
+/*
+ * Called when the uart has room in it's input buffer. This is called repeateadly
+ * if necessary, while the xoff is called only when the uart fifo is FULL
+ */
+static void
+uart_udp_xon_hook(
+		struct avr_irq_t * irq,
+		uint32_t value,
+		void * param)
+{
+   avr_irq_t * serial_irq= (avr_irq_t *)param;
+   avr_raise_irq(serial_irq + IRQ_UART_UDP_BYTE_OUT, 123);  
+}
+
+/*
+ * Called when the uart ran out of room in it's input buffer
+ */
+static void
+uart_udp_xoff_hook(
+		struct avr_irq_t * irq,
+		uint32_t value,
+		void * param)
+{
+    printf("uart_pty_xoff_hook %i\n",value);
+    fflush(stdout);
+}
+ 
+
+void
+board_avr::UpdateSerial(void)
+{
+ 
+};

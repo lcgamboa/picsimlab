@@ -104,7 +104,11 @@ class cboard_4:public board_pic
       ~cboard_4(void);
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
+#ifdef _EXPERIMENTAL_
       String GetSupportedDevices(void){return wxT("PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,");};
+#else
+      String GetSupportedDevices(void){return wxT("PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F4620,");};
+#endif
       String GetPictureFileName(void){return wxT("picsimlab4.png");};
       String GetInputMapFile(void){return wxT("input4.map");};
       String GetOutputMapFile(void){return wxT("output4.map");};

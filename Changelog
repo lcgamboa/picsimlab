@@ -1,5 +1,10 @@
 
+
+08/15/2017 Support to ATMEGA328 using simavr
+04/20/2017 Spare parts window added
 07/19/2016 Oscilloscope device added
+
+Version 0.6
 10/14/2015 MPLABX debugger support implemented
 10/07/2015 Animated cooler implemented
 10/06/2015 Serial baud rate emulation support

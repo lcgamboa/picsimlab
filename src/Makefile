@@ -12,9 +12,10 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-FLAGS = -D_VERSION_=\"0.6.5\" -Wall -O2 -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer `lxrad-config --cxxflags` -I"../../simavr/simavr/sim/"
-#FLAGS = -D_VERSION_=\"0.6.5\" -Wall -ggdb -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer `lxrad-config --cxxflags` -I"../../simavr/simavr/sim/"
+#FLAGS = -D_VERSION_=\"0.6.5\" -Wall -O2 -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer `lxrad-config --cxxflags` -I"../../simavr/simavr/sim/"
+FLAGS = -D_VERSION_=\"0.6.5\" -Wall -ggdb -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer `lxrad-config --cxxflags` -I"../../simavr/simavr/sim/"
 
+#FLAGS+= -D_EXPERIMENTAL_
 
 LIBS = `lxrad-config --libs` -lpicsim ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a 
 #LIBS= `wx-config --libs` ../../picsim/src/libpicsim.a ../../LXRAD_WX/libteste/liblxrad.a  ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a 

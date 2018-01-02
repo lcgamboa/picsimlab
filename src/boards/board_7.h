@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2017  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2015-2018  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -28,28 +28,27 @@
 
 #include<lxrad/lxrad.h>
 
-#include "board_avr.h"
+#include "board_pic.h"
 
 //new board class must be derived from board class defined in board.h
-class cboard_7:public board_avr
+class cboard_7:public board_pic
 {
-  private: 
+  private:
+     int p_BT1;           //S1 switch
 
-     //controls to be added in simulator window   
-     CGauge *gauge1;   //gauge to show mean value of 3
-     CGauge *gauge2;   //gauge to show mean value of 5
-     CGauge *gauge3;   //gauge to show mean value of 6
-     CGauge *gauge4;   //gauge to show mean value of 9
-     CGauge *gauge5;   //gauge to show mean value of 10
-     CGauge *gauge6;   //gauge to show mean value of 11
-     
-     
-     CLabel *label1;   //label of gauge 3
-     CLabel *label2;   //label of gauge 5
-     CLabel *label3;   //label of gauge 6
-     CLabel *label4;   //label of gauge 9
-     CLabel *label5;   //label of gauge 10
-     CLabel *label6;   //label of gauge 11
+     int jmp[1];             //jmp
+          
+     //controls to be added in simulator window
+     CScroll *scroll1; //scroll for analog input AN0    
+     CGauge *gauge1;   //gauge to show mean value of RA5
+     CGauge *gauge2;   //gauge to show mean value of RA1
+     CGauge *gauge3;   //gauge to show mean value of RA2
+     CGauge *gauge4;   //gauge to show mean value of RC5
+     CLabel *label1;   //label of scroll AN4
+     CLabel *label2;   //label of gauge RA5
+     CLabel *label3;   //label of gauge RA1
+     CLabel *label4;   //label of gauge RA2
+     CLabel *label5;   //label of gauge RC5
      
  
    public:
@@ -61,13 +60,13 @@ class cboard_7:public board_avr
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
-      String GetSupportedDevices(void){return wxT("atmega328,");};
+      String GetSupportedDevices(void){return wxT("PIC16F1619,");};
       //Return the filename of board picture 
-      String GetPictureFileName(void){return wxT("picsimlab7.png");};
+      String GetPictureFileName(void){return wxT("picsimlab5.png");};
       //Return the filename of board picture input map 
-      String GetInputMapFile(void){return wxT("input7.map");};
+      String GetInputMapFile(void){return wxT("input5.map");};
       //Return the filename of board picture output map 
-      String GetOutputMapFile(void){return wxT("output7.map");};
+      String GetOutputMapFile(void){return wxT("output5.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

@@ -34,6 +34,8 @@
 #include "sim_hex.h"
 #include "sim_gdb.h"
 #include "avr_adc.h"
+#include "avr_uart.h"
+#include "sim_hex.h"
 #include "../picsimlab1.h"
 
 
@@ -59,6 +61,7 @@ class board_avr: public board
       void MSetAPin(int pin, float value);
       unsigned char MGetPin(int pin);  
       const picpin * MGetPinsValues(void); 
+      void UpdateSerial(void);
       
       static void out_hook( struct avr_irq_t* irq, uint32_t value, void* param )
       {      
@@ -87,6 +90,7 @@ class board_avr: public board
         
  protected:
       avr_t *  avr;
+      avr_irq_t * serial_irq;
       picpin pins[28];//FIXME only for atmega328!
       avr_irq_t * Write_stat_irq[28];//FIXME only for atmega328!
  private:
