@@ -60,29 +60,29 @@ board_avr::MSetSerial(const char * port)
 }
 
 enum {
-	IRQ_UART_UDP_BYTE_IN = 0,
-	IRQ_UART_UDP_BYTE_OUT,
-	IRQ_UART_UDP_COUNT
+	IRQ_UART_BYTE_IN = 0,
+	IRQ_UART_BYTE_OUT,
+	IRQ_UART_COUNT
 };
 
-static const char * irq_names[IRQ_UART_UDP_COUNT] = {
-	[IRQ_UART_UDP_BYTE_IN] = "8<uart_udp.in",
-	[IRQ_UART_UDP_BYTE_OUT] = "8>uart_udp.out",
+static const char * irq_names[IRQ_UART_COUNT] = {
+	[IRQ_UART_BYTE_IN] = "8<uart.in",
+	[IRQ_UART_BYTE_OUT] = "8>uart.out",
 };
 
 /*
  * called when a byte is send via the uart on the AVR
  */
-static void uart_udp_in_hook(struct avr_irq_t * irq, uint32_t value, void * param);
+static void uart_in_hook(struct avr_irq_t * irq, uint32_t value, void * param);
 /*
  * Called when the uart has room in it's input buffer. This is called repeateadly
  * if necessary, while the xoff is called only when the uart fifo is FULL
  */
-static void uart_udp_xon_hook(struct avr_irq_t * irq, uint32_t value, void * param);
+static void uart_xon_hook(struct avr_irq_t * irq, uint32_t value, void * param);
 /*
  * Called when the uart ran out of room in it's input buffer
  */
-static void uart_udp_xoff_hook(struct avr_irq_t * irq, uint32_t value, void * param);
+static void uart_xoff_hook(struct avr_irq_t * irq, uint32_t value, void * param);
         
 int  avr_serial_open(void);
 int  avr_serial_cfg(void);
@@ -142,10 +142,9 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
           
           //FIXME
           
-          /*  
-          avr_irq_t* adcIrq = avr_io_getirq( avr, AVR_IOCTL_ADC_GETIRQ, ADC_IRQ_OUT_TRIGGER );
-          avr_irq_register_notify( adcIrq, adc_hook, &pins[i] );
-  */
+            
+          //avr_irq_t* adcIrq = avr_io_getirq( avr, AVR_IOCTL_ADC_GETIRQ, ADC_IRQ_OUT_TRIGGER );
+          //avr_irq_register_notify( adcIrq, adc_hook, &pins[i] );
     
       }
       else
@@ -155,9 +154,7 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
       }
   }
   
-  //avr_ioport_state_t  iostate;  
-  //avr_ioctl( avr, AVR_IOCTL_IOPORT_GETSTATE('B'),&iostate);
-  
+ 
   
   // disable the uart stdio 
   uint32_t f = 0;
@@ -166,21 +163,21 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
   f &= ~AVR_UART_FLAG_POLL_SLEEP;
   avr_ioctl(avr, AVR_IOCTL_UART_SET_FLAGS('0'), &f);
   
-  serial_irq = avr_alloc_irq(&avr->irq_pool, 0, IRQ_UART_UDP_COUNT, irq_names);
-  avr_irq_register_notify(serial_irq + IRQ_UART_UDP_BYTE_IN, uart_udp_in_hook, NULL);
+  serial_irq = avr_alloc_irq(&avr->irq_pool, 0, IRQ_UART_COUNT, irq_names);
+  avr_irq_register_notify(serial_irq + IRQ_UART_BYTE_IN, uart_in_hook, NULL);
         
   avr_irq_t * src = avr_io_getirq(avr, AVR_IOCTL_UART_GETIRQ('0'), UART_IRQ_OUTPUT);
   avr_irq_t * dst = avr_io_getirq(avr, AVR_IOCTL_UART_GETIRQ('0'), UART_IRQ_INPUT);
   avr_irq_t * xon = avr_io_getirq(avr, AVR_IOCTL_UART_GETIRQ('0'), UART_IRQ_OUT_XON);
   avr_irq_t * xoff = avr_io_getirq(avr, AVR_IOCTL_UART_GETIRQ('0'), UART_IRQ_OUT_XOFF);
   if (src && dst) {
-    avr_connect_irq(src, serial_irq + IRQ_UART_UDP_BYTE_IN);
-    avr_connect_irq(serial_irq + IRQ_UART_UDP_BYTE_OUT, dst);
+    avr_connect_irq(src, serial_irq + IRQ_UART_BYTE_IN);
+    avr_connect_irq(serial_irq + IRQ_UART_BYTE_OUT, dst);
   }
   if (xon)
-   avr_irq_register_notify(xon, uart_udp_xon_hook, serial_irq);
+   avr_irq_register_notify(xon, uart_xon_hook, serial_irq);
   if (xoff)
-   avr_irq_register_notify(xoff, uart_udp_xoff_hook, NULL); 
+   avr_irq_register_notify(xoff, uart_xoff_hook, NULL); 
   
   avr_serial_open();
   avr_serial_cfg();
@@ -1041,7 +1038,7 @@ unsigned long avr_serial_recbuff( unsigned char * c)
  * called when a byte is send via the uart on the AVR
  */
 static void
-uart_udp_in_hook(struct avr_irq_t * irq, uint32_t value, void * param)
+uart_in_hook(struct avr_irq_t * irq, uint32_t value, void * param)
 {
   avr_serial_send(value);
 }
@@ -1051,45 +1048,74 @@ uart_udp_in_hook(struct avr_irq_t * irq, uint32_t value, void * param)
  * if necessary, while the xoff is called only when the uart fifo is FULL
  */
 int off=0;
-int cont=0;
 static void
-uart_udp_xon_hook(struct avr_irq_t * irq, uint32_t value, void * param)
+uart_xon_hook(struct avr_irq_t * irq, uint32_t value, void * param)
 {
-  /*  
+   /* 
    avr_irq_t * serial_irq= (avr_irq_t *)param;
    unsigned char c;
    
    off=0;   
    while(avr_serial_rec(&c) && !off)
    {
-     avr_raise_irq(serial_irq + IRQ_UART_UDP_BYTE_OUT, c);  
+     avr_raise_irq(serial_irq + IRQ_UART_BYTE_OUT, c);  
      printf("byte %i\n",c);
    }
-   */
-    //printf("uart_xon_hook %i\n",value+cont++);   
-    //fflush(stdout);
-  
+   
+    printf("uart_xon_hook %i\n",value+cont++);   
+    fflush(stdout);
+  */
 }
 
 /*
  * Called when the uart ran out of room in it's input buffer
  */
 static void
-uart_udp_xoff_hook( struct avr_irq_t * irq, uint32_t value, void * param)
+uart_xoff_hook( struct avr_irq_t * irq, uint32_t value, void * param)
 {
     off=1;
     //printf("uart_xoff_hook %i\n",value);
     //fflush(stdout);
 }
  
+int cont=0;
+int aux=1;
 
 void
 board_avr::UpdateSerial(void)
 {
-   unsigned char c;
    
-   if(avr_serial_rec(&c))
+   unsigned char c;
+   cont++;
+   
+   if(cont > 1000)
    {
-     avr_raise_irq(serial_irq + IRQ_UART_UDP_BYTE_OUT, c);  
+     cont=0;  
+     if(avr_serial_rec(&c))
+     {
+       avr_raise_irq(serial_irq + IRQ_UART_BYTE_OUT, c);  
+       //printf("%i\n",c);
+       //fflush(stdout);
+     }
+     
+   int state;
+   ioctl(serialfd, TIOCMGET ,&state);
+   
+   if(state & TIOCM_DSR)
+   {
+       if(aux)
+       {
+         avr_reset(avr);
+         aux=0;
+       }        
    }
+   else
+   {
+       aux=1;
+   }
+   
+   
+   }
+   
+
 };
