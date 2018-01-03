@@ -1050,11 +1050,25 @@ uart_udp_in_hook(struct avr_irq_t * irq, uint32_t value, void * param)
  * Called when the uart has room in it's input buffer. This is called repeateadly
  * if necessary, while the xoff is called only when the uart fifo is FULL
  */
+int off=0;
+int cont=0;
 static void
 uart_udp_xon_hook(struct avr_irq_t * irq, uint32_t value, void * param)
 {
+  /*  
    avr_irq_t * serial_irq= (avr_irq_t *)param;
-   avr_raise_irq(serial_irq + IRQ_UART_UDP_BYTE_OUT, 123);  
+   unsigned char c;
+   
+   off=0;   
+   while(avr_serial_rec(&c) && !off)
+   {
+     avr_raise_irq(serial_irq + IRQ_UART_UDP_BYTE_OUT, c);  
+     printf("byte %i\n",c);
+   }
+   */
+    //printf("uart_xon_hook %i\n",value+cont++);   
+    //fflush(stdout);
+  
 }
 
 /*
@@ -1063,13 +1077,19 @@ uart_udp_xon_hook(struct avr_irq_t * irq, uint32_t value, void * param)
 static void
 uart_udp_xoff_hook( struct avr_irq_t * irq, uint32_t value, void * param)
 {
-    printf("uart_xoff_hook %i\n",value);
-    fflush(stdout);
+    off=1;
+    //printf("uart_xoff_hook %i\n",value);
+    //fflush(stdout);
 }
  
 
 void
 board_avr::UpdateSerial(void)
 {
- 
+   unsigned char c;
+   
+   if(avr_serial_rec(&c))
+   {
+     avr_raise_irq(serial_irq + IRQ_UART_UDP_BYTE_OUT, c);  
+   }
 };
