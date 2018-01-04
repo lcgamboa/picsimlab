@@ -56,12 +56,15 @@ class CPWindow1:public CPWindow
   CMenu menu1;
   CPMenu menu1_File;
   CPMenu menu1_Modules;
+  CPMenu menu1_Tools;
   CPMenu menu1_Help;
   CItemMenu menu1_File_LoadHex;
   CItemMenu menu1_File_ReloadLast;
   CItemMenu menu1_File_Configure;
   CItemMenu menu1_File_Exit;
   CItemMenu menu1_Modules_Oscilloscope;
+  CItemMenu menu1_Modules_Spareparts;
+  CItemMenu menu1_Tools_SerialTerm;
   CItemMenu menu1_Help_Contents;
   CItemMenu menu1_Help_Examples;
   CItemMenu menu1_Help_About;
@@ -69,7 +72,6 @@ class CPWindow1:public CPWindow
   CLabel label2;
   CLabel label7;
   CCombo combo3;
-  CItemMenu menu1_Modules_Spareparts;
   /*#Events*/
   void _EvOnCreate(CControl * control);
   void _EvOnDestroy(CControl * control);
@@ -87,11 +89,12 @@ class CPWindow1:public CPWindow
   void menu1_File_Configure_EvMenuActive(CControl * control);
   void menu1_File_Exit_EvMenuActive(CControl * control);
   void menu1_Modules_Oscilloscope_EvMenuActive(CControl * control);
+  void menu1_Modules_Spareparts_EvMenuActive(CControl * control);
+  void menu1_Tools_SerialTerm_EvMenuActive(CControl * control);
   void menu1_Help_Contents_EvMenuActive(CControl * control);
   void menu1_Help_Examples_EvMenuActive(CControl * control);
   void menu1_Help_About_EvMenuActive(CControl * control);
   void combo3_EvOnComboChange(CControl * control);
-  void menu1_Modules_Spareparts_EvMenuActive(CControl * control);
 
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!

@@ -152,7 +152,7 @@ CPWindow1::CPWindow1(void)
   menu1.SetClass(wxT("CMenu"));
   menu1.SetName(wxT("menu1"));
   menu1.SetTag(0);
-  menu1.SetMenuItems(wxT("File,Modules,Help,"));
+  menu1.SetMenuItems(wxT("File,Modules,Tools,Help,"));
   CreateChild(&menu1);
   //menu1_File
   menu1_File.SetFOwner(this);
@@ -170,6 +170,14 @@ CPWindow1::CPWindow1(void)
   menu1_Modules.SetText(wxT("Modules"));
   menu1_Modules.SetMenuItems(wxT("Oscilloscope,Spare parts,"));
   menu1.CreateChild(&menu1_Modules);
+  //menu1_Tools
+  menu1_Tools.SetFOwner(this);
+  menu1_Tools.SetClass(wxT("CPMenu"));
+  menu1_Tools.SetName(wxT("menu1_Tools"));
+  menu1_Tools.SetTag(0);
+  menu1_Tools.SetText(wxT("Tools"));
+  menu1_Tools.SetMenuItems(wxT("Serial Term,"));
+  menu1.CreateChild(&menu1_Tools);
   //menu1_Help
   menu1_Help.SetFOwner(this);
   menu1_Help.SetClass(wxT("CPMenu"));
@@ -223,6 +231,24 @@ CPWindow1::CPWindow1(void)
   menu1_Modules_Oscilloscope.SetSubMenu(NULL);
   menu1_Modules_Oscilloscope.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Modules_Oscilloscope_EvMenuActive;
   menu1_Modules.CreateChild(&menu1_Modules_Oscilloscope);
+  //menu1_Modules_Spareparts
+  menu1_Modules_Spareparts.SetFOwner(this);
+  menu1_Modules_Spareparts.SetClass(wxT("CItemMenu"));
+  menu1_Modules_Spareparts.SetName(wxT("menu1_Modules_Spareparts"));
+  menu1_Modules_Spareparts.SetTag(0);
+  menu1_Modules_Spareparts.SetText(wxT("Spare parts"));
+  menu1_Modules_Spareparts.SetSubMenu(NULL);
+  menu1_Modules_Spareparts.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Modules_Spareparts_EvMenuActive;
+  menu1_Modules.CreateChild(&menu1_Modules_Spareparts);
+  //menu1_Tools_SerialTerm
+  menu1_Tools_SerialTerm.SetFOwner(this);
+  menu1_Tools_SerialTerm.SetClass(wxT("CItemMenu"));
+  menu1_Tools_SerialTerm.SetName(wxT("menu1_Tools_SerialTerm"));
+  menu1_Tools_SerialTerm.SetTag(0);
+  menu1_Tools_SerialTerm.SetText(wxT("Serial Term"));
+  menu1_Tools_SerialTerm.SetSubMenu(NULL);
+  menu1_Tools_SerialTerm.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Tools_SerialTerm_EvMenuActive;
+  menu1_Tools.CreateChild(&menu1_Tools_SerialTerm);
   //menu1_Help_Contents
   menu1_Help_Contents.SetFOwner(this);
   menu1_Help_Contents.SetClass(wxT("CItemMenu"));
@@ -310,15 +336,6 @@ CPWindow1::CPWindow1(void)
   combo3.SetReadOnly(1);
   combo3.EvOnComboChange=EVONCOMBOCHANGE & CPWindow1::combo3_EvOnComboChange;
   CreateChild(&combo3);
-  //menu1_Modules_Spareparts
-  menu1_Modules_Spareparts.SetFOwner(this);
-  menu1_Modules_Spareparts.SetClass(wxT("CItemMenu"));
-  menu1_Modules_Spareparts.SetName(wxT("menu1_Modules_Spareparts"));
-  menu1_Modules_Spareparts.SetTag(0);
-  menu1_Modules_Spareparts.SetText(wxT("Spare parts"));
-  menu1_Modules_Spareparts.SetSubMenu(NULL);
-  menu1_Modules_Spareparts.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Modules_Spareparts_EvMenuActive;
-  menu1_Modules.CreateChild(&menu1_Modules_Spareparts);
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!
   

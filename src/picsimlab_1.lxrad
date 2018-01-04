@@ -170,7 +170,7 @@
   <Class type="String">CMenu</Class>
   <Name type="String">menu1</Name>
   <Tag type="int">0</Tag>
-  <MenuItems type="MenuItems">File,Modules,Help,</MenuItems>
+  <MenuItems type="MenuItems">File,Modules,Tools,Help,</MenuItems>
 </menu1>
 <menu1_File>
   <Class type="String">CPMenu</Class>
@@ -186,6 +186,13 @@
   <Text type="String">Modules</Text>
   <MenuItems type="MenuItems">Oscilloscope,Spare parts,</MenuItems>
 </menu1_Modules>
+<menu1_Tools>
+  <Class type="String">CPMenu</Class>
+  <Name type="String">menu1_Tools</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Tools</Text>
+  <MenuItems type="MenuItems">Serial Term,</MenuItems>
+</menu1_Tools>
 <menu1_Help>
   <Class type="String">CPMenu</Class>
   <Name type="String">menu1_Help</Name>
@@ -233,6 +240,22 @@
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_Modules_Oscilloscope>
+<menu1_Modules_Spareparts>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Modules_Spareparts</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Spare parts</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Modules_Spareparts>
+<menu1_Tools_SerialTerm>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Tools_SerialTerm</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Serial Term</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Tools_SerialTerm>
 <menu1_Help_Contents>
   <Class type="String">CItemMenu</Class>
   <Name type="String">menu1_Help_Contents</Name>
@@ -346,12 +369,4 @@
   <ReadOnly type="bool">1</ReadOnly>
   <EvOnComboChange type="Event">TRUE</EvOnComboChange>
 </combo3>
-<menu1_Modules_Spareparts>
-  <Class type="String">CItemMenu</Class>
-  <Name type="String">menu1_Modules_Spareparts</Name>
-  <Tag type="int">0</Tag>
-  <Text type="String">Spare parts</Text>
-  <SubMenu type="SubMenu">NULL</SubMenu>
-  <EvMenuActive type="Event">TRUE</EvMenuActive>
-</menu1_Modules_Spareparts>
 </window1>
