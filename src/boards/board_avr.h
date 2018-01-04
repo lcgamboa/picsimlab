@@ -28,14 +28,14 @@
 
 #include "board.h"
 
-#include "sim_avr.h"
-#include "avr_ioport.h"
-#include "sim_elf.h"
-#include "sim_hex.h"
-#include "sim_gdb.h"
-#include "avr_adc.h"
-#include "avr_uart.h"
-#include "sim_hex.h"
+#include <simavr/sim_avr.h>
+#include <simavr/avr_ioport.h>
+#include <simavr/sim_elf.h>
+#include <simavr/sim_hex.h>
+#include <simavr/sim_gdb.h>
+#include <simavr/avr_adc.h>
+#include <simavr/avr_uart.h>
+#include <simavr/sim_hex.h>
 #include "../picsimlab1.h"
 
 
