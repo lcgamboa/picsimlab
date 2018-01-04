@@ -75,6 +75,7 @@ class part
       unsigned int Y;
       wxBitmap * Bitmap; 
       CCanvas canvas; 
+      unsigned int refresh;
  private:      
       void ReadInputMap(String fname);
       void ReadOutputMap(String fname);

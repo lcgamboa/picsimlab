@@ -113,6 +113,7 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
  
   avr->reset_pc = 0x07000; // bootloader 0x3800
   
+  avr->avcc=5000;
   
   avr_reset(avr);
 
@@ -139,12 +140,6 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
   
           avr_irq_t* writeIrq = avr_io_getirq( avr, AVR_IOCTL_IOPORT_GETIRQ(pins[p].port), pins[p].pord );
           avr_connect_irq(Write_stat_irq[p], writeIrq );
-          
-          //FIXME
-          
-            
-          //avr_irq_t* adcIrq = avr_io_getirq( avr, AVR_IOCTL_ADC_GETIRQ, ADC_IRQ_OUT_TRIGGER );
-          //avr_irq_register_notify( adcIrq, adc_hook, &pins[i] );
     
       }
       else
@@ -269,7 +264,7 @@ board_avr::MGetPinCount(void)
 String 
 board_avr::MGetPinName(int pin)
 {
-  if(pin <0 && pin >= MGetPinCount())return "error";
+  if(pin <= 0 || pin > MGetPinCount())return "error";
   
   switch(pin)
   {
@@ -337,7 +332,7 @@ board_avr::MGetPinName(int pin)
 void 
 board_avr::MSetPin(int pin, unsigned char value)
 {
-  if(pin <0 && pin >= MGetPinCount())return;
+  if(pin <= 0 || pin > MGetPinCount())return;
   
   avr_raise_irq(Write_stat_irq[pin-1], value);
 }
@@ -345,14 +340,38 @@ board_avr::MSetPin(int pin, unsigned char value)
 void 
 board_avr::MSetAPin(int pin, float value)
 {
-  if(pin <0 && pin >= MGetPinCount())return;  
+  if(pin <=0 || pin > MGetPinCount())return;  
   pins[pin-1].avalue=value;
+  
+  //FIXME ptype == PT_ANALOG;
+  switch(pin)
+  {
+    case 23:
+      pins[pin-1].ptype = PT_ANALOG;
+      avr_raise_irq( avr_io_getirq( avr, AVR_IOCTL_ADC_GETIRQ, 0),(int)(value*1000) );break;
+    case 24:
+      pins[pin-1].ptype = PT_ANALOG;
+      avr_raise_irq( avr_io_getirq( avr, AVR_IOCTL_ADC_GETIRQ, 1),(int)(value*1000) );break;
+    case 25:
+      pins[pin-1].ptype = PT_ANALOG;
+      avr_raise_irq( avr_io_getirq( avr, AVR_IOCTL_ADC_GETIRQ, 2),(int)(value*1000) );break;
+    case 26:
+      pins[pin-1].ptype = PT_ANALOG;
+      avr_raise_irq( avr_io_getirq( avr, AVR_IOCTL_ADC_GETIRQ, 3),(int)(value*1000) );break;
+    case 27:
+      pins[pin-1].ptype = PT_ANALOG;
+      avr_raise_irq( avr_io_getirq( avr, AVR_IOCTL_ADC_GETIRQ, 4),(int)(value*1000) );break;
+    case 28:
+      pins[pin-1].ptype = PT_ANALOG;
+      avr_raise_irq( avr_io_getirq( avr, AVR_IOCTL_ADC_GETIRQ, 5),(int)(value*1000) );break;      
+  }
+  
 }
       
 unsigned char 
 board_avr::MGetPin(int pin)
 {
-  if(pin <0 && pin >= MGetPinCount())return -1;
+  if(pin <=0 || pin > MGetPinCount())return -1;
   
   return pins[pin-1].value;
 }
@@ -948,7 +967,7 @@ EscapeCommFunction(serialfd ,SETRTS );
         newtio.c_lflag = 0;
          
         newtio.c_cc[VTIME]    = 0;   /* inter-character timer unused */
-        newtio.c_cc[VMIN]     = 5;   /* blocking read until 5 chars received */
+        newtio.c_cc[VMIN]     = 1;   /* blocking read until 5 chars received */
         
         tcflush(serialfd, TCIFLUSH);
         tcsetattr(serialfd,TCSANOW,&newtio);

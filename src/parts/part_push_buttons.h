@@ -56,6 +56,7 @@ class cpart_pbuttons:public part
       void PropButton (CControl * control, uint button, uint x, uint y, uint state);
     private:
       unsigned char output_pins[8];    
+      unsigned char output_value[8];
 };
 
 

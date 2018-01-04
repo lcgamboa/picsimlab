@@ -74,20 +74,7 @@ class board_avr: public board
          picpin * p = (picpin *)param;
          p->dir=!(value & (1<<p->pord));
       }
-
-      void adc_read(int ch,float val)
-      {
-        avr_raise_irq( avr_io_getirq( avr, AVR_IOCTL_ADC_GETIRQ, ch),(int)(val*1000) );
-      }
-            
-      static void adc_hook( struct avr_irq_t* irq, uint32_t value, void* param )   
-      {
-            picpin * p = (picpin *)param;
-            ((board_avr *)Window1.GetBoard())->adc_read(value,p->avalue); 
-      } 
-      
-
-        
+     
  protected:
       avr_t *  avr;
       avr_irq_t * serial_irq;
