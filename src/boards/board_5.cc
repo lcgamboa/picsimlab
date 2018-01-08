@@ -29,6 +29,12 @@
 #include"../picsimlab5.h" //Spare Parts
 #include"board_5.h"
 
+#ifdef _WIN_
+HANDLE avr_serial_get_fd(void);
+#else
+int avr_serial_get_fd(void);
+#endif
+
 /* ids of inputs of input map*/
 #define I_ICSP	1  //ICSP connector
 #define I_PWR	2  //Power button
@@ -167,7 +173,7 @@ cboard_5::cboard_5(void)
   label1->SetName(wxT("label1_p7"));
   label1->SetX(12);
   label1->SetY(205);
-  label1->SetWidth(60);
+  label1->SetWidth(20);
   label1->SetHeight(20);
   label1->SetEnable(1);
   label1->SetVisible(1);
@@ -180,7 +186,7 @@ cboard_5::cboard_5(void)
   label2->SetName(wxT("label2_p7"));
   label2->SetX(12);
   label2->SetY(230);
-  label2->SetWidth(60);
+  label2->SetWidth(20);
   label2->SetHeight(20);
   label2->SetEnable(1);
   label2->SetVisible(1);
@@ -193,7 +199,7 @@ cboard_5::cboard_5(void)
   label3->SetName(wxT("label3_p7"));
   label3->SetX(13);
   label3->SetY(255);
-  label3->SetWidth(60);
+  label3->SetWidth(20);
   label3->SetHeight(20);
   label3->SetEnable(1);
   label3->SetVisible(1);
@@ -206,7 +212,7 @@ cboard_5::cboard_5(void)
   label4->SetName(wxT("label4_p7"));
   label4->SetX(13);
   label4->SetY(280);
-  label4->SetWidth(60);
+  label4->SetWidth(20);
   label4->SetHeight(20);
   label4->SetEnable(1);
   label4->SetVisible(1);
@@ -219,7 +225,7 @@ cboard_5::cboard_5(void)
   label5->SetName(wxT("label5_p7"));
   label5->SetX(13);
   label5->SetY(305);
-  label5->SetWidth(60);
+  label5->SetWidth(20);
   label5->SetHeight(20);
   label5->SetEnable(1);
   label5->SetVisible(1);
@@ -232,7 +238,7 @@ cboard_5::cboard_5(void)
   label6->SetName(wxT("label6_p7"));
   label6->SetX(13);
   label6->SetY(330);
-  label6->SetWidth(60);
+  label6->SetWidth(20);
   label6->SetHeight(20);
   label6->SetEnable(1);
   label6->SetVisible(1);
@@ -266,28 +272,26 @@ void
 cboard_5::Reset(void)
 {
    
-   
-       
     //write button state to pic pin 19 (RD0)
     //pic_set_pin(19,p_BT1); 
     //write switch state to pic pin 20 (RD1)
     //pic_set_pin(20,p_BT2); 
 
-    /*    
+    
   //verify serial port state and refresh status bar  
 #ifndef _WIN_
-    if(pic.serialfd > 0)
+    if(avr_serial_get_fd() > 0)
 #else
-    if(pic.serialfd != INVALID_HANDLE_VALUE)
+    if(avr_serial_get_fd() != INVALID_HANDLE_VALUE)
 #endif
       Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
-        String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic.serialbaud)+wxT("(")+
-        String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*
-        pic.serialbaud)/pic.serialexbaud))+wxT("%)"));
+        String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(serialbaud)+wxT("(")+
+        String().Format("%4.1f",fabs((100.0*serialexbaud-100.0*
+        serialbaud)/serialexbaud))+wxT("%)"));
     else  
       Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
         String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
-   */     
+    
 /*
   //reset mean value
   for(int pi=0;pi < pic.PINCOUNT;pi++)
@@ -301,21 +305,19 @@ cboard_5::Reset(void)
 void 
 cboard_5::RefreshStatus(void)
 {
-  /*
    //verify serial port state and refresh status bar   
 #ifndef _WIN_
-    if(pic.serialfd > 0)
+    if(avr_serial_get_fd() > 0)
 #else
-    if(pic.serialfd != INVALID_HANDLE_VALUE)
+    if(avr_serial_get_fd()!= INVALID_HANDLE_VALUE)
 #endif
       Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
-        String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic.serialbaud)+wxT("(")+
-        String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*
-        pic.serialbaud)/pic.serialexbaud))+wxT("%)"));
+        String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(serialbaud)+wxT("(")+
+        String().Format("%4.1f",fabs((100.0*serialexbaud-100.0*
+        serialbaud)/serialexbaud))+wxT("%)"));
     else  
       Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
         String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
-    */
 };
 
 //Called to save board preferences in configuration file
@@ -504,7 +506,7 @@ void cboard_5::Run_CPU(void)
   unsigned int alm[40];
        
   int JUMPSTEPS = Window1.GetJUMPSTEPS(); //number of steps skipped
-  long int NSTEPJ=Window1.GetNSTEPJ();  //number of steps in 100ms
+  long int NSTEPJ=Window1.GetNSTEPJ()*4.0;  //number of steps in 100ms
 
   
   //reset mean value
@@ -520,7 +522,7 @@ void cboard_5::Run_CPU(void)
   
  j=JUMPSTEPS+1;//step counter
  if(Window1.Get_picpwr()) //if powered
-   for(i=0;i<Window1.GetNSTEP();i++) //repeat for number of steps in 100ms
+   for(i=0;i<Window1.GetNSTEP()*4;i++) //repeat for number of steps in 100ms
       {
  /*
         if(j > JUMPSTEPS)//if number of step is bigger than steps to skip 

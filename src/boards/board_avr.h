@@ -80,6 +80,9 @@ class board_avr: public board
       avr_irq_t * serial_irq;
       picpin pins[28];//FIXME only for atmega328!
       avr_irq_t * Write_stat_irq[28];//FIXME only for atmega328!
+      unsigned int serialbaud; 
+      float serialexbaud;
+      void pins_reset(void);
  private:
       int parse_hex(char *line,int bytes);
       unsigned char checksum(char* str);

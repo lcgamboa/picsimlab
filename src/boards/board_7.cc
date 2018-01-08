@@ -262,12 +262,7 @@ cboard_7::Reset(void)
     else  
       Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
         String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
-        
-  //reset mean value
-  for(int pi=0;pi < pic.PINCOUNT;pi++)
-  {
-    pic.pins[pi].oavalue=0;
-  };
+
 };
 
 //Called ever 1s to refresh status

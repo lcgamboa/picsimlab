@@ -613,7 +613,6 @@ cboard_3::Reset(void)
 
   for(int pi=0;pi < pic.PINCOUNT;pi++)
      {
-       pic.pins[pi].oavalue=0;
        lm1[pi]=0;
        lm2[pi]=0;
        lm3[pi]=0;

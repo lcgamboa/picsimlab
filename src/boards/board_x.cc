@@ -204,12 +204,6 @@ cboard_x::Reset(void)
         String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
         
 
-  //reset mean value
-  for(int pi=0;pi < pic.PINCOUNT;pi++)
-  {
-    pic.pins[pi].oavalue=0;
-  };
-
 };
 
 //Called ever 1s to refresh status

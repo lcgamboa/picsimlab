@@ -334,7 +334,6 @@ cboard_1::Reset(void)
 
    for(int i=0;i < pic.PINCOUNT;i++)
    {
-     pic.pins[i].oavalue=0;
      lm1[i]=0;
      lm2[i]=0;
    };

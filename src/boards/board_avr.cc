@@ -28,23 +28,14 @@
 
 #include"../picsimlab1.h"
 
-//serial stuff
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
 
-#ifdef _WIN_
-#include <conio.h>
-#include <time.h>
-#include <windows.h>
-#else
-#include <termios.h>
-#include <sys/ioctl.h>
-#endif
+unsigned long avr_serial_send(unsigned char c);
+unsigned long avr_serial_rec( unsigned char * c);
+int avr_serial_get_dsr(void);
+int  avr_serial_open(char * SERIALDEVICE);
+int avr_serial_cfg(float serialexbaud);
+int avr_serial_close(void);
+
 
 board_avr::board_avr(void)
 {
@@ -84,8 +75,35 @@ static void uart_xon_hook(struct avr_irq_t * irq, uint32_t value, void * param);
  */
 static void uart_xoff_hook(struct avr_irq_t * irq, uint32_t value, void * param);
         
-int  avr_serial_open(void);
-int  avr_serial_cfg(void);
+
+
+
+void
+avr_callback_sleep(avr_t *avr, avr_cycle_count_t how_long)
+{
+       //no delay
+        printf("sleep=%lu\n", how_long);
+        fflush(stdout);
+	return;
+}
+  
+
+void 
+board_avr::pins_reset(void)
+{
+   for(int p=0; p< MGetPinCount ();p++)
+    {
+          pins[p].avalue=0;
+          pins[p].lvalue=0;
+          pins[p].value=0;
+          pins[p].ptype=PT_CMOS;
+          pins[p].dir=PD_IN;
+          pins[p].ovalue=0;
+          pins[p].oavalue=0;
+    }
+}
+
+
 
 int
 board_avr::MInit(const char * processor, const char * fname, float freq)
@@ -110,13 +128,18 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
   ret=read_ihx_avr(fname,1);
   
   avr->frequency = freq;
- 
+
   avr->reset_pc = 0x07000; // bootloader 0x3800
-  
+
   avr->avcc=5000;
   
+  avr->sleep=avr_callback_sleep;
+  
+  //avr->log= LOG_DEBUG;
+  
   avr_reset(avr);
-
+  pins_reset();
+  
           
   for(int p=0; p< MGetPinCount ();p++)
   {
@@ -174,8 +197,10 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
   if (xoff)
    avr_irq_register_notify(xoff, uart_xoff_hook, NULL); 
   
-  avr_serial_open();
-  avr_serial_cfg();
+  avr_serial_open(SERIALDEVICE);
+  
+  serialexbaud=9600; //FIXME read value from avr 
+  serialbaud=avr_serial_cfg(serialexbaud);
 
   return ret;
 }
@@ -186,8 +211,7 @@ board_avr::MEnd(void)
   avr_terminate(avr); 	
   //delete avr;
   avr=NULL;
-  
-  //pic_end();
+  avr_serial_close();
   //mplabxd_end();
 };
 
@@ -229,7 +253,7 @@ int
 board_avr::DebugInit(void)
 {
   
-   //avr->gdb_port = 1234;
+   avr->gdb_port = 1234;
    //avr->state = cpu_Stopped;
    //return avr_gdb_init(avr);
     return 0;
@@ -740,317 +764,6 @@ board_avr::write_ihx_avr(const char * fname)
   return 0;//no error
 }
 
-//uart support ============================================================
-
-int serialfd;
-
-int 
-avr_serial_open(void)
-{
-      if(SERIALDEVICE[0] == 0)
-      { 	
-#ifdef _WIN_
-        strcpy(SERIALDEVICE,"COM2");
-#else
-        strcpy(SERIALDEVICE,"/dev/tnt2");
-#endif
-      }
-
-
-#ifdef _WIN_
-  serialfd = CreateFile(SERIALDEVICE, GENERIC_READ | GENERIC_WRITE,
-0, // exclusive access
-NULL, // no security
-OPEN_EXISTING,
-0, // no overlapped I/O
-NULL); // null template
-  if( serialfd == INVALID_HANDLE_VALUE)
-  {
-     serialfd=0;
-//     printf("Erro on Port Open:%s!\n",SERIALDEVICE);
-     return 0; 
-  }
-#else
-  serialfd = open(SERIALDEVICE, O_RDWR | O_NOCTTY | O_NONBLOCK);
- 
-  if (serialfd < 0) 
-  {
-    serialfd=0;
-    perror(SERIALDEVICE); 
-//    printf("Erro on Port Open:%s!\n",SERIALDEVICE);
-    return 0; 
-  }
-//  printf("Port Open:%s!\n",SERIALDEVICE);
-#endif
-  return 1;
-}
-
-int 
-avr_serial_close(void)
-{
-  if (serialfd != 0) 
-  {
-#ifdef _WIN_
-  CloseHandle(serialfd);
-#else    
-    close(serialfd);
-#endif
-    serialfd=0;
-  }
-  return 0;
-}
-
-
-
-int
-avr_serial_cfg(void)
-{
-    unsigned int BAUDRATE;
-   
-    /*
-    if(*serial_TXSTA & 0x04) //BRGH=1 
-    {
-       serialexbaud=pic->freq/(16*((*pic->serial_SPBRG) +1));
-    }
-    else
-    {
-        serialexbaud=pic->freq/(64*((*pic->serial_SPBRG) +1));
-    }
-    */
-      
-          #ifndef _WIN_
-          BAUDRATE=B9600;
-          #else
-          BAUDRATE=9600;
-          #endif 
-
-/*
-    switch(((int)((pic->serialexbaud/300.0)+0.5))) 
-    {
-       case 0 ... 1:
-          pic->serialbaud=300;
-          #ifndef _WIN_
-          BAUDRATE=B300;
-          #else
-          BAUDRATE=300;
-          #endif  
-          break; 
-       case 2 ... 3:
-          pic->serialbaud=600;
-          #ifndef _WIN_
-          BAUDRATE=B600;
-          #else
-          BAUDRATE=600;
-          #endif  
-          break; 
-       case 4 ... 7:
-          pic->serialbaud=1200;
-          #ifndef _WIN_
-          BAUDRATE=B1200;
-          #else
-          BAUDRATE=1200;
-          #endif  
-          break; 
-       case 8 ... 15:
-          pic->serialbaud=2400;
-          #ifndef _WIN_
-          BAUDRATE=B2400;
-          #else
-          BAUDRATE=2400;
-          #endif  
-          break; 
-       case 16 ... 31:
-          pic->serialbaud=4800;
-          #ifndef _WIN_
-          BAUDRATE=B4800;
-          #else
-          BAUDRATE=4800;
-          #endif  
-          break; 
-       case 32 ... 63:
-          pic->serialbaud=9600;
-          #ifndef _WIN_
-          BAUDRATE=B9600;
-          #else
-          BAUDRATE=9600;
-          #endif  
-          break; 
-       case 64 ... 127:
-          pic->serialbaud=19200;
-          #ifndef _WIN_
-          BAUDRATE=B19200;
-          #else
-          BAUDRATE=19200;
-          #endif  
-          break; 
-       case 128 ... 191:
-          pic->serialbaud=38400;
-          #ifndef _WIN_
-          BAUDRATE=B38400;
-          #else
-          BAUDRATE=38400;
-          #endif  
-          break; 
-       case 192 ... 383:
-          pic->serialbaud=57600;
-          #ifndef _WIN_
-          BAUDRATE=B57600;
-          #else
-          BAUDRATE=57600;
-          #endif  
-          break; 
-       default:
-          pic->serialbaud=115200;
-          #ifndef _WIN_
-          BAUDRATE=B115200;
-          #else
-          BAUDRATE=115200;
-          #endif  
-          break; 
-    } 
-*/
-    
-#ifdef _WIN_
-  BOOL bPortReady;
-  DCB dcb;
-  COMMTIMEOUTS CommTimeouts;
-
-bPortReady = GetCommState(serialfd , &dcb);
-dcb.BaudRate = BAUDRATE;
-dcb.ByteSize = 8;
-dcb.Parity = NOPARITY;
-dcb.StopBits = ONESTOPBIT;
-dcb.fAbortOnError = TRUE;
-
-// set XON/XOFF
-dcb.fOutX = FALSE; // XON/XOFF off for transmit
-dcb.fInX = FALSE; // XON/XOFF off for receive
-// set RTSCTS
-dcb.fOutxCtsFlow = FALSE; // turn off CTS flow control
-//dcb.fRtsControl = RTS_CONTROL_HANDSHAKE; //
-dcb.fRtsControl = RTS_CONTROL_DISABLE; //
-// set DSRDTR
-dcb.fOutxDsrFlow = FALSE; // turn off DSR flow control
-//dcb.fDtrControl = DTR_CONTROL_ENABLE; //
-dcb.fDtrControl = DTR_CONTROL_DISABLE; //
-// dcb.fDtrControl = DTR_CONTROL_HANDSHAKE; //
-
-bPortReady = SetCommState(serialfd , &dcb);
-
-// Communication timeouts are optional
-
-bPortReady = GetCommTimeouts (serialfd , &CommTimeouts);
-
-CommTimeouts.ReadIntervalTimeout = MAXDWORD;
-CommTimeouts.ReadTotalTimeoutConstant = 0;
-CommTimeouts.ReadTotalTimeoutMultiplier = 0;
-CommTimeouts.WriteTotalTimeoutConstant = 0;
-CommTimeouts.WriteTotalTimeoutMultiplier = 0;
-
-bPortReady = SetCommTimeouts (serialfd , &CommTimeouts);
-	
-
-EscapeCommFunction(serialfd ,SETRTS );
-
-#else
-   struct termios newtio;
-   int cmd;   
-        
-//        tcgetattr(fd,&oldtio); /* save current port settings */
-        
-        bzero(&newtio, sizeof(newtio));
-        newtio.c_cflag = BAUDRATE |CS8 | CLOCAL | CREAD;
-        newtio.c_iflag = IGNPAR|IGNBRK;
-        newtio.c_oflag = 0;
-        
-        /* set input mode (non-canonical, no echo,...) */
-        newtio.c_lflag = 0;
-         
-        newtio.c_cc[VTIME]    = 0;   /* inter-character timer unused */
-        newtio.c_cc[VMIN]     = 1;   /* blocking read until 5 chars received */
-        
-        tcflush(serialfd, TCIFLUSH);
-        tcsetattr(serialfd,TCSANOW,&newtio);
-        
-	cmd=TIOCM_RTS;
-	ioctl(serialfd, TIOCMBIS ,&cmd);
-#endif
-
-	return 0; 
-}
-
-
-      
-unsigned long avr_serial_send(unsigned char c)
-{
-  if(serialfd)
-  {
-#ifdef _WIN_
-   unsigned long nbytes;
-    
-   WriteFile(serialfd, &c, 1, &nbytes,NULL);
-   return nbytes;
-#else
-  return write (serialfd,&c,1);   
-#endif
-  }
-  else
-    return 0;
-}
-
-unsigned long avr_serial_rec( unsigned char * c)
-{
-  if(serialfd)
-  {
-#ifdef _WIN_
-    unsigned long nbytes;
-      
-    ReadFile(serialfd, c, 1,&nbytes, NULL);
-#else
-    long nbytes;
-
-     nbytes = read (serialfd,c,1);   
-     if(nbytes<0)nbytes=0;
-#endif    
-    return nbytes;
-   }
-   else
-     return 0;
-}
-
-unsigned long avr_serial_rec_tout( unsigned char * c)
-{
- unsigned int tout=0;
-
-  if(serialfd)
-  {
-#ifdef _WIN_
-    unsigned long nbytes;
-    do
-    { 
-      Sleep(1);	
-      ReadFile(serialfd, c, 1,&nbytes, NULL);
-#else
-    long nbytes;
-    do
-    { 
-      usleep(100);
-      nbytes = read (serialfd,c,1);   
-      if(nbytes<0)nbytes=0;
-#endif    
-      tout++;
-    }while((nbytes == 0 )&&(tout < 1000));
-    return nbytes;
-   }
-   else
-     return 0;
-}
-
-
-unsigned long avr_serial_recbuff( unsigned char * c)
-{
-   return avr_serial_rec(c);
-}
 
 
 /*
@@ -1116,15 +829,14 @@ board_avr::UpdateSerial(void)
        //printf("%i\n",c);
        //fflush(stdout);
      }
-     
-   int state;
-   ioctl(serialfd, TIOCMGET ,&state);
-   
-   if(state & TIOCM_DSR)
+
+	   
+   if(avr_serial_get_dsr())  
    {
        if(aux)
        {
          avr_reset(avr);
+         pins_reset();
          aux=0;
        }        
    }
