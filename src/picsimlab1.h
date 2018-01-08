@@ -100,6 +100,7 @@ class CPWindow1:public CPWindow
 //lxrad automatic generated block end, don't edit above!
   
   CThread thread1;
+  int tgo;
   
   CPWindow1(void);
   void saveprefs(String name, String value);
@@ -127,6 +128,7 @@ class CPWindow1:public CPWindow
   int GetJUMPSTEPS(void){return JUMPSTEPS;};
   void SetJUMPSTEPS(int js){JUMPSTEPS=js;NSTEPJ=NSTEP/JUMPSTEPS;};
   board * GetBoard(void);
+  void SetCpuState(unsigned char cs);
  private: 
   String share;
  
@@ -143,6 +145,7 @@ class CPWindow1:public CPWindow
   int JUMPSTEPS;
   String PATH;
   String FNAME;
+  char cpustate;
   
   CStringList prefs;
 
@@ -161,6 +164,7 @@ class CPWindow1:public CPWindow
 
 extern CPWindow1 Window1 ;
 
+enum {CPU_RUNNING, CPU_STEPPING, CPU_HALTED, CPU_BREAKPOINT};
 
 #endif /*#CPWINDOW1*/
 

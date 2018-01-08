@@ -63,14 +63,11 @@ int crt;
 void
 CPWindow1::timer1_EvOnTime(CControl * control)
 {
-
     if(!ondraw)
-    {
-     ondraw=1;   
+    {   
      if(!crt)   
        label1.SetColor(wxT("black"));
      crt=0;
-     thread1.Run();//parallel thread
      pboard->Draw(&draw1,scale);
     }
     else
@@ -78,6 +75,9 @@ CPWindow1::timer1_EvOnTime(CControl * control)
       label1.SetColor(wxT("red"));
       crt=1;
     }
+    ondraw=1;
+    tgo=1;//thread sync
+    
 };
 
 void
@@ -88,8 +88,26 @@ CPWindow1::thread1_EvThreadRun(CControl*)
 
   //cstart = clock();
 
-  pboard->Run_CPU();
+  while(!thread1.TestDestroy ())
+  {
+      
+      if(tgo)
+      {
+        tgo=0;  
+        pboard->Run_CPU();
+        pboard->DebugLoop();
+        ondraw=0;
+      }
+      else
+      {
+#ifdef _WIN_
+        Sleep(1);
+#else
+        usleep(1);
+#endif        
+      }
 
+  }
   //cend = clock();
   //cpu_time_used = ((double) (cend - cstart)) / CLOCKS_PER_SEC;
 
@@ -135,8 +153,7 @@ CPWindow1::thread1_EvThreadRun(CControl*)
 void
 CPWindow1::thread1_EvThreadEnd(CControl*)
 {
-   pboard->DebugLoop();
-   ondraw=0;
+
 }
 
 
@@ -144,6 +161,19 @@ void
 CPWindow1::timer2_EvOnTime(CControl * control)
 {
    pboard->RefreshStatus(); 
+   
+   switch(cpustate)
+   {
+     case CPU_RUNNING:
+       statusbar1.SetField(0,wxT("Running..."));break;
+     case CPU_STEPPING:
+       statusbar1.SetField(0,wxT("Stepping..."));break;
+     case CPU_HALTED:  
+       statusbar1.SetField(0,wxT("Halted!"));break;
+     case CPU_BREAKPOINT:  
+       statusbar1.SetField(0,wxT("BreakPoint!"));break;   
+   }
+   
 };
 
 
@@ -389,8 +419,10 @@ create++;
 
   Application->ProcessEvents();
 
+  thread1.Run();//parallel thread
   timer1.SetRunState(1);
   timer2.SetRunState(1);
+  
   
   Window4.SetBaseTimer();
   
@@ -479,25 +511,8 @@ CPWindow1::_EvOnDestroy(CControl * control)
   timer1.SetRunState(0);
   timer2.SetRunState(0);
  
- 
-  //while(ondraw) //Wait thread finish
-  while(thread1.runstate) //Wait thread finish
-  {
-#ifndef _WIN_
-      usleep(100);
-#else
-      Sleep(1);
-#endif 
-  }
-
-
-/*
-#ifndef _WIN_
-  usleep(100);
-#else
-  Sleep(1);
-#endif 
-*/
+  thread1.Destroy ();
+  
 
 //write options
   wxTheApp->SetAppName(_T("picsimlab"));
@@ -792,6 +807,13 @@ CPWindow1::GetBoard(void)
 {
   return pboard;
 }
+
+void
+CPWindow1::SetCpuState (unsigned char cs) 
+{
+  cpustate=cs;
+}
+
 
 void
 CPWindow1::menu1_Modules_Spareparts_EvMenuActive(CControl * control)

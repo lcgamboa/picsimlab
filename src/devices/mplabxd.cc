@@ -254,7 +254,7 @@ int i;
 #ifdef _DEBUG_
           printf("breakpoint 0x%04X!!!!!=========================\n",bp[i]);
 #endif
-          //Window1.statusbar1.SetField(0,wxT("BreakPoint!")); //FIXME crash on separated thread
+          Window1.SetCpuState(CPU_BREAKPOINT);
           Window1.Set_picdbg(1);
           return Window1.Get_picdbg();
         } 
@@ -311,7 +311,7 @@ int mplabxd_loop(void)
 #endif
            ret=1;
            Window1.Set_picdbg(0); 	
-           Window1.statusbar1.SetField(0,wxT("Running..."));
+           Window1.SetCpuState(CPU_RUNNING);
            bpc=0;
            Window1.SetJUMPSTEPS(DEFAULTJS);
            break;
@@ -321,7 +321,7 @@ int mplabxd_loop(void)
 #endif
            pic_step();
            if(pic->s2 == 1)pic_step();
-           Window1.statusbar1.SetField(0,wxT("Stepping..."));
+           Window1.SetCpuState(CPU_STEPPING);
            break;
          case RESET:
            Window1.Set_picdbg(1);
@@ -340,7 +340,7 @@ int mplabxd_loop(void)
 	   printf("RUN cmd\n");	
 #endif
            pic_step();//to go out break point
-           Window1.statusbar1.SetField(0,wxT("Running..."));
+           Window1.SetCpuState(CPU_RUNNING);
            break;
          case HALT:
            Window1.Set_picdbg(1);
@@ -349,7 +349,7 @@ int mplabxd_loop(void)
 #ifdef _DEBUG_
 	   printf("HALT cmd\n");	
 #endif
-           Window1.statusbar1.SetField(0,wxT("Halted!"));
+           Window1.SetCpuState(CPU_HALTED);
            break;
          case GETPC:
 #ifdef _DEBUG_

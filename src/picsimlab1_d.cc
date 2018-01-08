@@ -23,6 +23,9 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+#include "picsimlab1.h"
+
+
 CPWindow1::CPWindow1(void)
 {
 //lxrad automatic generated block start, don't edit below!
@@ -377,5 +380,9 @@ FNAME=wxT(" ");
 ondraw=0;    
 
 pboard=NULL;
+
+cpustate=CPU_RUNNING;
+
+tgo=0;
  
 };
