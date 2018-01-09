@@ -34,10 +34,10 @@
 #include"part_switchs.h"
 #include"part_LEDs.h"
 #include"part_pot.h"
+#include"part_RGB_LED.h"
 
 
-
-const char parts_list[NUM_PARTS][30]={"Servo motor","Step motor","D. Transfer function","Push buttons", "Switchs","LEDs","Potentiometers",};
+const char parts_list[NUM_PARTS][30]={"Servo motor","Step motor","D. Transfer function","Push buttons", "Switchs","LEDs","Potentiometers","RGB LED",};
 
 
 //boards object creation
@@ -58,6 +58,8 @@ part * create_part(String name, unsigned int x, unsigned int y)
    if(name.compare(wxT("LEDs")) == 0 )part_= new cpart_leds(x,y);
    
    if(name.compare(wxT("Potentiometers")) == 0 )part_= new cpart_pot(x,y);
+   
+   if(name.compare(wxT("RGB LED")) == 0 )part_= new cpart_rgb_led(x,y);
    
    return part_; 
 }

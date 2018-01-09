@@ -157,7 +157,7 @@ void cpart_leds::Draw(void)
          case O_L5:
          case O_L6:
          case O_L7:
-         case O_L8: //FIXME it must use mean value!
+         case O_L8: 
            if(output[i].id == O_L1)
              canvas.SetColor (ppins[input_pins[0]-1].oavalue, 0, 0);
            if(output[i].id == O_L2)
