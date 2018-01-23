@@ -125,7 +125,9 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
     avr_load_firmware(avr, &f); 
   }
   */
+  avr->flashend-= 3;
   ret=read_ihx_avr(fname,1);
+  avr->flashend+= 3;
   
   avr->frequency = freq;
 
@@ -246,7 +248,9 @@ board_avr::MGetInstClock(void)
 void 
 board_avr::MDumpMemory(const char * fname)
 {
+      avr->flashend-= 3;
       write_ihx_avr(fname);
+      avr->flashend+= 3;
 }
 
 int
@@ -357,7 +361,8 @@ void
 board_avr::MSetPin(int pin, unsigned char value)
 {
   if(pin <= 0 || pin > MGetPinCount())return;
-  
+  if(avr == NULL) return;
+  if(Write_stat_irq[pin-1] == NULL) return;
   avr_raise_irq(Write_stat_irq[pin-1], value);
 }
       
@@ -366,6 +371,7 @@ board_avr::MSetAPin(int pin, float value)
 {
   if(pin <=0 || pin > MGetPinCount())return;  
   pins[pin-1].avalue=value;
+   if(avr == NULL) return;
   
   //FIXME ptype == PT_ANALOG;
   switch(pin)

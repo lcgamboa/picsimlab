@@ -63,11 +63,11 @@ class cboard_5:public board_avr
       //Return a list of board supported microcontrollers
       String GetSupportedDevices(void){return wxT("atmega328,");};
       //Return the filename of board picture 
-      String GetPictureFileName(void){return wxT("picsimlab7.png");};
+      String GetPictureFileName(void){return wxT("picsimlab5.png");};
       //Return the filename of board picture input map 
-      String GetInputMapFile(void){return wxT("input7.map");};
+      String GetInputMapFile(void){return wxT("input5.map");};
       //Return the filename of board picture output map 
-      String GetOutputMapFile(void){return wxT("output7.map");};
+      String GetOutputMapFile(void){return wxT("output5.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

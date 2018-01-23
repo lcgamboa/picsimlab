@@ -55,6 +55,15 @@ cpart_switchs::cpart_switchs(unsigned x, unsigned y)
    output_pins[5]=0;
    output_pins[6]=0;
    output_pins[7]=0;  
+   
+   output_value[0] = 0;
+   output_value[1] = 0;
+   output_value[2] = 0;
+   output_value[3] = 0;
+   output_value[4] = 0;
+   output_value[5] = 0;
+   output_value[6] = 0;
+   output_value[7] = 0;
   
 
 };
@@ -153,33 +162,24 @@ void cpart_switchs::Draw(void)
                canvas.Text (pboard->MGetPinName(output_pins[7]),output[i].x1,output[i].y1);
            }           
            break;
-           /*
-         case O_ROT:
-           canvas.SetLineWidth (8);
-           canvas.SetColor (250, 250, 250);
-           canvas.Circle (1,output[i].x1,output[i].y1,output[i].r);
-           canvas.SetColor (55, 55, 55);
-           canvas.Circle (1,output[i].x1,output[i].y1,output[i].r/5);
 
-           canvas.Line (output[i].x1,output[i].y1,output[i].x1+output[i].r*sin(angle),output[i].y1+output[i].r*cos(angle));
-           canvas.SetLineWidth (1);  
-         break;
-         case O_L1:
-         case O_L2:
-         case O_L3:
-         case O_L4: //FIXME it must use mean value!
-           if(output[i].id == O_L1)
-             canvas.SetColor (pic->pins[output_pins[0]-1].value*250, 0, 0);
-           if(output[i].id == O_L2)
-             canvas.SetColor (pic->pins[output_pins[1]-1].value*250, 0, 0);
-           if(output[i].id == O_L3)
-             canvas.SetColor (pic->pins[output_pins[2]-1].value*250, 0, 0);
-           if(output[i].id == O_L4)
-             canvas.SetColor (pic->pins[output_pins[3]-1].value*250, 0, 0);
-           canvas.Circle (1,output[i].x1,output[i].y1,output[i].r);
+         case O_S1:
+         case O_S2:
+         case O_S3:
+         case O_S4:
+         case O_S5: 
+         case O_S6: 
+         case O_S7: 
+         case O_S8: 
+           
+           canvas.SetColor (100, 100, 100);
+           canvas.Rectangle(1,output[i].x1,output[i].y1,output[i].x2-output[i].x1,output[i].y2-output[i].y1);
+           canvas.SetColor (255, 255, 255);
+           canvas.Rectangle(1,output[i].x1+2,output[i].y1+8+20*output_value[output[i].id-O_S1],18,10);
+           
            break;
+           
 
-            */
       }
 
       
@@ -203,10 +203,23 @@ void cpart_switchs::Draw(void)
  
 void cpart_switchs::Process(void)
 {
-
-  // b1[0]=pic->pins[output_pins[0]-1].value-pic->pins[output_pins[2]-1].value;
-    
-     
+  
+  if(refresh >1000)
+  {    
+  board *pboard = Window1.GetBoard ();
+  refresh=0;
+  
+  pboard->MSetPin (output_pins[0], output_value[0]);
+  pboard->MSetPin (output_pins[1], output_value[1]);
+  pboard->MSetPin (output_pins[2], output_value[2]);
+  pboard->MSetPin (output_pins[3], output_value[3]);
+  pboard->MSetPin (output_pins[4], output_value[4]);
+  pboard->MSetPin (output_pins[5], output_value[5]);
+  pboard->MSetPin (output_pins[6], output_value[6]);
+  pboard->MSetPin (output_pins[7], output_value[7]);
+  
+  }
+  refresh++;   
 }
  
 
@@ -222,23 +235,34 @@ cpart_switchs::Reset(void)
 void 
 cpart_switchs::MouseButtonPress(uint button, uint x, uint y,uint state)
 {
- /*
-  int i;
-    
-  for(i=0;i<inputc;i++)
-  {
-    if(((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+int i;
+
+  for (i = 0; i < inputc; i++)
     {
-   
-      switch(input[i].id) 
-      { 
-        case I_P1:
-           Message("P1");
-           break; 
-      }
+      if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+        {
+
+          switch (input[i].id)
+            {
+            case I_S1: output_value[0] ^= 1;
+              break;
+            case I_S2: output_value[1] ^= 1;
+              break;
+            case I_S3: output_value[2] ^= 1;
+              break;
+            case I_S4: output_value[3] ^= 1;
+              break;
+            case I_S5: output_value[4] ^= 1;
+              break;
+            case I_S6: output_value[5] ^= 1;
+              break;
+            case I_S7: output_value[6] ^= 1;
+              break;
+            case I_S8: output_value[7] ^= 1;
+              break;
+            }
+        }
     }
-  }
- */
 };
 
 
@@ -362,7 +386,9 @@ cpart_switchs::WritePreferences(void)
 {
    char prefs[256];
   
-  sprintf(prefs,"%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",output_pins[0],output_pins[1],output_pins[2],output_pins[3],output_pins[4],output_pins[5],output_pins[6],output_pins[7]);
+  sprintf(prefs,"%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
+          output_pins[0],output_pins[1],output_pins[2],output_pins[3],output_pins[4],output_pins[5],output_pins[6],output_pins[7],
+          output_value[0],output_value[1],output_value[2],output_value[3],output_value[4],output_value[5],output_value[6],output_value[7]);
   
   return prefs;
 };
@@ -370,8 +396,10 @@ cpart_switchs::WritePreferences(void)
 void 
 cpart_switchs::ReadPreferences(String value)
 {
-  sscanf(value.c_str (),"%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",&output_pins[0],&output_pins[1],&output_pins[2],&output_pins[3],&output_pins[4],&output_pins[5],&output_pins[6],&output_pins[7]);      
-};
+  sscanf(value.c_str (),"%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
+         &output_pins[0],&output_pins[1],&output_pins[2],&output_pins[3],&output_pins[4],&output_pins[5],&output_pins[6],&output_pins[7],      
+         &output_value[0],&output_value[1],&output_value[2],&output_value[3],&output_value[4],&output_value[5],&output_value[6],&output_value[7]);
+ }; 
 
 CPWindow * WProp_switchs;
       
@@ -412,7 +440,7 @@ cpart_switchs::ConfigurePropiertsWindow(CPWindow *  wprop)
     }
     
     ((CCombo*)WProp_switchs->GetChildByName("combo3"))->SetItems(Items);
-    if(output_pins[3] == 0)
+    if(output_pins[2] == 0)
         ((CCombo*)WProp_switchs->GetChildByName("combo3"))->SetText("0  NC");
     else
     {

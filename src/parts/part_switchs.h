@@ -55,7 +55,8 @@ class cpart_switchs:public part
       unsigned short get_out_id(char * name);
       void PropButton (CControl * control, uint button, uint x, uint y, uint state);
     private:
-      unsigned char output_pins[8];    
+      unsigned char output_pins[8];   
+      unsigned char output_value[8];
 };
 
 

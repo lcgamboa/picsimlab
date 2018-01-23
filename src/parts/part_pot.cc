@@ -57,6 +57,12 @@ cpart_pot::cpart_pot (unsigned x, unsigned y)
   input_pins[1] = 0;
   input_pins[2] = 0;
   input_pins[3] = 0;
+  
+  values[0] = 0;
+  values[1] = 0;
+  values[2] = 0;
+  values[3] = 0;
+  
 
 };
 
@@ -119,55 +125,41 @@ cpart_pot::Draw (void)
               else
                 canvas.Text (pboard->MGetPinName (input_pins[3]), output[i].x1, output[i].y1);
             }
-          /*
-        case O_ROT:
-          canvas.SetLineWidth (8);
-          canvas.SetColor (250, 250, 250);
-          canvas.Circle (1,output[i].x1,output[i].y1,output[i].r);
-          canvas.SetColor (55, 55, 55);
-          canvas.Circle (1,output[i].x1,output[i].y1,output[i].r/5);
-
-          canvas.Line (output[i].x1,output[i].y1,output[i].x1+output[i].r*sin(angle),output[i].y1+output[i].r*cos(angle));
-          canvas.SetLineWidth (1);  
-        break;
-        case O_L1:
-        case O_L2:
-        case O_L3:
-        case O_L4: //FIXME it must use mean value!
-          if(output[i].id == O_L1)
-            canvas.SetColor (pic->pins[output_pins[0]-1].value*250, 0, 0);
-          if(output[i].id == O_L2)
-            canvas.SetColor (pic->pins[output_pins[1]-1].value*250, 0, 0);
-          if(output[i].id == O_L3)
-            canvas.SetColor (pic->pins[output_pins[2]-1].value*250, 0, 0);
-          if(output[i].id == O_L4)
-            canvas.SetColor (pic->pins[output_pins[3]-1].value*250, 0, 0);
-          canvas.Circle (1,output[i].x1,output[i].y1,output[i].r);
           break;
-
-           */
+        case O_PO1:
+          canvas.SetColor (50, 50, 50);
+          canvas.Rectangle (1,output[i].x1,output[i].y1,output[i].x2-output[i].x1,output[i].y2-output[i].y1);
+          canvas.SetColor (250, 250, 250);
+          canvas.Rectangle (1,output[i].x1+6,output[i].y1+values[0],20,10);
+          break;          
+        case O_PO2:
+          canvas.SetColor (50, 50, 50);
+          canvas.Rectangle (1,output[i].x1,output[i].y1,output[i].x2-output[i].x1,output[i].y2-output[i].y1);
+          canvas.SetColor (250, 250, 250);
+          canvas.Rectangle (1,output[i].x1+6,output[i].y1+values[1],20,10);
+          break;          
+        case O_PO3:
+          canvas.SetColor (50, 50, 50);
+          canvas.Rectangle (1,output[i].x1,output[i].y1,output[i].x2-output[i].x1,output[i].y2-output[i].y1);
+          canvas.SetColor (250, 250, 250);
+          canvas.Rectangle (1,output[i].x1+6,output[i].y1+values[2],20,10);
+          break;          
+        case O_PO4:  
+          canvas.SetColor (50, 50, 50);
+          canvas.Rectangle (1,output[i].x1,output[i].y1,output[i].x2-output[i].x1,output[i].y2-output[i].y1);
+          canvas.SetColor (250, 250, 250);
+          canvas.Rectangle (1,output[i].x1+6,output[i].y1+values[3],20,10);
+          break;          
+        break;
         }
 
 
     };
 
-  /*
-  canvas.SetColor (0,0,0);
-  canvas.Rectangle (1,0,0,100,20);
-  canvas.SetFgColor (255,255,255);
-  
-  wxFont fonts(8, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );
-
-  canvas.SetFont (fonts);
-  canvas.Text (ftoa(180.0*angle/M_PI),1,1); 
-   */
-
   canvas.End ();
 
 }
 
-
-float x = 0;
 
 void
 cpart_pot::Process (void)
@@ -177,15 +169,13 @@ cpart_pot::Process (void)
   if (refresh > 100000)
     {
       refresh = 0;
-      x += 0.1;
-      if (x > 5.0)x = 0;
 
       board *pboard = Window1.GetBoard ();
 
-      pboard->MSetAPin (input_pins[0], x);
-      pboard->MSetAPin (input_pins[1], x);
-      pboard->MSetAPin (input_pins[2], x);
-      pboard->MSetAPin (input_pins[3], x);
+      pboard->MSetAPin (input_pins[0], 5.0*(148-values[0])/148.0);
+      pboard->MSetAPin (input_pins[1], 5.0*(148-values[1])/148.0);
+      pboard->MSetAPin (input_pins[2], 5.0*(148-values[2])/148.0);
+      pboard->MSetAPin (input_pins[3], 5.0*(148-values[3])/148.0);
 
     }
   refresh++;
@@ -200,18 +190,32 @@ cpart_pot::MouseButtonPress (uint button, uint x, uint y, uint state)
 {
 
   int i;
-
+  unsigned int l;
+  
   for (i = 0; i < inputc; i++)
     {
       if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
         {
-
+          l=(input[i].y2-input[i].y1-10); 
           switch (input[i].id)
             {
             case I_PO1:
-              Message ("P1");
+              values[0]=y-input[i].y1;
+              if( values[0] >= l)values[0]=l;
               break;
-            }
+            case I_PO2:
+              values[1]=y-input[i].y1;
+              if( values[1] >= l)values[1]=l;
+              break;
+            case I_PO3:
+              values[2]=y-input[i].y1;
+              if( values[2] >= l)values[2]=l;
+              break;
+            case I_PO4:
+              values[3]=y-input[i].y1;
+              if( values[3] >= l)values[3]=l;
+              break;  
+            }    
         }
     }
 
@@ -316,7 +320,7 @@ cpart_pot::WritePreferences (void)
 {
   char prefs[256];
 
-  sprintf (prefs, "%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3]);
+  sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3], values[0], values[1], values[2], values[3]);
 
   return prefs;
 };
@@ -324,7 +328,7 @@ cpart_pot::WritePreferences (void)
 void
 cpart_pot::ReadPreferences (String value)
 {
-  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3]);
+  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &values[0], &values[1], &values[2], &values[3]);
 };
 
 CPWindow * WProp_pot;

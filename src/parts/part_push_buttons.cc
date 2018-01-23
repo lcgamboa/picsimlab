@@ -448,7 +448,7 @@ cpart_pbuttons::ConfigurePropiertsWindow (CPWindow * wprop)
     }
 
   ((CCombo*) WProp_pbuttons->GetChildByName ("combo3"))->SetItems (Items);
-  if (output_pins[3] == 0)
+  if (output_pins[2] == 0)
     ((CCombo*) WProp_pbuttons->GetChildByName ("combo3"))->SetText ("0  NC");
   else
     {

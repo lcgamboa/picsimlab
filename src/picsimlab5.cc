@@ -61,9 +61,9 @@ CPWindow5::_EvOnCreate(CControl * control)
 
 void
 CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uint y,uint state)
-
 {
-
+  x=x/scale;
+  y=y/scale;  
 
   for (int i = 0; i < partsc; i++)
     {
@@ -73,7 +73,7 @@ CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
           if (button == 3)
             {
                PartSelected=i;
-               Widget->PopupMenu ((wxMenu*) (pmenu2.GetWidget ()), x, y);
+               Widget->PopupMenu ((wxMenu*) (pmenu2.GetWidget ()), x*scale, y*scale);
             }
           return;
         }
@@ -105,6 +105,9 @@ CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
 void
 CPWindow5::draw1_EvMouseButtonRelease(CControl * control, uint button, uint x, uint y,uint state)
 {
+  x=x/scale;
+  y=y/scale;  
+  
   PartToMove=-1;
   wxSetCursor (wxCursor (wxCURSOR_ARROW));
   mdx=0;
@@ -154,12 +157,14 @@ void
 CPWindow5::timer1_EvOnTime(CControl * control)
 {
 
-  draw1.Canvas.Init (scale, scale);
+  draw1.Canvas.Init (1.0, 1.0);
 
   draw1.Canvas.SetFgColor (50, 50, 50);
   draw1.Canvas.SetBgColor (50, 50, 50);
   draw1.Canvas.Rectangle (1, 0, 0, draw1.GetWidth (), draw1.GetHeight ());
-
+  
+  //draw1.Canvas.End ();
+  draw1.Canvas.Init (scale, scale);
 
   for (int i = 0; i < partsc; i++)
     {
@@ -180,7 +185,9 @@ CPWindow5::draw1_EvMouseMove(CControl * control, uint button, uint x, uint y,uin
   
   if(PartToMove >= 0)
   {
- 
+    x=x/scale;
+    y=y/scale;
+    
     if((mdx == 0)&&(mdy == 0))  
       {
         mdx=parts[PartToMove]->GetX()-x; 
@@ -198,9 +205,7 @@ CPWindow5::draw1_EvMouseMove(CControl * control, uint button, uint x, uint y,uin
 void
 CPWindow5::draw1_EvKeyboardPress(CControl * control, uint key, uint x, uint y,uint mask)
 {
-  //code here:)
-  mprint(wxT("draw1_EvKeyboardPress\n"));
-  
+
   switch(key)
   {
     case '='://+
@@ -219,7 +224,7 @@ void
 CPWindow5::draw1_EvKeyboardRelease(CControl * control, uint key, uint x, uint y,uint mask)
 {
   //code here:)
-  mprint(wxT("draw1_EvKeyboardRelease\n"));
+  //mprint(wxT("draw1_EvKeyboardRelease\n"));
 };
 
 bool 

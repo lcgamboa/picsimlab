@@ -398,7 +398,7 @@ cpart_leds::ConfigurePropiertsWindow(CPWindow *  wprop)
     }
     
     ((CCombo*)WProp_leds->GetChildByName("combo3"))->SetItems(Items);
-    if(input_pins[3] == 0)
+    if(input_pins[2] == 0)
         ((CCombo*)WProp_leds->GetChildByName("combo3"))->SetText("0  NC");
     else
     {
