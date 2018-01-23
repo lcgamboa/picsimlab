@@ -2,8 +2,8 @@
   <Class type="String">CPWindow</Class>
   <Name type="String">window1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">50</X>
-  <Y type="int">50</Y>
+  <X type="int">256</X>
+  <Y type="int">141</Y>
   <Width type="uint">1110</Width>
   <Height type="uint">505</Height>
   <Hint type="String"></Hint>
@@ -170,7 +170,7 @@
   <Class type="String">CMenu</Class>
   <Name type="String">menu1</Name>
   <Tag type="int">0</Tag>
-  <MenuItems type="MenuItems">File,Modules,Tools,Help,</MenuItems>
+  <MenuItems type="MenuItems">File,Board,Microcontroller,Modules,Tools,Help,</MenuItems>
 </menu1>
 <menu1_File>
   <Class type="String">CPMenu</Class>
@@ -179,6 +179,20 @@
   <Text type="String">File</Text>
   <MenuItems type="MenuItems">Load Hex,Reload Last,Configure,Exit,</MenuItems>
 </menu1_File>
+<menu1_Board>
+  <Class type="String">CPMenu</Class>
+  <Name type="String">menu1_Board</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Board</Text>
+  <MenuItems type="MenuItems"></MenuItems>
+</menu1_Board>
+<menu1_Microcontroller>
+  <Class type="String">CPMenu</Class>
+  <Name type="String">menu1_Microcontroller</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Microcontroller</Text>
+  <MenuItems type="MenuItems"></MenuItems>
+</menu1_Microcontroller>
 <menu1_Modules>
   <Class type="String">CPMenu</Class>
   <Name type="String">menu1_Modules</Name>

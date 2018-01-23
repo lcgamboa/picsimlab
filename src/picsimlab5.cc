@@ -270,15 +270,21 @@ CPWindow5::LoadConfig(String fname)
       prefs.LoadFromFile(fname);
       
       DeleteParts();
-    
+      partsc=0;
       for (unsigned int i = 0; i < prefs.GetLinesCount (); i++)
       {
         sscanf(prefs.GetLine (i).c_str (),"%256[^,],%i,%i:%256[^\n]",name,&x,&y,temp);
               
-        parts[i]=create_part(name,x,y);
-        parts[i]->ReadPreferences(temp);
+        if((parts[i]=create_part(name,x,y)))
+        {
+          parts[i]->ReadPreferences(temp);
+          partsc++;
+        }
+        else
+        {
+          printf("Erro loading part: %s \n",name);  
+        }
       }
-      partsc=prefs.GetLinesCount ();
     }
     
     return ret;

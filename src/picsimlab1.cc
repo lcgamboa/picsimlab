@@ -28,8 +28,6 @@
 #include"picsimlab1.h"
 #include"picsimlab1_d.cc"
 
-#include"boards/boards_defs.h"
-
 CPWindow1 Window1;
 
 //Implementation
@@ -322,6 +320,27 @@ create++;
         pboard = create_board(&lab,&lab_);         
 
         combo3.SetItems(pboard->GetSupportedDevices());
+        
+        
+        menu1_Microcontroller.DestroyChilds();
+        String sdev = pboard->GetSupportedDevices();
+        int f;
+        int dc=0;
+        while (sdev.size () > 0)
+        {
+          f = sdev.find (wxT(","));
+          if(f < 0)break;
+          MMicro[dc].SetFOwner(this);
+          MMicro[dc].SetName("Micro_"+itoa(dc+1));
+          MMicro[dc].SetText(sdev.substr (0, f));
+          MMicro[dc].EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_EvMicrocontroller;
+          menu1_Microcontroller.CreateChild(&MMicro[dc]);
+          sdev = sdev.substr (f + 1, sdev.size () - f - 1);
+          dc++;
+        }
+
+ 
+        
       }
       if(!strcmp(name,"clock"))
       {
@@ -737,7 +756,6 @@ CPWindow1::combo3_EvOnComboChange(CControl * control)
    proc_=pboard->proc;
    pboard->proc=combo3.GetText();
    
-   
   _EvOnDestroy(control);
   _EvOnCreate(control);
   _EvOnShow(control);
@@ -833,5 +851,29 @@ CPWindow1::menu1_Tools_SerialTerm_EvMenuActive(CControl * control)
 {
   wxExecute("cutecom");
 };
+
+void
+CPWindow1::menu1_EvBoard(CControl * control)
+{
+  lab_= lab;
+  lab= (int)(atof(((CItemMenu*)control)->GetText ()));
+
+  _EvOnDestroy(control);
+  _EvOnCreate(control);
+  _EvOnShow(control);
+};
+
+void
+CPWindow1::menu1_EvMicrocontroller(CControl * control)
+{
+   proc_=pboard->proc;
+   pboard->proc=((CItemMenu*)control)->GetText ();
+   
+   
+  _EvOnDestroy(control);
+  _EvOnCreate(control);
+  _EvOnShow(control);
+};
+
 
 

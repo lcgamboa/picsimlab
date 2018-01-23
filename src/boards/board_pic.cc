@@ -48,7 +48,9 @@ board_pic::MInit(const char * processor, const char * fname, float freq)
    if(procn == 0)
    {
      printf("Unknown processor %s !!\n",processor) ;  
-     return 0;
+     String sproc=GetSupportedDevices();
+     int f = sproc.find (wxT(","));
+     procn=getprocbyname (sproc.substr (0, f));
    }
   
    int ret=pic_init(&pic,procn,fname,1,freq);

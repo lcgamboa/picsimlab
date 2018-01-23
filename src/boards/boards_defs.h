@@ -26,7 +26,6 @@
 #ifndef BOARDS_DEFS_H
 #define	BOARDS_DEFS_H
 
-#include"../picsimlab1.h"
 
 //includes of boards
 #include"board_1.h" 
@@ -45,51 +44,10 @@
 #define BOARDS_LAST 5
 #endif
 
-
 //boards object creation
-board * create_board(int *lab,int *lab_)
-{
-   board * pboard=NULL;
+board * create_board(int *lab,int *lab_);
 
-        switch(*lab)
-        {
-          case 1:
-            pboard= new cboard_1();
-            break;
-          case 2:
-            pboard= new cboard_2();
-            break;
-          case 3:
-            pboard= new cboard_3();
-            break;
-          case 4:
-            pboard= new cboard_4();
-            break;    
-          case 5:
-            pboard= new cboard_5();
-            break;  
-#ifdef _EXPERIMENTAL_
-          case 6:
-            pboard= new cboard_6();
-            break;     
-          case 7:
-            pboard= new cboard_7();
-            break;  
-          case 8:
-            pboard= new cboard_x();
-            break; 
-#endif	    
-          default:
-            mprint(wxT("Invalid Board! Using Default!\n"));
-            *lab=1;//default  
-            *lab_=1;//default  
-            Window1.combo2.SetText(wxT("1"));
-            pboard= new cboard_1();
-          break;
-        }
-
-    return pboard; 
-}
+extern const char boards_list[BOARDS_LAST][30];
 
 #endif	/* BOARDS_DEFS_H */
 

@@ -113,7 +113,8 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
   avr = avr_make_mcu_by_name(processor);
   if (!avr) {
     fprintf(stderr, "Error creating the AVR core\n");
-    return 0;
+    //return 0;
+    avr = avr_make_mcu_by_name("atmega328");   
   }
   
   

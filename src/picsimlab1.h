@@ -32,12 +32,13 @@
 #define NSTEPKF        40.0      //Freq constant 4.0*timer_freq
 #define DEFAULTJS       100      //IO refresh rate
 
+#define MAX_MIC 20
 extern char SERIALDEVICE[100];
 
 #include <lxrad/lxrad.h>
 
 #include "boards/board.h"
-
+#include "boards/boards_defs.h"
 #include "wx/stdpaths.h"
 
     
@@ -55,6 +56,8 @@ class CPWindow1:public CPWindow
   CCombo combo2;
   CMenu menu1;
   CPMenu menu1_File;
+  CPMenu menu1_Board;
+  CPMenu menu1_Microcontroller;
   CPMenu menu1_Modules;
   CPMenu menu1_Tools;
   CPMenu menu1_Help;
@@ -129,6 +132,8 @@ class CPWindow1:public CPWindow
   void SetJUMPSTEPS(int js){JUMPSTEPS=js;NSTEPJ=NSTEP/JUMPSTEPS;};
   board * GetBoard(void);
   void SetCpuState(unsigned char cs);
+  void menu1_EvBoard(CControl * control);
+  void menu1_EvMicrocontroller(CControl * control);
  private: 
   String share;
  
@@ -160,6 +165,10 @@ class CPWindow1:public CPWindow
   int create;
 
   int ondraw;    
+  
+  CItemMenu MBoard[BOARDS_LAST];
+  CItemMenu MMicro[MAX_MIC];
+  
 };
 
 extern CPWindow1 Window1 ;

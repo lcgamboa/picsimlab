@@ -36,7 +36,6 @@
 #include <simavr/avr_adc.h>
 #include <simavr/avr_uart.h>
 #include <simavr/sim_hex.h>
-#include "../picsimlab1.h"
 
 
 

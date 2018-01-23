@@ -33,8 +33,8 @@ CPWindow1::CPWindow1(void)
   SetClass(wxT("CPWindow"));
   SetName(wxT("window1"));
   SetTag(0);
-  SetX(50);
-  SetY(50);
+  SetX(256);
+  SetY(141);
   SetWidth(1110);
   SetHeight(505);
   SetHint(wxT(""));
@@ -155,7 +155,7 @@ CPWindow1::CPWindow1(void)
   menu1.SetClass(wxT("CMenu"));
   menu1.SetName(wxT("menu1"));
   menu1.SetTag(0);
-  menu1.SetMenuItems(wxT("File,Modules,Tools,Help,"));
+  menu1.SetMenuItems(wxT("File,Board,Microcontroller,Modules,Tools,Help,"));
   CreateChild(&menu1);
   //menu1_File
   menu1_File.SetFOwner(this);
@@ -165,6 +165,22 @@ CPWindow1::CPWindow1(void)
   menu1_File.SetText(wxT("File"));
   menu1_File.SetMenuItems(wxT("Load Hex,Reload Last,Configure,Exit,"));
   menu1.CreateChild(&menu1_File);
+  //menu1_Board
+  menu1_Board.SetFOwner(this);
+  menu1_Board.SetClass(wxT("CPMenu"));
+  menu1_Board.SetName(wxT("menu1_Board"));
+  menu1_Board.SetTag(0);
+  menu1_Board.SetText(wxT("Board"));
+  menu1_Board.SetMenuItems(wxT(""));
+  menu1.CreateChild(&menu1_Board);
+  //menu1_Microcontroller
+  menu1_Microcontroller.SetFOwner(this);
+  menu1_Microcontroller.SetClass(wxT("CPMenu"));
+  menu1_Microcontroller.SetName(wxT("menu1_Microcontroller"));
+  menu1_Microcontroller.SetTag(0);
+  menu1_Microcontroller.SetText(wxT("Microcontroller"));
+  menu1_Microcontroller.SetMenuItems(wxT(""));
+  menu1.CreateChild(&menu1_Microcontroller);
   //menu1_Modules
   menu1_Modules.SetFOwner(this);
   menu1_Modules.SetClass(wxT("CPMenu"));
@@ -385,4 +401,16 @@ cpustate=CPU_RUNNING;
 
 tgo=0;
  
+
+ 
+  for(int i=0; i <BOARDS_LAST; i++)
+    {
+       MBoard[i].SetFOwner(this);
+       MBoard[i].SetName("Board_"+itoa(i+1));
+       MBoard[i].SetText(itoa(i+1)+wxT(" ")+boards_list[i]);
+       MBoard[i].EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_EvBoard;
+       menu1_Board.CreateChild(&MBoard[i]);
+    }    
+
+        
 };
