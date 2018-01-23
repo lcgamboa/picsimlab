@@ -88,7 +88,7 @@ cboard_1::cboard_1(void)
   gauge1->SetFOwner(&Window1);
   gauge1->SetName(wxT("gauge1_p1"));
   gauge1->SetX(13);
-  gauge1->SetY(242);
+  gauge1->SetY(102);
   gauge1->SetWidth(140);
   gauge1->SetHeight(20);
   gauge1->SetEnable(1);
@@ -102,7 +102,7 @@ cboard_1::cboard_1(void)
   label1->SetFOwner(&Window1);
   label1->SetName(wxT("label1_p1"));
   label1->SetX(12);
-  label1->SetY(220);
+  label1->SetY(80);
   label1->SetWidth(60);
   label1->SetHeight(20);
   label1->SetEnable(1);

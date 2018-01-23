@@ -130,7 +130,7 @@ cboard_3::cboard_3(void)
   scroll1->SetFOwner(&Window1);
   scroll1->SetName(wxT("scroll1_p3"));
   scroll1->SetX(12);
-  scroll1->SetY(273);
+  scroll1->SetY(133);
   scroll1->SetWidth(140);
   scroll1->SetHeight(22);
   scroll1->SetEnable(1);
@@ -144,7 +144,7 @@ cboard_3::cboard_3(void)
   gauge1->SetFOwner(&Window1);
   gauge1->SetName(wxT("gauge1_p3"));
   gauge1->SetX(13);
-  gauge1->SetY(382);
+  gauge1->SetY(242);
   gauge1->SetWidth(140);
   gauge1->SetHeight(20);
   gauge1->SetEnable(1);
@@ -158,7 +158,7 @@ cboard_3::cboard_3(void)
   gauge2->SetFOwner(&Window1);
   gauge2->SetName(wxT("gauge2_p3"));
   gauge2->SetX(12);
-  gauge2->SetY(330);
+  gauge2->SetY(190);
   gauge2->SetWidth(140);
   gauge2->SetHeight(20);
   gauge2->SetEnable(1);
@@ -172,7 +172,7 @@ cboard_3::cboard_3(void)
   label1->SetFOwner(&Window1);
   label1->SetName(wxT("label1_p3"));
   label1->SetX(12);
-  label1->SetY(249);
+  label1->SetY(109);
   label1->SetWidth(60);
   label1->SetHeight(20);
   label1->SetEnable(1);
@@ -185,7 +185,7 @@ cboard_3::cboard_3(void)
   label2->SetFOwner(&Window1);
   label2->SetName(wxT("label2_p3"));
   label2->SetX(12);
-  label2->SetY(306);
+  label2->SetY(166);
   label2->SetWidth(60);
   label2->SetHeight(20);
   label2->SetEnable(1);
@@ -193,12 +193,12 @@ cboard_3::cboard_3(void)
   label2->SetText(wxT("Heater"));
   label2->SetAlign(1);
   Window1.CreateChild(label2);    
-  //label4
+  //label3
   label3=new CLabel();
   label3->SetFOwner(&Window1);
   label3->SetName(wxT("label3_p3"));
   label3->SetX(13);
-  label3->SetY(357);
+  label3->SetY(217);
   label3->SetWidth(60);
   label3->SetHeight(20);
   label3->SetEnable(1);
@@ -206,12 +206,12 @@ cboard_3::cboard_3(void)
   label3->SetText(wxT("Cooler"));
   label3->SetAlign(1);
   Window1.CreateChild(label3);
-  //label5
+  //label4
   label4=new CLabel();
   label4->SetFOwner(&Window1);
   label4->SetName(wxT("label4_p3"));
   label4->SetX(13);
-  label4->SetY(412);
+  label4->SetY(272);
   label4->SetWidth(120);
   label4->SetHeight(24);
   label4->SetEnable(1);

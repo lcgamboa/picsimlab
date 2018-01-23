@@ -86,7 +86,7 @@
   <Name type="String">combo1</Name>
   <Tag type="int">0</Tag>
   <X type="int">12</X>
-  <Y type="int">160</Y>
+  <Y type="int">39</Y>
   <Width type="uint">130</Width>
   <Height type="uint">25</Height>
   <Hint type="String"></Hint>
@@ -114,8 +114,8 @@
   <Class type="String">CLabel</Class>
   <Name type="String">label1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">13</X>
-  <Y type="int">133</Y>
+  <X type="int">10</X>
+  <Y type="int">11</Y>
   <Width type="uint">99</Width>
   <Height type="uint">21</Height>
   <Hint type="String"></Hint>
@@ -137,35 +137,6 @@
   <Text type="String">Clock (MHz)</Text>
   <Align type="CAlign">1</Align>
 </label1>
-<combo2>
-  <Class type="String">CCombo</Class>
-  <Name type="String">combo2</Name>
-  <Tag type="int">0</Tag>
-  <X type="int">12</X>
-  <Y type="int">39</Y>
-  <Width type="uint">132</Width>
-  <Height type="uint">25</Height>
-  <Hint type="String"></Hint>
-  <Enable type="bool">1</Enable>
-  <Visible type="bool">1</Visible>
-  <Color type="String">#000001</Color>
-  <PopupMenu type="PopupMenu">NULL</PopupMenu>
-  <EvMouseMove type="Event">FALSE</EvMouseMove>
-  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
-  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
-  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
-  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
-  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
-  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
-  <EvOnDraw type="Event">FALSE</EvOnDraw>
-  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
-  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Items type="StringList">1,2,3,4,</Items>
-  <Text type="String">1</Text>
-  <ReadOnly type="bool">1</ReadOnly>
-  <EvOnComboChange type="Event">TRUE</EvOnComboChange>
-</combo2>
 <menu1>
   <Class type="String">CMenu</Class>
   <Name type="String">menu1</Name>
@@ -300,87 +271,4 @@
   <Tag type="int">0</Tag>
   <Fields type="StringList">port,stats,serial,</Fields>
 </statusbar1>
-<label2>
-  <Class type="String">CLabel</Class>
-  <Name type="String">label2</Name>
-  <Tag type="int">0</Tag>
-  <X type="int">12</X>
-  <Y type="int">11</Y>
-  <Width type="uint">92</Width>
-  <Height type="uint">22</Height>
-  <Hint type="String"></Hint>
-  <Enable type="bool">1</Enable>
-  <Visible type="bool">1</Visible>
-  <Color type="String">#000001</Color>
-  <PopupMenu type="PopupMenu">NULL</PopupMenu>
-  <EvMouseMove type="Event">FALSE</EvMouseMove>
-  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
-  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
-  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
-  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
-  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
-  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
-  <EvOnDraw type="Event">FALSE</EvOnDraw>
-  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
-  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Board</Text>
-  <Align type="CAlign">1</Align>
-</label2>
-<label7>
-  <Class type="String">CLabel</Class>
-  <Name type="String">label7</Name>
-  <Tag type="int">0</Tag>
-  <X type="int">12</X>
-  <Y type="int">69</Y>
-  <Width type="uint">94</Width>
-  <Height type="uint">24</Height>
-  <Hint type="String"></Hint>
-  <Enable type="bool">1</Enable>
-  <Visible type="bool">1</Visible>
-  <Color type="String">#000001</Color>
-  <PopupMenu type="PopupMenu">NULL</PopupMenu>
-  <EvMouseMove type="Event">FALSE</EvMouseMove>
-  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
-  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
-  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
-  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
-  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
-  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
-  <EvOnDraw type="Event">FALSE</EvOnDraw>
-  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
-  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Processor</Text>
-  <Align type="CAlign">1</Align>
-</label7>
-<combo3>
-  <Class type="String">CCombo</Class>
-  <Name type="String">combo3</Name>
-  <Tag type="int">0</Tag>
-  <X type="int">12</X>
-  <Y type="int">98</Y>
-  <Width type="uint">131</Width>
-  <Height type="uint">26</Height>
-  <Hint type="String"></Hint>
-  <Enable type="bool">1</Enable>
-  <Visible type="bool">1</Visible>
-  <Color type="String">#000001</Color>
-  <PopupMenu type="PopupMenu">NULL</PopupMenu>
-  <EvMouseMove type="Event">FALSE</EvMouseMove>
-  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
-  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
-  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
-  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
-  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
-  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
-  <EvOnDraw type="Event">FALSE</EvOnDraw>
-  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
-  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Items type="StringList">PIC16F628A,PIC16F648A,</Items>
-  <Text type="String">PIC16F628</Text>
-  <ReadOnly type="bool">1</ReadOnly>
-  <EvOnComboChange type="Event">TRUE</EvOnComboChange>
-</combo3>
 </window1>

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -101,7 +101,7 @@ CPWindow1::CPWindow1(void)
   combo1.SetName(wxT("combo1"));
   combo1.SetTag(0);
   combo1.SetX(12);
-  combo1.SetY(160);
+  combo1.SetY(39);
   combo1.SetWidth(130);
   combo1.SetHeight(25);
   combo1.SetHint(wxT(""));
@@ -119,8 +119,8 @@ CPWindow1::CPWindow1(void)
   label1.SetClass(wxT("CLabel"));
   label1.SetName(wxT("label1"));
   label1.SetTag(0);
-  label1.SetX(13);
-  label1.SetY(133);
+  label1.SetX(10);
+  label1.SetY(11);
   label1.SetWidth(99);
   label1.SetHeight(21);
   label1.SetHint(wxT(""));
@@ -131,25 +131,6 @@ CPWindow1::CPWindow1(void)
   label1.SetText(wxT("Clock (MHz)"));
   label1.SetAlign(1);
   CreateChild(&label1);
-  //combo2
-  combo2.SetFOwner(this);
-  combo2.SetClass(wxT("CCombo"));
-  combo2.SetName(wxT("combo2"));
-  combo2.SetTag(0);
-  combo2.SetX(12);
-  combo2.SetY(39);
-  combo2.SetWidth(132);
-  combo2.SetHeight(25);
-  combo2.SetHint(wxT(""));
-  combo2.SetEnable(1);
-  combo2.SetVisible(1);
-  combo2.SetColor(wxT("#000001"));
-  combo2.SetPopupMenu(NULL);
-  combo2.SetItems(wxT("1,2,3,4,"));
-  combo2.SetText(wxT("1"));
-  combo2.SetReadOnly(1);
-  combo2.EvOnComboChange=EVONCOMBOCHANGE & CPWindow1::combo2_EvOnComboChange;
-  CreateChild(&combo2);
   //menu1
   menu1.SetFOwner(this);
   menu1.SetClass(wxT("CMenu"));
@@ -302,59 +283,6 @@ CPWindow1::CPWindow1(void)
   statusbar1.SetTag(0);
   statusbar1.SetFields(wxT("port,stats,serial,"));
   CreateChild(&statusbar1);
-  //label2
-  label2.SetFOwner(this);
-  label2.SetClass(wxT("CLabel"));
-  label2.SetName(wxT("label2"));
-  label2.SetTag(0);
-  label2.SetX(12);
-  label2.SetY(11);
-  label2.SetWidth(92);
-  label2.SetHeight(22);
-  label2.SetHint(wxT(""));
-  label2.SetEnable(1);
-  label2.SetVisible(1);
-  label2.SetColor(wxT("#000001"));
-  label2.SetPopupMenu(NULL);
-  label2.SetText(wxT("Board"));
-  label2.SetAlign(1);
-  CreateChild(&label2);
-  //label7
-  label7.SetFOwner(this);
-  label7.SetClass(wxT("CLabel"));
-  label7.SetName(wxT("label7"));
-  label7.SetTag(0);
-  label7.SetX(12);
-  label7.SetY(69);
-  label7.SetWidth(94);
-  label7.SetHeight(24);
-  label7.SetHint(wxT(""));
-  label7.SetEnable(1);
-  label7.SetVisible(1);
-  label7.SetColor(wxT("#000001"));
-  label7.SetPopupMenu(NULL);
-  label7.SetText(wxT("Processor"));
-  label7.SetAlign(1);
-  CreateChild(&label7);
-  //combo3
-  combo3.SetFOwner(this);
-  combo3.SetClass(wxT("CCombo"));
-  combo3.SetName(wxT("combo3"));
-  combo3.SetTag(0);
-  combo3.SetX(12);
-  combo3.SetY(98);
-  combo3.SetWidth(131);
-  combo3.SetHeight(26);
-  combo3.SetHint(wxT(""));
-  combo3.SetEnable(1);
-  combo3.SetVisible(1);
-  combo3.SetColor(wxT("#000001"));
-  combo3.SetPopupMenu(NULL);
-  combo3.SetItems(wxT("PIC16F628A,PIC16F648A,"));
-  combo3.SetText(wxT("PIC16F628"));
-  combo3.SetReadOnly(1);
-  combo3.EvOnComboChange=EVONCOMBOCHANGE & CPWindow1::combo3_EvOnComboChange;
-  CreateChild(&combo3);
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!
   

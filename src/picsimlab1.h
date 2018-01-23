@@ -53,7 +53,6 @@ class CPWindow1:public CPWindow
   CDraw draw1;
   CCombo combo1;
   CLabel label1;
-  CCombo combo2;
   CMenu menu1;
   CPMenu menu1_File;
   CPMenu menu1_Board;
@@ -72,9 +71,6 @@ class CPWindow1:public CPWindow
   CItemMenu menu1_Help_Examples;
   CItemMenu menu1_Help_About;
   CStatusbar statusbar1;
-  CLabel label2;
-  CLabel label7;
-  CCombo combo3;
   /*#Events*/
   void _EvOnCreate(CControl * control);
   void _EvOnDestroy(CControl * control);
@@ -86,7 +82,6 @@ class CPWindow1:public CPWindow
   void draw1_EvKeyboardPress(CControl * control, uint key, uint x, uint y,uint mask);
   void draw1_EvKeyboardRelease(CControl * control, uint key, uint x, uint y,uint mask);
   void combo1_EvOnComboChange(CControl * control);
-  void combo2_EvOnComboChange(CControl * control);
   void menu1_File_LoadHex_EvMenuActive(CControl * control);
   void menu1_File_ReloadLast_EvMenuActive(CControl * control);
   void menu1_File_Configure_EvMenuActive(CControl * control);
@@ -97,7 +92,6 @@ class CPWindow1:public CPWindow
   void menu1_Help_Contents_EvMenuActive(CControl * control);
   void menu1_Help_Examples_EvMenuActive(CControl * control);
   void menu1_Help_About_EvMenuActive(CControl * control);
-  void combo3_EvOnComboChange(CControl * control);
 
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!

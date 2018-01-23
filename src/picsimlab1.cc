@@ -270,11 +270,6 @@ if(!create)
  Window3.combo2.SetItems(wxT("/dev/ttyS0,/dev/ttyS1,/dev/ttyS2,/dev/ttyS3,/dev/tnt0,/dev/tnt1,/dev/tnt2,/dev/tnt3,/dev/tnt4,/dev/tnt5,"));
 #endif
 
- combo2.DeleteItems();
- for(i=1;i<=BOARDS_LAST;i++)
- {
-     combo2.AddItem(itoa(i));
- }
 }
 create++;
 
@@ -313,15 +308,12 @@ create++;
       if(!strcmp(name,"lab"))
       {
         sscanf(value,"%i",&i);
-        combo2.SetText(itoa(i));
+        
         lab=i;
         lab_=i; 
 
         pboard = create_board(&lab,&lab_);         
-
-        combo3.SetItems(pboard->GetSupportedDevices());
-        
-        
+      
         menu1_Microcontroller.DestroyChilds();
         String sdev = pboard->GetSupportedDevices();
         int f;
@@ -378,7 +370,7 @@ create++;
     
     lab=1;//default  
     lab_=1;//default  
-    combo2.SetText(wxT("1"));
+    
     pboard= new cboard_1();
 
 #ifndef _WIN_   
@@ -389,11 +381,12 @@ create++;
    //strcpy(PROGDEVICE,"com8");
 #endif
   }
-   
- 
-  combo3.SetText(pboard->proc);   
+  
   proc_=pboard->proc;
  
+  SetTitle(wxT("PICSimLab - ")+ String(boards_list[lab-1])+wxT(" - ")+pboard->proc);
+  
+  
 
   filedialog1.SetDir(PATH);
  
@@ -464,24 +457,6 @@ CPWindow1::combo1_EvOnComboChange(CControl * control)
   
   Application->ProcessEvents();
 };
-
-
-
-
-//Change board
-void
-CPWindow1::combo2_EvOnComboChange(CControl * control)
-{
-
-  lab_= lab;
-  lab= (int)(atof(combo2.GetText()));
-
-  _EvOnDestroy(control);
-  _EvOnCreate(control);
-  _EvOnShow(control);
-  
-};
-
 
 void
 CPWindow1::saveprefs(String name, String value)
@@ -634,9 +609,10 @@ CPWindow1::menu1_File_LoadHex_EvMenuActive(CControl * control)
             
  
           if(picrun) 
-            Window1.SetTitle(wxT("PicsimLab - ")+basename(filedialog1.GetFileName()));          
+            SetTitle(wxT("PICSimLab - ")+ String(boards_list[lab-1])+wxT(" - ")+pboard->proc+wxT(" - ")+basename(filedialog1.GetFileName()));          
           else
-            Window1.SetTitle(wxT("PicsimLab"));
+            SetTitle(wxT("PICSimLab - ")+ String(boards_list[lab-1])+wxT(" - ")+pboard->proc);
+  
           
         
           PATH=filedialog1.GetDir();
@@ -700,9 +676,10 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
   
  
           if(picrun) 
-            Window1.SetTitle(wxT("PicsimLab - ")+basename(filedialog1.GetFileName()));          
+            SetTitle(wxT("PICSimLab - ")+ String(boards_list[lab-1])+wxT(" - ")+pboard->proc+wxT(" - ")+basename(filedialog1.GetFileName()));          
           else
-            Window1.SetTitle(wxT("PicsimLab"));
+            SetTitle(wxT("PICSimLab - ")+ String(boards_list[lab-1])+wxT(" - ")+pboard->proc);
+  
           
         }
         filedialog1.SetDir(PATH);
@@ -749,20 +726,6 @@ CPWindow1::menu1_File_Configure_EvMenuActive(CControl * control)
 };
 
 
-//change processor
-void
-CPWindow1::combo3_EvOnComboChange(CControl * control)
-{
-   proc_=pboard->proc;
-   pboard->proc=combo3.GetText();
-   
-  _EvOnDestroy(control);
-  _EvOnCreate(control);
-  _EvOnShow(control);
-
-};
-
-
 void
 CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
 {
@@ -796,9 +759,10 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
     
  
           if(picrun) 
-            Window1.SetTitle(wxT("PicsimLab - ")+basename(filedialog1.GetFileName()));          
+            SetTitle(wxT("PICSimLab - ")+ String(boards_list[lab-1])+wxT(" - ")+pboard->proc+wxT(" - ")+basename(filedialog1.GetFileName()));          
           else
-            Window1.SetTitle(wxT("PicsimLab"));
+            SetTitle(wxT("PICSimLab - ")+ String(boards_list[lab-1])+wxT(" - ")+pboard->proc);
+  
           
         
         //}
@@ -852,6 +816,7 @@ CPWindow1::menu1_Tools_SerialTerm_EvMenuActive(CControl * control)
   wxExecute("cutecom");
 };
 
+//Change board
 void
 CPWindow1::menu1_EvBoard(CControl * control)
 {
@@ -863,12 +828,14 @@ CPWindow1::menu1_EvBoard(CControl * control)
   _EvOnShow(control);
 };
 
+//change microcontroller
 void
 CPWindow1::menu1_EvMicrocontroller(CControl * control)
 {
    proc_=pboard->proc;
    pboard->proc=((CItemMenu*)control)->GetText ();
    
+   SetTitle(wxT("PICSimLab - ")+ String(boards_list[lab-1])+wxT(" - ")+pboard->proc);
    
   _EvOnDestroy(control);
   _EvOnCreate(control);

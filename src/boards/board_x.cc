@@ -86,7 +86,7 @@ cboard_x::cboard_x(void)
   scroll1->SetFOwner(&Window1);
   scroll1->SetName(wxT("scroll1_px"));
   scroll1->SetX(12);
-  scroll1->SetY(273);
+  scroll1->SetY(273-160);
   scroll1->SetWidth(140);
   scroll1->SetHeight(22);
   scroll1->SetEnable(1);
@@ -100,7 +100,7 @@ cboard_x::cboard_x(void)
   gauge1->SetFOwner(&Window1);
   gauge1->SetName(wxT("gauge1_px"));
   gauge1->SetX(13);
-  gauge1->SetY(382);
+  gauge1->SetY(382-160);
   gauge1->SetWidth(140);
   gauge1->SetHeight(20);
   gauge1->SetEnable(1);
@@ -114,7 +114,7 @@ cboard_x::cboard_x(void)
   gauge2->SetFOwner(&Window1);
   gauge2->SetName(wxT("gauge2_px"));
   gauge2->SetX(12);
-  gauge2->SetY(330);
+  gauge2->SetY(330-160);
   gauge2->SetWidth(140);
   gauge2->SetHeight(20);
   gauge2->SetEnable(1);
@@ -128,7 +128,7 @@ cboard_x::cboard_x(void)
   label1->SetFOwner(&Window1);
   label1->SetName(wxT("label1_px"));
   label1->SetX(12);
-  label1->SetY(249);
+  label1->SetY(249-160);
   label1->SetWidth(60);
   label1->SetHeight(20);
   label1->SetEnable(1);
@@ -141,7 +141,7 @@ cboard_x::cboard_x(void)
   label2->SetFOwner(&Window1);
   label2->SetName(wxT("label2_px"));
   label2->SetX(12);
-  label2->SetY(306);
+  label2->SetY(306-160);
   label2->SetWidth(60);
   label2->SetHeight(20);
   label2->SetEnable(1);
@@ -154,7 +154,7 @@ cboard_x::cboard_x(void)
   label3->SetFOwner(&Window1);
   label3->SetName(wxT("label3_px"));
   label3->SetX(13);
-  label3->SetY(357);
+  label3->SetY(357-160);
   label3->SetWidth(60);
   label3->SetHeight(20);
   label3->SetEnable(1);

@@ -90,7 +90,7 @@ cboard_7::cboard_7(void)
   scroll1->SetFOwner(&Window1);
   scroll1->SetName(wxT("scroll1_p5"));
   scroll1->SetX(48);
-  scroll1->SetY(200);
+  scroll1->SetY(200-120);
   scroll1->SetWidth(110);
   scroll1->SetHeight(22);
   scroll1->SetEnable(1);
@@ -104,7 +104,7 @@ cboard_7::cboard_7(void)
   gauge1->SetFOwner(&Window1);
   gauge1->SetName(wxT("gauge1_p5"));
   gauge1->SetX(48);
-  gauge1->SetY(230);
+  gauge1->SetY(230-120);
   gauge1->SetWidth(110);
   gauge1->SetHeight(20);
   gauge1->SetEnable(1);
@@ -118,7 +118,7 @@ cboard_7::cboard_7(void)
   gauge2->SetFOwner(&Window1);
   gauge2->SetName(wxT("gauge2_p5"));
   gauge2->SetX(48);
-  gauge2->SetY(255);
+  gauge2->SetY(255-120);
   gauge2->SetWidth(110);
   gauge2->SetHeight(20);
   gauge2->SetEnable(1);
@@ -132,7 +132,7 @@ cboard_7::cboard_7(void)
   gauge3->SetFOwner(&Window1);
   gauge3->SetName(wxT("gauge3_p5"));
   gauge3->SetX(48);
-  gauge3->SetY(280);
+  gauge3->SetY(280-120);
   gauge3->SetWidth(110);
   gauge3->SetHeight(20);
   gauge3->SetEnable(1);
@@ -146,7 +146,7 @@ cboard_7::cboard_7(void)
   gauge4->SetFOwner(&Window1);
   gauge4->SetName(wxT("gauge4_p5"));
   gauge4->SetX(48);
-  gauge4->SetY(305);
+  gauge4->SetY(305-120);
   gauge4->SetWidth(110);
   gauge4->SetHeight(20);
   gauge4->SetEnable(1);
@@ -160,7 +160,7 @@ cboard_7::cboard_7(void)
   label1->SetFOwner(&Window1);
   label1->SetName(wxT("label1_p5"));
   label1->SetX(12);
-  label1->SetY(200);
+  label1->SetY(200-120);
   label1->SetWidth(60);
   label1->SetHeight(20);
   label1->SetEnable(1);
@@ -173,7 +173,7 @@ cboard_7::cboard_7(void)
   label2->SetFOwner(&Window1);
   label2->SetName(wxT("label2_p5"));
   label2->SetX(12);
-  label2->SetY(230);
+  label2->SetY(230-120);
   label2->SetWidth(60);
   label2->SetHeight(20);
   label2->SetEnable(1);
@@ -186,7 +186,7 @@ cboard_7::cboard_7(void)
   label3->SetFOwner(&Window1);
   label3->SetName(wxT("label3_p5"));
   label3->SetX(13);
-  label3->SetY(255);
+  label3->SetY(255-120);
   label3->SetWidth(60);
   label3->SetHeight(20);
   label3->SetEnable(1);
@@ -199,7 +199,7 @@ cboard_7::cboard_7(void)
   label4->SetFOwner(&Window1);
   label4->SetName(wxT("label4_p5"));
   label4->SetX(13);
-  label4->SetY(280);
+  label4->SetY(280-120);
   label4->SetWidth(60);
   label4->SetHeight(20);
   label4->SetEnable(1);
@@ -212,7 +212,7 @@ cboard_7::cboard_7(void)
   label5->SetFOwner(&Window1);
   label5->SetName(wxT("label5_p5"));
   label5->SetX(13);
-  label5->SetY(305);
+  label5->SetY(305-120);
   label5->SetWidth(60);
   label5->SetHeight(20);
   label5->SetEnable(1);
