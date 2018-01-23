@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -36,16 +36,17 @@ class part
   public:
       virtual String GetName(void)=0;
       virtual void Draw(void)=0; //Called ever 100ms to draw board 
-      virtual void Process (void)=0; //Called every CPU step
+      virtual void Process (void){}; //Called every CPU step
       virtual String GetPictureFileName(void)=0; //Return the filename of board picture 
       virtual String GetInputMapFile(void)=0;    //Return the filename of board picture input map  
       virtual String GetOutputMapFile(void)=0;   //Return the filename of board picture output map  
       virtual String GetPropiertiesWindowFile(void)=0;//Return the filename of propierties window XML file
-      virtual void Reset(void)=0;           //Reset board status
-      virtual void MouseButtonPress(uint button, uint x, uint y,uint state)=0;    //Event on the board
-      virtual void MouseButtonRelease(uint button, uint x, uint y,uint state)=0;  //Event on the board
-      virtual void KeyPress(uint key, uint x, uint y,uint mask)=0;  //Event on the board
-      virtual void KeyRelease(uint key, uint x, uint y,uint mask)=0;//Event on the board
+      virtual void Reset(void){};           //Reset part status
+      virtual void MouseButtonPress(uint button, uint x, uint y,uint state){};    //Event on the board
+      virtual void MouseButtonRelease(uint button, uint x, uint y,uint state){};  //Event on the board
+      virtual void MouseMove(uint button, uint x, uint y,uint state){};  //Event on the board
+      virtual void KeyPress(uint key, uint x, uint y,uint mask){};  //Event on the board
+      virtual void KeyRelease(uint key, uint x, uint y,uint mask){};//Event on the board
       virtual String WritePreferences(void)=0;   //Called to save part preferences in configuration file
       virtual void ReadPreferences(String value)=0; //Called whe configuration file load  preferences 
       virtual unsigned short get_in_id(char * name)=0; //return the input ids numbers of names used in input map

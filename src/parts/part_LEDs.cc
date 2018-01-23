@@ -43,8 +43,6 @@ cpart_leds::cpart_leds(unsigned x, unsigned y)
    
    canvas.Create(Bitmap);
    
-
-   
    input_pins[0]=0;
    input_pins[1]=0;
    input_pins[2]=0;
@@ -60,8 +58,6 @@ cpart_leds::~cpart_leds(void)
 {
     delete Bitmap;
 }
-
- 
 
 
 void cpart_leds::Draw(void)
@@ -181,133 +177,11 @@ void cpart_leds::Draw(void)
       
   };
   
-  /*
-  canvas.SetColor (0,0,0);
-  canvas.Rectangle (1,0,0,100,20);
-  canvas.SetFgColor (255,255,255);
   
-  wxFont fonts(8, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );
-
-  canvas.SetFont (fonts);
-  canvas.Text (ftoa(180.0*angle/M_PI),1,1); 
-  */
-   
   canvas.End();
   
 }
 
- 
-void cpart_leds::Process(void)
-{
-
-//   b1[0]=pic->pins[input_pin[0]-1].value-pic->pins[input_pin[2]-1].value;
- 
-     
-}
- 
-
-void 
-cpart_leds::Reset(void)
-{          
-
-};
-
-
-
-
-void 
-cpart_leds::MouseButtonPress(uint button, uint x, uint y,uint state)
-{
- /*
-  int i;
-    
-  for(i=0;i<inputc;i++)
-  {
-    if(((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
-    {
-   
-      switch(input[i].id) 
-      { 
-        case I_P1:
-           Message("P1");
-           break; 
-      }
-    }
-  }
- */
-};
-
-
-void 
-cpart_leds::MouseButtonRelease(uint button, uint x, uint y,uint state)
-{
-  /*  
-  int i;
-
-  for(i=0;i<inputc;i++)
-  {
-    if(((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
-    {
-      switch(input[i].id)
-      {
-        case I_P1:
-        break;
-      }
-    } 
-  }
-   */ 
-};
-
-
-
-void 
-cpart_leds::KeyPress( uint key, uint x, uint y,uint mask)
-{
-  /*
-  if(key == '1')
-  {
-    p_BT1=0; 
-  }
-  if(key == '2')
-  {
-    p_BT2=0; 
-  }
-  if(key == '3')
-  {
-    p_BT3=0; 
-  }
-  if(key == '4')
-  {
-    p_BT4=0; 
-  }
-  */
-};
-
-void
-cpart_leds::KeyRelease(uint key, uint x, uint y,uint mask)
-{
-  /*
-  if(key == '1')
-  {
-    p_BT1=1; 
-  }
-  
-  if(key == '2')
-  {
-    p_BT2=1; 
-  }
-  
-  if(key == '3')
-  {
-    p_BT3=1; 
-  }
-  
-  if(key == '4')
-  {
-    p_BT4=1; 
-  }
-  */
-};
 
 unsigned short 
 cpart_leds::get_in_id(char * name)

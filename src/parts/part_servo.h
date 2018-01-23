@@ -42,11 +42,6 @@ class cpart_servo:public part
       String GetInputMapFile(void){return wxT("parts/servo_motor_i.map");};
       String GetOutputMapFile(void){return wxT("parts/servo_motor_o.map");};
       String GetPropiertiesWindowFile(void){return wxT("parts/servo_motor.lxrad");};
-      void Reset(void);
-      void MouseButtonPress(uint button, uint x, uint y,uint state);
-      void MouseButtonRelease(uint button, uint x, uint y,uint state);
-      void KeyPress(uint key, uint x, uint y,uint mask);
-      void KeyRelease(uint key, uint x, uint y,uint mask);
       void ConfigurePropiertsWindow(CPWindow *  wprop);
       void ReadPropiertsWindow(void);
       String WritePreferences(void);

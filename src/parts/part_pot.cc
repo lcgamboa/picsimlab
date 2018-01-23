@@ -63,6 +63,10 @@ cpart_pot::cpart_pot (unsigned x, unsigned y)
   values[2] = 0;
   values[3] = 0;
   
+  active[0] = 0;
+  active[1] = 0;
+  active[2] = 0;
+  active[3] = 0;
 
 };
 
@@ -183,9 +187,6 @@ cpart_pot::Process (void)
 }
 
 void
-cpart_pot::Reset (void) { };
-
-void
 cpart_pot::MouseButtonPress (uint button, uint x, uint y, uint state)
 {
 
@@ -202,87 +203,103 @@ cpart_pot::MouseButtonPress (uint button, uint x, uint y, uint state)
             case I_PO1:
               values[0]=y-input[i].y1;
               if( values[0] >= l)values[0]=l;
+              active[0]=1;
               break;
             case I_PO2:
               values[1]=y-input[i].y1;
               if( values[1] >= l)values[1]=l;
+              active[1]=1;
               break;
             case I_PO3:
               values[2]=y-input[i].y1;
               if( values[2] >= l)values[2]=l;
+              active[2]=1;
               break;
             case I_PO4:
               values[3]=y-input[i].y1;
               if( values[3] >= l)values[3]=l;
+              active[3]=1;
               break;  
             }    
         }
     }
 
-};
+}
 
-void
-cpart_pot::MouseButtonRelease (uint button, uint x, uint y, uint state) {
-  /*  
+void 
+cpart_pot::MouseButtonRelease(uint button, uint x, uint y,uint state)
+{
   int i;
-
-  for(i=0;i<inputc;i++)
-  {
-    if(((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+  
+  for (i = 0; i < inputc; i++)
     {
-      switch(input[i].id)
-      {
-        case I_P1:
-        break;
-      }
-    } 
-  }
-   */ };
+      if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+        {
+          switch (input[i].id)
+            {
+            case I_PO1:
+              active[0]=0;
+              break;
+            case I_PO2:
+              active[1]=0;
+              break;
+            case I_PO3:
+              active[2]=0;
+              break;
+            case I_PO4:
+              active[3]=0;
+              break;  
+            }    
+        }
+    }
+}
 
-void
-cpart_pot::KeyPress (uint key, uint x, uint y, uint mask) {
-  /*
-  if(key == '1')
-  {
-    p_BT1=0; 
-  }
-  if(key == '2')
-  {
-    p_BT2=0; 
-  }
-  if(key == '3')
-  {
-    p_BT3=0; 
-  }
-  if(key == '4')
-  {
-    p_BT4=0; 
-  }
-   */ };
-
-void
-cpart_pot::KeyRelease (uint key, uint x, uint y, uint mask) {
-  /*
-  if(key == '1')
-  {
-    p_BT1=1; 
-  }
+void 
+cpart_pot::MouseMove(uint button, uint x, uint y,uint state)
+{
   
-  if(key == '2')
-  {
-    p_BT2=1; 
-  }
+  int i;
+  unsigned int l;
   
-  if(key == '3')
-  {
-    p_BT3=1; 
-  }
-  
-  if(key == '4')
-  {
-    p_BT4=1; 
-  }
-   */ };
+  for (i = 0; i < inputc; i++)
+    {
+      if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+        {
+          l=(input[i].y2-input[i].y1-10); 
+          switch (input[i].id)
+            {
+            case I_PO1:
+              if(active[0])
+              {
+                values[0]=y-input[i].y1;
+                if( values[0] >= l)values[0]=l;
+              }
+              break;
+            case I_PO2:
+              if(active[1])
+              {
+                values[1]=y-input[i].y1;
+                if( values[1] >= l)values[1]=l;
+              }
+              break;
+            case I_PO3:
+              if(active[2])
+              {
+                values[2]=y-input[i].y1;
+                if( values[2] >= l)values[2]=l;
+              }
+              break;
+            case I_PO4:
+              if(active[3])
+              {
+                values[3]=y-input[i].y1;
+                if( values[3] >= l)values[3]=l;
+              }
+              break;  
+            }    
+        }
+    }
+}
 
 unsigned short
 cpart_pot::get_in_id (char * name)

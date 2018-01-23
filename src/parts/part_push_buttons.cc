@@ -165,47 +165,10 @@ cpart_pbuttons::Draw (void)
                 canvas.Text (pboard->MGetPinName (output_pins[7]), output[i].x1, output[i].y1);
             }
           break;
-          /*
-        case O_ROT:
-          canvas.SetLineWidth (8);
-          canvas.SetColor (250, 250, 250);
-          canvas.Circle (1,output[i].x1,output[i].y1,output[i].r);
-          canvas.SetColor (55, 55, 55);
-          canvas.Circle (1,output[i].x1,output[i].y1,output[i].r/5);
-
-          canvas.Line (output[i].x1,output[i].y1,output[i].x1+output[i].r*sin(angle),output[i].y1+output[i].r*cos(angle));
-          canvas.SetLineWidth (1);  
-        break;
-        case O_L1:
-        case O_L2:
-        case O_L3:
-        case O_L4: //FIXME it must use mean value!
-          if(output[i].id == O_L1)
-            canvas.SetColor (pic->pins[output_pins[0]-1].value*250, 0, 0);
-          if(output[i].id == O_L2)
-            canvas.SetColor (pic->pins[output_pins[1]-1].value*250, 0, 0);
-          if(output[i].id == O_L3)
-            canvas.SetColor (pic->pins[output_pins[2]-1].value*250, 0, 0);
-          if(output[i].id == O_L4)
-            canvas.SetColor (pic->pins[output_pins[3]-1].value*250, 0, 0);
-          canvas.Circle (1,output[i].x1,output[i].y1,output[i].r);
-          break;
-           */
         }
 
 
     };
-
-  /*
-  canvas.SetColor (0,0,0);
-  canvas.Rectangle (1,0,0,100,20);
-  canvas.SetFgColor (255,255,255);
-  
-  wxFont fonts(8, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );
-
-  canvas.SetFont (fonts);
-  canvas.Text (ftoa(180.0*angle/M_PI),1,1); 
-   */
 
   canvas.End ();
 
@@ -233,9 +196,6 @@ cpart_pbuttons::Process (void)
   refresh++;
 }
 
-void
-cpart_pbuttons::Reset (void) {
- };
 
 void
 cpart_pbuttons::MouseButtonPress (uint button, uint x, uint y, uint state)
@@ -301,51 +261,6 @@ cpart_pbuttons::MouseButtonRelease (uint button, uint x, uint y, uint state)
         }
     }
 }
-
-void
-cpart_pbuttons::KeyPress (uint key, uint x, uint y, uint mask) {
-  /*
-  if(key == '1')
-  {
-    p_BT1=0; 
-  }
-  if(key == '2')
-  {
-    p_BT2=0; 
-  }
-  if(key == '3')
-  {
-    p_BT3=0; 
-  }
-  if(key == '4')
-  {
-    p_BT4=0; 
-  }
-   */ };
-
-void
-cpart_pbuttons::KeyRelease (uint key, uint x, uint y, uint mask) {
-  /*
-  if(key == '1')
-  {
-    p_BT1=1; 
-  }
-  
-  if(key == '2')
-  {
-    p_BT2=1; 
-  }
-  
-  if(key == '3')
-  {
-    p_BT3=1; 
-  }
-  
-  if(key == '4')
-  {
-    p_BT4=1; 
-  }
-   */ };
 
 unsigned short
 cpart_pbuttons::get_in_id (char * name)

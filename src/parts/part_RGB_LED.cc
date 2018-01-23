@@ -120,49 +120,6 @@ void cpart_rgb_led::Draw(void)
   
 }
 
- 
-void cpart_rgb_led::Process(void)
-{
-     
-}
- 
-
-void 
-cpart_rgb_led::Reset(void)
-{          
-
-};
-
-
-
-
-void 
-cpart_rgb_led::MouseButtonPress(uint button, uint x, uint y,uint state)
-{
-
-};
-
-
-void 
-cpart_rgb_led::MouseButtonRelease(uint button, uint x, uint y,uint state)
-{
-
-};
-
-
-
-void 
-cpart_rgb_led::KeyPress( uint key, uint x, uint y,uint mask)
-{
-
-};
-
-void
-cpart_rgb_led::KeyRelease(uint key, uint x, uint y,uint mask)
-{
-
-};
-
 unsigned short 
 cpart_rgb_led::get_in_id(char * name)
 {  

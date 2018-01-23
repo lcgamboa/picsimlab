@@ -37,16 +37,10 @@ class cpart_rgb_led:public part
       cpart_rgb_led(unsigned x, unsigned y);
       ~cpart_rgb_led(void);
       void Draw(void);
-      void Process(void);
       String GetPictureFileName(void){return wxT("parts/RGB_LED.png");};
       String GetInputMapFile(void){return wxT("parts/RGB_LED_i.map");};
       String GetOutputMapFile(void){return wxT("parts/RGB_LED_o.map");};
       String GetPropiertiesWindowFile(void){return wxT("parts/RGB_LED.lxrad");};
-      void Reset(void);
-      void MouseButtonPress(uint button, uint x, uint y,uint state);
-      void MouseButtonRelease(uint button, uint x, uint y,uint state);
-      void KeyPress(uint key, uint x, uint y,uint mask);
-      void KeyRelease(uint key, uint x, uint y,uint mask);
       void ConfigurePropiertsWindow(CPWindow *  wprop);
       void ReadPropiertsWindow(void);
       String WritePreferences(void);

@@ -182,11 +182,12 @@ CPWindow5::timer1_EvOnTime(CControl * control)
 void
 CPWindow5::draw1_EvMouseMove(CControl * control, uint button, uint x, uint y,uint state)
 {
+  x=x/scale;
+  y=y/scale;
   
   if(PartToMove >= 0)
   {
-    x=x/scale;
-    y=y/scale;
+
     
     if((mdx == 0)&&(mdy == 0))  
       {
@@ -196,6 +197,17 @@ CPWindow5::draw1_EvMouseMove(CControl * control, uint button, uint x, uint y,uin
       
     parts[PartToMove]->SetX (x+mdx); 
     parts[PartToMove]->SetY (y+mdy);
+  }
+  else
+  {
+    for (int i = 0; i < partsc; i++)
+    {
+      if (parts[i]->PointInside (x, y))
+        {
+          parts[i]->MouseMove (button, x - parts[i]->GetX (), y - parts[i]->GetY (), state);
+          return;
+        }
+    }    
   }
   
 };

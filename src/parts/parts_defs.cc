@@ -36,9 +36,11 @@
 #include"part_pot.h"
 #include"part_RGB_LED.h"
 
-
+#ifdef _EXPERIMENTAL_
 const char parts_list[NUM_PARTS][30]={"Servo motor","Step motor","D. Transfer function","Push buttons", "Switchs","LEDs","Potentiometers","RGB LED",};
-
+#else
+const char parts_list[NUM_PARTS][30]={"Servo motor","Step motor","Push buttons", "Switchs","LEDs","Potentiometers","RGB LED",};
+#endif
 
 //boards object creation
 part * create_part(String name, unsigned int x, unsigned int y)
@@ -48,9 +50,9 @@ part * create_part(String name, unsigned int x, unsigned int y)
    if(name.compare(wxT("Servo motor")) == 0 )part_= new cpart_servo(x,y);
 
    if(name.compare(wxT("Step motor")) == 0 )part_= new cpart_step(x,y);
-   
+#ifdef _EXPERIMENTAL_   
    if(name.compare(wxT("D. Transfer function")) == 0 )part_= new cpart_dtfunc(x,y);
-
+#endif
    if(name.compare(wxT("Push buttons")) == 0 )part_= new cpart_pbuttons(x,y);
    
    if(name.compare(wxT("Switchs")) == 0 )part_= new cpart_switchs(x,y);

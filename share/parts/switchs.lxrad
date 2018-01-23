@@ -22,7 +22,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Title type="String">switchs</Title>
+  <Title type="String">Switchs</Title>
   <OverrideRedirect type="bool">0</OverrideRedirect>
   <EvOnCreate type="Event">FALSE</EvOnCreate>
   <EvOnDestroy type="Event">FALSE</EvOnDestroy>
