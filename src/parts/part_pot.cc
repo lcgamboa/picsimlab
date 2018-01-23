@@ -101,58 +101,19 @@ cpart_pot::Draw (void)
           canvas.SetColor (49, 61, 99);
           canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
           canvas.SetFgColor (255, 255, 255);
-          if (output[i].id == O_P1)
-            {
-              if (input_pins[0] == 0)
-                canvas.Text ("NC", output[i].x1, output[i].y1);
-              else
-                canvas.Text (pboard->MGetPinName (input_pins[0]), output[i].x1, output[i].y1);
-            }
-          if (output[i].id == O_P2)
-            {
-              if (input_pins[1] == 0)
-                canvas.Text ("NC", output[i].x1, output[i].y1);
-              else
-                canvas.Text (pboard->MGetPinName (input_pins[1]), output[i].x1, output[i].y1);
-            }
-          if (output[i].id == O_P3)
-            {
-              if (input_pins[2] == 0)
-                canvas.Text ("NC", output[i].x1, output[i].y1);
-              else
-                canvas.Text (pboard->MGetPinName (input_pins[2]), output[i].x1, output[i].y1);
-            }
-          if (output[i].id == O_P4)
-            {
-              if (input_pins[3] == 0)
-                canvas.Text ("NC", output[i].x1, output[i].y1);
-              else
-                canvas.Text (pboard->MGetPinName (input_pins[3]), output[i].x1, output[i].y1);
-            }
+          if (input_pins[output[i].id-O_P1] == 0)
+           canvas.Text ("NC", output[i].x1, output[i].y1);
+          else
+            canvas.Text (pboard->MGetPinName (input_pins[output[i].id-O_P1]), output[i].x1, output[i].y1);         
           break;
-        case O_PO1:
-          canvas.SetColor (50, 50, 50);
-          canvas.Rectangle (1,output[i].x1,output[i].y1,output[i].x2-output[i].x1,output[i].y2-output[i].y1);
-          canvas.SetColor (250, 250, 250);
-          canvas.Rectangle (1,output[i].x1+6,output[i].y1+values[0],20,10);
-          break;          
-        case O_PO2:
-          canvas.SetColor (50, 50, 50);
-          canvas.Rectangle (1,output[i].x1,output[i].y1,output[i].x2-output[i].x1,output[i].y2-output[i].y1);
-          canvas.SetColor (250, 250, 250);
-          canvas.Rectangle (1,output[i].x1+6,output[i].y1+values[1],20,10);
-          break;          
-        case O_PO3:
-          canvas.SetColor (50, 50, 50);
-          canvas.Rectangle (1,output[i].x1,output[i].y1,output[i].x2-output[i].x1,output[i].y2-output[i].y1);
-          canvas.SetColor (250, 250, 250);
-          canvas.Rectangle (1,output[i].x1+6,output[i].y1+values[2],20,10);
-          break;          
+        case O_PO1:         
+        case O_PO2:        
+        case O_PO3:       
         case O_PO4:  
           canvas.SetColor (50, 50, 50);
           canvas.Rectangle (1,output[i].x1,output[i].y1,output[i].x2-output[i].x1,output[i].y2-output[i].y1);
           canvas.SetColor (250, 250, 250);
-          canvas.Rectangle (1,output[i].x1+6,output[i].y1+values[3],20,10);
+          canvas.Rectangle (1,output[i].x1+6,output[i].y1+values[output[i].id-O_PO1],20,10);
           break;          
         break;
         }

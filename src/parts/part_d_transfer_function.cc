@@ -105,20 +105,7 @@ void cpart_dtfunc::Draw(void)
            canvas.Line (output[i].x1,output[i].y1,output[i].x1+output[i].r*sin(angle),output[i].y1+output[i].r*cos(angle));
            canvas.SetLineWidth (1);  
          break;
-         case O_L1:
-         case O_L2:
-         case O_L3:
-         case O_L4: //FIXME it must use mean value!
-           if(output[i].id == O_L1)
-             canvas.SetColor (pic->pins[input_pin[0]-1].value*250, 0, 0);
-           if(output[i].id == O_L2)
-             canvas.SetColor (pic->pins[input_pin[1]-1].value*250, 0, 0);
-           if(output[i].id == O_L3)
-             canvas.SetColor (pic->pins[input_pin[2]-1].value*250, 0, 0);
-           if(output[i].id == O_L4)
-             canvas.SetColor (pic->pins[input_pin[3]-1].value*250, 0, 0);
-           canvas.Circle (1,output[i].x1,output[i].y1,output[i].r);
-           break;
+
            */
         }
 

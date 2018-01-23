@@ -105,64 +105,11 @@ void cpart_switchs::Draw(void)
            canvas.SetColor (49, 61, 99);
            canvas.Rectangle (1,output[i].x1,output[i].y1,output[i].x2-output[i].x1,output[i].y2-output[i].y1);
            canvas.SetFgColor (255, 255, 255);
-           if(output[i].id == O_P1)
-           {
-             if(output_pins[0] == 0)
-               canvas.Text ("NC",output[i].x1,output[i].y1);
-             else
-               canvas.Text (pboard->MGetPinName(output_pins[0]),output[i].x1,output[i].y1);  
-           }
-           if(output[i].id == O_P2)
-           {
-             if(output_pins[1] == 0)
-               canvas.Text ("NC",output[i].x1,output[i].y1);
-             else  
-               canvas.Text (pboard->MGetPinName(output_pins[1]),output[i].x1,output[i].y1);
-           }
-           if(output[i].id == O_P3)
-           {
-             if(output_pins[2] == 0)
-               canvas.Text ("NC",output[i].x1,output[i].y1);
-             else  
-               canvas.Text (pboard->MGetPinName(output_pins[2]),output[i].x1,output[i].y1);
-           }
-           if(output[i].id == O_P4)
-           {
-             if(output_pins[3] == 0)
-               canvas.Text ("NC",output[i].x1,output[i].y1);
-             else  
-               canvas.Text (pboard->MGetPinName(output_pins[3]),output[i].x1,output[i].y1);
-           }
-           if(output[i].id == O_P5)
-           {
-             if(output_pins[4] == 0)
-               canvas.Text ("NC",output[i].x1,output[i].y1);
-             else
-               canvas.Text (pboard->MGetPinName(output_pins[4]),output[i].x1,output[i].y1);  
-           }
-           if(output[i].id == O_P6)
-           {
-             if(output_pins[5] == 0)
-               canvas.Text ("NC",output[i].x1,output[i].y1);
-             else  
-               canvas.Text (pboard->MGetPinName(output_pins[5]),output[i].x1,output[i].y1);
-           }
-           if(output[i].id == O_P7)
-           {
-             if(output_pins[6] == 0)
-               canvas.Text ("NC",output[i].x1,output[i].y1);
-             else  
-               canvas.Text (pboard->MGetPinName(output_pins[6]),output[i].x1,output[i].y1);
-           }
-           if(output[i].id == O_P8)
-           {
-             if(output_pins[7] == 0)
-               canvas.Text ("NC",output[i].x1,output[i].y1);
-             else  
-               canvas.Text (pboard->MGetPinName(output_pins[7]),output[i].x1,output[i].y1);
-           }           
+           if(output_pins[output[i].id-O_P1] == 0)
+             canvas.Text ("NC",output[i].x1,output[i].y1);
+           else  
+             canvas.Text (pboard->MGetPinName(output_pins[output[i].id-O_P1]),output[i].x1,output[i].y1);       
            break;
-
          case O_S1:
          case O_S2:
          case O_S3:
@@ -175,7 +122,7 @@ void cpart_switchs::Draw(void)
            canvas.SetColor (100, 100, 100);
            canvas.Rectangle(1,output[i].x1,output[i].y1,output[i].x2-output[i].x1,output[i].y2-output[i].y1);
            canvas.SetColor (255, 255, 255);
-           canvas.Rectangle(1,output[i].x1+2,output[i].y1+8+20*output_value[output[i].id-O_S1],18,10);
+           canvas.Rectangle(1,output[i].x1+2,output[i].y1+28-20*output_value[output[i].id-O_S1],18,10);
            
            break;
            

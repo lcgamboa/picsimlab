@@ -84,27 +84,10 @@ void cpart_rgb_led::Draw(void)
            canvas.SetColor (49, 61, 99);
            canvas.Rectangle (1,output[i].x1,output[i].y1,output[i].x2-output[i].x1,output[i].y2-output[i].y1);
            canvas.SetFgColor (255, 255, 255);
-           if(output[i].id == O_P1)
-           {
-             if(input_pins[0] == 0)
-               canvas.Text ("NC",output[i].x1,output[i].y1);
-             else
-               canvas.Text (pboard->MGetPinName(input_pins[0]),output[i].x1,output[i].y1);  
-           }
-           if(output[i].id == O_P2)
-           {
-             if(input_pins[1] == 0)
-               canvas.Text ("NC",output[i].x1,output[i].y1);
-             else
-               canvas.Text (pboard->MGetPinName(input_pins[1]),output[i].x1,output[i].y1);  
-           }
-           if(output[i].id == O_P3)
-           {
-             if(input_pins[2] == 0)
-               canvas.Text ("NC",output[i].x1,output[i].y1);
-             else
-               canvas.Text (pboard->MGetPinName(input_pins[2]),output[i].x1,output[i].y1);  
-           }           
+           if(input_pins[output[i].id - O_P1] == 0)
+             canvas.Text ("NC",output[i].x1,output[i].y1);
+           else
+             canvas.Text (pboard->MGetPinName(input_pins[output[i].id - O_P1]),output[i].x1,output[i].y1);         
            break;
          case O_L1:
            canvas.SetColor (ppins[input_pins[0]-1].oavalue, ppins[input_pins[1]-1].oavalue, ppins[input_pins[2]-1].oavalue);
