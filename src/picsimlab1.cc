@@ -821,7 +821,11 @@ CPWindow1::menu1_Modules_Spareparts_EvMenuActive(CControl * control)
 void
 CPWindow1::menu1_Tools_SerialTerm_EvMenuActive(CControl * control)
 {
+#ifdef _WIN_  
+  wxExecute(share+wxT("/../tools/cutecom/cutecom.exe"));
+#else
   wxExecute("cutecom");
+#endif  
 };
 
 //Change board

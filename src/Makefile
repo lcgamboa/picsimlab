@@ -12,8 +12,8 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-FLAGS = -D_VERSION_=\"0.6.5\" -Wall -O3 -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer  `lxrad-config --cxxflags`
-#FLAGS = -D_VERSION_=\"0.6.5\" -Wall -ggdb -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer  `lxrad-config --cxxflags`
+FLAGS = -D_VERSION_=\"0.7.0\" -Wall -O3 -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer  `lxrad-config --cxxflags`
+#FLAGS = -D_VERSION_=\"0.7.0\" -Wall -ggdb -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer  `lxrad-config --cxxflags`
 
 #FLAGS+= -D_EXPERIMENTAL_
 
