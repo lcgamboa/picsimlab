@@ -93,7 +93,7 @@ CPWindow1::thread1_EvThreadRun(CControl*)
       {
         tgo=0;  
         pboard->Run_CPU();
-        pboard->DebugLoop();
+        if(debug)pboard->DebugLoop();
         ondraw=0;
       }
       else
@@ -149,13 +149,6 @@ CPWindow1::thread1_EvThreadRun(CControl*)
 }
 
 void
-CPWindow1::thread1_EvThreadEnd(CControl*)
-{
-
-}
-
-
-void
 CPWindow1::timer2_EvOnTime(CControl * control)
 {
    pboard->RefreshStatus(); 
@@ -170,6 +163,8 @@ CPWindow1::timer2_EvOnTime(CControl * control)
        statusbar1.SetField(0,wxT("Halted!"));break;
      case CPU_BREAKPOINT:  
        statusbar1.SetField(0,wxT("BreakPoint!"));break;   
+     case CPU_ERROR:  
+       statusbar1.SetField(0,wxT("Error!"));break; 
    }
    
 };
@@ -347,7 +342,14 @@ create++;
         }
         combo1_EvOnComboChange(control);
       }
-
+      
+      if(!strcmp(name,"debug"))
+      {
+         sscanf(value,"%i",&i);  
+         debug=i;
+         togglebutton1.SetCheck(i);
+      }
+      
       if(!strcmp(name,"lpath"))
       {
          PATH=String(value,wxConvUTF8);
@@ -420,11 +422,17 @@ create++;
   */
   status=wxT("");  
 
-  if(pboard->DebugInit() == 0 ) 
-     statusbar1.SetField(1,status+wxT("    MplabxD:  Ok "));
+  if(debug)
+  {
+    if(pboard->DebugInit() == 0 ) 
+      statusbar1.SetField(1,status+wxT("    Debug: On"));
+    else
+      statusbar1.SetField(1,status+wxT("    Debug: Error"));
+  }
   else
-     statusbar1.SetField(1,status+wxT("    MplabxD:Error"));
-  
+  {
+      statusbar1.SetField(1,status+wxT("    Debug: Off"));
+  }
 
  
   statusbar1.SetField(0,wxT("Running..."));
@@ -504,8 +512,8 @@ CPWindow1::_EvOnDestroy(CControl * control)
   
   timer1.SetRunState(0);
   timer2.SetRunState(0);
- 
   thread1.Destroy ();
+   
   
 
 //write options
@@ -535,7 +543,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
   
     saveprefs(wxT("lab"),String::Format("%i",lab));
     saveprefs(wxT("clock"),combo1.GetText());
-
+    saveprefs(wxT("debug"),itoa(debug));
 #ifndef _WIN_
     saveprefs(wxT("lser"),SERIALDEVICE);
     //saveprefs(wxT("lprog"),PROGDEVICE);
@@ -842,5 +850,16 @@ CPWindow1::menu1_EvMicrocontroller(CControl * control)
   _EvOnShow(control);
 };
 
+
+
+void
+CPWindow1::togglebutton1_EvOnToggleButton(CControl * control)
+{
+   debug=togglebutton1.GetCheck();
+   
+  _EvOnDestroy(control);
+  _EvOnCreate(control);
+  _EvOnShow(control);
+};
 
 

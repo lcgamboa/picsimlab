@@ -71,6 +71,7 @@ class CPWindow1:public CPWindow
   CItemMenu menu1_Help_Examples;
   CItemMenu menu1_Help_About;
   CStatusbar statusbar1;
+  CToggleButton togglebutton1;
   /*#Events*/
   void _EvOnCreate(CControl * control);
   void _EvOnDestroy(CControl * control);
@@ -92,6 +93,7 @@ class CPWindow1:public CPWindow
   void menu1_Help_Contents_EvMenuActive(CControl * control);
   void menu1_Help_Examples_EvMenuActive(CControl * control);
   void menu1_Help_About_EvMenuActive(CControl * control);
+  void togglebutton1_EvOnToggleButton(CControl * control);
 
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!
@@ -104,7 +106,6 @@ class CPWindow1:public CPWindow
   
   void board_Event(CControl * control);
   void thread1_EvThreadRun(CControl * control);
-  void thread1_EvThreadEnd(CControl * control);
 
   String GetSharePath(void){return share;};
   void SetplWidth(int pw){plWidth=pw;};
@@ -135,6 +136,7 @@ class CPWindow1:public CPWindow
   int picpwr;
   int picrst;
   int picdbg;
+  int debug;
 
   int plWidth;
   int plHeight;
@@ -167,7 +169,7 @@ class CPWindow1:public CPWindow
 
 extern CPWindow1 Window1 ;
 
-enum {CPU_RUNNING, CPU_STEPPING, CPU_HALTED, CPU_BREAKPOINT};
+enum {CPU_RUNNING, CPU_STEPPING, CPU_HALTED, CPU_BREAKPOINT, CPU_ERROR};
 
 #endif /*#CPWINDOW1*/
 

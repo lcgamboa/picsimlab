@@ -100,9 +100,9 @@ CPWindow1::CPWindow1(void)
   combo1.SetClass(wxT("CCombo"));
   combo1.SetName(wxT("combo1"));
   combo1.SetTag(0);
-  combo1.SetX(12);
-  combo1.SetY(39);
-  combo1.SetWidth(130);
+  combo1.SetX(11);
+  combo1.SetY(33);
+  combo1.SetWidth(89);
   combo1.SetHeight(25);
   combo1.SetHint(wxT(""));
   combo1.SetEnable(1);
@@ -119,9 +119,9 @@ CPWindow1::CPWindow1(void)
   label1.SetClass(wxT("CLabel"));
   label1.SetName(wxT("label1"));
   label1.SetTag(0);
-  label1.SetX(10);
-  label1.SetY(11);
-  label1.SetWidth(99);
+  label1.SetX(12);
+  label1.SetY(10);
+  label1.SetWidth(89);
   label1.SetHeight(21);
   label1.SetHint(wxT(""));
   label1.SetEnable(1);
@@ -283,6 +283,24 @@ CPWindow1::CPWindow1(void)
   statusbar1.SetTag(0);
   statusbar1.SetFields(wxT("port,stats,serial,"));
   CreateChild(&statusbar1);
+  //togglebutton1
+  togglebutton1.SetFOwner(this);
+  togglebutton1.SetClass(wxT("CToggleButton"));
+  togglebutton1.SetName(wxT("togglebutton1"));
+  togglebutton1.SetTag(0);
+  togglebutton1.SetX(112);
+  togglebutton1.SetY(12);
+  togglebutton1.SetWidth(50);
+  togglebutton1.SetHeight(50);
+  togglebutton1.SetHint(wxT(""));
+  togglebutton1.SetEnable(1);
+  togglebutton1.SetVisible(1);
+  togglebutton1.SetColor(wxT("#000001"));
+  togglebutton1.SetPopupMenu(NULL);
+  togglebutton1.SetText(wxT("Debug"));
+  togglebutton1.SetCheck(0);
+  togglebutton1.EvOnToggleButton=EVONTOGGLEBUTTON & CPWindow1::togglebutton1_EvOnToggleButton;
+  CreateChild(&togglebutton1);
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!
   
@@ -294,7 +312,6 @@ CPWindow1::CPWindow1(void)
   thread1.SetName(wxT("thread1"));
   thread1.SetTag(0);
   thread1.EvThreadRun=EVTHREADRUN & CPWindow1::thread1_EvThreadRun;
-  thread1.EvThreadEnd=EVTHREADEND & CPWindow1::thread1_EvThreadEnd;
   CreateChild(&thread1);
 
   JUMPSTEPS=DEFAULTJS;
@@ -307,6 +324,7 @@ picrun=1;
 picpwr=1;
 picrst=0;
 picdbg=0;
+debug=0;
 
 lab=1;
 lab_=1;

@@ -85,9 +85,9 @@
   <Class type="String">CCombo</Class>
   <Name type="String">combo1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">12</X>
-  <Y type="int">39</Y>
-  <Width type="uint">130</Width>
+  <X type="int">11</X>
+  <Y type="int">33</Y>
+  <Width type="uint">89</Width>
   <Height type="uint">25</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -114,9 +114,9 @@
   <Class type="String">CLabel</Class>
   <Name type="String">label1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">10</X>
-  <Y type="int">11</Y>
-  <Width type="uint">99</Width>
+  <X type="int">12</X>
+  <Y type="int">10</Y>
+  <Width type="uint">89</Width>
   <Height type="uint">21</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -271,4 +271,32 @@
   <Tag type="int">0</Tag>
   <Fields type="StringList">port,stats,serial,</Fields>
 </statusbar1>
+<togglebutton1>
+  <Class type="String">CToggleButton</Class>
+  <Name type="String">togglebutton1</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">112</X>
+  <Y type="int">12</Y>
+  <Width type="uint">50</Width>
+  <Height type="uint">50</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Text type="String">Debug</Text>
+  <Check type="Int">0</Check>
+  <EvOnToggleButton type="Event">TRUE</EvOnToggleButton>
+</togglebutton1>
 </window1>

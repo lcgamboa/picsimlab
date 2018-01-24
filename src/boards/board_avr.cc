@@ -260,8 +260,7 @@ board_avr::DebugInit(void)
   
    avr->gdb_port = 1234;
    //avr->state = cpu_Stopped;
-   //return avr_gdb_init(avr);
-    return 0;
+   return  avr_gdb_init(avr);
 }
 
 void

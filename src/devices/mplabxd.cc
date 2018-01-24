@@ -99,14 +99,14 @@ void setnblock(int sock_descriptor)
   if ((flags = fcntl(sock_descriptor, F_GETFL, 0)) < 0) 
   { 
     /* Handle error */ 
-    printf("Error fcntl nblock !!!!!!!\n");  
+    //printf("Error fcntl nblock !!!!!!!\n");  
   } 
 
 
   if (fcntl(sock_descriptor, F_SETFL, flags | O_NONBLOCK) < 0) 
   { 
     /* Handle error */ 
-    printf("Error fcntl nblock !!!!!!!\n");  
+    //printf("Error fcntl nblock !!!!!!!\n");  
   }
 #else
 	unsigned long iMode=1;
@@ -125,14 +125,14 @@ void setblock(int sock_descriptor)
   if ((flags = fcntl(sock_descriptor, F_GETFL, 0)) < 0) 
   { 
     /* Handle error */ 
-    printf("Error fcntl block !!!!!!!\n");  
+    //printf("Error fcntl block !!!!!!!\n");  
   } 
 
 
   if (fcntl(sock_descriptor, F_SETFL, flags & (~O_NONBLOCK)) < 0) 
   { 
     /* Handle error */ 
-    printf("Error fcntl block !!!!!!!\n");  
+    //printf("Error fcntl block !!!!!!!\n");  
   }
 #else
    unsigned long iMode=0;
