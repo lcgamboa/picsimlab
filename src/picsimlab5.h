@@ -46,6 +46,10 @@ class CPWindow5:public CPWindow
   CItemMenu menu1_File_Loadconfiguration;
   CItemMenu pmenu2_Move;
   CItemMenu pmenu2_Delete;
+  CPMenu menu1_Help;
+  CItemMenu menu1_Help_Contents;
+  CItemMenu menu1_Help_About;
+  CFileDialog filedialog1;
   /*#Events*/
   void _EvOnCreate(CControl * control);
   void _EvOnShow(CControl * control);
@@ -61,6 +65,8 @@ class CPWindow5:public CPWindow
   void menu1_File_Loadconfiguration_EvMenuActive(CControl * control);
   void pmenu2_Move_EvMenuActive(CControl * control);
   void pmenu2_Delete_EvMenuActive(CControl * control);
+  void menu1_Help_Contents_EvMenuActive(CControl * control);
+  void menu1_Help_About_EvMenuActive(CControl * control);
 
   /*#Others*/
   CPWindow5(void);

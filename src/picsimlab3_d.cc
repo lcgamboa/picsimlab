@@ -38,7 +38,7 @@ CPWindow3::CPWindow3(void)
   SetEnable(1);
   SetVisible(0);
   SetPopupMenu(NULL);
-  SetTitle(wxT("picsimlab"));
+  SetTitle(wxT("PICSimLab - Configuration"));
   SetOverrideRedirect(0);
   EvOnCreate=EVONCREATE & CPWindow3::_EvOnCreate;
   //label1

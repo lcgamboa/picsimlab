@@ -2,13 +2,14 @@
   <Class type="String">CPWindow</Class>
   <Name type="String">window5</Name>
   <Tag type="int">0</Tag>
-  <X type="int">118</X>
-  <Y type="int">52</Y>
-  <Width type="uint">1248</Width>
-  <Height type="uint">685</Height>
+  <X type="int">264</X>
+  <Y type="int">133</Y>
+  <Width type="uint">950</Width>
+  <Height type="uint">506</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">0</Visible>
+  <Color type="String">#000001</Color>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">FALSE</EvMouseMove>
   <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
@@ -21,7 +22,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Title type="String">picsimlab</Title>
+  <Title type="String">PICSimLab - Spare parts</Title>
   <OverrideRedirect type="bool">0</OverrideRedirect>
   <EvOnCreate type="Event">TRUE</EvOnCreate>
   <EvOnDestroy type="Event">FALSE</EvOnDestroy>
@@ -33,19 +34,20 @@
   <Class type="String">CMenu</Class>
   <Name type="String">menu1</Name>
   <Tag type="int">0</Tag>
-  <MenuItems type="MenuItems">File,Add,</MenuItems>
+  <MenuItems type="MenuItems">File,Add,Help,</MenuItems>
 </menu1>
 <draw1>
   <Class type="String">CDraw</Class>
   <Name type="String">draw1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">7</X>
+  <X type="int">5</X>
   <Y type="int">5</Y>
   <Width type="uint">827</Width>
   <Height type="uint">356</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">TRUE</EvMouseMove>
   <EvMouseButtonPress type="Event">TRUE</EvMouseButtonPress>
@@ -130,4 +132,35 @@
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </pmenu2_Delete>
+<menu1_Help>
+  <Class type="String">CPMenu</Class>
+  <Name type="String">menu1_Help</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Help</Text>
+  <MenuItems type="MenuItems">Contents,About,</MenuItems>
+</menu1_Help>
+<menu1_Help_Contents>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Help_Contents</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Contents</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Help_Contents>
+<menu1_Help_About>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Help_About</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">About</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Help_About>
+<filedialog1>
+  <Class type="String">CFileDialog</Class>
+  <Name type="String">filedialog1</Name>
+  <Tag type="int">0</Tag>
+  <FileName type="String">untitled.txt</FileName>
+  <Filter type="String">All Files (*.pcf)|*.*</Filter>
+  <Type type="int">129</Type>
+</filedialog1>
 </window5>

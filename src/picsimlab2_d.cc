@@ -38,7 +38,7 @@ CPWindow2::CPWindow2(void)
   SetEnable(1);
   SetVisible(0);
   SetPopupMenu(NULL);
-  SetTitle(wxT("picsimlab - Help"));
+  SetTitle(wxT("PICSimLab - Help"));
   SetOverrideRedirect(0);
   EvOnShow=EVONSHOW & CPWindow2::_EvOnShow;
   //html1

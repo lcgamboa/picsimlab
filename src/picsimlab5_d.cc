@@ -5,15 +5,16 @@ CPWindow5::CPWindow5(void)
   SetClass(wxT("CPWindow"));
   SetName(wxT("window5"));
   SetTag(0);
-  SetX(118);
-  SetY(52);
-  SetWidth(1248);
-  SetHeight(685);
+  SetX(264);
+  SetY(133);
+  SetWidth(950);
+  SetHeight(506);
   SetHint(wxT(""));
   SetEnable(1);
   SetVisible(0);
+  SetColor(wxT("#000001"));
   SetPopupMenu(NULL);
-  SetTitle(wxT("picsimlab"));
+  SetTitle(wxT("PICSimLab - Spare parts"));
   SetOverrideRedirect(0);
   EvOnCreate=EVONCREATE & CPWindow5::_EvOnCreate;
   EvOnShow=EVONSHOW & CPWindow5::_EvOnShow;
@@ -23,20 +24,21 @@ CPWindow5::CPWindow5(void)
   menu1.SetClass(wxT("CMenu"));
   menu1.SetName(wxT("menu1"));
   menu1.SetTag(0);
-  menu1.SetMenuItems(wxT("File,Add,"));
+  menu1.SetMenuItems(wxT("File,Add,Help,"));
   CreateChild(&menu1);
   //draw1
   draw1.SetFOwner(this);
   draw1.SetClass(wxT("CDraw"));
   draw1.SetName(wxT("draw1"));
   draw1.SetTag(0);
-  draw1.SetX(7);
+  draw1.SetX(5);
   draw1.SetY(5);
   draw1.SetWidth(827);
   draw1.SetHeight(356);
   draw1.SetHint(wxT(""));
   draw1.SetEnable(1);
   draw1.SetVisible(1);
+  draw1.SetColor(wxT("#000001"));
   draw1.SetPopupMenu(NULL);
   draw1.EvMouseMove=EVMOUSEMOVE & CPWindow5::draw1_EvMouseMove;
   draw1.EvMouseButtonPress=EVMOUSEBUTTONPRESS & CPWindow5::draw1_EvMouseButtonPress;
@@ -124,6 +126,41 @@ CPWindow5::CPWindow5(void)
   pmenu2_Delete.SetSubMenu(NULL);
   pmenu2_Delete.EvMenuActive=EVMENUACTIVE & CPWindow5::pmenu2_Delete_EvMenuActive;
   pmenu2.CreateChild(&pmenu2_Delete);
+  //menu1_Help
+  menu1_Help.SetFOwner(this);
+  menu1_Help.SetClass(wxT("CPMenu"));
+  menu1_Help.SetName(wxT("menu1_Help"));
+  menu1_Help.SetTag(0);
+  menu1_Help.SetText(wxT("Help"));
+  menu1_Help.SetMenuItems(wxT("Contents,About,"));
+  menu1.CreateChild(&menu1_Help);
+  //menu1_Help_Contents
+  menu1_Help_Contents.SetFOwner(this);
+  menu1_Help_Contents.SetClass(wxT("CItemMenu"));
+  menu1_Help_Contents.SetName(wxT("menu1_Help_Contents"));
+  menu1_Help_Contents.SetTag(0);
+  menu1_Help_Contents.SetText(wxT("Contents"));
+  menu1_Help_Contents.SetSubMenu(NULL);
+  menu1_Help_Contents.EvMenuActive=EVMENUACTIVE & CPWindow5::menu1_Help_Contents_EvMenuActive;
+  menu1_Help.CreateChild(&menu1_Help_Contents);
+  //menu1_Help_About
+  menu1_Help_About.SetFOwner(this);
+  menu1_Help_About.SetClass(wxT("CItemMenu"));
+  menu1_Help_About.SetName(wxT("menu1_Help_About"));
+  menu1_Help_About.SetTag(0);
+  menu1_Help_About.SetText(wxT("About"));
+  menu1_Help_About.SetSubMenu(NULL);
+  menu1_Help_About.EvMenuActive=EVMENUACTIVE & CPWindow5::menu1_Help_About_EvMenuActive;
+  menu1_Help.CreateChild(&menu1_Help_About);
+  //filedialog1
+  filedialog1.SetFOwner(this);
+  filedialog1.SetClass(wxT("CFileDialog"));
+  filedialog1.SetName(wxT("filedialog1"));
+  filedialog1.SetTag(0);
+  filedialog1.SetFileName(wxT("untitled.txt"));
+  filedialog1.SetFilter(wxT("All Files (*.pcf)|*.*"));
+  filedialog1.SetType(129);
+  CreateChild(&filedialog1);
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!
   

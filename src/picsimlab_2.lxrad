@@ -21,7 +21,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Title type="String">picsimlab - Help</Title>
+  <Title type="String">PICSimLab - Help</Title>
   <OverrideRedirect type="bool">0</OverrideRedirect>
   <EvOnCreate type="Event">FALSE</EvOnCreate>
   <EvOnDestroy type="Event">FALSE</EvOnDestroy>

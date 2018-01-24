@@ -13,7 +13,7 @@ CPWindow4::CPWindow4(void)
   SetEnable(1);
   SetVisible(0);
   SetPopupMenu(NULL);
-  SetTitle(wxT("oscilloscope"));
+  SetTitle(wxT("PICSimLab - Oscilloscope"));
   SetOverrideRedirect(0);
   EvOnDestroy=EVONDESTROY & CPWindow4::_EvOnDestroy;
   EvOnShow=EVONSHOW & CPWindow4::_EvOnShow;

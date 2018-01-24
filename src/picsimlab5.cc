@@ -372,3 +372,18 @@ CPWindow5::pmenu2_Delete_EvMenuActive(CControl * control)
 };
 
 
+void
+CPWindow5::menu1_Help_Contents_EvMenuActive(CControl * control)
+{
+  //code here:)
+  mprint(wxT("menu1_Help_Contents_EvMenuActive\n"));
+};
+
+void
+CPWindow5::menu1_Help_About_EvMenuActive(CControl * control)
+{
+  //code here:)
+  mprint(wxT("menu1_Help_About_EvMenuActive\n"));
+};
+
+
