@@ -122,7 +122,9 @@ void cpart_step::Draw(void)
   
 }
 
- 
+#define STEP (1.8*M_PI/180.0)
+#define HSTEP (STEP/2.0)
+
 void cpart_step::Process(void)
 {
    const picpin * ppins=Window1.GetBoard()->MGetPinsValues();
@@ -137,85 +139,83 @@ void cpart_step::Process(void)
    
    //foward full step
    if((b1[0]==1) && (b2[0]==0) && (b1[1]==0) && (b2[1]==-1) )
-       angle+=0.5;
+       angle+=STEP;
      
     if((b1[0]==0) && (b2[0]==1) && (b1[1]==1) && (b2[1]==0) )
-       angle+=0.5;
+       angle+=STEP;
         
     if((b1[0]==-1) && (b2[0]==0) && (b1[1]==0) && (b2[1]==1) )
-       angle+=0.5;
+       angle+=STEP;
         
     if((b1[0]==0 )&& (b2[0]==-1) && (b1[1]==-1) && (b2[1]==0) )
-       angle+=0.5;
+       angle+=STEP;
    
     //foward half step
    
     if((b1[0]==1) && (b2[0]==0) && (b1[1]==1) && (b2[1]==-1) )
-       angle+=0.25;
+       angle+=HSTEP;
     
     if((b1[0]==1) && (b2[0]==1) && (b1[1]==1) && (b2[1]==0) )
-       angle+=0.25;
+       angle+=HSTEP;
    
     if((b1[0]==0) && (b2[0]==1) && (b1[1]==1) && (b2[1]==1) )
-       angle+=0.25;
+       angle+=HSTEP;
    
     if((b1[0]==-1) && (b2[0]==1) && (b1[1]==0) && (b2[1]==1) )
-       angle+=0.25;
+       angle+=HSTEP;
    
     if((b1[0]==-1) && (b2[0]==0) && (b1[1]==-1) && (b2[1]==1) )
-       angle+=0.25;
+       angle+=HSTEP;
    
     if((b1[0]==-1) && (b2[0]==-1) && (b1[1]==-1) && (b2[1]==0) )
-       angle+=0.25;
+       angle+=HSTEP;
         
     if((b1[0]==0 )&& (b2[0]==-1) && (b1[1]==-1) && (b2[1]=-1) )
-       angle+=0.25;
+       angle+=HSTEP;
    
     if((b1[0]==1 )&& (b2[0]==-1) && (b1[1]==0) && (b2[1]==-1) )
-       angle+=0.25; 
+       angle+=HSTEP; 
     
    
    //backward full step
     if((b1[1]==1) && (b2[1]==0) && (b1[0]==0) && (b2[0]==-1) )
-       angle-=0.5;
+       angle-=STEP;
      
     if((b1[1]==0) && (b2[1]==1) && (b1[0]==1) && (b2[0]==0) )
-       angle-=0.5;
+       angle-=STEP;
         
     if((b1[1]==-1) && (b2[1]==0) && (b1[0]==0) && (b2[0]==1) )
-       angle-=0.5;
+       angle-=STEP;
         
     if((b1[1]==0 )&& (b2[1]==-1) && (b1[0]==-1) && (b2[0]==0) )
-       angle-=0.5;
+       angle-=STEP;
    
    //backward half step
     if((b1[1]==1) && (b2[1]==0) && (b1[0]==1) && (b2[0]==-1) )
-       angle-=0.25;
+       angle-=HSTEP;
     
     if((b1[1]==1) && (b2[1]==1) && (b1[0]==1) && (b2[0]==0) )
-       angle-=0.25;
+       angle-=HSTEP;
    
     if((b1[1]==0) && (b2[1]==1) && (b1[0]==1) && (b2[0]==1) )
-       angle-=0.25;
+       angle-=HSTEP;
    
     if((b1[1]==-1) && (b2[1]==1) && (b1[0]==0) && (b2[0]==1) )
-       angle-=0.25;
+       angle-=HSTEP;
    
     if((b1[1]==-1) && (b2[1]==0) && (b1[0]==-1) && (b2[0]==1) )
-       angle-=0.25;
+       angle-=HSTEP;
    
     if((b1[1]==-1) && (b2[1]==-1) && (b1[0]==-1) && (b2[0]==0) )
-       angle-=0.25;
+       angle-=HSTEP;
         
     if((b1[1]==0 )&& (b2[1]==-1) && (b1[0]==-1) && (b2[0]=-1) )
-       angle-=0.25;
+       angle-=HSTEP;
    
     if((b1[1]==1 )&& (b2[1]==-1) && (b1[0]==0) && (b2[0]==-1) )
-       angle-=0.25; 
-    
+       angle-=HSTEP; 
     
     if(angle >= 2*M_PI)angle-=2*M_PI;
-   
      
 }
  
