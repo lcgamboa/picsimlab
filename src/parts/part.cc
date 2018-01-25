@@ -228,10 +228,10 @@ part::ReadOutputMap(String fname)
 
 
 int 
-part::PointInside(unsigned int x, unsigned int y)
+part::PointInside(int x,  int y)
 {
 
-if ((( X  <= x)&&( X +Width >= x))&&(( Y <= y)&&( Y+ Height >= y)))
+if ((( X  <= x)&&( (X +(int)Width) >= x))&&(( Y <= y)&&( (Y+ (int)Height) >= y)))
   return 1;
 else
   return 0;

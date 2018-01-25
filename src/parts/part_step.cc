@@ -76,8 +76,8 @@ void cpart_step::Draw(void)
 
           
   canvas.Init();
-  
-  wxFont font(12, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );
+  wxFont font(9, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD );
+  canvas.SetFont (font);
  
   for(i=0;i<outputc;i++)
   {
@@ -88,7 +88,6 @@ void cpart_step::Draw(void)
          case O_P2:
          case O_P3:
          case O_P4:    
-           canvas.SetFont (font);
            canvas.SetColor (49, 61, 99);
            canvas.Rectangle (1,output[i].x1,output[i].y1,output[i].x2-output[i].x1,output[i].y2-output[i].y1);
            canvas.SetFgColor (255, 255, 255);
@@ -110,7 +109,7 @@ void cpart_step::Draw(void)
          case O_L1:
          case O_L2:
          case O_L3:
-         case O_L4: //FIXME it must use mean value!
+         case O_L4: 
            canvas.SetColor (ppins[input_pins[output[i].id - O_L1]-1].oavalue, 0, 0);
            canvas.Circle (1,output[i].x1,output[i].y1,output[i].r);
            break;

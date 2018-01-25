@@ -68,7 +68,7 @@ CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
 
   for (int i = 0; i < partsc; i++)
     {
-      if (parts[i]->PointInside (x, y))
+      if (parts[i]->PointInside ((int)x, (int)y))
         {
           parts[i]->MouseButtonPress (button, x - parts[i]->GetX (), y - parts[i]->GetY (), state);
           if (button == 3)
@@ -110,6 +110,8 @@ CPWindow5::draw1_EvMouseButtonRelease(CControl * control, uint button, uint x, u
   y=y/scale;  
   
   PartToMove=-1;
+  
+  
   wxSetCursor (wxCursor (wxCURSOR_ARROW));
   mdx=0;
   mdy=0;
@@ -195,9 +197,9 @@ CPWindow5::draw1_EvMouseMove(CControl * control, uint button, uint x, uint y,uin
         mdx=parts[PartToMove]->GetX()-x; 
         mdy=parts[PartToMove]->GetY()-y;
       }
-      
-    parts[PartToMove]->SetX (x+mdx); 
-    parts[PartToMove]->SetY (y+mdy);
+    
+     parts[PartToMove]->SetX (x+mdx); 
+     parts[PartToMove]->SetY (y+mdy);
   }
   else
   {

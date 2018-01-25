@@ -57,13 +57,13 @@ class part
       part();           //Called once on part creation
       virtual ~part(void){};  //Called once on part destruction
       wxBitmap * GetBitmap(void){return Bitmap;};
-      unsigned int GetX(void){return X;};
-      unsigned int GetY(void){return Y;};
-      void SetX(unsigned int x){X=x;};
-      void SetY(unsigned int y){Y=y;};
+      int GetX(void){return X;};
+      int GetY(void){return Y;};
+      void SetX(int x){X=x;};
+      void SetY(int y){Y=y;};
       unsigned int GetWidth(void){return Width;};
       unsigned int GetHeight(void){return Height;};
-      int PointInside(unsigned int x, unsigned int y);
+      int PointInside(int x, int y);
  protected:
       input_t  input[100];  //input map elements
       output_t output[100]; //output map elements 
@@ -72,8 +72,8 @@ class part
       void ReadMaps(void); //read maps 
       unsigned int Height;
       unsigned int Width;
-      unsigned int X;
-      unsigned int Y;
+      int X;
+     int Y;
       wxBitmap * Bitmap; 
       CCanvas canvas; 
       unsigned int refresh;

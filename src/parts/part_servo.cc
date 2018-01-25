@@ -77,7 +77,9 @@ void cpart_servo::Draw(void)
   
   canvas.Init();
   
- 
+  wxFont font(9, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD );
+  canvas.SetFont(font);
+  
   for(i=0;i<outputc;i++)
   {
 
