@@ -157,8 +157,8 @@ CPWindow5::CPWindow5(void)
   filedialog1.SetClass(wxT("CFileDialog"));
   filedialog1.SetName(wxT("filedialog1"));
   filedialog1.SetTag(0);
-  filedialog1.SetFileName(wxT("untitled.txt"));
-  filedialog1.SetFilter(wxT("All Files (*.pcf)|*.*"));
+  filedialog1.SetFileName(wxT("untitled.pcf"));
+  filedialog1.SetFilter(wxT("PICSimLab Config. (*.pcf)|*.pcf"));
   filedialog1.SetType(129);
   CreateChild(&filedialog1);
   /*#Others*/

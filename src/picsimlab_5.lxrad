@@ -159,8 +159,8 @@
   <Class type="String">CFileDialog</Class>
   <Name type="String">filedialog1</Name>
   <Tag type="int">0</Tag>
-  <FileName type="String">untitled.txt</FileName>
-  <Filter type="String">All Files (*.pcf)|*.*</Filter>
+  <FileName type="String">untitled.pcf</FileName>
+  <Filter type="String">PICSimLab Config. (*.pcf)|*.pcf</Filter>
   <Type type="int">129</Type>
 </filedialog1>
 </window5>

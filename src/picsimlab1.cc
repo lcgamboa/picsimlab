@@ -446,7 +446,7 @@ create++;
   
   Window4.SetBaseTimer();
   
-  sprintf(fname,"%s/parts_%02i.cfg",home,lab);
+  sprintf(fname,"%s/parts_%02i.pcf",home,lab);
   Window5.LoadConfig (fname);
 };
 
@@ -570,7 +570,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
   pboard->MEnd();
 
   
-  sprintf(fname,"%s/parts_%02i.cfg",home,lab_);
+  sprintf(fname,"%s/parts_%02i.pcf",home,lab_);
   Window5.SaveConfig (fname);
   Window5.DeleteParts();
   

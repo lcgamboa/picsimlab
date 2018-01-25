@@ -27,6 +27,7 @@
 //Spare parts
 
 #include"picsimlab1.h"
+#include"picsimlab2.h"
 #include"picsimlab5.h"
 #include"picsimlab5_d.cc"
 
@@ -267,10 +268,11 @@ CPWindow5::LoadConfig(String fname)
     
     if(ret)
     {
+      int partsc_;  
       prefs.LoadFromFile(fname);
       
       DeleteParts();
-      partsc=0;
+      partsc_=0;
       for (unsigned int i = 0; i < prefs.GetLinesCount (); i++)
       {
         sscanf(prefs.GetLine (i).c_str (),"%256[^,],%i,%i:%256[^\n]",name,&x,&y,temp);
@@ -278,13 +280,14 @@ CPWindow5::LoadConfig(String fname)
         if((parts[i]=create_part(name,x,y)))
         {
           parts[i]->ReadPreferences(temp);
-          partsc++;
+          partsc_++;
         }
         else
         {
           printf("Erro loading part: %s \n",name);  
         }
       }
+      partsc=partsc_;
     }
     
     return ret;
@@ -293,37 +296,37 @@ CPWindow5::LoadConfig(String fname)
 void 
 CPWindow5::DeleteParts(void)
 {
-     int runstate=0;
-    
+     int partsc_ = partsc;
+     partsc=0; //for disable process
+     
     //delete previous parts
-    
-    runstate=timer1.GetRunState ();
-    timer1.SetRunState(0);
-#ifndef _WIN_
-    usleep(100000);//wait for thread end 
-#else
-    Sleep(100);
-#endif    
-    
-    for (int i = 0; i < partsc; i++)
+   
+    for (int i = 0; i < partsc_; i++)
     {
         delete parts[i];
     } 
-    partsc=0;
-    timer1.SetRunState (runstate);
+    
 }
 
 
 void
 CPWindow5::menu1_File_Saveconfiguration_EvMenuActive(CControl * control)
 {
-  //SaveConfig("parts.txt");  
+  filedialog1.SetType(wxFD_SAVE|wxFD_CHANGE_DIR);  
+  if(filedialog1.Run())
+  {
+    SaveConfig(filedialog1.GetFileName());
+  } 
 };
 
 void
 CPWindow5::menu1_File_Loadconfiguration_EvMenuActive(CControl * control)
 {
-    //LoadConfig("parts.txt");
+  filedialog1.SetType(wxFD_OPEN|wxFD_CHANGE_DIR);
+  if(filedialog1.Run())
+  {
+    LoadConfig(filedialog1.GetFileName());
+  }
 };
 
 
@@ -355,35 +358,33 @@ CPWindow5::pmenu2_Move_EvMenuActive(CControl * control)
 void
 CPWindow5::pmenu2_Delete_EvMenuActive(CControl * control)
 {
-    timer1.SetRunState (0);
-#ifndef _WIN_
-    usleep(100000);//wait for thread end 
-#else
-    Sleep(100);
-#endif    
+
+    int partsc_=partsc;
+    partsc=0;//disable process
+    
     delete  parts[PartSelected];
   
-    for (int i = PartSelected; i < partsc-1; i++)
+    for (int i = PartSelected; i < partsc_-1; i++)
     {
         parts[i]=parts[i+1];
     } 
-    partsc--;
-    timer1.SetRunState (1);
+    partsc_--;
+
+    partsc=partsc_;
 };
 
 
 void
 CPWindow5::menu1_Help_Contents_EvMenuActive(CControl * control)
 {
-  //code here:)
-  mprint(wxT("menu1_Help_Contents_EvMenuActive\n"));
+  Window2.html1.SetLoadFile(Window1.GetSharePath()+wxT("doc/picsimlab.html"));   
+  Window2.Show();
 };
 
 void
 CPWindow5::menu1_Help_About_EvMenuActive(CControl * control)
 {
-  //code here:)
-  mprint(wxT("menu1_Help_About_EvMenuActive\n"));
+   Message(wxT("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ")+String(wxT(_VERSION_)));
 };
 
 
