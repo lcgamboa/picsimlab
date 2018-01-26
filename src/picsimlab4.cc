@@ -209,7 +209,7 @@ CPWindow4::SetBaseTimer(void)
   
   if(pboard->CpuInitialized () == 0)return;
   
-  Dt=4.0/pboard->MGetFreq();;
+  Dt=1.0/pboard->MGetInstClock();;
   
   int chp[2];
 

@@ -76,18 +76,6 @@ static void uart_xon_hook(struct avr_irq_t * irq, uint32_t value, void * param);
 static void uart_xoff_hook(struct avr_irq_t * irq, uint32_t value, void * param);
         
 
-
-
-void
-avr_callback_sleep(avr_t *avr, avr_cycle_count_t how_long)
-{
-       //no delay
-        printf("sleep=%lu\n", how_long);
-        fflush(stdout);
-	return;
-}
-  
-
 void 
 board_avr::pins_reset(void)
 {
@@ -126,17 +114,14 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
     avr_load_firmware(avr, &f); 
   }
   */
-  avr->flashend-= 3;
-  ret=read_ihx_avr(fname,1);
-  avr->flashend+= 3;
   
+  ret=read_ihx_avr(fname,1);
+    
   avr->frequency = freq;
 
   avr->reset_pc = 0x07000; // bootloader 0x3800
 
   avr->avcc=5000;
-  
-  avr->sleep=avr_callback_sleep;
   
   //avr->log= LOG_DEBUG;
   
@@ -249,9 +234,7 @@ board_avr::MGetInstClock(void)
 void 
 board_avr::MDumpMemory(const char * fname)
 {
-      avr->flashend-= 3;
-      write_ihx_avr(fname);
-      avr->flashend+= 3;
+   write_ihx_avr(fname);
 }
 
 int

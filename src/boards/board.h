@@ -84,7 +84,8 @@ class board
       virtual ~board(void);  //Called once on board destruction 
       void SetUseOscilloscope(int uo); //Enable/disable oscilloscope measurement
       void SetUseSpareParts(int sp); //Enable/disable spare parts 
-      
+      int GetUseOscilloscope(void); 
+      int GetUseSpareParts(void);
       virtual int DebugInit(void)=0;
       virtual void DebugLoop(void)=0;
       virtual int CpuInitialized(void)=0;

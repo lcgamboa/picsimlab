@@ -859,11 +859,19 @@ CPWindow1::menu1_EvMicrocontroller(CControl * control)
 void
 CPWindow1::togglebutton1_EvOnToggleButton(CControl * control)
 {
-   debug=togglebutton1.GetCheck();
+   int osc_on= pboard->GetUseOscilloscope();
+   int spare_on= pboard->GetUseSpareParts();
    
+   debug=togglebutton1.GetCheck();
+           
   _EvOnDestroy(control);
   _EvOnCreate(control);
   _EvOnShow(control);
+  
+  if(osc_on) menu1_Modules_Oscilloscope_EvMenuActive(this);
+  if(spare_on) menu1_Modules_Spareparts_EvMenuActive(this);
+          
+
 };
 
 

@@ -498,12 +498,12 @@ void cboard_5::Draw(CDraw *draw,double scale)
   draw->Update ();
   
   
-  gauge1->SetValue(0.4444*(pins[4].oavalue-30)); 
-  gauge2->SetValue(0.44444*(pins[10].oavalue-30)); 
-  gauge3->SetValue(0.4444*(pins[11].oavalue-30)); 
-  gauge4->SetValue(0.44444*(pins[14].oavalue-30));
-  gauge5->SetValue(0.4444*(pins[15].oavalue-30)); 
-  gauge6->SetValue(0.44444*(pins[16].oavalue-30));
+  gauge1->SetValue(0.45*(pins[4].oavalue-30)); 
+  gauge2->SetValue(0.45*(pins[10].oavalue-30)); 
+  gauge3->SetValue(0.45*(pins[11].oavalue-30)); 
+  gauge4->SetValue(0.45*(pins[14].oavalue-30));
+  gauge5->SetValue(0.45*(pins[15].oavalue-30)); 
+  gauge6->SetValue(0.45*(pins[16].oavalue-30));
 
 }
 
@@ -520,6 +520,8 @@ void cboard_5::Run_CPU(void)
   int JUMPSTEPS = Window1.GetJUMPSTEPS(); //number of steps skipped
   long int NSTEPJ=Window1.GetNSTEPJ()*4.0;  //number of steps in 100ms
 
+  long long unsigned int cycle_start;
+  int twostep=0;
   
   //reset mean value
   for(pi=0;pi < MGetPinCount();pi++)
@@ -531,10 +533,9 @@ void cboard_5::Run_CPU(void)
 //FIXME pins = pic.pins;
   pins = MGetPinsValues();
 
-  
  j=JUMPSTEPS+1;//step counter
  if(Window1.Get_picpwr()) //if powered
-   for(i=0;i<Window1.GetNSTEP()*4;i++) //repeat for number of steps in 100ms
+   for(i=0; i < (Window1.GetNSTEP()*4);i++) //repeat for number of steps in 100ms
       {
  /*
         if(j > JUMPSTEPS)//if number of step is bigger than steps to skip 
@@ -545,7 +546,20 @@ void cboard_5::Run_CPU(void)
  */       
         //verify if a breakpoint is reached if not run one instruction 
         //if(!mplabxd_testbp())pic_step();
-        avr_run(avr); //FIXME sleep_usec
+        
+        if(twostep)
+        {
+         twostep=0; //NOP   
+        }
+        else
+        {
+          cycle_start=avr->cycle; 
+          avr_run(avr); 
+          if((avr->cycle - cycle_start) > 1)
+          {
+              twostep=1;
+          }
+        }      
         UpdateSerial();
         //avr->sleep_usec=0;
         if(use_oscope)Window4.SetSample();

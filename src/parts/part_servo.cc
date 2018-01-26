@@ -71,10 +71,19 @@ void cpart_servo::Draw(void)
   
   int i;
   
-  if(angle > angle_)angle-=0.2;
   
-  if(angle < angle_)angle+=0.2;
+  if(angle > angle_)
+  {
+      angle-=0.2;
+      if(angle < angle_) angle = angle_;
+  }
   
+  if(angle < angle_)
+  {
+      angle+=0.2;
+      if(angle > angle_) angle = angle_;
+  }
+
   canvas.Init();
   
   wxFont font(9, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD );
@@ -110,7 +119,7 @@ void cpart_servo::Draw(void)
 void cpart_servo::Process(void)
 {
 
-     const picpin * ppins=Window1.GetBoard()->MGetPinsValues();
+   const picpin * ppins=Window1.GetBoard()->MGetPinsValues();
 
    in_[1]=in_[0];
    in_[0]=ppins[input_pin-1].value;
@@ -122,10 +131,13 @@ void cpart_servo::Process(void)
   
    if((in_[0]==0)&&(in_[1]==1))//low
    {
-     angle_=((time/Window1.GetBoard()->MGetInstClock())-0.0015)*1570.79632679;
+     angle_=((time/Window1.GetBoard()->MGetInstClock())-0.0015)*3141.59265359;
+    
+     //printf("time=%f  angle=%f\n",time/Window1.GetBoard()->MGetInstClock(),angle*180.0/M_PI);
    
-     if(angle_ > M_PI/2)angle_ =M_PI/2;
-     if(angle_ < -M_PI/2)angle_ =-M_PI/2;
+     if(angle_ > M_PI/2.0)angle_ =M_PI/2.0;
+     if(angle_ < -M_PI/2.0)angle_ =-M_PI/2.0;
+     
    }
    
    time++;
