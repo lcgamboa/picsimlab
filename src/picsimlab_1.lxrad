@@ -148,7 +148,7 @@
   <Name type="String">menu1_File</Name>
   <Tag type="int">0</Tag>
   <Text type="String">File</Text>
-  <MenuItems type="MenuItems">Load Hex,Reload Last,Configure,Exit,</MenuItems>
+  <MenuItems type="MenuItems">Load Hex,Reload Last,Configure,Save Workspace,Load Workspace,Exit,</MenuItems>
 </menu1_File>
 <menu1_Board>
   <Class type="String">CPMenu</Class>
@@ -209,6 +209,22 @@
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_File_Configure>
+<menu1_File_SaveWorkspace>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_File_SaveWorkspace</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Save Workspace</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_File_SaveWorkspace>
+<menu1_File_LoadWorkspace>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_File_LoadWorkspace</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Load Workspace</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_File_LoadWorkspace>
 <menu1_File_Exit>
   <Class type="String">CItemMenu</Class>
   <Name type="String">menu1_File_Exit</Name>

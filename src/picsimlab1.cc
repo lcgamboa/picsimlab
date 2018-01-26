@@ -591,6 +591,8 @@ CPWindow1::menu1_File_LoadHex_EvMenuActive(CControl * control)
 
         pa=picpwr; 
         picpwr=0;
+        filedialog1.SetType(wxFD_OPEN|wxFD_CHANGE_DIR);
+        filedialog1.SetFilter(wxT("Hex Files (*.hex)|*.hex;*.HEX"));
         if(filedialog1.Run())
         {
   	  pboard->MEnd ();
@@ -658,7 +660,8 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
         picpwr=0;
         
         filedialog1.SetDir(share+wxT("/examples/hex/board_")+itoa(lab)+wxT("/")+pboard->proc+wxT("/"));
-
+        filedialog1.SetType(wxFD_OPEN|wxFD_CHANGE_DIR);
+        filedialog1.SetFilter(wxT("Hex Files (*.hex)|*.hex;*.HEX"));
         if(filedialog1.Run())
         {
           pboard->MEnd ();
@@ -742,8 +745,7 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
         pa=picpwr; 
         picpwr=0;
 
-        //if(filedialog1.Run())
-        //{
+     
           pboard->MEnd ();
           pboard->MSetSerial(SERIALDEVICE);
   	  
@@ -773,7 +775,7 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
   
           
         
-        //}
+        
         picpwr=pa;
 };
 
@@ -872,6 +874,28 @@ CPWindow1::togglebutton1_EvOnToggleButton(CControl * control)
   if(spare_on) menu1_Modules_Spareparts_EvMenuActive(this);
           
 
+};
+
+
+void
+CPWindow1::menu1_File_SaveWorkspace_EvMenuActive(CControl * control)
+{
+  filedialog1.SetFileName("untitled.pzw");  
+  filedialog1.SetType(wxFD_SAVE|wxFD_CHANGE_DIR);  
+  filedialog1.SetFilter(wxT("PICSimLab Workspace (*.pzw)|*.pzw;*.PZW"));
+  if(filedialog1.Run())
+  {
+  }
+};
+
+void
+CPWindow1::menu1_File_LoadWorkspace_EvMenuActive(CControl * control)
+{
+  filedialog1.SetType(wxFD_OPEN|wxFD_CHANGE_DIR);
+  filedialog1.SetFilter(wxT("PICSimLab Workspace (*.pzw)|*.pzw;*.PZW"));
+  if(filedialog1.Run())
+  {
+  }
 };
 
 

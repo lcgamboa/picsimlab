@@ -144,7 +144,7 @@ CPWindow1::CPWindow1(void)
   menu1_File.SetName(wxT("menu1_File"));
   menu1_File.SetTag(0);
   menu1_File.SetText(wxT("File"));
-  menu1_File.SetMenuItems(wxT("Load Hex,Reload Last,Configure,Exit,"));
+  menu1_File.SetMenuItems(wxT("Load Hex,Reload Last,Configure,Save Workspace,Load Workspace,Exit,"));
   menu1.CreateChild(&menu1_File);
   //menu1_Board
   menu1_Board.SetFOwner(this);
@@ -213,6 +213,24 @@ CPWindow1::CPWindow1(void)
   menu1_File_Configure.SetSubMenu(NULL);
   menu1_File_Configure.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_File_Configure_EvMenuActive;
   menu1_File.CreateChild(&menu1_File_Configure);
+  //menu1_File_SaveWorkspace
+  menu1_File_SaveWorkspace.SetFOwner(this);
+  menu1_File_SaveWorkspace.SetClass(wxT("CItemMenu"));
+  menu1_File_SaveWorkspace.SetName(wxT("menu1_File_SaveWorkspace"));
+  menu1_File_SaveWorkspace.SetTag(0);
+  menu1_File_SaveWorkspace.SetText(wxT("Save Workspace"));
+  menu1_File_SaveWorkspace.SetSubMenu(NULL);
+  menu1_File_SaveWorkspace.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_File_SaveWorkspace_EvMenuActive;
+  menu1_File.CreateChild(&menu1_File_SaveWorkspace);
+  //menu1_File_LoadWorkspace
+  menu1_File_LoadWorkspace.SetFOwner(this);
+  menu1_File_LoadWorkspace.SetClass(wxT("CItemMenu"));
+  menu1_File_LoadWorkspace.SetName(wxT("menu1_File_LoadWorkspace"));
+  menu1_File_LoadWorkspace.SetTag(0);
+  menu1_File_LoadWorkspace.SetText(wxT("Load Workspace"));
+  menu1_File_LoadWorkspace.SetSubMenu(NULL);
+  menu1_File_LoadWorkspace.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_File_LoadWorkspace_EvMenuActive;
+  menu1_File.CreateChild(&menu1_File_LoadWorkspace);
   //menu1_File_Exit
   menu1_File_Exit.SetFOwner(this);
   menu1_File_Exit.SetClass(wxT("CItemMenu"));
