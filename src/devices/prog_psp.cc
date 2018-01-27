@@ -23,6 +23,7 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+//Picstart+ serial programmer support
 
 #include <stdio.h>
 #include <stdlib.h>

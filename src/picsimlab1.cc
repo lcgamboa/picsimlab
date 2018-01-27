@@ -38,16 +38,17 @@ CPWindow1 Window1;
 #include"picsimlab5.h"
 #include"futils.h"
 
-
-//extern char PROGDEVICE[100];
+#ifdef _USE_PICSTARTP_
+extern char PROGDEVICE[100];
+#endif
 char SERIALDEVICE[100];
 
-/*
+#ifdef _USE_PICSTARTP_
 //picstart plus
 int prog_init(void);
 int prog_loop(_pic * pic);
 int prog_end(void);
-*/
+#endif
 
 
 int crt;
@@ -78,10 +79,6 @@ CPWindow1::timer1_EvOnTime(CControl * control)
 void
 CPWindow1::thread1_EvThreadRun(CControl*)
 {
- //clock_t cstart=0, cend=0;
- //double cpu_time_used;
-
-  //cstart = clock();
 
   while(!thread1.TestDestroy ())
   {
@@ -104,46 +101,6 @@ CPWindow1::thread1_EvThreadRun(CControl*)
       }
 
   }
-  //cend = clock();
-  //cpu_time_used = ((double) (cend - cstart)) / CLOCKS_PER_SEC;
-
-
-   //printf("time=%f \n",cpu_time_used);
-  
-/*
-   if(cpu_time_used > CPUTUSEMAX)
-   {
-      over+=(cpu_time_used-CPUTUSEMAX);
-   
-      //printf("over= %f   \n",over);
-
-      if(over > 0.5)
-      {
-
-          over=0;
-
-         int newf=((NSTEP-NSTEPKT)/NSTEPKT);//diminui clock
-         
-         if(newf <= 1)newf=1;    
-
-         //printf("New Freq=%i\n",newf); 
- 
-
-         combo1.SetText(itoa(newf));//diminui clock
-         combo1_EvOnComboChange(this);
- 
-       }  
-   }
-   else
-   {
-      over=0;
-   }
-*/  
-  
-//   cstart=0;
-  // Application->ProcessEvents();
-
-  
 }
 
 void
@@ -280,7 +237,9 @@ CPWindow1::Configure(CControl * control, const char * home)
    sprintf(fname,"%s/picsimlab.ini",home);
   
    SERIALDEVICE[0]=0;
-   //PROGDEVICE[0]=0;
+#ifdef _USE_PICSTARTP_   
+   PROGDEVICE[0]=0;
+#endif   
    pboard=NULL;
    
   prefs.Clear(); 
@@ -297,10 +256,14 @@ CPWindow1::Configure(CControl * control, const char * home)
       if((name == NULL)||(value==NULL))continue;
 #ifndef _WIN_
       if(!strcmp("lser",name))strcpy(SERIALDEVICE,value);
-      //if(!strcmp("lprog",name))strcpy(PROGDEVICE,value);
+#ifdef _USE_PICSTARTP_      
+      if(!strcmp("lprog",name))strcpy(PROGDEVICE,value);
+#endif      
 #else
       if(!strcmp("wser",name))strcpy(SERIALDEVICE,value);
-      //if(!strcmp("wprog",name))strcpy(PROGDEVICE,value);
+#ifdef _USE_PICSTARTP_      
+      if(!strcmp("wprog",name))strcpy(PROGDEVICE,value);
+#endif      
 #endif
       
       if(!strcmp(name,"lab"))
@@ -407,10 +370,14 @@ CPWindow1::Configure(CControl * control, const char * home)
 
 #ifndef _WIN_   
    strcpy(SERIALDEVICE,"/dev/tnt2");
-   //strcpy(PROGDEVICE,"/dev/tnt4");
+#ifdef _USE_PICSTARTP_   
+   strcpy(PROGDEVICE,"/dev/tnt4");
+#endif   
 #else
    strcpy(SERIALDEVICE,"com6");
-   //strcpy(PROGDEVICE,"com8");
+#ifdef _USE_PICSTARTP_   
+   strcpy(PROGDEVICE,"com8");
+#endif   
 #endif
   }
   
@@ -444,12 +411,12 @@ CPWindow1::Configure(CControl * control, const char * home)
   pboard->Reset();
       
 
-  /*
+  #ifdef _USE_PICSTARTP_
   if(prog_init() >= 0 ) 
      status=wxT("PStart:  Ok ");
   else
      status=wxT("PStart:Error");
-  */
+  #endif
   status=wxT("");  
 
   if(debug)
@@ -517,11 +484,9 @@ CPWindow1::saveprefs(String name, String value)
       {
          prefs.SetLine(name+wxT("\t= \"")+value+wxT("\""),lc);
          
-         //printf("refresh %s=%s\n",(const char *)name.c_str(),(const char *)value.c_str());
          return; 
       }
     }
-    //printf("add     %s=%s\n",(const char *)name.c_str(),(const char *)value.c_str());
     prefs.AddLine(name+wxT("\t= \"")+value+wxT("\""));
 }
 
@@ -562,10 +527,14 @@ CPWindow1::_EvOnDestroy(CControl * control)
     saveprefs(wxT("spare_on"),itoa(pboard->GetUseSpareParts()));
 #ifndef _WIN_
     saveprefs(wxT("lser"),SERIALDEVICE);
-    //saveprefs(wxT("lprog"),PROGDEVICE);
+#ifdef _USE_PICSTARTP_    
+    saveprefs(wxT("lprog"),PROGDEVICE);
+#endif    
 #else
     saveprefs("wser",SERIALDEVICE);
-    //saveprefs("wprog",PROGDEVICE);
+#ifdef _USE_PICSTARTP_    
+    saveprefs("wprog",PROGDEVICE);
+#endif
 #endif
     saveprefs(wxT("lpath"),PATH);
     saveprefs(wxT("lfile"),FNAME);
@@ -656,7 +625,7 @@ CPWindow1::menu1_File_Exit_EvMenuActive(CControl * control)
 void
 CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
 {
-  Window2.html1.SetLoadFile(share+wxT("doc/picsimlab.html"));   
+  Window2.html1.SetLoadFile(share+wxT("doc/picsimlab.html"));  
   Window2.Show();
 };
 
@@ -674,6 +643,9 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
 
         pa=picpwr; 
         picpwr=0;
+        
+        //filedialog1.SetDir(share+wxT("/examples/hex/"));
+        filedialog1.SetDir(share+wxT("/examples/hex/board_")+itoa(lab)+wxT("/")+pboard->proc+wxT("/"));
         
         if(filedialog1.Run())
         {
@@ -993,6 +965,22 @@ CPWindow1::menu1_File_LoadWorkspace_EvMenuActive(CControl * control)
      _EvOnDestroy(control);
      Configure(control,home);
      _EvOnShow(control);  
+     
+     snprintf(fzip,1024,"%s/Readme.html",home);
+     if (wxFileExists(fzip))
+     {
+       Window2.html1.SetLoadFile(fzip);  
+       Window2.Show();
+     }
+     else
+     {
+        snprintf(fzip,1024,"%s/Readme.txt",home);
+        if (wxFileExists(fzip))
+        {
+          Window2.html1.SetLoadFile(fzip);  
+          Window2.Show();
+        }
+     }
      
      RemoveDir(home);
   }
