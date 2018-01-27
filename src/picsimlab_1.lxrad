@@ -190,6 +190,7 @@
   <Name type="String">menu1_File_LoadHex</Name>
   <Tag type="int">0</Tag>
   <Text type="String">Load Hex</Text>
+  <Enable type="bool">1</Enable>
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_File_LoadHex>
@@ -198,6 +199,7 @@
   <Name type="String">menu1_File_ReloadLast</Name>
   <Tag type="int">0</Tag>
   <Text type="String">Reload Last</Text>
+  <Enable type="bool">0</Enable>
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_File_ReloadLast>
@@ -206,6 +208,7 @@
   <Name type="String">menu1_File_Configure</Name>
   <Tag type="int">0</Tag>
   <Text type="String">Configure</Text>
+  <Enable type="bool">1</Enable>
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_File_Configure>
@@ -214,6 +217,7 @@
   <Name type="String">menu1_File_SaveWorkspace</Name>
   <Tag type="int">0</Tag>
   <Text type="String">Save Workspace</Text>
+  <Enable type="bool">1</Enable>
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_File_SaveWorkspace>
@@ -222,6 +226,7 @@
   <Name type="String">menu1_File_LoadWorkspace</Name>
   <Tag type="int">0</Tag>
   <Text type="String">Load Workspace</Text>
+  <Enable type="bool">1</Enable>
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_File_LoadWorkspace>
@@ -230,6 +235,7 @@
   <Name type="String">menu1_File_Exit</Name>
   <Tag type="int">0</Tag>
   <Text type="String">Exit</Text>
+  <Enable type="bool">1</Enable>
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_File_Exit>
@@ -238,6 +244,7 @@
   <Name type="String">menu1_Modules_Oscilloscope</Name>
   <Tag type="int">0</Tag>
   <Text type="String">Oscilloscope</Text>
+  <Enable type="bool">1</Enable>
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_Modules_Oscilloscope>
@@ -246,6 +253,7 @@
   <Name type="String">menu1_Modules_Spareparts</Name>
   <Tag type="int">0</Tag>
   <Text type="String">Spare parts</Text>
+  <Enable type="bool">1</Enable>
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_Modules_Spareparts>
@@ -254,6 +262,7 @@
   <Name type="String">menu1_Tools_SerialTerm</Name>
   <Tag type="int">0</Tag>
   <Text type="String">Serial Term</Text>
+  <Enable type="bool">1</Enable>
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_Tools_SerialTerm>
@@ -262,6 +271,7 @@
   <Name type="String">menu1_Help_Contents</Name>
   <Tag type="int">0</Tag>
   <Text type="String">Contents</Text>
+  <Enable type="bool">1</Enable>
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_Help_Contents>
@@ -270,6 +280,7 @@
   <Name type="String">menu1_Help_Examples</Name>
   <Tag type="int">0</Tag>
   <Text type="String">Examples</Text>
+  <Enable type="bool">1</Enable>
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_Help_Examples>
@@ -278,6 +289,7 @@
   <Name type="String">menu1_Help_About</Name>
   <Tag type="int">0</Tag>
   <Text type="String">About</Text>
+  <Enable type="bool">1</Enable>
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_Help_About>

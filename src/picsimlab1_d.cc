@@ -192,6 +192,7 @@ CPWindow1::CPWindow1(void)
   menu1_File_LoadHex.SetName(wxT("menu1_File_LoadHex"));
   menu1_File_LoadHex.SetTag(0);
   menu1_File_LoadHex.SetText(wxT("Load Hex"));
+  menu1_File_LoadHex.SetEnable(1);
   menu1_File_LoadHex.SetSubMenu(NULL);
   menu1_File_LoadHex.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_File_LoadHex_EvMenuActive;
   menu1_File.CreateChild(&menu1_File_LoadHex);
@@ -201,6 +202,7 @@ CPWindow1::CPWindow1(void)
   menu1_File_ReloadLast.SetName(wxT("menu1_File_ReloadLast"));
   menu1_File_ReloadLast.SetTag(0);
   menu1_File_ReloadLast.SetText(wxT("Reload Last"));
+  menu1_File_ReloadLast.SetEnable(0);
   menu1_File_ReloadLast.SetSubMenu(NULL);
   menu1_File_ReloadLast.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_File_ReloadLast_EvMenuActive;
   menu1_File.CreateChild(&menu1_File_ReloadLast);
@@ -210,6 +212,7 @@ CPWindow1::CPWindow1(void)
   menu1_File_Configure.SetName(wxT("menu1_File_Configure"));
   menu1_File_Configure.SetTag(0);
   menu1_File_Configure.SetText(wxT("Configure"));
+  menu1_File_Configure.SetEnable(1);
   menu1_File_Configure.SetSubMenu(NULL);
   menu1_File_Configure.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_File_Configure_EvMenuActive;
   menu1_File.CreateChild(&menu1_File_Configure);
@@ -219,6 +222,7 @@ CPWindow1::CPWindow1(void)
   menu1_File_SaveWorkspace.SetName(wxT("menu1_File_SaveWorkspace"));
   menu1_File_SaveWorkspace.SetTag(0);
   menu1_File_SaveWorkspace.SetText(wxT("Save Workspace"));
+  menu1_File_SaveWorkspace.SetEnable(1);
   menu1_File_SaveWorkspace.SetSubMenu(NULL);
   menu1_File_SaveWorkspace.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_File_SaveWorkspace_EvMenuActive;
   menu1_File.CreateChild(&menu1_File_SaveWorkspace);
@@ -228,6 +232,7 @@ CPWindow1::CPWindow1(void)
   menu1_File_LoadWorkspace.SetName(wxT("menu1_File_LoadWorkspace"));
   menu1_File_LoadWorkspace.SetTag(0);
   menu1_File_LoadWorkspace.SetText(wxT("Load Workspace"));
+  menu1_File_LoadWorkspace.SetEnable(1);
   menu1_File_LoadWorkspace.SetSubMenu(NULL);
   menu1_File_LoadWorkspace.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_File_LoadWorkspace_EvMenuActive;
   menu1_File.CreateChild(&menu1_File_LoadWorkspace);
@@ -237,6 +242,7 @@ CPWindow1::CPWindow1(void)
   menu1_File_Exit.SetName(wxT("menu1_File_Exit"));
   menu1_File_Exit.SetTag(0);
   menu1_File_Exit.SetText(wxT("Exit"));
+  menu1_File_Exit.SetEnable(1);
   menu1_File_Exit.SetSubMenu(NULL);
   menu1_File_Exit.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_File_Exit_EvMenuActive;
   menu1_File.CreateChild(&menu1_File_Exit);
@@ -246,6 +252,7 @@ CPWindow1::CPWindow1(void)
   menu1_Modules_Oscilloscope.SetName(wxT("menu1_Modules_Oscilloscope"));
   menu1_Modules_Oscilloscope.SetTag(0);
   menu1_Modules_Oscilloscope.SetText(wxT("Oscilloscope"));
+  menu1_Modules_Oscilloscope.SetEnable(1);
   menu1_Modules_Oscilloscope.SetSubMenu(NULL);
   menu1_Modules_Oscilloscope.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Modules_Oscilloscope_EvMenuActive;
   menu1_Modules.CreateChild(&menu1_Modules_Oscilloscope);
@@ -255,6 +262,7 @@ CPWindow1::CPWindow1(void)
   menu1_Modules_Spareparts.SetName(wxT("menu1_Modules_Spareparts"));
   menu1_Modules_Spareparts.SetTag(0);
   menu1_Modules_Spareparts.SetText(wxT("Spare parts"));
+  menu1_Modules_Spareparts.SetEnable(1);
   menu1_Modules_Spareparts.SetSubMenu(NULL);
   menu1_Modules_Spareparts.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Modules_Spareparts_EvMenuActive;
   menu1_Modules.CreateChild(&menu1_Modules_Spareparts);
@@ -264,6 +272,7 @@ CPWindow1::CPWindow1(void)
   menu1_Tools_SerialTerm.SetName(wxT("menu1_Tools_SerialTerm"));
   menu1_Tools_SerialTerm.SetTag(0);
   menu1_Tools_SerialTerm.SetText(wxT("Serial Term"));
+  menu1_Tools_SerialTerm.SetEnable(1);
   menu1_Tools_SerialTerm.SetSubMenu(NULL);
   menu1_Tools_SerialTerm.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Tools_SerialTerm_EvMenuActive;
   menu1_Tools.CreateChild(&menu1_Tools_SerialTerm);
@@ -273,6 +282,7 @@ CPWindow1::CPWindow1(void)
   menu1_Help_Contents.SetName(wxT("menu1_Help_Contents"));
   menu1_Help_Contents.SetTag(0);
   menu1_Help_Contents.SetText(wxT("Contents"));
+  menu1_Help_Contents.SetEnable(1);
   menu1_Help_Contents.SetSubMenu(NULL);
   menu1_Help_Contents.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Help_Contents_EvMenuActive;
   menu1_Help.CreateChild(&menu1_Help_Contents);
@@ -282,6 +292,7 @@ CPWindow1::CPWindow1(void)
   menu1_Help_Examples.SetName(wxT("menu1_Help_Examples"));
   menu1_Help_Examples.SetTag(0);
   menu1_Help_Examples.SetText(wxT("Examples"));
+  menu1_Help_Examples.SetEnable(1);
   menu1_Help_Examples.SetSubMenu(NULL);
   menu1_Help_Examples.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Help_Examples_EvMenuActive;
   menu1_Help.CreateChild(&menu1_Help_Examples);
@@ -291,6 +302,7 @@ CPWindow1::CPWindow1(void)
   menu1_Help_About.SetName(wxT("menu1_Help_About"));
   menu1_Help_About.SetTag(0);
   menu1_Help_About.SetText(wxT("About"));
+  menu1_Help_About.SetEnable(1);
   menu1_Help_About.SetSubMenu(NULL);
   menu1_Help_About.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Help_About_EvMenuActive;
   menu1_Help.CreateChild(&menu1_Help_About);
@@ -354,7 +366,8 @@ picdbg=0;
 debug=0;
 osc_on= 0;
 spare_on= 0;
-  
+status=0;
+
 lab=1;
 lab_=1;
 

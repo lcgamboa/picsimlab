@@ -55,6 +55,7 @@ int crt;
 void
 CPWindow1::timer1_EvOnTime(CControl * control)
 {
+    status|=ST_T1;
     if(!ondraw)
     {   
      if(!crt)   
@@ -68,8 +69,10 @@ CPWindow1::timer1_EvOnTime(CControl * control)
       crt=1;
     }
     ondraw=1;
+
+    status&=~ST_T1;
+    status|=ST_TH;
     tgo=1;//thread sync
-    
 };
 
 void
@@ -84,11 +87,12 @@ CPWindow1::thread1_EvThreadRun(CControl*)
   {
       
       if(tgo)
-      {
+      {  
         tgo=0;  
         pboard->Run_CPU();
         if(debug)pboard->DebugLoop();
         ondraw=0;
+        status&=~ST_TH;
       }
       else
       {
@@ -145,22 +149,26 @@ CPWindow1::thread1_EvThreadRun(CControl*)
 void
 CPWindow1::timer2_EvOnTime(CControl * control)
 {
-   pboard->RefreshStatus(); 
-   
-   switch(cpustate)
+   status|=ST_T2; 
+   if(pboard != NULL)
    {
-     case CPU_RUNNING:
-       statusbar1.SetField(0,wxT("Running..."));break;
-     case CPU_STEPPING:
-       statusbar1.SetField(0,wxT("Stepping..."));break;
-     case CPU_HALTED:  
-       statusbar1.SetField(0,wxT("Halted!"));break;
-     case CPU_BREAKPOINT:  
-       statusbar1.SetField(0,wxT("BreakPoint!"));break;   
-     case CPU_ERROR:  
-       statusbar1.SetField(0,wxT("Error!"));break; 
-   }
+     pboard->RefreshStatus(); 
    
+     switch(cpustate)
+     {
+       case CPU_RUNNING:
+         statusbar1.SetField(0,wxT("Running..."));break;
+       case CPU_STEPPING:
+         statusbar1.SetField(0,wxT("Stepping..."));break;
+       case CPU_HALTED:  
+         statusbar1.SetField(0,wxT("Halted!"));break;
+       case CPU_BREAKPOINT:  
+         statusbar1.SetField(0,wxT("BreakPoint!"));break;   
+       case CPU_ERROR:  
+         statusbar1.SetField(0,wxT("Error!"));break; 
+     }
+   }
+   status&=~ST_T2;
 };
 
 
@@ -253,7 +261,7 @@ void
 CPWindow1::Configure(CControl * control, const char * home)
 {
   
-  char line[256];
+  char line[1024];
   char fname[1024];
 
   char *name;
@@ -375,6 +383,10 @@ CPWindow1::Configure(CControl * control, const char * home)
       if(!strcmp(name,"lfile"))
       {
          FNAME=String(value,wxConvUTF8);
+         if(FNAME.Length() > 1) 
+             menu1_File_ReloadLast.SetEnable(1);
+         else
+             menu1_File_ReloadLast.SetEnable(0);
       }
 
       if(pboard != NULL)
@@ -487,7 +499,7 @@ CPWindow1::combo1_EvOnComboChange(CControl * control)
 void
 CPWindow1::saveprefs(String name, String value)
 {
-  char line[512];
+  char line[1024];
   char *pname;  
   char *pvalue;
   
@@ -525,6 +537,8 @@ CPWindow1::_EvOnDestroy(CControl * control)
   
   timer1.SetRunState(0);
   timer2.SetRunState(0);
+  usleep(100000);
+  while(status){usleep(1);};
   thread1.Destroy ();
    
   
@@ -560,7 +574,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
     
     Window4.WritePreferences ();
     Window5.WritePreferences ();
-    
+
     prefs.SaveToFile(fname);
     
 //write memory
@@ -628,6 +642,7 @@ CPWindow1::menu1_File_LoadHex_EvMenuActive(CControl * control)
         
           PATH=filedialog1.GetDir();
           FNAME=filedialog1.GetFileName();
+          menu1_File_ReloadLast.SetEnable(1);
         }
         picpwr=pa;
 };
@@ -753,8 +768,11 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
 
         pa=picpwr; 
         picpwr=0;
-
-     
+        
+         timer1.SetRunState(0);
+         usleep(100000);
+         while(status & 0x05){usleep(1);};
+        
           pboard->MEnd ();
           pboard->MSetSerial(SERIALDEVICE);
   	  
@@ -786,6 +804,8 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
         
         
         picpwr=pa;
+        timer1.SetRunState(1);
+  
 };
 
 void 
@@ -846,6 +866,7 @@ CPWindow1::menu1_EvBoard(CControl * control)
   lab_= lab;
   lab= (int)(atof(((CItemMenu*)control)->GetText ()));
 
+  FNAME=wxT(" ");
   _EvOnDestroy(control);
   _EvOnCreate(control);
   _EvOnShow(control);
@@ -860,6 +881,7 @@ CPWindow1::menu1_EvMicrocontroller(CControl * control)
    
    SetTitle(wxT("PICSimLab - ")+ String(boards_list[lab-1])+wxT(" - ")+pboard->proc);
    
+  FNAME=wxT(" ");
   _EvOnDestroy(control);
   _EvOnCreate(control);
   _EvOnShow(control);
@@ -924,7 +946,7 @@ CPWindow1::menu1_File_SaveWorkspace_EvMenuActive(CControl * control)
      saveprefs("wser",SERIALDEVICE);
 #endif
      saveprefs(wxT("lpath"),PATH);
-     saveprefs(wxT("lfile"),FNAME);
+     saveprefs(wxT("lfile"),wxT(" "));
         
      pboard->WritePreferences();
     
