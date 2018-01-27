@@ -76,6 +76,8 @@ class CPWindow5:public CPWindow
   bool SaveConfig(String fname);
   bool LoadConfig(String fname);
   void DeleteParts(void);
+  void WritePreferences(void);
+  void ReadPreferences(char *name,char *value);
   private:
     int partsc;  
     part *parts[MAX_PARTS];

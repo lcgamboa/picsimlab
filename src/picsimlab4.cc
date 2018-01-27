@@ -394,7 +394,7 @@ CPWindow4::WritePreferences(void)
   Window1.saveprefs(wxT("osc_usetrigger"),itoa(togglebutton5.GetCheck()));
   Window1.saveprefs(wxT("osc_tch"),combo1.GetText());
   Window1.saveprefs(wxT("osc_tlevel"),ftoa(spind7.GetValue()));
-
+  Window1.saveprefs(wxT("osc_position"),itoa(GetX())+wxT(",")+itoa(GetY()));
 };
 
 
@@ -482,6 +482,14 @@ CPWindow4::ReadPreferences(char *name,char *value)
     if(!strcmp(name,"osc_tlevel"))
     {
       spind7.SetValue(atof(value));
+    }
+    
+    if(!strcmp(name,"osc_position"))
+    {
+      int i,j;
+      sscanf(value,"%i,%i",&i,&j);
+      SetX(i);
+      SetY(j);
     }
 };
 

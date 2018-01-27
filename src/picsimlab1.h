@@ -74,6 +74,7 @@ class CPWindow1:public CPWindow
   CItemMenu menu1_Help_About;
   CStatusbar statusbar1;
   CToggleButton togglebutton1;
+  CFileDialog filedialog2;
   /*#Events*/
   void _EvOnCreate(CControl * control);
   void _EvOnDestroy(CControl * control);
@@ -107,7 +108,7 @@ class CPWindow1:public CPWindow
   
   CPWindow1(void);
   void saveprefs(String name, String value);
-  
+  void Configure(CControl * control, const char * home);
   void board_Event(CControl * control);
   void thread1_EvThreadRun(CControl * control);
 
@@ -141,7 +142,9 @@ class CPWindow1:public CPWindow
   int picrst;
   int picdbg;
   int debug;
-
+  int osc_on;
+  int spare_on;
+  
   int plWidth;
   int plHeight;
   double scale;

@@ -50,7 +50,7 @@
   <Class type="String">CFileDialog</Class>
   <Name type="String">filedialog1</Name>
   <Tag type="int">0</Tag>
-  <FileName type="String">untitled.txt</FileName>
+  <FileName type="String">untitled.hex</FileName>
   <Filter type="String">Hex Files (*.hex)|*.hex;*.HEX</Filter>
   <Type type="int">129</Type>
 </filedialog1>
@@ -315,4 +315,12 @@
   <Check type="Int">0</Check>
   <EvOnToggleButton type="Event">TRUE</EvOnToggleButton>
 </togglebutton1>
+<filedialog2>
+  <Class type="String">CFileDialog</Class>
+  <Name type="String">filedialog2</Name>
+  <Tag type="int">0</Tag>
+  <FileName type="String">untitled.pzw</FileName>
+  <Filter type="String">PICSimLab Workspace (*.pzw)|*.pzw</Filter>
+  <Type type="int">129</Type>
+</filedialog2>
 </window1>

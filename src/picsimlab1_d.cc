@@ -70,7 +70,7 @@ CPWindow1::CPWindow1(void)
   filedialog1.SetClass(wxT("CFileDialog"));
   filedialog1.SetName(wxT("filedialog1"));
   filedialog1.SetTag(0);
-  filedialog1.SetFileName(wxT("untitled.txt"));
+  filedialog1.SetFileName(wxT("untitled.hex"));
   filedialog1.SetFilter(wxT("Hex Files (*.hex)|*.hex;*.HEX"));
   filedialog1.SetType(129);
   CreateChild(&filedialog1);
@@ -319,6 +319,15 @@ CPWindow1::CPWindow1(void)
   togglebutton1.SetCheck(0);
   togglebutton1.EvOnToggleButton=EVONTOGGLEBUTTON & CPWindow1::togglebutton1_EvOnToggleButton;
   CreateChild(&togglebutton1);
+  //filedialog2
+  filedialog2.SetFOwner(this);
+  filedialog2.SetClass(wxT("CFileDialog"));
+  filedialog2.SetName(wxT("filedialog2"));
+  filedialog2.SetTag(0);
+  filedialog2.SetFileName(wxT("untitled.pzw"));
+  filedialog2.SetFilter(wxT("PICSimLab Workspace (*.pzw)|*.pzw"));
+  filedialog2.SetType(129);
+  CreateChild(&filedialog2);
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!
   
@@ -343,7 +352,9 @@ picpwr=1;
 picrst=0;
 picdbg=0;
 debug=0;
-
+osc_on= 0;
+spare_on= 0;
+  
 lab=1;
 lab_=1;
 

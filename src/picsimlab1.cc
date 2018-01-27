@@ -36,8 +36,8 @@ CPWindow1 Window1;
 #include"picsimlab3.h"
 #include"picsimlab4.h"
 #include"picsimlab5.h"
+#include"futils.h"
 
-#include<dirent.h>
 
 //extern char PROGDEVICE[100];
 char SERIALDEVICE[100];
@@ -48,13 +48,7 @@ int prog_init(void);
 int prog_loop(_pic * pic);
 int prog_end(void);
 */
-/*
-//mplabx debugger
-int mplabxd_init(void);
-int mplabxd_loop(void);
-void mplabxd_end(void);
-int mplabxd_testbp(void);
-*/
+
 
 int crt;
 
@@ -220,31 +214,9 @@ CPWindow1::draw1_EvKeyboardRelease(CControl * control, uint key, uint x, uint y,
 void
 CPWindow1::_EvOnCreate(CControl * control)
 {
-//  FILE *fin;
-
-
-  char line[256];
-  char fname[1024];
-
-
-  char *name;
-  char *value;
-
-  char home[1024];
-    
-  int i;
-  int lc;
-  float clk;
-  
-  String status;
-
-  
-  picrun=1;
-  picpwr=1;
-  picrst=0;
-  
-  
-
+   char home[1024];
+   String status;
+ 
 if(!create)
 {
   PATH=wxGetCwd(); 
@@ -273,7 +245,30 @@ create++;
 
   wxStandardPathsBase& stdp = wxStandardPaths::Get();
   strcpy(home,(char*)stdp.GetUserDataDir().char_str());
+  
+  Configure(control, home);
+};
 
+void
+CPWindow1::Configure(CControl * control, const char * home)
+{
+  
+  char line[256];
+  char fname[1024];
+
+  char *name;
+  char *value;
+ 
+  int i,j;
+  int lc;
+  float clk;
+     
+  String status;
+    
+  picrun=1;
+  picpwr=1;
+  picrst=0;
+  
    sprintf(fname,"%s/picsimlab.ini",home);
   
    SERIALDEVICE[0]=0;
@@ -345,10 +340,32 @@ create++;
       
       if(!strcmp(name,"debug"))
       {
-         sscanf(value,"%i",&i);  
-         debug=i;
-         togglebutton1.SetCheck(i);
+         sscanf(value,"%i",&debug);  
+         togglebutton1.SetCheck(debug);
       }
+      
+      if(!strcmp(name,"osc_on"))
+      {
+         sscanf(value,"%i",&osc_on);  
+      }
+      
+      if(!strcmp(name,"spare_on"))
+      {
+         sscanf(value,"%i",&spare_on);  
+      }
+      
+      if(!strcmp(name,"spare_on"))
+      {
+         sscanf(value,"%i",&spare_on);  
+      }
+      
+      if(!strcmp(name,"position"))
+      {
+         sscanf(value,"%i,%i",&i,&j);
+         SetX(i);
+         SetY(j);
+      }
+      
       
       if(!strcmp(name,"lpath"))
       {
@@ -364,6 +381,7 @@ create++;
         pboard->ReadPreferences(name,value); 
 
        Window4.ReadPreferences(name,value);
+       Window5.ReadPreferences(name,value);
     }
   }
   else
@@ -448,8 +466,8 @@ create++;
   
   sprintf(fname,"%s/parts_%02i.pcf",home,lab);
   Window5.LoadConfig (fname);
-};
-
+  
+}
 
 //Change  frequency
 void
@@ -498,14 +516,9 @@ CPWindow1::saveprefs(String name, String value)
 void
 CPWindow1::_EvOnDestroy(CControl * control)
 {
-  //code here:)
-  //mprint(wxT("_EvOnDestroy\n"));
   char home[1024];
   char fname[1024];
-  //char line[256];
-  //FILE * fout; 
-  DIR  *dp;
-  //int i; 
+ 
   
   Window4.Hide ();
   Window5.Hide ();
@@ -521,29 +534,18 @@ CPWindow1::_EvOnDestroy(CControl * control)
   wxStandardPathsBase& stdp = wxStandardPaths::Get();
   strcpy(home,(char*)stdp.GetUserDataDir().char_str());
  
-   dp = opendir (home);
+   CreateDir(home);
 
-   if(dp)
-   {
-     closedir(dp);
-   }
-   else
-   {
-     remove(home);
-#ifndef _WIN_
-     mkdir(home, S_IWUSR| S_IRUSR | S_IXUSR | S_IRGRP | S_IROTH ); 
-#else     
-     mkdir(home);
-#endif 
-   }
-
-  sprintf(fname,"%s/picsimlab.ini",home);
+   sprintf(fname,"%s/picsimlab.ini",home);
   
 
   
     saveprefs(wxT("lab"),String::Format("%i",lab));
     saveprefs(wxT("clock"),combo1.GetText());
     saveprefs(wxT("debug"),itoa(debug));
+    saveprefs(wxT("position"),itoa(GetX())+wxT(",")+itoa(GetY()));
+    saveprefs(wxT("osc_on"),itoa(pboard->GetUseOscilloscope()));
+    saveprefs(wxT("spare_on"),itoa(pboard->GetUseSpareParts()));
 #ifndef _WIN_
     saveprefs(wxT("lser"),SERIALDEVICE);
     //saveprefs(wxT("lprog"),PROGDEVICE);
@@ -557,6 +559,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
     pboard->WritePreferences();
     
     Window4.WritePreferences ();
+    Window5.WritePreferences ();
     
     prefs.SaveToFile(fname);
     
@@ -591,8 +594,6 @@ CPWindow1::menu1_File_LoadHex_EvMenuActive(CControl * control)
 
         pa=picpwr; 
         picpwr=0;
-        filedialog1.SetType(wxFD_OPEN|wxFD_CHANGE_DIR);
-        filedialog1.SetFilter(wxT("Hex Files (*.hex)|*.hex;*.HEX"));
         if(filedialog1.Run())
         {
   	  pboard->MEnd ();
@@ -659,9 +660,6 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
         pa=picpwr; 
         picpwr=0;
         
-        filedialog1.SetDir(share+wxT("/examples/hex/board_")+itoa(lab)+wxT("/")+pboard->proc+wxT("/"));
-        filedialog1.SetType(wxFD_OPEN|wxFD_CHANGE_DIR);
-        filedialog1.SetFilter(wxT("Hex Files (*.hex)|*.hex;*.HEX"));
         if(filedialog1.Run())
         {
           pboard->MEnd ();
@@ -725,6 +723,17 @@ if(timer1.GetRunState())
 
   draw1.SetImgFileName(share+pboard->GetPictureFileName(),scale,scale);
   pboard->OnShow();
+  
+  if(osc_on) 
+  {
+     menu1_Modules_Oscilloscope_EvMenuActive(this);
+     osc_on=0;   
+  }
+  if(spare_on)
+  { 
+     menu1_Modules_Spareparts_EvMenuActive(this);
+     spare_on=0;
+  }
 };
 
 };
@@ -880,21 +889,90 @@ CPWindow1::togglebutton1_EvOnToggleButton(CControl * control)
 void
 CPWindow1::menu1_File_SaveWorkspace_EvMenuActive(CControl * control)
 {
-  filedialog1.SetFileName("untitled.pzw");  
-  filedialog1.SetType(wxFD_SAVE|wxFD_CHANGE_DIR);  
-  filedialog1.SetFilter(wxT("PICSimLab Workspace (*.pzw)|*.pzw;*.PZW"));
-  if(filedialog1.Run())
+  filedialog2.SetType(wxFD_SAVE|wxFD_CHANGE_DIR);  
+  if(filedialog2.Run())
   {
+     char home[1024];
+     char fname[1024];
+     
+     if(wxFileExists(filedialog2.GetFileName()))
+     {
+       
+         if(!Dialog("Overwriting file: "+basename(filedialog2.GetFileName())+"?"))
+             return;
+     }
+     
+     //write options
+     wxTheApp->SetAppName(_T("picsimlab"));
+     wxStandardPathsBase& stdp = wxStandardPaths::Get();
+     strcpy(home,(char*)stdp.GetTempDir().char_str());
+     strcat(home,"/picsimlab_workspace/");
+ 
+     RemoveDir(home);
+     
+     CreateDir(home);     
+
+     sprintf(fname,"%s/picsimlab.ini",home);
+  
+
+     saveprefs(wxT("lab"),String::Format("%i",lab));
+     saveprefs(wxT("clock"),combo1.GetText());
+     saveprefs(wxT("debug"),itoa(debug));
+#ifndef _WIN_
+     saveprefs(wxT("lser"),SERIALDEVICE);
+#else
+     saveprefs("wser",SERIALDEVICE);
+#endif
+     saveprefs(wxT("lpath"),PATH);
+     saveprefs(wxT("lfile"),FNAME);
+        
+     pboard->WritePreferences();
+    
+     Window4.WritePreferences ();
+    
+     prefs.SaveToFile(fname);
+    
+//write memory
+     sprintf(fname,"%s/mdump_%02i_%s.hex",home,lab_,(const char*)proc_.c_str ());
+  
+     pboard->MDumpMemory(fname);
+     
+     sprintf(fname,"%s/parts_%02i.pcf",home,lab_);
+     Window5.SaveConfig (fname);
+     
+     ZipDir(home, filedialog2.GetFileName());
+     
+     RemoveDir(home);
   }
 };
 
 void
 CPWindow1::menu1_File_LoadWorkspace_EvMenuActive(CControl * control)
 {
-  filedialog1.SetType(wxFD_OPEN|wxFD_CHANGE_DIR);
-  filedialog1.SetFilter(wxT("PICSimLab Workspace (*.pzw)|*.pzw;*.PZW"));
-  if(filedialog1.Run())
+  filedialog2.SetType(wxFD_OPEN|wxFD_CHANGE_DIR);
+  if(filedialog2.Run())
   {
+      char home[1024];
+      char fzip[1024];
+      
+      //write options
+      wxTheApp->SetAppName(_T("picsimlab"));
+      wxStandardPathsBase& stdp = wxStandardPaths::Get();
+      strcpy(fzip,(char*)stdp.GetTempDir().char_str());
+      strcat(fzip,"/");
+      
+      strcpy(home,(char*)stdp.GetTempDir().char_str());
+      strcat(home,"/picsimlab_workspace/");
+ 
+      RemoveDir(home);
+ 
+      UnzipDir(filedialog2.GetFileName(),fzip);
+      
+     _EvOnDestroy(control);
+     Configure(control,home);
+     _EvOnShow(control);  
+     
+     RemoveDir(home);
   }
 };
 

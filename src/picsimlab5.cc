@@ -317,6 +317,12 @@ CPWindow5::menu1_File_Saveconfiguration_EvMenuActive(CControl * control)
   filedialog1.SetType(wxFD_SAVE|wxFD_CHANGE_DIR);  
   if(filedialog1.Run())
   {
+     if(wxFileExists(filedialog1.GetFileName()))
+     {
+       
+         if(!Dialog("Overwriting file: "+basename(filedialog1.GetFileName())+"?"))
+             return;
+     } 
     SaveConfig(filedialog1.GetFileName());
   } 
 };
@@ -390,3 +396,27 @@ CPWindow5::menu1_Help_About_EvMenuActive(CControl * control)
 };
 
 
+
+void 
+CPWindow5::WritePreferences(void)
+{
+    Window1.saveprefs(wxT("spare_position"),itoa(GetX())+wxT(",")+itoa(GetY())+wxT(",")+itoa(GetWidth())+wxT(",")+itoa(GetHeight()));
+};
+
+
+void 
+CPWindow5::ReadPreferences(char *name,char *value)
+{
+
+    if(!strcmp(name,"spare_position"))
+    {
+      int x,y,w,h;     
+      sscanf(value,"%i,%i,%i,%i",&x,&y,&w,&h);
+      SetX(x);
+      SetY(y);
+      if(w > 5000)w=5000;
+      if(h > 5000)h=5000;
+      SetWidth(w);
+      SetHeight(h);
+    }
+};
