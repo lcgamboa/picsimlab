@@ -643,47 +643,13 @@ CPWindow1::menu1_Help_About_EvMenuActive(CControl * control)
 void
 CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
 {
-  int pa;
+    String oldPath= filedialog2.GetDir();   
 
-        pa=picpwr; 
-        picpwr=0;
-        
-        //filedialog1.SetDir(share+wxT("/examples/hex/"));
-        filedialog1.SetDir(share+wxT("/examples/hex/board_")+itoa(lab)+wxT("/")+pboard->proc+wxT("/"));
-        
-        if(filedialog1.Run())
-        {
-          pboard->MEnd ();
-          pboard->MSetSerial(SERIALDEVICE);
-  	  switch(pboard->MInit (pboard->proc,filedialog1.GetFileName().char_str(),NSTEP*NSTEPKF))
-          {
-            case HEX_NFOUND:
-              Message(wxT("File not found!")); 
-              picrun=0;
-              break;
-            case HEX_CHKSUM:
-              Message(wxT("File checksum error!")); 
-              pboard->MEraseFlash ();
-              picrun=0;
-              break;
-            case 0:
-              picrun=1;
-              break; 
-          } 
-          
-          
-          pboard->Reset();
+    filedialog2.SetDir(share+wxT("/examples/hex/board_")+itoa(lab)+wxT("/")+pboard->proc+wxT("/"));
   
- 
-          if(picrun) 
-            SetTitle(wxT("PICSimLab - ")+ String(boards_list[lab-1])+wxT(" - ")+pboard->proc+wxT(" - ")+basename(filedialog1.GetFileName()));          
-          else
-            SetTitle(wxT("PICSimLab - ")+ String(boards_list[lab-1])+wxT(" - ")+pboard->proc);
-  
-          
-        }
-        filedialog1.SetDir(PATH);
-        picpwr=pa;
+    menu1_File_LoadWorkspace_EvMenuActive(control);
+        
+    filedialog2.SetDir(oldPath);
 };
 
 
