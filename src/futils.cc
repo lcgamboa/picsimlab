@@ -169,6 +169,7 @@ bool RemoveDir(const char* dirname)
 {
      DIR  *dp;
      struct dirent *dent;
+     struct stat sb;
      char fname[1024];
      
      dp = opendir (dirname);
@@ -177,16 +178,17 @@ bool RemoveDir(const char* dirname)
      {
        while((dent=readdir(dp))!=NULL)
        {
-          if(dent->d_type == DT_REG)
+          snprintf(fname,1024,"%s/%s",dirname,dent->d_name);  
+          stat(fname, &sb);
+          
+          if(S_ISREG(sb.st_mode))
           {
-            sprintf(fname,"%s%s",dirname,dent->d_name); 
             RemoveFile(fname);
           }
-          else if(dent->d_type == DT_DIR)
+          else if(S_ISDIR(sb.st_mode))
           {
             if(!(!strcmp(dent->d_name,".") || !strcmp(dent->d_name,"..")))
-            {
-              sprintf(fname,"%s%s",dirname,dent->d_name); 
+            {    
               RemoveDir(fname);
             }
           }

@@ -50,6 +50,13 @@ int prog_loop(_pic * pic);
 int prog_end(void);
 #endif
 
+#ifdef _WIN_
+#define msleep(x) Sleep(x)
+#else
+#define msleep(x) usleep(x*1000)
+#endif        
+
+
 
 int crt;
 
@@ -506,8 +513,8 @@ CPWindow1::_EvOnDestroy(CControl * control)
   
   timer1.SetRunState(0);
   timer2.SetRunState(0);
-  usleep(100000);
-  while(status){usleep(1);};
+  msleep(100);
+  while(status){msleep(1);};
   thread1.Destroy ();
    
   
@@ -712,8 +719,8 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
         picpwr=0;
         
          timer1.SetRunState(0);
-         usleep(100000);
-         while(status & 0x05){usleep(1);};
+         msleep(100);
+         while(status & 0x05){msleep(1);};
         
           pboard->MEnd ();
           pboard->MSetSerial(SERIALDEVICE);
