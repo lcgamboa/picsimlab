@@ -210,7 +210,7 @@ create++;
 
   wxStandardPathsBase& stdp = wxStandardPaths::Get();
   strcpy(home,(char*)stdp.GetUserDataDir().char_str());
-  
+   
   Configure(control, home);
 };
 
@@ -234,21 +234,24 @@ CPWindow1::Configure(CControl * control, const char * home)
   picpwr=1;
   picrst=0;
   
-   sprintf(fname,"%s/picsimlab.ini",home);
+   snprintf(fname,1024,"%s/picsimlab.ini",home);
   
-   SERIALDEVICE[0]=0;
-#ifdef _USE_PICSTARTP_   
-   PROGDEVICE[0]=0;
+   SERIALDEVICE[0]=' ';
+   SERIALDEVICE[1]=0;
+#ifdef _USE_PICSTARTP_ 
+   PROGDEVICE[0]=' ';
+   PROGDEVICE[1]=0;
 #endif   
    pboard=NULL;
    
-  prefs.Clear(); 
-  
+  prefs.Clear();
+  if (wxFileExists(fname))
+  {
   if(prefs.LoadFromFile(fname)) 
   {
     for(lc=0;lc< (int)prefs.GetLinesCount();lc++)      
     {
-      strcpy(line,prefs.GetLine(lc).c_str());  
+      strncpy(line,prefs.GetLine(lc).c_str(),1024);  
         
       name=strtok(line,"\t= ");
       strtok(NULL," ");
@@ -358,6 +361,7 @@ CPWindow1::Configure(CControl * control, const char * home)
        Window4.ReadPreferences(name,value);
        Window5.ReadPreferences(name,value);
     }
+  }
   }
   else
   {
@@ -472,7 +476,7 @@ CPWindow1::saveprefs(String name, String value)
   
    for(int lc=0;lc< (int)prefs.GetLinesCount();lc++)      
     {
-      strcpy(line,prefs.GetLine(lc).c_str());  
+      strncpy(line,prefs.GetLine(lc).c_str(),1024);  
         
       pname=strtok(line,"\t= ");
       strtok(NULL," ");
@@ -899,44 +903,59 @@ CPWindow1::menu1_File_SaveWorkspace_EvMenuActive(CControl * control)
      //write options
      wxTheApp->SetAppName(_T("picsimlab"));
      wxStandardPathsBase& stdp = wxStandardPaths::Get();
-     strcpy(home,(char*)stdp.GetTempDir().char_str());
-     strcat(home,"/picsimlab_workspace/");
+     
+     strncpy(home,(char*)stdp.GetUserDataDir().char_str(),1024);
+     snprintf(fname,1024,"%s/picsimlab.ini",home);
+     prefs.SaveToFile(fname);
+     
+     strncpy(home,(char*)stdp.GetTempDir().char_str(),1024);
+     strncat(home,"/picsimlab_workspace/",1024);
  
      RemoveDir(home);
      
      CreateDir(home);     
-
-     sprintf(fname,"%s/picsimlab.ini",home);
-  
-
+     
+     snprintf(fname,1024,"%s/picsimlab.ini",home);
+     prefs.Clear();
      saveprefs(wxT("lab"),String::Format("%i",lab));
      saveprefs(wxT("clock"),combo1.GetText());
      saveprefs(wxT("debug"),itoa(debug));
-#ifndef _WIN_
-     saveprefs(wxT("lser"),SERIALDEVICE);
-#else
-     saveprefs("wser",SERIALDEVICE);
-#endif
-     saveprefs(wxT("lpath"),PATH);
+     saveprefs(wxT("position"),itoa(GetX())+wxT(",")+itoa(GetY()));
+     saveprefs(wxT("osc_on"),itoa(pboard->GetUseOscilloscope()));
+     saveprefs(wxT("spare_on"),itoa(pboard->GetUseSpareParts()));
      saveprefs(wxT("lfile"),wxT(" "));
         
      pboard->WritePreferences();
+     
+     if(pboard->GetUseOscilloscope())
+       Window4.WritePreferences ();
     
-     Window4.WritePreferences ();
+     if(pboard->GetUseSpareParts())
+       Window5.WritePreferences ();
     
+     
      prefs.SaveToFile(fname);
     
 //write memory
-     sprintf(fname,"%s/mdump_%02i_%s.hex",home,lab_,(const char*)proc_.c_str ());
+     snprintf(fname,1024,"%s/mdump_%02i_%s.hex",home,lab_,(const char*)proc_.c_str ());
   
      pboard->MDumpMemory(fname);
      
-     sprintf(fname,"%s/parts_%02i.pcf",home,lab_);
-     Window5.SaveConfig (fname);
+     if(pboard->GetUseSpareParts())
+     {
+       snprintf(fname,1024,"%s/parts_%02i.pcf",home,lab_);
+       Window5.SaveConfig (fname);
+     }
      
      ZipDir(home, filedialog2.GetFileName());
      
      RemoveDir(home);
+     
+     
+     strncpy(home,(char*)stdp.GetUserDataDir().char_str(),1024);
+     snprintf(fname,1024,"%s/picsimlab.ini",home);
+     prefs.Clear();
+     prefs.LoadFromFile(fname);
   }
 };
 
@@ -962,7 +981,29 @@ CPWindow1::menu1_File_LoadWorkspace_EvMenuActive(CControl * control)
  
       UnzipDir(filedialog2.GetFileName(),fzip);
       
-     _EvOnDestroy(control);
+      _EvOnDestroy(control);
+     
+      snprintf(fzip,1024,"%s/picsimlab.ini",home);
+      CStringList prefsw;
+      prefsw.Clear();
+      int lc;
+      char * value;
+      char * name;
+      char line[1024];
+      if(prefsw.LoadFromFile(fzip)) 
+      {
+        for(lc=0;lc< (int)prefsw.GetLinesCount();lc++)      
+        {
+         strncpy(line,prefsw.GetLine(lc).c_str(),1024);  
+         name=strtok(line,"\t= ");
+         strtok(NULL," ");
+         value=strtok(NULL,"\"");
+         if((name == NULL)||(value==NULL))continue;
+         saveprefs(name,value);
+        }
+      }
+     prefs.SaveToFile(fzip);
+
      Configure(control,home);
      _EvOnShow(control);  
      
