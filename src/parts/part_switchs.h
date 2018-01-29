@@ -38,10 +38,10 @@ class cpart_switchs:public part
       ~cpart_switchs(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return wxT("parts/switchs.png");};
-      String GetInputMapFile(void){return wxT("parts/switchs_i.map");};
-      String GetOutputMapFile(void){return wxT("parts/switchs_o.map");};
-      String GetPropiertiesWindowFile(void){return wxT("parts/switchs.lxrad");};
+      String GetPictureFileName(void){return wxT("switchs.png");};
+      String GetInputMapFile(void){return wxT("switchs_i.map");};
+      String GetOutputMapFile(void){return wxT("switchs_o.map");};
+      String GetPropiertiesWindowFile(void){return wxT("switchs.lxrad");};
       void MouseButtonPress(uint button, uint x, uint y,uint state);
       void ConfigurePropiertsWindow(CPWindow *  wprop);
       void ReadPropiertsWindow(void);

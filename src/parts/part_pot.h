@@ -38,10 +38,10 @@ class cpart_pot:public part
       ~cpart_pot(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return wxT("parts/pot.png");};
-      String GetInputMapFile(void){return wxT("parts/pot_i.map");};
-      String GetOutputMapFile(void){return wxT("parts/pot_o.map");};
-      String GetPropiertiesWindowFile(void){return wxT("parts/pot.lxrad");};
+      String GetPictureFileName(void){return wxT("pot.png");};
+      String GetInputMapFile(void){return wxT("pot_i.map");};
+      String GetOutputMapFile(void){return wxT("pot_o.map");};
+      String GetPropiertiesWindowFile(void){return wxT("pot.lxrad");};
       void MouseButtonPress(uint button, uint x, uint y,uint state);
       void MouseButtonRelease(uint button, uint x, uint y,uint state);
       void MouseMove(uint button, uint x, uint y,uint state);

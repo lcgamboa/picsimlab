@@ -38,10 +38,10 @@ class cpart_dtfunc:public part
       ~cpart_dtfunc(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return wxT("parts/d_transfer_function.png");};
-      String GetInputMapFile(void){return wxT("parts/d_transfer_function_i.map");};
-      String GetOutputMapFile(void){return wxT("parts/d_transfer_function_o.map");};
-      String GetPropiertiesWindowFile(void){return wxT("parts/d_transfer_function.lxrad");};
+      String GetPictureFileName(void){return wxT("d_transfer_function.png");};
+      String GetInputMapFile(void){return wxT("d_transfer_function_i.map");};
+      String GetOutputMapFile(void){return wxT("d_transfer_function_o.map");};
+      String GetPropiertiesWindowFile(void){return wxT("d_transfer_function.lxrad");};
       void Reset(void);
       void MouseButtonPress(uint button, uint x, uint y,uint state);
       void MouseButtonRelease(uint button, uint x, uint y,uint state);

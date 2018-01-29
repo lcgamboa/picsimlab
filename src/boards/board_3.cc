@@ -110,7 +110,7 @@ cboard_3::cboard_3(void)
       lcde=0;
       sound_on=0;
       
-      buzz.Create(Window1.GetSharePath()+wxT("buzzer.wav"));
+      buzz.Create(Window1.GetSharePath()+wxT("boards/buzzer.wav"));
       
       lcd_init(&lcd,2);
       mi2c_init(&mi2c,4);

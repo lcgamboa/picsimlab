@@ -40,8 +40,8 @@ part::ReadMaps(void)
 {
   inputc=0;
   outputc=0;  
-  ReadInputMap(Window1.GetSharePath()+GetInputMapFile());
-  ReadOutputMap(Window1.GetSharePath()+GetOutputMapFile());
+  ReadInputMap(Window1.GetSharePath()+wxT("parts/")+GetInputMapFile());
+  ReadOutputMap(Window1.GetSharePath()+wxT("parts/")+GetOutputMapFile());
 }
 
 void 

@@ -401,7 +401,7 @@ CPWindow1::Configure(CControl * control, const char * home)
   filedialog1.SetDir(PATH);
  
   
-  draw1.SetImgFileName(share+pboard->GetPictureFileName(),scale,scale);
+  draw1.SetImgFileName(share+wxT("boards/")+pboard->GetPictureFileName(),scale,scale);
   
   pboard->MSetSerial(SERIALDEVICE);
   
@@ -685,7 +685,7 @@ if(timer1.GetRunState())
   draw1.SetHeight(plHeight*scale);
   
 
-  draw1.SetImgFileName(share+pboard->GetPictureFileName(),scale,scale);
+  draw1.SetImgFileName(share+wxT("boards/")+pboard->GetPictureFileName(),scale,scale);
   pboard->OnShow();
   
   if(osc_on) 

@@ -46,7 +46,7 @@ cpart_servo::cpart_servo(unsigned x, unsigned y)
    ReadMaps();   
      
    wxImage image;
-   image.LoadFile(Window1.GetSharePath()+GetPictureFileName());
+   image.LoadFile(Window1.GetSharePath()+wxT("parts/")+GetPictureFileName());
 
    Bitmap = new wxBitmap(image);
    BackGround = new wxBitmap(image);

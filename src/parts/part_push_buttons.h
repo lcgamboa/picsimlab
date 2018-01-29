@@ -38,10 +38,10 @@ class cpart_pbuttons:public part
       ~cpart_pbuttons(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return wxT("parts/push_buttons.png");};
-      String GetInputMapFile(void){return wxT("parts/push_buttons_i.map");};
-      String GetOutputMapFile(void){return wxT("parts/push_buttons_o.map");};
-      String GetPropiertiesWindowFile(void){return wxT("parts/push_buttons.lxrad");};
+      String GetPictureFileName(void){return wxT("push_buttons.png");};
+      String GetInputMapFile(void){return wxT("push_buttons_i.map");};
+      String GetOutputMapFile(void){return wxT("push_buttons_o.map");};
+      String GetPropiertiesWindowFile(void){return wxT("push_buttons.lxrad");};
       void MouseButtonPress(uint button, uint x, uint y,uint state);
       void MouseButtonRelease(uint button, uint x, uint y,uint state);
       void ConfigurePropiertsWindow(CPWindow *  wprop);

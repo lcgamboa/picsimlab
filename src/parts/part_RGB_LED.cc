@@ -37,7 +37,7 @@ cpart_rgb_led::cpart_rgb_led(unsigned x, unsigned y)
    ReadMaps();   
      
    wxImage image;
-   image.LoadFile(Window1.GetSharePath()+GetPictureFileName());
+   image.LoadFile(Window1.GetSharePath()+wxT("parts/")+GetPictureFileName());
 
    Bitmap = new wxBitmap(image);
    

@@ -183,17 +183,17 @@ cboard_4::cboard_4(void)
       lcde=0;
       sound_on=0;
       
-      buzz.Create(Window1.GetSharePath()+wxT("buzzer.wav"));
+      buzz.Create(Window1.GetSharePath()+wxT("boards/buzzer.wav"));
       
      wxImage  image;
-     image.LoadFile(Window1.GetSharePath()+wxT("VT1.png"));
+     image.LoadFile(Window1.GetSharePath()+wxT("boards/VT1.png"));
      vent[0] = new wxBitmap(image);
-     image.LoadFile(Window1.GetSharePath()+wxT("VT2.png"));
+     image.LoadFile(Window1.GetSharePath()+wxT("boards/VT2.png"));
      vent[1] = new wxBitmap(image);
      
-     image.LoadFile(Window1.GetSharePath()+wxT("lcd2.png"));
+     image.LoadFile(Window1.GetSharePath()+wxT("boards/lcd2.png"));
      lcdbmp[0] = new wxBitmap(image);
-     image.LoadFile(Window1.GetSharePath()+wxT("lcd4.png"));
+     image.LoadFile(Window1.GetSharePath()+wxT("boards/lcd4.png"));
      lcdbmp[1] = new wxBitmap(image);
      
      lcd_init(&lcd,2); 

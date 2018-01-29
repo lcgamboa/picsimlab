@@ -38,10 +38,10 @@ class cpart_servo:public part
       ~cpart_servo(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return wxT("parts/servo_motor.png");};
-      String GetInputMapFile(void){return wxT("parts/servo_motor_i.map");};
-      String GetOutputMapFile(void){return wxT("parts/servo_motor_o.map");};
-      String GetPropiertiesWindowFile(void){return wxT("parts/servo_motor.lxrad");};
+      String GetPictureFileName(void){return wxT("servo_motor.png");};
+      String GetInputMapFile(void){return wxT("servo_motor_i.map");};
+      String GetOutputMapFile(void){return wxT("servo_motor_o.map");};
+      String GetPropiertiesWindowFile(void){return wxT("servo_motor.lxrad");};
       void ConfigurePropiertsWindow(CPWindow *  wprop);
       void ReadPropiertsWindow(void);
       String WritePreferences(void);

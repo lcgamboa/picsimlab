@@ -46,7 +46,7 @@ cpart_pot::cpart_pot (unsigned x, unsigned y)
   ReadMaps ();
 
   wxImage image;
-  image.LoadFile (Window1.GetSharePath () + GetPictureFileName ());
+  image.LoadFile (Window1.GetSharePath () +wxT("parts/")+ GetPictureFileName ());
 
   Bitmap = new wxBitmap (image);
 
