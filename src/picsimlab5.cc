@@ -134,7 +134,7 @@ CPWindow5::pmenu2_Propierties_EvMenuActive(CControl * control)
   wd1->SetName("window1");//must be the same as in xml 
   Application->ACreateWindow (wd1);
   
-  if(wd1->LoadXMLContextAndCreateChilds (Window1.GetSharePath()+parts[PartSelected]->GetPropiertiesWindowFile()))
+  if(wd1->LoadXMLContextAndCreateChilds (Window1.GetSharePath()+wxT("parts/")+parts[PartSelected]->GetPropiertiesWindowFile()))
   {
     wd1->SetCanDestroy(false);
 
