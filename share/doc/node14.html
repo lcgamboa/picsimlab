@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Serial Communication</TITLE>
-<META NAME="description" CONTENT="Serial Communication">
+<TITLE>Interface</TITLE>
+<META NAME="description" CONTENT="Interface">
 <META NAME="keywords" CONTENT="picsimlab">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,45 +21,218 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node15.html">
 <LINK REL="previous" HREF="node13.html">
-<LINK REL="up" HREF="node11.html">
+<LINK REL="up" HREF="node12.html">
 <LINK REL="next" HREF="node15.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html273"
+<A NAME="tex2html297"
   HREF="node15.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
- SRC="/usr/share/latex2html/icons/next.png"></A> 
-<A NAME="tex2html271"
-  HREF="node11.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
- SRC="/usr/share/latex2html/icons/up.png"></A> 
-<A NAME="tex2html265"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html295"
+  HREF="node12.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html289"
   HREF="node13.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
- SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html274"
-  HREF="node15.html">MPLABX Integrated Debug (PIC)</A>
-<B> Up:</B> <A NAME="tex2html272"
-  HREF="node11.html">English Manual</A>
-<B> Previous:</B> <A NAME="tex2html266"
-  HREF="node13.html">Boards</A>
+<B> Next:</B> <A NAME="tex2html298"
+  HREF="node15.html">Boards</A>
+<B> Up:</B> <A NAME="tex2html296"
+  HREF="node12.html">English Manual</A>
+<B> Previous:</B> <A NAME="tex2html290"
+  HREF="node13.html">Introduction</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
-<H1><A NAME="SECTION02300000000000000000">
-Serial Communication</A>
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html299"
+  HREF="node14.html#SECTION02210000000000000000">Janela Principal</A>
+<LI><A NAME="tex2html300"
+  HREF="node14.html#SECTION02220000000000000000">Comandos</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION02200000000000000000">
+Interface</A>
 </H1>
 
 <P>
-<BR><HR>
+
+<H1><A NAME="SECTION02210000000000000000">
+Janela Principal</A>
+</H1>
+
+<P>
+A janela principal é composta de um menu, uma barra de status, um combobox de seleção de frequência, um botão liga/desliga para acionar a depuração (debug), alguns controles específicos da placa e parte de interface da placa em si.
+
+<P>
+No título da janela é mostrado o nome do simulador PICSimLab, seguido da placa e do microcontrolador em uso.
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="700" HEIGHT="442" ALIGN="BOTTOM" BORDER="0"
+ SRC="./int.png"
+ ALT="Image int"> 
+
+</DIV> 
+
+<P>
+O combobox de seleção de frequência altera diretamente a velocidade de trabalho do microcontrolador, quando o label ``Clock (MHz)'' fica em vermelho indica que o computador não está sendo capaz de executar o programa em tempo real para o clock selecionado. Neste caso a simulação pode apresentar alguma diferença do esperado e a carga da CPU ser aumentada.
+
+<P>
+O botão liga/desliga para acionar a depuração serve para habilitar o suporte à depuração, com o suporte ativo a uma carga maior de simulação.
+
+<P>
+Os menus e suas funções são listados abaixo:
+
+<UL>
+<LI>File
+
+<UL>
+<LI>Load Hex - Carrega arquivo .hex
+</LI>
+<LI>Reload Last - Recarrega último arquivo .hex utilizado
+</LI>
+<LI>Configure - Abre a janela de configuração
+</LI>
+<LI>Save Workspace - Salva todas as configurações atuais do workspace em um arquivo .pzw 
+</LI>
+<LI>Load Workspace - Carrega as configurações salvas de uma arquivo .pzw
+</LI>
+<LI>Exit
+</LI>
+</UL>
+</LI>
+<LI>Board
+
+<UL>
+<LI>1 McLab1 - Escolhe a placa 1
+</LI>
+<LI>2 K16F - Escolhe a placa 2
+</LI>
+<LI>3 McLab2 - Escolhe a placa 3
+</LI>
+<LI>4 PICGenios - Escolhe a placa 4
+</LI>
+<LI>5 Arduino - Escolhe a placa 5
+</LI>
+</UL>
+</LI>
+<LI>Microcontroller
+
+<UL>
+<LI>xxxxx - Seleciona o microcontrolador a ser utilizado (depende da placa selecionada)
+</LI>
+</UL>
+</LI>
+<LI>Modules
+
+<UL>
+<LI>Oscilloscope - Abre a janela do osciloscópio
+</LI>
+<LI>Spare Parts - Abre a janela de peças avulsas
+</LI>
+</UL>
+</LI>
+<LI>Tools
+
+<UL>
+<LI>Serial Term - Abre o terminal serial Cutecom
+</LI>
+</UL>
+</LI>
+<LI>Help 
+
+<UL>
+<LI>Contents - Abre a janela de Ajuda
+</LI>
+<LI>Examples - Carrega exemplos
+</LI>
+<LI>About - Mostra mensagem de versão e autor
+</LI>
+</UL>
+</LI>
+</UL>
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="648" HEIGHT="117" ALIGN="BOTTOM" BORDER="0"
+ SRC="./int1.png"
+ ALT="Image int1"> 
+
+</DIV> 
+
+<P>
+Na primeira parte da barra de status é mostrado o estado da simulação, na parte do meio o estado do suporte a depuração e na última parte o nome da porta serial utilizada, sua velocidade padrão e o erro em relação a velocidade real configurada no microcontrolador. 
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="703" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="./int2.png"
+ ALT="Image int2"> 
+
+</DIV> 
+
+<P>
+
+<H1><A NAME="SECTION02220000000000000000">
+Comandos</A>
+</H1>
+
+<P>
+Sobre a área de interface da placa é possível interagir de algumas formas:
+
+<P>
+
+<UL>
+<LI>Click in ICSP connector to load an .hex file.
+</LI>
+<LI>Click in PWR button to ON/OFF the emulator..
+</LI>
+<LI>The buttons can be activated through mouse or keys 1, 2, 3 e 4.
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html297"
+  HREF="node15.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html295"
+  HREF="node12.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html289"
+  HREF="node13.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html298"
+  HREF="node15.html">Boards</A>
+<B> Up:</B> <A NAME="tex2html296"
+  HREF="node12.html">English Manual</A>
+<B> Previous:</B> <A NAME="tex2html290"
+  HREF="node13.html">Introduction</A></DIV>
+<!--End of Navigation Panel-->
 <ADDRESS>
 Luis Claudio Gamboa Lopes
-2018-01-29
+2018-01-30
 </ADDRESS>
 </BODY>
 </HTML>

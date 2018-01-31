@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Parts</TITLE>
-<META NAME="description" CONTENT="Parts">
+<TITLE>avr-gdb Debug (ATMEGA)</TITLE>
+<META NAME="description" CONTENT="avr-gdb Debug (ATMEGA)">
 <META NAME="keywords" CONTENT="picsimlab">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,96 +21,53 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node20.html">
 <LINK REL="previous" HREF="node18.html">
-<LINK REL="up" HREF="node11.html">
+<LINK REL="up" HREF="node12.html">
 <LINK REL="next" HREF="node20.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html323"
+<A NAME="tex2html356"
   HREF="node20.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
- SRC="/usr/share/latex2html/icons/next.png"></A> 
-<A NAME="tex2html321"
-  HREF="node11.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
- SRC="/usr/share/latex2html/icons/up.png"></A> 
-<A NAME="tex2html315"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html354"
+  HREF="node12.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html348"
   HREF="node18.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
- SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html324"
-  HREF="node20.html">How To's</A>
-<B> Up:</B> <A NAME="tex2html322"
-  HREF="node11.html">English Manual</A>
-<B> Previous:</B> <A NAME="tex2html316"
-  HREF="node18.html">Oscilloscope</A>
+<B> Next:</B> <A NAME="tex2html357"
+  HREF="node20.html">Oscilloscope</A>
+<B> Up:</B> <A NAME="tex2html355"
+  HREF="node12.html">English Manual</A>
+<B> Previous:</B> <A NAME="tex2html349"
+  HREF="node18.html">Arduino IDE Integration (ATMEGA)</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html325"
-  HREF="node19.html#SECTION02810000000000000000">Servo Motor</A>
-<LI><A NAME="tex2html326"
-  HREF="node19.html#SECTION02820000000000000000">Step Motor</A>
-<LI><A NAME="tex2html327"
-  HREF="node19.html#SECTION02830000000000000000">Push Buttons</A>
-<LI><A NAME="tex2html328"
-  HREF="node19.html#SECTION02840000000000000000">Switchs</A>
-<LI><A NAME="tex2html329"
-  HREF="node19.html#SECTION02850000000000000000">LEDs</A>
-<LI><A NAME="tex2html330"
-  HREF="node19.html#SECTION02860000000000000000">Potentiometers</A>
-<LI><A NAME="tex2html331"
-  HREF="node19.html#SECTION02870000000000000000">RGB LED</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION02800000000000000000">
-Parts</A>
+<H1><A NAME="SECTION02700000000000000000">
+avr-gdb Debug (ATMEGA)</A>
 </H1>
 
 <P>
-
-<H1><A NAME="SECTION02810000000000000000">
-Servo Motor</A>
-</H1>
-
-<H1><A NAME="SECTION02820000000000000000">
-Step Motor</A>
-</H1>
-
-<H1><A NAME="SECTION02830000000000000000">
-Push Buttons</A>
-</H1>
-
-<H1><A NAME="SECTION02840000000000000000">
-Switchs</A>
-</H1>
-
-<H1><A NAME="SECTION02850000000000000000">
-LEDs</A>
-</H1>
-
-<H1><A NAME="SECTION02860000000000000000">
-Potentiometers</A>
-</H1>
-
-<H1><A NAME="SECTION02870000000000000000">
-RGB LED</A>
-</H1>
+Com o suporte a depuração habilitado é possível utilizar o avr-gdb para depurar o código utilizado no simulador.
+Utilize o avr-gdb com o arquivo .elf como parâmetro:
+<PRE>
+avr-gdb arquivo_compilado.elf
+</PRE>
+e o comando abaixo para se conectar:
+<PRE>
+target remote localhost:1234
+</PRE>
 
 <P>
 <BR><HR>
 <ADDRESS>
 Luis Claudio Gamboa Lopes
-2018-01-29
+2018-01-30
 </ADDRESS>
 </BODY>
 </HTML>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Oscilloscope</TITLE>
-<META NAME="description" CONTENT="Oscilloscope">
+<TITLE>Arduino IDE Integration (ATMEGA)</TITLE>
+<META NAME="description" CONTENT="Arduino IDE Integration (ATMEGA)">
 <META NAME="keywords" CONTENT="picsimlab">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,45 +21,55 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node19.html">
 <LINK REL="previous" HREF="node17.html">
-<LINK REL="up" HREF="node11.html">
+<LINK REL="up" HREF="node12.html">
 <LINK REL="next" HREF="node19.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html313"
+<A NAME="tex2html346"
   HREF="node19.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
- SRC="/usr/share/latex2html/icons/next.png"></A> 
-<A NAME="tex2html311"
-  HREF="node11.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
- SRC="/usr/share/latex2html/icons/up.png"></A> 
-<A NAME="tex2html305"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html344"
+  HREF="node12.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html338"
   HREF="node17.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
- SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html314"
-  HREF="node19.html">Parts</A>
-<B> Up:</B> <A NAME="tex2html312"
-  HREF="node11.html">English Manual</A>
-<B> Previous:</B> <A NAME="tex2html306"
-  HREF="node17.html">avr-gdb Debug (ATMEGA)</A>
+<B> Next:</B> <A NAME="tex2html347"
+  HREF="node19.html">avr-gdb Debug (ATMEGA)</A>
+<B> Up:</B> <A NAME="tex2html345"
+  HREF="node12.html">English Manual</A>
+<B> Previous:</B> <A NAME="tex2html339"
+  HREF="node17.html">MPLABX Integrated Debug (PIC)</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION02700000000000000000">
-Oscilloscope</A>
+<H1><A NAME="SECTION02600000000000000000">
+Arduino IDE Integration (ATMEGA)</A>
 </H1>
+
+<P>
+Para utilização integrada com a IDE do Arduino, basta fazer a configuração da porta serial como explicado na seção <A HREF="node16.html#seriali">4</A> e carregar o bootloader do Arduino. O bootloader pode ser carregado pelo menu ``help-&gt;exemplos'' escolhendo o arquivo ATmegaBOOT_168_atmega328.pzw.
+
+<P>
+No windows, considerando o com0com fazendo uma conexão NULL-MODEM entre a porta COM1 e COM2, basta conectar o PICSimLab na porta COM1 e a IDE Arduino na porta COM2 ou vice-versa.
+
+<P>
+No Linux o funcionamento é o mesmo, mas utilizando por exemplo as portas /dev/tnt2 e /dev/tnt3.
+
+<P>
+No Linux para as portas virtuais serem detectadas no Arduino é necessário substituir a biblioteca lib/liblistSerialsj.so do Arduino por uma com suporte a detecção das portas do tty0tyy, que pode se baixada no link <A NAME="tex2html65"
+  HREF="xxx">listSerialC com suporte ao tty0tyy</A>.  
 
 <P>
 <BR><HR>
 <ADDRESS>
 Luis Claudio Gamboa Lopes
-2018-01-29
+2018-01-30
 </ADDRESS>
 </BODY>
 </HTML>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Osciloscópio</TITLE>
-<META NAME="description" CONTENT="Osciloscópio">
+<TITLE>Depuração com o avr-gdb (ATMEGA)</TITLE>
+<META NAME="description" CONTENT="Depuração com o avr-gdb (ATMEGA)">
 <META NAME="keywords" CONTENT="picsimlab">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,49 +28,46 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html180"
+<A NAME="tex2html206"
   HREF="node9.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
- SRC="/usr/share/latex2html/icons/next.png"></A> 
-<A NAME="tex2html178"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html204"
   HREF="node1.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
- SRC="/usr/share/latex2html/icons/up.png"></A> 
-<A NAME="tex2html172"
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html198"
   HREF="node7.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
- SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html181"
-  HREF="node9.html">Partes</A>
-<B> Up:</B> <A NAME="tex2html179"
+<B> Next:</B> <A NAME="tex2html207"
+  HREF="node9.html">Osciloscópio</A>
+<B> Up:</B> <A NAME="tex2html205"
   HREF="node1.html">Manual em Português</A>
-<B> Previous:</B> <A NAME="tex2html173"
-  HREF="node7.html">Depuração com o avr-gdb</A>
+<B> Previous:</B> <A NAME="tex2html199"
+  HREF="node7.html">Integração com a IDE</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION01700000000000000000">
-Osciloscópio</A>
+Depuração com o avr-gdb (ATMEGA)</A>
 </H1>
 
 <P>
-
-<DIV ALIGN="CENTER">
-
-<IMG
-  WIDTH="1026" HEIGHT="476" ALIGN="BOTTOM" BORDER="0"
- SRC="./osc.png"
- ALT="Image osc"> 
-
-</DIV> 
+Com o suporte a depuração habilitado é possível utilizar o avr-gdb para depurar o código utilizado no simulador.
+Utilize o avr-gdb com o arquivo .elf como parâmetro:
+<PRE>
+avr-gdb arquivo_compilado.elf
+</PRE>
+e o comando abaixo para se conectar:
+<PRE>
+target remote localhost:1234
+</PRE>
 
 <P>
 <BR><HR>
 <ADDRESS>
 Luis Claudio Gamboa Lopes
-2018-01-29
+2018-01-30
 </ADDRESS>
 </BODY>
 </HTML>

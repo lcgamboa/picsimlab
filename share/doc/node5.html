@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Depuração Integrada com o MPLABX (PIC)</TITLE>
-<META NAME="description" CONTENT="Depuração Integrada com o MPLABX (PIC)">
+<TITLE>Comunicação Serial </TITLE>
+<META NAME="description" CONTENT="Comunicação Serial ">
 <META NAME="keywords" CONTENT="picsimlab">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,51 +28,208 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html150"
+<A NAME="tex2html174"
   HREF="node6.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
- SRC="/usr/share/latex2html/icons/next.png"></A> 
-<A NAME="tex2html148"
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html172"
   HREF="node1.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
- SRC="/usr/share/latex2html/icons/up.png"></A> 
-<A NAME="tex2html142"
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html166"
   HREF="node4.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
- SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html151"
-  HREF="node6.html">Integração com a IDE</A>
-<B> Up:</B> <A NAME="tex2html149"
+<B> Next:</B> <A NAME="tex2html175"
+  HREF="node6.html">Depuração Integrada com o</A>
+<B> Up:</B> <A NAME="tex2html173"
   HREF="node1.html">Manual em Português</A>
-<B> Previous:</B> <A NAME="tex2html143"
-  HREF="node4.html">Comunicação Serial</A>
+<B> Previous:</B> <A NAME="tex2html167"
+  HREF="node4.html">Placas</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
-<H1><A NAME="SECTION01400000000000000000">
-Depuração Integrada com o MPLABX (PIC)</A>
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html176"
+  HREF="node5.html#SECTION01410000000000000000">Instalação e Configuração do com0com (Windows</A>
+<LI><A NAME="tex2html177"
+  HREF="node5.html#SECTION01420000000000000000">Instalação e Configuração do tty0tty (Linux)</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION01400000000000000000"></A><A NAME="serialp"></A>
+<BR>
+Comunicação Serial 
 </H1>
 
 <P>
-Para utilizar o IDE <A NAME="tex2html24"
-  HREF="http://www.microchip.com/mplabx">MPLABX</A>
-para depurar e programar o PicsimLab, basta instalar o plugin <A NAME="tex2html25"
-  HREF="http://sourceforge.net/projects/picsim/files/picsim/picsim-0.6/">com-picsim-picsimlab.nbm</A>
-no MPLABX. 
+Para utilizar o a porta serial do simulador, instale um emulador NULL-MODEM:
+
+<UL>
+<LI>Windows: com0com <TT><A NAME="tex2html27"
+  HREF="http://sourceforge.net/projects/com0com/">http://sourceforge.net/projects/com0com/</A></TT>
+</LI>
+<LI>Linux: tty0tty  <TT><A NAME="tex2html28"
+  HREF="https://github.com/lcgamboa/tty0tty">https://github.com/lcgamboa/tty0tty</A></TT>
+</LI>
+</UL>
 
 <P>
-O plugin se conecta ao Picsimlab através de um socket TCP na porta 1234, permita o acesso no firewall.
+Para comunicação o PICSimLab deve ficar em uma porta do emulador NULL-MODEM e o outro aplicativo na outra porta.
+ Exemplos de configuração ligando o PICSimLab ao <A NAME="tex2html29"
+  HREF="https://github.com/neundorf/CuteCom">Cutecom</A>
+para comunicação serial:
 
 <P>
-<A NAME="tex2html26"
-  HREF="pdf/How to use MPLABX to program and debug PICsimLab.pdf" target="_blank">Tutorial: Como usar o MPLABX para programar e depurar o PICsimLab (Inglês)</A>
+<BR>
+<BR>
+
 <P>
-<BR><HR>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="CENTER">OS</TD>
+<TD ALIGN="CENTER">porta PicsimLab</TD>
+<TD ALIGN="CENTER">porta Cutecom</TD>
+<TD ALIGN="CENTER">NULL-Modem prog.</TD>
+<TD ALIGN="CENTER">Conexão</TD>
+</TR>
+<TR><TD ALIGN="CENTER">Windows</TD>
+<TD ALIGN="CENTER">com1</TD>
+<TD ALIGN="CENTER">com2</TD>
+<TD ALIGN="CENTER">com0com</TD>
+<TD ALIGN="CENTER">com1&lt;=&gt;com2</TD>
+</TR>
+<TR><TD ALIGN="CENTER">Linux</TD>
+<TD ALIGN="CENTER">/dev/tnt2</TD>
+<TD ALIGN="CENTER">/dev/tnt3</TD>
+<TD ALIGN="CENTER">tty0tty</TD>
+<TD ALIGN="CENTER">/dev/tnt2&lt;=&gt;/dev/tnt3</TD>
+</TR>
+</TABLE>
+
+<P>
+
+<H1><A NAME="SECTION01410000000000000000">
+Instalação e Configuração do com0com (Windows</A>
+</H1>
+
+<P>
+Faça o download da versão assinada do  <A NAME="tex2html30"
+  HREF="https://sourceforge.net/projects/com0com/files/com0com/3.0.0.0/com0com-3.0.0.0-i386-and-x64-signed.zip/download">com0com</A>.
+
+<P>
+Descompacte o arquivo .zip baixado e execute o instalador específico de seu sistema operacional, x86 para windows 32 bits ou x64 para windows 64 bits. 
+
+<P>
+Configure a janela ``choose components'' como a figura abaixo:
+ 
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="499" HEIGHT="388" ALIGN="BOTTOM" BORDER="0"
+ SRC="./com0com1.png"
+ ALT="Image com0com1"> 
+
+</DIV> 
+
+<P>
+Na última janela da configuração, marque a opção ``Launch setup'':
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="499" HEIGHT="388" ALIGN="BOTTOM" BORDER="0"
+ SRC="./com0com2.png"
+ ALT="Image com0com2"> 
+
+</DIV> 
+
+<P>
+Na janela do setup, troque os nomes das portas para COM1, COM2, COM3....
+Marque apenas a opção ``enable buffer overrun'' nas duas portas, clique no botão ``Apply'' e feche o setup. 
+Na configuração mostrada na figura abaixo, as portas COM1 e COM2 formam uma conexão NULL-MODEM, onde uma porta deve ser utilizada pelo PICSimLab e outra pela aplicação com comunicação serial.
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="447" HEIGHT="393" ALIGN="BOTTOM" BORDER="0"
+ SRC="./com0com3.png"
+ ALT="Image com0com3"> 
+
+</DIV> 
+
+<P>
+
+<H1><A NAME="SECTION01420000000000000000">
+Instalação e Configuração do tty0tty (Linux)</A>
+</H1>
+
+<P>
+Faça o download do <A NAME="tex2html31"
+  HREF="https://github.com/lcgamboa/tty0tty/archive/master.zip">tty0tyy</A>.
+
+Descompacte a pasta baixada.
+
+<P>
+Abra um terminal e entre na pasta tty0tty/module e digite os comandos na sequência:
+<PRE>
+ sudo apt-get update
+ sudo apt-get -y upgrade
+ sudo apt-get -y install gcc make linux-headers-`uname -r` 
+ make
+ sudo make install
+</PRE>
+
+<P>
+Depois de instalado, o módulo cria 8 portas interconectadas da seguinte forma:
+<PRE>
+  /dev/tnt0  &lt;=&gt;  /dev/tnt1 
+  /dev/tnt2  &lt;=&gt;  /dev/tnt3 
+  /dev/tnt4  &lt;=&gt;  /dev/tnt5 
+  /dev/tnt6  &lt;=&gt;  /dev/tnt7
+</PRE>
+
+<P>
+a conexão entre cada par é da forma:
+<PRE>  
+  TX   -&gt;  RX
+  RX   &lt;-  TX 	
+  RTS  -&gt;  CTS
+  CTS  &lt;-  RTS
+  DSR  &lt;-  DTR
+  CD   &lt;-  DTR
+  DTR  -&gt;  DSR
+  DTR  -&gt;  CD
+</PRE>
+
+<P>
+Qualquer par de portas formam uma conexão NULL-MODEM, onde uma porta deve ser utilizada pelo PICSimLab e outra pela aplicação com comunicação serial.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html174"
+  HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html172"
+  HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html166"
+  HREF="node4.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html175"
+  HREF="node6.html">Depuração Integrada com o</A>
+<B> Up:</B> <A NAME="tex2html173"
+  HREF="node1.html">Manual em Português</A>
+<B> Previous:</B> <A NAME="tex2html167"
+  HREF="node4.html">Placas</A></DIV>
+<!--End of Navigation Panel-->
 <ADDRESS>
 Luis Claudio Gamboa Lopes
-2018-01-29
+2018-01-30
 </ADDRESS>
 </BODY>
 </HTML>
