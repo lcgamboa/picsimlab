@@ -13,7 +13,7 @@ echo -e "\033[1;32m ---------------------- download deps -----------------------
 git clone https://github.com/lcgamboa/picsim.git
 git clone https://github.com/lcgamboa/lxrad.git
 git clone https://github.com/lcgamboa/tty0tty.git
-git clone https://github.com/buserror/simavr
+git clone https://github.com/lcgamboa/simavr.git
 cd picsim
 echo -e "\033[1;32m ---------------------- build and install picsim ------------------------- \033[0m"
 cl git pull

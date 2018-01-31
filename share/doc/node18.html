@@ -28,21 +28,21 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html346"
+<A NAME="tex2html347"
   HREF="node19.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html344"
+<A NAME="tex2html345"
   HREF="node12.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html338"
+<A NAME="tex2html339"
   HREF="node17.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html347"
+<B> Next:</B> <A NAME="tex2html348"
   HREF="node19.html">avr-gdb Debug (ATMEGA)</A>
-<B> Up:</B> <A NAME="tex2html345"
+<B> Up:</B> <A NAME="tex2html346"
   HREF="node12.html">English Manual</A>
-<B> Previous:</B> <A NAME="tex2html339"
+<B> Previous:</B> <A NAME="tex2html340"
   HREF="node17.html">MPLABX Integrated Debug (PIC)</A>
 <BR>
 <BR></DIV>
@@ -53,23 +53,23 @@ Arduino IDE Integration (ATMEGA)</A>
 </H1>
 
 <P>
-Para utilização integrada com a IDE do Arduino, basta fazer a configuração da porta serial como explicado na seção <A HREF="node16.html#seriali">4</A> e carregar o bootloader do Arduino. O bootloader pode ser carregado pelo menu ``help-&gt;exemplos'' escolhendo o arquivo ATmegaBOOT_168_atmega328.pzw.
+For integrated use with the Arduino IDE, simply configure the serial port as explained in the section <A HREF="node16.html#seriali">4</A> and load the Arduino bootloader. The bootloader can be loaded from the ``help-&gt;examples'' menu by choosing the file ATmegaBOOT_168_atmega328.pzw.
 
 <P>
-No windows, considerando o com0com fazendo uma conexão NULL-MODEM entre a porta COM1 e COM2, basta conectar o PICSimLab na porta COM1 e a IDE Arduino na porta COM2 ou vice-versa.
+In Windows, considering com0com making a NULL-MODEM connection between COM1 and COM2, simply connect the PICSimLab on the COM1 port and the Arduino IDE on the COM2 port or vice versa.
 
 <P>
-No Linux o funcionamento é o mesmo, mas utilizando por exemplo as portas /dev/tnt2 e /dev/tnt3.
+On Linux the operation is the same, but using for example the ports /dev/tnt2 and /dev/tnt3.
 
 <P>
-No Linux para as portas virtuais serem detectadas no Arduino é necessário substituir a biblioteca lib/liblistSerialsj.so do Arduino por uma com suporte a detecção das portas do tty0tyy, que pode se baixada no link <A NAME="tex2html65"
-  HREF="xxx">listSerialC com suporte ao tty0tyy</A>.  
+In Linux for the virtual ports to be detected in Arduino it is necessary to replace the library lib/liblistSerialsj.so of the Arduino with a version which support the detection of tty0tyy ports, that can be downloaded in the link <A NAME="tex2html66"
+  HREF="https://github.com/lcgamboa/listSerialPortsC/releases">listSerialC with tty0tyy support</A>.
 
 <P>
 <BR><HR>
 <ADDRESS>
 Luis Claudio Gamboa Lopes
-2018-01-30
+2018-01-31
 </ADDRESS>
 </BODY>
 </HTML>

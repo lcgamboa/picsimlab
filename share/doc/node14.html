@@ -28,21 +28,21 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html297"
+<A NAME="tex2html298"
   HREF="node15.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html295"
+<A NAME="tex2html296"
   HREF="node12.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html289"
+<A NAME="tex2html290"
   HREF="node13.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html298"
+<B> Next:</B> <A NAME="tex2html299"
   HREF="node15.html">Boards</A>
-<B> Up:</B> <A NAME="tex2html296"
+<B> Up:</B> <A NAME="tex2html297"
   HREF="node12.html">English Manual</A>
-<B> Previous:</B> <A NAME="tex2html290"
+<B> Previous:</B> <A NAME="tex2html291"
   HREF="node13.html">Introduction</A>
 <BR>
 <BR></DIV>
@@ -51,10 +51,10 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html299"
-  HREF="node14.html#SECTION02210000000000000000">Janela Principal</A>
 <LI><A NAME="tex2html300"
-  HREF="node14.html#SECTION02220000000000000000">Comandos</A>
+  HREF="node14.html#SECTION02210000000000000000">Main Window</A>
+<LI><A NAME="tex2html301"
+  HREF="node14.html#SECTION02220000000000000000">Commands</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
@@ -66,14 +66,14 @@ Interface</A>
 <P>
 
 <H1><A NAME="SECTION02210000000000000000">
-Janela Principal</A>
+Main Window</A>
 </H1>
 
 <P>
-A janela principal é composta de um menu, uma barra de status, um combobox de seleção de frequência, um botão liga/desliga para acionar a depuração (debug), alguns controles específicos da placa e parte de interface da placa em si.
+The main window consists of a menu, a status bar, a frequency selection combobox, an on/off button to trigger debugging, some board-specific controls and the part of the board interface itself.
 
 <P>
-No título da janela é mostrado o nome do simulador PICSimLab, seguido da placa e do microcontrolador em uso.
+In the title of the window is shown the name of the simulator PICSimLab, followed by the board and the microcontroller in use.
 
 <P>
 
@@ -87,27 +87,28 @@ No título da janela é mostrado o nome do simulador PICSimLab, seguido da placa
 </DIV> 
 
 <P>
-O combobox de seleção de frequência altera diretamente a velocidade de trabalho do microcontrolador, quando o label ``Clock (MHz)'' fica em vermelho indica que o computador não está sendo capaz de executar o programa em tempo real para o clock selecionado. Neste caso a simulação pode apresentar alguma diferença do esperado e a carga da CPU ser aumentada.
+The frequency selection combobox directly changes the working speed of the microcontroller, when the ``Clock (MHz)'' label goes red indicates that the computer is not being able to run the program in real time for the selected clock. 
+In this case the simulation may present some difference than expected and the CPU load will be increased.
 
 <P>
-O botão liga/desliga para acionar a depuração serve para habilitar o suporte à depuração, com o suporte ativo a uma carga maior de simulação.
+The on/off button to enable debugging is used to enable debugging support, with the active support there is a higher simulation load.
 
 <P>
-Os menus e suas funções são listados abaixo:
+The menus and their functions are listed below:
 
 <UL>
 <LI>File
 
 <UL>
-<LI>Load Hex - Carrega arquivo .hex
+<LI>Load Hex - Load .hex files
 </LI>
-<LI>Reload Last - Recarrega último arquivo .hex utilizado
+<LI>Reload Last - Reload the last used .hex file
 </LI>
-<LI>Configure - Abre a janela de configuração
+<LI>Configure - Open the configuration windows
 </LI>
-<LI>Save Workspace - Salva todas as configurações atuais do workspace em um arquivo .pzw 
+<LI>Save Workspace - Saves all current workspace settings to a .pzw file
 </LI>
-<LI>Load Workspace - Carrega as configurações salvas de uma arquivo .pzw
+<LI>Load Workspace - Loads saved settings from a .pzw file
 </LI>
 <LI>Exit
 </LI>
@@ -116,49 +117,49 @@ Os menus e suas funções são listados abaixo:
 <LI>Board
 
 <UL>
-<LI>1 McLab1 - Escolhe a placa 1
+<LI>1 McLab1 - hoose board 1
 </LI>
-<LI>2 K16F - Escolhe a placa 2
+<LI>2 K16F - Choose board 2
 </LI>
-<LI>3 McLab2 - Escolhe a placa 3
+<LI>3 McLab2 - Choose board 3
 </LI>
-<LI>4 PICGenios - Escolhe a placa 4
+<LI>4 PICGenios - Choose board 4
 </LI>
-<LI>5 Arduino - Escolhe a placa 5
+<LI>5 Arduino - Choose board 5
 </LI>
 </UL>
 </LI>
 <LI>Microcontroller
 
 <UL>
-<LI>xxxxx - Seleciona o microcontrolador a ser utilizado (depende da placa selecionada)
+<LI>xxxxx - Selects the microcontroller to be used (depends on the selected board)
 </LI>
 </UL>
 </LI>
 <LI>Modules
 
 <UL>
-<LI>Oscilloscope - Abre a janela do osciloscópio
+<LI>Oscilloscope - Open the oscilloscope window
 </LI>
-<LI>Spare Parts - Abre a janela de peças avulsas
+<LI>Spare parts - Open the spare parts window
 </LI>
 </UL>
 </LI>
 <LI>Tools
 
 <UL>
-<LI>Serial Term - Abre o terminal serial Cutecom
+<LI>Serial Term - Open the serial terminal Cutecom
 </LI>
 </UL>
 </LI>
 <LI>Help 
 
 <UL>
-<LI>Contents - Abre a janela de Ajuda
+<LI>Contents - Open the Help window
 </LI>
-<LI>Examples - Carrega exemplos
+<LI>Examples - Load the examples
 </LI>
-<LI>About - Mostra mensagem de versão e autor
+<LI>About - Show message about author and version
 </LI>
 </UL>
 </LI>
@@ -176,7 +177,7 @@ Os menus e suas funções são listados abaixo:
 </DIV> 
 
 <P>
-Na primeira parte da barra de status é mostrado o estado da simulação, na parte do meio o estado do suporte a depuração e na última parte o nome da porta serial utilizada, sua velocidade padrão e o erro em relação a velocidade real configurada no microcontrolador. 
+The first part of the status bar shows the state of the simulation, in the middle part the status of the debug support and in the last part the name of the serial port used, its default speed and the error in relation to the real speed configured in the microcontroller.
 
 <P>
 
@@ -192,11 +193,11 @@ Na primeira parte da barra de status é mostrado o estado da simulação, na par
 <P>
 
 <H1><A NAME="SECTION02220000000000000000">
-Comandos</A>
+Commands</A>
 </H1>
 
 <P>
-Sobre a área de interface da placa é possível interagir de algumas formas:
+On the interface area of the board it is possible to interact in some ways:
 
 <P>
 
@@ -213,26 +214,26 @@ Sobre a área de interface da placa é possível interagir de algumas formas:
 
 <DIV CLASS="navigation"><HR>
 <!--Navigation Panel-->
-<A NAME="tex2html297"
+<A NAME="tex2html298"
   HREF="node15.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html295"
+<A NAME="tex2html296"
   HREF="node12.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html289"
+<A NAME="tex2html290"
   HREF="node13.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html298"
+<B> Next:</B> <A NAME="tex2html299"
   HREF="node15.html">Boards</A>
-<B> Up:</B> <A NAME="tex2html296"
+<B> Up:</B> <A NAME="tex2html297"
   HREF="node12.html">English Manual</A>
-<B> Previous:</B> <A NAME="tex2html290"
+<B> Previous:</B> <A NAME="tex2html291"
   HREF="node13.html">Introduction</A></DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 Luis Claudio Gamboa Lopes
-2018-01-30
+2018-01-31
 </ADDRESS>
 </BODY>
 </HTML>
