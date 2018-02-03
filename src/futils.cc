@@ -37,10 +37,9 @@
 
 
 #if __cplusplus >= 201103L
-template <typename T>
-using xauto_ptr = std::unique_ptr<T>;
+#define xauto_ptr  std::unique_ptr
 #else
-using xauto_ptr = std::auto_ptr<T>;
+#define xauto_ptr  std::auto_ptr
 #endif
 
 bool UnzipDir(const String &in_filename, const String &out_dirname)
