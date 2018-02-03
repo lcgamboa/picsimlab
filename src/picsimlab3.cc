@@ -32,7 +32,9 @@
 
 CPWindow3 Window3;
 
-//extern char PROGDEVICE[100];
+#ifdef _USE_PICSTARTP_
+extern char PROGDEVICE[100];
+#endif
 
 extern char SERIALDEVICE[100];
 
@@ -43,14 +45,18 @@ void
 CPWindow3::_EvOnCreate(CControl * control)
 {
   combo1.SetText(String::FromAscii(SERIALDEVICE));
-  //combo2.SetText(String::FromAscii(PROGDEVICE));
+#ifdef _USE_PICSTARTP_  
+  combo2.SetText(String::FromAscii(PROGDEVICE));
+#endif
 };
 
 
 void
 CPWindow3::button1_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state)
 {
-
+  int osc_on= Window1.GetBoard()->GetUseOscilloscope();
+  int spare_on= Window1.GetBoard()->GetUseSpareParts();
+  
   if(combo1.GetText()==combo2.GetText())
   {
     Message(wxT("Use diferent ports!"));
@@ -58,10 +64,14 @@ CPWindow3::button1_EvMouseButtonClick(CControl * control, uint button, uint x, u
   }	
 
   strcpy(SERIALDEVICE,(char*)combo1.GetText().char_str());
-  //strcpy(PROGDEVICE,(char*)combo2.GetText().char_str());
-  
+#ifdef _USE_PICSTARTP_
+  strcpy(PROGDEVICE,(char*)combo2.GetText().char_str());
+#endif
   Window1._EvOnDestroy(control);
   Window1._EvOnCreate(control);
+  
+  if(osc_on) Window1.menu1_Modules_Oscilloscope_EvMenuActive(this);
+  if(spare_on) Window1.menu1_Modules_Spareparts_EvMenuActive(this);
 
   WDestroy();
 };

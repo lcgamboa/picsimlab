@@ -944,11 +944,11 @@ CPWindow1::menu1_File_LoadWorkspace_EvMenuActive(CControl * control)
       //write options
       wxTheApp->SetAppName(_T("picsimlab"));
       wxStandardPathsBase& stdp = wxStandardPaths::Get();
-      strcpy(fzip,(char*)stdp.GetTempDir().char_str());
-      strcat(fzip,"/");
+      strncpy(fzip,(char*)stdp.GetTempDir().char_str(),1024);
+      strncat(fzip,"/",1024);
       
-      strcpy(home,(char*)stdp.GetTempDir().char_str());
-      strcat(home,"/picsimlab_workspace/");
+      strncpy(home,(char*)stdp.GetTempDir().char_str(),1024);
+      strncat(home,"/picsimlab_workspace/",1024);
  
       RemoveDir(home);
  
