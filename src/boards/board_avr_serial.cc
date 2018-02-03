@@ -374,7 +374,7 @@ int avr_serial_get_dsr(void)
     return (state & MS_DSR_ON);
   }
 #else     
-  if( serialfd >= 0 )
+  if( serialfd > 0 )
   {
      int state;
      ioctl(serialfd, TIOCMGET ,&state);
