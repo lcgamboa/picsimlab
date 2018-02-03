@@ -166,7 +166,7 @@ CPWindow5::timer1_EvOnTime(CControl * control)
   draw1.Canvas.SetBgColor (50, 50, 50);
   draw1.Canvas.Rectangle (1, 0, 0, draw1.GetWidth (), draw1.GetHeight ());
   
-  //draw1.Canvas.End ();
+  draw1.Canvas.End ();
   draw1.Canvas.Init (scale, scale);
 
   for (int i = 0; i < partsc; i++)
@@ -418,5 +418,7 @@ CPWindow5::ReadPreferences(char *name,char *value)
       if(h > 5000)h=5000;
       SetWidth(w);
       SetHeight(h);
+      draw1.SetWidth (w - 15);
+      draw1.SetHeight (h - 40);
     }
 };
