@@ -6,7 +6,8 @@ cl()("$@" 2>&1>&3|sed $'s,.*,\e[31m&\e[m,'>&2)3>&1
 echo -e "\033[1;32m ---------------------- update and install packages ---------------------- \033[0m"
 cl sudo apt-get update
 cl sudo apt-get -y upgrade
-cl sudo apt-get -y install git doxygen autoconf gcc g++ make libwxgtk3.0-dev linux-headers-`uname -r` libelf-dev freeglut3-dev cutecom
+cl sudo apt-get -y install git doxygen autoconf gcc g++ make libwxgtk3.0-dev linux-headers-`uname -r` \
+libelf-dev freeglut3-dev cutecom gcc-avr avr-libc
 cl mkdir build_all
 cd build_all
 echo -e "\033[1;32m ---------------------- download deps -------------------------------------\033[0m"
@@ -33,6 +34,7 @@ echo -e "\033[1;32m ---------------------- build and install tty0tty -----------
 git pull
 cl make clean;make -j4
 cl sudo make install
+sudo usermod -a -G dialout 'whoami'
 cd ../../
 cd simavr
 echo -e "\033[1;32m ---------------------- build and install simavr ------------------------- \033[0m"
