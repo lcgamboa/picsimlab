@@ -366,14 +366,21 @@ unsigned long avr_serial_recbuff( unsigned char * c)
 int avr_serial_get_dsr(void)
 {
 #ifdef _WIN_
-   long unsigned int state;
-   GetCommModemStatus(serialfd ,&state);
+  if( serialfd != INVALID_HANDLE_VALUE)
+  {
+    long unsigned int state;
+    GetCommModemStatus(serialfd ,&state);
    
-   return (state & MS_DSR_ON);
+    return (state & MS_DSR_ON);
+  }
 #else     
-   int state;
-   ioctl(serialfd, TIOCMGET ,&state);
+  if( serialfd >= 0 )
+  {
+     int state;
+     ioctl(serialfd, TIOCMGET ,&state);
    
-   return (state & TIOCM_DSR);
+     return (state & TIOCM_DSR);
+  }
 #endif
+  return 0;
 }

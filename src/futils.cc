@@ -36,6 +36,12 @@
 #include<dirent.h>
 
 
+#if __cplusplus >= 201103L
+template <typename T>
+using xauto_ptr = std::unique_ptr<T>;
+#else
+using xauto_ptr = std::auto_ptr<T>;
+#endif
 
 bool UnzipDir(const String &in_filename, const String &out_dirname)
 {
@@ -44,7 +50,7 @@ bool UnzipDir(const String &in_filename, const String &out_dirname)
         wxFileSystem::AddHandler(new wxZipFSHandler);
         wxFileSystem fs;
            
-        std::unique_ptr<wxZipEntry> entry(new wxZipEntry);
+        xauto_ptr<wxZipEntry> entry(new wxZipEntry);
         do {    
             wxFileInputStream in(in_filename);
             if (!in)

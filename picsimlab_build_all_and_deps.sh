@@ -34,7 +34,7 @@ echo -e "\033[1;32m ---------------------- build and install tty0tty -----------
 git pull
 cl make clean;make -j4
 cl sudo make install
-sudo usermod -a -G dialout 'whoami'
+sudo usermod -a -G dialout `whoami`
 cd ../../
 cd simavr
 echo -e "\033[1;32m ---------------------- build and install simavr ------------------------- \033[0m"
@@ -50,3 +50,4 @@ user=`whoami`
 cl sudo usermod -a -G dialout $user
 echo -e "\033[1;32m ---------------------- done! -------------------------------------------- \033[0m"
 cl picsimlab
+echo -e "\033[1;32m logout your session and login to use serial \033[0m"
