@@ -182,6 +182,14 @@ Abra um terminal e entre na pasta tty0tty/module e digite os comandos na sequên
 </PRE>
 
 <P>
+O usuário deve estar no grupo <SPAN  CLASS="textbf">dialout</SPAN> para poder acessar as portas.
+Para adicionar seu usuário ao grupo <SPAN  CLASS="textbf">dialout</SPAN> use o comando:
+<PRE>
+sudo usermod -a -G dialout your_user_name
+</PRE>
+depois disso é ncessário fazer logout e login para as permissões do grupo tenham efeito.
+
+<P>
 Depois de instalado, o módulo cria 8 portas interconectadas da seguinte forma:
 <PRE>
   /dev/tnt0  &lt;=&gt;  /dev/tnt1 
@@ -229,7 +237,7 @@ Qualquer par de portas formam uma conexão NULL-MODEM, onde uma porta deve ser u
 <!--End of Navigation Panel-->
 <ADDRESS>
 Luis Claudio Gamboa Lopes
-2018-02-01
+2018-02-04
 </ADDRESS>
 </BODY>
 </HTML>

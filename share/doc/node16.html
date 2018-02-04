@@ -178,6 +178,14 @@ Open a terminal and enter in the tty0tty/module/ folder and enter the following 
 </PRE>
 
 <P>
+The user must be in the <SPAN  CLASS="textbf">dialout</SPAN> group to access the ports. 
+To add your user to <SPAN  CLASS="textbf">dialout</SPAN> group use the command:
+<PRE>
+sudo usermod -a -G dialout your_user_name
+</PRE>
+after this is necessary logout and login to group permissions take effect.
+
+<P>
 Once installed, the module creates 8 interconnected ports as follows:
 <PRE>
   /dev/tnt0  &lt;=&gt;  /dev/tnt1 
@@ -225,7 +233,7 @@ Any pair of ports form a NULL-MODEM connection, where one port must be used by t
 <!--End of Navigation Panel-->
 <ADDRESS>
 Luis Claudio Gamboa Lopes
-2018-02-01
+2018-02-04
 </ADDRESS>
 </BODY>
 </HTML>
