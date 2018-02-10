@@ -40,7 +40,7 @@ class CPWindow5:public CPWindow
   CPMenu menu1_File;
   CPMenu menu1_Add;
   CPMenu pmenu2;
-  CItemMenu pmenu2_Propierties;
+  CItemMenu pmenu2_Properties;
   CTimer timer1;
   CItemMenu menu1_File_Saveconfiguration;
   CItemMenu menu1_File_Loadconfiguration;
@@ -59,7 +59,7 @@ class CPWindow5:public CPWindow
   void draw1_EvMouseButtonRelease(CControl * control, uint button, uint x, uint y,uint state);
   void draw1_EvKeyboardPress(CControl * control, uint key, uint x, uint y,uint mask);
   void draw1_EvKeyboardRelease(CControl * control, uint key, uint x, uint y,uint mask);
-  void pmenu2_Propierties_EvMenuActive(CControl * control);
+  void pmenu2_Properties_EvMenuActive(CControl * control);
   void timer1_EvOnTime(CControl * control);
   void menu1_File_Saveconfiguration_EvMenuActive(CControl * control);
   void menu1_File_Loadconfiguration_EvMenuActive(CControl * control);

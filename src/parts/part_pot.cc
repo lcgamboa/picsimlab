@@ -312,7 +312,7 @@ cpart_pot::ReadPreferences (String value)
 CPWindow * WProp_pot;
 
 void
-cpart_pot::ConfigurePropiertsWindow (CPWindow * wprop)
+cpart_pot::ConfigurePropertiesWindow (CPWindow * wprop)
 {
   String Items = "0  NC,";
   String spin;
@@ -373,7 +373,7 @@ cpart_pot::ConfigurePropiertsWindow (CPWindow * wprop)
 }
 
 void
-cpart_pot::ReadPropiertsWindow (void)
+cpart_pot::ReadPropertiesWindow (void)
 {
   if (WProp_pot->GetTag ())
     {

@@ -264,7 +264,7 @@ cpart_step::ReadPreferences(String value)
 CPWindow * WProp_step;
       
 void 
-cpart_step::ConfigurePropiertsWindow(CPWindow *  wprop)
+cpart_step::ConfigurePropertiesWindow(CPWindow *  wprop)
 {
     String Items="0  NC,";
     String spin;
@@ -324,7 +324,7 @@ cpart_step::ConfigurePropiertsWindow(CPWindow *  wprop)
 }
 
 void 
-cpart_step::ReadPropiertsWindow(void)
+cpart_step::ReadPropertiesWindow(void)
 {
    if(WProp_step->GetTag())
    {

@@ -259,7 +259,7 @@ cpart_switchs::ReadPreferences(String value)
 CPWindow * WProp_switchs;
       
 void 
-cpart_switchs::ConfigurePropiertsWindow(CPWindow *  wprop)
+cpart_switchs::ConfigurePropertiesWindow(CPWindow *  wprop)
 {
     String Items="0  NC,";
     String spin;
@@ -356,7 +356,7 @@ cpart_switchs::ConfigurePropiertsWindow(CPWindow *  wprop)
 }
 
 void 
-cpart_switchs::ReadPropiertsWindow(void)
+cpart_switchs::ReadPropertiesWindow(void)
 {
    if(WProp_switchs->GetTag())
    {

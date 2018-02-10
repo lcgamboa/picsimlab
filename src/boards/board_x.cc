@@ -80,7 +80,7 @@ cboard_x::cboard_x(void)
   proc="PIC18F4550";  //default microcontroller if none defined in preferences
   ReadMaps();     //Read input and output board maps
 
-  //controls propierties and creation
+  //controls properties and creation
   //scroll1
   scroll1=new CScroll();   
   scroll1->SetFOwner(&Window1);

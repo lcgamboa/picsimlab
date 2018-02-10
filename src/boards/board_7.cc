@@ -84,7 +84,7 @@ cboard_7::cboard_7(void)
   ReadMaps();     //Read input and output board maps
   jmp[0]=0; 
       
-  //controls propierties and creation
+  //controls properties and creation
   //scroll1
   scroll1=new CScroll();   
   scroll1->SetFOwner(&Window1);

@@ -41,9 +41,9 @@ class cpart_step:public part
       String GetPictureFileName(void){return wxT("step_motor.png");};
       String GetInputMapFile(void){return wxT("step_motor_i.map");};
       String GetOutputMapFile(void){return wxT("step_motor_o.map");};
-      String GetPropiertiesWindowFile(void){return wxT("step_motor.lxrad");};
-      void ConfigurePropiertsWindow(CPWindow *  wprop);
-      void ReadPropiertsWindow(void);
+      String GetPropertiesWindowFile(void){return wxT("step_motor.lxrad");};
+      void ConfigurePropertiesWindow(CPWindow *  wprop);
+      void ReadPropertiesWindow(void);
       String WritePreferences(void);
       void ReadPreferences(String value);
       unsigned short get_in_id(char * name);

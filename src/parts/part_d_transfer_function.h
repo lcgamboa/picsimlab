@@ -41,14 +41,14 @@ class cpart_dtfunc:public part
       String GetPictureFileName(void){return wxT("d_transfer_function.png");};
       String GetInputMapFile(void){return wxT("d_transfer_function_i.map");};
       String GetOutputMapFile(void){return wxT("d_transfer_function_o.map");};
-      String GetPropiertiesWindowFile(void){return wxT("d_transfer_function.lxrad");};
+      String GetPropertiesWindowFile(void){return wxT("d_transfer_function.lxrad");};
       void Reset(void);
       void MouseButtonPress(uint button, uint x, uint y,uint state);
       void MouseButtonRelease(uint button, uint x, uint y,uint state);
       void KeyPress(uint key, uint x, uint y,uint mask);
       void KeyRelease(uint key, uint x, uint y,uint mask);
-      void ConfigurePropiertsWindow(CPWindow *  wprop);
-      void ReadPropiertsWindow(void);
+      void ConfigurePropertiesWindow(CPWindow *  wprop);
+      void ReadPropertiesWindow(void);
       String WritePreferences(void);
       void ReadPreferences(String value);
       unsigned short get_in_id(char * name);

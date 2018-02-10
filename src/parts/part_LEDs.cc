@@ -169,7 +169,7 @@ cpart_leds::ReadPreferences(String value)
 CPWindow * WProp_leds;
       
 void 
-cpart_leds::ConfigurePropiertsWindow(CPWindow *  wprop)
+cpart_leds::ConfigurePropertiesWindow(CPWindow *  wprop)
 {
     String Items="0  NC,";
     String spin;
@@ -266,7 +266,7 @@ cpart_leds::ConfigurePropiertsWindow(CPWindow *  wprop)
 }
 
 void 
-cpart_leds::ReadPropiertsWindow(void)
+cpart_leds::ReadPropertiesWindow(void)
 {
    if(WProp_leds->GetTag())
    {

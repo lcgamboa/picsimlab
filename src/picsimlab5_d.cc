@@ -70,17 +70,17 @@ CPWindow5::CPWindow5(void)
   pmenu2.SetName(wxT("pmenu2"));
   pmenu2.SetTag(0);
   pmenu2.SetText(wxT(""));
-  pmenu2.SetMenuItems(wxT("Propierties,Move,Delete,"));
+  pmenu2.SetMenuItems(wxT("Properties,Move,Delete,"));
   CreateChild(&pmenu2);
-  //pmenu2_Propierties
-  pmenu2_Propierties.SetFOwner(this);
-  pmenu2_Propierties.SetClass(wxT("CItemMenu"));
-  pmenu2_Propierties.SetName(wxT("pmenu2_Propierties"));
-  pmenu2_Propierties.SetTag(0);
-  pmenu2_Propierties.SetText(wxT("Propierties"));
-  pmenu2_Propierties.SetSubMenu(NULL);
-  pmenu2_Propierties.EvMenuActive=EVMENUACTIVE & CPWindow5::pmenu2_Propierties_EvMenuActive;
-  pmenu2.CreateChild(&pmenu2_Propierties);
+  //pmenu2_Properties
+  pmenu2_Properties.SetFOwner(this);
+  pmenu2_Properties.SetClass(wxT("CItemMenu"));
+  pmenu2_Properties.SetName(wxT("pmenu2_Properties"));
+  pmenu2_Properties.SetTag(0);
+  pmenu2_Properties.SetText(wxT("Properties"));
+  pmenu2_Properties.SetSubMenu(NULL);
+  pmenu2_Properties.EvMenuActive=EVMENUACTIVE & CPWindow5::pmenu2_Properties_EvMenuActive;
+  pmenu2.CreateChild(&pmenu2_Properties);
   //timer1
   timer1.SetFOwner(this);
   timer1.SetClass(wxT("CTimer"));

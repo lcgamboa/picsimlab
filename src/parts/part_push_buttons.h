@@ -41,11 +41,11 @@ class cpart_pbuttons:public part
       String GetPictureFileName(void){return wxT("push_buttons.png");};
       String GetInputMapFile(void){return wxT("push_buttons_i.map");};
       String GetOutputMapFile(void){return wxT("push_buttons_o.map");};
-      String GetPropiertiesWindowFile(void){return wxT("push_buttons.lxrad");};
+      String GetPropertiesWindowFile(void){return wxT("push_buttons.lxrad");};
       void MouseButtonPress(uint button, uint x, uint y,uint state);
       void MouseButtonRelease(uint button, uint x, uint y,uint state);
-      void ConfigurePropiertsWindow(CPWindow *  wprop);
-      void ReadPropiertsWindow(void);
+      void ConfigurePropertiesWindow(CPWindow *  wprop);
+      void ReadPropertiesWindow(void);
       String WritePreferences(void);
       void ReadPreferences(String value);
       unsigned short get_in_id(char * name);

@@ -27,8 +27,6 @@
 #define	PART_H
     
 #include "../boards/board.h"
-//#include <lxrad/lxrad.h>    
-//#include <picsim/picsim.h>    
     
 
 class part
@@ -40,7 +38,7 @@ class part
       virtual String GetPictureFileName(void)=0; //Return the filename of board picture 
       virtual String GetInputMapFile(void)=0;    //Return the filename of board picture input map  
       virtual String GetOutputMapFile(void)=0;   //Return the filename of board picture output map  
-      virtual String GetPropiertiesWindowFile(void)=0;//Return the filename of propierties window XML file
+      virtual String GetPropertiesWindowFile(void)=0;//Return the filename of properties window XML file
       virtual void Reset(void){};           //Reset part status
       virtual void MouseButtonPress(uint button, uint x, uint y,uint state){};    //Event on the board
       virtual void MouseButtonRelease(uint button, uint x, uint y,uint state){};  //Event on the board
@@ -52,8 +50,8 @@ class part
       virtual unsigned short get_in_id(char * name)=0; //return the input ids numbers of names used in input map
       virtual unsigned short get_out_id(char * name)=0; //return the output ids numbers of names used in output map
       virtual void board_Event(CControl * control){};   
-      virtual void ConfigurePropiertsWindow(CPWindow *  wprop)=0;
-      virtual void ReadPropiertsWindow(void)=0;
+      virtual void ConfigurePropertiesWindow(CPWindow *  wprop)=0;
+      virtual void ReadPropertiesWindow(void)=0;
       part();           //Called once on part creation
       virtual ~part(void){};  //Called once on part destruction
       wxBitmap * GetBitmap(void){return Bitmap;};

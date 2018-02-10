@@ -41,12 +41,12 @@ class cpart_pot:public part
       String GetPictureFileName(void){return wxT("pot.png");};
       String GetInputMapFile(void){return wxT("pot_i.map");};
       String GetOutputMapFile(void){return wxT("pot_o.map");};
-      String GetPropiertiesWindowFile(void){return wxT("pot.lxrad");};
+      String GetPropertiesWindowFile(void){return wxT("pot.lxrad");};
       void MouseButtonPress(uint button, uint x, uint y,uint state);
       void MouseButtonRelease(uint button, uint x, uint y,uint state);
       void MouseMove(uint button, uint x, uint y,uint state);
-      void ConfigurePropiertsWindow(CPWindow *  wprop);
-      void ReadPropiertsWindow(void);
+      void ConfigurePropertiesWindow(CPWindow *  wprop);
+      void ReadPropertiesWindow(void);
       String WritePreferences(void);
       void ReadPreferences(String value);
       unsigned short get_in_id(char * name);

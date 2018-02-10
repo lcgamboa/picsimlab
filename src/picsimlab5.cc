@@ -127,18 +127,18 @@ CPWindow5::draw1_EvMouseButtonRelease(CControl * control, uint button, uint x, u
 };
 
 void
-CPWindow5::pmenu2_Propierties_EvMenuActive(CControl * control)
+CPWindow5::pmenu2_Properties_EvMenuActive(CControl * control)
 {  
   CPWindow * wd1= new CPWindow;
  
   wd1->SetName("window1");//must be the same as in xml 
   Application->ACreateWindow (wd1);
   
-  if(wd1->LoadXMLContextAndCreateChilds (Window1.GetSharePath()+wxT("parts/")+parts[PartSelected]->GetPropiertiesWindowFile()))
+  if(wd1->LoadXMLContextAndCreateChilds (Window1.GetSharePath()+wxT("parts/")+parts[PartSelected]->GetPropertiesWindowFile()))
   {
     wd1->SetCanDestroy(false);
 
-    parts[PartSelected]->ConfigurePropiertsWindow(wd1);
+    parts[PartSelected]->ConfigurePropertiesWindow(wd1);
   
     wd1->Draw();
     wd1->ShowExclusive();
@@ -149,7 +149,7 @@ CPWindow5::pmenu2_Propierties_EvMenuActive(CControl * control)
       wxMilliSleep(100);
     }
   
-    parts[PartSelected]->ReadPropiertsWindow();
+    parts[PartSelected]->ReadPropertiesWindow();
   
     wd1->SetCanDestroy (true);
     wd1->WDestroy ();

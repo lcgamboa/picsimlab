@@ -277,7 +277,7 @@ cpart_dtfunc::ReadPreferences(String value)
 CPWindow * WProp_dtfunc;
       
 void 
-cpart_dtfunc::ConfigurePropiertsWindow(CPWindow *  wprop)
+cpart_dtfunc::ConfigurePropertiesWindow(CPWindow *  wprop)
 {
     String Items="0  NC,";
     String spin;
@@ -320,7 +320,7 @@ cpart_dtfunc::ConfigurePropiertsWindow(CPWindow *  wprop)
 }
 
 void 
-cpart_dtfunc::ReadPropiertsWindow(void)
+cpart_dtfunc::ReadPropertiesWindow(void)
 {
    if(WProp_dtfunc->GetTag())
    {

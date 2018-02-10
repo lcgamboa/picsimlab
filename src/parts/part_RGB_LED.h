@@ -40,9 +40,9 @@ class cpart_rgb_led:public part
       String GetPictureFileName(void){return wxT("RGB_LED.png");};
       String GetInputMapFile(void){return wxT("RGB_LED_i.map");};
       String GetOutputMapFile(void){return wxT("RGB_LED_o.map");};
-      String GetPropiertiesWindowFile(void){return wxT("RGB_LED.lxrad");};
-      void ConfigurePropiertsWindow(CPWindow *  wprop);
-      void ReadPropiertsWindow(void);
+      String GetPropertiesWindowFile(void){return wxT("RGB_LED.lxrad");};
+      void ConfigurePropertiesWindow(CPWindow *  wprop);
+      void ReadPropertiesWindow(void);
       String WritePreferences(void);
       void ReadPreferences(String value);
       unsigned short get_in_id(char * name);

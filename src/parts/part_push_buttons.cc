@@ -275,7 +275,7 @@ cpart_pbuttons::ReadPreferences (String value)
 CPWindow * WProp_pbuttons;
 
 void
-cpart_pbuttons::ConfigurePropiertsWindow (CPWindow * wprop)
+cpart_pbuttons::ConfigurePropertiesWindow (CPWindow * wprop)
 {
   String Items = "0  NC,";
   String spin;
@@ -371,7 +371,7 @@ cpart_pbuttons::ConfigurePropiertsWindow (CPWindow * wprop)
 }
 
 void
-cpart_pbuttons::ReadPropiertsWindow (void)
+cpart_pbuttons::ReadPropertiesWindow (void)
 {
   if (WProp_pbuttons->GetTag ())
     {

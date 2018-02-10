@@ -80,7 +80,7 @@ cboard_5::cboard_5(void)
   proc="atmega328";  //default microcontroller if none defined in preferences
   ReadMaps();     //Read input and output board maps
 
-  //controls propierties and creation
+  //controls properties and creation
 
   //gauge1
   gauge1=new CGauge();

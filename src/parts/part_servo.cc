@@ -181,7 +181,7 @@ cpart_servo::ReadPreferences(String value)
 CPWindow * WProp_servo;
 
 void 
-cpart_servo::ConfigurePropiertsWindow(CPWindow *  wprop)
+cpart_servo::ConfigurePropertiesWindow(CPWindow *  wprop)
 {
     String Items="0  NC,";
     String spin;
@@ -215,7 +215,7 @@ cpart_servo::ConfigurePropiertsWindow(CPWindow *  wprop)
 }
 
 void 
-cpart_servo::ReadPropiertsWindow(void)
+cpart_servo::ReadPropertiesWindow(void)
 {
    if(WProp_servo->GetTag())
    {

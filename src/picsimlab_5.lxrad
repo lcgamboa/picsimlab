@@ -82,16 +82,16 @@
   <Name type="String">pmenu2</Name>
   <Tag type="int">0</Tag>
   <Text type="String"></Text>
-  <MenuItems type="MenuItems">Propierties,Move,Delete,</MenuItems>
+  <MenuItems type="MenuItems">Properties,Move,Delete,</MenuItems>
 </pmenu2>
-<pmenu2_Propierties>
+<pmenu2_Properties>
   <Class type="String">CItemMenu</Class>
-  <Name type="String">pmenu2_Propierties</Name>
+  <Name type="String">pmenu2_Properties</Name>
   <Tag type="int">0</Tag>
-  <Text type="String">Propierties</Text>
+  <Text type="String">Properties</Text>
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
-</pmenu2_Propierties>
+</pmenu2_Properties>
 <timer1>
   <Class type="String">CTimer</Class>
   <Name type="String">timer1</Name>
