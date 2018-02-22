@@ -166,9 +166,8 @@ CPWindow5::timer1_EvOnTime(CControl * control)
   draw1.Canvas.SetBgColor (50, 50, 50);
   draw1.Canvas.Rectangle (1, 0, 0, draw1.GetWidth (), draw1.GetHeight ());
   
-  draw1.Canvas.End ();
-  draw1.Canvas.Init (scale, scale);
-
+  draw1.Canvas.GetDC()->SetUserScale(scale,scale);
+  
   for (int i = 0; i < partsc; i++)
     {
       parts[i]->Draw ();

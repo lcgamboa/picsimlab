@@ -49,5 +49,6 @@ cl sudo make install
 user=`whoami`
 cl sudo usermod -a -G dialout $user
 echo -e "\033[1;32m ---------------------- done! -------------------------------------------- \033[0m"
-cl picsimlab
 echo -e "\033[1;32m logout your session and login to use serial \033[0m"
+sudo ldconfig
+cl picsimlab
