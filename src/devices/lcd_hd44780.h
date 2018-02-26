@@ -92,7 +92,7 @@ void lcd_on(lcd_t * lcd,int onoff);
 
 void lcd_blink(lcd_t * lcd);
 
-void lcd_draw(lcd_t * lcd, CDraw *draw,int x1,int y1,int w1,int h1, int picpwr);
+void lcd_draw(lcd_t * lcd, CCanvas * canvas,int x1,int y1,int w1,int h1, int picpwr);
 
 
 #endif

@@ -656,15 +656,15 @@ void lcd_blink(lcd_t * lcd)
            lcd->blink=0;   
 }
 
-void lcd_draw(lcd_t * lcd, CDraw *draw,int x1,int y1,int w1,int h1,int picpwr)
+void lcd_draw(lcd_t * lcd, CCanvas * canvas, int x1,int y1,int w1,int h1,int picpwr)
 {
   int l,c,x,y;
   int loff=0;
   
          if(lcd->lnum == 2)
-           draw->Canvas.Rectangle (1, x1, y1, w1,h1);
+           canvas->Rectangle (1, x1, y1, w1,h1);
          else
-           draw->Canvas.Rectangle (1, x1, y1, w1,(h1*2)-14);  
+           canvas->Rectangle (1, x1, y1, w1,(h1*2)-14);  
          lcd->update=0;
 
          
@@ -697,16 +697,16 @@ void lcd_draw(lcd_t * lcd, CDraw *draw,int x1,int y1,int w1,int h1,int picpwr)
             
                  if((lcd->ddram[cs+loff][x]  & (0x01<<y))&& (lcd->flags & L_DON))
                  {  
-                    draw->Canvas.SetFgColor (0, 35 , 0);
-                    draw->Canvas.SetColor (0, 35 , 0);
+                    canvas->SetFgColor (0, 35 , 0);
+                    canvas->SetColor (0, 35 , 0);
                  }
                  else
                  {
-                    draw->Canvas.SetFgColor (0, 90*picpwr+35 , 0);
-                    draw->Canvas.SetColor (0, 90*picpwr+35 , 0);
+                    canvas->SetFgColor (0, 90*picpwr+35 , 0);
+                    canvas->SetColor (0, 90*picpwr+35 , 0);
                  }
-       //          draw->Canvas.Rectangle (1, output[i].x1+12+(x*4)+(c*22), output[i].y1+8+(y*4)+(l*38), 4,4 );
-                 draw->Canvas.Rectangle (1, x1+2+(x*4)+(c*23), y1+10+(y*4)+(l*35), 4,4 );
+       //          canvas.Rectangle (1, output[i].x1+12+(x*4)+(c*22), output[i].y1+8+(y*4)+(l*38), 4,4 );
+                 canvas->Rectangle (1, x1+2+(x*4)+(c*23), y1+10+(y*4)+(l*35), 4,4 );
                }
              }
            }
@@ -732,13 +732,13 @@ void lcd_draw(lcd_t * lcd, CDraw *draw,int x1,int y1,int w1,int h1,int picpwr)
          
            if((c >= 0)&& (c< 16)) //draw only visible columns
            {    
-             draw->Canvas.SetFgColor (0, 35 , 0);
-             draw->Canvas.SetColor (0, 35 , 0);
+             canvas->SetFgColor (0, 35 , 0);
+             canvas->SetColor (0, 35 , 0);
             
              if(lcd->blink)
-               draw->Canvas.Rectangle (1, x1+2+(c*23), y1+10 +(l*35), 20,32 );  
+               canvas->Rectangle (1, x1+2+(c*23), y1+10 +(l*35), 20,32 );  
              else    
-               draw->Canvas.Rectangle (1, x1+2+(c*23), y1+38+(l*35), 20,4 );
+               canvas->Rectangle (1, x1+2+(c*23), y1+38+(l*35), 20,4 );
            }
          }
       

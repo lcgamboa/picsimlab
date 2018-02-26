@@ -107,7 +107,7 @@ void cboard_2::Draw(CDraw *draw,double scale)
    
       if((output[i].id == O_LCD)&&(lcd.update))
       {
-        lcd_draw(&lcd,draw,output[i].x1, output[i].y1, output[i].x2-output[i].x1,output[i].y2-output[i].y1,Window1.Get_picpwr());   
+        lcd_draw(&lcd,&draw->Canvas,output[i].x1, output[i].y1, output[i].x2-output[i].x1,output[i].y2-output[i].y1,Window1.Get_picpwr());   
       }
        
     }
