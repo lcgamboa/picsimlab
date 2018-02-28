@@ -287,6 +287,7 @@ void
 cboard_2::Reset(void)
 {  
 
+  pic_reset(1);
                 
   lcd_rst(&lcd);  
   mi2c_rst(&mi2c);
@@ -345,7 +346,6 @@ cboard_2::MouseButtonPress( uint button, uint x, uint y,uint state)
         { 
           Window1.Set_picrun(0); 
           Window1.Set_picpwr(0); 
-          pic_reset(1);
           Reset();
           
           Window1.statusbar1.SetField(0,wxT("Stoped"));
@@ -354,8 +354,6 @@ cboard_2::MouseButtonPress( uint button, uint x, uint y,uint state)
         {
           Window1.Set_picpwr(1);
           Window1.Set_picrun(1);
-          pic_reset(1);  
-        
           Reset();
      
           
@@ -452,13 +450,7 @@ cboard_2::MouseButtonRelease( uint button, uint x, uint y,uint state)
 
             if(pic_reset(-1))
             { 
-              lcd_rst(&lcd);
-	      mi2c_rst(&mi2c);
-	      rtc_rst(&rtc);
-
-              
               Reset();
-        
             }
           } 
       };break;

@@ -320,6 +320,8 @@ void cboard_1::Run_CPU(void)
 void 
 cboard_1::Reset(void)
 {          
+    pic_reset(1);
+
     p_BT1=1; 
     p_BT2=1; 
     p_BT3=1; 
@@ -374,7 +376,6 @@ cboard_1::MouseButtonPress(uint button, uint x, uint y,uint state)
         { 
           Window1.Set_picrun(0); 
           Window1.Set_picpwr(0); 
-          pic_reset(1);
           Reset();
 
           p_BT1=0; 
@@ -387,7 +388,6 @@ cboard_1::MouseButtonPress(uint button, uint x, uint y,uint state)
         {
           Window1.Set_picpwr(1);
           Window1.Set_picrun(1);
-          pic_reset(1);          
           Reset();
      
           Window1.statusbar1.SetField(0,wxT("Running..."));

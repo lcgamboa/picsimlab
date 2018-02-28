@@ -793,7 +793,7 @@ CPWindow1::menu1_Modules_Spareparts_EvMenuActive(CControl * control)
   pboard->SetUseSpareParts (1);
   Window5.Show ();
   Window5.timer1.SetRunState (1);
-  
+  pboard->Reset();  
 
 };
 

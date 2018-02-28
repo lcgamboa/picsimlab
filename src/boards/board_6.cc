@@ -237,6 +237,7 @@ cboard_6::~cboard_6(void)
 void 
 cboard_6::Reset(void)
 {
+    pic_reset(1);
    
     p_BT1=1;//set push button  in default state (high) 
        
@@ -354,7 +355,6 @@ cboard_6::MouseButtonPress(uint button, uint x, uint y,uint state)
           { 
             Window1.Set_picrun(0); 
             Window1.Set_picpwr(0); 
-            pic_reset(1);
             Reset();
             p_BT1=1; 
             Window1.statusbar1.SetField(0,wxT("Stoped"));
@@ -363,7 +363,6 @@ cboard_6::MouseButtonPress(uint button, uint x, uint y,uint state)
           {
             Window1.Set_picpwr(1);
             Window1.Set_picrun(1);
-            pic_reset(1);          
             Reset();
             Window1.statusbar1.SetField(0,wxT("Running..."));
           } 

@@ -276,6 +276,7 @@ cboard_5::Reset(void)
     //pic_set_pin(19,p_BT1); 
     //write switch state to pic pin 20 (RD1)
     //pic_set_pin(20,p_BT2); 
+    avr_reset(avr);
 
     
   //verify serial port state and refresh status bar  
@@ -393,7 +394,6 @@ cboard_5::MouseButtonPress(uint button, uint x, uint y,uint state)
           { 
             Window1.Set_picrun(0); 
             Window1.Set_picpwr(0); 
-            avr_reset(avr);
             Reset();
             Window1.statusbar1.SetField(0,wxT("Stoped"));
           }
@@ -401,7 +401,6 @@ cboard_5::MouseButtonPress(uint button, uint x, uint y,uint state)
           {
             Window1.Set_picpwr(1);
             Window1.Set_picrun(1);
-            avr_reset(avr);          
             Reset();
             Window1.statusbar1.SetField(0,wxT("Running..."));
           } 
@@ -441,7 +440,6 @@ cboard_5::MouseButtonRelease(uint button, uint x, uint y,uint state)
             Window1.Set_picpwr(1);
             Window1.Set_picrst(0);
 
-            avr_reset(avr);
             Reset();
             
           } 

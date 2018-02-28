@@ -35,11 +35,12 @@
 #include"part_LEDs.h"
 #include"part_pot.h"
 #include"part_RGB_LED.h"
+#include"part_LCD_hd44780.h"
 
 #ifdef _EXPERIMENTAL_
-const char parts_list[NUM_PARTS][30]={"Servo motor","Step motor","D. Transfer function","Push buttons", "Switchs","LEDs","Potentiometers","RGB LED",};
+const char parts_list[NUM_PARTS][30]={"Servo motor","Step motor","D. Transfer function","Push buttons", "Switchs","LEDs","Potentiometers","RGB LED","LCD hd44780",};
 #else
-const char parts_list[NUM_PARTS][30]={"Servo motor","Step motor","Push buttons", "Switchs","LEDs","Potentiometers","RGB LED",};
+const char parts_list[NUM_PARTS][30]={"Servo motor","Step motor","Push buttons", "Switchs","LEDs","Potentiometers","RGB LED","LCD hd44780",};
 #endif
 
 //boards object creation
@@ -62,6 +63,8 @@ part * create_part(String name, unsigned int x, unsigned int y)
    if(name.compare(wxT("Potentiometers")) == 0 )part_= new cpart_pot(x,y);
    
    if(name.compare(wxT("RGB LED")) == 0 )part_= new cpart_rgb_led(x,y);
+   
+   if(name.compare(wxT("LCD hd44780")) == 0 )part_= new cpart_LCD_hd44780(x,y);
    
    return part_; 
 }
