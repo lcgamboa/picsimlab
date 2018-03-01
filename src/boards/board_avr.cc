@@ -89,6 +89,10 @@ board_avr::pins_reset(void)
           pins[p].ovalue=0;
           pins[p].oavalue=0;
     }
+
+    //VCC pins
+    pins[6].value=1;
+    pins[19].value=1;
 }
 
 
@@ -291,14 +295,14 @@ board_avr::MGetPinName(int pin)
       return "PD3/~3";break;
     case 6:
       return "PD4/4";break;
-    //case 7:
-    //  return "VCC";break;
-    //case 8:
-    //  return "GND";break;    
-    //case 9:
-    //  return "PB6 (OSC1)";break;
-    //case 10:
-    //  return "PB7 (OSC2)";break;
+    case 7:
+      return "+5V";break;
+    case 8:
+      return "GND";break;    
+    case 9:
+      return "PB6 (OSC1)";break;
+    case 10:
+      return "PB7 (OSC2)";break;
     case 11:
       return "PD5/~5";break;
     case 12:
@@ -317,12 +321,12 @@ board_avr::MGetPinName(int pin)
       return "PB4/12";break;
     case 19:
       return "PB5/13";break;
-    //case 20:
-    //  return "VCC";break;
+    case 20:
+      return "+5V";break;
     //case 21:
     //  return "AREF";break;
-    //case 22:
-    //  return "GND";break;
+    case 22:
+      return "GND";break;
     case 23:
       return "PC0/A0";break;
     case 24:
