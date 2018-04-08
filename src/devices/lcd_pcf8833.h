@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,27 +23,54 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+
+#ifndef LCD_PCF8833
+#define	LCD_PCF8833
+    
 #include<lxrad/lxrad.h>
-#include"picsimlab1.h"
-#include"picsimlab2.h"
-#include"picsimlab3.h"
-#include"picsimlab4.h"
-#include"picsimlab5.h"
 
-//Program____________________________________________________________
+/* pinout
+  1 VCC
+  2 NOT_RESET
+  3 DATA
+  4 CLK
+  5 NOT_CS
+  6 VCC
+  7 NC
+  8 GND
+  9 VLED-
+ 10 VLED+
+*/
 
-Initialize
+typedef struct
 {
-  Application->Start ();
-  Window4.SetVisible (0);
-  Window5.SetVisible (0);
-  Application->ACreateWindow (&Window1);
-  Application->ACreateWindow (&Window2);
-  Application->ACreateWindow (&Window3);
-  Application->ACreateWindow (&Window4);
-  Application->ACreateWindow (&Window5);
-  Application->Load ();
+unsigned int ram[132][132];
+float aclk;
+int bc,dc;
+unsigned char colm;
+unsigned char madctl;
+unsigned char hrst;
+unsigned char tp,dat;
+unsigned char x,y,r,g,b;
+unsigned int color;
+unsigned char update;
+unsigned char command;
+unsigned char rmin;
+unsigned char rmax;
+unsigned char cmin;
+unsigned char cmax;
+}lcd_pcf8833_t;
 
-  return 0;
-};
+
+void lcd_pcf8833_rst(lcd_pcf8833_t *lcd);
+void lcd_pcf8833_init(lcd_pcf8833_t *lcd);
+void lcd_pcf8833_update(lcd_pcf8833_t *lcd);
+//void lcd_pcf8833_end(lcd_pcf8833_t *lcd);
+
+unsigned char lcd_pcf8833_io(lcd_pcf8833_t *lcd, unsigned char pdat, unsigned char clk, unsigned char ncs, unsigned char nrst);
+
+void lcd_pcf8833_draw(lcd_pcf8833_t *lcd, CCanvas * canvas,int x1,int y1,int w1,int h1, int picpwr);
+
+
+#endif //LCD_PCF8833
 

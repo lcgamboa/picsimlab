@@ -951,7 +951,10 @@ void cboard_4::Run_CPU(void)
   
      for(i=0;i < pic.PINCOUNT;i++)
      { 
-      pic.pins[i].oavalue= (int)(((225.0*alm[i])/NSTEPJ)+30);
+      if(pic.pins[i].port == P_VDD)
+        pic.pins[i].oavalue= 255;
+      else    
+        pic.pins[i].oavalue= (int)(((225.0*alm[i])/NSTEPJ)+30);
 
       lm1[i]= (int)(((600.0*alm1[i])/NSTEPJ)+30);
       lm2[i]= (int)(((600.0*alm2[i])/NSTEPJ)+30);

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,27 +23,45 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+
+#ifndef LCD_PDC8544
+#define	LCD_PDC8544
+    
 #include<lxrad/lxrad.h>
-#include"picsimlab1.h"
-#include"picsimlab2.h"
-#include"picsimlab3.h"
-#include"picsimlab4.h"
-#include"picsimlab5.h"
 
-//Program____________________________________________________________
+/* pinout
+  1 RST
+  2 CE
+  3 DC
+  4 DIN
+  5 CLK
+  6 VCC
+  7 BL
+  8 GND
+*/
 
-Initialize
+typedef struct
 {
-  Application->Start ();
-  Window4.SetVisible (0);
-  Window5.SetVisible (0);
-  Application->ACreateWindow (&Window1);
-  Application->ACreateWindow (&Window2);
-  Application->ACreateWindow (&Window3);
-  Application->ACreateWindow (&Window4);
-  Application->ACreateWindow (&Window5);
-  Application->Load ();
+unsigned short int ram[84][6];
+float aclk;
+int bc;
+unsigned char hrst;
+unsigned char dat;
+unsigned char h,v,d,e,pd;
+unsigned char x,y;
+unsigned char update;
+}lcd_pcd8544_t;
 
-  return 0;
-};
+
+void lcd_pcd8544_rst(lcd_pcd8544_t *lcd);
+void lcd_pcd8544_init(lcd_pcd8544_t *lcd);
+void lcd_pcd8544_update(lcd_pcd8544_t *lcd);
+//void lcd_pfc8833_end(lcd_pfc8833_t *lcd);
+
+unsigned char lcd_pcd8544_io(lcd_pcd8544_t *lcd, unsigned char din, unsigned char clk, unsigned char ncs, unsigned char nrst, unsigned char dc);
+
+void lcd_pcd8544_draw(lcd_pcd8544_t *lcd, CCanvas * canvas,int x1,int y1,int w1,int h1, int picpwr);
+
+
+#endif //LCD_PDC8544
 

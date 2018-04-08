@@ -37,10 +37,20 @@
 #include"part_RGB_LED.h"
 #include"part_LCD_hd44780.h"
 
+#include"part_LCD_pcf8833.h"
+#include"part_LCD_pcd8544.h"
+/*
+#include"part_MI2C_24CXXX.h"
+#include"part_RTC_ds1307.h"
+#include"part_RTC_pfc8563.h"
+#include"part_Signal_Generator.h"
+#include"part_VCD_Dump.h" or csv dump
+*/
+
 #ifdef _EXPERIMENTAL_
-const char parts_list[NUM_PARTS][30]={"Servo motor","Step motor","D. Transfer function","Push buttons", "Switchs","LEDs","Potentiometers","RGB LED","LCD hd44780",};
+const char parts_list[NUM_PARTS][30]={"D. Transfer function", "LEDs", "LCD hd44780", "LCD pcf8833", "LCD pcd8544", "MEM 24CXXX", "Potentiometers", "Push buttons", "RGB LED", "RTC ds1307", "RTC pfc8563", "Servo motor", "Signal Generator", "Step motor","Switchs",};
 #else
-const char parts_list[NUM_PARTS][30]={"Servo motor","Step motor","Push buttons", "Switchs","LEDs","Potentiometers","RGB LED","LCD hd44780",};
+const char parts_list[NUM_PARTS][30]={"LCD hd44780", "LEDs", "LCD pcf8833", "LCD pcd8544", "MEM 24CXXX", "Potentiometers", "Push buttons", "RGB LED", "RTC ds1307", "RTC pfc8563", "Servo motor", "Signal Generator", "Step motor","Switchs",};
 #endif
 
 //boards object creation
@@ -66,5 +76,9 @@ part * create_part(String name, unsigned int x, unsigned int y)
    
    if(name.compare(wxT("LCD hd44780")) == 0 )part_= new cpart_LCD_hd44780(x,y);
    
+   if(name.compare(wxT("LCD pcf8833")) == 0 )part_= new cpart_LCD_pcf8833(x,y);
+  
+   if(name.compare(wxT("LCD pcd8544")) == 0 )part_= new cpart_LCD_pcd8544(x,y);
+  
    return part_; 
 }
