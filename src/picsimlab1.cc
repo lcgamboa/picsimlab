@@ -216,7 +216,7 @@ create++;
   
 
   wxStandardPathsBase& stdp = wxStandardPaths::Get();
-  strcpy(home,(char*)stdp.GetUserDataDir().char_str());
+  strncpy(home,(char*)stdp.GetUserDataDir().char_str(),1024);
    
   Configure(control, home);
 };
@@ -240,7 +240,7 @@ CPWindow1::Configure(CControl * control, const char * home)
   picrun=1;
   picpwr=1;
   picrst=0;
-  
+  //TODO: verify initialization errors
    snprintf(fname,1024,"%s/picsimlab.ini",home);
   
    SERIALDEVICE[0]=' ';

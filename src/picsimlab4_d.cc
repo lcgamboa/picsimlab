@@ -125,10 +125,10 @@ CPWindow4::CPWindow4(void)
   spind5.SetVisible(1);
   spind5.SetPopupMenu(NULL);
   spind5.SetValue(10.000000);
-  spind5.SetMin(0.010000);
+  spind5.SetMin(0.0010000);
   spind5.SetMax(200.000000);
-  spind5.SetInc(0.010000);
-  spind5.SetDigits(2);
+  spind5.SetInc(0.0010000);
+  spind5.SetDigits(3);
   spind5.EvOnChangeSpinDouble=EVONCHANGESPINDOUBLE & CPWindow4::spind5_EvOnChangeSpinDouble;
   CreateChild(&spind5);
   //spind6
@@ -147,8 +147,8 @@ CPWindow4::CPWindow4(void)
   spind6.SetValue(0.000000);
   spind6.SetMin(-100.000000);
   spind6.SetMax(100.000000);
-  spind6.SetInc(0.010000);
-  spind6.SetDigits(2);
+  spind6.SetInc(0.001000);
+  spind6.SetDigits(3);
   spind6.EvOnChangeSpinDouble=EVONCHANGESPINDOUBLE & CPWindow4::spind6_EvOnChangeSpinDouble;
   CreateChild(&spind6);
   //togglebutton1

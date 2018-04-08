@@ -199,10 +199,10 @@
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
   <Value type="double">10.000000</Value>
-  <Min type="double">0.010000</Min>
+  <Min type="double">0.001000</Min>
   <Max type="double">200.000000</Max>
-  <Inc type="double">0.010000</Inc>
-  <Digits type="int">2</Digits>
+  <Inc type="double">0.001000</Inc>
+  <Digits type="int">3</Digits>
   <EvOnChangeSpinDouble type="Event">TRUE</EvOnChangeSpinDouble>
 </spind5>
 <spind6>
@@ -231,8 +231,8 @@
   <Value type="double">0.000000</Value>
   <Min type="double">-100.000000</Min>
   <Max type="double">100.000000</Max>
-  <Inc type="double">0.010000</Inc>
-  <Digits type="int">2</Digits>
+  <Inc type="double">0.001000</Inc>
+  <Digits type="int">3</Digits>
   <EvOnChangeSpinDouble type="Event">TRUE</EvOnChangeSpinDouble>
 </spind6>
 <togglebutton1>

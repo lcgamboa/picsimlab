@@ -48,9 +48,9 @@
 */
 
 #ifdef _EXPERIMENTAL_
-const char parts_list[NUM_PARTS][30]={"D. Transfer function", "LEDs", "LCD hd44780", "LCD pcf8833", "LCD pcd8544", "MEM 24CXXX", "Potentiometers", "Push buttons", "RGB LED", "RTC ds1307", "RTC pfc8563", "Servo motor", "Signal Generator", "Step motor","Switchs",};
+const char parts_list[NUM_PARTS][30]={"D. Transfer function", "LCD hd44780", "LCD pcf8833", "LCD pcd8544", "LEDs", "MEM 24CXXX", "Potentiometers", "Push buttons", "RGB LED", "RTC ds1307", "RTC pfc8563", "Servo motor", "Signal Generator", "Step motor","Switchs",};
 #else
-const char parts_list[NUM_PARTS][30]={"LCD hd44780", "LEDs", "LCD pcf8833", "LCD pcd8544", "MEM 24CXXX", "Potentiometers", "Push buttons", "RGB LED", "RTC ds1307", "RTC pfc8563", "Servo motor", "Signal Generator", "Step motor","Switchs",};
+const char parts_list[NUM_PARTS][30]={"LCD hd44780", "LEDs", "Potentiometers", "Push buttons", "RGB LED", "Servo motor", "Step motor","Switchs",};
 #endif
 
 //boards object creation

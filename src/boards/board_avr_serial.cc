@@ -127,7 +127,7 @@ avr_serial_cfg(float serialexbaud)
     }
     */
     
-        serialbaud=serialexbaud; //FIXME 
+        serialbaud=serialexbaud; //FIXME: calculate  
       
           #ifndef _WIN_
           BAUDRATE=B9600;

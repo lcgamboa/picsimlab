@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -97,7 +97,7 @@ CPWindow4::DrawScreen (void)
         draw1.Canvas.SetLineWidth (2);
         for(int t=0;t< (NPOINTS/2)-1;t++)
         {
-          draw1.Canvas.Line (t,gain[0]*ch[0][t]+nivel[0],t+1,gain[0]*ch[0][t+1]+nivel[0]);    
+          draw1.Canvas.Line ((t*xz+xz)-((NPOINTS*(xz-1.0))/4.0),gain[0]*ch[0][t]+nivel[0],((t+1)*xz+xz)-((NPOINTS*(xz-1.0))/4.0),gain[0]*ch[0][t+1]+nivel[0]);    
         }
       }
     draw1.Canvas.SetLineWidth (1);
@@ -120,7 +120,7 @@ CPWindow4::DrawScreen (void)
         draw1.Canvas.SetLineWidth (2);
         for(int t=0;t< (NPOINTS/2)-1;t++)
         {
-          draw1.Canvas.Line (t,gain[1]*ch[1][t]+nivel[1],t+1,gain[1]*ch[1][t+1]+nivel[1]);    
+          draw1.Canvas.Line ((t*xz+xz)-((NPOINTS*(xz-1.0))/4.0),gain[1]*ch[1][t]+nivel[1],((t+1)*xz+xz)-((NPOINTS*(xz-1.0))/4.0),gain[1]*ch[1][t+1]+nivel[1]);    
         }
       }
       draw1.Canvas.SetLineWidth (1);
@@ -147,7 +147,7 @@ CPWindow4::DrawScreen (void)
     //draw toffset level
    
     draw1.Canvas.SetFgColor (255,255,0); 
-    nivel[2]= WMAX-toffset;
+    nivel[2]= ((WMAX-toffset)*xz+xz)-((NPOINTS*(xz-1.0))/4.0);          
     pts[0].y=1;
     pts[0].x=nivel[2]-3;
     pts[1].y=1+3;
@@ -323,14 +323,23 @@ CPWindow4::SetSample(void)
 void
 CPWindow4::spind5_EvOnChangeSpinDouble(CControl * control)
 {
+  //spind5.SetMin ((Dt*WMAX)/10e-3);
+    
   Rt=  ((spind5.GetValue ()*1e-3*10)/WMAX);  
+  
+  if( (Rt/Dt) < 1.0)
+  {
+    xz=Dt/Rt;
+  }
+  else
+    xz=1.0;
   
   spind6.SetMin (-5*spind5.GetValue ());
   spind6.SetMax (5*spind5.GetValue ());
   
   spind6.SetValue (0);
   toffset=250;
-  //printf("Dt=%e Rt=%e  Rt/Dt=%f\n",Dt,Rt,Rt/Dt);
+  //printf("Dt=%e Rt=%e  Rt/Dt=%f   xz=%f\n",Dt,Rt,Rt/Dt,xz);
 };
 
 

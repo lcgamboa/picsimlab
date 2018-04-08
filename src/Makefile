@@ -15,7 +15,7 @@ execdir= ${prefix}/bin/
 FLAGS = -D_VERSION_=\"0.7.0\" -Wall -O3 -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer  `lxrad-config --cxxflags`
 #FLAGS = -D_VERSION_=\"0.7.0\" -Wall -ggdb -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer  `lxrad-config --cxxflags`
 
-FLAGS+= -D_EXPERIMENTAL_
+#FLAGS+= -D_EXPERIMENTAL_
 
 LIBS = `lxrad-config --libs` -lpicsim -lsimavr -lelf
 #LIBS= `wx-config --libs` ../../picsim/src/libpicsim.a ../../LXRAD_WX/libteste/liblxrad.a  ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a 

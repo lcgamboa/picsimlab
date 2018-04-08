@@ -95,6 +95,7 @@ class CPWindow4:public CPWindow
 private:
   double Dt;   
   double Rt;
+  double xz;
   int usetrigger;
   double triggerlv;
   int chpin[2];
