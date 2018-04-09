@@ -191,7 +191,7 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
   
   avr_serial_open(SERIALDEVICE);
   
-  serialexbaud=9600; //FIXME read value from avr 
+  serialexbaud=57600; //FIXME read value from avr 
   serialbaud=avr_serial_cfg(serialexbaud);
 
   return ret;
@@ -813,7 +813,7 @@ board_avr::UpdateSerial(void)
    unsigned char c;
    cont++;
    
-   if(cont > 1000)
+   if(cont > 1000)//FIXME : correct the baud rate
    {
      cont=0;  
      if(avr_serial_rec(&c))

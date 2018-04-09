@@ -515,17 +515,20 @@ void cboard_5::Run_CPU(void)
   const picpin *pins;
   unsigned int alm[40];
        
-  int JUMPSTEPS = Window1.GetJUMPSTEPS(); //number of steps skipped
-  long int NSTEPJ=Window1.GetNSTEPJ()*4.0;  //number of steps in 100ms
+  int JUMPSTEPS = Window1.GetJUMPSTEPS()*4.0; //number of steps skipped
+  long int NSTEPJ=Window1.GetNSTEPJ();  //number of steps in 100ms
 
   long long unsigned int cycle_start;
   int twostep=0;
   
   //reset mean value
+  /*
   for(pi=0;pi < MGetPinCount();pi++)
   {
     alm[pi]=0;
   };
+  */
+  memset(alm,0,MGetPinCount()*sizeof(unsigned int));
 
  //read pic.pins to a local variable to speed up 
 //FIXME pins = pic.pins;
@@ -558,11 +561,13 @@ void cboard_5::Run_CPU(void)
               twostep=1;
           }
         }      
+        
         UpdateSerial();
+
         //avr->sleep_usec=0;
         if(use_oscope)Window4.SetSample();
         if(use_spare)Window5.Process();
-        
+  
         if(j > JUMPSTEPS)//if number of step is bigger than steps to skip 
         {  
           //increment mean value counter if pin is high  
@@ -578,6 +583,7 @@ void cboard_5::Run_CPU(void)
           j=0;//reset counter
         } 
         j++;//counter increment
+        
      }
 
      //calculate mean value
