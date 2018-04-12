@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -410,7 +410,7 @@ void cboard_3::Run_CPU(void)
   
   int JUMPSTEPS = Window1.GetJUMPSTEPS();
   long int NSTEPJ=Window1.GetNSTEPJ();
-   
+ /*  
   for(pi=0;pi < pic.PINCOUNT;pi++)
      {
        alm[pi]=0;
@@ -419,12 +419,17 @@ void cboard_3::Run_CPU(void)
        alm3[pi]=0;
        alm4[pi]=0;
      };
-   
-        
+ */
+     memset(alm,0,40*sizeof(unsigned int));
+     memset(alm1,0,40*sizeof(unsigned int));
+     memset(alm2,0,40*sizeof(unsigned int));
+     memset(alm3,0,40*sizeof(unsigned int));
+     memset(alm4,0,40*sizeof(unsigned int));
+     
  pins = pic.pins;
 
 
- j=JUMPSTEPS+1;
+ j=JUMPSTEPS;
  if(Window1.Get_picpwr())
    for(i=0;i<Window1.GetNSTEP();i++)
       {
@@ -434,7 +439,7 @@ void cboard_3::Run_CPU(void)
           pic_set_pin(35,p_BT3); 
           pic_set_pin(36,p_BT4);
  
-          if(j > JUMPSTEPS)
+          if(j >= JUMPSTEPS)
           {  
           
           rpmc++;
@@ -449,7 +454,7 @@ void cboard_3::Run_CPU(void)
           if(use_oscope)Window4.SetSample();
           if(use_spare)Window5.Process();
           
-          if(j > JUMPSTEPS)
+          if(j >= JUMPSTEPS)
           {  
 /*
         for(pi=0;pi < pic.PINCOUNT;pi++)
@@ -487,7 +492,7 @@ void cboard_3::Run_CPU(void)
             }
      
 
-          j=0;
+          j=-1;
           } 
           j++;
           

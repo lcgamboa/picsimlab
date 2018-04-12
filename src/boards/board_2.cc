@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -155,14 +155,15 @@ void cboard_2::Run_CPU(void)
     
 pins = pic.pins;
   
-
+/*
 for(pi=0;pi < pic.PINCOUNT;pi++)
      {
        alm[pi]=0;
      };
+*/
+     memset(alm,0,18*sizeof(unsigned int));
 
-
- j=JUMPSTEPS+1;
+ j=JUMPSTEPS;
  if(Window1.Get_picpwr())
    for(i=0;i<Window1.GetNSTEP();i++)
       {
@@ -209,15 +210,18 @@ for(pi=0;pi < pic.PINCOUNT;pi++)
         if(use_oscope)Window4.SetSample();
         if(use_spare)Window5.Process();  
         
-          if(j > JUMPSTEPS)
-          {  
+        if( j < pic.PINCOUNT)  
+          alm[j]+=pins[j].value;
+        if(j >= JUMPSTEPS)
+          {
+        /*    
         for(pi=0;pi < pic.PINCOUNT;pi++)
         {
            alm[pi]+=pins[pi].value;
            //if((!pins[pi].dir)&&(pins[pi].value)) lm[pi]++;
         }
-        
-          j=0;
+        */
+          j=-1;
           } 
           j++;
 

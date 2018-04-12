@@ -248,23 +248,27 @@ void cboard_1::Run_CPU(void)
      
   int JUMPSTEPS = Window1.GetJUMPSTEPS();
   long int NSTEPJ=Window1.GetNSTEPJ();
-  
+  /*
   for(i=0;i < pic.PINCOUNT;i++)
   {
      alm[i]=0;
      alm1[i]=0;
      alm2[i]=0;
   };
-
+   */ 
+  memset(alm,0,18*sizeof(unsigned int));
+  memset(alm1,0,18*sizeof(unsigned int));
+  memset(alm2,0,18*sizeof(unsigned int));
+  
     
  pins = pic.pins;
  
- j=JUMPSTEPS+1;
+ j=JUMPSTEPS;
  if(Window1.Get_picpwr())
    for(i=0;i<Window1.GetNSTEP();i++)
       {
  
-          if(j > JUMPSTEPS)
+          if(j >= JUMPSTEPS)
           {  
           pic_set_pin(18,p_BT1); 
           pic_set_pin(1,p_BT2); 
@@ -276,14 +280,18 @@ void cboard_1::Run_CPU(void)
         if(use_oscope)Window4.SetSample();
         if(use_spare)Window5.Process();
         
-          if(j > JUMPSTEPS)
+          if(j < pic.PINCOUNT)
+            alm[j]+=pins[j].value;
+          
+          if(j >= JUMPSTEPS)
           {  
+              /*
         for(pi=0;pi < pic.PINCOUNT;pi++)
         {
            alm[pi]+=pins[pi].value;
            //if((!pins[pi].dir)&&(pins[pi].value)) alm[pi]++;
         }
-        
+        */
           //pull-up extern 
           if((pins[17].dir)&&(p_BT1))alm[17]++; 
           if((pins[0].dir)&&(p_BT2))alm[0]++; 
@@ -298,7 +306,7 @@ void cboard_1::Run_CPU(void)
                 if((pinv)&&(pins[9].value)) alm2[pi]++;
               }
             }
-          j=0;
+          j=-1;
           } 
           j++;
      }

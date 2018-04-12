@@ -521,6 +521,7 @@ void cboard_5::Run_CPU(void)
   long long unsigned int cycle_start;
   int twostep=0;
   
+  int pinc=MGetPinCount();
   //reset mean value
   /*
   for(pi=0;pi < MGetPinCount();pi++)
@@ -528,13 +529,13 @@ void cboard_5::Run_CPU(void)
     alm[pi]=0;
   };
   */
-  memset(alm,0,MGetPinCount()*sizeof(unsigned int));
+  memset(alm,0,pinc*sizeof(unsigned int));
 
  //read pic.pins to a local variable to speed up 
 //FIXME pins = pic.pins;
   pins = MGetPinsValues();
 
- j=JUMPSTEPS+1;//step counter
+ j=JUMPSTEPS;//step counter
  if(Window1.Get_picpwr()) //if powered
    for(i=0; i < (Window1.GetNSTEP()*4);i++) //repeat for number of steps in 100ms
       {
@@ -568,22 +569,19 @@ void cboard_5::Run_CPU(void)
         if(use_oscope)Window4.SetSample();
         if(use_spare)Window5.Process();
   
-        if(j > JUMPSTEPS)//if number of step is bigger than steps to skip 
-        {  
-          //increment mean value counter if pin is high  
-          for(pi=0;pi < MGetPinCount();pi++)
-          {
-           alm[pi]+=pins[pi].value;
-          }
+        //increment mean value counter if pin is high
+        if(j < pinc)
+           alm[j]+=pins[j].value;
         
+        if(j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
+        {  
           //set analog pin 2 (AN0) with value from scroll  
           //pic_set_apin(2,((5.0*(scroll1->GetPosition()))/
           //  (scroll1->GetRange()-1)));
           
-          j=0;//reset counter
+          j=-1;//reset counter
         } 
-        j++;//counter increment
-        
+        j++;//counter increment   
      }
 
      //calculate mean value

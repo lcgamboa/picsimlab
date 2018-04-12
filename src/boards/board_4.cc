@@ -672,7 +672,7 @@ void cboard_4::Run_CPU(void)
   int JUMPSTEPS = Window1.GetJUMPSTEPS();
   long int NSTEPJ=Window1.GetNSTEPJ();  
 
-
+  /*
   for(i=0;i < pic.PINCOUNT;i++)
   {
      alm[i]=0;
@@ -681,17 +681,23 @@ void cboard_4::Run_CPU(void)
      alm3[i]=0;
      alm4[i]=0;
   };
-  
+  */
+     memset(alm,0,40*sizeof(unsigned int));
+     memset(alm1,0,40*sizeof(unsigned int));
+     memset(alm2,0,40*sizeof(unsigned int));
+     memset(alm3,0,40*sizeof(unsigned int));
+     memset(alm4,0,40*sizeof(unsigned int));
+     
   pins = pic.pins;
   
 
-  j=JUMPSTEPS+1;
+  j=JUMPSTEPS;
 
  if(Window1.Get_picpwr())
    for(i=0;i<Window1.GetNSTEP();i++)
       {
 
-        if(j > JUMPSTEPS)
+        if(j >= JUMPSTEPS)
           {     
           pic_set_pin(33,p_BT1); 
           pic_set_pin(34,p_BT2); 
@@ -818,7 +824,7 @@ void cboard_4::Run_CPU(void)
         }
 */
 
-        if(j > JUMPSTEPS)
+        if(j >= JUMPSTEPS)
         {       
 //outputs     
           alm[32]+=pins[32].value;
@@ -883,7 +889,7 @@ void cboard_4::Run_CPU(void)
       if(dip[19])pic_set_apin(3,vp2in);
 
 
-    j=0;
+    j=-1;
     }
     j++;
 

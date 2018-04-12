@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2015-2018  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -481,21 +481,25 @@ void cboard_x::Run_CPU(void)
 
   
   //reset mean value
+  /*
   for(pi=0;pi < pic.PINCOUNT;pi++)
   {
     alm[pi]=0;
   };
+  */
+  memset(alm,0,40*sizeof(unsigned int));
+
 
  //read pic.pins to a local variable to speed up 
  pins = pic.pins;
 
   
- j=JUMPSTEPS+1;//step counter
+ j=JUMPSTEPS;//step counter
  if(Window1.Get_picpwr()) //if powered
    for(i=0;i<Window1.GetNSTEP();i++) //repeat for number of steps in 100ms
       {
  
-        if(j > JUMPSTEPS)//if number of step is bigger than steps to skip 
+        if(j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
         {  
           pic_set_pin(19,p_BT1);//Set pin 19 (RD0) with button state 
           pic_set_pin(20,p_BT2);//Set pin 20 (RD1) with switch state 
@@ -506,19 +510,24 @@ void cboard_x::Run_CPU(void)
         if(use_oscope)Window4.SetSample();
         if(use_spare)Window5.Process();
         
-        if(j > JUMPSTEPS)//if number of step is bigger than steps to skip 
-        {  
+        //increment mean value counter if pin is high 
+        if(j < pic.PINCOUNT)
+          alm[j]+=pins[j].value;
+        
+        if(j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
+        { 
+          /*  
           //increment mean value counter if pin is high  
           for(pi=0;pi < pic.PINCOUNT;pi++)
           {
            alm[pi]+=pins[pi].value;
           }
-        
+          */
           //set analog pin 2 (AN0) with value from scroll  
           pic_set_apin(2,((5.0*(scroll1->GetPosition()))/
             (scroll1->GetRange()-1)));
           
-          j=0;//reset counter
+          j=-1;//reset counter
         } 
         j++;//counter increment
      }

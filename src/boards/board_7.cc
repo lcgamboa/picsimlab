@@ -542,21 +542,25 @@ void cboard_7::Run_CPU(void)
  
   
   //reset mean value
+  /*
   for(pi=0;pi < pic.PINCOUNT;pi++)
   {
     alm[pi]=0;
   };
+  */
+  memset(alm,0,20*sizeof(unsigned int));
+
 
  //read pic.pins to a local variable to speed up 
  pins = pic.pins;
 
   
- j=JUMPSTEPS+1;//step counter
+ j=JUMPSTEPS;//step counter
  if(Window1.Get_picpwr()) //if powered
    for(i=0;i<Window1.GetNSTEP();i++) //repeat for number of steps in 100ms
       {
  
-        if(j > JUMPSTEPS)//if number of step is bigger than steps to skip 
+        if(j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
         {  
           pic_set_pin(6,p_BT1);//Set pin 6 (RC4) with button state 
         } 
@@ -566,19 +570,24 @@ void cboard_7::Run_CPU(void)
         if(use_oscope)Window4.SetSample();
         if(use_spare)Window5.Process();
         
-        if(j > JUMPSTEPS)//if number of step is bigger than steps to skip 
+        //increment mean value counter if pin is high 
+        if(j < pic.PINCOUNT)
+          alm[j]+=pins[j].value;
+        
+        if(j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
         {  
+          /*  
           //increment mean value counter if pin is high  
           for(pi=0;pi < pic.PINCOUNT;pi++)
           {
            alm[pi]+=pins[pi].value;
           }
-          
+          */
           //set analog pin 16 (RC0 AN4) with value from scroll  
           pic_set_apin(16,((5.0*(scroll1->GetPosition()))/
             (scroll1->GetRange()-1)));
           
-          j=0;//reset counter
+          j=-1;//reset counter
         }
         
         j++;//counter increment
