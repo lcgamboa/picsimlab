@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -695,7 +695,7 @@ void lcd_draw(lcd_t * lcd, CCanvas * canvas, int x1,int y1,int w1,int h1,int pic
                  if(cs < 0) cs= 40+(cs%40);
                  if(cs >= 40 )cs=cs%40;
             
-                 if((lcd->ddram[cs+loff][x]  & (0x01<<y))&& (lcd->flags & L_DON))
+                 if((lcd->ddram[(cs+loff)][x]  & (0x01<<y))&& (lcd->flags & L_DON))
                  {  
                     canvas->SetFgColor (0, 35 , 0);
                     canvas->SetColor (0, 35 , 0);
