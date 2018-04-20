@@ -48,9 +48,7 @@ class CPWindow4:public CPWindow
   CButton button2;
   CToggleButton togglebutton3;
   CToggleButton togglebutton4;
-#ifndef __WXX11__
   CColorDialog colordialog1;
-#endif  
   CToggleButton togglebutton5;
   CSpind spind7;
   CCombo combo1;
@@ -68,6 +66,11 @@ class CPWindow4:public CPWindow
   CLabel label9;
   CLabel label10;
   CLabel label11;
+  CButton button3;
+  CToggleButton togglebutton6;
+  CToggleButton togglebutton7;
+  CButton button4;
+  CFileDialog filedialog1;
   /*#Events*/
   void _EvOnDestroy(CControl * control);
   void _EvOnShow(CControl * control);
@@ -82,6 +85,9 @@ class CPWindow4:public CPWindow
   void timer1_EvOnTime(CControl * control);
   void combo2_EvOnComboChange(CControl * control);
   void combo3_EvOnComboChange(CControl * control);
+  void button3_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state);
+  void togglebutton6_EvOnToggleButton(CControl * control);
+  void button4_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state);
 
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!
