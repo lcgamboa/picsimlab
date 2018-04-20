@@ -606,7 +606,4 @@ CPWindow4::button4_EvMouseButtonClick (CControl * control, uint button, uint x, 
       draw1.WriteImgToFile (filedialog1.GetFileName ());
     }
 
-
 };
-
-

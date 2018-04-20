@@ -11,7 +11,7 @@ CPWindow4::CPWindow4(void)
   SetHeight(501);
   SetHint(wxT(""));
   SetEnable(1);
-  SetVisible(1);
+  SetVisible(0);
   SetColor(wxT("#000001"));
   SetPopupMenu(NULL);
   SetTitle(wxT("PICSimLab - Oscilloscope"));
@@ -273,8 +273,8 @@ CPWindow4::CPWindow4(void)
   togglebutton5.SetClass(wxT("CToggleButton"));
   togglebutton5.SetName(wxT("togglebutton5"));
   togglebutton5.SetTag(0);
-  togglebutton5.SetX(865);
-  togglebutton5.SetY(291);
+  togglebutton5.SetX(866);
+  togglebutton5.SetY(280);
   togglebutton5.SetWidth(65);
   togglebutton5.SetHeight(28);
   togglebutton5.SetHint(wxT(""));
@@ -291,8 +291,8 @@ CPWindow4::CPWindow4(void)
   spind7.SetClass(wxT("CSpind"));
   spind7.SetName(wxT("spind7"));
   spind7.SetTag(0);
-  spind7.SetX(862);
-  spind7.SetY(434);
+  spind7.SetX(860);
+  spind7.SetY(420);
   spind7.SetWidth(80);
   spind7.SetHeight(26);
   spind7.SetHint(wxT(""));
@@ -312,8 +312,8 @@ CPWindow4::CPWindow4(void)
   combo1.SetClass(wxT("CCombo"));
   combo1.SetName(wxT("combo1"));
   combo1.SetTag(0);
-  combo1.SetX(859);
-  combo1.SetY(367);
+  combo1.SetX(860);
+  combo1.SetY(344);
   combo1.SetWidth(80);
   combo1.SetHeight(26);
   combo1.SetHint(wxT(""));
@@ -411,8 +411,8 @@ CPWindow4::CPWindow4(void)
   label3.SetClass(wxT("CLabel"));
   label3.SetName(wxT("label3"));
   label3.SetTag(0);
-  label3.SetX(846);
-  label3.SetY(261);
+  label3.SetX(844);
+  label3.SetY(247);
   label3.SetWidth(119);
   label3.SetHeight(20);
   label3.SetHint(wxT(""));
@@ -462,8 +462,8 @@ CPWindow4::CPWindow4(void)
   label6.SetClass(wxT("CLabel"));
   label6.SetName(wxT("label6"));
   label6.SetTag(0);
-  label6.SetX(846);
-  label6.SetY(336);
+  label6.SetX(843);
+  label6.SetY(318);
   label6.SetWidth(122);
   label6.SetHeight(20);
   label6.SetHint(wxT(""));
@@ -479,8 +479,8 @@ CPWindow4::CPWindow4(void)
   label7.SetClass(wxT("CLabel"));
   label7.SetName(wxT("label7"));
   label7.SetTag(0);
-  label7.SetX(841);
-  label7.SetY(403);
+  label7.SetX(837);
+  label7.SetY(390);
   label7.SetWidth(128);
   label7.SetHeight(20);
   label7.SetHint(wxT(""));
