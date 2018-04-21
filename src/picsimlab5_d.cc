@@ -90,6 +90,15 @@ CPWindow5::CPWindow5(void)
   timer1.SetRunState(0);
   timer1.EvOnTime=EVONTIME & CPWindow5::timer1_EvOnTime;
   CreateChild(&timer1);
+  //menu1_File_Newconfiguration
+  menu1_File_Newconfiguration.SetFOwner(this);
+  menu1_File_Newconfiguration.SetClass(wxT("CItemMenu"));
+  menu1_File_Newconfiguration.SetName(wxT("menu1_File_Newconfiguration"));
+  menu1_File_Newconfiguration.SetTag(0);
+  menu1_File_Newconfiguration.SetText(wxT("New configuration"));
+  menu1_File_Newconfiguration.SetSubMenu(NULL);
+  menu1_File_Newconfiguration.EvMenuActive=EVMENUACTIVE & CPWindow5::menu1_File_Newconfiguration_EvMenuActive;
+  menu1_File.CreateChild(&menu1_File_Newconfiguration);
   //menu1_File_Saveconfiguration
   menu1_File_Saveconfiguration.SetFOwner(this);
   menu1_File_Saveconfiguration.SetClass(wxT("CItemMenu"));

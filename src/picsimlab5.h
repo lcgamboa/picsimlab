@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@ class CPWindow5:public CPWindow
   CPMenu pmenu2;
   CItemMenu pmenu2_Properties;
   CTimer timer1;
+  CItemMenu menu1_File_Newconfiguration;
   CItemMenu menu1_File_Saveconfiguration;
   CItemMenu menu1_File_Loadconfiguration;
   CItemMenu pmenu2_Move;
@@ -61,6 +62,7 @@ class CPWindow5:public CPWindow
   void draw1_EvKeyboardRelease(CControl * control, uint key, uint x, uint y,uint mask);
   void pmenu2_Properties_EvMenuActive(CControl * control);
   void timer1_EvOnTime(CControl * control);
+  void menu1_File_Newconfiguration_EvMenuActive(CControl * control);
   void menu1_File_Saveconfiguration_EvMenuActive(CControl * control);
   void menu1_File_Loadconfiguration_EvMenuActive(CControl * control);
   void pmenu2_Move_EvMenuActive(CControl * control);

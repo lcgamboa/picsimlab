@@ -309,6 +309,19 @@ CPWindow5::DeleteParts(void)
     
 }
 
+void
+CPWindow5::menu1_File_Newconfiguration_EvMenuActive(CControl * control)
+{
+  if(partsc > 0)
+  {
+    if( Dialog("Save current configuration?"))
+    {
+       menu1_File_Saveconfiguration_EvMenuActive(control);
+    }
+    DeleteParts();
+  }
+}
+
 
 void
 CPWindow5::menu1_File_Saveconfiguration_EvMenuActive(CControl * control)
@@ -325,6 +338,7 @@ CPWindow5::menu1_File_Saveconfiguration_EvMenuActive(CControl * control)
     SaveConfig(filedialog1.GetFileName());
   } 
 };
+
 
 void
 CPWindow5::menu1_File_Loadconfiguration_EvMenuActive(CControl * control)

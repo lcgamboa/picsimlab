@@ -68,7 +68,7 @@
   <Name type="String">menu1_File</Name>
   <Tag type="int">0</Tag>
   <Text type="String">File</Text>
-  <MenuItems type="MenuItems">Save configuration,Load configuration,</MenuItems>
+  <MenuItems type="MenuItems">New configuration,Save configuration,Load configuration,</MenuItems>
 </menu1_File>
 <menu1_Add>
   <Class type="String">CPMenu</Class>
@@ -100,6 +100,14 @@
   <RunState type="int">0</RunState>
   <EvOnTime type="Event">TRUE</EvOnTime>
 </timer1>
+<menu1_File_Newconfiguration>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_File_Newconfiguration</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">New configuration</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_File_Newconfiguration>
 <menu1_File_Saveconfiguration>
   <Class type="String">CItemMenu</Class>
   <Name type="String">menu1_File_Saveconfiguration</Name>
