@@ -1,0 +1,26 @@
+CC = i686-w64-mingw32-g++
+
+#lxrad automatic generated block start, don't edit below!
+
+FLAGS = -Wall -ggdb `/usr/x86_64-w64-mingw32/bin/wx-config --cxxflags` 
+
+LIBS = `/usr/i686-w64-mingw32/bin/wx-config  --libs` -lws2_32  
+
+OBJS = pespmsim.o espmsim1.o serial.o tcp.o ../LXRAD_WX/libteste/liblxrad.aw32
+
+#lxrad automatic generated block end, don't edit above!
+
+
+all: $(OBJS)
+	$(CC) $(FLAGS) $(OBJS) -oespmsim.exe $(LIBS)
+
+%.o: %.cc
+	$(CC) -c $(FLAGS) $< 
+
+run: all
+	espmsim.exe
+
+install:
+
+clean:
+	rm -f espmsim.exe *.o core

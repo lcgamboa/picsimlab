@@ -1,0 +1,24 @@
+#CC =  x86_64-w64-mingw32-g++
+CC=i686-w64-mingw32-g++
+
+FLAGS = -Wall -ggdb -D_WIN_  `i686-w64-mingw32-msw-unicode-3.0 --cxxflags`
+# -fomit-frame-pointer
+
+OBJS = premota.o remota1.o serial.o ../LXRAD_WX/libteste/liblxrad.aw32
+
+
+all: $(OBJS)
+#	i586-mingw32msvc-windres picsimlab_res.rc  -O coff -o picsimlab_res.o
+#	$(CC) $(FLAGS) $(OBJS) -Wl,--enable-auto-import -oremota.exe  -llxrad  `i686-w64-mingw32-msw-unicode-3.0 --libs`
+	$(CC) $(FLAGS) $(OBJS)  -oremota.exe   `i686-w64-mingw32-msw-unicode-3.0 --libs`
+
+%.o: %.cc
+	$(CC) -c $(FLAGS) $< 
+
+run: all
+	wine ./remota.exe
+
+install:
+
+clean:
+	rm -f remota.exe *.o core 

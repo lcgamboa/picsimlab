@@ -1,0 +1,122 @@
+CPWindow1::CPWindow1(void)
+{
+//lxrad automatic generated block start, don't edit below!
+  SetFOwner(this);
+  SetClass(wxT("CPWindow"));
+  SetName(wxT("window1"));
+  SetTag(0);
+  SetX(448);
+  SetY(174);
+  SetWidth(402);
+  SetHeight(498);
+  SetHint(wxT(""));
+  SetEnable(1);
+  SetVisible(1);
+  SetColor(wxT("#000001"));
+  SetPopupMenu(NULL);
+  SetTitle(wxT("espmsim"));
+  SetOverrideRedirect(0);
+  EvOnCreate=EVONCREATE & CPWindow1::_EvOnCreate;
+  EvOnDestroy=EVONDESTROY & CPWindow1::_EvOnDestroy;
+  //combo1
+  combo1.SetFOwner(this);
+  combo1.SetClass(wxT("CCombo"));
+  combo1.SetName(wxT("combo1"));
+  combo1.SetTag(0);
+  combo1.SetX(61);
+  combo1.SetY(23);
+  combo1.SetWidth(107);
+  combo1.SetHeight(26);
+  combo1.SetHint(wxT(""));
+  combo1.SetEnable(1);
+  combo1.SetVisible(1);
+  combo1.SetColor(wxT("#000001"));
+  combo1.SetPopupMenu(NULL);
+  combo1.SetItems(wxT(""));
+  combo1.SetText(wxT(""));
+  combo1.SetReadOnly(0);
+  CreateChild(&combo1);
+  //togglebutton1
+  togglebutton1.SetFOwner(this);
+  togglebutton1.SetClass(wxT("CToggleButton"));
+  togglebutton1.SetName(wxT("togglebutton1"));
+  togglebutton1.SetTag(0);
+  togglebutton1.SetX(179);
+  togglebutton1.SetY(22);
+  togglebutton1.SetWidth(86);
+  togglebutton1.SetHeight(28);
+  togglebutton1.SetHint(wxT(""));
+  togglebutton1.SetEnable(1);
+  togglebutton1.SetVisible(1);
+  togglebutton1.SetColor(wxT("#000001"));
+  togglebutton1.SetPopupMenu(NULL);
+  togglebutton1.SetText(wxT("Connect"));
+  togglebutton1.SetCheck(0);
+  togglebutton1.EvOnToggleButton=EVONTOGGLEBUTTON & CPWindow1::togglebutton1_EvOnToggleButton;
+  CreateChild(&togglebutton1);
+  //timer1
+  timer1.SetFOwner(this);
+  timer1.SetClass(wxT("CTimer"));
+  timer1.SetName(wxT("timer1"));
+  timer1.SetTag(0);
+  timer1.SetTime(100);
+  timer1.SetRunState(0);
+  timer1.EvOnTime=EVONTIME & CPWindow1::timer1_EvOnTime;
+  CreateChild(&timer1);
+  //text1
+  text1.SetFOwner(this);
+  text1.SetClass(wxT("CText"));
+  text1.SetName(wxT("text1"));
+  text1.SetTag(0);
+  text1.SetX(17);
+  text1.SetY(263);
+  text1.SetWidth(360);
+  text1.SetHeight(170);
+  text1.SetHint(wxT(""));
+  text1.SetEnable(1);
+  text1.SetVisible(1);
+  text1.SetColor(wxT("#000001"));
+  text1.SetPopupMenu(NULL);
+  text1.SetReadOnly(1);
+  CreateChild(&text1);
+  //timer2
+  timer2.SetFOwner(this);
+  timer2.SetClass(wxT("CTimer"));
+  timer2.SetName(wxT("timer2"));
+  timer2.SetTag(0);
+  timer2.SetTime(500);
+  timer2.SetRunState(1);
+  timer2.EvOnTime=EVONTIME & CPWindow1::timer2_EvOnTime;
+  CreateChild(&timer2);
+  //text2
+  text2.SetFOwner(this);
+  text2.SetClass(wxT("CText"));
+  text2.SetName(wxT("text2"));
+  text2.SetTag(0);
+  text2.SetX(17);
+  text2.SetY(73);
+  text2.SetWidth(361);
+  text2.SetHeight(170);
+  text2.SetHint(wxT(""));
+  text2.SetEnable(1);
+  text2.SetVisible(1);
+  text2.SetColor(wxT("#000001"));
+  text2.SetPopupMenu(NULL);
+  text2.SetReadOnly(1);
+  CreateChild(&text2);
+  /*#Others*/
+//lxrad automatic generated block end, don't edit above!
+  CWMODE=3;
+  CIPMUX=0;
+  CIPMODE=0;
+  WCON=0;
+  CIPSERVER=0;
+  PORT=0;
+  SKL=-1;
+  SRVN=0;
+  SCLI[0]=-1;
+  SCLI[1]=-1;
+  SCLI[2]=-1;
+  SCLI[3]=-1;
+  
+};

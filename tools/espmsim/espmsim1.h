@@ -1,0 +1,62 @@
+#ifndef CPWINDOW1 
+#define CPWINDOW1
+
+#ifdef CONSOLE
+#include"cespmsim.h"
+#else
+#include<lxrad/lxrad.h>
+#endif
+
+class CPWindow1:public CPWindow
+{
+  public:
+//lxrad automatic generated block start, don't edit below!
+  /*#Controls*/
+  CCombo combo1;
+  CToggleButton togglebutton1;
+  CTimer timer1;
+  CText text1;
+  CTimer timer2;
+  CText text2;
+  /*#Events*/
+  void _EvOnCreate(CControl * control);
+  void _EvOnDestroy(CControl * control);
+  void togglebutton1_EvOnToggleButton(CControl * control);
+  void timer1_EvOnTime(CControl * control);
+  void timer2_EvOnTime(CControl * control);
+
+  /*#Others*/
+  CPWindow1(void);
+//lxrad automatic generated block end, don't edit above!
+#ifdef LINUX
+  int sfd;//serial descriptor
+#else
+  HANDLE sfd;//serial descriptor
+#endif
+  char buff[500];
+  char * bptr;
+  char blen;
+  
+  int CWMODE;
+  char SSID[64];
+  int WCON;
+  int CIPMUX;
+  int CIPMODE;
+  int CIPSERVER;
+  int PORT;
+  int SKL; //listen socket
+  int SRVN; //connected clients
+  int SCLI[4];//socket of clients
+  
+  char RBUFF[2048];//receive buffer
+  char SBUFF[2048];//send buffer
+  
+  int search_cmd(char * buff, int blen);
+  void execute_cmd(char * cmd);
+
+};
+
+extern CPWindow1 Window1 ;
+
+#endif /*#CPWINDOW1*/
+

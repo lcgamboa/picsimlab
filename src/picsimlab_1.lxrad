@@ -176,7 +176,7 @@
   <Name type="String">menu1_Tools</Name>
   <Tag type="int">0</Tag>
   <Text type="String">Tools</Text>
-  <MenuItems type="MenuItems">Serial Term,</MenuItems>
+  <MenuItems type="MenuItems">Serial Term,Serial Remote Tank,Esp32 Modem Simulator,</MenuItems>
 </menu1_Tools>
 <menu1_Help>
   <Class type="String">CPMenu</Class>
@@ -266,6 +266,24 @@
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_Tools_SerialTerm>
+<menu1_Tools_SerialRemoteTank>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Tools_SerialRemoteTank</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Serial Remote Tank</Text>
+  <Enable type="bool">1</Enable>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Tools_SerialRemoteTank>
+<menu1_Tools_Esp32ModemSimulator>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Tools_Esp32ModemSimulator</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Esp32 Modem Simulator</Text>
+  <Enable type="bool">1</Enable>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Tools_Esp32ModemSimulator>
 <menu1_Help_Contents>
   <Class type="String">CItemMenu</Class>
   <Name type="String">menu1_Help_Contents</Name>

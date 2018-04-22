@@ -802,16 +802,6 @@ CPWindow1::menu1_Modules_Spareparts_EvMenuActive(CControl * control)
 };
 
 
-void
-CPWindow1::menu1_Tools_SerialTerm_EvMenuActive(CControl * control)
-{
-#ifdef _WIN_  
-  wxExecute(share+wxT("/../tools/cutecom/cutecom.exe"));
-#else
-  wxExecute("cutecom");
-#endif  
-};
-
 //Change board
 void
 CPWindow1::menu1_EvBoard(CControl * control)
@@ -1002,6 +992,37 @@ CPWindow1::menu1_File_LoadWorkspace_EvMenuActive(CControl * control)
      
      RemoveDir(home);
   }
+};
+
+void
+CPWindow1::menu1_Tools_SerialTerm_EvMenuActive(CControl * control)
+{
+#ifdef _WIN_  
+  wxExecute(share+wxT("/../tools/cutecom/cutecom.exe"));
+#else
+  wxExecute("cutecom");
+#endif  
+};
+
+
+void
+CPWindow1::menu1_Tools_SerialRemoteTank_EvMenuActive(CControl * control)
+{
+#ifdef _WIN_  
+  wxExecute(share+wxT("remota.exe"));
+#else
+  wxExecute("remota");
+#endif  
+};
+
+void
+CPWindow1::menu1_Tools_Esp32ModemSimulator_EvMenuActive(CControl * control)
+{
+#ifdef _WIN_  
+  wxExecute(share+wxT("espmsim.exe"));
+#else
+  wxExecute("espmsim");
+#endif  
 };
 
 

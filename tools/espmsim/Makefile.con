@@ -1,0 +1,26 @@
+CC = g++
+
+#lxrad automatic generated block start, don't edit below!
+
+FLAGS = -Wall -O2 -DLINUX -DCONSOLE `lxrad-config --cxxflags`
+
+LIBS = `wx-config --libs`  
+
+OBJS = cespmsim.o espmsim1.o serial.o tcp.o ../LXRAD_WX/libteste/liblxrad.a
+
+#lxrad automatic generated block end, don't edit above!
+
+
+all: $(OBJS)
+	$(CC) $(FLAGS) $(OBJS) -ocespmsim $(LIBS)
+
+%.o: %.cc
+	$(CC) -c $(FLAGS) $< 
+
+run: all
+	./cespmsim
+
+install:
+
+clean:
+	rm -f cespmsim *.o core
