@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -62,26 +62,26 @@ typedef struct sockaddr sockaddr;
 #define STOPD  0xFF
 
 
-#define STEP  0x01
-#define RESET 0x05
-#define RUN   0x10
-#define HALT  0x15
-#define GETPC 0x20
-#define SETPC 0x25
-#define SETBK 0x30
-#define STRUN 0x31
-#define GETID 0x35
-#define PROGD 0x40
-#define PROGP 0x45
-#define PROGC 0x50
-#define PROGI 0x55
-#define PROGE 0x57
-#define READD 0x60
+#define STEP   0x01
+#define RESET  0x05
+#define RUN    0x10
+#define HALT   0x15
+#define GETPC  0x20
+#define SETPC  0x25
+#define SETBK  0x30
+#define STRUN  0x31
+#define GETID  0x35
+#define PROGD  0x40
+#define PROGP  0x45
+#define PROGC  0x50
+#define PROGI  0x55
+#define PROGE  0x57
+#define READD  0x60
 #define READDV 0x61
-#define READP 0x65
-#define READC 0x70
-#define READI 0x75
-#define READE 0x80
+#define READP  0x65
+#define READC  0x70
+#define READI  0x75
+#define READE  0x80
 
 
 
@@ -223,14 +223,18 @@ void mplabxd_stop(void)
 #ifdef _DEBUG_
       printf("Debug disconnected!---------------------------------\n"); 
 #endif
-      close (sockfd);
+      if(sockfd >= 0)
+         close (sockfd);
       sockfd=-1; 
 }
 
 
 void mplabxd_end(void)
 {
+  if(server_started)
+  {
     close (listenfd);
+  }
     listenfd=-1;
     server_started=0;
 #ifdef _WIN_
