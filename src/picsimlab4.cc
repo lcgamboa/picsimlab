@@ -535,7 +535,8 @@ CPWindow4::button3_EvMouseButtonClick (CControl * control, uint button, uint x, 
 
   togglebutton5.SetCheck(1); //trigguer
   spind5.SetValue(1.0);//time scale
-  spind6.SetValue(0.0);//time offset
+  spind5_EvOnChangeSpinDouble(control);
+  //spind6.SetValue(0.0);//time offset
   spind7.SetValue(2.5);//trigguer level
   switch (ce)
     {
