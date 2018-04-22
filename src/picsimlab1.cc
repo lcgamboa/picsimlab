@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -316,7 +316,10 @@ CPWindow1::Configure(CControl * control, const char * home)
         {
           combo1.SetText(String::Format("%2.0f",clk));
         }
-        combo1_EvOnComboChange(control);
+        //combo1_EvOnComboChange(control);
+        NSTEP= (int)(atof(combo1.GetText())*NSTEPKT); 
+        NSTEPJ=NSTEP/JUMPSTEPS;
+        pboard->MSetFreq(NSTEP*NSTEPKF); 
       }
       
       if(!strcmp(name,"debug"))
@@ -470,6 +473,7 @@ CPWindow1::combo1_EvOnComboChange(CControl * control)
 
   pboard->MSetFreq(NSTEP*NSTEPKF);       
   Window4.SetBaseTimer();
+  
   
   Application->ProcessEvents();
 };
