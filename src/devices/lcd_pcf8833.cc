@@ -26,8 +26,6 @@
 
 #define dprint if (1) {} else printf
 
-#include <picsim/picsim.h>
-
 #include"lcd_pcf8833.h"
 
 // Philips PCF8833 LCD controller command codes

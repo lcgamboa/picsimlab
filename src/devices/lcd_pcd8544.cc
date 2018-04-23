@@ -26,8 +26,6 @@
 
 #define dprint if (1) {} else printf
 
-#include <picsim/picsim.h>
-
 #include"lcd_pcd8544.h"
 
 

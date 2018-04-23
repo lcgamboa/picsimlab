@@ -1009,7 +1009,7 @@ void
 CPWindow1::menu1_Tools_SerialRemoteTank_EvMenuActive(CControl * control)
 {
 #ifdef _WIN_  
-  wxExecute(share+wxT("remota.exe"));
+  wxExecute(share+wxT("/../remota.exe"));
 #else
   wxExecute("remota");
 #endif  
@@ -1019,7 +1019,7 @@ void
 CPWindow1::menu1_Tools_Esp32ModemSimulator_EvMenuActive(CControl * control)
 {
 #ifdef _WIN_  
-  wxExecute(share+wxT("espmsim.exe"));
+  wxExecute(share+wxT("/../espmsim.exe"));
 #else
   wxExecute("espmsim");
 #endif  
