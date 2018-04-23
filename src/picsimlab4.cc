@@ -257,7 +257,8 @@ CPWindow4::SetSample (void)
 
   const picpin * ppins = Window1.GetBoard ()->MGetPinsValues ();
 
-  if (togglebutton6.GetCheck ())return;
+  //FIXME error on windows 
+  if (!run)return;
 
   if (ppins[chpin[0]].ptype == PT_ANALOG)
     pins[0] = ppins[chpin[0]].avalue;
@@ -574,25 +575,25 @@ CPWindow4::button3_EvMouseButtonClick (CControl * control, uint button, uint x, 
 void
 CPWindow4::togglebutton6_EvOnToggleButton (CControl * control)
 {
-  int status = !togglebutton6.GetCheck ();
-  spind1.SetEnable (status);
-  spind2.SetEnable (status);
-  spind3.SetEnable (status);
-  spind4.SetEnable (status);
-  spind5.SetEnable (status);
-  spind6.SetEnable (status);
-  spind7.SetEnable (status);
-  button1.SetEnable (status);
-  button2.SetEnable (status);
-  button3.SetEnable (status);
-  togglebutton1.SetEnable (status);
-  togglebutton2.SetEnable (status);
-  togglebutton3.SetEnable (status);
-  togglebutton4.SetEnable (status);
-  togglebutton5.SetEnable (status);
-  combo1.SetEnable (status);
-  combo2.SetEnable (status);
-  combo3.SetEnable (status);
+  run = !togglebutton6.GetCheck ();
+  spind1.SetEnable (run);
+  spind2.SetEnable (run);
+  spind3.SetEnable (run);
+  spind4.SetEnable (run);
+  spind5.SetEnable (run);
+  spind6.SetEnable (run);
+  spind7.SetEnable (run);
+  button1.SetEnable (run);
+  button2.SetEnable (run);
+  button3.SetEnable (run);
+  togglebutton1.SetEnable (run);
+  togglebutton2.SetEnable (run);
+  togglebutton3.SetEnable (run);
+  togglebutton4.SetEnable (run);
+  togglebutton5.SetEnable (run);
+  combo1.SetEnable (run);
+  combo2.SetEnable (run);
+  combo3.SetEnable (run);
 };
 
 //save PNG

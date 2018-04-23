@@ -70,7 +70,7 @@ class CPWindow1:public CPWindow
   CItemMenu menu1_Modules_Spareparts;
   CItemMenu menu1_Tools_SerialTerm;
   CItemMenu menu1_Tools_SerialRemoteTank;
-  CItemMenu menu1_Tools_Esp32ModemSimulator;
+  CItemMenu menu1_Tools_Esp8266ModemSimulator;
   CItemMenu menu1_Help_Contents;
   CItemMenu menu1_Help_Examples;
   CItemMenu menu1_Help_About;
@@ -98,7 +98,7 @@ class CPWindow1:public CPWindow
   void menu1_Modules_Spareparts_EvMenuActive(CControl * control);
   void menu1_Tools_SerialTerm_EvMenuActive(CControl * control);
   void menu1_Tools_SerialRemoteTank_EvMenuActive(CControl * control);
-  void menu1_Tools_Esp32ModemSimulator_EvMenuActive(CControl * control);
+  void menu1_Tools_Esp8266ModemSimulator_EvMenuActive(CControl * control);
   void menu1_Help_Contents_EvMenuActive(CControl * control);
   void menu1_Help_Examples_EvMenuActive(CControl * control);
   void menu1_Help_About_EvMenuActive(CControl * control);

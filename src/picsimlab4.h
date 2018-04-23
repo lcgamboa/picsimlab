@@ -106,6 +106,7 @@ private:
   double triggerlv;
   int chpin[2];
   int toffset;
+  int run;
 };
 
 extern CPWindow4 Window4;

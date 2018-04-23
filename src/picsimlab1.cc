@@ -1016,7 +1016,7 @@ CPWindow1::menu1_Tools_SerialRemoteTank_EvMenuActive(CControl * control)
 };
 
 void
-CPWindow1::menu1_Tools_Esp32ModemSimulator_EvMenuActive(CControl * control)
+CPWindow1::menu1_Tools_Esp8266ModemSimulator_EvMenuActive(CControl * control)
 {
 #ifdef _WIN_  
   wxExecute(share+wxT("/../espmsim.exe"));

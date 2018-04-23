@@ -649,4 +649,5 @@ CPWindow4::CPWindow4(void)
   chpin[0]=0;
   chpin[1]=1;
   toffset=250;
+  run=1;
 };

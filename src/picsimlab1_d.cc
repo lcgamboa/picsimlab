@@ -175,7 +175,7 @@ CPWindow1::CPWindow1(void)
   menu1_Tools.SetName(wxT("menu1_Tools"));
   menu1_Tools.SetTag(0);
   menu1_Tools.SetText(wxT("Tools"));
-  menu1_Tools.SetMenuItems(wxT("Serial Term,Serial Remote Tank,Esp32 Modem Simulator,"));
+  menu1_Tools.SetMenuItems(wxT("Serial Term,Serial Remote Tank,Esp8266 Modem Simulator,"));
   menu1.CreateChild(&menu1_Tools);
   //menu1_Help
   menu1_Help.SetFOwner(this);
@@ -285,16 +285,16 @@ CPWindow1::CPWindow1(void)
   menu1_Tools_SerialRemoteTank.SetSubMenu(NULL);
   menu1_Tools_SerialRemoteTank.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Tools_SerialRemoteTank_EvMenuActive;
   menu1_Tools.CreateChild(&menu1_Tools_SerialRemoteTank);
-  //menu1_Tools_Esp32ModemSimulator
-  menu1_Tools_Esp32ModemSimulator.SetFOwner(this);
-  menu1_Tools_Esp32ModemSimulator.SetClass(wxT("CItemMenu"));
-  menu1_Tools_Esp32ModemSimulator.SetName(wxT("menu1_Tools_Esp32ModemSimulator"));
-  menu1_Tools_Esp32ModemSimulator.SetTag(0);
-  menu1_Tools_Esp32ModemSimulator.SetText(wxT("Esp32 Modem Simulator"));
-  menu1_Tools_Esp32ModemSimulator.SetEnable(1);
-  menu1_Tools_Esp32ModemSimulator.SetSubMenu(NULL);
-  menu1_Tools_Esp32ModemSimulator.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Tools_Esp32ModemSimulator_EvMenuActive;
-  menu1_Tools.CreateChild(&menu1_Tools_Esp32ModemSimulator);
+  //menu1_Tools_Esp8266ModemSimulator
+  menu1_Tools_Esp8266ModemSimulator.SetFOwner(this);
+  menu1_Tools_Esp8266ModemSimulator.SetClass(wxT("CItemMenu"));
+  menu1_Tools_Esp8266ModemSimulator.SetName(wxT("menu1_Tools_Esp8266ModemSimulator"));
+  menu1_Tools_Esp8266ModemSimulator.SetTag(0);
+  menu1_Tools_Esp8266ModemSimulator.SetText(wxT("Esp8266 Modem Simulator"));
+  menu1_Tools_Esp8266ModemSimulator.SetEnable(1);
+  menu1_Tools_Esp8266ModemSimulator.SetSubMenu(NULL);
+  menu1_Tools_Esp8266ModemSimulator.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Tools_Esp8266ModemSimulator_EvMenuActive;
+  menu1_Tools.CreateChild(&menu1_Tools_Esp8266ModemSimulator);
   //menu1_Help_Contents
   menu1_Help_Contents.SetFOwner(this);
   menu1_Help_Contents.SetClass(wxT("CItemMenu"));
