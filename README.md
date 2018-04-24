@@ -40,3 +40,7 @@ git clone https://github.com/lcgamboa/picsimlab.git
 cd picsimlab
 ./picsimlab_build_all_and_deps.sh
 ```
+
+### Manual
+
+https://lcgamboa.github.io/picsimlab/
