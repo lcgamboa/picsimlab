@@ -257,7 +257,6 @@ CPWindow4::SetSample (void)
 
   const picpin * ppins = Window1.GetBoard ()->MGetPinsValues ();
 
-  //FIXME error on windows 
   if (!run)return;
 
   if (ppins[chpin[0]].ptype == PT_ANALOG)

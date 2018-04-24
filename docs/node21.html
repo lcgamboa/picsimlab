@@ -1,0 +1,392 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Spare Parts</TITLE>
+<META NAME="description" CONTENT="Spare Parts">
+<META NAME="keywords" CONTENT="picsimlab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="picsimlab.css">
+
+<LINK REL="next" HREF="node22.html">
+<LINK REL="previous" HREF="node20.html">
+<LINK REL="up" HREF="node12.html">
+<LINK REL="next" HREF="node22.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html379"
+  HREF="node22.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html377"
+  HREF="node12.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html371"
+  HREF="node20.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html380"
+  HREF="node22.html">How To's</A>
+<B> Up:</B> <A NAME="tex2html378"
+  HREF="node12.html">English Manual</A>
+<B> Previous:</B> <A NAME="tex2html372"
+  HREF="node20.html">Oscilloscope</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html381"
+  HREF="node21.html#SECTION02910000000000000000">Servo Motor</A>
+<LI><A NAME="tex2html382"
+  HREF="node21.html#SECTION02920000000000000000">Step Motor</A>
+<LI><A NAME="tex2html383"
+  HREF="node21.html#SECTION02930000000000000000">Push Buttons</A>
+<LI><A NAME="tex2html384"
+  HREF="node21.html#SECTION02940000000000000000">Switchs</A>
+<LI><A NAME="tex2html385"
+  HREF="node21.html#SECTION02950000000000000000">LEDs</A>
+<LI><A NAME="tex2html386"
+  HREF="node21.html#SECTION02960000000000000000">Potentiometers</A>
+<LI><A NAME="tex2html387"
+  HREF="node21.html#SECTION02970000000000000000">RGB LED</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION02900000000000000000">
+Spare Parts</A>
+</H1>
+
+<P>
+The PICSimLab has a window that allows the connection of spare parts to the microcontroller, it can be accessed through the menu `` Modules-&gt; Spare parts ''.
+
+<P>
+The main window has the menu with the following functions:
+
+<UL>
+<LI>File
+ 
+<UL>
+<LI>Save configuration - Saves the current settings of the spare parts to an .pcf file
+</LI>
+<LI>Load configuration - Loads the settings of an .pcf file
+</LI>
+</UL>
+</LI>
+<LI>Add
+ 
+<UL>
+<LI>Servo Motor - Adds a servo motor
+</LI>
+<LI>Step Motor - Adds a step motor
+</LI>
+<LI>Push Buttons - Adds 8 push buttons
+</LI>
+<LI>Switchs - Adds 8 switchs
+</LI>
+<LI>LEDs - Adds 8 red LEDs
+</LI>
+<LI>Potentiometers - Adds 4 potentiometers
+</LI>
+<LI>RGB LED - Adds 1 RGB LED
+</LI>
+</UL>
+</LI>
+<LI>Help
+ 
+<UL>
+<LI>Contents - Open Help window
+</LI>
+<LI>About - Show message about author and version
+</LI>
+</UL>
+</LI>
+</UL>
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="970" HEIGHT="490" ALIGN="BOTTOM" BORDER="0"
+ SRC="./spare.png"
+ ALT="Image spare"> 
+
+</DIV> 
+
+<P>
+After adding the part, with a right click of the mouse you can access the options menu of the part with the options:
+
+<UL>
+<LI>Properties - Opens the connection settings window
+</LI>
+<LI>Move - Unlocks the part to move
+</LI>
+<LI>Delete - Remove part
+</LI>
+</UL>
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="273" HEIGHT="470" ALIGN="BOTTOM" BORDER="0"
+ SRC="./spare_pmenu.png"
+ ALT="Image spare_pmenu"> 
+
+</DIV> 
+
+<P>
+
+<H1><A NAME="SECTION02910000000000000000">
+Servo Motor</A>
+</H1>
+
+<P>
+The servo motor is a component that must be activated with a pulse of variable width from 1ms to 2ms every 20 ms.
+A pulse of 1ms positions the servo at -90º, one from 1.5ms to 0º and one from 2ms to 90º.
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="215" HEIGHT="339" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_servo.png"
+ ALT="Image part_servo"> 
+
+</DIV> 
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="879" HEIGHT="366" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_servo_.png"
+ ALT="Image part_servo_"> 
+
+</DIV> 
+
+<P>
+
+<H1><A NAME="SECTION02920000000000000000">
+Step Motor</A>
+</H1>
+
+<P>
+The stepper motor is a component with 4 coils that must be driven in the correct order to rotate the rotor.
+Each step of the motor is 1.8º.
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="272" HEIGHT="342" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_step.png"
+ ALT="Image part_step"> 
+
+</DIV> 
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="1247" HEIGHT="437" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_step_.png"
+ ALT="Image part_step_"> 
+
+</DIV> 
+
+<P>
+
+<H1><A NAME="SECTION02930000000000000000">
+Push Buttons</A>
+</H1>
+
+<P>
+This part consists of 8 push buttons. When pressed the output goes to logic level `` 1 ''.
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="556" HEIGHT="100" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_buttons.png"
+ ALT="Image part_buttons"> 
+
+</DIV> 
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="1260" HEIGHT="291" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_buttons_.png"
+ ALT="Image part_buttons_"> 
+
+</DIV> 
+
+<P>
+
+<H1><A NAME="SECTION02940000000000000000">
+Switchs</A>
+</H1>
+This part consists of 8 keys with on or off position (0 or 1).
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="561" HEIGHT="108" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_switchs.png"
+ ALT="Image part_switchs"> 
+
+</DIV> 
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="1033" HEIGHT="246" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_switchs_.png"
+ ALT="Image part_switchs_"> 
+
+</DIV> 
+
+<P>
+
+<H1><A NAME="SECTION02950000000000000000">
+LEDs</A>
+</H1>
+
+<P>
+This part is a bar of 8 independent red LEDs.
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="560" HEIGHT="103" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_leds.png"
+ ALT="Image part_leds"> 
+
+</DIV> 
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="849" HEIGHT="473" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_leds_.png"
+ ALT="Image part_leds_"> 
+
+</DIV> 
+
+<P>
+
+<H1><A NAME="SECTION02960000000000000000">
+Potentiometers</A>
+</H1>
+
+<P>
+This part is formed by 4 potentiometers connected between 0 and 5 volts, the output is connected to the cursor and varies within this voltage range.
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="315" HEIGHT="215" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_pot.png"
+ ALT="Image part_pot"> 
+
+</DIV> 
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="974" HEIGHT="463" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_pot_.png"
+ ALT="Image part_pot_"> 
+
+</DIV> 
+
+<P>
+
+<H1><A NAME="SECTION02970000000000000000">
+RGB LED</A>
+</H1>
+
+<P>
+This part consists of a 4-pin RGB LED. Each color can be triggered independently.
+Using PWM it is possible to generate several colors by combining the 3 primary colors. 
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="165" HEIGHT="126" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_rgb.png"
+ ALT="Image part_rgb"> 
+
+</DIV> 
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="689" HEIGHT="294" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_rgb_.png"
+ ALT="Image part_rgb_"> 
+
+</DIV> 
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html379"
+  HREF="node22.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html377"
+  HREF="node12.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html371"
+  HREF="node20.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html380"
+  HREF="node22.html">How To's</A>
+<B> Up:</B> <A NAME="tex2html378"
+  HREF="node12.html">English Manual</A>
+<B> Previous:</B> <A NAME="tex2html372"
+  HREF="node20.html">Oscilloscope</A></DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+Luis Claudio Gamboa Lopes
+2018-02-09
+</ADDRESS>
+</BODY>
+</HTML>
