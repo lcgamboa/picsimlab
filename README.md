@@ -41,6 +41,6 @@ cd picsimlab
 ./picsimlab_build_all_and_deps.sh
 ```
 
-### Manual
+## Manual
 
 https://lcgamboa.github.io/picsimlab/
