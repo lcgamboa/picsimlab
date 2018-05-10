@@ -460,6 +460,8 @@ board_avr::read_ihx_avr(const char * fname, int leeprom)
       fgets(line,256,fin);
       lc++;
   
+      if(strlen(line) == 0) continue;
+      
       /*for dos file*/ 
       if(line[strlen(line)-2]=='\r')
       {
