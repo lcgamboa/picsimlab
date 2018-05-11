@@ -26,6 +26,8 @@
 
 #include"../picsimlab1.h"
 
+#define dprint if (1) {} else printf
+
 //system headers dependent
 #ifndef _WIN_
 #include<sys/types.h>
@@ -148,6 +150,7 @@ int mplabxd_init(void)
 
 if(!server_started)
 {
+  dprint("mplabxd_init\n");	
 #ifdef _WIN_
   WSAStartup (wVersionRequested, &wsaData);
   if (wsaData.wVersion != wVersionRequested)
@@ -211,20 +214,19 @@ int  mplabxd_start(void)
 
 
     setnblock(sockfd);
-#ifdef _DEBUG_
-    printf("Debug connected!---------------------------------\n"); 
-#endif
+    dprint("Debug connected!---------------------------------\n"); 
    return 0;
 }
 
 
 void mplabxd_stop(void)
 {
-#ifdef _DEBUG_
-      printf("Debug disconnected!---------------------------------\n"); 
-#endif
+      dprint("Debug disconnected!---------------------------------\n"); 
       if(sockfd >= 0)
+      {
+         shutdown (sockfd, SHUT_RDWR);
          close (sockfd);
+      }
       sockfd=-1; 
 }
 
@@ -233,6 +235,9 @@ void mplabxd_end(void)
 {
   if(server_started)
   {
+    mplabxd_stop();
+    dprint("mplabxd_end\n");	
+    shutdown (listenfd, SHUT_RDWR);
     close (listenfd);
   }
     listenfd=-1;
@@ -255,9 +260,7 @@ int i;
       {
         if((pic->pc == bp[i])&&(pic->s2 == 0))
         {
-#ifdef _DEBUG_
-          printf("breakpoint 0x%04X!!!!!=========================\n",bp[i]);
-#endif
+          dprint("breakpoint 0x%04X!!!!!=========================\n",bp[i]);
           Window1.SetCpuState(CPU_BREAKPOINT);
           Window1.Set_picdbg(1);
           return Window1.Get_picdbg();
@@ -295,24 +298,19 @@ int mplabxd_loop(void)
       setblock(sockfd);
 
         
-#ifdef _DEBUG_
-      printf("cmd %02X  ",cmd);
-      fflush(stdout);  
-#endif     
+      dprint("cmd %02X  ",cmd);
+      //fflush(stdout);  
+      
       reply=0x00; 
 
        switch(cmd)
        {
          case STARTD:
-#ifdef _DEBUG_
-	   printf("STARTD cmd ----------------------\n");
-#endif
+	   dprint("STARTD cmd ----------------------\n");
            Window1.Set_picdbg(1);  	
            break;
          case STOPD:
-#ifdef _DEBUG_
-	   printf("STOPD cmd -----------------------\n");
-#endif
+	   dprint("STOPD cmd -----------------------\n");
            ret=1;
            Window1.Set_picdbg(0); 	
            Window1.SetCpuState(CPU_RUNNING);
@@ -320,18 +318,14 @@ int mplabxd_loop(void)
            Window1.SetJUMPSTEPS(DEFAULTJS);
            break;
          case STEP:
-#ifdef _DEBUG_
-	   printf("STEP cmd\n");
-#endif
+	   dprint("STEP cmd\n");
            pic_step();
            if(pic->s2 == 1)pic_step();
            Window1.SetCpuState(CPU_STEPPING);
            break;
          case RESET:
            Window1.Set_picdbg(1);
-#ifdef _DEBUG_
-	   printf("RESET cmd\n");
-#endif
+	   dprint("RESET cmd\n");
            if(pic->s2 == 1)pic_step();
            pic_reset(1);
            pic_step();
@@ -340,9 +334,7 @@ int mplabxd_loop(void)
          case RUN:
            Window1.Set_picdbg(0);
            Window1.SetJUMPSTEPS(DEFAULTJS);
-#ifdef _DEBUG_
-	   printf("RUN cmd\n");	
-#endif
+	   dprint("RUN cmd\n");	
            pic_step();//to go out break point
            Window1.SetCpuState(CPU_RUNNING);
            break;
@@ -350,15 +342,11 @@ int mplabxd_loop(void)
            Window1.Set_picdbg(1);
            if(pic->s2 == 1)pic_step();
            Window1.SetJUMPSTEPS(1);
-#ifdef _DEBUG_
-	   printf("HALT cmd\n");	
-#endif
+	   dprint("HALT cmd\n");	
            Window1.SetCpuState(CPU_HALTED);
            break;
          case GETPC:
-#ifdef _DEBUG_
-	   printf("GETPC %04Xcmd\n",pic->pc);	
-#endif
+	   dprint("GETPC %04Xcmd\n",pic->pc);	
            if (send (sockfd,(char *)&pic->pc, 2, 0) != 2)
            { 
              printf ("send error : %s \n", strerror (errno));
@@ -373,9 +361,7 @@ int mplabxd_loop(void)
              ret=1;
              reply=0x01; 
            };
-#ifdef _DEBUG_
-	   printf("SETPC cmd\n");	
-#endif
+	   dprint("SETPC cmd\n");	
            break;
          case SETBK:
            if ((n = recv (sockfd, (char *)&bpc, 2,MSG_WAITALL )) != 2)
@@ -384,9 +370,7 @@ int mplabxd_loop(void)
              ret=1;
              reply=0x01; 
            };
-#ifdef _DEBUG_
-           printf("bp count =%i\n",bpc);  
-#endif
+           dprint("bp count =%i\n",bpc);  
            if(bpc >=100)bpc=100;
            if(bpc > 0)
            {
@@ -400,10 +384,8 @@ int mplabxd_loop(void)
              for(i=0;i<bpc;i++)
                printf("bp %i = %#06X\n",i,bp[i]);
 #endif
-           }
-#ifdef _DEBUG_
-	   printf("SETBK cmd\n");	
-#endif
+	   }
+	   dprint("SETBK cmd\n");	
            break;
          case STRUN:
            i=Window1.Get_picdbg();  
@@ -413,14 +395,10 @@ int mplabxd_loop(void)
              ret=1;
              reply=0x01; 
            };
-#ifdef _DEBUG_
-	   printf("STRUN cmd =%i\n",Window1.Get_picdbg());	
-#endif
+	   dprint("STRUN cmd =%i\n",Window1.Get_picdbg());	
            break;
          case GETID:
-#ifdef _DEBUG_
-	   printf("GETID cmd\n");	
-#endif
+	   dprint("GETID cmd\n");	
            if (send (sockfd, (char *)&pic->processor, 2, 0) != 2)
            { 
              printf ("send error : %s \n", strerror (errno));
@@ -435,9 +413,7 @@ int mplabxd_loop(void)
              ret=1;
              reply=0x01; 
            };
-#ifdef _DEBUG_
-	   printf("PROGD cmd\n");	
-#endif
+	   dprint("PROGD cmd\n");	
            break;
          case PROGP:
            if ((n = recv (sockfd, (char *)pic->prog, 2*pic->ROMSIZE,MSG_WAITALL )) != 2*(int)pic->ROMSIZE)
@@ -448,8 +424,8 @@ int mplabxd_loop(void)
            };
 #ifdef _DEBUG_
            for(i=0;i< (int)pic->ROMSIZE;i++)printf("%#02X ",pic->prog[i]);
-	   printf("PROGP cmd  %i of %i\n",n,2*pic->ROMSIZE);	
 #endif
+	   dprint("PROGP cmd  %i of %i\n",n,2*pic->ROMSIZE);	
            break;
          case PROGC:
            if ((n = recv (sockfd, (char *)pic->config, 2*pic->CONFIGSIZE,MSG_WAITALL )) !=  2*(int)pic->CONFIGSIZE)
@@ -460,8 +436,8 @@ int mplabxd_loop(void)
            };
 #ifdef _DEBUG_
            for(i=0;i< (int)pic->CONFIGSIZE;i++)printf("%#02X ",pic->config[i]);
-	   printf("PROGC cmd  %i of %i\n",n,2*pic->CONFIGSIZE);	
 #endif
+	   dprint("PROGC cmd  %i of %i\n",n,2*pic->CONFIGSIZE);	
            break;
          case PROGI:
            if ((n = recv (sockfd, (char *)pic->id, 2*pic->IDSIZE,MSG_WAITALL )) !=  2*(int)pic->IDSIZE)
@@ -472,8 +448,8 @@ int mplabxd_loop(void)
            };   
 #ifdef _DEBUG_
            for(i=0;i< (int)pic->IDSIZE;i++)printf("%#02X ",pic->id[i]);
-	   printf("PROGI cmd\n");	
 #endif
+	   dprint("PROGI cmd\n");	
            break;
          case PROGE:
            if ((n = recv (sockfd, (char *)pic->eeprom, pic->EEPROMSIZE,MSG_WAITALL )) !=  (int)pic->EEPROMSIZE)
@@ -484,8 +460,8 @@ int mplabxd_loop(void)
            };   
 #ifdef _DEBUG_
            for(i=0;i< (int)pic->EEPROMSIZE;i++)printf("%#02X ",pic->eeprom[i]);
-	   printf("PROGE cmd\n");	
 #endif
+	   dprint("PROGE cmd\n");	
            break;           
          case READD:
            if (send (sockfd, (char *)pic->ram, pic->RAMSIZE, 0) != (int)pic->RAMSIZE)
@@ -494,9 +470,7 @@ int mplabxd_loop(void)
              ret=1;
              reply=0x01; 
            };
-#ifdef _DEBUG_
-	   printf("READD cmd\n");	
-#endif
+	   dprint("READD cmd\n");	
            break;
          case READDV:
            if ((n = recv (sockfd, (char *)&bp, 4,MSG_WAITALL )) != 4)
@@ -505,18 +479,14 @@ int mplabxd_loop(void)
              ret=1;
              reply=0x01; 
            };
-#ifdef _DEBUG_
-           printf("address=%02X  values=%i \n",bp[0],bp[1]);  
-#endif
+           dprint("address=%02X  values=%i \n",bp[0],bp[1]);  
            if (send (sockfd, (char *)&pic->ram[bp[0]], bp[1], 0) != bp[1])
            { 
              printf ("send error : %s \n", strerror (errno));
              ret=1;
              reply=0x01; 
            };
-#ifdef _DEBUG_
-	   printf("READDV cmd\n");	
-#endif
+	   dprint("READDV cmd\n");	
            break;
          case READP:
            if (send (sockfd, (char *)pic->prog, 2*pic->ROMSIZE, 0) !=  2*(int)pic->ROMSIZE)
@@ -525,9 +495,7 @@ int mplabxd_loop(void)
              ret=1;
              reply=0x01; 
            };
-#ifdef _DEBUG_
-	   printf("READP cmd\n");	
-#endif
+	   dprint("READP cmd\n");	
            break;
          case READC:  
            if (send (sockfd, (char *)pic->config, 2*pic->CONFIGSIZE, 0) !=  2*(int)pic->CONFIGSIZE)
@@ -536,9 +504,7 @@ int mplabxd_loop(void)
              ret=1;
              reply=0x01; 
            };   
-#ifdef _DEBUG_
-	   printf("READC cmd\n");	
-#endif
+	   dprint("READC cmd\n");	
            break;
          case READI: 
            if (send (sockfd, (char *)pic->id, 2*pic->IDSIZE, 0) !=  2*(int)pic->IDSIZE)
@@ -547,9 +513,7 @@ int mplabxd_loop(void)
              ret=1;
              reply=0x01; 
            };   
-#ifdef _DEBUG_
-	   printf("READI cmd\n");	
-#endif
+	   dprint("READI cmd\n");	
            break;
          case READE: 
            if (send (sockfd, (char *)pic->eeprom, pic->EEPROMSIZE, 0) !=  (int)pic->EEPROMSIZE)
@@ -558,14 +522,10 @@ int mplabxd_loop(void)
              ret=1;
              reply=0x01; 
            };   
-#ifdef _DEBUG_
-	   printf("READI cmd\n");	
-#endif
+	   dprint("READI cmd\n");	
            break;           
          default:
-#ifdef _DEBUG_
-	   printf("UNKNOWN cmd !!!!!!!!!!!!!\n");	
-#endif
+	   dprint("UNKNOWN cmd !!!!!!!!!!!!!\n");	
            break;
       }
 
