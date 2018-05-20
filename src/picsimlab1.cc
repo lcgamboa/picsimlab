@@ -1000,7 +1000,7 @@ CPWindow1::menu1_Tools_SerialTerm_EvMenuActive(CControl * control)
 #ifdef _WIN_  
   wxExecute(share+wxT("/../tools/cutecom/cutecom.exe"));
 #else
-  wxExecute("cutecom");
+  wxExecute("cutecom",wxEXEC_MAKE_GROUP_LEADER );
 #endif  
 };
 
@@ -1011,7 +1011,7 @@ CPWindow1::menu1_Tools_SerialRemoteTank_EvMenuActive(CControl * control)
 #ifdef _WIN_  
   wxExecute(share+wxT("/../remota.exe"));
 #else
-  wxExecute("remota");
+  wxExecute("remota",wxEXEC_MAKE_GROUP_LEADER );
 #endif  
 };
 
@@ -1021,7 +1021,7 @@ CPWindow1::menu1_Tools_Esp8266ModemSimulator_EvMenuActive(CControl * control)
 #ifdef _WIN_  
   wxExecute(share+wxT("/../espmsim.exe"));
 #else
-  wxExecute("espmsim");
+  wxExecute("espmsim",wxEXEC_MAKE_GROUP_LEADER );
 #endif  
 };
 

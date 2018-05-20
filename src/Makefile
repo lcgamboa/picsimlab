@@ -12,10 +12,10 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-FLAGS = -D_VERSION_=\"0.7.0\" -Wall -O3 -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer  `lxrad-config --cxxflags`
-#FLAGS = -D_VERSION_=\"0.7.0\" -Wall -ggdb -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer  `lxrad-config --cxxflags`
+override CFLAGS += -D_VERSION_=\"0.7.0\" -Wall -O3 -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer  `lxrad-config --cxxflags`
+#CFLAGS = -D_VERSION_=\"0.7.0\" -Wall -ggdb -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer  `lxrad-config --cxxflags`
 
-#FLAGS+= -D_EXPERIMENTAL_
+#CFLAGS+= -D_EXPERIMENTAL_
 
 LIBS = `lxrad-config --libs` -lpicsim -lsimavr -lelf
 #LIBS= `wx-config --libs` ../../picsim/src/libpicsim.a ../../LXRAD_WX/libteste/liblxrad.a  ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a 
@@ -25,10 +25,10 @@ OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimla
 #lxrad automatic generated block end, don't edit above!
 
 all: $(OBJS)
-	$(CC) $(FLAGS) $(OBJS) -opicsimlab $(LIBS) 
+	$(CC) $(CFLAGS) $(OBJS) -opicsimlab $(LIBS) 
 
 %.o: %.cc
-	$(CC) -c $(FLAGS) $< -o $@ 
+	$(CC) -c $(CFLAGS) $< -o $@ 
 
 install: all
 	${MKDIR} ${sharedir}

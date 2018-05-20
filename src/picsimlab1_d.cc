@@ -270,7 +270,7 @@ CPWindow1::CPWindow1(void)
   menu1_Tools_SerialTerm.SetClass(wxT("CItemMenu"));
   menu1_Tools_SerialTerm.SetName(wxT("menu1_Tools_SerialTerm"));
   menu1_Tools_SerialTerm.SetTag(0);
-  menu1_Tools_SerialTerm.SetText(wxT("Serial Term"));
+  menu1_Tools_SerialTerm.SetText(wxT("Serial Terminal"));
   menu1_Tools_SerialTerm.SetEnable(1);
   menu1_Tools_SerialTerm.SetSubMenu(NULL);
   menu1_Tools_SerialTerm.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Tools_SerialTerm_EvMenuActive;

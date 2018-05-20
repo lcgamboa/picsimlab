@@ -33,7 +33,7 @@
 #ifdef _EXPERIMENTAL_
 #define NUM_PARTS 15
 #else
-#define NUM_PARTS 8
+#define NUM_PARTS 10
 #endif
 
 extern const char parts_list[NUM_PARTS][30];

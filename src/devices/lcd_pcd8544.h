@@ -30,8 +30,8 @@
 #include<lxrad/lxrad.h>
 
 /* pinout
-  1 RST
-  2 CE
+  1 /RST
+  2 /CE
   3 DC
   4 DIN
   5 CLK

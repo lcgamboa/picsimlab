@@ -261,7 +261,7 @@
   <Class type="String">CItemMenu</Class>
   <Name type="String">menu1_Tools_SerialTerm</Name>
   <Tag type="int">0</Tag>
-  <Text type="String">Serial Term</Text>
+  <Text type="String">Serial Terminal</Text>
   <Enable type="bool">1</Enable>
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>

@@ -28,6 +28,10 @@
 
 #define dprint if (1) {} else printf
 
+
+#ifndef _POSIX_SOURCE
+#define _POSIX_SOURCE
+#endif
 //system headers dependent
 #ifndef _WIN_
 #include<sys/types.h>
