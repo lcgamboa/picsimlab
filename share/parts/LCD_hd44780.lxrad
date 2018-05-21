@@ -276,7 +276,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Pin - Vee:      POT</Text>
+  <Text type="String">Pin 3 - Vee:    POT</Text>
   <Align type="CAlign">1</Align>
 </label3>
 <label4>

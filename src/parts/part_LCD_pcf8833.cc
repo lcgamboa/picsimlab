@@ -94,19 +94,19 @@ void cpart_LCD_pcf8833::Draw(void)
            canvas.SetColor (49, 61, 99);
            canvas.Rectangle (1,output[i].x1,output[i].y1,output[i].x2-output[i].x1,output[i].y2-output[i].y1);
            canvas.SetFgColor (155, 155, 155);
-           canvas.RotatedText ("GND",output[i].x1,output[i].y2, 90.0);
+           canvas.RotatedText ("3.3V",output[i].x1,output[i].y2, 90.0);
 	   break;  
 	 case O_F2:
            canvas.SetColor (49, 61, 99);
            canvas.Rectangle (1,output[i].x1,output[i].y1,output[i].x2-output[i].x1,output[i].y2-output[i].y1);
            canvas.SetFgColor (155, 155, 155);
-           canvas.RotatedText ("+5V",output[i].x1,output[i].y2, 90.0);
+           canvas.RotatedText ("3.3V",output[i].x1,output[i].y2, 90.0);
 	   break;  
 	 case O_F3:
            canvas.SetColor (49, 61, 99);
            canvas.Rectangle (1,output[i].x1,output[i].y1,output[i].x2-output[i].x1,output[i].y2-output[i].y1);
            canvas.SetFgColor (155, 155, 155);
-           canvas.RotatedText ("POT",output[i].x1,output[i].y2, 90.0);
+           canvas.RotatedText ("GND",output[i].x1,output[i].y2, 90.0);
 	   break;  
 	 case O_F4:
            canvas.SetColor (49, 61, 99);
@@ -118,7 +118,7 @@ void cpart_LCD_pcf8833::Draw(void)
            canvas.SetColor (49, 61, 99);
            canvas.Rectangle (1,output[i].x1,output[i].y1,output[i].x2-output[i].x1,output[i].y2-output[i].y1);
            canvas.SetFgColor (155, 155, 155);
-           canvas.RotatedText ("GND",output[i].x1,output[i].y2, 90.0);
+           canvas.RotatedText ("6V",output[i].x1,output[i].y2, 90.0);
 	   break;           
          case O_LCD:
          //draw lcd text 

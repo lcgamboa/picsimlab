@@ -96,13 +96,13 @@ void cpart_LCD_pcd8544::Draw(void)
            canvas.SetColor (49, 61, 99);
            canvas.Rectangle (1,output[i].x1,output[i].y1,output[i].x2-output[i].x1,output[i].y2-output[i].y1);
            canvas.SetFgColor (155, 155, 155);
-           canvas.RotatedText ("VCC",output[i].x1,output[i].y2, 90.0);
+           canvas.RotatedText ("3.3V",output[i].x1,output[i].y2, 90.0);
 	   break;  
 	 case O_F2:
            canvas.SetColor (49, 61, 99);
            canvas.Rectangle (1,output[i].x1,output[i].y1,output[i].x2-output[i].x1,output[i].y2-output[i].y1);
            canvas.SetFgColor (155, 155, 155);
-           canvas.RotatedText ("BL",output[i].x1,output[i].y2, 90.0);
+           canvas.RotatedText ("3.3V",output[i].x1,output[i].y2, 90.0);
 	   break;  
 	 case O_F3:
            canvas.SetColor (49, 61, 99);
