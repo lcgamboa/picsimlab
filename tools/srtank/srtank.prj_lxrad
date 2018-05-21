@@ -1,7 +1,8 @@
 <LXRAD_Project>
   <Version type="String">0.8</Version>
-  <PName type="String">remota</PName>
+  <PName type="String">srtank</PName>
   <POptions type="String">-Wall -O2</POptions>
+  <PLibs type="String"> </PLibs>
   <PIncludeFile type="String"> serial.o</PIncludeFile>
   <PNW type="String">1</PNW>
 </LXRAD_Project>

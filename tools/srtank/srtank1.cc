@@ -1,5 +1,5 @@
-#include"remota1.h"
-#include"remota1_d.cc"
+#include"srtank1.h"
+#include"srtank1_d.cc"
 
 CPWindow1 Window1;
 
@@ -88,7 +88,7 @@ CPWindow1::button1_EvMouseButtonClick(CControl * control, uint button, uint x, u
      conectado=0;  
      sclose();
      combo1.SetEnable(1);
-     button1.SetText(wxT("Conectar"));
+     button1.SetText(wxT("Connect"));
       
      edit1.SetEnable(1);
      edit2.SetEnable(1);
@@ -120,7 +120,7 @@ CPWindow1::button1_EvMouseButtonClick(CControl * control, uint button, uint x, u
       scfg();
       conectado=1;
       combo1.SetEnable(0);
-      button1.SetText(wxT("Desconectar"));
+      button1.SetText(wxT("Disconnect"));
 
       edit1.SetEnable(0);
       edit2.SetEnable(0);
@@ -144,8 +144,8 @@ CPWindow1::button1_EvMouseButtonClick(CControl * control, uint button, uint x, u
     }
     else
     {
-      Message(wxT(" Erro abrindo porta: ")+combo1.GetText());
-      text1.AddLine(wxT(" Erro abrindo porta: ")+combo1.GetText());
+      Message(wxT(" Error open serial port: ")+combo1.GetText());
+      text1.AddLine(wxT(" Error open serial port: ")+combo1.GetText());
     };
   }
 
@@ -366,7 +366,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
        {
          idig[buff[0]&0x07]= buff[1] != 0;    
          bc=0;
-         str.Printf(wxT("  Escrita Digital %d = %d \n"),buff[0]&0x07,idig[buff[0]&0x07]);
+         str.Printf(wxT("  Digital Write %d = %d \n"),buff[0]&0x07,idig[buff[0]&0x07]);
          line+=str; 
          text1.AddLine(line);
          line="";
@@ -378,7 +378,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
          ssend(odig[buff[0]&0x07]);
          str.Printf(wxT("<%02x "),odig[buff[0]&0x07]);
          line+=str;
-         str.Printf(wxT("  Leitura Digital %d = %d \n"),buff[0]&0x07,odig[buff[0]&0x07]);
+         str.Printf(wxT("  Digital Read %d = %d \n"),buff[0]&0x07,odig[buff[0]&0x07]);
          line+=str;
          bc=0;
          text1.AddLine(line);
@@ -390,7 +390,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
        {
         iana[buff[0]&0x03]= buff[1]<<8|buff[2];    
         bc=0;
-        str.Printf(wxT("  Escrita Analógica %d = %d \n"),buff[0]&0x03,iana[buff[0]&0x03]);
+        str.Printf(wxT("  Analog Write %d = %d \n"),buff[0]&0x03,iana[buff[0]&0x03]);
         line+=str;
         text1.AddLine(line);
         line="";
@@ -405,7 +405,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
          ssend((oana[buff[0]&0x03]&0x00FF));
          str.Printf(wxT("<%02x "),(oana[buff[0]&0x03]&0x00FF));
          line+=str;
-         str.Printf(wxT("  Leitura Analógica %d = %d \n"),buff[0]&0x03,oana[buff[0]&0x03]);
+         str.Printf(wxT("  Analog Read %d = %d \n"),buff[0]&0x03,oana[buff[0]&0x03]);
          line+=str;
          bc=0;
          text1.AddLine(line);
@@ -413,9 +413,9 @@ CPWindow1::timer1_EvOnTime(CControl * control)
        }
        break;
       default:
-         text1.AddLine(wxT("!!!!!!!!!!!!!!!!!!!! ")+line+wxT("commando desconhecido !!!!!!!!!!!!!!!\n"));
+         text1.AddLine(wxT("!!!!!!!!!!!!!!!!!!!! ")+line+wxT("  Unknown command !!!!!!!!!!!!!!!\n"));
          line="";
-         //printf("cmd unknown !!!!!!!!\n");
+         //printf("  Unknown command!!!!!!!!\n");
          bc=0;
        break;
     }

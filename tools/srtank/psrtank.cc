@@ -1,5 +1,5 @@
 #include<lxrad/lxrad.h>
-#include"remota1.h"
+#include"srtank1.h"
 
 //Program____________________________________________________________
 

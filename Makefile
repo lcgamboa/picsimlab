@@ -2,7 +2,7 @@
 FILE=Makefile
 
 
-SUBDIRS= src tools/espmsim tools/remota
+SUBDIRS= src tools/espmsim tools/srtank
 
 .PHONY: $(SUBDIRS)  
 

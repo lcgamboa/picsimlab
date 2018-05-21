@@ -1009,9 +1009,9 @@ void
 CPWindow1::menu1_Tools_SerialRemoteTank_EvMenuActive(CControl * control)
 {
 #ifdef _WIN_  
-  wxExecute(share+wxT("/../remota.exe"));
+  wxExecute(share+wxT("/../srtank.exe"));
 #else
-  wxExecute("remota",wxEXEC_MAKE_GROUP_LEADER );
+  wxExecute("srtank",wxEXEC_MAKE_GROUP_LEADER );
 #endif  
 };
 

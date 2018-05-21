@@ -4,15 +4,16 @@ CPWindow1::CPWindow1(void)
   SetClass(wxT("CPWindow"));
   SetName(wxT("window1"));
   SetTag(0);
-  SetX(455);
-  SetY(70);
+  SetX(272);
+  SetY(55);
   SetWidth(652);
   SetHeight(600);
   SetHint(wxT(""));
   SetEnable(1);
   SetVisible(1);
+  SetColor(wxT("#000001"));
   SetPopupMenu(NULL);
-  SetTitle(wxT("remota"));
+  SetTitle(wxT("Serial Remote Tank"));
   SetOverrideRedirect(0);
   EvOnCreate=EVONCREATE & CPWindow1::_EvOnCreate;
   EvOnDestroy=EVONDESTROY & CPWindow1::_EvOnDestroy;
@@ -28,6 +29,7 @@ CPWindow1::CPWindow1(void)
   draw1.SetHint(wxT(""));
   draw1.SetEnable(1);
   draw1.SetVisible(1);
+  draw1.SetColor(wxT("#000001"));
   draw1.SetPopupMenu(NULL);
   draw1.EvMouseButtonPress=EVMOUSEBUTTONPRESS & CPWindow1::draw1_EvMouseButtonPress;
   draw1.SetTransparent(0);
@@ -45,9 +47,10 @@ CPWindow1::CPWindow1(void)
   button1.SetHint(wxT(""));
   button1.SetEnable(1);
   button1.SetVisible(1);
+  button1.SetColor(wxT("#000001"));
   button1.SetPopupMenu(NULL);
   button1.EvMouseButtonClick=EVMOUSEBUTTONCLICK & CPWindow1::button1_EvMouseButtonClick;
-  button1.SetText(wxT("Conectar"));
+  button1.SetText(wxT("Connect"));
   CreateChild(&button1);
   //combo1
   combo1.SetFOwner(this);
@@ -61,9 +64,10 @@ CPWindow1::CPWindow1(void)
   combo1.SetHint(wxT(""));
   combo1.SetEnable(1);
   combo1.SetVisible(1);
+  combo1.SetColor(wxT("#000001"));
   combo1.SetPopupMenu(NULL);
-  combo1.SetText(wxT(""));
   combo1.SetItems(wxT(""));
+  combo1.SetText(wxT(""));
   combo1.SetReadOnly(0);
   CreateChild(&combo1);
   //label1
@@ -78,8 +82,9 @@ CPWindow1::CPWindow1(void)
   label1.SetHint(wxT(""));
   label1.SetEnable(1);
   label1.SetVisible(1);
+  label1.SetColor(wxT("#000001"));
   label1.SetPopupMenu(NULL);
-  label1.SetText(wxT("Porta serial:"));
+  label1.SetText(wxT("Serial port:"));
   label1.SetAlign(1);
   CreateChild(&label1);
   //edit1
@@ -94,6 +99,7 @@ CPWindow1::CPWindow1(void)
   edit1.SetHint(wxT(""));
   edit1.SetEnable(1);
   edit1.SetVisible(1);
+  edit1.SetColor(wxT("#000001"));
   edit1.SetPopupMenu(NULL);
   edit1.SetText(wxT("100"));
   edit1.SetReadOnly(0);
@@ -110,6 +116,7 @@ CPWindow1::CPWindow1(void)
   edit2.SetHint(wxT(""));
   edit2.SetEnable(1);
   edit2.SetVisible(1);
+  edit2.SetColor(wxT("#000001"));
   edit2.SetPopupMenu(NULL);
   edit2.SetText(wxT("100"));
   edit2.SetReadOnly(0);
@@ -126,6 +133,7 @@ CPWindow1::CPWindow1(void)
   edit3.SetHint(wxT(""));
   edit3.SetEnable(1);
   edit3.SetVisible(1);
+  edit3.SetColor(wxT("#000001"));
   edit3.SetPopupMenu(NULL);
   edit3.SetText(wxT("800"));
   edit3.SetReadOnly(0);
@@ -142,6 +150,7 @@ CPWindow1::CPWindow1(void)
   edit4.SetHint(wxT(""));
   edit4.SetEnable(1);
   edit4.SetVisible(1);
+  edit4.SetColor(wxT("#000001"));
   edit4.SetPopupMenu(NULL);
   edit4.SetText(wxT("500"));
   edit4.SetReadOnly(0);
@@ -158,6 +167,7 @@ CPWindow1::CPWindow1(void)
   edit5.SetHint(wxT(""));
   edit5.SetEnable(1);
   edit5.SetVisible(1);
+  edit5.SetColor(wxT("#000001"));
   edit5.SetPopupMenu(NULL);
   edit5.SetText(wxT("3000"));
   edit5.SetReadOnly(0);
@@ -174,6 +184,7 @@ CPWindow1::CPWindow1(void)
   edit6.SetHint(wxT(""));
   edit6.SetEnable(1);
   edit6.SetVisible(1);
+  edit6.SetColor(wxT("#000001"));
   edit6.SetPopupMenu(NULL);
   edit6.SetText(wxT("22"));
   edit6.SetReadOnly(0);
@@ -190,6 +201,7 @@ CPWindow1::CPWindow1(void)
   edit7.SetHint(wxT(""));
   edit7.SetEnable(1);
   edit7.SetVisible(1);
+  edit7.SetColor(wxT("#000001"));
   edit7.SetPopupMenu(NULL);
   edit7.SetText(wxT("1.0"));
   edit7.SetReadOnly(0);
@@ -206,6 +218,7 @@ CPWindow1::CPWindow1(void)
   edit8.SetHint(wxT(""));
   edit8.SetEnable(1);
   edit8.SetVisible(1);
+  edit8.SetColor(wxT("#000001"));
   edit8.SetPopupMenu(NULL);
   edit8.SetText(wxT("1000"));
   edit8.SetReadOnly(0);
@@ -222,8 +235,9 @@ CPWindow1::CPWindow1(void)
   checkbox1.SetHint(wxT(""));
   checkbox1.SetEnable(1);
   checkbox1.SetVisible(1);
+  checkbox1.SetColor(wxT("#000001"));
   checkbox1.SetPopupMenu(NULL);
-  checkbox1.SetText(wxT("V. Entrada"));
+  checkbox1.SetText(wxT("0-Inlet valve"));
   checkbox1.SetCheck(0);
   CreateChild(&checkbox1);
   //checkbox2
@@ -233,13 +247,14 @@ CPWindow1::CPWindow1(void)
   checkbox2.SetTag(0);
   checkbox2.SetX(365);
   checkbox2.SetY(280);
-  checkbox2.SetWidth(110);
+  checkbox2.SetWidth(120);
   checkbox2.SetHeight(25);
   checkbox2.SetHint(wxT(""));
   checkbox2.SetEnable(1);
   checkbox2.SetVisible(1);
+  checkbox2.SetColor(wxT("#000001"));
   checkbox2.SetPopupMenu(NULL);
-  checkbox2.SetText(wxT("V. Saída"));
+  checkbox2.SetText(wxT("1-Outlet valve"));
   checkbox2.SetCheck(0);
   CreateChild(&checkbox2);
   //checkbox3
@@ -254,8 +269,9 @@ CPWindow1::CPWindow1(void)
   checkbox3.SetHint(wxT(""));
   checkbox3.SetEnable(1);
   checkbox3.SetVisible(1);
+  checkbox3.SetColor(wxT("#000001"));
   checkbox3.SetPopupMenu(NULL);
-  checkbox3.SetText(wxT("Aquecedor"));
+  checkbox3.SetText(wxT("2-Heater"));
   checkbox3.SetCheck(0);
   CreateChild(&checkbox3);
   //checkbox4
@@ -270,8 +286,9 @@ CPWindow1::CPWindow1(void)
   checkbox4.SetHint(wxT(""));
   checkbox4.SetEnable(1);
   checkbox4.SetVisible(1);
+  checkbox4.SetColor(wxT("#000001"));
   checkbox4.SetPopupMenu(NULL);
-  checkbox4.SetText(wxT("Resfriador"));
+  checkbox4.SetText(wxT("3-Cooler"));
   checkbox4.SetCheck(0);
   CreateChild(&checkbox4);
   //checkbox5
@@ -286,8 +303,9 @@ CPWindow1::CPWindow1(void)
   checkbox5.SetHint(wxT(""));
   checkbox5.SetEnable(1);
   checkbox5.SetVisible(1);
+  checkbox5.SetColor(wxT("#000001"));
   checkbox5.SetPopupMenu(NULL);
-  checkbox5.SetText(wxT("Agitador"));
+  checkbox5.SetText(wxT("4-Stirrer"));
   checkbox5.SetCheck(0);
   CreateChild(&checkbox5);
   //checkbox6
@@ -302,8 +320,9 @@ CPWindow1::CPWindow1(void)
   checkbox6.SetHint(wxT(""));
   checkbox6.SetEnable(1);
   checkbox6.SetVisible(1);
+  checkbox6.SetColor(wxT("#000001"));
   checkbox6.SetPopupMenu(NULL);
-  checkbox6.SetText(wxT("Bóia Alta"));
+  checkbox6.SetText(wxT("0-High floater"));
   checkbox6.SetCheck(0);
   CreateChild(&checkbox6);
   //checkbox7
@@ -318,8 +337,9 @@ CPWindow1::CPWindow1(void)
   checkbox7.SetHint(wxT(""));
   checkbox7.SetEnable(1);
   checkbox7.SetVisible(1);
+  checkbox7.SetColor(wxT("#000001"));
   checkbox7.SetPopupMenu(NULL);
-  checkbox7.SetText(wxT("Bóia Baixa"));
+  checkbox7.SetText(wxT("1-Low floater"));
   checkbox7.SetCheck(0);
   CreateChild(&checkbox7);
   //checkbox8
@@ -334,8 +354,9 @@ CPWindow1::CPWindow1(void)
   checkbox8.SetHint(wxT(""));
   checkbox8.SetEnable(1);
   checkbox8.SetVisible(1);
+  checkbox8.SetColor(wxT("#000001"));
   checkbox8.SetPopupMenu(NULL);
-  checkbox8.SetText(wxT("Temp. Mín."));
+  checkbox8.SetText(wxT("2-Min. Temp."));
   checkbox8.SetCheck(0);
   CreateChild(&checkbox8);
   //edit9
@@ -343,13 +364,14 @@ CPWindow1::CPWindow1(void)
   edit9.SetClass(wxT("CEdit"));
   edit9.SetName(wxT("edit9"));
   edit9.SetTag(0);
-  edit9.SetX(407);
+  edit9.SetX(430);
   edit9.SetY(397);
-  edit9.SetWidth(80);
+  edit9.SetWidth(40);
   edit9.SetHeight(26);
   edit9.SetHint(wxT(""));
   edit9.SetEnable(1);
   edit9.SetVisible(1);
+  edit9.SetColor(wxT("#000001"));
   edit9.SetPopupMenu(NULL);
   edit9.SetText(wxT("10"));
   edit9.SetReadOnly(1);
@@ -359,15 +381,16 @@ CPWindow1::CPWindow1(void)
   label2.SetClass(wxT("CLabel"));
   label2.SetName(wxT("label2"));
   label2.SetTag(0);
-  label2.SetX(399);
+  label2.SetX(390);
   label2.SetY(10);
   label2.SetWidth(147);
   label2.SetHeight(20);
   label2.SetHint(wxT(""));
   label2.SetEnable(1);
   label2.SetVisible(1);
+  label2.SetColor(wxT("#000001"));
   label2.SetPopupMenu(NULL);
-  label2.SetText(wxT("Vazão V.Ent. (l/s)"));
+  label2.SetText(wxT("Inlet valve flow (l/s)"));
   label2.SetAlign(1);
   CreateChild(&label2);
   //label3
@@ -375,15 +398,16 @@ CPWindow1::CPWindow1(void)
   label3.SetClass(wxT("CLabel"));
   label3.SetName(wxT("label3"));
   label3.SetTag(0);
-  label3.SetX(399);
+  label3.SetX(390);
   label3.SetY(37);
   label3.SetWidth(147);
   label3.SetHeight(20);
   label3.SetHint(wxT(""));
   label3.SetEnable(1);
   label3.SetVisible(1);
+  label3.SetColor(wxT("#000001"));
   label3.SetPopupMenu(NULL);
-  label3.SetText(wxT("Vazão V. Saí. (l/s)"));
+  label3.SetText(wxT("Outlet valve flow (l/s)"));
   label3.SetAlign(1);
   CreateChild(&label3);
   //label4
@@ -391,15 +415,16 @@ CPWindow1::CPWindow1(void)
   label4.SetClass(wxT("CLabel"));
   label4.SetName(wxT("label4"));
   label4.SetTag(0);
-  label4.SetX(399);
+  label4.SetX(390);
   label4.SetY(64);
   label4.SetWidth(147);
   label4.SetHeight(20);
   label4.SetHint(wxT(""));
   label4.SetEnable(1);
   label4.SetVisible(1);
+  label4.SetColor(wxT("#000001"));
   label4.SetPopupMenu(NULL);
-  label4.SetText(wxT("Pot. Aquec. (kcal/s)"));
+  label4.SetText(wxT("Heater Power (kcal/s)"));
   label4.SetAlign(1);
   CreateChild(&label4);
   //label5
@@ -407,15 +432,16 @@ CPWindow1::CPWindow1(void)
   label5.SetClass(wxT("CLabel"));
   label5.SetName(wxT("label5"));
   label5.SetTag(0);
-  label5.SetX(400);
+  label5.SetX(390);
   label5.SetY(90);
   label5.SetWidth(147);
   label5.SetHeight(20);
   label5.SetHint(wxT(""));
   label5.SetEnable(1);
   label5.SetVisible(1);
+  label5.SetColor(wxT("#000001"));
   label5.SetPopupMenu(NULL);
-  label5.SetText(wxT("Pot. Resfr. (kcal/s)"));
+  label5.SetText(wxT("Cooler Power (kcal/s)"));
   label5.SetAlign(1);
   CreateChild(&label5);
   //label6
@@ -423,15 +449,16 @@ CPWindow1::CPWindow1(void)
   label6.SetClass(wxT("CLabel"));
   label6.SetName(wxT("label6"));
   label6.SetTag(0);
-  label6.SetX(400);
+  label6.SetX(390);
   label6.SetY(116);
   label6.SetWidth(147);
   label6.SetHeight(20);
   label6.SetHint(wxT(""));
   label6.SetEnable(1);
   label6.SetVisible(1);
+  label6.SetColor(wxT("#000001"));
   label6.SetPopupMenu(NULL);
-  label6.SetText(wxT("Cap. Tanque (l)"));
+  label6.SetText(wxT("Tank capacity (l)"));
   label6.SetAlign(1);
   CreateChild(&label6);
   //label7
@@ -439,15 +466,16 @@ CPWindow1::CPWindow1(void)
   label7.SetClass(wxT("CLabel"));
   label7.SetName(wxT("label7"));
   label7.SetTag(0);
-  label7.SetX(402);
+  label7.SetX(390);
   label7.SetY(144);
   label7.SetWidth(145);
   label7.SetHeight(20);
   label7.SetHint(wxT(""));
   label7.SetEnable(1);
   label7.SetVisible(1);
+  label7.SetColor(wxT("#000001"));
   label7.SetPopupMenu(NULL);
-  label7.SetText(wxT("T. Amb. (°C)"));
+  label7.SetText(wxT("Room temp (°C)"));
   label7.SetAlign(1);
   CreateChild(&label7);
   //label8
@@ -455,15 +483,16 @@ CPWindow1::CPWindow1(void)
   label8.SetClass(wxT("CLabel"));
   label8.SetName(wxT("label8"));
   label8.SetTag(0);
-  label8.SetX(402);
+  label8.SetX(390);
   label8.SetY(171);
-  label8.SetWidth(146);
+  label8.SetWidth(156);
   label8.SetHeight(20);
   label8.SetHint(wxT(""));
   label8.SetEnable(1);
   label8.SetVisible(1);
+  label8.SetColor(wxT("#000001"));
   label8.SetPopupMenu(NULL);
-  label8.SetText(wxT("Calor. E. (cal/g.°C)"));
+  label8.SetText(wxT("specific heat (cal/g.°C)"));
   label8.SetAlign(1);
   CreateChild(&label8);
   //label9
@@ -471,15 +500,16 @@ CPWindow1::CPWindow1(void)
   label9.SetClass(wxT("CLabel"));
   label9.SetName(wxT("label9"));
   label9.SetTag(0);
-  label9.SetX(403);
+  label9.SetX(390);
   label9.SetY(198);
   label9.SetWidth(144);
   label9.SetHeight(20);
   label9.SetHint(wxT(""));
   label9.SetEnable(1);
   label9.SetVisible(1);
+  label9.SetColor(wxT("#000001"));
   label9.SetPopupMenu(NULL);
-  label9.SetText(wxT("Densidade (g/l)"));
+  label9.SetText(wxT("Density (g/l)"));
   label9.SetAlign(1);
   CreateChild(&label9);
   //edit10
@@ -487,13 +517,14 @@ CPWindow1::CPWindow1(void)
   edit10.SetClass(wxT("CEdit"));
   edit10.SetName(wxT("edit10"));
   edit10.SetTag(0);
-  edit10.SetX(407);
+  edit10.SetX(430);
   edit10.SetY(426);
-  edit10.SetWidth(80);
+  edit10.SetWidth(40);
   edit10.SetHeight(26);
   edit10.SetHint(wxT(""));
   edit10.SetEnable(1);
   edit10.SetVisible(1);
+  edit10.SetColor(wxT("#000001"));
   edit10.SetPopupMenu(NULL);
   edit10.SetText(wxT("30"));
   edit10.SetReadOnly(1);
@@ -510,8 +541,9 @@ CPWindow1::CPWindow1(void)
   checkbox9.SetHint(wxT(""));
   checkbox9.SetEnable(1);
   checkbox9.SetVisible(1);
+  checkbox9.SetColor(wxT("#000001"));
   checkbox9.SetPopupMenu(NULL);
-  checkbox9.SetText(wxT("Temp. máx."));
+  checkbox9.SetText(wxT("3-Max. temp"));
   checkbox9.SetCheck(0);
   CreateChild(&checkbox9);
   //edit11
@@ -519,13 +551,14 @@ CPWindow1::CPWindow1(void)
   edit11.SetClass(wxT("CEdit"));
   edit11.SetName(wxT("edit11"));
   edit11.SetTag(0);
-  edit11.SetX(556);
+  edit11.SetX(567);
   edit11.SetY(396);
-  edit11.SetWidth(80);
+  edit11.SetWidth(70);
   edit11.SetHeight(26);
   edit11.SetHint(wxT(""));
   edit11.SetEnable(1);
   edit11.SetVisible(1);
+  edit11.SetColor(wxT("#000001"));
   edit11.SetPopupMenu(NULL);
   edit11.SetText(wxT("0"));
   edit11.SetReadOnly(1);
@@ -535,13 +568,14 @@ CPWindow1::CPWindow1(void)
   edit12.SetClass(wxT("CEdit"));
   edit12.SetName(wxT("edit12"));
   edit12.SetTag(0);
-  edit12.SetX(557);
+  edit12.SetX(567);
   edit12.SetY(426);
-  edit12.SetWidth(80);
+  edit12.SetWidth(70);
   edit12.SetHeight(26);
   edit12.SetHint(wxT(""));
   edit12.SetEnable(1);
   edit12.SetVisible(1);
+  edit12.SetColor(wxT("#000001"));
   edit12.SetPopupMenu(NULL);
   edit12.SetText(wxT("22"));
   edit12.SetReadOnly(1);
@@ -551,15 +585,16 @@ CPWindow1::CPWindow1(void)
   label10.SetClass(wxT("CLabel"));
   label10.SetName(wxT("label10"));
   label10.SetTag(0);
-  label10.SetX(335);
+  label10.SetX(332);
   label10.SetY(400);
-  label10.SetWidth(68);
+  label10.SetWidth(95);
   label10.SetHeight(20);
   label10.SetHint(wxT(""));
   label10.SetEnable(1);
   label10.SetVisible(1);
+  label10.SetColor(wxT("#000001"));
   label10.SetPopupMenu(NULL);
-  label10.SetText(wxT("A.T.Mín."));
+  label10.SetText(wxT("0-Min. t. ala."));
   label10.SetAlign(1);
   CreateChild(&label10);
   //label11
@@ -567,15 +602,16 @@ CPWindow1::CPWindow1(void)
   label11.SetClass(wxT("CLabel"));
   label11.SetName(wxT("label11"));
   label11.SetTag(0);
-  label11.SetX(335);
-  label11.SetY(428);
-  label11.SetWidth(67);
+  label11.SetX(332);
+  label11.SetY(429);
+  label11.SetWidth(95);
   label11.SetHeight(20);
   label11.SetHint(wxT(""));
   label11.SetEnable(1);
   label11.SetVisible(1);
+  label11.SetColor(wxT("#000001"));
   label11.SetPopupMenu(NULL);
-  label11.SetText(wxT("A.T.Máx."));
+  label11.SetText(wxT("1-Max. t. ala."));
   label11.SetAlign(1);
   CreateChild(&label11);
   //label12
@@ -583,15 +619,16 @@ CPWindow1::CPWindow1(void)
   label12.SetClass(wxT("CLabel"));
   label12.SetName(wxT("label12"));
   label12.SetTag(0);
-  label12.SetX(492);
+  label12.SetX(477);
   label12.SetY(400);
-  label12.SetWidth(60);
+  label12.SetWidth(85);
   label12.SetHeight(20);
   label12.SetHint(wxT(""));
   label12.SetEnable(1);
   label12.SetVisible(1);
+  label12.SetColor(wxT("#000001"));
   label12.SetPopupMenu(NULL);
-  label12.SetText(wxT("Vol. (l)"));
+  label12.SetText(wxT("0-Volume (l)"));
   label12.SetAlign(1);
   CreateChild(&label12);
   //label13
@@ -599,15 +636,16 @@ CPWindow1::CPWindow1(void)
   label13.SetClass(wxT("CLabel"));
   label13.SetName(wxT("label13"));
   label13.SetTag(0);
-  label13.SetX(494);
+  label13.SetX(477);
   label13.SetY(429);
-  label13.SetWidth(60);
+  label13.SetWidth(87);
   label13.SetHeight(20);
   label13.SetHint(wxT(""));
   label13.SetEnable(1);
   label13.SetVisible(1);
+  label13.SetColor(wxT("#000001"));
   label13.SetPopupMenu(NULL);
-  label13.SetText(wxT("T. (°C)"));
+  label13.SetText(wxT("1-Temp (°C)"));
   label13.SetAlign(1);
   CreateChild(&label13);
   //label14
@@ -615,15 +653,16 @@ CPWindow1::CPWindow1(void)
   label14.SetClass(wxT("CLabel"));
   label14.SetName(wxT("label14"));
   label14.SetTag(0);
-  label14.SetX(385);
+  label14.SetX(358);
   label14.SetY(228);
-  label14.SetWidth(73);
+  label14.SetWidth(128);
   label14.SetHeight(20);
   label14.SetHint(wxT(""));
   label14.SetEnable(1);
   label14.SetVisible(1);
+  label14.SetColor(wxT("#000001"));
   label14.SetPopupMenu(NULL);
-  label14.SetText(wxT("Entradas"));
+  label14.SetText(wxT("Input (actuators)"));
   label14.SetAlign(1);
   CreateChild(&label14);
   //label15
@@ -631,15 +670,16 @@ CPWindow1::CPWindow1(void)
   label15.SetClass(wxT("CLabel"));
   label15.SetName(wxT("label15"));
   label15.SetTag(0);
-  label15.SetX(528);
+  label15.SetX(501);
   label15.SetY(230);
-  label15.SetWidth(60);
+  label15.SetWidth(134);
   label15.SetHeight(20);
   label15.SetHint(wxT(""));
   label15.SetEnable(1);
   label15.SetVisible(1);
+  label15.SetColor(wxT("#000001"));
   label15.SetPopupMenu(NULL);
-  label15.SetText(wxT("Saídas"));
+  label15.SetText(wxT("Outputs (sensors)"));
   label15.SetAlign(1);
   CreateChild(&label15);
   //timer1
@@ -663,7 +703,9 @@ CPWindow1::CPWindow1(void)
   text1.SetHint(wxT(""));
   text1.SetEnable(1);
   text1.SetVisible(1);
+  text1.SetColor(wxT("#000001"));
   text1.SetPopupMenu(NULL);
   text1.SetReadOnly(1);
   CreateChild(&text1);
-};
+  /*#Others*/
+}
