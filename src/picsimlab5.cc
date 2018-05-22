@@ -137,9 +137,12 @@ CPWindow5::pmenu2_Properties_EvMenuActive(CControl * control)
   if(wd1->LoadXMLContextAndCreateChilds (Window1.GetSharePath()+wxT("parts/")+parts[PartSelected]->GetPropertiesWindowFile()))
   {
     wd1->SetCanDestroy(false);
-
+    
     parts[PartSelected]->ConfigurePropertiesWindow(wd1);
   
+    wd1->SetX(parts[PartSelected]->GetX ()+GetX ());
+    wd1->SetY(parts[PartSelected]->GetY ()+GetY ());
+    
     wd1->Draw();
     wd1->ShowExclusive();
   
