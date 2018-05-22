@@ -2,8 +2,8 @@
   <Class type="String">CPWindow</Class>
   <Name type="String">window1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">272</X>
-  <Y type="int">55</Y>
+  <X type="int">582</X>
+  <Y type="int">66</Y>
   <Width type="uint">652</Width>
   <Height type="uint">600</Height>
   <Hint type="String"></Hint>
@@ -1127,4 +1127,86 @@
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
   <ReadOnly type="int">1</ReadOnly>
 </text1>
+<menu1>
+  <Class type="String">CMenu</Class>
+  <Name type="String">menu1</Name>
+  <Tag type="int">0</Tag>
+  <MenuItems type="MenuItems">File,Help,</MenuItems>
+</menu1>
+<menu1_File>
+  <Class type="String">CPMenu</Class>
+  <Name type="String">menu1_File</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">File</Text>
+  <MenuItems type="MenuItems">Default Config,Save Config,Load Config,Exit,</MenuItems>
+</menu1_File>
+<menu1_Help>
+  <Class type="String">CPMenu</Class>
+  <Name type="String">menu1_Help</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Help</Text>
+  <MenuItems type="MenuItems">Contents,About,</MenuItems>
+</menu1_Help>
+<menu1_File_DefaultConfig>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_File_DefaultConfig</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Default Config</Text>
+  <Enable type="bool">1</Enable>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_File_DefaultConfig>
+<menu1_File_SaveConfig>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_File_SaveConfig</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Save Config</Text>
+  <Enable type="bool">1</Enable>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_File_SaveConfig>
+<menu1_File_LoadConfig>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_File_LoadConfig</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Load Config</Text>
+  <Enable type="bool">1</Enable>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_File_LoadConfig>
+<menu1_File_Exit>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_File_Exit</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Exit</Text>
+  <Enable type="bool">1</Enable>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_File_Exit>
+<menu1_Help_Contents>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Help_Contents</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Contents</Text>
+  <Enable type="bool">1</Enable>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Help_Contents>
+<menu1_Help_About>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Help_About</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">About</Text>
+  <Enable type="bool">1</Enable>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Help_About>
+<filedialog1>
+  <Class type="String">CFileDialog</Class>
+  <Name type="String">filedialog1</Name>
+  <Tag type="int">0</Tag>
+  <FileName type="String">untitled.srt</FileName>
+  <Filter type="String">srtank Files (*.srt)|*.srt</Filter>
+  <Type type="int">129</Type>
+</filedialog1>
 </window1>

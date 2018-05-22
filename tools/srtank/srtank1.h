@@ -48,12 +48,28 @@ class CPWindow1:public CPWindow
   CLabel label15;
   CTimer timer1;
   CText text1;
+  CMenu menu1;
+  CPMenu menu1_File;
+  CPMenu menu1_Help;
+  CItemMenu menu1_File_DefaultConfig;
+  CItemMenu menu1_File_SaveConfig;
+  CItemMenu menu1_File_LoadConfig;
+  CItemMenu menu1_File_Exit;
+  CItemMenu menu1_Help_Contents;
+  CItemMenu menu1_Help_About;
+  CFileDialog filedialog1;
   /*#Events*/
   void _EvOnCreate(CControl * control);
   void _EvOnDestroy(CControl * control);
   void draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uint y,uint state);
   void button1_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state);
   void timer1_EvOnTime(CControl * control);
+  void menu1_File_DefaultConfig_EvMenuActive(CControl * control);
+  void menu1_File_SaveConfig_EvMenuActive(CControl * control);
+  void menu1_File_LoadConfig_EvMenuActive(CControl * control);
+  void menu1_File_Exit_EvMenuActive(CControl * control);
+  void menu1_Help_Contents_EvMenuActive(CControl * control);
+  void menu1_Help_About_EvMenuActive(CControl * control);
 
   /*#Others*/
   CPWindow1(void);

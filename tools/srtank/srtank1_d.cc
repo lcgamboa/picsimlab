@@ -4,8 +4,8 @@ CPWindow1::CPWindow1(void)
   SetClass(wxT("CPWindow"));
   SetName(wxT("window1"));
   SetTag(0);
-  SetX(272);
-  SetY(55);
+  SetX(582);
+  SetY(66);
   SetWidth(652);
   SetHeight(600);
   SetHint(wxT(""));
@@ -707,5 +707,97 @@ CPWindow1::CPWindow1(void)
   text1.SetPopupMenu(NULL);
   text1.SetReadOnly(1);
   CreateChild(&text1);
+  //menu1
+  menu1.SetFOwner(this);
+  menu1.SetClass(wxT("CMenu"));
+  menu1.SetName(wxT("menu1"));
+  menu1.SetTag(0);
+  menu1.SetMenuItems(wxT("File,Help,"));
+  CreateChild(&menu1);
+  //menu1_File
+  menu1_File.SetFOwner(this);
+  menu1_File.SetClass(wxT("CPMenu"));
+  menu1_File.SetName(wxT("menu1_File"));
+  menu1_File.SetTag(0);
+  menu1_File.SetText(wxT("File"));
+  menu1_File.SetMenuItems(wxT("Default Config,Save Config,Load Config,Exit,"));
+  menu1.CreateChild(&menu1_File);
+  //menu1_Help
+  menu1_Help.SetFOwner(this);
+  menu1_Help.SetClass(wxT("CPMenu"));
+  menu1_Help.SetName(wxT("menu1_Help"));
+  menu1_Help.SetTag(0);
+  menu1_Help.SetText(wxT("Help"));
+  menu1_Help.SetMenuItems(wxT("Contents,About,"));
+  menu1.CreateChild(&menu1_Help);
+  //menu1_File_DefaultConfig
+  menu1_File_DefaultConfig.SetFOwner(this);
+  menu1_File_DefaultConfig.SetClass(wxT("CItemMenu"));
+  menu1_File_DefaultConfig.SetName(wxT("menu1_File_DefaultConfig"));
+  menu1_File_DefaultConfig.SetTag(0);
+  menu1_File_DefaultConfig.SetText(wxT("Default Config"));
+  menu1_File_DefaultConfig.SetEnable(1);
+  menu1_File_DefaultConfig.SetSubMenu(NULL);
+  menu1_File_DefaultConfig.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_File_DefaultConfig_EvMenuActive;
+  menu1_File.CreateChild(&menu1_File_DefaultConfig);
+  //menu1_File_SaveConfig
+  menu1_File_SaveConfig.SetFOwner(this);
+  menu1_File_SaveConfig.SetClass(wxT("CItemMenu"));
+  menu1_File_SaveConfig.SetName(wxT("menu1_File_SaveConfig"));
+  menu1_File_SaveConfig.SetTag(0);
+  menu1_File_SaveConfig.SetText(wxT("Save Config"));
+  menu1_File_SaveConfig.SetEnable(1);
+  menu1_File_SaveConfig.SetSubMenu(NULL);
+  menu1_File_SaveConfig.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_File_SaveConfig_EvMenuActive;
+  menu1_File.CreateChild(&menu1_File_SaveConfig);
+  //menu1_File_LoadConfig
+  menu1_File_LoadConfig.SetFOwner(this);
+  menu1_File_LoadConfig.SetClass(wxT("CItemMenu"));
+  menu1_File_LoadConfig.SetName(wxT("menu1_File_LoadConfig"));
+  menu1_File_LoadConfig.SetTag(0);
+  menu1_File_LoadConfig.SetText(wxT("Load Config"));
+  menu1_File_LoadConfig.SetEnable(1);
+  menu1_File_LoadConfig.SetSubMenu(NULL);
+  menu1_File_LoadConfig.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_File_LoadConfig_EvMenuActive;
+  menu1_File.CreateChild(&menu1_File_LoadConfig);
+  //menu1_File_Exit
+  menu1_File_Exit.SetFOwner(this);
+  menu1_File_Exit.SetClass(wxT("CItemMenu"));
+  menu1_File_Exit.SetName(wxT("menu1_File_Exit"));
+  menu1_File_Exit.SetTag(0);
+  menu1_File_Exit.SetText(wxT("Exit"));
+  menu1_File_Exit.SetEnable(1);
+  menu1_File_Exit.SetSubMenu(NULL);
+  menu1_File_Exit.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_File_Exit_EvMenuActive;
+  menu1_File.CreateChild(&menu1_File_Exit);
+  //menu1_Help_Contents
+  menu1_Help_Contents.SetFOwner(this);
+  menu1_Help_Contents.SetClass(wxT("CItemMenu"));
+  menu1_Help_Contents.SetName(wxT("menu1_Help_Contents"));
+  menu1_Help_Contents.SetTag(0);
+  menu1_Help_Contents.SetText(wxT("Contents"));
+  menu1_Help_Contents.SetEnable(1);
+  menu1_Help_Contents.SetSubMenu(NULL);
+  menu1_Help_Contents.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Help_Contents_EvMenuActive;
+  menu1_Help.CreateChild(&menu1_Help_Contents);
+  //menu1_Help_About
+  menu1_Help_About.SetFOwner(this);
+  menu1_Help_About.SetClass(wxT("CItemMenu"));
+  menu1_Help_About.SetName(wxT("menu1_Help_About"));
+  menu1_Help_About.SetTag(0);
+  menu1_Help_About.SetText(wxT("About"));
+  menu1_Help_About.SetEnable(1);
+  menu1_Help_About.SetSubMenu(NULL);
+  menu1_Help_About.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Help_About_EvMenuActive;
+  menu1_Help.CreateChild(&menu1_Help_About);
+  //filedialog1
+  filedialog1.SetFOwner(this);
+  filedialog1.SetClass(wxT("CFileDialog"));
+  filedialog1.SetName(wxT("filedialog1"));
+  filedialog1.SetTag(0);
+  filedialog1.SetFileName(wxT("untitled.srt"));
+  filedialog1.SetFilter(wxT("srtank Files (*.srt)|*.srt"));
+  filedialog1.SetType(129);
+  CreateChild(&filedialog1);
   /*#Others*/
 }

@@ -460,3 +460,46 @@ CPWindow1::_EvOnDestroy(CControl * control)
 };
 
 
+void
+CPWindow1::menu1_File_DefaultConfig_EvMenuActive(CControl * control)
+{
+  //code here:)
+  mprint(wxT("menu1_File_DefaultConfig_EvMenuActive\n"));
+};
+
+void
+CPWindow1::menu1_File_SaveConfig_EvMenuActive(CControl * control)
+{
+  //code here:)
+  mprint(wxT("menu1_File_SaveConfig_EvMenuActive\n"));
+};
+
+void
+CPWindow1::menu1_File_LoadConfig_EvMenuActive(CControl * control)
+{
+  //code here:)
+  mprint(wxT("menu1_File_LoadConfig_EvMenuActive\n"));
+};
+
+void
+CPWindow1::menu1_File_Exit_EvMenuActive(CControl * control)
+{
+  //code here:)
+  mprint(wxT("menu1_File_Exit_EvMenuActive\n"));
+};
+
+void
+CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
+{
+  //code here:)
+  mprint(wxT("menu1_Help_Contents_EvMenuActive\n"));
+};
+
+void
+CPWindow1::menu1_Help_About_EvMenuActive(CControl * control)
+{
+  //code here:)
+  mprint(wxT("menu1_Help_About_EvMenuActive\n"));
+};
+
+
