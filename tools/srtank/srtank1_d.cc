@@ -7,7 +7,7 @@ CPWindow1::CPWindow1(void)
   SetX(582);
   SetY(66);
   SetWidth(652);
-  SetHeight(600);
+  SetHeight(650);
   SetHint(wxT(""));
   SetEnable(1);
   SetVisible(1);

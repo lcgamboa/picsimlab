@@ -10,7 +10,7 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-FLAGS = -Wall -O2 `lxrad-config --cxxflags`
+FLAGS = -Wall -O2 `lxrad-config --cxxflags` -D_VERSION_=\"0.7.0\"
 
 LIBS = `lxrad-config --libs`  
 
