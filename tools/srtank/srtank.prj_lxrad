@@ -1,8 +1,8 @@
 <LXRAD_Project>
   <Version type="String">0.8</Version>
   <PName type="String">srtank</PName>
-  <POptions type="String">-Wall -O2</POptions>
+  <POptions type="String">-D_VERSION_=\"0.7.0\" -D_SHARE_=\"${sharedir}\" -Wall -O2</POptions>
   <PLibs type="String"> </PLibs>
   <PIncludeFile type="String"> serial.o</PIncludeFile>
-  <PNW type="String">1</PNW>
+  <PNW type="String">2</PNW>
 </LXRAD_Project>

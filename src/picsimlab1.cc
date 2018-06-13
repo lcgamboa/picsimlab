@@ -640,7 +640,7 @@ CPWindow1::menu1_File_Exit_EvMenuActive(CControl * control)
 void
 CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
 {
-  Window2.html1.SetLoadFile(share+wxT("doc/picsimlab.html"));  
+  Window2.html1.SetLoadFile(share+wxT("docs/picsimlab.html"));  
   Window2.Show();
 };
 

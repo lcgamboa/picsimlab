@@ -18,12 +18,21 @@ class CPWindow1:public CPWindow
   CText text1;
   CTimer timer2;
   CText text2;
+  CMenu menu1;
+  CPMenu menu1_File;
+  CPMenu menu1_Help;
+  CItemMenu menu1_File_Exit;
+  CItemMenu menu1_Help_Contents;
+  CItemMenu menu1_Help_About;
   /*#Events*/
   void _EvOnCreate(CControl * control);
   void _EvOnDestroy(CControl * control);
   void togglebutton1_EvOnToggleButton(CControl * control);
   void timer1_EvOnTime(CControl * control);
   void timer2_EvOnTime(CControl * control);
+  void menu1_File_Exit_EvMenuActive(CControl * control);
+  void menu1_Help_Contents_EvMenuActive(CControl * control);
+  void menu1_Help_About_EvMenuActive(CControl * control);
 
   /*#Others*/
   CPWindow1(void);

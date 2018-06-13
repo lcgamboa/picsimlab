@@ -10,7 +10,7 @@ CPWindow1::CPWindow1(void){};
 
 #include"tcp.h"
 #include"serial.h"
-
+#include"espmsim2.h"
 
 
 CPWindow1 Window1;
@@ -82,8 +82,6 @@ CPWindow1::_EvOnDestroy(CControl * control)
 {
   timer1.SetRunState (0);
   skt_stop();
-  //code here:)
-  mprint(wxT("_EvOnDestroy\n"));
 };
 
 
@@ -616,5 +614,26 @@ CPWindow1::timer2_EvOnTime(CControl * control)
   text2.AddLine (wxT("SKL=")+itoa(SKL)+wxT(" C0=")+itoa(SCLI[0])+wxT(" C1=")+itoa(SCLI[1])+wxT(" C2=")+itoa(SCLI[2])+wxT(" C3=")+itoa(SCLI[3])+wxT("\n")); 
 #endif
 };
+
+
+void
+CPWindow1::menu1_File_Exit_EvMenuActive(CControl * control)
+{
+ WDestroy ();
+}
+
+void
+CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
+{
+  //code here:)
+  mprint(wxT("menu1_Help_Contents_EvMenuActive\n"));  Window2.html1.SetLoadFile(String(wxT(_SHARE_))+wxT("docs/picsimlab.html"));  
+  Window2.Show();;
+}
+
+void
+CPWindow1::menu1_Help_About_EvMenuActive(CControl * control)
+{
+ Message (wxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (wxT (_VERSION_)));
+}
 
 

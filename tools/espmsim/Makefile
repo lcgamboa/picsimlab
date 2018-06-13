@@ -7,16 +7,17 @@ CP= cp
 MKDIR = mkdir -p
 
 execdir= ${prefix}/bin/
+sharedir= ${prefix}/share/picsimlab/
 
 #lxrad automatic generated block start, don't edit below!
 
-FLAGS = -Wall -O2 -DLINUX `lxrad-config --cxxflags`
+FLAGS = -D_VERSION_=\"0.7.0\" -D_SHARE_=\"${sharedir}\" -Wall -O2 -DLINUX `lxrad-config --cxxflags`
 
 LIBS = `lxrad-config --libs`  
 LIBS = `lxrad-config --libs`  
 
-OBJS = pespmsim.o espmsim1.o serial.o tcp.o
-OBJS = pespmsim.o espmsim1.o serial.o tcp.o
+OBJS = pespmsim.o espmsim1.o espmsim2.o serial.o tcp.o
+OBJS = pespmsim.o espmsim1.o espmsim2.o serial.o tcp.o
 
 #lxrad automatic generated block end, don't edit above!
 

@@ -34,6 +34,7 @@ install: all
 	${MKDIR} ${sharedir}
 	$(CP) -dvf  ../share/picsimlab.desktop ${appdir} 
 	$(CP) -drvf ../share/* ${sharedir} 
+	$(CP) -drvf ../docs ${sharedir} 
 	$(CP) -dvf picsimlab ${execdir}
 
 uninstall:

@@ -401,7 +401,7 @@ CPWindow5::pmenu2_Delete_EvMenuActive(CControl * control)
 void
 CPWindow5::menu1_Help_Contents_EvMenuActive(CControl * control)
 {
-  Window2.html1.SetLoadFile(Window1.GetSharePath()+wxT("doc/picsimlab.html"));   
+  Window2.html1.SetLoadFile(Window1.GetSharePath()+wxT("docs/picsimlab.html"));   
   Window2.Show();
 };
 

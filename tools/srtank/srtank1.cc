@@ -7,6 +7,7 @@ CPWindow1 Window1;
 //Implementation
 
 #include"serial.h"
+#include"srtank2.h"
 
 int conectado = 0;
 char idig[8];
@@ -525,8 +526,8 @@ CPWindow1::menu1_File_Exit_EvMenuActive (CControl * control)
 void
 CPWindow1::menu1_Help_Contents_EvMenuActive (CControl * control)
 {
- //code here:)
- mprint (wxT ("menu1_Help_Contents_EvMenuActive\n"));
+  Window2.html1.SetLoadFile(String(wxT(_SHARE_))+wxT("docs/picsimlab.html"));  
+  Window2.Show();
 };
 
 void
