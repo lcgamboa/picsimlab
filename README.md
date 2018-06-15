@@ -5,9 +5,9 @@ PICSimLab is a realtime emulator of development boards with integrated MPLABX/av
 PICSimLab supports picsim microcontrollers (PIC16F84, PIC16F628, PIC16F648, PIC16F777, PIC16F877A, PIC18F452, PIC18F4520, PIC18F4550 and PIC18F4620) and simavr microcontrollers (ATMEGA328).
 PICSimLab have integration with  MPLABX/Arduino IDE for programming the boards microcontrollers.
 
-![PICsimLab](share/doc/screenshot.png?raw=true "PICsimLab")
+![PICsimLab](share/docs/screenshot.png?raw=true "PICsimLab")
 
-![PICsimLab](share/doc/picsimlab4.png?raw=true "PICsimLab")
+![PICsimLab](share/docs/picsimlab4.png?raw=true "PICsimLab")
 
 ## Requirements for compiling:
 
