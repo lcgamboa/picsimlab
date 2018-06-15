@@ -1,18 +1,22 @@
+include ../../Makefile.conf
+
 CC = i686-w64-mingw32-g++
+WINDRES = i686-w64-mingw32-windres
 
 #lxrad automatic generated block start, don't edit below!
 
-FLAGS = -Wall -ggdb `i686-w64-mingw32-msw-unicode-3.1  --cxxflags ` 
+FLAGS = -D_VERSION_=$(VERSION) -D_SHARE_=\"../../share/\" -Wall -O2 `i686-w64-mingw32-msw-unicode-3.1  --cxxflags ` 
 
 LIBS = -llxrad `i686-w64-mingw32-msw-unicode-3.1  --libs` -lws2_32  
 
-OBJS = pespmsim.o espmsim1.o serial.o tcp.o 
+OBJS = pespmsim.o espmsim1.o espmsim2.o serial.o tcp.o 
 
 #lxrad automatic generated block end, don't edit above!
 
 
 all: $(OBJS)
-	$(CC) $(FLAGS) $(OBJS) -oespmsim.exe $(LIBS)
+	$(WINDRES) espmsim_res.rc  -O coff -o espmsim_res.o
+	$(CC) $(FLAGS) $(OBJS) espmsim_res.o -oespmsim.exe $(LIBS)
 	mv *.exe ../../picsimlab_0.7.0_win32/
 
 %.o: %.cc

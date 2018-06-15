@@ -1,22 +1,26 @@
-CC =  x86_64-w64-mingw32-g++
+include ../../Makefile.conf
 
-FLAGS = -Wall -ggdb -D_WIN_ `x86_64-w64-mingw32-msw-unicode-3.1  --cxxflags ` 
+CC =  x86_64-w64-mingw32-g++
+WINDRES =  x86_64-w64-mingw32-windres  
+
+FLAGS = -D_VERSION_=$(VERSION) -D_SHARE_=\"../../share/\" -Wall -O2 -D_WIN_ `x86_64-w64-mingw32-msw-unicode-3.1  --cxxflags ` 
 
 LIBS = -llxrad `x86_64-w64-mingw32-msw-unicode-3.1  --libs` 
 
-OBJS = premota.o remota1.o serial.o 
+OBJS = psrtank.o srtank1.o srtank2.o serial.o 
 
 all: $(OBJS)
-	$(CC) $(FLAGS) $(OBJS)  -oremota.exe $(LIBS)
+	$(WINDRES) srtank_res.rc  -O coff -o srtank_res.o
+	$(CC) $(FLAGS) $(OBJS) srtank_res.o  -osrtank.exe $(LIBS)
 	mv *.exe ../../picsimlab_0.7.0_win64/
 
 %.o: %.cc
 	$(CC) -c $(FLAGS) $< 
 
 run: all
-	wine2 remota.exe
+	wine2 srtank.exe
 
 install:
 
 clean:
-	rm -f remota.exe *.o core 
+	rm -f srtank.exe *.o core 

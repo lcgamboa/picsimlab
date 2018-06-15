@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=ESPMSim
+Comment="ESP8266 Modem Simulator"
+Exec=espmsim
+Icon=/usr/share/picsimlab/espmsim.png
+Terminal=false
+Type=Application
+Categories=Development;Engineering;Electronics;

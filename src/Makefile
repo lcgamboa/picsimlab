@@ -1,3 +1,5 @@
+include ../Makefile.conf
+
 CC = g++
 
 prefix=/usr
@@ -12,7 +14,7 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-override CFLAGS += -D_VERSION_=\"0.7.0\" -Wall -O3 -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer  `lxrad-config --cxxflags`
+override CFLAGS += -D_VERSION_=$(VERSION) -Wall -O3 -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer  `lxrad-config --cxxflags`
 #CFLAGS = -D_VERSION_=\"0.7.0\" -Wall -ggdb -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer  `lxrad-config --cxxflags`
 
 #CFLAGS+= -D_EXPERIMENTAL_
