@@ -1,10 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<!--Converted with LaTeX2HTML 2008 (1.71)
-original version by:  Nikos Drakos, CBLU, University of Leeds
-* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
-* with significant contributions from:
-  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<!--Converted with LaTeX2HTML 2018 (Released Feb 1, 2018) -->
 <HTML>
 <HEAD>
 <TITLE>Serial Communication </TITLE>
@@ -14,7 +10,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <META NAME="distribution" CONTENT="global">
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
-<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2018">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="picsimlab.css">
@@ -28,21 +24,21 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html327"
+<A NAME="tex2html332"
   HREF="node17.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html325"
+<A NAME="tex2html330"
   HREF="node12.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html319"
+<A NAME="tex2html324"
   HREF="node15.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html328"
+<B> Next:</B> <A NAME="tex2html333"
   HREF="node17.html">MPLABX Integrated Debug (PIC)</A>
-<B> Up:</B> <A NAME="tex2html326"
+<B> Up:</B> <A NAME="tex2html331"
   HREF="node12.html">English Manual</A>
-<B> Previous:</B> <A NAME="tex2html320"
+<B> Previous:</B> <A NAME="tex2html325"
   HREF="node15.html">Boards</A>
 <BR>
 <BR></DIV>
@@ -51,9 +47,9 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html329"
+<LI><A NAME="tex2html334"
   HREF="node16.html#SECTION02410000000000000000">Com0com Installation and Configuration(Windows)</A>
-<LI><A NAME="tex2html330"
+<LI><A NAME="tex2html335"
   HREF="node16.html#SECTION02420000000000000000">tty0tty Installation and Configuration (Linux)</A>
 </UL>
 <!--End of Table of Child-Links-->
@@ -68,17 +64,17 @@ Serial Communication
 To use the simulator serial port, install a NULL-MODEM emulator:
 
 <UL>
-<LI>Windows: com0com <TT><A NAME="tex2html61"
+<LI>Windows: com0com <TT><A NAME="tex2html66"
   HREF="http://sourceforge.net/projects/com0com/">http://sourceforge.net/projects/com0com/</A></TT>
 </LI>
-<LI>Linux: tty0tty  <TT><A NAME="tex2html62"
+<LI>Linux: tty0tty  <TT><A NAME="tex2html67"
   HREF="https://github.com/lcgamboa/tty0tty">https://github.com/lcgamboa/tty0tty</A></TT>
 </LI>
 </UL>
 
 <P>
 For communication the PICSimLab should be connected in one port of the NULL-MODEM emulator and the other application connected in the other port.
-Configuration examples linking PICSimLab to <A NAME="tex2html63"
+Configuration examples linking PICSimLab to <A NAME="tex2html68"
   HREF="https://github.com/neundorf/CuteCom">Cutecom</A>
 for serial communication:
  <BR>
@@ -113,14 +109,14 @@ Com0com Installation and Configuration(Windows)</A>
 </H1>
 
 <P>
-Download the signed version of <A NAME="tex2html64"
+Download the signed version of <A NAME="tex2html69"
   HREF="https://sourceforge.net/projects/com0com/files/com0com/3.0.0.0/com0com-3.0.0.0-i386-and-x64-signed.zip/download">com0com</A>.
 
 <P>
 Unzip the downloaded .zip file and run the specific installer of your operating system, x86 for windows 32-bit or x64 for windows 64-bit.
 
 <P>
-Configure the ``choose components'' window as the figure below:
+Configure the &ldquo;choose components&rdquo; window as the figure below:
  
 <DIV ALIGN="CENTER">
 
@@ -132,7 +128,7 @@ Configure the ``choose components'' window as the figure below:
 </DIV> 
 
 <P>
-In the last configuration window, check the ``Launch setup'' option:
+In the last configuration window, check the &ldquo;Launch setup&rdquo; option:
 
 <DIV ALIGN="CENTER">
 
@@ -145,7 +141,7 @@ In the last configuration window, check the ``Launch setup'' option:
 
 <P>
 In the setup window, change the port names to COM1, COM2, COM3 ....
-Just check the ``enable buffer overrun'' option on the two ports, click in the ``Apply'' button and close the setup.
+Just check the &ldquo;enable buffer overrun&rdquo; option on the two ports, click in the &ldquo;Apply&rdquo; button and close the setup.
 In the configuration shown in the figure below, the COM1 and COM2 ports form a NULL-MODEM connection, where one port must be used by the PICSimLab and another by the application with serial communication.
 
 <DIV ALIGN="CENTER">
@@ -214,26 +210,23 @@ Any pair of ports form a NULL-MODEM connection, where one port must be used by t
 
 <DIV CLASS="navigation"><HR>
 <!--Navigation Panel-->
-<A NAME="tex2html327"
+<A NAME="tex2html332"
   HREF="node17.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html325"
+<A NAME="tex2html330"
   HREF="node12.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html319"
+<A NAME="tex2html324"
   HREF="node15.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html328"
+<B> Next:</B> <A NAME="tex2html333"
   HREF="node17.html">MPLABX Integrated Debug (PIC)</A>
-<B> Up:</B> <A NAME="tex2html326"
+<B> Up:</B> <A NAME="tex2html331"
   HREF="node12.html">English Manual</A>
-<B> Previous:</B> <A NAME="tex2html320"
+<B> Previous:</B> <A NAME="tex2html325"
   HREF="node15.html">Boards</A></DIV>
 <!--End of Navigation Panel-->
-<ADDRESS>
-Luis Claudio Gamboa Lopes
-2018-02-09
-</ADDRESS>
+
 </BODY>
 </HTML>

@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2018 (Released Feb 1, 2018) -->
+<HTML>
+<HEAD>
+<TITLE>Interface</TITLE>
+<META NAME="description" CONTENT="Interface">
+<META NAME="keywords" CONTENT="srtank">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2018">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="srtank.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="node1.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html58"
+  HREF="node4.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html56"
+  HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html50"
+  HREF="node2.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html59"
+  HREF="node4.html">Comunicação Serial</A>
+<B> Up:</B> <A NAME="tex2html57"
+  HREF="node1.html">Manual em Português</A>
+<B> Previous:</B> <A NAME="tex2html51"
+  HREF="node2.html">Introdução</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html60"
+  HREF="node3.html#SECTION01210000000000000000">Janela Principal</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION01200000000000000000">
+Interface</A>
+</H1>
+
+<P>
+
+<H1><A NAME="SECTION01210000000000000000">
+Janela Principal</A>
+</H1>
+
+<P>
+A janela principal é composta de um menu, uma barra de status, um combobox de seleção de frequência, um botão liga/desliga para acionar a depuração (debug), alguns controles específicos da placa e parte de interface da placa em si.
+
+<P>
+No título da janela é mostrado o nome do simulador PICSimLab, seguido da placa e do microcontrolador em uso.
+
+<P>
+O combobox de seleção de frequência altera diretamente a velocidade de trabalho do microcontrolador, quando o label &ldquo;Clock (MHz)&rdquo; fica em vermelho indica que o computador não está sendo capaz de executar o programa em tempo real para o clock selecionado. Neste caso a simulação pode apresentar alguma diferença do esperado e a carga da CPU ser aumentada.
+
+<P>
+O botão liga/desliga para acionar a depuração serve para habilitar o suporte à depuração, com o suporte ativo há uma carga maior de simulação.
+
+<P>
+Os menus e suas funções são listados abaixo:
+
+<UL>
+<LI>File
+
+<UL>
+<LI>Load Hex - Carrega arquivo .hex
+</LI>
+<LI>Reload Last - Recarrega último arquivo .hex utilizado
+</LI>
+<LI>Configure - Abre a janela de configuração
+</LI>
+<LI>Save Workspace - Salva todas as configurações atuais do workspace em um arquivo .pzw 
+</LI>
+<LI>Load Workspace - Carrega as configurações salvas de uma arquivo .pzw
+</LI>
+<LI>Exit
+</LI>
+</UL>
+</LI>
+<LI>Board
+
+<UL>
+<LI>1 McLab1 - Escolhe a placa 1
+</LI>
+<LI>2 K16F - Escolhe a placa 2
+</LI>
+<LI>3 McLab2 - Escolhe a placa 3
+</LI>
+<LI>4 PICGenios - Escolhe a placa 4
+</LI>
+<LI>5 Arduino - Escolhe a placa 5
+</LI>
+</UL>
+</LI>
+<LI>Microcontroller
+
+<UL>
+<LI>xxxxx - Seleciona o microcontrolador a ser utilizado (depende da placa selecionada)
+</LI>
+</UL>
+</LI>
+<LI>Modules
+
+<UL>
+<LI>Oscilloscope - Abre a janela do osciloscópio
+</LI>
+<LI>Spare parts - Abre a janela de peças avulsas
+</LI>
+</UL>
+</LI>
+<LI>Tools
+
+<UL>
+<LI>Serial Term - Abre o terminal serial <A NAME="tex2html1"
+  HREF="https://github.com/neundorf/CuteCom">Cutecom</A>
+</LI>
+</UL>
+</LI>
+<LI>Help 
+
+<UL>
+<LI>Contents - Abre a janela de Ajuda
+</LI>
+<LI>Examples - Carrega exemplos
+</LI>
+<LI>About - Mostra mensagem de versão e autor
+</LI>
+</UL>
+</LI>
+</UL>
+
+<P>
+Na primeira parte da barra de status é mostrado o estado da simulação, na parte do meio o estado do suporte a depuração e na última parte o nome da porta serial utilizada, sua velocidade padrão e o erro em relação a velocidade real configurada no microcontrolador. 
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html58"
+  HREF="node4.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html56"
+  HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html50"
+  HREF="node2.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html59"
+  HREF="node4.html">Comunicação Serial</A>
+<B> Up:</B> <A NAME="tex2html57"
+  HREF="node1.html">Manual em Português</A>
+<B> Previous:</B> <A NAME="tex2html51"
+  HREF="node2.html">Introdução</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -526,7 +526,7 @@ CPWindow1::menu1_File_Exit_EvMenuActive (CControl * control)
 void
 CPWindow1::menu1_Help_Contents_EvMenuActive (CControl * control)
 {
-  Window2.html1.SetLoadFile(String(wxT(_SHARE_))+wxT("docs/picsimlab.html"));  
+  Window2.html1.SetLoadFile(String(wxT(_SHARE_))+wxT("docs/srtank/srtank.html"));  
   Window2.Show();
 };
 

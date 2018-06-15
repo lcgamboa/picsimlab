@@ -626,7 +626,7 @@ void
 CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
 {
   //code here:)
-  mprint(wxT("menu1_Help_Contents_EvMenuActive\n"));  Window2.html1.SetLoadFile(String(wxT(_SHARE_))+wxT("docs/picsimlab.html"));  
+  mprint(wxT("menu1_Help_Contents_EvMenuActive\n"));  Window2.html1.SetLoadFile(String(wxT(_SHARE_))+wxT("docs/espmsim/espmsim.html"));  
   Window2.Show();;
 }
 

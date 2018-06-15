@@ -1,10 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<!--Converted with LaTeX2HTML 2008 (1.71)
-original version by:  Nikos Drakos, CBLU, University of Leeds
-* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
-* with significant contributions from:
-  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<!--Converted with LaTeX2HTML 2018 (Released Feb 1, 2018) -->
 <HTML>
 <HEAD>
 <TITLE>Comunicação Serial </TITLE>
@@ -14,7 +10,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <META NAME="distribution" CONTENT="global">
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
-<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2018">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="picsimlab.css">
@@ -28,21 +24,21 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html177"
+<A NAME="tex2html182"
   HREF="node6.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html175"
+<A NAME="tex2html180"
   HREF="node1.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html169"
+<A NAME="tex2html174"
   HREF="node4.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html178"
+<B> Next:</B> <A NAME="tex2html183"
   HREF="node6.html">Depuração Integrada com o</A>
-<B> Up:</B> <A NAME="tex2html176"
+<B> Up:</B> <A NAME="tex2html181"
   HREF="node1.html">Manual em Português</A>
-<B> Previous:</B> <A NAME="tex2html170"
+<B> Previous:</B> <A NAME="tex2html175"
   HREF="node4.html">Placas</A>
 <BR>
 <BR></DIV>
@@ -51,9 +47,9 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html179"
+<LI><A NAME="tex2html184"
   HREF="node5.html#SECTION01410000000000000000">Instalação e Configuração do com0com (Windows)</A>
-<LI><A NAME="tex2html180"
+<LI><A NAME="tex2html185"
   HREF="node5.html#SECTION01420000000000000000">Instalação e Configuração do tty0tty (Linux)</A>
 </UL>
 <!--End of Table of Child-Links-->
@@ -68,17 +64,17 @@ Comunicação Serial
 Para utilizar o a porta serial do simulador, instale um emulador NULL-MODEM:
 
 <UL>
-<LI>Windows: com0com <TT><A NAME="tex2html27"
+<LI>Windows: com0com <TT><A NAME="tex2html29"
   HREF="http://sourceforge.net/projects/com0com/">http://sourceforge.net/projects/com0com/</A></TT>
 </LI>
-<LI>Linux: tty0tty  <TT><A NAME="tex2html28"
+<LI>Linux: tty0tty  <TT><A NAME="tex2html30"
   HREF="https://github.com/lcgamboa/tty0tty">https://github.com/lcgamboa/tty0tty</A></TT>
 </LI>
 </UL>
 
 <P>
 Para comunicação o PICSimLab deve ficar conectado em uma porta do emulador NULL-MODEM e o outro aplicativo conectado na outra porta.
- Exemplos de configuração ligando o PICSimLab ao <A NAME="tex2html29"
+ Exemplos de configuração ligando o PICSimLab ao <A NAME="tex2html31"
   HREF="https://github.com/neundorf/CuteCom">Cutecom</A>
 para comunicação serial:
 
@@ -115,14 +111,14 @@ Instalação e Configuração do com0com (Windows)</A>
 </H1>
 
 <P>
-Faça o download da versão assinada do  <A NAME="tex2html30"
+Faça o download da versão assinada do  <A NAME="tex2html32"
   HREF="https://sourceforge.net/projects/com0com/files/com0com/3.0.0.0/com0com-3.0.0.0-i386-and-x64-signed.zip/download">com0com</A>.
 
 <P>
 Descompacte o arquivo .zip baixado e execute o instalador específico de seu sistema operacional, x86 para windows 32 bits ou x64 para windows 64 bits. 
 
 <P>
-Configure a janela ``choose components'' como a figura abaixo:
+Configure a janela &ldquo;choose components&rdquo; como a figura abaixo:
  
 <DIV ALIGN="CENTER">
 
@@ -134,7 +130,7 @@ Configure a janela ``choose components'' como a figura abaixo:
 </DIV> 
 
 <P>
-Na última janela da configuração, marque a opção ``Launch setup'':
+Na última janela da configuração, marque a opção &ldquo;Launch setup&rdquo;:
 
 <DIV ALIGN="CENTER">
 
@@ -147,7 +143,7 @@ Na última janela da configuração, marque a opção ``Launch setup'':
 
 <P>
 Na janela do setup, troque os nomes das portas para COM1, COM2, COM3....
-Marque apenas a opção ``enable buffer overrun'' nas duas portas, clique no botão ``Apply'' e feche o setup. 
+Marque apenas a opção &ldquo;enable buffer overrun&rdquo; nas duas portas, clique no botão &ldquo;Apply&rdquo; e feche o setup. 
 Na configuração mostrada na figura abaixo, as portas COM1 e COM2 formam uma conexão NULL-MODEM, onde uma porta deve ser utilizada pelo PICSimLab e outra pela aplicação com comunicação serial.
 
 <DIV ALIGN="CENTER">
@@ -166,7 +162,7 @@ Instalação e Configuração do tty0tty (Linux)</A>
 </H1>
 
 <P>
-Faça o download do <A NAME="tex2html31"
+Faça o download do <A NAME="tex2html33"
   HREF="https://github.com/lcgamboa/tty0tty/archive/master.zip">tty0tyy</A>.
 
 Descompacte a pasta baixada.
@@ -218,26 +214,23 @@ Qualquer par de portas formam uma conexão NULL-MODEM, onde uma porta deve ser u
 
 <DIV CLASS="navigation"><HR>
 <!--Navigation Panel-->
-<A NAME="tex2html177"
+<A NAME="tex2html182"
   HREF="node6.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html175"
+<A NAME="tex2html180"
   HREF="node1.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html169"
+<A NAME="tex2html174"
   HREF="node4.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html178"
+<B> Next:</B> <A NAME="tex2html183"
   HREF="node6.html">Depuração Integrada com o</A>
-<B> Up:</B> <A NAME="tex2html176"
+<B> Up:</B> <A NAME="tex2html181"
   HREF="node1.html">Manual em Português</A>
-<B> Previous:</B> <A NAME="tex2html170"
+<B> Previous:</B> <A NAME="tex2html175"
   HREF="node4.html">Placas</A></DIV>
 <!--End of Navigation Panel-->
-<ADDRESS>
-Luis Claudio Gamboa Lopes
-2018-02-09
-</ADDRESS>
+
 </BODY>
 </HTML>

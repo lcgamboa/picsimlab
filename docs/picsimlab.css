@@ -28,9 +28,9 @@ TD.eqno			{ }	/* equation-number cells */
 
 
 /* document-specific styles come next */
-PRE.preform		{   }
 DIV.center		{   }
 DIV.navigation		{   }
-SPAN.textbf		{ font-weight: bold  }
-SPAN.arabic		{   }
+PRE.preform		{   }
 SPAN.Roman		{   }
+SPAN.arabic		{   }
+SPAN.textbf		{ font-weight: bold  }
