@@ -6,7 +6,7 @@ WINDRES = i686-w64-mingw32-windres
 #lxrad automatic generated block start, don't edit below!
 
 
-FLAGS = -D_VERSION_=$(VERSION) -D_SHARE_=\"../../share/\" -Wall -D_WIN_ `i686-w64-mingw32-msw-unicode-3.1  --cxxflags ` 
+FLAGS = -D_VERSION_=$(VERSION) -D_SHARE_=\"share/\" -Wall -D_WIN_ `i686-w64-mingw32-msw-unicode-3.1  --cxxflags ` 
 
 LIBS = -llxrad `i686-w64-mingw32-msw-unicode-3.1  --libs`   
 
@@ -25,7 +25,7 @@ all: $(OBJS)
 run: all
 	wine2 srtank.exe
 
-install:
+install: all
 
 clean:
 	rm -f srtank.exe *.o core 

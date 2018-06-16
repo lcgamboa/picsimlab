@@ -31,7 +31,7 @@ all: $(OBJS)
 run: all
 	./srtank
 
-install:
+install: all
 	$(CP) -dvf  ../../share/srtank.desktop ${appdir} 
 	$(CP) -dvf srtank ${execdir}
 

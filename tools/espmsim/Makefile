@@ -32,7 +32,7 @@ all: $(OBJS)
 run: all
 	./espmsim
 
-install:
+install: all
 	$(CP) -dvf  ../../share/espmsim.desktop ${appdir} 
 	$(CP) -dvf espmsim ${execdir}
 

@@ -77,6 +77,11 @@ CPWindow1::_EvOnCreate (CControl * control)
  temp0 = 22;
  c_esp = 1;
  densi = 1000;
+
+#ifdef _WIN_ 
+ wxFileName fexe(wxStandardPaths::Get().GetExecutablePath());
+ wxSetWorkingDirectory(fexe.GetPath());
+#endif
 };
 
 void

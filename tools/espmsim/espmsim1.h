@@ -7,6 +7,11 @@
 #include<lxrad/lxrad.h>
 #endif
 
+#ifdef _WIN_
+#include <wx/filename.h>
+#include <wx/stdpaths.h>
+#endif
+
 class CPWindow1:public CPWindow
 {
   public:
