@@ -3,8 +3,8 @@
 <!--Converted with LaTeX2HTML 2018 (Released Feb 1, 2018) -->
 <HTML>
 <HEAD>
-<TITLE>Introduction</TITLE>
-<META NAME="description" CONTENT="Introduction">
+<TITLE>Protocolo de comunicação</TITLE>
+<META NAME="description" CONTENT="Protocolo de comunicação">
 <META NAME="keywords" CONTENT="srtank">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -15,49 +15,107 @@
 
 <LINK REL="STYLESHEET" HREF="srtank.css">
 
-<LINK REL="next" HREF="node7.html">
 <LINK REL="previous" HREF="node5.html">
-<LINK REL="up" HREF="node5.html">
+<LINK REL="up" HREF="node1.html">
 <LINK REL="next" HREF="node7.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html95"
+<A NAME="tex2html101"
   HREF="node7.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html93"
-  HREF="node5.html">
+<A NAME="tex2html99"
+  HREF="node1.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html87"
+<A NAME="tex2html95"
   HREF="node5.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html96"
-  HREF="node7.html">Interface</A>
-<B> Up:</B> <A NAME="tex2html94"
-  HREF="node5.html">English Manual</A>
-<B> Previous:</B> <A NAME="tex2html88"
-  HREF="node5.html">English Manual</A>
+<B> Next:</B> <A NAME="tex2html102"
+  HREF="node7.html">English Manual</A>
+<B> Up:</B> <A NAME="tex2html100"
+  HREF="node1.html">Manual em Português</A>
+<B> Previous:</B> <A NAME="tex2html96"
+  HREF="node5.html">Sensores e Atuadores</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
-<H1><A NAME="SECTION02100000000000000000">
-Introduction</A>
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html103"
+  HREF="node6.html#SECTION01510000000000000000">Escrita entrada digital</A>
+<LI><A NAME="tex2html104"
+  HREF="node6.html#SECTION01520000000000000000">Leitura saída digital</A>
+<LI><A NAME="tex2html105"
+  HREF="node6.html#SECTION01530000000000000000">Escrita entrada analógica</A>
+<LI><A NAME="tex2html106"
+  HREF="node6.html#SECTION01540000000000000000">Leitura saída analógica</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION01500000000000000000">
+Protocolo de comunicação</A>
 </H1>
-PICSimLab means  PIC Simulator Laboratory
 
 <P>
-PICSimLab is a realtime emulator of development boards with integrated MPLABX/avr-gdb debugger. PICSimLab supports <A NAME="tex2html7"
-  HREF="https://github.com/lcgamboa/picsim">picsim</A>
-microcontrollers (PIC16F84, PIC16F628, PIC16F648, PIC16F777, PIC16F877A, PIC18F452, PIC18F4520, PIC18F4550 and PIC18F4620) and <A NAME="tex2html8"
-  HREF="https://github.com/buserror/simavr">simavr</A>
-microcontroller (ATMEGA328).
-PICSimLab have integration with  MPLABX/Arduino IDE for programming the boards microcontrollers.
+
+<H1><A NAME="SECTION01510000000000000000">
+Escrita entrada digital</A>
+</H1>
+Envio do byte 0x0N onde N é o número da saída seguido do byte 0x00 para desligar ou 0x01 para ligar.
+Exemplo ligar saída 2:
+<PRE>
+            Serial_write(0x02);
+            Serial_write(0x01);
+</PRE>
 
 <P>
+
+<H1><A NAME="SECTION01520000000000000000">
+Leitura saída digital</A>
+</H1>
+Envio do byte 0x1N onde N é o número da saída e leitura  do byte,  0x00 para desligado ou 0x01 para ligado.
+Exemplo ler entrada 3:
+<PRE>
+      Serial_write(0x13);
+      valor=Serial_read(0);
+</PRE>
+
+<P>
+
+<H1><A NAME="SECTION01530000000000000000">
+Escrita entrada analógica</A>
+</H1> 
+Envio do byte 0x2N onde N é o número da saída seguido do byte mais significativo e do menos significativo.
+Exemplo escrever 230 na saída 1:
+<PRE>
+            Serial_write(0x21);
+            valor=230;
+            Serial_write((valor&amp;0xFF00)&gt;&gt;8);
+            Serial_write(valor&amp;0x00FF);
+</PRE>
+
+<P>
+
+<H1><A NAME="SECTION01540000000000000000">
+Leitura saída analógica</A>
+</H1>
+Envio do byte 0x3N onde N é o número da saída e leitura  do byte mais significativo e menos significativo.
+Exemplo ler entrada 2:
+<PRE>
+      Serial_write(0x32);
+      valorh=Serial_read(0);
+      valorl=Serial_read(0);
+      valor=(valorh&lt;&lt;8)|valorl;
+</PRE>
+
+<P>
+
 <BR><HR>
 
 </BODY>

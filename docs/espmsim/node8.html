@@ -3,8 +3,8 @@
 <!--Converted with LaTeX2HTML 2018 (Released Feb 1, 2018) -->
 <HTML>
 <HEAD>
-<TITLE>Serial Communication </TITLE>
-<META NAME="description" CONTENT="Serial Communication ">
+<TITLE>Interface</TITLE>
+<META NAME="description" CONTENT="Interface">
 <META NAME="keywords" CONTENT="espmsim">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -15,30 +15,31 @@
 
 <LINK REL="STYLESHEET" HREF="espmsim.css">
 
+<LINK REL="next" HREF="node9.html">
 <LINK REL="previous" HREF="node7.html">
-<LINK REL="up" HREF="node5.html">
+<LINK REL="up" HREF="node6.html">
 <LINK REL="next" HREF="node9.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html114"
+<A NAME="tex2html117"
   HREF="node9.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html112"
-  HREF="node5.html">
+<A NAME="tex2html115"
+  HREF="node6.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html108"
+<A NAME="tex2html109"
   HREF="node7.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html115"
-  HREF="node9.html">License</A>
-<B> Up:</B> <A NAME="tex2html113"
-  HREF="node5.html">English Manual</A>
-<B> Previous:</B> <A NAME="tex2html109"
-  HREF="node7.html">Interface</A>
+<B> Next:</B> <A NAME="tex2html118"
+  HREF="node9.html">Serial Communication</A>
+<B> Up:</B> <A NAME="tex2html116"
+  HREF="node6.html">English Manual</A>
+<B> Previous:</B> <A NAME="tex2html110"
+  HREF="node7.html">Introduction</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
@@ -46,187 +47,130 @@
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html116"
-  HREF="node8.html#SECTION02310000000000000000">Com0com Installation and Configuration(Windows)</A>
-<LI><A NAME="tex2html117"
-  HREF="node8.html#SECTION02320000000000000000">tty0tty Installation and Configuration (Linux)</A>
+<LI><A NAME="tex2html119"
+  HREF="node8.html#SECTION02210000000000000000">Main Window</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION02300000000000000000"></A><A NAME="seriali"></A>
-<BR>
-Serial Communication 
+<H1><A NAME="SECTION02200000000000000000">
+Interface</A>
 </H1>
 
 <P>
-To use the simulator serial port, install a NULL-MODEM emulator:
+
+<H1><A NAME="SECTION02210000000000000000">
+Main Window</A>
+</H1>
+
+<P>
+The main window consists of a menu, a status bar, a frequency selection combobox, an on/off button to trigger debugging, some board-specific controls and the part of the board interface itself.
+
+<P>
+In the title of the window is shown the name of the simulator PICSimLab, followed by the board and the microcontroller in use.
+
+<P>
+The frequency selection combobox directly changes the working speed of the microcontroller, when the &ldquo;Clock (MHz)&rdquo; label goes red indicates that the computer is not being able to run the program in real time for the selected clock. 
+In this case the simulation may present some difference than expected and the CPU load will be increased.
+
+<P>
+The on/off button to enable debugging is used to enable debugging support, with the active support there is a higher simulation load.
+
+<P>
+The menus and their functions are listed below:
 
 <UL>
-<LI>Windows: com0com <TT><A NAME="tex2html9"
-  HREF="http://sourceforge.net/projects/com0com/">http://sourceforge.net/projects/com0com/</A></TT>
+<LI>File
+
+<UL>
+<LI>Load Hex - Load .hex files
 </LI>
-<LI>Linux: tty0tty  <TT><A NAME="tex2html10"
-  HREF="https://github.com/lcgamboa/tty0tty">https://github.com/lcgamboa/tty0tty</A></TT>
+<LI>Reload Last - Reload the last used .hex file
+</LI>
+<LI>Configure - Open the configuration windows
+</LI>
+<LI>Save Workspace - Saves all current workspace settings to a .pzw file
+</LI>
+<LI>Load Workspace - Loads saved settings from a .pzw file
+</LI>
+<LI>Exit
+</LI>
+</UL>
+</LI>
+<LI>Board
+
+<UL>
+<LI>1 McLab1 - hoose board 1
+</LI>
+<LI>2 K16F - Choose board 2
+</LI>
+<LI>3 McLab2 - Choose board 3
+</LI>
+<LI>4 PICGenios - Choose board 4
+</LI>
+<LI>5 Arduino - Choose board 5
+</LI>
+</UL>
+</LI>
+<LI>Microcontroller
+
+<UL>
+<LI>xxxxx - Selects the microcontroller to be used (depends on the selected board)
+</LI>
+</UL>
+</LI>
+<LI>Modules
+
+<UL>
+<LI>Oscilloscope - Open the oscilloscope window
+</LI>
+<LI>Spare parts - Open the spare parts window
+</LI>
+</UL>
+</LI>
+<LI>Tools
+
+<UL>
+<LI>Serial Term - Open the serial terminal Cutecom
+</LI>
+</UL>
+</LI>
+<LI>Help 
+
+<UL>
+<LI>Contents - Open the Help window
+</LI>
+<LI>Examples - Load the examples
+</LI>
+<LI>About - Show message about author and version
+</LI>
+</UL>
 </LI>
 </UL>
 
 <P>
-For communication the PICSimLab should be connected in one port of the NULL-MODEM emulator and the other application connected in the other port.
-Configuration examples linking PICSimLab to <A NAME="tex2html11"
-  HREF="https://github.com/neundorf/CuteCom">Cutecom</A>
-for serial communication:
- <BR>
-<BR>
-
-<P>
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="CENTER">OS</TD>
-<TD ALIGN="CENTER">PicsimLab port</TD>
-<TD ALIGN="CENTER">Cutecom port</TD>
-<TD ALIGN="CENTER">NULL-Modem prog.</TD>
-<TD ALIGN="CENTER">Connection</TD>
-</TR>
-<TR><TD ALIGN="CENTER">Windows</TD>
-<TD ALIGN="CENTER">com1</TD>
-<TD ALIGN="CENTER">com2</TD>
-<TD ALIGN="CENTER">com0com</TD>
-<TD ALIGN="CENTER">com1&lt;=&gt;com2</TD>
-</TR>
-<TR><TD ALIGN="CENTER">Linux</TD>
-<TD ALIGN="CENTER">/dev/tnt2</TD>
-<TD ALIGN="CENTER">/dev/tnt3</TD>
-<TD ALIGN="CENTER">tty0tty</TD>
-<TD ALIGN="CENTER">/dev/tnt2&lt;=&gt;/dev/tnt3</TD>
-</TR>
-</TABLE>
-
-<P>
-
-<H1><A NAME="SECTION02310000000000000000">
-Com0com Installation and Configuration(Windows)</A>
-</H1>
-
-<P>
-Download the signed version of <A NAME="tex2html12"
-  HREF="https://sourceforge.net/projects/com0com/files/com0com/3.0.0.0/com0com-3.0.0.0-i386-and-x64-signed.zip/download">com0com</A>.
-
-<P>
-Unzip the downloaded .zip file and run the specific installer of your operating system, x86 for windows 32-bit or x64 for windows 64-bit.
-
-<P>
-Configure the &ldquo;choose components&rdquo; window as the figure below:
- 
-<DIV ALIGN="CENTER">
-
-<IMG
-  WIDTH="499" HEIGHT="388" ALIGN="BOTTOM" BORDER="0"
- SRC="./com0com1.png"
- ALT="Image com0com1"> 
-
-</DIV> 
-
-<P>
-In the last configuration window, check the &ldquo;Launch setup&rdquo; option:
-
-<DIV ALIGN="CENTER">
-
-<IMG
-  WIDTH="499" HEIGHT="388" ALIGN="BOTTOM" BORDER="0"
- SRC="./com0com2.png"
- ALT="Image com0com2"> 
-
-</DIV> 
-
-<P>
-In the setup window, change the port names to COM1, COM2, COM3 ....
-Just check the &ldquo;enable buffer overrun&rdquo; option on the two ports, click in the &ldquo;Apply&rdquo; button and close the setup.
-In the configuration shown in the figure below, the COM1 and COM2 ports form a NULL-MODEM connection, where one port must be used by the PICSimLab and another by the application with serial communication.
-
-<DIV ALIGN="CENTER">
-
-<IMG
-  WIDTH="447" HEIGHT="393" ALIGN="BOTTOM" BORDER="0"
- SRC="./com0com3.png"
- ALT="Image com0com3"> 
-
-</DIV> 
-
-<P>
-
-<H1><A NAME="SECTION02320000000000000000">
-tty0tty Installation and Configuration (Linux)</A>
-</H1>
-
-<P>
-Download the  href https://github.com/lcgamboa/tty0tty/archive/master.zip tty0tyy.
-Unzip the downloaded folder.
-
-<P>
-Open a terminal and enter in the tty0tty/module/ folder and enter the following commands:
-<PRE>
- sudo apt-get update
- sudo apt-get -y upgrade
- sudo apt-get -y install gcc make linux-headers-`uname -r` 
- make
- sudo make install
-</PRE>
-
-<P>
-The user must be in the <SPAN  CLASS="textbf">dialout</SPAN> group to access the ports. 
-To add your user to <SPAN  CLASS="textbf">dialout</SPAN> group use the command:
-<PRE>
-sudo usermod -a -G dialout your_user_name
-</PRE>
-after this is necessary logout and login to group permissions take effect.
-
-<P>
-Once installed, the module creates 8 interconnected ports as follows:
-<PRE>
-  /dev/tnt0  &lt;=&gt;  /dev/tnt1 
-  /dev/tnt2  &lt;=&gt;  /dev/tnt3 
-  /dev/tnt4  &lt;=&gt;  /dev/tnt5 
-  /dev/tnt6  &lt;=&gt;  /dev/tnt7
-</PRE>
-
-<P>
-the connection between each pair is of the form:
-<PRE>  
-  TX   -&gt;  RX
-  RX   &lt;-  TX 	
-  RTS  -&gt;  CTS
-  CTS  &lt;-  RTS
-  DSR  &lt;-  DTR
-  CD   &lt;-  DTR
-  DTR  -&gt;  DSR
-  DTR  -&gt;  CD
-</PRE>
-
-<P>
-Any pair of ports form a NULL-MODEM connection, where one port must be used by the PICSimLab and another by the application with serial communication.
-
-<P>
+The first part of the status bar shows the state of the simulation, in the middle part the status of the debug support and in the last part the name of the serial port used, its default speed and the error in relation to the real speed configured in the microcontroller.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
 <!--Navigation Panel-->
-<A NAME="tex2html114"
+<A NAME="tex2html117"
   HREF="node9.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html112"
-  HREF="node5.html">
+<A NAME="tex2html115"
+  HREF="node6.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html108"
+<A NAME="tex2html109"
   HREF="node7.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html115"
-  HREF="node9.html">License</A>
-<B> Up:</B> <A NAME="tex2html113"
-  HREF="node5.html">English Manual</A>
-<B> Previous:</B> <A NAME="tex2html109"
-  HREF="node7.html">Interface</A></DIV>
+<B> Next:</B> <A NAME="tex2html118"
+  HREF="node9.html">Serial Communication</A>
+<B> Up:</B> <A NAME="tex2html116"
+  HREF="node6.html">English Manual</A>
+<B> Previous:</B> <A NAME="tex2html110"
+  HREF="node7.html">Introduction</A></DIV>
 <!--End of Navigation Panel-->
 
 </BODY>
