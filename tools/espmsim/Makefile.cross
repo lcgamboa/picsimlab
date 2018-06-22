@@ -5,7 +5,7 @@ WINDRES =  x86_64-w64-mingw32-windres
 
 #lxrad automatic generated block start, don't edit below!
 
-FLAGS = -D_VERSION_=$(VERSION) -D_SHARE_=\"share/\" -Wall -O2 -D_WIN_ `x86_64-w64-mingw32-msw-unicode-3.1  --cxxflags ` 
+FLAGS = -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\" -Wall -O2 -D_WIN_ `x86_64-w64-mingw32-msw-unicode-3.1  --cxxflags ` 
 
 LIBS = -llxrad `x86_64-w64-mingw32-msw-unicode-3.1  --libs` -lws2_32  
 
@@ -17,7 +17,7 @@ OBJS = pespmsim.o espmsim1.o espmsim2.o serial.o tcp.o
 all: $(OBJS)
 	$(WINDRES) espmsim_res.rc  -O coff -o espmsim_res.o
 	$(CC) $(FLAGS) $(OBJS) espmsim_res.o -oespmsim.exe $(LIBS)
-	mv *.exe ../../picsimlab_0.7.0_win64/
+	mv *.exe ../../picsimlab_$(VERSION)_win64/
 
 %.o: %.cc
 	$(CC) -c $(FLAGS) $< 
