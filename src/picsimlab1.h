@@ -138,6 +138,7 @@ class CPWindow1:public CPWindow
   void SetCpuState(unsigned char cs);
   void menu1_EvBoard(CControl * control);
   void menu1_EvMicrocontroller(CControl * control);
+  void LoadWorkspace(String fnpzw);
  private: 
   String share;
  
