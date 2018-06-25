@@ -38,11 +38,18 @@ install: all
 	$(CP) -drvf ../share/* ${sharedir} 
 	$(CP) -drvf ../docs ${sharedir} 
 	$(CP) -dvf picsimlab ${execdir}
+	xdg-icon-resource install --context mimetypes --size 48 ../share/application-x-picsimlab-workspace.png application-x-picsimlab-workspace
+	xdg-mime install --mode system ../share/application-x-picsimlab-workspace.xml
+	xdg-mime default picsimlab.desktop application/x-picsimlab-workspace
+	update-mime-database /usr/share/mime
+	update-desktop-database ${appdir}
 
 uninstall:
 	$(RM) -drvf ${sharedir} 
 	$(RM) -dvf ${execdir}picsimlab
 	$(RM) -dvf ${appdir}picsimlab.desktop
+	xdg-icon-resource uninstall  --context mimetypes --size 48 application-x-picsimlab-workspace
+	xdg-mime uninstall  --mode system ../share/application-x-picsimlab-workspace.xml
 
 run: all
 	./picsimlab

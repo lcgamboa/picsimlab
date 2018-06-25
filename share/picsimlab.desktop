@@ -1,8 +1,9 @@
 [Desktop Entry]
-Name=PICsimLab
-Comment="Pic simulator Laboratory"
+Name=PICSimLab
+Comment="PIC Simulator Laboratory"
 Exec=picsimlab
-Icon=/usr/share/picsimlab/logo.png
+Icon=/usr/share/picsimlab/picsimlab.png
 Terminal=false
 Type=Application
 Categories=Development;Engineering;Electronics;
+MimeType=application/x-picsimlab-workspace;

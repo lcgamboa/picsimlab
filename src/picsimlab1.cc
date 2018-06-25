@@ -672,6 +672,8 @@ CPWindow1::menu1_Help_About_EvMenuActive (CControl * control)
 void
 CPWindow1::menu1_Help_Examples_EvMenuActive (CControl * control)
 {
+ 
+ //FIXME: use LoadWorkspace function
  String oldPath = filedialog2.GetDir ();
 
  filedialog2.SetDir (share + wxT ("/examples/hex/board_") + itoa (lab) + wxT ("/") + pboard->proc + wxT ("/"));
