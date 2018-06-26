@@ -198,7 +198,6 @@ CPWindow1::_EvOnCreate (CControl * control)
 
 #ifndef _WIN_
    share = String (_SHARE_);
-   stdp.
 #else
    share = dirname(stdp.GetExecutablePath ()) + wxT ("/") + String (_SHARE_);
 #endif
