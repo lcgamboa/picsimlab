@@ -189,17 +189,18 @@ void
 CPWindow1::_EvOnCreate (CControl * control)
 {
  char home[1024];
+ wxStandardPathsBase& stdp = wxStandardPaths::Get ();
  wxFileName fn;
  
  if (!create)
   {
    PATH = wxGetCwd ();
 
-
 #ifndef _WIN_
    share = String (_SHARE_);
+   stdp.
 #else
-   share = wxGetCwd () + wxT ("/") + String (_SHARE_);
+   share = dirname(stdp.GetExecutablePath ()) + wxT ("/") + String (_SHARE_);
 #endif
 
 
@@ -220,7 +221,7 @@ CPWindow1::_EvOnCreate (CControl * control)
  
  //load options
 
- wxStandardPathsBase& stdp = wxStandardPaths::Get ();
+
  strncpy (home, (char*) stdp.GetUserDataDir ().char_str (), 1024);
 
  Configure (control, home);
@@ -948,8 +949,6 @@ CPWindow1::LoadWorkspace (String fnpzw)
 {
  char home[1024];
  char fzip[1024];
-
- printf("fnpzw=%s\n",(char *)fnpzw.char_str ());
 
  if ((!wxFileExists (fnpzw)) || (!fnpzw.Contains (".pzw")))return;
 

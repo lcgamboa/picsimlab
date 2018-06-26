@@ -41,8 +41,8 @@ install: all
 	xdg-icon-resource install --context mimetypes --size 48 ../share/application-x-picsimlab-workspace.png application-x-picsimlab-workspace
 	xdg-mime install --mode system ../share/application-x-picsimlab-workspace.xml
 	xdg-mime default picsimlab.desktop application/x-picsimlab-workspace
-	update-mime-database /usr/share/mime
-	update-desktop-database ${appdir}
+	update-mime-database /usr/share/mime &
+	update-desktop-database ${appdir} &
 
 uninstall:
 	$(RM) -drvf ${sharedir} 
