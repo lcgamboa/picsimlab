@@ -1,0 +1,58 @@
+[DEVICE]
+Name=P16F877A
+Clock=4000000
+[MEMORY_MODEL]
+Value=0
+[BUILD_TYPE]
+Value=0
+[ACTIVE_TAB]
+Value=teste_b3.c
+[USE_EEPROM]
+Value=0
+[EEPROM_DEFINITION]
+Value=
+[FILES]
+Count=3
+File0=display7s.c
+File1=eeprom_ext.c
+File2=teste_b3.c
+[BINARIES]
+Count=0
+[IMAGES]
+Count=0
+ActiveImageIndex=-1
+[OPENED_FILES]
+Count=1
+File0=teste_b3.c
+[EEPROM]
+Count=0
+[ACTIVE_COMMENTS_FILES]
+Count=0
+[OTHER_FILES]
+Count=0
+[SEARCH_PATH]
+Count=7
+Path0=C:\Arquivos de programas\Mikroelektronika\mikroC PRO for PIC\defs\
+Path1=C:\Arquivos de programas\Mikroelektronika\mikroC PRO for PIC\Uses\P16\
+Path2=Y:\projetos\picsim\lab\share\examples\b3_mikroc_pro\
+Path3=C:\Documents and Settings\gamboa.PROF-02\Desktop\matlab\mikroc\b3\
+Path4=Y:\Área de Trabalho\matlab\mikroc\b3\
+Path5=I:\Área de Trabalho\matlab\mikroc\b3\
+Path6=E:\mikroc\b3\
+[HEADER_PATH]
+Count=2
+Path0=C:\Documents and Settings\gamboa.PROF-02\Desktop\matlab\mikroc\b3\
+Path1=Y:\Área de Trabalho\matlab\mikroc\b3\
+[HEADERS]
+Count=0
+[PLDS]
+Count=0
+[Useses]
+Count=4
+File0=Lcd
+File1=Lcd_Constants
+File2=EEPROM
+File3=I2C
+[EXPANDED NODES]
+Node1=Sources
+Count=1

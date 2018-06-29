@@ -1,0 +1,21 @@
+<!DOCTYPE piklab>
+<piklab>
+  <general>
+    <device>16F628A</device>
+    <tool>sdcc</tool>
+    <files>
+      <item>lcd.c</item>
+      <item>lcd.h</item>
+      <item>serial.c</item>
+      <item>serial.h</item>
+      <item>teclado.c</item>
+      <item>teclado.h</item>
+      <item>teste_b2_serial.c</item>
+      <item>atraso.c</item>
+    </files>
+    <opened_files>
+      <item>teste_b2_serial.c</item>
+    </opened_files>
+  </general>
+  <editors/>
+</piklab>

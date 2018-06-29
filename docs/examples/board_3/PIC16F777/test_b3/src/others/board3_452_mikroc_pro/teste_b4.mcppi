@@ -1,0 +1,59 @@
+[DEVICE]
+Name=P18F452
+Clock=4000000
+[MEMORY_MODEL]
+Value=0
+[BUILD_TYPE]
+Value=0
+[ACTIVE_TAB]
+Value=teste_b4.c
+[USE_EEPROM]
+Value=0
+[EEPROM_DEFINITION]
+Value=
+[FILES]
+Count=3
+File0=display7s.c
+File1=eeprom_ext.c
+File2=teste_b4.c
+[BINARIES]
+Count=0
+[IMAGES]
+Count=0
+ActiveImageIndex=-1
+[OPENED_FILES]
+Count=1
+File0=teste_b4.c
+[EEPROM]
+Count=0
+[ACTIVE_COMMENTS_FILES]
+Count=0
+[OTHER_FILES]
+Count=0
+[SEARCH_PATH]
+Count=6
+Path0=C:\Arquivos de programas\Mikroelektronika\mikroC PRO for PIC\defs\
+Path1=C:\Arquivos de programas\Mikroelektronika\mikroC PRO for PIC\uses\P18\
+Path2=Y:\projetos\picsim\lab\share\examples\b4_mikroc_pro\
+Path3=C:\Documents and Settings\gamboa.PROF-02\Desktop\matlab\mikroc\b4\
+Path4=I:\Área de Trabalho\matlab\mikroc\b4\
+Path5=Y:\Área de Trabalho\matlab\mikroc\b4\
+[HEADER_PATH]
+Count=2
+Path0=C:\Documents and Settings\gamboa.PROF-02\Desktop\matlab\mikroc\b4\
+Path1=Y:\Área de Trabalho\matlab\mikroc\b4\
+[HEADERS]
+Count=0
+[PLDS]
+Count=0
+[Useses]
+Count=5
+File0=Conversions
+File1=Lcd
+File2=Lcd_Constants
+File3=I2C
+File4=EEPROM
+[EXPANDED NODES]
+Node1=Sources
+Node2=Output Files
+Count=2

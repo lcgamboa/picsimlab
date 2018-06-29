@@ -1,0 +1,53 @@
+[DEVICE]
+Name=P16F628A
+Clock=8000000
+[MEMORY_MODEL]
+Value=0
+[BUILD_TYPE]
+Value=0
+[ACTIVE_TAB]
+Value=teste_b2_serial.c
+[USE_EEPROM]
+Value=0
+[EEPROM_DEFINITION]
+Value=
+[FILES]
+Count=3
+File0=teste_b2_serial.c
+File1=lcd.c
+File2=teclado.c
+[BINARIES]
+Count=0
+[IMAGES]
+Count=0
+ActiveImageIndex=-1
+[OPENED_FILES]
+Count=1
+File0=teste_b2_serial.c
+[EEPROM]
+Count=0
+[ACTIVE_COMMENTS_FILES]
+Count=0
+[OTHER_FILES]
+Count=0
+[SEARCH_PATH]
+Count=5
+Path0=C:\Arquivos de programas\Mikroelektronika\mikroC PRO for PIC\defs\
+Path1=C:\Arquivos de programas\Mikroelektronika\mikroC PRO for PIC\Uses\P16\
+Path2=Y:\projetos\picsim\lab\share\examples\b2_mikroc_pro\
+Path3=C:\Documents and Settings\gamboa.PROF-02\Desktop\matlab\mikroc\b2\
+Path4=Y:\Área de Trabalho\matlab\mikroc\b2\
+[HEADER_PATH]
+Count=1
+Path0=C:\Documents and Settings\gamboa.PROF-02\Desktop\matlab\mikroc\b2\
+[HEADERS]
+Count=0
+[PLDS]
+Count=0
+[Useses]
+Count=1
+File0=UART
+[EXPANDED NODES]
+Node1=Sources
+Node2=Output Files
+Count=2

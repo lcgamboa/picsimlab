@@ -1,0 +1,62 @@
+[DEVICE]
+Name=P16F877A
+Clock=8000000
+[MEMORY_MODEL]
+Value=0
+[BUILD_TYPE]
+Value=0
+[ACTIVE_TAB]
+Value=rtc_r.c
+[USE_EEPROM]
+Value=0
+[EEPROM_DEFINITION]
+Value=
+[FILES]
+Count=4
+File0=rtc_r.c
+File1=teclado.c
+File2=eeprom_ext.c
+File3=teste_b5_b.c
+[BINARIES]
+Count=0
+[IMAGES]
+Count=0
+ActiveImageIndex=-1
+[OPENED_FILES]
+Count=2
+File0=teste_b5_b.c
+File1=rtc_r.c
+[EEPROM]
+Count=0
+[ACTIVE_COMMENTS_FILES]
+Count=0
+[OTHER_FILES]
+Count=0
+[SEARCH_PATH]
+Count=7
+Path0=C:\Arquivos de programas\Mikroelektronika\mikroC PRO for PIC\defs\
+Path1=C:\Arquivos de programas\Mikroelektronika\mikroC PRO for PIC\Uses\P16\
+Path2=Y:\Área de Trabalho\matlab\examples\b5_mikroc_pro_lib\
+Path3=I:\Área de Trabalho\matlab\examples\b5_mikroc_pro_lib\
+Path4=Y:\Área de Trabalho\matlab\examples\b6_mikroc_pro_lib\
+Path5=C:\examples\b6_mikroc_pro_lib\
+Path6=C:\examples\b6_mikrocpro\
+[HEADER_PATH]
+Count=1
+Path0=C:\examples\b6_mikrocpro\
+[HEADERS]
+Count=0
+[PLDS]
+Count=0
+[Useses]
+Count=6
+File0=I2C
+File1=ADC
+File2=Lcd
+File3=Lcd_Constants
+File4=EEPROM
+File5=Conversions
+[EXPANDED NODES]
+Node1=Sources
+Node2=Output Files
+Count=2

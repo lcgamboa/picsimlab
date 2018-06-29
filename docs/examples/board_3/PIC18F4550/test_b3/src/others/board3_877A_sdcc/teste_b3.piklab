@@ -1,0 +1,34 @@
+<!DOCTYPE piklab>
+<piklab>
+  <general>
+    <device>16F877A</device>
+    <tool>sdcc</tool>
+    <files>
+      <item>teste_b3.c</item>
+      <item>atraso.c</item>
+      <item>atraso.h</item>
+      <item>lcd.c</item>
+      <item>lcd.h</item>
+      <item>display7s.c</item>
+      <item>eeprom.c</item>
+      <item>display7s.h</item>
+      <item>eeprom.h</item>
+      <item>i2c.c</item>
+      <item>serial.c</item>
+      <item>i2c.h</item>
+      <item>serial.h</item>
+      <item>adc.h</item>
+      <item>adc.c</item>
+      <item>eeprom_ext.c</item>
+      <item>eeprom_ext.h</item>
+      <item>itoa.c</item>
+      <item>itoa.h</item>
+    </files>
+    <custom_linker_script>/usr/share/gputils/lkr/16f877a.lkr</custom_linker_script>
+    <programmer>icd2_debugger</programmer>
+    <opened_files>
+      <item>/home/gamboa/Desktop/matlab/mikroc/b4/teste_b4_b.hex</item>
+    </opened_files>
+  </general>
+  <editors/>
+</piklab>

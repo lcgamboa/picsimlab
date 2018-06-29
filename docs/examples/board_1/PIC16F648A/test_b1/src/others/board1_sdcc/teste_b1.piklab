@@ -1,0 +1,21 @@
+<!DOCTYPE piklab>
+<piklab>
+  <general>
+    <device>16F628A</device>
+    <tool>sdcc</tool>
+    <files>
+      <item>teste_b1.c</item>
+      <item>atraso.c</item>
+      <item>atraso.h</item>
+      <item>display7s.c</item>
+      <item>display7s.h</item>
+      <item>eeprom.c</item>
+      <item>eeprom.h</item>
+    </files>
+    <programmer>psp</programmer>
+    <opened_files>
+      <item>teste_b1.c</item>
+    </opened_files>
+  </general>
+  <editors/>
+</piklab>
