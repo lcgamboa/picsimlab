@@ -2,13 +2,14 @@
   <Class type="String">CPWindow</Class>
   <Name type="String">window2</Name>
   <Tag type="int">0</Tag>
-  <X type="int">312</X>
-  <Y type="int">167</Y>
+  <X type="int">340</X>
+  <Y type="int">20</Y>
   <Width type="uint">733</Width>
   <Height type="uint">773</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
-  <Visible type="bool">0</Visible>
+  <Visible type="bool">1</Visible>
+  <Color type="String">#A9A9A9</Color>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">FALSE</EvMouseMove>
   <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
@@ -34,12 +35,13 @@
   <Name type="String">html1</Name>
   <Tag type="int">0</Tag>
   <X type="int">18</X>
-  <Y type="int">18</Y>
+  <Y type="int">32</Y>
   <Width type="uint">695</Width>
   <Height type="uint">713</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">FALSE</EvMouseMove>
   <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
@@ -57,4 +59,30 @@
   <LoadFile type="File"></LoadFile>
   <EvOnLinkClicked type="Event">FALSE</EvOnLinkClicked>
 </html1>
+<button1>
+  <Class type="String">CButton</Class>
+  <Name type="String">button1</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">18</X>
+  <Y type="int">2</Y>
+  <Width type="uint">65</Width>
+  <Height type="uint">28</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">TRUE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Text type="String">Back</Text>
+</button1>
 </window2>

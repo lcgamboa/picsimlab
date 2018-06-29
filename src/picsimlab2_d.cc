@@ -41,23 +41,41 @@ CPWindow2::CPWindow2(void)
   SetTitle(wxT("PICSimLab - Help"));
   SetOverrideRedirect(0);
   EvOnShow=EVONSHOW & CPWindow2::_EvOnShow;
-  //html1
+    //html1
   html1.SetFOwner(this);
   html1.SetClass(wxT("CHtml"));
   html1.SetName(wxT("html1"));
   html1.SetTag(0);
   html1.SetX(18);
-  html1.SetY(18);
+  html1.SetY(32);
   html1.SetWidth(695);
   html1.SetHeight(713);
   html1.SetHint(wxT(""));
   html1.SetEnable(1);
   html1.SetVisible(1);
+  html1.SetColor(wxT("#000001"));
   html1.SetPopupMenu(NULL);
   html1.SetLoadText(wxT(""));
   html1.SetLoadUrl(wxT(""));
   html1.SetLoadFile(wxT(""));
   CreateChild(&html1);
+  //button1
+  button1.SetFOwner(this);
+  button1.SetClass(wxT("CButton"));
+  button1.SetName(wxT("button1"));
+  button1.SetTag(0);
+  button1.SetX(18);
+  button1.SetY(2);
+  button1.SetWidth(65);
+  button1.SetHeight(28);
+  button1.SetHint(wxT(""));
+  button1.SetEnable(1);
+  button1.SetVisible(1);
+  button1.SetColor(wxT("#000001"));
+  button1.SetPopupMenu(NULL);
+  button1.EvMouseButtonClick=EVMOUSEBUTTONCLICK & CPWindow2::button1_EvMouseButtonClick;
+  button1.SetText(wxT("Back"));
+  CreateChild(&button1);
   /*#Others*/
-//lxrad automatic generated block end, don't edit above!
+  //lxrad automatic generated block end, don't edit above!
 };

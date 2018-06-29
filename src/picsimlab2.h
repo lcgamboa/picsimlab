@@ -33,8 +33,10 @@ class CPWindow2:public CPWindow
   public:
   /*#Controls*/
   CHtml html1;
+  CButton button1;
   /*#Events*/
   void _EvOnShow(CControl * control);
+  void button1_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state);
 
   /*#Others*/
   CPWindow2(void);
