@@ -675,7 +675,7 @@ CPWindow1::menu1_Help_Examples_EvMenuActive (CControl * control)
  
  String oldPath = filedialog2.GetDir ();
 
- filedialog2.SetDir (share + wxT ("/examples/hex/board_") + itoa (lab) + wxT ("/") + pboard->proc + wxT ("/"));
+ filedialog2.SetDir (share + wxT ("/docs/hex/board_") + itoa (lab) + wxT ("/") + pboard->proc + wxT ("/"));
 
  menu1_File_LoadWorkspace_EvMenuActive (control);
 
