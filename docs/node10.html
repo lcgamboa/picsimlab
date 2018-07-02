@@ -24,21 +24,21 @@
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html234"
+<A NAME="tex2html237"
   HREF="node11.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html232"
+<A NAME="tex2html235"
   HREF="node1.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html226"
+<A NAME="tex2html229"
   HREF="node9.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html235"
+<B> Next:</B> <A NAME="tex2html238"
   HREF="node11.html">Como Fazer (How To's)</A>
-<B> Up:</B> <A NAME="tex2html233"
+<B> Up:</B> <A NAME="tex2html236"
   HREF="node1.html">Manual em Português</A>
-<B> Previous:</B> <A NAME="tex2html227"
+<B> Previous:</B> <A NAME="tex2html230"
   HREF="node9.html">Osciloscópio</A>
 <BR>
 <BR></DIV>
@@ -47,20 +47,26 @@
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html236"
-  HREF="node10.html#SECTION01910000000000000000">Servo Motor</A>
-<LI><A NAME="tex2html237"
-  HREF="node10.html#SECTION01920000000000000000">Step Motor</A>
-<LI><A NAME="tex2html238"
-  HREF="node10.html#SECTION01930000000000000000">Push Buttons</A>
 <LI><A NAME="tex2html239"
-  HREF="node10.html#SECTION01940000000000000000">Switchs</A>
+  HREF="node10.html#SECTION01910000000000000000">LCD hd44780</A>
 <LI><A NAME="tex2html240"
-  HREF="node10.html#SECTION01950000000000000000">LEDs</A>
+  HREF="node10.html#SECTION01920000000000000000">LCD pcf8833</A>
 <LI><A NAME="tex2html241"
-  HREF="node10.html#SECTION01960000000000000000">Potentiometers</A>
+  HREF="node10.html#SECTION01930000000000000000">LCD pcd8544</A>
 <LI><A NAME="tex2html242"
+  HREF="node10.html#SECTION01940000000000000000">LEDs</A>
+<LI><A NAME="tex2html243"
+  HREF="node10.html#SECTION01950000000000000000">Potentiometers</A>
+<LI><A NAME="tex2html244"
+  HREF="node10.html#SECTION01960000000000000000">Push Buttons</A>
+<LI><A NAME="tex2html245"
   HREF="node10.html#SECTION01970000000000000000">RGB LED</A>
+<LI><A NAME="tex2html246"
+  HREF="node10.html#SECTION01980000000000000000">Servo Motor</A>
+<LI><A NAME="tex2html247"
+  HREF="node10.html#SECTION01990000000000000000">Step Motor</A>
+<LI><A NAME="tex2html248"
+  HREF="node10.html#SECTION019100000000000000000">Switchs</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
@@ -88,19 +94,25 @@ A janela principal possui o menu com as seguintes funções:
 <LI>Add
  
 <UL>
-<LI>Servo Motor - Adiciona um servo motor
+<LI>LCD hd44780 - Adiciona um display de texto hd44780
 </LI>
-<LI>Step Motor - Adiciona um motor de passo
+<LI>LCD pcf8833 - Adiciona um display gráfico colorido pcf8833
 </LI>
-<LI>Push Buttons - Adiciona 8 botões de pressionar
-</LI>
-<LI>Switchs - Adiciona 8 chaves
+<LI>LCD pcd8544 - Adiciona um display gráfico monocromático pcd8544
 </LI>
 <LI>LEDs - Adiciona 8 LEDs vermelhos
 </LI>
 <LI>Potentiometers - Adiciona 4 potenciômetros
 </LI>
-<LI>RGB LED - Adiciona 1 LED RGB
+<LI>Push Buttons - Adiciona 8 botões de pressionar
+</LI>
+<LI>RGB LED - Adiciona 1 LED RGB 
+</LI>
+<LI>Servo Motor - Adiciona um servo motor
+</LI>
+<LI>Step Motor - Adiciona um motor de passo
+</LI>
+<LI>Switchs - Adiciona 8 chaves
 </LI>
 </UL>
 </LI>
@@ -152,128 +164,60 @@ Depois de adicionado a parte, com um clique com o botão direito do mouse é pos
 <P>
 
 <H1><A NAME="SECTION01910000000000000000">
-Servo Motor</A>
+LCD hd44780</A>
 </H1>
 
 <P>
-O servo motor é um componente que deve ser acionado com um pulso de largura variável de 1ms a 2ms a cada 20 ms. 
-Um pulso de 1ms posiciona o servo a -90º, um de 1,5ms a 0º e um de 2ms a 90º.
-
-<P>
+Essa parte é um display de texto de 2 (ou 4 linhas) por 16 colunas.
 
 <DIV ALIGN="CENTER">
 
 <IMG
-  WIDTH="215" HEIGHT="339" ALIGN="BOTTOM" BORDER="0"
- SRC="./part_servo.png"
- ALT="Image part_servo"> 
-
-</DIV> 
-
-<P>
-
-<DIV ALIGN="CENTER">
-
-<IMG
-  WIDTH="879" HEIGHT="366" ALIGN="BOTTOM" BORDER="0"
- SRC="./part_servo_.png"
- ALT="Image part_servo_"> 
+  WIDTH="425" HEIGHT="345" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_hd44780.png"
+ ALT="Image part_hd44780"> 
 
 </DIV> 
 
 <P>
 
 <H1><A NAME="SECTION01920000000000000000">
-Step Motor</A>
+LCD pcf8833</A>
 </H1>
 
 <P>
-O motor de passo e um componente com 4 bobinas que devem ser acionadas na ordem correta para fazer o deslocamento do rotor.
-Cada passo do motor é de 1.8º.
-
-<P>
+Essa parte é um display de gráfico colorido de 132x132 pontos.
 
 <DIV ALIGN="CENTER">
 
 <IMG
-  WIDTH="272" HEIGHT="342" ALIGN="BOTTOM" BORDER="0"
- SRC="./part_step.png"
- ALT="Image part_step"> 
-
-</DIV> 
-
-<P>
-
-<DIV ALIGN="CENTER">
-
-<IMG
-  WIDTH="1247" HEIGHT="437" ALIGN="BOTTOM" BORDER="0"
- SRC="./part_step_.png"
- ALT="Image part_step_"> 
+  WIDTH="318" HEIGHT="344" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_pcf8833.png"
+ ALT="Image part_pcf8833"> 
 
 </DIV> 
 
 <P>
 
 <H1><A NAME="SECTION01930000000000000000">
-Push Buttons</A>
+LCD pcd8544</A>
 </H1>
 
 <P>
-Esta parte é formada por 8 botões de pressão. Quando pressionado a saída vai para nível lógico &ldquo;1&rdquo;.
+Essa parte é um display de gráfico monocromático de 48x84 pontos.
 
 <DIV ALIGN="CENTER">
 
 <IMG
-  WIDTH="556" HEIGHT="100" ALIGN="BOTTOM" BORDER="0"
- SRC="./part_buttons.png"
- ALT="Image part_buttons"> 
-
-</DIV> 
-
-<P>
-
-<DIV ALIGN="CENTER">
-
-<IMG
-  WIDTH="1260" HEIGHT="291" ALIGN="BOTTOM" BORDER="0"
- SRC="./part_buttons_.png"
- ALT="Image part_buttons_"> 
+  WIDTH="252" HEIGHT="313" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_pcd8544.png"
+ ALT="Image part_pcd8544"> 
 
 </DIV> 
 
 <P>
 
 <H1><A NAME="SECTION01940000000000000000">
-Switchs</A>
-</H1>
-Esta parte é formada por 8 chaves com posição ligado ou desligado (0 ou 1).
-
-<P>
-
-<DIV ALIGN="CENTER">
-
-<IMG
-  WIDTH="561" HEIGHT="108" ALIGN="BOTTOM" BORDER="0"
- SRC="./part_switchs.png"
- ALT="Image part_switchs"> 
-
-</DIV> 
-
-<P>
-
-<DIV ALIGN="CENTER">
-
-<IMG
-  WIDTH="1033" HEIGHT="246" ALIGN="BOTTOM" BORDER="0"
- SRC="./part_switchs_.png"
- ALT="Image part_switchs_"> 
-
-</DIV> 
-
-<P>
-
-<H1><A NAME="SECTION01950000000000000000">
 LEDs</A>
 </H1>
 
@@ -302,7 +246,7 @@ Essa parte é uma barra de 8 LEDs vermelhos independentes.
 
 <P>
 
-<H1><A NAME="SECTION01960000000000000000">
+<H1><A NAME="SECTION01950000000000000000">
 Potentiometers</A>
 </H1>
 
@@ -326,6 +270,35 @@ Essa parte é formada por 4 potenciômetros ligados entre 0 e 5 Volts, a saída 
   WIDTH="974" HEIGHT="463" ALIGN="BOTTOM" BORDER="0"
  SRC="./part_pot_.png"
  ALT="Image part_pot_"> 
+
+</DIV> 
+
+<P>
+
+<H1><A NAME="SECTION01960000000000000000">
+Push Buttons</A>
+</H1>
+
+<P>
+Esta parte é formada por 8 botões de pressão. Quando pressionado a saída vai para nível lógico &ldquo;1&rdquo;.
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="556" HEIGHT="100" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_buttons.png"
+ ALT="Image part_buttons"> 
+
+</DIV> 
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="1260" HEIGHT="291" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_buttons_.png"
+ ALT="Image part_buttons_"> 
 
 </DIV> 
 
@@ -361,23 +334,116 @@ Utilizando PWM é possível gerar varias cores através da combinação da 3 cor
 
 <P>
 
+<H1><A NAME="SECTION01980000000000000000">
+Servo Motor</A>
+</H1>
+
+<P>
+O servo motor é um componente que deve ser acionado com um pulso de largura variável de 1ms a 2ms a cada 20 ms. 
+Um pulso de 1ms posiciona o servo a -90º, um de 1,5ms a 0º e um de 2ms a 90º.
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="215" HEIGHT="339" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_servo.png"
+ ALT="Image part_servo"> 
+
+</DIV> 
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="879" HEIGHT="366" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_servo_.png"
+ ALT="Image part_servo_"> 
+
+</DIV> 
+
+<P>
+
+<H1><A NAME="SECTION01990000000000000000">
+Step Motor</A>
+</H1>
+
+<P>
+O motor de passo e um componente com 4 bobinas que devem ser acionadas na ordem correta para fazer o deslocamento do rotor.
+Cada passo do motor é de 1.8º.
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="272" HEIGHT="342" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_step.png"
+ ALT="Image part_step"> 
+
+</DIV> 
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="1247" HEIGHT="437" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_step_.png"
+ ALT="Image part_step_"> 
+
+</DIV> 
+
+<P>
+
+<H1><A NAME="SECTION019100000000000000000">
+Switchs</A>
+</H1>
+Esta parte é formada por 8 chaves com posição ligado ou desligado (0 ou 1).
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="561" HEIGHT="108" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_switchs.png"
+ ALT="Image part_switchs"> 
+
+</DIV> 
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="1033" HEIGHT="246" ALIGN="BOTTOM" BORDER="0"
+ SRC="./part_switchs_.png"
+ ALT="Image part_switchs_"> 
+
+</DIV> 
+
+<P>
+
 <DIV CLASS="navigation"><HR>
 <!--Navigation Panel-->
-<A NAME="tex2html234"
+<A NAME="tex2html237"
   HREF="node11.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html232"
+<A NAME="tex2html235"
   HREF="node1.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html226"
+<A NAME="tex2html229"
   HREF="node9.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html235"
+<B> Next:</B> <A NAME="tex2html238"
   HREF="node11.html">Como Fazer (How To's)</A>
-<B> Up:</B> <A NAME="tex2html233"
+<B> Up:</B> <A NAME="tex2html236"
   HREF="node1.html">Manual em Português</A>
-<B> Previous:</B> <A NAME="tex2html227"
+<B> Previous:</B> <A NAME="tex2html230"
   HREF="node9.html">Osciloscópio</A></DIV>
 <!--End of Navigation Panel-->
 
