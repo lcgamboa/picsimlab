@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -41,9 +41,13 @@ CPWindow5 Window5;
 void
 CPWindow5::_EvOnShow(CControl * control)
 {
+
   draw1.SetWidth (GetWidth () - 15);
   draw1.SetHeight (GetHeight () - 40);
   timer1.SetRunState (1); 
+
+  wxPanel* panel=(wxPanel*)GetWidget();
+  if(panel != NULL) panel->Fit();
 };
 
 void
@@ -162,7 +166,7 @@ CPWindow5::pmenu2_Properties_EvMenuActive(CControl * control)
 void
 CPWindow5::timer1_EvOnTime(CControl * control)
 {
-
+  
   draw1.Canvas.Init (1.0, 1.0);
 
   draw1.Canvas.SetFgColor (50, 50, 50);
