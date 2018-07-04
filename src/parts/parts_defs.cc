@@ -39,6 +39,7 @@
 
 #include"part_LCD_pcf8833.h"
 #include"part_LCD_pcd8544.h"
+#include"part_gamepad.h"
 /*
 #include"part_MI2C_24CXXX.h"
 #include"part_RTC_ds1307.h"
@@ -48,7 +49,7 @@
 */
 
 #ifdef _EXPERIMENTAL_
-const char parts_list[NUM_PARTS][30]={"D. Transfer function", "LCD hd44780", "LCD pcf8833", "LCD pcd8544", "LEDs", "MEM 24CXXX", "Potentiometers", "Push buttons", "RGB LED", "RTC ds1307", "RTC pfc8563", "Servo motor", "Signal Generator", "Step motor","Switchs",};
+const char parts_list[NUM_PARTS][30]={"D. Transfer function","Gamepad", "LCD hd44780", "LCD pcf8833", "LCD pcd8544", "LEDs", "MEM 24CXXX", "Potentiometers", "Push buttons", "RGB LED", "RTC ds1307", "RTC pfc8563", "Servo motor", "Signal Generator", "Step motor","Switchs",};
 #else
 const char parts_list[NUM_PARTS][30]={"LCD hd44780",  "LCD pcf8833", "LCD pcd8544", "LEDs", "Potentiometers", "Push buttons", "RGB LED", "Servo motor", "Step motor","Switchs",};
 #endif
@@ -79,6 +80,8 @@ part * create_part(String name, unsigned int x, unsigned int y)
    if(name.compare(wxT("LCD pcf8833")) == 0 )part_= new cpart_LCD_pcf8833(x,y);
   
    if(name.compare(wxT("LCD pcd8544")) == 0 )part_= new cpart_LCD_pcd8544(x,y);
-  
+ 
+   if(name.compare(wxT("Gamepad")) == 0 )part_= new cpart_gamepad(x,y);
+ 
    return part_; 
 }

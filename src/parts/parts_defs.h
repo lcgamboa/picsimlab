@@ -31,7 +31,7 @@
 #define MAX_PARTS 100
 
 #ifdef _EXPERIMENTAL_
-#define NUM_PARTS 15
+#define NUM_PARTS 16
 #else
 #define NUM_PARTS 10
 #endif

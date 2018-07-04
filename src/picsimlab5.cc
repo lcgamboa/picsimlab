@@ -46,8 +46,11 @@ CPWindow5::_EvOnShow(CControl * control)
   draw1.SetHeight (GetHeight () - 40);
   timer1.SetRunState (1); 
 
+//FIXME for windows  
+#ifndef _WIN_ 
   wxPanel* panel=(wxPanel*)GetWidget();
   if(panel != NULL) panel->Fit();
+#endif
 };
 
 void
@@ -237,6 +240,12 @@ CPWindow5::draw1_EvKeyboardPress(CControl * control, uint key, uint x, uint y,ui
       scale-=0.1;
       if(scale < 0.1)scale=0.1;
       break;
+   default:
+    for (int i = 0; i < partsc; i++)
+    {
+     parts[i]->KeyPress (key, x, y, mask);
+    }
+    break;
   }
   
 };
@@ -244,8 +253,10 @@ CPWindow5::draw1_EvKeyboardPress(CControl * control, uint key, uint x, uint y,ui
 void
 CPWindow5::draw1_EvKeyboardRelease(CControl * control, uint key, uint x, uint y,uint mask)
 {
-  //code here:)
-  //mprint(wxT("draw1_EvKeyboardRelease\n"));
+    for (int i = 0; i < partsc; i++)
+    {
+     parts[i]->KeyRelease (key, x, y, mask);
+    }
 };
 
 bool 
