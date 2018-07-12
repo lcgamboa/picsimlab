@@ -272,7 +272,7 @@ int
 board_avr::MGetPinCount(void)
 {
   if(avr == NULL) return 0;	
-  if( String(avr->mmcu).compare (wxT("atmega328")) == 0)return 28;
+  if( String(avr->mmcu).compare (lxT("atmega328")) == 0)return 28;
   return 0;
 }
 

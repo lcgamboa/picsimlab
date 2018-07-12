@@ -33,15 +33,15 @@
 class cpart_dtfunc:public part
 {
    public:
-      String GetName(void){return wxT("D. Transfer function");};
+      String GetName(void){return lxT("D. Transfer function");};
       cpart_dtfunc(unsigned x, unsigned y);
       ~cpart_dtfunc(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return wxT("d_transfer_function.png");};
-      String GetInputMapFile(void){return wxT("d_transfer_function_i.map");};
-      String GetOutputMapFile(void){return wxT("d_transfer_function_o.map");};
-      String GetPropertiesWindowFile(void){return wxT("d_transfer_function.lxrad");};
+      String GetPictureFileName(void){return lxT("d_transfer_function.png");};
+      String GetInputMapFile(void){return lxT("d_transfer_function_i.map");};
+      String GetOutputMapFile(void){return lxT("d_transfer_function_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("d_transfer_function.lxrad");};
       void Reset(void);
       void MouseButtonPress(uint button, uint x, uint y,uint state);
       void MouseButtonRelease(uint button, uint x, uint y,uint state);

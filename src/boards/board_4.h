@@ -64,7 +64,7 @@ class cboard_4:public board_pic
      int lcde;
 
      int sound_on;
-     wxSound buzz;
+     lxSound buzz;
 
      float vp1in;
      float vp2in;
@@ -85,8 +85,8 @@ class cboard_4:public board_pic
     unsigned int lm2[40]; //luminosidade media display
     unsigned int lm3[40]; //luminosidade media display
     unsigned int lm4[40]; //luminosidade media display
-    wxBitmap * vent[2];
-    wxBitmap * lcdbmp[2];
+    lxBitmap * vent[2];
+    lxBitmap * lcdbmp[2];
     
     CGauge *gauge1;
     CGauge *gauge2;
@@ -105,13 +105,13 @@ class cboard_4:public board_pic
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
 #ifdef _EXPERIMENTAL_
-      String GetSupportedDevices(void){return wxT("PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,");};
+      String GetSupportedDevices(void){return lxT("PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,");};
 #else
-      String GetSupportedDevices(void){return wxT("PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F4620,");};
+      String GetSupportedDevices(void){return lxT("PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F4620,");};
 #endif
-      String GetPictureFileName(void){return wxT("picsimlab4.png");};
-      String GetInputMapFile(void){return wxT("input4.map");};
-      String GetOutputMapFile(void){return wxT("output4.map");};
+      String GetPictureFileName(void){return lxT("picsimlab4.png");};
+      String GetInputMapFile(void){return lxT("input4.map");};
+      String GetOutputMapFile(void){return lxT("output4.map");};
       void Reset(void);
       void MouseButtonPress(uint button, uint x, uint y,uint state);
       void MouseButtonRelease(uint button, uint x, uint y,uint state);

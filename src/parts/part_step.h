@@ -33,15 +33,15 @@
 class cpart_step:public part
 {
    public:
-      String GetName(void){return wxT("Step motor");}; 
+      String GetName(void){return lxT("Step motor");}; 
       cpart_step(unsigned x, unsigned y);
       ~cpart_step(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return wxT("step_motor.png");};
-      String GetInputMapFile(void){return wxT("step_motor_i.map");};
-      String GetOutputMapFile(void){return wxT("step_motor_o.map");};
-      String GetPropertiesWindowFile(void){return wxT("step_motor.lxrad");};
+      String GetPictureFileName(void){return lxT("step_motor.png");};
+      String GetInputMapFile(void){return lxT("step_motor_i.map");};
+      String GetOutputMapFile(void){return lxT("step_motor_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("step_motor.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  wprop);
       void ReadPropertiesWindow(void);
       String WritePreferences(void);

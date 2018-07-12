@@ -49,10 +49,10 @@ class cboard_1:public board_pic
       ~cboard_1(void);
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
-      String GetSupportedDevices(void){return wxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
-      String GetPictureFileName(void){return wxT("picsimlab1.png");};
-      String GetInputMapFile(void){return wxT("input1.map");};
-      String GetOutputMapFile(void){return wxT("output1.map");};
+      String GetSupportedDevices(void){return lxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
+      String GetPictureFileName(void){return lxT("picsimlab1.png");};
+      String GetInputMapFile(void){return lxT("input1.map");};
+      String GetOutputMapFile(void){return lxT("output1.map");};
       void Reset(void);
       void MouseButtonPress(uint button, uint x, uint y,uint state);
       void MouseButtonRelease(uint button, uint x, uint y,uint state);

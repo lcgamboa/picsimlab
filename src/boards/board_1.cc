@@ -86,7 +86,7 @@ cboard_1::cboard_1(void)
   //gauge1
   gauge1=new CGauge();
   gauge1->SetFOwner(&Window1);
-  gauge1->SetName(wxT("gauge1_p1"));
+  gauge1->SetName(lxT("gauge1_p1"));
   gauge1->SetX(13);
   gauge1->SetY(102);
   gauge1->SetWidth(140);
@@ -100,14 +100,14 @@ cboard_1::cboard_1(void)
   //label1
   label1=new CLabel();
   label1->SetFOwner(&Window1);
-  label1->SetName(wxT("label1_p1"));
+  label1->SetName(lxT("label1_p1"));
   label1->SetX(12);
   label1->SetY(80);
   label1->SetWidth(60);
   label1->SetHeight(20);
   label1->SetEnable(1);
   label1->SetVisible(1);
-  label1->SetText(wxT("LAMP"));
+  label1->SetText(lxT("LAMP"));
   label1->SetAlign(1);
   Window1.CreateChild(label1);   
 };
@@ -340,7 +340,7 @@ cboard_1::Reset(void)
     pic_set_pin(2,p_BT3); 
     pic_set_pin(3,p_BT4); 
     
-    Window1.statusbar1.SetField(2,wxT(""));
+    Window1.statusbar1.SetField(2,lxT(""));
 
    for(int i=0;i < pic.PINCOUNT;i++)
    {
@@ -390,7 +390,7 @@ cboard_1::MouseButtonPress(uint button, uint x, uint y,uint state)
           p_BT2=0; 
           p_BT3=0; 
           p_BT4=0; 
-          Window1.statusbar1.SetField(0,wxT("Stoped"));
+          Window1.statusbar1.SetField(0,lxT("Stoped"));
         }
         else
         {
@@ -398,7 +398,7 @@ cboard_1::MouseButtonPress(uint button, uint x, uint y,uint state)
           Window1.Set_picrun(1);
           Reset();
      
-          Window1.statusbar1.SetField(0,wxT("Running..."));
+          Window1.statusbar1.SetField(0,lxT("Running..."));
         } 
       };break;
       
@@ -595,8 +595,8 @@ cboard_1::get_out_id(char * name)
 void 
 cboard_1::WritePreferences(void)
 {
-    Window1.saveprefs(wxT("p1_proc"),proc);
-    Window1.saveprefs(wxT("p1_jmp"),String::Format("%i",jmp[0]));
+    Window1.saveprefs(lxT("p1_proc"),proc);
+    Window1.saveprefs(lxT("p1_jmp"),String::Format("%i",jmp[0]));
 };
 
 void 

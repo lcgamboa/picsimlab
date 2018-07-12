@@ -84,7 +84,7 @@ cboard_x::cboard_x(void)
   //scroll1
   scroll1=new CScroll();   
   scroll1->SetFOwner(&Window1);
-  scroll1->SetName(wxT("scroll1_px"));
+  scroll1->SetName(lxT("scroll1_px"));
   scroll1->SetX(12);
   scroll1->SetY(273-160);
   scroll1->SetWidth(140);
@@ -98,7 +98,7 @@ cboard_x::cboard_x(void)
   //gauge1
   gauge1=new CGauge();
   gauge1->SetFOwner(&Window1);
-  gauge1->SetName(wxT("gauge1_px"));
+  gauge1->SetName(lxT("gauge1_px"));
   gauge1->SetX(13);
   gauge1->SetY(382-160);
   gauge1->SetWidth(140);
@@ -112,7 +112,7 @@ cboard_x::cboard_x(void)
   //gauge2
   gauge2=new CGauge();
   gauge2->SetFOwner(&Window1);
-  gauge2->SetName(wxT("gauge2_px"));
+  gauge2->SetName(lxT("gauge2_px"));
   gauge2->SetX(12);
   gauge2->SetY(330-160);
   gauge2->SetWidth(140);
@@ -126,40 +126,40 @@ cboard_x::cboard_x(void)
   //label1
   label1=new CLabel();
   label1->SetFOwner(&Window1);
-  label1->SetName(wxT("label1_px"));
+  label1->SetName(lxT("label1_px"));
   label1->SetX(12);
   label1->SetY(249-160);
   label1->SetWidth(60);
   label1->SetHeight(20);
   label1->SetEnable(1);
   label1->SetVisible(1);
-  label1->SetText(wxT("AN0"));
+  label1->SetText(lxT("AN0"));
   label1->SetAlign(1);
   Window1.CreateChild(label1); 
   //label2
   label2=new CLabel();
   label2->SetFOwner(&Window1);
-  label2->SetName(wxT("label2_px"));
+  label2->SetName(lxT("label2_px"));
   label2->SetX(12);
   label2->SetY(306-160);
   label2->SetWidth(60);
   label2->SetHeight(20);
   label2->SetEnable(1);
   label2->SetVisible(1);
-  label2->SetText(wxT("RB0"));
+  label2->SetText(lxT("RB0"));
   label2->SetAlign(1);
   Window1.CreateChild(label2);    
   //label3
   label3=new CLabel();
   label3->SetFOwner(&Window1);
-  label3->SetName(wxT("label3_px"));
+  label3->SetName(lxT("label3_px"));
   label3->SetX(13);
   label3->SetY(357-160);
   label3->SetWidth(60);
   label3->SetHeight(20);
   label3->SetEnable(1);
   label3->SetVisible(1);
-  label3->SetText(wxT("RB1"));
+  label3->SetText(lxT("RB1"));
   label3->SetAlign(1);
   Window1.CreateChild(label3);    
 };
@@ -196,13 +196,13 @@ cboard_x::Reset(void)
 #else
     if(pic.serialfd != INVALID_HANDLE_VALUE)
 #endif
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
-        String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic.serialbaud)+wxT("(")+
+      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+
+        String::FromAscii(SERIALDEVICE)+lxT(":")+itoa(pic.serialbaud)+lxT("(")+
         String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*
-        pic.serialbaud)/pic.serialexbaud))+wxT("%)"));
+        pic.serialbaud)/pic.serialexbaud))+lxT("%)"));
     else  
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
-        String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
+      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+
+        String::FromAscii(SERIALDEVICE)+lxT(" (ERROR)"));
         
 
 };
@@ -217,13 +217,13 @@ cboard_x::RefreshStatus(void)
 #else
     if(pic.serialfd != INVALID_HANDLE_VALUE)
 #endif
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
-        String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic.serialbaud)+wxT("(")+
+      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+
+        String::FromAscii(SERIALDEVICE)+lxT(":")+itoa(pic.serialbaud)+lxT("(")+
         String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*
-        pic.serialbaud)/pic.serialexbaud))+wxT("%)"));
+        pic.serialbaud)/pic.serialexbaud))+lxT("%)"));
     else  
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
-        String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
+      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+
+        String::FromAscii(SERIALDEVICE)+lxT(" (ERROR)"));
     
 };
 
@@ -232,9 +232,9 @@ void
 cboard_x::WritePreferences(void)
 {
     //write selected microcontroller of board_x to preferences
-    Window1.saveprefs(wxT("px_proc"),proc);
+    Window1.saveprefs(lxT("px_proc"),proc);
     //write switch state of board_x to preferences 
-    Window1.saveprefs(wxT("px_bt2"),String::Format("%i",p_BT2));
+    Window1.saveprefs(lxT("px_bt2"),String::Format("%i",p_BT2));
 };
 
 //Called whe configuration file load  preferences 
@@ -315,14 +315,14 @@ cboard_x::MouseButtonPress(uint button, uint x, uint y,uint state)
             Window1.Set_picpwr(0); 
             Reset();
             p_BT1=1; 
-            Window1.statusbar1.SetField(0,wxT("Stoped"));
+            Window1.statusbar1.SetField(0,lxT("Stoped"));
           }
           else //if off turn on
           {
             Window1.Set_picpwr(1);
             Window1.Set_picrun(1);
             Reset();
-            Window1.statusbar1.SetField(0,wxT("Running..."));
+            Window1.statusbar1.SetField(0,lxT("Running..."));
           } 
           break;
         //if event is over I_RST area then turn off and reset

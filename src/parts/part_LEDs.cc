@@ -36,10 +36,10 @@ cpart_leds::cpart_leds(unsigned x, unsigned y)
    Y=y;        
    ReadMaps();   
      
-   wxImage image;
-   image.LoadFile(Window1.GetSharePath()+wxT("parts/")+GetPictureFileName());
+   lxImage image;
+   image.LoadFile(Window1.GetSharePath()+lxT("parts/")+GetPictureFileName());
 
-   Bitmap = new wxBitmap(image);
+   Bitmap = new lxBitmap(image);
    
    canvas.Create(Bitmap);
    
@@ -70,7 +70,7 @@ void cpart_leds::Draw(void)
    
   canvas.Init();
   
-  wxFont font(9, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD );
+  lxFont font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD );
   canvas.SetFont (font);
   
   for(i=0;i<outputc;i++)
@@ -180,7 +180,7 @@ cpart_leds::ConfigurePropertiesWindow(CPWindow *  wprop)
     {
        spin= pboard->MGetPinName(i);
       
-      if(spin.Cmp(wxT("error")))
+      if(spin.Cmp(lxT("error")))
       {
         Items=Items+itoa(i)+"  "+spin+",";
       }

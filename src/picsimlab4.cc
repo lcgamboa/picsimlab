@@ -75,7 +75,7 @@ CPWindow4::DrawScreen (void)
   draw1.Canvas.Line (WMAX / 2, 0, WMAX / 2, HMAX);
 
   float gain[3], nivel[3];
-  wxPoint pts[3];
+  lxPoint pts[3];
 
 
   //draw ch 0
@@ -128,7 +128,7 @@ CPWindow4::DrawScreen (void)
   //draw trigger level
   if (usetrigger)
     {
-      if (combo1.GetText ().compare (wxT ("1")) == 0)
+      if (combo1.GetText ().compare (lxT ("1")) == 0)
         tch = 0;
       else
         tch = 1;
@@ -189,7 +189,7 @@ void
 CPWindow4::draw1_EvMouseButtonClick (CControl * control, uint button, uint x, uint y, uint state)
 {
   //code here:)
-  mprint (wxT ("draw1_EvMouseButtonClick\n"));
+  mprint (lxT ("draw1_EvMouseButtonClick\n"));
 };
 
 void
@@ -218,7 +218,7 @@ CPWindow4::SetBaseTimer (void)
     {
       String spin = pboard->MGetPinName (i);
 
-      if (spin.Cmp (wxT ("error")))
+      if (spin.Cmp (lxT ("error")))
         {
           combo2.AddItem (itoa (i) + "  " + spin);
           combo3.AddItem (itoa (i) + "  " + spin);
@@ -381,26 +381,26 @@ void
 CPWindow4::WritePreferences (void)
 {
   //TODO write all preferences
-  Window1.saveprefs (wxT ("osc_scale1"), ftoa (spind1.GetValue ()));
-  Window1.saveprefs (wxT ("osc_offset1"), ftoa (spind2.GetValue ()));
-  Window1.saveprefs (wxT ("osc_on1"), itoa (togglebutton1.GetCheck ()));
-  Window1.saveprefs (wxT ("osc_color1"), button1.GetColor ().GetAsString (wxC2S_HTML_SYNTAX));
-  Window1.saveprefs (wxT ("osc_inv"), itoa (togglebutton3.GetCheck ()));
-  Window1.saveprefs (wxT ("osc_ch1"), combo2.GetText ());
+  Window1.saveprefs (lxT ("osc_scale1"), ftoa (spind1.GetValue ()));
+  Window1.saveprefs (lxT ("osc_offset1"), ftoa (spind2.GetValue ()));
+  Window1.saveprefs (lxT ("osc_on1"), itoa (togglebutton1.GetCheck ()));
+  Window1.saveprefs (lxT ("osc_color1"), button1.GetColor ().GetAsString (lxC2S_HTML_SYNTAX));
+  Window1.saveprefs (lxT ("osc_inv"), itoa (togglebutton3.GetCheck ()));
+  Window1.saveprefs (lxT ("osc_ch1"), combo2.GetText ());
 
-  Window1.saveprefs (wxT ("osc_scale2"), ftoa (spind3.GetValue ()));
-  Window1.saveprefs (wxT ("osc_offset2"), ftoa (spind4.GetValue ()));
-  Window1.saveprefs (wxT ("osc_on2"), itoa (togglebutton2.GetCheck ()));
-  Window1.saveprefs (wxT ("osc_color2"), button2.GetColor ().GetAsString (wxC2S_HTML_SYNTAX));
-  Window1.saveprefs (wxT ("osc_inv2"), itoa (togglebutton4.GetCheck ()));
-  Window1.saveprefs (wxT ("osc_ch2"), combo3.GetText ());
+  Window1.saveprefs (lxT ("osc_scale2"), ftoa (spind3.GetValue ()));
+  Window1.saveprefs (lxT ("osc_offset2"), ftoa (spind4.GetValue ()));
+  Window1.saveprefs (lxT ("osc_on2"), itoa (togglebutton2.GetCheck ()));
+  Window1.saveprefs (lxT ("osc_color2"), button2.GetColor ().GetAsString (lxC2S_HTML_SYNTAX));
+  Window1.saveprefs (lxT ("osc_inv2"), itoa (togglebutton4.GetCheck ()));
+  Window1.saveprefs (lxT ("osc_ch2"), combo3.GetText ());
 
-  Window1.saveprefs (wxT ("osc_tscale"), ftoa (spind5.GetValue ()));
-  //Window1.saveprefs(wxT("osc_toffset"),ftoa(spind6.GetValue()));
-  Window1.saveprefs (wxT ("osc_usetrigger"), itoa (togglebutton5.GetCheck ()));
-  Window1.saveprefs (wxT ("osc_tch"), combo1.GetText ());
-  Window1.saveprefs (wxT ("osc_tlevel"), ftoa (spind7.GetValue ()));
-  Window1.saveprefs (wxT ("osc_position"), itoa (GetX ()) + wxT (",") + itoa (GetY ()));
+  Window1.saveprefs (lxT ("osc_tscale"), ftoa (spind5.GetValue ()));
+  //Window1.saveprefs(lxT("osc_toffset"),ftoa(spind6.GetValue()));
+  Window1.saveprefs (lxT ("osc_usetrigger"), itoa (togglebutton5.GetCheck ()));
+  Window1.saveprefs (lxT ("osc_tch"), combo1.GetText ());
+  Window1.saveprefs (lxT ("osc_tlevel"), ftoa (spind7.GetValue ()));
+  Window1.saveprefs (lxT ("osc_position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
 };
 
 void
@@ -423,7 +423,7 @@ CPWindow4::ReadPreferences (char *name, char *value)
 
   if (!strcmp (name, "osc_color1"))
     {
-      button1.SetColor (wxColor (value));
+      button1.SetColor (lxColor (value));
     }
 
   if (!strcmp (name, "osc_inv1"))
@@ -454,7 +454,7 @@ CPWindow4::ReadPreferences (char *name, char *value)
 
   if (!strcmp (name, "osc_color2"))
     {
-      button2.SetColor (wxColor (value));
+      button2.SetColor (lxColor (value));
     }
 
   if (!strcmp (name, "osc_inv2"))
@@ -501,13 +501,13 @@ CPWindow4::ReadPreferences (char *name, char *value)
 void
 CPWindow4::_EvOnDestroy (CControl * control) {
   //code here:)
-  //mprint(wxT("_EvOnDestroy\n"));
+  //mprint(lxT("_EvOnDestroy\n"));
 };
 
 void
 CPWindow4::_EvOnShow (CControl * control) {
   //code here:)
-  //mprint(wxT("_EvOnShow\n"));
+  //mprint(lxT("_EvOnShow\n"));
 };
 
 void
@@ -601,7 +601,7 @@ void
 CPWindow4::button4_EvMouseButtonClick (CControl * control, uint button, uint x, uint y, uint state)
 {
 
-  filedialog1.SetType (wxFD_SAVE | wxFD_CHANGE_DIR);
+  filedialog1.SetType (lxFD_SAVE | lxFD_CHANGE_DIR);
   if (filedialog1.Run ())
     {
       draw1.WriteImgToFile (filedialog1.GetFileName ());

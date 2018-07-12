@@ -59,7 +59,7 @@ CPWindow3::button1_EvMouseButtonClick(CControl * control, uint button, uint x, u
   
   if(combo1.GetText()==combo2.GetText())
   {
-    Message(wxT("Use diferent ports!"));
+    Message(lxT("Use diferent ports!"));
     return;
   }	
 

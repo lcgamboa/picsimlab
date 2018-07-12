@@ -59,29 +59,29 @@ part * create_part(String name, unsigned int x, unsigned int y)
 {
    part * part_=NULL; 
  
-   if(name.compare(wxT("Servo motor")) == 0 )part_= new cpart_servo(x,y);
+   if(name.compare(lxT("Servo motor")) == 0 )part_= new cpart_servo(x,y);
 
-   if(name.compare(wxT("Step motor")) == 0 )part_= new cpart_step(x,y);
+   if(name.compare(lxT("Step motor")) == 0 )part_= new cpart_step(x,y);
 #ifdef _EXPERIMENTAL_   
-   if(name.compare(wxT("D. Transfer function")) == 0 )part_= new cpart_dtfunc(x,y);
+   if(name.compare(lxT("D. Transfer function")) == 0 )part_= new cpart_dtfunc(x,y);
 #endif
-   if(name.compare(wxT("Push buttons")) == 0 )part_= new cpart_pbuttons(x,y);
+   if(name.compare(lxT("Push buttons")) == 0 )part_= new cpart_pbuttons(x,y);
    
-   if(name.compare(wxT("Switchs")) == 0 )part_= new cpart_switchs(x,y);
+   if(name.compare(lxT("Switchs")) == 0 )part_= new cpart_switchs(x,y);
    
-   if(name.compare(wxT("LEDs")) == 0 )part_= new cpart_leds(x,y);
+   if(name.compare(lxT("LEDs")) == 0 )part_= new cpart_leds(x,y);
    
-   if(name.compare(wxT("Potentiometers")) == 0 )part_= new cpart_pot(x,y);
+   if(name.compare(lxT("Potentiometers")) == 0 )part_= new cpart_pot(x,y);
    
-   if(name.compare(wxT("RGB LED")) == 0 )part_= new cpart_rgb_led(x,y);
+   if(name.compare(lxT("RGB LED")) == 0 )part_= new cpart_rgb_led(x,y);
    
-   if(name.compare(wxT("LCD hd44780")) == 0 )part_= new cpart_LCD_hd44780(x,y);
+   if(name.compare(lxT("LCD hd44780")) == 0 )part_= new cpart_LCD_hd44780(x,y);
    
-   if(name.compare(wxT("LCD pcf8833")) == 0 )part_= new cpart_LCD_pcf8833(x,y);
+   if(name.compare(lxT("LCD pcf8833")) == 0 )part_= new cpart_LCD_pcf8833(x,y);
   
-   if(name.compare(wxT("LCD pcd8544")) == 0 )part_= new cpart_LCD_pcd8544(x,y);
+   if(name.compare(lxT("LCD pcd8544")) == 0 )part_= new cpart_LCD_pcd8544(x,y);
  
-   if(name.compare(wxT("Gamepad")) == 0 )part_= new cpart_gamepad(x,y);
+   if(name.compare(lxT("Gamepad")) == 0 )part_= new cpart_gamepad(x,y);
  
    return part_; 
 }

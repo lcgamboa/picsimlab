@@ -58,13 +58,13 @@ class cboard_6:public board_pic
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
-      String GetSupportedDevices(void){return wxT("PIC16F18855,");};
+      String GetSupportedDevices(void){return lxT("PIC16F18855,");};
       //Return the filename of board picture 
-      String GetPictureFileName(void){return wxT("picsimlab6.png");};
+      String GetPictureFileName(void){return lxT("picsimlab6.png");};
       //Return the filename of board picture input map 
-      String GetInputMapFile(void){return wxT("input6.map");};
+      String GetInputMapFile(void){return lxT("input6.map");};
       //Return the filename of board picture output map 
-      String GetOutputMapFile(void){return wxT("output6.map");};
+      String GetOutputMapFile(void){return lxT("output6.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

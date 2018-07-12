@@ -42,7 +42,7 @@ board * create_board(int *lab,int *lab_)
             break; 
 #endif	    
           default:
-            mprint(wxT("Invalid Board! Using Default!\n"));
+            mprint(lxT("Invalid Board! Using Default!\n"));
             *lab=1;//default  
             *lab_=1;//default  
             pboard= new cboard_1();

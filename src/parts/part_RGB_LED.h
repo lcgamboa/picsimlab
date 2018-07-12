@@ -33,14 +33,14 @@
 class cpart_rgb_led:public part
 {
    public:
-      String GetName(void){return wxT("RGB LED");};
+      String GetName(void){return lxT("RGB LED");};
       cpart_rgb_led(unsigned x, unsigned y);
       ~cpart_rgb_led(void);
       void Draw(void);
-      String GetPictureFileName(void){return wxT("RGB_LED.png");};
-      String GetInputMapFile(void){return wxT("RGB_LED_i.map");};
-      String GetOutputMapFile(void){return wxT("RGB_LED_o.map");};
-      String GetPropertiesWindowFile(void){return wxT("RGB_LED.lxrad");};
+      String GetPictureFileName(void){return lxT("RGB_LED.png");};
+      String GetInputMapFile(void){return lxT("RGB_LED_i.map");};
+      String GetOutputMapFile(void){return lxT("RGB_LED_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("RGB_LED.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  wprop);
       void ReadPropertiesWindow(void);
       String WritePreferences(void);

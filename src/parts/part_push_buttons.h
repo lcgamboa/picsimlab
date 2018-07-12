@@ -33,15 +33,15 @@
 class cpart_pbuttons:public part
 {
    public:
-      String GetName(void){return wxT("Push buttons");};
+      String GetName(void){return lxT("Push buttons");};
       cpart_pbuttons(unsigned x, unsigned y);
       ~cpart_pbuttons(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return wxT("push_buttons.png");};
-      String GetInputMapFile(void){return wxT("push_buttons_i.map");};
-      String GetOutputMapFile(void){return wxT("push_buttons_o.map");};
-      String GetPropertiesWindowFile(void){return wxT("push_buttons.lxrad");};
+      String GetPictureFileName(void){return lxT("push_buttons.png");};
+      String GetInputMapFile(void){return lxT("push_buttons_i.map");};
+      String GetOutputMapFile(void){return lxT("push_buttons_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("push_buttons.lxrad");};
       void MouseButtonPress(uint button, uint x, uint y,uint state);
       void MouseButtonRelease(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  wprop);

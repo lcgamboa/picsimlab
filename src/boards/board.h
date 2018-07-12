@@ -26,7 +26,6 @@
 #ifndef BOARD_H
 #define	BOARD_H
 
-#include <wx/sound.h>    
 #include <lxrad/lxrad.h>    
 #include <picsim/picsim.h>
 #include "../devices/lcd_hd44780.h"

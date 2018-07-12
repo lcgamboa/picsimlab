@@ -40,8 +40,8 @@ part::ReadMaps(void)
 {
   inputc=0;
   outputc=0;  
-  ReadInputMap(Window1.GetSharePath()+wxT("parts/")+GetInputMapFile());
-  ReadOutputMap(Window1.GetSharePath()+wxT("parts/")+GetOutputMapFile());
+  ReadInputMap(Window1.GetSharePath()+lxT("parts/")+GetInputMapFile());
+  ReadOutputMap(Window1.GetSharePath()+lxT("parts/")+GetOutputMapFile());
 }
 
 void 
@@ -146,7 +146,7 @@ part::ReadInputMap(String fname)
   }
   else
   {
-    //Message(wxT("Error open input.map")); Not use this in create!!
+    //Message(lxT("Error open input.map")); Not use this in create!!
     printf("Error open input.map \"%s\"!\n",(const char*)fname.c_str());
   }
     
@@ -220,7 +220,7 @@ part::ReadOutputMap(String fname)
       }
   else
   {
-    //Message(wxT("Error open output.map")); not use this in create!!!
+    //Message(lxT("Error open output.map")); not use this in create!!!
     printf("Error open output.map \"%s\"!\n",(const char *)fname.c_str());
   }
     

@@ -42,7 +42,7 @@ class cboard_3:public board_pic
      int lcde;
 
      int sound_on;
-     wxSound buzz;
+     lxSound buzz;
 
 
      float vp2in;
@@ -76,10 +76,10 @@ class cboard_3:public board_pic
       ~cboard_3(void);
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
-      String GetSupportedDevices(void){return wxT("PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F4620,");};
-      String GetPictureFileName(void){return wxT("picsimlab3.png");};
-      String GetInputMapFile(void){return wxT("input3.map");};
-      String GetOutputMapFile(void){return wxT("output3.map");};
+      String GetSupportedDevices(void){return lxT("PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F4620,");};
+      String GetPictureFileName(void){return lxT("picsimlab3.png");};
+      String GetInputMapFile(void){return lxT("input3.map");};
+      String GetOutputMapFile(void){return lxT("output3.map");};
       void Reset(void);
       void MouseButtonPress(uint button, uint x, uint y,uint state);
       void MouseButtonRelease(uint button, uint x, uint y,uint state);

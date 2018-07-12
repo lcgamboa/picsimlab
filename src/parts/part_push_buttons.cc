@@ -45,10 +45,10 @@ cpart_pbuttons::cpart_pbuttons (unsigned x, unsigned y)
   Y = y;
   ReadMaps ();
 
-  wxImage image;
-  image.LoadFile (Window1.GetSharePath () +wxT("parts/")+ GetPictureFileName ());
+  lxImage image;
+  image.LoadFile (Window1.GetSharePath () +lxT("parts/")+ GetPictureFileName ());
 
-  Bitmap = new wxBitmap (image);
+  Bitmap = new lxBitmap (image);
 
   canvas.Create (Bitmap);
 
@@ -89,7 +89,7 @@ cpart_pbuttons::Draw (void)
 
   canvas.Init ();
 
-  wxFont font(9, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD );
+  lxFont font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD );
   canvas.SetFont (font);
   
   for (i = 0; i < outputc; i++)
@@ -222,7 +222,7 @@ cpart_pbuttons::get_in_id (char * name)
   if (strcmp (name, "B7") == 0)return I_B7;
   if (strcmp (name, "B8") == 0)return I_B8;
 
-  if (strcmp (name, "J1") == 0)return O_J1;
+  if (strcmp (name, "J1") == 0)return I_J1;
 
   printf ("Erro input '%s' don't have a valid id! \n", name);
   return -1;
@@ -286,7 +286,7 @@ cpart_pbuttons::ConfigurePropertiesWindow (CPWindow * wprop)
     {
       spin = pboard->MGetPinName (i);
 
-      if (spin.Cmp (wxT ("error")))
+      if (spin.Cmp (lxT ("error")))
         {
           Items = Items + itoa (i) + "  " + spin + ",";
         }

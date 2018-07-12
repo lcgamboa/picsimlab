@@ -25,7 +25,6 @@
 
 //main window
 
-#include <wx-3.0/wx/filename.h>
 
 #include"picsimlab1.h"
 #include"picsimlab1_d.cc"
@@ -38,7 +37,6 @@ CPWindow1 Window1;
 #include"picsimlab3.h"
 #include"picsimlab4.h"
 #include"picsimlab5.h"
-#include"futils.h"
 
 #ifdef _USE_PICSTARTP_
 extern char PROGDEVICE[100];
@@ -69,13 +67,13 @@ CPWindow1::timer1_EvOnTime (CControl * control)
  if (!ondraw)
   {
    if (!crt)
-    label1.SetColor (wxT ("black"));
+    label1.SetColor (lxT ("black"));
    crt = 0;
    pboard->Draw (&draw1, scale);
   }
  else
   {
-   label1.SetColor (wxT ("red"));
+   label1.SetColor (lxT ("red"));
    crt = 1;
   }
  ondraw = 1;
@@ -123,19 +121,19 @@ CPWindow1::timer2_EvOnTime (CControl * control)
    switch (cpustate)
     {
     case CPU_RUNNING:
-     statusbar1.SetField (0, wxT ("Running..."));
+     statusbar1.SetField (0, lxT ("Running..."));
      break;
     case CPU_STEPPING:
-     statusbar1.SetField (0, wxT ("Stepping..."));
+     statusbar1.SetField (0, lxT ("Stepping..."));
      break;
     case CPU_HALTED:
-     statusbar1.SetField (0, wxT ("Halted!"));
+     statusbar1.SetField (0, lxT ("Halted!"));
      break;
     case CPU_BREAKPOINT:
-     statusbar1.SetField (0, wxT ("BreakPoint!"));
+     statusbar1.SetField (0, lxT ("BreakPoint!"));
      break;
     case CPU_ERROR:
-     statusbar1.SetField (0, wxT ("Error!"));
+     statusbar1.SetField (0, lxT ("Error!"));
      break;
     }
   }
@@ -189,26 +187,25 @@ void
 CPWindow1::_EvOnCreate (CControl * control)
 {
  char home[1024];
- wxStandardPathsBase& stdp = wxStandardPaths::Get ();
- wxFileName fn;
+ lxFileName fn;
  
  if (!create)
   {
-   PATH = wxGetCwd ();
+   PATH = lxGetCwd ();
 
 #ifndef _WIN_
    share = String (_SHARE_);
 #else
-   share = dirname(stdp.GetExecutablePath ()) + wxT ("/") + String (_SHARE_);
+   share = dirname(lxGetExecutablePath ()) + lxT ("/") + String (_SHARE_);
 #endif
 
 
 #ifdef _WIN_
-   Window3.combo1.SetItems (wxT ("COM1,COM2,COM3,COM4,COM5,COM6,COM7,COM8,COM9,COM10,"));
-   Window3.combo2.SetItems (wxT ("COM1,COM2,COM3,COM4,COM5,COM6,COM7,COM8,COM9,COM10,"));
+   Window3.combo1.SetItems (lxT ("COM1,COM2,COM3,COM4,COM5,COM6,COM7,COM8,COM9,COM10,"));
+   Window3.combo2.SetItems (lxT ("COM1,COM2,COM3,COM4,COM5,COM6,COM7,COM8,COM9,COM10,"));
 #else
-   Window3.combo1.SetItems (wxT ("/dev/ttyS0,/dev/ttyS1,/dev/ttyS2,/dev/ttyS3,/dev/tnt0,/dev/tnt1,/dev/tnt2,/dev/tnt3,/dev/tnt4,/dev/tnt5,"));
-   Window3.combo2.SetItems (wxT ("/dev/ttyS0,/dev/ttyS1,/dev/ttyS2,/dev/ttyS3,/dev/tnt0,/dev/tnt1,/dev/tnt2,/dev/tnt3,/dev/tnt4,/dev/tnt5,"));
+   Window3.combo1.SetItems (lxT ("/dev/ttyS0,/dev/ttyS1,/dev/ttyS2,/dev/ttyS3,/dev/tnt0,/dev/tnt1,/dev/tnt2,/dev/tnt3,/dev/tnt4,/dev/tnt5,"));
+   Window3.combo2.SetItems (lxT ("/dev/ttyS0,/dev/ttyS1,/dev/ttyS2,/dev/ttyS3,/dev/tnt0,/dev/tnt1,/dev/tnt2,/dev/tnt3,/dev/tnt4,/dev/tnt5,"));
 #endif
 
   if (Application->argc == 2)
@@ -221,7 +218,7 @@ CPWindow1::_EvOnCreate (CControl * control)
  //load options
 
 
- strncpy (home, (char*) stdp.GetUserDataDir ().char_str (), 1024);
+ strncpy (home, (char*) lxGetUserDataDir (_T("picsimlab")).char_str (), 1024);
 
  Configure (control, home);
  
@@ -268,7 +265,7 @@ CPWindow1::Configure (CControl * control, const char * home)
  pboard = NULL;
 
  prefs.Clear ();
- if (wxFileExists (fname))
+ if (lxFileExists (fname))
   {
    if (prefs.LoadFromFile (fname))
     {
@@ -307,7 +304,7 @@ CPWindow1::Configure (CControl * control, const char * home)
          int dc = 0;
          while (sdev.size () > 0)
           {
-           f = sdev.find (wxT (","));
+           f = sdev.find (lxT (","));
            if (f < 0)break;
            MMicro[dc].SetFOwner (this);
            MMicro[dc].SetName ("Micro_" + itoa (dc + 1));
@@ -369,12 +366,12 @@ CPWindow1::Configure (CControl * control, const char * home)
 
        if (!strcmp (name, "lpath"))
         {
-         PATH = String (value, wxConvUTF8);
+         PATH = String (value, lxConvUTF8);
         }
 
        if (!strcmp (name, "lfile"))
         {
-         FNAME = String (value, wxConvUTF8);
+         FNAME = String (value, lxConvUTF8);
          if (FNAME.Length () > 1)
           menu1_File_ReloadLast.SetEnable (1);
          else
@@ -413,14 +410,14 @@ CPWindow1::Configure (CControl * control, const char * home)
 
  proc_ = pboard->proc;
 
- SetTitle (wxT ("PICSimLab - ") + String (boards_list[lab - 1]) + wxT (" - ") + pboard->proc);
+ SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab - 1]) + lxT (" - ") + pboard->proc);
 
 
 
  filedialog1.SetDir (PATH);
 
 
- draw1.SetImgFileName (share + wxT ("boards/") + pboard->GetPictureFileName (), scale, scale);
+ draw1.SetImgFileName (share + lxT ("boards/") + pboard->GetPictureFileName (), scale, scale);
 
  pboard->MSetSerial (SERIALDEVICE);
 
@@ -443,26 +440,26 @@ CPWindow1::Configure (CControl * control, const char * home)
 
 #ifdef _USE_PICSTARTP_
  if (prog_init () >= 0)
-  status = wxT ("PStart:  Ok ");
+  status = lxT ("PStart:  Ok ");
  else
-  status = wxT ("PStart:Error");
+  status = lxT ("PStart:Error");
 #endif
- status = wxT ("");
+ status = lxT ("");
 
  if (debug)
   {
    if (pboard->DebugInit () == 0)
-    statusbar1.SetField (1, status + wxT ("    Debug: On"));
+    statusbar1.SetField (1, status + lxT ("    Debug: On"));
    else
-    statusbar1.SetField (1, status + wxT ("    Debug: Error"));
+    statusbar1.SetField (1, status + lxT ("    Debug: Error"));
   }
  else
   {
-   statusbar1.SetField (1, status + wxT ("    Debug: Off"));
+   statusbar1.SetField (1, status + lxT ("    Debug: Off"));
   }
 
 
- statusbar1.SetField (0, wxT ("Running..."));
+ statusbar1.SetField (0, lxT ("Running..."));
 
  Application->ProcessEvents ();
 
@@ -514,12 +511,12 @@ CPWindow1::saveprefs (String name, String value)
 
    if (String (pname) == name)
     {
-     prefs.SetLine (name + wxT ("\t= \"") + value + wxT ("\""), lc);
+     prefs.SetLine (name + lxT ("\t= \"") + value + lxT ("\""), lc);
 
      return;
     }
   }
- prefs.AddLine (name + wxT ("\t= \"") + value + wxT ("\""));
+ prefs.AddLine (name + lxT ("\t= \"") + value + lxT ("\""));
 }
 
 void
@@ -544,26 +541,24 @@ CPWindow1::_EvOnDestroy (CControl * control)
 
 
  //write options
- wxTheApp->SetAppName (_T ("picsimlab"));
- wxStandardPathsBase& stdp = wxStandardPaths::Get ();
- strcpy (home, (char*) stdp.GetUserDataDir ().char_str ());
+ strcpy (home, (char*) lxGetUserDataDir (_T("picsimlab")).char_str ());
 
- CreateDir (home);
+ lxCreateDir (home);
 
  sprintf (fname, "%s/picsimlab.ini", home);
 
 
 
- saveprefs (wxT ("lab"), String::Format ("%i", lab));
- saveprefs (wxT ("clock"), combo1.GetText ());
- saveprefs (wxT ("debug"), itoa (debug));
- saveprefs (wxT ("position"), itoa (GetX ()) + wxT (",") + itoa (GetY ()));
- saveprefs (wxT ("osc_on"), itoa (pboard->GetUseOscilloscope ()));
- saveprefs (wxT ("spare_on"), itoa (pboard->GetUseSpareParts ()));
+ saveprefs (lxT ("lab"), String::Format ("%i", lab));
+ saveprefs (lxT ("clock"), combo1.GetText ());
+ saveprefs (lxT ("debug"), itoa (debug));
+ saveprefs (lxT ("position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
+ saveprefs (lxT ("osc_on"), itoa (pboard->GetUseOscilloscope ()));
+ saveprefs (lxT ("spare_on"), itoa (pboard->GetUseSpareParts ()));
 #ifndef _WIN_
- saveprefs (wxT ("lser"), SERIALDEVICE);
+ saveprefs (lxT ("lser"), SERIALDEVICE);
 #ifdef _USE_PICSTARTP_    
- saveprefs (wxT ("lprog"), PROGDEVICE);
+ saveprefs (lxT ("lprog"), PROGDEVICE);
 #endif    
 #else
  saveprefs ("wser", SERIALDEVICE);
@@ -571,8 +566,8 @@ CPWindow1::_EvOnDestroy (CControl * control)
  saveprefs ("wprog", PROGDEVICE);
 #endif
 #endif
- saveprefs (wxT ("lpath"), PATH);
- saveprefs (wxT ("lfile"), FNAME);
+ saveprefs (lxT ("lpath"), PATH);
+ saveprefs (lxT ("lfile"), FNAME);
 
  pboard->WritePreferences ();
 
@@ -619,11 +614,11 @@ CPWindow1::menu1_File_LoadHex_EvMenuActive (CControl * control)
    switch (pboard->MInit (pboard->proc, filedialog1.GetFileName ().char_str (), NSTEP * NSTEPKF))
     {
     case HEX_NFOUND:
-     Message (wxT ("File not found!"));
+     Message (lxT ("File not found!"));
      picrun = 0;
      break;
     case HEX_CHKSUM:
-     Message (wxT ("File checksum error!"));
+     Message (lxT ("File checksum error!"));
      pboard->MEraseFlash ();
      picrun = 0;
      break;
@@ -637,9 +632,9 @@ CPWindow1::menu1_File_LoadHex_EvMenuActive (CControl * control)
 
 
    if (picrun)
-    SetTitle (wxT ("PICSimLab - ") + String (boards_list[lab - 1]) + wxT (" - ") + pboard->proc + wxT (" - ") + basename (filedialog1.GetFileName ()));
+    SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab - 1]) + lxT (" - ") + pboard->proc + lxT (" - ") + basename (filedialog1.GetFileName ()));
    else
-    SetTitle (wxT ("PICSimLab - ") + String (boards_list[lab - 1]) + wxT (" - ") + pboard->proc);
+    SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab - 1]) + lxT (" - ") + pboard->proc);
 
 
 
@@ -659,14 +654,14 @@ CPWindow1::menu1_File_Exit_EvMenuActive (CControl * control)
 void
 CPWindow1::menu1_Help_Contents_EvMenuActive (CControl * control)
 {
- Window2.html1.SetLoadFile (share + wxT ("docs/picsimlab.html"));
+ Window2.html1.SetLoadFile (share + lxT ("docs/picsimlab.html"));
  Window2.Show ();
 };
 
 void
 CPWindow1::menu1_Help_About_EvMenuActive (CControl * control)
 {
- Message (wxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (wxT (_VERSION_)));
+ Message (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (lxT (_VERSION_)));
 };
 
 void
@@ -675,7 +670,7 @@ CPWindow1::menu1_Help_Examples_EvMenuActive (CControl * control)
  
  String oldPath = filedialog2.GetDir ();
 
- filedialog2.SetDir (share + wxT ("/docs/hex/board_") + itoa (lab) + wxT ("/") + pboard->proc + wxT ("/"));
+ filedialog2.SetDir (share + lxT ("/docs/hex/board_") + itoa (lab) + lxT ("/") + pboard->proc + lxT ("/"));
 
  menu1_File_LoadWorkspace_EvMenuActive (control);
 
@@ -709,7 +704,7 @@ CPWindow1::_EvOnShow (CControl * control)
    draw1.SetHeight (plHeight * scale);
 
 
-   draw1.SetImgFileName (share + wxT ("boards/") + pboard->GetPictureFileName (), scale, scale);
+   draw1.SetImgFileName (share + lxT ("boards/") + pboard->GetPictureFileName (), scale, scale);
    pboard->OnShow ();
 
    if (osc_on)
@@ -753,11 +748,11 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive (CControl * control)
  switch (pboard->MInit (pboard->proc, FNAME.char_str (), NSTEP * NSTEPKF))
   {
   case HEX_NFOUND:
-   Message (wxT ("File not found!"));
+   Message (lxT ("File not found!"));
    picrun = 0;
    break;
   case HEX_CHKSUM:
-   Message (wxT ("File checksum error!"));
+   Message (lxT ("File checksum error!"));
    pboard->MEraseFlash ();
    picrun = 0;
    break;
@@ -770,9 +765,9 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive (CControl * control)
 
 
  if (picrun)
-  SetTitle (wxT ("PICSimLab - ") + String (boards_list[lab - 1]) + wxT (" - ") + pboard->proc + wxT (" - ") + basename (filedialog1.GetFileName ()));
+  SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab - 1]) + lxT (" - ") + pboard->proc + lxT (" - ") + basename (filedialog1.GetFileName ()));
  else
-  SetTitle (wxT ("PICSimLab - ") + String (boards_list[lab - 1]) + wxT (" - ") + pboard->proc);
+  SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab - 1]) + lxT (" - ") + pboard->proc);
 
 
 
@@ -828,7 +823,7 @@ CPWindow1::menu1_EvBoard (CControl * control)
  lab_ = lab;
  lab = (int) (atof (((CItemMenu*) control)->GetText ()));
 
- FNAME = wxT (" ");
+ FNAME = lxT (" ");
  _EvOnDestroy (control);
  _EvOnCreate (control);
  _EvOnShow (control);
@@ -842,9 +837,9 @@ CPWindow1::menu1_EvMicrocontroller (CControl * control)
  proc_ = pboard->proc;
  pboard->proc = ((CItemMenu*) control)->GetText ();
 
- SetTitle (wxT ("PICSimLab - ") + String (boards_list[lab - 1]) + wxT (" - ") + pboard->proc);
+ SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab - 1]) + lxT (" - ") + pboard->proc);
 
- FNAME = wxT (" ");
+ FNAME = lxT (" ");
  _EvOnDestroy (control);
  _EvOnCreate (control);
  _EvOnShow (control);
@@ -871,13 +866,13 @@ CPWindow1::togglebutton1_EvOnToggleButton (CControl * control)
 void
 CPWindow1::menu1_File_SaveWorkspace_EvMenuActive (CControl * control)
 {
- filedialog2.SetType (wxFD_SAVE | wxFD_CHANGE_DIR);
+ filedialog2.SetType (lxFD_SAVE | lxFD_CHANGE_DIR);
  if (filedialog2.Run ())
   {
    char home[1024];
    char fname[1024];
 
-   if (wxFileExists (filedialog2.GetFileName ()))
+   if (lxFileExists (filedialog2.GetFileName ()))
     {
 
      if (!Dialog ("Overwriting file: " + basename (filedialog2.GetFileName ()) + "?"))
@@ -885,29 +880,27 @@ CPWindow1::menu1_File_SaveWorkspace_EvMenuActive (CControl * control)
     }
 
    //write options
-   wxTheApp->SetAppName (_T ("picsimlab"));
-   wxStandardPathsBase& stdp = wxStandardPaths::Get ();
 
-   strncpy (home, (char*) stdp.GetUserDataDir ().char_str (), 1024);
+   strncpy (home, (char*) lxGetUserDataDir (_T("picsimlab")).char_str (), 1024);
    snprintf (fname, 1024, "%s/picsimlab.ini", home);
    prefs.SaveToFile (fname);
 
-   strncpy (home, (char*) stdp.GetTempDir ().char_str (), 1024);
+   strncpy (home, (char*) lxGetTempDir (_T("picsimlab")).char_str (), 1024);
    strncat (home, "/picsimlab_workspace/", 1024);
 
-   RemoveDir (home);
+   lxRemoveDir (home);
 
-   CreateDir (home);
+   lxCreateDir (home);
 
    snprintf (fname, 1024, "%s/picsimlab.ini", home);
    prefs.Clear ();
-   saveprefs (wxT ("lab"), String::Format ("%i", lab));
-   saveprefs (wxT ("clock"), combo1.GetText ());
-   saveprefs (wxT ("debug"), itoa (debug));
-   saveprefs (wxT ("position"), itoa (GetX ()) + wxT (",") + itoa (GetY ()));
-   saveprefs (wxT ("osc_on"), itoa (pboard->GetUseOscilloscope ()));
-   saveprefs (wxT ("spare_on"), itoa (pboard->GetUseSpareParts ()));
-   saveprefs (wxT ("lfile"), wxT (" "));
+   saveprefs (lxT ("lab"), String::Format ("%i", lab));
+   saveprefs (lxT ("clock"), combo1.GetText ());
+   saveprefs (lxT ("debug"), itoa (debug));
+   saveprefs (lxT ("position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
+   saveprefs (lxT ("osc_on"), itoa (pboard->GetUseOscilloscope ()));
+   saveprefs (lxT ("spare_on"), itoa (pboard->GetUseSpareParts ()));
+   saveprefs (lxT ("lfile"), lxT (" "));
 
    pboard->WritePreferences ();
 
@@ -931,12 +924,12 @@ CPWindow1::menu1_File_SaveWorkspace_EvMenuActive (CControl * control)
      Window5.SaveConfig (fname);
     }
 
-   ZipDir (home, filedialog2.GetFileName ());
+   lxZipDir (home, filedialog2.GetFileName ());
 
-   RemoveDir (home);
+   lxRemoveDir (home);
 
 
-   strncpy (home, (char*) stdp.GetUserDataDir ().char_str (), 1024);
+   strncpy (home, (char*) lxGetUserDataDir (_T("picsimlab")).char_str (), 1024);
    snprintf (fname, 1024, "%s/picsimlab.ini", home);
    prefs.Clear ();
    prefs.LoadFromFile (fname);
@@ -949,20 +942,18 @@ CPWindow1::LoadWorkspace (String fnpzw)
  char home[1024];
  char fzip[1024];
 
- if ((!wxFileExists (fnpzw)) || (!fnpzw.Contains (".pzw")))return;
+ if ((!lxFileExists (fnpzw)) || (!fnpzw.Contains (".pzw")))return;
 
  //write options
- wxTheApp->SetAppName (_T ("picsimlab"));
- wxStandardPathsBase& stdp = wxStandardPaths::Get ();
- strncpy (fzip, (char*) stdp.GetTempDir ().char_str (), 1024);
+ strncpy (fzip, (char*) lxGetTempDir (_T("picsimlab")).char_str (), 1024);
  strncat (fzip, "/", 1024);
 
- strncpy (home, (char*) stdp.GetTempDir ().char_str (), 1024);
+ strncpy (home, (char*) lxGetTempDir (_T("picsimlab")).char_str (), 1024);
  strncat (home, "/picsimlab_workspace/", 1024);
 
- RemoveDir (home);
+ lxRemoveDir (home);
 
- UnzipDir (fnpzw, fzip);
+ lxUnzipDir (fnpzw, fzip);
 
  _EvOnDestroy (this);
 
@@ -991,7 +982,7 @@ CPWindow1::LoadWorkspace (String fnpzw)
  _EvOnShow (this);
 
  snprintf (fzip, 1024, "%s/Readme.html", home);
- if (wxFileExists (fzip))
+ if (lxFileExists (fzip))
   {
    Window2.html1.SetLoadFile (fzip);
    Window2.Show ();
@@ -999,7 +990,7 @@ CPWindow1::LoadWorkspace (String fnpzw)
  else
   {
    snprintf (fzip, 1024, "%s/Readme.txt", home);
-   if (wxFileExists (fzip))
+   if (lxFileExists (fzip))
     {
      Window2.html1.SetLoadFile (fzip);
      Window2.Show ();
@@ -1012,7 +1003,7 @@ CPWindow1::LoadWorkspace (String fnpzw)
 void
 CPWindow1::menu1_File_LoadWorkspace_EvMenuActive (CControl * control)
 {
- filedialog2.SetType (wxFD_OPEN | wxFD_CHANGE_DIR);
+ filedialog2.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
  if (filedialog2.Run ())
   {
    LoadWorkspace (filedialog2.GetFileName ());
@@ -1023,9 +1014,9 @@ void
 CPWindow1::menu1_Tools_SerialTerm_EvMenuActive (CControl * control)
 {
 #ifdef _WIN_  
- wxExecute (share + wxT ("/../tools/cutecom/cutecom.exe"));
+ lxExecute (share + lxT ("/../tools/cutecom/cutecom.exe"));
 #else
- wxExecute ("cutecom", wxEXEC_MAKE_GROUP_LEADER);
+ lxExecute ("cutecom", lxEXEC_MAKE_GROUP_LEADER);
 #endif  
 };
 
@@ -1033,9 +1024,9 @@ void
 CPWindow1::menu1_Tools_SerialRemoteTank_EvMenuActive (CControl * control)
 {
 #ifdef _WIN_  
- wxExecute (share + wxT ("/../srtank.exe"));
+ lxExecute (share + lxT ("/../srtank.exe"));
 #else
- wxExecute ("srtank", wxEXEC_MAKE_GROUP_LEADER);
+ lxExecute ("srtank", lxEXEC_MAKE_GROUP_LEADER);
 #endif  
 };
 
@@ -1043,9 +1034,9 @@ void
 CPWindow1::menu1_Tools_Esp8266ModemSimulator_EvMenuActive (CControl * control)
 {
 #ifdef _WIN_  
- wxExecute (share + wxT ("/../espmsim.exe"));
+ lxExecute (share + lxT ("/../espmsim.exe"));
 #else
- wxExecute ("espmsim", wxEXEC_MAKE_GROUP_LEADER);
+ lxExecute ("espmsim", lxEXEC_MAKE_GROUP_LEADER);
 #endif  
 };
 

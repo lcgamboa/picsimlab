@@ -33,15 +33,15 @@
 class cpart_LCD_pcf8833:public part
 {
    public:
-      String GetName(void){return wxT("LCD pcf8833");};
+      String GetName(void){return lxT("LCD pcf8833");};
       cpart_LCD_pcf8833(unsigned x, unsigned y);
       ~cpart_LCD_pcf8833(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return wxT("LCD_pcf8833.png");};
-      String GetInputMapFile(void){return wxT("LCD_pcf8833_i.map");};
-      String GetOutputMapFile(void){return wxT("LCD_pcf8833_o.map");};
-      String GetPropertiesWindowFile(void){return wxT("LCD_pcf8833.lxrad");};
+      String GetPictureFileName(void){return lxT("LCD_pcf8833.png");};
+      String GetInputMapFile(void){return lxT("LCD_pcf8833_i.map");};
+      String GetOutputMapFile(void){return lxT("LCD_pcf8833_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("LCD_pcf8833.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  wprop);
       void ReadPropertiesWindow(void);
       String WritePreferences(void);

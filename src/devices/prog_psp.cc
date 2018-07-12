@@ -452,7 +452,7 @@ int prog_loop(_pic * pic)
 #ifdef _DEBUG_
            printf("%02x",c);
 #endif 
-           Window1.statusbar1.SetField(0,wxT("Programming...."));
+           Window1.statusbar1.SetField(0,lxT("Programming...."));
            switch(c)
            {
   	     case 0x42: //Blank check full
@@ -803,7 +803,7 @@ word to write	->
            fflush(stdout);
 #endif
 
-          Window1.statusbar1.SetField(0,wxT("Running..."));
+          Window1.statusbar1.SetField(0,lxT("Running..."));
 	  pic_reset(pic,0);
         }
 

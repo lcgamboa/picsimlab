@@ -33,15 +33,15 @@
 class cpart_switchs:public part
 {
    public:
-      String GetName(void){return wxT("Switchs");}; 
+      String GetName(void){return lxT("Switchs");}; 
       cpart_switchs(unsigned x, unsigned y);
       ~cpart_switchs(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return wxT("switchs.png");};
-      String GetInputMapFile(void){return wxT("switchs_i.map");};
-      String GetOutputMapFile(void){return wxT("switchs_o.map");};
-      String GetPropertiesWindowFile(void){return wxT("switchs.lxrad");};
+      String GetPictureFileName(void){return lxT("switchs.png");};
+      String GetInputMapFile(void){return lxT("switchs_i.map");};
+      String GetOutputMapFile(void){return lxT("switchs_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("switchs.lxrad");};
       void MouseButtonPress(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  wprop);
       void ReadPropertiesWindow(void);

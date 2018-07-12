@@ -83,7 +83,7 @@ cboard_6::cboard_6(void)
   //scroll1
   scroll1=new CScroll();   
   scroll1->SetFOwner(&Window1);
-  scroll1->SetName(wxT("scroll1_p6"));
+  scroll1->SetName(lxT("scroll1_p6"));
   scroll1->SetX(48);
   scroll1->SetY(200-110);
   scroll1->SetWidth(110);
@@ -97,7 +97,7 @@ cboard_6::cboard_6(void)
   //gauge1
   gauge1=new CGauge();
   gauge1->SetFOwner(&Window1);
-  gauge1->SetName(wxT("gauge1_p6"));
+  gauge1->SetName(lxT("gauge1_p6"));
   gauge1->SetX(48);
   gauge1->SetY(230-110);
   gauge1->SetWidth(110);
@@ -111,7 +111,7 @@ cboard_6::cboard_6(void)
   //gauge2
   gauge2=new CGauge();
   gauge2->SetFOwner(&Window1);
-  gauge2->SetName(wxT("gauge2_p6"));
+  gauge2->SetName(lxT("gauge2_p6"));
   gauge2->SetX(48);
   gauge2->SetY(255-110);
   gauge2->SetWidth(110);
@@ -125,7 +125,7 @@ cboard_6::cboard_6(void)
   //gauge3
   gauge3=new CGauge();
   gauge3->SetFOwner(&Window1);
-  gauge3->SetName(wxT("gauge3_p6"));
+  gauge3->SetName(lxT("gauge3_p6"));
   gauge3->SetX(48);
   gauge3->SetY(280-110);
   gauge3->SetWidth(110);
@@ -139,7 +139,7 @@ cboard_6::cboard_6(void)
   //gauge4
   gauge4=new CGauge();
   gauge4->SetFOwner(&Window1);
-  gauge4->SetName(wxT("gauge4_p6"));
+  gauge4->SetName(lxT("gauge4_p6"));
   gauge4->SetX(48);
   gauge4->SetY(305-110);
   gauge4->SetWidth(110);
@@ -153,66 +153,66 @@ cboard_6::cboard_6(void)
   //label1
   label1=new CLabel();
   label1->SetFOwner(&Window1);
-  label1->SetName(wxT("label1_p6"));
+  label1->SetName(lxT("label1_p6"));
   label1->SetX(12);
   label1->SetY(200-110);
   label1->SetWidth(60);
   label1->SetHeight(20);
   label1->SetEnable(1);
   label1->SetVisible(1);
-  label1->SetText(wxT("AN4"));
+  label1->SetText(lxT("AN4"));
   label1->SetAlign(1);
   Window1.CreateChild(label1); 
   //label2
   label2=new CLabel();
   label2->SetFOwner(&Window1);
-  label2->SetName(wxT("label2_p6"));
+  label2->SetName(lxT("label2_p6"));
   label2->SetX(12);
   label2->SetY(230-110);
   label2->SetWidth(60);
   label2->SetHeight(20);
   label2->SetEnable(1);
   label2->SetVisible(1);
-  label2->SetText(wxT("RA0"));
+  label2->SetText(lxT("RA0"));
   label2->SetAlign(1);
   Window1.CreateChild(label2);    
   //label3
   label3=new CLabel();
   label3->SetFOwner(&Window1);
-  label3->SetName(wxT("label3_p6"));
+  label3->SetName(lxT("label3_p6"));
   label3->SetX(13);
   label3->SetY(255-110);
   label3->SetWidth(60);
   label3->SetHeight(20);
   label3->SetEnable(1);
   label3->SetVisible(1);
-  label3->SetText(wxT("RA1"));
+  label3->SetText(lxT("RA1"));
   label3->SetAlign(1);
   Window1.CreateChild(label3);    
   //label4
   label4=new CLabel();
   label4->SetFOwner(&Window1);
-  label4->SetName(wxT("label4_p6"));
+  label4->SetName(lxT("label4_p6"));
   label4->SetX(13);
   label4->SetY(280-110);
   label4->SetWidth(60);
   label4->SetHeight(20);
   label4->SetEnable(1);
   label4->SetVisible(1);
-  label4->SetText(wxT("RA2"));
+  label4->SetText(lxT("RA2"));
   label4->SetAlign(1);
   Window1.CreateChild(label4);  
   //label5
   label5=new CLabel();
   label5->SetFOwner(&Window1);
-  label5->SetName(wxT("label5_p6"));
+  label5->SetName(lxT("label5_p6"));
   label5->SetX(13);
   label5->SetY(305-110);
   label5->SetWidth(60);
   label5->SetHeight(20);
   label5->SetEnable(1);
   label5->SetVisible(1);
-  label5->SetText(wxT("RA3"));
+  label5->SetText(lxT("RA3"));
   label5->SetAlign(1);
   Window1.CreateChild(label5);  
 };
@@ -251,13 +251,13 @@ cboard_6::Reset(void)
 #else
     if(pic.serialfd != INVALID_HANDLE_VALUE)
 #endif
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
-        String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic.serialbaud)+wxT("(")+
+      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+
+        String::FromAscii(SERIALDEVICE)+lxT(":")+itoa(pic.serialbaud)+lxT("(")+
         String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*
-        pic.serialbaud)/pic.serialexbaud))+wxT("%)"));
+        pic.serialbaud)/pic.serialexbaud))+lxT("%)"));
     else  
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
-        String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
+      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+
+        String::FromAscii(SERIALDEVICE)+lxT(" (ERROR)"));
         
 
 
@@ -273,13 +273,13 @@ cboard_6::RefreshStatus(void)
 #else
     if(pic.serialfd != INVALID_HANDLE_VALUE)
 #endif
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
-        String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic.serialbaud)+wxT("(")+
+      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+
+        String::FromAscii(SERIALDEVICE)+lxT(":")+itoa(pic.serialbaud)+lxT("(")+
         String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*
-        pic.serialbaud)/pic.serialexbaud))+wxT("%)"));
+        pic.serialbaud)/pic.serialexbaud))+lxT("%)"));
     else  
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
-        String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
+      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+
+        String::FromAscii(SERIALDEVICE)+lxT(" (ERROR)"));
     
 };
 
@@ -288,7 +288,7 @@ void
 cboard_6::WritePreferences(void)
 {
     //write selected microcontroller of board_6 to preferences
-    Window1.saveprefs(wxT("p6_proc"),proc);
+    Window1.saveprefs(lxT("p6_proc"),proc);
 };
 
 //Called whe configuration file load  preferences 
@@ -357,14 +357,14 @@ cboard_6::MouseButtonPress(uint button, uint x, uint y,uint state)
             Window1.Set_picpwr(0); 
             Reset();
             p_BT1=1; 
-            Window1.statusbar1.SetField(0,wxT("Stoped"));
+            Window1.statusbar1.SetField(0,lxT("Stoped"));
           }
           else //if off turn on
           {
             Window1.Set_picpwr(1);
             Window1.Set_picrun(1);
             Reset();
-            Window1.statusbar1.SetField(0,wxT("Running..."));
+            Window1.statusbar1.SetField(0,lxT("Running..."));
           } 
           break;
         //if event is over I_RST area then turn off and reset

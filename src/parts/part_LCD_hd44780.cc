@@ -34,16 +34,16 @@ enum {O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_P9, O_P10, O_F1, O_F2, O
 void 
 cpart_LCD_hd44780::Reset(void)
 {
-   wxImage image;
+   lxImage image;
 
    if(model == 2)
-     image.LoadFile(Window1.GetSharePath()+wxT("parts/")+GetPictureFileName());
+     image.LoadFile(Window1.GetSharePath()+lxT("parts/")+GetPictureFileName());
    else
-     image.LoadFile(Window1.GetSharePath()+wxT("parts/")+GetPictureFileName_());
+     image.LoadFile(Window1.GetSharePath()+lxT("parts/")+GetPictureFileName_());
 
    if(Bitmap)delete Bitmap;
   
-   Bitmap = new wxBitmap(image);
+   Bitmap = new lxBitmap(image);
    canvas.Create(Bitmap);
 
    lcd_init(&lcd,model);
@@ -95,7 +95,7 @@ void cpart_LCD_hd44780::Draw(void)
   
   lcd_blink(&lcd);
   
-  wxFont font(8, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD );
+  lxFont font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD );
   canvas.SetFont (font);
   
   for(i=0;i<outputc;i++)
@@ -235,7 +235,7 @@ cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow *  wprop)
     {
        spin= pboard->MGetPinName(i);
       
-      if(spin.Cmp(wxT("error")))
+      if(spin.Cmp(lxT("error")))
       {
         Items=Items+itoa(i)+"  "+spin+",";
       }
@@ -357,7 +357,7 @@ cpart_LCD_hd44780::ReadPropertiesWindow(void)
       input_pins[7]=atoi(((CCombo*)WProp_LCD_hd44780->GetChildByName("combo8"))->GetText());
       input_pins[8]=atoi(((CCombo*)WProp_LCD_hd44780->GetChildByName("combo9"))->GetText());
       input_pins[9]=atoi(((CCombo*)WProp_LCD_hd44780->GetChildByName("combo10"))->GetText());
-      if(!((((CCombo*)WProp_LCD_hd44780->GetChildByName("combo11"))->GetText()).Cmp(wxT("16x2"))))
+      if(!((((CCombo*)WProp_LCD_hd44780->GetChildByName("combo11"))->GetText()).Cmp(lxT("16x2"))))
         model=2;
       else
 	model=4;

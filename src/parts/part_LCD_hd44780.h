@@ -33,16 +33,16 @@
 class cpart_LCD_hd44780:public part
 {
    public:
-      String GetName(void){return wxT("LCD hd44780");};
+      String GetName(void){return lxT("LCD hd44780");};
       cpart_LCD_hd44780(unsigned x, unsigned y);
       ~cpart_LCD_hd44780(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return wxT("LCD_hd44780.png");};
-      String GetPictureFileName_(void){return wxT("LCD_hd44780_.png");};
-      String GetInputMapFile(void){return wxT("LCD_hd44780_i.map");};
-      String GetOutputMapFile(void){return wxT("LCD_hd44780_o.map");};
-      String GetPropertiesWindowFile(void){return wxT("LCD_hd44780.lxrad");};
+      String GetPictureFileName(void){return lxT("LCD_hd44780.png");};
+      String GetPictureFileName_(void){return lxT("LCD_hd44780_.png");};
+      String GetInputMapFile(void){return lxT("LCD_hd44780_i.map");};
+      String GetOutputMapFile(void){return lxT("LCD_hd44780_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("LCD_hd44780.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  wprop);
       void ReadPropertiesWindow(void);
       String WritePreferences(void);

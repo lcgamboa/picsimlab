@@ -39,7 +39,6 @@ extern char SERIALDEVICE[100];
 
 #include "boards/board.h"
 #include "boards/boards_defs.h"
-#include "wx/stdpaths.h"
 
     
 class CPWindow1:public CPWindow

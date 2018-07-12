@@ -110,7 +110,7 @@ cboard_3::cboard_3(void)
       lcde=0;
       sound_on=0;
       
-      buzz.Create(Window1.GetSharePath()+wxT("boards/buzzer.wav"));
+      buzz.Create(Window1.GetSharePath()+lxT("boards/buzzer.wav"));
       
       lcd_init(&lcd,2);
       mi2c_init(&mi2c,4);
@@ -128,7 +128,7 @@ cboard_3::cboard_3(void)
   //scroll1
   scroll1=new CScroll();   
   scroll1->SetFOwner(&Window1);
-  scroll1->SetName(wxT("scroll1_p3"));
+  scroll1->SetName(lxT("scroll1_p3"));
   scroll1->SetX(12);
   scroll1->SetY(133);
   scroll1->SetWidth(140);
@@ -142,7 +142,7 @@ cboard_3::cboard_3(void)
   //gauge1
   gauge1=new CGauge();
   gauge1->SetFOwner(&Window1);
-  gauge1->SetName(wxT("gauge1_p3"));
+  gauge1->SetName(lxT("gauge1_p3"));
   gauge1->SetX(13);
   gauge1->SetY(242);
   gauge1->SetWidth(140);
@@ -156,7 +156,7 @@ cboard_3::cboard_3(void)
   //gauge2
   gauge2=new CGauge();
   gauge2->SetFOwner(&Window1);
-  gauge2->SetName(wxT("gauge2_p3"));
+  gauge2->SetName(lxT("gauge2_p3"));
   gauge2->SetX(12);
   gauge2->SetY(190);
   gauge2->SetWidth(140);
@@ -170,53 +170,53 @@ cboard_3::cboard_3(void)
   //label1
   label1=new CLabel();
   label1->SetFOwner(&Window1);
-  label1->SetName(wxT("label1_p3"));
+  label1->SetName(lxT("label1_p3"));
   label1->SetX(12);
   label1->SetY(109);
   label1->SetWidth(60);
   label1->SetHeight(20);
   label1->SetEnable(1);
   label1->SetVisible(1);
-  label1->SetText(wxT("Pot. P2"));
+  label1->SetText(lxT("Pot. P2"));
   label1->SetAlign(1);
   Window1.CreateChild(label1);    
   //label2
   label2=new CLabel();
   label2->SetFOwner(&Window1);
-  label2->SetName(wxT("label2_p3"));
+  label2->SetName(lxT("label2_p3"));
   label2->SetX(12);
   label2->SetY(166);
   label2->SetWidth(60);
   label2->SetHeight(20);
   label2->SetEnable(1);
   label2->SetVisible(1);
-  label2->SetText(wxT("Heater"));
+  label2->SetText(lxT("Heater"));
   label2->SetAlign(1);
   Window1.CreateChild(label2);    
   //label3
   label3=new CLabel();
   label3->SetFOwner(&Window1);
-  label3->SetName(wxT("label3_p3"));
+  label3->SetName(lxT("label3_p3"));
   label3->SetX(13);
   label3->SetY(217);
   label3->SetWidth(60);
   label3->SetHeight(20);
   label3->SetEnable(1);
   label3->SetVisible(1);
-  label3->SetText(wxT("Cooler"));
+  label3->SetText(lxT("Cooler"));
   label3->SetAlign(1);
   Window1.CreateChild(label3);
   //label4
   label4=new CLabel();
   label4->SetFOwner(&Window1);
-  label4->SetName(wxT("label4_p3"));
+  label4->SetName(lxT("label4_p3"));
   label4->SetX(13);
   label4->SetY(272);
   label4->SetWidth(120);
   label4->SetHeight(24);
   label4->SetEnable(1);
   label4->SetVisible(1);
-  label4->SetText(wxT("Temp: 00.0°C"));
+  label4->SetText(lxT("Temp: 00.0°C"));
   label4->SetAlign(1);
   Window1.CreateChild(label4);
  
@@ -357,7 +357,7 @@ void cboard_3::Draw( CDraw *draw,double scale)
      {
        if(!sound_on)
        {
-         buzz.Play(wxSOUND_ASYNC|wxSOUND_LOOP); 
+         buzz.Play(lxSOUND_ASYNC|lxSOUND_LOOP); 
          sound_on=1;
        }
      }
@@ -616,9 +616,9 @@ cboard_3::Reset(void)
 #else
     if(pic.serialfd != INVALID_HANDLE_VALUE)
 #endif
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic.serialbaud)+wxT("(")+String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*pic.serialbaud)/pic.serialexbaud))+wxT("%)"));
+      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+lxT(":")+itoa(pic.serialbaud)+lxT("(")+String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*pic.serialbaud)/pic.serialexbaud))+lxT("%)"));
     else  
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
+      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+lxT(" (ERROR)"));
 
   for(int pi=0;pi < pic.PINCOUNT;pi++)
      {
@@ -686,7 +686,7 @@ cboard_3::MouseButtonPress( uint button, uint x, uint y,uint state)
           p_BT2=0; 
           p_BT3=0; 
           p_BT4=0; 
-          Window1.statusbar1.SetField(0,wxT("Stoped"));
+          Window1.statusbar1.SetField(0,lxT("Stoped"));
         }
         else
         {
@@ -695,7 +695,7 @@ cboard_3::MouseButtonPress( uint button, uint x, uint y,uint state)
           Reset();
      
           
-          Window1.statusbar1.SetField(0,wxT("Running..."));
+          Window1.statusbar1.SetField(0,lxT("Running..."));
         } 
       };break;
       
@@ -922,16 +922,16 @@ cboard_3::get_out_id(char * name)
 void 
 cboard_3::RefreshStatus(void)
 {
-    label4->SetText(wxT("Temp: ")+String().Format("%5.2f",temp[0])+wxT("°C"));
+    label4->SetText(lxT("Temp: ")+String().Format("%5.2f",temp[0])+lxT("°C"));
     
 #ifndef _WIN_
     if(pic.serialfd > 0)
 #else
     if(pic.serialfd != INVALID_HANDLE_VALUE)
 #endif
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic.serialbaud)+wxT("(")+String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*pic.serialbaud)/pic.serialexbaud))+wxT("%)"));
+      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+lxT(":")+itoa(pic.serialbaud)+lxT("(")+String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*pic.serialbaud)/pic.serialexbaud))+lxT("%)"));
     else  
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
+      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+lxT(" (ERROR)"));
 
 };
 
@@ -939,13 +939,13 @@ void
 cboard_3::WritePreferences(void)
 {
     char line[100];
-    Window1.saveprefs(wxT("p3_proc"),proc);
+    Window1.saveprefs(lxT("p3_proc"),proc);
    
     line[0]=0;
     for(int i=0;i<6;i++)
       sprintf(line+i,"%i",jmp[i]);
     
-    Window1.saveprefs(wxT("p3_jmp"),line);
+    Window1.saveprefs(lxT("p3_jmp"),line);
 };
 
 void 

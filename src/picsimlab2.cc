@@ -27,7 +27,6 @@
 
 #include"picsimlab2.h"
 #include"picsimlab2_d.cc"
-#include <wx/html/htmlwin.h>
 
 CPWindow2 Window2;
 
@@ -44,7 +43,7 @@ CPWindow2::_EvOnShow(CControl * control)
 void
 CPWindow2::button1_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state)
 {
-  ((wxHtmlWindow*)(html1.GetWidget ()))->HistoryBack();
+  html1.HistoryBack();
 };
 
 

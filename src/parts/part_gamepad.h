@@ -33,15 +33,15 @@
 class cpart_gamepad:public part
 {
    public:
-      String GetName(void){return wxT("Gamepad");};
+      String GetName(void){return lxT("Gamepad");};
       cpart_gamepad(unsigned x, unsigned y);
       ~cpart_gamepad(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return wxT("gamepad.png");};
-      String GetInputMapFile(void){return wxT("gamepad_i.map");};
-      String GetOutputMapFile(void){return wxT("gamepad_o.map");};
-      String GetPropertiesWindowFile(void){return wxT("gamepad.lxrad");};
+      String GetPictureFileName(void){return lxT("gamepad.png");};
+      String GetInputMapFile(void){return lxT("gamepad_i.map");};
+      String GetOutputMapFile(void){return lxT("gamepad_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("gamepad.lxrad");};
       void MouseButtonPress(uint button, uint x, uint y,uint state);
       void MouseButtonRelease(uint button, uint x, uint y,uint state);
       void MouseMove(uint button, uint x, uint y,uint state);
@@ -57,6 +57,11 @@ class cpart_gamepad:public part
     private:
       unsigned char output_pins[8];    
       unsigned char output_value[8];
+      unsigned char valuex;
+      unsigned char valuey;
+      unsigned char active;
+      
+      unsigned int jr;
 };
 
 

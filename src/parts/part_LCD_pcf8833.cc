@@ -39,12 +39,12 @@ cpart_LCD_pcf8833::cpart_LCD_pcf8833(unsigned x, unsigned y)
    ReadMaps();   
    Bitmap=NULL;
 
-   wxImage image;
+   lxImage image;
 
-   image.LoadFile(Window1.GetSharePath()+wxT("parts/")+GetPictureFileName());
+   image.LoadFile(Window1.GetSharePath()+lxT("parts/")+GetPictureFileName());
 
   
-   Bitmap = new wxBitmap(image);
+   Bitmap = new lxBitmap(image);
    canvas.Create(Bitmap);
 
    lcd_pcf8833_init(&lcd);
@@ -70,7 +70,7 @@ void cpart_LCD_pcf8833::Draw(void)
   
   canvas.Init();
    
-  wxFont font(8, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD );
+  lxFont font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD );
   canvas.SetFont (font);
   
   for(i=0;i<outputc;i++)
@@ -205,7 +205,7 @@ cpart_LCD_pcf8833::ConfigurePropertiesWindow(CPWindow *  wprop)
     {
        spin= pboard->MGetPinName(i);
       
-      if(spin.Cmp(wxT("error")))
+      if(spin.Cmp(lxT("error")))
       {
         Items=Items+itoa(i)+"  "+spin+",";
       }

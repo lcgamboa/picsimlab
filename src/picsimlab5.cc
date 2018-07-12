@@ -46,18 +46,13 @@ CPWindow5::_EvOnShow(CControl * control)
   draw1.SetHeight (GetHeight () - 40);
   timer1.SetRunState (1); 
 
-//FIXME for windows  
-#ifndef _WIN_ 
-  wxPanel* panel=(wxPanel*)GetWidget();
-  if(panel != NULL) panel->Fit();
-#endif
 };
 
 void
 CPWindow5::menu1_EvMenuActive(CControl * control)
 {
   PartToCreate= ((CItemMenu*)control)->GetText ();
-  wxSetCursor (wxCursor (wxCURSOR_CROSS));
+  lxSetCursor (lxCursor (lxCURSOR_CROSS));
 };
 
 void
@@ -81,7 +76,9 @@ CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
           if (button == 3)
             {
                PartSelected=i;
-               Widget->PopupMenu ((wxMenu*) (pmenu2.GetWidget ()), x*scale, y*scale);
+	       pmenu2.SetX(x*scale);
+	       pmenu2.SetY(y*scale);
+	       SetPopupMenu(&pmenu2);
             }
           return;
         }
@@ -90,12 +87,12 @@ CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
   //clique fora 
   if ((button == 1)&&(PartToCreate.size() > 0)&&(partsc < MAX_PARTS))
     {
-       wxSetCursor (wxCursor (wxCURSOR_ARROW));   
+       lxSetCursor (lxCursor (lxCURSOR_ARROW));   
        parts[partsc] = create_part ((char *)PartToCreate.char_str (), x, y);
        
        if(parts[partsc] == NULL)
          {
-           Message(wxT("Erro creating part: ")+PartToCreate);
+           Message(lxT("Erro creating part: ")+PartToCreate);
          }
        else
          {
@@ -119,7 +116,7 @@ CPWindow5::draw1_EvMouseButtonRelease(CControl * control, uint button, uint x, u
   PartToMove=-1;
   
   
-  wxSetCursor (wxCursor (wxCURSOR_ARROW));
+  lxSetCursor (lxCursor (lxCURSOR_ARROW));
   mdx=0;
   mdy=0;
   
@@ -141,7 +138,7 @@ CPWindow5::pmenu2_Properties_EvMenuActive(CControl * control)
   wd1->SetName("window1");//must be the same as in xml 
   Application->ACreateWindow (wd1);
   
-  if(wd1->LoadXMLContextAndCreateChilds (Window1.GetSharePath()+wxT("parts/")+parts[PartSelected]->GetPropertiesWindowFile()))
+  if(wd1->LoadXMLContextAndCreateChilds (Window1.GetSharePath()+lxT("parts/")+parts[PartSelected]->GetPropertiesWindowFile()))
   {
     wd1->SetCanDestroy(false);
     
@@ -156,7 +153,7 @@ CPWindow5::pmenu2_Properties_EvMenuActive(CControl * control)
     while (wd1->GetCanExitExclusive())
     {
       Application->ProcessEvents(wd1->GetWWidget());
-      wxMilliSleep(100);
+      lxMilliSleep(100);
     }
   
     parts[PartSelected]->ReadPropertiesWindow();
@@ -283,7 +280,7 @@ CPWindow5::LoadConfig(String fname)
     unsigned int x,y;
     CStringList prefs;
     
-    bool ret=wxFileExists(fname);
+    bool ret=lxFileExists(fname);
     
     if(ret)
     {
@@ -344,10 +341,10 @@ CPWindow5::menu1_File_Newconfiguration_EvMenuActive(CControl * control)
 void
 CPWindow5::menu1_File_Saveconfiguration_EvMenuActive(CControl * control)
 {
-  filedialog1.SetType(wxFD_SAVE|wxFD_CHANGE_DIR);  
+  filedialog1.SetType(lxFD_SAVE|lxFD_CHANGE_DIR);  
   if(filedialog1.Run())
   {
-     if(wxFileExists(filedialog1.GetFileName()))
+     if(lxFileExists(filedialog1.GetFileName()))
      {
        
          if(!Dialog("Overwriting file: "+basename(filedialog1.GetFileName())+"?"))
@@ -361,7 +358,7 @@ CPWindow5::menu1_File_Saveconfiguration_EvMenuActive(CControl * control)
 void
 CPWindow5::menu1_File_Loadconfiguration_EvMenuActive(CControl * control)
 {
-  filedialog1.SetType(wxFD_OPEN|wxFD_CHANGE_DIR);
+  filedialog1.SetType(lxFD_OPEN|lxFD_CHANGE_DIR);
   if(filedialog1.Run())
   {
     LoadConfig(filedialog1.GetFileName());
@@ -391,7 +388,7 @@ void
 CPWindow5::pmenu2_Move_EvMenuActive(CControl * control)
 {
     PartToMove=PartSelected;
-    wxSetCursor (wxCursor (wxCURSOR_SIZENWSE));           
+    lxSetCursor (lxCursor (lxCURSOR_SIZENWSE));           
 };
 
 void
@@ -416,14 +413,14 @@ CPWindow5::pmenu2_Delete_EvMenuActive(CControl * control)
 void
 CPWindow5::menu1_Help_Contents_EvMenuActive(CControl * control)
 {
-  Window2.html1.SetLoadFile(Window1.GetSharePath()+wxT("docs/picsimlab.html"));   
+  Window2.html1.SetLoadFile(Window1.GetSharePath()+lxT("docs/picsimlab.html"));   
   Window2.Show();
 };
 
 void
 CPWindow5::menu1_Help_About_EvMenuActive(CControl * control)
 {
-   Message(wxT("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ")+String(wxT(_VERSION_)));
+   Message(lxT("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ")+String(lxT(_VERSION_)));
 };
 
 
@@ -431,7 +428,7 @@ CPWindow5::menu1_Help_About_EvMenuActive(CControl * control)
 void 
 CPWindow5::WritePreferences(void)
 {
-    Window1.saveprefs(wxT("spare_position"),itoa(GetX())+wxT(",")+itoa(GetY())+wxT(",")+itoa(GetWidth())+wxT(",")+itoa(GetHeight()));
+    Window1.saveprefs(lxT("spare_position"),itoa(GetX())+lxT(",")+itoa(GetY())+lxT(",")+itoa(GetWidth())+lxT(",")+itoa(GetHeight()));
 };
 
 

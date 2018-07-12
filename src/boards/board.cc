@@ -47,8 +47,8 @@ board::ReadMaps(void)
 {
   inputc=0;
   outputc=0;  
-  ReadInputMap(Window1.GetSharePath()+wxT("boards/")+GetInputMapFile());
-  ReadOutputMap(Window1.GetSharePath()+wxT("boards/")+GetOutputMapFile());
+  ReadInputMap(Window1.GetSharePath()+lxT("boards/")+GetInputMapFile());
+  ReadOutputMap(Window1.GetSharePath()+lxT("boards/")+GetOutputMapFile());
 }
 
 void 
@@ -149,7 +149,7 @@ board::ReadInputMap(String fname)
   }
   else
   {
-    //Message(wxT("Error open input.map")); Not use this in create!!
+    //Message(lxT("Error open input.map")); Not use this in create!!
     printf("Error open input.map \"%s\"!\n",(const char*)fname.c_str());
   }
     
@@ -223,7 +223,7 @@ board::ReadOutputMap(String fname)
       }
   else
   {
-    //Message(wxT("Error open output.map")); not use this in create!!!
+    //Message(lxT("Error open output.map")); not use this in create!!!
     printf("Error open output.map \"%s\"!\n",(const char *)fname.c_str());
   }
     
@@ -232,7 +232,7 @@ board::ReadOutputMap(String fname)
 void 
 board::RefreshStatus(void)
 {
-  Window1.statusbar1.SetField(2,wxT(""));
+  Window1.statusbar1.SetField(2,lxT(""));
 }
 
 void 

@@ -33,15 +33,15 @@
 class cpart_servo:public part
 {
    public:
-      String GetName(void){return wxT("Servo motor");};
+      String GetName(void){return lxT("Servo motor");};
       cpart_servo(unsigned x, unsigned y);
       ~cpart_servo(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return wxT("servo_motor.png");};
-      String GetInputMapFile(void){return wxT("servo_motor_i.map");};
-      String GetOutputMapFile(void){return wxT("servo_motor_o.map");};
-      String GetPropertiesWindowFile(void){return wxT("servo_motor.lxrad");};
+      String GetPictureFileName(void){return lxT("servo_motor.png");};
+      String GetInputMapFile(void){return lxT("servo_motor_i.map");};
+      String GetOutputMapFile(void){return lxT("servo_motor_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("servo_motor.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  wprop);
       void ReadPropertiesWindow(void);
       String WritePreferences(void);
@@ -51,7 +51,7 @@ class cpart_servo:public part
       void PropButton (CControl * control, uint button, uint x, uint y, uint state);
     private:  
       unsigned char input_pin;   
-      wxBitmap * BackGround;  //Background image
+      lxBitmap * BackGround;  //Background image
       float angle;
       float angle_;
       unsigned char in_[2];

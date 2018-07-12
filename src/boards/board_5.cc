@@ -85,7 +85,7 @@ cboard_5::cboard_5(void)
   //gauge1
   gauge1=new CGauge();
   gauge1->SetFOwner(&Window1);
-  gauge1->SetName(wxT("gauge1_p7"));
+  gauge1->SetName(lxT("gauge1_p7"));
   gauge1->SetX(35);
   gauge1->SetY(74);
   gauge1->SetWidth(110);
@@ -99,7 +99,7 @@ cboard_5::cboard_5(void)
   //gauge2
   gauge2=new CGauge();
   gauge2->SetFOwner(&Window1);
-  gauge2->SetName(wxT("gauge2_p7"));
+  gauge2->SetName(lxT("gauge2_p7"));
   gauge2->SetX(35);
   gauge2->SetY(100);
   gauge2->SetWidth(110);
@@ -113,7 +113,7 @@ cboard_5::cboard_5(void)
   //gauge3
   gauge3=new CGauge();
   gauge3->SetFOwner(&Window1);
-  gauge3->SetName(wxT("gauge3_p7"));
+  gauge3->SetName(lxT("gauge3_p7"));
   gauge3->SetX(35);
   gauge3->SetY(125);
   gauge3->SetWidth(110);
@@ -127,7 +127,7 @@ cboard_5::cboard_5(void)
   //gauge4
   gauge4=new CGauge();
   gauge4->SetFOwner(&Window1);
-  gauge4->SetName(wxT("gauge4_p7"));
+  gauge4->SetName(lxT("gauge4_p7"));
   gauge4->SetX(35);
   gauge4->SetY(150);
   gauge4->SetWidth(110);
@@ -141,7 +141,7 @@ cboard_5::cboard_5(void)
    //gauge5
   gauge5=new CGauge();
   gauge5->SetFOwner(&Window1);
-  gauge5->SetName(wxT("gauge5_p7"));
+  gauge5->SetName(lxT("gauge5_p7"));
   gauge5->SetX(35);
   gauge5->SetY(175);
   gauge5->SetWidth(110);
@@ -155,7 +155,7 @@ cboard_5::cboard_5(void)
    //gauge6
   gauge6=new CGauge();
   gauge6->SetFOwner(&Window1);
-  gauge6->SetName(wxT("gauge6_p7"));
+  gauge6->SetName(lxT("gauge6_p7"));
   gauge6->SetX(35);
   gauge6->SetY(200);
   gauge6->SetWidth(110);
@@ -170,79 +170,79 @@ cboard_5::cboard_5(void)
   //label1
   label1=new CLabel();
   label1->SetFOwner(&Window1);
-  label1->SetName(wxT("label1_p7"));
+  label1->SetName(lxT("label1_p7"));
   label1->SetX(12);
   label1->SetY(75);
   label1->SetWidth(20);
   label1->SetHeight(20);
   label1->SetEnable(1);
   label1->SetVisible(1);
-  label1->SetText(wxT("3"));
+  label1->SetText(lxT("3"));
   label1->SetAlign(1);
   Window1.CreateChild(label1); 
   //label2
   label2=new CLabel();
   label2->SetFOwner(&Window1);
-  label2->SetName(wxT("label2_p7"));
+  label2->SetName(lxT("label2_p7"));
   label2->SetX(12);
   label2->SetY(100);
   label2->SetWidth(20);
   label2->SetHeight(20);
   label2->SetEnable(1);
   label2->SetVisible(1);
-  label2->SetText(wxT("5"));
+  label2->SetText(lxT("5"));
   label2->SetAlign(1);
   Window1.CreateChild(label2);    
   //label3
   label3=new CLabel();
   label3->SetFOwner(&Window1);
-  label3->SetName(wxT("label3_p7"));
+  label3->SetName(lxT("label3_p7"));
   label3->SetX(13);
   label3->SetY(125);
   label3->SetWidth(20);
   label3->SetHeight(20);
   label3->SetEnable(1);
   label3->SetVisible(1);
-  label3->SetText(wxT("6"));
+  label3->SetText(lxT("6"));
   label3->SetAlign(1);
   Window1.CreateChild(label3);    
   //label4
   label4=new CLabel();
   label4->SetFOwner(&Window1);
-  label4->SetName(wxT("label4_p7"));
+  label4->SetName(lxT("label4_p7"));
   label4->SetX(13);
   label4->SetY(150);
   label4->SetWidth(20);
   label4->SetHeight(20);
   label4->SetEnable(1);
   label4->SetVisible(1);
-  label4->SetText(wxT("9"));
+  label4->SetText(lxT("9"));
   label4->SetAlign(1);
   Window1.CreateChild(label4);  
   //label5
   label5=new CLabel();
   label5->SetFOwner(&Window1);
-  label5->SetName(wxT("label5_p7"));
+  label5->SetName(lxT("label5_p7"));
   label5->SetX(13);
   label5->SetY(175);
   label5->SetWidth(20);
   label5->SetHeight(20);
   label5->SetEnable(1);
   label5->SetVisible(1);
-  label5->SetText(wxT("10"));
+  label5->SetText(lxT("10"));
   label5->SetAlign(1);
   Window1.CreateChild(label5);    
   //label6
   label6=new CLabel();
   label6->SetFOwner(&Window1);
-  label6->SetName(wxT("label6_p7"));
+  label6->SetName(lxT("label6_p7"));
   label6->SetX(13);
   label6->SetY(200);
   label6->SetWidth(20);
   label6->SetHeight(20);
   label6->SetEnable(1);
   label6->SetVisible(1);
-  label6->SetText(wxT("11"));
+  label6->SetText(lxT("11"));
   label6->SetAlign(1);
   Window1.CreateChild(label6);  
 };
@@ -285,13 +285,13 @@ cboard_5::Reset(void)
 #else
     if(avr_serial_get_fd() != INVALID_HANDLE_VALUE)
 #endif
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
-        String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(serialbaud)+wxT("(")+
+      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+
+        String::FromAscii(SERIALDEVICE)+lxT(":")+itoa(serialbaud)+lxT("(")+
         String().Format("%4.1f",fabs((100.0*serialexbaud-100.0*
-        serialbaud)/serialexbaud))+wxT("%)"));
+        serialbaud)/serialexbaud))+lxT("%)"));
     else  
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
-        String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
+      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+
+        String::FromAscii(SERIALDEVICE)+lxT(" (ERROR)"));
     
 /*
   //reset mean value
@@ -312,13 +312,13 @@ cboard_5::RefreshStatus(void)
 #else
     if(avr_serial_get_fd()!= INVALID_HANDLE_VALUE)
 #endif
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
-        String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(serialbaud)+wxT("(")+
+      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+
+        String::FromAscii(SERIALDEVICE)+lxT(":")+itoa(serialbaud)+lxT("(")+
         String().Format("%4.1f",fabs((100.0*serialexbaud-100.0*
-        serialbaud)/serialexbaud))+wxT("%)"));
+        serialbaud)/serialexbaud))+lxT("%)"));
     else  
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+
-        String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
+      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+
+        String::FromAscii(SERIALDEVICE)+lxT(" (ERROR)"));
     
     switch(avr->state)
     {	
@@ -338,7 +338,7 @@ void
 cboard_5::WritePreferences(void)
 {
     //write selected microcontroller of board_x to preferences
-    Window1.saveprefs(wxT("p7_proc"),proc);
+    Window1.saveprefs(lxT("p7_proc"),proc);
 };
 
 //Called whe configuration file load  preferences 
@@ -395,14 +395,14 @@ cboard_5::MouseButtonPress(uint button, uint x, uint y,uint state)
             Window1.Set_picrun(0); 
             Window1.Set_picpwr(0); 
             Reset();
-            Window1.statusbar1.SetField(0,wxT("Stoped"));
+            Window1.statusbar1.SetField(0,lxT("Stoped"));
           }
           else //if off turn on
           {
             Window1.Set_picpwr(1);
             Window1.Set_picrun(1);
             Reset();
-            Window1.statusbar1.SetField(0,wxT("Running..."));
+            Window1.statusbar1.SetField(0,lxT("Running..."));
           } 
           break;
         //if event is over I_RST area then turn off and reset

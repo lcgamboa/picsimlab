@@ -54,7 +54,7 @@ class part
       virtual void ReadPropertiesWindow(void)=0;
       part();           //Called once on part creation
       virtual ~part(void){};  //Called once on part destruction
-      wxBitmap * GetBitmap(void){return Bitmap;};
+      lxBitmap * GetBitmap(void){return Bitmap;};
       int GetX(void){return X;};
       int GetY(void){return Y;};
       void SetX(int x){X=x;};
@@ -72,7 +72,7 @@ class part
       unsigned int Width;
       int X;
      int Y;
-      wxBitmap * Bitmap; 
+      lxBitmap * Bitmap; 
       CCanvas canvas; 
       unsigned int refresh;
  private:      

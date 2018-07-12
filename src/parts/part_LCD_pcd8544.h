@@ -33,15 +33,15 @@
 class cpart_LCD_pcd8544:public part
 {
    public:
-      String GetName(void){return wxT("LCD pcd8544");};
+      String GetName(void){return lxT("LCD pcd8544");};
       cpart_LCD_pcd8544(unsigned x, unsigned y);
       ~cpart_LCD_pcd8544(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return wxT("LCD_pcd8544.png");};
-      String GetInputMapFile(void){return wxT("LCD_pcd8544_i.map");};
-      String GetOutputMapFile(void){return wxT("LCD_pcd8544_o.map");};
-      String GetPropertiesWindowFile(void){return wxT("LCD_pcd8544.lxrad");};
+      String GetPictureFileName(void){return lxT("LCD_pcd8544.png");};
+      String GetInputMapFile(void){return lxT("LCD_pcd8544_i.map");};
+      String GetOutputMapFile(void){return lxT("LCD_pcd8544_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("LCD_pcd8544.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  wprop);
       void ReadPropertiesWindow(void);
       String WritePreferences(void);

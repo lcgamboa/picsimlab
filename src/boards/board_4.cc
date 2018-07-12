@@ -183,18 +183,18 @@ cboard_4::cboard_4(void)
       lcde=0;
       sound_on=0;
       
-      buzz.Create(Window1.GetSharePath()+wxT("boards/buzzer.wav"));
+      buzz.Create(Window1.GetSharePath()+lxT("boards/buzzer.wav"));
       
-     wxImage  image;
-     image.LoadFile(Window1.GetSharePath()+wxT("boards/VT1.png"));
-     vent[0] = new wxBitmap(image);
-     image.LoadFile(Window1.GetSharePath()+wxT("boards/VT2.png"));
-     vent[1] = new wxBitmap(image);
+     lxImage  image;
+     image.LoadFile(Window1.GetSharePath()+lxT("boards/VT1.png"));
+     vent[0] = new lxBitmap(image);
+     image.LoadFile(Window1.GetSharePath()+lxT("boards/VT2.png"));
+     vent[1] = new lxBitmap(image);
      
-     image.LoadFile(Window1.GetSharePath()+wxT("boards/lcd2.png"));
-     lcdbmp[0] = new wxBitmap(image);
-     image.LoadFile(Window1.GetSharePath()+wxT("boards/lcd4.png"));
-     lcdbmp[1] = new wxBitmap(image);
+     image.LoadFile(Window1.GetSharePath()+lxT("boards/lcd2.png"));
+     lcdbmp[0] = new lxBitmap(image);
+     image.LoadFile(Window1.GetSharePath()+lxT("boards/lcd4.png"));
+     lcdbmp[1] = new lxBitmap(image);
      
      lcd_init(&lcd,2); 
      mi2c_init(&mi2c,4);
@@ -210,7 +210,7 @@ cboard_4::cboard_4(void)
   //scroll1
   scroll1=new CScroll();   
   scroll1->SetFOwner(&Window1);
-  scroll1->SetName(wxT("scroll1_p4"));
+  scroll1->SetName(lxT("scroll1_p4"));
   scroll1->SetX(12);
   scroll1->SetY(193+20);
   scroll1->SetWidth(140);
@@ -224,7 +224,7 @@ cboard_4::cboard_4(void)
   //scroll2
   scroll2=new CScroll();
   scroll2->SetFOwner(&Window1);
-  scroll2->SetName(wxT("scroll2_p4"));
+  scroll2->SetName(lxT("scroll2_p4"));
   scroll2->SetX(12);
   scroll2->SetY(141+20);
   scroll2->SetWidth(140);
@@ -238,7 +238,7 @@ cboard_4::cboard_4(void)
   //gauge1
   gauge1=new CGauge();
   gauge1->SetFOwner(&Window1);
-  gauge1->SetName(wxT("gauge1_p4"));
+  gauge1->SetName(lxT("gauge1_p4"));
   gauge1->SetX(13);
   gauge1->SetY(302+20);
   gauge1->SetWidth(140);
@@ -252,7 +252,7 @@ cboard_4::cboard_4(void)
   //gauge2
   gauge2=new CGauge();
   gauge2->SetFOwner(&Window1);
-  gauge2->SetName(wxT("gauge2_p4"));
+  gauge2->SetName(lxT("gauge2_p4"));
   gauge2->SetX(12);
   gauge2->SetY(250+20);
   gauge2->SetWidth(140);
@@ -266,93 +266,93 @@ cboard_4::cboard_4(void)
   //label1
   label1=new CLabel();
   label1->SetFOwner(&Window1);
-  label1->SetName(wxT("label1_p4"));
+  label1->SetName(lxT("label1_p4"));
   label1->SetX(12);
   label1->SetY(117+20);
   label1->SetWidth(60);
   label1->SetHeight(20);
   label1->SetEnable(1);
   label1->SetVisible(1);
-  label1->SetText(wxT("Pot. P1"));
+  label1->SetText(lxT("Pot. P1"));
   label1->SetAlign(1);
   Window1.CreateChild(label1); 
   //label2
   label2=new CLabel();
   label2->SetFOwner(&Window1);
-  label2->SetName(wxT("label2_p4"));
+  label2->SetName(lxT("label2_p4"));
   label2->SetX(12);
   label2->SetY(169+20);
   label2->SetWidth(60);
   label2->SetHeight(20);
   label2->SetEnable(1);
   label2->SetVisible(1);
-  label2->SetText(wxT("Pot. P2"));
+  label2->SetText(lxT("Pot. P2"));
   label2->SetAlign(1);
   Window1.CreateChild(label2);    
   //label3
   label3=new CLabel();
   label3->SetFOwner(&Window1);
-  label3->SetName(wxT("label3_p4"));
+  label3->SetName(lxT("label3_p4"));
   label3->SetX(12);
   label3->SetY(226+20);
   label3->SetWidth(60);
   label3->SetHeight(20);
   label3->SetEnable(1);
   label3->SetVisible(1);
-  label3->SetText(wxT("Heater"));
+  label3->SetText(lxT("Heater"));
   label3->SetAlign(1);
   Window1.CreateChild(label3);    
   //label4
   label4=new CLabel();
   label4->SetFOwner(&Window1);
-  label4->SetName(wxT("label4_p4"));
+  label4->SetName(lxT("label4_p4"));
   label4->SetX(13);
   label4->SetY(277+20);
   label4->SetWidth(60);
   label4->SetHeight(20);
   label4->SetEnable(1);
   label4->SetVisible(1);
-  label4->SetText(wxT("Cooler"));
+  label4->SetText(lxT("Cooler"));
   label4->SetAlign(1);
   Window1.CreateChild(label4);
   //label5
   label5=new CLabel();
   label5->SetFOwner(&Window1);
-  label5->SetName(wxT("label5_p4"));
+  label5->SetName(lxT("label5_p4"));
   label5->SetX(13);
   label5->SetY(332+20);
   label5->SetWidth(120);
   label5->SetHeight(24);
   label5->SetEnable(1);
   label5->SetVisible(1);
-  label5->SetText(wxT("Temp: 00.0°C"));
+  label5->SetText(lxT("Temp: 00.0°C"));
   label5->SetAlign(1);
   Window1.CreateChild(label5);
   //label6
   label6=new CLabel();
   label6->SetFOwner(&Window1);
-  label6->SetName(wxT("label6_p4"));
+  label6->SetName(lxT("label6_p4"));
   label6->SetX(13);
   label6->SetY(54+20);
   label6->SetWidth(120);
   label6->SetHeight(24);
   label6->SetEnable(1);
   label6->SetVisible(1);
-  label6->SetText(wxT("LCD"));
+  label6->SetText(lxT("LCD"));
   label6->SetAlign(1);
   Window1.CreateChild(label6);
   //combo1
   combo1=new CCombo();
   combo1->SetFOwner(&Window1);
-  combo1->SetName(wxT("combo1_p4"));
+  combo1->SetName(lxT("combo1_p4"));
   combo1->SetX(13);
   combo1->SetY(78+20);
   combo1->SetWidth(130);
   combo1->SetHeight(24);
   combo1->SetEnable(1);
   combo1->SetVisible(1);
-  combo1->SetText(wxT("hd44780 16x2"));
-  combo1->SetItems(wxT("hd44780 16x2,hd44780 16x4,"));
+  combo1->SetText(lxT("hd44780 16x2"));
+  combo1->SetItems(lxT("hd44780 16x2,hd44780 16x4,"));
   combo1->EvOnComboChange=EVONCOMBOCHANGE & CPWindow1::board_Event;
   Window1.CreateChild(combo1);
 };
@@ -612,7 +612,7 @@ void cboard_4::Draw( CDraw *draw,double scale)
    {
      if(!sound_on)
      {
-       buzz.Play(wxSOUND_ASYNC|wxSOUND_LOOP); 
+       buzz.Play(lxSOUND_ASYNC|lxSOUND_LOOP); 
        sound_on=1;
      }
    }
@@ -1028,9 +1028,9 @@ cboard_4::Reset(void)
 #else
     if(pic.serialfd != INVALID_HANDLE_VALUE)
 #endif
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic.serialbaud)+wxT("(")+String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*pic.serialbaud)/pic.serialexbaud))+wxT("%)"));
+      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+lxT(":")+itoa(pic.serialbaud)+lxT("(")+String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*pic.serialbaud)/pic.serialexbaud))+lxT("%)"));
     else  
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
+      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+lxT(" (ERROR)"));
         
   
   for(int i=0;i < pic.PINCOUNT;i++)
@@ -1155,7 +1155,7 @@ cboard_4::MouseButtonPress(uint button, uint x, uint y,uint state)
           p_BT2=0; 
           p_BT3=0; 
           p_BT4=0; 
-          Window1.statusbar1.SetField(0,wxT("Stoped"));
+          Window1.statusbar1.SetField(0,lxT("Stoped"));
         }
         else
         {
@@ -1164,7 +1164,7 @@ cboard_4::MouseButtonPress(uint button, uint x, uint y,uint state)
           Reset();
      
           
-          Window1.statusbar1.SetField(0,wxT("Running..."));
+          Window1.statusbar1.SetField(0,lxT("Running..."));
         } 
       };break;
       
@@ -1746,16 +1746,16 @@ cboard_4::get_out_id(char * name)
 void 
 cboard_4::RefreshStatus(void)
 {
-    label5->SetText(wxT("Temp: ")+String().Format("%5.2f",temp[0])+wxT("°C"));
+    label5->SetText(lxT("Temp: ")+String().Format("%5.2f",temp[0])+lxT("°C"));
     
 #ifndef _WIN_
     if(pic.serialfd > 0)
 #else
     if(pic.serialfd != INVALID_HANDLE_VALUE)
 #endif
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(":")+itoa(pic.serialbaud)+wxT("(")+String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*pic.serialbaud)/pic.serialexbaud))+wxT("%)"));
+      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+lxT(":")+itoa(pic.serialbaud)+lxT("(")+String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*pic.serialbaud)/pic.serialexbaud))+lxT("%)"));
     else  
-      Window1.statusbar1.SetField(2,wxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+wxT(" (ERROR)"));
+      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+lxT(" (ERROR)"));
     
 };
 
@@ -1763,17 +1763,17 @@ void
 cboard_4::WritePreferences(void)
 {
     char line[100];
-    Window1.saveprefs(wxT("p4_proc"),proc);
+    Window1.saveprefs(lxT("p4_proc"),proc);
 
-    Window1.saveprefs(wxT("p4_jmp"),String::Format("%i",jmp[0]));
+    Window1.saveprefs(lxT("p4_jmp"),String::Format("%i",jmp[0]));
     
-    Window1.saveprefs(wxT("p4_lcd"),combo1->GetText());
+    Window1.saveprefs(lxT("p4_lcd"),combo1->GetText());
 
     line[0]=0;
     for(int i=0;i<20;i++)
       sprintf(line+i,"%i",dip[i]);
     
-    Window1.saveprefs(wxT("p4_dip"),line);
+    Window1.saveprefs(lxT("p4_dip"),line);
    
 };
 
@@ -1813,7 +1813,7 @@ cboard_4::ReadPreferences(char *name,char *value)
    if(!strcmp(name,"p4_lcd"))
    {
       combo1->SetText(value);
-      if(combo1->GetText().Cmp(wxT("hd44780 16x2")) == 0)
+      if(combo1->GetText().Cmp(lxT("hd44780 16x2")) == 0)
         lcd_init(&lcd,2);
       else
         lcd_init(&lcd,4);  
@@ -1825,7 +1825,7 @@ void
 cboard_4::board_Event(CControl * control)
 {
  
-  if(combo1->GetText().Cmp(wxT("hd44780 16x2")) == 0)
+  if(combo1->GetText().Cmp(lxT("hd44780 16x2")) == 0)
     lcd_init(&lcd,2);
   else
     lcd_init(&lcd,4);  
