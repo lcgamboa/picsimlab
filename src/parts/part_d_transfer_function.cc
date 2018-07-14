@@ -146,7 +146,7 @@ cpart_dtfunc::Reset(void)
 
 
 void 
-cpart_dtfunc::MouseButtonPress(uint button, uint x, uint y,uint state)
+cpart_dtfunc::EvMouseButtonPress(uint button, uint x, uint y,uint state)
 {
  /*
   int i;
@@ -169,7 +169,7 @@ cpart_dtfunc::MouseButtonPress(uint button, uint x, uint y,uint state)
 
 
 void 
-cpart_dtfunc::MouseButtonRelease(uint button, uint x, uint y,uint state)
+cpart_dtfunc::EvMouseButtonRelease(uint button, uint x, uint y,uint state)
 {
   /*  
   int i;
@@ -191,7 +191,7 @@ cpart_dtfunc::MouseButtonRelease(uint button, uint x, uint y,uint state)
 
 
 void 
-cpart_dtfunc::KeyPress( uint key, uint x, uint y,uint mask)
+cpart_dtfunc::EvKeyPress( uint key, uint x, uint y,uint mask)
 {
   /*
   if(key == '1')
@@ -214,7 +214,7 @@ cpart_dtfunc::KeyPress( uint key, uint x, uint y,uint mask)
 };
 
 void
-cpart_dtfunc::KeyRelease(uint key, uint x, uint y,uint mask)
+cpart_dtfunc::EvKeyRelease(uint key, uint x, uint y,uint mask)
 {
   /*
   if(key == '1')

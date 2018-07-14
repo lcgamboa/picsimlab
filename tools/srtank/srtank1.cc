@@ -1,6 +1,8 @@
 #include"srtank1.h"
 #include"srtank1_d.cc"
 
+#include"math.h"
+
 CPWindow1 Window1;
 
 
@@ -49,11 +51,11 @@ CPWindow1::_EvOnCreate (CControl * control)
 {
 
 #ifdef _WIN_
- combo1.SetItems (wxT ("COM1,COM2,COM3,COM4,COM5,COM6,COM7,COM8,COM9,COM10,COM11,COM12,"));
- combo1.SetText (wxT ("COM1"));
+ combo1.SetItems (lxT ("COM1,COM2,COM3,COM4,COM5,COM6,COM7,COM8,COM9,COM10,COM11,COM12,"));
+ combo1.SetText (lxT ("COM1"));
 #else
- combo1.SetItems (wxT ("/dev/ttyS0,/dev/ttyS1,/dev/ttyS2,/dev/ttyS3,/dev/tnt0,/dev/tnt1,/dev/tnt2,/dev/tnt3,/dev/tnt4,/dev/tnt5,"));
- combo1.SetText (wxT ("/dev/ttyS0"));
+ combo1.SetItems (lxT ("/dev/ttyS0,/dev/ttyS1,/dev/ttyS2,/dev/ttyS3,/dev/tnt0,/dev/tnt1,/dev/tnt2,/dev/tnt3,/dev/tnt4,/dev/tnt5,"));
+ combo1.SetText (lxT ("/dev/ttyS0"));
 #endif
 
 
@@ -93,7 +95,7 @@ CPWindow1::button1_EvMouseButtonClick (CControl * control, uint button, uint x, 
    conectado = 0;
    sclose ();
    combo1.SetEnable (1);
-   button1.SetText (wxT ("Connect"));
+   button1.SetText (lxT ("Connect"));
 
    edit1.SetEnable (1);
    edit2.SetEnable (1);
@@ -125,7 +127,7 @@ CPWindow1::button1_EvMouseButtonClick (CControl * control, uint button, uint x, 
      scfg ();
      conectado = 1;
      combo1.SetEnable (0);
-     button1.SetText (wxT ("Disconnect"));
+     button1.SetText (lxT ("Disconnect"));
 
      edit1.SetEnable (0);
      edit2.SetEnable (0);
@@ -149,8 +151,8 @@ CPWindow1::button1_EvMouseButtonClick (CControl * control, uint button, uint x, 
     }
    else
     {
-     Message (wxT (" Error open serial port: ") + combo1.GetText ());
-     text1.AddLine (wxT (" Error open serial port: ") + combo1.GetText ());
+     Message (lxT (" Error open serial port: ") + combo1.GetText ());
+     text1.AddLine (lxT (" Error open serial port: ") + combo1.GetText ());
     };
   }
 
@@ -357,7 +359,7 @@ CPWindow1::timer1_EvOnTime (CControl * control)
      buff[bc] = dado;
      bc++;
 
-     str.Printf (wxT (">%02x "), dado);
+     str.Printf (lxT (">%02x "), dado);
      line += str;
 
     }
@@ -370,7 +372,7 @@ CPWindow1::timer1_EvOnTime (CControl * control)
        {
         idig[buff[0]&0x07] = buff[1] != 0;
         bc = 0;
-        str.Printf (wxT ("  Digital Write %d = %d \n"), buff[0]&0x07, idig[buff[0]&0x07]);
+        str.Printf (lxT ("  Digital Write %d = %d \n"), buff[0]&0x07, idig[buff[0]&0x07]);
         line += str;
         text1.AddLine (line);
         line = "";
@@ -380,9 +382,9 @@ CPWindow1::timer1_EvOnTime (CControl * control)
       if (bc >= 1)
        {
         ssend (odig[buff[0]&0x07]);
-        str.Printf (wxT ("<%02x "), odig[buff[0]&0x07]);
+        str.Printf (lxT ("<%02x "), odig[buff[0]&0x07]);
         line += str;
-        str.Printf (wxT ("  Digital Read %d = %d \n"), buff[0]&0x07, odig[buff[0]&0x07]);
+        str.Printf (lxT ("  Digital Read %d = %d \n"), buff[0]&0x07, odig[buff[0]&0x07]);
         line += str;
         bc = 0;
         text1.AddLine (line);
@@ -394,7 +396,7 @@ CPWindow1::timer1_EvOnTime (CControl * control)
        {
         iana[buff[0]&0x03] = buff[1] << 8 | buff[2];
         bc = 0;
-        str.Printf (wxT ("  Analog Write %d = %d \n"), buff[0]&0x03, iana[buff[0]&0x03]);
+        str.Printf (lxT ("  Analog Write %d = %d \n"), buff[0]&0x03, iana[buff[0]&0x03]);
         line += str;
         text1.AddLine (line);
         line = "";
@@ -404,12 +406,12 @@ CPWindow1::timer1_EvOnTime (CControl * control)
       if (bc >= 1)
        {
         ssend (((oana[buff[0]&0x03]&0xFF00) >> 8));
-        str.Printf (wxT ("<%02x "), ((oana[buff[0]&0x03]&0xFF00) >> 8));
+        str.Printf (lxT ("<%02x "), ((oana[buff[0]&0x03]&0xFF00) >> 8));
         line += str;
         ssend ((oana[buff[0]&0x03]&0x00FF));
-        str.Printf (wxT ("<%02x "), (oana[buff[0]&0x03]&0x00FF));
+        str.Printf (lxT ("<%02x "), (oana[buff[0]&0x03]&0x00FF));
         line += str;
-        str.Printf (wxT ("  Analog Read %d = %d \n"), buff[0]&0x03, oana[buff[0]&0x03]);
+        str.Printf (lxT ("  Analog Read %d = %d \n"), buff[0]&0x03, oana[buff[0]&0x03]);
         line += str;
         bc = 0;
         text1.AddLine (line);
@@ -417,7 +419,7 @@ CPWindow1::timer1_EvOnTime (CControl * control)
        }
       break;
      default:
-      text1.AddLine (wxT ("!!!!!!!!!!!!!!!!!!!! ") + line + wxT ("  Unknown command !!!!!!!!!!!!!!!\n"));
+      text1.AddLine (lxT ("!!!!!!!!!!!!!!!!!!!! ") + line + lxT ("  Unknown command !!!!!!!!!!!!!!!\n"));
       line = "";
       //printf("  Unknown command!!!!!!!!\n");
       bc = 0;
@@ -465,14 +467,14 @@ void
 CPWindow1::menu1_File_DefaultConfig_EvMenuActive (CControl * control)
 {
 
- edit1.SetText (wxT ("100"));
- edit2.SetText (wxT ("100"));
- edit3.SetText (wxT ("800"));
- edit4.SetText (wxT ("500"));
- edit5.SetText (wxT ("3000"));
- edit6.SetText (wxT ("22"));
- edit7.SetText (wxT ("1.0"));
- edit8.SetText (wxT ("1000"));
+ edit1.SetText (lxT ("100"));
+ edit2.SetText (lxT ("100"));
+ edit3.SetText (lxT ("800"));
+ edit4.SetText (lxT ("500"));
+ edit5.SetText (lxT ("3000"));
+ edit6.SetText (lxT ("22"));
+ edit7.SetText (lxT ("1.0"));
+ edit8.SetText (lxT ("1000"));
 
 };
 
@@ -480,7 +482,7 @@ void
 CPWindow1::menu1_File_SaveConfig_EvMenuActive (CControl * control)
 {
 
- filedialog1.SetType (wxFD_SAVE | wxFD_CHANGE_DIR);
+ filedialog1.SetType (lxFD_SAVE | lxFD_CHANGE_DIR);
 
  if (filedialog1.Run ())
   {
@@ -504,7 +506,7 @@ CPWindow1::menu1_File_LoadConfig_EvMenuActive (CControl * control)
 {
 
 
- filedialog1.SetType (wxFD_OPEN | wxFD_CHANGE_DIR);
+ filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
  if (filedialog1.Run ())
   {
    CStringList prefs;
@@ -531,14 +533,14 @@ CPWindow1::menu1_File_Exit_EvMenuActive (CControl * control)
 void
 CPWindow1::menu1_Help_Contents_EvMenuActive (CControl * control)
 {
-  Window2.html1.SetLoadFile(String(wxT(_SHARE_))+wxT("docs/srtank/srtank.html"));  
+  Window2.html1.SetLoadFile(String(lxT(_SHARE_))+lxT("docs/srtank/srtank.html"));  
   Window2.Show();
 };
 
 void
 CPWindow1::menu1_Help_About_EvMenuActive (CControl * control)
 {
- Message (wxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (wxT (_VERSION_)));
+ Message (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (lxT (_VERSION_)));
 };
 
 

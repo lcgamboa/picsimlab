@@ -167,7 +167,7 @@ cpart_gamepad::Process (void)
 }
 
 void
-cpart_gamepad::MouseButtonPress (uint button, uint x, uint y, uint state)
+cpart_gamepad::EvMouseButtonPress (uint button, uint x, uint y, uint state)
 {
  int i;
 
@@ -211,7 +211,7 @@ cpart_gamepad::MouseButtonPress (uint button, uint x, uint y, uint state)
 };
 
 void
-cpart_gamepad::MouseButtonRelease (uint button, uint x, uint y, uint state)
+cpart_gamepad::EvMouseButtonRelease (uint button, uint x, uint y, uint state)
 {
  int i;
 
@@ -245,7 +245,7 @@ cpart_gamepad::MouseButtonRelease (uint button, uint x, uint y, uint state)
 }
 
 void
-cpart_gamepad::MouseMove (uint button, uint x, uint y, uint state)
+cpart_gamepad::EvMouseMove (uint button, uint x, uint y, uint state)
 {
 
  int i;
@@ -278,7 +278,7 @@ cpart_gamepad::MouseMove (uint button, uint x, uint y, uint state)
 }
 
 void
-cpart_gamepad::KeyPress (uint key, uint x, uint y, uint mask)
+cpart_gamepad::EvKeyPress (uint key, uint x, uint y, uint mask)
 {
 
  switch (key)
@@ -324,7 +324,7 @@ cpart_gamepad::KeyPress (uint key, uint x, uint y, uint mask)
 }
 
 void
-cpart_gamepad::KeyRelease (uint key, uint x, uint y, uint mask)
+cpart_gamepad::EvKeyRelease (uint key, uint x, uint y, uint mask)
 {
  switch (key)
   {

@@ -29,22 +29,21 @@
 #include<lxrad/lxrad.h>
 #include"part.h"
 
-
-	class cpart_pot:public part
-	{
-	   public:
-	      String GetName(void){return lxT("Potentiometers");};
-	      cpart_pot(unsigned x, unsigned y);
-	      ~cpart_pot(void);
-	      void Draw(void);
-	      void Process(void);
-	      String GetPictureFileName(void){return lxT("pot.png");};
-	      String GetInputMapFile(void){return lxT("pot_i.map");};
-	      String GetOutputMapFile(void){return lxT("pot_o.map");};
-	      String GetPropertiesWindowFile(void){return lxT("pot.lxrad");};
-      void MouseButtonPress(uint button, uint x, uint y,uint state);
-      void MouseButtonRelease(uint button, uint x, uint y,uint state);
-      void MouseMove(uint button, uint x, uint y,uint state);
+class cpart_pot:public part
+{
+    public:
+      String GetName(void){return lxT("Potentiometers");};
+      cpart_pot(unsigned x, unsigned y);
+      ~cpart_pot(void); 
+      void Draw(void);
+      void Process(void);
+      String GetPictureFileName(void){return lxT("pot.png");};
+      String GetInputMapFile(void){return lxT("pot_i.map");};
+      String GetOutputMapFile(void){return lxT("pot_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("pot.lxrad");};
+      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
+      void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
+      void EvMouseMove(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  wprop);
       void ReadPropertiesWindow(void);
       String WritePreferences(void);

@@ -631,7 +631,7 @@ cboard_3::Reset(void)
 };
 
 void 
-cboard_3::MouseButtonPress( uint button, uint x, uint y,uint state)
+cboard_3::EvMouseButtonPress( uint button, uint x, uint y,uint state)
 {
  
   int i;
@@ -734,7 +734,7 @@ cboard_3::MouseButtonPress( uint button, uint x, uint y,uint state)
 };
 
 void 
-cboard_3::MouseButtonRelease(uint button, uint x, uint y,uint state)
+cboard_3::EvMouseButtonRelease(uint button, uint x, uint y,uint state)
 {    
   int i;
 
@@ -784,7 +784,7 @@ cboard_3::MouseButtonRelease(uint button, uint x, uint y,uint state)
 
 
 void 
-cboard_3::KeyPress( uint key, uint x, uint y,uint mask)
+cboard_3::EvKeyPress( uint key, uint x, uint y,uint mask)
 {
   if(key == '1')
   {
@@ -805,7 +805,7 @@ cboard_3::KeyPress( uint key, uint x, uint y,uint mask)
 };
 
 void
-cboard_3::KeyRelease( uint key, uint x, uint y,uint mask)
+cboard_3::EvKeyRelease( uint key, uint x, uint y,uint mask)
 {
   if(key == '1')
   {
@@ -829,7 +829,7 @@ cboard_3::KeyRelease( uint key, uint x, uint y,uint mask)
 };
 
 void
-cboard_3::OnShow(void)
+cboard_3::EvOnShow(void)
 {
     lcd.update=1;
 }

@@ -67,11 +67,11 @@ class board
       virtual String GetInputMapFile(void)=0;    //Return the filename of board picture input map  
       virtual String GetOutputMapFile(void)=0;   //Return the filename of board picture output map  
       virtual void Reset(void)=0;           //Reset board status
-      virtual void MouseButtonPress(uint button, uint x, uint y,uint state)=0;    //Event on the board
-      virtual void MouseButtonRelease(uint button, uint x, uint y,uint state)=0;  //Event on the board
-      virtual void KeyPress(uint key, uint x, uint y,uint mask)=0;  //Event on the board
-      virtual void KeyRelease(uint key, uint x, uint y,uint mask)=0;//Event on the board
-      virtual void OnShow(void)=0;//Event on the board
+      virtual void EvMouseButtonPress(uint button, uint x, uint y,uint state)=0;    //Event on the board
+      virtual void EvMouseButtonRelease(uint button, uint x, uint y,uint state)=0;  //Event on the board
+      virtual void EvKeyPress(uint key, uint x, uint y,uint mask)=0;  //Event on the board
+      virtual void EvKeyRelease(uint key, uint x, uint y,uint mask)=0;//Event on the board
+      virtual void EvOnShow(void)=0;//Event on the board
       virtual void RefreshStatus(void);   //Called ever 1s to refresh status
       virtual void WritePreferences(void){};   //Called to save board preferences in configuration file
       virtual void ReadPreferences(char *name,char *value){}; //Called whe configuration file load  preferences 

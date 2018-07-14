@@ -147,7 +147,7 @@ CPWindow1::draw1_EvMouseButtonPress (CControl * control, uint button, uint x, ui
  x = x / scale;
  y = y / scale;
 
- pboard->MouseButtonPress (button, x, y, state);
+ pboard->EvMouseButtonPress (button, x, y, state);
 
 };
 
@@ -158,7 +158,7 @@ CPWindow1::draw1_EvMouseButtonRelease (CControl * control, uint button, uint x, 
  x = x / scale;
  y = y / scale;
 
- pboard->MouseButtonRelease (button, x, y, state);
+ pboard->EvMouseButtonRelease (button, x, y, state);
 
 };
 
@@ -168,7 +168,7 @@ CPWindow1::draw1_EvKeyboardPress (CControl * control, uint key, uint x, uint y, 
  x = x / scale;
  y = y / scale;
 
- pboard->KeyPress (key, x, y, mask);
+ pboard->EvKeyPress (key, x, y, mask);
 
 
 };
@@ -179,7 +179,7 @@ CPWindow1::draw1_EvKeyboardRelease (CControl * control, uint key, uint x, uint y
  x = x / scale;
  y = y / scale;
 
- pboard->KeyRelease (key, x, y, mask);
+ pboard->EvKeyRelease (key, x, y, mask);
 
 };
 
@@ -208,9 +208,9 @@ CPWindow1::_EvOnCreate (CControl * control)
    Window3.combo2.SetItems (lxT ("/dev/ttyS0,/dev/ttyS1,/dev/ttyS2,/dev/ttyS3,/dev/tnt0,/dev/tnt1,/dev/tnt2,/dev/tnt3,/dev/tnt4,/dev/tnt5,"));
 #endif
 
-  if (Application->argc == 2)
+  if (Application->Aargc == 2)
     {
-     fn.Assign(Application->argv[1]);  
+     fn.Assign(Application->Aargv[1]);  
      fn.MakeAbsolute ();
     }
   }
@@ -225,7 +225,7 @@ CPWindow1::_EvOnCreate (CControl * control)
  if (!create)
   {
    //search for file name 
-   if (Application->argc == 2)
+   if (Application->Aargc == 2)
     {
      LoadWorkspace (fn.GetFullPath ());
     }
@@ -323,11 +323,11 @@ CPWindow1::Configure (CControl * control, const char * home)
          sscanf (value, "%f", &clk);
          if (clk < 1)
           {
-           combo1.SetText (String::Format ("%2.1f", clk));
+           combo1.SetText (String().Format ("%2.1f", clk));
           }
          else
           {
-           combo1.SetText (String::Format ("%2.0f", clk));
+           combo1.SetText (String().Format ("%2.0f", clk));
           }
          //combo1_EvOnComboChange(control);
          NSTEP = (int) (atof (combo1.GetText ()) * NSTEPKT);
@@ -372,7 +372,7 @@ CPWindow1::Configure (CControl * control, const char * home)
        if (!strcmp (name, "lfile"))
         {
          FNAME = String (value, lxConvUTF8);
-         if (FNAME.Length () > 1)
+         if (FNAME.length () > 1)
           menu1_File_ReloadLast.SetEnable (1);
          else
           menu1_File_ReloadLast.SetEnable (0);
@@ -549,7 +549,7 @@ CPWindow1::_EvOnDestroy (CControl * control)
 
 
 
- saveprefs (lxT ("lab"), String::Format ("%i", lab));
+ saveprefs (lxT ("lab"), String().Format ("%i", lab));
  saveprefs (lxT ("clock"), combo1.GetText ());
  saveprefs (lxT ("debug"), itoa (debug));
  saveprefs (lxT ("position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
@@ -705,7 +705,7 @@ CPWindow1::_EvOnShow (CControl * control)
 
 
    draw1.SetImgFileName (share + lxT ("boards/") + pboard->GetPictureFileName (), scale, scale);
-   pboard->OnShow ();
+   pboard->EvOnShow ();
 
    if (osc_on)
     {
@@ -875,7 +875,7 @@ CPWindow1::menu1_File_SaveWorkspace_EvMenuActive (CControl * control)
    if (lxFileExists (filedialog2.GetFileName ()))
     {
 
-     if (!Dialog ("Overwriting file: " + basename (filedialog2.GetFileName ()) + "?"))
+     if (!Dialog (String("Overwriting file: ") + basename (filedialog2.GetFileName ()) + "?"))
       return;
     }
 
@@ -894,7 +894,7 @@ CPWindow1::menu1_File_SaveWorkspace_EvMenuActive (CControl * control)
 
    snprintf (fname, 1024, "%s/picsimlab.ini", home);
    prefs.Clear ();
-   saveprefs (lxT ("lab"), String::Format ("%i", lab));
+   saveprefs (lxT ("lab"), String().Format ("%i", lab));
    saveprefs (lxT ("clock"), combo1.GetText ());
    saveprefs (lxT ("debug"), itoa (debug));
    saveprefs (lxT ("position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));

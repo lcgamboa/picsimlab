@@ -306,7 +306,7 @@ cboard_6::ReadPreferences(char *name,char *value)
 
 //Event on the board
 void 
-cboard_6::KeyPress(uint key, uint x, uint y,uint mask)
+cboard_6::EvKeyPress(uint key, uint x, uint y,uint mask)
 {
   //if keyboard key 1 is pressed then activate button (state=0)   
   if(key == '1')
@@ -319,7 +319,7 @@ cboard_6::KeyPress(uint key, uint x, uint y,uint mask)
 
 //Event on the board
 void
-cboard_6::KeyRelease(uint key, uint x, uint y,uint mask)
+cboard_6::EvKeyRelease(uint key, uint x, uint y,uint mask)
 {
   //if keyboard key 1 is pressed then deactivate button (state=1)     
   if(key == '1')
@@ -331,7 +331,7 @@ cboard_6::KeyRelease(uint key, uint x, uint y,uint mask)
 
 //Event on the board
 void 
-cboard_6::MouseButtonPress(uint button, uint x, uint y,uint state)
+cboard_6::EvMouseButtonPress(uint button, uint x, uint y,uint state)
 {
  
   int i;
@@ -388,7 +388,7 @@ cboard_6::MouseButtonPress(uint button, uint x, uint y,uint state)
 
 //Event on the board
 void 
-cboard_6::MouseButtonRelease(uint button, uint x, uint y,uint state)
+cboard_6::EvMouseButtonRelease(uint button, uint x, uint y,uint state)
 {
   int i;
 

@@ -68,14 +68,14 @@ class cboard_6:public board_pic
       //Reset board status
       void Reset(void);
       //Event on the board
-      void MouseButtonPress(uint button, uint x, uint y,uint state);
+      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       //Event on the board
-      void MouseButtonRelease(uint button, uint x, uint y,uint state);
+      void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
       //Event on the board
-      void KeyPress(uint key, uint x, uint y,uint mask);
+      void EvKeyPress(uint key, uint x, uint y,uint mask);
       //Event on the board
-      void KeyRelease(uint key, uint x, uint y,uint mask);
-      void OnShow(void){};
+      void EvKeyRelease(uint key, uint x, uint y,uint mask);
+      void EvOnShow(void){};
       //Called ever 1s to refresh status
       void RefreshStatus(void);
       //Called to save board preferences in configuration file

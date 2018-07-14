@@ -159,7 +159,7 @@ void cpart_switchs::Process(void)
 }
  
 void 
-cpart_switchs::MouseButtonPress(uint button, uint x, uint y,uint state)
+cpart_switchs::EvMouseButtonPress(uint button, uint x, uint y,uint state)
 {
 int i;
 

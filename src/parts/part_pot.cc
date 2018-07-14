@@ -148,7 +148,7 @@ cpart_pot::Process (void)
 }
 
 void
-cpart_pot::MouseButtonPress (uint button, uint x, uint y, uint state)
+cpart_pot::EvMouseButtonPress (uint button, uint x, uint y, uint state)
 {
 
   int i;
@@ -188,7 +188,7 @@ cpart_pot::MouseButtonPress (uint button, uint x, uint y, uint state)
 }
 
 void 
-cpart_pot::MouseButtonRelease(uint button, uint x, uint y,uint state)
+cpart_pot::EvMouseButtonRelease(uint button, uint x, uint y,uint state)
 {
   int i;
   
@@ -216,7 +216,7 @@ cpart_pot::MouseButtonRelease(uint button, uint x, uint y,uint state)
 }
 
 void 
-cpart_pot::MouseMove(uint button, uint x, uint y,uint state)
+cpart_pot::EvMouseMove(uint button, uint x, uint y,uint state)
 {
   
   int i;

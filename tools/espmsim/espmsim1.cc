@@ -40,11 +40,11 @@ CPWindow1::togglebutton1_EvOnToggleButton(CControl * control)
       {
         togglebutton1.SetCheck (0);
         combo1.SetEnable(1);
-        text1.AddLine (wxT("Error on open serial port\n"));
+        text1.AddLine (lxT("Error on open serial port\n"));
         return;
       }
      
-     togglebutton1.SetText(wxT("Disconnect"));
+     togglebutton1.SetText(lxT("Disconnect"));
      text1.Clear ();     
      serial_cfg(sfd,115200);
      bptr=buff;
@@ -54,7 +54,7 @@ CPWindow1::togglebutton1_EvOnToggleButton(CControl * control)
    else
    {
      timer1.SetRunState (0);  
-     togglebutton1.SetText(wxT("Connect"));
+     togglebutton1.SetText(lxT("Connect"));
      serial_close(sfd);
    }
 
@@ -65,11 +65,11 @@ void
 CPWindow1::_EvOnCreate(CControl * control)
 {
 #ifndef LINUX
-  combo1.SetItems(wxT("COM1,COM2,COM3,COM4,COM5,COM6,COM7,COM8,COM9,COM10,COM11,COM12,"));
-  combo1.SetText(wxT("COM1"));
+  combo1.SetItems(lxT("COM1,COM2,COM3,COM4,COM5,COM6,COM7,COM8,COM9,COM10,COM11,COM12,"));
+  combo1.SetText(lxT("COM1"));
 #else
-  combo1.SetItems(wxT("/dev/ttyS0,/dev/ttyS1,/dev/ttyS2,/dev/ttyS3,/dev/tnt0,/dev/tnt1,/dev/tnt2,/dev/tnt3,/dev/tnt4,/dev/tnt5,"));
-  combo1.SetText(wxT("/dev/ttyS0"));
+  combo1.SetItems(lxT("/dev/ttyS0,/dev/ttyS1,/dev/ttyS2,/dev/ttyS3,/dev/tnt0,/dev/tnt1,/dev/tnt2,/dev/tnt3,/dev/tnt4,/dev/tnt5,"));
+  combo1.SetText(lxT("/dev/ttyS0"));
 #endif
   
 
@@ -136,7 +136,7 @@ CPWindow1::execute_cmd(char * cmd)
     
     printf("cmd=[%s]\n",cmd);
 #ifndef CONSOLE
-    text1.AddLine (wxT("cmd=[")+String(cmd)+wxT("]\n"));
+    text1.AddLine (lxT("cmd=[")+String(cmd)+lxT("]\n"));
 #endif        
     if(!strcmp(cmd,"AT"))
     {
@@ -610,14 +610,14 @@ CPWindow1::timer2_EvOnTime(CControl * control)
 {
 #ifndef CONSOLE
   text2.Clear ();
-  text2.AddLine (wxT("WIFI CONNECTED=")+itoa(WCON)+wxT("\n"));
-  text2.AddLine (wxT("CWMODE=")+itoa(CWMODE)+wxT("\n"));
-  text2.AddLine (wxT("\n"));
-  text2.AddLine (wxT("CIPMODE=")+itoa(CIPMODE)+wxT("\n"));
-  text2.AddLine (wxT("CIPMUX=")+itoa(CIPMUX)+wxT("\n")); 
-  text2.AddLine (wxT("CIPSERVER=")+itoa(CIPSERVER)+wxT("    PORT=")+itoa(PORT)+wxT("\n")); 
-  text2.AddLine (wxT("\n"));
-  text2.AddLine (wxT("SKL=")+itoa(SKL)+wxT(" C0=")+itoa(SCLI[0])+wxT(" C1=")+itoa(SCLI[1])+wxT(" C2=")+itoa(SCLI[2])+wxT(" C3=")+itoa(SCLI[3])+wxT("\n")); 
+  text2.AddLine (lxT("WIFI CONNECTED=")+itoa(WCON)+lxT("\n"));
+  text2.AddLine (lxT("CWMODE=")+itoa(CWMODE)+lxT("\n"));
+  text2.AddLine (lxT("\n"));
+  text2.AddLine (lxT("CIPMODE=")+itoa(CIPMODE)+lxT("\n"));
+  text2.AddLine (lxT("CIPMUX=")+itoa(CIPMUX)+lxT("\n")); 
+  text2.AddLine (lxT("CIPSERVER=")+itoa(CIPSERVER)+lxT("    PORT=")+itoa(PORT)+lxT("\n")); 
+  text2.AddLine (lxT("\n"));
+  text2.AddLine (lxT("SKL=")+itoa(SKL)+lxT(" C0=")+itoa(SCLI[0])+lxT(" C1=")+itoa(SCLI[1])+lxT(" C2=")+itoa(SCLI[2])+lxT(" C3=")+itoa(SCLI[3])+lxT("\n")); 
 #endif
 };
 
@@ -631,14 +631,14 @@ CPWindow1::menu1_File_Exit_EvMenuActive(CControl * control)
 void
 CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
 {
-  Window2.html1.SetLoadFile(String(wxT(_SHARE_))+wxT("docs/espmsim/espmsim.html"));  
+  Window2.html1.SetLoadFile(String(lxT(_SHARE_))+lxT("docs/espmsim/espmsim.html"));  
   Window2.Show();;
 }
 
 void
 CPWindow1::menu1_Help_About_EvMenuActive(CControl * control)
 {
- Message (wxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (wxT (_VERSION_)));
+ Message (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (lxT (_VERSION_)));
 }
 
 

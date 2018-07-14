@@ -42,11 +42,11 @@ class cpart_gamepad:public part
       String GetInputMapFile(void){return lxT("gamepad_i.map");};
       String GetOutputMapFile(void){return lxT("gamepad_o.map");};
       String GetPropertiesWindowFile(void){return lxT("gamepad.lxrad");};
-      void MouseButtonPress(uint button, uint x, uint y,uint state);
-      void MouseButtonRelease(uint button, uint x, uint y,uint state);
-      void MouseMove(uint button, uint x, uint y,uint state);
-      void KeyPress(uint key, uint x, uint y,uint mask);
-      void KeyRelease(uint key, uint x, uint y,uint mask);
+      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
+      void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
+      void EvMouseMove(uint button, uint x, uint y,uint state);
+      void EvKeyPress(uint key, uint x, uint y,uint mask);
+      void EvKeyRelease(uint key, uint x, uint y,uint mask);
       void ConfigurePropertiesWindow(CPWindow *  wprop);
       void ReadPropertiesWindow(void);
       String WritePreferences(void);

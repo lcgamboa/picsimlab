@@ -113,11 +113,11 @@ class cboard_4:public board_pic
       String GetInputMapFile(void){return lxT("input4.map");};
       String GetOutputMapFile(void){return lxT("output4.map");};
       void Reset(void);
-      void MouseButtonPress(uint button, uint x, uint y,uint state);
-      void MouseButtonRelease(uint button, uint x, uint y,uint state);
-      void KeyPress(uint key, uint x, uint y,uint mask);
-      void KeyRelease(uint key, uint x, uint y,uint mask);
-      void OnShow(void);
+      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
+      void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
+      void EvKeyPress(uint key, uint x, uint y,uint mask);
+      void EvKeyRelease(uint key, uint x, uint y,uint mask);
+      void EvOnShow(void);
       void RefreshStatus(void);
       void WritePreferences(void);
       void ReadPreferences(char *name,char *value);

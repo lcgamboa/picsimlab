@@ -72,7 +72,7 @@ CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
     {
       if (parts[i]->PointInside ((int)x, (int)y))
         {
-          parts[i]->MouseButtonPress (button, x - parts[i]->GetX (), y - parts[i]->GetY (), state);
+          parts[i]->EvMouseButtonPress (button, x - parts[i]->GetX (), y - parts[i]->GetY (), state);
           if (button == 3)
             {
                PartSelected=i;
@@ -124,7 +124,7 @@ CPWindow5::draw1_EvMouseButtonRelease(CControl * control, uint button, uint x, u
     {
       if (parts[i]->PointInside (x, y))
         {
-          parts[i]->MouseButtonRelease (button, x - parts[i]->GetX (), y - parts[i]->GetY (), state);
+          parts[i]->EvMouseButtonRelease (button, x - parts[i]->GetX (), y - parts[i]->GetY (), state);
           return;
         }
     }
@@ -173,7 +173,7 @@ CPWindow5::timer1_EvOnTime(CControl * control)
   draw1.Canvas.SetBgColor (50, 50, 50);
   draw1.Canvas.Rectangle (1, 0, 0, draw1.GetWidth (), draw1.GetHeight ());
   
-  draw1.Canvas.GetDC()->SetUserScale(scale,scale);
+  draw1.Canvas.ChangeScale(scale,scale);
   
   for (int i = 0; i < partsc; i++)
     {
@@ -213,7 +213,7 @@ CPWindow5::draw1_EvMouseMove(CControl * control, uint button, uint x, uint y,uin
     {
       if (parts[i]->PointInside (x, y))
         {
-          parts[i]->MouseMove (button, x - parts[i]->GetX (), y - parts[i]->GetY (), state);
+          parts[i]->EvMouseMove (button, x - parts[i]->GetX (), y - parts[i]->GetY (), state);
           return;
         }
     }    
@@ -240,7 +240,7 @@ CPWindow5::draw1_EvKeyboardPress(CControl * control, uint key, uint x, uint y,ui
    default:
     for (int i = 0; i < partsc; i++)
     {
-     parts[i]->KeyPress (key, x, y, mask);
+     parts[i]->EvKeyPress (key, x, y, mask);
     }
     break;
   }
@@ -252,7 +252,7 @@ CPWindow5::draw1_EvKeyboardRelease(CControl * control, uint key, uint x, uint y,
 {
     for (int i = 0; i < partsc; i++)
     {
-     parts[i]->KeyRelease (key, x, y, mask);
+     parts[i]->EvKeyRelease (key, x, y, mask);
     }
 };
 
@@ -265,7 +265,7 @@ CPWindow5::SaveConfig(String fname)
     prefs.Clear();
     for (int i = 0; i < partsc; i++)
     {
-      temp.Printf ("%s,%i,%i:%s",parts[i]->GetName(),parts[i]->GetX(),parts[i]->GetY(),parts[i]->WritePreferences());  
+      temp.Printf ("%s,%i,%i:%s",parts[i]->GetName().c_str(),parts[i]->GetX(),parts[i]->GetY(),parts[i]->WritePreferences().c_str());  
       prefs.AddLine(temp);
     }
     
@@ -347,7 +347,7 @@ CPWindow5::menu1_File_Saveconfiguration_EvMenuActive(CControl * control)
      if(lxFileExists(filedialog1.GetFileName()))
      {
        
-         if(!Dialog("Overwriting file: "+basename(filedialog1.GetFileName())+"?"))
+         if(!Dialog(String("Overwriting file: ")+basename(filedialog1.GetFileName())+"?"))
              return;
      } 
     SaveConfig(filedialog1.GetFileName());

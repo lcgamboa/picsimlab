@@ -42,7 +42,7 @@ class cpart_switchs:public part
       String GetInputMapFile(void){return lxT("switchs_i.map");};
       String GetOutputMapFile(void){return lxT("switchs_o.map");};
       String GetPropertiesWindowFile(void){return lxT("switchs.lxrad");};
-      void MouseButtonPress(uint button, uint x, uint y,uint state);
+      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  wprop);
       void ReadPropertiesWindow(void);
       String WritePreferences(void);

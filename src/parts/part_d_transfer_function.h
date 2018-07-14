@@ -43,10 +43,10 @@ class cpart_dtfunc:public part
       String GetOutputMapFile(void){return lxT("d_transfer_function_o.map");};
       String GetPropertiesWindowFile(void){return lxT("d_transfer_function.lxrad");};
       void Reset(void);
-      void MouseButtonPress(uint button, uint x, uint y,uint state);
-      void MouseButtonRelease(uint button, uint x, uint y,uint state);
-      void KeyPress(uint key, uint x, uint y,uint mask);
-      void KeyRelease(uint key, uint x, uint y,uint mask);
+      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
+      void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
+      void EvKeyPress(uint key, uint x, uint y,uint mask);
+      void EvKeyRelease(uint key, uint x, uint y,uint mask);
       void ConfigurePropertiesWindow(CPWindow *  wprop);
       void ReadPropertiesWindow(void);
       String WritePreferences(void);

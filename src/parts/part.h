@@ -40,11 +40,11 @@ class part
       virtual String GetOutputMapFile(void)=0;   //Return the filename of board picture output map  
       virtual String GetPropertiesWindowFile(void)=0;//Return the filename of properties window XML file
       virtual void Reset(void){};           //Reset part status
-      virtual void MouseButtonPress(uint button, uint x, uint y,uint state){};    //Event on the board
-      virtual void MouseButtonRelease(uint button, uint x, uint y,uint state){};  //Event on the board
-      virtual void MouseMove(uint button, uint x, uint y,uint state){};  //Event on the board
-      virtual void KeyPress(uint key, uint x, uint y,uint mask){};  //Event on the board
-      virtual void KeyRelease(uint key, uint x, uint y,uint mask){};//Event on the board
+      virtual void EvMouseButtonPress(uint button, uint x, uint y,uint state){};    //Event on the board
+      virtual void EvMouseButtonRelease(uint button, uint x, uint y,uint state){};  //Event on the board
+      virtual void EvMouseMove(uint button, uint x, uint y,uint state){};  //Event on the board
+      virtual void EvKeyPress(uint key, uint x, uint y,uint mask){};  //Event on the board
+      virtual void EvKeyRelease(uint key, uint x, uint y,uint mask){};//Event on the board
       virtual String WritePreferences(void)=0;   //Called to save part preferences in configuration file
       virtual void ReadPreferences(String value)=0; //Called whe configuration file load  preferences 
       virtual unsigned short get_in_id(char * name)=0; //return the input ids numbers of names used in input map

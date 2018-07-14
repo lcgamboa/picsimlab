@@ -146,7 +146,7 @@ cpart_pbuttons::Process (void)
 
 
 void
-cpart_pbuttons::MouseButtonPress (uint button, uint x, uint y, uint state)
+cpart_pbuttons::EvMouseButtonPress (uint button, uint x, uint y, uint state)
 {
   int i;
 
@@ -179,7 +179,7 @@ cpart_pbuttons::MouseButtonPress (uint button, uint x, uint y, uint state)
 };
 
 void
-cpart_pbuttons::MouseButtonRelease (uint button, uint x, uint y, uint state)
+cpart_pbuttons::EvMouseButtonRelease (uint button, uint x, uint y, uint state)
 {
   int i;
 

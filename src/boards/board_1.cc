@@ -354,7 +354,7 @@ cboard_1::Reset(void)
 
 
 void 
-cboard_1::MouseButtonPress(uint button, uint x, uint y,uint state)
+cboard_1::EvMouseButtonPress(uint button, uint x, uint y,uint state)
 {
  
   int i;
@@ -436,7 +436,7 @@ cboard_1::MouseButtonPress(uint button, uint x, uint y,uint state)
 
 
 void 
-cboard_1::MouseButtonRelease(uint button, uint x, uint y,uint state)
+cboard_1::EvMouseButtonRelease(uint button, uint x, uint y,uint state)
 {
   int i;
 
@@ -487,7 +487,7 @@ cboard_1::MouseButtonRelease(uint button, uint x, uint y,uint state)
 
 
 void 
-cboard_1::KeyPress( uint key, uint x, uint y,uint mask)
+cboard_1::EvKeyPress( uint key, uint x, uint y,uint mask)
 {
   if(key == '1')
   {
@@ -508,7 +508,7 @@ cboard_1::KeyPress( uint key, uint x, uint y,uint mask)
 };
 
 void
-cboard_1::KeyRelease(uint key, uint x, uint y,uint mask)
+cboard_1::EvKeyRelease(uint key, uint x, uint y,uint mask)
 {
   if(key == '1')
   {
@@ -596,7 +596,7 @@ void
 cboard_1::WritePreferences(void)
 {
     Window1.saveprefs(lxT("p1_proc"),proc);
-    Window1.saveprefs(lxT("p1_jmp"),String::Format("%i",jmp[0]));
+    Window1.saveprefs(lxT("p1_jmp"),String().Format("%i",jmp[0]));
 };
 
 void 

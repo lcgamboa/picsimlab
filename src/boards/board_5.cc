@@ -355,14 +355,14 @@ cboard_5::ReadPreferences(char *name,char *value)
 
 //Event on the board
 void 
-cboard_5::KeyPress(uint key, uint x, uint y,uint mask)
+cboard_5::EvKeyPress(uint key, uint x, uint y,uint mask)
 {
 
 };
 
 //Event on the board
 void
-cboard_5::KeyRelease(uint key, uint x, uint y,uint mask)
+cboard_5::EvKeyRelease(uint key, uint x, uint y,uint mask)
 {
  
   
@@ -370,7 +370,7 @@ cboard_5::KeyRelease(uint key, uint x, uint y,uint mask)
 
 //Event on the board
 void 
-cboard_5::MouseButtonPress(uint button, uint x, uint y,uint state)
+cboard_5::EvMouseButtonPress(uint button, uint x, uint y,uint state)
 {
  
   int i;
@@ -421,7 +421,7 @@ cboard_5::MouseButtonPress(uint button, uint x, uint y,uint state)
 
 //Event on the board
 void 
-cboard_5::MouseButtonRelease(uint button, uint x, uint y,uint state)
+cboard_5::EvMouseButtonRelease(uint button, uint x, uint y,uint state)
 {
   int i;
 

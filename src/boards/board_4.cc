@@ -1044,7 +1044,7 @@ cboard_4::Reset(void)
 };
 
 void 
-cboard_4::MouseButtonPress(uint button, uint x, uint y,uint state)
+cboard_4::EvMouseButtonPress(uint button, uint x, uint y,uint state)
 {
  
   int i;
@@ -1289,7 +1289,7 @@ cboard_4::MouseButtonPress(uint button, uint x, uint y,uint state)
 
 
 void 
-cboard_4::MouseButtonRelease(uint button, uint x, uint y,uint state)
+cboard_4::EvMouseButtonRelease(uint button, uint x, uint y,uint state)
 {    
   int i;
 
@@ -1419,7 +1419,7 @@ cboard_4::MouseButtonRelease(uint button, uint x, uint y,uint state)
 
 
 void 
-cboard_4::KeyPress(uint key, uint x, uint y,uint mask)
+cboard_4::EvKeyPress(uint key, uint x, uint y,uint mask)
 { 
   if(key == '1')
   {
@@ -1500,7 +1500,7 @@ cboard_4::KeyPress(uint key, uint x, uint y,uint mask)
 };
 
 void
-cboard_4::KeyRelease( uint key, uint x, uint y,uint mask)
+cboard_4::EvKeyRelease( uint key, uint x, uint y,uint mask)
 {
   
   if(key == '1')
@@ -1582,7 +1582,7 @@ cboard_4::KeyRelease( uint key, uint x, uint y,uint mask)
 };
 
 void
-cboard_4::OnShow(void)
+cboard_4::EvOnShow(void)
 {
     lcd.update=1;
 }
@@ -1765,7 +1765,7 @@ cboard_4::WritePreferences(void)
     char line[100];
     Window1.saveprefs(lxT("p4_proc"),proc);
 
-    Window1.saveprefs(lxT("p4_jmp"),String::Format("%i",jmp[0]));
+    Window1.saveprefs(lxT("p4_jmp"),String().Format("%i",jmp[0]));
     
     Window1.saveprefs(lxT("p4_lcd"),combo1->GetText());
 

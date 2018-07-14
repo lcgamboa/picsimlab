@@ -234,7 +234,7 @@ cboard_x::WritePreferences(void)
     //write selected microcontroller of board_x to preferences
     Window1.saveprefs(lxT("px_proc"),proc);
     //write switch state of board_x to preferences 
-    Window1.saveprefs(lxT("px_bt2"),String::Format("%i",p_BT2));
+    Window1.saveprefs(lxT("px_bt2"),String().Format("%i",p_BT2));
 };
 
 //Called whe configuration file load  preferences 
@@ -259,7 +259,7 @@ cboard_x::ReadPreferences(char *name,char *value)
 
 //Event on the board
 void 
-cboard_x::KeyPress(uint key, uint x, uint y,uint mask)
+cboard_x::EvKeyPress(uint key, uint x, uint y,uint mask)
 {
   //if keyboard key 1 is pressed then activate button (state=0)   
   if(key == '1')
@@ -277,7 +277,7 @@ cboard_x::KeyPress(uint key, uint x, uint y,uint mask)
 
 //Event on the board
 void
-cboard_x::KeyRelease(uint key, uint x, uint y,uint mask)
+cboard_x::EvKeyRelease(uint key, uint x, uint y,uint mask)
 {
   //if keyboard key 1 is pressed then deactivate button (state=1)     
   if(key == '1')
@@ -289,7 +289,7 @@ cboard_x::KeyRelease(uint key, uint x, uint y,uint mask)
 
 //Event on the board
 void 
-cboard_x::MouseButtonPress(uint button, uint x, uint y,uint state)
+cboard_x::EvMouseButtonPress(uint button, uint x, uint y,uint state)
 {
  
   int i;
@@ -349,7 +349,7 @@ cboard_x::MouseButtonPress(uint button, uint x, uint y,uint state)
 
 //Event on the board
 void 
-cboard_x::MouseButtonRelease(uint button, uint x, uint y,uint state)
+cboard_x::EvMouseButtonRelease(uint button, uint x, uint y,uint state)
 {
   int i;
 
