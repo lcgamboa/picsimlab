@@ -196,6 +196,8 @@ cboard_4::cboard_4(void)
      image.LoadFile(Window1.GetSharePath()+lxT("boards/lcd4.png"));
      lcdbmp[1] = new lxBitmap(image);
      
+     image.Destroy();
+
      lcd_init(&lcd,2); 
      mi2c_init(&mi2c,4);
      rtc2_init(&rtc2);

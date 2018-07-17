@@ -45,6 +45,7 @@ cpart_LCD_pcd8544::cpart_LCD_pcd8544(unsigned x, unsigned y)
 
   
    Bitmap = new lxBitmap(image);
+   image.Destroy(); 
    canvas.Create(Bitmap);
 
    lcd_pcd8544_init(&lcd);

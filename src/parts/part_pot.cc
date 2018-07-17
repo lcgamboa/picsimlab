@@ -49,6 +49,7 @@ cpart_pot::cpart_pot (unsigned x, unsigned y)
   image.LoadFile (Window1.GetSharePath () +lxT("parts/")+ GetPictureFileName ());
 
   Bitmap = new lxBitmap (image);
+  image.Destroy(); 
 
   canvas.Create (Bitmap);
 

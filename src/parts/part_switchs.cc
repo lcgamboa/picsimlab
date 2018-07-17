@@ -43,6 +43,7 @@ cpart_switchs::cpart_switchs(unsigned x, unsigned y)
    image.LoadFile(Window1.GetSharePath()+lxT("parts/")+GetPictureFileName());
 
    Bitmap = new lxBitmap(image);
+   image.Destroy(); 
    
    canvas.Create(Bitmap);
    

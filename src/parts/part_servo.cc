@@ -50,6 +50,7 @@ cpart_servo::cpart_servo(unsigned x, unsigned y)
 
    Bitmap = new lxBitmap(image);
    BackGround = new lxBitmap(image);
+   image.Destroy(); 
    
    canvas.Create(Bitmap);
 };

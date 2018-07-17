@@ -8,6 +8,7 @@ graphic LCD
 
 ######### board 1 ################
 
+FIX BUG PIC16F84 unknown opcode 0x0016!
 
 ######### board 2 ################
 RTC -> int output
