@@ -694,14 +694,20 @@ CPWindow1::_EvOnShow (CControl * control)
    scaley = ((Window1.GetHeight () - 90)*1.0) / plHeight;
 #endif
 
+   if(scalex < 0.1)scalex=0.1;
+   if(scaley < 0.1)scaley=0.1;
+   if(scalex > 10)scalex=10;
+   if(scaley > 10)scaley=10;
+   
    if (scalex < scaley)
     scale = scalex;
    else
     scale = scaley;
-
-
-   draw1.SetWidth (plWidth * scale);
-   draw1.SetHeight (plHeight * scale);
+   
+   printf("scale=%f\n",scale);
+   
+   draw1.SetWidth ((plWidth * scale)+2);
+   draw1.SetHeight ((plHeight * scale)+2);
 
 
    draw1.SetImgFileName (share + lxT ("boards/") + pboard->GetPictureFileName (), scale, scale);
