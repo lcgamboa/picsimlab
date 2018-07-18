@@ -26,7 +26,7 @@
 #ifndef PART_PUSH_BUTTONS_H
 #define	PART_PUSH_BUTTONS_H
 
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 #include"part.h"
 
 

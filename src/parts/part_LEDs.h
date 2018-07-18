@@ -26,7 +26,7 @@
 #ifndef PART_LEDS_H
 #define	PART_LEDS_H
 
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 #include"part.h"
 
 

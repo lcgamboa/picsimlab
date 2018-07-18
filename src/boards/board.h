@@ -26,7 +26,7 @@
 #ifndef BOARD_H
 #define	BOARD_H
 
-#include <lxrad/lxrad.h>    
+#include <lxrad.h>    
 #include <picsim/picsim.h>
 #include "../devices/lcd_hd44780.h"
 #include "../devices/mi2c_24CXXX.h"

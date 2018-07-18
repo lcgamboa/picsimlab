@@ -26,7 +26,7 @@
 #ifndef PART_POT_H
 #define	PART_POT_H
 
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 #include"part.h"
 
 class cpart_pot:public part

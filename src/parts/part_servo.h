@@ -26,7 +26,7 @@
 #ifndef PART_SERVO_H
 #define	PART_SERVO_H
 
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 #include"part.h"
 
 

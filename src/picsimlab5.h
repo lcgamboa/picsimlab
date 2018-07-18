@@ -26,7 +26,7 @@
 #ifndef CPWINDOW5 
 #define CPWINDOW5
 
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 #include"parts/part.h"
 #include"parts/parts_defs.h"
 

@@ -26,7 +26,7 @@
 #ifndef BOARD_6_H
 #define	BOARD_6_H
 
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 
 #include "board_pic.h"
 

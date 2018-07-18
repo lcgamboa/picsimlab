@@ -26,7 +26,7 @@
 #ifndef PART_STEP_H
 #define	PART_STEP_H
 
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 #include"part.h"
 
 

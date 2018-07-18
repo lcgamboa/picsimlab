@@ -26,7 +26,7 @@
 #ifndef CPWINDOW4 
 #define CPWINDOW4
 
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 #include <picsim/picsim.h>
 
     

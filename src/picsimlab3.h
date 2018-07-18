@@ -26,7 +26,7 @@
 #ifndef CPWINDOW3 
 #define CPWINDOW3
 
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 
 class CPWindow3:public CPWindow
 {

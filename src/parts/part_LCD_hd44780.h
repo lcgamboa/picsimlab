@@ -26,7 +26,7 @@
 #ifndef PART_LCD_HD44780_H
 #define	PART_LCD_HD44780_H
 
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 #include"part.h"
 
 

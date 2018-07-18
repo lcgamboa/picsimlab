@@ -27,7 +27,7 @@
 #ifndef LCD_PCF8833
 #define	LCD_PCF8833
     
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 
 /* pinout
   1 VCC

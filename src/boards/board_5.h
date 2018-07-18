@@ -26,7 +26,7 @@
 #ifndef BOARD_5_H
 #define	BOARD_5_H
 
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 
 #include "board_avr.h"
 

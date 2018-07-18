@@ -26,7 +26,7 @@
 #ifndef BOARD_1_H
 #define	BOARD_1_H
 
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 #include "board_pic.h"
 
 class cboard_1:public board_pic

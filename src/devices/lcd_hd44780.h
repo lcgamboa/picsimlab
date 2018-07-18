@@ -27,7 +27,7 @@
 #ifndef LCD_H
 #define	LCD_H
     
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
     
 #define DDRMAX 80
 

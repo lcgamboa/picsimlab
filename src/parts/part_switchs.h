@@ -26,7 +26,7 @@
 #ifndef PART_SWITCHS_H
 #define	PART_SWITCHS_H
 
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 #include"part.h"
 
 

@@ -27,7 +27,7 @@
 #ifndef LCD_PDC8544
 #define	LCD_PDC8544
     
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 
 /* pinout
   1 /RST

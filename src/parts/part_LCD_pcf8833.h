@@ -26,7 +26,7 @@
 #ifndef PART_LCD_PCF8833_H
 #define	PART_LCD_PCF8833_H
 
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 #include"part.h"
 #include"../devices/lcd_pcf8833.h"
 

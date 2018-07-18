@@ -26,7 +26,7 @@
 #ifndef PART_DTRANSFERF_H
 #define	PART_DTRANSFERF_H
 
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 #include"part.h"
 
 

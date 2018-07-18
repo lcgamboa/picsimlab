@@ -26,7 +26,7 @@
 #ifndef PART_GAMEPAD_H
 #define	PART_GAMEPAD_H
 
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 #include"part.h"
 
 

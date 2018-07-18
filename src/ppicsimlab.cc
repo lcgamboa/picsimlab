@@ -23,7 +23,7 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 #include"picsimlab1.h"
 #include"picsimlab2.h"
 #include"picsimlab3.h"
