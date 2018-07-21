@@ -49,6 +49,9 @@ cpart_servo::cpart_servo(unsigned x, unsigned y)
    image.LoadFile(Window1.GetSharePath()+lxT("parts/")+GetPictureFileName());
 
    Bitmap = new lxBitmap(image);
+   image.Destroy(); 
+   
+   image.LoadFile(Window1.GetSharePath()+lxT("parts/")+GetPictureFileName());
    BackGround = new lxBitmap(image);
    image.Destroy(); 
    

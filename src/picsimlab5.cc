@@ -78,7 +78,11 @@ CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
                PartSelected=i;
 	       pmenu2.SetX(x*scale);
 	       pmenu2.SetY(y*scale);
-	       SetPopupMenu(&pmenu2);
+#ifdef __WXGTK__
+	       SetPopupMenu(&pmenu2);//FIXME problemas com as propriedades
+#else
+	       draw1.SetPopupMenu(&pmenu2);
+#endif
             }
           return;
         }
@@ -87,6 +91,7 @@ CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
   //clique fora 
   if ((button == 1)&&(PartToCreate.size() > 0)&&(partsc < MAX_PARTS))
     {
+       //timer1.SetRunState (0); 
        lxSetCursor (lxCursor (lxCURSOR_ARROW));   
        parts[partsc] = create_part ((char *)PartToCreate.char_str (), x, y);
        
