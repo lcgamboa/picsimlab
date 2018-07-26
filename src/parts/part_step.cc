@@ -43,7 +43,7 @@ cpart_step::cpart_step(unsigned x, unsigned y)
    Bitmap = new lxBitmap(image);
    image.Destroy(); 
    
-   canvas.Create(Bitmap);
+   canvas.Create(Window1.GetWWidget(),Bitmap);
    
    angle =0;
    

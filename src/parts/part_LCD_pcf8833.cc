@@ -46,7 +46,7 @@ cpart_LCD_pcf8833::cpart_LCD_pcf8833(unsigned x, unsigned y)
   
    Bitmap = new lxBitmap(image);
    image.Destroy(); 
-   canvas.Create(Bitmap);
+   canvas.Create(Window1.GetWWidget(),Bitmap);
 
    lcd_pcf8833_init(&lcd);
    lcd_pcf8833_rst(&lcd);

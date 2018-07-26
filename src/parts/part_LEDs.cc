@@ -41,7 +41,7 @@ cpart_leds::cpart_leds(unsigned x, unsigned y)
 
    Bitmap = new lxBitmap(image);
    image.Destroy();   
-   canvas.Create(Bitmap);
+   canvas.Create(Window1.GetWWidget(),Bitmap);
    
    input_pins[0]=0;
    input_pins[1]=0;

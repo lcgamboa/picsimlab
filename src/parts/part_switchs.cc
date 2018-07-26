@@ -45,7 +45,7 @@ cpart_switchs::cpart_switchs(unsigned x, unsigned y)
    Bitmap = new lxBitmap(image);
    image.Destroy(); 
    
-   canvas.Create(Bitmap);
+   canvas.Create(Window1.GetWWidget(),Bitmap);
    
    
    output_pins[0]=0;

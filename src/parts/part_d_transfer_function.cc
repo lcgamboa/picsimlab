@@ -42,7 +42,7 @@ cpart_dtfunc::cpart_dtfunc(unsigned x, unsigned y)
 
    Bitmap = new lxBitmap(image);
    image.Destroy(); 
-   canvas.Create(Bitmap);
+   canvas.Create(Window1.GetWWidget(),Bitmap);
    
   
    input_pin=0;
