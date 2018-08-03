@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2018  Luis Claudio Gamboa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -87,8 +87,7 @@ void
 CPWindow1::thread1_EvThreadRun (CControl*)
 {
 
- while (!thread1.TestDestroy ())
-  {
+ do {
 
    if (tgo)
     {
@@ -106,8 +105,7 @@ CPWindow1::thread1_EvThreadRun (CControl*)
      usleep (1);
 #endif        
     }
-
-  }
+  }while(!thread1.TestDestroy ());
 }
 
 void
@@ -218,7 +216,7 @@ CPWindow1::_EvOnCreate (CControl * control)
  //load options
 
 
- strncpy (home, (char*) lxGetUserDataDir (_T("picsimlab")).char_str (), 1024);
+ strncpy (home, (char*) lxGetUserDataDir (_T("picsimlab")).char_str (), 1023);
 
  Configure (control, home);
  
@@ -254,7 +252,7 @@ CPWindow1::Configure (CControl * control, const char * home)
  picpwr = 1;
  picrst = 0;
  //TODO: verify initialization errors
- snprintf (fname, 1024, "%s/picsimlab.ini", home);
+ snprintf (fname, 1023, "%s/picsimlab.ini", home);
 
  SERIALDEVICE[0] = ' ';
  SERIALDEVICE[1] = 0;
@@ -271,7 +269,7 @@ CPWindow1::Configure (CControl * control, const char * home)
     {
      for (lc = 0; lc < (int) prefs.GetLinesCount (); lc++)
       {
-       strncpy (line, prefs.GetLine (lc).c_str (), 1024);
+       strncpy (line, prefs.GetLine (lc).c_str (), 1023);
 
        name = strtok (line, "\t= ");
        strtok (NULL, " ");
@@ -501,7 +499,7 @@ CPWindow1::saveprefs (String name, String value)
 
  for (int lc = 0; lc < (int) prefs.GetLinesCount (); lc++)
   {
-   strncpy (line, prefs.GetLine (lc).c_str (), 1024);
+   strncpy (line, prefs.GetLine (lc).c_str (), 1023);
 
    pname = strtok (line, "\t= ");
    strtok (NULL, " ");
@@ -890,18 +888,18 @@ CPWindow1::menu1_File_SaveWorkspace_EvMenuActive (CControl * control)
 
    //write options
 
-   strncpy (home, (char*) lxGetUserDataDir (_T("picsimlab")).char_str (), 1024);
-   snprintf (fname, 1024, "%s/picsimlab.ini", home);
+   strncpy (home, (char*) lxGetUserDataDir (_T("picsimlab")).char_str (), 1023);
+   snprintf (fname, 1023, "%s/picsimlab.ini", home);
    prefs.SaveToFile (fname);
 
-   strncpy (home, (char*) lxGetTempDir (_T("picsimlab")).char_str (), 1024);
-   strncat (home, "/picsimlab_workspace/", 1024);
+   strncpy (home, (char*) lxGetTempDir (_T("picsimlab")).char_str (), 1023);
+   strncat (home, "/picsimlab_workspace/", 1023);
 
    lxRemoveDir (home);
 
    lxCreateDir (home);
 
-   snprintf (fname, 1024, "%s/picsimlab.ini", home);
+   snprintf (fname, 1023, "%s/picsimlab.ini", home);
    prefs.Clear ();
    saveprefs (lxT ("lab"), String().Format ("%i", lab));
    saveprefs (lxT ("clock"), combo1.GetText ());
@@ -923,13 +921,13 @@ CPWindow1::menu1_File_SaveWorkspace_EvMenuActive (CControl * control)
    prefs.SaveToFile (fname);
 
    //write memory
-   snprintf (fname, 1024, "%s/mdump_%02i_%s.hex", home, lab_, (const char*) proc_.c_str ());
+   snprintf (fname, 1023, "%s/mdump_%02i_%s.hex", home, lab_, (const char*) proc_.c_str ());
 
    pboard->MDumpMemory (fname);
 
    if (pboard->GetUseSpareParts ())
     {
-     snprintf (fname, 1024, "%s/parts_%02i.pcf", home, lab_);
+     snprintf (fname, 1023, "%s/parts_%02i.pcf", home, lab_);
      Window5.SaveConfig (fname);
     }
 
@@ -938,8 +936,8 @@ CPWindow1::menu1_File_SaveWorkspace_EvMenuActive (CControl * control)
    lxRemoveDir (home);
 
 
-   strncpy (home, (char*) lxGetUserDataDir (_T("picsimlab")).char_str (), 1024);
-   snprintf (fname, 1024, "%s/picsimlab.ini", home);
+   strncpy (home, (char*) lxGetUserDataDir (_T("picsimlab")).char_str (), 1023);
+   snprintf (fname, 1023, "%s/picsimlab.ini", home);
    prefs.Clear ();
    prefs.LoadFromFile (fname);
   }
@@ -954,11 +952,11 @@ CPWindow1::LoadWorkspace (String fnpzw)
  if ((!lxFileExists (fnpzw)) || (!fnpzw.Contains (".pzw")))return;
 
  //write options
- strncpy (fzip, (char*) lxGetTempDir (_T("picsimlab")).char_str (), 1024);
- strncat (fzip, "/", 1024);
+ strncpy (fzip, (char*) lxGetTempDir (_T("picsimlab")).char_str (), 1023);
+ strncat (fzip, "/", 1023);
 
- strncpy (home, (char*) lxGetTempDir (_T("picsimlab")).char_str (), 1024);
- strncat (home, "/picsimlab_workspace/", 1024);
+ strncpy (home, (char*) lxGetTempDir (_T("picsimlab")).char_str (), 1023);
+ strncat (home, "/picsimlab_workspace/", 1023);
 
  lxRemoveDir (home);
 
@@ -966,7 +964,7 @@ CPWindow1::LoadWorkspace (String fnpzw)
 
  _EvOnDestroy (this);
 
- snprintf (fzip, 1024, "%s/picsimlab.ini", home);
+ snprintf (fzip, 1023, "%s/picsimlab.ini", home);
  CStringList prefsw;
  prefsw.Clear ();
  int lc;
@@ -977,7 +975,7 @@ CPWindow1::LoadWorkspace (String fnpzw)
   {
    for (lc = 0; lc < (int) prefsw.GetLinesCount (); lc++)
     {
-     strncpy (line, prefsw.GetLine (lc).c_str (), 1024);
+     strncpy (line, prefsw.GetLine (lc).c_str (), 1023);
      name = strtok (line, "\t= ");
      strtok (NULL, " ");
      value = strtok (NULL, "\"");
@@ -990,7 +988,7 @@ CPWindow1::LoadWorkspace (String fnpzw)
  Configure (this, home);
  _EvOnShow (this);
 
- snprintf (fzip, 1024, "%s/Readme.html", home);
+ snprintf (fzip, 1023, "%s/Readme.html", home);
  if (lxFileExists (fzip))
   {
    Window2.html1.SetLoadFile (fzip);
@@ -998,7 +996,7 @@ CPWindow1::LoadWorkspace (String fnpzw)
   }
  else
   {
-   snprintf (fzip, 1024, "%s/Readme.txt", home);
+   snprintf (fzip, 1023, "%s/Readme.txt", home);
    if (lxFileExists (fzip))
     {
      Window2.html1.SetLoadFile (fzip);

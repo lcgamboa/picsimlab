@@ -180,7 +180,7 @@ cpart_rgb_led::ConfigurePropertiesWindow(CPWindow *  wprop)
     }
     
     ((CCombo*)WProp_rgb_led->GetChildByName("combo3"))->SetItems(Items);
-    if(input_pins[3] == 0)
+    if(input_pins[2] == 0)
         ((CCombo*)WProp_rgb_led->GetChildByName("combo3"))->SetText("0  NC");
     else
     {

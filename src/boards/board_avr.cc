@@ -135,8 +135,8 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
           
   for(int p=0; p< MGetPinCount ();p++)
   {
-      String pname=MGetPinName (p+1);
-      
+       char pname[20];
+       strncpy(pname,(const char *)MGetPinName (p+1).c_str(),19);
       if(pname[0] == 'P')
       {
           pins[p].port=pname[1];
@@ -148,10 +148,9 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
           avr_irq_t* directionIrq = avr_io_getirq( avr, AVR_IOCTL_IOPORT_GETIRQ(pins[p].port), IOPORT_IRQ_DIRECTION_ALL );
           avr_irq_register_notify( directionIrq, ddr_hook, &pins[p] );
 
-          
-          
-          const char* name = (const char *)pname.c_str ();
-          Write_stat_irq[p] = avr_alloc_irq( &avr->irq_pool, 0, 1, &name );
+          const char* name[1];
+          name[0]=pname;
+          Write_stat_irq[p] = avr_alloc_irq( &avr->irq_pool, 0, 1, name );
   
           avr_irq_t* writeIrq = avr_io_getirq( avr, AVR_IOCTL_IOPORT_GETIRQ(pins[p].port), pins[p].pord );
           avr_connect_irq(Write_stat_irq[p], writeIrq );
