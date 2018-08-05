@@ -331,7 +331,7 @@ CPWindow4::CPWindow4(void)
   timer1.SetName(lxT("timer1"));
   timer1.SetTag(0);
   timer1.SetTime(33);
-  timer1.SetRunState(1);
+  timer1.SetRunState(0);
   timer1.EvOnTime=EVONTIME & CPWindow4::timer1_EvOnTime;
   CreateChild(&timer1);
   //combo2

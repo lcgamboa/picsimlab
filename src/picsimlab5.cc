@@ -157,7 +157,7 @@ CPWindow5::pmenu2_Properties_EvMenuActive(CControl * control)
   
     while (wd1->GetCanExitExclusive())
     {
-      Application->ProcessEvents(wd1->GetWWidget());
+      Application->ProcessEvents();
       lxMilliSleep(100);
     }
   

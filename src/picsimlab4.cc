@@ -500,21 +500,20 @@ CPWindow4::ReadPreferences (char *name, char *value)
 
 void
 CPWindow4::_EvOnDestroy (CControl * control) {
-  //code here:)
-  //mprint(lxT("_EvOnDestroy\n"));
-};
+
+}
 
 void
 CPWindow4::_EvOnShow (CControl * control) {
-  //code here:)
-  //mprint(lxT("_EvOnShow\n"));
-};
+  timer1.SetRunState (1);
+}
 
 void
 CPWindow4::_EvOnHide (CControl * control)
 {
+  timer1.SetRunState (0);
   Window1.GetBoard ()->SetUseOscilloscope (0);
-};
+}
 
 void
 CPWindow4::spind6_EvOnChangeSpinDouble (CControl * control)
