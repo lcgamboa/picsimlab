@@ -187,14 +187,14 @@ cboard_4::cboard_4(void)
       
      lxImage  image;
      image.LoadFile(Window1.GetSharePath()+lxT("boards/VT1.png"));
-     vent[0] = new lxBitmap(image);
+     vent[0] = new lxBitmap(image, &Window1);
      image.LoadFile(Window1.GetSharePath()+lxT("boards/VT2.png"));
-     vent[1] = new lxBitmap(image);
+     vent[1] = new lxBitmap(image, &Window1);
      
      image.LoadFile(Window1.GetSharePath()+lxT("boards/lcd2.png"));
-     lcdbmp[0] = new lxBitmap(image);
+     lcdbmp[0] = new lxBitmap(image, &Window1);
      image.LoadFile(Window1.GetSharePath()+lxT("boards/lcd4.png"));
-     lcdbmp[1] = new lxBitmap(image);
+     lcdbmp[1] = new lxBitmap(image, &Window1);
      
      image.Destroy();
 

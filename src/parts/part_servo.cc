@@ -25,6 +25,7 @@
 
 #include"../picsimlab1.h"
 #include"../picsimlab4.h"
+#include"../picsimlab5.h"
 #include"part_servo.h"
 
 /* outputs */
@@ -48,11 +49,11 @@ cpart_servo::cpart_servo(unsigned x, unsigned y)
    lxImage image;
    image.LoadFile(Window1.GetSharePath()+lxT("parts/")+GetPictureFileName());
 
-   Bitmap = new lxBitmap(image);
+   Bitmap = new lxBitmap(image, &Window5);
    image.Destroy(); 
    
    image.LoadFile(Window1.GetSharePath()+lxT("parts/")+GetPictureFileName());
-   BackGround = new lxBitmap(image);
+   BackGround = new lxBitmap(image, &Window5);
    image.Destroy(); 
    
    canvas.Create(Window1.GetWWidget(),Bitmap);

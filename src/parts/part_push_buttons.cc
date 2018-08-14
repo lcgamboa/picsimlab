@@ -25,6 +25,7 @@
 
 #include"../picsimlab1.h"
 #include"../picsimlab4.h"
+#include"../picsimlab5.h"
 #include"part_push_buttons.h"
 
 /* outputs */
@@ -48,7 +49,7 @@ cpart_pbuttons::cpart_pbuttons (unsigned x, unsigned y)
   lxImage image;
   image.LoadFile (Window1.GetSharePath () +lxT("parts/")+ GetPictureFileName ());
 
-  Bitmap = new lxBitmap (image);
+  Bitmap = new lxBitmap (image, &Window5);
   image.Destroy(); 
 
   canvas.Create (Window1.GetWWidget(),Bitmap);

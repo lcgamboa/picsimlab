@@ -25,6 +25,7 @@
 
 #include"../picsimlab1.h"
 #include"../picsimlab4.h"
+#include"../picsimlab5.h"
 #include"part_LCD_hd44780.h"
 
 /* outputs */
@@ -43,7 +44,7 @@ cpart_LCD_hd44780::Reset(void)
 
    if(Bitmap)delete Bitmap;
   
-   Bitmap = new lxBitmap(image);
+   Bitmap = new lxBitmap(image, &Window5);
    canvas.Create(Window1.GetWWidget(),Bitmap);
    image.Destroy(); 
 

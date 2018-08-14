@@ -25,6 +25,7 @@
 
 #include"../picsimlab1.h"
 #include"../picsimlab4.h"
+#include"../picsimlab5.h"
 #include"part_LCD_pcd8544.h"
 
 /* outputs */
@@ -44,7 +45,7 @@ cpart_LCD_pcd8544::cpart_LCD_pcd8544(unsigned x, unsigned y)
    image.LoadFile(Window1.GetSharePath()+lxT("parts/")+GetPictureFileName());
 
   
-   Bitmap = new lxBitmap(image);
+   Bitmap = new lxBitmap(image, &Window5);
    image.Destroy(); 
    canvas.Create(Window1.GetWWidget(),Bitmap);
 
