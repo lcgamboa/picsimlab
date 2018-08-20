@@ -89,6 +89,7 @@ class CPWindow5:public CPWindow
     int PartToMove;
     int mdx,mdy;
     float scale;
+    String LoadConfigFile;
 };
 
 extern CPWindow5 Window5 ;

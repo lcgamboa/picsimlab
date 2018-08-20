@@ -189,4 +189,5 @@ CPWindow5::CPWindow5(void)
   mdx=0;
   mdy=0;
   scale=1.0;
+  LoadConfigFile="";
 };

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ cpart_step::cpart_step(unsigned x, unsigned y)
    Bitmap = new lxBitmap(image, &Window5);
    image.Destroy(); 
    
-   canvas.Create(Window1.GetWWidget(),Bitmap);
+   canvas.Create(Window5.GetWWidget(),Bitmap);
    
    angle =0;
    
@@ -68,14 +68,11 @@ cpart_step::~cpart_step(void)
 
 void cpart_step::Draw(void)
 { 
- 
-  
    
   int i;
   board *pboard=Window1.GetBoard();
   const picpin * ppins=pboard->MGetPinsValues();
   
-
           
   canvas.Init();
   lxFont font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD );

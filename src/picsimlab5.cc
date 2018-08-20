@@ -58,6 +58,9 @@ CPWindow5::menu1_EvMenuActive(CControl * control)
 void
 CPWindow5::_EvOnCreate(CControl * control)
 {
+ 
+ if(LoadConfigFile.length () > 0)
+  LoadConfig (LoadConfigFile);
 
 };
 
@@ -284,6 +287,16 @@ CPWindow5::LoadConfig(String fname)
     char temp[256]; 
     unsigned int x,y;
     CStringList prefs;
+   
+    if(GetWin () == NULL)
+    {
+      LoadConfigFile=fname;
+      return 0;
+    }
+    else
+    {
+      LoadConfigFile=""; 
+    }
     
     bool ret=lxFileExists(fname);
     

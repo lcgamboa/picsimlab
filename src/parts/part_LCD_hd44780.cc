@@ -45,7 +45,7 @@ cpart_LCD_hd44780::Reset(void)
    if(Bitmap)delete Bitmap;
   
    Bitmap = new lxBitmap(image, &Window5);
-   canvas.Create(Window1.GetWWidget(),Bitmap);
+   canvas.Create(Window5.GetWWidget(),Bitmap);
    image.Destroy(); 
 
    lcd_init(&lcd,model);

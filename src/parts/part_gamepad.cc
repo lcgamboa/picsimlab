@@ -52,7 +52,7 @@ cpart_gamepad::cpart_gamepad (unsigned x, unsigned y)
  Bitmap = new lxBitmap (image, &Window5);
  image.Destroy(); 
 
- canvas.Create (Window1.GetWWidget(),Bitmap);
+ canvas.Create (Window5.GetWWidget(),Bitmap);
 
 
 

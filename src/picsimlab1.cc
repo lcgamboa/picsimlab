@@ -459,12 +459,12 @@ CPWindow1::Configure (CControl * control, const char * home)
 
  statusbar1.SetField (0, lxT ("Running..."));
 
- Application->ProcessEvents ();
 
  thread1.Run (); //parallel thread
  timer1.SetRunState (1);
  timer2.SetRunState (1);
 
+ Application->ProcessEvents ();
 
  Window4.SetBaseTimer ();
 
@@ -713,7 +713,7 @@ CPWindow1::_EvOnShow (CControl * control)
 
    draw1.SetImgFileName (share + lxT ("boards/") + pboard->GetPictureFileName (), scale, scale);
    pboard->EvOnShow ();
-
+  
    if (osc_on)
     {
      menu1_Modules_Oscilloscope_EvMenuActive (this);
@@ -724,9 +724,9 @@ CPWindow1::_EvOnShow (CControl * control)
      menu1_Modules_Spareparts_EvMenuActive (this);
      spare_on = 0;
     }
-  };
+  }
 
-};
+}
 
 void
 CPWindow1::menu1_File_Configure_EvMenuActive (CControl * control)
@@ -987,6 +987,7 @@ CPWindow1::LoadWorkspace (String fnpzw)
  prefs.SaveToFile (fzip);
 
  Configure (this, home);
+ 
  _EvOnShow (this);
 
  snprintf (fzip, 1023, "%s/Readme.html", home);
