@@ -116,6 +116,8 @@ avr_serial_cfg(float serialexbaud)
     unsigned int BAUDRATE;
     int serialbaud;
     
+    if( serialfd <= 0 ) return 0;
+
     /*
     if(*serial_TXSTA & 0x04) //BRGH=1 
     {
