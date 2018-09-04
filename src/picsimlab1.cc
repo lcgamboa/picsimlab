@@ -64,20 +64,33 @@ void
 CPWindow1::timer1_EvOnTime (CControl * control)
 {
  status |= ST_T1;
- if (!ondraw)
+ 
+#ifdef _ONEWIN
+  if (timer1.GetOverTime() < 10)
   {
-   if (!crt)
-    label1.SetColor (lxT ("black"));
-   crt = 0;
-   pboard->Draw (&draw1, scale);
+    label1.SetColor (0,0,0);
   }
  else
   {
-   label1.SetColor (lxT ("red"));
+   label1.SetColor (255,0,0);
+  }
+#else   
+ if (!ondraw)
+  {
+   if (!crt)
+    label1.SetColor (0,0,0);
+   crt = 0;
+  }
+ else
+  {
+   label1.SetColor (255,0,0);
    crt = 1;
   }
+#endif
+ pboard->Draw (&draw1, scale); 
+ label1.Draw();
  ondraw = 1;
-
+ 
  status &= ~ST_T1;
  status |= ST_TH;
  tgo = 1; //thread sync
