@@ -2,8 +2,8 @@
   <Class type="String">CPWindow</Class>
   <Name type="String">window1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">626</X>
-  <Y type="int">302</Y>
+  <X type="int">226</X>
+  <Y type="int">102</Y>
   <Width type="uint">269</Width>
   <Height type="uint">420</Height>
   <Hint type="String"></Hint>
@@ -22,7 +22,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Title type="String">Push buttons</Title>
+  <Title type="String">Gamepad</Title>
   <OverrideRedirect type="bool">0</OverrideRedirect>
   <EvOnCreate type="Event">FALSE</EvOnCreate>
   <EvOnDestroy type="Event">FALSE</EvOnDestroy>
@@ -222,7 +222,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Pin 1</Text>
+  <Text type="String">Button A</Text>
   <Align type="CAlign">1</Align>
 </label1>
 <label2>
@@ -249,7 +249,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Pin 2</Text>
+  <Text type="String">Button B</Text>
   <Align type="CAlign">1</Align>
 </label2>
 <label3>
@@ -276,7 +276,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Pin 3</Text>
+  <Text type="String">Button C</Text>
   <Align type="CAlign">1</Align>
 </label3>
 <label4>
@@ -303,7 +303,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Pin 4</Text>
+  <Text type="String">Button D</Text>
   <Align type="CAlign">1</Align>
 </label4>
 <combo5>
@@ -446,7 +446,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Pin 5</Text>
+  <Text type="String">Button E</Text>
   <Align type="CAlign">1</Align>
 </label5>
 <label6>
@@ -473,7 +473,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Pin 6</Text>
+  <Text type="String">Button F</Text>
   <Align type="CAlign">1</Align>
 </label6>
 <label7>
@@ -500,7 +500,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Pin 7</Text>
+  <Text type="String">Axis X</Text>
   <Align type="CAlign">1</Align>
 </label7>
 <label8>
@@ -527,7 +527,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Pin 8</Text>
+  <Text type="String">Axis Y</Text>
   <Align type="CAlign">1</Align>
 </label8>
 </window1>

@@ -234,7 +234,6 @@ CPWindow5::draw1_EvMouseMove(CControl * control, uint button, uint x, uint y,uin
 void
 CPWindow5::draw1_EvKeyboardPress(CControl * control, uint key, uint x, uint y,uint mask)
 {
-
   switch(key)
   {
     case '='://+

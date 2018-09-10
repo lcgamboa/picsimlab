@@ -286,40 +286,51 @@ cpart_gamepad::EvKeyPress (uint key, uint x, uint y, uint mask)
  switch (key)
   {
   case 'W':
+  case 'w':
    valuex = jr;
    valuey = 0;
    break;
   case 'A':
+  case 'a':  
    valuex = 0;
    valuey = jr;
    break;
   case 'S':
+  case 's': 
    valuex = jr;
    valuey = 2 * jr;
    break;
   case 'D':
+  case 'd': 
    valuex = 2 * jr;
    valuey = jr;
    break;
   case 'I':
+  case 'i': 
    output_value[0] = 0;
    break;
   case 'J':
+  case 'j':
    output_value[3] = 0;
    break;
   case 'K':
+  case 'k':
    output_value[2] = 0;
    break;
   case 'L':
+  case 'l': 
    output_value[1] = 0;
    break;
   case 'E':
+  case 'e': 
    output_value[4] = 0;
    break;
   case 'O':
+  case 'o': 
    output_value[5] = 0;
    break;
   case 'R':
+  case 'r': 
    output_value[6] = 0;
    break;
   }
@@ -334,28 +345,39 @@ cpart_gamepad::EvKeyRelease (uint key, uint x, uint y, uint mask)
   case 'A':
   case 'S':
   case 'D':
+  case 'w':
+  case 'a':
+  case 's':
+  case 'd': 
    valuex = jr;
    valuey = jr;
    break;
   case 'I':
+  case 'i': 
    output_value[0] = 1;
    break;
   case 'J':
+  case 'j': 
    output_value[3] = 1;
    break;
   case 'K':
+  case 'k': 
    output_value[2] = 1;
    break;
   case 'L':
+  case 'l': 
    output_value[1] = 1;
    break;
   case 'E':
+  case 'e': 
    output_value[4] = 1;
    break;
   case 'O':
+  case 'o': 
    output_value[5] = 1;
    break;
   case 'R':
+  case 'r': 
    output_value[6] = 1;
    break;
   }

@@ -93,7 +93,8 @@ CPWindow1::timer1_EvOnTime (CControl * control)
  
  status &= ~ST_T1;
  status |= ST_TH;
- tgo = 1; //thread sync
+ if(!tgo)
+  tgo = 1; //thread sync
 };
 
 void
