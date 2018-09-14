@@ -1,11 +1,11 @@
-<window4>
+<window3>
   <Class type="String">CPWindow</Class>
-  <Name type="String">window4</Name>
+  <Name type="String">window3</Name>
   <Tag type="int">0</Tag>
   <X type="int">283</X>
   <Y type="int">159</Y>
-  <Width type="uint">1026</Width>
-  <Height type="uint">501</Height>
+  <Width type="uint">716</Width>
+  <Height type="uint">370</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">0</Visible>
@@ -36,8 +36,8 @@
   <Tag type="int">0</Tag>
   <X type="int">20</X>
   <Y type="int">20</Y>
-  <Width type="uint">500</Width>
-  <Height type="uint">400</Height>
+  <Width type="uint">350</Width>
+  <Height type="uint">250</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
@@ -61,8 +61,8 @@
   <Class type="String">CSpind</Class>
   <Name type="String">spind1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">571</X>
-  <Y type="int">134</Y>
+  <X type="int">389</X>
+  <Y type="int">74</Y>
   <Width type="uint">80</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
@@ -92,8 +92,8 @@
   <Class type="String">CSpind</Class>
   <Name type="String">spind2</Name>
   <Tag type="int">0</Tag>
-  <X type="int">571</X>
-  <Y type="int">203</Y>
+  <X type="int">387</X>
+  <Y type="int">128</Y>
   <Width type="uint">80</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
@@ -123,8 +123,8 @@
   <Class type="String">CSpind</Class>
   <Name type="String">spind3</Name>
   <Tag type="int">0</Tag>
-  <X type="int">702</X>
-  <Y type="int">134</Y>
+  <X type="int">484</X>
+  <Y type="int">74</Y>
   <Width type="uint">80</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
@@ -154,8 +154,8 @@
   <Class type="String">CSpind</Class>
   <Name type="String">spind4</Name>
   <Tag type="int">0</Tag>
-  <X type="int">704</X>
-  <Y type="int">203</Y>
+  <X type="int">483</X>
+  <Y type="int">128</Y>
   <Width type="uint">80</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
@@ -185,8 +185,8 @@
   <Class type="String">CSpind</Class>
   <Name type="String">spind5</Name>
   <Tag type="int">0</Tag>
-  <X type="int">855</X>
-  <Y type="int">135</Y>
+  <X type="int">589</X>
+  <Y type="int">74</Y>
   <Width type="uint">80</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
@@ -216,8 +216,8 @@
   <Class type="String">CSpind</Class>
   <Name type="String">spind6</Name>
   <Tag type="int">0</Tag>
-  <X type="int">858</X>
-  <Y type="int">202</Y>
+  <X type="int">589</X>
+  <Y type="int">129</Y>
   <Width type="uint">80</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
@@ -247,8 +247,8 @@
   <Class type="String">CToggleButton</Class>
   <Name type="String">togglebutton1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">578</X>
-  <Y type="int">252</Y>
+  <X type="int">394</X>
+  <Y type="int">159</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="String"></Hint>
@@ -275,8 +275,8 @@
   <Class type="String">CButton</Class>
   <Name type="String">button1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">579</X>
-  <Y type="int">294</Y>
+  <X type="int">394</X>
+  <Y type="int">192</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="String"></Hint>
@@ -301,8 +301,8 @@
   <Class type="String">CToggleButton</Class>
   <Name type="String">togglebutton2</Name>
   <Tag type="int">0</Tag>
-  <X type="int">709</X>
-  <Y type="int">252</Y>
+  <X type="int">490</X>
+  <Y type="int">159</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="String"></Hint>
@@ -329,8 +329,8 @@
   <Class type="String">CButton</Class>
   <Name type="String">button2</Name>
   <Tag type="int">0</Tag>
-  <X type="int">708</X>
-  <Y type="int">294</Y>
+  <X type="int">490</X>
+  <Y type="int">192</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="String"></Hint>
@@ -355,8 +355,8 @@
   <Class type="String">CToggleButton</Class>
   <Name type="String">togglebutton3</Name>
   <Tag type="int">0</Tag>
-  <X type="int">578</X>
-  <Y type="int">344</Y>
+  <X type="int">394</X>
+  <Y type="int">226</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="String"></Hint>
@@ -383,8 +383,8 @@
   <Class type="String">CToggleButton</Class>
   <Name type="String">togglebutton4</Name>
   <Tag type="int">0</Tag>
-  <X type="int">708</X>
-  <Y type="int">344</Y>
+  <X type="int">491</X>
+  <Y type="int">226</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="String"></Hint>
@@ -417,8 +417,8 @@
   <Class type="String">CToggleButton</Class>
   <Name type="String">togglebutton5</Name>
   <Tag type="int">0</Tag>
-  <X type="int">866</X>
-  <Y type="int">280</Y>
+  <X type="int">595</X>
+  <Y type="int">182</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="String"></Hint>
@@ -445,8 +445,8 @@
   <Class type="String">CSpind</Class>
   <Name type="String">spind7</Name>
   <Tag type="int">0</Tag>
-  <X type="int">860</X>
-  <Y type="int">420</Y>
+  <X type="int">592</X>
+  <Y type="int">289</Y>
   <Width type="uint">80</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
@@ -476,8 +476,8 @@
   <Class type="String">CCombo</Class>
   <Name type="String">combo1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">860</X>
-  <Y type="int">344</Y>
+  <X type="int">592</X>
+  <Y type="int">238</Y>
   <Width type="uint">80</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
@@ -513,8 +513,8 @@
   <Class type="String">CCombo</Class>
   <Name type="String">combo2</Name>
   <Tag type="int">0</Tag>
-  <X type="int">537</X>
-  <Y type="int">420</Y>
+  <X type="int">73</X>
+  <Y type="int">276</Y>
   <Width type="uint">140</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
@@ -542,8 +542,8 @@
   <Class type="String">CCombo</Class>
   <Name type="String">combo3</Name>
   <Tag type="int">0</Tag>
-  <X type="int">685</X>
-  <Y type="int">420</Y>
+  <X type="int">287</X>
+  <Y type="int">275</Y>
   <Width type="uint">140</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
@@ -571,9 +571,9 @@
   <Class type="String">CLabel</Class>
   <Name type="String">label1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">549</X>
-  <Y type="int">105</Y>
-  <Width type="uint">128</Width>
+  <X type="int">381</X>
+  <Y type="int">52</Y>
+  <Width type="uint">91</Width>
   <Height type="uint">20</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -591,16 +591,16 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Ch 1 scale (V/div)</Text>
+  <Text type="String">Ch 1 (V/div)</Text>
   <Align type="CAlign">1</Align>
 </label1>
 <label2>
   <Class type="String">CLabel</Class>
   <Name type="String">label2</Name>
   <Tag type="int">0</Tag>
-  <X type="int">686</X>
-  <Y type="int">105</Y>
-  <Width type="uint">130</Width>
+  <X type="int">481</X>
+  <Y type="int">52</Y>
+  <Width type="uint">88</Width>
   <Height type="uint">20</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -618,15 +618,15 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Ch 2 scale (V/div)</Text>
+  <Text type="String">Ch 2 (V/div)</Text>
   <Align type="CAlign">1</Align>
 </label2>
 <label3>
   <Class type="String">CLabel</Class>
   <Name type="String">label3</Name>
   <Tag type="int">0</Tag>
-  <X type="int">844</X>
-  <Y type="int">247</Y>
+  <X type="int">573</X>
+  <Y type="int">159</Y>
   <Width type="uint">119</Width>
   <Height type="uint">20</Height>
   <Hint type="String"></Hint>
@@ -652,9 +652,9 @@
   <Class type="String">CLabel</Class>
   <Name type="String">label4</Name>
   <Tag type="int">0</Tag>
-  <X type="int">826</X>
-  <Y type="int">105</Y>
-  <Width type="uint">147</Width>
+  <X type="int">579</X>
+  <Y type="int">52</Y>
+  <Width type="uint">104</Width>
   <Height type="uint">20</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -672,16 +672,16 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Time Scale (ms/div)</Text>
+  <Text type="String">Time (ms/div)</Text>
   <Align type="CAlign">1</Align>
 </label4>
 <label5>
   <Class type="String">CLabel</Class>
   <Name type="String">label5</Name>
   <Tag type="int">0</Tag>
-  <X type="int">836</X>
-  <Y type="int">175</Y>
-  <Width type="uint">128</Width>
+  <X type="int">578</X>
+  <Y type="int">106</Y>
+  <Width type="uint">100</Width>
   <Height type="uint">20</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -699,15 +699,15 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Time offset (ms)</Text>
+  <Text type="String">Time off. (ms)</Text>
   <Align type="CAlign">1</Align>
 </label5>
 <label6>
   <Class type="String">CLabel</Class>
   <Name type="String">label6</Name>
   <Tag type="int">0</Tag>
-  <X type="int">843</X>
-  <Y type="int">318</Y>
+  <X type="int">573</X>
+  <Y type="int">215</Y>
   <Width type="uint">122</Width>
   <Height type="uint">20</Height>
   <Hint type="String"></Hint>
@@ -733,8 +733,8 @@
   <Class type="String">CLabel</Class>
   <Name type="String">label7</Name>
   <Tag type="int">0</Tag>
-  <X type="int">837</X>
-  <Y type="int">390</Y>
+  <X type="int">573</X>
+  <Y type="int">266</Y>
   <Width type="uint">128</Width>
   <Height type="uint">20</Height>
   <Hint type="String"></Hint>
@@ -760,9 +760,9 @@
   <Class type="String">CLabel</Class>
   <Name type="String">label8</Name>
   <Tag type="int">0</Tag>
-  <X type="int">562</X>
-  <Y type="int">176</Y>
-  <Width type="uint">113</Width>
+  <X type="int">380</X>
+  <Y type="int">105</Y>
+  <Width type="uint">91</Width>
   <Height type="uint">20</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -780,16 +780,16 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Ch 1 offset (V)</Text>
+  <Text type="String">Ch 1 off. (V)</Text>
   <Align type="CAlign">1</Align>
 </label8>
 <label9>
   <Class type="String">CLabel</Class>
   <Name type="String">label9</Name>
   <Tag type="int">0</Tag>
-  <X type="int">692</X>
-  <Y type="int">176</Y>
-  <Width type="uint">115</Width>
+  <X type="int">480</X>
+  <Y type="int">105</Y>
+  <Width type="uint">89</Width>
   <Height type="uint">20</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -807,15 +807,15 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Ch 2 offset (V)</Text>
+  <Text type="String">Ch 2 off. (V)</Text>
   <Align type="CAlign">1</Align>
 </label9>
 <label10>
   <Class type="String">CLabel</Class>
   <Name type="String">label10</Name>
   <Tag type="int">0</Tag>
-  <X type="int">549</X>
-  <Y type="int">394</Y>
+  <X type="int">10</X>
+  <Y type="int">278</Y>
   <Width type="uint">60</Width>
   <Height type="uint">20</Height>
   <Hint type="String"></Hint>
@@ -841,8 +841,8 @@
   <Class type="String">CLabel</Class>
   <Name type="String">label11</Name>
   <Tag type="int">0</Tag>
-  <X type="int">693</X>
-  <Y type="int">394</Y>
+  <X type="int">223</X>
+  <Y type="int">279</Y>
   <Width type="uint">60</Width>
   <Height type="uint">20</Height>
   <Hint type="String"></Hint>
@@ -868,8 +868,8 @@
   <Class type="String">CButton</Class>
   <Name type="String">button3</Name>
   <Tag type="int">0</Tag>
-  <X type="int">725</X>
-  <Y type="int">26</Y>
+  <X type="int">467</X>
+  <Y type="int">14</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="String"></Hint>
@@ -894,8 +894,8 @@
   <Class type="String">CToggleButton</Class>
   <Name type="String">togglebutton6</Name>
   <Tag type="int">0</Tag>
-  <X type="int">839</X>
-  <Y type="int">26</Y>
+  <X type="int">539</X>
+  <Y type="int">14</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="String"></Hint>
@@ -922,8 +922,8 @@
   <Class type="String">CToggleButton</Class>
   <Name type="String">togglebutton7</Name>
   <Tag type="int">0</Tag>
-  <X type="int">920</X>
-  <Y type="int">26</Y>
+  <X type="int">609</X>
+  <Y type="int">14</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="String"></Hint>
@@ -950,8 +950,8 @@
   <Class type="String">CButton</Class>
   <Name type="String">button4</Name>
   <Tag type="int">0</Tag>
-  <X type="int">433</X>
-  <Y type="int">430</Y>
+  <X type="int">434</X>
+  <Y type="int">275</Y>
   <Width type="uint">70</Width>
   <Height type="uint">28</Height>
   <Hint type="String"></Hint>

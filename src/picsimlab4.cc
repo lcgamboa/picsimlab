@@ -38,8 +38,8 @@ CPWindow4 Window4;
 //Implementation
 
 
-#define WMAX 500
-#define HMAX 400
+#define WMAX 350
+#define HMAX 250
 
 #define NPOINTS 1000
 //flip buffers+ 2 channels + 500 points
@@ -337,7 +337,7 @@ CPWindow4::spind5_EvOnChangeSpinDouble (CControl * control)
   spind6.SetMax (5 * spind5.GetValue ());
 
   spind6.SetValue (0);
-  toffset = 250;
+  toffset = WMAX/2;
   //printf("Dt=%e Rt=%e  Rt/Dt=%f   xz=%f\n",Dt,Rt,Rt/Dt,xz);
 };
 
@@ -520,7 +520,7 @@ CPWindow4::spind6_EvOnChangeSpinDouble (CControl * control)
 {
 
 
-  toffset = 250 - ((250 * spind6.GetValue ()) / (5 * spind5.GetValue ()));
+  toffset = (WMAX/2) - (((WMAX/2) * spind6.GetValue ()) / (5 * spind5.GetValue ()));
 };
 
 //autoset
