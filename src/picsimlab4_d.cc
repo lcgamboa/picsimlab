@@ -8,7 +8,7 @@ CPWindow4::CPWindow4(void)
   SetX(283);
   SetY(159);
   SetWidth(716);
-  SetHeight(320);
+  SetHeight(350);
   SetHint(lxT(""));
   SetEnable(1);
   SetVisible(0);

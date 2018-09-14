@@ -1,11 +1,11 @@
-<window3>
+<window4>
   <Class type="String">CPWindow</Class>
-  <Name type="String">window3</Name>
+  <Name type="String">window4</Name>
   <Tag type="int">0</Tag>
   <X type="int">283</X>
   <Y type="int">159</Y>
   <Width type="uint">716</Width>
-  <Height type="uint">370</Height>
+  <Height type="uint">350</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">0</Visible>
