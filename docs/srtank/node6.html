@@ -1,121 +1,92 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<!--Converted with LaTeX2HTML 2018 (Released Feb 1, 2018) -->
+<!--Converted with LaTeX2HTML 2018.2 (Released May 16, 2018) -->
 <HTML>
 <HEAD>
-<TITLE>Protocolo de comunicação</TITLE>
-<META NAME="description" CONTENT="Protocolo de comunicação">
+<TITLE>English Manual</TITLE>
+<META NAME="description" CONTENT="English Manual">
 <META NAME="keywords" CONTENT="srtank">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
-<META NAME="Generator" CONTENT="LaTeX2HTML v2018">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2018.2">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="srtank.css">
 
-<LINK REL="previous" HREF="node5.html">
-<LINK REL="up" HREF="node1.html">
+<LINK REL="next" HREF="node11.html">
+<LINK REL="previous" HREF="node1.html">
+<LINK REL="up" HREF="srtank.html">
 <LINK REL="next" HREF="node7.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html101"
+<A NAME="tex2html99"
   HREF="node7.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html99"
-  HREF="node1.html">
+<A NAME="tex2html97"
+  HREF="srtank.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html95"
+<A NAME="tex2html91"
   HREF="node5.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html102"
-  HREF="node7.html">English Manual</A>
-<B> Up:</B> <A NAME="tex2html100"
-  HREF="node1.html">Manual em Português</A>
-<B> Previous:</B> <A NAME="tex2html96"
-  HREF="node5.html">Sensores e Atuadores</A>
+<B> Next:</B> <A NAME="tex2html100"
+  HREF="node7.html">Introduction</A>
+<B> Up:</B> <A NAME="tex2html98"
+  HREF="srtank.html">Serial Remote Tank</A>
+<B> Previous:</B> <A NAME="tex2html92"
+  HREF="node5.html">Protocolo de comunicação</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION02000000000000000000">
+English Manual</A>
+</H1>
+ingles
+
+<BR><HR>
 <!--Table of Child-Links-->
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL CLASS="ChildLinks">
+<LI><A NAME="tex2html101"
+  HREF="node7.html">Introduction</A>
+<LI><A NAME="tex2html102"
+  HREF="node8.html">Serial Communication </A>
+<UL>
 <LI><A NAME="tex2html103"
-  HREF="node6.html#SECTION01510000000000000000">Escrita entrada digital</A>
+  HREF="node8.html#SECTION02210000000000000000">Com0com Installation and Configuration(Windows)</A>
 <LI><A NAME="tex2html104"
-  HREF="node6.html#SECTION01520000000000000000">Leitura saída digital</A>
-<LI><A NAME="tex2html105"
-  HREF="node6.html#SECTION01530000000000000000">Escrita entrada analógica</A>
-<LI><A NAME="tex2html106"
-  HREF="node6.html#SECTION01540000000000000000">Leitura saída analógica</A>
+  HREF="node8.html#SECTION02220000000000000000">tty0tty Installation and Configuration (Linux)</A>
 </UL>
+<BR>
+<LI><A NAME="tex2html105"
+  HREF="node9.html">Sensors and Actuators</A>
+<UL>
+<LI><A NAME="tex2html106"
+  HREF="node9.html#SECTION02310000000000000000">Actuators</A>
+<LI><A NAME="tex2html107"
+  HREF="node9.html#SECTION02320000000000000000">Sensors</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html108"
+  HREF="node10.html">Communication Protocol</A>
+<UL>
+<LI><A NAME="tex2html109"
+  HREF="node10.html#SECTION02410000000000000000">Writing on Digital Input</A>
+<LI><A NAME="tex2html110"
+  HREF="node10.html#SECTION02420000000000000000">Reading Digital Output</A>
+<LI><A NAME="tex2html111"
+  HREF="node10.html#SECTION02430000000000000000">Writing on Analog Input</A>
+<LI><A NAME="tex2html112"
+  HREF="node10.html#SECTION02440000000000000000">Reading Analog Output</A>
+</UL></UL>
 <!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION01500000000000000000">
-Protocolo de comunicação</A>
-</H1>
-
-<P>
-
-<H1><A NAME="SECTION01510000000000000000">
-Escrita entrada digital</A>
-</H1>
-Envio do byte 0x0N onde N é o número da saída seguido do byte 0x00 para desligar ou 0x01 para ligar.
-Exemplo ligar saída 2:
-<PRE>
-            Serial_write(0x02);
-            Serial_write(0x01);
-</PRE>
-
-<P>
-
-<H1><A NAME="SECTION01520000000000000000">
-Leitura saída digital</A>
-</H1>
-Envio do byte 0x1N onde N é o número da saída e leitura  do byte,  0x00 para desligado ou 0x01 para ligado.
-Exemplo ler entrada 3:
-<PRE>
-      Serial_write(0x13);
-      valor=Serial_read(0);
-</PRE>
-
-<P>
-
-<H1><A NAME="SECTION01530000000000000000">
-Escrita entrada analógica</A>
-</H1> 
-Envio do byte 0x2N onde N é o número da saída seguido do byte mais significativo e do menos significativo.
-Exemplo escrever 230 na saída 1:
-<PRE>
-            Serial_write(0x21);
-            valor=230;
-            Serial_write((valor&amp;0xFF00)&gt;&gt;8);
-            Serial_write(valor&amp;0x00FF);
-</PRE>
-
-<P>
-
-<H1><A NAME="SECTION01540000000000000000">
-Leitura saída analógica</A>
-</H1>
-Envio do byte 0x3N onde N é o número da saída e leitura  do byte mais significativo e menos significativo.
-Exemplo ler entrada 2:
-<PRE>
-      Serial_write(0x32);
-      valorh=Serial_read(0);
-      valorl=Serial_read(0);
-      valor=(valorh&lt;&lt;8)|valorl;
-</PRE>
-
-<P>
-
 <BR><HR>
 
 </BODY>

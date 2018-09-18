@@ -41,8 +41,9 @@ CPWindow4 Window4;
 #define WMAX 350
 #define HMAX 250
 
-#define NPOINTS 1000
-//flip buffers+ 2 channels + 500 points
+#define NPOINTS 700
+
+//flip buffers+ 2 channels + 700 points
 double data[2][2][NPOINTS];
 int fp = 0;
 

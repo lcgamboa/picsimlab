@@ -1,233 +1,70 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<!--Converted with LaTeX2HTML 2018 (Released Feb 1, 2018) -->
+<!--Converted with LaTeX2HTML 2018.2 (Released May 16, 2018) -->
 <HTML>
 <HEAD>
-<TITLE>Serial Communication </TITLE>
-<META NAME="description" CONTENT="Serial Communication ">
+<TITLE>License</TITLE>
+<META NAME="description" CONTENT="License">
 <META NAME="keywords" CONTENT="espmsim">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
-<META NAME="Generator" CONTENT="LaTeX2HTML v2018">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2018.2">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="espmsim.css">
 
-<LINK REL="previous" HREF="node8.html">
-<LINK REL="up" HREF="node6.html">
-<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="espmsim.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html126"
-  HREF="node10.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html124"
-  HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next_g.png"> 
+<A NAME="tex2html115"
+  HREF="espmsim.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html120"
+<A NAME="tex2html111"
   HREF="node8.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html127"
-  HREF="node10.html">License</A>
-<B> Up:</B> <A NAME="tex2html125"
-  HREF="node6.html">English Manual</A>
-<B> Previous:</B> <A NAME="tex2html121"
-  HREF="node8.html">Interface</A>
+<B> Up:</B> <A NAME="tex2html116"
+  HREF="espmsim.html">ESP8266 Modem Simulator</A>
+<B> Previous:</B> <A NAME="tex2html112"
+  HREF="node8.html">Supported Commands</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html128"
-  HREF="node9.html#SECTION02310000000000000000">Com0com Installation and Configuration(Windows)</A>
-<LI><A NAME="tex2html129"
-  HREF="node9.html#SECTION02320000000000000000">tty0tty Installation and Configuration (Linux)</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION02300000000000000000"></A><A NAME="seriali"></A>
-<BR>
-Serial Communication 
+<H1><A NAME="SECTION03000000000000000000">
+License</A>
 </H1>
 
 <P>
-To use the simulator serial port, install a NULL-MODEM emulator:
-
-<UL>
-<LI>Windows: com0com <TT><A NAME="tex2html9"
-  HREF="http://sourceforge.net/projects/com0com/">http://sourceforge.net/projects/com0com/</A></TT>
-</LI>
-<LI>Linux: tty0tty  <TT><A NAME="tex2html10"
-  HREF="https://github.com/lcgamboa/tty0tty">https://github.com/lcgamboa/tty0tty</A></TT>
-</LI>
-</UL>
+Copyright © 2018 Luis Claudio Gambôa Lopes &lt;lcgamboa@yahoo.com&gt;
 
 <P>
-For communication the PICSimLab should be connected in one port of the NULL-MODEM emulator and the other application connected in the other port.
-Configuration examples linking PICSimLab to <A NAME="tex2html11"
-  HREF="https://github.com/neundorf/CuteCom">Cutecom</A>
-for serial communication:
- <BR>
-<BR>
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
 <P>
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="CENTER">OS</TD>
-<TD ALIGN="CENTER">PicsimLab port</TD>
-<TD ALIGN="CENTER">Cutecom port</TD>
-<TD ALIGN="CENTER">NULL-Modem prog.</TD>
-<TD ALIGN="CENTER">Connection</TD>
-</TR>
-<TR><TD ALIGN="CENTER">Windows</TD>
-<TD ALIGN="CENTER">com1</TD>
-<TD ALIGN="CENTER">com2</TD>
-<TD ALIGN="CENTER">com0com</TD>
-<TD ALIGN="CENTER">com1&lt;=&gt;com2</TD>
-</TR>
-<TR><TD ALIGN="CENTER">Linux</TD>
-<TD ALIGN="CENTER">/dev/tnt2</TD>
-<TD ALIGN="CENTER">/dev/tnt3</TD>
-<TD ALIGN="CENTER">tty0tty</TD>
-<TD ALIGN="CENTER">/dev/tnt2&lt;=&gt;/dev/tnt3</TD>
-</TR>
-</TABLE>
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
 <P>
-
-<H1><A NAME="SECTION02310000000000000000">
-Com0com Installation and Configuration(Windows)</A>
-</H1>
-
-<P>
-Download the signed version of <A NAME="tex2html12"
-  HREF="https://sourceforge.net/projects/com0com/files/com0com/3.0.0.0/com0com-3.0.0.0-i386-and-x64-signed.zip/download">com0com</A>.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330,
+Boston, MA 02111-1307, USA.
 
 <P>
-Unzip the downloaded .zip file and run the specific installer of your operating system, x86 for windows 32-bit or x64 for windows 64-bit.
-
-<P>
-Configure the &ldquo;choose components&rdquo; window as the figure below:
- 
-<DIV ALIGN="CENTER">
-
-<IMG
-  WIDTH="499" HEIGHT="388" ALIGN="BOTTOM" BORDER="0"
- SRC="./com0com1.png"
- ALT="Image com0com1"> 
-
-</DIV> 
-
-<P>
-In the last configuration window, check the &ldquo;Launch setup&rdquo; option:
-
-<DIV ALIGN="CENTER">
-
-<IMG
-  WIDTH="499" HEIGHT="388" ALIGN="BOTTOM" BORDER="0"
- SRC="./com0com2.png"
- ALT="Image com0com2"> 
-
-</DIV> 
-
-<P>
-In the setup window, change the port names to COM1, COM2, COM3 ....
-Just check the &ldquo;enable buffer overrun&rdquo; option on the two ports, click in the &ldquo;Apply&rdquo; button and close the setup.
-In the configuration shown in the figure below, the COM1 and COM2 ports form a NULL-MODEM connection, where one port must be used by the PICSimLab and another by the application with serial communication.
-
-<DIV ALIGN="CENTER">
-
-<IMG
-  WIDTH="447" HEIGHT="393" ALIGN="BOTTOM" BORDER="0"
- SRC="./com0com3.png"
- ALT="Image com0com3"> 
-
-</DIV> 
-
-<P>
-
-<H1><A NAME="SECTION02320000000000000000">
-tty0tty Installation and Configuration (Linux)</A>
-</H1>
-
-<P>
-Download the  href https://github.com/lcgamboa/tty0tty/archive/master.zip tty0tyy.
-Unzip the downloaded folder.
-
-<P>
-Open a terminal and enter in the tty0tty/module/ folder and enter the following commands:
-<PRE>
- sudo apt-get update
- sudo apt-get -y upgrade
- sudo apt-get -y install gcc make linux-headers-`uname -r` 
- make
- sudo make install
-</PRE>
-
-<P>
-The user must be in the <SPAN  CLASS="textbf">dialout</SPAN> group to access the ports. 
-To add your user to <SPAN  CLASS="textbf">dialout</SPAN> group use the command:
-<PRE>
-sudo usermod -a -G dialout your_user_name
-</PRE>
-after this is necessary logout and login to group permissions take effect.
-
-<P>
-Once installed, the module creates 8 interconnected ports as follows:
-<PRE>
-  /dev/tnt0  &lt;=&gt;  /dev/tnt1 
-  /dev/tnt2  &lt;=&gt;  /dev/tnt3 
-  /dev/tnt4  &lt;=&gt;  /dev/tnt5 
-  /dev/tnt6  &lt;=&gt;  /dev/tnt7
-</PRE>
-
-<P>
-the connection between each pair is of the form:
-<PRE>  
-  TX   -&gt;  RX
-  RX   &lt;-  TX 	
-  RTS  -&gt;  CTS
-  CTS  &lt;-  RTS
-  DSR  &lt;-  DTR
-  CD   &lt;-  DTR
-  DTR  -&gt;  DSR
-  DTR  -&gt;  CD
-</PRE>
-
-<P>
-Any pair of ports form a NULL-MODEM connection, where one port must be used by the PICSimLab and another by the application with serial communication.
-
-<P>
-
-<P>
-
-<DIV CLASS="navigation"><HR>
-<!--Navigation Panel-->
-<A NAME="tex2html126"
-  HREF="node10.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html124"
-  HREF="node6.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html120"
-  HREF="node8.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
-<BR>
-<B> Next:</B> <A NAME="tex2html127"
-  HREF="node10.html">License</A>
-<B> Up:</B> <A NAME="tex2html125"
-  HREF="node6.html">English Manual</A>
-<B> Previous:</B> <A NAME="tex2html121"
-  HREF="node8.html">Interface</A></DIV>
-<!--End of Navigation Panel-->
+<BR><HR>
 
 </BODY>
 </HTML>

@@ -1,45 +1,45 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<!--Converted with LaTeX2HTML 2018 (Released Feb 1, 2018) -->
+<!--Converted with LaTeX2HTML 2018.2 (Released May 16, 2018) -->
 <HTML>
 <HEAD>
-<TITLE>Interface</TITLE>
-<META NAME="description" CONTENT="Interface">
+<TITLE>Sensors and Actuators</TITLE>
+<META NAME="description" CONTENT="Sensors and Actuators">
 <META NAME="keywords" CONTENT="srtank">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
-<META NAME="Generator" CONTENT="LaTeX2HTML v2018">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2018.2">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="srtank.css">
 
 <LINK REL="next" HREF="node10.html">
 <LINK REL="previous" HREF="node8.html">
-<LINK REL="up" HREF="node7.html">
+<LINK REL="up" HREF="node6.html">
 <LINK REL="next" HREF="node10.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html141"
+<A NAME="tex2html143"
   HREF="node10.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html139"
-  HREF="node7.html">
+<A NAME="tex2html141"
+  HREF="node6.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html133"
+<A NAME="tex2html135"
   HREF="node8.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html142"
-  HREF="node10.html">Serial Communication</A>
-<B> Up:</B> <A NAME="tex2html140"
-  HREF="node7.html">English Manual</A>
-<B> Previous:</B> <A NAME="tex2html134"
-  HREF="node8.html">Introduction</A>
+<B> Next:</B> <A NAME="tex2html144"
+  HREF="node10.html">Communication Protocol</A>
+<B> Up:</B> <A NAME="tex2html142"
+  HREF="node6.html">English Manual</A>
+<B> Previous:</B> <A NAME="tex2html136"
+  HREF="node8.html">Serial Communication</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
@@ -47,131 +47,82 @@
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html143"
-  HREF="node9.html#SECTION02210000000000000000">Main Window</A>
+<LI><A NAME="tex2html145"
+  HREF="node9.html#SECTION02310000000000000000">Actuators</A>
+<LI><A NAME="tex2html146"
+  HREF="node9.html#SECTION02320000000000000000">Sensors</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION02200000000000000000">
-Interface</A>
+<H1><A NAME="SECTION02300000000000000000">
+Sensors and Actuators</A>
 </H1>
 
 <P>
 
-<H1><A NAME="SECTION02210000000000000000">
-Main Window</A>
+<H1><A NAME="SECTION02310000000000000000">
+Actuators</A>
 </H1>
 
 <P>
-The main window consists of a menu, a status bar, a frequency selection combobox, an on/off button to trigger debugging, some board-specific controls and the part of the board interface itself.
+Digital inputs
+
+<OL>
+<LI>Inlet valve
+</LI>
+<LI>Outlet valve
+</LI>
+<LI>Heater
+</LI>
+<LI>Cooler
+</LI>
+<LI>Stirrer
+</LI>
+</OL>
 
 <P>
-In the title of the window is shown the name of the simulator PICSimLab, followed by the board and the microcontroller in use.
+Analog inputs
 
-<P>
-The frequency selection combobox directly changes the working speed of the microcontroller, when the &ldquo;Clock (MHz)&rdquo; label goes red indicates that the computer is not being able to run the program in real time for the selected clock. 
-In this case the simulation may present some difference than expected and the CPU load will be increased.
-
-<P>
-The on/off button to enable debugging is used to enable debugging support, with the active support there is a higher simulation load.
-
-<P>
-The menus and their functions are listed below:
-
-<UL>
-<LI>File
-
-<UL>
-<LI>Load Hex - Load .hex files
+<OL>
+<LI>Minimal temperature alarm trigger level
 </LI>
-<LI>Reload Last - Reload the last used .hex file
+<LI>Maximal temperature alarm trigger level
 </LI>
-<LI>Configure - Open the configuration windows
-</LI>
-<LI>Save Workspace - Saves all current workspace settings to a .pzw file
-</LI>
-<LI>Load Workspace - Loads saved settings from a .pzw file
-</LI>
-<LI>Exit
-</LI>
-</UL>
-</LI>
-<LI>Board
-
-<UL>
-<LI>1 McLab1 - hoose board 1
-</LI>
-<LI>2 K16F - Choose board 2
-</LI>
-<LI>3 McLab2 - Choose board 3
-</LI>
-<LI>4 PICGenios - Choose board 4
-</LI>
-<LI>5 Arduino - Choose board 5
-</LI>
-</UL>
-</LI>
-<LI>Microcontroller
-
-<UL>
-<LI>xxxxx - Selects the microcontroller to be used (depends on the selected board)
-</LI>
-</UL>
-</LI>
-<LI>Modules
-
-<UL>
-<LI>Oscilloscope - Open the oscilloscope window
-</LI>
-<LI>Spare parts - Open the spare parts window
-</LI>
-</UL>
-</LI>
-<LI>Tools
-
-<UL>
-<LI>Serial Term - Open the serial terminal Cutecom
-</LI>
-</UL>
-</LI>
-<LI>Help 
-
-<UL>
-<LI>Contents - Open the Help window
-</LI>
-<LI>Examples - Load the examples
-</LI>
-<LI>About - Show message about author and version
-</LI>
-</UL>
-</LI>
-</UL>
-
-<P>
-The first part of the status bar shows the state of the simulation, in the middle part the status of the debug support and in the last part the name of the serial port used, its default speed and the error in relation to the real speed configured in the microcontroller.
+</OL>
 
 <P>
 
-<DIV CLASS="navigation"><HR>
-<!--Navigation Panel-->
-<A NAME="tex2html141"
-  HREF="node10.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html139"
-  HREF="node7.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html133"
-  HREF="node8.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
-<BR>
-<B> Next:</B> <A NAME="tex2html142"
-  HREF="node10.html">Serial Communication</A>
-<B> Up:</B> <A NAME="tex2html140"
-  HREF="node7.html">English Manual</A>
-<B> Previous:</B> <A NAME="tex2html134"
-  HREF="node8.html">Introduction</A></DIV>
-<!--End of Navigation Panel-->
+<H1><A NAME="SECTION02320000000000000000">
+Sensors</A>
+</H1>
+
+<P>
+Digital outputs
+
+<OL>
+<LI>High floater 
+</LI>
+<LI>Low floater
+</LI>
+<LI>Minimal temperature 
+</LI>
+<LI>Maximal temperature
+</LI>
+</OL>
+
+<P>
+Analog outputs
+
+<OL>
+<LI>Volume
+</LI>
+<LI>Temperature
+</LI>
+</OL>
+
+<P>
+<BR><HR>
 
 </BODY>
 </HTML>

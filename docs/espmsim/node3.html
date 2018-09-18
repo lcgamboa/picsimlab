@@ -1,16 +1,16 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<!--Converted with LaTeX2HTML 2018 (Released Feb 1, 2018) -->
+<!--Converted with LaTeX2HTML 2018.2 (Released May 16, 2018) -->
 <HTML>
 <HEAD>
-<TITLE>Interface</TITLE>
-<META NAME="description" CONTENT="Interface">
+<TITLE>Comunicação Serial </TITLE>
+<META NAME="description" CONTENT="Comunicação Serial ">
 <META NAME="keywords" CONTENT="espmsim">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
-<META NAME="Generator" CONTENT="LaTeX2HTML v2018">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2018.2">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="espmsim.css">
@@ -24,21 +24,21 @@
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html60"
+<A NAME="tex2html54"
   HREF="node4.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html58"
+<A NAME="tex2html52"
   HREF="node1.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html52"
+<A NAME="tex2html46"
   HREF="node2.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html61"
-  HREF="node4.html">Comunicação Serial</A>
-<B> Up:</B> <A NAME="tex2html59"
+<B> Next:</B> <A NAME="tex2html55"
+  HREF="node4.html">Comandos Suportados</A>
+<B> Up:</B> <A NAME="tex2html53"
   HREF="node1.html">Manual em Português</A>
-<B> Previous:</B> <A NAME="tex2html53"
+<B> Previous:</B> <A NAME="tex2html47"
   HREF="node2.html">Introdução</A>
 <BR>
 <BR></DIV>
@@ -47,129 +47,188 @@
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html62"
-  HREF="node3.html#SECTION01210000000000000000">Janela Principal</A>
+<LI><A NAME="tex2html56"
+  HREF="node3.html#SECTION01210000000000000000">Instalação e Configuração do com0com (Windows)</A>
+<LI><A NAME="tex2html57"
+  HREF="node3.html#SECTION01220000000000000000">Instalação e Configuração do tty0tty (Linux)</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION01200000000000000000">
-Interface</A>
+<H1><A NAME="SECTION01200000000000000000"></A><A NAME="serialp"></A>
+<BR>
+Comunicação Serial 
 </H1>
+
+<P>
+Para utilizar o a porta serial do simulador, instale um emulador NULL-MODEM:
+
+<UL>
+<LI>Windows: com0com <TT><A NAME="tex2html1"
+  HREF="http://sourceforge.net/projects/com0com/">http://sourceforge.net/projects/com0com/</A></TT>
+</LI>
+<LI>Linux: tty0tty  <TT><A NAME="tex2html2"
+  HREF="https://github.com/lcgamboa/tty0tty">https://github.com/lcgamboa/tty0tty</A></TT>
+</LI>
+</UL>
+
+<P>
+Para comunicação o PICSimLab deve ficar conectado em uma porta do emulador NULL-MODEM e o outro aplicativo conectado na outra porta.
+ Exemplos de configuração ligando o PICSimLab ao <A NAME="tex2html3"
+  HREF="https://github.com/neundorf/CuteCom">Cutecom</A>
+para comunicação serial:
+
+<P>
+<BR>
+<BR>
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="CENTER">OS</TD>
+<TD ALIGN="CENTER">porta PICSimLab</TD>
+<TD ALIGN="CENTER">porta Cutecom</TD>
+<TD ALIGN="CENTER">NULL-Modem prog.</TD>
+<TD ALIGN="CENTER">Conexão</TD>
+</TR>
+<TR><TD ALIGN="CENTER">Windows</TD>
+<TD ALIGN="CENTER">com1</TD>
+<TD ALIGN="CENTER">com2</TD>
+<TD ALIGN="CENTER">com0com</TD>
+<TD ALIGN="CENTER">com1&lt;=&gt;com2</TD>
+</TR>
+<TR><TD ALIGN="CENTER">Linux</TD>
+<TD ALIGN="CENTER">/dev/tnt2</TD>
+<TD ALIGN="CENTER">/dev/tnt3</TD>
+<TD ALIGN="CENTER">tty0tty</TD>
+<TD ALIGN="CENTER">/dev/tnt2&lt;=&gt;/dev/tnt3</TD>
+</TR>
+</TABLE>
 
 <P>
 
 <H1><A NAME="SECTION01210000000000000000">
-Janela Principal</A>
+Instalação e Configuração do com0com (Windows)</A>
 </H1>
 
 <P>
-A janela principal é composta de um menu, uma barra de status, um combobox de seleção de frequência, um botão liga/desliga para acionar a depuração (debug), alguns controles específicos da placa e parte de interface da placa em si.
+Faça o download da versão assinada do  <A NAME="tex2html4"
+  HREF="https://sourceforge.net/projects/com0com/files/com0com/3.0.0.0/com0com-3.0.0.0-i386-and-x64-signed.zip/download">com0com</A>.
 
 <P>
-No título da janela é mostrado o nome do simulador PICSimLab, seguido da placa e do microcontrolador em uso.
+Descompacte o arquivo .zip baixado e execute o instalador específico de seu sistema operacional, x86 para windows 32 bits ou x64 para windows 64 bits. 
 
 <P>
-O combobox de seleção de frequência altera diretamente a velocidade de trabalho do microcontrolador, quando o label &ldquo;Clock (MHz)&rdquo; fica em vermelho indica que o computador não está sendo capaz de executar o programa em tempo real para o clock selecionado. Neste caso a simulação pode apresentar alguma diferença do esperado e a carga da CPU ser aumentada.
+Configure a janela &ldquo;choose components&rdquo; como a figura abaixo:
+ 
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="499" HEIGHT="388" ALIGN="BOTTOM" BORDER="0"
+ SRC="./com0com1.png"
+ ALT="Image com0com1"> 
+
+</DIV> 
 
 <P>
-O botão liga/desliga para acionar a depuração serve para habilitar o suporte à depuração, com o suporte ativo há uma carga maior de simulação.
+Na última janela da configuração, marque a opção &ldquo;Launch setup&rdquo;:
+
+<DIV ALIGN="CENTER">
+
+<IMG
+  WIDTH="499" HEIGHT="388" ALIGN="BOTTOM" BORDER="0"
+ SRC="./com0com2.png"
+ ALT="Image com0com2"> 
+
+</DIV> 
 
 <P>
-Os menus e suas funções são listados abaixo:
+Na janela do setup, troque os nomes das portas para COM1, COM2, COM3....
+Marque apenas a opção &ldquo;enable buffer overrun&rdquo; nas duas portas, clique no botão &ldquo;Apply&rdquo; e feche o setup. 
+Na configuração mostrada na figura abaixo, as portas COM1 e COM2 formam uma conexão NULL-MODEM, onde uma porta deve ser utilizada pelo PICSimLab e outra pela aplicação com comunicação serial.
 
-<UL>
-<LI>File
+<DIV ALIGN="CENTER">
 
-<UL>
-<LI>Load Hex - Carrega arquivo .hex
-</LI>
-<LI>Reload Last - Recarrega último arquivo .hex utilizado
-</LI>
-<LI>Configure - Abre a janela de configuração
-</LI>
-<LI>Save Workspace - Salva todas as configurações atuais do workspace em um arquivo .pzw 
-</LI>
-<LI>Load Workspace - Carrega as configurações salvas de uma arquivo .pzw
-</LI>
-<LI>Exit
-</LI>
-</UL>
-</LI>
-<LI>Board
+<IMG
+  WIDTH="447" HEIGHT="393" ALIGN="BOTTOM" BORDER="0"
+ SRC="./com0com3.png"
+ ALT="Image com0com3"> 
 
-<UL>
-<LI>1 McLab1 - Escolhe a placa 1
-</LI>
-<LI>2 K16F - Escolhe a placa 2
-</LI>
-<LI>3 McLab2 - Escolhe a placa 3
-</LI>
-<LI>4 PICGenios - Escolhe a placa 4
-</LI>
-<LI>5 Arduino - Escolhe a placa 5
-</LI>
-</UL>
-</LI>
-<LI>Microcontroller
-
-<UL>
-<LI>xxxxx - Seleciona o microcontrolador a ser utilizado (depende da placa selecionada)
-</LI>
-</UL>
-</LI>
-<LI>Modules
-
-<UL>
-<LI>Oscilloscope - Abre a janela do osciloscópio
-</LI>
-<LI>Spare parts - Abre a janela de peças avulsas
-</LI>
-</UL>
-</LI>
-<LI>Tools
-
-<UL>
-<LI>Serial Term - Abre o terminal serial <A NAME="tex2html1"
-  HREF="https://github.com/neundorf/CuteCom">Cutecom</A>
-</LI>
-</UL>
-</LI>
-<LI>Help 
-
-<UL>
-<LI>Contents - Abre a janela de Ajuda
-</LI>
-<LI>Examples - Carrega exemplos
-</LI>
-<LI>About - Mostra mensagem de versão e autor
-</LI>
-</UL>
-</LI>
-</UL>
+</DIV> 
 
 <P>
-Na primeira parte da barra de status é mostrado o estado da simulação, na parte do meio o estado do suporte a depuração e na última parte o nome da porta serial utilizada, sua velocidade padrão e o erro em relação a velocidade real configurada no microcontrolador. 
+
+<H1><A NAME="SECTION01220000000000000000">
+Instalação e Configuração do tty0tty (Linux)</A>
+</H1>
+
+<P>
+Faça o download do <A NAME="tex2html5"
+  HREF="https://github.com/lcgamboa/tty0tty/archive/master.zip">tty0tyy</A>.
+
+Descompacte a pasta baixada.
+
+<P>
+Abra um terminal e entre na pasta tty0tty/module e digite os comandos na sequência:
+<PRE>
+ sudo apt-get update
+ sudo apt-get -y upgrade
+ sudo apt-get -y install gcc make linux-headers-`uname -r` 
+ make
+ sudo make install
+</PRE>
+
+<P>
+O usuário deve estar no grupo <SPAN  CLASS="textbf">dialout</SPAN> para poder acessar as portas.
+Para adicionar seu usuário ao grupo <SPAN  CLASS="textbf">dialout</SPAN> use o comando:
+<PRE>
+sudo usermod -a -G dialout your_user_name
+</PRE>
+depois disso é ncessário fazer logout e login para as permissões do grupo tenham efeito.
+
+<P>
+Depois de instalado, o módulo cria 8 portas interconectadas da seguinte forma:
+<PRE>
+  /dev/tnt0  &lt;=&gt;  /dev/tnt1 
+  /dev/tnt2  &lt;=&gt;  /dev/tnt3 
+  /dev/tnt4  &lt;=&gt;  /dev/tnt5 
+  /dev/tnt6  &lt;=&gt;  /dev/tnt7
+</PRE>
+
+<P>
+a conexão entre cada par é da forma:
+<PRE>  
+  TX   -&gt;  RX
+  RX   &lt;-  TX 	
+  RTS  -&gt;  CTS
+  CTS  &lt;-  RTS
+  DSR  &lt;-  DTR
+  CD   &lt;-  DTR
+  DTR  -&gt;  DSR
+  DTR  -&gt;  CD
+</PRE>
+
+<P>
+Qualquer par de portas formam uma conexão NULL-MODEM, onde uma porta deve ser utilizada pelo PICSimLab e outra pela aplicação com comunicação serial.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
 <!--Navigation Panel-->
-<A NAME="tex2html60"
+<A NAME="tex2html54"
   HREF="node4.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html58"
+<A NAME="tex2html52"
   HREF="node1.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html52"
+<A NAME="tex2html46"
   HREF="node2.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html61"
-  HREF="node4.html">Comunicação Serial</A>
-<B> Up:</B> <A NAME="tex2html59"
+<B> Next:</B> <A NAME="tex2html55"
+  HREF="node4.html">Comandos Suportados</A>
+<B> Up:</B> <A NAME="tex2html53"
   HREF="node1.html">Manual em Português</A>
-<B> Previous:</B> <A NAME="tex2html53"
+<B> Previous:</B> <A NAME="tex2html47"
   HREF="node2.html">Introdução</A></DIV>
 <!--End of Navigation Panel-->
 
