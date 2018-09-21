@@ -63,7 +63,7 @@ int crt;
 void
 CPWindow1::timer1_EvOnTime (CControl * control)
 {
- status |= ST_T1;
+ status.st[0] |= ST_T1;
  
 #ifdef _ONEWIN
   if (timer1.GetOverTime() < 10)
@@ -91,8 +91,8 @@ CPWindow1::timer1_EvOnTime (CControl * control)
  label1.Draw();
  ondraw = 1;
  
- status &= ~ST_T1;
- status |= ST_TH;
+ status.st[0] &= ~ST_T1;
+ 
  if(!tgo)
   tgo = 1; //thread sync
 };
@@ -105,11 +105,12 @@ CPWindow1::thread1_EvThreadRun (CControl*)
 
    if (tgo)
     {
+     status.st[1] |= ST_TH;
      tgo = 0;
      pboard->Run_CPU ();
      if (debug)pboard->DebugLoop ();
      ondraw = 0;
-     status &= ~ST_TH;
+     status.st[1] &= ~ST_TH;
     }
    else
     {
@@ -125,7 +126,7 @@ CPWindow1::thread1_EvThreadRun (CControl*)
 void
 CPWindow1::timer2_EvOnTime (CControl * control)
 {
- status |= ST_T2;
+ status.st[0] |= ST_T2;
  if (pboard != NULL)
   {
    pboard->RefreshStatus ();
@@ -149,7 +150,7 @@ CPWindow1::timer2_EvOnTime (CControl * control)
      break;
     }
   }
- status &= ~ST_T2;
+ status.st[0] &= ~ST_T2;
 };
 
 void
@@ -537,10 +538,6 @@ CPWindow1::_EvOnDestroy (CControl * control)
  char home[1024];
  char fname[1024];
 
- //FIXME hack to work in windows 
- int uosc=pboard->GetUseOscilloscope ();
- 
- pboard->SetUseOscilloscope (0);
 
  Window4.Hide ();
  Window5.Hide ();
@@ -548,9 +545,10 @@ CPWindow1::_EvOnDestroy (CControl * control)
  timer1.SetRunState (0);
  timer2.SetRunState (0);
  msleep (100);
- while (status)
+ while (status.status)
   {
    msleep (1);
+   Application->ProcessEvents();
   };
  thread1.Destroy ();
 
@@ -569,8 +567,7 @@ CPWindow1::_EvOnDestroy (CControl * control)
  saveprefs (lxT ("clock"), combo1.GetText ());
  saveprefs (lxT ("debug"), itoa (debug));
  saveprefs (lxT ("position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
- //saveprefs (lxT ("osc_on"), itoa (pboard->GetUseOscilloscope ()));
- saveprefs (lxT ("osc_on"), itoa (uosc));
+ saveprefs (lxT ("osc_on"), itoa (pboard->GetUseOscilloscope ()));
  saveprefs (lxT ("spare_on"), itoa (pboard->GetUseSpareParts ()));
 #ifndef _WIN_
  saveprefs (lxT ("lser"), SERIALDEVICE);
@@ -763,9 +760,10 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive (CControl * control)
 
  timer1.SetRunState (0);
  msleep (100);
- while (status & 0x05)
+ while (status.status & 0x41)
   {
    msleep (1);
+   Application->ProcessEvents();
   };
 
  pboard->MEnd ();

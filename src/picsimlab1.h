@@ -148,8 +148,10 @@ class CPWindow1:public CPWindow
   int debug;
   int osc_on;
   int spare_on;
-  char status;
-  
+  union{
+    char st[2];
+    unsigned short int status; 
+  }status;
   int plWidth;
   int plHeight;
   double scale;

@@ -385,7 +385,7 @@ picdbg=0;
 debug=0;
 osc_on= 0;
 spare_on= 0;
-status=0;
+status.status=0;
 
 lab=1;
 lab_=1;
