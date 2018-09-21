@@ -537,6 +537,10 @@ CPWindow1::_EvOnDestroy (CControl * control)
  char home[1024];
  char fname[1024];
 
+ //FIXME hack to work in windows 
+ int uosc=pboard->GetUseOscilloscope ();
+ 
+ pboard->SetUseOscilloscope (0);
 
  Window4.Hide ();
  Window5.Hide ();
@@ -565,7 +569,8 @@ CPWindow1::_EvOnDestroy (CControl * control)
  saveprefs (lxT ("clock"), combo1.GetText ());
  saveprefs (lxT ("debug"), itoa (debug));
  saveprefs (lxT ("position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
- saveprefs (lxT ("osc_on"), itoa (pboard->GetUseOscilloscope ()));
+ //saveprefs (lxT ("osc_on"), itoa (pboard->GetUseOscilloscope ()));
+ saveprefs (lxT ("osc_on"), itoa (uosc));
  saveprefs (lxT ("spare_on"), itoa (pboard->GetUseSpareParts ()));
 #ifndef _WIN_
  saveprefs (lxT ("lser"), SERIALDEVICE);
