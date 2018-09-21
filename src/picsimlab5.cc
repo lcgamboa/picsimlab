@@ -41,9 +41,9 @@ CPWindow5 Window5;
 void
 CPWindow5::_EvOnShow(CControl * control)
 {
+  draw1.SetWidth (Width - 15);
+  draw1.SetHeight (Height - 40);
 
-  draw1.SetWidth (GetWidth () - 15);
-  draw1.SetHeight (GetHeight () - 40);
   timer1.SetRunState (1); 
 
 };
