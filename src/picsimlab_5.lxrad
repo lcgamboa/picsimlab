@@ -170,5 +170,6 @@
   <FileName type="String">untitled.pcf</FileName>
   <Filter type="String">PICSimLab Config. (*.pcf)|*.pcf</Filter>
   <Type type="int">129</Type>
+  <EvOnClose type="Event">TRUE</EvOnClose>
 </filedialog1>
 </window5>

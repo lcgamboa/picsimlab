@@ -69,7 +69,8 @@ class CPWindow5:public CPWindow
   void pmenu2_Delete_EvMenuActive(CControl * control);
   void menu1_Help_Contents_EvMenuActive(CControl * control);
   void menu1_Help_About_EvMenuActive(CControl * control);
-
+  void filedialog1_EvOnClose(int retId);
+  
   /*#Others*/
   CPWindow5(void);
 //lxrad automatic generated block end, don't edit above!

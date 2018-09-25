@@ -81,8 +81,8 @@ CPWindow1::_EvOnCreate (CControl * control)
  densi = 1000;
 
 #ifdef _WIN_ 
- wxFileName fexe(wxStandardPaths::Get().GetExecutablePath());
- wxSetWorkingDirectory(fexe.GetPath());
+ wxFileName fexe (wxStandardPaths::Get ().GetExecutablePath ());
+ wxSetWorkingDirectory (fexe.GetPath ());
 #endif
 };
 
@@ -484,7 +484,44 @@ CPWindow1::menu1_File_SaveConfig_EvMenuActive (CControl * control)
 
  filedialog1.SetType (lxFD_SAVE | lxFD_CHANGE_DIR);
 
- if (filedialog1.Run ())
+ filedialog1.Run ();
+
+}
+
+void
+CPWindow1::menu1_File_LoadConfig_EvMenuActive (CControl * control)
+{
+
+
+ filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
+ filedialog1.Run ();
+
+}
+
+void
+CPWindow1::menu1_File_Exit_EvMenuActive (CControl * control)
+{
+ WDestroy ();
+}
+
+void
+CPWindow1::menu1_Help_Contents_EvMenuActive (CControl * control)
+{
+ Window2.html1.SetLoadFile (String (lxT (_SHARE_)) + lxT ("docs/srtank/srtank.html"));
+ Window2.Show ();
+}
+
+void
+CPWindow1::menu1_Help_About_EvMenuActive (CControl * control)
+{
+ Message (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (lxT (_VERSION_)));
+}
+
+void
+CPWindow1::filedialog1_EvOnClose (int retId)
+{
+
+ if (retId && (filedialog1.GetType () == (lxFD_SAVE | lxFD_CHANGE_DIR)))
   {
    CStringList prefs;
 
@@ -499,15 +536,8 @@ CPWindow1::menu1_File_SaveConfig_EvMenuActive (CControl * control)
 
    prefs.SaveToFile (filedialog1.GetFileName ());
   }
-}
 
-void
-CPWindow1::menu1_File_LoadConfig_EvMenuActive (CControl * control)
-{
-
-
- filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
- if (filedialog1.Run ())
+ if (retId && (filedialog1.GetType () == (lxFD_OPEN | lxFD_CHANGE_DIR)))
   {
    CStringList prefs;
    if (prefs.LoadFromFile (filedialog1.GetFileName ()))
@@ -522,25 +552,6 @@ CPWindow1::menu1_File_LoadConfig_EvMenuActive (CControl * control)
      edit8.SetText (prefs.GetLine (7));
     }
   }
-};
-
-void
-CPWindow1::menu1_File_Exit_EvMenuActive (CControl * control)
-{
- WDestroy ();
-};
-
-void
-CPWindow1::menu1_Help_Contents_EvMenuActive (CControl * control)
-{
-  Window2.html1.SetLoadFile(String(lxT(_SHARE_))+lxT("docs/srtank/srtank.html"));  
-  Window2.Show();
-};
-
-void
-CPWindow1::menu1_Help_About_EvMenuActive (CControl * control)
-{
- Message (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (lxT (_VERSION_)));
-};
+}
 
 

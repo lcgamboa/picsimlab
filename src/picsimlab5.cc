@@ -39,431 +39,424 @@ CPWindow5 Window5;
 //Implementation
 
 void
-CPWindow5::_EvOnShow(CControl * control)
+CPWindow5::_EvOnShow (CControl * control)
 {
-  draw1.SetWidth (Width - 15);
-  draw1.SetHeight (Height - 40);
+ draw1.SetWidth (Width - 15);
+ draw1.SetHeight (Height - 40);
 
-  timer1.SetRunState (1); 
+ timer1.SetRunState (1);
 
 };
 
 void
-CPWindow5::menu1_EvMenuActive(CControl * control)
+CPWindow5::menu1_EvMenuActive (CControl * control)
 {
-  PartToCreate= ((CItemMenu*)control)->GetText ();
-  lxSetCursor (lxCursor (lxCURSOR_CROSS));
+ PartToCreate = ((CItemMenu*) control)->GetText ();
+ lxSetCursor (lxCursor (lxCURSOR_CROSS));
 };
 
 void
-CPWindow5::_EvOnCreate(CControl * control)
+CPWindow5::_EvOnCreate (CControl * control)
 {
- 
- if(LoadConfigFile.length () > 0)
+
+ if (LoadConfigFile.length () > 0)
   LoadConfig (LoadConfigFile);
 
 };
 
-
 void
-CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uint y,uint state)
+CPWindow5::draw1_EvMouseButtonPress (CControl * control, uint button, uint x, uint y, uint state)
 {
-  x=x/scale;
-  y=y/scale;  
+ x = x / scale;
+ y = y / scale;
 
-  for (int i = 0; i < partsc; i++)
-    {
-      if (parts[i]->PointInside ((int)x, (int)y))
-        {
-          parts[i]->EvMouseButtonPress (button, x - parts[i]->GetX (), y - parts[i]->GetY (), state);
-          if (button == 3)
-            {
-               PartSelected=i;
-	       pmenu2.SetX(x*scale);
-	       pmenu2.SetY(y*scale);
-#if defined(__WXGTK__)||defined(__WXMSW__)
-	       SetPopupMenu(&pmenu2);//FIXME problemas com as propriedades
-#else
-	       draw1.SetPopupMenu(&pmenu2);
-#endif
-            }
-          return;
-        }
-    }
-
-  //clique fora 
-  if ((button == 1)&&(PartToCreate.size() > 0)&&(partsc < MAX_PARTS))
-    {
-       //timer1.SetRunState (0); 
-       lxSetCursor (lxCursor (lxCURSOR_ARROW));   
-       parts[partsc] = create_part ((char *)PartToCreate.char_str (), x, y);
-       
-       if(parts[partsc] == NULL)
-         {
-           Message(lxT("Erro creating part: ")+PartToCreate);
-         }
-       else
-         {
-           partsc++;
-         }
-       PartToCreate="";
-      _EvOnShow (control);
-    }
-
-
-};
-
-
-
-void
-CPWindow5::draw1_EvMouseButtonRelease(CControl * control, uint button, uint x, uint y,uint state)
-{
-  x=x/scale;
-  y=y/scale;  
-  
-  PartToMove=-1;
-  
-  
-  lxSetCursor (lxCursor (lxCURSOR_ARROW));
-  mdx=0;
-  mdy=0;
-  
-    for (int i = 0; i < partsc; i++)
-    {
-      if (parts[i]->PointInside (x, y))
-        {
-          parts[i]->EvMouseButtonRelease (button, x - parts[i]->GetX (), y - parts[i]->GetY (), state);
-          return;
-        }
-    }
-};
-
-void
-CPWindow5::pmenu2_Properties_EvMenuActive(CControl * control)
-{  
-  CPWindow * wd1= new CPWindow;
- 
-  wd1->SetName("window1");//must be the same as in xml 
-  Application->ACreateWindow (wd1);
-  
-  if(wd1->LoadXMLContextAndCreateChilds (Window1.GetSharePath()+lxT("parts/")+parts[PartSelected]->GetPropertiesWindowFile()))
+ for (int i = 0; i < partsc; i++)
   {
-    wd1->SetCanDestroy(false);
-    
-    parts[PartSelected]->ConfigurePropertiesWindow(wd1);
-  
-    wd1->SetX(parts[PartSelected]->GetX ()+GetX ());
-    wd1->SetY(parts[PartSelected]->GetY ()+GetY ());
-    
-    wd1->Draw();
-    wd1->ShowExclusive();
-  
-    while (wd1->GetCanExitExclusive())
+   if (parts[i]->PointInside ((int) x, (int) y))
     {
-      Application->ProcessEvents();
-      lxMilliSleep(100);
-    }
-  
-    parts[PartSelected]->ReadPropertiesWindow();
-  
-    wd1->SetCanDestroy (true);
-    wd1->WDestroy ();
-  }
-};
-
-void
-CPWindow5::timer1_EvOnTime(CControl * control)
-{
-  
-  draw1.Canvas.Init (1.0, 1.0);
-
-  draw1.Canvas.SetFgColor (50, 50, 50);
-  draw1.Canvas.SetBgColor (50, 50, 50);
-  draw1.Canvas.Rectangle (1, 0, 0, draw1.GetWidth (), draw1.GetHeight ());
-  
-  draw1.Canvas.ChangeScale(scale,scale);
-  
-  for (int i = 0; i < partsc; i++)
-    {
-      parts[i]->Draw ();
-      draw1.Canvas.PutBitmap (parts[i]->GetBitmap (), parts[i]->GetX (), parts[i]->GetY ());
-    }
-
-  draw1.Canvas.End ();
-  draw1.Update ();
-
-};
-
-
-
-void
-CPWindow5::draw1_EvMouseMove(CControl * control, uint button, uint x, uint y,uint state)
-{
-  x=x/scale;
-  y=y/scale;
-  
-  if(PartToMove >= 0)
-  {
-
-    
-    if((mdx == 0)&&(mdy == 0))  
+     parts[i]->EvMouseButtonPress (button, x - parts[i]->GetX (), y - parts[i]->GetY (), state);
+     if (button == 3)
       {
-        mdx=parts[PartToMove]->GetX()-x; 
-        mdy=parts[PartToMove]->GetY()-y;
+       PartSelected = i;
+       pmenu2.SetX (x * scale);
+       pmenu2.SetY (y * scale);
+#if defined(__WXGTK__)||defined(__WXMSW__)
+       SetPopupMenu (&pmenu2); //FIXME problemas com as propriedades
+#else
+       draw1.SetPopupMenu (&pmenu2);
+#endif
       }
-    
-     parts[PartToMove]->SetX (x+mdx); 
-     parts[PartToMove]->SetY (y+mdy);
+     return;
+    }
   }
-  else
+
+ //clique fora 
+ if ((button == 1)&&(PartToCreate.size () > 0)&&(partsc < MAX_PARTS))
   {
-    for (int i = 0; i < partsc; i++)
+   //timer1.SetRunState (0); 
+   lxSetCursor (lxCursor (lxCURSOR_ARROW));
+   parts[partsc] = create_part ((char *) PartToCreate.char_str (), x, y);
+
+   if (parts[partsc] == NULL)
     {
-      if (parts[i]->PointInside (x, y))
-        {
-          parts[i]->EvMouseMove (button, x - parts[i]->GetX (), y - parts[i]->GetY (), state);
-          return;
-        }
-    }    
+     Message (lxT ("Erro creating part: ") + PartToCreate);
+    }
+   else
+    {
+     partsc++;
+    }
+   PartToCreate = "";
+   _EvOnShow (control);
   }
-  
+
+
 };
 
+void
+CPWindow5::draw1_EvMouseButtonRelease (CControl * control, uint button, uint x, uint y, uint state)
+{
+ x = x / scale;
+ y = y / scale;
 
+ PartToMove = -1;
+
+
+ lxSetCursor (lxCursor (lxCURSOR_ARROW));
+ mdx = 0;
+ mdy = 0;
+
+ for (int i = 0; i < partsc; i++)
+  {
+   if (parts[i]->PointInside (x, y))
+    {
+     parts[i]->EvMouseButtonRelease (button, x - parts[i]->GetX (), y - parts[i]->GetY (), state);
+     return;
+    }
+  }
+};
 
 void
-CPWindow5::draw1_EvKeyboardPress(CControl * control, uint key, uint x, uint y,uint mask)
+CPWindow5::pmenu2_Properties_EvMenuActive (CControl * control)
 {
-  switch(key)
+ CPWindow * wd1 = new CPWindow;
+
+ wd1->SetName ("window1"); //must be the same as in xml 
+ Application->ACreateWindow (wd1);
+
+ if (wd1->LoadXMLContextAndCreateChilds (Window1.GetSharePath () + lxT ("parts/") + parts[PartSelected]->GetPropertiesWindowFile ()))
   {
-    case '='://+
-      scale+=0.1;
-      if(scale > 2)scale=2;
-      break;  
-    case '-':
-      scale-=0.1;
-      if(scale < 0.1)scale=0.1;
-      break;
-   default:
-    for (int i = 0; i < partsc; i++)
+   wd1->SetCanDestroy (false);
+
+   parts[PartSelected]->ConfigurePropertiesWindow (wd1);
+
+   wd1->SetX (parts[PartSelected]->GetX () + GetX ());
+   wd1->SetY (parts[PartSelected]->GetY () + GetY ());
+
+   wd1->Draw ();
+   wd1->ShowExclusive ();
+
+   while (wd1->GetCanExitExclusive ())
+    {
+     Application->ProcessEvents ();
+     lxMilliSleep (100);
+    }
+
+   parts[PartSelected]->ReadPropertiesWindow ();
+
+   wd1->SetCanDestroy (true);
+   wd1->WDestroy ();
+  }
+};
+
+void
+CPWindow5::timer1_EvOnTime (CControl * control)
+{
+
+ draw1.Canvas.Init (1.0, 1.0);
+
+ draw1.Canvas.SetFgColor (50, 50, 50);
+ draw1.Canvas.SetBgColor (50, 50, 50);
+ draw1.Canvas.Rectangle (1, 0, 0, draw1.GetWidth (), draw1.GetHeight ());
+
+ draw1.Canvas.ChangeScale (scale, scale);
+
+ for (int i = 0; i < partsc; i++)
+  {
+   parts[i]->Draw ();
+   draw1.Canvas.PutBitmap (parts[i]->GetBitmap (), parts[i]->GetX (), parts[i]->GetY ());
+  }
+
+ draw1.Canvas.End ();
+ draw1.Update ();
+
+};
+
+void
+CPWindow5::draw1_EvMouseMove (CControl * control, uint button, uint x, uint y, uint state)
+{
+ x = x / scale;
+ y = y / scale;
+
+ if (PartToMove >= 0)
+  {
+
+
+   if ((mdx == 0)&&(mdy == 0))
+    {
+     mdx = parts[PartToMove]->GetX () - x;
+     mdy = parts[PartToMove]->GetY () - y;
+    }
+
+   parts[PartToMove]->SetX (x + mdx);
+   parts[PartToMove]->SetY (y + mdy);
+  }
+ else
+  {
+   for (int i = 0; i < partsc; i++)
+    {
+     if (parts[i]->PointInside (x, y))
+      {
+       parts[i]->EvMouseMove (button, x - parts[i]->GetX (), y - parts[i]->GetY (), state);
+       return;
+      }
+    }
+  }
+
+};
+
+void
+CPWindow5::draw1_EvKeyboardPress (CControl * control, uint key, uint x, uint y, uint mask)
+{
+ switch (key)
+  {
+  case '='://+
+   scale += 0.1;
+   if (scale > 2)scale = 2;
+   break;
+  case '-':
+   scale -= 0.1;
+   if (scale < 0.1)scale = 0.1;
+   break;
+  default:
+   for (int i = 0; i < partsc; i++)
     {
      parts[i]->EvKeyPress (key, x, y, mask);
     }
-    break;
+   break;
   }
-  
+
 };
 
 void
-CPWindow5::draw1_EvKeyboardRelease(CControl * control, uint key, uint x, uint y,uint mask)
+CPWindow5::draw1_EvKeyboardRelease (CControl * control, uint key, uint x, uint y, uint mask)
 {
-    for (int i = 0; i < partsc; i++)
-    {
-     parts[i]->EvKeyRelease (key, x, y, mask);
-    }
+ for (int i = 0; i < partsc; i++)
+  {
+   parts[i]->EvKeyRelease (key, x, y, mask);
+  }
 };
 
-bool 
-CPWindow5::SaveConfig(String fname)
+bool
+CPWindow5::SaveConfig (String fname)
 {
-  String temp;
-  
-    CStringList prefs;
-    prefs.Clear();
-    for (int i = 0; i < partsc; i++)
-    {
-      temp.Printf ("%s,%i,%i:%s",parts[i]->GetName().c_str(),parts[i]->GetX(),parts[i]->GetY(),parts[i]->WritePreferences().c_str());  
-      prefs.AddLine(temp);
-    }
-    
-    return prefs.SaveToFile(fname);
+ String temp;
+
+ CStringList prefs;
+ prefs.Clear ();
+ for (int i = 0; i < partsc; i++)
+  {
+   temp.Printf ("%s,%i,%i:%s", parts[i]->GetName ().c_str (), parts[i]->GetX (), parts[i]->GetY (), parts[i]->WritePreferences ().c_str ());
+   prefs.AddLine (temp);
+  }
+
+ return prefs.SaveToFile (fname);
 }
 
-bool 
-CPWindow5::LoadConfig(String fname)
+bool
+CPWindow5::LoadConfig (String fname)
 {
-    char name[256];  
-    char temp[256]; 
-    unsigned int x,y;
-    CStringList prefs;
-   
-    if(GetWin () == NULL)
+ char name[256];
+ char temp[256];
+ unsigned int x, y;
+ CStringList prefs;
+
+ if (GetWin () == NULL)
+  {
+   LoadConfigFile = fname;
+   return 0;
+  }
+ else
+  {
+   LoadConfigFile = "";
+  }
+
+ bool ret = lxFileExists (fname);
+
+ if (ret)
+  {
+   int partsc_;
+   prefs.LoadFromFile (fname);
+
+   DeleteParts ();
+   partsc_ = 0;
+   for (unsigned int i = 0; i < prefs.GetLinesCount (); i++)
     {
-      LoadConfigFile=fname;
-      return 0;
-    }
-    else
-    {
-      LoadConfigFile=""; 
-    }
-    
-    bool ret=lxFileExists(fname);
-    
-    if(ret)
-    {
-      int partsc_;  
-      prefs.LoadFromFile(fname);
-      
-      DeleteParts();
-      partsc_=0;
-      for (unsigned int i = 0; i < prefs.GetLinesCount (); i++)
+     sscanf (prefs.GetLine (i).c_str (), "%256[^,],%i,%i:%256[^\n]", name, &x, &y, temp);
+
+     if ((parts[i] = create_part (name, x, y)))
       {
-        sscanf(prefs.GetLine (i).c_str (),"%256[^,],%i,%i:%256[^\n]",name,&x,&y,temp);
-              
-        if((parts[i]=create_part(name,x,y)))
-        {
-          parts[i]->ReadPreferences(temp);
-          partsc_++;
-        }
-        else
-        {
-          printf("Erro loading part: %s \n",name);  
-        }
+       parts[i]->ReadPreferences (temp);
+       partsc_++;
       }
-      partsc=partsc_;
+     else
+      {
+       printf ("Erro loading part: %s \n", name);
+      }
     }
-    
-    return ret;
-}
-  
-void 
-CPWindow5::DeleteParts(void)
-{
-     int partsc_ = partsc;
-     partsc=0; //for disable process
-     
-    //delete previous parts
-   
-    for (int i = 0; i < partsc_; i++)
-    {
-        delete parts[i];
-    } 
-    
+   partsc = partsc_;
+  }
+
+ return ret;
 }
 
 void
-CPWindow5::menu1_File_Newconfiguration_EvMenuActive(CControl * control)
+CPWindow5::DeleteParts (void)
 {
-  if(partsc > 0)
+ int partsc_ = partsc;
+ partsc = 0; //for disable process
+
+ //delete previous parts
+
+ for (int i = 0; i < partsc_; i++)
   {
-    if( Dialog("Save current configuration?"))
+   delete parts[i];
+  }
+
+}
+
+void
+CPWindow5::menu1_File_Newconfiguration_EvMenuActive (CControl * control)
+{
+ if (partsc > 0)
+  {
+   if (Dialog ("Save current configuration?"))
     {
-       menu1_File_Saveconfiguration_EvMenuActive(control);
+     menu1_File_Saveconfiguration_EvMenuActive (control);
     }
-    DeleteParts();
+   DeleteParts ();
   }
 }
 
+void
+CPWindow5::menu1_File_Saveconfiguration_EvMenuActive (CControl * control)
+{
+ filedialog1.SetType (lxFD_SAVE | lxFD_CHANGE_DIR);
+ filedialog1.Run ();
+}
 
 void
-CPWindow5::menu1_File_Saveconfiguration_EvMenuActive(CControl * control)
+CPWindow5::menu1_File_Loadconfiguration_EvMenuActive (CControl * control)
 {
-  filedialog1.SetType(lxFD_SAVE|lxFD_CHANGE_DIR);  
-  if(filedialog1.Run())
-  {
-     if(lxFileExists(filedialog1.GetFileName()))
-     {
-       
-         if(!Dialog(String("Overwriting file: ")+basename(filedialog1.GetFileName())+"?"))
-             return;
-     } 
-    SaveConfig(filedialog1.GetFileName());
-  } 
-};
-
+ filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
+ filedialog1.Run ();
+}
 
 void
-CPWindow5::menu1_File_Loadconfiguration_EvMenuActive(CControl * control)
+CPWindow5::Process (void)
 {
-  filedialog1.SetType(lxFD_OPEN|lxFD_CHANGE_DIR);
-  if(filedialog1.Run())
+ for (int i = 0; i < partsc; i++)
   {
-    LoadConfig(filedialog1.GetFileName());
+   parts[i]->Process ();
   }
 };
 
-
-void 
-CPWindow5::Process(void)
+void
+CPWindow5::_EvOnHide (CControl * control)
 {
-    for (int i = 0; i < partsc; i++)
+ timer1.SetRunState (0);
+ Window1.GetBoard ()->SetUseSpareParts (0);
+};
+
+void
+CPWindow5::pmenu2_Move_EvMenuActive (CControl * control)
+{
+ PartToMove = PartSelected;
+ lxSetCursor (lxCursor (lxCURSOR_SIZENWSE));
+};
+
+void
+CPWindow5::pmenu2_Delete_EvMenuActive (CControl * control)
+{
+
+ int partsc_ = partsc;
+ partsc = 0; //disable process
+
+ delete parts[PartSelected];
+
+ for (int i = PartSelected; i < partsc_ - 1; i++)
+  {
+   parts[i] = parts[i + 1];
+  }
+ partsc_--;
+
+ partsc = partsc_;
+};
+
+void
+CPWindow5::menu1_Help_Contents_EvMenuActive (CControl * control)
+{
+ Window2.html1.SetLoadFile (Window1.GetSharePath () + lxT ("docs/picsimlab.html"));
+ Window2.Show ();
+};
+
+void
+CPWindow5::menu1_Help_About_EvMenuActive (CControl * control)
+{
+ Message (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (lxT (_VERSION_)));
+};
+
+void
+CPWindow5::WritePreferences (void)
+{
+ Window1.saveprefs (lxT ("spare_position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()) + lxT (",") + itoa (GetWidth ()) + lxT (",") + itoa (GetHeight ()));
+};
+
+void
+CPWindow5::ReadPreferences (char *name, char *value)
+{
+
+ if (!strcmp (name, "spare_position"))
+  {
+   int x, y, w, h;
+   sscanf (value, "%i,%i,%i,%i", &x, &y, &w, &h);
+   SetX (x);
+   SetY (y);
+   if (w > 5000)w = 5000;
+   if (h > 5000)h = 5000;
+   SetWidth (w);
+   SetHeight (h);
+   draw1.SetWidth (w - 15);
+   draw1.SetHeight (h - 40);
+  }
+}
+
+void
+CPWindow5::filedialog1_EvOnClose (int retId)
+{
+
+ if (retId && (filedialog1.GetType () == (lxFD_SAVE | lxFD_CHANGE_DIR)))
+  {
+   if (lxFileExists (filedialog1.GetFileName ()))
     {
-        parts[i]->Process ();
-    } 
-};
 
-
-void
-CPWindow5::_EvOnHide(CControl * control)
-{
-  timer1.SetRunState (0);
-  Window1.GetBoard ()->SetUseSpareParts (0);
-};
-
-
-void
-CPWindow5::pmenu2_Move_EvMenuActive(CControl * control)
-{
-    PartToMove=PartSelected;
-    lxSetCursor (lxCursor (lxCURSOR_SIZENWSE));           
-};
-
-void
-CPWindow5::pmenu2_Delete_EvMenuActive(CControl * control)
-{
-
-    int partsc_=partsc;
-    partsc=0;//disable process
-    
-    delete  parts[PartSelected];
-  
-    for (int i = PartSelected; i < partsc_-1; i++)
-    {
-        parts[i]=parts[i+1];
-    } 
-    partsc_--;
-
-    partsc=partsc_;
-};
-
-
-void
-CPWindow5::menu1_Help_Contents_EvMenuActive(CControl * control)
-{
-  Window2.html1.SetLoadFile(Window1.GetSharePath()+lxT("docs/picsimlab.html"));   
-  Window2.Show();
-};
-
-void
-CPWindow5::menu1_Help_About_EvMenuActive(CControl * control)
-{
-   Message(lxT("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ")+String(lxT(_VERSION_)));
-};
-
-
-
-void 
-CPWindow5::WritePreferences(void)
-{
-    Window1.saveprefs(lxT("spare_position"),itoa(GetX())+lxT(",")+itoa(GetY())+lxT(",")+itoa(GetWidth())+lxT(",")+itoa(GetHeight()));
-};
-
-
-void 
-CPWindow5::ReadPreferences(char *name,char *value)
-{
-
-    if(!strcmp(name,"spare_position"))
-    {
-      int x,y,w,h;     
-      sscanf(value,"%i,%i,%i,%i",&x,&y,&w,&h);
-      SetX(x);
-      SetY(y);
-      if(w > 5000)w=5000;
-      if(h > 5000)h=5000;
-      SetWidth(w);
-      SetHeight(h);
-      draw1.SetWidth (w - 15);
-      draw1.SetHeight (h - 40);
+     if (!Dialog (String ("Overwriting file: ") + basename (filedialog1.GetFileName ()) + "?"))
+      return;
     }
-};
+   SaveConfig (filedialog1.GetFileName ());
+  }
+
+ if (retId && (filedialog1.GetType () == (lxFD_OPEN | lxFD_CHANGE_DIR)))
+  {
+   LoadConfig (filedialog1.GetFileName ());
+  }
+}

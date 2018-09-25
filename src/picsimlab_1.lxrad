@@ -53,6 +53,7 @@
   <FileName type="String">untitled.hex</FileName>
   <Filter type="String">Hex Files (*.hex)|*.hex;*.HEX</Filter>
   <Type type="int">129</Type>
+  <EvOnClose type="Event">TRUE</EvOnClose>
 </filedialog1>
 <draw1>
   <Class type="String">CDraw</Class>
@@ -352,5 +353,6 @@
   <FileName type="String">untitled.pzw</FileName>
   <Filter type="String">PICSimLab Workspace (*.pzw)|*.pzw</Filter>
   <Type type="int">129</Type>
+  <EvOnClose type="Event">TRUE</EvOnClose>
 </filedialog2>
 </window1>

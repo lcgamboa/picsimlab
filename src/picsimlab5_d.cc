@@ -169,6 +169,7 @@ CPWindow5::CPWindow5(void)
   filedialog1.SetFileName(lxT("untitled.pcf"));
   filedialog1.SetFilter(lxT("PICSimLab Config. (*.pcf)|*.pcf"));
   filedialog1.SetType(129);
+  filedialog1.EvOnClose=EVONCLOSE & CPWindow5::filedialog1_EvOnClose;
   CreateChild(&filedialog1);
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!

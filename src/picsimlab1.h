@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -82,6 +82,7 @@ class CPWindow1:public CPWindow
   void _EvOnShow(CControl * control);
   void timer1_EvOnTime(CControl * control);
   void timer2_EvOnTime(CControl * control);
+  void filedialog1_EvOnClose(int retId);
   void draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uint y,uint state);
   void draw1_EvMouseButtonRelease(CControl * control, uint button, uint x, uint y,uint state);
   void draw1_EvKeyboardPress(CControl * control, uint key, uint x, uint y,uint mask);
@@ -102,6 +103,7 @@ class CPWindow1:public CPWindow
   void menu1_Help_Examples_EvMenuActive(CControl * control);
   void menu1_Help_About_EvMenuActive(CControl * control);
   void togglebutton1_EvOnToggleButton(CControl * control);
+  void filedialog2_EvOnClose(int retId);
 
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!
@@ -141,6 +143,7 @@ class CPWindow1:public CPWindow
  private: 
   String share;
  
+  int pa;
   int picrun;
   int picpwr;
   int picrst;

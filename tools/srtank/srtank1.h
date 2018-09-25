@@ -75,6 +75,7 @@ class CPWindow1:public CPWindow
   void menu1_File_Exit_EvMenuActive(CControl * control);
   void menu1_Help_Contents_EvMenuActive(CControl * control);
   void menu1_Help_About_EvMenuActive(CControl * control);
+  void filedialog1_EvOnClose(int retId);
 
   /*#Others*/
   CPWindow1(void);

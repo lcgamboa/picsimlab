@@ -64,36 +64,36 @@ void
 CPWindow1::timer1_EvOnTime (CControl * control)
 {
  status.st[0] |= ST_T1;
- 
+
 #ifdef _ONEWIN
-  if (timer1.GetOverTime() < 10)
+ if (timer1.GetOverTime () < 10)
   {
-    label1.SetColor (0,0,0);
+   label1.SetColor (0, 0, 0);
   }
  else
   {
-   label1.SetColor (255,0,0);
+   label1.SetColor (255, 0, 0);
   }
 #else   
  if (!ondraw)
   {
    if (!crt)
-    label1.SetColor (0,0,0);
+    label1.SetColor (0, 0, 0);
    crt = 0;
   }
  else
   {
-   label1.SetColor (255,0,0);
+   label1.SetColor (255, 0, 0);
    crt = 1;
   }
 #endif
- pboard->Draw (&draw1, scale); 
- label1.Draw();
+ pboard->Draw (&draw1, scale);
+ label1.Draw ();
  ondraw = 1;
- 
+
  status.st[0] &= ~ST_T1;
- 
- if(!tgo)
+
+ if (!tgo)
   tgo = 1; //thread sync
 };
 
@@ -101,7 +101,8 @@ void
 CPWindow1::thread1_EvThreadRun (CControl*)
 {
 
- do {
+ do
+  {
 
    if (tgo)
     {
@@ -120,7 +121,8 @@ CPWindow1::thread1_EvThreadRun (CControl*)
      usleep (1);
 #endif        
     }
-  }while(!thread1.TestDestroy ());
+  }
+ while (!thread1.TestDestroy ());
 }
 
 void
@@ -201,7 +203,7 @@ CPWindow1::_EvOnCreate (CControl * control)
 {
  char home[1024];
  lxFileName fn;
- 
+
  if (!create)
   {
    PATH = lxGetCwd ();
@@ -209,7 +211,7 @@ CPWindow1::_EvOnCreate (CControl * control)
 #ifndef _WIN_
    share = String (_SHARE_);
 #else
-   share = dirname(lxGetExecutablePath ()) + lxT ("/") + String (_SHARE_);
+   share = dirname (lxGetExecutablePath ()) + lxT ("/") + String (_SHARE_);
 #endif
 
 
@@ -221,20 +223,20 @@ CPWindow1::_EvOnCreate (CControl * control)
    Window3.combo2.SetItems (lxT ("/dev/ttyS0,/dev/ttyS1,/dev/ttyS2,/dev/ttyS3,/dev/tnt0,/dev/tnt1,/dev/tnt2,/dev/tnt3,/dev/tnt4,/dev/tnt5,"));
 #endif
 
-  if (Application->Aargc == 2)
+   if (Application->Aargc == 2)
     {
-     fn.Assign(Application->Aargv[1]);  
+     fn.Assign (Application->Aargv[1]);
      fn.MakeAbsolute ();
     }
   }
- 
+
  //load options
 
 
- strncpy (home, (char*) lxGetUserDataDir (_T("picsimlab")).char_str (), 1023);
+ strncpy (home, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
 
  Configure (control, home);
- 
+
  if (!create)
   {
    //search for file name 
@@ -336,11 +338,11 @@ CPWindow1::Configure (CControl * control, const char * home)
          sscanf (value, "%f", &clk);
          if (clk < 1)
           {
-           combo1.SetText (String().Format ("%2.1f", clk));
+           combo1.SetText (String ().Format ("%2.1f", clk));
           }
          else
           {
-           combo1.SetText (String().Format ("%2.0f", clk));
+           combo1.SetText (String ().Format ("%2.0f", clk));
           }
          //combo1_EvOnComboChange(control);
          NSTEP = (int) (atof (combo1.GetText ()) * NSTEPKT);
@@ -548,14 +550,14 @@ CPWindow1::_EvOnDestroy (CControl * control)
  while (status.status)
   {
    msleep (1);
-   Application->ProcessEvents();
+   Application->ProcessEvents ();
   };
  thread1.Destroy ();
 
 
 
  //write options
- strcpy (home, (char*) lxGetUserDataDir (_T("picsimlab")).char_str ());
+ strcpy (home, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str ());
 
  lxCreateDir (home);
 
@@ -563,7 +565,7 @@ CPWindow1::_EvOnDestroy (CControl * control)
 
 
 
- saveprefs (lxT ("lab"), String().Format ("%i", lab));
+ saveprefs (lxT ("lab"), String ().Format ("%i", lab));
  saveprefs (lxT ("clock"), combo1.GetText ());
  saveprefs (lxT ("debug"), itoa (debug));
  saveprefs (lxT ("position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
@@ -616,11 +618,15 @@ CPWindow1::_EvOnDestroy (CControl * control)
 void
 CPWindow1::menu1_File_LoadHex_EvMenuActive (CControl * control)
 {
- int pa;
-
  pa = picpwr;
  picpwr = 0;
- if (filedialog1.Run ())
+ filedialog1.Run ();
+}
+
+void
+CPWindow1::filedialog1_EvOnClose (int retId)
+{
+ if (retId)
   {
    pboard->MEnd ();
    pboard->MSetSerial (SERIALDEVICE);
@@ -657,7 +663,7 @@ CPWindow1::menu1_File_LoadHex_EvMenuActive (CControl * control)
    menu1_File_ReloadLast.SetEnable (1);
   }
  picpwr = pa;
-};
+}
 
 void
 CPWindow1::menu1_File_Exit_EvMenuActive (CControl * control)
@@ -681,7 +687,7 @@ CPWindow1::menu1_Help_About_EvMenuActive (CControl * control)
 void
 CPWindow1::menu1_Help_Examples_EvMenuActive (CControl * control)
 {
- 
+
  String oldPath = filedialog2.GetDir ();
 
  filedialog2.SetDir (share + lxT ("/docs/hex/board_") + itoa (lab) + lxT ("/") + pboard->proc + lxT ("/"));
@@ -708,28 +714,28 @@ CPWindow1::_EvOnShow (CControl * control)
    scaley = ((Window1.GetHeight () - 90)*1.0) / plHeight;
 #endif
 
-   if(scalex < 0.1)scalex=0.1;
-   if(scaley < 0.1)scaley=0.1;
-   if(scalex > 4)scalex=4;
-   if(scaley > 4)scaley=4;
-   
+   if (scalex < 0.1)scalex = 0.1;
+   if (scaley < 0.1)scaley = 0.1;
+   if (scalex > 4)scalex = 4;
+   if (scaley > 4)scaley = 4;
+
    if (scalex < scaley)
     scale = scalex;
    else
     scale = scaley;
-     
-   int nw=(plWidth * scale);
-   if(nw ==0)nw=1;
-   int nh=(plHeight * scale);
-   if(nh ==0)nh=1;
-   
+
+   int nw = (plWidth * scale);
+   if (nw == 0)nw = 1;
+   int nh = (plHeight * scale);
+   if (nh == 0)nh = 1;
+
    draw1.SetWidth (nw);
    draw1.SetHeight (nh);
 
 
    draw1.SetImgFileName (share + lxT ("boards/") + pboard->GetPictureFileName (), scale, scale);
    pboard->EvOnShow ();
-  
+
    if (osc_on)
     {
      menu1_Modules_Oscilloscope_EvMenuActive (this);
@@ -763,7 +769,7 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive (CControl * control)
  while (status.status & 0x41)
   {
    msleep (1);
-   Application->ProcessEvents();
+   Application->ProcessEvents ();
   };
 
  pboard->MEnd ();
@@ -892,73 +898,7 @@ void
 CPWindow1::menu1_File_SaveWorkspace_EvMenuActive (CControl * control)
 {
  filedialog2.SetType (lxFD_SAVE | lxFD_CHANGE_DIR);
- if (filedialog2.Run ())
-  {
-   char home[1024];
-   char fname[1024];
-
-   if (lxFileExists (filedialog2.GetFileName ()))
-    {
-
-     if (!Dialog (String("Overwriting file: ") + basename (filedialog2.GetFileName ()) + "?"))
-      return;
-    }
-
-   //write options
-
-   strncpy (home, (char*) lxGetUserDataDir (_T("picsimlab")).char_str (), 1023);
-   snprintf (fname, 1023, "%s/picsimlab.ini", home);
-   prefs.SaveToFile (fname);
-
-   strncpy (home, (char*) lxGetTempDir (_T("picsimlab")).char_str (), 1023);
-   strncat (home, "/picsimlab_workspace/", 1023);
-
-   lxRemoveDir (home);
-
-   lxCreateDir (home);
-
-   snprintf (fname, 1023, "%s/picsimlab.ini", home);
-   prefs.Clear ();
-   saveprefs (lxT ("lab"), String().Format ("%i", lab));
-   saveprefs (lxT ("clock"), combo1.GetText ());
-   saveprefs (lxT ("debug"), itoa (debug));
-   saveprefs (lxT ("position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
-   saveprefs (lxT ("osc_on"), itoa (pboard->GetUseOscilloscope ()));
-   saveprefs (lxT ("spare_on"), itoa (pboard->GetUseSpareParts ()));
-   saveprefs (lxT ("lfile"), lxT (" "));
-
-   pboard->WritePreferences ();
-
-   if (pboard->GetUseOscilloscope ())
-    Window4.WritePreferences ();
-
-   if (pboard->GetUseSpareParts ())
-    Window5.WritePreferences ();
-
-
-   prefs.SaveToFile (fname);
-
-   //write memory
-   snprintf (fname, 1023, "%s/mdump_%02i_%s.hex", home, lab_, (const char*) proc_.c_str ());
-
-   pboard->MDumpMemory (fname);
-
-   if (pboard->GetUseSpareParts ())
-    {
-     snprintf (fname, 1023, "%s/parts_%02i.pcf", home, lab_);
-     Window5.SaveConfig (fname);
-    }
-
-   lxZipDir (home, filedialog2.GetFileName ());
-
-   lxRemoveDir (home);
-
-
-   strncpy (home, (char*) lxGetUserDataDir (_T("picsimlab")).char_str (), 1023);
-   snprintf (fname, 1023, "%s/picsimlab.ini", home);
-   prefs.Clear ();
-   prefs.LoadFromFile (fname);
-  }
+ filedialog2.Run ();
 };
 
 void
@@ -970,10 +910,10 @@ CPWindow1::LoadWorkspace (String fnpzw)
  if ((!lxFileExists (fnpzw)) || (!fnpzw.Contains (".pzw")))return;
 
  //write options
- strncpy (fzip, (char*) lxGetTempDir (_T("picsimlab")).char_str (), 1023);
+ strncpy (fzip, (char*) lxGetTempDir (_T ("picsimlab")).char_str (), 1023);
  strncat (fzip, "/", 1023);
 
- strncpy (home, (char*) lxGetTempDir (_T("picsimlab")).char_str (), 1023);
+ strncpy (home, (char*) lxGetTempDir (_T ("picsimlab")).char_str (), 1023);
  strncat (home, "/picsimlab_workspace/", 1023);
 
  lxRemoveDir (home);
@@ -1004,7 +944,7 @@ CPWindow1::LoadWorkspace (String fnpzw)
  prefs.SaveToFile (fzip);
 
  Configure (this, home);
- 
+
  _EvOnShow (this);
 
  snprintf (fzip, 1023, "%s/Readme.html", home);
@@ -1030,11 +970,88 @@ void
 CPWindow1::menu1_File_LoadWorkspace_EvMenuActive (CControl * control)
 {
  filedialog2.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
- if (filedialog2.Run ())
+ filedialog2.Run ();
+
+}
+
+void
+CPWindow1::filedialog2_EvOnClose (int retId)
+{
+ if (retId && (filedialog2.GetType () == (lxFD_OPEN | lxFD_CHANGE_DIR)))
   {
    LoadWorkspace (filedialog2.GetFileName ());
   }
-};
+
+ if (retId && (filedialog2.GetType () == (lxFD_SAVE | lxFD_CHANGE_DIR)))
+  {
+   char home[1024];
+   char fname[1024];
+
+   if (lxFileExists (filedialog2.GetFileName ()))
+    {
+
+     if (!Dialog (String ("Overwriting file: ") + basename (filedialog2.GetFileName ()) + "?"))
+      return;
+    }
+
+   //write options
+
+   strncpy (home, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
+   snprintf (fname, 1023, "%s/picsimlab.ini", home);
+   prefs.SaveToFile (fname);
+
+   strncpy (home, (char*) lxGetTempDir (_T ("picsimlab")).char_str (), 1023);
+   strncat (home, "/picsimlab_workspace/", 1023);
+
+   lxRemoveDir (home);
+
+   lxCreateDir (home);
+
+   snprintf (fname, 1023, "%s/picsimlab.ini", home);
+   prefs.Clear ();
+   saveprefs (lxT ("lab"), String ().Format ("%i", lab));
+   saveprefs (lxT ("clock"), combo1.GetText ());
+   saveprefs (lxT ("debug"), itoa (debug));
+   saveprefs (lxT ("position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
+   saveprefs (lxT ("osc_on"), itoa (pboard->GetUseOscilloscope ()));
+   saveprefs (lxT ("spare_on"), itoa (pboard->GetUseSpareParts ()));
+   saveprefs (lxT ("lfile"), lxT (" "));
+
+   pboard->WritePreferences ();
+
+   if (pboard->GetUseOscilloscope ())
+    Window4.WritePreferences ();
+
+   if (pboard->GetUseSpareParts ())
+    Window5.WritePreferences ();
+
+
+   prefs.SaveToFile (fname);
+
+   //write memory
+   snprintf (fname, 1023, "%s/mdump_%02i_%s.hex", home, lab_, (const char*) proc_.c_str ());
+
+   pboard->MDumpMemory (fname);
+
+   if (pboard->GetUseSpareParts ())
+    {
+
+     snprintf (fname, 1023, "%s/parts_%02i.pcf", home, lab_);
+     Window5.SaveConfig (fname);
+    }
+
+   lxZipDir (home, filedialog2.GetFileName ());
+
+   lxRemoveDir (home);
+
+
+   strncpy (home, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
+   snprintf (fname, 1023, "%s/picsimlab.ini", home);
+   prefs.Clear ();
+   prefs.LoadFromFile (fname);
+  }
+
+}
 
 void
 CPWindow1::menu1_Tools_SerialTerm_EvMenuActive (CControl * control)
@@ -1042,6 +1059,7 @@ CPWindow1::menu1_Tools_SerialTerm_EvMenuActive (CControl * control)
 #ifdef _WIN_  
  lxExecute (share + lxT ("/../tools/cutecom/cutecom.exe"));
 #else
+
  lxExecute ("cutecom", lxEXEC_MAKE_GROUP_LEADER);
 #endif  
 };
@@ -1052,6 +1070,7 @@ CPWindow1::menu1_Tools_SerialRemoteTank_EvMenuActive (CControl * control)
 #ifdef _WIN_  
  lxExecute (share + lxT ("/../srtank.exe"));
 #else
+
  lxExecute ("srtank", lxEXEC_MAKE_GROUP_LEADER);
 #endif  
 };
@@ -1065,5 +1084,6 @@ CPWindow1::menu1_Tools_Esp8266ModemSimulator_EvMenuActive (CControl * control)
  lxExecute ("espmsim", lxEXEC_MAKE_GROUP_LEADER);
 #endif  
 };
+
 
 

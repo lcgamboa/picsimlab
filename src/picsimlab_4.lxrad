@@ -412,6 +412,7 @@
   <Name type="String">colordialog1</Name>
   <Tag type="int">0</Tag>
   <ColorName type="String">RED</ColorName>
+  <EvOnClose type="Event">TRUE</EvOnClose>
 </colordialog1>
 <togglebutton5>
   <Class type="String">CToggleButton</Class>
@@ -979,5 +980,6 @@
   <FileName type="String">untitled.png</FileName>
   <Filter type="String">PNG Files (*.png)|*.png</Filter>
   <Type type="int">129</Type>
+  <EvOnClose type="Event">TRUE</EvOnClose>
 </filedialog1>
 </window4>

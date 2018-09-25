@@ -88,7 +88,9 @@ class CPWindow4:public CPWindow
   void button3_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state);
   void togglebutton6_EvOnToggleButton(CControl * control);
   void button4_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state);
-
+  void filedialog1_EvOnClose(int retId);
+  void colordialog1_EvOnClose(int retId);
+  
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!
   CPWindow4(void);
@@ -107,6 +109,7 @@ private:
   int chpin[2];
   int toffset;
   int run;
+  CButton * ctrl;
 };
 
 extern CPWindow4 Window4;

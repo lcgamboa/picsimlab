@@ -1208,5 +1208,6 @@
   <FileName type="String">untitled.srt</FileName>
   <Filter type="String">srtank Files (*.srt)|*.srt</Filter>
   <Type type="int">129</Type>
+  <EvOnClose type="Event">TRUE</EvOnClose>
 </filedialog1>
 </window1>

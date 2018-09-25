@@ -267,6 +267,7 @@ CPWindow4::CPWindow4(void)
   colordialog1.SetName(lxT("colordialog1"));
   colordialog1.SetTag(0);
   colordialog1.SetColorName(lxT("RED"));
+  colordialog1.EvOnClose=EVONCLOSE & CPWindow4::colordialog1_EvOnClose;
   CreateChild(&colordialog1);
   //togglebutton5
   togglebutton5.SetFOwner(this);
@@ -636,6 +637,7 @@ CPWindow4::CPWindow4(void)
   filedialog1.SetFileName(lxT("untitled.png"));
   filedialog1.SetFilter(lxT("PNG Files (*.png)|*.png"));
   filedialog1.SetType(129);
+  filedialog1.EvOnClose=EVONCLOSE & CPWindow4::filedialog1_EvOnClose;
   CreateChild(&filedialog1);
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!
