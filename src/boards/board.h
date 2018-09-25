@@ -69,8 +69,8 @@ class board
       virtual void Reset(void)=0;           //Reset board status
       virtual void EvMouseButtonPress(uint button, uint x, uint y,uint state)=0;    //Event on the board
       virtual void EvMouseButtonRelease(uint button, uint x, uint y,uint state)=0;  //Event on the board
-      virtual void EvKeyPress(uint key, uint x, uint y,uint mask)=0;  //Event on the board
-      virtual void EvKeyRelease(uint key, uint x, uint y,uint mask)=0;//Event on the board
+      virtual void EvKeyPress(uint key,uint mask)=0;  //Event on the board
+      virtual void EvKeyRelease(uint key,uint mask)=0;//Event on the board
       virtual void EvOnShow(void)=0;//Event on the board
       virtual void RefreshStatus(void);   //Called ever 1s to refresh status
       virtual void WritePreferences(void){};   //Called to save board preferences in configuration file

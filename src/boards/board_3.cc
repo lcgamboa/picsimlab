@@ -784,7 +784,7 @@ cboard_3::EvMouseButtonRelease(uint button, uint x, uint y,uint state)
 
 
 void 
-cboard_3::EvKeyPress( uint key, uint x, uint y,uint mask)
+cboard_3::EvKeyPress( uint key, uint mask)
 {
   if(key == '1')
   {
@@ -805,7 +805,7 @@ cboard_3::EvKeyPress( uint key, uint x, uint y,uint mask)
 };
 
 void
-cboard_3::EvKeyRelease( uint key, uint x, uint y,uint mask)
+cboard_3::EvKeyRelease( uint key, uint mask)
 {
   if(key == '1')
   {

@@ -39,7 +39,7 @@ class CPWindow3:public CPWindow
   CCombo combo2;
   /*#Events*/
   void _EvOnCreate(CControl * control);
-  void button1_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state);
+  void button1_EvMouseButtonClick(CControl * control,const uint button,const uint x,const uint y,const uint state);
 
   /*#Others*/
   CPWindow3(void);

@@ -225,7 +225,7 @@ CPWindow5::draw1_EvMouseMove (CControl * control, uint button, uint x, uint y, u
 };
 
 void
-CPWindow5::draw1_EvKeyboardPress (CControl * control, uint key, uint x, uint y, uint mask)
+CPWindow5::draw1_EvKeyboardPress (CControl * control,const uint key,const uint hkey,const uint mask)
 {
  switch (key)
   {
@@ -240,7 +240,7 @@ CPWindow5::draw1_EvKeyboardPress (CControl * control, uint key, uint x, uint y, 
   default:
    for (int i = 0; i < partsc; i++)
     {
-     parts[i]->EvKeyPress (key, x, y, mask);
+     parts[i]->EvKeyPress (key, mask);
     }
    break;
   }
@@ -248,11 +248,11 @@ CPWindow5::draw1_EvKeyboardPress (CControl * control, uint key, uint x, uint y, 
 };
 
 void
-CPWindow5::draw1_EvKeyboardRelease (CControl * control, uint key, uint x, uint y, uint mask)
+CPWindow5::draw1_EvKeyboardRelease (CControl * control,const uint key,const uint hkey,const  uint mask)
 {
  for (int i = 0; i < partsc; i++)
   {
-   parts[i]->EvKeyRelease (key, x, y, mask);
+   parts[i]->EvKeyRelease (key, mask);
   }
 };
 

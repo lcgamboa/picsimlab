@@ -75,21 +75,21 @@ class CPWindow4:public CPWindow
   void _EvOnDestroy(CControl * control);
   void _EvOnShow(CControl * control);
   void _EvOnHide(CControl * control);
-  void draw1_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state);
+  void draw1_EvMouseButtonClick(CControl * control,const uint button,const uint x,const uint y,const uint state);
   void spind5_EvOnChangeSpinDouble(CControl * control);
   void spind6_EvOnChangeSpinDouble(CControl * control);
-  void button1_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state);
-  void button2_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state);
+  void button1_EvMouseButtonClick(CControl * control,const uint button,const uint x,const uint y,const uint state);
+  void button2_EvMouseButtonClick(CControl * control,const uint button,const uint x,const uint y,const uint state);
   void togglebutton5_EvOnToggleButton(CControl * control);
   void spind7_EvOnChangeSpinDouble(CControl * control);
   void timer1_EvOnTime(CControl * control);
   void combo2_EvOnComboChange(CControl * control);
   void combo3_EvOnComboChange(CControl * control);
-  void button3_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state);
+  void button3_EvMouseButtonClick(CControl * control,const uint button,const uint x,const uint y,const uint state);
   void togglebutton6_EvOnToggleButton(CControl * control);
-  void button4_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state);
-  void filedialog1_EvOnClose(int retId);
-  void colordialog1_EvOnClose(int retId);
+  void button4_EvMouseButtonClick(CControl * control,const uint button,const uint x,const uint y,const uint state);
+  void filedialog1_EvOnClose(const int retId);
+  void colordialog1_EvOnClose(const int retId);
   
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!

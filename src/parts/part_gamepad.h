@@ -45,8 +45,8 @@ class cpart_gamepad:public part
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
       void EvMouseMove(uint button, uint x, uint y,uint state);
-      void EvKeyPress(uint key, uint x, uint y,uint mask);
-      void EvKeyRelease(uint key, uint x, uint y,uint mask);
+      void EvKeyPress(uint key,uint mask);
+      void EvKeyRelease(uint key,uint mask);
       void ConfigurePropertiesWindow(CPWindow *  wprop);
       void ReadPropertiesWindow(void);
       String WritePreferences(void);

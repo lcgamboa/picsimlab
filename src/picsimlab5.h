@@ -55,11 +55,11 @@ class CPWindow5:public CPWindow
   void _EvOnCreate(CControl * control);
   void _EvOnShow(CControl * control);
   void _EvOnHide(CControl * control);
-  void draw1_EvMouseMove(CControl * control, uint button, uint x, uint y,uint state);
-  void draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uint y,uint state);
-  void draw1_EvMouseButtonRelease(CControl * control, uint button, uint x, uint y,uint state);
-  void draw1_EvKeyboardPress(CControl * control, uint key, uint x, uint y,uint mask);
-  void draw1_EvKeyboardRelease(CControl * control, uint key, uint x, uint y,uint mask);
+  void draw1_EvMouseMove(CControl * control,const uint button,const uint x,const uint y,const uint state);
+  void draw1_EvMouseButtonPress(CControl * control,const uint button,const uint x,const uint y,const uint state);
+  void draw1_EvMouseButtonRelease(CControl * control,const uint button,const uint x,const uint y,const uint state);
+  void draw1_EvKeyboardPress(CControl * control,const uint key,const uint hkey ,const uint mask);
+  void draw1_EvKeyboardRelease(CControl * control,const uint key,const uint hkey,const uint mask);
   void pmenu2_Properties_EvMenuActive(CControl * control);
   void timer1_EvOnTime(CControl * control);
   void menu1_File_Newconfiguration_EvMenuActive(CControl * control);
@@ -69,7 +69,7 @@ class CPWindow5:public CPWindow
   void pmenu2_Delete_EvMenuActive(CControl * control);
   void menu1_Help_Contents_EvMenuActive(CControl * control);
   void menu1_Help_About_EvMenuActive(CControl * control);
-  void filedialog1_EvOnClose(int retId);
+  void filedialog1_EvOnClose(const int retId);
   
   /*#Others*/
   CPWindow5(void);

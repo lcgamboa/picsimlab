@@ -321,7 +321,7 @@ cboard_7::ReadPreferences(char *name,char *value)
 
 //Event on the board
 void 
-cboard_7::EvKeyPress(uint key, uint x, uint y,uint mask)
+cboard_7::EvKeyPress(uint key, uint mask)
 {
   //if keyboard key 1 is pressed then activate button (state=0)   
   if(key == '1')
@@ -334,7 +334,7 @@ cboard_7::EvKeyPress(uint key, uint x, uint y,uint mask)
 
 //Event on the board
 void
-cboard_7::EvKeyRelease(uint key, uint x, uint y,uint mask)
+cboard_7::EvKeyRelease(uint key, uint mask)
 {
   //if keyboard key 1 is pressed then deactivate button (state=1)     
   if(key == '1')

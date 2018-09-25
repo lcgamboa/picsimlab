@@ -43,8 +43,8 @@ class part
       virtual void EvMouseButtonPress(uint button, uint x, uint y,uint state){};    //Event on the board
       virtual void EvMouseButtonRelease(uint button, uint x, uint y,uint state){};  //Event on the board
       virtual void EvMouseMove(uint button, uint x, uint y,uint state){};  //Event on the board
-      virtual void EvKeyPress(uint key, uint x, uint y,uint mask){};  //Event on the board
-      virtual void EvKeyRelease(uint key, uint x, uint y,uint mask){};//Event on the board
+      virtual void EvKeyPress(uint key, uint mask){};  //Event on the board
+      virtual void EvKeyRelease(uint key,uint mask){};//Event on the board
       virtual String WritePreferences(void)=0;   //Called to save part preferences in configuration file
       virtual void ReadPreferences(String value)=0; //Called whe configuration file load  preferences 
       virtual unsigned short get_in_id(char * name)=0; //return the input ids numbers of names used in input map

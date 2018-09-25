@@ -355,14 +355,14 @@ cboard_5::ReadPreferences(char *name,char *value)
 
 //Event on the board
 void 
-cboard_5::EvKeyPress(uint key, uint x, uint y,uint mask)
+cboard_5::EvKeyPress(uint key, uint mask)
 {
 
 };
 
 //Event on the board
 void
-cboard_5::EvKeyRelease(uint key, uint x, uint y,uint mask)
+cboard_5::EvKeyRelease(uint key, uint mask)
 {
  
   

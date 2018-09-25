@@ -280,7 +280,7 @@ cpart_gamepad::EvMouseMove (uint button, uint x, uint y, uint state)
 }
 
 void
-cpart_gamepad::EvKeyPress (uint key, uint x, uint y, uint mask)
+cpart_gamepad::EvKeyPress (uint key, uint mask)
 {
 
  switch (key)
@@ -337,7 +337,7 @@ cpart_gamepad::EvKeyPress (uint key, uint x, uint y, uint mask)
 }
 
 void
-cpart_gamepad::EvKeyRelease (uint key, uint x, uint y, uint mask)
+cpart_gamepad::EvKeyRelease (uint key, uint mask)
 {
  switch (key)
   {

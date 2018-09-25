@@ -82,11 +82,11 @@ class CPWindow1:public CPWindow
   void _EvOnShow(CControl * control);
   void timer1_EvOnTime(CControl * control);
   void timer2_EvOnTime(CControl * control);
-  void filedialog1_EvOnClose(int retId);
-  void draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uint y,uint state);
-  void draw1_EvMouseButtonRelease(CControl * control, uint button, uint x, uint y,uint state);
-  void draw1_EvKeyboardPress(CControl * control, uint key, uint x, uint y,uint mask);
-  void draw1_EvKeyboardRelease(CControl * control, uint key, uint x, uint y,uint mask);
+  void filedialog1_EvOnClose(const int retId);
+  void draw1_EvMouseButtonPress(CControl * control, const uint button, const uint x, const uint y,const uint state);
+  void draw1_EvMouseButtonRelease(CControl * control, const uint button, const uint x, const uint y,const uint state);
+  void draw1_EvKeyboardPress(CControl * control, const uint key,  const uint hkey, const uint mask);
+  void draw1_EvKeyboardRelease(CControl * control, const uint key,const  uint hkey, const uint mask);
   void combo1_EvOnComboChange(CControl * control);
   void menu1_File_LoadHex_EvMenuActive(CControl * control);
   void menu1_File_ReloadLast_EvMenuActive(CControl * control);
@@ -103,7 +103,7 @@ class CPWindow1:public CPWindow
   void menu1_Help_Examples_EvMenuActive(CControl * control);
   void menu1_Help_About_EvMenuActive(CControl * control);
   void togglebutton1_EvOnToggleButton(CControl * control);
-  void filedialog2_EvOnClose(int retId);
+  void filedialog2_EvOnClose(const int retId);
 
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!

@@ -74,9 +74,9 @@ class cboard_7:public board_pic
       //Event on the board
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
       //Event on the board
-      void EvKeyPress(uint key, uint x, uint y,uint mask);
+      void EvKeyPress(uint key, uint mask);
       //Event on the board
-      void EvKeyRelease(uint key, uint x, uint y,uint mask);
+      void EvKeyRelease(uint key, uint mask);
       void EvOnShow(void){};
       //Called ever 1s to refresh status
       void RefreshStatus(void);

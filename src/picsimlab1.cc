@@ -178,24 +178,15 @@ CPWindow1::draw1_EvMouseButtonRelease (CControl * control, uint button, uint x, 
 };
 
 void
-CPWindow1::draw1_EvKeyboardPress (CControl * control, uint key, uint x, uint y, uint mask)
+CPWindow1::draw1_EvKeyboardPress (CControl * control,const  uint key,const uint hkey,const uint mask)
 {
- x = x / scale;
- y = y / scale;
-
- pboard->EvKeyPress (key, x, y, mask);
-
-
+ pboard->EvKeyPress (key, mask);
 };
 
 void
-CPWindow1::draw1_EvKeyboardRelease (CControl * control, uint key, uint x, uint y, uint mask)
+CPWindow1::draw1_EvKeyboardRelease (CControl * control,const  uint key,const  uint hkey,const  uint mask)
 {
- x = x / scale;
- y = y / scale;
-
- pboard->EvKeyRelease (key, x, y, mask);
-
+ pboard->EvKeyRelease (key, mask);
 };
 
 void
