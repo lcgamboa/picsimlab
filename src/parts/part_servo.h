@@ -48,7 +48,6 @@ class cpart_servo:public part
       void ReadPreferences(String value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
-      void PropButton (CControl * control, uint button, uint x, uint y, uint state);
     private:  
       unsigned char input_pin;   
       lxBitmap * BackGround;  //Background image

@@ -50,9 +50,9 @@ cpart_gamepad::cpart_gamepad (unsigned x, unsigned y)
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
  Bitmap = new lxBitmap (image, &Window5);
- image.Destroy(); 
+ image.Destroy ();
 
- canvas.Create (Window5.GetWWidget(),Bitmap);
+ canvas.Create (Window5.GetWWidget (), Bitmap);
 
 
 
@@ -291,22 +291,22 @@ cpart_gamepad::EvKeyPress (uint key, uint mask)
    valuey = 0;
    break;
   case 'A':
-  case 'a':  
+  case 'a':
    valuex = 0;
    valuey = jr;
    break;
   case 'S':
-  case 's': 
+  case 's':
    valuex = jr;
    valuey = 2 * jr;
    break;
   case 'D':
-  case 'd': 
+  case 'd':
    valuex = 2 * jr;
    valuey = jr;
    break;
   case 'I':
-  case 'i': 
+  case 'i':
    output_value[0] = 0;
    break;
   case 'J':
@@ -318,19 +318,19 @@ cpart_gamepad::EvKeyPress (uint key, uint mask)
    output_value[2] = 0;
    break;
   case 'L':
-  case 'l': 
+  case 'l':
    output_value[1] = 0;
    break;
   case 'E':
-  case 'e': 
+  case 'e':
    output_value[4] = 0;
    break;
   case 'O':
-  case 'o': 
+  case 'o':
    output_value[5] = 0;
    break;
   case 'R':
-  case 'r': 
+  case 'r':
    output_value[6] = 0;
    break;
   }
@@ -348,36 +348,36 @@ cpart_gamepad::EvKeyRelease (uint key, uint mask)
   case 'w':
   case 'a':
   case 's':
-  case 'd': 
+  case 'd':
    valuex = jr;
    valuey = jr;
    break;
   case 'I':
-  case 'i': 
+  case 'i':
    output_value[0] = 1;
    break;
   case 'J':
-  case 'j': 
+  case 'j':
    output_value[3] = 1;
    break;
   case 'K':
-  case 'k': 
+  case 'k':
    output_value[2] = 1;
    break;
   case 'L':
-  case 'l': 
+  case 'l':
    output_value[1] = 1;
    break;
   case 'E':
-  case 'e': 
+  case 'e':
    output_value[4] = 1;
    break;
   case 'O':
-  case 'o': 
+  case 'o':
    output_value[5] = 1;
    break;
   case 'R':
-  case 'r': 
+  case 'r':
    output_value[6] = 1;
    break;
   }
@@ -535,31 +535,24 @@ cpart_gamepad::ConfigurePropertiesWindow (CPWindow * wprop)
    ((CCombo*) WProp_gamepad->GetChildByName ("combo8"))->SetText (itoa (output_pins[7]) + "  " + spin);
   }
 
- ((CButton*) WProp_gamepad->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & cpart_gamepad::PropButton;
+ ((CButton*) WProp_gamepad->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
  ((CButton*) WProp_gamepad->GetChildByName ("button1"))->SetTag (1);
 
- ((CButton*) WProp_gamepad->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & cpart_gamepad::PropButton;
+ ((CButton*) WProp_gamepad->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
 }
 
 void
 cpart_gamepad::ReadPropertiesWindow (void)
 {
- if (WProp_gamepad->GetTag ())
-  {
-   output_pins[0] = atoi (((CCombo*) WProp_gamepad->GetChildByName ("combo1"))->GetText ());
-   output_pins[1] = atoi (((CCombo*) WProp_gamepad->GetChildByName ("combo2"))->GetText ());
-   output_pins[2] = atoi (((CCombo*) WProp_gamepad->GetChildByName ("combo3"))->GetText ());
-   output_pins[3] = atoi (((CCombo*) WProp_gamepad->GetChildByName ("combo4"))->GetText ());
-   output_pins[4] = atoi (((CCombo*) WProp_gamepad->GetChildByName ("combo5"))->GetText ());
-   output_pins[5] = atoi (((CCombo*) WProp_gamepad->GetChildByName ("combo6"))->GetText ());
-   output_pins[6] = atoi (((CCombo*) WProp_gamepad->GetChildByName ("combo7"))->GetText ());
-   output_pins[7] = atoi (((CCombo*) WProp_gamepad->GetChildByName ("combo8"))->GetText ());
-  }
+ output_pins[0] = atoi (((CCombo*) WProp_gamepad->GetChildByName ("combo1"))->GetText ());
+ output_pins[1] = atoi (((CCombo*) WProp_gamepad->GetChildByName ("combo2"))->GetText ());
+ output_pins[2] = atoi (((CCombo*) WProp_gamepad->GetChildByName ("combo3"))->GetText ());
+ output_pins[3] = atoi (((CCombo*) WProp_gamepad->GetChildByName ("combo4"))->GetText ());
+ output_pins[4] = atoi (((CCombo*) WProp_gamepad->GetChildByName ("combo5"))->GetText ());
+ output_pins[5] = atoi (((CCombo*) WProp_gamepad->GetChildByName ("combo6"))->GetText ());
+ output_pins[6] = atoi (((CCombo*) WProp_gamepad->GetChildByName ("combo7"))->GetText ());
+ output_pins[7] = atoi (((CCombo*) WProp_gamepad->GetChildByName ("combo8"))->GetText ());
+
 }
 
-void
-cpart_gamepad::PropButton (CControl * control, uint button, uint x, uint y, uint state)
-{
- WProp_gamepad->SetTag (control->GetTag ());
- WProp_gamepad->HideExclusive ();
-};
+

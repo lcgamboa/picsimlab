@@ -338,17 +338,15 @@ cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow *  wprop)
     else
       ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo11"))->SetText("16x4");
     
-    ((CButton*)WProp_LCD_hd44780->GetChildByName("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & cpart_LCD_hd44780::PropButton;
+    ((CButton*)WProp_LCD_hd44780->GetChildByName("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
     ((CButton*)WProp_LCD_hd44780->GetChildByName("button1"))->SetTag(1);
     
-    ((CButton*)WProp_LCD_hd44780->GetChildByName("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & cpart_LCD_hd44780::PropButton;
+    ((CButton*)WProp_LCD_hd44780->GetChildByName("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
 }
 
 void 
 cpart_LCD_hd44780::ReadPropertiesWindow(void)
-{
-   if(WProp_LCD_hd44780->GetTag())
-   {	   
+{   
       input_pins[0]=atoi(((CCombo*)WProp_LCD_hd44780->GetChildByName("combo1"))->GetText());
       input_pins[1]=atoi(((CCombo*)WProp_LCD_hd44780->GetChildByName("combo2"))->GetText());
       input_pins[2]=atoi(((CCombo*)WProp_LCD_hd44780->GetChildByName("combo3"))->GetText());
@@ -364,16 +362,9 @@ cpart_LCD_hd44780::ReadPropertiesWindow(void)
       else
 	model=4;
       Reset();      
-   }
+
 } 
 
-
-void
-cpart_LCD_hd44780::PropButton (CControl * control, uint button, uint x, uint y, uint state)
-{
-   WProp_LCD_hd44780->SetTag(control->GetTag()); 
-   WProp_LCD_hd44780->HideExclusive ();
-};
 
 void
 cpart_LCD_hd44780::Process(void)

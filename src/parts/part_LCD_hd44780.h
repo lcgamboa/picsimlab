@@ -49,7 +49,6 @@ class cpart_LCD_hd44780:public part
       void ReadPreferences(String value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
-      void PropButton (CControl * control, uint button, uint x, uint y, uint state);
     private:
       void Reset(void);
       unsigned char input_pins[10]; 

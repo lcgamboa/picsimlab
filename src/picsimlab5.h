@@ -81,6 +81,8 @@ class CPWindow5:public CPWindow
   void DeleteParts(void);
   void WritePreferences(void);
   void ReadPreferences(char *name,char *value);
+  void PropButtonRelease (CControl * control, uint button, uint x, uint y, uint state);
+  void PropClose(int tag);
   private:
     int partsc;  
     part *parts[MAX_PARTS];
@@ -91,6 +93,7 @@ class CPWindow5:public CPWindow
     int mdx,mdy;
     float scale;
     String LoadConfigFile;
+    CPWindow wprop;
 };
 
 extern CPWindow5 Window5 ;

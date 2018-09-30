@@ -53,7 +53,6 @@ class cpart_gamepad:public part
       void ReadPreferences(String value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
-      void PropButton (CControl * control, uint button, uint x, uint y, uint state);
     private:
       unsigned char output_pins[8];    
       unsigned char output_value[8];

@@ -138,35 +138,42 @@ CPWindow5::draw1_EvMouseButtonRelease (CControl * control, uint button, uint x, 
 void
 CPWindow5::pmenu2_Properties_EvMenuActive (CControl * control)
 {
- CPWindow * wd1 = new CPWindow;
-
- wd1->SetName ("window1"); //must be the same as in xml 
- Application->ACreateWindow (wd1);
-
- if (wd1->LoadXMLContextAndCreateChilds (Window1.GetSharePath () + lxT ("parts/") + parts[PartSelected]->GetPropertiesWindowFile ()))
+ 
+ wprop.SetName ("window1"); //must be the same as in xml 
+ Application->ACreateWindow (&wprop);
+ wprop.DestroyChilds ();
+ if (wprop.LoadXMLContextAndCreateChilds (Window1.GetSharePath () + lxT ("parts/") + parts[PartSelected]->GetPropertiesWindowFile ()))
   {
-   wd1->SetCanDestroy (false);
+   //wprop.SetCanDestroy (false);
 
-   parts[PartSelected]->ConfigurePropertiesWindow (wd1);
+   parts[PartSelected]->ConfigurePropertiesWindow (&wprop);
 
-   wd1->SetX (parts[PartSelected]->GetX () + GetX ());
-   wd1->SetY (parts[PartSelected]->GetY () + GetY ());
+   wprop.SetX (parts[PartSelected]->GetX () + GetX ());
+   wprop.SetY (parts[PartSelected]->GetY () + GetY ());
 
-   wd1->Draw ();
-   wd1->ShowExclusive ();
+   wprop.Draw ();
+   wprop.ShowExclusive ();
 
-   while (wd1->GetCanExitExclusive ())
-    {
-     Application->ProcessEvents ();
-     lxMilliSleep (100);
-    }
-
-   parts[PartSelected]->ReadPropertiesWindow ();
-
-   wd1->SetCanDestroy (true);
-   wd1->WDestroy ();
   }
-};
+}
+
+void
+CPWindow5::PropClose (int tag)
+{
+ if (tag)
+  {
+   parts[PartSelected]->ReadPropertiesWindow ();
+  }
+ wprop.HideExclusive ();
+ //wprop.SetCanDestroy (true);
+ wprop.WDestroy ();
+}
+
+void
+CPWindow5::PropButtonRelease (CControl * control, uint button, uint x, uint y, uint state)
+{
+ Window5.PropClose (control->GetTag ());
+}
 
 void
 CPWindow5::timer1_EvOnTime (CControl * control)
@@ -189,7 +196,7 @@ CPWindow5::timer1_EvOnTime (CControl * control)
  draw1.Canvas.End ();
  draw1.Update ();
 
-};
+}
 
 void
 CPWindow5::draw1_EvMouseMove (CControl * control, uint button, uint x, uint y, uint state)
@@ -225,7 +232,7 @@ CPWindow5::draw1_EvMouseMove (CControl * control, uint button, uint x, uint y, u
 };
 
 void
-CPWindow5::draw1_EvKeyboardPress (CControl * control,const uint key,const uint hkey,const uint mask)
+CPWindow5::draw1_EvKeyboardPress (CControl * control, const uint key, const uint hkey, const uint mask)
 {
  switch (key)
   {
@@ -248,7 +255,7 @@ CPWindow5::draw1_EvKeyboardPress (CControl * control,const uint key,const uint h
 };
 
 void
-CPWindow5::draw1_EvKeyboardRelease (CControl * control,const uint key,const uint hkey,const  uint mask)
+CPWindow5::draw1_EvKeyboardRelease (CControl * control, const uint key, const uint hkey, const uint mask)
 {
  for (int i = 0; i < partsc; i++)
   {

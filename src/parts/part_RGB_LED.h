@@ -47,8 +47,7 @@ class cpart_rgb_led:public part
       void ReadPreferences(String value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
-      void PropButton (CControl * control, uint button, uint x, uint y, uint state);
-    private:
+     private:
       unsigned char input_pins[3];    
 };
 
