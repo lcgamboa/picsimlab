@@ -177,7 +177,7 @@ cpart_dtfunc::EvMouseButtonRelease (uint button, uint x, uint y, uint state) {
   */ };
 
 void
-cpart_dtfunc::EvKeyPress (uint key, uint x, uint y, uint mask) {
+cpart_dtfunc::EvKeyPress (uint key, uint mask) {
  /*
  if(key == '1')
  {
@@ -198,7 +198,7 @@ cpart_dtfunc::EvKeyPress (uint key, uint x, uint y, uint mask) {
   */ };
 
 void
-cpart_dtfunc::EvKeyRelease (uint key, uint x, uint y, uint mask) {
+cpart_dtfunc::EvKeyRelease (uint key, uint mask) {
  /*
  if(key == '1')
  {
