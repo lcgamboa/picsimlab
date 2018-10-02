@@ -178,13 +178,13 @@ CPWindow1::draw1_EvMouseButtonRelease (CControl * control, uint button, uint x, 
 };
 
 void
-CPWindow1::draw1_EvKeyboardPress (CControl * control,const  uint key,const uint hkey,const uint mask)
+CPWindow1::draw1_EvKeyboardPress (CControl * control, const uint key, const uint hkey, const uint mask)
 {
  pboard->EvKeyPress (key, mask);
 };
 
 void
-CPWindow1::draw1_EvKeyboardRelease (CControl * control,const  uint key,const  uint hkey,const  uint mask)
+CPWindow1::draw1_EvKeyboardRelease (CControl * control, const uint key, const uint hkey, const uint mask)
 {
  pboard->EvKeyRelease (key, mask);
 };
@@ -679,14 +679,13 @@ void
 CPWindow1::menu1_Help_Examples_EvMenuActive (CControl * control)
 {
 
- String oldPath = filedialog2.GetDir ();
+ OldPath = filedialog2.GetDir ();
 
  filedialog2.SetDir (share + lxT ("/docs/hex/board_") + itoa (lab) + lxT ("/") + pboard->proc + lxT ("/"));
 
  menu1_File_LoadWorkspace_EvMenuActive (control);
 
- filedialog2.SetDir (oldPath);
-};
+}
 
 
 //Resize
@@ -971,6 +970,11 @@ CPWindow1::filedialog2_EvOnClose (int retId)
  if (retId && (filedialog2.GetType () == (lxFD_OPEN | lxFD_CHANGE_DIR)))
   {
    LoadWorkspace (filedialog2.GetFileName ());
+   if (OldPath.size () > 1)
+    {
+     filedialog2.SetDir (OldPath);
+     OldPath = lxT ("");
+    }
   }
 
  if (retId && (filedialog2.GetType () == (lxFD_SAVE | lxFD_CHANGE_DIR)))

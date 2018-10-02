@@ -411,7 +411,7 @@
   <Class type="String">CColorDialog</Class>
   <Name type="String">colordialog1</Name>
   <Tag type="int">0</Tag>
-  <ColorName type="String">RED</ColorName>
+  <ColorName type="String">red</ColorName>
   <EvOnClose type="Event">TRUE</EvOnClose>
 </colordialog1>
 <togglebutton5>

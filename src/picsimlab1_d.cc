@@ -402,7 +402,8 @@ scale=0.8;
 create=0;
 
 FNAME=lxT(" ");
-
+OldPath=lxT("");
+    
 ondraw=0;    
 
 pboard=NULL;

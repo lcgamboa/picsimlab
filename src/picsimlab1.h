@@ -163,6 +163,7 @@ class CPWindow1:public CPWindow
   int JUMPSTEPS;
   String PATH;
   String FNAME;
+  String OldPath;
   char cpustate;
   
   CStringList prefs;
