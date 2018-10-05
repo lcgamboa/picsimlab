@@ -462,6 +462,7 @@ void lcd_cmd(lcd_t * lcd, char cmd)
   if(cmd & 0x02 )
   {
     lcd->ddram_ad=0;
+    lcd->shift=0;
     lcd->update=1;  
     return;
   }
