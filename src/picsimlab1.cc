@@ -317,6 +317,7 @@ CPWindow1::Configure (CControl * control, const char * home)
            MMicro[dc].SetText (sdev.substr (0, f));
            MMicro[dc].EvMenuActive = EVMENUACTIVE & CPWindow1::menu1_EvMicrocontroller;
            menu1_Microcontroller.CreateChild (&MMicro[dc]);
+           MMicro[dc].SetVisible (true);
            sdev = sdev.substr (f + 1, sdev.size () - f - 1);
            dc++;
           }
