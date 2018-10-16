@@ -423,5 +423,11 @@ tgo=0;
        menu1_Board.CreateChild(&MBoard[i]);
     }    
 
-        
-};
+#ifdef NO_TOOLS
+   menu1.DestroyChild (&menu1_Tools);
+#endif
+   
+#ifdef NO_DEBUG
+   DestroyChild(&togglebutton1);
+#endif   
+}

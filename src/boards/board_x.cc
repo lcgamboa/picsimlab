@@ -196,12 +196,12 @@ cboard_x::Reset(void)
 #else
     if(pic.serialfd != INVALID_HANDLE_VALUE)
 #endif
-      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+
+      Window1.statusbar1.SetField(2,lxT("Serial: ")+
         String::FromAscii(SERIALDEVICE)+lxT(":")+itoa(pic.serialbaud)+lxT("(")+
         String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*
         pic.serialbaud)/pic.serialexbaud))+lxT("%)"));
     else  
-      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+
+      Window1.statusbar1.SetField(2,lxT("Serial: ")+
         String::FromAscii(SERIALDEVICE)+lxT(" (ERROR)"));
         
 
@@ -217,12 +217,12 @@ cboard_x::RefreshStatus(void)
 #else
     if(pic.serialfd != INVALID_HANDLE_VALUE)
 #endif
-      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+
+      Window1.statusbar1.SetField(2,lxT("Serial: ")+
         String::FromAscii(SERIALDEVICE)+lxT(":")+itoa(pic.serialbaud)+lxT("(")+
         String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*
         pic.serialbaud)/pic.serialexbaud))+lxT("%)"));
     else  
-      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+
+      Window1.statusbar1.SetField(2,lxT("Serial: ")+
         String::FromAscii(SERIALDEVICE)+lxT(" (ERROR)"));
     
 };

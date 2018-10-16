@@ -450,9 +450,14 @@ CPWindow1::Configure (CControl * control, const char * home)
   status = lxT ("PStart:  Ok ");
  else
   status = lxT ("PStart:Error");
+#else
+ status = lxT (""); 
 #endif
- status = lxT ("");
 
+
+#ifdef NO_DEBUG
+ statusbar1.SetField (1, lxT (" "));
+#else 
  if (debug)
   {
    if (pboard->DebugInit () == 0)
@@ -464,7 +469,7 @@ CPWindow1::Configure (CControl * control, const char * home)
   {
    statusbar1.SetField (1, status + lxT ("    Debug: Off"));
   }
-
+#endif
 
  statusbar1.SetField (0, lxT ("Running..."));
 
@@ -946,16 +951,26 @@ CPWindow1::LoadWorkspace (String fnpzw)
  snprintf (fzip, 1023, "%s/Readme.html", home);
  if (lxFileExists (fzip))
   {
+#ifdef EXT_BROWSER
+   lxLaunchDefaultBrowser(lxT("file://")+String(fzip));
+ //lxLaunchDefaultBrowser(lxT("https://lcgamboa.github.io/picsimlab/"));
+#else    
    Window2.html1.SetLoadFile (fzip);
    Window2.Show ();
+#endif   
   }
  else
   {
    snprintf (fzip, 1023, "%s/Readme.txt", home);
    if (lxFileExists (fzip))
     {
+#ifdef EXT_BROWSER
+     lxLaunchDefaultBrowser(lxT("file://")+String(fzip));
+     //lxLaunchDefaultBrowser(lxT("https://lcgamboa.github.io/picsimlab/"));
+#else      
      Window2.html1.SetLoadFile (fzip);
      Window2.Show ();
+#endif     
     }
   }
 

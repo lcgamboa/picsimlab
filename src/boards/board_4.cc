@@ -1030,9 +1030,9 @@ cboard_4::Reset(void)
 #else
     if(pic.serialfd != INVALID_HANDLE_VALUE)
 #endif
-      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+lxT(":")+itoa(pic.serialbaud)+lxT("(")+String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*pic.serialbaud)/pic.serialexbaud))+lxT("%)"));
+      Window1.statusbar1.SetField(2,lxT("Serial: ")+String::FromAscii(SERIALDEVICE)+lxT(":")+itoa(pic.serialbaud)+lxT("(")+String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*pic.serialbaud)/pic.serialexbaud))+lxT("%)"));
     else  
-      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+lxT(" (ERROR)"));
+      Window1.statusbar1.SetField(2,lxT("Serial: ")+String::FromAscii(SERIALDEVICE)+lxT(" (ERROR)"));
         
   
   for(int i=0;i < pic.PINCOUNT;i++)
@@ -1755,9 +1755,9 @@ cboard_4::RefreshStatus(void)
 #else
     if(pic.serialfd != INVALID_HANDLE_VALUE)
 #endif
-      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+lxT(":")+itoa(pic.serialbaud)+lxT("(")+String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*pic.serialbaud)/pic.serialexbaud))+lxT("%)"));
+      Window1.statusbar1.SetField(2,lxT("Serial: ")+String::FromAscii(SERIALDEVICE)+lxT(":")+itoa(pic.serialbaud)+lxT("(")+String().Format("%4.1f",fabs((100.0*pic.serialexbaud-100.0*pic.serialbaud)/pic.serialexbaud))+lxT("%)"));
     else  
-      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+String::FromAscii(SERIALDEVICE)+lxT(" (ERROR)"));
+      Window1.statusbar1.SetField(2,lxT("Serial: ")+String::FromAscii(SERIALDEVICE)+lxT(" (ERROR)"));
     
 };
 

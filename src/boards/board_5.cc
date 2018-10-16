@@ -285,12 +285,12 @@ cboard_5::Reset(void)
 #else
     if(avr_serial_get_fd() != INVALID_HANDLE_VALUE)
 #endif
-      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+
+      Window1.statusbar1.SetField(2,lxT("Serial: ")+
         String::FromAscii(SERIALDEVICE)+lxT(":")+itoa(serialbaud)+lxT("(")+
         String().Format("%4.1f",fabs((100.0*serialexbaud-100.0*
         serialbaud)/serialexbaud))+lxT("%)"));
     else  
-      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+
+      Window1.statusbar1.SetField(2,lxT("Serial: ")+
         String::FromAscii(SERIALDEVICE)+lxT(" (ERROR)"));
     
 /*
@@ -312,12 +312,12 @@ cboard_5::RefreshStatus(void)
 #else
     if(avr_serial_get_fd()!= INVALID_HANDLE_VALUE)
 #endif
-      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+
+      Window1.statusbar1.SetField(2,lxT("Serial: ")+
         String::FromAscii(SERIALDEVICE)+lxT(":")+itoa(serialbaud)+lxT("(")+
         String().Format("%4.1f",fabs((100.0*serialexbaud-100.0*
         serialbaud)/serialexbaud))+lxT("%)"));
     else  
-      Window1.statusbar1.SetField(2,lxT("Serial Port: ")+
+      Window1.statusbar1.SetField(2,lxT("Serial: ")+
         String::FromAscii(SERIALDEVICE)+lxT(" (ERROR)"));
     
     switch(avr->state)
