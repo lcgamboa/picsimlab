@@ -381,7 +381,11 @@ void
 CPWindow5::_EvOnHide (CControl * control)
 {
  timer1.SetRunState (0);
- Window1.GetBoard ()->SetUseSpareParts (0);
+ board * pboard = Window1.GetBoard ();
+ if (pboard)
+  {
+   pboard->SetUseSpareParts (0);
+  }
 };
 
 void

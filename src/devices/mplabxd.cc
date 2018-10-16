@@ -41,7 +41,7 @@
 #include<arpa/inet.h>
 #define        min(a,b)        ((a) < (b) ? (a) : (b))
 #include <sys/unistd.h>
-#include <sys/fcntl.h>
+#include <fcntl.h>
 #else
 #include<winsock.h>
 WORD wVersionRequested = 2;

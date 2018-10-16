@@ -239,13 +239,13 @@ void
 board::SetUseOscilloscope(int uo)
 {
   use_oscope=uo;
-};
+}
 
 void 
 board::SetUseSpareParts(int sp)
 {
   use_spare=sp;
-};
+}
 
 int 
 board::GetUseOscilloscope(void)

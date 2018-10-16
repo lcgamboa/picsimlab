@@ -496,8 +496,7 @@ CPWindow4::ReadPreferences (char *name, char *value)
 };
 
 void
-CPWindow4::_EvOnDestroy (CControl * control) {
- }
+CPWindow4::_EvOnDestroy (CControl * control) { }
 
 void
 CPWindow4::_EvOnShow (CControl * control)
@@ -509,7 +508,11 @@ void
 CPWindow4::_EvOnHide (CControl * control)
 {
  timer1.SetRunState (0);
- Window1.GetBoard ()->SetUseOscilloscope (0);
+ board * pboard = Window1.GetBoard ();
+ if (pboard)
+  {
+   pboard->SetUseOscilloscope (0);
+  }
 }
 
 void
