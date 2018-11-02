@@ -690,12 +690,16 @@ void
 CPWindow1::menu1_Help_Examples_EvMenuActive (CControl * control)
 {
 
+ #ifdef EXT_BROWSER
+ //lxLaunchDefaultBrowser(lxT("file://")+share + lxT ("docs/picsimlab.html"));
+ lxLaunchDefaultBrowser(lxT("https://lcgamboa.github.io/picsimlab/examples/examples_index.html#board_"+ itoa (lab) + lxT ("_") + pboard->proc ));
+#else 
  OldPath = filedialog2.GetDir ();
 
  filedialog2.SetDir (share + lxT ("/docs/hex/board_") + itoa (lab) + lxT ("/") + pboard->proc + lxT ("/"));
 
  menu1_File_LoadWorkspace_EvMenuActive (control);
-
+#endif
 }
 
 
