@@ -1,5 +1,6 @@
 
 
+char * serial_list(void);
 #ifdef LINUX
 int serial_open(const char * sname);
 int serial_cfg(int serialfd,int baud);

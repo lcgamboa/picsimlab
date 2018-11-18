@@ -206,13 +206,6 @@ CPWindow1::_EvOnCreate (CControl * control)
 #endif
 
 
-#ifdef _WIN_
-   Window3.combo1.SetItems (lxT ("COM1,COM2,COM3,COM4,COM5,COM6,COM7,COM8,COM9,COM10,"));
-   Window3.combo2.SetItems (lxT ("COM1,COM2,COM3,COM4,COM5,COM6,COM7,COM8,COM9,COM10,"));
-#else
-   Window3.combo1.SetItems (lxT ("/dev/ttyS0,/dev/ttyS1,/dev/ttyS2,/dev/ttyS3,/dev/tnt0,/dev/tnt1,/dev/tnt2,/dev/tnt3,/dev/tnt4,/dev/tnt5,"));
-   Window3.combo2.SetItems (lxT ("/dev/ttyS0,/dev/ttyS1,/dev/ttyS2,/dev/ttyS3,/dev/tnt0,/dev/tnt1,/dev/tnt2,/dev/tnt3,/dev/tnt4,/dev/tnt5,"));
-#endif
 
    if (Application->Aargc == 2)
     {

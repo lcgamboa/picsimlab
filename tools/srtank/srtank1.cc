@@ -50,15 +50,20 @@ void
 CPWindow1::_EvOnCreate (CControl * control)
 {
 
-#ifdef _WIN_
- combo1.SetItems (lxT ("COM1,COM2,COM3,COM4,COM5,COM6,COM7,COM8,COM9,COM10,COM11,COM12,"));
- combo1.SetText (lxT ("COM1"));
-#else
- combo1.SetItems (lxT ("/dev/ttyS0,/dev/ttyS1,/dev/ttyS2,/dev/ttyS3,/dev/tnt0,/dev/tnt1,/dev/tnt2,/dev/tnt3,/dev/tnt4,/dev/tnt5,"));
- combo1.SetText (lxT ("/dev/ttyS0"));
-#endif
+ char * resp = slist ();
 
+ if (resp)
+  {
 
+   combo1.SetItems (resp);
+   combo1.SetText (combo1.GetItem (0));
+   free (resp);
+  }
+ else
+  {
+   printf ("No serial ports found!\n");
+  }
+  
  amax = 40;
  amin = 10;
 

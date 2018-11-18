@@ -39,6 +39,7 @@
 #else
 #include <termios.h>
 #include <sys/ioctl.h>
+#include <glob.h>
 #endif
 
         
@@ -509,3 +510,163 @@ pic_set_serial(_pic * pic, const char * name, int flowcontrol,int ctspin,int  rt
   }
 };
 */
+
+
+char *
+serial_list (void)
+{
+ char *resp = NULL;
+ unsigned int i = 0;
+ int length;
+#ifdef _WIN_
+ HKEY key;
+ char *value, *data;
+ DWORD max_value_len, max_data_size;
+ DWORD value_len, data_size;
+ DWORD type;
+ int ret = 1;
+
+ if (RegOpenKeyEx (HKEY_LOCAL_MACHINE, "HARDWARE\\DEVICEMAP\\SERIALCOMM", 0, KEY_QUERY_VALUE, &key) != ERROR_SUCCESS)
+  {
+   printf (" %i RegOpenKeyEx() failed\n", ret);
+   return resp;
+  }
+ if (RegQueryInfoKey (key, NULL, NULL, NULL, NULL, NULL, NULL, NULL, &max_value_len, &max_data_size, NULL, NULL) != ERROR_SUCCESS)
+  {
+   printf ("%i RegQueryInfoKey() failed\n", ret);
+   RegCloseKey (key);
+   return resp;
+  }
+ if (!(value = (char *) malloc ((max_value_len + 1))))
+  {
+   printf (" %i Registry value malloc failed\n", ret);
+   RegCloseKey (key);
+   return resp;
+  }
+ if (!(data = (char *) malloc ((max_data_size + 1))))
+  {
+   printf ("%i Registry data malloc failed\n", ret);
+   free (value);
+   RegCloseKey (key);
+   return resp;
+  }
+
+ i = 0;
+ length = 0;
+ while (value_len = max_value_len + 1,
+        data_size = max_data_size,
+        RegEnumValue (key, i, value, &value_len, NULL, &type, (LPBYTE) data, &data_size) == ERROR_SUCCESS)
+  {
+   if (type == REG_SZ)
+    {
+     length += data_size;
+    }
+   i++;
+  }
+
+ if (length > 0)
+  {
+   resp = (char *) malloc (length + 1);
+   if (!resp)
+    {
+     printf ("Resp malloc failed\n");
+     free (value);
+     free (data);
+     RegCloseKey (key);
+     return resp;
+    }
+
+   resp[0] = 0;
+   i = 0;
+
+   while (value_len = max_value_len + 1,
+          data_size = max_data_size,
+          RegEnumValue (key, i, value, &value_len, NULL, &type, (LPBYTE) data, &data_size) == ERROR_SUCCESS)
+    {
+     if (type == REG_SZ)
+      {
+       strcat (resp, data);
+       strcat (resp, ",");
+      }
+     i++;
+    }
+  }
+
+ free (data);
+ free (value);
+ RegCloseKey (key);
+
+#else
+ int ret;
+ glob_t globbuf;
+
+ ret = glob ("/dev/ttyS*", 0, NULL, &globbuf);
+ if ((ret != 0)&&(ret != GLOB_NOMATCH))
+  {
+   printf ("glob error %i\n", ret);
+   return resp;
+  }
+
+ ret = glob ("/dev/ttyUSB*", GLOB_APPEND, NULL, &globbuf);
+ if ((ret != 0)&&(ret != GLOB_NOMATCH))
+  {
+   printf ("glob error %i\n", ret);
+   return resp;
+  }
+ ret = glob ("/dev/ttyACM*", GLOB_APPEND, NULL, &globbuf);
+ if ((ret != 0)&&(ret != GLOB_NOMATCH))
+  {
+   printf ("glob error %i\n", ret);
+   return resp;
+  }
+ ret = glob ("/dev/ttyAMA*", GLOB_APPEND, NULL, &globbuf);
+ if ((ret != 0)&&(ret != GLOB_NOMATCH))
+  {
+   printf ("glob error %i\n", ret);
+   return resp;
+  }
+ ret = glob ("/dev/rfcomm*", GLOB_APPEND, NULL, &globbuf);
+ if ((ret != 0)&&(ret != GLOB_NOMATCH))
+  {
+   printf ("glob error %i\n", ret);
+   return resp;
+  }
+ ret = glob ("/dev/tnt*", GLOB_APPEND, NULL, &globbuf);
+ if ((ret != 0)&&(ret != GLOB_NOMATCH))
+  {
+   printf ("glob error %i\n", ret);
+   return resp;
+  }
+
+
+ length = 0;
+ for (i = 0; i < globbuf.gl_pathc; i++)
+  {
+   length += strlen (globbuf.gl_pathv[i]) + 1;
+  }
+
+ if (length > 0)
+  {
+   resp = (char *) malloc (length + 1);
+   if (!resp)
+    {
+
+     printf ("Resp malloc failed\n");
+     return resp;
+    }
+
+   resp[0] = 0;
+   for (i = 0; i < globbuf.gl_pathc; i++)
+    {
+     strcat (resp, globbuf.gl_pathv[i]);
+     strcat (resp, ",");
+    }
+  }
+
+ globfree (&globbuf);
+
+
+#endif
+
+ return resp;
+}

@@ -41,6 +41,7 @@ CPWindow3::CPWindow3(void)
   SetTitle(lxT("PICSimLab - Configuration"));
   SetOverrideRedirect(0);
   EvOnCreate=EVONCREATE & CPWindow3::_EvOnCreate;
+  EvOnShow=EVONSHOW & CPWindow3::_EvOnShow;
   //label1
   label1.SetFOwner(this);
   label1.SetClass(lxT("CLabel"));

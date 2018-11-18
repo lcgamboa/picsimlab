@@ -1,0 +1,18 @@
+<img src="[push_buttons] (sobrescrita)" width="380" height="235" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:Luis Claudio Gamboa Lopes        -->
+<area shape="rect" coords="17,180,66,199" href="P1" />
+<area shape="rect" coords="17,206,66,225" href="P2" />
+<area shape="rect" coords="89,180,138,199" href="P3" />
+<area shape="rect" coords="89,206,138,225" href="P4" />
+<area shape="rect" coords="165,181,214,200" href="P5" />
+<area shape="rect" coords="165,206,214,225" href="P6" />
+<area shape="rect" coords="233,181,282,200" href="P7" />
+<area shape="rect" coords="233,206,282,225" href="P8" />
+<area shape="rect" coords="31,31,149,149" href="J1" />
+</map>

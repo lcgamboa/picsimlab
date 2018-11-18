@@ -39,6 +39,7 @@ class CPWindow3:public CPWindow
   CCombo combo2;
   /*#Events*/
   void _EvOnCreate(CControl * control);
+  void _EvOnShow(CControl * control);
   void button1_EvMouseButtonClick(CControl * control,const uint button,const uint x,const uint y,const uint state);
 
   /*#Others*/

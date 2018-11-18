@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=SRTank
+Comment="Serial Remote Tank"
+Exec=srtank
+Icon=/usr/share/picsimlab/srtank.png
+Terminal=false
+Type=Application
+Categories=Development;Engineering;Electronics;

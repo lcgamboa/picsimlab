@@ -1,0 +1,14 @@
+<img src="[board_x] (imported)" width="450" height="530" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:lcganmboa@yahoo.com   -->
+<area shape="rect" coords="194,80,283,99" href="I_ICSP" />
+<area shape="rect" coords="411,54,426,84" href="I_PWR" />
+<area shape="circle" coords="125,211,22" href="I_RST" />
+<area shape="circle" coords="54,390,22" href="I_D0" />
+<area shape="rect" coords="135,414,143,436" href="I_D1" />
+</map>

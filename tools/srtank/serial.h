@@ -2,6 +2,7 @@
 
 extern char SERIALDEVICE[100];
 
+char * slist(void);
 int sopen(const char * port);
 int sclose(void);
 int scfg(void);

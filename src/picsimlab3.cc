@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -38,6 +38,7 @@ extern char PROGDEVICE[100];
 
 extern char SERIALDEVICE[100];
 
+char * serial_list (void);
 
 //Implementation
 
@@ -47,8 +48,14 @@ CPWindow3::_EvOnCreate(CControl * control)
   combo1.SetText(String::FromAscii(SERIALDEVICE));
 #ifdef _USE_PICSTARTP_  
   combo2.SetText(String::FromAscii(PROGDEVICE));
+  combo2.SetVisible (true);
+  label2.SetVisible (true);
+#else  
+  combo2.SetVisible (false);
+  label2.SetVisible (false);
 #endif
-};
+
+}
 
 
 void
@@ -74,10 +81,33 @@ CPWindow3::button1_EvMouseButtonClick(CControl * control, uint button, uint x, u
   if(spare_on) Window1.menu1_Modules_Spareparts_EvMenuActive(this);
 
   WDestroy();
-};
+}
 
+void
+CPWindow3::_EvOnShow (CControl * control)
+{
 
+ char * resp = serial_list ();
 
+ if (resp)
+  {
+   String temp;
+   temp=combo1.GetText ();
+   combo1.SetItems (resp);
+   combo1.SetText (temp);  
+
+   temp=combo2.GetText ();
+   combo2.SetItems (resp);
+   combo2.SetText (temp);  
+
+   free (resp);
+  }
+ else
+  {
+   printf ("No serial ports found!\n");
+  }
+ 
+}
 
 
 
