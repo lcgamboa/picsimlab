@@ -434,7 +434,9 @@ AT+CIUPDATE
         if(CIPMUX)
             sscanf(cmd,"AT+CIPSEND=%i,%i",&link,&size);   
         else
-            sscanf(cmd,"AT+CIPSEND=%i",&size);  
+            sscanf(cmd,"AT+CIPSEND=%i",&size); 
+
+       if(size > 2048)size=2048;	
        
        if(((link >=0)&&(link <= 3))||(CIPMUX == 0))
         if(SCLI[link] > 0)
@@ -443,16 +445,30 @@ AT+CIUPDATE
            serial_send(sfd,(const unsigned char *)"\r\n\r\nOK\r\n>",9);
        
            int r=0;
-        
            do{
               r+=serial_rec (sfd,(unsigned char *)SBUFF+r,size-r);
            }while(r < size);
           
            if(CIPMUX)
-              r= skt_send (SCLI[link],(const char *)SBUFF,size);
+	   {
+              if((r= skt_send (SCLI[link],(const char *)SBUFF,size)) < 0)
+	      {
+                skt_close (SCLI[link]);
+		SCLI[link]=-1;      
+	        printf("Send Error!\n");    
+	      }
+	   }
            else
-              r= skt_send (SCLI[0],(const char *)SBUFF,size);
-        
+	   {
+              if((r= skt_send (SCLI[0],(const char *)SBUFF,size)) < 0)
+	      {
+                skt_close (SCLI[0]);
+	        SCLI[0]=-1; 
+	        printf("Send Error!\n");    
+	      }
+	   }
+
+
            char str[100];
            sprintf(str,"\r\nRecv %i bytes\r\n",r);
            serial_send(sfd,(const unsigned char *) str, strlen(str)); 

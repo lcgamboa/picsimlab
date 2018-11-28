@@ -64,12 +64,13 @@ CPWindow3::button1_EvMouseButtonClick(CControl * control, uint button, uint x, u
   int osc_on= Window1.GetBoard()->GetUseOscilloscope();
   int spare_on= Window1.GetBoard()->GetUseSpareParts();
   
+  #ifdef _USE_PICSTARTP_ 
   if(combo1.GetText()==combo2.GetText())
   {
     Message(lxT("Use diferent ports!"));
     return;
   }	
-
+  #endif
   strcpy(SERIALDEVICE,(char*)combo1.GetText().char_str());
 #ifdef _USE_PICSTARTP_
   strcpy(PROGDEVICE,(char*)combo2.GetText().char_str());
