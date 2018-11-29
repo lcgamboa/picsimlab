@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="62">
+<configurationDescriptor version="65">
   <logicalFolder name="root" displayName="root" projectFiles="true">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -30,29 +30,16 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>picsimlab</platformTool>
         <languageToolchain>XC8</languageToolchain>
-        <languageToolchainVersion>1.45</languageToolchainVersion>
+        <languageToolchainVersion>2.00</languageToolchainVersion>
         <platform>2</platform>
       </toolsSet>
+      <packs>
+        <pack name="PIC18Fxxxx_DFP" vendor="Microchip" version="1.0.7"/>
+      </packs>
       <compileType>
         <linkerTool>
           <linkerLibItems>
-            <linkerLibProjectItem>
-              <makeArtifact PL="bibliotecas.X"
-                            CT="3"
-                            CN="default"
-                            AC="true"
-                            BL="true"
-                            WD="bibliotecas.X"
-                            BC="${MAKE}  -f Makefile CONF=default"
-                            DBC="${MAKE}  -f Makefile CONF=default TYPE_IMAGE=DEBUG_RUN"
-                            CC="rm -rf &quot;build/default&quot; &quot;dist/default&quot;"
-                            OP="dist/default/production/bibliotecas.X.lpp"
-                            DOP="dist/default/debug/bibliotecas.X.lpp"
-                            FL="dist/default/production/bibliotecas.X.lpp"
-                            PD="dist/default/production/bibliotecas.X.lpp"
-                            DD="dist/default/debug/bibliotecas.X.lpp">
-              </makeArtifact>
-            </linkerLibProjectItem>
+            <linkerLibFileItem>bibliotecas.X/dist/default/production/bibliotecas.X.a</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
         <archiverTool>
