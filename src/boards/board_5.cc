@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015-2018  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2015-2019  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -85,7 +85,7 @@ cboard_5::cboard_5(void)
   //gauge1
   gauge1=new CGauge();
   gauge1->SetFOwner(&Window1);
-  gauge1->SetName(lxT("gauge1_p7"));
+  gauge1->SetName(lxT("gauge1_p5"));
   gauge1->SetX(35);
   gauge1->SetY(74);
   gauge1->SetWidth(110);
@@ -99,7 +99,7 @@ cboard_5::cboard_5(void)
   //gauge2
   gauge2=new CGauge();
   gauge2->SetFOwner(&Window1);
-  gauge2->SetName(lxT("gauge2_p7"));
+  gauge2->SetName(lxT("gauge2_p5"));
   gauge2->SetX(35);
   gauge2->SetY(100);
   gauge2->SetWidth(110);
@@ -113,7 +113,7 @@ cboard_5::cboard_5(void)
   //gauge3
   gauge3=new CGauge();
   gauge3->SetFOwner(&Window1);
-  gauge3->SetName(lxT("gauge3_p7"));
+  gauge3->SetName(lxT("gauge3_p5"));
   gauge3->SetX(35);
   gauge3->SetY(125);
   gauge3->SetWidth(110);
@@ -127,7 +127,7 @@ cboard_5::cboard_5(void)
   //gauge4
   gauge4=new CGauge();
   gauge4->SetFOwner(&Window1);
-  gauge4->SetName(lxT("gauge4_p7"));
+  gauge4->SetName(lxT("gauge4_p5"));
   gauge4->SetX(35);
   gauge4->SetY(150);
   gauge4->SetWidth(110);
@@ -141,7 +141,7 @@ cboard_5::cboard_5(void)
    //gauge5
   gauge5=new CGauge();
   gauge5->SetFOwner(&Window1);
-  gauge5->SetName(lxT("gauge5_p7"));
+  gauge5->SetName(lxT("gauge5_p5"));
   gauge5->SetX(35);
   gauge5->SetY(175);
   gauge5->SetWidth(110);
@@ -155,7 +155,7 @@ cboard_5::cboard_5(void)
    //gauge6
   gauge6=new CGauge();
   gauge6->SetFOwner(&Window1);
-  gauge6->SetName(lxT("gauge6_p7"));
+  gauge6->SetName(lxT("gauge6_p5"));
   gauge6->SetX(35);
   gauge6->SetY(200);
   gauge6->SetWidth(110);
@@ -170,7 +170,7 @@ cboard_5::cboard_5(void)
   //label1
   label1=new CLabel();
   label1->SetFOwner(&Window1);
-  label1->SetName(lxT("label1_p7"));
+  label1->SetName(lxT("label1_p5"));
   label1->SetX(12);
   label1->SetY(75);
   label1->SetWidth(20);
@@ -183,7 +183,7 @@ cboard_5::cboard_5(void)
   //label2
   label2=new CLabel();
   label2->SetFOwner(&Window1);
-  label2->SetName(lxT("label2_p7"));
+  label2->SetName(lxT("label2_p5"));
   label2->SetX(12);
   label2->SetY(100);
   label2->SetWidth(20);
@@ -196,7 +196,7 @@ cboard_5::cboard_5(void)
   //label3
   label3=new CLabel();
   label3->SetFOwner(&Window1);
-  label3->SetName(lxT("label3_p7"));
+  label3->SetName(lxT("label3_p5"));
   label3->SetX(13);
   label3->SetY(125);
   label3->SetWidth(20);
@@ -209,7 +209,7 @@ cboard_5::cboard_5(void)
   //label4
   label4=new CLabel();
   label4->SetFOwner(&Window1);
-  label4->SetName(lxT("label4_p7"));
+  label4->SetName(lxT("label4_p5"));
   label4->SetX(13);
   label4->SetY(150);
   label4->SetWidth(20);
@@ -222,7 +222,7 @@ cboard_5::cboard_5(void)
   //label5
   label5=new CLabel();
   label5->SetFOwner(&Window1);
-  label5->SetName(lxT("label5_p7"));
+  label5->SetName(lxT("label5_p5"));
   label5->SetX(13);
   label5->SetY(175);
   label5->SetWidth(20);
@@ -235,7 +235,7 @@ cboard_5::cboard_5(void)
   //label6
   label6=new CLabel();
   label6->SetFOwner(&Window1);
-  label6->SetName(lxT("label6_p7"));
+  label6->SetName(lxT("label6_p5"));
   label6->SetX(13);
   label6->SetY(200);
   label6->SetWidth(20);
@@ -338,7 +338,7 @@ void
 cboard_5::WritePreferences(void)
 {
     //write selected microcontroller of board_x to preferences
-    Window1.saveprefs(lxT("p7_proc"),proc);
+    Window1.saveprefs(lxT("p5_proc"),proc);
 };
 
 //Called whe configuration file load  preferences 
@@ -346,7 +346,7 @@ void
 cboard_5::ReadPreferences(char *name,char *value)
 {
     //read microcontroller of preferences
-    if(!strcmp(name,"p7_proc"))
+    if(!strcmp(name,"p5_proc"))
     {
       proc=value; 
     }
@@ -407,11 +407,12 @@ cboard_5::EvMouseButtonPress(uint button, uint x, uint y,uint state)
           break;
         //if event is over I_RST area then turn off and reset
         case I_RST:
-          if(Window1.Get_picpwr())//if powered
+          if(Window1.Get_picpwr() && pic_reset(-1))//if powered
           {
             Window1.Set_picpwr(0);
             Window1.Set_picrst(1);
           } 
+          p_MCLR= 0;
           break;
       }
     }
@@ -443,6 +444,7 @@ cboard_5::EvMouseButtonRelease(uint button, uint x, uint y,uint state)
             Reset();
             
           } 
+          p_MCLR= 1;
           break;
 
       }
@@ -539,9 +541,13 @@ void cboard_5::Run_CPU(void)
  if(Window1.Get_picpwr()) //if powered
    for(i=0; i < (Window1.GetNSTEP()*4);i++) //repeat for number of steps in 100ms
       {
+     
+       
  /*
         if(j > JUMPSTEPS)//if number of step is bigger than steps to skip 
         {  
+        //FIXME ATMEGA RST
+        //pic_set_pin(pic.mclr, p_MCLR);
           pic_set_pin(19,p_BT1);//Set pin 19 (RD0) with button state 
           pic_set_pin(20,p_BT2);//Set pin 20 (RD1) with switch state 
         } 

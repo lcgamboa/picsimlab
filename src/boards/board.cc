@@ -33,6 +33,7 @@ board::board(void)
   outputc=0;
   use_oscope=0;
   use_spare=0;
+  p_MCLR=1;
 };
 
 

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015-2018  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2015-2019  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -88,7 +88,7 @@ cboard_7::cboard_7(void)
   //scroll1
   scroll1=new CScroll();   
   scroll1->SetFOwner(&Window1);
-  scroll1->SetName(lxT("scroll1_p5"));
+  scroll1->SetName(lxT("scroll1_p7"));
   scroll1->SetX(48);
   scroll1->SetY(200-120);
   scroll1->SetWidth(110);
@@ -102,7 +102,7 @@ cboard_7::cboard_7(void)
   //gauge1
   gauge1=new CGauge();
   gauge1->SetFOwner(&Window1);
-  gauge1->SetName(lxT("gauge1_p5"));
+  gauge1->SetName(lxT("gauge1_p7"));
   gauge1->SetX(48);
   gauge1->SetY(230-120);
   gauge1->SetWidth(110);
@@ -116,7 +116,7 @@ cboard_7::cboard_7(void)
   //gauge2
   gauge2=new CGauge();
   gauge2->SetFOwner(&Window1);
-  gauge2->SetName(lxT("gauge2_p5"));
+  gauge2->SetName(lxT("gauge2_p7"));
   gauge2->SetX(48);
   gauge2->SetY(255-120);
   gauge2->SetWidth(110);
@@ -130,7 +130,7 @@ cboard_7::cboard_7(void)
   //gauge3
   gauge3=new CGauge();
   gauge3->SetFOwner(&Window1);
-  gauge3->SetName(lxT("gauge3_p5"));
+  gauge3->SetName(lxT("gauge3_p7"));
   gauge3->SetX(48);
   gauge3->SetY(280-120);
   gauge3->SetWidth(110);
@@ -144,7 +144,7 @@ cboard_7::cboard_7(void)
   //gauge4
   gauge4=new CGauge();
   gauge4->SetFOwner(&Window1);
-  gauge4->SetName(lxT("gauge4_p5"));
+  gauge4->SetName(lxT("gauge4_p7"));
   gauge4->SetX(48);
   gauge4->SetY(305-120);
   gauge4->SetWidth(110);
@@ -158,7 +158,7 @@ cboard_7::cboard_7(void)
   //label1
   label1=new CLabel();
   label1->SetFOwner(&Window1);
-  label1->SetName(lxT("label1_p5"));
+  label1->SetName(lxT("label1_p7"));
   label1->SetX(12);
   label1->SetY(200-120);
   label1->SetWidth(60);
@@ -171,7 +171,7 @@ cboard_7::cboard_7(void)
   //label2
   label2=new CLabel();
   label2->SetFOwner(&Window1);
-  label2->SetName(lxT("label2_p5"));
+  label2->SetName(lxT("label2_p7"));
   label2->SetX(12);
   label2->SetY(230-120);
   label2->SetWidth(60);
@@ -184,7 +184,7 @@ cboard_7::cboard_7(void)
   //label3
   label3=new CLabel();
   label3->SetFOwner(&Window1);
-  label3->SetName(lxT("label3_p5"));
+  label3->SetName(lxT("label3_p7"));
   label3->SetX(13);
   label3->SetY(255-120);
   label3->SetWidth(60);
@@ -197,7 +197,7 @@ cboard_7::cboard_7(void)
   //label4
   label4=new CLabel();
   label4->SetFOwner(&Window1);
-  label4->SetName(lxT("label4_p5"));
+  label4->SetName(lxT("label4_p7"));
   label4->SetX(13);
   label4->SetY(280-120);
   label4->SetWidth(60);
@@ -210,7 +210,7 @@ cboard_7::cboard_7(void)
   //label5
   label5=new CLabel();
   label5->SetFOwner(&Window1);
-  label5->SetName(lxT("label5_p5"));
+  label5->SetName(lxT("label5_p7"));
   label5->SetX(13);
   label5->SetY(305-120);
   label5->SetWidth(60);
@@ -291,8 +291,8 @@ void
 cboard_7::WritePreferences(void)
 {
     //write selected microcontroller of board_5 to preferences
-    Window1.saveprefs(lxT("p5_proc"),proc);
-    Window1.saveprefs(lxT("p5_jmp"),String().Format("%i",jmp[0]));
+    Window1.saveprefs(lxT("p7_proc"),proc);
+    Window1.saveprefs(lxT("p7_jmp"),String().Format("%i",jmp[0]));
 };
 
 //Called whe configuration file load  preferences 
@@ -300,12 +300,12 @@ void
 cboard_7::ReadPreferences(char *name,char *value)
 {
     //read microcontroller of preferences
-    if(!strcmp(name,"p5_proc"))
+    if(!strcmp(name,"p7_proc"))
     {
       proc=value; 
     }
     
-    if(!strcmp(name,"p5_jmp"))
+    if(!strcmp(name,"p7_jmp"))
     {
       int i;  
       for(i=0;i<1;i++)
@@ -384,11 +384,12 @@ cboard_7::EvMouseButtonPress(uint button, uint x, uint y,uint state)
           break;
         //if event is over I_RST area then turn off and reset
         case I_RST:
-          if(Window1.Get_picpwr())//if powered
+          if(Window1.Get_picpwr() && pic_reset(-1))//if powered
           {
             Window1.Set_picpwr(0);
             Window1.Set_picrst(1);
           } 
+          p_MCLR= 0;
           break;
         //if event is over I_S1 area then activate button (state=0) 
         case I_S1:
@@ -429,7 +430,8 @@ cboard_7::EvMouseButtonRelease(uint button, uint x, uint y,uint state)
             {  
               Reset();
             }
-          } 
+          }
+          p_MCLR= 1;
           break;
         //if event is over I_S1 area then deactivate button (state=1) 
         case I_S1:
@@ -560,8 +562,10 @@ void cboard_7::Run_CPU(void)
    for(i=0;i<Window1.GetNSTEP();i++) //repeat for number of steps in 100ms
       {
  
+        
         if(j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
-        {  
+        {
+          pic_set_pin(pic.mclr, p_MCLR);
           pic_set_pin(6,p_BT1);//Set pin 6 (RC4) with button state 
         } 
         

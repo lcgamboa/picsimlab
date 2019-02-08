@@ -111,6 +111,7 @@ class board
       void ReadMaps(void); //read maps 
       int use_oscope;
       int use_spare;
+      int p_MCLR;
  private:      
       void ReadInputMap(String fname);
       void ReadOutputMap(String fname);

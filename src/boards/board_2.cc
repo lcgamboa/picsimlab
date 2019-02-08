@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2019  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -167,9 +167,11 @@ for(pi=0;pi < pic.PINCOUNT;pi++)
  if(Window1.Get_picpwr())
    for(i=0;i<Window1.GetNSTEP();i++)
       {
-          //if(j > JUMPSTEPS)
-          //{  
- 
+          if(j >= JUMPSTEPS)
+          {  
+            pic_set_pin(pic.mclr, p_MCLR);
+          }
+          
           L[0]=pic_get_pin(18);
           L[1]=pic_get_pin(1);
           L[2]=pic_get_pin(15);
@@ -367,11 +369,12 @@ cboard_2::EvMouseButtonPress( uint button, uint x, uint y,uint state)
       
       case I_RST:
       {
-          if(Window1.Get_picpwr())
+          if(Window1.Get_picpwr() && pic_reset(-1))
           {
              Window1.Set_picpwr(0);
              Window1.Set_picrst(1);
           } 
+          p_MCLR= 0;
       };break;
       
 
@@ -457,6 +460,7 @@ cboard_2::EvMouseButtonRelease( uint button, uint x, uint y,uint state)
               Reset();
             }
           } 
+          p_MCLR= 1;
       };break;
       
 

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015-2018  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2015-2019  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -327,11 +327,12 @@ cboard_x::EvMouseButtonPress(uint button, uint x, uint y,uint state)
           break;
         //if event is over I_RST area then turn off and reset
         case I_RST:
-          if(Window1.Get_picpwr())//if powered
+          if(Window1.Get_picpwr() && pic_reset(-1))//if powered
           {
             Window1.Set_picpwr(0);
             Window1.Set_picrst(1);
           } 
+          p_MCLR= 0;
           break;
         //if event is over I_D0 area then activate button (state=0) 
         case I_D0:
@@ -372,7 +373,8 @@ cboard_x::EvMouseButtonRelease(uint button, uint x, uint y,uint state)
             {  
               Reset();
             }
-          } 
+          }
+          p_MCLR= 1;
           break;
         //if event is over I_D0 area then deactivate button (state=1) 
         case I_D0:
@@ -501,6 +503,7 @@ void cboard_x::Run_CPU(void)
  
         if(j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
         {  
+          pic_set_pin(pic.mclr, p_MCLR);
           pic_set_pin(19,p_BT1);//Set pin 19 (RD0) with button state 
           pic_set_pin(20,p_BT2);//Set pin 20 (RD1) with switch state 
         } 
