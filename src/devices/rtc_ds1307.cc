@@ -29,11 +29,8 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
-#include<time.h>
 
-
-time_t utime2;
-struct tm *dtime2;
+//#define _DEBUG
 
 void
 rtc2_rst(rtc2_t *rtc)
@@ -46,6 +43,7 @@ rtc->byte=0xFF;
 rtc->datab=0;
 rtc->ctrl=0;
 rtc->ret=0;
+rtc->ucont=0;
   //printf("rtc rst\n");
 
 //for(i=0;i<16;i++)
@@ -56,6 +54,7 @@ rtc->ret=0;
 void 
 rtc2_init(rtc2_t *rtc)
 {
+  time_t utime;
   //printf("rtc init\n");
   
   rtc->data=(unsigned char *) calloc(64,sizeof(unsigned char));
@@ -63,18 +62,32 @@ rtc2_init(rtc2_t *rtc)
   memset(rtc->data,0xFF,16);
   rtc2_rst(rtc);
          
+  utime=time(NULL);
+  rtc2_setUtime(rtc, utime);
+}
 
-  utime2=time(NULL);
-  dtime2=localtime(&utime2);
-  rtc->data[0]=((dtime2->tm_sec/10)<<4)|(dtime2->tm_sec%10);
-  rtc->data[1]=((dtime2->tm_min/10)<<4)|(dtime2->tm_min%10);
-  rtc->data[2]=((dtime2->tm_hour/10)<<4)|(dtime2->tm_hour%10);
-  rtc->data[3]=dtime2->tm_wday;
-  rtc->data[4]=((dtime2->tm_mday/10)<<4)|(dtime2->tm_mday%10);
-  rtc->data[5]=(((dtime2->tm_mon+1)/10)<<4)|((dtime2->tm_mon+1)%10);
-  rtc->data[6]=(((dtime2->tm_year%100)/10)<<4)|(dtime2->tm_year%10);
+void rtc2_setUtime(rtc2_t *rtc, time_t utime)
+{
+  rtc->systime=time(NULL);
+  rtc->rtctime=utime;
+  rtc->ucont=0;
+#ifdef _WIN_
+  localtime_s(&rtc->dtime, &utime);
+#else
+  localtime_r(&utime, &rtc->dtime);
+#endif  
+  rtc->data[0]=((rtc->dtime.tm_sec/10)<<4)|(rtc->dtime.tm_sec%10);
+  rtc->data[1]=((rtc->dtime.tm_min/10)<<4)|(rtc->dtime.tm_min%10);
+  rtc->data[2]=((rtc->dtime.tm_hour/10)<<4)|(rtc->dtime.tm_hour%10);
+  rtc->data[3]=rtc->dtime.tm_wday;
+  rtc->data[4]=((rtc->dtime.tm_mday/10)<<4)|(rtc->dtime.tm_mday%10);
+  rtc->data[5]=(((rtc->dtime.tm_mon+1)/10)<<4)|((rtc->dtime.tm_mon+1)%10);
+  rtc->data[6]=(((rtc->dtime.tm_year%100)/10)<<4)|(rtc->dtime.tm_year%10); 
+}
 
-
+time_t rtc2_getUtime(rtc2_t *rtc)
+{
+ return mktime(&rtc->dtime);
 }
 
 int rtcc2=0;
@@ -89,44 +102,50 @@ void rtc2_update(rtc2_t *rtc)
     rtcc2=0;
     if((rtc->data[0] & 0x80) == 0 )
     {
-       
-      dtime2->tm_sec++;
-      if(dtime2->tm_sec == 60)
+ /*      
+      rtc->dtime.tm_sec++;
+      if(rtc->dtime.tm_sec == 60)
       {
-        dtime2->tm_sec =0;
-        dtime2->tm_min++;
+        rtc->dtime.tm_sec =0;
+        rtc->dtime.tm_min++;
       } 
-      if(dtime2->tm_min == 60)
+      if(rtc->dtime.tm_min == 60)
       {
-        dtime2->tm_min=0;
-        dtime2->tm_hour++;  
+        rtc->dtime.tm_min=0;
+        rtc->dtime.tm_hour++;  
       }
-      if(dtime2->tm_hour == 24)
+      if(rtc->dtime.tm_hour == 24)
       {
-        dtime2->tm_hour=0;
-        dtime2->tm_mday++;
-        dtime2->tm_wday++;
+        rtc->dtime.tm_hour=0;
+        rtc->dtime.tm_mday++;
+        rtc->dtime.tm_wday++;
       } 
-      if(dtime2->tm_wday == 7)dtime2->tm_wday=0;
+      if(rtc->dtime.tm_wday == 7)rtc->dtime.tm_wday=0;
  
-      if(dtime2->tm_mday == 31)
+      if(rtc->dtime.tm_mday == 31)
       {
-        dtime2->tm_mday=0;
-        dtime2->tm_mon++;
+        rtc->dtime.tm_mday=0;
+        rtc->dtime.tm_mon++;
       } 
-      if(dtime2->tm_mon == 13)
+      if(rtc->dtime.tm_mon == 13)
       {
-        dtime2->tm_mon=1;
-        dtime2->tm_year++;
+        rtc->dtime.tm_mon=1;
+        rtc->dtime.tm_year++;
       }  
-
-      rtc->data[0]=((dtime2->tm_sec/10)<<4)|(dtime2->tm_sec%10);
-      rtc->data[1]=((dtime2->tm_min/10)<<4)|(dtime2->tm_min%10);
-      rtc->data[2]=((dtime2->tm_hour/10)<<4)|(dtime2->tm_hour%10);
-      rtc->data[3]=dtime2->tm_wday;
-      rtc->data[4]=((dtime2->tm_mday/10)<<4)|(dtime2->tm_mday%10);
-      rtc->data[5]=(((dtime2->tm_mon+1)/10)<<4)|((dtime2->tm_mon+1)%10);
-      rtc->data[6]=(((dtime2->tm_year%100)/10)<<4)|(dtime2->tm_year%10);
+*/      
+      time_t utime= mktime(&rtc->dtime)+1;
+#ifdef _WIN_  
+      localtime_s(&rtc->dtime, &utime);
+#else
+      localtime_r(&utime, &rtc->dtime);
+#endif 
+      rtc->data[0]=((rtc->dtime.tm_sec/10)<<4)|(rtc->dtime.tm_sec%10);
+      rtc->data[1]=((rtc->dtime.tm_min/10)<<4)|(rtc->dtime.tm_min%10);
+      rtc->data[2]=((rtc->dtime.tm_hour/10)<<4)|(rtc->dtime.tm_hour%10);
+      rtc->data[3]=rtc->dtime.tm_wday;
+      rtc->data[4]=((rtc->dtime.tm_mday/10)<<4)|(rtc->dtime.tm_mday%10);
+      rtc->data[5]=(((rtc->dtime.tm_mon+1)/10)<<4)|((rtc->dtime.tm_mon+1)%10);
+      rtc->data[6]=(((rtc->dtime.tm_year%100)/10)<<4)|(rtc->dtime.tm_year%10);
     };
 
 //alarm
@@ -200,9 +219,36 @@ void rtc2_update(rtc2_t *rtc)
   }
 
 */
+  rtc->ucont++;
+  if(rtc->ucont == 10)
+   {
+#ifdef _DEBUG    
+    printf("test sync...  ");
+#endif    
+    time_t now= time(NULL);
+    long int dsys= now-rtc->systime;
+    long int drtc=rtc2_getUtime (rtc) - rtc->rtctime;
+    int drift=dsys-drtc;
+#ifdef _DEBUG    
+    printf("sys=%li rtc=%li drift=%li\n",dsys,drtc, dsys-drtc );
+#endif    
+    
+    if(drift > 0)
+    {
+#ifdef _DEBUG      
+      printf("resync ...\n"); 
+#endif      
+      rtc2_setUtime(rtc, rtc2_getUtime (rtc)+drift);
+      rtc->systime=now;
+      rtc->rtctime=rtc2_getUtime (rtc);
+    }
+    
+    
+    rtc->ucont=0;
+   }
  }
 
-};
+}
 
 void
 rtc2_end(rtc2_t *rtc)
@@ -293,25 +339,25 @@ rtc2_io(rtc2_t *rtc, unsigned char scl, unsigned char sda)
             switch(rtc->addr)
             {
               case 0:
-                 dtime2->tm_sec=(((rtc->datab&0xF0)>>4)*10)+(rtc->datab&0x0F); 
+                 rtc->dtime.tm_sec=(((rtc->datab&0xF0)>>4)*10)+(rtc->datab&0x0F); 
                  break; 
               case 1:
-                 dtime2->tm_min=(((rtc->datab&0xF0)>>4)*10)+(rtc->datab&0x0F); 
+                 rtc->dtime.tm_min=(((rtc->datab&0xF0)>>4)*10)+(rtc->datab&0x0F); 
                  break; 
               case 2:
-                 dtime2->tm_hour=(((rtc->datab&0xF0)>>4)*10)+(rtc->datab&0x0F); 
+                 rtc->dtime.tm_hour=(((rtc->datab&0xF0)>>4)*10)+(rtc->datab&0x0F); 
                  break; 
               case 4:
-                 dtime2->tm_mday=(((rtc->datab&0xF0)>>4)*10)+(rtc->datab&0x0F); 
+                 rtc->dtime.tm_mday=(((rtc->datab&0xF0)>>4)*10)+(rtc->datab&0x0F); 
                  break; 
               case 3:
-                 dtime2->tm_wday=(((rtc->datab&0xF0)>>4)*10)+(rtc->datab&0x0F); 
+                 rtc->dtime.tm_wday=(((rtc->datab&0xF0)>>4)*10)+(rtc->datab&0x0F); 
                  break; 
               case 5:
-                 dtime2->tm_mon=(((rtc->datab&0xF0)>>4)*10)+(rtc->datab&0x0F); 
+                 rtc->dtime.tm_mon=(((rtc->datab&0xF0)>>4)*10)+(rtc->datab&0x0F); 
                  break; 
               case 6:
-                 dtime2->tm_year= (dtime2->tm_year&0xFF00)|((((rtc->datab&0xF0)>>4)*10)+(rtc->datab&0x0F)); 
+                 rtc->dtime.tm_year= (rtc->dtime.tm_year&0xFF00)|((((rtc->datab&0xF0)>>4)*10)+(rtc->datab&0x0F)); 
                  break; 
              default:
                 break;   
@@ -319,6 +365,10 @@ rtc2_io(rtc2_t *rtc, unsigned char scl, unsigned char sda)
  
             rtc->addr++;
             rtc->ret=0;
+            
+            rtc->systime=time(NULL);
+            rtc->rtctime=rtc2_getUtime(rtc);
+            rtc->ucont=0;
           }
      }  
      else if((rtc->ctrl ) == 0xD1)  //read

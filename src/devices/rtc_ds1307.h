@@ -23,6 +23,8 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+#include<time.h>
+
 typedef struct
 {
 
@@ -41,6 +43,11 @@ unsigned char ret;
 
 unsigned char bit;
 unsigned char byte;
+
+struct tm dtime;
+time_t systime;
+time_t rtctime;
+int ucont;
 }rtc2_t;
 
 
@@ -48,5 +55,7 @@ void rtc2_rst(rtc2_t *rtc);
 void rtc2_init(rtc2_t *rtc);
 void rtc2_update(rtc2_t *rtc);
 void rtc2_end(rtc2_t *rtc);
+void rtc2_setUtime(rtc2_t *rtc, time_t utime);
+time_t rtc2_getUtime(rtc2_t *rtc);
 
 unsigned char rtc2_io(rtc2_t *rtc, unsigned char scl, unsigned char sda);

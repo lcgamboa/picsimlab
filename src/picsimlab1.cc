@@ -52,6 +52,18 @@ int prog_end (void);
 
 #ifdef _WIN_
 #define msleep(x) Sleep(x)
+void usleep(unsigned int usec)
+{
+	HANDLE timer;
+	LARGE_INTEGER ft;
+
+	ft.QuadPart = -(10 * (__int64)usec);
+
+	timer = CreateWaitableTimer(NULL, TRUE, NULL);
+	SetWaitableTimer(timer, &ft, 0, NULL, NULL, 0);
+	WaitForSingleObject(timer, INFINITE);
+	CloseHandle(timer);
+}
 #else
 #define msleep(x) usleep(x*1000)
 #endif        
@@ -115,11 +127,7 @@ CPWindow1::thread1_EvThreadRun (CControl*)
     }
    else
     {
-#ifdef _WIN_
-     Sleep (1);
-#else
      usleep (1);
-#endif        
     }
   }
  while (!thread1.TestDestroy ());
