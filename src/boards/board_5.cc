@@ -407,7 +407,7 @@ cboard_5::EvMouseButtonPress(uint button, uint x, uint y,uint state)
           break;
         //if event is over I_RST area then turn off and reset
         case I_RST:
-          if(Window1.Get_picpwr() && pic_reset(-1))//if powered
+          if(Window1.Get_picpwr())//if powered
           {
             Window1.Set_picpwr(0);
             Window1.Set_picrst(1);
