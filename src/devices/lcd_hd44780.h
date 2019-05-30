@@ -75,6 +75,7 @@ char ddram[DDRMAX][5];
 char cgram[8][5];
 char bc;
 char buff;
+unsigned char cnum;     //number of columns 16 or 20
 unsigned char lnum;     //number of lines 1,2 or 4 
 }lcd_t;
 
@@ -86,7 +87,7 @@ void lcd_data(lcd_t * lcd, char data);
 
 void lcd_rst(lcd_t * lcd);
 
-void lcd_init(lcd_t * lcd, unsigned char lnum);
+void lcd_init(lcd_t * lcd, unsigned char cnum, unsigned char lnum);
 
 void lcd_on(lcd_t * lcd,int onoff);
 

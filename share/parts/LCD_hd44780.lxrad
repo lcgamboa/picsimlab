@@ -801,7 +801,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Items type="StringList">16x2,16x4,</Items>
+  <Items type="StringList">16x2,16x4,20x2,20x4,</Items>
   <Text type="String">16x2</Text>
   <ReadOnly type="bool">0</ReadOnly>
   <EvOnComboChange type="Event">FALSE</EvOnComboChange>

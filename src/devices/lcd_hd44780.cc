@@ -621,8 +621,13 @@ int i,j;
     return;
 };
 
-void lcd_init(lcd_t * lcd, unsigned char lnum)
+void lcd_init(lcd_t * lcd, unsigned char cnum, unsigned char lnum)
 {
+    if((cnum >15)&&(cnum <= 20 ))
+      lcd->cnum=cnum;
+    else
+      lcd->cnum=16;
+    
     if((lnum >0)&&(lnum <= 4 ))
       lcd->lnum=lnum;
     else
@@ -661,15 +666,21 @@ void lcd_draw(lcd_t * lcd, CCanvas * canvas, int x1,int y1,int w1,int h1,int pic
 {
   int l,c,x,y;
   int loff=0;
+  int w;
+         
+         if(lcd->cnum == 16)
+          w=w1;
+         else
+          w=(int)(w1*1.25); 
   
          if(lcd->lnum == 2)
-           canvas->Rectangle (1, x1, y1, w1,h1);
+           canvas->Rectangle (1, x1, y1, w,h1);
          else
-           canvas->Rectangle (1, x1, y1, w1,(h1*2)-14);  
+           canvas->Rectangle (1, x1, y1, w,(h1*2)-14);  
          lcd->update=0;
 
          
-         for(l=0;l< lcd->lnum;l++)
+         for(l=0; l< lcd->lnum; l++)
          {
            switch(l)
            {
@@ -686,7 +697,7 @@ void lcd_draw(lcd_t * lcd, CCanvas * canvas, int x1,int y1,int w1,int h1,int pic
                loff=56;    
                break;  
            }
-           for(c=0;c<16;c++)
+           for(c=0; c<lcd->cnum; c++)
            {
              for(x=0;x<5;x++)
              { 
@@ -731,7 +742,7 @@ void lcd_draw(lcd_t * lcd, CCanvas * canvas, int x1,int y1,int w1,int h1,int pic
            if(c >= 40 )c=c%40;      
            
          
-           if((c >= 0)&& (c< 16)) //draw only visible columns
+           if((c >= 0)&& (c< lcd->cnum)) //draw only visible columns
            {    
              canvas->SetFgColor (0, 35 , 0);
              canvas->SetColor (0, 35 , 0);

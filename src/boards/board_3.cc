@@ -112,7 +112,7 @@ cboard_3::cboard_3(void)
       
       buzz.Create(Window1.GetSharePath()+lxT("boards/buzzer.wav"));
       
-      lcd_init(&lcd,2);
+      lcd_init(&lcd,16,2);
       mi2c_init(&mi2c,4);
       
       ReadMaps();

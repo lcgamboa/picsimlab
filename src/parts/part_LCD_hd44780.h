@@ -30,6 +30,11 @@
 #include"part.h"
 
 
+#define LCD16x2 1
+#define LCD16x4 2
+#define LCD20x2 4
+#define LCD20x4 8
+
 class cpart_LCD_hd44780:public part
 {
    public:
@@ -40,6 +45,8 @@ class cpart_LCD_hd44780:public part
       void Process(void);
       String GetPictureFileName(void){return lxT("LCD_hd44780.png");};
       String GetPictureFileName_(void){return lxT("LCD_hd44780_.png");};
+      String GetPictureFileName__(void){return lxT("LCD_hd44780__.png");};
+      String GetPictureFileName___(void){return lxT("LCD_hd44780___.png");};
       String GetInputMapFile(void){return lxT("LCD_hd44780_i.map");};
       String GetOutputMapFile(void){return lxT("LCD_hd44780_o.map");};
       String GetPropertiesWindowFile(void){return lxT("LCD_hd44780.lxrad");};

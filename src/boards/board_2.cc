@@ -63,7 +63,7 @@ cboard_2::cboard_2(void)
       d=0;
       lcde=0;
       
-      lcd_init(&lcd,2);
+      lcd_init(&lcd,16,2);
       mi2c_init(&mi2c,512);
       rtc_init(&rtc);
       ReadMaps();

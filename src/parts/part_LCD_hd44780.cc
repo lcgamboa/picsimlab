@@ -37,10 +37,21 @@ cpart_LCD_hd44780::Reset(void)
 {
    lxImage image;
 
-   if(model == 2)
-     image.LoadFile(Window1.GetSharePath()+lxT("parts/")+GetPictureFileName());
-   else
-     image.LoadFile(Window1.GetSharePath()+lxT("parts/")+GetPictureFileName_());
+   switch(model)
+    {
+         case LCD16x2:
+           image.LoadFile(Window1.GetSharePath()+lxT("parts/")+GetPictureFileName());
+           break;
+         case LCD16x4:
+           image.LoadFile(Window1.GetSharePath()+lxT("parts/")+GetPictureFileName_());
+           break;
+         case LCD20x2:
+           image.LoadFile(Window1.GetSharePath()+lxT("parts/")+GetPictureFileName__());
+           break;
+         case LCD20x4:
+           image.LoadFile(Window1.GetSharePath()+lxT("parts/")+GetPictureFileName___());
+           break;           
+    }
 
    if(Bitmap)delete Bitmap;
   
@@ -48,7 +59,21 @@ cpart_LCD_hd44780::Reset(void)
    canvas.Create(Window5.GetWWidget(),Bitmap);
    image.Destroy(); 
 
-   lcd_init(&lcd,model);
+   switch(model)
+   {
+     case LCD16x2:
+        lcd_init(&lcd,16,2);
+        break;
+     case LCD16x4:
+        lcd_init(&lcd,16,4);
+        break;
+     case LCD20x2:
+        lcd_init(&lcd,20,2);
+        break;
+     case LCD20x4:
+        lcd_init(&lcd,20,4);
+        break;        
+   }
    lcd_rst(&lcd);
    lcde=0;
 }
@@ -61,7 +86,7 @@ cpart_LCD_hd44780::cpart_LCD_hd44780(unsigned x, unsigned y)
    ReadMaps();   
    Bitmap=NULL;
 
-   model=2;
+   model=LCD16x2;
    Reset();
 
    input_pins[0]=0;
@@ -91,7 +116,7 @@ void cpart_LCD_hd44780::Draw(void)
   
   int yoff=0;
 
-  if(model == 4)yoff=96;
+  if((model == LCD16x4)||(model == LCD20x4)) yoff=96;
 
   canvas.Init();
   
@@ -333,10 +358,21 @@ cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow *  wprop)
         ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo10"))->SetText(itoa(input_pins[9])+"  "+spin);
     }
         
-    if(model == 2)
-      ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo11"))->SetText("16x2");
-    else
-      ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo11"))->SetText("16x4");
+    switch(model)
+     {
+        case LCD16x2:
+           ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo11"))->SetText("16x2");
+           break;
+        case LCD16x4:   
+           ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo11"))->SetText("16x4");
+           break;
+        case LCD20x2:
+           ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo11"))->SetText("20x2");
+           break;
+        case LCD20x4:   
+           ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo11"))->SetText("20x4");
+           break;           
+     }
     
     ((CButton*)WProp_LCD_hd44780->GetChildByName("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
     ((CButton*)WProp_LCD_hd44780->GetChildByName("button1"))->SetTag(1);
@@ -357,10 +393,16 @@ cpart_LCD_hd44780::ReadPropertiesWindow(void)
       input_pins[7]=atoi(((CCombo*)WProp_LCD_hd44780->GetChildByName("combo8"))->GetText());
       input_pins[8]=atoi(((CCombo*)WProp_LCD_hd44780->GetChildByName("combo9"))->GetText());
       input_pins[9]=atoi(((CCombo*)WProp_LCD_hd44780->GetChildByName("combo10"))->GetText());
-      if(!((((CCombo*)WProp_LCD_hd44780->GetChildByName("combo11"))->GetText()).Cmp(lxT("16x2"))))
-        model=2;
-      else
-	model=4;
+      
+      model=LCD16x2;
+      if(!((((CCombo*)WProp_LCD_hd44780->GetChildByName("combo11"))->GetText()).Cmp(lxT("16x4"))))
+        model=LCD16x4;
+      else if(!((((CCombo*)WProp_LCD_hd44780->GetChildByName("combo11"))->GetText()).Cmp(lxT("20x2"))))
+        model=LCD20x2;
+      else if(!((((CCombo*)WProp_LCD_hd44780->GetChildByName("combo11"))->GetText()).Cmp(lxT("20x4"))))
+        model=LCD20x4;
+    
+	
       Reset();      
 
 } 
