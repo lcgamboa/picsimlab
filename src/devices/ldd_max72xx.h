@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2019  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,22 +23,58 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef PARTS_DEFS_H
-#define	PARTS_DEFS_H
 
-#include"part.h" 
+#ifndef LDD_MAX72XX
+#define	LDD_MAX72XX
+    
+#include<lxrad.h>
 
-#define MAX_PARTS 100
+/* pinout
+  1 DIN
+  2 DIG0
+  3 DIG4
+  4 GND
+  5 DIG6
+  6 DIG2
+  7 DIG3
+  8 DIG7
+  9 GND
+  10 DIG5
+  11 DIG1
+  12 /CS
+  13 CLK
+  14 SEGA
+  15 SEGF
+  16 SEGB
+  17 SEGG
+  18 ISET
+  19 VCC
+  20 SEGC
+  21 SEGE
+  22 SEGDP
+  23 SEGD
+  24 DOUT 
+*/
 
-#ifdef _EXPERIMENTAL_
-#define NUM_PARTS 17
-#else
-#define NUM_PARTS 12
-#endif
+typedef struct
+{
+unsigned char ram[8];
+unsigned char aclk;
+unsigned char ancs;
+int bc;
+unsigned short dat;
+unsigned char update;
+}ldd_max72xx_t;
 
-extern const char parts_list[NUM_PARTS][30];
 
-part * create_part(String name, unsigned int x, unsigned int y);
+void ldd_max72xx_rst(ldd_max72xx_t *ldd);
+void ldd_max72xx_init(ldd_max72xx_t *ldd);
+void ldd_max72xx_update(ldd_max72xx_t *ldd);
 
-#endif	/* PARTS_DEFS_H */
+unsigned char ldd_max72xx_io(ldd_max72xx_t *ldd, unsigned char din, unsigned char clk, unsigned char ncs);
+
+void ldd_max72xx_draw(ldd_max72xx_t *ldd, CCanvas * canvas,int x1,int y1,int w1,int h1, int picpwr);
+
+
+#endif //LDD_MAX72XX
 

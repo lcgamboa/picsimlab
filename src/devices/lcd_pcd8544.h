@@ -43,7 +43,7 @@
 typedef struct
 {
 unsigned short int ram[84][6];
-float aclk;
+unsigned char aclk;
 int bc;
 unsigned char hrst;
 unsigned char dat;

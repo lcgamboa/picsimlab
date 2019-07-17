@@ -7,7 +7,7 @@
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:lcganmboa@yahoo.com            -->
 <area shape="rect" coords="34,30,202,126" href="LCD" />
-<area shape="rect" coords="10,192,29,240" href="P1" /
+<area shape="rect" coords="10,192,29,240" href="P1" />
 <area shape="rect" coords="40,192,58,240" href="P2" />
 <area shape="rect" coords="70,192,87,240" href="P3" />
 <area shape="rect" coords="100,192,117,240" href="P4" />

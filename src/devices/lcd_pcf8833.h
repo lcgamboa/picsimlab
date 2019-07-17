@@ -45,7 +45,7 @@
 typedef struct
 {
 unsigned int ram[132][132];
-float aclk;
+unsigned char aclk;
 int bc,dc;
 unsigned char colm;
 unsigned char madctl;
