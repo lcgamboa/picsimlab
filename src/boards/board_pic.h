@@ -30,7 +30,7 @@
 
 int mplabxd_testbp(void);
 
-class board_pic: public board
+class board_pic: virtual public board
 {
   public:
       int DebugInit(void); 

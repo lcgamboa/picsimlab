@@ -23,44 +23,56 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_x_H
-#define	BOARD_x_H
+#ifndef BOARD_0_H
+#define	BOARD_0_H
 
 #include<lxrad.h>
 
 #include "board_pic.h"
+#include "board_avr.h"
+
+#define _PIC 0
+#define _AVR 1
 
 //new board class must be derived from board class defined in board.h
-class cboard_x:public board_pic
+class cboard_0:public board_pic, public board_avr
 {
   private:
-     int p_BT1;           //first board switch in RD0
-     int p_BT2;           //second board switch in RD1  
-
-     //controls to be added in simulator window
-     CScroll *scroll1; //scroll for analog input AN0    
-     CGauge *gauge1;   //gauge to show mean value of RB0
-     CGauge *gauge2;   //gauge to show mean value of RB1
-     CLabel *label1;   //label of scroll AN0
-     CLabel *label2;   //label of gauge RB0
-     CLabel *label3;   //label of gauge RB1
- 
+      int ptype;
    public:
+      int DebugInit(void); 
+      void DebugLoop(void);
+      int CpuInitialized(void);
+      void MSetSerial(const char * port);
+      int MInit(const char * processor, const char * fname, float freq);
+      void MEnd(void);
+      void MDumpMemory(const char * fname);
+      void MEraseFlash(void);
+      void MSetFreq(float freq);
+      float MGetFreq(void);
+      float MGetInstClock(void);
+      int MGetPinCount(void);
+      String MGetPinName(int pin);
+      void MSetPin(int pin, unsigned char value);
+      void MSetAPin(int pin, float value);
+      unsigned char MGetPin(int pin);  
+      const picpin * MGetPinsValues(void);  
+      
       //Constructor called once on board creation 
-      cboard_x(void);
+      cboard_0(void);
       //Destructor called once on board destruction 
-      ~cboard_x(void); 
+      ~cboard_0(void); 
       //Called ever 100ms to draw board
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
-      String GetSupportedDevices(void){return lxT("PIC18F4550,PIC16F877A,");};
+      String GetSupportedDevices(void){return lxT("PIC16F628A,PIC16F648A,PIC16F84A,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,atmega328,");};
       //Return the filename of board picture 
-      String GetPictureFileName(void){return lxT("board_x.png");};
+      String GetPictureFileName(void){return lxT("picsimlab0.png");};
       //Return the filename of board picture input map 
-      String GetInputMapFile(void){return lxT("input_boardx.map");};
+      String GetInputMapFile(void){return lxT("input0.map");};
       //Return the filename of board picture output map 
-      String GetOutputMapFile(void){return lxT("output_boardx.map");};
+      String GetOutputMapFile(void){return lxT("output0.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

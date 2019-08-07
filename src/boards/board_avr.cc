@@ -843,4 +843,4 @@ board_avr::UpdateSerial(void)
    }
    
 
-};
+}

@@ -45,10 +45,10 @@
 //uart support ============================================================
 
 #ifdef _WIN_
-HANDLE serialfd;
+static HANDLE serialfd;
 HANDLE avr_serial_get_fd(void){return serialfd;};
 #else
-int serialfd;
+static int serialfd;
 int avr_serial_get_fd(void){return serialfd;};
 #endif
 
@@ -376,12 +376,12 @@ int avr_serial_get_dsr(void)
    
     return (state & MS_DSR_ON);
   }
-#else     
+#else   
   if( serialfd > 0 )
   {
      int state;
      ioctl(serialfd, TIOCMGET ,&state);
-   
+ 
      return (state & TIOCM_DSR);
   }
 #endif

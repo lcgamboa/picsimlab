@@ -3,7 +3,7 @@
 #include"../picsimlab1.h"
 
 #ifdef _EXPERIMENTAL_
-const char boards_list[BOARDS_LAST][30]={"McLab1","K16F","McLab2", "PICGenios","Arduino Uno","MPLAB Xpress","Curiosity","Board X"};
+const char boards_list[BOARDS_LAST][30]={"Breadboard","McLab1","K16F","McLab2", "PICGenios","Arduino Uno","MPLAB Xpress","Curiosity","Board X"};
 #else
 const char boards_list[BOARDS_LAST][30]={"McLab1","K16F","McLab2", "PICGenios","Arduino Uno",};
 #endif
@@ -31,6 +31,9 @@ board * create_board(int *lab,int *lab_)
             pboard= new cboard_5();
             break;  
 #ifdef _EXPERIMENTAL_
+          case 0:
+            pboard= new cboard_0();
+            break;            
           case 6:
             pboard= new cboard_6();
             break;     

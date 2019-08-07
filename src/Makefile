@@ -24,7 +24,7 @@ LIBS = `lxrad-config --libs` -lpicsim -lsimavr -lelf
 OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimlab5.o\
  boards/board.o boards/boards_defs.o boards/board_pic.o boards/board_avr.o boards/board_avr_serial.o\
  boards/board_1.o boards/board_2.o boards/board_3.o boards/board_4.o boards/board_5.o boards/board_6.o\
- boards/board_7.o boards/board_x.o\
+ boards/board_7.o boards/board_x.o boards/board_0.o\
  devices/lcd_hd44780.o devices/mi2c_24CXXX.o devices/rtc_ds1307.o devices/rtc_pfc8563.o devices/lcd_pcf8833.o\
  devices/lcd_pcd8544.o devices/mplabxd.o devices/ldd_max72xx.o\
  parts/parts_defs.o parts/part.o parts/part_servo.o parts/part_step.o parts/part_d_transfer_function.o\

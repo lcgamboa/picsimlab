@@ -39,7 +39,7 @@
 
 
 
-class board_avr: public board
+class board_avr: virtual public board
 {
   public:
       board_avr(void);//Called once on board creation
@@ -88,6 +88,12 @@ class board_avr: public board
       int read_ihx_avr(const char * fname, int leeprom);
       int write_ihx_avr(const char * fname);  
 };
+
+#ifdef _WIN_
+HANDLE avr_serial_get_fd(void);
+#else
+int avr_serial_get_fd(void);
+#endif
 
 #endif	/* BOARD_AVR_H */
 

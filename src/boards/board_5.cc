@@ -29,12 +29,6 @@
 #include"../picsimlab5.h" //Spare Parts
 #include"board_5.h"
 
-#ifdef _WIN_
-HANDLE avr_serial_get_fd(void);
-#else
-int avr_serial_get_fd(void);
-#endif
-
 /* ids of inputs of input map*/
 #define I_ICSP	1  //ICSP connector
 #define I_PWR	2  //Power button
