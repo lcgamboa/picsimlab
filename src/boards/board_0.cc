@@ -60,7 +60,7 @@ cboard_0::get_out_id(char * name)
 
  if (strcmp (name, "O_LPWR") == 0)return O_LPWR;
  if (strcmp (name, "O_MP") == 0)return O_MP;
- 
+
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
 };
@@ -73,11 +73,19 @@ cboard_0::cboard_0(void)
  proc = "PIC18F4550"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
 
-};
+ lxImage image;
+ image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic40.png"));
+ micbmp = new lxBitmap (image, &Window1);
+
+}
 
 //Destructor called once on board destruction 
 
-cboard_0::~cboard_0(void) { }
+cboard_0::~cboard_0(void)
+{
+ delete micbmp;
+ micbmp = NULL;
+}
 
 //Reset board status
 
@@ -317,29 +325,28 @@ cboard_0::Draw(CDraw *draw, double scale)
 
  draw->Canvas.Init (scale, scale); //initialize draw context
 
- //board_x draw 
+ //board_0 draw 
  for (i = 0; i < outputc; i++) //run over all outputs
   {
-   if (!output[i].r)//if output shape is a rectangle
+
+   draw->Canvas.SetFgColor (0, 0, 0); //black
+
+   switch (output[i].id)//search for color of output
     {
+    case O_LPWR: //Blue using picpwr value
+     draw->Canvas.SetColor (0, 0, 225 * Window1.Get_picpwr () + 30);
+     draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     break;
+    case O_MP:
+     lxFont font (12, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
+     draw->Canvas.SetFont (font);
+     draw->Canvas.PutBitmap (micbmp, output[i].x1, output[i].y1);
+     draw->Canvas.SetFgColor (255, 255, 255);
+     draw->Canvas.Text (proc, output[i].x1 + 10, output[i].y1+10);
+     break;
     }
-   else //if output shape is a circle
-    {
 
-     draw->Canvas.SetFgColor (0, 0, 0); //black
-
-     switch (output[i].id)//search for color of output
-      {
-      case O_LPWR: //Blue using picpwr value
-       draw->Canvas.SetColor (0, 0, 225 * Window1.Get_picpwr () + 30);
-       break;
-      }
-
-     //draw a circle
-     draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
-    };
-
-  };
+  }
 
  //end draw
  draw->Canvas.End ();
@@ -562,6 +569,8 @@ cboard_0::MSetSerial(const char * port)
 int
 cboard_0::MInit(const char * processor, const char * fname, float freq)
 {
+ int ret = 0;
+
  if (processor[0] == 'P')
   ptype = _PIC;
  else
@@ -571,13 +580,41 @@ cboard_0::MInit(const char * processor, const char * fname, float freq)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MInit (processor, fname, freq);
+   ret = board_pic::MInit (processor, fname, freq);
    break;
   case _AVR:
-   return board_avr::MInit (processor, fname, freq);
+   ret = board_avr::MInit (processor, fname, freq);
    break;
   }
- return 0;
+
+ if (!ret)
+  {
+   lxImage image;
+
+   switch (MGetPinCount ())
+    {
+    case 8:
+     image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic08.png"));
+     break;
+    case 18:
+     image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic18.png"));
+     break;
+    case 28:
+     image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic28.png"));
+     break;
+    case 40:
+     image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic40.png"));
+     break;
+    default:
+     image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic40.png"));
+     break;
+    }
+
+   if (micbmp) delete micbmp;
+   micbmp = new lxBitmap (image, &Window1);
+  }
+
+ return ret;
 }
 
 void

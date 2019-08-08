@@ -39,6 +39,7 @@ class cboard_0:public board_pic, public board_avr
 {
   private:
       int ptype;
+      lxBitmap * micbmp;
    public:
       int DebugInit(void); 
       void DebugLoop(void);
