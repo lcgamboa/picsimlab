@@ -354,7 +354,7 @@ cboard_4::cboard_4(void)
   combo1->SetEnable(1);
   combo1->SetVisible(1);
   combo1->SetText(lxT("hd44780 16x2"));
-  combo1->SetItems(lxT("hd44780 16x2,hd44780 16x4,hd44780 20x2,hd44780 20x4,"));
+  combo1->SetItems(lxT("hd44780 16x2,hd44780 16x4,"));
   combo1->EvOnComboChange=EVONCOMBOCHANGE & CPWindow1::board_Event;
   Window1.CreateChild(combo1);
 };

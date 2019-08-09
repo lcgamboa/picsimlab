@@ -40,10 +40,12 @@ enum
  I_B1, I_B2, I_B3, I_B4, I_B5, I_B6, I_B7, I_B8, I_J1
 };
 
-cpart_pbuttons::cpart_pbuttons (unsigned x, unsigned y)
+cpart_pbuttons::cpart_pbuttons(unsigned x, unsigned y)
 {
  X = x;
  Y = y;
+ active = 1;
+
  ReadMaps ();
 
  lxImage image;
@@ -65,24 +67,24 @@ cpart_pbuttons::cpart_pbuttons (unsigned x, unsigned y)
  output_pins[6] = 0;
  output_pins[7] = 0;
 
- output_value[0] = 0;
- output_value[1] = 0;
- output_value[2] = 0;
- output_value[3] = 0;
- output_value[4] = 0;
- output_value[5] = 0;
- output_value[6] = 0;
- output_value[7] = 0;
+ output_value[0] = !active;
+ output_value[1] = !active;
+ output_value[2] = !active;
+ output_value[3] = !active;
+ output_value[4] = !active;
+ output_value[5] = !active;
+ output_value[6] = !active;
+ output_value[7] = !active;
 
 };
 
-cpart_pbuttons::~cpart_pbuttons (void)
+cpart_pbuttons::~cpart_pbuttons(void)
 {
  delete Bitmap;
 }
 
 void
-cpart_pbuttons::Draw (void)
+cpart_pbuttons::Draw(void)
 {
 
  int i;
@@ -125,7 +127,7 @@ cpart_pbuttons::Draw (void)
 }
 
 void
-cpart_pbuttons::Process (void)
+cpart_pbuttons::Process(void)
 {
 
  if (refresh > 1000)
@@ -147,7 +149,7 @@ cpart_pbuttons::Process (void)
 }
 
 void
-cpart_pbuttons::EvMouseButtonPress (uint button, uint x, uint y, uint state)
+cpart_pbuttons::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
  int i;
 
@@ -158,21 +160,21 @@ cpart_pbuttons::EvMouseButtonPress (uint button, uint x, uint y, uint state)
 
      switch (input[i].id)
       {
-      case I_B1: output_value[0] = 1;
+      case I_B1: output_value[0] = active;
        break;
-      case I_B2: output_value[1] = 1;
+      case I_B2: output_value[1] = active;
        break;
-      case I_B3: output_value[2] = 1;
+      case I_B3: output_value[2] = active;
        break;
-      case I_B4: output_value[3] = 1;
+      case I_B4: output_value[3] = active;
        break;
-      case I_B5: output_value[4] = 1;
+      case I_B5: output_value[4] = active;
        break;
-      case I_B6: output_value[5] = 1;
+      case I_B6: output_value[5] = active;
        break;
-      case I_B7: output_value[6] = 1;
+      case I_B7: output_value[6] = active;
        break;
-      case I_B8: output_value[7] = 1;
+      case I_B8: output_value[7] = active;
        break;
       }
     }
@@ -180,7 +182,7 @@ cpart_pbuttons::EvMouseButtonPress (uint button, uint x, uint y, uint state)
 };
 
 void
-cpart_pbuttons::EvMouseButtonRelease (uint button, uint x, uint y, uint state)
+cpart_pbuttons::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 {
  int i;
 
@@ -190,21 +192,21 @@ cpart_pbuttons::EvMouseButtonRelease (uint button, uint x, uint y, uint state)
     {
      switch (input[i].id)
       {
-      case I_B1: output_value[0] = 0;
+      case I_B1: output_value[0] = !active;
        break;
-      case I_B2: output_value[1] = 0;
+      case I_B2: output_value[1] = !active;
        break;
-      case I_B3: output_value[2] = 0;
+      case I_B3: output_value[2] = !active;
        break;
-      case I_B4: output_value[3] = 0;
+      case I_B4: output_value[3] = !active;
        break;
-      case I_B5: output_value[4] = 0;
+      case I_B5: output_value[4] = !active;
        break;
-      case I_B6: output_value[5] = 0;
+      case I_B6: output_value[5] = !active;
        break;
-      case I_B7: output_value[6] = 0;
+      case I_B7: output_value[6] = !active;
        break;
-      case I_B8: output_value[7] = 0;
+      case I_B8: output_value[7] = !active;
        break;
       }
     }
@@ -212,7 +214,7 @@ cpart_pbuttons::EvMouseButtonRelease (uint button, uint x, uint y, uint state)
 }
 
 unsigned short
-cpart_pbuttons::get_in_id (char * name)
+cpart_pbuttons::get_in_id(char * name)
 {
  if (strcmp (name, "B1") == 0)return I_B1;
  if (strcmp (name, "B2") == 0)return I_B2;
@@ -230,7 +232,7 @@ cpart_pbuttons::get_in_id (char * name)
 };
 
 unsigned short
-cpart_pbuttons::get_out_id (char * name)
+cpart_pbuttons::get_out_id(char * name)
 {
 
  if (strcmp (name, "P1") == 0)return O_P1;
@@ -258,25 +260,33 @@ cpart_pbuttons::get_out_id (char * name)
 };
 
 String
-cpart_pbuttons::WritePreferences (void)
+cpart_pbuttons::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", output_pins[0], output_pins[1], output_pins[2], output_pins[3], output_pins[4], output_pins[5], output_pins[6], output_pins[7]);
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", output_pins[0], output_pins[1], output_pins[2], output_pins[3], output_pins[4], output_pins[5], output_pins[6], output_pins[7],active);
 
  return prefs;
 };
 
 void
-cpart_pbuttons::ReadPreferences (String value)
+cpart_pbuttons::ReadPreferences(String value)
 {
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7]);
-};
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7],&active);
+ output_value[0] = !active;
+ output_value[1] = !active;
+ output_value[2] = !active;
+ output_value[3] = !active;
+ output_value[4] = !active;
+ output_value[5] = !active;
+ output_value[6] = !active;
+ output_value[7] = !active;
+}
 
 CPWindow * WProp_pbuttons;
 
 void
-cpart_pbuttons::ConfigurePropertiesWindow (CPWindow * wprop)
+cpart_pbuttons::ConfigurePropertiesWindow(CPWindow * wprop)
 {
  String Items = "0  NC,";
  String spin;
@@ -365,6 +375,12 @@ cpart_pbuttons::ConfigurePropertiesWindow (CPWindow * wprop)
    ((CCombo*) WProp_pbuttons->GetChildByName ("combo8"))->SetText (itoa (output_pins[7]) + "  " + spin);
   }
 
+ if (active)
+  ((CCombo*) WProp_pbuttons->GetChildByName ("combo9"))->SetText ("HIGH");
+ else
+  ((CCombo*) WProp_pbuttons->GetChildByName ("combo9"))->SetText ("LOW ");
+
+
  ((CButton*) WProp_pbuttons->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
  ((CButton*) WProp_pbuttons->GetChildByName ("button1"))->SetTag (1);
 
@@ -372,7 +388,7 @@ cpart_pbuttons::ConfigurePropertiesWindow (CPWindow * wprop)
 }
 
 void
-cpart_pbuttons::ReadPropertiesWindow (void)
+cpart_pbuttons::ReadPropertiesWindow(void)
 {
  output_pins[0] = atoi (((CCombo*) WProp_pbuttons->GetChildByName ("combo1"))->GetText ());
  output_pins[1] = atoi (((CCombo*) WProp_pbuttons->GetChildByName ("combo2"))->GetText ());
@@ -382,6 +398,17 @@ cpart_pbuttons::ReadPropertiesWindow (void)
  output_pins[5] = atoi (((CCombo*) WProp_pbuttons->GetChildByName ("combo6"))->GetText ());
  output_pins[6] = atoi (((CCombo*) WProp_pbuttons->GetChildByName ("combo7"))->GetText ());
  output_pins[7] = atoi (((CCombo*) WProp_pbuttons->GetChildByName ("combo8"))->GetText ());
+
+ active = !(((CCombo*) WProp_pbuttons->GetChildByName ("combo9"))->GetText ().compare ("LOW") == 0);
+
+ output_value[0] = !active;
+ output_value[1] = !active;
+ output_value[2] = !active;
+ output_value[3] = !active;
+ output_value[4] = !active;
+ output_value[5] = !active;
+ output_value[6] = !active;
+ output_value[7] = !active;
 }
 
 

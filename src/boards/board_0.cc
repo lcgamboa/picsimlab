@@ -340,9 +340,12 @@ cboard_0::Draw(CDraw *draw, double scale)
     case O_MP:
      lxFont font (12, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
      draw->Canvas.SetFont (font);
+
+     wxSize ps = micbmp->GetSize ();
+
      draw->Canvas.PutBitmap (micbmp, output[i].x1, output[i].y1);
      draw->Canvas.SetFgColor (255, 255, 255);
-     draw->Canvas.Text (proc, output[i].x1 + 10, output[i].y1+10);
+     draw->Canvas.Text (proc, (ps.x - strlen (proc)*11) / 2 + output[i].x1, (ps.y / 2) + output[i].y1 - 9);
      break;
     }
 
@@ -372,12 +375,6 @@ cboard_0::Run_CPU(void)
    NSTEPJ = Window1.GetNSTEPJ (); //number of steps in 100ms
 
    //reset mean value
-   /*
-   for(pi=0;pi < pic.PINCOUNT;pi++)
-   {
-     alm[pi]=0;
-   };
-    */
    memset (alm, 0, 40 * sizeof (unsigned int));
 
 
@@ -418,6 +415,11 @@ cboard_0::Run_CPU(void)
        }
       j++; //counter increment
      }
+   //calculate mean value
+   for (pi = 0; pi < MGetPinCount (); pi++)
+    {
+     board_pic::pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEPJ) + 30);
+    }
    break;
   case _AVR:
 
@@ -429,12 +431,7 @@ cboard_0::Run_CPU(void)
 
    int pinc = board_avr::MGetPinCount ();
    //reset mean value
-   /*
-   for(pi=0;pi < MGetPinCount();pi++)
-   {
-     alm[pi]=0;
-   };
-    */
+
    memset (alm, 0, pinc * sizeof (unsigned int));
 
    //read pic.pins to a local variable to speed up 
@@ -493,15 +490,15 @@ cboard_0::Run_CPU(void)
        }
       j++; //counter increment   
      }
-
+   //calculate mean value
+   for (pi = 0; pi < MGetPinCount (); pi++)
+    {
+     board_avr::pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEPJ) + 30);
+    }
    break;
   }
 
- //calculate mean value
- for (pi = 0; pi < MGetPinCount (); pi++)
-  {
-   cboard_0::pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEPJ) + 30);
-  }
+
 
 }
 
@@ -607,6 +604,7 @@ cboard_0::MInit(const char * processor, const char * fname, float freq)
      break;
     default:
      image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic40.png"));
+     printf("IC package with %i pins not found!\n",MGetPinCount ());
      break;
     }
 

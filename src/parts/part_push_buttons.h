@@ -51,6 +51,7 @@ class cpart_pbuttons:public part
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
     private:
+      unsigned char active;  
       unsigned char output_pins[8];    
       unsigned char output_value[8];
 };

@@ -67,7 +67,7 @@ class cboard_0:public board_pic, public board_avr
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
-      String GetSupportedDevices(void){return lxT("PIC16F628A,PIC16F648A,PIC16F84A,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,atmega328,");};
+      String GetSupportedDevices(void){return lxT("atmega328,PIC16F18855,PIC16F1619,PIC16F628A,PIC16F648A,PIC16F84A,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,");};
       //Return the filename of board picture 
       String GetPictureFileName(void){return lxT("picsimlab0.png");};
       //Return the filename of board picture input map 
