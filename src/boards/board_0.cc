@@ -341,7 +341,7 @@ cboard_0::Draw(CDraw *draw, double scale)
      lxFont font (12, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
      draw->Canvas.SetFont (font);
 
-     wxSize ps = micbmp->GetSize ();
+     lxSize ps = micbmp->GetSize ();
 
      draw->Canvas.PutBitmap (micbmp, output[i].x1, output[i].y1);
      draw->Canvas.SetFgColor (255, 255, 255);
