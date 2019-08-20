@@ -41,10 +41,10 @@
 #include"part_gamepad.h"
 #include"part_LED_matrix.h"
 #include"part_7s_Display.h"
-
-/*
 #include"part_TempSys.h"
 
+
+/*
 #include"part_MI2C_24CXXX.h"
 #include"part_RTC_ds1307.h"
 #include"part_RTC_pfc8563.h"
@@ -55,9 +55,9 @@
  */
 
 #ifdef _EXPERIMENTAL_
-const char parts_list[NUM_PARTS][30]={"7 Segments Display","D. Transfer function","Gamepad", "LCD hd44780", "LCD pcf8833", "LCD pcd8544", "LED Matrix", "LEDs", "MEM 24CXXX", "Potentiometers", "Push buttons", "RGB LED", "RTC ds1307", "RTC pfc8563", "Servo motor", "Signal Generator", "Step motor","Switchs",};
+const char parts_list[NUM_PARTS][30]={"7 Segments Display","D. Transfer function","Gamepad", "LCD hd44780", "LCD pcf8833", "LCD pcd8544", "LED Matrix", "LEDs", "MEM 24CXXX", "Potentiometers", "Push buttons", "RGB LED", "RTC ds1307", "RTC pfc8563", "Servo motor", "Signal Generator", "Step motor","Switchs","Temperature System",};
 #else
-const char parts_list[NUM_PARTS][30]={"7 Segments Display","Gamepad", "LCD hd44780",  "LCD pcf8833", "LCD pcd8544", "LED Matrix", "LEDs", "Potentiometers", "Push buttons", "RGB LED", "Servo motor", "Step motor","Switchs",};
+const char parts_list[NUM_PARTS][30]={"7 Segments Display","Gamepad", "LCD hd44780",  "LCD pcf8833", "LCD pcd8544", "LED Matrix", "LEDs", "Potentiometers", "Push buttons", "RGB LED", "Servo motor", "Step motor","Switchs","Temperature System",};
 #endif
 
 //boards object creation
@@ -92,5 +92,8 @@ part * create_part(String name, unsigned int x, unsigned int y)
    if(name.compare(lxT("Gamepad")) == 0 )part_= new cpart_gamepad(x,y);
  
    if(name.compare(lxT("7 Segments Display")) == 0 )part_= new cpart_7s_display(x,y);
+   
+   if(name.compare(lxT("Temperature System")) == 0 )part_= new cpart_tempsys(x,y);
+   
    return part_; 
 }
