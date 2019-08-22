@@ -31,6 +31,12 @@ tty0tty 	- For serial emulation in linux    https://github.com/lcgamboa/tty0tty
 
 https://github.com/lcgamboa/picsimlab/releases
 
+If you are on macOS you can run picsimlab using Wine:
+
+- Download and install [`xquarts`](https://www.xquartz.org)
+- Download and install [Wine](https://dl.winehq.org/wine-builds/macosx/download.html)
+- Download the executable and double-click it to run the installer
+
 ## Install from source
 
 In Debian Linux and derivatives:
