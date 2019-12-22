@@ -569,7 +569,7 @@ board_avr::write_ihx_avr(const char * fname)
   unsigned int iaddr=0;
   unsigned int i;
   char values[100]; 
-  char tmp[100]; 
+  char tmp[200]; 
 
   fout=fopen(fname,"w");
 
@@ -585,11 +585,11 @@ board_avr::write_ihx_avr(const char * fname)
       if(nb==0)
       {
         iaddr=i;
-        sprintf(values,"%02X",avr->flash[i]);
+        snprintf(values,99,"%02X",avr->flash[i]);
       }
       else
       {
-        sprintf(tmp,"%s%02X",values,avr->flash[i]);
+        snprintf(tmp,199,"%s%02X",values,avr->flash[i]);
         strcpy(values,tmp);
       }
 

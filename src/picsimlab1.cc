@@ -536,7 +536,7 @@ void
 CPWindow1::_EvOnDestroy (CControl * control)
 {
  char home[1024];
- char fname[1024];
+ char fname[1280];
 
 
  Window4.Hide ();
@@ -911,7 +911,7 @@ void
 CPWindow1::LoadWorkspace (String fnpzw)
 {
  char home[1024];
- char fzip[1024];
+ char fzip[1280];
 
  if ((!lxFileExists (fnpzw)) || (!fnpzw.Contains (".pzw")))return;
 
@@ -928,7 +928,7 @@ CPWindow1::LoadWorkspace (String fnpzw)
 
  _EvOnDestroy (this);
 
- snprintf (fzip, 1023, "%s/picsimlab.ini", home);
+ snprintf (fzip, 1279, "%s/picsimlab.ini", home);
  CStringList prefsw;
  prefsw.Clear ();
  int lc;
@@ -953,7 +953,7 @@ CPWindow1::LoadWorkspace (String fnpzw)
 
  _EvOnShow (this);
 
- snprintf (fzip, 1023, "%s/Readme.html", home);
+ snprintf (fzip, 1279, "%s/Readme.html", home);
  if (lxFileExists (fzip))
   {
 #ifdef EXT_BROWSER
@@ -966,7 +966,7 @@ CPWindow1::LoadWorkspace (String fnpzw)
   }
  else
   {
-   snprintf (fzip, 1023, "%s/Readme.txt", home);
+   snprintf (fzip, 1279, "%s/Readme.txt", home);
    if (lxFileExists (fzip))
     {
 #ifdef EXT_BROWSER
@@ -1006,7 +1006,7 @@ CPWindow1::filedialog2_EvOnClose (int retId)
  if (retId && (filedialog2.GetType () == (lxFD_SAVE | lxFD_CHANGE_DIR)))
   {
    char home[1024];
-   char fname[1024];
+   char fname[1280];
 
    if (lxFileExists (filedialog2.GetFileName ()))
     {
@@ -1018,7 +1018,7 @@ CPWindow1::filedialog2_EvOnClose (int retId)
    //write options
 
    strncpy (home, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
-   snprintf (fname, 1023, "%s/picsimlab.ini", home);
+   snprintf (fname, 1279, "%s/picsimlab.ini", home);
    prefs.SaveToFile (fname);
 
    strncpy (home, (char*) lxGetTempDir (_T ("picsimlab")).char_str (), 1023);
@@ -1028,7 +1028,7 @@ CPWindow1::filedialog2_EvOnClose (int retId)
 
    lxCreateDir (home);
 
-   snprintf (fname, 1023, "%s/picsimlab.ini", home);
+   snprintf (fname, 1279, "%s/picsimlab.ini", home);
    prefs.Clear ();
    saveprefs (lxT ("lab"), String ().Format ("%i", lab));
    saveprefs (lxT ("clock"), combo1.GetText ());
@@ -1050,14 +1050,14 @@ CPWindow1::filedialog2_EvOnClose (int retId)
    prefs.SaveToFile (fname);
 
    //write memory
-   snprintf (fname, 1023, "%s/mdump_%02i_%s.hex", home, lab_, (const char*) proc_.c_str ());
+   snprintf (fname, 1279, "%s/mdump_%02i_%s.hex", home, lab_, (const char*) proc_.c_str ());
 
    pboard->MDumpMemory (fname);
 
    if (pboard->GetUseSpareParts ())
     {
 
-     snprintf (fname, 1023, "%s/parts_%02i.pcf", home, lab_);
+     snprintf (fname, 1279, "%s/parts_%02i.pcf", home, lab_);
      Window5.SaveConfig (fname);
     }
 
@@ -1067,7 +1067,7 @@ CPWindow1::filedialog2_EvOnClose (int retId)
 
 
    strncpy (home, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
-   snprintf (fname, 1023, "%s/picsimlab.ini", home);
+   snprintf (fname, 1279, "%s/picsimlab.ini", home);
    prefs.Clear ();
    prefs.LoadFromFile (fname);
   }
