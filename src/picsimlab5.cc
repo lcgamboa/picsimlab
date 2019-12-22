@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2019  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -270,6 +270,10 @@ CPWindow5::SaveConfig (String fname)
 
  CStringList prefs;
  prefs.Clear ();
+ 
+ temp.Printf ("scale,0,0:%f", scale);
+ prefs.AddLine (temp);
+  
  for (int i = 0; i < partsc; i++)
   {
    temp.Printf ("%s,%i,%i:%s", parts[i]->GetName ().c_str (), parts[i]->GetX (), parts[i]->GetY (), parts[i]->WritePreferences ().c_str ());
@@ -309,10 +313,14 @@ CPWindow5::LoadConfig (String fname)
    for (unsigned int i = 0; i < prefs.GetLinesCount (); i++)
     {
      sscanf (prefs.GetLine (i).c_str (), "%256[^,],%i,%i:%256[^\n]", name, &x, &y, temp);
-
-     if ((parts[i] = create_part (name, x, y)))
+      
+     if(strcmp(name,"scale") == 0)
       {
-       parts[i]->ReadPreferences (temp);
+       sscanf(temp,"%f",&scale); 
+      }
+     else if ((parts[partsc_] = create_part (name, x, y)))
+      {
+       parts[partsc_]->ReadPreferences (temp);
        partsc_++;
       }
      else
@@ -331,6 +339,7 @@ CPWindow5::DeleteParts (void)
 {
  int partsc_ = partsc;
  partsc = 0; //for disable process
+ scale=1.0;
 
  //delete previous parts
 
