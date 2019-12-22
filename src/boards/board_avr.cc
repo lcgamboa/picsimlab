@@ -160,6 +160,7 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
       {
           pins[p].port=0;
           pins[p].pord=-1;
+          Write_stat_irq[p]=NULL;
       }
   }
   
