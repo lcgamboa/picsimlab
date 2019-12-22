@@ -596,6 +596,9 @@ cboard_0::MInit(const char * processor, const char * fname, float freq)
     case 18:
      image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic18.png"));
      break;
+    case 20:
+     image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic20.png"));
+     break;
     case 28:
      image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic28.png"));
      break;
@@ -604,7 +607,7 @@ cboard_0::MInit(const char * processor, const char * fname, float freq)
      break;
     default:
      image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic40.png"));
-     printf("IC package with %i pins not found!\n",MGetPinCount ());
+     printf ("IC package with %i pins not found!\n", MGetPinCount ());
      break;
     }
 

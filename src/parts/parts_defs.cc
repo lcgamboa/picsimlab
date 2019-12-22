@@ -49,10 +49,10 @@
 #include"part_RTC_ds1307.h"
 #include"part_RTC_pfc8563.h"
 #include"part_Signal_Generator.h"
-#include"part_VCD_Dump.h" or csv dump
 #include"part_keyboard.h"
-
- */
+ 
+#include"part_VCD_Dump.h" or csv dump
+*/
 
 #ifdef _EXPERIMENTAL_
 const char parts_list[NUM_PARTS][30]={"7 Segments Display","D. Transfer function","Gamepad", "LCD hd44780", "LCD pcf8833", "LCD pcd8544", "LED Matrix", "LEDs", "MEM 24CXXX", "Potentiometers", "Push buttons", "RGB LED", "RTC ds1307", "RTC pfc8563", "Servo motor", "Signal Generator", "Step motor","Switchs","Temperature System",};
