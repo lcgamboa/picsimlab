@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2019  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -75,7 +75,9 @@ cpart_tempsys::cpart_tempsys(unsigned x, unsigned y)
  ref = 0;
  rpmstp = 0; //(NSTEP*2)/100;
  rpmc = 0;
-};
+ 
+ refresh=0;
+}
 
 cpart_tempsys::~cpart_tempsys(void)
 {
@@ -186,7 +188,7 @@ cpart_tempsys::Process(void)
    board *pboard = Window1.GetBoard ();
 
    const picpin * ppins = pboard->MGetPinsValues ();
-
+   
    if (ppins[input_pins[1] - 1].oavalue > 30)
     {
      rpmc++;

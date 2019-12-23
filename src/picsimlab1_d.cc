@@ -417,13 +417,8 @@ tgo=0;
   for(int i=0; i <BOARDS_LAST; i++)
     {
        MBoard[i].SetFOwner(this);
-#ifdef _EXPERIMENTAL_
        MBoard[i].SetName("Board_"+itoa(i));
        MBoard[i].SetText(itoa(i)+lxT(" ")+boards_list[i]);
-#else
-       MBoard[i].SetName("Board_"+itoa(i+1));
-       MBoard[i].SetText(itoa(i+1)+lxT(" ")+boards_list[i]);
-#endif
        MBoard[i].EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_EvBoard;
        menu1_Board.CreateChild(&MBoard[i]);
     }    

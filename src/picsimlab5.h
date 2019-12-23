@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -83,6 +83,8 @@ class CPWindow5:public CPWindow
   void ReadPreferences(char *name,char *value);
   void PropButtonRelease (CControl * control, uint button, uint x, uint y, uint state);
   void PropClose(int tag);
+  void Set_i2c_bus(unsigned char pin, unsigned char value);
+  unsigned char Get_i2c_bus(unsigned char pin);
   private:
     int partsc;  
     part *parts[MAX_PARTS];
@@ -93,6 +95,7 @@ class CPWindow5:public CPWindow
     int mdx,mdy;
     float scale;
     String LoadConfigFile;
+    unsigned char i2c_bus[40];
     CPWindow wprop;
 };
 

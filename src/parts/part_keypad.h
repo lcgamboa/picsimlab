@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2019-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,25 +23,25 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef PART_PUSH_BUTTONS_H
-#define	PART_PUSH_BUTTONS_H
+#ifndef PART_KEYPAD_H
+#define	PART_KEYPAD_H
 
 #include<lxrad.h>
 #include"part.h"
 
 
-class cpart_pbuttons:public part
+class cpart_keypad:public part
 {
    public:
-      String GetName(void){return lxT("Push buttons");};
-      cpart_pbuttons(unsigned x, unsigned y);
-      ~cpart_pbuttons(void);
+      String GetName(void){return lxT("Keypad");};
+      cpart_keypad(unsigned x, unsigned y);
+      ~cpart_keypad(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return lxT("push_buttons.png");};
-      String GetInputMapFile(void){return lxT("push_buttons_i.map");};
-      String GetOutputMapFile(void){return lxT("push_buttons_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("push_buttons.lxrad");};
+      String GetPictureFileName(void){return lxT("keypad.png");};
+      String GetInputMapFile(void){return lxT("keypad_i.map");};
+      String GetOutputMapFile(void){return lxT("keypad_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("keypad.lxrad");};
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  wprop);
@@ -51,13 +51,13 @@ class cpart_pbuttons:public part
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
     private:
-      unsigned char active;  
+      unsigned char linput;  
       unsigned char output_pins[8];    
-      unsigned char output_value[8];
+      unsigned char keys[4][4];
 };
 
 
 
 
-#endif	/* PART_PUSH_BUTTONS_H */
+#endif	/* PART_KEYPAD_H */
 

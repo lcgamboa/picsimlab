@@ -5,7 +5,7 @@
 #ifdef _EXPERIMENTAL_
 const char boards_list[BOARDS_LAST][30]={"Breadboard","McLab1","K16F","McLab2", "PICGenios","Arduino Uno","MPLAB Xpress","Curiosity","Board X"};
 #else
-const char boards_list[BOARDS_LAST][30]={"McLab1","K16F","McLab2", "PICGenios","Arduino Uno",};
+const char boards_list[BOARDS_LAST][30]={"Breadboard","McLab1","K16F","McLab2", "PICGenios","Arduino Uno",};
 #endif
 
 //boards object creation
@@ -15,6 +15,9 @@ board * create_board(int *lab,int *lab_)
 
         switch(*lab)
         {
+          case 0:
+            pboard= new cboard_0();
+            break;  
           case 1:
             pboard= new cboard_1();
             break;
@@ -30,10 +33,7 @@ board * create_board(int *lab,int *lab_)
           case 5:
             pboard= new cboard_5();
             break;  
-#ifdef _EXPERIMENTAL_
-          case 0:
-            pboard= new cboard_0();
-            break;            
+#ifdef _EXPERIMENTAL_          
           case 6:
             pboard= new cboard_6();
             break;     

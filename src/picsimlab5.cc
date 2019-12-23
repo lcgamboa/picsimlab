@@ -380,6 +380,7 @@ CPWindow5::menu1_File_Loadconfiguration_EvMenuActive (CControl * control)
 void
 CPWindow5::Process (void)
 {
+ memset(i2c_bus,0,40);
  for (int i = 0; i < partsc; i++)
   {
    parts[i]->Process ();
@@ -484,4 +485,23 @@ CPWindow5::filedialog1_EvOnClose (int retId)
   {
    LoadConfig (filedialog1.GetFileName ());
   }
+}
+
+void 
+CPWindow5::Set_i2c_bus(unsigned char pin, unsigned char value)
+{
+ if(pin < 40)
+  {
+   i2c_bus[pin]|=value;
+  }
+
+}
+
+unsigned char 
+CPWindow5::Get_i2c_bus(unsigned char pin)
+{
+ if(pin < 40)
+  return i2c_bus[pin];
+ else
+  return 0;
 }

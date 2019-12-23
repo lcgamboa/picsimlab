@@ -5,14 +5,14 @@
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:gamboa    -->
+<!-- #$AUTHOR:gamboa     -->
 <area shape="rect" coords="16,19,201,204" href="VT" />
-<area shape="rect" coords="313,56,361,74" href="CO" />
-<area shape="rect" coords="313,171,361,189" href="F2" />
-<area shape="rect" coords="313,143,361,161" href="F1" />
-<area shape="rect" coords="313,114,361,132" href="TA" />
-<area shape="rect" coords="313,86,361,104" href="TE" />
-<area shape="rect" coords="313,27,361,45" href="HT" />
+<area shape="rect" coords="313,61,361,79" href="CO" />
+<area shape="rect" coords="313,176,361,194" href="F2" />
+<area shape="rect" coords="313,147,361,165" href="F1" />
+<area shape="rect" coords="313,116,361,134" href="TA" />
+<area shape="rect" coords="313,88,361,106" href="TE" />
+<area shape="rect" coords="313,30,361,48" href="HT" />
 <area shape="rect" coords="250,215,350,233" href="OTA" />
 <area shape="rect" coords="250,246,350,264" href="OTE" />
 </map>

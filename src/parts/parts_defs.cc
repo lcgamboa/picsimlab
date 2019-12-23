@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -42,22 +42,20 @@
 #include"part_LED_matrix.h"
 #include"part_7s_Display.h"
 #include"part_TempSys.h"
-
-
-/*
+#include"part_keypad.h"
 #include"part_MI2C_24CXXX.h"
 #include"part_RTC_ds1307.h"
 #include"part_RTC_pfc8563.h"
-#include"part_Signal_Generator.h"
-#include"part_keyboard.h"
- 
+
+/*
+#include"part_Signal_Generator.h" 
 #include"part_VCD_Dump.h" or csv dump
 */
 
 #ifdef _EXPERIMENTAL_
-const char parts_list[NUM_PARTS][30]={"7 Segments Display","D. Transfer function","Gamepad", "LCD hd44780", "LCD pcf8833", "LCD pcd8544", "LED Matrix", "LEDs", "MEM 24CXXX", "Potentiometers", "Push buttons", "RGB LED", "RTC ds1307", "RTC pfc8563", "Servo motor", "Signal Generator", "Step motor","Switchs","Temperature System",};
+const char parts_list[NUM_PARTS][30]={"7 Segments Display","D. Transfer function","Gamepad", "Keypad","LCD hd44780", "LCD pcf8833", "LCD pcd8544", "LED Matrix", "LEDs", "MEM 24CXXX", "Potentiometers", "Push buttons", "RGB LED", "RTC ds1307", "RTC pfc8563", "Servo motor", "Signal Generator", "Step motor","Switchs","Temperature System",};
 #else
-const char parts_list[NUM_PARTS][30]={"7 Segments Display","Gamepad", "LCD hd44780",  "LCD pcf8833", "LCD pcd8544", "LED Matrix", "LEDs", "Potentiometers", "Push buttons", "RGB LED", "Servo motor", "Step motor","Switchs","Temperature System",};
+const char parts_list[NUM_PARTS][30]={"7 Segments Display","Gamepad", "Keypad","LCD hd44780", "LCD pcf8833", "LCD pcd8544", "LED Matrix", "LEDs", "MEM 24CXXX", "Potentiometers", "Push buttons", "RGB LED", "RTC ds1307", "RTC pfc8563", "Servo motor", "Signal Generator", "Step motor","Switchs","Temperature System",};
 #endif
 
 //boards object creation
@@ -94,6 +92,15 @@ part * create_part(String name, unsigned int x, unsigned int y)
    if(name.compare(lxT("7 Segments Display")) == 0 )part_= new cpart_7s_display(x,y);
    
    if(name.compare(lxT("Temperature System")) == 0 )part_= new cpart_tempsys(x,y);
+
+   if(name.compare(lxT("Keypad")) == 0 )part_= new cpart_keypad(x,y);
+  
+   if(name.compare(lxT("MEM 24CXXX")) == 0 )part_= new cpart_MI2C_24CXXX(x,y);
+   
+   if(name.compare(lxT("RTC ds1307")) == 0 )part_= new cpart_RTC_ds1307(x,y);
+   
+   if(name.compare(lxT("RTC pfc8563")) == 0 )part_= new cpart_RTC_pfc8563(x,y);
+
    
    return part_; 
 }

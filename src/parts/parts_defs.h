@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -31,9 +31,9 @@
 #define MAX_PARTS 100
 
 #ifdef _EXPERIMENTAL_
-#define NUM_PARTS 19
+#define NUM_PARTS 20
 #else
-#define NUM_PARTS 14
+#define NUM_PARTS 19
 #endif
 
 extern const char parts_list[NUM_PARTS][30];

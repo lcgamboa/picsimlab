@@ -28,13 +28,13 @@
 
 
 //includes of boards
+#include"board_0.h"
 #include"board_1.h" 
 #include"board_2.h"
 #include"board_3.h"
 #include"board_4.h"
 #include"board_5.h"
 #ifdef _EXPERIMENTAL_
-#include"board_0.h"
 #include"board_6.h"
 #include"board_7.h"
 #include"board_x.h"
@@ -42,7 +42,7 @@
 #define BOARDS_LAST 9
 #else
 //number of last board
-#define BOARDS_LAST 5
+#define BOARDS_LAST 6
 #endif
 
 //boards object creation

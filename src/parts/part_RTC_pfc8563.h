@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2019-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,25 +23,25 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef PART_LCD_PCD8544_H
-#define	PART_LCD_PCD8544_H
+#ifndef PART_RTC_PFC8563_H
+#define	PART_RTC_PFC8563_H
 
 #include<lxrad.h>
 #include"part.h"
 #include"../devices/lcd_pcd8544.h"
 
-class cpart_LCD_pcd8544:public part
+class cpart_RTC_pfc8563:public part
 {
    public:
-      String GetName(void){return lxT("LCD pcd8544");};
-      cpart_LCD_pcd8544(unsigned x, unsigned y);
-      ~cpart_LCD_pcd8544(void);
+      String GetName(void){return lxT("RTC pfc8563");};
+      cpart_RTC_pfc8563(unsigned x, unsigned y);
+      ~cpart_RTC_pfc8563(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return lxT("LCD_pcd8544.png");};
-      String GetInputMapFile(void){return lxT("LCD_pcd8544_i.map");};
-      String GetOutputMapFile(void){return lxT("LCD_pcd8544_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("LCD_pcd8544.lxrad");};
+      String GetPictureFileName(void){return lxT("IC8.png");};
+      String GetInputMapFile(void){return lxT("IC8_i.map");};
+      String GetOutputMapFile(void){return lxT("IC8_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("RTC_pfc8563.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  wprop);
       void ReadPropertiesWindow(void);
       String WritePreferences(void);
@@ -49,12 +49,12 @@ class cpart_LCD_pcd8544:public part
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
    private:
-      unsigned char input_pins[5]; 
-      lcd_pcd8544_t lcd;
+      unsigned char input_pins[4]; 
+      rtc_t rtc;
 };
 
 
 
 
-#endif	/* PART_LCD_PCD8544_H */
+#endif	/* PART_RTC_PFC8563_H */
 
