@@ -33,6 +33,9 @@
 #ifdef _18F4620
 #include"config_4620.h"
 #endif
+#ifdef _18F4520
+#include"config_4520.h"
+#endif
 #ifdef _18F4550
 #include"config_4550.h"
 #endif

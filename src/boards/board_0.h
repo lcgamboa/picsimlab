@@ -70,7 +70,7 @@ class cboard_0:public board_pic, public board_avr
 #ifdef _EXPERIMENTAL_      
       String GetSupportedDevices(void){return lxT("atmega328,PIC16F18855,PIC16F1619,PIC16F628A,PIC16F648A,PIC16F84A,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,");};
 #else
-      String GetSupportedDevices(void){return lxT("atmega328,PIC16F628A,PIC16F648A,PIC16F84A,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F4620,");};
+      String GetSupportedDevices(void){return lxT("atmega328,PIC16F628A,PIC16F648A,PIC16F84A,PIC16F777,PIC16F877A,PIC18F452,PIC18F4550,PIC18F4620,");};
 #endif      
       //Return the filename of board picture 
       String GetPictureFileName(void){return lxT("picsimlab0.png");};
