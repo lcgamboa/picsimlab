@@ -51,17 +51,16 @@ cpart_dtfunc::cpart_dtfunc(unsigned x, unsigned y)
  input_pin = 0;
  output_pin = 0;
 
- num[0] = -1.2;
- den[0] = +1.5;
- num[1] = +2.2;
- den[1] = -2.5;
- ordern = 2;
+ num[0] = 0.1445;
+ den[0] = 1.0;
+ den[1] = -0.997;
+ ordern = 1;
  orderd = 2;
  sample = 0.1;
- in_gain = 1.0;
+ in_gain = 0.2;
  in_off = 0;
- out_gain = 1.0;
- out_off = 0;
+ out_gain = 0.01;
+ out_off = 0.27;
 
  nsamples= sample * Window1.GetBoard ()->MGetInstClock ();
  
