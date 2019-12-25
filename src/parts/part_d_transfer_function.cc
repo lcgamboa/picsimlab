@@ -178,10 +178,14 @@ cpart_dtfunc::Process(void)
    board *pboard = Window1.GetBoard ();
    const picpin * ppins = pboard->MGetPinsValues ();
 
-   float in, out;
+   float in, out, pinv;
 
-   in = (ppins[input_pin - 1].oavalue * 0.0196078431373) * in_gain + in_off;
+   pinv= (ppins[input_pin - 1].oavalue-30)*0.022502250225;
+   //pinv = (ppins[input_pin - 1].value) *5.0;
 
+   
+   in = pinv * in_gain + in_off;
+ 
    v[3] = v[2];
    v[2] = v[1];
    v[1] = v[0];
@@ -190,6 +194,9 @@ cpart_dtfunc::Process(void)
 
    out = out * out_gain + out_off;
 
+   if(out < 0.0)out=0.0;
+   if(out > 5.0)out=5.0;
+   
    pboard->MSetAPin (output_pin, out);
 
   }

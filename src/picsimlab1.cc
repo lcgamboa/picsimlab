@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2018  Luis Claudio Gamboa Lopes
+   Copyright (c) : 2010-2020  Luis Claudio Gamboa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -418,7 +418,7 @@ CPWindow1::Configure (CControl * control, const char * home)
 
  proc_ = pboard->proc;
 
- SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab - 1]) + lxT (" - ") + pboard->proc);
+ SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->proc);
 
 
 
@@ -650,9 +650,9 @@ CPWindow1::filedialog1_EvOnClose (int retId)
 
 
    if (picrun)
-    SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab - 1]) + lxT (" - ") + pboard->proc + lxT (" - ") + basename (filedialog1.GetFileName ()));
+    SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->proc + lxT (" - ") + basename (filedialog1.GetFileName ()));
    else
-    SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab - 1]) + lxT (" - ") + pboard->proc);
+    SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->proc);
 
 
 
@@ -801,9 +801,9 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive (CControl * control)
 
 
  if (picrun)
-  SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab - 1]) + lxT (" - ") + pboard->proc + lxT (" - ") + basename (filedialog1.GetFileName ()));
+  SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->proc + lxT (" - ") + basename (filedialog1.GetFileName ()));
  else
-  SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab - 1]) + lxT (" - ") + pboard->proc);
+  SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->proc);
 
 
 
@@ -874,7 +874,7 @@ CPWindow1::menu1_EvMicrocontroller (CControl * control)
  proc_ = pboard->proc;
  pboard->proc = ((CItemMenu*) control)->GetText ();
 
- SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab - 1]) + lxT (" - ") + pboard->proc);
+ SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->proc);
 
  FNAME = lxT (" ");
  _EvOnDestroy (control);
