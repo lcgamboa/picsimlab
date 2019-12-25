@@ -1,5 +1,7 @@
 
-
+Version 0.7
+12/24/2019 Support to board0 
+12/20/2019 RTC and memory parts added
 08/15/2017 Support to ATMEGA328 using simavr
 04/20/2017 Spare parts window added
 07/19/2016 Oscilloscope device added

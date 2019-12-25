@@ -554,7 +554,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Output</Text>
+  <Text type="String">Pull</Text>
   <Align type="CAlign">1</Align>
 </label9>
 <combo9>
@@ -581,8 +581,8 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Items type="StringList">Lines,Columns,</Items>
-  <Text type="String">Lines</Text>
+  <Items type="StringList">UP,DOWN,</Items>
+  <Text type="String">UP</Text>
   <ReadOnly type="bool">0</ReadOnly>
   <EvOnComboChange type="Event">FALSE</EvOnComboChange>
 </combo9>

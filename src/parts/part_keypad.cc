@@ -44,7 +44,7 @@ cpart_keypad::cpart_keypad(unsigned x, unsigned y)
 {
  X = x;
  Y = y;
- linput = 0;
+ pull = 0;
 
  ReadMaps ();
 
@@ -130,7 +130,7 @@ cpart_keypad::Process(void)
    refresh = 0;
 
    for(int i=0;i<8;i++)
-     pboard->MSetPin (output_pins[i],1);
+     pboard->MSetPin (output_pins[i],!pull);
        
    for (int c = 0; c < 4; c++)
     {
@@ -295,7 +295,7 @@ cpart_keypad::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", output_pins[0], output_pins[1], output_pins[2], output_pins[3], output_pins[4], output_pins[5], output_pins[6], output_pins[7], linput);
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", output_pins[0], output_pins[1], output_pins[2], output_pins[3], output_pins[4], output_pins[5], output_pins[6], output_pins[7], pull);
 
  return prefs;
 };
@@ -303,7 +303,7 @@ cpart_keypad::WritePreferences(void)
 void
 cpart_keypad::ReadPreferences(String value)
 {
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7], &linput);
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7], &pull);
  memset (keys, 0, 16);
 }
 
@@ -399,10 +399,10 @@ cpart_keypad::ConfigurePropertiesWindow(CPWindow * wprop)
    ((CCombo*) WProp_keypad->GetChildByName ("combo8"))->SetText (itoa (output_pins[7]) + "  " + spin);
   }
 
- if (!linput)
-  ((CCombo*) WProp_keypad->GetChildByName ("combo9"))->SetText ("Lines");
+ if (!pull)
+  ((CCombo*) WProp_keypad->GetChildByName ("combo9"))->SetText ("UP");
  else
-  ((CCombo*) WProp_keypad->GetChildByName ("combo9"))->SetText ("Columns");
+  ((CCombo*) WProp_keypad->GetChildByName ("combo9"))->SetText ("DOWN");
 
 
  ((CButton*) WProp_keypad->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
@@ -423,7 +423,7 @@ cpart_keypad::ReadPropertiesWindow(void)
  output_pins[6] = atoi (((CCombo*) WProp_keypad->GetChildByName ("combo7"))->GetText ());
  output_pins[7] = atoi (((CCombo*) WProp_keypad->GetChildByName ("combo8"))->GetText ());
 
- linput = !(((CCombo*) WProp_keypad->GetChildByName ("combo9"))->GetText ().compare ("Lines") == 0);
+ pull = !(((CCombo*) WProp_keypad->GetChildByName ("combo9"))->GetText ().compare ("UP") == 0);
 
  memset (keys, 0, 16);
 

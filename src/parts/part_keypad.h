@@ -51,7 +51,7 @@ class cpart_keypad:public part
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
     private:
-      unsigned char linput;  
+      unsigned char pull;  
       unsigned char output_pins[8];    
       unsigned char keys[4][4];
 };

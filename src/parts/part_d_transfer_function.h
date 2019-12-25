@@ -56,7 +56,17 @@ class cpart_dtfunc:public part
    private:
       unsigned char input_pin;
       unsigned char output_pin;
-      
+      int ordern;
+      int orderd;
+      float num[4];
+      float den[4];
+      float v[4];
+      float sample;
+      float in_gain;
+      float in_off;
+      float out_gain;
+      float out_off;
+      long unsigned int nsamples;
 };
 
 

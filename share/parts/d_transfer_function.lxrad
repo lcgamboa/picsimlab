@@ -4,8 +4,8 @@
   <Tag type="int">0</Tag>
   <X type="int">626</X>
   <Y type="int">302</Y>
-  <Width type="uint">269</Width>
-  <Height type="uint">335</Height>
+  <Width type="uint">270</Width>
+  <Height type="uint">455</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
@@ -35,7 +35,7 @@
   <Name type="String">button1</Name>
   <Tag type="int">0</Tag>
   <X type="int">52</X>
-  <Y type="int">235</Y>
+  <Y type="int">375</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="String"></Hint>
@@ -61,7 +61,7 @@
   <Name type="String">button2</Name>
   <Tag type="int">0</Tag>
   <X type="int">137</X>
-  <Y type="int">236</Y>
+  <Y type="int">375</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="String"></Hint>
@@ -329,6 +329,114 @@
   <Text type="String">0.1</Text>
   <ReadOnly type="int">0</ReadOnly>
 </edit3>
+<edit4>
+  <Class type="String">CEdit</Class>
+  <Name type="String">edit4</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">123</X>
+  <Y type="int">215</Y>
+  <Width type="uint">120</Width>
+  <Height type="uint">26</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Text type="String">1</Text>
+  <ReadOnly type="int">0</ReadOnly>
+</edit4>
+<edit5>
+  <Class type="String">CEdit</Class>
+  <Name type="String">edit5</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">123</X>
+  <Y type="int">253</Y>
+  <Width type="uint">120</Width>
+  <Height type="uint">26</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Text type="String">0</Text>
+  <ReadOnly type="int">0</ReadOnly>
+</edit5>
+<edit6>
+  <Class type="String">CEdit</Class>
+  <Name type="String">edit6</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">123</X>
+  <Y type="int">291</Y>
+  <Width type="uint">120</Width>
+  <Height type="uint">26</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Text type="String">1</Text>
+  <ReadOnly type="int">0</ReadOnly>
+</edit6>
+<edit7>
+  <Class type="String">CEdit</Class>
+  <Name type="String">edit7</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">123</X>
+  <Y type="int">329</Y>
+  <Width type="uint">120</Width>
+  <Height type="uint">26</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Text type="String">0</Text>
+  <ReadOnly type="int">0</ReadOnly>
+</edit7>
 <label5>
   <Class type="String">CLabel</Class>
   <Name type="String">label5</Name>
@@ -356,4 +464,112 @@
   <Text type="String">Sample time</Text>
   <Align type="CAlign">1</Align>
 </label5>
+<label6>
+  <Class type="String">CLabel</Class>
+  <Name type="String">label6</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">20</X>
+  <Y type="int">219</Y>
+  <Width type="uint">100</Width>
+  <Height type="uint">20</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Text type="String">In Gain</Text>
+  <Align type="CAlign">1</Align>
+</label6>
+<label7>
+  <Class type="String">CLabel</Class>
+  <Name type="String">label7</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">20</X>
+  <Y type="int">258</Y>
+  <Width type="uint">100</Width>
+  <Height type="uint">20</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Text type="String">In Offset</Text>
+  <Align type="CAlign">1</Align>
+</label7>
+<label8>
+  <Class type="String">CLabel</Class>
+  <Name type="String">label8</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">20</X>
+  <Y type="int">297</Y>
+  <Width type="uint">100</Width>
+  <Height type="uint">20</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Text type="String">Out Gain</Text>
+  <Align type="CAlign">1</Align>
+</label8>
+<label9>
+  <Class type="String">CLabel</Class>
+  <Name type="String">label9</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">20</X>
+  <Y type="int">336</Y>
+  <Width type="uint">100</Width>
+  <Height type="uint">20</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Text type="String">Out Offset</Text>
+  <Align type="CAlign">1</Align>
+</label9>
 </window1>

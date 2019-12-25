@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -31,10 +31,10 @@
 /* outputs */
 enum
 {
- O_P1, O_P2
+ O_P1, O_P2, O_IG, O_IO, O_OG, O_OO, O_NUM, O_DEN, O_TS
 };
 
-cpart_dtfunc::cpart_dtfunc (unsigned x, unsigned y)
+cpart_dtfunc::cpart_dtfunc(unsigned x, unsigned y)
 {
  X = x;
  Y = y;
@@ -51,23 +51,41 @@ cpart_dtfunc::cpart_dtfunc (unsigned x, unsigned y)
  input_pin = 0;
  output_pin = 0;
 
-};
+ num[0] = -1.2;
+ den[0] = +1.5;
+ num[1] = +2.2;
+ den[1] = -2.5;
+ ordern = 2;
+ orderd = 2;
+ sample = 0.1;
+ in_gain = 1.0;
+ in_off = 0;
+ out_gain = 1.0;
+ out_off = 0;
 
-cpart_dtfunc::~cpart_dtfunc (void)
+ nsamples= sample * Window1.GetBoard ()->MGetInstClock ();
+ 
+ refresh = 0;
+
+}
+
+cpart_dtfunc::~cpart_dtfunc(void)
 {
  delete Bitmap;
 }
 
 void
-cpart_dtfunc::Draw (void)
+cpart_dtfunc::Draw(void)
 {
 
  int i;
+ char buff[20];
+ char eq[100];
  board *pboard = Window1.GetBoard ();
 
  canvas.Init ();
 
- lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
+ lxFont font (7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
 
  for (i = 0; i < outputc; i++)
@@ -77,9 +95,9 @@ cpart_dtfunc::Draw (void)
     {
     case O_P1:
     case O_P2:
-     canvas.SetColor (49, 61, 99);
+     canvas.SetColor (255, 255, 255);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
+     canvas.SetFgColor (0, 0, 0);
      if (output[i].id == O_P1)
       {
        if (input_pin == 0)
@@ -95,51 +113,101 @@ cpart_dtfunc::Draw (void)
         canvas.Text (pboard->MGetPinName (output_pin), output[i].x1, output[i].y1);
       }
      break;
-     /*
-   case O_ROT:
-     canvas.SetLineWidth (8);
-     canvas.SetColor (250, 250, 250);
-     canvas.Circle (1,output[i].x1,output[i].y1,output[i].r);
-     canvas.SetColor (55, 55, 55);
-     canvas.Circle (1,output[i].x1,output[i].y1,output[i].r/5);
+    case O_IG:
+    case O_IO:
+    case O_OG:
+    case O_OO:
+    case O_TS:
+     canvas.SetColor (220, 220, 220);
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     canvas.SetFgColor (0, 0, 0);
+     if (output[i].id == O_IG)snprintf (buff, 19, "%5.2f", in_gain);
+     if (output[i].id == O_IO)snprintf (buff, 19, "%5.2f", in_off);
+     if (output[i].id == O_OG)snprintf (buff, 19, "%5.2f", out_gain);
+     if (output[i].id == O_OO)snprintf (buff, 19, "%5.2f", out_off);
+     if (output[i].id == O_TS)snprintf (buff, 19, "%5.2f", sample);
+     canvas.Text (buff, output[i].x1, output[i].y1);
+     break;
+    case O_NUM:
+     canvas.SetColor (220, 220, 220);
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
-     canvas.Line (output[i].x1,output[i].y1,output[i].x1+output[i].r*sin(angle),output[i].y1+output[i].r*cos(angle));
-     canvas.SetLineWidth (1);  
-   break;
+     strncpy (eq, "[", 99);
+     for (int i = 0; i < ordern; i++)
+      {
+       snprintf (buff, 19, "%+6.3f ", num[i]);
+       strncat (eq, buff, 99);
+      }
+     strncat (eq, "]", 99);
+     canvas.SetFgColor (0, 0, 0);
+     canvas.Text (eq, output[i].x1, output[i].y1);
+     break;
+    case O_DEN:
+     canvas.SetColor (240, 240, 240);
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
-      */
+     strncpy (eq, "[", 99);
+     for (int i = 0; i < orderd; i++)
+      {
+       snprintf (buff, 19, "%+6.3f ", den[i]);
+       strncat (eq, buff, 99);
+      }
+     strncat (eq, "]", 99);
+     canvas.SetFgColor (0, 0, 0);
+     canvas.Text (eq, output[i].x1, output[i].y1);
+
+     break;
     }
 
 
   };
 
- /*
- canvas.SetColor (0,0,0);
- canvas.Rectangle (1,0,0,100,20);
- canvas.SetFgColor (255,255,255);
-  
- lxFont fonts(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL );
-
- canvas.SetFont (fonts);
- canvas.Text (ftoa(180.0*angle/M_PI),1,1); 
-  */
-
  canvas.End ();
+
+ nsamples= sample * pboard->MGetInstClock ();
+ 
+}
+
+void
+cpart_dtfunc::Process(void)
+{
+
+ if (refresh > nsamples)
+  {
+   refresh=0;
+   
+   board *pboard = Window1.GetBoard ();
+   const picpin * ppins = pboard->MGetPinsValues ();
+
+   float in, out;
+
+   in = (ppins[input_pin - 1].oavalue * 0.0196078431373) * in_gain + in_off;
+
+   v[3] = v[2];
+   v[2] = v[1];
+   v[1] = v[0];
+   v[0] = in - den[1] * v[1] - den[2] * v[2] - den[3] * v[3];
+   out = v[0] * num[0] + v[1] * num[1] + v[2] * num[2] + v[3] * num[3];
+
+   out = out * out_gain + out_off;
+
+   pboard->MSetAPin (output_pin, out);
+
+  }
+ refresh++;
 
 }
 
 void
-cpart_dtfunc::Process (void) {
+cpart_dtfunc::Reset(void)
+{
 
- //b1[0]=pic->pins[input_pin[0]-1].value-pic->pins[input_pin[2]-1].value;
- }
-
-void
-cpart_dtfunc::Reset (void) {
- };
+ for (int i = 0; i < 4; i++)
+  v[i] = 0;
+}
 
 void
-cpart_dtfunc::EvMouseButtonPress (uint button, uint x, uint y, uint state) {
+cpart_dtfunc::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
  /*
   int i;
     
@@ -159,7 +227,7 @@ cpart_dtfunc::EvMouseButtonPress (uint button, uint x, uint y, uint state) {
   */ };
 
 void
-cpart_dtfunc::EvMouseButtonRelease (uint button, uint x, uint y, uint state) {
+cpart_dtfunc::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
  /*  
  int i;
 
@@ -177,7 +245,7 @@ cpart_dtfunc::EvMouseButtonRelease (uint button, uint x, uint y, uint state) {
   */ };
 
 void
-cpart_dtfunc::EvKeyPress (uint key, uint mask) {
+cpart_dtfunc::EvKeyPress(uint key, uint mask) {
  /*
  if(key == '1')
  {
@@ -198,7 +266,7 @@ cpart_dtfunc::EvKeyPress (uint key, uint mask) {
   */ };
 
 void
-cpart_dtfunc::EvKeyRelease (uint key, uint mask) {
+cpart_dtfunc::EvKeyRelease(uint key, uint mask) {
  /*
  if(key == '1')
  {
@@ -222,48 +290,66 @@ cpart_dtfunc::EvKeyRelease (uint key, uint mask) {
   */ };
 
 unsigned short
-cpart_dtfunc::get_in_id (char * name)
+cpart_dtfunc::get_in_id(char * name)
 {
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
 };
 
 unsigned short
-cpart_dtfunc::get_out_id (char * name)
+cpart_dtfunc::get_out_id(char * name)
 {
 
  if (strcmp (name, "P1") == 0)return O_P1;
  if (strcmp (name, "P2") == 0)return O_P2;
+ if (strcmp (name, "IG") == 0)return O_IG;
+ if (strcmp (name, "IO") == 0)return O_IO;
+ if (strcmp (name, "OG") == 0)return O_OG;
+ if (strcmp (name, "OO") == 0)return O_OO;
+ if (strcmp (name, "TS") == 0)return O_TS;
+ if (strcmp (name, "NUM") == 0)return O_NUM;
+ if (strcmp (name, "DEN") == 0)return O_DEN;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
 };
 
 String
-cpart_dtfunc::WritePreferences (void)
+cpart_dtfunc::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu", input_pin, output_pin);
+
+
+ snprintf (prefs, 255, "%hhu,%hhu,%f,%f,%f,%f,%f,%i,%i,%f,%f,%f,%f,%f,%f,%f,%f", input_pin, output_pin,
+           sample, in_gain, in_off, out_gain, out_off, ordern, orderd,
+           num[0], num[1], num[2], num[3],
+           den[0], den[1], den[2], den[3]);
 
  return prefs;
-};
+}
 
 void
-cpart_dtfunc::ReadPreferences (String value)
+cpart_dtfunc::ReadPreferences(String value)
 {
- sscanf (value.c_str (), "%hhu,%hhu", &input_pin, &output_pin);
-};
+ sscanf (value.c_str (), "%hhu,%hhu,%f,%f,%f,%f,%f,%i,%i,%f,%f,%f,%f,%f,%f,%f,%f", &input_pin, &output_pin,
+         &sample, &in_gain, &in_off, &out_gain, &out_off, &ordern, &orderd,
+         &num[0], &num[1], &num[2], &num[3],
+         &den[0], &den[1], &den[2], &den[3]);
+}
 
 CPWindow * WProp_dtfunc;
 
 void
-cpart_dtfunc::ConfigurePropertiesWindow (CPWindow * wprop)
+cpart_dtfunc::ConfigurePropertiesWindow(CPWindow * wprop)
 {
  String Items = "0  NC,";
  String spin;
  WProp_dtfunc = wprop;
  board *pboard = Window1.GetBoard ();
+ char buff[20];
+ char eq[200];
+
 
  for (int i = 1; i <= pboard->MGetPinCount (); i++)
   {
@@ -300,13 +386,101 @@ cpart_dtfunc::ConfigurePropertiesWindow (CPWindow * wprop)
  ((CButton*) WProp_dtfunc->GetChildByName ("button1"))->SetTag (1);
 
  ((CButton*) WProp_dtfunc->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+
+ eq[0] = 0;
+ for (int i = 0; i < ordern; i++)
+  {
+   snprintf (buff, 19, "%+f ", num[i]);
+   strncat (eq, buff, 199);
+  }
+ ((CEdit*) WProp_dtfunc->GetChildByName ("edit1"))->SetText (eq);
+
+ eq[0] = 0;
+ for (int i = 0; i < orderd; i++)
+  {
+   snprintf (buff, 19, "%+f ", den[i]);
+   strncat (eq, buff, 199);
+  }
+ ((CEdit*) WProp_dtfunc->GetChildByName ("edit2"))->SetText (eq);
+
+ ((CEdit*) WProp_dtfunc->GetChildByName ("edit3"))->SetText (ftoa (sample));
+ ((CEdit*) WProp_dtfunc->GetChildByName ("edit4"))->SetText (ftoa (in_gain));
+ ((CEdit*) WProp_dtfunc->GetChildByName ("edit5"))->SetText (ftoa (in_off));
+ ((CEdit*) WProp_dtfunc->GetChildByName ("edit6"))->SetText (ftoa (out_gain));
+ ((CEdit*) WProp_dtfunc->GetChildByName ("edit7"))->SetText (ftoa (out_off));
+
 }
 
 void
-cpart_dtfunc::ReadPropertiesWindow (void)
+cpart_dtfunc::ReadPropertiesWindow(void)
 {
+ char line[256];
+ char * T[4];
+
  input_pin = atoi (((CCombo*) WProp_dtfunc->GetChildByName ("combo1"))->GetText ());
  output_pin = atoi (((CCombo*) WProp_dtfunc->GetChildByName ("combo2"))->GetText ());
+
+ strncpy (line, ((CEdit*) WProp_dtfunc->GetChildByName ("edit1"))->GetText ().c_str (), 255);
+ T[0] = strtok (line, " ");
+ T[1] = strtok (NULL, " ");
+ T[2] = strtok (NULL, " ");
+ T[3] = strtok (NULL, " ");
+
+ ordern = 0;
+ for (int i = 0; i < 4; i++)
+  {
+   if (T[i])
+    {
+     sscanf (T[i], "%f", &num[i]);
+     ordern++;
+    }
+   else
+    {
+     num[i] = 0;
+    }
+  }
+
+ strncpy (line, ((CEdit*) WProp_dtfunc->GetChildByName ("edit2"))->GetText ().c_str (), 255);
+ T[0] = strtok (line, " ");
+ T[1] = strtok (NULL, " ");
+ T[2] = strtok (NULL, " ");
+ T[3] = strtok (NULL, " ");
+
+ orderd = 0;
+ for (int i = 0; i < 4; i++)
+  {
+   if (T[i])
+    {
+     sscanf (T[i], "%f", &den[i]);
+     orderd++;
+    }
+   else
+    {
+     den[i] = 0;
+    }
+  }
+
+ if (den[0] != 1.0)
+  {
+   for (int i = 0; i < ordern; i++)
+    {
+     num[i] /= den[0];
+    }
+
+   for (int i = orderd - 1; i >= 0; i--)
+    {
+     den[i] /= den[0];
+    }
+  }
+
+
+ sample = atof (((CEdit*) WProp_dtfunc->GetChildByName ("edit3"))->GetText ());
+ in_gain = atof (((CEdit*) WProp_dtfunc->GetChildByName ("edit4"))->GetText ());
+ in_off = atof (((CEdit*) WProp_dtfunc->GetChildByName ("edit5"))->GetText ());
+ out_gain = atof (((CEdit*) WProp_dtfunc->GetChildByName ("edit6"))->GetText ());
+ out_off = atof (((CEdit*) WProp_dtfunc->GetChildByName ("edit7"))->GetText ());
+
+ Reset ();
 }
 
 

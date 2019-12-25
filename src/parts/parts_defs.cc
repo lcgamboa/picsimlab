@@ -52,11 +52,8 @@
 #include"part_VCD_Dump.h" or csv dump
 */
 
-#ifdef _EXPERIMENTAL_
 const char parts_list[NUM_PARTS][30]={"7 Segments Display","D. Transfer function","Gamepad", "Keypad","LCD hd44780", "LCD pcf8833", "LCD pcd8544", "LED Matrix", "LEDs", "MEM 24CXXX", "Potentiometers", "Push buttons", "RGB LED", "RTC ds1307", "RTC pfc8563", "Servo motor", "Signal Generator", "Step motor","Switchs","Temperature System",};
-#else
-const char parts_list[NUM_PARTS][30]={"7 Segments Display","Gamepad", "Keypad","LCD hd44780", "LCD pcf8833", "LCD pcd8544", "LED Matrix", "LEDs", "MEM 24CXXX", "Potentiometers", "Push buttons", "RGB LED", "RTC ds1307", "RTC pfc8563", "Servo motor", "Signal Generator", "Step motor","Switchs","Temperature System",};
-#endif
+
 
 //boards object creation
 part * create_part(String name, unsigned int x, unsigned int y)
@@ -66,9 +63,9 @@ part * create_part(String name, unsigned int x, unsigned int y)
    if(name.compare(lxT("Servo motor")) == 0 )part_= new cpart_servo(x,y);
 
    if(name.compare(lxT("Step motor")) == 0 )part_= new cpart_step(x,y);
-#ifdef _EXPERIMENTAL_   
+  
    if(name.compare(lxT("D. Transfer function")) == 0 )part_= new cpart_dtfunc(x,y);
-#endif
+
    if(name.compare(lxT("Push buttons")) == 0 )part_= new cpart_pbuttons(x,y);
    
    if(name.compare(lxT("Switchs")) == 0 )part_= new cpart_switchs(x,y);

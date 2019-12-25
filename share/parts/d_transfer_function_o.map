@@ -1,11 +1,18 @@
-<img src="[d_transfer_function] (overwritten)" width="385" height="156" border="0" usemap="#map" />
+<img src="[d_transfer_function] (overwritten)" width="702" height="201" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:Luis Claudio Gamboa Lopes -->
-<area shape="rect" coords="9,98,58,117" href="P1" />
-<area shape="rect" coords="328,99,377,118" href="P2" />
+<!-- #$AUTHOR:Luis Claudio Gamboa Lopes    -->
+<area shape="rect" coords="16,57,48,74" href="P1" />
+<area shape="rect" coords="652,114,681,133" href="P2" />
+<area shape="rect" coords="99,56,129,75" href="IG" />
+<area shape="rect" coords="102,127,144,144" href="IO" />
+<area shape="rect" coords="313,91,423,111" href="NUM" />
+<area shape="rect" coords="313,118,424,139" href="DEN" />
+<area shape="rect" coords="480,104,512,120" href="OG" />
+<area shape="rect" coords="484,161,527,179" href="OO" />
+<area shape="rect" coords="353,24,390,39" href="TS" />
 </map>
