@@ -200,19 +200,18 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
 void 
 board_avr::MEnd(void)
 {
-  avr_terminate(avr); 	
-  //delete avr;
-  avr=NULL;
   avr_serial_close();
-  //mplabxd_end();
-};
+  avr_terminate(avr); 	
+  free(avr);
+  avr=NULL;
+}
 
 void 
 board_avr::MEraseFlash(void)
 {
    //pic_erase_flash();
    memset(avr->flash,0xFF,avr->flashend);
-};
+}
 
 
 void 
@@ -220,7 +219,7 @@ board_avr::MSetFreq(float freq)
 {
   if(avr)
    avr->frequency = freq;
-};
+}
 
 float
 board_avr::MGetFreq(void)

@@ -56,6 +56,7 @@ cpart_LCD_hd44780::Reset(void)
    if(Bitmap)delete Bitmap;
   
    Bitmap = new lxBitmap(image, &Window5);
+   canvas.Destroy();
    canvas.Create(Window5.GetWWidget(),Bitmap);
    image.Destroy(); 
 
@@ -105,6 +106,7 @@ cpart_LCD_hd44780::cpart_LCD_hd44780(unsigned x, unsigned y)
 cpart_LCD_hd44780::~cpart_LCD_hd44780(void)
 {
     delete Bitmap;
+    canvas.Destroy();
 }
 
 

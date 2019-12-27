@@ -81,6 +81,7 @@ cpart_7s_display::cpart_7s_display(unsigned x, unsigned y)
 cpart_7s_display::~cpart_7s_display(void)
 {
  delete Bitmap;
+ canvas.Destroy();
 }
 
 void

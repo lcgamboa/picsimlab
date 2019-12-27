@@ -87,6 +87,8 @@ cpart_tempsys::~cpart_tempsys(void)
  delete vent[1];
  vent[0] = NULL;
  vent[1] = NULL;
+ 
+ canvas.Destroy();
 
 }
 

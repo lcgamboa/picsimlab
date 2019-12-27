@@ -75,6 +75,7 @@ cpart_keypad::cpart_keypad(unsigned x, unsigned y)
 cpart_keypad::~cpart_keypad(void)
 {
  delete Bitmap;
+ canvas.Destroy();
 }
 
 void

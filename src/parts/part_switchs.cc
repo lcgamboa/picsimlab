@@ -80,6 +80,7 @@ cpart_switchs::cpart_switchs (unsigned x, unsigned y)
 cpart_switchs::~cpart_switchs (void)
 {
  delete Bitmap;
+ canvas.Destroy();
 }
 
 void

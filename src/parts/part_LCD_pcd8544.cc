@@ -63,6 +63,7 @@ cpart_LCD_pcd8544::cpart_LCD_pcd8544 (unsigned x, unsigned y)
 cpart_LCD_pcd8544::~cpart_LCD_pcd8544 (void)
 {
  delete Bitmap;
+ canvas.Destroy();
 }
 
 void

@@ -65,6 +65,7 @@ cpart_step::cpart_step (unsigned x, unsigned y)
 cpart_step::~cpart_step (void)
 {
  delete Bitmap;
+ canvas.Destroy();
 }
 
 void

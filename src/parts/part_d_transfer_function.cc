@@ -71,6 +71,7 @@ cpart_dtfunc::cpart_dtfunc(unsigned x, unsigned y)
 cpart_dtfunc::~cpart_dtfunc(void)
 {
  delete Bitmap;
+ canvas.Destroy();
 }
 
 void

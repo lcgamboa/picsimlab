@@ -312,7 +312,7 @@ CPWindow5::LoadConfig (String fname)
    partsc_ = 0;
    for (unsigned int i = 0; i < prefs.GetLinesCount (); i++)
     {
-     sscanf (prefs.GetLine (i).c_str (), "%256[^,],%i,%i:%256[^\n]", name, &x, &y, temp);
+     sscanf (prefs.GetLine (i).c_str (), "%255[^,],%i,%i:%255[^\n]", name, &x, &y, temp);
       
      if(strcmp(name,"scale") == 0)
       {

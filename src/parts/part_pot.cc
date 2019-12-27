@@ -76,6 +76,7 @@ cpart_pot::cpart_pot (unsigned x, unsigned y)
 cpart_pot::~cpart_pot (void)
 {
  delete Bitmap;
+ canvas.Destroy();
 }
 
 void

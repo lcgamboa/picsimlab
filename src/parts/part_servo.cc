@@ -64,6 +64,7 @@ cpart_servo::~cpart_servo (void)
 {
  delete Bitmap;
  delete BackGround;
+ canvas.Destroy();
 }
 
 void

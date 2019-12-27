@@ -34,7 +34,7 @@ enum
  O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_L1, O_L2, O_L3, O_L4, O_L5, O_L6, O_L7, O_L8
 };
 
-cpart_leds::cpart_leds (unsigned x, unsigned y)
+cpart_leds::cpart_leds(unsigned x, unsigned y)
 {
  X = x;
  Y = y;
@@ -58,13 +58,14 @@ cpart_leds::cpart_leds (unsigned x, unsigned y)
 
 };
 
-cpart_leds::~cpart_leds (void)
+cpart_leds::~cpart_leds(void)
 {
  delete Bitmap;
+ canvas.Destroy ();
 }
 
 void
-cpart_leds::Draw (void)
+cpart_leds::Draw(void)
 {
 
  int i;
@@ -106,8 +107,14 @@ cpart_leds::Draw (void)
     case O_L6:
     case O_L7:
     case O_L8:
-     if(input_pins[output[i].id - O_L1] > 0)
+     if (input_pins[output[i].id - O_L1] > 0)
+      {
        canvas.SetColor (ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
+      }
+     else
+      {
+       canvas.SetColor (30, 0, 0);
+      }
      canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
      break;
     }
@@ -121,14 +128,14 @@ cpart_leds::Draw (void)
 }
 
 unsigned short
-cpart_leds::get_in_id (char * name)
+cpart_leds::get_in_id(char * name)
 {
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
 };
 
 unsigned short
-cpart_leds::get_out_id (char * name)
+cpart_leds::get_out_id(char * name)
 {
 
  if (strcmp (name, "P1") == 0)return O_P1;
@@ -154,7 +161,7 @@ cpart_leds::get_out_id (char * name)
 };
 
 String
-cpart_leds::WritePreferences (void)
+cpart_leds::WritePreferences(void)
 {
  char prefs[256];
 
@@ -164,7 +171,7 @@ cpart_leds::WritePreferences (void)
 };
 
 void
-cpart_leds::ReadPreferences (String value)
+cpart_leds::ReadPreferences(String value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7]);
 };
@@ -172,7 +179,7 @@ cpart_leds::ReadPreferences (String value)
 CPWindow * WProp_leds;
 
 void
-cpart_leds::ConfigurePropertiesWindow (CPWindow * wprop)
+cpart_leds::ConfigurePropertiesWindow(CPWindow * wprop)
 {
  String Items = "0  NC,";
  String spin;
@@ -269,7 +276,7 @@ cpart_leds::ConfigurePropertiesWindow (CPWindow * wprop)
 }
 
 void
-cpart_leds::ReadPropertiesWindow (void)
+cpart_leds::ReadPropertiesWindow(void)
 {
  input_pins[0] = atoi (((CCombo*) WProp_leds->GetChildByName ("combo1"))->GetText ());
  input_pins[1] = atoi (((CCombo*) WProp_leds->GetChildByName ("combo2"))->GetText ());

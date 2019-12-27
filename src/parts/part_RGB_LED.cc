@@ -59,6 +59,7 @@ cpart_rgb_led::cpart_rgb_led (unsigned x, unsigned y)
 cpart_rgb_led::~cpart_rgb_led (void)
 {
  delete Bitmap;
+ canvas.Destroy();
 }
 
 void

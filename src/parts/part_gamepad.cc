@@ -96,6 +96,7 @@ cpart_gamepad::cpart_gamepad (unsigned x, unsigned y)
 cpart_gamepad::~cpart_gamepad (void)
 {
  delete Bitmap;
+ canvas.Destroy();
 }
 
 void

@@ -62,6 +62,7 @@ cpart_led_matrix::cpart_led_matrix(unsigned x, unsigned y)
 cpart_led_matrix::~cpart_led_matrix(void)
 {
  delete Bitmap;
+ canvas.Destroy();
 }
 
 void

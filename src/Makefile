@@ -16,6 +16,7 @@ execdir= ${prefix}/bin/
 
 override CFLAGS += -D_VERSION_=\"$(VERSION)\" -Wall -O3 -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer  `lxrad-config --cxxflags`
 
+#override CFLAGS+=-fsanitize=address
 #CFLAGS+= -D_EXPERIMENTAL_
 
 LIBS = `lxrad-config --libs` -lpicsim -lsimavr -lelf

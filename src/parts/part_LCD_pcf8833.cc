@@ -62,6 +62,7 @@ cpart_LCD_pcf8833::cpart_LCD_pcf8833 (unsigned x, unsigned y)
 cpart_LCD_pcf8833::~cpart_LCD_pcf8833 (void)
 {
  delete Bitmap;
+ canvas.Destroy();
 }
 
 void

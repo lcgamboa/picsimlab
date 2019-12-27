@@ -82,6 +82,7 @@ cpart_pbuttons::cpart_pbuttons(unsigned x, unsigned y)
 cpart_pbuttons::~cpart_pbuttons(void)
 {
  delete Bitmap;
+ canvas.Destroy();
 }
 
 void

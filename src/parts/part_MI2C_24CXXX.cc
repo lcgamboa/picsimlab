@@ -76,6 +76,7 @@ cpart_MI2C_24CXXX::~cpart_MI2C_24CXXX(void)
 {
  mi2c_end (&mi2c);
  delete Bitmap;
+ canvas.Destroy();
 }
 
 void

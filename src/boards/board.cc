@@ -34,13 +34,13 @@ board::board(void)
   use_oscope=0;
   use_spare=0;
   p_MCLR=1;
-};
+}
 
 
 board::~board(void)
 {
 
-};
+}
 
 
 void 
@@ -154,7 +154,7 @@ board::ReadInputMap(String fname)
     printf("Error open input.map \"%s\"!\n",(const char*)fname.c_str());
   }
     
-};
+}
 
 void 
 board::ReadOutputMap(String fname)
@@ -228,7 +228,7 @@ board::ReadOutputMap(String fname)
     printf("Error open output.map \"%s\"!\n",(const char *)fname.c_str());
   }
     
-};
+}
 
 void 
 board::RefreshStatus(void)

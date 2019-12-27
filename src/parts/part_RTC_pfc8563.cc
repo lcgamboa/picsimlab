@@ -75,6 +75,7 @@ cpart_RTC_pfc8563::~cpart_RTC_pfc8563(void)
 {
  rtc_end (&rtc);
  delete Bitmap;
+ canvas.Destroy();
 }
 
 void
