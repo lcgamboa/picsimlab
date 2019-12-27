@@ -89,6 +89,8 @@ cpart_gamepad::cpart_gamepad (unsigned x, unsigned y)
 
  valuex = jr;
  valuey = jr;
+
+ refresh=0;
 }
 
 cpart_gamepad::~cpart_gamepad (void)

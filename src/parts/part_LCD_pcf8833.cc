@@ -272,7 +272,10 @@ cpart_LCD_pcf8833::Process (void)
 
 
 
- //if((!ppins[input_pins[3]-1].dir)&&(!ppins[input_pins[3]-1].value))
+ if((input_pins[0])
+ &&(input_pins[1])
+ &&(input_pins[2])
+ &&(input_pins[3]))
  {
   lcd_pcf8833_io (&lcd, ppins[input_pins[1] - 1].value, ppins[input_pins[2] - 1].value, ppins[input_pins[3] - 1].value, ppins[input_pins[0] - 1].value);
  }

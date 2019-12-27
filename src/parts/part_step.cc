@@ -111,7 +111,8 @@ cpart_step::Draw (void)
     case O_L2:
     case O_L3:
     case O_L4:
-     canvas.SetColor (ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
+     if(input_pins[output[i].id - O_L1] > 0 )
+       canvas.SetColor (ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
      canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
      break;
     }
@@ -130,6 +131,12 @@ void
 cpart_step::Process (void)
 {
  const picpin * ppins = Window1.GetBoard ()->MGetPinsValues ();
+
+ if((input_pins[0]>0)
+ &&(input_pins[1]>0)
+ &&(input_pins[2]>0)
+ &&(input_pins[3]>0))
+ {
 
  b1[1] = b1[0];
  b1[0] = ppins[input_pins[0] - 1].value - ppins[input_pins[2] - 1].value;
@@ -218,7 +225,7 @@ cpart_step::Process (void)
   angle -= HSTEP;
 
  if (angle >= 2 * M_PI)angle -= 2 * M_PI;
-
+ }
 }
 
 unsigned short

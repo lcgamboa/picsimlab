@@ -180,6 +180,7 @@ cpart_dtfunc::Process(void)
 
    float in, out, pinv;
 
+   if(input_pin == 0)return;
    pinv= (ppins[input_pin - 1].oavalue-30)*0.022502250225;
    //pinv = (ppins[input_pin - 1].value) *5.0;
 

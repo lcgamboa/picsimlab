@@ -69,6 +69,7 @@ cpart_keypad::cpart_keypad(unsigned x, unsigned y)
 
  memset (keys, 0, 16);
 
+ refresh=0;
 }
 
 cpart_keypad::~cpart_keypad(void)

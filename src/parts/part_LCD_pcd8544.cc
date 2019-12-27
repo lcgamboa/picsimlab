@@ -269,7 +269,11 @@ cpart_LCD_pcd8544::Process (void)
 
 
 
- //if((!ppins[input_pins[3]-1].dir)&&(!ppins[input_pins[3]-1].value))
+ if((input_pins[0] > 0) 
+ &&(input_pins[1] > 0) 
+ &&(input_pins[2] > 0) 
+ &&(input_pins[3] > 0) 
+ &&(input_pins[4] > 0)) 
  {
   lcd_pcd8544_io (&lcd, ppins[input_pins[3] - 1].value, ppins[input_pins[4] - 1].value, ppins[input_pins[1] - 1].value, ppins[input_pins[0] - 1].value, ppins[input_pins[2] - 1].value);
  }

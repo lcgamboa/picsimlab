@@ -92,13 +92,19 @@ cpart_rgb_led::Draw (void)
       canvas.Text (pboard->MGetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1);
      break;
     case O_L1:
-     canvas.SetColor (ppins[input_pins[0] - 1].oavalue, ppins[input_pins[1] - 1].oavalue, ppins[input_pins[2] - 1].oavalue);
+     unsigned char r=0,g=0,b=0;
+     if(input_pins[0] > 0)
+	     r=ppins[input_pins[0] - 1].oavalue;
+     if(input_pins[1] > 0)
+	     g=ppins[input_pins[1] - 1].oavalue;
+     if(input_pins[2] > 0)
+	     b=ppins[input_pins[2] - 1].oavalue;
+     canvas.SetColor (r, g, b);
      canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
      break;
     }
 
-
-  };
+  }
 
 
  canvas.End ();

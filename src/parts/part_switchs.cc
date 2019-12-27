@@ -73,8 +73,9 @@ cpart_switchs::cpart_switchs (unsigned x, unsigned y)
  output_value[6] = 0;
  output_value[7] = 0;
 
+ refresh = 0;
 
-};
+}
 
 cpart_switchs::~cpart_switchs (void)
 {
@@ -151,14 +152,14 @@ cpart_switchs::Process (void)
    board *pboard = Window1.GetBoard ();
    refresh = 0;
 
-   pboard->MSetPin (output_pins[0], output_value[0]);
-   pboard->MSetPin (output_pins[1], output_value[1]);
-   pboard->MSetPin (output_pins[2], output_value[2]);
-   pboard->MSetPin (output_pins[3], output_value[3]);
-   pboard->MSetPin (output_pins[4], output_value[4]);
-   pboard->MSetPin (output_pins[5], output_value[5]);
-   pboard->MSetPin (output_pins[6], output_value[6]);
-   pboard->MSetPin (output_pins[7], output_value[7]);
+   if(output_pins[0]>0)pboard->MSetPin (output_pins[0], output_value[0]);
+   if(output_pins[1]>0)pboard->MSetPin (output_pins[1], output_value[1]);
+   if(output_pins[2]>0)pboard->MSetPin (output_pins[2], output_value[2]);
+   if(output_pins[3]>0)pboard->MSetPin (output_pins[3], output_value[3]);
+   if(output_pins[4]>0)pboard->MSetPin (output_pins[4], output_value[4]);
+   if(output_pins[5]>0)pboard->MSetPin (output_pins[5], output_value[5]);
+   if(output_pins[6]>0)pboard->MSetPin (output_pins[6], output_value[6]);
+   if(output_pins[7]>0)pboard->MSetPin (output_pins[7], output_value[7]);
 
   }
  refresh++;

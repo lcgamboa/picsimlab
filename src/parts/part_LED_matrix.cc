@@ -227,8 +227,7 @@ cpart_led_matrix::Process(void)
 {
  const picpin * ppins = Window1.GetBoard ()->MGetPinsValues ();
 
-
- //if((!ppins[input_pins[3]-1].dir)&&(!ppins[input_pins[3]-1].value))
+ if((input_pins[0] > 0)&&(input_pins[1] > 0)&&(input_pins[2] > 0))
  {
   ldd_max72xx_io (&ldd, ppins[input_pins[0] - 1].value, ppins[input_pins[2] - 1].value, ppins[input_pins[1] - 1].value);
  }

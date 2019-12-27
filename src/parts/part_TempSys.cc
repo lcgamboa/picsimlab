@@ -147,6 +147,7 @@ cpart_tempsys::Draw(void)
      canvas.Text (str, output[i].x1, output[i].y1);
      break;
     case O_VT:
+     if(input_pins[1] == 0)break;
      if (ppins[input_pins[1] - 1].oavalue > 30) vtc++;
 
      if (vtc > (4 - 0.04 * ppins[input_pins[1] - 1].oavalue))
@@ -160,9 +161,11 @@ cpart_tempsys::Draw(void)
   }
 
  //sensor ventilador
- rpmstp = ((float) Window1.GetNSTEPJ ()) / (0.64 * (ppins[input_pins[1] - 1].oavalue - 29));
+ if(input_pins[1] > 0)
+   rpmstp = ((float) Window1.GetNSTEPJ ()) / (0.64 * (ppins[input_pins[1] - 1].oavalue - 29));
  //temperatura 
- ref = ((0.2222 * (ppins[input_pins[0] - 1].oavalue - 30)))-(0.2222 * (ppins[input_pins[1] - 1].oavalue - 30));
+ if((input_pins[0] > 0)&&(input_pins[1] > 0))
+   ref = ((0.2222 * (ppins[input_pins[0] - 1].oavalue - 30)))-(0.2222 * (ppins[input_pins[1] - 1].oavalue - 30));
 
  if (ref < 0)
   ref = 0;
@@ -189,6 +192,8 @@ cpart_tempsys::Process(void)
 
    const picpin * ppins = pboard->MGetPinsValues ();
    
+   if((input_pins[1]>0)&&(input_pins[3]>0))
+   {
    if (ppins[input_pins[1] - 1].oavalue > 30)
     {
      rpmc++;
@@ -200,7 +205,7 @@ cpart_tempsys::Process(void)
     }
    else
     pboard->MSetPin (input_pins[3], 0);
-
+   }
   }
  refresh--;
 

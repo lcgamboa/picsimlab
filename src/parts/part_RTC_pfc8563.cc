@@ -250,7 +250,9 @@ cpart_RTC_pfc8563::Process(void)
  const picpin * ppins = Window1.GetBoard ()->MGetPinsValues ();
  board *pboard = Window1.GetBoard ();
 
- Window5.Set_i2c_bus (input_pins[1] - 1, rtc_io (&rtc, ppins[input_pins[2] - 1].value, ppins[input_pins[1] - 1].value));
- pboard->MSetPin (input_pins[1], Window5.Get_i2c_bus (input_pins[1] - 1));
+ if((input_pins[1]>0)&&(input_pins[2]>0))
+   Window5.Set_i2c_bus (input_pins[1] - 1, rtc_io (&rtc, ppins[input_pins[2] - 1].value, ppins[input_pins[1] - 1].value));
+ if(input_pins[1]>0)
+   pboard->MSetPin (input_pins[1], Window5.Get_i2c_bus (input_pins[1] - 1));
 
 }

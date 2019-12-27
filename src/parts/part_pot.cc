@@ -70,7 +70,8 @@ cpart_pot::cpart_pot (unsigned x, unsigned y)
  active[2] = 0;
  active[3] = 0;
 
-};
+ refresh=0;
+}
 
 cpart_pot::~cpart_pot (void)
 {

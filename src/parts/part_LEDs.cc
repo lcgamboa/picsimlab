@@ -106,7 +106,8 @@ cpart_leds::Draw (void)
     case O_L6:
     case O_L7:
     case O_L8:
-     canvas.SetColor (ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
+     if(input_pins[output[i].id - O_L1] > 0)
+       canvas.SetColor (ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
      canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
      break;
     }

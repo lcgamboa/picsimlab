@@ -491,11 +491,14 @@ cpart_7s_display::Process(void)
 
  for (i = 0; i < 8; i++)
   {
-   pinv = ppins[input_pins[i] - 1].value;
-   if ((pinv)&&(ppins[input_pins[8] - 1].value)) alm1[i]++;
-   if ((pinv)&&(ppins[input_pins[9] - 1].value)) alm2[i]++;
-   if ((pinv)&&(ppins[input_pins[10] - 1].value)) alm3[i]++;
-   if ((pinv)&&(ppins[input_pins[11] - 1].value)) alm4[i]++;
+   if(input_pins[i] > 0)
+   {	   
+     pinv = ppins[input_pins[i] - 1].value;
+     if ((pinv)&&(ppins[input_pins[8] - 1].value)) alm1[i]++;
+     if ((pinv)&&(ppins[input_pins[9] - 1].value)) alm2[i]++;
+     if ((pinv)&&(ppins[input_pins[10] - 1].value)) alm3[i]++;
+     if ((pinv)&&(ppins[input_pins[11] - 1].value)) alm4[i]++;
+   }
   }
 
  mcount++;

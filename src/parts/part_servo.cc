@@ -125,6 +125,8 @@ cpart_servo::Process (void)
 
  const picpin * ppins = Window1.GetBoard ()->MGetPinsValues ();
 
+ if(input_pin == 0)return;
+
  in_[1] = in_[0];
  in_[0] = ppins[input_pin - 1].value;
 

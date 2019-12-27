@@ -76,7 +76,8 @@ cpart_pbuttons::cpart_pbuttons(unsigned x, unsigned y)
  output_value[6] = !active;
  output_value[7] = !active;
 
-};
+ refresh=0;
+}
 
 cpart_pbuttons::~cpart_pbuttons(void)
 {
