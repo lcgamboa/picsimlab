@@ -85,7 +85,16 @@ class CPWindow5:public CPWindow
   void PropClose(int tag);
   void Set_i2c_bus(unsigned char pin, unsigned char value);
   unsigned char Get_i2c_bus(unsigned char pin);
+  String GetPinsNames(void);
+  String GetPinName(unsigned char pin);
+  const picpin * GetPinsValues (void);
+  void SetPin (unsigned char pin, unsigned char value);
+  void SetAPin (unsigned char pin, float value);
   private:
+    board *pboard;
+    String PinNames[256];
+    picpin  * Pins;
+    unsigned char PinsCount;
     int partsc;  
     part *parts[MAX_PARTS];
     CItemMenu MParts[NUM_PARTS];

@@ -114,8 +114,7 @@ void cpart_LCD_hd44780::Draw(void)
 { 
  
   int i;
-  board *pboard=Window1.GetBoard();
-  
+    
   int yoff=0;
 
   if((model == LCD16x4)||(model == LCD20x4)) yoff=96;
@@ -148,7 +147,7 @@ void cpart_LCD_hd44780::Draw(void)
            if(input_pins[output[i].id - O_P1] == 0)
              canvas.RotatedText ("NC",output[i].x1,output[i].y2+yoff, 90.0);
            else
-             canvas.RotatedText(pboard->MGetPinName(input_pins[output[i].id - O_P1]),output[i].x1,output[i].y2+yoff, 90.0);  
+             canvas.RotatedText(Window5.GetPinName(input_pins[output[i].id - O_P1]),output[i].x1,output[i].y2+yoff, 90.0);  
            break;
 	 case O_F1:
            canvas.SetColor (49, 61, 99);
@@ -255,27 +254,17 @@ CPWindow * WProp_LCD_hd44780;
 void 
 cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow *  wprop)
 {
-    String Items="0  NC,";
+    String Items = Window5.GetPinsNames();
     String spin;
     WProp_LCD_hd44780=wprop;
-    board *pboard=Window1.GetBoard();
-    
-    for(int i=1; i<= pboard->MGetPinCount();i++ )
-    {
-       spin= pboard->MGetPinName(i);
-      
-      if(spin.Cmp(lxT("error")))
-      {
-        Items=Items+itoa(i)+"  "+spin+",";
-      }
-    }
+        
     
     ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo1"))->SetItems(Items);
     if(input_pins[0] == 0)
         ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo1"))->SetText("0  NC");
     else
     {
-        spin= pboard->MGetPinName(input_pins[0]);
+        spin= Window5.GetPinName(input_pins[0]);
         ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo1"))->SetText(itoa(input_pins[0])+"  "+spin);
     }
     
@@ -284,7 +273,7 @@ cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow *  wprop)
         ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo2"))->SetText("0  NC");
     else
     {
-        spin= pboard->MGetPinName(input_pins[1]);
+        spin= Window5.GetPinName(input_pins[1]);
         ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo2"))->SetText(itoa(input_pins[1])+"  "+spin);
     }
     
@@ -293,7 +282,7 @@ cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow *  wprop)
         ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo3"))->SetText("0  NC");
     else
     {
-        spin= pboard->MGetPinName(input_pins[2]);
+        spin= Window5.GetPinName(input_pins[2]);
         ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo3"))->SetText(itoa(input_pins[2])+"  "+spin);
     }
     
@@ -302,7 +291,7 @@ cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow *  wprop)
         ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo4"))->SetText("0  NC");
     else
     {
-        spin= pboard->MGetPinName(input_pins[3]);
+        spin= Window5.GetPinName(input_pins[3]);
         ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo4"))->SetText(itoa(input_pins[3])+"  "+spin);
     }
     
@@ -311,7 +300,7 @@ cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow *  wprop)
         ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo5"))->SetText("0  NC");
     else
     {
-        spin= pboard->MGetPinName(input_pins[4]);
+        spin= Window5.GetPinName(input_pins[4]);
         ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo5"))->SetText(itoa(input_pins[4])+"  "+spin);
     }
     
@@ -320,7 +309,7 @@ cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow *  wprop)
         ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo6"))->SetText("0  NC");
     else
     {
-        spin= pboard->MGetPinName(input_pins[5]);
+        spin= Window5.GetPinName(input_pins[5]);
         ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo6"))->SetText(itoa(input_pins[5])+"  "+spin);
     }
     
@@ -329,7 +318,7 @@ cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow *  wprop)
         ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo7"))->SetText("0  NC");
     else
     {
-        spin= pboard->MGetPinName(input_pins[6]);
+        spin= Window5.GetPinName(input_pins[6]);
         ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo7"))->SetText(itoa(input_pins[6])+"  "+spin);
     }
     
@@ -338,7 +327,7 @@ cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow *  wprop)
         ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo8"))->SetText("0  NC");
     else
     {
-        spin= pboard->MGetPinName(input_pins[7]);
+        spin= Window5.GetPinName(input_pins[7]);
         ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo8"))->SetText(itoa(input_pins[7])+"  "+spin);
     }
     
@@ -347,7 +336,7 @@ cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow *  wprop)
         ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo9"))->SetText("0  NC");
     else
     {
-        spin= pboard->MGetPinName(input_pins[8]);
+        spin= Window5.GetPinName(input_pins[8]);
         ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo9"))->SetText(itoa(input_pins[8])+"  "+spin);
     }
     
@@ -356,7 +345,7 @@ cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow *  wprop)
         ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo10"))->SetText("0  NC");
     else
     {
-        spin= pboard->MGetPinName(input_pins[9]);
+        spin= Window5.GetPinName(input_pins[9]);
         ((CCombo*)WProp_LCD_hd44780->GetChildByName("combo10"))->SetText(itoa(input_pins[9])+"  "+spin);
     }
         
@@ -413,7 +402,7 @@ cpart_LCD_hd44780::ReadPropertiesWindow(void)
 void
 cpart_LCD_hd44780::Process(void)
 {
-   const picpin * ppins=Window1.GetBoard()->MGetPinsValues();
+   const picpin * ppins=Window5.GetPinsValues();
 
    
 //lcd dipins[2].display code

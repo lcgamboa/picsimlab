@@ -68,9 +68,7 @@ cpart_led_matrix::~cpart_led_matrix(void)
 void
 cpart_led_matrix::Draw(void)
 {
-
  int i;
- board *pboard = Window1.GetBoard ();
 
  canvas.Init ();
 
@@ -91,7 +89,7 @@ cpart_led_matrix::Draw(void)
      if (input_pins[output[i].id - O_P1] == 0)
       canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
      else
-      canvas.RotatedText (pboard->MGetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2, 90.0);
+      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2, 90.0);
      break;
     case O_F1:
      canvas.SetColor (49, 61, 99);
@@ -167,27 +165,16 @@ CPWindow * WProp_led_matrix;
 void
 cpart_led_matrix::ConfigurePropertiesWindow(CPWindow * wprop)
 {
- String Items = "0  NC,";
+ String Items = Window5.GetPinsNames ();
  String spin;
  WProp_led_matrix = wprop;
- board *pboard = Window1.GetBoard ();
-
- for (int i = 1; i <= pboard->MGetPinCount (); i++)
-  {
-   spin = pboard->MGetPinName (i);
-
-   if (spin.Cmp (lxT ("error")))
-    {
-     Items = Items + itoa (i) + "  " + spin + ",";
-    }
-  }
 
  ((CCombo*) WProp_led_matrix->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)
   ((CCombo*) WProp_led_matrix->GetChildByName ("combo1"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[0]);
+   spin = Window5.GetPinName (input_pins[0]);
    ((CCombo*) WProp_led_matrix->GetChildByName ("combo1"))->SetText (itoa (input_pins[0]) + "  " + spin);
   }
 
@@ -196,7 +183,7 @@ cpart_led_matrix::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_led_matrix->GetChildByName ("combo2"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[1]);
+   spin = Window5.GetPinName (input_pins[1]);
    ((CCombo*) WProp_led_matrix->GetChildByName ("combo2"))->SetText (itoa (input_pins[1]) + "  " + spin);
   }
 
@@ -205,7 +192,7 @@ cpart_led_matrix::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_led_matrix->GetChildByName ("combo3"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[2]);
+   spin = Window5.GetPinName (input_pins[2]);
    ((CCombo*) WProp_led_matrix->GetChildByName ("combo3"))->SetText (itoa (input_pins[2]) + "  " + spin);
   }
 
@@ -226,7 +213,7 @@ cpart_led_matrix::ReadPropertiesWindow(void)
 void
 cpart_led_matrix::Process(void)
 {
- const picpin * ppins = Window1.GetBoard ()->MGetPinsValues ();
+ const picpin * ppins = Window5.GetPinsValues ();
 
  if((input_pins[0] > 0)&&(input_pins[1] > 0)&&(input_pins[2] > 0))
  {

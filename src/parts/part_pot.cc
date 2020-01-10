@@ -83,10 +83,7 @@ void
 cpart_pot::Draw (void)
 {
 
-
-
  int i;
- board *pboard = Window1.GetBoard ();
 
  canvas.Init ();
 
@@ -108,7 +105,7 @@ cpart_pot::Draw (void)
      if (input_pins[output[i].id - O_P1] == 0)
       canvas.Text ("NC", output[i].x1, output[i].y1);
      else
-      canvas.Text (pboard->MGetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1);
+      canvas.Text (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1);
      break;
     case O_PO1:
     case O_PO2:
@@ -138,12 +135,10 @@ cpart_pot::Process (void)
   {
    refresh = 0;
 
-   board *pboard = Window1.GetBoard ();
-
-   pboard->MSetAPin (input_pins[0], 5.0 * (148 - values[0]) / 148.0);
-   pboard->MSetAPin (input_pins[1], 5.0 * (148 - values[1]) / 148.0);
-   pboard->MSetAPin (input_pins[2], 5.0 * (148 - values[2]) / 148.0);
-   pboard->MSetAPin (input_pins[3], 5.0 * (148 - values[3]) / 148.0);
+   Window5.SetAPin (input_pins[0], 5.0 * (148 - values[0]) / 148.0);
+   Window5.SetAPin (input_pins[1], 5.0 * (148 - values[1]) / 148.0);
+   Window5.SetAPin (input_pins[2], 5.0 * (148 - values[2]) / 148.0);
+   Window5.SetAPin (input_pins[3], 5.0 * (148 - values[3]) / 148.0);
 
   }
  refresh++;
@@ -317,27 +312,16 @@ CPWindow * WProp_pot;
 void
 cpart_pot::ConfigurePropertiesWindow (CPWindow * wprop)
 {
- String Items = "0  NC,";
+ String Items = Window5.GetPinsNames ();
  String spin;
  WProp_pot = wprop;
- board *pboard = Window1.GetBoard ();
-
- for (int i = 1; i <= pboard->MGetPinCount (); i++)
-  {
-   spin = pboard->MGetPinName (i);
-
-   if (spin.Cmp (lxT ("error")))
-    {
-     Items = Items + itoa (i) + "  " + spin + ",";
-    }
-  }
 
  ((CCombo*) WProp_pot->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)
   ((CCombo*) WProp_pot->GetChildByName ("combo1"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[0]);
+   spin = Window5.GetPinName (input_pins[0]);
    ((CCombo*) WProp_pot->GetChildByName ("combo1"))->SetText (itoa (input_pins[0]) + "  " + spin);
   }
 
@@ -346,7 +330,7 @@ cpart_pot::ConfigurePropertiesWindow (CPWindow * wprop)
   ((CCombo*) WProp_pot->GetChildByName ("combo2"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[1]);
+   spin = Window5.GetPinName (input_pins[1]);
    ((CCombo*) WProp_pot->GetChildByName ("combo2"))->SetText (itoa (input_pins[1]) + "  " + spin);
   }
 
@@ -355,7 +339,7 @@ cpart_pot::ConfigurePropertiesWindow (CPWindow * wprop)
   ((CCombo*) WProp_pot->GetChildByName ("combo3"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[2]);
+   spin = Window5.GetPinName (input_pins[2]);
    ((CCombo*) WProp_pot->GetChildByName ("combo3"))->SetText (itoa (input_pins[2]) + "  " + spin);
   }
 
@@ -364,7 +348,7 @@ cpart_pot::ConfigurePropertiesWindow (CPWindow * wprop)
   ((CCombo*) WProp_pot->GetChildByName ("combo4"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[3]);
+   spin = Window5.GetPinName (input_pins[3]);
    ((CCombo*) WProp_pot->GetChildByName ("combo4"))->SetText (itoa (input_pins[3]) + "  " + spin);
   }
 

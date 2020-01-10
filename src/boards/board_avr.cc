@@ -126,6 +126,7 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
  //avr->log= LOG_DEBUG;
 
  avr_reset (avr);
+ 
  pins_reset ();
 
 

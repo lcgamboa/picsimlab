@@ -70,8 +70,7 @@ cpart_servo::~cpart_servo (void)
 void
 cpart_servo::Draw (void)
 {
- board *pboard = Window1.GetBoard ();
-
+ 
  canvas.SetBitmap (BackGround, 1.0, 1.0);
 
  int i;
@@ -103,7 +102,7 @@ cpart_servo::Draw (void)
      if (input_pin == 0)
       canvas.Text ("NC", output[i].x1, output[i].y1);
      else
-      canvas.Text (pboard->MGetPinName (input_pin), output[i].x1, output[i].y1);
+      canvas.Text (Window5.GetPinName (input_pin), output[i].x1, output[i].y1);
     }
 
    if (output[i].id == O_AXIS)
@@ -124,7 +123,7 @@ void
 cpart_servo::Process (void)
 {
 
- const picpin * ppins = Window1.GetBoard ()->MGetPinsValues ();
+ const picpin * ppins = Window5.GetPinsValues ();
 
  if(input_pin == 0)return;
 
@@ -189,27 +188,16 @@ CPWindow * WProp_servo;
 void
 cpart_servo::ConfigurePropertiesWindow (CPWindow * wprop)
 {
- String Items = "0  NC,";
+ String Items = Window5.GetPinsNames ();
  String spin;
  WProp_servo = wprop;
- board *pboard = Window1.GetBoard ();
-
- for (int i = 1; i <= pboard->MGetPinCount (); i++)
-  {
-   spin = pboard->MGetPinName (i);
-
-   if (spin.Cmp (lxT ("error")))
-    {
-     Items = Items + itoa (i) + "  " + spin + ",";
-    }
-  }
 
  ((CCombo*) WProp_servo->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pin == 0)
   ((CCombo*) WProp_servo->GetChildByName ("combo1"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pin);
+   spin = Window5.GetPinName (input_pin);
    ((CCombo*) WProp_servo->GetChildByName ("combo1"))->SetText (itoa (input_pin) + "  " + spin);
   }
 

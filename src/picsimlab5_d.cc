@@ -174,6 +174,8 @@ CPWindow5::CPWindow5(void)
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!
   
+  pboard = NULL; 
+  
   for(int i=0; i <NUM_PARTS; i++)
     {
        MParts[i].SetFOwner(this);

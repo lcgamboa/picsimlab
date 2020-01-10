@@ -55,6 +55,9 @@ board_pic::MInit(const char * processor, const char * fname, float freq)
   
    int ret=pic_init(&pic,procn,fname,1,freq);
    pic.config[0] |= 0x0800; //disable DEBUG
+   
+   pic.pins= (picpin*)realloc(pic.pins,sizeof(picpin)*256);
+   
    return ret;
 }
 

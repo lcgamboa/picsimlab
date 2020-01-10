@@ -84,8 +84,6 @@ cpart_keypad::Draw(void)
 
  int i;
 
- board *pboard = Window1.GetBoard ();
-
  canvas.Init ();
 
  lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
@@ -110,7 +108,7 @@ cpart_keypad::Draw(void)
      if (output_pins[output[i].id - O_L1] == 0)
       canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
      else
-      canvas.RotatedText (pboard->MGetPinName (output_pins[output[i].id - O_L1]), output[i].x1, output[i].y2, 90.0);
+      canvas.RotatedText (Window5.GetPinName (output_pins[output[i].id - O_L1]), output[i].x1, output[i].y2, 90.0);
      break;
     }
 
@@ -127,12 +125,11 @@ cpart_keypad::Process(void)
 
  if (refresh > 10)
   {
-   const picpin * ppins = Window1.GetBoard ()->MGetPinsValues ();
-   board *pboard = Window1.GetBoard ();
+   const picpin * ppins = Window5.GetPinsValues ();
    refresh = 0;
 
    for(int i=0;i<8;i++)
-     pboard->MSetPin (output_pins[i],!pull);
+     Window5.SetPin (output_pins[i],!pull);
        
    for (int c = 0; c < 4; c++)
     {
@@ -140,8 +137,8 @@ cpart_keypad::Process(void)
       {
        if (keys[l][c])
         {
-         pboard->MSetPin (output_pins[l], ppins[output_pins[4 + c] - 1].value);
-         pboard->MSetPin (output_pins[4 + c], ppins[output_pins[l] - 1].value);
+         Window5.SetPin (output_pins[l], ppins[output_pins[4 + c] - 1].value);
+         Window5.SetPin (output_pins[4 + c], ppins[output_pins[l] - 1].value);
         }
       }
     }
@@ -314,27 +311,16 @@ CPWindow * WProp_keypad;
 void
 cpart_keypad::ConfigurePropertiesWindow(CPWindow * wprop)
 {
- String Items = "0  NC,";
+ String Items = Window5.GetPinsNames ();
  String spin;
  WProp_keypad = wprop;
- board *pboard = Window1.GetBoard ();
-
- for (int i = 1; i <= pboard->MGetPinCount (); i++)
-  {
-   spin = pboard->MGetPinName (i);
-
-   if (spin.Cmp (lxT ("error")))
-    {
-     Items = Items + itoa (i) + "  " + spin + ",";
-    }
-  }
 
  ((CCombo*) WProp_keypad->GetChildByName ("combo1"))->SetItems (Items);
  if (output_pins[0] == 0)
   ((CCombo*) WProp_keypad->GetChildByName ("combo1"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (output_pins[0]);
+   spin = Window5.GetPinName (output_pins[0]);
    ((CCombo*) WProp_keypad->GetChildByName ("combo1"))->SetText (itoa (output_pins[0]) + "  " + spin);
   }
 
@@ -343,7 +329,7 @@ cpart_keypad::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_keypad->GetChildByName ("combo2"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (output_pins[1]);
+   spin = Window5.GetPinName (output_pins[1]);
    ((CCombo*) WProp_keypad->GetChildByName ("combo2"))->SetText (itoa (output_pins[1]) + "  " + spin);
   }
 
@@ -352,7 +338,7 @@ cpart_keypad::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_keypad->GetChildByName ("combo3"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (output_pins[2]);
+   spin = Window5.GetPinName (output_pins[2]);
    ((CCombo*) WProp_keypad->GetChildByName ("combo3"))->SetText (itoa (output_pins[2]) + "  " + spin);
   }
 
@@ -361,7 +347,7 @@ cpart_keypad::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_keypad->GetChildByName ("combo4"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (output_pins[3]);
+   spin = Window5.GetPinName (output_pins[3]);
    ((CCombo*) WProp_keypad->GetChildByName ("combo4"))->SetText (itoa (output_pins[3]) + "  " + spin);
   }
 
@@ -370,7 +356,7 @@ cpart_keypad::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_keypad->GetChildByName ("combo5"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (output_pins[4]);
+   spin = Window5.GetPinName (output_pins[4]);
    ((CCombo*) WProp_keypad->GetChildByName ("combo5"))->SetText (itoa (output_pins[4]) + "  " + spin);
   }
 
@@ -379,7 +365,7 @@ cpart_keypad::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_keypad->GetChildByName ("combo6"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (output_pins[5]);
+   spin = Window5.GetPinName (output_pins[5]);
    ((CCombo*) WProp_keypad->GetChildByName ("combo6"))->SetText (itoa (output_pins[5]) + "  " + spin);
   }
 
@@ -388,7 +374,7 @@ cpart_keypad::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_keypad->GetChildByName ("combo7"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (output_pins[6]);
+   spin = Window5.GetPinName (output_pins[6]);
    ((CCombo*) WProp_keypad->GetChildByName ("combo7"))->SetText (itoa (output_pins[6]) + "  " + spin);
   }
 
@@ -397,7 +383,7 @@ cpart_keypad::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_keypad->GetChildByName ("combo8"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (output_pins[7]);
+   spin = Window5.GetPinName (output_pins[7]);
    ((CCombo*) WProp_keypad->GetChildByName ("combo8"))->SetText (itoa (output_pins[7]) + "  " + spin);
   }
 

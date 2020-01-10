@@ -39,7 +39,7 @@ CPWindow5 Window5;
 //Implementation
 
 void
-CPWindow5::_EvOnShow (CControl * control)
+CPWindow5::_EvOnShow(CControl * control)
 {
  draw1.SetWidth (Width - 15);
  draw1.SetHeight (Height - 40);
@@ -49,23 +49,22 @@ CPWindow5::_EvOnShow (CControl * control)
 };
 
 void
-CPWindow5::menu1_EvMenuActive (CControl * control)
+CPWindow5::menu1_EvMenuActive(CControl * control)
 {
  PartToCreate = ((CItemMenu*) control)->GetText ();
  lxSetCursor (lxCursor (lxCURSOR_CROSS));
 };
 
 void
-CPWindow5::_EvOnCreate (CControl * control)
+CPWindow5::_EvOnCreate(CControl * control)
 {
-
  if (LoadConfigFile.length () > 0)
   LoadConfig (LoadConfigFile);
 
 };
 
 void
-CPWindow5::draw1_EvMouseButtonPress (CControl * control, uint button, uint x, uint y, uint state)
+CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uint y, uint state)
 {
  x = x / scale;
  y = y / scale;
@@ -113,7 +112,7 @@ CPWindow5::draw1_EvMouseButtonPress (CControl * control, uint button, uint x, ui
 };
 
 void
-CPWindow5::draw1_EvMouseButtonRelease (CControl * control, uint button, uint x, uint y, uint state)
+CPWindow5::draw1_EvMouseButtonRelease(CControl * control, uint button, uint x, uint y, uint state)
 {
  x = x / scale;
  y = y / scale;
@@ -136,9 +135,9 @@ CPWindow5::draw1_EvMouseButtonRelease (CControl * control, uint button, uint x, 
 };
 
 void
-CPWindow5::pmenu2_Properties_EvMenuActive (CControl * control)
+CPWindow5::pmenu2_Properties_EvMenuActive(CControl * control)
 {
- 
+
  wprop.SetName ("window1"); //must be the same as in xml 
  Application->ACreateWindow (&wprop);
  wprop.DestroyChilds ();
@@ -158,7 +157,7 @@ CPWindow5::pmenu2_Properties_EvMenuActive (CControl * control)
 }
 
 void
-CPWindow5::PropClose (int tag)
+CPWindow5::PropClose(int tag)
 {
  if (tag)
   {
@@ -170,13 +169,13 @@ CPWindow5::PropClose (int tag)
 }
 
 void
-CPWindow5::PropButtonRelease (CControl * control, uint button, uint x, uint y, uint state)
+CPWindow5::PropButtonRelease(CControl * control, uint button, uint x, uint y, uint state)
 {
  Window5.PropClose (control->GetTag ());
 }
 
 void
-CPWindow5::timer1_EvOnTime (CControl * control)
+CPWindow5::timer1_EvOnTime(CControl * control)
 {
 
  draw1.Canvas.Init (1.0, 1.0);
@@ -199,7 +198,7 @@ CPWindow5::timer1_EvOnTime (CControl * control)
 }
 
 void
-CPWindow5::draw1_EvMouseMove (CControl * control, uint button, uint x, uint y, uint state)
+CPWindow5::draw1_EvMouseMove(CControl * control, uint button, uint x, uint y, uint state)
 {
  x = x / scale;
  y = y / scale;
@@ -232,7 +231,7 @@ CPWindow5::draw1_EvMouseMove (CControl * control, uint button, uint x, uint y, u
 };
 
 void
-CPWindow5::draw1_EvKeyboardPress (CControl * control, const uint key, const uint hkey, const uint mask)
+CPWindow5::draw1_EvKeyboardPress(CControl * control, const uint key, const uint hkey, const uint mask)
 {
  switch (key)
   {
@@ -255,7 +254,7 @@ CPWindow5::draw1_EvKeyboardPress (CControl * control, const uint key, const uint
 };
 
 void
-CPWindow5::draw1_EvKeyboardRelease (CControl * control, const uint key, const uint hkey, const uint mask)
+CPWindow5::draw1_EvKeyboardRelease(CControl * control, const uint key, const uint hkey, const uint mask)
 {
  for (int i = 0; i < partsc; i++)
   {
@@ -264,16 +263,16 @@ CPWindow5::draw1_EvKeyboardRelease (CControl * control, const uint key, const ui
 };
 
 bool
-CPWindow5::SaveConfig (String fname)
+CPWindow5::SaveConfig(String fname)
 {
  String temp;
 
  CStringList prefs;
  prefs.Clear ();
- 
+
  temp.Printf ("scale,0,0:%f", scale);
  prefs.AddLine (temp);
-  
+
  for (int i = 0; i < partsc; i++)
   {
    temp.Printf ("%s,%i,%i:%s", parts[i]->GetName ().c_str (), parts[i]->GetX (), parts[i]->GetY (), parts[i]->WritePreferences ().c_str ());
@@ -284,12 +283,35 @@ CPWindow5::SaveConfig (String fname)
 }
 
 bool
-CPWindow5::LoadConfig (String fname)
+CPWindow5::LoadConfig(String fname)
 {
  char name[256];
  char temp[256];
  unsigned int x, y;
  CStringList prefs;
+
+ pboard = Window1.GetBoard ();
+
+ GetPinsNames ();
+
+ for (int i = 0; i < 256; i++)
+  {
+   if ((i > 0)&&(i <= pboard->MGetPinCount ()))
+    {
+     PinNames[i] = pboard->MGetPinName (i);
+    }
+   else
+    {
+     PinNames[i] = "NC";
+    }
+  }
+
+
+
+ PinsCount = pboard->MGetPinCount ();
+ Pins = (picpin*) pboard->MGetPinsValues ();
+
+ memset (&Pins[PinsCount], 0, sizeof (picpin)* (256 - PinsCount));
 
  if (GetWin () == NULL)
   {
@@ -313,10 +335,10 @@ CPWindow5::LoadConfig (String fname)
    for (unsigned int i = 0; i < prefs.GetLinesCount (); i++)
     {
      sscanf (prefs.GetLine (i).c_str (), "%255[^,],%i,%i:%255[^\n]", name, &x, &y, temp);
-      
-     if(strcmp(name,"scale") == 0)
+
+     if (strcmp (name, "scale") == 0)
       {
-       sscanf(temp,"%f",&scale); 
+       sscanf (temp, "%f", &scale);
       }
      else if ((parts[partsc_] = create_part (name, x, y)))
       {
@@ -335,11 +357,11 @@ CPWindow5::LoadConfig (String fname)
 }
 
 void
-CPWindow5::DeleteParts (void)
+CPWindow5::DeleteParts(void)
 {
  int partsc_ = partsc;
  partsc = 0; //for disable process
- scale=1.0;
+ scale = 1.0;
 
  //delete previous parts
 
@@ -351,7 +373,7 @@ CPWindow5::DeleteParts (void)
 }
 
 void
-CPWindow5::menu1_File_Newconfiguration_EvMenuActive (CControl * control)
+CPWindow5::menu1_File_Newconfiguration_EvMenuActive(CControl * control)
 {
  if (partsc > 0)
   {
@@ -364,49 +386,49 @@ CPWindow5::menu1_File_Newconfiguration_EvMenuActive (CControl * control)
 }
 
 void
-CPWindow5::menu1_File_Saveconfiguration_EvMenuActive (CControl * control)
+CPWindow5::menu1_File_Saveconfiguration_EvMenuActive(CControl * control)
 {
  filedialog1.SetType (lxFD_SAVE | lxFD_CHANGE_DIR);
  filedialog1.Run ();
 }
 
 void
-CPWindow5::menu1_File_Loadconfiguration_EvMenuActive (CControl * control)
+CPWindow5::menu1_File_Loadconfiguration_EvMenuActive(CControl * control)
 {
  filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
  filedialog1.Run ();
 }
 
 void
-CPWindow5::Process (void)
+CPWindow5::Process(void)
 {
- memset(i2c_bus,0,40);
+ memset (i2c_bus, 0, 40);
  for (int i = 0; i < partsc; i++)
   {
    parts[i]->Process ();
   }
-};
+}
 
 void
-CPWindow5::_EvOnHide (CControl * control)
+CPWindow5::_EvOnHide(CControl * control)
 {
  timer1.SetRunState (0);
- board * pboard = Window1.GetBoard ();
+ //board * pboard = Window1.GetBoard ();
  if (pboard)
   {
    pboard->SetUseSpareParts (0);
   }
-};
+}
 
 void
-CPWindow5::pmenu2_Move_EvMenuActive (CControl * control)
+CPWindow5::pmenu2_Move_EvMenuActive(CControl * control)
 {
  PartToMove = PartSelected;
  lxSetCursor (lxCursor (lxCURSOR_SIZENWSE));
-};
+}
 
 void
-CPWindow5::pmenu2_Delete_EvMenuActive (CControl * control)
+CPWindow5::pmenu2_Delete_EvMenuActive(CControl * control)
 {
 
  int partsc_ = partsc;
@@ -421,34 +443,34 @@ CPWindow5::pmenu2_Delete_EvMenuActive (CControl * control)
  partsc_--;
 
  partsc = partsc_;
-};
+}
 
 void
-CPWindow5::menu1_Help_Contents_EvMenuActive (CControl * control)
+CPWindow5::menu1_Help_Contents_EvMenuActive(CControl * control)
 {
- #ifdef EXT_BROWSER
+#ifdef EXT_BROWSER
  //lxLaunchDefaultBrowser(lxT("file://")+share + lxT ("docs/picsimlab.html"));
- lxLaunchDefaultBrowser(lxT("https://lcgamboa.github.io/picsimlab/"));
+ lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/"));
 #else 
  Window2.html1.SetLoadFile (Window1.GetSharePath () + lxT ("docs/picsimlab.html"));
  Window2.Show ();
 #endif
-};
+}
 
 void
-CPWindow5::menu1_Help_About_EvMenuActive (CControl * control)
+CPWindow5::menu1_Help_About_EvMenuActive(CControl * control)
 {
  Message (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (lxT (_VERSION_)));
-};
+}
 
 void
-CPWindow5::WritePreferences (void)
+CPWindow5::WritePreferences(void)
 {
  Window1.saveprefs (lxT ("spare_position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()) + lxT (",") + itoa (GetWidth ()) + lxT (",") + itoa (GetHeight ()));
-};
+}
 
 void
-CPWindow5::ReadPreferences (char *name, char *value)
+CPWindow5::ReadPreferences(char *name, char *value)
 {
 
  if (!strcmp (name, "spare_position"))
@@ -467,7 +489,7 @@ CPWindow5::ReadPreferences (char *name, char *value)
 }
 
 void
-CPWindow5::filedialog1_EvOnClose (int retId)
+CPWindow5::filedialog1_EvOnClose(int retId)
 {
 
  if (retId && (filedialog1.GetType () == (lxFD_SAVE | lxFD_CHANGE_DIR)))
@@ -487,21 +509,65 @@ CPWindow5::filedialog1_EvOnClose (int retId)
   }
 }
 
-void 
+void
 CPWindow5::Set_i2c_bus(unsigned char pin, unsigned char value)
 {
- if(pin < 40)
+ if (pin < 40)
   {
-   i2c_bus[pin]|=value;
+   i2c_bus[pin] |= value;
   }
 
 }
 
-unsigned char 
+unsigned char
 CPWindow5::Get_i2c_bus(unsigned char pin)
 {
- if(pin < 40)
+ if (pin < 40)
   return i2c_bus[pin];
  else
   return 0;
+}
+
+String
+CPWindow5::GetPinsNames(void)
+{
+ String Items = "0  NC,";
+ String spin;
+
+ for (int i = 1; i <= pboard->MGetPinCount (); i++)
+  {
+   spin = pboard->MGetPinName (i);
+
+   if (spin.Cmp (lxT ("error")))
+    {
+     Items = Items + itoa (i) + "  " + spin + ",";
+    }
+  }
+ return Items;
+}
+
+String
+CPWindow5::GetPinName(unsigned char pin)
+{
+ return PinNames[pin];
+}
+
+const picpin *
+CPWindow5::GetPinsValues(void)
+{
+ return Pins;
+}
+
+void
+CPWindow5::SetPin(unsigned char pin, unsigned char value)
+{
+ pboard->MSetPin (pin, value);
+ if ((pin)&&(Pins[pin - 1].dir))Pins[pin - 1].value = value;
+}
+
+void
+CPWindow5::SetAPin(unsigned char pin, float value)
+{
+ pboard->MSetAPin (pin, value);
+ if ((pin)&&(Pins[pin - 1].dir))Pins[pin - 1].avalue = value;
 }

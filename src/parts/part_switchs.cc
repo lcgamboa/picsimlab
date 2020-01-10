@@ -87,10 +87,7 @@ void
 cpart_switchs::Draw (void)
 {
 
-
-
  int i;
- board *pboard = Window1.GetBoard ();
 
  canvas.Init ();
 
@@ -116,7 +113,7 @@ cpart_switchs::Draw (void)
      if (output_pins[output[i].id - O_P1] == 0)
       canvas.Text ("NC", output[i].x1, output[i].y1);
      else
-      canvas.Text (pboard->MGetPinName (output_pins[output[i].id - O_P1]), output[i].x1, output[i].y1);
+      canvas.Text (Window5.GetPinName (output_pins[output[i].id - O_P1]), output[i].x1, output[i].y1);
      break;
     case O_S1:
     case O_S2:
@@ -150,17 +147,16 @@ cpart_switchs::Process (void)
 
  if (refresh > 1000)
   {
-   board *pboard = Window1.GetBoard ();
    refresh = 0;
 
-   if(output_pins[0]>0)pboard->MSetPin (output_pins[0], output_value[0]);
-   if(output_pins[1]>0)pboard->MSetPin (output_pins[1], output_value[1]);
-   if(output_pins[2]>0)pboard->MSetPin (output_pins[2], output_value[2]);
-   if(output_pins[3]>0)pboard->MSetPin (output_pins[3], output_value[3]);
-   if(output_pins[4]>0)pboard->MSetPin (output_pins[4], output_value[4]);
-   if(output_pins[5]>0)pboard->MSetPin (output_pins[5], output_value[5]);
-   if(output_pins[6]>0)pboard->MSetPin (output_pins[6], output_value[6]);
-   if(output_pins[7]>0)pboard->MSetPin (output_pins[7], output_value[7]);
+   if(output_pins[0]>0)Window5.SetPin (output_pins[0], output_value[0]);
+   if(output_pins[1]>0)Window5.SetPin (output_pins[1], output_value[1]);
+   if(output_pins[2]>0)Window5.SetPin (output_pins[2], output_value[2]);
+   if(output_pins[3]>0)Window5.SetPin (output_pins[3], output_value[3]);
+   if(output_pins[4]>0)Window5.SetPin (output_pins[4], output_value[4]);
+   if(output_pins[5]>0)Window5.SetPin (output_pins[5], output_value[5]);
+   if(output_pins[6]>0)Window5.SetPin (output_pins[6], output_value[6]);
+   if(output_pins[7]>0)Window5.SetPin (output_pins[7], output_value[7]);
 
   }
  refresh++;
@@ -267,27 +263,16 @@ CPWindow * WProp_switchs;
 void
 cpart_switchs::ConfigurePropertiesWindow (CPWindow * wprop)
 {
- String Items = "0  NC,";
+ String Items = Window5.GetPinsNames ();
  String spin;
  WProp_switchs = wprop;
- board *pboard = Window1.GetBoard ();
-
- for (int i = 1; i <= pboard->MGetPinCount (); i++)
-  {
-   spin = pboard->MGetPinName (i);
-
-   if (spin.Cmp (lxT ("error")))
-    {
-     Items = Items + itoa (i) + "  " + spin + ",";
-    }
-  }
 
  ((CCombo*) WProp_switchs->GetChildByName ("combo1"))->SetItems (Items);
  if (output_pins[0] == 0)
   ((CCombo*) WProp_switchs->GetChildByName ("combo1"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (output_pins[0]);
+   spin = Window5.GetPinName (output_pins[0]);
    ((CCombo*) WProp_switchs->GetChildByName ("combo1"))->SetText (itoa (output_pins[0]) + "  " + spin);
   }
 
@@ -296,7 +281,7 @@ cpart_switchs::ConfigurePropertiesWindow (CPWindow * wprop)
   ((CCombo*) WProp_switchs->GetChildByName ("combo2"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (output_pins[1]);
+   spin = Window5.GetPinName (output_pins[1]);
    ((CCombo*) WProp_switchs->GetChildByName ("combo2"))->SetText (itoa (output_pins[1]) + "  " + spin);
   }
 
@@ -305,7 +290,7 @@ cpart_switchs::ConfigurePropertiesWindow (CPWindow * wprop)
   ((CCombo*) WProp_switchs->GetChildByName ("combo3"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (output_pins[2]);
+   spin = Window5.GetPinName (output_pins[2]);
    ((CCombo*) WProp_switchs->GetChildByName ("combo3"))->SetText (itoa (output_pins[2]) + "  " + spin);
   }
 
@@ -314,7 +299,7 @@ cpart_switchs::ConfigurePropertiesWindow (CPWindow * wprop)
   ((CCombo*) WProp_switchs->GetChildByName ("combo4"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (output_pins[3]);
+   spin = Window5.GetPinName (output_pins[3]);
    ((CCombo*) WProp_switchs->GetChildByName ("combo4"))->SetText (itoa (output_pins[3]) + "  " + spin);
   }
 
@@ -323,7 +308,7 @@ cpart_switchs::ConfigurePropertiesWindow (CPWindow * wprop)
   ((CCombo*) WProp_switchs->GetChildByName ("combo5"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (output_pins[4]);
+   spin = Window5.GetPinName (output_pins[4]);
    ((CCombo*) WProp_switchs->GetChildByName ("combo5"))->SetText (itoa (output_pins[4]) + "  " + spin);
   }
 
@@ -332,7 +317,7 @@ cpart_switchs::ConfigurePropertiesWindow (CPWindow * wprop)
   ((CCombo*) WProp_switchs->GetChildByName ("combo6"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (output_pins[5]);
+   spin = Window5.GetPinName (output_pins[5]);
    ((CCombo*) WProp_switchs->GetChildByName ("combo6"))->SetText (itoa (output_pins[5]) + "  " + spin);
   }
 
@@ -341,7 +326,7 @@ cpart_switchs::ConfigurePropertiesWindow (CPWindow * wprop)
   ((CCombo*) WProp_switchs->GetChildByName ("combo7"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (output_pins[6]);
+   spin = Window5.GetPinName (output_pins[6]);
    ((CCombo*) WProp_switchs->GetChildByName ("combo7"))->SetText (itoa (output_pins[6]) + "  " + spin);
   }
 
@@ -350,7 +335,7 @@ cpart_switchs::ConfigurePropertiesWindow (CPWindow * wprop)
   ((CCombo*) WProp_switchs->GetChildByName ("combo8"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (output_pins[7]);
+   spin = Window5.GetPinName (output_pins[7]);
    ((CCombo*) WProp_switchs->GetChildByName ("combo8"))->SetText (itoa (output_pins[7]) + "  " + spin);
   }
 

@@ -97,9 +97,8 @@ cpart_tempsys::Draw(void)
 {
  int i;
  String str;
- board *pboard = Window1.GetBoard ();
 
- const picpin * ppins = pboard->MGetPinsValues ();
+ const picpin * ppins = Window5.GetPinsValues ();
 
  canvas.Init ();
 
@@ -121,7 +120,7 @@ cpart_tempsys::Draw(void)
      if (input_pins[output[i].id - O_HT] == 0)
       canvas.Text ("NC", output[i].x1, output[i].y1);
      else
-      canvas.Text (pboard->MGetPinName (input_pins[output[i].id - O_HT]), output[i].x1, output[i].y1);
+      canvas.Text (Window5.GetPinName (input_pins[output[i].id - O_HT]), output[i].x1, output[i].y1);
      break;
     case O_F1:
      canvas.SetColor (49, 61, 99);
@@ -175,7 +174,7 @@ cpart_tempsys::Draw(void)
  temp[1] = temp[0];
  temp[0] = ((27.5 + ref)*0.003) + temp[1]*(0.997);
 
- pboard->MSetAPin (input_pins[2], temp[0] / 100.0);
+ Window5.SetAPin (input_pins[2], temp[0] / 100.0);
 
  canvas.End ();
 
@@ -190,9 +189,7 @@ cpart_tempsys::Process(void)
   {
    refresh = Window1.GetJUMPSTEPS ();
 
-   board *pboard = Window1.GetBoard ();
-
-   const picpin * ppins = pboard->MGetPinsValues ();
+   const picpin * ppins = Window5.GetPinsValues ();
    
    if((input_pins[1]>0)&&(input_pins[3]>0))
    {
@@ -202,11 +199,11 @@ cpart_tempsys::Process(void)
      if (rpmc > rpmstp)
       {
        rpmc = 0;
-       pboard->MSetPin (input_pins[3], !ppins[input_pins[3] - 1].value);
+       Window5.SetPin (input_pins[3], !ppins[input_pins[3] - 1].value);
       }
     }
    else
-    pboard->MSetPin (input_pins[3], 0);
+    Window5.SetPin (input_pins[3], 0);
    }
   }
  refresh--;
@@ -272,27 +269,16 @@ CPWindow * WProp_tempsys;
 void
 cpart_tempsys::ConfigurePropertiesWindow(CPWindow * wprop)
 {
- String Items = "0  NC,";
+ String Items = Window5.GetPinsNames ();
  String spin;
  WProp_tempsys = wprop;
- board *pboard = Window1.GetBoard ();
-
- for (int i = 1; i <= pboard->MGetPinCount (); i++)
-  {
-   spin = pboard->MGetPinName (i);
-
-   if (spin.Cmp (lxT ("error")))
-    {
-     Items = Items + itoa (i) + "  " + spin + ",";
-    }
-  }
 
  ((CCombo*) WProp_tempsys->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)
   ((CCombo*) WProp_tempsys->GetChildByName ("combo1"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[0]);
+   spin = Window5.GetPinName (input_pins[0]);
    ((CCombo*) WProp_tempsys->GetChildByName ("combo1"))->SetText (itoa (input_pins[0]) + "  " + spin);
   }
 
@@ -301,7 +287,7 @@ cpart_tempsys::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_tempsys->GetChildByName ("combo2"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[1]);
+   spin = Window5.GetPinName (input_pins[1]);
    ((CCombo*) WProp_tempsys->GetChildByName ("combo2"))->SetText (itoa (input_pins[1]) + "  " + spin);
   }
 
@@ -310,7 +296,7 @@ cpart_tempsys::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_tempsys->GetChildByName ("combo3"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[2]);
+   spin = Window5.GetPinName (input_pins[2]);
    ((CCombo*) WProp_tempsys->GetChildByName ("combo3"))->SetText (itoa (input_pins[2]) + "  " + spin);
   }
 
@@ -319,7 +305,7 @@ cpart_tempsys::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_tempsys->GetChildByName ("combo4"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[3]);
+   spin = Window5.GetPinName (input_pins[3]);
    ((CCombo*) WProp_tempsys->GetChildByName ("combo4"))->SetText (itoa (input_pins[3]) + "  " + spin);
   }
 

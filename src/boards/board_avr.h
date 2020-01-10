@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -77,7 +77,7 @@ class board_avr: virtual public board
  protected:
       avr_t *  avr;
       avr_irq_t * serial_irq;
-      picpin pins[28];//FIXME only for atmega328!
+      picpin pins[256];
       avr_irq_t * Write_stat_irq[28];//FIXME only for atmega328!
       unsigned int serialbaud; 
       float serialexbaud;

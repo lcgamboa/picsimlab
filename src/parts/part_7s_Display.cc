@@ -89,9 +89,6 @@ cpart_7s_display::Draw(void)
 {
 
  int i;
- board *pboard = Window1.GetBoard ();
-
- //const picpin * ppins = pboard->MGetPinsValues ();
 
  canvas.Init ();
 
@@ -122,7 +119,7 @@ cpart_7s_display::Draw(void)
      if (input_pins[output[i].id - O_SA] == 0)
       canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
      else
-      canvas.RotatedText (pboard->MGetPinName (input_pins[output[i].id - O_SA]), output[i].x1, output[i].y2, 90.0);
+      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_SA]), output[i].x1, output[i].y2, 90.0);
      break;
     case O_FX1:
      canvas.SetColor (49, 61, 99);
@@ -335,27 +332,16 @@ CPWindow * WProp_7s_display;
 void
 cpart_7s_display::ConfigurePropertiesWindow(CPWindow * wprop)
 {
- String Items = "0  NC,";
+ String Items = Window5.GetPinsNames ();
  String spin;
  WProp_7s_display = wprop;
- board *pboard = Window1.GetBoard ();
-
- for (int i = 1; i <= pboard->MGetPinCount (); i++)
-  {
-   spin = pboard->MGetPinName (i);
-
-   if (spin.Cmp (lxT ("error")))
-    {
-     Items = Items + itoa (i) + "  " + spin + ",";
-    }
-  }
 
  ((CCombo*) WProp_7s_display->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)
   ((CCombo*) WProp_7s_display->GetChildByName ("combo1"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[0]);
+   spin = Window5.GetPinName (input_pins[0]);
    ((CCombo*) WProp_7s_display->GetChildByName ("combo1"))->SetText (itoa (input_pins[0]) + "  " + spin);
   }
 
@@ -364,7 +350,7 @@ cpart_7s_display::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_7s_display->GetChildByName ("combo2"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[1]);
+   spin = Window5.GetPinName (input_pins[1]);
    ((CCombo*) WProp_7s_display->GetChildByName ("combo2"))->SetText (itoa (input_pins[1]) + "  " + spin);
   }
 
@@ -373,7 +359,7 @@ cpart_7s_display::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_7s_display->GetChildByName ("combo3"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[2]);
+   spin = Window5.GetPinName (input_pins[2]);
    ((CCombo*) WProp_7s_display->GetChildByName ("combo3"))->SetText (itoa (input_pins[2]) + "  " + spin);
   }
 
@@ -382,7 +368,7 @@ cpart_7s_display::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_7s_display->GetChildByName ("combo4"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[3]);
+   spin = Window5.GetPinName (input_pins[3]);
    ((CCombo*) WProp_7s_display->GetChildByName ("combo4"))->SetText (itoa (input_pins[3]) + "  " + spin);
   }
 
@@ -391,7 +377,7 @@ cpart_7s_display::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_7s_display->GetChildByName ("combo5"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[4]);
+   spin = Window5.GetPinName (input_pins[4]);
    ((CCombo*) WProp_7s_display->GetChildByName ("combo5"))->SetText (itoa (input_pins[4]) + "  " + spin);
   }
 
@@ -400,7 +386,7 @@ cpart_7s_display::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_7s_display->GetChildByName ("combo6"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[5]);
+   spin = Window5.GetPinName (input_pins[5]);
    ((CCombo*) WProp_7s_display->GetChildByName ("combo6"))->SetText (itoa (input_pins[5]) + "  " + spin);
   }
 
@@ -409,7 +395,7 @@ cpart_7s_display::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_7s_display->GetChildByName ("combo7"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[6]);
+   spin = Window5.GetPinName (input_pins[6]);
    ((CCombo*) WProp_7s_display->GetChildByName ("combo7"))->SetText (itoa (input_pins[6]) + "  " + spin);
   }
 
@@ -418,7 +404,7 @@ cpart_7s_display::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_7s_display->GetChildByName ("combo8"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[7]);
+   spin = Window5.GetPinName (input_pins[7]);
    ((CCombo*) WProp_7s_display->GetChildByName ("combo8"))->SetText (itoa (input_pins[7]) + "  " + spin);
   }
 
@@ -427,7 +413,7 @@ cpart_7s_display::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_7s_display->GetChildByName ("combo9"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[8]);
+   spin = Window5.GetPinName (input_pins[8]);
    ((CCombo*) WProp_7s_display->GetChildByName ("combo9"))->SetText (itoa (input_pins[8]) + "  " + spin);
   }
 
@@ -436,7 +422,7 @@ cpart_7s_display::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_7s_display->GetChildByName ("combo10"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[9]);
+   spin = Window5.GetPinName (input_pins[9]);
    ((CCombo*) WProp_7s_display->GetChildByName ("combo10"))->SetText (itoa (input_pins[9]) + "  " + spin);
   }
 
@@ -445,7 +431,7 @@ cpart_7s_display::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_7s_display->GetChildByName ("combo11"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[10]);
+   spin = Window5.GetPinName (input_pins[10]);
    ((CCombo*) WProp_7s_display->GetChildByName ("combo11"))->SetText (itoa (input_pins[10]) + "  " + spin);
   }
 
@@ -454,7 +440,7 @@ cpart_7s_display::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_7s_display->GetChildByName ("combo12"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[11]);
+   spin = Window5.GetPinName (input_pins[11]);
    ((CCombo*) WProp_7s_display->GetChildByName ("combo12"))->SetText (itoa (input_pins[11]) + "  " + spin);
   }
 
@@ -485,7 +471,7 @@ void
 cpart_7s_display::Process(void)
 {
  int i;
- const picpin * ppins = Window1.GetBoard ()->MGetPinsValues ();
+ const picpin * ppins = Window5.GetPinsValues ();
  int pinv;
 
  long int NSTEPJ = Window1.GetNSTEPJ ();

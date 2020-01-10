@@ -81,7 +81,6 @@ cpart_dtfunc::Draw(void)
  int i;
  char buff[20];
  char eq[100];
- board *pboard = Window1.GetBoard ();
 
  canvas.Init ();
 
@@ -103,14 +102,14 @@ cpart_dtfunc::Draw(void)
        if (input_pin == 0)
         canvas.Text ("NC", output[i].x1, output[i].y1);
        else
-        canvas.Text (pboard->MGetPinName (input_pin), output[i].x1, output[i].y1);
+        canvas.Text (Window5.GetPinName (input_pin), output[i].x1, output[i].y1);
       }
      if (output[i].id == O_P2)
       {
        if (output_pin == 0)
         canvas.Text ("NC", output[i].x1, output[i].y1);
        else
-        canvas.Text (pboard->MGetPinName (output_pin), output[i].x1, output[i].y1);
+        canvas.Text (Window5.GetPinName (output_pin), output[i].x1, output[i].y1);
       }
      break;
     case O_IG:
@@ -164,7 +163,7 @@ cpart_dtfunc::Draw(void)
 
  canvas.End ();
 
- nsamples= sample * pboard->MGetInstClock ();
+ nsamples= sample * Window1.GetBoard ()->MGetInstClock ();
  
 }
 
@@ -176,8 +175,7 @@ cpart_dtfunc::Process(void)
   {
    refresh=0;
    
-   board *pboard = Window1.GetBoard ();
-   const picpin * ppins = pboard->MGetPinsValues ();
+   const picpin * ppins = Window5.GetPinsValues ();
 
    float in, out, pinv;
 
@@ -199,7 +197,7 @@ cpart_dtfunc::Process(void)
    if(out < 0.0)out=0.0;
    if(out > 5.0)out=5.0;
    
-   pboard->MSetAPin (output_pin, out);
+   Window5.SetAPin (output_pin, out);
 
   }
  refresh++;
@@ -351,30 +349,18 @@ CPWindow * WProp_dtfunc;
 void
 cpart_dtfunc::ConfigurePropertiesWindow(CPWindow * wprop)
 {
- String Items = "0  NC,";
+ String Items = Window5.GetPinsNames ();
  String spin;
  WProp_dtfunc = wprop;
- board *pboard = Window1.GetBoard ();
  char buff[20];
  char eq[200];
-
-
- for (int i = 1; i <= pboard->MGetPinCount (); i++)
-  {
-   spin = pboard->MGetPinName (i);
-
-   if (spin.Cmp (lxT ("error")))
-    {
-     Items = Items + itoa (i) + "  " + spin + ",";
-    }
-  }
 
  ((CCombo*) WProp_dtfunc->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pin == 0)
   ((CCombo*) WProp_dtfunc->GetChildByName ("combo1"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pin);
+   spin = Window5.GetPinName (input_pin);
    ;
    ((CCombo*) WProp_dtfunc->GetChildByName ("combo1"))->SetText (itoa (input_pin) + "  " + spin);
   }
@@ -384,7 +370,7 @@ cpart_dtfunc::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_dtfunc->GetChildByName ("combo2"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (output_pin);
+   spin = Window5.GetPinName (output_pin);
    ;
    ((CCombo*) WProp_dtfunc->GetChildByName ("combo2"))->SetText (itoa (output_pin) + "  " + spin);
   }

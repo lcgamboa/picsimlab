@@ -71,7 +71,6 @@ cpart_LCD_pcd8544::Draw (void)
 {
 
  int i;
- board *pboard = Window1.GetBoard ();
 
  canvas.Init ();
 
@@ -94,7 +93,7 @@ cpart_LCD_pcd8544::Draw (void)
      if (input_pins[output[i].id - O_P1] == 0)
       canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
      else
-      canvas.RotatedText (pboard->MGetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2, 90.0);
+      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2, 90.0);
      break;
     case O_F1:
      canvas.SetColor (49, 61, 99);
@@ -187,27 +186,16 @@ CPWindow * WProp_LCD_pcd8544;
 void
 cpart_LCD_pcd8544::ConfigurePropertiesWindow (CPWindow * wprop)
 {
- String Items = "0  NC,";
+ String Items = Window5.GetPinsNames ();
  String spin;
  WProp_LCD_pcd8544 = wprop;
- board *pboard = Window1.GetBoard ();
-
- for (int i = 1; i <= pboard->MGetPinCount (); i++)
-  {
-   spin = pboard->MGetPinName (i);
-
-   if (spin.Cmp (lxT ("error")))
-    {
-     Items = Items + itoa (i) + "  " + spin + ",";
-    }
-  }
 
  ((CCombo*) WProp_LCD_pcd8544->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)
   ((CCombo*) WProp_LCD_pcd8544->GetChildByName ("combo1"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[0]);
+   spin = Window5.GetPinName (input_pins[0]);
    ((CCombo*) WProp_LCD_pcd8544->GetChildByName ("combo1"))->SetText (itoa (input_pins[0]) + "  " + spin);
   }
 
@@ -216,7 +204,7 @@ cpart_LCD_pcd8544::ConfigurePropertiesWindow (CPWindow * wprop)
   ((CCombo*) WProp_LCD_pcd8544->GetChildByName ("combo2"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[1]);
+   spin = Window5.GetPinName (input_pins[1]);
    ((CCombo*) WProp_LCD_pcd8544->GetChildByName ("combo2"))->SetText (itoa (input_pins[1]) + "  " + spin);
   }
 
@@ -225,7 +213,7 @@ cpart_LCD_pcd8544::ConfigurePropertiesWindow (CPWindow * wprop)
   ((CCombo*) WProp_LCD_pcd8544->GetChildByName ("combo3"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[2]);
+   spin = Window5.GetPinName (input_pins[2]);
    ((CCombo*) WProp_LCD_pcd8544->GetChildByName ("combo3"))->SetText (itoa (input_pins[2]) + "  " + spin);
   }
 
@@ -234,7 +222,7 @@ cpart_LCD_pcd8544::ConfigurePropertiesWindow (CPWindow * wprop)
   ((CCombo*) WProp_LCD_pcd8544->GetChildByName ("combo4"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[3]);
+   spin = Window5.GetPinName (input_pins[3]);
    ((CCombo*) WProp_LCD_pcd8544->GetChildByName ("combo4"))->SetText (itoa (input_pins[3]) + "  " + spin);
   }
 
@@ -243,7 +231,7 @@ cpart_LCD_pcd8544::ConfigurePropertiesWindow (CPWindow * wprop)
   ((CCombo*) WProp_LCD_pcd8544->GetChildByName ("combo5"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[4]);
+   spin = Window5.GetPinName (input_pins[4]);
    ((CCombo*) WProp_LCD_pcd8544->GetChildByName ("combo5"))->SetText (itoa (input_pins[4]) + "  " + spin);
   }
 
@@ -266,7 +254,7 @@ cpart_LCD_pcd8544::ReadPropertiesWindow (void)
 void
 cpart_LCD_pcd8544::Process (void)
 {
- const picpin * ppins = Window1.GetBoard ()->MGetPinsValues ();
+ const picpin * ppins = Window5.GetPinsValues ();
 
 
 

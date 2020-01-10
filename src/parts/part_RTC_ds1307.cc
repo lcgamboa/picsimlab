@@ -82,7 +82,6 @@ cpart_RTC_ds1307::Draw(void)
 {
 
  int i;
- board *pboard = Window1.GetBoard ();
 
  canvas.Init ();
 
@@ -118,7 +117,7 @@ cpart_RTC_ds1307::Draw(void)
        if (input_pins[pinv] == 0)
         canvas.RotatedText ("NC", output[i].x1, output[i].y2 - 30, 90.0);
        else
-        canvas.RotatedText (pboard->MGetPinName (input_pins[pinv]), output[i].x1, output[i].y2 - 30, 90.0);
+        canvas.RotatedText (Window5.GetPinName (input_pins[pinv]), output[i].x1, output[i].y2 - 30, 90.0);
       }
      break;
     }
@@ -181,27 +180,16 @@ CPWindow * WProp_RTC_ds1307;
 void
 cpart_RTC_ds1307::ConfigurePropertiesWindow(CPWindow * wprop)
 {
- String Items = "0  NC,";
+ String Items = Window5.GetPinsNames ();
  String spin;
  WProp_RTC_ds1307 = wprop;
- board *pboard = Window1.GetBoard ();
-
- for (int i = 1; i <= pboard->MGetPinCount (); i++)
-  {
-   spin = pboard->MGetPinName (i);
-
-   if (spin.Cmp (lxT ("error")))
-    {
-     Items = Items + itoa (i) + "  " + spin + ",";
-    }
-  }
 
  ((CCombo*) WProp_RTC_ds1307->GetChildByName ("combo5"))->SetItems (Items);
  if (input_pins[0] == 0)
   ((CCombo*) WProp_RTC_ds1307->GetChildByName ("combo5"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[0]);
+   spin = Window5.GetPinName (input_pins[0]);
    ((CCombo*) WProp_RTC_ds1307->GetChildByName ("combo5"))->SetText (itoa (input_pins[0]) + "  " + spin);
   }
 
@@ -210,7 +198,7 @@ cpart_RTC_ds1307::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_RTC_ds1307->GetChildByName ("combo6"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[1]);
+   spin = Window5.GetPinName (input_pins[1]);
    ((CCombo*) WProp_RTC_ds1307->GetChildByName ("combo6"))->SetText (itoa (input_pins[1]) + "  " + spin);
   }
 
@@ -219,7 +207,7 @@ cpart_RTC_ds1307::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_RTC_ds1307->GetChildByName ("combo7"))->SetText ("0  NC");
  else
   {
-   spin = pboard->MGetPinName (input_pins[2]);
+   spin = Window5.GetPinName (input_pins[2]);
    ((CCombo*) WProp_RTC_ds1307->GetChildByName ("combo7"))->SetText (itoa (input_pins[2]) + "  " + spin);
   }
 
@@ -240,12 +228,11 @@ cpart_RTC_ds1307::ReadPropertiesWindow(void)
 void
 cpart_RTC_ds1307::Process(void)
 {
- const picpin * ppins = Window1.GetBoard ()->MGetPinsValues ();
- board *pboard = Window1.GetBoard ();
-
+ const picpin * ppins = Window5.GetPinsValues ();
+ 
  if((input_pins[0]>0)&&(input_pins[1]>0))
    Window5.Set_i2c_bus (input_pins[0] - 1, rtc2_io (&rtc2, ppins[input_pins[1] - 1].value, ppins[input_pins[0] - 1].value));
  if(input_pins[0]>0)
-   pboard->MSetPin (input_pins[0], Window5.Get_i2c_bus (input_pins[0] - 1));
+   Window5.SetPin (input_pins[0], Window5.Get_i2c_bus (input_pins[0] - 1));
 
 }
