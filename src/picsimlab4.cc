@@ -199,7 +199,6 @@ CPWindow4::SetBaseTimer (void)
  if (pboard->CpuInitialized () == 0)return;
 
  Dt = 1.0 / pboard->MGetInstClock ();
- ;
 
  int chp[2];
 
@@ -360,7 +359,7 @@ CPWindow4::timer1_EvOnTime (CControl * control)
    if (togglebutton6.GetCheck () && spind1.GetEnable ())
     togglebutton6_EvOnToggleButton (this);
   }
-};
+}
 
 void
 CPWindow4::combo2_EvOnComboChange (CControl * control)

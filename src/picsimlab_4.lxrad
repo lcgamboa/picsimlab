@@ -506,7 +506,7 @@
   <Class type="String">CTimer</Class>
   <Name type="String">timer1</Name>
   <Tag type="int">0</Tag>
-  <Time type="int">33</Time>
+  <Time type="int">100</Time>
   <RunState type="int">0</RunState>
   <EvOnTime type="Event">TRUE</EvOnTime>
 </timer1>
