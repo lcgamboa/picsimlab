@@ -23,18 +23,46 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef PARTS_DEFS_H
-#define	PARTS_DEFS_H
 
-#include"part.h" 
+#ifndef IO_74XX595
+#define	IO_74XX595
+    
+#include<lxrad.h>
 
-#define MAX_PARTS 100
+/*
+ pinout
+1  QB
+2  QC
+3  QD
+4  QE
+5  QF
+6  QG
+7  QH
+8  GND
+9  SQH  -> serial out
+10 /RESET -> reset only ff 
+11 SHIFT CLK
+12 LATCH CLK
+12 /OE
+14 A   -> serial in
+15 QA
+16 VCC
+*/
 
-#define NUM_PARTS 20
+typedef struct
+{
+unsigned char asclk;
+unsigned char alclk;
+unsigned short dsr;
+unsigned char out;
+unsigned char sout;
+}io_74xx595_t;
 
-extern const char parts_list[NUM_PARTS][30];
 
-part * create_part(String name, unsigned int x, unsigned int y);
+void io_74xx595_rst(io_74xx595_t *sr);
+void io_74xx595_init(io_74xx595_t *sr);
 
-#endif	/* PARTS_DEFS_H */
+unsigned short io_74xx595_io(io_74xx595_t *sr, unsigned char A, unsigned char sclk,unsigned char lclk, unsigned char rst);
+
+#endif //IO_74XX595
 

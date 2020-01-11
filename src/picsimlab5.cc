@@ -32,7 +32,6 @@
 #include"picsimlab5_d.cc"
 
 
-
 CPWindow5 Window5;
 
 
@@ -290,6 +289,7 @@ CPWindow5::LoadConfig(String fname)
  unsigned int x, y;
  CStringList prefs;
 
+ IOPinsCount = 0;
  pboard = Window1.GetBoard ();
 
  GetPinsNames ();
@@ -402,7 +402,7 @@ CPWindow5::menu1_File_Loadconfiguration_EvMenuActive(CControl * control)
 void
 CPWindow5::Process(void)
 {
- memset (i2c_bus, 0, 40);
+ memset (i2c_bus, 0, PinsCount);
  for (int i = 0; i < partsc; i++)
   {
    parts[i]->Process ();
@@ -512,7 +512,7 @@ CPWindow5::filedialog1_EvOnClose(int retId)
 void
 CPWindow5::Set_i2c_bus(unsigned char pin, unsigned char value)
 {
- if (pin < 40)
+ if (pin < IOINIT)
   {
    i2c_bus[pin] |= value;
   }
@@ -522,7 +522,7 @@ CPWindow5::Set_i2c_bus(unsigned char pin, unsigned char value)
 unsigned char
 CPWindow5::Get_i2c_bus(unsigned char pin)
 {
- if (pin < 40)
+ if (pin < IOINIT)
   return i2c_bus[pin];
  else
   return 0;
@@ -536,12 +536,17 @@ CPWindow5::GetPinsNames(void)
 
  for (int i = 1; i <= pboard->MGetPinCount (); i++)
   {
-   spin = pboard->MGetPinName (i);
+   spin = PinNames[i];
 
    if (spin.Cmp (lxT ("error")))
     {
      Items = Items + itoa (i) + "  " + spin + ",";
     }
+  }
+ for (int i = 0; i < IOPinsCount; i++)
+  {
+   spin = PinNames[IOINIT + i];
+   Items = Items + itoa (i + IOINIT) + "  " + spin + ",";
   }
  return Items;
 }
@@ -559,15 +564,32 @@ CPWindow5::GetPinsValues(void)
 }
 
 void
-CPWindow5::SetPin(unsigned char pin, unsigned char value)
+CPWindow5::SetPin(unsigned char pin, unsigned char value, unsigned char force)
 {
  pboard->MSetPin (pin, value);
- if ((pin)&&(Pins[pin - 1].dir))Pins[pin - 1].value = value;
+ if ((pin > PinsCount)&&((Pins[pin - 1].dir)||force))
+  {
+   Pins[pin - 1].value = value;
+   Pins[pin - 1].oavalue = 255*value;
+  }
 }
 
 void
 CPWindow5::SetAPin(unsigned char pin, float value)
 {
  pboard->MSetAPin (pin, value);
- if ((pin)&&(Pins[pin - 1].dir))Pins[pin - 1].avalue = value;
+ if (pin > PinsCount)
+  {
+   Pins[pin - 1].avalue = value;
+  }
+}
+
+unsigned char
+CPWindow5::RegisterIOpin(String pname)
+{
+ unsigned char pin = IOPinsCount + IOINIT;
+ PinNames[pin] = pname;
+ IOPinsCount++;
+
+ return pin;
 }

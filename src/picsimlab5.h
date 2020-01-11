@@ -30,6 +30,8 @@
 #include"parts/part.h"
 #include"parts/parts_defs.h"
 
+#define IOINIT 70
+
 class CPWindow5:public CPWindow
 {
   public:
@@ -88,13 +90,15 @@ class CPWindow5:public CPWindow
   String GetPinsNames(void);
   String GetPinName(unsigned char pin);
   const picpin * GetPinsValues (void);
-  void SetPin (unsigned char pin, unsigned char value);
+  void SetPin (unsigned char pin, unsigned char value, unsigned char force=0);
   void SetAPin (unsigned char pin, float value);
+  unsigned char RegisterIOpin(String pname);
   private:
     board *pboard;
     String PinNames[256];
     picpin  * Pins;
     unsigned char PinsCount;
+    unsigned char IOPinsCount;
     int partsc;  
     part *parts[MAX_PARTS];
     CItemMenu MParts[NUM_PARTS];
@@ -104,7 +108,7 @@ class CPWindow5:public CPWindow
     int mdx,mdy;
     float scale;
     String LoadConfigFile;
-    unsigned char i2c_bus[40];
+    unsigned char i2c_bus[IOINIT];
     CPWindow wprop;
 };
 

@@ -62,7 +62,9 @@ cpart_MI2C_24CXXX::cpart_MI2C_24CXXX(unsigned x, unsigned y)
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
- mi2c_init (&mi2c, 4);
+ kbits = 4;
+
+ mi2c_init (&mi2c, kbits);
  mi2c_rst (&mi2c);
 
  input_pins[0] = 0;
@@ -76,7 +78,7 @@ cpart_MI2C_24CXXX::~cpart_MI2C_24CXXX(void)
 {
  mi2c_end (&mi2c);
  delete Bitmap;
- canvas.Destroy();
+ canvas.Destroy ();
 }
 
 void
@@ -96,10 +98,12 @@ cpart_MI2C_24CXXX::Draw(void)
    switch (output[i].id)
     {
     case O_IC:
+     char buff[10];
+     snprintf(buff,9,"24C%02i",kbits);
      canvas.SetColor (0, 0, 0);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     canvas.RotatedText ("24CXXX", output[i].x1, output[i].y2 - 15, 0.0);
+     canvas.Text (buff, output[i].x1, output[i].y2 - 15);
      break;
     default:
      canvas.SetColor (49, 61, 99);
@@ -108,7 +112,7 @@ cpart_MI2C_24CXXX::Draw(void)
      canvas.SetFgColor (255, 255, 255);
      canvas.RotatedText (pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0);
 
-     int pinv =pin_values[output[i].id - O_P1][0]; 
+     int pinv = pin_values[output[i].id - O_P1][0];
      if (pinv > 10)
       {
        canvas.SetFgColor (155, 155, 155);
@@ -162,7 +166,7 @@ cpart_MI2C_24CXXX::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4]);
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%u", input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4], kbits);
 
  return prefs;
 }
@@ -170,7 +174,12 @@ cpart_MI2C_24CXXX::WritePreferences(void)
 void
 cpart_MI2C_24CXXX::ReadPreferences(String value)
 {
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4]);
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%u", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &kbits);
+
+ mi2c_end (&mi2c);
+ mi2c_init (&mi2c, kbits);
+ mi2c_rst (&mi2c);
+
  Reset ();
 }
 
@@ -182,7 +191,7 @@ cpart_MI2C_24CXXX::ConfigurePropertiesWindow(CPWindow * wprop)
  String Items = Window5.GetPinsNames ();
  String spin;
  WProp_MI2C_24CXXX = wprop;
- 
+
  ((CCombo*) WProp_MI2C_24CXXX->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)
   ((CCombo*) WProp_MI2C_24CXXX->GetChildByName ("combo1"))->SetText ("0  NC");
@@ -229,6 +238,7 @@ cpart_MI2C_24CXXX::ConfigurePropertiesWindow(CPWindow * wprop)
    ((CCombo*) WProp_MI2C_24CXXX->GetChildByName ("combo6"))->SetText (itoa (input_pins[4]) + "  " + spin);
   }
 
+ ((CCombo*) WProp_MI2C_24CXXX->GetChildByName ("combo9"))->SetText (itoa (kbits));
 
 
  ((CButton*) WProp_MI2C_24CXXX->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
@@ -245,6 +255,16 @@ cpart_MI2C_24CXXX::ReadPropertiesWindow(void)
  input_pins[2] = atoi (((CCombo*) WProp_MI2C_24CXXX->GetChildByName ("combo3"))->GetText ());
  input_pins[3] = atoi (((CCombo*) WProp_MI2C_24CXXX->GetChildByName ("combo5"))->GetText ());
  input_pins[4] = atoi (((CCombo*) WProp_MI2C_24CXXX->GetChildByName ("combo6"))->GetText ());
+
+ int nkbits = atoi (((CCombo*) WProp_MI2C_24CXXX->GetChildByName ("combo9"))->GetText ());
+
+ if (nkbits != kbits)
+  {
+   kbits = nkbits;
+   mi2c_end (&mi2c);
+   mi2c_init (&mi2c, kbits);
+   mi2c_rst (&mi2c);
+  }
 }
 
 void
@@ -252,10 +272,10 @@ cpart_MI2C_24CXXX::Process(void)
 {
  const picpin * ppins = Window5.GetPinsValues ();
 
- if((input_pins[3]>0)&&(input_pins[4]>0))
-   Window5.Set_i2c_bus (input_pins[3] - 1, mi2c_io (&mi2c, ppins[input_pins[4] - 1].value, ppins[input_pins[3] - 1].value));
+ if ((input_pins[3] > 0)&&(input_pins[4] > 0))
+  Window5.Set_i2c_bus (input_pins[3] - 1, mi2c_io (&mi2c, ppins[input_pins[4] - 1].value, ppins[input_pins[3] - 1].value));
 
- if(input_pins[3]>0)
-   Window5.SetPin (input_pins[3], Window5.Get_i2c_bus (input_pins[3] - 1));
+ if (input_pins[3] > 0)
+  Window5.SetPin (input_pins[3], Window5.Get_i2c_bus (input_pins[3] - 1));
 
 }

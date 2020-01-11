@@ -92,6 +92,10 @@ board_avr::pins_reset(void)
  pins[19].value = 1;
 }
 
+void avr_callback_sleep_raw_(avr_t *avr,avr_cycle_count_t how_long)
+{
+}
+     
 int
 board_avr::MInit(const char * processor, const char * fname, float freq)
 {
@@ -107,6 +111,10 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
 
 
  avr_init (avr);
+ 
+ avr->sleep=avr_callback_sleep_raw_;
+ 
+ 
  /*   
  ret=elf_read_firmware(fname, &f);
  if(ret > 0)

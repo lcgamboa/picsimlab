@@ -23,25 +23,25 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef PART_MI2C_24CXXX_H
-#define	PART_MI2C_24CXXX_H
+#ifndef PART_IO_74XX595_H
+#define	PART_IO_74XX595_H
 
 #include<lxrad.h>
 #include"part.h"
-#include"../devices/lcd_pcd8544.h"
+#include"../devices/io_74xx595.h"
 
-class cpart_MI2C_24CXXX:public part
+class cpart_IO_74xx595:public part
 {
    public:
-      String GetName(void){return lxT("MEM 24CXXX");};
-      cpart_MI2C_24CXXX(unsigned x, unsigned y);
-      ~cpart_MI2C_24CXXX(void);
+      String GetName(void){return lxT("IO 74xx595");};
+      cpart_IO_74xx595(unsigned x, unsigned y);
+      ~cpart_IO_74xx595(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return lxT("IC8.png");};
-      String GetInputMapFile(void){return lxT("IC8_i.map");};
-      String GetOutputMapFile(void){return lxT("IC8_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("MI2C_24CXXX.lxrad");};
+      String GetPictureFileName(void){return lxT("IC16.png");};
+      String GetInputMapFile(void){return lxT("IC16_i.map");};
+      String GetOutputMapFile(void){return lxT("IC16_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("IO_74xx595.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  wprop);
       void ReadPropertiesWindow(void);
       String WritePreferences(void);
@@ -49,13 +49,14 @@ class cpart_MI2C_24CXXX:public part
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
    private:
-      unsigned char input_pins[5]; 
-      mi2c_t mi2c;
-      int kbits;
+      unsigned char input_pins[4];
+      unsigned char output_pins[9];
+      io_74xx595_t sr8;
+      unsigned short _ret; 
 };
 
 
 
 
-#endif	/* PART_MI2C_24CXXX_H */
+#endif	/* PART_IO_74XX595_H */
 

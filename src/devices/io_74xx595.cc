@@ -23,18 +23,60 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef PARTS_DEFS_H
-#define	PARTS_DEFS_H
 
-#include"part.h" 
+#include"io_74xx595.h"
 
-#define MAX_PARTS 100
+void
+io_74xx595_rst(io_74xx595_t *sr)
+{
+ sr->asclk = 1;
+ sr->alclk = 1;
+ sr->dsr = 0;
+ sr->sout = 0;
+}
 
-#define NUM_PARTS 20
+void
+io_74xx595_init(io_74xx595_t *sr)
+{
+ sr->asclk = 1;
+ sr->alclk = 1;
+ sr->sout = 0;
+ sr->out = 0;
+ sr->dsr = 0;
+}
 
-extern const char parts_list[NUM_PARTS][30];
+unsigned short
+io_74xx595_io(io_74xx595_t *sr, unsigned char A, unsigned char sclk, unsigned char lclk, unsigned char rst)
+{
 
-part * create_part(String name, unsigned int x, unsigned int y);
+ if (!rst)
+  {
+   sr->dsr = 0;
+   sr->sout = 0;
+  }
 
-#endif	/* PARTS_DEFS_H */
 
+ //transicao
+ if ((sr->asclk == 0)&&(sclk == 1))//rising edge
+  {
+   if (A)
+    {
+     sr->dsr = (sr->dsr << 1) | 1;
+    }
+   else
+    {
+     sr->dsr = (sr->dsr << 1) & 0xFE;
+    }
+  }
+ sr->asclk = sclk;
+
+ //transicao
+ if ((sr->alclk == 0)&&(lclk == 1))//rising edge
+  {
+   sr->out = sr->dsr;
+  }
+ sr->alclk = lclk;
+
+
+ return (sr->dsr & 0x0100)| sr->out ;
+}
