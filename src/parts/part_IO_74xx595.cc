@@ -31,7 +31,8 @@
 /* outputs */
 enum
 {
- O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_IC
+ O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_P9, O_P10, O_P11, O_P12,
+ O_P13, O_P14, O_P15, O_P16, O_IC
 };
 
 const char pin_names[16][10] = {
@@ -143,17 +144,24 @@ cpart_IO_74xx595::Draw(void)
      canvas.RotatedText (pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0);
 
      int pinv = pin_values[output[i].id - O_P1][0];
-     if (pinv > 4)
+     if (pinv > 12)
       {
        canvas.SetFgColor (155, 155, 155);
        canvas.RotatedText (pin_values[output[i].id - O_P1], output[i].x1, output[i].y2 - 30, 90.0);
       }
-     else
+     else if( pinv < 4)
       {
        if (input_pins[pinv] == 0)
         canvas.RotatedText ("NC", output[i].x1, output[i].y2 - 30, 90.0);
        else
         canvas.RotatedText (Window5.GetPinName (input_pins[pinv]), output[i].x1, output[i].y2 - 30, 90.0);
+      }
+     else
+      {
+       if (output_pins[pinv-4] == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y2 - 30, 90.0);
+       else
+        canvas.RotatedText (itoa(output_pins[pinv-4])+lxT(" ")+Window5.GetPinName (output_pins[pinv-4]), output[i].x1, output[i].y2 - 30, 90.0);
       }
      break;
     }
@@ -184,7 +192,15 @@ cpart_IO_74xx595::get_out_id(char * name)
  if (strcmp (name, "P6") == 0)return O_P6;
  if (strcmp (name, "P7") == 0)return O_P7;
  if (strcmp (name, "P8") == 0)return O_P8;
-
+ if (strcmp (name, "P9") == 0)return O_P9;
+ if (strcmp (name, "P10") == 0)return O_P10;
+ if (strcmp (name, "P11") == 0)return O_P11;
+ if (strcmp (name, "P12") == 0)return O_P12;
+ if (strcmp (name, "P13") == 0)return O_P13;
+ if (strcmp (name, "P14") == 0)return O_P14;
+ if (strcmp (name, "P15") == 0)return O_P15;
+ if (strcmp (name, "P16") == 0)return O_P16;
+ 
  if (strcmp (name, "IC") == 0)return O_IC;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
