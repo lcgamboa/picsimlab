@@ -106,6 +106,10 @@ cpart_IO_74xx595::cpart_IO_74xx595(unsigned x, unsigned y)
  output_pins[6] = Window5.RegisterIOpin (lxT ("QG"));
  output_pins[7] = Window5.RegisterIOpin (lxT ("QH"));
  output_pins[8] = Window5.RegisterIOpin (lxT ("SOUT"));
+
+ mcount = 0;
+ memset (output_pins_alm, 0, 9 * sizeof (unsigned long));
+
 }
 
 cpart_IO_74xx595::~cpart_IO_74xx595(void)
@@ -149,7 +153,7 @@ cpart_IO_74xx595::Draw(void)
        canvas.SetFgColor (155, 155, 155);
        canvas.RotatedText (pin_values[output[i].id - O_P1], output[i].x1, output[i].y2 - 30, 90.0);
       }
-     else if( pinv < 4)
+     else if (pinv < 4)
       {
        if (input_pins[pinv] == 0)
         canvas.RotatedText ("NC", output[i].x1, output[i].y2 - 30, 90.0);
@@ -158,10 +162,10 @@ cpart_IO_74xx595::Draw(void)
       }
      else
       {
-       if (output_pins[pinv-4] == 0)
+       if (output_pins[pinv - 4] == 0)
         canvas.RotatedText ("NC", output[i].x1, output[i].y2 - 30, 90.0);
        else
-        canvas.RotatedText (itoa(output_pins[pinv-4])+lxT(" ")+Window5.GetPinName (output_pins[pinv-4]), output[i].x1, output[i].y2 - 30, 90.0);
+        canvas.RotatedText (itoa (output_pins[pinv - 4]) + lxT (" ") + Window5.GetPinName (output_pins[pinv - 4]), output[i].x1, output[i].y2 - 30, 90.0);
       }
      break;
     }
@@ -200,7 +204,7 @@ cpart_IO_74xx595::get_out_id(char * name)
  if (strcmp (name, "P14") == 0)return O_P14;
  if (strcmp (name, "P15") == 0)return O_P15;
  if (strcmp (name, "P16") == 0)return O_P16;
- 
+
  if (strcmp (name, "IC") == 0)return O_IC;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
@@ -287,6 +291,9 @@ cpart_IO_74xx595::ReadPropertiesWindow(void)
  input_pins[3] = atoi (((CCombo*) WProp_IO_74xx595->GetChildByName ("combo4"))->GetText ());
 }
 
+
+#define MAXC 1000000L
+
 void
 cpart_IO_74xx595::Process(void)
 {
@@ -298,15 +305,45 @@ cpart_IO_74xx595::Process(void)
 
  if (_ret != ret)
   {
-   Window5.SetPin (output_pins[0], (ret & 0x01) != 0, 1 );
-   Window5.SetPin (output_pins[1], (ret & 0x02) != 0, 1 );
-   Window5.SetPin (output_pins[2], (ret & 0x04) != 0, 1 );
-   Window5.SetPin (output_pins[3], (ret & 0x08) != 0, 1 );
-   Window5.SetPin (output_pins[4], (ret & 0x10) != 0, 1 );
-   Window5.SetPin (output_pins[5], (ret & 0x20) != 0, 1 );
-   Window5.SetPin (output_pins[6], (ret & 0x40) != 0, 1 );
-   Window5.SetPin (output_pins[7], (ret & 0x80) != 0, 1 );
-   Window5.SetPin (output_pins[8], (ret & 0x100) != 0, 1 );
+   Window5.WritePin (output_pins[0], (ret & 0x01) != 0);
+   Window5.WritePin (output_pins[1], (ret & 0x02) != 0);
+   Window5.WritePin (output_pins[2], (ret & 0x04) != 0);
+   Window5.WritePin (output_pins[3], (ret & 0x08) != 0);
+   Window5.WritePin (output_pins[4], (ret & 0x10) != 0);
+   Window5.WritePin (output_pins[5], (ret & 0x20) != 0);
+   Window5.WritePin (output_pins[6], (ret & 0x40) != 0);
+   Window5.WritePin (output_pins[7], (ret & 0x80) != 0);
+   Window5.WritePin (output_pins[8], (ret & 0x100) != 0);
   }
  _ret = ret;
+
+ if (ppins[output_pins[0]].value)output_pins_alm[0]++;
+ if (ppins[output_pins[1]].value)output_pins_alm[1]++;
+ if (ppins[output_pins[2]].value)output_pins_alm[2]++;
+ if (ppins[output_pins[3]].value)output_pins_alm[3]++;
+ if (ppins[output_pins[4]].value)output_pins_alm[4]++;
+ if (ppins[output_pins[5]].value)output_pins_alm[5]++;
+ if (ppins[output_pins[6]].value)output_pins_alm[6]++;
+ if (ppins[output_pins[7]].value)output_pins_alm[7]++;
+ if (ppins[output_pins[8]].value)output_pins_alm[8]++;
+
+ mcount++;
+ if (mcount >= MAXC)
+  {
+
+   Window5.WritePinA (output_pins[0], (ppins[output_pins[0] - 1].oavalue + ((output_pins_alm[0]*255.0) / MAXC))/2);
+   Window5.WritePinA (output_pins[1], (ppins[output_pins[1] - 1].oavalue + ((output_pins_alm[1]*255.0) / MAXC))/2);
+   Window5.WritePinA (output_pins[2], (ppins[output_pins[2] - 1].oavalue + ((output_pins_alm[2]*255.0) / MAXC))/2);
+   Window5.WritePinA (output_pins[3], (ppins[output_pins[3] - 1].oavalue + ((output_pins_alm[3]*255.0) / MAXC))/2);
+   Window5.WritePinA (output_pins[4], (ppins[output_pins[4] - 1].oavalue + ((output_pins_alm[4]*255.0) / MAXC))/2);
+   Window5.WritePinA (output_pins[5], (ppins[output_pins[5] - 1].oavalue + ((output_pins_alm[5]*255.0) / MAXC))/2);
+   Window5.WritePinA (output_pins[6], (ppins[output_pins[6] - 1].oavalue + ((output_pins_alm[6]*255.0) / MAXC))/2);
+   Window5.WritePinA (output_pins[7], (ppins[output_pins[7] - 1].oavalue + ((output_pins_alm[7]*255.0) / MAXC))/2);
+   Window5.WritePinA (output_pins[8], (ppins[output_pins[8] - 1].oavalue + ((output_pins_alm[8]*255.0) / MAXC))/2);
+
+   mcount = 0;
+   memset (output_pins_alm, 0, 9 * sizeof (unsigned long));
+  }
+
+
 }

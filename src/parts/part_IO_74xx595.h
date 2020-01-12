@@ -51,6 +51,8 @@ class cpart_IO_74xx595:public part
    private:
       unsigned char input_pins[4];
       unsigned char output_pins[9];
+      unsigned long output_pins_alm[9];
+      unsigned long mcount;
       io_74xx595_t sr8;
       unsigned short _ret; 
 };

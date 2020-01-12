@@ -78,6 +78,8 @@ class CPWindow5:public CPWindow
 //lxrad automatic generated block end, don't edit above!
   void menu1_EvMenuActive(CControl * control);
   void Process(void);
+  void PreProcess(void);
+  void PostProcess(void);
   bool SaveConfig(String fname);
   bool LoadConfig(String fname);
   void DeleteParts(void);
@@ -90,7 +92,9 @@ class CPWindow5:public CPWindow
   String GetPinsNames(void);
   String GetPinName(unsigned char pin);
   const picpin * GetPinsValues (void);
-  void SetPin (unsigned char pin, unsigned char value, unsigned char force=0);
+  void SetPin (unsigned char pin, unsigned char value);
+  void WritePin (unsigned char pin, unsigned char value);
+  void WritePinA (unsigned char pin, unsigned char avalue);
   void SetAPin (unsigned char pin, float value);
   unsigned char RegisterIOpin(String pname);
   private:

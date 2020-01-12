@@ -38,8 +38,9 @@ public:
     cpart_7s_display(unsigned x, unsigned y);
     ~cpart_7s_display(void);
     void Draw(void);
-    void Process(void);
-
+    void PreProcess (void);
+    void Process(void); 
+    void PostProcess (void);
     String GetPictureFileName(void) {
         return lxT("7sdisplay.png");
     };
@@ -73,6 +74,7 @@ private:
     unsigned int alm3[8];
     unsigned int alm4[8];
     long int mcount;
+    int JUMPSTEPS_;
 };
 
 

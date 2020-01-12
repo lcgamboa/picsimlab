@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2019  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -620,6 +620,8 @@ cboard_4::Run_CPU(void)
 
  int JUMPSTEPS = Window1.GetJUMPSTEPS ();
  long int NSTEPJ = Window1.GetNSTEPJ ();
+ 
+ if (use_spare)Window5.PreProcess ();
 
  /*
  for(i=0;i < pic.PINCOUNT;i++)
@@ -923,6 +925,9 @@ cboard_4::Run_CPU(void)
    if (lm3[i] > 255)lm3[i] = 255;
    if (lm4[i] > 255)lm4[i] = 255;
   }
+ 
+if (use_spare)Window5.PostProcess ();
+ 
 }
 
 void

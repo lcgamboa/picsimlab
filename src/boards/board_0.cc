@@ -30,15 +30,17 @@
 #include"board_0.h"
 
 /* ids of inputs of input map*/
-#define I_ICSP 1  //ICSP connector
-#define I_PWR 2  //Power button
-#define I_RST 3  //Reset button
-
+enum{
+I_ICSP, //ICSP connector
+I_PWR,  //Power button
+I_RST   //Reset button
+};
 
 /* ids of outputs of output map*/
-#define O_LPWR 4  //Power LED
-#define O_MP 5  
-
+enum{
+O_LPWR, //Power LED
+O_MP   
+};
 //return the input ids numbers of names used in input map
 
 unsigned short
@@ -380,7 +382,7 @@ cboard_0::Run_CPU(void)
 
    //read pic.pins to a local variable to speed up 
    pins = MGetPinsValues ();
-
+   if (use_spare)Window5.PreProcess ();
 
    j = JUMPSTEPS; //step counter
    if (Window1.Get_picpwr ()) //if powered
@@ -420,6 +422,7 @@ cboard_0::Run_CPU(void)
     {
      board_pic::pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEPJ) + 30);
     }
+   if (use_spare)Window5.PostProcess ();
    break;
   case _AVR:
 
@@ -437,6 +440,8 @@ cboard_0::Run_CPU(void)
    //read pic.pins to a local variable to speed up 
    //FIXME pins = pic.pins;
    pins = board_avr::MGetPinsValues ();
+
+   if (use_spare)Window5.PreProcess ();
 
    j = JUMPSTEPS; //step counter
    if (Window1.Get_picpwr ()) //if powered
@@ -495,6 +500,7 @@ cboard_0::Run_CPU(void)
     {
      board_avr::pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEPJ) + 30);
     }
+   if (use_spare)Window5.PostProcess ();
    break;
   }
 

@@ -81,7 +81,7 @@ cpart_7s_display::cpart_7s_display(unsigned x, unsigned y)
 cpart_7s_display::~cpart_7s_display(void)
 {
  delete Bitmap;
- canvas.Destroy();
+ canvas.Destroy ();
 }
 
 void
@@ -468,49 +468,61 @@ cpart_7s_display::ReadPropertiesWindow(void)
 }
 
 void
+cpart_7s_display::PreProcess(void)
+{
+
+ memset (alm1, 0, 8 * sizeof (unsigned int));
+ memset (alm2, 0, 8 * sizeof (unsigned int));
+ memset (alm3, 0, 8 * sizeof (unsigned int));
+ memset (alm4, 0, 8 * sizeof (unsigned int));
+
+ JUMPSTEPS_ = Window1.GetJUMPSTEPS ();
+ mcount = JUMPSTEPS_;
+}
+
+void
 cpart_7s_display::Process(void)
 {
  int i;
  const picpin * ppins = Window5.GetPinsValues ();
- int pinv;
-
- long int NSTEPJ = Window1.GetNSTEPJ ();
-
- for (i = 0; i < 8; i++)
-  {
-   if(input_pins[i] > 0)
-   {	   
-     pinv = ppins[input_pins[i] - 1].value;
-     if ((pinv)&&(ppins[input_pins[8] - 1].value)) alm1[i]++;
-     if ((pinv)&&(ppins[input_pins[9] - 1].value)) alm2[i]++;
-     if ((pinv)&&(ppins[input_pins[10] - 1].value)) alm3[i]++;
-     if ((pinv)&&(ppins[input_pins[11] - 1].value)) alm4[i]++;
-   }
-  }
 
  mcount++;
 
- if (mcount > NSTEPJ)
+ if (mcount > JUMPSTEPS_)
   {
-
    for (i = 0; i < 8; i++)
     {
-
-     lm1[i] = (int) (((600.0 * alm1[i]) / NSTEPJ) + 30);
-     lm2[i] = (int) (((600.0 * alm2[i]) / NSTEPJ) + 30);
-     lm3[i] = (int) (((600.0 * alm3[i]) / NSTEPJ) + 30);
-     lm4[i] = (int) (((600.0 * alm4[i]) / NSTEPJ) + 30);
-     if (lm1[i] > 255)lm1[i] = 255;
-     if (lm2[i] > 255)lm2[i] = 255;
-     if (lm3[i] > 255)lm3[i] = 255;
-     if (lm4[i] > 255)lm4[i] = 255;
+     if (input_pins[i])
+      {
+       if (ppins[input_pins[i] - 1].value)
+        {
+         if (ppins[input_pins[8] - 1].value) alm1[i]++;
+         if (ppins[input_pins[9] - 1].value) alm2[i]++;
+         if (ppins[input_pins[10] - 1].value) alm3[i]++;
+         if (ppins[input_pins[11] - 1].value) alm4[i]++;
+        }
+      }
     }
-
-   mcount = 0;
-   memset (alm1, 0, 8 * sizeof (unsigned int));
-   memset (alm2, 0, 8 * sizeof (unsigned int));
-   memset (alm3, 0, 8 * sizeof (unsigned int));
-   memset (alm4, 0, 8 * sizeof (unsigned int));
+   mcount = -1;
   }
 
+}
+
+void
+cpart_7s_display::PostProcess(void)
+{
+ long int NSTEPJ = Window1.GetNSTEPJ ();
+
+ for (int i = 0; i < 8; i++)
+  {
+
+   lm1[i] = (int) ((lm1[i]+(((600.0 * alm1[i]) / NSTEPJ) + 30)) / 2.0);
+   lm2[i] = (int) ((lm2[i]+(((600.0 * alm2[i]) / NSTEPJ) + 30)) / 2.0);
+   lm3[i] = (int) ((lm3[i]+(((600.0 * alm3[i]) / NSTEPJ) + 30)) / 2.0);
+   lm4[i] = (int) ((lm4[i]+(((600.0 * alm4[i]) / NSTEPJ) + 30)) / 2.0);
+   if (lm1[i] > 255)lm1[i] = 255;
+   if (lm2[i] > 255)lm2[i] = 255;
+   if (lm3[i] > 255)lm3[i] = 255;
+   if (lm4[i] > 255)lm4[i] = 255;
+  }
 }

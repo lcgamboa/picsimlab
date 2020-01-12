@@ -34,7 +34,9 @@ class part
   public:
       virtual String GetName(void)=0;
       virtual void Draw(void)=0; //Called ever 100ms to draw board 
+      virtual void PreProcess (void){}; //Called every start of CPU process 
       virtual void Process (void){}; //Called every CPU step
+      virtual void PostProcess (void){}; //Called every end of CPU process
       virtual String GetPictureFileName(void)=0; //Return the filename of board picture 
       virtual String GetInputMapFile(void)=0;    //Return the filename of board picture input map  
       virtual String GetOutputMapFile(void)=0;   //Return the filename of board picture output map  

@@ -399,6 +399,18 @@ CPWindow5::menu1_File_Loadconfiguration_EvMenuActive(CControl * control)
  filedialog1.Run ();
 }
 
+ 
+void 
+CPWindow5::PreProcess(void)
+{
+  for (int i = 0; i < partsc; i++)
+  {
+   parts[i]->PreProcess ();
+  }
+}
+
+
+
 void
 CPWindow5::Process(void)
 {
@@ -406,6 +418,15 @@ CPWindow5::Process(void)
  for (int i = 0; i < partsc; i++)
   {
    parts[i]->Process ();
+  }
+}
+
+void 
+CPWindow5::PostProcess(void)
+{
+  for (int i = 0; i < partsc; i++)
+  {
+   parts[i]->PostProcess ();
   }
 }
 
@@ -564,13 +585,30 @@ CPWindow5::GetPinsValues(void)
 }
 
 void
-CPWindow5::SetPin(unsigned char pin, unsigned char value, unsigned char force)
+CPWindow5::SetPin(unsigned char pin, unsigned char value)
 {
  pboard->MSetPin (pin, value);
- if ((pin > PinsCount)&&((Pins[pin - 1].dir)||force))
+ if ((pin > PinsCount)&&(Pins[pin - 1].dir))
   {
    Pins[pin - 1].value = value;
-   Pins[pin - 1].oavalue = 255*value;
+  }
+}
+
+void
+CPWindow5::WritePin(unsigned char pin, unsigned char value)
+{
+ if (pin > PinsCount)
+  {
+   Pins[pin - 1].value = value;
+  }
+}
+
+void
+CPWindow5::WritePinA(unsigned char pin, unsigned char avalue)
+{
+ if (pin > PinsCount)
+  {
+   Pins[pin - 1].oavalue = avalue;
   }
 }
 
