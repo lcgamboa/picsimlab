@@ -37,7 +37,9 @@ class cpart_IO_74xx595:public part
       cpart_IO_74xx595(unsigned x, unsigned y);
       ~cpart_IO_74xx595(void);
       void Draw(void);
-      void Process(void);
+      void PreProcess (void);
+      void Process(void); 
+      void PostProcess (void);
       String GetPictureFileName(void){return lxT("IC16.png");};
       String GetInputMapFile(void){return lxT("IC16_i.map");};
       String GetOutputMapFile(void){return lxT("IC16_o.map");};
@@ -52,7 +54,8 @@ class cpart_IO_74xx595:public part
       unsigned char input_pins[4];
       unsigned char output_pins[9];
       unsigned long output_pins_alm[9];
-      unsigned long mcount;
+      long mcount;
+      int JUMPSTEPS_;
       io_74xx595_t sr8;
       unsigned short _ret; 
 };

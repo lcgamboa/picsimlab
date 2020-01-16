@@ -32,30 +32,17 @@
 class cpart_7s_display : public part {
 public:
 
-    String GetName(void) {
-        return lxT("7 Segments Display");
-    };
+    String GetName(void) {return lxT("7 Segments Display"); };
     cpart_7s_display(unsigned x, unsigned y);
     ~cpart_7s_display(void);
     void Draw(void);
     void PreProcess (void);
     void Process(void); 
     void PostProcess (void);
-    String GetPictureFileName(void) {
-        return lxT("7sdisplay.png");
-    };
-
-    String GetInputMapFile(void) {
-        return lxT("7sdisplay_i.map");
-    };
-
-    String GetOutputMapFile(void) {
-        return lxT("7sdisplay_o.map");
-    };
-
-    String GetPropertiesWindowFile(void) {
-        return lxT("7sdisplay.lxrad");
-    };
+    String GetPictureFileName(void) {return lxT("7sdisplay.png"); };
+    String GetInputMapFile(void) {return lxT("7sdisplay_i.map"); };
+    String GetOutputMapFile(void) {return lxT("7sdisplay_o.map");};
+    String GetPropertiesWindowFile(void) {return lxT("7sdisplay.lxrad");};
     void ConfigurePropertiesWindow(CPWindow * wprop);
     void ReadPropertiesWindow(void);
     String WritePreferences(void);

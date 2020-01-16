@@ -291,8 +291,15 @@ cpart_IO_74xx595::ReadPropertiesWindow(void)
  input_pins[3] = atoi (((CCombo*) WProp_IO_74xx595->GetChildByName ("combo4"))->GetText ());
 }
 
+void
+cpart_IO_74xx595::PreProcess(void)
+{
 
-#define MAXC 1000000L
+ memset (output_pins_alm, 0, 9 * sizeof (unsigned long));
+
+ JUMPSTEPS_ = Window1.GetJUMPSTEPS ();
+ mcount = JUMPSTEPS_;
+}
 
 void
 cpart_IO_74xx595::Process(void)
@@ -317,33 +324,41 @@ cpart_IO_74xx595::Process(void)
   }
  _ret = ret;
 
- if (ppins[output_pins[0]].value)output_pins_alm[0]++;
- if (ppins[output_pins[1]].value)output_pins_alm[1]++;
- if (ppins[output_pins[2]].value)output_pins_alm[2]++;
- if (ppins[output_pins[3]].value)output_pins_alm[3]++;
- if (ppins[output_pins[4]].value)output_pins_alm[4]++;
- if (ppins[output_pins[5]].value)output_pins_alm[5]++;
- if (ppins[output_pins[6]].value)output_pins_alm[6]++;
- if (ppins[output_pins[7]].value)output_pins_alm[7]++;
- if (ppins[output_pins[8]].value)output_pins_alm[8]++;
+
 
  mcount++;
- if (mcount >= MAXC)
+ if (mcount >= JUMPSTEPS_)
   {
+   if (ppins[output_pins[0]].value)output_pins_alm[0]++;
+   if (ppins[output_pins[1]].value)output_pins_alm[1]++;
+   if (ppins[output_pins[2]].value)output_pins_alm[2]++;
+   if (ppins[output_pins[3]].value)output_pins_alm[3]++;
+   if (ppins[output_pins[4]].value)output_pins_alm[4]++;
+   if (ppins[output_pins[5]].value)output_pins_alm[5]++;
+   if (ppins[output_pins[6]].value)output_pins_alm[6]++;
+   if (ppins[output_pins[7]].value)output_pins_alm[7]++;
+   if (ppins[output_pins[8]].value)output_pins_alm[8]++;
 
-   Window5.WritePinA (output_pins[0], (ppins[output_pins[0] - 1].oavalue + ((output_pins_alm[0]*255.0) / MAXC))/2);
-   Window5.WritePinA (output_pins[1], (ppins[output_pins[1] - 1].oavalue + ((output_pins_alm[1]*255.0) / MAXC))/2);
-   Window5.WritePinA (output_pins[2], (ppins[output_pins[2] - 1].oavalue + ((output_pins_alm[2]*255.0) / MAXC))/2);
-   Window5.WritePinA (output_pins[3], (ppins[output_pins[3] - 1].oavalue + ((output_pins_alm[3]*255.0) / MAXC))/2);
-   Window5.WritePinA (output_pins[4], (ppins[output_pins[4] - 1].oavalue + ((output_pins_alm[4]*255.0) / MAXC))/2);
-   Window5.WritePinA (output_pins[5], (ppins[output_pins[5] - 1].oavalue + ((output_pins_alm[5]*255.0) / MAXC))/2);
-   Window5.WritePinA (output_pins[6], (ppins[output_pins[6] - 1].oavalue + ((output_pins_alm[6]*255.0) / MAXC))/2);
-   Window5.WritePinA (output_pins[7], (ppins[output_pins[7] - 1].oavalue + ((output_pins_alm[7]*255.0) / MAXC))/2);
-   Window5.WritePinA (output_pins[8], (ppins[output_pins[8] - 1].oavalue + ((output_pins_alm[8]*255.0) / MAXC))/2);
-
-   mcount = 0;
-   memset (output_pins_alm, 0, 9 * sizeof (unsigned long));
+   mcount = -1;
   }
 
+
+}
+
+void
+cpart_IO_74xx595::PostProcess(void)
+{
+ long int NSTEPJ = Window1.GetNSTEPJ ();
+ const picpin * ppins = Window5.GetPinsValues ();
+
+ Window5.WritePinA (output_pins[0], (ppins[output_pins[0] - 1].oavalue + ((output_pins_alm[0]*255.0) / NSTEPJ)) / 2);
+ Window5.WritePinA (output_pins[1], (ppins[output_pins[1] - 1].oavalue + ((output_pins_alm[1]*255.0) / NSTEPJ)) / 2);
+ Window5.WritePinA (output_pins[2], (ppins[output_pins[2] - 1].oavalue + ((output_pins_alm[2]*255.0) / NSTEPJ)) / 2);
+ Window5.WritePinA (output_pins[3], (ppins[output_pins[3] - 1].oavalue + ((output_pins_alm[3]*255.0) / NSTEPJ)) / 2);
+ Window5.WritePinA (output_pins[4], (ppins[output_pins[4] - 1].oavalue + ((output_pins_alm[4]*255.0) / NSTEPJ)) / 2);
+ Window5.WritePinA (output_pins[5], (ppins[output_pins[5] - 1].oavalue + ((output_pins_alm[5]*255.0) / NSTEPJ)) / 2);
+ Window5.WritePinA (output_pins[6], (ppins[output_pins[6] - 1].oavalue + ((output_pins_alm[6]*255.0) / NSTEPJ)) / 2);
+ Window5.WritePinA (output_pins[7], (ppins[output_pins[7] - 1].oavalue + ((output_pins_alm[7]*255.0) / NSTEPJ)) / 2);
+ Window5.WritePinA (output_pins[8], (ppins[output_pins[8] - 1].oavalue + ((output_pins_alm[8]*255.0) / NSTEPJ)) / 2);
 
 }
