@@ -30,18 +30,20 @@
 #include"board_5.h"
 
 /* ids of inputs of input map*/
-enum{
-I_ICSP,  //ICSP connector
-I_PWR,   //Power button
-I_RST    //Reset button
+enum
+{
+ I_ICSP, //ICSP connector
+ I_PWR, //Power button
+ I_RST //Reset button
 };
 
 /* ids of outputs of output map*/
-enum{
-O_L,   //switch position (On/Off)
-O_RX,  //LED on RD0 push button
-O_TX,  //LED on RD1 switch
-O_ON  //Power LED
+enum
+{
+ O_L, //switch position (On/Off)
+ O_RX, //LED on RD0 push button
+ O_TX, //LED on RD1 switch
+ O_ON //Power LED
 };
 //return the input ids numbers of names used in input map
 
@@ -368,14 +370,12 @@ cboard_5::ReadPreferences(char *name, char *value)
 //Event on the board
 
 void
-cboard_5::EvKeyPress(uint key, uint mask) {
- };
+cboard_5::EvKeyPress(uint key, uint mask) { };
 
 //Event on the board
 
 void
 cboard_5::EvKeyRelease(uint key, uint mask) {
-
  };
 
 //Event on the board
@@ -401,27 +401,27 @@ cboard_5::EvMouseButtonPress(uint button, uint x, uint y, uint state)
        break;
        //if event is over I_PWR area then toggle board on/off
       case I_PWR:
-       if (Window1.Get_picpwr ()) //if on turn off
+       if (Window1.Get_mcupwr ()) //if on turn off
         {
-         Window1.Set_picrun (0);
-         Window1.Set_picpwr (0);
+         Window1.Set_mcurun (0);
+         Window1.Set_mcupwr (0);
          Reset ();
          Window1.statusbar1.SetField (0, lxT ("Stoped"));
         }
        else //if off turn on
         {
-         Window1.Set_picpwr (1);
-         Window1.Set_picrun (1);
+         Window1.Set_mcupwr (1);
+         Window1.Set_mcurun (1);
          Reset ();
          Window1.statusbar1.SetField (0, lxT ("Running..."));
         }
        break;
        //if event is over I_RST area then turn off and reset
       case I_RST:
-       if (Window1.Get_picpwr ())//if powered
+       if (Window1.Get_mcupwr ())//if powered
         {
-         Window1.Set_picpwr (0);
-         Window1.Set_picrst (1);
+         Window1.Set_mcupwr (0);
+         Window1.Set_mcurst (1);
         }
        p_MCLR = 0;
        break;
@@ -448,10 +448,10 @@ cboard_5::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
       {
        //if event is over I_RST area then turn on  
       case I_RST:
-       if (Window1.Get_picrst ())//if powered
+       if (Window1.Get_mcurst ())//if powered
         {
-         Window1.Set_picpwr (1);
-         Window1.Set_picrst (0);
+         Window1.Set_mcupwr (1);
+         Window1.Set_mcurst (0);
 
          Reset ();
 
@@ -484,7 +484,7 @@ cboard_5::Draw(CDraw *draw, double scale)
      switch (output[i].id)
       {
       case O_ON:
-       draw->Canvas.SetColor (0, 225 * Window1.Get_picpwr () + 30, 0);
+       draw->Canvas.SetColor (0, 225 * Window1.Get_mcupwr () + 30, 0);
        break;
       case O_RX:
        draw->Canvas.SetColor (0, pins[0].oavalue, 0);
@@ -554,7 +554,7 @@ cboard_5::Run_CPU(void)
  if (use_spare)Window5.PreProcess ();
 
  j = JUMPSTEPS; //step counter
- if (Window1.Get_picpwr ()) //if powered
+ if (Window1.Get_mcupwr ()) //if powered
   for (i = 0; i < (Window1.GetNSTEP ()*4); i++) //repeat for number of steps in 100ms
    {
 
@@ -569,23 +569,26 @@ cboard_5::Run_CPU(void)
            } 
      */
     //verify if a breakpoint is reached if not run one instruction 
-    //if(!mplabxd_testbp())pic_step();
+#ifndef AVR_USE_GDB
+    if(!mplabxd_testbp())
+#endif    
+    {
+     if (twostep)
+      {
+       twostep = 0; //NOP   
+      }
+     else
+      {
+       cycle_start = avr->cycle;
+       avr_run (avr);
+       if ((avr->cycle - cycle_start) > 1)
+        {
+         twostep = 1;
+        }
+      }
+    }
 
-    if (twostep)
-     {
-      twostep = 0; //NOP   
-     }
-    else
-     {
-      cycle_start = avr->cycle;
-      avr_run (avr);
-      if ((avr->cycle - cycle_start) > 1)
-       {
-        twostep = 1;
-       }
-     }
-
-    UpdateSerial ();
+    UpdateHardware ();
 
     //avr->sleep_usec=0;
     if (use_oscope)Window4.SetSample ();

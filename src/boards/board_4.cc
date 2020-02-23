@@ -401,7 +401,7 @@ cboard_4::Draw(CDraw *draw, double scale)
        break;
 
 
-      case O_LCD: draw->Canvas.SetColor (0, 90 * Window1.Get_picpwr () + 40, 0);
+      case O_LCD: draw->Canvas.SetColor (0, 90 * Window1.Get_mcupwr () + 40, 0);
        break;
 
       default:
@@ -445,7 +445,7 @@ cboard_4::Draw(CDraw *draw, double scale)
       {
        if ((output[i].id == O_LCD)&&(lcd.update))
         {
-         lcd_draw (&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, Window1.Get_picpwr ());
+         lcd_draw (&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, Window1.Get_mcupwr ());
         }
       }
      else if (output[i].id == O_LCD)
@@ -543,7 +543,7 @@ cboard_4::Draw(CDraw *draw, double scale)
         break;
        }
 
-     if (output[i].id == O_LPWR)draw->Canvas.SetColor (0, 255 * Window1.Get_picpwr (), 0);
+     if (output[i].id == O_LPWR)draw->Canvas.SetColor (0, 255 * Window1.Get_mcupwr (), 0);
 
      draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
     };
@@ -556,7 +556,7 @@ cboard_4::Draw(CDraw *draw, double scale)
  draw->Update ();
 
 
- if (((0.4444 * (pic.pins[15].oavalue - 30)) < 10)&&(Window1.Get_picpwr ()) && jmp[0])
+ if (((0.4444 * (pic.pins[15].oavalue - 30)) < 10)&&(Window1.Get_mcupwr ()) && jmp[0])
   {
    if (!sound_on)
     {
@@ -644,7 +644,7 @@ cboard_4::Run_CPU(void)
 
  j = JUMPSTEPS;
 
- if (Window1.Get_picpwr ())
+ if (Window1.Get_mcupwr ())
   for (i = 0; i < Window1.GetNSTEP (); i++)
    {
 
@@ -1120,10 +1120,10 @@ cboard_4::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
       case I_PWR:
        {
-        if (Window1.Get_picpwr ())
+        if (Window1.Get_mcupwr ())
          {
-          Window1.Set_picrun (0);
-          Window1.Set_picpwr (0);
+          Window1.Set_mcurun (0);
+          Window1.Set_mcupwr (0);
           Reset ();
 
           p_BT1 = 0;
@@ -1134,8 +1134,8 @@ cboard_4::EvMouseButtonPress(uint button, uint x, uint y, uint state)
          }
         else
          {
-          Window1.Set_picpwr (1);
-          Window1.Set_picrun (1);
+          Window1.Set_mcupwr (1);
+          Window1.Set_mcurun (1);
           Reset ();
 
 
@@ -1146,10 +1146,10 @@ cboard_4::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
       case I_RST:
        {
-        if (Window1.Get_picpwr () && pic_reset (-1))
+        if (Window1.Get_mcupwr () && pic_reset (-1))
          {
-          Window1.Set_picpwr (0);
-          Window1.Set_picrst (1);
+          Window1.Set_mcupwr (0);
+          Window1.Set_mcurst (1);
          }
         p_MCLR = 0;
        };
@@ -1298,10 +1298,10 @@ cboard_4::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
       {
       case I_RST:
        {
-        if (Window1.Get_picrst ())
+        if (Window1.Get_mcurst ())
          {
-          Window1.Set_picpwr (1);
-          Window1.Set_picrst (0);
+          Window1.Set_mcupwr (1);
+          Window1.Set_mcurst (0);
 
           if (pic_reset (-1))
            {

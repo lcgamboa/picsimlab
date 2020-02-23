@@ -379,28 +379,28 @@ cboard_7::EvMouseButtonPress(uint button, uint x, uint y, uint state)
        break;
        //if event is over I_PWR area then toggle board on/off
       case I_PWR:
-       if (Window1.Get_picpwr ()) //if on turn off
+       if (Window1.Get_mcupwr ()) //if on turn off
         {
-         Window1.Set_picrun (0);
-         Window1.Set_picpwr (0);
+         Window1.Set_mcurun (0);
+         Window1.Set_mcupwr (0);
          Reset ();
          p_BT1 = 1;
          Window1.statusbar1.SetField (0, lxT ("Stoped"));
         }
        else //if off turn on
         {
-         Window1.Set_picpwr (1);
-         Window1.Set_picrun (1);
+         Window1.Set_mcupwr (1);
+         Window1.Set_mcurun (1);
          Reset ();
          Window1.statusbar1.SetField (0, lxT ("Running..."));
         }
        break;
        //if event is over I_RST area then turn off and reset
       case I_RST:
-       if (Window1.Get_picpwr () && pic_reset (-1))//if powered
+       if (Window1.Get_mcupwr () && pic_reset (-1))//if powered
         {
-         Window1.Set_picpwr (0);
-         Window1.Set_picrst (1);
+         Window1.Set_mcupwr (0);
+         Window1.Set_mcurst (1);
         }
        p_MCLR = 0;
        break;
@@ -435,10 +435,10 @@ cboard_7::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
       {
        //if event is over I_RST area then turn on  
       case I_RST:
-       if (Window1.Get_picrst ())//if powered
+       if (Window1.Get_mcurst ())//if powered
         {
-         Window1.Set_picpwr (1);
-         Window1.Set_picrst (0);
+         Window1.Set_mcupwr (1);
+         Window1.Set_mcurst (0);
 
          if (pic_reset (-1))
           {
@@ -478,10 +478,10 @@ cboard_7::Draw(CDraw *draw, double scale)
      switch (output[i].id)//search for color of output
       {
       case O_D1: //green using picpwr value
-       draw->Canvas.SetColor (0, 225 * Window1.Get_picpwr () + 30, 0);
+       draw->Canvas.SetColor (0, 225 * Window1.Get_mcupwr () + 30, 0);
        break;
       case O_D2: //green using picpwr value
-       draw->Canvas.SetColor (0, 225 * Window1.Get_picpwr () + 30, 0);
+       draw->Canvas.SetColor (0, 225 * Window1.Get_mcupwr () + 30, 0);
        break;
       case O_D4: //Red using pin 2 mean  value (RA5) 
        draw->Canvas.SetColor (pic.pins[1].oavalue, 0, 0);
@@ -576,7 +576,7 @@ cboard_7::Run_CPU(void)
  if (use_spare)Window5.PreProcess ();
 
  j = JUMPSTEPS; //step counter
- if (Window1.Get_picpwr ()) //if powered
+ if (Window1.Get_mcupwr ()) //if powered
   for (i = 0; i < Window1.GetNSTEP (); i++) //repeat for number of steps in 100ms
    {
 

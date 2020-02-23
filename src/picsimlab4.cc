@@ -221,7 +221,7 @@ CPWindow4::SetBaseTimer (void)
     }
   }
 
- if (chp[0] < PinCount)
+ if (chp[0] <= PinCount)
   {
    String spin = pboard->MGetPinName (chp[0]);
    combo2.SetText (itoa (chp[0]) + "  " + spin);
@@ -229,7 +229,7 @@ CPWindow4::SetBaseTimer (void)
  else
   combo2.SetText ("1");
 
- if (chp[1] < PinCount)
+ if (chp[1] <= PinCount)
   {
    String spin = pboard->MGetPinName (chp[1]);
    combo3.SetText (itoa (chp[1]) + "  " + spin);

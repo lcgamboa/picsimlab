@@ -381,10 +381,10 @@ CPWindow1::CPWindow1(void)
 
   NSTEPJ=NSTEP/JUMPSTEPS;
 
-picrun=1;
-picpwr=1;
-picrst=0;
-picdbg=0;
+mcurun=1;
+mcupwr=1;
+mcurst=0;
+mcudbg=0;
 debug=0;
 osc_on= 0;
 spare_on= 0;

@@ -30,16 +30,18 @@
 #include"board_0.h"
 
 /* ids of inputs of input map*/
-enum{
-I_ICSP, //ICSP connector
-I_PWR,  //Power button
-I_RST   //Reset button
+enum
+{
+ I_ICSP, //ICSP connector
+ I_PWR, //Power button
+ I_RST //Reset button
 };
 
 /* ids of outputs of output map*/
-enum{
-O_LPWR, //Power LED
-O_MP   
+enum
+{
+ O_LPWR, //Power LED
+ O_MP
 };
 //return the input ids numbers of names used in input map
 
@@ -255,27 +257,27 @@ cboard_0::EvMouseButtonPress(uint button, uint x, uint y, uint state)
        break;
        //if event is over I_PWR area then toggle board on/off
       case I_PWR:
-       if (Window1.Get_picpwr ()) //if on turn off
+       if (Window1.Get_mcupwr ()) //if on turn off
         {
-         Window1.Set_picrun (0);
-         Window1.Set_picpwr (0);
+         Window1.Set_mcurun (0);
+         Window1.Set_mcupwr (0);
          Reset ();
          Window1.statusbar1.SetField (0, lxT ("Stoped"));
         }
        else //if off turn on
         {
-         Window1.Set_picpwr (1);
-         Window1.Set_picrun (1);
+         Window1.Set_mcupwr (1);
+         Window1.Set_mcurun (1);
          Reset ();
          Window1.statusbar1.SetField (0, lxT ("Running..."));
         }
        break;
        //if event is over I_RST area then turn off and reset
       case I_RST:
-       if (Window1.Get_picpwr ())//if powered
+       if (Window1.Get_mcupwr ())//if powered
         {
-         Window1.Set_picpwr (0);
-         Window1.Set_picrst (1);
+         Window1.Set_mcupwr (0);
+         Window1.Set_mcurst (1);
         }
        p_MCLR = 0;
        break;
@@ -301,10 +303,10 @@ cboard_0::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
       {
        //if event is over I_RST area then turn on  
       case I_RST:
-       if (Window1.Get_picrst ())//if powered
+       if (Window1.Get_mcurst ())//if powered
         {
-         Window1.Set_picpwr (1);
-         Window1.Set_picrst (0);
+         Window1.Set_mcupwr (1);
+         Window1.Set_mcurst (0);
 
          Reset ();
 
@@ -335,8 +337,8 @@ cboard_0::Draw(CDraw *draw, double scale)
 
    switch (output[i].id)//search for color of output
     {
-    case O_LPWR: //Blue using picpwr value
-     draw->Canvas.SetColor (0, 0, 225 * Window1.Get_picpwr () + 30);
+    case O_LPWR: //Blue using mcupwr value
+     draw->Canvas.SetColor (0, 0, 225 * Window1.Get_mcupwr () + 30);
      draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
     case O_MP:
@@ -385,7 +387,7 @@ cboard_0::Run_CPU(void)
    if (use_spare)Window5.PreProcess ();
 
    j = JUMPSTEPS; //step counter
-   if (Window1.Get_picpwr ()) //if powered
+   if (Window1.Get_mcupwr ()) //if powered
     for (i = 0; i < Window1.GetNSTEP (); i++) //repeat for number of steps in 100ms
      {
 
@@ -444,7 +446,7 @@ cboard_0::Run_CPU(void)
    if (use_spare)Window5.PreProcess ();
 
    j = JUMPSTEPS; //step counter
-   if (Window1.Get_picpwr ()) //if powered
+   if (Window1.Get_mcupwr ()) //if powered
     for (i = 0; i < (Window1.GetNSTEP ()*4); i++) //repeat for number of steps in 100ms
      {
 
@@ -459,23 +461,25 @@ cboard_0::Run_CPU(void)
              } 
        */
       //verify if a breakpoint is reached if not run one instruction 
-      //if(!mplabxd_testbp())pic_step();
-
-      if (twostep)
+#ifndef AVR_USE_GDB
+      if (!mplabxd_testbp ())
+#endif 
        {
-        twostep = 0; //NOP   
-       }
-      else
-       {
-        cycle_start = avr->cycle;
-        avr_run (avr);
-        if ((avr->cycle - cycle_start) > 1)
+        if (twostep)
          {
-          twostep = 1;
+          twostep = 0; //NOP   
+         }
+        else
+         {
+          cycle_start = avr->cycle;
+          avr_run (avr);
+          if ((avr->cycle - cycle_start) > 1)
+           {
+            twostep = 1;
+           }
          }
        }
-
-      board_avr::UpdateSerial ();
+      board_avr::UpdateHardware ();
 
       //avr->sleep_usec=0;
       if (use_oscope)Window4.SetSample ();
@@ -799,3 +803,256 @@ cboard_0::MGetPinsValues(void)
  return NULL;
 }
 
+void
+cboard_0::MStep(void)
+{
+ switch (ptype)
+  {
+  case _PIC:
+   return board_pic::MStep ();
+   break;
+  case _AVR:
+   return board_avr::MStep ();
+   break;
+  }
+}
+
+void
+cboard_0::MStepResume(void)
+{
+ switch (ptype)
+  {
+  case _PIC:
+   return board_pic::MStepResume ();
+   break;
+  case _AVR:
+   return board_avr::MStepResume ();
+   break;
+  }
+}
+
+int
+cboard_0::MTestBP(unsigned short bp)
+{
+ switch (ptype)
+  {
+  case _PIC:
+   return board_pic::MTestBP (bp);
+   break;
+  case _AVR:
+   return board_avr::MTestBP (bp);
+   break;
+  }
+ return 0;
+}
+
+void
+cboard_0::MReset(int flags)
+{
+ switch (ptype)
+  {
+  case _PIC:
+   return board_pic::MReset (flags);
+   break;
+  case _AVR:
+   return board_avr::MReset (flags);
+   break;
+  }
+}
+
+unsigned short *
+cboard_0::MGetProcID_p(void)
+{
+ switch (ptype)
+  {
+  case _PIC:
+   return board_pic::MGetProcID_p ();
+   break;
+  case _AVR:
+   return board_avr::MGetProcID_p ();
+   break;
+  }
+ return NULL;
+}
+
+unsigned short 
+cboard_0::MGetPC(void)
+{
+ switch (ptype)
+  {
+  case _PIC:
+   return board_pic::MGetPC();
+   break;
+  case _AVR:
+   return board_avr::MGetPC();
+   break;
+  }
+ return 0;
+}
+
+void 
+cboard_0::MSetPC(unsigned short pc)
+{
+ switch (ptype)
+  {
+  case _PIC:
+   board_pic::MSetPC(pc);
+   return;
+   break;
+  case _AVR:
+   board_avr::MSetPC(pc);
+   return;
+   break;
+  }
+ return;
+}
+
+unsigned char *
+cboard_0::MGetRAM_p(void)
+{
+ switch (ptype)
+  {
+  case _PIC:
+   return board_pic::MGetRAM_p ();
+   break;
+  case _AVR:
+   return board_avr::MGetRAM_p ();
+   break;
+  }
+ return NULL;
+}
+
+unsigned char *
+cboard_0::MGetROM_p(void)
+{
+ switch (ptype)
+  {
+  case _PIC:
+   return board_pic::MGetROM_p ();
+   break;
+  case _AVR:
+   return board_avr::MGetROM_p ();
+   break;
+  }
+ return NULL;
+}
+
+unsigned char *
+cboard_0::MGetCONFIG_p(void)
+{
+ switch (ptype)
+  {
+  case _PIC:
+   return board_pic::MGetCONFIG_p ();
+   break;
+  case _AVR:
+   return board_avr::MGetCONFIG_p ();
+   break;
+  }
+ return NULL;
+}
+
+unsigned char *
+cboard_0::MGetID_p(void)
+{
+ switch (ptype)
+  {
+  case _PIC:
+   return board_pic::MGetID_p ();
+   break;
+  case _AVR:
+   return board_avr::MGetID_p ();
+   break;
+  }
+ return NULL;
+}
+
+unsigned char *
+cboard_0::MGetEEPROM_p(void)
+{
+ switch (ptype)
+  {
+  case _PIC:
+   return board_pic::MGetEEPROM_p ();
+   break;
+  case _AVR:
+   return board_avr::MGetEEPROM_p ();
+   break;
+  }
+ return NULL;
+}
+
+unsigned int
+cboard_0::MGetRAMSize(void)
+{
+ switch (ptype)
+  {
+  case _PIC:
+   return board_pic::MGetRAMSize ();
+   break;
+  case _AVR:
+   return board_avr::MGetRAMSize ();
+   break;
+  }
+ return 0;
+}
+
+unsigned int
+cboard_0::MGetROMSize(void)
+{
+ switch (ptype)
+  {
+  case _PIC:
+   return board_pic::MGetROMSize ();
+   break;
+  case _AVR:
+   return board_avr::MGetROMSize ();
+   break;
+  }
+ return 0;
+}
+
+unsigned int
+cboard_0::MGetCONFIGSize(void)
+{
+ switch (ptype)
+  {
+  case _PIC:
+   return board_pic::MGetCONFIGSize ();
+   break;
+  case _AVR:
+   return board_avr::MGetCONFIGSize ();
+   break;
+  }
+ return 0;
+}
+
+unsigned int
+cboard_0::MGetIDSize(void)
+{
+ switch (ptype)
+  {
+  case _PIC:
+   return board_pic::MGetIDSize ();
+   break;
+  case _AVR:
+   return board_avr::MGetIDSize ();
+   break;
+  }
+ return 0;
+}
+
+unsigned int
+cboard_0::MGetEEPROM_Size(void)
+{
+ switch (ptype)
+  {
+  case _PIC:
+   return board_pic::MGetEEPROM_Size ();
+   break;
+  case _AVR:
+   return board_avr::MGetEEPROM_Size ();
+   break;
+  }
+ return 0;
+}

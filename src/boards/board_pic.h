@@ -28,7 +28,7 @@
 
 #include "board.h"
 
-int mplabxd_testbp(void);
+#include"../devices/mplabxd.h"
 
 class board_pic: virtual public board
 {
@@ -50,7 +50,24 @@ class board_pic: virtual public board
       void MSetAPin(int pin, float value);
       unsigned char MGetPin(int pin);  
       const picpin * MGetPinsValues(void);  
-
+      void MStep(void);
+      void MStepResume(void);
+      int MTestBP(unsigned short bp);
+      void MReset(int flags);
+      unsigned short * MGetProcID_p(void);
+      unsigned short  MGetPC(void);
+      void MSetPC(unsigned short pc);
+      unsigned char * MGetRAM_p(void);
+      unsigned char * MGetROM_p(void);
+      unsigned char * MGetCONFIG_p(void);
+      unsigned char * MGetID_p(void);
+      unsigned char * MGetEEPROM_p(void);
+      unsigned int MGetRAMSize(void);
+      unsigned int MGetROMSize(void);
+      unsigned int MGetCONFIGSize(void);
+      unsigned int MGetIDSize(void);
+      unsigned int MGetEEPROM_Size(void);
+      
  protected:
       _pic pic;
 

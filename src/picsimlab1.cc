@@ -257,9 +257,9 @@ CPWindow1::Configure (CControl * control, const char * home)
 
  String status;
 
- picrun = 1;
- picpwr = 1;
- picrst = 0;
+ mcurun = 1;
+ mcupwr = 1;
+ mcurst = 0;
  //TODO: verify initialization errors
  snprintf (fname, 1023, "%s/picsimlab.ini", home);
 
@@ -616,8 +616,8 @@ CPWindow1::_EvOnDestroy (CControl * control)
 void
 CPWindow1::menu1_File_LoadHex_EvMenuActive (CControl * control)
 {
- pa = picpwr;
- picpwr = 0;
+ pa = mcupwr;
+ mcupwr = 0;
  filedialog1.Run ();
 }
 
@@ -633,15 +633,15 @@ CPWindow1::filedialog1_EvOnClose (int retId)
     {
     case HEX_NFOUND:
      Message (lxT ("File not found!"));
-     picrun = 0;
+     mcurun = 0;
      break;
     case HEX_CHKSUM:
      Message (lxT ("File checksum error!"));
      pboard->MEraseFlash ();
-     picrun = 0;
+     mcurun = 0;
      break;
     case 0:
-     picrun = 1;
+     mcurun = 1;
      break;
     }
 
@@ -649,7 +649,7 @@ CPWindow1::filedialog1_EvOnClose (int retId)
    pboard->Reset ();
 
 
-   if (picrun)
+   if (mcurun)
     SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->proc + lxT (" - ") + basename (filedialog1.GetFileName ()));
    else
     SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->proc);
@@ -660,7 +660,7 @@ CPWindow1::filedialog1_EvOnClose (int retId)
    FNAME = filedialog1.GetFileName ();
    menu1_File_ReloadLast.SetEnable (1);
   }
- picpwr = pa;
+ mcupwr = pa;
 }
 
 void
@@ -767,8 +767,8 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive (CControl * control)
 {
  int pa;
 
- pa = picpwr;
- picpwr = 0;
+ pa = mcupwr;
+ mcupwr = 0;
 
  timer1.SetRunState (0);
  msleep (100);
@@ -785,22 +785,22 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive (CControl * control)
   {
   case HEX_NFOUND:
    Message (lxT ("File not found!"));
-   picrun = 0;
+   mcurun = 0;
    break;
   case HEX_CHKSUM:
    Message (lxT ("File checksum error!"));
    pboard->MEraseFlash ();
-   picrun = 0;
+   mcurun = 0;
    break;
   case 0:
-   picrun = 1;
+   mcurun = 1;
    break;
   }
 
  pboard->Reset ();
 
 
- if (picrun)
+ if (mcurun)
   SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->proc + lxT (" - ") + basename (filedialog1.GetFileName ()));
  else
   SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->proc);
@@ -808,7 +808,7 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive (CControl * control)
 
 
 
- picpwr = pa;
+ mcupwr = pa;
  timer1.SetRunState (1);
 
 };

@@ -295,7 +295,7 @@ cboard_1::Run_CPU(void)
  if (use_spare)Window5.PreProcess ();
 
  j = JUMPSTEPS;
- if (Window1.Get_picpwr ())
+ if (Window1.Get_mcupwr ())
   for (i = 0; i < Window1.GetNSTEP (); i++)
    {
 
@@ -414,10 +414,10 @@ cboard_1::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
       case I_PWR:
        {
-        if (Window1.Get_picpwr ())
+        if (Window1.Get_mcupwr ())
          {
-          Window1.Set_picrun (0);
-          Window1.Set_picpwr (0);
+          Window1.Set_mcurun (0);
+          Window1.Set_mcupwr (0);
           Reset ();
 
           p_BT1 = 0;
@@ -428,8 +428,8 @@ cboard_1::EvMouseButtonPress(uint button, uint x, uint y, uint state)
          }
         else
          {
-          Window1.Set_picpwr (1);
-          Window1.Set_picrun (1);
+          Window1.Set_mcupwr (1);
+          Window1.Set_mcurun (1);
           Reset ();
 
           Window1.statusbar1.SetField (0, lxT ("Running..."));
@@ -439,10 +439,10 @@ cboard_1::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
       case I_RST:
        {
-        if (Window1.Get_picpwr () && pic_reset (-1))
+        if (Window1.Get_mcupwr () && pic_reset (-1))
          {
-          Window1.Set_picpwr (0);
-          Window1.Set_picrst (1);
+          Window1.Set_mcupwr (0);
+          Window1.Set_mcurst (1);
          }
         p_MCLR = 0;
        };
@@ -488,10 +488,10 @@ cboard_1::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
       {
       case I_RST:
        {
-        if (Window1.Get_picrst ())
+        if (Window1.Get_mcurst ())
          {
-          Window1.Set_picpwr (1);
-          Window1.Set_picrst (0);
+          Window1.Set_mcupwr (1);
+          Window1.Set_mcurst (0);
 
           if (pic_reset (-1))
            {

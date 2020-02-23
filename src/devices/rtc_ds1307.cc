@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -32,19 +32,22 @@
 
 //#define _DEBUG
 
+#define dprintf if (1) {} else printf
+
 void
 rtc2_rst(rtc2_t *rtc)
 {
 //int i;
-rtc->sdao=0;
-rtc->sclo=1;
+rtc->sdao=-1;//0
+rtc->sclo=-1;//1
 rtc->bit=0xFF;
 rtc->byte=0xFF;
 rtc->datab=0;
 rtc->ctrl=0;
 rtc->ret=0;
 rtc->ucont=0;
-  //printf("rtc rst\n");
+
+dprintf("rtc rst\n");
 
 //for(i=0;i<16;i++)
    //printf("%02X ",rtc->data[i]);
@@ -55,7 +58,7 @@ void
 rtc2_init(rtc2_t *rtc)
 {
   time_t utime;
-  //printf("rtc init\n");
+  dprintf("rtc init\n");
   
   rtc->data=(unsigned char *) calloc(64,sizeof(unsigned char));
 
@@ -253,7 +256,7 @@ void rtc2_update(rtc2_t *rtc)
 void
 rtc2_end(rtc2_t *rtc)
 {
-  //printf("rtc end\n");
+  dprintf("rtc end\n");
   if(rtc->data)
     free(rtc->data);
   rtc->data=NULL;
@@ -264,6 +267,8 @@ rtc2_end(rtc2_t *rtc)
 unsigned char
 rtc2_io(rtc2_t *rtc, unsigned char scl, unsigned char sda)
 {
+  
+  if((rtc->sdao == sda)&&(rtc->sclo == scl))return rtc->ret ;
 
   if((rtc->sdao == 1)&&(sda ==0)&&(scl==1)&&(rtc->sclo == 1)) //start
   {
@@ -272,7 +277,7 @@ rtc2_io(rtc2_t *rtc, unsigned char scl, unsigned char sda)
     rtc->datab=0;
     rtc->ctrl=0;
     rtc->ret=0;
-    //printf("rtc start!\n");	 
+    dprintf("rtc start!\n");	 
   }
   
   if((rtc->sdao == 0)&&(sda ==1)&&(scl==1)&&(rtc->sclo == 1)) //stop
@@ -281,7 +286,7 @@ rtc2_io(rtc2_t *rtc, unsigned char scl, unsigned char sda)
     rtc->byte=0xFF;  
     rtc->ctrl=0;
     rtc->ret=0;
-    //printf("rtc stop!\n");	 
+    dprintf("rtc stop!\n");	 
   }
 
 
@@ -301,7 +306,7 @@ rtc2_io(rtc2_t *rtc, unsigned char scl, unsigned char sda)
     if(rtc->bit < 8)
     {
      rtc->ret=((rtc->datas & (1<<(7-rtc->bit)))>0);
-    ////printf("send %i %i (%02X)\n",rtc->bit,rtc->ret,rtc->datas);  
+     //dprintf("rtc send %i %i (%02X)\n",rtc->bit,rtc->ret,rtc->datas);  
     }
     else
     {
@@ -312,12 +317,12 @@ rtc2_io(rtc2_t *rtc, unsigned char scl, unsigned char sda)
 
   if(rtc->bit == 9)
   {
-     //printf("rtc data %02X\n",rtc->datab);
+     dprintf("rtc data %02X\n",rtc->datab);
 
      if(rtc->byte == 0)
      {
        rtc->ctrl=rtc->datab;
-       //printf("rtc ctrl = %02X\n",rtc->ctrl);		
+       dprintf("rtc ctrl = %02X\n",rtc->ctrl);		
        rtc->ret=0;
        
        if( (rtc->ctrl& 0x01) == 0x00)
@@ -333,7 +338,7 @@ rtc2_io(rtc2_t *rtc, unsigned char scl, unsigned char sda)
   
          if(((rtc->byte > 1)&&(rtc->ctrl &0x01) == 0))
          {
-            //printf("write rtc[%04X]=%02X\n",rtc->addr,rtc->datab); 
+            dprintf("write rtc[%04X]=%02X\n",rtc->addr,rtc->datab); 
             rtc->data[rtc->addr]=rtc->datab;
  
             switch(rtc->addr)
@@ -376,7 +381,7 @@ rtc2_io(rtc2_t *rtc, unsigned char scl, unsigned char sda)
        if(rtc->byte < 16)
        {  
          rtc->datas=rtc->data[rtc->addr];
-         //printf("read rtc[%04X]=%02X\n",rtc->addr,rtc->datas); 
+         dprintf("rtc read [%04X]=%02X\n",rtc->addr,rtc->datas); 
          rtc->addr++;
        }
        else

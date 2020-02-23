@@ -327,7 +327,7 @@ cboard_3::Draw(CDraw *draw, double scale)
       case O_P4: draw->Canvas.SetColor (lm4[29], 0, 0);
        break;
 
-      case O_LCD: draw->Canvas.SetColor (0, 90 * Window1.Get_picpwr () + 40, 0);
+      case O_LCD: draw->Canvas.SetColor (0, 90 * Window1.Get_mcupwr () + 40, 0);
        break;
 
       default: if ((output[i].name[0] == 'J')&&(output[i].name[1] == 'P')) draw->Canvas.SetColor (150, 150, 150);
@@ -341,7 +341,7 @@ cboard_3::Draw(CDraw *draw, double scale)
 
      if ((output[i].id == O_LCD)&&(lcd.update))
       {
-       lcd_draw (&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, Window1.Get_picpwr ());
+       lcd_draw (&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, Window1.Get_mcupwr ());
       }
 
 
@@ -380,7 +380,7 @@ cboard_3::Draw(CDraw *draw, double scale)
       case O_RB3: draw->Canvas.SetColor (pic.pins[35].oavalue, 0, 0);
        break;
       }
-     if (output[i].id == O_LPWR)draw->Canvas.SetColor (0, 255 * Window1.Get_picpwr (), 0);
+     if (output[i].id == O_LPWR)draw->Canvas.SetColor (0, 255 * Window1.Get_mcupwr (), 0);
 
      draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
     };
@@ -393,7 +393,7 @@ cboard_3::Draw(CDraw *draw, double scale)
 
 
 
- if (((0.4444 * (pic.pins[6].oavalue - 30)) > 40) && Window1.Get_picpwr ())
+ if (((0.4444 * (pic.pins[6].oavalue - 30)) > 40) && Window1.Get_mcupwr ())
   {
    if (!sound_on)
     {
@@ -472,7 +472,7 @@ cboard_3::Run_CPU(void)
  if (use_spare)Window5.PreProcess ();
 
  j = JUMPSTEPS;
- if (Window1.Get_picpwr ())
+ if (Window1.Get_mcupwr ())
   for (i = 0; i < Window1.GetNSTEP (); i++)
    {
 
@@ -727,10 +727,10 @@ cboard_3::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
       case I_PWR:
        {
-        if (Window1.Get_picpwr ())
+        if (Window1.Get_mcupwr ())
          {
-          Window1.Set_picrun (0);
-          Window1.Set_picpwr (0);
+          Window1.Set_mcurun (0);
+          Window1.Set_mcupwr (0);
           Reset ();
 
           p_BT1 = 0;
@@ -741,8 +741,8 @@ cboard_3::EvMouseButtonPress(uint button, uint x, uint y, uint state)
          }
         else
          {
-          Window1.Set_picpwr (1);
-          Window1.Set_picrun (1);
+          Window1.Set_mcupwr (1);
+          Window1.Set_mcurun (1);
           Reset ();
 
 
@@ -753,10 +753,10 @@ cboard_3::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
       case I_RST:
        {
-        if (Window1.Get_picpwr () && pic_reset (-1))
+        if (Window1.Get_mcupwr () && pic_reset (-1))
          {
-          Window1.Set_picpwr (0);
-          Window1.Set_picrst (1);
+          Window1.Set_mcupwr (0);
+          Window1.Set_mcurst (1);
          }
         p_MCLR = 0;
        };
@@ -804,10 +804,10 @@ cboard_3::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
       {
       case I_RST:
        {
-        if (Window1.Get_picrst ())
+        if (Window1.Get_mcurst ())
          {
-          Window1.Set_picpwr (1);
-          Window1.Set_picrst (0);
+          Window1.Set_mcupwr (1);
+          Window1.Set_mcurst (0);
 
           if (pic_reset (-1))
            {

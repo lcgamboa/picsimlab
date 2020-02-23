@@ -36,8 +36,12 @@
 #include <simavr/avr_adc.h>
 #include <simavr/avr_uart.h>
 #include <simavr/sim_hex.h>
+#include <simavr/avr_twi.h>
 
-
+typedef struct{
+  avr_irq_t * twi_irq;    
+  picpin * pins;
+}twi_data_t;
 
 class board_avr: virtual public board
 {
@@ -60,7 +64,24 @@ class board_avr: virtual public board
       void MSetAPin(int pin, float value);
       unsigned char MGetPin(int pin);  
       const picpin * MGetPinsValues(void); 
-      void UpdateSerial(void);
+      void UpdateHardware(void);
+      void MStep(void);
+      void MStepResume(void);
+      int MTestBP(unsigned short bp);
+      void MReset(int flags);
+      unsigned short * MGetProcID_p(void);
+      unsigned short  MGetPC(void);
+      void MSetPC(unsigned short pc);
+      unsigned char * MGetRAM_p(void);
+      unsigned char * MGetROM_p(void);
+      unsigned char * MGetCONFIG_p(void);
+      unsigned char * MGetID_p(void);
+      unsigned char * MGetEEPROM_p(void);
+      unsigned int MGetRAMSize(void);
+      unsigned int MGetROMSize(void);
+      unsigned int MGetCONFIGSize(void);
+      unsigned int MGetIDSize(void);
+      unsigned int MGetEEPROM_Size(void);
       
       static void out_hook( struct avr_irq_t* irq, uint32_t value, void* param )
       {      
@@ -88,6 +109,7 @@ class board_avr: virtual public board
       int read_ihx_avr(const char * fname, int leeprom);
       int write_ihx_avr(const char * fname);  
 };
+
 
 #ifdef _WIN_
 HANDLE avr_serial_get_fd(void);

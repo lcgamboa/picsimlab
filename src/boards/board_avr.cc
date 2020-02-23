@@ -44,6 +44,7 @@ board_avr::board_avr(void)
 
 void
 board_avr::MSetSerial(const char * port) {
+ //TODO
  //pic_set_serial(&pic,port,0,0,0);
 }
 
@@ -54,24 +55,16 @@ enum
  IRQ_UART_COUNT
 };
 
-static const char * irq_names[IRQ_UART_COUNT] = {
+static const char * irq_names_uart[IRQ_UART_COUNT] = {
  [IRQ_UART_BYTE_IN] = "8<uart.in",
  [IRQ_UART_BYTE_OUT] = "8>uart.out",
 };
+
 
 /*
  * called when a byte is send via the uart on the AVR
  */
 static void uart_in_hook(struct avr_irq_t * irq, uint32_t value, void * param);
-/*
- * Called when the uart has room in it's input buffer. This is called repeateadly
- * if necessary, while the xoff is called only when the uart fifo is FULL
- */
-static void uart_xon_hook(struct avr_irq_t * irq, uint32_t value, void * param);
-/*
- * Called when the uart ran out of room in it's input buffer
- */
-static void uart_xoff_hook(struct avr_irq_t * irq, uint32_t value, void * param);
 
 void
 board_avr::pins_reset(void)
@@ -92,36 +85,25 @@ board_avr::pins_reset(void)
  pins[19].value = 1;
 }
 
-void avr_callback_sleep_raw_(avr_t *avr,avr_cycle_count_t how_long)
-{
-}
-     
+void
+avr_callback_sleep_raw_(avr_t *avr, avr_cycle_count_t how_long) { }
+
 int
 board_avr::MInit(const char * processor, const char * fname, float freq)
 {
  int ret;
- //elf_firmware_t f;
  avr = avr_make_mcu_by_name (processor);
+
  if (!avr)
   {
    fprintf (stderr, "Error creating the AVR core\n");
-   //return 0;
    avr = avr_make_mcu_by_name ("atmega328");
   }
 
 
  avr_init (avr);
- 
- avr->sleep=avr_callback_sleep_raw_;
- 
- 
- /*   
- ret=elf_read_firmware(fname, &f);
- if(ret > 0)
- {
-   avr_load_firmware(avr, &f); 
- }
-  */
+
+ avr->sleep = avr_callback_sleep_raw_;
 
  ret = read_ihx_avr (fname, 1);
 
@@ -134,7 +116,7 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
  //avr->log= LOG_DEBUG;
 
  avr_reset (avr);
- 
+
  pins_reset ();
 
 
@@ -178,22 +160,16 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
  f &= ~AVR_UART_FLAG_POLL_SLEEP;
  avr_ioctl (avr, AVR_IOCTL_UART_SET_FLAGS ('0'), &f);
 
- serial_irq = avr_alloc_irq (&avr->irq_pool, 0, IRQ_UART_COUNT, irq_names);
+ serial_irq = avr_alloc_irq (&avr->irq_pool, 0, IRQ_UART_COUNT, irq_names_uart);
  avr_irq_register_notify (serial_irq + IRQ_UART_BYTE_IN, uart_in_hook, NULL);
 
  avr_irq_t * src = avr_io_getirq (avr, AVR_IOCTL_UART_GETIRQ ('0'), UART_IRQ_OUTPUT);
  avr_irq_t * dst = avr_io_getirq (avr, AVR_IOCTL_UART_GETIRQ ('0'), UART_IRQ_INPUT);
- avr_irq_t * xon = avr_io_getirq (avr, AVR_IOCTL_UART_GETIRQ ('0'), UART_IRQ_OUT_XON);
- avr_irq_t * xoff = avr_io_getirq (avr, AVR_IOCTL_UART_GETIRQ ('0'), UART_IRQ_OUT_XOFF);
  if (src && dst)
   {
    avr_connect_irq (src, serial_irq + IRQ_UART_BYTE_IN);
    avr_connect_irq (serial_irq + IRQ_UART_BYTE_OUT, dst);
   }
- if (xon)
-  avr_irq_register_notify (xon, uart_xon_hook, serial_irq);
- if (xoff)
-  avr_irq_register_notify (xoff, uart_xoff_hook, NULL);
 
  avr_serial_open (SERIALDEVICE);
 
@@ -247,6 +223,10 @@ board_avr::MEnd(void)
  free ((void*) avr->irq_pool.irq);
  free (avr);
  avr = NULL;
+
+#ifndef AVR_USE_GDB
+ mplabxd_end ();
+#endif 
 }
 
 void
@@ -284,21 +264,25 @@ board_avr::MDumpMemory(const char * fname)
 int
 board_avr::DebugInit(void)
 {
-
+#ifdef AVR_USE_GDB
  avr->gdb_port = 1234;
  //avr->state = cpu_Stopped;
  return avr_gdb_init (avr);
+#else
+ return mplabxd_init (this);
+#endif 
 }
 
 void
 board_avr::DebugLoop(void) {
- /*
-  if(Window1.Get_picpwr())
+#ifndef AVR_USE_GDB
+ if (Window1.Get_mcupwr ())
   {
-     //prog_loop(&pic);
-     mplabxd_loop();
+   //prog_loop(&pic);
+   mplabxd_loop ();
   }
-  */ }
+#endif 
+ }
 
 int
 board_avr::CpuInitialized(void)
@@ -413,6 +397,8 @@ board_avr::MSetPin(int pin, unsigned char value)
 {
  if (pin <= 0 || pin > MGetPinCount ())return;
  if (avr == NULL) return;
+ if (!pins[pin - 1].dir)return;
+ if (pins[pin - 1].value == value)return;
  if (Write_stat_irq[pin - 1] == NULL) return;
  avr_raise_irq (Write_stat_irq[pin - 1], value);
 }
@@ -421,6 +407,9 @@ void
 board_avr::MSetAPin(int pin, float value)
 {
  if (pin <= 0 || pin > MGetPinCount ())return;
+ if (!pins[pin - 1].dir)return;
+ if (pins[pin - 1].avalue == value)return;
+
  pins[pin - 1].avalue = value;
  if (avr == NULL) return;
 
@@ -834,45 +823,11 @@ uart_in_hook(struct avr_irq_t * irq, uint32_t value, void * param)
  avr_serial_send (value);
 }
 
-/*
- * Called when the uart has room in it's input buffer. This is called repeateadly
- * if necessary, while the xoff is called only when the uart fifo is FULL
- */
-int off = 0;
-
-static void
-uart_xon_hook(struct avr_irq_t * irq, uint32_t value, void * param) {
- /* 
- avr_irq_t * serial_irq= (avr_irq_t *)param;
- unsigned char c;
-   
- off=0;   
- while(avr_serial_rec(&c) && !off)
- {
-   avr_raise_irq(serial_irq + IRQ_UART_BYTE_OUT, c);  
-   printf("byte %i\n",c);
- }
-   
-  printf("uart_xon_hook %i\n",value+cont++);   
-  fflush(stdout);
-  */ }
-
-/*
- * Called when the uart ran out of room in it's input buffer
- */
-static void
-uart_xoff_hook(struct avr_irq_t * irq, uint32_t value, void * param)
-{
- off = 1;
- //printf("uart_xoff_hook %i\n",value);
- //fflush(stdout);
-}
-
 int cont = 0;
 int aux = 1;
 
 void
-board_avr::UpdateSerial(void)
+board_avr::UpdateHardware(void)
 {
 
  unsigned char c;
@@ -884,10 +839,7 @@ board_avr::UpdateSerial(void)
    if (avr_serial_rec (&c))
     {
      avr_raise_irq (serial_irq + IRQ_UART_BYTE_OUT, c);
-     //printf("%i\n",c);
-     //fflush(stdout);
     }
-
 
    if (avr_serial_get_dsr ())
     {
@@ -902,9 +854,113 @@ board_avr::UpdateSerial(void)
     {
      aux = 1;
     }
-
-
   }
 
+}
 
+
+void 
+board_avr::MStep(void)
+{
+      avr_run (avr);
+}
+
+void 
+board_avr::MStepResume(void)
+{
+}
+
+int 
+board_avr::MTestBP(unsigned short bp)
+{
+ return (bp== avr->pc>>1);
+}
+
+void 
+board_avr::MReset(int flags)
+{
+ avr_reset (avr);
+}
+
+unsigned short * 
+board_avr::MGetProcID_p(void)
+{
+ return 0;
+}
+
+unsigned short  
+board_avr::MGetPC(void)
+{
+ return avr->pc>>1;
+}
+
+void  
+board_avr::MSetPC(unsigned short pc)
+{
+ avr->pc= pc << 1;
+}
+
+
+unsigned char * 
+board_avr::MGetRAM_p(void)
+{
+ return avr->data;
+}
+
+unsigned char * 
+board_avr::MGetROM_p(void)
+{
+ return avr->flash;
+}
+
+unsigned char * 
+board_avr::MGetCONFIG_p(void)
+{
+ return avr->fuse;
+}
+
+unsigned char * 
+board_avr::MGetID_p(void)
+{
+ //TODO
+ return NULL; 
+}
+
+unsigned char * 
+board_avr::MGetEEPROM_p(void)
+{
+ //TODO
+ return NULL;
+}
+
+unsigned int 
+board_avr::MGetRAMSize(void)
+{
+ return avr->ramend+1;
+}
+
+unsigned int 
+board_avr::MGetROMSize(void)
+{
+ return avr->flashend+1;
+}
+
+unsigned int 
+board_avr::MGetCONFIGSize(void)
+{
+ return 3; //FIXME
+}
+
+unsigned int 
+board_avr::MGetIDSize(void)
+{
+ //TODO
+ return 0;
+}
+
+unsigned int 
+board_avr::MGetEEPROM_Size(void)
+{
+ //TODO
+ return 0;
 }

@@ -121,14 +121,14 @@ class CPWindow1:public CPWindow
   void SetplWidth(int pw){plWidth=pw;};
   void SetplHeight(int ph){plHeight=ph;};
   double GetScale(void){return scale;};
-  int Get_picpwr(void){return picpwr;};
-  int Get_picrun(void){return picrun;};
-  int Get_picrst(void){return picrst;};
-  int Get_picdbg(void){return picdbg;};
-  void Set_picpwr(int pp){picpwr =pp;};
-  void Set_picrun(int pr){picrun =pr;};
-  void Set_picrst(int pr){picrst =pr;};
-  void Set_picdbg(int pd){picdbg =pd;};
+  int Get_mcupwr(void){return mcupwr;};
+  int Get_mcurun(void){return mcurun;};
+  int Get_mcurst(void){return mcurst;};
+  int Get_mcudbg(void){return mcudbg;};
+  void Set_mcupwr(int pp){mcupwr =pp;};
+  void Set_mcurun(int pr){mcurun =pr;};
+  void Set_mcurst(int pr){mcurst =pr;};
+  void Set_mcudbg(int pd){mcudbg =pd;};
   void SetPATH(String path){PATH=path;};
   void SetFNAME(String fname){FNAME=fname;};
   long int GetNSTEP(void){return NSTEP;};
@@ -144,10 +144,10 @@ class CPWindow1:public CPWindow
   String share;
  
   int pa;
-  int picrun;
-  int picpwr;
-  int picrst;
-  int picdbg;
+  int mcurun;
+  int mcupwr;
+  int mcurst;
+  int mcudbg;
   int debug;
   int osc_on;
   int spare_on;

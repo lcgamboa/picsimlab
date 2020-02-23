@@ -102,6 +102,24 @@ class board
       virtual void MSetAPin(int pin, float value)=0;
       virtual unsigned char MGetPin(int pin)=0;  
       virtual const picpin * MGetPinsValues(void)=0;  
+      virtual void MStep(void)=0;
+      virtual void MStepResume(void)=0;
+      virtual int MTestBP(unsigned short bp)=0;
+      virtual void MReset(int flags)=0;
+      virtual unsigned short * MGetProcID_p(void)=0;
+      virtual unsigned short  MGetPC(void)=0;
+      virtual void MSetPC(unsigned short pc)=0;
+      virtual unsigned char * MGetRAM_p(void)=0;
+      virtual unsigned char * MGetROM_p(void)=0;
+      virtual unsigned char * MGetCONFIG_p(void)=0;
+      virtual unsigned char * MGetID_p(void)=0;
+      virtual unsigned char * MGetEEPROM_p(void)=0;
+      virtual unsigned int MGetRAMSize(void)=0;
+      virtual unsigned int MGetROMSize(void)=0;
+      virtual unsigned int MGetCONFIGSize(void)=0;
+      virtual unsigned int MGetIDSize(void)=0;
+      virtual unsigned int MGetEEPROM_Size(void)=0;
+      
       String proc;             //ID of processor in use
  protected:
       input_t  input[100];  //input map elements
