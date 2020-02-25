@@ -38,10 +38,6 @@
 #include <simavr/sim_hex.h>
 #include <simavr/avr_twi.h>
 
-typedef struct{
-  avr_irq_t * twi_irq;    
-  picpin * pins;
-}twi_data_t;
 
 class board_avr: virtual public board
 {

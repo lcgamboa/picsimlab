@@ -92,6 +92,7 @@ int
 board_avr::MInit(const char * processor, const char * fname, float freq)
 {
  int ret;
+ 
  avr = avr_make_mcu_by_name (processor);
 
  if (!avr)
@@ -118,7 +119,6 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
  avr_reset (avr);
 
  pins_reset ();
-
 
  for (int p = 0; p < MGetPinCount (); p++)
   {
@@ -274,7 +274,8 @@ board_avr::DebugInit(void)
 }
 
 void
-board_avr::DebugLoop(void) {
+board_avr::DebugLoop(void)
+{
 #ifndef AVR_USE_GDB
  if (Window1.Get_mcupwr ())
   {
@@ -282,7 +283,7 @@ board_avr::DebugLoop(void) {
    mplabxd_loop ();
   }
 #endif 
- }
+}
 
 int
 board_avr::CpuInitialized(void)
@@ -858,107 +859,103 @@ board_avr::UpdateHardware(void)
 
 }
 
-
-void 
+void
 board_avr::MStep(void)
 {
-      avr_run (avr);
+ avr_run (avr);
 }
 
-void 
-board_avr::MStepResume(void)
-{
-}
+void
+board_avr::MStepResume(void) { }
 
-int 
+int
 board_avr::MTestBP(unsigned short bp)
 {
- return (bp== avr->pc>>1);
+ return (bp == avr->pc >> 1);
 }
 
-void 
+void
 board_avr::MReset(int flags)
 {
  avr_reset (avr);
 }
 
-unsigned short * 
+unsigned short *
 board_avr::MGetProcID_p(void)
 {
  return 0;
 }
 
-unsigned short  
+unsigned short
 board_avr::MGetPC(void)
 {
- return avr->pc>>1;
+ return avr->pc >> 1;
 }
 
-void  
+void
 board_avr::MSetPC(unsigned short pc)
 {
- avr->pc= pc << 1;
+ avr->pc = pc << 1;
 }
 
-
-unsigned char * 
+unsigned char *
 board_avr::MGetRAM_p(void)
 {
  return avr->data;
 }
 
-unsigned char * 
+unsigned char *
 board_avr::MGetROM_p(void)
 {
  return avr->flash;
 }
 
-unsigned char * 
+unsigned char *
 board_avr::MGetCONFIG_p(void)
 {
  return avr->fuse;
 }
 
-unsigned char * 
+unsigned char *
 board_avr::MGetID_p(void)
 {
  //TODO
- return NULL; 
+ return NULL;
 }
 
-unsigned char * 
+unsigned char *
 board_avr::MGetEEPROM_p(void)
 {
  //TODO
  return NULL;
 }
 
-unsigned int 
+unsigned int
 board_avr::MGetRAMSize(void)
 {
- return avr->ramend+1;
+ return avr->ramend + 1;
 }
 
-unsigned int 
+unsigned int
 board_avr::MGetROMSize(void)
 {
- return avr->flashend+1;
+ return avr->flashend + 1;
 }
 
-unsigned int 
+unsigned int
 board_avr::MGetCONFIGSize(void)
 {
  return 3; //FIXME
 }
 
-unsigned int 
+unsigned int
 board_avr::MGetIDSize(void)
 {
  //TODO
  return 0;
 }
 
-unsigned int 
+unsigned int
 board_avr::MGetEEPROM_Size(void)
 {
  //TODO

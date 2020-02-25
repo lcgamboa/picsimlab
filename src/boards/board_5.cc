@@ -375,8 +375,7 @@ cboard_5::EvKeyPress(uint key, uint mask) { };
 //Event on the board
 
 void
-cboard_5::EvKeyRelease(uint key, uint mask) {
- };
+cboard_5::EvKeyRelease(uint key, uint mask) { };
 
 //Event on the board
 
@@ -570,23 +569,23 @@ cboard_5::Run_CPU(void)
      */
     //verify if a breakpoint is reached if not run one instruction 
 #ifndef AVR_USE_GDB
-    if(!mplabxd_testbp())
+    if (!mplabxd_testbp ())
 #endif    
-    {
-     if (twostep)
-      {
-       twostep = 0; //NOP   
-      }
-     else
-      {
-       cycle_start = avr->cycle;
-       avr_run (avr);
-       if ((avr->cycle - cycle_start) > 1)
-        {
-         twostep = 1;
-        }
-      }
-    }
+     {
+      if (twostep)
+       {
+        twostep = 0; //NOP   
+       }
+      else
+       {
+        cycle_start = avr->cycle;
+        avr_run (avr);
+        if ((avr->cycle - cycle_start) > 1)
+         {
+          twostep = 1;
+         }
+       }
+     }
 
     UpdateHardware ();
 
