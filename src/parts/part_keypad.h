@@ -38,9 +38,9 @@ class cpart_keypad:public part
       ~cpart_keypad(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return lxT("keypad.png");};
-      String GetInputMapFile(void){return lxT("keypad_i.map");};
-      String GetOutputMapFile(void){return lxT("keypad_o.map");};
+      String GetPictureFileName(void);
+      String GetInputMapFile(void);
+      String GetOutputMapFile(void);
       String GetPropertiesWindowFile(void){return lxT("keypad.lxrad");};
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
@@ -50,10 +50,14 @@ class cpart_keypad:public part
       void ReadPreferences(String value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
+      void ComboChange(String value);
+      void ChangeType(unsigned char tp); 
     private:
+      unsigned char type;  
       unsigned char pull;  
       unsigned char output_pins[8];    
       unsigned char keys[4][4];
+      unsigned char keys2[2][5];
 };
 
 

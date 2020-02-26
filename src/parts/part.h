@@ -54,6 +54,7 @@ class part
       virtual void board_Event(CControl * control){};   
       virtual void ConfigurePropertiesWindow(CPWindow *  wprop)=0;
       virtual void ReadPropertiesWindow(void)=0;
+      virtual void ComboChange(String value){};
       part();           //Called once on part creation
       virtual ~part(void){};  //Called once on part destruction
       lxBitmap * GetBitmap(void){return Bitmap;};

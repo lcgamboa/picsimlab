@@ -174,6 +174,18 @@ CPWindow5::PropButtonRelease(CControl * control, uint button, uint x, uint y, ui
 }
 
 void
+CPWindow5::PropComboChange(CCombo * control)
+{
+ Window5.wprop.HideExclusive ();
+ //Window5.wprop.SetCanDestroy (true);
+ Window5.wprop.WDestroy ();
+ 
+ Window5.parts[Window5.PartSelected]->ComboChange( control->GetText ());
+
+ Window5.pmenu2_Properties_EvMenuActive (this);
+}
+
+void
 CPWindow5::timer1_EvOnTime(CControl * control)
 {
 

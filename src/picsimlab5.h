@@ -86,6 +86,7 @@ class CPWindow5:public CPWindow
   void WritePreferences(void);
   void ReadPreferences(char *name,char *value);
   void PropButtonRelease (CControl * control, uint button, uint x, uint y, uint state);
+  void PropComboChange(CCombo * control);
   void PropClose(int tag);
   void Set_i2c_bus(unsigned char pin, unsigned char value);
   unsigned char Get_i2c_bus(unsigned char pin);

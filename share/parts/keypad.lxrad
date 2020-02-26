@@ -2,10 +2,10 @@
   <Class type="String">CPWindow</Class>
   <Name type="String">window1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">626</X>
-  <Y type="int">302</Y>
+  <X type="int">354</X>
+  <Y type="int">184</Y>
   <Width type="uint">269</Width>
-  <Height type="uint">450</Height>
+  <Height type="uint">507</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
@@ -18,7 +18,6 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
@@ -34,8 +33,8 @@
   <Class type="String">CButton</Class>
   <Name type="String">button1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">44</X>
-  <Y type="int">365</Y>
+  <X type="int">49</X>
+  <Y type="int">411</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="String"></Hint>
@@ -50,7 +49,6 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
@@ -60,8 +58,8 @@
   <Class type="String">CButton</Class>
   <Name type="String">button2</Name>
   <Tag type="int">0</Tag>
-  <X type="int">139</X>
-  <Y type="int">365</Y>
+  <X type="int">129</X>
+  <Y type="int">411</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="String"></Hint>
@@ -76,7 +74,6 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
@@ -102,7 +99,6 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
@@ -131,7 +127,6 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
@@ -160,7 +155,6 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
@@ -189,7 +183,6 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
@@ -218,7 +211,6 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
@@ -245,7 +237,6 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
@@ -272,7 +263,6 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
@@ -299,7 +289,6 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
@@ -326,7 +315,6 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
@@ -355,7 +343,6 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
@@ -384,7 +371,6 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
@@ -413,7 +399,6 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
@@ -442,7 +427,6 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
@@ -469,7 +453,6 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
@@ -496,7 +479,6 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
@@ -523,7 +505,6 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
@@ -535,7 +516,7 @@
   <Name type="String">label9</Name>
   <Tag type="int">0</Tag>
   <X type="int">44</X>
-  <Y type="int">321</Y>
+  <Y type="int">324</Y>
   <Width type="uint">60</Width>
   <Height type="uint">20</Height>
   <Hint type="String"></Hint>
@@ -550,7 +531,6 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
@@ -577,13 +557,66 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
   <Items type="StringList">UP,DOWN,</Items>
   <Text type="String">UP</Text>
-  <ReadOnly type="bool">0</ReadOnly>
+  <ReadOnly type="bool">1</ReadOnly>
   <EvOnComboChange type="Event">FALSE</EvOnComboChange>
 </combo9>
+<label10>
+  <Class type="String">CLabel</Class>
+  <Name type="String">label10</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">44</X>
+  <Y type="int">366</Y>
+  <Width type="uint">60</Width>
+  <Height type="uint">20</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Text type="String">Type</Text>
+  <Align type="CAlign">1</Align>
+</label10>
+<combo10>
+  <Class type="String">CCombo</Class>
+  <Name type="String">combo10</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">122</X>
+  <Y type="int">361</Y>
+  <Width type="uint">120</Width>
+  <Height type="uint">26</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="String">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Items type="StringList">4x4,4x3,2x5,</Items>
+  <Text type="String">4x4</Text>
+  <ReadOnly type="bool">1</ReadOnly>
+  <EvOnComboChange type="Event">FALSE</EvOnComboChange>
+</combo10>
 </window1>
