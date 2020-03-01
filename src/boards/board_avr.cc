@@ -92,6 +92,7 @@ int
 board_avr::MInit(const char * processor, const char * fname, float freq)
 {
  int ret;
+ //avr_ioport_external_t p;
  
  avr = avr_make_mcu_by_name (processor);
 
@@ -119,7 +120,14 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
  avr_reset (avr);
 
  pins_reset ();
-
+ 
+ /*
+ //external pull-up for i2c
+ p.mask =  0x30;
+ p.value = 0x30;
+ avr_ioctl(avr, AVR_IOCTL_IOPORT_SET_EXTERNAL('C'), &p);
+*/
+     
  for (int p = 0; p < MGetPinCount (); p++)
   {
    char pname[20];

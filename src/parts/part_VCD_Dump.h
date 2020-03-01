@@ -30,6 +30,7 @@
 #include"part.h"
 
 //#define DUMP_DIR
+//#define DATA_DEBUG
 
 class cpart_VCD_Dump:public part
 {
@@ -55,6 +56,9 @@ class cpart_VCD_Dump:public part
       unsigned char old_value_pins[8]; 
 #ifdef DUMP_DIR
       unsigned char old_value_dir[8]; 
+#endif      
+#ifdef DATA_DEBUG
+      unsigned char old_data_debug[8];
 #endif      
       char   f_vcd_name[200];
       FILE * f_vcd;
