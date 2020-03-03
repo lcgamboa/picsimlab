@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,18 +23,35 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef PARTS_DEFS_H
-#define	PARTS_DEFS_H
+#include<time.h>
 
-#include"part.h" 
+typedef struct
+{
 
-#define MAX_PARTS 100
+unsigned char  addr;
+    
+unsigned char  data;
 
-#define NUM_PARTS 22
+unsigned char datab;
+unsigned char datas;
 
-extern const char parts_list[NUM_PARTS][30];
+unsigned char ctrl;
 
-part * create_part(String name, unsigned int x, unsigned int y);
+unsigned char sclo;
+unsigned char sdao;
 
-#endif	/* PARTS_DEFS_H */
+unsigned char ret;
 
+unsigned char bit;
+unsigned char byte;
+
+}io_PCF8574_t;
+
+
+void io_PCF8574_rst(io_PCF8574_t *ioe8);
+void io_PCF8574_init(io_PCF8574_t *ioe8);
+void io_PCF8574_end(io_PCF8574_t *ioe8);
+void io_PCF8574_set_addr(io_PCF8574_t *ioe8, unsigned char addr);
+
+
+unsigned char io_PCF8574_io(io_PCF8574_t *ioe8, unsigned char scl, unsigned char sda);

@@ -93,8 +93,8 @@ time_t rtc2_getUtime(rtc2_t *rtc)
  return mktime(&rtc->dtime);
 }
 
-int rtcc2=0;
-int alarm2;
+static int rtcc2=0;
+static int alarm2;
 
 void rtc2_update(rtc2_t *rtc)
 {
