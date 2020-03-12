@@ -96,6 +96,7 @@ cpart_IO_PCF8574::cpart_IO_PCF8574(unsigned x, unsigned y)
  input_pins[1] = 0;
  input_pins[2] = 0;
  input_pins[3] = 0;
+ input_pins[4] = 0;
 
  output_pins[0] = Window5.RegisterIOpin (lxT ("P0"));
  output_pins[1] = Window5.RegisterIOpin (lxT ("P1"));
@@ -165,7 +166,7 @@ cpart_IO_PCF8574::Draw(void)
        if (output_pins[pinv - 5] == 0)
         canvas.RotatedText ("NC", output[i].x1, output[i].y2 - 30, 90.0);
        else
-        canvas.RotatedText (itoa (output_pins[pinv - 5]) + lxT (" ") + Window5.GetPinName (output_pins[pinv - 5]), output[i].x1, output[i].y2 - 30, 90.0);
+        canvas.RotatedText (itoa (output_pins[pinv - 5]) /*+ lxT (" ") + Window5.GetPinName (output_pins[pinv - 5])*/, output[i].x1, output[i].y2 - 30, 90.0);
       }
      break;
     }
@@ -237,6 +238,28 @@ cpart_IO_PCF8574::ConfigurePropertiesWindow(CPWindow * wprop)
  String spin;
  WProp_IO_PCF8574 = wprop;
 
+ 
+  for (int i = 0; i < 16; i++)
+  {
+   String value="";
+   
+   int pinv = pin_values[i][0];
+   if (pinv > 13)
+    {
+     value=lxT("          ")+String(pin_values[i]);
+    }
+   else if (pinv >= 5)
+    {
+     if (output_pins[pinv - 5] == 0)
+          value="          NC";
+     else
+          value=lxT("          ")+itoa (output_pins[pinv - 5]) ; //+ lxT (" ") + Window5.GetPinName (output_pins[pinv - 5]);
+    }
+   
+   
+   ((CLabel*) WProp_IO_PCF8574->GetChildByName ("label" + itoa (i + 1)))->SetText (itoa (i + 1) + lxT ("-") + pin_names[i]+value);
+  }
+ 
  ((CCombo*) WProp_IO_PCF8574->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)
   ((CCombo*) WProp_IO_PCF8574->GetChildByName ("combo1"))->SetText ("0  NC");
@@ -298,6 +321,7 @@ cpart_IO_PCF8574::ReadPropertiesWindow(void)
  input_pins[1] = atoi (((CCombo*) WProp_IO_PCF8574->GetChildByName ("combo2"))->GetText ());
  input_pins[2] = atoi (((CCombo*) WProp_IO_PCF8574->GetChildByName ("combo3"))->GetText ());
  input_pins[3] = atoi (((CCombo*) WProp_IO_PCF8574->GetChildByName ("combo4"))->GetText ());
+ input_pins[4] = atoi (((CCombo*) WProp_IO_PCF8574->GetChildByName ("combo5"))->GetText ());
 }
 
 void

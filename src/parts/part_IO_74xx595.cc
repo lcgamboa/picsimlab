@@ -44,12 +44,12 @@ const char pin_names[16][10] = {
  "QG",
  "QH",
  "GND",
- "SQH",
+ "SOUT",
  "/RST",
  "SCLK",
  "LCLK",
  "/OE",
- "A",
+ "SER",
  "QA",
  "VCC"
 };
@@ -165,7 +165,7 @@ cpart_IO_74xx595::Draw(void)
        if (output_pins[pinv - 4] == 0)
         canvas.RotatedText ("NC", output[i].x1, output[i].y2 - 30, 90.0);
        else
-        canvas.RotatedText (itoa (output_pins[pinv - 4]) + lxT (" ") + Window5.GetPinName (output_pins[pinv - 4]), output[i].x1, output[i].y2 - 30, 90.0);
+        canvas.RotatedText (itoa (output_pins[pinv - 4]) /* + lxT (" ") + Window5.GetPinName (output_pins[pinv - 4])*/, output[i].x1, output[i].y2 - 30, 90.0);
       }
      break;
     }
@@ -236,6 +236,28 @@ cpart_IO_74xx595::ConfigurePropertiesWindow(CPWindow * wprop)
  String Items = Window5.GetPinsNames ();
  String spin;
  WProp_IO_74xx595 = wprop;
+
+ for (int i = 0; i < 16; i++)
+  {
+   String value="";
+   
+   int pinv = pin_values[i][0];
+   if (pinv > 12)
+    {
+     value=lxT("          ")+String(pin_values[i]);
+    }
+   else if (pinv >= 4)
+    {
+     if (output_pins[pinv - 4] == 0)
+          value="          NC";
+     else
+          value=lxT("          ")+itoa (output_pins[pinv - 4]);// + lxT (" ") + Window5.GetPinName (output_pins[pinv - 4]);
+    }
+   
+
+   ((CLabel*) WProp_IO_74xx595->GetChildByName ("label" + itoa (i + 1)))->SetText (itoa (i + 1) + lxT ("-") + pin_names[i]+value);
+  }
+
 
  ((CCombo*) WProp_IO_74xx595->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)
