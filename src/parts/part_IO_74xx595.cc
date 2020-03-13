@@ -114,6 +114,8 @@ cpart_IO_74xx595::cpart_IO_74xx595(unsigned x, unsigned y)
 
 cpart_IO_74xx595::~cpart_IO_74xx595(void)
 {
+ for (int i = 0; i < 9; i++)
+  Window5.UnregisterIOpin (output_pins[i]);
  delete Bitmap;
  canvas.Destroy ();
 }
@@ -216,7 +218,7 @@ cpart_IO_74xx595::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3]);
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3], output_pins[0]);
 
  return prefs;
 }
@@ -224,7 +226,27 @@ cpart_IO_74xx595::WritePreferences(void)
 void
 cpart_IO_74xx595::ReadPreferences(String value)
 {
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3]);
+ unsigned char outp;
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &outp);
+
+ if (output_pins[0] != outp)
+  {
+
+   for (int i = 0; i < 9; i++)
+    Window5.UnregisterIOpin (output_pins[i]);
+
+   output_pins[0] = Window5.RegisterIOpin (lxT ("QA"), outp++);
+   output_pins[1] = Window5.RegisterIOpin (lxT ("QB"), outp++);
+   output_pins[2] = Window5.RegisterIOpin (lxT ("QC"), outp++);
+   output_pins[3] = Window5.RegisterIOpin (lxT ("QD"), outp++);
+   output_pins[4] = Window5.RegisterIOpin (lxT ("QE"), outp++);
+   output_pins[5] = Window5.RegisterIOpin (lxT ("QF"), outp++);
+   output_pins[6] = Window5.RegisterIOpin (lxT ("QG"), outp++);
+   output_pins[7] = Window5.RegisterIOpin (lxT ("QH"), outp++);
+   output_pins[8] = Window5.RegisterIOpin (lxT ("SOUT"), outp++);
+  }
+
+
  Reset ();
 }
 
@@ -239,23 +261,23 @@ cpart_IO_74xx595::ConfigurePropertiesWindow(CPWindow * wprop)
 
  for (int i = 0; i < 16; i++)
   {
-   String value="";
-   
+   String value = "";
+
    int pinv = pin_values[i][0];
    if (pinv > 12)
     {
-     value=lxT("          ")+String(pin_values[i]);
+     value = lxT ("          ") + String (pin_values[i]);
     }
    else if (pinv >= 4)
     {
      if (output_pins[pinv - 4] == 0)
-          value="          NC";
+      value = "          NC";
      else
-          value=lxT("          ")+itoa (output_pins[pinv - 4]);// + lxT (" ") + Window5.GetPinName (output_pins[pinv - 4]);
+      value = lxT ("          ") + itoa (output_pins[pinv - 4]); // + lxT (" ") + Window5.GetPinName (output_pins[pinv - 4]);
     }
-   
 
-   ((CLabel*) WProp_IO_74xx595->GetChildByName ("label" + itoa (i + 1)))->SetText (itoa (i + 1) + lxT ("-") + pin_names[i]+value);
+
+   ((CLabel*) WProp_IO_74xx595->GetChildByName ("label" + itoa (i + 1)))->SetText (itoa (i + 1) + lxT ("-") + pin_names[i] + value);
   }
 
 
@@ -292,6 +314,7 @@ cpart_IO_74xx595::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_IO_74xx595->GetChildByName ("combo4"))->SetText ("0  NC");
  else
   {
+
    spin = Window5.GetPinName (input_pins[3]);
    ((CCombo*) WProp_IO_74xx595->GetChildByName ("combo4"))->SetText (itoa (input_pins[3]) + "  " + spin);
   }
@@ -307,6 +330,7 @@ cpart_IO_74xx595::ConfigurePropertiesWindow(CPWindow * wprop)
 void
 cpart_IO_74xx595::ReadPropertiesWindow(void)
 {
+
  input_pins[0] = atoi (((CCombo*) WProp_IO_74xx595->GetChildByName ("combo1"))->GetText ());
  input_pins[1] = atoi (((CCombo*) WProp_IO_74xx595->GetChildByName ("combo2"))->GetText ());
  input_pins[2] = atoi (((CCombo*) WProp_IO_74xx595->GetChildByName ("combo3"))->GetText ());
@@ -359,6 +383,7 @@ cpart_IO_74xx595::Process(void)
    if (ppins[output_pins[5]].value)output_pins_alm[5]++;
    if (ppins[output_pins[6]].value)output_pins_alm[6]++;
    if (ppins[output_pins[7]].value)output_pins_alm[7]++;
+
    if (ppins[output_pins[8]].value)output_pins_alm[8]++;
 
    mcount = -1;

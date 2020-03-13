@@ -179,8 +179,8 @@ CPWindow5::PropComboChange(CCombo * control)
  Window5.wprop.HideExclusive ();
  //Window5.wprop.SetCanDestroy (true);
  Window5.wprop.WDestroy ();
- 
- Window5.parts[Window5.PartSelected]->ComboChange( control->GetText ());
+
+ Window5.parts[Window5.PartSelected]->ComboChange (control->GetText ());
 
  Window5.pmenu2_Properties_EvMenuActive (this);
 }
@@ -238,8 +238,7 @@ CPWindow5::draw1_EvMouseMove(CControl * control, uint button, uint x, uint y, ui
       }
     }
   }
-
-};
+}
 
 void
 CPWindow5::draw1_EvKeyboardPress(CControl * control, const uint key, const uint hkey, const uint mask)
@@ -261,8 +260,7 @@ CPWindow5::draw1_EvKeyboardPress(CControl * control, const uint key, const uint 
     }
    break;
   }
-
-};
+}
 
 void
 CPWindow5::draw1_EvKeyboardRelease(CControl * control, const uint key, const uint hkey, const uint mask)
@@ -301,10 +299,8 @@ CPWindow5::LoadConfig(String fname)
  unsigned int x, y;
  CStringList prefs;
 
- IOPinsCount = 0;
  pboard = Window1.GetBoard ();
 
- GetPinsNames ();
 
  for (int i = 0; i < 256; i++)
   {
@@ -314,10 +310,9 @@ CPWindow5::LoadConfig(String fname)
     }
    else
     {
-     PinNames[i] = "NC";
+     PinNames[i] = "";
     }
   }
-
 
 
  PinsCount = pboard->MGetPinCount ();
@@ -573,10 +568,13 @@ CPWindow5::GetPinsNames(void)
      Items = Items + itoa (i) + "  " + spin + ",";
     }
   }
- for (int i = 0; i < IOPinsCount; i++)
+ for (int i = IOINIT; i < 256; i++)
   {
-   spin = PinNames[IOINIT + i];
-   Items = Items + itoa (i + IOINIT) + "  " + spin + ",";
+   spin = PinNames[i];
+   if (spin.Len () > 0)
+    {
+     Items = Items + itoa (i) + "  " + spin + ",";
+    }
   }
  return Items;
 }
@@ -639,11 +637,35 @@ CPWindow5::SetAPin(unsigned char pin, float value)
 }
 
 unsigned char
-CPWindow5::RegisterIOpin(String pname)
+CPWindow5::RegisterIOpin(String pname, unsigned char pin)
 {
- unsigned char pin = IOPinsCount + IOINIT;
- PinNames[pin] = pname;
- IOPinsCount++;
+ unsigned char ppin = IOINIT;
+ 
+ if(pin >= IOINIT)
+  {
+   ppin = pin;
+  }
+ 
+ while((PinNames[ppin].Len () > 0 )&&(ppin))
+  {
+   ppin++;
+  }
+ 
+ if(ppin)
+  {
+    PinNames[ppin] = pname;
+  }
 
- return pin;
+ return ppin;
+}
+
+unsigned char
+CPWindow5::UnregisterIOpin(unsigned char pin)
+{
+ if(PinNames[pin].Len () > 0)
+  {
+    PinNames[pin]="";
+    return 1;
+  }
+ return 0; 
 }

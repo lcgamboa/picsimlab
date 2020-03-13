@@ -97,13 +97,13 @@ class CPWindow5:public CPWindow
   void WritePin (unsigned char pin, unsigned char value);
   void WritePinA (unsigned char pin, unsigned char avalue);
   void SetAPin (unsigned char pin, float value);
-  unsigned char RegisterIOpin(String pname);
+  unsigned char RegisterIOpin(String pname, unsigned char pin=0);
+  unsigned char UnregisterIOpin(unsigned char pin);
   private:
     board *pboard;
     String PinNames[256];
     picpin  * Pins;
     unsigned char PinsCount;
-    unsigned char IOPinsCount;
     int partsc;  
     part *parts[MAX_PARTS];
     CItemMenu MParts[NUM_PARTS];

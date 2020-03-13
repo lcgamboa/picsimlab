@@ -115,6 +115,8 @@ cpart_IO_PCF8574::cpart_IO_PCF8574(unsigned x, unsigned y)
 
 cpart_IO_PCF8574::~cpart_IO_PCF8574(void)
 {
+ for (int i = 0; i < 9; i++)
+  Window5.UnregisterIOpin (output_pins[i]);
  delete Bitmap;
  canvas.Destroy ();
 }
@@ -217,7 +219,7 @@ cpart_IO_PCF8574::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3]);
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3], output_pins[0]);
 
  return prefs;
 }
@@ -225,7 +227,26 @@ cpart_IO_PCF8574::WritePreferences(void)
 void
 cpart_IO_PCF8574::ReadPreferences(String value)
 {
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3]);
+ unsigned char outp;
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &outp);
+
+ if (output_pins[0] != outp)
+  {
+
+   for (int i = 0; i < 9; i++)
+    Window5.UnregisterIOpin (output_pins[i]);
+
+   output_pins[0] = Window5.RegisterIOpin (lxT ("P0"),outp++);
+   output_pins[1] = Window5.RegisterIOpin (lxT ("P1"),outp++);
+   output_pins[2] = Window5.RegisterIOpin (lxT ("P2"),outp++);
+   output_pins[3] = Window5.RegisterIOpin (lxT ("P3"),outp++);
+   output_pins[4] = Window5.RegisterIOpin (lxT ("P4"),outp++);
+   output_pins[5] = Window5.RegisterIOpin (lxT ("P5"),outp++);
+   output_pins[6] = Window5.RegisterIOpin (lxT ("P6"),outp++);
+   output_pins[7] = Window5.RegisterIOpin (lxT ("P7"),outp++);
+   output_pins[8] = Window5.RegisterIOpin (lxT ("/INT"),outp++);
+  }
+
  Reset ();
 }
 
@@ -238,28 +259,28 @@ cpart_IO_PCF8574::ConfigurePropertiesWindow(CPWindow * wprop)
  String spin;
  WProp_IO_PCF8574 = wprop;
 
- 
-  for (int i = 0; i < 16; i++)
+
+ for (int i = 0; i < 16; i++)
   {
-   String value="";
-   
+   String value = "";
+
    int pinv = pin_values[i][0];
    if (pinv > 13)
     {
-     value=lxT("          ")+String(pin_values[i]);
+     value = lxT ("          ") + String (pin_values[i]);
     }
    else if (pinv >= 5)
     {
      if (output_pins[pinv - 5] == 0)
-          value="          NC";
+      value = "          NC";
      else
-          value=lxT("          ")+itoa (output_pins[pinv - 5]) ; //+ lxT (" ") + Window5.GetPinName (output_pins[pinv - 5]);
+      value = lxT ("          ") + itoa (output_pins[pinv - 5]); //+ lxT (" ") + Window5.GetPinName (output_pins[pinv - 5]);
     }
-   
-   
-   ((CLabel*) WProp_IO_PCF8574->GetChildByName ("label" + itoa (i + 1)))->SetText (itoa (i + 1) + lxT ("-") + pin_names[i]+value);
+
+
+   ((CLabel*) WProp_IO_PCF8574->GetChildByName ("label" + itoa (i + 1)))->SetText (itoa (i + 1) + lxT ("-") + pin_names[i] + value);
   }
- 
+
  ((CCombo*) WProp_IO_PCF8574->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)
   ((CCombo*) WProp_IO_PCF8574->GetChildByName ("combo1"))->SetText ("0  NC");
@@ -344,7 +365,7 @@ cpart_IO_PCF8574::Process(void)
  if (input_pins[1] > 0)
   Window5.SetPin (input_pins[1], Window5.Get_i2c_bus (input_pins[1] - 1));
 
- 
+
  if (_ret != ioe8.data)
   {
    Window5.WritePin (output_pins[0], (ioe8.data & 0x01) != 0);
@@ -358,7 +379,7 @@ cpart_IO_PCF8574::Process(void)
    //Window5.WritePin (output_pins[8], (ioe8.data & 0x100) != 0);
   }
  _ret = ioe8.data;
- 
+
 
  mcount++;
  if (mcount >= JUMPSTEPS_)
