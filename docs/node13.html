@@ -1,73 +1,236 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<!--Converted with LaTeX2HTML 2018.2 (Released May 16, 2018) -->
-<HTML>
+<!--Converted with LaTeX2HTML 2019.2 (Released June 5, 2019) -->
+<HTML lang="EN">
 <HEAD>
-<TITLE>Introduction</TITLE>
-<META NAME="description" CONTENT="Introduction">
+<TITLE>Interface</TITLE>
+<META NAME="description" CONTENT="Interface">
 <META NAME="keywords" CONTENT="picsimlab">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
-<META NAME="Generator" CONTENT="LaTeX2HTML v2018.2">
-<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2019.2">
 
 <LINK REL="STYLESHEET" HREF="picsimlab.css">
 
 <LINK REL="next" HREF="node14.html">
 <LINK REL="previous" HREF="node12.html">
-<LINK REL="up" HREF="node12.html">
 <LINK REL="next" HREF="node14.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html307"
-  HREF="node14.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html305"
-  HREF="node12.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html299"
-  HREF="node12.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<A
+ HREF="node14.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="node11.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="node12.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html308"
-  HREF="node14.html">Interface</A>
-<B> Up:</B> <A NAME="tex2html306"
-  HREF="node12.html">English Manual</A>
-<B> Previous:</B> <A NAME="tex2html300"
-  HREF="node12.html">English Manual</A>
+<B> Next:</B> <A
+ HREF="node14.html">Placas</A>
+<B> Up:</B> <A
+ HREF="node11.html">Manual em Português</A>
+<B> Previous:</B> <A
+ HREF="node12.html">Introdução</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A ID="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
-<H1><A NAME="SECTION02100000000000000000">
-Introduction</A>
+<UL CLASS="ChildLinks">
+<LI><A ID="tex2html211"
+  HREF="node13.html#SECTION02210000000000000000">Janela Principal</A>
+<LI><A ID="tex2html212"
+  HREF="node13.html#SECTION02220000000000000000">Comandos</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A ID="SECTION02200000000000000000">
+Interface</A>
 </H1>
-PICSimLab means  PIC Simulator Laboratory
 
 <P>
-PICSimLab is a realtime emulator of development boards with integrated MPLABX/avr-gdb debugger. PICSimLab supports <A NAME="tex2html40"
-  HREF="https://github.com/lcgamboa/picsim">picsim</A>
-microcontrollers (PIC16F84, PIC16F628, PIC16F648, PIC16F777, PIC16F877A, PIC18F452, PIC18F4520, PIC18F4550 and PIC18F4620) and <A NAME="tex2html41"
-  HREF="https://github.com/buserror/simavr">simavr</A>
-microcontroller (ATMEGA328).
-PICSimLab have integration with  MPLABX/Arduino IDE for programming the boards microcontrollers.
 
-<DIV ALIGN="CENTER">
+<H1><A ID="SECTION02210000000000000000">
+Janela Principal</A>
+</H1>
 
-<IMG
-  WIDTH="1205" HEIGHT="736" ALIGN="BOTTOM" BORDER="0"
- SRC="./screenshot.png"
- ALT="Image screenshot"> 
+<P>
+A janela principal é composta de um menu, uma barra de status, um combobox de seleção de frequência, um botão liga/desliga para acionar a depuração (debug), alguns controles específicos da placa e parte de interface da placa em si.
+
+<P>
+No título da janela é mostrado o nome do simulador PICSimLab, seguido da placa e do microcontrolador em uso.
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./int.png"
+ ALT="Image int"> 
 
 </DIV> 
 
 <P>
-<BR><HR>
+O combobox de seleção de frequência altera diretamente a velocidade de trabalho do microcontrolador, quando o label &ldquo;Clock (MHz)&rdquo; fica em vermelho indica que o computador não está sendo capaz de executar o programa em tempo real para o clock selecionado. Neste caso a simulação pode apresentar alguma diferença do esperado e a carga da CPU ser aumentada.
+
+<P>
+O botão liga/desliga para acionar a depuração serve para habilitar o suporte à depuração, com o suporte ativo há uma carga maior de simulação.
+
+<P>
+Os menus e suas funções são listados abaixo:
+
+<UL>
+<LI>File
+
+<UL>
+<LI>Load Hex - Carrega arquivo .hex
+</LI>
+<LI>Reload Last - Recarrega último arquivo .hex utilizado
+</LI>
+<LI>Configure - Abre a janela de configuração
+</LI>
+<LI>Save Workspace - Salva todas as configurações atuais do workspace em um arquivo .pzw 
+</LI>
+<LI>Load Workspace - Carrega as configurações salvas de uma arquivo .pzw
+</LI>
+<LI>Exit
+</LI>
+</UL>
+</LI>
+<LI>Board
+
+<UL>
+<LI>0 Breadboard - Escolhe a placa 0
+</LI>
+<LI>1 McLab1 - Escolhe a placa 1
+</LI>
+<LI>2 K16F - Escolhe a placa 2
+</LI>
+<LI>3 McLab2 - Escolhe a placa 3
+</LI>
+<LI>4 PICGenios - Escolhe a placa 4
+</LI>
+<LI>5 Arduino - Escolhe a placa 5
+</LI>
+</UL>
+</LI>
+<LI>Microcontroller
+
+<UL>
+<LI>xxxxx - Seleciona o microcontrolador a ser utilizado (depende da placa selecionada)
+</LI>
+</UL>
+</LI>
+<LI>Modules
+
+<UL>
+<LI>Oscilloscope - Abre a janela do osciloscópio
+</LI>
+<LI>Spare parts - Abre a janela de peças avulsas
+</LI>
+</UL>
+</LI>
+<LI>Tools
+
+<UL>
+<LI>Serial Terminal - Abre o terminal serial <A ID="tex2html41"
+  HREF="https://github.com/neundorf/CuteCom">Cutecom</A>
+</LI>
+<LI>Serial Remote Tank - Abre o  <A ID="tex2html42"
+  HREF="srtank/srtank.html">simulador de tank remoto</A>
+</LI>
+<LI>Esp8266 Modem Simulator -  Abre o  <A ID="tex2html43"
+  HREF="espmsim/espmsim.html">simulador de modem Esp8266</A>
+</LI>
+</UL>
+</LI>
+<LI>Help 
+
+<UL>
+<LI>Contents - Abre a janela de Ajuda
+</LI>
+<LI>Examples - Carrega exemplos
+</LI>
+<LI>About - Mostra mensagem de versão e autor
+</LI>
+</UL>
+</LI>
+</UL>
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./int1.png"
+ ALT="Image int1"> 
+
+</DIV> 
+
+<P>
+Na primeira parte da barra de status é mostrado o estado da simulação, na parte do meio o estado do suporte a depuração e na última parte o nome da porta serial utilizada, sua velocidade padrão e o erro em relação a velocidade real configurada no microcontrolador. 
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./int2.png"
+ ALT="Image int2"> 
+
+</DIV> 
+
+<P>
+
+<H1><A ID="SECTION02220000000000000000">
+Comandos</A>
+</H1>
+
+<P>
+Sobre a área de interface da placa é possível interagir de algumas formas:
+
+<P>
+
+<UL>
+<LI>Clique no conector ICSP para carregar um arquivo .hex.
+</LI>
+<LI>Clique no botão PWR para ligar/desligar o emulador.
+</LI>
+<LI>Os botões podem ser acionados pelo mouse ou pelas teclas 1, 2, 3 ...
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A
+ HREF="node14.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="node11.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="node12.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="node14.html">Placas</A>
+<B> Up:</B> <A
+ HREF="node11.html">Manual em Português</A>
+<B> Previous:</B> <A
+ HREF="node12.html">Introdução</A></DIV>
+<!--End of Navigation Panel-->
 
 </BODY>
 </HTML>

@@ -1,65 +1,64 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<!--Converted with LaTeX2HTML 2018.2 (Released May 16, 2018) -->
-<HTML>
+<!--Converted with LaTeX2HTML 2019.2 (Released June 5, 2019) -->
+<HTML lang="EN">
 <HEAD>
-<TITLE>Arduino IDE Integration (ATMEGA)</TITLE>
-<META NAME="description" CONTENT="Arduino IDE Integration (ATMEGA)">
+<TITLE>Osciloscópio</TITLE>
+<META NAME="description" CONTENT="Osciloscópio">
 <META NAME="keywords" CONTENT="picsimlab">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
-<META NAME="Generator" CONTENT="LaTeX2HTML v2018.2">
-<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2019.2">
 
 <LINK REL="STYLESHEET" HREF="picsimlab.css">
 
 <LINK REL="next" HREF="node19.html">
 <LINK REL="previous" HREF="node17.html">
-<LINK REL="up" HREF="node12.html">
 <LINK REL="next" HREF="node19.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html366"
-  HREF="node19.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html364"
-  HREF="node12.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html358"
-  HREF="node17.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<A
+ HREF="node19.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="node11.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="node17.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html367"
-  HREF="node19.html">avr-gdb Debug (ATMEGA)</A>
-<B> Up:</B> <A NAME="tex2html365"
-  HREF="node12.html">English Manual</A>
-<B> Previous:</B> <A NAME="tex2html359"
-  HREF="node17.html">MPLABX Integrated Debug (PIC)</A>
+<B> Next:</B> <A
+ HREF="node19.html">Partes Avulsas</A>
+<B> Up:</B> <A
+ HREF="node11.html">Manual em Português</A>
+<B> Previous:</B> <A
+ HREF="node17.html">Integração com a IDE</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION02600000000000000000">
-Arduino IDE Integration (ATMEGA)</A>
+<H1><A ID="SECTION02700000000000000000">
+Osciloscópio</A>
 </H1>
 
 <P>
-For integrated use with the Arduino IDE, simply configure the serial port as explained in the section <A HREF="node16.html#seriali">4</A> and load the Arduino bootloader. The bootloader can be loaded from the &ldquo;Help-&gt;Examples&rdquo; menu by choosing the file ATmegaBOOT_168_atmega328.pzw.
+O PICSimLab possui um osciloscópio básico de dois canais que pode ser utilizado para ver o sinal em qualquer pino do microcontrolador. O osciloscópio pode ser acessado pelo menu &ldquo;Modules-&gt;Oscilloscope&rdquo;.
 
 <P>
-In Windows, considering com0com making a NULL-MODEM connection between COM1 and COM2, simply connect the PICSimLab on the COM1 port and the Arduino IDE on the COM2 port or vice versa.
 
-<P>
-On Linux the operation is the same, but using for example the ports /dev/tnt2 and /dev/tnt3.
+<DIV class="CENTER">
 
-<P>
-In Linux for the virtual ports to be detected in Arduino it is necessary to replace the library lib/liblistSerialsj.so of the Arduino with a version which support the detection of tty0tty ports, that can be downloaded in the link <A NAME="tex2html73"
-  HREF="https://github.com/lcgamboa/listSerialPortsC/releases">listSerialC with tty0tty support</A>.
+<IMG STYLE=""
+ SRC="./osc.png"
+ ALT="Image osc"> 
+
+</DIV> 
 
 <P>
 <BR><HR>

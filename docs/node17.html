@@ -1,66 +1,64 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<!--Converted with LaTeX2HTML 2018.2 (Released May 16, 2018) -->
-<HTML>
+<!--Converted with LaTeX2HTML 2019.2 (Released June 5, 2019) -->
+<HTML lang="EN">
 <HEAD>
-<TITLE>MPLABX Integrated Debug (PIC)</TITLE>
-<META NAME="description" CONTENT="MPLABX Integrated Debug (PIC)">
+<TITLE>Integração com a IDE do Arduino (ATMEGA)</TITLE>
+<META NAME="description" CONTENT="Integração com a IDE do Arduino (ATMEGA)">
 <META NAME="keywords" CONTENT="picsimlab">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
-<META NAME="Generator" CONTENT="LaTeX2HTML v2018.2">
-<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2019.2">
 
 <LINK REL="STYLESHEET" HREF="picsimlab.css">
 
 <LINK REL="next" HREF="node18.html">
 <LINK REL="previous" HREF="node16.html">
-<LINK REL="up" HREF="node12.html">
 <LINK REL="next" HREF="node18.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html356"
-  HREF="node18.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html354"
-  HREF="node12.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html348"
-  HREF="node16.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<A
+ HREF="node18.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="node11.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="node16.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html357"
-  HREF="node18.html">Arduino IDE Integration (ATMEGA)</A>
-<B> Up:</B> <A NAME="tex2html355"
-  HREF="node12.html">English Manual</A>
-<B> Previous:</B> <A NAME="tex2html349"
-  HREF="node16.html">Serial Communication</A>
+<B> Next:</B> <A
+ HREF="node18.html">Osciloscópio</A>
+<B> Up:</B> <A
+ HREF="node11.html">Manual em Português</A>
+<B> Previous:</B> <A
+ HREF="node16.html">Depuração Integrada com o</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION02500000000000000000">
-MPLABX Integrated Debug (PIC)</A>
+<H1><A ID="SECTION02600000000000000000">
+Integração com a IDE do Arduino (ATMEGA)</A>
 </H1>
 
 <P>
-To use the <A NAME="tex2html70"
-  HREF="http://www.microchip.com/mplabx">MPLABX</A>
-IDE for debug and program the PicsimLab, install the plugin <A NAME="tex2html71"
-  HREF="https://github.com/lcgamboa/picsimlab_md/tree/master/plugin_compiled">com-picsim-picsimlab.nbm</A>
-in MPLABX.
+Para utilização integrada com a IDE do Arduino, basta fazer a configuração da porta serial como explicado na seção <A HREF="node15.html#serialp">4</A> e carregar o bootloader do Arduino. O bootloader pode ser carregado pelo menu &ldquo;Help-&gt;Examples&rdquo; escolhendo o arquivo ATmegaBOOT_168_atmega328.pzw.
 
 <P>
-The plugin connect to Picsimlab through a TCP socket using port 1234, and you have to allow the access in the firewall.
+No windows, considerando o com0com fazendo uma conexão NULL-MODEM entre a porta COM1 e COM2, basta conectar o PICSimLab na porta COM1 e a IDE Arduino na porta COM2 ou vice-versa.
 
 <P>
-<A NAME="tex2html72"
-  HREF="pdf/How to use MPLABX to program and debug PICsimLab.pdf" target="_blank">Tutorial: how to use MPLABX to program and debug PICsimLab</A>.
+No Linux o funcionamento é o mesmo, mas utilizando por exemplo as portas /dev/tnt2 e /dev/tnt3.
+
+<P>
+No Linux para as portas virtuais serem detectadas no Arduino é necessário substituir a biblioteca lib/liblistSerialsj.so do Arduino por uma com suporte a detecção das portas do tty0tty, que pode se baixada no link <A ID="tex2html73"
+  HREF="https://github.com/lcgamboa/listSerialPortsC/releases">listSerialC com suporte ao tty0tty</A>.  
 
 <P>
 <BR><HR>

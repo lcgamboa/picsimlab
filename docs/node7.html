@@ -1,65 +1,64 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<!--Converted with LaTeX2HTML 2018.2 (Released May 16, 2018) -->
-<HTML>
+<!--Converted with LaTeX2HTML 2019.2 (Released June 5, 2019) -->
+<HTML lang="EN">
 <HEAD>
-<TITLE>Integração com a IDE do Arduino (ATMEGA)</TITLE>
-<META NAME="description" CONTENT="Integração com a IDE do Arduino (ATMEGA)">
+<TITLE>Arduino IDE Integration (ATMEGA)</TITLE>
+<META NAME="description" CONTENT="Arduino IDE Integration (ATMEGA)">
 <META NAME="keywords" CONTENT="picsimlab">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
-<META NAME="Generator" CONTENT="LaTeX2HTML v2018.2">
-<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2019.2">
 
 <LINK REL="STYLESHEET" HREF="picsimlab.css">
 
 <LINK REL="next" HREF="node8.html">
 <LINK REL="previous" HREF="node6.html">
-<LINK REL="up" HREF="node1.html">
 <LINK REL="next" HREF="node8.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html208"
-  HREF="node8.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html206"
-  HREF="node1.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html200"
-  HREF="node6.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<A
+ HREF="node8.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="node6.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html209"
-  HREF="node8.html">Depuração com o avr-gdb</A>
-<B> Up:</B> <A NAME="tex2html207"
-  HREF="node1.html">Manual em Português</A>
-<B> Previous:</B> <A NAME="tex2html201"
-  HREF="node6.html">Depuração Integrada com o</A>
+<B> Next:</B> <A
+ HREF="node8.html">Oscilloscope</A>
+<B> Up:</B> <A
+ HREF="node1.html">English Manual</A>
+<B> Previous:</B> <A
+ HREF="node6.html">MPLABX Integrated Debug (PIC</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION01600000000000000000">
-Integração com a IDE do Arduino (ATMEGA)</A>
+<H1><A ID="SECTION01600000000000000000">
+Arduino IDE Integration (ATMEGA)</A>
 </H1>
 
 <P>
-Para utilização integrada com a IDE do Arduino, basta fazer a configuração da porta serial como explicado na seção <A HREF="node5.html#serialp">4</A> e carregar o bootloader do Arduino. O bootloader pode ser carregado pelo menu &ldquo;Help-&gt;Examples&rdquo; escolhendo o arquivo ATmegaBOOT_168_atmega328.pzw.
+For integrated use with the Arduino IDE, simply configure the serial port as explained in the section <A HREF="node5.html#seriali">4</A> and load the Arduino bootloader. The bootloader can be loaded from the &ldquo;Help-&gt;Examples&rdquo; menu by choosing the file ATmegaBOOT_168_atmega328.pzw.
 
 <P>
-No windows, considerando o com0com fazendo uma conexão NULL-MODEM entre a porta COM1 e COM2, basta conectar o PICSimLab na porta COM1 e a IDE Arduino na porta COM2 ou vice-versa.
+In Windows, considering com0com making a NULL-MODEM connection between COM1 and COM2, simply connect the PICSimLab on the COM1 port and the Arduino IDE on the COM2 port or vice versa.
 
 <P>
-No Linux o funcionamento é o mesmo, mas utilizando por exemplo as portas /dev/tnt2 e /dev/tnt3.
+On Linux the operation is the same, but using for example the ports /dev/tnt2 and /dev/tnt3.
 
 <P>
-No Linux para as portas virtuais serem detectadas no Arduino é necessário substituir a biblioteca lib/liblistSerialsj.so do Arduino por uma com suporte a detecção das portas do tty0tty, que pode se baixada no link <A NAME="tex2html37"
-  HREF="https://github.com/lcgamboa/listSerialPortsC/releases">listSerialC com suporte ao tty0tty</A>.  
+In Linux for the virtual ports to be detected in Arduino it is necessary to replace the library lib/liblistSerialsj.so of the Arduino with a version which support the detection of tty0tty ports, that can be downloaded in the link <A ID="tex2html36"
+  HREF="https://github.com/lcgamboa/listSerialPortsC/releases">listSerialC with tty0tty support</A>.
 
 <P>
 <BR><HR>

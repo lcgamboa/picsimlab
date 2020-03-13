@@ -1,232 +1,67 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<!--Converted with LaTeX2HTML 2018.2 (Released May 16, 2018) -->
-<HTML>
+<!--Converted with LaTeX2HTML 2019.2 (Released June 5, 2019) -->
+<HTML lang="EN">
 <HEAD>
-<TITLE>Serial Communication </TITLE>
-<META NAME="description" CONTENT="Serial Communication ">
+<TITLE>Depuração Integrada com o MPLABX (PIC e ATMEGA)</TITLE>
+<META NAME="description" CONTENT="Depuração Integrada com o MPLABX (PIC e ATMEGA)">
 <META NAME="keywords" CONTENT="picsimlab">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
-<META NAME="Generator" CONTENT="LaTeX2HTML v2018.2">
-<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2019.2">
 
 <LINK REL="STYLESHEET" HREF="picsimlab.css">
 
 <LINK REL="next" HREF="node17.html">
 <LINK REL="previous" HREF="node15.html">
-<LINK REL="up" HREF="node12.html">
 <LINK REL="next" HREF="node17.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html344"
-  HREF="node17.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html342"
-  HREF="node12.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html336"
-  HREF="node15.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<A
+ HREF="node17.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="node11.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="node15.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html345"
-  HREF="node17.html">MPLABX Integrated Debug (PIC)</A>
-<B> Up:</B> <A NAME="tex2html343"
-  HREF="node12.html">English Manual</A>
-<B> Previous:</B> <A NAME="tex2html337"
-  HREF="node15.html">Boards</A>
+<B> Next:</B> <A
+ HREF="node17.html">Integração com a IDE</A>
+<B> Up:</B> <A
+ HREF="node11.html">Manual em Português</A>
+<B> Previous:</B> <A
+ HREF="node15.html">Comunicação Serial</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html346"
-  HREF="node16.html#SECTION02410000000000000000">Com0com Installation and Configuration(Windows)</A>
-<LI><A NAME="tex2html347"
-  HREF="node16.html#SECTION02420000000000000000">tty0tty Installation and Configuration (Linux)</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION02400000000000000000"></A><A NAME="seriali"></A>
-<BR>
-Serial Communication 
+<H1><A ID="SECTION02500000000000000000">
+Depuração Integrada com o MPLABX (PIC e ATMEGA)</A>
 </H1>
 
 <P>
-To use the simulator serial port, install a NULL-MODEM emulator:
-
-<UL>
-<LI>Windows: com0com <TT><A NAME="tex2html66"
-  HREF="http://sourceforge.net/projects/com0com/">http://sourceforge.net/projects/com0com/</A></TT>
-</LI>
-<LI>Linux: tty0tty  <TT><A NAME="tex2html67"
-  HREF="https://github.com/lcgamboa/tty0tty">https://github.com/lcgamboa/tty0tty</A></TT>
-</LI>
-</UL>
+Para utilizar o IDE <A ID="tex2html70"
+  HREF="http://www.microchip.com/mplabx">MPLABX</A>
+para depurar e programar o PicsimLab, basta instalar o plugin <A ID="tex2html71"
+  HREF="https://github.com/lcgamboa/picsimlab_md/tree/master/plugin_compiled">com-picsim-picsimlab.nbm</A>
+no MPLABX. 
 
 <P>
-For communication the PICSimLab should be connected in one port of the NULL-MODEM emulator and the other application connected in the other port.
-Configuration examples linking PICSimLab to <A NAME="tex2html68"
-  HREF="https://github.com/neundorf/CuteCom">Cutecom</A>
-for serial communication:
- <BR>
-<BR>
+O plugin se conecta ao Picsimlab através de um socket TCP na porta 1234, permita o acesso no firewall.
 
 <P>
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="CENTER">OS</TD>
-<TD ALIGN="CENTER">PicsimLab port</TD>
-<TD ALIGN="CENTER">Cutecom port</TD>
-<TD ALIGN="CENTER">NULL-Modem prog.</TD>
-<TD ALIGN="CENTER">Connection</TD>
-</TR>
-<TR><TD ALIGN="CENTER">Windows</TD>
-<TD ALIGN="CENTER">com1</TD>
-<TD ALIGN="CENTER">com2</TD>
-<TD ALIGN="CENTER">com0com</TD>
-<TD ALIGN="CENTER">com1&lt;=&gt;com2</TD>
-</TR>
-<TR><TD ALIGN="CENTER">Linux</TD>
-<TD ALIGN="CENTER">/dev/tnt2</TD>
-<TD ALIGN="CENTER">/dev/tnt3</TD>
-<TD ALIGN="CENTER">tty0tty</TD>
-<TD ALIGN="CENTER">/dev/tnt2&lt;=&gt;/dev/tnt3</TD>
-</TR>
-</TABLE>
-
+<A ID="tex2html72"
+  HREF="pdf/How to use MPLABX to program and debug PICsimLab.pdf" target="_blank">Tutorial: Como usar o MPLABX para programar e depurar o PICsimLab (Inglês)</A>
 <P>
-
-<H1><A NAME="SECTION02410000000000000000">
-Com0com Installation and Configuration(Windows)</A>
-</H1>
-
-<P>
-Download the signed version of <A NAME="tex2html69"
-  HREF="https://sourceforge.net/projects/com0com/files/com0com/3.0.0.0/com0com-3.0.0.0-i386-and-x64-signed.zip/download">com0com</A>.
-
-<P>
-Unzip the downloaded .zip file and run the specific installer of your operating system, x86 for windows 32-bit or x64 for windows 64-bit.
-
-<P>
-Configure the &ldquo;choose components&rdquo; window as the figure below:
- 
-<DIV ALIGN="CENTER">
-
-<IMG
-  WIDTH="499" HEIGHT="388" ALIGN="BOTTOM" BORDER="0"
- SRC="./com0com1.png"
- ALT="Image com0com1"> 
-
-</DIV> 
-
-<P>
-In the last configuration window, check the &ldquo;Launch setup&rdquo; option:
-
-<DIV ALIGN="CENTER">
-
-<IMG
-  WIDTH="499" HEIGHT="388" ALIGN="BOTTOM" BORDER="0"
- SRC="./com0com2.png"
- ALT="Image com0com2"> 
-
-</DIV> 
-
-<P>
-In the setup window, change the port names to COM1, COM2, COM3 ....
-Just check the &ldquo;enable buffer overrun&rdquo; option on the two ports, click in the &ldquo;Apply&rdquo; button and close the setup.
-In the configuration shown in the figure below, the COM1 and COM2 ports form a NULL-MODEM connection, where one port must be used by the PICSimLab and another by the application with serial communication.
-
-<DIV ALIGN="CENTER">
-
-<IMG
-  WIDTH="447" HEIGHT="393" ALIGN="BOTTOM" BORDER="0"
- SRC="./com0com3.png"
- ALT="Image com0com3"> 
-
-</DIV> 
-
-<P>
-
-<H1><A NAME="SECTION02420000000000000000">
-tty0tty Installation and Configuration (Linux)</A>
-</H1>
-
-<P>
-Download the  href https://github.com/lcgamboa/tty0tty/archive/master.zip tty0tyy.
-Unzip the downloaded folder.
-
-<P>
-Open a terminal and enter in the tty0tty/module/ folder and enter the following commands:
-<PRE>
- sudo apt-get update
- sudo apt-get -y upgrade
- sudo apt-get -y install gcc make linux-headers-`uname -r` 
- make
- sudo make install
-</PRE>
-
-<P>
-The user must be in the <SPAN  CLASS="textbf">dialout</SPAN> group to access the ports. 
-To add your user to <SPAN  CLASS="textbf">dialout</SPAN> group use the command:
-<PRE>
-sudo usermod -a -G dialout your_user_name
-</PRE>
-after this is necessary logout and login to group permissions take effect.
-
-<P>
-Once installed, the module creates 8 interconnected ports as follows:
-<PRE>
-  /dev/tnt0  &lt;=&gt;  /dev/tnt1 
-  /dev/tnt2  &lt;=&gt;  /dev/tnt3 
-  /dev/tnt4  &lt;=&gt;  /dev/tnt5 
-  /dev/tnt6  &lt;=&gt;  /dev/tnt7
-</PRE>
-
-<P>
-the connection between each pair is of the form:
-<PRE>  
-  TX   -&gt;  RX
-  RX   &lt;-  TX 	
-  RTS  -&gt;  CTS
-  CTS  &lt;-  RTS
-  DSR  &lt;-  DTR
-  CD   &lt;-  DTR
-  DTR  -&gt;  DSR
-  DTR  -&gt;  CD
-</PRE>
-
-<P>
-Any pair of ports form a NULL-MODEM connection, where one port must be used by the PICSimLab and another by the application with serial communication.
-
-<P>
-
-<DIV CLASS="navigation"><HR>
-<!--Navigation Panel-->
-<A NAME="tex2html344"
-  HREF="node17.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html342"
-  HREF="node12.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html336"
-  HREF="node15.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
-<BR>
-<B> Next:</B> <A NAME="tex2html345"
-  HREF="node17.html">MPLABX Integrated Debug (PIC)</A>
-<B> Up:</B> <A NAME="tex2html343"
-  HREF="node12.html">English Manual</A>
-<B> Previous:</B> <A NAME="tex2html337"
-  HREF="node15.html">Boards</A></DIV>
-<!--End of Navigation Panel-->
+<BR><HR>
 
 </BODY>
 </HTML>
