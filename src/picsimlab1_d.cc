@@ -207,6 +207,16 @@ CPWindow1::CPWindow1(void)
   menu1_File_ReloadLast.SetSubMenu(NULL);
   menu1_File_ReloadLast.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_File_ReloadLast_EvMenuActive;
   menu1_File.CreateChild(&menu1_File_ReloadLast);
+  //menu1_File_SaveHex
+  menu1_File_SaveHex.SetFOwner(this);
+  menu1_File_SaveHex.SetClass(lxT("CItemMenu"));
+  menu1_File_SaveHex.SetName(lxT("menu1_File_SaveHex"));
+  menu1_File_SaveHex.SetTag(0);
+  menu1_File_SaveHex.SetText(lxT("Save Hex"));
+  menu1_File_SaveHex.SetEnable(1);
+  menu1_File_SaveHex.SetSubMenu(NULL);
+  menu1_File_SaveHex.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_File_SaveHex_EvMenuActive;
+  menu1_File.CreateChild(&menu1_File_SaveHex);
   //menu1_File_Configure
   menu1_File_Configure.SetFOwner(this);
   menu1_File_Configure.SetClass(lxT("CItemMenu"));

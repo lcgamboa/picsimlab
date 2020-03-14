@@ -45,24 +45,26 @@ char SERIALDEVICE[100];
 
 #ifdef _USE_PICSTARTP_
 //picstart plus
-int prog_init (void);
-int prog_loop (_pic * pic);
-int prog_end (void);
+int prog_init(void);
+int prog_loop(_pic * pic);
+int prog_end(void);
 #endif
 
 #ifdef _WIN_
 #define msleep(x) Sleep(x)
-void usleep(unsigned int usec)
+
+void
+usleep(unsigned int usec)
 {
-	HANDLE timer;
-	LARGE_INTEGER ft;
+ HANDLE timer;
+ LARGE_INTEGER ft;
 
-	ft.QuadPart = -(10 * (__int64)usec);
+ ft.QuadPart = -(10 * (__int64)usec);
 
-	timer = CreateWaitableTimer(NULL, TRUE, NULL);
-	SetWaitableTimer(timer, &ft, 0, NULL, NULL, 0);
-	WaitForSingleObject(timer, INFINITE);
-	CloseHandle(timer);
+ timer = CreateWaitableTimer (NULL, TRUE, NULL);
+ SetWaitableTimer (timer, &ft, 0, NULL, NULL, 0);
+ WaitForSingleObject (timer, INFINITE);
+ CloseHandle (timer);
 }
 #else
 #define msleep(x) usleep(x*1000)
@@ -73,7 +75,7 @@ void usleep(unsigned int usec)
 int crt;
 
 void
-CPWindow1::timer1_EvOnTime (CControl * control)
+CPWindow1::timer1_EvOnTime(CControl * control)
 {
  status.st[0] |= ST_T1;
 
@@ -110,7 +112,7 @@ CPWindow1::timer1_EvOnTime (CControl * control)
 };
 
 void
-CPWindow1::thread1_EvThreadRun (CControl*)
+CPWindow1::thread1_EvThreadRun(CControl*)
 {
 
  do
@@ -134,7 +136,7 @@ CPWindow1::thread1_EvThreadRun (CControl*)
 }
 
 void
-CPWindow1::timer2_EvOnTime (CControl * control)
+CPWindow1::timer2_EvOnTime(CControl * control)
 {
  status.st[0] |= ST_T2;
  if (pboard != NULL)
@@ -164,7 +166,7 @@ CPWindow1::timer2_EvOnTime (CControl * control)
 };
 
 void
-CPWindow1::draw1_EvMouseButtonPress (CControl * control, uint button, uint x, uint y, uint state)
+CPWindow1::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uint y, uint state)
 {
 
  x = x / scale;
@@ -175,7 +177,7 @@ CPWindow1::draw1_EvMouseButtonPress (CControl * control, uint button, uint x, ui
 };
 
 void
-CPWindow1::draw1_EvMouseButtonRelease (CControl * control, uint button, uint x, uint y, uint state)
+CPWindow1::draw1_EvMouseButtonRelease(CControl * control, uint button, uint x, uint y, uint state)
 {
 
  x = x / scale;
@@ -186,19 +188,19 @@ CPWindow1::draw1_EvMouseButtonRelease (CControl * control, uint button, uint x, 
 };
 
 void
-CPWindow1::draw1_EvKeyboardPress (CControl * control, const uint key, const uint hkey, const uint mask)
+CPWindow1::draw1_EvKeyboardPress(CControl * control, const uint key, const uint hkey, const uint mask)
 {
  pboard->EvKeyPress (key, mask);
 };
 
 void
-CPWindow1::draw1_EvKeyboardRelease (CControl * control, const uint key, const uint hkey, const uint mask)
+CPWindow1::draw1_EvKeyboardRelease(CControl * control, const uint key, const uint hkey, const uint mask)
 {
  pboard->EvKeyRelease (key, mask);
 };
 
 void
-CPWindow1::_EvOnCreate (CControl * control)
+CPWindow1::_EvOnCreate(CControl * control)
 {
  char home[1024];
  lxFileName fn;
@@ -242,7 +244,7 @@ CPWindow1::_EvOnCreate (CControl * control)
 };
 
 void
-CPWindow1::Configure (CControl * control, const char * home)
+CPWindow1::Configure(CControl * control, const char * home)
 {
 
  char line[1024];
@@ -452,7 +454,7 @@ CPWindow1::Configure (CControl * control, const char * home)
  else
   status = lxT ("PStart:Error");
 #else
- status = lxT (""); 
+ status = lxT ("");
 #endif
 
 
@@ -491,7 +493,7 @@ CPWindow1::Configure (CControl * control, const char * home)
 //Change  frequency
 
 void
-CPWindow1::combo1_EvOnComboChange (CControl * control)
+CPWindow1::combo1_EvOnComboChange(CControl * control)
 {
 
  NSTEP = (int) (atof (combo1.GetText ()) * NSTEPKT);
@@ -506,7 +508,7 @@ CPWindow1::combo1_EvOnComboChange (CControl * control)
 };
 
 void
-CPWindow1::saveprefs (String name, String value)
+CPWindow1::saveprefs(String name, String value)
 {
  char line[1024];
  char *pname;
@@ -533,7 +535,7 @@ CPWindow1::saveprefs (String name, String value)
 }
 
 void
-CPWindow1::_EvOnDestroy (CControl * control)
+CPWindow1::_EvOnDestroy(CControl * control)
 {
  char home[1024];
  char fname[1280];
@@ -614,17 +616,26 @@ CPWindow1::_EvOnDestroy (CControl * control)
 };
 
 void
-CPWindow1::menu1_File_LoadHex_EvMenuActive (CControl * control)
+CPWindow1::menu1_File_LoadHex_EvMenuActive(CControl * control)
 {
  pa = mcupwr;
  mcupwr = 0;
+ filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
  filedialog1.Run ();
 }
 
 void
-CPWindow1::filedialog1_EvOnClose (int retId)
+CPWindow1::menu1_File_SaveHex_EvMenuActive(CControl * control)
 {
- if (retId)
+ pa = mcupwr;
+ filedialog1.SetType (lxFD_SAVE | lxFD_CHANGE_DIR);
+ filedialog1.Run ();
+}
+
+void
+CPWindow1::filedialog1_EvOnClose(int retId)
+{
+ if (retId && (filedialog1.GetType () == (lxFD_OPEN | lxFD_CHANGE_DIR)))
   {
    pboard->MEnd ();
    pboard->MSetSerial (SERIALDEVICE);
@@ -660,21 +671,27 @@ CPWindow1::filedialog1_EvOnClose (int retId)
    FNAME = filedialog1.GetFileName ();
    menu1_File_ReloadLast.SetEnable (1);
   }
+
+ if (retId && (filedialog1.GetType () == (lxFD_SAVE | lxFD_CHANGE_DIR)))
+  {
+   pboard->MDumpMemory (filedialog1.GetFileName ());
+  }
+
  mcupwr = pa;
 }
 
 void
-CPWindow1::menu1_File_Exit_EvMenuActive (CControl * control)
+CPWindow1::menu1_File_Exit_EvMenuActive(CControl * control)
 {
  WDestroy ();
 };
 
 void
-CPWindow1::menu1_Help_Contents_EvMenuActive (CControl * control)
+CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
 {
 #ifdef EXT_BROWSER
  //lxLaunchDefaultBrowser(lxT("file://")+share + lxT ("docs/picsimlab.html"));
- lxLaunchDefaultBrowser(lxT("https://lcgamboa.github.io/picsimlab/"));
+ lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/"));
 #else 
  Window2.html1.SetLoadFile (share + lxT ("docs/picsimlab.html"));
  Window2.Show ();
@@ -682,18 +699,18 @@ CPWindow1::menu1_Help_Contents_EvMenuActive (CControl * control)
 };
 
 void
-CPWindow1::menu1_Help_About_EvMenuActive (CControl * control)
+CPWindow1::menu1_Help_About_EvMenuActive(CControl * control)
 {
  Message (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (lxT (_VERSION_)));
 };
 
 void
-CPWindow1::menu1_Help_Examples_EvMenuActive (CControl * control)
+CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
 {
 
- #ifdef EXT_BROWSER
+#ifdef EXT_BROWSER
  //lxLaunchDefaultBrowser(lxT("file://")+share + lxT ("docs/picsimlab.html"));
- lxLaunchDefaultBrowser(lxT("https://lcgamboa.github.io/picsimlab/examples/examples_index.html#board_"+ itoa (lab) + lxT ("_") + pboard->proc ));
+ lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/examples/examples_index.html#board_" + itoa (lab) + lxT ("_") + pboard->proc));
 #else 
  OldPath = filedialog2.GetDir ();
 
@@ -707,7 +724,7 @@ CPWindow1::menu1_Help_Examples_EvMenuActive (CControl * control)
 //Resize
 
 void
-CPWindow1::_EvOnShow (CControl * control)
+CPWindow1::_EvOnShow(CControl * control)
 {
  double scalex, scaley;
 
@@ -757,13 +774,13 @@ CPWindow1::_EvOnShow (CControl * control)
 }
 
 void
-CPWindow1::menu1_File_Configure_EvMenuActive (CControl * control)
+CPWindow1::menu1_File_Configure_EvMenuActive(CControl * control)
 {
  Window3.ShowExclusive ();
 };
 
 void
-CPWindow1::menu1_File_ReloadLast_EvMenuActive (CControl * control)
+CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
 {
  int pa;
 
@@ -814,13 +831,13 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive (CControl * control)
 };
 
 void
-CPWindow1::board_Event (CControl * control)
+CPWindow1::board_Event(CControl * control)
 {
  pboard->board_Event (control);
 };
 
 void
-CPWindow1::menu1_Modules_Oscilloscope_EvMenuActive (CControl * control)
+CPWindow1::menu1_Modules_Oscilloscope_EvMenuActive(CControl * control)
 {
  pboard->SetUseOscilloscope (1);
  Window4.Show ();
@@ -828,19 +845,19 @@ CPWindow1::menu1_Modules_Oscilloscope_EvMenuActive (CControl * control)
 };
 
 board *
-CPWindow1::GetBoard (void)
+CPWindow1::GetBoard(void)
 {
  return pboard;
 }
 
 void
-CPWindow1::SetCpuState (unsigned char cs)
+CPWindow1::SetCpuState(unsigned char cs)
 {
  cpustate = cs;
 }
 
 void
-CPWindow1::menu1_Modules_Spareparts_EvMenuActive (CControl * control)
+CPWindow1::menu1_Modules_Spareparts_EvMenuActive(CControl * control)
 {
 
 
@@ -855,7 +872,7 @@ CPWindow1::menu1_Modules_Spareparts_EvMenuActive (CControl * control)
 //Change board
 
 void
-CPWindow1::menu1_EvBoard (CControl * control)
+CPWindow1::menu1_EvBoard(CControl * control)
 {
  lab_ = lab;
  lab = (int) (atof (((CItemMenu*) control)->GetText ()));
@@ -869,7 +886,7 @@ CPWindow1::menu1_EvBoard (CControl * control)
 //change microcontroller
 
 void
-CPWindow1::menu1_EvMicrocontroller (CControl * control)
+CPWindow1::menu1_EvMicrocontroller(CControl * control)
 {
  proc_ = pboard->proc;
  pboard->proc = ((CItemMenu*) control)->GetText ();
@@ -883,7 +900,7 @@ CPWindow1::menu1_EvMicrocontroller (CControl * control)
 };
 
 void
-CPWindow1::togglebutton1_EvOnToggleButton (CControl * control)
+CPWindow1::togglebutton1_EvOnToggleButton(CControl * control)
 {
  int osc_on = pboard->GetUseOscilloscope ();
  int spare_on = pboard->GetUseSpareParts ();
@@ -901,14 +918,14 @@ CPWindow1::togglebutton1_EvOnToggleButton (CControl * control)
 };
 
 void
-CPWindow1::menu1_File_SaveWorkspace_EvMenuActive (CControl * control)
+CPWindow1::menu1_File_SaveWorkspace_EvMenuActive(CControl * control)
 {
  filedialog2.SetType (lxFD_SAVE | lxFD_CHANGE_DIR);
  filedialog2.Run ();
-};
+}
 
 void
-CPWindow1::LoadWorkspace (String fnpzw)
+CPWindow1::LoadWorkspace(String fnpzw)
 {
  char home[1024];
  char fzip[1280];
@@ -957,8 +974,8 @@ CPWindow1::LoadWorkspace (String fnpzw)
  if (lxFileExists (fzip))
   {
 #ifdef EXT_BROWSER
-   lxLaunchDefaultBrowser(lxT("file://")+String(fzip));
- //lxLaunchDefaultBrowser(lxT("https://lcgamboa.github.io/picsimlab/"));
+   lxLaunchDefaultBrowser (lxT ("file://") + String (fzip));
+   //lxLaunchDefaultBrowser(lxT("https://lcgamboa.github.io/picsimlab/"));
 #else    
    Window2.html1.SetLoadFile (fzip);
    Window2.Show ();
@@ -970,7 +987,7 @@ CPWindow1::LoadWorkspace (String fnpzw)
    if (lxFileExists (fzip))
     {
 #ifdef EXT_BROWSER
-     lxLaunchDefaultBrowser(lxT("file://")+String(fzip));
+     lxLaunchDefaultBrowser (lxT ("file://") + String (fzip));
      //lxLaunchDefaultBrowser(lxT("https://lcgamboa.github.io/picsimlab/"));
 #else      
      Window2.html1.SetLoadFile (fzip);
@@ -983,7 +1000,7 @@ CPWindow1::LoadWorkspace (String fnpzw)
 }
 
 void
-CPWindow1::menu1_File_LoadWorkspace_EvMenuActive (CControl * control)
+CPWindow1::menu1_File_LoadWorkspace_EvMenuActive(CControl * control)
 {
  filedialog2.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
  filedialog2.Run ();
@@ -991,7 +1008,7 @@ CPWindow1::menu1_File_LoadWorkspace_EvMenuActive (CControl * control)
 }
 
 void
-CPWindow1::filedialog2_EvOnClose (int retId)
+CPWindow1::filedialog2_EvOnClose(int retId)
 {
  if (retId && (filedialog2.GetType () == (lxFD_OPEN | lxFD_CHANGE_DIR)))
   {
@@ -1075,7 +1092,7 @@ CPWindow1::filedialog2_EvOnClose (int retId)
 }
 
 void
-CPWindow1::menu1_Tools_SerialTerm_EvMenuActive (CControl * control)
+CPWindow1::menu1_Tools_SerialTerm_EvMenuActive(CControl * control)
 {
 #ifdef _WIN_  
  lxExecute (share + lxT ("/../tools/cutecom/cutecom.exe"));
@@ -1086,7 +1103,7 @@ CPWindow1::menu1_Tools_SerialTerm_EvMenuActive (CControl * control)
 };
 
 void
-CPWindow1::menu1_Tools_SerialRemoteTank_EvMenuActive (CControl * control)
+CPWindow1::menu1_Tools_SerialRemoteTank_EvMenuActive(CControl * control)
 {
 #ifdef _WIN_  
  lxExecute (share + lxT ("/../srtank.exe"));
@@ -1097,7 +1114,7 @@ CPWindow1::menu1_Tools_SerialRemoteTank_EvMenuActive (CControl * control)
 };
 
 void
-CPWindow1::menu1_Tools_Esp8266ModemSimulator_EvMenuActive (CControl * control)
+CPWindow1::menu1_Tools_Esp8266ModemSimulator_EvMenuActive(CControl * control)
 {
 #ifdef _WIN_  
  lxExecute (share + lxT ("/../espmsim.exe"));

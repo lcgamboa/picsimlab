@@ -61,6 +61,7 @@ class CPWindow1:public CPWindow
   CPMenu menu1_Help;
   CItemMenu menu1_File_LoadHex;
   CItemMenu menu1_File_ReloadLast;
+  CItemMenu menu1_File_SaveHex;
   CItemMenu menu1_File_Configure;
   CItemMenu menu1_File_SaveWorkspace;
   CItemMenu menu1_File_LoadWorkspace;
@@ -90,6 +91,7 @@ class CPWindow1:public CPWindow
   void combo1_EvOnComboChange(CControl * control);
   void menu1_File_LoadHex_EvMenuActive(CControl * control);
   void menu1_File_ReloadLast_EvMenuActive(CControl * control);
+  void menu1_File_SaveHex_EvMenuActive(CControl * control);
   void menu1_File_Configure_EvMenuActive(CControl * control);
   void menu1_File_SaveWorkspace_EvMenuActive(CControl * control);
   void menu1_File_LoadWorkspace_EvMenuActive(CControl * control);
