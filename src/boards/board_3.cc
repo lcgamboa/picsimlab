@@ -111,8 +111,6 @@ cboard_3::cboard_3(void)
  lcde = 0;
  sound_on = 0;
 
- buzz.Create (Window1.GetSharePath () + lxT ("boards/buzzer.wav"));
-
  lcd_init (&lcd, 16, 2);
  mi2c_init (&mi2c, 4);
 
@@ -225,7 +223,7 @@ cboard_3::cboard_3(void)
 
 cboard_3::~cboard_3(void)
 {
- buzz.Stop ();
+ lxaudio_BeepStop ();
  mi2c_end (&mi2c);
 
  Window1.DestroyChild (scroll1);
@@ -397,13 +395,13 @@ cboard_3::Draw(CDraw *draw, double scale)
   {
    if (!sound_on)
     {
-     buzz.Play (lxSOUND_ASYNC | lxSOUND_LOOP);
+     lxaudio_BeepStart ();
      sound_on = 1;
     }
   }
  else
   {
-   buzz.Stop ();
+   lxaudio_BeepStop ();
    sound_on = 0;
   }
 

@@ -78,8 +78,6 @@ cboard_4::cboard_4(void)
  lcde = 0;
  sound_on = 0;
 
- buzz.Create (Window1.GetSharePath () + lxT ("boards/buzzer.wav"));
-
  lxImage image;
  image.LoadFile (Window1.GetSharePath () + lxT ("boards/VT1.png"));
  vent[0] = new lxBitmap (image, &Window1);
@@ -256,7 +254,7 @@ cboard_4::cboard_4(void)
 
 cboard_4::~cboard_4(void)
 {
- buzz.Stop ();
+ lxaudio_BeepStop();
 
  delete vent[0];
  delete vent[1];
@@ -556,17 +554,17 @@ cboard_4::Draw(CDraw *draw, double scale)
  draw->Update ();
 
 
- if (((0.4444 * (pic.pins[15].oavalue - 30)) < 10)&&(Window1.Get_mcupwr ()) && jmp[0])
+ if (((0.4444 * (pic.pins[15].oavalue - 30)) > 10)&&(Window1.Get_mcupwr ()) && jmp[0])
   {
    if (!sound_on)
     {
-     buzz.Play (lxSOUND_ASYNC | lxSOUND_LOOP);
+     lxaudio_BeepStart();
      sound_on = 1;
     }
   }
  else
   {
-   buzz.Stop ();
+   lxaudio_BeepStop();
    sound_on = 0;
   }
 

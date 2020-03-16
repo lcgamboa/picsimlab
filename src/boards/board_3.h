@@ -42,7 +42,6 @@ class cboard_3:public board_pic
      int lcde;
 
      int sound_on;
-     lxSound buzz;
 
 
      float vp2in;

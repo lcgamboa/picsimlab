@@ -34,12 +34,13 @@ board::board(void)
   use_oscope=0;
   use_spare=0;
   p_MCLR=1;
+  lxaudio_Init ();
 }
 
 
 board::~board(void)
 {
-
+  lxaudio_End ();
 }
 
 
