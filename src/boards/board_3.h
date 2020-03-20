@@ -69,6 +69,7 @@ class cboard_3:public board_pic
     CLabel *label3;
     CLabel *label4;
 
+    lxaudio buzzer;
     
   public:
       cboard_3(void);

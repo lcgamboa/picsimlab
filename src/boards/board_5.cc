@@ -303,7 +303,8 @@ cboard_5::Reset(void)
      lm[pi]=0;
    };
   */
-};
+ if (use_spare)Window5.Reset ();
+}
 
 //Called ever 1s to refresh status
 

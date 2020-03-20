@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@ class cpart_switchs:public part
       String GetInputMapFile(void){return lxT("switchs_i.map");};
       String GetOutputMapFile(void){return lxT("switchs_o.map");};
       String GetPropertiesWindowFile(void){return lxT("switchs.lxrad");};
+      void Reset(void); 
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  wprop);
       void ReadPropertiesWindow(void);

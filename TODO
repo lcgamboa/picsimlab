@@ -3,9 +3,6 @@
 
 LCD -> read and busy flag
 
-graphic LCD
-
-
 ######### board 1 ################
 
 FIX BUG PIC16F84 unknown opcode 0x0016!
@@ -15,11 +12,9 @@ RTC -> int output
 RTC -> Countdown timer
 
 ######### board 3 ##############
-BUZZER freq. sound output
 JUMPERS
 
 ######### board 4 ##############
-BUZZER freq. sound output
 RTC -> int output
 TEMP cooler must don't work with AQUE=0
 

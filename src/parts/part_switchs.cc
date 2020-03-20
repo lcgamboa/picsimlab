@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ enum
  I_S1, I_S2, I_S3, I_S4, I_S5, I_S6, I_S7, I_S8
 };
 
-cpart_switchs::cpart_switchs (unsigned x, unsigned y)
+cpart_switchs::cpart_switchs(unsigned x, unsigned y)
 {
  X = x;
  Y = y;
@@ -77,14 +77,39 @@ cpart_switchs::cpart_switchs (unsigned x, unsigned y)
 
 }
 
-cpart_switchs::~cpart_switchs (void)
+void
+cpart_switchs::Reset(void)
+{
+ refresh = 0;
+
+ //force pin update
+ if (output_pins[0] > 0)Window5.SetPin (output_pins[0], !output_value[0]);
+ if (output_pins[1] > 0)Window5.SetPin (output_pins[1], !output_value[1]);
+ if (output_pins[2] > 0)Window5.SetPin (output_pins[2], !output_value[2]);
+ if (output_pins[3] > 0)Window5.SetPin (output_pins[3], !output_value[3]);
+ if (output_pins[4] > 0)Window5.SetPin (output_pins[4], !output_value[4]);
+ if (output_pins[5] > 0)Window5.SetPin (output_pins[5], !output_value[5]);
+ if (output_pins[6] > 0)Window5.SetPin (output_pins[6], !output_value[6]);
+ if (output_pins[7] > 0)Window5.SetPin (output_pins[7], !output_value[7]);
+
+ if (output_pins[0] > 0)Window5.SetPin (output_pins[0], output_value[0]);
+ if (output_pins[1] > 0)Window5.SetPin (output_pins[1], output_value[1]);
+ if (output_pins[2] > 0)Window5.SetPin (output_pins[2], output_value[2]);
+ if (output_pins[3] > 0)Window5.SetPin (output_pins[3], output_value[3]);
+ if (output_pins[4] > 0)Window5.SetPin (output_pins[4], output_value[4]);
+ if (output_pins[5] > 0)Window5.SetPin (output_pins[5], output_value[5]);
+ if (output_pins[6] > 0)Window5.SetPin (output_pins[6], output_value[6]);
+ if (output_pins[7] > 0)Window5.SetPin (output_pins[7], output_value[7]);
+}
+
+cpart_switchs::~cpart_switchs(void)
 {
  delete Bitmap;
- canvas.Destroy();
+ canvas.Destroy ();
 }
 
 void
-cpart_switchs::Draw (void)
+cpart_switchs::Draw(void)
 {
 
  int i;
@@ -142,28 +167,28 @@ cpart_switchs::Draw (void)
 }
 
 void
-cpart_switchs::Process (void)
+cpart_switchs::Process(void)
 {
 
  if (refresh > 1000)
   {
    refresh = 0;
 
-   if(output_pins[0]>0)Window5.SetPin (output_pins[0], output_value[0]);
-   if(output_pins[1]>0)Window5.SetPin (output_pins[1], output_value[1]);
-   if(output_pins[2]>0)Window5.SetPin (output_pins[2], output_value[2]);
-   if(output_pins[3]>0)Window5.SetPin (output_pins[3], output_value[3]);
-   if(output_pins[4]>0)Window5.SetPin (output_pins[4], output_value[4]);
-   if(output_pins[5]>0)Window5.SetPin (output_pins[5], output_value[5]);
-   if(output_pins[6]>0)Window5.SetPin (output_pins[6], output_value[6]);
-   if(output_pins[7]>0)Window5.SetPin (output_pins[7], output_value[7]);
+   if (output_pins[0] > 0)Window5.SetPin (output_pins[0], output_value[0]);
+   if (output_pins[1] > 0)Window5.SetPin (output_pins[1], output_value[1]);
+   if (output_pins[2] > 0)Window5.SetPin (output_pins[2], output_value[2]);
+   if (output_pins[3] > 0)Window5.SetPin (output_pins[3], output_value[3]);
+   if (output_pins[4] > 0)Window5.SetPin (output_pins[4], output_value[4]);
+   if (output_pins[5] > 0)Window5.SetPin (output_pins[5], output_value[5]);
+   if (output_pins[6] > 0)Window5.SetPin (output_pins[6], output_value[6]);
+   if (output_pins[7] > 0)Window5.SetPin (output_pins[7], output_value[7]);
 
   }
  refresh++;
 }
 
 void
-cpart_switchs::EvMouseButtonPress (uint button, uint x, uint y, uint state)
+cpart_switchs::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
  int i;
 
@@ -196,7 +221,7 @@ cpart_switchs::EvMouseButtonPress (uint button, uint x, uint y, uint state)
 };
 
 unsigned short
-cpart_switchs::get_in_id (char * name)
+cpart_switchs::get_in_id(char * name)
 {
 
  if (strcmp (name, "S1") == 0)return I_S1;
@@ -213,7 +238,7 @@ cpart_switchs::get_in_id (char * name)
 };
 
 unsigned short
-cpart_switchs::get_out_id (char * name)
+cpart_switchs::get_out_id(char * name)
 {
 
  if (strcmp (name, "P1") == 0)return O_P1;
@@ -239,7 +264,7 @@ cpart_switchs::get_out_id (char * name)
 };
 
 String
-cpart_switchs::WritePreferences (void)
+cpart_switchs::WritePreferences(void)
 {
  char prefs[256];
 
@@ -251,7 +276,7 @@ cpart_switchs::WritePreferences (void)
 };
 
 void
-cpart_switchs::ReadPreferences (String value)
+cpart_switchs::ReadPreferences(String value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
          &output_pins[0], &output_pins[1], &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7],
@@ -261,7 +286,7 @@ cpart_switchs::ReadPreferences (String value)
 CPWindow * WProp_switchs;
 
 void
-cpart_switchs::ConfigurePropertiesWindow (CPWindow * wprop)
+cpart_switchs::ConfigurePropertiesWindow(CPWindow * wprop)
 {
  String Items = Window5.GetPinsNames ();
  String spin;
@@ -347,7 +372,7 @@ cpart_switchs::ConfigurePropertiesWindow (CPWindow * wprop)
 }
 
 void
-cpart_switchs::ReadPropertiesWindow (void)
+cpart_switchs::ReadPropertiesWindow(void)
 {
 
  output_pins[0] = atoi (((CCombo*) WProp_switchs->GetChildByName ("combo1"))->GetText ());

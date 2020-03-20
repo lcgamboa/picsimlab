@@ -381,9 +381,9 @@ cboard_1::Reset(void)
   {
    lm1[i] = 0;
    lm2[i] = 0;
-  };
-
-};
+  }
+ if (use_spare)Window5.Reset ();
+}
 
 void
 cboard_1::EvMouseButtonPress(uint button, uint x, uint y, uint state)

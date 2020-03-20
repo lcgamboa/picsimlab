@@ -435,6 +435,16 @@ CPWindow5::PostProcess(void)
 }
 
 void
+CPWindow5::Reset(void)
+{
+ for (int i = 0; i < partsc; i++)
+  {
+   parts[i]->Reset ();
+  }
+}
+
+
+void
 CPWindow5::_EvOnHide(CControl * control)
 {
  timer1.SetRunState (0);
@@ -622,7 +632,7 @@ CPWindow5::WritePinA(unsigned char pin, unsigned char avalue)
 {
  if (pin > PinsCount)
   {
-   Pins[pin - 1].oavalue = avalue;
+   Pins[pin - 1].avalue = avalue;
   }
 }
 

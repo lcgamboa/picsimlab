@@ -33,7 +33,7 @@ OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimla
  parts/part_LCD_hd44780.o parts/part_LCD_pcf8833.o parts/part_LCD_pcd8544.o parts/part_gamepad.o\
  parts/part_LED_matrix.o parts/part_7s_Display.o parts/part_TempSys.o parts/part_keypad.o \
  parts/part_MI2C_24CXXX.o parts/part_RTC_ds1307.o parts/part_RTC_pfc8563.o parts/part_IO_74xx595.o \
- parts/part_VCD_Dump.o parts/part_IO_PCF8574.o
+ parts/part_VCD_Dump.o parts/part_IO_PCF8574.o parts/part_Buzzer.o parts/part_SignalGenerator.o
 
 #lxrad automatic generated block end, don't edit above!
 

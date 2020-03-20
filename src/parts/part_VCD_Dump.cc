@@ -600,7 +600,7 @@ cpart_VCD_Dump::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       case I_VIEW:
 
 #ifdef _WIN_
-       lxExecute (share + lxT ("/../tools/gtkwave/gtkwave.exe ") + f_vcd_name);
+       lxExecute (Window1.GetSharePath()+ lxT ("/../tools/gtkwave/gtkwave.exe ") + f_vcd_name);
 #else
 
        lxExecute (String ("gtkwave ") + f_vcd_name, lxEXEC_MAKE_GROUP_LEADER);

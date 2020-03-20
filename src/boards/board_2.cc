@@ -29,32 +29,34 @@
 #include"board_2.h"
 
 /* outputs */
-enum{
-O_RA1,
-O_RA2,
-O_RA6,
-O_RA7,
-O_LPWR,
-O_LCD
+enum
+{
+ O_RA1,
+ O_RA2,
+ O_RA6,
+ O_RA7,
+ O_LPWR,
+ O_LCD
 };
 
 /*inputs*/
-enum{
-I_RST,
-I_PWR,
-I_ICSP,
-I_TC1,
-I_TC2,
-I_TC3,
-I_TC4,
-I_TC5,
-I_TC6,
-I_TC7,
-I_TC8,
-I_TC9,
-I_TCA,
-I_TC0,
-I_TCT  
+enum
+{
+ I_RST,
+ I_PWR,
+ I_ICSP,
+ I_TC1,
+ I_TC2,
+ I_TC3,
+ I_TC4,
+ I_TC5,
+ I_TC6,
+ I_TC7,
+ I_TC8,
+ I_TC9,
+ I_TCA,
+ I_TC0,
+ I_TCT
 };
 
 cboard_2::cboard_2(void)
@@ -333,9 +335,9 @@ cboard_2::Reset(void)
  for (int pi = 0; pi < pic.PINCOUNT; pi++)
   {
    pic.pins[pi].oavalue = 0;
-  };
-
-};
+  }
+ if (use_spare)Window5.Reset ();
+}
 
 void
 cboard_2::EvMouseButtonPress(uint button, uint x, uint y, uint state)

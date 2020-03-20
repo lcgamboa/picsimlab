@@ -30,22 +30,24 @@
 #include"board_x.h"
 
 /* ids of inputs of input map*/
-enum{
-I_ICSP, //ICSP connector
-I_PWR,  //Power button
-I_RST,  //Reset button
-I_D0,   //RD0 push button
-I_D1    //RD1 switch
+enum
+{
+ I_ICSP, //ICSP connector
+ I_PWR, //Power button
+ I_RST, //Reset button
+ I_D0, //RD0 push button
+ I_D1 //RD1 switch
 };
 
 /* ids of outputs of output map*/
-enum{
-O_SD1,  //switch position (On/Off)
-O_LD0,  //LED on RD0 push button
-O_LD1,  //LED on RD1 switch
-O_LPWR, //Power LED
-O_RB0,  //LED on RB0 output
-O_RB1   //LED on RB1 output
+enum
+{
+ O_SD1, //switch position (On/Off)
+ O_LD0, //LED on RD0 push button
+ O_LD1, //LED on RD1 switch
+ O_LPWR, //Power LED
+ O_RB0, //LED on RB0 output
+ O_RB1 //LED on RB1 output
 };
 //return the input ids numbers of names used in input map
 
@@ -212,8 +214,8 @@ cboard_x::Reset(void)
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
-
-};
+ if (use_spare)Window5.Reset ();
+}
 
 //Called ever 1s to refresh status
 

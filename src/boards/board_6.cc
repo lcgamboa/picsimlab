@@ -264,9 +264,8 @@ cboard_6::Reset(void)
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
-
-
-};
+ if (use_spare)Window5.Reset ();
+}
 
 //Called ever 1s to refresh status
 

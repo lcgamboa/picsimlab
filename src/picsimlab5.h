@@ -80,6 +80,7 @@ class CPWindow5:public CPWindow
   void Process(void);
   void PreProcess(void);
   void PostProcess(void);
+  void Reset(void);
   bool SaveConfig(String fname);
   bool LoadConfig(String fname);
   void DeleteParts(void);

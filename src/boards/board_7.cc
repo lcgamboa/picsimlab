@@ -30,23 +30,25 @@
 #include"board_7.h"
 
 /* ids of inputs of input map*/
-enum{
-I_ICSP,//ICSP connector
-I_PWR, //Power button
-I_RST, //Reset button
-I_S1,  //S1 push button
-I_JMP  //JMP
+enum
+{
+ I_ICSP, //ICSP connector
+ I_PWR, //Power button
+ I_RST, //Reset button
+ I_S1, //S1 push button
+ I_JMP //JMP
 };
 
 /* ids of outputs of output map*/
-enum{
-O_JMP, //JMP
-O_D1,  //LED D1
-O_D2,  //LED D2 
-O_D4,  //LED D4 
-O_D5,  //LED D5 
-O_D6,  //LED D6 
-O_D7   //LED D7 
+enum
+{
+ O_JMP, //JMP
+ O_D1, //LED D1
+ O_D2, //LED D2 
+ O_D4, //LED D4 
+ O_D5, //LED D5 
+ O_D6, //LED D6 
+ O_D7 //LED D7 
 };
 //return the input ids numbers of names used in input map
 
@@ -271,7 +273,8 @@ cboard_7::Reset(void)
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
-};
+ if (use_spare)Window5.Reset ();
+}
 
 //Called ever 1s to refresh status
 

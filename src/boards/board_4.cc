@@ -102,6 +102,8 @@ cboard_4::cboard_4(void)
  for (int i = 0; i < 20; i++)
   dip[i] = 1;
 
+ buzzer.Init ();
+
  //scroll1
  scroll1 = new CScroll ();
  scroll1->SetFOwner (&Window1);
@@ -254,8 +256,8 @@ cboard_4::cboard_4(void)
 
 cboard_4::~cboard_4(void)
 {
- lxaudio_BeepStop();
-
+ buzzer.BeepStop ();
+ buzzer.End ();
  delete vent[0];
  delete vent[1];
  vent[0] = NULL;
@@ -558,13 +560,13 @@ cboard_4::Draw(CDraw *draw, double scale)
   {
    if (!sound_on)
     {
-     lxaudio_BeepStart();
+     buzzer.BeepStart ();
      sound_on = 1;
     }
   }
  else
   {
-   lxaudio_BeepStop();
+   buzzer.BeepStop ();
    sound_on = 0;
   }
 
@@ -618,7 +620,7 @@ cboard_4::Run_CPU(void)
 
  int JUMPSTEPS = Window1.GetJUMPSTEPS ();
  long int NSTEPJ = Window1.GetNSTEPJ ();
- 
+
  if (use_spare)Window5.PreProcess ();
 
  /*
@@ -923,9 +925,9 @@ cboard_4::Run_CPU(void)
    if (lm3[i] > 255)lm3[i] = 255;
    if (lm4[i] > 255)lm4[i] = 255;
   }
- 
-if (use_spare)Window5.PostProcess ();
- 
+
+ if (use_spare)Window5.PostProcess ();
+
 }
 
 void
@@ -991,9 +993,10 @@ cboard_4::Reset(void)
    lm2[i] = 0;
    lm3[i] = 0;
    lm4[i] = 0;
-  };
+  }
 
-};
+ if (use_spare)Window5.Reset ();
+}
 
 void
 cboard_4::EvMouseButtonPress(uint button, uint x, uint y, uint state)

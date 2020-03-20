@@ -98,6 +98,9 @@ class cboard_4:public board_pic
     CLabel *label5;
     CLabel *label6;
     CCombo *combo1; 
+    
+    lxaudio buzzer;
+    
   public:
       cboard_4(void);
       ~cboard_4(void);

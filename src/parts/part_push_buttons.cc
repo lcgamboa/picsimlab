@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -76,13 +76,48 @@ cpart_pbuttons::cpart_pbuttons(unsigned x, unsigned y)
  output_value[6] = !active;
  output_value[7] = !active;
 
- refresh=0;
+ refresh = 0;
+}
+
+void
+cpart_pbuttons::Reset(void)
+{
+ //release all
+ output_value[0] = !active;
+ output_value[1] = !active;
+ output_value[2] = !active;
+ output_value[3] = !active;
+ output_value[4] = !active;
+ output_value[5] = !active;
+ output_value[6] = !active;
+ output_value[7] = !active;
+
+ refresh = 0;
+//force pin update
+ Window5.SetPin (output_pins[0], !output_value[0]);
+ Window5.SetPin (output_pins[1], !output_value[1]);
+ Window5.SetPin (output_pins[2], !output_value[2]);
+ Window5.SetPin (output_pins[3], !output_value[3]);
+ Window5.SetPin (output_pins[4], !output_value[4]);
+ Window5.SetPin (output_pins[5], !output_value[5]);
+ Window5.SetPin (output_pins[6], !output_value[6]);
+ Window5.SetPin (output_pins[7], !output_value[7]);
+ 
+ Window5.SetPin (output_pins[0], output_value[0]);
+ Window5.SetPin (output_pins[1], output_value[1]);
+ Window5.SetPin (output_pins[2], output_value[2]);
+ Window5.SetPin (output_pins[3], output_value[3]);
+ Window5.SetPin (output_pins[4], output_value[4]);
+ Window5.SetPin (output_pins[5], output_value[5]);
+ Window5.SetPin (output_pins[6], output_value[6]);
+ Window5.SetPin (output_pins[7], output_value[7]);
+ 
 }
 
 cpart_pbuttons::~cpart_pbuttons(void)
 {
  delete Bitmap;
- canvas.Destroy();
+ canvas.Destroy ();
 }
 
 void
@@ -263,7 +298,7 @@ cpart_pbuttons::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", output_pins[0], output_pins[1], output_pins[2], output_pins[3], output_pins[4], output_pins[5], output_pins[6], output_pins[7],active);
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", output_pins[0], output_pins[1], output_pins[2], output_pins[3], output_pins[4], output_pins[5], output_pins[6], output_pins[7], active);
 
  return prefs;
 };
@@ -271,7 +306,7 @@ cpart_pbuttons::WritePreferences(void)
 void
 cpart_pbuttons::ReadPreferences(String value)
 {
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7],&active);
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7], &active);
  output_value[0] = !active;
  output_value[1] = !active;
  output_value[2] = !active;
@@ -387,7 +422,7 @@ cpart_pbuttons::ReadPropertiesWindow(void)
  output_pins[6] = atoi (((CCombo*) WProp_pbuttons->GetChildByName ("combo7"))->GetText ());
  output_pins[7] = atoi (((CCombo*) WProp_pbuttons->GetChildByName ("combo8"))->GetText ());
 
- active = !(((CCombo*) WProp_pbuttons->GetChildByName ("combo9"))->GetText ().compare ("LOW") == 0);
+ active = (((CCombo*) WProp_pbuttons->GetChildByName ("combo9"))->GetText ().compare ("HIGH") == 0);
 
  output_value[0] = !active;
  output_value[1] = !active;

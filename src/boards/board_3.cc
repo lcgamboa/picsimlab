@@ -29,67 +29,70 @@
 #include"board_3.h"
 
 /* outputs */
-enum{
-O_RB0,
-O_RB1,
-O_RB2,
-O_RB3,
-O_LPWR,
-O_LCD,
-O_A1,
-O_B1,
-O_C1,
-O_D1,
-O_E1,
-O_F1,
-O_G1,
-O_P1,
-O_A2,
-O_B2,
-O_C2,
-O_D2,
-O_E2,
-O_F2,
-O_G2,
-O_P2,
-O_A3,
-O_B3,
-O_C3,
-O_D3,
-O_E3,
-O_F3,
-O_G3,
-O_P3,
-O_A4,
-O_B4,
-O_C4,
-O_D4,
-O_E4,
-O_F4,
-O_G4,
-O_P4,
-O_JP1,
-O_JP2,
-O_JP3,
-O_JP4,
-O_JP5,
-O_JP6
+enum
+{
+ O_RB0,
+ O_RB1,
+ O_RB2,
+ O_RB3,
+ O_LPWR,
+ O_LCD,
+ O_A1,
+ O_B1,
+ O_C1,
+ O_D1,
+ O_E1,
+ O_F1,
+ O_G1,
+ O_P1,
+ O_A2,
+ O_B2,
+ O_C2,
+ O_D2,
+ O_E2,
+ O_F2,
+ O_G2,
+ O_P2,
+ O_A3,
+ O_B3,
+ O_C3,
+ O_D3,
+ O_E3,
+ O_F3,
+ O_G3,
+ O_P3,
+ O_A4,
+ O_B4,
+ O_C4,
+ O_D4,
+ O_E4,
+ O_F4,
+ O_G4,
+ O_P4,
+ O_JP1,
+ O_JP2,
+ O_JP3,
+ O_JP4,
+ O_JP5,
+ O_JP6
 };
+
 /*inputs*/
-enum{
-I_RST,
-I_PWR,
-I_ICSP,
-I_JP1,
-I_JP2,
-I_JP3,
-I_JP4,
-I_JP5,
-I_JP6,
-I_RB0,
-I_RB1,
-I_RB2,
-I_RB3 
+enum
+{
+ I_RST,
+ I_PWR,
+ I_ICSP,
+ I_JP1,
+ I_JP2,
+ I_JP3,
+ I_JP4,
+ I_JP5,
+ I_JP6,
+ I_RB0,
+ I_RB1,
+ I_RB2,
+ I_RB3
 };
 
 cboard_3::cboard_3(void)
@@ -123,6 +126,7 @@ cboard_3::cboard_3(void)
  jmp[4] = 0;
  jmp[5] = 0;
 
+ buzzer.Init ();
 
  //scroll1
  scroll1 = new CScroll ();
@@ -223,7 +227,8 @@ cboard_3::cboard_3(void)
 
 cboard_3::~cboard_3(void)
 {
- lxaudio_BeepStop ();
+ buzzer.BeepStop ();
+ buzzer.End ();
  mi2c_end (&mi2c);
 
  Window1.DestroyChild (scroll1);
@@ -395,13 +400,13 @@ cboard_3::Draw(CDraw *draw, double scale)
   {
    if (!sound_on)
     {
-     lxaudio_BeepStart ();
+     buzzer.BeepStart ();
      sound_on = 1;
     }
   }
  else
   {
-   lxaudio_BeepStop ();
+   buzzer.BeepStop ();
    sound_on = 0;
   }
 
@@ -668,9 +673,9 @@ cboard_3::Reset(void)
    lm2[pi] = 0;
    lm3[pi] = 0;
    lm4[pi] = 0;
-  };
-
-};
+  }
+ if (use_spare)Window5.Reset ();
+}
 
 void
 cboard_3::EvMouseButtonPress(uint button, uint x, uint y, uint state)

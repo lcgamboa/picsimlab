@@ -138,6 +138,8 @@ cboard_0::Reset(void)
    break;
 
   }
+
+ if (use_spare)Window5.Reset ();
 }
 
 //Called ever 1s to refresh status
@@ -875,32 +877,32 @@ cboard_0::MGetProcID_p(void)
  return NULL;
 }
 
-unsigned short 
+unsigned short
 cboard_0::MGetPC(void)
 {
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MGetPC();
+   return board_pic::MGetPC ();
    break;
   case _AVR:
-   return board_avr::MGetPC();
+   return board_avr::MGetPC ();
    break;
   }
  return 0;
 }
 
-void 
+void
 cboard_0::MSetPC(unsigned short pc)
 {
  switch (ptype)
   {
   case _PIC:
-   board_pic::MSetPC(pc);
+   board_pic::MSetPC (pc);
    return;
    break;
   case _AVR:
-   board_avr::MSetPC(pc);
+   board_avr::MSetPC (pc);
    return;
    break;
   }
