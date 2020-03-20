@@ -61,7 +61,7 @@ cpart_keypad::GetPictureFileName(void)
    return lxT ("keypad_2x5.png");
    break;
   }
- return lxT ("");
+ return lxT ("keypad_4x4.png");
 }
 
 String
@@ -79,7 +79,7 @@ cpart_keypad::GetInputMapFile(void)
    return lxT ("keypad_2x5_i.map");
    break;
   }
- return lxT ("");
+ return lxT ("keypad_4x4_i.map");
 }
 
 String
@@ -97,7 +97,7 @@ cpart_keypad::GetOutputMapFile(void)
    return lxT ("keypad_2x5_o.map");
    break;
   }
- return lxT ("");
+ return lxT ("keypad_4x4_o.map");
 }
 
 cpart_keypad::cpart_keypad(unsigned x, unsigned y)
@@ -137,6 +137,11 @@ cpart_keypad::~cpart_keypad(void)
 void
 cpart_keypad::ChangeType(unsigned char tp)
 {
+
+
+ if(!tp)tp=KT4x4;
+ if(tp > KT2x5)tp=KT4x4; 
+ 
  //if same
  if (tp == type) return;
 
