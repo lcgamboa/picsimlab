@@ -5,6 +5,8 @@ WINDRES =  x86_64-w64-mingw32-windres
 
 FLAGS = -Wall -O3 -D_WIN_ -I/usr/include/lxrad -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  `x86_64-w64-mingw32-msw-unicode-3.1  --cxxflags` -fomit-frame-pointer 
 
+#FLAGS+= -D_EXPERIMENTAL_
+
 LIBS= -llxrad -lOpenAL32 -lpicsim `x86_64-w64-mingw32-msw-unicode-3.1 --libs` ../../simavr_win/simavr/obj-x86_64-w64-mingw32/libsimavr.a -lws2_32 
 #LIBAS=  ../../LXRAD_WX/libteste/liblxrad.aw  `x86_64-w64-mingw32-msw-unicode-3.1 --libs` -l../../simavr/simavr/obj-x86_64-w64-mingw32/libsimavr.a -lws2_32
 
