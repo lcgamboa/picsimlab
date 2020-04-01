@@ -6,8 +6,8 @@ cl()("$@" 2>&1>&3|sed $'s,.*,\e[31m&\e[m,'>&2)3>&1
 echo -e "\033[1;32m ---------------------- update and install packages ---------------------- \033[0m"
 cl sudo apt-get update
 cl sudo apt-get -y upgrade
-cl sudo apt-get -y install git doxygen autoconf gcc g++ make libwxgtk3.0-dev \
-libelf-dev freeglut3-dev cutecom gcc-avr avr-libc
+cl sudo apt-get -y install git doxygen autoconf gcc g++ make libwxgtk3.0-gtk3-dev \
+libelf-dev freeglut3-dev cutecom gcc-avr avr-libc libopenal-dev
 cl sudo apt-get -y install linux-headers-`uname -r` 
 cl mkdir build_all
 cd build_all
