@@ -708,7 +708,7 @@ void
 CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
 {
 
-#ifdef EXT_BROWSER
+#ifdef EXT_BROWSER_EXAMPLES
  //lxLaunchDefaultBrowser(lxT("file://")+share + lxT ("docs/picsimlab.html"));
  lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/examples/examples_index.html#board_" + itoa (lab) + lxT ("_") + pboard->proc));
 #else 

@@ -60,19 +60,19 @@ board_pic::MEnd(void)
  pic_end ();
  //prog_end();
  mplabxd_end ();
-};
+}
 
 void
 board_pic::MEraseFlash(void)
 {
  pic_erase_flash ();
-};
+}
 
 void
 board_pic::MSetFreq(float freq)
 {
  pic.freq = freq;
-};
+}
 
 float
 board_pic::MGetFreq(void)
@@ -99,7 +99,6 @@ board_pic::MDumpMemory(const char * fname)
   {
   case P16:
   case P16E:
-  case P16E2:
    write_ihx (fname);
    break;
   case P18:
