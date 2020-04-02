@@ -88,6 +88,8 @@ board_avr::pins_reset(void)
 void
 avr_callback_sleep_raw_(avr_t *avr, avr_cycle_count_t how_long) { }
 
+const unsigned char AVR_PORTS[5]={'A','B','C','D','E'};
+
 int
 board_avr::MInit(const char * processor, const char * fname, float freq)
 {
@@ -134,20 +136,20 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
    strncpy (pname, (const char *) MGetPinName (p + 1).c_str (), 19);
    if (pname[0] == 'P')
     {
-     pins[p].port = pname[1];
+     pins[p].port = (unsigned char *)&AVR_PORTS[pname[1]-'A'];
      pins[p].pord = pname[2] - '0';
 
-     avr_irq_t* stateIrq = avr_io_getirq (avr, AVR_IOCTL_IOPORT_GETIRQ (pins[p].port), pins[p].pord);
+     avr_irq_t* stateIrq = avr_io_getirq (avr, AVR_IOCTL_IOPORT_GETIRQ (*pins[p].port), pins[p].pord);
      avr_irq_register_notify (stateIrq, out_hook, &pins[p]);
 
-     avr_irq_t* directionIrq = avr_io_getirq (avr, AVR_IOCTL_IOPORT_GETIRQ (pins[p].port), IOPORT_IRQ_DIRECTION_ALL);
+     avr_irq_t* directionIrq = avr_io_getirq (avr, AVR_IOCTL_IOPORT_GETIRQ (*pins[p].port), IOPORT_IRQ_DIRECTION_ALL);
      avr_irq_register_notify (directionIrq, ddr_hook, &pins[p]);
 
      const char* name[1];
      name[0] = pname;
      Write_stat_irq[p] = avr_alloc_irq (&avr->irq_pool, 0, 1, name);
 
-     avr_irq_t* writeIrq = avr_io_getirq (avr, AVR_IOCTL_IOPORT_GETIRQ (pins[p].port), pins[p].pord);
+     avr_irq_t* writeIrq = avr_io_getirq (avr, AVR_IOCTL_IOPORT_GETIRQ (*pins[p].port), pins[p].pord);
      avr_connect_irq (Write_stat_irq[p], writeIrq);
 
     }

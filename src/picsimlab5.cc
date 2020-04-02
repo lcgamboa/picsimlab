@@ -581,7 +581,7 @@ CPWindow5::GetPinsNames(void)
  for (int i = IOINIT; i < 256; i++)
   {
    spin = PinNames[i];
-   if (spin.Len () > 0)
+   if (spin.length () > 0)
     {
      Items = Items + itoa (i) + "  " + spin + ",";
     }
@@ -604,7 +604,8 @@ CPWindow5::GetPinsValues(void)
 void
 CPWindow5::SetPin(unsigned char pin, unsigned char value)
 {
-
+ if(pin)
+ {
  if ((Pins[pin - 1].dir) &&((Pins[pin - 1].value != value)))
   {
    if ((pin > PinsCount))
@@ -616,6 +617,7 @@ CPWindow5::SetPin(unsigned char pin, unsigned char value)
      pboard->MSetPin (pin, value);
     }
   }
+ }
 }
 
 void
@@ -656,7 +658,7 @@ CPWindow5::RegisterIOpin(String pname, unsigned char pin)
    ppin = pin;
   }
  
- while((PinNames[ppin].Len () > 0 )&&(ppin))
+ while((PinNames[ppin].length () > 0 )&&(ppin))
   {
    ppin++;
   }
@@ -672,7 +674,7 @@ CPWindow5::RegisterIOpin(String pname, unsigned char pin)
 unsigned char
 CPWindow5::UnregisterIOpin(unsigned char pin)
 {
- if(PinNames[pin].Len () > 0)
+ if(PinNames[pin].length () > 0)
   {
     PinNames[pin]="";
     return 1;

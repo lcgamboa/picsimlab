@@ -479,7 +479,7 @@ mplabxd_loop(void)
        printf ("receive error : %s \n", strerror (errno));
        ret = 1;
        reply = 0x01;
-      };
+      }
 #ifdef _DEBUG_
      for (i = 0; i < (int) dbg_board->MGetEEPROM_Size (); i++)printf ("%#02X ", dbg_board->MGetEEPROM_p ()[i]);
 #endif
@@ -491,8 +491,8 @@ mplabxd_loop(void)
        printf ("send error : %s \n", strerror (errno));
        ret = 1;
        reply = 0x01;
-      };
-     dprint ("READD cmd\n");
+      }
+     dprint ("READD cmd  size=0x%04X, ret= %i\n",dbg_board->MGetRAMSize(),ret);
      break;
     case READDV:
      if ((n = recv (sockfd, (char *) &bp, 4, MSG_WAITALL)) != 4)
