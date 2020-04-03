@@ -242,6 +242,8 @@ cboard_6::~cboard_6(void)
 void
 cboard_6::Reset(void)
 {
+ pic.pkg=QFN;
+
  pic_reset (1);
 
  p_BT1 = 1; //set push button  in default state (high) 
