@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -84,10 +84,13 @@ cpart_pot::Draw (void)
 {
 
  int i;
-
+ lxRect rect;
+ char  val[10];
+ 
  canvas.Init ();
 
  lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
+ lxFont font_p (6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
 
  for (i = 0; i < outputc; i++)
@@ -114,7 +117,15 @@ cpart_pot::Draw (void)
      canvas.SetColor (50, 50, 50);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetColor (250, 250, 250);
-     canvas.Rectangle (1, output[i].x1 + 6, output[i].y1 + values[output[i].id - O_PO1], 20, 10);
+     rect.x=output[i].x1 + 6;
+     rect.y=output[i].y1 + values[output[i].id - O_PO1];
+     rect.width=20;
+     rect.height= 10;  
+     snprintf (val,10,"%4.2f", 5.0 * (148 - values[output[i].id - O_PO1]) / 148.0);
+     canvas.Rectangle (1, rect.x, rect.y, 20, 10);
+     canvas.SetColor (150, 0, 0);
+     canvas.SetFont (font_p);
+     canvas.TextOnRect (val,rect,CA_CENTER);
      break;
      break;
     }
