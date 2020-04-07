@@ -31,13 +31,13 @@
 /* outputs */
 enum
 {
- O_P1, O_P2, O_PO1, O_PO2, O_TP, O_AMPL, O_FREQ
+ O_P1, O_P2, O_PO1, O_PO2, O_TP, O_AMPL, O_FREQ, O_MF
 };
 
 /* inputs */
 enum
 {
- I_PO1, I_PO2, I_TP
+ I_PO1, I_PO2, I_TP, I_MF
 };
 
 cpart_SignalGenerator::cpart_SignalGenerator(unsigned x, unsigned y)
@@ -65,6 +65,7 @@ cpart_SignalGenerator::cpart_SignalGenerator(unsigned x, unsigned y)
 
  type = 0;
  ts = 0;
+ maxfreq=1;
 }
 
 cpart_SignalGenerator::~cpart_SignalGenerator(void)
@@ -81,7 +82,8 @@ cpart_SignalGenerator::Draw(void)
  String temp;
  float v[2];
  float tsi;
- int size;
+ int sizex;
+ int sizey;
  canvas.Init ();
 
  lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
@@ -121,9 +123,10 @@ cpart_SignalGenerator::Draw(void)
     
      v[0]= 0;
      tsi = 0;
-     size = output[i].x2 - output[i].x1;
-
-     for (j = 1; j < size; j++)
+     sizex = output[i].x2 - output[i].x1;
+     sizey = output[i].y2 - output[i].y1;
+     
+     for (j = 1; j < sizex; j++)
       {
        v[1]=v[0];
        switch (type)
@@ -138,12 +141,10 @@ cpart_SignalGenerator::Draw(void)
          v[0] = ((acos (sin (tsi)) / 1.5708) - 1) ;
          break;
         }
-       tsi += 3*6.28/size;
+       tsi += 3*6.28/sizex;
        if(j > 0)
-        {
-          //canvas.Point (output[i].x1+j,output[i].y1+((v+2.0)*size/4.0));
-          
-          canvas.Line (output[i].x1+j-1,output[i].y1+((v[1]+2.0)*size/4.0),output[i].x1+j,output[i].y1+((v[0]+2.0)*size/4.0));
+        {       
+          canvas.Line (output[i].x1+j-1,output[i].y1+((v[1]+2.0)*sizey/4.0),output[i].x1+j,output[i].y1+((v[0]+2.0)*sizey/4.0));
         }
       }
 
@@ -162,6 +163,13 @@ cpart_SignalGenerator::Draw(void)
      canvas.SetFgColor (255, 255, 255);
      canvas.Text (temp, output[i].x1, output[i].y1);
      break;
+    case O_MF:
+     canvas.SetColor (255, 255, 255);
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     canvas.SetColor (0, 0, 0);
+     temp.Printf ("F x %i", maxfreq);
+     canvas.Text (temp, output[i].x1, output[i].y1);
+     break;  
     }
   }
 
@@ -175,7 +183,7 @@ cpart_SignalGenerator::PreProcess(void)
  JUMPSTEPS_ = (Window1.GetBoard ()->MGetInstClock () / 250000);
  mcount = JUMPSTEPS_;
 
- freq = (10000 * values[1] / 148.0);
+ freq = (maxfreq * values[1] / 148.0);
  ampl = (2.5 * values[0] / 148.0);
 }
 
@@ -203,7 +211,10 @@ cpart_SignalGenerator::Process(void)
     }
    ts += 4e-6;
 
-   if (ts > 1e6)ts = ts - 1e6;
+   if (ts >= 128)
+    {
+     ts = ts - 128;
+    }
 
    Window5.SetAPin (input_pins[0], v);
 
@@ -240,6 +251,10 @@ cpart_SignalGenerator::EvMouseButtonPress(uint button, uint x, uint y, uint stat
        type++;
        if (type > 2)type = 0;
        break;
+      case I_MF:
+       maxfreq*=10;
+       if (maxfreq > 10000)maxfreq = 1;
+       break;  
       }
     }
   }
@@ -308,10 +323,11 @@ cpart_SignalGenerator::get_in_id(char * name)
  if (strcmp (name, "PO1") == 0)return I_PO1;
  if (strcmp (name, "PO2") == 0)return I_PO2;
  if (strcmp (name, "TP") == 0)return I_TP;
-
+ if (strcmp (name, "MF") == 0)return I_MF;
+ 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
-};
+}
 
 unsigned short
 cpart_SignalGenerator::get_out_id(char * name)
@@ -325,6 +341,7 @@ cpart_SignalGenerator::get_out_id(char * name)
  if (strcmp (name, "TP") == 0)return O_TP;
  if (strcmp (name, "AMPL") == 0)return O_AMPL;
  if (strcmp (name, "FREQ") == 0)return O_FREQ;
+ if (strcmp (name, "MF") == 0)return O_MF;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
@@ -335,7 +352,7 @@ cpart_SignalGenerator::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu", input_pins[0], values[0], values[1], type);
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%u", input_pins[0], values[0], values[1], type,maxfreq);
 
  return prefs;
 }
@@ -343,7 +360,7 @@ cpart_SignalGenerator::WritePreferences(void)
 void
 cpart_SignalGenerator::ReadPreferences(String value)
 {
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &values[0], &values[1], &type);
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%u", &input_pins[0], &values[0], &values[1], &type, &maxfreq);
 }
 
 CPWindow * WProp_SignalGenerator;

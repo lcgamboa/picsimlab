@@ -184,7 +184,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Active</Text>
+  <Text type="String">Open</Text>
   <Align type="CAlign">1</Align>
 </label9>
 </window1>

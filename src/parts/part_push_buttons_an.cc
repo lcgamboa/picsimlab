@@ -60,7 +60,7 @@ cpart_pbuttons_an::cpart_pbuttons_an(unsigned x, unsigned y)
 
  output_pins[0] = 0;
 
- output_value = active*5.0;
+ output_value = active * 5.0;
 
  refresh = 0;
 }
@@ -69,7 +69,7 @@ void
 cpart_pbuttons_an::Reset(void)
 {
  //release all
- output_value =  active* 5.0;
+ output_value = active * 5.0;
 
  refresh = 0;
 
@@ -88,7 +88,8 @@ cpart_pbuttons_an::Draw(void)
 {
 
  int i;
-
+ String temp;
+ float ftemp;
  canvas.Init ();
 
  lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
@@ -100,6 +101,20 @@ cpart_pbuttons_an::Draw(void)
    switch (output[i].id)
     {
     case O_P1:
+     canvas.SetColor (49, 61, 99);
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1+12);
+     canvas.SetFgColor (255, 255, 255);
+     if(active) 
+        ftemp=(5.0*(output[i].id - O_P1))/8.0;
+     else
+        ftemp=(5.0*(8-output[i].id - O_P1))/8.0;
+     temp=String().Format("%3.1f",ftemp)+lxT("V");
+     canvas.Text (temp, output[i].x1, output[i].y1);
+     if (output_pins[0] == 0)
+      canvas.Text ("NC", output[i].x1, output[i].y1+12);
+     else
+      canvas.Text (Window5.GetPinName (output_pins[0]), output[i].x1, output[i].y1+12);
+     break;
     case O_P2:
     case O_P3:
     case O_P4:
@@ -110,10 +125,13 @@ cpart_pbuttons_an::Draw(void)
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     if (output_pins[0] == 0)
-      canvas.Text ("NC", output[i].x1, output[i].y1);
+     if(active) 
+        ftemp=(5.0*(output[i].id - O_P1))/8.0;
      else
-      canvas.Text (Window5.GetPinName (output_pins[0]), output[i].x1, output[i].y1);
+        ftemp=(5.0*(8-output[i].id - O_P1))/8.0;
+      
+     temp=String().Format("%3.1f",ftemp)+lxT("V");
+     canvas.Text (temp, output[i].x1, output[i].y1);
      break;
     }
 
@@ -150,22 +168,22 @@ cpart_pbuttons_an::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
      switch (input[i].id)
       {
-      
-      case I_B1: output_value = (active*5.0*(0.0/8.0))+((!active)*5.0*(8.0/8.0));
+
+      case I_B1: output_value = (active * 5.0 * (0.0 / 8.0))+((!active)*5.0 * (8.0 / 8.0));
        break;
-      case I_B2: output_value = (active*5.0*(1.0/8.0))+((!active)*5.0*(7.0/8.0));
+      case I_B2: output_value = (active * 5.0 * (1.0 / 8.0))+((!active)*5.0 * (7.0 / 8.0));
        break;
-      case I_B3: output_value = (active*5.0*(2.0/8.0))+((!active)*5.0*(6.0/8.0));
+      case I_B3: output_value = (active * 5.0 * (2.0 / 8.0))+((!active)*5.0 * (6.0 / 8.0));
        break;
-      case I_B4: output_value = (active*5.0*(3.0/8.0))+((!active)*5.0*(5.0/8.0));
+      case I_B4: output_value = (active * 5.0 * (3.0 / 8.0))+((!active)*5.0 * (5.0 / 8.0));
        break;
-      case I_B5: output_value = (active*5.0*(4.0/8.0))+((!active)*5.0*(4.0/8.0));
+      case I_B5: output_value = (active * 5.0 * (4.0 / 8.0))+((!active)*5.0 * (4.0 / 8.0));
        break;
-      case I_B6: output_value = (active*5.0*(5.0/8.0))+((!active)*5.0*(3.0/8.0));
+      case I_B6: output_value = (active * 5.0 * (5.0 / 8.0))+((!active)*5.0 * (3.0 / 8.0));
        break;
-      case I_B7: output_value = (active*5.0*(6.0/8.0))+((!active)*5.0*(2.0/8.0));
+      case I_B7: output_value = (active * 5.0 * (6.0 / 8.0))+((!active)*5.0 * (2.0 / 8.0));
        break;
-      case I_B8: output_value = (active*5.0*(7.0/8.0))+((!active)*5.0*(1.0/8.0));
+      case I_B8: output_value = (active * 5.0 * (7.0 / 8.0))+((!active)*5.0 * (1.0 / 8.0));
        break;
       }
     }
@@ -183,21 +201,21 @@ cpart_pbuttons_an::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
     {
      switch (input[i].id)
       {
-      case I_B1: output_value = active*5.0;
+      case I_B1: output_value = active * 5.0;
        break;
-      case I_B2: output_value = active*5.0;
+      case I_B2: output_value = active * 5.0;
        break;
-      case I_B3: output_value = active*5.0;
+      case I_B3: output_value = active * 5.0;
        break;
-      case I_B4: output_value = active*5.0;
+      case I_B4: output_value = active * 5.0;
        break;
-      case I_B5: output_value = active*5.0;
+      case I_B5: output_value = active * 5.0;
        break;
-      case I_B6: output_value = active*5.0;
+      case I_B6: output_value = active * 5.0;
        break;
-      case I_B7: output_value = active*5.0;
+      case I_B7: output_value = active * 5.0;
        break;
-      case I_B8: output_value = active*5.0;
+      case I_B8: output_value = active * 5.0;
        break;
       }
     }
@@ -264,7 +282,7 @@ void
 cpart_pbuttons_an::ReadPreferences(String value)
 {
  sscanf (value.c_str (), "%hhu,%hhu", &output_pins[0], &active);
- output_value =  active*5.0;
+ output_value = active * 5.0;
 }
 
 CPWindow * WProp_pbuttons_an;
@@ -305,7 +323,7 @@ cpart_pbuttons_an::ReadPropertiesWindow(void)
 
  active = (((CCombo*) WProp_pbuttons_an->GetChildByName ("combo9"))->GetText ().compare ("HIGH") == 0);
 
- output_value = active*5.0;
+ output_value = active * 5.0;
 
 }
 

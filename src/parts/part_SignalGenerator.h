@@ -75,6 +75,7 @@ private:
     int JUMPSTEPS_;
     float freq;
     float ampl;
+    unsigned int maxfreq;
 };
 
 
