@@ -61,6 +61,9 @@ enum
 
 cboard_2::cboard_2(void)
 {
+ char fname[1024];
+ FILE * fout;
+
  proc = "PIC16F628A";
 
  clko = 0;
@@ -71,12 +74,50 @@ cboard_2::cboard_2(void)
  mi2c_init (&mi2c, 512);
  rtc_init (&rtc);
  ReadMaps ();
-};
+
+ strncpy (fname, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
+ strncat (fname, "/mdump_02_EEPROM.bin", 1023);
+
+ fout = fopen (fname, "rb");
+ if (fout)
+  {
+   fread (mi2c.data, mi2c.SIZE, 1, fout);
+   fclose (fout);
+  }
+ else
+  {
+   printf ("Error loading from file: %s \n", fname);
+  }
+
+}
 
 cboard_2::~cboard_2(void)
 {
  mi2c_end (&mi2c);
  rtc_end (&rtc);
+}
+
+void
+cboard_2::MDumpMemory(const char * mfname)
+{
+ FILE * fout;
+ char fname[1024];
+
+ strncpy (fname, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
+ strncat (fname, "/mdump_02_EEPROM.bin", 1023);
+
+ fout = fopen (fname, "wb");
+ if (fout)
+  {
+   fwrite (mi2c.data, mi2c.SIZE, 1, fout);
+   fclose (fout);
+  }
+ else
+  {
+   printf ("Error saving to file: %s \n", fname);
+  }
+
+ board_pic::MDumpMemory (mfname);
 }
 
 void

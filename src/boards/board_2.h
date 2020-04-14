@@ -58,6 +58,7 @@ class cboard_2:public board_pic
       String GetInputMapFile(void){return lxT("input2.map");};
       String GetOutputMapFile(void){return lxT("output2.map");};
       void Reset(void);
+      void MDumpMemory(const char * mfname);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
       void EvKeyPress(uint key, uint mask);

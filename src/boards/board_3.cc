@@ -97,6 +97,9 @@ enum
 
 cboard_3::cboard_3(void)
 {
+ char fname[1024];
+ FILE * fout;
+ 
  proc = "PIC18F452";
 
  vp2in = 2.5;
@@ -223,7 +226,20 @@ cboard_3::cboard_3(void)
  label4->SetAlign (1);
  Window1.CreateChild (label4);
 
-};
+ strncpy (fname, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
+ strncat (fname, "/mdump_03_EEPROM.bin", 1023);
+
+ fout = fopen (fname, "rb");
+ if (fout)
+  {
+   fread (mi2c.data, mi2c.SIZE, 1, fout);
+   fclose (fout);
+  }
+ else
+  {
+   printf ("Error loading from file: %s \n", fname);
+  }
+}
 
 cboard_3::~cboard_3(void)
 {
@@ -240,6 +256,30 @@ cboard_3::~cboard_3(void)
  Window1.DestroyChild (label4);
 
 }
+
+void
+cboard_3::MDumpMemory(const char * mfname)
+{
+ FILE * fout;
+ char fname[1024];
+
+ strncpy (fname, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
+ strncat (fname, "/mdump_03_EEPROM.bin", 1023);
+
+ fout = fopen (fname, "wb");
+ if (fout)
+  {
+   fwrite (mi2c.data, mi2c.SIZE, 1, fout);
+   fclose (fout);
+  }
+ else
+  {
+   printf ("Error saving to file: %s \n", fname);
+  }
+
+ board_pic::MDumpMemory (mfname);
+}
+
 
 void
 cboard_3::Draw(CDraw *draw, double scale)

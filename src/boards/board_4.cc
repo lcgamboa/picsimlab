@@ -57,6 +57,9 @@ enum
 
 cboard_4::cboard_4(void)
 {
+ char fname[1024];
+ FILE * fout;
+ 
  proc = "PIC18F452";
 
  vtc = 0;
@@ -252,7 +255,21 @@ cboard_4::cboard_4(void)
  combo1->SetItems (lxT ("hd44780 16x2,hd44780 16x4,"));
  combo1->EvOnComboChange = EVONCOMBOCHANGE & CPWindow1::board_Event;
  Window1.CreateChild (combo1);
-};
+ 
+ strncpy (fname, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
+ strncat (fname, "/mdump_04_EEPROM.bin", 1023);
+
+ fout = fopen (fname, "rb");
+ if (fout)
+  {
+   fread (mi2c.data, mi2c.SIZE, 1, fout);
+   fclose (fout);
+  }
+ else
+  {
+   printf ("Error loading from file: %s \n", fname);
+  }
+}
 
 cboard_4::~cboard_4(void)
 {
@@ -283,6 +300,30 @@ cboard_4::~cboard_4(void)
  Window1.DestroyChild (label6);
  Window1.DestroyChild (combo1);
 }
+
+void
+cboard_4::MDumpMemory(const char * mfname)
+{
+ FILE * fout;
+ char fname[1024];
+
+ strncpy (fname, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
+ strncat (fname, "/mdump_04_EEPROM.bin", 1023);
+
+ fout = fopen (fname, "wb");
+ if (fout)
+  {
+   fwrite (mi2c.data, mi2c.SIZE, 1, fout);
+   fclose (fout);
+  }
+ else
+  {
+   printf ("Error saving to file: %s \n", fname);
+  }
+
+ board_pic::MDumpMemory (mfname);
+}
+
 
 void
 cboard_4::Draw(CDraw *draw, double scale)

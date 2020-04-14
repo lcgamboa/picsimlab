@@ -553,6 +553,7 @@ CPWindow5::filedialog1_EvOnClose(int retId)
    parts[fdtype]->filedialog_EvOnClose (retId);
    fdtype = -1;
    filedialog1.SetFileName (oldfname);
+   filedialog1.SetFilter (lxT ("PICSimLab Config. (*.pcf)|*.pcf"));
   }
 }
 
@@ -698,6 +699,5 @@ void
 CPWindow5::Setfdtype(int value)
 {
  fdtype = value;
- filedialog1.SetFilter (lxT ("PICSimLab Config. (*.pcf)|*.pcf"));
  oldfname = filedialog1.GetFileName ();
 }

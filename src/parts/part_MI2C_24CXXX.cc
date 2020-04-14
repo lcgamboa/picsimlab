@@ -361,7 +361,7 @@ cpart_MI2C_24CXXX::EvMouseButtonPress(uint button, uint x, uint y, uint state)
             {
              fprintf (fout, "%02X ", mi2c.data[j + i ]);
             }
-           fprintf (fout, "\n");
+           fprintf (fout, "\r\n");
           }
          fclose (fout);
 #ifdef _WIN_
@@ -424,6 +424,4 @@ cpart_MI2C_24CXXX::filedialog_EvOnClose(int retId)
       }
     }
   }
-
-
 }
