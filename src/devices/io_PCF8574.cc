@@ -149,7 +149,7 @@ io_PCF8574_io(io_PCF8574_t *ioe8, unsigned char scl, unsigned char sda)
 
       }
     }
-   else if ((ioe8->ctrl) == (ioe8->addr+1)) //read
+   else if ((ioe8->ctrl) == (ioe8->addr|1)) //read
     {
 
      ioe8->datas = ioe8->data;

@@ -28,6 +28,12 @@
 #include"../picsimlab5.h"
 #include"part_MI2C_24CXXX.h"
 
+/* inputs */
+enum
+{
+ I_LOAD, I_SAVE, I_VIEW
+};
+
 /* outputs */
 enum
 {
@@ -72,13 +78,24 @@ cpart_MI2C_24CXXX::cpart_MI2C_24CXXX(unsigned x, unsigned y)
  input_pins[2] = 0;
  input_pins[3] = 0;
  input_pins[4] = 0;
-};
+
+ f_mi2c_name[0] = 0;
+ f_mi2c = NULL;
+
+ snprintf (f_mi2c_tmp_name, 200, "%s/picsimlab-XXXXXX", (const char *) lxGetTempDir ("PICSimLab").c_str ());
+ close (mkstemp (f_mi2c_tmp_name));
+ unlink (f_mi2c_tmp_name);
+
+ strncat (f_mi2c_tmp_name, ".txt", 200);
+
+}
 
 cpart_MI2C_24CXXX::~cpart_MI2C_24CXXX(void)
 {
  mi2c_end (&mi2c);
  delete Bitmap;
  canvas.Destroy ();
+ unlink (f_mi2c_tmp_name);
 }
 
 void
@@ -99,7 +116,7 @@ cpart_MI2C_24CXXX::Draw(void)
     {
     case O_IC:
      char buff[10];
-     snprintf(buff,9,"24C%02i",kbits);
+     snprintf (buff, 9, "24C%02i", kbits);
      canvas.SetColor (0, 0, 0);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
@@ -138,9 +155,13 @@ cpart_MI2C_24CXXX::Draw(void)
 unsigned short
 cpart_MI2C_24CXXX::get_in_id(char * name)
 {
+ if (strcmp (name, "LOAD") == 0)return I_LOAD;
+ if (strcmp (name, "SAVE") == 0)return I_SAVE;
+ if (strcmp (name, "VIEW") == 0)return I_VIEW;
+
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
-};
+}
 
 unsigned short
 cpart_MI2C_24CXXX::get_out_id(char * name)
@@ -159,7 +180,7 @@ cpart_MI2C_24CXXX::get_out_id(char * name)
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
-};
+}
 
 String
 cpart_MI2C_24CXXX::WritePreferences(void)
@@ -268,6 +289,28 @@ cpart_MI2C_24CXXX::ReadPropertiesWindow(void)
 }
 
 void
+cpart_MI2C_24CXXX::PreProcess(void)
+{
+ const picpin * ppins = Window5.GetPinsValues ();
+ unsigned char addr = 0x50;
+
+ if (input_pins[0])
+  {
+   if (ppins[input_pins[0] - 1].value)addr |= 0x01;
+  }
+ if (input_pins[1])
+  {
+   if (ppins[input_pins[1] - 1].value)addr |= 0x02;
+  }
+ if (input_pins[2])
+  {
+   if (ppins[input_pins[2] - 1].value)addr |= 0x04;
+  }
+
+ mi2c_set_addr (&mi2c, addr);
+}
+
+void
 cpart_MI2C_24CXXX::Process(void)
 {
  const picpin * ppins = Window5.GetPinsValues ();
@@ -277,5 +320,110 @@ cpart_MI2C_24CXXX::Process(void)
 
  if (input_pins[3] > 0)
   Window5.SetPin (input_pins[3], Window5.Get_i2c_bus (input_pins[3] - 1));
+
+}
+
+void
+cpart_MI2C_24CXXX::EvMouseButtonPress(uint button, uint x, uint y, uint state)
+{
+ int i;
+
+ for (i = 0; i < inputc; i++)
+  {
+   if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+    {
+
+     switch (input[i].id)
+      {
+      case I_LOAD:
+       Window5.filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
+       Window5.filedialog1.SetFilter (lxT ("PICSimLab Binary File (*.bin)|*.bin"));
+       Window5.filedialog1.SetFileName (lxT ("untitled.bin"));
+       Window5.Setfdtype (id);
+       Window5.filedialog1.Run ();
+       break;
+      case I_SAVE:
+       Window5.filedialog1.SetType (lxFD_SAVE | lxFD_CHANGE_DIR);
+       Window5.filedialog1.SetFilter (lxT ("PICSimLab Binary File (*.bin)|*.bin"));
+       Window5.filedialog1.SetFileName (lxT ("untitled.bin"));
+       Window5.Setfdtype (id);
+       Window5.filedialog1.Run ();
+       break;
+      case I_VIEW:
+       FILE * fout;
+       fout = fopen (f_mi2c_tmp_name, "w");
+       if (fout)
+        {
+         for (unsigned int i = 0; i < mi2c.SIZE; i += 16)
+          {
+           fprintf (fout, "%04X: ", i);
+           for (int j = 0; j < 16; j++)
+            {
+             fprintf (fout, "%02X ", mi2c.data[j + i ]);
+            }
+           fprintf (fout, "\n");
+          }
+         fclose (fout);
+#ifdef _WIN_
+         lxExecute (Window1.GetSharePath () + lxT ("notepad ") + f_mi2c_tmp_name);
+#else
+         lxExecute (String ("gedit ") + f_mi2c_tmp_name, lxEXEC_MAKE_GROUP_LEADER);
+#endif   
+        }
+       else
+        {
+         printf ("Error saving to file: %s \n", f_mi2c_tmp_name);
+        }
+       break;
+      }
+    }
+  }
+}
+
+void
+cpart_MI2C_24CXXX::filedialog_EvOnClose(int retId)
+{
+
+ if (retId)
+  {
+
+   if ((Window5.filedialog1.GetType () == (lxFD_SAVE | lxFD_CHANGE_DIR)))
+    {
+     if (lxFileExists (Window5.filedialog1.GetFileName ()))
+      {
+
+       if (!Dialog (String ("Overwriting file: ") + basename (Window5.filedialog1.GetFileName ()) + "?"))
+        return;
+      }
+
+     FILE * fout;
+     fout = fopen (Window5.filedialog1.GetFileName (), "wb");
+     if (fout)
+      {
+       fwrite (mi2c.data, mi2c.SIZE, 1, fout);
+       fclose (fout);
+      }
+     else
+      {
+       printf ("Error saving to file: %s \n", (const char *) Window5.filedialog1.GetFileName ().c_str ());
+      }
+    }
+
+   if ((Window5.filedialog1.GetType () == (lxFD_OPEN | lxFD_CHANGE_DIR)))
+    {
+     FILE * fout;
+     fout = fopen (Window5.filedialog1.GetFileName (), "rb");
+     if (fout)
+      {
+       fread (mi2c.data, mi2c.SIZE, 1, fout);
+       fclose (fout);
+      }
+     else
+      {
+       printf ("Error loading from file: %s \n", (const char *) Window5.filedialog1.GetFileName ().c_str ());
+      }
+    }
+  }
+
 
 }

@@ -55,6 +55,7 @@ class part
       virtual void ConfigurePropertiesWindow(CPWindow *  wprop)=0;
       virtual void ReadPropertiesWindow(void)=0;
       virtual void ComboChange(String value){};
+      virtual void filedialog_EvOnClose(int retId){};
       part();           //Called once on part creation
       virtual ~part(void){};  //Called once on part destruction
       lxBitmap * GetBitmap(void){return Bitmap;};
@@ -65,6 +66,7 @@ class part
       unsigned int GetWidth(void){return Width;};
       unsigned int GetHeight(void){return Height;};
       int PointInside(int x, int y);
+      int id;
  protected:
       input_t  input[100];  //input map elements
       output_t output[100]; //output map elements 
@@ -74,7 +76,7 @@ class part
       unsigned int Height;
       unsigned int Width;
       int X;
-     int Y;
+      int Y;
       lxBitmap * Bitmap; 
       CCanvas canvas; 
       unsigned int refresh;

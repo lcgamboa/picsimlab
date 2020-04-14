@@ -33,6 +33,15 @@
 #define dprintf if (1) {} else printf
 
 void
+mi2c_set_addr(mi2c_t *mem, unsigned char addr)
+{
+ if (mem->SIZE >= 4096)
+  {
+   mem->maddr = addr << 1;
+  }
+}
+
+void
 mi2c_rst(mi2c_t *mem)
 {
 
@@ -67,18 +76,19 @@ mi2c_init(mi2c_t *mem, int sizekbits)
  else
   mem->ADDRB = 2;
 
- dprintf("mi2c init size=(%i) ADDRB=(%i)\n", sizekbits,mem->ADDRB);
+ dprintf ("mi2c init size=(%i) ADDRB=(%i)\n", sizekbits, mem->ADDRB);
 
  mem->data = (unsigned char *) calloc (mem->SIZE, sizeof (unsigned char));
 
  memset (mem->data, 0xFF, mem->SIZE);
  mi2c_rst (mem);
+ mem->maddr = 0x50<<1;
 }
 
 void
 mi2c_end(mi2c_t *mem)
 {
- dprintf("mi2c end\n");
+ dprintf ("mi2c end\n");
  if (mem->data)
   free (mem->data);
  mem->data = NULL;
@@ -95,7 +105,7 @@ mi2c_io(mi2c_t *mem, unsigned char scl, unsigned char sda)
    mem->datab = 0;
    mem->ctrl = 0;
    mem->ret = 0;
-   dprintf("---->mem start!\n");	 
+   dprintf ("---->mem start!\n");
   }
 
  if ((mem->sdao == 0)&&(sda == 1)&&(scl == 1)&&(mem->sclo == 1)) //stop
@@ -104,7 +114,7 @@ mi2c_io(mi2c_t *mem, unsigned char scl, unsigned char sda)
    mem->byte = 0xFF;
    mem->ctrl = 0;
    mem->ret = 0;
-   dprintf("---> mem stop!\n");	 
+   dprintf ("---> mem stop!\n");
   }
 
 
@@ -135,7 +145,7 @@ mi2c_io(mi2c_t *mem, unsigned char scl, unsigned char sda)
 
  if (mem->bit == 9)
   {
-   dprintf("mi2c data %02X\n",mem->datab);
+   dprintf ("mi2c data %02X\n", mem->datab);
 
    if (mem->byte == 0)
     {
@@ -144,7 +154,7 @@ mi2c_io(mi2c_t *mem, unsigned char scl, unsigned char sda)
      else
       mem->ctrl = mem->datab & 0xF1;
 
-     dprintf("----> mem ctrl = %02X\n",mem->ctrl);		
+     dprintf ("----> mem ctrl = %02X\n", mem->ctrl);
      mem->ret = 0;
 
      if ((mem->ctrl & 0x01) == 0x00)
@@ -159,19 +169,19 @@ mi2c_io(mi2c_t *mem, unsigned char scl, unsigned char sda)
 
     }
 
-   if ((mem->ctrl) == 0xA0)
+   if (mem->ctrl == mem->maddr)
     {
      if (mem->ADDRB == 2)
       {
        if (mem->byte == 1)
         {
          mem->addr |= (mem->datab << 8);
-         dprintf("----> mem add = %02X\n",mem->addr);		
+         dprintf ("----> mem add = %02X\n", mem->addr);
         }
        if (mem->byte == 2)
         {
          mem->addr |= mem->datab;
-         dprintf("----> mem add = %02X\n",mem->addr);		
+         dprintf ("----> mem add = %02X\n", mem->addr);
         }
       }
      else
@@ -179,24 +189,24 @@ mi2c_io(mi2c_t *mem, unsigned char scl, unsigned char sda)
        if (mem->byte == 1)
         {
          mem->addr |= mem->datab;
-         dprintf("----> mem add = %02X\n",mem->addr);		
+         dprintf ("----> mem add = %02X\n", mem->addr);
         };
       }
 
      if ((mem->byte > mem->ADDRB)&&((mem->ctrl & 0x01) == 0))
       {
        mem->data[mem->addr] = mem->datab;
-       dprintf("write mem[%04X]=%02X\n",mem->addr,mem->datab); 
+       dprintf ("write mem[%04X]=%02X\n", mem->addr, mem->datab);
        mem->addr++;
       }
      mem->ret = 0;
     }
-   else if ((mem->ctrl) == 0xA1) //read
+   else if (mem->ctrl == (mem->maddr | 1)) //read
     {
      if (mem->byte < mem->SIZE)
       {
        mem->datas = mem->data[mem->addr];
-       dprintf("mi2c read[%04X]=%02X\n",mem->addr,mem->datas); 
+       dprintf ("mi2c read[%04X]=%02X\n", mem->addr, mem->datas);
        mem->addr++;
       }
      else

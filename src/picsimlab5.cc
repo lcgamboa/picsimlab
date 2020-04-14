@@ -101,14 +101,13 @@ CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
     }
    else
     {
+     parts[partsc]->id = partsc;
      partsc++;
     }
    PartToCreate = "";
    _EvOnShow (control);
   }
-
-
-};
+}
 
 void
 CPWindow5::draw1_EvMouseButtonRelease(CControl * control, uint button, uint x, uint y, uint state)
@@ -350,6 +349,7 @@ CPWindow5::LoadConfig(String fname)
      else if ((parts[partsc_] = create_part (name, x, y)))
       {
        parts[partsc_]->ReadPreferences (temp);
+       parts[partsc_]->id = partsc_;
        partsc_++;
       }
      else
@@ -396,6 +396,7 @@ void
 CPWindow5::menu1_File_Saveconfiguration_EvMenuActive(CControl * control)
 {
  filedialog1.SetType (lxFD_SAVE | lxFD_CHANGE_DIR);
+ fdtype = -1;
  filedialog1.Run ();
 }
 
@@ -403,6 +404,7 @@ void
 CPWindow5::menu1_File_Loadconfiguration_EvMenuActive(CControl * control)
 {
  filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
+ fdtype = -1;
  filedialog1.Run ();
 }
 
@@ -442,7 +444,6 @@ CPWindow5::Reset(void)
    parts[i]->Reset ();
   }
 }
-
 
 void
 CPWindow5::_EvOnHide(CControl * control)
@@ -527,20 +528,31 @@ void
 CPWindow5::filedialog1_EvOnClose(int retId)
 {
 
- if (retId && (filedialog1.GetType () == (lxFD_SAVE | lxFD_CHANGE_DIR)))
+ if (retId && (fdtype == -1))
   {
-   if (lxFileExists (filedialog1.GetFileName ()))
-    {
 
-     if (!Dialog (String ("Overwriting file: ") + basename (filedialog1.GetFileName ()) + "?"))
-      return;
+   if ((filedialog1.GetType () == (lxFD_SAVE | lxFD_CHANGE_DIR)))
+    {
+     if (lxFileExists (filedialog1.GetFileName ()))
+      {
+
+       if (!Dialog (String ("Overwriting file: ") + basename (filedialog1.GetFileName ()) + "?"))
+        return;
+      }
+     SaveConfig (filedialog1.GetFileName ());
     }
-   SaveConfig (filedialog1.GetFileName ());
+
+   if ((filedialog1.GetType () == (lxFD_OPEN | lxFD_CHANGE_DIR)))
+    {
+     LoadConfig (filedialog1.GetFileName ());
+    }
   }
 
- if (retId && (filedialog1.GetType () == (lxFD_OPEN | lxFD_CHANGE_DIR)))
+ if (fdtype != -1)
   {
-   LoadConfig (filedialog1.GetFileName ());
+   parts[fdtype]->filedialog_EvOnClose (retId);
+   fdtype = -1;
+   filedialog1.SetFileName (oldfname);
   }
 }
 
@@ -604,20 +616,20 @@ CPWindow5::GetPinsValues(void)
 void
 CPWindow5::SetPin(unsigned char pin, unsigned char value)
 {
- if(pin)
- {
- if ((Pins[pin - 1].dir) &&((Pins[pin - 1].value != value)))
+ if (pin)
   {
-   if ((pin > PinsCount))
+   if ((Pins[pin - 1].dir) &&((Pins[pin - 1].value != value)))
     {
-     Pins[pin - 1].value = value;
-    }
-   else
-    {
-     pboard->MSetPin (pin, value);
+     if ((pin > PinsCount))
+      {
+       Pins[pin - 1].value = value;
+      }
+     else
+      {
+       pboard->MSetPin (pin, value);
+      }
     }
   }
- }
 }
 
 void
@@ -652,20 +664,20 @@ unsigned char
 CPWindow5::RegisterIOpin(String pname, unsigned char pin)
 {
  unsigned char ppin = IOINIT;
- 
- if(pin >= IOINIT)
+
+ if (pin >= IOINIT)
   {
    ppin = pin;
   }
- 
- while((PinNames[ppin].length () > 0 )&&(ppin))
+
+ while ((PinNames[ppin].length () > 0)&&(ppin))
   {
    ppin++;
   }
- 
- if(ppin)
+
+ if (ppin)
   {
-    PinNames[ppin] = pname;
+   PinNames[ppin] = pname;
   }
 
  return ppin;
@@ -674,10 +686,18 @@ CPWindow5::RegisterIOpin(String pname, unsigned char pin)
 unsigned char
 CPWindow5::UnregisterIOpin(unsigned char pin)
 {
- if(PinNames[pin].length () > 0)
+ if (PinNames[pin].length () > 0)
   {
-    PinNames[pin]="";
-    return 1;
+   PinNames[pin] = "";
+   return 1;
   }
- return 0; 
+ return 0;
+}
+
+void
+CPWindow5::Setfdtype(int value)
+{
+ fdtype = value;
+ filedialog1.SetFilter (lxT ("PICSimLab Config. (*.pcf)|*.pcf"));
+ oldfname = filedialog1.GetFileName ();
 }

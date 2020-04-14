@@ -43,6 +43,8 @@ unsigned char ret;
 
 unsigned char bit;
 unsigned char byte;
+
+unsigned char maddr;
 }mi2c_t;
 
 
@@ -50,5 +52,6 @@ void mi2c_init_null(mi2c_t *mem);
 void mi2c_rst(mi2c_t *mem);
 void mi2c_init(mi2c_t *mem,int sizekbits);
 void mi2c_end(mi2c_t *mem);
+void mi2c_set_addr(mi2c_t *mem, unsigned char addr);
 
 unsigned char mi2c_io(mi2c_t *mem, unsigned char scl, unsigned char sda);

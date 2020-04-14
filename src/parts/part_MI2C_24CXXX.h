@@ -24,38 +24,58 @@
    ######################################################################## */
 
 #ifndef PART_MI2C_24CXXX_H
-#define	PART_MI2C_24CXXX_H
+#define PART_MI2C_24CXXX_H
 
 #include<lxrad.h>
 #include"part.h"
 #include"../devices/lcd_pcd8544.h"
 
-class cpart_MI2C_24CXXX:public part
-{
-   public:
-      String GetName(void){return lxT("MEM 24CXXX");};
-      cpart_MI2C_24CXXX(unsigned x, unsigned y);
-      ~cpart_MI2C_24CXXX(void);
-      void Draw(void);
-      void Process(void);
-      String GetPictureFileName(void){return lxT("IC8.png");};
-      String GetInputMapFile(void){return lxT("IC8_i.map");};
-      String GetOutputMapFile(void){return lxT("IC8_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("MI2C_24CXXX.lxrad");};
-      void ConfigurePropertiesWindow(CPWindow *  wprop);
-      void ReadPropertiesWindow(void);
-      String WritePreferences(void);
-      void ReadPreferences(String value);
-      unsigned short get_in_id(char * name);
-      unsigned short get_out_id(char * name);
-   private:
-      unsigned char input_pins[5]; 
-      mi2c_t mi2c;
-      int kbits;
+class cpart_MI2C_24CXXX : public part {
+public:
+
+    String GetName(void) {
+        return lxT("MEM 24CXXX");
+    };
+    cpart_MI2C_24CXXX(unsigned x, unsigned y);
+    ~cpart_MI2C_24CXXX(void);
+    void Draw(void);
+    void PreProcess(void);
+    void Process(void);
+
+    String GetPictureFileName(void) {
+        return lxT("MI2C_24CXXX.png");
+    };
+
+    String GetInputMapFile(void) {
+        return lxT("MI2C_24CXXX_i.map");
+    };
+
+    String GetOutputMapFile(void) {
+        return lxT("IC8_o.map");
+    };
+
+    String GetPropertiesWindowFile(void) {
+        return lxT("MI2C_24CXXX.lxrad");
+    };
+    void EvMouseButtonPress(uint button, uint x, uint y,uint state);
+    void ConfigurePropertiesWindow(CPWindow * wprop);
+    void filedialog_EvOnClose(int retId);
+    void ReadPropertiesWindow(void);
+    String WritePreferences(void);
+    void ReadPreferences(String value);
+    unsigned short get_in_id(char * name);
+    unsigned short get_out_id(char * name);
+private:
+    unsigned char input_pins[5];
+    mi2c_t mi2c;
+    int kbits;
+    char f_mi2c_name[200];
+    char f_mi2c_tmp_name[200];
+    FILE * f_mi2c;
 };
 
 
 
 
-#endif	/* PART_MI2C_24CXXX_H */
+#endif /* PART_MI2C_24CXXX_H */
 

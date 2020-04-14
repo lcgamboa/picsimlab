@@ -219,7 +219,7 @@ cpart_IO_PCF8574::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3], output_pins[0]);
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4], output_pins[0]);
 
  return prefs;
 }
@@ -228,7 +228,7 @@ void
 cpart_IO_PCF8574::ReadPreferences(String value)
 {
  unsigned char outp;
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &outp);
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &outp);
 
  if (output_pins[0] != outp)
   {
@@ -236,15 +236,15 @@ cpart_IO_PCF8574::ReadPreferences(String value)
    for (int i = 0; i < 9; i++)
     Window5.UnregisterIOpin (output_pins[i]);
 
-   output_pins[0] = Window5.RegisterIOpin (lxT ("P0"),outp++);
-   output_pins[1] = Window5.RegisterIOpin (lxT ("P1"),outp++);
-   output_pins[2] = Window5.RegisterIOpin (lxT ("P2"),outp++);
-   output_pins[3] = Window5.RegisterIOpin (lxT ("P3"),outp++);
-   output_pins[4] = Window5.RegisterIOpin (lxT ("P4"),outp++);
-   output_pins[5] = Window5.RegisterIOpin (lxT ("P5"),outp++);
-   output_pins[6] = Window5.RegisterIOpin (lxT ("P6"),outp++);
-   output_pins[7] = Window5.RegisterIOpin (lxT ("P7"),outp++);
-   output_pins[8] = Window5.RegisterIOpin (lxT ("/INT"),outp++);
+   output_pins[0] = Window5.RegisterIOpin (lxT ("P0"), outp++);
+   output_pins[1] = Window5.RegisterIOpin (lxT ("P1"), outp++);
+   output_pins[2] = Window5.RegisterIOpin (lxT ("P2"), outp++);
+   output_pins[3] = Window5.RegisterIOpin (lxT ("P3"), outp++);
+   output_pins[4] = Window5.RegisterIOpin (lxT ("P4"), outp++);
+   output_pins[5] = Window5.RegisterIOpin (lxT ("P5"), outp++);
+   output_pins[6] = Window5.RegisterIOpin (lxT ("P6"), outp++);
+   output_pins[7] = Window5.RegisterIOpin (lxT ("P7"), outp++);
+   output_pins[8] = Window5.RegisterIOpin (lxT ("/INT"), outp++);
   }
 
  Reset ();
@@ -348,11 +348,31 @@ cpart_IO_PCF8574::ReadPropertiesWindow(void)
 void
 cpart_IO_PCF8574::PreProcess(void)
 {
+ const picpin * ppins = Window5.GetPinsValues ();
+ unsigned char addr = 0x27;
 
  memset (output_pins_alm, 0, 9 * sizeof (unsigned long));
 
  JUMPSTEPS_ = Window1.GetJUMPSTEPS ();
  mcount = JUMPSTEPS_;
+
+
+
+ if (input_pins[2])
+  {
+   if (!ppins[input_pins[2] - 1].value)addr &= ~0x01;
+  }
+ if (input_pins[3])
+  {
+   if (!ppins[input_pins[3] - 1].value)addr &= ~0x02;
+  }
+ if (input_pins[4])
+  {
+   if (!ppins[input_pins[4] - 1].value)addr &= ~0x04;
+  }
+
+ io_PCF8574_set_addr (&ioe8, addr);
+
 }
 
 void

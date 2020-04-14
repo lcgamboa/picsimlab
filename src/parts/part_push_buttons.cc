@@ -213,7 +213,7 @@ cpart_pbuttons::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       }
     }
   }
-};
+}
 
 void
 cpart_pbuttons::EvMouseButtonRelease(uint button, uint x, uint y, uint state)

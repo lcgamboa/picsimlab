@@ -100,6 +100,7 @@ class CPWindow5:public CPWindow
   void SetAPin (unsigned char pin, float value);
   unsigned char RegisterIOpin(String pname, unsigned char pin=0);
   unsigned char UnregisterIOpin(unsigned char pin);
+  void Setfdtype (int value);
   private:
     board *pboard;
     String PinNames[256];
@@ -116,6 +117,8 @@ class CPWindow5:public CPWindow
     String LoadConfigFile;
     unsigned char i2c_bus[IOINIT];
     CPWindow wprop;
+    int fdtype;
+    String oldfname;
 };
 
 extern CPWindow5 Window5 ;

@@ -193,4 +193,5 @@ CPWindow5::CPWindow5(void)
   mdy=0;
   scale=1.0;
   LoadConfigFile="";
-};
+  fdtype = -1;
+}
