@@ -46,7 +46,7 @@ class cboard_2:public board_pic
      unsigned char clko;
      unsigned char d;
      unsigned char sda,sck;
-       
+     char mi2c_tmp_name[200];  
     
   public:
       cboard_2(void);

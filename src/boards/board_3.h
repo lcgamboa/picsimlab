@@ -71,6 +71,7 @@ class cboard_3:public board_pic
 
     lxaudio buzzer;
     
+    char mi2c_tmp_name[200]; 
   public:
       cboard_3(void);
       ~cboard_3(void);

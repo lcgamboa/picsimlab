@@ -52,14 +52,14 @@ enum
  I_TC1, I_TC2, I_TC3, I_TC4, I_TC5, I_TC6, I_TC7, I_TC8, I_TC9,
  I_TCA, I_TC0, I_TCT, I_D01, I_D02, I_D03, I_D04, I_D05, I_D06, I_D07,
  I_D08, I_D09, I_D10, I_D11, I_D12, I_D13, I_D14, I_D15, I_D16, I_D17,
- I_D18, I_D19, I_D20, I_JP1
+ I_D18, I_D19, I_D20, I_JP1, I_VIEW
 };
 
 cboard_4::cboard_4(void)
 {
  char fname[1024];
  FILE * fout;
- 
+
  proc = "PIC18F452";
 
  vtc = 0;
@@ -255,7 +255,7 @@ cboard_4::cboard_4(void)
  combo1->SetItems (lxT ("hd44780 16x2,hd44780 16x4,"));
  combo1->EvOnComboChange = EVONCOMBOCHANGE & CPWindow1::board_Event;
  Window1.CreateChild (combo1);
- 
+
  strncpy (fname, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
  strncat (fname, "/mdump_04_EEPROM.bin", 1023);
 
@@ -269,6 +269,11 @@ cboard_4::cboard_4(void)
   {
    printf ("Error loading from file: %s \n", fname);
   }
+
+ snprintf (mi2c_tmp_name, 200, "%s/picsimlab-XXXXXX", (const char *) lxGetTempDir ("PICSimLab").c_str ());
+ close (mkstemp (mi2c_tmp_name));
+ unlink (mi2c_tmp_name);
+ strncat (mi2c_tmp_name, ".txt", 200);
 }
 
 cboard_4::~cboard_4(void)
@@ -299,6 +304,8 @@ cboard_4::~cboard_4(void)
  Window1.DestroyChild (label5);
  Window1.DestroyChild (label6);
  Window1.DestroyChild (combo1);
+ 
+ unlink (mi2c_tmp_name);
 }
 
 void
@@ -323,7 +330,6 @@ cboard_4::MDumpMemory(const char * mfname)
 
  board_pic::MDumpMemory (mfname);
 }
-
 
 void
 cboard_4::Draw(CDraw *draw, double scale)
@@ -1319,7 +1325,28 @@ cboard_4::EvMouseButtonPress(uint button, uint x, uint y, uint state)
         p_KEY12 = 1;
        };
        break;
-
+      case I_VIEW:
+       FILE * fout;
+       fout = fopen (mi2c_tmp_name, "w");
+       if (fout)
+        {
+         for (unsigned int i = 0; i < mi2c.SIZE; i += 16)
+          {
+           fprintf (fout, "%04X: ", i);
+           for (int j = 0; j < 16; j++)
+            {
+             fprintf (fout, "%02X ", mi2c.data[j + i ]);
+            }
+           fprintf (fout, "\r\n");
+          }
+         fclose (fout);
+         wxLaunchDefaultApplication(mi2c_tmp_name);
+        }
+       else
+        {
+         printf ("Error saving to file: %s \n", mi2c_tmp_name);
+        }
+       break;
       }
     }
   }
@@ -1699,6 +1726,7 @@ cboard_4::get_in_id(char * name)
  if (strcmp (name, "DP20") == 0)return I_D20;
 
  if (strcmp (name, "JP1") == 0)return I_JP1;
+ if (strcmp (name, "VIEW") == 0)return I_VIEW;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;

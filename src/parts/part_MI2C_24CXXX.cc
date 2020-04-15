@@ -79,7 +79,8 @@ cpart_MI2C_24CXXX::cpart_MI2C_24CXXX(unsigned x, unsigned y)
  input_pins[3] = 0;
  input_pins[4] = 0;
 
- f_mi2c_name[0] = 0;
+ f_mi2c_name[0] = '*';
+ f_mi2c_name[1] = 0;
  f_mi2c = NULL;
 
  snprintf (f_mi2c_tmp_name, 200, "%s/picsimlab-XXXXXX", (const char *) lxGetTempDir ("PICSimLab").c_str ());
@@ -187,7 +188,22 @@ cpart_MI2C_24CXXX::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%u", input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4], kbits);
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%u,%s", input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4], kbits, f_mi2c_name);
+
+ if (f_mi2c_name[0] != '*')
+  {
+   FILE * fout;
+   fout = fopen (f_mi2c_name, "wb");
+   if (fout)
+    {
+     fwrite (mi2c.data, mi2c.SIZE, 1, fout);
+     fclose (fout);
+    }
+   else
+    {
+     printf ("Error saving to file: %s \n", f_mi2c_name);
+    }
+  }
 
  return prefs;
 }
@@ -195,12 +211,26 @@ cpart_MI2C_24CXXX::WritePreferences(void)
 void
 cpart_MI2C_24CXXX::ReadPreferences(String value)
 {
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%u", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &kbits);
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%u,%s", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &kbits, f_mi2c_name);
 
  mi2c_end (&mi2c);
  mi2c_init (&mi2c, kbits);
  mi2c_rst (&mi2c);
 
+ if (f_mi2c_name[0] != '*')
+  {
+   FILE * fout;
+   fout = fopen (f_mi2c_name, "rb");
+   if (fout)
+    {
+     fread (mi2c.data, mi2c.SIZE, 1, fout);
+     fclose (fout);
+    }
+   else
+    {
+     printf ("Error loading from file: %s \n", f_mi2c_name);
+    }
+  }
  Reset ();
 }
 
@@ -255,6 +285,7 @@ cpart_MI2C_24CXXX::ConfigurePropertiesWindow(CPWindow * wprop)
   ((CCombo*) WProp_MI2C_24CXXX->GetChildByName ("combo6"))->SetText ("0  NC");
  else
   {
+
    spin = Window5.GetPinName (input_pins[4]);
    ((CCombo*) WProp_MI2C_24CXXX->GetChildByName ("combo6"))->SetText (itoa (input_pins[4]) + "  " + spin);
   }
@@ -281,10 +312,13 @@ cpart_MI2C_24CXXX::ReadPropertiesWindow(void)
 
  if (nkbits != kbits)
   {
+
    kbits = nkbits;
    mi2c_end (&mi2c);
    mi2c_init (&mi2c, kbits);
    mi2c_rst (&mi2c);
+   f_mi2c_name[0]='*';
+   f_mi2c_name[1]=0; 
   }
 }
 
@@ -304,6 +338,7 @@ cpart_MI2C_24CXXX::PreProcess(void)
   }
  if (input_pins[2])
   {
+
    if (ppins[input_pins[2] - 1].value)addr |= 0x04;
   }
 
@@ -364,14 +399,11 @@ cpart_MI2C_24CXXX::EvMouseButtonPress(uint button, uint x, uint y, uint state)
            fprintf (fout, "\r\n");
           }
          fclose (fout);
-#ifdef _WIN_
-         lxExecute (Window1.GetSharePath () + lxT ("notepad ") + f_mi2c_tmp_name);
-#else
-         lxExecute (String ("gedit ") + f_mi2c_tmp_name, lxEXEC_MAKE_GROUP_LEADER);
-#endif   
+         wxLaunchDefaultApplication (f_mi2c_tmp_name);
         }
        else
         {
+
          printf ("Error saving to file: %s \n", f_mi2c_tmp_name);
         }
        break;
@@ -402,6 +434,7 @@ cpart_MI2C_24CXXX::filedialog_EvOnClose(int retId)
       {
        fwrite (mi2c.data, mi2c.SIZE, 1, fout);
        fclose (fout);
+       strncpy (f_mi2c_name, Window5.filedialog1.GetFileName (), 200);
       }
      else
       {

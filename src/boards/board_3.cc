@@ -92,7 +92,8 @@ enum
  I_RB0,
  I_RB1,
  I_RB2,
- I_RB3
+ I_RB3,
+ I_VIEW    
 };
 
 cboard_3::cboard_3(void)
@@ -239,6 +240,12 @@ cboard_3::cboard_3(void)
   {
    printf ("Error loading from file: %s \n", fname);
   }
+
+ snprintf (mi2c_tmp_name, 200, "%s/picsimlab-XXXXXX", (const char *) lxGetTempDir ("PICSimLab").c_str ());
+ close (mkstemp (mi2c_tmp_name));
+ unlink (mi2c_tmp_name);
+ strncat (mi2c_tmp_name, ".txt", 200);
+ 
 }
 
 cboard_3::~cboard_3(void)
@@ -255,6 +262,7 @@ cboard_3::~cboard_3(void)
  Window1.DestroyChild (label3);
  Window1.DestroyChild (label4);
 
+ unlink (mi2c_tmp_name);
 }
 
 void
@@ -826,7 +834,28 @@ cboard_3::EvMouseButtonPress(uint button, uint x, uint y, uint state)
         p_BT4 = 0;
        };
        break;
-
+      case I_VIEW:
+       FILE * fout;
+       fout = fopen (mi2c_tmp_name, "w");
+       if (fout)
+        {
+         for (unsigned int i = 0; i < mi2c.SIZE; i += 16)
+          {
+           fprintf (fout, "%04X: ", i);
+           for (int j = 0; j < 16; j++)
+            {
+             fprintf (fout, "%02X ", mi2c.data[j + i ]);
+            }
+           fprintf (fout, "\r\n");
+          }
+         fclose (fout);
+         wxLaunchDefaultApplication(mi2c_tmp_name);
+        }
+       else
+        {
+         printf ("Error saving to file: %s \n", mi2c_tmp_name);
+        }
+       break;
       }
     }
   }
@@ -958,6 +987,8 @@ cboard_3::get_in_id(char * name)
  if (strcmp (name, "JP4") == 0)return I_JP4;
  if (strcmp (name, "JP5") == 0)return I_JP5;
  if (strcmp (name, "JP6") == 0)return I_JP6;
+
+ if (strcmp (name, "VIEW") == 0)return I_VIEW;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
