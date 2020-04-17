@@ -130,13 +130,13 @@ class CPWindow1:public CPWindow
   void Set_mcupwr(int pp){mcupwr =pp;};
   void Set_mcurun(int pr){mcurun =pr;};
   void Set_mcurst(int pr){mcurst =pr;};
-  void Set_mcudbg(int pd){mcudbg =pd;};
+  void Set_mcudbg(int pd);
   void SetPATH(String path){PATH=path;};
   void SetFNAME(String fname){FNAME=fname;};
   long int GetNSTEP(void){return NSTEP;};
   long int GetNSTEPJ(void){return NSTEPJ;};
   int GetJUMPSTEPS(void){return JUMPSTEPS;};
-  void SetJUMPSTEPS(int js){JUMPSTEPS=js;NSTEPJ=NSTEP/JUMPSTEPS;};
+  void SetJUMPSTEPS(int js);
   board * GetBoard(void);
   void SetCpuState(unsigned char cs);
   void menu1_EvBoard(CControl * control);

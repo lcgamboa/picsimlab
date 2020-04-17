@@ -456,7 +456,7 @@ cboard_4::Draw(CDraw *draw, double scale)
         {
          draw->Canvas.SetBgColor (250, 250, 250);
          break;
-        };
+        }
       }
      if (output[i].id == O_JP1) draw->Canvas.SetColor (150, 150, 150);
 
@@ -502,20 +502,16 @@ cboard_4::Draw(CDraw *draw, double scale)
 
      if ((output[i].name[0] == 'D')&&(output[i].name[1] == 'P'))
       {
-       if (!dip[(((output[i].name[2] - 0x30)*10)+(output[i].name[3] - 0x30)) - 1 ])
+       if (dip[(((output[i].name[2] - 0x30)*10)+(output[i].name[3] - 0x30)) - 1 ])
         {
          draw->Canvas.SetBgColor (70, 70, 70);
          draw->Canvas.Rectangle (1, output[i].x1, output[i].y1 + ((int) ((output[i].y2 - output[i].y1)*0.35)), output[i].x2 - output[i].x1, (int) ((output[i].y2 - output[i].y1)*0.65));
-         //draw->Canvas.SetColor (220, 220, 0);
-         //draw->Canvas.Circle (1,output[i].x1+(int)((output[i].x2-output[i].x1)*0.20), output[i].y1+((output[i].y2-output[i].y1)/2),3);
         }
        else
         {
          draw->Canvas.SetBgColor (70, 70, 70);
          draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, (int) ((output[i].y2 - output[i].y1)*0.65));
-         //draw->Canvas.SetColor (220, 220, 0);
-         //draw->Canvas.Circle (1,output[i].x1+(int)((output[i].x2-output[i].x1)*0.80), output[i].y1+((output[i].y2-output[i].y1)/2),3);
-        };
+        }
       }
 
 
@@ -1350,9 +1346,7 @@ cboard_4::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       }
     }
   }
-
-
-};
+}
 
 void
 cboard_4::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
@@ -1501,7 +1495,7 @@ cboard_4::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
     }
   }
 
-};
+}
 
 void
 cboard_4::EvKeyPress(uint key, uint mask)
@@ -1582,7 +1576,7 @@ cboard_4::EvKeyPress(uint key, uint mask)
   {
    p_BT6 = 0;
   }
-};
+}
 
 void
 cboard_4::EvKeyRelease(uint key, uint mask)
@@ -1664,7 +1658,7 @@ cboard_4::EvKeyRelease(uint key, uint mask)
   {
    p_BT6 = 1;
   }
-};
+}
 
 void
 cboard_4::EvOnShow(void)

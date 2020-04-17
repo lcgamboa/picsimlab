@@ -1123,5 +1123,31 @@ CPWindow1::menu1_Tools_Esp8266ModemSimulator_EvMenuActive(CControl * control)
 #endif  
 };
 
+void
+CPWindow1::Set_mcudbg(int pd)
+{
+ mcudbg = pd;
 
+ if (mcudbg)
+  {
+   SetJUMPSTEPS (0);
+  }
+ else
+  {
+   SetJUMPSTEPS (DEFAULTJS);
+  }
+}
 
+void
+CPWindow1::SetJUMPSTEPS(int js)
+{
+ JUMPSTEPS = js;
+ if (JUMPSTEPS)
+  {
+   NSTEPJ = NSTEP / JUMPSTEPS;
+  }
+ else
+  {
+   NSTEPJ = NSTEP;
+  }
+}
