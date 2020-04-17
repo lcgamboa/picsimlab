@@ -371,14 +371,14 @@ cboard_0::Run_CPU(void)
  const picpin * pins;
  unsigned int alm[40];
  int JUMPSTEPS = 0;
- long int NSTEPJ = 0;
+ //long int NSTEPJ = 0;
 
  switch (ptype)
   {
   case _PIC:
 
    JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
-   NSTEPJ = Window1.GetNSTEPJ (); //number of steps in 100ms
+   //NSTEPJ = Window1.GetNSTEPJ (); //number of steps in 100ms
 
    //reset mean value
    memset (alm, 0, 40 * sizeof (unsigned int));
@@ -403,9 +403,8 @@ cboard_0::Run_CPU(void)
       if (use_oscope)Window4.SetSample ();
       if (use_spare)Window5.Process ();
 
-      //increment mean value counter if pin is high 
-      if (j < pic.PINCOUNT)
-       alm[j] += pins[j].value;
+      //increment mean value counter if pin is high
+      alm[i % pic.PINCOUNT] += pins[i % pic.PINCOUNT].value;
 
       if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
        {
@@ -424,14 +423,14 @@ cboard_0::Run_CPU(void)
    //calculate mean value
    for (pi = 0; pi < MGetPinCount (); pi++)
     {
-     board_pic::pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEPJ) + 30);
+     board_pic::pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / (Window1.GetNSTEP ()/ pic.PINCOUNT)) + 30);
     }
    if (use_spare)Window5.PostProcess ();
    break;
   case _AVR:
 
    JUMPSTEPS = Window1.GetJUMPSTEPS ()*4.0; //number of steps skipped
-   NSTEPJ = Window1.GetNSTEPJ (); //number of steps in 100ms
+   //NSTEPJ = Window1.GetNSTEPJ (); //number of steps in 100ms
 
    long long unsigned int cycle_start;
    int twostep = 0;
@@ -488,8 +487,7 @@ cboard_0::Run_CPU(void)
       if (use_spare)Window5.Process ();
 
       //increment mean value counter if pin is high
-      if (j < pinc)
-       alm[j] += pins[j].value;
+      alm[i % pinc] += pins[i % pinc].value;
 
       if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
        {
@@ -504,7 +502,7 @@ cboard_0::Run_CPU(void)
    //calculate mean value
    for (pi = 0; pi < MGetPinCount (); pi++)
     {
-     board_avr::pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEPJ) + 30);
+     board_avr::pins[pi].oavalue = (int) (((225.0 * alm[pi]) / (Window1.GetNSTEP ()/ pinc)) + 30);
     }
    if (use_spare)Window5.PostProcess ();
    break;

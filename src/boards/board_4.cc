@@ -1336,7 +1336,7 @@ cboard_4::EvMouseButtonPress(uint button, uint x, uint y, uint state)
            fprintf (fout, "\r\n");
           }
          fclose (fout);
-         wxLaunchDefaultApplication(mi2c_tmp_name);
+         lxLaunchDefaultApplication(mi2c_tmp_name);
         }
        else
         {
