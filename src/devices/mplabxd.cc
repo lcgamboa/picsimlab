@@ -27,7 +27,7 @@
 #include "../picsimlab1.h"
 #include "mplabxd.h"
 
-#define dprint if (1) {} else printf
+#define dprint if (0) {} else printf
 
 
 #ifndef _POSIX_SOURCE

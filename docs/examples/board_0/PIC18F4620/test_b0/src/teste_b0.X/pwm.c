@@ -68,7 +68,7 @@
        T2CONbits.T2CKPS=2;  //16
      }
    
-#if defined(_18F45K50) || defined(_18F4520)
+#if defined (_16F1939) ||defined(_18F45K50) || defined(_18F4520)
      T2CONbits.T2OUTPS=0 ;
 #else
      T2CONbits.TOUTPS=0;  //1-16

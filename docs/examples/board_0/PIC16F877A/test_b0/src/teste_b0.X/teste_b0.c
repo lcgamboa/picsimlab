@@ -48,6 +48,9 @@
 #ifdef _16F777
 #include"config_777.h"
 #endif
+#ifdef _16F1939
+#include"config_1939.h"
+#endif
 
 #include "atraso.h"
 #include "lcd.h"
@@ -88,8 +91,19 @@ void main()
   TRISC=0x01;
   TRISD=0x00;
   TRISE=0x00;
+#if defined(_16F1939)
+  //all digital
+  ANSELA=0x00;
+  ANSELB=0x00;
+  ANSELD=0x00;
+  ANSELE=0x00;
+#endif  
+  
 
 #if defined(_16F877A) || defined(_16F777)  
+
+#elif defined(_16F1939) || defined (_16F1789) || defined (_16F1788) 
+  // a voir s(il y a quelque chose a faire sur RBPU)    
 #else  
   INTCON2bits.RBPU=0;
 #endif
@@ -101,18 +115,16 @@ void main()
 #endif  
   serial_init();
   adc_init();
-  
-#ifdef _18F452
+    
+#if defined(_18F452)
   ADCON1=0x06;
+#elif defined(_18F45K50) || defined(_16F1939)
+  ANSELA=0x00;
 #else
-#ifndef _18F45K50
   ADCON1=0x0F;
   CMCON=0x07;
-#else
-  ANSELA=0x00;
 #endif
-#endif
-
+/*
 //dip
   TRISB=0x03;
   lcd_cmd(L_CLR);
@@ -121,7 +133,6 @@ void main()
   lcd_cmd(L_L2);
   lcd_str("Press. RB1");
   while(PORTBbits.RB1);
-
 
 //testa caracter especial
   lcd_cmd(L_CLR);
@@ -200,7 +211,7 @@ void main()
   lcd_cmd(L_L2);
   lcd_str("       Ok");
   atraso_ms(500);
-  
+
 //testa display 7s
 
   lcd_cmd(L_CLR);
@@ -242,16 +253,7 @@ void main()
       }
     }
 
-#ifdef _18F452
-  ADCON1=0x02;
-#else
-#ifndef _18F45K50
-  ADCON1=0x0B;
-#else
-  ANSELA=0x07;  
-#endif  
-  
-#endif
+    
   PORTD=0;
 
 
@@ -287,15 +289,6 @@ void main()
   lcd_str("  Switchs Test");
 
   tmp=0;
-#ifdef _18F452
-  ADCON1=0x06;
-#else
-#ifndef _18F45K50
-  ADCON1=0x0F;
-#else
-  ANSELA=0x00;  
-#endif    
-#endif
   
   TRISA|=0x20;
 
@@ -349,22 +342,10 @@ void main()
   lcd_cmd(L_L2+12);
   lcd_str("Ok");
   atraso_ms(500);
-
-            
+          
   PORTB=0; 
-#ifdef _18F452
-  ADCON1=0x02;
-#else
-#ifndef _18F45K50
-  ADCON1=0x0B;
-#else
-  ANSELA=0x07;  
-#endif  
-
-#endif
-
-
  
+  
 //teste serial
  lcd_cmd(L_CLR);
  lcd_cmd(L_L1);
@@ -374,9 +355,9 @@ void main()
   lcd_str(" (Y=RB0 N=RB1) ?");
 
   TRISB=0x03;
-  while(PORTBbits.RB0 && PORTBbits.RB1);
+  while(PORTBbits.RB0 && PORTBbits.RB1 );
 
-  if(PORTBbits.RB0 == 0)
+  if(!PORTBbits.RB0)
   {
 
   TRISCbits.TRISC7=1; //RX
@@ -412,8 +393,21 @@ void main()
   }
   atraso_ms(100);
   }
-
+  */
 //teste ADC
+  
+  TRISA=0x07;
+  
+#if defined (_18F452)
+  ADCON1=0x02;
+#elif defined(_18F45K50) || defined(_16F1939)
+  ANSELA=0x07; 
+#else
+  ADCON1=0x0B;
+#endif  
+
+  adc_init();
+  
   lcd_cmd(L_CLR);
   lcd_cmd(L_L1);
   lcd_str(" ADC (P1) Test");
@@ -452,9 +446,6 @@ void main()
   lcd_cmd(L_L1);
   lcd_str("   TEMP. Test");
   
-  TRISA=0x07;
-
-  adc_init();
 
   for(i=0; i< 100; i++)
   {
@@ -498,7 +489,14 @@ void main()
   lcd_str("   Cooler Test");
 
 //timer0 temporizador
-#if defined(_16F877A) || defined(_16F777)  
+#if defined (_16F1939) || defined (_16F1789)|| defined (_16F1788)
+    // cofuguration de base à écrire
+ OPTION_REGbits.TMR0CS=0;
+ OPTION_REGbits.PSA=0;
+ OPTION_REGbits.PS0=0;
+ OPTION_REGbits.PS1=0;
+ OPTION_REGbits.PS2=1;   
+#elif  defined(_16F877A) || defined(_16F777) 
  OPTION_REGbits.T0CS=0;
  OPTION_REGbits.PSA=0;
  OPTION_REGbits.PS0=0;
@@ -526,7 +524,7 @@ void main()
 
 
  INTCONbits.T0IF=0;
-#if defined(_16F877A) || defined(_16F777)  
+#if defined(_16F877A) || defined(_16F777)  || defined(_16F1939) 
  TMR0=6;
 #else
  TMR0H=0;
@@ -570,14 +568,12 @@ void main()
 
 #ifdef _18F452
   ADCON1=0x06;
+#elif defined(_18F45K50) || defined(_16F1939)
+  ANSELA=0x00;
 #else
-#ifndef _18F45K50
-  ADCON1=0x0F;
-#else
-  ANSELA=0x00;  
-#endif  
+  ADCON1=0x0F;    
 #endif
-
+/*
 #if !defined(_18F4550) && !defined(_18F45K50)
 //teste RTC
   lcd_cmd(L_CLR);
@@ -622,7 +618,7 @@ void main()
     i++;
   }
 
-
+*/
   
 #ifndef _16F777
 //teste EEPROM INT
@@ -747,7 +743,7 @@ void  interrupt isrh()
      TMR1L=0;     
   }
   INTCONbits.T0IF=0;
-#if defined(_16F877A) || defined(_16F777)  
+#if defined(_16F877A) || defined(_16F777) || defined(_16F1939) 
   TMR0=6;  
 #else
   TMR0H=0;
@@ -757,7 +753,7 @@ void  interrupt isrh()
 
 //----------------------------------------------------------------------------
 
-#if defined(_16F877A) || defined(_16F777)  
+#if defined(_16F877A) || defined(_16F777) || defined(_16F1939)  
 #else
 void  interrupt low_priority isrl()
 {

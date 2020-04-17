@@ -29,7 +29,17 @@
 
 void adc_init(void)
 {
-#if defined (_18F452) || defined(_16F877A)
+#if defined (_16F1939) 
+    // cofuguration de base à écrire
+    // GO_nDONE stop; ADON enabled; CHS AN0; 
+    ADCON0 = 0x01;
+    // ADFM left; ADNREF VSS; ADPREF VDD; ADCS FOSC/4; 
+    ADCON1 = 0x10;   
+/*    // ADRESL 0; 
+    ADRESL = 0x00;
+    // ADRESH 0; 
+    ADRESH = 0x00;*/
+#elif  defined (_18F452) || defined(_16F877A)
   ADCON1=0x02;
   ADCON0=0x41; 
 #else
@@ -44,8 +54,7 @@ void adc_init(void)
 unsigned int adc_amostra(unsigned char canal)
 {
 
-
-#if defined(_18F4620) || defined(_18F4550)
+#if defined(_18F4620) || defined(_18F4550) || defined(_16F1939))
     switch(canal)
     {
       case 0: 
@@ -73,9 +82,12 @@ unsigned int adc_amostra(unsigned char canal)
     }   
 #endif
    
-
+#ifdef _16F1939
+     ADCON0bits.GO_nDONE = 1;
+     while (ADCON0bits.GO_nDONE == 1);
+#else  
     ADCON0bits.GO=1;
     while(ADCON0bits.GO == 1);
-
+#endif
    return ((((unsigned int)ADRESH)<<2)|(ADRESL>>6));
 }
