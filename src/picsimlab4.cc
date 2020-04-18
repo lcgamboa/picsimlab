@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -254,13 +254,13 @@ CPWindow4::SetSample (void)
  const picpin * ppins = Window1.GetBoard ()->MGetPinsValues ();
 
  if (!run)return;
-
- if (ppins[chpin[0]].ptype == PT_ANALOG)
+ 
+ if ((ppins[chpin[0]].ptype == PT_ANALOG)&&(ppins[chpin[0]].dir == PD_IN))
   pins[0] = ppins[chpin[0]].avalue;
  else
   pins[0] = ppins[chpin[0]].value * 5.0;
 
- if (ppins[chpin[1]].ptype == PT_ANALOG)
+ if ((ppins[chpin[1]].ptype == PT_ANALOG)&&(ppins[chpin[1]].dir == PD_IN))
   pins[1] = ppins[chpin[1]].avalue;
  else
   pins[1] = ppins[chpin[1]].value * 5.0;

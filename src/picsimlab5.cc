@@ -45,22 +45,21 @@ CPWindow5::_EvOnShow(CControl * control)
 
  timer1.SetRunState (1);
 
-};
+}
 
 void
 CPWindow5::menu1_EvMenuActive(CControl * control)
 {
  PartToCreate = ((CItemMenu*) control)->GetText ();
  lxSetCursor (lxCursor (lxCURSOR_CROSS));
-};
+}
 
 void
 CPWindow5::_EvOnCreate(CControl * control)
 {
  if (LoadConfigFile.length () > 0)
   LoadConfig (LoadConfigFile);
-
-};
+}
 
 void
 CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uint y, uint state)
@@ -130,7 +129,7 @@ CPWindow5::draw1_EvMouseButtonRelease(CControl * control, uint button, uint x, u
      return;
     }
   }
-};
+}
 
 void
 CPWindow5::pmenu2_Properties_EvMenuActive(CControl * control)
@@ -268,7 +267,7 @@ CPWindow5::draw1_EvKeyboardRelease(CControl * control, const uint key, const uin
   {
    parts[i]->EvKeyRelease (key, mask);
   }
-};
+}
 
 bool
 CPWindow5::SaveConfig(String fname)
