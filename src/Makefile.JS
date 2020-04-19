@@ -14,7 +14,11 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-CFLAGS= --pre-js load.js -D_ONEWIN -DEXT_BROWSER -DNO_DEBUG -DNO_TOOLS -Werror -s WASM=1 -Os -s DEMANGLE_SUPPORT=0 -s "BINARYEN_TRAP_MODE='clamp'" -s SAFE_HEAP=0 -s ASSERTIONS=0 -s TOTAL_MEMORY=128MB -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='["png","bmp"]' -s USE_SDL_TTF=2 --preload-file assets --preload-file home -D_VERSION_=\"0.7.0\" -Wall -D_SHARE_=\"/assets/share/\" -I../../LXRAD_SDL2/include/ -I../../picsim/include/ -I../../simavr/simavr/   
+CFLAGS= --pre-js load.js -D_ONEWIN -DEXT_BROWSER -DNO_DEBUG -DNO_TOOLS -Werror -s WASM=1 -Os -s DEMANGLE_SUPPORT=0 \
+	-s "BINARYEN_TRAP_MODE='clamp'" -s SAFE_HEAP=0 -s ASSERTIONS=0 -s TOTAL_MEMORY=128MB -s USE_SDL=2 -s USE_SDL_IMAGE=2 \
+	-s SDL2_IMAGE_FORMATS='["png","bmp"]' -s USE_SDL_TTF=2 --preload-file assets --preload-file home \
+	-D_VERSION_=\"0.8.0\" -Wall -D_SHARE_=\"/assets/share/\" -I../../LXRAD_SDL2/include/ -I../../picsim/include/ \
+	-I../../simavr/simavr/ -DEXT_BROWSER_EXAMPLES   
 
 #CFLAGS+=--emrun
 

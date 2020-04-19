@@ -43,7 +43,7 @@ H4		{  }
 H5		{  }
 
 /* mathematics styles */
-DIV.displaymath		{ }	/* math displays */
+DIV.displaymath		{ text-align:center; }	/* math displays */
 TD.eqno			{ width:0; }	/* equation-number cells */
 TABLE.PAD TD	{ padding:3px; }
 TABLE.BORDER TD	{ border:1px solid black; }
@@ -59,49 +59,60 @@ PRE.preform		{   }
 SPAN.Roman		{   }
 SPAN.arabic		{   }
 SPAN.textbf		{ font-weight: bold  }
-#hue1000		{ color: #ff0000;  }
-#hue1002		{ color: #ff0000;  }
-#hue1004		{ color: #ff0000;  }
-#hue1006		{ color: #ff0000;  }
-#hue1008		{ color: #ff0000;  }
-#hue1010		{ color: #ff0000;  }
-#hue1012		{ color: #ff0000;  }
-#hue1014		{ color: #ff0000;  }
-#hue1016		{ color: #ff0000;  }
-#hue1018		{ color: #ff0000;  }
-#hue1033		{ color: #ff0000;  }
-#hue1036		{ color: #ff0000;  }
+#hue1005		{ color: #ff0000;  }
+#hue1007		{ color: #ff0000;  }
+#hue1009		{ color: #ff0000;  }
+#hue1011		{ color: #ff0000;  }
+#hue1013		{ color: #ff0000;  }
+#hue1015		{ color: #ff0000;  }
+#hue1017		{ color: #ff0000;  }
+#hue1019		{ color: #ff0000;  }
+#hue1021		{ color: #ff0000;  }
+#hue1023		{ color: #ff0000;  }
+#hue1025		{ color: #ff0000;  }
+#hue1027		{ color: #ff0000;  }
+#hue1029		{ color: #ff0000;  }
+#hue1031		{ color: #ff0000;  }
 #hue1046		{ color: #ff0000;  }
 #hue1049		{ color: #ff0000;  }
 #hue1052		{ color: #ff0000;  }
-#hue1067		{ color: #ff0000;  }
-#hue1077		{ color: #ff0000;  }
-#hue1101		{ color: #ff0000;  }
-#hue1104		{ color: #ff0000;  }
-#hue1128		{ color: #ff0000;  }
+#hue1062		{ color: #ff0000;  }
+#hue1065		{ color: #ff0000;  }
+#hue1068		{ color: #ff0000;  }
+#hue1083		{ color: #ff0000;  }
+#hue1093		{ color: #ff0000;  }
+#hue1118		{ color: #ff0000;  }
+#hue1121		{ color: #ff0000;  }
 #hue1131		{ color: #ff0000;  }
+#hue1148		{ color: #ff0000;  }
+#hue1151		{ color: #ff0000;  }
 #hue117		{ color: #ff0000;  }
-#hue261		{ color: #ff0000;  }
-#hue263		{ color: #ff0000;  }
-#hue265		{ color: #ff0000;  }
-#hue267		{ color: #ff0000;  }
-#hue269		{ color: #ff0000;  }
-#hue271		{ color: #ff0000;  }
-#hue273		{ color: #ff0000;  }
-#hue275		{ color: #ff0000;  }
-#hue277		{ color: #ff0000;  }
-#hue279		{ color: #ff0000;  }
-#hue281		{ color: #ff0000;  }
-#hue296		{ color: #ff0000;  }
-#hue299		{ color: #ff0000;  }
-#hue309		{ color: #ff0000;  }
-#hue312		{ color: #ff0000;  }
-#hue315		{ color: #ff0000;  }
-#hue330		{ color: #ff0000;  }
-#hue340		{ color: #ff0000;  }
-#hue364		{ color: #ff0000;  }
-#hue367		{ color: #ff0000;  }
-#hue391		{ color: #ff0000;  }
-#hue394		{ color: #ff0000;  }
-#hue854		{ color: #ff0000;  }
-#hue998		{ color: #ff0000;  }
+#hue254		{ color: #ff0000;  }
+#hue256		{ color: #ff0000;  }
+#hue258		{ color: #ff0000;  }
+#hue260		{ color: #ff0000;  }
+#hue262		{ color: #ff0000;  }
+#hue264		{ color: #ff0000;  }
+#hue266		{ color: #ff0000;  }
+#hue268		{ color: #ff0000;  }
+#hue270		{ color: #ff0000;  }
+#hue272		{ color: #ff0000;  }
+#hue274		{ color: #ff0000;  }
+#hue276		{ color: #ff0000;  }
+#hue278		{ color: #ff0000;  }
+#hue280		{ color: #ff0000;  }
+#hue295		{ color: #ff0000;  }
+#hue298		{ color: #ff0000;  }
+#hue301		{ color: #ff0000;  }
+#hue311		{ color: #ff0000;  }
+#hue314		{ color: #ff0000;  }
+#hue317		{ color: #ff0000;  }
+#hue332		{ color: #ff0000;  }
+#hue342		{ color: #ff0000;  }
+#hue359		{ color: #ff0000;  }
+#hue369		{ color: #ff0000;  }
+#hue372		{ color: #ff0000;  }
+#hue382		{ color: #ff0000;  }
+#hue399		{ color: #ff0000;  }
+#hue402		{ color: #ff0000;  }
+#hue868		{ color: #ff0000;  }
