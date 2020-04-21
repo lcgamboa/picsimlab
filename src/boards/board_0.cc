@@ -328,6 +328,9 @@ void
 cboard_0::Draw(CDraw *draw, double scale)
 {
  int i;
+ lxRect rec;
+ lxSize ps;
+
 
  draw->Canvas.Init (scale, scale); //initialize draw context
 
@@ -347,11 +350,15 @@ cboard_0::Draw(CDraw *draw, double scale)
      lxFont font (12, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
      draw->Canvas.SetFont (font);
 
-     lxSize ps = micbmp->GetSize ();
-
+     ps = micbmp->GetSize ();
      draw->Canvas.PutBitmap (micbmp, output[i].x1, output[i].y1);
      draw->Canvas.SetFgColor (255, 255, 255);
-     draw->Canvas.Text (proc, (ps.x - strlen (proc)*11) / 2 + output[i].x1, (ps.y / 2) + output[i].y1 - 9);
+
+     rec.x = output[i].x1;
+     rec.y = output[i].y1;
+     rec.width = ps.x;
+     rec.height = ps.y;
+     draw->Canvas.TextOnRect (proc, rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
      break;
     }
 
@@ -423,7 +430,7 @@ cboard_0::Run_CPU(void)
    //calculate mean value
    for (pi = 0; pi < MGetPinCount (); pi++)
     {
-     board_pic::pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / (Window1.GetNSTEP ()/ pic.PINCOUNT)) + 30);
+     board_pic::pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / (Window1.GetNSTEP () / pic.PINCOUNT)) + 30);
     }
    if (use_spare)Window5.PostProcess ();
    break;
@@ -502,7 +509,7 @@ cboard_0::Run_CPU(void)
    //calculate mean value
    for (pi = 0; pi < MGetPinCount (); pi++)
     {
-     board_avr::pins[pi].oavalue = (int) (((225.0 * alm[pi]) / (Window1.GetNSTEP ()/ pinc)) + 30);
+     board_avr::pins[pi].oavalue = (int) (((225.0 * alm[pi]) / (Window1.GetNSTEP () / pinc)) + 30);
     }
    if (use_spare)Window5.PostProcess ();
    break;
