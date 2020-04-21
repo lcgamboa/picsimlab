@@ -356,8 +356,8 @@ cboard_0::Draw(CDraw *draw, double scale)
 
      rec.x = output[i].x1;
      rec.y = output[i].y1;
-     rec.width = ps.x;
-     rec.height = ps.y;
+     rec.width = ps.GetWidth ();
+     rec.height = ps.GetHeight ();
      draw->Canvas.TextOnRect (proc, rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
      break;
     }
