@@ -4,6 +4,7 @@ CC =  x86_64-w64-mingw32-g++
 WINDRES =  x86_64-w64-mingw32-windres  
 
 FLAGS = -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\" -Wall -O2 -D_WIN_ `x86_64-w64-mingw32-msw-unicode-3.1  --cxxflags ` 
+FLAGS+= -DEXT_BROWSER
 
 LIBS = -llxrad `x86_64-w64-mingw32-msw-unicode-3.1  --libs` 
 
