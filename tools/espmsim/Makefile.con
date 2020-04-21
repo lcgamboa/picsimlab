@@ -3,6 +3,7 @@ CC = g++
 #lxrad automatic generated block start, don't edit below!
 
 FLAGS = -Wall -O2 -DLINUX -DCONSOLE `lxrad-config --cxxflags`
+FLAGS+= -DEXT_BROWSER
 
 LIBS = `wx-config --libs`  
 

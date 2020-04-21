@@ -652,8 +652,12 @@ CPWindow1::menu1_File_Exit_EvMenuActive(CControl * control)
 void
 CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
 {
+#ifdef EXT_BROWSER
+ lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/espmsim/"));
+#else	
   Window2.html1.SetLoadFile(String(lxT(_SHARE_))+lxT("docs/espmsim/espmsim.html"));  
-  Window2.Show();;
+  Window2.Show();
+#endif  
 }
 
 void
