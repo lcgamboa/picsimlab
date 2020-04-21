@@ -199,11 +199,11 @@ mplabxd_init(board * mboard)
      return 1;
     };
    server_started = 1;
+  
+
+   ramsend = (unsigned char*) malloc (dbg_board->MGetRAMSize ());
+   ramreceived = (unsigned char*) malloc (dbg_board->MGetRAMSize ());
   }
-
- ramsend = (unsigned char*) malloc (dbg_board->MGetRAMSize ());
- ramreceived = (unsigned char*) malloc (dbg_board->MGetRAMSize ());
-
  return 0;
 }
 
@@ -248,12 +248,15 @@ mplabxd_stop(void)
 void
 mplabxd_end(void)
 {
+	
  if (server_started)
   {
    mplabxd_stop ();
    dprint ("mplabxd_end\n");
    shutdown (listenfd, SHUT_RDWR);
    close (listenfd);
+   free (ramsend);
+   free (ramreceived);
   }
  listenfd = -1;
  server_started = 0;
@@ -261,8 +264,7 @@ mplabxd_end(void)
 #ifdef _WIN_
  WSACleanup ();
 #endif
- free (ramsend);
- free (ramreceived);
+ 
 }
 
 
