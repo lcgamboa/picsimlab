@@ -34,6 +34,7 @@ run: all
 	./espmsim
 
 install: all
+	install -d $(execdir) $(appdir) 
 	$(CP) -dvf  ../../share/espmsim.desktop ${appdir} 
 	$(CP) -dvf espmsim ${execdir}
 

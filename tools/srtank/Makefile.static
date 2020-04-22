@@ -33,6 +33,7 @@ run: all
 	./srtank
 
 install: all
+	install -d $(execdir) $(appdir) 
 	$(CP) -dvf  ../../share/srtank.desktop ${appdir} 
 	$(CP) -dvf srtank ${execdir}
 
