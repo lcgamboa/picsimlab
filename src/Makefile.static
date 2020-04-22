@@ -46,8 +46,7 @@ all: $(OBJS)
 	$(CC) -c $(CFLAGS) $< -o $@ 
 
 install: all
-	${MKDIR} ${sharedir}
-	${MKDIR} ${sharedir}docs/
+	install -d $(execdir) $(sharedir) $(sharedir)/docs $(appdir) 
 	$(CP) -dvf  ../share/picsimlab.desktop ${appdir} 
 	$(CP) -drvf ../share/* ${sharedir} 
 	$(CP) -drvf ../docs/hex ${sharedir}docs/ 
