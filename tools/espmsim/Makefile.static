@@ -2,7 +2,7 @@ include ../../Makefile.conf
 
 CC = g++
 
-prefix=/usr
+prefix=$(DESTDIR)/usr
 
 RM= rm -f
 CP= cp
