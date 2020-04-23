@@ -1,0 +1,3 @@
+?package(qucs):needs="X11" section="Applications/Education" hints="electronic"\
+  title="PicsimLab" command="/usr/bin/picsimlab"\
+  icon="/usr/share/picsim/lab/logo.xpm"

@@ -1,18 +1,24 @@
 #!/bin/bash -x 
 sudo apt-get install debmake
+git archive --format=tar master > build_all/picsimlab-0.8.0.tar 
 cd build_all
-git clone https://github.com/lcgamboa/picsimlab.git
-rm -Rf picsimlab/.git
-rm -Rf picsimlab/docs/*.* 
-rm -Rf picsimlab/docs/examples/ 
-rm -Rf picsimlab/docs/pdf/ 
-rm -Rf picsimlab/docs/srtank/ 
-rm -Rf picsimlab/docs/espmsim/ 
-rm -Rf picsimlab/docs/kicad/
-mv picsimlab/src/Makefile.static picsimlab/src/Makefile
-mv picsimlab/tools/srtank/Makefile.static picsimlab/tools/srtank/Makefile
-mv picsimlab/tools0espmsim/Makefile.static picsimlab/tools/espmsim/Makefile
-mv picsimlab picsimlab-0.8.0
+tar  --delete -f picsimlab-0.8.0.tar "docs/kicad"
+tar  --delete -f picsimlab-0.8.0.tar "docs/examples"
+tar  --delete -f picsimlab-0.8.0.tar "docs/pdf"
+tar  --delete -f picsimlab-0.8.0.tar "docs/srtank"
+tar  --delete -f picsimlab-0.8.0.tar "docs/espmsim"
+tar  --delete --wildcards -f picsimlab-0.8.0.tar "docs/*.png"
+tar  --delete --wildcards -f picsimlab-0.8.0.tar "docs/*.html" 
+tar  --delete --wildcards -f picsimlab-0.8.0.tar "docs/*.pdf" 
+tar  --delete --wildcards -f picsimlab-0.8.0.tar "docs/*.css" 
+gzip picsimlab-0.8.0.tar
+mkdir picsimlab-0.8.0
+cd picsimlab-0.8.0
+tar xvfz ../picsimlab-0.8.0.tar.gz
+mv src/Makefile.static src/Makefile
+mv tools/srtank/Makefile.static tools/srtank/Makefile
+mv tools0espmsim/Makefile.static tools/espmsim/Makefile
+cd ..
 tar cvfz  picsimlab-0.8.0.tar.gz picsimlab-0.8.0
 cd picsimlab-0.8.0/
 debmake
