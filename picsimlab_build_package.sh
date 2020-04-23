@@ -21,6 +21,5 @@ mv tools0espmsim/Makefile.static tools/espmsim/Makefile
 cd ..
 tar cvfz  picsimlab-0.8.0.tar.gz picsimlab-0.8.0
 cd picsimlab-0.8.0/
-debmake
 debuild
 
