@@ -1,0 +1,13 @@
+Source: picsimlab
+Section: x11
+Priority: extra
+Maintainer: Luis Claudio Gamboa Lopes <lcgamboa@yahoo.com>
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.7.3
+Homepage: http://picsim.sourceforge.net
+
+Package: picsimlab
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: board simulator for  pic16f and pic18f
+ simulador de placas para pic16f e pic18f
