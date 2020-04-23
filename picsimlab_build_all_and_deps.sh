@@ -8,7 +8,7 @@ cl sudo apt-get update
 cl sudo apt-get -y upgrade
 cl sudo apt-get -y install git doxygen autoconf gcc g++ make libwxgtk3.0-gtk3-dev \
 libelf-dev freeglut3-dev cutecom gcc-avr avr-libc libopenal-dev libncurses-dev gtkwave
-cl sudo apt-get -y install linux-headers-`uname -r` 
+cl sudo apt-get -y install linux-headers-`uname -r` dkms 
 cl mkdir build_all
 cd build_all
 echo -e "\033[1;32m ---------------------- download deps -------------------------------------\033[0m"
@@ -33,8 +33,9 @@ cd ..
 cd tty0tty/module
 echo -e "\033[1;32m ---------------------- build and install tty0tty ------------------------ \033[0m"
 git pull
-cl make clean;make -j4
-cl sudo make install
+cl sudo ./dkms-install.sh
+#cl make clean;make -j4
+#cl sudo make install
 sudo usermod -a -G dialout `whoami`
 cd ../../
 cd simavr
