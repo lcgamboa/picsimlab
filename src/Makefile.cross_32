@@ -6,6 +6,7 @@ WINDRES =  i686-w64-mingw32-windres
 #//FIXME Otimization cause crash on program exit !! cause unknown, only in windows 32. Don't use flag -O3
 FLAGS = -Wall -O3 -D_WIN_ -I/usr/include/lxrad  -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  `i686-w64-mingw32-msw-unicode-3.1  --cxxflags` -fomit-frame-pointer
 FLAGS+= -DEXT_BROWSER
+#FLAGS+= -D_EXPERIMENTAL_
 
 LIBS= -llxrad  -lpicsim `i686-w64-mingw32-msw-unicode-3.1 --libs` ../../simavr_win/simavr/obj-i686-w64-mingw32/libsimavr.a -lws2_32 
 #LIBS= ../../LXRAD_WX/libteste/liblxrad.aw  `i686-w64-mingw32-msw-unicode-3.1 --libs` -lws2_32

@@ -1,3 +1,0 @@
-?package(picsimlab):needs="X11" section="Applications/Education" hints="electronic"\
-  title="PICSimLab" command="/usr/bin/picsimlab"\
-  icon="/usr/share/picsimlab/picsimlab.png"
