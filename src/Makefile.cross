@@ -3,7 +3,7 @@ include ../Makefile.conf
 CC = x86_64-w64-mingw32-g++
 WINDRES =  x86_64-w64-mingw32-windres  
 
-FLAGS = -Wall -O3 -D_WIN_ -I/usr/include/lxrad -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  `x86_64-w64-mingw32-msw-unicode-3.1  --cxxflags` -fomit-frame-pointer 
+FLAGS = -Wall -O3 -D_WIN_ -I/usr/include/lxrad -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  `x86_64-w64-mingw32-msw-unicode-3.1  --cxxflags`  
 FLAGS+= -DEXT_BROWSER
 #FLAGS+= -D_EXPERIMENTAL_
 

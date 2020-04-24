@@ -4,7 +4,7 @@ CC = i686-w64-mingw32-g++
 WINDRES =  i686-w64-mingw32-windres  
 
 #//FIXME Otimization cause crash on program exit !! cause unknown, only in windows 32. Don't use flag -O3
-FLAGS = -Wall -O3 -D_WIN_ -I/usr/include/lxrad  -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  `i686-w64-mingw32-msw-unicode-3.1  --cxxflags` -fomit-frame-pointer
+FLAGS = -Wall -O3 -D_WIN_ -I/usr/include/lxrad  -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  `i686-w64-mingw32-msw-unicode-3.1  --cxxflags` 
 FLAGS+= -DEXT_BROWSER
 #FLAGS+= -D_EXPERIMENTAL_
 

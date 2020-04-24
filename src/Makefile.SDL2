@@ -14,7 +14,7 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-override CFLAGS += -DEXT_BROWSER  -D_VERSION_=\"0.7.0\" -Wall -ggdb -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer `sdl2-config --cflags` -I/usr/include/lxrad_SDL2 -Wall  -D_REENTRANT
+override CFLAGS += -DEXT_BROWSER  -D_VERSION_=\"0.7.0\" -Wall -ggdb -D_SHARE_=\"${sharedir}\"  `sdl2-config --cflags` -I/usr/include/lxrad_SDL2 -Wall  -D_REENTRANT
 
 override CFLAGS+=-fsanitize=address
 override CFLAGS+= -D_ONEWIN
