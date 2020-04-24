@@ -1,6 +1,6 @@
 #!/bin/bash -x 
 rm -rf build_all/picsimlab*
-sudo apt-get install debmake
+sudo apt-get install debmake debhelper
 git archive --format=tar master > build_all/picsimlab-0.8.0.tar 
 cd build_all
 tar  --delete -f picsimlab-0.8.0.tar "docs/kicad"
@@ -23,5 +23,5 @@ cd ..
 tar cvfz  picsimlab-0.8.0.tar.gz picsimlab-0.8.0
 mv picsimlab-0.8.0.tar.gz picsimlab_0.8.0.orig.tar.gz
 cd picsimlab-0.8.0
-sudo debuild
+debuild -us -uc
 

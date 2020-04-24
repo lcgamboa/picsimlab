@@ -1,6 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: picsimlab
-Source: <url://github.com/lcgamboa/picsimlab>
+Source: <https://github.com/lcgamboa/picsimlab>
 Files: *
 Files: debian/*
 Copyright: 2020 Luis Claudio Gamboa Lopes <lcgamboa@yahoo.com>
