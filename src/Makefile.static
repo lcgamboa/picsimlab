@@ -14,7 +14,7 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-override CFLAGS += -D_VERSION_=\"$(VERSION)\" -Wall -O2 -D_SHARE_=\"${sharedir}\"   -fomit-frame-pointer  `lxrad-config --cxxflags`
+override CFLAGS += -D_VERSION_=\"$(VERSION)\" -Wall -O2 -D_SHARE_=\"${sharedir}\" `lxrad-config --cxxflags`
 override CFLAGS+= -DEXT_BROWSER
 #override CFLAGS+=-fsanitize=address
 #override CFLAGS+= -D_EXPERIMENTAL_
