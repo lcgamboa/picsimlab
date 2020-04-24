@@ -18,7 +18,7 @@ cd picsimlab-0.8.0
 tar xvfz ../picsimlab-0.8.0.tar.gz
 mv src/Makefile.static src/Makefile
 mv tools/srtank/Makefile.static tools/srtank/Makefile
-mv tools0espmsim/Makefile.static tools/espmsim/Makefile
+mv tools/espmsim/Makefile.static tools/espmsim/Makefile
 cd ..
 tar cvfz  picsimlab-0.8.0.tar.gz picsimlab-0.8.0
 mv picsimlab-0.8.0.tar.gz picsimlab_0.8.0.orig.tar.gz
