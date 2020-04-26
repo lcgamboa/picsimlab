@@ -3,14 +3,19 @@ include ../Makefile.conf
 CC = x86_64-w64-mingw32-g++
 WINDRES =  x86_64-w64-mingw32-windres  
 
-FLAGS = -Wall -O3 -D_WIN_ -I/usr/include/lxrad -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  `x86_64-w64-mingw32-msw-unicode-3.1  --cxxflags`  
+FLAGS = -Wall -O3 -D_WIN_ -I../dev_w64/include -I../dev_w64/include/lxrad -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  
 FLAGS+= -DEXT_BROWSER
+FLAGS +=-I../dev_w64/lib/wx/include/x86_64-w64-mingw32-msw-unicode-3.1 -I../dev_w64/include/wx-3.1 -D_FILE_OFFSET_BITS=64 -DWXUSINGDLL -D__WXMSW__
+#FLAGS +=`x86_64-w64-mingw32-msw-unicode-3.1  --cxxflags` 
 #FLAGS+= -D_EXPERIMENTAL_
 
-LIBS= -llxrad -lOpenAL32 -lpicsim `x86_64-w64-mingw32-msw-unicode-3.1 --libs` ../../simavr_win/simavr/obj-x86_64-w64-mingw32/libsimavr.a -lws2_32 
-#LIBAS=  ../../LXRAD_WX/libteste/liblxrad.aw  `x86_64-w64-mingw32-msw-unicode-3.1 --libs` -l../../simavr/simavr/obj-x86_64-w64-mingw32/libsimavr.a -lws2_32
+LIBS= -llxrad -lOpenAL32 -lpicsim  ../dev_w64/lib/libsimavr.a -lws2_32 -L../dev_w64/lib
 
-#LIBS= -llxrad -lpicsim ../../simavr_win/simavr/obj-x86_64-w64-mingw32/libsimavr.a -lws2_32 -lwx_mswu_xrc-3.1-x86_64-w64-mingw32 -lwx_mswu_html-3.1-x86_64-w64-mingw32 -lwx_mswu_qa-3.1-x86_64-w64-mingw32 -lwx_mswu_adv-3.1-x86_64-w64-mingw32 -lwx_mswu_core-3.1-x86_64-w64-mingw32 -lwx_baseu_xml-3.1-x86_64-w64-mingw32 -lwx_baseu_net-3.1-x86_64-w64-mingw32 -lwx_baseu-3.1-x86_64-w64-mingw32 
+LIBS+= -Wl,--subsystem,windows -mwindows -lwx_mswu_xrc-3.1-x86_64-w64-mingw32 -lwx_mswu_html-3.1-x86_64-w64-mingw32 -lwx_mswu_qa-3.1-x86_64-w64-mingw32 -lwx_mswu_core-3.1-x86_64-w64-mingw32 -lwx_baseu_xml-3.1-x86_64-w64-mingw32 -lwx_baseu_net-3.1-x86_64-w64-mingw32 -lwx_baseu-3.1-x86_64-w64-mingw32 
+
+#LIBS+=`x86_64-w64-mingw32-msw-unicode-3.1 --libs` 
+
+
 
 OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimlab5.o\
  boards/board.o boards/boards_defs.o boards/board_pic.o boards/board_avr.o boards/board_avr_serial.o\

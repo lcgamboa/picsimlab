@@ -3,10 +3,14 @@ include ../../Makefile.conf
 CC =  x86_64-w64-mingw32-g++
 WINDRES =  x86_64-w64-mingw32-windres  
 
-FLAGS = -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\" -Wall -O2 -D_WIN_ `x86_64-w64-mingw32-msw-unicode-3.1  --cxxflags ` 
+FLAGS = -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\" -Wall -O2 -D_WIN_ 
 FLAGS+= -DEXT_BROWSER
+FLAGS +=-I../../dev_w64/lib/wx/include/x86_64-w64-mingw32-msw-unicode-3.1 -I../../dev_w64/include/wx-3.1 -D_FILE_OFFSET_BITS=64 -DWXUSINGDLL -D__WXMSW__
+#FLAGS+=`x86_64-w64-mingw32-msw-unicode-3.1  --cxxflags ` 
 
-LIBS = -llxrad `x86_64-w64-mingw32-msw-unicode-3.1  --libs` 
+LIBS = -llxrad -L../../dev_w64/lib 
+LIBS+= -Wl,--subsystem,windows -mwindows -lwx_mswu_xrc-3.1-x86_64-w64-mingw32 -lwx_mswu_html-3.1-x86_64-w64-mingw32 -lwx_mswu_qa-3.1-x86_64-w64-mingw32 -lwx_mswu_core-3.1-x86_64-w64-mingw32 -lwx_baseu_xml-3.1-x86_64-w64-mingw32 -lwx_baseu_net-3.1-x86_64-w64-mingw32 -lwx_baseu-3.1-x86_64-w64-mingw32 
+#LIBS+=`x86_64-w64-mingw32-msw-unicode-3.1 --libs` 
 
 OBJS = psrtank.o srtank1.o srtank2.o serial.o 
 
