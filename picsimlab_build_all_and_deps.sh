@@ -1,5 +1,5 @@
 #!/bin/bash 
-#show erros in color red 
+#show errors in color red 
 set -o pipefail
 cl()("$@" 2>&1>&3|sed $'s,.*,\e[31m&\e[m,'>&2)3>&1
 
