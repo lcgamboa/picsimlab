@@ -5,10 +5,14 @@ WINDRES = i686-w64-mingw32-windres
 
 #lxrad automatic generated block start, don't edit below!
 
-FLAGS = -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\" -Wall -O2 -D_WIN_ `i686-w64-mingw32-msw-unicode-3.1  --cxxflags ` 
+FLAGS = -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\" -Wall -O2 -D_WIN_ -I../../dev_w32/include
 FLAGS+= -DEXT_BROWSER
+FLAGS+= -I/usr/i686-w64-mingw32/lib/wx/include/i686-w64-mingw32-msw-unicode-3.1 -I/usr/i686-w64-mingw32/include/wx-3.1 -D_FILE_OFFSET_BITS=64 -DWXUSINGDLL -D__WXMSW__ -mthreads
+#FLAGS +=`i686-w64-mingw32-msw-unicode-3.1  --cxxflags` 
 
-LIBS = -llxrad `i686-w64-mingw32-msw-unicode-3.1  --libs` -lws2_32  
+LIBS = -llxrad  -lws2_32  -L../../dev_w32/lib
+LIBS+= -Wl,--subsystem,windows -mwindows -lwx_mswu_xrc-3.1-i686-w64-mingw32 -lwx_mswu_html-3.1-i686-w64-mingw32 -lwx_mswu_qa-3.1-i686-w64-mingw32 -lwx_mswu_core-3.1-i686-w64-mingw32 -lwx_baseu_xml-3.1-i686-w64-mingw32 -lwx_baseu_net-3.1-i686-w64-mingw32 -lwx_baseu-3.1-i686-w64-mingw32 
+#LIBS+=`i686-w64-mingw32-msw-unicode-3.1 --libs` 
 
 OBJS = pespmsim.o espmsim1.o espmsim2.o serial.o tcp.o 
 

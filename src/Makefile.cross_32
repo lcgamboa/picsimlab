@@ -3,14 +3,18 @@ include ../Makefile.conf
 CC = i686-w64-mingw32-g++
 WINDRES =  i686-w64-mingw32-windres  
 
-#//FIXME Otimization cause crash on program exit !! cause unknown, only in windows 32. Don't use flag -O3
-FLAGS = -Wall -O3 -D_WIN_ -I/usr/include/lxrad  -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  `i686-w64-mingw32-msw-unicode-3.1  --cxxflags` 
+FLAGS = -Wall -O3 -D_WIN_ -I../dev_w32/include -I../dev_w32/include/lxrad -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  
 FLAGS+= -DEXT_BROWSER
+FLAGS+= -I/usr/i686-w64-mingw32/lib/wx/include/i686-w64-mingw32-msw-unicode-3.1 -I/usr/i686-w64-mingw32/include/wx-3.1 -D_FILE_OFFSET_BITS=64 -DWXUSINGDLL -D__WXMSW__ -mthreads
+
+#FLAGS +=`i686-w64-mingw32-msw-unicode-3.1  --cxxflags` 
 #FLAGS+= -D_EXPERIMENTAL_
 
-LIBS= -llxrad  -lpicsim `i686-w64-mingw32-msw-unicode-3.1 --libs` ../../simavr_win/simavr/obj-i686-w64-mingw32/libsimavr.a -lws2_32 
-#LIBS= ../../LXRAD_WX/libteste/liblxrad.aw  `i686-w64-mingw32-msw-unicode-3.1 --libs` -lws2_32
-#LIBS= -llxrad  -lpicsim  -lwx_mswu_xrc-3.1-i686-w64-mingw32 -lwx_mswu_html-3.1-i686-w64-mingw32 -lwx_mswu_qa-3.1-i686-w64-mingw32 -lwx_mswu_adv-3.1-i686-w64-mingw32 -lwx_mswu_core-3.1-i686-w64-mingw32 -lwx_baseu_xml-3.1-i686-w64-mingw32 -lwx_baseu_net-3.1-i686-w64-mingw32 -lwx_baseu-3.1-i686-w64-mingw32  ../../simavr_win/simavr/obj-i686-w64-mingw32/libsimavr.a -lws2_32 
+LIBS= -llxrad -lOpenAL32 -lpicsim  -lsimavr -lws2_32 -L../dev_w32/lib
+LIBS+= -Wl,--subsystem,windows -mwindows -lwx_mswu_xrc-3.1-i686-w64-mingw32 -lwx_mswu_html-3.1-i686-w64-mingw32 -lwx_mswu_qa-3.1-i686-w64-mingw32 -lwx_mswu_core-3.1-i686-w64-mingw32 -lwx_baseu_xml-3.1-i686-w64-mingw32 -lwx_baseu_net-3.1-i686-w64-mingw32 -lwx_baseu-3.1-i686-w64-mingw32 
+#LIBS+=`i686-w64-mingw32-msw-unicode-3.1 --libs` 
+
+
 
 OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimlab5.o\
  boards/board.o boards/boards_defs.o boards/board_pic.o boards/board_avr.o boards/board_avr_serial.o\
