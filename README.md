@@ -46,6 +46,16 @@ git clone https://github.com/lcgamboa/picsimlab.git
 cd picsimlab
 ./picsimlab_build_all_and_deps.sh
 ```
+## Cross-compiling for windows 64bits (from linux or wsl on win10)
+
+In Debian Linux and derivatives:
+
+```
+git clone https://github.com/lcgamboa/picsimlab.git
+cd picsimlab
+./picsimlab_build_w64.sh
+```
+
 
 ## Manual
 
