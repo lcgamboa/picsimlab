@@ -79,7 +79,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
 {
  status.st[0] |= ST_T1;
 
-#ifdef _ONEWIN
+#ifdef _NOTHREAD
  if (timer1.GetOverTime () < 10)
   {
    label1.SetColor (0, 0, 0);
