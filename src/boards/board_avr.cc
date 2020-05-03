@@ -56,8 +56,8 @@ enum
 };
 
 static const char * irq_names_uart[IRQ_UART_COUNT] = {
- [IRQ_UART_BYTE_IN] = "8<uart.in",
- [IRQ_UART_BYTE_OUT] = "8>uart.out",
+ /*[IRQ_UART_BYTE_IN] =*/ "8<uart.in",
+ /*[IRQ_UART_BYTE_OUT] =*/ "8>uart.out",
 };
 
 
