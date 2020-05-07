@@ -28,8 +28,11 @@
 #include"../picsimlab5.h"
 #include"board_4.h"
 
-/* outputs */
+#ifdef __EMSCRIPTEN__
+#include<emscripten.h>
+#endif
 
+/* outputs */
 enum
 {
  O_RB0, O_RB1, O_RB2, O_RB3, O_RB4, O_RB5, O_RB6, O_RB7, O_LPWR, O_LCD,
@@ -1336,7 +1339,28 @@ cboard_4::EvMouseButtonPress(uint button, uint x, uint y, uint state)
            fprintf (fout, "\r\n");
           }
          fclose (fout);
-         lxLaunchDefaultApplication(mi2c_tmp_name);
+#ifdef __EMSCRIPTEN__
+   EM_ASM_({
+	   var filename=UTF8ToString($0);
+           var buf = FS.readFile(filename);
+           var blob = new Blob([buf],  {"type" : "application/octet-stream" });
+           var text = URL.createObjectURL(blob);
+
+	   var element = document.createElement('a');
+           element.setAttribute('href', text);
+           element.setAttribute('download', filename);
+
+           element.style.display = 'none';
+           document.body.appendChild(element);
+
+           element.click();
+
+           document.body.removeChild(element);
+           URL.revokeObjectURL(text);
+	  },mi2c_tmp_name);
+#else
+         lxLaunchDefaultApplication(mi2c_tmp_name);      
+#endif 
         }
        else
         {

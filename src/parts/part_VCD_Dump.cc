@@ -28,6 +28,9 @@
 #include"../picsimlab5.h"
 #include"part_VCD_Dump.h"
 
+#ifdef __EMSCRIPTEN__
+#include<emscripten.h>
+#endif
 
 const char markers[] = "!$%&[()]";
 
@@ -602,14 +605,33 @@ cpart_VCD_Dump::EvMouseButtonPress(uint button, uint x, uint y, uint state)
         }
        break;
       case I_VIEW:
+#ifdef __EMSCRIPTEN__
+   EM_ASM_({
+	   var filename=UTF8ToString($0);
+           var buf = FS.readFile(filename);
+           var blob = new Blob([buf],  {"type" : "application/octet-stream" });
+           var text = URL.createObjectURL(blob);
 
+	   var element = document.createElement('a');
+           element.setAttribute('href', text);
+           element.setAttribute('download', filename);
+
+           element.style.display = 'none';
+           document.body.appendChild(element);
+
+           element.click();
+
+           document.body.removeChild(element);
+           URL.revokeObjectURL(text);
+	  },f_vcd_name);
+#else
 #ifdef _WIN_
        lxExecute (Window1.GetSharePath()+ lxT ("/../tools/gtkwave/bin/gtkwave.exe ") + f_vcd_name);
 #else
 
        lxExecute (String ("gtkwave ") + f_vcd_name, lxEXEC_MAKE_GROUP_LEADER);
 #endif
-
+#endif
        break;
       }
     }

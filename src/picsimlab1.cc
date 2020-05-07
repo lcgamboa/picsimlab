@@ -38,6 +38,10 @@ CPWindow1 Window1;
 #include"picsimlab4.h"
 #include"picsimlab5.h"
 
+#ifdef __EMSCRIPTEN__
+#include<emscripten.h>
+#endif
+
 #ifdef _USE_PICSTARTP_
 extern char PROGDEVICE[100];
 #endif
@@ -109,7 +113,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
 
  if (!tgo)
   tgo = 1; //thread sync
-};
+}
 
 void
 CPWindow1::thread1_EvThreadRun(CControl*)
@@ -618,8 +622,6 @@ CPWindow1::_EvOnDestroy(CControl * control)
 void
 CPWindow1::menu1_File_LoadHex_EvMenuActive(CControl * control)
 {
- pa = mcupwr;
- mcupwr = 0;
  filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
  filedialog1.Run ();
 }
@@ -635,6 +637,11 @@ CPWindow1::menu1_File_SaveHex_EvMenuActive(CControl * control)
 void
 CPWindow1::filedialog1_EvOnClose(int retId)
 {
+ pa = mcupwr;
+ mcupwr = 0;
+ 
+ while(status.st[1] & ST_TH)usleep(100);//wait thread
+ 
  if (retId && (filedialog1.GetType () == (lxFD_OPEN | lxFD_CHANGE_DIR)))
   {
    pboard->MEnd ();
@@ -675,6 +682,26 @@ CPWindow1::filedialog1_EvOnClose(int retId)
  if (retId && (filedialog1.GetType () == (lxFD_SAVE | lxFD_CHANGE_DIR)))
   {
    pboard->MDumpMemory (filedialog1.GetFileName ());
+   #ifdef __EMSCRIPTEN__
+   EM_ASM_({
+	   var filename=UTF8ToString($0);
+           var buf = FS.readFile(filename);
+           var blob = new Blob([buf],  {"type" : "application/octet-stream" });
+           var text = URL.createObjectURL(blob);
+
+	   var element = document.createElement('a');
+           element.setAttribute('href', text);
+           element.setAttribute('download', filename);
+
+           element.style.display = 'none';
+           document.body.appendChild(element);
+
+           element.click();
+
+           document.body.removeChild(element);
+           URL.revokeObjectURL(text);
+	  },filedialog1.GetFileName ().c_str ());
+#endif 
   }
 
  mcupwr = pa;
@@ -1087,6 +1114,28 @@ CPWindow1::filedialog2_EvOnClose(int retId)
    snprintf (fname, 1279, "%s/picsimlab.ini", home);
    prefs.Clear ();
    prefs.LoadFromFile (fname);
+   
+#ifdef __EMSCRIPTEN__
+   EM_ASM_({
+	   var filename=UTF8ToString($0);
+           var buf = FS.readFile(filename);
+           var blob = new Blob([buf],  {"type" : "application/octet-stream" });
+           var text = URL.createObjectURL(blob);
+
+	   var element = document.createElement('a');
+           element.setAttribute('href', text);
+           element.setAttribute('download', filename);
+
+           element.style.display = 'none';
+           document.body.appendChild(element);
+
+           element.click();
+
+           document.body.removeChild(element);
+           URL.revokeObjectURL(text);
+	  },filedialog2.GetFileName ().c_str ());
+#endif 
+   
   }
 
 }
@@ -1151,3 +1200,34 @@ CPWindow1::SetJUMPSTEPS(int js)
    NSTEPJ = NSTEP;
   }
 }
+
+
+
+#ifdef __EMSCRIPTEN__
+extern "C"
+{
+
+ void
+ file_ready(const char *fname)
+ {
+  if (strstr (fname, ".pzw"))
+   {
+    printf("Loading .pzw...\n");
+    Window1.filedialog2.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
+    Window1.filedialog2.SetFileName (fname);
+    Window1.filedialog2_EvOnClose (1);
+   }
+  else if (strstr (fname, ".hex"))
+   {
+    printf("Loading .hex...\n");
+    Window1.filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
+    Window1.filedialog1.SetFileName (fname);
+    Window1.filedialog1_EvOnClose (1);
+   }
+  else
+   {
+    printf("Unknow file %s !!\n",fname);
+   }
+ }
+}
+#endif

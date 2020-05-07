@@ -192,9 +192,9 @@ extern CPWindow1 Window1 ;
 
 enum {CPU_RUNNING, CPU_STEPPING, CPU_HALTED, CPU_BREAKPOINT, CPU_ERROR};
 
-#define ST_T1 0x01;
-#define ST_T2 0x02;
-#define ST_TH 0x04;
+#define ST_T1 0x01
+#define ST_T2 0x02
+#define ST_TH 0x04
 
 #endif /*#CPWINDOW1*/
 

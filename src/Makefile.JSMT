@@ -14,7 +14,7 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-CFLAGS=  -DEXT_BROWSER -DNO_DEBUG -DNO_TOOLS -Werror -Os -s DEMANGLE_SUPPORT=0 \
+CFLAGS=  -DEXT_BROWSER -DNO_DEBUG -DNO_TOOLS -Werror -Os  -s DEMANGLE_SUPPORT=0 \
         -s SAFE_HEAP=0 -s ASSERTIONS=0 -s TOTAL_MEMORY=128MB -s USE_SDL=2 -s USE_SDL_IMAGE=2 \
 	-s SDL2_IMAGE_FORMATS='["png","bmp"]' -s USE_SDL_TTF=2 --preload-file assets --preload-file home \
 	-D_VERSION_=\"0.8.0\" -Wall -D_SHARE_=\"/assets/share/\" -I../../LXRAD_SDL2/include/ -I../../picsim/include/ \
@@ -23,15 +23,14 @@ CFLAGS+= --pre-js load.js
 #	-s "BINARYEN_TRAP_MODE='clamp'" 
 CFLAGS+= -s EXPORTED_FUNCTIONS='["_main","_file_ready","_lxrad_scale_up","_lxrad_scale_down"]' \
 	 -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' 
+CFLAGS+= -s WASM=1  -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=1  
 
-
-#CFLAGS+=-s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 
 #CFLAGS+=--emrun
-CFLAGS+= -D_NOTHREAD 
+#CFLAGS+= -D_NOTHREAD 
 #CFLAGS+= -D_EXPERIMENTAL_
 
-LIBS= ../../LXRAD_SDL2/lib/liblxrad_SDL2_js.a ../../picsim/src/libpicsim_js.a ../../simavr/simavr/obj-wasm32-unknown-emscripten/libsimavr.a
-LIBS+= ../../LXRAD_SDL2/teste/zlib-master/contrib/minizip/minizip.a
+LIBS= ../../LXRAD_SDL2/lib/liblxrad_SDL2_js_mt.a ../../picsim/src/libpicsim_js_mt.a ../../simavr/simavr/obj-wasm32-unknown-emscripten_mt/libsimavr_mt.a
+LIBS+= ../../LXRAD_SDL2/teste/zlib-master/contrib/minizip/minizip_mt.a
 
 #LIBS = `lxrad_SDL2-config --libs` -lpicsim -lsimavr -lelf
 
@@ -52,8 +51,7 @@ OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimla
 #lxrad automatic generated block end, don't edit above!
 
 all: $(OBJS)
-	$(CC) $(CFLAGS) -s WASM=1 $(OBJS) -o picsimlab.html $(LIBS) --shell-file template.html 
-	$(CC) $(CFLAGS) -s WASM=0 $(OBJS) -o picsimlab_asmjs.html $(LIBS) --shell-file template_asmjs.html 
+	$(CC) $(CFLAGS) $(OBJS) -o picsimlab_mt.html $(LIBS) --shell-file template_mt.html 
 
 %.o: %.cc
 	$(CC) -c $(CFLAGS) $< -o $@ 
