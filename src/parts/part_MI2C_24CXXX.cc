@@ -28,6 +28,10 @@
 #include"../picsimlab5.h"
 #include"part_MI2C_24CXXX.h"
 
+#ifdef __EMSCRIPTEN__
+#include<emscripten.h>
+#endif
+
 /* inputs */
 enum
 {
@@ -399,11 +403,31 @@ cpart_MI2C_24CXXX::EvMouseButtonPress(uint button, uint x, uint y, uint state)
            fprintf (fout, "\r\n");
           }
          fclose (fout);
+         #ifdef __EMSCRIPTEN__
+   EM_ASM_({
+	   var filename=UTF8ToString($0);
+           var buf = FS.readFile(filename);
+           var blob = new Blob([buf],  {"type" : "application/octet-stream" });
+           var text = URL.createObjectURL(blob);
+
+	   var element = document.createElement('a');
+           element.setAttribute('href', text);
+           element.setAttribute('download', filename);
+
+           element.style.display = 'none';
+           document.body.appendChild(element);
+
+           element.click();
+
+           document.body.removeChild(element);
+           URL.revokeObjectURL(text);
+	  },f_mi2c_tmp_name);
+#else 
          lxLaunchDefaultApplication (f_mi2c_tmp_name);
+#endif         
         }
        else
         {
-
          printf ("Error saving to file: %s \n", f_mi2c_tmp_name);
         }
        break;
