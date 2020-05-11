@@ -31,13 +31,14 @@
 class CPWindow2:public CPWindow
 {
   public:
+#ifndef EXT_BROWSER
   /*#Controls*/
   CHtml html1;
   CButton button1;
   /*#Events*/
   void _EvOnShow(CControl * control);
   void button1_EvMouseButtonClick(CControl * control, const uint button, const uint x, const uint y, const uint state);
-
+#endif
   /*#Others*/
   CPWindow2(void);
 };
