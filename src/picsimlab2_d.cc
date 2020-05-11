@@ -40,6 +40,7 @@ CPWindow2::CPWindow2(void)
   SetPopupMenu(NULL);
   SetTitle(lxT("PICSimLab - Help"));
   SetOverrideRedirect(0);
+#ifndef EXT_BROWSER
   EvOnShow=EVONSHOW & CPWindow2::_EvOnShow;
     //html1
   html1.SetFOwner(this);
@@ -76,6 +77,7 @@ CPWindow2::CPWindow2(void)
   button1.EvMouseButtonClick=EVMOUSEBUTTONCLICK & CPWindow2::button1_EvMouseButtonClick;
   button1.SetText(lxT("Back"));
   CreateChild(&button1);
+#endif
   /*#Others*/
   //lxrad automatic generated block end, don't edit above!
 };
