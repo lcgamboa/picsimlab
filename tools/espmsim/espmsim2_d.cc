@@ -16,6 +16,7 @@ CPWindow2::CPWindow2(void)
   SetPopupMenu(NULL);
   SetTitle(lxT("srtank - Help"));
   SetOverrideRedirect(0);
+#ifndef EXT_BROWSER
   EvOnShow=EVONSHOW & CPWindow2::_EvOnShow;
   //html1
   html1.SetFOwner(this);
@@ -35,6 +36,7 @@ CPWindow2::CPWindow2(void)
   html1.SetLoadUrl(lxT(""));
   html1.SetLoadFile(lxT(""));
   CreateChild(&html1);
+#endif
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!
 };
