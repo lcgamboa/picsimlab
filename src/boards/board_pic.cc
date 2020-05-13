@@ -98,8 +98,10 @@ board_pic::MDumpMemory(const char * fname)
  switch (getfprocbyname ((const char*) proc.c_str ()))
   {
   case P16:
-  case P16E:
    write_ihx (fname);
+   break;
+  case P16E:
+   write_ihx16e (fname);
    break;
   case P18:
    write_ihx18 (fname);
