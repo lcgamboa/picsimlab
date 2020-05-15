@@ -633,6 +633,25 @@ CPWindow5::SetPin(unsigned char pin, unsigned char value)
 }
 
 void
+CPWindow5::SetPinDOV(unsigned char pin, unsigned char ovalue)
+{
+ if (pin)
+  {
+   if (Pins[pin - 1].ovalue != ovalue)
+    {
+     if ((pin > PinsCount))
+      {
+       Pins[pin - 1].ovalue = ovalue;
+      }
+     else
+      {
+       pboard->MSetPinDOV (pin, ovalue);
+      }
+    }
+  }
+}
+
+void
 CPWindow5::WritePin(unsigned char pin, unsigned char value)
 {
  if (pin > PinsCount)

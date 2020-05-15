@@ -57,6 +57,7 @@ class board_avr: virtual public board
       int MGetPinCount(void);
       String MGetPinName(int pin);
       void MSetPin(int pin, unsigned char value);
+      void MSetPinDOV(int pin, unsigned char ovalue);      
       void MSetAPin(int pin, float value);
       unsigned char MGetPin(int pin);  
       const picpin * MGetPinsValues(void); 

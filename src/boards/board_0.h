@@ -55,6 +55,7 @@ class cboard_0:public board_pic, public board_avr
       int MGetPinCount(void);
       String MGetPinName(int pin);
       void MSetPin(int pin, unsigned char value);
+      void MSetPinDOV(int pin, unsigned char ovalue);
       void MSetAPin(int pin, float value);
       unsigned char MGetPin(int pin);  
       const picpin * MGetPinsValues(void);  

@@ -37,7 +37,7 @@ class cpart_pbuttons_an:public part
       cpart_pbuttons_an(unsigned x, unsigned y);
       ~cpart_pbuttons_an(void);
       void Draw(void);
-      void Process(void);
+      void PreProcess(void);
       String GetPictureFileName(void){return lxT("push_buttons.png");};
       String GetInputMapFile(void){return lxT("push_buttons_i.map");};
       String GetOutputMapFile(void){return lxT("push_buttons_o.map");};

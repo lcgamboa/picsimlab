@@ -151,6 +151,12 @@ board_pic::MSetPin(int pin, unsigned char value)
 }
 
 void
+board_pic::MSetPinDOV(int pin, unsigned char ovalue)
+{
+ pic_set_pin_DOV (pin, ovalue);
+}
+
+void
 board_pic::MSetAPin(int pin, float value)
 {
  pic_set_apin (pin, value);
