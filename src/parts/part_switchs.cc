@@ -73,14 +73,11 @@ cpart_switchs::cpart_switchs(unsigned x, unsigned y)
  output_value[6] = 0;
  output_value[7] = 0;
 
- refresh = 0;
-
 }
 
 void
 cpart_switchs::Reset(void)
 {
- refresh = 0;
 
  //force pin update
  if (output_pins[0] > 0)Window5.SetPin (output_pins[0], !output_value[0]);
@@ -167,12 +164,8 @@ cpart_switchs::Draw(void)
 }
 
 void
-cpart_switchs::Process(void)
+cpart_switchs::PreProcess(void)
 {
-
- if (refresh > 1000)
-  {
-   refresh = 0;
 
    if (output_pins[0] > 0)Window5.SetPin (output_pins[0], output_value[0]);
    if (output_pins[1] > 0)Window5.SetPin (output_pins[1], output_value[1]);
@@ -183,8 +176,6 @@ cpart_switchs::Process(void)
    if (output_pins[6] > 0)Window5.SetPin (output_pins[6], output_value[6]);
    if (output_pins[7] > 0)Window5.SetPin (output_pins[7], output_value[7]);
 
-  }
- refresh++;
 }
 
 void
