@@ -415,6 +415,16 @@ board_avr::MSetPin(int pin, unsigned char value)
 }
 
 void
+board_avr::MSetPinDOV(int pin, unsigned char ovalue)
+{
+ if (pin <= 0 || pin > MGetPinCount ())return;
+ if (avr == NULL) return;
+ if (!pins[pin - 1].dir)return;
+ if (pins[pin - 1].ovalue == ovalue)return;
+ pins[pin - 1].ovalue = ovalue; //TODO this value is not used yet
+}
+
+void
 board_avr::MSetAPin(int pin, float value)
 {
  if (pin <= 0 || pin > MGetPinCount ())return;

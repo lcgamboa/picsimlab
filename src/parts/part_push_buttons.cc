@@ -76,7 +76,6 @@ cpart_pbuttons::cpart_pbuttons(unsigned x, unsigned y)
  output_value[6] = !active;
  output_value[7] = !active;
 
- refresh = 0;
 }
 
 void
@@ -92,8 +91,7 @@ cpart_pbuttons::Reset(void)
  output_value[6] = !active;
  output_value[7] = !active;
 
- refresh = 0;
-//force pin update
+ //force pin update
  Window5.SetPin (output_pins[0], !output_value[0]);
  Window5.SetPin (output_pins[1], !output_value[1]);
  Window5.SetPin (output_pins[2], !output_value[2]);
@@ -111,7 +109,7 @@ cpart_pbuttons::Reset(void)
  Window5.SetPin (output_pins[5], output_value[5]);
  Window5.SetPin (output_pins[6], output_value[6]);
  Window5.SetPin (output_pins[7], output_value[7]);
- 
+
 }
 
 cpart_pbuttons::~cpart_pbuttons(void)
@@ -153,33 +151,26 @@ cpart_pbuttons::Draw(void)
       canvas.Text (Window5.GetPinName (output_pins[output[i].id - O_P1]), output[i].x1, output[i].y1);
      break;
     }
-
-
-  };
+  }
 
  canvas.End ();
 
 }
 
 void
-cpart_pbuttons::Process(void)
+cpart_pbuttons::PreProcess(void)
 {
 
- if (refresh > 1000)
-  {
-   refresh = 0;
+ 
+ Window5.SetPin (output_pins[0], output_value[0]);
+ Window5.SetPin (output_pins[1], output_value[1]);
+ Window5.SetPin (output_pins[2], output_value[2]);
+ Window5.SetPin (output_pins[3], output_value[3]);
+ Window5.SetPin (output_pins[4], output_value[4]);
+ Window5.SetPin (output_pins[5], output_value[5]);
+ Window5.SetPin (output_pins[6], output_value[6]);
+ Window5.SetPin (output_pins[7], output_value[7]);
 
-   Window5.SetPin (output_pins[0], output_value[0]);
-   Window5.SetPin (output_pins[1], output_value[1]);
-   Window5.SetPin (output_pins[2], output_value[2]);
-   Window5.SetPin (output_pins[3], output_value[3]);
-   Window5.SetPin (output_pins[4], output_value[4]);
-   Window5.SetPin (output_pins[5], output_value[5]);
-   Window5.SetPin (output_pins[6], output_value[6]);
-   Window5.SetPin (output_pins[7], output_value[7]);
-
-  }
- refresh++;
 }
 
 void

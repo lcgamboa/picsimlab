@@ -62,7 +62,6 @@ cpart_pbuttons_an::cpart_pbuttons_an(unsigned x, unsigned y)
 
  output_value = active * 5.0;
 
- refresh = 0;
 }
 
 void
@@ -70,8 +69,6 @@ cpart_pbuttons_an::Reset(void)
 {
  //release all
  output_value = active * 5.0;
-
- refresh = 0;
 
  Window5.SetAPin (output_pins[0], output_value);
 
@@ -143,17 +140,9 @@ cpart_pbuttons_an::Draw(void)
 }
 
 void
-cpart_pbuttons_an::Process(void)
+cpart_pbuttons_an::PreProcess(void)
 {
-
- if (refresh > 1000)
-  {
-   refresh = 0;
-
    Window5.SetAPin (output_pins[0], output_value);
-
-  }
- refresh++;
 }
 
 void

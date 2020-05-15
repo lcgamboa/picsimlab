@@ -767,6 +767,20 @@ cboard_0::MSetPin(int pin, unsigned char value)
 }
 
 void
+cboard_0::MSetPinDOV(int pin, unsigned char ovalue)
+{
+ switch (ptype)
+  {
+  case _PIC:
+   return board_pic::MSetPinDOV (pin, ovalue);
+   break;
+  case _AVR:
+   return board_avr::MSetPinDOV (pin, ovalue);
+   break;
+  }
+}
+
+void
 cboard_0::MSetAPin(int pin, float value)
 {
  switch (ptype)

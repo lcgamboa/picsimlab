@@ -99,6 +99,7 @@ class board
       virtual int MGetPinCount(void)=0;
       virtual String MGetPinName(int pin)=0;
       virtual void MSetPin(int pin, unsigned char value)=0;
+      virtual void MSetPinDOV(int pin, unsigned char ovalue)=0;
       virtual void MSetAPin(int pin, float value)=0;
       virtual unsigned char MGetPin(int pin)=0;  
       virtual const picpin * MGetPinsValues(void)=0;  
