@@ -37,7 +37,7 @@ class cpart_switchs:public part
       cpart_switchs(unsigned x, unsigned y);
       ~cpart_switchs(void);
       void Draw(void);
-      void Process(void);
+      void PreProcess(void);
       String GetPictureFileName(void){return lxT("switchs.png");};
       String GetInputMapFile(void){return lxT("switchs_i.map");};
       String GetOutputMapFile(void){return lxT("switchs_o.map");};

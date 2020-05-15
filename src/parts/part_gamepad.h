@@ -37,7 +37,7 @@ class cpart_gamepad:public part
       cpart_gamepad(unsigned x, unsigned y);
       ~cpart_gamepad(void);
       void Draw(void);
-      void Process(void);
+      void PreProcess(void);
       String GetPictureFileName(void){return lxT("gamepad.png");};
       String GetInputMapFile(void){return lxT("gamepad_i.map");};
       String GetOutputMapFile(void){return lxT("gamepad_o.map");};

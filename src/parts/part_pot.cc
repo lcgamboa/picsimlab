@@ -70,7 +70,6 @@ cpart_pot::cpart_pot (unsigned x, unsigned y)
  active[2] = 0;
  active[3] = 0;
 
- refresh=0;
 }
 
 cpart_pot::~cpart_pot (void)
@@ -138,22 +137,12 @@ cpart_pot::Draw (void)
 }
 
 void
-cpart_pot::Process (void)
+cpart_pot::PreProcess (void)
 {
-
-
- if (refresh > 100000)
-  {
-   refresh = 0;
-
    Window5.SetAPin (input_pins[0], 5.0 * (148 - values[0]) / 148.0);
    Window5.SetAPin (input_pins[1], 5.0 * (148 - values[1]) / 148.0);
    Window5.SetAPin (input_pins[2], 5.0 * (148 - values[2]) / 148.0);
    Window5.SetAPin (input_pins[3], 5.0 * (148 - values[3]) / 148.0);
-
-  }
- refresh++;
-
 }
 
 void

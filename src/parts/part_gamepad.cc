@@ -90,7 +90,6 @@ cpart_gamepad::cpart_gamepad (unsigned x, unsigned y)
  valuex = jr;
  valuey = jr;
 
- refresh=0;
 }
 
 cpart_gamepad::~cpart_gamepad (void)
@@ -148,12 +147,8 @@ cpart_gamepad::Draw (void)
 }
 
 void
-cpart_gamepad::Process (void)
+cpart_gamepad::PreProcess (void)
 {
-
- if (refresh > 1000)
-  {
-   refresh = 0;
 
    Window5.SetPin (output_pins[0], output_value[0]);
    Window5.SetPin (output_pins[1], output_value[1]);
@@ -163,8 +158,6 @@ cpart_gamepad::Process (void)
    Window5.SetPin (output_pins[5], output_value[5]);
    Window5.SetAPin (output_pins[6], 2.5 * (valuex) / jr);
    Window5.SetAPin (output_pins[7], 2.5 * (valuey) / jr);
-  }
- refresh++;
 }
 
 void

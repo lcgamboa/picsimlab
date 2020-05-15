@@ -36,7 +36,7 @@ class cpart_pot:public part
       cpart_pot(unsigned x, unsigned y);
       ~cpart_pot(void); 
       void Draw(void);
-      void Process(void);
+      void PreProcess(void);
       String GetPictureFileName(void){return lxT("pot.png");};
       String GetInputMapFile(void){return lxT("pot_i.map");};
       String GetOutputMapFile(void){return lxT("pot_o.map");};
