@@ -352,7 +352,6 @@ cboard_4::Draw(CDraw *draw, double scale)
  pic_set_pin (30, 1);
 
 
-
  draw->Canvas.Init (scale, scale);
 
 
@@ -803,10 +802,10 @@ cboard_4::Run_CPU(void)
          {
           rpmc = 0;
           if (dip[14])
-           pic_set_pin (15, !pic_get_pin (15));
+           pic_set_pin (15, !pins[14].value);
          }
        }
-      else
+      else 
        pic_set_pin (15, 0);
 
 
