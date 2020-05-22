@@ -56,7 +56,7 @@ cpart_Buzzer::cpart_Buzzer(unsigned x, unsigned y)
 
  mcount = 0;
 
- buzzer.Init ();
+ buzzer.Init (4);
  type = ACTIVE;
 
  samplerate = buzzer.GetSampleRate ();
