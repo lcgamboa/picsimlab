@@ -101,7 +101,7 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
  if (!avr)
   {
    fprintf (stderr, "Error creating the AVR core\n");
-   avr = avr_make_mcu_by_name ("atmega328");
+   avr = avr_make_mcu_by_name ("atmega328p");
   }
 
 
@@ -306,6 +306,7 @@ board_avr::MGetPinCount(void)
 {
  if (avr == NULL) return 0;
  if (String (avr->mmcu).compare (lxT ("atmega328")) == 0)return 28;
+ if (String (avr->mmcu).compare (lxT ("atmega328p")) == 0)return 28;
  return 0;
 }
 
