@@ -61,7 +61,7 @@ class cboard_5:public board_avr
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
-      String GetSupportedDevices(void){return lxT("atmega328,");};
+      String GetSupportedDevices(void){return lxT("atmega328p,");};
       //Return the filename of board picture 
       String GetPictureFileName(void){return lxT("picsimlab5.png");};
       //Return the filename of board picture input map 
