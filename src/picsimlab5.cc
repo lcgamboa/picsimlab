@@ -604,7 +604,14 @@ CPWindow5::GetPinsNames(void)
 String
 CPWindow5::GetPinName(unsigned char pin)
 {
- return PinNames[pin];
+ if (pin < pboard->MGetPinCount ())
+  {
+   return PinNames[pin];
+  }
+ else
+  {
+   return PinNames[pin]+" "+itoa(pin);
+  }
 }
 
 const picpin *

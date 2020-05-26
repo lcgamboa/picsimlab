@@ -38,6 +38,7 @@ ldd_max72xx_rst(ldd_max72xx_t *ldd)
  ldd->aclk = 1;
  ldd->update = 1;
  ldd->dat = 0;
+ ldd->dout = 0;
 }
 
 void
@@ -110,12 +111,17 @@ ldd_max72xx_io(ldd_max72xx_t *ldd, unsigned char din, unsigned char clk, unsigne
  //transicao
  if ((ldd->aclk == 0)&&(clk == 1))//rising edge
   {
-
+/*
    if (ldd->bc == 0)
     {
      ldd->dat = 0;
     }
-   ldd->dat |= din << (15 - ldd->bc);
+ *       ldd->dat |= din << (15 - ldd->bc);
+ */
+  
+   ldd->dout= (ldd->dat & 0x8000) > 0;
+   ldd->dat= (ldd->dat<<1) | din;
+   
    ldd->bc++;
 
    if (ldd->bc >= 16)//16 bits received
@@ -126,13 +132,13 @@ ldd_max72xx_io(ldd_max72xx_t *ldd, unsigned char din, unsigned char clk, unsigne
   }
 
  ldd->aclk = clk;
- return 1;
+ return ldd->dout;
 }
 
 void
-ldd_max72xx_draw(ldd_max72xx_t *ldd, CCanvas * canvas, int x1, int y1, int w1, int h1, int picpwr)
+ldd_max72xx_draw(ldd_max72xx_t *ldd, CCanvas * canvas, int x1, int y1, int w1, int h1, int picpwr, int angle)
 {
- int x, y;
+ int x, y, a, b;
 
  ldd->update = 0;
 
@@ -140,7 +146,31 @@ ldd_max72xx_draw(ldd_max72xx_t *ldd, CCanvas * canvas, int x1, int y1, int w1, i
   {
    for (y = 0; y < 8; y++)
     {
-     if (ldd->ram[x] & (1 << y))
+     switch (angle)
+      {
+      case 0:
+       a = 7 - x;
+       b = y;
+       break;
+      case 90:
+       a = y;
+       b = x;
+       break;
+      case 180:
+       a = x;
+       b = 7-y;
+       break;
+      case 270:
+       a = 7 - y;
+       b = 7 - x;
+       break;
+      default:
+       a = 7 - x;
+       b = y;
+       break;
+      }
+
+     if (ldd->ram[a] & (1 << (b)))
       {
        canvas->SetFgColor (250, 0, 0);
        canvas->SetColor (250, 0, 0);
@@ -150,7 +180,8 @@ ldd_max72xx_draw(ldd_max72xx_t *ldd, CCanvas * canvas, int x1, int y1, int w1, i
        canvas->SetFgColor (100, 100, 100);
        canvas->SetColor (100, 100, 100);
       }
-     canvas->Circle (1, x1 + (y * 25)+12, y1 + (x * 25)+12, 10);
+
+     canvas->Circle (1, x1 + (y * 25) + 12, y1 + (x * 25) + 12, 10);
     }
   }
 }
