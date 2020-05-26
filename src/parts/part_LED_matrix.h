@@ -64,7 +64,9 @@ public:
     unsigned short get_out_id(char * name);
 private:
     unsigned char input_pins[3];
+    unsigned char output_pins[1];
     ldd_max72xx_t ldd;
+    int angle;
 };
 
 
