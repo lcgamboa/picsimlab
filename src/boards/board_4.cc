@@ -307,7 +307,7 @@ cboard_4::~cboard_4(void)
  Window1.DestroyChild (label5);
  Window1.DestroyChild (label6);
  Window1.DestroyChild (combo1);
- 
+
  unlink (mi2c_tmp_name);
 }
 
@@ -632,11 +632,11 @@ cboard_4::Draw(CDraw *draw, double scale)
  //temperatura 
  ref = ((0.2222 * (pic.pins[23].oavalue - 30)))-(0.2222 * (pic.pins[16].oavalue - 30));
 
- if (ref < 0)
-  ref = 0;
-
  temp[1] = temp[0];
  temp[0] = ((27.5 + ref)*0.003) + temp[1]*(0.997);
+
+ if (temp[0] < 27.5)
+  temp[0] = 27.5;
 
  if (dip[16])
   pic_set_apin (4, temp[0] / 100.0);
@@ -805,7 +805,7 @@ cboard_4::Run_CPU(void)
            pic_set_pin (15, !pins[14].value);
          }
        }
-      else 
+      else
        pic_set_pin (15, 0);
 
 
@@ -1339,26 +1339,28 @@ cboard_4::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           }
          fclose (fout);
 #ifdef __EMSCRIPTEN__
-   EM_ASM_({
-	   var filename=UTF8ToString($0);
-           var buf = FS.readFile(filename);
-           var blob = new Blob([buf],  {"type" : "application/octet-stream" });
-           var text = URL.createObjectURL(blob);
+         EM_ASM_ ({
+                  var filename = UTF8ToString ($0);
+                  var buf = FS.readFile (filename);
+                  var blob = new Blob ([buf],
+                   {
+                    "type" : "application/octet-stream" });
+                  var text = URL.createObjectURL (blob);
 
-	   var element = document.createElement('a');
-           element.setAttribute('href', text);
-           element.setAttribute('download', filename);
+                  var element = document.createElement ('a');
+                  element.setAttribute ('href', text);
+                  element.setAttribute ('download', filename);
 
-           element.style.display = 'none';
-           document.body.appendChild(element);
+                  element.style.display = 'none';
+                  document.body.appendChild (element);
 
-           element.click();
+                  element.click ();
 
-           document.body.removeChild(element);
-           URL.revokeObjectURL(text);
-	  },mi2c_tmp_name);
+                  document.body.removeChild (element);
+                  URL.revokeObjectURL (text);
+         }, mi2c_tmp_name);
 #else
-         lxLaunchDefaultApplication(mi2c_tmp_name);      
+         lxLaunchDefaultApplication (mi2c_tmp_name);
 #endif 
         }
        else
