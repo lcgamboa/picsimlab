@@ -41,8 +41,8 @@ enum
 enum
 {
  O_L, //switch position (On/Off)
- O_RX, //LED on RD0 push button
- O_TX, //LED on RD1 switch
+ O_RX, //LED on PD0
+ O_TX, //LED on PD1
  O_ON //Power LED
 };
 //return the input ids numbers of names used in input map
@@ -487,10 +487,10 @@ cboard_5::Draw(CDraw *draw, double scale)
        draw->Canvas.SetColor (0, 225 * Window1.Get_mcupwr () + 30, 0);
        break;
       case O_RX:
-       draw->Canvas.SetColor (0, pins[0].oavalue, 0);
+       draw->Canvas.SetColor (0, 255-pins[1].oavalue, 0);
        break;
       case O_TX:
-       draw->Canvas.SetColor (0, pins[1].oavalue, 0);
+       draw->Canvas.SetColor (0, 255-  ((unsigned char) pins[2].oavalue*10), 0);
        break;
       case O_L:
        draw->Canvas.SetColor (0, pins[18].oavalue, 0);
