@@ -48,12 +48,13 @@
 #include"part_RTC_pfc8563.h"
 #include"part_IO_74xx595.h"
 #include"part_VCD_Dump.h"
+#include"part_VCD_Dump_an.h"
 #include"part_IO_PCF8574.h"
 #include"part_Buzzer.h"
 #include"part_SignalGenerator.h" 
 #include"part_push_buttons_an.h"
 
-const char parts_list[NUM_PARTS][30]={"7 Segments Display","Buzzer","D. Transfer function","Gamepad","IO 74xx595","IO PCF8574", "Keypad","LCD hd44780", "LCD pcf8833", "LCD pcd8544", "LED Matrix", "LEDs", "MEM 24CXXX", "Potentiometers", "Push buttons", "Push buttons (Analogic)", "RGB LED", "RTC ds1307", "RTC pfc8563", "Servo motor","Signal Generator","Step motor","Switchs","Temperature System","VCD Dump",};
+const char parts_list[NUM_PARTS][30]={"7 Segments Display","Buzzer","D. Transfer function","Gamepad","IO 74xx595","IO PCF8574", "Keypad","LCD hd44780", "LCD pcf8833", "LCD pcd8544", "LED Matrix", "LEDs", "MEM 24CXXX", "Potentiometers", "Push buttons", "Push buttons (Analogic)", "RGB LED", "RTC ds1307", "RTC pfc8563", "Servo motor","Signal Generator","Step motor","Switchs","Temperature System","VCD Dump","VCD Dump (Analogic)",};
 
 
 //boards object creation
@@ -102,7 +103,9 @@ part * create_part(String name, unsigned int x, unsigned int y)
    if(name.compare(lxT("IO 74xx595")) == 0 )part_= new cpart_IO_74xx595(x,y);
 
    if(name.compare(lxT("VCD Dump")) == 0 )part_= new cpart_VCD_Dump(x,y);
-   
+
+   if(name.compare(lxT("VCD Dump (Analogic)")) == 0 )part_= new cpart_VCD_Dump_an(x,y);   
+
    if(name.compare(lxT("IO PCF8574")) == 0 )part_= new cpart_IO_PCF8574(x,y);
    
    if(name.compare(lxT("Buzzer")) == 0 )part_= new cpart_Buzzer(x,y);

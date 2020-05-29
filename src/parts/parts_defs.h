@@ -30,7 +30,7 @@
 
 #define MAX_PARTS 100
 
-#define NUM_PARTS 25
+#define NUM_PARTS 26
 
 extern const char parts_list[NUM_PARTS][30];
 
