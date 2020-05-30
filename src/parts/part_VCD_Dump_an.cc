@@ -143,7 +143,7 @@ cpart_VCD_Dump_an::Draw(void)
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     canvas.Text (f_vcd_name, output[i].x1, output[i].y1);
+     canvas.Text (f_vcd_name+String(" (Analogic)"), output[i].x1, output[i].y1);
      break;
     case O_L1:
     case O_L2:
