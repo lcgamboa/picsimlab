@@ -1,4 +1,4 @@
-include ../../Makefile.conf
+include ../../VERSION
 
 CC = i686-w64-mingw32-g++
 WINDRES = i686-w64-mingw32-windres
@@ -22,7 +22,7 @@ OBJS = pespmsim.o espmsim1.o espmsim2.o serial.o tcp.o
 all: $(OBJS)
 	$(WINDRES) espmsim_res.rc  -O coff -o espmsim_res.o
 	$(CC) $(FLAGS) $(OBJS) espmsim_res.o -oespmsim.exe $(LIBS)
-	mv *.exe ../../picsimlab_$(VERSION)_win32/
+	mv *.exe ../../picsimlab_win32/
 
 %.o: %.cc
 	$(CC) -c $(FLAGS) $< 

@@ -1,4 +1,4 @@
-include ../Makefile.conf
+include ../VERSION
 
 CC = g++
 
