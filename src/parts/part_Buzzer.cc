@@ -60,7 +60,7 @@ cpart_Buzzer::cpart_Buzzer(unsigned x, unsigned y)
  type = ACTIVE;
 
  samplerate = buzzer.GetSampleRate ();
- buffersize = samplerate / 10; //0.1 seconds
+ buffersize = samplerate / 5 ; //0.1 seconds
  buffer = NULL;
  maxv = buzzer.GetMax ();
  buffercount = 0;
@@ -217,7 +217,7 @@ cpart_Buzzer::PreProcess(void)
  if (type == PASSIVE)
   {
 
-   JUMPSTEPS_ = (Window1.GetBoard ()->MGetInstClock () / samplerate);
+   JUMPSTEPS_ = (Window1.GetBoard ()->MGetInstClock () / samplerate)-100 ;
    mcount = JUMPSTEPS_;
 
   }
@@ -250,16 +250,11 @@ cpart_Buzzer::Process(void)
        out[1] = out[0];
        out[0] = 0.7837 * in[1] - 0.7837 * in[2] + 1.196 * out[1] - 0.2068 * out[2];
 
-       buffer[buffercount++] =  out[0];
+       buffer[buffercount++] = out[0];
 
-       buzzer.SoundProcess ();
       }
-     else
-      {
-       buzzer.SoundPlay (buffer, buffersize);
-       buffercount = 0;
-      }
-     mcount = -1;
+
+     mcount = 0;
     }
   }
 }
@@ -279,6 +274,11 @@ cpart_Buzzer::PostProcess(void)
     {
      buzzer.BeepStop ();
     }
+  }
+ else
+  {
+   buzzer.SoundPlay (buffer, buffersize);
+   buffercount = 0;
   }
 
 }
