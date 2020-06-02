@@ -252,7 +252,6 @@ cpart_Buzzer::Process(void)
 
        buffer[buffercount++] =  out[0];
 
-       buzzer.SoundProcess ();
       }
      else
       {
