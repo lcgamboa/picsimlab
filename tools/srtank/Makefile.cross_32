@@ -1,4 +1,4 @@
-include ../../Makefile.conf
+include ../../VERSION
 
 CC = i686-w64-mingw32-g++
 WINDRES = i686-w64-mingw32-windres
@@ -17,7 +17,7 @@ OBJS = psrtank.o srtank1.o srtank2.o serial.o
 all: $(OBJS)
 	$(WINDRES) srtank_res.rc  -O coff -o srtank_res.o
 	$(CC) $(FLAGS) $(OBJS) srtank_res.o  -osrtank.exe $(LIBS)
-	mv *.exe ../../picsimlab_$(VERSION)_win32/
+	mv *.exe ../../picsimlab_win32/
 
 %.o: %.cc
 	$(CC) -c $(FLAGS) $< 

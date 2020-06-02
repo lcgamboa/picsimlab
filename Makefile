@@ -11,6 +11,7 @@ all:$(SUBDIRS)
 install:$(SUBDIRS) 
 	
 clean:$(SUBDIRS) 
+	rm -Rf *.exe *.zip
 
 uninstall:$(SUBDIRS) 
 
