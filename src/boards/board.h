@@ -105,11 +105,11 @@ class board
       virtual const picpin * MGetPinsValues(void)=0;  
       virtual void MStep(void)=0;
       virtual void MStepResume(void)=0;
-      virtual int MTestBP(unsigned short bp)=0;
+      virtual int MTestBP(unsigned int bp)=0;
       virtual void MReset(int flags)=0;
       virtual unsigned short * MGetProcID_p(void)=0;
-      virtual unsigned short  MGetPC(void)=0;
-      virtual void MSetPC(unsigned short pc)=0;
+      virtual unsigned int  MGetPC(void)=0;
+      virtual void MSetPC(unsigned int pc)=0;
       virtual unsigned char * MGetRAM_p(void)=0;
       virtual unsigned char * MGetROM_p(void)=0;
       virtual unsigned char * MGetCONFIG_p(void)=0;

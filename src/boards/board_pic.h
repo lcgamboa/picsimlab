@@ -53,11 +53,11 @@ class board_pic: virtual public board
       const picpin * MGetPinsValues(void);  
       void MStep(void);
       void MStepResume(void);
-      int MTestBP(unsigned short bp);
+      int MTestBP(unsigned int bp);
       void MReset(int flags);
       unsigned short * MGetProcID_p(void);
-      unsigned short  MGetPC(void);
-      void MSetPC(unsigned short pc);
+      unsigned int  MGetPC(void);
+      void MSetPC(unsigned int pc);
       unsigned char * MGetRAM_p(void);
       unsigned char * MGetROM_p(void);
       unsigned char * MGetCONFIG_p(void);

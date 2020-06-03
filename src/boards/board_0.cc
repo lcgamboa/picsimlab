@@ -853,7 +853,7 @@ cboard_0::MStepResume(void)
 }
 
 int
-cboard_0::MTestBP(unsigned short bp)
+cboard_0::MTestBP(unsigned int bp)
 {
  switch (ptype)
   {
@@ -896,7 +896,7 @@ cboard_0::MGetProcID_p(void)
  return NULL;
 }
 
-unsigned short
+unsigned int
 cboard_0::MGetPC(void)
 {
  switch (ptype)
@@ -912,7 +912,7 @@ cboard_0::MGetPC(void)
 }
 
 void
-cboard_0::MSetPC(unsigned short pc)
+cboard_0::MSetPC(unsigned int pc)
 {
  switch (ptype)
   {

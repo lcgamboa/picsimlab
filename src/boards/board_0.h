@@ -61,11 +61,11 @@ class cboard_0:public board_pic, public board_avr
       const picpin * MGetPinsValues(void);  
       void MStep(void);
       void MStepResume(void);
-      int MTestBP(unsigned short bp);
+      int MTestBP(unsigned int bp);
       void MReset(int flags);
       unsigned short * MGetProcID_p(void);
-      unsigned short  MGetPC(void);
-      void MSetPC(unsigned short pc);
+      unsigned int  MGetPC(void);
+      void MSetPC(unsigned int pc);
       unsigned char * MGetRAM_p(void);
       unsigned char * MGetROM_p(void);
       unsigned char * MGetCONFIG_p(void);
@@ -86,7 +86,7 @@ class cboard_0:public board_pic, public board_avr
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
 #ifdef _EXPERIMENTAL_      
-      String GetSupportedDevices(void){return lxT("atmega328p,PIC16F18855,PIC16F1619,PIC16F1788,PIC16F1789,PIC16F1939,PIC16F628A,PIC16F648A,PIC16F84A,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,PIC18F27K40,");};
+      String GetSupportedDevices(void){return lxT("atmega328p,PIC16F18855,PIC16F1619,PIC16F1788,PIC16F1789,PIC16F1939,PIC16F628A,PIC16F648A,PIC16F84A,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,PIC18F27K40,PIC18F47K40,");};
 #else
       String GetSupportedDevices(void){return lxT("atmega328p,PIC16F628A,PIC16F648A,PIC16F84A,PIC16F777,PIC16F877A,PIC18F452,PIC18F4550,PIC18F4620,");};
 #endif      

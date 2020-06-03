@@ -27,6 +27,7 @@
 #include "../picsimlab1.h"
 #include "mplabxd.h"
 
+//#define _DEBUG_
 #define dprint if (1) {} else printf
 
 
@@ -191,13 +192,13 @@ mplabxd_init(board * mboard)
     {
      printf ("bind error : %s \n", strerror (errno));
      return 1;
-    };
+    }
 
    if (listen (listenfd, SOMAXCONN) < 0)
     {
      printf ("listen error : %s \n", strerror (errno));
      return 1;
-    };
+    }
    server_started = 1;
   
 
@@ -269,7 +270,7 @@ mplabxd_end(void)
 
 
 int bpc = 0;
-unsigned short bp[100];
+unsigned int bp[100];
 
 int
 mplabxd_testbp(void)
@@ -293,7 +294,7 @@ mplabxd_testbp(void)
 int
 mplabxd_loop(void)
 {
- unsigned short pc;
+ unsigned int pc;
  int i;
 
  int n;
@@ -311,7 +312,7 @@ mplabxd_loop(void)
   {
    //printf ("receive error : %s \n", strerror (errno));
    //exit (1);
-  };
+  }
 
 
  if (n == 1)
@@ -364,20 +365,20 @@ mplabxd_loop(void)
     case GETPC:
      pc = dbg_board->MGetPC ();
      dprint ("GETPC %04Xcmd\n", pc);
-     if (send (sockfd, (char *) &pc, 2, 0) != 2)
+     if (send (sockfd, (char *) &pc, 4, 0) != 4)
       {
        printf ("send error : %s \n", strerror (errno));
        ret = 1;
        reply = 0x01;
-      };
+      }
      break;
     case SETPC:
-     if ((n = recv (sockfd, (char *) &pc, 2, MSG_WAITALL)) != 2)
+     if ((n = recv (sockfd, (char *) &pc, 4, MSG_WAITALL)) != 4)
       {
        printf ("receive error : %s \n", strerror (errno));
        ret = 1;
        reply = 0x01;
-      };
+      }
      dbg_board->MSetPC (pc);
      dprint ("SETPC cmd\n");
      break;
@@ -387,17 +388,17 @@ mplabxd_loop(void)
        printf ("receive error : %s \n", strerror (errno));
        ret = 1;
        reply = 0x01;
-      };
+      }
      dprint ("bp count =%i\n", bpc);
      if (bpc >= 100)bpc = 100;
      if (bpc > 0)
       {
-       if ((n = recv (sockfd, (char *) &bp, bpc * 2, MSG_WAITALL)) != bpc * 2)
+       if ((n = recv (sockfd, (char *) &bp, bpc * 4, MSG_WAITALL)) != bpc * 4)
         {
          printf ("receive error : %s \n", strerror (errno));
          ret = 1;
          reply = 0x01;
-        };
+        }
 #ifdef _DEBUG_
        for (i = 0; i < bpc; i++)
         printf ("bp %i = %#06X\n", i, bp[i]);
@@ -412,7 +413,7 @@ mplabxd_loop(void)
        printf ("send error : %s \n", strerror (errno));
        ret = 1;
        reply = 0x01;
-      };
+      }
      dprint ("STRUN cmd =%i\n", Window1.Get_mcudbg ());
      break;
     case GETID:
@@ -422,7 +423,7 @@ mplabxd_loop(void)
        printf ("send error : %s \n", strerror (errno));
        ret = 1;
        reply = 0x01;
-      };
+      }
      break;
     case GETNAM:
      dprint ("GETNAM cmd\n");
@@ -434,7 +435,7 @@ mplabxd_loop(void)
        printf ("send error : %s \n", strerror (errno));
        ret = 1;
        reply = 0x01;
-      };
+      }
      break;
     case PROGD:
      if ((n = recv (sockfd, (char *) ramreceived, dbg_board->MGetRAMSize (), MSG_WAITALL)) != (int) dbg_board->MGetRAMSize ())
@@ -460,7 +461,7 @@ mplabxd_loop(void)
        printf ("receive error : %s \n", strerror (errno));
        ret = 1;
        reply = 0x01;
-      };
+      }
 #ifdef _DEBUG_
      for (i = 0; i < (int) dbg_board->MGetROMSize (); i++)printf ("%#02X ", dbg_board->MGetROM_p ()[i]);
 #endif
@@ -472,7 +473,7 @@ mplabxd_loop(void)
        printf ("receive error : %s \n", strerror (errno));
        ret = 1;
        reply = 0x01;
-      };
+      }
 #ifdef _DEBUG_
      for (i = 0; i < (int) dbg_board->MGetCONFIGSize (); i++)printf ("%#02X ", dbg_board->MGetCONFIG_p ()[i]);
 #endif
@@ -484,7 +485,7 @@ mplabxd_loop(void)
        printf ("receive error : %s \n", strerror (errno));
        ret = 1;
        reply = 0x01;
-      };
+      }
 #ifdef _DEBUG_
      for (i = 0; i < (int) dbg_board->MGetIDSize (); i++)printf ("%#02X ", dbg_board->MGetID_p ()[i]);
 #endif
@@ -518,14 +519,14 @@ mplabxd_loop(void)
        printf ("receive error : %s \n", strerror (errno));
        ret = 1;
        reply = 0x01;
-      };
+      }
      dprint ("address=%02X  values=%i \n", bp[0], bp[1]);
      if (send (sockfd, (char *) &dbg_board->MGetRAM_p ()[bp[0]], bp[1], 0) != bp[1])
       {
        printf ("send error : %s \n", strerror (errno));
        ret = 1;
        reply = 0x01;
-      };
+      }
      dprint ("READDV cmd\n");
      break;
     case READP:
@@ -534,7 +535,7 @@ mplabxd_loop(void)
        printf ("send error : %s \n", strerror (errno));
        ret = 1;
        reply = 0x01;
-      };
+      }
      dprint ("READP cmd\n");
      break;
     case READC:
@@ -543,7 +544,7 @@ mplabxd_loop(void)
        printf ("send error : %s \n", strerror (errno));
        ret = 1;
        reply = 0x01;
-      };
+      }
      dprint ("READC cmd\n");
      break;
     case READI:
@@ -552,7 +553,7 @@ mplabxd_loop(void)
        printf ("send error : %s \n", strerror (errno));
        ret = 1;
        reply = 0x01;
-      };
+      }
      dprint ("READI cmd\n");
      break;
     case READE:
@@ -574,7 +575,7 @@ mplabxd_loop(void)
     {
      printf ("send error : %s \n", strerror (errno));
      ret = 1;
-    };
+    }
 
    setnblock (sockfd);
   }
