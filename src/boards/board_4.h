@@ -109,7 +109,7 @@ class cboard_4:public board_pic
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
 #ifdef _EXPERIMENTAL_
-      String GetSupportedDevices(void){return lxT("PIC16F1789,PIC16F1939,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,");};
+      String GetSupportedDevices(void){return lxT("PIC16F1789,PIC16F1939,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,PIC18F47K40,");};
 #else
       String GetSupportedDevices(void){return lxT("PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F4620,");};
 #endif

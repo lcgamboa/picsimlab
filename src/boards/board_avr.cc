@@ -890,7 +890,7 @@ void
 board_avr::MStepResume(void) { }
 
 int
-board_avr::MTestBP(unsigned short bp)
+board_avr::MTestBP(unsigned int bp)
 {
  return (bp == avr->pc >> 1);
 }
@@ -907,14 +907,14 @@ board_avr::MGetProcID_p(void)
  return 0;
 }
 
-unsigned short
+unsigned int
 board_avr::MGetPC(void)
 {
  return avr->pc >> 1;
 }
 
 void
-board_avr::MSetPC(unsigned short pc)
+board_avr::MSetPC(unsigned int pc)
 {
  avr->pc = pc << 1;
 }

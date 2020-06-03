@@ -188,7 +188,7 @@ board_pic::MStepResume(void)
 }
 
 int
-board_pic::MTestBP(unsigned short bp)
+board_pic::MTestBP(unsigned int bp)
 {
  return ((pic.pc == bp)&&(pic.s2 == 0));
 }
@@ -205,14 +205,14 @@ board_pic::MGetProcID_p(void)
  return (unsigned short *)&pic.processor;
 }
 
-unsigned short 
+unsigned int 
 board_pic::MGetPC(void)
 {
  return pic.pc;
 }
 
 void 
-board_pic::MSetPC(unsigned short pc)
+board_pic::MSetPC(unsigned int pc)
 {
  pic.pc= pc;
 }
