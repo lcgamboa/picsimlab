@@ -27,8 +27,6 @@
 #ifndef IO_74XX595
 #define	IO_74XX595
     
-#include<lxrad.h>
-
 /*
  pinout
 1  QB

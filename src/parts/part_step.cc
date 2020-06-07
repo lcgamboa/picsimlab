@@ -320,7 +320,7 @@ cpart_step::ConfigurePropertiesWindow (CPWindow * wprop)
 }
 
 void
-cpart_step::ReadPropertiesWindow (void)
+cpart_step::ReadPropertiesWindow (CPWindow * WProp)
 {
  input_pins[0] = atoi (((CCombo*) WProp_step->GetChildByName ("combo1"))->GetText ());
  input_pins[1] = atoi (((CCombo*) WProp_step->GetChildByName ("combo2"))->GetText ());

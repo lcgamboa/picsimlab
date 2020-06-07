@@ -569,7 +569,7 @@ cpart_keypad::ConfigurePropertiesWindow(CPWindow * wprop)
 }
 
 void
-cpart_keypad::ReadPropertiesWindow(void)
+cpart_keypad::ReadPropertiesWindow(CPWindow * WProp)
 {
  output_pins[0] = atoi (((CCombo*) WProp_keypad->GetChildByName ("combo1"))->GetText ());
  output_pins[1] = atoi (((CCombo*) WProp_keypad->GetChildByName ("combo2"))->GetText ());

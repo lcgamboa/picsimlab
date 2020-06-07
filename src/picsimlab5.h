@@ -95,10 +95,11 @@ class CPWindow5:public CPWindow
   String GetPinName(unsigned char pin);
   const picpin * GetPinsValues (void);
   void SetPin (unsigned char pin, unsigned char value);
+  void SetAPin (unsigned char pin, float value);
   void SetPinDOV (unsigned char pin, unsigned char ovalue);
   void WritePin (unsigned char pin, unsigned char value);
   void WritePinA (unsigned char pin, unsigned char avalue);
-  void SetAPin (unsigned char pin, float value);
+  void WritePinOA (unsigned char pin, unsigned short oavalue);
   unsigned char RegisterIOpin(String pname, unsigned char pin=0);
   unsigned char UnregisterIOpin(unsigned char pin);
   void Setfdtype (int value);

@@ -44,7 +44,7 @@ public:
     String GetOutputMapFile(void) {return lxT("7sdisplay_o.map");};
     String GetPropertiesWindowFile(void) {return lxT("7sdisplay.lxrad");};
     void ConfigurePropertiesWindow(CPWindow * wprop);
-    void ReadPropertiesWindow(void);
+    void ReadPropertiesWindow(CPWindow * WProp);
     String WritePreferences(void);
     void ReadPreferences(String value);
     unsigned short get_in_id(char * name);

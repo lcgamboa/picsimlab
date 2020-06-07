@@ -158,7 +158,7 @@ CPWindow5::PropClose(int tag)
 {
  if (tag)
   {
-   parts[PartSelected]->ReadPropertiesWindow ();
+   parts[PartSelected]->ReadPropertiesWindow (&wprop);
   }
  wprop.HideExclusive ();
  //wprop.SetCanDestroy (true);
@@ -673,6 +673,16 @@ CPWindow5::WritePinA(unsigned char pin, unsigned char avalue)
  if (pin > PinsCount)
   {
    Pins[pin - 1].avalue = avalue;
+  }
+}
+
+void
+CPWindow5::WritePinOA(unsigned char pin, unsigned short oavalue)
+{
+ if (pin > PinsCount)
+  {
+   if(oavalue > 255)oavalue=255;
+   Pins[pin - 1].oavalue = oavalue;
   }
 }
 

@@ -1,0 +1,38 @@
+<img src="picsimlab2.png" width="416" height="281" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:lcganmboa@yahoo.com                 -->
+<area shape="rect" coords="188,137,233,155" href="IC" />
+<area shape="rect" coords="6,163,25,250" href="P1" />
+<area shape="rect" coords="36,163,54,250" href="P2" />
+<area shape="rect" coords="65,163,82,250" href="P3" />
+<area shape="rect" coords="95,163,112,250" href="P4" />
+<area shape="rect" coords="123,171,143,250" href="P5" />
+<area shape="rect" coords="155,171,173,250" href="P6" />
+<area shape="rect" coords="184,171,203,250" href="P7" />
+<area shape="rect" coords="213,171,232,251" href="P8" />
+<area shape="rect" coords="245,171,264,251" href="P9" />
+<area shape="rect" coords="273,171,292,251" href="P10" />
+<area shape="rect" coords="304,164,321,252" href="P11" />
+<area shape="rect" coords="334,163,351,251" href="P12" />
+<area shape="rect" coords="364,163,381,251" href="P13" />
+<area shape="rect" coords="394,163,412,251" href="P14" />
+<area shape="rect" coords="394,3,411,91" href="P15" />
+<area shape="rect" coords="365,2,381,91" href="P16" />
+<area shape="rect" coords="334,3,351,91" href="P17" />
+<area shape="rect" coords="304,1,321,89" href="P18" />
+<area shape="rect" coords="273,3,291,91" href="P19" />
+<area shape="rect" coords="243,3,261,91" href="P20" />
+<area shape="rect" coords="217,2,233,90" href="P21" />
+<area shape="rect" coords="185,4,202,91" href="P22" />
+<area shape="rect" coords="155,3,173,90" href="P23" />
+<area shape="rect" coords="125,2,142,89" href="P24" />
+<area shape="rect" coords="95,3,112,90" href="P25" />
+<area shape="rect" coords="65,3,82,90" href="P26" />
+<area shape="rect" coords="36,3,54,90" href="P27" />
+<area shape="rect" coords="5,3,24,90" href="P28" />
+</map>

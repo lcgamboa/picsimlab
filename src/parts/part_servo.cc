@@ -209,7 +209,7 @@ cpart_servo::ConfigurePropertiesWindow (CPWindow * wprop)
 }
 
 void
-cpart_servo::ReadPropertiesWindow (void)
+cpart_servo::ReadPropertiesWindow (CPWindow * WProp)
 {
  input_pin = atoi (((CCombo*) WProp_servo->GetChildByName ("combo1"))->GetText ());
 }

@@ -255,72 +255,69 @@ cpart_tempsys::WritePreferences(void)
  sprintf (prefs, "%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3]);
 
  return prefs;
-};
+}
 
 void
 cpart_tempsys::ReadPreferences(String value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3]);
-};
-
-CPWindow * WProp_tempsys;
-
-void
-cpart_tempsys::ConfigurePropertiesWindow(CPWindow * wprop)
-{
- String Items = Window5.GetPinsNames ();
- String spin;
- WProp_tempsys = wprop;
-
- ((CCombo*) WProp_tempsys->GetChildByName ("combo1"))->SetItems (Items);
- if (input_pins[0] == 0)
-  ((CCombo*) WProp_tempsys->GetChildByName ("combo1"))->SetText ("0  NC");
- else
-  {
-   spin = Window5.GetPinName (input_pins[0]);
-   ((CCombo*) WProp_tempsys->GetChildByName ("combo1"))->SetText (itoa (input_pins[0]) + "  " + spin);
-  }
-
- ((CCombo*) WProp_tempsys->GetChildByName ("combo2"))->SetItems (Items);
- if (input_pins[1] == 0)
-  ((CCombo*) WProp_tempsys->GetChildByName ("combo2"))->SetText ("0  NC");
- else
-  {
-   spin = Window5.GetPinName (input_pins[1]);
-   ((CCombo*) WProp_tempsys->GetChildByName ("combo2"))->SetText (itoa (input_pins[1]) + "  " + spin);
-  }
-
- ((CCombo*) WProp_tempsys->GetChildByName ("combo3"))->SetItems (Items);
- if (input_pins[2] == 0)
-  ((CCombo*) WProp_tempsys->GetChildByName ("combo3"))->SetText ("0  NC");
- else
-  {
-   spin = Window5.GetPinName (input_pins[2]);
-   ((CCombo*) WProp_tempsys->GetChildByName ("combo3"))->SetText (itoa (input_pins[2]) + "  " + spin);
-  }
-
- ((CCombo*) WProp_tempsys->GetChildByName ("combo4"))->SetItems (Items);
- if (input_pins[3] == 0)
-  ((CCombo*) WProp_tempsys->GetChildByName ("combo4"))->SetText ("0  NC");
- else
-  {
-   spin = Window5.GetPinName (input_pins[3]);
-   ((CCombo*) WProp_tempsys->GetChildByName ("combo4"))->SetText (itoa (input_pins[3]) + "  " + spin);
-  }
-
-
- ((CButton*) WProp_tempsys->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
- ((CButton*) WProp_tempsys->GetChildByName ("button1"))->SetTag (1);
-
- ((CButton*) WProp_tempsys->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
 }
 
 void
-cpart_tempsys::ReadPropertiesWindow(void)
+cpart_tempsys::ConfigurePropertiesWindow(CPWindow * WProp)
 {
- input_pins[0] = atoi (((CCombo*) WProp_tempsys->GetChildByName ("combo1"))->GetText ());
- input_pins[1] = atoi (((CCombo*) WProp_tempsys->GetChildByName ("combo2"))->GetText ());
- input_pins[2] = atoi (((CCombo*) WProp_tempsys->GetChildByName ("combo3"))->GetText ());
- input_pins[3] = atoi (((CCombo*) WProp_tempsys->GetChildByName ("combo4"))->GetText ());
+ String Items = Window5.GetPinsNames ();
+ String spin;
+
+ ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
+ if (input_pins[0] == 0)
+  ((CCombo*) WProp->GetChildByName ("combo1"))->SetText ("0  NC");
+ else
+  {
+   spin = Window5.GetPinName (input_pins[0]);
+   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (input_pins[0]) + "  " + spin);
+  }
+
+ ((CCombo*) WProp->GetChildByName ("combo2"))->SetItems (Items);
+ if (input_pins[1] == 0)
+  ((CCombo*) WProp->GetChildByName ("combo2"))->SetText ("0  NC");
+ else
+  {
+   spin = Window5.GetPinName (input_pins[1]);
+   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText (itoa (input_pins[1]) + "  " + spin);
+  }
+
+ ((CCombo*) WProp->GetChildByName ("combo3"))->SetItems (Items);
+ if (input_pins[2] == 0)
+  ((CCombo*) WProp->GetChildByName ("combo3"))->SetText ("0  NC");
+ else
+  {
+   spin = Window5.GetPinName (input_pins[2]);
+   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText (itoa (input_pins[2]) + "  " + spin);
+  }
+
+ ((CCombo*) WProp->GetChildByName ("combo4"))->SetItems (Items);
+ if (input_pins[3] == 0)
+  ((CCombo*) WProp->GetChildByName ("combo4"))->SetText ("0  NC");
+ else
+  {
+   spin = Window5.GetPinName (input_pins[3]);
+   ((CCombo*) WProp->GetChildByName ("combo4"))->SetText (itoa (input_pins[3]) + "  " + spin);
+  }
+
+
+ ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+ ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
+
+ ((CButton*) WProp->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+}
+
+void
+cpart_tempsys::ReadPropertiesWindow(CPWindow * WProp)
+{
+ input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
+ input_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
+ input_pins[2] = atoi (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ());
+ input_pins[3] = atoi (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ());
 }
 

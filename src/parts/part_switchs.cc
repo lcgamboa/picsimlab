@@ -363,7 +363,7 @@ cpart_switchs::ConfigurePropertiesWindow(CPWindow * wprop)
 }
 
 void
-cpart_switchs::ReadPropertiesWindow(void)
+cpart_switchs::ReadPropertiesWindow(CPWindow * WProp)
 {
 
  output_pins[0] = atoi (((CCombo*) WProp_switchs->GetChildByName ("combo1"))->GetText ());

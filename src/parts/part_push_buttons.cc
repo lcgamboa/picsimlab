@@ -402,7 +402,7 @@ cpart_pbuttons::ConfigurePropertiesWindow(CPWindow * wprop)
 }
 
 void
-cpart_pbuttons::ReadPropertiesWindow(void)
+cpart_pbuttons::ReadPropertiesWindow(CPWindow * WProp)
 {
  output_pins[0] = atoi (((CCombo*) WProp_pbuttons->GetChildByName ("combo1"))->GetText ());
  output_pins[1] = atoi (((CCombo*) WProp_pbuttons->GetChildByName ("combo2"))->GetText ());

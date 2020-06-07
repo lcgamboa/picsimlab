@@ -344,42 +344,40 @@ cpart_dtfunc::ReadPreferences(String value)
          &den[0], &den[1], &den[2], &den[3]);
 }
 
-CPWindow * WProp_dtfunc;
 
 void
-cpart_dtfunc::ConfigurePropertiesWindow(CPWindow * wprop)
+cpart_dtfunc::ConfigurePropertiesWindow(CPWindow * WProp)
 {
  String Items = Window5.GetPinsNames ();
  String spin;
- WProp_dtfunc = wprop;
  char buff[20];
  char eq[200];
 
- ((CCombo*) WProp_dtfunc->GetChildByName ("combo1"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pin == 0)
-  ((CCombo*) WProp_dtfunc->GetChildByName ("combo1"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo1"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (input_pin);
    ;
-   ((CCombo*) WProp_dtfunc->GetChildByName ("combo1"))->SetText (itoa (input_pin) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (input_pin) + "  " + spin);
   }
 
- ((CCombo*) WProp_dtfunc->GetChildByName ("combo2"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo2"))->SetItems (Items);
  if (output_pin == 0)
-  ((CCombo*) WProp_dtfunc->GetChildByName ("combo2"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo2"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (output_pin);
    ;
-   ((CCombo*) WProp_dtfunc->GetChildByName ("combo2"))->SetText (itoa (output_pin) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText (itoa (output_pin) + "  " + spin);
   }
 
 
- ((CButton*) WProp_dtfunc->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
- ((CButton*) WProp_dtfunc->GetChildByName ("button1"))->SetTag (1);
+ ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+ ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
 
- ((CButton*) WProp_dtfunc->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+ ((CButton*) WProp->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
 
  eq[0] = 0;
  for (int i = 0; i < ordern; i++)
@@ -387,7 +385,7 @@ cpart_dtfunc::ConfigurePropertiesWindow(CPWindow * wprop)
    snprintf (buff, 19, "%+f ", num[i]);
    strncat (eq, buff, 199);
   }
- ((CEdit*) WProp_dtfunc->GetChildByName ("edit1"))->SetText (eq);
+ ((CEdit*) WProp->GetChildByName ("edit1"))->SetText (eq);
 
  eq[0] = 0;
  for (int i = 0; i < orderd; i++)
@@ -395,26 +393,26 @@ cpart_dtfunc::ConfigurePropertiesWindow(CPWindow * wprop)
    snprintf (buff, 19, "%+f ", den[i]);
    strncat (eq, buff, 199);
   }
- ((CEdit*) WProp_dtfunc->GetChildByName ("edit2"))->SetText (eq);
+ ((CEdit*) WProp->GetChildByName ("edit2"))->SetText (eq);
 
- ((CEdit*) WProp_dtfunc->GetChildByName ("edit3"))->SetText (ftoa (sample));
- ((CEdit*) WProp_dtfunc->GetChildByName ("edit4"))->SetText (ftoa (in_gain));
- ((CEdit*) WProp_dtfunc->GetChildByName ("edit5"))->SetText (ftoa (in_off));
- ((CEdit*) WProp_dtfunc->GetChildByName ("edit6"))->SetText (ftoa (out_gain));
- ((CEdit*) WProp_dtfunc->GetChildByName ("edit7"))->SetText (ftoa (out_off));
+ ((CEdit*) WProp->GetChildByName ("edit3"))->SetText (ftoa (sample));
+ ((CEdit*) WProp->GetChildByName ("edit4"))->SetText (ftoa (in_gain));
+ ((CEdit*) WProp->GetChildByName ("edit5"))->SetText (ftoa (in_off));
+ ((CEdit*) WProp->GetChildByName ("edit6"))->SetText (ftoa (out_gain));
+ ((CEdit*) WProp->GetChildByName ("edit7"))->SetText (ftoa (out_off));
 
 }
 
 void
-cpart_dtfunc::ReadPropertiesWindow(void)
+cpart_dtfunc::ReadPropertiesWindow(CPWindow * WProp)
 {
  char line[256];
  char * T[4];
 
- input_pin = atoi (((CCombo*) WProp_dtfunc->GetChildByName ("combo1"))->GetText ());
- output_pin = atoi (((CCombo*) WProp_dtfunc->GetChildByName ("combo2"))->GetText ());
+ input_pin = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
+ output_pin = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
 
- strncpy (line, ((CEdit*) WProp_dtfunc->GetChildByName ("edit1"))->GetText ().c_str (), 255);
+ strncpy (line, ((CEdit*) WProp->GetChildByName ("edit1"))->GetText ().c_str (), 255);
  T[0] = strtok (line, " ");
  T[1] = strtok (NULL, " ");
  T[2] = strtok (NULL, " ");
@@ -434,7 +432,7 @@ cpart_dtfunc::ReadPropertiesWindow(void)
     }
   }
 
- strncpy (line, ((CEdit*) WProp_dtfunc->GetChildByName ("edit2"))->GetText ().c_str (), 255);
+ strncpy (line, ((CEdit*) WProp->GetChildByName ("edit2"))->GetText ().c_str (), 255);
  T[0] = strtok (line, " ");
  T[1] = strtok (NULL, " ");
  T[2] = strtok (NULL, " ");
@@ -468,11 +466,11 @@ cpart_dtfunc::ReadPropertiesWindow(void)
   }
 
 
- sample = atof (((CEdit*) WProp_dtfunc->GetChildByName ("edit3"))->GetText ());
- in_gain = atof (((CEdit*) WProp_dtfunc->GetChildByName ("edit4"))->GetText ());
- in_off = atof (((CEdit*) WProp_dtfunc->GetChildByName ("edit5"))->GetText ());
- out_gain = atof (((CEdit*) WProp_dtfunc->GetChildByName ("edit6"))->GetText ());
- out_off = atof (((CEdit*) WProp_dtfunc->GetChildByName ("edit7"))->GetText ());
+ sample = atof (((CEdit*) WProp->GetChildByName ("edit3"))->GetText ());
+ in_gain = atof (((CEdit*) WProp->GetChildByName ("edit4"))->GetText ());
+ in_off = atof (((CEdit*) WProp->GetChildByName ("edit5"))->GetText ());
+ out_gain = atof (((CEdit*) WProp->GetChildByName ("edit6"))->GetText ());
+ out_off = atof (((CEdit*) WProp->GetChildByName ("edit7"))->GetText ());
 
  Reset ();
 }

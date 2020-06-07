@@ -173,64 +173,62 @@ cpart_RTC_pfc8563::ReadPreferences(String value)
  Reset ();
 }
 
-CPWindow * WProp_RTC_pfc8563;
 
 void
-cpart_RTC_pfc8563::ConfigurePropertiesWindow(CPWindow * wprop)
+cpart_RTC_pfc8563::ConfigurePropertiesWindow(CPWindow * WProp)
 {
  String Items = Window5.GetPinsNames ();
  String spin;
- WProp_RTC_pfc8563 = wprop;
 
- ((CCombo*) WProp_RTC_pfc8563->GetChildByName ("combo3"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo3"))->SetItems (Items);
  if (input_pins[0] == 0)
-  ((CCombo*) WProp_RTC_pfc8563->GetChildByName ("combo3"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo3"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (input_pins[0]);
-   ((CCombo*) WProp_RTC_pfc8563->GetChildByName ("combo3"))->SetText (itoa (input_pins[0]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText (itoa (input_pins[0]) + "  " + spin);
   }
 
- ((CCombo*) WProp_RTC_pfc8563->GetChildByName ("combo5"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo5"))->SetItems (Items);
  if (input_pins[1] == 0)
-  ((CCombo*) WProp_RTC_pfc8563->GetChildByName ("combo5"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo5"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (input_pins[1]);
-   ((CCombo*) WProp_RTC_pfc8563->GetChildByName ("combo5"))->SetText (itoa (input_pins[1]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo5"))->SetText (itoa (input_pins[1]) + "  " + spin);
   }
 
- ((CCombo*) WProp_RTC_pfc8563->GetChildByName ("combo6"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo6"))->SetItems (Items);
  if (input_pins[2] == 0)
-  ((CCombo*) WProp_RTC_pfc8563->GetChildByName ("combo6"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo6"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (input_pins[2]);
-   ((CCombo*) WProp_RTC_pfc8563->GetChildByName ("combo6"))->SetText (itoa (input_pins[2]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo6"))->SetText (itoa (input_pins[2]) + "  " + spin);
   }
 
- ((CCombo*) WProp_RTC_pfc8563->GetChildByName ("combo7"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo7"))->SetItems (Items);
  if (input_pins[3] == 0)
-  ((CCombo*) WProp_RTC_pfc8563->GetChildByName ("combo7"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo7"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (input_pins[3]);
-   ((CCombo*) WProp_RTC_pfc8563->GetChildByName ("combo7"))->SetText (itoa (input_pins[3]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo7"))->SetText (itoa (input_pins[3]) + "  " + spin);
   }
 
- ((CButton*) WProp_RTC_pfc8563->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
- ((CButton*) WProp_RTC_pfc8563->GetChildByName ("button1"))->SetTag (1);
+ ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+ ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
 
- ((CButton*) WProp_RTC_pfc8563->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+ ((CButton*) WProp->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
 }
 
 void
-cpart_RTC_pfc8563::ReadPropertiesWindow(void)
+cpart_RTC_pfc8563::ReadPropertiesWindow(CPWindow * WProp)
 {
- input_pins[0] = atoi (((CCombo*) WProp_RTC_pfc8563->GetChildByName ("combo3"))->GetText ());
- input_pins[1] = atoi (((CCombo*) WProp_RTC_pfc8563->GetChildByName ("combo5"))->GetText ());
- input_pins[2] = atoi (((CCombo*) WProp_RTC_pfc8563->GetChildByName ("combo6"))->GetText ());
- input_pins[3] = atoi (((CCombo*) WProp_RTC_pfc8563->GetChildByName ("combo7"))->GetText ());
+ input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ());
+ input_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo5"))->GetText ());
+ input_pins[2] = atoi (((CCombo*) WProp->GetChildByName ("combo6"))->GetText ());
+ input_pins[3] = atoi (((CCombo*) WProp->GetChildByName ("combo7"))->GetText ());
 }
 
 void

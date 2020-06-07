@@ -23,27 +23,27 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef PART_IO_PCF8574_H
-#define	PART_IO_PCF8574_H
+#ifndef PART_IO_MCP23S17_H
+#define	PART_IO_MCP23S17_H
 
 #include<lxrad.h>
 #include"part.h"
-#include"../devices/io_PCF8574.h"
+#include"../devices/io_MCP23X17.h"
 
-class cpart_IO_PCF8574:public part
+class cpart_IO_MCP23S17:public part
 {
    public:
-      String GetName(void){return lxT("IO PCF8574");};
-      cpart_IO_PCF8574(unsigned x, unsigned y);
-      ~cpart_IO_PCF8574(void);
+      String GetName(void){return lxT("IO MCP23S17");};
+      cpart_IO_MCP23S17(unsigned x, unsigned y);
+      ~cpart_IO_MCP23S17(void);
       void Draw(void);
       void PreProcess (void);
       void Process(void); 
       void PostProcess (void);
-      String GetPictureFileName(void){return lxT("IC16.png");};
-      String GetInputMapFile(void){return lxT("IC16_i.map");};
-      String GetOutputMapFile(void){return lxT("IC16_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("IO_PCF8574.lxrad");};
+      String GetPictureFileName(void){return lxT("IC28.png");};
+      String GetInputMapFile(void){return lxT("IC28_i.map");};
+      String GetOutputMapFile(void){return lxT("IC28_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("IO_MCP23S17.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       String WritePreferences(void);
@@ -51,17 +51,18 @@ class cpart_IO_PCF8574:public part
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
    private:
-      unsigned char input_pins[5];
-      unsigned char output_pins[9];
-      unsigned long output_pins_alm[9];
+      unsigned char input_pins[10];
+      unsigned char output_pins[16];
+      unsigned long output_pins_alm[16];
       long mcount;
       int JUMPSTEPS_;
-      io_PCF8574_t ioe8;
-      unsigned short _ret; 
+      io_MCP23X17_t mcp;
+      unsigned char _PA;
+      unsigned char _PB;
 };
 
 
 
 
-#endif	/* PART_IO_PCF8574_H */
+#endif	/* PART_IO_MCP23S17_H */
 

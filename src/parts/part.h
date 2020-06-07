@@ -52,8 +52,8 @@ class part
       virtual unsigned short get_in_id(char * name)=0; //return the input ids numbers of names used in input map
       virtual unsigned short get_out_id(char * name)=0; //return the output ids numbers of names used in output map
       virtual void board_Event(CControl * control){};   
-      virtual void ConfigurePropertiesWindow(CPWindow *  wprop)=0;
-      virtual void ReadPropertiesWindow(void)=0;
+      virtual void ConfigurePropertiesWindow(CPWindow *  WProp)=0;
+      virtual void ReadPropertiesWindow(CPWindow *  WProp)=0;
       virtual void ComboChange(String value){};
       virtual void filedialog_EvOnClose(int retId){};
       part();           //Called once on part creation

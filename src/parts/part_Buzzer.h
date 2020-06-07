@@ -57,8 +57,8 @@ public:
     String GetPropertiesWindowFile(void) {
         return lxT("Buzzer.lxrad");
     };
-    void ConfigurePropertiesWindow(CPWindow * wprop);
-    void ReadPropertiesWindow(void);
+    void ConfigurePropertiesWindow(CPWindow * WProp);
+    void ReadPropertiesWindow(CPWindow * WProp);
     String WritePreferences(void);
     void ReadPreferences(String value);
     unsigned short get_in_id(char * name);

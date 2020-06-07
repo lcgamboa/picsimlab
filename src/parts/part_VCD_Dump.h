@@ -45,8 +45,8 @@ class cpart_VCD_Dump:public part
       String GetOutputMapFile(void){return lxT("VCD_Dump_o.map");};
       String GetPropertiesWindowFile(void){return lxT("VCD_Dump.lxrad");};
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
-      void ConfigurePropertiesWindow(CPWindow *  wprop);
-      void ReadPropertiesWindow(void);
+      void ConfigurePropertiesWindow(CPWindow *  WProp);
+      void ReadPropertiesWindow(CPWindow * WProp);
       String WritePreferences(void);
       void ReadPreferences(String value);
       unsigned short get_in_id(char * name);

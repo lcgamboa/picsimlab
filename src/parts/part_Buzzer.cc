@@ -172,42 +172,40 @@ cpart_Buzzer::ReadPreferences(String value)
  ChangeType (tp);
 }
 
-CPWindow * WProp_Buzzer;
 
 void
-cpart_Buzzer::ConfigurePropertiesWindow(CPWindow * wprop)
+cpart_Buzzer::ConfigurePropertiesWindow(CPWindow * WProp)
 {
  String Items = Window5.GetPinsNames ();
  String spin;
- WProp_Buzzer = wprop;
 
- ((CCombo*) WProp_Buzzer->GetChildByName ("combo1"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)
-  ((CCombo*) WProp_Buzzer->GetChildByName ("combo1"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo1"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (input_pins[0]);
-   ((CCombo*) WProp_Buzzer->GetChildByName ("combo1"))->SetText (itoa (input_pins[0]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (input_pins[0]) + "  " + spin);
   }
 
  if (type == 0)
-  ((CCombo*) WProp_Buzzer->GetChildByName ("combo2"))->SetText ("Active");
+  ((CCombo*) WProp->GetChildByName ("combo2"))->SetText ("Active");
  else
   {
-   ((CCombo*) WProp_Buzzer->GetChildByName ("combo2"))->SetText ("Passive");
+   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText ("Passive");
   }
 
- ((CButton*) WProp_Buzzer->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
- ((CButton*) WProp_Buzzer->GetChildByName ("button1"))->SetTag (1);
+ ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+ ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
 
- ((CButton*) WProp_Buzzer->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+ ((CButton*) WProp->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
 }
 
 void
-cpart_Buzzer::ReadPropertiesWindow(void)
+cpart_Buzzer::ReadPropertiesWindow(CPWindow * WProp)
 {
- input_pins[0] = atoi (((CCombo*) WProp_Buzzer->GetChildByName ("combo1"))->GetText ());
- unsigned char tp = ((CCombo*) WProp_Buzzer->GetChildByName ("combo2"))->GetText ().compare (lxT ("Active"));
+ input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
+ unsigned char tp = ((CCombo*) WProp->GetChildByName ("combo2"))->GetText ().compare (lxT ("Active"));
  ChangeType (tp);
 }
 
