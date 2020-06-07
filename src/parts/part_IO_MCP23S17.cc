@@ -513,22 +513,22 @@ cpart_IO_MCP23S17::Process(void)
   mcount++;
  if (mcount >= JUMPSTEPS_)
   {
-   if (ppins[output_pins[0]].value)output_pins_alm[0]++;
-   if (ppins[output_pins[1]].value)output_pins_alm[1]++;
-   if (ppins[output_pins[2]].value)output_pins_alm[2]++;
-   if (ppins[output_pins[3]].value)output_pins_alm[3]++;
-   if (ppins[output_pins[4]].value)output_pins_alm[4]++;
-   if (ppins[output_pins[5]].value)output_pins_alm[5]++;
-   if (ppins[output_pins[6]].value)output_pins_alm[6]++;
-   if (ppins[output_pins[7]].value)output_pins_alm[7]++;
-   if (ppins[output_pins[8]].value)output_pins_alm[8]++;
-   if (ppins[output_pins[9]].value)output_pins_alm[9]++;
-   if (ppins[output_pins[10]].value)output_pins_alm[10]++;
-   if (ppins[output_pins[11]].value)output_pins_alm[11]++;
-   if (ppins[output_pins[12]].value)output_pins_alm[12]++;
-   if (ppins[output_pins[13]].value)output_pins_alm[13]++;
-   if (ppins[output_pins[14]].value)output_pins_alm[14]++;
-   if (ppins[output_pins[15]].value)output_pins_alm[15]++;
+   if (ppins[output_pins[0]-1].value)output_pins_alm[0]++;
+   if (ppins[output_pins[1]-1].value)output_pins_alm[1]++;
+   if (ppins[output_pins[2]-1].value)output_pins_alm[2]++;
+   if (ppins[output_pins[3]-1].value)output_pins_alm[3]++;
+   if (ppins[output_pins[4]-1].value)output_pins_alm[4]++;
+   if (ppins[output_pins[5]-1].value)output_pins_alm[5]++;
+   if (ppins[output_pins[6]-1].value)output_pins_alm[6]++;
+   if (ppins[output_pins[7]-1].value)output_pins_alm[7]++;
+   if (ppins[output_pins[8]-1].value)output_pins_alm[8]++;
+   if (ppins[output_pins[9]-1].value)output_pins_alm[9]++;
+   if (ppins[output_pins[10]-1].value)output_pins_alm[10]++;
+   if (ppins[output_pins[11]-1].value)output_pins_alm[11]++;
+   if (ppins[output_pins[12]-1].value)output_pins_alm[12]++;
+   if (ppins[output_pins[13]-1].value)output_pins_alm[13]++;
+   if (ppins[output_pins[14]-1].value)output_pins_alm[14]++;
+   if (ppins[output_pins[15]-1].value)output_pins_alm[15]++;
    mcount = -1;
   }
   
@@ -556,5 +556,4 @@ cpart_IO_MCP23S17::PostProcess(void)
  Window5.WritePinOA (output_pins[13], (ppins[output_pins[13] - 1].oavalue + ((output_pins_alm[13]*255.0) / NSTEPJ)) / 2);
  Window5.WritePinOA (output_pins[14], (ppins[output_pins[14] - 1].oavalue + ((output_pins_alm[14]*255.0) / NSTEPJ)) / 2);
  Window5.WritePinOA (output_pins[15], (ppins[output_pins[15] - 1].oavalue + ((output_pins_alm[15]*255.0) / NSTEPJ)) / 2);
-
 }
