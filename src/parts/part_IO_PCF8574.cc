@@ -401,15 +401,15 @@ cpart_IO_PCF8574::Process(void)
  mcount++;
  if (mcount >= JUMPSTEPS_)
   {
-   if (ppins[output_pins[0]].value)output_pins_alm[0]++;
-   if (ppins[output_pins[1]].value)output_pins_alm[1]++;
-   if (ppins[output_pins[2]].value)output_pins_alm[2]++;
-   if (ppins[output_pins[3]].value)output_pins_alm[3]++;
-   if (ppins[output_pins[4]].value)output_pins_alm[4]++;
-   if (ppins[output_pins[5]].value)output_pins_alm[5]++;
-   if (ppins[output_pins[6]].value)output_pins_alm[6]++;
-   if (ppins[output_pins[7]].value)output_pins_alm[7]++;
-   if (ppins[output_pins[8]].value)output_pins_alm[8]++;
+   if (ppins[output_pins[0]-1].value)output_pins_alm[0]++;
+   if (ppins[output_pins[1]-1].value)output_pins_alm[1]++;
+   if (ppins[output_pins[2]-1].value)output_pins_alm[2]++;
+   if (ppins[output_pins[3]-1].value)output_pins_alm[3]++;
+   if (ppins[output_pins[4]-1].value)output_pins_alm[4]++;
+   if (ppins[output_pins[5]-1].value)output_pins_alm[5]++;
+   if (ppins[output_pins[6]-1].value)output_pins_alm[6]++;
+   if (ppins[output_pins[7]-1].value)output_pins_alm[7]++;
+   if (ppins[output_pins[8]-1].value)output_pins_alm[8]++;
 
    mcount = -1;
   }
