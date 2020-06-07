@@ -41,8 +41,8 @@ class cpart_rgb_led:public part
       String GetInputMapFile(void){return lxT("RGB_LED_i.map");};
       String GetOutputMapFile(void){return lxT("RGB_LED_o.map");};
       String GetPropertiesWindowFile(void){return lxT("RGB_LED.lxrad");};
-      void ConfigurePropertiesWindow(CPWindow *  wprop);
-      void ReadPropertiesWindow(void);
+      void ConfigurePropertiesWindow(CPWindow *  WProp);
+      void ReadPropertiesWindow(CPWindow * WProp);
       String WritePreferences(void);
       void ReadPreferences(String value);
       unsigned short get_in_id(char * name);

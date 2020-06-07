@@ -42,8 +42,8 @@ class cpart_servo:public part
       String GetInputMapFile(void){return lxT("servo_motor_i.map");};
       String GetOutputMapFile(void){return lxT("servo_motor_o.map");};
       String GetPropertiesWindowFile(void){return lxT("servo_motor.lxrad");};
-      void ConfigurePropertiesWindow(CPWindow *  wprop);
-      void ReadPropertiesWindow(void);
+      void ConfigurePropertiesWindow(CPWindow *  WProp);
+      void ReadPropertiesWindow(CPWindow * WProp);
       String WritePreferences(void);
       void ReadPreferences(String value);
       unsigned short get_in_id(char * name);

@@ -42,8 +42,8 @@ class cpart_step:public part
       String GetInputMapFile(void){return lxT("step_motor_i.map");};
       String GetOutputMapFile(void){return lxT("step_motor_o.map");};
       String GetPropertiesWindowFile(void){return lxT("step_motor.lxrad");};
-      void ConfigurePropertiesWindow(CPWindow *  wprop);
-      void ReadPropertiesWindow(void);
+      void ConfigurePropertiesWindow(CPWindow *  WProp);
+      void ReadPropertiesWindow(CPWindow * WProp);
       String WritePreferences(void);
       void ReadPreferences(String value);
       unsigned short get_in_id(char * name);

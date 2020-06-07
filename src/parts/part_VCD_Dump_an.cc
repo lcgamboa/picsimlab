@@ -228,7 +228,7 @@ cpart_VCD_Dump_an::get_out_id(char * name)
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
-};
+}
 
 String
 cpart_VCD_Dump_an::WritePreferences(void)
@@ -238,113 +238,111 @@ cpart_VCD_Dump_an::WritePreferences(void)
  sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4], input_pins[5], input_pins[6], input_pins[7]);
 
  return prefs;
-};
+}
 
 void
 cpart_VCD_Dump_an::ReadPreferences(String value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7]);
-};
+}
 
-CPWindow * WProp_VCD_an;
 
 void
-cpart_VCD_Dump_an::ConfigurePropertiesWindow(CPWindow * wprop)
+cpart_VCD_Dump_an::ConfigurePropertiesWindow(CPWindow * WProp)
 {
  String Items = Window5.GetPinsNames ();
  String spin;
- WProp_VCD_an = wprop;
 
- ((CCombo*) WProp_VCD_an->GetChildByName ("combo1"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)
-  ((CCombo*) WProp_VCD_an->GetChildByName ("combo1"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo1"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (input_pins[0]);
-   ((CCombo*) WProp_VCD_an->GetChildByName ("combo1"))->SetText (itoa (input_pins[0]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (input_pins[0]) + "  " + spin);
   }
 
- ((CCombo*) WProp_VCD_an->GetChildByName ("combo2"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo2"))->SetItems (Items);
  if (input_pins[1] == 0)
-  ((CCombo*) WProp_VCD_an->GetChildByName ("combo2"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo2"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (input_pins[1]);
-   ((CCombo*) WProp_VCD_an->GetChildByName ("combo2"))->SetText (itoa (input_pins[1]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText (itoa (input_pins[1]) + "  " + spin);
   }
 
- ((CCombo*) WProp_VCD_an->GetChildByName ("combo3"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo3"))->SetItems (Items);
  if (input_pins[2] == 0)
-  ((CCombo*) WProp_VCD_an->GetChildByName ("combo3"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo3"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (input_pins[2]);
-   ((CCombo*) WProp_VCD_an->GetChildByName ("combo3"))->SetText (itoa (input_pins[2]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText (itoa (input_pins[2]) + "  " + spin);
   }
 
- ((CCombo*) WProp_VCD_an->GetChildByName ("combo4"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo4"))->SetItems (Items);
  if (input_pins[3] == 0)
-  ((CCombo*) WProp_VCD_an->GetChildByName ("combo4"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo4"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (input_pins[3]);
-   ((CCombo*) WProp_VCD_an->GetChildByName ("combo4"))->SetText (itoa (input_pins[3]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo4"))->SetText (itoa (input_pins[3]) + "  " + spin);
   }
 
- ((CCombo*) WProp_VCD_an->GetChildByName ("combo5"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo5"))->SetItems (Items);
  if (input_pins[4] == 0)
-  ((CCombo*) WProp_VCD_an->GetChildByName ("combo5"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo5"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (input_pins[4]);
-   ((CCombo*) WProp_VCD_an->GetChildByName ("combo5"))->SetText (itoa (input_pins[4]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo5"))->SetText (itoa (input_pins[4]) + "  " + spin);
   }
 
- ((CCombo*) WProp_VCD_an->GetChildByName ("combo6"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo6"))->SetItems (Items);
  if (input_pins[5] == 0)
-  ((CCombo*) WProp_VCD_an->GetChildByName ("combo6"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo6"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (input_pins[5]);
-   ((CCombo*) WProp_VCD_an->GetChildByName ("combo6"))->SetText (itoa (input_pins[5]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo6"))->SetText (itoa (input_pins[5]) + "  " + spin);
   }
 
- ((CCombo*) WProp_VCD_an->GetChildByName ("combo7"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo7"))->SetItems (Items);
  if (input_pins[6] == 0)
-  ((CCombo*) WProp_VCD_an->GetChildByName ("combo7"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo7"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (input_pins[6]);
-   ((CCombo*) WProp_VCD_an->GetChildByName ("combo7"))->SetText (itoa (input_pins[6]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo7"))->SetText (itoa (input_pins[6]) + "  " + spin);
   }
 
- ((CCombo*) WProp_VCD_an->GetChildByName ("combo8"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo8"))->SetItems (Items);
  if (input_pins[7] == 0)
-  ((CCombo*) WProp_VCD_an->GetChildByName ("combo8"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo8"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (input_pins[7]);
-   ((CCombo*) WProp_VCD_an->GetChildByName ("combo8"))->SetText (itoa (input_pins[7]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo8"))->SetText (itoa (input_pins[7]) + "  " + spin);
   }
 
 
- ((CButton*) WProp_VCD_an->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
- ((CButton*) WProp_VCD_an->GetChildByName ("button1"))->SetTag (1);
+ ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+ ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
 
- ((CButton*) WProp_VCD_an->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+ ((CButton*) WProp->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
 }
 
 void
-cpart_VCD_Dump_an::ReadPropertiesWindow(void)
+cpart_VCD_Dump_an::ReadPropertiesWindow(CPWindow * WProp)
 {
- input_pins[0] = atoi (((CCombo*) WProp_VCD_an->GetChildByName ("combo1"))->GetText ());
- input_pins[1] = atoi (((CCombo*) WProp_VCD_an->GetChildByName ("combo2"))->GetText ());
- input_pins[2] = atoi (((CCombo*) WProp_VCD_an->GetChildByName ("combo3"))->GetText ());
- input_pins[3] = atoi (((CCombo*) WProp_VCD_an->GetChildByName ("combo4"))->GetText ());
- input_pins[4] = atoi (((CCombo*) WProp_VCD_an->GetChildByName ("combo5"))->GetText ());
- input_pins[5] = atoi (((CCombo*) WProp_VCD_an->GetChildByName ("combo6"))->GetText ());
- input_pins[6] = atoi (((CCombo*) WProp_VCD_an->GetChildByName ("combo7"))->GetText ());
- input_pins[7] = atoi (((CCombo*) WProp_VCD_an->GetChildByName ("combo8"))->GetText ());
+ input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
+ input_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
+ input_pins[2] = atoi (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ());
+ input_pins[3] = atoi (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ());
+ input_pins[4] = atoi (((CCombo*) WProp->GetChildByName ("combo5"))->GetText ());
+ input_pins[5] = atoi (((CCombo*) WProp->GetChildByName ("combo6"))->GetText ());
+ input_pins[6] = atoi (((CCombo*) WProp->GetChildByName ("combo7"))->GetText ());
+ input_pins[7] = atoi (((CCombo*) WProp->GetChildByName ("combo8"))->GetText ());
 }
 
 void
@@ -420,7 +418,7 @@ cpart_VCD_Dump_an::EvMouseButtonPress(uint button, uint x, uint y, uint state)
          fprintf (f_vcd,
                   "$version Generated by PICSimLab $end\n"
                   "$timescale %ins $end\n"
-                  "$scope module logic $end\n"
+                  "$scope module analogic $end\n"
                   "$var real 32 !  1-%s $end\n"
                   "$var real 32 $  2-%s $end\n"
                   "$var real 32 %% 3-%s $end\n"

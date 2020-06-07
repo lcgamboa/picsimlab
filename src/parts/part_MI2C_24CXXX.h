@@ -58,9 +58,9 @@ public:
         return lxT("MI2C_24CXXX.lxrad");
     };
     void EvMouseButtonPress(uint button, uint x, uint y,uint state);
-    void ConfigurePropertiesWindow(CPWindow * wprop);
+    void ConfigurePropertiesWindow(CPWindow * WProp);
     void filedialog_EvOnClose(int retId);
-    void ReadPropertiesWindow(void);
+    void ReadPropertiesWindow(CPWindow * WProp);
     String WritePreferences(void);
     void ReadPreferences(String value);
     unsigned short get_in_id(char * name);

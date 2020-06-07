@@ -360,7 +360,7 @@ cpart_pot::ConfigurePropertiesWindow (CPWindow * wprop)
 }
 
 void
-cpart_pot::ReadPropertiesWindow (void)
+cpart_pot::ReadPropertiesWindow (CPWindow * WProp)
 {
  input_pins[0] = atoi (((CCombo*) WProp_pot->GetChildByName ("combo1"))->GetText ());
  input_pins[1] = atoi (((CCombo*) WProp_pot->GetChildByName ("combo2"))->GetText ());

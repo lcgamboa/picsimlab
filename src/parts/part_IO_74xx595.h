@@ -44,8 +44,8 @@ class cpart_IO_74xx595:public part
       String GetInputMapFile(void){return lxT("IC16_i.map");};
       String GetOutputMapFile(void){return lxT("IC16_o.map");};
       String GetPropertiesWindowFile(void){return lxT("IO_74xx595.lxrad");};
-      void ConfigurePropertiesWindow(CPWindow *  wprop);
-      void ReadPropertiesWindow(void);
+      void ConfigurePropertiesWindow(CPWindow *  WProp);
+      void ReadPropertiesWindow(CPWindow * WProp);
       String WritePreferences(void);
       void ReadPreferences(String value);
       unsigned short get_in_id(char * name);

@@ -42,8 +42,8 @@ class cpart_LCD_pcf8833:public part
       String GetInputMapFile(void){return lxT("LCD_pcf8833_i.map");};
       String GetOutputMapFile(void){return lxT("LCD_pcf8833_o.map");};
       String GetPropertiesWindowFile(void){return lxT("LCD_pcf8833.lxrad");};
-      void ConfigurePropertiesWindow(CPWindow *  wprop);
-      void ReadPropertiesWindow(void);
+      void ConfigurePropertiesWindow(CPWindow *  WProp);
+      void ReadPropertiesWindow(CPWindow * WProp);
       String WritePreferences(void);
       void ReadPreferences(String value);
       unsigned short get_in_id(char * name);

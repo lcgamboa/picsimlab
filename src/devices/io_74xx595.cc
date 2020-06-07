@@ -33,16 +33,13 @@ io_74xx595_rst(io_74xx595_t *sr)
  sr->alclk = 1;
  sr->dsr = 0;
  sr->sout = 0;
+ sr->out = 0;
 }
 
 void
 io_74xx595_init(io_74xx595_t *sr)
 {
- sr->asclk = 1;
- sr->alclk = 1;
- sr->sout = 0;
- sr->out = 0;
- sr->dsr = 0;
+ io_74xx595_rst(sr); 
 }
 
 unsigned short
@@ -51,8 +48,8 @@ io_74xx595_io(io_74xx595_t *sr, unsigned char A, unsigned char sclk, unsigned ch
 
  if (!rst)
   {
-   sr->dsr = 0;
-   sr->sout = 0;
+   io_74xx595_rst(sr);
+   return sr->out;
   }
 
 
