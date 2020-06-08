@@ -418,7 +418,7 @@ cpart_LCD_hd44780::Process(void)
       if((input_pins[4] > 0)&&(ppins[input_pins[4]-1].value)) d|= 0x04;
       if((input_pins[3] > 0)&&(ppins[input_pins[3]-1].value)) d|= 0x02;
       if((input_pins[2] > 0)&&(ppins[input_pins[2]-1].value)) d|= 0x01;
-
+      
       if((!ppins[input_pins[0]-1].dir)&&(!ppins[input_pins[0]-1].value))
       {
         lcd_cmd(&lcd,d);
