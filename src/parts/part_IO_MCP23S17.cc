@@ -147,6 +147,10 @@ cpart_IO_MCP23S17::cpart_IO_MCP23S17(unsigned x, unsigned y)
 
  mcount = 0;
  memset (output_pins_alm, 0, 16 * sizeof (unsigned long));
+ 
+ _PA=0xFA;//dummy value
+ _PB=0xFA;
+ 
 }
 
 cpart_IO_MCP23S17::~cpart_IO_MCP23S17(void)
@@ -177,7 +181,7 @@ cpart_IO_MCP23S17::Draw(void)
      canvas.SetColor (0, 0, 0);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     canvas.RotatedText ("74XX595", output[i].x1, output[i].y2 - 15, 0.0);
+     canvas.RotatedText ("MCP23S17", output[i].x1, output[i].y2 - 15, 0.0);
      break;
     default:
      canvas.SetColor (49, 61, 99);

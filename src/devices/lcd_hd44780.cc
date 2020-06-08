@@ -485,8 +485,7 @@ void lcd_cmd(lcd_t * lcd, char cmd)
     return;
   }
  
-
-};
+}
 
 
 void lcd_data(lcd_t * lcd, char data)
@@ -584,7 +583,7 @@ void lcd_data(lcd_t * lcd, char data)
     if(lcd->cgram_ad >=64)lcd->cgram_ad=0;	
   }  
 
-};
+}
 
 
 
@@ -617,9 +616,9 @@ int i,j;
     lcd->blink=0;
     lcd->blinkc=0;
     lcd->shift=0;
-    lcd->flags=0;
+    lcd->flags= L_DL | L_DID;
     return;
-};
+}
 
 void lcd_init(lcd_t * lcd, unsigned char cnum, unsigned char lnum)
 {
@@ -633,7 +632,7 @@ void lcd_init(lcd_t * lcd, unsigned char cnum, unsigned char lnum)
     else
       lcd->lnum=2;
     lcd->update=1;  
-};
+}
 
 void lcd_on(lcd_t * lcd,int onoff)
 {
@@ -642,7 +641,7 @@ void lcd_on(lcd_t * lcd,int onoff)
     lcd->flags=0;
   };
   lcd_rst(lcd);
-};
+}
 
 
 
@@ -754,5 +753,4 @@ void lcd_draw(lcd_t * lcd, CCanvas * canvas, int x1,int y1,int w1,int h1,int pic
            }
          }
       
-
 }

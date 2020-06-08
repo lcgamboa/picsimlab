@@ -27,7 +27,7 @@
 #include<stdio.h>
 #include"io_MCP23X17.h"
 
-#define dprintf if (0) {} else printf
+#define dprintf if (1) {} else printf
 
 //IOCON bits
 #define BANK      0x80
@@ -110,23 +110,29 @@ write_reg(io_MCP23X17_t *mcp, unsigned char val)
 {
  unsigned char addr_ = decode_addr (mcp);
  mcp->regs[addr_] = val;
- 
- if((mcp->regs[IOCON] & SEQOP) == 0)
+
+ if ((mcp->regs[IOCON] & SEQOP) == 0)
   {
-    mcp->reg_addr++;
-    
-    //FIXME only for BANK=0;
-    if(mcp->reg_addr > 0x15)mcp->reg_addr=0;
+   mcp->reg_addr++;
+
+   //FIXME only for BANK=0;
+   if (mcp->reg_addr > 0x15)mcp->reg_addr = 0;
   }
- 
- //mirror IOCON
- if (addr_ == IOCON)
+
+ switch (addr_)
   {
+  case IOCON:
    mcp->regs[IOCON_] = val;
-  }
- if (addr_ == IOCON_)
-  {
+   break;
+  case IOCON_:
    mcp->regs[IOCON] = val;
+   break;
+  case GPIOA:
+   mcp->regs[OLATA] = val;
+   break;
+  case GPIOB:
+   mcp->regs[OLATB] = val;
+   break;
   }
 }
 
@@ -194,8 +200,8 @@ io_MCP23X17_SPI_io(io_MCP23X17_t *mcp, unsigned char si, unsigned char sck, unsi
  //transicao
  if ((mcp->asck == 0)&&(sck == 1))//rising edge
   {
-   if (mcp->bit == 8) mcp->bit =0;
-   
+   if (mcp->bit == 8) mcp->bit = 0;
+
    if (mcp->bit < 8)
     {
      if (si)
@@ -208,7 +214,7 @@ io_MCP23X17_SPI_io(io_MCP23X17_t *mcp, unsigned char si, unsigned char sck, unsi
       }
      mcp->bit++;
     }
-   
+
    if (mcp->bit == 8)
     {
      //dprintf ("-------mcp data 0x%02X  byte=%i\n", mcp->data,mcp->byte);
@@ -220,13 +226,13 @@ io_MCP23X17_SPI_io(io_MCP23X17_t *mcp, unsigned char si, unsigned char sck, unsi
         {
          mcp->op = mcp->data & 0x01;
          mcp->byte++;
-         dprintf ("mcp addr 0x%02X OK\n",mcp->addr);
+         dprintf ("mcp addr 0x%02X OK\n", mcp->addr);
         }
        else
         {
-         mcp->bit  = 0xFF;
+         mcp->bit = 0xFF;
          mcp->byte = 0xFF;
-         dprintf ("mcp addr 0x%02X ERROR\n",mcp->addr);
+         dprintf ("mcp addr 0x%02X ERROR\n", mcp->addr);
         }
        break;
       case 1:
@@ -237,19 +243,19 @@ io_MCP23X17_SPI_io(io_MCP23X17_t *mcp, unsigned char si, unsigned char sck, unsi
       default:
        if (mcp->op)
         {
-         dprintf ("mcp data read [0x%02X] 0x%02X\n",mcp->reg_addr, mcp->data);
-         mcp->datas = read_reg(mcp);
+         dprintf ("mcp data read [0x%02X] 0x%02X\n", mcp->reg_addr, mcp->data);
+         mcp->datas = read_reg (mcp);
         }
        else
         {
-         dprintf ("mcp data write [0x%02X] 0x%02X\n",mcp->reg_addr, mcp->data);
-         write_reg(mcp,mcp->data);
+         dprintf ("mcp data write [0x%02X] 0x%02X\n", mcp->reg_addr, mcp->data);
+         write_reg (mcp, mcp->data);
         }
        break;
       }
     }
   }
- 
+
  mcp->asck = sck;
 
 
