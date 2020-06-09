@@ -47,8 +47,41 @@ board_pic::MInit(const char * processor, const char * fname, float freq)
   }
 
  int ret = pic_init (&pic, procn, fname, 1, freq);
- pic.config[0] |= 0x0800; //disable DEBUG
-
+ 
+ //disable DEBUG
+ switch(pic.processor)
+  {
+  case P16F1619: 
+  case P16F1788:
+  case P16F1789: 
+  case P16F1939:
+     pic.config[1] |= 0x0100; 
+     break;
+  case P16F18855:
+     pic.config[1] |= 0x0200;
+     break;
+  case P16F628A:
+  case P16F648A:
+  case P16F84A:
+  case P16F777:
+  case P16F877A: 
+     pic.config[0] |= 0x0800; 
+     break;
+  case P18F452:
+  case P18F4520:
+  case P18F4550:
+  case P18F45K50:
+  case P18F4620: 
+     pic.config[3] |= 0x0080;
+     break;
+  case P18F27K40:  
+  case P18F47K40: 
+     pic.config[1] |= 0x2000;
+     break;
+  default:
+     break;   
+  }
+ 
  pic.pins = (picpin*) realloc (pic.pins, sizeof (picpin)*256);
 
  return ret;
