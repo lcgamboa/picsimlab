@@ -47,7 +47,7 @@ board_pic::MInit(const char * processor, const char * fname, float freq)
   }
 
  int ret = pic_init (&pic, procn, fname, 1, freq);
- 
+
  //disable DEBUG
  switch(pic.processor)
   {
@@ -57,6 +57,7 @@ board_pic::MInit(const char * processor, const char * fname, float freq)
   case P16F1939:
      pic.config[1] |= 0x0100; 
      break;
+  case P16F18324:   
   case P16F18855:
      pic.config[1] |= 0x0200;
      break;
