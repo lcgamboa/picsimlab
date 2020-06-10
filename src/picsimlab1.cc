@@ -861,7 +861,7 @@ void
 CPWindow1::board_Event(CControl * control)
 {
  pboard->board_Event (control);
-};
+}
 
 void
 CPWindow1::menu1_Modules_Oscilloscope_EvMenuActive(CControl * control)
@@ -869,7 +869,7 @@ CPWindow1::menu1_Modules_Oscilloscope_EvMenuActive(CControl * control)
  pboard->SetUseOscilloscope (1);
  Window4.Show ();
  Window4.timer1.SetRunState (1);
-};
+}
 
 board *
 CPWindow1::GetBoard(void)

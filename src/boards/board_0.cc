@@ -610,6 +610,9 @@ cboard_0::MInit(const char * processor, const char * fname, float freq)
     case 8:
      image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic08.png"));
      break;
+    case 14:
+     image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic14.png"));
+     break; 
     case 18:
      image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic18.png"));
      break;
