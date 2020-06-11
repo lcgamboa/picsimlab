@@ -1,0 +1,12 @@
+<map id="board_pic" name="board_pic">
+<area shape="rect" id="node1" title=" " alt="" coords="371,80,457,107"/>
+<area shape="rect" id="node3" href="$classcboard__0.html" title=" " alt="" coords="5,155,87,181"/>
+<area shape="rect" id="node4" href="$classcboard__1.html" title=" " alt="" coords="111,155,192,181"/>
+<area shape="rect" id="node5" href="$classcboard__2.html" title=" " alt="" coords="216,155,297,181"/>
+<area shape="rect" id="node6" href="$classcboard__3.html" title=" " alt="" coords="321,155,403,181"/>
+<area shape="rect" id="node7" href="$classcboard__4.html" title=" " alt="" coords="427,155,508,181"/>
+<area shape="rect" id="node8" href="$classcboard__6.html" title=" " alt="" coords="532,155,613,181"/>
+<area shape="rect" id="node9" href="$classcboard__7.html" title=" " alt="" coords="637,155,719,181"/>
+<area shape="rect" id="node10" href="$classcboard__x.html" title=" " alt="" coords="743,155,824,181"/>
+<area shape="rect" id="node2" href="$classboard.html" title="Board class." alt="" coords="385,5,443,32"/>
+</map>
