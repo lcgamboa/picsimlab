@@ -129,7 +129,7 @@ board_pic::CpuInitialized(void)
 void
 board_pic::MDumpMemory(const char * fname)
 {
- switch (getfprocbyname ((const char*) proc.c_str ()))
+ switch (getfprocbyname ((const char*) Proc.c_str ()))
   {
   case P16:
    write_ihx (fname);

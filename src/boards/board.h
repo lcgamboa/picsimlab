@@ -34,27 +34,33 @@
 #include "../devices/rtc_pfc8563.h"
 
 
-
+    /**
+     * @brief input map struct 
+     *
+     */
 typedef struct
 {
-unsigned int x1;
-unsigned int x2;
-unsigned int y1;
-unsigned int y2;
-char name[10];
-unsigned short id;
+unsigned int x1; ///< x1 position
+unsigned int x2; ///< x2 position
+unsigned int y1; ///< y1 position
+unsigned int y2; ///< y2 position
+char name[10]; ///< region name
+unsigned short id; ///< region ID
 }input_t;
-
+    
+    /**
+     * @brief output map struct 
+     *
+     */
 typedef struct
 {
-unsigned int x1;
-unsigned int x2;
-unsigned int y1;
-unsigned int y2;
+unsigned int x1; ///< x1 position
+unsigned int x2; ///< x2 position
+unsigned int y1; ///< y1 position
+unsigned int y2; ///< y2 position
 unsigned int r;
-char name[10];
-unsigned short id;
-//int lval;
+char name[10]; ///< region name
+unsigned short id; ///<  region ID
 }output_t;    
 
     /**
@@ -175,60 +181,229 @@ class board
      */ 
       void SetUseSpareParts(int sp); 
       
+     /**
+     * @brief Get if oscilloscope is in use   
+     */ 
       int GetUseOscilloscope(void); 
-      int GetUseSpareParts(void);
-      virtual int DebugInit(void)=0;
-      virtual void DebugLoop(void)=0;
-      virtual int CpuInitialized(void)=0;
-      virtual void MSetSerial(const char * port)=0;
-      virtual int MInit(const char* processor, const char * fname, float freq)=0;
-      virtual void MEnd(void)=0;
-      virtual void MDumpMemory(const char * fname)=0;
-      virtual void MEraseFlash(void)=0;
-      virtual void MSetFreq(float freq)=0;
-      virtual float MGetFreq(void)=0;
-      virtual float MGetInstClock(void)=0;
-      virtual int MGetPinCount(void)=0;
-      virtual String MGetPinName(int pin)=0;
-      virtual void MSetPin(int pin, unsigned char value)=0;
-      virtual void MSetPinDOV(int pin, unsigned char ovalue)=0;
-      virtual void MSetAPin(int pin, float value)=0;
-      virtual unsigned char MGetPin(int pin)=0;  
-      virtual const picpin * MGetPinsValues(void)=0;  
-      virtual void MStep(void)=0;
-      virtual void MStepResume(void)=0;
-      virtual int MTestBP(unsigned int bp)=0;
-      virtual void MReset(int flags)=0;
-      virtual unsigned short * MGetProcID_p(void)=0;
-      virtual unsigned int  MGetPC(void)=0;
-      virtual void MSetPC(unsigned int pc)=0;
-      virtual unsigned char * MGetRAM_p(void)=0;
-      virtual unsigned char * MGetROM_p(void)=0;
-      virtual unsigned char * MGetCONFIG_p(void)=0;
-      virtual unsigned char * MGetID_p(void)=0;
-      virtual unsigned char * MGetEEPROM_p(void)=0;
-      virtual unsigned int MGetRAMSize(void)=0;
-      virtual unsigned int MGetROMSize(void)=0;
-      virtual unsigned int MGetCONFIGSize(void)=0;
-      virtual unsigned int MGetIDSize(void)=0;
-      virtual unsigned int MGetEEPROM_Size(void)=0;
       
-      String proc;             ///< ID of processor in use
- protected:
+     /**
+     * @brief Get if spare parts is in use   
+     */ 
+      int GetUseSpareParts(void);
+     
+     /**
+     * @brief Set board processor   
+     */ 
+      void  SetProcessorName(String proc);
+     
+     /**
+     * @brief Get board processor in use  
+     */ 
+      String  GetProcessorName(void);    
+      
+     /**
+     * @brief Start debug support  
+     */ 
+      virtual int DebugInit(void)=0;
+        
+     /**
+     * @brief debug step (pooling)  
+     */
+      virtual void DebugLoop(void)=0;
+        
+     /**
+     * @brief return true if microcontroller is initialized  
+     */
+      virtual int CpuInitialized(void)=0;
+        
+     /**
+     * @brief Set serial port name to use  
+     */
+      virtual void MSetSerial(const char * port)=0;
+        
+     /**
+     * @brief board microcontroller init  
+     */
+      virtual int MInit(const char* processor, const char * fname, float freq)=0;
+        
+     /**
+     * @brief board microcontroller end   
+     */
+      virtual void MEnd(void)=0;
+        
+     /**
+     * @brief board microcontroller save non volatile memory to hex file   
+     */
+      virtual void MDumpMemory(const char * fname)=0;
+        
+     /**
+     * @brief board microcontroller erase flash memory (program)   
+     */
+      virtual void MEraseFlash(void)=0;
+        
+     /**
+     * @brief board microcontroller set frequency   
+     */
+      virtual void MSetFreq(float freq)=0;
+        
+     /**
+     * @brief board microcontroller get frequency   
+     */
+      virtual float MGetFreq(void)=0;
+        
+     /**
+     * @brief board microcontroller get cpu internal clock (in PIC frequency/4)   
+     */
+      virtual float MGetInstClock(void)=0;
+        
+     /**
+     * @brief board microcontroller pin count   
+     */
+      virtual int MGetPinCount(void)=0;
+        
+     /**
+     * @brief board microcontroller pin name   
+     */
+      virtual String MGetPinName(int pin)=0;
+        
+     /**
+     * @brief board microcontroller set digital pin   
+     */
+      virtual void MSetPin(int pin, unsigned char value)=0;
+        
+     /**
+     * @brief board microcontroller set Default Open Value (external pull)   
+     */
+      virtual void MSetPinDOV(int pin, unsigned char ovalue)=0;
+        
+     /**
+     * @brief board microcontroller set analog pin   
+     */
+      virtual void MSetAPin(int pin, float value)=0;
+        
+     /**
+     * @brief board microcontroller get digital pin value   
+     */
+      virtual unsigned char MGetPin(int pin)=0;  
+        
+     /**
+     * @brief board microcontroller get all pins list struct   
+     */
+      virtual const picpin * MGetPinsValues(void)=0;  
+        
+     /**
+     * @brief board microcontroller run one step   
+     */
+      virtual void MStep(void)=0;
+        
+     /**
+     * @brief board microcontroller run one or two steps to resume instruction   
+     */
+      virtual void MStepResume(void)=0;
+        
+     /**
+     * @brief board microcontroller test if in breakpoint   
+     */
+      virtual int MTestBP(unsigned int bp)=0;
+        
+     /**
+     * @brief board microcontroller reset   
+     */
+      virtual void MReset(int flags)=0;
+        
+     /**
+     * @brief board microcontroller get pointer to processor ID   
+     */
+      virtual unsigned short * MGetProcID_p(void)=0;
+        
+     /**
+     * @brief  board microcontroller get PC  
+     */
+      virtual unsigned int  MGetPC(void)=0;
+        
+     /**
+     * @brief  board microcontroller set PC
+     */
+      virtual void MSetPC(unsigned int pc)=0;
+        
+     /**
+     * @brief  board microcontroller get RAM memory pointer  
+     */
+      virtual unsigned char * MGetRAM_p(void)=0;
+        
+     /**
+     * @brief  board microcontroller get ROM (FLASH) memory pointer 
+     */
+      virtual unsigned char * MGetROM_p(void)=0;
+        
+     /**
+     * @brief  board microcontroller  get CONFIG memory pointer  
+     */
+      virtual unsigned char * MGetCONFIG_p(void)=0;
+        
+     /**
+     * @brief  board microcontroller  get internal IDS memory pointer   
+     */
+      virtual unsigned char * MGetID_p(void)=0;
+        
+     /**
+     * @brief  board microcontroller get data EEPROM memory pointer  
+     */
+      virtual unsigned char * MGetEEPROM_p(void)=0;
+        
+     /**
+     * @brief  board microcontroller get RAM memory size   
+     */
+      virtual unsigned int MGetRAMSize(void)=0;
+        
+     /**
+     * @brief  board microcontroller get ROM  (FLASH) memory size  
+     */
+      virtual unsigned int MGetROMSize(void)=0;
+        
+     /**
+     * @brief board microcontroller get CONFIG memory size   
+     */
+      virtual unsigned int MGetCONFIGSize(void)=0;
+        
+     /**
+     * @brief board microcontroller get internal IDS memory size   
+     */
+      virtual unsigned int MGetIDSize(void)=0;
+        
+     /**
+     * @brief  board microcontroller get data EEPROM memory size    
+     */
+      virtual unsigned int MGetEEPROM_Size(void)=0;
+ 
+protected:      
+      String Proc;          ///< Name of processor in use
       input_t  input[100];  ///< input map elements
       output_t output[100]; ///< output map elements 
       int inputc;           ///< input map elements counter 
       int outputc;          ///< output map elements counter   
-      void ReadMaps(void);  ///< read maps 
-      int use_oscope;
-      int use_spare;
-      int p_MCLR;
- private:      
-      void ReadInputMap(String fname);  ///< Read the Input Map
-      void ReadOutputMap(String fname); ///< Read the Output Map 
+      int use_oscope;       ///< use oscilloscope window
+      int use_spare;        ///< use spare parts window             
+      int p_MCLR;           ///< board /RESET pin state
+      
+     /**
+     * @brief  Read maps 
+     */
+      void ReadMaps(void); 
+      
+private:      
+      
+     /**
+     * @brief Read the Input Map  
+     */
+    void ReadInputMap(String fname);  
+          
+     /**
+     * @brief Read the Output Map  
+     */  
+    void ReadOutputMap(String fname); 
 
 };
-
 
 
 #endif	/* BOARD_H */

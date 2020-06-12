@@ -56,7 +56,7 @@ cboard_5::get_in_id(char * name)
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
-};
+}
 
 //return the output ids numbers of names used in output map
 
@@ -71,14 +71,14 @@ cboard_5::get_out_id(char * name)
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
-};
+}
 
 //Constructor called once on board creation 
 
 cboard_5::cboard_5(void)
 {
  //FIXME
- proc = "atmega328"; //default microcontroller if none defined in preferences
+ Proc = "atmega328p"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
 
  //controls properties and creation
@@ -246,7 +246,7 @@ cboard_5::cboard_5(void)
  label6->SetText (lxT ("11"));
  label6->SetAlign (1);
  Window1.CreateChild (label6);
-};
+}
 
 //Destructor called once on board destruction 
 
@@ -301,7 +301,7 @@ cboard_5::Reset(void)
    for(int pi=0;pi < pic.PINCOUNT;pi++)
    {
      lm[pi]=0;
-   };
+   }
   */
  if (use_spare)Window5.Reset ();
 }
@@ -344,7 +344,7 @@ cboard_5::RefreshStatus(void)
   case cpu_Crashed: Window1.SetCpuState (CPU_ERROR);
    break;
   }
-};
+}
 
 //Called to save board preferences in configuration file
 
@@ -352,8 +352,8 @@ void
 cboard_5::WritePreferences(void)
 {
  //write selected microcontroller of board_x to preferences
- Window1.saveprefs (lxT ("p5_proc"), proc);
-};
+ Window1.saveprefs (lxT ("p5_proc"), Proc);
+}
 
 //Called whe configuration file load  preferences 
 
@@ -363,20 +363,20 @@ cboard_5::ReadPreferences(char *name, char *value)
  //read microcontroller of preferences
  if (!strcmp (name, "p5_proc"))
   {
-   proc = value;
+   Proc = value;
   }
-};
+}
 
 
 //Event on the board
 
 void
-cboard_5::EvKeyPress(uint key, uint mask) { };
+cboard_5::EvKeyPress(uint key, uint mask) { }
 
 //Event on the board
 
 void
-cboard_5::EvKeyRelease(uint key, uint mask) { };
+cboard_5::EvKeyRelease(uint key, uint mask) { }
 
 //Event on the board
 
@@ -429,7 +429,7 @@ cboard_5::EvMouseButtonPress(uint button, uint x, uint y, uint state)
     }
   }
 
-};
+}
 
 //Event on the board
 
@@ -463,7 +463,7 @@ cboard_5::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
     }
   }
 
-};
+}
 
 
 //Called ever 100ms to draw board
@@ -543,7 +543,7 @@ cboard_5::Run_CPU(void)
  for(pi=0;pi < MGetPinCount();pi++)
  {
    alm[pi]=0;
- };
+ }
   */
  memset (alm, 0, pinc * sizeof (unsigned int));
 

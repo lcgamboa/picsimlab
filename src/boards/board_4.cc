@@ -63,7 +63,7 @@ cboard_4::cboard_4(void)
  char fname[1024];
  FILE * fout;
 
- proc = "PIC18F452";
+ Proc = "PIC18F452";
 
  vtc = 0;
  vt = 0;
@@ -1867,7 +1867,7 @@ void
 cboard_4::WritePreferences(void)
 {
  char line[100];
- Window1.saveprefs (lxT ("p4_proc"), proc);
+ Window1.saveprefs (lxT ("p4_proc"), Proc);
 
  Window1.saveprefs (lxT ("p4_jmp"), String ().Format ("%i", jmp[0]));
 
@@ -1888,7 +1888,7 @@ cboard_4::ReadPreferences(char *name, char *value)
 
  if (!strcmp (name, "p4_proc"))
   {
-   proc = value;
+   Proc = value;
   }
 
  if (!strcmp (name, "p4_jmp"))

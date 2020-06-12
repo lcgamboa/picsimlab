@@ -653,7 +653,7 @@ board_avr::write_ihx_avr(const char * fname)
 
  if (fout)
   {
-   //program memory  //TODO P18 only address < 64K bytes  
+   //program memory  
    nb = 0;
    sum = 0;
    //fprintf(fout,":020000040000FA\n");

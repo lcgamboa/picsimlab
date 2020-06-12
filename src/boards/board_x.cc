@@ -62,7 +62,7 @@ cboard_x::get_in_id(char * name)
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
-};
+}
 
 //return the output ids numbers of names used in output map
 
@@ -79,13 +79,13 @@ cboard_x::get_out_id(char * name)
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
-};
+}
 
 //Constructor called once on board creation 
 
 cboard_x::cboard_x(void)
 {
- proc = "PIC18F4550"; //default microcontroller if none defined in preferences
+ Proc = "PIC18F4550"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
 
  //controls properties and creation
@@ -170,7 +170,7 @@ cboard_x::cboard_x(void)
  label3->SetText (lxT ("RB1"));
  label3->SetAlign (1);
  Window1.CreateChild (label3);
-};
+}
 
 //Destructor called once on board destruction 
 
@@ -236,7 +236,7 @@ cboard_x::RefreshStatus(void)
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
-};
+}
 
 //Called to save board preferences in configuration file
 
@@ -244,10 +244,10 @@ void
 cboard_x::WritePreferences(void)
 {
  //write selected microcontroller of board_x to preferences
- Window1.saveprefs (lxT ("px_proc"), proc);
+ Window1.saveprefs (lxT ("px_proc"), Proc);
  //write switch state of board_x to preferences 
  Window1.saveprefs (lxT ("px_bt2"), String ().Format ("%i", p_BT2));
-};
+}
 
 //Called whe configuration file load  preferences 
 
@@ -265,9 +265,9 @@ cboard_x::ReadPreferences(char *name, char *value)
  //read microcontroller of preferences
  if (!strcmp (name, "px_proc"))
   {
-   proc = value;
+   Proc = value;
   }
-};
+}
 
 
 //Event on the board
@@ -287,7 +287,7 @@ cboard_x::EvKeyPress(uint key, uint mask)
    p_BT2 ^= 1;
   }
 
-};
+}
 
 //Event on the board
 
@@ -300,7 +300,7 @@ cboard_x::EvKeyRelease(uint key, uint mask)
    p_BT1 = 1;
   }
 
-};
+}
 
 //Event on the board
 
@@ -362,7 +362,7 @@ cboard_x::EvMouseButtonPress(uint button, uint x, uint y, uint state)
     }
   }
 
-};
+}
 
 //Event on the board
 
@@ -401,7 +401,7 @@ cboard_x::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
     }
   }
 
-};
+}
 
 
 //Called ever 100ms to draw board
@@ -441,7 +441,7 @@ cboard_x::Draw(CDraw *draw, double scale)
          draw->Canvas.Rectangle (1, output[i].x1,
                                  output[i].y1, output[i].x2 - output[i].x1,
                                  (int) ((output[i].y2 - output[i].y1)*0.65));
-        };
+        }
       }
     }
    else //if output shape is a circle
@@ -470,9 +470,9 @@ cboard_x::Draw(CDraw *draw, double scale)
 
      //draw a circle
      draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
-    };
+    }
 
-  };
+  }
 
  //end draw
  draw->Canvas.End ();
@@ -486,7 +486,7 @@ cboard_x::Draw(CDraw *draw, double scale)
  gauge2->SetValue (0.44444 * (pic.pins[32].oavalue - 30));
 
 
-};
+}
 
 void
 cboard_x::Run_CPU(void)
@@ -506,7 +506,7 @@ cboard_x::Run_CPU(void)
  for(pi=0;pi < pic.PINCOUNT;pi++)
  {
    alm[pi]=0;
- };
+ }
   */
  memset (alm, 0, 40 * sizeof (unsigned int));
 

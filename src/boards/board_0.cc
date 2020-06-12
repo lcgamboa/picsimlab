@@ -54,7 +54,7 @@ cboard_0::get_in_id(char * name)
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
-};
+}
 
 //return the output ids numbers of names used in output map
 
@@ -67,14 +67,14 @@ cboard_0::get_out_id(char * name)
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
-};
+}
 
 //Constructor called once on board creation 
 
 cboard_0::cboard_0(void)
 {
  ptype = _PIC;
- proc = "PIC18F4550"; //default microcontroller if none defined in preferences
+ Proc = "PIC18F4550"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
 
  lxImage image;
@@ -202,7 +202,7 @@ cboard_0::RefreshStatus(void)
    break;
   }
 
-};
+}
 
 //Called to save board preferences in configuration file
 
@@ -210,7 +210,7 @@ void
 cboard_0::WritePreferences(void)
 {
  //write selected microcontroller of board_x to preferences
- Window1.saveprefs (lxT ("p0_proc"), proc);
+ Window1.saveprefs (lxT ("p0_proc"), Proc);
 }
 
 //Called whe configuration file load  preferences 
@@ -221,9 +221,9 @@ cboard_0::ReadPreferences(char *name, char *value)
  //read microcontroller of preferences
  if (!strcmp (name, "p0_proc"))
   {
-   proc = value;
+   Proc = value;
   }
-};
+}
 
 
 //Event on the board
@@ -358,7 +358,7 @@ cboard_0::Draw(CDraw *draw, double scale)
      rec.y = output[i].y1;
      rec.width = ps.GetWidth ();
      rec.height = ps.GetHeight ();
-     draw->Canvas.TextOnRect (proc, rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
+     draw->Canvas.TextOnRect (Proc, rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
      break;
     }
 

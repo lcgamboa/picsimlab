@@ -13,6 +13,7 @@
 | [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L89) | 89 | 
 | [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L92) | 92 | 
 | [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L99) | 99 | 
+| [src/parts/part_IO_MCP23S17.cc](src/parts/part_IO_MCP23S17.cc#L487) | 487 | only write support implemented
 
 ### FIXMEs
 | Filename | line # | FIXME

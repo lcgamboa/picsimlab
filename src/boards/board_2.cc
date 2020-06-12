@@ -69,7 +69,7 @@ cboard_2::cboard_2(void)
  char fname[1024];
  FILE * fout;
 
- proc = "PIC16F628A";
+ Proc = "PIC16F628A";
 
  clko = 0;
  d = 0;
@@ -188,8 +188,8 @@ cboard_2::Draw(CDraw *draw, double scale)
      if (output[i].id == O_LPWR)draw->Canvas.SetColor (0, 255 * Window1.Get_mcupwr (), 0);
 
      draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
-    };
-  };
+    }
+  }
 
  rtc_update (&rtc);
 
@@ -199,7 +199,7 @@ cboard_2::Draw(CDraw *draw, double scale)
  draw->Update ();
 
 
-};
+}
 
 void
 cboard_2::Run_CPU(void)
@@ -221,7 +221,7 @@ cboard_2::Run_CPU(void)
  for(pi=0;pi < pic.PINCOUNT;pi++)
       {
         alm[pi]=0;
-      };
+      }
   */
  memset (alm, 0, 18 * sizeof (unsigned int));
 
@@ -295,7 +295,7 @@ cboard_2::Run_CPU(void)
     if ((pins[9].value)&&(!clko))
      {
       d = (d << 1) | pins[8].value;
-     };
+     }
 
     clko = pins[9].value;
 
@@ -341,7 +341,7 @@ cboard_2::Run_CPU(void)
       sck = pins[1].value;
      }
     pic_set_pin (3, mi2c_io (&mi2c, sck, sda) | rtc_io (&rtc, sck, sda));
-   };
+   }
  //fim STEP
 
 
@@ -407,7 +407,7 @@ cboard_2::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       case I_ICSP:
        {
         Window1.menu1_File_LoadHex_EvMenuActive (NULL);
-       };
+       }
        break;
 
       case I_PWR:
@@ -429,7 +429,7 @@ cboard_2::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
           Window1.statusbar1.SetField (0, lxT ("Running..."));
          }
-       };
+       }
        break;
 
       case I_RST:
@@ -440,72 +440,72 @@ cboard_2::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           Window1.Set_mcurst (1);
          }
         p_MCLR = 0;
-       };
+       }
        break;
 
 
       case I_TC1:
        {
         p_CL1 = 1;
-       };
+       }
        break;
       case I_TC2:
        {
         p_CL2 = 1;
-       };
+       }
        break;
       case I_TC3:
        {
         p_CL3 = 1;
-       };
+       }
        break;
 
       case I_TC4:
        {
         p_CL1 = 2;
-       };
+       }
        break;
       case I_TC5:
        {
         p_CL2 = 2;
-       };
+       }
        break;
       case I_TC6:
        {
         p_CL3 = 2;
-       };
+       }
        break;
 
       case I_TC7:
        {
         p_CL1 = 3;
-       };
+       }
        break;
       case I_TC8:
        {
         p_CL2 = 3;
-       };
+       }
        break;
       case I_TC9:
        {
         p_CL3 = 3;
-       };
+       }
        break;
 
       case I_TCA:
        {
         p_CL1 = 4;
-       };
+       }
        break;
       case I_TC0:
        {
         p_CL2 = 4;
-       };
+       }
        break;
       case I_TCT:
        {
         p_CL3 = 4;
-       };
+       }
        break;
       case I_VIEW:
        FILE * fout;
@@ -555,7 +555,7 @@ cboard_2::EvMouseButtonPress(uint button, uint x, uint y, uint state)
   }
 
 
-};
+}
 
 void
 cboard_2::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
@@ -581,7 +581,7 @@ cboard_2::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
            }
          }
         p_MCLR = 1;
-       };
+       }
        break;
 
 
@@ -591,7 +591,7 @@ cboard_2::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
       case I_TCA:
        {
         p_CL1 = 0;
-       };
+       }
        break;
 
       case I_TC2:
@@ -600,7 +600,7 @@ cboard_2::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
       case I_TC0:
        {
         p_CL2 = 0;
-       };
+       }
        break;
 
       case I_TC3:
@@ -609,12 +609,12 @@ cboard_2::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
       case I_TCT:
        {
         p_CL3 = 0;
-       };
+       }
        break;
       }
     }
   }
-};
+}
 
 void
 cboard_2::EvKeyPress(uint key, uint mask)
@@ -671,7 +671,7 @@ cboard_2::EvKeyPress(uint key, uint mask)
    p_CL3 = 4;
   }
 
-};
+}
 
 void
 cboard_2::EvKeyRelease(uint key, uint mask)
@@ -688,7 +688,7 @@ cboard_2::EvKeyRelease(uint key, uint mask)
   {
    p_CL3 = 0;
   }
-};
+}
 
 void
 cboard_2::EvOnShow(void)
@@ -718,7 +718,7 @@ cboard_2::get_in_id(char * name)
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
-};
+}
 
 unsigned short
 cboard_2::get_out_id(char * name)
@@ -734,13 +734,13 @@ cboard_2::get_out_id(char * name)
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
-};
+}
 
 void
 cboard_2::WritePreferences(void)
 {
- Window1.saveprefs (lxT ("p2_proc"), proc);
-};
+ Window1.saveprefs (lxT ("p2_proc"), Proc);
+}
 
 void
 cboard_2::ReadPreferences(char *name, char *value)
@@ -748,9 +748,9 @@ cboard_2::ReadPreferences(char *name, char *value)
 
  if (!strcmp (name, "p2_proc"))
   {
-   proc = value;
+   Proc = value;
   }
-};
+}
 
 void
 cboard_2::RefreshStatus(void)
@@ -765,4 +765,4 @@ cboard_2::RefreshStatus(void)
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") + String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
-};
+}

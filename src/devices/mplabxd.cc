@@ -428,8 +428,8 @@ mplabxd_loop(void)
     case GETNAM:
      dprint ("GETNAM cmd\n");
      char buff[20];
-     buff[0] = dbg_board->proc.length ();
-     strncpy (buff + 1, (const char *) dbg_board->proc.c_str (), 18);
+     buff[0] = dbg_board->GetProcessorName ().length ();
+     strncpy (buff + 1, (const char *) dbg_board->GetProcessorName ().c_str (), 18);
      if (send (sockfd, buff, 20, 0) != 20)
       {
        printf ("send error : %s \n", strerror (errno));
