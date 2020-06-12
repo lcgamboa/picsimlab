@@ -471,8 +471,6 @@ cpart_IO_MCP23S17::Process(void)
 {
  const picpin * ppins = Window5.GetPinsValues ();
 
- unsigned short ret;
-
  /*
  "/CS", 0
  "SCK", 1
@@ -486,7 +484,8 @@ cpart_IO_MCP23S17::Process(void)
  "INTA",
   */
 
- ret = io_MCP23X17_SPI_io (&mcp, ppins[input_pins[2] - 1].value, ppins[input_pins[1] - 1].value, ppins[input_pins[7] - 1].value, ppins[input_pins[0] - 1].value);
+ //TODO only write support implemented
+ io_MCP23X17_SPI_io (&mcp, ppins[input_pins[2] - 1].value, ppins[input_pins[1] - 1].value, ppins[input_pins[7] - 1].value, ppins[input_pins[0] - 1].value);
 
  if (_PA != mcp.regs[OLATA])
   {

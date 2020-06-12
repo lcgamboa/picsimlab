@@ -86,7 +86,6 @@ $(document).ready(function(){initNavTree('classboard.html',''); initResizable();
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classboard-members.html">List of all members</a>  </div>
@@ -124,8 +123,8 @@ Collaboration diagram for board:</div>
 <div class="center"><img src="classboard__coll__graph.png" border="0" usemap="#board_coll__map" alt="Collaboration graph"/></div>
 <map name="board_coll__map" id="board_coll__map">
 <area shape="rect" title="Board class." alt="" coords="57,95,116,121"/>
-<area shape="rect" href="structinput__t.html" title=" " alt="" coords="5,5,72,32"/>
-<area shape="rect" href="structoutput__t.html" title=" " alt="" coords="97,5,173,32"/>
+<area shape="rect" href="structinput__t.html" title="input map struct" alt="" coords="5,5,72,32"/>
+<area shape="rect" href="structoutput__t.html" title="output map struct" alt="" coords="97,5,173,32"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -221,133 +220,209 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:aed10607a8c6d8357eb52c76dc9eb2a1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable/disable spare parts. <br /></td></tr>
 <tr class="separator:aed10607a8c6d8357eb52c76dc9eb2a1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf01242f542b74ca0fd4412ddb07036b"><td class="memItemLeft" align="right" valign="top"><a id="adf01242f542b74ca0fd4412ddb07036b"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GetUseOscilloscope</b> (void)</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#adf01242f542b74ca0fd4412ddb07036b">GetUseOscilloscope</a> (void)</td></tr>
+<tr class="memdesc:adf01242f542b74ca0fd4412ddb07036b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get if oscilloscope is in use <br  />
+ <br /></td></tr>
 <tr class="separator:adf01242f542b74ca0fd4412ddb07036b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1aab29eeedcda11d16f633975854008"><td class="memItemLeft" align="right" valign="top"><a id="ad1aab29eeedcda11d16f633975854008"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GetUseSpareParts</b> (void)</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#ad1aab29eeedcda11d16f633975854008">GetUseSpareParts</a> (void)</td></tr>
+<tr class="memdesc:ad1aab29eeedcda11d16f633975854008"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get if spare parts is in use <br  />
+ <br /></td></tr>
 <tr class="separator:ad1aab29eeedcda11d16f633975854008"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b01e74f1dde3df6243a214150292950"><td class="memItemLeft" align="right" valign="top"><a id="a0b01e74f1dde3df6243a214150292950"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a0b01e74f1dde3df6243a214150292950">SetProcessorName</a> (String proc)</td></tr>
+<tr class="memdesc:a0b01e74f1dde3df6243a214150292950"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set board processor <br  />
+ <br /></td></tr>
+<tr class="separator:a0b01e74f1dde3df6243a214150292950"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c0b0e4eaa79de604b280ab17c4e7bd5"><td class="memItemLeft" align="right" valign="top"><a id="a6c0b0e4eaa79de604b280ab17c4e7bd5"></a>
+String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a6c0b0e4eaa79de604b280ab17c4e7bd5">GetProcessorName</a> (void)</td></tr>
+<tr class="memdesc:a6c0b0e4eaa79de604b280ab17c4e7bd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get board processor in use <br  />
+ <br /></td></tr>
+<tr class="separator:a6c0b0e4eaa79de604b280ab17c4e7bd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d851283c41b3a4ccac6dea7bc5cae4c"><td class="memItemLeft" align="right" valign="top"><a id="a8d851283c41b3a4ccac6dea7bc5cae4c"></a>
-virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>DebugInit</b> (void)=0</td></tr>
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a8d851283c41b3a4ccac6dea7bc5cae4c">DebugInit</a> (void)=0</td></tr>
+<tr class="memdesc:a8d851283c41b3a4ccac6dea7bc5cae4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start debug support <br  />
+ <br /></td></tr>
 <tr class="separator:a8d851283c41b3a4ccac6dea7bc5cae4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aecd35c04c4131a9f0520e024aa7236ed"><td class="memItemLeft" align="right" valign="top"><a id="aecd35c04c4131a9f0520e024aa7236ed"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>DebugLoop</b> (void)=0</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#aecd35c04c4131a9f0520e024aa7236ed">DebugLoop</a> (void)=0</td></tr>
+<tr class="memdesc:aecd35c04c4131a9f0520e024aa7236ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">debug step (pooling) <br  />
+ <br /></td></tr>
 <tr class="separator:aecd35c04c4131a9f0520e024aa7236ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a674991a3112843f587302646d2f56e8c"><td class="memItemLeft" align="right" valign="top"><a id="a674991a3112843f587302646d2f56e8c"></a>
-virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>CpuInitialized</b> (void)=0</td></tr>
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a674991a3112843f587302646d2f56e8c">CpuInitialized</a> (void)=0</td></tr>
+<tr class="memdesc:a674991a3112843f587302646d2f56e8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">return true if microcontroller is initialized <br  />
+ <br /></td></tr>
 <tr class="separator:a674991a3112843f587302646d2f56e8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4af1cf9e2222874ee86f1ea84fa0daa"><td class="memItemLeft" align="right" valign="top"><a id="ad4af1cf9e2222874ee86f1ea84fa0daa"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>MSetSerial</b> (const char *port)=0</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#ad4af1cf9e2222874ee86f1ea84fa0daa">MSetSerial</a> (const char *port)=0</td></tr>
+<tr class="memdesc:ad4af1cf9e2222874ee86f1ea84fa0daa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set serial port name to use <br  />
+ <br /></td></tr>
 <tr class="separator:ad4af1cf9e2222874ee86f1ea84fa0daa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61ea711ce1669e335dabe272aaf07ebd"><td class="memItemLeft" align="right" valign="top"><a id="a61ea711ce1669e335dabe272aaf07ebd"></a>
-virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>MInit</b> (const char *processor, const char *fname, float freq)=0</td></tr>
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a61ea711ce1669e335dabe272aaf07ebd">MInit</a> (const char *processor, const char *fname, float freq)=0</td></tr>
+<tr class="memdesc:a61ea711ce1669e335dabe272aaf07ebd"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller init <br  />
+ <br /></td></tr>
 <tr class="separator:a61ea711ce1669e335dabe272aaf07ebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5ff3776f5029a4467b11bd70bec0523"><td class="memItemLeft" align="right" valign="top"><a id="ab5ff3776f5029a4467b11bd70bec0523"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>MEnd</b> (void)=0</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#ab5ff3776f5029a4467b11bd70bec0523">MEnd</a> (void)=0</td></tr>
+<tr class="memdesc:ab5ff3776f5029a4467b11bd70bec0523"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller end <br  />
+ <br /></td></tr>
 <tr class="separator:ab5ff3776f5029a4467b11bd70bec0523"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5eb090b7de3ce7fd8ffcebe79d44631f"><td class="memItemLeft" align="right" valign="top"><a id="a5eb090b7de3ce7fd8ffcebe79d44631f"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>MDumpMemory</b> (const char *fname)=0</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a5eb090b7de3ce7fd8ffcebe79d44631f">MDumpMemory</a> (const char *fname)=0</td></tr>
+<tr class="memdesc:a5eb090b7de3ce7fd8ffcebe79d44631f"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller save non volatile memory to hex file <br  />
+ <br /></td></tr>
 <tr class="separator:a5eb090b7de3ce7fd8ffcebe79d44631f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a803827850c5c111d0af986ca992f8bdb"><td class="memItemLeft" align="right" valign="top"><a id="a803827850c5c111d0af986ca992f8bdb"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>MEraseFlash</b> (void)=0</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a803827850c5c111d0af986ca992f8bdb">MEraseFlash</a> (void)=0</td></tr>
+<tr class="memdesc:a803827850c5c111d0af986ca992f8bdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller erase flash memory (program) <br  />
+ <br /></td></tr>
 <tr class="separator:a803827850c5c111d0af986ca992f8bdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f386ec52284ca79e4e56dad5377acb0"><td class="memItemLeft" align="right" valign="top"><a id="a5f386ec52284ca79e4e56dad5377acb0"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>MSetFreq</b> (float freq)=0</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a5f386ec52284ca79e4e56dad5377acb0">MSetFreq</a> (float freq)=0</td></tr>
+<tr class="memdesc:a5f386ec52284ca79e4e56dad5377acb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller set frequency <br  />
+ <br /></td></tr>
 <tr class="separator:a5f386ec52284ca79e4e56dad5377acb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade6a05c12a7ad4712e8428681efdc421"><td class="memItemLeft" align="right" valign="top"><a id="ade6a05c12a7ad4712e8428681efdc421"></a>
-virtual float&#160;</td><td class="memItemRight" valign="bottom"><b>MGetFreq</b> (void)=0</td></tr>
+virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#ade6a05c12a7ad4712e8428681efdc421">MGetFreq</a> (void)=0</td></tr>
+<tr class="memdesc:ade6a05c12a7ad4712e8428681efdc421"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller get frequency <br  />
+ <br /></td></tr>
 <tr class="separator:ade6a05c12a7ad4712e8428681efdc421"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5a2d7a6530a1dad9f827e6ea5e31ad8"><td class="memItemLeft" align="right" valign="top"><a id="ae5a2d7a6530a1dad9f827e6ea5e31ad8"></a>
-virtual float&#160;</td><td class="memItemRight" valign="bottom"><b>MGetInstClock</b> (void)=0</td></tr>
+virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#ae5a2d7a6530a1dad9f827e6ea5e31ad8">MGetInstClock</a> (void)=0</td></tr>
+<tr class="memdesc:ae5a2d7a6530a1dad9f827e6ea5e31ad8"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller get cpu internal clock (in PIC frequency/4) <br  />
+ <br /></td></tr>
 <tr class="separator:ae5a2d7a6530a1dad9f827e6ea5e31ad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a670f0ecc8e8b3208a863588ebfeef533"><td class="memItemLeft" align="right" valign="top"><a id="a670f0ecc8e8b3208a863588ebfeef533"></a>
-virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>MGetPinCount</b> (void)=0</td></tr>
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a670f0ecc8e8b3208a863588ebfeef533">MGetPinCount</a> (void)=0</td></tr>
+<tr class="memdesc:a670f0ecc8e8b3208a863588ebfeef533"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller pin count <br  />
+ <br /></td></tr>
 <tr class="separator:a670f0ecc8e8b3208a863588ebfeef533"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0f78efceb6673cf38afe5481b263d51"><td class="memItemLeft" align="right" valign="top"><a id="aa0f78efceb6673cf38afe5481b263d51"></a>
-virtual String&#160;</td><td class="memItemRight" valign="bottom"><b>MGetPinName</b> (int pin)=0</td></tr>
+virtual String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#aa0f78efceb6673cf38afe5481b263d51">MGetPinName</a> (int pin)=0</td></tr>
+<tr class="memdesc:aa0f78efceb6673cf38afe5481b263d51"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller pin name <br  />
+ <br /></td></tr>
 <tr class="separator:aa0f78efceb6673cf38afe5481b263d51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fdfd6ef6da5c154f46fc6dcc0d0a67d"><td class="memItemLeft" align="right" valign="top"><a id="a1fdfd6ef6da5c154f46fc6dcc0d0a67d"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>MSetPin</b> (int pin, unsigned char value)=0</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a1fdfd6ef6da5c154f46fc6dcc0d0a67d">MSetPin</a> (int pin, unsigned char value)=0</td></tr>
+<tr class="memdesc:a1fdfd6ef6da5c154f46fc6dcc0d0a67d"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller set digital pin <br  />
+ <br /></td></tr>
 <tr class="separator:a1fdfd6ef6da5c154f46fc6dcc0d0a67d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86d9d66ba74223ccd9066b78ea04f7d6"><td class="memItemLeft" align="right" valign="top"><a id="a86d9d66ba74223ccd9066b78ea04f7d6"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>MSetPinDOV</b> (int pin, unsigned char ovalue)=0</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a86d9d66ba74223ccd9066b78ea04f7d6">MSetPinDOV</a> (int pin, unsigned char ovalue)=0</td></tr>
+<tr class="memdesc:a86d9d66ba74223ccd9066b78ea04f7d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller set Default Open Value (external pull) <br  />
+ <br /></td></tr>
 <tr class="separator:a86d9d66ba74223ccd9066b78ea04f7d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1d6ac217f57ad1ffd681d5fdd7ab205"><td class="memItemLeft" align="right" valign="top"><a id="ac1d6ac217f57ad1ffd681d5fdd7ab205"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>MSetAPin</b> (int pin, float value)=0</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#ac1d6ac217f57ad1ffd681d5fdd7ab205">MSetAPin</a> (int pin, float value)=0</td></tr>
+<tr class="memdesc:ac1d6ac217f57ad1ffd681d5fdd7ab205"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller set analog pin <br  />
+ <br /></td></tr>
 <tr class="separator:ac1d6ac217f57ad1ffd681d5fdd7ab205"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4465e37c88ae83651dd63dc99e07e262"><td class="memItemLeft" align="right" valign="top"><a id="a4465e37c88ae83651dd63dc99e07e262"></a>
-virtual unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>MGetPin</b> (int pin)=0</td></tr>
+virtual unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a4465e37c88ae83651dd63dc99e07e262">MGetPin</a> (int pin)=0</td></tr>
+<tr class="memdesc:a4465e37c88ae83651dd63dc99e07e262"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller get digital pin value <br  />
+ <br /></td></tr>
 <tr class="separator:a4465e37c88ae83651dd63dc99e07e262"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1515331aa8df4477187a8d8ef49cd1e"><td class="memItemLeft" align="right" valign="top"><a id="ae1515331aa8df4477187a8d8ef49cd1e"></a>
-virtual const picpin *&#160;</td><td class="memItemRight" valign="bottom"><b>MGetPinsValues</b> (void)=0</td></tr>
+virtual const picpin *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#ae1515331aa8df4477187a8d8ef49cd1e">MGetPinsValues</a> (void)=0</td></tr>
+<tr class="memdesc:ae1515331aa8df4477187a8d8ef49cd1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller get all pins list struct <br  />
+ <br /></td></tr>
 <tr class="separator:ae1515331aa8df4477187a8d8ef49cd1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad55b24f415d25c8daaf5a8ee946396b7"><td class="memItemLeft" align="right" valign="top"><a id="ad55b24f415d25c8daaf5a8ee946396b7"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>MStep</b> (void)=0</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#ad55b24f415d25c8daaf5a8ee946396b7">MStep</a> (void)=0</td></tr>
+<tr class="memdesc:ad55b24f415d25c8daaf5a8ee946396b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller run one step <br  />
+ <br /></td></tr>
 <tr class="separator:ad55b24f415d25c8daaf5a8ee946396b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdaf797280c35e90b1abacf034792d80"><td class="memItemLeft" align="right" valign="top"><a id="acdaf797280c35e90b1abacf034792d80"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>MStepResume</b> (void)=0</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#acdaf797280c35e90b1abacf034792d80">MStepResume</a> (void)=0</td></tr>
+<tr class="memdesc:acdaf797280c35e90b1abacf034792d80"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller run one or two steps to resume instruction <br  />
+ <br /></td></tr>
 <tr class="separator:acdaf797280c35e90b1abacf034792d80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af24829d7fb2a20d672db1a6b95c49307"><td class="memItemLeft" align="right" valign="top"><a id="af24829d7fb2a20d672db1a6b95c49307"></a>
-virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>MTestBP</b> (unsigned int bp)=0</td></tr>
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#af24829d7fb2a20d672db1a6b95c49307">MTestBP</a> (unsigned int bp)=0</td></tr>
+<tr class="memdesc:af24829d7fb2a20d672db1a6b95c49307"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller test if in breakpoint <br  />
+ <br /></td></tr>
 <tr class="separator:af24829d7fb2a20d672db1a6b95c49307"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e4cb734bdf69e456dbdbce6ff875d61"><td class="memItemLeft" align="right" valign="top"><a id="a8e4cb734bdf69e456dbdbce6ff875d61"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>MReset</b> (int flags)=0</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a8e4cb734bdf69e456dbdbce6ff875d61">MReset</a> (int flags)=0</td></tr>
+<tr class="memdesc:a8e4cb734bdf69e456dbdbce6ff875d61"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller reset <br  />
+ <br /></td></tr>
 <tr class="separator:a8e4cb734bdf69e456dbdbce6ff875d61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa105de196a6a184c6617ed8444250f12"><td class="memItemLeft" align="right" valign="top"><a id="aa105de196a6a184c6617ed8444250f12"></a>
-virtual unsigned short *&#160;</td><td class="memItemRight" valign="bottom"><b>MGetProcID_p</b> (void)=0</td></tr>
+virtual unsigned short *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#aa105de196a6a184c6617ed8444250f12">MGetProcID_p</a> (void)=0</td></tr>
+<tr class="memdesc:aa105de196a6a184c6617ed8444250f12"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller get pointer to processor ID <br  />
+ <br /></td></tr>
 <tr class="separator:aa105de196a6a184c6617ed8444250f12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7734f57d444f4a7737eb324fa256a4a8"><td class="memItemLeft" align="right" valign="top"><a id="a7734f57d444f4a7737eb324fa256a4a8"></a>
-virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>MGetPC</b> (void)=0</td></tr>
+virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a7734f57d444f4a7737eb324fa256a4a8">MGetPC</a> (void)=0</td></tr>
+<tr class="memdesc:a7734f57d444f4a7737eb324fa256a4a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller get PC <br  />
+ <br /></td></tr>
 <tr class="separator:a7734f57d444f4a7737eb324fa256a4a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a3e45404c50fd1f82c9ea46a00d8ad1"><td class="memItemLeft" align="right" valign="top"><a id="a0a3e45404c50fd1f82c9ea46a00d8ad1"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>MSetPC</b> (unsigned int pc)=0</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a0a3e45404c50fd1f82c9ea46a00d8ad1">MSetPC</a> (unsigned int pc)=0</td></tr>
+<tr class="memdesc:a0a3e45404c50fd1f82c9ea46a00d8ad1"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller set PC <br /></td></tr>
 <tr class="separator:a0a3e45404c50fd1f82c9ea46a00d8ad1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5259fcd2a04194c2088fdf0741a8fbbe"><td class="memItemLeft" align="right" valign="top"><a id="a5259fcd2a04194c2088fdf0741a8fbbe"></a>
-virtual unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><b>MGetRAM_p</b> (void)=0</td></tr>
+virtual unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a5259fcd2a04194c2088fdf0741a8fbbe">MGetRAM_p</a> (void)=0</td></tr>
+<tr class="memdesc:a5259fcd2a04194c2088fdf0741a8fbbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller get RAM memory pointer <br  />
+ <br /></td></tr>
 <tr class="separator:a5259fcd2a04194c2088fdf0741a8fbbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4c8c9f3e39948b29cedd398da2df129"><td class="memItemLeft" align="right" valign="top"><a id="ae4c8c9f3e39948b29cedd398da2df129"></a>
-virtual unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><b>MGetROM_p</b> (void)=0</td></tr>
+virtual unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#ae4c8c9f3e39948b29cedd398da2df129">MGetROM_p</a> (void)=0</td></tr>
+<tr class="memdesc:ae4c8c9f3e39948b29cedd398da2df129"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller get ROM (FLASH) memory pointer <br /></td></tr>
 <tr class="separator:ae4c8c9f3e39948b29cedd398da2df129"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a718fce89139f2c02c219bf4baea35f92"><td class="memItemLeft" align="right" valign="top"><a id="a718fce89139f2c02c219bf4baea35f92"></a>
-virtual unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><b>MGetCONFIG_p</b> (void)=0</td></tr>
+virtual unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a718fce89139f2c02c219bf4baea35f92">MGetCONFIG_p</a> (void)=0</td></tr>
+<tr class="memdesc:a718fce89139f2c02c219bf4baea35f92"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller get CONFIG memory pointer <br  />
+ <br /></td></tr>
 <tr class="separator:a718fce89139f2c02c219bf4baea35f92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc0e1b08d01664cea6246852eca6cdf3"><td class="memItemLeft" align="right" valign="top"><a id="afc0e1b08d01664cea6246852eca6cdf3"></a>
-virtual unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><b>MGetID_p</b> (void)=0</td></tr>
+virtual unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#afc0e1b08d01664cea6246852eca6cdf3">MGetID_p</a> (void)=0</td></tr>
+<tr class="memdesc:afc0e1b08d01664cea6246852eca6cdf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller get internal IDS memory pointer <br  />
+ <br /></td></tr>
 <tr class="separator:afc0e1b08d01664cea6246852eca6cdf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83d51f9cb7d7e279b6675e4cc6800a8c"><td class="memItemLeft" align="right" valign="top"><a id="a83d51f9cb7d7e279b6675e4cc6800a8c"></a>
-virtual unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><b>MGetEEPROM_p</b> (void)=0</td></tr>
+virtual unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a83d51f9cb7d7e279b6675e4cc6800a8c">MGetEEPROM_p</a> (void)=0</td></tr>
+<tr class="memdesc:a83d51f9cb7d7e279b6675e4cc6800a8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller get data EEPROM memory pointer <br  />
+ <br /></td></tr>
 <tr class="separator:a83d51f9cb7d7e279b6675e4cc6800a8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad14864f9add808923b40b9bcf2e4623d"><td class="memItemLeft" align="right" valign="top"><a id="ad14864f9add808923b40b9bcf2e4623d"></a>
-virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>MGetRAMSize</b> (void)=0</td></tr>
+virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#ad14864f9add808923b40b9bcf2e4623d">MGetRAMSize</a> (void)=0</td></tr>
+<tr class="memdesc:ad14864f9add808923b40b9bcf2e4623d"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller get RAM memory size <br  />
+ <br /></td></tr>
 <tr class="separator:ad14864f9add808923b40b9bcf2e4623d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54923c454a323389a5cb60fdd2d9e513"><td class="memItemLeft" align="right" valign="top"><a id="a54923c454a323389a5cb60fdd2d9e513"></a>
-virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>MGetROMSize</b> (void)=0</td></tr>
+virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a54923c454a323389a5cb60fdd2d9e513">MGetROMSize</a> (void)=0</td></tr>
+<tr class="memdesc:a54923c454a323389a5cb60fdd2d9e513"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller get ROM (FLASH) memory size <br  />
+ <br /></td></tr>
 <tr class="separator:a54923c454a323389a5cb60fdd2d9e513"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6410b8387e99c9af44997ae62b0c2df4"><td class="memItemLeft" align="right" valign="top"><a id="a6410b8387e99c9af44997ae62b0c2df4"></a>
-virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>MGetCONFIGSize</b> (void)=0</td></tr>
+virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a6410b8387e99c9af44997ae62b0c2df4">MGetCONFIGSize</a> (void)=0</td></tr>
+<tr class="memdesc:a6410b8387e99c9af44997ae62b0c2df4"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller get CONFIG memory size <br  />
+ <br /></td></tr>
 <tr class="separator:a6410b8387e99c9af44997ae62b0c2df4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f6312d35f2311eafb72225e1b73dd3b"><td class="memItemLeft" align="right" valign="top"><a id="a8f6312d35f2311eafb72225e1b73dd3b"></a>
-virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>MGetIDSize</b> (void)=0</td></tr>
+virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a8f6312d35f2311eafb72225e1b73dd3b">MGetIDSize</a> (void)=0</td></tr>
+<tr class="memdesc:a8f6312d35f2311eafb72225e1b73dd3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller get internal IDS memory size <br  />
+ <br /></td></tr>
 <tr class="separator:a8f6312d35f2311eafb72225e1b73dd3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37efc7ec6f346605063b07a9e2e0d090"><td class="memItemLeft" align="right" valign="top"><a id="a37efc7ec6f346605063b07a9e2e0d090"></a>
-virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>MGetEEPROM_Size</b> (void)=0</td></tr>
+<tr class="memitem:a37efc7ec6f346605063b07a9e2e0d090"><td class="memItemLeft" align="right" valign="top">virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a37efc7ec6f346605063b07a9e2e0d090">MGetEEPROM_Size</a> (void)=0</td></tr>
 <tr class="separator:a37efc7ec6f346605063b07a9e2e0d090"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a295849e8b74d6b62427275af4683d015"><td class="memItemLeft" align="right" valign="top"><a id="a295849e8b74d6b62427275af4683d015"></a>
-String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a295849e8b74d6b62427275af4683d015">proc</a></td></tr>
-<tr class="memdesc:a295849e8b74d6b62427275af4683d015"><td class="mdescLeft">&#160;</td><td class="mdescRight">ID of processor in use. <br /></td></tr>
-<tr class="separator:a295849e8b74d6b62427275af4683d015"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:aec4781344e8ceebccdc6ac543a04ce15"><td class="memItemLeft" align="right" valign="top"><a id="aec4781344e8ceebccdc6ac543a04ce15"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#aec4781344e8ceebccdc6ac543a04ce15">ReadMaps</a> (void)</td></tr>
-<tr class="memdesc:aec4781344e8ceebccdc6ac543a04ce15"><td class="mdescLeft">&#160;</td><td class="mdescRight">read maps <br /></td></tr>
+<tr class="memdesc:aec4781344e8ceebccdc6ac543a04ce15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read maps. <br /></td></tr>
 <tr class="separator:aec4781344e8ceebccdc6ac543a04ce15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
+<tr class="memitem:af7dd22eddfccdc76089e08f1394f748f"><td class="memItemLeft" align="right" valign="top"><a id="af7dd22eddfccdc76089e08f1394f748f"></a>
+String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#af7dd22eddfccdc76089e08f1394f748f">Proc</a></td></tr>
+<tr class="memdesc:af7dd22eddfccdc76089e08f1394f748f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of processor in use. <br /></td></tr>
+<tr class="separator:af7dd22eddfccdc76089e08f1394f748f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c25b0e71ec999af05ef7d43844d7aa2"><td class="memItemLeft" align="right" valign="top"><a id="a5c25b0e71ec999af05ef7d43844d7aa2"></a>
 <a class="el" href="structinput__t.html">input_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a5c25b0e71ec999af05ef7d43844d7aa2">input</a> [100]</td></tr>
 <tr class="memdesc:a5c25b0e71ec999af05ef7d43844d7aa2"><td class="mdescLeft">&#160;</td><td class="mdescRight">input map elements <br /></td></tr>
@@ -366,19 +441,54 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
  <br /></td></tr>
 <tr class="separator:a52d4e88ddf5f29d1648ea94dafbf87de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f5dedbf50d1ebd86af96429a4a3d180"><td class="memItemLeft" align="right" valign="top"><a id="a1f5dedbf50d1ebd86af96429a4a3d180"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>use_oscope</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a1f5dedbf50d1ebd86af96429a4a3d180">use_oscope</a></td></tr>
+<tr class="memdesc:a1f5dedbf50d1ebd86af96429a4a3d180"><td class="mdescLeft">&#160;</td><td class="mdescRight">use oscilloscope window <br /></td></tr>
 <tr class="separator:a1f5dedbf50d1ebd86af96429a4a3d180"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac41e7f65ae979416dd133853774e206e"><td class="memItemLeft" align="right" valign="top"><a id="ac41e7f65ae979416dd133853774e206e"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>use_spare</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#ac41e7f65ae979416dd133853774e206e">use_spare</a></td></tr>
+<tr class="memdesc:ac41e7f65ae979416dd133853774e206e"><td class="mdescLeft">&#160;</td><td class="mdescRight">use spare parts window <br  />
+ <br /></td></tr>
 <tr class="separator:ac41e7f65ae979416dd133853774e206e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1032804a2ca54d248911d4fdc1ee860a"><td class="memItemLeft" align="right" valign="top"><a id="a1032804a2ca54d248911d4fdc1ee860a"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>p_MCLR</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a1032804a2ca54d248911d4fdc1ee860a">p_MCLR</a></td></tr>
+<tr class="memdesc:a1032804a2ca54d248911d4fdc1ee860a"><td class="mdescLeft">&#160;</td><td class="mdescRight">board /RESET pin state <br /></td></tr>
 <tr class="separator:a1032804a2ca54d248911d4fdc1ee860a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Board class. </p>
 <p>class definition of boards used in picsimlab. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a37efc7ec6f346605063b07a9e2e0d090"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37efc7ec6f346605063b07a9e2e0d090">&#9670;&nbsp;</a></span>MGetEEPROM_Size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual unsigned int board::MGetEEPROM_Size </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>@briefboard microcontroller get data EEPROM memory size <br  />
+ </p>
+
+<p>Implemented in <a class="el" href="classboard__avr.html#a4168f56d83af35c03fe2c8eb96bcd548">board_avr</a>, <a class="el" href="classcboard__0.html#ac808a259d9b7d70008a481d32475ac0a">cboard_0</a>, and <a class="el" href="classboard__pic.html#a7169781b0863fd1b0f00865759ad9775">board_pic</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/boards/<a class="el" href="board_8h_source.html">board.h</a></li>
 <li>src/boards/board.cc</li>
 </ul>

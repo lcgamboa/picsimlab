@@ -105,7 +105,7 @@ cboard_3::cboard_3(void)
  char fname[1024];
  FILE * fout;
  
- proc = "PIC18F452";
+ Proc = "PIC18F452";
 
  vp2in = 2.5;
  vp2[0] = 2.5;
@@ -1098,7 +1098,7 @@ void
 cboard_3::WritePreferences(void)
 {
  char line[100];
- Window1.saveprefs (lxT ("p3_proc"), proc);
+ Window1.saveprefs (lxT ("p3_proc"), Proc);
 
  line[0] = 0;
  for (int i = 0; i < 6; i++)
@@ -1112,7 +1112,7 @@ cboard_3::ReadPreferences(char *name, char *value)
 {
  if (!strcmp (name, "p3_proc"))
   {
-   proc = value;
+   Proc = value;
   }
 
  int i;

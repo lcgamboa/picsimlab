@@ -78,7 +78,7 @@ enum
 
 cboard_1::cboard_1(void)
 {
- proc = "PIC16F628A";
+ Proc = "PIC16F628A";
  ReadMaps ();
  jmp[0] = 0;
 
@@ -109,7 +109,7 @@ cboard_1::cboard_1(void)
  label1->SetText (lxT ("LAMP"));
  label1->SetAlign (1);
  Window1.CreateChild (label1);
-};
+}
 
 cboard_1::~cboard_1(void)
 {
@@ -196,7 +196,7 @@ cboard_1::Draw(CDraw *draw, double scale)
          draw->Canvas.Rectangle (1, output[i].x1 + ((int) ((output[i].x2 - output[i].x1)*0.35)), output[i].y1, (int) ((output[i].x2 - output[i].x1)*0.65), output[i].y2 - output[i].y1);
          draw->Canvas.SetColor (220, 220, 0);
          draw->Canvas.Circle (1, output[i].x1 + (int) ((output[i].x2 - output[i].x1)*0.20), output[i].y1 + ((output[i].y2 - output[i].y1) / 2), 3);
-        };
+        }
       }
 
     }
@@ -248,9 +248,9 @@ cboard_1::Draw(CDraw *draw, double scale)
       }
 
      draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
-    };
+    }
 
-  };
+  }
 
  //end draw
 
@@ -283,7 +283,7 @@ cboard_1::Run_CPU(void)
     alm[i]=0;
     alm1[i]=0;
     alm2[i]=0;
- };
+ }
   */
  memset (alm, 0, 18 * sizeof (unsigned int));
  memset (alm1, 0, 18 * sizeof (unsigned int));
@@ -401,13 +401,13 @@ cboard_1::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       case I_ICSP:
        {
         Window1.menu1_File_LoadHex_EvMenuActive (NULL);
-       };
+       }
        break;
 
       case I_JP1:
        {
         jmp[0] ^= 0x01;
-       };
+       }
        break;
 
 
@@ -434,7 +434,7 @@ cboard_1::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
           Window1.statusbar1.SetField (0, lxT ("Running..."));
          }
-       };
+       }
        break;
 
       case I_RST:
@@ -445,35 +445,35 @@ cboard_1::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           Window1.Set_mcurst (1);
          }
         p_MCLR = 0;
-       };
+       }
        break;
 
       case I_RA1:
        {
         p_BT1 = 0;
-       };
+       }
        break;
       case I_RA2:
        {
         p_BT2 = 0;
-       };
+       }
        break;
       case I_RA3:
        {
         p_BT3 = 0;
-       };
+       }
        break;
       case I_RA4:
        {
         p_BT4 = 0;
-       };
+       }
        break;
 
       }
     }
   }
 
-};
+}
 
 void
 cboard_1::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
@@ -499,28 +499,28 @@ cboard_1::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
            }
          }
         p_MCLR = 1;
-       };
+       }
        break;
 
       case I_RA1:
        {
         p_BT1 = 1;
-       };
+       }
        break;
       case I_RA2:
        {
         p_BT2 = 1;
-       };
+       }
        break;
       case I_RA3:
        {
         p_BT3 = 1;
-       };
+       }
        break;
       case I_RA4:
        {
         p_BT4 = 1;
-       };
+       }
        break;
 
 
@@ -528,7 +528,7 @@ cboard_1::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
     }
   }
 
-};
+}
 
 void
 cboard_1::EvKeyPress(uint key, uint mask)
@@ -549,7 +549,7 @@ cboard_1::EvKeyPress(uint key, uint mask)
   {
    p_BT4 = 0;
   }
-};
+}
 
 void
 cboard_1::EvKeyRelease(uint key, uint mask)
@@ -573,7 +573,7 @@ cboard_1::EvKeyRelease(uint key, uint mask)
   {
    p_BT4 = 1;
   }
-};
+}
 
 unsigned short
 cboard_1::get_in_id(char * name)
@@ -589,7 +589,7 @@ cboard_1::get_in_id(char * name)
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
-};
+}
 
 unsigned short
 cboard_1::get_out_id(char * name)
@@ -633,14 +633,14 @@ cboard_1::get_out_id(char * name)
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
-};
+}
 
 void
 cboard_1::WritePreferences(void)
 {
- Window1.saveprefs (lxT ("p1_proc"), proc);
+ Window1.saveprefs (lxT ("p1_proc"), Proc);
  Window1.saveprefs (lxT ("p1_jmp"), String ().Format ("%i", jmp[0]));
-};
+}
 
 void
 cboard_1::ReadPreferences(char *name, char *value)
@@ -660,6 +660,6 @@ cboard_1::ReadPreferences(char *name, char *value)
 
  if (!strcmp (name, "p1_proc"))
   {
-   proc = value;
+   Proc = value;
   }
-};
+}

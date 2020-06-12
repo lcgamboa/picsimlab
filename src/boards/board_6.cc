@@ -56,7 +56,7 @@ cboard_6::get_in_id(char * name)
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
-};
+}
 
 //return the output ids numbers of names used in output map
 
@@ -73,13 +73,13 @@ cboard_6::get_out_id(char * name)
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
-};
+}
 
 //Constructor called once on board creation 
 
 cboard_6::cboard_6(void)
 {
- proc = "PIC16F18855"; //default microcontroller if none defined in preferences
+ Proc = "PIC16F18855"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
 
  //controls properties and creation
@@ -218,7 +218,7 @@ cboard_6::cboard_6(void)
  label5->SetText (lxT ("RA3"));
  label5->SetAlign (1);
  Window1.CreateChild (label5);
-};
+}
 
 //Destructor called once on board destruction 
 
@@ -288,7 +288,7 @@ cboard_6::RefreshStatus(void)
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
-};
+}
 
 //Called to save board preferences in configuration file
 
@@ -296,8 +296,8 @@ void
 cboard_6::WritePreferences(void)
 {
  //write selected microcontroller of board_6 to preferences
- Window1.saveprefs (lxT ("p6_proc"), proc);
-};
+ Window1.saveprefs (lxT ("p6_proc"), Proc);
+}
 
 //Called whe configuration file load  preferences 
 
@@ -307,10 +307,10 @@ cboard_6::ReadPreferences(char *name, char *value)
  //read microcontroller of preferences
  if (!strcmp (name, "p6_proc"))
   {
-   proc = value;
+   Proc = value;
   }
 
-};
+}
 
 
 //Event on the board
@@ -325,7 +325,7 @@ cboard_6::EvKeyPress(uint key, uint mask)
   }
 
 
-};
+}
 
 //Event on the board
 
@@ -338,7 +338,7 @@ cboard_6::EvKeyRelease(uint key, uint mask)
    p_BT1 = 1;
   }
 
-};
+}
 
 //Event on the board
 
@@ -397,7 +397,7 @@ cboard_6::EvMouseButtonPress(uint button, uint x, uint y, uint state)
     }
   }
 
-};
+}
 
 //Event on the board
 
@@ -436,7 +436,7 @@ cboard_6::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
     }
   }
 
-};
+}
 
 
 //Called ever 100ms to draw board
@@ -484,9 +484,9 @@ cboard_6::Draw(CDraw *draw, double scale)
    else //if output shape is a circle
     {
 
-    };
+    }
 
-  };
+  }
 
  //end draw
  draw->Canvas.End ();
@@ -506,7 +506,7 @@ cboard_6::Draw(CDraw *draw, double scale)
 
 
 
-};
+}
 
 void
 cboard_6::Run_CPU(void)
@@ -526,7 +526,7 @@ cboard_6::Run_CPU(void)
  for(pi=0;pi < pic.PINCOUNT;pi++)
  {
    alm[pi]=0;
- };
+ }
   */
  memset (alm, 0, 28 * sizeof (unsigned int));
 

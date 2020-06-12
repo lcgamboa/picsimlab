@@ -422,9 +422,9 @@ CPWindow1::Configure(CControl * control, const char * home)
 #endif
   }
 
- proc_ = pboard->proc;
+ proc_ = pboard->GetProcessorName ();
 
- SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->proc);
+ SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->GetProcessorName ());
 
 
 
@@ -435,10 +435,10 @@ CPWindow1::Configure(CControl * control, const char * home)
 
  pboard->MSetSerial (SERIALDEVICE);
 
- sprintf (fname, "%s/mdump_%02i_%s.hex", home, lab, (const char *) pboard->proc.c_str ());
+ sprintf (fname, "%s/mdump_%02i_%s.hex", home, lab, (const char *) pboard->GetProcessorName ().c_str ());
 
 
- switch (pboard->MInit (pboard->proc, fname, NSTEP * NSTEPKF))
+ switch (pboard->MInit (pboard->GetProcessorName (), fname, NSTEP * NSTEPKF))
   {
   case HEX_NFOUND:
    printf ("File not found!\n");
@@ -647,7 +647,7 @@ CPWindow1::filedialog1_EvOnClose(int retId)
    pboard->MEnd ();
    pboard->MSetSerial (SERIALDEVICE);
 
-   switch (pboard->MInit (pboard->proc, filedialog1.GetFileName ().char_str (), NSTEP * NSTEPKF))
+   switch (pboard->MInit (pboard->GetProcessorName (), filedialog1.GetFileName ().char_str (), NSTEP * NSTEPKF))
     {
     case HEX_NFOUND:
      Message (lxT ("File not found!"));
@@ -668,9 +668,9 @@ CPWindow1::filedialog1_EvOnClose(int retId)
 
 
    if (mcurun)
-    SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->proc + lxT (" - ") + basename (filedialog1.GetFileName ()));
+    SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->GetProcessorName () + lxT (" - ") + basename (filedialog1.GetFileName ()));
    else
-    SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->proc);
+    SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->GetProcessorName ());
 
 
 
@@ -741,7 +741,7 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
 #else 
  OldPath = filedialog2.GetDir ();
 
- filedialog2.SetDir (share + lxT ("/docs/hex/board_") + itoa (lab) + lxT ("/") + pboard->proc + lxT ("/"));
+ filedialog2.SetDir (share + lxT ("/docs/hex/board_") + itoa (lab) + lxT ("/") + pboard->GetProcessorName () + lxT ("/"));
 
  menu1_File_LoadWorkspace_EvMenuActive (control);
 #endif
@@ -825,7 +825,7 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
  pboard->MEnd ();
  pboard->MSetSerial (SERIALDEVICE);
 
- switch (pboard->MInit (pboard->proc, FNAME.char_str (), NSTEP * NSTEPKF))
+ switch (pboard->MInit (pboard->GetProcessorName (), FNAME.char_str (), NSTEP * NSTEPKF))
   {
   case HEX_NFOUND:
    Message (lxT ("File not found!"));
@@ -845,9 +845,9 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
 
 
  if (mcurun)
-  SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->proc + lxT (" - ") + basename (filedialog1.GetFileName ()));
+  SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->GetProcessorName () + lxT (" - ") + basename (filedialog1.GetFileName ()));
  else
-  SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->proc);
+  SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->GetProcessorName ());
 
 
 
@@ -915,10 +915,10 @@ CPWindow1::menu1_EvBoard(CControl * control)
 void
 CPWindow1::menu1_EvMicrocontroller(CControl * control)
 {
- proc_ = pboard->proc;
- pboard->proc = ((CItemMenu*) control)->GetText ();
+ proc_ = pboard->GetProcessorName ();
+ pboard->SetProcessorName (((CItemMenu*) control)->GetText ());
 
- SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->proc);
+ SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->GetProcessorName ());
 
  FNAME = lxT (" ");
  _EvOnDestroy (control);

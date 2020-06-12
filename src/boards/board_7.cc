@@ -63,7 +63,7 @@ cboard_7::get_in_id(char * name)
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
-};
+}
 
 //return the output ids numbers of names used in output map
 
@@ -81,13 +81,13 @@ cboard_7::get_out_id(char * name)
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
-};
+}
 
 //Constructor called once on board creation 
 
 cboard_7::cboard_7(void)
 {
- proc = "PIC16F1619"; //default microcontroller if none defined in preferences
+ Proc = "PIC16F1619"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
  jmp[0] = 0;
 
@@ -227,7 +227,7 @@ cboard_7::cboard_7(void)
  label5->SetText (lxT ("RC5"));
  label5->SetAlign (1);
  Window1.CreateChild (label5);
-};
+}
 
 //Destructor called once on board destruction 
 
@@ -295,7 +295,7 @@ cboard_7::RefreshStatus(void)
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
-};
+}
 
 //Called to save board preferences in configuration file
 
@@ -303,9 +303,9 @@ void
 cboard_7::WritePreferences(void)
 {
  //write selected microcontroller of board_5 to preferences
- Window1.saveprefs (lxT ("p7_proc"), proc);
+ Window1.saveprefs (lxT ("p7_proc"), Proc);
  Window1.saveprefs (lxT ("p7_jmp"), String ().Format ("%i", jmp[0]));
-};
+}
 
 //Called whe configuration file load  preferences 
 
@@ -315,7 +315,7 @@ cboard_7::ReadPreferences(char *name, char *value)
  //read microcontroller of preferences
  if (!strcmp (name, "p7_proc"))
   {
-   proc = value;
+   Proc = value;
   }
 
  if (!strcmp (name, "p7_jmp"))
@@ -329,7 +329,7 @@ cboard_7::ReadPreferences(char *name, char *value)
       jmp[i] = 1;
     }
   }
-};
+}
 
 
 //Event on the board
@@ -344,7 +344,7 @@ cboard_7::EvKeyPress(uint key, uint mask)
   }
 
 
-};
+}
 
 //Event on the board
 
@@ -357,7 +357,7 @@ cboard_7::EvKeyRelease(uint key, uint mask)
    p_BT1 = 1;
   }
 
-};
+}
 
 //Event on the board
 
@@ -419,7 +419,7 @@ cboard_7::EvMouseButtonPress(uint button, uint x, uint y, uint state)
     }
   }
 
-};
+}
 
 //Event on the board
 
@@ -458,7 +458,7 @@ cboard_7::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
     }
   }
 
-};
+}
 
 
 //Called ever 100ms to draw board
@@ -521,16 +521,16 @@ cboard_7::Draw(CDraw *draw, double scale)
          draw->Canvas.Rectangle (1, output[i].x1 + ((int) ((output[i].x2 - output[i].x1)*0.35)), output[i].y1, (int) ((output[i].x2 - output[i].x1)*0.65), output[i].y2 - output[i].y1);
          draw->Canvas.SetColor (220, 220, 0);
          draw->Canvas.Circle (1, output[i].x1 + (int) ((output[i].x2 - output[i].x1)*0.20), output[i].y1 + ((output[i].y2 - output[i].y1) / 2), 3);
-        };
+        }
       }
 
     }
    else //if output shape is a circle
     {
 
-    };
+    }
 
-  };
+  }
 
  //end draw
  draw->Canvas.End ();
@@ -548,7 +548,7 @@ cboard_7::Draw(CDraw *draw, double scale)
  gauge4->SetValue (0.4444 * (pic.pins[4].oavalue - 30));
 
 
-};
+}
 
 void
 cboard_7::Run_CPU(void)
@@ -568,7 +568,7 @@ cboard_7::Run_CPU(void)
  for(pi=0;pi < pic.PINCOUNT;pi++)
  {
    alm[pi]=0;
- };
+ }
   */
  memset (alm, 0, 20 * sizeof (unsigned int));
 
