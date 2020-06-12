@@ -65,28 +65,116 @@ unsigned short id;
 class board
 {
   public:
-      virtual void Draw(CDraw *draw,double scale)=0; ///< Called ever 100ms to draw board 
-      virtual void Run_CPU(void)=0; ///< Paralle thread called ever 100ms to run cpu code
-      virtual String GetSupportedDevices(void)=0;///< Return a list of supported microcontrollers
-      virtual String GetPictureFileName(void)=0; ///< Return the filename of board picture 
-      virtual String GetInputMapFile(void)=0;    ///< Return the filename of board picture input map  
-      virtual String GetOutputMapFile(void)=0;   ///< Return the filename of board picture output map  
-      virtual void Reset(void)=0;           ///< Reset board status
-      virtual void EvMouseButtonPress(uint button, uint x, uint y,uint state)=0;    ///< Event on the board
-      virtual void EvMouseButtonRelease(uint button, uint x, uint y,uint state)=0;  ///< Event on the board
-      virtual void EvKeyPress(uint key,uint mask)=0;  ///< Event on the board
-      virtual void EvKeyRelease(uint key,uint mask)=0;///< Event on the board
-      virtual void EvOnShow(void)=0;///< Event on the board
-      virtual void RefreshStatus(void);   ///< Called ever 1s to refresh status
-      virtual void WritePreferences(void){};   ///< Called to save board preferences in configuration file
-      virtual void ReadPreferences(char *name,char *value){}; ///< Called whe configuration file load  preferences 
-      virtual unsigned short get_in_id(char * name)=0; ///< return the input ids numbers of names used in input map
-      virtual unsigned short get_out_id(char * name)=0; ///< return the output ids numbers of names used in output map
-      virtual void board_Event(CControl * control){}; ///< Called when window side controls are activated        
-      board(void);           ///< Called once on board creation
-      virtual ~board(void);  ///< Called once on board destruction 
-      void SetUseOscilloscope(int uo); ///<  Enable/disable oscilloscope measurement
-      void SetUseSpareParts(int sp); ///<  Enable/disable spare parts 
+     /**
+     * @brief Called ever 100ms to draw board 
+     */
+      virtual void Draw(CDraw *draw,double scale)=0;
+     
+     /**
+     * @brief Paralle thread called ever 100ms to run cpu code 
+     */ 
+      virtual void Run_CPU(void)=0; 
+           
+     /**
+     * @brief  Return a list of supported microcontrollers
+     */ 
+      virtual String GetSupportedDevices(void)=0;
+           
+     /**
+     * @brief Return the filename of board picture  
+     */ 
+      virtual String GetPictureFileName(void)=0; 
+           
+     /**
+     * @brief  Return the filename of board picture input map
+     */ 
+      virtual String GetInputMapFile(void)=0;      
+           
+     /**
+     * @brief  Return the filename of board picture output map
+     */ 
+      virtual String GetOutputMapFile(void)=0;     
+           
+     /**
+     * @brief  Reset board status
+     */ 
+      virtual void Reset(void)=0;           
+           
+     /**
+     * @brief  Event on the board
+     */ 
+      virtual void EvMouseButtonPress(uint button, uint x, uint y,uint state)=0;    
+           
+     /**
+     * @brief  Event on the board
+     */ 
+      virtual void EvMouseButtonRelease(uint button, uint x, uint y,uint state)=0; 
+           
+     /**
+     * @brief  Event on the board
+     */ 
+      virtual void EvKeyPress(uint key,uint mask)=0;  
+           
+     /**
+     * @brief  Event on the board
+     */ 
+      virtual void EvKeyRelease(uint key,uint mask)=0;
+           
+     /**
+     * @brief  Event on the board
+     */ 
+      virtual void EvOnShow(void)=0;
+           
+     /**
+     * @brief  Called ever 1s to refresh status
+     */ 
+      virtual void RefreshStatus(void);   
+           
+     /**
+     * @brief  Called to save board preferences in configuration file
+     */ 
+      virtual void WritePreferences(void){};   
+           
+     /**
+     * @brief  Called whe configuration file load  preferences 
+     */ 
+      virtual void ReadPreferences(char *name,char *value){}; 
+           
+     /**
+     * @brief  return the input ids numbers of names used in input map
+     */ 
+      virtual unsigned short get_in_id(char * name)=0; 
+           
+     /**
+     * @brief  return the output ids numbers of names used in output map
+     */ 
+      virtual unsigned short get_out_id(char * name)=0; 
+           
+     /**
+     * @brief  Called when window side controls are activated
+     */ 
+      virtual void board_Event(CControl * control){};         
+           
+     /**
+     * @brief  Called once on board creation
+     */ 
+      board(void);           
+           
+     /**
+     * @brief  Called once on board destruction 
+     */ 
+      virtual ~board(void);  
+           
+     /**
+     * @brief  Enable/disable oscilloscope measurement
+     */ 
+      void SetUseOscilloscope(int uo);   
+           
+     /**
+     * @brief  Enable/disable spare parts 
+     */ 
+      void SetUseSpareParts(int sp); 
+      
       int GetUseOscilloscope(void); 
       int GetUseSpareParts(void);
       virtual int DebugInit(void)=0;
