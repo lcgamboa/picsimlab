@@ -23,6 +23,17 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+/** @mainpage notitle
+ *
+ * @section intro_sec Introduction
+ *
+ * This is the documentation to explain the use of picsimlab internal classes.
+ *
+ * The main objective of this domentation is to enable the expansion of the simulator with 
+ * the creation of new boards (@ref board) and parts (@ref part). 
+ * 
+ */
+
 #ifndef CPWINDOW1 
 #define CPWINDOW1
    

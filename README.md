@@ -57,6 +57,13 @@ cd picsimlab
 ```
 
 
-## Manual
+## Info
 
-https://lcgamboa.github.io/picsimlab/
+[Online Documentation](https://lcgamboa.github.io/picsimlab/)
+
+[Changelog](./CHANGELOG.md)
+
+[TODO list](./TODO.md)
+
+[Online version of PICSimLab](https://lcgamboa.github.io/)
+
