@@ -77,7 +77,7 @@ cboard_5::get_out_id(char * name)
 
 cboard_5::cboard_5(void)
 {
- //FIXME
+
  Proc = "atmega328p"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
 
@@ -548,7 +548,7 @@ cboard_5::Run_CPU(void)
  memset (alm, 0, pinc * sizeof (unsigned int));
 
  //read pic.pins to a local variable to speed up 
- //FIXME pins = pic.pins;
+
  pins = MGetPinsValues ();
 
  if (use_spare)Window5.PreProcess ();
@@ -558,16 +558,6 @@ cboard_5::Run_CPU(void)
   for (i = 0; i < (Window1.GetNSTEP ()*4); i++) //repeat for number of steps in 100ms
    {
 
-
-    /*
-           if(j > JUMPSTEPS)//if number of step is bigger than steps to skip 
-           {  
-           //FIXME ATMEGA RST
-           //pic_set_pin(pic.mclr, p_MCLR);
-             pic_set_pin(19,p_BT1);//Set pin 19 (RD0) with button state 
-             pic_set_pin(20,p_BT2);//Set pin 20 (RD1) with switch state 
-           } 
-     */
     //verify if a breakpoint is reached if not run one instruction 
 #ifndef AVR_USE_GDB
     if (!mplabxd_testbp ())

@@ -78,7 +78,7 @@ CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
        pmenu2.SetX (x * scale);
        pmenu2.SetY (y * scale);
 #if defined(__WXGTK__)||defined(__WXMSW__)
-       SetPopupMenu (&pmenu2); //FIXME problemas com as propriedades
+       SetPopupMenu (&pmenu2); 
 #else
        draw1.SetPopupMenu (&pmenu2);
 #endif
