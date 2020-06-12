@@ -404,3 +404,5 @@ rtc_io(rtc_t *rtc, unsigned char scl, unsigned char sda)
  rtc->sclo = scl;
  return rtc->ret;
 }
+
+//TODO int output and countdown timer

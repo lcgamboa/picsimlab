@@ -100,6 +100,8 @@ enum
  I_VIEW    
 };
 
+//TODO jumper support
+
 cboard_3::cboard_3(void)
 {
  char fname[1024];

@@ -58,6 +58,9 @@ enum
  I_D18, I_D19, I_D20, I_JP1, I_VIEW
 };
 
+
+//TODO TEMP cooler must don't work with AQUE=0
+
 cboard_4::cboard_4(void)
 {
  char fname[1024];

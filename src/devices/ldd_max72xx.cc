@@ -81,22 +81,23 @@ ldd_max72xx_io(ldd_max72xx_t *ldd, unsigned char din, unsigned char clk, unsigne
      ldd->ram[((0x0F00 & ldd->dat) >> 8) - 1] = 0x00FF & ldd->dat;
      break;
     case 9://decode
-     //TODO
+     //TODO decode 
      break;
     case 10://itensity
+     //TODO itensity 
      break;
     case 11://scan limit
-     //TODO
+     //TODO scan limit
      break;
     case 12://shutdown
-     //TODO
+     //TODO shutdown
      break;
     case 13://not defined
      break;
     case 14://not defined
      break;
     case 15://display test
-     //TODO
+     //TODO display test
      break;
     }
 

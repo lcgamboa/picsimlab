@@ -129,8 +129,8 @@ avr_serial_cfg(float serialexbaud)
         serialexbaud=pic->freq/(64*((*pic->serial_SPBRG) +1));
     }
     */
-    
-        serialbaud=serialexbaud; //FIXME: calculate  
+        //FIXME: calculate 
+        serialbaud=serialexbaud;  
       
           #ifndef _WIN_
           BAUDRATE=B9600;

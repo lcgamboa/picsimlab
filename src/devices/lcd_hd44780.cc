@@ -754,3 +754,6 @@ void lcd_draw(lcd_t * lcd, CCanvas * canvas, int x1,int y1,int w1,int h1,int pic
          }
       
 }
+
+
+//TODO support to read and busy flag

@@ -1022,8 +1022,6 @@ CPWindow1::LoadWorkspace(String fnpzw)
 #endif     
     }
   }
-
- //FIXME RemoveDir (home);
 }
 
 void

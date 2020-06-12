@@ -44,7 +44,7 @@ board_avr::board_avr(void)
 
 void
 board_avr::MSetSerial(const char * port) {
- //TODO
+ //TODO change serial name
  //pic_set_serial(&pic,port,0,0,0);
 }
 
@@ -183,7 +183,8 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
 
  avr_serial_open (SERIALDEVICE);
 
- serialexbaud = 57600; //FIXME read value from avr 
+ //TODO read baudrate value from avr 
+ serialexbaud = 57600; 
  serialbaud = avr_serial_cfg (serialexbaud);
 
  return ret;
@@ -422,7 +423,8 @@ board_avr::MSetPinDOV(int pin, unsigned char ovalue)
  if (avr == NULL) return;
  if (!pins[pin - 1].dir)return;
  if (pins[pin - 1].ovalue == ovalue)return;
- pins[pin - 1].ovalue = ovalue; //TODO this value is not used yet
+ //TODO this value is not used yet
+ pins[pin - 1].ovalue = ovalue; 
 }
 
 void
@@ -435,7 +437,6 @@ board_avr::MSetAPin(int pin, float value)
  pins[pin - 1].avalue = value;
  if (avr == NULL) return;
 
- //FIXME ptype == PT_ANALOG;
  switch (pin)
   {
   case 23:
@@ -855,7 +856,8 @@ board_avr::UpdateHardware(void)
  unsigned char c;
  cont++;
 
- if (cont > 1000)//FIXME : correct the baud rate
+ //FIXME  correct the baud rate
+ if (cont > 1000)
   {
    cont = 0;
    if (avr_serial_rec (&c))
@@ -940,14 +942,14 @@ board_avr::MGetCONFIG_p(void)
 unsigned char *
 board_avr::MGetID_p(void)
 {
- //TODO
+ //TODO avr ID pointer
  return NULL;
 }
 
 unsigned char *
 board_avr::MGetEEPROM_p(void)
 {
- //TODO
+ //TODO avr EEPROM pointer
  return NULL;
 }
 
@@ -966,19 +968,20 @@ board_avr::MGetROMSize(void)
 unsigned int
 board_avr::MGetCONFIGSize(void)
 {
- return 3; //FIXME
+ //FIXME avr CONFIG size
+ return 3; 
 }
 
 unsigned int
 board_avr::MGetIDSize(void)
 {
- //TODO
+ //TODO avr ID size
  return 0;
 }
 
 unsigned int
 board_avr::MGetEEPROM_Size(void)
 {
- //TODO
+ //TODO AVR EEPROM size
  return 0;
 }

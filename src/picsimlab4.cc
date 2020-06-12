@@ -376,7 +376,6 @@ CPWindow4::combo3_EvOnComboChange (CControl * control)
 void
 CPWindow4::WritePreferences (void)
 {
- //TODO write all preferences
  Window1.saveprefs (lxT ("osc_scale1"), ftoa (spind1.GetValue ()));
  Window1.saveprefs (lxT ("osc_offset1"), ftoa (spind2.GetValue ()));
  Window1.saveprefs (lxT ("osc_on1"), itoa (togglebutton1.GetCheck ()));
@@ -397,7 +396,7 @@ CPWindow4::WritePreferences (void)
  Window1.saveprefs (lxT ("osc_tch"), combo1.GetText ());
  Window1.saveprefs (lxT ("osc_tlevel"), ftoa (spind7.GetValue ()));
  Window1.saveprefs (lxT ("osc_position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
-};
+}
 
 void
 CPWindow4::ReadPreferences (char *name, char *value)
@@ -492,7 +491,7 @@ CPWindow4::ReadPreferences (char *name, char *value)
    SetX (i);
    SetY (j);
   }
-};
+}
 
 void
 CPWindow4::_EvOnDestroy (CControl * control) { }
@@ -559,7 +558,7 @@ CPWindow4::button3_EvMouseButtonClick (CControl * control, uint button, uint x, 
    spind4.SetValue (-6.0); //ch2 level
    togglebutton3.SetCheck (0); //ch1 inverse off
    togglebutton4.SetCheck (0); //ch2 inverse off
-   //TODO select the better channel trigguer
+   //TODO select the better mode for channel trigguer
    combo1.SetText ("1"); //trigguer channel
    break;
   }
