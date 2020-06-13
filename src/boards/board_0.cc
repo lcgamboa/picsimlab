@@ -347,7 +347,9 @@ cboard_0::Draw(CDraw *draw, double scale)
      draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
     case O_MP:
-     lxFont font (12, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
+     
+     lxFont font ((MGetPinCount () > 14)? 12 :10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);  
+     
      draw->Canvas.SetFont (font);
 
      ps = micbmp->GetSize ();

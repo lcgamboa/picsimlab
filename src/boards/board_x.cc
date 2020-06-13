@@ -60,7 +60,7 @@ cboard_x::get_in_id(char * name)
  if (strcmp (name, "I_D0") == 0)return I_D0;
  if (strcmp (name, "I_D1") == 0)return I_D1;
 
- printf ("Erro input '%s' don't have a valid id! \n", name);
+ printf ("Error input '%s' don't have a valid id! \n", name);
  return -1;
 }
 
@@ -77,7 +77,7 @@ cboard_x::get_out_id(char * name)
  if (strcmp (name, "O_RB1") == 0)return O_RB1;
  if (strcmp (name, "O_RB0") == 0)return O_RB0;
 
- printf ("Erro output '%s' don't have a valid id! \n", name);
+ printf ("Error output '%s' don't have a valid id! \n", name);
  return 1;
 }
 
@@ -478,13 +478,10 @@ cboard_x::Draw(CDraw *draw, double scale)
  draw->Canvas.End ();
  draw->Update ();
 
-
-
  //RB0 mean value to gauge1
  gauge1->SetValue (0.4444 * (pic.pins[33].oavalue - 30));
  //RB1 mean value to gauge2
  gauge2->SetValue (0.44444 * (pic.pins[32].oavalue - 30));
-
 
 }
 
@@ -501,19 +498,13 @@ cboard_x::Run_CPU(void)
  long int NSTEPJ = Window1.GetNSTEPJ (); //number of steps in 100ms
 
 
- //reset mean value
- /*
- for(pi=0;pi < pic.PINCOUNT;pi++)
- {
-   alm[pi]=0;
- }
-  */
+ //reset pins mean value
  memset (alm, 0, 40 * sizeof (unsigned int));
-
 
  //read pic.pins to a local variable to speed up 
  pins = pic.pins;
 
+ //Spare parts window pre process
  if (use_spare)Window5.PreProcess ();
 
  j = JUMPSTEPS; //step counter
@@ -530,7 +521,9 @@ cboard_x::Run_CPU(void)
 
     //verify if a breakpoint is reached if not run one instruction 
     if (!mplabxd_testbp ())pic_step ();
+    //Oscilloscope window process
     if (use_oscope)Window4.SetSample ();
+    //Spare parts window process
     if (use_spare)Window5.Process ();
 
     //increment mean value counter if pin is high 
@@ -539,13 +532,7 @@ cboard_x::Run_CPU(void)
 
     if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
      {
-      /*  
-      //increment mean value counter if pin is high  
-      for(pi=0;pi < pic.PINCOUNT;pi++)
-      {
-       alm[pi]+=pins[pi].value;
-      }
-       */
+
       //set analog pin 2 (AN0) with value from scroll  
       pic_set_apin (2, ((5.0 * (scroll1->GetPosition ())) /
                         (scroll1->GetRange () - 1)));
@@ -560,7 +547,8 @@ cboard_x::Run_CPU(void)
   {
    pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEPJ) + 30);
   }
-
+ 
+ //Spare parts window pre post process
  if (use_spare)Window5.PostProcess ();
 
 }

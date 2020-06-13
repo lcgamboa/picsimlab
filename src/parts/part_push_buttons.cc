@@ -254,7 +254,7 @@ cpart_pbuttons::get_in_id(char * name)
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
-};
+}
 
 unsigned short
 cpart_pbuttons::get_out_id(char * name)
@@ -282,7 +282,7 @@ cpart_pbuttons::get_out_id(char * name)
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
-};
+}
 
 String
 cpart_pbuttons::WritePreferences(void)
@@ -292,7 +292,7 @@ cpart_pbuttons::WritePreferences(void)
  sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", output_pins[0], output_pins[1], output_pins[2], output_pins[3], output_pins[4], output_pins[5], output_pins[6], output_pins[7], active);
 
  return prefs;
-};
+}
 
 void
 cpart_pbuttons::ReadPreferences(String value)
@@ -308,112 +308,110 @@ cpart_pbuttons::ReadPreferences(String value)
  output_value[7] = !active;
 }
 
-CPWindow * WProp_pbuttons;
 
 void
-cpart_pbuttons::ConfigurePropertiesWindow(CPWindow * wprop)
+cpart_pbuttons::ConfigurePropertiesWindow(CPWindow * WProp)
 {
  String Items = Window5.GetPinsNames ();
  String spin;
- WProp_pbuttons = wprop;
 
- ((CCombo*) WProp_pbuttons->GetChildByName ("combo1"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
  if (output_pins[0] == 0)
-  ((CCombo*) WProp_pbuttons->GetChildByName ("combo1"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo1"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (output_pins[0]);
-   ((CCombo*) WProp_pbuttons->GetChildByName ("combo1"))->SetText (itoa (output_pins[0]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (output_pins[0]) + "  " + spin);
   }
 
- ((CCombo*) WProp_pbuttons->GetChildByName ("combo2"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo2"))->SetItems (Items);
  if (output_pins[1] == 0)
-  ((CCombo*) WProp_pbuttons->GetChildByName ("combo2"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo2"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (output_pins[1]);
-   ((CCombo*) WProp_pbuttons->GetChildByName ("combo2"))->SetText (itoa (output_pins[1]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText (itoa (output_pins[1]) + "  " + spin);
   }
 
- ((CCombo*) WProp_pbuttons->GetChildByName ("combo3"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo3"))->SetItems (Items);
  if (output_pins[2] == 0)
-  ((CCombo*) WProp_pbuttons->GetChildByName ("combo3"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo3"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (output_pins[2]);
-   ((CCombo*) WProp_pbuttons->GetChildByName ("combo3"))->SetText (itoa (output_pins[2]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText (itoa (output_pins[2]) + "  " + spin);
   }
 
- ((CCombo*) WProp_pbuttons->GetChildByName ("combo4"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo4"))->SetItems (Items);
  if (output_pins[3] == 0)
-  ((CCombo*) WProp_pbuttons->GetChildByName ("combo4"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo4"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (output_pins[3]);
-   ((CCombo*) WProp_pbuttons->GetChildByName ("combo4"))->SetText (itoa (output_pins[3]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo4"))->SetText (itoa (output_pins[3]) + "  " + spin);
   }
 
- ((CCombo*) WProp_pbuttons->GetChildByName ("combo5"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo5"))->SetItems (Items);
  if (output_pins[4] == 0)
-  ((CCombo*) WProp_pbuttons->GetChildByName ("combo5"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo5"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (output_pins[4]);
-   ((CCombo*) WProp_pbuttons->GetChildByName ("combo5"))->SetText (itoa (output_pins[4]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo5"))->SetText (itoa (output_pins[4]) + "  " + spin);
   }
 
- ((CCombo*) WProp_pbuttons->GetChildByName ("combo6"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo6"))->SetItems (Items);
  if (output_pins[5] == 0)
-  ((CCombo*) WProp_pbuttons->GetChildByName ("combo6"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo6"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (output_pins[5]);
-   ((CCombo*) WProp_pbuttons->GetChildByName ("combo6"))->SetText (itoa (output_pins[5]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo6"))->SetText (itoa (output_pins[5]) + "  " + spin);
   }
 
- ((CCombo*) WProp_pbuttons->GetChildByName ("combo7"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo7"))->SetItems (Items);
  if (output_pins[6] == 0)
-  ((CCombo*) WProp_pbuttons->GetChildByName ("combo7"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo7"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (output_pins[6]);
-   ((CCombo*) WProp_pbuttons->GetChildByName ("combo7"))->SetText (itoa (output_pins[6]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo7"))->SetText (itoa (output_pins[6]) + "  " + spin);
   }
 
- ((CCombo*) WProp_pbuttons->GetChildByName ("combo8"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo8"))->SetItems (Items);
  if (output_pins[7] == 0)
-  ((CCombo*) WProp_pbuttons->GetChildByName ("combo8"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo8"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (output_pins[7]);
-   ((CCombo*) WProp_pbuttons->GetChildByName ("combo8"))->SetText (itoa (output_pins[7]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo8"))->SetText (itoa (output_pins[7]) + "  " + spin);
   }
 
  if (active)
-  ((CCombo*) WProp_pbuttons->GetChildByName ("combo9"))->SetText ("HIGH");
+  ((CCombo*) WProp->GetChildByName ("combo9"))->SetText ("HIGH");
  else
-  ((CCombo*) WProp_pbuttons->GetChildByName ("combo9"))->SetText ("LOW ");
+  ((CCombo*) WProp->GetChildByName ("combo9"))->SetText ("LOW ");
 
 
- ((CButton*) WProp_pbuttons->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
- ((CButton*) WProp_pbuttons->GetChildByName ("button1"))->SetTag (1);
+ ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+ ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
 
- ((CButton*) WProp_pbuttons->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+ ((CButton*) WProp->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
 }
 
 void
 cpart_pbuttons::ReadPropertiesWindow(CPWindow * WProp)
 {
- output_pins[0] = atoi (((CCombo*) WProp_pbuttons->GetChildByName ("combo1"))->GetText ());
- output_pins[1] = atoi (((CCombo*) WProp_pbuttons->GetChildByName ("combo2"))->GetText ());
- output_pins[2] = atoi (((CCombo*) WProp_pbuttons->GetChildByName ("combo3"))->GetText ());
- output_pins[3] = atoi (((CCombo*) WProp_pbuttons->GetChildByName ("combo4"))->GetText ());
- output_pins[4] = atoi (((CCombo*) WProp_pbuttons->GetChildByName ("combo5"))->GetText ());
- output_pins[5] = atoi (((CCombo*) WProp_pbuttons->GetChildByName ("combo6"))->GetText ());
- output_pins[6] = atoi (((CCombo*) WProp_pbuttons->GetChildByName ("combo7"))->GetText ());
- output_pins[7] = atoi (((CCombo*) WProp_pbuttons->GetChildByName ("combo8"))->GetText ());
+ output_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
+ output_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
+ output_pins[2] = atoi (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ());
+ output_pins[3] = atoi (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ());
+ output_pins[4] = atoi (((CCombo*) WProp->GetChildByName ("combo5"))->GetText ());
+ output_pins[5] = atoi (((CCombo*) WProp->GetChildByName ("combo6"))->GetText ());
+ output_pins[6] = atoi (((CCombo*) WProp->GetChildByName ("combo7"))->GetText ());
+ output_pins[7] = atoi (((CCombo*) WProp->GetChildByName ("combo8"))->GetText ());
 
- active = (((CCombo*) WProp_pbuttons->GetChildByName ("combo9"))->GetText ().compare ("HIGH") == 0);
+ active = (((CCombo*) WProp->GetChildByName ("combo9"))->GetText ().compare ("HIGH") == 0);
 
  output_value[0] = !active;
  output_value[1] = !active;

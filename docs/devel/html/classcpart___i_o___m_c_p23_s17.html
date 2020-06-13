@@ -86,6 +86,7 @@ $(document).ready(function(){initNavTree('classcpart___i_o___m_c_p23_s17.html','
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classcpart___i_o___m_c_p23_s17-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">cpart_IO_MCP23S17 Class Reference</div>  </div>
@@ -105,10 +106,11 @@ Collaboration diagram for cpart_IO_MCP23S17:</div>
 <div class="dyncontent">
 <div class="center"><img src="classcpart___i_o___m_c_p23_s17__coll__graph.png" border="0" usemap="#cpart___i_o___m_c_p23_s17_coll__map" alt="Collaboration graph"/></div>
 <map name="cpart___i_o___m_c_p23_s17_coll__map" id="cpart___i_o___m_c_p23_s17_coll__map">
-<area shape="rect" title=" " alt="" coords="11,171,163,197"/>
+<area shape="rect" title=" " alt="" coords="65,184,217,211"/>
 <area shape="rect" href="classpart.html" title="PART class." alt="" coords="63,95,111,121"/>
 <area shape="rect" href="structinput__t.html" title="input map struct" alt="" coords="5,5,72,32"/>
 <area shape="rect" href="structoutput__t.html" title="output map struct" alt="" coords="97,5,173,32"/>
+<area shape="rect" href="structio___m_c_p23_x17__t.html" title=" " alt="" coords="135,95,257,121"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -251,6 +253,33 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpart.html#a99de50507d46d85ece50269de14e5992">PointInside</a> (int x, int y)</td></tr>
 <tr class="memdesc:a99de50507d46d85ece50269de14e5992 inherit pub_methods_classpart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return if point x,y is inside of part. <br /></td></tr>
 <tr class="separator:a99de50507d46d85ece50269de14e5992 inherit pub_methods_classpart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a37759a7b7a67b59c5bdefde83f321ea6"><td class="memItemLeft" align="right" valign="top"><a id="a37759a7b7a67b59c5bdefde83f321ea6"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>input_pins</b> [10]</td></tr>
+<tr class="separator:a37759a7b7a67b59c5bdefde83f321ea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a437e32eed78886d54ba35c0d71c9f5bb"><td class="memItemLeft" align="right" valign="top"><a id="a437e32eed78886d54ba35c0d71c9f5bb"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>output_pins</b> [16]</td></tr>
+<tr class="separator:a437e32eed78886d54ba35c0d71c9f5bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08456d55556c966c3bed3ede4b80d365"><td class="memItemLeft" align="right" valign="top"><a id="a08456d55556c966c3bed3ede4b80d365"></a>
+unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>output_pins_alm</b> [16]</td></tr>
+<tr class="separator:a08456d55556c966c3bed3ede4b80d365"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1408fd359b06215298bbec47305a17cc"><td class="memItemLeft" align="right" valign="top"><a id="a1408fd359b06215298bbec47305a17cc"></a>
+long&#160;</td><td class="memItemRight" valign="bottom"><b>mcount</b></td></tr>
+<tr class="separator:a1408fd359b06215298bbec47305a17cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef76f5ea6bcf51bae566f18c44e93ac9"><td class="memItemLeft" align="right" valign="top"><a id="aef76f5ea6bcf51bae566f18c44e93ac9"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>JUMPSTEPS_</b></td></tr>
+<tr class="separator:aef76f5ea6bcf51bae566f18c44e93ac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95c9747972a53c059ef2457973cdf160"><td class="memItemLeft" align="right" valign="top"><a id="a95c9747972a53c059ef2457973cdf160"></a>
+<a class="el" href="structio___m_c_p23_x17__t.html">io_MCP23X17_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>mcp</b></td></tr>
+<tr class="separator:a95c9747972a53c059ef2457973cdf160"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae91c9a598ab4d94f0d2c9cd952b20624"><td class="memItemLeft" align="right" valign="top"><a id="ae91c9a598ab4d94f0d2c9cd952b20624"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>_PA</b></td></tr>
+<tr class="separator:ae91c9a598ab4d94f0d2c9cd952b20624"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84695c484e040d873a6d5b6582a32a0f"><td class="memItemLeft" align="right" valign="top"><a id="a84695c484e040d873a6d5b6582a32a0f"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>_PB</b></td></tr>
+<tr class="separator:a84695c484e040d873a6d5b6582a32a0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>

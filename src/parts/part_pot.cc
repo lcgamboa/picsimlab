@@ -130,7 +130,7 @@ cpart_pot::Draw (void)
     }
 
 
-  };
+  }
 
  canvas.End ();
 
@@ -271,7 +271,7 @@ cpart_pot::get_in_id (char * name)
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
-};
+}
 
 unsigned short
 cpart_pot::get_out_id (char * name)
@@ -289,7 +289,7 @@ cpart_pot::get_out_id (char * name)
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
-};
+}
 
 String
 cpart_pot::WritePreferences (void)
@@ -299,72 +299,70 @@ cpart_pot::WritePreferences (void)
  sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3], values[0], values[1], values[2], values[3]);
 
  return prefs;
-};
+}
 
 void
 cpart_pot::ReadPreferences (String value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &values[0], &values[1], &values[2], &values[3]);
-};
+}
 
-CPWindow * WProp_pot;
 
 void
-cpart_pot::ConfigurePropertiesWindow (CPWindow * wprop)
+cpart_pot::ConfigurePropertiesWindow (CPWindow * WProp)
 {
  String Items = Window5.GetPinsNames ();
  String spin;
- WProp_pot = wprop;
 
- ((CCombo*) WProp_pot->GetChildByName ("combo1"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)
-  ((CCombo*) WProp_pot->GetChildByName ("combo1"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo1"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (input_pins[0]);
-   ((CCombo*) WProp_pot->GetChildByName ("combo1"))->SetText (itoa (input_pins[0]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (input_pins[0]) + "  " + spin);
   }
 
- ((CCombo*) WProp_pot->GetChildByName ("combo2"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo2"))->SetItems (Items);
  if (input_pins[1] == 0)
-  ((CCombo*) WProp_pot->GetChildByName ("combo2"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo2"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (input_pins[1]);
-   ((CCombo*) WProp_pot->GetChildByName ("combo2"))->SetText (itoa (input_pins[1]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText (itoa (input_pins[1]) + "  " + spin);
   }
 
- ((CCombo*) WProp_pot->GetChildByName ("combo3"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo3"))->SetItems (Items);
  if (input_pins[2] == 0)
-  ((CCombo*) WProp_pot->GetChildByName ("combo3"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo3"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (input_pins[2]);
-   ((CCombo*) WProp_pot->GetChildByName ("combo3"))->SetText (itoa (input_pins[2]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText (itoa (input_pins[2]) + "  " + spin);
   }
 
- ((CCombo*) WProp_pot->GetChildByName ("combo4"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo4"))->SetItems (Items);
  if (input_pins[3] == 0)
-  ((CCombo*) WProp_pot->GetChildByName ("combo4"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo4"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (input_pins[3]);
-   ((CCombo*) WProp_pot->GetChildByName ("combo4"))->SetText (itoa (input_pins[3]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo4"))->SetText (itoa (input_pins[3]) + "  " + spin);
   }
 
 
- ((CButton*) WProp_pot->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
- ((CButton*) WProp_pot->GetChildByName ("button1"))->SetTag (1);
+ ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+ ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
 
- ((CButton*) WProp_pot->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+ ((CButton*) WProp->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
 }
 
 void
 cpart_pot::ReadPropertiesWindow (CPWindow * WProp)
 {
- input_pins[0] = atoi (((CCombo*) WProp_pot->GetChildByName ("combo1"))->GetText ());
- input_pins[1] = atoi (((CCombo*) WProp_pot->GetChildByName ("combo2"))->GetText ());
- input_pins[2] = atoi (((CCombo*) WProp_pot->GetChildByName ("combo3"))->GetText ());
- input_pins[3] = atoi (((CCombo*) WProp_pot->GetChildByName ("combo4"))->GetText ());
+ input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
+ input_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
+ input_pins[2] = atoi (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ());
+ input_pins[3] = atoi (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ());
 }
 

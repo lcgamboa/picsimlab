@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ cpart_servo::cpart_servo (unsigned x, unsigned y)
  image.Destroy ();
 
  canvas.Create (Window5.GetWWidget (), Bitmap);
-};
+}
 
 cpart_servo::~cpart_servo (void)
 {
@@ -113,7 +113,7 @@ cpart_servo::Draw (void)
     }
 
 
-  };
+  }
 
  canvas.End ();
 
@@ -139,8 +139,6 @@ cpart_servo::Process (void)
   {
    angle_ = ((time / Window1.GetBoard ()->MGetInstClock ()) - 0.0015)*3141.59265359;
 
-   //printf("time=%f  angle=%f\n",time/Window1.GetBoard()->MGetInstClock(),angle*180.0/M_PI);
-
    if (angle_ > M_PI / 2.0)angle_ = M_PI / 2.0;
    if (angle_ < -M_PI / 2.0)angle_ = -M_PI / 2.0;
 
@@ -154,7 +152,7 @@ cpart_servo::get_in_id (char * name)
 {
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
-};
+}
 
 unsigned short
 cpart_servo::get_out_id (char * name)
@@ -165,7 +163,7 @@ cpart_servo::get_out_id (char * name)
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
-};
+}
 
 String
 cpart_servo::WritePreferences (void)
@@ -175,42 +173,39 @@ cpart_servo::WritePreferences (void)
  sprintf (prefs, "%hhu", input_pin);
 
  return prefs;
-};
+}
 
 void
 cpart_servo::ReadPreferences (String value)
 {
  sscanf (value.c_str (), "%hhu", &input_pin);
-};
-
-CPWindow * WProp_servo;
+}
 
 void
-cpart_servo::ConfigurePropertiesWindow (CPWindow * wprop)
+cpart_servo::ConfigurePropertiesWindow (CPWindow * WProp)
 {
  String Items = Window5.GetPinsNames ();
  String spin;
- WProp_servo = wprop;
 
- ((CCombo*) WProp_servo->GetChildByName ("combo1"))->SetItems (Items);
+ ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pin == 0)
-  ((CCombo*) WProp_servo->GetChildByName ("combo1"))->SetText ("0  NC");
+  ((CCombo*) WProp->GetChildByName ("combo1"))->SetText ("0  NC");
  else
   {
    spin = Window5.GetPinName (input_pin);
-   ((CCombo*) WProp_servo->GetChildByName ("combo1"))->SetText (itoa (input_pin) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (input_pin) + "  " + spin);
   }
 
 
- ((CButton*) WProp_servo->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
- ((CButton*) WProp_servo->GetChildByName ("button1"))->SetTag (1);
+ ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+ ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
 
- ((CButton*) WProp_servo->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+ ((CButton*) WProp->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
 }
 
 void
 cpart_servo::ReadPropertiesWindow (CPWindow * WProp)
 {
- input_pin = atoi (((CCombo*) WProp_servo->GetChildByName ("combo1"))->GetText ());
+ input_pin = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
 }
 
