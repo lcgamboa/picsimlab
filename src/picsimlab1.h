@@ -31,7 +31,19 @@
  *
  * The main objective of this domentation is to enable the expansion of the simulator with 
  * the creation of new boards (@ref board) and parts (@ref part). 
- * 
+ *
+ * @section partex Part example
+ * @subsection pinc part_servo.h
+ * @include part_servo.h
+ * @subsection pcode part_servo.cc
+ * @include part_servo.cc
+ *
+ * @section boardex Board example
+ * @subsection binc boardX.h
+ * @include board_X.h
+ * @subsection bcode boardX.cc
+ * @include board_X.cc
+ *
  */
 
 #ifndef CPWINDOW1 

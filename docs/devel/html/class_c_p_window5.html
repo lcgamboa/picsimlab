@@ -87,6 +87,7 @@ $(document).ready(function(){initNavTree('class_c_p_window5.html',''); initResiz
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_c_p_window5-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">CPWindow5 Class Reference</div>  </div>
@@ -106,8 +107,12 @@ Collaboration diagram for CPWindow5:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_c_p_window5__coll__graph.png" border="0" usemap="#_c_p_window5_coll__map" alt="Collaboration graph"/></div>
 <map name="_c_p_window5_coll__map" id="_c_p_window5_coll__map">
-<area shape="rect" title=" " alt="" coords="5,80,104,107"/>
-<area shape="rect" title=" " alt="" coords="9,5,100,32"/>
+<area shape="rect" title=" " alt="" coords="95,184,193,211"/>
+<area shape="rect" title=" " alt="" coords="5,95,96,121"/>
+<area shape="rect" href="classboard.html" title="Board class." alt="" coords="192,95,251,121"/>
+<area shape="rect" href="structinput__t.html" title="input map struct" alt="" coords="87,5,153,32"/>
+<area shape="rect" href="classpart.html" title="PART class." alt="" coords="120,95,168,121"/>
+<area shape="rect" href="structoutput__t.html" title="output map struct" alt="" coords="198,5,274,32"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -299,6 +304,63 @@ CItemMenu&#160;</td><td class="memItemRight" valign="bottom"><b>menu1_Help_About
 <tr class="memitem:a6c366b8e0e53edf8c162e786dc76047b"><td class="memItemLeft" align="right" valign="top"><a id="a6c366b8e0e53edf8c162e786dc76047b"></a>
 CFileDialog&#160;</td><td class="memItemRight" valign="bottom"><b>filedialog1</b></td></tr>
 <tr class="separator:a6c366b8e0e53edf8c162e786dc76047b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a48bb2f0958765c25848920642558ecbe"><td class="memItemLeft" align="right" valign="top"><a id="a48bb2f0958765c25848920642558ecbe"></a>
+<a class="el" href="classboard.html">board</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>pboard</b></td></tr>
+<tr class="separator:a48bb2f0958765c25848920642558ecbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba319981911ede72c07ba5e6da7f01cd"><td class="memItemLeft" align="right" valign="top"><a id="aba319981911ede72c07ba5e6da7f01cd"></a>
+String&#160;</td><td class="memItemRight" valign="bottom"><b>PinNames</b> [256]</td></tr>
+<tr class="separator:aba319981911ede72c07ba5e6da7f01cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1ea0f093a415a0e44c02e91c42f12e9"><td class="memItemLeft" align="right" valign="top"><a id="ad1ea0f093a415a0e44c02e91c42f12e9"></a>
+picpin *&#160;</td><td class="memItemRight" valign="bottom"><b>Pins</b></td></tr>
+<tr class="separator:ad1ea0f093a415a0e44c02e91c42f12e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b141b01d1379348257f460a58760c02"><td class="memItemLeft" align="right" valign="top"><a id="a9b141b01d1379348257f460a58760c02"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>PinsCount</b></td></tr>
+<tr class="separator:a9b141b01d1379348257f460a58760c02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a222bb1cb6b017a07e3965070e13576e6"><td class="memItemLeft" align="right" valign="top"><a id="a222bb1cb6b017a07e3965070e13576e6"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>partsc</b></td></tr>
+<tr class="separator:a222bb1cb6b017a07e3965070e13576e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac57dbc6f29881a0fdeb3071fe5b6bb1f"><td class="memItemLeft" align="right" valign="top"><a id="ac57dbc6f29881a0fdeb3071fe5b6bb1f"></a>
+<a class="el" href="classpart.html">part</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>parts</b> [MAX_PARTS]</td></tr>
+<tr class="separator:ac57dbc6f29881a0fdeb3071fe5b6bb1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5bcc0c885a0d74b882a3d3c965c7fce"><td class="memItemLeft" align="right" valign="top"><a id="ad5bcc0c885a0d74b882a3d3c965c7fce"></a>
+CItemMenu&#160;</td><td class="memItemRight" valign="bottom"><b>MParts</b> [NUM_PARTS]</td></tr>
+<tr class="separator:ad5bcc0c885a0d74b882a3d3c965c7fce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abff2cd6c209b638274e9d08d17e5e2ad"><td class="memItemLeft" align="right" valign="top"><a id="abff2cd6c209b638274e9d08d17e5e2ad"></a>
+String&#160;</td><td class="memItemRight" valign="bottom"><b>PartToCreate</b></td></tr>
+<tr class="separator:abff2cd6c209b638274e9d08d17e5e2ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84489e832f85d99afc1d97748dd14d82"><td class="memItemLeft" align="right" valign="top"><a id="a84489e832f85d99afc1d97748dd14d82"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>PartSelected</b></td></tr>
+<tr class="separator:a84489e832f85d99afc1d97748dd14d82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fd261be3d00b28562e0e318fb255357"><td class="memItemLeft" align="right" valign="top"><a id="a3fd261be3d00b28562e0e318fb255357"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>PartToMove</b></td></tr>
+<tr class="separator:a3fd261be3d00b28562e0e318fb255357"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a136d5167a517e89b4189bef24dabf016"><td class="memItemLeft" align="right" valign="top"><a id="a136d5167a517e89b4189bef24dabf016"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>mdx</b></td></tr>
+<tr class="separator:a136d5167a517e89b4189bef24dabf016"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a294039894b768f2e8ac65866ad789b54"><td class="memItemLeft" align="right" valign="top"><a id="a294039894b768f2e8ac65866ad789b54"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>mdy</b></td></tr>
+<tr class="separator:a294039894b768f2e8ac65866ad789b54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab41465dc5a3b914980d1dac13798fb51"><td class="memItemLeft" align="right" valign="top"><a id="ab41465dc5a3b914980d1dac13798fb51"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>scale</b></td></tr>
+<tr class="separator:ab41465dc5a3b914980d1dac13798fb51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36bbf3dcef0e875fff0a1ea24da7fd47"><td class="memItemLeft" align="right" valign="top"><a id="a36bbf3dcef0e875fff0a1ea24da7fd47"></a>
+String&#160;</td><td class="memItemRight" valign="bottom"><b>LoadConfigFile</b></td></tr>
+<tr class="separator:a36bbf3dcef0e875fff0a1ea24da7fd47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63a2f35c6a3cdc1953e4f4b0f1c60661"><td class="memItemLeft" align="right" valign="top"><a id="a63a2f35c6a3cdc1953e4f4b0f1c60661"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_bus</b> [IOINIT]</td></tr>
+<tr class="separator:a63a2f35c6a3cdc1953e4f4b0f1c60661"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22ad915452e2c41cb49211983de7ed44"><td class="memItemLeft" align="right" valign="top"><a id="a22ad915452e2c41cb49211983de7ed44"></a>
+CPWindow&#160;</td><td class="memItemRight" valign="bottom"><b>wprop</b></td></tr>
+<tr class="separator:a22ad915452e2c41cb49211983de7ed44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e8db4620697639eb7c07be31dfff432"><td class="memItemLeft" align="right" valign="top"><a id="a2e8db4620697639eb7c07be31dfff432"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>fdtype</b></td></tr>
+<tr class="separator:a2e8db4620697639eb7c07be31dfff432"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dbdbc936aaa228a721aa77eb9e3fdbe"><td class="memItemLeft" align="right" valign="top"><a id="a6dbdbc936aaa228a721aa77eb9e3fdbe"></a>
+String&#160;</td><td class="memItemRight" valign="bottom"><b>oldfname</b></td></tr>
+<tr class="separator:a6dbdbc936aaa228a721aa77eb9e3fdbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="picsimlab5_8h_source.html">picsimlab5.h</a></li>
