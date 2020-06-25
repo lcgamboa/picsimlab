@@ -167,7 +167,7 @@ CPWindow1::timer2_EvOnTime(CControl * control)
     }
   }
  status.st[0] &= ~ST_T2;
-};
+}
 
 void
 CPWindow1::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uint y, uint state)
@@ -178,7 +178,7 @@ CPWindow1::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
 
  pboard->EvMouseButtonPress (button, x, y, state);
 
-};
+}
 
 void
 CPWindow1::draw1_EvMouseButtonRelease(CControl * control, uint button, uint x, uint y, uint state)
@@ -189,19 +189,19 @@ CPWindow1::draw1_EvMouseButtonRelease(CControl * control, uint button, uint x, u
 
  pboard->EvMouseButtonRelease (button, x, y, state);
 
-};
+}
 
 void
 CPWindow1::draw1_EvKeyboardPress(CControl * control, const uint key, const uint hkey, const uint mask)
 {
  pboard->EvKeyPress (key, mask);
-};
+}
 
 void
 CPWindow1::draw1_EvKeyboardRelease(CControl * control, const uint key, const uint hkey, const uint mask)
 {
  pboard->EvKeyRelease (key, mask);
-};
+}
 
 void
 CPWindow1::_EvOnCreate(CControl * control)
@@ -245,7 +245,7 @@ CPWindow1::_EvOnCreate(CControl * control)
   }
  create++;
 
-};
+}
 
 void
 CPWindow1::Configure(CControl * control, const char * home)
@@ -509,7 +509,7 @@ CPWindow1::combo1_EvOnComboChange(CControl * control)
 
 
  Application->ProcessEvents ();
-};
+}
 
 void
 CPWindow1::saveprefs(String name, String value)
@@ -555,7 +555,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
   {
    msleep (1);
    Application->ProcessEvents ();
-  };
+  }
  thread1.Destroy ();
 
 
@@ -617,7 +617,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
  GetX ();
  GetY ();
 
-};
+}
 
 void
 CPWindow1::menu1_File_LoadHex_EvMenuActive(CControl * control)
@@ -711,7 +711,7 @@ void
 CPWindow1::menu1_File_Exit_EvMenuActive(CControl * control)
 {
  WDestroy ();
-};
+}
 
 void
 CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
@@ -723,13 +723,13 @@ CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
  Window2.html1.SetLoadFile (share + lxT ("docs/picsimlab.html"));
  Window2.Show ();
 #endif 
-};
+}
 
 void
 CPWindow1::menu1_Help_About_EvMenuActive(CControl * control)
 {
  Message (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (lxT (_VERSION_)));
-};
+}
 
 void
 CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
@@ -737,7 +737,7 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
 
 #ifdef EXT_BROWSER_EXAMPLES
  //lxLaunchDefaultBrowser(lxT("file://")+share + lxT ("docs/picsimlab.html"));
- lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/examples/examples_index.html#board_" + itoa (lab) + lxT ("_") + pboard->proc));
+ lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/examples/examples_index.html#board_" + itoa (lab) + lxT ("_") + pboard->GetProcessorName ()));
 #else 
  OldPath = filedialog2.GetDir ();
 
@@ -804,7 +804,7 @@ void
 CPWindow1::menu1_File_Configure_EvMenuActive(CControl * control)
 {
  Window3.ShowExclusive ();
-};
+}
 
 void
 CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
@@ -820,7 +820,7 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
   {
    msleep (1);
    Application->ProcessEvents ();
-  };
+  }
 
  pboard->MEnd ();
  pboard->MSetSerial (SERIALDEVICE);
@@ -855,7 +855,7 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
  mcupwr = pa;
  timer1.SetRunState (1);
 
-};
+}
 
 void
 CPWindow1::board_Event(CControl * control)
@@ -893,7 +893,7 @@ CPWindow1::menu1_Modules_Spareparts_EvMenuActive(CControl * control)
  Window5.timer1.SetRunState (1);
  pboard->Reset ();
 
-};
+}
 
 
 //Change board
@@ -908,7 +908,7 @@ CPWindow1::menu1_EvBoard(CControl * control)
  _EvOnDestroy (control);
  _EvOnCreate (control);
  _EvOnShow (control);
-};
+}
 
 //change microcontroller
 
@@ -924,7 +924,7 @@ CPWindow1::menu1_EvMicrocontroller(CControl * control)
  _EvOnDestroy (control);
  _EvOnCreate (control);
  _EvOnShow (control);
-};
+}
 
 void
 CPWindow1::togglebutton1_EvOnToggleButton(CControl * control)
@@ -942,7 +942,7 @@ CPWindow1::togglebutton1_EvOnToggleButton(CControl * control)
  if (spare_on) menu1_Modules_Spareparts_EvMenuActive (this);
 
 
-};
+}
 
 void
 CPWindow1::menu1_File_SaveWorkspace_EvMenuActive(CControl * control)
@@ -1147,7 +1147,7 @@ CPWindow1::menu1_Tools_SerialTerm_EvMenuActive(CControl * control)
 
  lxExecute ("cutecom", lxEXEC_MAKE_GROUP_LEADER);
 #endif  
-};
+}
 
 void
 CPWindow1::menu1_Tools_SerialRemoteTank_EvMenuActive(CControl * control)
@@ -1158,7 +1158,7 @@ CPWindow1::menu1_Tools_SerialRemoteTank_EvMenuActive(CControl * control)
 
  lxExecute ("srtank", lxEXEC_MAKE_GROUP_LEADER);
 #endif  
-};
+}
 
 void
 CPWindow1::menu1_Tools_Esp8266ModemSimulator_EvMenuActive(CControl * control)
@@ -1168,7 +1168,7 @@ CPWindow1::menu1_Tools_Esp8266ModemSimulator_EvMenuActive(CControl * control)
 #else
  lxExecute ("espmsim", lxEXEC_MAKE_GROUP_LEADER);
 #endif  
-};
+}
 
 void
 CPWindow1::Set_mcudbg(int pd)

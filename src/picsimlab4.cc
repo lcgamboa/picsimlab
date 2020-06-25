@@ -160,7 +160,7 @@ CPWindow4::DrawScreen (void)
 
  draw1.Canvas.End ();
 
-};
+}
 
 void
 CPWindow4::button1_EvMouseButtonClick (CControl * control, uint button, uint x, uint y, uint state)
@@ -170,7 +170,7 @@ CPWindow4::button1_EvMouseButtonClick (CControl * control, uint button, uint x, 
  ctrl = &button1;
  colordialog1.Run ();
 #endif  
-};
+}
 
 void
 CPWindow4::button2_EvMouseButtonClick (CControl * control, uint button, uint x, uint y, uint state)
@@ -180,14 +180,14 @@ CPWindow4::button2_EvMouseButtonClick (CControl * control, uint button, uint x, 
  ctrl = &button2;
  colordialog1.Run ();
 #endif
-};
+}
 
 void
 CPWindow4::draw1_EvMouseButtonClick (CControl * control, uint button, uint x, uint y, uint state)
 {
  //code here:)
  mprint (lxT ("draw1_EvMouseButtonClick\n"));
-};
+}
 
 void
 CPWindow4::SetBaseTimer (void)
@@ -335,19 +335,19 @@ CPWindow4::spind5_EvOnChangeSpinDouble (CControl * control)
  spind6.SetValue (0);
  toffset = WMAX / 2;
  //printf("Dt=%e Rt=%e  Rt/Dt=%f   xz=%f\n",Dt,Rt,Rt/Dt,xz);
-};
+}
 
 void
 CPWindow4::togglebutton5_EvOnToggleButton (CControl * control)
 {
  usetrigger = togglebutton5.GetCheck ();
-};
+}
 
 void
 CPWindow4::spind7_EvOnChangeSpinDouble (CControl * control)
 {
  triggerlv = spind7.GetValue ();
-};
+}
 
 void
 CPWindow4::timer1_EvOnTime (CControl * control)
@@ -365,13 +365,13 @@ void
 CPWindow4::combo2_EvOnComboChange (CControl * control)
 {
  chpin[0] = atoi (combo2.GetText ()) - 1;
-};
+}
 
 void
 CPWindow4::combo3_EvOnComboChange (CControl * control)
 {
  chpin[1] = atoi (combo3.GetText ()) - 1;
-};
+}
 
 void
 CPWindow4::WritePreferences (void)
@@ -519,7 +519,7 @@ CPWindow4::spind6_EvOnChangeSpinDouble (CControl * control)
 
 
  toffset = (WMAX / 2) - (((WMAX / 2) * spind6.GetValue ()) / (5 * spind5.GetValue ()));
-};
+}
 
 //autoset
 
@@ -590,7 +590,7 @@ CPWindow4::togglebutton6_EvOnToggleButton (CControl * control)
  combo1.SetEnable (run);
  combo2.SetEnable (run);
  combo3.SetEnable (run);
-};
+}
 
 //save PNG
 
