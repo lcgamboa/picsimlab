@@ -17,7 +17,7 @@ execdir= ${prefix}/bin/
 override CFLAGS += -D_VERSION_=\"$(VERSION)\" -Wall -O2 -D_SHARE_=\"${sharedir}\"  `lxrad-config --cxxflags`
 override CFLAGS+= -DEXT_BROWSER
 #override CFLAGS+=-fsanitize=address
-override CFLAGS+= -D_EXPERIMENTAL_
+#override CFLAGS+= -D_EXPERIMENTAL_
 
 LIBS = `lxrad-config --libs` -lpicsim -lsimavr -lelf
 #LIBS=  ../../picsim/src/libpicsim_dbg.a ../../LXRAD_WX/libteste/liblxrad.a  ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a\
