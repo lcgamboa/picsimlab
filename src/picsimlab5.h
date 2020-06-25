@@ -32,89 +32,118 @@
 
 #define IOINIT 70
 
-class CPWindow5:public CPWindow
-{
-  public:
-//lxrad automatic generated block start, don't edit below!
-  /*#Controls*/
-  CMenu menu1;
-  CDraw draw1;
-  CPMenu menu1_File;
-  CPMenu menu1_Add;
-  CPMenu pmenu2;
-  CItemMenu pmenu2_Properties;
-  CTimer timer1;
-  CItemMenu menu1_File_Newconfiguration;
-  CItemMenu menu1_File_Saveconfiguration;
-  CItemMenu menu1_File_Loadconfiguration;
-  CItemMenu pmenu2_Move;
-  CItemMenu pmenu2_Delete;
-  CPMenu menu1_Help;
-  CItemMenu menu1_Help_Contents;
-  CItemMenu menu1_Help_About;
-  CFileDialog filedialog1;
-  /*#Events*/
-  void _EvOnCreate(CControl * control);
-  void _EvOnShow(CControl * control);
-  void _EvOnHide(CControl * control);
-  void draw1_EvMouseMove(CControl * control,const uint button,const uint x,const uint y,const uint state);
-  void draw1_EvMouseButtonPress(CControl * control,const uint button,const uint x,const uint y,const uint state);
-  void draw1_EvMouseButtonRelease(CControl * control,const uint button,const uint x,const uint y,const uint state);
-  void draw1_EvKeyboardPress(CControl * control,const uint key,const uint hkey ,const uint mask);
-  void draw1_EvKeyboardRelease(CControl * control,const uint key,const uint hkey,const uint mask);
-  void pmenu2_Properties_EvMenuActive(CControl * control);
-  void timer1_EvOnTime(CControl * control);
-  void menu1_File_Newconfiguration_EvMenuActive(CControl * control);
-  void menu1_File_Saveconfiguration_EvMenuActive(CControl * control);
-  void menu1_File_Loadconfiguration_EvMenuActive(CControl * control);
-  void pmenu2_Move_EvMenuActive(CControl * control);
-  void pmenu2_Delete_EvMenuActive(CControl * control);
-  void menu1_Help_Contents_EvMenuActive(CControl * control);
-  void menu1_Help_About_EvMenuActive(CControl * control);
-  void filedialog1_EvOnClose(const int retId);
-  
-  /*#Others*/
-  CPWindow5(void);
-//lxrad automatic generated block end, don't edit above!
-  void menu1_EvMenuActive(CControl * control);
-  void Process(void);
-  void PreProcess(void);
-  void PostProcess(void);
-  void Reset(void);
-  bool SaveConfig(String fname);
-  bool LoadConfig(String fname);
-  void DeleteParts(void);
-  void WritePreferences(void);
-  void ReadPreferences(char *name,char *value);
-  void PropButtonRelease (CControl * control, uint button, uint x, uint y, uint state);
-  void PropComboChange(CCombo * control);
-  void PropClose(int tag);
-  void Set_i2c_bus(unsigned char pin, unsigned char value);
-  unsigned char Get_i2c_bus(unsigned char pin);
-  String GetPinsNames(void);
-  String GetPinName(unsigned char pin);
-  const picpin * GetPinsValues (void);
-  void SetPin (unsigned char pin, unsigned char value);
-  void SetAPin (unsigned char pin, float value);
-  void SetPinDOV (unsigned char pin, unsigned char ovalue);
-  void WritePin (unsigned char pin, unsigned char value);
-  void WritePinA (unsigned char pin, unsigned char avalue);
-  void WritePinOA (unsigned char pin, unsigned short oavalue);
-  unsigned char RegisterIOpin(String pname, unsigned char pin=0);
-  unsigned char UnregisterIOpin(unsigned char pin);
-  void Setfdtype (int value);
-  private:
+/**
+ * @brief CPWindow4 class
+ *
+ * class definition of PICSimLab spare parts window.
+ */
+class CPWindow5 : public CPWindow {
+public:
+    //lxrad automatic generated block start, don't edit below!
+    /*#Controls*/
+    CMenu menu1;
+    CDraw draw1;
+    CPMenu menu1_File;
+    CPMenu menu1_Add;
+    CPMenu pmenu2;
+    CItemMenu pmenu2_Properties;
+    CTimer timer1;
+    CItemMenu menu1_File_Newconfiguration;
+    CItemMenu menu1_File_Saveconfiguration;
+    CItemMenu menu1_File_Loadconfiguration;
+    CItemMenu pmenu2_Move;
+    CItemMenu pmenu2_Delete;
+    CPMenu menu1_Help;
+    CItemMenu menu1_Help_Contents;
+    CItemMenu menu1_Help_About;
+    CFileDialog filedialog1;
+    /*#Events*/
+    void _EvOnCreate(CControl * control);
+    void _EvOnShow(CControl * control);
+    void _EvOnHide(CControl * control);
+    void draw1_EvMouseMove(CControl * control, const uint button, const uint x, const uint y, const uint state);
+    void draw1_EvMouseButtonPress(CControl * control, const uint button, const uint x, const uint y, const uint state);
+    void draw1_EvMouseButtonRelease(CControl * control, const uint button, const uint x, const uint y, const uint state);
+    void draw1_EvKeyboardPress(CControl * control, const uint key, const uint hkey, const uint mask);
+    void draw1_EvKeyboardRelease(CControl * control, const uint key, const uint hkey, const uint mask);
+    void pmenu2_Properties_EvMenuActive(CControl * control);
+    void timer1_EvOnTime(CControl * control);
+    void menu1_File_Newconfiguration_EvMenuActive(CControl * control);
+    void menu1_File_Saveconfiguration_EvMenuActive(CControl * control);
+    void menu1_File_Loadconfiguration_EvMenuActive(CControl * control);
+    void pmenu2_Move_EvMenuActive(CControl * control);
+    void pmenu2_Delete_EvMenuActive(CControl * control);
+    void menu1_Help_Contents_EvMenuActive(CControl * control);
+    void menu1_Help_About_EvMenuActive(CControl * control);
+    void filedialog1_EvOnClose(const int retId);
+
+    /*#Others*/
+    CPWindow5(void);
+    //lxrad automatic generated block end, don't edit above!
+    void menu1_EvMenuActive(CControl * control);
+
+    /**
+     * @brief  Execute the process code of spare parts N times (where N is the number of steps in 100ms)  
+     */
+    void Process(void);
+
+    /**
+     * @brief  Execute the pre process code of spare parts one time per 100ms
+     */
+    void PreProcess(void);
+    
+    /**
+     * @brief  Execute the post process code of spare parts one time per 100ms
+     */
+    void PostProcess(void);
+
+    /**
+     * @brief  Reset all spare parts
+     */
+    void Reset(void);
+    bool SaveConfig(String fname);
+    bool LoadConfig(String fname);
+    void DeleteParts(void);
+    void WritePreferences(void);
+    void ReadPreferences(char *name, char *value);
+    void PropButtonRelease(CControl * control, uint button, uint x, uint y, uint state);
+    void PropComboChange(CCombo * control);
+    void PropClose(int tag);
+    void Set_i2c_bus(unsigned char pin, unsigned char value);
+    unsigned char Get_i2c_bus(unsigned char pin);
+
+    /**
+     * @brief  Return the name of all pins
+     */
+    String GetPinsNames(void);
+
+    /**
+     * @brief  Return the name of one pin
+     */
+    String GetPinName(unsigned char pin);
+
+    const picpin * GetPinsValues(void);
+    void SetPin(unsigned char pin, unsigned char value);
+    void SetAPin(unsigned char pin, float value);
+    void SetPinDOV(unsigned char pin, unsigned char ovalue);
+    void WritePin(unsigned char pin, unsigned char value);
+    void WritePinA(unsigned char pin, unsigned char avalue);
+    void WritePinOA(unsigned char pin, unsigned short oavalue);
+    unsigned char RegisterIOpin(String pname, unsigned char pin = 0);
+    unsigned char UnregisterIOpin(unsigned char pin);
+    void Setfdtype(int value);
+private:
     board *pboard;
     String PinNames[256];
-    picpin  * Pins;
+    picpin * Pins;
     unsigned char PinsCount;
-    int partsc;  
+    int partsc;
     part *parts[MAX_PARTS];
     CItemMenu MParts[NUM_PARTS];
     String PartToCreate;
     int PartSelected;
     int PartToMove;
-    int mdx,mdy;
+    int mdx, mdy;
     float scale;
     String LoadConfigFile;
     unsigned char i2c_bus[IOINIT];
@@ -123,7 +152,7 @@ class CPWindow5:public CPWindow
     String oldfname;
 };
 
-extern CPWindow5 Window5 ;
+extern CPWindow5 Window5;
 
 #endif /*#CPWINDOW5*/
 

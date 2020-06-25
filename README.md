@@ -55,7 +55,7 @@ git clone https://github.com/lcgamboa/picsimlab.git
 cd picsimlab
 ./picsimlab_build_w64.sh
 ```
-## troubleshooting:
+## Troubleshooting:
 The simulation in PICSimLab consists of 3 parts:
 
 - The microcontroller program
@@ -68,7 +68,7 @@ One of the most common problems is the error in the microcontroller program. Bef
 
 Errors in the microcontroller simulation can be detected using code debugging. Any instruction execution or peripheral behavior outside the expected should be reported in the project of simulator used ([picsim](https://github.com/lcgamboa/picsim) or [simavr](https://github.com/buserror/simavr)).
 
-If the problem is not in either of the previous two options, the problem is probably in PICSimLab. A good practice is to send a source code along with a PICSimLab workspace (.pzw file) to open the issue about the problem.
+If the problem is not in either of the previous two options, the problem is probably in PICSimLab. A good practice is to send a source code together with a PICSimLab workspace (.pzw file) to open the issue about the problem.
 
 
 ## Info
