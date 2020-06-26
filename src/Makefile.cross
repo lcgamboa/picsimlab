@@ -3,11 +3,11 @@ include Makefile.Common
 CC = x86_64-w64-mingw32-g++
 WINDRES =  x86_64-w64-mingw32-windres  
 
-FLAGS = -Wall -O3 -D_WIN_ -I../dev_w64/include -I../dev_w64/include/lxrad -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  
-FLAGS+= -DEXT_BROWSER
-FLAGS +=-I../dev_w64/lib/wx/include/x86_64-w64-mingw32-msw-unicode-3.1 -I../dev_w64/include/wx-3.1 -D_FILE_OFFSET_BITS=64 -DWXUSINGDLL -D__WXMSW__
-#FLAGS +=`x86_64-w64-mingw32-msw-unicode-3.1  --cxxflags` 
-#FLAGS+= -D_EXPERIMENTAL_
+override CFLAGS+= -Wall -O3 -D_WIN_ -I../dev_w64/include -I../dev_w64/include/lxrad -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  
+override CFLAGS+= -DEXT_BROWSER
+override CFLAGS+=-I../dev_w64/lib/wx/include/x86_64-w64-mingw32-msw-unicode-3.1 -I../dev_w64/include/wx-3.1 -D_FILE_OFFSET_BITS=64 -DWXUSINGDLL -D__WXMSW__
+#CFLAGS+=`x86_64-w64-mingw32-msw-unicode-3.1  --cxxflags` 
+#CFLAGS+= -D_EXPERIMENTAL_
 
 LIBS= -llxrad -lOpenAL32 -lpicsim  -lsimavr -lws2_32 -L../dev_w64/lib
 LIBS+= -Wl,--subsystem,windows -mwindows -lwx_mswu_xrc-3.1-x86_64-w64-mingw32 -lwx_mswu_html-3.1-x86_64-w64-mingw32 -lwx_mswu_qa-3.1-x86_64-w64-mingw32 -lwx_mswu_core-3.1-x86_64-w64-mingw32 -lwx_baseu_xml-3.1-x86_64-w64-mingw32 -lwx_baseu_net-3.1-x86_64-w64-mingw32 -lwx_baseu-3.1-x86_64-w64-mingw32 
@@ -16,11 +16,11 @@ LIBS+= -Wl,--subsystem,windows -mwindows -lwx_mswu_xrc-3.1-x86_64-w64-mingw32 -l
 
 all: $(OBJS)
 	$(WINDRES) picsimlab_res.rc  -O coff -o picsimlab_res.o
-	$(CC) $(FLAGS) $(OBJS) picsimlab_res.o -opicsimlab.exe $(LIBS)
+	$(CC) $(CFLAGS) $(OBJS) picsimlab_res.o -opicsimlab.exe $(LIBS)
 	mv *.exe ../picsimlab_win64/
 
 %.o: %.cc
-	$(CC) -c $(FLAGS) $< -o $@ 
+	$(CC) -c $(CFLAGS) $< -o $@ 
 
 run: all
 	wine ./picsimlab.exe
