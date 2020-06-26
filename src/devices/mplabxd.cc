@@ -94,8 +94,8 @@ typedef struct sockaddr sockaddr;
 
 
 
-int sockfd = -1;
-int listenfd = -1;
+static int sockfd = -1;
+static int listenfd = -1;
 
 void
 setnblock(int sock_descriptor)
@@ -147,11 +147,11 @@ setblock(int sock_descriptor)
 #endif
 }
 
-int server_started = 0;
+static int server_started = 0;
 
-board * dbg_board = NULL;
-unsigned char *ramsend = NULL;
-unsigned char *ramreceived = NULL;
+static board * dbg_board = NULL;
+static unsigned char *ramsend = NULL;
+static unsigned char *ramreceived = NULL;
 
 int
 mplabxd_init(board * mboard)
@@ -269,8 +269,10 @@ mplabxd_end(void)
 }
 
 
-int bpc = 0;
-unsigned int bp[100];
+static int bpc = 0;
+static unsigned int bp[100];
+
+static unsigned short dbuff[2];
 
 int
 mplabxd_testbp(void)
@@ -514,14 +516,14 @@ mplabxd_loop(void)
      dprint ("READD cmd  size=0x%04X, ret= %i\n", dbg_board->MGetRAMSize (), ret);
      break;
     case READDV:
-     if ((n = recv (sockfd, (char *) &bp, 4, MSG_WAITALL)) != 4)
+     if ((n = recv (sockfd, (char *) &dbuff, 4, MSG_WAITALL)) != 4)
       {
        printf ("receive error : %s \n", strerror (errno));
        ret = 1;
        reply = 0x01;
       }
-     dprint ("address=%02X  values=%i \n", bp[0], bp[1]);
-     if (send (sockfd, (char *) &dbg_board->MGetRAM_p ()[bp[0]], bp[1], 0) != bp[1])
+     dprint ("address=%02X  values=%i \n", dbuff[0], dbuff[1]);
+     if (send (sockfd, (char *) &dbg_board->MGetRAM_p ()[dbuff[0]],dbuff[1], 0) != dbuff[1])
       {
        printf ("send error : %s \n", strerror (errno));
        ret = 1;

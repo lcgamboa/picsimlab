@@ -85,11 +85,11 @@ int
 scfg(void)
 {
 #ifdef _WIN_
-  BOOL bPortReady;
+  //BOOL bPortReady;
   DCB dcb;
   COMMTIMEOUTS CommTimeouts;
 
-bPortReady = GetCommState(phCom, &dcb);
+/*bPortReady =*/ GetCommState(phCom, &dcb);
 dcb.BaudRate = BAUDRATE;
 dcb.ByteSize = 8;
 dcb.Parity = NOPARITY;
@@ -108,11 +108,11 @@ dcb.fOutxDsrFlow = FALSE; // turn off DSR flow control
 dcb.fDtrControl = DTR_CONTROL_DISABLE; //
 // dcb.fDtrControl = DTR_CONTROL_HANDSHAKE; //
 
-bPortReady = SetCommState(phCom, &dcb);
+/*bPortReady =*/ SetCommState(phCom, &dcb);
 
 // Communication timeouts are optional
 
-bPortReady = GetCommTimeouts (phCom, &CommTimeouts);
+/*bPortReady =*/ GetCommTimeouts (phCom, &CommTimeouts);
 
 CommTimeouts.ReadIntervalTimeout = MAXDWORD;
 CommTimeouts.ReadTotalTimeoutConstant = 0;
@@ -120,7 +120,7 @@ CommTimeouts.ReadTotalTimeoutMultiplier = 0;
 CommTimeouts.WriteTotalTimeoutConstant = 0;
 CommTimeouts.WriteTotalTimeoutMultiplier = 0;
 
-bPortReady = SetCommTimeouts (phCom, &CommTimeouts);
+/*bPortReady =*/ SetCommTimeouts (phCom, &CommTimeouts);
 	
 
 EscapeCommFunction(phCom,SETRTS );

@@ -178,11 +178,11 @@ serial_cfg(HANDLE serialfd,int baud)
     } 
 
 #ifndef LINUX
-  BOOL bPortReady;
+  //BOOL bPortReady;
   DCB dcb;
   COMMTIMEOUTS CommTimeouts;
 
-bPortReady = GetCommState(serialfd , &dcb);
+/*bPortReady =*/ GetCommState(serialfd , &dcb);
 dcb.BaudRate = BAUDRATE;
 dcb.ByteSize = 8;
 dcb.Parity = NOPARITY;
@@ -202,11 +202,11 @@ dcb.fOutxDsrFlow = FALSE; // turn off DSR flow control
 dcb.fDtrControl = DTR_CONTROL_DISABLE; //
 // dcb.fDtrControl = DTR_CONTROL_HANDSHAKE; //
 
-bPortReady = SetCommState(serialfd , &dcb);
+/*bPortReady =*/ SetCommState(serialfd , &dcb);
 
 // Communication timeouts are optional
 
-bPortReady = GetCommTimeouts (serialfd , &CommTimeouts);
+/*bPortReady =*/ GetCommTimeouts (serialfd , &CommTimeouts);
 
 CommTimeouts.ReadIntervalTimeout = MAXDWORD;
 CommTimeouts.ReadTotalTimeoutConstant = 0;
@@ -214,7 +214,7 @@ CommTimeouts.ReadTotalTimeoutMultiplier = 0;
 CommTimeouts.WriteTotalTimeoutConstant = 0;
 CommTimeouts.WriteTotalTimeoutMultiplier = 0;
 
-bPortReady = SetCommTimeouts (serialfd , &CommTimeouts);
+/*bPortReady =*/ SetCommTimeouts (serialfd , &CommTimeouts);
 	
 
 EscapeCommFunction(serialfd ,SETRTS );
