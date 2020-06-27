@@ -6,7 +6,7 @@ SUBDIRS= src tools/espmsim tools/srtank
 
 .PHONY: $(SUBDIRS)  
 
-all:$(SUBDIRS) doc
+all:$(SUBDIRS) 
 
 install:$(SUBDIRS) 
 	
