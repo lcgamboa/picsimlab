@@ -1,7 +1,7 @@
 # Changelog
 
 
-## (unreleased)
+## v0.8.1 (2020-06-27)
 
 ### New
 
