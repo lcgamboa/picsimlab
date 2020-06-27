@@ -15,7 +15,7 @@ clean:$(SUBDIRS)
 
 doc:
 	doxygen 1>/dev/null  2>/dev/null
-	gitchangelog > CHANGELOG.md
+	gitchangelog ^v0.8.0 HEAD > CHANGELOG.md
 	! leasot -r markdown  src/*.{cc,h} src/*/*.{cc,h}  > TODO.md 
 
 uninstall:$(SUBDIRS) 
