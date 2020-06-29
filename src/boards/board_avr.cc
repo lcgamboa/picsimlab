@@ -23,6 +23,9 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
 
 #include "board_avr.h"
 
@@ -88,14 +91,14 @@ board_avr::pins_reset(void)
 void
 avr_callback_sleep_raw_(avr_t *avr, avr_cycle_count_t how_long) { }
 
-const unsigned char AVR_PORTS[5]={'A','B','C','D','E'};
+const unsigned char AVR_PORTS[12] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'};
 
 int
 board_avr::MInit(const char * processor, const char * fname, float freq)
 {
  int ret;
  //avr_ioport_external_t p;
- 
+
  avr = avr_make_mcu_by_name (processor);
 
  if (!avr)
@@ -113,8 +116,14 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
 
  avr->frequency = freq;
 
- avr->reset_pc = 0x07000; // bootloader 0x3800
-
+ if (String (avr->mmcu).compare (lxT ("atmega2560")) == 0)
+  {
+   avr->reset_pc = 0x3E000;
+  }
+ else
+  {
+   avr->reset_pc = 0x07000; // bootloader 0x3800
+  }
  avr->avcc = 5000;
 
  //avr->log= LOG_DEBUG;
@@ -122,21 +131,21 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
  avr_reset (avr);
 
  pins_reset ();
- 
+
  /*
  //external pull-up for i2c
  p.mask =  0x30;
  p.value = 0x30;
  avr_ioctl(avr, AVR_IOCTL_IOPORT_SET_EXTERNAL('C'), &p);
-*/
-     
+  */
+
  for (int p = 0; p < MGetPinCount (); p++)
   {
    char pname[20];
    strncpy (pname, (const char *) MGetPinName (p + 1).c_str (), 19);
    if (pname[0] == 'P')
     {
-     pins[p].port = (unsigned char *)&AVR_PORTS[pname[1]-'A'];
+     pins[p].port = (unsigned char *) &AVR_PORTS[pname[1] - 'A'];
      pins[p].pord = pname[2] - '0';
 
      avr_irq_t* stateIrq = avr_io_getirq (avr, AVR_IOCTL_IOPORT_GETIRQ (*pins[p].port), pins[p].pord);
@@ -184,7 +193,7 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
  avr_serial_open (SERIALDEVICE);
 
  //TODO read baudrate value from avr 
- serialexbaud = 57600; 
+ serialexbaud = 57600;
  serialbaud = avr_serial_cfg (serialexbaud);
 
  return ret;
@@ -198,7 +207,7 @@ board_avr::MEnd(void)
  avr_terminate (avr);
 
 
- for (int i = 0; i < 28; i++)
+ for (int i = 0; i < MGetPinCount (); i++)
   avr_free_irq (Write_stat_irq[i], 1);
 
  avr_free_irq (serial_irq, IRQ_UART_COUNT);
@@ -308,6 +317,7 @@ board_avr::MGetPinCount(void)
  if (avr == NULL) return 0;
  if (String (avr->mmcu).compare (lxT ("atmega328")) == 0)return 28;
  if (String (avr->mmcu).compare (lxT ("atmega328p")) == 0)return 28;
+ if (String (avr->mmcu).compare (lxT ("atmega2560")) == 0)return 100;
  return 0;
 }
 
@@ -316,92 +326,400 @@ board_avr::MGetPinName(int pin)
 {
  if (pin <= 0 || pin > MGetPinCount ())return "error";
 
- switch (pin)
+ if (String (avr->mmcu).compare (lxT ("atmega2560")) == 0)
   {
-   //case 1:
-   //  return "PC6 (RST)";break;
-  case 2:
-   return "PD0/0";
-   break;
-  case 3:
-   return "PD1/1";
-   break;
-  case 4:
-   return "PD2/2";
-   break;
-  case 5:
-   return "PD3/~3";
-   break;
-  case 6:
-   return "PD4/4";
-   break;
-  case 7:
-   return "+5V";
-   break;
-  case 8:
-   return "GND";
-   break;
-  case 9:
-   return "PB6 (OSC1)";
-   break;
-  case 10:
-   return "PB7 (OSC2)";
-   break;
-  case 11:
-   return "PD5/~5";
-   break;
-  case 12:
-   return "PD6/~6";
-   break;
-  case 13:
-   return "PD7/7";
-   break;
-  case 14:
-   return "PB0/8";
-   break;
-  case 15:
-   return "PB1/~9";
-   break;
-  case 16:
-   return "PB2/~10";
-   break;
-  case 17:
-   return "PB3/~11";
-   break;
-  case 18:
-   return "PB4/12";
-   break;
-  case 19:
-   return "PB5/13";
-   break;
-  case 20:
-   return "+5V";
-   break;
-   //case 21:
-   //  return "AREF";break;
-  case 22:
-   return "GND";
-   break;
-  case 23:
-   return "PC0/A0";
-   break;
-  case 24:
-   return "PC1/A1";
-   break;
-  case 25:
-   return "PC2/A2";
-   break;
-  case 26:
-   return "PC3/A3";
-   break;
-  case 27:
-   return "PC4/A4";
-   break;
-  case 28:
-   return "PC5/A5";
-   break;
+   switch (pin)
+    {
+    case 1:
+     return "PG5/~4 ";
+     break;
+    case 2:
+     return "PE0/~0";
+     break;
+    case 3:
+     return "PE1/~1";
+     break;
+    case 4:
+     return "PE2";
+     break;
+    case 5:
+     return "PE3/~5";
+     break;
+    case 6:
+     return "PE4/~2";
+     break;
+    case 7:
+     return "PE5/~3";
+     break;
+    case 8:
+     return "PE6";
+     break;
+    case 9:
+     return "PE7";
+     break;
+    case 10:
+     return "+5V";
+     break;
+    case 11:
+     return "GND";
+     break;
+    case 12:
+     return "PH0/17";
+     break;
+    case 13:
+     return "PH1/16";
+     break;
+    case 14:
+     return "PH2";
+     break;
+    case 15:
+     return "PH3/~6";
+     break;
+    case 16:
+     return "PH4/~7";
+     break;
+    case 17:
+     return "PH5/~8";
+     break;
+    case 18:
+     return "PH6/~9";
+     break;
+    case 19:
+     return "PB0/53";
+     break;
+    case 20:
+     return "PB1/52";
+     break;
+    case 21:
+     return "PB2/51";
+     break;
+    case 22:
+     return "PB3/50";
+     break;
+    case 23:
+     return "PB4/~10";
+     break;
+    case 24:
+     return "PB5/~11";
+     break;
+    case 25:
+     return "PB6/~12";
+     break;
+    case 26:
+     return "PB7/~13";
+     break;
+    case 27:
+     return "PH7";
+     break;
+    case 28:
+     return "PG3";
+     break;
+    case 29:
+     return "PG4";
+     break;
+     //case 30:
+     //return "RESET";
+     //break;
+    case 31:
+     return "+5V";
+     break;
+    case 32:
+     return "GND";
+     break;
+     //case 33:
+     //return "XTAL2";
+     //break;
+     //case 34:
+     //return "XTAL1";
+     //break;
+    case 35:
+     return "PL0/49";
+     break;
+    case 36:
+     return "PL1/48";
+     break;
+    case 37:
+     return "PL2/47";
+     break;
+    case 38:
+     return "PL3/46";
+     break;
+    case 39:
+     return "PL4/45";
+     break;
+    case 40:
+     return "PL5/44";
+     break;
+    case 41:
+     return "PL6/43";
+     break;
+    case 42:
+     return "PL7/42";
+     break;
+    case 43:
+     return "PD0/21";
+     break;
+    case 44:
+     return "PD1/20";
+     break;
+    case 45:
+     return "PD2/19";
+     break;
+    case 46:
+     return "PD3/18";
+     break;
+    case 47:
+     return "PD4";
+     break;
+    case 48:
+     return "PD5";
+     break;
+    case 49:
+     return "PD6";
+     break;
+    case 50:
+     return "PD7/38";
+     break;
+    case 51:
+     return "PG0/41";
+     break;
+    case 52:
+     return "PG1/40";
+     break;
+    case 53:
+     return "PC0/37";
+     break;
+    case 54:
+     return "PC1/36";
+     break;
+    case 55:
+     return "PC2/35";
+     break;
+    case 56:
+     return "PC3/34";
+     break;
+    case 57:
+     return "PC4/33";
+     break;
+    case 58:
+     return "PC5/32";
+     break;
+    case 59:
+     return "PC6/31";
+     break;
+    case 60:
+     return "PC7/30";
+     break;
+    case 61:
+     return "+5V";
+     break;
+    case 62:
+     return "GND";
+     break;
+    case 63:
+     return "PJ0/15";
+     break;
+    case 64:
+     return "PJ1/14";
+     break;
+    case 65:
+     return "PJ2";
+     break;
+    case 66:
+     return "PJ3";
+     break;
+    case 67:
+     return "PJ4";
+     break;
+    case 68:
+     return "PJ5";
+     break;
+    case 69:
+     return "PJ6";
+     break;
+    case 70:
+     return "PG2/39";
+     break;
+    case 71:
+     return "PA7/29";
+     break;
+    case 72:
+     return "PA6/28";
+     break;
+    case 73:
+     return "PA5/27";
+     break;
+    case 74:
+     return "PA4/26";
+     break;
+    case 75:
+     return "PA3/25";
+     break;
+    case 76:
+     return "PA2/24";
+     break;
+    case 77:
+     return "PA1/23";
+     break;
+    case 78:
+     return "PA0/22";
+     break;
+    case 79:
+     return "PJ7";
+     break;
+    case 80:
+     return "+5V";
+     break;
+    case 81:
+     return "GND";
+     break;
+    case 82:
+     return "PK7/A15";
+     break;
+    case 83:
+     return "PK6/A14";
+     break;
+    case 84:
+     return "PK5/A13";
+     break;
+    case 85:
+     return "PK4/A12";
+     break;
+    case 86:
+     return "PK3/A11";
+     break;
+    case 87:
+     return "PK2/A10";
+     break;
+    case 88:
+     return "PK1/A9";
+     break;
+    case 89:
+     return "PK0/A8";
+     break;
+    case 90:
+     return "PF7/A7";
+     break;
+    case 91:
+     return "PF6/A6";
+     break;
+    case 92:
+     return "PF5/A5";
+     break;
+    case 93:
+     return "PF4/A4";
+     break;
+    case 94:
+     return "PF3/A3";
+     break;
+    case 95:
+     return "PF2/A2";
+     break;
+    case 96:
+     return "PF1/A1";
+     break;
+    case 97:
+     return "PF0/A0";
+     break;
+     //case 98:
+     //return "AREF";
+     //break;
+    case 99:
+     return "GND";
+     break;
+    case 100:
+     return "+5V";
+     break;
+    }
   }
-
+ else
+  {
+   switch (pin)
+    {
+     //case 1:
+     //  return "PC6 (RST)";break;
+    case 2:
+     return "PD0/0";
+     break;
+    case 3:
+     return "PD1/1";
+     break;
+    case 4:
+     return "PD2/2";
+     break;
+    case 5:
+     return "PD3/~3";
+     break;
+    case 6:
+     return "PD4/4";
+     break;
+    case 7:
+     return "+5V";
+     break;
+    case 8:
+     return "GND";
+     break;
+    case 9:
+     return "PB6/(OSC1)";
+     break;
+    case 10:
+     return "PB7/(OSC2)";
+     break;
+    case 11:
+     return "PD5/~5";
+     break;
+    case 12:
+     return "PD6/~6";
+     break;
+    case 13:
+     return "PD7/7";
+     break;
+    case 14:
+     return "PB0/8";
+     break;
+    case 15:
+     return "PB1/~9";
+     break;
+    case 16:
+     return "PB2/~10";
+     break;
+    case 17:
+     return "PB3/~11";
+     break;
+    case 18:
+     return "PB4/12";
+     break;
+    case 19:
+     return "PB5/13";
+     break;
+    case 20:
+     return "+5V";
+     break;
+     //case 21:
+     //  return "AREF";break;
+    case 22:
+     return "GND";
+     break;
+    case 23:
+     return "PC0/A0";
+     break;
+    case 24:
+     return "PC1/A1";
+     break;
+    case 25:
+     return "PC2/A2";
+     break;
+    case 26:
+     return "PC3/A3";
+     break;
+    case 27:
+     return "PC4/A4";
+     break;
+    case 28:
+     return "PC5/A5";
+     break;
+    }
+  }
  return "error";
 }
 
@@ -424,7 +742,7 @@ board_avr::MSetPinDOV(int pin, unsigned char ovalue)
  if (!pins[pin - 1].dir)return;
  if (pins[pin - 1].ovalue == ovalue)return;
  //TODO this value is not used yet
- pins[pin - 1].ovalue = ovalue; 
+ pins[pin - 1].ovalue = ovalue;
 }
 
 void
@@ -437,34 +755,106 @@ board_avr::MSetAPin(int pin, float value)
  pins[pin - 1].avalue = value;
  if (avr == NULL) return;
 
- switch (pin)
+ if (String (avr->mmcu).compare (lxT ("atmega2560")) == 0)
   {
-  case 23:
-   pins[pin - 1].ptype = PT_ANALOG;
-   avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 0), (int) (value * 1000));
-   break;
-  case 24:
-   pins[pin - 1].ptype = PT_ANALOG;
-   avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 1), (int) (value * 1000));
-   break;
-  case 25:
-   pins[pin - 1].ptype = PT_ANALOG;
-   avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 2), (int) (value * 1000));
-   break;
-  case 26:
-   pins[pin - 1].ptype = PT_ANALOG;
-   avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 3), (int) (value * 1000));
-   break;
-  case 27:
-   pins[pin - 1].ptype = PT_ANALOG;
-   avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 4), (int) (value * 1000));
-   break;
-  case 28:
-   pins[pin - 1].ptype = PT_ANALOG;
-   avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 5), (int) (value * 1000));
-   break;
+   switch (pin)
+    { 
+    case 82:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 15), (int) (value * 1000));
+     break;
+    case 83:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 14), (int) (value * 1000));
+     break;
+    case 84:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 13), (int) (value * 1000));
+     break;
+    case 85:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 12), (int) (value * 1000));
+     break;
+    case 86:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 11), (int) (value * 1000));
+     break;
+    case 87:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 10), (int) (value * 1000));
+     break;
+    case 88:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 9), (int) (value * 1000));
+     break;
+    case 89:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 8), (int) (value * 1000));
+     break;
+    case 90:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 7), (int) (value * 1000));
+     break;
+    case 91:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 6), (int) (value * 1000));
+     break;
+    case 92:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 5), (int) (value * 1000));
+     break;
+    case 93:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 4), (int) (value * 1000));
+     break;
+    case 94:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 3), (int) (value * 1000));
+     break;
+    case 95:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 2), (int) (value * 1000));
+     break;
+    case 96:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 1), (int) (value * 1000));
+     break;
+    case 97:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 0), (int) (value * 1000));
+     break;
+    }
   }
-
+ else
+  {
+   switch (pin)
+    {
+    case 23:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 0), (int) (value * 1000));
+     break;
+    case 24:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 1), (int) (value * 1000));
+     break;
+    case 25:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 2), (int) (value * 1000));
+     break;
+    case 26:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 3), (int) (value * 1000));
+     break;
+    case 27:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 4), (int) (value * 1000));
+     break;
+    case 28:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 5), (int) (value * 1000));
+     break;
+    }
+  }
 }
 
 unsigned char
@@ -481,14 +871,157 @@ board_avr::MGetPinsValues(void)
  return pins;
 }
 
+/*
+ * called when a byte is send via the uart on the AVR
+ */
+static void
+uart_in_hook(struct avr_irq_t * irq, uint32_t value, void * param)
+{
+ avr_serial_send (value);
+}
+
+int cont = 0;
+int aux = 1;
+
+void
+board_avr::UpdateHardware(void)
+{
+
+ unsigned char c;
+ cont++;
+
+ //FIXME  correct the baud rate
+ if (cont > 1000)
+  {
+   cont = 0;
+   if (avr_serial_rec (&c))
+    {
+     avr_raise_irq (serial_irq + IRQ_UART_BYTE_OUT, c);
+    }
+
+   if (avr_serial_get_dsr ())
+    {
+     if (aux)
+      {
+       avr_reset (avr);
+       pins_reset ();
+       aux = 0;
+      }
+    }
+   else
+    {
+     aux = 1;
+    }
+  }
+
+}
+
+void
+board_avr::MStep(void)
+{
+ avr_run (avr);
+}
+
+void
+board_avr::MStepResume(void) { }
+
+int
+board_avr::MTestBP(unsigned int bp)
+{
+ return (bp == avr->pc >> 1);
+}
+
+void
+board_avr::MReset(int flags)
+{
+ avr_reset (avr);
+}
+
+unsigned short *
+board_avr::MGetProcID_p(void)
+{
+ return 0;
+}
+
+unsigned int
+board_avr::MGetPC(void)
+{
+ return avr->pc >> 1;
+}
+
+void
+board_avr::MSetPC(unsigned int pc)
+{
+ avr->pc = pc << 1;
+}
+
+unsigned char *
+board_avr::MGetRAM_p(void)
+{
+ return avr->data;
+}
+
+unsigned char *
+board_avr::MGetROM_p(void)
+{
+ return avr->flash;
+}
+
+unsigned char *
+board_avr::MGetCONFIG_p(void)
+{
+ return avr->fuse;
+}
+
+unsigned char *
+board_avr::MGetID_p(void)
+{
+ //TODO avr ID pointer
+ return NULL;
+}
+
+unsigned char *
+board_avr::MGetEEPROM_p(void)
+{
+ //TODO avr EEPROM pointer
+ return NULL;
+}
+
+unsigned int
+board_avr::MGetRAMSize(void)
+{
+ return avr->ramend + 1;
+}
+
+unsigned int
+board_avr::MGetROMSize(void)
+{
+ return avr->flashend + 1;
+}
+
+unsigned int
+board_avr::MGetCONFIGSize(void)
+{
+ //FIXME avr CONFIG size
+ return 3;
+}
+
+unsigned int
+board_avr::MGetIDSize(void)
+{
+ //TODO avr ID size
+ return 0;
+}
+
+unsigned int
+board_avr::MGetEEPROM_Size(void)
+{
+ //TODO AVR EEPROM size
+ return 0;
+}
 
 
 //hexfile support ============================================================
-
-
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
 
 int
 board_avr::parse_hex(char *line, int bytes)
@@ -526,7 +1059,7 @@ board_avr::read_ihx_avr(const char * fname, int leeprom)
  char line[256];
  unsigned int nbytes, addr, type;
  unsigned int addrx;
- //unsigned short addrh=0;
+ unsigned short addrh = 0;
  //unsigned short addrl=0;
  char *mptr;
 
@@ -603,7 +1136,7 @@ board_avr::read_ihx_avr(const char * fname, int leeprom)
          mptr = (char*) avr->flash;
          for (bc = 0; bc < nbytes; bc++)
           {
-           addrx = addr + bc;
+           addrx = (addrh << 16) | (addr + bc);
            if (addrx <= avr->flashend)
             mptr[addrx] = parse_hex (line + 9 + (bc * 2), 2);
           }
@@ -615,8 +1148,11 @@ board_avr::read_ihx_avr(const char * fname, int leeprom)
          fclose (fin);
          return 0; //no error
          break;
+        case 2:
+         addrh = (((parse_hex (line + 9, 2) << 8) | parse_hex (line + 11, 2))) >> 12;
+         break;
         case 4:
-         //addrh=((parse_hex(line+9,2)<<8)|parse_hex(line+11,2));
+         addrh = ((parse_hex (line + 9, 2) << 8) | parse_hex (line + 11, 2));
          break;
         }
       }
@@ -657,13 +1193,15 @@ board_avr::write_ihx_avr(const char * fname)
    //program memory  
    nb = 0;
    sum = 0;
-   //fprintf(fout,":020000040000FA\n");
    for (i = 0; i <= avr->flashend; i++)
     {
+     if (i == 0x10000)fprintf (fout, ":020000040001F9\n");
+     if (i == 0x20000)fprintf (fout, ":020000040002F8\n");
+     if (i == 0x30000)fprintf (fout, ":020000040003F7\n");
 
      if (nb == 0)
       {
-       iaddr = i;
+       iaddr = i & 0xFFFF;
        snprintf (values, 99, "%02X", avr->flash[i]);
       }
      else
@@ -835,153 +1373,4 @@ board_avr::write_ihx_avr(const char * fname)
    return HEX_NWRITE;
   }
  return 0; //no error
-}
-
-/*
- * called when a byte is send via the uart on the AVR
- */
-static void
-uart_in_hook(struct avr_irq_t * irq, uint32_t value, void * param)
-{
- avr_serial_send (value);
-}
-
-int cont = 0;
-int aux = 1;
-
-void
-board_avr::UpdateHardware(void)
-{
-
- unsigned char c;
- cont++;
-
- //FIXME  correct the baud rate
- if (cont > 1000)
-  {
-   cont = 0;
-   if (avr_serial_rec (&c))
-    {
-     avr_raise_irq (serial_irq + IRQ_UART_BYTE_OUT, c);
-    }
-
-   if (avr_serial_get_dsr ())
-    {
-     if (aux)
-      {
-       avr_reset (avr);
-       pins_reset ();
-       aux = 0;
-      }
-    }
-   else
-    {
-     aux = 1;
-    }
-  }
-
-}
-
-void
-board_avr::MStep(void)
-{
- avr_run (avr);
-}
-
-void
-board_avr::MStepResume(void) { }
-
-int
-board_avr::MTestBP(unsigned int bp)
-{
- return (bp == avr->pc >> 1);
-}
-
-void
-board_avr::MReset(int flags)
-{
- avr_reset (avr);
-}
-
-unsigned short *
-board_avr::MGetProcID_p(void)
-{
- return 0;
-}
-
-unsigned int
-board_avr::MGetPC(void)
-{
- return avr->pc >> 1;
-}
-
-void
-board_avr::MSetPC(unsigned int pc)
-{
- avr->pc = pc << 1;
-}
-
-unsigned char *
-board_avr::MGetRAM_p(void)
-{
- return avr->data;
-}
-
-unsigned char *
-board_avr::MGetROM_p(void)
-{
- return avr->flash;
-}
-
-unsigned char *
-board_avr::MGetCONFIG_p(void)
-{
- return avr->fuse;
-}
-
-unsigned char *
-board_avr::MGetID_p(void)
-{
- //TODO avr ID pointer
- return NULL;
-}
-
-unsigned char *
-board_avr::MGetEEPROM_p(void)
-{
- //TODO avr EEPROM pointer
- return NULL;
-}
-
-unsigned int
-board_avr::MGetRAMSize(void)
-{
- return avr->ramend + 1;
-}
-
-unsigned int
-board_avr::MGetROMSize(void)
-{
- return avr->flashend + 1;
-}
-
-unsigned int
-board_avr::MGetCONFIGSize(void)
-{
- //FIXME avr CONFIG size
- return 3; 
-}
-
-unsigned int
-board_avr::MGetIDSize(void)
-{
- //TODO avr ID size
- return 0;
-}
-
-unsigned int
-board_avr::MGetEEPROM_Size(void)
-{
- //TODO AVR EEPROM size
- return 0;
 }

@@ -30,7 +30,7 @@
 #include"parts/part.h"
 #include"parts/parts_defs.h"
 
-#define IOINIT 70
+#define IOINIT 110
 
 /**
  * @brief CPWindow4 class

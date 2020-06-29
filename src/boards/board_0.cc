@@ -347,9 +347,9 @@ cboard_0::Draw(CDraw *draw, double scale)
      draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
     case O_MP:
-     
-     lxFont font ((MGetPinCount () > 14)? 12 :10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);  
-     
+
+     lxFont font ((MGetPinCount () > 14) ? 12 : 10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
+
      draw->Canvas.SetFont (font);
 
      ps = micbmp->GetSize ();
@@ -378,7 +378,7 @@ cboard_0::Run_CPU(void)
  int j;
  unsigned char pi;
  const picpin * pins;
- unsigned int alm[40];
+ unsigned int alm[100];
  int JUMPSTEPS = 0;
  //long int NSTEPJ = 0;
 
@@ -450,7 +450,7 @@ cboard_0::Run_CPU(void)
    memset (alm, 0, pinc * sizeof (unsigned int));
 
    //read pic.pins to a local variable to speed up 
-  
+
    pins = board_avr::MGetPinsValues ();
 
    if (use_spare)Window5.PreProcess ();
@@ -593,39 +593,40 @@ cboard_0::MInit(const char * processor, const char * fname, float freq)
    break;
   }
 
- if (!ret)
+ lxImage image;
+
+ switch (MGetPinCount ())
   {
-   lxImage image;
-
-   switch (MGetPinCount ())
-    {
-    case 8:
-     image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic08.png"));
-     break;
-    case 14:
-     image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic14.png"));
-     break; 
-    case 18:
-     image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic18.png"));
-     break;
-    case 20:
-     image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic20.png"));
-     break;
-    case 28:
-     image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic28.png"));
-     break;
-    case 40:
-     image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic40.png"));
-     break;
-    default:
-     image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic40.png"));
-     printf ("IC package with %i pins not found!\n", MGetPinCount ());
-     break;
-    }
-
-   if (micbmp) delete micbmp;
-   micbmp = new lxBitmap (image, &Window1);
+  case 8:
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic08.png"));
+   break;
+  case 14:
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic14.png"));
+   break;
+  case 18:
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic18.png"));
+   break;
+  case 20:
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic20.png"));
+   break;
+  case 28:
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic28.png"));
+   break;
+  case 40:
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic40.png"));
+   break;
+  case 100:
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic100.png"));
+   break;
+  default:
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic40.png"));
+   printf ("IC package with %i pins not found!\n", MGetPinCount ());
+   break;
   }
+
+ if (micbmp) delete micbmp;
+ micbmp = new lxBitmap (image, &Window1);
+
 
  return ret;
 }
