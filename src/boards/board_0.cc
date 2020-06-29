@@ -348,8 +348,10 @@ cboard_0::Draw(CDraw *draw, double scale)
      break;
     case O_MP:
 
-     lxFont font ((MGetPinCount () > 14) ? 12 : 10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
-
+     lxFont font (
+     (MGetPinCount () >= 100 ) ? 9 : ((MGetPinCount () > 14) ? 12 : 10)
+     , lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
+   
      draw->Canvas.SetFont (font);
 
      ps = micbmp->GetSize ();
