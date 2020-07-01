@@ -47,5 +47,5 @@ var classboard__avr =
     [ "serial_irq", "classboard__avr.html#ac0d5dcd082e5a9a46a5f8f530d0ad4b3", null ],
     [ "serialbaud", "classboard__avr.html#a598e073dfea98d5f9fdd70a7ce0b3fc6", null ],
     [ "serialexbaud", "classboard__avr.html#ab894db00db98030ab955be80f4b39d02", null ],
-    [ "Write_stat_irq", "classboard__avr.html#a5342b27ee44e4f7d0a8ecf0161e2b269", null ]
+    [ "Write_stat_irq", "classboard__avr.html#af3f18bd04b42c5b8dd7fb97e23926e4e", null ]
 ];
