@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2015  Luis Claudio GambÃ´a Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -43,6 +43,7 @@ void delay(void)
 
 void i2c_init(void)
 {
+  PORTC&=~(1<<RC3) //clock direction as output 
   TIDAT=0;
   ICLK=1;
   IDAT=1;
