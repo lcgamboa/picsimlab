@@ -43,7 +43,7 @@ void delay(void)
 
 void i2c_init(void)
 {
-  PORTC&=~(1<<RC3) //clock direction as output 
+  PORTC&=~(1<<3) //clock direction as output 
   TIDAT=0;
   ICLK=1;
   IDAT=1;
