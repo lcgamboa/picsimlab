@@ -1,7 +1,7 @@
 #ifndef CPWINDOW1 
 #define CPWINDOW1
 
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 
 #ifdef _WIN_
 #include <wx/filename.h>

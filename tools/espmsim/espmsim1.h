@@ -4,7 +4,7 @@
 #ifdef CONSOLE
 #include"cespmsim.h"
 #else
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 #endif
 
 #ifdef _WIN_

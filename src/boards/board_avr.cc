@@ -244,7 +244,9 @@ board_avr::MEnd(void)
  free (avr);
  avr = NULL;
 
-#ifndef AVR_USE_GDB
+#ifdef AVR_USE_GDB
+ avr_deinit_gdb (avr);
+#else 
  mplabxd_end ();
 #endif 
 }
@@ -296,10 +298,14 @@ board_avr::DebugInit(void)
 void
 board_avr::DebugLoop(void)
 {
-#ifndef AVR_USE_GDB
- if (Window1.Get_mcupwr ())
+#ifdef AVR_USE_GDB
+  if (Window1.Get_mcupwr ())
   {
    //prog_loop(&pic);
+  }
+#else 
+ if (Window1.Get_mcupwr ())
+  {
    mplabxd_loop ();
   }
 #endif 

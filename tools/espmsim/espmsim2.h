@@ -1,7 +1,7 @@
 #ifndef CPWINDOW2 
 #define CPWINDOW2
 
-#include<lxrad/lxrad.h>
+#include<lxrad.h>
 
 class CPWindow2:public CPWindow
 {
