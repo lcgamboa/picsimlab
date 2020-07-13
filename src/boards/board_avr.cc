@@ -31,6 +31,38 @@
 
 #include"../picsimlab1.h"
 
+//gdb debug hack stuff
+extern "C"
+{
+#define WATCH_LIMIT (32)
+
+ typedef struct
+ {
+  uint32_t len; /**< How many points are taken (points[0] .. points[len - 1]). */
+
+  struct
+  {
+   uint32_t addr; /**< Which address is watched. */
+   uint32_t size; /**< How large is the watched segment. */
+   uint32_t kind; /**< Bitmask of enum avr_gdb_watch_type values. */
+  } points[WATCH_LIMIT];
+ } avr_gdb_watchpoints_t;
+
+ typedef struct avr_gdb_t
+ {
+  avr_t * avr;
+  int listen; // listen socket
+  int s; // current gdb connection
+
+  avr_gdb_watchpoints_t breakpoints;
+  avr_gdb_watchpoints_t watchpoints;
+ } avr_gdb_t;
+
+
+ void gdb_send_quick_status(avr_gdb_t * g, uint8_t signal);
+ int gdb_network_handler(avr_gdb_t * g, uint32_t dosleep);
+ int gdb_watch_find(const avr_gdb_watchpoints_t * w, uint32_t addr);
+}
 
 unsigned long avr_serial_send(unsigned char c);
 unsigned long avr_serial_rec(unsigned char * c);
@@ -202,6 +234,15 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
 void
 board_avr::MEnd(void)
 {
+ if (avr_debug_type)
+  {
+   avr_deinit_gdb (avr);
+  }
+ else
+  {
+   mplabxd_end ();
+  }
+
  avr_serial_close ();
 
  avr_terminate (avr);
@@ -244,11 +285,6 @@ board_avr::MEnd(void)
  free (avr);
  avr = NULL;
 
-#ifdef AVR_USE_GDB
- avr_deinit_gdb (avr);
-#else 
- mplabxd_end ();
-#endif 
 }
 
 void
@@ -283,32 +319,84 @@ board_avr::MDumpMemory(const char * fname)
  write_ihx_avr (fname);
 }
 
-int
-board_avr::DebugInit(void)
+void
+avr_callback_run_gdb_(avr_t * avr)
 {
-#ifdef AVR_USE_GDB
- avr->gdb_port = 1234;
- //avr->state = cpu_Stopped;
- return avr_gdb_init (avr);
-#else
- return mplabxd_init (this);
-#endif 
+
+ avr_gdb_t * g = avr->gdb;
+
+ if (avr->state == cpu_Running &&
+     gdb_watch_find (&g->breakpoints, avr->pc) != -1)
+  {
+   gdb_send_quick_status (g, 0);
+   avr->state = cpu_Stopped;
+  }
+ else if (avr->state == cpu_StepDone)
+  {
+   gdb_send_quick_status (g, 0);
+   avr->state = cpu_Stopped;
+  }
+
+ // this also sleeps for a bit
+ //gdb_network_handler(g, 0);
+
+ if (avr->state == cpu_Stopped)
+  {
+   gdb_network_handler (g, 0);
+   return;
+  }
+
+ // if we are stepping one instruction, we "run" for one..
+ int step = avr->state == cpu_Step;
+ if (step)
+  avr->state = cpu_Running;
+
+ avr_callback_run_raw (avr);
+
+
+ // if we were stepping, use this state to inform remote gdb
+ if (step)
+  avr->state = cpu_StepDone;
+
+}
+
+int
+board_avr::DebugInit(int dtyppe)
+{
+ avr_debug_type = dtyppe;
+
+ if (avr_debug_type)
+  {
+   avr->gdb_port = 1234;
+   int ret = avr_gdb_init (avr);
+   avr->run = avr_callback_run_gdb_;
+   avr->sleep = avr_callback_sleep_raw_;
+   if (ret)
+    return -1;
+   else
+    return 1;
+  }
+ else
+  {
+   return !mplabxd_init (this) - 1;
+  }
 }
 
 void
 board_avr::DebugLoop(void)
 {
-#ifdef AVR_USE_GDB
-  if (Window1.Get_mcupwr ())
-  {
-   //prog_loop(&pic);
-  }
-#else 
  if (Window1.Get_mcupwr ())
   {
-   mplabxd_loop ();
+   if (avr_debug_type)
+    {
+     // this also sleeps for a bit
+     gdb_network_handler (avr->gdb, 0);
+    }
+   else
+    {
+     mplabxd_loop ();
+    }
   }
-#endif 
 }
 
 int
@@ -764,7 +852,7 @@ board_avr::MSetAPin(int pin, float value)
  if (String (avr->mmcu).compare (lxT ("atmega2560")) == 0)
   {
    switch (pin)
-    { 
+    {
     case 82:
      pins[pin - 1].ptype = PT_ANALOG;
      avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 15), (int) (value * 1000));
