@@ -10,5 +10,7 @@ var class_c_p_window3 =
     [ "combo3", "class_c_p_window3.html#afd3770ec45b5671ca9ac9f008a6ecf55", null ],
     [ "label1", "class_c_p_window3.html#a1de956a484a3ee8970943ea8e6227094", null ],
     [ "label2", "class_c_p_window3.html#ae7f3515db43db1b703230f4451fd04d0", null ],
-    [ "label3", "class_c_p_window3.html#a96dc8bd4a50055f6b8136cb313aacac9", null ]
+    [ "label3", "class_c_p_window3.html#a96dc8bd4a50055f6b8136cb313aacac9", null ],
+    [ "label4", "class_c_p_window3.html#ae644be3931e76a635a654839ac187df8", null ],
+    [ "spin1", "class_c_p_window3.html#affbc2701812f477bc0c7c9967ab2088a", null ]
 ];

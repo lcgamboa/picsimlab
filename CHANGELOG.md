@@ -2,6 +2,10 @@
 
 ### New
 
+* Menu option to kick load Arduino bootloader. [lcgamboa]
+
+* Support to change debug TCP port. [lcgamboa]
+
 * Support to chose AVR debugger type. [lcgamboa]
 
 * Support to atmega2560. [lcgamboa]
