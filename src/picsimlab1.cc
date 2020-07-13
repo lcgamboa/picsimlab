@@ -355,6 +355,11 @@ CPWindow1::Configure(CControl * control, const char * home)
          togglebutton1.SetCheck (debug);
         }
 
+       if (!strcmp (name, "debugt"))
+        {
+         sscanf (value, "%i", &debug_type);
+        }
+
        if (!strcmp (name, "osc_on"))
         {
          sscanf (value, "%i", &osc_on);
@@ -467,14 +472,26 @@ CPWindow1::Configure(CControl * control, const char * home)
 #else 
  if (debug)
   {
-   if (pboard->DebugInit () == 0)
-    statusbar1.SetField (1, status + lxT ("    Debug: On"));
+   int ret=pboard->DebugInit (debug_type);
+   if ( ret < 0)
+    {
+     statusbar1.SetField (1, status + lxT ("  Debug: Error"));
+    }
    else
-    statusbar1.SetField (1, status + lxT ("    Debug: Error"));
+    {
+     if(ret)
+      {
+         statusbar1.SetField (1, status + lxT ("  Debug: GDB"));
+      }
+      else
+      {
+         statusbar1.SetField (1, status + lxT ("  Debug: MPLABX")); 
+      }
+    }
   }
  else
   {
-   statusbar1.SetField (1, status + lxT ("    Debug: Off"));
+   statusbar1.SetField (1, status + lxT ("  Debug: Off"));
   }
 #endif
 
@@ -572,6 +589,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
  saveprefs (lxT ("lab"), String ().Format ("%i", lab));
  saveprefs (lxT ("clock"), combo1.GetText ());
  saveprefs (lxT ("debug"), itoa (debug));
+ saveprefs (lxT ("debugt"), itoa (debug_type));
  saveprefs (lxT ("position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
  saveprefs (lxT ("osc_on"), itoa (pboard->GetUseOscilloscope ()));
  saveprefs (lxT ("spare_on"), itoa (pboard->GetUseSpareParts ()));
@@ -639,9 +657,9 @@ CPWindow1::filedialog1_EvOnClose(int retId)
 {
  pa = mcupwr;
  mcupwr = 0;
- 
- while(status.st[1] & ST_TH)usleep(100);//wait thread
- 
+
+ while (status.st[1] & ST_TH)usleep (100); //wait thread
+
  if (retId && (filedialog1.GetType () == (lxFD_OPEN | lxFD_CHANGE_DIR)))
   {
    pboard->MEnd ();
@@ -682,25 +700,27 @@ CPWindow1::filedialog1_EvOnClose(int retId)
  if (retId && (filedialog1.GetType () == (lxFD_SAVE | lxFD_CHANGE_DIR)))
   {
    pboard->MDumpMemory (filedialog1.GetFileName ());
-   #ifdef __EMSCRIPTEN__
-   EM_ASM_({
-	   var filename=UTF8ToString($0);
-           var buf = FS.readFile(filename);
-           var blob = new Blob([buf],  {"type" : "application/octet-stream" });
-           var text = URL.createObjectURL(blob);
+#ifdef __EMSCRIPTEN__
+   EM_ASM_ ({
+            var filename = UTF8ToString ($0);
+            var buf = FS.readFile (filename);
+            var blob = new Blob ([buf],
+             {
+              "type" : "application/octet-stream" });
+            var text = URL.createObjectURL (blob);
 
-	   var element = document.createElement('a');
-           element.setAttribute('href', text);
-           element.setAttribute('download', filename);
+            var element = document.createElement ('a');
+            element.setAttribute ('href', text);
+            element.setAttribute ('download', filename);
 
-           element.style.display = 'none';
-           document.body.appendChild(element);
+            element.style.display = 'none';
+            document.body.appendChild (element);
 
-           element.click();
+            element.click ();
 
-           document.body.removeChild(element);
-           URL.revokeObjectURL(text);
-	  },filedialog1.GetFileName ().c_str ());
+            document.body.removeChild (element);
+            URL.revokeObjectURL (text);
+   }, filedialog1.GetFileName ().c_str ());
 #endif 
   }
 
@@ -1075,6 +1095,7 @@ CPWindow1::filedialog2_EvOnClose(int retId)
    saveprefs (lxT ("lab"), String ().Format ("%i", lab));
    saveprefs (lxT ("clock"), combo1.GetText ());
    saveprefs (lxT ("debug"), itoa (debug));
+   saveprefs (lxT ("debugt"), itoa (debug_type));
    saveprefs (lxT ("position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
    saveprefs (lxT ("osc_on"), itoa (pboard->GetUseOscilloscope ()));
    saveprefs (lxT ("spare_on"), itoa (pboard->GetUseSpareParts ()));
@@ -1112,28 +1133,30 @@ CPWindow1::filedialog2_EvOnClose(int retId)
    snprintf (fname, 1279, "%s/picsimlab.ini", home);
    prefs.Clear ();
    prefs.LoadFromFile (fname);
-   
+
 #ifdef __EMSCRIPTEN__
-   EM_ASM_({
-	   var filename=UTF8ToString($0);
-           var buf = FS.readFile(filename);
-           var blob = new Blob([buf],  {"type" : "application/octet-stream" });
-           var text = URL.createObjectURL(blob);
+   EM_ASM_ ({
+            var filename = UTF8ToString ($0);
+            var buf = FS.readFile (filename);
+            var blob = new Blob ([buf],
+             {
+              "type" : "application/octet-stream" });
+            var text = URL.createObjectURL (blob);
 
-	   var element = document.createElement('a');
-           element.setAttribute('href', text);
-           element.setAttribute('download', filename);
+            var element = document.createElement ('a');
+            element.setAttribute ('href', text);
+            element.setAttribute ('download', filename);
 
-           element.style.display = 'none';
-           document.body.appendChild(element);
+            element.style.display = 'none';
+            document.body.appendChild (element);
 
-           element.click();
+            element.click ();
 
-           document.body.removeChild(element);
-           URL.revokeObjectURL(text);
-	  },filedialog2.GetFileName ().c_str ());
+            document.body.removeChild (element);
+            URL.revokeObjectURL (text);
+   }, filedialog2.GetFileName ().c_str ());
 #endif 
-   
+
   }
 
 }
@@ -1210,21 +1233,21 @@ extern "C"
  {
   if (strstr (fname, ".pzw"))
    {
-    printf("Loading .pzw...\n");
+    printf ("Loading .pzw...\n");
     Window1.filedialog2.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
     Window1.filedialog2.SetFileName (fname);
     Window1.filedialog2_EvOnClose (1);
    }
   else if (strstr (fname, ".hex"))
    {
-    printf("Loading .hex...\n");
+    printf ("Loading .hex...\n");
     Window1.filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
     Window1.filedialog1.SetFileName (fname);
     Window1.filedialog1_EvOnClose (1);
    }
   else
    {
-    printf("Unknow file %s !!\n",fname);
+    printf ("Unknow file %s !!\n", fname);
    }
  }
 }

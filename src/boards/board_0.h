@@ -41,7 +41,7 @@ class cboard_0:public board_pic, public board_avr
       int ptype;
       lxBitmap * micbmp;
    public:
-      int DebugInit(void); 
+      int DebugInit(int dtyppe); 
       void DebugLoop(void);
       int CpuInitialized(void);
       void MSetSerial(const char * port);

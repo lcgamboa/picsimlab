@@ -33,7 +33,7 @@
 class board_pic: virtual public board
 {
   public:
-      int DebugInit(void); 
+      int DebugInit(int dtyppe); 
       void DebugLoop(void);
       int CpuInitialized(void);
       void MSetSerial(const char * port);

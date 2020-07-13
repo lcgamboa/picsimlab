@@ -517,15 +517,15 @@ cboard_0::Run_CPU(void)
 //class dependent
 
 int
-cboard_0::DebugInit(void)
+cboard_0::DebugInit(int dtyppe)
 {
  switch (ptype)
   {
   case _PIC:
-   return board_pic::DebugInit ();
+   return board_pic::DebugInit (dtyppe);
    break;
   case _AVR:
-   return board_avr::DebugInit ();
+   return board_avr::DebugInit (dtyppe);
    break;
   }
  return 0;

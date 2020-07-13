@@ -38,54 +38,55 @@ extern char PROGDEVICE[100];
 
 extern char SERIALDEVICE[100];
 
-char * serial_list (void);
+char * serial_list(void);
 
 //Implementation
 
 void
 CPWindow3::_EvOnCreate(CControl * control)
 {
-  combo1.SetText(String::FromAscii(SERIALDEVICE));
+ combo1.SetText (String::FromAscii (SERIALDEVICE));
 #ifdef _USE_PICSTARTP_  
-  combo2.SetText(String::FromAscii(PROGDEVICE));
-  combo2.SetVisible (true);
-  label2.SetVisible (true);
+ combo2.SetText (String::FromAscii (PROGDEVICE));
+ combo2.SetVisible (true);
+ label2.SetVisible (true);
 #else  
-  combo2.SetVisible (false);
-  label2.SetVisible (false);
+ combo2.SetVisible (false);
+ label2.SetVisible (false);
 #endif
 
 }
 
-
 void
-CPWindow3::button1_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state)
+CPWindow3::button1_EvMouseButtonClick(CControl * control, uint button, uint x, uint y, uint state)
 {
-  int osc_on= Window1.GetBoard()->GetUseOscilloscope();
-  int spare_on= Window1.GetBoard()->GetUseSpareParts();
-  
-  #ifdef _USE_PICSTARTP_ 
-  if(combo1.GetText()==combo2.GetText())
-  {
-    Message(lxT("Use diferent ports!"));
-    return;
-  }	
-  #endif
-  strcpy(SERIALDEVICE,(char*)combo1.GetText().char_str());
-#ifdef _USE_PICSTARTP_
-  strcpy(PROGDEVICE,(char*)combo2.GetText().char_str());
-#endif
-  Window1._EvOnDestroy(control);
-  Window1._EvOnCreate(control);
-  
-  if(osc_on) Window1.menu1_Modules_Oscilloscope_EvMenuActive(this);
-  if(spare_on) Window1.menu1_Modules_Spareparts_EvMenuActive(this);
+ int osc_on = Window1.GetBoard ()->GetUseOscilloscope ();
+ int spare_on = Window1.GetBoard ()->GetUseSpareParts ();
 
-  WDestroy();
+ Window1.Set_debug_type (combo3.GetText ().compare ("GDB") == 0);
+ 
+#ifdef _USE_PICSTARTP_ 
+ if (combo1.GetText () == combo2.GetText ())
+  {
+   Message (lxT ("Use diferent ports!"));
+   return;
+  }
+#endif
+ strcpy (SERIALDEVICE, (char*) combo1.GetText ().char_str ());
+#ifdef _USE_PICSTARTP_
+ strcpy (PROGDEVICE, (char*) combo2.GetText ().char_str ());
+#endif
+ Window1._EvOnDestroy (control);
+ Window1._EvOnCreate (control);
+
+ if (osc_on) Window1.menu1_Modules_Oscilloscope_EvMenuActive (this);
+ if (spare_on) Window1.menu1_Modules_Spareparts_EvMenuActive (this);
+
+ WDestroy ();
 }
 
 void
-CPWindow3::_EvOnShow (CControl * control)
+CPWindow3::_EvOnShow(CControl * control)
 {
 
  char * resp = serial_list ();
@@ -93,13 +94,13 @@ CPWindow3::_EvOnShow (CControl * control)
  if (resp)
   {
    String temp;
-   temp=combo1.GetText ();
+   temp = combo1.GetText ();
    combo1.SetItems (resp);
-   combo1.SetText (temp);  
+   combo1.SetText (temp);
 
-   temp=combo2.GetText ();
+   temp = combo2.GetText ();
    combo2.SetItems (resp);
-   combo2.SetText (temp);  
+   combo2.SetText (temp);
 
    free (resp);
   }
@@ -107,7 +108,15 @@ CPWindow3::_EvOnShow (CControl * control)
   {
    printf ("No serial ports found!\n");
   }
- 
+
+ if (Window1.Get_debug_type ())
+  {
+   combo3.SetText ("GDB");
+  }
+ else
+  {
+   combo3.SetText ("MPLABX");
+  }
 }
 
 

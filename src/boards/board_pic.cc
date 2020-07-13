@@ -146,9 +146,9 @@ board_pic::MDumpMemory(const char * fname)
 }
 
 int
-board_pic::DebugInit(void)
+board_pic::DebugInit(int dtyppe) //argument not used in picm only mplabx
 {
- return mplabxd_init (this);
+ return !mplabxd_init (this) -1 ;
 }
 
 void

@@ -43,7 +43,7 @@ class board_avr: virtual public board
 {
   public:
       board_avr(void);//Called once on board creation
-      int DebugInit(void); 
+      int DebugInit(int dtyppe); 
       void DebugLoop(void);
       int CpuInitialized(void);
       void MSetSerial(const char * port);
@@ -105,6 +105,7 @@ class board_avr: virtual public board
       unsigned char checksum(char* str);
       int read_ihx_avr(const char * fname, int leeprom);
       int write_ihx_avr(const char * fname);  
+      int avr_debug_type;
 };
 
 

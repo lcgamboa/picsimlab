@@ -168,6 +168,13 @@ public:
     double GetScale(void) {
         return scale;
     };
+    
+    /**
+     * @brief  Return the selected debugger type
+     */
+    int Get_debug_type(void) {
+        return debug_type;
+    };
 
     /**
      * @brief  Return actual power status of microcontroller ON/OFF
@@ -211,6 +218,11 @@ public:
     void Set_mcurst(int pr) {
         mcurst = pr;
     };
+    
+    void Set_debug_type(int dt) {
+        debug_type = dt;
+    };
+    
     void Set_mcudbg(int pd);
 
     void SetPATH(String path) {
@@ -259,6 +271,7 @@ private:
     int mcurst;
     int mcudbg;
     int debug;
+    int debug_type;
     int osc_on;
     int spare_on;
 

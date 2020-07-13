@@ -204,7 +204,7 @@ class board
      /**
      * @brief Start debug support  
      */ 
-      virtual int DebugInit(void)=0;
+      virtual int DebugInit(int dtyppe)=0;
         
      /**
      * @brief debug step (pooling)  

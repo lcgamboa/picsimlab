@@ -37,6 +37,8 @@ class CPWindow3:public CPWindow
   CButton button1;
   CCombo combo1;
   CCombo combo2;
+  CLabel label3;
+  CCombo combo3;
   /*#Events*/
   void _EvOnCreate(CControl * control);
   void _EvOnShow(CControl * control);

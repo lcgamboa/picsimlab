@@ -47,8 +47,8 @@ CPWindow3::CPWindow3(void)
   label1.SetClass(lxT("CLabel"));
   label1.SetName(lxT("label1"));
   label1.SetTag(0);
-  label1.SetX(50);
-  label1.SetY(55);
+  label1.SetX(49);
+  label1.SetY(39);
   label1.SetWidth(87);
   label1.SetHeight(20);
   label1.SetHint(lxT(""));
@@ -63,8 +63,8 @@ CPWindow3::CPWindow3(void)
   label2.SetClass(lxT("CLabel"));
   label2.SetName(lxT("label2"));
   label2.SetTag(0);
-  label2.SetX(51);
-  label2.SetY(105);
+  label2.SetX(49);
+  label2.SetY(71);
   label2.SetWidth(88);
   label2.SetHeight(20);
   label2.SetHint(lxT(""));
@@ -79,8 +79,8 @@ CPWindow3::CPWindow3(void)
   button1.SetClass(lxT("CButton"));
   button1.SetName(lxT("button1"));
   button1.SetTag(0);
-  button1.SetX(126);
-  button1.SetY(156);
+  button1.SetX(125);
+  button1.SetY(146);
   button1.SetWidth(65);
   button1.SetHeight(28);
   button1.SetHint(lxT(""));
@@ -95,8 +95,8 @@ CPWindow3::CPWindow3(void)
   combo1.SetClass(lxT("CCombo"));
   combo1.SetName(lxT("combo1"));
   combo1.SetTag(0);
-  combo1.SetX(144);
-  combo1.SetY(53);
+  combo1.SetX(143);
+  combo1.SetY(37);
   combo1.SetWidth(137);
   combo1.SetHeight(26);
   combo1.SetHint(lxT(""));
@@ -112,8 +112,8 @@ CPWindow3::CPWindow3(void)
   combo2.SetClass(lxT("CCombo"));
   combo2.SetName(lxT("combo2"));
   combo2.SetTag(0);
-  combo2.SetX(145);
-  combo2.SetY(103);
+  combo2.SetX(144);
+  combo2.SetY(68);
   combo2.SetWidth(137);
   combo2.SetHeight(26);
   combo2.SetHint(lxT(""));
@@ -124,6 +124,39 @@ CPWindow3::CPWindow3(void)
   combo2.SetText(lxT(""));
   combo2.SetReadOnly(0);
   CreateChild(&combo2);
+  //label3
+  label3.SetFOwner(this);
+  label3.SetClass(lxT("CLabel"));
+  label3.SetName(lxT("label3"));
+  label3.SetTag(0);
+  label3.SetX(51);
+  label3.SetY(101);
+  label3.SetWidth(87);
+  label3.SetHeight(20);
+  label3.SetHint(lxT(""));
+  label3.SetEnable(1);
+  label3.SetVisible(1);
+  label3.SetPopupMenu(NULL);
+  label3.SetText(lxT("AVR DBG:"));
+  label3.SetAlign(1);
+  CreateChild(&label3);
+  //combo3
+  combo3.SetFOwner(this);
+  combo3.SetClass(lxT("CCombo"));
+  combo3.SetName(lxT("combo3"));
+  combo3.SetTag(0);
+  combo3.SetX(144);
+  combo3.SetY(98);
+  combo3.SetWidth(137);
+  combo3.SetHeight(26);
+  combo3.SetHint(lxT(""));
+  combo3.SetEnable(1);
+  combo3.SetVisible(1);
+  combo3.SetPopupMenu(NULL);
+  combo3.SetItems(lxT("MPLABX,GDB,"));
+  combo3.SetText(lxT("MPLABX"));
+  combo3.SetReadOnly(0);
+  CreateChild(&combo3);
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!
 };
