@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['board_183',['board',['../classboard.html',1,'']]],
-  ['board_5favr_184',['board_avr',['../classboard__avr.html',1,'']]],
-  ['board_5fpic_185',['board_pic',['../classboard__pic.html',1,'']]]
+  ['avr_5fgdb_5ft_190',['avr_gdb_t',['../structavr__gdb__t.html',1,'']]],
+  ['avr_5fgdb_5fwatchpoints_5ft_191',['avr_gdb_watchpoints_t',['../structavr__gdb__watchpoints__t.html',1,'']]]
 ];

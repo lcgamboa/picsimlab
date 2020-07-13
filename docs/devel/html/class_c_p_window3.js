@@ -7,6 +7,8 @@ var class_c_p_window3 =
     [ "button1", "class_c_p_window3.html#a179d4a2176de2552d02fc1842e630325", null ],
     [ "combo1", "class_c_p_window3.html#ae508085c57803e8189df5409bc047b1a", null ],
     [ "combo2", "class_c_p_window3.html#a0f54b2a2e07f72904655b4ca6c96aac2", null ],
+    [ "combo3", "class_c_p_window3.html#afd3770ec45b5671ca9ac9f008a6ecf55", null ],
     [ "label1", "class_c_p_window3.html#a1de956a484a3ee8970943ea8e6227094", null ],
-    [ "label2", "class_c_p_window3.html#ae7f3515db43db1b703230f4451fd04d0", null ]
+    [ "label2", "class_c_p_window3.html#ae7f3515db43db1b703230f4451fd04d0", null ],
+    [ "label3", "class_c_p_window3.html#a96dc8bd4a50055f6b8136cb313aacac9", null ]
 ];

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['y_363',['Y',['../classpart.html#a2a61f1d2127b6397a4b2fb76495b1451',1,'part']]],
-  ['y1_364',['y1',['../structinput__t.html#ad9fa0d56447e197208859ad1329b2475',1,'input_t::y1()'],['../structoutput__t.html#a3ea90d25dafd4e3f279f3f541a956ffa',1,'output_t::y1()']]],
-  ['y2_365',['y2',['../structinput__t.html#a32554d97aeb8e3e7822322a5a59bfb3e',1,'input_t::y2()'],['../structoutput__t.html#aabca51d7095f7ba0b654cbcfea9cd6b7',1,'output_t::y2()']]]
+  ['use_5foscope_371',['use_oscope',['../classboard.html#a1f5dedbf50d1ebd86af96429a4a3d180',1,'board']]],
+  ['use_5fspare_372',['use_spare',['../classboard.html#ac41e7f65ae979416dd133853774e206e',1,'board']]]
 ];

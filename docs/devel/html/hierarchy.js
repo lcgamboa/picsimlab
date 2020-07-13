@@ -1,6 +1,8 @@
 var hierarchy =
 [
     [ "_info", "struct__info.html", null ],
+    [ "avr_gdb_t", "structavr__gdb__t.html", null ],
+    [ "avr_gdb_watchpoints_t", "structavr__gdb__watchpoints__t.html", null ],
     [ "board", "classboard.html", [
       [ "board_avr", "classboard__avr.html", [
         [ "cboard_0", "classcboard__0.html", null ],

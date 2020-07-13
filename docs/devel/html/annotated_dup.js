@@ -1,6 +1,8 @@
 var annotated_dup =
 [
     [ "_info", "struct__info.html", "struct__info" ],
+    [ "avr_gdb_t", "structavr__gdb__t.html", "structavr__gdb__t" ],
+    [ "avr_gdb_watchpoints_t", "structavr__gdb__watchpoints__t.html", "structavr__gdb__watchpoints__t" ],
     [ "board", "classboard.html", "classboard" ],
     [ "board_avr", "classboard__avr.html", "classboard__avr" ],
     [ "board_pic", "classboard__pic.html", "classboard__pic" ],

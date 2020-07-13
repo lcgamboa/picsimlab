@@ -4,7 +4,7 @@ var classboard =
     [ "~board", "classboard.html#ae0e109ef9bef5c70dd503b7c9032b32a", null ],
     [ "board_Event", "classboard.html#a451cc40f63f39e78f82afd08e0273358", null ],
     [ "CpuInitialized", "classboard.html#a674991a3112843f587302646d2f56e8c", null ],
-    [ "DebugInit", "classboard.html#a8d851283c41b3a4ccac6dea7bc5cae4c", null ],
+    [ "DebugInit", "classboard.html#a0d9a7ccfcd1ab5ea02eb32a186c95746", null ],
     [ "DebugLoop", "classboard.html#aecd35c04c4131a9f0520e024aa7236ed", null ],
     [ "Draw", "classboard.html#a7336467dc738b9e53bca6a843aa138cc", null ],
     [ "EvKeyPress", "classboard.html#a6a45a6e6f2ed67d282ac303abbde1725", null ],

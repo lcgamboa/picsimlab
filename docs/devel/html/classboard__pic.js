@@ -1,7 +1,7 @@
 var classboard__pic =
 [
     [ "CpuInitialized", "classboard__pic.html#a61e3c2bda07e24e03e830dbe93199d04", null ],
-    [ "DebugInit", "classboard__pic.html#a0b7318b905d1bc558c9be43976492e70", null ],
+    [ "DebugInit", "classboard__pic.html#a9404891218c6178f3705ee1636d466c7", null ],
     [ "DebugLoop", "classboard__pic.html#a58ffc0b360e4ceb8dc97a3bcf2596360", null ],
     [ "MDumpMemory", "classboard__pic.html#a3eeb5de2c0183c98962d83d11792dd8f", null ],
     [ "MEnd", "classboard__pic.html#a2f345d8be8bdc2df17fc07c90da82965", null ],

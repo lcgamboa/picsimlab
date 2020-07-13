@@ -2,7 +2,13 @@
 
 ### New
 
+* Support to chose AVR debugger type. [lcgamboa]
+
 * Support to atmega2560. [lcgamboa]
+
+### Fix
+
+* AVR GDB debug speed increased. [lcgamboa]
 
 
 ## v0.8.1 (2020-06-27)

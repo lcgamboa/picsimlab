@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['p_5fmclr_353',['p_MCLR',['../classboard.html#a1032804a2ca54d248911d4fdc1ee860a',1,'board']]],
-  ['proc_354',['Proc',['../classboard.html#af7dd22eddfccdc76089e08f1394f748f',1,'board']]]
+  ['name_363',['name',['../structinput__t.html#a3b1ff707fb82e2a731d3b6097eaa313e',1,'input_t::name()'],['../structoutput__t.html#a7cf3bb99ac5c2da3c4a9f3767c2c6534',1,'output_t::name()']]]
 ];

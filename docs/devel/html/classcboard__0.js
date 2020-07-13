@@ -3,7 +3,7 @@ var classcboard__0 =
     [ "cboard_0", "classcboard__0.html#afc210cf8d967da1ab0bf5b31cd917c25", null ],
     [ "~cboard_0", "classcboard__0.html#aa5052233d72a71e053fe1022be8853c4", null ],
     [ "CpuInitialized", "classcboard__0.html#a049d6514e28ec38d2d365e26ddfa9f0d", null ],
-    [ "DebugInit", "classcboard__0.html#a7176e72768943719a99b0c769a79bda9", null ],
+    [ "DebugInit", "classcboard__0.html#ac933e24895973ab63d765c7410e5fee2", null ],
     [ "DebugLoop", "classcboard__0.html#a6ca6abc22b6a0ad1d3c4f40dc05bd0fa", null ],
     [ "Draw", "classcboard__0.html#aef5dc28a144e8e1c9e269f84a6799b56", null ],
     [ "EvKeyPress", "classcboard__0.html#a6ab74b0f350949bf2a43cf6b261f8119", null ],

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['use_5foscope_169',['use_oscope',['../classboard.html#a1f5dedbf50d1ebd86af96429a4a3d180',1,'board']]],
-  ['use_5fspare_170',['use_spare',['../classboard.html#ac41e7f65ae979416dd133853774e206e',1,'board']]]
+  ['time_175',['time',['../classcpart__servo.html#a143b73817ed78ff25408bd0eec5f4755',1,'cpart_servo']]]
 ];
