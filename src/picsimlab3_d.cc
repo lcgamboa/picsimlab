@@ -155,7 +155,7 @@ CPWindow3::CPWindow3(void)
   combo3.SetPopupMenu(NULL);
   combo3.SetItems(lxT("MDB,GDB,"));
   combo3.SetText(lxT("MDB"));
-  combo3.SetReadOnly(1);
+  combo3.SetReadOnly(0);
   CreateChild(&combo3);
   //label4
   label4.SetFOwner(this);
