@@ -75,6 +75,7 @@ board_avr::board_avr(void)
 {
  avr = NULL;
  serial_irq = NULL;
+ avr_debug_type=0;
 }
 
 void
@@ -367,7 +368,7 @@ board_avr::DebugInit(int dtyppe)
 
  if (avr_debug_type)
   {
-   avr->gdb_port = 1234;
+   avr->gdb_port = Window1.Get_debug_port ();
    int ret = avr_gdb_init (avr);
    avr->run = avr_callback_run_gdb_;
    avr->sleep = avr_callback_sleep_raw_;
@@ -378,7 +379,7 @@ board_avr::DebugInit(int dtyppe)
   }
  else
   {
-   return !mplabxd_init (this) - 1;
+   return !mplabxd_init (this, Window1.Get_debug_port ()) - 1;
   }
 }
 

@@ -79,8 +79,8 @@ CPWindow3::CPWindow3(void)
   button1.SetClass(lxT("CButton"));
   button1.SetName(lxT("button1"));
   button1.SetTag(0);
-  button1.SetX(125);
-  button1.SetY(146);
+  button1.SetX(123);
+  button1.SetY(173);
   button1.SetWidth(65);
   button1.SetHeight(28);
   button1.SetHint(lxT(""));
@@ -153,10 +153,45 @@ CPWindow3::CPWindow3(void)
   combo3.SetEnable(1);
   combo3.SetVisible(1);
   combo3.SetPopupMenu(NULL);
-  combo3.SetItems(lxT("MPLABX,GDB,"));
-  combo3.SetText(lxT("MPLABX"));
-  combo3.SetReadOnly(0);
+  combo3.SetItems(lxT("MDB,GDB,"));
+  combo3.SetText(lxT("MDB"));
+  combo3.SetReadOnly(1);
   CreateChild(&combo3);
+  //label4
+  label4.SetFOwner(this);
+  label4.SetClass(lxT("CLabel"));
+  label4.SetName(lxT("label4"));
+  label4.SetTag(0);
+  label4.SetX(31);
+  label4.SetY(132);
+  label4.SetWidth(109);
+  label4.SetHeight(20);
+  label4.SetHint(lxT(""));
+  label4.SetEnable(1);
+  label4.SetVisible(1);
+  label4.SetColor(lxT("#000001"));
+  label4.SetPopupMenu(NULL);
+  label4.SetText(lxT("DBG TCP Port:"));
+  label4.SetAlign(1);
+  CreateChild(&label4);
+  //spin1
+  spin1.SetFOwner(this);
+  spin1.SetClass(lxT("CSpin"));
+  spin1.SetName(lxT("spin1"));
+  spin1.SetTag(0);
+  spin1.SetX(143);
+  spin1.SetY(129);
+  spin1.SetWidth(139);
+  spin1.SetHeight(26);
+  spin1.SetHint(lxT(""));
+  spin1.SetEnable(1);
+  spin1.SetVisible(1);
+  spin1.SetColor(lxT("#000001"));
+  spin1.SetPopupMenu(NULL);
+  spin1.SetValue(1234);
+  spin1.SetMin(0);
+  spin1.SetMax(65535);
+  CreateChild(&spin1);
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!
 };

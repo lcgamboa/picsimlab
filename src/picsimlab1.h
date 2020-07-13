@@ -175,6 +175,13 @@ public:
     int Get_debug_type(void) {
         return debug_type;
     };
+    
+    /**
+     * @brief  Return the selected debugger port
+     */
+    unsigned short Get_debug_port(void) {
+        return debug_port;
+    };
 
     /**
      * @brief  Return actual power status of microcontroller ON/OFF
@@ -221,6 +228,10 @@ public:
     
     void Set_debug_type(int dt) {
         debug_type = dt;
+    };
+    
+    void Set_debug_port(unsigned short dp) {
+        debug_port = dp;
     };
     
     void Set_mcudbg(int pd);
@@ -272,6 +283,7 @@ private:
     int mcudbg;
     int debug;
     int debug_type;
+    unsigned short debug_port;
     int osc_on;
     int spare_on;
 

@@ -25,6 +25,8 @@
 
 //Configuration window
 
+#include <lxrad/cspin.h>
+
 #include"picsimlab3.h"
 #include"picsimlab3_d.cc"
 
@@ -64,6 +66,8 @@ CPWindow3::button1_EvMouseButtonClick(CControl * control, uint button, uint x, u
  int spare_on = Window1.GetBoard ()->GetUseSpareParts ();
 
  Window1.Set_debug_type (combo3.GetText ().compare ("GDB") == 0);
+ 
+ Window1.Set_debug_port (spin1.GetValue ());
  
 #ifdef _USE_PICSTARTP_ 
  if (combo1.GetText () == combo2.GetText ())
@@ -117,6 +121,8 @@ CPWindow3::_EvOnShow(CControl * control)
   {
    combo3.SetText ("MPLABX");
   }
+ 
+  spin1.SetValue (Window1.Get_debug_port ());
 }
 
 

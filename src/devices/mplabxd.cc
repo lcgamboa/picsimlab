@@ -59,8 +59,7 @@ WSADATA wsaData;
 #include<stdlib.h>
 #include<string.h>
 #include<unistd.h>
-//defines
-#define        TCP_SERV_PORT        1234
+
 
 typedef struct sockaddr sockaddr;
 
@@ -154,7 +153,7 @@ static unsigned char *ramsend = NULL;
 static unsigned char *ramreceived = NULL;
 
 int
-mplabxd_init(board * mboard)
+mplabxd_init(board * mboard, unsigned short tcpport)
 {
  struct sockaddr_in serv;
 
@@ -186,7 +185,7 @@ mplabxd_init(board * mboard)
    memset (&serv, 0, sizeof (serv));
    serv.sin_family = AF_INET;
    serv.sin_addr.s_addr = htonl (INADDR_ANY);
-   serv.sin_port = htons (TCP_SERV_PORT);
+   serv.sin_port = htons (tcpport);
 
    if (bind (listenfd, (sockaddr *) & serv, sizeof (serv)) < 0)
     {

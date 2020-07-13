@@ -29,7 +29,7 @@
 #include "../boards/board.h"
 
 //mplabx debugger
-int mplabxd_init(board * mboard);
+int mplabxd_init(board * mboard, unsigned short tcpport);
 int mplabxd_loop(void);
 void mplabxd_end(void);
 int mplabxd_testbp(void);

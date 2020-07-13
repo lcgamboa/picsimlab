@@ -359,6 +359,11 @@ CPWindow1::Configure(CControl * control, const char * home)
         {
          sscanf (value, "%i", &debug_type);
         }
+       
+       if (!strcmp (name, "debugp"))
+        {
+         sscanf (value, "%hu", &debug_port);
+        }
 
        if (!strcmp (name, "osc_on"))
         {
@@ -475,23 +480,23 @@ CPWindow1::Configure(CControl * control, const char * home)
    int ret=pboard->DebugInit (debug_type);
    if ( ret < 0)
     {
-     statusbar1.SetField (1, status + lxT ("  Debug: Error"));
+     statusbar1.SetField (1, status + lxT ("Debug: Error"));
     }
    else
     {
      if(ret)
       {
-         statusbar1.SetField (1, status + lxT ("  Debug: GDB"));
+         statusbar1.SetField (1, status + lxT ("Debug: GDB:")+itoa(debug_port));
       }
       else
       {
-         statusbar1.SetField (1, status + lxT ("  Debug: MPLABX")); 
+         statusbar1.SetField (1, status + lxT ("Debug: MDB:")+itoa(debug_port)); 
       }
     }
   }
  else
   {
-   statusbar1.SetField (1, status + lxT ("  Debug: Off"));
+   statusbar1.SetField (1, status + lxT ("Debug: Off"));
   }
 #endif
 
@@ -590,6 +595,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
  saveprefs (lxT ("clock"), combo1.GetText ());
  saveprefs (lxT ("debug"), itoa (debug));
  saveprefs (lxT ("debugt"), itoa (debug_type));
+ saveprefs (lxT ("debugp"), itoa (debug_port));
  saveprefs (lxT ("position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
  saveprefs (lxT ("osc_on"), itoa (pboard->GetUseOscilloscope ()));
  saveprefs (lxT ("spare_on"), itoa (pboard->GetUseSpareParts ()));
@@ -1096,6 +1102,7 @@ CPWindow1::filedialog2_EvOnClose(int retId)
    saveprefs (lxT ("clock"), combo1.GetText ());
    saveprefs (lxT ("debug"), itoa (debug));
    saveprefs (lxT ("debugt"), itoa (debug_type));
+   saveprefs (lxT ("debugp"), itoa (debug_port));
    saveprefs (lxT ("position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
    saveprefs (lxT ("osc_on"), itoa (pboard->GetUseOscilloscope ()));
    saveprefs (lxT ("spare_on"), itoa (pboard->GetUseSpareParts ()));
