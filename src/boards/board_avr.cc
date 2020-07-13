@@ -75,7 +75,7 @@ board_avr::board_avr(void)
 {
  avr = NULL;
  serial_irq = NULL;
- avr_debug_type=0;
+ avr_debug_type = 0;
 }
 
 void

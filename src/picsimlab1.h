@@ -97,6 +97,7 @@ public:
     CItemMenu menu1_Tools_SerialTerm;
     CItemMenu menu1_Tools_SerialRemoteTank;
     CItemMenu menu1_Tools_Esp8266ModemSimulator;
+    CItemMenu menu1_Tools_ArduinoBootloader;
     CItemMenu menu1_Help_Contents;
     CItemMenu menu1_Help_Examples;
     CItemMenu menu1_Help_About;
@@ -127,6 +128,7 @@ public:
     void menu1_Tools_SerialTerm_EvMenuActive(CControl * control);
     void menu1_Tools_SerialRemoteTank_EvMenuActive(CControl * control);
     void menu1_Tools_Esp8266ModemSimulator_EvMenuActive(CControl * control);
+    void menu1_Tools_ArduinoBootloader_EvMenuActive(CControl * control);
     void menu1_Help_Contents_EvMenuActive(CControl * control);
     void menu1_Help_Examples_EvMenuActive(CControl * control);
     void menu1_Help_About_EvMenuActive(CControl * control);
@@ -272,7 +274,7 @@ public:
     void menu1_EvBoard(CControl * control);
     void menu1_EvMicrocontroller(CControl * control);
     void LoadWorkspace(String fnpzw);
-
+    void LoadHexFile(String fname);
 private:
     String share;
 

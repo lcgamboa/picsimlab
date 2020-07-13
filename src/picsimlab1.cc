@@ -359,7 +359,7 @@ CPWindow1::Configure(CControl * control, const char * home)
         {
          sscanf (value, "%i", &debug_type);
         }
-       
+
        if (!strcmp (name, "debugp"))
         {
          sscanf (value, "%hu", &debug_port);
@@ -477,20 +477,20 @@ CPWindow1::Configure(CControl * control, const char * home)
 #else 
  if (debug)
   {
-   int ret=pboard->DebugInit (debug_type);
-   if ( ret < 0)
+   int ret = pboard->DebugInit (debug_type);
+   if (ret < 0)
     {
      statusbar1.SetField (1, status + lxT ("Debug: Error"));
     }
    else
     {
-     if(ret)
+     if (ret)
       {
-         statusbar1.SetField (1, status + lxT ("Debug: GDB:")+itoa(debug_port));
+       statusbar1.SetField (1, status + lxT ("Debug: GDB:") + itoa (debug_port));
       }
-      else
+     else
       {
-         statusbar1.SetField (1, status + lxT ("Debug: MDB:")+itoa(debug_port)); 
+       statusbar1.SetField (1, status + lxT ("Debug: MDB:") + itoa (debug_port));
       }
     }
   }
@@ -513,6 +513,16 @@ CPWindow1::Configure(CControl * control, const char * home)
 
  sprintf (fname, "%s/parts_%02i.pcf", home, lab);
  Window5.LoadConfig (fname);
+
+
+ if ((lab == 0) || (lab == 5))
+  {
+   menu1_Tools_ArduinoBootloader.SetEnable (true);
+  }
+ else
+  {
+   menu1_Tools_ArduinoBootloader.SetEnable (false);
+  }
 
 }
 
@@ -668,35 +678,8 @@ CPWindow1::filedialog1_EvOnClose(int retId)
 
  if (retId && (filedialog1.GetType () == (lxFD_OPEN | lxFD_CHANGE_DIR)))
   {
-   pboard->MEnd ();
-   pboard->MSetSerial (SERIALDEVICE);
 
-   switch (pboard->MInit (pboard->GetProcessorName (), filedialog1.GetFileName ().char_str (), NSTEP * NSTEPKF))
-    {
-    case HEX_NFOUND:
-     Message (lxT ("File not found!"));
-     mcurun = 0;
-     break;
-    case HEX_CHKSUM:
-     Message (lxT ("File checksum error!"));
-     pboard->MEraseFlash ();
-     mcurun = 0;
-     break;
-    case 0:
-     mcurun = 1;
-     break;
-    }
-
-
-   pboard->Reset ();
-
-
-   if (mcurun)
-    SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->GetProcessorName () + lxT (" - ") + basename (filedialog1.GetFileName ()));
-   else
-    SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->GetProcessorName ());
-
-
+   LoadHexFile (filedialog1.GetFileName ());
 
    PATH = filedialog1.GetDir ();
    FNAME = filedialog1.GetFileName ();
@@ -764,6 +747,7 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
 #ifdef EXT_BROWSER_EXAMPLES
  //lxLaunchDefaultBrowser(lxT("file://")+share + lxT ("docs/picsimlab.html"));
  lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/examples/examples_index.html#board_" + itoa (lab) + lxT ("_") + pboard->GetProcessorName ()));
+ WDestroy ();
 #else 
  OldPath = filedialog2.GetDir ();
 
@@ -833,7 +817,7 @@ CPWindow1::menu1_File_Configure_EvMenuActive(CControl * control)
 }
 
 void
-CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
+CPWindow1::LoadHexFile(String fname)
 {
  int pa;
 
@@ -851,7 +835,7 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
  pboard->MEnd ();
  pboard->MSetSerial (SERIALDEVICE);
 
- switch (pboard->MInit (pboard->GetProcessorName (), FNAME.char_str (), NSTEP * NSTEPKF))
+ switch (pboard->MInit (pboard->GetProcessorName (), fname.char_str (), NSTEP * NSTEPKF))
   {
   case HEX_NFOUND:
    Message (lxT ("File not found!"));
@@ -876,11 +860,14 @@ CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
   SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->GetProcessorName ());
 
 
-
-
  mcupwr = pa;
  timer1.SetRunState (1);
+}
 
+void
+CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl * control)
+{
+ LoadHexFile (FNAME);
 }
 
 void
@@ -1198,6 +1185,12 @@ CPWindow1::menu1_Tools_Esp8266ModemSimulator_EvMenuActive(CControl * control)
 #else
  lxExecute ("espmsim", lxEXEC_MAKE_GROUP_LEADER);
 #endif  
+}
+
+void
+CPWindow1::menu1_Tools_ArduinoBootloader_EvMenuActive(CControl * control)
+{
+ LoadHexFile (share + "bootloaders/arduino_" + pboard->GetProcessorName () + ".hex");
 }
 
 void

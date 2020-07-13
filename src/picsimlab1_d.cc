@@ -177,7 +177,7 @@ CPWindow1::CPWindow1(void)
   menu1_Tools.SetName(lxT("menu1_Tools"));
   menu1_Tools.SetTag(0);
   menu1_Tools.SetText(lxT("Tools"));
-  menu1_Tools.SetMenuItems(lxT("Serial Term,Serial Remote Tank,Esp8266 Modem Simulator,"));
+  menu1_Tools.SetMenuItems(lxT("Serial Term,Serial Remote Tank,Esp8266 Modem Simulator,Arduino Bootloader,"));
   menu1.CreateChild(&menu1_Tools);
   //menu1_Help
   menu1_Help.SetFOwner(this);
@@ -307,6 +307,16 @@ CPWindow1::CPWindow1(void)
   menu1_Tools_Esp8266ModemSimulator.SetSubMenu(NULL);
   menu1_Tools_Esp8266ModemSimulator.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Tools_Esp8266ModemSimulator_EvMenuActive;
   menu1_Tools.CreateChild(&menu1_Tools_Esp8266ModemSimulator);
+  //menu1_Tools_ArduinoBootloader
+  menu1_Tools_ArduinoBootloader.SetFOwner(this);
+  menu1_Tools_ArduinoBootloader.SetClass(lxT("CItemMenu"));
+  menu1_Tools_ArduinoBootloader.SetName(lxT("menu1_Tools_ArduinoBootloader"));
+  menu1_Tools_ArduinoBootloader.SetTag(0);
+  menu1_Tools_ArduinoBootloader.SetText(lxT("Arduino Bootloader"));
+  menu1_Tools_ArduinoBootloader.SetEnable(1);
+  menu1_Tools_ArduinoBootloader.SetSubMenu(NULL);
+  menu1_Tools_ArduinoBootloader.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Tools_ArduinoBootloader_EvMenuActive;
+  menu1_Tools.CreateChild(&menu1_Tools_ArduinoBootloader);  
   //menu1_Help_Contents
   menu1_Help_Contents.SetFOwner(this);
   menu1_Help_Contents.SetClass(lxT("CItemMenu"));
