@@ -1075,3 +1075,15 @@ cboard_0::MGetEEPROM_Size(void)
   }
  return 0;
 }
+
+static board * cboard_0_create(void)
+{
+   return new cboard_0();
+}
+
+static void cboard_0_init(void)
+{
+    board_register(0, "Breadboard", cboard_0_create );
+}
+
+board_init(cboard_0_init);

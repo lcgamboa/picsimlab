@@ -26,29 +26,23 @@
 #ifndef BOARDS_DEFS_H
 #define	BOARDS_DEFS_H
 
+#include "board.h"
+#include "board_1.h"
 
-//includes of boards
-#include"board_0.h"
-#include"board_1.h" 
-#include"board_2.h"
-#include"board_3.h"
-#include"board_4.h"
-#include"board_5.h"
-#ifdef _EXPERIMENTAL_
-#include"board_6.h"
-#include"board_7.h"
-#include"board_x.h"
-//number of last board
-#define BOARDS_LAST 9
-#else
-//number of last board
-#define BOARDS_LAST 6
-#endif
+#define board_init(function)  static void __attribute__((constructor)) function(void) 
+
+typedef board * board_create_func(void);
+
+void board_register(int num, const char * name, board_create_func bcreate);
 
 //boards object creation
 board * create_board(int *lab,int *lab_);
 
-extern const char boards_list[BOARDS_LAST][30];
+#define BOARDS_MAX 10
+
+extern int BOARDS_LAST;
+
+extern char boards_list[BOARDS_MAX][30];
 
 #endif	/* BOARDS_DEFS_H */
 

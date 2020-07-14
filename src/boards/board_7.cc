@@ -626,3 +626,16 @@ cboard_7::Run_CPU(void)
  if (use_spare)Window5.PostProcess ();
 }
 
+#ifdef _EXPERIMENTAL_
+static board * cboard_7_create(void)
+{
+   return new cboard_7();
+}
+
+static void cboard_7_init(void)
+{
+    board_register(7, "Curiosity", cboard_7_create );
+}
+
+board_init(cboard_7_init);
+#endif

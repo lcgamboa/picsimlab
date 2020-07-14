@@ -766,3 +766,16 @@ cboard_2::RefreshStatus(void)
   Window1.statusbar1.SetField (2, lxT ("Serial: ") + String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
 }
+
+
+static board * cboard_2_create(void)
+{
+   return new cboard_2();
+}
+
+static void cboard_2_init(void)
+{
+    board_register(2, "K16F", cboard_2_create );
+}
+
+board_init(cboard_2_init);

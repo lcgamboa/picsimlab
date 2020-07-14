@@ -607,3 +607,16 @@ cboard_5::Run_CPU(void)
 
  if (use_spare)Window5.PostProcess ();
 }
+
+
+static board * cboard_5_create(void)
+{
+   return new cboard_5();
+}
+
+static void cboard_5_init(void)
+{
+    board_register(5, "Arduino Uno", cboard_5_create );
+}
+
+board_init(cboard_5_init);

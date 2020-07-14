@@ -663,3 +663,16 @@ cboard_1::ReadPreferences(char *name, char *value)
    Proc = value;
   }
 }
+
+
+static board * cboard_1_create(void)
+{
+   return new cboard_1();
+}
+
+static void cboard_1_init(void)
+{
+    board_register(1, "McLab1", cboard_1_create );
+}
+
+board_init(cboard_1_init);

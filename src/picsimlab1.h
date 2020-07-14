@@ -318,7 +318,7 @@ private:
 
     int ondraw;
 
-    CItemMenu MBoard[BOARDS_LAST];
+    CItemMenu MBoard[BOARDS_MAX];
     CItemMenu MMicro[MAX_MIC];
 
 };

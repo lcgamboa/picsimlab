@@ -433,17 +433,7 @@ pboard=NULL;
 cpustate=CPU_RUNNING;
 
 tgo=0;
- 
-
- 
-  for(int i=0; i <BOARDS_LAST; i++)
-    {
-       MBoard[i].SetFOwner(this);
-       MBoard[i].SetName("Board_"+itoa(i));
-       MBoard[i].SetText(itoa(i)+lxT(" ")+boards_list[i]);
-       MBoard[i].EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_EvBoard;
-       menu1_Board.CreateChild(&MBoard[i]);
-    }    
+   
 
 #ifdef NO_TOOLS
    menu1.DestroyChild (&menu1_Tools);
