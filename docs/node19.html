@@ -1,17 +1,17 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//en">
 
-<!--Converted with LaTeX2HTML 2020 (Released January 1, 2020) -->
+<!--Converted with LaTeX2HTML 2020.2 (Released July 1, 2020) -->
 <HTML lang="en">
 <HEAD>
-<TITLE>Partes Avulsas</TITLE>
-<META NAME="description" CONTENT="Partes Avulsas">
+<TITLE>Depuração com o avr-gdb (ATMEGA)</TITLE>
+<META NAME="description" CONTENT="Depuração com o avr-gdb (ATMEGA)">
 <META NAME="keywords" CONTENT="picsimlab">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
 <META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
-<META NAME="Generator" CONTENT="LaTeX2HTML v2020">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2020.2">
 
 <LINK REL="STYLESHEET" HREF="picsimlab.css">
 
@@ -27,611 +27,50 @@
  HREF="node20.html">
 <IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
 <A
- HREF="node11.html">
+ HREF="node12.html">
 <IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
 <A
  HREF="node18.html">
 <IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
 <BR>
 <B> Next:</B> <A
- HREF="node20.html">Como Fazer (How To's)</A>
+ HREF="node20.html">Osciloscópio</A>
 <B> Up:</B> <A
- HREF="node11.html">Manual em Português</A>
+ HREF="node12.html">Manual em Português</A>
 <B> Previous:</B> <A
- HREF="node18.html">Osciloscópio</A>
+ HREF="node18.html">Integração com a IDE</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A ID="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><A ID="tex2html256"
-  HREF="node19.html#SECTION02810000000000000000">7 Segments Display</A>
-<LI><A ID="tex2html257"
-  HREF="node19.html#SECTION02820000000000000000">Buzzer</A>
-<LI><A ID="tex2html258"
-  HREF="node19.html#SECTION02830000000000000000">D. Transfer Function</A>
-<LI><A ID="tex2html259"
-  HREF="node19.html#SECTION02840000000000000000">Gamepad</A>
-<LI><A ID="tex2html260"
-  HREF="node19.html#SECTION02850000000000000000">IO 74xx595</A>
-<LI><A ID="tex2html261"
-  HREF="node19.html#SECTION02860000000000000000">IO MCP23S17</A>
-<LI><A ID="tex2html262"
-  HREF="node19.html#SECTION02870000000000000000">IO PCF8574</A>
-<LI><A ID="tex2html263"
-  HREF="node19.html#SECTION02880000000000000000">Keypad</A>
-<LI><A ID="tex2html264"
-  HREF="node19.html#SECTION02890000000000000000">LCD hd44780</A>
-<LI><A ID="tex2html265"
-  HREF="node19.html#SECTION028100000000000000000">LCD pcf8833</A>
-<LI><A ID="tex2html266"
-  HREF="node19.html#SECTION028110000000000000000">LCD pcd8544</A>
-<LI><A ID="tex2html267"
-  HREF="node19.html#SECTION028120000000000000000">LED Matrix</A>
-<LI><A ID="tex2html268"
-  HREF="node19.html#SECTION028130000000000000000">LEDs</A>
-<LI><A ID="tex2html269"
-  HREF="node19.html#SECTION028140000000000000000">MEM 24CXXX</A>
-<LI><A ID="tex2html270"
-  HREF="node19.html#SECTION028150000000000000000">Potentiometers</A>
-<LI><A ID="tex2html271"
-  HREF="node19.html#SECTION028160000000000000000">Push Buttons</A>
-<LI><A ID="tex2html272"
-  HREF="node19.html#SECTION028170000000000000000">Push Buttons (Analogic)</A>
-<LI><A ID="tex2html273"
-  HREF="node19.html#SECTION028180000000000000000">RGB LED</A>
-<LI><A ID="tex2html274"
-  HREF="node19.html#SECTION028190000000000000000">RTC ds1307</A>
-<LI><A ID="tex2html275"
-  HREF="node19.html#SECTION028200000000000000000">RTC pfc8563</A>
-<LI><A ID="tex2html276"
-  HREF="node19.html#SECTION028210000000000000000">Servo Motor</A>
-<LI><A ID="tex2html277"
-  HREF="node19.html#SECTION028220000000000000000">Signal Generator</A>
-<LI><A ID="tex2html278"
-  HREF="node19.html#SECTION028230000000000000000">Step Motor</A>
-<LI><A ID="tex2html279"
-  HREF="node19.html#SECTION028240000000000000000">Switchs</A>
-<LI><A ID="tex2html280"
-  HREF="node19.html#SECTION028250000000000000000">Temperature System</A>
-<LI><A ID="tex2html281"
-  HREF="node19.html#SECTION028260000000000000000">VCD dump</A>
-<LI><A ID="tex2html282"
-  HREF="node19.html#SECTION028270000000000000000">VCD dump (Analogic)</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A ID="SECTION02800000000000000000">
-Partes Avulsas</A>
+<H1><A ID="SECTION02700000000000000000">
+Depuração com o avr-gdb (ATMEGA)</A>
 </H1>
 
 <P>
-O PICsimLab possui uma janela que permite a ligação de partes avulsas ao microcontrolador, ela pode ser acessada pelo menu &ldquo;Modules-&gt;Spare parts&rdquo;.
+Com o suporte a depuração habilitado é possível utilizar o avr-gdb para depurar o código utilizado no simulador.
+  Use a janela de configurações para escolher entre o MDB (MPLABX) e o GDB para depuração dos microcontroladores AVR. 
 
 <P>
-A janela principal possui o menu com as seguintes funções:
-
-<UL>
-<LI>File
- 
-<UL>
-<LI>Save configuration - Salva as configurações atuais das partes avulsas em um arquivo .pcf
-</LI>
-<LI>Load configuration - Carrega as configurações de uma arquivo .pcf
-</LI>
-</UL>
-</LI>
-<LI>Add
- 
-<UL>
-<LI>7 Segments Display - <SPAN ID="hue1304">TODO</SPAN>
-</LI>
-<LI>Buzzer - <SPAN ID="hue1306">TODO</SPAN> 
-</LI>
-<LI>D. Transfer Function - <SPAN ID="hue1308">TODO</SPAN>
-</LI>
-<LI>Gamepad - Adicionae um gamepad
-</LI>
-<LI>IO 74xx595 - <SPAN ID="hue1310">TODO</SPAN>
-</LI>
-<LI>IO MCP23S17 - <SPAN ID="hue1312">TODO</SPAN>
-</LI>
-<LI>IO PCF8574 - <SPAN ID="hue1314">TODO</SPAN>
-</LI>
-<LI>Keypad -  <SPAN ID="hue1316">TODO</SPAN>
-</LI>
-<LI>LCD hd44780 - Adiciona um display de texto hd44780
-</LI>
-<LI>LCD pcf8833 - Adiciona um display gráfico colorido pcf8833
-</LI>
-<LI>LCD pcd8544 - Adiciona um display gráfico monocromático pcd8544
-</LI>
-<LI>LED Matrix - <SPAN ID="hue1318">TODO</SPAN>
-</LI>
-<LI>LEDs - Adiciona 8 LEDs vermelhos
-</LI>
-<LI>MEM 24CXXX - <SPAN ID="hue1320">TODO</SPAN>
-</LI>
-<LI>Potentiometers - Adiciona 4 potenciômetros
-</LI>
-<LI>Push Buttons - Adiciona 8 botões de pressionar
-</LI>
-<LI>Push Buttons (Analogic) - <SPAN ID="hue1322">TODO</SPAN>
-</LI>
-<LI>RGB LED - Adiciona 1 LED RGB 
-</LI>
-<LI>RTC ds1307 - <SPAN ID="hue1324">TODO</SPAN>
-</LI>
-<LI>RTC pfc8563 - <SPAN ID="hue1326">TODO</SPAN>
-</LI>
-<LI>Servo Motor - Adiciona um servo motor
-</LI>
-<LI>Signal Generator - <SPAN ID="hue1328">TODO</SPAN>
-</LI>
-<LI>Step Motor - Adiciona um motor de passo
-</LI>
-<LI>Switchs - Adiciona 8 chaves
-</LI>
-<LI>Temperature System - <SPAN ID="hue1330">TODO</SPAN>
-</LI>
-<LI>VCD Dump - <SPAN ID="hue1332">TODO</SPAN>
-</LI>
-<LI>VCD Dump (Analogic) - <SPAN ID="hue1334">TODO</SPAN>
-</LI>
-</UL>
-</LI>
-<LI>Help
- 
-<UL>
-<LI>Contents - Abre a janela de Ajuda
-</LI>
-<LI>About - Mostra mensagem de versão e autor
-</LI>
-</UL>
-</LI>
-</UL>
+Utilize o avr-gdb com o arquivo .elf como parâmetro:
 
 <P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./spare.png"
- ALT="Image spare"> 
-
-</DIV> 
-
-<P>
-Depois de adicionado a parte, com um clique com o botão direito do mouse é possível acessar o menu das opções da parte com as opções:
-
-<UL>
-<LI>Properties - Abre a janela de configuração das conexões
-</LI>
-<LI>Move - Desbloqueia a parte para movimentação
-</LI>
-<LI>Delete - Remove a parte
-</LI>
-</UL>
+<PRE>
+ avr-gdb arquivo_compilado.elf
+</PRE>
+ e o comando abaixo para se conectar:
+ <PRE>
+ target remote localhost:1234
+</PRE>
 
 <P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./spare_pmenu.png"
- ALT="Image spare_pmenu"> 
-
-</DIV> 
+O debug no modo gráfico pode ser feito utilizando a <A ID="tex2html96"
+  HREF="https://www.eclipse.org/">IDE eclipse</A>
+junto com o <A ID="tex2html97"
+  HREF="https://eclipse.baeyens.it/">Sloeber Arduino plugin</A>.
 
 <P>
-
-<H1><A ID="SECTION02810000000000000000">
-7 Segments Display</A>
-</H1>
-<SPAN ID="hue1349">TODO</SPAN>
-<P>
-
-<H1><A ID="SECTION02820000000000000000">
-Buzzer</A>
-</H1>
-<SPAN ID="hue1352">TODO</SPAN>
-<P>
-
-<H1><A ID="SECTION02830000000000000000">
-D. Transfer Function</A>
-</H1>
-<SPAN ID="hue1355">TODO</SPAN>
-<P>
-
-<H1><A ID="SECTION02840000000000000000">
-Gamepad</A>
-</H1>
-
-<P>
-Esta parte é um gamepad com dois eixos analógicos e 7 botões de pressão.
-
-<P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./part_gamepad.png"
- ALT="Image part_gamepad"> 
-
-</DIV> 
-
-<P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./part_gamepad_.png"
- ALT="Image part_gamepad_"> 
-
-</DIV> 
-
-<P>
-
-<H1><A ID="SECTION02850000000000000000">
-IO 74xx595</A>
-</H1>
-<SPAN ID="hue1365">TODO</SPAN>
-<P>
-
-<H1><A ID="SECTION02860000000000000000">
-IO MCP23S17</A>
-</H1>
-<SPAN ID="hue1368">TODO</SPAN>
-<P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./part_MCP23S17.png"
- ALT="Image part_MCP23S17"> 
-
-</DIV> 
-
-<P>
-<A ID="tex2html93"
-  HREF="examples/examples_index.html#IO_MCP23S17">Examples</A>
-<P>
-
-<H1><A ID="SECTION02870000000000000000">
-IO PCF8574</A>
-</H1>
-<SPAN ID="hue1376">TODO</SPAN>
-<P>
-
-<H1><A ID="SECTION02880000000000000000">
-Keypad</A>
-</H1>
-<SPAN ID="hue1379">TODO</SPAN>
-<P>
-
-<H1><A ID="SECTION02890000000000000000">
-LCD hd44780</A>
-</H1>
-
-<P>
-Essa parte é um display de texto de 2 (ou 4 linhas) por 16 colunas.
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./part_hd44780_2x16.png"
- ALT="Image part_hd44780_2x16"> 
-
-</DIV> 
-
-<P>
-
-<H1><A ID="SECTION028100000000000000000">
-LCD pcf8833</A>
-</H1>
-
-<P>
-Essa parte é um display de gráfico colorido de 132x132 pontos.
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./part_pcf8833.png"
- ALT="Image part_pcf8833"> 
-
-</DIV> 
-
-<P>
-
-<H1><A ID="SECTION028110000000000000000">
-LCD pcd8544</A>
-</H1>
-
-<P>
-Essa parte é um display de gráfico monocromático de 48x84 pontos.
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./part_pcd8544.png"
- ALT="Image part_pcd8544"> 
-
-</DIV> 
-
-<P>
-
-<H1><A ID="SECTION028120000000000000000">
-LED Matrix</A>
-</H1>
-<SPAN ID="hue1394">TODO</SPAN>
-<P>
-
-<H1><A ID="SECTION028130000000000000000">
-LEDs</A>
-</H1>
-
-<P>
-Essa parte é uma barra de 8 LEDs vermelhos independentes.
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./part_leds.png"
- ALT="Image part_leds"> 
-
-</DIV> 
-
-<P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./part_leds_.png"
- ALT="Image part_leds_"> 
-
-</DIV> 
-
-<P>
-
-<H1><A ID="SECTION028140000000000000000">
-MEM 24CXXX</A>
-</H1>
-<SPAN ID="hue1404">TODO</SPAN>
-<P>
-
-<H1><A ID="SECTION028150000000000000000">
-Potentiometers</A>
-</H1>
-
-<P>
-Essa parte é formada por 4 potenciômetros ligados entre 0 e 5 Volts, a saída está ligada ao cursor e varia dentro dessa faixa de tensão.
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./part_pot.png"
- ALT="Image part_pot"> 
-
-</DIV> 
-
-<P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./part_pot_.png"
- ALT="Image part_pot_"> 
-
-</DIV> 
-
-<P>
-
-<H1><A ID="SECTION028160000000000000000">
-Push Buttons</A>
-</H1>
-
-<P>
-Esta parte é formada por 8 botões de pressão. Quando pressionado a saída vai para nível lógico &ldquo;1&rdquo;.
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./part_buttons.png"
- ALT="Image part_buttons"> 
-
-</DIV> 
-
-<P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./part_buttons_.png"
- ALT="Image part_buttons_"> 
-
-</DIV> 
-
-<P>
-
-<H1><A ID="SECTION028170000000000000000">
-Push Buttons (Analogic)</A>
-</H1>
-
-<P>
-
-<H1><A ID="SECTION028180000000000000000">
-RGB LED</A>
-</H1>
-
-<P>
-Essa parte é formada por um LED RGB de 4 terminais. Cada cor pode ser acionada de forma independente. 
-Utilizando PWM é possível gerar varias cores através da combinação da 3 cores primárias.  
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./part_rgb.png"
- ALT="Image part_rgb"> 
-
-</DIV> 
-
-<P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./part_rgb_.png"
- ALT="Image part_rgb_"> 
-
-</DIV> 
-
-<P>
-
-<H1><A ID="SECTION028190000000000000000">
-RTC ds1307</A>
-</H1>
-<SPAN ID="hue1429">TODO</SPAN>
-<P>
-
-<H1><A ID="SECTION028200000000000000000">
-RTC pfc8563</A>
-</H1>
-<SPAN ID="hue1432">TODO</SPAN>
-<P>
-
-<H1><A ID="SECTION028210000000000000000">
-Servo Motor</A>
-</H1>
-
-<P>
-O servo motor é um componente que deve ser acionado com um pulso de largura variável de 1ms a 2ms a cada 20 ms. 
-Um pulso de 1ms posiciona o servo a -90º, um de 1,5ms a 0º e um de 2ms a 90º.
-
-<P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./part_servo.png"
- ALT="Image part_servo"> 
-
-</DIV> 
-
-<P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./part_servo_.png"
- ALT="Image part_servo_"> 
-
-</DIV> 
-
-<P>
-
-<H1><A ID="SECTION028220000000000000000">
-Signal Generator</A>
-</H1>
-<SPAN ID="hue1442">TODO</SPAN>
-<P>
-
-<H1><A ID="SECTION028230000000000000000">
-Step Motor</A>
-</H1>
-
-<P>
-O motor de passo e um componente com 4 bobinas que devem ser acionadas na ordem correta para fazer o deslocamento do rotor.
-Cada passo do motor é de 1.8º.
-
-<P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./part_step.png"
- ALT="Image part_step"> 
-
-</DIV> 
-
-<P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./part_step_.png"
- ALT="Image part_step_"> 
-
-</DIV> 
-
-<P>
-
-<H1><A ID="SECTION028240000000000000000">
-Switchs</A>
-</H1>
-Esta parte é formada por 8 chaves com posição ligado ou desligado (0 ou 1).
-
-<P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./part_switchs.png"
- ALT="Image part_switchs"> 
-
-</DIV> 
-
-<P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./part_switchs_.png"
- ALT="Image part_switchs_"> 
-
-</DIV> 
-
-<P>
-
-<H1><A ID="SECTION028250000000000000000">
-Temperature System</A>
-</H1>
-<SPAN ID="hue1459">TODO</SPAN>
-<P>
-
-<H1><A ID="SECTION028260000000000000000">
-VCD dump</A>
-</H1>
-<SPAN ID="hue1462">TODO</SPAN>
-<P>
-
-<H1><A ID="SECTION028270000000000000000">
-VCD dump (Analogic)</A>
-</H1>
-<SPAN ID="hue1465">TODO</SPAN>
-<P>
-
-<DIV CLASS="navigation"><HR>
-<!--Navigation Panel-->
-<A
- HREF="node20.html">
-<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
-<A
- HREF="node11.html">
-<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
-<A
- HREF="node18.html">
-<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
-<BR>
-<B> Next:</B> <A
- HREF="node20.html">Como Fazer (How To's)</A>
-<B> Up:</B> <A
- HREF="node11.html">Manual em Português</A>
-<B> Previous:</B> <A
- HREF="node18.html">Osciloscópio</A></DIV>
-<!--End of Navigation Panel-->
+<BR><HR>
 
 </BODY>
 </HTML>

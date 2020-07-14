@@ -746,7 +746,7 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
 
 #ifdef EXT_BROWSER_EXAMPLES
  //lxLaunchDefaultBrowser(lxT("file://")+share + lxT ("docs/picsimlab.html"));
- lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/examples/examples_index.html#board_" + itoa (lab) + lxT ("_") + pboard->GetProcessorName ()));
+ lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#board_" + itoa (lab) + lxT ("_") + pboard->GetProcessorName ()));
  WDestroy ();
 #else 
  OldPath = filedialog2.GetDir ();

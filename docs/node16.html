@@ -1,17 +1,17 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//en">
 
-<!--Converted with LaTeX2HTML 2020 (Released January 1, 2020) -->
+<!--Converted with LaTeX2HTML 2020.2 (Released July 1, 2020) -->
 <HTML lang="en">
 <HEAD>
-<TITLE>Depuração Integrada com o MPLABX (PIC e ATMEGA)</TITLE>
-<META NAME="description" CONTENT="Depuração Integrada com o MPLABX (PIC e ATMEGA)">
+<TITLE>Comunicação Serial </TITLE>
+<META NAME="description" CONTENT="Comunicação Serial ">
 <META NAME="keywords" CONTENT="picsimlab">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
 <META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
-<META NAME="Generator" CONTENT="LaTeX2HTML v2020">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2020.2">
 
 <LINK REL="STYLESHEET" HREF="picsimlab.css">
 
@@ -27,41 +27,206 @@
  HREF="node17.html">
 <IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
 <A
- HREF="node11.html">
+ HREF="node12.html">
 <IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
 <A
  HREF="node15.html">
 <IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
 <BR>
 <B> Next:</B> <A
- HREF="node17.html">Integração com a IDE</A>
+ HREF="node17.html">Depuração Integrada com o</A>
 <B> Up:</B> <A
- HREF="node11.html">Manual em Português</A>
+ HREF="node12.html">Manual em Português</A>
 <B> Previous:</B> <A
- HREF="node15.html">Comunicação Serial</A>
+ HREF="node15.html">Placas</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A ID="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
-<H1><A ID="SECTION02500000000000000000">
-Depuração Integrada com o MPLABX (PIC e ATMEGA)</A>
+<UL CLASS="ChildLinks">
+<LI><A ID="tex2html263"
+  HREF="node16.html#SECTION02410000000000000000">Instalação e Configuração do com0com (Windows)</A>
+<LI><A ID="tex2html264"
+  HREF="node16.html#SECTION02420000000000000000">Instalação e Configuração do tty0tty (Linux)</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A ID="SECTION02400000000000000000"></A><A ID="serialp"></A>
+<BR>
+Comunicação Serial 
 </H1>
 
 <P>
-Para utilizar o IDE <A ID="tex2html89"
-  HREF="http://www.microchip.com/mplabx">MPLABX</A>
-para depurar e programar o PicsimLab, basta instalar o plugin <A ID="tex2html90"
-  HREF="https://github.com/lcgamboa/picsimlab_md/tree/master/plugin_compiled">com-picsim-picsimlab.nbm</A>
-no MPLABX. 
+Para utilizar o a porta serial do simulador, instale um emulador NULL-MODEM:
+
+<UL>
+<LI>Windows: com0com <kbd><A ID="tex2html86"
+  HREF="http://sourceforge.net/projects/com0com/">http://sourceforge.net/projects/com0com/</A></kbd>
+</LI>
+<LI>Linux: tty0tty  <kbd><A ID="tex2html87"
+  HREF="https://github.com/lcgamboa/tty0tty">https://github.com/lcgamboa/tty0tty</A></kbd>
+</LI>
+</UL>
 
 <P>
-O plugin se conecta ao Picsimlab através de um socket TCP na porta 1234, permita o acesso no firewall.
+Para comunicação o PICSimLab deve ficar conectado em uma porta do emulador NULL-MODEM e o outro aplicativo conectado na outra porta.
+ Exemplos de configuração ligando o PICSimLab ao <A ID="tex2html88"
+  HREF="https://github.com/neundorf/CuteCom">Cutecom</A>
+para comunicação serial:
 
 <P>
-<A ID="tex2html91"
-  HREF="pdf/How to use MPLABX to program and debug PICsimLab.pdf" target="_blank">Tutorial: Como usar o MPLABX para programar e depurar o PICsimLab (Inglês)</A>
+<BR>
+<BR>
+
 <P>
-<BR><HR>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="CENTER">OS</TD>
+<TD ALIGN="CENTER">porta PICSimLab</TD>
+<TD ALIGN="CENTER">porta Cutecom</TD>
+<TD ALIGN="CENTER">NULL-Modem prog.</TD>
+<TD ALIGN="CENTER">Conexão</TD>
+</TR>
+<TR><TD ALIGN="CENTER">Windows</TD>
+<TD ALIGN="CENTER">com1</TD>
+<TD ALIGN="CENTER">com2</TD>
+<TD ALIGN="CENTER">com0com</TD>
+<TD ALIGN="CENTER">com1&lt;=&gt;com2</TD>
+</TR>
+<TR><TD ALIGN="CENTER">Linux</TD>
+<TD ALIGN="CENTER">/dev/tnt2</TD>
+<TD ALIGN="CENTER">/dev/tnt3</TD>
+<TD ALIGN="CENTER">tty0tty</TD>
+<TD ALIGN="CENTER">/dev/tnt2&lt;=&gt;/dev/tnt3</TD>
+</TR>
+</TABLE>
+
+<P>
+
+<H1><A ID="SECTION02410000000000000000">
+Instalação e Configuração do com0com (Windows)</A>
+</H1>
+
+<P>
+Faça o download da versão assinada do  <A ID="tex2html89"
+  HREF="https://sourceforge.net/projects/com0com/files/com0com/3.0.0.0/com0com-3.0.0.0-i386-and-x64-signed.zip/download">com0com</A>.
+
+<P>
+Descompacte o arquivo .zip baixado e execute o instalador específico de seu sistema operacional, x86 para windows 32 bits ou x64 para windows 64 bits. 
+
+<P>
+Configure a janela &ldquo;choose components&rdquo; como a figura abaixo:
+ 
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./com0com1.png"
+ ALT="Image com0com1"> 
+
+</DIV> 
+
+<P>
+Na última janela da configuração, marque a opção &ldquo;Launch setup&rdquo;:
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./com0com2.png"
+ ALT="Image com0com2"> 
+
+</DIV> 
+
+<P>
+Na janela do setup, troque os nomes das portas para COM1, COM2, COM3....
+Marque apenas a opção &ldquo;enable buffer overrun&rdquo; nas duas portas, clique no botão &ldquo;Apply&rdquo; e feche o setup. 
+Na configuração mostrada na figura abaixo, as portas COM1 e COM2 formam uma conexão NULL-MODEM, onde uma porta deve ser utilizada pelo PICSimLab e outra pela aplicação com comunicação serial.
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./com0com3.png"
+ ALT="Image com0com3"> 
+
+</DIV> 
+
+<P>
+
+<H1><A ID="SECTION02420000000000000000">
+Instalação e Configuração do tty0tty (Linux)</A>
+</H1>
+
+<P>
+Faça o download do <A ID="tex2html90"
+  HREF="https://github.com/lcgamboa/tty0tty/archive/master.zip">tty0tyy</A>.
+
+Descompacte a pasta baixada.
+
+<P>
+Abra um terminal e entre na pasta tty0tty/module e digite os comandos na sequência:
+<PRE>
+ sudo apt-get update
+ sudo apt-get -y upgrade
+ sudo apt-get -y install gcc make linux-headers-`uname -r` 
+ make
+ sudo make install
+</PRE>
+
+<P>
+O usuário deve estar no grupo <SPAN  CLASS="textbf">dialout</SPAN> para poder acessar as portas.
+Para adicionar seu usuário ao grupo <SPAN  CLASS="textbf">dialout</SPAN> use o comando:
+<PRE>
+sudo usermod -a -G dialout your_user_name
+</PRE>
+depois disso é ncessário fazer logout e login para as permissões do grupo tenham efeito.
+
+<P>
+Depois de instalado, o módulo cria 8 portas interconectadas da seguinte forma:
+<PRE>
+  /dev/tnt0  &lt;=&gt;  /dev/tnt1 
+  /dev/tnt2  &lt;=&gt;  /dev/tnt3 
+  /dev/tnt4  &lt;=&gt;  /dev/tnt5 
+  /dev/tnt6  &lt;=&gt;  /dev/tnt7
+</PRE>
+
+<P>
+a conexão entre cada par é da forma:
+<PRE>  
+  TX   -&gt;  RX
+  RX   &lt;-  TX 	
+  RTS  -&gt;  CTS
+  CTS  &lt;-  RTS
+  DSR  &lt;-  DTR
+  CD   &lt;-  DTR
+  DTR  -&gt;  DSR
+  DTR  -&gt;  CD
+</PRE>
+
+<P>
+Qualquer par de portas formam uma conexão NULL-MODEM, onde uma porta deve ser utilizada pelo PICSimLab e outra pela aplicação com comunicação serial.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A
+ HREF="node17.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="node12.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="node15.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="node17.html">Depuração Integrada com o</A>
+<B> Up:</B> <A
+ HREF="node12.html">Manual em Português</A>
+<B> Previous:</B> <A
+ HREF="node15.html">Placas</A></DIV>
+<!--End of Navigation Panel-->
 
 </BODY>
 </HTML>

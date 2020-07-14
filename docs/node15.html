@@ -1,17 +1,17 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//en">
 
-<!--Converted with LaTeX2HTML 2020 (Released January 1, 2020) -->
+<!--Converted with LaTeX2HTML 2020.2 (Released July 1, 2020) -->
 <HTML lang="en">
 <HEAD>
-<TITLE>Comunicação Serial </TITLE>
-<META NAME="description" CONTENT="Comunicação Serial ">
+<TITLE>Placas</TITLE>
+<META NAME="description" CONTENT="Placas">
 <META NAME="keywords" CONTENT="picsimlab">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
 <META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
-<META NAME="Generator" CONTENT="LaTeX2HTML v2020">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2020.2">
 
 <LINK REL="STYLESHEET" HREF="picsimlab.css">
 
@@ -27,18 +27,18 @@
  HREF="node16.html">
 <IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
 <A
- HREF="node11.html">
+ HREF="node12.html">
 <IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
 <A
  HREF="node14.html">
 <IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
 <BR>
 <B> Next:</B> <A
- HREF="node16.html">Depuração Integrada com o</A>
+ HREF="node16.html">Comunicação Serial</A>
 <B> Up:</B> <A
- HREF="node11.html">Manual em Português</A>
+ HREF="node12.html">Manual em Português</A>
 <B> Previous:</B> <A
- HREF="node14.html">Placas</A>
+ HREF="node14.html">Interface</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
@@ -46,166 +46,278 @@
 <A ID="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A ID="tex2html254"
-  HREF="node15.html#SECTION02410000000000000000">Instalação e Configuração do com0com (Windows)</A>
-<LI><A ID="tex2html255"
-  HREF="node15.html#SECTION02420000000000000000">Instalação e Configuração do tty0tty (Linux)</A>
+<LI><A ID="tex2html257"
+  HREF="node15.html#SECTION02310000000000000000">Características da Placa 0</A>
+<LI><A ID="tex2html258"
+  HREF="node15.html#SECTION02320000000000000000">Características da Placa 1</A>
+<LI><A ID="tex2html259"
+  HREF="node15.html#SECTION02330000000000000000">Características da Placa 2</A>
+<LI><A ID="tex2html260"
+  HREF="node15.html#SECTION02340000000000000000">Características da Placa 3</A>
+<LI><A ID="tex2html261"
+  HREF="node15.html#SECTION02350000000000000000">Características da Placa 4</A>
+<LI><A ID="tex2html262"
+  HREF="node15.html#SECTION02360000000000000000">Características da Placa 5</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A ID="SECTION02400000000000000000"></A><A ID="serialp"></A>
-<BR>
-Comunicação Serial 
+<H1><A ID="SECTION02300000000000000000">
+Placas</A>
 </H1>
 
 <P>
-Para utilizar o a porta serial do simulador, instale um emulador NULL-MODEM:
 
-<UL>
-<LI>Windows: com0com <kbd><A ID="tex2html84"
-  HREF="http://sourceforge.net/projects/com0com/">http://sourceforge.net/projects/com0com/</A></kbd>
-</LI>
-<LI>Linux: tty0tty  <kbd><A ID="tex2html85"
-  HREF="https://github.com/lcgamboa/tty0tty">https://github.com/lcgamboa/tty0tty</A></kbd>
-</LI>
-</UL>
-
-<P>
-Para comunicação o PICSimLab deve ficar conectado em uma porta do emulador NULL-MODEM e o outro aplicativo conectado na outra porta.
- Exemplos de configuração ligando o PICSimLab ao <A ID="tex2html86"
-  HREF="https://github.com/neundorf/CuteCom">Cutecom</A>
-para comunicação serial:
-
-<P>
-<BR>
-<BR>
-
-<P>
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="CENTER">OS</TD>
-<TD ALIGN="CENTER">porta PICSimLab</TD>
-<TD ALIGN="CENTER">porta Cutecom</TD>
-<TD ALIGN="CENTER">NULL-Modem prog.</TD>
-<TD ALIGN="CENTER">Conexão</TD>
-</TR>
-<TR><TD ALIGN="CENTER">Windows</TD>
-<TD ALIGN="CENTER">com1</TD>
-<TD ALIGN="CENTER">com2</TD>
-<TD ALIGN="CENTER">com0com</TD>
-<TD ALIGN="CENTER">com1&lt;=&gt;com2</TD>
-</TR>
-<TR><TD ALIGN="CENTER">Linux</TD>
-<TD ALIGN="CENTER">/dev/tnt2</TD>
-<TD ALIGN="CENTER">/dev/tnt3</TD>
-<TD ALIGN="CENTER">tty0tty</TD>
-<TD ALIGN="CENTER">/dev/tnt2&lt;=&gt;/dev/tnt3</TD>
-</TR>
-</TABLE>
-
-<P>
-
-<H1><A ID="SECTION02410000000000000000">
-Instalação e Configuração do com0com (Windows)</A>
+<H1><A ID="SECTION02310000000000000000">
+Características da Placa 0</A>
 </H1>
 
 <P>
-Faça o download da versão assinada do  <A ID="tex2html87"
-  HREF="https://sourceforge.net/projects/com0com/files/com0com/3.0.0.0/com0com-3.0.0.0-i386-and-x64-signed.zip/download">com0com</A>.
+<SPAN ID="hue1190">TODO</SPAN>
+<P>
+É uma placa genérica só com os circuitos de reset, serial e cristal com suporte a múltiplos microcontroladores.
 
 <P>
-Descompacte o arquivo .zip baixado e execute o instalador específico de seu sistema operacional, x86 para windows 32 bits ou x64 para windows 64 bits. 
 
-<P>
-Configure a janela &ldquo;choose components&rdquo; como a figura abaixo:
- 
 <DIV class="CENTER">
 
 <IMG STYLE=""
- SRC="./com0com1.png"
- ALT="Image com0com1"> 
+ SRC="./picsimlab0.png"
+ ALT="Image picsimlab0"> 
 
 </DIV> 
 
 <P>
-Na última janela da configuração, marque a opção &ldquo;Launch setup&rdquo;:
+<A ID="tex2html69"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#board_0">Exemplos</A>
+<P>
 
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./com0com2.png"
- ALT="Image com0com2"> 
-
-</DIV> 
+<H1><A ID="SECTION02320000000000000000">
+Características da Placa 1</A>
+</H1>
 
 <P>
-Na janela do setup, troque os nomes das portas para COM1, COM2, COM3....
-Marque apenas a opção &ldquo;enable buffer overrun&rdquo; nas duas portas, clique no botão &ldquo;Apply&rdquo; e feche o setup. 
-Na configuração mostrada na figura abaixo, as portas COM1 e COM2 formam uma conexão NULL-MODEM, onde uma porta deve ser utilizada pelo PICSimLab e outra pela aplicação com comunicação serial.
+Emula a placa de desenvolvimento McLab1 da Labtools que utiliza um PIC16F84, PIC16F628 ou PIC16F648.
+
+<P>
 
 <DIV class="CENTER">
 
 <IMG STYLE=""
- SRC="./com0com3.png"
- ALT="Image com0com3"> 
+ SRC="img5.png"
+ ALT="\includegraphics[width=0.85\textwidth]{img/blocks_p1_p.eps}"> 
 
 </DIV> 
 
 <P>
 
-<H1><A ID="SECTION02420000000000000000">
-Instalação e Configuração do tty0tty (Linux)</A>
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./picsimlab1.png"
+ ALT="Image picsimlab1"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html70"
+  HREF="pdf/board1.pdf" target="_blank">Esquemático da placa 1</A>.
+<BR>
+<BR>
+
+<P>
+Os códigos fontes de exemplo podem ser carregados através do menu 
+<SPAN  CLASS="textbf">Help-&gt;Examples</SPAN> do PICSimLab.
+
+<P>
+O código fonte de exemplo da placa PICSimLab1 usando o
+<A ID="tex2html71"
+  HREF="http://www.microchip.com/mplabx">MPLABX e o compilador XC8</A>
+está no link: 
+<A ID="tex2html72"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#board_1">board_1</A>.
+
+<P>
+
+<H1><A ID="SECTION02330000000000000000">
+Características da Placa 2</A>
 </H1>
 
 <P>
-Faça o download do <A ID="tex2html88"
-  HREF="https://github.com/lcgamboa/tty0tty/archive/master.zip">tty0tyy</A>.
-
-Descompacte a pasta baixada.
+Emula uma placa didática desenvolvida pelo autor que utiliza um PIC16F84, PIC16F628 ou PIC16F648.
 
 <P>
-Abra um terminal e entre na pasta tty0tty/module e digite os comandos na sequência:
-<PRE>
- sudo apt-get update
- sudo apt-get -y upgrade
- sudo apt-get -y install gcc make linux-headers-`uname -r` 
- make
- sudo make install
-</PRE>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="img6.png"
+ ALT="\includegraphics[width=0.85\textwidth]{img/blocks_p2_p.eps}"> 
+
+</DIV> 
 
 <P>
-O usuário deve estar no grupo <SPAN  CLASS="textbf">dialout</SPAN> para poder acessar as portas.
-Para adicionar seu usuário ao grupo <SPAN  CLASS="textbf">dialout</SPAN> use o comando:
-<PRE>
-sudo usermod -a -G dialout your_user_name
-</PRE>
-depois disso é ncessário fazer logout e login para as permissões do grupo tenham efeito.
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./picsimlab2.png"
+ ALT="Image picsimlab2"> 
+
+</DIV> 
 
 <P>
-Depois de instalado, o módulo cria 8 portas interconectadas da seguinte forma:
-<PRE>
-  /dev/tnt0  &lt;=&gt;  /dev/tnt1 
-  /dev/tnt2  &lt;=&gt;  /dev/tnt3 
-  /dev/tnt4  &lt;=&gt;  /dev/tnt5 
-  /dev/tnt6  &lt;=&gt;  /dev/tnt7
-</PRE>
+<A ID="tex2html73"
+  HREF="pdf/board2.pdf" target="_blank">Esquemático da placa 2</A>.
+<BR>
+<BR>
 
 <P>
-a conexão entre cada par é da forma:
-<PRE>  
-  TX   -&gt;  RX
-  RX   &lt;-  TX 	
-  RTS  -&gt;  CTS
-  CTS  &lt;-  RTS
-  DSR  &lt;-  DTR
-  CD   &lt;-  DTR
-  DTR  -&gt;  DSR
-  DTR  -&gt;  CD
-</PRE>
+Os códigos fontes de exemplo podem ser carregados através do menu 
+<SPAN  CLASS="textbf">Help-&gt;Examples</SPAN> do PICSimLab.
 
 <P>
-Qualquer par de portas formam uma conexão NULL-MODEM, onde uma porta deve ser utilizada pelo PICSimLab e outra pela aplicação com comunicação serial.
+O código fonte de exemplo da placa PICSimLab2 usando o
+<A ID="tex2html74"
+  HREF="http://www.microchip.com/mplabx">MPLABX e o compilador XC8</A>
+está no link: 
+<A ID="tex2html75"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#board_2">board_2</A>.
 
+<P>
+
+<H1><A ID="SECTION02340000000000000000">
+Características da Placa 3</A>
+</H1>
+
+<P>
+Emula a placa de desenvolvimento McLab2 da Labtools que utiliza um PIC16F777, PIC16F877A, PIC18F452, PIC18F4520, PIC18F4550 ou PIC18F4620.
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="img7.png"
+ ALT="\includegraphics[width=0.85\textwidth]{img/blocks_p3_p.eps}"> 
+
+</DIV> 
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./picsimlab3.png"
+ ALT="Image picsimlab3"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html76"
+  HREF="pdf/board3.pdf" target="_blank">Esquemático da placa 3</A>.
+<BR>
+<BR>
+
+<P>
+Os códigos fontes de exemplo podem ser carregados através do menu 
+<SPAN  CLASS="textbf">Help-&gt;Examples</SPAN> do PICSimLab.
+
+<P>
+O código fonte de exemplo da placa PICSimLab3 usando o
+<A ID="tex2html77"
+  HREF="http://www.microchip.com/mplabx">MPLABX e o compilador XC8</A>
+está no link: 
+<A ID="tex2html78"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#board_3">board_3</A>.
+
+<P>
+
+<H1><A ID="SECTION02350000000000000000">
+Características da Placa 4</A>
+</H1>
+
+<P>
+Emula a placa de desenvolvimento PICGenios PIC18F e PIC16F Microchip da microgenios que utiliza um PIC16F777, PIC16F877A, PIC18F452, PIC18F4520, PIC18F4550 ou PIC18F4620.
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="img8.png"
+ ALT="\includegraphics[width=0.85\textwidth]{img/blocks_p4_p.eps}"> 
+
+</DIV> 
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./picsimlab4.png"
+ ALT="Image picsimlab4"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html79"
+  HREF="pdf/board4.pdf" target="_blank">Board 4 schematics</A>.
+<BR>
+<BR>
+
+<P>
+Os códigos fontes de exemplo podem ser carregados através do menu 
+<SPAN  CLASS="textbf">Help-&gt;Examples</SPAN> do PICSimLab.
+
+<P>
+O código fonte de exemplo da placa PICSimLab4 usando o
+<A ID="tex2html80"
+  HREF="http://www.microchip.com/mplabx">MPLABX e o compilador XC8</A>
+está no link: 
+<A ID="tex2html81"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#board_4">board_4</A>.
+
+<P>
+
+<H1><A ID="SECTION02360000000000000000">
+Características da Placa 5</A>
+</H1>
+
+<P>
+Emula a placa de desenvolvimento Arduino Uno que utiliza um microcontrolador ATMEGA328.
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./picsimlab5.png"
+ ALT="Image picsimlab5"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html82"
+  HREF="https://www.arduino.cc/en/uploads/Main/Arduino_Uno_Rev3-schematic.pdf">Esquemático da placa 5</A>.
+<BR>
+<BR>
+
+<P>
+Os códigos fontes de exemplo podem ser carregados através do menu 
+<SPAN  CLASS="textbf">Help-&gt;Examples</SPAN> do PICSimLab.
+
+<P>
+O código fonte de exemplo da placa PICSimLab5 usando a IDE
+<A ID="tex2html83"
+  HREF="https://www.arduino.cc/en/Main/Software">Arduino com o avr-gcc</A>
+está no link: 
+<A ID="tex2html84"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#board_5">board_5</A>.
+
+<P>
+Mais informações sobre o Arduino em <A ID="tex2html85"
+  HREF="https://www.arduino.cc/">www.arduino.cc</A>
 <P>
 
 <DIV CLASS="navigation"><HR>
@@ -214,18 +326,18 @@ Qualquer par de portas formam uma conexão NULL-MODEM, onde uma porta deve ser u
  HREF="node16.html">
 <IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
 <A
- HREF="node11.html">
+ HREF="node12.html">
 <IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
 <A
  HREF="node14.html">
 <IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
 <BR>
 <B> Next:</B> <A
- HREF="node16.html">Depuração Integrada com o</A>
+ HREF="node16.html">Comunicação Serial</A>
 <B> Up:</B> <A
- HREF="node11.html">Manual em Português</A>
+ HREF="node12.html">Manual em Português</A>
 <B> Previous:</B> <A
- HREF="node14.html">Placas</A></DIV>
+ HREF="node14.html">Interface</A></DIV>
 <!--End of Navigation Panel-->
 
 </BODY>

@@ -1,20 +1,21 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//en">
 
-<!--Converted with LaTeX2HTML 2020 (Released January 1, 2020) -->
+<!--Converted with LaTeX2HTML 2020.2 (Released July 1, 2020) -->
 <HTML lang="en">
 <HEAD>
-<TITLE>How To's</TITLE>
-<META NAME="description" CONTENT="How To's">
+<TITLE>Spare Parts</TITLE>
+<META NAME="description" CONTENT="Spare Parts">
 <META NAME="keywords" CONTENT="picsimlab">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
 <META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
-<META NAME="Generator" CONTENT="LaTeX2HTML v2020">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2020.2">
 
 <LINK REL="STYLESHEET" HREF="picsimlab.css">
 
+<LINK REL="next" HREF="node11.html">
 <LINK REL="previous" HREF="node9.html">
 <LINK REL="next" HREF="node11.html">
 </HEAD>
@@ -33,33 +34,908 @@
 <IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
 <BR>
 <B> Next:</B> <A
- HREF="node11.html">Manual em Português</A>
+ HREF="node11.html">How To's</A>
 <B> Up:</B> <A
  HREF="node1.html">English Manual</A>
 <B> Previous:</B> <A
- HREF="node9.html">Spare Parts</A>
+ HREF="node9.html">Oscilloscope</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A ID="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A ID="tex2html181"
+  HREF="node10.html#SECTION01910000000000000000">7 Segments Display</A>
+<LI><A ID="tex2html182"
+  HREF="node10.html#SECTION01920000000000000000">Buzzer</A>
+<LI><A ID="tex2html183"
+  HREF="node10.html#SECTION01930000000000000000">D. Transfer Function</A>
+<LI><A ID="tex2html184"
+  HREF="node10.html#SECTION01940000000000000000">Gamepad</A>
+<LI><A ID="tex2html185"
+  HREF="node10.html#SECTION01950000000000000000">IO 74xx595</A>
+<LI><A ID="tex2html186"
+  HREF="node10.html#SECTION01960000000000000000">IO MCP23S17</A>
+<LI><A ID="tex2html187"
+  HREF="node10.html#SECTION01970000000000000000">IO PCF8574</A>
+<LI><A ID="tex2html188"
+  HREF="node10.html#SECTION01980000000000000000">Keypad</A>
+<LI><A ID="tex2html189"
+  HREF="node10.html#SECTION01990000000000000000">LCD hd44780</A>
+<LI><A ID="tex2html190"
+  HREF="node10.html#SECTION019100000000000000000">LCD pcf8833</A>
+<LI><A ID="tex2html191"
+  HREF="node10.html#SECTION019110000000000000000">LCD pcd8544</A>
+<LI><A ID="tex2html192"
+  HREF="node10.html#SECTION019120000000000000000">LED Matrix</A>
+<LI><A ID="tex2html193"
+  HREF="node10.html#SECTION019130000000000000000">LEDs</A>
+<LI><A ID="tex2html194"
+  HREF="node10.html#SECTION019140000000000000000">MEM 24CXXX</A>
+<LI><A ID="tex2html195"
+  HREF="node10.html#SECTION019150000000000000000">Potentiometers</A>
+<LI><A ID="tex2html196"
+  HREF="node10.html#SECTION019160000000000000000">Push Buttons</A>
+<LI><A ID="tex2html197"
+  HREF="node10.html#SECTION019170000000000000000">Push Buttons (Analogic)</A>
+<LI><A ID="tex2html198"
+  HREF="node10.html#SECTION019180000000000000000">RGB LED</A>
+<LI><A ID="tex2html199"
+  HREF="node10.html#SECTION019190000000000000000">RTC ds1307</A>
+<LI><A ID="tex2html200"
+  HREF="node10.html#SECTION019200000000000000000">RTC pfc8563</A>
+<LI><A ID="tex2html201"
+  HREF="node10.html#SECTION019210000000000000000">Servo Motor</A>
+<LI><A ID="tex2html202"
+  HREF="node10.html#SECTION019220000000000000000">Signal Generator</A>
+<LI><A ID="tex2html203"
+  HREF="node10.html#SECTION019230000000000000000">Step Motor</A>
+<LI><A ID="tex2html204"
+  HREF="node10.html#SECTION019240000000000000000">Switchs</A>
+<LI><A ID="tex2html205"
+  HREF="node10.html#SECTION019250000000000000000">Temperature System</A>
+<LI><A ID="tex2html206"
+  HREF="node10.html#SECTION019260000000000000000">VCD dump</A>
+<LI><A ID="tex2html207"
+  HREF="node10.html#SECTION019270000000000000000">VCD dump (Analogic)</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
 
 <H1><A ID="SECTION01900000000000000000">
-How To's</A>
+Spare Parts</A>
 </H1>
 
 <P>
+The PICSimLab has a window that allows the connection of spare parts to the microcontroller, it can be accessed through the menu &ldquo; Modules-&gt; Spare parts &rdquo;.
+
+<P>
+The main window has the menu with the following functions:
 
 <UL>
-<LI><A ID="tex2html60"
-  HREF="pdf/How to use MPLABX to program and debug PICsimLab.pdf" target="_blank">How to use MPLABX to program and debug PICsimLab</A>.
+<LI>File
+ 
+<UL>
+<LI>Save configuration - Saves the current settings of the spare parts to an .pcf file
 </LI>
-<LI><A ID="tex2html61"
-  HREF="pdf/How to Compile PICsimLab and Create New Boards.pdf" target="_blank">(Deprecated) How to Compile PICsimLab and Create New Boards</A>.
+<LI>Load configuration - Loads the settings of an .pcf file
+</LI>
+</UL>
+</LI>
+<LI>Add
+ 
+<UL>
+<LI>7 Segments Display - <SPAN ID="hue261">TODO</SPAN>
+</LI>
+<LI>Buzzer - <SPAN ID="hue263">TODO</SPAN>
+</LI>
+<LI>D. Transfer Function - <SPAN ID="hue265">TODO</SPAN>
+</LI>
+<LI>Gamepad - Adds a gamepad
+</LI>
+<LI>IO 74xx595 - <SPAN ID="hue267">TODO</SPAN>
+</LI>
+<LI>IO MCP23S17 - <SPAN ID="hue269">TODO</SPAN>
+</LI>
+<LI>IO PCF8574 - <SPAN ID="hue271">TODO</SPAN>
+</LI>
+<LI>Keypad -  <SPAN ID="hue273">TODO</SPAN>
+</LI>
+<LI>LCD hd44780 - Adds a text display hd44780
+</LI>
+<LI>LCD pcf8833 - Adds a color graphic display pcf8833
+</LI>
+<LI>LCD pcd8544 - Adds a monochrome graphic display pcd8544
+</LI>
+<LI>LED Matrix - <SPAN ID="hue275">TODO</SPAN>
+</LI>
+<LI>LEDs - Adds 8 red LEDs
+</LI>
+<LI>MEM 24CXXX - <SPAN ID="hue277">TODO</SPAN>
+</LI>
+<LI>Potentiometers - Adds 4 potentiometers
+</LI>
+<LI>Push Buttons - Adds 8 push buttons
+</LI>
+<LI>Push Buttons (Analogic) - <SPAN ID="hue279">TODO</SPAN>
+</LI>
+<LI>RGB LED - Adds 1 RGB LED 
+</LI>
+<LI>RTC ds1307 - <SPAN ID="hue281">TODO</SPAN>
+</LI>
+<LI>RTC pfc8563 - <SPAN ID="hue283">TODO</SPAN>
+</LI>
+<LI>Servo Motor - Adds a servo motor
+</LI>
+<LI>Signal Generator - <SPAN ID="hue285">TODO</SPAN>
+</LI>
+<LI>Step Motor - Adds a step motor
+</LI>
+<LI>Switchs - Adds 8 switchs
+</LI>
+<LI>Temperature System - <SPAN ID="hue287">TODO</SPAN>
+</LI>
+<LI>VCD Dump - <SPAN ID="hue289">TODO</SPAN>
+</LI>
+<LI>VCD Dump (Analogic) - <SPAN ID="hue291">TODO</SPAN>
+</LI>
+</UL>
+</LI>
+<LI>Help
+ 
+<UL>
+<LI>Contents - Open Help window
+</LI>
+<LI>About - Show message about author and version
+</LI>
+</UL>
 </LI>
 </UL>
 
 <P>
 
-<BR><HR>
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./spare.png"
+ ALT="Image spare"> 
+
+</DIV> 
+
+<P>
+After adding the part, with a right click of the mouse you can access the options menu of the part with the options:
+
+<UL>
+<LI>Properties - Opens the connection settings window
+</LI>
+<LI>Move - Unlocks the part to move
+</LI>
+<LI>Delete - Remove part
+</LI>
+</UL>
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./spare_pmenu.png"
+ ALT="Image spare_pmenu"> 
+
+</DIV> 
+
+<P>
+
+<H1><A ID="SECTION01910000000000000000">
+7 Segments Display</A>
+</H1>
+<SPAN ID="hue306">TODO</SPAN>
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_7seg.png"
+ ALT="Image part_7seg"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html35"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#7_Segments_Display">Examples</A>
+<P>
+
+<H1><A ID="SECTION01920000000000000000">
+Buzzer</A>
+</H1>
+<SPAN ID="hue314">TODO</SPAN>
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_buzzer.png"
+ ALT="Image part_buzzer"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html36"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#Buzzer">Examples</A>
+<P>
+
+<H1><A ID="SECTION01930000000000000000">
+D. Transfer Function</A>
+</H1>
+<SPAN ID="hue322">TODO</SPAN>
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_dtransferf.png"
+ ALT="Image part_dtransferf"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html37"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#D._Transfer_function">Examples</A>
+<P>
+
+<H1><A ID="SECTION01940000000000000000">
+Gamepad</A>
+</H1>
+
+<P>
+This part is a gamepad with two analog axis and 7 push buttons.
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_gamepad.png"
+ ALT="Image part_gamepad"> 
+
+</DIV> 
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_gamepad_.png"
+ ALT="Image part_gamepad_"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html38"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#Gamepad">Examples</A>
+<P>
+
+<H1><A ID="SECTION01950000000000000000">
+IO 74xx595</A>
+</H1>
+<SPAN ID="hue339">TODO</SPAN>
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_74xx595.png"
+ ALT="Image part_74xx595"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html39"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#IO_74xx595">Examples</A>
+<P>
+
+<H1><A ID="SECTION01960000000000000000">
+IO MCP23S17</A>
+</H1>
+<SPAN ID="hue347">TODO</SPAN>
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_MCP23S17.png"
+ ALT="Image part_MCP23S17"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html40"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#IO_MCP23S17">Examples</A>
+<P>
+
+<H1><A ID="SECTION01970000000000000000">
+IO PCF8574</A>
+</H1>
+<SPAN ID="hue355">TODO</SPAN>
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_pcf8574.png"
+ ALT="Image part_pcf8574"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html41"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#IO_PCF8574">Examples</A>
+<P>
+
+<H1><A ID="SECTION01980000000000000000">
+Keypad</A>
+</H1>
+<SPAN ID="hue363">TODO</SPAN>
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_keyb_4x3.png"
+ ALT="Image part_keyb_4x3"> 
+
+</DIV> 
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_keyb_4x4.png"
+ ALT="Image part_keyb_4x4"> 
+
+</DIV> 
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_keyb_2x5.png"
+ ALT="Image part_keyb_2x5"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html42"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#Keypad">Examples</A>
+<P>
+
+<H1><A ID="SECTION01990000000000000000">
+LCD hd44780</A>
+</H1>
+
+<P>
+This part is a text display with 2 (or 4) lines by 16 (or 20) columns.
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_hd44780_2x16.png"
+ ALT="Image part_hd44780_2x16"> 
+
+</DIV> 
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_hd44780_2x20.png"
+ ALT="Image part_hd44780_2x20"> 
+
+</DIV> 
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_hd44780_4x16.png"
+ ALT="Image part_hd44780_4x16"> 
+
+</DIV> 
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_hd44780_4x20.png"
+ ALT="Image part_hd44780_4x20"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html43"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#LCD_hd44780">Examples</A>
+<P>
+
+<H1><A ID="SECTION019100000000000000000">
+LCD pcf8833</A>
+</H1>
+
+<P>
+This part is a color graphic display with 132x132 pixels.
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_pcf8833.png"
+ ALT="Image part_pcf8833"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html44"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#LCD_pcf8833">Examples</A>
+<P>
+
+<H1><A ID="SECTION019110000000000000000">
+LCD pcd8544</A>
+</H1>
+
+<P>
+This part is a monochrome graphic display with 48x84 pixels.
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_pcd8544.png"
+ ALT="Image part_pcd8544"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html45"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#LCD_pcd8544">Examples</A>
+<P>
+
+<H1><A ID="SECTION019120000000000000000">
+LED Matrix</A>
+</H1>
+<SPAN ID="hue404">TODO</SPAN>
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_LED_matrix.png"
+ ALT="Image part_LED_matrix"> 
+
+</DIV>
+
+<P>
+<A ID="tex2html46"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#LED_Matrix">Examples</A>
+<P>
+
+<H1><A ID="SECTION019130000000000000000">
+LEDs</A>
+</H1>
+
+<P>
+This part is a bar of 8 independent red LEDs.
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_leds.png"
+ ALT="Image part_leds"> 
+
+</DIV> 
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_leds_.png"
+ ALT="Image part_leds_"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html47"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#LEDs">Examples</A>
+<P>
+
+<H1><A ID="SECTION019140000000000000000">
+MEM 24CXXX</A>
+</H1>
+<SPAN ID="hue421">TODO</SPAN>
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_mem24xx.png"
+ ALT="Image part_mem24xx"> 
+
+</DIV>
+
+<P>
+<A ID="tex2html48"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#MEM_24CXXX">Examples</A>
+<P>
+
+<H1><A ID="SECTION019150000000000000000">
+Potentiometers</A>
+</H1>
+
+<P>
+This part is formed by 4 potentiometers connected between 0 and 5 volts, the output is connected to the cursor and varies within this voltage range.
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_pot.png"
+ ALT="Image part_pot"> 
+
+</DIV> 
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_pot_.png"
+ ALT="Image part_pot_"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html49"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#Potentiometers">Examples</A>
+<P>
+
+<H1><A ID="SECTION019160000000000000000">
+Push Buttons</A>
+</H1>
+
+<P>
+This part consists of 8 push buttons. When pressed the output goes to logic level &ldquo; 1 &rdquo;.
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_buttons.png"
+ ALT="Image part_buttons"> 
+
+</DIV> 
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_buttons_.png"
+ ALT="Image part_buttons_"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html50"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#Push_buttons">Examples</A>
+<P>
+
+<H1><A ID="SECTION019170000000000000000">
+Push Buttons (Analogic)</A>
+</H1>
+<SPAN ID="hue447">TODO</SPAN>
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_push_a.png"
+ ALT="Image part_push_a"> 
+
+</DIV>
+
+<P>
+<A ID="tex2html51"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#Push_buttons_(Analogic)">Examples</A>
+<P>
+
+<H1><A ID="SECTION019180000000000000000">
+RGB LED</A>
+</H1>
+
+<P>
+This part consists of a 4-pin RGB LED. Each color can be triggered independently.
+Using PWM it is possible to generate several colors by combining the 3 primary colors. 
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_rgb.png"
+ ALT="Image part_rgb"> 
+
+</DIV> 
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_rgb_.png"
+ ALT="Image part_rgb_"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html52"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#RGB_LED">Examples</A>
+<P>
+
+<H1><A ID="SECTION019190000000000000000">
+RTC ds1307</A>
+</H1>
+<SPAN ID="hue464">TODO</SPAN>
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_ds1307.png"
+ ALT="Image part_ds1307"> 
+
+</DIV>
+
+<P>
+<A ID="tex2html53"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#RTC_ds1307">Examples</A>
+<P>
+
+<H1><A ID="SECTION019200000000000000000">
+RTC pfc8563</A>
+</H1>
+<SPAN ID="hue472">TODO</SPAN>
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_pcf8563.png"
+ ALT="Image part_pcf8563"> 
+
+</DIV>
+
+<P>
+<A ID="tex2html54"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#RTC_pfc8563">Examples</A>
+<P>
+
+<H1><A ID="SECTION019210000000000000000">
+Servo Motor</A>
+</H1>
+
+<P>
+The servo motor is a component that must be activated with a pulse of variable width from 1ms to 2ms every 20 ms.
+A pulse of 1ms positions the servo at -90º, one from 1.5ms to 0º and one from 2ms to 90º.
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_servo.png"
+ ALT="Image part_servo"> 
+
+</DIV> 
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_servo_.png"
+ ALT="Image part_servo_"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html55"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#Servo_motor">Examples</A>
+<P>
+
+<H1><A ID="SECTION019220000000000000000">
+Signal Generator</A>
+</H1>
+<SPAN ID="hue489">TODO</SPAN>
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_sgen.png"
+ ALT="Image part_sgen"> 
+
+</DIV>
+
+<P>
+<A ID="tex2html56"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#Signal_Generator">Examples</A>
+<P>
+
+<H1><A ID="SECTION019230000000000000000">
+Step Motor</A>
+</H1>
+
+<P>
+The stepper motor is a component with 4 coils that must be driven in the correct order to rotate the rotor.
+Each step of the motor is 1.8º.
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_step.png"
+ ALT="Image part_step"> 
+
+</DIV> 
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_step_.png"
+ ALT="Image part_step_"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html57"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#Step_motor">Examples</A>
+<P>
+
+<H1><A ID="SECTION019240000000000000000">
+Switchs</A>
+</H1>
+This part consists of 8 keys with on or off position (0 or 1).
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_switchs.png"
+ ALT="Image part_switchs"> 
+
+</DIV> 
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_switchs_.png"
+ ALT="Image part_switchs_"> 
+
+</DIV> 
+
+<P>
+<A ID="tex2html58"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#Switchs">Examples</A>
+<P>
+
+<H1><A ID="SECTION019250000000000000000">
+Temperature System</A>
+</H1>
+<SPAN ID="hue515">TODO</SPAN>
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_tempsys.png"
+ ALT="Image part_tempsys"> 
+
+</DIV>
+
+<P>
+<A ID="tex2html59"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#Temperature_System">Examples</A>
+<P>
+
+<H1><A ID="SECTION019260000000000000000">
+VCD dump</A>
+</H1>
+<SPAN ID="hue523">TODO</SPAN>
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_vcd_dump.png"
+ ALT="Image part_vcd_dump"> 
+
+</DIV>
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_vcd_dump_gtkwave.png"
+ ALT="Image part_vcd_dump_gtkwave"> 
+
+</DIV>
+
+<P>
+<A ID="tex2html60"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#VCD_Dump">Examples</A>
+<P>
+
+<H1><A ID="SECTION019270000000000000000">
+VCD dump (Analogic)</A>
+</H1>
+<SPAN ID="hue534">TODO</SPAN>
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_vcd_dump_an.png"
+ ALT="Image part_vcd_dump_an"> 
+
+</DIV>
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./part_vcd_dump_gtkwave_an.png"
+ ALT="Image part_vcd_dump_gtkwave_an"> 
+
+</DIV>
+
+<P>
+<A ID="tex2html61"
+  HREF="https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#VCD_Dump_(Analogic)">Examples</A>
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A
+ HREF="node11.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="node1.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="node9.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="node11.html">How To's</A>
+<B> Up:</B> <A
+ HREF="node1.html">English Manual</A>
+<B> Previous:</B> <A
+ HREF="node9.html">Oscilloscope</A></DIV>
+<!--End of Navigation Panel-->
 
 </BODY>
 </HTML>

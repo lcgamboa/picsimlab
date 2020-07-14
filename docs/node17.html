@@ -1,17 +1,17 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//en">
 
-<!--Converted with LaTeX2HTML 2020 (Released January 1, 2020) -->
+<!--Converted with LaTeX2HTML 2020.2 (Released July 1, 2020) -->
 <HTML lang="en">
 <HEAD>
-<TITLE>Integração com a IDE do Arduino (ATMEGA)</TITLE>
-<META NAME="description" CONTENT="Integração com a IDE do Arduino (ATMEGA)">
+<TITLE>Depuração Integrada com o MPLABX (PIC e ATMEGA)</TITLE>
+<META NAME="description" CONTENT="Depuração Integrada com o MPLABX (PIC e ATMEGA)">
 <META NAME="keywords" CONTENT="picsimlab">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
 <META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
-<META NAME="Generator" CONTENT="LaTeX2HTML v2020">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2020.2">
 
 <LINK REL="STYLESHEET" HREF="picsimlab.css">
 
@@ -27,38 +27,42 @@
  HREF="node18.html">
 <IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
 <A
- HREF="node11.html">
+ HREF="node12.html">
 <IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
 <A
  HREF="node16.html">
 <IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
 <BR>
 <B> Next:</B> <A
- HREF="node18.html">Osciloscópio</A>
+ HREF="node18.html">Integração com a IDE</A>
 <B> Up:</B> <A
- HREF="node11.html">Manual em Português</A>
+ HREF="node12.html">Manual em Português</A>
 <B> Previous:</B> <A
- HREF="node16.html">Depuração Integrada com o</A>
+ HREF="node16.html">Comunicação Serial</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
 
-<H1><A ID="SECTION02600000000000000000">
-Integração com a IDE do Arduino (ATMEGA)</A>
+<H1><A ID="SECTION02500000000000000000">
+Depuração Integrada com o MPLABX (PIC e ATMEGA)</A>
 </H1>
 
 <P>
-Para utilização integrada com a IDE do Arduino, basta fazer a configuração da porta serial como explicado na seção <A HREF="node15.html#serialp">4</A> e carregar o bootloader do Arduino. O bootloader pode ser carregado pelo menu &ldquo;Help-&gt;Examples&rdquo; escolhendo o arquivo ATmegaBOOT_168_atmega328.pzw.
+Para utilizar o IDE <A ID="tex2html91"
+  HREF="http://www.microchip.com/mplabx">MPLABX</A>
+para depurar e programar o PicsimLab, basta instalar o plugin <A ID="tex2html92"
+  HREF="https://github.com/lcgamboa/picsimlab_md/tree/master/plugin_compiled">com-picsim-picsimlab.nbm</A>
+no MPLABX. 
 
 <P>
-No windows, considerando o com0com fazendo uma conexão NULL-MODEM entre a porta COM1 e COM2, basta conectar o PICSimLab na porta COM1 e a IDE Arduino na porta COM2 ou vice-versa.
+O plugin se conecta ao Picsimlab através de um socket TCP na porta 1234 (ou outra definida na janela de configuração), permita o acesso no firewall.
 
 <P>
-No Linux o funcionamento é o mesmo, mas utilizando por exemplo as portas /dev/tnt2 e /dev/tnt3.
-
+<A ID="tex2html93"
+  HREF="pdf/How to use MPLABX to program and debug PICsimLab.pdf" target="_blank">Tutorial: Como usar o MPLABX para programar e depurar o PICsimLab (Inglês)</A>
 <P>
-No Linux para as portas virtuais serem detectadas no Arduino é necessário substituir a biblioteca lib/liblistSerialsj.so do Arduino por uma com suporte a detecção das portas do tty0tty, que pode se baixada no link <A ID="tex2html92"
-  HREF="https://github.com/lcgamboa/listSerialPortsC/releases">listSerialC com suporte ao tty0tty</A>.  
+É possível importar e depurar um sketch do Arduino no MPLABX utilizando o <A ID="tex2html94"
+  HREF="https://github.com/janegilruud/chipKIT-importer-2.0">Arduino import plugin</A>.
 
 <P>
 <BR><HR>

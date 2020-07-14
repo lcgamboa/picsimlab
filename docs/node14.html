@@ -1,17 +1,17 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//en">
 
-<!--Converted with LaTeX2HTML 2020 (Released January 1, 2020) -->
+<!--Converted with LaTeX2HTML 2020.2 (Released July 1, 2020) -->
 <HTML lang="en">
 <HEAD>
-<TITLE>Placas</TITLE>
-<META NAME="description" CONTENT="Placas">
+<TITLE>Interface</TITLE>
+<META NAME="description" CONTENT="Interface">
 <META NAME="keywords" CONTENT="picsimlab">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
 <META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
-<META NAME="Generator" CONTENT="LaTeX2HTML v2020">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2020.2">
 
 <LINK REL="STYLESHEET" HREF="picsimlab.css">
 
@@ -27,18 +27,18 @@
  HREF="node15.html">
 <IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
 <A
- HREF="node11.html">
+ HREF="node12.html">
 <IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
 <A
  HREF="node13.html">
 <IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
 <BR>
 <B> Next:</B> <A
- HREF="node15.html">Comunicação Serial</A>
+ HREF="node15.html">Placas</A>
 <B> Up:</B> <A
- HREF="node11.html">Manual em Português</A>
+ HREF="node12.html">Manual em Português</A>
 <B> Previous:</B> <A
- HREF="node13.html">Interface</A>
+ HREF="node13.html">Introdução</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
@@ -46,278 +46,174 @@
 <A ID="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A ID="tex2html248"
-  HREF="node14.html#SECTION02310000000000000000">Características da Placa 0</A>
-<LI><A ID="tex2html249"
-  HREF="node14.html#SECTION02320000000000000000">Características da Placa 1</A>
-<LI><A ID="tex2html250"
-  HREF="node14.html#SECTION02330000000000000000">Características da Placa 2</A>
-<LI><A ID="tex2html251"
-  HREF="node14.html#SECTION02340000000000000000">Características da Placa 3</A>
-<LI><A ID="tex2html252"
-  HREF="node14.html#SECTION02350000000000000000">Características da Placa 4</A>
-<LI><A ID="tex2html253"
-  HREF="node14.html#SECTION02360000000000000000">Características da Placa 5</A>
+<LI><A ID="tex2html255"
+  HREF="node14.html#SECTION02210000000000000000">Janela Principal</A>
+<LI><A ID="tex2html256"
+  HREF="node14.html#SECTION02220000000000000000">Comandos</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A ID="SECTION02300000000000000000">
-Placas</A>
+<H1><A ID="SECTION02200000000000000000">
+Interface</A>
 </H1>
 
 <P>
 
-<H1><A ID="SECTION02310000000000000000">
-Características da Placa 0</A>
+<H1><A ID="SECTION02210000000000000000">
+Janela Principal</A>
 </H1>
 
 <P>
-<SPAN ID="hue1167">TODO</SPAN>
+A janela principal é composta de um menu, uma barra de status, um combobox de seleção de frequência, um botão liga/desliga para acionar a depuração (debug), alguns controles específicos da placa e parte de interface da placa em si.
+
 <P>
-É uma placa genérica só com os circuitos de reset, serial e cristal com suporte a múltiplos microcontroladores.
+No título da janela é mostrado o nome do simulador PICSimLab, seguido da placa e do microcontrolador em uso.
 
 <P>
 
 <DIV class="CENTER">
 
 <IMG STYLE=""
- SRC="./picsimlab0.png"
- ALT="Image picsimlab0"> 
+ SRC="./int.png"
+ ALT="Image int"> 
 
 </DIV> 
 
 <P>
-<A ID="tex2html67"
-  HREF="examples/examples_index.html#board_0">Exemplos</A>
+O combobox de seleção de frequência altera diretamente a velocidade de trabalho do microcontrolador, quando o label &ldquo;Clock (MHz)&rdquo; fica em vermelho indica que o computador não está sendo capaz de executar o programa em tempo real para o clock selecionado. Neste caso a simulação pode apresentar alguma diferença do esperado e a carga da CPU ser aumentada.
+
+<P>
+O botão liga/desliga para acionar a depuração serve para habilitar o suporte à depuração, com o suporte ativo há uma carga maior de simulação.
+
+<P>
+Os menus e suas funções são listados abaixo:
+
+<UL>
+<LI>File
+
+<UL>
+<LI>Load Hex - Carrega arquivo .hex
+</LI>
+<LI>Reload Last - Recarrega último arquivo .hex utilizado
+</LI>
+<LI>Save Hex - Salva a memória em um arquivo .hex 
+</LI>
+<LI>Configure - Abre a janela de configuração
+</LI>
+<LI>Save Workspace - Salva todas as configurações atuais do workspace em um arquivo .pzw 
+</LI>
+<LI>Load Workspace - Carrega as configurações salvas de uma arquivo .pzw
+</LI>
+<LI>Exit
+</LI>
+</UL>
+</LI>
+<LI>Board
+
+<UL>
+<LI>0 Breadboard - Escolhe a placa 0
+</LI>
+<LI>1 McLab1 - Escolhe a placa 1
+</LI>
+<LI>2 K16F - Escolhe a placa 2
+</LI>
+<LI>3 McLab2 - Escolhe a placa 3
+</LI>
+<LI>4 PICGenios - Escolhe a placa 4
+</LI>
+<LI>5 Arduino - Escolhe a placa 5
+</LI>
+</UL>
+</LI>
+<LI>Microcontroller
+
+<UL>
+<LI>xxxxx - Seleciona o microcontrolador a ser utilizado (depende da placa selecionada)
+</LI>
+</UL>
+</LI>
+<LI>Modules
+
+<UL>
+<LI>Oscilloscope - Abre a janela do osciloscópio
+</LI>
+<LI>Spare parts - Abre a janela de peças avulsas
+</LI>
+</UL>
+</LI>
+<LI>Tools
+
+<UL>
+<LI>Serial Terminal - Abre o terminal serial <A ID="tex2html66"
+  HREF="https://github.com/neundorf/CuteCom">Cutecom</A>
+</LI>
+<LI>Serial Remote Tank - Abre o  <A ID="tex2html67"
+  HREF="srtank/srtank.html">simulador de tank remoto</A>
+</LI>
+<LI>Esp8266 Modem Simulator -  Abre o  <A ID="tex2html68"
+  HREF="espmsim/espmsim.html">simulador de modem Esp8266</A>
+</LI>
+<LI>Arduino bootloader - Carrega o microcontrolador com o bootloader serial do Arduino
+</LI>
+</UL>
+</LI>
+<LI>Help 
+
+<UL>
+<LI>Contents - Abre a janela de Ajuda
+</LI>
+<LI>Examples - Carrega exemplos
+</LI>
+<LI>About - Mostra mensagem de versão e autor
+</LI>
+</UL>
+</LI>
+</UL>
+
 <P>
 
-<H1><A ID="SECTION02320000000000000000">
-Características da Placa 1</A>
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./int1.png"
+ ALT="Image int1"> 
+
+</DIV> 
+
+<P>
+Na primeira parte da barra de status é mostrado o estado da simulação, na parte do meio o estado do suporte a depuração e na última parte o nome da porta serial utilizada, sua velocidade padrão e o erro em relação a velocidade real configurada no microcontrolador. 
+
+<P>
+
+<DIV class="CENTER">
+
+<IMG STYLE=""
+ SRC="./int2.png"
+ ALT="Image int2"> 
+
+</DIV> 
+
+<P>
+
+<H1><A ID="SECTION02220000000000000000">
+Comandos</A>
 </H1>
 
 <P>
-Emula a placa de desenvolvimento McLab1 da Labtools que utiliza um PIC16F84, PIC16F628 ou PIC16F648.
+Sobre a área de interface da placa é possível interagir de algumas formas:
 
 <P>
 
-<DIV class="CENTER">
+<UL>
+<LI>Clique no conector ICSP para carregar um arquivo .hex.
+</LI>
+<LI>Clique no botão PWR para ligar/desligar o emulador.
+</LI>
+<LI>Os botões podem ser acionados pelo mouse ou pelas teclas 1, 2, 3 ...
+</LI>
+</UL>
 
-<IMG STYLE=""
- SRC="img5.png"
- ALT="\includegraphics[width=0.85\textwidth]{img/blocks_p1_p.eps}"> 
-
-</DIV> 
-
-<P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./picsimlab1.png"
- ALT="Image picsimlab1"> 
-
-</DIV> 
-
-<P>
-<A ID="tex2html68"
-  HREF="pdf/board1.pdf" target="_blank">Esquemático da placa 1</A>.
-<BR>
-<BR>
-
-<P>
-Os códigos fontes de exemplo podem ser carregados através do menu 
-<SPAN  CLASS="textbf">Help-&gt;Examples</SPAN> do PICSimLab.
-
-<P>
-O código fonte de exemplo da placa PICSimLab1 usando o
-<A ID="tex2html69"
-  HREF="http://www.microchip.com/mplabx">MPLABX e o compilador XC8</A>
-está no link: 
-<A ID="tex2html70"
-  HREF="examples/examples_index.html#board_1">board_1</A>.
-
-<P>
-
-<H1><A ID="SECTION02330000000000000000">
-Características da Placa 2</A>
-</H1>
-
-<P>
-Emula uma placa didática desenvolvida pelo autor que utiliza um PIC16F84, PIC16F628 ou PIC16F648.
-
-<P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="img6.png"
- ALT="\includegraphics[width=0.85\textwidth]{img/blocks_p2_p.eps}"> 
-
-</DIV> 
-
-<P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./picsimlab2.png"
- ALT="Image picsimlab2"> 
-
-</DIV> 
-
-<P>
-<A ID="tex2html71"
-  HREF="pdf/board2.pdf" target="_blank">Esquemático da placa 2</A>.
-<BR>
-<BR>
-
-<P>
-Os códigos fontes de exemplo podem ser carregados através do menu 
-<SPAN  CLASS="textbf">Help-&gt;Examples</SPAN> do PICSimLab.
-
-<P>
-O código fonte de exemplo da placa PICSimLab2 usando o
-<A ID="tex2html72"
-  HREF="http://www.microchip.com/mplabx">MPLABX e o compilador XC8</A>
-está no link: 
-<A ID="tex2html73"
-  HREF="examples/examples_index.html#board_2">board_2</A>.
-
-<P>
-
-<H1><A ID="SECTION02340000000000000000">
-Características da Placa 3</A>
-</H1>
-
-<P>
-Emula a placa de desenvolvimento McLab2 da Labtools que utiliza um PIC16F777, PIC16F877A, PIC18F452, PIC18F4520, PIC18F4550 ou PIC18F4620.
-
-<P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="img7.png"
- ALT="\includegraphics[width=0.85\textwidth]{img/blocks_p3_p.eps}"> 
-
-</DIV> 
-
-<P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./picsimlab3.png"
- ALT="Image picsimlab3"> 
-
-</DIV> 
-
-<P>
-<A ID="tex2html74"
-  HREF="pdf/board3.pdf" target="_blank">Esquemático da placa 3</A>.
-<BR>
-<BR>
-
-<P>
-Os códigos fontes de exemplo podem ser carregados através do menu 
-<SPAN  CLASS="textbf">Help-&gt;Examples</SPAN> do PICSimLab.
-
-<P>
-O código fonte de exemplo da placa PICSimLab3 usando o
-<A ID="tex2html75"
-  HREF="http://www.microchip.com/mplabx">MPLABX e o compilador XC8</A>
-está no link: 
-<A ID="tex2html76"
-  HREF="examples/examples_index.html#board_3">board_3</A>.
-
-<P>
-
-<H1><A ID="SECTION02350000000000000000">
-Características da Placa 4</A>
-</H1>
-
-<P>
-Emula a placa de desenvolvimento PICGenios PIC18F e PIC16F Microchip da microgenios que utiliza um PIC16F777, PIC16F877A, PIC18F452, PIC18F4520, PIC18F4550 ou PIC18F4620.
-
-<P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="img8.png"
- ALT="\includegraphics[width=0.85\textwidth]{img/blocks_p4_p.eps}"> 
-
-</DIV> 
-
-<P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./picsimlab4.png"
- ALT="Image picsimlab4"> 
-
-</DIV> 
-
-<P>
-<A ID="tex2html77"
-  HREF="pdf/board4.pdf" target="_blank">Board 4 schematics</A>.
-<BR>
-<BR>
-
-<P>
-Os códigos fontes de exemplo podem ser carregados através do menu 
-<SPAN  CLASS="textbf">Help-&gt;Examples</SPAN> do PICSimLab.
-
-<P>
-O código fonte de exemplo da placa PICSimLab4 usando o
-<A ID="tex2html78"
-  HREF="http://www.microchip.com/mplabx">MPLABX e o compilador XC8</A>
-está no link: 
-<A ID="tex2html79"
-  HREF="examples/examples_index.html#board_4">board_4</A>.
-
-<P>
-
-<H1><A ID="SECTION02360000000000000000">
-Características da Placa 5</A>
-</H1>
-
-<P>
-Emula a placa de desenvolvimento Arduino Uno que utiliza um microcontrolador ATMEGA328.
-
-<P>
-
-<DIV class="CENTER">
-
-<IMG STYLE=""
- SRC="./picsimlab5.png"
- ALT="Image picsimlab5"> 
-
-</DIV> 
-
-<P>
-<A ID="tex2html80"
-  HREF="https://www.arduino.cc/en/uploads/Main/Arduino_Uno_Rev3-schematic.pdf">Esquemático da placa 5</A>.
-<BR>
-<BR>
-
-<P>
-Os códigos fontes de exemplo podem ser carregados através do menu 
-<SPAN  CLASS="textbf">Help-&gt;Examples</SPAN> do PICSimLab.
-
-<P>
-O código fonte de exemplo da placa PICSimLab5 usando a IDE
-<A ID="tex2html81"
-  HREF="https://www.arduino.cc/en/Main/Software">Arduino com o avr-gcc</A>
-está no link: 
-<A ID="tex2html82"
-  HREF="examples/examples_index.html#board_5">board_5</A>.
-
-<P>
-Mais informações sobre o Arduino em <A ID="tex2html83"
-  HREF="https://www.arduino.cc/">www.arduino.cc</A>
 <P>
 
 <DIV CLASS="navigation"><HR>
@@ -326,18 +222,18 @@ Mais informações sobre o Arduino em <A ID="tex2html83"
  HREF="node15.html">
 <IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
 <A
- HREF="node11.html">
+ HREF="node12.html">
 <IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
 <A
  HREF="node13.html">
 <IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
 <BR>
 <B> Next:</B> <A
- HREF="node15.html">Comunicação Serial</A>
+ HREF="node15.html">Placas</A>
 <B> Up:</B> <A
- HREF="node11.html">Manual em Português</A>
+ HREF="node12.html">Manual em Português</A>
 <B> Previous:</B> <A
- HREF="node13.html">Interface</A></DIV>
+ HREF="node13.html">Introdução</A></DIV>
 <!--End of Navigation Panel-->
 
 </BODY>
