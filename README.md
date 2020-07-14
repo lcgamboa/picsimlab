@@ -77,6 +77,8 @@ If the problem is not in either of the previous two options, the problem is prob
 
 [Development Documentation](https://lcgamboa.github.io/picsimlab/devel/html/)
 
+[Examples](https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html)
+
 [Changelog](./CHANGELOG.md)
 
 [TODO list](./TODO.md)
