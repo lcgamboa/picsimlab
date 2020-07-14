@@ -76,7 +76,7 @@ var class_c_p_window1 =
     [ "lab", "class_c_p_window1.html#a5204452b55b42f80ad3931374f760640", null ],
     [ "lab_", "class_c_p_window1.html#a1be51ec3362b49403e9a2536d200cc39", null ],
     [ "label1", "class_c_p_window1.html#a900577700978c4afe7067defce2d0f08", null ],
-    [ "MBoard", "class_c_p_window1.html#abcc7deec3f0db38a38c8c1de6e0dfb03", null ],
+    [ "MBoard", "class_c_p_window1.html#a2dfc75ac79617bbb7f0ef890985626ad", null ],
     [ "mcudbg", "class_c_p_window1.html#a57d9b2f3cc9b5955293ff005b8f86711", null ],
     [ "mcupwr", "class_c_p_window1.html#ab29d43371f68fef0ff6b638d79d1cc27", null ],
     [ "mcurst", "class_c_p_window1.html#ac179c62ce1a80b2354a5b2e19ca1aa79", null ],

@@ -1016,6 +1016,21 @@ boardX.cc</h2>
 <div class="line"> <span class="keywordflow">if</span> (<a class="code" href="classboard.html#ac41e7f65ae979416dd133853774e206e">use_spare</a>)Window5.<a class="code" href="class_c_p_window5.html#a7b033d0c44a3dfc514d5506b74ad5abb">PostProcess</a> ();</div>
 <div class="line"> </div>
 <div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#ifdef _EXPERIMENTAL_</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">static</span> <a class="code" href="classboard.html">board</a> * cboard_x_create(<span class="keywordtype">void</span>)</div>
+<div class="line">{</div>
+<div class="line">   <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classcboard__x.html">cboard_x</a>();</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">static</span> <span class="keywordtype">void</span> cboard_x_init(<span class="keywordtype">void</span>)</div>
+<div class="line">{</div>
+<div class="line">    board_register(8, <span class="stringliteral">&quot;Board X&quot;</span>, cboard_x_create );</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">board_init(cboard_x_init);</div>
+<div class="line"><span class="preprocessor">#endif</span></div>
 </div><!-- fragment --> </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -1050,6 +1065,7 @@ boardX.cc</h2>
 <div class="ttc" id="aclasspart_html_a1870d9498f0aae89f3c239b7fa8aaee4"><div class="ttname"><a href="classpart.html#a1870d9498f0aae89f3c239b7fa8aaee4">part::ReadMaps</a></div><div class="ttdeci">void ReadMaps(void)</div><div class="ttdoc">read maps</div><div class="ttdef"><b>Definition:</b> part.cc:39</div></div>
 <div class="ttc" id="aclasscboard__x_html_af22b7401d801dc22ca407acd9d1d2367"><div class="ttname"><a href="classcboard__x.html#af22b7401d801dc22ca407acd9d1d2367">cboard_x::get_in_id</a></div><div class="ttdeci">unsigned short get_in_id(char *name)</div><div class="ttdoc">return the input ids numbers of names used in input map</div><div class="ttdef"><b>Definition:</b> board_x.cc:55</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a43b803f5191ced277e7c55168c298d94"><div class="ttname"><a href="classcpart__servo.html#a43b803f5191ced277e7c55168c298d94">cpart_servo::ConfigurePropertiesWindow</a></div><div class="ttdeci">void ConfigurePropertiesWindow(CPWindow *WProp)</div><div class="ttdoc">Called to configure the properties window.</div><div class="ttdef"><b>Definition:</b> part_servo.cc:185</div></div>
+<div class="ttc" id="aclassboard_html"><div class="ttname"><a href="classboard.html">board</a></div><div class="ttdoc">Board class.</div><div class="ttdef"><b>Definition:</b> board.h:71</div></div>
 <div class="ttc" id="aclassboard_html_a52d4e88ddf5f29d1648ea94dafbf87de"><div class="ttname"><a href="classboard.html#a52d4e88ddf5f29d1648ea94dafbf87de">board::outputc</a></div><div class="ttdeci">int outputc</div><div class="ttdoc">output map elements counter</div><div class="ttdef"><b>Definition:</b> board.h:384</div></div>
 <div class="ttc" id="aclassboard_html_a1f5dedbf50d1ebd86af96429a4a3d180"><div class="ttname"><a href="classboard.html#a1f5dedbf50d1ebd86af96429a4a3d180">board::use_oscope</a></div><div class="ttdeci">int use_oscope</div><div class="ttdoc">use oscilloscope window</div><div class="ttdef"><b>Definition:</b> board.h:385</div></div>
 <div class="ttc" id="aclass_c_p_window1_html_ae06fa45b666a4e0993cb7c9563b73ea8"><div class="ttname"><a href="class_c_p_window1.html#ae06fa45b666a4e0993cb7c9563b73ea8">CPWindow1::GetNSTEPJ</a></div><div class="ttdeci">long int GetNSTEPJ(void)</div><div class="ttdoc">Get the number of steps in 100ms of simulation.</div><div class="ttdef"><b>Definition:</b> picsimlab1.h:256</div></div>
@@ -1079,7 +1095,7 @@ boardX.cc</h2>
 <div class="ttc" id="aclasscboard__x_html_a253842be321749318a561d88b559773d"><div class="ttname"><a href="classcboard__x.html#a253842be321749318a561d88b559773d">cboard_x::get_out_id</a></div><div class="ttdeci">unsigned short get_out_id(char *name)</div><div class="ttdoc">return the output ids numbers of names used in output map</div><div class="ttdef"><b>Definition:</b> board_x.cc:70</div></div>
 <div class="ttc" id="aclass_c_p_window1_html_ae9c1fa118bae7bc54acb0eacc78c933b"><div class="ttname"><a href="class_c_p_window1.html#ae9c1fa118bae7bc54acb0eacc78c933b">CPWindow1::Set_mcurun</a></div><div class="ttdeci">void Set_mcurun(int pr)</div><div class="ttdoc">Set the run status of microcontroller Running/Stopped.</div><div class="ttdef"><b>Definition:</b> picsimlab1.h:223</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a534464c3dfff25226507e281924629f8"><div class="ttname"><a href="classcpart__servo.html#a534464c3dfff25226507e281924629f8">cpart_servo::GetInputMapFile</a></div><div class="ttdeci">String GetInputMapFile(void)</div><div class="ttdoc">Return the filename of part picture input map.</div><div class="ttdef"><b>Definition:</b> part_servo.h:57</div></div>
-<div class="ttc" id="aclass_c_p_window1_html_a5293ce669d8269ef2ecf2ed54fb3eb12"><div class="ttname"><a href="class_c_p_window1.html#a5293ce669d8269ef2ecf2ed54fb3eb12">CPWindow1::GetBoard</a></div><div class="ttdeci">board * GetBoard(void)</div><div class="ttdoc">Return a pointer to board object.</div><div class="ttdef"><b>Definition:</b> picsimlab1.cc:888</div></div>
+<div class="ttc" id="aclass_c_p_window1_html_a5293ce669d8269ef2ecf2ed54fb3eb12"><div class="ttname"><a href="class_c_p_window1.html#a5293ce669d8269ef2ecf2ed54fb3eb12">CPWindow1::GetBoard</a></div><div class="ttdeci">board * GetBoard(void)</div><div class="ttdoc">Return a pointer to board object.</div><div class="ttdef"><b>Definition:</b> picsimlab1.cc:897</div></div>
 <div class="ttc" id="aclasscboard__x_html_a4ec35f699502dc726d0d127f9fda8bb1"><div class="ttname"><a href="classcboard__x.html#a4ec35f699502dc726d0d127f9fda8bb1">cboard_x::EvKeyPress</a></div><div class="ttdeci">void EvKeyPress(uint key, uint mask)</div><div class="ttdoc">Event on the board.</div><div class="ttdef"><b>Definition:</b> board_x.cc:276</div></div>
 <div class="ttc" id="aclasscboard__x_html_aaaa5c268d8576af19dac09700f1d0ceb"><div class="ttname"><a href="classcboard__x.html#aaaa5c268d8576af19dac09700f1d0ceb">cboard_x::GetPictureFileName</a></div><div class="ttdeci">String GetPictureFileName(void)</div><div class="ttdoc">Return the filename of board picture</div><div class="ttdef"><b>Definition:</b> board_x.h:59</div></div>
 <div class="ttc" id="aclass_c_p_window4_html_a3193dfdbbbd823e021fc60bdc402bfc2"><div class="ttname"><a href="class_c_p_window4.html#a3193dfdbbbd823e021fc60bdc402bfc2">CPWindow4::SetSample</a></div><div class="ttdeci">void SetSample(void)</div><div class="ttdoc">Sample and update oscilloscope data aquisition.</div><div class="ttdef"><b>Definition:</b> picsimlab4.cc:250</div></div>
@@ -1094,7 +1110,7 @@ boardX.cc</h2>
 <div class="ttc" id="aclasscboard__x_html_a123c6c7d672c47c24eb192d620b14bde"><div class="ttname"><a href="classcboard__x.html#a123c6c7d672c47c24eb192d620b14bde">cboard_x::Reset</a></div><div class="ttdeci">void Reset(void)</div><div class="ttdoc">Reset board status.</div><div class="ttdef"><b>Definition:</b> board_x.cc:191</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a67baf5e61954a20b1ad32ba7be306c1e"><div class="ttname"><a href="classcpart__servo.html#a67baf5e61954a20b1ad32ba7be306c1e">cpart_servo::Draw</a></div><div class="ttdeci">void Draw(void)</div><div class="ttdoc">Called ever 100ms to draw part.</div><div class="ttdef"><b>Definition:</b> part_servo.cc:71</div></div>
 <div class="ttc" id="aclasscboard__x_html_ad4162cf2a32b56e7023d23252593d4c4"><div class="ttname"><a href="classcboard__x.html#ad4162cf2a32b56e7023d23252593d4c4">cboard_x::RefreshStatus</a></div><div class="ttdeci">void RefreshStatus(void)</div><div class="ttdoc">Called ever 1s to refresh status.</div><div class="ttdef"><b>Definition:</b> board_x.cc:223</div></div>
-<div class="ttc" id="aclass_c_p_window1_html_aca5e4762842eb9f39c7492738c7693fc"><div class="ttname"><a href="class_c_p_window1.html#aca5e4762842eb9f39c7492738c7693fc">CPWindow1::saveprefs</a></div><div class="ttdeci">void saveprefs(String name, String value)</div><div class="ttdoc">Save the preferences.</div><div class="ttdef"><b>Definition:</b> picsimlab1.cc:547</div></div>
+<div class="ttc" id="aclass_c_p_window1_html_aca5e4762842eb9f39c7492738c7693fc"><div class="ttname"><a href="class_c_p_window1.html#aca5e4762842eb9f39c7492738c7693fc">CPWindow1::saveprefs</a></div><div class="ttdeci">void saveprefs(String name, String value)</div><div class="ttdoc">Save the preferences.</div><div class="ttdef"><b>Definition:</b> picsimlab1.cc:556</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a9b4c8f6557bae63ba5645c4aeb31a519"><div class="ttname"><a href="classcpart__servo.html#a9b4c8f6557bae63ba5645c4aeb31a519">cpart_servo::BackGround</a></div><div class="ttdeci">lxBitmap * BackGround</div><div class="ttdoc">Background image.</div><div class="ttdef"><b>Definition:</b> part_servo.h:68</div></div>
 <div class="ttc" id="aclasscpart__servo_html_ac943dc8cf327494608d6540db5349760"><div class="ttname"><a href="classcpart__servo.html#ac943dc8cf327494608d6540db5349760">cpart_servo::input_pin</a></div><div class="ttdeci">unsigned char input_pin</div><div class="ttdoc">pulse input pin</div><div class="ttdef"><b>Definition:</b> part_servo.h:67</div></div>
 <!-- start footer part -->

@@ -2,6 +2,10 @@
 
 ### New
 
+* Dynamic board registration for better modularization. [lcgamboa]
+
+* Examples are moved to other repository. [lcgamboa]
+
 * Menu option to kick load Arduino bootloader. [lcgamboa]
 
 * Support to change debug TCP port. [lcgamboa]
