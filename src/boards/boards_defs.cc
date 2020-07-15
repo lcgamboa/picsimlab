@@ -1,10 +1,32 @@
+/* ########################################################################
+
+   PICsimLab - PIC laboratory simulator
+
+   ########################################################################
+
+   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+   For e-mail suggestions :  lcgamboa@yahoo.com
+   ######################################################################## */
 
 #include "boards_defs.h"
 #include"../picsimlab1.h"
 
-char boards_list[BOARDS_MAX][30];
-
-board * (* boards_createf[BOARDS_MAX]) (void) ;
+board_desc boards_list[BOARDS_MAX];
 
 int BOARDS_LAST = 0;
 
@@ -18,7 +40,7 @@ create_board(int *lab, int *lab_)
 
  if ((*lab >= 0)&&(*lab < BOARDS_LAST))
   {
-   pboard = boards_createf[*lab]();
+   pboard = boards_list[*lab].bcreate ();
   }
  else
   {
@@ -34,8 +56,33 @@ create_board(int *lab, int *lab_)
 void
 board_register(int num, const char * name, board_create_func bcreate)
 {
- //TODO error handler
- boards_createf[num] = bcreate;
- strncpy (boards_list[num], name, 30);
+ int in;
+
+ if (BOARDS_LAST == BOARDS_MAX)
+  {
+   printf ("Number of boards greater than BOARDS_MAX!\n");
+   exit (-1);
+  }
+
+ //insert in ascendent order
+ in = BOARDS_LAST;
+ for (int i = BOARDS_LAST; i > 0; i--)
+  {
+   if (num > boards_list[i-1].num)
+    {
+     break;
+    }
+   else
+    {
+     in=i-1;
+     memcpy ((void *) &boards_list[i], (void *) &boards_list[i-1], sizeof (board_desc));
+    }
+  }
+ 
+ //insert new
+ boards_list[in].num = num;
+ boards_list[in].bcreate = bcreate;
+ strncpy (boards_list[in].name, name, 30);
+
  BOARDS_LAST++;
 }

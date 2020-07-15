@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -24,25 +24,31 @@
    ######################################################################## */
 
 #ifndef BOARDS_DEFS_H
-#define	BOARDS_DEFS_H
+#define BOARDS_DEFS_H
 
 #include "board.h"
 #include "board_1.h"
 
 #define board_init(function)  static void __attribute__((constructor)) function(void) 
 
-typedef board * board_create_func(void);
+typedef board * (* board_create_func)(void);
 
 void board_register(int num, const char * name, board_create_func bcreate);
 
 //boards object creation
-board * create_board(int *lab,int *lab_);
+board * create_board(int *lab, int *lab_);
 
 #define BOARDS_MAX 10
 
 extern int BOARDS_LAST;
 
-extern char boards_list[BOARDS_MAX][30];
+typedef struct {
+    int num;
+    char name[30];
+    board_create_func bcreate;
+} board_desc;
 
-#endif	/* BOARDS_DEFS_H */
+extern board_desc boards_list[BOARDS_MAX];
+
+#endif /* BOARDS_DEFS_H */
 

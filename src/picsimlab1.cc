@@ -247,7 +247,7 @@ CPWindow1::_EvOnCreate(CControl * control)
     {
      MBoard[i].SetFOwner (this);
      MBoard[i].SetName ("Board_" + itoa (i));
-     MBoard[i].SetText (itoa (i) + lxT (" ") + boards_list[i]);
+     MBoard[i].SetText (itoa (i) + lxT (" ") + boards_list[i].name);
      MBoard[i].EvMenuActive = EVMENUACTIVE & CPWindow1::menu1_EvBoard;
      menu1_Board.CreateChild (&MBoard[i]);
     }
@@ -443,7 +443,7 @@ CPWindow1::Configure(CControl * control, const char * home)
 
  proc_ = pboard->GetProcessorName ();
 
- SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->GetProcessorName ());
+ SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab].name) + lxT (" - ") + pboard->GetProcessorName ());
 
 
 
@@ -864,9 +864,9 @@ CPWindow1::LoadHexFile(String fname)
 
 
  if (mcurun)
-  SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->GetProcessorName () + lxT (" - ") + basename (filedialog1.GetFileName ()));
+  SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab].name) + lxT (" - ") + pboard->GetProcessorName () + lxT (" - ") + basename (filedialog1.GetFileName ()));
  else
-  SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->GetProcessorName ());
+  SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab].name) + lxT (" - ") + pboard->GetProcessorName ());
 
 
  mcupwr = pa;
@@ -940,7 +940,7 @@ CPWindow1::menu1_EvMicrocontroller(CControl * control)
  proc_ = pboard->GetProcessorName ();
  pboard->SetProcessorName (((CItemMenu*) control)->GetText ());
 
- SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab]) + lxT (" - ") + pboard->GetProcessorName ());
+ SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab].name) + lxT (" - ") + pboard->GetProcessorName ());
 
  FNAME = lxT (" ");
  _EvOnDestroy (control);
