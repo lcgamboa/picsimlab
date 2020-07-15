@@ -234,3 +234,15 @@ cpart_RTC_ds1307::Process(void)
    Window5.SetPin (input_pins[0], Window5.Get_i2c_bus (input_pins[0] - 1));
 
 }
+
+static part * cpart_RTC_ds1307_create(unsigned int x, unsigned int y)
+{
+   return new cpart_RTC_ds1307 ( x ,y);
+}
+
+static void cpart_RTC_ds1307_init(void)
+{
+    part_register("RTC ds1307", cpart_RTC_ds1307_create );
+}
+
+part_init(cpart_RTC_ds1307_init);

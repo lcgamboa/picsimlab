@@ -315,3 +315,14 @@ cpart_pbuttons_an::ReadPropertiesWindow(CPWindow * WProp)
 }
 
 
+static part * cpart_pbuttons_an_create(unsigned int x, unsigned int y)
+{
+   return new cpart_pbuttons_an ( x ,y);
+}
+
+static void cpart_pbuttons_an_init(void)
+{
+    part_register("Push buttons (Analogic)", cpart_pbuttons_an_create );
+}
+
+part_init(cpart_pbuttons_an_init);

@@ -28,13 +28,24 @@
 
 #include"part.h" 
 
-#define MAX_PARTS 100
+#define MAX_PARTS 50
 
-#define NUM_PARTS 27
+extern int NUM_PARTS;
 
-extern const char parts_list[NUM_PARTS][30];
+#define part_init(function)  static void __attribute__((constructor)) function(void) 
+
+typedef part * (* part_create_func)(unsigned int x, unsigned int y);
+
+void part_register(const char * name, part_create_func pcreate);
 
 part * create_part(String name, unsigned int x, unsigned int y);
+
+typedef struct {
+    char name[30];
+    part_create_func pcreate;
+} part_desc;
+
+extern part_desc parts_list[MAX_PARTS];
 
 #endif	/* PARTS_DEFS_H */
 

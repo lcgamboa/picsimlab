@@ -480,3 +480,16 @@ cpart_MI2C_24CXXX::filedialog_EvOnClose(int retId)
     }
   }
 }
+
+
+static part * cpart_MI2C_24CXXX_create(unsigned int x, unsigned int y)
+{
+   return new cpart_MI2C_24CXXX ( x ,y);
+}
+
+static void cpart_MI2C_24CXXX_init(void)
+{
+    part_register("MEM 24CXXX", cpart_MI2C_24CXXX_create );
+}
+
+part_init(cpart_MI2C_24CXXX_init);

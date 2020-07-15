@@ -26,96 +26,59 @@
 
 #include"parts_defs.h" 
 
-//includes of parts
-#include"part_servo.h" 
-#include"part_step.h" 
-#include"part_d_transfer_function.h"
-#include"part_push_buttons.h"
-#include"part_switchs.h"
-#include"part_LEDs.h"
-#include"part_pot.h"
-#include"part_RGB_LED.h"
-#include"part_LCD_hd44780.h"
-#include"part_LCD_pcf8833.h"
-#include"part_LCD_pcd8544.h"
-#include"part_gamepad.h"
-#include"part_LED_matrix.h"
-#include"part_7s_Display.h"
-#include"part_TempSys.h"
-#include"part_keypad.h"
-#include"part_MI2C_24CXXX.h"
-#include"part_RTC_ds1307.h"
-#include"part_RTC_pfc8563.h"
-#include"part_IO_74xx595.h"
-#include"part_VCD_Dump.h"
-#include"part_VCD_Dump_an.h"
-#include"part_IO_PCF8574.h"
-#include"part_Buzzer.h"
-#include"part_SignalGenerator.h" 
-#include"part_push_buttons_an.h"
-#include"part_IO_MCP23S17.h"
+part_desc parts_list[MAX_PARTS];
 
-const char parts_list[NUM_PARTS][30]={"7 Segments Display","Buzzer","D. Transfer function","Gamepad","IO 74xx595","IO MCP23S17","IO PCF8574", "Keypad","LCD hd44780", "LCD pcf8833", "LCD pcd8544", "LED Matrix", "LEDs", "MEM 24CXXX", "Potentiometers", "Push buttons", "Push buttons (Analogic)", "RGB LED", "RTC ds1307", "RTC pfc8563", "Servo motor","Signal Generator","Step motor","Switchs","Temperature System","VCD Dump","VCD Dump (Analogic)",};
 
+int NUM_PARTS = 0;
 
 //boards object creation
-part * create_part(String name, unsigned int x, unsigned int y)
+
+part *
+create_part(String name, unsigned int x, unsigned int y)
 {
-   part * part_=NULL; 
- 
-   if(name.compare(lxT("Servo motor")) == 0 )part_= new cpart_servo(x,y);
+ part * part_ = NULL;
 
-   if(name.compare(lxT("Step motor")) == 0 )part_= new cpart_step(x,y);
-  
-   if(name.compare(lxT("D. Transfer function")) == 0 )part_= new cpart_dtfunc(x,y);
+ for (int i = 0; i < NUM_PARTS; i++)
+  {
+   if (name.compare (parts_list[i].name) == 0)
+    {
+     part_ = parts_list[i].pcreate (x, y);
+     break;
+    }
+  }
 
-   if(name.compare(lxT("Push buttons")) == 0 )part_= new cpart_pbuttons(x,y);
-   
-   if(name.compare(lxT("Switchs")) == 0 )part_= new cpart_switchs(x,y);
-   
-   if(name.compare(lxT("LED Matrix")) == 0 )part_= new cpart_led_matrix(x,y);
-   
-   if(name.compare(lxT("LEDs")) == 0 )part_= new cpart_leds(x,y);
-   
-   if(name.compare(lxT("Potentiometers")) == 0 )part_= new cpart_pot(x,y);
-   
-   if(name.compare(lxT("RGB LED")) == 0 )part_= new cpart_rgb_led(x,y);
-   
-   if(name.compare(lxT("LCD hd44780")) == 0 )part_= new cpart_LCD_hd44780(x,y);
-   
-   if(name.compare(lxT("LCD pcf8833")) == 0 )part_= new cpart_LCD_pcf8833(x,y);
-  
-   if(name.compare(lxT("LCD pcd8544")) == 0 )part_= new cpart_LCD_pcd8544(x,y);
- 
-   if(name.compare(lxT("Gamepad")) == 0 )part_= new cpart_gamepad(x,y);
- 
-   if(name.compare(lxT("7 Segments Display")) == 0 )part_= new cpart_7s_display(x,y);
-   
-   if(name.compare(lxT("Temperature System")) == 0 )part_= new cpart_tempsys(x,y);
+ return part_;
+}
 
-   if(name.compare(lxT("Keypad")) == 0 )part_= new cpart_keypad(x,y);
-  
-   if(name.compare(lxT("MEM 24CXXX")) == 0 )part_= new cpart_MI2C_24CXXX(x,y);
-   
-   if(name.compare(lxT("RTC ds1307")) == 0 )part_= new cpart_RTC_ds1307(x,y);
-   
-   if(name.compare(lxT("RTC pfc8563")) == 0 )part_= new cpart_RTC_pfc8563(x,y);
+void
+part_register(const char * name, part_create_func pcreate)
+{
+ int in;
 
-   if(name.compare(lxT("IO 74xx595")) == 0 )part_= new cpart_IO_74xx595(x,y);
+ if (NUM_PARTS == MAX_PARTS)
+  {
+   printf ("Number of parts greater than MAX_PARTS!\n");
+   exit (-1);
+  }
 
-   if(name.compare(lxT("VCD Dump")) == 0 )part_= new cpart_VCD_Dump(x,y);
+ //insert in ascendent order
+ in = NUM_PARTS;
+ for (int i = NUM_PARTS; i > 0; i--)
+  {
+   if (name[0] > parts_list[i - 1].name[0])
+    {
+     break;
+    }
+   else
+    {
+     in = i - 1;
+     memcpy ((void *) &parts_list[i], (void *) &parts_list[i - 1], sizeof (part_desc));
+    }
+  }
 
-   if(name.compare(lxT("VCD Dump (Analogic)")) == 0 )part_= new cpart_VCD_Dump_an(x,y);   
+ //insert new
+ parts_list[in].pcreate = pcreate;
+ strncpy (parts_list[in].name, name, 30);
 
-   if(name.compare(lxT("IO PCF8574")) == 0 )part_= new cpart_IO_PCF8574(x,y);
-   
-   if(name.compare(lxT("Buzzer")) == 0 )part_= new cpart_Buzzer(x,y);
-   
-   if(name.compare(lxT("Signal Generator")) == 0 )part_= new cpart_SignalGenerator(x,y);
-   
-   if(name.compare(lxT("Push buttons (Analogic)")) == 0 )part_= new cpart_pbuttons_an(x,y);
-   
-   if(name.compare(lxT("IO MCP23S17")) == 0 )part_= new cpart_IO_MCP23S17(x,y);
-   
-   return part_; 
+ NUM_PARTS++;
 }

@@ -242,3 +242,16 @@ cpart_RTC_pfc8563::Process(void)
    Window5.SetPin (input_pins[1], Window5.Get_i2c_bus (input_pins[1] - 1));
 
 }
+
+
+static part * cpart_RTC_pfc8563_create(unsigned int x, unsigned int y)
+{
+   return new cpart_RTC_pfc8563 ( x ,y);
+}
+
+static void cpart_RTC_pfc8563_init(void)
+{
+    part_register("RTC pfc8563", cpart_RTC_pfc8563_create );
+}
+
+part_init(cpart_RTC_pfc8563_init);

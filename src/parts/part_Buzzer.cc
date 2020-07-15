@@ -304,5 +304,17 @@ cpart_Buzzer::ChangeType(unsigned char tp)
     }
    type = tp;
   }
-
 }
+
+
+static part * cpart_Buzzer_create(unsigned int x, unsigned int y)
+{
+   return new cpart_Buzzer ( x ,y);
+}
+
+static void cpart_Buzzer_init(void)
+{
+    part_register("Buzzer", cpart_Buzzer_create );
+}
+
+part_init(cpart_Buzzer_init);

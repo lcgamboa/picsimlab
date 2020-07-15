@@ -266,3 +266,16 @@ cpart_LCD_pcd8544::Process (void)
  }
 
 }
+
+
+static part * cpart_LCD_pcd8544_create(unsigned int x, unsigned int y)
+{
+   return new cpart_LCD_pcd8544 ( x ,y);
+}
+
+static void cpart_LCD_pcd8544_init(void)
+{
+    part_register("LCD pcd8544", cpart_LCD_pcd8544_create );
+}
+
+part_init(cpart_LCD_pcd8544_init);

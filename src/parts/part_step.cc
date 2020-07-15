@@ -327,3 +327,14 @@ cpart_step::ReadPropertiesWindow (CPWindow * WProp)
 }
 
 
+static part * cpart_step_create(unsigned int x, unsigned int y)
+{
+   return new cpart_step( x ,y);
+}
+
+static void cpart_step_init(void)
+{
+    part_register("Step motor", cpart_step_create );
+}
+
+part_init(cpart_step_init);

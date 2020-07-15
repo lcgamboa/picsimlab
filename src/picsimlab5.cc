@@ -59,6 +59,16 @@ CPWindow5::_EvOnCreate(CControl * control)
 {
  if (LoadConfigFile.length () > 0)
   LoadConfig (LoadConfigFile);
+
+
+ for (int i = 0; i < NUM_PARTS; i++)
+  {
+   MParts[i].SetFOwner (this);
+   MParts[i].SetName (parts_list[i].name);
+   MParts[i].SetText (parts_list[i].name);
+   MParts[i].EvMenuActive = EVMENUACTIVE & CPWindow5::menu1_EvMenuActive;
+   menu1_Add.CreateChild (&MParts[i]);
+  }
 }
 
 void
@@ -78,7 +88,7 @@ CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
        pmenu2.SetX (x * scale);
        pmenu2.SetY (y * scale);
 #if defined(__WXGTK__)||defined(__WXMSW__)
-       SetPopupMenu (&pmenu2); 
+       SetPopupMenu (&pmenu2);
 #else
        draw1.SetPopupMenu (&pmenu2);
 #endif
@@ -610,7 +620,7 @@ CPWindow5::GetPinName(unsigned char pin)
   }
  else
   {
-   return PinNames[pin]+"-"+itoa(pin);
+   return PinNames[pin] + "-" + itoa (pin);
   }
 }
 
@@ -681,7 +691,7 @@ CPWindow5::WritePinOA(unsigned char pin, unsigned short oavalue)
 {
  if (pin > PinsCount)
   {
-   if(oavalue > 255)oavalue=255;
+   if (oavalue > 255)oavalue = 255;
    Pins[pin - 1].oavalue = oavalue;
   }
 }

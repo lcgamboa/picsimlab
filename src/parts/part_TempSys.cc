@@ -321,3 +321,15 @@ cpart_tempsys::ReadPropertiesWindow(CPWindow * WProp)
  input_pins[3] = atoi (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ());
 }
 
+
+static part * cpart_tempsys_create(unsigned int x, unsigned int y)
+{
+   return new cpart_tempsys ( x ,y);
+}
+
+static void cpart_tempsys_init(void)
+{
+    part_register("Temperature System", cpart_tempsys_create );
+}
+
+part_init(cpart_tempsys_init);

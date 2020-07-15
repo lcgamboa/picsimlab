@@ -1,3 +1,6 @@
+
+#include "parts/parts_defs.h"
+
 CPWindow5::CPWindow5(void)
 {
 //lxrad automatic generated block start, don't edit below!
@@ -175,15 +178,6 @@ CPWindow5::CPWindow5(void)
 //lxrad automatic generated block end, don't edit above!
   
   pboard = NULL; 
-  
-  for(int i=0; i <NUM_PARTS; i++)
-    {
-       MParts[i].SetFOwner(this);
-       MParts[i].SetName(parts_list[i]);
-       MParts[i].SetText(parts_list[i]);
-       MParts[i].EvMenuActive=EVMENUACTIVE & CPWindow5::menu1_EvMenuActive;
-       menu1_Add.CreateChild(&MParts[i]);
-    }
   
   partsc=0;  
   PartToCreate="";

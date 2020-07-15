@@ -437,3 +437,16 @@ cpart_LCD_hd44780::Process(void)
 //end display code
    
 }
+
+
+static part * cpart_LCD_hd44780_create(unsigned int x, unsigned int y)
+{
+   return new cpart_LCD_hd44780 ( x ,y);
+}
+
+static void cpart_LCD_hd44780_init(void)
+{
+    part_register("LCD hd44780", cpart_LCD_hd44780_create );
+}
+
+part_init(cpart_LCD_hd44780_init);

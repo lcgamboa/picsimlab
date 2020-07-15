@@ -139,7 +139,7 @@ private:
     unsigned char PinsCount;
     int partsc;
     part *parts[MAX_PARTS];
-    CItemMenu MParts[NUM_PARTS];
+    CItemMenu MParts[MAX_PARTS];
     String PartToCreate;
     int PartSelected;
     int PartToMove;

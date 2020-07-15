@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2019  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -524,3 +524,17 @@ cpart_7s_display::PostProcess(void)
    if (lm4[i] > 255)lm4[i] = 255;
   }
 }
+
+
+static part * cpart_7s_display_create(unsigned int x, unsigned int y)
+{
+   return new cpart_7s_display( x ,y);
+}
+
+static void cpart_7s_display_init(void)
+{
+    part_register("7 Segments Display", cpart_7s_display_create );
+}
+
+part_init(cpart_7s_display_init);
+

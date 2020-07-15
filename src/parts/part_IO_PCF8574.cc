@@ -434,3 +434,16 @@ cpart_IO_PCF8574::PostProcess(void)
  Window5.WritePinOA (output_pins[8], (ppins[output_pins[8] - 1].oavalue + ((output_pins_alm[8]*255.0) / NSTEPJ)) / 2);
 
 }
+
+
+static part * cpart_IO_PCF8574_create(unsigned int x, unsigned int y)
+{
+   return new cpart_IO_PCF8574 ( x ,y);
+}
+
+static void cpart_IO_PCF8574_init(void)
+{
+    part_register("IO PCF8574", cpart_IO_PCF8574_create );
+}
+
+part_init(cpart_IO_PCF8574_init);

@@ -605,3 +605,15 @@ cpart_keypad::ComboChange(String value)
    ChangeType (KT4x4);
   }
 }
+
+static part * cpart_keypad_create(unsigned int x, unsigned int y)
+{
+   return new cpart_keypad ( x ,y);
+}
+
+static void cpart_keypad_init(void)
+{
+    part_register("Keypad", cpart_keypad_create );
+}
+
+part_init(cpart_keypad_init);
