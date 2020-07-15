@@ -5,6 +5,7 @@ var annotated_dup =
     [ "avr_gdb_watchpoints_t", "structavr__gdb__watchpoints__t.html", "structavr__gdb__watchpoints__t" ],
     [ "board", "classboard.html", "classboard" ],
     [ "board_avr", "classboard__avr.html", "classboard__avr" ],
+    [ "board_desc", "structboard__desc.html", "structboard__desc" ],
     [ "board_pic", "classboard__pic.html", "classboard__pic" ],
     [ "cboard_0", "classcboard__0.html", "classcboard__0" ],
     [ "cboard_1", "classcboard__1.html", "classcboard__1" ],
@@ -58,6 +59,7 @@ var annotated_dup =
     [ "mi2c_t", "structmi2c__t.html", "structmi2c__t" ],
     [ "output_t", "structoutput__t.html", "structoutput__t" ],
     [ "part", "classpart.html", "classpart" ],
+    [ "part_desc", "structpart__desc.html", "structpart__desc" ],
     [ "rtc2_t", "structrtc2__t.html", "structrtc2__t" ],
     [ "rtc_t", "structrtc__t.html", "structrtc__t" ]
 ];

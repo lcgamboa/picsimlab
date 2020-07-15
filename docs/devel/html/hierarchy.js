@@ -19,6 +19,7 @@ var hierarchy =
         [ "cboard_x", "classcboard__x.html", null ]
       ] ]
     ] ],
+    [ "board_desc", "structboard__desc.html", null ],
     [ "CPWindow", null, [
       [ "CPWindow1", "class_c_p_window1.html", null ],
       [ "CPWindow2", "class_c_p_window2.html", null ],
@@ -65,6 +66,7 @@ var hierarchy =
       [ "cpart_VCD_Dump", "classcpart___v_c_d___dump.html", null ],
       [ "cpart_VCD_Dump_an", "classcpart___v_c_d___dump__an.html", null ]
     ] ],
+    [ "part_desc", "structpart__desc.html", null ],
     [ "rtc2_t", "structrtc2__t.html", null ],
     [ "rtc_t", "structrtc__t.html", null ]
 ];

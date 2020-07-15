@@ -209,15 +209,17 @@ cpart_servo::ReadPropertiesWindow (CPWindow * WProp)
  input_pin = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
 }
 
-
+//Return a object servo of type part
 static part * cpart_servo_create(unsigned int x, unsigned int y)
 {
    return new cpart_servo( x ,y);
 }
 
+//Register the part in PICSimLab spare parts list
 static void cpart_servo_init(void)
 {
     part_register("Servo motor", cpart_servo_create );
 }
 
+//Run the register function
 part_init(cpart_servo_init);

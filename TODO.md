@@ -12,7 +12,6 @@
 | [src/boards/board_avr.cc](src/boards/board_avr.cc#L1081) | 1081 | avr EEPROM pointer
 | [src/boards/board_avr.cc](src/boards/board_avr.cc#L1107) | 1107 | avr ID size
 | [src/boards/board_avr.cc](src/boards/board_avr.cc#L1114) | 1114 | AVR EEPROM size
-| [src/boards/boards_defs.cc](src/boards/boards_defs.cc#L37) | 37 | error handler
 | [src/devices/lcd_hd44780.cc](src/devices/lcd_hd44780.cc#L759) | 759 | support to read and busy flag
 | [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L84) | 84 | decode
 | [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L87) | 87 | itensity

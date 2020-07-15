@@ -62,7 +62,7 @@ var class_c_p_window5 =
     [ "menu1_Help", "class_c_p_window5.html#ad63f160d3804b194e409582438172387", null ],
     [ "menu1_Help_About", "class_c_p_window5.html#aa8c0c368f2e68e6bc33d1d124c4b325a", null ],
     [ "menu1_Help_Contents", "class_c_p_window5.html#a866ff18b277181675f274b3a39f0a6fd", null ],
-    [ "MParts", "class_c_p_window5.html#ad5bcc0c885a0d74b882a3d3c965c7fce", null ],
+    [ "MParts", "class_c_p_window5.html#a8c3a81ea5fe38b7320d1aaebeb9195f2", null ],
     [ "oldfname", "class_c_p_window5.html#a6dbdbc936aaa228a721aa77eb9e3fdbe", null ],
     [ "parts", "class_c_p_window5.html#ac57dbc6f29881a0fdeb3071fe5b6bb1f", null ],
     [ "partsc", "class_c_p_window5.html#a222bb1cb6b017a07e3965070e13576e6", null ],

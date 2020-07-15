@@ -65,7 +65,7 @@ part_register(const char * name, part_create_func pcreate)
  in = NUM_PARTS;
  for (int i = NUM_PARTS; i > 0; i--)
   {
-   if (name[0] > parts_list[i - 1].name[0])
+   if ( strcmp(name, parts_list[i - 1].name) > 0)
     {
      break;
     }

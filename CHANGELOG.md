@@ -2,6 +2,8 @@
 
 ### New
 
+* Dynamic parts registration for better modularization. [lcgamboa]
+
 * Dynamic board registration for better modularization. [lcgamboa]
 
 * Examples are moved to other repository. [lcgamboa]
@@ -13,6 +15,10 @@
 * Support to chose AVR debugger type. [lcgamboa]
 
 * Support to atmega2560. [lcgamboa]
+
+### Changes
+
+* Board registartion improved. [lcgamboa]
 
 ### Fix
 

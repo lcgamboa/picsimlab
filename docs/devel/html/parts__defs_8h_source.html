@@ -118,46 +118,31 @@ $(document).ready(function(){initNavTree('parts__defs_8h_source.html',''); initR
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include&quot;part.h&quot;</span> </div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#define MAX_PARTS 100</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#define MAX_PARTS 50</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#define NUM_PARTS 27</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">int</span> NUM_PARTS;</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <span class="keywordtype">char</span> parts_list[NUM_PARTS][30];</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#define part_init(function)  static void __attribute__((constructor)) function(void) </span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<a class="code" href="classpart.html">part</a> * create_part(String name, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> x, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> y);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">typedef</span> <a class="code" href="classpart.html">part</a> * (* part_create_func)(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> x, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> y);</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#endif  </span><span class="comment">/* PARTS_DEFS_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keywordtype">void</span> part_register(<span class="keyword">const</span> <span class="keywordtype">char</span> * name, part_create_func pcreate);</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<a class="code" href="classpart.html">part</a> * create_part(String name, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> x, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> y);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="structpart__desc.html">   43</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordtype">char</span> name[30];</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    part_create_func pcreate;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;} <a class="code" href="structpart__desc.html">part_desc</a>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">extern</span> <a class="code" href="structpart__desc.html">part_desc</a> parts_list[MAX_PARTS];</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#endif  </span><span class="comment">/* PARTS_DEFS_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclasscpart___i_o___m_c_p23_s17_html"><div class="ttname"><a href="classcpart___i_o___m_c_p23_s17.html">cpart_IO_MCP23S17</a></div><div class="ttdef"><b>Definition:</b> part_IO_MCP23S17.h:33</div></div>
-<div class="ttc" id="aclasscpart___l_c_d__pcf8833_html"><div class="ttname"><a href="classcpart___l_c_d__pcf8833.html">cpart_LCD_pcf8833</a></div><div class="ttdef"><b>Definition:</b> part_LCD_pcf8833.h:33</div></div>
-<div class="ttc" id="aclasscpart___signal_generator_html"><div class="ttname"><a href="classcpart___signal_generator.html">cpart_SignalGenerator</a></div><div class="ttdef"><b>Definition:</b> part_SignalGenerator.h:32</div></div>
-<div class="ttc" id="aclasscpart___buzzer_html"><div class="ttname"><a href="classcpart___buzzer.html">cpart_Buzzer</a></div><div class="ttdef"><b>Definition:</b> part_Buzzer.h:32</div></div>
-<div class="ttc" id="aclasscpart__servo_html"><div class="ttname"><a href="classcpart__servo.html">cpart_servo</a></div><div class="ttdoc">servo motor part class</div><div class="ttdef"><b>Definition:</b> part_servo.h:37</div></div>
-<div class="ttc" id="aclasscpart___i_o__74xx595_html"><div class="ttname"><a href="classcpart___i_o__74xx595.html">cpart_IO_74xx595</a></div><div class="ttdef"><b>Definition:</b> part_IO_74xx595.h:33</div></div>
-<div class="ttc" id="aclasscpart__leds_html"><div class="ttname"><a href="classcpart__leds.html">cpart_leds</a></div><div class="ttdef"><b>Definition:</b> part_LEDs.h:33</div></div>
-<div class="ttc" id="aclasscpart___r_t_c__pfc8563_html"><div class="ttname"><a href="classcpart___r_t_c__pfc8563.html">cpart_RTC_pfc8563</a></div><div class="ttdef"><b>Definition:</b> part_RTC_pfc8563.h:33</div></div>
 <div class="ttc" id="aclasspart_html"><div class="ttname"><a href="classpart.html">part</a></div><div class="ttdoc">PART class.</div><div class="ttdef"><b>Definition:</b> part.h:36</div></div>
-<div class="ttc" id="aclasscpart__pbuttons_html"><div class="ttname"><a href="classcpart__pbuttons.html">cpart_pbuttons</a></div><div class="ttdef"><b>Definition:</b> part_push_buttons.h:33</div></div>
-<div class="ttc" id="aclasscpart__7s__display_html"><div class="ttname"><a href="classcpart__7s__display.html">cpart_7s_display</a></div><div class="ttdef"><b>Definition:</b> part_7s_Display.h:32</div></div>
-<div class="ttc" id="aclasscpart__pot_html"><div class="ttname"><a href="classcpart__pot.html">cpart_pot</a></div><div class="ttdef"><b>Definition:</b> part_pot.h:32</div></div>
-<div class="ttc" id="aclasscpart__pbuttons__an_html"><div class="ttname"><a href="classcpart__pbuttons__an.html">cpart_pbuttons_an</a></div><div class="ttdef"><b>Definition:</b> part_push_buttons_an.h:33</div></div>
-<div class="ttc" id="aclasscpart___l_c_d__hd44780_html"><div class="ttname"><a href="classcpart___l_c_d__hd44780.html">cpart_LCD_hd44780</a></div><div class="ttdef"><b>Definition:</b> part_LCD_hd44780.h:38</div></div>
-<div class="ttc" id="aclasscpart___m_i2_c__24_c_x_x_x_html"><div class="ttname"><a href="classcpart___m_i2_c__24_c_x_x_x.html">cpart_MI2C_24CXXX</a></div><div class="ttdef"><b>Definition:</b> part_MI2C_24CXXX.h:33</div></div>
-<div class="ttc" id="aclasscpart__step_html"><div class="ttname"><a href="classcpart__step.html">cpart_step</a></div><div class="ttdef"><b>Definition:</b> part_step.h:33</div></div>
-<div class="ttc" id="aclasscpart__dtfunc_html"><div class="ttname"><a href="classcpart__dtfunc.html">cpart_dtfunc</a></div><div class="ttdef"><b>Definition:</b> part_d_transfer_function.h:33</div></div>
-<div class="ttc" id="aclasscpart___i_o___p_c_f8574_html"><div class="ttname"><a href="classcpart___i_o___p_c_f8574.html">cpart_IO_PCF8574</a></div><div class="ttdef"><b>Definition:</b> part_IO_PCF8574.h:33</div></div>
-<div class="ttc" id="aclasscpart___l_c_d__pcd8544_html"><div class="ttname"><a href="classcpart___l_c_d__pcd8544.html">cpart_LCD_pcd8544</a></div><div class="ttdef"><b>Definition:</b> part_LCD_pcd8544.h:33</div></div>
-<div class="ttc" id="aclasscpart___v_c_d___dump__an_html"><div class="ttname"><a href="classcpart___v_c_d___dump__an.html">cpart_VCD_Dump_an</a></div><div class="ttdef"><b>Definition:</b> part_VCD_Dump_an.h:32</div></div>
-<div class="ttc" id="aclasscpart__gamepad_html"><div class="ttname"><a href="classcpart__gamepad.html">cpart_gamepad</a></div><div class="ttdef"><b>Definition:</b> part_gamepad.h:33</div></div>
-<div class="ttc" id="aclasscpart__led__matrix_html"><div class="ttname"><a href="classcpart__led__matrix.html">cpart_led_matrix</a></div><div class="ttdef"><b>Definition:</b> part_LED_matrix.h:33</div></div>
-<div class="ttc" id="aclasscpart__keypad_html"><div class="ttname"><a href="classcpart__keypad.html">cpart_keypad</a></div><div class="ttdef"><b>Definition:</b> part_keypad.h:33</div></div>
-<div class="ttc" id="aclasscpart___v_c_d___dump_html"><div class="ttname"><a href="classcpart___v_c_d___dump.html">cpart_VCD_Dump</a></div><div class="ttdef"><b>Definition:</b> part_VCD_Dump.h:35</div></div>
-<div class="ttc" id="aclasscpart__rgb__led_html"><div class="ttname"><a href="classcpart__rgb__led.html">cpart_rgb_led</a></div><div class="ttdef"><b>Definition:</b> part_RGB_LED.h:33</div></div>
-<div class="ttc" id="aclasscpart___r_t_c__ds1307_html"><div class="ttname"><a href="classcpart___r_t_c__ds1307.html">cpart_RTC_ds1307</a></div><div class="ttdef"><b>Definition:</b> part_RTC_ds1307.h:33</div></div>
-<div class="ttc" id="aclasscpart__switchs_html"><div class="ttname"><a href="classcpart__switchs.html">cpart_switchs</a></div><div class="ttdef"><b>Definition:</b> part_switchs.h:33</div></div>
-<div class="ttc" id="aclasscpart__tempsys_html"><div class="ttname"><a href="classcpart__tempsys.html">cpart_tempsys</a></div><div class="ttdef"><b>Definition:</b> part_TempSys.h:32</div></div>
+<div class="ttc" id="astructpart__desc_html"><div class="ttname"><a href="structpart__desc.html">part_desc</a></div><div class="ttdef"><b>Definition:</b> parts_defs.h:43</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
