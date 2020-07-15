@@ -1131,15 +1131,7 @@ cboard_3::ReadPreferences(char *name, char *value)
 }
 
 
-static board * cboard_3_create(void)
-{
-   return new cboard_3();
-}
+board_init(3, "McLab2", cboard_3);
 
-static void cboard_3_init(void)
-{
-    board_register(3, "McLab2", cboard_3_create );
-}
 
-board_init(cboard_3_init);
 

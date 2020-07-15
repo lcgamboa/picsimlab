@@ -269,15 +269,5 @@ cpart_LCD_pcf8833::Process (void)
 
 }
 
+part_init("LCD pcf8833", cpart_LCD_pcf8833);
 
-static part * cpart_LCD_pcf8833_create(unsigned int x, unsigned int y)
-{
-   return new cpart_LCD_pcf8833 ( x ,y);
-}
-
-static void cpart_LCD_pcf8833_init(void)
-{
-    part_register("LCD pcf8833", cpart_LCD_pcf8833_create );
-}
-
-part_init(cpart_LCD_pcf8833_init);

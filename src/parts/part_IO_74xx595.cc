@@ -408,15 +408,5 @@ cpart_IO_74xx595::PostProcess(void)
 
 }
 
+part_init("IO 74xx595", cpart_IO_74xx595);
 
-static part * cpart_IO_74xx595_create(unsigned int x, unsigned int y)
-{
-   return new cpart_IO_74xx595 ( x ,y);
-}
-
-static void cpart_IO_74xx595_init(void)
-{
-    part_register("IO 74xx595", cpart_IO_74xx595_create );
-}
-
-part_init(cpart_IO_74xx595_init);

@@ -609,14 +609,5 @@ cboard_5::Run_CPU(void)
 }
 
 
-static board * cboard_5_create(void)
-{
-   return new cboard_5();
-}
+board_init(5, "Arduino Uno", cboard_5);
 
-static void cboard_5_init(void)
-{
-    board_register(5, "Arduino Uno", cboard_5_create );
-}
-
-board_init(cboard_5_init);

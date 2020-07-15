@@ -435,15 +435,5 @@ cpart_IO_PCF8574::PostProcess(void)
 
 }
 
+part_init("IO PCF8574", cpart_IO_PCF8574);
 
-static part * cpart_IO_PCF8574_create(unsigned int x, unsigned int y)
-{
-   return new cpart_IO_PCF8574 ( x ,y);
-}
-
-static void cpart_IO_PCF8574_init(void)
-{
-    part_register("IO PCF8574", cpart_IO_PCF8574_create );
-}
-
-part_init(cpart_IO_PCF8574_init);

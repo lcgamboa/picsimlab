@@ -636,15 +636,5 @@ cpart_VCD_Dump::EvMouseButtonPress(uint button, uint x, uint y, uint state)
   }
 }
 
+part_init("VCD Dump", cpart_VCD_Dump);
 
-static part * cpart_VCD_Dump_create(unsigned int x, unsigned int y)
-{
-   return new cpart_VCD_Dump ( x ,y);
-}
-
-static void cpart_VCD_Dump_init(void)
-{
-    part_register("VCD Dump", cpart_VCD_Dump_create );
-}
-
-part_init(cpart_VCD_Dump_init);

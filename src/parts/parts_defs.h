@@ -24,7 +24,7 @@
    ######################################################################## */
 
 #ifndef PARTS_DEFS_H
-#define	PARTS_DEFS_H
+#define PARTS_DEFS_H
 
 #include"part.h" 
 
@@ -32,7 +32,12 @@
 
 extern int NUM_PARTS;
 
-#define part_init(function)  static void __attribute__((constructor)) function(void) 
+#define part_init(name, function)  \
+static part * function ## _create(unsigned int x, unsigned int y){\
+   return new function ( x ,y);};\
+    static void __attribute__((constructor)) function ## _init(void);\
+    static void function ## _init(void){\
+    part_register(name , function ## _create );}
 
 typedef part * (* part_create_func)(unsigned int x, unsigned int y);
 
@@ -47,5 +52,5 @@ typedef struct {
 
 extern part_desc parts_list[MAX_PARTS];
 
-#endif	/* PARTS_DEFS_H */
+#endif /* PARTS_DEFS_H */
 

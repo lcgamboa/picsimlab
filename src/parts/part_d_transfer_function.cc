@@ -476,14 +476,5 @@ cpart_dtfunc::ReadPropertiesWindow(CPWindow * WProp)
 }
 
 
-static part * cpart_dtfunc_create(unsigned int x, unsigned int y)
-{
-   return new cpart_dtfunc( x ,y);
-}
+part_init("D. Transfer function" , cpart_dtfunc);
 
-static void cpart_dtfunc_init(void)
-{
-    part_register("D. Transfer function" , cpart_dtfunc_create );
-}
-
-part_init(cpart_dtfunc_init);

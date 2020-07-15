@@ -235,14 +235,5 @@ cpart_RTC_ds1307::Process(void)
 
 }
 
-static part * cpart_RTC_ds1307_create(unsigned int x, unsigned int y)
-{
-   return new cpart_RTC_ds1307 ( x ,y);
-}
+part_init("RTC ds1307", cpart_RTC_ds1307);
 
-static void cpart_RTC_ds1307_init(void)
-{
-    part_register("RTC ds1307", cpart_RTC_ds1307_create );
-}
-
-part_init(cpart_RTC_ds1307_init);

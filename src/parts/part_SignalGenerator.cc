@@ -392,14 +392,5 @@ cpart_SignalGenerator::ReadPropertiesWindow(CPWindow * WProp)
  input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
 }
 
-static part * cpart_SignalGenerator_create(unsigned int x, unsigned int y)
-{
-   return new cpart_SignalGenerator ( x ,y);
-}
+part_init("Signal Generator", cpart_SignalGenerator);
 
-static void cpart_SignalGenerator_init(void)
-{
-    part_register("Signal Generator", cpart_SignalGenerator_create );
-}
-
-part_init(cpart_SignalGenerator_init);

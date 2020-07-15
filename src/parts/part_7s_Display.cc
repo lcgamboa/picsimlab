@@ -526,15 +526,7 @@ cpart_7s_display::PostProcess(void)
 }
 
 
-static part * cpart_7s_display_create(unsigned int x, unsigned int y)
-{
-   return new cpart_7s_display( x ,y);
-}
+part_init("7 Segments Display", cpart_7s_display);
 
-static void cpart_7s_display_init(void)
-{
-    part_register("7 Segments Display", cpart_7s_display_create );
-}
 
-part_init(cpart_7s_display_init);
 

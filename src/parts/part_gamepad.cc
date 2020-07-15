@@ -534,15 +534,5 @@ cpart_gamepad::ReadPropertiesWindow (CPWindow * WProp)
 
 }
 
+part_init("Gamepad", cpart_gamepad);
 
-static part * cpart_gamepad_create(unsigned int x, unsigned int y)
-{
-   return new cpart_gamepad ( x ,y);
-}
-
-static void cpart_gamepad_init(void)
-{
-    part_register("Gamepad", cpart_gamepad_create );
-}
-
-part_init(cpart_gamepad_init);

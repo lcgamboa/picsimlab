@@ -606,14 +606,5 @@ cpart_keypad::ComboChange(String value)
   }
 }
 
-static part * cpart_keypad_create(unsigned int x, unsigned int y)
-{
-   return new cpart_keypad ( x ,y);
-}
+part_init("Keypad", cpart_keypad);
 
-static void cpart_keypad_init(void)
-{
-    part_register("Keypad", cpart_keypad_create );
-}
-
-part_init(cpart_keypad_init);

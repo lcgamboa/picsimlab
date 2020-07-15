@@ -29,7 +29,13 @@
 #include "board.h"
 #include "board_1.h"
 
-#define board_init(function)  static void __attribute__((constructor)) function(void) 
+#define board_init(num,name,function)  \
+    static board * function ## _create(void){\
+    return new function ();};\
+    static void __attribute__((constructor)) function ## _init (void);\
+    static void function ## _init (void){\
+    board_register(num, name, function ## _create );}
+
 
 typedef board * (* board_create_func)(void);
 

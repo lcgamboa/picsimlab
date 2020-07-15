@@ -274,14 +274,5 @@ cpart_leds::ReadPropertiesWindow(CPWindow * WProp)
 }
 
 
-static part * cpart_leds_create(unsigned int x, unsigned int y)
-{
-   return new cpart_leds( x ,y);
-}
+part_init("LEDs", cpart_leds);
 
-static void cpart_leds_init(void)
-{
-    part_register("LEDs", cpart_leds_create );
-}
-
-part_init(cpart_leds_init);

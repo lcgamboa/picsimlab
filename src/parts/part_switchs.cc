@@ -374,15 +374,5 @@ cpart_switchs::ReadPropertiesWindow(CPWindow * WProp)
  output_pins[7] = atoi (((CCombo*) WProp->GetChildByName ("combo8"))->GetText ());
 }
 
+part_init("Switchs", cpart_switchs);
 
-static part * cpart_switchs_create(unsigned int x, unsigned int y)
-{
-   return new cpart_switchs ( x ,y);
-}
-
-static void cpart_switchs_init(void)
-{
-    part_register("Switchs", cpart_switchs_create );
-}
-
-part_init(cpart_switchs_init);

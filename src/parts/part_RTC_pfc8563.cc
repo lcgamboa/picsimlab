@@ -243,15 +243,5 @@ cpart_RTC_pfc8563::Process(void)
 
 }
 
+part_init("RTC pfc8563", cpart_RTC_pfc8563);
 
-static part * cpart_RTC_pfc8563_create(unsigned int x, unsigned int y)
-{
-   return new cpart_RTC_pfc8563 ( x ,y);
-}
-
-static void cpart_RTC_pfc8563_init(void)
-{
-    part_register("RTC pfc8563", cpart_RTC_pfc8563_create );
-}
-
-part_init(cpart_RTC_pfc8563_init);

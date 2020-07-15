@@ -366,14 +366,6 @@ cpart_pot::ReadPropertiesWindow (CPWindow * WProp)
  input_pins[3] = atoi (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ());
 }
 
-static part * cpart_pot_create(unsigned int x, unsigned int y)
-{
-   return new cpart_pot ( x ,y);
-}
 
-static void cpart_pot_init(void)
-{
-    part_register("Potentiometers", cpart_pot_create );
-}
+part_init("Potentiometers", cpart_pot);
 
-part_init(cpart_pot_init);

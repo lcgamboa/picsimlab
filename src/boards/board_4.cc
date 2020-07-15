@@ -1943,14 +1943,6 @@ cboard_4::board_Event(CControl * control)
   lcd_init (&lcd, 20, 4);
 }
 
-static board * cboard_4_create(void)
-{
-   return new cboard_4();
-}
+board_init(4, "PICGenios", cboard_4);
 
-static void cboard_4_init(void)
-{
-    board_register(4, "PICGenios", cboard_4_create );
-}
 
-board_init(cboard_4_init);

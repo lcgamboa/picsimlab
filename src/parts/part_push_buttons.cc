@@ -424,14 +424,5 @@ cpart_pbuttons::ReadPropertiesWindow(CPWindow * WProp)
 }
 
 
-static part * cpart_pbuttons_create(unsigned int x, unsigned int y)
-{
-   return new cpart_pbuttons( x ,y);
-}
+part_init("Push buttons", cpart_pbuttons);
 
-static void cpart_pbuttons_init(void)
-{
-    part_register("Push buttons", cpart_pbuttons_create );
-}
-
-part_init(cpart_pbuttons_init);

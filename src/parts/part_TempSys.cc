@@ -322,14 +322,5 @@ cpart_tempsys::ReadPropertiesWindow(CPWindow * WProp)
 }
 
 
-static part * cpart_tempsys_create(unsigned int x, unsigned int y)
-{
-   return new cpart_tempsys ( x ,y);
-}
+part_init("Temperature System", cpart_tempsys);
 
-static void cpart_tempsys_init(void)
-{
-    part_register("Temperature System", cpart_tempsys_create );
-}
-
-part_init(cpart_tempsys_init);

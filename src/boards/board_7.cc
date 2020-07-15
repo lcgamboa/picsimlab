@@ -627,15 +627,7 @@ cboard_7::Run_CPU(void)
 }
 
 #ifdef _EXPERIMENTAL_
-static board * cboard_7_create(void)
-{
-   return new cboard_7();
-}
 
-static void cboard_7_init(void)
-{
-    board_register(7, "Curiosity", cboard_7_create );
-}
+board_init(7, "Curiosity", cboard_7);
 
-board_init(cboard_7_init);
 #endif

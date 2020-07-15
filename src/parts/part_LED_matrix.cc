@@ -252,15 +252,5 @@ cpart_led_matrix::Process(void)
 
 }
 
+part_init("LED Matrix", cpart_led_matrix);
 
-static part * cpart_led_matrix_create(unsigned int x, unsigned int y)
-{
-   return new cpart_led_matrix ( x ,y);
-}
-
-static void cpart_led_matrix_init(void)
-{
-    part_register("LED Matrix", cpart_led_matrix_create );
-}
-
-part_init(cpart_led_matrix_init);

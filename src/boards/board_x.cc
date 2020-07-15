@@ -555,19 +555,7 @@ cboard_x::Run_CPU(void)
 
 #ifdef _EXPERIMENTAL_
 
-//Return a object of type board_x
-static board * cboard_x_create(void)
-{
-   return new cboard_x();
-}
-
 //Register the board in PICSimLab
-static void cboard_x_init(void)
-{
-    board_register(8, "Board X", cboard_x_create );
-}
-
-//Run the register function
-board_init(cboard_x_init);
+board_init(8, "Board X", cboard_x); 
 
 #endif

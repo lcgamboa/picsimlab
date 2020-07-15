@@ -197,15 +197,5 @@ cpart_rgb_led::ReadPropertiesWindow (CPWindow * WProp)
  input_pins[2] = atoi (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ());
 }
 
+part_init("RGB LED", cpart_rgb_led);
 
-static part * cpart_rgb_led_create(unsigned int x, unsigned int y)
-{
-   return new cpart_rgb_led ( x ,y);
-}
-
-static void cpart_rgb_led_init(void)
-{
-    part_register("RGB LED", cpart_rgb_led_create );
-}
-
-part_init(cpart_rgb_led_init);

@@ -584,15 +584,7 @@ cboard_6::Run_CPU(void)
 }
 
 #ifdef _EXPERIMENTAL_
-static board * cboard_6_create(void)
-{
-   return new cboard_6();
-}
 
-static void cboard_6_init(void)
-{
-    board_register(6, "MPLAB Xpress", cboard_6_create );
-}
+board_init(6, "MPLAB Xpress", cboard_6);
 
-board_init(cboard_6_init);
 #endif
