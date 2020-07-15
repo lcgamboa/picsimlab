@@ -18,6 +18,8 @@
 
 ### Changes
 
+* Register macros simplified. [lcgamboa]
+
 * Board registartion improved. [lcgamboa]
 
 ### Fix
