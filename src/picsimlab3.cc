@@ -25,8 +25,6 @@
 
 //Configuration window
 
-#include <lxrad/cspin.h>
-
 #include"picsimlab3.h"
 #include"picsimlab3_d.cc"
 

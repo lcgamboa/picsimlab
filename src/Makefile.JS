@@ -14,15 +14,15 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-CFLAGS=  -DEXT_BROWSER -DNO_DEBUG -DNO_TOOLS -Werror -Os -s DEMANGLE_SUPPORT=0 \
+override CFLAGS=  -DEXT_BROWSER -DNO_DEBUG -DNO_TOOLS -Werror -Os -s DEMANGLE_SUPPORT=0 \
         -s SAFE_HEAP=0 -s ASSERTIONS=0 -s TOTAL_MEMORY=128MB -s USE_SDL=2 -s USE_SDL_IMAGE=2 \
 	-s SDL2_IMAGE_FORMATS='["png","bmp"]' -s USE_SDL_TTF=2 --preload-file assets --preload-file home \
 	-D_VERSION_=\"${VERSION}\" -Wall -D_SHARE_=\"/assets/share/\" -I../../LXRAD_SDL2/include/ \
 	-I../../picsim/include/ \
 	-I../../simavr/simavr/ -DEXT_BROWSER_EXAMPLES   
-CFLAGS+= --pre-js load.js
+override CFLAGS+= --pre-js load.js
 #	-s "BINARYEN_TRAP_MODE='clamp'" 
-CFLAGS+= -s EXPORTED_FUNCTIONS='["_main","_file_ready","_lxrad_scale_up","_lxrad_scale_down"]' \
+override CFLAGS+= -s EXPORTED_FUNCTIONS='["_main","_file_ready","_lxrad_scale_up","_lxrad_scale_down"]' \
 	 -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' 
 
 
