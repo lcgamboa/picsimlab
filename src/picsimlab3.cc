@@ -117,7 +117,7 @@ CPWindow3::_EvOnShow(CControl * control)
   }
  else
   {
-   combo3.SetText ("MPLABX");
+   combo3.SetText ("MDB");
   }
  
   spin1.SetValue (Window1.Get_debug_port ());
