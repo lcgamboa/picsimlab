@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ void
 board_pic::MSetSerial(const char * port)
 {
  pic_set_serial (&pic,0, port, 0, 0, 0);
+ pic_set_serial (&pic,1, "", 0, 0, 0);
 }
 
 int
