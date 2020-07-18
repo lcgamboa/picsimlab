@@ -202,14 +202,14 @@ cboard_x::Reset(void)
 
  //verify serial port state and refresh status bar  
 #ifndef _WIN_
- if (pic.serialfd > 0)
+ if (pic.serial[0].serialfd > 0)
 #else
- if (pic.serialfd != INVALID_HANDLE_VALUE)
+ if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serialbaud) + lxT ("(") +
-                               String ().Format ("%4.1f", fabs ((100.0 * pic.serialexbaud - 100.0 *
-                                                                 pic.serialbaud) / pic.serialexbaud)) + lxT ("%)"));
+                               String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
+                               String ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
+                                                                 pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
@@ -224,14 +224,14 @@ cboard_x::RefreshStatus(void)
 {
  //verify serial port state and refresh status bar   
 #ifndef _WIN_
- if (pic.serialfd > 0)
+ if (pic.serial[0].serialfd > 0)
 #else
- if (pic.serialfd != INVALID_HANDLE_VALUE)
+ if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serialbaud) + lxT ("(") +
-                               String ().Format ("%4.1f", fabs ((100.0 * pic.serialexbaud - 100.0 *
-                                                                 pic.serialbaud) / pic.serialexbaud)) + lxT ("%)"));
+                               String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
+                               String ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
+                                                                 pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));

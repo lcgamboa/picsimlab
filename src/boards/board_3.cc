@@ -713,11 +713,11 @@ cboard_3::Reset(void)
  pic_set_pin (36, p_BT4);
 
 #ifndef _WIN_
- if (pic.serialfd > 0)
+ if (pic.serial[0].serialfd > 0)
 #else
- if (pic.serialfd != INVALID_HANDLE_VALUE)
+ if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-  Window1.statusbar1.SetField (2, lxT ("Serial: ") + String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serialbaud) + lxT ("(") + String ().Format ("%4.1f", fabs ((100.0 * pic.serialexbaud - 100.0 * pic.serialbaud) / pic.serialexbaud)) + lxT ("%)"));
+  Window1.statusbar1.SetField (2, lxT ("Serial: ") + String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") + String ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") + String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
@@ -1086,11 +1086,11 @@ cboard_3::RefreshStatus(void)
  label4->SetText (lxT ("Temp: ") + String ().Format ("%5.2f", temp[0]) + lxT ("°C"));
 
 #ifndef _WIN_
- if (pic.serialfd > 0)
+ if (pic.serial[0].serialfd > 0)
 #else
- if (pic.serialfd != INVALID_HANDLE_VALUE)
+ if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-  Window1.statusbar1.SetField (2, lxT ("Serial: ") + String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serialbaud) + lxT ("(") + String ().Format ("%4.1f", fabs ((100.0 * pic.serialexbaud - 100.0 * pic.serialbaud) / pic.serialexbaud)) + lxT ("%)"));
+  Window1.statusbar1.SetField (2, lxT ("Serial: ") + String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") + String ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") + String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
