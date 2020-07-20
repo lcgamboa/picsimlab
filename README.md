@@ -85,3 +85,15 @@ If the problem is not in either of the previous two options, the problem is prob
 
 [Online version of PICSimLab](https://lcgamboa.github.io/)
 
+## Download analytics
+
+- GitHub [`lcgamboa/picsimlab`](https://github.com/lcgamboa/picsimlab/) repo
+  - latest PICSimLab release
+[![Github All Releases](https://img.shields.io/github/downloads/lcgamboa/picsimlab/latest/total.svg)](https://github.com/lcgamboa/picsimlab/releases/)
+  - all xPack releases [![Github All Releases](https://img.shields.io/github/downloads/lcgamboa/picsimlab/total.svg)](https://github.com/lcgamboa/picsimlab/releases/)
+  - [individual file counters](https://www.somsubhra.com/github-release-stats/?username=lcagmboa&repository=picsimlab) (grouped per release)
+
+Credit to [Shields IO](https://shields.io) for the badges and to
+[Somsubhra/github-release-stats](https://github.com/Somsubhra/github-release-stats)
+for the individual file counters.
+
