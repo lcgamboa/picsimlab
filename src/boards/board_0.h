@@ -61,21 +61,21 @@ class cboard_0:public board_pic, public board_avr
       const picpin * MGetPinsValues(void);  
       void MStep(void);
       void MStepResume(void);
-      int MTestBP(unsigned int bp);
+      int DBGTestBP(unsigned int bp);
       void MReset(int flags);
-      unsigned short * MGetProcID_p(void);
-      unsigned int  MGetPC(void);
-      void MSetPC(unsigned int pc);
-      unsigned char * MGetRAM_p(void);
-      unsigned char * MGetROM_p(void);
-      unsigned char * MGetCONFIG_p(void);
-      unsigned char * MGetID_p(void);
-      unsigned char * MGetEEPROM_p(void);
-      unsigned int MGetRAMSize(void);
-      unsigned int MGetROMSize(void);
-      unsigned int MGetCONFIGSize(void);
-      unsigned int MGetIDSize(void);
-      unsigned int MGetEEPROM_Size(void);
+      unsigned short * DBGGetProcID_p(void);
+      unsigned int  DBGGetPC(void);
+      void DBGSetPC(unsigned int pc);
+      unsigned char * DBGGetRAM_p(void);
+      unsigned char * DBGGetROM_p(void);
+      unsigned char * DBGGetCONFIG_p(void);
+      unsigned char * DBGGetID_p(void);
+      unsigned char * DBGGetEEPROM_p(void);
+      unsigned int DBGGetRAMSize(void);
+      unsigned int DBGGetROMSize(void);
+      unsigned int DBGGetCONFIGSize(void);
+      unsigned int DBGGetIDSize(void);
+      unsigned int DBGGetEEPROM_Size(void);
       
       //Constructor called once on board creation 
       cboard_0(void);

@@ -851,15 +851,15 @@ cboard_0::MStepResume(void)
 }
 
 int
-cboard_0::MTestBP(unsigned int bp)
+cboard_0::DBGTestBP(unsigned int bp)
 {
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MTestBP (bp);
+   return board_pic::DBGTestBP (bp);
    break;
   case _AVR:
-   return board_avr::MTestBP (bp);
+   return board_avr::DBGTestBP (bp);
    break;
   }
  return 0;
@@ -880,46 +880,46 @@ cboard_0::MReset(int flags)
 }
 
 unsigned short *
-cboard_0::MGetProcID_p(void)
+cboard_0::DBGGetProcID_p(void)
 {
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MGetProcID_p ();
+   return board_pic::DBGGetProcID_p ();
    break;
   case _AVR:
-   return board_avr::MGetProcID_p ();
+   return board_avr::DBGGetProcID_p ();
    break;
   }
  return NULL;
 }
 
 unsigned int
-cboard_0::MGetPC(void)
+cboard_0::DBGGetPC(void)
 {
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MGetPC ();
+   return board_pic::DBGGetPC ();
    break;
   case _AVR:
-   return board_avr::MGetPC ();
+   return board_avr::DBGGetPC ();
    break;
   }
  return 0;
 }
 
 void
-cboard_0::MSetPC(unsigned int pc)
+cboard_0::DBGSetPC(unsigned int pc)
 {
  switch (ptype)
   {
   case _PIC:
-   board_pic::MSetPC (pc);
+   board_pic::DBGSetPC (pc);
    return;
    break;
   case _AVR:
-   board_avr::MSetPC (pc);
+   board_avr::DBGSetPC (pc);
    return;
    break;
   }
@@ -927,150 +927,150 @@ cboard_0::MSetPC(unsigned int pc)
 }
 
 unsigned char *
-cboard_0::MGetRAM_p(void)
+cboard_0::DBGGetRAM_p(void)
 {
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MGetRAM_p ();
+   return board_pic::DBGGetRAM_p ();
    break;
   case _AVR:
-   return board_avr::MGetRAM_p ();
+   return board_avr::DBGGetRAM_p ();
    break;
   }
  return NULL;
 }
 
 unsigned char *
-cboard_0::MGetROM_p(void)
+cboard_0::DBGGetROM_p(void)
 {
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MGetROM_p ();
+   return board_pic::DBGGetROM_p ();
    break;
   case _AVR:
-   return board_avr::MGetROM_p ();
+   return board_avr::DBGGetROM_p ();
    break;
   }
  return NULL;
 }
 
 unsigned char *
-cboard_0::MGetCONFIG_p(void)
+cboard_0::DBGGetCONFIG_p(void)
 {
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MGetCONFIG_p ();
+   return board_pic::DBGGetCONFIG_p ();
    break;
   case _AVR:
-   return board_avr::MGetCONFIG_p ();
+   return board_avr::DBGGetCONFIG_p ();
    break;
   }
  return NULL;
 }
 
 unsigned char *
-cboard_0::MGetID_p(void)
+cboard_0::DBGGetID_p(void)
 {
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MGetID_p ();
+   return board_pic::DBGGetID_p ();
    break;
   case _AVR:
-   return board_avr::MGetID_p ();
+   return board_avr::DBGGetID_p ();
    break;
   }
  return NULL;
 }
 
 unsigned char *
-cboard_0::MGetEEPROM_p(void)
+cboard_0::DBGGetEEPROM_p(void)
 {
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MGetEEPROM_p ();
+   return board_pic::DBGGetEEPROM_p ();
    break;
   case _AVR:
-   return board_avr::MGetEEPROM_p ();
+   return board_avr::DBGGetEEPROM_p ();
    break;
   }
  return NULL;
 }
 
 unsigned int
-cboard_0::MGetRAMSize(void)
+cboard_0::DBGGetRAMSize(void)
 {
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MGetRAMSize ();
+   return board_pic::DBGGetRAMSize ();
    break;
   case _AVR:
-   return board_avr::MGetRAMSize ();
+   return board_avr::DBGGetRAMSize ();
    break;
   }
  return 0;
 }
 
 unsigned int
-cboard_0::MGetROMSize(void)
+cboard_0::DBGGetROMSize(void)
 {
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MGetROMSize ();
+   return board_pic::DBGGetROMSize ();
    break;
   case _AVR:
-   return board_avr::MGetROMSize ();
+   return board_avr::DBGGetROMSize ();
    break;
   }
  return 0;
 }
 
 unsigned int
-cboard_0::MGetCONFIGSize(void)
+cboard_0::DBGGetCONFIGSize(void)
 {
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MGetCONFIGSize ();
+   return board_pic::DBGGetCONFIGSize ();
    break;
   case _AVR:
-   return board_avr::MGetCONFIGSize ();
+   return board_avr::DBGGetCONFIGSize ();
    break;
   }
  return 0;
 }
 
 unsigned int
-cboard_0::MGetIDSize(void)
+cboard_0::DBGGetIDSize(void)
 {
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MGetIDSize ();
+   return board_pic::DBGGetIDSize ();
    break;
   case _AVR:
-   return board_avr::MGetIDSize ();
+   return board_avr::DBGGetIDSize ();
    break;
   }
  return 0;
 }
 
 unsigned int
-cboard_0::MGetEEPROM_Size(void)
+cboard_0::DBGGetEEPROM_Size(void)
 {
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MGetEEPROM_Size ();
+   return board_pic::DBGGetEEPROM_Size ();
    break;
   case _AVR:
-   return board_avr::MGetEEPROM_Size ();
+   return board_avr::DBGGetEEPROM_Size ();
    break;
   }
  return 0;

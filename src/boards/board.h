@@ -34,6 +34,8 @@
 #include "../devices/rtc_pfc8563.h"
 
 
+#define INCOMPLETE printf ("Incomplete: %s -> %s :%i\n", __func__,__FILE__, __LINE__);exit(-1);
+
     /**
      * @brief input map struct 
      *
@@ -300,81 +302,81 @@ class board
      * @brief board microcontroller run one or two steps to resume instruction   
      */
       virtual void MStepResume(void)=0;
-        
-     /**
-     * @brief board microcontroller test if in breakpoint   
-     */
-      virtual int MTestBP(unsigned int bp)=0;
-        
+     
      /**
      * @brief board microcontroller reset   
      */
-      virtual void MReset(int flags)=0;
-        
+      virtual void MReset(int flags)=0;  
+      
+     /**
+     * @brief board microcontroller test if in breakpoint   
+     */
+      virtual int DBGTestBP(unsigned int bp) {INCOMPLETE; return 0;};
+                
      /**
      * @brief board microcontroller get pointer to processor ID   
      */
-      virtual unsigned short * MGetProcID_p(void)=0;
+      virtual unsigned short * DBGGetProcID_p(void) {INCOMPLETE; return NULL;} ;
         
      /**
      * @brief  board microcontroller get PC  
      */
-      virtual unsigned int  MGetPC(void)=0;
+      virtual unsigned int  DBGGetPC(void) {INCOMPLETE; return 0;};
         
      /**
      * @brief  board microcontroller set PC
      */
-      virtual void MSetPC(unsigned int pc)=0;
+      virtual void DBGSetPC(unsigned int pc) {INCOMPLETE; };
         
      /**
      * @brief  board microcontroller get RAM memory pointer  
      */
-      virtual unsigned char * MGetRAM_p(void)=0;
+      virtual unsigned char * DBGGetRAM_p(void) {INCOMPLETE; return NULL;};
         
      /**
      * @brief  board microcontroller get ROM (FLASH) memory pointer 
      */
-      virtual unsigned char * MGetROM_p(void)=0;
+      virtual unsigned char * DBGGetROM_p(void) {INCOMPLETE; return NULL;};
         
      /**
      * @brief  board microcontroller  get CONFIG memory pointer  
      */
-      virtual unsigned char * MGetCONFIG_p(void)=0;
+      virtual unsigned char * DBGGetCONFIG_p(void) {INCOMPLETE; return NULL;};
         
      /**
      * @brief  board microcontroller  get internal IDS memory pointer   
      */
-      virtual unsigned char * MGetID_p(void)=0;
+      virtual unsigned char * DBGGetID_p(void) {INCOMPLETE; return NULL;};
         
      /**
      * @brief  board microcontroller get data EEPROM memory pointer  
      */
-      virtual unsigned char * MGetEEPROM_p(void)=0;
+      virtual unsigned char * DBGGetEEPROM_p(void) {INCOMPLETE; return NULL;};
         
      /**
      * @brief  board microcontroller get RAM memory size   
      */
-      virtual unsigned int MGetRAMSize(void)=0;
+      virtual unsigned int DBGGetRAMSize(void) {INCOMPLETE; return 0;};
         
      /**
      * @brief  board microcontroller get ROM  (FLASH) memory size  
      */
-      virtual unsigned int MGetROMSize(void)=0;
+      virtual unsigned int DBGGetROMSize(void) {INCOMPLETE; return 0;};
         
      /**
      * @brief board microcontroller get CONFIG memory size   
      */
-      virtual unsigned int MGetCONFIGSize(void)=0;
+      virtual unsigned int DBGGetCONFIGSize(void) {INCOMPLETE; return 0;};
         
      /**
      * @brief board microcontroller get internal IDS memory size   
      */
-      virtual unsigned int MGetIDSize(void)=0;
+      virtual unsigned int DBGGetIDSize(void) {INCOMPLETE; return 0;};
         
      /**
      * @brief  board microcontroller get data EEPROM memory size    
      */
-      virtual unsigned int MGetEEPROM_Size(void)=0;
+      virtual unsigned int DBGGetEEPROM_Size(void) {INCOMPLETE; return 0;};
  
 protected:      
       String Proc;          ///< Name of processor in use

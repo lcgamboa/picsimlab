@@ -201,8 +201,8 @@ mplabxd_init(board * mboard, unsigned short tcpport)
    server_started = 1;
   
 
-   ramsend = (unsigned char*) malloc (dbg_board->MGetRAMSize ());
-   ramreceived = (unsigned char*) malloc (dbg_board->MGetRAMSize ());
+   ramsend = (unsigned char*) malloc (dbg_board->DBGGetRAMSize ());
+   ramreceived = (unsigned char*) malloc (dbg_board->DBGGetRAMSize ());
   }
  return 0;
 }
@@ -280,7 +280,7 @@ mplabxd_testbp(void)
  if (!Window1.Get_mcudbg ())
   for (i = 0; i < bpc; i++)
    {
-    if (dbg_board->MTestBP (bp[i]))
+    if (dbg_board->DBGTestBP (bp[i]))
      {
       dprint ("breakpoint 0x%04X!!!!!=========================\n", bp[i]);
       Window1.SetCpuState (CPU_BREAKPOINT);
@@ -364,7 +364,7 @@ mplabxd_loop(void)
      Window1.SetCpuState (CPU_HALTED);
      break;
     case GETPC:
-     pc = dbg_board->MGetPC ();
+     pc = dbg_board->DBGGetPC ();
      dprint ("GETPC %04Xcmd\n", pc);
      if (send (sockfd, (char *) &pc, 4, 0) != 4)
       {
@@ -380,7 +380,7 @@ mplabxd_loop(void)
        ret = 1;
        reply = 0x01;
       }
-     dbg_board->MSetPC (pc);
+     dbg_board->DBGSetPC (pc);
      dprint ("SETPC cmd\n");
      break;
     case SETBK:
@@ -419,7 +419,7 @@ mplabxd_loop(void)
      break;
     case GETID:
      dprint ("GETID cmd\n");
-     if (send (sockfd, (char *) dbg_board->MGetProcID_p (), 2, 0) != 2)
+     if (send (sockfd, (char *) dbg_board->DBGGetProcID_p (), 2, 0) != 2)
       {
        printf ("send error : %s \n", strerror (errno));
        ret = 1;
@@ -439,15 +439,15 @@ mplabxd_loop(void)
       }
      break;
     case PROGD:
-     if ((n = recv (sockfd, (char *) ramreceived, dbg_board->MGetRAMSize (), MSG_WAITALL)) != (int) dbg_board->MGetRAMSize ())
+     if ((n = recv (sockfd, (char *) ramreceived, dbg_board->DBGGetRAMSize (), MSG_WAITALL)) != (int) dbg_board->DBGGetRAMSize ())
       {
        printf ("receive error : %s \n", strerror (errno));
        ret = 1;
        reply = 0x01;
       }
      dprint ("PROGD cmd\n");
-     uram = dbg_board->MGetRAM_p ();
-     for (i = 0; i < (int)dbg_board->MGetRAMSize (); i++)
+     uram = dbg_board->DBGGetRAM_p ();
+     for (i = 0; i < (int)dbg_board->DBGGetRAMSize (); i++)
       {
        if(ramsend[i] != ramreceived[i])
         {
@@ -457,7 +457,7 @@ mplabxd_loop(void)
       }
      break;
     case PROGP:
-     if ((n = recv (sockfd, (char *) dbg_board->MGetROM_p (), dbg_board->MGetROMSize (), MSG_WAITALL)) != (int) dbg_board->MGetROMSize ())
+     if ((n = recv (sockfd, (char *) dbg_board->DBGGetROM_p (), dbg_board->DBGGetROMSize (), MSG_WAITALL)) != (int) dbg_board->DBGGetROMSize ())
       {
        printf ("receive error : %s \n", strerror (errno));
        ret = 1;
@@ -466,10 +466,10 @@ mplabxd_loop(void)
 #ifdef _DEBUG_
      for (i = 0; i < (int) dbg_board->MGetROMSize (); i++)printf ("%#02X ", dbg_board->MGetROM_p ()[i]);
 #endif
-     dprint ("PROGP cmd  %i of %i\n", n, dbg_board->MGetROMSize ());
+     dprint ("PROGP cmd  %i of %i\n", n, dbg_board->DBGGetROMSize ());
      break;
     case PROGC:
-     if ((n = recv (sockfd, (char *) dbg_board->MGetCONFIG_p (), dbg_board->MGetCONFIGSize (), MSG_WAITALL)) != (int) dbg_board->MGetCONFIGSize ())
+     if ((n = recv (sockfd, (char *) dbg_board->DBGGetCONFIG_p (), dbg_board->DBGGetCONFIGSize (), MSG_WAITALL)) != (int) dbg_board->DBGGetCONFIGSize ())
       {
        printf ("receive error : %s \n", strerror (errno));
        ret = 1;
@@ -478,10 +478,10 @@ mplabxd_loop(void)
 #ifdef _DEBUG_
      for (i = 0; i < (int) dbg_board->MGetCONFIGSize (); i++)printf ("%#02X ", dbg_board->MGetCONFIG_p ()[i]);
 #endif
-     dprint ("PROGC cmd  %i of %i\n", n, dbg_board->MGetCONFIGSize ());
+     dprint ("PROGC cmd  %i of %i\n", n, dbg_board->DBGGetCONFIGSize ());
      break;
     case PROGI:
-     if ((n = recv (sockfd, (char *) dbg_board->MGetID_p (), dbg_board->MGetIDSize (), MSG_WAITALL)) != (int) dbg_board->MGetIDSize ())
+     if ((n = recv (sockfd, (char *) dbg_board->DBGGetID_p (), dbg_board->DBGGetIDSize (), MSG_WAITALL)) != (int) dbg_board->DBGGetIDSize ())
       {
        printf ("receive error : %s \n", strerror (errno));
        ret = 1;
@@ -493,7 +493,7 @@ mplabxd_loop(void)
      dprint ("PROGI cmd\n");
      break;
     case PROGE:
-     if ((n = recv (sockfd, (char *) dbg_board->MGetEEPROM_p (), dbg_board->MGetEEPROM_Size (), MSG_WAITALL)) != (int) dbg_board->MGetEEPROM_Size ())
+     if ((n = recv (sockfd, (char *) dbg_board->DBGGetEEPROM_p (), dbg_board->DBGGetEEPROM_Size (), MSG_WAITALL)) != (int) dbg_board->DBGGetEEPROM_Size ())
       {
        printf ("receive error : %s \n", strerror (errno));
        ret = 1;
@@ -505,14 +505,14 @@ mplabxd_loop(void)
      dprint ("PROGE cmd\n");
      break;
     case READD:
-     memcpy (ramsend, dbg_board->MGetRAM_p (), dbg_board->MGetRAMSize ());
-     if (send (sockfd, (char *) ramsend, dbg_board->MGetRAMSize (), 0) != (int) dbg_board->MGetRAMSize ())
+     memcpy (ramsend, dbg_board->DBGGetRAM_p (), dbg_board->DBGGetRAMSize ());
+     if (send (sockfd, (char *) ramsend, dbg_board->DBGGetRAMSize (), 0) != (int) dbg_board->DBGGetRAMSize ())
       {
        printf ("send error : %s \n", strerror (errno));
        ret = 1;
        reply = 0x01;
       }
-     dprint ("READD cmd  size=0x%04X, ret= %i\n", dbg_board->MGetRAMSize (), ret);
+     dprint ("READD cmd  size=0x%04X, ret= %i\n", dbg_board->DBGGetRAMSize (), ret);
      break;
     case READDV:
      if ((n = recv (sockfd, (char *) &dbuff, 4, MSG_WAITALL)) != 4)
@@ -522,7 +522,7 @@ mplabxd_loop(void)
        reply = 0x01;
       }
      dprint ("address=%02X  values=%i \n", dbuff[0], dbuff[1]);
-     if (send (sockfd, (char *) &dbg_board->MGetRAM_p ()[dbuff[0]],dbuff[1], 0) != dbuff[1])
+     if (send (sockfd, (char *) &dbg_board->DBGGetRAM_p ()[dbuff[0]],dbuff[1], 0) != dbuff[1])
       {
        printf ("send error : %s \n", strerror (errno));
        ret = 1;
@@ -531,7 +531,7 @@ mplabxd_loop(void)
      dprint ("READDV cmd\n");
      break;
     case READP:
-     if (send (sockfd, (const char *) dbg_board->MGetROM_p (), dbg_board->MGetROMSize (), 0) != (int) dbg_board->MGetROMSize ())
+     if (send (sockfd, (const char *) dbg_board->DBGGetROM_p (), dbg_board->DBGGetROMSize (), 0) != (int) dbg_board->DBGGetROMSize ())
       {
        printf ("send error : %s \n", strerror (errno));
        ret = 1;
@@ -540,7 +540,7 @@ mplabxd_loop(void)
      dprint ("READP cmd\n");
      break;
     case READC:
-     if (send (sockfd, (const char *) dbg_board->MGetCONFIG_p (), dbg_board->MGetCONFIGSize (), 0) != (int) dbg_board->MGetCONFIGSize ())
+     if (send (sockfd, (const char *) dbg_board->DBGGetCONFIG_p (), dbg_board->DBGGetCONFIGSize (), 0) != (int) dbg_board->DBGGetCONFIGSize ())
       {
        printf ("send error : %s \n", strerror (errno));
        ret = 1;
@@ -549,7 +549,7 @@ mplabxd_loop(void)
      dprint ("READC cmd\n");
      break;
     case READI:
-     if (send (sockfd, (char *) dbg_board->MGetID_p (), dbg_board->MGetIDSize (), 0) != (int) dbg_board->MGetIDSize ())
+     if (send (sockfd, (char *) dbg_board->DBGGetID_p (), dbg_board->DBGGetIDSize (), 0) != (int) dbg_board->DBGGetIDSize ())
       {
        printf ("send error : %s \n", strerror (errno));
        ret = 1;
@@ -558,7 +558,7 @@ mplabxd_loop(void)
      dprint ("READI cmd\n");
      break;
     case READE:
-     if (send (sockfd, (char *) dbg_board->MGetEEPROM_p (), dbg_board->MGetEEPROM_Size (), 0) != (int) dbg_board->MGetEEPROM_Size ())
+     if (send (sockfd, (char *) dbg_board->DBGGetEEPROM_p (), dbg_board->DBGGetEEPROM_Size (), 0) != (int) dbg_board->DBGGetEEPROM_Size ())
       {
        printf ("send error : %s \n", strerror (errno));
        ret = 1;

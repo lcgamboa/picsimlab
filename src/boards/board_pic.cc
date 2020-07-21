@@ -231,7 +231,7 @@ board_pic::MStepResume(void)
 }
 
 int
-board_pic::MTestBP(unsigned int bp)
+board_pic::DBGTestBP(unsigned int bp)
 {
  return ((pic.pc == bp)&&(pic.s2 == 0));
 }
@@ -243,80 +243,80 @@ board_pic::MReset(int flags)
 }
 
 unsigned short *
-board_pic::MGetProcID_p(void)
+board_pic::DBGGetProcID_p(void)
 {
  return (unsigned short *) &pic.processor;
 }
 
 unsigned int
-board_pic::MGetPC(void)
+board_pic::DBGGetPC(void)
 {
  return pic.pc;
 }
 
 void
-board_pic::MSetPC(unsigned int pc)
+board_pic::DBGSetPC(unsigned int pc)
 {
  pic.pc = pc;
 }
 
 unsigned char *
-board_pic::MGetRAM_p(void)
+board_pic::DBGGetRAM_p(void)
 {
  return pic.ram;
 }
 
 unsigned char *
-board_pic::MGetROM_p(void)
+board_pic::DBGGetROM_p(void)
 {
  return (unsigned char *) pic.prog;
 }
 
 unsigned char *
-board_pic::MGetCONFIG_p(void)
+board_pic::DBGGetCONFIG_p(void)
 {
  return (unsigned char *) pic.config;
 }
 
 unsigned char *
-board_pic::MGetID_p(void)
+board_pic::DBGGetID_p(void)
 {
  return (unsigned char *) pic.id;
 }
 
 unsigned char *
-board_pic::MGetEEPROM_p(void)
+board_pic::DBGGetEEPROM_p(void)
 {
  return pic.eeprom;
 }
 
 unsigned int
-board_pic::MGetRAMSize(void)
+board_pic::DBGGetRAMSize(void)
 {
  return pic.RAMSIZE;
 }
 
 unsigned int
-board_pic::MGetROMSize(void)
+board_pic::DBGGetROMSize(void)
 {
  return pic.ROMSIZE * 2;
 }
 
 unsigned int
-board_pic::MGetCONFIGSize(void)
+board_pic::DBGGetCONFIGSize(void)
 {
  return pic.CONFIGSIZE * 2;
 
 }
 
 unsigned int
-board_pic::MGetIDSize(void)
+board_pic::DBGGetIDSize(void)
 {
  return pic.IDSIZE * 2;
 }
 
 unsigned int
-board_pic::MGetEEPROM_Size(void)
+board_pic::DBGGetEEPROM_Size(void)
 {
  return pic.EEPROMSIZE;
 }

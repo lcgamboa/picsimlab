@@ -1021,7 +1021,7 @@ void
 board_avr::MStepResume(void) { }
 
 int
-board_avr::MTestBP(unsigned int bp)
+board_avr::DBGTestBP(unsigned int bp)
 {
  return (bp == avr->pc >> 1);
 }
@@ -1033,83 +1033,83 @@ board_avr::MReset(int flags)
 }
 
 unsigned short *
-board_avr::MGetProcID_p(void)
+board_avr::DBGGetProcID_p(void)
 {
  return 0;
 }
 
 unsigned int
-board_avr::MGetPC(void)
+board_avr::DBGGetPC(void)
 {
  return avr->pc >> 1;
 }
 
 void
-board_avr::MSetPC(unsigned int pc)
+board_avr::DBGSetPC(unsigned int pc)
 {
  avr->pc = pc << 1;
 }
 
 unsigned char *
-board_avr::MGetRAM_p(void)
+board_avr::DBGGetRAM_p(void)
 {
  return avr->data;
 }
 
 unsigned char *
-board_avr::MGetROM_p(void)
+board_avr::DBGGetROM_p(void)
 {
  return avr->flash;
 }
 
 unsigned char *
-board_avr::MGetCONFIG_p(void)
+board_avr::DBGGetCONFIG_p(void)
 {
  return avr->fuse;
 }
 
 unsigned char *
-board_avr::MGetID_p(void)
+board_avr::DBGGetID_p(void)
 {
  //TODO avr ID pointer
  return NULL;
 }
 
 unsigned char *
-board_avr::MGetEEPROM_p(void)
+board_avr::DBGGetEEPROM_p(void)
 {
  //TODO avr EEPROM pointer
  return NULL;
 }
 
 unsigned int
-board_avr::MGetRAMSize(void)
+board_avr::DBGGetRAMSize(void)
 {
  return avr->ramend + 1;
 }
 
 unsigned int
-board_avr::MGetROMSize(void)
+board_avr::DBGGetROMSize(void)
 {
  return avr->flashend + 1;
 }
 
 unsigned int
-board_avr::MGetCONFIGSize(void)
+board_avr::DBGGetCONFIGSize(void)
 {
  //FIXME avr CONFIG size
  return 3;
 }
 
 unsigned int
-board_avr::MGetIDSize(void)
+board_avr::DBGGetIDSize(void)
 {
  //TODO avr ID size
  return 0;
 }
 
 unsigned int
-board_avr::MGetEEPROM_Size(void)
+board_avr::DBGGetEEPROM_Size(void)
 {
  //TODO AVR EEPROM size
  return 0;
