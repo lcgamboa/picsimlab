@@ -1,5 +1,7 @@
 var NAVTREEINDEX7 =
 {
+"structlcd__t.html#aac567c9216520584a9082ba072c33306":[3,0,54,5],
+"structlcd__t.html#ac6fc114a23dc88b0926fff85c24392aa":[3,0,54,7],
 "structlcd__t.html#ac82603c8d4ce5cb0463911f26da61938":[3,0,54,12],
 "structlcd__t.html#ae3921db33c468328c01ae2bda7568e3c":[3,0,54,11],
 "structldd__max72xx__t.html":[3,0,55],

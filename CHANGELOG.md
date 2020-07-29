@@ -2,6 +2,8 @@
 
 ### New
 
+* Support to save clock speed for each board. [lcgamboa]
+
 * Dynamic parts registration for better modularization. [lcgamboa]
 
 * Dynamic board registration for better modularization. [lcgamboa]
@@ -17,6 +19,8 @@
 * Support to atmega2560. [lcgamboa]
 
 ### Changes
+
+* Board debug support methods renamed. [lcgamboa]
 
 * Register macros simplified. [lcgamboa]
 

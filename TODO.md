@@ -1,7 +1,7 @@
 ### TODOs
 | Filename | line # | TODO
 |:------|:------:|:------
-| [src/picsimlab1.cc](src/picsimlab1.cc#L278) | 278 | verify initialization errors
+| [src/picsimlab1.cc](src/picsimlab1.cc#L277) | 277 | verify initialization errors
 | [src/picsimlab4.cc](src/picsimlab4.cc#L561) | 561 | select the better mode for channel trigguer
 | [src/boards/board_3.cc](src/boards/board_3.cc#L103) | 103 | jumper support
 | [src/boards/board_4.cc](src/boards/board_4.cc#L62) | 62 | TEMP cooler must don't work with AQUE=0
