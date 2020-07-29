@@ -318,6 +318,7 @@ CPWindow1::Configure(CControl * control, const char * home)
          lab_ = i;
 
          pboard = create_board (&lab, &lab_);
+         SetClock(2.0); //Default clock
 
          menu1_Microcontroller.DestroyChilds ();
          String sdev = pboard->GetSupportedDevices ();
