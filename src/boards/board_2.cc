@@ -740,6 +740,7 @@ void
 cboard_2::WritePreferences(void)
 {
  Window1.saveprefs (lxT ("p2_proc"), Proc);
+ Window1.saveprefs (lxT ("p2_clock"), String ().Format ("%2.1f", Window1.GetClock()));
 }
 
 void
@@ -749,6 +750,11 @@ cboard_2::ReadPreferences(char *name, char *value)
  if (!strcmp (name, "p2_proc"))
   {
    Proc = value;
+  }
+ 
+  if (!strcmp (name, "p2_clock"))
+  {
+   Window1.SetClock (atof(value));
   }
 }
 

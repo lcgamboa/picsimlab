@@ -353,6 +353,7 @@ cboard_5::WritePreferences(void)
 {
  //write selected microcontroller of board_x to preferences
  Window1.saveprefs (lxT ("p5_proc"), Proc);
+ Window1.saveprefs (lxT ("p5_clock"), String ().Format ("%2.1f", Window1.GetClock())); 
 }
 
 //Called whe configuration file load  preferences 
@@ -364,6 +365,11 @@ cboard_5::ReadPreferences(char *name, char *value)
  if (!strcmp (name, "p5_proc"))
   {
    Proc = value;
+  }
+ 
+  if (!strcmp (name, "p5_clock"))
+  {
+   Window1.SetClock (atof(value));
   }
 }
 

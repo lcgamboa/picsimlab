@@ -247,6 +247,8 @@ cboard_x::WritePreferences(void)
  Window1.saveprefs (lxT ("px_proc"), Proc);
  //write switch state of board_x to preferences 
  Window1.saveprefs (lxT ("px_bt2"), String ().Format ("%i", p_BT2));
+ //write microcontroller clock to preferences
+ Window1.saveprefs (lxT ("px_clock"), String ().Format ("%2.1f", Window1.GetClock()));
 }
 
 //Called whe configuration file load  preferences 
@@ -267,6 +269,11 @@ cboard_x::ReadPreferences(char *name, char *value)
   {
    Proc = value;
   }
+ //read microcontroller clock
+ if (!strcmp (name, "px_clock"))
+ {
+  Window1.SetClock (atof(value));
+ }
 }
 
 

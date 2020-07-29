@@ -1107,7 +1107,8 @@ cboard_3::WritePreferences(void)
   sprintf (line + i, "%i", jmp[i]);
 
  Window1.saveprefs (lxT ("p3_jmp"), line);
-};
+ Window1.saveprefs (lxT ("p3_clock"), String ().Format ("%2.1f", Window1.GetClock())); 
+}
 
 void
 cboard_3::ReadPreferences(char *name, char *value)
@@ -1127,6 +1128,11 @@ cboard_3::ReadPreferences(char *name, char *value)
      else
       jmp[i] = 1;
     }
+  }
+ 
+  if (!strcmp (name, "p3_clock"))
+  {
+   Window1.SetClock (atof(value));
   }
 }
 

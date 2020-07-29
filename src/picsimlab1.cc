@@ -268,7 +268,6 @@ CPWindow1::Configure(CControl * control, const char * home)
 
  int i, j;
  int lc;
- float clk;
 
  String status;
 
@@ -338,24 +337,6 @@ CPWindow1::Configure(CControl * control, const char * home)
            dc++;
           }
 
-
-
-        }
-       if (!strcmp (name, "clock"))
-        {
-         sscanf (value, "%f", &clk);
-         if (clk < 1)
-          {
-           combo1.SetText (String ().Format ("%2.1f", clk));
-          }
-         else
-          {
-           combo1.SetText (String ().Format ("%2.0f", clk));
-          }
-         //combo1_EvOnComboChange(control);
-         NSTEP = (int) (atof (combo1.GetText ()) * NSTEPKT);
-         NSTEPJ = NSTEP / JUMPSTEPS;
-         pboard->MSetFreq (NSTEP * NSTEPKF);
         }
 
        if (!strcmp (name, "debug"))
@@ -611,7 +592,6 @@ CPWindow1::_EvOnDestroy(CControl * control)
 
 
  saveprefs (lxT ("lab"), String ().Format ("%i", lab));
- saveprefs (lxT ("clock"), combo1.GetText ());
  saveprefs (lxT ("debug"), itoa (debug));
  saveprefs (lxT ("debugt"), itoa (debug_type));
  saveprefs (lxT ("debugp"), itoa (debug_port));
@@ -1095,7 +1075,6 @@ CPWindow1::filedialog2_EvOnClose(int retId)
    snprintf (fname, 1279, "%s/picsimlab.ini", home);
    prefs.Clear ();
    saveprefs (lxT ("lab"), String ().Format ("%i", lab));
-   saveprefs (lxT ("clock"), combo1.GetText ());
    saveprefs (lxT ("debug"), itoa (debug));
    saveprefs (lxT ("debugt"), itoa (debug_type));
    saveprefs (lxT ("debugp"), itoa (debug_port));
@@ -1231,6 +1210,29 @@ CPWindow1::SetJUMPSTEPS(int js)
   }
 }
 
+void
+CPWindow1::SetClock(float clk)
+{
+ if (clk < 1)
+  {
+   combo1.SetText (String ().Format ("%2.1f", clk));
+  }
+ else
+  {
+   combo1.SetText (String ().Format ("%2.0f", clk));
+  }
+ //combo1_EvOnComboChange(control);
+ NSTEP = (int) (atof (combo1.GetText ()) * NSTEPKT);
+ NSTEPJ = NSTEP / JUMPSTEPS;
+ pboard->MSetFreq (NSTEP * NSTEPKF);
+}
+
+float 
+CPWindow1::GetClock(void)
+{
+ return atof(combo1.GetText ());
+}
+    
 
 
 #ifdef __EMSCRIPTEN__

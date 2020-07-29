@@ -456,7 +456,7 @@ cpart_MI2C_24CXXX::filedialog_EvOnClose(int retId)
       {
        fwrite (mi2c.data, mi2c.SIZE, 1, fout);
        fclose (fout);
-       strncpy (f_mi2c_name, Window5.filedialog1.GetFileName (), 200);
+       strncpy (f_mi2c_name, Window5.filedialog1.GetFileName (), 199);
       }
      else
       {

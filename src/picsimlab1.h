@@ -275,6 +275,8 @@ public:
     void menu1_EvMicrocontroller(CControl * control);
     void LoadWorkspace(String fnpzw);
     void LoadHexFile(String fname);
+    void SetClock(float clk);
+    float GetClock(void);
 private:
     String share;
 

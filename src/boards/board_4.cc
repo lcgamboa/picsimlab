@@ -1881,8 +1881,8 @@ cboard_4::WritePreferences(void)
   sprintf (line + i, "%i", dip[i]);
 
  Window1.saveprefs (lxT ("p4_dip"), line);
-
-};
+ Window1.saveprefs (lxT ("p4_clock"), String ().Format ("%2.1f", Window1.GetClock()));
+}
 
 void
 cboard_4::ReadPreferences(char *name, char *value)
@@ -1925,7 +1925,12 @@ cboard_4::ReadPreferences(char *name, char *value)
    else
     lcd_init (&lcd, 16, 4);
   }
-};
+ 
+  if (!strcmp (name, "p4_clock"))
+  {
+   Window1.SetClock (atof(value));
+  }
+}
 
 //Change lcd
 
