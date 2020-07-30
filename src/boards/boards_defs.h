@@ -50,7 +50,8 @@ extern int BOARDS_LAST;
 
 typedef struct {
     int num;
-    char name[30];
+    char name[30];  //name
+    char name_[30]; //name without spaces
     board_create_func bcreate;
 } board_desc;
 

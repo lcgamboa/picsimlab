@@ -68,21 +68,33 @@ board_register(int num, const char * name, board_create_func bcreate)
  in = BOARDS_LAST;
  for (int i = BOARDS_LAST; i > 0; i--)
   {
-   if (num > boards_list[i-1].num)
+   if (num > boards_list[i - 1].num)
     {
      break;
     }
    else
     {
-     in=i-1;
-     memcpy ((void *) &boards_list[i], (void *) &boards_list[i-1], sizeof (board_desc));
+     in = i - 1;
+     memcpy ((void *) &boards_list[i], (void *) &boards_list[i - 1], sizeof (board_desc));
     }
   }
- 
+
  //insert new
  boards_list[in].num = num;
  boards_list[in].bcreate = bcreate;
  strncpy (boards_list[in].name, name, 30);
+
+ for (unsigned int i = 0; i < strlen (name); i++)
+  {
+   if (name[i] != ' ')
+    {
+     boards_list[in].name_[i] = name[i];
+    }
+   else
+    {
+     boards_list[in].name_[i] = '_';
+    }
+  }
 
  BOARDS_LAST++;
 }

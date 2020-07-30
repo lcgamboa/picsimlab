@@ -246,8 +246,8 @@ CPWindow1::_EvOnCreate(CControl * control)
    for (int i = 0; i < BOARDS_LAST; i++)
     {
      MBoard[i].SetFOwner (this);
-     MBoard[i].SetName ("Board_" + itoa (i));
-     MBoard[i].SetText (itoa (i) + lxT (" ") + boards_list[i].name);
+     MBoard[i].SetName (itoa (i));
+     MBoard[i].SetText (boards_list[i].name);
      MBoard[i].EvMenuActive = EVMENUACTIVE & CPWindow1::menu1_EvBoard;
      menu1_Board.CreateChild (&MBoard[i]);
     }
@@ -736,12 +736,12 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
 
 #ifdef EXT_BROWSER_EXAMPLES
  //lxLaunchDefaultBrowser(lxT("file://")+share + lxT ("docs/picsimlab.html"));
- lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#board_" + itoa (lab) + lxT ("_") + pboard->GetProcessorName ()));
+ lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#board_" + String(boards_list[lab].name_) + lxT ("_") + pboard->GetProcessorName ()));
  WDestroy ();
 #else 
  OldPath = filedialog2.GetDir ();
 
- filedialog2.SetDir (share + lxT ("/docs/hex/board_") + itoa (lab) + lxT ("/") + pboard->GetProcessorName () + lxT ("/"));
+ filedialog2.SetDir (share + lxT ("/docs/hex/board_") + String(boards_list[lab].name_) + lxT ("/") + pboard->GetProcessorName () + lxT ("/"));
 
  menu1_File_LoadWorkspace_EvMenuActive (control);
 #endif
@@ -905,7 +905,7 @@ void
 CPWindow1::menu1_EvBoard(CControl * control)
 {
  lab_ = lab;
- lab = (int) (atof (((CItemMenu*) control)->GetText ()));
+ lab = atoi (((CItemMenu*) control)->GetName ());
 
  FNAME = lxT (" ");
  _EvOnDestroy (control);
