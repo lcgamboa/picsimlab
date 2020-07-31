@@ -28,6 +28,8 @@
 
 #include "board.h"
 
+#include"../devices/mplabxd.h"
+
 #include <simavr/sim_avr.h>
 #include <simavr/avr_ioport.h>
 #include <simavr/sim_elf.h>

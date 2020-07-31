@@ -312,13 +312,19 @@ CPWindow1::Configure(CControl * control, const char * home)
 
        if (!strcmp (name, "picsimlab_lab"))
         {
-         sscanf (value, "%i", &i);
+         for (i = 0; i < BOARDS_LAST; i++)
+          {
+           if (!strcmp (boards_list[i].name_, value))
+            {
+             break;
+            }
+          }
 
          lab = i;
          lab_ = i;
 
          pboard = create_board (&lab, &lab_);
-         SetClock(2.0); //Default clock
+         SetClock (2.0); //Default clock
 
          menu1_Microcontroller.DestroyChilds ();
          String sdev = pboard->GetSupportedDevices ();
@@ -404,7 +410,7 @@ CPWindow1::Configure(CControl * control, const char * home)
    lab = 0; //default  
    lab_ = 0; //default  
 
-   pboard = boards_list[0].bcreate();
+   pboard = boards_list[0].bcreate ();
 
 #ifndef _WIN_   
    strcpy (SERIALDEVICE, "/dev/tnt2");
@@ -588,7 +594,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
 
 
 
- saveprefs (lxT ("picsimlab_lab"), String ().Format ("%i", lab));
+ saveprefs (lxT ("picsimlab_lab"), boards_list[lab].name_);
  saveprefs (lxT ("picsimlab_debug"), itoa (debug));
  saveprefs (lxT ("picsimlab_debugt"), itoa (debug_type));
  saveprefs (lxT ("picsimlab_debugp"), itoa (debug_port));
@@ -732,12 +738,12 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
 
 #ifdef EXT_BROWSER_EXAMPLES
  //lxLaunchDefaultBrowser(lxT("file://")+share + lxT ("docs/picsimlab.html"));
- lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#board_" + String(boards_list[lab].name_) + lxT ("_") + pboard->GetProcessorName ()));
+ lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#board_" + String (boards_list[lab].name_) + lxT ("_") + pboard->GetProcessorName ()));
  WDestroy ();
 #else 
  OldPath = filedialog2.GetDir ();
 
- filedialog2.SetDir (share + lxT ("/docs/hex/board_") + String(boards_list[lab].name_) + lxT ("/") + pboard->GetProcessorName () + lxT ("/"));
+ filedialog2.SetDir (share + lxT ("/docs/hex/board_") + String (boards_list[lab].name_) + lxT ("/") + pboard->GetProcessorName () + lxT ("/"));
 
  menu1_File_LoadWorkspace_EvMenuActive (control);
 #endif
@@ -950,6 +956,9 @@ CPWindow1::menu1_File_SaveWorkspace_EvMenuActive(CControl * control)
  filedialog2.Run ();
 }
 
+//legacy format support before 0.8.2
+static const char old_board_names[6][20] = {"Breadboard", "McLab1", "K16F", "McLab2", "PICGenios", "Arduino_Uno"};
+
 void
 CPWindow1::LoadWorkspace(String fnpzw)
 {
@@ -977,6 +986,10 @@ CPWindow1::LoadWorkspace(String fnpzw)
  int lc;
  char * value;
  char * name;
+ char name_[100];
+ char value_[400];
+ int llab = 0;
+
  char line[1024];
  if (prefsw.LoadFromFile (fzip))
   {
@@ -987,7 +1000,133 @@ CPWindow1::LoadWorkspace(String fnpzw)
      strtok (NULL, " ");
      value = strtok (NULL, "\"");
      if ((name == NULL) || (value == NULL))continue;
-     saveprefs (name, value);
+
+     strncpy (name_, name, 99);
+     strncpy (value_, value, 399);
+
+     //legacy mode compatibility
+     if (!strcmp (name_, "lab"))
+      {
+       char oldname[1500];
+
+       strcpy (name_, "picsimlab_lab");
+       sscanf (value_, "%i", &llab);
+
+       strcpy (value_, old_board_names[llab]);
+
+       snprintf (oldname, 1499, "%sparts_%02i.pcf", home, llab);
+
+       if (lxFileExists (oldname))
+        {
+         char newname[1500];
+         snprintf (newname, 1499, "%sparts_%s.pcf", home, old_board_names[llab]);
+         lxRenameFile (oldname, newname);
+        }
+      }
+     if (!strcmp (name_, "debug"))
+      {
+       strcpy (name_, "picsimlab_debug");
+      }
+     if (!strcmp (name_, "position"))
+      {
+       strcpy (name_, "picsimlab_position");
+      }
+     if (!strcmp (name_, "lfile"))
+      {
+       strcpy (name_, "picsimlab_lfile");
+      }
+     if (!strcmp (name_, "clock"))
+      {
+       sprintf (name_, "%s_clock", old_board_names[llab]);
+      }
+     if (!strcmp (name_, "p0_proc"))
+      {
+       sprintf (name_, "%s_proc", old_board_names[0]);
+
+       char oldname[1500];
+       char newname[1500];
+       snprintf (oldname, 1499, "%smdump_00_%s.hex", home, value);
+       snprintf (newname, 1499, "%smdump_%s_%s.hex", home, old_board_names[0], value);
+       lxRenameFile (oldname, newname);
+      }
+     if (!strcmp (name_, "p1_proc"))
+      {
+       sprintf (name_, "%s_proc", old_board_names[1]);
+
+       char oldname[1500];
+       char newname[1500];
+       snprintf (oldname, 1499, "%smdump_01_%s.hex", home, value);
+       snprintf (newname, 1499, "%smdump_%s_%s.hex", home, old_board_names[1], value);
+       lxRenameFile (oldname, newname);
+      }
+     if (!strcmp (name_, "p2_proc"))
+      {
+       sprintf (name_, "%s_proc", old_board_names[2]);
+
+       char oldname[1500];
+       char newname[1500];
+       snprintf (oldname, 1499, "%smdump_02_%s.hex", home, value);
+       snprintf (newname, 1499, "%smdump_%s_%s.hex", home, old_board_names[2], value);
+       lxRenameFile (oldname, newname);
+      }
+     if (!strcmp (name_, "p3_proc"))
+      {
+       sprintf (name_, "%s_proc", old_board_names[3]);
+
+       char oldname[1500];
+       char newname[1500];
+       snprintf (oldname, 1499, "%smdump_03_%s.hex", home, value);
+       snprintf (newname, 1499, "%smdump_%s_%s.hex", home, old_board_names[3], value);
+       lxRenameFile (oldname, newname);
+      }
+     if (!strcmp (name_, "p4_proc"))
+      {
+       sprintf (name_, "%s_proc", old_board_names[4]);
+
+       char oldname[1500];
+       char newname[1500];
+       snprintf (oldname, 1499, "%smdump_04_%s.hex", home, value);
+       snprintf (newname, 1499, "%smdump_%s_%s.hex", home, old_board_names[4], value);
+       lxRenameFile (oldname, newname);
+      }
+     if (!strcmp (name_, "p5_proc"))
+      {
+       sprintf (name_, "%s_proc", old_board_names[5]);
+
+       char oldname[1500];
+       char newname[1500];
+       snprintf (oldname, 1499, "%smdump_05_%s.hex", home, value);
+       snprintf (newname, 1499, "%smdump_%s_%s.hex", home, old_board_names[5], value);
+       lxRenameFile (oldname, newname);
+      }
+
+     char * ptr;
+     if ((ptr = strstr (name, "p0_")))
+      {
+       sprintf (name_, "%s_%s", old_board_names[0], ptr + 3);
+      }
+     if ((ptr = strstr (name, "p1_")))
+      {
+       sprintf (name_, "%s_%s", old_board_names[1], ptr + 3);
+      }
+     if ((ptr = strstr (name, "p2_")))
+      {
+       sprintf (name_, "%s_%s", old_board_names[2], ptr + 3);
+      }
+     if ((ptr = strstr (name, "p3_")))
+      {
+       sprintf (name_, "%s_%s", old_board_names[3], ptr + 3);
+      }
+     if ((ptr = strstr (name, "p4_")))
+      {
+       sprintf (name_, "%s_%s", old_board_names[4], ptr + 3);
+      }
+     if ((ptr = strstr (name, "p5_")))
+      {
+       sprintf (name_, "%s_%s", old_board_names[5], ptr + 3);
+      }
+
+     saveprefs (name_, value_);
     }
   }
  prefs.SaveToFile (fzip);
@@ -1071,7 +1210,7 @@ CPWindow1::filedialog2_EvOnClose(int retId)
 
    snprintf (fname, 1279, "%s/picsimlab.ini", home);
    prefs.Clear ();
-   saveprefs (lxT ("picsimlab_lab"), String ().Format ("%i", lab));
+   saveprefs (lxT ("picsimlab_lab"), boards_list[lab].name_);
    saveprefs (lxT ("picsimlab_debug"), itoa (debug));
    saveprefs (lxT ("picsimlab_debugt"), itoa (debug_type));
    saveprefs (lxT ("picsimlab_debugp"), itoa (debug_port));
@@ -1224,12 +1363,12 @@ CPWindow1::SetClock(float clk)
  pboard->MSetFreq (NSTEP * NSTEPKF);
 }
 
-float 
+float
 CPWindow1::GetClock(void)
 {
- return atof(combo1.GetText ());
+ return atof (combo1.GetText ());
 }
-    
+
 
 
 #ifdef __EMSCRIPTEN__
