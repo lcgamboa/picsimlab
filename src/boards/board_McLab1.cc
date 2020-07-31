@@ -26,7 +26,7 @@
 #include"../picsimlab1.h"
 #include"../picsimlab4.h"
 #include"../picsimlab5.h"
-#include"board_1.h"
+#include"board_McLab1.h"
 
 /* outputs */
 enum

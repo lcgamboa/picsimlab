@@ -27,7 +27,7 @@
 #include"../picsimlab1.h"
 #include"../picsimlab4.h" //Oscilloscope
 #include"../picsimlab5.h" //Spare Parts
-#include"board_0.h"
+#include"board_Breadboard.h"
 
 /* ids of inputs of input map*/
 enum

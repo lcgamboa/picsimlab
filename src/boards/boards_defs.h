@@ -27,7 +27,7 @@
 #define BOARDS_DEFS_H
 
 #include "board.h"
-#include "board_1.h"
+#include "board_McLab1.h"
 
 #define board_init(num,name,function)  \
     static board * function ## _create(void){\

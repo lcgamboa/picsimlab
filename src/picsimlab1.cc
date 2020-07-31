@@ -436,7 +436,7 @@ CPWindow1::Configure(CControl * control, const char * home)
 
  pboard->MSetSerial (SERIALDEVICE);
 
- sprintf (fname, "%s/mdump_%02i_%s.hex", home, lab, (const char *) pboard->GetProcessorName ().c_str ());
+ sprintf (fname, "%s/mdump_%s_%s.hex", home, boards_list[lab].name_, (const char *) pboard->GetProcessorName ().c_str ());
 
 
  switch (pboard->MInit (pboard->GetProcessorName (), fname, NSTEP * NSTEPKF))
@@ -502,11 +502,11 @@ CPWindow1::Configure(CControl * control, const char * home)
 
  Window4.SetBaseTimer ();
 
- sprintf (fname, "%s/parts_%02i.pcf", home, lab);
+ sprintf (fname, "%s/parts_%s.pcf", home, boards_list[lab].name_);
  Window5.LoadConfig (fname);
 
 
- if ((lab == 0) || (lab == 5))
+ if ((lab == 0) || (lab == 5))//TODO use board name
   {
    menu1_Tools_ArduinoBootloader.SetEnable (true);
   }
@@ -622,7 +622,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
 
  //write memory
 
- sprintf (fname, "%s/mdump_%02i_%s.hex", home, lab_, (const char*) proc_.c_str ());
+ sprintf (fname, "%s/mdump_%s_%s.hex", home, boards_list[lab_].name_, (const char*) proc_.c_str ());
 
  pboard->MDumpMemory (fname);
 
@@ -630,7 +630,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
  pboard->MEnd ();
 
 
- sprintf (fname, "%s/parts_%02i.pcf", home, lab_);
+ sprintf (fname, "%s/parts_%s.pcf", home, boards_list[lab_].name_);
  Window5.SaveConfig (fname);
  Window5.DeleteParts ();
 
@@ -1096,14 +1096,14 @@ CPWindow1::filedialog2_EvOnClose(int retId)
    prefs.SaveToFile (fname);
 
    //write memory
-   snprintf (fname, 1279, "%s/mdump_%02i_%s.hex", home, lab_, (const char*) proc_.c_str ());
+   snprintf (fname, 1279, "%s/mdump_%s_%s.hex", home, boards_list[lab_].name_, (const char*) proc_.c_str ());
 
    pboard->MDumpMemory (fname);
 
    if (pboard->GetUseSpareParts ())
     {
 
-     snprintf (fname, 1279, "%s/parts_%02i.pcf", home, lab_);
+     snprintf (fname, 1279, "%s/parts_%s.pcf", home, boards_list[lab_].name_);
      Window5.SaveConfig (fname);
     }
 
@@ -1222,7 +1222,7 @@ CPWindow1::SetClock(float clk)
   {
    combo1.SetText (String ().Format ("%2.0f", clk));
   }
- //combo1_EvOnComboChange(control);
+
  NSTEP = (int) (atof (combo1.GetText ()) * NSTEPKT);
  NSTEPJ = NSTEP / JUMPSTEPS;
  pboard->MSetFreq (NSTEP * NSTEPKF);

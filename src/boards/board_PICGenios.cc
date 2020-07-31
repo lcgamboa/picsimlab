@@ -26,7 +26,7 @@
 #include"../picsimlab1.h"
 #include"../picsimlab4.h"
 #include"../picsimlab5.h"
-#include"board_4.h"
+#include"board_PICGenios.h"
 
 #ifdef __EMSCRIPTEN__
 #include<emscripten.h>

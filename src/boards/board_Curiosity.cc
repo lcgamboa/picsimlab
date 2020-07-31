@@ -27,7 +27,7 @@
 #include"../picsimlab1.h"
 #include"../picsimlab4.h"
 #include"../picsimlab5.h"
-#include"board_7.h"
+#include"board_Curiosity.h"
 
 /* ids of inputs of input map*/
 enum
