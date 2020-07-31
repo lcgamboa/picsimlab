@@ -1,6 +1,6 @@
 include ../VERSION
 
-override CFLAGS+= -DEXT_BROWSER_EXAMPLES
+override CFLAGS+= -DEXT_BROWSER_EXAMPLES -DLEGACY081
 
 OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimlab5.o\
  boards/board.o boards/boards_defs.o boards/board_pic.o boards/board_avr.o boards/board_avr_serial.o\

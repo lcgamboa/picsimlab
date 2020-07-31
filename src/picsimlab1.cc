@@ -986,10 +986,12 @@ CPWindow1::LoadWorkspace(String fnpzw)
  int lc;
  char * value;
  char * name;
+#ifdef LEGACY081 
  char name_[100];
  char value_[400];
  int llab = 0;
-
+#endif
+ 
  char line[1024];
  if (prefsw.LoadFromFile (fzip))
   {
@@ -1000,7 +1002,9 @@ CPWindow1::LoadWorkspace(String fnpzw)
      strtok (NULL, " ");
      value = strtok (NULL, "\"");
      if ((name == NULL) || (value == NULL))continue;
-
+#ifndef LEGACY081
+    saveprefs (name, value);
+#else     
      strncpy (name_, name, 99);
      strncpy (value_, value, 399);
 
@@ -1127,6 +1131,7 @@ CPWindow1::LoadWorkspace(String fnpzw)
       }
 
      saveprefs (name_, value_);
+#endif     
     }
   }
  prefs.SaveToFile (fzip);

@@ -715,6 +715,12 @@ CPWindow5::RegisterIOpin(String pname, unsigned char pin)
   {
    ppin = pin;
   }
+#ifdef LEGACY081
+ else if (pin >= 70) //legacy
+  {
+   ppin = pin;   
+  }
+#endif
 
  while ((PinNames[ppin].length () > 0)&&(ppin))
   {
