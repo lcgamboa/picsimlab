@@ -2,6 +2,8 @@
 
 ### New
 
+* New preference tags and support to legacy workspace (before 0.8.2) [lcgamboa]
+
 * Support to save clock speed for each board. [lcgamboa]
 
 * Dynamic parts registration for better modularization. [lcgamboa]
@@ -19,6 +21,8 @@
 * Support to atmega2560. [lcgamboa]
 
 ### Changes
+
+* Using boards names instead numbers. [lcgamboa]
 
 * Board debug support methods renamed. [lcgamboa]
 

@@ -5,17 +5,17 @@ var hierarchy =
     [ "avr_gdb_watchpoints_t", "structavr__gdb__watchpoints__t.html", null ],
     [ "board", "classboard.html", [
       [ "board_avr", "classboard__avr.html", [
-        [ "cboard_0", "classcboard__0.html", null ],
-        [ "cboard_5", "classcboard__5.html", null ]
+        [ "cboard_Arduino_Uno", "classcboard___arduino___uno.html", null ],
+        [ "cboard_Breadboard", "classcboard___breadboard.html", null ]
       ] ],
       [ "board_pic", "classboard__pic.html", [
-        [ "cboard_0", "classcboard__0.html", null ],
-        [ "cboard_1", "classcboard__1.html", null ],
-        [ "cboard_2", "classcboard__2.html", null ],
-        [ "cboard_3", "classcboard__3.html", null ],
-        [ "cboard_4", "classcboard__4.html", null ],
-        [ "cboard_6", "classcboard__6.html", null ],
-        [ "cboard_7", "classcboard__7.html", null ],
+        [ "cboard_Breadboard", "classcboard___breadboard.html", null ],
+        [ "cboard_Curiosity", "classcboard___curiosity.html", null ],
+        [ "cboard_K16F", "classcboard___k16_f.html", null ],
+        [ "cboard_McLab1", "classcboard___mc_lab1.html", null ],
+        [ "cboard_McLab2", "classcboard___mc_lab2.html", null ],
+        [ "cboard_MPLAB_Xpress", "classcboard___m_p_l_a_b___xpress.html", null ],
+        [ "cboard_PICGenios", "classcboard___p_i_c_genios.html", null ],
         [ "cboard_x", "classcboard__x.html", null ]
       ] ]
     ] ],

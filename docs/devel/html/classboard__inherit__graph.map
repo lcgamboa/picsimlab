@@ -1,14 +1,14 @@
 <map id="board" name="board">
-<area shape="rect" id="node1" title="Board class." alt="" coords="279,5,338,32"/>
-<area shape="rect" id="node2" href="$classboard__avr.html" title=" " alt="" coords="108,80,195,107"/>
-<area shape="rect" id="node5" href="$classboard__pic.html" title=" " alt="" coords="425,80,510,107"/>
-<area shape="rect" id="node3" href="$classcboard__0.html" title=" " alt="" coords="111,155,192,181"/>
-<area shape="rect" id="node4" href="$classcboard__5.html" title=" " alt="" coords="5,155,87,181"/>
-<area shape="rect" id="node6" href="$classcboard__1.html" title=" " alt="" coords="216,155,297,181"/>
-<area shape="rect" id="node7" href="$classcboard__2.html" title=" " alt="" coords="321,155,403,181"/>
-<area shape="rect" id="node8" href="$classcboard__3.html" title=" " alt="" coords="427,155,508,181"/>
-<area shape="rect" id="node9" href="$classcboard__4.html" title=" " alt="" coords="532,155,613,181"/>
-<area shape="rect" id="node10" href="$classcboard__6.html" title=" " alt="" coords="637,155,719,181"/>
-<area shape="rect" id="node11" href="$classcboard__7.html" title=" " alt="" coords="743,155,824,181"/>
-<area shape="rect" id="node12" href="$classcboard__x.html" title=" " alt="" coords="848,155,929,181"/>
+<area shape="rect" id="node1" title="Board class." alt="" coords="5,132,64,159"/>
+<area shape="rect" id="node2" href="$classboard__avr.html" title=" " alt="" coords="112,56,199,83"/>
+<area shape="rect" id="node5" href="$classboard__pic.html" title=" " alt="" coords="113,208,198,235"/>
+<area shape="rect" id="node3" href="$classcboard___arduino___uno.html" title=" " alt="" coords="254,5,410,32"/>
+<area shape="rect" id="node4" href="$classcboard___breadboard.html" title=" " alt="" coords="258,56,406,83"/>
+<area shape="rect" id="node6" href="$classcboard___curiosity.html" title=" " alt="" coords="267,107,397,133"/>
+<area shape="rect" id="node7" href="$classcboard___k16_f.html" title=" " alt="" coords="279,157,385,184"/>
+<area shape="rect" id="node8" href="$classcboard___mc_lab1.html" title=" " alt="" coords="271,208,393,235"/>
+<area shape="rect" id="node9" href="$classcboard___mc_lab2.html" title=" " alt="" coords="271,259,393,285"/>
+<area shape="rect" id="node10" href="$classcboard___m_p_l_a_b___xpress.html" title=" " alt="" coords="247,309,417,336"/>
+<area shape="rect" id="node11" href="$classcboard___p_i_c_genios.html" title=" " alt="" coords="263,360,401,387"/>
+<area shape="rect" id="node12" href="$classcboard__x.html" title=" " alt="" coords="291,411,373,437"/>
 </map>

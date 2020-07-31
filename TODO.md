@@ -3,8 +3,8 @@
 |:------|:------:|:------
 | [src/picsimlab1.cc](src/picsimlab1.cc#L277) | 277 | verify initialization errors
 | [src/picsimlab4.cc](src/picsimlab4.cc#L561) | 561 | select the better mode for channel trigguer
-| [src/boards/board_3.cc](src/boards/board_3.cc#L103) | 103 | jumper support
-| [src/boards/board_4.cc](src/boards/board_4.cc#L62) | 62 | TEMP cooler must don't work with AQUE=0
+| [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L103) | 103 | jumper support
+| [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L62) | 62 | TEMP cooler must don't work with AQUE=0
 | [src/boards/board_avr.cc](src/boards/board_avr.cc#L83) | 83 | change serial name
 | [src/boards/board_avr.cc](src/boards/board_avr.cc#L228) | 228 | read baudrate value from avr
 | [src/boards/board_avr.cc](src/boards/board_avr.cc#L839) | 839 | this value is not used yet
