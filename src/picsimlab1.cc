@@ -508,7 +508,7 @@ CPWindow1::Configure(CControl * control, const char * home)
  Window5.LoadConfig (fname);
 
 
- if ((lab == 0) || (lab == 5))//TODO use board name
+ if ((!pboard->GetProcessorName ().Cmp ("atmega328p"))||(!pboard->GetProcessorName ().Cmp ("atmega2560")) )
   {
    menu1_Tools_ArduinoBootloader.SetEnable (true);
   }
