@@ -299,18 +299,18 @@ CPWindow1::Configure(CControl * control, const char * home)
        value = strtok (NULL, "\"");
        if ((name == NULL) || (value == NULL))continue;
 #ifndef _WIN_
-       if (!strcmp ("lser", name))strcpy (SERIALDEVICE, value);
+       if (!strcmp ("picsimlab_lser", name))strcpy (SERIALDEVICE, value);
 #ifdef _USE_PICSTARTP_      
-       if (!strcmp ("lprog", name))strcpy (PROGDEVICE, value);
+       if (!strcmp ("picsimlab_lprog", name))strcpy (PROGDEVICE, value);
 #endif      
 #else
-       if (!strcmp ("wser", name))strcpy (SERIALDEVICE, value);
+       if (!strcmp ("picsimlab_wser", name))strcpy (SERIALDEVICE, value);
 #ifdef _USE_PICSTARTP_      
-       if (!strcmp ("wprog", name))strcpy (PROGDEVICE, value);
+       if (!strcmp ("picsimlab_wprog", name))strcpy (PROGDEVICE, value);
 #endif      
 #endif
 
-       if (!strcmp (name, "lab"))
+       if (!strcmp (name, "picsimlab_lab"))
         {
          sscanf (value, "%i", &i);
 
@@ -340,18 +340,18 @@ CPWindow1::Configure(CControl * control, const char * home)
 
         }
 
-       if (!strcmp (name, "debug"))
+       if (!strcmp (name, "picsimlab_debug"))
         {
          sscanf (value, "%i", &debug);
          togglebutton1.SetCheck (debug);
         }
 
-       if (!strcmp (name, "debugt"))
+       if (!strcmp (name, "picsimlab_debugt"))
         {
          sscanf (value, "%i", &debug_type);
         }
 
-       if (!strcmp (name, "debugp"))
+       if (!strcmp (name, "picsimlab_debugp"))
         {
          sscanf (value, "%hu", &debug_port);
         }
@@ -366,12 +366,8 @@ CPWindow1::Configure(CControl * control, const char * home)
          sscanf (value, "%i", &spare_on);
         }
 
-       if (!strcmp (name, "spare_on"))
-        {
-         sscanf (value, "%i", &spare_on);
-        }
 
-       if (!strcmp (name, "position"))
+       if (!strcmp (name, "picsimlab_position"))
         {
          sscanf (value, "%i,%i", &i, &j);
          SetX (i);
@@ -379,12 +375,12 @@ CPWindow1::Configure(CControl * control, const char * home)
         }
 
 
-       if (!strcmp (name, "lpath"))
+       if (!strcmp (name, "picsimlab_lpath"))
         {
          PATH = String (value, lxConvUTF8);
         }
 
-       if (!strcmp (name, "lfile"))
+       if (!strcmp (name, "picsimlab_lfile"))
         {
          FNAME = String (value, lxConvUTF8);
          if (FNAME.length () > 1)
@@ -405,10 +401,10 @@ CPWindow1::Configure(CControl * control, const char * home)
   {
    printf ("Error open config file \"%s\"!\n", fname);
 
-   lab = 1; //default  
-   lab_ = 1; //default  
+   lab = 0; //default  
+   lab_ = 0; //default  
 
-   pboard = new cboard_1 ();
+   pboard = boards_list[0].bcreate();
 
 #ifndef _WIN_   
    strcpy (SERIALDEVICE, "/dev/tnt2");
@@ -592,26 +588,26 @@ CPWindow1::_EvOnDestroy(CControl * control)
 
 
 
- saveprefs (lxT ("lab"), String ().Format ("%i", lab));
- saveprefs (lxT ("debug"), itoa (debug));
- saveprefs (lxT ("debugt"), itoa (debug_type));
- saveprefs (lxT ("debugp"), itoa (debug_port));
- saveprefs (lxT ("position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
+ saveprefs (lxT ("picsimlab_lab"), String ().Format ("%i", lab));
+ saveprefs (lxT ("picsimlab_debug"), itoa (debug));
+ saveprefs (lxT ("picsimlab_debugt"), itoa (debug_type));
+ saveprefs (lxT ("picsimlab_debugp"), itoa (debug_port));
+ saveprefs (lxT ("picsimlab_position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
  saveprefs (lxT ("osc_on"), itoa (pboard->GetUseOscilloscope ()));
  saveprefs (lxT ("spare_on"), itoa (pboard->GetUseSpareParts ()));
 #ifndef _WIN_
- saveprefs (lxT ("lser"), SERIALDEVICE);
+ saveprefs (lxT ("picsimlab_lser"), SERIALDEVICE);
 #ifdef _USE_PICSTARTP_    
- saveprefs (lxT ("lprog"), PROGDEVICE);
+ saveprefs (lxT ("picsimlab_lprog"), PROGDEVICE);
 #endif    
 #else
- saveprefs ("wser", SERIALDEVICE);
+ saveprefs ("picsimlab_wser", SERIALDEVICE);
 #ifdef _USE_PICSTARTP_    
- saveprefs ("wprog", PROGDEVICE);
+ saveprefs ("picsimlab_wprog", PROGDEVICE);
 #endif
 #endif
- saveprefs (lxT ("lpath"), PATH);
- saveprefs (lxT ("lfile"), FNAME);
+ saveprefs (lxT ("picsimlab_lpath"), PATH);
+ saveprefs (lxT ("picsimlab_lfile"), FNAME);
 
  pboard->WritePreferences ();
 
@@ -1075,14 +1071,14 @@ CPWindow1::filedialog2_EvOnClose(int retId)
 
    snprintf (fname, 1279, "%s/picsimlab.ini", home);
    prefs.Clear ();
-   saveprefs (lxT ("lab"), String ().Format ("%i", lab));
-   saveprefs (lxT ("debug"), itoa (debug));
-   saveprefs (lxT ("debugt"), itoa (debug_type));
-   saveprefs (lxT ("debugp"), itoa (debug_port));
-   saveprefs (lxT ("position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
+   saveprefs (lxT ("picsimlab_lab"), String ().Format ("%i", lab));
+   saveprefs (lxT ("picsimlab_debug"), itoa (debug));
+   saveprefs (lxT ("picsimlab_debugt"), itoa (debug_type));
+   saveprefs (lxT ("picsimlab_debugp"), itoa (debug_port));
+   saveprefs (lxT ("picsimlab_position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
    saveprefs (lxT ("osc_on"), itoa (pboard->GetUseOscilloscope ()));
    saveprefs (lxT ("spare_on"), itoa (pboard->GetUseSpareParts ()));
-   saveprefs (lxT ("lfile"), lxT (" "));
+   saveprefs (lxT ("picsimlab_lfile"), lxT (" "));
 
    pboard->WritePreferences ();
 

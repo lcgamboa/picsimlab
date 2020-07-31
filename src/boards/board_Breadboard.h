@@ -23,8 +23,8 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_0_H
-#define	BOARD_0_H
+#ifndef BOARD_Breadboard_H
+#define	BOARD_Breadboard_H
 
 #include<lxrad.h>
 
@@ -35,7 +35,7 @@
 #define _AVR 1
 
 //new board class must be derived from board class defined in board.h
-class cboard_0:public board_pic, public board_avr
+class cboard_Breadboard:public board_pic, public board_avr
 {
   private:
       int ptype;
@@ -78,9 +78,9 @@ class cboard_0:public board_pic, public board_avr
       unsigned int DBGGetEEPROM_Size(void);
       
       //Constructor called once on board creation 
-      cboard_0(void);
+      cboard_Breadboard(void);
       //Destructor called once on board destruction 
-      ~cboard_0(void); 
+      ~cboard_Breadboard(void); 
       //Called ever 100ms to draw board
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
@@ -119,5 +119,5 @@ class cboard_0:public board_pic, public board_avr
       unsigned short get_out_id(char * name);
 };
 
-#endif	/* BOARD_x_H */
+#endif	/* BOARD_Breadboard_H */
 

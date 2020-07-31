@@ -30,6 +30,7 @@
 #include "board_avr.h"
 
 #include"../picsimlab1.h"
+#include"../devices/mplabxd.h"
 
 //gdb debug hack stuff
 extern "C"

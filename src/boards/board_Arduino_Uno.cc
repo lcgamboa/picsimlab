@@ -48,7 +48,7 @@ enum
 //return the input ids numbers of names used in input map
 
 unsigned short
-cboard_5::get_in_id(char * name)
+cboard_Arduino_Uno::get_in_id(char * name)
 {
  if (strcmp (name, "I_ICSP") == 0)return I_ICSP;
  if (strcmp (name, "I_PWR") == 0)return I_PWR;
@@ -61,7 +61,7 @@ cboard_5::get_in_id(char * name)
 //return the output ids numbers of names used in output map
 
 unsigned short
-cboard_5::get_out_id(char * name)
+cboard_Arduino_Uno::get_out_id(char * name)
 {
 
  if (strcmp (name, "O_L") == 0)return O_L;
@@ -75,7 +75,7 @@ cboard_5::get_out_id(char * name)
 
 //Constructor called once on board creation 
 
-cboard_5::cboard_5(void)
+cboard_Arduino_Uno::cboard_Arduino_Uno(void)
 {
 
  Proc = "atmega328p"; //default microcontroller if none defined in preferences
@@ -250,7 +250,7 @@ cboard_5::cboard_5(void)
 
 //Destructor called once on board destruction 
 
-cboard_5::~cboard_5(void)
+cboard_Arduino_Uno::~cboard_Arduino_Uno(void)
 {
  //controls destruction 
  Window1.DestroyChild (gauge1);
@@ -272,7 +272,7 @@ cboard_5::~cboard_5(void)
 //Reset board status
 
 void
-cboard_5::Reset(void)
+cboard_Arduino_Uno::Reset(void)
 {
 
  //write button state to pic pin 19 (RD0)
@@ -309,7 +309,7 @@ cboard_5::Reset(void)
 //Called ever 1s to refresh status
 
 void
-cboard_5::RefreshStatus(void)
+cboard_Arduino_Uno::RefreshStatus(void)
 {
  //verify serial port state and refresh status bar   
 #ifndef _WIN_
@@ -349,25 +349,25 @@ cboard_5::RefreshStatus(void)
 //Called to save board preferences in configuration file
 
 void
-cboard_5::WritePreferences(void)
+cboard_Arduino_Uno::WritePreferences(void)
 {
  //write selected microcontroller of board_x to preferences
- Window1.saveprefs (lxT ("p5_proc"), Proc);
- Window1.saveprefs (lxT ("p5_clock"), String ().Format ("%2.1f", Window1.GetClock())); 
+ Window1.saveprefs (lxT ("Arduino_Uno_proc"), Proc);
+ Window1.saveprefs (lxT ("Arduino_Uno_clock"), String ().Format ("%2.1f", Window1.GetClock())); 
 }
 
 //Called whe configuration file load  preferences 
 
 void
-cboard_5::ReadPreferences(char *name, char *value)
+cboard_Arduino_Uno::ReadPreferences(char *name, char *value)
 {
  //read microcontroller of preferences
- if (!strcmp (name, "p5_proc"))
+ if (!strcmp (name, "Arduino_Uno_proc"))
   {
    Proc = value;
   }
  
-  if (!strcmp (name, "p5_clock"))
+  if (!strcmp (name, "Arduino_Uno_clock"))
   {
    Window1.SetClock (atof(value));
   }
@@ -377,17 +377,17 @@ cboard_5::ReadPreferences(char *name, char *value)
 //Event on the board
 
 void
-cboard_5::EvKeyPress(uint key, uint mask) { }
+cboard_Arduino_Uno::EvKeyPress(uint key, uint mask) { }
 
 //Event on the board
 
 void
-cboard_5::EvKeyRelease(uint key, uint mask) { }
+cboard_Arduino_Uno::EvKeyRelease(uint key, uint mask) { }
 
 //Event on the board
 
 void
-cboard_5::EvMouseButtonPress(uint button, uint x, uint y, uint state)
+cboard_Arduino_Uno::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
 
  int i;
@@ -440,7 +440,7 @@ cboard_5::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 //Event on the board
 
 void
-cboard_5::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
+cboard_Arduino_Uno::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 {
  int i;
 
@@ -476,7 +476,7 @@ cboard_5::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 //This is the critical code for simulator running speed
 
 void
-cboard_5::Draw(CDraw *draw, double scale)
+cboard_Arduino_Uno::Draw(CDraw *draw, double scale)
 {
  int i;
 
@@ -528,7 +528,7 @@ cboard_5::Draw(CDraw *draw, double scale)
 }
 
 void
-cboard_5::Run_CPU(void)
+cboard_Arduino_Uno::Run_CPU(void)
 {
 
  int i;
@@ -608,12 +608,12 @@ cboard_5::Run_CPU(void)
  //calculate mean value
  for (pi = 0; pi < MGetPinCount (); pi++)
   {
-   cboard_5::pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEPJ) + 30);
+   cboard_Arduino_Uno::pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEPJ) + 30);
   }
 
  if (use_spare)Window5.PostProcess ();
 }
 
 
-board_init(5, "Arduino Uno", cboard_5);
+board_init("Arduino Uno", cboard_Arduino_Uno);
 

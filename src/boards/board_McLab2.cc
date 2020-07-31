@@ -102,7 +102,7 @@ enum
 
 //TODO jumper support
 
-cboard_3::cboard_3(void)
+cboard_McLab2::cboard_McLab2(void)
 {
  char fname[1024];
  FILE * fout;
@@ -234,7 +234,7 @@ cboard_3::cboard_3(void)
  Window1.CreateChild (label4);
 
  strncpy (fname, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
- strncat (fname, "/mdump_03_EEPROM.bin", 1023);
+ strncat (fname, "/mdump_McLab2_EEPROM.bin", 1023);
 
  fout = fopen (fname, "rb");
  if (fout)
@@ -254,7 +254,7 @@ cboard_3::cboard_3(void)
  
 }
 
-cboard_3::~cboard_3(void)
+cboard_McLab2::~cboard_McLab2(void)
 {
  buzzer.BeepStop ();
  buzzer.End ();
@@ -272,13 +272,13 @@ cboard_3::~cboard_3(void)
 }
 
 void
-cboard_3::MDumpMemory(const char * mfname)
+cboard_McLab2::MDumpMemory(const char * mfname)
 {
  FILE * fout;
  char fname[1024];
 
  strncpy (fname, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
- strncat (fname, "/mdump_03_EEPROM.bin", 1023);
+ strncat (fname, "/mdump_McLab2_EEPROM.bin", 1023);
 
  fout = fopen (fname, "wb");
  if (fout)
@@ -296,7 +296,7 @@ cboard_3::MDumpMemory(const char * mfname)
 
 
 void
-cboard_3::Draw(CDraw *draw, double scale)
+cboard_McLab2::Draw(CDraw *draw, double scale)
 {
  int i;
 
@@ -492,7 +492,7 @@ cboard_3::Draw(CDraw *draw, double scale)
 };
 
 void
-cboard_3::Run_CPU(void)
+cboard_McLab2::Run_CPU(void)
 {
  int i;
  int j;
@@ -693,7 +693,7 @@ cboard_3::Run_CPU(void)
 }
 
 void
-cboard_3::Reset(void)
+cboard_McLab2::Reset(void)
 {
 
  pic_reset (1);
@@ -732,7 +732,7 @@ cboard_3::Reset(void)
 }
 
 void
-cboard_3::EvMouseButtonPress(uint button, uint x, uint y, uint state)
+cboard_McLab2::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
 
  int i;
@@ -891,7 +891,7 @@ cboard_3::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 };
 
 void
-cboard_3::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
+cboard_McLab2::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 {
  int i;
 
@@ -945,7 +945,7 @@ cboard_3::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 };
 
 void
-cboard_3::EvKeyPress(uint key, uint mask)
+cboard_McLab2::EvKeyPress(uint key, uint mask)
 {
  if (key == '1')
   {
@@ -966,7 +966,7 @@ cboard_3::EvKeyPress(uint key, uint mask)
 };
 
 void
-cboard_3::EvKeyRelease(uint key, uint mask)
+cboard_McLab2::EvKeyRelease(uint key, uint mask)
 {
  if (key == '1')
   {
@@ -990,13 +990,13 @@ cboard_3::EvKeyRelease(uint key, uint mask)
 };
 
 void
-cboard_3::EvOnShow(void)
+cboard_McLab2::EvOnShow(void)
 {
  lcd.update = 1;
 }
 
 unsigned short
-cboard_3::get_in_id(char * name)
+cboard_McLab2::get_in_id(char * name)
 {
  if (strcmp (name, "RST") == 0)return I_RST;
 
@@ -1022,7 +1022,7 @@ cboard_3::get_in_id(char * name)
 };
 
 unsigned short
-cboard_3::get_out_id(char * name)
+cboard_McLab2::get_out_id(char * name)
 {
 
  if (strcmp (name, "RB0") == 0)return O_RB0;
@@ -1081,7 +1081,7 @@ cboard_3::get_out_id(char * name)
 };
 
 void
-cboard_3::RefreshStatus(void)
+cboard_McLab2::RefreshStatus(void)
 {
  label4->SetText (lxT ("Temp: ") + String ().Format ("%5.2f", temp[0]) + lxT ("°C"));
 
@@ -1097,29 +1097,29 @@ cboard_3::RefreshStatus(void)
 };
 
 void
-cboard_3::WritePreferences(void)
+cboard_McLab2::WritePreferences(void)
 {
  char line[100];
- Window1.saveprefs (lxT ("p3_proc"), Proc);
+ Window1.saveprefs (lxT ("McLab2_proc"), Proc);
 
  line[0] = 0;
  for (int i = 0; i < 6; i++)
   sprintf (line + i, "%i", jmp[i]);
 
- Window1.saveprefs (lxT ("p3_jmp"), line);
- Window1.saveprefs (lxT ("p3_clock"), String ().Format ("%2.1f", Window1.GetClock())); 
+ Window1.saveprefs (lxT ("McLab2_jmp"), line);
+ Window1.saveprefs (lxT ("McLab2_clock"), String ().Format ("%2.1f", Window1.GetClock())); 
 }
 
 void
-cboard_3::ReadPreferences(char *name, char *value)
+cboard_McLab2::ReadPreferences(char *name, char *value)
 {
- if (!strcmp (name, "p3_proc"))
+ if (!strcmp (name, "McLab2_proc"))
   {
    Proc = value;
   }
 
  int i;
- if (!strcmp (name, "p3_jmp"))
+ if (!strcmp (name, "McLab2_jmp"))
   {
    for (i = 0; i < 6; i++)
     {
@@ -1130,14 +1130,14 @@ cboard_3::ReadPreferences(char *name, char *value)
     }
   }
  
-  if (!strcmp (name, "p3_clock"))
+  if (!strcmp (name, "McLab2_clock"))
   {
    Window1.SetClock (atof(value));
   }
 }
 
 
-board_init(3, "McLab2", cboard_3);
+board_init("McLab2", cboard_McLab2);
 
 
 

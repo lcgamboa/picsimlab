@@ -23,15 +23,15 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_6_H
-#define	BOARD_6_H
+#ifndef BOARD_MPLAB_Xpress_H
+#define	BOARD_MPLAB_Xpress_H
 
 #include<lxrad.h>
 
 #include "board_pic.h"
 
 //new board class must be derived from board class defined in board.h
-class cboard_6:public board_pic
+class cboard_MPLAB_Xpress:public board_pic
 {
   private:
      int p_BT1;           //S1 switch
@@ -51,9 +51,9 @@ class cboard_6:public board_pic
  
    public:
       //Constructor called once on board creation 
-      cboard_6(void);
+      cboard_MPLAB_Xpress(void);
       //Destructor called once on board destruction 
-      ~cboard_6(void); 
+      ~cboard_MPLAB_Xpress(void); 
       //Called ever 100ms to draw board
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
@@ -88,5 +88,5 @@ class cboard_6:public board_pic
       unsigned short get_out_id(char * name);
 };
 
-#endif	/* BOARD_6_H */
+#endif	/* BOARD_MPLAB_Xpress_H */
 

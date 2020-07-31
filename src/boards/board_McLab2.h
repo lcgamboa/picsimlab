@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,12 +23,12 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_3_H
-#define	BOARD_3_H
+#ifndef BOARD_McLab2_H
+#define	BOARD_McLab2_H
 
 #include "board_pic.h"
 
-class cboard_3:public board_pic
+class cboard_McLab2:public board_pic
 {
    private:
      int p_BT1; 
@@ -73,8 +73,8 @@ class cboard_3:public board_pic
     
     char mi2c_tmp_name[200]; 
   public:
-      cboard_3(void);
-      ~cboard_3(void);
+      cboard_McLab2(void);
+      ~cboard_McLab2(void);
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       String GetSupportedDevices(void){return lxT("PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F4620,");};
@@ -96,5 +96,5 @@ class cboard_3:public board_pic
 };
 
 
-#endif	/* BOARD_1_H */
+#endif	/* BOARD_McLab2_H */
 

@@ -61,7 +61,7 @@ enum
 
 //TODO TEMP cooler must don't work with AQUE=0
 
-cboard_4::cboard_4(void)
+cboard_PICGenios::cboard_PICGenios(void)
 {
  char fname[1024];
  FILE * fout;
@@ -263,7 +263,7 @@ cboard_4::cboard_4(void)
  Window1.CreateChild (combo1);
 
  strncpy (fname, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
- strncat (fname, "/mdump_04_EEPROM.bin", 1023);
+ strncat (fname, "/mdump_PICGenios_EEPROM.bin", 1023);
 
  fout = fopen (fname, "rb");
  if (fout)
@@ -282,7 +282,7 @@ cboard_4::cboard_4(void)
  strncat (mi2c_tmp_name, ".txt", 200);
 }
 
-cboard_4::~cboard_4(void)
+cboard_PICGenios::~cboard_PICGenios(void)
 {
  buzzer.BeepStop ();
  buzzer.End ();
@@ -315,13 +315,13 @@ cboard_4::~cboard_4(void)
 }
 
 void
-cboard_4::MDumpMemory(const char * mfname)
+cboard_PICGenios::MDumpMemory(const char * mfname)
 {
  FILE * fout;
  char fname[1024];
 
  strncpy (fname, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
- strncat (fname, "/mdump_04_EEPROM.bin", 1023);
+ strncat (fname, "/mdump_PICGenios_EEPROM.bin", 1023);
 
  fout = fopen (fname, "wb");
  if (fout)
@@ -338,7 +338,7 @@ cboard_4::MDumpMemory(const char * mfname)
 }
 
 void
-cboard_4::Draw(CDraw *draw, double scale)
+cboard_PICGenios::Draw(CDraw *draw, double scale)
 {
  int i;
 
@@ -652,7 +652,7 @@ cboard_4::Draw(CDraw *draw, double scale)
 }
 
 void
-cboard_4::Run_CPU(void)
+cboard_PICGenios::Run_CPU(void)
 {
  int i;
  int j;
@@ -979,7 +979,7 @@ cboard_4::Run_CPU(void)
 }
 
 void
-cboard_4::Reset(void)
+cboard_PICGenios::Reset(void)
 {
 
  pic_reset (1);
@@ -1047,7 +1047,7 @@ cboard_4::Reset(void)
 }
 
 void
-cboard_4::EvMouseButtonPress(uint button, uint x, uint y, uint state)
+cboard_PICGenios::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
 
  int i;
@@ -1377,7 +1377,7 @@ cboard_4::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 }
 
 void
-cboard_4::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
+cboard_PICGenios::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 {
  int i;
 
@@ -1526,7 +1526,7 @@ cboard_4::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 }
 
 void
-cboard_4::EvKeyPress(uint key, uint mask)
+cboard_PICGenios::EvKeyPress(uint key, uint mask)
 {
  if (key == '1')
   {
@@ -1607,7 +1607,7 @@ cboard_4::EvKeyPress(uint key, uint mask)
 }
 
 void
-cboard_4::EvKeyRelease(uint key, uint mask)
+cboard_PICGenios::EvKeyRelease(uint key, uint mask)
 {
 
  if (key == '1')
@@ -1689,13 +1689,13 @@ cboard_4::EvKeyRelease(uint key, uint mask)
 }
 
 void
-cboard_4::EvOnShow(void)
+cboard_PICGenios::EvOnShow(void)
 {
  lcd.update = 1;
 }
 
 unsigned short
-cboard_4::get_in_id(char * name)
+cboard_PICGenios::get_in_id(char * name)
 {
  if (strcmp (name, "RST") == 0)return I_RST;
  if (strcmp (name, "RA1") == 0)return I_RA1;
@@ -1755,7 +1755,7 @@ cboard_4::get_in_id(char * name)
 };
 
 unsigned short
-cboard_4::get_out_id(char * name)
+cboard_PICGenios::get_out_id(char * name)
 {
 
  if (strcmp (name, "RB0") == 0)return O_RB0;
@@ -1851,7 +1851,7 @@ cboard_4::get_out_id(char * name)
 };
 
 void
-cboard_4::RefreshStatus(void)
+cboard_PICGenios::RefreshStatus(void)
 {
  label5->SetText (lxT ("Temp: ") + String ().Format ("%5.2f", temp[0]) + lxT ("°C"));
 
@@ -1867,34 +1867,34 @@ cboard_4::RefreshStatus(void)
 };
 
 void
-cboard_4::WritePreferences(void)
+cboard_PICGenios::WritePreferences(void)
 {
  char line[100];
- Window1.saveprefs (lxT ("p4_proc"), Proc);
+ Window1.saveprefs (lxT ("PICGenios_proc"), Proc);
 
- Window1.saveprefs (lxT ("p4_jmp"), String ().Format ("%i", jmp[0]));
+ Window1.saveprefs (lxT ("PICGenios_jmp"), String ().Format ("%i", jmp[0]));
 
- Window1.saveprefs (lxT ("p4_lcd"), combo1->GetText ());
+ Window1.saveprefs (lxT ("PICGenios_lcd"), combo1->GetText ());
 
  line[0] = 0;
  for (int i = 0; i < 20; i++)
   sprintf (line + i, "%i", dip[i]);
 
- Window1.saveprefs (lxT ("p4_dip"), line);
- Window1.saveprefs (lxT ("p4_clock"), String ().Format ("%2.1f", Window1.GetClock()));
+ Window1.saveprefs (lxT ("PICGenios_dip"), line);
+ Window1.saveprefs (lxT ("PICGenios_clock"), String ().Format ("%2.1f", Window1.GetClock()));
 }
 
 void
-cboard_4::ReadPreferences(char *name, char *value)
+cboard_PICGenios::ReadPreferences(char *name, char *value)
 {
  int i;
 
- if (!strcmp (name, "p4_proc"))
+ if (!strcmp (name, "PICGenios_proc"))
   {
    Proc = value;
   }
 
- if (!strcmp (name, "p4_jmp"))
+ if (!strcmp (name, "PICGenios_jmp"))
   {
    for (i = 0; i < 1; i++)
     {
@@ -1906,7 +1906,7 @@ cboard_4::ReadPreferences(char *name, char *value)
   }
 
 
- if (!strcmp (name, "p4_dip"))
+ if (!strcmp (name, "PICGenios_dip"))
   {
    for (i = 0; i < 20; i++)
     {
@@ -1917,7 +1917,7 @@ cboard_4::ReadPreferences(char *name, char *value)
     }
   }
 
- if (!strcmp (name, "p4_lcd"))
+ if (!strcmp (name, "PICGenios_lcd"))
   {
    combo1->SetText (value);
    if (combo1->GetText ().Cmp (lxT ("hd44780 16x2")) == 0)
@@ -1926,7 +1926,7 @@ cboard_4::ReadPreferences(char *name, char *value)
     lcd_init (&lcd, 16, 4);
   }
  
-  if (!strcmp (name, "p4_clock"))
+  if (!strcmp (name, "PICGenios_clock"))
   {
    Window1.SetClock (atof(value));
   }
@@ -1935,7 +1935,7 @@ cboard_4::ReadPreferences(char *name, char *value)
 //Change lcd
 
 void
-cboard_4::board_Event(CControl * control)
+cboard_PICGenios::board_Event(CControl * control)
 {
 
  if (combo1->GetText ().Cmp (lxT ("hd44780 16x2")) == 0)
@@ -1948,6 +1948,6 @@ cboard_4::board_Event(CControl * control)
   lcd_init (&lcd, 20, 4);
 }
 
-board_init(4, "PICGenios", cboard_4);
+board_init("PICGenios", cboard_PICGenios);
 
 

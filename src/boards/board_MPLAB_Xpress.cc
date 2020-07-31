@@ -47,7 +47,7 @@
 //return the input ids numbers of names used in input map
 
 unsigned short
-cboard_6::get_in_id(char * name)
+cboard_MPLAB_Xpress::get_in_id(char * name)
 {
  if (strcmp (name, "I_ICSP") == 0)return I_ICSP;
  if (strcmp (name, "I_PWR") == 0)return I_PWR;
@@ -61,7 +61,7 @@ cboard_6::get_in_id(char * name)
 //return the output ids numbers of names used in output map
 
 unsigned short
-cboard_6::get_out_id(char * name)
+cboard_MPLAB_Xpress::get_out_id(char * name)
 {
 
  if (strcmp (name, "O_D1") == 0)return O_D1;
@@ -77,7 +77,7 @@ cboard_6::get_out_id(char * name)
 
 //Constructor called once on board creation 
 
-cboard_6::cboard_6(void)
+cboard_MPLAB_Xpress::cboard_MPLAB_Xpress(void)
 {
  Proc = "PIC16F18855"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
@@ -222,7 +222,7 @@ cboard_6::cboard_6(void)
 
 //Destructor called once on board destruction 
 
-cboard_6::~cboard_6(void)
+cboard_MPLAB_Xpress::~cboard_MPLAB_Xpress(void)
 {
  //controls destruction 
  Window1.DestroyChild (scroll1);
@@ -240,7 +240,7 @@ cboard_6::~cboard_6(void)
 //Reset board status
 
 void
-cboard_6::Reset(void)
+cboard_MPLAB_Xpress::Reset(void)
 {
  pic.pkg=QFN;
 
@@ -272,7 +272,7 @@ cboard_6::Reset(void)
 //Called ever 1s to refresh status
 
 void
-cboard_6::RefreshStatus(void)
+cboard_MPLAB_Xpress::RefreshStatus(void)
 {
  //verify serial port state and refresh status bar   
 #ifndef _WIN_
@@ -293,24 +293,24 @@ cboard_6::RefreshStatus(void)
 //Called to save board preferences in configuration file
 
 void
-cboard_6::WritePreferences(void)
+cboard_MPLAB_Xpress::WritePreferences(void)
 {
  //write selected microcontroller of board_6 to preferences
- Window1.saveprefs (lxT ("p6_proc"), Proc);
- Window1.saveprefs (lxT ("p6_clock"), String ().Format ("%2.1f", Window1.GetClock())); 
+ Window1.saveprefs (lxT ("MPLAB_Xpress_proc"), Proc);
+ Window1.saveprefs (lxT ("MPLAB_Xpress_clock"), String ().Format ("%2.1f", Window1.GetClock())); 
 }
 
 //Called whe configuration file load  preferences 
 
 void
-cboard_6::ReadPreferences(char *name, char *value)
+cboard_MPLAB_Xpress::ReadPreferences(char *name, char *value)
 {
  //read microcontroller of preferences
- if (!strcmp (name, "p6_proc"))
+ if (!strcmp (name, "MPLAB_Xpress_proc"))
   {
    Proc = value;
   }
- if (!strcmp (name, "p6_clock"))
+ if (!strcmp (name, "MPLAB_Xpress_clock"))
   {
    Window1.SetClock (atof(value));
   }
@@ -320,7 +320,7 @@ cboard_6::ReadPreferences(char *name, char *value)
 //Event on the board
 
 void
-cboard_6::EvKeyPress(uint key, uint mask)
+cboard_MPLAB_Xpress::EvKeyPress(uint key, uint mask)
 {
  //if keyboard key 1 is pressed then activate button (state=0)   
  if (key == '1')
@@ -334,7 +334,7 @@ cboard_6::EvKeyPress(uint key, uint mask)
 //Event on the board
 
 void
-cboard_6::EvKeyRelease(uint key, uint mask)
+cboard_MPLAB_Xpress::EvKeyRelease(uint key, uint mask)
 {
  //if keyboard key 1 is pressed then deactivate button (state=1)     
  if (key == '1')
@@ -347,7 +347,7 @@ cboard_6::EvKeyRelease(uint key, uint mask)
 //Event on the board
 
 void
-cboard_6::EvMouseButtonPress(uint button, uint x, uint y, uint state)
+cboard_MPLAB_Xpress::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
 
  int i;
@@ -406,7 +406,7 @@ cboard_6::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 //Event on the board
 
 void
-cboard_6::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
+cboard_MPLAB_Xpress::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 {
  int i;
 
@@ -447,7 +447,7 @@ cboard_6::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 //This is the critical code for simulator running speed
 
 void
-cboard_6::Draw(CDraw *draw, double scale)
+cboard_MPLAB_Xpress::Draw(CDraw *draw, double scale)
 {
  int i;
 
@@ -513,7 +513,7 @@ cboard_6::Draw(CDraw *draw, double scale)
 }
 
 void
-cboard_6::Run_CPU(void)
+cboard_MPLAB_Xpress::Run_CPU(void)
 {
  int i;
  int j;
@@ -589,6 +589,6 @@ cboard_6::Run_CPU(void)
 
 #ifdef _EXPERIMENTAL_
 
-board_init(6, "MPLAB Xpress", cboard_6);
+board_init("MPLAB Xpress", cboard_MPLAB_Xpress);
 
 #endif

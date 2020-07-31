@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,13 +23,13 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_4_H
-#define	BOARD_4_H
+#ifndef BOARD_PICGenios_H
+#define	BOARD_PICGenios_H
 
 #include "board_pic.h"
 
 
-class cboard_4:public board_pic
+class cboard_PICGenios:public board_pic
 {
   private:
      int p_BT1; 
@@ -104,8 +104,8 @@ class cboard_4:public board_pic
     char mi2c_tmp_name[200]; 
     
   public:
-      cboard_4(void);
-      ~cboard_4(void);
+      cboard_PICGenios(void);
+      ~cboard_PICGenios(void);
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
 #ifdef _EXPERIMENTAL_

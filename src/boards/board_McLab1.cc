@@ -76,7 +76,7 @@ enum
  I_JP1
 };
 
-cboard_1::cboard_1(void)
+cboard_McLab1::cboard_McLab1(void)
 {
  Proc = "PIC16F628A";
  ReadMaps ();
@@ -111,14 +111,14 @@ cboard_1::cboard_1(void)
  Window1.CreateChild (label1);
 }
 
-cboard_1::~cboard_1(void)
+cboard_McLab1::~cboard_McLab1(void)
 {
  Window1.DestroyChild (gauge1);
  Window1.DestroyChild (label1);
 }
 
 void
-cboard_1::Draw(CDraw *draw, double scale)
+cboard_McLab1::Draw(CDraw *draw, double scale)
 {
  int i;
 
@@ -263,7 +263,7 @@ cboard_1::Draw(CDraw *draw, double scale)
 }
 
 void
-cboard_1::Run_CPU(void)
+cboard_McLab1::Run_CPU(void)
 {
  int i;
  int j;
@@ -361,7 +361,7 @@ for(pi=0;pi < pic.PINCOUNT;pi++)
 }
 
 void
-cboard_1::Reset(void)
+cboard_McLab1::Reset(void)
 {
  pic_reset (1);
 
@@ -386,7 +386,7 @@ cboard_1::Reset(void)
 }
 
 void
-cboard_1::EvMouseButtonPress(uint button, uint x, uint y, uint state)
+cboard_McLab1::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
 
  int i;
@@ -476,7 +476,7 @@ cboard_1::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 }
 
 void
-cboard_1::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
+cboard_McLab1::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 {
  int i;
 
@@ -531,7 +531,7 @@ cboard_1::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 }
 
 void
-cboard_1::EvKeyPress(uint key, uint mask)
+cboard_McLab1::EvKeyPress(uint key, uint mask)
 {
  if (key == '1')
   {
@@ -552,7 +552,7 @@ cboard_1::EvKeyPress(uint key, uint mask)
 }
 
 void
-cboard_1::EvKeyRelease(uint key, uint mask)
+cboard_McLab1::EvKeyRelease(uint key, uint mask)
 {
  if (key == '1')
   {
@@ -576,7 +576,7 @@ cboard_1::EvKeyRelease(uint key, uint mask)
 }
 
 unsigned short
-cboard_1::get_in_id(char * name)
+cboard_McLab1::get_in_id(char * name)
 {
  if (strcmp (name, "RST") == 0)return I_RST;
  if (strcmp (name, "RA1") == 0)return I_RA1;
@@ -592,7 +592,7 @@ cboard_1::get_in_id(char * name)
 }
 
 unsigned short
-cboard_1::get_out_id(char * name)
+cboard_McLab1::get_out_id(char * name)
 {
 
  if (strcmp (name, "RB0") == 0)return O_RB0;
@@ -636,19 +636,19 @@ cboard_1::get_out_id(char * name)
 }
 
 void
-cboard_1::WritePreferences(void)
+cboard_McLab1::WritePreferences(void)
 {
- Window1.saveprefs (lxT ("p1_proc"), Proc);
- Window1.saveprefs (lxT ("p1_jmp"), String ().Format ("%i", jmp[0]));
- Window1.saveprefs (lxT ("p1_clock"), String ().Format ("%2.1f", Window1.GetClock()));
+ Window1.saveprefs (lxT ("McLab1_proc"), Proc);
+ Window1.saveprefs (lxT ("McLab1_jmp"), String ().Format ("%i", jmp[0]));
+ Window1.saveprefs (lxT ("McLab1_clock"), String ().Format ("%2.1f", Window1.GetClock()));
 }
 
 void
-cboard_1::ReadPreferences(char *name, char *value)
+cboard_McLab1::ReadPreferences(char *name, char *value)
 {
  int i;
 
- if (!strcmp (name, "p1_jmp"))
+ if (!strcmp (name, "McLab1_jmp"))
   {
    for (i = 0; i < 1; i++)
     {
@@ -659,16 +659,16 @@ cboard_1::ReadPreferences(char *name, char *value)
     }
   }
 
- if (!strcmp (name, "p1_proc"))
+ if (!strcmp (name, "McLab1_proc"))
   {
    Proc = value;
   }
  
-  if (!strcmp (name, "p1_clock"))
+  if (!strcmp (name, "McLab1_clock"))
   {
    Window1.SetClock (atof(value));
   }
 }
 
-board_init(1, "McLab1", cboard_1);
+board_init("McLab1", cboard_McLab1);
 

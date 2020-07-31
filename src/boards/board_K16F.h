@@ -23,13 +23,13 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_2_H
-#define	BOARD_2_H
+#ifndef BOARD_K16F_H
+#define	BOARD_K16F_H
 
 #include "board_pic.h"
 
 
-class cboard_2:public board_pic
+class cboard_K16F:public board_pic
 {
   private:
     int p_CL1; 
@@ -49,8 +49,8 @@ class cboard_2:public board_pic
      char mi2c_tmp_name[200];  
     
   public:
-      cboard_2(void);
-      ~cboard_2(void);
+      cboard_K16F(void);
+      ~cboard_K16F(void);
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       String GetSupportedDevices(void){return lxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
@@ -73,5 +73,5 @@ class cboard_2:public board_pic
 
 
 
-#endif	/* BOARD_1_H */
+#endif	/* BOARD_K16F_H */
 

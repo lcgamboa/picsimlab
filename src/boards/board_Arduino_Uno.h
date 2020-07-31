@@ -23,15 +23,15 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_5_H
-#define	BOARD_5_H
+#ifndef BOARD_Arduino_Uno_H
+#define	BOARD_Arduino_Uno_H
 
 #include<lxrad.h>
 
 #include "board_avr.h"
 
 //new board class must be derived from board class defined in board.h
-class cboard_5:public board_avr
+class cboard_Arduino_Uno:public board_avr
 {
   private: 
 
@@ -54,9 +54,9 @@ class cboard_5:public board_avr
  
    public:
       //Constructor called once on board creation 
-      cboard_5(void);
+      cboard_Arduino_Uno(void);
       //Destructor called once on board destruction 
-      ~cboard_5(void); 
+      ~cboard_Arduino_Uno(void); 
       //Called ever 100ms to draw board
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
@@ -91,5 +91,5 @@ class cboard_5:public board_avr
       unsigned short get_out_id(char * name);
 };
 
-#endif	/* BOARD_5_H */
+#endif	/* BOARD_Arduino_Uno_H */
 

@@ -244,11 +244,11 @@ void
 cboard_x::WritePreferences(void)
 {
  //write selected microcontroller of board_x to preferences
- Window1.saveprefs (lxT ("px_proc"), Proc);
+ Window1.saveprefs (lxT ("X_proc"), Proc);
  //write switch state of board_x to preferences 
- Window1.saveprefs (lxT ("px_bt2"), String ().Format ("%i", p_BT2));
+ Window1.saveprefs (lxT ("X_bt2"), String ().Format ("%i", p_BT2));
  //write microcontroller clock to preferences
- Window1.saveprefs (lxT ("px_clock"), String ().Format ("%2.1f", Window1.GetClock()));
+ Window1.saveprefs (lxT ("X_clock"), String ().Format ("%2.1f", Window1.GetClock()));
 }
 
 //Called whe configuration file load  preferences 
@@ -257,7 +257,7 @@ void
 cboard_x::ReadPreferences(char *name, char *value)
 {
  //read switch state of board_x of preferences 
- if (!strcmp (name, "px_bt2"))
+ if (!strcmp (name, "X_bt2"))
   {
    if (value[0] == '0')
     p_BT2 = 0;
@@ -265,12 +265,12 @@ cboard_x::ReadPreferences(char *name, char *value)
     p_BT2 = 1;
   }
  //read microcontroller of preferences
- if (!strcmp (name, "px_proc"))
+ if (!strcmp (name, "X_proc"))
   {
    Proc = value;
   }
  //read microcontroller clock
- if (!strcmp (name, "px_clock"))
+ if (!strcmp (name, "X_clock"))
  {
   Window1.SetClock (atof(value));
  }
@@ -563,6 +563,6 @@ cboard_x::Run_CPU(void)
 #ifdef _EXPERIMENTAL_
 
 //Register the board in PICSimLab
-board_init(8, "Board X", cboard_x); 
+board_init("X", cboard_x); 
 
 #endif

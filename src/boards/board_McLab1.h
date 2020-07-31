@@ -23,13 +23,13 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_1_H
-#define	BOARD_1_H
+#ifndef BOARD_McLab1_H
+#define	BOARD_McLab1_H
 
 #include<lxrad.h>
 #include "board_pic.h"
 
-class cboard_1:public board_pic
+class cboard_McLab1:public board_pic
 {
   private:
      int p_BT1; 
@@ -45,8 +45,8 @@ class cboard_1:public board_pic
      CLabel *label1;
  
    public:
-      cboard_1(void);
-      ~cboard_1(void);
+      cboard_McLab1(void);
+      ~cboard_McLab1(void);
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       String GetSupportedDevices(void){return lxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
@@ -66,8 +66,5 @@ class cboard_1:public board_pic
 };
 
 
-
-
-
-#endif	/* BOARD_1_H */
+#endif	/* BOARD_McLab1_H */
 

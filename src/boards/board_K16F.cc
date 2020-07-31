@@ -64,7 +64,7 @@ enum
  I_VIEW    
 };
 
-cboard_2::cboard_2(void)
+cboard_K16F::cboard_K16F(void)
 {
  char fname[1024];
  FILE * fout;
@@ -81,7 +81,7 @@ cboard_2::cboard_2(void)
  ReadMaps ();
 
  strncpy (fname, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
- strncat (fname, "/mdump_02_EEPROM.bin", 1023);
+ strncat (fname, "/mdump_K16F_EEPROM.bin", 1023);
 
  fout = fopen (fname, "rb");
  if (fout)
@@ -101,7 +101,7 @@ cboard_2::cboard_2(void)
 
 }
 
-cboard_2::~cboard_2(void)
+cboard_K16F::~cboard_K16F(void)
 {
  mi2c_end (&mi2c);
  rtc_end (&rtc);
@@ -109,13 +109,13 @@ cboard_2::~cboard_2(void)
 }
 
 void
-cboard_2::MDumpMemory(const char * mfname)
+cboard_K16F::MDumpMemory(const char * mfname)
 {
  FILE * fout;
  char fname[1024];
 
  strncpy (fname, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
- strncat (fname, "/mdump_02_EEPROM.bin", 1023);
+ strncat (fname, "/mdump_K16F_EEPROM.bin", 1023);
 
  fout = fopen (fname, "wb");
  if (fout)
@@ -132,7 +132,7 @@ cboard_2::MDumpMemory(const char * mfname)
 }
 
 void
-cboard_2::Draw(CDraw *draw, double scale)
+cboard_K16F::Draw(CDraw *draw, double scale)
 {
  int i;
 
@@ -202,7 +202,7 @@ cboard_2::Draw(CDraw *draw, double scale)
 }
 
 void
-cboard_2::Run_CPU(void)
+cboard_K16F::Run_CPU(void)
 {
  int i;
  int j;
@@ -354,7 +354,7 @@ cboard_2::Run_CPU(void)
 }
 
 void
-cboard_2::Reset(void)
+cboard_K16F::Reset(void)
 {
 
  pic_reset (1);
@@ -392,7 +392,7 @@ cboard_2::Reset(void)
 }
 
 void
-cboard_2::EvMouseButtonPress(uint button, uint x, uint y, uint state)
+cboard_K16F::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
 
  int i;
@@ -558,7 +558,7 @@ cboard_2::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 }
 
 void
-cboard_2::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
+cboard_K16F::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 {
  int i;
 
@@ -617,7 +617,7 @@ cboard_2::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 }
 
 void
-cboard_2::EvKeyPress(uint key, uint mask)
+cboard_K16F::EvKeyPress(uint key, uint mask)
 {
  if (key == '1')
   {
@@ -674,7 +674,7 @@ cboard_2::EvKeyPress(uint key, uint mask)
 }
 
 void
-cboard_2::EvKeyRelease(uint key, uint mask)
+cboard_K16F::EvKeyRelease(uint key, uint mask)
 {
  if ((key == '1') || (key == '4') || (key == '7') || (key == '*'))
   {
@@ -691,13 +691,13 @@ cboard_2::EvKeyRelease(uint key, uint mask)
 }
 
 void
-cboard_2::EvOnShow(void)
+cboard_K16F::EvOnShow(void)
 {
  lcd.update = 1;
 }
 
 unsigned short
-cboard_2::get_in_id(char * name)
+cboard_K16F::get_in_id(char * name)
 {
  if (strcmp (name, "RST") == 0)return I_RST;
  if (strcmp (name, "PWR") == 0)return I_PWR;
@@ -721,7 +721,7 @@ cboard_2::get_in_id(char * name)
 }
 
 unsigned short
-cboard_2::get_out_id(char * name)
+cboard_K16F::get_out_id(char * name)
 {
 
  if (strcmp (name, "RA1") == 0)return O_RA1;
@@ -737,29 +737,29 @@ cboard_2::get_out_id(char * name)
 }
 
 void
-cboard_2::WritePreferences(void)
+cboard_K16F::WritePreferences(void)
 {
- Window1.saveprefs (lxT ("p2_proc"), Proc);
- Window1.saveprefs (lxT ("p2_clock"), String ().Format ("%2.1f", Window1.GetClock()));
+ Window1.saveprefs (lxT ("K16F_proc"), Proc);
+ Window1.saveprefs (lxT ("K16F_clock"), String ().Format ("%2.1f", Window1.GetClock()));
 }
 
 void
-cboard_2::ReadPreferences(char *name, char *value)
+cboard_K16F::ReadPreferences(char *name, char *value)
 {
 
- if (!strcmp (name, "p2_proc"))
+ if (!strcmp (name, "K16F_proc"))
   {
    Proc = value;
   }
  
-  if (!strcmp (name, "p2_clock"))
+  if (!strcmp (name, "K16F_clock"))
   {
    Window1.SetClock (atof(value));
   }
 }
 
 void
-cboard_2::RefreshStatus(void)
+cboard_K16F::RefreshStatus(void)
 {
 
 #ifndef _WIN_
@@ -774,4 +774,4 @@ cboard_2::RefreshStatus(void)
 }
 
 
-board_init(2, "K16F", cboard_2);
+board_init("K16F", cboard_K16F);

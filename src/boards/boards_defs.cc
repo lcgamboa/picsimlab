@@ -24,7 +24,6 @@
    ######################################################################## */
 
 #include "boards_defs.h"
-#include"../picsimlab1.h"
 
 board_desc boards_list[BOARDS_MAX];
 
@@ -45,16 +44,16 @@ create_board(int *lab, int *lab_)
  else
   {
    mprint (lxT ("Invalid Board! Using Default!\n"));
-   *lab = 1; //default  
-   *lab_ = 1; //default  
-   pboard = new cboard_1 ();
+   *lab = 0; //default  
+   *lab_ = 0; //default  
+   pboard = boards_list[0].bcreate ();
   }
 
  return pboard;
 }
 
 void
-board_register(int num, const char * name, board_create_func bcreate)
+board_register(const char * name, board_create_func bcreate)
 {
  int in;
 
@@ -68,7 +67,7 @@ board_register(int num, const char * name, board_create_func bcreate)
  in = BOARDS_LAST;
  for (int i = BOARDS_LAST; i > 0; i--)
   {
-   if (num > boards_list[i - 1].num)
+   if ( strcmp(name, boards_list[i - 1].name) > 0)
     {
      break;
     }
@@ -80,11 +79,10 @@ board_register(int num, const char * name, board_create_func bcreate)
   }
 
  //insert new
- boards_list[in].num = num;
  boards_list[in].bcreate = bcreate;
  strncpy (boards_list[in].name, name, 30);
 
- for (unsigned int i = 0; i < strlen (name); i++)
+ for (unsigned int i = 0; i <= strlen (name); i++)
   {
    if (name[i] != ' ')
     {

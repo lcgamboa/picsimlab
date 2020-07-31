@@ -46,7 +46,7 @@ enum
 //return the input ids numbers of names used in input map
 
 unsigned short
-cboard_0::get_in_id(char * name)
+cboard_Breadboard::get_in_id(char * name)
 {
  if (strcmp (name, "I_ICSP") == 0)return I_ICSP;
  if (strcmp (name, "I_PWR") == 0)return I_PWR;
@@ -59,7 +59,7 @@ cboard_0::get_in_id(char * name)
 //return the output ids numbers of names used in output map
 
 unsigned short
-cboard_0::get_out_id(char * name)
+cboard_Breadboard::get_out_id(char * name)
 {
 
  if (strcmp (name, "O_LPWR") == 0)return O_LPWR;
@@ -71,7 +71,7 @@ cboard_0::get_out_id(char * name)
 
 //Constructor called once on board creation 
 
-cboard_0::cboard_0(void)
+cboard_Breadboard::cboard_Breadboard(void)
 {
  ptype = _PIC;
  Proc = "PIC18F4550"; //default microcontroller if none defined in preferences
@@ -85,7 +85,7 @@ cboard_0::cboard_0(void)
 
 //Destructor called once on board destruction 
 
-cboard_0::~cboard_0(void)
+cboard_Breadboard::~cboard_Breadboard(void)
 {
  delete micbmp;
  micbmp = NULL;
@@ -94,7 +94,7 @@ cboard_0::~cboard_0(void)
 //Reset board status
 
 void
-cboard_0::Reset(void)
+cboard_Breadboard::Reset(void)
 {
 
  switch (ptype)
@@ -145,7 +145,7 @@ cboard_0::Reset(void)
 //Called ever 1s to refresh status
 
 void
-cboard_0::RefreshStatus(void)
+cboard_Breadboard::RefreshStatus(void)
 {
 
  switch (ptype)
@@ -207,24 +207,24 @@ cboard_0::RefreshStatus(void)
 //Called to save board preferences in configuration file
 
 void
-cboard_0::WritePreferences(void)
+cboard_Breadboard::WritePreferences(void)
 {
  //write selected microcontroller of board_x to preferences
- Window1.saveprefs (lxT ("p0_proc"), Proc);
- Window1.saveprefs (lxT ("p0_clock"), String ().Format ("%2.1f", Window1.GetClock()));
+ Window1.saveprefs (lxT ("Breadboard_proc"), Proc);
+ Window1.saveprefs (lxT ("Breadboard_clock"), String ().Format ("%2.1f", Window1.GetClock()));
 }
 
 //Called whe configuration file load  preferences 
 
 void
-cboard_0::ReadPreferences(char *name, char *value)
+cboard_Breadboard::ReadPreferences(char *name, char *value)
 {
  //read microcontroller of preferences
- if (!strcmp (name, "p0_proc"))
+ if (!strcmp (name, "Breadboard_proc"))
   {
    Proc = value;
   }
- if (!strcmp (name, "p0_clock"))
+ if (!strcmp (name, "Breadboard_clock"))
   {
    Window1.SetClock (atof(value));
   }
@@ -234,17 +234,17 @@ cboard_0::ReadPreferences(char *name, char *value)
 //Event on the board
 
 void
-cboard_0::EvKeyPress(uint key, uint mask) { }
+cboard_Breadboard::EvKeyPress(uint key, uint mask) { }
 
 //Event on the board
 
 void
-cboard_0::EvKeyRelease(uint key, uint mask) { }
+cboard_Breadboard::EvKeyRelease(uint key, uint mask) { }
 
 //Event on the board
 
 void
-cboard_0::EvMouseButtonPress(uint button, uint x, uint y, uint state)
+cboard_Breadboard::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
 
  int i;
@@ -296,7 +296,7 @@ cboard_0::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 //Event on the board
 
 void
-cboard_0::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
+cboard_Breadboard::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 {
  int i;
 
@@ -330,7 +330,7 @@ cboard_0::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 //This is the critical code for simulator running speed
 
 void
-cboard_0::Draw(CDraw *draw, double scale)
+cboard_Breadboard::Draw(CDraw *draw, double scale)
 {
  int i;
  lxRect rec;
@@ -379,7 +379,7 @@ cboard_0::Draw(CDraw *draw, double scale)
 }
 
 void
-cboard_0::Run_CPU(void)
+cboard_Breadboard::Run_CPU(void)
 {
  int i;
  int j;
@@ -522,7 +522,7 @@ cboard_0::Run_CPU(void)
 //class dependent
 
 int
-cboard_0::DebugInit(int dtyppe)
+cboard_Breadboard::DebugInit(int dtyppe)
 {
  switch (ptype)
   {
@@ -537,7 +537,7 @@ cboard_0::DebugInit(int dtyppe)
 }
 
 void
-cboard_0::DebugLoop(void)
+cboard_Breadboard::DebugLoop(void)
 {
  switch (ptype)
   {
@@ -551,7 +551,7 @@ cboard_0::DebugLoop(void)
 }
 
 int
-cboard_0::CpuInitialized(void)
+cboard_Breadboard::CpuInitialized(void)
 {
  switch (ptype)
   {
@@ -566,7 +566,7 @@ cboard_0::CpuInitialized(void)
 }
 
 void
-cboard_0::MSetSerial(const char * port)
+cboard_Breadboard::MSetSerial(const char * port)
 {
  switch (ptype)
   {
@@ -580,7 +580,7 @@ cboard_0::MSetSerial(const char * port)
 }
 
 int
-cboard_0::MInit(const char * processor, const char * fname, float freq)
+cboard_Breadboard::MInit(const char * processor, const char * fname, float freq)
 {
  int ret = 0;
 
@@ -639,7 +639,7 @@ cboard_0::MInit(const char * processor, const char * fname, float freq)
 }
 
 void
-cboard_0::MEnd(void)
+cboard_Breadboard::MEnd(void)
 {
  switch (ptype)
   {
@@ -653,7 +653,7 @@ cboard_0::MEnd(void)
 }
 
 void
-cboard_0::MDumpMemory(const char * fname)
+cboard_Breadboard::MDumpMemory(const char * fname)
 {
  switch (ptype)
   {
@@ -667,7 +667,7 @@ cboard_0::MDumpMemory(const char * fname)
 }
 
 void
-cboard_0::MEraseFlash(void)
+cboard_Breadboard::MEraseFlash(void)
 {
  switch (ptype)
   {
@@ -681,7 +681,7 @@ cboard_0::MEraseFlash(void)
 }
 
 void
-cboard_0::MSetFreq(float freq)
+cboard_Breadboard::MSetFreq(float freq)
 {
  switch (ptype)
   {
@@ -696,7 +696,7 @@ cboard_0::MSetFreq(float freq)
 }
 
 float
-cboard_0::MGetFreq(void)
+cboard_Breadboard::MGetFreq(void)
 {
  switch (ptype)
   {
@@ -711,7 +711,7 @@ cboard_0::MGetFreq(void)
 }
 
 float
-cboard_0::MGetInstClock(void)
+cboard_Breadboard::MGetInstClock(void)
 {
  switch (ptype)
   {
@@ -726,7 +726,7 @@ cboard_0::MGetInstClock(void)
 }
 
 int
-cboard_0::MGetPinCount(void)
+cboard_Breadboard::MGetPinCount(void)
 {
  switch (ptype)
   {
@@ -741,7 +741,7 @@ cboard_0::MGetPinCount(void)
 }
 
 String
-cboard_0::MGetPinName(int pin)
+cboard_Breadboard::MGetPinName(int pin)
 {
  switch (ptype)
   {
@@ -756,7 +756,7 @@ cboard_0::MGetPinName(int pin)
 }
 
 void
-cboard_0::MSetPin(int pin, unsigned char value)
+cboard_Breadboard::MSetPin(int pin, unsigned char value)
 {
  switch (ptype)
   {
@@ -770,7 +770,7 @@ cboard_0::MSetPin(int pin, unsigned char value)
 }
 
 void
-cboard_0::MSetPinDOV(int pin, unsigned char ovalue)
+cboard_Breadboard::MSetPinDOV(int pin, unsigned char ovalue)
 {
  switch (ptype)
   {
@@ -784,7 +784,7 @@ cboard_0::MSetPinDOV(int pin, unsigned char ovalue)
 }
 
 void
-cboard_0::MSetAPin(int pin, float value)
+cboard_Breadboard::MSetAPin(int pin, float value)
 {
  switch (ptype)
   {
@@ -798,7 +798,7 @@ cboard_0::MSetAPin(int pin, float value)
 }
 
 unsigned char
-cboard_0::MGetPin(int pin)
+cboard_Breadboard::MGetPin(int pin)
 {
  switch (ptype)
   {
@@ -813,7 +813,7 @@ cboard_0::MGetPin(int pin)
 }
 
 const picpin *
-cboard_0::MGetPinsValues(void)
+cboard_Breadboard::MGetPinsValues(void)
 {
  switch (ptype)
   {
@@ -828,7 +828,7 @@ cboard_0::MGetPinsValues(void)
 }
 
 void
-cboard_0::MStep(void)
+cboard_Breadboard::MStep(void)
 {
  switch (ptype)
   {
@@ -842,7 +842,7 @@ cboard_0::MStep(void)
 }
 
 void
-cboard_0::MStepResume(void)
+cboard_Breadboard::MStepResume(void)
 {
  switch (ptype)
   {
@@ -856,7 +856,7 @@ cboard_0::MStepResume(void)
 }
 
 int
-cboard_0::DBGTestBP(unsigned int bp)
+cboard_Breadboard::DBGTestBP(unsigned int bp)
 {
  switch (ptype)
   {
@@ -871,7 +871,7 @@ cboard_0::DBGTestBP(unsigned int bp)
 }
 
 void
-cboard_0::MReset(int flags)
+cboard_Breadboard::MReset(int flags)
 {
  switch (ptype)
   {
@@ -885,7 +885,7 @@ cboard_0::MReset(int flags)
 }
 
 unsigned short *
-cboard_0::DBGGetProcID_p(void)
+cboard_Breadboard::DBGGetProcID_p(void)
 {
  switch (ptype)
   {
@@ -900,7 +900,7 @@ cboard_0::DBGGetProcID_p(void)
 }
 
 unsigned int
-cboard_0::DBGGetPC(void)
+cboard_Breadboard::DBGGetPC(void)
 {
  switch (ptype)
   {
@@ -915,7 +915,7 @@ cboard_0::DBGGetPC(void)
 }
 
 void
-cboard_0::DBGSetPC(unsigned int pc)
+cboard_Breadboard::DBGSetPC(unsigned int pc)
 {
  switch (ptype)
   {
@@ -932,7 +932,7 @@ cboard_0::DBGSetPC(unsigned int pc)
 }
 
 unsigned char *
-cboard_0::DBGGetRAM_p(void)
+cboard_Breadboard::DBGGetRAM_p(void)
 {
  switch (ptype)
   {
@@ -947,7 +947,7 @@ cboard_0::DBGGetRAM_p(void)
 }
 
 unsigned char *
-cboard_0::DBGGetROM_p(void)
+cboard_Breadboard::DBGGetROM_p(void)
 {
  switch (ptype)
   {
@@ -962,7 +962,7 @@ cboard_0::DBGGetROM_p(void)
 }
 
 unsigned char *
-cboard_0::DBGGetCONFIG_p(void)
+cboard_Breadboard::DBGGetCONFIG_p(void)
 {
  switch (ptype)
   {
@@ -977,7 +977,7 @@ cboard_0::DBGGetCONFIG_p(void)
 }
 
 unsigned char *
-cboard_0::DBGGetID_p(void)
+cboard_Breadboard::DBGGetID_p(void)
 {
  switch (ptype)
   {
@@ -992,7 +992,7 @@ cboard_0::DBGGetID_p(void)
 }
 
 unsigned char *
-cboard_0::DBGGetEEPROM_p(void)
+cboard_Breadboard::DBGGetEEPROM_p(void)
 {
  switch (ptype)
   {
@@ -1007,7 +1007,7 @@ cboard_0::DBGGetEEPROM_p(void)
 }
 
 unsigned int
-cboard_0::DBGGetRAMSize(void)
+cboard_Breadboard::DBGGetRAMSize(void)
 {
  switch (ptype)
   {
@@ -1022,7 +1022,7 @@ cboard_0::DBGGetRAMSize(void)
 }
 
 unsigned int
-cboard_0::DBGGetROMSize(void)
+cboard_Breadboard::DBGGetROMSize(void)
 {
  switch (ptype)
   {
@@ -1037,7 +1037,7 @@ cboard_0::DBGGetROMSize(void)
 }
 
 unsigned int
-cboard_0::DBGGetCONFIGSize(void)
+cboard_Breadboard::DBGGetCONFIGSize(void)
 {
  switch (ptype)
   {
@@ -1052,7 +1052,7 @@ cboard_0::DBGGetCONFIGSize(void)
 }
 
 unsigned int
-cboard_0::DBGGetIDSize(void)
+cboard_Breadboard::DBGGetIDSize(void)
 {
  switch (ptype)
   {
@@ -1067,7 +1067,7 @@ cboard_0::DBGGetIDSize(void)
 }
 
 unsigned int
-cboard_0::DBGGetEEPROM_Size(void)
+cboard_Breadboard::DBGGetEEPROM_Size(void)
 {
  switch (ptype)
   {
@@ -1082,5 +1082,5 @@ cboard_0::DBGGetEEPROM_Size(void)
 }
 
 
-board_init(0, "Breadboard", cboard_0);
+board_init("Breadboard", cboard_Breadboard);
 

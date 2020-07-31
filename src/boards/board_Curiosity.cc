@@ -53,7 +53,7 @@ enum
 //return the input ids numbers of names used in input map
 
 unsigned short
-cboard_7::get_in_id(char * name)
+cboard_Curiosity::get_in_id(char * name)
 {
  if (strcmp (name, "I_ICSP") == 0)return I_ICSP;
  if (strcmp (name, "I_PWR") == 0)return I_PWR;
@@ -68,7 +68,7 @@ cboard_7::get_in_id(char * name)
 //return the output ids numbers of names used in output map
 
 unsigned short
-cboard_7::get_out_id(char * name)
+cboard_Curiosity::get_out_id(char * name)
 {
 
  if (strcmp (name, "O_JMP") == 0)return O_JMP;
@@ -85,7 +85,7 @@ cboard_7::get_out_id(char * name)
 
 //Constructor called once on board creation 
 
-cboard_7::cboard_7(void)
+cboard_Curiosity::cboard_Curiosity(void)
 {
  Proc = "PIC16F1619"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
@@ -231,7 +231,7 @@ cboard_7::cboard_7(void)
 
 //Destructor called once on board destruction 
 
-cboard_7::~cboard_7(void)
+cboard_Curiosity::~cboard_Curiosity(void)
 {
  //controls destruction 
  Window1.DestroyChild (scroll1);
@@ -249,7 +249,7 @@ cboard_7::~cboard_7(void)
 //Reset board status
 
 void
-cboard_7::Reset(void)
+cboard_Curiosity::Reset(void)
 {
  pic_reset (1);
 
@@ -279,7 +279,7 @@ cboard_7::Reset(void)
 //Called ever 1s to refresh status
 
 void
-cboard_7::RefreshStatus(void)
+cboard_Curiosity::RefreshStatus(void)
 {
  //verify serial port state and refresh status bar   
 #ifndef _WIN_
@@ -300,26 +300,26 @@ cboard_7::RefreshStatus(void)
 //Called to save board preferences in configuration file
 
 void
-cboard_7::WritePreferences(void)
+cboard_Curiosity::WritePreferences(void)
 {
  //write selected microcontroller of board_5 to preferences
- Window1.saveprefs (lxT ("p7_proc"), Proc);
- Window1.saveprefs (lxT ("p7_jmp"), String ().Format ("%i", jmp[0]));
- Window1.saveprefs (lxT ("p7_clock"), String ().Format ("%2.1f", Window1.GetClock()));
+ Window1.saveprefs (lxT ("Curiosity_proc"), Proc);
+ Window1.saveprefs (lxT ("Curiosity_jmp"), String ().Format ("%i", jmp[0]));
+ Window1.saveprefs (lxT ("Curiosity_clock"), String ().Format ("%2.1f", Window1.GetClock()));
 }
 
 //Called whe configuration file load  preferences 
 
 void
-cboard_7::ReadPreferences(char *name, char *value)
+cboard_Curiosity::ReadPreferences(char *name, char *value)
 {
  //read microcontroller of preferences
- if (!strcmp (name, "p7_proc"))
+ if (!strcmp (name, "Curiosity_proc"))
   {
    Proc = value;
   }
 
- if (!strcmp (name, "p7_jmp"))
+ if (!strcmp (name, "Curiosity_jmp"))
   {
    int i;
    for (i = 0; i < 1; i++)
@@ -331,7 +331,7 @@ cboard_7::ReadPreferences(char *name, char *value)
     }
   }
  
-  if (!strcmp (name, "p7_clock"))
+  if (!strcmp (name, "Curiosity_clock"))
   {
    Window1.SetClock (atof(value));
   }
@@ -341,7 +341,7 @@ cboard_7::ReadPreferences(char *name, char *value)
 //Event on the board
 
 void
-cboard_7::EvKeyPress(uint key, uint mask)
+cboard_Curiosity::EvKeyPress(uint key, uint mask)
 {
  //if keyboard key 1 is pressed then activate button (state=0)   
  if (key == '1')
@@ -355,7 +355,7 @@ cboard_7::EvKeyPress(uint key, uint mask)
 //Event on the board
 
 void
-cboard_7::EvKeyRelease(uint key, uint mask)
+cboard_Curiosity::EvKeyRelease(uint key, uint mask)
 {
  //if keyboard key 1 is pressed then deactivate button (state=1)     
  if (key == '1')
@@ -368,7 +368,7 @@ cboard_7::EvKeyRelease(uint key, uint mask)
 //Event on the board
 
 void
-cboard_7::EvMouseButtonPress(uint button, uint x, uint y, uint state)
+cboard_Curiosity::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
 
  int i;
@@ -430,7 +430,7 @@ cboard_7::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 //Event on the board
 
 void
-cboard_7::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
+cboard_Curiosity::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 {
  int i;
 
@@ -471,7 +471,7 @@ cboard_7::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 //This is the critical code for simulator running speed
 
 void
-cboard_7::Draw(CDraw *draw, double scale)
+cboard_Curiosity::Draw(CDraw *draw, double scale)
 {
  int i;
 
@@ -557,7 +557,7 @@ cboard_7::Draw(CDraw *draw, double scale)
 }
 
 void
-cboard_7::Run_CPU(void)
+cboard_Curiosity::Run_CPU(void)
 {
  int i;
  int j;
@@ -634,6 +634,6 @@ cboard_7::Run_CPU(void)
 
 #ifdef _EXPERIMENTAL_
 
-board_init(7, "Curiosity", cboard_7);
+board_init("Curiosity", cboard_Curiosity);
 
 #endif

@@ -27,19 +27,18 @@
 #define BOARDS_DEFS_H
 
 #include "board.h"
-#include "board_McLab1.h"
 
-#define board_init(num,name,function)  \
+#define board_init(name, function)  \
     static board * function ## _create(void){\
     return new function ();};\
     static void __attribute__((constructor)) function ## _init (void);\
     static void function ## _init (void){\
-    board_register(num, name, function ## _create );}
+    board_register(name, function ## _create );}
 
 
 typedef board * (* board_create_func)(void);
 
-void board_register(int num, const char * name, board_create_func bcreate);
+void board_register(const char * name, board_create_func bcreate);
 
 //boards object creation
 board * create_board(int *lab, int *lab_);
@@ -49,7 +48,6 @@ board * create_board(int *lab, int *lab_);
 extern int BOARDS_LAST;
 
 typedef struct {
-    int num;
     char name[30];  //name
     char name_[30]; //name without spaces
     board_create_func bcreate;
