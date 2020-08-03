@@ -42,19 +42,19 @@ public:
     void Process(void);
 
     String GetPictureFileName(void) {
-        return lxT("LED_matrix.png");
+        return lxT("led_matrix/LED_matrix.png");
     };
 
     String GetInputMapFile(void) {
-        return lxT("LED_matrix_i.map");
+        return lxT("led_matrix/LED_matrix_i.map");
     };
 
     String GetOutputMapFile(void) {
-        return lxT("LED_matrix_o.map");
+        return lxT("led_matrix/LED_matrix_o.map");
     };
 
     String GetPropertiesWindowFile(void) {
-        return lxT("LED_matrix.lxrad");
+        return lxT("led_matrix/LED_matrix.lxrad");
     };
     void ConfigurePropertiesWindow(CPWindow * WProp);
     void ReadPropertiesWindow(CPWindow * WProp);

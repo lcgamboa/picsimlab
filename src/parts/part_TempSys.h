@@ -41,19 +41,19 @@ public:
     void Process(void);
 
     String GetPictureFileName(void) {
-        return lxT("TempSys.png");
+        return lxT("tempsys/TempSys.png");
     };
 
     String GetInputMapFile(void) {
-        return lxT("TempSys_i.map");
+        return lxT("tempsys/TempSys_i.map");
     };
 
     String GetOutputMapFile(void) {
-        return lxT("TempSys_o.map");
+        return lxT("tempsys/TempSys_o.map");
     };
 
     String GetPropertiesWindowFile(void) {
-        return lxT("TempSys.lxrad");
+        return lxT("tempsys/TempSys.lxrad");
     };
     void EvMouseButtonPress(uint button, uint x, uint y, uint state);
     void EvMouseButtonRelease(uint button, uint x, uint y, uint state);

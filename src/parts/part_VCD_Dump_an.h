@@ -37,10 +37,10 @@ class cpart_VCD_Dump_an:public part
       ~cpart_VCD_Dump_an(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return lxT("VCD_Dump.png");};
-      String GetInputMapFile(void){return lxT("VCD_Dump_i.map");};
-      String GetOutputMapFile(void){return lxT("VCD_Dump_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("VCD_Dump.lxrad");};
+      String GetPictureFileName(void){return lxT("VCD_Dump/VCD_Dump.png");};
+      String GetInputMapFile(void){return lxT("VCD_Dump/VCD_Dump_i.map");};
+      String GetOutputMapFile(void){return lxT("VCD_Dump/VCD_Dump_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("VCD_Dump/VCD_Dump.lxrad");};
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);

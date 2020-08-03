@@ -42,19 +42,19 @@ public:
     void Process(void);
 
     String GetPictureFileName(void) {
-        return lxT("SignalGenerator.png");
+        return lxT("SignalGenerator/SignalGenerator.png");
     };
 
     String GetInputMapFile(void) {
-        return lxT("SignalGenerator_i.map");
+        return lxT("SignalGenerator/SignalGenerator_i.map");
     };
 
     String GetOutputMapFile(void) {
-        return lxT("SignalGenerator_o.map");
+        return lxT("SignalGenerator/SignalGenerator_o.map");
     };
 
     String GetPropertiesWindowFile(void) {
-        return lxT("SignalGenerator.lxrad");
+        return lxT("SignalGenerator/SignalGenerator.lxrad");
     };
     void EvMouseButtonPress(uint button, uint x, uint y, uint state);
     void EvMouseButtonRelease(uint button, uint x, uint y, uint state);

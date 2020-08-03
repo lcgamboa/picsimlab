@@ -28,7 +28,6 @@
 
 #include<lxrad.h>
 #include"part.h"
-#include"../devices/lcd_pcd8544.h"
 
 class cpart_RTC_ds1307:public part
 {
@@ -38,10 +37,10 @@ class cpart_RTC_ds1307:public part
       ~cpart_RTC_ds1307(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return lxT("IC8.png");};
-      String GetInputMapFile(void){return lxT("IC8_i.map");};
-      String GetOutputMapFile(void){return lxT("IC8_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("RTC_ds1307.lxrad");};
+      String GetPictureFileName(void){return lxT("Common/IC8.png");};
+      String GetInputMapFile(void){return lxT("Common/IC8_i.map");};
+      String GetOutputMapFile(void){return lxT("Common/IC8_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("RTC_ds1307/RTC_ds1307.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       String WritePreferences(void);

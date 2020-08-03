@@ -43,19 +43,19 @@ public:
     void PostProcess(void);
 
     String GetPictureFileName(void) {
-        return lxT("Buzzer.png");
+        return lxT("Buzzer/Buzzer.png");
     };
 
     String GetInputMapFile(void) {
-        return lxT("Buzzer_i.map");
+        return lxT("Buzzer/Buzzer_i.map");
     };
 
     String GetOutputMapFile(void) {
-        return lxT("Buzzer_o.map");
+        return lxT("Buzzer/Buzzer_o.map");
     };
 
     String GetPropertiesWindowFile(void) {
-        return lxT("Buzzer.lxrad");
+        return lxT("Buzzer/Buzzer.lxrad");
     };
     void ConfigurePropertiesWindow(CPWindow * WProp);
     void ReadPropertiesWindow(CPWindow * WProp);

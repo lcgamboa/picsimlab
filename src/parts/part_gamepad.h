@@ -38,10 +38,10 @@ class cpart_gamepad:public part
       ~cpart_gamepad(void);
       void Draw(void);
       void PreProcess(void);
-      String GetPictureFileName(void){return lxT("gamepad.png");};
-      String GetInputMapFile(void){return lxT("gamepad_i.map");};
-      String GetOutputMapFile(void){return lxT("gamepad_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("gamepad.lxrad");};
+      String GetPictureFileName(void){return lxT("gamepad/gamepad.png");};
+      String GetInputMapFile(void){return lxT("gamepad/gamepad_i.map");};
+      String GetOutputMapFile(void){return lxT("gamepad/gamepad_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("gamepad/gamepad.lxrad");};
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
       void EvMouseMove(uint button, uint x, uint y,uint state);

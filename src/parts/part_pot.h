@@ -37,10 +37,10 @@ class cpart_pot:public part
       ~cpart_pot(void); 
       void Draw(void);
       void PreProcess(void);
-      String GetPictureFileName(void){return lxT("pot.png");};
-      String GetInputMapFile(void){return lxT("pot_i.map");};
-      String GetOutputMapFile(void){return lxT("pot_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("pot.lxrad");};
+      String GetPictureFileName(void){return lxT("pot/pot.png");};
+      String GetInputMapFile(void){return lxT("pot/pot_i.map");};
+      String GetOutputMapFile(void){return lxT("pot/pot_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("pot/pot.lxrad");};
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
       void EvMouseMove(uint button, uint x, uint y,uint state);

@@ -41,7 +41,7 @@ class cpart_keypad:public part
       String GetPictureFileName(void);
       String GetInputMapFile(void);
       String GetOutputMapFile(void);
-      String GetPropertiesWindowFile(void){return lxT("keypad.lxrad");};
+      String GetPropertiesWindowFile(void){return lxT("keypad/keypad.lxrad");};
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  WProp);

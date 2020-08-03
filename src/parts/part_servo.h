@@ -53,10 +53,10 @@ class cpart_servo:public part
       
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return lxT("servo_motor.png");};
-      String GetInputMapFile(void){return lxT("servo_motor_i.map");};
-      String GetOutputMapFile(void){return lxT("servo_motor_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("servo_motor.lxrad");};
+      String GetPictureFileName(void){return lxT("servo/servo_motor.png");};
+      String GetInputMapFile(void){return lxT("servo/servo_motor_i.map");};
+      String GetOutputMapFile(void){return lxT("servo/servo_motor_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("servo/servo_motor.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       String WritePreferences(void);

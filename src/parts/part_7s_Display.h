@@ -39,10 +39,10 @@ public:
     void PreProcess (void);
     void Process(void); 
     void PostProcess (void);
-    String GetPictureFileName(void) {return lxT("7sdisplay.png"); };
-    String GetInputMapFile(void) {return lxT("7sdisplay_i.map"); };
-    String GetOutputMapFile(void) {return lxT("7sdisplay_o.map");};
-    String GetPropertiesWindowFile(void) {return lxT("7sdisplay.lxrad");};
+    String GetPictureFileName(void) {return lxT("7s_display/7sdisplay.png"); };
+    String GetInputMapFile(void) {return lxT("7s_display/7sdisplay_i.map"); };
+    String GetOutputMapFile(void) {return lxT("7s_display/7sdisplay_o.map");};
+    String GetPropertiesWindowFile(void) {return lxT("7s_display/7sdisplay.lxrad");};
     void ConfigurePropertiesWindow(CPWindow * wprop);
     void ReadPropertiesWindow(CPWindow * WProp);
     String WritePreferences(void);

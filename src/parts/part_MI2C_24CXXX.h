@@ -43,19 +43,19 @@ public:
     void Process(void);
 
     String GetPictureFileName(void) {
-        return lxT("MI2C_24CXXX.png");
+        return lxT("MI2C_24CXXX/MI2C_24CXXX.png");
     };
 
     String GetInputMapFile(void) {
-        return lxT("MI2C_24CXXX_i.map");
+        return lxT("MI2C_24CXXX/MI2C_24CXXX_i.map");
     };
 
     String GetOutputMapFile(void) {
-        return lxT("IC8_o.map");
+        return lxT("Common/IC8_o.map");
     };
 
     String GetPropertiesWindowFile(void) {
-        return lxT("MI2C_24CXXX.lxrad");
+        return lxT("MI2C_24CXXX/MI2C_24CXXX.lxrad");
     };
     void EvMouseButtonPress(uint button, uint x, uint y,uint state);
     void ConfigurePropertiesWindow(CPWindow * WProp);

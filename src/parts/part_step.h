@@ -38,10 +38,10 @@ class cpart_step:public part
       ~cpart_step(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return lxT("step_motor.png");};
-      String GetInputMapFile(void){return lxT("step_motor_i.map");};
-      String GetOutputMapFile(void){return lxT("step_motor_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("step_motor.lxrad");};
+      String GetPictureFileName(void){return lxT("step/step_motor.png");};
+      String GetInputMapFile(void){return lxT("step/step_motor_i.map");};
+      String GetOutputMapFile(void){return lxT("step/step_motor_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("step/step_motor.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       String WritePreferences(void);

@@ -38,10 +38,10 @@ class cpart_pbuttons:public part
       ~cpart_pbuttons(void);
       void Draw(void);
       void PreProcess(void);
-      String GetPictureFileName(void){return lxT("push_buttons.png");};
-      String GetInputMapFile(void){return lxT("push_buttons_i.map");};
-      String GetOutputMapFile(void){return lxT("push_buttons_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("push_buttons.lxrad");};
+      String GetPictureFileName(void){return lxT("pbuttons/push_buttons.png");};
+      String GetInputMapFile(void){return lxT("pbuttons/push_buttons_i.map");};
+      String GetOutputMapFile(void){return lxT("pbuttons/push_buttons_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("pbuttons/push_buttons.lxrad");};
       void Reset(void); 
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);

@@ -40,10 +40,10 @@ class cpart_IO_74xx595:public part
       void PreProcess (void);
       void Process(void); 
       void PostProcess (void);
-      String GetPictureFileName(void){return lxT("IC16.png");};
-      String GetInputMapFile(void){return lxT("IC16_i.map");};
-      String GetOutputMapFile(void){return lxT("IC16_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("IO_74xx595.lxrad");};
+      String GetPictureFileName(void){return lxT("Common/IC16.png");};
+      String GetInputMapFile(void){return lxT("Common/IC16_i.map");};
+      String GetOutputMapFile(void){return lxT("Common/IC16_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("io_74xx595/IO_74xx595.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       String WritePreferences(void);

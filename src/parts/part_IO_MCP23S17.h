@@ -40,10 +40,10 @@ class cpart_IO_MCP23S17:public part
       void PreProcess (void);
       void Process(void); 
       void PostProcess (void);
-      String GetPictureFileName(void){return lxT("IC28.png");};
-      String GetInputMapFile(void){return lxT("IC28_i.map");};
-      String GetOutputMapFile(void){return lxT("IC28_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("IO_MCP23S17.lxrad");};
+      String GetPictureFileName(void){return lxT("Common/IC28.png");};
+      String GetInputMapFile(void){return lxT("Common/IC28_i.map");};
+      String GetOutputMapFile(void){return lxT("Common/IC28_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("IO_MCP23S17/IO_MCP23S17.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       String WritePreferences(void);

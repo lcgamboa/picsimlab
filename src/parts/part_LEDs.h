@@ -37,10 +37,10 @@ class cpart_leds:public part
       cpart_leds(unsigned x, unsigned y);
       ~cpart_leds(void);
       void Draw(void);
-      String GetPictureFileName(void){return lxT("LEDs.png");};
-      String GetInputMapFile(void){return lxT("LEDs_i.map");};
-      String GetOutputMapFile(void){return lxT("LEDs_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("LEDs.lxrad");};
+      String GetPictureFileName(void){return lxT("leds/LEDs.png");};
+      String GetInputMapFile(void){return lxT("leds/LEDs_i.map");};
+      String GetOutputMapFile(void){return lxT("leds/LEDs_o.map");};
+      String GetPropertiesWindowFile(void){return lxT("leds/LEDs.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       String WritePreferences(void);

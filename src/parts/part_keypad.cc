@@ -52,16 +52,16 @@ cpart_keypad::GetPictureFileName(void)
  switch (type)
   {
   case KT4x4:
-   return lxT ("keypad_4x4.png");
+   return lxT ("keypad/keypad_4x4.png");
    break;
   case KT4x3:
-   return lxT ("keypad_4x3.png");
+   return lxT ("keypad/keypad_4x3.png");
    break;
   case KT2x5:
-   return lxT ("keypad_2x5.png");
+   return lxT ("keypad/keypad_2x5.png");
    break;
   }
- return lxT ("keypad_4x4.png");
+ return lxT ("keypad/keypad_4x4.png");
 }
 
 String
@@ -70,16 +70,16 @@ cpart_keypad::GetInputMapFile(void)
  switch (type)
   {
   case KT4x4:
-   return lxT ("keypad_4x4_i.map");
+   return lxT ("keypad/keypad_4x4_i.map");
    break;
   case KT4x3:
-   return lxT ("keypad_4x3_i.map");
+   return lxT ("keypad/keypad_4x3_i.map");
    break;
   case KT2x5:
-   return lxT ("keypad_2x5_i.map");
+   return lxT ("keypad/keypad_2x5_i.map");
    break;
   }
- return lxT ("keypad_4x4_i.map");
+ return lxT ("keypad/keypad_4x4_i.map");
 }
 
 String
@@ -88,16 +88,16 @@ cpart_keypad::GetOutputMapFile(void)
  switch (type)
   {
   case KT4x4:
-   return lxT ("keypad_4x4_o.map");
+   return lxT ("keypad/keypad_4x4_o.map");
    break;
   case KT4x3:
-   return lxT ("keypad_4x3_o.map");
+   return lxT ("keypad/keypad_4x3_o.map");
    break;
   case KT2x5:
-   return lxT ("keypad_2x5_o.map");
+   return lxT ("keypad/keypad_2x5_o.map");
    break;
   }
- return lxT ("keypad_4x4_o.map");
+ return lxT ("keypad/keypad_4x4_o.map");
 }
 
 cpart_keypad::cpart_keypad(unsigned x, unsigned y)
