@@ -22,7 +22,7 @@ override CFLAGS+= -D_EXPERIMENTAL_ -DAVR_USE_GDB
 
 #LIBS = `lxrad_X11-config --libs` -lpicsim -lsimavr -lelf -lminizip
 LIBS = `lxrad_X11-config --libs`  ../../picsim/src/libpicsim_dbg.a  ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a -lelf -lminizip
-
+LIBS+= ../../ucsim-0.6/libucsim.a
 
 #lxrad automatic generated block end, don't edit above!
 
