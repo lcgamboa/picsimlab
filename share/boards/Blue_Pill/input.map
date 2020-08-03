@@ -1,0 +1,12 @@
+<img src="picsimlab8.png" width="512" height="220" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:lcganmboa@yahoo.com     -->
+<area shape="rect" coords="434,66,470,150" href="I_ICSP" />
+<area shape="rect" coords="9,79,68,140" href="I_PWR" />
+<area shape="circle" coords="141,135,22" href="I_RST" />
+</map>
