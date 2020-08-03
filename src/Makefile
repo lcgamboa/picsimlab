@@ -17,7 +17,6 @@ execdir= ${prefix}/bin/
 override CFLAGS+= -D_VERSION_=\"$(VERSION)\" -Wall -O2 -D_SHARE_=\"${sharedir}\"  `lxrad-config --cxxflags`
 override CFLAGS+= -DEXT_BROWSER
 #override CFLAGS+=-fsanitize=address
-#override CFLAGS+= -D_EXPERIMENTAL_
 
 LIBS = `lxrad-config --libs` -lpicsim -lsimavr -lelf
 LIBS+= ../../ucsim-0.6/libucsim.a

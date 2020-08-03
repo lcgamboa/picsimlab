@@ -29,7 +29,6 @@ override CFLAGS+= -s EXPORTED_FUNCTIONS='["_main","_file_ready","_lxrad_scale_up
 #CFLAGS+=-s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 
 #CFLAGS+=--emrun
 CFLAGS+= -D_NOTHREAD 
-#CFLAGS+= -D_EXPERIMENTAL_
 
 LIBS= ../../LXRAD_SDL2/lib/liblxrad_SDL2_js.a ../../picsim/src/libpicsim_js.a ../../simavr/simavr/obj-wasm32-unknown-emscripten/libsimavr.a
 LIBS+= ../../LXRAD_SDL2/teste/zlib-master/contrib/minizip/minizip.a

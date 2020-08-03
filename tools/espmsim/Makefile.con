@@ -11,6 +11,7 @@ OBJS = cespmsim.o espmsim1.o serial.o tcp.o ../LXRAD_WX/libteste/liblxrad.a
 
 #lxrad automatic generated block end, don't edit above!
 
+exp: all
 
 all: $(OBJS)
 	$(CC) $(FLAGS) $(OBJS) -ocespmsim $(LIBS)

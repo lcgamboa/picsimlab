@@ -23,7 +23,7 @@ OBJS = pespmsim.o espmsim1.o espmsim2.o serial.o tcp.o
 
 #lxrad automatic generated block end, don't edit above!
 
-
+exp: all
 all: $(OBJS)
 	$(CC) $(FLAGS) $(OBJS) -oespmsim $(LIBS)
 

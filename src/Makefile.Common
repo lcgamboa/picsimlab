@@ -1,12 +1,9 @@
 include ../VERSION
 
-override CFLAGS+= -DEXT_BROWSER_EXAMPLES -DLEGACY081
-
 OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimlab5.o\
  boards/board.o boards/boards_defs.o boards/board_pic.o boards/board_avr.o boards/board_avr_serial.o\
  boards/board_McLab1.o boards/board_K16F.o boards/board_McLab2.o boards/board_PICGenios.o \
- boards/board_Arduino_Uno.o boards/board_MPLAB_Xpress.o boards/board_ucsim.o\
- boards/board_Curiosity.o boards/board_x.o boards/board_Breadboard.o boards/board_s51.o\
+ boards/board_Arduino_Uno.o boards/board_Breadboard.o \
  devices/lcd_hd44780.o devices/mi2c_24CXXX.o devices/rtc_ds1307.o devices/rtc_pfc8563.o devices/lcd_pcf8833.o\
  devices/lcd_pcd8544.o devices/mplabxd.o devices/ldd_max72xx.o devices/io_74xx595.o devices/io_PCF8574.o\
  devices/io_MCP23X17.o \
@@ -16,6 +13,19 @@ OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimla
  parts/part_LED_matrix.o parts/part_7s_Display.o parts/part_TempSys.o parts/part_keypad.o \
  parts/part_MI2C_24CXXX.o parts/part_RTC_ds1307.o parts/part_RTC_pfc8563.o parts/part_IO_74xx595.o \
  parts/part_VCD_Dump.o parts/part_IO_PCF8574.o parts/part_Buzzer.o parts/part_SignalGenerator.o \
- parts/part_push_buttons_an.o parts/part_VCD_Dump_an.o parts/part_IO_MCP23S17.o\
- boards/board_Blue_Pill.o boards/board_stm32.o
+ parts/part_push_buttons_an.o parts/part_VCD_Dump_an.o parts/part_IO_MCP23S17.o
+ 
 
+OBJS_EXP =  boards/board_MPLAB_Xpress.o boards/board_Curiosity.o boards/board_x.o boards/board_Blue_Pill.o \
+            boards/board_stm32.o boards/board_ucsim.o boards/board_s51.o
+
+.DEFAULT_GOAL := all
+
+.PHONY: exp 
+
+exp: OBJS+=$(OBJS_EXP)  
+exp: EFLAGS=-D_EXPERIMENTAL_
+	
+exp: $(OBJS_EXP) all
+	
+override CFLAGS+= $(EFLAGS) -DEXT_BROWSER_EXAMPLES -DLEGACY081

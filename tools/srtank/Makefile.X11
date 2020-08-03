@@ -23,6 +23,8 @@ OBJS = psrtank.o srtank1.o srtank2.o  serial.o
 
 #lxrad automatic generated block end, don't edit above!
 
+exp: all
+
 all: $(OBJS)
 	$(CC) $(FLAGS) $(OBJS) -osrtank_X11 $(LIBS)
 

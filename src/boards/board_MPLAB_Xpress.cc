@@ -587,8 +587,5 @@ cboard_MPLAB_Xpress::Run_CPU(void)
  if (use_spare)Window5.PostProcess ();
 }
 
-#ifdef _EXPERIMENTAL_
-
 board_init("MPLAB Xpress", cboard_MPLAB_Xpress);
 
-#endif

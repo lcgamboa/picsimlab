@@ -14,6 +14,8 @@ LIBS+= -Wl,--subsystem,windows -mwindows -lwx_mswu_xrc-3.1-x86_64-w64-mingw32 -l
 
 OBJS = psrtank.o srtank1.o srtank2.o serial.o 
 
+exp: all
+
 all: $(OBJS)
 	$(WINDRES) srtank_res.rc  -O coff -o srtank_res.o
 	$(CC) $(FLAGS) $(OBJS) srtank_res.o  -osrtank.exe $(LIBS)

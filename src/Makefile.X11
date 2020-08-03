@@ -7,6 +7,7 @@ prefix=/usr
 RM= rm -f
 CP= cp
 MKDIR = mkdir -p
+EFLAGS=
 
 appdir= ${prefix}/share/applications/
 sharedir= ${prefix}/share/picsimlab/
@@ -18,7 +19,6 @@ override CFLAGS += -DEXT_BROWSER -D_VERSION_=\"${VERSION}\" -Wall -ggdb -D_SHARE
 
 #override CFLAGS+= -D_NOTHREAD
 #override CFLAGS+=-fsanitize=address
-override CFLAGS+= -D_EXPERIMENTAL_ -DAVR_USE_GDB
 
 #LIBS = `lxrad_X11-config --libs` -lpicsim -lsimavr -lelf -lminizip
 LIBS = `lxrad_X11-config --libs`  ../../picsim/src/libpicsim_dbg.a  ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a -lelf -lminizip

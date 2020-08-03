@@ -367,9 +367,6 @@ cboard_Blue_Pill::Run_CPU(void)
 
 }
 
-#ifdef _EXPERIMENTAL_
-
 //Register the board in PICSimLab
 board_init("Blue Pill", cboard_Blue_Pill); 
 
-#endif

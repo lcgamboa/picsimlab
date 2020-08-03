@@ -102,12 +102,12 @@ class board_avr: virtual public board
       unsigned int serialbaud; 
       float serialexbaud;
       void pins_reset(void);
+      int avr_debug_type;
  private:
       int parse_hex(char *line,int bytes);
       unsigned char checksum(char* str);
       int read_ihx_avr(const char * fname, int leeprom);
       int write_ihx_avr(const char * fname);  
-      int avr_debug_type;
 };
 
 

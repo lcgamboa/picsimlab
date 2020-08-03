@@ -560,9 +560,6 @@ cboard_x::Run_CPU(void)
 
 }
 
-#ifdef _EXPERIMENTAL_
-
 //Register the board in PICSimLab
 board_init("X", cboard_x); 
 
-#endif

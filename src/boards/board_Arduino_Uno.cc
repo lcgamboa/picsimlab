@@ -353,7 +353,7 @@ cboard_Arduino_Uno::WritePreferences(void)
 {
  //write selected microcontroller of board_x to preferences
  Window1.saveprefs (lxT ("Arduino_Uno_proc"), Proc);
- Window1.saveprefs (lxT ("Arduino_Uno_clock"), String ().Format ("%2.1f", Window1.GetClock())); 
+ Window1.saveprefs (lxT ("Arduino_Uno_clock"), String ().Format ("%2.1f", Window1.GetClock ()));
 }
 
 //Called whe configuration file load  preferences 
@@ -366,10 +366,10 @@ cboard_Arduino_Uno::ReadPreferences(char *name, char *value)
   {
    Proc = value;
   }
- 
-  if (!strcmp (name, "Arduino_Uno_clock"))
+
+ if (!strcmp (name, "Arduino_Uno_clock"))
   {
-   Window1.SetClock (atof(value));
+   Window1.SetClock (atof (value));
   }
 }
 
@@ -493,10 +493,10 @@ cboard_Arduino_Uno::Draw(CDraw *draw, double scale)
        draw->Canvas.SetColor (0, 225 * Window1.Get_mcupwr () + 30, 0);
        break;
       case O_RX:
-       draw->Canvas.SetColor (0, 255-pins[1].oavalue, 0);
+       draw->Canvas.SetColor (0, 255 - pins[1].oavalue, 0);
        break;
       case O_TX:
-       draw->Canvas.SetColor (0, 255-  ((unsigned char) pins[2].oavalue*10), 0);
+       draw->Canvas.SetColor (0, 255 - ((unsigned char) pins[2].oavalue * 10), 0);
        break;
       case O_L:
        draw->Canvas.SetColor (0, pins[18].oavalue, 0);
@@ -564,25 +564,24 @@ cboard_Arduino_Uno::Run_CPU(void)
   for (i = 0; i < (Window1.GetNSTEP ()*4); i++) //repeat for number of steps in 100ms
    {
 
-    //verify if a breakpoint is reached if not run one instruction 
-#ifndef AVR_USE_GDB
-    if (!mplabxd_testbp ())
-#endif    
-     {
-      if (twostep)
-       {
-        twostep = 0; //NOP   
-       }
-      else
-       {
-        cycle_start = avr->cycle;
-        avr_run (avr);
-        if ((avr->cycle - cycle_start) > 1)
-         {
-          twostep = 1;
-         }
-       }
-     }
+    //verify if a breakpoint is reached if not run one instruction   
+    if (avr_debug_type || (!mplabxd_testbp ()))
+    {
+     if (twostep)
+      {
+       twostep = 0; //NOP   
+      }
+     else
+      {
+       cycle_start = avr->cycle;
+       avr_run (avr);
+       if ((avr->cycle - cycle_start) > 1)
+        {
+         twostep = 1;
+        }
+      }
+    }
+      
 
     UpdateHardware ();
 

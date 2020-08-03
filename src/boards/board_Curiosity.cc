@@ -632,8 +632,5 @@ cboard_Curiosity::Run_CPU(void)
  if (use_spare)Window5.PostProcess ();
 }
 
-#ifdef _EXPERIMENTAL_
-
 board_init("Curiosity", cboard_Curiosity);
 
-#endif

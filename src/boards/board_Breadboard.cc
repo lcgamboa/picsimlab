@@ -211,7 +211,7 @@ cboard_Breadboard::WritePreferences(void)
 {
  //write selected microcontroller of board_x to preferences
  Window1.saveprefs (lxT ("Breadboard_proc"), Proc);
- Window1.saveprefs (lxT ("Breadboard_clock"), String ().Format ("%2.1f", Window1.GetClock()));
+ Window1.saveprefs (lxT ("Breadboard_clock"), String ().Format ("%2.1f", Window1.GetClock ()));
 }
 
 //Called whe configuration file load  preferences 
@@ -226,7 +226,7 @@ cboard_Breadboard::ReadPreferences(char *name, char *value)
   }
  if (!strcmp (name, "Breadboard_clock"))
   {
-   Window1.SetClock (atof(value));
+   Window1.SetClock (atof (value));
   }
 }
 
@@ -354,9 +354,9 @@ cboard_Breadboard::Draw(CDraw *draw, double scale)
     case O_MP:
 
      lxFont font (
-     (MGetPinCount () >= 100 ) ? 9 : ((MGetPinCount () > 14) ? 12 : 10)
-     , lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
-   
+                  (MGetPinCount () >= 100) ? 9 : ((MGetPinCount () > 14) ? 12 : 10)
+                  , lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
+
      draw->Canvas.SetFont (font);
 
      ps = micbmp->GetSize ();
@@ -468,9 +468,7 @@ cboard_Breadboard::Run_CPU(void)
      {
 
       //verify if a breakpoint is reached if not run one instruction 
-#ifndef AVR_USE_GDB
-      if (!mplabxd_testbp ())
-#endif 
+      if (avr_debug_type || (!mplabxd_testbp ()))
        {
         if (twostep)
          {

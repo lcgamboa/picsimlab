@@ -8,6 +8,8 @@ SUBDIRS= src tools/espmsim tools/srtank
 
 all:$(SUBDIRS) 
 
+exp:$(SUBDIRS) 
+
 install:$(SUBDIRS) 
 	
 clean:$(SUBDIRS) 
