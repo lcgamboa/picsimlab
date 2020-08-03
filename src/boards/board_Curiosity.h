@@ -28,10 +28,10 @@
 
 #include<lxrad.h>
 
-#include "board_pic.h"
+#include "board_picsim.h"
 
 //new board class must be derived from board class defined in board.h
-class cboard_Curiosity:public board_pic
+class cboard_Curiosity:public board_picsim
 {
   private:
      int p_BT1;           //S1 switch
@@ -62,11 +62,11 @@ class cboard_Curiosity:public board_pic
       //Return a list of board supported microcontrollers
       String GetSupportedDevices(void){return lxT("PIC16F1619,");};
       //Return the filename of board picture 
-      String GetPictureFileName(void){return lxT("picsimlab7.png");};
+      String GetPictureFileName(void){return lxT("Curiosity/board.png");};
       //Return the filename of board picture input map 
-      String GetInputMapFile(void){return lxT("input7.map");};
+      String GetInputMapFile(void){return lxT("Curiosity/input.map");};
       //Return the filename of board picture output map 
-      String GetOutputMapFile(void){return lxT("output7.map");};
+      String GetOutputMapFile(void){return lxT("Curiosity/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

@@ -30,7 +30,7 @@
 
 #include"../devices/mplabxd.h"
 
-class board_pic: virtual public board
+class board_picsim: virtual public board
 {
   public:
       int DebugInit(int dtyppe); 

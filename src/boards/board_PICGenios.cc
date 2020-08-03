@@ -88,14 +88,14 @@ cboard_PICGenios::cboard_PICGenios(void)
  sound_on = 0;
 
  lxImage image;
- image.LoadFile (Window1.GetSharePath () + lxT ("boards/VT1.png"));
+ image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT1.png"));
  vent[0] = new lxBitmap (image, &Window1);
- image.LoadFile (Window1.GetSharePath () + lxT ("boards/VT2.png"));
+ image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT2.png"));
  vent[1] = new lxBitmap (image, &Window1);
 
- image.LoadFile (Window1.GetSharePath () + lxT ("boards/lcd2.png"));
+ image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/lcd2.png"));
  lcdbmp[0] = new lxBitmap (image, &Window1);
- image.LoadFile (Window1.GetSharePath () + lxT ("boards/lcd4.png"));
+ image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/lcd4.png"));
  lcdbmp[1] = new lxBitmap (image, &Window1);
 
  image.Destroy ();
@@ -334,7 +334,7 @@ cboard_PICGenios::MDumpMemory(const char * mfname)
    printf ("Error saving to file: %s \n", fname);
   }
 
- board_pic::MDumpMemory (mfname);
+ board_picsim::MDumpMemory (mfname);
 }
 
 void

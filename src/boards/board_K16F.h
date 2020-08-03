@@ -26,10 +26,10 @@
 #ifndef BOARD_K16F_H
 #define	BOARD_K16F_H
 
-#include "board_pic.h"
+#include "board_picsim.h"
 
 
-class cboard_K16F:public board_pic
+class cboard_K16F:public board_picsim
 {
   private:
     int p_CL1; 
@@ -54,9 +54,9 @@ class cboard_K16F:public board_pic
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       String GetSupportedDevices(void){return lxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
-      String GetPictureFileName(void){return lxT("picsimlab2.png");};
-      String GetInputMapFile(void){return lxT("input2.map");};
-      String GetOutputMapFile(void){return lxT("output2.map");};
+      String GetPictureFileName(void){return lxT("K16F/board.png");};
+      String GetInputMapFile(void){return lxT("K16F/input.map");};
+      String GetOutputMapFile(void){return lxT("K16F/output.map");};
       void Reset(void);
       void MDumpMemory(const char * mfname);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);

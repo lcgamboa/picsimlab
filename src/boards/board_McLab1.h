@@ -27,9 +27,9 @@
 #define	BOARD_McLab1_H
 
 #include<lxrad.h>
-#include "board_pic.h"
+#include "board_picsim.h"
 
-class cboard_McLab1:public board_pic
+class cboard_McLab1:public board_picsim
 {
   private:
      int p_BT1; 
@@ -50,9 +50,9 @@ class cboard_McLab1:public board_pic
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       String GetSupportedDevices(void){return lxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
-      String GetPictureFileName(void){return lxT("picsimlab1.png");};
-      String GetInputMapFile(void){return lxT("input1.map");};
-      String GetOutputMapFile(void){return lxT("output1.map");};
+      String GetPictureFileName(void){return lxT("McLab1/board.png");};
+      String GetInputMapFile(void){return lxT("McLab1/input.map");};
+      String GetOutputMapFile(void){return lxT("McLab1/output.map");};
       void Reset(void);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);

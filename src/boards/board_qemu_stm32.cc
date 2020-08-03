@@ -24,7 +24,7 @@
    ######################################################################## */
 
 
-#include "board_stm32.h"
+#include "board_qemu_stm32.h"
 #include"../picsimlab1.h"
 
 void setblock(int sock_descriptor);
@@ -44,20 +44,20 @@ WSADATA wsaData;
 #define SHUT_RDWR SD_BOTH 
 #endif
 
-board_stm32::board_stm32(void)
+board_qemu_stm32::board_qemu_stm32(void)
 {
  connected = 0;
 }
 
 void
-board_stm32::MSetSerial(const char * port) {
+board_qemu_stm32::MSetSerial(const char * port) {
  /*
  set_serial (&pic,0, port, 0, 0, 0);
  set_serial (&pic,1, "", 0, 0, 0);
   */ }
 
 int
-board_stm32::MInit(const char * processor, const char * fname, float freq)
+board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
 {
  struct sockaddr_in serv, cli;
  char buff[100];
@@ -194,7 +194,7 @@ board_stm32::MInit(const char * processor, const char * fname, float freq)
 }
 
 void
-board_stm32::MEnd(void)
+board_qemu_stm32::MEnd(void)
 {
  if (connected)
   {
@@ -211,42 +211,42 @@ board_stm32::MEnd(void)
 }
 
 void
-board_stm32::MEraseFlash(void) {
+board_qemu_stm32::MEraseFlash(void) {
  //erase_flash ();
 }
 
 void
-board_stm32::MSetFreq(float freq_)
+board_qemu_stm32::MSetFreq(float freq_)
 {
  freq = freq_;
 }
 
 float
-board_stm32::MGetFreq(void)
+board_qemu_stm32::MGetFreq(void)
 {
  return freq;
 }
 
 float
-board_stm32::MGetInstClock(void)
+board_qemu_stm32::MGetInstClock(void)
 {
  return freq;
 }
 
 int
-board_stm32::CpuInitialized(void)
+board_qemu_stm32::CpuInitialized(void)
 {
  return 1;
 }
 
 void
-board_stm32::DebugLoop(void) {
+board_qemu_stm32::DebugLoop(void) {
 
 }
 
 
 String
-board_stm32::MGetPinName(int pin)
+board_qemu_stm32::MGetPinName(int pin)
 {
  String pinname = "error";
 
@@ -401,7 +401,7 @@ board_stm32::MGetPinName(int pin)
 }
 
 void
-board_stm32::MDumpMemory(const char * fname)
+board_qemu_stm32::MDumpMemory(const char * fname)
 {
  char cmd[500];
  char fname_[300];
@@ -417,20 +417,20 @@ board_stm32::MDumpMemory(const char * fname)
 }
 
 int
-board_stm32::DebugInit(int dtyppe) //argument not used in picm only mplabx
+board_qemu_stm32::DebugInit(int dtyppe) //argument not used in picm only mplabx
 {
  return 0; //!mplabxd_init (this, Window1.Get_debug_port ()) - 1;
 }
 
 
 int
-board_stm32::MGetPinCount(void)
+board_qemu_stm32::MGetPinCount(void)
 {
  return 48;
 }
 
 void
-board_stm32::pins_reset(void)
+board_qemu_stm32::pins_reset(void)
 {
  for (int p = 0; p < MGetPinCount (); p++)
   {
@@ -450,7 +450,7 @@ board_stm32::pins_reset(void)
 }
 
 void
-board_stm32::MSetPin(int pin, unsigned char value)
+board_qemu_stm32::MSetPin(int pin, unsigned char value)
 {
  if ((connected)&&(pins[pin - 1].value != value))
   {
@@ -468,24 +468,24 @@ board_stm32::MSetPin(int pin, unsigned char value)
 }
 
 void
-board_stm32::MSetPinDOV(int pin, unsigned char ovalue) {
+board_qemu_stm32::MSetPinDOV(int pin, unsigned char ovalue) {
  //set_pin_DOV (pin, ovalue);
 }
 
 void
-board_stm32::MSetAPin(int pin, float value) {
+board_qemu_stm32::MSetAPin(int pin, float value) {
  //set_apin (pin, value);
 }
 
 unsigned char
-board_stm32::MGetPin(int pin)
+board_qemu_stm32::MGetPin(int pin)
 {
  return 0; //get_pin (pin);
 }
 
 
 void
-board_stm32::MReset(int flags)
+board_qemu_stm32::MReset(int flags)
 {
  if (connected)
   {
@@ -495,13 +495,13 @@ board_stm32::MReset(int flags)
 
 
 const picpin *
-board_stm32::MGetPinsValues(void)
+board_qemu_stm32::MGetPinsValues(void)
 {
  return pins;
 }
 
 void
-board_stm32::MStep(void)
+board_qemu_stm32::MStep(void)
 {
  char buff;
  int n;
@@ -519,13 +519,13 @@ board_stm32::MStep(void)
 }
 
 void
-board_stm32::MStepResume(void) {
+board_qemu_stm32::MStepResume(void) {
  //if (pic.s2 == 1)step ();
 }
 
 
 int
-board_stm32::qemu_cmd(const char * cmd, int raw)
+board_qemu_stm32::qemu_cmd(const char * cmd, int raw)
 {
  int n;
  char buffin[400];

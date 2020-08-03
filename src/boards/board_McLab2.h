@@ -26,9 +26,9 @@
 #ifndef BOARD_McLab2_H
 #define	BOARD_McLab2_H
 
-#include "board_pic.h"
+#include "board_picsim.h"
 
-class cboard_McLab2:public board_pic
+class cboard_McLab2:public board_picsim
 {
    private:
      int p_BT1; 
@@ -78,9 +78,9 @@ class cboard_McLab2:public board_pic
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       String GetSupportedDevices(void){return lxT("PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F4620,");};
-      String GetPictureFileName(void){return lxT("picsimlab3.png");};
-      String GetInputMapFile(void){return lxT("input3.map");};
-      String GetOutputMapFile(void){return lxT("output3.map");};
+      String GetPictureFileName(void){return lxT("McLab2/board.png");};
+      String GetInputMapFile(void){return lxT("McLab2/input.map");};
+      String GetOutputMapFile(void){return lxT("McLab2/output.map");};
       void Reset(void);
       void MDumpMemory(const char * mfname);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);

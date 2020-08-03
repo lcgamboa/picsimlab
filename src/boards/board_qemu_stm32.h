@@ -29,10 +29,10 @@
 
 #include "board.h"
 
-class board_stm32: virtual public board
+class board_qemu_stm32: virtual public board
 {
   public:
-      board_stm32(void);
+      board_qemu_stm32(void);
       int DebugInit(int dtyppe); 
       void DebugLoop(void);
       int CpuInitialized(void);

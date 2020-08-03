@@ -291,7 +291,7 @@ cboard_McLab2::MDumpMemory(const char * mfname)
    printf ("Error saving to file: %s \n", fname);
   }
 
- board_pic::MDumpMemory (mfname);
+ board_picsim::MDumpMemory (mfname);
 }
 
 

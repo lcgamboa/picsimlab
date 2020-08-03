@@ -78,7 +78,7 @@ cboard_Breadboard::cboard_Breadboard(void)
  ReadMaps (); //Read input and output board maps
 
  lxImage image;
- image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic40.png"));
+ image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.png"));
  micbmp = new lxBitmap (image, &Window1);
 
 }
@@ -439,7 +439,7 @@ cboard_Breadboard::Run_CPU(void)
    //calculate mean value
    for (pi = 0; pi < MGetPinCount (); pi++)
     {
-     board_pic::pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / (Window1.GetNSTEP () / pic.PINCOUNT)) + 30);
+     board_picsim::pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / (Window1.GetNSTEP () / pic.PINCOUNT)) + 30);
     }
    if (use_spare)Window5.PostProcess ();
    break;
@@ -451,14 +451,14 @@ cboard_Breadboard::Run_CPU(void)
    long long unsigned int cycle_start;
    int twostep = 0;
 
-   int pinc = board_avr::MGetPinCount ();
+   int pinc = board_simavr::MGetPinCount ();
    //reset mean value
 
    memset (alm, 0, pinc * sizeof (unsigned int));
 
    //read pic.pins to a local variable to speed up 
 
-   pins = board_avr::MGetPinsValues ();
+   pins = board_simavr::MGetPinsValues ();
 
    if (use_spare)Window5.PreProcess ();
 
@@ -484,7 +484,7 @@ cboard_Breadboard::Run_CPU(void)
            }
          }
        }
-      board_avr::UpdateHardware ();
+      board_simavr::UpdateHardware ();
 
       //avr->sleep_usec=0;
       if (use_oscope)Window4.SetSample ();
@@ -506,7 +506,7 @@ cboard_Breadboard::Run_CPU(void)
    //calculate mean value
    for (pi = 0; pi < MGetPinCount (); pi++)
     {
-     board_avr::pins[pi].oavalue = (int) (((225.0 * alm[pi]) / (Window1.GetNSTEP () / pinc)) + 30);
+     board_simavr::pins[pi].oavalue = (int) (((225.0 * alm[pi]) / (Window1.GetNSTEP () / pinc)) + 30);
     }
    if (use_spare)Window5.PostProcess ();
    break;
@@ -525,10 +525,10 @@ cboard_Breadboard::DebugInit(int dtyppe)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::DebugInit (dtyppe);
+   return board_picsim::DebugInit (dtyppe);
    break;
   case _AVR:
-   return board_avr::DebugInit (dtyppe);
+   return board_simavr::DebugInit (dtyppe);
    break;
   }
  return 0;
@@ -540,10 +540,10 @@ cboard_Breadboard::DebugLoop(void)
  switch (ptype)
   {
   case _PIC:
-   board_pic::DebugLoop ();
+   board_picsim::DebugLoop ();
    break;
   case _AVR:
-   board_avr::DebugLoop ();
+   board_simavr::DebugLoop ();
    break;
   }
 }
@@ -554,10 +554,10 @@ cboard_Breadboard::CpuInitialized(void)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::CpuInitialized ();
+   return board_picsim::CpuInitialized ();
    break;
   case _AVR:
-   return board_avr::CpuInitialized ();
+   return board_simavr::CpuInitialized ();
    break;
   }
  return 0;
@@ -569,10 +569,10 @@ cboard_Breadboard::MSetSerial(const char * port)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MSetSerial (port);
+   return board_picsim::MSetSerial (port);
    break;
   case _AVR:
-   return board_avr::MSetSerial (port);
+   return board_simavr::MSetSerial (port);
    break;
   }
 }
@@ -591,10 +591,10 @@ cboard_Breadboard::MInit(const char * processor, const char * fname, float freq)
  switch (ptype)
   {
   case _PIC:
-   ret = board_pic::MInit (processor, fname, freq);
+   ret = board_picsim::MInit (processor, fname, freq);
    break;
   case _AVR:
-   ret = board_avr::MInit (processor, fname, freq);
+   ret = board_simavr::MInit (processor, fname, freq);
    break;
   }
 
@@ -603,28 +603,28 @@ cboard_Breadboard::MInit(const char * processor, const char * fname, float freq)
  switch (MGetPinCount ())
   {
   case 8:
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic08.png"));
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic08.png"));
    break;
   case 14:
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic14.png"));
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic14.png"));
    break;
   case 18:
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic18.png"));
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic18.png"));
    break;
   case 20:
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic20.png"));
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic20.png"));
    break;
   case 28:
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic28.png"));
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic28.png"));
    break;
   case 40:
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic40.png"));
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.png"));
    break;
   case 100:
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic100.png"));
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic100.png"));
    break;
   default:
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/ic40.png"));
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.png"));
    printf ("IC package with %i pins not found!\n", MGetPinCount ());
    break;
   }
@@ -642,10 +642,10 @@ cboard_Breadboard::MEnd(void)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MEnd ();
+   return board_picsim::MEnd ();
    break;
   case _AVR:
-   return board_avr::MEnd ();
+   return board_simavr::MEnd ();
    break;
   }
 }
@@ -656,10 +656,10 @@ cboard_Breadboard::MDumpMemory(const char * fname)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MDumpMemory (fname);
+   return board_picsim::MDumpMemory (fname);
    break;
   case _AVR:
-   return board_avr::MDumpMemory (fname);
+   return board_simavr::MDumpMemory (fname);
    break;
   }
 }
@@ -670,10 +670,10 @@ cboard_Breadboard::MEraseFlash(void)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MEraseFlash ();
+   return board_picsim::MEraseFlash ();
    break;
   case _AVR:
-   return board_avr::MEraseFlash ();
+   return board_simavr::MEraseFlash ();
    break;
   }
 }
@@ -684,10 +684,10 @@ cboard_Breadboard::MSetFreq(float freq)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MSetFreq (freq);
+   return board_picsim::MSetFreq (freq);
    break;
   case _AVR:
-   return board_avr::MSetFreq (freq);
+   return board_simavr::MSetFreq (freq);
    break;
   }
 
@@ -699,10 +699,10 @@ cboard_Breadboard::MGetFreq(void)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MGetFreq ();
+   return board_picsim::MGetFreq ();
    break;
   case _AVR:
-   return board_avr::MGetFreq ();
+   return board_simavr::MGetFreq ();
    break;
   }
  return 0;
@@ -714,10 +714,10 @@ cboard_Breadboard::MGetInstClock(void)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MGetInstClock ();
+   return board_picsim::MGetInstClock ();
    break;
   case _AVR:
-   return board_avr::MGetInstClock ();
+   return board_simavr::MGetInstClock ();
    break;
   }
  return 0;
@@ -729,10 +729,10 @@ cboard_Breadboard::MGetPinCount(void)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MGetPinCount ();
+   return board_picsim::MGetPinCount ();
    break;
   case _AVR:
-   return board_avr::MGetPinCount ();
+   return board_simavr::MGetPinCount ();
    break;
   }
  return 0;
@@ -744,10 +744,10 @@ cboard_Breadboard::MGetPinName(int pin)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MGetPinName (pin);
+   return board_picsim::MGetPinName (pin);
    break;
   case _AVR:
-   return board_avr::MGetPinName (pin);
+   return board_simavr::MGetPinName (pin);
    break;
   }
  return "";
@@ -759,10 +759,10 @@ cboard_Breadboard::MSetPin(int pin, unsigned char value)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MSetPin (pin, value);
+   return board_picsim::MSetPin (pin, value);
    break;
   case _AVR:
-   return board_avr::MSetPin (pin, value);
+   return board_simavr::MSetPin (pin, value);
    break;
   }
 }
@@ -773,10 +773,10 @@ cboard_Breadboard::MSetPinDOV(int pin, unsigned char ovalue)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MSetPinDOV (pin, ovalue);
+   return board_picsim::MSetPinDOV (pin, ovalue);
    break;
   case _AVR:
-   return board_avr::MSetPinDOV (pin, ovalue);
+   return board_simavr::MSetPinDOV (pin, ovalue);
    break;
   }
 }
@@ -787,10 +787,10 @@ cboard_Breadboard::MSetAPin(int pin, float value)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MSetAPin (pin, value);
+   return board_picsim::MSetAPin (pin, value);
    break;
   case _AVR:
-   return board_avr::MSetAPin (pin, value);
+   return board_simavr::MSetAPin (pin, value);
    break;
   }
 }
@@ -801,10 +801,10 @@ cboard_Breadboard::MGetPin(int pin)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MGetPin (pin);
+   return board_picsim::MGetPin (pin);
    break;
   case _AVR:
-   return board_avr::MGetPin (pin);
+   return board_simavr::MGetPin (pin);
    break;
   }
  return 0;
@@ -816,10 +816,10 @@ cboard_Breadboard::MGetPinsValues(void)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MGetPinsValues ();
+   return board_picsim::MGetPinsValues ();
    break;
   case _AVR:
-   return board_avr::MGetPinsValues ();
+   return board_simavr::MGetPinsValues ();
    break;
   }
  return NULL;
@@ -831,10 +831,10 @@ cboard_Breadboard::MStep(void)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MStep ();
+   return board_picsim::MStep ();
    break;
   case _AVR:
-   return board_avr::MStep ();
+   return board_simavr::MStep ();
    break;
   }
 }
@@ -845,10 +845,10 @@ cboard_Breadboard::MStepResume(void)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MStepResume ();
+   return board_picsim::MStepResume ();
    break;
   case _AVR:
-   return board_avr::MStepResume ();
+   return board_simavr::MStepResume ();
    break;
   }
 }
@@ -859,10 +859,10 @@ cboard_Breadboard::DBGTestBP(unsigned int bp)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::DBGTestBP (bp);
+   return board_picsim::DBGTestBP (bp);
    break;
   case _AVR:
-   return board_avr::DBGTestBP (bp);
+   return board_simavr::DBGTestBP (bp);
    break;
   }
  return 0;
@@ -874,10 +874,10 @@ cboard_Breadboard::MReset(int flags)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::MReset (flags);
+   return board_picsim::MReset (flags);
    break;
   case _AVR:
-   return board_avr::MReset (flags);
+   return board_simavr::MReset (flags);
    break;
   }
 }
@@ -888,10 +888,10 @@ cboard_Breadboard::DBGGetProcID_p(void)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::DBGGetProcID_p ();
+   return board_picsim::DBGGetProcID_p ();
    break;
   case _AVR:
-   return board_avr::DBGGetProcID_p ();
+   return board_simavr::DBGGetProcID_p ();
    break;
   }
  return NULL;
@@ -903,10 +903,10 @@ cboard_Breadboard::DBGGetPC(void)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::DBGGetPC ();
+   return board_picsim::DBGGetPC ();
    break;
   case _AVR:
-   return board_avr::DBGGetPC ();
+   return board_simavr::DBGGetPC ();
    break;
   }
  return 0;
@@ -918,11 +918,11 @@ cboard_Breadboard::DBGSetPC(unsigned int pc)
  switch (ptype)
   {
   case _PIC:
-   board_pic::DBGSetPC (pc);
+   board_picsim::DBGSetPC (pc);
    return;
    break;
   case _AVR:
-   board_avr::DBGSetPC (pc);
+   board_simavr::DBGSetPC (pc);
    return;
    break;
   }
@@ -935,10 +935,10 @@ cboard_Breadboard::DBGGetRAM_p(void)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::DBGGetRAM_p ();
+   return board_picsim::DBGGetRAM_p ();
    break;
   case _AVR:
-   return board_avr::DBGGetRAM_p ();
+   return board_simavr::DBGGetRAM_p ();
    break;
   }
  return NULL;
@@ -950,10 +950,10 @@ cboard_Breadboard::DBGGetROM_p(void)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::DBGGetROM_p ();
+   return board_picsim::DBGGetROM_p ();
    break;
   case _AVR:
-   return board_avr::DBGGetROM_p ();
+   return board_simavr::DBGGetROM_p ();
    break;
   }
  return NULL;
@@ -965,10 +965,10 @@ cboard_Breadboard::DBGGetCONFIG_p(void)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::DBGGetCONFIG_p ();
+   return board_picsim::DBGGetCONFIG_p ();
    break;
   case _AVR:
-   return board_avr::DBGGetCONFIG_p ();
+   return board_simavr::DBGGetCONFIG_p ();
    break;
   }
  return NULL;
@@ -980,10 +980,10 @@ cboard_Breadboard::DBGGetID_p(void)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::DBGGetID_p ();
+   return board_picsim::DBGGetID_p ();
    break;
   case _AVR:
-   return board_avr::DBGGetID_p ();
+   return board_simavr::DBGGetID_p ();
    break;
   }
  return NULL;
@@ -995,10 +995,10 @@ cboard_Breadboard::DBGGetEEPROM_p(void)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::DBGGetEEPROM_p ();
+   return board_picsim::DBGGetEEPROM_p ();
    break;
   case _AVR:
-   return board_avr::DBGGetEEPROM_p ();
+   return board_simavr::DBGGetEEPROM_p ();
    break;
   }
  return NULL;
@@ -1010,10 +1010,10 @@ cboard_Breadboard::DBGGetRAMSize(void)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::DBGGetRAMSize ();
+   return board_picsim::DBGGetRAMSize ();
    break;
   case _AVR:
-   return board_avr::DBGGetRAMSize ();
+   return board_simavr::DBGGetRAMSize ();
    break;
   }
  return 0;
@@ -1025,10 +1025,10 @@ cboard_Breadboard::DBGGetROMSize(void)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::DBGGetROMSize ();
+   return board_picsim::DBGGetROMSize ();
    break;
   case _AVR:
-   return board_avr::DBGGetROMSize ();
+   return board_simavr::DBGGetROMSize ();
    break;
   }
  return 0;
@@ -1040,10 +1040,10 @@ cboard_Breadboard::DBGGetCONFIGSize(void)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::DBGGetCONFIGSize ();
+   return board_picsim::DBGGetCONFIGSize ();
    break;
   case _AVR:
-   return board_avr::DBGGetCONFIGSize ();
+   return board_simavr::DBGGetCONFIGSize ();
    break;
   }
  return 0;
@@ -1055,10 +1055,10 @@ cboard_Breadboard::DBGGetIDSize(void)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::DBGGetIDSize ();
+   return board_picsim::DBGGetIDSize ();
    break;
   case _AVR:
-   return board_avr::DBGGetIDSize ();
+   return board_simavr::DBGGetIDSize ();
    break;
   }
  return 0;
@@ -1070,10 +1070,10 @@ cboard_Breadboard::DBGGetEEPROM_Size(void)
  switch (ptype)
   {
   case _PIC:
-   return board_pic::DBGGetEEPROM_Size ();
+   return board_picsim::DBGGetEEPROM_Size ();
    break;
   case _AVR:
-   return board_avr::DBGGetEEPROM_Size ();
+   return board_simavr::DBGGetEEPROM_Size ();
    break;
   }
  return 0;

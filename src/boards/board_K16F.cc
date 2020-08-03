@@ -128,7 +128,7 @@ cboard_K16F::MDumpMemory(const char * mfname)
    printf ("Error saving to file: %s \n", fname);
   }
 
- board_pic::MDumpMemory (mfname);
+ board_picsim::MDumpMemory (mfname);
 }
 
 void

@@ -27,7 +27,7 @@
 #include<stdlib.h>
 #include<string.h>
 
-#include "board_avr.h"
+#include "board_simavr.h"
 
 #include"../picsimlab1.h"
 
@@ -71,7 +71,7 @@ int avr_serial_open(char * SERIALDEVICE);
 int avr_serial_cfg(float serialexbaud);
 int avr_serial_close(void);
 
-board_avr::board_avr(void)
+board_simavr::board_simavr(void)
 {
  avr = NULL;
  serial_irq = NULL;
@@ -79,7 +79,7 @@ board_avr::board_avr(void)
 }
 
 void
-board_avr::MSetSerial(const char * port) {
+board_simavr::MSetSerial(const char * port) {
  //TODO change serial name
  //pic_set_serial(&pic,port,0,0,0);
 }
@@ -103,7 +103,7 @@ static const char * irq_names_uart[IRQ_UART_COUNT] = {
 static void uart_in_hook(struct avr_irq_t * irq, uint32_t value, void * param);
 
 void
-board_avr::pins_reset(void)
+board_simavr::pins_reset(void)
 {
  for (int p = 0; p < MGetPinCount (); p++)
   {
@@ -127,7 +127,7 @@ avr_callback_sleep_raw_(avr_t *avr, avr_cycle_count_t how_long) { }
 const unsigned char AVR_PORTS[12] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'};
 
 int
-board_avr::MInit(const char * processor, const char * fname, float freq)
+board_simavr::MInit(const char * processor, const char * fname, float freq)
 {
  int ret;
  //avr_ioport_external_t p;
@@ -233,7 +233,7 @@ board_avr::MInit(const char * processor, const char * fname, float freq)
 }
 
 void
-board_avr::MEnd(void)
+board_simavr::MEnd(void)
 {
  if (avr_debug_type)
   {
@@ -289,33 +289,33 @@ board_avr::MEnd(void)
 }
 
 void
-board_avr::MEraseFlash(void)
+board_simavr::MEraseFlash(void)
 {
  //pic_erase_flash();
  memset (avr->flash, 0xFF, avr->flashend);
 }
 
 void
-board_avr::MSetFreq(float freq)
+board_simavr::MSetFreq(float freq)
 {
  if (avr)
   avr->frequency = freq;
 }
 
 float
-board_avr::MGetFreq(void)
+board_simavr::MGetFreq(void)
 {
  return avr->frequency;
 }
 
 float
-board_avr::MGetInstClock(void)
+board_simavr::MGetInstClock(void)
 {
  return avr->frequency;
 }
 
 void
-board_avr::MDumpMemory(const char * fname)
+board_simavr::MDumpMemory(const char * fname)
 {
  write_ihx_avr (fname);
 }
@@ -362,7 +362,7 @@ avr_callback_run_gdb_(avr_t * avr)
 }
 
 int
-board_avr::DebugInit(int dtyppe)
+board_simavr::DebugInit(int dtyppe)
 {
  avr_debug_type = dtyppe;
 
@@ -384,7 +384,7 @@ board_avr::DebugInit(int dtyppe)
 }
 
 void
-board_avr::DebugLoop(void)
+board_simavr::DebugLoop(void)
 {
  if (Window1.Get_mcupwr ())
   {
@@ -401,13 +401,13 @@ board_avr::DebugLoop(void)
 }
 
 int
-board_avr::CpuInitialized(void)
+board_simavr::CpuInitialized(void)
 {
  return (avr != NULL);
 }
 
 int
-board_avr::MGetPinCount(void)
+board_simavr::MGetPinCount(void)
 {
  if (avr == NULL) return 0;
  if (String (avr->mmcu).compare (lxT ("atmega328")) == 0)return 28;
@@ -417,7 +417,7 @@ board_avr::MGetPinCount(void)
 }
 
 String
-board_avr::MGetPinName(int pin)
+board_simavr::MGetPinName(int pin)
 {
  if (pin <= 0 || pin > MGetPinCount ())return "error";
 
@@ -819,7 +819,7 @@ board_avr::MGetPinName(int pin)
 }
 
 void
-board_avr::MSetPin(int pin, unsigned char value)
+board_simavr::MSetPin(int pin, unsigned char value)
 {
  if (pin <= 0 || pin > MGetPinCount ())return;
  if (avr == NULL) return;
@@ -830,7 +830,7 @@ board_avr::MSetPin(int pin, unsigned char value)
 }
 
 void
-board_avr::MSetPinDOV(int pin, unsigned char ovalue)
+board_simavr::MSetPinDOV(int pin, unsigned char ovalue)
 {
  if (pin <= 0 || pin > MGetPinCount ())return;
  if (avr == NULL) return;
@@ -841,7 +841,7 @@ board_avr::MSetPinDOV(int pin, unsigned char ovalue)
 }
 
 void
-board_avr::MSetAPin(int pin, float value)
+board_simavr::MSetAPin(int pin, float value)
 {
  if (pin <= 0 || pin > MGetPinCount ())return;
  if (!pins[pin - 1].dir)return;
@@ -953,7 +953,7 @@ board_avr::MSetAPin(int pin, float value)
 }
 
 unsigned char
-board_avr::MGetPin(int pin)
+board_simavr::MGetPin(int pin)
 {
  if (pin <= 0 || pin > MGetPinCount ())return -1;
 
@@ -961,7 +961,7 @@ board_avr::MGetPin(int pin)
 }
 
 const picpin *
-board_avr::MGetPinsValues(void)
+board_simavr::MGetPinsValues(void)
 {
  return pins;
 }
@@ -979,7 +979,7 @@ int cont = 0;
 int aux = 1;
 
 void
-board_avr::UpdateHardware(void)
+board_simavr::UpdateHardware(void)
 {
 
  unsigned char c;
@@ -1012,104 +1012,104 @@ board_avr::UpdateHardware(void)
 }
 
 void
-board_avr::MStep(void)
+board_simavr::MStep(void)
 {
  avr_run (avr);
 }
 
 void
-board_avr::MStepResume(void) { }
+board_simavr::MStepResume(void) { }
 
 int
-board_avr::DBGTestBP(unsigned int bp)
+board_simavr::DBGTestBP(unsigned int bp)
 {
  return (bp == avr->pc >> 1);
 }
 
 void
-board_avr::MReset(int flags)
+board_simavr::MReset(int flags)
 {
  avr_reset (avr);
 }
 
 unsigned short *
-board_avr::DBGGetProcID_p(void)
+board_simavr::DBGGetProcID_p(void)
 {
  return 0;
 }
 
 unsigned int
-board_avr::DBGGetPC(void)
+board_simavr::DBGGetPC(void)
 {
  return avr->pc >> 1;
 }
 
 void
-board_avr::DBGSetPC(unsigned int pc)
+board_simavr::DBGSetPC(unsigned int pc)
 {
  avr->pc = pc << 1;
 }
 
 unsigned char *
-board_avr::DBGGetRAM_p(void)
+board_simavr::DBGGetRAM_p(void)
 {
  return avr->data;
 }
 
 unsigned char *
-board_avr::DBGGetROM_p(void)
+board_simavr::DBGGetROM_p(void)
 {
  return avr->flash;
 }
 
 unsigned char *
-board_avr::DBGGetCONFIG_p(void)
+board_simavr::DBGGetCONFIG_p(void)
 {
  return avr->fuse;
 }
 
 unsigned char *
-board_avr::DBGGetID_p(void)
+board_simavr::DBGGetID_p(void)
 {
  //TODO avr ID pointer
  return NULL;
 }
 
 unsigned char *
-board_avr::DBGGetEEPROM_p(void)
+board_simavr::DBGGetEEPROM_p(void)
 {
  //TODO avr EEPROM pointer
  return NULL;
 }
 
 unsigned int
-board_avr::DBGGetRAMSize(void)
+board_simavr::DBGGetRAMSize(void)
 {
  return avr->ramend + 1;
 }
 
 unsigned int
-board_avr::DBGGetROMSize(void)
+board_simavr::DBGGetROMSize(void)
 {
  return avr->flashend + 1;
 }
 
 unsigned int
-board_avr::DBGGetCONFIGSize(void)
+board_simavr::DBGGetCONFIGSize(void)
 {
  //FIXME avr CONFIG size
  return 3;
 }
 
 unsigned int
-board_avr::DBGGetIDSize(void)
+board_simavr::DBGGetIDSize(void)
 {
  //TODO avr ID size
  return 0;
 }
 
 unsigned int
-board_avr::DBGGetEEPROM_Size(void)
+board_simavr::DBGGetEEPROM_Size(void)
 {
  //TODO AVR EEPROM size
  return 0;
@@ -1119,7 +1119,7 @@ board_avr::DBGGetEEPROM_Size(void)
 //hexfile support ============================================================
 
 int
-board_avr::parse_hex(char *line, int bytes)
+board_simavr::parse_hex(char *line, int bytes)
 {
  char snum[200];
  int num;
@@ -1132,7 +1132,7 @@ board_avr::parse_hex(char *line, int bytes)
 };
 
 unsigned char
-board_avr::checksum(char* str)
+board_simavr::checksum(char* str)
 {
  unsigned int i;
  unsigned char acum = 0;
@@ -1146,7 +1146,7 @@ board_avr::checksum(char* str)
 }
 
 int
-board_avr::read_ihx_avr(const char * fname, int leeprom)
+board_simavr::read_ihx_avr(const char * fname, int leeprom)
 {
  FILE* fin;
  int lc = 0;
@@ -1270,7 +1270,7 @@ board_avr::read_ihx_avr(const char * fname, int leeprom)
 };
 
 int
-board_avr::write_ihx_avr(const char * fname)
+board_simavr::write_ihx_avr(const char * fname)
 {
 
  FILE * fout;

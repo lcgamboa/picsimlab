@@ -24,19 +24,19 @@
    ######################################################################## */
 
 
-#include "board_pic.h"
+#include "board_picsim.h"
 
 #include"../picsimlab1.h"
 
 void
-board_pic::MSetSerial(const char * port)
+board_picsim::MSetSerial(const char * port)
 {
  pic_set_serial (&pic,0, port, 0, 0, 0);
  pic_set_serial (&pic,1, "", 0, 0, 0);
 }
 
 int
-board_pic::MInit(const char * processor, const char * fname, float freq)
+board_picsim::MInit(const char * processor, const char * fname, float freq)
 {
  int procn = getprocbyname (processor);
  if (procn == 0)
@@ -98,7 +98,7 @@ board_pic::MInit(const char * processor, const char * fname, float freq)
 }
 
 void
-board_pic::MEnd(void)
+board_picsim::MEnd(void)
 {
  pic_end ();
  //prog_end();
@@ -106,37 +106,37 @@ board_pic::MEnd(void)
 }
 
 void
-board_pic::MEraseFlash(void)
+board_picsim::MEraseFlash(void)
 {
  pic_erase_flash ();
 }
 
 void
-board_pic::MSetFreq(float freq)
+board_picsim::MSetFreq(float freq)
 {
  pic.freq = freq;
 }
 
 float
-board_pic::MGetFreq(void)
+board_picsim::MGetFreq(void)
 {
  return pic.freq;
 }
 
 float
-board_pic::MGetInstClock(void)
+board_picsim::MGetInstClock(void)
 {
  return pic.freq / 4.0;
 }
 
 int
-board_pic::CpuInitialized(void)
+board_picsim::CpuInitialized(void)
 {
  return 1;
 }
 
 void
-board_pic::MDumpMemory(const char * fname)
+board_picsim::MDumpMemory(const char * fname)
 {
  switch (getfprocbyname ((const char*) Proc.c_str ()))
   {
@@ -155,13 +155,13 @@ board_pic::MDumpMemory(const char * fname)
 }
 
 int
-board_pic::DebugInit(int dtyppe) //argument not used in picm only mplabx
+board_picsim::DebugInit(int dtyppe) //argument not used in picm only mplabx
 {
  return !mplabxd_init (this, Window1.Get_debug_port ()) - 1;
 }
 
 void
-board_pic::DebugLoop(void)
+board_picsim::DebugLoop(void)
 {
  if (Window1.Get_mcupwr ())
   {
@@ -171,13 +171,13 @@ board_pic::DebugLoop(void)
 }
 
 int
-board_pic::MGetPinCount(void)
+board_picsim::MGetPinCount(void)
 {
  return pic.PINCOUNT;
 }
 
 String
-board_pic::MGetPinName(int pin)
+board_picsim::MGetPinName(int pin)
 {
  char cbuf[10];
  String pinname;
@@ -188,135 +188,135 @@ board_pic::MGetPinName(int pin)
 }
 
 void
-board_pic::MSetPin(int pin, unsigned char value)
+board_picsim::MSetPin(int pin, unsigned char value)
 {
  pic_set_pin (pin, value);
 }
 
 void
-board_pic::MSetPinDOV(int pin, unsigned char ovalue)
+board_picsim::MSetPinDOV(int pin, unsigned char ovalue)
 {
  pic_set_pin_DOV (pin, ovalue);
 }
 
 void
-board_pic::MSetAPin(int pin, float value)
+board_picsim::MSetAPin(int pin, float value)
 {
  pic_set_apin (pin, value);
 }
 
 unsigned char
-board_pic::MGetPin(int pin)
+board_picsim::MGetPin(int pin)
 {
  return pic_get_pin (pin);
 }
 
 const picpin *
-board_pic::MGetPinsValues(void)
+board_picsim::MGetPinsValues(void)
 {
  return pic.pins;
 }
 
 void
-board_pic::MStep(void)
+board_picsim::MStep(void)
 {
  pic_step ();
  if (pic.s2 == 1)pic_step ();
 }
 
 void
-board_pic::MStepResume(void)
+board_picsim::MStepResume(void)
 {
  if (pic.s2 == 1)pic_step ();
 }
 
 int
-board_pic::DBGTestBP(unsigned int bp)
+board_picsim::DBGTestBP(unsigned int bp)
 {
  return ((pic.pc == bp)&&(pic.s2 == 0));
 }
 
 void
-board_pic::MReset(int flags)
+board_picsim::MReset(int flags)
 {
  pic_reset (flags);
 }
 
 unsigned short *
-board_pic::DBGGetProcID_p(void)
+board_picsim::DBGGetProcID_p(void)
 {
  return (unsigned short *) &pic.processor;
 }
 
 unsigned int
-board_pic::DBGGetPC(void)
+board_picsim::DBGGetPC(void)
 {
  return pic.pc;
 }
 
 void
-board_pic::DBGSetPC(unsigned int pc)
+board_picsim::DBGSetPC(unsigned int pc)
 {
  pic.pc = pc;
 }
 
 unsigned char *
-board_pic::DBGGetRAM_p(void)
+board_picsim::DBGGetRAM_p(void)
 {
  return pic.ram;
 }
 
 unsigned char *
-board_pic::DBGGetROM_p(void)
+board_picsim::DBGGetROM_p(void)
 {
  return (unsigned char *) pic.prog;
 }
 
 unsigned char *
-board_pic::DBGGetCONFIG_p(void)
+board_picsim::DBGGetCONFIG_p(void)
 {
  return (unsigned char *) pic.config;
 }
 
 unsigned char *
-board_pic::DBGGetID_p(void)
+board_picsim::DBGGetID_p(void)
 {
  return (unsigned char *) pic.id;
 }
 
 unsigned char *
-board_pic::DBGGetEEPROM_p(void)
+board_picsim::DBGGetEEPROM_p(void)
 {
  return pic.eeprom;
 }
 
 unsigned int
-board_pic::DBGGetRAMSize(void)
+board_picsim::DBGGetRAMSize(void)
 {
  return pic.RAMSIZE;
 }
 
 unsigned int
-board_pic::DBGGetROMSize(void)
+board_picsim::DBGGetROMSize(void)
 {
  return pic.ROMSIZE * 2;
 }
 
 unsigned int
-board_pic::DBGGetCONFIGSize(void)
+board_picsim::DBGGetCONFIGSize(void)
 {
  return pic.CONFIGSIZE * 2;
 
 }
 
 unsigned int
-board_pic::DBGGetIDSize(void)
+board_picsim::DBGGetIDSize(void)
 {
  return pic.IDSIZE * 2;
 }
 
 unsigned int
-board_pic::DBGGetEEPROM_Size(void)
+board_picsim::DBGGetEEPROM_Size(void)
 {
  return pic.EEPROMSIZE;
 }

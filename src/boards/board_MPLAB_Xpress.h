@@ -28,10 +28,10 @@
 
 #include<lxrad.h>
 
-#include "board_pic.h"
+#include "board_picsim.h"
 
 //new board class must be derived from board class defined in board.h
-class cboard_MPLAB_Xpress:public board_pic
+class cboard_MPLAB_Xpress:public board_picsim
 {
   private:
      int p_BT1;           //S1 switch
@@ -60,11 +60,11 @@ class cboard_MPLAB_Xpress:public board_pic
       //Return a list of board supported microcontrollers
       String GetSupportedDevices(void){return lxT("PIC16F18855,");};
       //Return the filename of board picture 
-      String GetPictureFileName(void){return lxT("picsimlab6.png");};
+      String GetPictureFileName(void){return lxT("MPLAB_Xpress/board.png");};
       //Return the filename of board picture input map 
-      String GetInputMapFile(void){return lxT("input6.map");};
+      String GetInputMapFile(void){return lxT("MPLAB_Xpress/input.map");};
       //Return the filename of board picture output map 
-      String GetOutputMapFile(void){return lxT("output6.map");};
+      String GetOutputMapFile(void){return lxT("MPLAB_Xpress/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

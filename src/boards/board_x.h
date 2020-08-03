@@ -28,10 +28,10 @@
 
 #include<lxrad.h>
 
-#include "board_pic.h"
+#include "board_picsim.h"
 
 //new board class must be derived from board class defined in board.h
-class cboard_x:public board_pic
+class cboard_x:public board_picsim
 {
   private:
      int p_BT1;           //first board switch in RD0
@@ -56,11 +56,11 @@ class cboard_x:public board_pic
       //Return a list of board supported microcontrollers
       String GetSupportedDevices(void){return lxT("PIC18F4550,PIC16F877A,");};
       //Return the filename of board picture 
-      String GetPictureFileName(void){return lxT("board_x.png");};
+      String GetPictureFileName(void){return lxT("x/board.png");};
       //Return the filename of board picture input map 
-      String GetInputMapFile(void){return lxT("input_boardx.map");};
+      String GetInputMapFile(void){return lxT("x/input.map");};
       //Return the filename of board picture output map 
-      String GetOutputMapFile(void){return lxT("output_boardx.map");};
+      String GetOutputMapFile(void){return lxT("x/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

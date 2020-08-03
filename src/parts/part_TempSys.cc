@@ -57,11 +57,11 @@ cpart_tempsys::cpart_tempsys(unsigned x, unsigned y)
  vtc = 0;
  vt = 0;
 
- image.LoadFile (Window1.GetSharePath () + lxT ("boards/VT1.png"));
+ image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT1.png"));
  vent[0] = new lxBitmap (image, &Window1);
  image.Destroy ();
 
- image.LoadFile (Window1.GetSharePath () + lxT ("boards/VT2.png"));
+ image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT2.png"));
  vent[1] = new lxBitmap (image, &Window1);
  image.Destroy ();
 

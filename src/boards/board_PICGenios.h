@@ -26,10 +26,10 @@
 #ifndef BOARD_PICGenios_H
 #define	BOARD_PICGenios_H
 
-#include "board_pic.h"
+#include "board_picsim.h"
 
 
-class cboard_PICGenios:public board_pic
+class cboard_PICGenios:public board_picsim
 {
   private:
      int p_BT1; 
@@ -113,9 +113,9 @@ class cboard_PICGenios:public board_pic
 #else
       String GetSupportedDevices(void){return lxT("PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F4620,");};
 #endif
-      String GetPictureFileName(void){return lxT("picsimlab4.png");};
-      String GetInputMapFile(void){return lxT("input4.map");};
-      String GetOutputMapFile(void){return lxT("output4.map");};
+      String GetPictureFileName(void){return lxT("PICGenios/board.png");};
+      String GetInputMapFile(void){return lxT("PICGenios/input.map");};
+      String GetOutputMapFile(void){return lxT("PICGenios/output.map");};
       void Reset(void);
       void MDumpMemory(const char * mfname);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);

@@ -41,10 +41,10 @@
 #include <simavr/avr_twi.h>
 
 
-class board_avr: virtual public board
+class board_simavr: virtual public board
 {
   public:
-      board_avr(void);//Called once on board creation
+      board_simavr(void);//Called once on board creation
       int DebugInit(int dtyppe); 
       void DebugLoop(void);
       int CpuInitialized(void);

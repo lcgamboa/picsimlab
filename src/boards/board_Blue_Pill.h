@@ -28,10 +28,10 @@
 
 #include<lxrad.h>
 
-#include "board_stm32.h"
+#include "board_qemu_stm32.h"
 
 //new board class must be derived from board class defined in board.h
-class cboard_Blue_Pill:public board_stm32
+class cboard_Blue_Pill:public board_qemu_stm32
 {
    private:
  
@@ -46,11 +46,11 @@ class cboard_Blue_Pill:public board_stm32
       //Return a list of board supported microcontrollers
       String GetSupportedDevices(void){return lxT("stm32f103c8t6,");};
       //Return the filename of board picture 
-      String GetPictureFileName(void){return lxT("picsimlab8.png");};
+      String GetPictureFileName(void){return lxT("Blue_Pill/board.png");};
       //Return the filename of board picture input map 
-      String GetInputMapFile(void){return lxT("input8.map");};
+      String GetInputMapFile(void){return lxT("Blue_Pill/input.map");};
       //Return the filename of board picture output map 
-      String GetOutputMapFile(void){return lxT("output8.map");};
+      String GetOutputMapFile(void){return lxT("Blue_Pill/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

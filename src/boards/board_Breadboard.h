@@ -28,14 +28,14 @@
 
 #include<lxrad.h>
 
-#include "board_pic.h"
-#include "board_avr.h"
+#include "board_picsim.h"
+#include "board_simavr.h"
 
 #define _PIC 0
 #define _AVR 1
 
 //new board class must be derived from board class defined in board.h
-class cboard_Breadboard:public board_pic, public board_avr
+class cboard_Breadboard:public board_picsim, public board_simavr
 {
   private:
       int ptype;
@@ -91,11 +91,11 @@ class cboard_Breadboard:public board_pic, public board_avr
       String GetSupportedDevices(void){return lxT("atmega328p,PIC16F628A,PIC16F648A,PIC16F84A,PIC16F777,PIC16F877A,PIC18F452,PIC18F4550,PIC18F4620,");};
 #endif      
       //Return the filename of board picture 
-      String GetPictureFileName(void){return lxT("picsimlab0.png");};
+      String GetPictureFileName(void){return lxT("Breadboard/board.png");};
       //Return the filename of board picture input map 
-      String GetInputMapFile(void){return lxT("input0.map");};
+      String GetInputMapFile(void){return lxT("Breadboard/input.map");};
       //Return the filename of board picture output map 
-      String GetOutputMapFile(void){return lxT("output0.map");};
+      String GetOutputMapFile(void){return lxT("Breadboard/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

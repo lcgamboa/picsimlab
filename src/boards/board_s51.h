@@ -46,11 +46,11 @@ class cboard_s51:public board_ucsim
       //Return a list of board supported microcontrollers
       String GetSupportedDevices(void){return lxT("C51,");};
       //Return the filename of board picture 
-      String GetPictureFileName(void){return lxT("picsimlab8.png");};
+      String GetPictureFileName(void){return lxT("s51/board.png");};
       //Return the filename of board picture input map 
-      String GetInputMapFile(void){return lxT("input8.map");};
+      String GetInputMapFile(void){return lxT("s51/input.map");};
       //Return the filename of board picture output map 
-      String GetOutputMapFile(void){return lxT("output8.map");};
+      String GetOutputMapFile(void){return lxT("s51/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

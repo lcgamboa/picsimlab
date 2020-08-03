@@ -28,10 +28,10 @@
 
 #include<lxrad.h>
 
-#include "board_avr.h"
+#include "board_simavr.h"
 
 //new board class must be derived from board class defined in board.h
-class cboard_Arduino_Uno:public board_avr
+class cboard_Arduino_Uno:public board_simavr
 {
   private: 
 
@@ -63,11 +63,11 @@ class cboard_Arduino_Uno:public board_avr
       //Return a list of board supported microcontrollers
       String GetSupportedDevices(void){return lxT("atmega328p,");};
       //Return the filename of board picture 
-      String GetPictureFileName(void){return lxT("picsimlab5.png");};
+      String GetPictureFileName(void){return lxT("Arduino_Uno/board.png");};
       //Return the filename of board picture input map 
-      String GetInputMapFile(void){return lxT("input5.map");};
+      String GetInputMapFile(void){return lxT("Arduino_Uno/input.map");};
       //Return the filename of board picture output map 
-      String GetOutputMapFile(void){return lxT("output5.map");};
+      String GetOutputMapFile(void){return lxT("Arduino_Uno/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board
