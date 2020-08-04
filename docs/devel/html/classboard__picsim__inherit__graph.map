@@ -1,0 +1,12 @@
+<map id="board_picsim" name="board_picsim">
+<area shape="rect" id="node1" title=" " alt="" coords="112,183,221,209"/>
+<area shape="rect" id="node3" href="$classcboard___breadboard.html" title=" " alt="" coords="281,5,429,32"/>
+<area shape="rect" id="node4" href="$classcboard___curiosity.html" title=" " alt="" coords="289,56,420,83"/>
+<area shape="rect" id="node5" href="$classcboard___k16_f.html" title=" " alt="" coords="301,107,408,133"/>
+<area shape="rect" id="node6" href="$classcboard___mc_lab1.html" title=" " alt="" coords="293,157,416,184"/>
+<area shape="rect" id="node7" href="$classcboard___mc_lab2.html" title=" " alt="" coords="293,208,416,235"/>
+<area shape="rect" id="node8" href="$classcboard___m_p_l_a_b___xpress.html" title=" " alt="" coords="269,259,440,285"/>
+<area shape="rect" id="node9" href="$classcboard___p_i_c_genios.html" title=" " alt="" coords="285,309,424,336"/>
+<area shape="rect" id="node10" href="$classcboard__x.html" title=" " alt="" coords="314,360,395,387"/>
+<area shape="rect" id="node2" href="$classboard.html" title="Board class." alt="" coords="5,183,64,209"/>
+</map>

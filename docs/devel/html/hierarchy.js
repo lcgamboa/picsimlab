@@ -4,11 +4,7 @@ var hierarchy =
     [ "avr_gdb_t", "structavr__gdb__t.html", null ],
     [ "avr_gdb_watchpoints_t", "structavr__gdb__watchpoints__t.html", null ],
     [ "board", "classboard.html", [
-      [ "board_avr", "classboard__avr.html", [
-        [ "cboard_Arduino_Uno", "classcboard___arduino___uno.html", null ],
-        [ "cboard_Breadboard", "classcboard___breadboard.html", null ]
-      ] ],
-      [ "board_pic", "classboard__pic.html", [
+      [ "board_picsim", "classboard__picsim.html", [
         [ "cboard_Breadboard", "classcboard___breadboard.html", null ],
         [ "cboard_Curiosity", "classcboard___curiosity.html", null ],
         [ "cboard_K16F", "classcboard___k16_f.html", null ],
@@ -17,6 +13,16 @@ var hierarchy =
         [ "cboard_MPLAB_Xpress", "classcboard___m_p_l_a_b___xpress.html", null ],
         [ "cboard_PICGenios", "classcboard___p_i_c_genios.html", null ],
         [ "cboard_x", "classcboard__x.html", null ]
+      ] ],
+      [ "board_qemu_stm32", "classboard__qemu__stm32.html", [
+        [ "cboard_Blue_Pill", "classcboard___blue___pill.html", null ]
+      ] ],
+      [ "board_simavr", "classboard__simavr.html", [
+        [ "cboard_Arduino_Uno", "classcboard___arduino___uno.html", null ],
+        [ "cboard_Breadboard", "classcboard___breadboard.html", null ]
+      ] ],
+      [ "board_ucsim", "classboard__ucsim.html", [
+        [ "cboard_s51", "classcboard__s51.html", null ]
       ] ]
     ] ],
     [ "board_desc", "structboard__desc.html", null ],

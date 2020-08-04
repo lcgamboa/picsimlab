@@ -1,6 +1,6 @@
 <map id="cboard_Breadboard" name="cboard_Breadboard">
-<area shape="rect" id="node1" title=" " alt="" coords="29,155,177,181"/>
-<area shape="rect" id="node2" href="$classboard__pic.html" title=" " alt="" coords="5,80,91,107"/>
-<area shape="rect" id="node3" href="$classboard.html" title="Board class." alt="" coords="73,5,132,32"/>
-<area shape="rect" id="node4" href="$classboard__avr.html" title=" " alt="" coords="115,80,202,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="53,155,201,181"/>
+<area shape="rect" id="node2" href="$classboard__picsim.html" title=" " alt="" coords="5,80,115,107"/>
+<area shape="rect" id="node3" href="$classboard.html" title="Board class." alt="" coords="97,5,156,32"/>
+<area shape="rect" id="node4" href="$classboard__simavr.html" title=" " alt="" coords="139,80,250,107"/>
 </map>

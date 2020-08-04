@@ -2,6 +2,12 @@
 
 ### New
 
+* Initial support to STM32 Blue Pill board. [lcgamboa]
+
+* Initial support to STM32 Blue Pill board. [lcgamboa]
+
+* Support to ucsim 8051. [lcgamboa]
+
 * New preference tags and support to legacy workspace (before 0.8.2) [lcgamboa]
 
 * Support to save clock speed for each board. [lcgamboa]

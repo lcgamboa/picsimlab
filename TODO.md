@@ -5,13 +5,15 @@
 | [src/picsimlab4.cc](src/picsimlab4.cc#L561) | 561 | select the better mode for channel trigguer
 | [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L103) | 103 | jumper support
 | [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L62) | 62 | TEMP cooler must don't work with AQUE=0
-| [src/boards/board_avr.cc](src/boards/board_avr.cc#L83) | 83 | change serial name
-| [src/boards/board_avr.cc](src/boards/board_avr.cc#L228) | 228 | read baudrate value from avr
-| [src/boards/board_avr.cc](src/boards/board_avr.cc#L839) | 839 | this value is not used yet
-| [src/boards/board_avr.cc](src/boards/board_avr.cc#L1074) | 1074 | avr ID pointer
-| [src/boards/board_avr.cc](src/boards/board_avr.cc#L1081) | 1081 | avr EEPROM pointer
-| [src/boards/board_avr.cc](src/boards/board_avr.cc#L1107) | 1107 | avr ID size
-| [src/boards/board_avr.cc](src/boards/board_avr.cc#L1114) | 1114 | AVR EEPROM size
+| [src/boards/board_qemu_stm32.cc](src/boards/board_qemu_stm32.cc#L446) | 446 | 
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L83) | 83 | change serial name
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L228) | 228 | read baudrate value from avr
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L839) | 839 | this value is not used yet
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1074) | 1074 | avr ID pointer
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1081) | 1081 | avr EEPROM pointer
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1107) | 1107 | avr ID size
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1114) | 1114 | AVR EEPROM size
+| [src/boards/board_ucsim.cc](src/boards/board_ucsim.cc#L267) | 267 | 
 | [src/devices/lcd_hd44780.cc](src/devices/lcd_hd44780.cc#L759) | 759 | support to read and busy flag
 | [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L84) | 84 | decode
 | [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L87) | 87 | itensity
@@ -25,7 +27,7 @@
 ### FIXMEs
 | Filename | line # | FIXME
 |:------|:------:|:------
-| [src/boards/board_avr.cc](src/boards/board_avr.cc#L988) | 988 | correct the baud rate
-| [src/boards/board_avr.cc](src/boards/board_avr.cc#L1100) | 1100 | avr CONFIG size
-| [src/boards/board_avr_serial.cc](src/boards/board_avr_serial.cc#L132) | 132 | calculate
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L988) | 988 | correct the baud rate
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1100) | 1100 | avr CONFIG size
+| [src/boards/board_simavr_serial.cc](src/boards/board_simavr_serial.cc#L132) | 132 | calculate
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L118) | 118 | only for BANK=0;
