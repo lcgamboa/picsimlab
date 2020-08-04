@@ -91,7 +91,25 @@ typedef struct sockaddr sockaddr;
 #define READI  0x75
 #define READE  0x80
 
+#ifdef _WIN_
+__attribute__ ((constructor))
+static void
+initialize_socket(void)
+{
+ WSAStartup (wVersionRequested, &wsaData);
+ if (wsaData.wVersion != wVersionRequested)
+  {
+   fprintf (stderr, "\n Wrong version\n");
+   return 1;
+  }
+}
 
+__attribute__ ((destructor))
+static void
+finalize_socket(void) {
+ WSACleanup ();
+ }
+#endif
 
 static int sockfd = -1;
 static int listenfd = -1;
@@ -162,15 +180,6 @@ mplabxd_init(board * mboard, unsigned short tcpport)
  if (!server_started)
   {
    dprint ("mplabxd_init\n");
-#ifdef _WIN_
-   WSAStartup (wVersionRequested, &wsaData);
-   if (wsaData.wVersion != wVersionRequested)
-    {
-     fprintf (stderr, "\n Wrong version\n");
-     return 1;
-    }
-
-#endif
 
    if ((listenfd = socket (PF_INET, SOCK_STREAM, 0)) < 0)
     {
@@ -199,7 +208,7 @@ mplabxd_init(board * mboard, unsigned short tcpport)
      return 1;
     }
    server_started = 1;
-  
+
 
    ramsend = (unsigned char*) malloc (dbg_board->DBGGetRAMSize ());
    ramreceived = (unsigned char*) malloc (dbg_board->DBGGetRAMSize ());
@@ -248,7 +257,7 @@ mplabxd_stop(void)
 void
 mplabxd_end(void)
 {
-	
+
  if (server_started)
   {
    mplabxd_stop ();
@@ -261,10 +270,6 @@ mplabxd_end(void)
  listenfd = -1;
  server_started = 0;
  dbg_board = NULL;
-#ifdef _WIN_
- WSACleanup ();
-#endif
- 
 }
 
 
@@ -447,12 +452,12 @@ mplabxd_loop(void)
       }
      dprint ("PROGD cmd\n");
      uram = dbg_board->DBGGetRAM_p ();
-     for (i = 0; i < (int)dbg_board->DBGGetRAMSize (); i++)
+     for (i = 0; i < (int) dbg_board->DBGGetRAMSize (); i++)
       {
-       if(ramsend[i] != ramreceived[i])
+       if (ramsend[i] != ramreceived[i])
         {
-         uram[i]=ramreceived[i];
-         dprint ("PROGD cmd RAM %04X updated!\n",i);
+         uram[i] = ramreceived[i];
+         dprint ("PROGD cmd RAM %04X updated!\n", i);
         }
       }
      break;
@@ -522,7 +527,7 @@ mplabxd_loop(void)
        reply = 0x01;
       }
      dprint ("address=%02X  values=%i \n", dbuff[0], dbuff[1]);
-     if (send (sockfd, (char *) &dbg_board->DBGGetRAM_p ()[dbuff[0]],dbuff[1], 0) != dbuff[1])
+     if (send (sockfd, (char *) &dbg_board->DBGGetRAM_p ()[dbuff[0]], dbuff[1], 0) != dbuff[1])
       {
        printf ("send error : %s \n", strerror (errno));
        ret = 1;

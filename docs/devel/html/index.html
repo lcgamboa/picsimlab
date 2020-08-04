@@ -375,48 +375,741 @@ part_servo.cc</h2>
 </div><!-- fragment --><h1><a class="anchor" id="boardex"></a>
 Board example</h1>
 <h2><a class="anchor" id="binc"></a>
-boardX.h</h2>
-<div class="fragment"></div><!-- fragment --> <h2><a class="anchor" id="bcode"></a>
-boardX.cc</h2>
-<div class="fragment"></div><!-- fragment --> </div></div><!-- PageDoc -->
+board_x.h</h2>
+<div class="fragment"><div class="line"><span class="comment">/* ########################################################################</span></div>
+<div class="line"><span class="comment"></span> </div>
+<div class="line"><span class="comment">   PICsimLab - PIC laboratory simulator</span></div>
+<div class="line"><span class="comment"></span> </div>
+<div class="line"><span class="comment">   ########################################################################</span></div>
+<div class="line"><span class="comment"></span> </div>
+<div class="line"><span class="comment">   Copyright (c) : 2015-2020  Luis Claudio Gambôa Lopes</span></div>
+<div class="line"><span class="comment"></span> </div>
+<div class="line"><span class="comment">   This program is free software; you can redistribute it and/or modify</span></div>
+<div class="line"><span class="comment">   it under the terms of the GNU General Public License as published by</span></div>
+<div class="line"><span class="comment">   the Free Software Foundation; either version 2, or (at your option)</span></div>
+<div class="line"><span class="comment">   any later version.</span></div>
+<div class="line"><span class="comment"></span> </div>
+<div class="line"><span class="comment">   This program is distributed in the hope that it will be useful,</span></div>
+<div class="line"><span class="comment">   but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
+<div class="line"><span class="comment">   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></div>
+<div class="line"><span class="comment">   GNU General Public License for more details.</span></div>
+<div class="line"><span class="comment"></span> </div>
+<div class="line"><span class="comment">   You should have received a copy of the GNU General Public License</span></div>
+<div class="line"><span class="comment">   along with this program; if not, write to the Free Software</span></div>
+<div class="line"><span class="comment">   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.</span></div>
+<div class="line"><span class="comment"></span> </div>
+<div class="line"><span class="comment">   For e-mail suggestions :  lcgamboa@yahoo.com</span></div>
+<div class="line"><span class="comment">   ######################################################################## */</span></div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#ifndef BOARD_x_H</span></div>
+<div class="line"><span class="preprocessor">#define BOARD_x_H</span></div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#include&lt;lxrad.h&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#include &quot;board_picsim.h&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">//new board class must be derived from board class defined in board.h</span></div>
+<div class="line"><span class="keyword">class </span><a class="code" href="classcboard__x.html">cboard_x</a>:<span class="keyword">public</span> <a class="code" href="classboard__picsim.html">board_picsim</a></div>
+<div class="line">{</div>
+<div class="line">  <span class="keyword">private</span>:</div>
+<div class="line">     <span class="keywordtype">int</span> p_BT1;           <span class="comment">//first board switch in RD0</span></div>
+<div class="line">     <span class="keywordtype">int</span> p_BT2;           <span class="comment">//second board switch in RD1  </span></div>
+<div class="line"> </div>
+<div class="line">     <span class="comment">//controls to be added in simulator window</span></div>
+<div class="line">     CScroll *scroll1; <span class="comment">//scroll for analog input AN0    </span></div>
+<div class="line">     CGauge *gauge1;   <span class="comment">//gauge to show mean value of RB0</span></div>
+<div class="line">     CGauge *gauge2;   <span class="comment">//gauge to show mean value of RB1</span></div>
+<div class="line">     CLabel *label1;   <span class="comment">//label of scroll AN0</span></div>
+<div class="line">     CLabel *label2;   <span class="comment">//label of gauge RB0</span></div>
+<div class="line">     CLabel *label3;   <span class="comment">//label of gauge RB1</span></div>
+<div class="line"> </div>
+<div class="line">   <span class="keyword">public</span>:</div>
+<div class="line">      <span class="comment">//Constructor called once on board creation </span></div>
+<div class="line">      <a class="code" href="classcboard__x.html">cboard_x</a>(<span class="keywordtype">void</span>);</div>
+<div class="line">      <span class="comment">//Destructor called once on board destruction </span></div>
+<div class="line">      ~<a class="code" href="classcboard__x.html">cboard_x</a>(<span class="keywordtype">void</span>); </div>
+<div class="line">      <span class="comment">//Called ever 100ms to draw board</span></div>
+<div class="line">      <span class="keywordtype">void</span> <a class="code" href="classcboard__x.html#a5a349c545f7cd41b8f04f1b6e75620b7">Draw</a>(CDraw *draw,<span class="keywordtype">double</span> scale);</div>
+<div class="line">      <span class="keywordtype">void</span> <a class="code" href="classcboard__x.html#a84da87615eacef12186e019610b407fc">Run_CPU</a>(<span class="keywordtype">void</span>);</div>
+<div class="line">      <span class="comment">//Return a list of board supported microcontrollers</span></div>
+<div class="line">      String <a class="code" href="classcboard__x.html#aa6ead809a88a8f87b42edc31651e1189">GetSupportedDevices</a>(<span class="keywordtype">void</span>){<span class="keywordflow">return</span> lxT(<span class="stringliteral">&quot;PIC18F4550,PIC16F877A,&quot;</span>);};</div>
+<div class="line">      <span class="comment">//Return the filename of board picture </span></div>
+<div class="line">      String <a class="code" href="classcboard__x.html#aaaa5c268d8576af19dac09700f1d0ceb">GetPictureFileName</a>(<span class="keywordtype">void</span>){<span class="keywordflow">return</span> lxT(<span class="stringliteral">&quot;x/board.png&quot;</span>);};</div>
+<div class="line">      <span class="comment">//Return the filename of board picture input map </span></div>
+<div class="line">      String <a class="code" href="classcboard__x.html#a5be12d896d0c3d1867df332935f1e45a">GetInputMapFile</a>(<span class="keywordtype">void</span>){<span class="keywordflow">return</span> lxT(<span class="stringliteral">&quot;x/input.map&quot;</span>);};</div>
+<div class="line">      <span class="comment">//Return the filename of board picture output map </span></div>
+<div class="line">      String <a class="code" href="classcboard__x.html#a474fbed4a5542f0ab23fd15c1ae34e9d">GetOutputMapFile</a>(<span class="keywordtype">void</span>){<span class="keywordflow">return</span> lxT(<span class="stringliteral">&quot;x/output.map&quot;</span>);};</div>
+<div class="line">      <span class="comment">//Reset board status</span></div>
+<div class="line">      <span class="keywordtype">void</span> <a class="code" href="classcboard__x.html#a123c6c7d672c47c24eb192d620b14bde">Reset</a>(<span class="keywordtype">void</span>);</div>
+<div class="line">      <span class="comment">//Event on the board</span></div>
+<div class="line">      <span class="keywordtype">void</span> <a class="code" href="classcboard__x.html#aeca24c97cafc120f6e293faa0e877fda">EvMouseButtonPress</a>(uint button, uint x, uint y,uint state);</div>
+<div class="line">      <span class="comment">//Event on the board</span></div>
+<div class="line">      <span class="keywordtype">void</span> <a class="code" href="classcboard__x.html#a0d8811cf02dd7638f25f151e278eaafe">EvMouseButtonRelease</a>(uint button, uint x, uint y,uint state);</div>
+<div class="line">      <span class="comment">//Event on the board</span></div>
+<div class="line">      <span class="keywordtype">void</span> <a class="code" href="classcboard__x.html#a4ec35f699502dc726d0d127f9fda8bb1">EvKeyPress</a>(uint key,uint mask);</div>
+<div class="line">      <span class="comment">//Event on the board</span></div>
+<div class="line">      <span class="keywordtype">void</span> <a class="code" href="classcboard__x.html#af6cb57797d9e100a624d3029c509d0bc">EvKeyRelease</a>(uint key,uint mask);</div>
+<div class="line">      <span class="keywordtype">void</span> <a class="code" href="classcboard__x.html#a783c1167e8b6085af3892bc82c6b3692">EvOnShow</a>(<span class="keywordtype">void</span>){};</div>
+<div class="line">      <span class="comment">//Called ever 1s to refresh status</span></div>
+<div class="line">      <span class="keywordtype">void</span> <a class="code" href="classcboard__x.html#ad4162cf2a32b56e7023d23252593d4c4">RefreshStatus</a>(<span class="keywordtype">void</span>);</div>
+<div class="line">      <span class="comment">//Called to save board preferences in configuration file</span></div>
+<div class="line">      <span class="keywordtype">void</span> <a class="code" href="classcboard__x.html#a1a8ef6de897499136d5d6220b2e7a25f">WritePreferences</a>(<span class="keywordtype">void</span>);</div>
+<div class="line">      <span class="comment">//Called whe configuration file load  preferences </span></div>
+<div class="line">      <span class="keywordtype">void</span> <a class="code" href="classcboard__x.html#ae7380c58afef71f5c38fab0174f2d70d">ReadPreferences</a>(<span class="keywordtype">char</span> *name,<span class="keywordtype">char</span> *value);</div>
+<div class="line">      <span class="comment">//return the input ids numbers of names used in input map</span></div>
+<div class="line">      <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> <a class="code" href="classcboard__x.html#af22b7401d801dc22ca407acd9d1d2367">get_in_id</a>(<span class="keywordtype">char</span> * name);</div>
+<div class="line">      <span class="comment">//return the output ids numbers of names used in output map</span></div>
+<div class="line">      <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> <a class="code" href="classcboard__x.html#a253842be321749318a561d88b559773d">get_out_id</a>(<span class="keywordtype">char</span> * name);</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#endif  </span><span class="comment">/* BOARD_x_H */</span><span class="preprocessor"></span></div>
+<div class="line"> </div>
+</div><!-- fragment --> <h2><a class="anchor" id="bcode"></a>
+board_x.cc</h2>
+<div class="fragment"><div class="line"><span class="comment">/* ########################################################################</span></div>
+<div class="line"><span class="comment"></span> </div>
+<div class="line"><span class="comment">   PICsimLab - PIC laboratory simulator</span></div>
+<div class="line"><span class="comment"></span> </div>
+<div class="line"><span class="comment">   ########################################################################</span></div>
+<div class="line"><span class="comment"></span> </div>
+<div class="line"><span class="comment">   Copyright (c) : 2015-2020  Luis Claudio Gambôa Lopes</span></div>
+<div class="line"><span class="comment"></span> </div>
+<div class="line"><span class="comment">   This program is free software; you can redistribute it and/or modify</span></div>
+<div class="line"><span class="comment">   it under the terms of the GNU General Public License as published by</span></div>
+<div class="line"><span class="comment">   the Free Software Foundation; either version 2, or (at your option)</span></div>
+<div class="line"><span class="comment">   any later version.</span></div>
+<div class="line"><span class="comment"></span> </div>
+<div class="line"><span class="comment">   This program is distributed in the hope that it will be useful,</span></div>
+<div class="line"><span class="comment">   but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
+<div class="line"><span class="comment">   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></div>
+<div class="line"><span class="comment">   GNU General Public License for more details.</span></div>
+<div class="line"><span class="comment"></span> </div>
+<div class="line"><span class="comment">   You should have received a copy of the GNU General Public License</span></div>
+<div class="line"><span class="comment">   along with this program; if not, write to the Free Software</span></div>
+<div class="line"><span class="comment">   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.</span></div>
+<div class="line"><span class="comment"></span> </div>
+<div class="line"><span class="comment">   For e-mail suggestions :  lcgamboa@yahoo.com</span></div>
+<div class="line"><span class="comment">   ######################################################################## */</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">//include files</span></div>
+<div class="line"><span class="preprocessor">#include&quot;../picsimlab1.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include&quot;../picsimlab4.h&quot;</span> <span class="comment">//Oscilloscope</span></div>
+<div class="line"><span class="preprocessor">#include&quot;../picsimlab5.h&quot;</span> <span class="comment">//Spare Parts</span></div>
+<div class="line"><span class="preprocessor">#include&quot;board_x.h&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">/* ids of inputs of input map*/</span></div>
+<div class="line"><span class="keyword">enum</span></div>
+<div class="line">{</div>
+<div class="line"> I_ICSP, <span class="comment">//ICSP connector</span></div>
+<div class="line"> I_PWR, <span class="comment">//Power button</span></div>
+<div class="line"> I_RST, <span class="comment">//Reset button</span></div>
+<div class="line"> I_D0, <span class="comment">//RD0 push button</span></div>
+<div class="line"> I_D1 <span class="comment">//RD1 switch</span></div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">/* ids of outputs of output map*/</span></div>
+<div class="line"><span class="keyword">enum</span></div>
+<div class="line">{</div>
+<div class="line"> O_SD1, <span class="comment">//switch position (On/Off)</span></div>
+<div class="line"> O_LD0, <span class="comment">//LED on RD0 push button</span></div>
+<div class="line"> O_LD1, <span class="comment">//LED on RD1 switch</span></div>
+<div class="line"> O_LPWR, <span class="comment">//Power LED</span></div>
+<div class="line"> O_RB0, <span class="comment">//LED on RB0 output</span></div>
+<div class="line"> O_RB1 <span class="comment">//LED on RB1 output</span></div>
+<div class="line">};</div>
+<div class="line"><span class="comment">//return the input ids numbers of names used in input map</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">unsigned</span> <span class="keywordtype">short</span></div>
+<div class="line"><a class="code" href="classcboard__x.html#af22b7401d801dc22ca407acd9d1d2367">cboard_x::get_in_id</a>(<span class="keywordtype">char</span> * name)</div>
+<div class="line">{</div>
+<div class="line"> <span class="keywordflow">if</span> (strcmp (name, <span class="stringliteral">&quot;I_ICSP&quot;</span>) == 0)<span class="keywordflow">return</span> I_ICSP;</div>
+<div class="line"> <span class="keywordflow">if</span> (strcmp (name, <span class="stringliteral">&quot;I_PWR&quot;</span>) == 0)<span class="keywordflow">return</span> I_PWR;</div>
+<div class="line"> <span class="keywordflow">if</span> (strcmp (name, <span class="stringliteral">&quot;I_RST&quot;</span>) == 0)<span class="keywordflow">return</span> I_RST;</div>
+<div class="line"> <span class="keywordflow">if</span> (strcmp (name, <span class="stringliteral">&quot;I_D0&quot;</span>) == 0)<span class="keywordflow">return</span> I_D0;</div>
+<div class="line"> <span class="keywordflow">if</span> (strcmp (name, <span class="stringliteral">&quot;I_D1&quot;</span>) == 0)<span class="keywordflow">return</span> I_D1;</div>
+<div class="line"> </div>
+<div class="line"> printf (<span class="stringliteral">&quot;Error input &#39;%s&#39; don&#39;t have a valid id! \n&quot;</span>, name);</div>
+<div class="line"> <span class="keywordflow">return</span> -1;</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">//return the output ids numbers of names used in output map</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">unsigned</span> <span class="keywordtype">short</span></div>
+<div class="line"><a class="code" href="classcboard__x.html#a253842be321749318a561d88b559773d">cboard_x::get_out_id</a>(<span class="keywordtype">char</span> * name)</div>
+<div class="line">{</div>
+<div class="line"> </div>
+<div class="line"> <span class="keywordflow">if</span> (strcmp (name, <span class="stringliteral">&quot;O_SD1&quot;</span>) == 0)<span class="keywordflow">return</span> O_SD1;</div>
+<div class="line"> <span class="keywordflow">if</span> (strcmp (name, <span class="stringliteral">&quot;O_LD0&quot;</span>) == 0)<span class="keywordflow">return</span> O_LD0;</div>
+<div class="line"> <span class="keywordflow">if</span> (strcmp (name, <span class="stringliteral">&quot;O_LD1&quot;</span>) == 0)<span class="keywordflow">return</span> O_LD1;</div>
+<div class="line"> <span class="keywordflow">if</span> (strcmp (name, <span class="stringliteral">&quot;O_LPWR&quot;</span>) == 0)<span class="keywordflow">return</span> O_LPWR;</div>
+<div class="line"> <span class="keywordflow">if</span> (strcmp (name, <span class="stringliteral">&quot;O_RB1&quot;</span>) == 0)<span class="keywordflow">return</span> O_RB1;</div>
+<div class="line"> <span class="keywordflow">if</span> (strcmp (name, <span class="stringliteral">&quot;O_RB0&quot;</span>) == 0)<span class="keywordflow">return</span> O_RB0;</div>
+<div class="line"> </div>
+<div class="line"> printf (<span class="stringliteral">&quot;Error output &#39;%s&#39; don&#39;t have a valid id! \n&quot;</span>, name);</div>
+<div class="line"> <span class="keywordflow">return</span> 1;</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">//Constructor called once on board creation </span></div>
+<div class="line"> </div>
+<div class="line">cboard_x::cboard_x(<span class="keywordtype">void</span>)</div>
+<div class="line">{</div>
+<div class="line"> <a class="code" href="classboard.html#af7dd22eddfccdc76089e08f1394f748f">Proc</a> = <span class="stringliteral">&quot;PIC18F4550&quot;</span>; <span class="comment">//default microcontroller if none defined in preferences</span></div>
+<div class="line"> <a class="code" href="classboard.html#aec4781344e8ceebccdc6ac543a04ce15">ReadMaps</a> (); <span class="comment">//Read input and output board maps</span></div>
+<div class="line"> </div>
+<div class="line"> <span class="comment">//controls properties and creation</span></div>
+<div class="line"> <span class="comment">//scroll1</span></div>
+<div class="line"> scroll1 = <span class="keyword">new</span> CScroll ();</div>
+<div class="line"> scroll1-&gt;SetFOwner (&amp;Window1);</div>
+<div class="line"> scroll1-&gt;SetName (lxT (<span class="stringliteral">&quot;scroll1_px&quot;</span>));</div>
+<div class="line"> scroll1-&gt;SetX (12);</div>
+<div class="line"> scroll1-&gt;SetY (273 - 160);</div>
+<div class="line"> scroll1-&gt;SetWidth (140);</div>
+<div class="line"> scroll1-&gt;SetHeight (22);</div>
+<div class="line"> scroll1-&gt;SetEnable (1);</div>
+<div class="line"> scroll1-&gt;SetVisible (1);</div>
+<div class="line"> scroll1-&gt;SetRange (100);</div>
+<div class="line"> scroll1-&gt;SetPosition (50);</div>
+<div class="line"> scroll1-&gt;SetType (4);</div>
+<div class="line"> Window1.CreateChild (scroll1);</div>
+<div class="line"> <span class="comment">//gauge1</span></div>
+<div class="line"> gauge1 = <span class="keyword">new</span> CGauge ();</div>
+<div class="line"> gauge1-&gt;SetFOwner (&amp;Window1);</div>
+<div class="line"> gauge1-&gt;SetName (lxT (<span class="stringliteral">&quot;gauge1_px&quot;</span>));</div>
+<div class="line"> gauge1-&gt;SetX (13);</div>
+<div class="line"> gauge1-&gt;SetY (382 - 160);</div>
+<div class="line"> gauge1-&gt;SetWidth (140);</div>
+<div class="line"> gauge1-&gt;SetHeight (20);</div>
+<div class="line"> gauge1-&gt;SetEnable (1);</div>
+<div class="line"> gauge1-&gt;SetVisible (1);</div>
+<div class="line"> gauge1-&gt;SetRange (100);</div>
+<div class="line"> gauge1-&gt;SetValue (0);</div>
+<div class="line"> gauge1-&gt;SetType (4);</div>
+<div class="line"> Window1.CreateChild (gauge1);</div>
+<div class="line"> <span class="comment">//gauge2</span></div>
+<div class="line"> gauge2 = <span class="keyword">new</span> CGauge ();</div>
+<div class="line"> gauge2-&gt;SetFOwner (&amp;Window1);</div>
+<div class="line"> gauge2-&gt;SetName (lxT (<span class="stringliteral">&quot;gauge2_px&quot;</span>));</div>
+<div class="line"> gauge2-&gt;SetX (12);</div>
+<div class="line"> gauge2-&gt;SetY (330 - 160);</div>
+<div class="line"> gauge2-&gt;SetWidth (140);</div>
+<div class="line"> gauge2-&gt;SetHeight (20);</div>
+<div class="line"> gauge2-&gt;SetEnable (1);</div>
+<div class="line"> gauge2-&gt;SetVisible (1);</div>
+<div class="line"> gauge2-&gt;SetRange (100);</div>
+<div class="line"> gauge2-&gt;SetValue (0);</div>
+<div class="line"> gauge2-&gt;SetType (4);</div>
+<div class="line"> Window1.CreateChild (gauge2);</div>
+<div class="line"> <span class="comment">//label1</span></div>
+<div class="line"> label1 = <span class="keyword">new</span> CLabel ();</div>
+<div class="line"> label1-&gt;SetFOwner (&amp;Window1);</div>
+<div class="line"> label1-&gt;SetName (lxT (<span class="stringliteral">&quot;label1_px&quot;</span>));</div>
+<div class="line"> label1-&gt;SetX (12);</div>
+<div class="line"> label1-&gt;SetY (249 - 160);</div>
+<div class="line"> label1-&gt;SetWidth (60);</div>
+<div class="line"> label1-&gt;SetHeight (20);</div>
+<div class="line"> label1-&gt;SetEnable (1);</div>
+<div class="line"> label1-&gt;SetVisible (1);</div>
+<div class="line"> label1-&gt;SetText (lxT (<span class="stringliteral">&quot;AN0&quot;</span>));</div>
+<div class="line"> label1-&gt;SetAlign (1);</div>
+<div class="line"> Window1.CreateChild (label1);</div>
+<div class="line"> <span class="comment">//label2</span></div>
+<div class="line"> label2 = <span class="keyword">new</span> CLabel ();</div>
+<div class="line"> label2-&gt;SetFOwner (&amp;Window1);</div>
+<div class="line"> label2-&gt;SetName (lxT (<span class="stringliteral">&quot;label2_px&quot;</span>));</div>
+<div class="line"> label2-&gt;SetX (12);</div>
+<div class="line"> label2-&gt;SetY (306 - 160);</div>
+<div class="line"> label2-&gt;SetWidth (60);</div>
+<div class="line"> label2-&gt;SetHeight (20);</div>
+<div class="line"> label2-&gt;SetEnable (1);</div>
+<div class="line"> label2-&gt;SetVisible (1);</div>
+<div class="line"> label2-&gt;SetText (lxT (<span class="stringliteral">&quot;RB0&quot;</span>));</div>
+<div class="line"> label2-&gt;SetAlign (1);</div>
+<div class="line"> Window1.CreateChild (label2);</div>
+<div class="line"> <span class="comment">//label3</span></div>
+<div class="line"> label3 = <span class="keyword">new</span> CLabel ();</div>
+<div class="line"> label3-&gt;SetFOwner (&amp;Window1);</div>
+<div class="line"> label3-&gt;SetName (lxT (<span class="stringliteral">&quot;label3_px&quot;</span>));</div>
+<div class="line"> label3-&gt;SetX (13);</div>
+<div class="line"> label3-&gt;SetY (357 - 160);</div>
+<div class="line"> label3-&gt;SetWidth (60);</div>
+<div class="line"> label3-&gt;SetHeight (20);</div>
+<div class="line"> label3-&gt;SetEnable (1);</div>
+<div class="line"> label3-&gt;SetVisible (1);</div>
+<div class="line"> label3-&gt;SetText (lxT (<span class="stringliteral">&quot;RB1&quot;</span>));</div>
+<div class="line"> label3-&gt;SetAlign (1);</div>
+<div class="line"> Window1.CreateChild (label3);</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">//Destructor called once on board destruction </span></div>
+<div class="line"> </div>
+<div class="line">cboard_x::~cboard_x(<span class="keywordtype">void</span>)</div>
+<div class="line">{</div>
+<div class="line"> <span class="comment">//controls destruction </span></div>
+<div class="line"> Window1.DestroyChild (scroll1);</div>
+<div class="line"> Window1.DestroyChild (gauge1);</div>
+<div class="line"> Window1.DestroyChild (gauge2);</div>
+<div class="line"> Window1.DestroyChild (label1);</div>
+<div class="line"> Window1.DestroyChild (label2);</div>
+<div class="line"> Window1.DestroyChild (label3);</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">//Reset board status</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span></div>
+<div class="line"><a class="code" href="classcboard__x.html#a123c6c7d672c47c24eb192d620b14bde">cboard_x::Reset</a>(<span class="keywordtype">void</span>)</div>
+<div class="line">{</div>
+<div class="line"> pic_reset (1);</div>
+<div class="line"> </div>
+<div class="line"> p_BT1 = 1; <span class="comment">//set push button  in default state (high) </span></div>
+<div class="line"> </div>
+<div class="line"> <span class="comment">//write button state to pic pin 19 (RD0)</span></div>
+<div class="line"> pic_set_pin (19, p_BT1);</div>
+<div class="line"> <span class="comment">//write switch state to pic pin 20 (RD1)</span></div>
+<div class="line"> pic_set_pin (20, p_BT2);</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> <span class="comment">//verify serial port state and refresh status bar  </span></div>
+<div class="line"><span class="preprocessor">#ifndef _WIN_</span></div>
+<div class="line"> <span class="keywordflow">if</span> (pic.serial[0].serialfd &gt; 0)</div>
+<div class="line"><span class="preprocessor">#else</span></div>
+<div class="line"> <span class="keywordflow">if</span> (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)</div>
+<div class="line"><span class="preprocessor">#endif</span></div>
+<div class="line">  Window1.statusbar1.SetField (2, lxT (<span class="stringliteral">&quot;Serial: &quot;</span>) +</div>
+<div class="line">                               String::FromAscii (SERIALDEVICE) + lxT (<span class="stringliteral">&quot;:&quot;</span>) + itoa (pic.serial[0].serialbaud) + lxT (<span class="stringliteral">&quot;(&quot;</span>) +</div>
+<div class="line">                               String ().Format (<span class="stringliteral">&quot;%4.1f&quot;</span>, fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *</div>
+<div class="line">                                                                 pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT (<span class="stringliteral">&quot;%)&quot;</span>));</div>
+<div class="line"> <span class="keywordflow">else</span></div>
+<div class="line">  Window1.statusbar1.SetField (2, lxT (<span class="stringliteral">&quot;Serial: &quot;</span>) +</div>
+<div class="line">                               String::FromAscii (SERIALDEVICE) + lxT (<span class="stringliteral">&quot; (ERROR)&quot;</span>));</div>
+<div class="line"> </div>
+<div class="line"> <span class="keywordflow">if</span> (<a class="code" href="classboard.html#ac41e7f65ae979416dd133853774e206e">use_spare</a>)Window5.<a class="code" href="class_c_p_window5.html#a371988205dfdb7dbb05150751c505f4a">Reset</a> ();</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">//Called ever 1s to refresh status</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span></div>
+<div class="line"><a class="code" href="classcboard__x.html#ad4162cf2a32b56e7023d23252593d4c4">cboard_x::RefreshStatus</a>(<span class="keywordtype">void</span>)</div>
+<div class="line">{</div>
+<div class="line"> <span class="comment">//verify serial port state and refresh status bar   </span></div>
+<div class="line"><span class="preprocessor">#ifndef _WIN_</span></div>
+<div class="line"> <span class="keywordflow">if</span> (pic.serial[0].serialfd &gt; 0)</div>
+<div class="line"><span class="preprocessor">#else</span></div>
+<div class="line"> <span class="keywordflow">if</span> (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)</div>
+<div class="line"><span class="preprocessor">#endif</span></div>
+<div class="line">  Window1.statusbar1.SetField (2, lxT (<span class="stringliteral">&quot;Serial: &quot;</span>) +</div>
+<div class="line">                               String::FromAscii (SERIALDEVICE) + lxT (<span class="stringliteral">&quot;:&quot;</span>) + itoa (pic.serial[0].serialbaud) + lxT (<span class="stringliteral">&quot;(&quot;</span>) +</div>
+<div class="line">                               String ().Format (<span class="stringliteral">&quot;%4.1f&quot;</span>, fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *</div>
+<div class="line">                                                                 pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT (<span class="stringliteral">&quot;%)&quot;</span>));</div>
+<div class="line"> <span class="keywordflow">else</span></div>
+<div class="line">  Window1.statusbar1.SetField (2, lxT (<span class="stringliteral">&quot;Serial: &quot;</span>) +</div>
+<div class="line">                               String::FromAscii (SERIALDEVICE) + lxT (<span class="stringliteral">&quot; (ERROR)&quot;</span>));</div>
+<div class="line"> </div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">//Called to save board preferences in configuration file</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span></div>
+<div class="line"><a class="code" href="classcboard__x.html#a1a8ef6de897499136d5d6220b2e7a25f">cboard_x::WritePreferences</a>(<span class="keywordtype">void</span>)</div>
+<div class="line">{</div>
+<div class="line"> <span class="comment">//write selected microcontroller of board_x to preferences</span></div>
+<div class="line"> Window1.<a class="code" href="class_c_p_window1.html#aca5e4762842eb9f39c7492738c7693fc">saveprefs</a> (lxT (<span class="stringliteral">&quot;X_proc&quot;</span>), <a class="code" href="classboard.html#af7dd22eddfccdc76089e08f1394f748f">Proc</a>);</div>
+<div class="line"> <span class="comment">//write switch state of board_x to preferences </span></div>
+<div class="line"> Window1.<a class="code" href="class_c_p_window1.html#aca5e4762842eb9f39c7492738c7693fc">saveprefs</a> (lxT (<span class="stringliteral">&quot;X_bt2&quot;</span>), String ().Format (<span class="stringliteral">&quot;%i&quot;</span>, p_BT2));</div>
+<div class="line"> <span class="comment">//write microcontroller clock to preferences</span></div>
+<div class="line"> Window1.<a class="code" href="class_c_p_window1.html#aca5e4762842eb9f39c7492738c7693fc">saveprefs</a> (lxT (<span class="stringliteral">&quot;X_clock&quot;</span>), String ().Format (<span class="stringliteral">&quot;%2.1f&quot;</span>, Window1.GetClock()));</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">//Called whe configuration file load  preferences </span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span></div>
+<div class="line"><a class="code" href="classcboard__x.html#ae7380c58afef71f5c38fab0174f2d70d">cboard_x::ReadPreferences</a>(<span class="keywordtype">char</span> *name, <span class="keywordtype">char</span> *value)</div>
+<div class="line">{</div>
+<div class="line"> <span class="comment">//read switch state of board_x of preferences </span></div>
+<div class="line"> <span class="keywordflow">if</span> (!strcmp (name, <span class="stringliteral">&quot;X_bt2&quot;</span>))</div>
+<div class="line">  {</div>
+<div class="line">   <span class="keywordflow">if</span> (value[0] == <span class="charliteral">&#39;0&#39;</span>)</div>
+<div class="line">    p_BT2 = 0;</div>
+<div class="line">   <span class="keywordflow">else</span></div>
+<div class="line">    p_BT2 = 1;</div>
+<div class="line">  }</div>
+<div class="line"> <span class="comment">//read microcontroller of preferences</span></div>
+<div class="line"> <span class="keywordflow">if</span> (!strcmp (name, <span class="stringliteral">&quot;X_proc&quot;</span>))</div>
+<div class="line">  {</div>
+<div class="line">   <a class="code" href="classboard.html#af7dd22eddfccdc76089e08f1394f748f">Proc</a> = value;</div>
+<div class="line">  }</div>
+<div class="line"> <span class="comment">//read microcontroller clock</span></div>
+<div class="line"> <span class="keywordflow">if</span> (!strcmp (name, <span class="stringliteral">&quot;X_clock&quot;</span>))</div>
+<div class="line"> {</div>
+<div class="line">  Window1.SetClock (atof(value));</div>
+<div class="line"> }</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"><span class="comment">//Event on the board</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span></div>
+<div class="line"><a class="code" href="classcboard__x.html#a4ec35f699502dc726d0d127f9fda8bb1">cboard_x::EvKeyPress</a>(uint key, uint mask)</div>
+<div class="line">{</div>
+<div class="line"> <span class="comment">//if keyboard key 1 is pressed then activate button (state=0)   </span></div>
+<div class="line"> <span class="keywordflow">if</span> (key == <span class="charliteral">&#39;1&#39;</span>)</div>
+<div class="line">  {</div>
+<div class="line">   p_BT1 = 0;</div>
+<div class="line">  }</div>
+<div class="line"> </div>
+<div class="line"> <span class="comment">//if keyboard key 2 is pressed then toggle switch state   </span></div>
+<div class="line"> <span class="keywordflow">if</span> (key == <span class="charliteral">&#39;2&#39;</span>)</div>
+<div class="line">  {</div>
+<div class="line">   p_BT2 ^= 1;</div>
+<div class="line">  }</div>
+<div class="line"> </div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">//Event on the board</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span></div>
+<div class="line"><a class="code" href="classcboard__x.html#af6cb57797d9e100a624d3029c509d0bc">cboard_x::EvKeyRelease</a>(uint key, uint mask)</div>
+<div class="line">{</div>
+<div class="line"> <span class="comment">//if keyboard key 1 is pressed then deactivate button (state=1)     </span></div>
+<div class="line"> <span class="keywordflow">if</span> (key == <span class="charliteral">&#39;1&#39;</span>)</div>
+<div class="line">  {</div>
+<div class="line">   p_BT1 = 1;</div>
+<div class="line">  }</div>
+<div class="line"> </div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">//Event on the board</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span></div>
+<div class="line"><a class="code" href="classcboard__x.html#aeca24c97cafc120f6e293faa0e877fda">cboard_x::EvMouseButtonPress</a>(uint button, uint x, uint y, uint state)</div>
+<div class="line">{</div>
+<div class="line"> </div>
+<div class="line"> <span class="keywordtype">int</span> i;</div>
+<div class="line"> </div>
+<div class="line"> <span class="comment">//search for the input area which owner the event    </span></div>
+<div class="line"> <span class="keywordflow">for</span> (i = 0; i &lt; <a class="code" href="classboard.html#ad9f8dc51eeea817a22d9ffec01c1f0c2">inputc</a>; i++)</div>
+<div class="line">  {</div>
+<div class="line">   <span class="keywordflow">if</span> (((<a class="code" href="classboard.html#a5c25b0e71ec999af05ef7d43844d7aa2">input</a>[i].x1 &lt;= x)&amp;&amp;(<a class="code" href="classboard.html#a5c25b0e71ec999af05ef7d43844d7aa2">input</a>[i].x2 &gt;= x))&amp;&amp;((<a class="code" href="classboard.html#a5c25b0e71ec999af05ef7d43844d7aa2">input</a>[i].y1 &lt;= y)&amp;&amp;</div>
+<div class="line">                                                  (<a class="code" href="classboard.html#a5c25b0e71ec999af05ef7d43844d7aa2">input</a>[i].y2 &gt;= y)))</div>
+<div class="line">    {</div>
+<div class="line"> </div>
+<div class="line">     <span class="keywordflow">switch</span> (<a class="code" href="classboard.html#a5c25b0e71ec999af05ef7d43844d7aa2">input</a>[i].<span class="keywordtype">id</span>)</div>
+<div class="line">      {</div>
+<div class="line">       <span class="comment">//if event is over I_ISCP area then load hex file  </span></div>
+<div class="line">      <span class="keywordflow">case</span> I_ICSP:</div>
+<div class="line">       Window1.menu1_File_LoadHex_EvMenuActive (NULL);</div>
+<div class="line">       <span class="keywordflow">break</span>;</div>
+<div class="line">       <span class="comment">//if event is over I_PWR area then toggle board on/off</span></div>
+<div class="line">      <span class="keywordflow">case</span> I_PWR:</div>
+<div class="line">       <span class="keywordflow">if</span> (Window1.<a class="code" href="class_c_p_window1.html#af08244612c785b8acc158fbc5d95a444">Get_mcupwr</a> ()) <span class="comment">//if on turn off</span></div>
+<div class="line">        {</div>
+<div class="line">         Window1.<a class="code" href="class_c_p_window1.html#ae9c1fa118bae7bc54acb0eacc78c933b">Set_mcurun</a> (0);</div>
+<div class="line">         Window1.<a class="code" href="class_c_p_window1.html#a8b2e0baf9fd9364d618f55dc943dc06c">Set_mcupwr</a> (0);</div>
+<div class="line">         <a class="code" href="classcboard__x.html#a123c6c7d672c47c24eb192d620b14bde">Reset</a> ();</div>
+<div class="line">         p_BT1 = 1;</div>
+<div class="line">         Window1.statusbar1.SetField (0, lxT (<span class="stringliteral">&quot;Stoped&quot;</span>));</div>
+<div class="line">        }</div>
+<div class="line">       <span class="keywordflow">else</span> <span class="comment">//if off turn on</span></div>
+<div class="line">        {</div>
+<div class="line">         Window1.<a class="code" href="class_c_p_window1.html#a8b2e0baf9fd9364d618f55dc943dc06c">Set_mcupwr</a> (1);</div>
+<div class="line">         Window1.<a class="code" href="class_c_p_window1.html#ae9c1fa118bae7bc54acb0eacc78c933b">Set_mcurun</a> (1);</div>
+<div class="line">         <a class="code" href="classcboard__x.html#a123c6c7d672c47c24eb192d620b14bde">Reset</a> ();</div>
+<div class="line">         Window1.statusbar1.SetField (0, lxT (<span class="stringliteral">&quot;Running...&quot;</span>));</div>
+<div class="line">        }</div>
+<div class="line">       <span class="keywordflow">break</span>;</div>
+<div class="line">       <span class="comment">//if event is over I_RST area then turn off and reset</span></div>
+<div class="line">      <span class="keywordflow">case</span> I_RST:</div>
+<div class="line">       <span class="keywordflow">if</span> (Window1.<a class="code" href="class_c_p_window1.html#af08244612c785b8acc158fbc5d95a444">Get_mcupwr</a> () &amp;&amp; pic_reset (-1))<span class="comment">//if powered</span></div>
+<div class="line">        {</div>
+<div class="line">         Window1.<a class="code" href="class_c_p_window1.html#a8b2e0baf9fd9364d618f55dc943dc06c">Set_mcupwr</a> (0);</div>
+<div class="line">         Window1.Set_mcurst (1);</div>
+<div class="line">        }</div>
+<div class="line">       <a class="code" href="classboard.html#a1032804a2ca54d248911d4fdc1ee860a">p_MCLR</a> = 0;</div>
+<div class="line">       <span class="keywordflow">break</span>;</div>
+<div class="line">       <span class="comment">//if event is over I_D0 area then activate button (state=0) </span></div>
+<div class="line">      <span class="keywordflow">case</span> I_D0:</div>
+<div class="line">       p_BT1 = 0;</div>
+<div class="line">       <span class="keywordflow">break</span>;</div>
+<div class="line">       <span class="comment">//if event is over I_D1 area then toggle switch state   </span></div>
+<div class="line">      <span class="keywordflow">case</span> I_D1:</div>
+<div class="line">       p_BT2 ^= 1;</div>
+<div class="line">       <span class="keywordflow">break</span>;</div>
+<div class="line">      }</div>
+<div class="line">    }</div>
+<div class="line">  }</div>
+<div class="line"> </div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">//Event on the board</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span></div>
+<div class="line"><a class="code" href="classcboard__x.html#a0d8811cf02dd7638f25f151e278eaafe">cboard_x::EvMouseButtonRelease</a>(uint button, uint x, uint y, uint state)</div>
+<div class="line">{</div>
+<div class="line"> <span class="keywordtype">int</span> i;</div>
+<div class="line"> </div>
+<div class="line"> <span class="comment">//search for the input area which owner the event  </span></div>
+<div class="line"> <span class="keywordflow">for</span> (i = 0; i &lt; <a class="code" href="classboard.html#ad9f8dc51eeea817a22d9ffec01c1f0c2">inputc</a>; i++)</div>
+<div class="line">  {</div>
+<div class="line">   <span class="keywordflow">if</span> (((<a class="code" href="classboard.html#a5c25b0e71ec999af05ef7d43844d7aa2">input</a>[i].x1 &lt;= x)&amp;&amp;(<a class="code" href="classboard.html#a5c25b0e71ec999af05ef7d43844d7aa2">input</a>[i].x2 &gt;= x))&amp;&amp;((<a class="code" href="classboard.html#a5c25b0e71ec999af05ef7d43844d7aa2">input</a>[i].y1 &lt;= y)&amp;&amp;</div>
+<div class="line">                                                  (<a class="code" href="classboard.html#a5c25b0e71ec999af05ef7d43844d7aa2">input</a>[i].y2 &gt;= y)))</div>
+<div class="line">    {</div>
+<div class="line">     <span class="keywordflow">switch</span> (<a class="code" href="classboard.html#a5c25b0e71ec999af05ef7d43844d7aa2">input</a>[i].<span class="keywordtype">id</span>)</div>
+<div class="line">      {</div>
+<div class="line">       <span class="comment">//if event is over I_RST area then turn on  </span></div>
+<div class="line">      <span class="keywordflow">case</span> I_RST:</div>
+<div class="line">       <span class="keywordflow">if</span> (Window1.<a class="code" href="class_c_p_window1.html#add73d25c4889d4e01489e335b509edb7">Get_mcurst</a> ())<span class="comment">//if powered</span></div>
+<div class="line">        {</div>
+<div class="line">         Window1.<a class="code" href="class_c_p_window1.html#a8b2e0baf9fd9364d618f55dc943dc06c">Set_mcupwr</a> (1);</div>
+<div class="line">         Window1.Set_mcurst (0);</div>
+<div class="line"> </div>
+<div class="line">         <span class="keywordflow">if</span> (pic_reset (-1))</div>
+<div class="line">          {</div>
+<div class="line">           <a class="code" href="classcboard__x.html#a123c6c7d672c47c24eb192d620b14bde">Reset</a> ();</div>
+<div class="line">          }</div>
+<div class="line">        }</div>
+<div class="line">       <a class="code" href="classboard.html#a1032804a2ca54d248911d4fdc1ee860a">p_MCLR</a> = 1;</div>
+<div class="line">       <span class="keywordflow">break</span>;</div>
+<div class="line">       <span class="comment">//if event is over I_D0 area then deactivate button (state=1) </span></div>
+<div class="line">      <span class="keywordflow">case</span> I_D0:</div>
+<div class="line">       p_BT1 = 1;</div>
+<div class="line">       <span class="keywordflow">break</span>;</div>
+<div class="line">      }</div>
+<div class="line">    }</div>
+<div class="line">  }</div>
+<div class="line"> </div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"><span class="comment">//Called ever 100ms to draw board</span></div>
+<div class="line"><span class="comment">//This is the critical code for simulator running speed</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span></div>
+<div class="line"><a class="code" href="classcboard__x.html#a5a349c545f7cd41b8f04f1b6e75620b7">cboard_x::Draw</a>(CDraw *draw, <span class="keywordtype">double</span> scale)</div>
+<div class="line">{</div>
+<div class="line"> <span class="keywordtype">int</span> i;</div>
+<div class="line"> </div>
+<div class="line"> draw-&gt;Canvas.Init (scale, scale); <span class="comment">//initialize draw context</span></div>
+<div class="line"> </div>
+<div class="line"> <span class="comment">//board_x draw </span></div>
+<div class="line"> <span class="keywordflow">for</span> (i = 0; i &lt; <a class="code" href="classboard.html#a52d4e88ddf5f29d1648ea94dafbf87de">outputc</a>; i++) <span class="comment">//run over all outputs</span></div>
+<div class="line">  {</div>
+<div class="line">   <span class="keywordflow">if</span> (!<a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].r)<span class="comment">//if output shape is a rectangle</span></div>
+<div class="line">    {</div>
+<div class="line">     <span class="keywordflow">if</span> (<a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].<span class="keywordtype">id</span> == O_SD1)<span class="comment">//if output is switch</span></div>
+<div class="line">      {</div>
+<div class="line">       <span class="comment">//draw a background white rectangle   </span></div>
+<div class="line">       draw-&gt;Canvas.SetBgColor (255, 255, 255);</div>
+<div class="line">       draw-&gt;Canvas.Rectangle (1, <a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].x1, <a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].y1,</div>
+<div class="line">                               <a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].x2 - <a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].x1, <a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].y2 - <a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].y1);</div>
+<div class="line"> </div>
+<div class="line">       <span class="keywordflow">if</span> (!p_BT2) <span class="comment">//draw switch off</span></div>
+<div class="line">        {</div>
+<div class="line">         <span class="comment">//draw a grey rectangle  </span></div>
+<div class="line">         draw-&gt;Canvas.SetBgColor (70, 70, 70);</div>
+<div class="line">         draw-&gt;Canvas.Rectangle (1, <a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].x1, <a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].y1 +</div>
+<div class="line">                                 ((<span class="keywordtype">int</span>) ((<a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].y2 - <a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].y1)*0.35)), <a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].x2 - <a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].x1,</div>
+<div class="line">                                 (<span class="keywordtype">int</span>) ((<a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].y2 - <a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].y1)*0.65));</div>
+<div class="line">        }</div>
+<div class="line">       <span class="keywordflow">else</span> <span class="comment">//draw switch on</span></div>
+<div class="line">        {</div>
+<div class="line">         <span class="comment">//draw a grey rectangle  </span></div>
+<div class="line">         draw-&gt;Canvas.SetBgColor (70, 70, 70);</div>
+<div class="line">         draw-&gt;Canvas.Rectangle (1, <a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].x1,</div>
+<div class="line">                                 <a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].y1, <a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].x2 - <a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].x1,</div>
+<div class="line">                                 (<span class="keywordtype">int</span>) ((<a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].y2 - <a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].y1)*0.65));</div>
+<div class="line">        }</div>
+<div class="line">      }</div>
+<div class="line">    }</div>
+<div class="line">   <span class="keywordflow">else</span> <span class="comment">//if output shape is a circle</span></div>
+<div class="line">    {</div>
+<div class="line"> </div>
+<div class="line">     draw-&gt;Canvas.SetFgColor (0, 0, 0); <span class="comment">//black</span></div>
+<div class="line"> </div>
+<div class="line">     <span class="keywordflow">switch</span> (<a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].<span class="keywordtype">id</span>)<span class="comment">//search for color of output</span></div>
+<div class="line">      {</div>
+<div class="line">      <span class="keywordflow">case</span> O_LD0: <span class="comment">//White using pin 19 mean value (RD0)</span></div>
+<div class="line">       draw-&gt;Canvas.SetColor (pic.pins[18].oavalue, pic.pins[18].oavalue, pic.pins[18].oavalue);</div>
+<div class="line">       <span class="keywordflow">break</span>;</div>
+<div class="line">      <span class="keywordflow">case</span> O_LD1: <span class="comment">//Yelllow using pin 20 mean value (RD1)</span></div>
+<div class="line">       draw-&gt;Canvas.SetColor (pic.pins[19].oavalue, pic.pins[19].oavalue, 0);</div>
+<div class="line">       <span class="keywordflow">break</span>;</div>
+<div class="line">      <span class="keywordflow">case</span> O_LPWR: <span class="comment">//Blue using mcupwr value</span></div>
+<div class="line">       draw-&gt;Canvas.SetColor (0, 0, 225 * Window1.<a class="code" href="class_c_p_window1.html#af08244612c785b8acc158fbc5d95a444">Get_mcupwr</a> () + 30);</div>
+<div class="line">       <span class="keywordflow">break</span>;</div>
+<div class="line">      <span class="keywordflow">case</span> O_RB0: <span class="comment">//Green using pin 33 mean value (RB0)</span></div>
+<div class="line">       draw-&gt;Canvas.SetColor (0, pic.pins[32].oavalue, 0);</div>
+<div class="line">       <span class="keywordflow">break</span>;</div>
+<div class="line">      <span class="keywordflow">case</span> O_RB1: <span class="comment">//Red using pin 34 mean value (RB1)</span></div>
+<div class="line">       draw-&gt;Canvas.SetColor (pic.pins[33].oavalue, 0, 0);</div>
+<div class="line">       <span class="keywordflow">break</span>;</div>
+<div class="line">      }</div>
+<div class="line"> </div>
+<div class="line">     <span class="comment">//draw a circle</span></div>
+<div class="line">     draw-&gt;Canvas.Circle (1, <a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].x1, <a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].y1, <a class="code" href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">output</a>[i].r);</div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">  }</div>
+<div class="line"> </div>
+<div class="line"> <span class="comment">//end draw</span></div>
+<div class="line"> draw-&gt;Canvas.End ();</div>
+<div class="line"> draw-&gt;Update ();</div>
+<div class="line"> </div>
+<div class="line"> <span class="comment">//RB0 mean value to gauge1</span></div>
+<div class="line"> gauge1-&gt;SetValue (0.4444 * (pic.pins[33].oavalue - 30));</div>
+<div class="line"> <span class="comment">//RB1 mean value to gauge2</span></div>
+<div class="line"> gauge2-&gt;SetValue (0.44444 * (pic.pins[32].oavalue - 30));</div>
+<div class="line"> </div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span></div>
+<div class="line"><a class="code" href="classcboard__x.html#a84da87615eacef12186e019610b407fc">cboard_x::Run_CPU</a>(<span class="keywordtype">void</span>)</div>
+<div class="line">{</div>
+<div class="line"> <span class="keywordtype">int</span> i;</div>
+<div class="line"> <span class="keywordtype">int</span> j;</div>
+<div class="line"> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> pi;</div>
+<div class="line"> <span class="keyword">const</span> picpin * pins;</div>
+<div class="line"> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> alm[40];</div>
+<div class="line"> </div>
+<div class="line"> <span class="keywordtype">int</span> JUMPSTEPS = Window1.<a class="code" href="class_c_p_window1.html#a003a0f87f554fef0aff246adc7b3c82d">GetJUMPSTEPS</a> (); <span class="comment">//number of steps skipped</span></div>
+<div class="line"> <span class="keywordtype">long</span> <span class="keywordtype">int</span> NSTEPJ = Window1.<a class="code" href="class_c_p_window1.html#ae06fa45b666a4e0993cb7c9563b73ea8">GetNSTEPJ</a> (); <span class="comment">//number of steps in 100ms</span></div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> <span class="comment">//reset pins mean value</span></div>
+<div class="line"> memset (alm, 0, 40 * <span class="keyword">sizeof</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>));</div>
+<div class="line"> </div>
+<div class="line"> <span class="comment">//read pic.pins to a local variable to speed up </span></div>
+<div class="line"> pins = pic.pins;</div>
+<div class="line"> </div>
+<div class="line"> <span class="comment">//Spare parts window pre process</span></div>
+<div class="line"> <span class="keywordflow">if</span> (<a class="code" href="classboard.html#ac41e7f65ae979416dd133853774e206e">use_spare</a>)Window5.<a class="code" href="class_c_p_window5.html#a02d69b9e32726649eaa1c325e2b7af70">PreProcess</a> ();</div>
+<div class="line"> </div>
+<div class="line"> j = JUMPSTEPS; <span class="comment">//step counter</span></div>
+<div class="line"> <span class="keywordflow">if</span> (Window1.<a class="code" href="class_c_p_window1.html#af08244612c785b8acc158fbc5d95a444">Get_mcupwr</a> ()) <span class="comment">//if powered</span></div>
+<div class="line">  <span class="keywordflow">for</span> (i = 0; i &lt; Window1.GetNSTEP (); i++) <span class="comment">//repeat for number of steps in 100ms</span></div>
+<div class="line">   {</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">if</span> (j &gt;= JUMPSTEPS)<span class="comment">//if number of step is bigger than steps to skip </span></div>
+<div class="line">     {</div>
+<div class="line">      pic_set_pin (pic.mclr, <a class="code" href="classboard.html#a1032804a2ca54d248911d4fdc1ee860a">p_MCLR</a>);</div>
+<div class="line">      pic_set_pin (19, p_BT1); <span class="comment">//Set pin 19 (RD0) with button state </span></div>
+<div class="line">      pic_set_pin (20, p_BT2); <span class="comment">//Set pin 20 (RD1) with switch state </span></div>
+<div class="line">     }</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">//verify if a breakpoint is reached if not run one instruction </span></div>
+<div class="line">    <span class="keywordflow">if</span> (!mplabxd_testbp ())pic_step ();</div>
+<div class="line">    <span class="comment">//Oscilloscope window process</span></div>
+<div class="line">    <span class="keywordflow">if</span> (<a class="code" href="classboard.html#a1f5dedbf50d1ebd86af96429a4a3d180">use_oscope</a>)Window4.<a class="code" href="class_c_p_window4.html#a3193dfdbbbd823e021fc60bdc402bfc2">SetSample</a> ();</div>
+<div class="line">    <span class="comment">//Spare parts window process</span></div>
+<div class="line">    <span class="keywordflow">if</span> (<a class="code" href="classboard.html#ac41e7f65ae979416dd133853774e206e">use_spare</a>)Window5.<a class="code" href="class_c_p_window5.html#abf4a593790774e9c184e4876ed7fd1b3">Process</a> ();</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">//increment mean value counter if pin is high </span></div>
+<div class="line">    <span class="keywordflow">if</span> (j &lt; pic.PINCOUNT)</div>
+<div class="line">     alm[j] += pins[j].value;</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">if</span> (j &gt;= JUMPSTEPS)<span class="comment">//if number of step is bigger than steps to skip </span></div>
+<div class="line">     {</div>
+<div class="line"> </div>
+<div class="line">      <span class="comment">//set analog pin 2 (AN0) with value from scroll  </span></div>
+<div class="line">      pic_set_apin (2, ((5.0 * (scroll1-&gt;GetPosition ())) /</div>
+<div class="line">                        (scroll1-&gt;GetRange () - 1)));</div>
+<div class="line"> </div>
+<div class="line">      j = -1; <span class="comment">//reset counter</span></div>
+<div class="line">     }</div>
+<div class="line">    j++; <span class="comment">//counter increment</span></div>
+<div class="line">   }</div>
+<div class="line"> </div>
+<div class="line"> <span class="comment">//calculate mean value</span></div>
+<div class="line"> <span class="keywordflow">for</span> (pi = 0; pi &lt; pic.PINCOUNT; pi++)</div>
+<div class="line">  {</div>
+<div class="line">   pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEPJ) + 30);</div>
+<div class="line">  }</div>
+<div class="line"> </div>
+<div class="line"> <span class="comment">//Spare parts window pre post process</span></div>
+<div class="line"> <span class="keywordflow">if</span> (<a class="code" href="classboard.html#ac41e7f65ae979416dd133853774e206e">use_spare</a>)Window5.<a class="code" href="class_c_p_window5.html#a7b033d0c44a3dfc514d5506b74ad5abb">PostProcess</a> ();</div>
+<div class="line"> </div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">//Register the board in PICSimLab</span></div>
+<div class="line">board_init(<span class="stringliteral">&quot;X&quot;</span>, <a class="code" href="classcboard__x.html">cboard_x</a>); </div>
+<div class="line"> </div>
+</div><!-- fragment --> </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="aclasscboard__x_html_a474fbed4a5542f0ab23fd15c1ae34e9d"><div class="ttname"><a href="classcboard__x.html#a474fbed4a5542f0ab23fd15c1ae34e9d">cboard_x::GetOutputMapFile</a></div><div class="ttdeci">String GetOutputMapFile(void)</div><div class="ttdoc">Return the filename of board picture output map.</div><div class="ttdef"><b>Definition:</b> board_x.h:63</div></div>
 <div class="ttc" id="aclasspart_html_ad99e90d6389a2cbbca423ec7e9371f49"><div class="ttname"><a href="classpart.html#ad99e90d6389a2cbbca423ec7e9371f49">part::EvMouseButtonRelease</a></div><div class="ttdeci">virtual void EvMouseButtonRelease(uint button, uint x, uint y, uint state)</div><div class="ttdoc">Event handler on the part.</div><div class="ttdef"><b>Definition:</b> part.h:98</div></div>
 <div class="ttc" id="aclasscpart__servo_html_aec280c6ce5b18601e15231a2f3622e6a"><div class="ttname"><a href="classcpart__servo.html#aec280c6ce5b18601e15231a2f3622e6a">cpart_servo::~cpart_servo</a></div><div class="ttdeci">~cpart_servo(void)</div><div class="ttdoc">destructor called once on part destruction</div><div class="ttdef"><b>Definition:</b> part_servo.cc:63</div></div>
+<div class="ttc" id="aclass_c_p_window1_html_add73d25c4889d4e01489e335b509edb7"><div class="ttname"><a href="class_c_p_window1.html#add73d25c4889d4e01489e335b509edb7">CPWindow1::Get_mcurst</a></div><div class="ttdeci">int Get_mcurst(void)</div><div class="ttdoc">Retunr if microcontroller reset pin is enabled.</div><div class="ttdef"><b>Definition:</b> picsimlab1.h:205</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a2d88d9e5290edfeed092417fa6d4a7f0"><div class="ttname"><a href="classcpart__servo.html#a2d88d9e5290edfeed092417fa6d4a7f0">cpart_servo::ReadPreferences</a></div><div class="ttdeci">void ReadPreferences(String value)</div><div class="ttdoc">Called whe configuration file load preferences.</div><div class="ttdef"><b>Definition:</b> part_servo.cc:179</div></div>
 <div class="ttc" id="aclasscpart__servo_html"><div class="ttname"><a href="classcpart__servo.html">cpart_servo</a></div><div class="ttdoc">servo motor part class</div><div class="ttdef"><b>Definition:</b> part_servo.h:38</div></div>
 <div class="ttc" id="aclasspart_html_a074fcb74e58bd5f199ce043a500d1c69"><div class="ttname"><a href="classpart.html#a074fcb74e58bd5f199ce043a500d1c69">part::output</a></div><div class="ttdeci">output_t output[100]</div><div class="ttdoc">output map elements</div><div class="ttdef"><b>Definition:</b> part.h:208</div></div>
 <div class="ttc" id="astructoutput__t_html_a3ea90d25dafd4e3f279f3f541a956ffa"><div class="ttname"><a href="structoutput__t.html#a3ea90d25dafd4e3f279f3f541a956ffa">output_t::y1</a></div><div class="ttdeci">unsigned int y1</div><div class="ttdoc">y1 position</div><div class="ttdef"><b>Definition:</b> board.h:61</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a840063c98f8a8635554d9f8a1e297181"><div class="ttname"><a href="classcpart__servo.html#a840063c98f8a8635554d9f8a1e297181">cpart_servo::in_</a></div><div class="ttdeci">unsigned char in_[2]</div><div class="ttdoc">input pin memory</div><div class="ttdef"><b>Definition:</b> part_servo.h:71</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a42d93bfacf8c184948a8de24883991c1"><div class="ttname"><a href="classcpart__servo.html#a42d93bfacf8c184948a8de24883991c1">cpart_servo::get_out_id</a></div><div class="ttdeci">unsigned short get_out_id(char *name)</div><div class="ttdoc">return the output ids numbers of names used in output map</div><div class="ttdef"><b>Definition:</b> part_servo.cc:158</div></div>
+<div class="ttc" id="aclasscboard__x_html_a5a349c545f7cd41b8f04f1b6e75620b7"><div class="ttname"><a href="classcboard__x.html#a5a349c545f7cd41b8f04f1b6e75620b7">cboard_x::Draw</a></div><div class="ttdeci">void Draw(CDraw *draw, double scale)</div><div class="ttdoc">Called ever 100ms to draw board.</div><div class="ttdef"><b>Definition:</b> board_x.cc:418</div></div>
+<div class="ttc" id="aclasscboard__x_html_aeca24c97cafc120f6e293faa0e877fda"><div class="ttname"><a href="classcboard__x.html#aeca24c97cafc120f6e293faa0e877fda">cboard_x::EvMouseButtonPress</a></div><div class="ttdeci">void EvMouseButtonPress(uint button, uint x, uint y, uint state)</div><div class="ttdoc">Event on the board.</div><div class="ttdef"><b>Definition:</b> board_x.cc:315</div></div>
+<div class="ttc" id="aclassboard_html_ae284da1fb18a28bc32ef30aadde45d30"><div class="ttname"><a href="classboard.html#ae284da1fb18a28bc32ef30aadde45d30">board::output</a></div><div class="ttdeci">output_t output[100]</div><div class="ttdoc">output map elements</div><div class="ttdef"><b>Definition:</b> board.h:384</div></div>
 <div class="ttc" id="aclasscpart__servo_html_acc7bd93bdd03a168783ddfa1efb60a95"><div class="ttname"><a href="classcpart__servo.html#acc7bd93bdd03a168783ddfa1efb60a95">cpart_servo::GetPropertiesWindowFile</a></div><div class="ttdeci">String GetPropertiesWindowFile(void)</div><div class="ttdoc">Return the filename of properties window XML file.</div><div class="ttdef"><b>Definition:</b> part_servo.h:59</div></div>
 <div class="ttc" id="aclass_c_p_window5_html_a9a209ed750269a9244bdd98a9e22a7fb"><div class="ttname"><a href="class_c_p_window5.html#a9a209ed750269a9244bdd98a9e22a7fb">CPWindow5::GetPinsNames</a></div><div class="ttdeci">String GetPinsNames(void)</div><div class="ttdoc">Return the name of all pins.</div><div class="ttdef"><b>Definition:</b> picsimlab5.cc:589</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a0af2e1168aeb456ba1f6a0a1511c1019"><div class="ttname"><a href="classcpart__servo.html#a0af2e1168aeb456ba1f6a0a1511c1019">cpart_servo::angle</a></div><div class="ttdeci">float angle</div><div class="ttdoc">angle of shaft</div><div class="ttdef"><b>Definition:</b> part_servo.h:69</div></div>
+<div class="ttc" id="aclass_c_p_window5_html_a7b033d0c44a3dfc514d5506b74ad5abb"><div class="ttname"><a href="class_c_p_window5.html#a7b033d0c44a3dfc514d5506b74ad5abb">CPWindow5::PostProcess</a></div><div class="ttdeci">void PostProcess(void)</div><div class="ttdoc">Execute the post process code of spare parts one time per 100ms.</div><div class="ttdef"><b>Definition:</b> picsimlab5.cc:440</div></div>
+<div class="ttc" id="aclasscboard__x_html_a84da87615eacef12186e019610b407fc"><div class="ttname"><a href="classcboard__x.html#a84da87615eacef12186e019610b407fc">cboard_x::Run_CPU</a></div><div class="ttdeci">void Run_CPU(void)</div><div class="ttdoc">Paralle thread called ever 100ms to run cpu code.</div><div class="ttdef"><b>Definition:</b> board_x.cc:496</div></div>
+<div class="ttc" id="aclassboard_html_a5c25b0e71ec999af05ef7d43844d7aa2"><div class="ttname"><a href="classboard.html#a5c25b0e71ec999af05ef7d43844d7aa2">board::input</a></div><div class="ttdeci">input_t input[100]</div><div class="ttdoc">input map elements</div><div class="ttdef"><b>Definition:</b> board.h:383</div></div>
 <div class="ttc" id="aclasscpart__servo_html_ac19ef1895370d94e9c0e27c6b28506bf"><div class="ttname"><a href="classcpart__servo.html#ac19ef1895370d94e9c0e27c6b28506bf">cpart_servo::GetPictureFileName</a></div><div class="ttdeci">String GetPictureFileName(void)</div><div class="ttdoc">Return the filename of part picture.</div><div class="ttdef"><b>Definition:</b> part_servo.h:56</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a38f5b70c1f63626da3951a5ce57bc16f"><div class="ttname"><a href="classcpart__servo.html#a38f5b70c1f63626da3951a5ce57bc16f">cpart_servo::cpart_servo</a></div><div class="ttdeci">cpart_servo(unsigned x, unsigned y)</div><div class="ttdoc">constructor called once on part creation</div><div class="ttdef"><b>Definition:</b> part_servo.cc:37</div></div>
+<div class="ttc" id="aclasscboard__x_html_a5be12d896d0c3d1867df332935f1e45a"><div class="ttname"><a href="classcboard__x.html#a5be12d896d0c3d1867df332935f1e45a">cboard_x::GetInputMapFile</a></div><div class="ttdeci">String GetInputMapFile(void)</div><div class="ttdoc">Return the filename of board picture input map.</div><div class="ttdef"><b>Definition:</b> board_x.h:61</div></div>
+<div class="ttc" id="aclassboard_html_aec4781344e8ceebccdc6ac543a04ce15"><div class="ttname"><a href="classboard.html#aec4781344e8ceebccdc6ac543a04ce15">board::ReadMaps</a></div><div class="ttdeci">void ReadMaps(void)</div><div class="ttdoc">Read maps.</div><div class="ttdef"><b>Definition:</b> board.cc:42</div></div>
+<div class="ttc" id="aclass_c_p_window5_html_a02d69b9e32726649eaa1c325e2b7af70"><div class="ttname"><a href="class_c_p_window5.html#a02d69b9e32726649eaa1c325e2b7af70">CPWindow5::PreProcess</a></div><div class="ttdeci">void PreProcess(void)</div><div class="ttdoc">Execute the pre process code of spare parts one time per 100ms.</div><div class="ttdef"><b>Definition:</b> picsimlab5.cc:421</div></div>
 <div class="ttc" id="astructoutput__t_html_a4a26c232a33f2387180a8bc0b6c078e7"><div class="ttname"><a href="structoutput__t.html#a4a26c232a33f2387180a8bc0b6c078e7">output_t::x1</a></div><div class="ttdeci">unsigned int x1</div><div class="ttdoc">x1 position</div><div class="ttdef"><b>Definition:</b> board.h:59</div></div>
+<div class="ttc" id="aclassboard_html_ac41e7f65ae979416dd133853774e206e"><div class="ttname"><a href="classboard.html#ac41e7f65ae979416dd133853774e206e">board::use_spare</a></div><div class="ttdeci">int use_spare</div><div class="ttdoc">use spare parts window</div><div class="ttdef"><b>Definition:</b> board.h:388</div></div>
 <div class="ttc" id="aclasspart_html"><div class="ttname"><a href="classpart.html">part</a></div><div class="ttdoc">PART class.</div><div class="ttdef"><b>Definition:</b> part.h:37</div></div>
 <div class="ttc" id="aclasspart_html_ac7d242f29bf318a8d103be1feda7340c"><div class="ttname"><a href="classpart.html#ac7d242f29bf318a8d103be1feda7340c">part::X</a></div><div class="ttdeci">int X</div><div class="ttdoc">X position of part.</div><div class="ttdef"><b>Definition:</b> part.h:213</div></div>
 <div class="ttc" id="aclasspart_html_a1870d9498f0aae89f3c239b7fa8aaee4"><div class="ttname"><a href="classpart.html#a1870d9498f0aae89f3c239b7fa8aaee4">part::ReadMaps</a></div><div class="ttdeci">void ReadMaps(void)</div><div class="ttdoc">read maps</div><div class="ttdef"><b>Definition:</b> part.cc:39</div></div>
+<div class="ttc" id="aclasscboard__x_html_af22b7401d801dc22ca407acd9d1d2367"><div class="ttname"><a href="classcboard__x.html#af22b7401d801dc22ca407acd9d1d2367">cboard_x::get_in_id</a></div><div class="ttdeci">unsigned short get_in_id(char *name)</div><div class="ttdoc">return the input ids numbers of names used in input map</div><div class="ttdef"><b>Definition:</b> board_x.cc:55</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a43b803f5191ced277e7c55168c298d94"><div class="ttname"><a href="classcpart__servo.html#a43b803f5191ced277e7c55168c298d94">cpart_servo::ConfigurePropertiesWindow</a></div><div class="ttdeci">void ConfigurePropertiesWindow(CPWindow *WProp)</div><div class="ttdoc">Called to configure the properties window.</div><div class="ttdef"><b>Definition:</b> part_servo.cc:185</div></div>
+<div class="ttc" id="aclassboard_html_a52d4e88ddf5f29d1648ea94dafbf87de"><div class="ttname"><a href="classboard.html#a52d4e88ddf5f29d1648ea94dafbf87de">board::outputc</a></div><div class="ttdeci">int outputc</div><div class="ttdoc">output map elements counter</div><div class="ttdef"><b>Definition:</b> board.h:386</div></div>
+<div class="ttc" id="aclassboard_html_a1f5dedbf50d1ebd86af96429a4a3d180"><div class="ttname"><a href="classboard.html#a1f5dedbf50d1ebd86af96429a4a3d180">board::use_oscope</a></div><div class="ttdeci">int use_oscope</div><div class="ttdoc">use oscilloscope window</div><div class="ttdef"><b>Definition:</b> board.h:387</div></div>
+<div class="ttc" id="aclass_c_p_window1_html_ae06fa45b666a4e0993cb7c9563b73ea8"><div class="ttname"><a href="class_c_p_window1.html#ae06fa45b666a4e0993cb7c9563b73ea8">CPWindow1::GetNSTEPJ</a></div><div class="ttdeci">long int GetNSTEPJ(void)</div><div class="ttdoc">Get the number of steps in 100ms of simulation.</div><div class="ttdef"><b>Definition:</b> picsimlab1.h:256</div></div>
+<div class="ttc" id="aclasscboard__x_html_af6cb57797d9e100a624d3029c509d0bc"><div class="ttname"><a href="classcboard__x.html#af6cb57797d9e100a624d3029c509d0bc">cboard_x::EvKeyRelease</a></div><div class="ttdeci">void EvKeyRelease(uint key, uint mask)</div><div class="ttdoc">Event on the board.</div><div class="ttdef"><b>Definition:</b> board_x.cc:302</div></div>
 <div class="ttc" id="aclass_c_p_window1_html_ae3a4c24f0983c83a0fc8199cd5ec5b4a"><div class="ttname"><a href="class_c_p_window1.html#ae3a4c24f0983c83a0fc8199cd5ec5b4a">CPWindow1::GetSharePath</a></div><div class="ttdeci">String GetSharePath(void)</div><div class="ttdoc">Get the file path of resources.</div><div class="ttdef"><b>Definition:</b> picsimlab1.h:158</div></div>
+<div class="ttc" id="aclassboard_html_ad9f8dc51eeea817a22d9ffec01c1f0c2"><div class="ttname"><a href="classboard.html#ad9f8dc51eeea817a22d9ffec01c1f0c2">board::inputc</a></div><div class="ttdeci">int inputc</div><div class="ttdoc">input map elements counter</div><div class="ttdef"><b>Definition:</b> board.h:385</div></div>
 <div class="ttc" id="aclassboard_html_ae5a2d7a6530a1dad9f827e6ea5e31ad8"><div class="ttname"><a href="classboard.html#ae5a2d7a6530a1dad9f827e6ea5e31ad8">board::MGetInstClock</a></div><div class="ttdeci">virtual float MGetInstClock(void)=0</div><div class="ttdoc">board microcontroller get cpu internal clock (in PIC frequency/4)</div></div>
 <div class="ttc" id="aclasspart_html_a4adcfbd9da4f9e196fd7f50ce829d817"><div class="ttname"><a href="classpart.html#a4adcfbd9da4f9e196fd7f50ce829d817">part::canvas</a></div><div class="ttdeci">CCanvas canvas</div><div class="ttdoc">Internal Canvas to draw in bitmap.</div><div class="ttdef"><b>Definition:</b> part.h:216</div></div>
+<div class="ttc" id="aclass_c_p_window1_html_a8b2e0baf9fd9364d618f55dc943dc06c"><div class="ttname"><a href="class_c_p_window1.html#a8b2e0baf9fd9364d618f55dc943dc06c">CPWindow1::Set_mcupwr</a></div><div class="ttdeci">void Set_mcupwr(int pp)</div><div class="ttdoc">Set the power status of microcontroller ON/OFF.</div><div class="ttdef"><b>Definition:</b> picsimlab1.h:216</div></div>
+<div class="ttc" id="aclasscboard__x_html_ae7380c58afef71f5c38fab0174f2d70d"><div class="ttname"><a href="classcboard__x.html#ae7380c58afef71f5c38fab0174f2d70d">cboard_x::ReadPreferences</a></div><div class="ttdeci">void ReadPreferences(char *name, char *value)</div><div class="ttdoc">Called whe configuration file load preferences.</div><div class="ttdef"><b>Definition:</b> board_x.cc:257</div></div>
+<div class="ttc" id="aclasscboard__x_html_a1a8ef6de897499136d5d6220b2e7a25f"><div class="ttname"><a href="classcboard__x.html#a1a8ef6de897499136d5d6220b2e7a25f">cboard_x::WritePreferences</a></div><div class="ttdeci">void WritePreferences(void)</div><div class="ttdoc">Called to save board preferences in configuration file.</div><div class="ttdef"><b>Definition:</b> board_x.cc:244</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a43d2e87e94cdbe6fb792ef8e2b70d60f"><div class="ttname"><a href="classcpart__servo.html#a43d2e87e94cdbe6fb792ef8e2b70d60f">cpart_servo::get_in_id</a></div><div class="ttdeci">unsigned short get_in_id(char *name)</div><div class="ttdoc">return the input ids numbers of names used in input map</div><div class="ttdef"><b>Definition:</b> part_servo.cc:151</div></div>
 <div class="ttc" id="aclasspart_html_a2a61f1d2127b6397a4b2fb76495b1451"><div class="ttname"><a href="classpart.html#a2a61f1d2127b6397a4b2fb76495b1451">part::Y</a></div><div class="ttdeci">int Y</div><div class="ttdoc">Y position of part.</div><div class="ttdef"><b>Definition:</b> part.h:214</div></div>
+<div class="ttc" id="aclasscboard__x_html_aa6ead809a88a8f87b42edc31651e1189"><div class="ttname"><a href="classcboard__x.html#aa6ead809a88a8f87b42edc31651e1189">cboard_x::GetSupportedDevices</a></div><div class="ttdeci">String GetSupportedDevices(void)</div><div class="ttdoc">Return a list of supported microcontrollers.</div><div class="ttdef"><b>Definition:</b> board_x.h:57</div></div>
 <div class="ttc" id="aclasspart_html_a5edfdd836fc264f0e1047d002e4e7e18"><div class="ttname"><a href="classpart.html#a5edfdd836fc264f0e1047d002e4e7e18">part::Bitmap</a></div><div class="ttdeci">lxBitmap * Bitmap</div><div class="ttdoc">Internal Bitmap</div><div class="ttdef"><b>Definition:</b> part.h:215</div></div>
 <div class="ttc" id="aclasscpart__servo_html_aa80b11cc1ab61058f87f5d001333fd37"><div class="ttname"><a href="classcpart__servo.html#aa80b11cc1ab61058f87f5d001333fd37">cpart_servo::WritePreferences</a></div><div class="ttdeci">String WritePreferences(void)</div><div class="ttdoc">Called to save part preferences in configuration file.</div><div class="ttdef"><b>Definition:</b> part_servo.cc:169</div></div>
 <div class="ttc" id="aclass_c_p_window5_html_a87ef96831d1b436f3a6d35caa47bdf48"><div class="ttname"><a href="class_c_p_window5.html#a87ef96831d1b436f3a6d35caa47bdf48">CPWindow5::GetPinName</a></div><div class="ttdeci">String GetPinName(unsigned char pin)</div><div class="ttdoc">Return the name of one pin.</div><div class="ttdef"><b>Definition:</b> picsimlab5.cc:615</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a22893b0e5a587b655f947d0450964303"><div class="ttname"><a href="classcpart__servo.html#a22893b0e5a587b655f947d0450964303">cpart_servo::angle_</a></div><div class="ttdeci">float angle_</div><div class="ttdoc">old angle of shaft</div><div class="ttdef"><b>Definition:</b> part_servo.h:70</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a11b19d024acfd94002f520f876608761"><div class="ttname"><a href="classcpart__servo.html#a11b19d024acfd94002f520f876608761">cpart_servo::GetOutputMapFile</a></div><div class="ttdeci">String GetOutputMapFile(void)</div><div class="ttdoc">Return the filename of part picture output map.</div><div class="ttdef"><b>Definition:</b> part_servo.h:58</div></div>
+<div class="ttc" id="aclassboard__picsim_html"><div class="ttname"><a href="classboard__picsim.html">board_picsim</a></div><div class="ttdef"><b>Definition:</b> board_picsim.h:34</div></div>
+<div class="ttc" id="aclass_c_p_window1_html_a003a0f87f554fef0aff246adc7b3c82d"><div class="ttname"><a href="class_c_p_window1.html#a003a0f87f554fef0aff246adc7b3c82d">CPWindow1::GetJUMPSTEPS</a></div><div class="ttdeci">int GetJUMPSTEPS(void)</div><div class="ttdoc">Get the number of steps to be skipped in board update.</div><div class="ttdef"><b>Definition:</b> picsimlab1.h:263</div></div>
+<div class="ttc" id="aclass_c_p_window5_html_abf4a593790774e9c184e4876ed7fd1b3"><div class="ttname"><a href="class_c_p_window5.html#abf4a593790774e9c184e4876ed7fd1b3">CPWindow5::Process</a></div><div class="ttdeci">void Process(void)</div><div class="ttdoc">Execute the process code of spare parts N times (where N is the number of steps in 100ms)</div><div class="ttdef"><b>Definition:</b> picsimlab5.cc:430</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a5f9ce011dbeb829625b4c919271bbf22"><div class="ttname"><a href="classcpart__servo.html#a5f9ce011dbeb829625b4c919271bbf22">cpart_servo::ReadPropertiesWindow</a></div><div class="ttdeci">void ReadPropertiesWindow(CPWindow *WProp)</div><div class="ttdoc">Called when properties window close.</div><div class="ttdef"><b>Definition:</b> part_servo.cc:207</div></div>
+<div class="ttc" id="aclasscboard__x_html_a0d8811cf02dd7638f25f151e278eaafe"><div class="ttname"><a href="classcboard__x.html#a0d8811cf02dd7638f25f151e278eaafe">cboard_x::EvMouseButtonRelease</a></div><div class="ttdeci">void EvMouseButtonRelease(uint button, uint x, uint y, uint state)</div><div class="ttdoc">Event on the board.</div><div class="ttdef"><b>Definition:</b> board_x.cc:377</div></div>
 <div class="ttc" id="aclasspart_html_ac55cc5edacce49ba7abc9e4d0d1cc354"><div class="ttname"><a href="classpart.html#ac55cc5edacce49ba7abc9e4d0d1cc354">part::outputc</a></div><div class="ttdeci">int outputc</div><div class="ttdoc">output map elements counter</div><div class="ttdef"><b>Definition:</b> part.h:210</div></div>
+<div class="ttc" id="aclassboard_html_a1032804a2ca54d248911d4fdc1ee860a"><div class="ttname"><a href="classboard.html#a1032804a2ca54d248911d4fdc1ee860a">board::p_MCLR</a></div><div class="ttdeci">int p_MCLR</div><div class="ttdoc">board /RESET pin state</div><div class="ttdef"><b>Definition:</b> board.h:389</div></div>
+<div class="ttc" id="aclasscboard__x_html_a253842be321749318a561d88b559773d"><div class="ttname"><a href="classcboard__x.html#a253842be321749318a561d88b559773d">cboard_x::get_out_id</a></div><div class="ttdeci">unsigned short get_out_id(char *name)</div><div class="ttdoc">return the output ids numbers of names used in output map</div><div class="ttdef"><b>Definition:</b> board_x.cc:70</div></div>
+<div class="ttc" id="aclass_c_p_window1_html_ae9c1fa118bae7bc54acb0eacc78c933b"><div class="ttname"><a href="class_c_p_window1.html#ae9c1fa118bae7bc54acb0eacc78c933b">CPWindow1::Set_mcurun</a></div><div class="ttdeci">void Set_mcurun(int pr)</div><div class="ttdoc">Set the run status of microcontroller Running/Stopped.</div><div class="ttdef"><b>Definition:</b> picsimlab1.h:223</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a534464c3dfff25226507e281924629f8"><div class="ttname"><a href="classcpart__servo.html#a534464c3dfff25226507e281924629f8">cpart_servo::GetInputMapFile</a></div><div class="ttdeci">String GetInputMapFile(void)</div><div class="ttdoc">Return the filename of part picture input map.</div><div class="ttdef"><b>Definition:</b> part_servo.h:57</div></div>
 <div class="ttc" id="aclass_c_p_window1_html_a5293ce669d8269ef2ecf2ed54fb3eb12"><div class="ttname"><a href="class_c_p_window1.html#a5293ce669d8269ef2ecf2ed54fb3eb12">CPWindow1::GetBoard</a></div><div class="ttdeci">board * GetBoard(void)</div><div class="ttdoc">Return a pointer to board object.</div><div class="ttdef"><b>Definition:</b> picsimlab1.cc:880</div></div>
+<div class="ttc" id="aclasscboard__x_html_a4ec35f699502dc726d0d127f9fda8bb1"><div class="ttname"><a href="classcboard__x.html#a4ec35f699502dc726d0d127f9fda8bb1">cboard_x::EvKeyPress</a></div><div class="ttdeci">void EvKeyPress(uint key, uint mask)</div><div class="ttdoc">Event on the board.</div><div class="ttdef"><b>Definition:</b> board_x.cc:283</div></div>
+<div class="ttc" id="aclasscboard__x_html_aaaa5c268d8576af19dac09700f1d0ceb"><div class="ttname"><a href="classcboard__x.html#aaaa5c268d8576af19dac09700f1d0ceb">cboard_x::GetPictureFileName</a></div><div class="ttdeci">String GetPictureFileName(void)</div><div class="ttdoc">Return the filename of board picture</div><div class="ttdef"><b>Definition:</b> board_x.h:59</div></div>
+<div class="ttc" id="aclass_c_p_window4_html_a3193dfdbbbd823e021fc60bdc402bfc2"><div class="ttname"><a href="class_c_p_window4.html#a3193dfdbbbd823e021fc60bdc402bfc2">CPWindow4::SetSample</a></div><div class="ttdeci">void SetSample(void)</div><div class="ttdoc">Sample and update oscilloscope data aquisition.</div><div class="ttdef"><b>Definition:</b> picsimlab4.cc:250</div></div>
+<div class="ttc" id="aclasscboard__x_html"><div class="ttname"><a href="classcboard__x.html">cboard_x</a></div><div class="ttdef"><b>Definition:</b> board_x.h:35</div></div>
+<div class="ttc" id="aclass_c_p_window5_html_a371988205dfdb7dbb05150751c505f4a"><div class="ttname"><a href="class_c_p_window5.html#a371988205dfdb7dbb05150751c505f4a">CPWindow5::Reset</a></div><div class="ttdeci">void Reset(void)</div><div class="ttdoc">Reset all spare parts.</div><div class="ttdef"><b>Definition:</b> picsimlab5.cc:449</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a9bfcc5515664d3d16fc10cfe1018ad0f"><div class="ttname"><a href="classcpart__servo.html#a9bfcc5515664d3d16fc10cfe1018ad0f">cpart_servo::GetName</a></div><div class="ttdeci">String GetName(void)</div><div class="ttdoc">Return the name of part.</div><div class="ttdef"><b>Definition:</b> part_servo.h:40</div></div>
+<div class="ttc" id="aclass_c_p_window1_html_af08244612c785b8acc158fbc5d95a444"><div class="ttname"><a href="class_c_p_window1.html#af08244612c785b8acc158fbc5d95a444">CPWindow1::Get_mcupwr</a></div><div class="ttdeci">int Get_mcupwr(void)</div><div class="ttdoc">Return actual power status of microcontroller ON/OFF.</div><div class="ttdef"><b>Definition:</b> picsimlab1.h:191</div></div>
+<div class="ttc" id="aclassboard_html_af7dd22eddfccdc76089e08f1394f748f"><div class="ttname"><a href="classboard.html#af7dd22eddfccdc76089e08f1394f748f">board::Proc</a></div><div class="ttdeci">String Proc</div><div class="ttdoc">Name of processor in use.</div><div class="ttdef"><b>Definition:</b> board.h:379</div></div>
+<div class="ttc" id="aclasscboard__x_html_a783c1167e8b6085af3892bc82c6b3692"><div class="ttname"><a href="classcboard__x.html#a783c1167e8b6085af3892bc82c6b3692">cboard_x::EvOnShow</a></div><div class="ttdeci">void EvOnShow(void)</div><div class="ttdoc">Event on the board.</div><div class="ttdef"><b>Definition:</b> board_x.h:74</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a143b73817ed78ff25408bd0eec5f4755"><div class="ttname"><a href="classcpart__servo.html#a143b73817ed78ff25408bd0eec5f4755">cpart_servo::time</a></div><div class="ttdeci">int time</div><div class="ttdoc">pulse time</div><div class="ttdef"><b>Definition:</b> part_servo.h:72</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a1c2781c42883239cefa14500d62ac0f6"><div class="ttname"><a href="classcpart__servo.html#a1c2781c42883239cefa14500d62ac0f6">cpart_servo::Process</a></div><div class="ttdeci">void Process(void)</div><div class="ttdoc">Called every CPU step.</div><div class="ttdef"><b>Definition:</b> part_servo.cc:123</div></div>
+<div class="ttc" id="aclasscboard__x_html_a123c6c7d672c47c24eb192d620b14bde"><div class="ttname"><a href="classcboard__x.html#a123c6c7d672c47c24eb192d620b14bde">cboard_x::Reset</a></div><div class="ttdeci">void Reset(void)</div><div class="ttdoc">Reset board status.</div><div class="ttdef"><b>Definition:</b> board_x.cc:191</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a67baf5e61954a20b1ad32ba7be306c1e"><div class="ttname"><a href="classcpart__servo.html#a67baf5e61954a20b1ad32ba7be306c1e">cpart_servo::Draw</a></div><div class="ttdeci">void Draw(void)</div><div class="ttdoc">Called ever 100ms to draw part.</div><div class="ttdef"><b>Definition:</b> part_servo.cc:71</div></div>
+<div class="ttc" id="aclasscboard__x_html_ad4162cf2a32b56e7023d23252593d4c4"><div class="ttname"><a href="classcboard__x.html#ad4162cf2a32b56e7023d23252593d4c4">cboard_x::RefreshStatus</a></div><div class="ttdeci">void RefreshStatus(void)</div><div class="ttdoc">Called ever 1s to refresh status.</div><div class="ttdef"><b>Definition:</b> board_x.cc:223</div></div>
+<div class="ttc" id="aclass_c_p_window1_html_aca5e4762842eb9f39c7492738c7693fc"><div class="ttname"><a href="class_c_p_window1.html#aca5e4762842eb9f39c7492738c7693fc">CPWindow1::saveprefs</a></div><div class="ttdeci">void saveprefs(String name, String value)</div><div class="ttdoc">Save the preferences.</div><div class="ttdef"><b>Definition:</b> picsimlab1.cc:540</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a9b4c8f6557bae63ba5645c4aeb31a519"><div class="ttname"><a href="classcpart__servo.html#a9b4c8f6557bae63ba5645c4aeb31a519">cpart_servo::BackGround</a></div><div class="ttdeci">lxBitmap * BackGround</div><div class="ttdoc">Background image.</div><div class="ttdef"><b>Definition:</b> part_servo.h:68</div></div>
 <div class="ttc" id="aclasscpart__servo_html_ac943dc8cf327494608d6540db5349760"><div class="ttname"><a href="classcpart__servo.html#ac943dc8cf327494608d6540db5349760">cpart_servo::input_pin</a></div><div class="ttdeci">unsigned char input_pin</div><div class="ttdoc">pulse input pin</div><div class="ttdef"><b>Definition:</b> part_servo.h:67</div></div>
 <!-- start footer part -->

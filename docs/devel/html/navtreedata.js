@@ -31,8 +31,8 @@ var NAVTREE =
       [ "part_servo.cc", "index.html#pcode", null ]
     ] ],
     [ "Board example", "index.html#boardex", [
-      [ "boardX.h", "index.html#binc", null ],
-      [ "boardX.cc", "index.html#bcode", null ]
+      [ "board_x.h", "index.html#binc", null ],
+      [ "board_x.cc", "index.html#bcode", null ]
     ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],

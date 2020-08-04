@@ -39,10 +39,10 @@
  * @include part_servo.cc
  *
  * @section boardex Board example
- * @subsection binc boardX.h
- * @include board_X.h
- * @subsection bcode boardX.cc
- * @include board_X.cc
+ * @subsection binc board_x.h
+ * @include board_x.h
+ * @subsection bcode board_x.cc
+ * @include board_x.cc
  *
  */
 
