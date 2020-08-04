@@ -32,6 +32,7 @@ CFLAGS+= -D_NOTHREAD
 
 LIBS= ../../LXRAD_SDL2/lib/liblxrad_SDL2_js.a ../../picsim/src/libpicsim_js.a ../../simavr/simavr/obj-wasm32-unknown-emscripten/libsimavr.a
 LIBS+= ../../LXRAD_SDL2/teste/zlib-master/contrib/minizip/minizip.a
+LIBS+= $(ELIBS)
 
 #LIBS = `lxrad_SDL2-config --libs` -lpicsim -lsimavr -lelf
 

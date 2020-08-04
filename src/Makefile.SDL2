@@ -20,6 +20,7 @@ override CFLAGS+=-fsanitize=address
 override CFLAGS+= -D_NOTHREAD
 
 LIBS = `lxrad_SDL2-config --libs` -lpicsim -lsimavr -lelf -lminizip
+LIBS+= $(ELIBS)
 
 #lxrad automatic generated block end, don't edit above!
 

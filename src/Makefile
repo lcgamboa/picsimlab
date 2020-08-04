@@ -19,7 +19,7 @@ override CFLAGS+= -DEXT_BROWSER
 #override CFLAGS+=-fsanitize=address
 
 LIBS = `lxrad-config --libs` -lpicsim -lsimavr -lelf
-LIBS+= ../../ucsim-0.6/libucsim.a
+LIBS+= $(ELIBS)
 #LIBS=  ../../picsim/src/libpicsim_dbg.a ../../LXRAD_WX/libteste/liblxrad.a  ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a\
       -lopenal `wx-config --libs` `wx-config --libs stc` 
 
