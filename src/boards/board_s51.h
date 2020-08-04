@@ -34,7 +34,7 @@
 class cboard_s51:public board_ucsim
 {
    private:
- 
+       lxBitmap * micbmp;
    public:
       //Constructor called once on board creation 
       cboard_s51(void);

@@ -41,8 +41,9 @@ enum
 enum
 {
  O_LPWR, //Power LED
- O_LED, //LED on PC13 output
+ O_MP,
 };
+
 //return the input ids numbers of names used in input map
 
 unsigned short
@@ -62,8 +63,8 @@ unsigned short
 cboard_s51::get_out_id(char * name)
 {
 
- if (strcmp (name, "LED") == 0)return O_LED;
- if (strcmp (name, "LPWR") == 0)return O_LPWR;
+ if (strcmp (name, "O_MP") == 0)return O_MP;
+ if (strcmp (name, "O_LPWR") == 0)return O_LPWR;
 
 
  printf ("Error output '%s' don't have a valid id! \n", name);
@@ -76,21 +77,24 @@ cboard_s51::cboard_s51(void)
 {
  Proc = "C51"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
+ lxImage image;
+ image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.png"));
+ micbmp = new lxBitmap (image, &Window1);
 }
 
 //Destructor called once on board destruction 
 
-cboard_s51::~cboard_s51(void)
-{
-
-}
+cboard_s51::~cboard_s51(void) {
+  delete micbmp;
+  micbmp = NULL;
+ }
 
 //Reset board status
 
 void
 cboard_s51::Reset(void)
 {
- MReset(1);
+ MReset (1);
 
  //verify serial port state and refresh status bar  
 #ifndef _WIN_
@@ -138,7 +142,7 @@ cboard_s51::WritePreferences(void)
  //write selected microcontroller of board_x to preferences
  Window1.saveprefs (lxT ("s51_proc"), Proc);
  //write microcontroller clock to preferences
- Window1.saveprefs (lxT ("s51_clock"), String ().Format ("%2.1f", Window1.GetClock())); 
+ Window1.saveprefs (lxT ("s51_clock"), String ().Format ("%2.1f", Window1.GetClock ()));
 }
 
 //Called whe configuration file load  preferences 
@@ -154,27 +158,23 @@ cboard_s51::ReadPreferences(char *name, char *value)
   }
  //read microcontroller clock
  if (!strcmp (name, "s51_clock"))
- {
-  Window1.SetClock (atof(value));
- } 
+  {
+   Window1.SetClock (atof (value));
+  }
 }
 
 
 //Event on the board
 
 void
-cboard_s51::EvKeyPress(uint key, uint mask)
-{
- 
-}
+cboard_s51::EvKeyPress(uint key, uint mask) {
+ }
 
 //Event on the board
 
 void
-cboard_s51::EvKeyRelease(uint key, uint mask)
-{
-
-}
+cboard_s51::EvKeyRelease(uint key, uint mask) {
+ }
 
 //Event on the board
 
@@ -222,8 +222,8 @@ cboard_s51::EvMouseButtonPress(uint button, uint x, uint y, uint state)
          Window1.Set_mcupwr (0);
          Window1.Set_mcurst (1);
         }
-        */ 
-       MReset(-1);
+        */
+       MReset (-1);
        p_MCLR = 0;
        break;
       }
@@ -253,12 +253,12 @@ cboard_s51::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
         {
          Window1.Set_mcupwr (1);
          Window1.Set_mcurst (0);
-/*
-         if (reset (-1))
-          {
-           Reset ();
-          }
- */ 
+         /*
+                  if (reset (-1))
+                   {
+                    Reset ();
+                   }
+          */
         }
        p_MCLR = 1;
        break;
@@ -276,7 +276,9 @@ void
 cboard_s51::Draw(CDraw *draw, double scale)
 {
  int i;
-
+ lxRect rec;
+ lxSize ps;
+ 
  draw->Canvas.Init (scale, scale); //initialize draw context
 
  //board_x draw 
@@ -284,20 +286,33 @@ cboard_s51::Draw(CDraw *draw, double scale)
   {
    if (!output[i].r)//if output shape is a rectangle
     {
-  
+
      draw->Canvas.SetFgColor (0, 0, 0); //black
 
      switch (output[i].id)//search for color of output
       {
-      case O_LED: //White using pc13 mean value 
-       draw->Canvas.SetColor (pins[1].oavalue, 0 , 0);
-       break;
       case O_LPWR: //Blue using mcupwr value
-       draw->Canvas.SetColor (225 * Window1.Get_mcupwr () + 30, 0 ,0 );
+       draw->Canvas.SetColor (225 * Window1.Get_mcupwr () + 30, 0, 0);
+       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       break;
+      case O_MP:
+       lxFont font (
+                    (MGetPinCount () >= 100) ? 9 : ((MGetPinCount () > 14) ? 12 : 10)
+                    , lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
+
+       draw->Canvas.SetFont (font);
+
+       ps = micbmp->GetSize ();
+       draw->Canvas.PutBitmap (micbmp, output[i].x1, output[i].y1);
+       draw->Canvas.SetFgColor (255, 255, 255);
+
+       rec.x = output[i].x1;
+       rec.y = output[i].y1;
+       rec.width = ps.GetWidth ();
+       rec.height = ps.GetHeight ();
+       draw->Canvas.TextOnRect (Proc, rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
        break;
       }
-
-     draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
     }
 
   }
@@ -321,7 +336,7 @@ cboard_s51::Run_CPU(void)
 
 
  //reset pins mean value
- memset (alm, 0, 64* sizeof (unsigned int));
+ memset (alm, 0, 64 * sizeof (unsigned int));
 
 
  //Spare parts window pre process
@@ -336,7 +351,7 @@ cboard_s51::Run_CPU(void)
     if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
      {
      }
-    */
+     */
     //verify if a breakpoint is reached if not run one instruction 
     MStep ();
     //Oscilloscope window process
@@ -352,7 +367,7 @@ cboard_s51::Run_CPU(void)
      {
       j = -1; //reset counter
      }
-    
+
     j++; //counter increment
    }
 
@@ -361,12 +376,12 @@ cboard_s51::Run_CPU(void)
   {
    pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEPJ) + 30);
   }
- 
+
  //Spare parts window pre post process
  if (use_spare)Window5.PostProcess ();
 
 }
 
 //Register the board in PICSimLab
-board_init("s51", cboard_s51); 
+board_init("s51", cboard_s51);
 
