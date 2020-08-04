@@ -26,7 +26,11 @@ LIBS+= $(ELIBS)
 
 #lxrad automatic generated block end, don't edit above!
 
-all: $(OBJS)
+
+
+all: picsimlab
+	
+picsimlab: $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -opicsimlab $(LIBS) 
 
 %.o: %.cc
