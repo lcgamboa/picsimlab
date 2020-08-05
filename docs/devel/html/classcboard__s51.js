@@ -18,5 +18,6 @@ var classcboard__s51 =
     [ "RefreshStatus", "classcboard__s51.html#a0fbf99af37f9b6061ae6f3edb15e2de7", null ],
     [ "Reset", "classcboard__s51.html#a7bf35b804689b53afa07bb70dd36eccc", null ],
     [ "Run_CPU", "classcboard__s51.html#a909e96ba2aee55ee3c6fd8cbd0bf31db", null ],
-    [ "WritePreferences", "classcboard__s51.html#a7242657c3cb2d7a3d31bb865681e6c0e", null ]
+    [ "WritePreferences", "classcboard__s51.html#a7242657c3cb2d7a3d31bb865681e6c0e", null ],
+    [ "micbmp", "classcboard__s51.html#a0fe0df2263e2eb242796b8e29d952e6d", null ]
 ];

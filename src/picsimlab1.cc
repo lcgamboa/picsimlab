@@ -403,7 +403,8 @@ CPWindow1::Configure(CControl * control, const char * home)
       }
     }
   }
- else
+ 
+ if(pboard == NULL)
   {
    printf ("Error open config file \"%s\"!\n", fname);
 

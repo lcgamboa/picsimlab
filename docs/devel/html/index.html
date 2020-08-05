@@ -134,10 +134,10 @@ part_servo.h</h2>
 <div class="line">      </div>
 <div class="line">      <span class="keywordtype">void</span> <a class="code" href="classcpart__servo.html#a67baf5e61954a20b1ad32ba7be306c1e">Draw</a>(<span class="keywordtype">void</span>);</div>
 <div class="line">      <span class="keywordtype">void</span> <a class="code" href="classcpart__servo.html#a1c2781c42883239cefa14500d62ac0f6">Process</a>(<span class="keywordtype">void</span>);</div>
-<div class="line">      String <a class="code" href="classcpart__servo.html#ac19ef1895370d94e9c0e27c6b28506bf">GetPictureFileName</a>(<span class="keywordtype">void</span>){<span class="keywordflow">return</span> lxT(<span class="stringliteral">&quot;servo/servo_motor.png&quot;</span>);};</div>
-<div class="line">      String <a class="code" href="classcpart__servo.html#a534464c3dfff25226507e281924629f8">GetInputMapFile</a>(<span class="keywordtype">void</span>){<span class="keywordflow">return</span> lxT(<span class="stringliteral">&quot;servo/servo_motor_i.map&quot;</span>);};</div>
-<div class="line">      String <a class="code" href="classcpart__servo.html#a11b19d024acfd94002f520f876608761">GetOutputMapFile</a>(<span class="keywordtype">void</span>){<span class="keywordflow">return</span> lxT(<span class="stringliteral">&quot;servo/servo_motor_o.map&quot;</span>);};</div>
-<div class="line">      String <a class="code" href="classcpart__servo.html#acc7bd93bdd03a168783ddfa1efb60a95">GetPropertiesWindowFile</a>(<span class="keywordtype">void</span>){<span class="keywordflow">return</span> lxT(<span class="stringliteral">&quot;servo/servo_motor.lxrad&quot;</span>);};</div>
+<div class="line">      String <a class="code" href="classcpart__servo.html#ac19ef1895370d94e9c0e27c6b28506bf">GetPictureFileName</a>(<span class="keywordtype">void</span>){<span class="keywordflow">return</span> lxT(<span class="stringliteral">&quot;servo_motor.png&quot;</span>);};</div>
+<div class="line">      String <a class="code" href="classcpart__servo.html#a534464c3dfff25226507e281924629f8">GetInputMapFile</a>(<span class="keywordtype">void</span>){<span class="keywordflow">return</span> lxT(<span class="stringliteral">&quot;servo_motor_i.map&quot;</span>);};</div>
+<div class="line">      String <a class="code" href="classcpart__servo.html#a11b19d024acfd94002f520f876608761">GetOutputMapFile</a>(<span class="keywordtype">void</span>){<span class="keywordflow">return</span> lxT(<span class="stringliteral">&quot;servo_motor_o.map&quot;</span>);};</div>
+<div class="line">      String <a class="code" href="classcpart__servo.html#acc7bd93bdd03a168783ddfa1efb60a95">GetPropertiesWindowFile</a>(<span class="keywordtype">void</span>){<span class="keywordflow">return</span> lxT(<span class="stringliteral">&quot;servo_motor.lxrad&quot;</span>);};</div>
 <div class="line">      <span class="keywordtype">void</span> <a class="code" href="classcpart__servo.html#a43b803f5191ced277e7c55168c298d94">ConfigurePropertiesWindow</a>(CPWindow *  WProp);</div>
 <div class="line">      <span class="keywordtype">void</span> <a class="code" href="classcpart__servo.html#a5f9ce011dbeb829625b4c919271bbf22">ReadPropertiesWindow</a>(CPWindow * WProp);</div>
 <div class="line">      String <a class="code" href="classcpart__servo.html#aa80b11cc1ab61058f87f5d001333fd37">WritePreferences</a>(<span class="keywordtype">void</span>);</div>
@@ -368,10 +368,6 @@ part_servo.cc</h2>
 <div class="line"> <a class="code" href="classcpart__servo.html#ac943dc8cf327494608d6540db5349760">input_pin</a> = atoi (((CCombo*) WProp-&gt;GetChildByName (<span class="stringliteral">&quot;combo1&quot;</span>))-&gt;GetText ());</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">//Register the part in PICSimLab spare parts list</span></div>
-<div class="line">part_init(<span class="stringliteral">&quot;Servo motor&quot;</span>, <a class="code" href="classcpart__servo.html">cpart_servo</a>);</div>
-<div class="line"> </div>
-<div class="line"> </div>
 </div><!-- fragment --><h1><a class="anchor" id="boardex"></a>
 Board example</h1>
 <h2><a class="anchor" id="binc"></a>
@@ -406,10 +402,10 @@ board_x.h</h2>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#include&lt;lxrad.h&gt;</span></div>
 <div class="line"> </div>
-<div class="line"><span class="preprocessor">#include &quot;board_picsim.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;board_pic.h&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">//new board class must be derived from board class defined in board.h</span></div>
-<div class="line"><span class="keyword">class </span><a class="code" href="classcboard__x.html">cboard_x</a>:<span class="keyword">public</span> <a class="code" href="classboard__picsim.html">board_picsim</a></div>
+<div class="line"><span class="keyword">class </span><a class="code" href="classcboard__x.html">cboard_x</a>:<span class="keyword">public</span> board_pic</div>
 <div class="line">{</div>
 <div class="line">  <span class="keyword">private</span>:</div>
 <div class="line">     <span class="keywordtype">int</span> p_BT1;           <span class="comment">//first board switch in RD0</span></div>
@@ -434,11 +430,11 @@ board_x.h</h2>
 <div class="line">      <span class="comment">//Return a list of board supported microcontrollers</span></div>
 <div class="line">      String <a class="code" href="classcboard__x.html#aa6ead809a88a8f87b42edc31651e1189">GetSupportedDevices</a>(<span class="keywordtype">void</span>){<span class="keywordflow">return</span> lxT(<span class="stringliteral">&quot;PIC18F4550,PIC16F877A,&quot;</span>);};</div>
 <div class="line">      <span class="comment">//Return the filename of board picture </span></div>
-<div class="line">      String <a class="code" href="classcboard__x.html#aaaa5c268d8576af19dac09700f1d0ceb">GetPictureFileName</a>(<span class="keywordtype">void</span>){<span class="keywordflow">return</span> lxT(<span class="stringliteral">&quot;x/board.png&quot;</span>);};</div>
+<div class="line">      String <a class="code" href="classcboard__x.html#aaaa5c268d8576af19dac09700f1d0ceb">GetPictureFileName</a>(<span class="keywordtype">void</span>){<span class="keywordflow">return</span> lxT(<span class="stringliteral">&quot;board_x.png&quot;</span>);};</div>
 <div class="line">      <span class="comment">//Return the filename of board picture input map </span></div>
-<div class="line">      String <a class="code" href="classcboard__x.html#a5be12d896d0c3d1867df332935f1e45a">GetInputMapFile</a>(<span class="keywordtype">void</span>){<span class="keywordflow">return</span> lxT(<span class="stringliteral">&quot;x/input.map&quot;</span>);};</div>
+<div class="line">      String <a class="code" href="classcboard__x.html#a5be12d896d0c3d1867df332935f1e45a">GetInputMapFile</a>(<span class="keywordtype">void</span>){<span class="keywordflow">return</span> lxT(<span class="stringliteral">&quot;input_boardx.map&quot;</span>);};</div>
 <div class="line">      <span class="comment">//Return the filename of board picture output map </span></div>
-<div class="line">      String <a class="code" href="classcboard__x.html#a474fbed4a5542f0ab23fd15c1ae34e9d">GetOutputMapFile</a>(<span class="keywordtype">void</span>){<span class="keywordflow">return</span> lxT(<span class="stringliteral">&quot;x/output.map&quot;</span>);};</div>
+<div class="line">      String <a class="code" href="classcboard__x.html#a474fbed4a5542f0ab23fd15c1ae34e9d">GetOutputMapFile</a>(<span class="keywordtype">void</span>){<span class="keywordflow">return</span> lxT(<span class="stringliteral">&quot;output_boardx.map&quot;</span>);};</div>
 <div class="line">      <span class="comment">//Reset board status</span></div>
 <div class="line">      <span class="keywordtype">void</span> <a class="code" href="classcboard__x.html#a123c6c7d672c47c24eb192d620b14bde">Reset</a>(<span class="keywordtype">void</span>);</div>
 <div class="line">      <span class="comment">//Event on the board</span></div>
@@ -712,11 +708,9 @@ board_x.cc</h2>
 <div class="line"><a class="code" href="classcboard__x.html#a1a8ef6de897499136d5d6220b2e7a25f">cboard_x::WritePreferences</a>(<span class="keywordtype">void</span>)</div>
 <div class="line">{</div>
 <div class="line"> <span class="comment">//write selected microcontroller of board_x to preferences</span></div>
-<div class="line"> Window1.<a class="code" href="class_c_p_window1.html#aca5e4762842eb9f39c7492738c7693fc">saveprefs</a> (lxT (<span class="stringliteral">&quot;X_proc&quot;</span>), <a class="code" href="classboard.html#af7dd22eddfccdc76089e08f1394f748f">Proc</a>);</div>
+<div class="line"> Window1.<a class="code" href="class_c_p_window1.html#aca5e4762842eb9f39c7492738c7693fc">saveprefs</a> (lxT (<span class="stringliteral">&quot;px_proc&quot;</span>), <a class="code" href="classboard.html#af7dd22eddfccdc76089e08f1394f748f">Proc</a>);</div>
 <div class="line"> <span class="comment">//write switch state of board_x to preferences </span></div>
-<div class="line"> Window1.<a class="code" href="class_c_p_window1.html#aca5e4762842eb9f39c7492738c7693fc">saveprefs</a> (lxT (<span class="stringliteral">&quot;X_bt2&quot;</span>), String ().Format (<span class="stringliteral">&quot;%i&quot;</span>, p_BT2));</div>
-<div class="line"> <span class="comment">//write microcontroller clock to preferences</span></div>
-<div class="line"> Window1.<a class="code" href="class_c_p_window1.html#aca5e4762842eb9f39c7492738c7693fc">saveprefs</a> (lxT (<span class="stringliteral">&quot;X_clock&quot;</span>), String ().Format (<span class="stringliteral">&quot;%2.1f&quot;</span>, Window1.GetClock()));</div>
+<div class="line"> Window1.<a class="code" href="class_c_p_window1.html#aca5e4762842eb9f39c7492738c7693fc">saveprefs</a> (lxT (<span class="stringliteral">&quot;px_bt2&quot;</span>), String ().Format (<span class="stringliteral">&quot;%i&quot;</span>, p_BT2));</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">//Called whe configuration file load  preferences </span></div>
@@ -725,7 +719,7 @@ board_x.cc</h2>
 <div class="line"><a class="code" href="classcboard__x.html#ae7380c58afef71f5c38fab0174f2d70d">cboard_x::ReadPreferences</a>(<span class="keywordtype">char</span> *name, <span class="keywordtype">char</span> *value)</div>
 <div class="line">{</div>
 <div class="line"> <span class="comment">//read switch state of board_x of preferences </span></div>
-<div class="line"> <span class="keywordflow">if</span> (!strcmp (name, <span class="stringliteral">&quot;X_bt2&quot;</span>))</div>
+<div class="line"> <span class="keywordflow">if</span> (!strcmp (name, <span class="stringliteral">&quot;px_bt2&quot;</span>))</div>
 <div class="line">  {</div>
 <div class="line">   <span class="keywordflow">if</span> (value[0] == <span class="charliteral">&#39;0&#39;</span>)</div>
 <div class="line">    p_BT2 = 0;</div>
@@ -733,15 +727,10 @@ board_x.cc</h2>
 <div class="line">    p_BT2 = 1;</div>
 <div class="line">  }</div>
 <div class="line"> <span class="comment">//read microcontroller of preferences</span></div>
-<div class="line"> <span class="keywordflow">if</span> (!strcmp (name, <span class="stringliteral">&quot;X_proc&quot;</span>))</div>
+<div class="line"> <span class="keywordflow">if</span> (!strcmp (name, <span class="stringliteral">&quot;px_proc&quot;</span>))</div>
 <div class="line">  {</div>
 <div class="line">   <a class="code" href="classboard.html#af7dd22eddfccdc76089e08f1394f748f">Proc</a> = value;</div>
 <div class="line">  }</div>
-<div class="line"> <span class="comment">//read microcontroller clock</span></div>
-<div class="line"> <span class="keywordflow">if</span> (!strcmp (name, <span class="stringliteral">&quot;X_clock&quot;</span>))</div>
-<div class="line"> {</div>
-<div class="line">  Window1.SetClock (atof(value));</div>
-<div class="line"> }</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"> </div>
@@ -1027,10 +1016,6 @@ board_x.cc</h2>
 <div class="line"> <span class="keywordflow">if</span> (<a class="code" href="classboard.html#ac41e7f65ae979416dd133853774e206e">use_spare</a>)Window5.<a class="code" href="class_c_p_window5.html#a7b033d0c44a3dfc514d5506b74ad5abb">PostProcess</a> ();</div>
 <div class="line"> </div>
 <div class="line">}</div>
-<div class="line"> </div>
-<div class="line"><span class="comment">//Register the board in PICSimLab</span></div>
-<div class="line">board_init(<span class="stringliteral">&quot;X&quot;</span>, <a class="code" href="classcboard__x.html">cboard_x</a>); </div>
-<div class="line"> </div>
 </div><!-- fragment --> </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -1084,7 +1069,6 @@ board_x.cc</h2>
 <div class="ttc" id="aclass_c_p_window5_html_a87ef96831d1b436f3a6d35caa47bdf48"><div class="ttname"><a href="class_c_p_window5.html#a87ef96831d1b436f3a6d35caa47bdf48">CPWindow5::GetPinName</a></div><div class="ttdeci">String GetPinName(unsigned char pin)</div><div class="ttdoc">Return the name of one pin.</div><div class="ttdef"><b>Definition:</b> picsimlab5.cc:615</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a22893b0e5a587b655f947d0450964303"><div class="ttname"><a href="classcpart__servo.html#a22893b0e5a587b655f947d0450964303">cpart_servo::angle_</a></div><div class="ttdeci">float angle_</div><div class="ttdoc">old angle of shaft</div><div class="ttdef"><b>Definition:</b> part_servo.h:70</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a11b19d024acfd94002f520f876608761"><div class="ttname"><a href="classcpart__servo.html#a11b19d024acfd94002f520f876608761">cpart_servo::GetOutputMapFile</a></div><div class="ttdeci">String GetOutputMapFile(void)</div><div class="ttdoc">Return the filename of part picture output map.</div><div class="ttdef"><b>Definition:</b> part_servo.h:58</div></div>
-<div class="ttc" id="aclassboard__picsim_html"><div class="ttname"><a href="classboard__picsim.html">board_picsim</a></div><div class="ttdef"><b>Definition:</b> board_picsim.h:34</div></div>
 <div class="ttc" id="aclass_c_p_window1_html_a003a0f87f554fef0aff246adc7b3c82d"><div class="ttname"><a href="class_c_p_window1.html#a003a0f87f554fef0aff246adc7b3c82d">CPWindow1::GetJUMPSTEPS</a></div><div class="ttdeci">int GetJUMPSTEPS(void)</div><div class="ttdoc">Get the number of steps to be skipped in board update.</div><div class="ttdef"><b>Definition:</b> picsimlab1.h:263</div></div>
 <div class="ttc" id="aclass_c_p_window5_html_abf4a593790774e9c184e4876ed7fd1b3"><div class="ttname"><a href="class_c_p_window5.html#abf4a593790774e9c184e4876ed7fd1b3">CPWindow5::Process</a></div><div class="ttdeci">void Process(void)</div><div class="ttdoc">Execute the process code of spare parts N times (where N is the number of steps in 100ms)</div><div class="ttdef"><b>Definition:</b> picsimlab5.cc:430</div></div>
 <div class="ttc" id="aclasscpart__servo_html_a5f9ce011dbeb829625b4c919271bbf22"><div class="ttname"><a href="classcpart__servo.html#a5f9ce011dbeb829625b4c919271bbf22">cpart_servo::ReadPropertiesWindow</a></div><div class="ttdeci">void ReadPropertiesWindow(CPWindow *WProp)</div><div class="ttdoc">Called when properties window close.</div><div class="ttdef"><b>Definition:</b> part_servo.cc:207</div></div>

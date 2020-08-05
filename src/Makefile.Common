@@ -25,7 +25,7 @@ OBJS_EXP =  boards/board_MPLAB_Xpress.o boards/board_Curiosity.o boards/board_x.
 
 exp: OBJS+=$(OBJS_EXP)  
 exp: EFLAGS=-D_EXPERIMENTAL_
-exp: ELIBS= ../../ucsim-0.6/libucsim.a
+exp: ELIBS= ../../ucsim-0.6/picsimlab/libucsim.a
 
 exp: $(OBJS_EXP) all
 	

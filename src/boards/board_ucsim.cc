@@ -24,7 +24,7 @@
    ######################################################################## */
 
 
-#include "../../../ucsim-0.6/s51_lib.h"
+#include "../../../ucsim-0.6/picsimlab/ucsimlib.h"
 
 #include "board_ucsim.h"
 #include"../picsimlab1.h"
@@ -48,14 +48,14 @@ board_ucsim::MInit(const char * processor, const char * fname, float freq)
 
  pins_reset ();
 
- s51_init ("C51", "8M", fname, "/dev/tnt2");
+ ucsim_init (S51,"C51", "8M", fname, "/dev/tnt2");
 
  return 0; //ret;
 }
 
 void
 board_ucsim::MEnd(void) {
- s51_end(); //TODO
+ ucsim_end(); //TODO
 }
 
 void
@@ -224,7 +224,7 @@ board_ucsim::MGetPinName(int pin)
 void
 board_ucsim::MDumpMemory(const char * fname) 
 { 
-   s51_dump (fname);
+   ucsim_dump (fname);
 }
 
 int
@@ -273,7 +273,7 @@ board_ucsim::pins_reset(void)
 void
 board_ucsim::MSetPin(int pin, unsigned char value) 
 { 
- s51_set_pin (*pins[pin-1].port, pins[pin-1].pord, value);
+ ucsim_set_pin (*pins[pin-1].port, pins[pin-1].pord, value);
 }
 
 void
@@ -289,13 +289,13 @@ board_ucsim::MSetAPin(int pin, float value) {
 unsigned char
 board_ucsim::MGetPin(int pin)
 {
- return s51_get_pin (*pins[pin-1].port, pins[pin-1].pord);
+ return ucsim_get_pin (*pins[pin-1].port, pins[pin-1].pord);
 }
 
 void
 board_ucsim::MReset(int flags) 
 { 
- s51_reset ();
+ ucsim_reset ();
 }
 
 const picpin *
@@ -309,12 +309,12 @@ board_ucsim::MStep(void)
 {
  unsigned char p[4];
  
- s51_step ();
+ ucsim_step ();
  
- p[0]=s51_get_port (0);
- p[1]=s51_get_port (1);
- p[2]=s51_get_port (2);
- p[3]=s51_get_port (3);
+ p[0]=ucsim_get_port (0);
+ p[1]=ucsim_get_port (1);
+ p[2]=ucsim_get_port (2);
+ p[3]=ucsim_get_port (3);
  
  for(int i=0; i< MGetPinCount (); i++)
   {
