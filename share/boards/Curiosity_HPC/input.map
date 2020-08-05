@@ -1,0 +1,15 @@
+<img src="[Curiosity_HPC] (imported)" width="700" height="386" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:medelk  -->
+<area shape="rect" coords="64,63,162,81" href="I_ICSP" />
+<area shape="rect" coords="125,114,155,145" href="I_RST" />
+<area shape="rect" coords="51,105,100,122" href="I_JMP" />
+<area shape="rect" coords="3,178,34,227" href="I_PWR" />
+<area shape="rect" coords="259,322,293,362" href="I_S1" />
+<area shape="rect" coords="355,324,387,362" href="I_S2" />
+</map>
