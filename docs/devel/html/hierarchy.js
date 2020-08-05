@@ -7,6 +7,7 @@ var hierarchy =
       [ "board_picsim", "classboard__picsim.html", [
         [ "cboard_Breadboard", "classcboard___breadboard.html", null ],
         [ "cboard_Curiosity", "classcboard___curiosity.html", null ],
+        [ "cboard_Curiosity_HPC", "classcboard___curiosity___h_p_c.html", null ],
         [ "cboard_K16F", "classcboard___k16_f.html", null ],
         [ "cboard_McLab1", "classcboard___mc_lab1.html", null ],
         [ "cboard_McLab2", "classcboard___mc_lab2.html", null ],
@@ -22,7 +23,7 @@ var hierarchy =
         [ "cboard_Breadboard", "classcboard___breadboard.html", null ]
       ] ],
       [ "board_ucsim", "classboard__ucsim.html", [
-        [ "cboard_s51", "classcboard__s51.html", null ]
+        [ "cboard_uCboard", "classcboard__u_cboard.html", null ]
       ] ]
     ] ],
     [ "board_desc", "structboard__desc.html", null ],

@@ -2,6 +2,10 @@
 
 ### New
 
+* New board Curiosity HPC. [lcgamboa]
+
+* Clock frequency of 64 and 48Mhz added. [lcgamboa]
+
 * Initial support to STM32 Blue Pill board. [lcgamboa]
 
 * Initial support to STM32 Blue Pill board. [lcgamboa]

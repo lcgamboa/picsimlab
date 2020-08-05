@@ -53,13 +53,13 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"class_c_p_window5.html#a22ad915452e2c41cb49211983de7ed44",
-"classboard__simavr.html#aa6d19bc4c70bab657bdca76e940a2d53",
-"classcboard___mc_lab1.html",
-"classcpart___buzzer.html#a4e9f5a3c977ae2fae7c68dde427632bc",
-"classcpart___v_c_d___dump.html#a394a04a2db37ca82127988d4b548a6df",
-"classcpart__servo.html#a22893b0e5a587b655f947d0450964303",
-"struct__info.html#a8d4b4d7095c0ac33f3b67afa98a5324a"
+"class_c_p_window5.html#a222bb1cb6b017a07e3965070e13576e6",
+"classboard__simavr.html#aa6b4ebc37aba7767637a900bc4b1dd23",
+"classcboard___k16_f.html#ae8ebfd184201ea78947dc776a2f8930a",
+"classcpart__7s__display.html#a32513f532f18ebfbf3c6df8954e7330c",
+"classcpart___signal_generator.html#a05dbd03428037bd98a6ecf2ee2b86cb5",
+"classcpart__pot.html#a6946f54391cdf89b6cc5ecb5cc8e4bf0",
+"part__gamepad_8h_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
