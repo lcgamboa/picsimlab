@@ -31,15 +31,15 @@
 #include "board_ucsim.h"
 
 //new board class must be derived from board class defined in board.h
-class cboard_s51:public board_ucsim
+class cboard_uCboard:public board_ucsim
 {
    private:
        lxBitmap * micbmp;
    public:
       //Constructor called once on board creation 
-      cboard_s51(void);
+      cboard_uCboard(void);
       //Destructor called once on board destruction 
-      ~cboard_s51(void); 
+      ~cboard_uCboard(void); 
       //Called ever 100ms to draw board
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);

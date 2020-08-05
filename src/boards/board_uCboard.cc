@@ -27,7 +27,7 @@
 #include"../picsimlab1.h"
 #include"../picsimlab4.h" //Oscilloscope
 #include"../picsimlab5.h" //Spare Parts
-#include"board_s51.h"
+#include"board_uCboard.h"
 
 /* ids of inputs of input map*/
 enum
@@ -47,7 +47,7 @@ enum
 //return the input ids numbers of names used in input map
 
 unsigned short
-cboard_s51::get_in_id(char * name)
+cboard_uCboard::get_in_id(char * name)
 {
  if (strcmp (name, "I_ICSP") == 0)return I_ICSP;
  if (strcmp (name, "I_PWR") == 0)return I_PWR;
@@ -60,7 +60,7 @@ cboard_s51::get_in_id(char * name)
 //return the output ids numbers of names used in output map
 
 unsigned short
-cboard_s51::get_out_id(char * name)
+cboard_uCboard::get_out_id(char * name)
 {
 
  if (strcmp (name, "O_MP") == 0)return O_MP;
@@ -73,7 +73,7 @@ cboard_s51::get_out_id(char * name)
 
 //Constructor called once on board creation 
 
-cboard_s51::cboard_s51(void)
+cboard_uCboard::cboard_uCboard(void)
 {
  Proc = "C51"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
@@ -84,7 +84,7 @@ cboard_s51::cboard_s51(void)
 
 //Destructor called once on board destruction 
 
-cboard_s51::~cboard_s51(void) {
+cboard_uCboard::~cboard_uCboard(void) {
   delete micbmp;
   micbmp = NULL;
  }
@@ -92,7 +92,7 @@ cboard_s51::~cboard_s51(void) {
 //Reset board status
 
 void
-cboard_s51::Reset(void)
+cboard_uCboard::Reset(void)
 {
  MReset (1);
 
@@ -116,7 +116,7 @@ cboard_s51::Reset(void)
 //Called ever 1s to refresh status
 
 void
-cboard_s51::RefreshStatus(void)
+cboard_uCboard::RefreshStatus(void)
 {
  //verify serial port state and refresh status bar   
 #ifndef _WIN_
@@ -137,27 +137,27 @@ cboard_s51::RefreshStatus(void)
 //Called to save board preferences in configuration file
 
 void
-cboard_s51::WritePreferences(void)
+cboard_uCboard::WritePreferences(void)
 {
  //write selected microcontroller of board_x to preferences
- Window1.saveprefs (lxT ("s51_proc"), Proc);
+ Window1.saveprefs (lxT ("uCboard_proc"), Proc);
  //write microcontroller clock to preferences
- Window1.saveprefs (lxT ("s51_clock"), String ().Format ("%2.1f", Window1.GetClock ()));
+ Window1.saveprefs (lxT ("uCboard_clock"), String ().Format ("%2.1f", Window1.GetClock ()));
 }
 
 //Called whe configuration file load  preferences 
 
 void
-cboard_s51::ReadPreferences(char *name, char *value)
+cboard_uCboard::ReadPreferences(char *name, char *value)
 {
 
  //read microcontroller of preferences
- if (!strcmp (name, "s51_proc"))
+ if (!strcmp (name, "uCboard_proc"))
   {
    Proc = value;
   }
  //read microcontroller clock
- if (!strcmp (name, "s51_clock"))
+ if (!strcmp (name, "uCboard_clock"))
   {
    Window1.SetClock (atof (value));
   }
@@ -167,19 +167,19 @@ cboard_s51::ReadPreferences(char *name, char *value)
 //Event on the board
 
 void
-cboard_s51::EvKeyPress(uint key, uint mask) {
+cboard_uCboard::EvKeyPress(uint key, uint mask) {
  }
 
 //Event on the board
 
 void
-cboard_s51::EvKeyRelease(uint key, uint mask) {
+cboard_uCboard::EvKeyRelease(uint key, uint mask) {
  }
 
 //Event on the board
 
 void
-cboard_s51::EvMouseButtonPress(uint button, uint x, uint y, uint state)
+cboard_uCboard::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
 
  int i;
@@ -235,7 +235,7 @@ cboard_s51::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 //Event on the board
 
 void
-cboard_s51::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
+cboard_uCboard::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 {
  int i;
 
@@ -273,7 +273,7 @@ cboard_s51::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 //This is the critical code for simulator running speed
 
 void
-cboard_s51::Draw(CDraw *draw, double scale)
+cboard_uCboard::Draw(CDraw *draw, double scale)
 {
  int i;
  lxRect rec;
@@ -324,7 +324,7 @@ cboard_s51::Draw(CDraw *draw, double scale)
 }
 
 void
-cboard_s51::Run_CPU(void)
+cboard_uCboard::Run_CPU(void)
 {
  int i;
  int j;
@@ -383,5 +383,5 @@ cboard_s51::Run_CPU(void)
 }
 
 //Register the board in PICSimLab
-board_init("s51", cboard_s51);
+board_init("uCboard", cboard_uCboard);
 
