@@ -106,7 +106,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Items type="StringList">40,32,20,16,10,8,4,2,1,</Items>
+  <Items type="StringList">64,48,40,32,20,16,10,8,4,2,1,</Items>
   <Text type="String">2</Text>
   <ReadOnly type="bool">0</ReadOnly>
   <EvOnComboChange type="Event">TRUE</EvOnComboChange>

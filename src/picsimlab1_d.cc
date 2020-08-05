@@ -110,7 +110,7 @@ CPWindow1::CPWindow1(void)
   combo1.SetVisible(1);
   combo1.SetColor(lxT("#000001"));
   combo1.SetPopupMenu(NULL);
-  combo1.SetItems(lxT("40,32,20,16,10,8,4,2,1,"));
+  combo1.SetItems(lxT("64,48,40,32,20,16,10,8,4,2,1,"));
   combo1.SetText(lxT("2"));
   combo1.SetReadOnly(0);
   combo1.EvOnComboChange=EVONCOMBOCHANGE & CPWindow1::combo1_EvOnComboChange;
