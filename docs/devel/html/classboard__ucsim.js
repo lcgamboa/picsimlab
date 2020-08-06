@@ -25,6 +25,7 @@ var classboard__ucsim =
     [ "pins_reset", "classboard__ucsim.html#a3c6ece2dee5c2bd4b7a355bf3f135abf", null ],
     [ "freq", "classboard__ucsim.html#a2fbf2f45f9bac44dfcdb5a64e4737ad2", null ],
     [ "pins", "classboard__ucsim.html#a63bb6ec0f931fc5bb53b53377d0d831e", null ],
+    [ "procid", "classboard__ucsim.html#ad576e2cf4891475e21bb3e8e77049086", null ],
     [ "serialbaud", "classboard__ucsim.html#ad335e2ee807876ff0ae5274e14168929", null ],
     [ "serialexbaud", "classboard__ucsim.html#ab5c5c2d0c817242c3842ae2db9310787", null ],
     [ "serialfd", "classboard__ucsim.html#ab51536c394a265772d118a1722bb3f31", null ]

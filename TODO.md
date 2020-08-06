@@ -13,7 +13,8 @@
 | [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1081) | 1081 | avr EEPROM pointer
 | [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1107) | 1107 | avr ID size
 | [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1114) | 1114 | AVR EEPROM size
-| [src/boards/board_ucsim.cc](src/boards/board_ucsim.cc#L267) | 267 | 
+| [src/boards/board_ucsim.cc](src/boards/board_ucsim.cc#L194) | 194 | 
+| [src/boards/board_ucsim.cc](src/boards/board_ucsim.cc#L223) | 223 | 
 | [src/devices/lcd_hd44780.cc](src/devices/lcd_hd44780.cc#L759) | 759 | support to read and busy flag
 | [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L84) | 84 | decode
 | [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L87) | 87 | itensity

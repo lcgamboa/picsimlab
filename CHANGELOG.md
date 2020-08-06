@@ -2,6 +2,8 @@
 
 ### New
 
+* Initial support to uCsim Z80 and STM8S103. [lcgamboa]
+
 * New board Curiosity HPC. [lcgamboa]
 
 * Clock frequency of 64 and 48Mhz added. [lcgamboa]
