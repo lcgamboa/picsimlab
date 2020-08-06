@@ -59,10 +59,18 @@ board_qemu_stm32::MSetSerial(const char * port) {
 int
 board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
 {
- struct sockaddr_in serv, cli;
+ struct sockaddr_in servm;
+ #ifdef _TCP_
+  struct sockaddr_in serv, cli;
+#else
+  struct sockaddr_un serv, cli;
+#endif
  char buff[100];
  int n;
-
+ char fname_[300];
+ char cmd[500];
+ 
+  
 #ifdef _WIN_
  int clilen;
 #else
@@ -79,7 +87,7 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
  serialfd[2] = -1;
  serialfd[3] = -1;
 
-
+#ifdef _TCP_
  if ((listenfd = socket (PF_INET, SOCK_STREAM, 0)) < 0)
   {
    printf ("socket error : %s \n", strerror (errno));
@@ -94,7 +102,20 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
  serv.sin_family = AF_INET;
  serv.sin_addr.s_addr = htonl (INADDR_ANY);
  serv.sin_port = htons (2200);
+#else
+  if ((listenfd = socket (PF_UNIX, SOCK_STREAM, 0)) < 0)
+    {
+      printf ("socket error : %s \n", strerror (errno));
+      exit (1);
+    };
+  //unlink("/tmp/.picsimlab_qemu");
 
+  memset (&serv, 0, sizeof (serv));
+  serv.sun_family = AF_UNIX;
+  serv.sun_path[0]=0;
+  strncpy(serv.sun_path+1, "picsimlab_qemu", sizeof(serv.sun_path)-2);
+#endif
+  
  if (bind (listenfd, (sockaddr *) & serv, sizeof (serv)) < 0)
   {
    printf ("bind error : %s \n", strerror (errno));
@@ -107,11 +128,10 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
    exit (1);
   }
 
- char fname_[300];
  //change .hex to .bin
  strncpy (fname_, fname, 299);
- strncpy (fname_ + (strlen (fname_) - 3), "bin", 299);
-
+ fname_[strlen (fname_) - 3]=0;
+ strncat (fname_, "bin", 299);
 
  if (!lxFileExists (fname_))
   {
@@ -131,14 +151,14 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
     }
   }
 
- char cmd[500];
- snprintf (cmd, 499, "cd %s; ./qemu-system-arm  -M stm32-f103c8-picsimlab  -pflash %s -serial %s -qmp tcp:localhost:2500,server,nowait &",
+ snprintf (cmd, 499, "cd %s; ./qemu-system-arm -M stm32-f103c8-picsimlab -pflash %s -serial %s -qmp tcp:localhost:2500,server,nowait &",
              "/home/gamboa/projetos/qemu_stm32/arm-softmmu/",
              fname_,
              "/dev/tnt2"
              );
 
- printf ("%s", (const char *)cmd);
+ printf ("%s\n", (const char *)cmd);
+ 
  system (cmd);
 
  clilen = sizeof (cli);
@@ -162,12 +182,12 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
    printf ("socket error : %s \n", strerror (errno));
    exit (1);
   }
- memset (&serv, 0, sizeof (serv));
- serv.sin_family = AF_INET;
- serv.sin_addr.s_addr = inet_addr ("127.0.0.1");
- serv.sin_port = htons (2500);
+ memset (&servm, 0, sizeof (servm));
+ servm.sin_family = AF_INET;
+ servm.sin_addr.s_addr = inet_addr ("127.0.0.1");
+ servm.sin_port = htons (2500);
 
- if (connect (sockmon, (sockaddr *) & serv, sizeof (serv)) < 0)
+ if (connect (sockmon, (sockaddr *) & servm, sizeof (servm)) < 0)
   {
    printf ("connect error : %s \n", strerror (errno));
    exit (1);
@@ -190,6 +210,7 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
  Window1.menu1_File_SaveHex.SetEnable (0);
  Window1.filedialog1.SetFileName(lxT("untitled.bin"));
  Window1.filedialog1.SetFilter(lxT("Bin Files (*.bin)|*.bin;*.BIN"));
+
  return 0; //ret;
 }
 
@@ -408,7 +429,8 @@ board_qemu_stm32::MDumpMemory(const char * fname)
 
  //change .hex to .bin
  strncpy (fname_, fname, 299);
- strncpy (fname_ + (strlen (fname_) - 3), "bin", 299);
+ fname_[strlen (fname_) - 3]=0;
+ strncat (fname_, "bin", 299);
 
  qemu_cmd ("stop");
  snprintf (cmd, 500, "{ \"execute\": \"pmemsave\",\"arguments\": { \"val\": 134217728, \"size\": 65536, \"filename\": \"%s\" } }\n", fname_);
