@@ -29,10 +29,38 @@
 #include "board_ucsim.h"
 #include"../picsimlab1.h"
 
+#define PID_C51      0
+#define PID_STM8S103 1
+#define PID_Z80      2
 
-const unsigned char UCSIM_PORTS[5] = {0,1,2,3,0xFF};
 
-board_ucsim::board_ucsim(void) { }
+static const char pincount[3] = {40, 20, 40};
+
+
+static const char pinnames[3][40][10] = {
+ {"P1.0", "P1.1", "P1.2", "P1.3", "P1.4", "P1.5", "P1.6", "P1.7", "RST", "P3.0", "P3.1", "P3.2", "P3.3",
+  "P3.4", "P3.5", "P3.6", "P3.7", "XTAL2", "XTAL1", "GND", "P2.0", "P2.1", "P2.2", "P2.3", "P2.4", "P2.5",
+  "P2.6", "P2.7", "/PSEN", "ALE", "/EA", "P0.7", "P0.6", "P0.5", "P0.4", "P0.3", "P0.2", "P0.1", "P0.0", "VCC"},
+
+ {"PD4", "PD5", "PD6", "NRST", "PA1", "PA2", "VSS", "VCAP", "VDD", "PA3", "PB5", "PB4", "PC3",
+  "PC4", "PC5", "PC6", "PC7", "PD1", "PD2", "PD3", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+
+ {
+  "P0.0", "P0.1", "P0.2", "P0.3", "P0.4", "P0.5", "P0.6", "P0.7",  
+  "P1.0", "P1.1", "P1.2", "P1.3", "P1.4", "P1.5", "P1.6", "P1.7", 
+  "P2.0", "P2.1", "P2.2", "P2.3", "P2.4", "P2.5", "P2.6", "P2.7",
+  "P3.0", "P3.1", "P3.2", "P3.3", "P3.4", "P3.5", "P3.6", "P3.7",
+  "VCC","GND","RST", "XTAL1", "XTAL2","NC", "NC", "NC" }
+};
+
+
+const unsigned char UCSIM_PORTS[5] = {0, 1, 2, 3, 0xFF};
+
+board_ucsim::board_ucsim(void)
+{
+ procid = -1;
+}
 
 void
 board_ucsim::MSetSerial(const char * port) {
@@ -44,18 +72,34 @@ board_ucsim::MSetSerial(const char * port) {
 int
 board_ucsim::MInit(const char * processor, const char * fname, float freq)
 {
+ char fbuff[20];
 
+ if (!strcmp ("C51", processor))
+  {
+   procid = PID_C51;
+  }
+ else if (!strcmp ("STM8S103", processor))
+  {
+   procid = PID_STM8S103;
+  }
+ else if (!strcmp ("Z80", processor))
+  {
+   procid = PID_Z80;
+  }
 
  pins_reset ();
 
- ucsim_init (S51,"C51", "8M", fname, "/dev/tnt2");
+ sprintf (fbuff, "%i", (int) freq);
 
- return 0; //ret;
+ int ret = ucsim_init (processor, fbuff, fname, SERIALDEVICE);
+
+ return ret;
 }
 
 void
-board_ucsim::MEnd(void) {
- ucsim_end(); //TODO
+board_ucsim::MEnd(void)
+{
+ ucsim_end (); //TODO
 }
 
 void
@@ -95,136 +139,16 @@ board_ucsim::MGetPinName(int pin)
 {
  String pinname = "error";
 
- switch (pin)
-  {
-  case 1:
-   pinname = "P1.0";
-   break;
-  case 2:
-   pinname = "P1.1";
-   break;
-  case 3:
-   pinname = "P1.2";
-   break;
-  case 4:
-   pinname = "P1.3";
-   break;
-  case 5:
-   pinname = "P1.4";
-   break;
-  case 6:
-   pinname = "P1.5";
-   break;
-  case 7:
-   pinname = "P1.6";
-   break;
-  case 8:
-   pinname = "P1.7";
-   break;
-  case 9:
-   pinname = "RST";
-   break;
-  case 10:
-   pinname = "P3.0";
-   break;
-  case 11:
-   pinname = "P3.1";
-   break;
-  case 12:
-   pinname = "P3.2";
-   break;
-  case 13:
-   pinname = "P3.3";
-   break;
-  case 14:
-   pinname = "P3.4";
-   break;
-  case 15:
-   pinname = "P3.5";
-   break;
-  case 16:
-   pinname = "P3.6";
-   break;
-  case 17:
-   pinname = "P3.7";
-   break;
-  case 18:
-   pinname = "XTAL2";
-   break;
-  case 19:
-   pinname = "XTAL1";
-   break;
-  case 20:
-   pinname = "GND";
-   break;
-  case 21:
-   pinname = "P2.0";
-   break;
-  case 22:
-   pinname = "P2.1";
-   break;
-  case 23:
-   pinname = "P2.2";
-   break;
-  case 24:
-   pinname = "P2.3";
-   break;
-  case 25:
-   pinname = "P2.4";
-   break;
-  case 26:
-   pinname = "P2.5";
-   break;
-  case 27:
-   pinname = "P2.6";
-   break;
-  case 28:
-   pinname = "P2.7";
-   break;
-  case 29:
-   pinname = "/PSEN";
-   break;
-  case 30:
-   pinname = "ALE";
-   break;
-  case 31:
-   pinname = "/EA";
-   break;
-  case 32:
-   pinname = "P0.7";
-   break;
-  case 33:
-   pinname = "P0.6";
-   break;
-  case 34:
-   pinname = "P0.5";
-   break;
-  case 35:
-   pinname = "P0.4";
-   break;
-  case 36:
-   pinname = "P0.3";
-   break;
-  case 37:
-   pinname = "P0.2";
-   break;
-  case 38:
-   pinname = "P0.1";
-   break;
-  case 39:
-   pinname = "P0.0";
-   break;
-  case 40:
-   pinname = "VCC";
-   break;
-  }
+ if ((pin)&&(pin <= MGetPinCount ()))
+  pinname = pinnames[procid][pin - 1];
+
  return pinname;
 }
 
 void
-board_ucsim::MDumpMemory(const char * fname) 
-{ 
-   ucsim_dump (fname);
+board_ucsim::MDumpMemory(const char * fname)
+{
+ ucsim_dump (fname);
 }
 
 int
@@ -236,44 +160,78 @@ board_ucsim::DebugInit(int dtyppe) //argument not used in picm only mplabx
 int
 board_ucsim::MGetPinCount(void)
 {
- return 40;
+ return pincount[procid];
 }
 
 void
 board_ucsim::pins_reset(void)
 {
- for (int p = 0; p < MGetPinCount (); p++)
+
+ if ((procid == PID_C51) || (procid == PID_Z80))
   {
-   String pname = MGetPinName (p + 1);
-   if (pname[0] == 'P')
+   for (int p = 0; p < MGetPinCount (); p++)
     {
-     pins[p].port = (unsigned char *)&UCSIM_PORTS[pname[1] - '0'];
-     pins[p].pord = pname[3] - '0';
+     String pname = MGetPinName (p + 1);
+     if (pname[0] == 'P')
+      {
+       pins[p].port = (unsigned char *) &UCSIM_PORTS[pname[1] - '0'];
+       pins[p].pord = pname[3] - '0';
+      }
+     else
+      {
+       pins[p].port = (unsigned char *) &UCSIM_PORTS[4];
+       pins[p].pord = -1;
+      }
+     pins[p].avalue = 0;
+     pins[p].lvalue = 0;
+     pins[p].value = 0;
+     pins[p].ptype = PT_CMOS;
+     pins[p].dir = PD_IN;
+     pins[p].ovalue = 0;
+     pins[p].oavalue = 0;
     }
-   else
+
+   //TODO
+   //VCC pins
+   //pins[6].value = 1;
+   //pins[19].value = 1;
+  }
+ else if (procid == PID_STM8S103)
+  {
+   for (int p = 0; p < MGetPinCount (); p++)
     {
-     pins[p].port = (unsigned char *)&UCSIM_PORTS[4];
-     pins[p].pord = -1;
+     String pname = MGetPinName (p + 1);
+     if (pname[0] == 'P')
+      {
+       pins[p].port = (unsigned char *) &UCSIM_PORTS[pname[1] - 'A'];
+       pins[p].pord = pname[2] - '0';
+      }
+     else
+      {
+       pins[p].port = (unsigned char *) &UCSIM_PORTS[4];
+       pins[p].pord = -1;
+      }
+     pins[p].avalue = 0;
+     pins[p].lvalue = 0;
+     pins[p].value = 0;
+     pins[p].ptype = PT_CMOS;
+     pins[p].dir = PD_IN;
+     pins[p].ovalue = 0;
+     pins[p].oavalue = 0;
     }
-   pins[p].avalue = 0;
-   pins[p].lvalue = 0;
-   pins[p].value = 0;
-   pins[p].ptype = PT_CMOS;
-   pins[p].dir = PD_IN;
-   pins[p].ovalue = 0;
-   pins[p].oavalue = 0;
+
+   //TODO
+   //VCC pins
+   //pins[6].value = 1;
+   //pins[19].value = 1;
   }
 
- //TODO
- //VCC pins
- //pins[6].value = 1;
- //pins[19].value = 1;
 }
 
 void
-board_ucsim::MSetPin(int pin, unsigned char value) 
-{ 
- ucsim_set_pin (*pins[pin-1].port, pins[pin-1].pord, value);
+board_ucsim::MSetPin(int pin, unsigned char value)
+{
+ ucsim_set_pin (*pins[pin - 1].port, pins[pin - 1].pord, value);
 }
 
 void
@@ -289,12 +247,12 @@ board_ucsim::MSetAPin(int pin, float value) {
 unsigned char
 board_ucsim::MGetPin(int pin)
 {
- return ucsim_get_pin (*pins[pin-1].port, pins[pin-1].pord);
+ return ucsim_get_pin (*pins[pin - 1].port, pins[pin - 1].pord);
 }
 
 void
-board_ucsim::MReset(int flags) 
-{ 
+board_ucsim::MReset(int flags)
+{
  ucsim_reset ();
 }
 
@@ -308,22 +266,22 @@ void
 board_ucsim::MStep(void)
 {
  unsigned char p[4];
- 
+
  ucsim_step ();
- 
- p[0]=ucsim_get_port (0);
- p[1]=ucsim_get_port (1);
- p[2]=ucsim_get_port (2);
- p[3]=ucsim_get_port (3);
- 
- for(int i=0; i< MGetPinCount (); i++)
+
+ p[0] = ucsim_get_port (0);
+ p[1] = ucsim_get_port (1);
+ p[2] = ucsim_get_port (2);
+ p[3] = ucsim_get_port (3);
+
+ for (int i = 0; i < MGetPinCount (); i++)
   {
-    if(*pins[i].port < 4)
-     {
-      pins[i].value = (p[*pins[i].port] &  (1<< pins[i].pord))>0;
-     }
+   if (*pins[i].port < 4)
+    {
+     pins[i].value = (p[*pins[i].port] & (1 << pins[i].pord)) > 0;
+    }
   }
- 
+
 }
 
 void

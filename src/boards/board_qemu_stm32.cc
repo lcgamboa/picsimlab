@@ -508,13 +508,10 @@ board_qemu_stm32::MStep(void)
 
  if (connected)
   {
-   if ((n = recv (sockfd, &buff, 1, 0)) < 0)
+   while ((n = recv (sockfd, &buff, 1, 0)) > 0)
     {
-     //printf ("receive error : %s \n", strerror (errno));
-     //exit (1);
-     return;
+      pins[(0x7F & buff) - 1].value = ((0x80 & buff) > 0);
     }
-   pins[(0x7F & buff) - 1].value = ((0x80 & buff) > 0);
   }
 }
 

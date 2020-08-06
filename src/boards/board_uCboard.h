@@ -23,8 +23,8 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_s51_H
-#define	BOARD_s51_H
+#ifndef BOARD_uCboard_H
+#define	BOARD_uCboard_H
 
 #include<lxrad.h>
 
@@ -34,7 +34,7 @@
 class cboard_uCboard:public board_ucsim
 {
    private:
-       lxBitmap * micbmp;
+       lxBitmap * micbmp;       
    public:
       //Constructor called once on board creation 
       cboard_uCboard(void);
@@ -44,7 +44,7 @@ class cboard_uCboard:public board_ucsim
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
-      String GetSupportedDevices(void){return lxT("C51,");};
+      String GetSupportedDevices(void){return lxT("C51,STM8S103,Z80,");};
       //Return the filename of board picture 
       String GetPictureFileName(void){return lxT("s51/board.png");};
       //Return the filename of board picture input map 
@@ -74,5 +74,6 @@ class cboard_uCboard:public board_ucsim
       unsigned short get_out_id(char * name);
 };
 
-#endif	/* BOARD_s51_H */
+
+#endif	/* BOARD_uCboard_H */
 

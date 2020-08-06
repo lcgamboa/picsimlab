@@ -61,6 +61,7 @@ class board_ucsim: virtual public board
       float serialexbaud;
       float freq;
       int serialfd;
+      int procid; 
 };
 
 #endif	/* BOARD_UCSIM_H */
