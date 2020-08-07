@@ -57,7 +57,12 @@ class board_qemu_stm32: virtual public board
       void pins_reset(void);
  protected:
       int qemu_cmd(const char * cmd, int raw =0);
+#ifdef _WIN_
+      HANDLE serialfd[4];
+#else
       int serialfd[4];
+#endif      
+      int procid; 
       picpin pins[256];
       unsigned int serialbaud; 
       float serialexbaud;

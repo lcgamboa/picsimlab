@@ -36,12 +36,12 @@ void setnblock(int sock_descriptor);
 #include<sys/un.h>
 #include<netinet/in.h>
 #include<arpa/inet.h>
+#include <lxrad/lxutils.h>
+#define INVALID_HANDLE_VALUE -1;
 #else
 #include<winsock2.h>
 #include<ws2tcpip.h>
-WORD wVersionRequested = 2;
-WSADATA wsaData;
-#define SHUT_RDWR SD_BOTH 
+#define _TCP_
 #endif
 
 board_qemu_stm32::board_qemu_stm32(void)
@@ -60,17 +60,17 @@ int
 board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
 {
  struct sockaddr_in servm;
- #ifdef _TCP_
-  struct sockaddr_in serv, cli;
+#ifdef _TCP_
+ struct sockaddr_in serv, cli;
 #else
-  struct sockaddr_un serv, cli;
+ struct sockaddr_un serv, cli;
 #endif
  char buff[100];
  int n;
  char fname_[300];
  char cmd[500];
- 
-  
+
+
 #ifdef _WIN_
  int clilen;
 #else
@@ -82,10 +82,10 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
 
  pins_reset ();
 
- serialfd[0] = -1;
- serialfd[1] = -1;
- serialfd[2] = -1;
- serialfd[3] = -1;
+ serialfd[0] = INVALID_HANDLE_VALUE;
+ serialfd[1] = INVALID_HANDLE_VALUE;
+ serialfd[2] = INVALID_HANDLE_VALUE;
+ serialfd[3] = INVALID_HANDLE_VALUE;
 
 #ifdef _TCP_
  if ((listenfd = socket (PF_INET, SOCK_STREAM, 0)) < 0)
@@ -103,19 +103,18 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
  serv.sin_addr.s_addr = htonl (INADDR_ANY);
  serv.sin_port = htons (2200);
 #else
-  if ((listenfd = socket (PF_UNIX, SOCK_STREAM, 0)) < 0)
-    {
-      printf ("socket error : %s \n", strerror (errno));
-      exit (1);
-    };
-  //unlink("/tmp/.picsimlab_qemu");
+ if ((listenfd = socket (PF_UNIX, SOCK_STREAM, 0)) < 0)
+  {
+   printf ("socket error : %s \n", strerror (errno));
+   exit (1);
+  }
 
-  memset (&serv, 0, sizeof (serv));
-  serv.sun_family = AF_UNIX;
-  serv.sun_path[0]=0;
-  strncpy(serv.sun_path+1, "picsimlab_qemu", sizeof(serv.sun_path)-2);
+ memset (&serv, 0, sizeof (serv));
+ serv.sun_family = AF_UNIX;
+ serv.sun_path[0] = 0;
+ strncpy (serv.sun_path + 1, "picsimlab_qemu", sizeof (serv.sun_path) - 2);
 #endif
-  
+
  if (bind (listenfd, (sockaddr *) & serv, sizeof (serv)) < 0)
   {
    printf ("bind error : %s \n", strerror (errno));
@@ -130,7 +129,7 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
 
  //change .hex to .bin
  strncpy (fname_, fname, 299);
- fname_[strlen (fname_) - 3]=0;
+ fname_[strlen (fname_) - 3] = 0;
  strncat (fname_, "bin", 299);
 
  if (!lxFileExists (fname_))
@@ -151,20 +150,39 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
     }
   }
 
- snprintf (cmd, 499, "cd %s; ./qemu-system-arm -M stm32-f103c8-picsimlab -pflash %s -serial %s -qmp tcp:localhost:2500,server,nowait &",
-             "/home/gamboa/projetos/qemu_stm32/arm-softmmu/",
-             fname_,
-             "/dev/tnt2"
-             );
-
- printf ("%s\n", (const char *)cmd);
+ //verify if qemu executable exists
+#ifdef _WIN_  
+ if( ! lxFileExists (Window1.GetSharePath () + lxT ("/../qemu-stm32.exe" )))
+#else
+ if((!lxFileExists("/usr/bin/qemu-stm32"))&&(!lxFileExists("/usr/local/bin/qemu-stm32")))
+#endif  
+  {
+   Message ("qemu-stm32 not found!");
+   close (listenfd);
+   return -1;
+  }
  
- system (cmd);
+ #ifdef _WIN_  
+ snprintf (cmd, 499, "qemu-stm32 -M stm32-f103c8-picsimlab -qmp tcp:localhost:2500,server,nowait  -pflash \"%s\"",
+             fname_
+           );
+#else
+ snprintf (cmd, 499, "qemu-stm32 -M stm32-f103c8-picsimlab -serial %s -qmp tcp:localhost:2500,server,nowait  -pflash \"%s\"",
+             SERIALDEVICE ,fname_
+           );
+#endif
+ 
+ printf ("%s\n", (const char *) cmd);
+#ifdef _WIN_  
+ lxExecute (Window1.GetSharePath () + lxT ("/../") + cmd);
+#else
+  lxExecute (cmd, lxEXEC_MAKE_GROUP_LEADER);
+#endif  
 
+  
  clilen = sizeof (cli);
  if (
-     (sockfd =
-      accept (listenfd, (sockaddr *) & cli, & clilen)) < 0)
+     (sockfd = accept (listenfd, (sockaddr *) & cli, & clilen)) < 0)
   {
    printf ("accept error : %s \n", strerror (errno));
    exit (1);
@@ -202,14 +220,15 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
  buff[n] = 0;
  printf ("%s", buff);
 
+ connected = 1;
+
  qemu_cmd ("qmp_capabilities");
 
- connected = 1;
- 
+
  Window1.menu1_File_LoadHex.SetText ("Load Bin");
  Window1.menu1_File_SaveHex.SetEnable (0);
- Window1.filedialog1.SetFileName(lxT("untitled.bin"));
- Window1.filedialog1.SetFilter(lxT("Bin Files (*.bin)|*.bin;*.BIN"));
+ Window1.filedialog1.SetFileName (lxT ("untitled.bin"));
+ Window1.filedialog1.SetFilter (lxT ("Bin Files (*.bin)|*.bin;*.BIN"));
 
  return 0; //ret;
 }
@@ -223,12 +242,18 @@ board_qemu_stm32::MEnd(void)
   }
  close (sockfd);
  connected = 0;
- 
+
  Window1.menu1_File_LoadHex.SetText ("Load Hex");
  Window1.menu1_File_SaveHex.SetEnable (1);
- Window1.filedialog1.SetFileName(lxT("untitled.hex"));
- Window1.filedialog1.SetFilter(lxT("Hex Files (*.hex)|*.hex;*.HEX"));
- sleep(1);
+ Window1.filedialog1.SetFileName (lxT ("untitled.hex"));
+ Window1.filedialog1.SetFilter (lxT ("Hex Files (*.hex)|*.hex;*.HEX"));
+ 
+//Wait for qemu shutdown
+#ifdef _WIN_ 
+ Sleep (1000);
+#else
+ sleep (1);
+#endif 
 }
 
 void
@@ -262,9 +287,7 @@ board_qemu_stm32::CpuInitialized(void)
 
 void
 board_qemu_stm32::DebugLoop(void) {
-
-}
-
+ }
 
 String
 board_qemu_stm32::MGetPinName(int pin)
@@ -429,7 +452,7 @@ board_qemu_stm32::MDumpMemory(const char * fname)
 
  //change .hex to .bin
  strncpy (fname_, fname, 299);
- fname_[strlen (fname_) - 3]=0;
+ fname_[strlen (fname_) - 3] = 0;
  strncat (fname_, "bin", 299);
 
  qemu_cmd ("stop");
@@ -443,7 +466,6 @@ board_qemu_stm32::DebugInit(int dtyppe) //argument not used in picm only mplabx
 {
  return 0; //!mplabxd_init (this, Window1.Get_debug_port ()) - 1;
 }
-
 
 int
 board_qemu_stm32::MGetPinCount(void)
@@ -477,10 +499,10 @@ board_qemu_stm32::MSetPin(int pin, unsigned char value)
  if ((connected)&&(pins[pin - 1].value != value))
   {
    unsigned char val = (0x7F & pin);
-   
-   if(value)
-      val|=0x80;
-   if (send (sockfd, &val, 1, 0) != 1)
+
+   if (value)
+    val |= 0x80;
+   if (send (sockfd, (const char *) &val, 1, 0) != 1)
     {
      printf ("send error : %s \n", strerror (errno));
      exit (1);
@@ -505,7 +527,6 @@ board_qemu_stm32::MGetPin(int pin)
  return 0; //get_pin (pin);
 }
 
-
 void
 board_qemu_stm32::MReset(int flags)
 {
@@ -514,7 +535,6 @@ board_qemu_stm32::MReset(int flags)
    qemu_cmd ("system_reset");
   }
 }
-
 
 const picpin *
 board_qemu_stm32::MGetPinsValues(void)
@@ -532,7 +552,7 @@ board_qemu_stm32::MStep(void)
   {
    while ((n = recv (sockfd, &buff, 1, 0)) > 0)
     {
-      pins[(0x7F & buff) - 1].value = ((0x80 & buff) > 0);
+     pins[(0x7F & buff) - 1].value = ((0x80 & buff) > 0);
     }
   }
 }
@@ -542,7 +562,6 @@ board_qemu_stm32::MStepResume(void) {
  //if (pic.s2 == 1)step ();
 }
 
-
 int
 board_qemu_stm32::qemu_cmd(const char * cmd, int raw)
 {
@@ -551,6 +570,7 @@ board_qemu_stm32::qemu_cmd(const char * cmd, int raw)
  char buffout[400];
  unsigned int size;
 
+ if (!connected) return -1;
  /*
  //clear messages
   if ((n = recv (sockmon, buffout, 399, 0)) < 0)
@@ -560,8 +580,8 @@ board_qemu_stm32::qemu_cmd(const char * cmd, int raw)
  buffout[n] = 0;
 
  printf ("(%s)=(%s) \n", buffin, buffout);
- */
- 
+  */
+
  if (raw)
   {
    strcpy (buffin, cmd);
@@ -579,7 +599,11 @@ board_qemu_stm32::qemu_cmd(const char * cmd, int raw)
    exit (1);
   }
 
+#ifdef _WIN_
+ Sleep (1);
+#else 
  usleep (1000);
+#endif
 
  if ((n = recv (sockmon, buffout, 399, 0)) < 0)
   {

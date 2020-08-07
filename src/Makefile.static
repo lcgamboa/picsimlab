@@ -18,10 +18,12 @@ override CFLAGS += -D_VERSION_=\"$(VERSION)\" -Wall -O2 -D_SHARE_=\"${sharedir}\
 override CFLAGS+= -DEXT_BROWSER
 #override CFLAGS+=-fsanitize=address
 
+ELIBS_= $(addsuffix .a ,$(ELIBS))
+
 LIBS=  ../../picsim/src/libpicsim.a ../../lxrad/lib/liblxrad.a  \
        ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a\
       -lopenal `wx-config --libs` `wx-config --libs stc` 
-LIBS+= $(ELIBS)
+LIBS+= $(ELIBS_)
 
 #lxrad automatic generated block end, don't edit above!
 

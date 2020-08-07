@@ -46,8 +46,8 @@
 #include <fcntl.h>
 #else
 #include<winsock.h>
-WORD wVersionRequested = 2;
-WSADATA wsaData;
+static WORD wVersionRequested = 2;
+static WSADATA wsaData;
 #ifndef MSG_WAITALL
 #define MSG_WAITALL (1 << 3)
 #endif
@@ -100,7 +100,7 @@ initialize_socket(void)
  if (wsaData.wVersion != wVersionRequested)
   {
    fprintf (stderr, "\n Wrong version\n");
-   return 1;
+   return;
   }
 }
 

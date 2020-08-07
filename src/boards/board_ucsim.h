@@ -60,7 +60,11 @@ class board_ucsim: virtual public board
       unsigned int serialbaud; 
       float serialexbaud;
       float freq;
+#ifdef _WIN_
+      HANDLE serialfd;
+#else
       int serialfd;
+#endif      
       int procid; 
 };
 

@@ -96,7 +96,7 @@ cboard_Blue_Pill::Reset(void)
 #ifndef _WIN_
  if (serialfd[0] > 0)
 #else
- if (serial[0].serialfd != INVALID_HANDLE_VALUE)
+ if (serialfd[0] != INVALID_HANDLE_VALUE)
 #endif
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +
@@ -118,7 +118,7 @@ cboard_Blue_Pill::RefreshStatus(void)
 #ifndef _WIN_
  if (serialfd[0] > 0)
 #else
- if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
+ if (serialfd[0] != INVALID_HANDLE_VALUE)
 #endif
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +
