@@ -29,6 +29,7 @@
 
 void setblock(int sock_descriptor);
 void setnblock(int sock_descriptor);
+char * serial_list(void);
 
 #ifndef _WIN_
 #include<sys/types.h>
@@ -68,7 +69,7 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
  char buff[100];
  int n;
  char fname_[300];
- char cmd[500];
+ char cmd[600];
 
 
 #ifdef _WIN_
@@ -152,34 +153,41 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
 
  //verify if qemu executable exists
 #ifdef _WIN_  
- if( ! lxFileExists (Window1.GetSharePath () + lxT ("/../qemu-stm32.exe" )))
+ if (!lxFileExists (Window1.GetSharePath () + lxT ("/../qemu-stm32.exe")))
 #else
- if((!lxFileExists("/usr/bin/qemu-stm32"))&&(!lxFileExists("/usr/local/bin/qemu-stm32")))
+ if ((!lxFileExists ("/usr/bin/qemu-stm32"))&&(!lxFileExists ("/usr/local/bin/qemu-stm32")))
 #endif  
   {
    Message ("qemu-stm32 not found!");
    close (listenfd);
    return -1;
   }
+
+ char * resp = serial_list ();
+
+ //verify if serial port exists
+ if (strstr (resp, SERIALDEVICE))
+  {
+   snprintf (cmd, 599, "qemu-stm32 -M stm32-f103c8-picsimlab -serial %s -qmp tcp:localhost:2500,server,nowait  -gdb tcp::%i -pflash \"%s\"",
+             SERIALDEVICE, Window1.Get_debug_port (), fname_);
+
+  }
+ else
+  {
+   snprintf (cmd, 599, "qemu-stm32 -M stm32-f103c8-picsimlab -qmp tcp:localhost:2500,server,nowait -gdb tcp::%i -pflash \"%s\"",
+             Window1.Get_debug_port (), fname_ );
+  }
  
- #ifdef _WIN_  
- snprintf (cmd, 499, "qemu-stm32 -M stm32-f103c8-picsimlab -qmp tcp:localhost:2500,server,nowait  -pflash \"%s\"",
-             fname_
-           );
-#else
- snprintf (cmd, 499, "qemu-stm32 -M stm32-f103c8-picsimlab -serial %s -qmp tcp:localhost:2500,server,nowait  -pflash \"%s\"",
-             SERIALDEVICE ,fname_
-           );
-#endif
- 
+ free(resp);
+
  printf ("%s\n", (const char *) cmd);
 #ifdef _WIN_  
  lxExecute (Window1.GetSharePath () + lxT ("/../") + cmd);
 #else
-  lxExecute (cmd, lxEXEC_MAKE_GROUP_LEADER);
+ lxExecute (cmd, lxEXEC_MAKE_GROUP_LEADER);
 #endif  
 
-  
+
  clilen = sizeof (cli);
  if (
      (sockfd = accept (listenfd, (sockaddr *) & cli, & clilen)) < 0)
@@ -247,8 +255,8 @@ board_qemu_stm32::MEnd(void)
  Window1.menu1_File_SaveHex.SetEnable (1);
  Window1.filedialog1.SetFileName (lxT ("untitled.hex"));
  Window1.filedialog1.SetFilter (lxT ("Hex Files (*.hex)|*.hex;*.HEX"));
- 
-//Wait for qemu shutdown
+
+ //Wait for qemu shutdown
 #ifdef _WIN_ 
  Sleep (1000);
 #else
@@ -286,8 +294,7 @@ board_qemu_stm32::CpuInitialized(void)
 }
 
 void
-board_qemu_stm32::DebugLoop(void) {
- }
+board_qemu_stm32::DebugLoop(void) { }
 
 String
 board_qemu_stm32::MGetPinName(int pin)

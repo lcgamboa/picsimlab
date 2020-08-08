@@ -91,7 +91,7 @@ board_ucsim::MInit(const char * processor, const char * fname, float freq)
 
  sprintf (fbuff, "%i", (int) freq);
 
- int ret = ucsim_init (processor, fbuff, fname, SERIALDEVICE);
+ int ret = ucsim_init (processor, fbuff, fname, SERIALDEVICE, Window1.Get_debug_port ());
 
  return ret;
 }
