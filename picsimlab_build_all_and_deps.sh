@@ -69,7 +69,7 @@ cd ../../
 echo -e "\033[1;32m ---------------------- build and install qemu_stm32 --------------------- \033[0m"
 cd qemu_stm32
 cl git checkout picsimlab
-cl ./configure 
+cl ./configure --target-list="arm-softmmu" --disable-werror --disable-sdl --disable-vnc --disable-docs --disable-blobs --static --disable-virtfs --disable-libusb --disable-libnfs --disable-vhost-net --disable-vde --disable-bluez --disable-curses --disable-gtk
 cl make clean;make -j4
 cl cd arm-softmmu
 cl sudo cp qemu-system-arm /usr/local/bin/qemu-stm32
