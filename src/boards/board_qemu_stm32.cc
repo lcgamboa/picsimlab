@@ -257,8 +257,8 @@ board_qemu_stm32::MEnd(void)
 {
  if (connected)
   {
-   connected = 0;
    qemu_cmd ("quit");
+   connected = 0;
   }
  if (sockfd >= 0)close (sockfd);
  if (sockmon >= 0)close (sockmon);
