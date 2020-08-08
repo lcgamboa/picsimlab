@@ -51,7 +51,8 @@ class cboard_Curiosity_HPC:public board_picsim
         CLabel *label3;   //label of gauge RA5
         CLabel *label4;   //label of gauge RA6
         CLabel *label5;   //label of gauge RA7
-
+        CLabel *label6;   //label of second serial
+        CCombo *combo1;  //combo of second serial
 
     public:
       //Constructor called once on board creation 
@@ -90,6 +91,8 @@ class cboard_Curiosity_HPC:public board_picsim
       unsigned short get_in_id(char * name);
       //return the output ids numbers of names used in output map
       unsigned short get_out_id(char * name);
+      //Set Serial port name
+      void MSetSerial(const char * port);
 };
 
 #endif  /* BOARD_Curiosity_HPC_H */

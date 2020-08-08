@@ -30,6 +30,9 @@
 #include"../picsimlab5.h"   //Spare Parts
 #include"board_Curiosity_HPC.h"
 
+char *
+serial_list(void);
+
 /* ids of inputs of input map*/
 enum
 {
@@ -231,6 +234,36 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void)
  label5->SetText (lxT ("RA7"));
  label5->SetAlign (1);
  Window1.CreateChild (label5);
+ //label6
+ label6 = new CLabel ();
+ label6->SetFOwner (&Window1);
+ label6->SetName (lxT ("label6_p8"));
+ label6->SetX (13);
+ label6->SetY (305 + 30 - 120);
+ label6->SetWidth (150);
+ label6->SetHeight (20);
+ label6->SetEnable (1);
+ label6->SetVisible (1);
+ label6->SetText (lxT ("Second serial port:"));
+ label6->SetAlign (1);
+ Window1.CreateChild (label6);
+ //combo1
+ combo1 = new CCombo ();
+ combo1->SetFOwner (&Window1);
+ combo1->SetName (lxT ("combo1_p8"));
+ combo1->SetX (13);
+ combo1->SetY (305 + 55 - 120);
+ combo1->SetWidth (150);
+ combo1->SetHeight (20);
+ combo1->SetEnable (1);
+ combo1->SetVisible (1);
+#ifndef _WIN_   
+ combo1->SetText (lxT ("/dev/tnt4"));
+#else    
+ combo1->SetText (lxT ("COM2"));
+#endif  
+ combo1->SetItems (serial_list ());
+ Window1.CreateChild (combo1);
 }
 
 //Destructor called once on board destruction 
@@ -248,7 +281,17 @@ cboard_Curiosity_HPC::~cboard_Curiosity_HPC(void)
  Window1.DestroyChild (label3);
  Window1.DestroyChild (label4);
  Window1.DestroyChild (label5);
+ Window1.DestroyChild (label6);
+ Window1.DestroyChild (combo1);
 }
+
+void
+cboard_Curiosity_HPC::MSetSerial(const char * port)
+{
+ pic_set_serial (&pic,0, port, 0, 0, 0);
+ pic_set_serial (&pic,1, combo1->GetText (), 0, 0, 0);
+}
+
 
 //Reset board status
 
@@ -312,7 +355,8 @@ cboard_Curiosity_HPC::WritePreferences(void)
  //write selected microcontroller of board_Curiosity_HPC to preferences
  Window1.saveprefs (lxT ("Curiosity_HPC_proc"), Proc);
  Window1.saveprefs (lxT ("Curiosity_HPC_jmp"), String ().Format ("%i", jmp[0]));
- Window1.saveprefs (lxT ("Curiosity_HPC_clock"), String ().Format ("%2.1f", Window1.GetClock()));
+ Window1.saveprefs (lxT ("Curiosity_HPC_clock"), String ().Format ("%2.1f", Window1.GetClock ()));
+ Window1.saveprefs (lxT ("Curiosity_HPC_serial2"), combo1->GetText ());
 }
 
 //Called whe configuration file load  preferences 
@@ -337,9 +381,14 @@ cboard_Curiosity_HPC::ReadPreferences(char *name, char *value)
       jmp[i] = 1;
     }
   }
-  if (!strcmp (name, "Curiosity_HPC_clock"))
+ if (!strcmp (name, "Curiosity_HPC_clock"))
   {
-   Window1.SetClock (atof(value));
+   Window1.SetClock (atof (value));
+  }
+ if (!strcmp (name, "Curiosity_HPC_serial2"))
+  {
+   combo1->SetText (value);
+   pic_set_serial (&pic,1, value , 0, 0, 0);
   }
 }
 
