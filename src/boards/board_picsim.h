@@ -34,6 +34,7 @@ class board_picsim: virtual public board
 {
   public:
       int DebugInit(int dtyppe); 
+      String GetDebugName(void){return "MDB";};
       void DebugLoop(void);
       int CpuInitialized(void);
       void MSetSerial(const char * port);

@@ -534,6 +534,21 @@ cboard_Breadboard::DebugInit(int dtyppe)
  return 0;
 }
 
+String
+cboard_Breadboard::GetDebugName(void)
+{
+ switch (ptype)
+  {
+  case _PIC:
+   return board_picsim::GetDebugName ();
+   break;
+  case _AVR:
+   return board_simavr::GetDebugName ();
+   break;
+  }
+ return "";
+}
+
 void
 cboard_Breadboard::DebugLoop(void)
 {

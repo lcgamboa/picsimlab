@@ -42,6 +42,7 @@ class cboard_Breadboard:public board_picsim, public board_simavr
       lxBitmap * micbmp;
    public:
       int DebugInit(int dtyppe); 
+      String GetDebugName(void);
       void DebugLoop(void);
       int CpuInitialized(void);
       void MSetSerial(const char * port);

@@ -383,6 +383,20 @@ board_simavr::DebugInit(int dtyppe)
   }
 }
 
+
+String 
+board_simavr::GetDebugName(void)
+{
+ if (avr_debug_type)
+  {
+   return "GDB";
+  }
+ else
+  {
+   return "MDB";
+  }
+}
+
 void
 board_simavr::DebugLoop(void)
 {

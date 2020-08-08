@@ -207,6 +207,11 @@ class board
      * @brief Start debug support  
      */ 
       virtual int DebugInit(int dtyppe)=0;
+      
+     /**
+     * @brief Get debug interface name  
+     */ 
+      virtual String GetDebugName(void)=0;
         
      /**
      * @brief debug step (pooling)  

@@ -34,6 +34,7 @@ class board_ucsim: virtual public board
   public:
       board_ucsim(void);
       int DebugInit(int dtyppe); 
+      String GetDebugName(void){return "uCsim";};
       void DebugLoop(void);
       int CpuInitialized(void);
       void MSetSerial(const char * port);

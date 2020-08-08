@@ -478,14 +478,7 @@ CPWindow1::Configure(CControl * control, const char * home)
     }
    else
     {
-     if (ret)
-      {
-       statusbar1.SetField (1, status + lxT ("Debug: GDB:") + itoa (debug_port));
-      }
-     else
-      {
-       statusbar1.SetField (1, status + lxT ("Debug: MDB:") + itoa (debug_port));
-      }
+     statusbar1.SetField (1, status + lxT ("Debug: ")+pboard->GetDebugName() +":"+ itoa (debug_port));
     }
   }
  else

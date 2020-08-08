@@ -46,6 +46,7 @@ class board_simavr: virtual public board
   public:
       board_simavr(void);//Called once on board creation
       int DebugInit(int dtyppe); 
+      String GetDebugName(void);
       void DebugLoop(void);
       int CpuInitialized(void);
       void MSetSerial(const char * port);
