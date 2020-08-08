@@ -20,8 +20,7 @@ git clone https://github.com/lcgamboa/picsim.git
 git clone https://github.com/lcgamboa/lxrad.git
 git clone https://github.com/lcgamboa/tty0tty.git
 git clone https://github.com/lcgamboa/simavr.git
-if [[ -z "$BUILD_EXPERIMETAL" ]]; then
-else
+if [[ -n "$BUILD_EXPERIMETAL" ]]; then
 git clone https://github.com/lcgamboa/uCsim_picsimlab.git
 git clone https://github.com/lcgamboa/qemu_stm32.git
 fi	
