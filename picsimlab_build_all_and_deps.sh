@@ -69,6 +69,7 @@ cl make clean;make -j4
 cd ../../
 echo -e "\033[1;32m ---------------------- build and install qemu_stm32 --------------------- \033[0m"
 cd qemu_stm32
+cl git checkout picsimlab
 cl ./configure 
 cl make clean;make -j4
 cl cd arm-softmmu
