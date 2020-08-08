@@ -3,6 +3,10 @@
 set -o pipefail
 cl()("$@" 2>&1>&3|sed $'s,.*,\e[31m&\e[m,'>&2)3>&1
 
+if [ "$#" -ne 0 ]; then
+BUILD_EXPERIMETAL=1
+fi
+
 echo -e "\033[1;32m ---------------------- update and install packages ---------------------- \033[0m"
 cl sudo apt-get update
 cl sudo apt-get -y upgrade
@@ -16,38 +20,66 @@ git clone https://github.com/lcgamboa/picsim.git
 git clone https://github.com/lcgamboa/lxrad.git
 git clone https://github.com/lcgamboa/tty0tty.git
 git clone https://github.com/lcgamboa/simavr.git
-cd picsim
+if [[ -z "$BUILD_EXPERIMETAL" ]]; then
+else
+git clone https://github.com/lcgamboa/uCsim_picsimlab.git
+git clone https://github.com/lcgamboa/qemu_stm32.git
+fi	
 echo -e "\033[1;32m ---------------------- build and install picsim ------------------------- \033[0m"
+cd picsim
 cl git pull
 cl make clean;make -j4
 cl sudo make install
 cd ..
-cd lxrad
 echo -e "\033[1;32m ---------------------- build and install lxrad -------------------------- \033[0m"
+cd lxrad
 git pull
 cl autoconf
 cl ./configure --prefix=/usr
 cl make clean;make -j4
 cl sudo make install
 cd ..
-cd tty0tty/module
 echo -e "\033[1;32m ---------------------- build and install tty0tty ------------------------ \033[0m"
+cd tty0tty/module
 git pull
 cl sudo ./dkms-install.sh
 #cl make clean;make -j4
 #cl sudo make install
 sudo usermod -a -G dialout `whoami`
 cd ../../
-cd simavr
 echo -e "\033[1;32m ---------------------- build and install simavr ------------------------- \033[0m"
+cd simavr
 git pull
 cl make clean;make -j4 
 cl sudo make install
-cd ../../
+cd ../
+if [[ -z "$BUILD_EXPERIMETAL" ]]; then
 echo -e "\033[1;32m ---------------------- build and install picsimlab ---------------------- \033[0m"
+cd ../
 #git pull
 cl make clean;make -j4
 cl sudo make install
+else	
+echo -e "\033[1;32m ---------------------- build and uCsim ---------------------------------- \033[0m"
+cd uCsim_picsimlab
+cl ./configure
+cl make clean;make -j4
+cd picsimlab
+cl make clean;make -j4
+cd ../../
+echo -e "\033[1;32m ---------------------- build and install qemu_stm32 --------------------- \033[0m"
+cd qemu_stm32
+cl ./configure 
+cl make clean;make -j4
+cl cd arm-softmmu
+cl sudo cp qemu-system-arm /usr/local/bin/qemu-stm32
+cd ../../
+echo -e "\033[1;32m ---------------------- build and install picsimlab ---------------------- \033[0m"
+#git pull
+cd ../
+cl make clean;make -j4 exp
+cl sudo make install
+fi
 user=`whoami`
 cl sudo usermod -a -G dialout $user
 echo -e "\033[1;32m ---------------------- done! -------------------------------------------- \033[0m"
