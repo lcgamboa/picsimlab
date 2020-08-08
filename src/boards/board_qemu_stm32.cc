@@ -48,6 +48,15 @@ char * serial_list(void);
 board_qemu_stm32::board_qemu_stm32(void)
 {
  connected = 0;
+ listenfd = -1;
+ sockfd = -1;
+ sockmon = -1;
+}
+
+board_qemu_stm32::~board_qemu_stm32(void)
+{
+ if (listenfd >= 0)close (listenfd);
+ listenfd = -1;
 }
 
 void
@@ -88,44 +97,47 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
  serialfd[2] = INVALID_HANDLE_VALUE;
  serialfd[3] = INVALID_HANDLE_VALUE;
 
+ if (listenfd < 0)
+  {
 #ifdef _TCP_
- if ((listenfd = socket (PF_INET, SOCK_STREAM, 0)) < 0)
-  {
-   printf ("socket error : %s \n", strerror (errno));
-   exit (1);
-  }
+   if ((listenfd = socket (PF_INET, SOCK_STREAM, 0)) < 0)
+    {
+     printf ("socket error : %s \n", strerror (errno));
+     exit (1);
+    }
 
- int reuse = 1;
- if (setsockopt (listenfd, SOL_SOCKET, SO_REUSEADDR, (const char*) &reuse, sizeof (reuse)) < 0)
-  perror ("setsockopt(SO_REUSEADDR) failed");
+   int reuse = 1;
+   if (setsockopt (listenfd, SOL_SOCKET, SO_REUSEADDR, (const char*) &reuse, sizeof (reuse)) < 0)
+    perror ("setsockopt(SO_REUSEADDR) failed");
 
- memset (&serv, 0, sizeof (serv));
- serv.sin_family = AF_INET;
- serv.sin_addr.s_addr = htonl (INADDR_ANY);
- serv.sin_port = htons (2200);
+   memset (&serv, 0, sizeof (serv));
+   serv.sin_family = AF_INET;
+   serv.sin_addr.s_addr = htonl (INADDR_ANY);
+   serv.sin_port = htons (2200);
 #else
- if ((listenfd = socket (PF_UNIX, SOCK_STREAM, 0)) < 0)
-  {
-   printf ("socket error : %s \n", strerror (errno));
-   exit (1);
-  }
+   if ((listenfd = socket (PF_UNIX, SOCK_STREAM, 0)) < 0)
+    {
+     printf ("socket error : %s \n", strerror (errno));
+     exit (1);
+    }
 
- memset (&serv, 0, sizeof (serv));
- serv.sun_family = AF_UNIX;
- serv.sun_path[0] = 0;
- strncpy (serv.sun_path + 1, "picsimlab_qemu", sizeof (serv.sun_path) - 2);
+   memset (&serv, 0, sizeof (serv));
+   serv.sun_family = AF_UNIX;
+   serv.sun_path[0] = 0;
+   strncpy (serv.sun_path + 1, "picsimlab_qemu", sizeof (serv.sun_path) - 2);
 #endif
 
- if (bind (listenfd, (sockaddr *) & serv, sizeof (serv)) < 0)
-  {
-   printf ("bind error : %s \n", strerror (errno));
-   exit (1);
-  }
+   if (bind (listenfd, (sockaddr *) & serv, sizeof (serv)) < 0)
+    {
+     printf ("bind error : %s \n", strerror (errno));
+     exit (1);
+    }
 
- if (listen (listenfd, SOMAXCONN) < 0)
-  {
-   printf ("listen error : %s \n", strerror (errno));
-   exit (1);
+   if (listen (listenfd, SOMAXCONN) < 0)
+    {
+     printf ("listen error : %s \n", strerror (errno));
+     exit (1);
+    }
   }
 
  //change .hex to .bin
@@ -160,6 +172,7 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
   {
    Message ("qemu-stm32 not found!");
    close (listenfd);
+   listenfd = -1;
    return -1;
   }
 
@@ -175,10 +188,10 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
  else
   {
    snprintf (cmd, 599, "qemu-stm32 -M stm32-f103c8-picsimlab -qmp tcp:localhost:2500,server,nowait -gdb tcp::%i -pflash \"%s\"",
-             Window1.Get_debug_port (), fname_ );
+             Window1.Get_debug_port (), fname_);
   }
- 
- free(resp);
+
+ free (resp);
 
  printf ("%s\n", (const char *) cmd);
 #ifdef _WIN_  
@@ -195,8 +208,6 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
    printf ("accept error : %s \n", strerror (errno));
    exit (1);
   }
-
- close (listenfd);
 
  printf ("Qemu connected!\n");
 
@@ -246,10 +257,14 @@ board_qemu_stm32::MEnd(void)
 {
  if (connected)
   {
+   connected = 0;
    qemu_cmd ("quit");
   }
- close (sockfd);
- connected = 0;
+ if (sockfd >= 0)close (sockfd);
+ if (sockmon >= 0)close (sockmon);
+
+ sockfd = -1;
+ sockmon = -1;
 
  Window1.menu1_File_LoadHex.SetText ("Load Hex");
  Window1.menu1_File_SaveHex.SetEnable (1);

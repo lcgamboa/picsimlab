@@ -33,6 +33,7 @@ class board_qemu_stm32: virtual public board
 {
   public:
       board_qemu_stm32(void);
+      ~board_qemu_stm32(void);
       int DebugInit(int dtyppe); 
       String GetDebugName(void){return "GDB";};
       void DebugLoop(void);
