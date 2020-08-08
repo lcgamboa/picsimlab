@@ -24,7 +24,7 @@
    ######################################################################## */
 
 
-#include "../../../ucsim-0.6/picsimlab/ucsimlib.h"
+#include "../../ucsim/picsimlab/ucsimlib.h"
 
 #include "board_ucsim.h"
 #include"../picsimlab1.h"
