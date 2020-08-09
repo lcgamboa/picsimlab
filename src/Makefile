@@ -42,8 +42,9 @@ install: all
 	${MKDIR} ${sharedir}
 	${MKDIR} ${sharedir}docs/
 	$(CP) -dvf  ../share/picsimlab.desktop ${appdir} 
-	$(CP) -drvf ../share/* ${sharedir} 
+	$(CP) -drvf ../share/* ${sharedir}
 	$(CP) -dvf picsimlab ${execdir}
+	strip ${execdir}picsimlab	
 	xdg-icon-resource install --context mimetypes --size 48 ../share/application-x-picsimlab-workspace.png application-x-picsimlab-workspace
 	xdg-mime install --mode system ../share/application-x-picsimlab-workspace.xml
 	xdg-mime default picsimlab.desktop application/x-picsimlab-workspace
