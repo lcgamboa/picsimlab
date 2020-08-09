@@ -45,18 +45,20 @@ char * serial_list(void);
 #define _TCP_
 #endif
 
+static int listenfd = -1;
+
 board_qemu_stm32::board_qemu_stm32(void)
 {
  connected = 0;
- listenfd = -1;
  sockfd = -1;
  sockmon = -1;
+ fname_bak[0]=0;
+ fname_[0]=0;
 }
 
 board_qemu_stm32::~board_qemu_stm32(void)
 {
- if (listenfd >= 0)close (listenfd);
- listenfd = -1;
+
 }
 
 void
@@ -171,8 +173,6 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
 #endif  
   {
    Message ("qemu-stm32 not found!");
-   close (listenfd);
-   listenfd = -1;
    return -1;
   }
 
@@ -181,13 +181,13 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
  //verify if serial port exists
  if (strstr (resp, SERIALDEVICE))
   {
-   snprintf (cmd, 599, "qemu-stm32 -M stm32-f103c8-picsimlab -serial %s -qmp tcp:localhost:2500,server,nowait  -gdb tcp::%i -pflash \"%s\"",
+   snprintf (cmd, 599, "qemu-stm32 -S -M stm32-f103c8-picsimlab -serial %s -qmp tcp:localhost:2500,server,nowait  -gdb tcp::%i -pflash \"%s\"",
              SERIALDEVICE, Window1.Get_debug_port (), fname_);
 
   }
  else
   {
-   snprintf (cmd, 599, "qemu-stm32 -M stm32-f103c8-picsimlab -qmp tcp:localhost:2500,server,nowait -gdb tcp::%i -pflash \"%s\"",
+   snprintf (cmd, 599, "qemu-stm32 -S -M stm32-f103c8-picsimlab -qmp tcp:localhost:2500,server,nowait -gdb tcp::%i -pflash \"%s\"",
              Window1.Get_debug_port (), fname_);
   }
 
@@ -239,7 +239,7 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
  buff[n] = 0;
  printf ("%s", buff);
 
- connected = 1;
+
 
  qemu_cmd ("qmp_capabilities");
 
@@ -248,7 +248,10 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
  Window1.menu1_File_SaveHex.SetEnable (0);
  Window1.filedialog1.SetFileName (lxT ("untitled.bin"));
  Window1.filedialog1.SetFilter (lxT ("Bin Files (*.bin)|*.bin;*.BIN"));
-
+ 
+ qemu_cmd ("cont");
+ connected = 1;
+  
  return 0; //ret;
 }
 
@@ -258,8 +261,8 @@ board_qemu_stm32::MEnd(void)
  if (connected)
   {
    qemu_cmd ("quit");
-   connected = 0;
   }
+ connected = 0;
  if (sockfd >= 0)close (sockfd);
  if (sockmon >= 0)close (sockmon);
 
@@ -271,12 +274,15 @@ board_qemu_stm32::MEnd(void)
  Window1.filedialog1.SetFileName (lxT ("untitled.hex"));
  Window1.filedialog1.SetFilter (lxT ("Hex Files (*.hex)|*.hex;*.HEX"));
 
- //Wait for qemu shutdown
-#ifdef _WIN_ 
- Sleep (1000);
+ #ifdef _WIN_
+ Sleep(200);
 #else
- sleep (1);
-#endif 
+ usleep(200000);
+#endif
+ if(fname_bak[0])
+  {
+    lxRenameFile (fname_bak,fname_);
+  }
 }
 
 void
@@ -470,15 +476,23 @@ void
 board_qemu_stm32::MDumpMemory(const char * fname)
 {
  char cmd[500];
- char fname_[300];
 
  //change .hex to .bin
  strncpy (fname_, fname, 299);
- fname_[strlen (fname_) - 3] = 0;
+ strncpy (fname_bak, fname, 299);
+ fname_[strlen (fname) - 3] = 0;
+ fname_bak[strlen (fname) - 3] = 0;
  strncat (fname_, "bin", 299);
-
+ strncat (fname_bak, "bak", 299);
+#ifdef _WIN_
+ for(int i=0; i < strlen(fname_);i++)
+  {
+   if(fname_[i] == '\\')fname_[i]='/';
+   if(fname_bak[i] == '\\')fname_bak[i]='/';
+  }
+#endif 
  qemu_cmd ("stop");
- snprintf (cmd, 500, "{ \"execute\": \"pmemsave\",\"arguments\": { \"val\": 134217728, \"size\": 65536, \"filename\": \"%s\" } }\n", fname_);
+ snprintf (cmd, 500, "{ \"execute\": \"pmemsave\",\"arguments\": { \"val\": 134217728, \"size\": 65536, \"filename\": \"%s\" } }\n", fname_bak);
  qemu_cmd (cmd, 1);
  qemu_cmd ("cont");
 }
@@ -591,8 +605,11 @@ board_qemu_stm32::qemu_cmd(const char * cmd, int raw)
  char buffin[400];
  char buffout[400];
  unsigned int size;
+ int connected_;
 
- if (!connected) return -1;
+ if (sockmon < 0) return -1;
+ connected_ = connected;
+ connected = 0;
  /*
  //clear messages
   if ((n = recv (sockmon, buffout, 399, 0)) < 0)
@@ -634,5 +651,7 @@ board_qemu_stm32::qemu_cmd(const char * cmd, int raw)
  buffout[n] = 0;
 
  printf ("(%s)=(%s) \n", buffin, buffout);
+ 
+ connected = connected_;
  return 0;
 }

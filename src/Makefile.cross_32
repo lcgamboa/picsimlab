@@ -2,6 +2,7 @@ include Makefile.Common
 
 CC = i686-w64-mingw32-g++
 WINDRES =  i686-w64-mingw32-windres  
+STRIP =  i686-w64-mingw32-strip
 
 override CFLAGS+= -Wall -O3 -D_WIN_ -I../dev_w32/include -I../dev_w32/include/lxrad -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  
 override CFLAGS+= -DEXT_BROWSER
@@ -19,6 +20,7 @@ LIBS+= -Wl,--subsystem,windows -mwindows -lwx_mswu_xrc-3.1-i686-w64-mingw32 -lwx
 all: $(OBJS)
 	$(WINDRES) picsimlab_res.rc  -O coff -o picsimlab_res.o
 	$(CC) $(CFLAGS) $(OBJS) picsimlab_res.o -opicsimlab.exe $(LIBS)
+	$(STRIP) picsimlab.exe
 	mv *.exe ../picsimlab_win32/
 
 %.o: %.cc
