@@ -104,7 +104,7 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
 #ifdef _TCP_
    if ((listenfd = socket (PF_INET, SOCK_STREAM, 0)) < 0)
     {
-     printf ("socket error : %s \n", strerror (errno));
+     printf ("picsimlab: socket error : %s \n", strerror (errno));
      exit (1);
     }
 
@@ -119,7 +119,7 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
 #else
    if ((listenfd = socket (PF_UNIX, SOCK_STREAM, 0)) < 0)
     {
-     printf ("socket error : %s \n", strerror (errno));
+     printf ("picsimlab: socket error : %s \n", strerror (errno));
      exit (1);
     }
 
@@ -131,13 +131,13 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
 
    if (bind (listenfd, (sockaddr *) & serv, sizeof (serv)) < 0)
     {
-     printf ("bind error : %s \n", strerror (errno));
+     printf ("picsimlab: bind error : %s \n", strerror (errno));
      exit (1);
     }
 
    if (listen (listenfd, SOMAXCONN) < 0)
     {
-     printf ("listen error : %s \n", strerror (errno));
+     printf ("picsimlab: listen error : %s \n", strerror (errno));
      exit (1);
     }
   }
@@ -160,7 +160,7 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
     }
    else
     {
-     printf ("Erro creating file %s \n", fname_);
+     printf ("picsimlab: Erro creating file %s \n", fname_);
      exit (-1);
     }
   }
@@ -193,7 +193,7 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
 
  free (resp);
 
- printf ("%s\n", (const char *) cmd);
+ printf ("picsimlab: %s\n", (const char *) cmd);
 #ifdef _WIN_  
  lxExecute (Window1.GetSharePath () + lxT ("/../") + cmd);
 #else
@@ -205,18 +205,18 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
  if (
      (sockfd = accept (listenfd, (sockaddr *) & cli, & clilen)) < 0)
   {
-   printf ("accept error : %s \n", strerror (errno));
+   printf ("picsimlab: accept error : %s \n", strerror (errno));
    exit (1);
   }
 
- printf ("Qemu connected!\n");
+ printf ("picsimlab: Qemu connected to PICSimLab!\n");
 
  setnblock (sockfd);
 
  //monitor  
  if ((sockmon = socket (PF_INET, SOCK_STREAM, 0)) < 0)
   {
-   printf ("socket error : %s \n", strerror (errno));
+   printf ("picsimlab: socket error : %s \n", strerror (errno));
    exit (1);
   }
  memset (&servm, 0, sizeof (servm));
@@ -224,20 +224,23 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
  servm.sin_addr.s_addr = inet_addr ("127.0.0.1");
  servm.sin_port = htons (2500);
 
- if (connect (sockmon, (sockaddr *) & servm, sizeof (servm)) < 0)
+n=0; 
+while (connect (sockmon, (sockaddr *) & servm, sizeof (servm)) < 0)
   {
-   printf ("connect error : %s \n", strerror (errno));
-   exit (1);
+   printf ("picsimlab: connect error : %s \n", strerror (errno));
+   if(n > 5) exit (1);
+   n++;
   }
-
+ printf ("picsimlab: PICSimLab connected to Qemu qmp!\n");
+ 
  //read monitor qemu first mensage
  if ((n = recv (sockmon, buff, 99, 0)) < 0)
   {
-   printf ("connect error : %s \n", strerror (errno));
+   printf ("picsimlab: recv error : %s \n", strerror (errno));
    exit (1);
   }
  buff[n] = 0;
- printf ("%s", buff);
+ printf ("picsimlab: %s", buff);
 
 
 
@@ -540,7 +543,7 @@ board_qemu_stm32::MSetPin(int pin, unsigned char value)
     val |= 0x80;
    if (send (sockfd, (const char *) &val, 1, 0) != 1)
     {
-     printf ("send error : %s \n", strerror (errno));
+     printf ("picsimlab: send error : %s \n", strerror (errno));
      exit (1);
     }
    pins[pin - 1].value = value;
@@ -618,7 +621,7 @@ board_qemu_stm32::qemu_cmd(const char * cmd, int raw)
   }
  buffout[n] = 0;
 
- printf ("(%s)=(%s) \n", buffin, buffout);
+ printf ("picsimlab: (%s)=(%s) \n", buffin, buffout);
   */
 
  if (raw)
@@ -634,7 +637,7 @@ board_qemu_stm32::qemu_cmd(const char * cmd, int raw)
 
  if (send (sockmon, buffin, size, 0) != size)
   {
-   printf ("mon send error : %s \n", strerror (errno));
+   printf ("picsimlab: mon send error : %s \n", strerror (errno));
    exit (1);
   }
 
@@ -650,7 +653,7 @@ board_qemu_stm32::qemu_cmd(const char * cmd, int raw)
   }
  buffout[n] = 0;
 
- printf ("(%s)=(%s) \n", buffin, buffout);
+ printf ("picsimlab: (%s)=(%s) \n", buffin, buffout);
  
  connected = connected_;
  return 0;

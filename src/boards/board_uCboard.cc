@@ -29,6 +29,10 @@
 #include"../picsimlab5.h" //Spare Parts
 #include"board_uCboard.h"
 
+#ifndef _WIN_
+#define INVALID_HANDLE_VALUE -1;
+#endif
+
 /* ids of inputs of input map*/
 enum
 {
@@ -80,6 +84,8 @@ cboard_uCboard::cboard_uCboard(void)
  lxImage image;
  image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.png"));
  micbmp = new lxBitmap (image, &Window1);
+# 
+ serialfd = INVALID_HANDLE_VALUE;
 }
 
 //Destructor called once on board destruction 
@@ -330,7 +336,7 @@ cboard_uCboard::Run_CPU(void)
  int j;
  unsigned char pi;
  unsigned int alm[64];
-
+ 
  int JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
  long int NSTEPJ = Window1.GetNSTEPJ (); //number of steps in 100ms
 

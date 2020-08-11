@@ -15,7 +15,7 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-override CFLAGS += -DEXT_BROWSER -D_VERSION_=\"${VERSION}\" -Wall -ggdb -D_SHARE_=\"${sharedir}\"  -I/usr/include/lxrad_X11 -Wall  -D_REENTRANT
+override CFLAGS += -DEXT_BROWSER -D_VERSION_=\"${VERSION}\" -Wall -g -O2  -D_SHARE_=\"${sharedir}\"  -I/usr/include/lxrad_X11 -Wall  -D_REENTRANT
 
 #override CFLAGS+= -D_NOTHREAD
 #override CFLAGS+=-fsanitize=address

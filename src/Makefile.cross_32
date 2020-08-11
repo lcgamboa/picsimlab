@@ -4,7 +4,7 @@ CC = i686-w64-mingw32-g++
 WINDRES =  i686-w64-mingw32-windres  
 STRIP =  i686-w64-mingw32-strip
 
-override CFLAGS+= -Wall -O3 -D_WIN_ -I../dev_w32/include -I../dev_w32/include/lxrad -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  
+override CFLAGS+= -Wall -g -O3 -D_WIN_ -I../dev_w32/include -I../dev_w32/include/lxrad -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  
 override CFLAGS+= -DEXT_BROWSER
 override CFLAGS+= -I../dev_w32/lib/wx/include/i686-w64-mingw32-msw-unicode-3.1 -I../dev_w32/include/wx-3.1 -D_FILE_OFFSET_BITS=64 -DWXUSINGDLL -D__WXMSW__ -mthreads
 
