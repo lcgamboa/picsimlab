@@ -46,20 +46,18 @@ char * serial_list(void);
 #endif
 
 static int listenfd = -1;
+static int listenfd_mon = -1;
 
 board_qemu_stm32::board_qemu_stm32(void)
 {
  connected = 0;
  sockfd = -1;
  sockmon = -1;
- fname_bak[0]=0;
- fname_[0]=0;
+ fname_bak[0] = 0;
+ fname_[0] = 0;
 }
 
-board_qemu_stm32::~board_qemu_stm32(void)
-{
-
-}
+board_qemu_stm32::~board_qemu_stm32(void) { }
 
 void
 board_qemu_stm32::MSetSerial(const char * port) {
@@ -71,13 +69,14 @@ board_qemu_stm32::MSetSerial(const char * port) {
 int
 board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
 {
- struct sockaddr_in servm;
 #ifdef _TCP_
  struct sockaddr_in serv, cli;
 #else
  struct sockaddr_un serv, cli;
 #endif
- char buff[100];
+ sockaddr_in serv_mon, cli_mon;
+
+ char buff[200];
  int n;
  char fname_[300];
  char cmd[600];
@@ -101,6 +100,7 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
 
  if (listenfd < 0)
   {
+   int reuse = 1;
 #ifdef _TCP_
    if ((listenfd = socket (PF_INET, SOCK_STREAM, 0)) < 0)
     {
@@ -108,7 +108,6 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
      exit (1);
     }
 
-   int reuse = 1;
    if (setsockopt (listenfd, SOL_SOCKET, SO_REUSEADDR, (const char*) &reuse, sizeof (reuse)) < 0)
     perror ("setsockopt(SO_REUSEADDR) failed");
 
@@ -136,6 +135,33 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
     }
 
    if (listen (listenfd, SOMAXCONN) < 0)
+    {
+     printf ("picsimlab: listen error : %s \n", strerror (errno));
+     exit (1);
+    }
+   //monitor
+   if ((listenfd_mon = socket (PF_INET, SOCK_STREAM, 0)) < 0)
+    {
+     printf ("picsimlab: socket error : %s \n", strerror (errno));
+     exit (1);
+    }
+
+
+   if (setsockopt (listenfd_mon, SOL_SOCKET, SO_REUSEADDR, (const char*) &reuse, sizeof (reuse)) < 0)
+    perror ("setsockopt(SO_REUSEADDR) failed");
+
+   memset (&serv_mon, 0, sizeof (serv_mon));
+   serv_mon.sin_family = AF_INET;
+   serv_mon.sin_addr.s_addr = htonl (INADDR_ANY);
+   serv_mon.sin_port = htons (2500);
+
+   if (bind (listenfd_mon, (sockaddr *) & serv_mon, sizeof (serv_mon)) < 0)
+    {
+     printf ("picsimlab: bind error : %s \n", strerror (errno));
+     exit (1);
+    }
+
+   if (listen (listenfd_mon, SOMAXCONN) < 0)
     {
      printf ("picsimlab: listen error : %s \n", strerror (errno));
      exit (1);
@@ -181,25 +207,67 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
  //verify if serial port exists
  if (strstr (resp, SERIALDEVICE))
   {
-   snprintf (cmd, 599, "qemu-stm32 -S -M stm32-f103c8-picsimlab -serial %s -qmp tcp:localhost:2500,server,nowait  -gdb tcp::%i -pflash \"%s\"",
+   snprintf (cmd, 599, "qemu-stm32 -M stm32-f103c8-picsimlab -serial %s -qmp tcp:localhost:2500  -gdb tcp::%i -pflash \"%s\"",
              SERIALDEVICE, Window1.Get_debug_port (), fname_);
 
   }
  else
   {
-   snprintf (cmd, 599, "qemu-stm32 -S -M stm32-f103c8-picsimlab -qmp tcp:localhost:2500,server,nowait -gdb tcp::%i -pflash \"%s\"",
+   snprintf (cmd, 599, "qemu-stm32 -M stm32-f103c8-picsimlab -qmp tcp:localhost:2500 -gdb tcp::%i -pflash \"%s\"",
              Window1.Get_debug_port (), fname_);
   }
 
  free (resp);
 
  printf ("picsimlab: %s\n", (const char *) cmd);
+
 #ifdef _WIN_  
- lxExecute (Window1.GetSharePath () + lxT ("/../") + cmd);
+#define wxMSW_CONV_LPCTSTR(s) static_cast<const wxChar *>((s).t_str())
+#define wxMSW_CONV_LPTSTR(s) const_cast<wxChar *>(wxMSW_CONV_LPCTSTR(s))
+#define wxMSW_CONV_LPARAM(s) reinterpret_cast<LPARAM>(wxMSW_CONV_LPCTSTR(s))
+
+ wxExecute (Window1.GetSharePath () + lxT ("/../") + cmd, wxEXEC_MAKE_GROUP_LEADER | wxEXEC_SHOW_CONSOLE | wxEXEC_ASYNC);
+ /*
+ STARTUPINFO info = {sizeof (info)};
+ PROCESS_INFORMATION processInfo;
+ CreateProcess
+     (
+      NULL, // application name (use only cmd line)
+      wxMSW_CONV_LPTSTR (Window1.GetSharePath () + lxT ("/../") + cmd), // full command line
+      NULL, // security attributes: defaults for both
+      NULL, //   the process and its main thread
+      FALSE, // inherit handles if we use pipes
+      CREATE_NEW_PROCESS_GROUP | DETACHED_PROCESS, // process creation flags
+      NULL, // environment (may be NULL which is fine)
+      NULL, // initial working directory
+      &info, // startup info (unused here)
+      &processInfo // process info
+      );
+  */
 #else
  lxExecute (cmd, lxEXEC_MAKE_GROUP_LEADER);
 #endif  
 
+ //monitor  
+ clilen = sizeof (cli_mon);
+ if (
+     (sockmon = accept (listenfd_mon, (sockaddr *) & cli_mon, & clilen)) < 0)
+  {
+   printf ("picsimlab: accept error : %s \n", strerror (errno));
+   exit (1);
+  }
+ printf ("picsimlab: PICSimLab connected to Qemu qmp!\n");
+
+ //read monitor qemu first mensage
+ if ((n = recv (sockmon, buff, 199, 0)) < 0)
+  {
+   printf ("picsimlab: recv error : %s \n", strerror (errno));
+   exit (1);
+  }
+ buff[n] = 0;
+ printf ("picsimlab: %s", buff);
+
+ qemu_cmd ("qmp_capabilities");
 
  clilen = sizeof (cli);
  if (
@@ -208,53 +276,18 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
    printf ("picsimlab: accept error : %s \n", strerror (errno));
    exit (1);
   }
-
  printf ("picsimlab: Qemu connected to PICSimLab!\n");
 
  setnblock (sockfd);
-
- //monitor  
- if ((sockmon = socket (PF_INET, SOCK_STREAM, 0)) < 0)
-  {
-   printf ("picsimlab: socket error : %s \n", strerror (errno));
-   exit (1);
-  }
- memset (&servm, 0, sizeof (servm));
- servm.sin_family = AF_INET;
- servm.sin_addr.s_addr = inet_addr ("127.0.0.1");
- servm.sin_port = htons (2500);
-
-n=0; 
-while (connect (sockmon, (sockaddr *) & servm, sizeof (servm)) < 0)
-  {
-   printf ("picsimlab: connect error : %s \n", strerror (errno));
-   if(n > 5) exit (1);
-   n++;
-  }
- printf ("picsimlab: PICSimLab connected to Qemu qmp!\n");
- 
- //read monitor qemu first mensage
- if ((n = recv (sockmon, buff, 99, 0)) < 0)
-  {
-   printf ("picsimlab: recv error : %s \n", strerror (errno));
-   exit (1);
-  }
- buff[n] = 0;
- printf ("picsimlab: %s", buff);
-
-
-
- qemu_cmd ("qmp_capabilities");
-
 
  Window1.menu1_File_LoadHex.SetText ("Load Bin");
  Window1.menu1_File_SaveHex.SetEnable (0);
  Window1.filedialog1.SetFileName (lxT ("untitled.bin"));
  Window1.filedialog1.SetFilter (lxT ("Bin Files (*.bin)|*.bin;*.BIN"));
- 
- qemu_cmd ("cont");
+
+ //qemu_cmd ("cont");
  connected = 1;
-  
+
  return 0; //ret;
 }
 
@@ -277,14 +310,14 @@ board_qemu_stm32::MEnd(void)
  Window1.filedialog1.SetFileName (lxT ("untitled.hex"));
  Window1.filedialog1.SetFilter (lxT ("Hex Files (*.hex)|*.hex;*.HEX"));
 
- #ifdef _WIN_
- Sleep(200);
+#ifdef _WIN_
+ Sleep (200);
 #else
- usleep(200000);
+ usleep (200000);
 #endif
- if(fname_bak[0])
+ if (fname_bak[0])
   {
-    lxRenameFile (fname_bak,fname_);
+   lxRenameFile (fname_bak, fname_);
   }
 }
 
@@ -482,20 +515,36 @@ board_qemu_stm32::MDumpMemory(const char * fname)
 
  //change .hex to .bin
  strncpy (fname_, fname, 299);
- strncpy (fname_bak, fname, 299);
  fname_[strlen (fname) - 3] = 0;
- fname_bak[strlen (fname) - 3] = 0;
  strncat (fname_, "bin", 299);
- strncat (fname_bak, "bak", 299);
-#ifdef _WIN_
- for(int i=0; i < strlen(fname_);i++)
-  {
-   if(fname_[i] == '\\')fname_[i]='/';
-   if(fname_bak[i] == '\\')fname_bak[i]='/';
-  }
-#endif 
+
  qemu_cmd ("stop");
- snprintf (cmd, 500, "{ \"execute\": \"pmemsave\",\"arguments\": { \"val\": 134217728, \"size\": 65536, \"filename\": \"%s\" } }\n", fname_bak);
+ if (lxFileExists (fname_))
+  {
+   //save backup copy until end
+   strncpy (fname_bak, fname, 299);
+   fname_bak[strlen (fname) - 3] = 0;
+   strncat (fname_bak, "bak", 299);
+#ifdef _WIN_
+   for (int i = 0; i < strlen (fname_); i++)
+    {
+     if (fname_[i] == '\\')fname_[i] = '/';
+     if (fname_bak[i] == '\\')fname_bak[i] = '/';
+    }
+#endif
+   snprintf (cmd, 500, "{ \"execute\": \"pmemsave\",\"arguments\": { \"val\": 134217728, \"size\": 65536, \"filename\": \"%s\" } }\n", fname_bak);
+  }
+ else
+  {
+   //save file direct
+#ifdef _WIN_
+   for (int i = 0; i < strlen (fname_); i++)
+    {
+     if (fname_[i] == '\\')fname_[i] = '/';
+    }
+#endif
+   snprintf (cmd, 500, "{ \"execute\": \"pmemsave\",\"arguments\": { \"val\": 134217728, \"size\": 65536, \"filename\": \"%s\" } }\n", fname_);
+  }
  qemu_cmd (cmd, 1);
  qemu_cmd ("cont");
 }
@@ -654,7 +703,7 @@ board_qemu_stm32::qemu_cmd(const char * cmd, int raw)
  buffout[n] = 0;
 
  printf ("picsimlab: (%s)=(%s) \n", buffin, buffout);
- 
+
  connected = connected_;
  return 0;
 }

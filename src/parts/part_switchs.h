@@ -41,7 +41,7 @@ class cpart_switchs:public part
       String GetPictureFileName(void){return lxT("switchs/switchs.png");};
       String GetInputMapFile(void){return lxT("switchs/switchs_i.map");};
       String GetOutputMapFile(void){return lxT("switchs/switchs_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("switchs/witchs.lxrad");};
+      String GetPropertiesWindowFile(void){return lxT("switchs/switchs.lxrad");};
       void Reset(void); 
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  WProp);
