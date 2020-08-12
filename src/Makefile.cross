@@ -12,8 +12,8 @@ override CFLAGS+=-I../dev_w64/lib/wx/include/x86_64-w64-mingw32-msw-unicode-3.1 
 ELIBS_= $(addsuffix .aw ,$(ELIBS))
 
 LIBS= $(ELIBS_) -llxrad -lOpenAL32 -lpicsim  -lsimavr -lws2_32 -L../dev_w64/lib
-#LIBS+= -Wl,--subsystem,windows -mwindows 
-LIBS+= -Wl,--subsystem,console -mconsole 
+LIBS+= -Wl,--subsystem,windows -mwindows 
+#LIBS+= -Wl,--subsystem,console -mconsole 
 LIBS+=-lwx_mswu_xrc-3.1-x86_64-w64-mingw32 -lwx_mswu_html-3.1-x86_64-w64-mingw32 -lwx_mswu_qa-3.1-x86_64-w64-mingw32 -lwx_mswu_core-3.1-x86_64-w64-mingw32 -lwx_baseu_xml-3.1-x86_64-w64-mingw32 -lwx_baseu_net-3.1-x86_64-w64-mingw32 -lwx_baseu-3.1-x86_64-w64-mingw32 
 
 #LIBS+=`x86_64-w64-mingw32-msw-unicode-3.1 --libs` 
