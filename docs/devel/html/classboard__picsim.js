@@ -17,6 +17,7 @@ var classboard__picsim =
     [ "DBGTestBP", "classboard__picsim.html#a3a750885489c22e267dc303c903c9fcc", null ],
     [ "DebugInit", "classboard__picsim.html#a58fe24bd2a85b4e180f27ff433672f98", null ],
     [ "DebugLoop", "classboard__picsim.html#ae435a0adad9dadadf3473382e4b47fbf", null ],
+    [ "GetDebugName", "classboard__picsim.html#a257e707557a6aa144f465cf51e85519a", null ],
     [ "MDumpMemory", "classboard__picsim.html#a4fc20dbdee68203c45fe9cd97262de93", null ],
     [ "MEnd", "classboard__picsim.html#a8eeae5dc7c060fa148fcc0d44a79db60", null ],
     [ "MEraseFlash", "classboard__picsim.html#ab22969635c8c55a31487ee1bdd429af8", null ],

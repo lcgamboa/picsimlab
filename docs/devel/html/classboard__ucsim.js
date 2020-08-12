@@ -4,6 +4,7 @@ var classboard__ucsim =
     [ "CpuInitialized", "classboard__ucsim.html#a8c94307c840106b86813f8b4535fb7b6", null ],
     [ "DebugInit", "classboard__ucsim.html#aa7a0e197ad869f87a6f2c65f15f3e9bc", null ],
     [ "DebugLoop", "classboard__ucsim.html#aedc574469d8381dcc66e154b8c4d3722", null ],
+    [ "GetDebugName", "classboard__ucsim.html#aebdd53b293202d676d49c64315122789", null ],
     [ "MDumpMemory", "classboard__ucsim.html#a1f4b90116701d00315bab639ad800763", null ],
     [ "MEnd", "classboard__ucsim.html#a232357192b08467d87266413ef93134d", null ],
     [ "MEraseFlash", "classboard__ucsim.html#afbfbe17f230f26a509c1aa42935cbc57", null ],

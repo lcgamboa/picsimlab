@@ -2,6 +2,8 @@
 
 ### New
 
+* Build script with support to build experimental features. [lcgamboa]
+
 * Initial support to uCsim Z80 and STM8S103. [lcgamboa]
 
 * New board Curiosity HPC. [lcgamboa]
@@ -43,6 +45,8 @@
 * Board registartion improved. [lcgamboa]
 
 ### Fix
+
+* Fixed the lose of parts on spare part window when open new pzw file. [lcgamboa]
 
 * AVR GDB debug speed increased. [lcgamboa]
 

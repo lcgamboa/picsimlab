@@ -19,6 +19,7 @@ var classboard__simavr =
     [ "DBGTestBP", "classboard__simavr.html#a5788fbb5639802af474dd749998169f0", null ],
     [ "DebugInit", "classboard__simavr.html#a02a9b8be302223b74e404bab05e514a1", null ],
     [ "DebugLoop", "classboard__simavr.html#ae8f546742d2784af077a5f8e6d514fa1", null ],
+    [ "GetDebugName", "classboard__simavr.html#ad9bba14e3f9f569d167f278110397482", null ],
     [ "MDumpMemory", "classboard__simavr.html#ae934f4cfc44eb2b4c5a3528ca29232a9", null ],
     [ "MEnd", "classboard__simavr.html#a18b403ced12ce8f1a326dcd94a742453", null ],
     [ "MEraseFlash", "classboard__simavr.html#aa6b4ebc37aba7767637a900bc4b1dd23", null ],
