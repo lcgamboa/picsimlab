@@ -285,6 +285,9 @@ CPWindow5::SaveConfig(String fname)
  String temp;
 
  CStringList prefs;
+ 
+ if (GetWin () == NULL)return 0;
+ 
  prefs.Clear ();
 
  temp.Printf ("scale,0,0:%f", scale);

@@ -627,6 +627,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
 
 
  sprintf (fname, "%s/parts_%s.pcf", home, boards_list[lab_].name_);
+ 
  Window5.SaveConfig (fname);
  Window5.DeleteParts ();
 
