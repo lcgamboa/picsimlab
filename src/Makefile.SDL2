@@ -19,8 +19,7 @@ override CFLAGS += -DEXT_BROWSER  -D_VERSION_=\"${VERSION}\" -Wall -ggdb -D_SHAR
 override CFLAGS+=-fsanitize=address
 override CFLAGS+= -D_NOTHREAD
 
-LIBS = `lxrad_SDL2-config --libs` -lpicsim -lsimavr -lelf -lminizip
-LIBS+= $(ELIBS)
+LIBS = $(ELIBS) `lxrad_SDL2-config --libs` -lpicsim -lsimavr -lelf -lminizip
 
 #lxrad automatic generated block end, don't edit above!
 
