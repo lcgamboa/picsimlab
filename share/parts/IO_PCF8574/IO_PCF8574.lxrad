@@ -501,7 +501,7 @@
   <Tag type="int">0</Tag>
   <X type="int">375</X>
   <Y type="int">177</Y>
-  <Width type="uint">120</Width>
+  <Width type="uint">160</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -529,7 +529,7 @@
   <Tag type="int">0</Tag>
   <X type="int">375</X>
   <Y type="int">206</Y>
-  <Width type="uint">120</Width>
+  <Width type="uint">160</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -555,9 +555,9 @@
   <Class type="String">CCombo</Class>
   <Name type="String">combo3</Name>
   <Tag type="int">0</Tag>
-  <X type="int">104</X>
+  <X type="int">96</X>
   <Y type="int">26</Y>
-  <Width type="uint">120</Width>
+  <Width type="uint">160</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -583,9 +583,9 @@
   <Class type="String">CCombo</Class>
   <Name type="String">combo4</Name>
   <Tag type="int">0</Tag>
-  <X type="int">104</X>
+  <X type="int">96</X>
   <Y type="int">57</Y>
-  <Width type="uint">120</Width>
+  <Width type="uint">160</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -611,9 +611,9 @@
   <Class type="String">CCombo</Class>
   <Name type="String">combo5</Name>
   <Tag type="int">0</Tag>
-  <X type="int">104</X>
+  <X type="int">96</X>
   <Y type="int">88</Y>
-  <Width type="uint">120</Width>
+  <Width type="uint">160</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>

@@ -4,7 +4,7 @@
   <Tag type="int">0</Tag>
   <X type="int">718</X>
   <Y type="int">68</Y>
-  <Width type="uint">301</Width>
+  <Width type="uint">400</Width>
   <Height type="uint">559</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -34,7 +34,7 @@
   <Class type="String">CButton</Class>
   <Name type="String">button1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">73</X>
+  <X type="int">104</X>
   <Y type="int">482</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
@@ -60,7 +60,7 @@
   <Class type="String">CButton</Class>
   <Name type="String">button2</Name>
   <Tag type="int">0</Tag>
-  <X type="int">150</X>
+  <X type="int">189</X>
   <Y type="int">482</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
@@ -88,7 +88,7 @@
   <Tag type="int">0</Tag>
   <X type="int">138</X>
   <Y type="int">104</Y>
-  <Width type="uint">100</Width>
+  <Width type="uint">200</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -117,7 +117,7 @@
   <Tag type="int">0</Tag>
   <X type="int">137</X>
   <Y type="int">157</Y>
-  <Width type="uint">100</Width>
+  <Width type="uint">200</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -146,7 +146,7 @@
   <Tag type="int">0</Tag>
   <X type="int">137</X>
   <Y type="int">185</Y>
-  <Width type="uint">100</Width>
+  <Width type="uint">200</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -175,7 +175,7 @@
   <Tag type="int">0</Tag>
   <X type="int">137</X>
   <Y type="int">213</Y>
-  <Width type="uint">100</Width>
+  <Width type="uint">200</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -312,7 +312,7 @@
   <Tag type="int">0</Tag>
   <X type="int">137</X>
   <Y type="int">241</Y>
-  <Width type="uint">100</Width>
+  <Width type="uint">200</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -341,7 +341,7 @@
   <Tag type="int">0</Tag>
   <X type="int">137</X>
   <Y type="int">269</Y>
-  <Width type="uint">100</Width>
+  <Width type="uint">200</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -370,7 +370,7 @@
   <Tag type="int">0</Tag>
   <X type="int">137</X>
   <Y type="int">297</Y>
-  <Width type="uint">100</Width>
+  <Width type="uint">200</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -399,7 +399,7 @@
   <Tag type="int">0</Tag>
   <X type="int">137</X>
   <Y type="int">326</Y>
-  <Width type="uint">100</Width>
+  <Width type="uint">200</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -698,7 +698,7 @@
   <Tag type="int">0</Tag>
   <X type="int">137</X>
   <Y type="int">355</Y>
-  <Width type="uint">100</Width>
+  <Width type="uint">200</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -727,7 +727,7 @@
   <Tag type="int">0</Tag>
   <X type="int">137</X>
   <Y type="int">384</Y>
-  <Width type="uint">100</Width>
+  <Width type="uint">200</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -783,7 +783,7 @@
   <Tag type="int">0</Tag>
   <X type="int">137</X>
   <Y type="int">433</Y>
-  <Width type="uint">100</Width>
+  <Width type="uint">200</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>

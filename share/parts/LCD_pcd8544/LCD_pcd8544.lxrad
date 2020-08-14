@@ -4,7 +4,7 @@
   <Tag type="int">0</Tag>
   <X type="int">463</X>
   <Y type="int">182</Y>
-  <Width type="uint">291</Width>
+  <Width type="uint">370</Width>
   <Height type="uint">345</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -34,7 +34,7 @@
   <Class type="String">CButton</Class>
   <Name type="String">button1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">58</X>
+  <X type="int">104</X>
   <Y type="int">256</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
@@ -60,7 +60,7 @@
   <Class type="String">CButton</Class>
   <Name type="String">button2</Name>
   <Tag type="int">0</Tag>
-  <X type="int">141</X>
+  <X type="int">189</X>
   <Y type="int">256</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
@@ -88,7 +88,7 @@
   <Tag type="int">0</Tag>
   <X type="int">141</X>
   <Y type="int">21</Y>
-  <Width type="uint">100</Width>
+  <Width type="uint">200</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -117,7 +117,7 @@
   <Tag type="int">0</Tag>
   <X type="int">141</X>
   <Y type="int">49</Y>
-  <Width type="uint">100</Width>
+  <Width type="uint">200</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -146,7 +146,7 @@
   <Tag type="int">0</Tag>
   <X type="int">141</X>
   <Y type="int">76</Y>
-  <Width type="uint">100</Width>
+  <Width type="uint">200</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -175,7 +175,7 @@
   <Tag type="int">0</Tag>
   <X type="int">141</X>
   <Y type="int">103</Y>
-  <Width type="uint">100</Width>
+  <Width type="uint">200</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
@@ -420,7 +420,7 @@
   <Tag type="int">0</Tag>
   <X type="int">141</X>
   <Y type="int">131</Y>
-  <Width type="uint">100</Width>
+  <Width type="uint">200</Width>
   <Height type="uint">26</Height>
   <Hint type="String"></Hint>
   <Enable type="bool">1</Enable>
