@@ -47,11 +47,12 @@ static const char pinnames[3][40][10] = {
   "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
 
  {
-  "P0.0", "P0.1", "P0.2", "P0.3", "P0.4", "P0.5", "P0.6", "P0.7",  
-  "P1.0", "P1.1", "P1.2", "P1.3", "P1.4", "P1.5", "P1.6", "P1.7", 
+  "P0.0", "P0.1", "P0.2", "P0.3", "P0.4", "P0.5", "P0.6", "P0.7",
+  "P1.0", "P1.1", "P1.2", "P1.3", "P1.4", "P1.5", "P1.6", "P1.7",
   "P2.0", "P2.1", "P2.2", "P2.3", "P2.4", "P2.5", "P2.6", "P2.7",
   "P3.0", "P3.1", "P3.2", "P3.3", "P3.4", "P3.5", "P3.6", "P3.7",
-  "RST","INT1","INT2", "INT3", "INT5","INT7", "GND", "VCC" }
+  "RST", "INT1", "INT2", "INT3", "INT5", "INT7", "GND", "VCC"
+ }
 };
 
 
@@ -191,10 +192,20 @@ board_ucsim::pins_reset(void)
      pins[p].oavalue = 0;
     }
 
-   //TODO
-   //VCC pins
-   //pins[6].value = 1;
-   //pins[19].value = 1;
+   if (procid == PID_C51)
+    {
+     pins[20 - 1].value = 0;
+     pins[20 - 1].dir = PD_OUT;
+     pins[40 - 1].value = 1;
+     pins[40 - 1].dir = PD_OUT;
+    }
+   else
+    {
+     pins[39 - 1].value = 0;
+     pins[39 - 1].dir = PD_OUT;
+     pins[40 - 1].value = 1;
+     pins[40 - 1].dir = PD_OUT;
+    }
   }
  else if (procid == PID_STM8S103)
   {
@@ -220,10 +231,10 @@ board_ucsim::pins_reset(void)
      pins[p].oavalue = 0;
     }
 
-   //TODO
-   //VCC pins
-   //pins[6].value = 1;
-   //pins[19].value = 1;
+   pins[7 - 1].value = 0;
+   pins[7 - 1].dir = PD_OUT;
+   pins[9 - 1].value = 1;
+   pins[9 - 1].dir = PD_OUT;
   }
 
 }
@@ -265,7 +276,7 @@ board_ucsim::MGetPinsValues(void)
 void
 board_ucsim::MStep(void)
 {
- unsigned char p[4];
+ unsigned short p[4];
 
  ucsim_step ();
 
@@ -278,7 +289,8 @@ board_ucsim::MStep(void)
   {
    if (*pins[i].port < 4)
     {
-     pins[i].value = (p[*pins[i].port] & (1 << pins[i].pord)) > 0;
+     pins[i].value = (p[*pins[i].port] & (0x0001 << pins[i].pord)) > 0;
+     pins[i].dir = (p[*pins[i].port] & (0x0100 << pins[i].pord)) > 0;
     }
   }
 

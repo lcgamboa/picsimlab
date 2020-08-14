@@ -61,18 +61,22 @@ F 	0 = 5x7 dots 			1 = 5x10 dots
 BF  	0 = Can accept instruction  	1 = Internal operation in progress
 */
 
+#define LCD_ADDR_CGRAM 0
+#define LCD_ADDR_DDRAM 1 
 
 typedef struct
 {
 unsigned short int flags;
-unsigned char ddram_ad;
-unsigned char cgram_ad;  
+unsigned char addr_counter;
+unsigned char addr_mode;
 unsigned char update;   //redraw 
 unsigned int blinkc;    //blink count timer
 unsigned char blink;    //cursor state
 char shift;             //display shift
-char ddram[DDRMAX][5];
-char cgram[8][5];
+char ddram[DDRMAX][5];  //ddram font mapped
+char ddram_char[DDRMAX];//ddram 
+char cgram[8][5]; //cgram font mapped
+char cgram_char[8]; //cgram
 char bc;
 char buff;
 unsigned char cnum;     //number of columns 16 or 20
@@ -84,6 +88,10 @@ unsigned char lnum;     //number of lines 1,2 or 4
 void lcd_cmd(lcd_t * lcd, char cmd);
 
 void lcd_data(lcd_t * lcd, char data);
+
+unsigned char lcd_read_busyf_acounter(lcd_t * lcd);
+
+char lcd_read_data(lcd_t * lcd);
 
 void lcd_rst(lcd_t * lcd);
 
