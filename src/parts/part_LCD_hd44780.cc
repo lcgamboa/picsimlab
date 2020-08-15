@@ -408,11 +408,11 @@ cpart_LCD_hd44780::Process(void)
  //lcd dipins[2].display code
 
 
- if ((input_pins[1] > 0) &&(!ppins[input_pins[1] - 1].dir)&&(!ppins[input_pins[1] - 1].value))
+ if ((input_pins[1] > 0) &&(!ppins[input_pins[1] - 1].value))
   {
    if (!lcde)
     {
-     if ((input_pins[10] > 0)&&(!ppins[input_pins[10] - 1].dir))
+     if (input_pins[10] > 0)
       {
        if (!ppins[input_pins[10] - 1].value)
         {
@@ -427,11 +427,11 @@ cpart_LCD_hd44780::Process(void)
          if ((input_pins[3] > 0)&&(ppins[input_pins[3] - 1].value)) d |= 0x02;
          if ((input_pins[2] > 0)&&(ppins[input_pins[2] - 1].value)) d |= 0x01;
 
-         if ((!ppins[input_pins[0] - 1].dir)&&(!ppins[input_pins[0] - 1].value))
+         if (!ppins[input_pins[0] - 1].value)
           {
            lcd_cmd (&lcd, d);
           }
-         else if ((!ppins[input_pins[0] - 1].dir)&&(ppins[input_pins[0] - 1].value))
+         else 
           {
            lcd_data (&lcd, d);
           }
@@ -439,11 +439,11 @@ cpart_LCD_hd44780::Process(void)
        else //Read
         {
          unsigned char val = 0;
-         if ((!ppins[input_pins[0] - 1].dir)&&(!ppins[input_pins[0] - 1].value))
+         if (!ppins[input_pins[0] - 1].value)
           {
            val = lcd_read_busyf_acounter (&lcd);
           }
-         else if ((!ppins[input_pins[0] - 1].dir)&&(ppins[input_pins[0] - 1].value))
+         else 
           {
            val = lcd_read_data (&lcd);
           }

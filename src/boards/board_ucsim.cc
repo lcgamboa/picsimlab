@@ -290,7 +290,10 @@ board_ucsim::MStep(void)
    if (*pins[i].port < 4)
     {
      pins[i].value = (p[*pins[i].port] & (0x0001 << pins[i].pord)) > 0;
-     pins[i].dir = (p[*pins[i].port] & (0x0100 << pins[i].pord)) > 0;
+     if (procid != PID_C51)
+      {
+        pins[i].dir = (p[*pins[i].port] & (0x0100 << pins[i].pord)) > 0;
+      }
     }
   }
 
