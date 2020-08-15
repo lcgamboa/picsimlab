@@ -258,7 +258,7 @@ const unsigned char LCDfont[224][5] = {
 void
 lcd_cmd(lcd_t * lcd, char cmd)
 {
- int i, j;
+ int i;
 
 
  //switch betwwen 8 ou 4 bits communication
@@ -471,13 +471,7 @@ lcd_cmd(lcd_t * lcd, char cmd)
  //Clear display
  if (cmd & 0x01)
   {
-   for (i = 0; i < DDRMAX; i++)
-    {
-     for (j = 0; j < 5; j++)
-      {
-       lcd->ddram[i][j] = 0;
-      }
-    }
+   memset (lcd->ddram_char, ' ', DDRMAX);
    lcd->addr_counter = 0;
    lcd->shift = 0;
    lcd->flags |= L_DID;
@@ -491,7 +485,6 @@ void
 lcd_data(lcd_t * lcd, char data)
 {
  int j;
- int fp;
 
  if (!(lcd->flags & L_DON))
   {
@@ -523,7 +516,6 @@ lcd_data(lcd_t * lcd, char data)
    return;
  }
   */
- fp = ((unsigned char) data) - 0x20;
 
 #ifdef _DEBUG
  printf ("LCD dat=%#04X  (%c)\n", (unsigned char) data, data);
@@ -531,17 +523,7 @@ lcd_data(lcd_t * lcd, char data)
  if (lcd->addr_mode == LCD_ADDR_DDRAM)
   {
    lcd->ddram_char[lcd->addr_counter] = data;
-   for (j = 0; j < 5; j++)
-    {
-     if (fp >= 0)
-      {
-       lcd->ddram[lcd->addr_counter][j] = LCDfont[fp][j];
-      }
-     else
-      {
-       lcd->ddram[lcd->addr_counter][j] = lcd->cgram[data & 0x07][j];
-      }
-    }
+
    if (lcd->flags & L_DID)
     {
      lcd->addr_counter++;
@@ -590,20 +572,7 @@ lcd_data(lcd_t * lcd, char data)
      lcd->addr_counter--;
      if (lcd->addr_counter >= 64)lcd->addr_counter = 63;
     }
-
-   for (int i = 0; i < DDRMAX; i++)
-    {
-     if (lcd->ddram_char[i] == (lcd->addr_counter >> 3))
-      {
-       for (j = 0; j < 5; j++)
-        {
-         lcd->ddram[i][j] = lcd->cgram[lcd->addr_counter >> 3][j];
-         lcd->update = 1;
-        }
-      }
-    }
-
-
+    lcd->update = 1;
   }
 
 }
@@ -661,13 +630,7 @@ lcd_rst(lcd_t * lcd)
 #ifdef _DEBUG
  printf ("LCD rst--------------------------\n");
 #endif
- for (i = 0; i < DDRMAX; i++)
-  {
-   for (j = 0; j < 5; j++)
-    {
-     lcd->ddram[i][j] = 0;
-    }
-  }
+
  for (i = 0; i < 8; i++)
   {
    for (j = 0; j < 5; j++)
@@ -677,7 +640,7 @@ lcd_rst(lcd_t * lcd)
   }
 
  memset (lcd->ddram_char, ' ', DDRMAX);
- memset (lcd->cgram_char, 0, 8);
+ memset (lcd->cgram_char, 0, 64);
 
  lcd->addr_counter = 0;
  lcd->addr_mode = LCD_ADDR_DDRAM;
@@ -778,8 +741,18 @@ lcd_draw(lcd_t * lcd, CCanvas * canvas, int x1, int y1, int w1, int h1, int picp
          int cs = c - lcd->shift;
          if (cs < 0) cs = 40 + (cs % 40);
          if (cs >= 40)cs = cs % 40;
+         char ram;
+         int fp = ((unsigned char) lcd->ddram_char[(cs + loff) % DDRMAX]);
 
-         if ((lcd->ddram[(cs + loff) % DDRMAX][x] & (0x01 << y))&& (lcd->flags & L_DON))
+         if (fp >= 0x20)
+          {
+           ram=LCDfont[fp-0x20][x];
+          }
+         else
+          {
+           ram=lcd->cgram[fp & 0x07][x];
+          }
+         if ((ram & (0x01 << y))&& (lcd->flags & L_DON))
           {
            canvas->SetFgColor (0, 35, 0);
            canvas->SetColor (0, 35, 0);

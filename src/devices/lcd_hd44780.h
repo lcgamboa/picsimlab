@@ -73,10 +73,9 @@ unsigned char update;   //redraw
 unsigned int blinkc;    //blink count timer
 unsigned char blink;    //cursor state
 char shift;             //display shift
-char ddram[DDRMAX][5];  //ddram font mapped
 char ddram_char[DDRMAX];//ddram 
 char cgram[8][5]; //cgram font mapped
-char cgram_char[8]; //cgram
+char cgram_char[64]; //cgram
 char bc;
 char buff;
 unsigned char cnum;     //number of columns 16 or 20
