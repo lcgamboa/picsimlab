@@ -14,6 +14,7 @@ var classcboard__u_cboard =
     [ "GetOutputMapFile", "classcboard__u_cboard.html#a7e1e401af06057f1045cd2ee799d8a44", null ],
     [ "GetPictureFileName", "classcboard__u_cboard.html#aa5d0af3fbae3b20d1fab71a9bb2ee0c7", null ],
     [ "GetSupportedDevices", "classcboard__u_cboard.html#a0293951ec6d1a023e06eb318bb2b899f", null ],
+    [ "MInit", "classcboard__u_cboard.html#a0651b1218a2bc08bce7f7c4e8b97252a", null ],
     [ "ReadPreferences", "classcboard__u_cboard.html#add283dcb791a681f49caf27884ccd223", null ],
     [ "RefreshStatus", "classcboard__u_cboard.html#aa49908a61875cb791bfd3bbfbdcd6340", null ],
     [ "Reset", "classcboard__u_cboard.html#ae89e8bfb25711494df8f1881f5bedaff", null ],

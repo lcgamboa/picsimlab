@@ -2,6 +2,8 @@
 
 ### New
 
+* LCD hd44780 read support added. [lcgamboa]
+
 * Build script with support to build experimental features. [lcgamboa]
 
 * Initial support to uCsim Z80 and STM8S103. [lcgamboa]
@@ -35,6 +37,8 @@
 * Support to atmega2560. [lcgamboa]
 
 ### Changes
+
+* Spare parts properties combo and input text sizes increased. [lcgamboa]
 
 * Using boards names instead numbers. [lcgamboa]
 
