@@ -43,6 +43,7 @@ class cboard_uCboard:public board_ucsim
       //Called ever 100ms to draw board
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
+      int MInit(const char * processor, const char * fname, float freq);
       //Return a list of board supported microcontrollers
       String GetSupportedDevices(void){return lxT("C51,STM8S103,Z80,");};
       //Return the filename of board picture 

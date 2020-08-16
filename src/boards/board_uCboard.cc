@@ -388,6 +388,51 @@ cboard_uCboard::Run_CPU(void)
 
 }
 
+
+int
+cboard_uCboard::MInit(const char * processor, const char * fname, float freq)
+{
+
+ int ret = board_ucsim::MInit (processor, fname, freq);
+
+ lxImage image;
+
+ switch (MGetPinCount ())
+  {
+  case 8:
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic08.png"));
+   break;
+  case 14:
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic14.png"));
+   break;
+  case 18:
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic18.png"));
+   break;
+  case 20:
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic20.png"));
+   break;
+  case 28:
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic28.png"));
+   break;
+  case 40:
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.png"));
+   break;
+  case 100:
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic100.png"));
+   break;
+  default:
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.png"));
+   printf ("IC package with %i pins not found!\n", MGetPinCount ());
+   break;
+  }
+
+ if (micbmp) delete micbmp;
+ micbmp = new lxBitmap (image, &Window1);
+
+
+ return ret;
+}
+
 //Register the board in PICSimLab
 board_init("uCboard", cboard_uCboard);
 
