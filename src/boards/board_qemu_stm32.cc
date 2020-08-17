@@ -638,7 +638,7 @@ board_qemu_stm32::MStep(void)
 
  if (connected)
   {
-   while ((n = recv (sockfd, &buff, 1, 0)) > 0)
+   if ((n = recv (sockfd, &buff, 1, 0)) > 0)
     {
      pins[(0x7F & buff) - 1].value = ((0x80 & buff) > 0);
     }
