@@ -55,6 +55,7 @@ class cboard_Curiosity_HPC:public board_picsim
         CCombo *combo1;  //combo of second serial
 
     public:
+      String GetAboutInfo(void){return lxT("El-khadraouy Mohammed\n<mohammed.el-khadraouy@ecole.ensicaen.fr>\n\nL.C. Gamboa \n <lcgamboa@yahoo.com>");};  
       //Constructor called once on board creation 
       cboard_Curiosity_HPC(void);
       //Destructor called once on board destruction 

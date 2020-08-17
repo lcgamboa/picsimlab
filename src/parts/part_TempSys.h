@@ -35,6 +35,8 @@ public:
     String GetName(void) {
         return lxT("Temperature System");
     };
+    String GetHelpURL(void){return lxT("Temperature_System.html");};
+    String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
     cpart_tempsys(unsigned x, unsigned y);
     ~cpart_tempsys(void);
     void Draw(void);

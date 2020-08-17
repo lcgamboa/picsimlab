@@ -49,6 +49,7 @@ class cboard_K16F:public board_picsim
      char mi2c_tmp_name[200];  
     
   public:
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cboard_K16F(void);
       ~cboard_K16F(void);
       void Draw(CDraw *draw,double scale);

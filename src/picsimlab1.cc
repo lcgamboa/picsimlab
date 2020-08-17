@@ -722,7 +722,19 @@ CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
 }
 
 void
-CPWindow1::menu1_Help_About_EvMenuActive(CControl * control)
+CPWindow1::menu1_Help_Board_EvMenuActive(CControl * control)
+{
+  lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/Features_Board_")+String (boards_list[lab].name_)+lxT(".html"));  
+}
+
+void
+CPWindow1::menu1_Help_About_Board_EvMenuActive(CControl * control)
+{
+ Message (lxT ("Developed by ")+pboard->GetAboutInfo ());
+}
+
+void
+CPWindow1::menu1_Help_About_PICSimLab_EvMenuActive(CControl * control)
 {
  Message (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (lxT (_VERSION_)));
 }

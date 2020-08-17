@@ -35,6 +35,8 @@ public:
     String GetName(void) {
         return lxT("Buzzer");
     };
+    String GetHelpURL(void){return lxT("Buzzer.html");};
+    String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
     cpart_Buzzer(unsigned x, unsigned y);
     ~cpart_Buzzer(void);
     void Draw(void);

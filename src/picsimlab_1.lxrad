@@ -184,7 +184,7 @@
   <Name type="String">menu1_Help</Name>
   <Tag type="int">0</Tag>
   <Text type="String">Help</Text>
-  <MenuItems type="MenuItems">Contents,Examples,About,</MenuItems>
+  <MenuItems type="MenuItems">Contents,Board,Examples,About Board,About PICSimLab,</MenuItems>
 </menu1_Help>
 <menu1_File_LoadHex>
   <Class type="String">CItemMenu</Class>
@@ -312,6 +312,15 @@
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_Help_Contents>
+<menu1_Help_Board>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Help_Board</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Board</Text>
+  <Enable type="bool">1</Enable>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Help_Board>
 <menu1_Help_Examples>
   <Class type="String">CItemMenu</Class>
   <Name type="String">menu1_Help_Examples</Name>
@@ -321,15 +330,24 @@
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_Help_Examples>
-<menu1_Help_About>
+<menu1_Help_About_Board>
   <Class type="String">CItemMenu</Class>
-  <Name type="String">menu1_Help_About</Name>
+  <Name type="String">menu1_Help_About_Board</Name>
   <Tag type="int">0</Tag>
-  <Text type="String">About</Text>
+  <Text type="String">About Board</Text>
   <Enable type="bool">1</Enable>
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
-</menu1_Help_About>
+</menu1_Help_About_Board>
+<menu1_Help_About_PICSimLab>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Help_About_PICSimLab</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">About PICSimLab</Text>
+  <Enable type="bool">1</Enable>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Help_About_PICSimLab>
 <statusbar1>
   <Class type="String">CStatusbar</Class>
   <Name type="String">statusbar1</Name>

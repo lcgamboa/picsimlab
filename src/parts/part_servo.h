@@ -38,6 +38,8 @@ class cpart_servo:public part
 {
    public:
       String GetName(void){return lxT("Servo motor");};
+      String GetHelpURL(void){return lxT("Servo_Motor.html");};
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};      
       
      /**
      * @brief constructor called once on part creation

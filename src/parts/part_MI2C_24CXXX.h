@@ -36,6 +36,8 @@ public:
     String GetName(void) {
         return lxT("MEM 24CXXX");
     };
+    String GetHelpURL(void){return lxT("MEM_24CXXX.html");};
+    String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
     cpart_MI2C_24CXXX(unsigned x, unsigned y);
     ~cpart_MI2C_24CXXX(void);
     void Draw(void);

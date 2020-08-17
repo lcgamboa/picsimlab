@@ -73,6 +73,7 @@ class cboard_McLab2:public board_picsim
     
     char mi2c_tmp_name[200]; 
   public:
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cboard_McLab2(void);
       ~cboard_McLab2(void);
       void Draw(CDraw *draw,double scale);

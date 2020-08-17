@@ -104,6 +104,7 @@ class cboard_PICGenios:public board_picsim
     char mi2c_tmp_name[200]; 
     
   public:
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cboard_PICGenios(void);
       ~cboard_PICGenios(void);
       void Draw(CDraw *draw,double scale);

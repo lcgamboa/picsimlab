@@ -34,6 +34,8 @@ class cpart_IO_74xx595:public part
 {
    public:
       String GetName(void){return lxT("IO 74xx595");};
+      String GetHelpURL(void){return lxT("IO_74xx595.html");};
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cpart_IO_74xx595(unsigned x, unsigned y);
       ~cpart_IO_74xx595(void);
       void Draw(void);

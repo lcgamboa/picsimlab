@@ -41,6 +41,7 @@ class cboard_Breadboard:public board_picsim, public board_simavr
       int ptype;
       lxBitmap * micbmp;
    public:
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       int DebugInit(int dtyppe); 
       String GetDebugName(void);
       void DebugLoop(void);

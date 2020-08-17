@@ -34,6 +34,8 @@ class cpart_gamepad:public part
 {
    public:
       String GetName(void){return lxT("Gamepad");};
+      String GetHelpURL(void){return lxT("Gamepad.html");};
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_gamepad(unsigned x, unsigned y);
       ~cpart_gamepad(void);
       void Draw(void);

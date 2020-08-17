@@ -34,6 +34,8 @@ class cpart_keypad:public part
 {
    public:
       String GetName(void){return lxT("Keypad");};
+      String GetHelpURL(void){return lxT("Keypad.html");};
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_keypad(unsigned x, unsigned y);
       ~cpart_keypad(void);
       void Draw(void);

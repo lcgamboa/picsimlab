@@ -34,6 +34,8 @@ class cpart_LCD_pcf8833:public part
 {
    public:
       String GetName(void){return lxT("LCD pcf8833");};
+      String GetHelpURL(void){return lxT("LCD_pcf8833.html");};
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_LCD_pcf8833(unsigned x, unsigned y);
       ~cpart_LCD_pcf8833(void);
       void Draw(void);

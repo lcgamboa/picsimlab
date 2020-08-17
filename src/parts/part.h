@@ -41,6 +41,16 @@ class part
      * @brief  Return the name of part
      */ 
       virtual String GetName(void)=0; 
+      
+     /**
+     * @brief  Return the help url of part
+     */ 
+      virtual String GetHelpURL(void)=0; 
+      
+     /**
+     * @brief  Return the about information of part
+     */ 
+      virtual String GetAboutInfo(void)=0;   
            
      /**
      * @brief  Called ever 100ms to draw part

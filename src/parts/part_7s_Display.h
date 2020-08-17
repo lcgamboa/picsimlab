@@ -33,6 +33,8 @@ class cpart_7s_display : public part {
 public:
 
     String GetName(void) {return lxT("7 Segments Display"); };
+    String GetHelpURL(void){return lxT("Segments_Display.html");};
+    String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
     cpart_7s_display(unsigned x, unsigned y);
     ~cpart_7s_display(void);
     void Draw(void);

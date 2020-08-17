@@ -34,6 +34,8 @@ class cpart_pbuttons_an:public part
 {
    public:
       String GetName(void){return lxT("Push buttons (Analogic)");};
+      String GetHelpURL(void){return lxT("Push_Buttons_Analogic.html");};
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_pbuttons_an(unsigned x, unsigned y);
       ~cpart_pbuttons_an(void);
       void Draw(void);

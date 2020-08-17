@@ -33,6 +33,8 @@ class cpart_RTC_ds1307:public part
 {
    public:
       String GetName(void){return lxT("RTC ds1307");};
+      String GetHelpURL(void){return lxT("RTC_ds1307.html");};
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_RTC_ds1307(unsigned x, unsigned y);
       ~cpart_RTC_ds1307(void);
       void Draw(void);

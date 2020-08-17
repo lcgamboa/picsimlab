@@ -33,6 +33,8 @@ class cpart_RTC_pfc8563:public part
 {
    public:
       String GetName(void){return lxT("RTC pfc8563");};
+      String GetHelpURL(void){return lxT("RTC_pfc8563.html");};
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_RTC_pfc8563(unsigned x, unsigned y);
       ~cpart_RTC_pfc8563(void);
       void Draw(void);

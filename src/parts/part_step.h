@@ -34,6 +34,8 @@ class cpart_step:public part
 {
    public:
       String GetName(void){return lxT("Step motor");}; 
+      String GetHelpURL(void){return lxT("Step_Motor.html");};
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_step(unsigned x, unsigned y);
       ~cpart_step(void);
       void Draw(void);

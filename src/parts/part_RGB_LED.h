@@ -34,6 +34,8 @@ class cpart_rgb_led:public part
 {
    public:
       String GetName(void){return lxT("RGB LED");};
+      String GetHelpURL(void){return lxT("RGB_LED.html");};
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_rgb_led(unsigned x, unsigned y);
       ~cpart_rgb_led(void);
       void Draw(void);

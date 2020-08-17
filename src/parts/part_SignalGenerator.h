@@ -35,6 +35,8 @@ public:
     String GetName(void) {
         return lxT("Signal Generator");
     };
+    String GetHelpURL(void){return lxT("Signal_Generator.html");};
+    String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
     cpart_SignalGenerator(unsigned x, unsigned y);
     ~cpart_SignalGenerator(void);
     void Draw(void);

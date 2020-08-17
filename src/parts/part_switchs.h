@@ -34,6 +34,8 @@ class cpart_switchs:public part
 {
    public:
       String GetName(void){return lxT("Switchs");}; 
+      String GetHelpURL(void){return lxT("Switchs.html");};
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_switchs(unsigned x, unsigned y);
       ~cpart_switchs(void);
       void Draw(void);

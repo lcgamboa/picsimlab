@@ -36,6 +36,7 @@ class cboard_Blue_Pill:public board_qemu_stm32
    private:
  
    public:
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       //Constructor called once on board creation 
       cboard_Blue_Pill(void);
       //Destructor called once on board destruction 

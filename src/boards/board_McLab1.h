@@ -45,6 +45,7 @@ class cboard_McLab1:public board_picsim
      CLabel *label1;
  
    public:
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       cboard_McLab1(void);
       ~cboard_McLab1(void);
       void Draw(CDraw *draw,double scale);

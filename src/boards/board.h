@@ -212,6 +212,11 @@ class board
      * @brief Get debug interface name  
      */ 
       virtual String GetDebugName(void)=0;
+      
+     /**
+     * @brief  Return the about information of part
+     */ 
+      virtual String GetAboutInfo(void)=0;   
         
      /**
      * @brief debug step (pooling)  

@@ -50,6 +50,7 @@ class cboard_MPLAB_Xpress:public board_picsim
      
  
    public:
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       //Constructor called once on board creation 
       cboard_MPLAB_Xpress(void);
       //Destructor called once on board destruction 

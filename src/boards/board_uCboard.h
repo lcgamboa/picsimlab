@@ -36,6 +36,7 @@ class cboard_uCboard:public board_ucsim
    private:
        lxBitmap * micbmp;       
    public:
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       //Constructor called once on board creation 
       cboard_uCboard(void);
       //Destructor called once on board destruction 

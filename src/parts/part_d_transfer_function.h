@@ -34,6 +34,8 @@ class cpart_dtfunc:public part
 {
    public:
       String GetName(void){return lxT("D. Transfer function");};
+      String GetHelpURL(void){return lxT("D_Transfer_Function.html");};
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_dtfunc(unsigned x, unsigned y);
       ~cpart_dtfunc(void);
       void Draw(void);

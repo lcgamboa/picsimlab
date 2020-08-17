@@ -82,7 +82,7 @@
   <Name type="String">pmenu2</Name>
   <Tag type="int">0</Tag>
   <Text type="String"></Text>
-  <MenuItems type="MenuItems">Properties,Move,Delete,</MenuItems>
+  <MenuItems type="MenuItems">Properties,Move,Delete,Help,About,</MenuItems>
 </pmenu2>
 <pmenu2_Properties>
   <Class type="String">CItemMenu</Class>
@@ -140,6 +140,22 @@
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </pmenu2_Delete>
+<pmenu2_Help>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">pmenu2_Help</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Help</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</pmenu2_Help>
+<pmenu2_About>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">pmenu2_About</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">About</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</pmenu2_About>
 <menu1_Help>
   <Class type="String">CPMenu</Class>
   <Name type="String">menu1_Help</Name>

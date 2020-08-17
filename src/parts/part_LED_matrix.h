@@ -36,6 +36,8 @@ public:
     String GetName(void) {
         return lxT("LED Matrix");
     };
+    String GetHelpURL(void){return lxT("LED_Matrix.html");};
+    String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
     cpart_led_matrix(unsigned x, unsigned y);
     ~cpart_led_matrix(void);
     void Draw(void);

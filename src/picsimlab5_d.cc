@@ -73,7 +73,7 @@ CPWindow5::CPWindow5(void)
   pmenu2.SetName(lxT("pmenu2"));
   pmenu2.SetTag(0);
   pmenu2.SetText(lxT(""));
-  pmenu2.SetMenuItems(lxT("Properties,Move,Delete,"));
+  pmenu2.SetMenuItems(lxT("Properties,Move,Delete,Help,About,"));
   CreateChild(&pmenu2);
   //pmenu2_Properties
   pmenu2_Properties.SetFOwner(this);
@@ -138,6 +138,24 @@ CPWindow5::CPWindow5(void)
   pmenu2_Delete.SetSubMenu(NULL);
   pmenu2_Delete.EvMenuActive=EVMENUACTIVE & CPWindow5::pmenu2_Delete_EvMenuActive;
   pmenu2.CreateChild(&pmenu2_Delete);
+  //pmenu2_Help
+  pmenu2_Help.SetFOwner(this);
+  pmenu2_Help.SetClass(lxT("CItemMenu"));
+  pmenu2_Help.SetName(lxT("pmenu2_Help"));
+  pmenu2_Help.SetTag(0);
+  pmenu2_Help.SetText(lxT("Help"));
+  pmenu2_Help.SetSubMenu(NULL);
+  pmenu2_Help.EvMenuActive=EVMENUACTIVE & CPWindow5::pmenu2_Help_EvMenuActive;
+  pmenu2.CreateChild(&pmenu2_Help);
+  //pmenu2_About
+  pmenu2_About.SetFOwner(this);
+  pmenu2_About.SetClass(lxT("CItemMenu"));
+  pmenu2_About.SetName(lxT("pmenu2_About"));
+  pmenu2_About.SetTag(0);
+  pmenu2_About.SetText(lxT("About"));
+  pmenu2_About.SetSubMenu(NULL);
+  pmenu2_About.EvMenuActive=EVMENUACTIVE & CPWindow5::pmenu2_About_EvMenuActive;
+  pmenu2.CreateChild(&pmenu2_About);
   //menu1_Help
   menu1_Help.SetFOwner(this);
   menu1_Help.SetClass(lxT("CPMenu"));

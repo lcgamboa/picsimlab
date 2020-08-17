@@ -34,6 +34,8 @@ class cpart_IO_PCF8574:public part
 {
    public:
       String GetName(void){return lxT("IO PCF8574");};
+      String GetHelpURL(void){return lxT("IO_PCF8574.html");};
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};      
       cpart_IO_PCF8574(unsigned x, unsigned y);
       ~cpart_IO_PCF8574(void);
       void Draw(void);

@@ -33,6 +33,8 @@ class cpart_pot:public part
 {
     public:
       String GetName(void){return lxT("Potentiometers");};
+      String GetHelpURL(void){return lxT("Potentiometers.html");};
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_pot(unsigned x, unsigned y);
       ~cpart_pot(void); 
       void Draw(void);

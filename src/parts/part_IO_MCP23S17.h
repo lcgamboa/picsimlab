@@ -34,6 +34,8 @@ class cpart_IO_MCP23S17:public part
 {
    public:
       String GetName(void){return lxT("IO MCP23S17");};
+      String GetHelpURL(void){return lxT("IO_MCP23S17.html");};
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cpart_IO_MCP23S17(unsigned x, unsigned y);
       ~cpart_IO_MCP23S17(void);
       void Draw(void);

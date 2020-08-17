@@ -185,7 +185,7 @@ CPWindow1::CPWindow1(void)
   menu1_Help.SetName(lxT("menu1_Help"));
   menu1_Help.SetTag(0);
   menu1_Help.SetText(lxT("Help"));
-  menu1_Help.SetMenuItems(lxT("Contents,Examples,About,"));
+  menu1_Help.SetMenuItems(lxT("Contents,Board,Examples,About Board,About PICSimLab,"));
   menu1.CreateChild(&menu1_Help);
   //menu1_File_LoadHex
   menu1_File_LoadHex.SetFOwner(this);
@@ -327,6 +327,16 @@ CPWindow1::CPWindow1(void)
   menu1_Help_Contents.SetSubMenu(NULL);
   menu1_Help_Contents.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Help_Contents_EvMenuActive;
   menu1_Help.CreateChild(&menu1_Help_Contents);
+  //menu1_Help_Board
+  menu1_Help_Board.SetFOwner(this);
+  menu1_Help_Board.SetClass(lxT("CItemMenu"));
+  menu1_Help_Board.SetName(lxT("menu1_Help_Board"));
+  menu1_Help_Board.SetTag(0);
+  menu1_Help_Board.SetText(lxT("Board"));
+  menu1_Help_Board.SetEnable(1);
+  menu1_Help_Board.SetSubMenu(NULL);
+  menu1_Help_Board.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Help_Board_EvMenuActive;
+  menu1_Help.CreateChild(&menu1_Help_Board);
   //menu1_Help_Examples
   menu1_Help_Examples.SetFOwner(this);
   menu1_Help_Examples.SetClass(lxT("CItemMenu"));
@@ -337,16 +347,26 @@ CPWindow1::CPWindow1(void)
   menu1_Help_Examples.SetSubMenu(NULL);
   menu1_Help_Examples.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Help_Examples_EvMenuActive;
   menu1_Help.CreateChild(&menu1_Help_Examples);
-  //menu1_Help_About
-  menu1_Help_About.SetFOwner(this);
-  menu1_Help_About.SetClass(lxT("CItemMenu"));
-  menu1_Help_About.SetName(lxT("menu1_Help_About"));
-  menu1_Help_About.SetTag(0);
-  menu1_Help_About.SetText(lxT("About"));
-  menu1_Help_About.SetEnable(1);
-  menu1_Help_About.SetSubMenu(NULL);
-  menu1_Help_About.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Help_About_EvMenuActive;
-  menu1_Help.CreateChild(&menu1_Help_About);
+  //menu1_Help_About_Board
+  menu1_Help_About_Board.SetFOwner(this);
+  menu1_Help_About_Board.SetClass(lxT("CItemMenu"));
+  menu1_Help_About_Board.SetName(lxT("menu1_Help_About_Board"));
+  menu1_Help_About_Board.SetTag(0);
+  menu1_Help_About_Board.SetText(lxT("About Board"));
+  menu1_Help_About_Board.SetEnable(1);
+  menu1_Help_About_Board.SetSubMenu(NULL);
+  menu1_Help_About_Board.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Help_About_Board_EvMenuActive;
+  menu1_Help.CreateChild(&menu1_Help_About_Board);
+  //menu1_Help_About_PICSimLab
+  menu1_Help_About_PICSimLab.SetFOwner(this);
+  menu1_Help_About_PICSimLab.SetClass(lxT("CItemMenu"));
+  menu1_Help_About_PICSimLab.SetName(lxT("menu1_Help_About_PICSimLab"));
+  menu1_Help_About_PICSimLab.SetTag(0);
+  menu1_Help_About_PICSimLab.SetText(lxT("About PICSimLab"));
+  menu1_Help_About_PICSimLab.SetEnable(1);
+  menu1_Help_About_PICSimLab.SetSubMenu(NULL);
+  menu1_Help_About_PICSimLab.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Help_About_PICSimLab_EvMenuActive;
+  menu1_Help.CreateChild(&menu1_Help_About_PICSimLab);
   //statusbar1
   statusbar1.SetFOwner(this);
   statusbar1.SetClass(lxT("CStatusbar"));

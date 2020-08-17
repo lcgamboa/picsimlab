@@ -36,6 +36,8 @@ class cpart_VCD_Dump:public part
 {
    public:
       String GetName(void){return lxT("VCD Dump");};
+      String GetHelpURL(void){return lxT("VCD_dump.html");};
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_VCD_Dump(unsigned x, unsigned y);
       ~cpart_VCD_Dump(void);
       void Draw(void);

@@ -50,6 +50,8 @@ class cboard_x:public board_picsim
       cboard_x(void);
       //Destructor called once on board destruction 
       ~cboard_x(void); 
+      //Return the about info of board
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       //Called ever 100ms to draw board
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);

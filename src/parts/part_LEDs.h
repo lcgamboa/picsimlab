@@ -34,6 +34,8 @@ class cpart_leds:public part
 {
    public:
       String GetName(void){return lxT("LEDs");};
+      String GetHelpURL(void){return lxT("LEDs.html");};
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_leds(unsigned x, unsigned y);
       ~cpart_leds(void);
       void Draw(void);

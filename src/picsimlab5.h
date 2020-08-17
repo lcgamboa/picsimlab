@@ -47,12 +47,14 @@ public:
     CPMenu menu1_Add;
     CPMenu pmenu2;
     CItemMenu pmenu2_Properties;
+    CItemMenu pmenu2_Move;
+    CItemMenu pmenu2_Delete;
+    CItemMenu pmenu2_Help;
+    CItemMenu pmenu2_About;    
     CTimer timer1;
     CItemMenu menu1_File_Newconfiguration;
     CItemMenu menu1_File_Saveconfiguration;
     CItemMenu menu1_File_Loadconfiguration;
-    CItemMenu pmenu2_Move;
-    CItemMenu pmenu2_Delete;
     CPMenu menu1_Help;
     CItemMenu menu1_Help_Contents;
     CItemMenu menu1_Help_About;
@@ -73,6 +75,8 @@ public:
     void menu1_File_Loadconfiguration_EvMenuActive(CControl * control);
     void pmenu2_Move_EvMenuActive(CControl * control);
     void pmenu2_Delete_EvMenuActive(CControl * control);
+    void pmenu2_Help_EvMenuActive(CControl * control);
+    void pmenu2_About_EvMenuActive(CControl * control);
     void menu1_Help_Contents_EvMenuActive(CControl * control);
     void menu1_Help_About_EvMenuActive(CControl * control);
     void filedialog1_EvOnClose(const int retId);

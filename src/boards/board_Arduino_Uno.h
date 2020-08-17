@@ -53,6 +53,7 @@ class cboard_Arduino_Uno:public board_simavr
      
  
    public:
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       //Constructor called once on board creation 
       cboard_Arduino_Uno(void);
       //Destructor called once on board destruction 

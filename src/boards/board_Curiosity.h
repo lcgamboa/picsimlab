@@ -52,6 +52,7 @@ class cboard_Curiosity:public board_picsim
      
  
    public:
+      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       //Constructor called once on board creation 
       cboard_Curiosity(void);
       //Destructor called once on board destruction 
