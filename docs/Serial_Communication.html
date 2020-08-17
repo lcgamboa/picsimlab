@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//en">
+
+<!--Converted with LaTeX2HTML 2020.2 (Released July 1, 2020) -->
+<HTML lang="en">
+<HEAD>
+<TITLE>Serial Communication </TITLE>
+<META NAME="description" CONTENT="Serial Communication ">
+<META NAME="keywords" CONTENT="picsimlab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2020.2">
+
+<LINK REL="STYLESHEET" HREF="picsimlab.css">
+
+<LINK REL="next" HREF="MPLABX_Integrated_Debug.html">
+<LINK REL="previous" HREF="Boards.html">
+<LINK REL="next" HREF="Com0com_Installation_Config.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A
+ HREF="Com0com_Installation_Config.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="English_Manual.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="Features_Board_Arduino.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="Com0com_Installation_Config.html">Com0com Installation and Configuration(Windows)</A>
+<B> Up:</B> <A
+ HREF="English_Manual.html">English Manual</A>
+<B> Previous:</B> <A
+ HREF="Features_Board_Arduino.html">Features of Board Arduino</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A ID="SECTION01400000000000000000"></A><A ID="seriali"></A>
+<BR>
+Serial Communication 
+</H1>
+
+<P>
+To use the simulator serial port, install a NULL-MODEM emulator:
+
+<UL>
+<LI>Windows: com0com <kbd><A ID="tex2html24"
+  HREF="http://sourceforge.net/projects/com0com/">http://sourceforge.net/projects/com0com/</A></kbd>
+</LI>
+<LI>Linux: tty0tty  <kbd><A ID="tex2html25"
+  HREF="https://github.com/lcgamboa/tty0tty">https://github.com/lcgamboa/tty0tty</A></kbd>
+</LI>
+</UL>
+
+<P>
+For communication the PICSimLab should be connected in one port of the NULL-MODEM emulator and the other application connected in the other port.
+Configuration examples linking PICSimLab to <A ID="tex2html26"
+  HREF="https://github.com/neundorf/CuteCom">Cutecom</A>
+for serial communication:
+ <BR>
+<BR>
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="CENTER">OS</TD>
+<TD ALIGN="CENTER">PicsimLab port</TD>
+<TD ALIGN="CENTER">Cutecom port</TD>
+<TD ALIGN="CENTER">NULL-Modem prog.</TD>
+<TD ALIGN="CENTER">Connection</TD>
+</TR>
+<TR><TD ALIGN="CENTER">Windows</TD>
+<TD ALIGN="CENTER">com1</TD>
+<TD ALIGN="CENTER">com2</TD>
+<TD ALIGN="CENTER">com0com</TD>
+<TD ALIGN="CENTER">com1&lt;=&gt;com2</TD>
+</TR>
+<TR><TD ALIGN="CENTER">Linux</TD>
+<TD ALIGN="CENTER">/dev/tnt2</TD>
+<TD ALIGN="CENTER">/dev/tnt3</TD>
+<TD ALIGN="CENTER">tty0tty</TD>
+<TD ALIGN="CENTER">/dev/tnt2&lt;=&gt;/dev/tnt3</TD>
+</TR>
+</TABLE>
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A ID="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A ID="tex2html253"
+  HREF="Com0com_Installation_Config.html">Com0com Installation and Configuration(Windows)</A>
+<LI><A ID="tex2html254"
+  HREF="tty0tty_Installation_Config.html">tty0tty Installation and Configuration (Linux)</A>
+</UL>
+<!--End of Table of Child-Links-->
+<BR><HR>
+
+</BODY>
+</HTML>
