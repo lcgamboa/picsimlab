@@ -7,6 +7,8 @@ var classcpart___buzzer =
     [ "Draw", "classcpart___buzzer.html#a5ef0550535577954d514c95e3771f79f", null ],
     [ "get_in_id", "classcpart___buzzer.html#a0844801dd34dc9dde02206c14e16bfe6", null ],
     [ "get_out_id", "classcpart___buzzer.html#addcdc9b6a54ec1e284c5939f84038953", null ],
+    [ "GetAboutInfo", "classcpart___buzzer.html#a8ba3cb1c46c859bb8ac4c8581c2e442f", null ],
+    [ "GetHelpURL", "classcpart___buzzer.html#a55f7cadc8e43c39fdaa0f9839213b321", null ],
     [ "GetInputMapFile", "classcpart___buzzer.html#a46f4220bdac51d70d9a98343e036e3fa", null ],
     [ "GetName", "classcpart___buzzer.html#abe895350fb4c3abc466331215b96922c", null ],
     [ "GetOutputMapFile", "classcpart___buzzer.html#a6eddd32860970837f166ca58d56346ff", null ],

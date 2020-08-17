@@ -2,6 +2,8 @@
 
 ### New
 
+* Added support to boards and parts help link and about information. [lcgamboa]
+
 * LCD hd44780 read support added. [lcgamboa]
 
 * Build script with support to build experimental features. [lcgamboa]

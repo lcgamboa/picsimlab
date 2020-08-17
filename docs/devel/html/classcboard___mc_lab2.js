@@ -10,6 +10,7 @@ var classcboard___mc_lab2 =
     [ "EvOnShow", "classcboard___mc_lab2.html#ad1d9bfdd4fc89da87b472e62f72f040e", null ],
     [ "get_in_id", "classcboard___mc_lab2.html#a8f62b7aef5f0e49ce112063e7d3278fe", null ],
     [ "get_out_id", "classcboard___mc_lab2.html#aaf7089538a8692b77cbc94765834f388", null ],
+    [ "GetAboutInfo", "classcboard___mc_lab2.html#a39eec64f4f4adedce49c37bcb133d5d6", null ],
     [ "GetInputMapFile", "classcboard___mc_lab2.html#af9be925d0505016f0e79ca164deb3dc8", null ],
     [ "GetOutputMapFile", "classcboard___mc_lab2.html#accfeafb31a3495e0ea3161700df777fb", null ],
     [ "GetPictureFileName", "classcboard___mc_lab2.html#a0430543dc21eb774c46aebc931c2edb0", null ],

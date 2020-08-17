@@ -9,6 +9,8 @@ var classcpart___signal_generator =
     [ "EvMouseMove", "classcpart___signal_generator.html#af74ade27b96ea3b247e14b53e1315163", null ],
     [ "get_in_id", "classcpart___signal_generator.html#acc7f11c732c393741265480ae05ce860", null ],
     [ "get_out_id", "classcpart___signal_generator.html#a05dbd03428037bd98a6ecf2ee2b86cb5", null ],
+    [ "GetAboutInfo", "classcpart___signal_generator.html#a46337c25034d03b51efac7255503799f", null ],
+    [ "GetHelpURL", "classcpart___signal_generator.html#add4cb02a7eb18c5fe7d37f3cf11e3bce", null ],
     [ "GetInputMapFile", "classcpart___signal_generator.html#ad993e8f3eb1b25f27f58619ada16315e", null ],
     [ "GetName", "classcpart___signal_generator.html#a13e4ce88a2805ecce49f1fa9228da202", null ],
     [ "GetOutputMapFile", "classcpart___signal_generator.html#a1045ea172bb4bfb64ffe043c795801f9", null ],

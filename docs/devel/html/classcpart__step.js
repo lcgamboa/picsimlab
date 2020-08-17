@@ -6,6 +6,8 @@ var classcpart__step =
     [ "Draw", "classcpart__step.html#a3a4d59fedc21b8c93638e851cddbe601", null ],
     [ "get_in_id", "classcpart__step.html#a00fa551a049f0e238e92c7cb2667d7ba", null ],
     [ "get_out_id", "classcpart__step.html#aa673c597abcb35b3225eb86abe889dda", null ],
+    [ "GetAboutInfo", "classcpart__step.html#a9e3a47dc60f392e5760914b1955c07e7", null ],
+    [ "GetHelpURL", "classcpart__step.html#a3deb00d56f6bfe7a94737c1e20445225", null ],
     [ "GetInputMapFile", "classcpart__step.html#adf147ab6c99fb0ba9f55149800b9bd42", null ],
     [ "GetName", "classcpart__step.html#ab634fd5204114c7c722b5ede05eb9985", null ],
     [ "GetOutputMapFile", "classcpart__step.html#aeafe060f101c158f1532bd4b0b73d660", null ],

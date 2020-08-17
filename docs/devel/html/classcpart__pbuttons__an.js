@@ -8,6 +8,8 @@ var classcpart__pbuttons__an =
     [ "EvMouseButtonRelease", "classcpart__pbuttons__an.html#a179e34d41ca59aed3f565eb4f9759cc6", null ],
     [ "get_in_id", "classcpart__pbuttons__an.html#aa3650b01e670d405cd1ba50110ccfef2", null ],
     [ "get_out_id", "classcpart__pbuttons__an.html#ac620045afe6e719992594d2727da44b1", null ],
+    [ "GetAboutInfo", "classcpart__pbuttons__an.html#a3bcaf568e6e5d5b9e1d034cfcc6fcb53", null ],
+    [ "GetHelpURL", "classcpart__pbuttons__an.html#af9cb79cbf13522a127fe25a1a9459c12", null ],
     [ "GetInputMapFile", "classcpart__pbuttons__an.html#adcc0091fc0c42651c75e34ae1564b750", null ],
     [ "GetName", "classcpart__pbuttons__an.html#ada9867d00b46bccf872e0849df1f5cf3", null ],
     [ "GetOutputMapFile", "classcpart__pbuttons__an.html#ad16b5049f3e6db39c8c7eac10ef1e7ba", null ],

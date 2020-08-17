@@ -9,6 +9,8 @@ var classcpart__tempsys =
     [ "EvMouseMove", "classcpart__tempsys.html#a2738db7124c9b85d315ffafadc742d0e", null ],
     [ "get_in_id", "classcpart__tempsys.html#a5d121b743f0e824b4acacac8e2bc939b", null ],
     [ "get_out_id", "classcpart__tempsys.html#a84e6d54ef0210a367e75d203c4c999a4", null ],
+    [ "GetAboutInfo", "classcpart__tempsys.html#a9878e1327afb0b59aaba1fbdb9c3b78b", null ],
+    [ "GetHelpURL", "classcpart__tempsys.html#aacbd1b492656dd709394ef381cd7eccf", null ],
     [ "GetInputMapFile", "classcpart__tempsys.html#a8c13250aed8330ee2cc7079484019d38", null ],
     [ "GetName", "classcpart__tempsys.html#ad67d2a8c8876a329d9ca4eac8f14f606", null ],
     [ "GetOutputMapFile", "classcpart__tempsys.html#a4be31b491eabd38a2af792af0ef91fb7", null ],

@@ -6,6 +6,8 @@ var classcpart__led__matrix =
     [ "Draw", "classcpart__led__matrix.html#af4e79b608d9574fb82bc2e4e835ace02", null ],
     [ "get_in_id", "classcpart__led__matrix.html#a3545cb604913fb811d0a1dd9880c3a3f", null ],
     [ "get_out_id", "classcpart__led__matrix.html#a7ed9dc6a12b215b06e6a3b15ae33879c", null ],
+    [ "GetAboutInfo", "classcpart__led__matrix.html#a8739374f2ca5d95bfc9e442753aa125c", null ],
+    [ "GetHelpURL", "classcpart__led__matrix.html#a5849004890b9a269003ac77f7ecbd62b", null ],
     [ "GetInputMapFile", "classcpart__led__matrix.html#a7080424e17b931cc2eb1dc8d90954e9a", null ],
     [ "GetName", "classcpart__led__matrix.html#ad7497ccec6d3318ea725b29416132d0f", null ],
     [ "GetOutputMapFile", "classcpart__led__matrix.html#a8ae34f05fbbe0437727724db076decee", null ],

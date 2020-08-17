@@ -8,6 +8,8 @@ var classcpart___m_i2_c__24_c_x_x_x =
     [ "filedialog_EvOnClose", "classcpart___m_i2_c__24_c_x_x_x.html#af83b8e78973a58726afb2d81a1b1f86e", null ],
     [ "get_in_id", "classcpart___m_i2_c__24_c_x_x_x.html#a08263fe1508741fd7b63d80558bd986e", null ],
     [ "get_out_id", "classcpart___m_i2_c__24_c_x_x_x.html#acd9eb85f15ed75866fdeef3cab72c87e", null ],
+    [ "GetAboutInfo", "classcpart___m_i2_c__24_c_x_x_x.html#a9c65da68b07d1f809b06a193dbbad55d", null ],
+    [ "GetHelpURL", "classcpart___m_i2_c__24_c_x_x_x.html#a221ba2df17360619cd7d8e83309174bb", null ],
     [ "GetInputMapFile", "classcpart___m_i2_c__24_c_x_x_x.html#ae5e8c5f9f542151e218554f90bd8bd68", null ],
     [ "GetName", "classcpart___m_i2_c__24_c_x_x_x.html#af32abba183700f8c0ac4ae353c2f1afb", null ],
     [ "GetOutputMapFile", "classcpart___m_i2_c__24_c_x_x_x.html#a849d539a4ab197a0f577a29e508149c7", null ],

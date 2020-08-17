@@ -11,6 +11,7 @@ var classcboard___p_i_c_genios =
     [ "EvOnShow", "classcboard___p_i_c_genios.html#aab3e0aa3900f0c37885c404139bdb2c6", null ],
     [ "get_in_id", "classcboard___p_i_c_genios.html#ac68f73cbc848dbe0d8f000aec083d804", null ],
     [ "get_out_id", "classcboard___p_i_c_genios.html#ac5d6f5591b2c6e97172dd25b93c7a794", null ],
+    [ "GetAboutInfo", "classcboard___p_i_c_genios.html#a200b7faa00a388604b63c22f60e6155e", null ],
     [ "GetInputMapFile", "classcboard___p_i_c_genios.html#a4c88c1d7c2ce55939238abc97be6bb1c", null ],
     [ "GetOutputMapFile", "classcboard___p_i_c_genios.html#a9e9e9ad5bdb47b32e240a841df90ef96", null ],
     [ "GetPictureFileName", "classcboard___p_i_c_genios.html#a1cdeddee96d96b078ec4ed8dc4341b8c", null ],

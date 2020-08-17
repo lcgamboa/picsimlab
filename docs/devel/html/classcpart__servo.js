@@ -6,6 +6,8 @@ var classcpart__servo =
     [ "Draw", "classcpart__servo.html#a67baf5e61954a20b1ad32ba7be306c1e", null ],
     [ "get_in_id", "classcpart__servo.html#a43d2e87e94cdbe6fb792ef8e2b70d60f", null ],
     [ "get_out_id", "classcpart__servo.html#a42d93bfacf8c184948a8de24883991c1", null ],
+    [ "GetAboutInfo", "classcpart__servo.html#a2371639d919e77826255674f162b099d", null ],
+    [ "GetHelpURL", "classcpart__servo.html#ab760910d2fd0c5ac44b1d88c38615a71", null ],
     [ "GetInputMapFile", "classcpart__servo.html#a534464c3dfff25226507e281924629f8", null ],
     [ "GetName", "classcpart__servo.html#a9bfcc5515664d3d16fc10cfe1018ad0f", null ],
     [ "GetOutputMapFile", "classcpart__servo.html#a11b19d024acfd94002f520f876608761", null ],

@@ -10,6 +10,8 @@ var classcpart__dtfunc =
     [ "EvMouseButtonRelease", "classcpart__dtfunc.html#a67c5088ac1da801d9473f64b6ad21910", null ],
     [ "get_in_id", "classcpart__dtfunc.html#a53517b94f9ec6a261cf7c700a3c3a42a", null ],
     [ "get_out_id", "classcpart__dtfunc.html#a4e53531385f1d57a1a37cd03bee4d531", null ],
+    [ "GetAboutInfo", "classcpart__dtfunc.html#acccf1e820bddb40447c54feeffd24db0", null ],
+    [ "GetHelpURL", "classcpart__dtfunc.html#af64b4a25280395fe296e14ed19cd675e", null ],
     [ "GetInputMapFile", "classcpart__dtfunc.html#a8b7efea3f4edc6dca7fc9201076c37cd", null ],
     [ "GetName", "classcpart__dtfunc.html#ac52817623e2c649045bebcd58acc076f", null ],
     [ "GetOutputMapFile", "classcpart__dtfunc.html#a6620b791dc4fcec4374ea5792b292968", null ],

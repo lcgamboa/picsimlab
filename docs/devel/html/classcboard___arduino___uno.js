@@ -10,6 +10,7 @@ var classcboard___arduino___uno =
     [ "EvOnShow", "classcboard___arduino___uno.html#adbcbed91830d58bf916bd116f7bcf246", null ],
     [ "get_in_id", "classcboard___arduino___uno.html#ab49016ed9ac21a70ef92ac012c8b8d30", null ],
     [ "get_out_id", "classcboard___arduino___uno.html#a69db315453a56249e72b3abc994e999c", null ],
+    [ "GetAboutInfo", "classcboard___arduino___uno.html#a208fc24ae6f27129e44a61d13a5b51e6", null ],
     [ "GetInputMapFile", "classcboard___arduino___uno.html#a548161ffc85d1166f8a3395acda2133f", null ],
     [ "GetOutputMapFile", "classcboard___arduino___uno.html#a5c600919be767f05161d2aebb10fda12", null ],
     [ "GetPictureFileName", "classcboard___arduino___uno.html#a0213f6a38f7fa38f769e7fbff4b98ab7", null ],

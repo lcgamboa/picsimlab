@@ -10,6 +10,8 @@ var classcpart__keypad =
     [ "EvMouseButtonRelease", "classcpart__keypad.html#a7eacabcf9144319368382b7be104cc03", null ],
     [ "get_in_id", "classcpart__keypad.html#a0c85f4ca8ada24f3bd154aed9547bc16", null ],
     [ "get_out_id", "classcpart__keypad.html#a1425ff63dce7d682ef6fbcb30200a83a", null ],
+    [ "GetAboutInfo", "classcpart__keypad.html#ad354fc3a102f0d66aed7a2861666e960", null ],
+    [ "GetHelpURL", "classcpart__keypad.html#a8029a83cdb772db5d3acf1a1f24d1aa0", null ],
     [ "GetInputMapFile", "classcpart__keypad.html#a832a3fa58cc2e5bc3b36b8accfb5f476", null ],
     [ "GetName", "classcpart__keypad.html#a10dcfdbe268c3db584e765227279ca21", null ],
     [ "GetOutputMapFile", "classcpart__keypad.html#adff3afb8d5efa5f81efdf65c36ac3d58", null ],

@@ -11,6 +11,8 @@ var classcpart__gamepad =
     [ "EvMouseMove", "classcpart__gamepad.html#a026460d33e0e9d86c10337e32a4a33bf", null ],
     [ "get_in_id", "classcpart__gamepad.html#a51c69f18547c001c570994696885545c", null ],
     [ "get_out_id", "classcpart__gamepad.html#abac3d9498792d509f638629136abccb7", null ],
+    [ "GetAboutInfo", "classcpart__gamepad.html#abafb7356e7aa3ee3fe761ab3bc6b3d36", null ],
+    [ "GetHelpURL", "classcpart__gamepad.html#a179091ad225398895baa2eb8b051660e", null ],
     [ "GetInputMapFile", "classcpart__gamepad.html#a0a75e114efcba078ece8636abcc35f65", null ],
     [ "GetName", "classcpart__gamepad.html#aef0a382225ddb07d42781e9d3f9db78c", null ],
     [ "GetOutputMapFile", "classcpart__gamepad.html#aebdf369f758538eff2340cb5ea8dea96", null ],

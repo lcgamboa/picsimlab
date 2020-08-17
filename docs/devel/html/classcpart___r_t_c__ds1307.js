@@ -6,6 +6,8 @@ var classcpart___r_t_c__ds1307 =
     [ "Draw", "classcpart___r_t_c__ds1307.html#ac32bd571c6a005d3da2db3a3e03be34f", null ],
     [ "get_in_id", "classcpart___r_t_c__ds1307.html#a9650cc53b5b22b2b4e48ce0e083ff3f2", null ],
     [ "get_out_id", "classcpart___r_t_c__ds1307.html#ab3f18835859580d2b7909e35e72987e3", null ],
+    [ "GetAboutInfo", "classcpart___r_t_c__ds1307.html#a7458e0b2229be28971438420a6ff97f7", null ],
+    [ "GetHelpURL", "classcpart___r_t_c__ds1307.html#a3450c33948a954b1af1137d1f352b161", null ],
     [ "GetInputMapFile", "classcpart___r_t_c__ds1307.html#afebe050477ee523fd51cda501f44114b", null ],
     [ "GetName", "classcpart___r_t_c__ds1307.html#a1433ff9e42ae68cd0983e29aa77589e7", null ],
     [ "GetOutputMapFile", "classcpart___r_t_c__ds1307.html#ad18b5bdf3b377829713644cd5e80edc3", null ],

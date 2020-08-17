@@ -9,6 +9,8 @@ var classcpart__pot =
     [ "EvMouseMove", "classcpart__pot.html#a31720fa87e5ae664737bffdb50bba9fd", null ],
     [ "get_in_id", "classcpart__pot.html#af541598c5634c1353fb5a0f85d3edbff", null ],
     [ "get_out_id", "classcpart__pot.html#a724eb9edde08ccba9e11c7d46ded2504", null ],
+    [ "GetAboutInfo", "classcpart__pot.html#a3608d13900269400c004147bca080c2f", null ],
+    [ "GetHelpURL", "classcpart__pot.html#ad76b6b37fda0deb39522a5acfeb057b8", null ],
     [ "GetInputMapFile", "classcpart__pot.html#a482deb3e817356677ca6477725645c3a", null ],
     [ "GetName", "classcpart__pot.html#ab6ed3844649d0d8f14b6fff1bb94908f", null ],
     [ "GetOutputMapFile", "classcpart__pot.html#a81d2f7781125c943938d967a5c78bb6d", null ],

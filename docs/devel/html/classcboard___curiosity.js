@@ -10,6 +10,7 @@ var classcboard___curiosity =
     [ "EvOnShow", "classcboard___curiosity.html#a73127f045be1562766ae359b74e8880e", null ],
     [ "get_in_id", "classcboard___curiosity.html#a991199c3753ce47848596d349c80312f", null ],
     [ "get_out_id", "classcboard___curiosity.html#a4a1de5b6c4a161019663e4a24fccf0bd", null ],
+    [ "GetAboutInfo", "classcboard___curiosity.html#a1af174f556a92c0e5119faeeb5fa22a2", null ],
     [ "GetInputMapFile", "classcboard___curiosity.html#acad85d4f297cf505a25cf21719a3d86c", null ],
     [ "GetOutputMapFile", "classcboard___curiosity.html#a1060c6bfc7be7de0d1022c8c2bbfe3e0", null ],
     [ "GetPictureFileName", "classcboard___curiosity.html#a7e42bc43fbe0c02cfd3445236f65e4a8", null ],

@@ -7,6 +7,8 @@ var classcpart___v_c_d___dump__an =
     [ "EvMouseButtonPress", "classcpart___v_c_d___dump__an.html#a5629aa339c67c63bc133bdde8e868836", null ],
     [ "get_in_id", "classcpart___v_c_d___dump__an.html#a98e0a6747ccb9bf9bbfb0772e9a3c2e7", null ],
     [ "get_out_id", "classcpart___v_c_d___dump__an.html#a6ff80e9f0cde58b017a02676292dbc3c", null ],
+    [ "GetAboutInfo", "classcpart___v_c_d___dump__an.html#a177875d696600b9f59f325363983dd49", null ],
+    [ "GetHelpURL", "classcpart___v_c_d___dump__an.html#accc36ea674b96f62556682755ef154be", null ],
     [ "GetInputMapFile", "classcpart___v_c_d___dump__an.html#a5ccd4aaf81f7259542737d8162a2c3c2", null ],
     [ "GetName", "classcpart___v_c_d___dump__an.html#a450832f71030bc44d42b09686a41012f", null ],
     [ "GetOutputMapFile", "classcpart___v_c_d___dump__an.html#a5812354398f0d096e916fec4990ef253", null ],

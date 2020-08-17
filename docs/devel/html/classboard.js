@@ -28,6 +28,7 @@ var classboard =
     [ "EvOnShow", "classboard.html#aed4015dca7fdd2c2a094aa46572d6ab0", null ],
     [ "get_in_id", "classboard.html#a3b8cb75705bbf6af80f688eab336fd04", null ],
     [ "get_out_id", "classboard.html#ac68c0b2bd1751f7eba3d52d7ca1e68bd", null ],
+    [ "GetAboutInfo", "classboard.html#af424c3897d82054e62dcefa7f52b7709", null ],
     [ "GetDebugName", "classboard.html#a34e157282a82c0b84361419f23af9613", null ],
     [ "GetInputMapFile", "classboard.html#a92e7b17832793f52ea61cb57f644f8e1", null ],
     [ "GetOutputMapFile", "classboard.html#abef59ebbb7537f5d1e5107ee3e54c8df", null ],

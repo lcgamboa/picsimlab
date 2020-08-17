@@ -7,6 +7,8 @@ var classcpart__switchs =
     [ "EvMouseButtonPress", "classcpart__switchs.html#aa12cbb00b5a76e6146aa7c57090346ca", null ],
     [ "get_in_id", "classcpart__switchs.html#aed80fb4f9bdf6311b424c891c694a8dd", null ],
     [ "get_out_id", "classcpart__switchs.html#a08d9e08d8a73677078319f84385341cd", null ],
+    [ "GetAboutInfo", "classcpart__switchs.html#a37545c68c3bb617690ad3038246b1163", null ],
+    [ "GetHelpURL", "classcpart__switchs.html#a85bdcc55d96120a266e0f09cc35a76c3", null ],
     [ "GetInputMapFile", "classcpart__switchs.html#a097d1f23f0f718180c8a28c610568cd1", null ],
     [ "GetName", "classcpart__switchs.html#a8c4f4d6efc0a6f19b3771ae0d4103c83", null ],
     [ "GetOutputMapFile", "classcpart__switchs.html#aa7dd5eaf412e40016e55a0bb02ff09e6", null ],

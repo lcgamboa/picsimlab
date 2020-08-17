@@ -10,6 +10,7 @@ var classcboard___m_p_l_a_b___xpress =
     [ "EvOnShow", "classcboard___m_p_l_a_b___xpress.html#a41f1346b2eb09470ab8c651efffc4f5c", null ],
     [ "get_in_id", "classcboard___m_p_l_a_b___xpress.html#a28868a8272cee8f6563e824edd04f769", null ],
     [ "get_out_id", "classcboard___m_p_l_a_b___xpress.html#a01b2c899d1594849882a09545cba08a9", null ],
+    [ "GetAboutInfo", "classcboard___m_p_l_a_b___xpress.html#a1eed1b6906de2b7ac82cf50e828f63f0", null ],
     [ "GetInputMapFile", "classcboard___m_p_l_a_b___xpress.html#af558c17887026bd11b34bb9177df0813", null ],
     [ "GetOutputMapFile", "classcboard___m_p_l_a_b___xpress.html#a1b8cffb447bb7b10359da068b73290f0", null ],
     [ "GetPictureFileName", "classcboard___m_p_l_a_b___xpress.html#a0d1318981dc4e170b46e47f9aef20e29", null ],

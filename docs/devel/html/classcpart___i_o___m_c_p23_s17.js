@@ -6,6 +6,8 @@ var classcpart___i_o___m_c_p23_s17 =
     [ "Draw", "classcpart___i_o___m_c_p23_s17.html#ad51311832c236419b1320a3649917d2a", null ],
     [ "get_in_id", "classcpart___i_o___m_c_p23_s17.html#af5510008d8459dd97509c4fbd579adda", null ],
     [ "get_out_id", "classcpart___i_o___m_c_p23_s17.html#aedefac0fb3347cd52c17af182749b2c4", null ],
+    [ "GetAboutInfo", "classcpart___i_o___m_c_p23_s17.html#aa7017d75750000538c6dfee59011d268", null ],
+    [ "GetHelpURL", "classcpart___i_o___m_c_p23_s17.html#a127939ce69d0ffff431962541f5060d2", null ],
     [ "GetInputMapFile", "classcpart___i_o___m_c_p23_s17.html#add1c96db66173cbbb226fca12b24fc7f", null ],
     [ "GetName", "classcpart___i_o___m_c_p23_s17.html#a6ae8c0f65ea7d5f1c0bf5d1ec3e82ced", null ],
     [ "GetOutputMapFile", "classcpart___i_o___m_c_p23_s17.html#a1b59ef019448ca16fa30f29ecb04bebc", null ],

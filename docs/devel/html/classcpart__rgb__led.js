@@ -6,6 +6,8 @@ var classcpart__rgb__led =
     [ "Draw", "classcpart__rgb__led.html#aea7410969663481ad08649e0c2a3cbdf", null ],
     [ "get_in_id", "classcpart__rgb__led.html#a0f9b7865c15e72ddd3704918023df402", null ],
     [ "get_out_id", "classcpart__rgb__led.html#a35d10e6977fe918049b4c1f3445661da", null ],
+    [ "GetAboutInfo", "classcpart__rgb__led.html#a65000c054c79079616a7481a0fa6558d", null ],
+    [ "GetHelpURL", "classcpart__rgb__led.html#af67175219f13a934b167df08dbf92752", null ],
     [ "GetInputMapFile", "classcpart__rgb__led.html#a7354939399cfaa8047711726bed5ba5e", null ],
     [ "GetName", "classcpart__rgb__led.html#a60e2d08526f8e35f3e51905fc00ac6b3", null ],
     [ "GetOutputMapFile", "classcpart__rgb__led.html#ad8a28734ab4f0c7c402c6695e36b762a", null ],
