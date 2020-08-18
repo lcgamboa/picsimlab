@@ -46,9 +46,6 @@ install: all
 	#update-mime-database /usr/share/mime &
 	#update-desktop-database ${appdir} &
 
-install_exp: install
-	$(CP) -dvf  ../../qemu_stm32/arm-softmmu/qemu-stm32 ${execdir}
-
 install_docs:
 	$(CP) -drvf ../docs ${sharedir} 
 		
