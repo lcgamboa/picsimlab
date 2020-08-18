@@ -66,8 +66,8 @@ cl ./configure
 cl make clean;make -j4
 cd picsimlab
 cl make clean;make -j4
+cl sudo make install
 cd ../../
-ln -s build_all/uCsim_picsimlab ../ucsim
 echo -e "\033[1;32m ---------------------- build and install qemu_stm32 --------------------- \033[0m"
 cd qemu_stm32
 cl git checkout picsimlab
