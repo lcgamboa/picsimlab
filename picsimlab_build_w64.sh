@@ -10,5 +10,6 @@ cl sudo apt-get -y upgrade
 cl sudo apt-get -y install git make mingw-w64-common mingw-w64-x86-64-dev gcc-mingw-w64-x86-64 \
 g++-mingw-w64-x86-64 wget unzip
 cl wget https://github.com/lcgamboa/picsimlab/releases/download/v${VERSION}/picsimlab_${VERSION}_w64-dev.zip
-cl unzip picsimlab_${VERSION}_w64-dev.zip
-make FILE=Makefile.cross -j4
+cl unzip -o picsimlab_${VERSION}_w64-dev.zip
+make clean
+make FILE=Makefile.cross -j4 $1

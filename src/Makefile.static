@@ -36,7 +36,7 @@ picsimlab: $(OBJS)
 	$(CC) -c $(CFLAGS) $< -o $@ 
 
 install: all
-	install -d $(execdir) $(sharedir) $(sharedir)/docs $(appdir) 
+	install -d $(execdir) $(sharedir) $(appdir) 
 	$(CP) -dvf  ../share/picsimlab.desktop ${appdir} 
 	$(CP) -drvf ../share/* ${sharedir} 
 	$(CP) -dvf picsimlab ${execdir}
