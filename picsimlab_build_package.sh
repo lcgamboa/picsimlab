@@ -23,6 +23,7 @@ mv tools/srtank/Makefile.static tools/srtank/Makefile
 mv tools/espmsim/Makefile.static tools/espmsim/Makefile
 if [[ -n "$1" ]]; then
 echo -e "\noverride_dh_auto_build:\n\tmake -j4 $1\n\n" >> debian/rules
+echo -e "\noverride_dh_install:\n\tmake install_$1\n\n" >> debian/rules
 fi
 cd ..
 tar cvfz  picsimlab-${VERSION}.tar.gz picsimlab-${VERSION}

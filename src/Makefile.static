@@ -40,12 +40,14 @@ install: all
 	$(CP) -dvf  ../share/picsimlab.desktop ${appdir} 
 	$(CP) -drvf ../share/* ${sharedir} 
 	$(CP) -dvf picsimlab ${execdir}
-	$(CP) -dvf ../../qemu_stm32/arm-softmpu/qemu-system-arm ${execdir}/qemu_stm32
 	#xdg-icon-resource install --context mimetypes --size 48 ../share/application-x-picsimlab-workspace.png application-x-picsimlab-workspace
 	#xdg-mime install --mode system ../share/application-x-picsimlab-workspace.xml
 	#xdg-mime default picsimlab.desktop application/x-picsimlab-workspace
 	#update-mime-database /usr/share/mime &
 	#update-desktop-database ${appdir} &
+
+install_exp: install
+	$(CP) -dvf  ../../qemu_stm32/arm-softmmu/qemu-stm32 ${execdir}
 
 install_docs:
 	$(CP) -drvf ../docs ${sharedir} 
