@@ -21,6 +21,9 @@ tar xvfz ../picsimlab-${VERSION}.tar.gz
 mv src/Makefile.static src/Makefile
 mv tools/srtank/Makefile.static tools/srtank/Makefile
 mv tools/espmsim/Makefile.static tools/espmsim/Makefile
+if [[ -n "$1" ]]; then
+echo -e "\noverride_dh_auto_build:\n\tmake -j4 $1\n\n" >> debian/rules
+fi
 cd ..
 tar cvfz  picsimlab-${VERSION}.tar.gz picsimlab-${VERSION}
 mv picsimlab-${VERSION}.tar.gz picsimlab_${VERSION}.orig.tar.gz

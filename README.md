@@ -39,22 +39,64 @@ If you are on macOS you can run picsimlab using Wine:
 
 ## Install from source
 
-In Debian Linux and derivatives:
 
+
+### In Debian Linux and derivatives Linux native:
+
+In first time build:
 ```
 git clone https://github.com/lcgamboa/picsimlab.git
 cd picsimlab
 ./picsimlab_build_all_and_deps.sh
 ```
-## Cross-compiling for windows 64bits (from linux or wsl on win10)
 
-In Debian Linux and derivatives:
+To recompile use:
+```
+make -j4
+```
+
+### Cross-compiling for Windows (from Linux or [WSL](https://docs.microsoft.com/windows/wsl/install-win10) on win10)
+
+In first time build in Debian Linux and derivatives target Windows 64 bits:
 
 ```
 git clone https://github.com/lcgamboa/picsimlab.git
 cd picsimlab
 ./picsimlab_build_w64.sh
 ```
+To recompile use:
+```
+make FILE=Makefile.cross -j4 
+```
+
+For target Windows 32 bits:
+
+```
+git clone https://github.com/lcgamboa/picsimlab.git
+cd picsimlab
+./picsimlab_build_w32.sh
+```
+To recompile use:
+```
+make FILE=Makefile.cross_32 -j4 
+```
+
+### Experimental version
+
+Experimental version can be built using the parameter "exp" on scripts:
+```
+./picsimlab_build_all_and_deps.sh exp
+./picsimlab_build_w64.sh exp
+./picsimlab_build_w32.sh exp
+```
+And recompiled using the parameter "exp" on Makefiles:
+```
+make -j4 exp
+make FILE=Makefile.cross -j4  exp
+make FILE=Makefile.cross_32 -j4 exp
+```
+
+
 ## Troubleshooting:
 The simulation in PICSimLab consists of 3 parts:
 
