@@ -29,4 +29,9 @@ tar cvfz  picsimlab-${VERSION}.tar.gz picsimlab-${VERSION}
 mv picsimlab-${VERSION}.tar.gz picsimlab_${VERSION}.orig.tar.gz
 cd picsimlab-${VERSION}
 debuild -us -uc
-
+cd ..
+if [[ -n "$1" ]]; then
+mv picsimlab_${VERSION}-1_amd64.deb  picsimlab_${VERSION}_experimetal_unbuntu_20.04_amd64.deb
+else
+mv picsimlab_${VERSION}-1_amd64.deb  picsimlab_${VERSION}_unbuntu_20.04_amd64.deb
+fi
