@@ -16,7 +16,7 @@ OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimla
  parts/part_push_buttons_an.o parts/part_VCD_Dump_an.o parts/part_IO_MCP23S17.o
  
 
-OBJS_EXP =  boards/board_MPLAB_Xpress.o boards/board_Curiosity.o boards/board_x.o boards/board_Blue_Pill.o \
+OBJS_EXP =  boards/board_Xpress.o boards/board_Curiosity.o boards/board_x.o boards/board_Blue_Pill.o \
             boards/board_qemu_stm32.o boards/board_ucsim.o boards/board_uCboard.o boards/board_Curiosity_HPC.o
 
 .DEFAULT_GOAL := all

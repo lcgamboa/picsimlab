@@ -27,7 +27,7 @@
 #include"../picsimlab1.h"
 #include"../picsimlab4.h"
 #include"../picsimlab5.h"
-#include"board_MPLAB_Xpress.h"
+#include"board_Xpress.h"
 
 /* ids of inputs of input map*/
 #define I_ICSP 1  //ICSP connector
@@ -47,7 +47,7 @@
 //return the input ids numbers of names used in input map
 
 unsigned short
-cboard_MPLAB_Xpress::get_in_id(char * name)
+cboard_Xpress::get_in_id(char * name)
 {
  if (strcmp (name, "I_ICSP") == 0)return I_ICSP;
  if (strcmp (name, "I_PWR") == 0)return I_PWR;
@@ -61,7 +61,7 @@ cboard_MPLAB_Xpress::get_in_id(char * name)
 //return the output ids numbers of names used in output map
 
 unsigned short
-cboard_MPLAB_Xpress::get_out_id(char * name)
+cboard_Xpress::get_out_id(char * name)
 {
 
  if (strcmp (name, "O_D1") == 0)return O_D1;
@@ -77,7 +77,7 @@ cboard_MPLAB_Xpress::get_out_id(char * name)
 
 //Constructor called once on board creation 
 
-cboard_MPLAB_Xpress::cboard_MPLAB_Xpress(void)
+cboard_Xpress::cboard_Xpress(void)
 {
  Proc = "PIC16F18855"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
@@ -222,7 +222,7 @@ cboard_MPLAB_Xpress::cboard_MPLAB_Xpress(void)
 
 //Destructor called once on board destruction 
 
-cboard_MPLAB_Xpress::~cboard_MPLAB_Xpress(void)
+cboard_Xpress::~cboard_Xpress(void)
 {
  //controls destruction 
  Window1.DestroyChild (scroll1);
@@ -240,7 +240,7 @@ cboard_MPLAB_Xpress::~cboard_MPLAB_Xpress(void)
 //Reset board status
 
 void
-cboard_MPLAB_Xpress::Reset(void)
+cboard_Xpress::Reset(void)
 {
  pic.pkg=QFN;
 
@@ -272,7 +272,7 @@ cboard_MPLAB_Xpress::Reset(void)
 //Called ever 1s to refresh status
 
 void
-cboard_MPLAB_Xpress::RefreshStatus(void)
+cboard_Xpress::RefreshStatus(void)
 {
  //verify serial port state and refresh status bar   
 #ifndef _WIN_
@@ -293,24 +293,24 @@ cboard_MPLAB_Xpress::RefreshStatus(void)
 //Called to save board preferences in configuration file
 
 void
-cboard_MPLAB_Xpress::WritePreferences(void)
+cboard_Xpress::WritePreferences(void)
 {
  //write selected microcontroller of board_6 to preferences
- Window1.saveprefs (lxT ("MPLAB_Xpress_proc"), Proc);
- Window1.saveprefs (lxT ("MPLAB_Xpress_clock"), String ().Format ("%2.1f", Window1.GetClock())); 
+ Window1.saveprefs (lxT ("Xpress_proc"), Proc);
+ Window1.saveprefs (lxT ("Xpress_clock"), String ().Format ("%2.1f", Window1.GetClock())); 
 }
 
 //Called whe configuration file load  preferences 
 
 void
-cboard_MPLAB_Xpress::ReadPreferences(char *name, char *value)
+cboard_Xpress::ReadPreferences(char *name, char *value)
 {
  //read microcontroller of preferences
- if (!strcmp (name, "MPLAB_Xpress_proc"))
+ if (!strcmp (name, "Xpress_proc"))
   {
    Proc = value;
   }
- if (!strcmp (name, "MPLAB_Xpress_clock"))
+ if (!strcmp (name, "Xpress_clock"))
   {
    Window1.SetClock (atof(value));
   }
@@ -320,7 +320,7 @@ cboard_MPLAB_Xpress::ReadPreferences(char *name, char *value)
 //Event on the board
 
 void
-cboard_MPLAB_Xpress::EvKeyPress(uint key, uint mask)
+cboard_Xpress::EvKeyPress(uint key, uint mask)
 {
  //if keyboard key 1 is pressed then activate button (state=0)   
  if (key == '1')
@@ -334,7 +334,7 @@ cboard_MPLAB_Xpress::EvKeyPress(uint key, uint mask)
 //Event on the board
 
 void
-cboard_MPLAB_Xpress::EvKeyRelease(uint key, uint mask)
+cboard_Xpress::EvKeyRelease(uint key, uint mask)
 {
  //if keyboard key 1 is pressed then deactivate button (state=1)     
  if (key == '1')
@@ -347,7 +347,7 @@ cboard_MPLAB_Xpress::EvKeyRelease(uint key, uint mask)
 //Event on the board
 
 void
-cboard_MPLAB_Xpress::EvMouseButtonPress(uint button, uint x, uint y, uint state)
+cboard_Xpress::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
 
  int i;
@@ -406,7 +406,7 @@ cboard_MPLAB_Xpress::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 //Event on the board
 
 void
-cboard_MPLAB_Xpress::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
+cboard_Xpress::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 {
  int i;
 
@@ -447,7 +447,7 @@ cboard_MPLAB_Xpress::EvMouseButtonRelease(uint button, uint x, uint y, uint stat
 //This is the critical code for simulator running speed
 
 void
-cboard_MPLAB_Xpress::Draw(CDraw *draw, double scale)
+cboard_Xpress::Draw(CDraw *draw, double scale)
 {
  int i;
 
@@ -513,7 +513,7 @@ cboard_MPLAB_Xpress::Draw(CDraw *draw, double scale)
 }
 
 void
-cboard_MPLAB_Xpress::Run_CPU(void)
+cboard_Xpress::Run_CPU(void)
 {
  int i;
  int j;
@@ -587,5 +587,5 @@ cboard_MPLAB_Xpress::Run_CPU(void)
  if (use_spare)Window5.PostProcess ();
 }
 
-board_init("MPLAB Xpress", cboard_MPLAB_Xpress);
+board_init("Xpress", cboard_Xpress);
 

@@ -23,15 +23,15 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_MPLAB_Xpress_H
-#define	BOARD_MPLAB_Xpress_H
+#ifndef BOARD_Xpress_H
+#define	BOARD_Xpress_H
 
 #include<lxrad.h>
 
 #include "board_picsim.h"
 
 //new board class must be derived from board class defined in board.h
-class cboard_MPLAB_Xpress:public board_picsim
+class cboard_Xpress:public board_picsim
 {
   private:
      int p_BT1;           //S1 switch
@@ -52,20 +52,20 @@ class cboard_MPLAB_Xpress:public board_picsim
    public:
       String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       //Constructor called once on board creation 
-      cboard_MPLAB_Xpress(void);
+      cboard_Xpress(void);
       //Destructor called once on board destruction 
-      ~cboard_MPLAB_Xpress(void); 
+      ~cboard_Xpress(void); 
       //Called ever 100ms to draw board
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
       String GetSupportedDevices(void){return lxT("PIC16F18855,");};
       //Return the filename of board picture 
-      String GetPictureFileName(void){return lxT("MPLAB_Xpress/board.png");};
+      String GetPictureFileName(void){return lxT("Xpress/board.png");};
       //Return the filename of board picture input map 
-      String GetInputMapFile(void){return lxT("MPLAB_Xpress/input.map");};
+      String GetInputMapFile(void){return lxT("Xpress/input.map");};
       //Return the filename of board picture output map 
-      String GetOutputMapFile(void){return lxT("MPLAB_Xpress/output.map");};
+      String GetOutputMapFile(void){return lxT("Xpress/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board
@@ -89,5 +89,5 @@ class cboard_MPLAB_Xpress:public board_picsim
       unsigned short get_out_id(char * name);
 };
 
-#endif	/* BOARD_MPLAB_Xpress_H */
+#endif	/* BOARD_Xpress_H */
 
