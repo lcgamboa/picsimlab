@@ -62,7 +62,7 @@ cl sudo make install
 else	
 echo -e "\033[1;32m ---------------------- build and uCsim ---------------------------------- \033[0m"
 cd uCsim_picsimlab
-cl ./configure
+cl ./config_linux.sh
 cl make clean;make -j4
 cd picsimlab
 cl make clean;make -j4
