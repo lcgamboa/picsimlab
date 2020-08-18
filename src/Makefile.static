@@ -18,12 +18,12 @@ override CFLAGS += -D_VERSION_=\"$(VERSION)\" -Wall -O2 -D_SHARE_=\"${sharedir}\
 override CFLAGS+= -DEXT_BROWSER
 #override CFLAGS+=-fsanitize=address
 
-ELIBS_= $(addsuffix .a ,$(ELIBS))
 
 LIBS=  ../../picsim/src/libpicsim.a ../../lxrad/lib/liblxrad.a  \
        ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a\
       -lopenal `wx-config --libs` `wx-config --libs stc` 
-LIBS+= $(ELIBS_)
+
+exp: LIBS+=../../uCsim_picsimlab/picsimlab/libucsim.a 
 
 #lxrad automatic generated block end, don't edit above!
 
@@ -40,6 +40,7 @@ install: all
 	$(CP) -dvf  ../share/picsimlab.desktop ${appdir} 
 	$(CP) -drvf ../share/* ${sharedir} 
 	$(CP) -dvf picsimlab ${execdir}
+	$(CP) -dvf ../../qemu_stm32/arm-softmpu/qemu-system-arm ${execdir}/qemu_stm32
 	#xdg-icon-resource install --context mimetypes --size 48 ../share/application-x-picsimlab-workspace.png application-x-picsimlab-workspace
 	#xdg-mime install --mode system ../share/application-x-picsimlab-workspace.xml
 	#xdg-mime default picsimlab.desktop application/x-picsimlab-workspace
