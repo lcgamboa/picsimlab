@@ -39,6 +39,8 @@ install: all
 	$(CP) -dvf  ../../share/espmsim.desktop ${appdir} 
 	$(CP) -dvf espmsim ${execdir}
 
+install_exp: install
+
 uninstall:
 	$(RM) -dvf ${execdir}espmsim
 	$(RM) -dvf ${appdir}espmsim.desktop

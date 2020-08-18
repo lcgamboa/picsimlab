@@ -39,6 +39,8 @@ install: all
 	$(CP) -dvf  ../../share/srtank.desktop ${appdir} 
 	$(CP) -dvf srtank ${execdir}
 
+install_exp: install
+
 uninstall:
 	$(RM) -dvf ${execdir}srtank
 	$(RM) -dvf ${appdir}srtank.desktop
