@@ -724,7 +724,9 @@ CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
 void
 CPWindow1::menu1_Help_Board_EvMenuActive(CControl * control)
 {
-  lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/Features_Board_")+String (boards_list[lab].name_)+lxT(".html"));  
+  String bname= String(boards_list[lab].name_).substr (0,12);
+  
+  lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/Features_Board_")+bname+lxT(".html"));  
 }
 
 void
