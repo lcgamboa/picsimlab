@@ -2,6 +2,8 @@
 
 ### New
 
+* Support for selecting board, processor and files on the command line. [lcgamboa]
+
 * Added support to boards and parts help link and about information. [lcgamboa]
 
 * LCD hd44780 read support added. [lcgamboa]

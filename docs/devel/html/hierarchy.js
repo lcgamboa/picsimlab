@@ -11,9 +11,9 @@ var hierarchy =
         [ "cboard_K16F", "classcboard___k16_f.html", null ],
         [ "cboard_McLab1", "classcboard___mc_lab1.html", null ],
         [ "cboard_McLab2", "classcboard___mc_lab2.html", null ],
-        [ "cboard_MPLAB_Xpress", "classcboard___m_p_l_a_b___xpress.html", null ],
         [ "cboard_PICGenios", "classcboard___p_i_c_genios.html", null ],
-        [ "cboard_x", "classcboard__x.html", null ]
+        [ "cboard_x", "classcboard__x.html", null ],
+        [ "cboard_Xpress", "classcboard___xpress.html", null ]
       ] ],
       [ "board_qemu_stm32", "classboard__qemu__stm32.html", [
         [ "cboard_Blue_Pill", "classcboard___blue___pill.html", null ]
