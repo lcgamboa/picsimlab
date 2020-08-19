@@ -229,7 +229,7 @@ CPWindow1::_EvOnCreate(CControl * control)
      fn.Assign (Application->Aargv[1]);
      fn.MakeAbsolute ();
     }
-   else if ((Application->Aargc >= 3) || (Application->Aargc <= 5))
+   else if ((Application->Aargc >= 3) && (Application->Aargc <= 5))
     {
      char fname[1200];
 
