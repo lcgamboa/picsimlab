@@ -31,20 +31,29 @@
 void
 board_picsim::MSetSerial(const char * port)
 {
- pic_set_serial (&pic,0, port, 0, 0, 0);
- pic_set_serial (&pic,1, "", 0, 0, 0);
+ pic_set_serial (&pic, 0, port, 0, 0, 0);
+ pic_set_serial (&pic, 1, "", 0, 0, 0);
 }
 
 int
 board_picsim::MInit(const char * processor, const char * fname, float freq)
 {
- int procn = getprocbyname (processor);
+ String sproc = GetSupportedDevices ();
+ int procn = 0;
+
+ if (sproc.Contains (processor))
+  {
+   procn = getprocbyname (processor);
+  }
+
  if (procn == 0)
   {
-   printf ("Unknown processor %s !!\n", processor);
-   String sproc = GetSupportedDevices ();
-   int f = sproc.find (lxT (","));
-   procn = getprocbyname (sproc.substr (0, f));
+   printf ("PICSimLab: Unknown processor %s ! Loading Default\n", processor);
+   int i = sproc.find (lxT ("PIC"));
+   sproc = sproc.substr (i, sproc.length ());
+   i = sproc.find (lxT (","));
+   Proc = sproc.substr (0, i);
+   procn = getprocbyname (Proc.c_str ());
   }
 
  int ret = pic_init (&pic, procn, fname, 1, freq);
@@ -88,7 +97,7 @@ board_picsim::MInit(const char * processor, const char * fname, float freq)
   }
  else
   {
-   printf ("PIC 0x%04X not supported in picsimlab!!\n", pic.processor);
+   printf ("PICSimLab: PIC 0x%04X not supported in picsimlab!!\n", pic.processor);
    exit (-1);
   }
 

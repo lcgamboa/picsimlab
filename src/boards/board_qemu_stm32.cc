@@ -81,6 +81,14 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
  char fname_[300];
  char cmd[600];
 
+ String sproc = GetSupportedDevices ();
+ if (!sproc.Contains (processor))
+  {
+   Proc = "stm32f103c8t6";
+   printf ("PICSimLab: Unknown processor %s, loading default !\n", processor);
+  }
+
+
 
 #ifdef _WIN_
  int clilen;

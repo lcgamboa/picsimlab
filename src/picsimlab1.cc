@@ -208,6 +208,10 @@ CPWindow1::_EvOnCreate(CControl * control)
 {
  char home[1024];
  lxFileName fn;
+ lxFileName fn_spare;
+
+ strncpy (home, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
+
 
  if (!create)
   {
@@ -220,19 +224,62 @@ CPWindow1::_EvOnCreate(CControl * control)
 #endif
 
 
-
    if (Application->Aargc == 2)
     {
      fn.Assign (Application->Aargv[1]);
      fn.MakeAbsolute ();
     }
+   else if ((Application->Aargc >= 3) || (Application->Aargc <= 5))
+    {
+     char fname[1200];
+
+     if (Application->Aargc >= 4)
+      {
+       fn.Assign (Application->Aargv[3]);
+       fn.MakeAbsolute ();
+      }
+     if (Application->Aargc == 5)
+      {
+       fn_spare.Assign (Application->Aargv[4]);
+       fn_spare.MakeAbsolute ();
+      }
+     lab = -1;
+     for (int i = 0; i < BOARDS_LAST; i++)
+      {
+       if (!strcmp (boards_list[i].name_, Application->Aargv[1]))
+        {
+         lab = i;
+         break;
+        }
+      }
+
+     if (lab != -1)
+      {
+       snprintf (fname, 1199, "%s/picsimlab.ini", home);
+       prefs.Clear ();
+       if (lxFileExists (fname))
+        {
+         if (prefs.LoadFromFile (fname))
+          {
+           saveprefs (lxT ("picsimlab_lab"), boards_list[lab].name_);
+           saveprefs (String (boards_list[lab].name_) + lxT ("_proc"), Application->Aargv[2]);
+           if (Application->Aargc == 5)
+            {
+             saveprefs (lxT ("spare_on"), lxT ("1"));
+            }
+           prefs.SaveToFile (fname);
+          }
+        }
+      }
+     else
+      {
+       Application->Aargc = 1;
+       printf ("PICSimLab: Unknown board %s !\n", Application->Aargv[1]);
+      }
+    }
   }
 
  //load options
-
-
- strncpy (home, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
-
  Configure (control, home);
 
  if (!create)
@@ -242,7 +289,16 @@ CPWindow1::_EvOnCreate(CControl * control)
     {
      LoadWorkspace (fn.GetFullPath ());
     }
+   else if ((Application->Aargc == 4) || (Application->Aargc == 5))
+    {
+     LoadHexFile (fn.GetFullPath ());
+     if (Application->Aargc == 5)
+      {
+       Window5.LoadConfig (fn_spare.GetFullPath ());
+      }
+    }
 
+   //board menu
    for (int i = 0; i < BOARDS_LAST; i++)
     {
      MBoard[i].SetFOwner (this);
@@ -403,8 +459,8 @@ CPWindow1::Configure(CControl * control, const char * home)
       }
     }
   }
- 
- if(pboard == NULL)
+
+ if (pboard == NULL)
   {
    printf ("Error open config file \"%s\"!\n", fname);
 
@@ -478,7 +534,7 @@ CPWindow1::Configure(CControl * control, const char * home)
     }
    else
     {
-     statusbar1.SetField (1, status + lxT ("Debug: ")+pboard->GetDebugName() +":"+ itoa (debug_port));
+     statusbar1.SetField (1, status + lxT ("Debug: ") + pboard->GetDebugName () + ":" + itoa (debug_port));
     }
   }
  else
@@ -502,7 +558,7 @@ CPWindow1::Configure(CControl * control, const char * home)
  Window5.LoadConfig (fname);
 
 
- if ((!pboard->GetProcessorName ().Cmp ("atmega328p"))||(!pboard->GetProcessorName ().Cmp ("atmega2560")) )
+ if ((!pboard->GetProcessorName ().Cmp ("atmega328p")) || (!pboard->GetProcessorName ().Cmp ("atmega2560")))
   {
    menu1_Tools_ArduinoBootloader.SetEnable (true);
   }
@@ -627,7 +683,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
 
 
  sprintf (fname, "%s/parts_%s.pcf", home, boards_list[lab_].name_);
- 
+
  Window5.SaveConfig (fname);
  Window5.DeleteParts ();
 
@@ -724,21 +780,21 @@ CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
 void
 CPWindow1::menu1_Help_Board_EvMenuActive(CControl * control)
 {
-  String bname= String(boards_list[lab].name_).substr (0,12);
-  
-  lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/Features_Board_")+bname+lxT(".html"));  
+ String bname = String (boards_list[lab].name_).substr (0, 12);
+
+ lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/Features_Board_") + bname + lxT (".html"));
 }
 
 void
 CPWindow1::menu1_Help_About_Board_EvMenuActive(CControl * control)
 {
- Message_sz (lxT("Board ")+String(boards_list[lab].name)+ lxT ("\nDeveloped by ")+pboard->GetAboutInfo (),400,200);
+ Message_sz (lxT ("Board ") + String (boards_list[lab].name) + lxT ("\nDeveloped by ") + pboard->GetAboutInfo (), 400, 200);
 }
 
 void
 CPWindow1::menu1_Help_About_PICSimLab_EvMenuActive(CControl * control)
 {
- Message_sz (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (lxT (_VERSION_)),400,200);
+ Message_sz (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (lxT (_VERSION_)), 400, 200);
 }
 
 void
@@ -974,8 +1030,16 @@ CPWindow1::LoadWorkspace(String fnpzw)
  char home[1024];
  char fzip[1280];
 
- if ((!lxFileExists (fnpzw)) || (!fnpzw.Contains (".pzw")))return;
-
+ if (!lxFileExists (fnpzw))
+  {
+   printf ("PICSimLab: file %s not found!\n", (const char *) fnpzw.c_str ());
+   return;
+  }
+ if (!fnpzw.Contains (".pzw"))
+  {
+   printf ("PICSimLab: file %s is not a .pzw file!\n", (const char *) fnpzw.c_str ());
+   return;
+  }
  //write options
  strncpy (fzip, (char*) lxGetTempDir (_T ("picsimlab")).char_str (), 1023);
  strncat (fzip, "/", 1023);
@@ -1000,7 +1064,7 @@ CPWindow1::LoadWorkspace(String fnpzw)
  char value_[400];
  int llab = 0;
 #endif
- 
+
  char line[1024];
  if (prefsw.LoadFromFile (fzip))
   {
@@ -1012,7 +1076,7 @@ CPWindow1::LoadWorkspace(String fnpzw)
      value = strtok (NULL, "\"");
      if ((name == NULL) || (value == NULL))continue;
 #ifndef LEGACY081
-    saveprefs (name, value);
+     saveprefs (name, value);
 #else     
      strncpy (name_, name, 99);
      strncpy (value_, value, 399);

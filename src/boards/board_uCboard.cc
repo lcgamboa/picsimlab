@@ -84,16 +84,17 @@ cboard_uCboard::cboard_uCboard(void)
  lxImage image;
  image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.png"));
  micbmp = new lxBitmap (image, &Window1);
-# 
+#
  serialfd = INVALID_HANDLE_VALUE;
 }
 
 //Destructor called once on board destruction 
 
-cboard_uCboard::~cboard_uCboard(void) {
-  delete micbmp;
-  micbmp = NULL;
- }
+cboard_uCboard::~cboard_uCboard(void)
+{
+ delete micbmp;
+ micbmp = NULL;
+}
 
 //Reset board status
 
@@ -173,14 +174,12 @@ cboard_uCboard::ReadPreferences(char *name, char *value)
 //Event on the board
 
 void
-cboard_uCboard::EvKeyPress(uint key, uint mask) {
- }
+cboard_uCboard::EvKeyPress(uint key, uint mask) { }
 
 //Event on the board
 
 void
-cboard_uCboard::EvKeyRelease(uint key, uint mask) {
- }
+cboard_uCboard::EvKeyRelease(uint key, uint mask) { }
 
 //Event on the board
 
@@ -284,7 +283,7 @@ cboard_uCboard::Draw(CDraw *draw, double scale)
  int i;
  lxRect rec;
  lxSize ps;
- 
+
  draw->Canvas.Init (scale, scale); //initialize draw context
 
  //board_x draw 
@@ -336,7 +335,7 @@ cboard_uCboard::Run_CPU(void)
  int j;
  unsigned char pi;
  unsigned int alm[64];
- 
+
  int JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
  long int NSTEPJ = Window1.GetNSTEPJ (); //number of steps in 100ms
 
@@ -388,12 +387,18 @@ cboard_uCboard::Run_CPU(void)
 
 }
 
-
 int
 cboard_uCboard::MInit(const char * processor, const char * fname, float freq)
 {
 
  int ret = board_ucsim::MInit (processor, fname, freq);
+
+ if (ret == -1)
+  {
+   printf("PICSimLab: Unknown processor %s, loading default !\n",processor);
+   board_ucsim::MInit ("C51", fname, freq);
+   Proc = "C51";
+  }
 
  lxImage image;
 

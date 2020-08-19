@@ -130,14 +130,20 @@ int
 board_simavr::MInit(const char * processor, const char * fname, float freq)
 {
  int ret;
+ String sproc = GetSupportedDevices ();
  //avr_ioport_external_t p;
 
- avr = avr_make_mcu_by_name (processor);
+ avr = NULL;
+ if (sproc.Contains (processor))
+  {
+   avr = avr_make_mcu_by_name (processor);
+  }
 
  if (!avr)
   {
-   fprintf (stderr, "Error creating the AVR core\n");
+   printf ("PICSimLab: Unknown processor %s ! Loading Default\n", processor);
    avr = avr_make_mcu_by_name ("atmega328p");
+   Proc = "atmega328p";
   }
 
 
@@ -383,8 +389,7 @@ board_simavr::DebugInit(int dtyppe)
   }
 }
 
-
-String 
+String
 board_simavr::GetDebugName(void)
 {
  if (avr_debug_type)

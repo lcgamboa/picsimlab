@@ -74,25 +74,32 @@ int
 board_ucsim::MInit(const char * processor, const char * fname, float freq)
 {
  char fbuff[20];
+ int ret = -1;
 
- if (!strcmp ("C51", processor))
+ String sproc = GetSupportedDevices ();
+
+ if (sproc.Contains (processor))
   {
-   procid = PID_C51;
-  }
- else if (!strcmp ("STM8S103", processor))
-  {
-   procid = PID_STM8S103;
-  }
- else if (!strcmp ("Z80", processor))
-  {
-   procid = PID_Z80;
-  }
 
- pins_reset ();
+   if (!strcmp ("C51", processor))
+    {
+     procid = PID_C51;
+    }
+   else if (!strcmp ("STM8S103", processor))
+    {
+     procid = PID_STM8S103;
+    }
+   else if (!strcmp ("Z80", processor))
+    {
+     procid = PID_Z80;
+    }
 
- sprintf (fbuff, "%i", (int) freq);
+   pins_reset ();
 
- int ret = ucsim_init (processor, fbuff, fname, SERIALDEVICE, Window1.Get_debug_port ());
+   sprintf (fbuff, "%i", (int) freq);
+
+   ret = ucsim_init (processor, fbuff, fname, SERIALDEVICE, Window1.Get_debug_port ());
+  }
 
  return ret;
 }
@@ -292,7 +299,7 @@ board_ucsim::MStep(void)
      pins[i].value = (p[*pins[i].port] & (0x0001 << pins[i].pord)) > 0;
      if (procid != PID_C51)
       {
-        pins[i].dir = (p[*pins[i].port] & (0x0100 << pins[i].pord)) > 0;
+       pins[i].dir = (p[*pins[i].port] & (0x0100 << pins[i].pord)) > 0;
       }
     }
   }
