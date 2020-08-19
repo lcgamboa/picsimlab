@@ -732,13 +732,13 @@ CPWindow1::menu1_Help_Board_EvMenuActive(CControl * control)
 void
 CPWindow1::menu1_Help_About_Board_EvMenuActive(CControl * control)
 {
- Message (lxT ("Developed by ")+pboard->GetAboutInfo ());
+ Message_sz (lxT("Board ")+String(boards_list[lab].name)+ lxT ("\nDeveloped by ")+pboard->GetAboutInfo (),400,200);
 }
 
 void
 CPWindow1::menu1_Help_About_PICSimLab_EvMenuActive(CControl * control)
 {
- Message (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (lxT (_VERSION_)));
+ Message_sz (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (lxT (_VERSION_)),400,200);
 }
 
 void

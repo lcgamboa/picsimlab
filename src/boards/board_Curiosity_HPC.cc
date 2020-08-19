@@ -254,7 +254,7 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void)
  combo1->SetX (13);
  combo1->SetY (305 + 55 - 120);
  combo1->SetWidth (150);
- combo1->SetHeight (20);
+ combo1->SetHeight (25);
  combo1->SetEnable (1);
  combo1->SetVisible (1);
 #ifndef _WIN_   
