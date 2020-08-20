@@ -382,23 +382,6 @@ CPWindow1::Configure(CControl * control, const char * home)
          pboard = create_board (&lab, &lab_);
          SetClock (2.0); //Default clock
 
-         menu1_Microcontroller.DestroyChilds ();
-         String sdev = pboard->GetSupportedDevices ();
-         int f;
-         int dc = 0;
-         while (sdev.size () > 0)
-          {
-           f = sdev.find (lxT (","));
-           if (f < 0)break;
-           MMicro[dc].SetFOwner (this);
-           MMicro[dc].SetName ("Micro_" + itoa (dc + 1));
-           MMicro[dc].SetText (sdev.substr (0, f));
-           MMicro[dc].EvMenuActive = EVMENUACTIVE & CPWindow1::menu1_EvMicrocontroller;
-           menu1_Microcontroller.CreateChild (&MMicro[dc]);
-           MMicro[dc].SetVisible (true);
-           sdev = sdev.substr (f + 1, sdev.size () - f - 1);
-           dc++;
-          }
 
         }
 
@@ -482,10 +465,23 @@ CPWindow1::Configure(CControl * control, const char * home)
 #endif
   }
 
- proc_ = pboard->GetProcessorName ();
-
- SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab].name) + lxT (" - ") + pboard->GetProcessorName ());
-
+ menu1_Microcontroller.DestroyChilds ();
+ String sdev = pboard->GetSupportedDevices ();
+ int f;
+ int dc = 0;
+ while (sdev.size () > 0)
+  {
+   f = sdev.find (lxT (","));
+   if (f < 0)break;
+   MMicro[dc].SetFOwner (this);
+   MMicro[dc].SetName ("Micro_" + itoa (dc + 1));
+   MMicro[dc].SetText (sdev.substr (0, f));
+   MMicro[dc].EvMenuActive = EVMENUACTIVE & CPWindow1::menu1_EvMicrocontroller;
+   menu1_Microcontroller.CreateChild (&MMicro[dc]);
+   MMicro[dc].SetVisible (true);
+   sdev = sdev.substr (f + 1, sdev.size () - f - 1);
+   dc++;
+  }
 
 
  filedialog1.SetDir (PATH);
@@ -510,6 +506,10 @@ CPWindow1::Configure(CControl * control, const char * home)
   }
 
  pboard->Reset ();
+
+ proc_ = pboard->GetProcessorName ();
+
+ SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab].name) + lxT (" - ") + pboard->GetProcessorName ());
 
 
 #ifdef _USE_PICSTARTP_
