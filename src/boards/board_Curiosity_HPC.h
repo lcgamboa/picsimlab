@@ -55,7 +55,7 @@ class cboard_Curiosity_HPC:public board_picsim
         CCombo *combo1;  //combo of second serial
 
     public:
-      String GetAboutInfo(void){return lxT("El-khadraouy Mohammed\n<mohammed.el-khadraouy@ecole.ensicaen.fr>\nand L.C. Gamboa \n <lcgamboa@yahoo.com>");};  
+      lxString GetAboutInfo(void){return lxT("El-khadraouy Mohammed\n<mohammed.el-khadraouy@ecole.ensicaen.fr>\nand L.C. Gamboa \n <lcgamboa@yahoo.com>");};  
       //Constructor called once on board creation 
       cboard_Curiosity_HPC(void);
       //Destructor called once on board destruction 
@@ -64,13 +64,13 @@ class cboard_Curiosity_HPC:public board_picsim
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
-      String GetSupportedDevices(void){return lxT("PIC16F1619,PIC18F27K40,");};
+      lxString GetSupportedDevices(void){return lxT("PIC16F1619,PIC18F27K40,");};
       //Return the filename of board picture 
-      String GetPictureFileName(void){return lxT("Curiosity_HPC/board.png");};
+      lxString GetPictureFileName(void){return lxT("Curiosity_HPC/board.png");};
       //Return the filename of board picture input map 
-      String GetInputMapFile(void){return lxT("Curiosity_HPC/input.map");};
+      lxString GetInputMapFile(void){return lxT("Curiosity_HPC/input.map");};
       //Return the filename of board picture output map 
-      String GetOutputMapFile(void){return lxT("Curiosity_HPC/output.map");};
+      lxString GetOutputMapFile(void){return lxT("Curiosity_HPC/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

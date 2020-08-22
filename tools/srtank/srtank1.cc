@@ -326,13 +326,13 @@ unsigned char buff[3];
 int bc = 0;
 
 
-String line = "";
+lxString line = "";
 
 void
 CPWindow1::timer1_EvOnTime (CControl * control)
 {
  unsigned char dado;
- String str;
+ lxString str;
 
 
  draw1_EvMouseButtonPress (control, 0, 0, 0, 0);
@@ -515,7 +515,7 @@ CPWindow1::menu1_Help_Contents_EvMenuActive (CControl * control)
 #ifdef EXT_BROWSER
  lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/srtank/"));
 #else	
- Window2.html1.SetLoadFile (String (lxT (_SHARE_)) + lxT ("docs/srtank/srtank.html"));
+ Window2.html1.SetLoadFile (lxString (lxT (_SHARE_)) + lxT ("docs/srtank/srtank.html"));
  Window2.Show ();
 #endif 
 }
@@ -523,7 +523,7 @@ CPWindow1::menu1_Help_Contents_EvMenuActive (CControl * control)
 void
 CPWindow1::menu1_Help_About_EvMenuActive (CControl * control)
 {
- Message (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (lxT (_VERSION_)));
+ Message (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + lxString (lxT (_VERSION_)));
 }
 
 void
@@ -532,7 +532,7 @@ CPWindow1::filedialog1_EvOnClose (int retId)
 
  if (retId && (filedialog1.GetType () == (lxFD_SAVE | lxFD_CHANGE_DIR)))
   {
-   CStringList prefs;
+   lxStringList prefs;
 
    prefs.AddLine (edit1.GetText ());
    prefs.AddLine (edit2.GetText ());
@@ -548,7 +548,7 @@ CPWindow1::filedialog1_EvOnClose (int retId)
 
  if (retId && (filedialog1.GetType () == (lxFD_OPEN | lxFD_CHANGE_DIR)))
   {
-   CStringList prefs;
+   lxStringList prefs;
    if (prefs.LoadFromFile (filedialog1.GetFileName ()))
     {
      edit1.SetText (prefs.GetLine (0));

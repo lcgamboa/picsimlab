@@ -32,11 +32,11 @@
 class cpart_Buzzer : public part {
 public:
 
-    String GetName(void) {
+    lxString GetName(void) {
         return lxT("Buzzer");
     };
-    String GetHelpURL(void){return lxT("Buzzer.html");};
-    String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
+    lxString GetHelpURL(void){return lxT("Buzzer.html");};
+    lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
     cpart_Buzzer(unsigned x, unsigned y);
     ~cpart_Buzzer(void);
     void Draw(void);
@@ -44,25 +44,25 @@ public:
     void Process(void);
     void PostProcess(void);
 
-    String GetPictureFileName(void) {
+    lxString GetPictureFileName(void) {
         return lxT("Buzzer/Buzzer.png");
     };
 
-    String GetInputMapFile(void) {
+    lxString GetInputMapFile(void) {
         return lxT("Buzzer/Buzzer_i.map");
     };
 
-    String GetOutputMapFile(void) {
+    lxString GetOutputMapFile(void) {
         return lxT("Buzzer/Buzzer_o.map");
     };
 
-    String GetPropertiesWindowFile(void) {
+    lxString GetPropertiesWindowFile(void) {
         return lxT("Buzzer/Buzzer.lxrad");
     };
     void ConfigurePropertiesWindow(CPWindow * WProp);
     void ReadPropertiesWindow(CPWindow * WProp);
-    String WritePreferences(void);
-    void ReadPreferences(String value);
+    lxString WritePreferences(void);
+    void ReadPreferences(lxString value);
     unsigned short get_in_id(char * name);
     unsigned short get_out_id(char * name);
 private:

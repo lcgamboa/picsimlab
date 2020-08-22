@@ -158,7 +158,7 @@ cpart_led_matrix::get_out_id(char * name)
  return 1;
 };
 
-String
+lxString
 cpart_led_matrix::WritePreferences(void)
 {
  char prefs[256];
@@ -169,7 +169,7 @@ cpart_led_matrix::WritePreferences(void)
 }
 
 void
-cpart_led_matrix::ReadPreferences(String value)
+cpart_led_matrix::ReadPreferences(lxString value)
 {
  unsigned char outp;
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%i", &input_pins[0], &input_pins[1], &input_pins[2], &outp, &angle);
@@ -185,8 +185,8 @@ cpart_led_matrix::ReadPreferences(String value)
 void
 cpart_led_matrix::ConfigurePropertiesWindow(CPWindow * WProp)
 {
- String Items = Window5.GetPinsNames ();
- String spin;
+ lxString Items = Window5.GetPinsNames ();
+ lxString spin;
 
  ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)

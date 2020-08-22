@@ -3,11 +3,11 @@
 #define wxT
 #define mprint printf
 
-class String
+class lxString
 {
 public:
-   String(){};
-   String(char *s){};
+   lxString(){};
+   lxString(char *s){};
 
    char * char_str (void){return NULL;};
 };
@@ -24,7 +24,7 @@ class CCombo
 {
 public:	
   void SetEnable(int e){};
-  String GetText(void);
+  lxString GetText(void);
   void SetItems(const char* i){};
   void SetText(const char* t){};
 };

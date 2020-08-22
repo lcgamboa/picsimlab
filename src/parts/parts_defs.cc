@@ -34,7 +34,7 @@ int NUM_PARTS = 0;
 //boards object creation
 
 part *
-create_part(String name, unsigned int x, unsigned int y)
+create_part(lxString name, unsigned int x, unsigned int y)
 {
  part * part_ = NULL;
 

@@ -33,17 +33,17 @@
 class cpart_gamepad:public part
 {
    public:
-      String GetName(void){return lxT("Gamepad");};
-      String GetHelpURL(void){return lxT("Gamepad.html");};
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
+      lxString GetName(void){return lxT("Gamepad");};
+      lxString GetHelpURL(void){return lxT("Gamepad.html");};
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_gamepad(unsigned x, unsigned y);
       ~cpart_gamepad(void);
       void Draw(void);
       void PreProcess(void);
-      String GetPictureFileName(void){return lxT("gamepad/gamepad.png");};
-      String GetInputMapFile(void){return lxT("gamepad/gamepad_i.map");};
-      String GetOutputMapFile(void){return lxT("gamepad/gamepad_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("gamepad/gamepad.lxrad");};
+      lxString GetPictureFileName(void){return lxT("gamepad/gamepad.png");};
+      lxString GetInputMapFile(void){return lxT("gamepad/gamepad_i.map");};
+      lxString GetOutputMapFile(void){return lxT("gamepad/gamepad_o.map");};
+      lxString GetPropertiesWindowFile(void){return lxT("gamepad/gamepad.lxrad");};
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
       void EvMouseMove(uint button, uint x, uint y,uint state);
@@ -51,8 +51,8 @@ class cpart_gamepad:public part
       void EvKeyRelease(uint key,uint mask);
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
-      String WritePreferences(void);
-      void ReadPreferences(String value);
+      lxString WritePreferences(void);
+      void ReadPreferences(lxString value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
     private:

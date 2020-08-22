@@ -46,7 +46,7 @@ enum
  KT4x4 = 1, KT4x3, KT2x5
 };
 
-String
+lxString
 cpart_keypad::GetPictureFileName(void)
 {
  switch (type)
@@ -64,7 +64,7 @@ cpart_keypad::GetPictureFileName(void)
  return lxT ("keypad/keypad_4x4.png");
 }
 
-String
+lxString
 cpart_keypad::GetInputMapFile(void)
 {
  switch (type)
@@ -82,7 +82,7 @@ cpart_keypad::GetInputMapFile(void)
  return lxT ("keypad/keypad_4x4_i.map");
 }
 
-String
+lxString
 cpart_keypad::GetOutputMapFile(void)
 {
  switch (type)
@@ -414,7 +414,7 @@ cpart_keypad::get_out_id(char * name)
  return 1;
 }
 
-String
+lxString
 cpart_keypad::WritePreferences(void)
 {
  char prefs[256];
@@ -425,7 +425,7 @@ cpart_keypad::WritePreferences(void)
 }
 
 void
-cpart_keypad::ReadPreferences(String value)
+cpart_keypad::ReadPreferences(lxString value)
 {
  unsigned char tp;
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7], &pull, &tp);
@@ -438,8 +438,8 @@ cpart_keypad::ReadPreferences(String value)
 void
 cpart_keypad::ConfigurePropertiesWindow(CPWindow * WProp)
 {
- String Items = Window5.GetPinsNames ();
- String spin;
+ lxString Items = Window5.GetPinsNames ();
+ lxString spin;
 
  ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
  if (output_pins[0] == 0)
@@ -580,7 +580,7 @@ cpart_keypad::ReadPropertiesWindow(CPWindow * WProp)
 
  pull = !(((CCombo*) WProp->GetChildByName ("combo9"))->GetText ().compare ("UP") == 0);
 
- String tps = ((CCombo*) WProp->GetChildByName ("combo10"))->GetText ();
+ lxString tps = ((CCombo*) WProp->GetChildByName ("combo10"))->GetText ();
 
  ComboChange (tps);
 
@@ -590,7 +590,7 @@ cpart_keypad::ReadPropertiesWindow(CPWindow * WProp)
 }
 
 void
-cpart_keypad::ComboChange(String value)
+cpart_keypad::ComboChange(lxString value)
 {
  if (!value.compare (lxT ("4x3")))
   {

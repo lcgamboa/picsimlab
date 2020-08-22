@@ -150,7 +150,7 @@ public:
     /**
      * @brief  Save the preferences 
      */
-    void saveprefs(String name, String value);
+    void saveprefs(lxString name, lxString value);
 
     void Configure(CControl * control, const char * home);
     void board_Event(CControl * control);
@@ -159,7 +159,7 @@ public:
     /**
      * @brief  Get the file path of resources
      */
-    String GetSharePath(void) {
+    lxString GetSharePath(void) {
         return share;
     };
 
@@ -242,11 +242,11 @@ public:
     
     void Set_mcudbg(int pd);
 
-    void SetPATH(String path) {
+    void SetPATH(lxString path) {
         PATH = path;
     };
 
-    void SetFNAME(String fname) {
+    void SetFNAME(lxString fname) {
         FNAME = fname;
     };
 
@@ -277,12 +277,12 @@ public:
     void SetCpuState(unsigned char cs);
     void menu1_EvBoard(CControl * control);
     void menu1_EvMicrocontroller(CControl * control);
-    void LoadWorkspace(String fnpzw);
-    void LoadHexFile(String fname);
+    void LoadWorkspace(lxString fnpzw);
+    void LoadHexFile(lxString fname);
     void SetClock(float clk);
     float GetClock(void);
 private:
-    String share;
+    lxString share;
 
     int pa;
     int mcurun;
@@ -305,17 +305,17 @@ private:
     long int NSTEP;
     long int NSTEPJ;
     int JUMPSTEPS;
-    String PATH;
-    String FNAME;
-    String OldPath;
+    lxString PATH;
+    lxString FNAME;
+    lxString OldPath;
     char cpustate;
 
-    CStringList prefs;
+    lxStringList prefs;
 
     int lab;
     int lab_;
 
-    String proc_;
+    lxString proc_;
 
     board *pboard;
 

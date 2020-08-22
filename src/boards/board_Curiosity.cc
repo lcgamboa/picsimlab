@@ -266,12 +266,12 @@ cboard_Curiosity::Reset(void)
  if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
-                               String ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
+                               lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
+                               lxString ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
                                                                  pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
+                               lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
  if (use_spare)Window5.Reset ();
 }
@@ -288,12 +288,12 @@ cboard_Curiosity::RefreshStatus(void)
  if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
-                               String ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
+                               lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
+                               lxString ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
                                                                  pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
+                               lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
 }
 
@@ -304,8 +304,8 @@ cboard_Curiosity::WritePreferences(void)
 {
  //write selected microcontroller of board_5 to preferences
  Window1.saveprefs (lxT ("Curiosity_proc"), Proc);
- Window1.saveprefs (lxT ("Curiosity_jmp"), String ().Format ("%i", jmp[0]));
- Window1.saveprefs (lxT ("Curiosity_clock"), String ().Format ("%2.1f", Window1.GetClock()));
+ Window1.saveprefs (lxT ("Curiosity_jmp"), lxString ().Format ("%i", jmp[0]));
+ Window1.saveprefs (lxT ("Curiosity_clock"), lxString ().Format ("%2.1f", Window1.GetClock()));
 }
 
 //Called whe configuration file load  preferences 

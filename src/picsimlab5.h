@@ -105,8 +105,8 @@ public:
      * @brief  Reset all spare parts
      */
     void Reset(void);
-    bool SaveConfig(String fname);
-    bool LoadConfig(String fname);
+    bool SaveConfig(lxString fname);
+    bool LoadConfig(lxString fname);
     void DeleteParts(void);
     void WritePreferences(void);
     void ReadPreferences(char *name, char *value);
@@ -119,12 +119,12 @@ public:
     /**
      * @brief  Return the name of all pins
      */
-    String GetPinsNames(void);
+    lxString GetPinsNames(void);
 
     /**
      * @brief  Return the name of one pin
      */
-    String GetPinName(unsigned char pin);
+    lxString GetPinName(unsigned char pin);
 
     const picpin * GetPinsValues(void);
     void SetPin(unsigned char pin, unsigned char value);
@@ -133,27 +133,27 @@ public:
     void WritePin(unsigned char pin, unsigned char value);
     void WritePinA(unsigned char pin, unsigned char avalue);
     void WritePinOA(unsigned char pin, unsigned short oavalue);
-    unsigned char RegisterIOpin(String pname, unsigned char pin = 0);
+    unsigned char RegisterIOpin(lxString pname, unsigned char pin = 0);
     unsigned char UnregisterIOpin(unsigned char pin);
     void Setfdtype(int value);
 private:
     board *pboard;
-    String PinNames[256];
+    lxString PinNames[256];
     picpin * Pins;
     unsigned char PinsCount;
     int partsc;
     part *parts[MAX_PARTS];
     CItemMenu MParts[MAX_PARTS];
-    String PartToCreate;
+    lxString PartToCreate;
     int PartSelected;
     int PartToMove;
     int mdx, mdy;
     float scale;
-    String LoadConfigFile;
+    lxString LoadConfigFile;
     unsigned char i2c_bus[IOINIT];
     CPWindow wprop;
     int fdtype;
-    String oldfname;
+    lxString oldfname;
 };
 
 extern CPWindow5 Window5;

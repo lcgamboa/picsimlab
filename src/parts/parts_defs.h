@@ -43,7 +43,7 @@ typedef part * (* part_create_func)(unsigned int x, unsigned int y);
 
 void part_register(const char * name, part_create_func pcreate);
 
-part * create_part(String name, unsigned int x, unsigned int y);
+part * create_part(lxString name, unsigned int x, unsigned int y);
 
 typedef struct {
     char name[30];

@@ -33,23 +33,23 @@
 class cpart_IO_MCP23S17:public part
 {
    public:
-      String GetName(void){return lxT("IO MCP23S17");};
-      String GetHelpURL(void){return lxT("IO_MCP23S17.html");};
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
+      lxString GetName(void){return lxT("IO MCP23S17");};
+      lxString GetHelpURL(void){return lxT("IO_MCP23S17.html");};
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cpart_IO_MCP23S17(unsigned x, unsigned y);
       ~cpart_IO_MCP23S17(void);
       void Draw(void);
       void PreProcess (void);
       void Process(void); 
       void PostProcess (void);
-      String GetPictureFileName(void){return lxT("Common/IC28.png");};
-      String GetInputMapFile(void){return lxT("Common/IC28_i.map");};
-      String GetOutputMapFile(void){return lxT("Common/IC28_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("IO_MCP23S17/IO_MCP23S17.lxrad");};
+      lxString GetPictureFileName(void){return lxT("Common/IC28.png");};
+      lxString GetInputMapFile(void){return lxT("Common/IC28_i.map");};
+      lxString GetOutputMapFile(void){return lxT("Common/IC28_o.map");};
+      lxString GetPropertiesWindowFile(void){return lxT("IO_MCP23S17/IO_MCP23S17.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
-      String WritePreferences(void);
-      void ReadPreferences(String value);
+      lxString WritePreferences(void);
+      void ReadPreferences(lxString value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
    private:

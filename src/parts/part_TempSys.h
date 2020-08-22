@@ -32,29 +32,29 @@
 class cpart_tempsys : public part {
 public:
 
-    String GetName(void) {
+    lxString GetName(void) {
         return lxT("Temperature System");
     };
-    String GetHelpURL(void){return lxT("Temperature_System.html");};
-    String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
+    lxString GetHelpURL(void){return lxT("Temperature_System.html");};
+    lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
     cpart_tempsys(unsigned x, unsigned y);
     ~cpart_tempsys(void);
     void Draw(void);
     void Process(void);
 
-    String GetPictureFileName(void) {
+    lxString GetPictureFileName(void) {
         return lxT("tempsys/TempSys.png");
     };
 
-    String GetInputMapFile(void) {
+    lxString GetInputMapFile(void) {
         return lxT("tempsys/TempSys_i.map");
     };
 
-    String GetOutputMapFile(void) {
+    lxString GetOutputMapFile(void) {
         return lxT("tempsys/TempSys_o.map");
     };
 
-    String GetPropertiesWindowFile(void) {
+    lxString GetPropertiesWindowFile(void) {
         return lxT("tempsys/TempSys.lxrad");
     };
     void EvMouseButtonPress(uint button, uint x, uint y, uint state);
@@ -62,8 +62,8 @@ public:
     void EvMouseMove(uint button, uint x, uint y, uint state);
     void ConfigurePropertiesWindow(CPWindow * WProp);
     void ReadPropertiesWindow(CPWindow * WProp);
-    String WritePreferences(void);
-    void ReadPreferences(String value);
+    lxString WritePreferences(void);
+    void ReadPreferences(lxString value);
     unsigned short get_in_id(char * name);
     unsigned short get_out_id(char * name);
 private:

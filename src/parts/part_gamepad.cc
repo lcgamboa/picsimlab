@@ -419,7 +419,7 @@ cpart_gamepad::get_out_id (char * name)
  return 1;
 };
 
-String
+lxString
 cpart_gamepad::WritePreferences (void)
 {
  char prefs[256];
@@ -430,7 +430,7 @@ cpart_gamepad::WritePreferences (void)
 };
 
 void
-cpart_gamepad::ReadPreferences (String value)
+cpart_gamepad::ReadPreferences (lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7]);
 }
@@ -439,8 +439,8 @@ cpart_gamepad::ReadPreferences (String value)
 void
 cpart_gamepad::ConfigurePropertiesWindow (CPWindow * WProp)
 {
- String Items = Window5.GetPinsNames ();
- String spin;
+ lxString Items = Window5.GetPinsNames ();
+ lxString spin;
 
  ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
  if (output_pins[0] == 0)

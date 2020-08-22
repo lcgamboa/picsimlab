@@ -155,7 +155,7 @@ cpart_Buzzer::get_out_id(char * name)
  return 1;
 };
 
-String
+lxString
 cpart_Buzzer::WritePreferences(void)
 {
  char prefs[256];
@@ -165,7 +165,7 @@ cpart_Buzzer::WritePreferences(void)
 }
 
 void
-cpart_Buzzer::ReadPreferences(String value)
+cpart_Buzzer::ReadPreferences(lxString value)
 {
  unsigned char tp;
  sscanf (value.c_str (), "%hhu,%hhu", &input_pins[0], &tp);
@@ -176,8 +176,8 @@ cpart_Buzzer::ReadPreferences(String value)
 void
 cpart_Buzzer::ConfigurePropertiesWindow(CPWindow * WProp)
 {
- String Items = Window5.GetPinsNames ();
- String spin;
+ lxString Items = Window5.GetPinsNames ();
+ lxString spin;
 
  ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)

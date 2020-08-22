@@ -212,7 +212,7 @@ CPWindow4::SetBaseTimer (void)
  combo3.DeleteItems ();
  for (int i = 1; i <= PinCount; i++)
   {
-   String spin = pboard->MGetPinName (i);
+   lxString spin = pboard->MGetPinName (i);
 
    if (spin.Cmp (lxT ("error")))
     {
@@ -223,7 +223,7 @@ CPWindow4::SetBaseTimer (void)
 
  if (chp[0] <= PinCount)
   {
-   String spin = pboard->MGetPinName (chp[0]);
+   lxString spin = pboard->MGetPinName (chp[0]);
    combo2.SetText (itoa (chp[0]) + "  " + spin);
   }
  else
@@ -231,7 +231,7 @@ CPWindow4::SetBaseTimer (void)
 
  if (chp[1] <= PinCount)
   {
-   String spin = pboard->MGetPinName (chp[1]);
+   lxString spin = pboard->MGetPinName (chp[1]);
    combo3.SetText (itoa (chp[1]) + "  " + spin);
   }
  else

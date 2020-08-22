@@ -49,7 +49,7 @@ board_gpsim::MInit(const char * processor, const char * fname, float freq)
 {
  int ret = -1;
 
- String sproc = GetSupportedDevices ();
+ lxString sproc = GetSupportedDevices ();
  
  if (sproc.Contains (processor))
   {
@@ -114,10 +114,10 @@ board_gpsim::CpuInitialized(void)
 void
 board_gpsim::DebugLoop(void) { }
 
-String
+lxString
 board_gpsim::MGetPinName(int pin)
 {
- String pinname = "error";
+ lxString pinname = "error";
 
  if ((pin)&&(pin <= MGetPinCount ()))
   pinname = bridge_gpsim_get_pin_name (pin);
@@ -148,7 +148,7 @@ board_gpsim::pins_reset(void)
 {
  for (int p = 0; p < MGetPinCount (); p++)
   {
-   String pname = MGetPinName (p + 1);
+   lxString pname = MGetPinName (p + 1);
    if (pname[0] == 'p')
     {
      pins[p].port = (unsigned char *) &GPSIM_PORTS[pname[4] - 'a'];

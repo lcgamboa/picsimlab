@@ -35,7 +35,7 @@ class board_qemu_stm32: virtual public board
       board_qemu_stm32(void);
       ~board_qemu_stm32(void);
       int DebugInit(int dtyppe); 
-      String GetDebugName(void){return "GDB";};
+      lxString GetDebugName(void){return "GDB";};
       void DebugLoop(void);
       int CpuInitialized(void);
       void MSetSerial(const char * port);
@@ -47,7 +47,7 @@ class board_qemu_stm32: virtual public board
       float MGetFreq(void);
       float MGetInstClock(void);
       int MGetPinCount(void);
-      String MGetPinName(int pin);
+      lxString MGetPinName(int pin);
       void MSetPin(int pin, unsigned char value);
       void MSetPinDOV(int pin, unsigned char ovalue);      
       void MSetAPin(int pin, float value);

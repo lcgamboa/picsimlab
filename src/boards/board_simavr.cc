@@ -130,7 +130,7 @@ int
 board_simavr::MInit(const char * processor, const char * fname, float freq)
 {
  int ret;
- String sproc = GetSupportedDevices ();
+ lxString sproc = GetSupportedDevices ();
  //avr_ioport_external_t p;
 
  avr = NULL;
@@ -155,7 +155,7 @@ board_simavr::MInit(const char * processor, const char * fname, float freq)
 
  avr->frequency = freq;
 
- if (String (avr->mmcu).compare (lxT ("atmega2560")) == 0)
+ if (lxString (avr->mmcu).compare (lxT ("atmega2560")) == 0)
   {
    avr->reset_pc = 0x3E000;
   }
@@ -389,7 +389,7 @@ board_simavr::DebugInit(int dtyppe)
   }
 }
 
-String
+lxString
 board_simavr::GetDebugName(void)
 {
  if (avr_debug_type)
@@ -429,18 +429,18 @@ int
 board_simavr::MGetPinCount(void)
 {
  if (avr == NULL) return 0;
- if (String (avr->mmcu).compare (lxT ("atmega328")) == 0)return 28;
- if (String (avr->mmcu).compare (lxT ("atmega328p")) == 0)return 28;
- if (String (avr->mmcu).compare (lxT ("atmega2560")) == 0)return 100;
+ if (lxString (avr->mmcu).compare (lxT ("atmega328")) == 0)return 28;
+ if (lxString (avr->mmcu).compare (lxT ("atmega328p")) == 0)return 28;
+ if (lxString (avr->mmcu).compare (lxT ("atmega2560")) == 0)return 100;
  return 0;
 }
 
-String
+lxString
 board_simavr::MGetPinName(int pin)
 {
  if (pin <= 0 || pin > MGetPinCount ())return "error";
 
- if (String (avr->mmcu).compare (lxT ("atmega2560")) == 0)
+ if (lxString (avr->mmcu).compare (lxT ("atmega2560")) == 0)
   {
    switch (pin)
     {
@@ -869,7 +869,7 @@ board_simavr::MSetAPin(int pin, float value)
  pins[pin - 1].avalue = value;
  if (avr == NULL) return;
 
- if (String (avr->mmcu).compare (lxT ("atmega2560")) == 0)
+ if (lxString (avr->mmcu).compare (lxT ("atmega2560")) == 0)
   {
    switch (pin)
     {

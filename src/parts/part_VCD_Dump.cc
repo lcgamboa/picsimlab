@@ -251,7 +251,7 @@ cpart_VCD_Dump::get_out_id(char * name)
  return 1;
 };
 
-String
+lxString
 cpart_VCD_Dump::WritePreferences(void)
 {
  char prefs[256];
@@ -262,7 +262,7 @@ cpart_VCD_Dump::WritePreferences(void)
 }
 
 void
-cpart_VCD_Dump::ReadPreferences(String value)
+cpart_VCD_Dump::ReadPreferences(lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7]);
 }
@@ -271,8 +271,8 @@ cpart_VCD_Dump::ReadPreferences(String value)
 void
 cpart_VCD_Dump::ConfigurePropertiesWindow(CPWindow * WProp)
 {
- String Items = Window5.GetPinsNames ();
- String spin;
+ lxString Items = Window5.GetPinsNames ();
+ lxString spin;
 
  ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)
@@ -605,7 +605,7 @@ cpart_VCD_Dump::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       case I_VIEW:
 #ifdef __EMSCRIPTEN__
    EM_ASM_({
-	   var filename=UTF8ToString($0);
+	   var filename=UTF8TolxString($0);
            var buf = FS.readFile(filename);
            var blob = new Blob([buf],  {"type" : "application/octet-stream" });
            var text = URL.createObjectURL(blob);
@@ -627,7 +627,7 @@ cpart_VCD_Dump::EvMouseButtonPress(uint button, uint x, uint y, uint state)
        lxExecute (Window1.GetSharePath()+ lxT ("/../tools/gtkwave/bin/gtkwave.exe ") + f_vcd_name);
 #else
 
-       lxExecute (String ("gtkwave ") + f_vcd_name, lxEXEC_MAKE_GROUP_LEADER);
+       lxExecute (lxString ("gtkwave ") + f_vcd_name, lxEXEC_MAKE_GROUP_LEADER);
 #endif
 #endif
        break;

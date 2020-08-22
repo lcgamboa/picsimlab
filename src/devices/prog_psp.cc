@@ -68,7 +68,7 @@ prog_sopen(const char* port)
 {
 #ifdef _WIN_
 
-phCom = CreateFile(String(port).c_str(), GENERIC_READ | GENERIC_WRITE,
+phCom = CreateFile(lxString(port).c_str(), GENERIC_READ | GENERIC_WRITE,
 0, // exclusive access
 NULL, // no security
 OPEN_EXISTING,

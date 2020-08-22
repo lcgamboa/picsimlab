@@ -85,7 +85,7 @@ cpart_pbuttons_an::Draw(void)
 {
 
  int i;
- String temp;
+ lxString temp;
  float ftemp;
  canvas.Init ();
 
@@ -105,7 +105,7 @@ cpart_pbuttons_an::Draw(void)
         ftemp=(5.0*(output[i].id - O_P1))/8.0;
      else
         ftemp=(5.0*(8-output[i].id - O_P1))/8.0;
-     temp=String().Format("%3.1f",ftemp)+lxT("V");
+     temp=lxString().Format("%3.1f",ftemp)+lxT("V");
      canvas.Text (temp, output[i].x1, output[i].y1);
      if (output_pins[0] == 0)
       canvas.Text ("NC", output[i].x1, output[i].y1+12);
@@ -127,7 +127,7 @@ cpart_pbuttons_an::Draw(void)
      else
         ftemp=(5.0*(8-output[i].id - O_P1))/8.0;
       
-     temp=String().Format("%3.1f",ftemp)+lxT("V");
+     temp=lxString().Format("%3.1f",ftemp)+lxT("V");
      canvas.Text (temp, output[i].x1, output[i].y1);
      break;
     }
@@ -257,7 +257,7 @@ cpart_pbuttons_an::get_out_id(char * name)
  return 1;
 }
 
-String
+lxString
 cpart_pbuttons_an::WritePreferences(void)
 {
  char prefs[256];
@@ -268,7 +268,7 @@ cpart_pbuttons_an::WritePreferences(void)
 }
 
 void
-cpart_pbuttons_an::ReadPreferences(String value)
+cpart_pbuttons_an::ReadPreferences(lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu", &output_pins[0], &active);
  output_value = active * 5.0;
@@ -278,8 +278,8 @@ cpart_pbuttons_an::ReadPreferences(String value)
 void
 cpart_pbuttons_an::ConfigurePropertiesWindow(CPWindow * WProp)
 {
- String Items = Window5.GetPinsNames ();
- String spin;
+ lxString Items = Window5.GetPinsNames ();
+ lxString spin;
 
  ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
  if (output_pins[0] == 0)

@@ -104,19 +104,19 @@ class cboard_PICGenios:public board_picsim
     char mi2c_tmp_name[200]; 
     
   public:
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cboard_PICGenios(void);
       ~cboard_PICGenios(void);
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
 #ifdef _EXPERIMENTAL_
-      String GetSupportedDevices(void){return lxT("PIC16F1789,PIC16F1939,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,PIC18F47K40,");};
+      lxString GetSupportedDevices(void){return lxT("PIC16F1789,PIC16F1939,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,PIC18F47K40,");};
 #else
-      String GetSupportedDevices(void){return lxT("PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F4620,");};
+      lxString GetSupportedDevices(void){return lxT("PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F4620,");};
 #endif
-      String GetPictureFileName(void){return lxT("PICGenios/board.png");};
-      String GetInputMapFile(void){return lxT("PICGenios/input.map");};
-      String GetOutputMapFile(void){return lxT("PICGenios/output.map");};
+      lxString GetPictureFileName(void){return lxT("PICGenios/board.png");};
+      lxString GetInputMapFile(void){return lxT("PICGenios/input.map");};
+      lxString GetOutputMapFile(void){return lxT("PICGenios/output.map");};
       void Reset(void);
       void MDumpMemory(const char * mfname);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);

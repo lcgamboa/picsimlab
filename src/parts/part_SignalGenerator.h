@@ -32,30 +32,30 @@
 class cpart_SignalGenerator : public part {
 public:
 
-    String GetName(void) {
+    lxString GetName(void) {
         return lxT("Signal Generator");
     };
-    String GetHelpURL(void){return lxT("Signal_Generator.html");};
-    String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
+    lxString GetHelpURL(void){return lxT("Signal_Generator.html");};
+    lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
     cpart_SignalGenerator(unsigned x, unsigned y);
     ~cpart_SignalGenerator(void);
     void Draw(void);
     void PreProcess(void);
     void Process(void);
 
-    String GetPictureFileName(void) {
+    lxString GetPictureFileName(void) {
         return lxT("SignalGenerator/SignalGenerator.png");
     };
 
-    String GetInputMapFile(void) {
+    lxString GetInputMapFile(void) {
         return lxT("SignalGenerator/SignalGenerator_i.map");
     };
 
-    String GetOutputMapFile(void) {
+    lxString GetOutputMapFile(void) {
         return lxT("SignalGenerator/SignalGenerator_o.map");
     };
 
-    String GetPropertiesWindowFile(void) {
+    lxString GetPropertiesWindowFile(void) {
         return lxT("SignalGenerator/SignalGenerator.lxrad");
     };
     void EvMouseButtonPress(uint button, uint x, uint y, uint state);
@@ -63,8 +63,8 @@ public:
     void EvMouseMove(uint button, uint x, uint y, uint state);
     void ConfigurePropertiesWindow(CPWindow * WProp);
     void ReadPropertiesWindow(CPWindow * WProp);
-    String WritePreferences(void);
-    void ReadPreferences(String value);
+    lxString WritePreferences(void);
+    void ReadPreferences(lxString value);
     unsigned short get_in_id(char * name);
     unsigned short get_out_id(char * name);
 private:

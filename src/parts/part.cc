@@ -45,7 +45,7 @@ part::ReadMaps(void)
 }
 
 void 
-part::ReadInputMap(String fname)
+part::ReadInputMap(lxString fname)
 {
   FILE *fin;
 
@@ -153,7 +153,7 @@ part::ReadInputMap(String fname)
 };
 
 void 
-part::ReadOutputMap(String fname)
+part::ReadOutputMap(lxString fname)
 {
   FILE *fin;
 

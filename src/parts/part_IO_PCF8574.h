@@ -33,23 +33,23 @@
 class cpart_IO_PCF8574:public part
 {
    public:
-      String GetName(void){return lxT("IO PCF8574");};
-      String GetHelpURL(void){return lxT("IO_PCF8574.html");};
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};      
+      lxString GetName(void){return lxT("IO PCF8574");};
+      lxString GetHelpURL(void){return lxT("IO_PCF8574.html");};
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};      
       cpart_IO_PCF8574(unsigned x, unsigned y);
       ~cpart_IO_PCF8574(void);
       void Draw(void);
       void PreProcess (void);
       void Process(void); 
       void PostProcess (void);
-      String GetPictureFileName(void){return lxT("Common/IC16.png");};
-      String GetInputMapFile(void){return lxT("Common/IC16_i.map");};
-      String GetOutputMapFile(void){return lxT("Common/IC16_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("IO_PCF8574/IO_PCF8574.lxrad");};
+      lxString GetPictureFileName(void){return lxT("Common/IC16.png");};
+      lxString GetInputMapFile(void){return lxT("Common/IC16_i.map");};
+      lxString GetOutputMapFile(void){return lxT("Common/IC16_o.map");};
+      lxString GetPropertiesWindowFile(void){return lxT("IO_PCF8574/IO_PCF8574.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
-      String WritePreferences(void);
-      void ReadPreferences(String value);
+      lxString WritePreferences(void);
+      void ReadPreferences(lxString value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
    private:

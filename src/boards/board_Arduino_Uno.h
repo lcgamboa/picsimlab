@@ -53,7 +53,7 @@ class cboard_Arduino_Uno:public board_simavr
      
  
    public:
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       //Constructor called once on board creation 
       cboard_Arduino_Uno(void);
       //Destructor called once on board destruction 
@@ -62,13 +62,13 @@ class cboard_Arduino_Uno:public board_simavr
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
-      String GetSupportedDevices(void){return lxT("atmega328p,");};
+      lxString GetSupportedDevices(void){return lxT("atmega328p,");};
       //Return the filename of board picture 
-      String GetPictureFileName(void){return lxT("Arduino_Uno/board.png");};
+      lxString GetPictureFileName(void){return lxT("Arduino_Uno/board.png");};
       //Return the filename of board picture input map 
-      String GetInputMapFile(void){return lxT("Arduino_Uno/input.map");};
+      lxString GetInputMapFile(void){return lxT("Arduino_Uno/input.map");};
       //Return the filename of board picture output map 
-      String GetOutputMapFile(void){return lxT("Arduino_Uno/output.map");};
+      lxString GetOutputMapFile(void){return lxT("Arduino_Uno/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

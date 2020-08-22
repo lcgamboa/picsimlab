@@ -1030,9 +1030,9 @@ cboard_PICGenios::Reset(void)
 #else
  if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-  Window1.statusbar1.SetField (2, lxT ("Serial: ") + String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") + String ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
+  Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") + lxString ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
  else
-  Window1.statusbar1.SetField (2, lxT ("Serial: ") + String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
+  Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
 
  for (int i = 0; i < pic.PINCOUNT; i++)
@@ -1343,7 +1343,7 @@ cboard_PICGenios::EvMouseButtonPress(uint button, uint x, uint y, uint state)
          fclose (fout);
 #ifdef __EMSCRIPTEN__
          EM_ASM_ ({
-                  var filename = UTF8ToString ($0);
+                  var filename = UTF8TolxString ($0);
                   var buf = FS.readFile (filename);
                   var blob = new Blob ([buf],
                    {
@@ -1853,16 +1853,16 @@ cboard_PICGenios::get_out_id(char * name)
 void
 cboard_PICGenios::RefreshStatus(void)
 {
- label5->SetText (lxT ("Temp: ") + String ().Format ("%5.2f", temp[0]) + lxT ("°C"));
+ label5->SetText (lxT ("Temp: ") + lxString ().Format ("%5.2f", temp[0]) + lxT ("°C"));
 
 #ifndef _WIN_
  if (pic.serial[0].serialfd > 0)
 #else
  if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-  Window1.statusbar1.SetField (2, lxT ("Serial: ") + String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") + String ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
+  Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") + lxString ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
  else
-  Window1.statusbar1.SetField (2, lxT ("Serial: ") + String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
+  Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
 };
 
@@ -1872,7 +1872,7 @@ cboard_PICGenios::WritePreferences(void)
  char line[100];
  Window1.saveprefs (lxT ("PICGenios_proc"), Proc);
 
- Window1.saveprefs (lxT ("PICGenios_jmp"), String ().Format ("%i", jmp[0]));
+ Window1.saveprefs (lxT ("PICGenios_jmp"), lxString ().Format ("%i", jmp[0]));
 
  Window1.saveprefs (lxT ("PICGenios_lcd"), combo1->GetText ());
 
@@ -1881,7 +1881,7 @@ cboard_PICGenios::WritePreferences(void)
   sprintf (line + i, "%i", dip[i]);
 
  Window1.saveprefs (lxT ("PICGenios_dip"), line);
- Window1.saveprefs (lxT ("PICGenios_clock"), String ().Format ("%2.1f", Window1.GetClock()));
+ Window1.saveprefs (lxT ("PICGenios_clock"), lxString ().Format ("%2.1f", Window1.GetClock()));
 }
 
 void

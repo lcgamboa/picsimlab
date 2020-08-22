@@ -37,9 +37,9 @@
 class cpart_servo:public part
 {
    public:
-      String GetName(void){return lxT("Servo motor");};
-      String GetHelpURL(void){return lxT("Servo_Motor.html");};
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};      
+      lxString GetName(void){return lxT("Servo motor");};
+      lxString GetHelpURL(void){return lxT("Servo_Motor.html");};
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};      
       
      /**
      * @brief constructor called once on part creation
@@ -55,14 +55,14 @@ class cpart_servo:public part
       
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return lxT("servo/servo_motor.png");};
-      String GetInputMapFile(void){return lxT("servo/servo_motor_i.map");};
-      String GetOutputMapFile(void){return lxT("servo/servo_motor_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("servo/servo_motor.lxrad");};
+      lxString GetPictureFileName(void){return lxT("servo/servo_motor.png");};
+      lxString GetInputMapFile(void){return lxT("servo/servo_motor_i.map");};
+      lxString GetOutputMapFile(void){return lxT("servo/servo_motor_o.map");};
+      lxString GetPropertiesWindowFile(void){return lxT("servo/servo_motor.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
-      String WritePreferences(void);
-      void ReadPreferences(String value);
+      lxString WritePreferences(void);
+      void ReadPreferences(lxString value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
     private:  

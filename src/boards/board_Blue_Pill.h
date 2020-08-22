@@ -36,7 +36,7 @@ class cboard_Blue_Pill:public board_qemu_stm32
    private:
  
    public:
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       //Constructor called once on board creation 
       cboard_Blue_Pill(void);
       //Destructor called once on board destruction 
@@ -45,13 +45,13 @@ class cboard_Blue_Pill:public board_qemu_stm32
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
-      String GetSupportedDevices(void){return lxT("stm32f103c8t6,");};
+      lxString GetSupportedDevices(void){return lxT("stm32f103c8t6,");};
       //Return the filename of board picture 
-      String GetPictureFileName(void){return lxT("Blue_Pill/board.png");};
+      lxString GetPictureFileName(void){return lxT("Blue_Pill/board.png");};
       //Return the filename of board picture input map 
-      String GetInputMapFile(void){return lxT("Blue_Pill/input.map");};
+      lxString GetInputMapFile(void){return lxT("Blue_Pill/input.map");};
       //Return the filename of board picture output map 
-      String GetOutputMapFile(void){return lxT("Blue_Pill/output.map");};
+      lxString GetOutputMapFile(void){return lxT("Blue_Pill/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

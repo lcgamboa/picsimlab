@@ -52,7 +52,7 @@ class cboard_Curiosity:public board_picsim
      
  
    public:
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       //Constructor called once on board creation 
       cboard_Curiosity(void);
       //Destructor called once on board destruction 
@@ -61,13 +61,13 @@ class cboard_Curiosity:public board_picsim
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
-      String GetSupportedDevices(void){return lxT("PIC16F1619,");};
+      lxString GetSupportedDevices(void){return lxT("PIC16F1619,");};
       //Return the filename of board picture 
-      String GetPictureFileName(void){return lxT("Curiosity/board.png");};
+      lxString GetPictureFileName(void){return lxT("Curiosity/board.png");};
       //Return the filename of board picture input map 
-      String GetInputMapFile(void){return lxT("Curiosity/input.map");};
+      lxString GetInputMapFile(void){return lxT("Curiosity/input.map");};
       //Return the filename of board picture output map 
-      String GetOutputMapFile(void){return lxT("Curiosity/output.map");};
+      lxString GetOutputMapFile(void){return lxT("Curiosity/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

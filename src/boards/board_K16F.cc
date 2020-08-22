@@ -380,9 +380,9 @@ cboard_K16F::Reset(void)
 #else
  if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-  Window1.statusbar1.SetField (2, lxT ("Serial: ") + String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") + String ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
+  Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") + lxString ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
  else
-  Window1.statusbar1.SetField (2, lxT ("Serial: ") + String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
+  Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
  for (int pi = 0; pi < pic.PINCOUNT; pi++)
   {
@@ -524,7 +524,7 @@ cboard_K16F::EvMouseButtonPress(uint button, uint x, uint y, uint state)
          fclose (fout);
 #ifdef __EMSCRIPTEN__
    EM_ASM_({
-	   var filename=UTF8ToString($0);
+	   var filename=UTF8TolxString($0);
            var buf = FS.readFile(filename);
            var blob = new Blob([buf],  {"type" : "application/octet-stream" });
            var text = URL.createObjectURL(blob);
@@ -740,7 +740,7 @@ void
 cboard_K16F::WritePreferences(void)
 {
  Window1.saveprefs (lxT ("K16F_proc"), Proc);
- Window1.saveprefs (lxT ("K16F_clock"), String ().Format ("%2.1f", Window1.GetClock()));
+ Window1.saveprefs (lxT ("K16F_clock"), lxString ().Format ("%2.1f", Window1.GetClock()));
 }
 
 void
@@ -767,9 +767,9 @@ cboard_K16F::RefreshStatus(void)
 #else
  if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-  Window1.statusbar1.SetField (2, lxT ("Serial: ") + String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") + String ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
+  Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") + lxString ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
  else
-  Window1.statusbar1.SetField (2, lxT ("Serial: ") + String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
+  Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
 }
 

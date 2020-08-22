@@ -34,7 +34,7 @@ class board_gpsim: virtual public board
   public:
       board_gpsim(void);
       int DebugInit(int dtyppe); 
-      String GetDebugName(void){return "none";};
+      lxString GetDebugName(void){return "none";};
       void DebugLoop(void);
       int CpuInitialized(void);
       void MSetSerial(const char * port);
@@ -46,7 +46,7 @@ class board_gpsim: virtual public board
       float MGetFreq(void);
       float MGetInstClock(void);
       int MGetPinCount(void);
-      String MGetPinName(int pin);
+      lxString MGetPinName(int pin);
       void MSetPin(int pin, unsigned char value);
       void MSetPinDOV(int pin, unsigned char ovalue);      
       void MSetAPin(int pin, float value);
@@ -66,7 +66,7 @@ class board_gpsim: virtual public board
 #else
       int serialfd;
 #endif      
-      String supported_devices;
+      lxString supported_devices;
 };
 
 #endif	/* BOARD_GPSIM_H */

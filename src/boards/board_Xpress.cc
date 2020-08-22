@@ -259,12 +259,12 @@ cboard_Xpress::Reset(void)
  if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
-                               String ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
+                               lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
+                               lxString ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
                                                                  pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
+                               lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
  if (use_spare)Window5.Reset ();
 }
@@ -281,12 +281,12 @@ cboard_Xpress::RefreshStatus(void)
  if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
-                               String ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
+                               lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
+                               lxString ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
                                                                  pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
+                               lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
 }
 
@@ -297,7 +297,7 @@ cboard_Xpress::WritePreferences(void)
 {
  //write selected microcontroller of board_6 to preferences
  Window1.saveprefs (lxT ("Xpress_proc"), Proc);
- Window1.saveprefs (lxT ("Xpress_clock"), String ().Format ("%2.1f", Window1.GetClock())); 
+ Window1.saveprefs (lxT ("Xpress_clock"), lxString ().Format ("%2.1f", Window1.GetClock())); 
 }
 
 //Called whe configuration file load  preferences 

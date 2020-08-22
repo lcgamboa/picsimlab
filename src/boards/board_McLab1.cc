@@ -639,8 +639,8 @@ void
 cboard_McLab1::WritePreferences(void)
 {
  Window1.saveprefs (lxT ("McLab1_proc"), Proc);
- Window1.saveprefs (lxT ("McLab1_jmp"), String ().Format ("%i", jmp[0]));
- Window1.saveprefs (lxT ("McLab1_clock"), String ().Format ("%2.1f", Window1.GetClock()));
+ Window1.saveprefs (lxT ("McLab1_jmp"), lxString ().Format ("%i", jmp[0]));
+ Window1.saveprefs (lxT ("McLab1_clock"), lxString ().Format ("%2.1f", Window1.GetClock()));
 }
 
 void

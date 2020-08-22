@@ -36,7 +36,7 @@ class cboard_gpboard:public board_gpsim
    private:
        lxBitmap * micbmp;   
    public:
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       //Constructor called once on board creation 
       cboard_gpboard(void);
       //Destructor called once on board destruction 
@@ -46,13 +46,13 @@ class cboard_gpboard:public board_gpsim
       void Run_CPU(void);
       int MInit(const char * processor, const char * fname, float freq);
       //Return a list of board supported microcontrollers
-      String GetSupportedDevices(void){return supported_devices;};
+      lxString GetSupportedDevices(void){return supported_devices;};
       //Return the filename of board picture 
-      String GetPictureFileName(void){return lxT("gpboard/board.png");};
+      lxString GetPictureFileName(void){return lxT("gpboard/board.png");};
       //Return the filename of board picture input map 
-      String GetInputMapFile(void){return lxT("gpboard/input.map");};
+      lxString GetInputMapFile(void){return lxT("gpboard/input.map");};
       //Return the filename of board picture output map 
-      String GetOutputMapFile(void){return lxT("gpboard/output.map");};
+      lxString GetOutputMapFile(void){return lxT("gpboard/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

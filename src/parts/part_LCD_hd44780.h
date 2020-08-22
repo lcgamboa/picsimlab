@@ -38,24 +38,24 @@
 class cpart_LCD_hd44780:public part
 {
    public:
-      String GetName(void){return lxT("LCD hd44780");};
-      String GetHelpURL(void){return lxT("LCD_hd44780.html");};
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};      
+      lxString GetName(void){return lxT("LCD hd44780");};
+      lxString GetHelpURL(void){return lxT("LCD_hd44780.html");};
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};      
       cpart_LCD_hd44780(unsigned x, unsigned y);
       ~cpart_LCD_hd44780(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return lxT("LCD_hd44780/LCD_hd44780.png");};
-      String GetPictureFileName_(void){return lxT("LCD_hd44780/LCD_hd44780_.png");};
-      String GetPictureFileName__(void){return lxT("LCD_hd44780/LCD_hd44780__.png");};
-      String GetPictureFileName___(void){return lxT("LCD_hd44780/LCD_hd44780___.png");};
-      String GetInputMapFile(void){return lxT("LCD_hd44780/LCD_hd44780_i.map");};
-      String GetOutputMapFile(void){return lxT("LCD_hd44780/LCD_hd44780_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("LCD_hd44780/LCD_hd44780.lxrad");};
+      lxString GetPictureFileName(void){return lxT("LCD_hd44780/LCD_hd44780.png");};
+      lxString GetPictureFileName_(void){return lxT("LCD_hd44780/LCD_hd44780_.png");};
+      lxString GetPictureFileName__(void){return lxT("LCD_hd44780/LCD_hd44780__.png");};
+      lxString GetPictureFileName___(void){return lxT("LCD_hd44780/LCD_hd44780___.png");};
+      lxString GetInputMapFile(void){return lxT("LCD_hd44780/LCD_hd44780_i.map");};
+      lxString GetOutputMapFile(void){return lxT("LCD_hd44780/LCD_hd44780_o.map");};
+      lxString GetPropertiesWindowFile(void){return lxT("LCD_hd44780/LCD_hd44780.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
-      String WritePreferences(void);
-      void ReadPreferences(String value);
+      lxString WritePreferences(void);
+      void ReadPreferences(lxString value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
     private:

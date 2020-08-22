@@ -33,23 +33,23 @@
 class cpart_IO_74xx595:public part
 {
    public:
-      String GetName(void){return lxT("IO 74xx595");};
-      String GetHelpURL(void){return lxT("IO_74xx595.html");};
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
+      lxString GetName(void){return lxT("IO 74xx595");};
+      lxString GetHelpURL(void){return lxT("IO_74xx595.html");};
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cpart_IO_74xx595(unsigned x, unsigned y);
       ~cpart_IO_74xx595(void);
       void Draw(void);
       void PreProcess (void);
       void Process(void); 
       void PostProcess (void);
-      String GetPictureFileName(void){return lxT("Common/IC16.png");};
-      String GetInputMapFile(void){return lxT("Common/IC16_i.map");};
-      String GetOutputMapFile(void){return lxT("Common/IC16_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("io_74xx595/IO_74xx595.lxrad");};
+      lxString GetPictureFileName(void){return lxT("Common/IC16.png");};
+      lxString GetInputMapFile(void){return lxT("Common/IC16_i.map");};
+      lxString GetOutputMapFile(void){return lxT("Common/IC16_o.map");};
+      lxString GetPropertiesWindowFile(void){return lxT("io_74xx595/IO_74xx595.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
-      String WritePreferences(void);
-      void ReadPreferences(String value);
+      lxString WritePreferences(void);
+      void ReadPreferences(lxString value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
    private:

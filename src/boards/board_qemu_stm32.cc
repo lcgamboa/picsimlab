@@ -81,7 +81,7 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
  char fname_[300];
  char cmd[600];
 
- String sproc = GetSupportedDevices ();
+ lxString sproc = GetSupportedDevices ();
  if (!sproc.Contains (processor))
   {
    Proc = "stm32f103c8t6";
@@ -362,10 +362,10 @@ board_qemu_stm32::CpuInitialized(void)
 void
 board_qemu_stm32::DebugLoop(void) { }
 
-String
+lxString
 board_qemu_stm32::MGetPinName(int pin)
 {
- String pinname = "error";
+ lxString pinname = "error";
 
  switch (pin)
   {

@@ -132,7 +132,7 @@ cpart_rgb_led::get_out_id (char * name)
  return 1;
 };
 
-String
+lxString
 cpart_rgb_led::WritePreferences (void)
 {
  char prefs[256];
@@ -143,7 +143,7 @@ cpart_rgb_led::WritePreferences (void)
 }
 
 void
-cpart_rgb_led::ReadPreferences (String value)
+cpart_rgb_led::ReadPreferences (lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2]);
 }
@@ -152,8 +152,8 @@ cpart_rgb_led::ReadPreferences (String value)
 void
 cpart_rgb_led::ConfigurePropertiesWindow (CPWindow * WProp)
 {
- String Items = Window5.GetPinsNames ();
- String spin;
+ lxString Items = Window5.GetPinsNames ();
+ lxString spin;
  
  ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)

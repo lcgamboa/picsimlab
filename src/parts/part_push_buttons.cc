@@ -284,7 +284,7 @@ cpart_pbuttons::get_out_id(char * name)
  return 1;
 }
 
-String
+lxString
 cpart_pbuttons::WritePreferences(void)
 {
  char prefs[256];
@@ -295,7 +295,7 @@ cpart_pbuttons::WritePreferences(void)
 }
 
 void
-cpart_pbuttons::ReadPreferences(String value)
+cpart_pbuttons::ReadPreferences(lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7], &active);
  output_value[0] = !active;
@@ -312,8 +312,8 @@ cpart_pbuttons::ReadPreferences(String value)
 void
 cpart_pbuttons::ConfigurePropertiesWindow(CPWindow * WProp)
 {
- String Items = Window5.GetPinsNames ();
- String spin;
+ lxString Items = Window5.GetPinsNames ();
+ lxString spin;
 
  ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
  if (output_pins[0] == 0)

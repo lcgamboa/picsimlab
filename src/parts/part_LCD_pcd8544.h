@@ -33,21 +33,21 @@
 class cpart_LCD_pcd8544:public part
 {
    public:
-      String GetName(void){return lxT("LCD pcd8544");};
-      String GetHelpURL(void){return lxT("LCD_pcd8544.html");};
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
+      lxString GetName(void){return lxT("LCD pcd8544");};
+      lxString GetHelpURL(void){return lxT("LCD_pcd8544.html");};
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_LCD_pcd8544(unsigned x, unsigned y);
       ~cpart_LCD_pcd8544(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return lxT("LCD_pcd8544/LCD_pcd8544.png");};
-      String GetInputMapFile(void){return lxT("LCD_pcd8544/LCD_pcd8544_i.map");};
-      String GetOutputMapFile(void){return lxT("LCD_pcd8544/LCD_pcd8544_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("LCD_pcd8544/LCD_pcd8544.lxrad");};
+      lxString GetPictureFileName(void){return lxT("LCD_pcd8544/LCD_pcd8544.png");};
+      lxString GetInputMapFile(void){return lxT("LCD_pcd8544/LCD_pcd8544_i.map");};
+      lxString GetOutputMapFile(void){return lxT("LCD_pcd8544/LCD_pcd8544_o.map");};
+      lxString GetPropertiesWindowFile(void){return lxT("LCD_pcd8544/LCD_pcd8544.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
-      String WritePreferences(void);
-      void ReadPreferences(String value);
+      lxString WritePreferences(void);
+      void ReadPreferences(lxString value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
    private:

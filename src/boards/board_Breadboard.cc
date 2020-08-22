@@ -111,12 +111,12 @@ cboard_Breadboard::Reset(void)
    if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
     Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                                 String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
-                                 String ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
+                                 lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
+                                 lxString ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
                                                                    pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
    else
     Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                                 String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
+                                 lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
    break;
   case _AVR:
    avr_reset (avr);
@@ -129,12 +129,12 @@ cboard_Breadboard::Reset(void)
    if (avr_serial_get_fd () != INVALID_HANDLE_VALUE)
 #endif
     Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                                 String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +
-                                 String ().Format ("%4.1f", fabs ((100.0 * serialexbaud - 100.0 *
+                                 lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +
+                                 lxString ().Format ("%4.1f", fabs ((100.0 * serialexbaud - 100.0 *
                                                                    serialbaud) / serialexbaud)) + lxT ("%)"));
    else
     Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                                 String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
+                                 lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
    break;
 
   }
@@ -158,12 +158,12 @@ cboard_Breadboard::RefreshStatus(void)
    if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
     Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                                 String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
-                                 String ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
+                                 lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
+                                 lxString ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
                                                                    pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
    else
     Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                                 String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
+                                 lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
    break;
   case _AVR:
    //verify serial port state and refresh status bar   
@@ -173,12 +173,12 @@ cboard_Breadboard::RefreshStatus(void)
    if (avr_serial_get_fd () != INVALID_HANDLE_VALUE)
 #endif
     Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                                 String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +
-                                 String ().Format ("%4.1f", fabs ((100.0 * serialexbaud - 100.0 *
+                                 lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +
+                                 lxString ().Format ("%4.1f", fabs ((100.0 * serialexbaud - 100.0 *
                                                                    serialbaud) / serialexbaud)) + lxT ("%)"));
    else
     Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                                 String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
+                                 lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
    switch (avr->state)
     {
@@ -211,7 +211,7 @@ cboard_Breadboard::WritePreferences(void)
 {
  //write selected microcontroller of board_x to preferences
  Window1.saveprefs (lxT ("Breadboard_proc"), Proc);
- Window1.saveprefs (lxT ("Breadboard_clock"), String ().Format ("%2.1f", Window1.GetClock ()));
+ Window1.saveprefs (lxT ("Breadboard_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
 }
 
 //Called whe configuration file load  preferences 
@@ -534,7 +534,7 @@ cboard_Breadboard::DebugInit(int dtyppe)
  return 0;
 }
 
-String
+lxString
 cboard_Breadboard::GetDebugName(void)
 {
  switch (ptype)
@@ -753,7 +753,7 @@ cboard_Breadboard::MGetPinCount(void)
  return 0;
 }
 
-String
+lxString
 cboard_Breadboard::MGetPinName(int pin)
 {
  switch (ptype)

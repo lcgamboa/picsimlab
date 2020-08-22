@@ -218,9 +218,9 @@ CPWindow1::_EvOnCreate(CControl * control)
    PATH = lxGetCwd ();
 
 #ifndef _WIN_
-   share = String (_SHARE_);
+   share = lxString (_SHARE_);
 #else
-   share = dirname (lxGetExecutablePath ()) + lxT ("/") + String (_SHARE_);
+   share = dirname (lxGetExecutablePath ()) + lxT ("/") + lxString (_SHARE_);
 #endif
 
 
@@ -262,7 +262,7 @@ CPWindow1::_EvOnCreate(CControl * control)
          if (prefs.LoadFromFile (fname))
           {
            saveprefs (lxT ("picsimlab_lab"), boards_list[lab].name_);
-           saveprefs (String (boards_list[lab].name_) + lxT ("_proc"), Application->Aargv[2]);
+           saveprefs (lxString (boards_list[lab].name_) + lxT ("_proc"), Application->Aargv[2]);
            if (Application->Aargc == 5)
             {
              saveprefs (lxT ("spare_on"), lxT ("1"));
@@ -325,7 +325,7 @@ CPWindow1::Configure(CControl * control, const char * home)
  int i, j;
  int lc;
 
- String status;
+ lxString status;
 
  mcurun = 1;
  mcupwr = 1;
@@ -422,12 +422,12 @@ CPWindow1::Configure(CControl * control, const char * home)
 
        if (!strcmp (name, "picsimlab_lpath"))
         {
-         PATH = String (value, lxConvUTF8);
+         PATH = lxString (value, lxConvUTF8);
         }
 
        if (!strcmp (name, "picsimlab_lfile"))
         {
-         FNAME = String (value, lxConvUTF8);
+         FNAME = lxString (value, lxConvUTF8);
          if (FNAME.length () > 1)
           menu1_File_ReloadLast.SetEnable (1);
          else
@@ -466,7 +466,7 @@ CPWindow1::Configure(CControl * control, const char * home)
   }
 
  menu1_Microcontroller.DestroyChilds ();
- String sdev = pboard->GetSupportedDevices ();
+ lxString sdev = pboard->GetSupportedDevices ();
  int f;
  int dc = 0;
  while (sdev.size () > 0)
@@ -515,7 +515,7 @@ CPWindow1::Configure(CControl * control, const char * home)
 
  proc_ = pboard->GetProcessorName ();
 
- SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab].name) + lxT (" - ") + pboard->GetProcessorName ());
+ SetTitle (lxT ("PICSimLab - ") + lxString (boards_list[lab].name) + lxT (" - ") + pboard->GetProcessorName ());
 
 
 #ifdef _USE_PICSTARTP_
@@ -593,7 +593,7 @@ CPWindow1::combo1_EvOnComboChange(CControl * control)
 }
 
 void
-CPWindow1::saveprefs(String name, String value)
+CPWindow1::saveprefs(lxString name, lxString value)
 {
  char line[1024];
  char *pname;
@@ -609,7 +609,7 @@ CPWindow1::saveprefs(String name, String value)
 
    if ((pname == NULL) || (pvalue == NULL))continue;
 
-   if (String (pname) == name)
+   if (lxString (pname) == name)
     {
      prefs.SetLine (name + lxT ("\t= \"") + value + lxT ("\""), lc);
 
@@ -740,7 +740,7 @@ CPWindow1::filedialog1_EvOnClose(int retId)
    pboard->MDumpMemory (filedialog1.GetFileName ());
 #ifdef __EMSCRIPTEN__
    EM_ASM_ ({
-            var filename = UTF8ToString ($0);
+            var filename = UTF8TolxString ($0);
             var buf = FS.readFile (filename);
             var blob = new Blob ([buf],
              {
@@ -786,7 +786,7 @@ CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
 void
 CPWindow1::menu1_Help_Board_EvMenuActive(CControl * control)
 {
- String bname = String (boards_list[lab].name_).substr (0, 12);
+ lxString bname = lxString (boards_list[lab].name_).substr (0, 12);
 
  lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/Features_Board_") + bname + lxT (".html"));
 }
@@ -794,13 +794,13 @@ CPWindow1::menu1_Help_Board_EvMenuActive(CControl * control)
 void
 CPWindow1::menu1_Help_About_Board_EvMenuActive(CControl * control)
 {
- Message_sz (lxT ("Board ") + String (boards_list[lab].name) + lxT ("\nDeveloped by ") + pboard->GetAboutInfo (), 400, 200);
+ Message_sz (lxT ("Board ") + lxString (boards_list[lab].name) + lxT ("\nDeveloped by ") + pboard->GetAboutInfo (), 400, 200);
 }
 
 void
 CPWindow1::menu1_Help_About_PICSimLab_EvMenuActive(CControl * control)
 {
- Message_sz (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (lxT (_VERSION_)), 400, 200);
+ Message_sz (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + lxString (lxT (_VERSION_)), 400, 200);
 }
 
 void
@@ -809,12 +809,12 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
 
 #ifdef EXT_BROWSER_EXAMPLES
  //lxLaunchDefaultBrowser(lxT("file://")+share + lxT ("docs/picsimlab.html"));
- lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#board_" + String (boards_list[lab].name_) + lxT ("_") + pboard->GetProcessorName ()));
+ lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#board_" + lxString (boards_list[lab].name_) + lxT ("_") + pboard->GetProcessorName ()));
  WDestroy ();
 #else 
  OldPath = filedialog2.GetDir ();
 
- filedialog2.SetDir (share + lxT ("/docs/hex/board_") + String (boards_list[lab].name_) + lxT ("/") + pboard->GetProcessorName () + lxT ("/"));
+ filedialog2.SetDir (share + lxT ("/docs/hex/board_") + lxString (boards_list[lab].name_) + lxT ("/") + pboard->GetProcessorName () + lxT ("/"));
 
  menu1_File_LoadWorkspace_EvMenuActive (control);
 #endif
@@ -880,7 +880,7 @@ CPWindow1::menu1_File_Configure_EvMenuActive(CControl * control)
 }
 
 void
-CPWindow1::LoadHexFile(String fname)
+CPWindow1::LoadHexFile(lxString fname)
 {
  int pa;
 
@@ -918,9 +918,9 @@ CPWindow1::LoadHexFile(String fname)
 
 
  if (mcurun)
-  SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab].name) + lxT (" - ") + pboard->GetProcessorName () + lxT (" - ") + basename (filedialog1.GetFileName ()));
+  SetTitle (lxT ("PICSimLab - ") + lxString (boards_list[lab].name) + lxT (" - ") + pboard->GetProcessorName () + lxT (" - ") + basename (filedialog1.GetFileName ()));
  else
-  SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab].name) + lxT (" - ") + pboard->GetProcessorName ());
+  SetTitle (lxT ("PICSimLab - ") + lxString (boards_list[lab].name) + lxT (" - ") + pboard->GetProcessorName ());
 
 
  mcupwr = pa;
@@ -994,7 +994,7 @@ CPWindow1::menu1_EvMicrocontroller(CControl * control)
  proc_ = pboard->GetProcessorName ();
  pboard->SetProcessorName (((CItemMenu*) control)->GetText ());
 
- SetTitle (lxT ("PICSimLab - ") + String (boards_list[lab].name) + lxT (" - ") + pboard->GetProcessorName ());
+ SetTitle (lxT ("PICSimLab - ") + lxString (boards_list[lab].name) + lxT (" - ") + pboard->GetProcessorName ());
 
  FNAME = lxT (" ");
  _EvOnDestroy (control);
@@ -1031,7 +1031,7 @@ CPWindow1::menu1_File_SaveWorkspace_EvMenuActive(CControl * control)
 static const char old_board_names[6][20] = {"Breadboard", "McLab1", "K16F", "McLab2", "PICGenios", "Arduino_Uno"};
 
 void
-CPWindow1::LoadWorkspace(String fnpzw)
+CPWindow1::LoadWorkspace(lxString fnpzw)
 {
  char home[1024];
  char fzip[1280];
@@ -1060,7 +1060,7 @@ CPWindow1::LoadWorkspace(String fnpzw)
  _EvOnDestroy (this);
 
  snprintf (fzip, 1279, "%s/picsimlab.ini", home);
- CStringList prefsw;
+ lxStringList prefsw;
  prefsw.Clear ();
  int lc;
  char * value;
@@ -1223,7 +1223,7 @@ CPWindow1::LoadWorkspace(String fnpzw)
  if (lxFileExists (fzip))
   {
 #ifdef EXT_BROWSER
-   lxLaunchDefaultBrowser (lxT ("file://") + String (fzip));
+   lxLaunchDefaultBrowser (lxT ("file://") + lxString (fzip));
    //lxLaunchDefaultBrowser(lxT("https://lcgamboa.github.io/picsimlab/"));
 #else    
    Window2.html1.SetLoadFile (fzip);
@@ -1236,7 +1236,7 @@ CPWindow1::LoadWorkspace(String fnpzw)
    if (lxFileExists (fzip))
     {
 #ifdef EXT_BROWSER
-     lxLaunchDefaultBrowser (lxT ("file://") + String (fzip));
+     lxLaunchDefaultBrowser (lxT ("file://") + lxString (fzip));
      //lxLaunchDefaultBrowser(lxT("https://lcgamboa.github.io/picsimlab/"));
 #else      
      Window2.html1.SetLoadFile (fzip);
@@ -1275,7 +1275,7 @@ CPWindow1::filedialog2_EvOnClose(int retId)
    if (lxFileExists (filedialog2.GetFileName ()))
     {
 
-     if (!Dialog (String ("Overwriting file: ") + basename (filedialog2.GetFileName ()) + "?"))
+     if (!Dialog (lxString ("Overwriting file: ") + basename (filedialog2.GetFileName ()) + "?"))
       return;
     }
 
@@ -1338,7 +1338,7 @@ CPWindow1::filedialog2_EvOnClose(int retId)
 
 #ifdef __EMSCRIPTEN__
    EM_ASM_ ({
-            var filename = UTF8ToString ($0);
+            var filename = UTF8TolxString ($0);
             var buf = FS.readFile (filename);
             var blob = new Blob ([buf],
              {
@@ -1435,11 +1435,11 @@ CPWindow1::SetClock(float clk)
 {
  if (clk < 1)
   {
-   combo1.SetText (String ().Format ("%2.1f", clk));
+   combo1.SetText (lxString ().Format ("%2.1f", clk));
   }
  else
   {
-   combo1.SetText (String ().Format ("%2.0f", clk));
+   combo1.SetText (lxString ().Format ("%2.0f", clk));
   }
 
  NSTEP = (int) (atof (combo1.GetText ()) * NSTEPKT);

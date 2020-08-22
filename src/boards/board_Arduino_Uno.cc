@@ -289,12 +289,12 @@ cboard_Arduino_Uno::Reset(void)
  if (avr_serial_get_fd () != INVALID_HANDLE_VALUE)
 #endif
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +
-                               String ().Format ("%4.1f", fabs ((100.0 * serialexbaud - 100.0 *
+                               lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +
+                               lxString ().Format ("%4.1f", fabs ((100.0 * serialexbaud - 100.0 *
                                                                  serialbaud) / serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
+                               lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
  /*
    //reset mean value
@@ -318,12 +318,12 @@ cboard_Arduino_Uno::RefreshStatus(void)
  if (avr_serial_get_fd () != INVALID_HANDLE_VALUE)
 #endif
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +
-                               String ().Format ("%4.1f", fabs ((100.0 * serialexbaud - 100.0 *
+                               lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +
+                               lxString ().Format ("%4.1f", fabs ((100.0 * serialexbaud - 100.0 *
                                                                  serialbaud) / serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
+                               lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
  switch (avr->state)
   {
@@ -353,7 +353,7 @@ cboard_Arduino_Uno::WritePreferences(void)
 {
  //write selected microcontroller of board_x to preferences
  Window1.saveprefs (lxT ("Arduino_Uno_proc"), Proc);
- Window1.saveprefs (lxT ("Arduino_Uno_clock"), String ().Format ("%2.1f", Window1.GetClock ()));
+ Window1.saveprefs (lxT ("Arduino_Uno_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
 }
 
 //Called whe configuration file load  preferences 

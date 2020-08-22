@@ -79,7 +79,7 @@ cpart_SignalGenerator::Draw(void)
 {
 
  int i,j;
- String temp;
+ lxString temp;
  float v[2];
  float tsi;
  int sizex;
@@ -347,7 +347,7 @@ cpart_SignalGenerator::get_out_id(char * name)
  return 1;
 }
 
-String
+lxString
 cpart_SignalGenerator::WritePreferences(void)
 {
  char prefs[256];
@@ -358,7 +358,7 @@ cpart_SignalGenerator::WritePreferences(void)
 }
 
 void
-cpart_SignalGenerator::ReadPreferences(String value)
+cpart_SignalGenerator::ReadPreferences(lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%u", &input_pins[0], &values[0], &values[1], &type, &maxfreq);
 }
@@ -366,8 +366,8 @@ cpart_SignalGenerator::ReadPreferences(String value)
 void
 cpart_SignalGenerator::ConfigurePropertiesWindow(CPWindow * WProp)
 {
- String Items = Window5.GetPinsNames ();
- String spin;
+ lxString Items = Window5.GetPinsNames ();
+ lxString spin;
 
  ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)

@@ -32,24 +32,24 @@
 class cpart_pot:public part
 {
     public:
-      String GetName(void){return lxT("Potentiometers");};
-      String GetHelpURL(void){return lxT("Potentiometers.html");};
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
+      lxString GetName(void){return lxT("Potentiometers");};
+      lxString GetHelpURL(void){return lxT("Potentiometers.html");};
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_pot(unsigned x, unsigned y);
       ~cpart_pot(void); 
       void Draw(void);
       void PreProcess(void);
-      String GetPictureFileName(void){return lxT("pot/pot.png");};
-      String GetInputMapFile(void){return lxT("pot/pot_i.map");};
-      String GetOutputMapFile(void){return lxT("pot/pot_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("pot/pot.lxrad");};
+      lxString GetPictureFileName(void){return lxT("pot/pot.png");};
+      lxString GetInputMapFile(void){return lxT("pot/pot_i.map");};
+      lxString GetOutputMapFile(void){return lxT("pot/pot_o.map");};
+      lxString GetPropertiesWindowFile(void){return lxT("pot/pot.lxrad");};
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
       void EvMouseMove(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
-      String WritePreferences(void);
-      void ReadPreferences(String value);
+      lxString WritePreferences(void);
+      void ReadPreferences(lxString value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
     private:

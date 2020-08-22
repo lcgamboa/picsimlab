@@ -46,7 +46,7 @@ class board_simavr: virtual public board
   public:
       board_simavr(void);//Called once on board creation
       int DebugInit(int dtyppe); 
-      String GetDebugName(void);
+      lxString GetDebugName(void);
       void DebugLoop(void);
       int CpuInitialized(void);
       void MSetSerial(const char * port);
@@ -58,7 +58,7 @@ class board_simavr: virtual public board
       float MGetFreq(void);
       float MGetInstClock(void);
       int MGetPinCount(void);
-      String MGetPinName(int pin);
+      lxString MGetPinName(int pin);
       void MSetPin(int pin, unsigned char value);
       void MSetPinDOV(int pin, unsigned char ovalue);      
       void MSetAPin(int pin, float value);

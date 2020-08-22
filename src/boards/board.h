@@ -86,22 +86,22 @@ class board
      /**
      * @brief  Return a list of supported microcontrollers
      */ 
-      virtual String GetSupportedDevices(void)=0;
+      virtual lxString GetSupportedDevices(void)=0;
            
      /**
      * @brief Return the filename of board picture  
      */ 
-      virtual String GetPictureFileName(void)=0; 
+      virtual lxString GetPictureFileName(void)=0; 
            
      /**
      * @brief  Return the filename of board picture input map
      */ 
-      virtual String GetInputMapFile(void)=0;      
+      virtual lxString GetInputMapFile(void)=0;      
            
      /**
      * @brief  Return the filename of board picture output map
      */ 
-      virtual String GetOutputMapFile(void)=0;     
+      virtual lxString GetOutputMapFile(void)=0;     
            
      /**
      * @brief  Reset board status
@@ -196,12 +196,12 @@ class board
      /**
      * @brief Set board processor   
      */ 
-      void  SetProcessorName(String proc);
+      void  SetProcessorName(lxString proc);
      
      /**
      * @brief Get board processor in use  
      */ 
-      String  GetProcessorName(void);    
+      lxString  GetProcessorName(void);    
       
      /**
      * @brief Start debug support  
@@ -211,12 +211,12 @@ class board
      /**
      * @brief Get debug interface name  
      */ 
-      virtual String GetDebugName(void)=0;
+      virtual lxString GetDebugName(void)=0;
       
      /**
      * @brief  Return the about information of part
      */ 
-      virtual String GetAboutInfo(void)=0;   
+      virtual lxString GetAboutInfo(void)=0;   
         
      /**
      * @brief debug step (pooling)  
@@ -276,7 +276,7 @@ class board
      /**
      * @brief board microcontroller pin name   
      */
-      virtual String MGetPinName(int pin)=0;
+      virtual lxString MGetPinName(int pin)=0;
         
      /**
      * @brief board microcontroller set digital pin   
@@ -389,7 +389,7 @@ class board
       virtual unsigned int DBGGetEEPROM_Size(void) {INCOMPLETE; return 0;};
  
 protected:      
-      String Proc;          ///< Name of processor in use
+      lxString Proc;          ///< Name of processor in use
       input_t  input[100];  ///< input map elements
       output_t output[100]; ///< output map elements 
       int inputc;           ///< input map elements counter 
@@ -408,12 +408,12 @@ private:
      /**
      * @brief Read the Input Map  
      */
-    void ReadInputMap(String fname);  
+    void ReadInputMap(lxString fname);  
           
      /**
      * @brief Read the Output Map  
      */  
-    void ReadOutputMap(String fname); 
+    void ReadOutputMap(lxString fname); 
 
 };
 

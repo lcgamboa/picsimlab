@@ -252,7 +252,7 @@ cpart_step::get_out_id (char * name)
  return 1;
 }
 
-String
+lxString
 cpart_step::WritePreferences (void)
 {
  char prefs[256];
@@ -263,7 +263,7 @@ cpart_step::WritePreferences (void)
 }
 
 void
-cpart_step::ReadPreferences (String value)
+cpart_step::ReadPreferences (lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3]);
 }
@@ -272,8 +272,8 @@ cpart_step::ReadPreferences (String value)
 void
 cpart_step::ConfigurePropertiesWindow (CPWindow * WProp)
 {
- String Items = Window5.GetPinsNames ();
- String spin;
+ lxString Items = Window5.GetPinsNames ();
+ lxString spin;
 
  ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)

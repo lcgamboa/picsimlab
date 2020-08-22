@@ -45,15 +45,15 @@ class cboard_McLab1:public board_picsim
      CLabel *label1;
  
    public:
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       cboard_McLab1(void);
       ~cboard_McLab1(void);
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
-      String GetSupportedDevices(void){return lxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
-      String GetPictureFileName(void){return lxT("McLab1/board.png");};
-      String GetInputMapFile(void){return lxT("McLab1/input.map");};
-      String GetOutputMapFile(void){return lxT("McLab1/output.map");};
+      lxString GetSupportedDevices(void){return lxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
+      lxString GetPictureFileName(void){return lxT("McLab1/board.png");};
+      lxString GetInputMapFile(void){return lxT("McLab1/input.map");};
+      lxString GetOutputMapFile(void){return lxT("McLab1/output.map");};
       void Reset(void);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);

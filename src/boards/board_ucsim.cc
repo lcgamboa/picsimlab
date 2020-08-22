@@ -76,7 +76,7 @@ board_ucsim::MInit(const char * processor, const char * fname, float freq)
  char fbuff[20];
  int ret = -1;
 
- String sproc = GetSupportedDevices ();
+ lxString sproc = GetSupportedDevices ();
 
  if (sproc.Contains (processor))
   {
@@ -142,10 +142,10 @@ board_ucsim::CpuInitialized(void)
 void
 board_ucsim::DebugLoop(void) { }
 
-String
+lxString
 board_ucsim::MGetPinName(int pin)
 {
- String pinname = "error";
+ lxString pinname = "error";
 
  if ((pin)&&(pin <= MGetPinCount ()))
   pinname = pinnames[procid][pin - 1];
@@ -179,7 +179,7 @@ board_ucsim::pins_reset(void)
   {
    for (int p = 0; p < MGetPinCount (); p++)
     {
-     String pname = MGetPinName (p + 1);
+     lxString pname = MGetPinName (p + 1);
      if (pname[0] == 'P')
       {
        pins[p].port = (unsigned char *) &UCSIM_PORTS[pname[1] - '0'];
@@ -218,7 +218,7 @@ board_ucsim::pins_reset(void)
   {
    for (int p = 0; p < MGetPinCount (); p++)
     {
-     String pname = MGetPinName (p + 1);
+     lxString pname = MGetPinName (p + 1);
      if (pname[0] == 'P')
       {
        pins[p].port = (unsigned char *) &UCSIM_PORTS[pname[1] - 'A'];

@@ -38,7 +38,7 @@ board_picsim::MSetSerial(const char * port)
 int
 board_picsim::MInit(const char * processor, const char * fname, float freq)
 {
- String sproc = GetSupportedDevices ();
+ lxString sproc = GetSupportedDevices ();
  int procn = 0;
 
  if (sproc.Contains (processor))
@@ -185,11 +185,11 @@ board_picsim::MGetPinCount(void)
  return pic.PINCOUNT;
 }
 
-String
+lxString
 board_picsim::MGetPinName(int pin)
 {
  char cbuf[10];
- String pinname;
+ lxString pinname;
 
  pinname = getPinName (&pic, pin, cbuf);
 

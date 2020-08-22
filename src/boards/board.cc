@@ -48,7 +48,7 @@ board::ReadMaps(void)
 }
 
 void
-board::ReadInputMap(String fname)
+board::ReadInputMap(lxString fname)
 {
  FILE *fin;
 
@@ -152,7 +152,7 @@ board::ReadInputMap(String fname)
 }
 
 void
-board::ReadOutputMap(String fname)
+board::ReadOutputMap(lxString fname)
 {
  FILE *fin;
 
@@ -256,12 +256,12 @@ board::GetUseSpareParts(void)
 }
 
 void
-board::SetProcessorName(String proc)
+board::SetProcessorName(lxString proc)
 {
  Proc = proc;
 }
 
-String
+lxString
 board::GetProcessorName(void)
 {
  return Proc;

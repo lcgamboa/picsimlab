@@ -36,7 +36,7 @@ class cboard_uCboard:public board_ucsim
    private:
        lxBitmap * micbmp;       
    public:
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       //Constructor called once on board creation 
       cboard_uCboard(void);
       //Destructor called once on board destruction 
@@ -46,13 +46,13 @@ class cboard_uCboard:public board_ucsim
       void Run_CPU(void);
       int MInit(const char * processor, const char * fname, float freq);
       //Return a list of board supported microcontrollers
-      String GetSupportedDevices(void){return lxT("C51,STM8S103,Z80,");};
+      lxString GetSupportedDevices(void){return lxT("C51,STM8S103,Z80,");};
       //Return the filename of board picture 
-      String GetPictureFileName(void){return lxT("uCboard/board.png");};
+      lxString GetPictureFileName(void){return lxT("uCboard/board.png");};
       //Return the filename of board picture input map 
-      String GetInputMapFile(void){return lxT("uCboard/input.map");};
+      lxString GetInputMapFile(void){return lxT("uCboard/input.map");};
       //Return the filename of board picture output map 
-      String GetOutputMapFile(void){return lxT("uCboard/output.map");};
+      lxString GetOutputMapFile(void){return lxT("uCboard/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

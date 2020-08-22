@@ -33,26 +33,26 @@
 class cpart_keypad:public part
 {
    public:
-      String GetName(void){return lxT("Keypad");};
-      String GetHelpURL(void){return lxT("Keypad.html");};
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
+      lxString GetName(void){return lxT("Keypad");};
+      lxString GetHelpURL(void){return lxT("Keypad.html");};
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_keypad(unsigned x, unsigned y);
       ~cpart_keypad(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void);
-      String GetInputMapFile(void);
-      String GetOutputMapFile(void);
-      String GetPropertiesWindowFile(void){return lxT("keypad/keypad.lxrad");};
+      lxString GetPictureFileName(void);
+      lxString GetInputMapFile(void);
+      lxString GetOutputMapFile(void);
+      lxString GetPropertiesWindowFile(void){return lxT("keypad/keypad.lxrad");};
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
-      String WritePreferences(void);
-      void ReadPreferences(String value);
+      lxString WritePreferences(void);
+      void ReadPreferences(lxString value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
-      void ComboChange(String value);
+      void ComboChange(lxString value);
       void ChangeType(unsigned char tp); 
     private:
       unsigned char type;  

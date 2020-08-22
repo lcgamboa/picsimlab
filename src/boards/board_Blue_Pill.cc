@@ -99,12 +99,12 @@ cboard_Blue_Pill::Reset(void)
  if (serialfd[0] != INVALID_HANDLE_VALUE)
 #endif
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +
-                               String ().Format ("%4.1f", fabs ((100.0 * serialexbaud - 100.0 *
+                               lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +
+                               lxString ().Format ("%4.1f", fabs ((100.0 * serialexbaud - 100.0 *
                                                                  serialbaud) / serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
+                               lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
  if (use_spare)Window5.Reset ();
 }
@@ -121,12 +121,12 @@ cboard_Blue_Pill::RefreshStatus(void)
  if (serialfd[0] != INVALID_HANDLE_VALUE)
 #endif
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               String::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +
-                               String ().Format ("%4.1f", fabs ((100.0 * serialexbaud - 100.0 *
+                               lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +
+                               lxString ().Format ("%4.1f", fabs ((100.0 * serialexbaud - 100.0 *
                                                                  serialbaud) / serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               String::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
+                               lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
 }
 
@@ -138,7 +138,7 @@ cboard_Blue_Pill::WritePreferences(void)
  //write selected microcontroller of board_x to preferences
  Window1.saveprefs (lxT ("Blue_Pill_proc"), Proc);
  //write microcontroller clock to preferences
- Window1.saveprefs (lxT ("Blue_Pill_clock"), String ().Format ("%2.1f", Window1.GetClock())); 
+ Window1.saveprefs (lxT ("Blue_Pill_clock"), lxString ().Format ("%2.1f", Window1.GetClock())); 
 }
 
 //Called whe configuration file load  preferences 

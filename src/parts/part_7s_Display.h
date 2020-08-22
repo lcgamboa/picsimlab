@@ -32,23 +32,23 @@
 class cpart_7s_display : public part {
 public:
 
-    String GetName(void) {return lxT("7 Segments Display"); };
-    String GetHelpURL(void){return lxT("Segments_Display.html");};
-    String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
+    lxString GetName(void) {return lxT("7 Segments Display"); };
+    lxString GetHelpURL(void){return lxT("Segments_Display.html");};
+    lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
     cpart_7s_display(unsigned x, unsigned y);
     ~cpart_7s_display(void);
     void Draw(void);
     void PreProcess (void);
     void Process(void); 
     void PostProcess (void);
-    String GetPictureFileName(void) {return lxT("7s_display/7sdisplay.png"); };
-    String GetInputMapFile(void) {return lxT("7s_display/7sdisplay_i.map"); };
-    String GetOutputMapFile(void) {return lxT("7s_display/7sdisplay_o.map");};
-    String GetPropertiesWindowFile(void) {return lxT("7s_display/7sdisplay.lxrad");};
+    lxString GetPictureFileName(void) {return lxT("7s_display/7sdisplay.png"); };
+    lxString GetInputMapFile(void) {return lxT("7s_display/7sdisplay_i.map"); };
+    lxString GetOutputMapFile(void) {return lxT("7s_display/7sdisplay_o.map");};
+    lxString GetPropertiesWindowFile(void) {return lxT("7s_display/7sdisplay.lxrad");};
     void ConfigurePropertiesWindow(CPWindow * wprop);
     void ReadPropertiesWindow(CPWindow * WProp);
-    String WritePreferences(void);
-    void ReadPreferences(String value);
+    lxString WritePreferences(void);
+    void ReadPreferences(lxString value);
     unsigned short get_in_id(char * name);
     unsigned short get_out_id(char * name);
 private:

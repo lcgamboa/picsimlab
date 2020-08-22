@@ -32,22 +32,22 @@
 class cpart_VCD_Dump_an:public part
 {
    public:
-      String GetName(void){return lxT("VCD Dump (Analogic)");};
-      String GetHelpURL(void){return lxT("VCD_dump_Analogic.html");};
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
+      lxString GetName(void){return lxT("VCD Dump (Analogic)");};
+      lxString GetHelpURL(void){return lxT("VCD_dump_Analogic.html");};
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_VCD_Dump_an(unsigned x, unsigned y);
       ~cpart_VCD_Dump_an(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return lxT("VCD_Dump/VCD_Dump.png");};
-      String GetInputMapFile(void){return lxT("VCD_Dump/VCD_Dump_i.map");};
-      String GetOutputMapFile(void){return lxT("VCD_Dump/VCD_Dump_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("VCD_Dump/VCD_Dump.lxrad");};
+      lxString GetPictureFileName(void){return lxT("VCD_Dump/VCD_Dump.png");};
+      lxString GetInputMapFile(void){return lxT("VCD_Dump/VCD_Dump_i.map");};
+      lxString GetOutputMapFile(void){return lxT("VCD_Dump/VCD_Dump_o.map");};
+      lxString GetPropertiesWindowFile(void){return lxT("VCD_Dump/VCD_Dump.lxrad");};
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
-      String WritePreferences(void);
-      void ReadPreferences(String value);
+      lxString WritePreferences(void);
+      void ReadPreferences(lxString value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
      private:

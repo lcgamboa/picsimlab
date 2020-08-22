@@ -33,38 +33,38 @@
 class cpart_MI2C_24CXXX : public part {
 public:
 
-    String GetName(void) {
+    lxString GetName(void) {
         return lxT("MEM 24CXXX");
     };
-    String GetHelpURL(void){return lxT("MEM_24CXXX.html");};
-    String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
+    lxString GetHelpURL(void){return lxT("MEM_24CXXX.html");};
+    lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
     cpart_MI2C_24CXXX(unsigned x, unsigned y);
     ~cpart_MI2C_24CXXX(void);
     void Draw(void);
     void PreProcess(void);
     void Process(void);
 
-    String GetPictureFileName(void) {
+    lxString GetPictureFileName(void) {
         return lxT("MI2C_24CXXX/MI2C_24CXXX.png");
     };
 
-    String GetInputMapFile(void) {
+    lxString GetInputMapFile(void) {
         return lxT("MI2C_24CXXX/MI2C_24CXXX_i.map");
     };
 
-    String GetOutputMapFile(void) {
+    lxString GetOutputMapFile(void) {
         return lxT("Common/IC8_o.map");
     };
 
-    String GetPropertiesWindowFile(void) {
+    lxString GetPropertiesWindowFile(void) {
         return lxT("MI2C_24CXXX/MI2C_24CXXX.lxrad");
     };
     void EvMouseButtonPress(uint button, uint x, uint y,uint state);
     void ConfigurePropertiesWindow(CPWindow * WProp);
     void filedialog_EvOnClose(int retId);
     void ReadPropertiesWindow(CPWindow * WProp);
-    String WritePreferences(void);
-    void ReadPreferences(String value);
+    lxString WritePreferences(void);
+    void ReadPreferences(lxString value);
     unsigned short get_in_id(char * name);
     unsigned short get_out_id(char * name);
 private:

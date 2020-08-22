@@ -32,21 +32,21 @@
 class cpart_RTC_ds1307:public part
 {
    public:
-      String GetName(void){return lxT("RTC ds1307");};
-      String GetHelpURL(void){return lxT("RTC_ds1307.html");};
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
+      lxString GetName(void){return lxT("RTC ds1307");};
+      lxString GetHelpURL(void){return lxT("RTC_ds1307.html");};
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_RTC_ds1307(unsigned x, unsigned y);
       ~cpart_RTC_ds1307(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return lxT("Common/IC8.png");};
-      String GetInputMapFile(void){return lxT("Common/IC8_i.map");};
-      String GetOutputMapFile(void){return lxT("Common/IC8_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("RTC_ds1307/RTC_ds1307.lxrad");};
+      lxString GetPictureFileName(void){return lxT("Common/IC8.png");};
+      lxString GetInputMapFile(void){return lxT("Common/IC8_i.map");};
+      lxString GetOutputMapFile(void){return lxT("Common/IC8_o.map");};
+      lxString GetPropertiesWindowFile(void){return lxT("RTC_ds1307/RTC_ds1307.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
-      String WritePreferences(void);
-      void ReadPreferences(String value);
+      lxString WritePreferences(void);
+      void ReadPreferences(lxString value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
    private:

@@ -73,15 +73,15 @@ class cboard_McLab2:public board_picsim
     
     char mi2c_tmp_name[200]; 
   public:
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cboard_McLab2(void);
       ~cboard_McLab2(void);
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
-      String GetSupportedDevices(void){return lxT("PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F4620,");};
-      String GetPictureFileName(void){return lxT("McLab2/board.png");};
-      String GetInputMapFile(void){return lxT("McLab2/input.map");};
-      String GetOutputMapFile(void){return lxT("McLab2/output.map");};
+      lxString GetSupportedDevices(void){return lxT("PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F4620,");};
+      lxString GetPictureFileName(void){return lxT("McLab2/board.png");};
+      lxString GetInputMapFile(void){return lxT("McLab2/input.map");};
+      lxString GetOutputMapFile(void){return lxT("McLab2/output.map");};
       void Reset(void);
       void MDumpMemory(const char * mfname);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);

@@ -41,9 +41,9 @@ class cboard_Breadboard:public board_picsim, public board_simavr
       int ptype;
       lxBitmap * micbmp;
    public:
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       int DebugInit(int dtyppe); 
-      String GetDebugName(void);
+      lxString GetDebugName(void);
       void DebugLoop(void);
       int CpuInitialized(void);
       void MSetSerial(const char * port);
@@ -55,7 +55,7 @@ class cboard_Breadboard:public board_picsim, public board_simavr
       float MGetFreq(void);
       float MGetInstClock(void);
       int MGetPinCount(void);
-      String MGetPinName(int pin);
+      lxString MGetPinName(int pin);
       void MSetPin(int pin, unsigned char value);
       void MSetPinDOV(int pin, unsigned char ovalue);
       void MSetAPin(int pin, float value);
@@ -88,16 +88,16 @@ class cboard_Breadboard:public board_picsim, public board_simavr
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
 #ifdef _EXPERIMENTAL_      
-      String GetSupportedDevices(void){return lxT("atmega328p,atmega2560,PIC16F18324,PIC16F18855,PIC16F1619,PIC16F1788,PIC16F1789,PIC16F1939,PIC16F628A,PIC16F648A,PIC16F84A,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,PIC18F27K40,PIC18F47K40,");};
+      lxString GetSupportedDevices(void){return lxT("atmega328p,atmega2560,PIC16F18324,PIC16F18855,PIC16F1619,PIC16F1788,PIC16F1789,PIC16F1939,PIC16F628A,PIC16F648A,PIC16F84A,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,PIC18F27K40,PIC18F47K40,");};
 #else
-      String GetSupportedDevices(void){return lxT("atmega328p,PIC16F628A,PIC16F648A,PIC16F84A,PIC16F777,PIC16F877A,PIC18F452,PIC18F4550,PIC18F4620,");};
+      lxString GetSupportedDevices(void){return lxT("atmega328p,PIC16F628A,PIC16F648A,PIC16F84A,PIC16F777,PIC16F877A,PIC18F452,PIC18F4550,PIC18F4620,");};
 #endif      
       //Return the filename of board picture 
-      String GetPictureFileName(void){return lxT("Breadboard/board.png");};
+      lxString GetPictureFileName(void){return lxT("Breadboard/board.png");};
       //Return the filename of board picture input map 
-      String GetInputMapFile(void){return lxT("Breadboard/input.map");};
+      lxString GetInputMapFile(void){return lxT("Breadboard/input.map");};
       //Return the filename of board picture output map 
-      String GetOutputMapFile(void){return lxT("Breadboard/output.map");};
+      lxString GetOutputMapFile(void){return lxT("Breadboard/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

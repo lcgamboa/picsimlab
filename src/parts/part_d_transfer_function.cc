@@ -320,7 +320,7 @@ cpart_dtfunc::get_out_id(char * name)
  return 1;
 };
 
-String
+lxString
 cpart_dtfunc::WritePreferences(void)
 {
  char prefs[256];
@@ -336,7 +336,7 @@ cpart_dtfunc::WritePreferences(void)
 }
 
 void
-cpart_dtfunc::ReadPreferences(String value)
+cpart_dtfunc::ReadPreferences(lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%f,%f,%f,%f,%f,%i,%i,%f,%f,%f,%f,%f,%f,%f,%f", &input_pin, &output_pin,
          &sample, &in_gain, &in_off, &out_gain, &out_off, &ordern, &orderd,
@@ -348,8 +348,8 @@ cpart_dtfunc::ReadPreferences(String value)
 void
 cpart_dtfunc::ConfigurePropertiesWindow(CPWindow * WProp)
 {
- String Items = Window5.GetPinsNames ();
- String spin;
+ lxString Items = Window5.GetPinsNames ();
+ lxString spin;
  char buff[20];
  char eq[200];
 

@@ -96,7 +96,7 @@ void
 cpart_tempsys::Draw(void)
 {
  int i;
- String str;
+ lxString str;
 
  const picpin * ppins = Window5.GetPinsValues ();
 
@@ -247,7 +247,7 @@ cpart_tempsys::get_out_id(char * name)
  return 1;
 };
 
-String
+lxString
 cpart_tempsys::WritePreferences(void)
 {
  char prefs[256];
@@ -258,7 +258,7 @@ cpart_tempsys::WritePreferences(void)
 }
 
 void
-cpart_tempsys::ReadPreferences(String value)
+cpart_tempsys::ReadPreferences(lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3]);
 }
@@ -266,8 +266,8 @@ cpart_tempsys::ReadPreferences(String value)
 void
 cpart_tempsys::ConfigurePropertiesWindow(CPWindow * WProp)
 {
- String Items = Window5.GetPinsNames ();
- String spin;
+ lxString Items = Window5.GetPinsNames ();
+ lxString spin;
 
  ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)

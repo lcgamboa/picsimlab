@@ -33,21 +33,21 @@
 class cpart_LCD_pcf8833:public part
 {
    public:
-      String GetName(void){return lxT("LCD pcf8833");};
-      String GetHelpURL(void){return lxT("LCD_pcf8833.html");};
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
+      lxString GetName(void){return lxT("LCD pcf8833");};
+      lxString GetHelpURL(void){return lxT("LCD_pcf8833.html");};
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_LCD_pcf8833(unsigned x, unsigned y);
       ~cpart_LCD_pcf8833(void);
       void Draw(void);
       void Process(void);
-      String GetPictureFileName(void){return lxT("LCD_pcf8833/LCD_pcf8833.png");};
-      String GetInputMapFile(void){return lxT("LCD_pcf8833/LCD_pcf8833_i.map");};
-      String GetOutputMapFile(void){return lxT("LCD_pcf8833/LCD_pcf8833_o.map");};
-      String GetPropertiesWindowFile(void){return lxT("LCD_pcf8833/LCD_pcf8833.lxrad");};
+      lxString GetPictureFileName(void){return lxT("LCD_pcf8833/LCD_pcf8833.png");};
+      lxString GetInputMapFile(void){return lxT("LCD_pcf8833/LCD_pcf8833_i.map");};
+      lxString GetOutputMapFile(void){return lxT("LCD_pcf8833/LCD_pcf8833_o.map");};
+      lxString GetPropertiesWindowFile(void){return lxT("LCD_pcf8833/LCD_pcf8833.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
-      String WritePreferences(void);
-      void ReadPreferences(String value);
+      lxString WritePreferences(void);
+      void ReadPreferences(lxString value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
     private:

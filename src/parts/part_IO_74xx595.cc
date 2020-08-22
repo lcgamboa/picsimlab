@@ -213,7 +213,7 @@ cpart_IO_74xx595::get_out_id(char * name)
  return 1;
 };
 
-String
+lxString
 cpart_IO_74xx595::WritePreferences(void)
 {
  char prefs[256];
@@ -224,7 +224,7 @@ cpart_IO_74xx595::WritePreferences(void)
 }
 
 void
-cpart_IO_74xx595::ReadPreferences(String value)
+cpart_IO_74xx595::ReadPreferences(lxString value)
 {
  unsigned char outp;
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &outp);
@@ -254,17 +254,17 @@ cpart_IO_74xx595::ReadPreferences(String value)
 void
 cpart_IO_74xx595::ConfigurePropertiesWindow(CPWindow * WProp)
 {
- String Items = Window5.GetPinsNames ();
- String spin;
+ lxString Items = Window5.GetPinsNames ();
+ lxString spin;
 
  for (int i = 0; i < 16; i++)
   {
-   String value = "";
+   lxString value = "";
 
    int pinv = pin_values[i][0];
    if (pinv > 12)
     {
-     value = lxT ("          ") + String (pin_values[i]);
+     value = lxT ("          ") + lxString (pin_values[i]);
     }
    else if (pinv >= 4)
     {

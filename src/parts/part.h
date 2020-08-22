@@ -40,17 +40,17 @@ class part
      /**
      * @brief  Return the name of part
      */ 
-      virtual String GetName(void)=0; 
+      virtual lxString GetName(void)=0; 
       
      /**
      * @brief  Return the help url of part
      */ 
-      virtual String GetHelpURL(void)=0; 
+      virtual lxString GetHelpURL(void)=0; 
       
      /**
      * @brief  Return the about information of part
      */ 
-      virtual String GetAboutInfo(void)=0;   
+      virtual lxString GetAboutInfo(void)=0;   
            
      /**
      * @brief  Called ever 100ms to draw part
@@ -75,22 +75,22 @@ class part
      /**
      * @brief  Return the filename of part picture
      */ 
-      virtual String GetPictureFileName(void)=0;  
+      virtual lxString GetPictureFileName(void)=0;  
                       
      /**
      * @brief  Return the filename of part picture input map
      */ 
-      virtual String GetInputMapFile(void)=0;      
+      virtual lxString GetInputMapFile(void)=0;      
                       
      /**
      * @brief  Return the filename of part picture output map
      */ 
-      virtual String GetOutputMapFile(void)=0;     
+      virtual lxString GetOutputMapFile(void)=0;     
                       
      /**
      * @brief  Return the filename of properties window XML file
      */ 
-      virtual String GetPropertiesWindowFile(void)=0; 
+      virtual lxString GetPropertiesWindowFile(void)=0; 
                       
      /**
      * @brief  Reset part status
@@ -125,12 +125,12 @@ class part
      /**
      * @brief  Called to save part preferences in configuration file
      */ 
-      virtual String WritePreferences(void)=0;   
+      virtual lxString WritePreferences(void)=0;   
                       
      /**
      * @brief  Called whe configuration file load  preferences 
      */ 
-      virtual void ReadPreferences(String value)=0; 
+      virtual void ReadPreferences(lxString value)=0; 
                       
      /**
      * @brief  return the input ids numbers of names used in input map
@@ -155,7 +155,7 @@ class part
      /**
      * @brief  Used by properties window combos
      */ 
-      virtual void ComboChange(String value){}; 
+      virtual void ComboChange(lxString value){}; 
                       
      /**
      * @brief  Used by properties window filedialogs
@@ -236,12 +236,12 @@ class part
      /**
      * @brief  Read the Input Map
      */  
-     void ReadInputMap(String fname); 
+     void ReadInputMap(lxString fname); 
                      
      /**
      * @brief  Read the Output Map
      */ 
-     void ReadOutputMap(String fname);
+     void ReadOutputMap(lxString fname);
 };
 
 #endif	/* PART_H */

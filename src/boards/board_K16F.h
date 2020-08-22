@@ -49,15 +49,15 @@ class cboard_K16F:public board_picsim
      char mi2c_tmp_name[200];  
     
   public:
-      String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cboard_K16F(void);
       ~cboard_K16F(void);
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
-      String GetSupportedDevices(void){return lxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
-      String GetPictureFileName(void){return lxT("K16F/board.png");};
-      String GetInputMapFile(void){return lxT("K16F/input.map");};
-      String GetOutputMapFile(void){return lxT("K16F/output.map");};
+      lxString GetSupportedDevices(void){return lxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
+      lxString GetPictureFileName(void){return lxT("K16F/board.png");};
+      lxString GetInputMapFile(void){return lxT("K16F/input.map");};
+      lxString GetOutputMapFile(void){return lxT("K16F/output.map");};
       void Reset(void);
       void MDumpMemory(const char * mfname);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);

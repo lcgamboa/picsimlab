@@ -141,7 +141,7 @@ CPWindow1::execute_cmd(char * cmd)
     
     printf("cmd=[%s]\n",cmd);
 #ifndef CONSOLE
-    text1.AddLine (lxT("cmd=[")+String(cmd)+lxT("]\n"));
+    text1.AddLine (lxT("cmd=[")+lxString(cmd)+lxT("]\n"));
 #endif        
     if(!strcmp(cmd,"AT"))
     {
@@ -655,7 +655,7 @@ CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
 #ifdef EXT_BROWSER
  lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/espmsim/"));
 #else	
-  Window2.html1.SetLoadFile(String(lxT(_SHARE_))+lxT("docs/espmsim/espmsim.html"));  
+  Window2.html1.SetLoadFile(lxString(lxT(_SHARE_))+lxT("docs/espmsim/espmsim.html"));  
   Window2.Show();
 #endif  
 }
@@ -663,7 +663,7 @@ CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
 void
 CPWindow1::menu1_Help_About_EvMenuActive(CControl * control)
 {
- Message (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (lxT (_VERSION_)));
+ Message (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + lxString (lxT (_VERSION_)));
 }
 
 

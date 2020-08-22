@@ -280,11 +280,11 @@ CPWindow5::draw1_EvKeyboardRelease(CControl * control, const uint key, const uin
 }
 
 bool
-CPWindow5::SaveConfig(String fname)
+CPWindow5::SaveConfig(lxString fname)
 {
- String temp;
+ lxString temp;
 
- CStringList prefs;
+ lxStringList prefs;
  
  if (GetWin () == NULL)return 0;
  
@@ -303,12 +303,12 @@ CPWindow5::SaveConfig(String fname)
 }
 
 bool
-CPWindow5::LoadConfig(String fname)
+CPWindow5::LoadConfig(lxString fname)
 {
  char name[256];
  char temp[256];
  unsigned int x, y;
- CStringList prefs;
+ lxStringList prefs;
 
  pboard = Window1.GetBoard ();
 
@@ -521,7 +521,7 @@ CPWindow5::menu1_Help_Contents_EvMenuActive(CControl * control)
 void
 CPWindow5::menu1_Help_About_EvMenuActive(CControl * control)
 {
- Message_sz (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + String (lxT (_VERSION_)),400,200);
+ Message_sz (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + lxString (lxT (_VERSION_)),400,200);
 }
 
 void
@@ -561,7 +561,7 @@ CPWindow5::filedialog1_EvOnClose(int retId)
      if (lxFileExists (filedialog1.GetFileName ()))
       {
 
-       if (!Dialog (String ("Overwriting file: ") + basename (filedialog1.GetFileName ()) + "?"))
+       if (!Dialog (lxString ("Overwriting file: ") + basename (filedialog1.GetFileName ()) + "?"))
         return;
       }
      SaveConfig (filedialog1.GetFileName ());
@@ -601,11 +601,11 @@ CPWindow5::Get_i2c_bus(unsigned char pin)
   return 0;
 }
 
-String
+lxString
 CPWindow5::GetPinsNames(void)
 {
- String Items = "0  NC,";
- String spin;
+ lxString Items = "0  NC,";
+ lxString spin;
 
  for (int i = 1; i <= pboard->MGetPinCount (); i++)
   {
@@ -627,7 +627,7 @@ CPWindow5::GetPinsNames(void)
  return Items;
 }
 
-String
+lxString
 CPWindow5::GetPinName(unsigned char pin)
 {
  if (pin <= pboard->MGetPinCount ())
@@ -723,7 +723,7 @@ CPWindow5::SetAPin(unsigned char pin, float value)
 }
 
 unsigned char
-CPWindow5::RegisterIOpin(String pname, unsigned char pin)
+CPWindow5::RegisterIOpin(lxString pname, unsigned char pin)
 {
  unsigned char ppin = IOINIT;
 

@@ -34,7 +34,7 @@ class board_ucsim: virtual public board
   public:
       board_ucsim(void);
       int DebugInit(int dtyppe); 
-      String GetDebugName(void){return "uCsim";};
+      lxString GetDebugName(void){return "uCsim";};
       void DebugLoop(void);
       int CpuInitialized(void);
       void MSetSerial(const char * port);
@@ -46,7 +46,7 @@ class board_ucsim: virtual public board
       float MGetFreq(void);
       float MGetInstClock(void);
       int MGetPinCount(void);
-      String MGetPinName(int pin);
+      lxString MGetPinName(int pin);
       void MSetPin(int pin, unsigned char value);
       void MSetPinDOV(int pin, unsigned char ovalue);      
       void MSetAPin(int pin, float value);

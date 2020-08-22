@@ -187,7 +187,7 @@ cpart_MI2C_24CXXX::get_out_id(char * name)
  return 1;
 }
 
-String
+lxString
 cpart_MI2C_24CXXX::WritePreferences(void)
 {
  char prefs[256];
@@ -213,7 +213,7 @@ cpart_MI2C_24CXXX::WritePreferences(void)
 }
 
 void
-cpart_MI2C_24CXXX::ReadPreferences(String value)
+cpart_MI2C_24CXXX::ReadPreferences(lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%u,%s", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &kbits, f_mi2c_name);
 
@@ -242,8 +242,8 @@ cpart_MI2C_24CXXX::ReadPreferences(String value)
 void
 cpart_MI2C_24CXXX::ConfigurePropertiesWindow(CPWindow * WProp)
 {
- String Items = Window5.GetPinsNames ();
- String spin;
+ lxString Items = Window5.GetPinsNames ();
+ lxString spin;
 
  ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)
@@ -403,7 +403,7 @@ cpart_MI2C_24CXXX::EvMouseButtonPress(uint button, uint x, uint y, uint state)
          fclose (fout);
          #ifdef __EMSCRIPTEN__
    EM_ASM_({
-	   var filename=UTF8ToString($0);
+	   var filename=UTF8TolxString($0);
            var buf = FS.readFile(filename);
            var blob = new Blob([buf],  {"type" : "application/octet-stream" });
            var text = URL.createObjectURL(blob);
@@ -446,7 +446,7 @@ cpart_MI2C_24CXXX::filedialog_EvOnClose(int retId)
      if (lxFileExists (Window5.filedialog1.GetFileName ()))
       {
 
-       if (!Dialog (String ("Overwriting file: ") + basename (Window5.filedialog1.GetFileName ()) + "?"))
+       if (!Dialog (lxString ("Overwriting file: ") + basename (Window5.filedialog1.GetFileName ()) + "?"))
         return;
       }
 

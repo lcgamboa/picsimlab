@@ -45,9 +45,9 @@ char * serial_list(void);
 void
 CPWindow3::_EvOnCreate(CControl * control)
 {
- combo1.SetText (String::FromAscii (SERIALDEVICE));
+ combo1.SetText (lxString::FromAscii (SERIALDEVICE));
 #ifdef _USE_PICSTARTP_  
- combo2.SetText (String::FromAscii (PROGDEVICE));
+ combo2.SetText (lxString::FromAscii (PROGDEVICE));
  combo2.SetVisible (true);
  label2.SetVisible (true);
 #else  
@@ -95,7 +95,7 @@ CPWindow3::_EvOnShow(CControl * control)
 
  if (resp)
   {
-   String temp;
+   lxString temp;
    temp = combo1.GetText ();
    combo1.SetItems (resp);
    combo1.SetText (temp);
