@@ -55,7 +55,7 @@
 #define NSTEPKF        40.0      //Freq constant 4.0*timer_freq
 #define DEFAULTJS       100      //IO refresh rate
 
-#define MAX_MIC 20
+#define MAX_MIC 140
 extern char SERIALDEVICE[100];
 
 #include <lxrad.h>

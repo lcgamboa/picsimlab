@@ -124,7 +124,7 @@ board_simavr::pins_reset(void)
 void
 avr_callback_sleep_raw_(avr_t *avr, avr_cycle_count_t how_long) { }
 
-const unsigned char AVR_PORTS[12] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'};
+static const unsigned char AVR_PORTS[12] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'};
 
 int
 board_simavr::MInit(const char * processor, const char * fname, float freq)

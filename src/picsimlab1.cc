@@ -481,6 +481,12 @@ CPWindow1::Configure(CControl * control, const char * home)
    MMicro[dc].SetVisible (true);
    sdev = sdev.substr (f + 1, sdev.size () - f - 1);
    dc++;
+
+   if (dc >= MAX_MIC)
+    {
+     printf ("PICSimLab: microcontroller menu only support %i entries!\n",MAX_MIC);
+     exit (-1);
+    }
   }
 
 

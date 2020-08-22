@@ -234,7 +234,8 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
 #define wxMSW_CONV_LPTSTR(s) const_cast<wxChar *>(wxMSW_CONV_LPCTSTR(s))
 #define wxMSW_CONV_LPARAM(s) reinterpret_cast<LPARAM>(wxMSW_CONV_LPCTSTR(s))
 
- wxExecute (Window1.GetSharePath () + lxT ("/../") + cmd, wxEXEC_MAKE_GROUP_LEADER | wxEXEC_SHOW_CONSOLE | wxEXEC_ASYNC);
+ //wxExecute (Window1.GetSharePath () + lxT ("/../") + cmd, wxEXEC_MAKE_GROUP_LEADER | wxEXEC_SHOW_CONSOLE | wxEXEC_ASYNC);
+ wxExecute (Window1.GetSharePath () + lxT ("/../") + cmd, wxEXEC_MAKE_GROUP_LEADER | wxEXEC_ASYNC);
  /*
  STARTUPINFO info = {sizeof (info)};
  PROCESS_INFORMATION processInfo;

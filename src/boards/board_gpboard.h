@@ -23,36 +23,36 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_uCboard_H
-#define	BOARD_uCboard_H
+#ifndef BOARD_gpboard_H
+#define	BOARD_gpboard_H
 
 #include<lxrad.h>
 
-#include "board_ucsim.h"
+#include "board_gpsim.h"
 
 //new board class must be derived from board class defined in board.h
-class cboard_uCboard:public board_ucsim
+class cboard_gpboard:public board_gpsim
 {
    private:
-       lxBitmap * micbmp;       
+       lxBitmap * micbmp;   
    public:
       String GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       //Constructor called once on board creation 
-      cboard_uCboard(void);
+      cboard_gpboard(void);
       //Destructor called once on board destruction 
-      ~cboard_uCboard(void); 
+      ~cboard_gpboard(void); 
       //Called ever 100ms to draw board
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       int MInit(const char * processor, const char * fname, float freq);
       //Return a list of board supported microcontrollers
-      String GetSupportedDevices(void){return lxT("C51,STM8S103,Z80,");};
+      String GetSupportedDevices(void){return supported_devices;};
       //Return the filename of board picture 
-      String GetPictureFileName(void){return lxT("uCboard/board.png");};
+      String GetPictureFileName(void){return lxT("gpboard/board.png");};
       //Return the filename of board picture input map 
-      String GetInputMapFile(void){return lxT("uCboard/input.map");};
+      String GetInputMapFile(void){return lxT("gpboard/input.map");};
       //Return the filename of board picture output map 
-      String GetOutputMapFile(void){return lxT("uCboard/output.map");};
+      String GetOutputMapFile(void){return lxT("gpboard/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board
@@ -77,5 +77,5 @@ class cboard_uCboard:public board_ucsim
 };
 
 
-#endif	/* BOARD_uCboard_H */
+#endif	/* BOARD_gpboard_H */
 

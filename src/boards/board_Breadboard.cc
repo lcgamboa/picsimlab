@@ -618,7 +618,7 @@ cboard_Breadboard::MInit(const char * processor, const char * fname, float freq)
  switch (MGetPinCount ())
   {
   case 8:
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic08.png"));
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic8.png"));
    break;
   case 14:
    image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic14.png"));

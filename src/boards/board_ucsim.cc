@@ -56,7 +56,7 @@ static const char pinnames[3][40][10] = {
 };
 
 
-const unsigned char UCSIM_PORTS[5] = {0, 1, 2, 3, 0xFF};
+static const unsigned char UCSIM_PORTS[5] = {0, 1, 2, 3, 0xFF};
 
 board_ucsim::board_ucsim(void)
 {
@@ -283,7 +283,7 @@ board_ucsim::MGetPinsValues(void)
 void
 board_ucsim::MStep(void)
 {
- unsigned short p[4];
+ volatile unsigned short p[4];
 
  ucsim_step ();
 
@@ -291,7 +291,7 @@ board_ucsim::MStep(void)
  p[1] = ucsim_get_port (1);
  p[2] = ucsim_get_port (2);
  p[3] = ucsim_get_port (3);
-
+ 
  for (int i = 0; i < MGetPinCount (); i++)
   {
    if (*pins[i].port < 4)
@@ -303,7 +303,7 @@ board_ucsim::MStep(void)
       }
     }
   }
-
+     
 }
 
 void
