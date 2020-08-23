@@ -34,4 +34,4 @@ override CFLAGS+= $(EFLAGS) -DEXT_BROWSER_EXAMPLES -DLEGACY081
 
 
 boards/bridge_gpsim.o: boards/bridge_gpsim.c
-	$(CC) $(CFLAGS)  `pkg-config --cflags glib-2.0`  boards/bridge_gpsim.c  -c -o boards/bridge_gpsim.o 
+	$(CC) $(CFLAGS)  `$(TOOL_PREFIX)pkg-config --cflags glib-2.0`  boards/bridge_gpsim.c  -c -o boards/bridge_gpsim.o 

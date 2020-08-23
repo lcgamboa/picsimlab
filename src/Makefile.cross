@@ -1,8 +1,12 @@
 include Makefile.Common
 
-CC = x86_64-w64-mingw32-g++
-WINDRES =  x86_64-w64-mingw32-windres  
-STRIP =  x86_64-w64-mingw32-strip  
+
+TOOL_PREFIX=x86_64-w64-mingw32-
+CC = $(TOOL_PREFIX)g++
+WINDRES =  $(TOOL_PREFIX)windres  
+STRIP =  $(TOOL_PREFIX)strip  
+
+
 
 override CFLAGS+= -Wall -g -O3 -D_WIN_ -I../dev_w64/include -I../dev_w64/include/lxrad -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  
 override CFLAGS+= -DEXT_BROWSER
