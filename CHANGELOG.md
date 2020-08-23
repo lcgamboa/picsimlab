@@ -2,6 +2,8 @@
 
 ### New
 
+* Initial support to PIC microcontrollers of gpsim as backend simulator. [lcgamboa]
+
 * Support for selecting board, processor and files on the command line. [lcgamboa]
 
 * Added support to boards and parts help link and about information. [lcgamboa]
@@ -53,6 +55,8 @@
 * Board registartion improved. [lcgamboa]
 
 ### Fix
+
+* Added missing two phase excitation on step motor part. [lcgamboa]
 
 * Fixed the lose of parts on spare part window when open new pzw file. [lcgamboa]
 

@@ -2,8 +2,14 @@
 # PICSimLab - PIC Simulator Laboratory
 
 PICSimLab is a realtime emulator of development boards with integrated MPLABX/avr-gdb debugger. 
-PICSimLab supports some picsim microcontrollers and some simavr microcontrollers.
-PICSimLab have integration with  MPLABX/Arduino IDE for programming the boards microcontrollers.
+PICSimLab supports some [picsim](https://github.com/lcgamboa/picsim) microcontrollers and 
+some [simavr](https://github.com/buserror/simavr) microcontrollers. 
+PICSimLab have integration with MPLABX/Arduino IDE for programming the boards microcontrollers.
+
+The experimental version supports [uCsim](http://mazsola.iit.uni-miskolc.hu/~drdani/embedded/ucsim/), 
+[gpsim](http://gpsim.sourceforge.net/) and [qemu-stm32](http://beckus.github.io/qemu_stm32/) simulators
+in addition to the stable ones.
+
 
 ![PICsimLab](docs/screenshot.png?raw=true "PICsimLab")
 

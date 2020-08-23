@@ -4,6 +4,9 @@ var hierarchy =
     [ "avr_gdb_t", "structavr__gdb__t.html", null ],
     [ "avr_gdb_watchpoints_t", "structavr__gdb__watchpoints__t.html", null ],
     [ "board", "classboard.html", [
+      [ "board_gpsim", "classboard__gpsim.html", [
+        [ "cboard_gpboard", "classcboard__gpboard.html", null ]
+      ] ],
       [ "board_picsim", "classboard__picsim.html", [
         [ "cboard_Breadboard", "classcboard___breadboard.html", null ],
         [ "cboard_Curiosity", "classcboard___curiosity.html", null ],

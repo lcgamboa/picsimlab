@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//en">
+
+<!--Converted with LaTeX2HTML 2020.2 (Released July 1, 2020) -->
+<HTML lang="en">
+<HEAD>
+<TITLE>avr-gdb Debug (simavr) </TITLE>
+<META NAME="description" CONTENT="avr-gdb Debug (simavr) ">
+<META NAME="keywords" CONTENT="picsimlab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2020.2">
+
+<LINK REL="STYLESHEET" HREF="picsimlab.css">
+
+<LINK REL="next" HREF="arm_gdb_Debug_qemu_stm32.html">
+<LINK REL="previous" HREF="Arduino_IDE_Integration_sim.html">
+<LINK REL="next" HREF="arm_gdb_Debug_qemu_stm32.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A
+ HREF="arm_gdb_Debug_qemu_stm32.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="English_Manual.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="Arduino_IDE_Integration_sim.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="arm_gdb_Debug_qemu_stm32.html">arm-gdb Debug (qemu-stm32)</A>
+<B> Up:</B> <A
+ HREF="English_Manual.html">English Manual</A>
+<B> Previous:</B> <A
+ HREF="Arduino_IDE_Integration_sim.html">Arduino IDE Integration (simavr)</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A ID="SECTION01800000000000000000"></A><A ID="gdbavr"></A>
+<BR>
+avr-gdb Debug (simavr) 
+</H1>
+
+<P>
+With debug support enabled you can use avr-gdb to debug the code used in the simulator. 
+ Use the configuration window to choose between MDB (MPLABX) or GDB to debug AVR microcontrollers. 
+
+<P>
+Use avr-gdb with the .elf file as the parameter:
+ <PRE>
+ avr-gdb compiled_file.elf
+</PRE>
+ and the command below to connect (1234 is the default port):
+ <PRE>
+ target remote localhost:1234
+</PRE>
+
+<P>
+Graphic debug mode can be made using <A ID="tex2html52"
+  HREF="https://www.eclipse.org/">eclipse IDE</A>
+with <A ID="tex2html53"
+  HREF="https://eclipse.baeyens.it/">Sloeber Arduino plugin</A>.
+
+<P>
+<BR><HR>
+
+</BODY>
+</HTML>
