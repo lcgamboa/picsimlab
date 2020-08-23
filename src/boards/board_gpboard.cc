@@ -84,7 +84,6 @@ cboard_gpboard::cboard_gpboard(void)
  lxImage image;
  image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.png"));
  micbmp = new lxBitmap (image, &Window1);
-#
  serialfd = INVALID_HANDLE_VALUE;
 }
 

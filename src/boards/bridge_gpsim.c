@@ -1,5 +1,4 @@
 
-
 #include"bridge_gpsim.h"
 
 #include <gpsim/sim_context.h>
@@ -23,8 +22,8 @@ static pic_processor *gpic;
 int
 bridge_gpsim_init(const char * processor, const char *fileName, float freq)
 {
- initialize_gpsim_core ();
- initialization_is_complete ();
+ //initialize_gpsim_core ();
+ //initialization_is_complete ();
  Processor *tempProc = 0l;
  CSimulationContext::GetContext ()->LoadProgram (fileName, processor, &tempProc, NULL);
  gpic = dynamic_cast<pic_processor*> (tempProc);
@@ -95,7 +94,14 @@ void
 bridge_gpsim_end(void)
 {
  CSimulationContext::GetContext ()->Clear ();
- simulation_cleanup ();
+ //simulation_cleanup ();
+ //Ugly hack to permit gpsim restart
+ //gpsim don't support restart yet
+ //https://sourceforge.net/p/gpsim/bugs/163/
+ for(int i=0;i< 1000;i++)
+  {
+    get_interface().remove_interface (i);
+  }
 }
 
 char *
