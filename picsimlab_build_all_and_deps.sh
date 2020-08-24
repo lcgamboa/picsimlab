@@ -21,7 +21,7 @@ git clone https://github.com/lcgamboa/lxrad.git
 git clone https://github.com/lcgamboa/tty0tty.git
 git clone https://github.com/lcgamboa/simavr.git
 if [[ -n "$BUILD_EXPERIMETAL" ]]; then
-cl sudo apt-get -y install bison++ python libglib2.0-dev libpixman-1-dev libfdt-dev
+cl sudo apt-get -y install bison++ python libglib2.0-dev libpixman-1-dev libfdt-dev gpsim-dev gpsim
 git clone https://github.com/lcgamboa/uCsim_picsimlab.git
 git clone https://github.com/lcgamboa/qemu_stm32.git
 fi	
