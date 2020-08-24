@@ -74,14 +74,37 @@ bridge_gpsim_get_pin_dir(int pin)
 void
 bridge_gpsim_set_pin_value(int pin, unsigned char value)
 {
- if (value)
+ IOPIN *iopin = gpic->get_pin (pin);
+
+ char cPinState = iopin->getForcedDrivenState ();
+
+ switch (cPinState)
   {
-   gpic->package->get_pin (1)->setDrivingState (true);
+  case '0':
+  case 'Z':
+  case 'X':
+  case '1':
+   if (value)
+    {
+     iopin->forceDrivenState ('1');
+     iopin->putState (true);
+    }
+   else
+    {
+     iopin->forceDrivenState ('0');
+     iopin->putState (false);
+    }
+   break;
+  case 'W':
+   if (!value)
+    iopin->forceDrivenState ('w');
+   break;
+  case 'w':
+   if (value)
+    iopin->forceDrivenState ('W');
+   break;
   }
- else
-  {
-   gpic->package->get_pin (1)->setDrivingState (false);
-  }
+
 }
 
 void
@@ -98,9 +121,9 @@ bridge_gpsim_end(void)
  //Ugly hack to permit gpsim restart
  //gpsim don't support restart yet
  //https://sourceforge.net/p/gpsim/bugs/163/
- for(int i=0;i< 1000;i++)
+ for (int i = 0; i < 1000; i++)
   {
-    get_interface().remove_interface (i);
+   get_interface ().remove_interface (i);
   }
 }
 
@@ -126,14 +149,19 @@ bridge_gpsim_get_processor_list(char * buff, unsigned int size)
  return buff;
 }
 
-static int write_hex(unsigned char * mem, unsigned int size, const char * fname);
+static int
+write_hex(unsigned char * mem, unsigned int size,
+          unsigned short * config, unsigned int configsize, unsigned int configaddr,
+          const char * fname);
 
 int
 bridge_gpsim_dump_memory(const char * fname)
 {
  unsigned char * mem;
+ unsigned short * config;
  unsigned short val;
  unsigned int memsize = gpic->program_memory_size ()*2;
+ unsigned int configsize = gpic->getConfigMemory ()->getnConfigWords ();
 
  mem = (unsigned char *) malloc (memsize);
 
@@ -141,17 +169,29 @@ bridge_gpsim_dump_memory(const char * fname)
   {
    val = gpic->program_memory[i / 2]->get_value ();
    mem[i + 1] = (val & 0xFF00) >> 8;
-   mem[i    ] = (val & 0x00FF);
+   mem[i ] = (val & 0x00FF);
   }
 
- int ret = write_hex (mem, memsize, fname);
+ config = (unsigned short *) malloc (configsize * 2);
+
+
+ for (unsigned int i = 0; i < configsize; i++)
+  {
+   config[i] = gpic->getConfigMemory ()->getConfigWord (i)->getVal ();
+  }
+
+
+ int ret = write_hex (mem, memsize, config, configsize, gpic->config_word_address (), fname);
 
  free (mem);
+ free (config);
  return ret;
 }
 
 static int
-write_hex(unsigned char * mem, unsigned int size, const char * fname)
+write_hex(unsigned char * mem, unsigned int size,
+          unsigned short * config, unsigned int configsize, unsigned int configaddr,
+          const char * fname)
 {
 
  FILE * fout;
@@ -210,6 +250,49 @@ write_hex(unsigned char * mem, unsigned int size, const char * fname)
      sum = (~sum) + 1;
      fprintf (fout, ":%02X%04X00%s%02X\n", nb, iaddr, values, sum);
     }
+
+
+   //config
+   nb = 0;
+   sum = 0;
+   for (i = 0; i < configsize; i++)
+    {
+
+     if (nb == 0)
+      {
+       iaddr = (configaddr * 2) + (i * 2);
+       sprintf (values, "%02X%02X", config[i]&0x00FF, (config[i]&0xFF00) >> 8);
+      }
+     else
+      {
+       sprintf (tmp, "%s%02X%02X", values, config[i]&0x00FF, (config[i]&0xFF00) >> 8);
+       strcpy (values, tmp);
+      }
+
+     nb += 2;
+     sum += config[i]&0x00FF;
+     sum += (config[i]&0xFF00) >> 8;
+     if (nb == 16)
+      {
+       sum += nb;
+       sum += (iaddr & 0x00FF);
+       sum += ((iaddr & 0xFF00) >> 8);
+       //printf("sum=%02X %02X %02X\n",sum,~sum,(~sum)+1);
+       sum = (~sum) + 1;
+       fprintf (fout, ":%02X%04X00%s%02X\n", nb, iaddr, values, sum);
+       nb = 0;
+       sum = 0;
+      }
+    }
+   if (nb)
+    {
+     sum += nb;
+     sum += (iaddr & 0x00FF);
+     sum += ((iaddr & 0xFF00) >> 8);
+     sum = (~sum) + 1;
+     fprintf (fout, ":%02X%04X00%s%02X\n", nb, iaddr, values, sum);
+    }
+
    //end
    fprintf (fout, ":00000001FF\n");
    fclose (fout);

@@ -178,7 +178,7 @@ board_gpsim::pins_reset(void)
 void
 board_gpsim::MSetPin(int pin, unsigned char value)
 {
- bridge_gpsim_set_pin_value (pin, value);
+ bridge_gpsim_set_pin_value (pin,  value);
 }
 
 void
