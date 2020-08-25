@@ -23,7 +23,7 @@ LIBS=  ../../picsim/src/libpicsim.a ../../lxrad/lib/liblxrad.a  \
        ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a\
       -lopenal `wx-config --libs` `wx-config --libs stc` 
 
-exp: LIBS+=../../uCsim_picsimlab/picsimlab/libucsim.a 
+exp: LIBS+=../../uCsim_picsimlab/picsimlab/libucsim.a -lgpsim
 
 #lxrad automatic generated block end, don't edit above!
 
