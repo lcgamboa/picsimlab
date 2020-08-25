@@ -2,6 +2,8 @@ include Makefile.Common
 
 CC = g++
 
+PKG_CONFIG= `pkg-config --cflags glib-2.0` 
+
 prefix=/usr
 
 RM= rm -f

@@ -3,7 +3,8 @@ include Makefile.Common
 TOOL_PREFIX=i686-w64-mingw32-
 CC = $(TOOL_PREFIX)g++
 WINDRES =  $(TOOL_PREFIX)windres  
-STRIP =  $(TOOL_PREFIX)strip  
+STRIP =  $(TOOL_PREFIX)strip 
+PKG_CONFIG= -mms-bitfields -I../dev_w32/include/glib-2.0 -I../dev_w32/lib/glib-2.0/include
 
 override CFLAGS+= -Wall -g -O3 -D_WIN_ -I../dev_w32/include -I../dev_w32/include/lxrad -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  
 override CFLAGS+= -DEXT_BROWSER
