@@ -167,7 +167,7 @@ board_gpsim::pins_reset(void)
    pins[p].ovalue = 0;
    pins[p].oavalue = 0;
   }
- /*TODO
+ /*TODO add VCC and GND pins
      pins[7 - 1].value = 0;
      pins[7 - 1].dir = PD_OUT;
      pins[9 - 1].value = 1;

@@ -584,7 +584,7 @@ board_qemu_stm32::pins_reset(void)
    pins[p].oavalue = 0;
   }
 
- //TODO
+ //TODO add VCC and GND pins
  //VCC pins
  //pins[6].value = 1;
  //pins[19].value = 1;

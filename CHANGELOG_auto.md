@@ -1,4 +1,4 @@
-## v0.8.2 (2020-08-25)
+## (unreleased)
 
 ### New
 
@@ -20,13 +20,17 @@
 
 * Initial support to STM32 Blue Pill board. [lcgamboa]
 
-* Support to uCsim 8051. [lcgamboa]
+* Initial support to STM32 Blue Pill board. [lcgamboa]
+
+* Support to ucsim 8051. [lcgamboa]
 
 * New preference tags and support to legacy workspace (before 0.8.2) [lcgamboa]
 
 * Support to save clock speed for each board. [lcgamboa]
 
-* Dynamic parts and boards registration for better modularization. [lcgamboa]
+* Dynamic parts registration for better modularization. [lcgamboa]
+
+* Dynamic board registration for better modularization. [lcgamboa]
 
 * Examples are moved to other repository. [lcgamboa]
 
@@ -129,71 +133,98 @@
 
 * Temperature system bug fixed. [lcgamboa]
 
+### Other
 
-## v0.0.8 (2019-12-24)
+* Merge branch 'new_features' of https://github.com/lcgamboa/picsimlab into new_features. [lcgamboa]
 
-### New
+* Lxaudio support updated. [lcgamboa]
 
-* Support to board0 
+* Read pin updated. [lcgamboa]
 
-* RTC and memory parts added
+* Refresh var removed. [lcgamboa]
 
-## v0.0.7 (2017-08-15)
+* Default Open Value for pin support added. [lcgamboa]
 
-### New
+* 16e intel hex read and write. [lcgamboa]
 
-* Support to ATMEGA328 using simavr
+* Tools remove chtml when use external browser. [lcgamboa]
 
-* Spare parts window added
+* Remove chtml when not used. [lcgamboa]
 
-* Oscilloscope device added
+* Emscripten JS support. [lcgamboa]
 
-## v0.0.6 (2015-10-14)
+* C++ compat. [lcgamboa]
 
-### New
+* Makefile updated. [lcgamboa]
 
-* MPLABX debugger support implemented
+* Docs updated. [lcgamboa]
 
-* Animated cooler implemented
+* Kicad files updated. [lcgamboa]
 
-* Serial baud rate emulation support
+* Makefile updated. [lcgamboa]
 
-* Reload last hex file implemented
+* Makefile cross win32 updated. [lcgamboa]
 
-* LCD cursor draw and LCD shift support added
+* Readme updated. [lcgamboa]
 
-* LCD full fontset added
+* Makefiles and scripts updated. [lcgamboa]
 
-* Sampled I/O for speed otimization 
+* Makefiles and scripts updated. [lcgamboa]
 
-* Board processor combo added
+* Makefiles and scripts updated. [lcgamboa]
 
-## v0.0.5 (2011-07-26)
+* Makefiles and scripts updated. [lcgamboa]
 
-### New
+* Makefiles updated. [lcgamboa]
 
-* psp support 18f
+* Package script updated. [lcgamboa]
 
-* Configure Window and psp memory limits
+* Makefile updated. [lcgamboa]
 
-* RTC DS1307 implemented
+* Debian info updated. [lcgamboa]
 
-* Max clock auto ajust 
+* Makefile updated. [lcgamboa]
 
-* Resize window implemented
+* Debian info updated. [lcgamboa]
 
-* Board 5 and 6 added
+* Script updated. [lcgamboa]
 
-* I2C Bus bug fixed
+* Debian control updated. [lcgamboa]
 
-* LCD 4 bit mode implemented
+* Debian package info. [lcgamboa]
 
-## v0.0.4 (2011-03-22)
+* Debian package info. [lcgamboa]
 
-### New
+* Package script. [lcgamboa]
 
-* memory save files 
+* Makefile updated. [lcgamboa]
 
-* LCD dot matrix implemented
+* Makefile updated. [lcgamboa]
+
+* Makefile updated. [lcgamboa]
+
+* Makefile updated. [lcgamboa]
+
+* Install script updated. [lcgamboa]
+
+* Install script updated. [lcgamboa]
+
+* Makefile updated. [lcgamboa]
+
+* Update to use only online help. [lcgamboa]
+
+* Mplabxd end free bug fixed. [lcgamboa]
+
+* Board 0 label centralized. [lcgamboa]
+
+* Board 0 label centralized. [lcgamboa]
+
+* Merge pull request #12 from TomasHubelbauer/patch-1. [lcgamboa]
+
+* Fix a typo in xquartz name. [Tomáš Hübelbauer]
+
+* Merge pull request #7 from TomasHubelbauer/patch-1. [lcgamboa]
+
+* Add instructions for running the prebuilt Windows executable in Wine. [Tomáš Hübelbauer]
 
 
