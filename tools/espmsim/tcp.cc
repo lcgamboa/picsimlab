@@ -12,9 +12,9 @@ const char* inet_ntop(int af, const void* src, char* dst, int cnt){
     memcpy(&(srcaddr.sin_addr), src, sizeof(srcaddr.sin_addr));
  
     srcaddr.sin_family = af;
-    if (WSAAddressTolxString((struct sockaddr*) &srcaddr, sizeof(struct sockaddr_in), 0, dst, (LPDWORD) &cnt) != 0) {
+    if (WSAAddressToString((struct sockaddr*) &srcaddr, sizeof(struct sockaddr_in), 0, dst, (LPDWORD) &cnt) != 0) {
         DWORD rv = WSAGetLastError();
-        printf("WSAAddressTolxString() : %ld\n",rv);
+        printf("WSAAddressToString() : %ld\n",rv);
         return NULL;
     }
     return dst;

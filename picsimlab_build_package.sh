@@ -2,7 +2,7 @@
 . VERSION
 
 rm -rf build_all/picsimlab*
-sudo apt-get install debmake debhelper
+sudo apt-get install debmake debhelper sed
 git archive --format=tar master > build_all/picsimlab-${VERSION}.tar 
 cd build_all
 tar  --delete -f picsimlab-${VERSION}.tar "docs/kicad"
@@ -25,6 +25,7 @@ if [[ -n "$1" ]]; then
 PWD=`pwd`	
 echo -e "\noverride_dh_auto_build:\n\tmake -j4 $1\n\n" >> debian/rules
 echo -e "\noverride_dh_auto_install:\n\tdh_auto_install\n\tinstall -p -D -m 0755 ../qemu_stm32/arm-softmmu/qemu-stm32 ${PWD}/debian/picsimlab/usr/bin/qemu-stm32\n\n" >> debian/rules
+sed -i 's/gtkwave/gtkwave,gpsim/g' debian/control
 fi
 cd ..
 tar cvfz  picsimlab-${VERSION}.tar.gz picsimlab-${VERSION}
