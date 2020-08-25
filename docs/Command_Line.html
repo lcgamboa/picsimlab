@@ -3,8 +3,8 @@
 <!--Converted with LaTeX2HTML 2020.2 (Released July 1, 2020) -->
 <HTML lang="en">
 <HEAD>
-<TITLE>Commands</TITLE>
-<META NAME="description" CONTENT="Commands">
+<TITLE>Command Line</TITLE>
+<META NAME="description" CONTENT="Command Line">
 <META NAME="keywords" CONTENT="picsimlab">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -15,7 +15,7 @@
 
 <LINK REL="STYLESHEET" HREF="picsimlab.css">
 
-<LINK REL="previous" HREF="Main_Window.html">
+<LINK REL="previous" HREF="Interaction_with_Board.html">
 <LINK REL="next" HREF="Boards.html">
 </HEAD>
 
@@ -29,7 +29,7 @@
  HREF="Simulator_Interface.html">
 <IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
 <A
- HREF="Main_Window.html">
+ HREF="Interaction_with_Board.html">
 <IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
 <BR>
 <B> Next:</B> <A
@@ -37,28 +37,29 @@
 <B> Up:</B> <A
  HREF="Simulator_Interface.html">Simulator Interface</A>
 <B> Previous:</B> <A
- HREF="Main_Window.html">Main Window</A>
+ HREF="Interaction_with_Board.html">Interaction with the Board</A>
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
 
-<H1><A ID="SECTION01220000000000000000">
-Commands</A>
+<H1><A ID="SECTION01230000000000000000">
+Command Line</A>
 </H1>
 
 <P>
-On the interface area of the board it is possible to interact in some ways:
+PICSimLab supports two command lines format:
 
 <P>
+One for load a PICSimLab Workspace file (.pzw) 
+<PRE>
+  picsimlab file.pzw
+</PRE>
 
-<UL>
-<LI>Click in ICSP connector to load an .hex file.
-</LI>
-<LI>Click in PWR button to ON/OFF the emulator..
-</LI>
-<LI>The buttons can be activated through mouse or keys 1, 2, 3 e 4.
-</LI>
-</UL>
+<P>
+And Other for load .hex files
+<PRE>
+  picsimlab boardname microcontroller [file.hex] [file.pcf]
+</PRE>
 
 <P>
 <BR><HR>
