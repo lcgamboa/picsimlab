@@ -605,7 +605,7 @@ cpart_VCD_Dump::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       case I_VIEW:
 #ifdef __EMSCRIPTEN__
    EM_ASM_({
-	   var filename=UTF8TolxString($0);
+	   var filename=UTF8ToString($0);
            var buf = FS.readFile(filename);
            var blob = new Blob([buf],  {"type" : "application/octet-stream" });
            var text = URL.createObjectURL(blob);
