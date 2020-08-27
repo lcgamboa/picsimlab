@@ -33,5 +33,5 @@ exp: $(OBJS_EXP) all
 override CFLAGS+= $(EFLAGS) -DEXT_BROWSER_EXAMPLES -DLEGACY081 
 
 
-boards/bridge_gpsim.o: boards/bridge_gpsim.c
-	$(CC) $(CFLAGS)  $(PKG_CONFIG)  boards/bridge_gpsim.c  -c -o boards/bridge_gpsim.o 
+boards/bridge_gpsim.o: boards/bridge_gpsim.cc
+	$(CC) $(CFLAGS)  $(PKG_CONFIG)  boards/bridge_gpsim.cc  -c -o boards/bridge_gpsim.o 
