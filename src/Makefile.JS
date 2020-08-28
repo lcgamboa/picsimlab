@@ -14,7 +14,9 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-override CFLAGS+=  -DEXT_BROWSER -DNO_DEBUG -DNO_TOOLS -Werror -Os -s DEMANGLE_SUPPORT=0 \
+override CFLAGS+= -Os
+#override CFLAGS+= -g
+override CFLAGS+=  -DEXT_BROWSER -DNO_DEBUG -DNO_TOOLS -Werror -s DEMANGLE_SUPPORT=0 \
         -s SAFE_HEAP=0 -s ASSERTIONS=0 -s TOTAL_MEMORY=128MB -s USE_SDL=2 -s USE_SDL_IMAGE=2 \
 	-s SDL2_IMAGE_FORMATS='["png","bmp"]' -s USE_SDL_TTF=2 --preload-file assets --preload-file home \
 	-D_VERSION_=\"${VERSION}\" -Wall -D_SHARE_=\"/assets/share/\" -I../../LXRAD_SDL2/include/ \
@@ -45,17 +47,25 @@ all: $(OBJS)
 %.o: %.cc
 	$(CC) -c $(CFLAGS) $< -o $@ 
 
-install: all
-	${MKDIR} ${sharedir}
-	$(CP) -dvf  ../share/picsimlab.desktop ${appdir} 
-	$(CP) -drvf ../share/* ${sharedir} 
-	$(CP) -drvf ../docs ${sharedir} 
-	$(CP) -dvf picsimlab ${execdir}
-	xdg-icon-resource install --context mimetypes --size 48 ../share/application-x-picsimlab-workspace.png application-x-picsimlab-workspace
-	xdg-mime install --mode system ../share/application-x-picsimlab-workspace.xml
-	xdg-mime default picsimlab.desktop application/x-picsimlab-workspace
-	update-mime-database /usr/share/mime &
-	update-desktop-database ${appdir} &
+
+JS_FILES=  emsc.js picsimlab_asmjs.js picsimlab.html picsimlab_mt.js  picsimlab.wasm \
+	picsimlab_asmjs.html  picsimlab.css picsimlab.js picsimlab_mt.wasm \
+	picsimlab_asmjs.html.mem picsimlab.data picsimlab_mt.html picsimlab_mt.worker.js
+
+
+JS_DIR= ../../lcgamboa.github.io/js/
+EXP_DIR= ../../lcgamboa.github.io/js_exp/
+
+install: 
+	cp -fv $(JS_FILES) $(JS_DIR)
+	sed -i 's/picsimlab_asmjs\.data/picsimlab\.data/g' $(JS_DIR)picsimlab_asmjs.js
+	sed -i 's/picsimlab_mt\.data/picsimlab\.data/g' $(JS_DIR)picsimlab_mt.js
+
+install_exp: 
+	cp -fv $(JS_FILES) $(EXP_DIR)
+	sed -i 's/picsimlab_asmjs\.data/picsimlab\.data/g' $(EXP_DIR)picsimlab_asmjs.js
+	sed -i 's/picsimlab_mt\.data/picsimlab\.data/g' $(EXP_DIR)picsimlab_mt.js
+
 
 uninstall:
 	$(RM) -drvf ${sharedir} 

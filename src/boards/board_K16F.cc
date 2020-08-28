@@ -524,7 +524,7 @@ cboard_K16F::EvMouseButtonPress(uint button, uint x, uint y, uint state)
          fclose (fout);
 #ifdef __EMSCRIPTEN__
    EM_ASM_({
-	   var filename=UTF8ToString($0);
+	   var filename=AsciiToString($0);
            var buf = FS.readFile(filename);
            var blob = new Blob([buf],  {"type" : "application/octet-stream" });
            var text = URL.createObjectURL(blob);

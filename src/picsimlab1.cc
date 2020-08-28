@@ -740,7 +740,7 @@ CPWindow1::filedialog1_EvOnClose(int retId)
    pboard->MDumpMemory (filedialog1.GetFileName ());
 #ifdef __EMSCRIPTEN__
    EM_ASM_ ({
-            var filename = UTF8ToString ($0);
+            var filename = AsciiToString ($0);
             var buf = FS.readFile (filename);
             var blob = new Blob ([buf],
              {
@@ -1338,7 +1338,7 @@ CPWindow1::filedialog2_EvOnClose(int retId)
 
 #ifdef __EMSCRIPTEN__
    EM_ASM_ ({
-            var filename = UTF8ToString ($0);
+            var filename = AsciiToString ($0);
             var buf = FS.readFile (filename);
             var blob = new Blob ([buf],
              {
