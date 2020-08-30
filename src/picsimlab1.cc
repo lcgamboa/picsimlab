@@ -1036,7 +1036,7 @@ CPWindow1::menu1_File_SaveWorkspace_EvMenuActive(CControl * control)
  filedialog2.SetType (lxFD_SAVE | lxFD_CHANGE_DIR);
 #ifdef __EMSCRIPTEN__
  filedialog2.SetDir("/tmp/");
- filedialog2.SetFileName("untitled.pwz");
+ filedialog2.SetFileName("untitled.pzw");
  filedialog2_EvOnClose(1);
 #else 
  filedialog2.Run ();
