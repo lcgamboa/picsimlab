@@ -15,13 +15,16 @@ execdir= ${prefix}/bin/
 #lxrad automatic generated block start, don't edit below!
 
 override CFLAGS+= -Os
-#override CFLAGS+= -g
-override CFLAGS+=  -DEXT_BROWSER -DNO_DEBUG -DNO_TOOLS -Werror -s DEMANGLE_SUPPORT=0 \
+#override CFLAGS+= -g4 --source-map-base -Werror
+override CFLAGS+=  -DEXT_BROWSER -DNO_DEBUG -DNO_TOOLS -s DEMANGLE_SUPPORT=0 \
         -s SAFE_HEAP=0 -s ASSERTIONS=0 -s TOTAL_MEMORY=128MB -s USE_SDL=2 -s USE_SDL_IMAGE=2 \
 	-s SDL2_IMAGE_FORMATS='["png","bmp"]' -s USE_SDL_TTF=2 --preload-file assets --preload-file home \
 	-D_VERSION_=\"${VERSION}\" -Wall -D_SHARE_=\"/assets/share/\" -I../../LXRAD_SDL2/include/ \
 	-I../../picsim/include/  -I../../ucsim-0.6/picsimlab/\
-	-I../../simavr/simavr/ -DEXT_BROWSER_EXAMPLES   
+	-I../../simavr/simavr/ -DEXT_BROWSER_EXAMPLES  \
+	-I../teste/glib_js/target/include  -I../teste/glib_js/target/include/glib-2.0 \
+	-I../teste/glib_js/target/lib/glib-2.0/include 
+
 override CFLAGS+= --pre-js load.js
 #	-s "BINARYEN_TRAP_MODE='clamp'" 
 override CFLAGS+= -s EXPORTED_FUNCTIONS='["_main","_file_ready","_lxrad_scale_up","_lxrad_scale_down"]' \
@@ -35,6 +38,8 @@ CFLAGS+= -D_NOTHREAD
 LIBS= ../../LXRAD_SDL2/lib/liblxrad_SDL2_js.a ../../picsim/src/libpicsim_js.a ../../simavr/simavr/obj-wasm32-unknown-emscripten/libsimavr.a
 LIBS+= ../../LXRAD_SDL2/teste/zlib-master/contrib/minizip/minizip.a
 LIBS+= ../../ucsim-0.6/picsimlab/libucsim.ajs
+LIBS+= ../teste/glib_js/target/lib/libgpsim.a
+LIBS+= ../teste/glib_js/target/lib/libglib-2.0.a
 
 #LIBS = `lxrad_SDL2-config --libs` -lpicsim -lsimavr -lelf
 

@@ -705,8 +705,12 @@ CPWindow1::_EvOnDestroy(CControl * control)
 void
 CPWindow1::menu1_File_LoadHex_EvMenuActive(CControl * control)
 {
+#ifdef __EMSCRIPTEN__
+   EM_ASM_ ({toggle_load_panel();});
+#else		   
  filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
  filedialog1.Run ();
+#endif 
 }
 
 void
@@ -714,7 +718,13 @@ CPWindow1::menu1_File_SaveHex_EvMenuActive(CControl * control)
 {
  pa = mcupwr;
  filedialog1.SetType (lxFD_SAVE | lxFD_CHANGE_DIR);
+#ifdef __EMSCRIPTEN__
+ filedialog1.SetDir("/tmp/");
+ filedialog1.SetFileName("untitled.hex");
+ filedialog1_EvOnClose(1);
+#else 
  filedialog1.Run ();
+#endif 
 }
 
 void
@@ -740,7 +750,7 @@ CPWindow1::filedialog1_EvOnClose(int retId)
    pboard->MDumpMemory (filedialog1.GetFileName ());
 #ifdef __EMSCRIPTEN__
    EM_ASM_ ({
-            var filename = AsciiToString ($0);
+            var filename = UTF8ToString ($0);
             var buf = FS.readFile (filename);
             var blob = new Blob ([buf],
              {
@@ -1024,7 +1034,13 @@ void
 CPWindow1::menu1_File_SaveWorkspace_EvMenuActive(CControl * control)
 {
  filedialog2.SetType (lxFD_SAVE | lxFD_CHANGE_DIR);
+#ifdef __EMSCRIPTEN__
+ filedialog2.SetDir("/tmp/");
+ filedialog2.SetFileName("untitled.pwz");
+ filedialog2_EvOnClose(1);
+#else 
  filedialog2.Run ();
+#endif 
 }
 
 //legacy format support before 0.8.2
@@ -1249,9 +1265,12 @@ CPWindow1::LoadWorkspace(lxString fnpzw)
 void
 CPWindow1::menu1_File_LoadWorkspace_EvMenuActive(CControl * control)
 {
+#ifdef __EMSCRIPTEN__
+   EM_ASM_ ({toggle_load_panel();});
+#else		   
  filedialog2.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
  filedialog2.Run ();
-
+#endif
 }
 
 void
@@ -1272,12 +1291,14 @@ CPWindow1::filedialog2_EvOnClose(int retId)
    char home[1024];
    char fname[1280];
 
+#ifndef __EMSCRIPTEN__
    if (lxFileExists (filedialog2.GetFileName ()))
     {
 
      if (!Dialog (lxString ("Overwriting file: ") + basename (filedialog2.GetFileName ()) + "?"))
       return;
     }
+#endif
 
    //write options
 
@@ -1338,7 +1359,7 @@ CPWindow1::filedialog2_EvOnClose(int retId)
 
 #ifdef __EMSCRIPTEN__
    EM_ASM_ ({
-            var filename = AsciiToString ($0);
+            var filename = UTF8ToString ($0);
             var buf = FS.readFile (filename);
             var blob = new Blob ([buf],
              {
@@ -1466,6 +1487,7 @@ extern "C"
    {
     printf ("Loading .pzw...\n");
     Window1.filedialog2.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
+    Window1.filedialog2.SetDir("/tmp/");
     Window1.filedialog2.SetFileName (fname);
     Window1.filedialog2_EvOnClose (1);
    }
@@ -1473,8 +1495,18 @@ extern "C"
    {
     printf ("Loading .hex...\n");
     Window1.filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
+    Window1.filedialog1.SetDir("/tmp/");
     Window1.filedialog1.SetFileName (fname);
     Window1.filedialog1_EvOnClose (1);
+   }
+  else if (strstr (fname, ".pcf"))
+   {
+     char buff[1024];
+     strncpy(buff,"/tmp/",1023);
+     strncat(buff,fname,1023);
+     printf ("Loading .pcf...\n");
+     Window5.LoadConfig (buff);
+     Window1.menu1_Modules_Spareparts_EvMenuActive(&Window1);
    }
   else
    {

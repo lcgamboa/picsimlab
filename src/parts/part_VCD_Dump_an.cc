@@ -454,7 +454,7 @@ cpart_VCD_Dump_an::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       case I_VIEW:
 #ifdef __EMSCRIPTEN__
        EM_ASM_ ({
-                var filename = AsciiToString ($0);
+                var filename = UTF8ToString ($0);
                 var buf = FS.readFile (filename);
                 var blob = new Blob ([buf],
                  {

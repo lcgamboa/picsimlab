@@ -31,6 +31,9 @@
 #include"picsimlab5.h"
 #include"picsimlab5_d.cc"
 
+#ifdef __EMSCRIPTEN__
+#include<emscripten.h>
+#endif
 
 CPWindow5 Window5;
 
@@ -285,9 +288,9 @@ CPWindow5::SaveConfig(lxString fname)
  lxString temp;
 
  lxStringList prefs;
- 
+
  if (GetWin () == NULL)return 0;
- 
+
  prefs.Clear ();
 
  temp.Printf ("scale,0,0:%f", scale);
@@ -396,10 +399,12 @@ CPWindow5::menu1_File_Newconfiguration_EvMenuActive(CControl * control)
 {
  if (partsc > 0)
   {
+#ifndef __EMSCRIPTEN__
    if (Dialog ("Save current configuration?"))
     {
      menu1_File_Saveconfiguration_EvMenuActive (control);
     }
+#endif   
    DeleteParts ();
   }
 }
@@ -409,15 +414,25 @@ CPWindow5::menu1_File_Saveconfiguration_EvMenuActive(CControl * control)
 {
  filedialog1.SetType (lxFD_SAVE | lxFD_CHANGE_DIR);
  fdtype = -1;
+#ifdef __EMSCRIPTEN__
+ filedialog1.SetDir ("/tmp/");
+ filedialog1.SetFileName ("untitled.pcf");
+ filedialog1_EvOnClose (1);
+#else 
  filedialog1.Run ();
+#endif 
 }
 
 void
 CPWindow5::menu1_File_Loadconfiguration_EvMenuActive(CControl * control)
 {
+#ifdef __EMSCRIPTEN__
+   EM_ASM_ ({toggle_load_panel();});
+#else	
  filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
  fdtype = -1;
  filedialog1.Run ();
+#endif 
 }
 
 void
@@ -496,15 +511,14 @@ CPWindow5::pmenu2_Delete_EvMenuActive(CControl * control)
 void
 CPWindow5::pmenu2_Help_EvMenuActive(CControl * control)
 {
- lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/")+parts[PartSelected]->GetHelpURL ());
+ lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/") + parts[PartSelected]->GetHelpURL ());
 }
 
 void
 CPWindow5::pmenu2_About_EvMenuActive(CControl * control)
 {
-  Message_sz (lxT("Part ")+parts[PartSelected]->GetName ()+lxT ("\nDeveloped by ") + parts[PartSelected]->GetAboutInfo (),400,200);
+ Message_sz (lxT ("Part ") + parts[PartSelected]->GetName () + lxT ("\nDeveloped by ") + parts[PartSelected]->GetAboutInfo (), 400, 200);
 }
-
 
 void
 CPWindow5::menu1_Help_Contents_EvMenuActive(CControl * control)
@@ -521,7 +535,7 @@ CPWindow5::menu1_Help_Contents_EvMenuActive(CControl * control)
 void
 CPWindow5::menu1_Help_About_EvMenuActive(CControl * control)
 {
- Message_sz (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + lxString (lxT (_VERSION_)),400,200);
+ Message_sz (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + lxString (lxT (_VERSION_)), 400, 200);
 }
 
 void
@@ -565,6 +579,28 @@ CPWindow5::filedialog1_EvOnClose(int retId)
         return;
       }
      SaveConfig (filedialog1.GetFileName ());
+#ifdef __EMSCRIPTEN__
+     EM_ASM_ ({
+              var filename = UTF8ToString ($0);
+              var buf = FS.readFile (filename);
+              var blob = new Blob ([buf],
+               {
+                "type" : "application/octet-stream" });
+              var text = URL.createObjectURL (blob);
+
+              var element = document.createElement ('a');
+              element.setAttribute ('href', text);
+              element.setAttribute ('download', filename);
+
+              element.style.display = 'none';
+              document.body.appendChild (element);
+
+              element.click ();
+
+              document.body.removeChild (element);
+              URL.revokeObjectURL (text);
+     }, filedialog1.GetFileName ().c_str ());
+#endif      
     }
 
    if ((filedialog1.GetType () == (lxFD_OPEN | lxFD_CHANGE_DIR)))
@@ -734,7 +770,7 @@ CPWindow5::RegisterIOpin(lxString pname, unsigned char pin)
 #ifdef LEGACY081
  else if (pin >= 70) //legacy
   {
-   ppin = pin;   
+   ppin = pin;
   }
 #endif
 

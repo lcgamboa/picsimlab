@@ -1,5 +1,5 @@
 /** helpers */
-function id(id) {
+function get_id(id) {
     return document.getElementById(id);
 }
 
@@ -37,7 +37,7 @@ var Module = {
         console.error(text);
     },
     canvas: (function() {
-        var canvas = id('canvas');
+        var canvas = get_id('canvas');
         canvas.addEventListener("webglcontextlost", function(e) { alert('FIXME: WebGL context lost, please reload the page'); e.preventDefault(); }, false);
         return canvas;
     })(),
@@ -63,7 +63,7 @@ var Module = {
             if (!text)
             { 
              spinnerElement.style.display = 'none';
-             var canvas = id('canvas');
+             var canvas = get_id('canvas');
              canvas.style.position= 'absolute';
              canvas.style.top='0px';
              canvas.style.left='0px';            
@@ -87,7 +87,7 @@ var Module = {
         // TODO: do not warn on ok events like simulating an infinite loop or exitStatus
         Module.setStatus('Exception thrown, see JavaScript console');
         spinnerElement.style.display = 'none';
-        id('canvas').style.top= '80px';
+        get_id('canvas').style.top= '80px';
         Module.setStatus = function(text) {
           if (text) Module.printErr('[post-exception status] ' + text);
         };
@@ -108,10 +108,10 @@ function callAsEventHandler(func_name) {
 // drag-n-drop functions
 function initDragAndDrop() {
     // add a drag'n'drop handler to the WebGL canvas
-    id('load_panel_container').addEventListener('dragenter', load_dragenter, false);
-    id('load_panel_container').addEventListener('dragleave', load_dragleave, false);
-    id('load_panel_container').addEventListener('dragover', load_dragover, false);
-    id('load_panel_container').addEventListener('drop', load_drop, false);
+    get_id('load_panel_container').addEventListener('dragenter', load_dragenter, false);
+    get_id('load_panel_container').addEventListener('dragleave', load_dragleave, false);
+    get_id('load_panel_container').addEventListener('dragover', load_dragover, false);
+    get_id('load_panel_container').addEventListener('drop', load_drop, false);
 }
 
 function load_dragenter(e) {
@@ -122,11 +122,11 @@ function load_dragenter(e) {
 function load_dragleave(e) {
     e.stopPropagation();
     e.preventDefault();
-    id('load_panel_container').classList.remove('highlight');
+    get_id('load_panel_container').classList.remove('highlight');
 }
 
 function load_dragover(e) {
-    id('load_panel_container').classList.add('highlight');
+    get_id('load_panel_container').classList.add('highlight');
     e.stopPropagation();
     e.preventDefault();
 }
@@ -134,7 +134,7 @@ function load_dragover(e) {
 function load_drop(e) {
     e.stopPropagation();
     e.preventDefault();
-    id('load_panel_container').classList.remove('highlight');
+    get_id('load_panel_container').classList.remove('highlight');
     toggle_load_panel();
     load_file(e.dataTransfer.files);
 }
@@ -161,7 +161,7 @@ function load_file(files) {
                     var res = Module.ccall('file_ready',  // C function name
                         null,
                         ['string'],  // name
-                        ['/tmp/'+file.name]);
+                        [file.name]);
                     if (res == 0) {
                         console.warn('file_ready failed!');
                     } 
@@ -180,21 +180,21 @@ function load_file(files) {
 
 // toggle the nav bar
 function nav_toggle() {
-    id('nav').classList.toggle('toggle');
+    get_id('nav').classList.toggle('toggle');
 }
 
 // show/hide panels
 
 function toggle_load_panel() {
-    id('load_panel').classList.toggle('hidden');
-    id('quickload_panel').classList.add('hidden');
-    id('systems_panel').classList.add('hidden');
-    id('load_panel_container').classList.remove('highlight');
+    get_id('load_panel').classList.toggle('hidden');
+    get_id('quickload_panel').classList.add('hidden');
+    get_id('systems_panel').classList.add('hidden');
+    get_id('load_panel_container').classList.remove('highlight');
 }
 
 
 function ui_open_filepicker() {
-    id('filepicker').click();
+    get_id('filepicker').click();
 }
 
 
