@@ -484,7 +484,7 @@ CPWindow1::Configure(CControl * control, const char * home)
 
    if (dc >= MAX_MIC)
     {
-     printf ("PICSimLab: microcontroller menu only support %i entries!\n",MAX_MIC);
+     printf ("PICSimLab: microcontroller menu only support %i entries!\n", MAX_MIC);
      exit (-1);
     }
   }
@@ -668,7 +668,15 @@ CPWindow1::_EvOnDestroy(CControl * control)
  saveprefs ("picsimlab_wprog", PROGDEVICE);
 #endif
 #endif
- saveprefs (lxT ("picsimlab_lpath"), PATH);
+
+ if (PATH.size () > 0)
+  {
+   saveprefs (lxT ("picsimlab_lpath"), PATH);
+  }
+ else
+  {
+   saveprefs (lxT ("picsimlab_lpath"), " ");
+  }
  saveprefs (lxT ("picsimlab_lfile"), FNAME);
 
  pboard->WritePreferences ();
@@ -706,8 +714,8 @@ void
 CPWindow1::menu1_File_LoadHex_EvMenuActive(CControl * control)
 {
 #ifdef __EMSCRIPTEN__
-   EM_ASM_ ({toggle_load_panel();});
-#else		   
+ EM_ASM_ ({toggle_load_panel ();});
+#else     
  filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
  filedialog1.Run ();
 #endif 
@@ -719,9 +727,9 @@ CPWindow1::menu1_File_SaveHex_EvMenuActive(CControl * control)
  pa = mcupwr;
  filedialog1.SetType (lxFD_SAVE | lxFD_CHANGE_DIR);
 #ifdef __EMSCRIPTEN__
- filedialog1.SetDir("/tmp/");
- filedialog1.SetFileName("untitled.hex");
- filedialog1_EvOnClose(1);
+ filedialog1.SetDir ("/tmp/");
+ filedialog1.SetFileName ("untitled.hex");
+ filedialog1_EvOnClose (1);
 #else 
  filedialog1.Run ();
 #endif 
@@ -1035,9 +1043,9 @@ CPWindow1::menu1_File_SaveWorkspace_EvMenuActive(CControl * control)
 {
  filedialog2.SetType (lxFD_SAVE | lxFD_CHANGE_DIR);
 #ifdef __EMSCRIPTEN__
- filedialog2.SetDir("/tmp/");
- filedialog2.SetFileName("untitled.pzw");
- filedialog2_EvOnClose(1);
+ filedialog2.SetDir ("/tmp/");
+ filedialog2.SetFileName ("untitled.pzw");
+ filedialog2_EvOnClose (1);
 #else 
  filedialog2.Run ();
 #endif 
@@ -1266,8 +1274,8 @@ void
 CPWindow1::menu1_File_LoadWorkspace_EvMenuActive(CControl * control)
 {
 #ifdef __EMSCRIPTEN__
-   EM_ASM_ ({toggle_load_panel();});
-#else		   
+ EM_ASM_ ({toggle_load_panel ();});
+#else     
  filedialog2.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
  filedialog2.Run ();
 #endif
@@ -1487,7 +1495,7 @@ extern "C"
    {
     printf ("Loading .pzw...\n");
     Window1.filedialog2.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
-    Window1.filedialog2.SetDir("/tmp/");
+    Window1.filedialog2.SetDir ("/tmp/");
     Window1.filedialog2.SetFileName (fname);
     Window1.filedialog2_EvOnClose (1);
    }
@@ -1495,18 +1503,18 @@ extern "C"
    {
     printf ("Loading .hex...\n");
     Window1.filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
-    Window1.filedialog1.SetDir("/tmp/");
+    Window1.filedialog1.SetDir ("/tmp/");
     Window1.filedialog1.SetFileName (fname);
     Window1.filedialog1_EvOnClose (1);
    }
   else if (strstr (fname, ".pcf"))
    {
-     char buff[1024];
-     strncpy(buff,"/tmp/",1023);
-     strncat(buff,fname,1023);
-     printf ("Loading .pcf...\n");
-     Window5.LoadConfig (buff);
-     Window1.menu1_Modules_Spareparts_EvMenuActive(&Window1);
+    char buff[1024];
+    strncpy (buff, "/tmp/", 1023);
+    strncat (buff, fname, 1023);
+    printf ("Loading .pcf...\n");
+    Window5.LoadConfig (buff);
+    Window1.menu1_Modules_Spareparts_EvMenuActive (&Window1);
    }
   else
    {
