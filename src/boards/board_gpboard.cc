@@ -401,36 +401,11 @@ cboard_gpboard::MInit(const char * processor, const char * fname, float freq)
 
  lxImage image;
 
- switch (MGetPinCount ())
+ if (image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic" + itoa (MGetPinCount ()) + ".png")))
   {
-  case 6:
    image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic6.png"));
-   break;  
-  case 8:
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic8.png"));
-   break;
-  case 14:
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic14.png"));
-   break;
-  case 18:
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic18.png"));
-   break;
-  case 20:
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic20.png"));
-   break;
-  case 28:
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic28.png"));
-   break;
-  case 40:
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.png"));
-   break;
-  case 100:
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic100.png"));
-   break;
-  default:
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.png"));
-   printf ("IC package with %i pins not found!\n", MGetPinCount ());
-   break;
+   printf ("picsimlab: IC package with %i pins not found!\n", MGetPinCount ());
+   printf ("picsimlab: %s not found!\n",(Window1.GetSharePath () + lxT ("boards/Common/ic" + itoa (MGetPinCount ()) + ".png")).c_str());
   }
 
  if (micbmp) delete micbmp;
