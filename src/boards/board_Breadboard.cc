@@ -616,11 +616,11 @@ cboard_Breadboard::MInit(const char * processor, const char * fname, float freq)
  lxImage image;
 
 
- if (image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic" + itoa (MGetPinCount ()) + ".png")))
+ if (!image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) +lxT(".png")))
   {
    image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic6.png"));
    printf ("picsimlab: IC package with %i pins not found!\n", MGetPinCount ());
-   printf ("picsimlab: %s not found!\n",(Window1.GetSharePath () + lxT ("boards/Common/ic" + itoa (MGetPinCount ()) + ".png")).c_str());
+   printf ("picsimlab: %s not found!\n",(const char *)(Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT(".png")).c_str());
   }
 
  if (micbmp) delete micbmp;
