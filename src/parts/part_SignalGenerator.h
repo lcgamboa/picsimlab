@@ -78,6 +78,7 @@ private:
     float freq;
     float ampl;
     unsigned int maxfreq;
+    unsigned char lastd;
 };
 
 

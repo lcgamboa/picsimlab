@@ -66,6 +66,7 @@ cpart_SignalGenerator::cpart_SignalGenerator(unsigned x, unsigned y)
  type = 0;
  ts = 0;
  maxfreq=1;
+ lastd= 2;
 }
 
 cpart_SignalGenerator::~cpart_SignalGenerator(void)
@@ -217,7 +218,13 @@ cpart_SignalGenerator::Process(void)
     }
 
    Window5.SetAPin (input_pins[0], v);
-
+   
+   unsigned char vald =  v > 2.5; 
+   if(vald != lastd)
+    {
+      lastd=vald;
+      Window5.SetPin (input_pins[0],vald);
+    }
    mcount = -1;
   }
 
