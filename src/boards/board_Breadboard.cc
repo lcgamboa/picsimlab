@@ -397,7 +397,7 @@ cboard_Breadboard::Run_CPU(void)
    //NSTEPJ = Window1.GetNSTEPJ (); //number of steps in 100ms
 
    //reset mean value
-   memset (alm, 0, 40 * sizeof (unsigned int));
+   memset (alm, 0, 100 * sizeof (unsigned int));
 
 
    //read pic.pins to a local variable to speed up 
