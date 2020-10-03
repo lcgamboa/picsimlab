@@ -394,7 +394,8 @@ CPWindow5::SavePinAlias(lxString fname)
 {
  lxStringList alias;
  alias.Clear ();
- for (int i = 0; i < 256; i++)
+ alias.AddLine ("//The pin name alias must start in column five and have size less than six chars ");
+ for (int i = 1; i < 256; i++)
   {
    alias.AddLine (lxString ().Format ("%3i-", i) + PinAlias[i].substr (0, 6));
   }
