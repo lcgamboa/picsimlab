@@ -27,7 +27,7 @@ CPWindow5::CPWindow5(void)
   menu1.SetClass(lxT("CMenu"));
   menu1.SetName(lxT("menu1"));
   menu1.SetTag(0);
-  menu1.SetMenuItems(lxT("File,Add,Help,"));
+  menu1.SetMenuItems(lxT("File,Edit,Add,Help,"));
   CreateChild(&menu1);
   //draw1
   draw1.SetFOwner(this);
@@ -57,8 +57,16 @@ CPWindow5::CPWindow5(void)
   menu1_File.SetName(lxT("menu1_File"));
   menu1_File.SetTag(0);
   menu1_File.SetText(lxT("File"));
-  menu1_File.SetMenuItems(lxT("Save configuration,Load configuration,"));
+  menu1_File.SetMenuItems(lxT("Save configuration,Load configuration,Save pin alias,Load pin alias,"));
   menu1.CreateChild(&menu1_File);
+  //menu1_Edit
+  menu1_Edit.SetFOwner(this);
+  menu1_Edit.SetClass(lxT("CPMenu"));
+  menu1_Edit.SetName(lxT("menu1_Edit"));
+  menu1_Edit.SetTag(0);
+  menu1_Edit.SetText(lxT("Edit"));
+  menu1_Edit.SetMenuItems(lxT("Clear pin alias,Toggle pin alias,Zoom in,Zoom out,"));
+  menu1.CreateChild(&menu1_Edit);
   //menu1_Add
   menu1_Add.SetFOwner(this);
   menu1_Add.SetClass(lxT("CPMenu"));
@@ -119,7 +127,61 @@ CPWindow5::CPWindow5(void)
   menu1_File_Loadconfiguration.SetText(lxT("Load configuration"));
   menu1_File_Loadconfiguration.SetSubMenu(NULL);
   menu1_File_Loadconfiguration.EvMenuActive=EVMENUACTIVE & CPWindow5::menu1_File_Loadconfiguration_EvMenuActive;
-  menu1_File.CreateChild(&menu1_File_Loadconfiguration);
+  menu1_File.CreateChild(&menu1_File_Loadconfiguration);  
+  //menu1_File_Savepinalias
+  menu1_File_Savepinalias.SetFOwner(this);
+  menu1_File_Savepinalias.SetClass(lxT("CItemMenu"));
+  menu1_File_Savepinalias.SetName(lxT("menu1_File_Savepinalias"));
+  menu1_File_Savepinalias.SetTag(0);
+  menu1_File_Savepinalias.SetText(lxT("Save pin alias"));
+  menu1_File_Savepinalias.SetSubMenu(NULL);
+  menu1_File_Savepinalias.EvMenuActive=EVMENUACTIVE & CPWindow5::menu1_File_Savepinalias_EvMenuActive;
+  menu1_File.CreateChild(&menu1_File_Savepinalias);
+  //menu1_File_Loadpinalias
+  menu1_File_Loadpinalias.SetFOwner(this);
+  menu1_File_Loadpinalias.SetClass(lxT("CItemMenu"));
+  menu1_File_Loadpinalias.SetName(lxT("menu1_File_Loadpinalias"));
+  menu1_File_Loadpinalias.SetTag(0);
+  menu1_File_Loadpinalias.SetText(lxT("Load pin alias"));
+  menu1_File_Loadpinalias.SetSubMenu(NULL);
+  menu1_File_Loadpinalias.EvMenuActive=EVMENUACTIVE & CPWindow5::menu1_File_Loadpinalias_EvMenuActive;
+  menu1_File.CreateChild(&menu1_File_Loadpinalias);
+  //menu1_Edit_Clearpinalias
+  menu1_Edit_Clearpinalias.SetFOwner(this);
+  menu1_Edit_Clearpinalias.SetClass(lxT("CItemMenu"));
+  menu1_Edit_Clearpinalias.SetName(lxT("menu1_Edit_Clearpinalias"));
+  menu1_Edit_Clearpinalias.SetTag(0);
+  menu1_Edit_Clearpinalias.SetText(lxT("Clear pin alias"));
+  menu1_Edit_Clearpinalias.SetSubMenu(NULL);
+  menu1_Edit_Clearpinalias.EvMenuActive=EVMENUACTIVE & CPWindow5::menu1_Edit_Clearpinalias_EvMenuActive;
+  menu1_Edit.CreateChild(&menu1_Edit_Clearpinalias);
+  //menu1_Edit_Togglepinalias
+  menu1_Edit_Togglepinalias.SetFOwner(this);
+  menu1_Edit_Togglepinalias.SetClass(lxT("CItemMenu"));
+  menu1_Edit_Togglepinalias.SetName(lxT("menu1_Edit_Togglepinalias"));
+  menu1_Edit_Togglepinalias.SetTag(0);
+  menu1_Edit_Togglepinalias.SetText(lxT("Toggle pin alias"));
+  menu1_Edit_Togglepinalias.SetSubMenu(NULL);
+  menu1_Edit_Togglepinalias.EvMenuActive=EVMENUACTIVE & CPWindow5::menu1_Edit_Togglepinalias_EvMenuActive;
+  menu1_Edit.CreateChild(&menu1_Edit_Togglepinalias);
+  //menu1_Edit_Zoomin
+  menu1_Edit_Zoomin.SetFOwner(this);
+  menu1_Edit_Zoomin.SetClass(lxT("CItemMenu"));
+  menu1_Edit_Zoomin.SetName(lxT("menu1_Edit_Zoomin"));
+  menu1_Edit_Zoomin.SetTag(0);
+  menu1_Edit_Zoomin.SetText(lxT("Zoom in"));
+  menu1_Edit_Zoomin.SetSubMenu(NULL);
+  menu1_Edit_Zoomin.EvMenuActive=EVMENUACTIVE & CPWindow5::menu1_Edit_Zoomin_EvMenuActive;
+  menu1_Edit.CreateChild(&menu1_Edit_Zoomin);
+  //menu1_Edit_Zoomout
+  menu1_Edit_Zoomout.SetFOwner(this);
+  menu1_Edit_Zoomout.SetClass(lxT("CItemMenu"));
+  menu1_Edit_Zoomout.SetName(lxT("menu1_Edit_Zoomout"));
+  menu1_Edit_Zoomout.SetTag(0);
+  menu1_Edit_Zoomout.SetText(lxT("Zoom out"));
+  menu1_Edit_Zoomout.SetSubMenu(NULL);
+  menu1_Edit_Zoomout.EvMenuActive=EVMENUACTIVE & CPWindow5::menu1_Edit_Zoomout_EvMenuActive;
+  menu1_Edit.CreateChild(&menu1_Edit_Zoomout);
   //pmenu2_Move
   pmenu2_Move.SetFOwner(this);
   pmenu2_Move.SetClass(lxT("CItemMenu"));
@@ -206,4 +268,5 @@ CPWindow5::CPWindow5(void)
   scale=1.0;
   LoadConfigFile="";
   fdtype = -1;
+  useAlias=0;
 }

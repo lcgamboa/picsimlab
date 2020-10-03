@@ -55,6 +55,13 @@ public:
     CItemMenu menu1_File_Newconfiguration;
     CItemMenu menu1_File_Saveconfiguration;
     CItemMenu menu1_File_Loadconfiguration;
+    CItemMenu menu1_File_Savepinalias;
+    CItemMenu menu1_File_Loadpinalias;
+    CPMenu menu1_Edit;
+    CItemMenu menu1_Edit_Clearpinalias;
+    CItemMenu menu1_Edit_Togglepinalias;  
+    CItemMenu menu1_Edit_Zoomin;
+    CItemMenu menu1_Edit_Zoomout;  
     CPMenu menu1_Help;
     CItemMenu menu1_Help_Contents;
     CItemMenu menu1_Help_About;
@@ -73,6 +80,12 @@ public:
     void menu1_File_Newconfiguration_EvMenuActive(CControl * control);
     void menu1_File_Saveconfiguration_EvMenuActive(CControl * control);
     void menu1_File_Loadconfiguration_EvMenuActive(CControl * control);
+    void menu1_File_Loadpinalias_EvMenuActive(CControl * control);
+    void menu1_File_Savepinalias_EvMenuActive(CControl * control);
+    void menu1_Edit_Clearpinalias_EvMenuActive(CControl * control);
+    void menu1_Edit_Togglepinalias_EvMenuActive(CControl * control);
+    void menu1_Edit_Zoomin_EvMenuActive(CControl * control);
+    void menu1_Edit_Zoomout_EvMenuActive(CControl * control);    
     void pmenu2_Move_EvMenuActive(CControl * control);
     void pmenu2_Delete_EvMenuActive(CControl * control);
     void pmenu2_Help_EvMenuActive(CControl * control);
@@ -136,11 +149,15 @@ public:
     unsigned char RegisterIOpin(lxString pname, unsigned char pin = 0);
     unsigned char UnregisterIOpin(unsigned char pin);
     void Setfdtype(int value);
+    bool SavePinAlias(lxString fname);
+    bool LoadPinAlias(lxString fname);
 private:
     board *pboard;
     lxString PinNames[256];
+    lxString PinAlias[256];
     picpin * Pins;
     unsigned char PinsCount;
+    unsigned char useAlias;
     int partsc;
     part *parts[MAX_PARTS];
     CItemMenu MParts[MAX_PARTS];

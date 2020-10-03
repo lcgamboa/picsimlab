@@ -562,6 +562,8 @@ CPWindow1::Configure(CControl * control, const char * home)
 
  sprintf (fname, "%s/parts_%s.pcf", home, boards_list[lab].name_);
  Window5.LoadConfig (fname);
+ sprintf (fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
+ Window5.LoadPinAlias (fname);
 
 
  if ((!pboard->GetProcessorName ().Cmp ("atmega328p")) || (!pboard->GetProcessorName ().Cmp ("atmega2560")))
@@ -697,9 +699,11 @@ CPWindow1::_EvOnDestroy(CControl * control)
 
 
  sprintf (fname, "%s/parts_%s.pcf", home, boards_list[lab_].name_);
-
  Window5.SaveConfig (fname);
  Window5.DeleteParts ();
+ sprintf (fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
+ Window5.SavePinAlias (fname);
+
 
  delete pboard;
  pboard = NULL;
@@ -1350,9 +1354,10 @@ CPWindow1::filedialog2_EvOnClose(int retId)
 
    if (pboard->GetUseSpareParts ())
     {
-
      snprintf (fname, 1279, "%s/parts_%s.pcf", home, boards_list[lab_].name_);
      Window5.SaveConfig (fname);
+     sprintf (fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
+     Window5.SavePinAlias (fname);
     }
 
    lxZipDir (home, filedialog2.GetFileName ());
@@ -1515,6 +1520,14 @@ extern "C"
     printf ("Loading .pcf...\n");
     Window5.LoadConfig (buff);
     Window1.menu1_Modules_Spareparts_EvMenuActive (&Window1);
+   }
+  else if (strstr (fname, ".ppa"))
+   {
+    char buff[1024];
+    strncpy (buff, "/tmp/", 1023);
+    strncat (buff, fname, 1023);
+    printf ("Loading .ppa...\n");
+    Window5.LoadPinAlias (buff);
    }
   else
    {

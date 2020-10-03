@@ -249,7 +249,7 @@ cpart_VCD_Dump::get_out_id(char * name)
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
-};
+}
 
 lxString
 cpart_VCD_Dump::WritePreferences(void)

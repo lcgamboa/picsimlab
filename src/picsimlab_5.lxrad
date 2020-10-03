@@ -34,7 +34,7 @@
   <Class type="String">CMenu</Class>
   <Name type="String">menu1</Name>
   <Tag type="int">0</Tag>
-  <MenuItems type="MenuItems">File,Add,Help,</MenuItems>
+  <MenuItems type="MenuItems">File,Edit,Add,Help,</MenuItems>
 </menu1>
 <draw1>
   <Class type="String">CDraw</Class>
@@ -68,8 +68,15 @@
   <Name type="String">menu1_File</Name>
   <Tag type="int">0</Tag>
   <Text type="String">File</Text>
-  <MenuItems type="MenuItems">New configuration,Save configuration,Load configuration,</MenuItems>
+  <MenuItems type="MenuItems">New configuration,Save configuration,Load configuration,Save pins alias,Load pin alias,</MenuItems>
 </menu1_File>
+<menu1_Edit>
+  <Class type="String">CPMenu</Class>
+  <Name type="String">menu1_Edit</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Edit</Text>
+  <MenuItems type="MenuItems">Clear pin alias,Toggle pin alias,Zoom in,Zoom out,</MenuItems>
+</menu1_Edit>
 <menu1_Add>
   <Class type="String">CPMenu</Class>
   <Name type="String">menu1_Add</Name>
@@ -124,6 +131,54 @@
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_File_Loadconfiguration>
+<menu1_File_Savepinalias>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_File_Savepinalias</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Save pin alias</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_File_Savepinalias>
+<menu1_File_Loadpinalias>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_File_Loadpinalias</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Load pin alias</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_File_Loadpinalias>
+<menu1_Edit_Clearpinalias>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Edit_Clearpinalias</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Clear pin alias</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Edit_Clearpinalias>
+<menu1_Edit_Togglepinalias>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Edit_togglepinalias</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Toggle pin alias</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Edit_Togglepinalias>
+<menu1_Edit_Zoomin>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Edit_Zoomin</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Zoom in</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Edit_Zoomin>
+<menu1_Edit_Zoomout>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Edit_Zoomout</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Zoom out</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Edit_Zoomout>
 <pmenu2_Move>
   <Class type="String">CItemMenu</Class>
   <Name type="String">pmenu2_Move</Name>
