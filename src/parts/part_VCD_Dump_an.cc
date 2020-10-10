@@ -421,7 +421,7 @@ cpart_VCD_Dump_an::EvMouseButtonPress(uint button, uint x, uint y, uint state)
                   "$scope module analogic $end\n"
                   "$var real 32 !  1-%s $end\n"
                   "$var real 32 $  2-%s $end\n"
-                  "$var real 32 %% 3-%s $end\n"
+                  "$var real 32 %%  3-%s $end\n"
                   "$var real 32 &  4-%s $end\n"
                   "$var real 32 [  5-%s $end\n"
                   "$var real 32 (  6-%s $end\n"

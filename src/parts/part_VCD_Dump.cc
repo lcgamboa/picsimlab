@@ -468,7 +468,7 @@ cpart_VCD_Dump::EvMouseButtonPress(uint button, uint x, uint y, uint state)
                   "$scope module logic $end\n"
                   "$var wire 1 !  1-%s $end\n"
                   "$var wire 1 $  2-%s $end\n"
-                  "$var wire 1 %% 3-%s $end\n"
+                  "$var wire 1 %%  3-%s $end\n"
                   "$var wire 1 &  4-%s $end\n"
                   "$var wire 1 [  5-%s $end\n"
                   "$var wire 1 (  6-%s $end\n"
