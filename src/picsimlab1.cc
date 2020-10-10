@@ -651,7 +651,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
  sprintf (fname, "%s/picsimlab.ini", home);
 
 
-
+ saveprefs (lxT ("picsimlab_version"), _VERSION_);
  saveprefs (lxT ("picsimlab_lab"), boards_list[lab].name_);
  saveprefs (lxT ("picsimlab_debug"), itoa (debug));
  saveprefs (lxT ("picsimlab_debugt"), itoa (debug_type));
