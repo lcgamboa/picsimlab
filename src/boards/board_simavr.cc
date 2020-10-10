@@ -329,8 +329,7 @@ board_simavr::MDumpMemory(const char * fname)
 void
 avr_callback_run_gdb_(avr_t * avr)
 {
-
- avr_gdb_t * g = avr->gdb;
+  avr_gdb_t * g = avr->gdb;
 
  if (avr->state == cpu_Running &&
      gdb_watch_find (&g->breakpoints, avr->pc) != -1)
@@ -375,13 +374,16 @@ board_simavr::DebugInit(int dtyppe)
  if (avr_debug_type)
   {
    avr->gdb_port = Window1.Get_debug_port ();
-   int ret = avr_gdb_init (avr);
-   avr->run = avr_callback_run_gdb_;
-   avr->sleep = avr_callback_sleep_raw_;
-   if (ret)
-    return -1;
+   if (avr_gdb_init (avr))
+    {
+     return -1;
+    }
    else
-    return 1;
+    {
+     avr->run = avr_callback_run_gdb_;
+     avr->sleep = avr_callback_sleep_raw_;
+     return 1;
+    }
   }
  else
   {
@@ -407,7 +409,7 @@ board_simavr::DebugLoop(void)
 {
  if (Window1.Get_mcupwr ())
   {
-   if (avr_debug_type)
+   if ((avr_debug_type)&&(avr->gdb))
     {
      // this also sleeps for a bit
      gdb_network_handler (avr->gdb, 0);
@@ -750,8 +752,9 @@ board_simavr::MGetPinName(int pin)
   {
    switch (pin)
     {
-     //case 1:
-     //  return "PC6 (RST)";break;
+    case 1:
+     return "PC6/RST";
+     break;
     case 2:
      return "PD0/0";
      break;
@@ -774,10 +777,10 @@ board_simavr::MGetPinName(int pin)
      return "GND";
      break;
     case 9:
-     return "PB6/(OSC1)";
+     return "PB6/X1";
      break;
     case 10:
-     return "PB7/(OSC2)";
+     return "PB7/X2";
      break;
     case 11:
      return "PD5/~5";
@@ -809,8 +812,9 @@ board_simavr::MGetPinName(int pin)
     case 20:
      return "+5V";
      break;
-     //case 21:
-     //  return "AREF";break;
+    case 21:
+     return "AREF";
+     break;
     case 22:
      return "GND";
      break;
