@@ -150,7 +150,7 @@ public:
     unsigned char UnregisterIOpin(unsigned char pin);
     void Setfdtype(int value);
     bool SavePinAlias(lxString fname);
-    bool LoadPinAlias(lxString fname);
+    bool LoadPinAlias(lxString fname, unsigned char show_error_msg = 0);
 private:
     board *pboard;
     lxString PinNames[256];

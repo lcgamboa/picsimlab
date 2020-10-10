@@ -368,7 +368,7 @@ CPWindow5::LoadConfig(lxString fname)
       {
        sscanf (temp, "%f", &scale);
       }
-     if (strcmp (name, "useAlias") == 0)
+     else if (strcmp (name, "useAlias") == 0)
       {
        sscanf (temp, "%hhu", &useAlias);
       }
@@ -394,25 +394,34 @@ CPWindow5::SavePinAlias(lxString fname)
 {
  lxStringList alias;
  alias.Clear ();
- alias.AddLine ("//The pin name alias must start in column five and have size less than six chars ");
+ alias.AddLine ("//The pin name alias must start in column five and have size less than seven chars ");
  for (int i = 1; i < 256; i++)
   {
-   alias.AddLine (lxString ().Format ("%3i-", i) + PinAlias[i].substr (0, 6));
+   alias.AddLine (lxString ().Format ("%3i-", i) + PinAlias[i].substr (0, 7));
   }
  return alias.SaveToFile (fname);
 }
 
 bool
-CPWindow5::LoadPinAlias(lxString fname)
+CPWindow5::LoadPinAlias(lxString fname, unsigned char show_error_msg)
 {
+ 
+ if(!show_error_msg)
+  {  
+     if(!lxFileExists(fname))
+      {
+       return 0;
+      }
+  }
  lxStringList alias;
  alias.Clear ();
  if (alias.LoadFromFile (fname))
   {
    for (int i = 0; i < 256; i++)
     {
-     PinAlias[i] = alias.GetLine (i).substr (4, 6);
+     PinAlias[i] = alias.GetLine (i).substr (4, 7);
     }
+   PinAlias[0]="NC";
    useAlias = 1;
    return 1;
   }
@@ -755,7 +764,7 @@ CPWindow5::filedialog1_EvOnClose(int retId)
 
    if ((filedialog1.GetType () == (lxFD_OPEN | lxFD_CHANGE_DIR)))
     {
-     LoadPinAlias (filedialog1.GetFileName ());
+     LoadPinAlias (filedialog1.GetFileName (), 1);
     }
   }
  else if (fdtype >= 0)
