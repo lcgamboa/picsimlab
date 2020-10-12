@@ -23,35 +23,35 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_Blue_Pill_H
-#define	BOARD_Blue_Pill_H
+#ifndef BOARD_STM32_H103_H
+#define	BOARD_STM32_H103_H
 
 #include<lxrad.h>
 
 #include "board_qemu_stm32.h"
 
 //new board class must be derived from board class defined in board.h
-class cboard_Blue_Pill:public board_qemu_stm32
+class cboard_STM32_H103:public board_qemu_stm32
 {
    private:
- 
+       unsigned char p_BUT;
    public:
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       //Constructor called once on board creation 
-      cboard_Blue_Pill(void);
+      cboard_STM32_H103(void);
       //Destructor called once on board destruction 
-      ~cboard_Blue_Pill(void); 
+      ~cboard_STM32_H103(void); 
       //Called ever 100ms to draw board
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
-      lxString GetSupportedDevices(void){return lxT("stm32f103c8t6,");};
+      lxString GetSupportedDevices(void){return lxT("stm32f103rbt6,");};
       //Return the filename of board picture 
-      lxString GetPictureFileName(void){return lxT("Blue_Pill/board.png");};
+      lxString GetPictureFileName(void){return lxT("STM32_H103/board.png");};
       //Return the filename of board picture input map 
-      lxString GetInputMapFile(void){return lxT("Blue_Pill/input.map");};
+      lxString GetInputMapFile(void){return lxT("STM32_H103/input.map");};
       //Return the filename of board picture output map 
-      lxString GetOutputMapFile(void){return lxT("Blue_Pill/output.map");};
+      lxString GetOutputMapFile(void){return lxT("STM32_H103/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board
@@ -75,5 +75,5 @@ class cboard_Blue_Pill:public board_qemu_stm32
       unsigned short get_out_id(char * name);
 };
 
-#endif	/* BOARD_Blue_Pill_H */
+#endif	/* BOARD_STM32_H103_H */
 
