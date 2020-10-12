@@ -105,7 +105,7 @@ int skt_recv(int sockfd,char* buff,int size)
 
 int skt_send(int sockfd,const char* buff,int size)
 {
-  return send (sockfd, buff, size, 0);
+  return send (sockfd, buff, size, MSG_NOSIGNAL);
 }
         
 int

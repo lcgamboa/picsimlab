@@ -138,19 +138,19 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
 
    if (bind (listenfd, (sockaddr *) & serv, sizeof (serv)) < 0)
     {
-     printf ("picsimlab: bind error : %s \n", strerror (errno));
+     printf ("picsimlab: qemu_stm32 bind error : %s \n", strerror (errno));
      exit (1);
     }
 
    if (listen (listenfd, SOMAXCONN) < 0)
     {
-     printf ("picsimlab: listen error : %s \n", strerror (errno));
+     printf ("picsimlab: qemu_stm32 listen error : %s \n", strerror (errno));
      exit (1);
     }
    //monitor
    if ((listenfd_mon = socket (PF_INET, SOCK_STREAM, 0)) < 0)
     {
-     printf ("picsimlab: socket error : %s \n", strerror (errno));
+     printf ("picsimlab: qemu_stm32 socket error : %s \n", strerror (errno));
      exit (1);
     }
 
@@ -165,13 +165,13 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
 
    if (bind (listenfd_mon, (sockaddr *) & serv_mon, sizeof (serv_mon)) < 0)
     {
-     printf ("picsimlab: bind error : %s \n", strerror (errno));
+     printf ("picsimlab: qemu_stm32 monitor bind error : %s \n", strerror (errno));
      exit (1);
     }
 
    if (listen (listenfd_mon, SOMAXCONN) < 0)
     {
-     printf ("picsimlab: listen error : %s \n", strerror (errno));
+     printf ("picsimlab: qemu_stm32 monitor listen error : %s \n", strerror (errno));
      exit (1);
     }
   }
@@ -194,7 +194,7 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
     }
    else
     {
-     printf ("picsimlab: Erro creating file %s \n", fname_);
+     printf ("picsimlab: qemu_stm32 Erro creating file %s \n", fname_);
      exit (-1);
     }
   }
@@ -212,6 +212,8 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
 
  char * resp = serial_list ();
 
+ if (!Proc.compare ("stm32f103c8t6"))
+  {
  //verify if serial port exists
  if (strstr (resp, SERIALDEVICE))
   {
@@ -224,7 +226,23 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
    snprintf (cmd, 599, "qemu-stm32 -M stm32-f103c8-picsimlab -qmp tcp:localhost:2500 -gdb tcp::%i -pflash \"%s\"",
              Window1.Get_debug_port (), fname_);
   }
+  }
+ else
+  {
+ //verify if serial port exists
+ if (strstr (resp, SERIALDEVICE))
+  {
+   snprintf (cmd, 599, "qemu-stm32 -M stm32-p103-picsimlab -serial %s -qmp tcp:localhost:2500  -gdb tcp::%i -pflash \"%s\"",
+             SERIALDEVICE, Window1.Get_debug_port (), fname_);
 
+  }
+ else
+  {
+   snprintf (cmd, 599, "qemu-stm32 -M stm32-p103-picsimlab -qmp tcp:localhost:2500 -gdb tcp::%i -pflash \"%s\"",
+             Window1.Get_debug_port (), fname_);
+  }
+  }
+ 
  free (resp);
 
  printf ("picsimlab: %s\n", (const char *) cmd);
@@ -367,153 +385,356 @@ board_qemu_stm32::MGetPinName(int pin)
 {
  lxString pinname = "error";
 
- switch (pin)
+
+ if (!Proc.compare ("stm32f103c8t6"))
   {
-  case 1:
-   pinname = "VBAT";
-   break;
-  case 2:
-   pinname = "PC13";
-   break;
-  case 3:
-   pinname = "PC14";
-   break;
-  case 4:
-   pinname = "PC15";
-   break;
-  case 5:
-   pinname = "PD0";
-   break;
-  case 6:
-   pinname = "PD1";
-   break;
-  case 7:
-   pinname = "NRST";
-   break;
-  case 8:
-   pinname = "VSSA";
-   break;
-  case 9:
-   pinname = "VDDA";
-   break;
-  case 10:
-   pinname = "PA0";
-   break;
-  case 11:
-   pinname = "PA1";
-   break;
-  case 12:
-   pinname = "PA2";
-   break;
-  case 13:
-   pinname = "PA3";
-   break;
-  case 14:
-   pinname = "PA4";
-   break;
-  case 15:
-   pinname = "PA5";
-   break;
-  case 16:
-   pinname = "PA6";
-   break;
-  case 17:
-   pinname = "PA7";
-   break;
-  case 18:
-   pinname = "PB0";
-   break;
-  case 19:
-   pinname = "PB1";
-   break;
-  case 20:
-   pinname = "PB2";
-   break;
-  case 21:
-   pinname = "PB10";
-   break;
-  case 22:
-   pinname = "PB11";
-   break;
-  case 23:
-   pinname = "VSS";
-   break;
-  case 24:
-   pinname = "VDD";
-   break;
-  case 25:
-   pinname = "PB12";
-   break;
-  case 26:
-   pinname = "PB13";
-   break;
-  case 27:
-   pinname = "PB14";
-   break;
-  case 28:
-   pinname = "PB15";
-   break;
-  case 29:
-   pinname = "PA8";
-   break;
-  case 30:
-   pinname = "PA9";
-   break;
-  case 31:
-   pinname = "PA10";
-   break;
-  case 32:
-   pinname = "PA11";
-   break;
-  case 33:
-   pinname = "PA12";
-   break;
-  case 34:
-   pinname = "PA13";
-   break;
-  case 35:
-   pinname = "VSS";
-   break;
-  case 36:
-   pinname = "VDD";
-   break;
-  case 37:
-   pinname = "PA14";
-   break;
-  case 38:
-   pinname = "PA15";
-   break;
-  case 39:
-   pinname = "PB3";
-   break;
-  case 40:
-   pinname = "PB4";
-   break;
-  case 41:
-   pinname = "PB5";
-   break;
-  case 42:
-   pinname = "PB6";
-   break;
-  case 43:
-   pinname = "PB7";
-   break;
-  case 44:
-   pinname = "BOOT0";
-   break;
-  case 45:
-   pinname = "PB8";
-   break;
-  case 46:
-   pinname = "PB9";
-   break;
-  case 47:
-   pinname = "VSS";
-   break;
-  case 48:
-   pinname = "VDD";
-   break;
+   switch (pin)
+    {
+    case 1:
+     pinname = "VBAT";
+     break;
+    case 2:
+     pinname = "PC13";
+     break;
+    case 3:
+     pinname = "PC14";
+     break;
+    case 4:
+     pinname = "PC15";
+     break;
+    case 5:
+     pinname = "PD0";
+     break;
+    case 6:
+     pinname = "PD1";
+     break;
+    case 7:
+     pinname = "NRST";
+     break;
+    case 8:
+     pinname = "VSSA";
+     break;
+    case 9:
+     pinname = "VDDA";
+     break;
+    case 10:
+     pinname = "PA0";
+     break;
+    case 11:
+     pinname = "PA1";
+     break;
+    case 12:
+     pinname = "PA2";
+     break;
+    case 13:
+     pinname = "PA3";
+     break;
+    case 14:
+     pinname = "PA4";
+     break;
+    case 15:
+     pinname = "PA5";
+     break;
+    case 16:
+     pinname = "PA6";
+     break;
+    case 17:
+     pinname = "PA7";
+     break;
+    case 18:
+     pinname = "PB0";
+     break;
+    case 19:
+     pinname = "PB1";
+     break;
+    case 20:
+     pinname = "PB2";
+     break;
+    case 21:
+     pinname = "PB10";
+     break;
+    case 22:
+     pinname = "PB11";
+     break;
+    case 23:
+     pinname = "VSS";
+     break;
+    case 24:
+     pinname = "VDD";
+     break;
+    case 25:
+     pinname = "PB12";
+     break;
+    case 26:
+     pinname = "PB13";
+     break;
+    case 27:
+     pinname = "PB14";
+     break;
+    case 28:
+     pinname = "PB15";
+     break;
+    case 29:
+     pinname = "PA8";
+     break;
+    case 30:
+     pinname = "PA9";
+     break;
+    case 31:
+     pinname = "PA10";
+     break;
+    case 32:
+     pinname = "PA11";
+     break;
+    case 33:
+     pinname = "PA12";
+     break;
+    case 34:
+     pinname = "PA13";
+     break;
+    case 35:
+     pinname = "VSS";
+     break;
+    case 36:
+     pinname = "VDD";
+     break;
+    case 37:
+     pinname = "PA14";
+     break;
+    case 38:
+     pinname = "PA15";
+     break;
+    case 39:
+     pinname = "PB3";
+     break;
+    case 40:
+     pinname = "PB4";
+     break;
+    case 41:
+     pinname = "PB5";
+     break;
+    case 42:
+     pinname = "PB6";
+     break;
+    case 43:
+     pinname = "PB7";
+     break;
+    case 44:
+     pinname = "BOOT0";
+     break;
+    case 45:
+     pinname = "PB8";
+     break;
+    case 46:
+     pinname = "PB9";
+     break;
+    case 47:
+     pinname = "VSS";
+     break;
+    case 48:
+     pinname = "VDD";
+     break;
+    }
   }
+ else if (!Proc.compare ("stm32f103rbt6"))
+  {
+   switch (pin)
+    {
+    case 1:
+     pinname = "VBAT";
+     break;
+    case 2:
+     pinname = "PC13";
+     break;
+    case 3:
+     pinname = "PC14";
+     break;
+    case 4:
+     pinname = "PC15";
+     break;
+    case 5:
+     pinname = "PD0";
+     break;
+    case 6:
+     pinname = "PD1";
+     break;
+    case 7:
+     pinname = "NRST";
+     break;
+    case 8:
+     pinname = "PC0";
+     break;
+    case 9:
+     pinname = "PC1";
+     break;
+    case 10:
+     pinname = "PC2";
+     break;
+    case 11:
+     pinname = "PC3";
+     break;
+    case 12:
+     pinname = "VSSA";
+     break;
+    case 13:
+     pinname = "VDDA";
+     break;
+    case 14:
+     pinname = "PA0";
+     break;
+    case 15:
+     pinname = "PA1";
+     break;
+    case 16:
+     pinname = "PA2";
+     break;
+    case 17:
+     pinname = "PA3";
+     break;
+    case 18:
+     pinname = "VSS";
+     break;
+    case 19:
+     pinname = "VDD";
+     break;
+    case 20:
+     pinname = "PA4";
+     break;
+    case 21:
+     pinname = "PA5";
+     break;
+    case 22:
+     pinname = "PA6";
+     break;
+    case 23:
+     pinname = "PA7";
+     break;
+    case 24:
+     pinname = "PC4";
+     break;
+    case 25:
+     pinname = "PC5";
+     break;
+    case 26:
+     pinname = "PB0";
+     break;
+    case 27:
+     pinname = "PB1";
+     break;
+    case 28:
+     pinname = "PB2";
+     break;
+    case 29:
+     pinname = "PB10";
+     break;
+    case 30:
+     pinname = "PB11";
+     break;
+    case 31:
+     pinname = "VSS";
+     break;
+    case 32:
+     pinname = "VDD";
+     break;
+    case 33:
+     pinname = "PB12";
+     break;
+    case 34:
+     pinname = "PB13";
+     break;
+    case 35:
+     pinname = "PB14";
+     break;
+    case 36:
+     pinname = "PB15";
+     break;
+    case 37:
+     pinname = "PC6";
+     break;
+    case 38:
+     pinname = "PC7";
+     break;
+    case 39:
+     pinname = "PC8";
+     break;
+    case 40:
+     pinname = "PC9";
+     break;
+    case 41:
+     pinname = "PA8";
+     break;
+    case 42:
+     pinname = "PA9";
+     break;
+    case 43:
+     pinname = "PA10";
+     break;
+    case 44:
+     pinname = "PA11";
+     break;
+    case 45:
+     pinname = "PA12";
+     break;
+    case 46:
+     pinname = "PA13";
+     break;
+    case 47:
+     pinname = "VSS";
+     break;
+    case 48:
+     pinname = "VDD";
+     break;
+    case 49:
+     pinname = "PA14";
+     break;
+    case 50:
+     pinname = "PA15";
+     break;
+    case 51:
+     pinname = "PC10";
+     break;
+    case 52:
+     pinname = "PC11";
+     break;
+    case 53:
+     pinname = "PC12";
+     break;
+    case 54:
+     pinname = "PD2";
+     break;
+    case 55:
+     pinname = "PB3";
+     break;
+    case 56:
+     pinname = "PB4";
+     break;
+    case 57:
+     pinname = "PB5";
+     break;
+    case 58:
+     pinname = "PB6";
+     break;
+    case 59:
+     pinname = "PB7";
+     break;
+    case 60:
+     pinname = "BOOT0";
+     break;
+    case 61:
+     pinname = "PB8";
+     break;
+    case 62:
+     pinname = "PB9";
+     break;
+    case 63:
+     pinname = "VSS";
+     break;
+    case 64:
+     pinname = "VDD";
+     break;
+    }
+  }
+
  return pinname;
 }
 
@@ -567,7 +788,9 @@ board_qemu_stm32::DebugInit(int dtyppe) //argument not used in picm only mplabx
 int
 board_qemu_stm32::MGetPinCount(void)
 {
- return 48;
+ if (!Proc.compare ("stm32f103c8t6")) return 48;
+ if (!Proc.compare ("stm32f103rbt6")) return 64;
+ return 0;
 }
 
 void
@@ -582,12 +805,14 @@ board_qemu_stm32::pins_reset(void)
    pins[p].dir = PD_IN;
    pins[p].ovalue = 0;
    pins[p].oavalue = 0;
-  }
 
- //TODO add VCC and GND pins
- //VCC pins
- //pins[6].value = 1;
- //pins[19].value = 1;
+   if (MGetPinName (p + 1).Contains ("VDD"))
+    {
+     pins[p].value = 1;
+     pins[p].dir = PD_OUT;
+    }
+
+  }
 }
 
 void
@@ -599,7 +824,7 @@ board_qemu_stm32::MSetPin(int pin, unsigned char value)
 
    if (value)
     val |= 0x80;
-   if (send (sockfd, (const char *) &val, 1, 0) != 1)
+   if (send (sockfd, (const char *) &val, 1, MSG_NOSIGNAL) != 1)
     {
      printf ("picsimlab: send error : %s \n", strerror (errno));
      exit (1);
@@ -621,7 +846,11 @@ board_qemu_stm32::MSetAPin(int pin, float value) {
 unsigned char
 board_qemu_stm32::MGetPin(int pin)
 {
- return 0; //get_pin (pin);
+ if ((pin) && (pin < MGetPinCount ()))
+  {
+   return pins[pin - 1].value;
+  }
+ return 0;
 }
 
 void
@@ -693,7 +922,7 @@ board_qemu_stm32::qemu_cmd(const char * cmd, int raw)
 
  size = strlen (buffin);
 
- if (send (sockmon, buffin, size, 0) != size)
+ if (send (sockmon, buffin, size, MSG_NOSIGNAL) != size)
   {
    printf ("picsimlab: mon send error : %s \n", strerror (errno));
    exit (1);
