@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2019-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,29 +23,30 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef PART_IO_74XX595_H
-#define	PART_IO_74XX595_H
+#ifndef PART_ETH_W5500_H
+#define	PART_ETH_W5500_H
 
 #include<lxrad.h>
 #include"part.h"
-#include"../devices/io_74xx595.h"
+#include"../devices/eth_w5500.h"
 
-class cpart_IO_74xx595:public part
+class cpart_ETH_w5500:public part
 {
    public:
-      lxString GetName(void){return lxT("IO 74xx595");};
-      lxString GetHelpURL(void){return lxT("IO_74xx595.html");};
+      lxString GetName(void){return lxT("ETH w5500");};
+      lxString GetHelpURL(void){return lxT("ETH_w5500.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
-      cpart_IO_74xx595(unsigned x, unsigned y);
-      ~cpart_IO_74xx595(void);
+      cpart_ETH_w5500(unsigned x, unsigned y);
+      ~cpart_ETH_w5500(void);
       void Draw(void);
       void PreProcess (void);
       void Process(void); 
       void PostProcess (void);
-      lxString GetPictureFileName(void){return lxT("Common/IC16.png");};
-      lxString GetInputMapFile(void){return lxT("Common/IC16_i.map");};
-      lxString GetOutputMapFile(void){return lxT("Common/IC16_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("io_74xx595/IO_74xx595.lxrad");};
+      lxString GetPictureFileName(void){return lxT("ETH_w5500/w5500.png");};
+      lxString GetInputMapFile(void){return lxT("ETH_w5500/w5500_i.map");};
+      lxString GetOutputMapFile(void){return lxT("ETH_w5500/w5500_o.map");};
+      lxString GetPropertiesWindowFile(void){return lxT("ETH_w5500/w5500.lxrad");};
+      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       lxString WritePreferences(void);
@@ -54,16 +55,14 @@ class cpart_IO_74xx595:public part
       unsigned short get_out_id(char * name);
    private:
       unsigned char input_pins[4];
-      unsigned char output_pins[9];
-      unsigned long output_pins_alm[9];
-      long mcount;
-      int JUMPSTEPS_;
-      io_74xx595_t sr8;
+      unsigned char output_pins[2];
+      eth_w5500_t ethw;
+      unsigned char link;
       unsigned short _ret; 
 };
 
 
 
 
-#endif	/* PART_IO_74XX595_H */
+#endif	/* PART_ETH_W5500_H */
 
