@@ -39,6 +39,7 @@ typedef unsigned char u_int8_t;
 typedef unsigned short u_int16_t;
 typedef unsigned int u_int32_t;
 #define SHUT_RDWR SD_BOTH
+#define MSG_NOSIGNAL 0
 #endif
 #define INVALID_SOCKET_VALUE -1
 

@@ -141,7 +141,7 @@ cpart_ETH_w5500::Draw(void)
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
     case O_STAT:
-     canvas.SetColor (49, 61, 99);
+     canvas.SetColor (9, 21, 59);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
      for (n = 0; n < 8; n++)

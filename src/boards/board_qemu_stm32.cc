@@ -43,6 +43,7 @@ char * serial_list(void);
 #include<winsock2.h>
 #include<ws2tcpip.h>
 #define _TCP_
+#define MSG_NOSIGNAL 0
 #endif
 
 static int listenfd = -1;
@@ -756,7 +757,7 @@ board_qemu_stm32::MDumpMemory(const char * fname)
    fname_bak[strlen (fname) - 3] = 0;
    strncat (fname_bak, "bak", 299);
 #ifdef _WIN_
-   for (int i = 0; i < strlen (fname_); i++)
+   for (unsigned int i = 0; i < strlen (fname_); i++)
     {
      if (fname_[i] == '\\')fname_[i] = '/';
      if (fname_bak[i] == '\\')fname_bak[i] = '/';
@@ -768,7 +769,7 @@ board_qemu_stm32::MDumpMemory(const char * fname)
   {
    //save file direct
 #ifdef _WIN_
-   for (int i = 0; i < strlen (fname_); i++)
+   for (unsigned int i = 0; i < strlen (fname_); i++)
     {
      if (fname_[i] == '\\')fname_[i] = '/';
     }
@@ -894,7 +895,7 @@ board_qemu_stm32::qemu_cmd(const char * cmd, int raw)
  int n;
  char buffin[400];
  char buffout[400];
- unsigned int size;
+ int size;
  int connected_;
 
  if (sockmon < 0) return -1;

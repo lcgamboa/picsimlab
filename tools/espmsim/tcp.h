@@ -14,6 +14,7 @@
 #include<winsock2.h>
 #include<ws2tcpip.h>
 #define SHUT_RDWR SD_BOTH 
+#define MSG_NOSIGNAL 0
 #endif
 //system headers independent
 #include<errno.h>
