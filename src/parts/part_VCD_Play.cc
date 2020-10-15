@@ -389,6 +389,24 @@ cpart_VCD_Play::Process(void)
      vcd_step = 0;
     }
   }
+ else
+  {
+   if (vcd_count)
+    {
+     Window5.SetPin (output_pins[0], 0);
+     Window5.SetPin (output_pins[1], 0);
+     Window5.SetPin (output_pins[2], 0);
+     Window5.SetPin (output_pins[3], 0);
+     Window5.SetPin (output_pins[4], 0);
+     Window5.SetPin (output_pins[5], 0);
+     Window5.SetPin (output_pins[6], 0);
+     Window5.SetPin (output_pins[7], 0);
+    }
+
+   vcd_count = 0;
+   vcd_ptr = 0;
+   vcd_step = 0;
+  }
 }
 
 void
@@ -478,7 +496,9 @@ cpart_VCD_Play::LoadVCD(lxString fname)
  char *value;
  char signal[8] = {0, 0, 0, 0, 0, 0, 0, 0};
  int signal_count = 0;
+ unsigned char old_play = play;
 
+ play = 0;
  vcd_data_count = 0;
 
  unsigned int vcd_count_ = -1;
@@ -572,6 +592,10 @@ cpart_VCD_Play::LoadVCD(lxString fname)
       }
     }
    fclose (fvcd);
+   vcd_count = 0;
+   vcd_ptr = 0;
+   vcd_step = 0;
+   play = old_play;
   }
  else
   {
