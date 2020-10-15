@@ -26,22 +26,22 @@
 #include"../picsimlab1.h"
 #include"../picsimlab4.h"
 #include"../picsimlab5.h"
-#include"part_MI2C_24CXXX.h"
+#include"part_VCD_Play.h"
 
 #ifdef __EMSCRIPTEN__
 #include<emscripten.h>
 #endif
 
-/* inputs */
-enum
-{
- I_LOAD, I_SAVE, I_VIEW
-};
-
 /* outputs */
 enum
 {
- O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_IC
+ O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_L1, O_L2, O_L3, O_L4, O_L5, O_L6, O_L7, O_L8, O_NAME, O_PLAY
+};
+
+/*inputs*/
+enum
+{
+ I_PLAY, I_VIEW, I_LOAD
 };
 
 const char pin_names[8][10] = {"A0", "A1", "A2", "VSS", "SDA", "SCL", "WP", "VCC"};
@@ -56,7 +56,7 @@ const char pin_values[8][10] = {
  "+5V"
 };
 
-cpart_MI2C_24CXXX::cpart_MI2C_24CXXX(unsigned x, unsigned y)
+cpart_VCD_Play::cpart_VCD_Play(unsigned x, unsigned y)
 {
  X = x;
  Y = y;
@@ -72,46 +72,50 @@ cpart_MI2C_24CXXX::cpart_MI2C_24CXXX(unsigned x, unsigned y)
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
- kbits = 4;
 
- mi2c_init (&mi2c, kbits);
- mi2c_rst (&mi2c);
+ output_pins[0] = 0;
+ output_pins[1] = 0;
+ output_pins[2] = 0;
+ output_pins[3] = 0;
+ output_pins[4] = 0;
+ output_pins[5] = 0;
+ output_pins[6] = 0;
+ output_pins[7] = 0;
 
- input_pins[0] = 0;
- input_pins[1] = 0;
- input_pins[2] = 0;
- input_pins[3] = 0;
- input_pins[4] = 0;
+ f_vcd_name[0] = '*';
+ f_vcd_name[1] = 0;
 
- f_mi2c_name[0] = '*';
- f_mi2c_name[1] = 0;
- f_mi2c = NULL;
+ play = 0;
 
- snprintf (f_mi2c_tmp_name, 200, "%s/picsimlab-XXXXXX", (const char *) lxGetTempDir ("PICSimLab").c_str ());
- close (mkstemp (f_mi2c_tmp_name));
- unlink (f_mi2c_tmp_name);
-
- strncat (f_mi2c_tmp_name, ".txt", 200);
-
+ vcd_data = NULL;
+ vcd_data_count = 0;
+ vcd_count = 0;
+ vcd_ptr = 0;
+ vcd_step = 0;
 }
 
-cpart_MI2C_24CXXX::~cpart_MI2C_24CXXX(void)
+cpart_VCD_Play::~cpart_VCD_Play(void)
 {
- mi2c_end (&mi2c);
  delete Bitmap;
  canvas.Destroy ();
- unlink (f_mi2c_tmp_name);
+ if (vcd_data)
+  {
+   free (vcd_data);
+   vcd_data = NULL;
+  }
 }
 
 void
-cpart_MI2C_24CXXX::Draw(void)
+cpart_VCD_Play::Draw(void)
 {
 
  int i;
 
+ const picpin * ppins = Window5.GetPinsValues ();
+
  canvas.Init ();
 
- lxFont font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
+ lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
 
  for (i = 0; i < outputc; i++)
@@ -119,57 +123,75 @@ cpart_MI2C_24CXXX::Draw(void)
 
    switch (output[i].id)
     {
-    case O_IC:
-     char buff[10];
-     snprintf (buff, 9, "24C%02i", kbits);
-     canvas.SetColor (0, 0, 0);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     canvas.Text (buff, output[i].x1, output[i].y2 - 15);
-     break;
-    default:
+    case O_P1:
+    case O_P2:
+    case O_P3:
+    case O_P4:
+    case O_P5:
+    case O_P6:
+    case O_P7:
+    case O_P8:
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-
      canvas.SetFgColor (255, 255, 255);
-     canvas.RotatedText (pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0);
-
-     int pinv = pin_values[output[i].id - O_P1][0];
-     if (pinv > 10)
+     if (output_pins[output[i].id - O_P1] == 0)
+      canvas.Text ("NC", output[i].x1, output[i].y1);
+     else
+      canvas.Text (Window5.GetPinName (output_pins[output[i].id - O_P1]), output[i].x1, output[i].y1);
+     break;
+    case O_NAME:
+     canvas.SetColor (49, 61, 99);
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     canvas.SetFgColor (255, 255, 255);
+     canvas.Text (f_vcd_name, output[i].x1, output[i].y1);
+     break;
+    case O_L1:
+    case O_L2:
+    case O_L3:
+    case O_L4:
+    case O_L5:
+    case O_L6:
+    case O_L7:
+    case O_L8:
+     if (output_pins[output[i].id - O_L1] > 0)
       {
-       canvas.SetFgColor (155, 155, 155);
-       canvas.RotatedText (pin_values[output[i].id - O_P1], output[i].x1, output[i].y2 - 30, 90.0);
+       canvas.SetColor (ppins[output_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
       }
      else
       {
-       if (input_pins[pinv] == 0)
-        canvas.RotatedText ("NC", output[i].x1, output[i].y2 - 30, 90.0);
-       else
-        canvas.RotatedText (Window5.GetPinName (input_pins[pinv]), output[i].x1, output[i].y2 - 30, 90.0);
+       canvas.SetColor (30, 0, 0);
       }
+     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
+     break;
+    case O_PLAY:
+     if (play > 0)
+      {
+       canvas.SetColor (0, 255, 0);
+      }
+     else
+      {
+       canvas.SetColor (255, 0, 0);
+      }
+     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
      break;
     }
-
-
   }
-
  canvas.End ();
-
 }
 
 unsigned short
-cpart_MI2C_24CXXX::get_in_id(char * name)
+cpart_VCD_Play::get_in_id(char * name)
 {
- if (strcmp (name, "LOAD") == 0)return I_LOAD;
- if (strcmp (name, "SAVE") == 0)return I_SAVE;
+ if (strcmp (name, "PLAY") == 0)return I_PLAY;
  if (strcmp (name, "VIEW") == 0)return I_VIEW;
+ if (strcmp (name, "LOAD") == 0)return I_LOAD;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
 }
 
 unsigned short
-cpart_MI2C_24CXXX::get_out_id(char * name)
+cpart_VCD_Play::get_out_id(char * name)
 {
 
  if (strcmp (name, "P1") == 0)return O_P1;
@@ -181,187 +203,196 @@ cpart_MI2C_24CXXX::get_out_id(char * name)
  if (strcmp (name, "P7") == 0)return O_P7;
  if (strcmp (name, "P8") == 0)return O_P8;
 
- if (strcmp (name, "IC") == 0)return O_IC;
+ if (strcmp (name, "L1") == 0)return O_L1;
+ if (strcmp (name, "L2") == 0)return O_L2;
+ if (strcmp (name, "L3") == 0)return O_L3;
+ if (strcmp (name, "L4") == 0)return O_L4;
+ if (strcmp (name, "L5") == 0)return O_L5;
+ if (strcmp (name, "L6") == 0)return O_L6;
+ if (strcmp (name, "L7") == 0)return O_L7;
+ if (strcmp (name, "L8") == 0)return O_L8;
+
+ if (strcmp (name, "NAME") == 0)return O_NAME;
+ if (strcmp (name, "REC") == 0)return O_PLAY;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
 }
 
 lxString
-cpart_MI2C_24CXXX::WritePreferences(void)
+cpart_VCD_Play::WritePreferences(void)
 {
  char prefs[256];
-
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%u,%s", input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4], kbits, f_mi2c_name);
-
- if (f_mi2c_name[0] != '*')
-  {
-   FILE * fout;
-   fout = fopen (f_mi2c_name, "wb");
-   if (fout)
-    {
-     fwrite (mi2c.data, mi2c.SIZE, 1, fout);
-     fclose (fout);
-    }
-   else
-    {
-     printf ("Error saving to file: %s \n", f_mi2c_name);
-    }
-  }
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%s", output_pins[0], output_pins[1], output_pins[2], output_pins[3], output_pins[4], output_pins[5], output_pins[6], output_pins[7], f_vcd_name);
 
  return prefs;
 }
 
 void
-cpart_MI2C_24CXXX::ReadPreferences(lxString value)
+cpart_VCD_Play::ReadPreferences(lxString value)
 {
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%u,%s", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &kbits, f_mi2c_name);
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%s", &output_pins[0], &output_pins[1], &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7], f_vcd_name);
 
- mi2c_end (&mi2c);
- mi2c_init (&mi2c, kbits);
- mi2c_rst (&mi2c);
 
- if (f_mi2c_name[0] != '*')
+ if (f_vcd_name[0] != '*')
   {
-   FILE * fout;
-   fout = fopen (f_mi2c_name, "rb");
-   if (fout)
+   if (lxFileExists (f_vcd_name))
     {
-     fread (mi2c.data, mi2c.SIZE, 1, fout);
-     fclose (fout);
+     LoadVCD (f_vcd_name);
     }
    else
     {
-     printf ("Error loading from file: %s \n", f_mi2c_name);
+     printf ("Error loading from file: %s \n", f_vcd_name);
+     f_vcd_name[0] = '*';
+     f_vcd_name[1] = 0;
     }
   }
  Reset ();
+
 }
 
-
 void
-cpart_MI2C_24CXXX::ConfigurePropertiesWindow(CPWindow * WProp)
+cpart_VCD_Play::ConfigurePropertiesWindow(CPWindow * WProp)
 {
  lxString Items = Window5.GetPinsNames ();
  lxString spin;
 
  ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
- if (input_pins[0] == 0)
+ if (output_pins[0] == 0)
   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText ("0  NC");
  else
   {
-   spin = Window5.GetPinName (input_pins[0]);
-   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (input_pins[0]) + "  " + spin);
+   spin = Window5.GetPinName (output_pins[0]);
+   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (output_pins[0]) + "  " + spin);
   }
 
  ((CCombo*) WProp->GetChildByName ("combo2"))->SetItems (Items);
- if (input_pins[1] == 0)
+ if (output_pins[1] == 0)
   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText ("0  NC");
  else
   {
-   spin = Window5.GetPinName (input_pins[1]);
-   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText (itoa (input_pins[1]) + "  " + spin);
+   spin = Window5.GetPinName (output_pins[1]);
+   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText (itoa (output_pins[1]) + "  " + spin);
   }
 
  ((CCombo*) WProp->GetChildByName ("combo3"))->SetItems (Items);
- if (input_pins[2] == 0)
+ if (output_pins[2] == 0)
   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText ("0  NC");
  else
   {
-   spin = Window5.GetPinName (input_pins[2]);
-   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText (itoa (input_pins[2]) + "  " + spin);
+   spin = Window5.GetPinName (output_pins[2]);
+   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText (itoa (output_pins[2]) + "  " + spin);
   }
 
+ ((CCombo*) WProp->GetChildByName ("combo4"))->SetItems (Items);
+ if (output_pins[3] == 0)
+  ((CCombo*) WProp->GetChildByName ("combo4"))->SetText ("0  NC");
+ else
+  {
+   spin = Window5.GetPinName (output_pins[3]);
+   ((CCombo*) WProp->GetChildByName ("combo4"))->SetText (itoa (output_pins[3]) + "  " + spin);
+  }
 
  ((CCombo*) WProp->GetChildByName ("combo5"))->SetItems (Items);
- if (input_pins[3] == 0)
+ if (output_pins[4] == 0)
   ((CCombo*) WProp->GetChildByName ("combo5"))->SetText ("0  NC");
  else
   {
-   spin = Window5.GetPinName (input_pins[3]);
-   ((CCombo*) WProp->GetChildByName ("combo5"))->SetText (itoa (input_pins[3]) + "  " + spin);
+   spin = Window5.GetPinName (output_pins[4]);
+   ((CCombo*) WProp->GetChildByName ("combo5"))->SetText (itoa (output_pins[4]) + "  " + spin);
   }
 
  ((CCombo*) WProp->GetChildByName ("combo6"))->SetItems (Items);
- if (input_pins[4] == 0)
+ if (output_pins[5] == 0)
   ((CCombo*) WProp->GetChildByName ("combo6"))->SetText ("0  NC");
  else
   {
-
-   spin = Window5.GetPinName (input_pins[4]);
-   ((CCombo*) WProp->GetChildByName ("combo6"))->SetText (itoa (input_pins[4]) + "  " + spin);
+   spin = Window5.GetPinName (output_pins[5]);
+   ((CCombo*) WProp->GetChildByName ("combo6"))->SetText (itoa (output_pins[5]) + "  " + spin);
   }
 
- ((CCombo*) WProp->GetChildByName ("combo9"))->SetText (itoa (kbits));
+ ((CCombo*) WProp->GetChildByName ("combo7"))->SetItems (Items);
+ if (output_pins[6] == 0)
+  ((CCombo*) WProp->GetChildByName ("combo7"))->SetText ("0  NC");
+ else
+  {
+   spin = Window5.GetPinName (output_pins[6]);
+   ((CCombo*) WProp->GetChildByName ("combo7"))->SetText (itoa (output_pins[6]) + "  " + spin);
+  }
+
+ ((CCombo*) WProp->GetChildByName ("combo8"))->SetItems (Items);
+ if (output_pins[7] == 0)
+  ((CCombo*) WProp->GetChildByName ("combo8"))->SetText ("0  NC");
+ else
+  {
+   spin = Window5.GetPinName (output_pins[7]);
+   ((CCombo*) WProp->GetChildByName ("combo8"))->SetText (itoa (output_pins[7]) + "  " + spin);
+  }
 
 
  ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
  ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
 
  ((CButton*) WProp->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+
 }
 
 void
-cpart_MI2C_24CXXX::ReadPropertiesWindow(CPWindow * WProp)
+cpart_VCD_Play::ReadPropertiesWindow(CPWindow * WProp)
 {
- input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
- input_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
- input_pins[2] = atoi (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ());
- input_pins[3] = atoi (((CCombo*) WProp->GetChildByName ("combo5"))->GetText ());
- input_pins[4] = atoi (((CCombo*) WProp->GetChildByName ("combo6"))->GetText ());
-
- int nkbits = atoi (((CCombo*) WProp->GetChildByName ("combo9"))->GetText ());
-
- if (nkbits != kbits)
-  {
-
-   kbits = nkbits;
-   mi2c_end (&mi2c);
-   mi2c_init (&mi2c, kbits);
-   mi2c_rst (&mi2c);
-   f_mi2c_name[0]='*';
-   f_mi2c_name[1]=0; 
-  }
+ output_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
+ output_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
+ output_pins[2] = atoi (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ());
+ output_pins[3] = atoi (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ());
+ output_pins[4] = atoi (((CCombo*) WProp->GetChildByName ("combo5"))->GetText ());
+ output_pins[5] = atoi (((CCombo*) WProp->GetChildByName ("combo6"))->GetText ());
+ output_pins[6] = atoi (((CCombo*) WProp->GetChildByName ("combo7"))->GetText ());
+ output_pins[7] = atoi (((CCombo*) WProp->GetChildByName ("combo8"))->GetText ());
 }
 
 void
-cpart_MI2C_24CXXX::PreProcess(void)
+cpart_VCD_Play::PreProcess(void)
 {
- const picpin * ppins = Window5.GetPinsValues ();
- unsigned char addr = 0x50;
-
- if (input_pins[0])
-  {
-   if (ppins[input_pins[0] - 1].value)addr |= 0x01;
-  }
- if (input_pins[1])
-  {
-   if (ppins[input_pins[1] - 1].value)addr |= 0x02;
-  }
- if (input_pins[2])
-  {
-
-   if (ppins[input_pins[2] - 1].value)addr |= 0x04;
-  }
-
- mi2c_set_addr (&mi2c, addr);
+ vcd_inc = 1.0 / ((timescale * 1e-9) * Window1.GetBoard ()->MGetInstClock ());
 }
 
 void
-cpart_MI2C_24CXXX::Process(void)
+cpart_VCD_Play::Process(void)
 {
- const picpin * ppins = Window5.GetPinsValues ();
 
- if ((input_pins[3] > 0)&&(input_pins[4] > 0))
-  Window5.Set_i2c_bus (input_pins[3] - 1, mi2c_io (&mi2c, ppins[input_pins[4] - 1].value, ppins[input_pins[3] - 1].value));
+ if (play)
+  {
 
- if (input_pins[3] > 0)
-  Window5.SetPin (input_pins[3], Window5.Get_i2c_bus (input_pins[3] - 1));
+   if (vcd_data[vcd_ptr].count <= vcd_count)
+    {
+     Window5.SetPin (output_pins[0], (vcd_data[vcd_ptr].data & 0x01) > 0);
+     Window5.SetPin (output_pins[1], (vcd_data[vcd_ptr].data & 0x02) > 0);
+     Window5.SetPin (output_pins[2], (vcd_data[vcd_ptr].data & 0x04) > 0);
+     Window5.SetPin (output_pins[3], (vcd_data[vcd_ptr].data & 0x08) > 0);
+     Window5.SetPin (output_pins[4], (vcd_data[vcd_ptr].data & 0x10) > 0);
+     Window5.SetPin (output_pins[5], (vcd_data[vcd_ptr].data & 0x20) > 0);
+     Window5.SetPin (output_pins[6], (vcd_data[vcd_ptr].data & 0x40) > 0);
+     Window5.SetPin (output_pins[7], (vcd_data[vcd_ptr].data & 0x80) > 0);
+     vcd_ptr++;
+     if (vcd_ptr >= vcd_data_count)
+      {
+       vcd_ptr = 0;
+       vcd_count = 0;
+      }
+    }
 
+
+   vcd_step += vcd_inc;
+   if (vcd_step >= 1)
+    {
+     vcd_count += (int) (vcd_step + 0.5);
+     vcd_step = 0;
+    }
+  }
 }
 
 void
-cpart_MI2C_24CXXX::EvMouseButtonPress(uint button, uint x, uint y, uint state)
+cpart_VCD_Play::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
  int i;
 
@@ -374,60 +405,48 @@ cpart_MI2C_24CXXX::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       {
       case I_LOAD:
        Window5.filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
-       Window5.filedialog1.SetFilter (lxT ("PICSimLab Binary File (*.bin)|*.bin"));
-       Window5.filedialog1.SetFileName (lxT ("untitled.bin"));
+       Window5.filedialog1.SetFilter (lxT ("Value change dump (*.vcd)|*.vcd"));
+       Window5.filedialog1.SetFileName (lxT ("untitled.vcd"));
        Window5.Setfdtype (id);
        Window5.filedialog1.Run ();
        break;
-      case I_SAVE:
-       Window5.filedialog1.SetType (lxFD_SAVE | lxFD_CHANGE_DIR);
-       Window5.filedialog1.SetFilter (lxT ("PICSimLab Binary File (*.bin)|*.bin"));
-       Window5.filedialog1.SetFileName (lxT ("untitled.bin"));
-       Window5.Setfdtype (id);
-       Window5.filedialog1.Run ();
+      case I_PLAY:
+       if (f_vcd_name[0] != '*')
+        {
+         play ^= 1;
+        }
        break;
       case I_VIEW:
-       FILE * fout;
-       fout = fopen (f_mi2c_tmp_name, "w");
-       if (fout)
-        {
-         for (unsigned int i = 0; i < mi2c.SIZE; i += 16)
-          {
-           fprintf (fout, "%04X: ", i);
-           for (int j = 0; j < 16; j++)
-            {
-             fprintf (fout, "%02X ", mi2c.data[j + i ]);
-            }
-           fprintf (fout, "\r\n");
-          }
-         fclose (fout);
-         #ifdef __EMSCRIPTEN__
-   EM_ASM_({
-	   var filename=UTF8ToString($0);
-           var buf = FS.readFile(filename);
-           var blob = new Blob([buf],  {"type" : "application/octet-stream" });
-           var text = URL.createObjectURL(blob);
+       if (f_vcd_name[0] == '*')break;
+#ifdef __EMSCRIPTEN__
+       EM_ASM_ ({
+                var filename = UTF8ToString ($0);
+                var buf = FS.readFile (filename);
+                var blob = new Blob ([buf],
+                 {
+                  "type" : "application/octet-stream" });
+                var text = URL.createObjectURL (blob);
 
-	   var element = document.createElement('a');
-           element.setAttribute('href', text);
-           element.setAttribute('download', filename);
+                var element = document.createElement ('a');
+                element.setAttribute ('href', text);
+                element.setAttribute ('download', filename);
 
-           element.style.display = 'none';
-           document.body.appendChild(element);
+                element.style.display = 'none';
+                document.body.appendChild (element);
 
-           element.click();
+                element.click ();
 
-           document.body.removeChild(element);
-           URL.revokeObjectURL(text);
-	  },f_mi2c_tmp_name);
-#else 
-         lxLaunchDefaultApplication (f_mi2c_tmp_name);
-#endif         
-        }
-       else
-        {
-         printf ("Error saving to file: %s \n", f_mi2c_tmp_name);
-        }
+                document.body.removeChild (element);
+                URL.revokeObjectURL (text);
+       }, f_vcd_name);
+#else
+#ifdef _WIN_
+       lxExecute (Window1.GetSharePath () + lxT ("/../tools/gtkwave/bin/gtkwave.exe ") + f_vcd_name);
+#else
+
+       lxExecute (lxString ("gtkwave ") + f_vcd_name, lxEXEC_MAKE_GROUP_LEADER);
+#endif
+#endif
        break;
       }
     }
@@ -435,51 +454,132 @@ cpart_MI2C_24CXXX::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 }
 
 void
-cpart_MI2C_24CXXX::filedialog_EvOnClose(int retId)
+cpart_VCD_Play::filedialog_EvOnClose(int retId)
 {
 
  if (retId)
   {
-
-   if ((Window5.filedialog1.GetType () == (lxFD_SAVE | lxFD_CHANGE_DIR)))
-    {
-     if (lxFileExists (Window5.filedialog1.GetFileName ()))
-      {
-
-       if (!Dialog (lxString ("Overwriting file: ") + basename (Window5.filedialog1.GetFileName ()) + "?"))
-        return;
-      }
-
-     FILE * fout;
-     fout = fopen (Window5.filedialog1.GetFileName (), "wb");
-     if (fout)
-      {
-       fwrite (mi2c.data, mi2c.SIZE, 1, fout);
-       fclose (fout);
-       strncpy (f_mi2c_name, Window5.filedialog1.GetFileName (), 199);
-      }
-     else
-      {
-       printf ("Error saving to file: %s \n", (const char *) Window5.filedialog1.GetFileName ().c_str ());
-      }
-    }
-
    if ((Window5.filedialog1.GetType () == (lxFD_OPEN | lxFD_CHANGE_DIR)))
     {
-     FILE * fout;
-     fout = fopen (Window5.filedialog1.GetFileName (), "rb");
-     if (fout)
-      {
-       fread (mi2c.data, mi2c.SIZE, 1, fout);
-       fclose (fout);
-      }
-     else
-      {
-       printf ("Error loading from file: %s \n", (const char *) Window5.filedialog1.GetFileName ().c_str ());
-      }
+     strncpy (f_vcd_name, Window5.filedialog1.GetFileName ().c_str (), 199);
+     LoadVCD (f_vcd_name);
     }
   }
 }
 
-part_init("MEM 24CXXX", cpart_MI2C_24CXXX);
+int
+cpart_VCD_Play::LoadVCD(lxString fname)
+{
+ FILE *fvcd;
+ fvcd = fopen (fname.c_str (), "r");
+ char buff[256];
+ int data = 0;
+ char *id;
+ char *value;
+ char signal[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+ int signal_count = 0;
+
+ vcd_data_count = 0;
+
+ unsigned int vcd_count_ = -1;
+
+ if (vcd_data)
+  {
+   free (vcd_data);
+   vcd_data = NULL;
+  }
+
+ if (fvcd)
+  {
+   while (fgets (buff, 255, fvcd))
+    {
+     if (buff[0] == '#')
+      {
+       vcd_data_count++;
+      }
+
+     if (!data) //option read
+      {
+       id = strtok (buff, " \n\r");
+       if (!strcmp (id, "$timescale"))
+        {
+         value = strtok (NULL, " ");
+         sscanf (value, "%fns", &timescale);
+        }
+       else if (!strcmp (id, "$var"))
+        {
+         value = strtok (NULL, " "); //wire
+         value = strtok (NULL, " "); //1
+         value = strtok (NULL, " "); //const
+         signal[signal_count++] = value[0];
+        }
+       else if (!strcmp (id, "$end") || (id[0] == '#'))
+        {
+         data = 1;
+        }
+      }
+    }
+   vcd_data_count--;
+
+   vcd_data = (vcd_reg_t *) malloc ((vcd_data_count + 1) * sizeof (vcd_reg_t));
+
+   if (!vcd_data)
+    {
+     printf ("vcd_play: malloc error \n");
+     fclose (fvcd);
+     return 0;
+    }
+
+   rewind (fvcd);
+
+   data = 0;
+   while (fgets (buff, 255, fvcd))
+    {
+     if (!data) //option read
+      {
+       id = strtok (buff, " \n\r");
+       if (!strcmp (id, "$end") || (id[0] == '#'))
+        {
+         data = 1;
+        }
+      }
+     else //data read
+      {
+       if (buff[0] == '#')
+        {
+         vcd_count_++;
+         sscanf (buff + 1, "%lu", &vcd_data[vcd_count_].count);
+        }
+       else
+        {
+         for (int i = 0; i < 8; i++)
+          {
+           if (signal[i] == buff[1])
+            {
+             if (buff[0] == '1')
+              {
+               vcd_data[vcd_count_].data |= (1 << i);
+               break;
+              }
+             else
+              {
+               vcd_data[vcd_count_].data &= ~(1 << i);
+               break;
+              }
+            }
+          }
+        }
+      }
+    }
+   fclose (fvcd);
+  }
+ else
+  {
+   printf ("vcd play: Error open file %s\n", (const char *) fname.c_str ());
+  }
+ return 0;
+}
+
+
+part_init("VCD Play", cpart_VCD_Play);
 

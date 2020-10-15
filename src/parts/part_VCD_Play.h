@@ -23,42 +23,33 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef PART_MI2C_24CXXX_H
-#define PART_MI2C_24CXXX_H
+#ifndef PART_VCD_Play_H
+#define PART_VCD_Play_H
 
 #include<lxrad.h>
 #include"part.h"
-#include"../devices/lcd_pcd8544.h"
 
-class cpart_MI2C_24CXXX : public part {
+typedef struct
+{
+unsigned long count;
+unsigned char data;
+}vcd_reg_t;
+
+class cpart_VCD_Play : public part {
 public:
 
-    lxString GetName(void) {
-        return lxT("MEM 24CXXX");
-    };
-    lxString GetHelpURL(void){return lxT("MEM_24CXXX.html");};
+    lxString GetName(void) { return lxT("VCD Play");};
+    lxString GetHelpURL(void){return lxT("VCD_play.html");};
     lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
-    cpart_MI2C_24CXXX(unsigned x, unsigned y);
-    ~cpart_MI2C_24CXXX(void);
+    cpart_VCD_Play(unsigned x, unsigned y);
+    ~cpart_VCD_Play(void);
     void Draw(void);
     void PreProcess(void);
     void Process(void);
-
-    lxString GetPictureFileName(void) {
-        return lxT("MI2C_24CXXX/MI2C_24CXXX.png");
-    };
-
-    lxString GetInputMapFile(void) {
-        return lxT("MI2C_24CXXX/MI2C_24CXXX_i.map");
-    };
-
-    lxString GetOutputMapFile(void) {
-        return lxT("Common/IC8_o.map");
-    };
-
-    lxString GetPropertiesWindowFile(void) {
-        return lxT("MI2C_24CXXX/MI2C_24CXXX.lxrad");
-    };
+    lxString GetPictureFileName(void){return lxT("VCD_Play/VCD_Play.png");};
+    lxString GetInputMapFile(void){return lxT("VCD_Play/VCD_Play_i.map");};
+    lxString GetOutputMapFile(void){return lxT("VCD_Play/VCD_Play_o.map");};
+    lxString GetPropertiesWindowFile(void){return lxT("VCD_Play/VCD_Play.lxrad");};
     void EvMouseButtonPress(uint button, uint x, uint y,uint state);
     void ConfigurePropertiesWindow(CPWindow * WProp);
     void filedialog_EvOnClose(int retId);
@@ -67,17 +58,19 @@ public:
     void ReadPreferences(lxString value);
     unsigned short get_in_id(char * name);
     unsigned short get_out_id(char * name);
+    int LoadVCD(lxString fname);
 private:
-    unsigned char input_pins[5];
-    mi2c_t mi2c;
-    int kbits;
-    char f_mi2c_name[200];
-    char f_mi2c_tmp_name[200];
-    FILE * f_mi2c;
+    unsigned char output_pins[8];
+    char f_vcd_name[200];
+    unsigned char play;
+    float timescale;
+    unsigned long vcd_count;
+    float vcd_inc;
+    float vcd_step;
+    vcd_reg_t *vcd_data;
+    int vcd_data_count;
+    int vcd_ptr;
 };
 
-
-
-
-#endif /* PART_MI2C_24CXXX_H */
+#endif /* PART_VCD_Play_H */
 

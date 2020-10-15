@@ -1,0 +1,27 @@
+<img src="[push_buttons] (sobrescrita)" width="584" height="92" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:Luis Claudio Gamboa Lopes      -->
+<area shape="rect" coords="8,65,57,84" href="P1" />
+<area shape="rect" coords="68,65,117,84" href="P2" />
+<area shape="rect" coords="128,65,177,84" href="P3" />
+<area shape="rect" coords="187,65,236,84" href="P4" />
+<area shape="rect" coords="245,65,294,84" href="P5" />
+<area shape="rect" coords="307,65,356,84" href="P6" />
+<area shape="rect" coords="367,65,416,84" href="P7" />
+<area shape="rect" coords="426,65,475,84" href="P8" />
+<area shape="circle" coords="32,33,11" href="L1" />
+<area shape="circle" coords="91,33,11" href="L2" />
+<area shape="circle" coords="150,34,11" href="L3" />
+<area shape="circle" coords="211,34,11" href="L4" />
+<area shape="circle" coords="269,35,11" href="L5" />
+<area shape="circle" coords="330,35,11" href="L6" />
+<area shape="circle" coords="390,35,11" href="L7" />
+<area shape="circle" coords="448,36,11" href="L8" />
+<area shape="rect" coords="107,3,453,18" href="NAME" />
+<area shape="circle" coords="513,66,11" href="REC" />
+</map>
