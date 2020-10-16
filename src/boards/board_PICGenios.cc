@@ -671,16 +671,6 @@ cboard_PICGenios::Run_CPU(void)
 
  if (use_spare)Window5.PreProcess ();
 
- /*
- for(i=0;i < pic.PINCOUNT;i++)
- {
-    alm[i]=0;
-    alm1[i]=0;
-    alm2[i]=0;
-    alm3[i]=0;
-    alm4[i]=0;
- };
-  */
  memset (alm, 0, 40 * sizeof (unsigned int));
  memset (alm1, 0, 40 * sizeof (unsigned int));
  memset (alm2, 0, 40 * sizeof (unsigned int));
@@ -818,61 +808,13 @@ cboard_PICGenios::Run_CPU(void)
 
     if (use_oscope)Window4.SetSample ();
     if (use_spare)Window5.Process ();
-    /*
-            for(pi=0;pi < pic.PINCOUNT;pi++)
-            {
-               alm[pi]+=pins[pi].value;
-               //if((!pins[pi].dir)&&(pins[pi].value)) alm[pi]++;
-            }
-     */
+    
+    //increment mean value counter if pin is high 
+    if (j < pic.PINCOUNT)
+     alm[j] += pins[j].value;
 
     if (j >= JUMPSTEPS)
      {
-      //outputs     
-      alm[32] += pins[32].value;
-      alm[33] += pins[33].value;
-      alm[34] += pins[34].value;
-      alm[35] += pins[35].value;
-      alm[36] += pins[36].value;
-      alm[37] += pins[37].value;
-      alm[38] += pins[38].value;
-      alm[39] += pins[39].value;
-
-      alm[18] += pins[18].value;
-      alm[19] += pins[19].value;
-      alm[20] += pins[20].value;
-      alm[21] += pins[21].value;
-      alm[26] += pins[26].value;
-      alm[27] += pins[27].value;
-      alm[28] += pins[28].value;
-      alm[29] += pins[29].value;
-
-      alm[23] += pins[23].value;
-      alm[16] += pins[16].value;
-      alm[14] += pins[14].value;
-      alm[7] += pins[7].value;
-      alm[15] += pins[15].value;
-
-      //inputs
-      if ((pins[32].dir)&&(p_BT1))alm[32]++;
-      if ((pins[33].dir)&&(p_BT2))alm[33]++;
-      if ((pins[34].dir)&&(p_BT3))alm[34]++;
-      if ((pins[35].dir)&&(p_BT4))alm[35]++;
-
-      if ((pins[36].dir)&&(p_BT5))alm[36]++;
-      if ((pins[37].dir)&&(p_BT6))alm[37]++;
-
-      if ((pins[38].dir))alm[38]++;
-      if ((pins[39].dir))alm[39]++;
-
-      if ((pins[18].dir))alm[18]++;
-      if ((pins[19].dir))alm[19]++;
-      if ((pins[20].dir))alm[20]++;
-      if ((pins[21].dir))alm[21]++;
-      if ((pins[26].dir))alm[26]++;
-      if ((pins[27].dir))alm[27]++;
-      if ((pins[28].dir))alm[28]++;
-      if ((pins[29].dir))alm[29]++;
 
       for (pi = 18; pi < 30; pi++)
        {

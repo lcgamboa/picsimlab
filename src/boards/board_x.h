@@ -56,7 +56,7 @@ class cboard_x:public board_picsim
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
-      lxString GetSupportedDevices(void){return lxT("PIC18F4550,PIC16F877A,");};
+      lxString GetSupportedDevices(void){return lxT("PIC16F877A,PIC18F4550,PIC18F4620,");};
       //Return the filename of board picture 
       lxString GetPictureFileName(void){return lxT("x/board.png");};
       //Return the filename of board picture input map 

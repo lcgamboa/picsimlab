@@ -508,16 +508,7 @@ cboard_McLab2::Run_CPU(void)
 
  int JUMPSTEPS = Window1.GetJUMPSTEPS ();
  long int NSTEPJ = Window1.GetNSTEPJ ();
- /*  
-  for(pi=0;pi < pic.PINCOUNT;pi++)
-     {
-       alm[pi]=0;
-       alm1[pi]=0;
-       alm2[pi]=0;
-       alm3[pi]=0;
-       alm4[pi]=0;
-     };
-  */
+
  memset (alm, 0, 40 * sizeof (unsigned int));
  memset (alm1, 0, 40 * sizeof (unsigned int));
  memset (alm2, 0, 40 * sizeof (unsigned int));
@@ -555,33 +546,12 @@ cboard_McLab2::Run_CPU(void)
     if (use_oscope)Window4.SetSample ();
     if (use_spare)Window5.Process ();
 
+    //increment mean value counter if pin is high 
+    if (j < pic.PINCOUNT)
+     alm[j] += pins[j].value;
+    
     if (j >= JUMPSTEPS)
      {
-      /*
-              for(pi=0;pi < pic.PINCOUNT;pi++)
-              {
-                 //if((!pins[pi].dir)&&(pins[pi].value)) alm[pi]++;
-                 alm[pi]+=pins[pi].value;
-              }
-       */
-
-      //output 
-      alm[32] += pins[32].value;
-      alm[33] += pins[33].value;
-      alm[34] += pins[34].value;
-      alm[35] += pins[35].value;
-
-      alm[6] += pins[6].value;
-      alm[15] += pins[15].value;
-      alm[16] += pins[16].value;
-
-
-      //input
-      if ((pins[32].dir)&&(p_BT1))alm[32]++;
-      if ((pins[33].dir)&&(p_BT2))alm[33]++;
-      if ((pins[34].dir)&&(p_BT3))alm[34]++;
-      if ((pins[35].dir)&&(p_BT4))alm[35]++;
-
 
       for (pi = 18; pi < 30; pi++)
        {
