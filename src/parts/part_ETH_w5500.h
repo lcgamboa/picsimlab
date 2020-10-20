@@ -46,6 +46,7 @@ class cpart_ETH_w5500:public part
       lxString GetInputMapFile(void){return lxT("ETH_w5500/w5500_i.map");};
       lxString GetOutputMapFile(void){return lxT("ETH_w5500/w5500_o.map");};
       lxString GetPropertiesWindowFile(void){return lxT("ETH_w5500/w5500.lxrad");};
+      void Reset(void);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);

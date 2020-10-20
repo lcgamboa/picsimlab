@@ -108,6 +108,12 @@ cpart_ETH_w5500::~cpart_ETH_w5500(void)
  eth_w5500_end (&ethw);
 }
 
+void 
+cpart_ETH_w5500::Reset(void)
+{
+  eth_w5500_rst (&ethw);
+}
+      
 void
 cpart_ETH_w5500::Draw(void)
 {

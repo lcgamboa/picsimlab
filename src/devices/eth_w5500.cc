@@ -958,450 +958,446 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
    eth->outsr = (eth->outsr << 1);
    eth->bc++;
 
-   switch (eth->bc)
+   if (!(eth->bc % 8))//only multiple of 8
     {
-    case 0: //nothing
-    case 8: //half address
-     break;
-    case 16: //full address
-     eth->addr = eth->insr;
-     dprintf ("----------------------------------------\n");
-     dprintf ("dsr %03i w5500= 0x%04X  addr=0x%04X  \n", eth->bc, eth->insr, eth->addr);
-     break;
-    case 24: //control
-     eth->control = eth->insr & 0x00FF;
-#ifdef DEBUG     
-     dprintf ("dsr %03i w5500= 0x%04X  ctrl=0x%02X  BSB=%s\n", eth->bc, eth->insr, eth->control, debug_BSB (eth));
-#endif
-     if (!RWB)//read
+     switch (eth->bc)
       {
-       switch (BSB)
-        {
-        case B_COMMON:
-         eth->outsr = eth->Common[eth->addr];
-         break;
-
-        case B_SCK0RG:
-        case B_SCK1RG:
-        case B_SCK2RG:
-        case B_SCK3RG:
-        case B_SCK4RG:
-        case B_SCK5RG:
-        case B_SCK6RG:
-        case B_SCK7RG:
-         n = (BSB - B_SCK0RG) / 4;
-         switch (eth->addr)
-          {
-          case Sn_TX_WR0: //for compatibility ?
-          case Sn_TX_WR1:
-           eth->outsr = 0;
-           break;
-          default:
-           eth->outsr = eth->Socket[n][eth->addr];
-           break;
-          }
-         break;
-        case B_SCK0RX:
-        case B_SCK1RX:
-        case B_SCK2RX:
-        case B_SCK3RX:
-        case B_SCK4RX:
-        case B_SCK5RX:
-        case B_SCK6RX:
-        case B_SCK7RX:
-         n = (BSB - B_SCK0RX) / 4;
-         size = (eth->Socket[n][Sn_RXBUF_SIZE]*1024);
-         addr = eth->addr & (size - 1);
-         eth->outsr = eth->RX_Mem[eth->RX_ptr[n] + addr];
-         break;
-        case B_SCK0TX:
-        case B_SCK1TX:
-        case B_SCK2TX:
-        case B_SCK3TX:
-        case B_SCK4TX:
-        case B_SCK5TX:
-        case B_SCK6TX:
-        case B_SCK7TX:
-         n = (BSB - B_SCK0TX) / 4;
-         size = (eth->Socket[n][Sn_TXBUF_SIZE]*1024);
-         addr = eth->addr & (size - 1);
-         eth->outsr = eth->TX_Mem[eth->TX_ptr[n] + addr];
-         break;
-        default:
-         eth->outsr = 0;
-         break;
-        }
-       dprintf ("dsr %03i w5500= 0x%04X  read data=0x%02X (%i)\n", eth->bc, eth->insr, eth->outsr, offset);
-      }
-     break;
-    default: //data
-     if (eth->bc % 8)//not multiple of 8
-      {
+      case 0: //nothing
+      case 8: //half address
        break;
-      }
-
-     offset = (eth->bc - 32) / 8;
-     if (RWB)//write
-      {
-       switch (BSB)
+      case 16: //full address
+       eth->addr = eth->insr;
+       dprintf ("----------------------------------------\n");
+       dprintf ("dsr %03i w5500= 0x%04X  addr=0x%04X  \n", eth->bc, eth->insr, eth->addr);
+       break;
+      case 24: //control
+       eth->control = eth->insr & 0x00FF;
+#ifdef DEBUG     
+       dprintf ("dsr %03i w5500= 0x%04X  ctrl=0x%02X  BSB=%s\n", eth->bc, eth->insr, eth->control, debug_BSB (eth));
+#endif
+       if (!RWB)//read
         {
-        case B_COMMON:
-         if ((eth->addr + offset) < 0x40)
+         switch (BSB)
           {
-           eth->Common[eth->addr + offset] = eth->insr & 0x00FF;
-           switch (eth->addr + offset)
+          case B_COMMON:
+           eth->outsr = eth->Common[eth->addr];
+           break;
+
+          case B_SCK0RG:
+          case B_SCK1RG:
+          case B_SCK2RG:
+          case B_SCK3RG:
+          case B_SCK4RG:
+          case B_SCK5RG:
+          case B_SCK6RG:
+          case B_SCK7RG:
+           n = (BSB - B_SCK0RG) / 4;
+           switch (eth->addr)
             {
-            case CR_MR:
-             if (eth->Common[CR_MR] & 0x80)
-              {
-               //reset
-               eth_w5500_rst (eth);
-              }
+            case Sn_TX_WR0: //for compatibility ?
+            case Sn_TX_WR1:
+             eth->outsr = 0;
+             break;
+            default:
+             eth->outsr = eth->Socket[n][eth->addr];
              break;
             }
+           break;
+          case B_SCK0RX:
+          case B_SCK1RX:
+          case B_SCK2RX:
+          case B_SCK3RX:
+          case B_SCK4RX:
+          case B_SCK5RX:
+          case B_SCK6RX:
+          case B_SCK7RX:
+           n = (BSB - B_SCK0RX) / 4;
+           size = (eth->Socket[n][Sn_RXBUF_SIZE]*1024);
+           addr = eth->addr & (size - 1);
+           eth->outsr = eth->RX_Mem[eth->RX_ptr[n] + addr];
+           break;
+          case B_SCK0TX:
+          case B_SCK1TX:
+          case B_SCK2TX:
+          case B_SCK3TX:
+          case B_SCK4TX:
+          case B_SCK5TX:
+          case B_SCK6TX:
+          case B_SCK7TX:
+           n = (BSB - B_SCK0TX) / 4;
+           size = (eth->Socket[n][Sn_TXBUF_SIZE]*1024);
+           addr = eth->addr & (size - 1);
+           eth->outsr = eth->TX_Mem[eth->TX_ptr[n] + addr];
+           break;
+          default:
+           eth->outsr = 0;
+           break;
           }
-         break;
-        case B_SCK0RG:
-        case B_SCK1RG:
-        case B_SCK2RG:
-        case B_SCK3RG:
-        case B_SCK4RG:
-        case B_SCK5RG:
-        case B_SCK6RG:
-        case B_SCK7RG:
-         n = (BSB - B_SCK0RG) / 4;
-         if ((eth->addr + offset) < 0x30)
+         dprintf ("dsr %03i w5500= 0x%04X  read data=0x%02X (%i)\n", eth->bc, eth->insr, eth->outsr, offset);
+        }
+       break;
+      default: //data
+       offset = (eth->bc - 32) / 8;
+       if (RWB)//write
+        {
+         switch (BSB)
           {
-           eth->Socket[n][eth->addr + offset] = eth->insr & 0x00FF;
-           switch (eth->addr + offset)
+          case B_COMMON:
+           if ((eth->addr + offset) < 0x40)
             {
-            case Sn_CR:
-             if (eth->Socket[n][Sn_CR])
+             eth->Common[eth->addr + offset] = eth->insr & 0x00FF;
+             switch (eth->addr + offset)
               {
-               dprintf ("eth_w5500: socket cmd = 0x%02X\n", eth->Socket[n][Sn_CR]);
-               switch (eth->Socket[n][Sn_CR])
+              case CR_MR:
+               if (eth->Common[CR_MR] & 0x80)
                 {
-                case OPEN:
-                 dsprintf ("eth_w5500: Socket %i Open type(%i)\n", n, eth->Socket[n][Sn_MR]& 0x0F);
-
-                 switch (eth->Socket[n][Sn_MR]& 0x0F)
+                 //reset
+                 eth_w5500_rst (eth);
+                }
+               break;
+              }
+            }
+           break;
+          case B_SCK0RG:
+          case B_SCK1RG:
+          case B_SCK2RG:
+          case B_SCK3RG:
+          case B_SCK4RG:
+          case B_SCK5RG:
+          case B_SCK6RG:
+          case B_SCK7RG:
+           n = (BSB - B_SCK0RG) / 4;
+           if ((eth->addr + offset) < 0x30)
+            {
+             eth->Socket[n][eth->addr + offset] = eth->insr & 0x00FF;
+             switch (eth->addr + offset)
+              {
+              case Sn_CR:
+               if (eth->Socket[n][Sn_CR])
+                {
+                 dprintf ("eth_w5500: socket cmd = 0x%02X\n", eth->Socket[n][Sn_CR]);
+                 switch (eth->Socket[n][Sn_CR])
                   {
-                  case Sn_MR_CLOSE:
+                  case OPEN:
+                   dsprintf ("eth_w5500: Socket %i Open type(%i)\n", n, eth->Socket[n][Sn_MR]& 0x0F);
+
+                   switch (eth->Socket[n][Sn_MR]& 0x0F)
+                    {
+                    case Sn_MR_CLOSE:
+                     eth->Socket[n][Sn_SR] = SOCK_CLOSED;
+                     eth->sockfd[n] = INVALID_SOCKET_VALUE;
+                     break;
+                    case Sn_MR_TCP:
+                     eth->Socket[n][Sn_SR] = SOCK_INIT;
+                     if ((eth->sockfd[n] = socket (PF_INET, SOCK_STREAM, 0)) < 0)
+                      {
+                       printf ("eth_w5500: socket creation failed\n");
+                       eth->sockfd[n] = INVALID_SOCKET_VALUE;
+                       eth->Socket[n][Sn_SR] = SOCK_CLOSED;
+                      }
+                     break;
+                    case Sn_MR_UDP:
+                     eth->Socket[n][Sn_SR] = SOCK_UDP;
+                     if ((eth->sockfd[n] = socket (AF_INET, SOCK_DGRAM, 0)) < 0)
+                      {
+                       printf ("eth_w5500: socket creation failed\n");
+                       eth->sockfd[n] = INVALID_SOCKET_VALUE;
+                       eth->Socket[n][Sn_SR] = SOCK_CLOSED;
+                      }
+                     break;
+                    case S0_MR_MACRAW:
+                     if (n == 0)
+                      {
+                       printf ("eth_w5500: S0_MR_MACRAW Not implemented\n");
+                      }
+                     break;
+                    }
+                   writeWord (eth->Socket[n], Sn_TX_RD0, 0);
+                   writeWord (eth->Socket[n], Sn_TX_WR0, 0);
+                   writeWord (eth->Socket[n], Sn_RX_RD0, 0);
+                   writeWord (eth->Socket[n], Sn_RX_WR0, 0);
+                   writeWord (eth->Socket[n], Sn_TX_FSR0, eth->Socket[n][Sn_TXBUF_SIZE] * 1024);
+                   writeWord (eth->Socket[n], Sn_RX_RSR0, 0);
+                   eth->status[n] = 0;
+                   setnblock (eth->sockfd[n]);
+                   break;
+                  case LISTEN:
+                   if ((eth->Socket[n][Sn_MR]& 0x0F) != Sn_MR_TCP)break;
+
+                   skt_port = readWord (eth->Socket[n], Sn_PORT0);
+
+                   if (skt_port < 2000) //avoid system services
+                    {
+                     skt_port += 2000;
+                    }
+
+                   if (eth->Socket[n][Sn_SR] != SOCK_INIT) break;
+
+                   dsprintf ("eth_w5500: Socket %i Listen on port %i\n", n, skt_port);
+                   eth->bindp[n] = skt_port;
+
+
+                   eth->Socket[n][Sn_SR] = SOCK_LISTEN;
+
+                   if (eth->listenfd == INVALID_SOCKET_VALUE)
+                    {
+
+                     if ((eth->listenfd = socket (PF_INET, SOCK_STREAM, 0)) < 0)
+                      {
+                       eth->sockfd[n] = INVALID_SOCKET_VALUE;
+                       eth->Socket[n][Sn_SR] = SOCK_CLOSED;
+                       break;
+                      }
+
+                     if (setsockopt (eth->listenfd, SOL_SOCKET, SO_REUSEADDR, (const char*) &reuse, sizeof (reuse)) < 0)
+                      {
+                       perror ("eth_w5500: setsockopt(SO_REUSEADDR) failed");
+                       close (eth->sockfd[n]);
+                       eth->sockfd[n] = INVALID_SOCKET_VALUE;
+                       eth->Socket[n][Sn_SR] = SOCK_CLOSED;
+                       eth->listenfd = -1;
+                       eth->status[n] = ER_REUSE;
+                       break;
+                      }
+
+                     memset (&serv, 0, sizeof (serv));
+                     serv.sin_family = AF_INET;
+                     serv.sin_addr.s_addr = htonl (INADDR_ANY);
+                     serv.sin_port = htons (skt_port);
+                     if (bind (eth->listenfd, (sockaddr *) & serv, sizeof (serv)) < 0)
+                      {
+                       printf ("eth_w5500: bind error : %s \n", strerror (errno));
+                       close (eth->sockfd[n]);
+                       eth->sockfd[n] = INVALID_SOCKET_VALUE;
+                       eth->Socket[n][Sn_SR] = SOCK_CLOSED;
+                       eth->status[n] = ER_BIND;
+                      }
+                     if (listen (eth->listenfd, SOMAXCONN) < 0)
+                      {
+                       printf ("eth_w5500: listen error : %s \n", strerror (errno));
+                       close (eth->sockfd[n]);
+                       eth->sockfd[n] = INVALID_SOCKET_VALUE;
+                       eth->Socket[n][Sn_SR] = SOCK_CLOSED;
+                       eth->status[n] = ER_LIST;
+                      }
+
+                     setnblock (eth->listenfd);
+                    }
+                   else
+                    {
+                     eth->sockfd[n] = INVALID_SOCKET_VALUE;
+                    }
+                   break;
+                  case CONNECT:
+                   if ((eth->Socket[n][Sn_MR]& 0x0F) != Sn_MR_TCP)break;
+                   eth->status[n] = 0;
+                   eth->Socket[n][Sn_SR] = SOCK_SYNSENT;
+                   conn_timeout[n] = 0;
+                   sprintf (skt_addr, "%i.%i.%i.%i", eth->Socket[n][Sn_DIPR0], eth->Socket[n][Sn_DIPR1], eth->Socket[n][Sn_DIPR2], eth->Socket[n][Sn_DIPR3]);
+                   skt_port = readWord (eth->Socket[n], Sn_DPORT0);
+                   dsprintf ("Socket %i try to connect to %s:%i\n", n, skt_addr, skt_port);
+
+                   break;
+                  case DISCON:
+                   if ((eth->Socket[n][Sn_MR]& 0x0F) != Sn_MR_TCP)break;
+                   dsprintf ("Socket %i Disconnect\n", n);
+                   if (shutdown (eth->sockfd[n], SHUT_RDWR) < 0)
+                    {
+                     printf ("eth_w5500: shutdown error : %s \n", strerror (errno));
+                     eth->status[n] = ER_SHUT;
+                    }
+                  case CLOSE:
+                   dsprintf ("Socket %i Close\n", n);
                    eth->Socket[n][Sn_SR] = SOCK_CLOSED;
+                   close (eth->sockfd[n]);
                    eth->sockfd[n] = INVALID_SOCKET_VALUE;
                    break;
-                  case Sn_MR_TCP:
-                   eth->Socket[n][Sn_SR] = SOCK_INIT;
-                   if ((eth->sockfd[n] = socket (PF_INET, SOCK_STREAM, 0)) < 0)
+                  case SEND:
+
+                   if (eth->link)eth->active = 2;
+
+                   switch (eth->Socket[n][Sn_MR]& 0x0F)
                     {
-                     printf ("eth_w5500: socket creation failed\n");
-                     eth->sockfd[n] = INVALID_SOCKET_VALUE;
-                     eth->Socket[n][Sn_SR] = SOCK_CLOSED;
-                    }
-                   break;
-                  case Sn_MR_UDP:
-                   eth->Socket[n][Sn_SR] = SOCK_UDP;
-                   if ((eth->sockfd[n] = socket (AF_INET, SOCK_DGRAM, 0)) < 0)
-                    {
-                     printf ("eth_w5500: socket creation failed\n");
-                     eth->sockfd[n] = INVALID_SOCKET_VALUE;
-                     eth->Socket[n][Sn_SR] = SOCK_CLOSED;
-                    }
-                   break;
-                  case S0_MR_MACRAW:
-                   if (n == 0)
-                    {
-                     printf ("eth_w5500: S0_MR_MACRAW Not implemented\n");
-                    }
-                   break;
-                  }
-                 writeWord (eth->Socket[n], Sn_TX_RD0, 0);
-                 writeWord (eth->Socket[n], Sn_TX_WR0, 0);
-                 writeWord (eth->Socket[n], Sn_RX_RD0, 0);
-                 writeWord (eth->Socket[n], Sn_RX_WR0, 0);
-                 writeWord (eth->Socket[n], Sn_TX_FSR0, eth->Socket[n][Sn_TXBUF_SIZE] * 1024);
-                 writeWord (eth->Socket[n], Sn_RX_RSR0, 0);
-                 eth->status[n] = 0;
-                 setnblock (eth->sockfd[n]);
-                 break;
-                case LISTEN:
-                 if ((eth->Socket[n][Sn_MR]& 0x0F) != Sn_MR_TCP)break;
+                    case Sn_MR_TCP:
 
-                 skt_port = readWord (eth->Socket[n], Sn_PORT0);
+                     if (eth->Socket[n][Sn_SR] != SOCK_ESTABLISHED)break;
 
-                 if (skt_port < 2000) //avoid system services
-                  {
-                   skt_port += 2000;
-                  }
-
-                 if (eth->Socket[n][Sn_SR] != SOCK_INIT) break;
-
-                 dsprintf ("eth_w5500: Socket %i Listen on port %i\n", n, skt_port);
-                 eth->bindp[n] = skt_port;
-
-
-                 eth->Socket[n][Sn_SR] = SOCK_LISTEN;
-
-                 if (eth->listenfd == INVALID_SOCKET_VALUE)
-                  {
-
-                   if ((eth->listenfd = socket (PF_INET, SOCK_STREAM, 0)) < 0)
-                    {
-                     eth->sockfd[n] = INVALID_SOCKET_VALUE;
-                     eth->Socket[n][Sn_SR] = SOCK_CLOSED;
-                     break;
-                    }
-
-                   if (setsockopt (eth->listenfd, SOL_SOCKET, SO_REUSEADDR, (const char*) &reuse, sizeof (reuse)) < 0)
-                    {
-                     perror ("eth_w5500: setsockopt(SO_REUSEADDR) failed");
-                     close (eth->sockfd[n]);
-                     eth->sockfd[n] = INVALID_SOCKET_VALUE;
-                     eth->Socket[n][Sn_SR] = SOCK_CLOSED;
-                     eth->listenfd = -1;
-                     eth->status[n] = ER_REUSE;
-                     break;
-                    }
-
-                   memset (&serv, 0, sizeof (serv));
-                   serv.sin_family = AF_INET;
-                   serv.sin_addr.s_addr = htonl (INADDR_ANY);
-                   serv.sin_port = htons (skt_port);
-                   if (bind (eth->listenfd, (sockaddr *) & serv, sizeof (serv)) < 0)
-                    {
-                     printf ("eth_w5500: bind error : %s \n", strerror (errno));
-                     close (eth->sockfd[n]);
-                     eth->sockfd[n] = INVALID_SOCKET_VALUE;
-                     eth->Socket[n][Sn_SR] = SOCK_CLOSED;
-                     eth->status[n] = ER_BIND;
-                    }
-                   if (listen (eth->listenfd, SOMAXCONN) < 0)
-                    {
-                     printf ("eth_w5500: listen error : %s \n", strerror (errno));
-                     close (eth->sockfd[n]);
-                     eth->sockfd[n] = INVALID_SOCKET_VALUE;
-                     eth->Socket[n][Sn_SR] = SOCK_CLOSED;
-                     eth->status[n] = ER_LIST;
-                    }
-
-                   setnblock (eth->listenfd);
-                  }
-                 else
-                  {
-                    eth->sockfd[n] = INVALID_SOCKET_VALUE;
-                  }
-                 break;
-                case CONNECT:
-                 if ((eth->Socket[n][Sn_MR]& 0x0F) != Sn_MR_TCP)break;
-                 eth->status[n] = 0;
-                 eth->Socket[n][Sn_SR] = SOCK_SYNSENT;
-                 conn_timeout[n] = 0;
-                 sprintf (skt_addr, "%i.%i.%i.%i", eth->Socket[n][Sn_DIPR0], eth->Socket[n][Sn_DIPR1], eth->Socket[n][Sn_DIPR2], eth->Socket[n][Sn_DIPR3]);
-                 skt_port = readWord (eth->Socket[n], Sn_DPORT0);
-                 dsprintf ("Socket %i try to connect to %s:%i\n", n, skt_addr, skt_port);
-
-                 break;
-                case DISCON:
-                 if ((eth->Socket[n][Sn_MR]& 0x0F) != Sn_MR_TCP)break;
-                 dsprintf ("Socket %i Disconnect\n", n);
-                 if (shutdown (eth->sockfd[n], SHUT_RDWR) < 0)
-                  {
-                   printf ("eth_w5500: shutdown error : %s \n", strerror (errno));
-                   eth->status[n] = ER_SHUT;
-                  }
-                case CLOSE:
-                 dsprintf ("Socket %i Close\n", n);
-                 eth->Socket[n][Sn_SR] = SOCK_CLOSED;
-                 close (eth->sockfd[n]);
-                 eth->sockfd[n] = INVALID_SOCKET_VALUE;
-                 break;
-                case SEND:
-
-                 if (eth->link)eth->active = 2;
-
-                 switch (eth->Socket[n][Sn_MR]& 0x0F)
-                  {
-                  case Sn_MR_TCP:
-
-                   if (eth->Socket[n][Sn_SR] != SOCK_ESTABLISHED)break;
-
-                   size = readWord (eth->Socket[n], Sn_TX_WR0);
+                     size = readWord (eth->Socket[n], Sn_TX_WR0);
 #ifdef DUMP
-                   sprintf (sfname, "/tmp/%03i_send_tcp.bin", scont++);
-                   fouts = fopen (sfname, "w");
-                   fwrite (&eth->TX_Mem[eth->TX_ptr[n]], size, 1, fouts);
-                   fclose (fouts);
+                     sprintf (sfname, "/tmp/%03i_send_tcp.bin", scont++);
+                     fouts = fopen (sfname, "w");
+                     fwrite (&eth->TX_Mem[eth->TX_ptr[n]], size, 1, fouts);
+                     fclose (fouts);
 #endif
-                   if ((s = send (eth->sockfd[n], (const char *) &eth->TX_Mem[eth->TX_ptr[n]], size, MSG_NOSIGNAL)) < 0)
-                    {
-                     printf ("eth_w5500: send error : %s \n", strerror (errno));
-                     eth->Socket[n][Sn_SR] = SOCK_CLOSED;
-                     eth->status[n] = ER_SEND;
-                    }
+                     if ((s = send (eth->sockfd[n], (const char *) &eth->TX_Mem[eth->TX_ptr[n]], size, MSG_NOSIGNAL)) < 0)
+                      {
+                       printf ("eth_w5500: send error : %s \n", strerror (errno));
+                       eth->Socket[n][Sn_SR] = SOCK_CLOSED;
+                       eth->status[n] = ER_SEND;
+                      }
 
-                   if (s > 0)
-                    {
-                     dsprintf ("Socket %i Send %i\n", n, s);
+                     if (s > 0)
+                      {
+                       dsprintf ("Socket %i Send %i\n", n, s);
+
+                       size = (eth->Socket[n][Sn_TXBUF_SIZE]*1024);
+                       writeWord (eth->Socket[n], Sn_TX_FSR0, (size));
+                       writeWord (eth->Socket[n], Sn_TX_WR0, 0);
+                       writeWord (eth->Socket[n], Sn_TX_RD0, 0);
+                      }
+                     break;
+                    case Sn_MR_UDP:
+
+                     sprintf (skt_addr, "%i.%i.%i.%i", eth->Socket[n][Sn_DIPR0], eth->Socket[n][Sn_DIPR1], eth->Socket[n][Sn_DIPR2], eth->Socket[n][Sn_DIPR3]);
+                     skt_port = readWord (eth->Socket[n], Sn_DPORT0);
+
+                     memset (&serv, 0, sizeof (serv));
+
+                     // Filling server information
+                     serv.sin_family = AF_INET;
+                     serv.sin_port = htons (skt_port);
+                     serv.sin_addr.s_addr = inet_addr (skt_addr);
+
+                     size = readWord (eth->Socket[n], Sn_TX_WR0);
+#ifdef DUMP
+                     sprintf (sfname, "/tmp/%03i_send_udp.bin", scont++);
+                     fouts = fopen (sfname, "w");
+                     fwrite (&eth->TX_Mem[eth->TX_ptr[n]], size, 1, fouts);
+                     fclose (fouts);
+#endif
+                     dsprintf ("Socket %i Send %i to %s:%i\n", n, size, skt_addr, skt_port);
+                     if (!strcmp (skt_addr, "255.255.255.255"))//fake broadcast
+                      {
+                       if (skt_port == 67) //dhcp
+                        {
+                         eth_w5500_fake_dhcp_reply (eth, n);
+                        }
+                      }
+                     else
+                      {
+                       sendto (eth->sockfd[n], (const char *) &eth->TX_Mem[eth->TX_ptr[n]], size,
+                               0 /*MSG_DONTWAIT MSG_CONFIRM*/, (const struct sockaddr *) &serv,
+                               sizeof (serv));
+                      }
 
                      size = (eth->Socket[n][Sn_TXBUF_SIZE]*1024);
                      writeWord (eth->Socket[n], Sn_TX_FSR0, (size));
                      writeWord (eth->Socket[n], Sn_TX_WR0, 0);
                      writeWord (eth->Socket[n], Sn_TX_RD0, 0);
+
+                     break;
                     }
-                   break;
-                  case Sn_MR_UDP:
-
-                   sprintf (skt_addr, "%i.%i.%i.%i", eth->Socket[n][Sn_DIPR0], eth->Socket[n][Sn_DIPR1], eth->Socket[n][Sn_DIPR2], eth->Socket[n][Sn_DIPR3]);
-                   skt_port = readWord (eth->Socket[n], Sn_DPORT0);
-
-                   memset (&serv, 0, sizeof (serv));
-
-                   // Filling server information
-                   serv.sin_family = AF_INET;
-                   serv.sin_port = htons (skt_port);
-                   serv.sin_addr.s_addr = inet_addr (skt_addr);
-
-                   size = readWord (eth->Socket[n], Sn_TX_WR0);
-#ifdef DUMP
-                   sprintf (sfname, "/tmp/%03i_send_udp.bin", scont++);
-                   fouts = fopen (sfname, "w");
-                   fwrite (&eth->TX_Mem[eth->TX_ptr[n]], size, 1, fouts);
-                   fclose (fouts);
-#endif
-                   dsprintf ("Socket %i Send %i to %s:%i\n", n, size, skt_addr, skt_port);
-                   if (!strcmp (skt_addr, "255.255.255.255"))//fake broadcast
-                    {
-                     if (skt_port == 67) //dhcp
-                      {
-                       eth_w5500_fake_dhcp_reply (eth, n);
-                      }
-                    }
-                   else
-                    {
-                     sendto (eth->sockfd[n], (const char *) &eth->TX_Mem[eth->TX_ptr[n]], size,
-                             0 /*MSG_DONTWAIT MSG_CONFIRM*/, (const struct sockaddr *) &serv,
-                             sizeof (serv));
-                    }
-
-                   size = (eth->Socket[n][Sn_TXBUF_SIZE]*1024);
-                   writeWord (eth->Socket[n], Sn_TX_FSR0, (size));
-                   writeWord (eth->Socket[n], Sn_TX_WR0, 0);
-                   writeWord (eth->Socket[n], Sn_TX_RD0, 0);
 
                    break;
-                  }
+                  case SEND_MAC:
+                   dsprintf ("Socket %i SEND_MAC CMD !!!NOT IMPLEMETED!!!\n", n);
+                   //if ((eth->Socket[n][Sn_MR]& 0x0F) != Sn_MR_UDP)break;
+                  case SEND_KEEP:
+                   dsprintf ("Socket %i SEND_KEEP CMD !!!NOT IMPLEMETED!!!\n", n);
+                   //if ((eth->Socket[n][Sn_MR]& 0x0F) != Sn_MR_TCP)break;
+                  case RECV:
+                   dsprintf ("Socket %i Receive CMD  (%i)\n", n, readWord (eth->Socket[n], Sn_RX_RSR0));
+                   //dsprintf ("RX_WR0=%i   RX_RD0=%i  \n", readWord (eth->Socket[n], Sn_RX_WR0), readWord (eth->Socket[n], Sn_RX_RD0));
 
-                 break;
-                case SEND_MAC:
-                 dsprintf ("Socket %i SEND_MAC CMD !!!NOT IMPLEMETED!!!\n", n);
-                 //if ((eth->Socket[n][Sn_MR]& 0x0F) != Sn_MR_UDP)break;
-                case SEND_KEEP:
-                 dsprintf ("Socket %i SEND_KEEP CMD !!!NOT IMPLEMETED!!!\n", n);
-                 //if ((eth->Socket[n][Sn_MR]& 0x0F) != Sn_MR_TCP)break;
-                case RECV:
-                 dsprintf ("Socket %i Receive CMD  (%i)\n", n, readWord (eth->Socket[n], Sn_RX_RSR0));
-                 //dsprintf ("RX_WR0=%i   RX_RD0=%i  \n", readWord (eth->Socket[n], Sn_RX_WR0), readWord (eth->Socket[n], Sn_RX_RD0));
-
-                 size = readWord (eth->Socket[n], Sn_RX_WR0);
-                 size -= readWord (eth->Socket[n], Sn_RX_RD0);
-                 if (size < 0)
-                  {
-                   size += eth->RX_size[n];
+                   size = readWord (eth->Socket[n], Sn_RX_WR0);
+                   size -= readWord (eth->Socket[n], Sn_RX_RD0);
+                   if (size < 0)
+                    {
+                     size += eth->RX_size[n];
+                    }
+                   writeWord (eth->Socket[n], Sn_RX_RSR0, size);
+                   break;
                   }
-                 writeWord (eth->Socket[n], Sn_RX_RSR0, size);
-                 break;
+                 eth->Socket[n][Sn_CR] = 0;
                 }
-               eth->Socket[n][Sn_CR] = 0;
+               break;
               }
+            }
+           break;
+          case B_SCK0TX:
+          case B_SCK1TX:
+          case B_SCK2TX:
+          case B_SCK3TX:
+          case B_SCK4TX:
+          case B_SCK5TX:
+          case B_SCK6TX:
+          case B_SCK7TX:
+           n = (BSB - B_SCK0TX) / 4;
+           size = (eth->Socket[n][Sn_TXBUF_SIZE]*1024);
+           addr = (eth->addr + offset) % size;
+           //printf ("TX write 0x%04X 0x%04X 0x%04X 0x%04X\n", addr, eth->addr + offset, size, readWord (eth->Socket[n], Sn_TX_WR0));
+           eth->TX_Mem[eth->TX_ptr[n] + addr] = eth->insr & 0x00FF;
+
+           size = readWord (eth->Socket[n], Sn_TX_FSR0);
+           size--;
+           writeWord (eth->Socket[n], Sn_TX_FSR0, size);
+
+           break;
+          }
+         dprintf ("dsr %03i w5500= 0x%04X  write data=0x%02X (%i)\n", eth->bc, eth->insr, eth->insr & 0x00FF, offset);
+        }
+       else//read
+        {
+         switch (BSB)
+          {
+          case B_COMMON:
+           eth->outsr = eth->Common[eth->addr + offset + 1];
+           break;
+          case B_SCK0RG:
+          case B_SCK1RG:
+          case B_SCK2RG:
+          case B_SCK3RG:
+          case B_SCK4RG:
+          case B_SCK5RG:
+          case B_SCK6RG:
+          case B_SCK7RG:
+           n = (BSB - B_SCK0RG) / 4;
+           switch (eth->addr)
+            {
+            case Sn_TX_WR0: //for compatibility ?
+            case Sn_TX_WR1:
+             eth->outsr = 0;
+             break;
+            default:
+             eth->outsr = eth->Socket[n][eth->addr + offset + 1];
              break;
             }
-          }
-         break;
-        case B_SCK0TX:
-        case B_SCK1TX:
-        case B_SCK2TX:
-        case B_SCK3TX:
-        case B_SCK4TX:
-        case B_SCK5TX:
-        case B_SCK6TX:
-        case B_SCK7TX:
-         n = (BSB - B_SCK0TX) / 4;
-         size = (eth->Socket[n][Sn_TXBUF_SIZE]*1024);
-         addr = (eth->addr + offset) % size;
-         //printf ("TX write 0x%04X 0x%04X 0x%04X 0x%04X\n", addr, eth->addr + offset, size, readWord (eth->Socket[n], Sn_TX_WR0));
-         eth->TX_Mem[eth->TX_ptr[n] + addr] = eth->insr & 0x00FF;
-
-         size = readWord (eth->Socket[n], Sn_TX_FSR0);
-         size--;
-         writeWord (eth->Socket[n], Sn_TX_FSR0, size);
-
-         break;
-        }
-       dprintf ("dsr %03i w5500= 0x%04X  write data=0x%02X (%i)\n", eth->bc, eth->insr, eth->insr & 0x00FF, offset);
-      }
-     else//read
-      {
-       switch (BSB)
-        {
-        case B_COMMON:
-         eth->outsr = eth->Common[eth->addr + offset + 1];
-         break;
-        case B_SCK0RG:
-        case B_SCK1RG:
-        case B_SCK2RG:
-        case B_SCK3RG:
-        case B_SCK4RG:
-        case B_SCK5RG:
-        case B_SCK6RG:
-        case B_SCK7RG:
-         n = (BSB - B_SCK0RG) / 4;
-         switch (eth->addr)
-          {
-          case Sn_TX_WR0: //for compatibility ?
-          case Sn_TX_WR1:
-           eth->outsr = 0;
+           break;
+          case B_SCK0RX:
+          case B_SCK1RX:
+          case B_SCK2RX:
+          case B_SCK3RX:
+          case B_SCK4RX:
+          case B_SCK5RX:
+          case B_SCK6RX:
+          case B_SCK7RX:
+           n = (BSB - B_SCK0RX) / 4;
+           size = (eth->Socket[n][Sn_RXBUF_SIZE]*1024);
+           addr = (eth->addr + offset + 1) % size;
+           eth->outsr = eth->RX_Mem[eth->RX_ptr[n] + addr];
+           break;
+          case B_SCK0TX:
+          case B_SCK1TX:
+          case B_SCK2TX:
+          case B_SCK3TX:
+          case B_SCK4TX:
+          case B_SCK5TX:
+          case B_SCK6TX:
+          case B_SCK7TX:
+           n = (BSB - B_SCK0TX) / 4;
+           size = (eth->Socket[n][Sn_TXBUF_SIZE]*1024);
+           addr = (eth->addr + offset + 1) & (size - 1);
+           eth->outsr = eth->TX_Mem[eth->TX_ptr[n] + addr];
            break;
           default:
-           eth->outsr = eth->Socket[n][eth->addr + offset + 1];
+           eth->outsr = 0;
            break;
           }
-         break;
-        case B_SCK0RX:
-        case B_SCK1RX:
-        case B_SCK2RX:
-        case B_SCK3RX:
-        case B_SCK4RX:
-        case B_SCK5RX:
-        case B_SCK6RX:
-        case B_SCK7RX:
-         n = (BSB - B_SCK0RX) / 4;
-         size = (eth->Socket[n][Sn_RXBUF_SIZE]*1024);
-         addr = (eth->addr + offset + 1) % size;
-         eth->outsr = eth->RX_Mem[eth->RX_ptr[n] + addr];
-         break;
-        case B_SCK0TX:
-        case B_SCK1TX:
-        case B_SCK2TX:
-        case B_SCK3TX:
-        case B_SCK4TX:
-        case B_SCK5TX:
-        case B_SCK6TX:
-        case B_SCK7TX:
-         n = (BSB - B_SCK0TX) / 4;
-         size = (eth->Socket[n][Sn_TXBUF_SIZE]*1024);
-         addr = (eth->addr + offset + 1) & (size - 1);
-         eth->outsr = eth->TX_Mem[eth->TX_ptr[n] + addr];
-         break;
-        default:
-         eth->outsr = 0;
-         break;
+         dprintf ("dsr %03i w5500= 0x%04X  read data=0x%02X (%i)\n", eth->bc, eth->insr, eth->outsr, offset + 1);
         }
-       dprintf ("dsr %03i w5500= 0x%04X  read data=0x%02X (%i)\n", eth->bc, eth->insr, eth->outsr, offset + 1);
+       break;
       }
-     break;
     }
-
-
   }
  eth->asclk = sclk;
 
