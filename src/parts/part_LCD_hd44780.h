@@ -52,6 +52,7 @@ class cpart_LCD_hd44780:public part
       lxString GetInputMapFile(void){return lxT("LCD_hd44780/LCD_hd44780_i.map");};
       lxString GetOutputMapFile(void){return lxT("LCD_hd44780/LCD_hd44780_o.map");};
       lxString GetPropertiesWindowFile(void){return lxT("LCD_hd44780/LCD_hd44780.lxrad");};
+      void Reset(void);
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       lxString WritePreferences(void);
@@ -59,7 +60,6 @@ class cpart_LCD_hd44780:public part
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
     private:
-      void Reset(void);
       unsigned char input_pins[11]; 
       lcd_t lcd;
       int lcde;

@@ -65,7 +65,7 @@ CPWindow5::CPWindow5(void)
   menu1_Edit.SetName(lxT("menu1_Edit"));
   menu1_Edit.SetTag(0);
   menu1_Edit.SetText(lxT("Edit"));
-  menu1_Edit.SetMenuItems(lxT("Clear pin alias,Toggle pin alias,Zoom in,Zoom out,"));
+  menu1_Edit.SetMenuItems(lxT("Clear pin alias,Toggle pin alias,Edit pin alias,Reload pin alias,Zoom in,Zoom out,"));
   menu1.CreateChild(&menu1_Edit);
   //menu1_Add
   menu1_Add.SetFOwner(this);
@@ -164,6 +164,24 @@ CPWindow5::CPWindow5(void)
   menu1_Edit_Togglepinalias.SetSubMenu(NULL);
   menu1_Edit_Togglepinalias.EvMenuActive=EVMENUACTIVE & CPWindow5::menu1_Edit_Togglepinalias_EvMenuActive;
   menu1_Edit.CreateChild(&menu1_Edit_Togglepinalias);
+  //menu1_Edit_Editpinalias
+  menu1_Edit_Editpinalias.SetFOwner(this);
+  menu1_Edit_Editpinalias.SetClass(lxT("CItemMenu"));
+  menu1_Edit_Editpinalias.SetName(lxT("menu1_Edit_Editpinalias"));
+  menu1_Edit_Editpinalias.SetTag(0);
+  menu1_Edit_Editpinalias.SetText(lxT("Edit pin alias"));
+  menu1_Edit_Editpinalias.SetSubMenu(NULL);
+  menu1_Edit_Editpinalias.EvMenuActive=EVMENUACTIVE & CPWindow5::menu1_Edit_Editpinalias_EvMenuActive;
+  menu1_Edit.CreateChild(&menu1_Edit_Editpinalias);
+  //menu1_Edit_Reloadpinalias
+  menu1_Edit_Reloadpinalias.SetFOwner(this);
+  menu1_Edit_Reloadpinalias.SetClass(lxT("CItemMenu"));
+  menu1_Edit_Reloadpinalias.SetName(lxT("menu1_Edit_Reloadpinalias"));
+  menu1_Edit_Reloadpinalias.SetTag(0);
+  menu1_Edit_Reloadpinalias.SetText(lxT("Reload pin alias"));
+  menu1_Edit_Reloadpinalias.SetSubMenu(NULL);
+  menu1_Edit_Reloadpinalias.EvMenuActive=EVMENUACTIVE & CPWindow5::menu1_Edit_Reloadpinalias_EvMenuActive;
+  menu1_Edit.CreateChild(&menu1_Edit_Reloadpinalias);
   //menu1_Edit_Zoomin
   menu1_Edit_Zoomin.SetFOwner(this);
   menu1_Edit_Zoomin.SetClass(lxT("CItemMenu"));
@@ -269,4 +287,5 @@ CPWindow5::CPWindow5(void)
   LoadConfigFile="";
   fdtype = -1;
   useAlias=0;
+  alias_fname="";
 }

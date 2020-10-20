@@ -60,6 +60,8 @@ public:
     CPMenu menu1_Edit;
     CItemMenu menu1_Edit_Clearpinalias;
     CItemMenu menu1_Edit_Togglepinalias;  
+    CItemMenu menu1_Edit_Editpinalias;  
+    CItemMenu menu1_Edit_Reloadpinalias;  
     CItemMenu menu1_Edit_Zoomin;
     CItemMenu menu1_Edit_Zoomout;  
     CPMenu menu1_Help;
@@ -84,6 +86,8 @@ public:
     void menu1_File_Savepinalias_EvMenuActive(CControl * control);
     void menu1_Edit_Clearpinalias_EvMenuActive(CControl * control);
     void menu1_Edit_Togglepinalias_EvMenuActive(CControl * control);
+    void menu1_Edit_Editpinalias_EvMenuActive(CControl * control);
+    void menu1_Edit_Reloadpinalias_EvMenuActive(CControl * control);
     void menu1_Edit_Zoomin_EvMenuActive(CControl * control);
     void menu1_Edit_Zoomout_EvMenuActive(CControl * control);    
     void pmenu2_Move_EvMenuActive(CControl * control);
@@ -171,6 +175,7 @@ private:
     CPWindow wprop;
     int fdtype;
     lxString oldfname;
+    lxString alias_fname;
 };
 
 extern CPWindow5 Window5;

@@ -214,6 +214,24 @@ CPWindow5::timer1_EvOnTime(CControl * control)
    draw1.Canvas.PutBitmap (parts[i]->GetBitmap (), parts[i]->GetX (), parts[i]->GetY ());
   }
 
+ draw1.Canvas.ChangeScale (1.0, 1.0);
+
+ if (useAlias)
+  {
+   draw1.Canvas.SetFgColor (180, 180, 00);
+   draw1.Canvas.Text ("Alias On", 10, 5);
+  }
+ else
+  {
+   draw1.Canvas.SetFgColor (180, 180, 180);
+   draw1.Canvas.Text ("Alias Off", 10, 5);
+  }
+
+ draw1.Canvas.SetFgColor (180, 180, 180);
+ lxString temp;
+ temp.Printf ("Scale %3.1f", scale);
+ draw1.Canvas.Text (temp, 10, 20);
+
  draw1.Canvas.End ();
  draw1.Update ();
 
@@ -392,37 +410,59 @@ CPWindow5::LoadConfig(lxString fname)
 bool
 CPWindow5::SavePinAlias(lxString fname)
 {
- lxStringList alias;
- alias.Clear ();
- alias.AddLine ("//The pin name alias must start in column five and have size less than seven chars ");
+ lxString temp;
+ lxString pin;
+ lxString alias;
+ lxStringList lalias;
+ lalias.Clear ();
+ lalias.AddLine ("//N-PinName -ALias   --The pin name alias must start in column fourteen and have size less than seven chars ");
  for (int i = 1; i < 256; i++)
   {
-   alias.AddLine (lxString ().Format ("%3i-", i) + PinAlias[i].substr (0, 7));
+   pin = PinNames[i].substr (0, 7);
+   if (!pin.size ())pin = " ";
+   alias = PinAlias[i].substr (0, 7);
+   if (!alias.size ())alias = " ";
+   temp.Printf ("%03i-%-7s -%-7s", i, pin.c_str (), alias.c_str ());
+   lalias.AddLine (temp);
   }
- return alias.SaveToFile (fname);
+ return lalias.SaveToFile (fname);
 }
 
 bool
 CPWindow5::LoadPinAlias(lxString fname, unsigned char show_error_msg)
 {
- 
- if(!show_error_msg)
-  {  
-     if(!lxFileExists(fname))
-      {
-       return 0;
-      }
+
+ if (!show_error_msg)
+  {
+   if (!lxFileExists (fname))
+    {
+     return 0;
+    }
   }
  lxStringList alias;
+ lxString line;
  alias.Clear ();
  if (alias.LoadFromFile (fname))
   {
+   alias_fname = fname;
+
    for (int i = 0; i < 256; i++)
     {
-     PinAlias[i] = alias.GetLine (i).substr (4, 7);
+     line = alias.GetLine (i);
+     if (line.size () > 13)
+      {
+       PinAlias[i] = line.substr (13, 7);
+      }
+     else
+      {
+       PinAlias[i] = "";
+      }
     }
-   PinAlias[0]="NC";
-   useAlias = 1;
+   PinAlias[0] = "NC";
+   if (show_error_msg)
+    {
+     useAlias = 1;
+    }
    return 1;
   }
  else
@@ -437,7 +477,7 @@ CPWindow5::DeleteParts(void)
  int partsc_ = partsc;
  partsc = 0; //for disable process
  scale = 1.0;
-
+ useAlias = 0;
  //delete previous parts
 
  for (int i = 0; i < partsc_; i++)
@@ -537,6 +577,29 @@ void
 CPWindow5::menu1_Edit_Togglepinalias_EvMenuActive(CControl * control)
 {
  useAlias = !useAlias;
+}
+
+void
+CPWindow5::menu1_Edit_Editpinalias_EvMenuActive(CControl * control)
+{
+ if (lxFileExists (alias_fname))
+  {
+#ifdef _WIN_  
+   lxExecute (lxT ("notepad.exe ") + alias_fname);
+#else
+   lxExecute ("gedit " + alias_fname, lxEXEC_MAKE_GROUP_LEADER);
+#endif
+  }
+ else
+  {
+   Message ("Pin alias file don't exist!");
+  }
+}
+
+void
+CPWindow5::menu1_Edit_Reloadpinalias_EvMenuActive(CControl * control)
+{
+ LoadPinAlias (alias_fname);
 }
 
 void

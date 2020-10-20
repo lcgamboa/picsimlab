@@ -75,7 +75,7 @@
   <Name type="String">menu1_Edit</Name>
   <Tag type="int">0</Tag>
   <Text type="String">Edit</Text>
-  <MenuItems type="MenuItems">Clear pin alias,Toggle pin alias,Zoom in,Zoom out,</MenuItems>
+  <MenuItems type="MenuItems">Clear pin alias,Toggle pin alias,Edit pin alias,Reload pin alias,Zoom in,Zoom out,</MenuItems>
 </menu1_Edit>
 <menu1_Add>
   <Class type="String">CPMenu</Class>
@@ -157,12 +157,28 @@
 </menu1_Edit_Clearpinalias>
 <menu1_Edit_Togglepinalias>
   <Class type="String">CItemMenu</Class>
-  <Name type="String">menu1_Edit_togglepinalias</Name>
+  <Name type="String">menu1_Edit_Togglepinalias</Name>
   <Tag type="int">0</Tag>
   <Text type="String">Toggle pin alias</Text>
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_Edit_Togglepinalias>
+<menu1_Edit_Editpinalias>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Edit_Editpinalias</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Edit pin alias</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Edit_Editpinalias>
+<menu1_Edit_Reloadpinalias>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Edit_Reloadinalias</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Toggle pin alias</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Edit_Reloadpinalias>
 <menu1_Edit_Zoomin>
   <Class type="String">CItemMenu</Class>
   <Name type="String">menu1_Edit_Zoomin</Name>
