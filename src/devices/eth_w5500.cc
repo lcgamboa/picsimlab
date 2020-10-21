@@ -377,7 +377,7 @@ eth_w5500_rst(eth_w5500_t *eth)
 
    eth->RX_ptr[n] = eth->RX_size[n] * n;
    eth->TX_ptr[n] = eth->TX_size[n] * n;
-
+   eth->listenfd_map[n] = 0;
   }
  dprintf ("rst w5500\n");
 }
@@ -387,7 +387,12 @@ eth_w5500_init(eth_w5500_t *eth, unsigned char linkon)
 {
  eth->link = linkon;
  eth_w5500_rst (eth);
- eth->listenfd = INVALID_SOCKET_VALUE;
+
+ for (int n = 0; n < 8; n++)
+  {
+   eth->listenfd[n] = INVALID_SOCKET_VALUE;
+   eth->listenfd_port[n] = 0;
+  }
  dprintf ("init w5500\n");
 }
 
@@ -400,10 +405,11 @@ eth_w5500_end(eth_w5500_t *eth)
     {
      close (eth->sockfd[n]);
     }
-  }
- if (eth->listenfd != INVALID_SOCKET_VALUE)
-  {
-   close (eth->listenfd);
+
+   if (eth->listenfd[n] != INVALID_SOCKET_VALUE)
+    {
+     close (eth->listenfd[n]);
+    }
   }
 }
 
@@ -659,6 +665,7 @@ eth_w5500_process(eth_w5500_t *eth)
  unsigned short addr_base;
  int s;
  int i;
+ int j;
  socklen_t len;
  struct sockaddr_in serv;
 #ifdef DUMP
@@ -713,7 +720,7 @@ eth_w5500_process(eth_w5500_t *eth)
      setnblock (eth->sockfd[n]);
      break;
     case SOCK_LISTEN:
-     if ((eth->sockfd[n] = accept (eth->listenfd, (sockaddr *) & cli, & clilen)) < 0)
+     if ((eth->sockfd[n] = accept (eth->listenfd[eth->listenfd_map[n]], (sockaddr *) & cli, & clilen)) < 0)
       {
        //printf ("eth_w5500: accept error : %s \n", strerror (errno));
        eth->sockfd[n] = INVALID_SOCKET_VALUE;
@@ -797,8 +804,18 @@ eth_w5500_process(eth_w5500_t *eth)
      serv.sin_port = htons (skt_port);
      serv.sin_addr.s_addr = inet_addr (skt_addr);
 
+     for (j = 0; j < 8; j++)
+      {
+       if ((eth->listenfd_port[j] == 0) || (eth->listenfd_port[j] == skt_port))
+        {
+         eth->listenfd_map[n] = j;
+         eth->listenfd_port[j] = skt_port;
+         break;
+        }
+      }
 
-     if ((eth->listenfd == INVALID_SOCKET_VALUE) && !strcmp (skt_addr, "0.0.0.0") && (skt_port == 0))
+
+     if ((eth->listenfd[eth->listenfd_map[n]] == INVALID_SOCKET_VALUE) && !strcmp (skt_addr, "0.0.0.0") && (skt_port == 0))
       {
        skt_port = readWord (eth->Socket[n], Sn_PORT0);
 
@@ -816,8 +833,8 @@ eth_w5500_process(eth_w5500_t *eth)
        serv.sin_addr.s_addr = htonl (INADDR_ANY);
 
 
-       eth->listenfd = eth->sockfd[n];
-       if (bind (eth->listenfd, (sockaddr *) & serv, sizeof (serv)) < 0)
+       eth->listenfd[eth->listenfd_map[n]] = eth->sockfd[n];
+       if (bind (eth->listenfd[eth->listenfd_map[n]], (sockaddr *) & serv, sizeof (serv)) < 0)
         {
          printf ("eth_w5500: bind error : %s \n", strerror (errno));
          close (eth->sockfd[n]);
@@ -914,6 +931,7 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
  unsigned short addr;
  int size;
  int s;
+ int j;
 
  struct sockaddr_in serv;
 
@@ -1139,23 +1157,33 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
 
                    eth->Socket[n][Sn_SR] = SOCK_LISTEN;
 
-                   if (eth->listenfd == INVALID_SOCKET_VALUE)
+                   for (j = 0; j < 8; j++)
+                    {
+                     if ((eth->listenfd_port[j] == 0) || (eth->listenfd_port[j] == skt_port))
+                      {
+                       eth->listenfd_map[n] = j;
+                       eth->listenfd_port[j] = skt_port;
+                       break;
+                      }
+                    }
+
+                   if (eth->listenfd[eth->listenfd_map[n]] == INVALID_SOCKET_VALUE)
                     {
 
-                     if ((eth->listenfd = socket (PF_INET, SOCK_STREAM, 0)) < 0)
+                     if ((eth->listenfd[eth->listenfd_map[n]] = socket (PF_INET, SOCK_STREAM, 0)) < 0)
                       {
                        eth->sockfd[n] = INVALID_SOCKET_VALUE;
                        eth->Socket[n][Sn_SR] = SOCK_CLOSED;
                        break;
                       }
 
-                     if (setsockopt (eth->listenfd, SOL_SOCKET, SO_REUSEADDR, (const char*) &reuse, sizeof (reuse)) < 0)
+                     if (setsockopt (eth->listenfd[eth->listenfd_map[n]], SOL_SOCKET, SO_REUSEADDR, (const char*) &reuse, sizeof (reuse)) < 0)
                       {
                        perror ("eth_w5500: setsockopt(SO_REUSEADDR) failed");
                        close (eth->sockfd[n]);
                        eth->sockfd[n] = INVALID_SOCKET_VALUE;
                        eth->Socket[n][Sn_SR] = SOCK_CLOSED;
-                       eth->listenfd = -1;
+                       eth->listenfd[eth->listenfd_map[n]] = INVALID_SOCKET_VALUE;
                        eth->status[n] = ER_REUSE;
                        break;
                       }
@@ -1164,7 +1192,7 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
                      serv.sin_family = AF_INET;
                      serv.sin_addr.s_addr = htonl (INADDR_ANY);
                      serv.sin_port = htons (skt_port);
-                     if (bind (eth->listenfd, (sockaddr *) & serv, sizeof (serv)) < 0)
+                     if (bind (eth->listenfd[eth->listenfd_map[n]], (sockaddr *) & serv, sizeof (serv)) < 0)
                       {
                        printf ("eth_w5500: bind error : %s \n", strerror (errno));
                        close (eth->sockfd[n]);
@@ -1172,7 +1200,7 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
                        eth->Socket[n][Sn_SR] = SOCK_CLOSED;
                        eth->status[n] = ER_BIND;
                       }
-                     if (listen (eth->listenfd, SOMAXCONN) < 0)
+                     if (listen (eth->listenfd[eth->listenfd_map[n]], SOMAXCONN) < 0)
                       {
                        printf ("eth_w5500: listen error : %s \n", strerror (errno));
                        close (eth->sockfd[n]);
@@ -1181,7 +1209,7 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
                        eth->status[n] = ER_LIST;
                       }
 
-                     setnblock (eth->listenfd);
+                     setnblock (eth->listenfd[eth->listenfd_map[n]]);
                     }
                    else
                     {
