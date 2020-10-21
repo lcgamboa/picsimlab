@@ -276,8 +276,7 @@ cpart_SDCard::ReadPropertiesWindow(CPWindow * WProp)
 }
 
 void
-cpart_SDCard::PreProcess(void) {
- }
+cpart_SDCard::PreProcess(void) { }
 
 void
 cpart_SDCard::Process(void)
@@ -288,12 +287,14 @@ cpart_SDCard::Process(void)
 
  ret = sdcard_io (&sd, ppins[input_pins[0] - 1].value, ppins[input_pins[1] - 1].value, ppins[input_pins[2] - 1].value);
 
- if (_ret != ret)
+ if (!ppins[input_pins[2] - 1].value)//if SS is active, update output 
   {
-   Window5.SetPin (output_pins[0], ret);
+   if (_ret != ret)
+    {
+     Window5.SetPin (output_pins[0], ret);
+    }
+   _ret = ret;
   }
- _ret = ret;
-
 }
 
 void

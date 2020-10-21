@@ -584,6 +584,7 @@ CPWindow5::menu1_Edit_Editpinalias_EvMenuActive(CControl * control)
 {
  if (lxFileExists (alias_fname))
   {
+   SavePinAlias(alias_fname);
 #ifdef _WIN_  
    lxExecute (lxT ("notepad.exe ") + alias_fname);
 #else

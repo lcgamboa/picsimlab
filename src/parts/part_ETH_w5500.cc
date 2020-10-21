@@ -108,12 +108,12 @@ cpart_ETH_w5500::~cpart_ETH_w5500(void)
  eth_w5500_end (&ethw);
 }
 
-void 
+void
 cpart_ETH_w5500::Reset(void)
 {
-  eth_w5500_rst (&ethw);
+ eth_w5500_rst (&ethw);
 }
-      
+
 void
 cpart_ETH_w5500::Draw(void)
 {
@@ -179,7 +179,7 @@ cpart_ETH_w5500::Draw(void)
          break;
         case SOCK_INIT:
          status[2] = 'I';
-         canvas.SetFgColor (255, 255, 255); 
+         canvas.SetFgColor (255, 255, 255);
          break;
         case SOCK_LISTEN:
          status[2] = 'L';
@@ -443,12 +443,15 @@ cpart_ETH_w5500::Process(void)
 
  ret = eth_w5500_io (&ethw, ppins[input_pins[0] - 1].value, ppins[input_pins[3] - 1].value, ppins[input_pins[2] - 1].value, ppins[input_pins[1] - 1].value);
 
- if (_ret != ret)
+ if (!ppins[input_pins[2] - 1].value) //if CS is active, update output 
   {
-   Window5.SetPin (output_pins[0], (ret & 0x01) > 0);
-   Window5.SetPin (output_pins[1], (ret & 0x02) > 0);
+   if (_ret != ret)
+    {
+     Window5.SetPin (output_pins[0], (ret & 0x01) > 0);
+     Window5.SetPin (output_pins[1], (ret & 0x02) > 0);
+    }
+   _ret = ret;
   }
- _ret = ret;
 
 }
 
