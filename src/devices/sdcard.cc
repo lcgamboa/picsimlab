@@ -407,7 +407,7 @@ sdcard_io(sdcard_t *sd, unsigned char mosi, unsigned char clk, unsigned char ss)
 
          if (!sd->data_rc)
           {
-           if (offset == sd->replyc)
+           if (offset >= sd->replyc)
             {
              sd->outsr = (sd->outsr & 0xFF00) | 0xFF;
              sd->bc = 0;

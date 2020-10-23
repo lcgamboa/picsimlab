@@ -55,6 +55,8 @@
 #define ACMD23  0X17 
 #define ACMD41  0X29
 
+#define MAX_REPLY 20
+
 typedef struct {
     FILE * fd;
     unsigned char card_present;
@@ -66,7 +68,7 @@ typedef struct {
     unsigned char crc;
     unsigned int bc;
     unsigned short replyc;
-    unsigned char reply[20];
+    unsigned char reply[MAX_REPLY];
     unsigned char ap_cmd;
     unsigned short data_rc;
     unsigned short data_wc;

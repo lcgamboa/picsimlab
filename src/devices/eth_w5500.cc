@@ -998,7 +998,7 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
          switch (BSB)
           {
           case B_COMMON:
-           eth->outsr = eth->Common[eth->addr];
+	   eth->outsr = eth->Common[eth->addr & 0x3F];
            break;
 
           case B_SCK0RG:
@@ -1017,7 +1017,7 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
              eth->outsr = 0;
              break;
             default:
-             eth->outsr = eth->Socket[n][eth->addr];
+             eth->outsr = eth->Socket[n][eth->addr & 0x2F];
              break;
             }
            break;
@@ -1063,7 +1063,7 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
           case B_COMMON:
            if ((eth->addr + offset) < 0x40)
             {
-             eth->Common[eth->addr + offset] = eth->insr & 0x00FF;
+             eth->Common[(eth->addr + offset) & 0x3F] = eth->insr & 0x00FF;
              switch (eth->addr + offset)
               {
               case CR_MR:
@@ -1369,7 +1369,7 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
          switch (BSB)
           {
           case B_COMMON:
-           eth->outsr = eth->Common[eth->addr + offset + 1];
+           eth->outsr = eth->Common[(eth->addr + offset + 1) & 0x3F];
            break;
           case B_SCK0RG:
           case B_SCK1RG:
@@ -1387,7 +1387,7 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
              eth->outsr = 0;
              break;
             default:
-             eth->outsr = eth->Socket[n][eth->addr + offset + 1];
+             eth->outsr = eth->Socket[n][(eth->addr + offset + 1) & 0x2F];
              break;
             }
            break;

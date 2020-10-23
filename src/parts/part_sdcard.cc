@@ -295,6 +295,10 @@ cpart_SDCard::Process(void)
     }
    _ret = ret;
   }
+  else
+  {
+    _ret=0xFF; //invalid value
+  }
 }
 
 void

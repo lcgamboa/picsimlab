@@ -371,5 +371,5 @@ cboard_STM32_H103::Run_CPU(void)
 }
 
 //Register the board in PICSimLab
-board_init("STM32_H103", cboard_STM32_H103);
+board_init("STM32 H103", cboard_STM32_H103);
 
