@@ -34,7 +34,7 @@ class cpart_SDCard:public part
 {
    public:
       lxString GetName(void){return lxT("SD Card");};
-      lxString GetHelpURL(void){return lxT("SDCard.html");};
+      lxString GetHelpURL(void){return lxT("SD_Card.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cpart_SDCard(unsigned x, unsigned y);
       ~cpart_SDCard(void);
