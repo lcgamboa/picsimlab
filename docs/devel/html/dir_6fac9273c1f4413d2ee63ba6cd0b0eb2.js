@@ -1,5 +1,6 @@
 var dir_6fac9273c1f4413d2ee63ba6cd0b0eb2 =
 [
+    [ "eth_w5500.h", "eth__w5500_8h_source.html", null ],
     [ "io_74xx595.h", "io__74xx595_8h_source.html", null ],
     [ "io_MCP23X17.h", "io___m_c_p23_x17_8h_source.html", null ],
     [ "io_PCF8574.h", "io___p_c_f8574_8h_source.html", null ],
@@ -10,5 +11,6 @@ var dir_6fac9273c1f4413d2ee63ba6cd0b0eb2 =
     [ "mi2c_24CXXX.h", "mi2c__24_c_x_x_x_8h_source.html", null ],
     [ "mplabxd.h", "mplabxd_8h_source.html", null ],
     [ "rtc_ds1307.h", "rtc__ds1307_8h_source.html", null ],
-    [ "rtc_pfc8563.h", "rtc__pfc8563_8h_source.html", null ]
+    [ "rtc_pfc8563.h", "rtc__pfc8563_8h_source.html", null ],
+    [ "sdcard.h", "sdcard_8h_source.html", null ]
 ];

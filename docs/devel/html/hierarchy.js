@@ -19,7 +19,8 @@ var hierarchy =
         [ "cboard_Xpress", "classcboard___xpress.html", null ]
       ] ],
       [ "board_qemu_stm32", "classboard__qemu__stm32.html", [
-        [ "cboard_Blue_Pill", "classcboard___blue___pill.html", null ]
+        [ "cboard_Blue_Pill", "classcboard___blue___pill.html", null ],
+        [ "cboard_STM32_H103", "classcboard___s_t_m32___h103.html", null ]
       ] ],
       [ "board_simavr", "classboard__simavr.html", [
         [ "cboard_Arduino_Uno", "classcboard___arduino___uno.html", null ],
@@ -37,6 +38,8 @@ var hierarchy =
       [ "CPWindow4", "class_c_p_window4.html", null ],
       [ "CPWindow5", "class_c_p_window5.html", null ]
     ] ],
+    [ "dhcp", "structdhcp.html", null ],
+    [ "eth_w5500_t", "structeth__w5500__t.html", null ],
     [ "input_t", "structinput__t.html", null ],
     [ "io_74xx595_t", "structio__74xx595__t.html", null ],
     [ "io_MCP23X17_t", "structio___m_c_p23_x17__t.html", null ],
@@ -51,6 +54,7 @@ var hierarchy =
       [ "cpart_7s_display", "classcpart__7s__display.html", null ],
       [ "cpart_Buzzer", "classcpart___buzzer.html", null ],
       [ "cpart_dtfunc", "classcpart__dtfunc.html", null ],
+      [ "cpart_ETH_w5500", "classcpart___e_t_h__w5500.html", null ],
       [ "cpart_gamepad", "classcpart__gamepad.html", null ],
       [ "cpart_IO_74xx595", "classcpart___i_o__74xx595.html", null ],
       [ "cpart_IO_MCP23S17", "classcpart___i_o___m_c_p23_s17.html", null ],
@@ -68,15 +72,19 @@ var hierarchy =
       [ "cpart_rgb_led", "classcpart__rgb__led.html", null ],
       [ "cpart_RTC_ds1307", "classcpart___r_t_c__ds1307.html", null ],
       [ "cpart_RTC_pfc8563", "classcpart___r_t_c__pfc8563.html", null ],
+      [ "cpart_SDCard", "classcpart___s_d_card.html", null ],
       [ "cpart_servo", "classcpart__servo.html", null ],
       [ "cpart_SignalGenerator", "classcpart___signal_generator.html", null ],
       [ "cpart_step", "classcpart__step.html", null ],
       [ "cpart_switchs", "classcpart__switchs.html", null ],
       [ "cpart_tempsys", "classcpart__tempsys.html", null ],
       [ "cpart_VCD_Dump", "classcpart___v_c_d___dump.html", null ],
-      [ "cpart_VCD_Dump_an", "classcpart___v_c_d___dump__an.html", null ]
+      [ "cpart_VCD_Dump_an", "classcpart___v_c_d___dump__an.html", null ],
+      [ "cpart_VCD_Play", "classcpart___v_c_d___play.html", null ]
     ] ],
     [ "part_desc", "structpart__desc.html", null ],
     [ "rtc2_t", "structrtc2__t.html", null ],
-    [ "rtc_t", "structrtc__t.html", null ]
+    [ "rtc_t", "structrtc__t.html", null ],
+    [ "sdcard_t", "structsdcard__t.html", null ],
+    [ "vcd_reg_t", "structvcd__reg__t.html", null ]
 ];

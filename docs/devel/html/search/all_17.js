@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['_7eboard_199',['~board',['../classboard.html#ae0e109ef9bef5c70dd503b7c9032b32a',1,'board']]],
-  ['_7ecpart_5fservo_200',['~cpart_servo',['../classcpart__servo.html#aec280c6ce5b18601e15231a2f3622e6a',1,'cpart_servo']]],
-  ['_7epart_201',['~part',['../classpart.html#a3500d57a8c47e24e94c748d0c7409b22',1,'part']]]
+  ['y_204',['Y',['../classpart.html#a2a61f1d2127b6397a4b2fb76495b1451',1,'part']]],
+  ['y1_205',['y1',['../structinput__t.html#ad9fa0d56447e197208859ad1329b2475',1,'input_t::y1()'],['../structoutput__t.html#a3ea90d25dafd4e3f279f3f541a956ffa',1,'output_t::y1()']]],
+  ['y2_206',['y2',['../structinput__t.html#a32554d97aeb8e3e7822322a5a59bfb3e',1,'input_t::y2()'],['../structoutput__t.html#aabca51d7095f7ba0b654cbcfea9cd6b7',1,'output_t::y2()']]]
 ];

@@ -1,3 +1,28 @@
+## (unreleased)
+
+### New
+
+* SD card part added. [lcgamboa]
+
+* VCD Play part added. [lcgamboa]
+
+* Board STM32_H103 added. [lcgamboa]
+
+* Part ethernet shield w5500 added. [lcgamboa]
+
+* Support to pin name alias in spare part window. [lcgamboa]
+
+* Added support to PIC18F46J50. [lcgamboa]
+
+### Fix
+
+* Support to mean value in all pins of boards McLAb2 and PICGenios. [lcgamboa]
+
+* Microcontroller with more than 40 pins support ! minor. [lcgamboa]
+
+* Signal generator fixed to generate digital signal. [lcgamboa]
+
+
 ## v0.8.2 (2020-08-25)
 
 ### New

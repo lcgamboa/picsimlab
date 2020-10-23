@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['y_196',['Y',['../classpart.html#a2a61f1d2127b6397a4b2fb76495b1451',1,'part']]],
-  ['y1_197',['y1',['../structinput__t.html#ad9fa0d56447e197208859ad1329b2475',1,'input_t::y1()'],['../structoutput__t.html#a3ea90d25dafd4e3f279f3f541a956ffa',1,'output_t::y1()']]],
-  ['y2_198',['y2',['../structinput__t.html#a32554d97aeb8e3e7822322a5a59bfb3e',1,'input_t::y2()'],['../structoutput__t.html#aabca51d7095f7ba0b654cbcfea9cd6b7',1,'output_t::y2()']]]
+  ['x_201',['X',['../classpart.html#ac7d242f29bf318a8d103be1feda7340c',1,'part']]],
+  ['x1_202',['x1',['../structinput__t.html#a1e2b92740c7fb766fb0e6a672b9bb498',1,'input_t::x1()'],['../structoutput__t.html#a4a26c232a33f2387180a8bc0b6c078e7',1,'output_t::x1()']]],
+  ['x2_203',['x2',['../structinput__t.html#ac451624c75df3df7401b8040b3e74006',1,'input_t::x2()'],['../structoutput__t.html#a62355ce1deb5d7a3a7955b5bb25ac26c',1,'output_t::x2()']]]
 ];

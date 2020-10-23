@@ -73,9 +73,30 @@ The main window has the menu with the following functions:
 <UL>
 <LI>New configuration - Clear the spare parts window 
 </LI>
-<LI>Save configuration - Saves the current settings of the spare parts to an .pcf file
+<LI>Save configuration - Saves the current settings of the spare parts into .pcf file
 </LI>
-<LI>Load configuration - Loads the settings of an .pcf file
+<LI>Load configuration - Loads the settings from .pcf file
+</LI>
+<LI>Save pin alias - Saves the current pin alias to .ppa text file
+</LI>
+<LI>Load pin alias - Loads the pin alias from .ppa file
+</LI>
+</UL>
+</LI>
+<LI>Edit
+ 
+<UL>
+<LI>Clear pin alias - Clear the pin alias 
+</LI>
+<LI>Toggle pin alias - Enable/Disable pin alias use
+</LI>
+<LI>Edit pin alias - Open current pin alias .ppa file in text editor
+</LI>
+<LI>Reload pin alias - Reload the current .ppa pin alias file (need after edit .ppa file) 
+</LI>
+<LI>Zoom in - Increase draw scale
+</LI>
+<LI>Zoom out - Decrease draw scale
 </LI>
 </UL>
 </LI>
@@ -87,6 +108,8 @@ The main window has the menu with the following functions:
 <LI>Buzzer - Adds a active/passive buzzer
 </LI>
 <LI>D. Transfer Function - Adds a discrete transfer function mathematical model
+</LI>
+<LI>ETH w5500 - Adds a ethernet shield w5500
 </LI>
 <LI>Gamepad - Adds a gamepad
 </LI>
@@ -122,6 +145,8 @@ The main window has the menu with the following functions:
 </LI>
 <LI>RTC pfc8563 - Adds a pfc8563 real time clock
 </LI>
+<LI>SD Card - Adds a SD card shield
+</LI>
 <LI>Servo Motor - Adds a servo motor
 </LI>
 <LI>Signal Generator - Adds a virtual signal generator
@@ -132,9 +157,11 @@ The main window has the menu with the following functions:
 </LI>
 <LI>Temperature System - Adds a temperature control system
 </LI>
-<LI>VCD Dump - Adds a digital value file dump  
+<LI>VCD Dump - Adds a digital value file dump recorder 
 </LI>
-<LI>VCD Dump (Analogic) - Adds a analog value file dump 
+<LI>VCD Dump (Analogic) - Adds a analog value file dump recorder
+</LI>
+<LI>VCD Play - Adds a digital value file dump player
 </LI>
 </UL>
 </LI>
@@ -191,60 +218,66 @@ After adding the part, with a right click of the mouse you can access the option
 <A ID="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A ID="tex2html181"
-  HREF="Segments_Display.html">7 Segments Display</A>
-<LI><A ID="tex2html182"
-  HREF="Buzzer.html">Buzzer</A>
-<LI><A ID="tex2html183"
-  HREF="D_Transfer_Function.html">D. Transfer Function</A>
-<LI><A ID="tex2html184"
-  HREF="Gamepad.html">Gamepad</A>
-<LI><A ID="tex2html185"
-  HREF="IO_74xx595.html">IO 74xx595</A>
-<LI><A ID="tex2html186"
-  HREF="IO_MCP23S17.html">IO MCP23S17</A>
-<LI><A ID="tex2html187"
-  HREF="IO_PCF8574.html">IO PCF8574</A>
-<LI><A ID="tex2html188"
-  HREF="Keypad.html">Keypad</A>
-<LI><A ID="tex2html189"
-  HREF="LCD_hd44780.html">LCD hd44780</A>
-<LI><A ID="tex2html190"
-  HREF="LCD_pcf8833.html">LCD pcf8833</A>
-<LI><A ID="tex2html191"
-  HREF="LCD_pcd8544.html">LCD pcd8544</A>
 <LI><A ID="tex2html192"
-  HREF="LED_Matrix.html">LED Matrix</A>
+  HREF="Segments_Display.html">7 Segments Display</A>
 <LI><A ID="tex2html193"
-  HREF="LEDs.html">LEDs</A>
+  HREF="Buzzer.html">Buzzer</A>
 <LI><A ID="tex2html194"
-  HREF="MEM_24CXXX.html">MEM 24CXXX</A>
+  HREF="D_Transfer_Function.html">D. Transfer Function</A>
 <LI><A ID="tex2html195"
-  HREF="Potentiometers.html">Potentiometers</A>
+  HREF="ETH_w5500.html">ETH w5500</A>
 <LI><A ID="tex2html196"
-  HREF="Push_Buttons.html">Push Buttons</A>
+  HREF="Gamepad.html">Gamepad</A>
 <LI><A ID="tex2html197"
-  HREF="Push_Buttons_Analogic.html">Push Buttons (Analogic)</A>
+  HREF="IO_74xx595.html">IO 74xx595</A>
 <LI><A ID="tex2html198"
-  HREF="RGB_LED.html">RGB LED</A>
+  HREF="IO_MCP23S17.html">IO MCP23S17</A>
 <LI><A ID="tex2html199"
-  HREF="RTC_ds1307.html">RTC ds1307</A>
+  HREF="IO_PCF8574.html">IO PCF8574</A>
 <LI><A ID="tex2html200"
-  HREF="RTC_pfc8563.html">RTC pfc8563</A>
+  HREF="Keypad.html">Keypad</A>
 <LI><A ID="tex2html201"
-  HREF="Servo_Motor.html">Servo Motor</A>
+  HREF="LCD_hd44780.html">LCD hd44780</A>
 <LI><A ID="tex2html202"
-  HREF="Signal_Generator.html">Signal Generator</A>
+  HREF="LCD_pcf8833.html">LCD pcf8833</A>
 <LI><A ID="tex2html203"
-  HREF="Step_Motor.html">Step Motor</A>
+  HREF="LCD_pcd8544.html">LCD pcd8544</A>
 <LI><A ID="tex2html204"
-  HREF="Switchs.html">Switchs</A>
+  HREF="LED_Matrix.html">LED Matrix</A>
 <LI><A ID="tex2html205"
-  HREF="Temperature_System.html">Temperature System</A>
+  HREF="LEDs.html">LEDs</A>
 <LI><A ID="tex2html206"
-  HREF="VCD_dump.html">VCD dump</A>
+  HREF="MEM_24CXXX.html">MEM 24CXXX</A>
 <LI><A ID="tex2html207"
+  HREF="Potentiometers.html">Potentiometers</A>
+<LI><A ID="tex2html208"
+  HREF="Push_Buttons.html">Push Buttons</A>
+<LI><A ID="tex2html209"
+  HREF="Push_Buttons_Analogic.html">Push Buttons (Analogic)</A>
+<LI><A ID="tex2html210"
+  HREF="RGB_LED.html">RGB LED</A>
+<LI><A ID="tex2html211"
+  HREF="RTC_ds1307.html">RTC ds1307</A>
+<LI><A ID="tex2html212"
+  HREF="RTC_pfc8563.html">RTC pfc8563</A>
+<LI><A ID="tex2html213"
+  HREF="SD_Card.html">SD Card</A>
+<LI><A ID="tex2html214"
+  HREF="Servo_Motor.html">Servo Motor</A>
+<LI><A ID="tex2html215"
+  HREF="Signal_Generator.html">Signal Generator</A>
+<LI><A ID="tex2html216"
+  HREF="Step_Motor.html">Step Motor</A>
+<LI><A ID="tex2html217"
+  HREF="Switchs.html">Switchs</A>
+<LI><A ID="tex2html218"
+  HREF="Temperature_System.html">Temperature System</A>
+<LI><A ID="tex2html219"
+  HREF="VCD_dump.html">VCD dump</A>
+<LI><A ID="tex2html220"
   HREF="VCD_dump_Analogic.html">VCD dump (Analogic)</A>
+<LI><A ID="tex2html221"
+  HREF="VCD_Play.html">VCD Play</A>
 </UL>
 <!--End of Table of Child-Links-->
 

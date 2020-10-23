@@ -26,6 +26,7 @@ var classcpart___signal_generator =
     [ "freq", "classcpart___signal_generator.html#a7ab916a29310390cff5da582c2a3f7c8", null ],
     [ "input_pins", "classcpart___signal_generator.html#aacf323680f36db266e5197b6838861a1", null ],
     [ "JUMPSTEPS_", "classcpart___signal_generator.html#aee94ee4b269b284e721ea97e9988449a", null ],
+    [ "lastd", "classcpart___signal_generator.html#a6040e847b26f7fd2c754314c7db9e89c", null ],
     [ "maxfreq", "classcpart___signal_generator.html#ac6343d891f43e11a6cb279fdc5cc3ffb", null ],
     [ "mcount", "classcpart___signal_generator.html#a883b08ce75d505c0476093cb4879b370", null ],
     [ "ts", "classcpart___signal_generator.html#a754ad8ebf98eb27c8efbe499727e7ca0", null ],

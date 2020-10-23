@@ -15,6 +15,7 @@ var dir_44b8a28b46c46acb1deed65f25aca5e6 =
     [ "board_picsim.h", "board__picsim_8h_source.html", null ],
     [ "board_qemu_stm32.h", "board__qemu__stm32_8h_source.html", null ],
     [ "board_simavr.h", "board__simavr_8h_source.html", null ],
+    [ "board_STM32_H103.h", "board___s_t_m32___h103_8h_source.html", null ],
     [ "board_uCboard.h", "board__u_cboard_8h_source.html", null ],
     [ "board_ucsim.h", "board__ucsim_8h_source.html", null ],
     [ "board_x.h", "board__x_8h_source.html", null ],

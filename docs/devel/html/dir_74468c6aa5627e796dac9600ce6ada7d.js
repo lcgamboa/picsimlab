@@ -4,6 +4,7 @@ var dir_74468c6aa5627e796dac9600ce6ada7d =
     [ "part_7s_Display.h", "part__7s___display_8h_source.html", null ],
     [ "part_Buzzer.h", "part___buzzer_8h_source.html", null ],
     [ "part_d_transfer_function.h", "part__d__transfer__function_8h_source.html", null ],
+    [ "part_ETH_w5500.h", "part___e_t_h__w5500_8h_source.html", null ],
     [ "part_gamepad.h", "part__gamepad_8h_source.html", null ],
     [ "part_IO_74xx595.h", "part___i_o__74xx595_8h_source.html", null ],
     [ "part_IO_MCP23S17.h", "part___i_o___m_c_p23_s17_8h_source.html", null ],
@@ -21,6 +22,7 @@ var dir_74468c6aa5627e796dac9600ce6ada7d =
     [ "part_RGB_LED.h", "part___r_g_b___l_e_d_8h_source.html", null ],
     [ "part_RTC_ds1307.h", "part___r_t_c__ds1307_8h_source.html", null ],
     [ "part_RTC_pfc8563.h", "part___r_t_c__pfc8563_8h_source.html", null ],
+    [ "part_sdcard.h", "part__sdcard_8h_source.html", null ],
     [ "part_servo.h", "part__servo_8h_source.html", null ],
     [ "part_SignalGenerator.h", "part___signal_generator_8h_source.html", null ],
     [ "part_step.h", "part__step_8h_source.html", null ],
@@ -28,5 +30,6 @@ var dir_74468c6aa5627e796dac9600ce6ada7d =
     [ "part_TempSys.h", "part___temp_sys_8h_source.html", null ],
     [ "part_VCD_Dump.h", "part___v_c_d___dump_8h_source.html", null ],
     [ "part_VCD_Dump_an.h", "part___v_c_d___dump__an_8h_source.html", null ],
+    [ "part_VCD_Play.h", "part___v_c_d___play_8h_source.html", null ],
     [ "parts_defs.h", "parts__defs_8h_source.html", null ]
 ];
