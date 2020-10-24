@@ -29,6 +29,7 @@
 #include "board.h"
 
 #include"../devices/mplabxd.h"
+#include"../serial_port.h"
 
 #include <simavr/sim_avr.h>
 #include <simavr/avr_ioport.h>
@@ -103,6 +104,7 @@ class board_simavr: virtual public board
       unsigned int serialbaud; 
       float serialexbaud;
       void pins_reset(void);
+       serialfd_t  serialfd;
       int avr_debug_type;
  private:
       int parse_hex(char *line,int bytes);
@@ -112,11 +114,6 @@ class board_simavr: virtual public board
 };
 
 
-#ifdef _WIN_
-HANDLE avr_serial_get_fd(void);
-#else
-int avr_serial_get_fd(void);
-#endif
 
 #endif	/* BOARD_AVR_H */
 

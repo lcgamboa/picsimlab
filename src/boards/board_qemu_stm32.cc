@@ -26,10 +26,10 @@
 
 #include "board_qemu_stm32.h"
 #include"../picsimlab1.h"
+#include"../serial_port.h"
 
 void setblock(int sock_descriptor);
 void setnblock(int sock_descriptor);
-char * serial_list(void);
 
 #ifndef _WIN_
 #include<sys/types.h>
@@ -211,7 +211,7 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
    return -1;
   }
 
- char * resp = serial_list ();
+ char * resp = serial_port_list ();
 
  if (!Proc.compare ("stm32f103c8t6"))
   {

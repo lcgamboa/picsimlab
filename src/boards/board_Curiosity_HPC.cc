@@ -28,10 +28,8 @@
 #include"../picsimlab1.h"
 #include"../picsimlab4.h"   //Oscilloscope 
 #include"../picsimlab5.h"   //Spare Parts
+#include"../serial_port.h"
 #include"board_Curiosity_HPC.h"
-
-char *
-serial_list(void);
 
 /* ids of inputs of input map*/
 enum
@@ -262,7 +260,13 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void)
 #else    
  combo1->SetText (lxT ("COM2"));
 #endif  
- combo1->SetItems (serial_list ());
+ char * resp = serial_port_list ();
+ if (resp)
+  {
+   combo1->SetItems (resp);
+   free (resp);
+  }
+
  Window1.CreateChild (combo1);
 }
 
@@ -288,8 +292,8 @@ cboard_Curiosity_HPC::~cboard_Curiosity_HPC(void)
 void
 cboard_Curiosity_HPC::MSetSerial(const char * port)
 {
- pic_set_serial (&pic,0, port, 0, 0, 0);
- pic_set_serial (&pic,1, combo1->GetText (), 0, 0, 0);
+ pic_set_serial (&pic, 0, port, 0, 0, 0);
+ pic_set_serial (&pic, 1, combo1->GetText (), 0, 0, 0);
 }
 
 
@@ -318,7 +322,7 @@ cboard_Curiosity_HPC::Reset(void)
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
                                lxString ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
-                                                                 pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
+                                                                   pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
@@ -340,7 +344,7 @@ cboard_Curiosity_HPC::RefreshStatus(void)
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
                                lxString ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
-                                                                 pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
+                                                                   pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
@@ -388,7 +392,7 @@ cboard_Curiosity_HPC::ReadPreferences(char *name, char *value)
  if (!strcmp (name, "Curiosity_HPC_serial2"))
   {
    combo1->SetText (value);
-   pic_set_serial (&pic,1, value , 0, 0, 0);
+   pic_set_serial (&pic, 1, value, 0, 0, 0);
   }
 }
 

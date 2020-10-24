@@ -64,12 +64,6 @@ extern "C"
  int gdb_watch_find(const avr_gdb_watchpoints_t * w, uint32_t addr);
 }
 
-unsigned long avr_serial_send(unsigned char c);
-unsigned long avr_serial_rec(unsigned char * c);
-int avr_serial_get_dsr(void);
-int avr_serial_open(char * SERIALDEVICE);
-int avr_serial_cfg(float serialexbaud);
-int avr_serial_close(void);
 
 board_simavr::board_simavr(void)
 {
@@ -219,7 +213,7 @@ board_simavr::MInit(const char * processor, const char * fname, float freq)
  avr_ioctl (avr, AVR_IOCTL_UART_SET_FLAGS ('0'), &f);
 
  serial_irq = avr_alloc_irq (&avr->irq_pool, 0, IRQ_UART_COUNT, irq_names_uart);
- avr_irq_register_notify (serial_irq + IRQ_UART_BYTE_IN, uart_in_hook, NULL);
+ avr_irq_register_notify (serial_irq + IRQ_UART_BYTE_IN, uart_in_hook, &serialfd);
 
  avr_irq_t * src = avr_io_getirq (avr, AVR_IOCTL_UART_GETIRQ ('0'), UART_IRQ_OUTPUT);
  avr_irq_t * dst = avr_io_getirq (avr, AVR_IOCTL_UART_GETIRQ ('0'), UART_IRQ_INPUT);
@@ -229,11 +223,11 @@ board_simavr::MInit(const char * processor, const char * fname, float freq)
    avr_connect_irq (serial_irq + IRQ_UART_BYTE_OUT, dst);
   }
 
- avr_serial_open (SERIALDEVICE);
+ serial_port_open (&serialfd, SERIALDEVICE);
 
  //TODO read baudrate value from avr 
  serialexbaud = 57600;
- serialbaud = avr_serial_cfg (serialexbaud);
+ serialbaud = serial_port_cfg (serialfd, serialexbaud);
 
  return ret;
 }
@@ -250,7 +244,7 @@ board_simavr::MEnd(void)
    mplabxd_end ();
   }
 
- avr_serial_close ();
+ serial_port_close (serialfd);
 
  avr_terminate (avr);
 
@@ -995,7 +989,8 @@ board_simavr::MGetPinsValues(void)
 static void
 uart_in_hook(struct avr_irq_t * irq, uint32_t value, void * param)
 {
- avr_serial_send (value);
+ serialfd_t * serialfd = (serialfd_t *)param;
+ serial_port_send (*serialfd, value);
 }
 
 int cont = 0;
@@ -1012,12 +1007,12 @@ board_simavr::UpdateHardware(void)
  if (cont > 1000)
   {
    cont = 0;
-   if (avr_serial_rec (&c))
+   if (serial_port_rec (serialfd, &c))
     {
      avr_raise_irq (serial_irq + IRQ_UART_BYTE_OUT, c);
     }
 
-   if (avr_serial_get_dsr ())
+   if (serial_port_get_dsr (serialfd))
     {
      if (aux)
       {

@@ -29,6 +29,7 @@
 #include"picsimlab3_d.cc"
 
 #include"picsimlab1.h"
+#include"serial_port.h" 
 
 CPWindow3 Window3;
 
@@ -38,7 +39,6 @@ extern char PROGDEVICE[100];
 
 extern char SERIALDEVICE[100];
 
-char * serial_list(void);
 
 //Implementation
 
@@ -91,7 +91,7 @@ void
 CPWindow3::_EvOnShow(CControl * control)
 {
 
- char * resp = serial_list ();
+ char * resp = serial_port_list ();
 
  if (resp)
   {

@@ -284,9 +284,9 @@ cboard_Arduino_Uno::Reset(void)
 
  //verify serial port state and refresh status bar  
 #ifndef _WIN_
- if (avr_serial_get_fd () > 0)
+ if (serialfd > 0)
 #else
- if (avr_serial_get_fd () != INVALID_HANDLE_VALUE)
+ if (serialfd != INVALID_HANDLE_VALUE)
 #endif
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +
@@ -313,9 +313,9 @@ cboard_Arduino_Uno::RefreshStatus(void)
 {
  //verify serial port state and refresh status bar   
 #ifndef _WIN_
- if (avr_serial_get_fd () > 0)
+ if (serialfd > 0)
 #else
- if (avr_serial_get_fd () != INVALID_HANDLE_VALUE)
+ if (serialfd != INVALID_HANDLE_VALUE)
 #endif
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +

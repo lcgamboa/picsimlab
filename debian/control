@@ -8,7 +8,7 @@ Homepage: https://lcgamboa.github/picsimlab
 
 Package: picsimlab
 Architecture: any
-Depends: gtkwave, cutecom, ${shlibs:Depends}, ${misc:Depends}
+Depends: gtkwave, cutecom, gedit, ${shlibs:Depends}, ${misc:Depends}
 Description:PICSimLab - PIC Simulator Laboratory 
  PICSimLab is a realtime emulator of development boards with 
  integrated MPLABX/avr-gdb debugger. PICSimLab supports picsim
