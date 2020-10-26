@@ -888,7 +888,7 @@ CPWindow5::GetPinsNames(void)
     {
      spin = PinNames[i];
     }
-   if (spin.length () > 0)
+   if ((spin.length () > 0)&& (spin[0] != ' ')) 
     {
      Items = Items + itoa (i) + "  " + spin + ",";
     }
