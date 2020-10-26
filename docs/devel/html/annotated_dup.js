@@ -51,8 +51,10 @@ var annotated_dup =
     [ "cpart_step", "classcpart__step.html", "classcpart__step" ],
     [ "cpart_switchs", "classcpart__switchs.html", "classcpart__switchs" ],
     [ "cpart_tempsys", "classcpart__tempsys.html", "classcpart__tempsys" ],
+    [ "cpart_UART", "classcpart___u_a_r_t.html", "classcpart___u_a_r_t" ],
     [ "cpart_VCD_Dump", "classcpart___v_c_d___dump.html", "classcpart___v_c_d___dump" ],
     [ "cpart_VCD_Dump_an", "classcpart___v_c_d___dump__an.html", "classcpart___v_c_d___dump__an" ],
+    [ "cpart_VCD_Dump_DBG", "classcpart___v_c_d___dump___d_b_g.html", "classcpart___v_c_d___dump___d_b_g" ],
     [ "cpart_VCD_Play", "classcpart___v_c_d___play.html", "classcpart___v_c_d___play" ],
     [ "CPWindow1", "class_c_p_window1.html", "class_c_p_window1" ],
     [ "CPWindow2", "class_c_p_window2.html", "class_c_p_window2" ],
@@ -76,5 +78,6 @@ var annotated_dup =
     [ "rtc2_t", "structrtc2__t.html", "structrtc2__t" ],
     [ "rtc_t", "structrtc__t.html", "structrtc__t" ],
     [ "sdcard_t", "structsdcard__t.html", "structsdcard__t" ],
+    [ "uart_t", "structuart__t.html", "structuart__t" ],
     [ "vcd_reg_t", "structvcd__reg__t.html", "structvcd__reg__t" ]
 ];

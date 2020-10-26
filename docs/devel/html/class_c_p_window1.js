@@ -129,7 +129,7 @@ var class_c_p_window1 =
     [ "spare_on", "class_c_p_window1.html#afcec024ae9a876c75710a296586014e4", null ],
     [ "st", "class_c_p_window1.html#a78790ad780f0bb99f736ba99823ec3f1", null ],
     [ "status", "class_c_p_window1.html#ad87f7ccdf944f1fcbab919c401f73f57", null ],
-    [ "status", "class_c_p_window1.html#a6cdd7458c751dfc953a47650acea8511", null ],
+    [ "status", "class_c_p_window1.html#a686c656628864b185295ff0bcb8277b2", null ],
     [ "statusbar1", "class_c_p_window1.html#a1b0f337b8fcb1e0d957122f863940d9c", null ],
     [ "tgo", "class_c_p_window1.html#af410ba3ebb701d0b43a7081040610407", null ],
     [ "thread1", "class_c_p_window1.html#adc5004b6b4ea4e9c42ca0a27e1155ba1", null ],

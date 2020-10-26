@@ -49,5 +49,6 @@ var classboard__simavr =
     [ "serial_irq", "classboard__simavr.html#af5738e0a922bcdb4865e818e7a8108de", null ],
     [ "serialbaud", "classboard__simavr.html#a27ed0c10e90b67baf7d38e432f6efc51", null ],
     [ "serialexbaud", "classboard__simavr.html#a8013cdafcbb2ce77d0ec2a7d260b4e01", null ],
+    [ "serialfd", "classboard__simavr.html#a3879167f3a3cf9e1943eb1391eec3659", null ],
     [ "Write_stat_irq", "classboard__simavr.html#a414e470261e8dba86f5c47ab3a0dc20e", null ]
 ];

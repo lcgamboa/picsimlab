@@ -2,6 +2,8 @@
 
 ### New
 
+* New part IO UART. [lcgamboa]
+
 * SD card part added. [lcgamboa]
 
 * VCD Play part added. [lcgamboa]

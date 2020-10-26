@@ -7,5 +7,6 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "picsimlab2.h", "picsimlab2_8h_source.html", null ],
     [ "picsimlab3.h", "picsimlab3_8h_source.html", null ],
     [ "picsimlab4.h", "picsimlab4_8h_source.html", null ],
-    [ "picsimlab5.h", "picsimlab5_8h_source.html", null ]
+    [ "picsimlab5.h", "picsimlab5_8h_source.html", null ],
+    [ "serial_port.h", "serial__port_8h_source.html", null ]
 ];

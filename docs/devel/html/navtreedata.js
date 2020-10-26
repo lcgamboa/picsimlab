@@ -55,13 +55,13 @@ var NAVTREEINDEX =
 "annotated.html",
 "class_c_p_window5.html",
 "classboard__picsim.html#af990796d977ee186e9ce111d7c7fd1f4",
-"classcboard___curiosity.html#a8694fc8f1db9bf4f37b3b841ec1282c2",
-"classcboard___s_t_m32___h103.html",
-"classcpart___i_o___m_c_p23_s17.html#a08456d55556c966c3bed3ede4b80d365",
-"classcpart___v_c_d___dump.html#a2ed06e672dcaecac2ee62d9c4df31fc5",
-"classcpart__pbuttons__an.html#ac620045afe6e719992594d2727da44b1",
-"index.html#pcode",
-"structoutput__t.html#a62355ce1deb5d7a3a7955b5bb25ac26c"
+"classcboard___curiosity.html#a8694e32a6dee863e9d13917dd25d4bdf",
+"classcboard___p_i_c_genios.html#aff8a80772de5f703b47aa034abc6198b",
+"classcpart___i_o___m_c_p23_s17.html#a06627b507f99cf3c5404d383aeedc98b",
+"classcpart___u_a_r_t.html#a0d953d48394af1304cb4e4e21b9cd840",
+"classcpart__leds.html#a32f18a084a294a47d9f173d6b6400b9b",
+"classpart.html#aeb1dcec741ed0694dc2c779d7e2de2d1",
+"structlcd__pcf8833__t.html#a26085aa300d89e27f8de5a03beb78cb8"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

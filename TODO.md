@@ -6,13 +6,13 @@
 | [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L103) | 103 | jumper support
 | [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L62) | 62 | TEMP cooler must don't work with AQUE=0
 | [src/boards/board_gpsim.cc](src/boards/board_gpsim.cc#L170) | 170 | add VCC and GND pins
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L83) | 83 | change serial name
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L234) | 234 | read baudrate value from avr
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L862) | 862 | this value is not used yet
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1097) | 1097 | avr ID pointer
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1104) | 1104 | avr EEPROM pointer
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1130) | 1130 | avr ID size
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1137) | 1137 | AVR EEPROM size
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L76) | 76 | change serial name
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L227) | 227 | read baudrate value from avr
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L855) | 855 | this value is not used yet
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1091) | 1091 | avr ID pointer
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1098) | 1098 | avr EEPROM pointer
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1124) | 1124 | avr ID size
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1131) | 1131 | AVR EEPROM size
 | [src/devices/eth_w5500.cc](src/devices/eth_w5500.cc#L364) | 364 | add support to buffer size different of 2k
 | [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L84) | 84 | decode
 | [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L87) | 87 | itensity
@@ -26,7 +26,7 @@
 ### FIXMEs
 | Filename | line # | FIXME
 |:------|:------:|:------
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1011) | 1011 | correct the baud rate
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1123) | 1123 | avr CONFIG size
-| [src/boards/board_simavr_serial.cc](src/boards/board_simavr_serial.cc#L132) | 132 | calculate
+| [src/serial_port.cc](src/serial_port.cc#L120) | 120 | calculate
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1005) | 1005 | correct the baud rate
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1117) | 1117 | avr CONFIG size
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L118) | 118 | only for BANK=0;
