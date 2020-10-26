@@ -47,16 +47,12 @@
 //uart support ============================================================
 
 int
-serial_port_open( serialfd_t * serialfd, char * SERIALDEVICE)
+serial_port_open( serialfd_t * serialfd, const char * SERIALDEVICE)
 {
  
  if (SERIALDEVICE[0] == 0)
   {
-#ifdef _WIN_
-   strcpy (SERIALDEVICE, "COM2");
-#else
-   strcpy (SERIALDEVICE, "/dev/tnt2");
-#endif
+   return 0;
   }
 
 

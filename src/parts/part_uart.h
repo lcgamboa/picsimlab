@@ -23,48 +23,48 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef PART_SDCARD_H
-#define	PART_SDCARD_H
+#ifndef PART_UART_H
+#define	PART_UART_H
 
 #include<lxrad.h>
 #include"part.h"
-#include"../devices/sdcard.h"
+#include"../devices/uart.h"
 
-class cpart_SDCard:public part
+class cpart_UART:public part
 {
    public:
-      lxString GetName(void){return lxT("SD Card");};
-      lxString GetHelpURL(void){return lxT("SD_Card.html");};
+      lxString GetName(void){return lxT("IO UART");};
+      lxString GetHelpURL(void){return lxT("IO_UART.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
-      cpart_SDCard(unsigned x, unsigned y);
-      ~cpart_SDCard(void);
+      cpart_UART(unsigned x, unsigned y);
+      ~cpart_UART(void);
       void Draw(void);
       void PreProcess (void);
       void Process(void); 
       void PostProcess (void);
-      lxString GetPictureFileName(void){return lxT("SDCard/sdcard.png");};
-      lxString GetInputMapFile(void){return lxT("SDCard/sdcard_i.map");};
-      lxString GetOutputMapFile(void){return lxT("SDCard/sdcard_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("SDCard/sdcard.lxrad");};
+      lxString GetPictureFileName(void){return lxT("UART/uart.png");};
+      lxString GetInputMapFile(void){return lxT("UART/uart_i.map");};
+      lxString GetOutputMapFile(void){return lxT("UART/uart_o.map");};
+      lxString GetPropertiesWindowFile(void){return lxT("UART/uart.lxrad");};
       void Reset(void);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       lxString WritePreferences(void);
       void ReadPreferences(lxString value);
-      void filedialog_EvOnClose(int retId);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
    private:
-      unsigned char input_pins[3];
+      unsigned char input_pins[1];
       unsigned char output_pins[1];
-      sdcard_t sd;
+      uart_t sr;
       unsigned short _ret; 
-      char sdcard_fname[200];
+      char uart_name[200];
+      unsigned int uart_speed;
 };
 
 
 
 
-#endif	/* PART_SDCARD_H */
+#endif	/* PART_UART_H */
 

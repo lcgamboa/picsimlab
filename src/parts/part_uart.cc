@@ -26,12 +26,12 @@
 #include"../picsimlab1.h"
 #include"../picsimlab4.h"
 #include"../picsimlab5.h"
-#include"part_sdcard.h"
+#include"part_uart.h"
 
 /* outputs */
 enum
 {
- O_P3, O_P4, O_P5, O_P6, O_FILE
+ O_RX, O_TX, O_FILE, O_LCON, O_LTX, O_LRX
 };
 
 /* inputs */
@@ -61,7 +61,7 @@ const char pin_values[10][10] = {
  */
 
 
-cpart_SDCard::cpart_SDCard(unsigned x, unsigned y)
+cpart_UART::cpart_UART(unsigned x, unsigned y)
 {
  X = x;
  Y = y;
@@ -77,39 +77,40 @@ cpart_SDCard::cpart_SDCard(unsigned x, unsigned y)
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
- sdcard_init (&sd);
- sdcard_rst (&sd);
+ uart_init (&sr);
+ uart_rst (&sr);
 
  input_pins[0] = 0;
- input_pins[1] = 0;
- input_pins[2] = 0;
 
  output_pins[0] = 0;
 
  _ret = -1;
 
- sdcard_fname[0] = '*';
- sdcard_fname[1] = 0;
+ uart_name[0] = '*';
+ uart_name[1] = 0;
+ uart_speed = 9600;
 }
 
-cpart_SDCard::~cpart_SDCard(void)
+cpart_UART::~cpart_UART(void)
 {
  delete Bitmap;
  canvas.Destroy ();
- sdcard_end (&sd);
+ uart_end (&sr);
 }
 
 void
-cpart_SDCard::Reset(void)
+cpart_UART::Reset(void)
 {
- sdcard_rst (&sd);
+ uart_rst (&sr);
 }
 
 void
-cpart_SDCard::Draw(void)
+cpart_UART::Draw(void)
 {
 
  int i;
+
+ //const picpin * ppins = Window5.GetPinsValues ();
 
  canvas.Init ();
 
@@ -121,11 +122,25 @@ cpart_SDCard::Draw(void)
 
    switch (output[i].id)
     {
+    case O_LTX:
+     canvas.SetColor (0, (sr.leds & 0x02)*125 , 0);
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     sr.leds&=~0x02;
+     break;
+    case O_LRX:
+     canvas.SetColor (0, (sr.leds & 0x01)*250, 0);
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     sr.leds&=~0x01;
+     break;
+    case O_LCON:
+     canvas.SetColor (255, 0, 0);
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     break;
     case O_FILE:
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     canvas.Text (lxT ("Img:") + lxString (sdcard_fname), output[i].x1, output[i].y1);
+     canvas.Text (lxT ("port:") + lxString (uart_name) + lxT ("   speed:") + itoa (uart_speed), output[i].x1, output[i].y1);
      break;
     default:
      canvas.SetColor (49, 61, 99);
@@ -133,28 +148,24 @@ cpart_SDCard::Draw(void)
 
      canvas.SetFgColor (155, 155, 155);
 
-     int pinv = output[i].id - O_P3;
+     int pinv = output[i].id - O_RX;
      int pin = 0;
      switch (pinv)
       {
       case 0:
-      case 4:
-       pin = pinv > 1;
+       pin = pinv;
+       if (input_pins[pin] == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
+       else
+        canvas.RotatedText (Window5.GetPinName (input_pins[pin]), output[i].x1, output[i].y2, 90.0);
+      case 1:
+       pin = pinv - 1;
        if (output_pins[pin] == 0)
         canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
        else
         canvas.RotatedText (Window5.GetPinName (output_pins[pin]), output[i].x1, output[i].y2, 90.0);
        break;
-      case 1:
-      case 2:
-      case 3:
-       pinv++;
-      case 5:
-       pin = pinv - 2;
-       if (input_pins[pin] == 0)
-        canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
-       else
-        canvas.RotatedText (Window5.GetPinName (input_pins[pin]), output[i].x1, output[i].y2, 90.0);
+
       }
      break;
     }
@@ -166,7 +177,7 @@ cpart_SDCard::Draw(void)
 }
 
 unsigned short
-cpart_SDCard::get_in_id(char * name)
+cpart_UART::get_in_id(char * name)
 {
  if (strcmp (name, "CONN") == 0)return I_CONN;
 
@@ -175,13 +186,14 @@ cpart_SDCard::get_in_id(char * name)
 }
 
 unsigned short
-cpart_SDCard::get_out_id(char * name)
+cpart_UART::get_out_id(char * name)
 {
 
- if (strcmp (name, "P3") == 0)return O_P3;
- if (strcmp (name, "P4") == 0)return O_P4;
- if (strcmp (name, "P5") == 0)return O_P5;
- if (strcmp (name, "P6") == 0)return O_P6;
+ if (strcmp (name, "RX") == 0)return O_RX;
+ if (strcmp (name, "TX") == 0)return O_TX;
+ if (strcmp (name, "LCON") == 0)return O_LCON;
+ if (strcmp (name, "LTX") == 0)return O_LTX;
+ if (strcmp (name, "LRX") == 0)return O_LRX;
  if (strcmp (name, "FILE") == 0)return O_FILE;
 
 
@@ -190,75 +202,68 @@ cpart_SDCard::get_out_id(char * name)
 }
 
 lxString
-cpart_SDCard::WritePreferences(void)
+cpart_UART::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%s", input_pins[0], input_pins[1], input_pins[2], output_pins[0], sdcard_fname);
+ sprintf (prefs, "%hhu,%hhu,%u,%s", input_pins[0], output_pins[0], uart_speed, uart_name);
 
  return prefs;
 }
 
 void
-cpart_SDCard::ReadPreferences(lxString value)
+cpart_UART::ReadPreferences(lxString value)
 {
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%s", &input_pins[0], &input_pins[1], &input_pins[2], &output_pins[0], sdcard_fname);
+ sscanf (value.c_str (), "%hhu,%hhu,%u,%s", &input_pins[0], &output_pins[0], &uart_speed, uart_name);
 
  Reset ();
- if (sdcard_fname[0] != '*')
+ if (uart_name[0] != '*')
   {
-   sdcard_set_filename (&sd, sdcard_fname);
-   sdcard_set_card_present (&sd, 1);
-  }
- else
-  {
-   sdcard_set_card_present (&sd, 0);
+   uart_set_port (&sr, uart_name, uart_speed);
   }
 }
 
 void
-cpart_SDCard::ConfigurePropertiesWindow(CPWindow * WProp)
+cpart_UART::ConfigurePropertiesWindow(CPWindow * WProp)
 {
  lxString Items = Window5.GetPinsNames ();
  lxString spin;
 
  ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
- if (output_pins[0] == 0)
+ if (input_pins[0] == 0)
   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText ("0  NC");
  else
   {
-   spin = Window5.GetPinName (output_pins[0]);
-   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (output_pins[0]) + "  " + spin);
+   spin = Window5.GetPinName (input_pins[0]);
+   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (input_pins[0]) + "  " + spin);
   }
 
  ((CCombo*) WProp->GetChildByName ("combo2"))->SetItems (Items);
- if (input_pins[0] == 0)
+ if (output_pins[0] == 0)
   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText ("0  NC");
  else
   {
-   spin = Window5.GetPinName (input_pins[0]);
-   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText (itoa (input_pins[0]) + "  " + spin);
+   spin = Window5.GetPinName (output_pins[0]);
+   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText (itoa (output_pins[0]) + "  " + spin);
   }
 
- ((CCombo*) WProp->GetChildByName ("combo3"))->SetItems (Items);
- if (input_pins[1] == 0)
-  ((CCombo*) WProp->GetChildByName ("combo3"))->SetText ("0  NC");
+ char * resp = serial_port_list ();
+ if (resp)
+  {
+   ((CCombo*) WProp->GetChildByName ("combo3"))->SetItems (resp);
+   free (resp);
+  }
+ if (uart_name[0] == '*')
+  ((CCombo*) WProp->GetChildByName ("combo3"))->SetText (" ");
  else
   {
-   spin = Window5.GetPinName (input_pins[1]);
-   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText (itoa (input_pins[1]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText (uart_name);
   }
 
 
- ((CCombo*) WProp->GetChildByName ("combo4"))->SetItems (Items);
- if (input_pins[2] == 0)
-  ((CCombo*) WProp->GetChildByName ("combo4"))->SetText ("0  NC");
- else
-  {
+ ((CCombo*) WProp->GetChildByName ("combo4"))->SetItems ("4800,9600,115200,");
+ ((CCombo*) WProp->GetChildByName ("combo4"))->SetText (itoa (uart_speed));
 
-   spin = Window5.GetPinName (input_pins[2]);
-   ((CCombo*) WProp->GetChildByName ("combo4"))->SetText (itoa (input_pins[2]) + "  " + spin);
-  }
 
  ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
  ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
@@ -267,42 +272,41 @@ cpart_SDCard::ConfigurePropertiesWindow(CPWindow * WProp)
 }
 
 void
-cpart_SDCard::ReadPropertiesWindow(CPWindow * WProp)
+cpart_UART::ReadPropertiesWindow(CPWindow * WProp)
 {
- output_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
- input_pins [0] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
- input_pins [1] = atoi (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ());
- input_pins [2] = atoi (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ());
+ input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
+ output_pins [0] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
+ strncpy (uart_name, (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ()).c_str (), 199);
+ uart_speed = atoi (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ());
+
+ uart_set_port (&sr, uart_name, uart_speed);
 }
 
 void
-cpart_SDCard::PreProcess(void) { }
+cpart_UART::PreProcess(void)
+{
+ uart_set_clk (&sr, Window1.GetBoard ()->MGetInstClock ());
+}
 
 void
-cpart_SDCard::Process(void)
+cpart_UART::Process(void)
 {
  const picpin * ppins = Window5.GetPinsValues ();
 
  unsigned short ret = 0;
 
- ret = sdcard_io (&sd, ppins[input_pins[0] - 1].value, ppins[input_pins[1] - 1].value, ppins[input_pins[2] - 1].value);
+ ret = uart_io (&sr, ppins[input_pins[0] - 1].value);
 
- if (!ppins[input_pins[2] - 1].value)//if SS is active, update output 
+ if (_ret != ret)
   {
-   if (_ret != ret)
-    {
-     Window5.SetPin (output_pins[0], ret);
-    }
-   _ret = ret;
+   Window5.SetPin (output_pins[0], ret);
   }
-  else
-  {
-    _ret=0xFF; //invalid value
-  }
+ _ret = ret;
+
 }
 
 void
-cpart_SDCard::EvMouseButtonPress(uint button, uint x, uint y, uint state)
+cpart_UART::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
  int i;
 
@@ -313,11 +317,7 @@ cpart_SDCard::EvMouseButtonPress(uint button, uint x, uint y, uint state)
      switch (input[i].id)
       {
       case I_CONN:
-       Window5.filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
-       Window5.filedialog1.SetFilter (lxT ("SD Card image (*.img)|*.img"));
-       Window5.filedialog1.SetFileName (lxT ("untitled.img"));
-       Window5.Setfdtype (id);
-       Window5.filedialog1.Run ();
+
        break;
       }
     }
@@ -325,31 +325,7 @@ cpart_SDCard::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 }
 
 void
-cpart_SDCard::filedialog_EvOnClose(int retId)
-{
+cpart_UART::PostProcess(void) { }
 
- if (retId)
-  {
-
-   if ((Window5.filedialog1.GetType () == (lxFD_OPEN | lxFD_CHANGE_DIR)))
-    {
-     if (lxFileExists (Window5.filedialog1.GetFileName ()))
-      {
-       strncpy (sdcard_fname, Window5.filedialog1.GetFileName ().c_str (), 199);
-       sdcard_set_filename (&sd, sdcard_fname);
-       sdcard_set_card_present (&sd, 1);
-      }
-     else
-      {
-       sdcard_set_card_present (&sd, 0);
-      }
-
-    }
-  }
-}
-
-void
-cpart_SDCard::PostProcess(void) { }
-
-part_init("SD Card", cpart_SDCard);
+part_init("IO UART", cpart_UART);
 

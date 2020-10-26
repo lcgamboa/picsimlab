@@ -37,7 +37,7 @@
 unsigned long serial_port_send(serialfd_t serialfd, unsigned char c);
 unsigned long serial_port_rec(serialfd_t serialfd, unsigned char * c);
 int serial_port_get_dsr(serialfd_t serialfd);
-int serial_port_open( serialfd_t *  serialfd, char * SERIALDEVICE);
+int serial_port_open( serialfd_t *  serialfd, const char * SERIALDEVICE);
 int serial_port_cfg(serialfd_t serialfd, float serialexbaud);
 int serial_port_close(serialfd_t serialfd);
 char * serial_port_list(void);

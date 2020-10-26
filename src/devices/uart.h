@@ -24,68 +24,37 @@
    ######################################################################## */
 
 
-#ifndef SDCARD
-#define SDCARD
+#ifndef UART
+#define UART
 
 #include <stdio.h>
+#include "../serial_port.h"
 
-// SD card commands
-#define CMD0 0X00
-//no spi #define CMD2 0X02 /** ALL_SEND_CID - Asks any card to send the CID. */
-//no spi #define CMD3 0X03 /** SEND_RELATIVE_ADDR - Ask the card to publish a new RCA. */
-//#define CMD6 0X06 /** SWITCH_FUNC - Switch Function Command */
-//no spi #define CMD7  0X07 /** SELECT/DESELECT_CARD - toggles between the stand-by and transfer states. */
-#define CMD8  0X08
-#define CMD9  0X09 
-#define CMD10  0X0A
-#define CMD12  0X0C 
-#define CMD13  0X0D 
-#define CMD17  0X11 
-//#define CMD18  0X12 /** READ_MULTIPLE_BLOCK - read a multiple data blocks from the card */
-#define CMD24  0X18 
-#define CMD25  0X19 
-#define CMD32  0X20 
-#define CMD33  0X21
-#define CMD38  0X26 
-#define CMD55  0X37
-#define CMD58  0X3A
-//#define CMD59 0X3B /** CRC_ON_OFF - enable or disable CRC checking */
-//no spi  #define ACMD6 0X06 /** SET_BUS_WIDTH - Defines the data bus width for data transfer. */
-//#define ACMD13 0X0D /** SD_STATUS - Send the SD Status. */
-#define ACMD23  0X17 
-#define ACMD41  0X29
-
-#define MAX_REPLY 20
 
 typedef struct {
-    FILE * fd;
-    unsigned char card_present;
-    unsigned char aclk;
+    unsigned char connected;
+    unsigned char arx;
     unsigned short insr;
     unsigned short outsr;
-    unsigned long arg;
-    unsigned char cmd;
-    unsigned char crc;
-    unsigned int bc;
-    unsigned short replyc;
-    unsigned char reply[MAX_REPLY];
-    unsigned char ap_cmd;
-    unsigned short data_rc;
-    unsigned short data_wc;
-    unsigned char multi;
-    unsigned long disk_size; //in kb
-    unsigned long ebstart;
-    unsigned long ebend;
-} sdcard_t;
+    unsigned int bcr;
+    unsigned long tcountr;
+    unsigned int bcw;
+    unsigned long tcountw;
+    serialfd_t serialfd;
+    unsigned long speed;
+    unsigned int count;
+    unsigned int rxc;
+    unsigned int leds;
+} uart_t;
 
 
-void sdcard_rst(sdcard_t *sd);
-void sdcard_init(sdcard_t *sd);
-void sdcard_end(sdcard_t *sd);
-void sdcard_set_card_present(sdcard_t *sd, unsigned char cp);
-void sdcard_set_filename(sdcard_t *sd, const char * fname);
+void uart_rst(uart_t *sr);
+void uart_init(uart_t *sr);
+void uart_end(uart_t *sr);
+void uart_set_clk(uart_t *sr, unsigned long clk);
+void uart_set_port(uart_t *sr,const char * port, unsigned int speed);
 
-unsigned short sdcard_io(sdcard_t *sd, unsigned char mosi, unsigned char clk, unsigned char ss);
+unsigned char uart_io(uart_t *sr, unsigned char rx);
 
-#endif //SDCARD
+#endif //UART
 
