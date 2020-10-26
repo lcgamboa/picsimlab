@@ -11,7 +11,7 @@ echo -e "\033[1;32m ---------------------- update and install packages ---------
 cl sudo apt-get update
 cl sudo apt-get -y upgrade
 cl sudo apt-get -y install git doxygen autoconf gcc g++ make libwxgtk3.0-gtk3-dev \
-libelf-dev freeglut3-dev cutecom gcc-avr avr-libc libopenal-dev libncurses-dev gtkwave
+libelf-dev freeglut3-dev cutecom gcc-avr avr-libc libopenal-dev libncurses-dev gtkwave gedit
 cl sudo apt-get -y install linux-headers-`uname -r` dkms 
 cl mkdir build_all
 cd build_all

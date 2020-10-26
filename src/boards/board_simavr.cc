@@ -64,7 +64,6 @@ extern "C"
  int gdb_watch_find(const avr_gdb_watchpoints_t * w, uint32_t addr);
 }
 
-
 board_simavr::board_simavr(void)
 {
  avr = NULL;
@@ -323,7 +322,7 @@ board_simavr::MDumpMemory(const char * fname)
 void
 avr_callback_run_gdb_(avr_t * avr)
 {
-  avr_gdb_t * g = avr->gdb;
+ avr_gdb_t * g = avr->gdb;
 
  if (avr->state == cpu_Running &&
      gdb_watch_find (&g->breakpoints, avr->pc) != -1)
@@ -536,12 +535,12 @@ board_simavr::MGetPinName(int pin)
     case 32:
      return "GND";
      break;
-     //case 33:
-     //return "XTAL2";
-     //break;
-     //case 34:
-     //return "XTAL1";
-     //break;
+    case 33:
+     return "XTAL2";
+     break;
+    case 34:
+     return "XTAL1";
+     break;
     case 35:
      return "PL0/49";
      break;
@@ -731,9 +730,9 @@ board_simavr::MGetPinName(int pin)
     case 97:
      return "PF0/A0";
      break;
-     //case 98:
-     //return "AREF";
-     //break;
+    case 98:
+     return "AREF";
+     break;
     case 99:
      return "GND";
      break;
@@ -989,7 +988,7 @@ board_simavr::MGetPinsValues(void)
 static void
 uart_in_hook(struct avr_irq_t * irq, uint32_t value, void * param)
 {
- serialfd_t * serialfd = (serialfd_t *)param;
+ serialfd_t * serialfd = (serialfd_t *) param;
  serial_port_send (*serialfd, value);
 }
 

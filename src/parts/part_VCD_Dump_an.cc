@@ -32,7 +32,7 @@
 #include<emscripten.h>
 #endif
 
-const char markers[] = "!$%&[()]";
+static const char markers[] = "!$%&[()]";
 
 /* outputs */
 enum

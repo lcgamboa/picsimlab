@@ -29,9 +29,6 @@
 #include<lxrad.h>
 #include"part.h"
 
-//#define DUMP_DIR
-//#define DATA_DEBUG
-
 class cpart_VCD_Dump:public part
 {
    public:
@@ -55,13 +52,7 @@ class cpart_VCD_Dump:public part
       unsigned short get_out_id(char * name);
      private:
       unsigned char input_pins[8];    
-      unsigned char old_value_pins[8]; 
-#ifdef DUMP_DIR
-      unsigned char old_value_dir[8]; 
-#endif      
-#ifdef DATA_DEBUG
-      unsigned char old_data_debug[8];
-#endif      
+      unsigned char old_value_pins[8];   
       char   f_vcd_name[200];
       FILE * f_vcd;
       unsigned long vcd_count;
