@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"classboard__picsim.html#af3806a9f1014296272f985535ee9a272":[3,0,6,29],
 "classboard__picsim.html#af990796d977ee186e9ce111d7c7fd1f4":[3,0,6,25],
 "classboard__qemu__stm32.html":[3,0,7],
 "classboard__qemu__stm32.html#a0d2751f17466335c0cd4e620f4d163f6":[3,0,7,14],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "classcboard___curiosity.html#a5e8407bec28dc471b351528ce408efdf":[3,0,13,16],
 "classcboard___curiosity.html#a61e0d867daceb5e45e420880d01f7c1d":[3,0,13,6],
 "classcboard___curiosity.html#a681191f3290f95a7bb03366001040a4b":[3,0,13,25],
-"classcboard___curiosity.html#a73127f045be1562766ae359b74e8880e":[3,0,13,7],
-"classcboard___curiosity.html#a79e24b01fe18915708b91b59f1b9edd3":[3,0,13,29]
+"classcboard___curiosity.html#a73127f045be1562766ae359b74e8880e":[3,0,13,7]
 };

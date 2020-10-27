@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"classcboard___p_i_c_genios.html#af8fca828d315f2eae3c7772773a377f4":[3,0,19,23],
 "classcboard___p_i_c_genios.html#aff8a80772de5f703b47aa034abc6198b":[3,0,19,15],
 "classcboard___s_t_m32___h103.html":[3,0,20],
 "classcboard___s_t_m32___h103.html#a0188758fb3b8e38fe288c599b31c106e":[3,0,20,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "classcpart___i_o__74xx595.html#adb43442e457f4ca59e9bdb3f6c0d57b6":[3,0,29,13],
 "classcpart___i_o__74xx595.html#ae0559295c807798b90841b58c5c79c50":[3,0,29,8],
 "classcpart___i_o__74xx595.html#afd0c0b2de9616175baabbda0957f3776":[3,0,29,21],
-"classcpart___i_o___m_c_p23_s17.html":[3,0,30],
-"classcpart___i_o___m_c_p23_s17.html#a03ef5ab872c8524d3c576077395df9cc":[3,0,30,2]
+"classcpart___i_o___m_c_p23_s17.html":[3,0,30]
 };

@@ -9,6 +9,7 @@ var dir_74468c6aa5627e796dac9600ce6ada7d =
     [ "part_IO_74xx595.h", "part___i_o__74xx595_8h_source.html", null ],
     [ "part_IO_MCP23S17.h", "part___i_o___m_c_p23_s17_8h_source.html", null ],
     [ "part_IO_PCF8574.h", "part___i_o___p_c_f8574_8h_source.html", null ],
+    [ "part_jumpers.h", "part__jumpers_8h_source.html", null ],
     [ "part_keypad.h", "part__keypad_8h_source.html", null ],
     [ "part_LCD_hd44780.h", "part___l_c_d__hd44780_8h_source.html", null ],
     [ "part_LCD_pcd8544.h", "part___l_c_d__pcd8544_8h_source.html", null ],

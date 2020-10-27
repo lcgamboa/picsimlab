@@ -2,6 +2,8 @@
 
 ### New
 
+* Part Jumper Wires added. [lcgamboa]
+
 * New part IO UART. [lcgamboa]
 
 * SD card part added. [lcgamboa]

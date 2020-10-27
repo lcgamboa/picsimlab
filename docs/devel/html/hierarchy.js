@@ -59,6 +59,7 @@ var hierarchy =
       [ "cpart_IO_74xx595", "classcpart___i_o__74xx595.html", null ],
       [ "cpart_IO_MCP23S17", "classcpart___i_o___m_c_p23_s17.html", null ],
       [ "cpart_IO_PCF8574", "classcpart___i_o___p_c_f8574.html", null ],
+      [ "cpart_Jumpers", "classcpart___jumpers.html", null ],
       [ "cpart_keypad", "classcpart__keypad.html", null ],
       [ "cpart_LCD_hd44780", "classcpart___l_c_d__hd44780.html", null ],
       [ "cpart_LCD_pcd8544", "classcpart___l_c_d__pcd8544.html", null ],

@@ -32,6 +32,7 @@ var annotated_dup =
     [ "cpart_IO_74xx595", "classcpart___i_o__74xx595.html", "classcpart___i_o__74xx595" ],
     [ "cpart_IO_MCP23S17", "classcpart___i_o___m_c_p23_s17.html", "classcpart___i_o___m_c_p23_s17" ],
     [ "cpart_IO_PCF8574", "classcpart___i_o___p_c_f8574.html", "classcpart___i_o___p_c_f8574" ],
+    [ "cpart_Jumpers", "classcpart___jumpers.html", "classcpart___jumpers" ],
     [ "cpart_keypad", "classcpart__keypad.html", "classcpart__keypad" ],
     [ "cpart_LCD_hd44780", "classcpart___l_c_d__hd44780.html", "classcpart___l_c_d__hd44780" ],
     [ "cpart_LCD_pcd8544", "classcpart___l_c_d__pcd8544.html", "classcpart___l_c_d__pcd8544" ],
