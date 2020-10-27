@@ -584,7 +584,7 @@ CPWindow5::menu1_Edit_Editpinalias_EvMenuActive(CControl * control)
 {
  if (lxFileExists (alias_fname))
   {
-   SavePinAlias(alias_fname);
+   SavePinAlias (alias_fname);
 #ifdef _WIN_  
    lxExecute (lxT ("notepad.exe ") + alias_fname);
 #else
@@ -873,7 +873,7 @@ CPWindow5::GetPinsNames(void)
     {
      spin = PinNames[i];
     }
-   if (spin.Cmp (lxT ("error")))
+   if (PinNames[i].Cmp (lxT ("error")))
     {
      Items = Items + itoa (i) + "  " + spin + ",";
     }
@@ -888,7 +888,7 @@ CPWindow5::GetPinsNames(void)
     {
      spin = PinNames[i];
     }
-   if ((spin.length () > 0)&& (spin[0] != ' ')) 
+   if (PinNames[i].length () > 0)
     {
      Items = Items + itoa (i) + "  " + spin + ",";
     }
@@ -968,6 +968,21 @@ CPWindow5::SetPinDOV(unsigned char pin, unsigned char ovalue)
 }
 
 void
+CPWindow5::SetPinDir(unsigned char pin, unsigned char dir)
+{
+ if (pin)
+  {
+   if (Pins[pin - 1].dir != dir)
+    {
+     if ((pin > PinsCount))
+      {
+       Pins[pin - 1].dir = dir;
+      }
+    }
+  }
+}
+
+void
 CPWindow5::WritePin(unsigned char pin, unsigned char value)
 {
  if (pin > PinsCount)
@@ -1006,7 +1021,7 @@ CPWindow5::SetAPin(unsigned char pin, float value)
 }
 
 unsigned char
-CPWindow5::RegisterIOpin(lxString pname, unsigned char pin)
+CPWindow5::RegisterIOpin(lxString pname, unsigned char pin, unsigned char dir)
 {
  unsigned char ppin = IOINIT;
 
@@ -1029,6 +1044,11 @@ CPWindow5::RegisterIOpin(lxString pname, unsigned char pin)
  if (ppin)
   {
    PinNames[ppin] = pname;
+   if (PinAlias[ppin][0] == ' ')
+    {
+     PinAlias[ppin] = pname;
+    }
+   SetPinDir (ppin, dir);
   }
 
  return ppin;
@@ -1039,6 +1059,10 @@ CPWindow5::UnregisterIOpin(unsigned char pin)
 {
  if (PinNames[pin].length () > 0)
   {
+   if (!strncmp (PinNames[pin], PinAlias[pin], strlen (PinNames[pin])))
+    {
+     PinAlias[pin] = " ";
+    }
    PinNames[pin] = "";
    return 1;
   }

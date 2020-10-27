@@ -147,10 +147,11 @@ public:
     void SetPin(unsigned char pin, unsigned char value);
     void SetAPin(unsigned char pin, float value);
     void SetPinDOV(unsigned char pin, unsigned char ovalue);
+    void SetPinDir(unsigned char pin, unsigned char dir);
     void WritePin(unsigned char pin, unsigned char value);
     void WritePinA(unsigned char pin, unsigned char avalue);
     void WritePinOA(unsigned char pin, unsigned short oavalue);
-    unsigned char RegisterIOpin(lxString pname, unsigned char pin = 0);
+    unsigned char RegisterIOpin(lxString pname, unsigned char pin = 0, unsigned char dir = PD_OUT);
     unsigned char UnregisterIOpin(unsigned char pin);
     void Setfdtype(int value);
     bool SavePinAlias(lxString fname);
