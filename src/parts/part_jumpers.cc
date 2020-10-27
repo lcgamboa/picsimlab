@@ -338,6 +338,12 @@ cpart_Jumpers::Process(void)
     {
      Window5.WritePin (output_pins[i], ppins[input_pins[i] - 1].value);
     }
+    /*
+    if (ppins[input_pins[i] - 1].avalue != ppins[output_pins[i] - 1].avalue)
+    {
+     Window5.WritePinA (output_pins[i], ppins[input_pins[i] - 1].avalue);
+    }
+    */ 
   }
 
  mcount++;

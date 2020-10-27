@@ -32,9 +32,12 @@ OBJS_EXP =  boards/board_Xpress.o boards/board_Curiosity.o boards/board_x.o boar
 exp: OBJS+=$(OBJS_EXP)  
 exp: EFLAGS=-D_EXPERIMENTAL_ 
 exp: ELIBS=  -lucsim  -lgpsim 
+exp: rebuild
+exp: $(OBJS_EXP)  all
 
-exp: $(OBJS_EXP) all
-	
+rebuild:
+	rm -rf picsimlab
+
 override CFLAGS+= $(EFLAGS) -DEXT_BROWSER_EXAMPLES -DLEGACY081 
 
 
