@@ -155,7 +155,7 @@ class part
      /**
      * @brief  Used by properties window combos
      */ 
-      virtual void ComboChange(lxString value){}; 
+      virtual void ComboChange(CCombo * control, lxString value){}; 
                       
      /**
      * @brief  Used by properties window filedialogs

@@ -191,7 +191,7 @@ CPWindow5::PropComboChange(CCombo * control)
  //Window5.wprop.SetCanDestroy (true);
  Window5.wprop.WDestroy ();
 
- Window5.parts[Window5.PartSelected]->ComboChange (control->GetText ());
+ Window5.parts[Window5.PartSelected]->ComboChange (control, control->GetText ());
 
  Window5.pmenu2_Properties_EvMenuActive (this);
 }
@@ -899,6 +899,9 @@ CPWindow5::GetPinsNames(void)
 lxString
 CPWindow5::GetPinName(unsigned char pin)
 {
+ 
+ if(!pin) return "NC";
+ 
  if (pin <= pboard->MGetPinCount ())
   {
    if (useAlias)

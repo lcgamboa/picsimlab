@@ -52,7 +52,7 @@ class cpart_keypad:public part
       void ReadPreferences(lxString value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
-      void ComboChange(lxString value);
+      void ComboChange(CCombo * control, lxString value);
       void ChangeType(unsigned char tp); 
     private:
       unsigned char type;  

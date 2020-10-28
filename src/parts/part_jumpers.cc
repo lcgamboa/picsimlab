@@ -100,6 +100,7 @@ cpart_Jumpers::cpart_Jumpers(unsigned x, unsigned y)
  output_pins[14] = Window5.RegisterIOpin (jname + lxT ("OE"));
  output_pins[15] = Window5.RegisterIOpin (jname + lxT ("OF"));
 
+ type = JWT_MM;
 
  mcount = 0;
  memset (output_pins_alm, 0, 16 * sizeof (unsigned long));
@@ -144,14 +145,14 @@ cpart_Jumpers::Draw(void)
     case O_I1 ... O_I16:
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     pname.Printf ("%2i-%s", output[i].id - O_I1 + 1, Window5.GetPinName (input_pins[output[i].id - O_I1]));
+     pname.Printf ("%2i-%s", output[i].id - O_I1 + 1, Window5.GetPinName (input_pins[output[i].id - O_I1]).c_str ());
      canvas.SetFgColor (255, 255, 255);
      canvas.RotatedText (pname, output[i].x1, output[i].y2, 90.0);
      break;
     case O_O1 ... O_O16:
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     pname.Printf ("%2i-%s", output[i].id - O_O1 + 1, Window5.GetPinName (output_pins[output[i].id - O_O1]));
+     pname.Printf ("%2i-%s", output[i].id - O_O1 + 1, Window5.GetPinName (output_pins[output[i].id - O_O1]).c_str ());
      canvas.SetFgColor (255, 255, 255);
      canvas.RotatedText (pname, output[i].x1, output[i].y2, 90.0);
      break;
@@ -235,7 +236,12 @@ cpart_Jumpers::WritePreferences(void)
  char prefs[256];
 
  char c = jname[0];
- sprintf (prefs, "%hhu,%c", input_pins[0], c);
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%c",
+          input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4], input_pins[5], input_pins[6], input_pins[7],
+          input_pins[8], input_pins[9], input_pins[10], input_pins[11], input_pins[12], input_pins[13], input_pins[14], input_pins[15],
+          output_pins[0], output_pins[1], output_pins[2], output_pins[3], output_pins[4], output_pins[5], output_pins[6], output_pins[7],
+          output_pins[8], output_pins[9], output_pins[10], output_pins[11], output_pins[12], output_pins[13], output_pins[14], output_pins[15],
+          type, c);
 
  return prefs;
 }
@@ -243,65 +249,116 @@ cpart_Jumpers::WritePreferences(void)
 void
 cpart_Jumpers::ReadPreferences(lxString value)
 {
- unsigned char inp;
+ unsigned char inp[16];
+ unsigned char outp[16];
+
  char c;
+ unsigned char ntype;
 
- sscanf (value.c_str (), "%hhu,%c", &inp, &c);
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%c",
+         &inp[0], &inp[1], &inp[2], &inp[3], &inp[4], &inp[5], &inp[6], &inp[7],
+         &inp[8], &inp[9], &inp[10], &inp[11], &inp[12], &inp[13], &inp[14], &inp[15],
+         &outp[0], &outp[1], &outp[2], &outp[3], &outp[4], &outp[5], &outp[6], &outp[7],
+         &outp[8], &outp[9], &outp[10], &outp[11], &outp[12], &outp[13], &outp[14], &outp[15],
+         &ntype, &c);
 
- if ((input_pins[0] != inp)||(   ID != (c-'A')))
+ ChangeType (ntype);
+
+ if ((ntype & 0x02))
   {
-   char buff[2];
-
-   buff[0] = c;
-   buff[1] = 0;
-
-   jname = buff;
-
-   ID = c - 'A';
-   if (ID >= countID)
-    {
-     countID = ID + 1;
-    }
-
    for (int i = 0; i < 16; i++)
     {
-     Window5.UnregisterIOpin (input_pins[i]);
-     Window5.UnregisterIOpin (output_pins[i]);
+     input_pins[i] = inp[i];
     }
+  }
+ else
+  {
+   if ((input_pins[0] != inp[0]) || (ID != (c - 'A')))
+    {
+     char buff[2];
 
-   input_pins[0] = Window5.RegisterIOpin (jname + lxT ("I0"), inp++, PD_IN);
-   input_pins[1] = Window5.RegisterIOpin (jname + lxT ("I1"), inp++, PD_IN);
-   input_pins[2] = Window5.RegisterIOpin (jname + lxT ("I2"), inp++, PD_IN);
-   input_pins[3] = Window5.RegisterIOpin (jname + lxT ("I3"), inp++, PD_IN);
-   input_pins[4] = Window5.RegisterIOpin (jname + lxT ("I4"), inp++, PD_IN);
-   input_pins[5] = Window5.RegisterIOpin (jname + lxT ("I5"), inp++, PD_IN);
-   input_pins[6] = Window5.RegisterIOpin (jname + lxT ("I6"), inp++, PD_IN);
-   input_pins[7] = Window5.RegisterIOpin (jname + lxT ("I7"), inp++, PD_IN);
-   input_pins[8] = Window5.RegisterIOpin (jname + lxT ("I8"), inp++, PD_IN);
-   input_pins[9] = Window5.RegisterIOpin (jname + lxT ("I9"), inp++, PD_IN);
-   input_pins[10] = Window5.RegisterIOpin (jname + lxT ("IA"), inp++, PD_IN);
-   input_pins[11] = Window5.RegisterIOpin (jname + lxT ("IB"), inp++, PD_IN);
-   input_pins[12] = Window5.RegisterIOpin (jname + lxT ("IC"), inp++, PD_IN);
-   input_pins[13] = Window5.RegisterIOpin (jname + lxT ("ID"), inp++, PD_IN);
-   input_pins[14] = Window5.RegisterIOpin (jname + lxT ("IE"), inp++, PD_IN);
-   input_pins[15] = Window5.RegisterIOpin (jname + lxT ("IF"), inp++, PD_IN);
+     buff[0] = c;
+     buff[1] = 0;
 
-   output_pins[0] = Window5.RegisterIOpin (jname + lxT ("O0"), inp++);
-   output_pins[1] = Window5.RegisterIOpin (jname + lxT ("O1"), inp++);
-   output_pins[2] = Window5.RegisterIOpin (jname + lxT ("O2"), inp++);
-   output_pins[3] = Window5.RegisterIOpin (jname + lxT ("O3"), inp++);
-   output_pins[4] = Window5.RegisterIOpin (jname + lxT ("O4"), inp++);
-   output_pins[5] = Window5.RegisterIOpin (jname + lxT ("O5"), inp++);
-   output_pins[6] = Window5.RegisterIOpin (jname + lxT ("O6"), inp++);
-   output_pins[7] = Window5.RegisterIOpin (jname + lxT ("O7"), inp++);
-   output_pins[8] = Window5.RegisterIOpin (jname + lxT ("O8"), inp++);
-   output_pins[9] = Window5.RegisterIOpin (jname + lxT ("O9"), inp++);
-   output_pins[10] = Window5.RegisterIOpin (jname + lxT ("OA"), inp++);
-   output_pins[11] = Window5.RegisterIOpin (jname + lxT ("OB"), inp++);
-   output_pins[12] = Window5.RegisterIOpin (jname + lxT ("OC"), inp++);
-   output_pins[13] = Window5.RegisterIOpin (jname + lxT ("OD"), inp++);
-   output_pins[14] = Window5.RegisterIOpin (jname + lxT ("OE"), inp++);
-   output_pins[15] = Window5.RegisterIOpin (jname + lxT ("OF"), inp++);
+     jname = buff;
+
+     ID = c - 'A';
+     if (ID >= countID)
+      {
+       countID = ID + 1;
+      }
+
+     for (int i = 0; i < 16; i++)
+      {
+       Window5.UnregisterIOpin (input_pins[i]);
+      }
+
+     input_pins[0] = Window5.RegisterIOpin (jname + lxT ("I0"), inp[0], PD_IN);
+     input_pins[1] = Window5.RegisterIOpin (jname + lxT ("I1"), inp[1], PD_IN);
+     input_pins[2] = Window5.RegisterIOpin (jname + lxT ("I2"), inp[2], PD_IN);
+     input_pins[3] = Window5.RegisterIOpin (jname + lxT ("I3"), inp[3], PD_IN);
+     input_pins[4] = Window5.RegisterIOpin (jname + lxT ("I4"), inp[4], PD_IN);
+     input_pins[5] = Window5.RegisterIOpin (jname + lxT ("I5"), inp[5], PD_IN);
+     input_pins[6] = Window5.RegisterIOpin (jname + lxT ("I6"), inp[6], PD_IN);
+     input_pins[7] = Window5.RegisterIOpin (jname + lxT ("I7"), inp[7], PD_IN);
+     input_pins[8] = Window5.RegisterIOpin (jname + lxT ("I8"), inp[8], PD_IN);
+     input_pins[9] = Window5.RegisterIOpin (jname + lxT ("I9"), inp[9], PD_IN);
+     input_pins[10] = Window5.RegisterIOpin (jname + lxT ("IA"), inp[10], PD_IN);
+     input_pins[11] = Window5.RegisterIOpin (jname + lxT ("IB"), inp[11], PD_IN);
+     input_pins[12] = Window5.RegisterIOpin (jname + lxT ("IC"), inp[12], PD_IN);
+     input_pins[13] = Window5.RegisterIOpin (jname + lxT ("ID"), inp[13], PD_IN);
+     input_pins[14] = Window5.RegisterIOpin (jname + lxT ("IE"), inp[14], PD_IN);
+     input_pins[15] = Window5.RegisterIOpin (jname + lxT ("IF"), inp[15], PD_IN);
+    }
+  }
+
+ if (ntype & 0x01)
+  {
+   for (int i = 0; i < 16; i++)
+    {
+     output_pins[i] = outp[i];
+    }
+  }
+ else
+  {
+   if ((output_pins[0] != outp[0]) || (ID != (c - 'A')))
+    {
+
+     char buff[2];
+
+     buff[0] = c;
+     buff[1] = 0;
+
+     jname = buff;
+
+     ID = c - 'A';
+     if (ID >= countID)
+      {
+       countID = ID + 1;
+      }
+
+     for (int i = 0; i < 16; i++)
+      {
+       Window5.UnregisterIOpin (output_pins[i]);
+      }
+
+     output_pins[0] = Window5.RegisterIOpin (jname + lxT ("O0"), outp[0]);
+     output_pins[1] = Window5.RegisterIOpin (jname + lxT ("O1"), outp[1]);
+     output_pins[2] = Window5.RegisterIOpin (jname + lxT ("O2"), outp[2]);
+     output_pins[3] = Window5.RegisterIOpin (jname + lxT ("O3"), outp[3]);
+     output_pins[4] = Window5.RegisterIOpin (jname + lxT ("O4"), outp[4]);
+     output_pins[5] = Window5.RegisterIOpin (jname + lxT ("O5"), outp[5]);
+     output_pins[6] = Window5.RegisterIOpin (jname + lxT ("O6"), outp[6]);
+     output_pins[7] = Window5.RegisterIOpin (jname + lxT ("O7"), outp[7]);
+     output_pins[8] = Window5.RegisterIOpin (jname + lxT ("O8"), outp[8]);
+     output_pins[9] = Window5.RegisterIOpin (jname + lxT ("O9"), outp[9]);
+     output_pins[10] = Window5.RegisterIOpin (jname + lxT ("OA"), outp[10]);
+     output_pins[11] = Window5.RegisterIOpin (jname + lxT ("OB"), outp[11]);
+     output_pins[12] = Window5.RegisterIOpin (jname + lxT ("OC"), outp[12]);
+     output_pins[13] = Window5.RegisterIOpin (jname + lxT ("OD"), outp[13]);
+     output_pins[14] = Window5.RegisterIOpin (jname + lxT ("OE"), outp[14]);
+     output_pins[15] = Window5.RegisterIOpin (jname + lxT ("OF"), outp[15]);
+    }
   }
 
  Reset ();
@@ -310,15 +367,133 @@ cpart_Jumpers::ReadPreferences(lxString value)
 void
 cpart_Jumpers::ConfigurePropertiesWindow(CPWindow * WProp)
 {
+ lxString Items = Window5.GetPinsNames ();
+ lxString spin;
+ lxString childname;
+ CCombo* cc;
+
+
+ cc = ((CCombo*) WProp->GetChildByName ("combo1"));
+ if (type & 0x02)
+  cc->SetText ("F");
+ else
+  cc->SetText ("M");
+
+ cc = ((CCombo*) WProp->GetChildByName ("combo18"));
+ if (type & 0x01)
+  cc->SetText ("F");
+ else
+  cc->SetText ("M");
+
+
+ for (int i = 0; i < 16; i++)
+  {
+   //input
+   childname.Printf ("combo%i", i + 2);
+   cc = (CCombo*) WProp->GetChildByName (childname);
+
+   cc->SetItems (Items);
+   if (input_pins[i] == 0)
+    cc->SetText ("0  NC");
+   else
+    {
+     spin = Window5.GetPinName (input_pins[i]);
+     cc->SetText (itoa (input_pins[i]) + "  " + spin);
+    }
+
+   if (type & 0x02)
+    {
+     cc->SetEnable (1);
+    }
+   else
+    {
+     cc->SetEnable (0);
+    }
+
+   //output
+   childname.Printf ("combo%i", i + 19);
+   cc = (CCombo*) WProp->GetChildByName (childname);
+
+   cc->SetItems (Items);
+   if (output_pins[i] == 0)
+    cc->SetText ("0  NC");
+   else
+    {
+     spin = Window5.GetPinName (output_pins[i]);
+     cc->SetText (itoa (output_pins[i]) + "  " + spin);
+    }
+
+   if (type & 0x01)
+    {
+     cc->SetEnable (1);
+    }
+   else
+    {
+
+     cc->SetEnable (0);
+    }
+
+  }
+
+
+
+ ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+ ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
+
  ((CButton*) WProp->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+
+ ((CCombo*) WProp->GetChildByName ("combo1"))->EvOnComboChange = EVONCOMBOCHANGE & CPWindow5::PropComboChange;
+ ((CCombo*) WProp->GetChildByName ("combo18"))->EvOnComboChange = EVONCOMBOCHANGE & CPWindow5::PropComboChange;
+
 }
 
 void
-cpart_Jumpers::ReadPropertiesWindow(CPWindow * WProp) { }
+cpart_Jumpers::ReadPropertiesWindow(CPWindow * WProp)
+{
+
+ lxString childname;
+ CCombo* cc;
+
+
+ cc = ((CCombo*) WProp->GetChildByName ("combo1"));
+ if (cc->GetText ().Cmp ("M"))
+  type |= 0x02;
+ else
+  type &= ~0x02;
+
+
+ cc = ((CCombo*) WProp->GetChildByName ("combo18"));
+ if (cc->GetText ().Cmp ("M"))
+  type |= 0x01;
+ else
+  type &= ~0x01;
+
+
+ for (int i = 0; i < 16; i++)
+  {
+
+   //input
+   if (type & 0x02)
+    {
+     childname.Printf ("combo%i", i + 2);
+     cc = (CCombo*) WProp->GetChildByName (childname);
+     input_pins[i] = atoi (cc->GetText ());
+    }
+   //output
+   if (type & 0x01)
+    {
+     childname.Printf ("combo%i", i + 19);
+     cc = (CCombo*) WProp->GetChildByName (childname);
+     output_pins[i] = atoi (cc->GetText ());
+    }
+  }
+
+}
 
 void
 cpart_Jumpers::PreProcess(void)
 {
+
  memset (output_pins_alm, 0, 16 * sizeof (unsigned long));
  JUMPSTEPS_ = Window1.GetJUMPSTEPS ();
  mcount = JUMPSTEPS_;
@@ -338,12 +513,12 @@ cpart_Jumpers::Process(void)
     {
      Window5.WritePin (output_pins[i], ppins[input_pins[i] - 1].value);
     }
-    /*
-    if (ppins[input_pins[i] - 1].avalue != ppins[output_pins[i] - 1].avalue)
-    {
-     Window5.WritePinA (output_pins[i], ppins[input_pins[i] - 1].avalue);
-    }
-    */ 
+   /*
+   if (ppins[input_pins[i] - 1].avalue != ppins[output_pins[i] - 1].avalue)
+   {
+Window5.WritePinA (output_pins[i], ppins[input_pins[i] - 1].avalue);
+   }
+    */
   }
 
  mcount++;
@@ -351,6 +526,7 @@ cpart_Jumpers::Process(void)
   {
    for (i = 0; i < 16; i++)
     {
+
      if (ppins[output_pins[i] - 1].value)output_pins_alm[i]++;
     }
    mcount = -1;
@@ -365,8 +541,111 @@ cpart_Jumpers::PostProcess(void)
 
  for (int i = 0; i < 16; i++)
   {
+
    Window5.WritePinOA (output_pins[i], (ppins[output_pins[i] - 1].oavalue + ((output_pins_alm[i]*255.0) / NSTEPJ)) / 2);
   }
+}
+
+void
+cpart_Jumpers::ChangeType(unsigned char ntype)
+{
+
+
+ //if same
+
+ if (type == ntype) return;
+
+ if (!(type & 0x02) && (ntype & 0x02))
+  {
+   for (int i = 0; i < 16; i++)
+    {
+     Window5.UnregisterIOpin (input_pins[i]);
+     input_pins[i] = 0;
+    }
+  }
+ if ((type & 0x02) && !(ntype & 0x02))
+  {
+   input_pins[0] = Window5.RegisterIOpin (jname + lxT ("I0"), 0, PD_IN);
+   input_pins[1] = Window5.RegisterIOpin (jname + lxT ("I1"), 0, PD_IN);
+   input_pins[2] = Window5.RegisterIOpin (jname + lxT ("I2"), 0, PD_IN);
+   input_pins[3] = Window5.RegisterIOpin (jname + lxT ("I3"), 0, PD_IN);
+   input_pins[4] = Window5.RegisterIOpin (jname + lxT ("I4"), 0, PD_IN);
+   input_pins[5] = Window5.RegisterIOpin (jname + lxT ("I5"), 0, PD_IN);
+   input_pins[6] = Window5.RegisterIOpin (jname + lxT ("I6"), 0, PD_IN);
+   input_pins[7] = Window5.RegisterIOpin (jname + lxT ("I7"), 0, PD_IN);
+   input_pins[8] = Window5.RegisterIOpin (jname + lxT ("I8"), 0, PD_IN);
+   input_pins[9] = Window5.RegisterIOpin (jname + lxT ("I9"), 0, PD_IN);
+   input_pins[10] = Window5.RegisterIOpin (jname + lxT ("IA"), 0, PD_IN);
+   input_pins[11] = Window5.RegisterIOpin (jname + lxT ("IB"), 0, PD_IN);
+   input_pins[12] = Window5.RegisterIOpin (jname + lxT ("IC"), 0, PD_IN);
+   input_pins[13] = Window5.RegisterIOpin (jname + lxT ("ID"), 0, PD_IN);
+   input_pins[14] = Window5.RegisterIOpin (jname + lxT ("IE"), 0, PD_IN);
+   input_pins[15] = Window5.RegisterIOpin (jname + lxT ("IF"), 0, PD_IN);
+  }
+
+ if (!(type & 0x01) && (ntype & 0x01))
+  {
+   for (int i = 0; i < 16; i++)
+    {
+     Window5.UnregisterIOpin (output_pins[i]);
+     output_pins[i] = 0;
+    }
+  }
+
+ if ((type & 0x01) && !(ntype & 0x01))
+  {
+   output_pins[0] = Window5.RegisterIOpin (jname + lxT ("O0"));
+   output_pins[1] = Window5.RegisterIOpin (jname + lxT ("O1"));
+   output_pins[2] = Window5.RegisterIOpin (jname + lxT ("O2"));
+   output_pins[3] = Window5.RegisterIOpin (jname + lxT ("O3"));
+   output_pins[4] = Window5.RegisterIOpin (jname + lxT ("O4"));
+   output_pins[5] = Window5.RegisterIOpin (jname + lxT ("O5"));
+   output_pins[6] = Window5.RegisterIOpin (jname + lxT ("O6"));
+   output_pins[7] = Window5.RegisterIOpin (jname + lxT ("O7"));
+   output_pins[8] = Window5.RegisterIOpin (jname + lxT ("O8"));
+   output_pins[9] = Window5.RegisterIOpin (jname + lxT ("O9"));
+   output_pins[10] = Window5.RegisterIOpin (jname + lxT ("OA"));
+   output_pins[11] = Window5.RegisterIOpin (jname + lxT ("OB"));
+   output_pins[12] = Window5.RegisterIOpin (jname + lxT ("OC"));
+   output_pins[13] = Window5.RegisterIOpin (jname + lxT ("OD"));
+   output_pins[14] = Window5.RegisterIOpin (jname + lxT ("OE"));
+   output_pins[15] = Window5.RegisterIOpin (jname + lxT ("OF"));
+  }
+
+ type = ntype;
+
+}
+
+void
+cpart_Jumpers::ComboChange(CCombo * control, lxString value)
+{
+
+ unsigned char ntype = type;
+
+ if (!control->GetName ().Cmp ("combo1"))
+  {
+   if (!value.compare (lxT ("F")))
+    {
+     ntype |= 0x02;
+    }
+   else
+    {
+     ntype &= ~0x02;
+    }
+
+  }
+ else
+  {
+   if (!value.compare (lxT ("F")))
+    {
+     ntype |= 0x01;
+    }
+   else
+    {
+     ntype &= ~0x01;
+    }
+  }
+ ChangeType (ntype);
 }
 
 part_init("Jumper Wires", cpart_Jumpers);

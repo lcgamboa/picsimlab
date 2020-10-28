@@ -582,7 +582,7 @@ cpart_keypad::ReadPropertiesWindow(CPWindow * WProp)
 
  lxString tps = ((CCombo*) WProp->GetChildByName ("combo10"))->GetText ();
 
- ComboChange (tps);
+ ComboChange ((CCombo*) WProp->GetChildByName ("combo10"), tps);
 
  memset (keys, 0, 16);
  memset (keys2, 0, 10);
@@ -590,7 +590,7 @@ cpart_keypad::ReadPropertiesWindow(CPWindow * WProp)
 }
 
 void
-cpart_keypad::ComboChange(lxString value)
+cpart_keypad::ComboChange(CCombo * control, lxString value)
 {
  if (!value.compare (lxT ("4x3")))
   {

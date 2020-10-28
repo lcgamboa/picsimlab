@@ -29,6 +29,7 @@
 
 
 #ifdef _WIN_
+#include<windows.h>
 #define serialfd_t HANDLE 
 #else
 #define serialfd_t int

@@ -57,15 +57,15 @@ serial_port_open( serialfd_t * serialfd, const char * SERIALDEVICE)
 
 
 #ifdef _WIN_
- serialfd = CreateFile (SERIALDEVICE, GENERIC_READ | GENERIC_WRITE,
+ *serialfd = CreateFile (SERIALDEVICE, GENERIC_READ | GENERIC_WRITE,
                         0, // exclusive access
                         NULL, // no security
                         OPEN_EXISTING,
                         0, // no overlapped I/O
                         NULL); // null template
- if (serialfd == INVALID_HANDLE_VALUE)
+ if (*serialfd == INVALID_HANDLE_VALUE)
   {
-   serialfd = 0;
+   *serialfd = 0;
    //     printf("Erro on Port Open:%s!\n",SERIALDEVICE);
    return 0;
   }

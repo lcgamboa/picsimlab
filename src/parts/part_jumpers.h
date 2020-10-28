@@ -73,6 +73,8 @@ public:
     void ReadPreferences(lxString value);
     unsigned short get_in_id(char * name);
     unsigned short get_out_id(char * name);
+    void ComboChange(CCombo * control, lxString value);
+    void ChangeType(unsigned char type); 
 private:
     unsigned char input_pins[16];
     unsigned char output_pins[16];
@@ -80,8 +82,14 @@ private:
     long mcount;
     int JUMPSTEPS_;
     lxString jname;
+    unsigned char type; 
 };
 
+// input/output   0-M 1-F
+#define JWT_MM 0x00
+#define JWT_MF 0x01
+#define JWT_FM 0x02
+#define JWT_FF 0x03
 
 
 
