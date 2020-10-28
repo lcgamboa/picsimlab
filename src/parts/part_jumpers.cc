@@ -511,7 +511,14 @@ cpart_Jumpers::Process(void)
   {
    if (ppins[input_pins[i] - 1].value != ppins[output_pins[i] - 1].value)
     {
-     Window5.WritePin (output_pins[i], ppins[input_pins[i] - 1].value);
+     if (type & 0x01)
+      {
+       Window5.SetPin (output_pins[i], ppins[input_pins[i] - 1].value);
+      }
+     else
+      {
+       Window5.WritePin (output_pins[i], ppins[input_pins[i] - 1].value);
+      }
     }
    /*
    if (ppins[input_pins[i] - 1].avalue != ppins[output_pins[i] - 1].avalue)
