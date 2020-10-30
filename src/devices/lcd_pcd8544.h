@@ -24,8 +24,8 @@
    ######################################################################## */
 
 
-#ifndef LCD_PDC8544
-#define	LCD_PDC8544
+#ifndef LCD_PCD8544
+#define	LCD_PCD8544
     
 #include<lxrad.h>
 
@@ -63,5 +63,5 @@ unsigned char lcd_pcd8544_io(lcd_pcd8544_t *lcd, unsigned char din, unsigned cha
 void lcd_pcd8544_draw(lcd_pcd8544_t *lcd, CCanvas * canvas,int x1,int y1,int w1,int h1, int picpwr);
 
 
-#endif //LCD_PDC8544
+#endif //LCD_PCD8544
 

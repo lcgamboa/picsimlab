@@ -51,6 +51,8 @@ typedef unsigned int u_int32_t;
 
 //#define DEBUG
 //#define DUMP
+#define TEXTDUMP
+
 #define dprintf if (1) {} else printf
 #define dsprintf if (1) {} else printf
 
@@ -646,6 +648,10 @@ eth_w5500_fake_dhcp_reply(eth_w5500_t *eth, int n)
  fclose (fouts);
 #endif
 
+#ifdef TEXTDUMP
+ temp_buff[s] = 0;
+ printf (temp_buff);
+#endif
 
 }
 
@@ -702,7 +708,6 @@ eth_w5500_process(eth_w5500_t *eth)
         }
        printf ("eth_w5500: connect error : %s \n", strerror (errno));
        eth->Socket[n][Sn_SR] = SOCK_CLOSED;
-       eth->Socket[n][Sn_IR] &= 0xFE;
        eth->status[n] = ER_CONN;
        break;
       }
@@ -758,6 +763,7 @@ eth_w5500_process(eth_w5500_t *eth)
        if (s > 0)
         {
          eth->active = 2;
+         eth->Socket[n][Sn_IR] |= 0x04;
 
          addr_base = (readWord (eth->Socket[n], Sn_RX_WR0));
 
@@ -767,7 +773,7 @@ eth_w5500_process(eth_w5500_t *eth)
            eth->RX_Mem[eth->RX_ptr[n] + addr ] = temp_buff[i];
           }
 
-         dsprintf ("Socket %i Received %i\n", n, s);
+         dsprintf ("eth_w5500: Socket %i Received %i\n", n, s);
          writeWord (eth->Socket[n], Sn_RX_WR0, readWord (eth->Socket[n], Sn_RX_WR0) + s);
 
          size = readWord (eth->Socket[n], Sn_RX_WR0);
@@ -789,6 +795,10 @@ eth_w5500_process(eth_w5500_t *eth)
          fwrite (temp_buff, s, 1, fouts);
          fclose (fouts);
 #endif
+#ifdef TEXTDUMP
+         temp_buff[s] = 0;
+         printf (temp_buff);
+#endif         
         }
       }
      break;
@@ -841,6 +851,10 @@ eth_w5500_process(eth_w5500_t *eth)
          eth->sockfd[n] = INVALID_SOCKET_VALUE;
          eth->Socket[n][Sn_SR] = SOCK_CLOSED;
          eth->status[n] = ER_BIND;
+         eth->bindp[n] = 0;
+         eth->listenfd[eth->listenfd_map[n]] = INVALID_SOCKET_VALUE;
+         eth->listenfd_port[eth->listenfd_map[n]] = 0;
+         break;
         }
        dsprintf ("Socket %i listen on port %i \n", n, skt_port);
       }
@@ -866,6 +880,7 @@ eth_w5500_process(eth_w5500_t *eth)
        if (s > 0)
         {
          eth->active = 2;
+         eth->Socket[n][Sn_IR] |= 0x04;
 
          strcpy (skt_addr, inet_ntoa (serv.sin_addr));
          skt_port = ntohs (serv.sin_port);
@@ -878,7 +893,7 @@ eth_w5500_process(eth_w5500_t *eth)
          eth->Socket[n][Sn_DPORT1] = skt_port & 0xFF;
 
 
-         dsprintf ("Socket %i Received %i from %s:%i\n", n, s, skt_addr, skt_port);
+         dsprintf ("eth_w5500: Socket %i Received %i from %s:%i\n", n, s, skt_addr, skt_port);
 
          temp_buff[0] = eth->Socket[n][Sn_DIPR0];
          temp_buff[1] = eth->Socket[n][Sn_DIPR1];
@@ -916,6 +931,10 @@ eth_w5500_process(eth_w5500_t *eth)
          fwrite (temp_buff, s, 1, fouts);
          fclose (fouts);
 #endif
+#ifdef TEXTDUMP
+         temp_buff[s] = 0;
+         printf (temp_buff);
+#endif         
         }
       }
      break;
@@ -998,7 +1017,7 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
          switch (BSB)
           {
           case B_COMMON:
-	   eth->outsr = eth->Common[eth->addr & 0x3F];
+           eth->outsr = eth->Common[eth->addr & 0x3F];
            break;
 
           case B_SCK0RG:
@@ -1087,10 +1106,10 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
            n = (BSB - B_SCK0RG) / 4;
            if ((eth->addr + offset) < 0x30)
             {
-             eth->Socket[n][eth->addr + offset] = eth->insr & 0x00FF;
              switch (eth->addr + offset)
               {
               case Sn_CR:
+               eth->Socket[n][eth->addr + offset] = eth->insr & 0x00FF;
                if (eth->Socket[n][Sn_CR])
                 {
                  dprintf ("eth_w5500: socket cmd = 0x%02X\n", eth->Socket[n][Sn_CR]);
@@ -1199,6 +1218,9 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
                        eth->sockfd[n] = INVALID_SOCKET_VALUE;
                        eth->Socket[n][Sn_SR] = SOCK_CLOSED;
                        eth->status[n] = ER_BIND;
+                       eth->listenfd[eth->listenfd_map[n]] = INVALID_SOCKET_VALUE;
+                       eth->listenfd_port[eth->listenfd_map[n]] = 0;
+                       break;
                       }
                      if (listen (eth->listenfd[eth->listenfd_map[n]], SOMAXCONN) < 0)
                       {
@@ -1207,6 +1229,7 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
                        eth->sockfd[n] = INVALID_SOCKET_VALUE;
                        eth->Socket[n][Sn_SR] = SOCK_CLOSED;
                        eth->status[n] = ER_LIST;
+                       break;
                       }
 
                      setnblock (eth->listenfd[eth->listenfd_map[n]]);
@@ -1228,14 +1251,14 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
                    break;
                   case DISCON:
                    if ((eth->Socket[n][Sn_MR]& 0x0F) != Sn_MR_TCP)break;
-                   dsprintf ("Socket %i Disconnect\n", n);
+                   dsprintf ("eth_w5500:Socket %i Disconnect\n", n);
                    if (shutdown (eth->sockfd[n], SHUT_RDWR) < 0)
                     {
                      printf ("eth_w5500: shutdown error : %s \n", strerror (errno));
                      eth->status[n] = ER_SHUT;
                     }
                   case CLOSE:
-                   dsprintf ("Socket %i Close\n", n);
+                   dsprintf ("eth_w5500:Socket %i Close\n", n);
                    eth->Socket[n][Sn_SR] = SOCK_CLOSED;
                    close (eth->sockfd[n]);
                    eth->sockfd[n] = INVALID_SOCKET_VALUE;
@@ -1257,6 +1280,10 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
                      fwrite (&eth->TX_Mem[eth->TX_ptr[n]], size, 1, fouts);
                      fclose (fouts);
 #endif
+#ifdef TEXTDUMP
+                     eth->TX_Mem[eth->TX_ptr[n] + size] = 0;
+                     printf ((char *) &eth->TX_Mem[eth->TX_ptr[n]]);
+#endif                     
                      if ((s = send (eth->sockfd[n], (const char *) &eth->TX_Mem[eth->TX_ptr[n]], size, MSG_NOSIGNAL)) < 0)
                       {
                        printf ("eth_w5500: send error : %s \n", strerror (errno));
@@ -1266,7 +1293,9 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
 
                      if (s > 0)
                       {
-                       dsprintf ("Socket %i Send %i\n", n, s);
+                       //dsprintf ("Socket %i Send %i \n", n, s);
+                       dsprintf (".");
+                       eth->Socket[n][Sn_IR] |= 0x10;
 
                        size = (eth->Socket[n][Sn_TXBUF_SIZE]*1024);
                        writeWord (eth->Socket[n], Sn_TX_FSR0, (size));
@@ -1293,6 +1322,10 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
                      fwrite (&eth->TX_Mem[eth->TX_ptr[n]], size, 1, fouts);
                      fclose (fouts);
 #endif
+#ifdef TEXTDUMP
+                     eth->TX_Mem[eth->TX_ptr[n] + size] = 0;
+                     printf ((char *) &eth->TX_Mem[eth->TX_ptr[n]]);
+#endif                     
                      dsprintf ("Socket %i Send %i to %s:%i\n", n, size, skt_addr, skt_port);
                      if (!strcmp (skt_addr, "255.255.255.255"))//fake broadcast
                       {
@@ -1312,7 +1345,7 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
                      writeWord (eth->Socket[n], Sn_TX_FSR0, (size));
                      writeWord (eth->Socket[n], Sn_TX_WR0, 0);
                      writeWord (eth->Socket[n], Sn_TX_RD0, 0);
-
+                     eth->Socket[n][Sn_IR] |= 0x10;
                      break;
                     }
 
@@ -1338,6 +1371,12 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
                   }
                  eth->Socket[n][Sn_CR] = 0;
                 }
+               break;
+              case Sn_IR:
+               eth->Socket[n][Sn_IR] &= ~(eth->insr & 0x00FF);
+               break;
+              default:
+               eth->Socket[n][eth->addr + offset] = eth->insr & 0x00FF;
                break;
               }
             }
