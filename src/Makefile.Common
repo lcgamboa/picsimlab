@@ -22,7 +22,8 @@ OBJS_EXP =  boards/board_Xpress.o boards/board_Curiosity.o boards/board_x.o boar
             boards/board_STM32_H103.o boards/board_Curiosity_HPC.o \
             boards/bridge_gpsim.o  boards/board_gpsim.o  boards/board_gpboard.o \
             parts/part_ETH_w5500.o devices/eth_w5500.o parts/part_VCD_Play.o \
-            parts/part_sdcard.o devices/sdcard.o devices/uart.o parts/part_uart.o  parts/part_jumpers.o
+            parts/part_sdcard.o devices/sdcard.o devices/uart.o parts/part_uart.o  parts/part_jumpers.o \
+            devices/lcd_ssd1306.o parts/part_LCD_ssd1306.o 
  
 
 .DEFAULT_GOAL := all
