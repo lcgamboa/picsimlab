@@ -532,8 +532,8 @@ lcd_ssd1306_draw(lcd_ssd1306_t *lcd, CCanvas * canvas, int x1, int y1, int w1, i
 {
  unsigned char x, y, z;
 
- lxColor front (0xb4, 0xff, 0xfc);
- lxColor back (0x0f, 0x0f, 0x17);
+ lxColor front(0xb4, 0xff, 0xfc);
+ lxColor back(0x0f, 0x0f, 0x17);
 
 
  lcd->update = 0;
