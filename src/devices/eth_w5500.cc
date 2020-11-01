@@ -51,7 +51,7 @@ typedef unsigned int u_int32_t;
 
 //#define DEBUG
 //#define DUMP
-#define TEXTDUMP
+//#define TEXTDUMP
 
 #define dprintf if (1) {} else printf
 #define dsprintf if (1) {} else printf
@@ -698,7 +698,11 @@ eth_w5500_process(eth_w5500_t *eth)
 
      if (connect (eth->sockfd[n], (sockaddr *) & serv, sizeof (serv)) < 0)
       {
+#ifndef _WIN_         
        if ((errno == EINPROGRESS) || (errno == EALREADY))
+#else
+       if ((WSAGetLastError () == WSAEINPROGRESS) || (WSAGetLastError () == WSAEALREADY) || (WSAGetLastError () == WSAEWOULDBLOCK))
+#endif          
         {
          conn_timeout[n]++;
          if (conn_timeout[n] < CONN_TIMEOUT)
@@ -753,9 +757,13 @@ eth_w5500_process(eth_w5500_t *eth)
       {
        if ((s = recv (eth->sockfd[n], temp_buff, size, 0)) < 0)
         {
+#ifndef _WIN_         
          if (errno != EAGAIN)
+#else
+         if (WSAGetLastError () != WSAEWOULDBLOCK)
+#endif          
           {
-           printf ("eth_w5500: recv error : %s \n", strerror (errno));
+           printf ("eth_w5500: recv tcp error :[%i] %s \n", errno, strerror (errno));
            eth->Socket[n][Sn_SR] = SOCK_CLOSED;
            eth->status[n] = ER_RECV;
           }
@@ -869,9 +877,13 @@ eth_w5500_process(eth_w5500_t *eth)
        if ((s = recvfrom (eth->sockfd[n], &temp_buff[8], eth->RX_size[n] - readWord (eth->Socket[n], Sn_RX_RSR0),
                           0 /*MSG_DONTWAIT MSG_WAITALL*/, (struct sockaddr *) &serv, &len)) < 0)
         {
+#ifndef _WIN_         
          if (errno != EAGAIN)
+#else
+         if (WSAGetLastError () != WSAEWOULDBLOCK)
+#endif  
           {
-           printf ("eth_w5500: recv error : %s \n", strerror (errno));
+           printf ("eth_w5500: recv udp error : %s \n", strerror (errno));
            eth->Socket[n][Sn_SR] = SOCK_CLOSED;
            eth->status[n] = ER_RECV;
           }
