@@ -701,7 +701,8 @@ eth_w5500_process(eth_w5500_t *eth)
 #ifndef _WIN_         
        if ((errno == EINPROGRESS) || (errno == EALREADY))
 #else
-       if ((WSAGetLastError () == WSAEINPROGRESS) || (WSAGetLastError () == WSAEALREADY) || (WSAGetLastError () == WSAEWOULDBLOCK))
+       if ((WSAGetLastError () == WSAEINPROGRESS) || (WSAGetLastError () == WSAEALREADY) ||
+           (WSAGetLastError () == WSAEWOULDBLOCK))
 #endif          
         {
          conn_timeout[n]++;
@@ -710,10 +711,17 @@ eth_w5500_process(eth_w5500_t *eth)
            break;
           }
         }
-       printf ("eth_w5500: connect error : %s \n", strerror (errno));
-       eth->Socket[n][Sn_SR] = SOCK_CLOSED;
-       eth->status[n] = ER_CONN;
-       break;
+#ifdef _WIN_         
+       if (WSAGetLastError () != WSAEISCONN)
+        {
+#endif
+         printf ("eth_w5500: connect error : %s \n", strerror (errno));
+         eth->Socket[n][Sn_SR] = SOCK_CLOSED;
+         eth->status[n] = ER_CONN;
+         break;
+#ifdef _WIN_         
+        }
+#endif       
       }
 
      dsprintf ("Socket %i Connected to %s:%i\n", n, skt_addr, skt_port);
@@ -880,9 +888,9 @@ eth_w5500_process(eth_w5500_t *eth)
 #ifndef _WIN_         
          if (errno != EAGAIN)
 #else
-         if (WSAGetLastError () != WSAEWOULDBLOCK)
+         if ((WSAGetLastError () != WSAEWOULDBLOCK) && (WSAGetLastError () != WSAEINVAL))
 #endif  
-          {
+          {        
            printf ("eth_w5500: recv udp error : %s \n", strerror (errno));
            eth->Socket[n][Sn_SR] = SOCK_CLOSED;
            eth->status[n] = ER_RECV;
