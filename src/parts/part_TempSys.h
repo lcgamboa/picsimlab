@@ -64,6 +64,7 @@ public:
     void ReadPropertiesWindow(CPWindow * WProp);
     lxString WritePreferences(void);
     void ReadPreferences(lxString value);
+    void SetOrientation(int orientation);
     unsigned short get_in_id(char * name);
     unsigned short get_out_id(char * name);
 private:

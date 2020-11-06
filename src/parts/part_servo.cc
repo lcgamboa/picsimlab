@@ -210,7 +210,7 @@ cpart_servo::ReadPropertiesWindow (CPWindow * WProp)
 }
 
 void 
-cpart_servo::SetOrientation(int orientation)
+cpart_servo::SetOrientation(int _orientation)
 {
  
  delete BackGround;
@@ -219,10 +219,10 @@ cpart_servo::SetOrientation(int orientation)
  
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
  
- BackGround = lxGetBitmapRotated(&image, &Window5, orientation); 
+ BackGround = lxGetBitmapRotated(&image, &Window5, _orientation); 
  image.Destroy ();
  
- part::SetOrientation (orientation);
+ part::SetOrientation (_orientation);
  
 }
 

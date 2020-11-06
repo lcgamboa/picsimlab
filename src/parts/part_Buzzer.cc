@@ -235,10 +235,10 @@ cpart_Buzzer::Process(void)
      if ((input_pins[0])&&(buffercount < buffersize))
       {
        /*       
-              0.7837 z-1 - 0.7837 z-2
-        y1:  ----------------------
-             1 - 1.196 z-1 + 0.2068 z-2
-        */
+	      0.7837 z-1 - 0.7837 z-2
+	y1:  ----------------------
+	     1 - 1.196 z-1 + 0.2068 z-2
+	*/
        in[2] = in[1];
        in[1] = in[0];
        in[0] = ((2.0 * ppins[input_pins[0] - 1].value) - 1.0) * maxv * 0.5;

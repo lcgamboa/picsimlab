@@ -498,7 +498,7 @@ lcd_ili9341_draw(lcd_ili9341_t *lcd, CCanvas * canvas, int x1, int y1, int w1, i
  lcd->update = 0;
 
  if (!lcd->on) return;
-
+ 
  for (x = 0; x < 240; x++)
   {
    for (y = 0; y < 320; y++)

@@ -470,9 +470,9 @@ cpart_LCD_hd44780::Process(void)
 }
 
 void
-cpart_LCD_hd44780::SetOrientation(int orientation)
+cpart_LCD_hd44780::SetOrientation(int _orientation)
 {
- part::SetOrientation (orientation);
+ part::SetOrientation (_orientation);
  Reset ();
 }
 

@@ -58,11 +58,11 @@ cpart_tempsys::cpart_tempsys(unsigned x, unsigned y)
  vt = 0;
 
  image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT1.png"));
- vent[0] = new lxBitmap (image, &Window1);
+ vent[0] = lxGetBitmapRotated(&image, &Window1, orientation);
  image.Destroy ();
 
  image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT2.png"));
- vent[1] = new lxBitmap (image, &Window1);
+ vent[1] = lxGetBitmapRotated(&image, &Window1, orientation);
  image.Destroy ();
 
  input_pins[0] = 0;
@@ -321,6 +321,26 @@ cpart_tempsys::ReadPropertiesWindow(CPWindow * WProp)
  input_pins[3] = atoi (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ());
 }
 
+void 
+cpart_tempsys::SetOrientation(int _orientation)
+{
+ 
+ delete vent[0];
+ delete vent[1];
+ 
+ lxImage image;
+  
+ image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT1.png"));
+ vent[0] = lxGetBitmapRotated(&image, &Window1, _orientation);
+ image.Destroy ();
+
+ image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT2.png"));
+ vent[1] = lxGetBitmapRotated(&image, &Window1, _orientation);
+ image.Destroy ();
+ 
+ part::SetOrientation (_orientation);
+ 
+}
 
 part_init("Temperature System", cpart_tempsys);
 

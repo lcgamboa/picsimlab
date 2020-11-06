@@ -40,7 +40,7 @@ enum
  I_B1, I_B2, I_B3, I_B4, I_B5, I_B6, I_B7, I_B8, I_J1
 };
 
-cpart_gamepad::cpart_gamepad (unsigned x, unsigned y)
+cpart_gamepad::cpart_gamepad(unsigned x, unsigned y)
 {
  X = x;
  Y = y;
@@ -49,7 +49,7 @@ cpart_gamepad::cpart_gamepad (unsigned x, unsigned y)
  lxImage image;
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
- Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
+ Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
  image.Destroy ();
 
  canvas.Create (Window5.GetWWidget (), Bitmap);
@@ -92,14 +92,14 @@ cpart_gamepad::cpart_gamepad (unsigned x, unsigned y)
 
 }
 
-cpart_gamepad::~cpart_gamepad (void)
+cpart_gamepad::~cpart_gamepad(void)
 {
  delete Bitmap;
- canvas.Destroy();
+ canvas.Destroy ();
 }
 
 void
-cpart_gamepad::Draw (void)
+cpart_gamepad::Draw(void)
 {
  int i;
 
@@ -147,27 +147,28 @@ cpart_gamepad::Draw (void)
 }
 
 void
-cpart_gamepad::PreProcess (void)
+cpart_gamepad::PreProcess(void)
 {
 
-   Window5.SetPin (output_pins[0], output_value[0]);
-   Window5.SetPin (output_pins[1], output_value[1]);
-   Window5.SetPin (output_pins[2], output_value[2]);
-   Window5.SetPin (output_pins[3], output_value[3]);
-   Window5.SetPin (output_pins[4], output_value[4]);
-   Window5.SetPin (output_pins[5], output_value[5]);
-   Window5.SetAPin (output_pins[6], 2.5 * (valuex) / jr);
-   Window5.SetAPin (output_pins[7], 2.5 * (valuey) / jr);
+ Window5.SetPin (output_pins[0], output_value[0]);
+ Window5.SetPin (output_pins[1], output_value[1]);
+ Window5.SetPin (output_pins[2], output_value[2]);
+ Window5.SetPin (output_pins[3], output_value[3]);
+ Window5.SetPin (output_pins[4], output_value[4]);
+ Window5.SetPin (output_pins[5], output_value[5]);
+ Window5.SetAPin (output_pins[6], 2.5 * (valuex) / jr);
+ Window5.SetAPin (output_pins[7], 2.5 * (valuey) / jr);
 }
 
 void
-cpart_gamepad::EvMouseButtonPress (uint button, uint x, uint y, uint state)
+cpart_gamepad::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
  int i;
-
+ int temp;
+ 
  for (i = 0; i < inputc; i++)
   {
-   if (PointInside(x, y, input[i]))
+   if (PointInside (x, y, input[i]))
     {
 
      switch (input[i].id)
@@ -185,9 +186,25 @@ cpart_gamepad::EvMouseButtonPress (uint button, uint x, uint y, uint state)
       case I_B6: output_value[5] = 0;
        break;
       case I_J1:
-
-       float cx = ((float) (x - input[i].x1)) - jr;
-       float cy = ((float) (y - input[i].y1)) - jr;
+       switch (orientation)
+	{
+	case 1:
+	 temp = x;
+	 x = y;
+	 y = Height - temp;
+	 break;
+	case 2:
+	 x = Width - x;
+	 y = Height - y;
+	 break;
+	case 3:
+	 temp = y;
+	 y = x;
+	 x = Width - temp;
+	 break;
+	}
+       float cx = ((float) fabs (x - input[i].x1)) - jr;
+       float cy = ((float) fabs (y - input[i].y1)) - jr;
 
        float module = sqrt (cx * cx + cy * cy);
        float angle = atan2 ((cy), (cx));
@@ -205,13 +222,13 @@ cpart_gamepad::EvMouseButtonPress (uint button, uint x, uint y, uint state)
 };
 
 void
-cpart_gamepad::EvMouseButtonRelease (uint button, uint x, uint y, uint state)
+cpart_gamepad::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 {
  int i;
 
  for (i = 0; i < inputc; i++)
   {
-   if (PointInside(x, y, input[i]))
+   if (PointInside (x, y, input[i]))
     {
      switch (input[i].id)
       {
@@ -239,32 +256,50 @@ cpart_gamepad::EvMouseButtonRelease (uint button, uint x, uint y, uint state)
 }
 
 void
-cpart_gamepad::EvMouseMove (uint button, uint x, uint y, uint state)
+cpart_gamepad::EvMouseMove(uint button, uint x, uint y, uint state)
 {
 
  int i;
+ int temp;
 
  for (i = 0; i < inputc; i++)
   {
-   if (PointInside(x, y, input[i]))
+   if (PointInside (x, y, input[i]))
     {
      switch (input[i].id)
       {
       case I_J1:
        if (active)
-        {
+	{
+	 switch (orientation)
+	  {
+	  case 1:
+	   temp = x;
+	   x = y;
+	   y = Height - temp;
+	   break;
+	  case 2:
+	   x = Width - x;
+	   y = Height - y;
+	   break;
+	  case 3:
+	   temp = y;
+	   y = x;
+	   x = Width - temp;
+	   break;
+	  }
 
-         float cx = ((float) (x - input[i].x1)) - jr;
-         float cy = ((float) (y - input[i].y1)) - jr;
+	 float cx = ((float) fabs (x - input[i].x1)) - jr;
+	 float cy = ((float) fabs (y - input[i].y1)) - jr;
 
-         float module = sqrt (cx * cx + cy * cy);
-         float angle = atan2 ((cy), (cx));
+	 float module = sqrt (cx * cx + cy * cy);
+	 float angle = atan2 ((cy), (cx));
 
-         if (module > jr)module = jr;
-         valuex = module * cos (angle) + jr;
-         valuey = module * sin (angle) + jr;
+	 if (module > jr)module = jr;
+	 valuex = module * cos (angle) + jr;
+	 valuey = module * sin (angle) + jr;
 
-        }
+	}
        break;
       }
     }
@@ -272,7 +307,7 @@ cpart_gamepad::EvMouseMove (uint button, uint x, uint y, uint state)
 }
 
 void
-cpart_gamepad::EvKeyPress (uint key, uint mask)
+cpart_gamepad::EvKeyPress(uint key, uint mask)
 {
 
  switch (key)
@@ -329,7 +364,7 @@ cpart_gamepad::EvKeyPress (uint key, uint mask)
 }
 
 void
-cpart_gamepad::EvKeyRelease (uint key, uint mask)
+cpart_gamepad::EvKeyRelease(uint key, uint mask)
 {
  switch (key)
   {
@@ -376,7 +411,7 @@ cpart_gamepad::EvKeyRelease (uint key, uint mask)
 }
 
 unsigned short
-cpart_gamepad::get_in_id (char * name)
+cpart_gamepad::get_in_id(char * name)
 {
  if (strcmp (name, "B1") == 0)return I_B1;
  if (strcmp (name, "B2") == 0)return I_B2;
@@ -392,7 +427,7 @@ cpart_gamepad::get_in_id (char * name)
 };
 
 unsigned short
-cpart_gamepad::get_out_id (char * name)
+cpart_gamepad::get_out_id(char * name)
 {
 
  if (strcmp (name, "P1") == 0)return O_P1;
@@ -420,7 +455,7 @@ cpart_gamepad::get_out_id (char * name)
 };
 
 lxString
-cpart_gamepad::WritePreferences (void)
+cpart_gamepad::WritePreferences(void)
 {
  char prefs[256];
 
@@ -430,14 +465,13 @@ cpart_gamepad::WritePreferences (void)
 };
 
 void
-cpart_gamepad::ReadPreferences (lxString value)
+cpart_gamepad::ReadPreferences(lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7]);
 }
 
-
 void
-cpart_gamepad::ConfigurePropertiesWindow (CPWindow * WProp)
+cpart_gamepad::ConfigurePropertiesWindow(CPWindow * WProp)
 {
  lxString Items = Window5.GetPinsNames ();
  lxString spin;
@@ -521,7 +555,7 @@ cpart_gamepad::ConfigurePropertiesWindow (CPWindow * WProp)
 }
 
 void
-cpart_gamepad::ReadPropertiesWindow (CPWindow * WProp)
+cpart_gamepad::ReadPropertiesWindow(CPWindow * WProp)
 {
  output_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
  output_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());

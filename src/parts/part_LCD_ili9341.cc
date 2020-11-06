@@ -112,8 +112,11 @@ cpart_LCD_ili9341::Draw(void)
      //draw lcd text 
      if (lcd.update)
       {
-       canvas.SetColor (0, 90 + 40, 0);
-       lcd_ili9341_draw (&lcd, &canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, 1);
+       //canvas.SetColor (255, 255, 0);
+       //canvas.Rectangle (1, output[i].x1-2, output[i].y1-2, output[i].x2 - output[i].x1+4, output[i].y2 - output[i].y1+4);
+  
+       canvas.SetColor (0, 90 + 40, 0);  
+       lcd_ili9341_draw (&lcd, &canvas, output[i].x1+4, output[i].y1-4, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, 1);
       }
      /*
      else   
@@ -125,7 +128,7 @@ cpart_LCD_ili9341::Draw(void)
     }
 
 
-  };
+  }
 
 
  canvas.End ();
