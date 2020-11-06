@@ -51,7 +51,7 @@ cpart_pbuttons_an::cpart_pbuttons_an(unsigned x, unsigned y)
  lxImage image;
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
- Bitmap = new lxBitmap (image, &Window5);
+ Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
  image.Destroy ();
 
  canvas.Create (Window5.GetWWidget (), Bitmap);
@@ -87,7 +87,7 @@ cpart_pbuttons_an::Draw(void)
  int i;
  lxString temp;
  float ftemp;
- canvas.Init ();
+ canvas.Init (1.0, 1.0, orientation);
 
  lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
@@ -106,11 +106,11 @@ cpart_pbuttons_an::Draw(void)
      else
         ftemp=(5.0*(8-output[i].id - O_P1))/8.0;
      temp=lxString().Format("%3.1f",ftemp)+lxT("V");
-     canvas.Text (temp, output[i].x1, output[i].y1);
+     canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
      if (output_pins[0] == 0)
-      canvas.Text ("NC", output[i].x1, output[i].y1+12);
+      canvas.RotatedText ("NC", output[i].x1, output[i].y1+12, 0);
      else
-      canvas.Text (Window5.GetPinName (output_pins[0]), output[i].x1, output[i].y1+12);
+      canvas.RotatedText (Window5.GetPinName (output_pins[0]), output[i].x1, output[i].y1+12, 0);
      break;
     case O_P2:
     case O_P3:
@@ -128,7 +128,7 @@ cpart_pbuttons_an::Draw(void)
         ftemp=(5.0*(8-output[i].id - O_P1))/8.0;
       
      temp=lxString().Format("%3.1f",ftemp)+lxT("V");
-     canvas.Text (temp, output[i].x1, output[i].y1);
+     canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
      break;
     }
 
@@ -152,7 +152,7 @@ cpart_pbuttons_an::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
  for (i = 0; i < inputc; i++)
   {
-   if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+   if (PointInside(x, y, input[i]))
     {
 
      switch (input[i].id)
@@ -186,7 +186,7 @@ cpart_pbuttons_an::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 
  for (i = 0; i < inputc; i++)
   {
-   if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+   if (PointInside(x, y, input[i]))
     {
      switch (input[i].id)
       {

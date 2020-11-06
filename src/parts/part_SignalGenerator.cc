@@ -49,7 +49,7 @@ cpart_SignalGenerator::cpart_SignalGenerator(unsigned x, unsigned y)
  lxImage image;
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
- Bitmap = new lxBitmap (image, &Window5);
+ Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
  image.Destroy ();
 
  canvas.Create (Window5.GetWWidget (), Bitmap);
@@ -85,7 +85,7 @@ cpart_SignalGenerator::Draw(void)
  float tsi;
  int sizex;
  int sizey;
- canvas.Init ();
+ canvas.Init (1.0, 1.0, orientation);
 
  lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
@@ -100,15 +100,15 @@ cpart_SignalGenerator::Draw(void)
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
      if (input_pins[output[i].id - O_P1] == 0)
-      canvas.Text ("NC", output[i].x1, output[i].y1);
+      canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
      else
-      canvas.Text (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1);
+      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
      break;
     case O_P2:
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     canvas.Text ("GND", output[i].x1, output[i].y1);
+     canvas.RotatedText ("GND", output[i].x1, output[i].y1, 0);
      break;
     case O_PO1:
     case O_PO2:
@@ -155,21 +155,21 @@ cpart_SignalGenerator::Draw(void)
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     canvas.Text (temp, output[i].x1, output[i].y1);
+     canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
      break;
     case O_FREQ:
      temp.Printf ("F=%5.2f", freq);
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     canvas.Text (temp, output[i].x1, output[i].y1);
+     canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
      break;
     case O_MF:
      canvas.SetColor (255, 255, 255);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetColor (0, 0, 0);
      temp.Printf ("F x %i", maxfreq);
-     canvas.Text (temp, output[i].x1, output[i].y1);
+     canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
      break;  
     }
   }
@@ -239,7 +239,7 @@ cpart_SignalGenerator::EvMouseButtonPress(uint button, uint x, uint y, uint stat
 
  for (i = 0; i < inputc; i++)
   {
-   if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+   if (PointInside(x, y, input[i]))
     {
      l = (input[i].y2 - input[i].y1 - 10);
      switch (input[i].id)
@@ -275,7 +275,7 @@ cpart_SignalGenerator::EvMouseButtonRelease(uint button, uint x, uint y, uint st
 
  for (i = 0; i < inputc; i++)
   {
-   if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+   if (PointInside(x, y, input[i]))
     {
      switch (input[i].id)
       {
@@ -299,7 +299,7 @@ cpart_SignalGenerator::EvMouseMove(uint button, uint x, uint y, uint state)
 
  for (i = 0; i < inputc; i++)
   {
-   if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+   if (PointInside(x, y, input[i]))
     {
      l = (input[i].y2 - input[i].y1 - 10);
      switch (input[i].id)

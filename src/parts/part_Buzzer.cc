@@ -48,7 +48,7 @@ cpart_Buzzer::cpart_Buzzer(unsigned x, unsigned y)
  lxImage image;
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
- Bitmap = new lxBitmap (image, &Window5);
+ Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -60,7 +60,7 @@ cpart_Buzzer::cpart_Buzzer(unsigned x, unsigned y)
  type = ACTIVE;
 
  samplerate = buzzer.GetSampleRate ();
- buffersize = samplerate / 5 ; //0.1 seconds
+ buffersize = samplerate / 5; //0.1 seconds
  buffer = NULL;
  maxv = buzzer.GetMax ();
  buffercount = 0;
@@ -96,7 +96,7 @@ cpart_Buzzer::Draw(void)
 
  const picpin * ppins = Window5.GetPinsValues ();
 
- canvas.Init ();
+ canvas.Init (1.0, 1.0, orientation);
 
  lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
@@ -112,15 +112,15 @@ cpart_Buzzer::Draw(void)
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
      if (input_pins[output[i].id - O_P1] == 0)
-      canvas.Text ("NC", output[i].x1, output[i].y1);
+      canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
      else
-      canvas.Text (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1);
+      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
      break;
     case O_P2:
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     canvas.Text ("GND", output[i].x1, output[i].y1);
+     canvas.RotatedText ("GND", output[i].x1, output[i].y1, 0);
     case O_L1:
      unsigned char r = 0;
      if (input_pins[0] > 0)
@@ -172,7 +172,6 @@ cpart_Buzzer::ReadPreferences(lxString value)
  ChangeType (tp);
 }
 
-
 void
 cpart_Buzzer::ConfigurePropertiesWindow(CPWindow * WProp)
 {
@@ -215,7 +214,7 @@ cpart_Buzzer::PreProcess(void)
  if (type == PASSIVE)
   {
 
-   JUMPSTEPS_ = (Window1.GetBoard ()->MGetInstClock () / samplerate)-100 ;
+   JUMPSTEPS_ = (Window1.GetBoard ()->MGetInstClock () / samplerate) - 100;
    mcount = JUMPSTEPS_;
 
   }

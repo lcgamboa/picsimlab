@@ -50,11 +50,11 @@ cpart_servo::cpart_servo (unsigned x, unsigned y)
  lxImage image;
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
- Bitmap = new lxBitmap (image, &Window5);
+ Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
  image.Destroy ();
 
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
- BackGround = new lxBitmap (image, &Window5);
+ BackGround = lxGetBitmapRotated(&image, &Window5, orientation);
  image.Destroy ();
 
  canvas.Create (Window5.GetWWidget (), Bitmap);
@@ -88,7 +88,7 @@ cpart_servo::Draw (void)
    if (angle > angle_) angle = angle_;
   }
 
- canvas.Init ();
+ canvas.Init (1.0, 1.0, orientation);
 
  lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
@@ -100,9 +100,9 @@ cpart_servo::Draw (void)
     {
      canvas.SetFgColor (255, 255, 255);
      if (input_pin == 0)
-      canvas.Text ("NC", output[i].x1, output[i].y1);
+      canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
      else
-      canvas.Text (Window5.GetPinName (input_pin), output[i].x1, output[i].y1);
+      canvas.RotatedText (Window5.GetPinName (input_pin), output[i].x1, output[i].y1, 0);
     }
 
    if (output[i].id == O_AXIS)
@@ -207,6 +207,23 @@ void
 cpart_servo::ReadPropertiesWindow (CPWindow * WProp)
 {
  input_pin = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
+}
+
+void 
+cpart_servo::SetOrientation(int orientation)
+{
+ 
+ delete BackGround;
+ 
+ lxImage image;
+ 
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
+ 
+ BackGround = lxGetBitmapRotated(&image, &Window5, orientation); 
+ image.Destroy ();
+ 
+ part::SetOrientation (orientation);
+ 
 }
 
 //Register the part in PICSimLab spare parts list

@@ -43,7 +43,7 @@ cpart_dtfunc::cpart_dtfunc(unsigned x, unsigned y)
  lxImage image;
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
- Bitmap = new lxBitmap (image, &Window5);
+ Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -82,7 +82,7 @@ cpart_dtfunc::Draw(void)
  char buff[20];
  char eq[100];
 
- canvas.Init ();
+ canvas.Init (1.0, 1.0, orientation);
 
  lxFont font (7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
@@ -100,16 +100,16 @@ cpart_dtfunc::Draw(void)
      if (output[i].id == O_P1)
       {
        if (input_pin == 0)
-        canvas.Text ("NC", output[i].x1, output[i].y1);
+        canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
        else
-        canvas.Text (Window5.GetPinName (input_pin), output[i].x1, output[i].y1);
+        canvas.RotatedText (Window5.GetPinName (input_pin), output[i].x1, output[i].y1, 0);
       }
      if (output[i].id == O_P2)
       {
        if (output_pin == 0)
-        canvas.Text ("NC", output[i].x1, output[i].y1);
+        canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
        else
-        canvas.Text (Window5.GetPinName (output_pin), output[i].x1, output[i].y1);
+        canvas.RotatedText (Window5.GetPinName (output_pin), output[i].x1, output[i].y1, 0);
       }
      break;
     case O_IG:
@@ -125,7 +125,7 @@ cpart_dtfunc::Draw(void)
      if (output[i].id == O_OG)snprintf (buff, 19, "%5.2f", out_gain);
      if (output[i].id == O_OO)snprintf (buff, 19, "%5.2f", out_off);
      if (output[i].id == O_TS)snprintf (buff, 19, "%5.2f", sample);
-     canvas.Text (buff, output[i].x1, output[i].y1);
+     canvas.RotatedText (buff, output[i].x1, output[i].y1, 0);
      break;
     case O_NUM:
      canvas.SetColor (220, 220, 220);
@@ -139,7 +139,7 @@ cpart_dtfunc::Draw(void)
       }
      strncat (eq, "]", 99);
      canvas.SetFgColor (0, 0, 0);
-     canvas.Text (eq, output[i].x1, output[i].y1);
+     canvas.RotatedText (eq, output[i].x1, output[i].y1, 0);
      break;
     case O_DEN:
      canvas.SetColor (240, 240, 240);
@@ -153,7 +153,7 @@ cpart_dtfunc::Draw(void)
       }
      strncat (eq, "]", 99);
      canvas.SetFgColor (0, 0, 0);
-     canvas.Text (eq, output[i].x1, output[i].y1);
+     canvas.RotatedText (eq, output[i].x1, output[i].y1, 0);
 
      break;
     }
@@ -219,7 +219,7 @@ cpart_dtfunc::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
     
   for(i=0;i<inputc;i++)
   {
-    if(((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+    if (PointInside(x, y, input[i]))
     {
    
       switch(input[i].id) 
@@ -239,7 +239,7 @@ cpart_dtfunc::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
 
  for(i=0;i<inputc;i++)
  {
-   if(((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+   if (PointInside(x, y, input[i]))
    {
      switch(input[i].id)
      {

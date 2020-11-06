@@ -209,6 +209,15 @@ CPWindow5::CPWindow5(void)
   pmenu2_Move.SetSubMenu(NULL);
   pmenu2_Move.EvMenuActive=EVMENUACTIVE & CPWindow5::pmenu2_Move_EvMenuActive;
   pmenu2.CreateChild(&pmenu2_Move);
+  //pmenu2_Rotate
+  pmenu2_Rotate.SetFOwner(this);
+  pmenu2_Rotate.SetClass(lxT("CItemMenu"));
+  pmenu2_Rotate.SetName(lxT("pmenu2_Rotate"));
+  pmenu2_Rotate.SetTag(0);
+  pmenu2_Rotate.SetText(lxT("Rotate"));
+  pmenu2_Rotate.SetSubMenu(NULL);
+  pmenu2_Rotate.EvMenuActive=EVMENUACTIVE & CPWindow5::pmenu2_Rotate_EvMenuActive;
+  pmenu2.CreateChild(&pmenu2_Rotate);
   //pmenu2_Delete
   pmenu2_Delete.SetFOwner(this);
   pmenu2_Delete.SetClass(lxT("CItemMenu"));

@@ -47,7 +47,7 @@ cpart_led_matrix::cpart_led_matrix(unsigned x, unsigned y)
 
  angle = 0;
 
- Bitmap = new lxBitmap (image, &Window5);
+ Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -74,7 +74,7 @@ cpart_led_matrix::Draw(void)
 {
  int i;
 
- canvas.Init ();
+ canvas.Init (1.0, 1.0, orientation);
 
  lxFont font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);

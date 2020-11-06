@@ -48,6 +48,7 @@ public:
     CPMenu pmenu2;
     CItemMenu pmenu2_Properties;
     CItemMenu pmenu2_Move;
+    CItemMenu pmenu2_Rotate;
     CItemMenu pmenu2_Delete;
     CItemMenu pmenu2_Help;
     CItemMenu pmenu2_About;    
@@ -91,6 +92,7 @@ public:
     void menu1_Edit_Zoomin_EvMenuActive(CControl * control);
     void menu1_Edit_Zoomout_EvMenuActive(CControl * control);    
     void pmenu2_Move_EvMenuActive(CControl * control);
+    void pmenu2_Rotate_EvMenuActive(CControl * control);
     void pmenu2_Delete_EvMenuActive(CControl * control);
     void pmenu2_Help_EvMenuActive(CControl * control);
     void pmenu2_About_EvMenuActive(CControl * control);

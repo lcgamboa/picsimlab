@@ -55,7 +55,7 @@ cpart_VCD_Dump::cpart_VCD_Dump(unsigned x, unsigned y)
  lxImage image;
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
- Bitmap = new lxBitmap (image, &Window5);
+ Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -114,7 +114,7 @@ cpart_VCD_Dump::Draw(void)
 
  const picpin * ppins = Window5.GetPinsValues ();
 
- canvas.Init ();
+ canvas.Init (1.0, 1.0, orientation);
 
  lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
@@ -136,15 +136,15 @@ cpart_VCD_Dump::Draw(void)
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
      if (input_pins[output[i].id - O_P1] == 0)
-      canvas.Text ("NC", output[i].x1, output[i].y1);
+      canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
      else
-      canvas.Text (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1);
+      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
      break;
     case O_NAME:
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     canvas.Text (f_vcd_name, output[i].x1, output[i].y1);
+     canvas.RotatedText (f_vcd_name, output[i].x1, output[i].y1, 0);
      break;
     case O_L1:
     case O_L2:
@@ -377,7 +377,7 @@ cpart_VCD_Dump::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
  for (i = 0; i < inputc; i++)
   {
-   if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+   if (PointInside(x, y, input[i]))
     {
 
      switch (input[i].id)

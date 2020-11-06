@@ -212,6 +212,17 @@ class part
      */ 
       int PointInside(int x, int y); 
       
+      
+     /**
+     * @brief  Return the orientation to draw
+     */ 
+      int GetOrientation(void);
+     
+     /**
+     * @brief  Set the orientation to draw
+     */ 
+      virtual void SetOrientation(int orientation);
+      
       int id; ///< part ID
  protected:
       input_t  input[100];  ///< input map elements
@@ -225,11 +236,17 @@ class part
       lxBitmap * Bitmap;    ///< Internal Bitmap   
       CCanvas canvas;       ///< Internal Canvas to draw in bitmap
       unsigned int refresh; ///< redraw is needed 
+      int orientation;      ///< orientation to draw part
       
-           /**
+     /**
      * @brief  read maps
      */  
-      void ReadMaps(void);  ///<  
+      void ReadMaps(void);  
+      
+           /**
+     * @brief  Return if point x,y is inside of input 
+     */ 
+      int PointInside(int x, int y, input_t input); 
             
  private:      
                      

@@ -57,7 +57,7 @@ cpart_LCD_hd44780::Reset(void)
 
  if (Bitmap)delete Bitmap;
 
- Bitmap = new lxBitmap (image, &Window5);
+ Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
  canvas.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
  image.Destroy ();
@@ -121,7 +121,7 @@ cpart_LCD_hd44780::Draw(void)
 
  if ((model == LCD16x4) || (model == LCD20x4)) yoff = 96;
 
- canvas.Init ();
+ canvas.Init (1.0, 1.0, orientation);
 
  lcd_blink (&lcd);
 
@@ -143,7 +143,7 @@ cpart_LCD_hd44780::Draw(void)
     case O_P8:
     case O_P9:
     case O_P10:
-    case O_P11: 
+    case O_P11:
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1 + yoff, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
@@ -216,7 +216,7 @@ cpart_LCD_hd44780::get_out_id(char * name)
  if (strcmp (name, "P9") == 0)return O_P9;
  if (strcmp (name, "P10") == 0)return O_P10;
  if (strcmp (name, "P11") == 0)return O_P11;
- 
+
  if (strcmp (name, "F1") == 0)return O_F1;
  if (strcmp (name, "F2") == 0)return O_F2;
  if (strcmp (name, "F3") == 0)return O_F3;
@@ -431,7 +431,7 @@ cpart_LCD_hd44780::Process(void)
           {
            lcd_cmd (&lcd, d);
           }
-         else 
+         else
           {
            lcd_data (&lcd, d);
           }
@@ -443,19 +443,19 @@ cpart_LCD_hd44780::Process(void)
           {
            val = lcd_read_busyf_acounter (&lcd);
           }
-         else 
+         else
           {
            val = lcd_read_data (&lcd);
           }
 
-         if (input_pins[9] > 0)Window5.SetPin (input_pins[9], (val & 0x80)>0);
-         if (input_pins[8] > 0)Window5.SetPin (input_pins[8], (val & 0x40)>0);
-         if (input_pins[7] > 0)Window5.SetPin (input_pins[7], (val & 0x20)>0);
-         if (input_pins[6] > 0)Window5.SetPin (input_pins[6], (val & 0x10)>0);
-         if (input_pins[5] > 0)Window5.SetPin (input_pins[5], (val & 0x08)>0);
-         if (input_pins[4] > 0)Window5.SetPin (input_pins[4], (val & 0x04)>0);
-         if (input_pins[3] > 0)Window5.SetPin (input_pins[3], (val & 0x02)>0);
-         if (input_pins[2] > 0)Window5.SetPin (input_pins[2], (val & 0x01)>0);
+         if (input_pins[9] > 0)Window5.SetPin (input_pins[9], (val & 0x80) > 0);
+         if (input_pins[8] > 0)Window5.SetPin (input_pins[8], (val & 0x40) > 0);
+         if (input_pins[7] > 0)Window5.SetPin (input_pins[7], (val & 0x20) > 0);
+         if (input_pins[6] > 0)Window5.SetPin (input_pins[6], (val & 0x10) > 0);
+         if (input_pins[5] > 0)Window5.SetPin (input_pins[5], (val & 0x08) > 0);
+         if (input_pins[4] > 0)Window5.SetPin (input_pins[4], (val & 0x04) > 0);
+         if (input_pins[3] > 0)Window5.SetPin (input_pins[3], (val & 0x02) > 0);
+         if (input_pins[2] > 0)Window5.SetPin (input_pins[2], (val & 0x01) > 0);
         }
       }
      lcde = 1;
@@ -467,6 +467,13 @@ cpart_LCD_hd44780::Process(void)
   }
  //end display code
 
+}
+
+void
+cpart_LCD_hd44780::SetOrientation(int orientation)
+{
+ part::SetOrientation (orientation);
+ Reset ();
 }
 
 part_init("LCD hd44780", cpart_LCD_hd44780);

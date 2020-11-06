@@ -49,7 +49,7 @@ cpart_pot::cpart_pot (unsigned x, unsigned y)
  lxImage image;
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
- Bitmap = new lxBitmap (image, &Window5);
+ Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
  image.Destroy ();
 
  canvas.Create (Window5.GetWWidget (), Bitmap);
@@ -83,10 +83,9 @@ cpart_pot::Draw (void)
 {
 
  int i;
- lxRect rect;
  char  val[10];
  
- canvas.Init ();
+ canvas.Init (1.0, 1.0, orientation);
 
  lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  lxFont font_p (6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
@@ -105,9 +104,9 @@ cpart_pot::Draw (void)
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
      if (input_pins[output[i].id - O_P1] == 0)
-      canvas.Text ("NC", output[i].x1, output[i].y1);
+      canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
      else
-      canvas.Text (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1);
+      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
      break;
     case O_PO1:
     case O_PO2:
@@ -116,15 +115,11 @@ cpart_pot::Draw (void)
      canvas.SetColor (50, 50, 50);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetColor (250, 250, 250);
-     rect.x=output[i].x1 + 6;
-     rect.y=output[i].y1 + values[output[i].id - O_PO1];
-     rect.width=20;
-     rect.height= 10;  
      snprintf (val,10,"%4.2f", 5.0 * (148 - values[output[i].id - O_PO1]) / 148.0);
-     canvas.Rectangle (1, rect.x, rect.y, 20, 10);
+     canvas.Rectangle (1, output[i].x1 + 6, output[i].y1 + values[output[i].id - O_PO1], 20, 10);
      canvas.SetColor (150, 0, 0);
      canvas.SetFont (font_p);
-     canvas.TextOnRect (val,rect,CA_CENTER);
+     canvas.RotatedText (val,output[i].x1 + 6, output[i].y1 + values[output[i].id - O_PO1] , 0 );
      break;
      break;
     }
@@ -154,7 +149,7 @@ cpart_pot::EvMouseButtonPress (uint button, uint x, uint y, uint state)
 
  for (i = 0; i < inputc; i++)
   {
-   if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+   if (PointInside(x, y, input[i]))
     {
      l = (input[i].y2 - input[i].y1 - 10);
      switch (input[i].id)
@@ -192,7 +187,7 @@ cpart_pot::EvMouseButtonRelease (uint button, uint x, uint y, uint state)
 
  for (i = 0; i < inputc; i++)
   {
-   if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+   if (PointInside(x, y, input[i]))
     {
      switch (input[i].id)
       {
@@ -222,7 +217,7 @@ cpart_pot::EvMouseMove (uint button, uint x, uint y, uint state)
 
  for (i = 0; i < inputc; i++)
   {
-   if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+   if (PointInside(x, y, input[i]))
     {
      l = (input[i].y2 - input[i].y1 - 10);
      switch (input[i].id)

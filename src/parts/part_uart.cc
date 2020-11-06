@@ -73,7 +73,7 @@ cpart_UART::cpart_UART(unsigned x, unsigned y)
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
 
- Bitmap = new lxBitmap (image, &Window5);
+ Bitmap = lxGetBitmapRotated(&image, &Window5, orientation); 
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -112,7 +112,7 @@ cpart_UART::Draw(void)
 
  //const picpin * ppins = Window5.GetPinsValues ();
 
- canvas.Init ();
+ canvas.Init (1.0, 1.0, orientation);
 
  lxFont font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
@@ -140,7 +140,7 @@ cpart_UART::Draw(void)
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     canvas.Text (lxT ("port:") + lxString (uart_name) + lxT ("   speed:") + itoa (uart_speed), output[i].x1, output[i].y1);
+     canvas.RotatedText (lxT ("port:") + lxString (uart_name) + lxT ("   speed:") + itoa (uart_speed), output[i].x1, output[i].y1, 0);
      break;
     default:
      canvas.SetColor (49, 61, 99);
@@ -312,7 +312,7 @@ cpart_UART::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
  for (i = 0; i < inputc; i++)
   {
-   if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+   if (PointInside(x, y, input[i]))
     {
      switch (input[i].id)
       {

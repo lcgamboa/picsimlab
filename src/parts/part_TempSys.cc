@@ -49,7 +49,7 @@ cpart_tempsys::cpart_tempsys(unsigned x, unsigned y)
  lxImage image;
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
- Bitmap = new lxBitmap (image, &Window5);
+ Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
  image.Destroy ();
 
  canvas.Create (Window5.GetWWidget (), Bitmap);
@@ -100,7 +100,7 @@ cpart_tempsys::Draw(void)
 
  const picpin * ppins = Window5.GetPinsValues ();
 
- canvas.Init ();
+ canvas.Init (1.0, 1.0, orientation);
 
  lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
@@ -118,34 +118,34 @@ cpart_tempsys::Draw(void)
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
      if (input_pins[output[i].id - O_HT] == 0)
-      canvas.Text ("NC", output[i].x1, output[i].y1);
+      canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
      else
-      canvas.Text (Window5.GetPinName (input_pins[output[i].id - O_HT]), output[i].x1, output[i].y1);
+      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_HT]), output[i].x1, output[i].y1, 0);
      break;
     case O_F1:
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (155, 155, 155);
-     canvas.Text ("12V", output[i].x1, output[i].y1);
+     canvas.RotatedText ("12V", output[i].x1, output[i].y1, 0);
      break;
     case O_F2:
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (155, 155, 155);
-     canvas.Text ("GND", output[i].x1, output[i].y1);
+     canvas.RotatedText ("GND", output[i].x1, output[i].y1, 0);
      break;
     case O_OTA:
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     canvas.Text ("Ambient=27.5C", output[i].x1, output[i].y1);
+     canvas.RotatedText ("Ambient=27.5C", output[i].x1, output[i].y1, 0);
      break;
     case O_OTE:
      str.Printf (lxT ("Temp.=%5.2fC"), temp[0]);
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     canvas.Text (str, output[i].x1, output[i].y1);
+     canvas.RotatedText (str, output[i].x1, output[i].y1, 0);
      break;
     case O_VT:
      if (input_pins[1] == 0)break;

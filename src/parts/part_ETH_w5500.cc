@@ -81,7 +81,7 @@ cpart_ETH_w5500::cpart_ETH_w5500(unsigned x, unsigned y)
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
 
- Bitmap = new lxBitmap (image, &Window5);
+ Bitmap = lxGetBitmapRotated(&image, &Window5, orientation); 
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -123,7 +123,7 @@ cpart_ETH_w5500::Draw(void)
  int n;
  char status[10];
  char sport[10];
- canvas.Init ();
+ canvas.Init (1.0, 1.0, orientation);
 
  lxFont font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
@@ -245,13 +245,13 @@ cpart_ETH_w5500::Draw(void)
        sprintf (sport, "%i", ethw.bindp[n]);
        if (n < 4)
         {
-         canvas.Text (status, output[i].x1 + (n * 30), output[i].y1);
-         canvas.Text (sport, output[i].x1 + (n * 35), output[i].y1 + 30);
+         canvas.RotatedText (status, output[i].x1 + (n * 30), output[i].y1, 0);
+         canvas.RotatedText (sport, output[i].x1 + (n * 35), output[i].y1 + 30, 0);
         }
        else
         {
-         canvas.Text (status, output[i].x1 + ((n - 4) * 30), output[i].y1 + 15);
-         canvas.Text (sport, output[i].x1 + ((n - 4) * 35), output[i].y1 + 45);
+         canvas.RotatedText (status, output[i].x1 + ((n - 4) * 30), output[i].y1 + 15, 0);
+         canvas.RotatedText (sport, output[i].x1 + ((n - 4) * 35), output[i].y1 + 45, 0);
         }
 
 
@@ -466,7 +466,7 @@ cpart_ETH_w5500::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
  for (i = 0; i < inputc; i++)
   {
-   if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+   if (PointInside(x, y, input[i]))
     {
      switch (input[i].id)
       {
