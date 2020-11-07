@@ -13,7 +13,11 @@
 | [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1098) | 1098 | avr EEPROM pointer
 | [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1124) | 1124 | avr ID size
 | [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1131) | 1131 | AVR EEPROM size
-| [src/devices/eth_w5500.cc](src/devices/eth_w5500.cc#L364) | 364 | add support to buffer size different of 2k
+| [src/devices/eth_w5500.cc](src/devices/eth_w5500.cc#L366) | 366 | add support to buffer size different of 2k
+| [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L141) | 141 | ssd1306 Scrolling Command Table
+| [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L155) | 155 | ssd1306 Continuous Vertical and Horizontal Scroll Setup
+| [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L174) | 174 | ssd1306 Set Vertical Scroll
+| [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L282) | 282 | ssd1306 Set Display Offset
 | [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L84) | 84 | decode
 | [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L87) | 87 | itensity
 | [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L90) | 90 | scan limit
@@ -30,3 +34,4 @@
 | [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1005) | 1005 | correct the baud rate
 | [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1117) | 1117 | avr CONFIG size
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L118) | 118 | only for BANK=0;
+| [src/parts/part.cc](src/parts/part.cc#L334) | 334 | Erase  Bitmap = new xBitmap(image, &Window5);

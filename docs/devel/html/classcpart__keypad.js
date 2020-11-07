@@ -3,7 +3,7 @@ var classcpart__keypad =
     [ "cpart_keypad", "classcpart__keypad.html#a6f09332547fd18d7ed99aea130d24a13", null ],
     [ "~cpart_keypad", "classcpart__keypad.html#a43b870ee663e9dc719634727b2481bf2", null ],
     [ "ChangeType", "classcpart__keypad.html#a6e1be51ec149283744ad52acfca08340", null ],
-    [ "ComboChange", "classcpart__keypad.html#a7c52898f767dab8f28bf7538f7caa483", null ],
+    [ "ComboChange", "classcpart__keypad.html#a45f5bddd174abc583f9ba18fce30f937", null ],
     [ "ConfigurePropertiesWindow", "classcpart__keypad.html#a1d50e07a1478c65d6adab32bf6b3e39e", null ],
     [ "Draw", "classcpart__keypad.html#acce175df5e1694ff13455a2fd69b8658", null ],
     [ "EvMouseButtonPress", "classcpart__keypad.html#a0274f23d021b9b3f67d70ee406b2495d", null ],

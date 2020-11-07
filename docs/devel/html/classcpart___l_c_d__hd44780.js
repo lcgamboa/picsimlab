@@ -20,6 +20,7 @@ var classcpart___l_c_d__hd44780 =
     [ "ReadPreferences", "classcpart___l_c_d__hd44780.html#a6bb9dfe09fabf2f607bb02d505d63d89", null ],
     [ "ReadPropertiesWindow", "classcpart___l_c_d__hd44780.html#a7c6267f7d279d1c121d1cc1f207c6242", null ],
     [ "Reset", "classcpart___l_c_d__hd44780.html#a174b8dcf7ab2cad01b42b59eceb189db", null ],
+    [ "SetOrientation", "classcpart___l_c_d__hd44780.html#a2d9fd9127edd0b8b4cb4594f5ec6d2e2", null ],
     [ "WritePreferences", "classcpart___l_c_d__hd44780.html#aba5d38350722e9ea141bb47c42b22c6b", null ],
     [ "input_pins", "classcpart___l_c_d__hd44780.html#a94ced7aae8e6e5d1109e659962464b33", null ],
     [ "lcd", "classcpart___l_c_d__hd44780.html#a01bd1ab188497186ff1c3e4676dde6c0", null ],

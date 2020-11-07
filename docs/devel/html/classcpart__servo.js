@@ -16,6 +16,7 @@ var classcpart__servo =
     [ "Process", "classcpart__servo.html#a1c2781c42883239cefa14500d62ac0f6", null ],
     [ "ReadPreferences", "classcpart__servo.html#a875e6a5517d3ed433267e0ab6a17a5c7", null ],
     [ "ReadPropertiesWindow", "classcpart__servo.html#a5f9ce011dbeb829625b4c919271bbf22", null ],
+    [ "SetOrientation", "classcpart__servo.html#a897c9a5c22af22f890a436965ddf346b", null ],
     [ "WritePreferences", "classcpart__servo.html#a2ae2bc599536d6f74d87dba3755edc49", null ],
     [ "angle", "classcpart__servo.html#a0af2e1168aeb456ba1f6a0a1511c1019", null ],
     [ "angle_", "classcpart__servo.html#a22893b0e5a587b655f947d0450964303", null ],

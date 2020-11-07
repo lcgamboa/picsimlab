@@ -2,6 +2,8 @@ var classcpart___jumpers =
 [
     [ "cpart_Jumpers", "classcpart___jumpers.html#aa94f2d1863e2854d29fd331c348765ad", null ],
     [ "~cpart_Jumpers", "classcpart___jumpers.html#aa224c3dc47a8ce47797b0376a22f2f75", null ],
+    [ "ChangeType", "classcpart___jumpers.html#a4fbfc382c6f104fd9f55c84582ee16d1", null ],
+    [ "ComboChange", "classcpart___jumpers.html#a55f7bfff2191e0342a3d8741a685fcc4", null ],
     [ "ConfigurePropertiesWindow", "classcpart___jumpers.html#ac2718d1f6dd741040b4e5b5bd61f0206", null ],
     [ "Draw", "classcpart___jumpers.html#a6bc45c71e498ce2bef2dd0594fcaa93d", null ],
     [ "get_in_id", "classcpart___jumpers.html#aef3c9dce53552038de7d90906809970e", null ],
@@ -25,5 +27,6 @@ var classcpart___jumpers =
     [ "JUMPSTEPS_", "classcpart___jumpers.html#a42a49ef723de45c4cf1ffed925d2e591", null ],
     [ "mcount", "classcpart___jumpers.html#ae3d324715c26a15ce9784d2126aa2189", null ],
     [ "output_pins", "classcpart___jumpers.html#a4a9b6dd63b1c121ca6b373e6b1222452", null ],
-    [ "output_pins_alm", "classcpart___jumpers.html#ad9639717ea7657b53468561eb66bd19f", null ]
+    [ "output_pins_alm", "classcpart___jumpers.html#ad9639717ea7657b53468561eb66bd19f", null ],
+    [ "type", "classcpart___jumpers.html#a0bf55539bd3bae0d2b8f19038e8faf1a", null ]
 ];

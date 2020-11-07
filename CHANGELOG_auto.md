@@ -2,6 +2,12 @@
 
 ### New
 
+* Support to spare parts orientation (rotation 0, 90, 180 and 270) [Luis Claudio Gambôa Lopes]
+
+* Initial support to part LCD ili9341. [lcgamboa]
+
+* Part lcd ssd1306 SPI and I2C added. [lcgamboa]
+
 * Part Jumper Wires added. [lcgamboa]
 
 * New part IO UART. [lcgamboa]
