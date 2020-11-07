@@ -58,6 +58,7 @@ var hierarchy =
       [ "cpart_dtfunc", "classcpart__dtfunc.html", null ],
       [ "cpart_ETH_w5500", "classcpart___e_t_h__w5500.html", null ],
       [ "cpart_gamepad", "classcpart__gamepad.html", null ],
+      [ "cpart_gamepad_an", "classcpart__gamepad__an.html", null ],
       [ "cpart_IO_74xx595", "classcpart___i_o__74xx595.html", null ],
       [ "cpart_IO_MCP23S17", "classcpart___i_o___m_c_p23_s17.html", null ],
       [ "cpart_IO_PCF8574", "classcpart___i_o___p_c_f8574.html", null ],

@@ -69,7 +69,50 @@ DHCP is emulated and return a fake ipv4 address.
 
 <P>
 All listening ports below 2000 are increased by 2000 to avoid operational system services ports. 
-For example listening on port 80 becomes 2080.  
+For example listening on port 80 becomes 2080. 
+
+<P>
+w5500 Status Legend:
+<DIV class="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TH ALIGN="LEFT"><SPAN  CLASS="textbf">1º Letter - Type</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">2º Letter - Status</SPAN></TH>
+<TH ALIGN="LEFT"><SPAN  CLASS="textbf">3º Letter - Error</SPAN></TH>
+</TR>
+<TR><TD ALIGN="LEFT">C - Closed</TD>
+<TD ALIGN="LEFT">C - Closed</TD>
+<TD ALIGN="LEFT">B - Bind</TD>
+</TR>
+<TR><TD ALIGN="LEFT">T - TCP</TD>
+<TD ALIGN="LEFT">I - Initialized</TD>
+<TD ALIGN="LEFT">S - Send</TD>
+</TR>
+<TR><TD ALIGN="LEFT">U - UDP</TD>
+<TD ALIGN="LEFT">L - Listen</TD>
+<TD ALIGN="LEFT">R - Receive</TD>
+</TR>
+<TR><TD ALIGN="LEFT">M - MACRAW (don't supported)</TD>
+<TD ALIGN="LEFT">S - Syn sent</TD>
+<TD ALIGN="LEFT">L - Listen</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">E - Established</TD>
+<TD ALIGN="LEFT">U - Reuse</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">W - Close wait</TD>
+<TD ALIGN="LEFT">C - Connecting</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">U - UDP</TD>
+<TD ALIGN="LEFT">D - Shutdown</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">M - MACRAW (don't supported)</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+</TABLE>
+</DIV>
 
 <P>
 

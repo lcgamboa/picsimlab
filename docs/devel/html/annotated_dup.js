@@ -29,6 +29,7 @@ var annotated_dup =
     [ "cpart_dtfunc", "classcpart__dtfunc.html", "classcpart__dtfunc" ],
     [ "cpart_ETH_w5500", "classcpart___e_t_h__w5500.html", "classcpart___e_t_h__w5500" ],
     [ "cpart_gamepad", "classcpart__gamepad.html", "classcpart__gamepad" ],
+    [ "cpart_gamepad_an", "classcpart__gamepad__an.html", "classcpart__gamepad__an" ],
     [ "cpart_IO_74xx595", "classcpart___i_o__74xx595.html", "classcpart___i_o__74xx595" ],
     [ "cpart_IO_MCP23S17", "classcpart___i_o___m_c_p23_s17.html", "classcpart___i_o___m_c_p23_s17" ],
     [ "cpart_IO_PCF8574", "classcpart___i_o___p_c_f8574.html", "classcpart___i_o___p_c_f8574" ],
