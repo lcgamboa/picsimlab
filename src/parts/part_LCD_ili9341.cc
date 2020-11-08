@@ -283,8 +283,12 @@ cpart_LCD_ili9341::Process(void)
      lcd_ili9341_SPI_io (&lcd, ppins[input_pins[1] - 1].value, ppins[input_pins[0] - 1].value, ppins[input_pins[4] - 1].value, ppins[input_pins[2] - 1].value, ppins[input_pins[3] - 1].value);
     }
   }
+}
 
-
+void
+cpart_LCD_ili9341::Reset(void)
+{
+ lcd_ili9341_rst (&lcd);
 }
 
 part_init("LCD ili9341", cpart_LCD_ili9341);

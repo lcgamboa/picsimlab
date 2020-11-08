@@ -126,7 +126,22 @@ lcd_ili9341_readdata(lcd_ili9341_t *lcd)
 
      if ((lcd->x < 240)&&(lcd->y < 320))
       {
-       lcd->ram[lcd->x][lcd->y] = lcd->color;
+       int lx, ly;
+       lx = lcd->x;
+       ly = lcd->y;
+
+       if (!(lcd->mac & 0x80))//MY
+	{
+	 ly = 319 - ly;
+	}
+
+       if ((lcd->mac & 0x40))//MX
+	{
+	 lx = 239 - lx;
+	}
+
+       lcd->ram[lx][ly] = lcd->color;
+
       }
      lcd->update = 1;
 
@@ -137,6 +152,7 @@ lcd_ili9341_readdata(lcd_ili9341_t *lcd)
        lcd->y++;
        if (lcd->y > lcd->pag_end)lcd->y = lcd->pag_start;
       }
+
      lcd->color = 0;
     }
   }
@@ -185,6 +201,10 @@ lcd_ili9341_process(lcd_ili9341_t *lcd)
        lcd->cmd_argc--;
       }
      break;
+    case 0x28:
+     dprint ("Display OFF\n");
+     lcd->on = 0;
+     break;
     case 0x29:
      dprint ("Display ON\n");
      lcd->on = 1;
@@ -199,20 +219,23 @@ lcd_ili9341_process(lcd_ili9341_t *lcd)
      else
       {
        switch (lcd->cmd_argc)
-        {
-        case 4:
-         lcd->col_start = lcd->cmd_val << 8;
-         break;
-        case 3:
-         lcd->col_start |= lcd->cmd_val;
-         break;
-        case 2:
-         lcd->col_end = lcd->cmd_val << 8;
-         break;
-        case 1:
-         lcd->col_end |= lcd->cmd_val;
-         break;
-        }
+	{
+	case 4:
+	 lcd->col_start = lcd->cmd_val << 8;
+	 break;
+	case 3:
+	 lcd->col_start |= lcd->cmd_val;
+	 break;
+	case 2:
+	 lcd->col_end = lcd->cmd_val << 8;
+	 break;
+	case 1:
+	 lcd->col_end |= lcd->cmd_val;
+
+	 lcd->col_start = lcd->col_start % 240;
+	 lcd->col_end = lcd->col_end % 240;
+	 break;
+	}
        lcd->cmd_argc--;
       }
      break;
@@ -226,20 +249,23 @@ lcd_ili9341_process(lcd_ili9341_t *lcd)
      else
       {
        switch (lcd->cmd_argc)
-        {
-        case 4:
-         lcd->pag_start = lcd->cmd_val << 8;
-         break;
-        case 3:
-         lcd->pag_start |= lcd->cmd_val;
-         break;
-        case 2:
-         lcd->pag_end = lcd->cmd_val << 8;
-         break;
-        case 1:
-         lcd->pag_end |= lcd->cmd_val;
-         break;
-        }
+	{
+	case 4:
+	 lcd->pag_start = lcd->cmd_val << 8;
+	 break;
+	case 3:
+	 lcd->pag_start |= lcd->cmd_val;
+	 break;
+	case 2:
+	 lcd->pag_end = lcd->cmd_val << 8;
+	 break;
+	case 1:
+	 lcd->pag_end |= lcd->cmd_val;
+
+	 lcd->pag_start = lcd->pag_start % 320;
+	 lcd->pag_end = lcd->pag_end % 320;
+	 break;
+	}
        lcd->cmd_argc--;
       }
      break;
@@ -250,13 +276,13 @@ lcd_ili9341_process(lcd_ili9341_t *lcd)
        lcd->last_cmd = lcd->dat;
 
        if ((lcd->pf & 0x06) == 0x06)
-        {
-         lcd->cmd_argc = 3;
-        }
+	{
+	 lcd->cmd_argc = 3;
+	}
        else
-        {
-         lcd->cmd_argc = 2;
-        }
+	{
+	 lcd->cmd_argc = 2;
+	}
 
        lcd->x = lcd->col_start;
        lcd->y = lcd->pag_start;
@@ -498,7 +524,7 @@ lcd_ili9341_draw(lcd_ili9341_t *lcd, CCanvas * canvas, int x1, int y1, int w1, i
  lcd->update = 0;
 
  if (!lcd->on) return;
- 
+
  for (x = 0; x < 240; x++)
   {
    for (y = 0; y < 320; y++)
@@ -519,13 +545,27 @@ lcd_ili9341_draw(lcd_ili9341_t *lcd, CCanvas * canvas, int x1, int y1, int w1, i
        r = ((lcd->ram[x][y] & 0x00F800) >> 11)*8.23;
        g = ((lcd->ram[x][y] & 0x0007E0) >> 5)*4.05;
        b = (lcd->ram[x][y] & 0x00001F)*8.23;
-        */
+	*/
 
        canvas->SetColor (r, g, b);
 
        //canvas->Rectangle (1, x1 + (x * 2), y1 + (y * 8 * 2)+(z * 2), 2, 2);
-       canvas->Point (y1 + y, x1 + (239 - x));
 
+       if ((lcd->mac & 0x20))//MV
+	{
+	 if ((lcd->mac & 0x80))//MY
+	  {
+	   canvas->Point (x1 + (239 - x), y1 + y);
+	  }
+	 else
+	  {
+	   canvas->Point (x1 + (319 - x), y1 + y - 80);
+	  }
+	}
+       else
+	{
+	 canvas->Point (y1 + y, x1 + (239 - x));
+	}
       }
     }
   }

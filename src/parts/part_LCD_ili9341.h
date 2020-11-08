@@ -44,6 +44,7 @@ class cpart_LCD_ili9341:public part
       lxString GetInputMapFile(void){return lxT("LCD_ili9341/LCD_ili9341_i.map");};
       lxString GetOutputMapFile(void){return lxT("LCD_ili9341/LCD_ili9341_o.map");};
       lxString GetPropertiesWindowFile(void){return lxT("LCD_ili9341/LCD_ili9341.lxrad");};
+      void Reset(void);
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       lxString WritePreferences(void);
