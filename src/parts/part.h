@@ -156,6 +156,16 @@ class part
      * @brief  Used by properties window combos
      */ 
       virtual void ComboChange(CCombo * control, lxString value){}; 
+
+     /**
+     * @brief  Used by windows of parts 
+     */ 
+      virtual void ButtonEvent(CControl * control, uint button, uint x, uint y, uint state){};
+
+     /**
+     * @brief  Used by windows of parts 
+     */  
+      virtual void Event(CControl * control){};
                       
      /**
      * @brief  Used by properties window filedialogs
@@ -223,8 +233,13 @@ class part
      */ 
       virtual void SetOrientation(int orientation);
       
-      int id; ///< part ID
+     /**
+     * @brief  Set the part ID, don't be called by user
+     */ 
+      virtual void SetId(int _id){id = _id;};
+
  protected:
+      int id; ///< part ID
       input_t  input[100];  ///< input map elements
       output_t output[100]; ///< output map elements 
       int inputc;           ///< input map elements counter 

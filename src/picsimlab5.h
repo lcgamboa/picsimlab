@@ -134,7 +134,9 @@ public:
     void PropClose(int tag);
     void Set_i2c_bus(unsigned char pin, unsigned char value);
     unsigned char Get_i2c_bus(unsigned char pin);
-
+    void PartButtonEvent(CControl * control, uint button, uint x, uint y, uint state);
+    void PartEvent(CControl * control);
+  
     /**
      * @brief  Return the name of all pins
      */
