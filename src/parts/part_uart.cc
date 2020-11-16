@@ -73,7 +73,7 @@ cpart_UART::cpart_UART(unsigned x, unsigned y)
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
 
- Bitmap = lxGetBitmapRotated(&image, &Window5, orientation); 
+ Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -123,14 +123,14 @@ cpart_UART::Draw(void)
    switch (output[i].id)
     {
     case O_LTX:
-     canvas.SetColor (0, (sr.leds & 0x02)*125 , 0);
+     canvas.SetColor (0, (sr.leds & 0x02)*125, 0);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     sr.leds&=~0x02;
+     sr.leds &= ~0x02;
      break;
     case O_LRX:
      canvas.SetColor (0, (sr.leds & 0x01)*250, 0);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     sr.leds&=~0x01;
+     sr.leds &= ~0x01;
      break;
     case O_LCON:
      canvas.SetColor (255, 0, 0);
@@ -155,15 +155,15 @@ cpart_UART::Draw(void)
       case 0:
        pin = pinv;
        if (input_pins[pin] == 0)
-        canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
+	canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
        else
-        canvas.RotatedText (Window5.GetPinName (input_pins[pin]), output[i].x1, output[i].y2, 90.0);
+	canvas.RotatedText (Window5.GetPinName (input_pins[pin]), output[i].x1, output[i].y2, 90.0);
       case 1:
        pin = pinv - 1;
        if (output_pins[pin] == 0)
-        canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
+	canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
        else
-        canvas.RotatedText (Window5.GetPinName (output_pins[pin]), output[i].x1, output[i].y2, 90.0);
+	canvas.RotatedText (Window5.GetPinName (output_pins[pin]), output[i].x1, output[i].y2, 90.0);
        break;
 
       }
@@ -295,7 +295,17 @@ cpart_UART::Process(void)
 
  unsigned short ret = 0;
 
- ret = uart_io (&sr, ppins[input_pins[0] - 1].value);
+ unsigned char val;
+
+ if (input_pins[0])
+  {
+   val = ppins[input_pins[0] - 1].value;
+  }
+ else
+  {
+   val = 1;
+  }
+ ret = uart_io (&sr, val);
 
  if (_ret != ret)
   {
@@ -312,7 +322,7 @@ cpart_UART::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
  for (i = 0; i < inputc; i++)
   {
-   if (PointInside(x, y, input[i]))
+   if (PointInside (x, y, input[i]))
     {
      switch (input[i].id)
       {

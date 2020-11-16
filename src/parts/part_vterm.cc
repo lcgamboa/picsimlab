@@ -399,7 +399,18 @@ cpart_vterm::Process(void)
 
  unsigned short ret = 0;
 
- ret = vterm_io (&vt, ppins[input_pins[0] - 1].value);
+ unsigned char val;
+
+ if (input_pins[0])
+  {
+   val = ppins[input_pins[0] - 1].value;
+  }
+ else
+  {
+   val = 1;
+  }
+
+ ret = vterm_io (&vt, val);
 
  if (_ret != ret)
   {
