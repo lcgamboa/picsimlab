@@ -88,12 +88,14 @@ var hierarchy =
       [ "cpart_VCD_Dump", "classcpart___v_c_d___dump.html", null ],
       [ "cpart_VCD_Dump_an", "classcpart___v_c_d___dump__an.html", null ],
       [ "cpart_VCD_Dump_DBG", "classcpart___v_c_d___dump___d_b_g.html", null ],
-      [ "cpart_VCD_Play", "classcpart___v_c_d___play.html", null ]
+      [ "cpart_VCD_Play", "classcpart___v_c_d___play.html", null ],
+      [ "cpart_vterm", "classcpart__vterm.html", null ]
     ] ],
     [ "part_desc", "structpart__desc.html", null ],
     [ "rtc2_t", "structrtc2__t.html", null ],
     [ "rtc_t", "structrtc__t.html", null ],
     [ "sdcard_t", "structsdcard__t.html", null ],
     [ "uart_t", "structuart__t.html", null ],
-    [ "vcd_reg_t", "structvcd__reg__t.html", null ]
+    [ "vcd_reg_t", "structvcd__reg__t.html", null ],
+    [ "vterm_t", "structvterm__t.html", null ]
 ];

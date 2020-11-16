@@ -54,15 +54,15 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "class_c_p_window5.html",
-"classboard__picsim.html#ae398fe01b6954bb2c6637c59ee0a4a5e",
-"classcboard___curiosity.html#a681191f3290f95a7bb03366001040a4b",
-"classcboard___p_i_c_genios.html#af76626c6a52fa62a701b8e3d90ae0c74",
-"classcpart___i_o__74xx595.html#afd0c0b2de9616175baabbda0957f3776",
-"classcpart___r_t_c__pfc8563.html#a2fcf390f12aba5a15f86c9a1b07117b8",
-"classcpart__gamepad.html#a1b5a640b8f225ae20f57eac1dad8111e",
-"classcpart__step.html#ad39c9f3771b18c983395d0d851288077",
-"structavr__gdb__t.html",
-"structrtc__t.html#ab0d52ae595d3b6c73bfae0104720b9b7"
+"classboard__picsim.html#ad99921bf6291e657f887273a30e1d758",
+"classcboard___curiosity.html#a5e8407bec28dc471b351528ce408efdf",
+"classcboard___p_i_c_genios.html#af43f36ab5cd6e61c93ea0ddc9eac58cd",
+"classcpart___i_o__74xx595.html#adb43442e457f4ca59e9bdb3f6c0d57b6",
+"classcpart___r_t_c__pfc8563.html#a153569291de6054de0270ba1e0158f5d",
+"classcpart__gamepad.html#a026460d33e0e9d86c10337e32a4a33bf",
+"classcpart__step.html#ab8768f4eac7bd28836dc29ca42ae7cac",
+"part__keypad_8h_source.html",
+"structmi2c__t.html#a08e6bba721a7d40e7c49e3b96700dbb5"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

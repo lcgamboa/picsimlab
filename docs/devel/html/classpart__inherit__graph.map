@@ -1,5 +1,5 @@
 <map id="part" name="part">
-<area shape="rect" id="node1" title="PART class." alt="" coords="5,892,53,919"/>
+<area shape="rect" id="node1" title="PART class." alt="" coords="5,917,53,944"/>
 <area shape="rect" id="node2" href="$classcpart__7s__display.html" title=" " alt="" coords="122,5,253,32"/>
 <area shape="rect" id="node3" href="$classcpart___buzzer.html" title=" " alt="" coords="134,56,241,83"/>
 <area shape="rect" id="node4" href="$classcpart__dtfunc.html" title=" " alt="" coords="136,107,239,133"/>
@@ -36,4 +36,5 @@
 <area shape="rect" id="node35" href="$classcpart___v_c_d___dump__an.html" title=" " alt="" coords="108,1677,267,1704"/>
 <area shape="rect" id="node36" href="$classcpart___v_c_d___dump___d_b_g.html" title=" " alt="" coords="101,1728,273,1755"/>
 <area shape="rect" id="node37" href="$classcpart___v_c_d___play.html" title=" " alt="" coords="125,1779,250,1805"/>
+<area shape="rect" id="node38" href="$classcpart__vterm.html" title=" " alt="" coords="137,1829,238,1856"/>
 </map>

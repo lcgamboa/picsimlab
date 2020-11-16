@@ -37,5 +37,6 @@ var dir_74468c6aa5627e796dac9600ce6ada7d =
     [ "part_VCD_Dump_an.h", "part___v_c_d___dump__an_8h_source.html", null ],
     [ "part_VCD_Dump_DBG.h", "part___v_c_d___dump___d_b_g_8h_source.html", null ],
     [ "part_VCD_Play.h", "part___v_c_d___play_8h_source.html", null ],
+    [ "part_vterm.h", "part__vterm_8h_source.html", null ],
     [ "parts_defs.h", "parts__defs_8h_source.html", null ]
 ];

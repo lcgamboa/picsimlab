@@ -60,6 +60,7 @@ var annotated_dup =
     [ "cpart_VCD_Dump_an", "classcpart___v_c_d___dump__an.html", "classcpart___v_c_d___dump__an" ],
     [ "cpart_VCD_Dump_DBG", "classcpart___v_c_d___dump___d_b_g.html", "classcpart___v_c_d___dump___d_b_g" ],
     [ "cpart_VCD_Play", "classcpart___v_c_d___play.html", "classcpart___v_c_d___play" ],
+    [ "cpart_vterm", "classcpart__vterm.html", "classcpart__vterm" ],
     [ "CPWindow1", "class_c_p_window1.html", "class_c_p_window1" ],
     [ "CPWindow2", "class_c_p_window2.html", "class_c_p_window2" ],
     [ "CPWindow3", "class_c_p_window3.html", "class_c_p_window3" ],
@@ -85,5 +86,6 @@ var annotated_dup =
     [ "rtc_t", "structrtc__t.html", "structrtc__t" ],
     [ "sdcard_t", "structsdcard__t.html", "structsdcard__t" ],
     [ "uart_t", "structuart__t.html", "structuart__t" ],
-    [ "vcd_reg_t", "structvcd__reg__t.html", "structvcd__reg__t" ]
+    [ "vcd_reg_t", "structvcd__reg__t.html", "structvcd__reg__t" ],
+    [ "vterm_t", "structvterm__t.html", "structvterm__t" ]
 ];

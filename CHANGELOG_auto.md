@@ -2,6 +2,8 @@
 
 ### New
 
+* Part virtual terminal added. [Luis Claudio Gambôa Lopes]
+
 * Gamepad Analogic part added. [Luis Claudio Gambôa Lopes]
 
 * Support to spare parts orientation (rotation 0, 90, 180 and 270) [Luis Claudio Gambôa Lopes]

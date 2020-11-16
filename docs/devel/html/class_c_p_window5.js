@@ -31,6 +31,8 @@ var class_c_p_window5 =
     [ "menu1_File_Savepinalias_EvMenuActive", "class_c_p_window5.html#a219f9c80f584140e97b5d4ebeb7f3ed9", null ],
     [ "menu1_Help_About_EvMenuActive", "class_c_p_window5.html#af7d89e4fc7a75bf1511202e3b66e6dc0", null ],
     [ "menu1_Help_Contents_EvMenuActive", "class_c_p_window5.html#a54201901fdb82a14cf097618cbf823c3", null ],
+    [ "PartButtonEvent", "class_c_p_window5.html#a4f3a2e13a8a0666e625684571b5751bc", null ],
+    [ "PartEvent", "class_c_p_window5.html#a0857399f68685bd354332a1766bf2933", null ],
     [ "pmenu2_About_EvMenuActive", "class_c_p_window5.html#afd4a5adadb50cb19bd2f78e8e86b16bf", null ],
     [ "pmenu2_Delete_EvMenuActive", "class_c_p_window5.html#a284d9a27026378e01117d933d28559d6", null ],
     [ "pmenu2_Help_EvMenuActive", "class_c_p_window5.html#abbbd3a64754c019e0b7cc5f5742ab824", null ],

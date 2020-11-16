@@ -16,6 +16,7 @@ var classcpart___l_c_d__ili9341 =
     [ "Process", "classcpart___l_c_d__ili9341.html#a16038d47e87f21f19191d50455c47b7e", null ],
     [ "ReadPreferences", "classcpart___l_c_d__ili9341.html#a539d8deb3b3c497f0846692c4429a17f", null ],
     [ "ReadPropertiesWindow", "classcpart___l_c_d__ili9341.html#a33a302086175f45fad25e22d92e8d160", null ],
+    [ "Reset", "classcpart___l_c_d__ili9341.html#a5950a85dda7994db1279ea34f2b7ce28", null ],
     [ "WritePreferences", "classcpart___l_c_d__ili9341.html#a443afcf145f2ae38a2f536c8c267571a", null ],
     [ "input_pins", "classcpart___l_c_d__ili9341.html#ad2a40dbab7325b1395f2f71cd920e49d", null ],
     [ "lcd", "classcpart___l_c_d__ili9341.html#ac44ca0238971eb2e75745f3fa225a9ea", null ],

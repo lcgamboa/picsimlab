@@ -1,5 +1,8 @@
 var NAVTREEINDEX6 =
 {
+"classcpart___r_t_c__pfc8563.html#a153569291de6054de0270ba1e0158f5d":[3,0,48,8],
+"classcpart___r_t_c__pfc8563.html#a1e1c729cea9f3542745db47b1283a3e3":[3,0,48,13],
+"classcpart___r_t_c__pfc8563.html#a1e46d078696c0c12a5cad7825f4117eb":[3,0,48,2],
 "classcpart___r_t_c__pfc8563.html#a2fcf390f12aba5a15f86c9a1b07117b8":[3,0,48,0],
 "classcpart___r_t_c__pfc8563.html#a34dbaef5d1dd5c0b6e91c94d67c856da":[3,0,48,1],
 "classcpart___r_t_c__pfc8563.html#a5e1ef13b217effffed429974ec41e40c":[3,0,48,15],
@@ -246,8 +249,5 @@ var NAVTREEINDEX6 =
 "classcpart__dtfunc.html#ae679c2752c9fe4479fe9a0febef06272":[3,0,26,29],
 "classcpart__dtfunc.html#afbe99edea69f4edcedaffce03749cf54":[3,0,26,13],
 "classcpart__gamepad.html":[3,0,28],
-"classcpart__gamepad.html#a000f4d9aff33a807d5a6600a1c83e6ec":[3,0,28,7],
-"classcpart__gamepad.html#a026460d33e0e9d86c10337e32a4a33bf":[3,0,28,8],
-"classcpart__gamepad.html#a0f9740476c5db66ebbc2ef43b68d4b01":[3,0,28,18],
-"classcpart__gamepad.html#a140675e72806e1d68d308a262c57d4cb":[3,0,28,0]
+"classcpart__gamepad.html#a000f4d9aff33a807d5a6600a1c83e6ec":[3,0,28,7]
 };
