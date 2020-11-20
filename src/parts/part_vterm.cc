@@ -230,14 +230,14 @@ cpart_vterm::Draw(void)
    switch (output[i].id)
     {
     case O_LTX:
-     canvas.SetColor (0, (vt.leds & 0x02)*125, 0);
+     canvas.SetColor (0, (vt.bb_uart.leds & 0x02)*125, 0);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     vt.leds &= ~0x02;
+     vt.bb_uart.leds &= ~0x02;
      break;
     case O_LRX:
-     canvas.SetColor (0, (vt.leds & 0x01)*250, 0);
+     canvas.SetColor (0, (vt.bb_uart.leds & 0x01)*250, 0);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     vt.leds &= ~0x01;
+     vt.bb_uart.leds &= ~0x01;
      break;
     default:
      canvas.SetColor (49, 61, 99);
@@ -338,7 +338,7 @@ cpart_vterm::ConfigurePropertiesWindow(CPWindow * WProp)
   }
 
 
- ((CCombo*) WProp->GetChildByName ("combo3"))->SetItems ("4800,9600,115200,");
+ ((CCombo*) WProp->GetChildByName ("combo3"))->SetItems ("1200,4800,9600,19200,38400,57600,115200,");
  ((CCombo*) WProp->GetChildByName ("combo3"))->SetText (itoa (vterm_speed));
 
 
@@ -444,8 +444,7 @@ cpart_vterm::PostProcess(void)
 {
  if (vt.count_in)
   {
-   char str[100];
-
+   char str[200];
    strncpy (str, (char *) vt.buff_in, vt.count_in);
    str[vt.count_in] = 0;
    vttext->Append (str);

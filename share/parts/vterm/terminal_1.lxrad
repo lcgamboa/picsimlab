@@ -131,7 +131,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Items type="lxStringList">4800,9600,</Items>
+  <Items type="lxStringList">1200,4800,9600,19200,38400,57600,115200,</Items>
   <Text type="lxString">9600</Text>
   <ReadOnly type="bool">0</ReadOnly>
   <EvOnComboChange type="Event">TRUE</EvOnComboChange>

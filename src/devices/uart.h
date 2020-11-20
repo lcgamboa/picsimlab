@@ -29,22 +29,12 @@
 
 #include <stdio.h>
 #include "../serial_port.h"
-
+#include"bitbang_uart.h"
 
 typedef struct {
     unsigned char connected;
-    unsigned char arx;
-    unsigned short insr;
-    unsigned short outsr;
-    unsigned int bcr;
-    unsigned long tcountr;
-    unsigned int bcw;
-    unsigned long tcountw;
     serialfd_t serialfd;
-    unsigned long speed;
-    unsigned int count;
-    unsigned int rxc;
-    unsigned int leds;
+    bitbang_uart_t bb_uart;
 } uart_t;
 
 

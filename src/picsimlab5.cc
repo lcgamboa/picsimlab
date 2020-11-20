@@ -199,13 +199,19 @@ CPWindow5::PropComboChange(CCombo * control)
 void
 CPWindow5::PartButtonEvent(CControl * control, uint button, uint x, uint y, uint state)
 {
- Window5.parts[control->GetTag ()]->ButtonEvent (control, button, x, y, state);
+ if (control->GetTag () < (unsigned int)partsc)
+  {
+   Window5.parts[control->GetTag ()]->ButtonEvent (control, button, x, y, state);
+  }
 }
 
 void
 CPWindow5::PartEvent(CControl * control)
 {
- Window5.parts[control->GetTag ()]->Event (control);
+ if (control->GetTag () < (unsigned int)partsc)
+  {
+   Window5.parts[control->GetTag ()]->Event (control);
+  }
 }
 
 void

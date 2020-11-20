@@ -37,15 +37,7 @@
 void
 vterm_rst(vterm_t *vt)
 {
- vt->arx = 1;
- vt->invt = 0;
- vt->outvt = 1;
- vt->bcr = 0;
- vt->bcw = 0;
- vt->rxc = 0;
- vt->tcountr = 0;
- vt->tcountw = 0;
- vt->leds = 0;
+ bitbang_uart_rst (&vt->bb_uart);
  vt->count_in = 0;
  vt->count_out = 0;
  vt->out_ptr = 0;
@@ -55,137 +47,55 @@ vterm_rst(vterm_t *vt)
 void
 vterm_init(vterm_t *vt)
 {
+ bitbang_uart_init (&vt->bb_uart);
  vterm_rst (vt);
- vt->speed = 9600;
- vt->count = 0;
  dprintf ("init uart\n");
 }
 
 void
-vterm_end(vterm_t *vt) {
- }
+vterm_end(vterm_t *vt) { }
 
 void
 vterm_set_clk(vterm_t *vt, unsigned long clk)
 {
- vt->count = clk / (16 * vt->speed);
+ bitbang_uart_set_clk (&vt->bb_uart, clk);
 }
 
 unsigned char
 vterm_io(vterm_t *vt, unsigned char rx)
 {
- //unsigned char data;
+ unsigned char ret;
 
- //read rx
- if (vt->tcountr)
+
+
+ if (!bitbang_uart_transmitting (&vt->bb_uart))
   {
-   vt->tcountr++;
-
-   if (!(vt->tcountr % vt->count))
+   if (vt->count_out)
     {
-     if (rx)vt->rxc++;
-    }
-
-   if (vt->tcountr >= vt->count << 4)
-    {
-     vt->tcountr = 1;
-
-
-     if (vt->rxc > 7)
+     bitbang_uart_send (&vt->bb_uart, vt->buff_out[vt->out_ptr++]);
+     if (vt->out_ptr == vt->count_out)
       {
-       vt->invt = (vt->invt >> 1) | 0x80;
+       vt->out_ptr = 0;
+       vt->count_out = 0;
       }
-     else
-      {
-       vt->invt = (vt->invt >> 1) & 0xF7FF;
-      }
-     vt->bcr++;
-     vt->rxc = 0;
-
-     if (vt->bcr == 8)//start+eight bits+ stop
-      {
-       //dprintf ("uart byte in 0x%02X  out 0x%02X\n", vt->invt & 0xFF, vt->outvt >> 8);
-       //printf ("%c  0x%04X\n", vt->invt >> 1, vt->invt >> 1);
-
-       vt->buff_in[vt->count_in++] = vt->invt >> 1;
-       if (vt->count_in >= SBUFFMAX)vt->count_in = 0;
-       //serial_port_send (vt->serialfd, (vt->invt >> 1)&0xFF);
-
-      }
-    }
-
-   //stop bit
-   if ((vt->bcr > 7)&&(vt->arx == 0)&&(rx == 1))//rising edge
-    {
-     vt->tcountr = 0;
-     vt->bcr = 0;
-    }
-
-  }
- else
-  {
-   //start bit
-   if ((vt->arx == 1)&&(rx == 0))//falling edge
-    {
-     //dprintf ("uart start bit \n");
-     vt->tcountr = 1;
-     vt->bcr = 0;
-     vt->invt = 0;
-     vt->rxc = 0;
-     vt->leds |= 0x01;
     }
   }
 
- vt->arx = rx;
 
+ ret = bitbang_uart_io (&vt->bb_uart, rx);
 
- //write tx
-
- vt->tcountw++;
-
- if (vt->tcountw >= (vt->count << 4))
+ if (bitbang_uart_data_available (&vt->bb_uart))
   {
-   vt->tcountw = 0;
-
-   if (!vt->bcw)
-    {
-
-     if (vt->count_out)
-      {
-       char data = vt->buff_out[vt->out_ptr++];
-
-       if (vt->out_ptr == vt->count_out)
-	{
-	 vt->out_ptr = 0;
-	 vt->count_out = 0;
-	}
-
-       dprintf ("uart data rec %c \n", data);
-       vt->leds |= 0x02;
-       vt->bcw = 1;
-       vt->outvt = (data << 1) | 0x200;
-      }
-
-    }
-   else
-    {
-     vt->outvt = (vt->outvt >> 1);
-     vt->bcw++;
-     if (vt->bcw > 9)
-      {
-       vt->bcw = 0;
-      }
-    }
-
+   vt->buff_in[vt->count_in++] = bitbang_uart_recv (&vt->bb_uart);
+   if (vt->count_in >= SBUFFMAX)vt->count_in = 0;
   }
 
+ return ret;
 
-
- return (vt->outvt & 0x01);
 }
 
 void
 vterm_set_speed(vterm_t *vt, unsigned int speed)
 {
- vt->speed = speed;
+ bitbang_uart_set_speed (&vt->bb_uart, speed);
 }

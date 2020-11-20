@@ -28,21 +28,12 @@
 #define VTERM
 
 #include <stdio.h>
+#include"bitbang_uart.h"
 
 #define SBUFFMAX 128
 
 typedef struct {
-    unsigned char arx;
-    unsigned short invt;
-    unsigned short outvt;
-    unsigned int bcr;
-    unsigned long tcountr;
-    unsigned int bcw;
-    unsigned long tcountw;
-    unsigned long speed;
-    unsigned int count;
-    unsigned int rxc;
-    unsigned int leds;
+    bitbang_uart_t bb_uart;    
     unsigned char buff_in[SBUFFMAX];
     unsigned char count_in;
     unsigned char buff_out[SBUFFMAX];

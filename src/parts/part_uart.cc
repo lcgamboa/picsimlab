@@ -123,14 +123,14 @@ cpart_UART::Draw(void)
    switch (output[i].id)
     {
     case O_LTX:
-     canvas.SetColor (0, (sr.leds & 0x02)*125, 0);
+     canvas.SetColor (0, (sr.bb_uart.leds & 0x02)*125, 0);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     sr.leds &= ~0x02;
+     sr.bb_uart.leds &= ~0x02;
      break;
     case O_LRX:
-     canvas.SetColor (0, (sr.leds & 0x01)*250, 0);
+     canvas.SetColor (0, (sr.bb_uart.leds & 0x01)*250, 0);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     sr.leds &= ~0x01;
+     sr.bb_uart.leds &= ~0x01;
      break;
     case O_LCON:
      canvas.SetColor (255, 0, 0);

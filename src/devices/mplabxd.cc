@@ -470,7 +470,7 @@ mplabxd_loop(void)
        reply = 0x01;
       }
 #ifdef _DEBUG_
-     for (i = 0; i < (int) dbg_board->MGetROMSize (); i++)printf ("%#02X ", dbg_board->MGetROM_p ()[i]);
+     for (i = 0; i < (int) dbg_board->DBGGetROMSize (); i++)printf ("%#02X ", dbg_board->DBGGetROM_p ()[i]);
 #endif
      dprint ("PROGP cmd  %i of %i\n", n, dbg_board->DBGGetROMSize ());
      break;
@@ -482,7 +482,7 @@ mplabxd_loop(void)
        reply = 0x01;
       }
 #ifdef _DEBUG_
-     for (i = 0; i < (int) dbg_board->MGetCONFIGSize (); i++)printf ("%#02X ", dbg_board->MGetCONFIG_p ()[i]);
+     for (i = 0; i < (int) dbg_board->DBGGetCONFIGSize (); i++)printf ("%#02X ", dbg_board->DBGGetCONFIG_p ()[i]);
 #endif
      dprint ("PROGC cmd  %i of %i\n", n, dbg_board->DBGGetCONFIGSize ());
      break;
@@ -494,7 +494,7 @@ mplabxd_loop(void)
        reply = 0x01;
       }
 #ifdef _DEBUG_
-     for (i = 0; i < (int) dbg_board->MGetIDSize (); i++)printf ("%#02X ", dbg_board->MGetID_p ()[i]);
+     for (i = 0; i < (int) dbg_board->DBGGetIDSize (); i++)printf ("%#02X ", dbg_board->DBGGetID_p ()[i]);
 #endif
      dprint ("PROGI cmd\n");
      break;
@@ -506,7 +506,7 @@ mplabxd_loop(void)
        reply = 0x01;
       }
 #ifdef _DEBUG_
-     for (i = 0; i < (int) dbg_board->MGetEEPROM_Size (); i++)printf ("%#02X ", dbg_board->MGetEEPROM_p ()[i]);
+     for (i = 0; i < (int) dbg_board->DBGGetEEPROM_Size (); i++)printf ("%#02X ", dbg_board->DBGGetEEPROM_p ()[i]);
 #endif
      dprint ("PROGE cmd\n");
      break;

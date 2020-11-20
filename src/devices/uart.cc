@@ -37,26 +37,17 @@
 void
 uart_rst(uart_t *sr)
 {
- sr->arx = 1;
- sr->insr = 0;
- sr->outsr = 1;
- sr->bcr = 0;
- sr->bcw = 0;
- sr->rxc = 0;
- sr->tcountr = 0;
- sr->tcountw = 0;
- sr->leds=0;
+ bitbang_uart_rst (&sr->bb_uart);
  dprintf ("rst uart\n");
 }
 
 void
 uart_init(uart_t *sr)
 {
+ bitbang_uart_init (&sr->bb_uart);
  sr->connected = 0;
  uart_rst (sr);
  sr->serialfd = 0;
- sr->speed = 9600;
- sr->count = 0;
  dprintf ("init uart\n");
 }
 
@@ -68,120 +59,43 @@ uart_end(uart_t *sr)
    serial_port_close (sr->serialfd);
    sr->connected = 0;
   }
+ bitbang_uart_end (&sr->bb_uart);
 }
 
 void
 uart_set_clk(uart_t *sr, unsigned long clk)
 {
- sr->count = clk / (16 * sr->speed);
+ bitbang_uart_set_clk (&sr->bb_uart, clk);
 }
 
 unsigned char
 uart_io(uart_t *sr, unsigned char rx)
 {
- unsigned char data;
+ unsigned char ret;
 
  if (!sr->connected)
   {
    return 1;
   }
 
- //read rx
- if (sr->tcountr)
+ if (!bitbang_uart_transmitting (&sr->bb_uart))
   {
-   sr->tcountr++;
-
-   if (!(sr->tcountr % sr->count))
+   unsigned char data;
+   if (serial_port_rec (sr->serialfd, &data))
     {
-     if (rx)sr->rxc++;
-    }
-
-   if (sr->tcountr >= sr->count << 4)
-    {
-     sr->tcountr = 1;
-
-
-     if (sr->rxc > 7)
-      {
-       sr->insr = (sr->insr >> 1) | 0x80;
-      }
-     else
-      {
-       sr->insr = (sr->insr >> 1) & 0xF7FF;
-      }
-     sr->bcr++;
-     sr->rxc = 0;
-
-     if (sr->bcr == 8)//start+eight bits+ stop
-      {
-       //dprintf ("uart byte in 0x%02X  out 0x%02X\n", sr->insr & 0xFF, sr->outsr >> 8);
-       //printf ("%c  0x%04X\n", sr->insr >> 1, sr->insr >> 1);
-
-       serial_port_send (sr->serialfd, (sr->insr >> 1)&0xFF);
-
-      }
-    }
-
-   //stop bit
-   if ((sr->bcr > 7)&&(sr->arx == 0)&&(rx == 1))//rising edge
-    {
-     sr->tcountr = 0;
-     sr->bcr = 0;
-    }
-
-  }
- else
-  {
-   //start bit
-   if ((sr->arx == 1)&&(rx == 0))//falling edge
-    {
-     //dprintf ("uart start bit \n");
-     sr->tcountr = 1;
-     sr->bcr = 0;
-     sr->insr = 0;
-     sr->rxc = 0;
-     sr->leds |= 0x01;
+     bitbang_uart_send (&sr->bb_uart, data);
     }
   }
 
- sr->arx = rx;
 
+ ret = bitbang_uart_io (&sr->bb_uart, rx);
 
- //write tx
-
- sr->tcountw++;
-
- if (sr->tcountw >= (sr->count << 4))
+ if (bitbang_uart_data_available (&sr->bb_uart))
   {
-   sr->tcountw = 0;
-
-   if (!sr->bcw)
-    {
-     if (serial_port_rec (sr->serialfd, &data))
-      {
-       dprintf ("uart data rec %c \n", data);
-       sr->leds |= 0x02;
-       sr->bcw = 1;
-       sr->outsr = (data<<1)|0x200;
-      }
-
-
-    }
-   else
-    {
-       sr->outsr = (sr->outsr >> 1);
-       sr->bcw++;
-       if(sr->bcw >9)
-        {
-          sr->bcw=0;
-        }
-    }
-
+   serial_port_send (sr->serialfd, bitbang_uart_recv (&sr->bb_uart));
   }
 
-
-
- return (sr->outsr & 0x01);
+ return ret;
 }
 
 void
@@ -197,7 +111,7 @@ uart_set_port(uart_t *sr, const char * port, unsigned int speed)
  if (serial_port_open (&sr->serialfd, port))
   {
    sr->connected = 1;
-   sr->speed = speed;
+   bitbang_uart_set_speed (&sr->bb_uart, speed);
    serial_port_cfg (sr->serialfd, speed);
    dprintf ("uart serial open: %s  speed %i\n", port, speed);
   }
@@ -206,6 +120,4 @@ uart_set_port(uart_t *sr, const char * port, unsigned int speed)
    sr->connected = 0;
    dprintf ("uart serial error open: %s !!!\n", port);
   }
-
-
 }
