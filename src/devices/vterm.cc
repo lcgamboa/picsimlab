@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -56,9 +56,9 @@ void
 vterm_end(vterm_t *vt) { }
 
 void
-vterm_set_clk(vterm_t *vt, unsigned long clk)
+vterm_set_clk_freq(vterm_t *vt, unsigned long freq)
 {
- bitbang_uart_set_clk (&vt->bb_uart, clk);
+ bitbang_uart_set_clk_freq (&vt->bb_uart, freq);
 }
 
 unsigned char

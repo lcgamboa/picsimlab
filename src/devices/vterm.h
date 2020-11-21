@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ typedef struct {
 void vterm_rst(vterm_t *vt);
 void vterm_init(vterm_t *vt);
 void vterm_end(vterm_t *vt);
-void vterm_set_clk(vterm_t *vt, unsigned long clk);
+void vterm_set_clk_freq(vterm_t *vt, unsigned long freq);
 void vterm_set_speed(vterm_t *vt, unsigned int speed);
 
 unsigned char vterm_io(vterm_t *vt, unsigned char rx);

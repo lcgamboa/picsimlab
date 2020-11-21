@@ -361,7 +361,7 @@ cpart_vterm::ReadPropertiesWindow(CPWindow * WProp)
 void
 cpart_vterm::PreProcess(void)
 {
- vterm_set_clk (&vt, Window1.GetBoard ()->MGetInstClock ());
+ vterm_set_clk_freq (&vt, Window1.GetBoard ()->MGetInstClock ());
 
  if (send_text)
   {

@@ -29,6 +29,7 @@
 #include "board.h"
 
 #include"../devices/mplabxd.h"
+#include"../devices/bitbang_uart.h"
 #include"../serial_port.h"
 
 #include <simavr/sim_avr.h>
@@ -95,7 +96,8 @@ class board_simavr: virtual public board
          picpin * p = (picpin *)param;
          p->dir=!(value & (1<<p->pord));
       }
-     
+      
+      void SerialSend(unsigned char value);
  protected:
       avr_t *  avr;
       avr_irq_t * serial_irq;
@@ -104,16 +106,24 @@ class board_simavr: virtual public board
       unsigned int serialbaud; 
       float serialexbaud;
       void pins_reset(void);
-       serialfd_t  serialfd;
       int avr_debug_type;
+      serialfd_t  serialfd;    
+      bitbang_uart_t bb_uart;  
  private:
       int parse_hex(char *line,int bytes);
       unsigned char checksum(char* str);
       int read_ihx_avr(const char * fname, int leeprom);
       int write_ihx_avr(const char * fname);  
+      
+      unsigned char pin_rx;
+      unsigned char pin_tx;
 };
 
-
+#define UCSR0A 0XC0
+#define UCSR0B 0XC1
+#define UCSR0C 0XC2
+#define UBRR0L 0xC4
+#define UBRR0H 0xC5
 
 #endif	/* BOARD_AVR_H */
 

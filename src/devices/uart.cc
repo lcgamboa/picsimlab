@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -63,9 +63,9 @@ uart_end(uart_t *sr)
 }
 
 void
-uart_set_clk(uart_t *sr, unsigned long clk)
+uart_set_clk_freq(uart_t *sr, unsigned long freq)
 {
- bitbang_uart_set_clk (&sr->bb_uart, clk);
+ bitbang_uart_set_clk_freq (&sr->bb_uart, freq);
 }
 
 unsigned char

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -46,13 +46,14 @@ typedef struct {
     unsigned char data_recv;    //flag data received 
     unsigned char dataw;        //data to write
     unsigned char data_to_send; //flag data to write
+    unsigned long freq;
 } bitbang_uart_t;
 
 
 void bitbang_uart_rst(bitbang_uart_t *bu);
 void bitbang_uart_init(bitbang_uart_t *bu);
 void bitbang_uart_end(bitbang_uart_t *bu);
-void bitbang_uart_set_clk(bitbang_uart_t *bu, unsigned long clk);
+void bitbang_uart_set_clk_freq(bitbang_uart_t *bu, unsigned long freq);
 void bitbang_uart_set_speed(bitbang_uart_t *bu, unsigned int speed);
 unsigned char  bitbang_uart_transmitting(bitbang_uart_t *bu);
 void bitbang_uart_send(bitbang_uart_t *bu, unsigned char data);

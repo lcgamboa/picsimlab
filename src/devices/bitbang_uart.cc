@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -56,6 +56,7 @@ bitbang_uart_init(bitbang_uart_t *bu)
 {
  bitbang_uart_rst (bu);
  bu->speed = 9600;
+ bu->freq=1000000L;
  bu->cycle_count = 100;
  dprintf ("init uart\n");
 }
@@ -65,9 +66,17 @@ bitbang_uart_end(bitbang_uart_t *bu) {
  }
 
 void
-bitbang_uart_set_clk(bitbang_uart_t *bu, unsigned long clk)
+bitbang_uart_set_clk_freq(bitbang_uart_t *bu, unsigned long freq)
 {
- bu->cycle_count = clk / (16 * bu->speed);
+ bu->freq = freq;
+ bu->cycle_count = bu->freq / (16 * bu->speed);
+}
+
+void
+bitbang_uart_set_speed(bitbang_uart_t *bu, unsigned int speed)
+{
+ bu->speed = speed; 
+ bu->cycle_count = bu->freq / (16 * bu->speed);
 }
 
 unsigned char
@@ -88,31 +97,33 @@ bitbang_uart_io(bitbang_uart_t *bu, unsigned char rx)
     {
      bu->tcountr = 1;
 
-
+     //printf("bit=%i mean=%i\n",  bu->bcr, bu->rxc);
      if (bu->rxc > 7)
       {
-       bu->insr = (bu->insr >> 1) | 0x80;
+       bu->insr = (bu->insr >> 1) | 0x8000;
       }
      else
       {
-       bu->insr = (bu->insr >> 1) & 0xF7FF;
+       bu->insr = (bu->insr >> 1) & 0x7FFF;
       }
      bu->bcr++;
      bu->rxc = 0;
 
      if (bu->bcr == 8)//start+eight bits+ stop
       {
-       //dprintf ("uart byte in 0x%02X  out 0x%02X\n", bu->inbu & 0xFF, bu->outbu >> 8);
-       //printf ("%c  0x%04X\n", bu->inbu >> 1, bu->inbu >> 1);
+       bu->insr >>=1;
+       //printf ("uart sr in 0x%04X  out 0x%04X\n", bu->insr, bu->outsr);
+       //printf ("%c  0x%04X\n", bu->insr >> 8, bu->insr >> 8);
 
-       bu->datar = bu->insr >> 1;
+       bu->datar = bu->insr >> 8;
        bu->data_recv=1;
       }
     }
 
    //stop bit
-   if ((bu->bcr > 7)&&(bu->prx == 0)&&(rx == 1))//rising edge
-    {
+   //if ((bu->bcr > 7)&&(bu->prx == 0)&&(rx == 1))//rising edge
+   if(bu->bcr > 8)
+   {
      bu->tcountr = 0;
      bu->bcr = 0;
     }
@@ -171,11 +182,6 @@ bitbang_uart_io(bitbang_uart_t *bu, unsigned char rx)
  return (bu->outsr & 0x01);
 }
 
-void
-bitbang_uart_set_speed(bitbang_uart_t *bu, unsigned int speed)
-{
- bu->speed = speed;
-}
 
 unsigned char  
 bitbang_uart_transmitting(bitbang_uart_t *bu)

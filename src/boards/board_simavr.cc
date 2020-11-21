@@ -212,7 +212,7 @@ board_simavr::MInit(const char * processor, const char * fname, float freq)
  avr_ioctl (avr, AVR_IOCTL_UART_SET_FLAGS ('0'), &f);
 
  serial_irq = avr_alloc_irq (&avr->irq_pool, 0, IRQ_UART_COUNT, irq_names_uart);
- avr_irq_register_notify (serial_irq + IRQ_UART_BYTE_IN, uart_in_hook, &serialfd);
+ avr_irq_register_notify (serial_irq + IRQ_UART_BYTE_IN, uart_in_hook, this);
 
  avr_irq_t * src = avr_io_getirq (avr, AVR_IOCTL_UART_GETIRQ ('0'), UART_IRQ_OUTPUT);
  avr_irq_t * dst = avr_io_getirq (avr, AVR_IOCTL_UART_GETIRQ ('0'), UART_IRQ_INPUT);
@@ -225,9 +225,16 @@ board_simavr::MInit(const char * processor, const char * fname, float freq)
  serial_port_open (&serialfd, SERIALDEVICE);
 
  //TODO read baudrate value from avr 
- serialexbaud = 57600;
+ serialexbaud = 9600;
  serialbaud = serial_port_cfg (serialfd, serialexbaud);
 
+ bitbang_uart_init (&bb_uart);
+
+ bitbang_uart_set_speed (&bb_uart, serialbaud);
+ bitbang_uart_set_clk_freq (&bb_uart, freq);
+
+ pin_rx = 2; //PD0
+ pin_tx = 3; //PD1  
  return ret;
 }
 
@@ -285,6 +292,7 @@ board_simavr::MEnd(void)
  free (avr);
  avr = NULL;
 
+ bitbang_uart_end (&bb_uart);
 }
 
 void
@@ -298,7 +306,10 @@ void
 board_simavr::MSetFreq(float freq)
 {
  if (avr)
-  avr->frequency = freq;
+  {
+   avr->frequency = freq;
+   bitbang_uart_set_clk_freq (&bb_uart, freq);
+  }
 }
 
 float
@@ -982,14 +993,21 @@ board_simavr::MGetPinsValues(void)
  return pins;
 }
 
+void
+board_simavr::SerialSend(unsigned char value)
+{
+ pins[pin_tx - 1 ].dir = PD_OUT;
+ serial_port_send (serialfd, value);
+ bitbang_uart_send (&bb_uart, value);
+}
+
 /*
  * called when a byte is send via the uart on the AVR
  */
 static void
 uart_in_hook(struct avr_irq_t * irq, uint32_t value, void * param)
 {
- serialfd_t * serialfd = (serialfd_t *) param;
- serial_port_send (*serialfd, value);
+ ((board_simavr *) param)->SerialSend (value);
 }
 
 int cont = 0;
@@ -1024,7 +1042,32 @@ board_simavr::UpdateHardware(void)
     {
      aux = 1;
     }
+
+   if (bitbang_uart_data_available (&bb_uart))
+    {
+     pins[pin_rx - 1 ].dir = PD_IN; //FIXME
+
+     unsigned char data = bitbang_uart_recv (&bb_uart);
+     //printf ("data recv:%02X  %c\n", data,data);
+     avr_raise_irq (serial_irq + IRQ_UART_BYTE_OUT, data);
+
+     /*
+     if (avr->data[UCSR0A & 0x02]) //U2Xn
+      {
+       serialexbaud = avr->frequency / (8 * ((avr->data[UBRR0H] << 8) | avr->data[UBRR0L]));
+      }
+     else
+      {
+       serialexbaud = avr->frequency / (16 * ((avr->data[UBRR0H] << 8) | avr->data[UBRR0L]));
+      }
+     */
+     //printf ("baud=%f\n", serialexbaud);
+
+    }
+
   }
+
+ pins[pin_tx - 1 ].value = bitbang_uart_io (&bb_uart, pins[pin_rx - 1 ].value);
 
 }
 
@@ -1047,6 +1090,7 @@ void
 board_simavr::MReset(int flags)
 {
  avr_reset (avr);
+ bitbang_uart_rst (&bb_uart);
 }
 
 unsigned short *

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ typedef struct {
 void uart_rst(uart_t *sr);
 void uart_init(uart_t *sr);
 void uart_end(uart_t *sr);
-void uart_set_clk(uart_t *sr, unsigned long clk);
+void uart_set_clk_freq(uart_t *sr, unsigned long freq);
 void uart_set_port(uart_t *sr,const char * port, unsigned int speed);
 
 unsigned char uart_io(uart_t *sr, unsigned char rx);
