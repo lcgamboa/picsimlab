@@ -46,8 +46,8 @@ bitbang_uart_rst(bitbang_uart_t *bu)
  bu->tcountr = 0;
  bu->tcountw = 0;
  bu->leds = 0;
- bu->data_recv=0;
- bu->data_to_send=0;
+ bu->data_recv = 0;
+ bu->data_to_send = 0;
  dprintf ("rst uart\n");
 }
 
@@ -56,14 +56,13 @@ bitbang_uart_init(bitbang_uart_t *bu)
 {
  bitbang_uart_rst (bu);
  bu->speed = 9600;
- bu->freq=1000000L;
+ bu->freq = 1000000L;
  bu->cycle_count = 100;
  dprintf ("init uart\n");
 }
 
 void
-bitbang_uart_end(bitbang_uart_t *bu) {
- }
+bitbang_uart_end(bitbang_uart_t *bu) { }
 
 void
 bitbang_uart_set_clk_freq(bitbang_uart_t *bu, unsigned long freq)
@@ -75,7 +74,14 @@ bitbang_uart_set_clk_freq(bitbang_uart_t *bu, unsigned long freq)
 void
 bitbang_uart_set_speed(bitbang_uart_t *bu, unsigned int speed)
 {
- bu->speed = speed; 
+ if (speed)
+  {
+   bu->speed = speed;
+  }
+ else
+  {
+   speed = 1;
+  }
  bu->cycle_count = bu->freq / (16 * bu->speed);
 }
 
@@ -88,17 +94,14 @@ bitbang_uart_io(bitbang_uart_t *bu, unsigned char rx)
   {
    bu->tcountr++;
 
-   if (!(bu->tcountr % bu->cycle_count))
-    {
-     if (rx)bu->rxc++;
-    }
+   if (rx)bu->rxc++;
 
    if (bu->tcountr >= bu->cycle_count << 4)
     {
      bu->tcountr = 1;
 
      //printf("bit=%i mean=%i\n",  bu->bcr, bu->rxc);
-     if (bu->rxc > 7)
+     if (bu->rxc > (bu->cycle_count >> 1))
       {
        bu->insr = (bu->insr >> 1) | 0x8000;
       }
@@ -109,25 +112,17 @@ bitbang_uart_io(bitbang_uart_t *bu, unsigned char rx)
      bu->bcr++;
      bu->rxc = 0;
 
-     if (bu->bcr == 8)//start+eight bits+ stop
+     if (bu->bcr > 8)//start+eight bits+ stop
       {
-       bu->insr >>=1;
        //printf ("uart sr in 0x%04X  out 0x%04X\n", bu->insr, bu->outsr);
        //printf ("%c  0x%04X\n", bu->insr >> 8, bu->insr >> 8);
 
        bu->datar = bu->insr >> 8;
-       bu->data_recv=1;
+       bu->data_recv = 1;
+       bu->tcountr = 0;
+       bu->bcr = 0;
       }
     }
-
-   //stop bit
-   //if ((bu->bcr > 7)&&(bu->prx == 0)&&(rx == 1))//rising edge
-   if(bu->bcr > 8)
-   {
-     bu->tcountr = 0;
-     bu->bcr = 0;
-    }
-
   }
  else
   {
@@ -156,9 +151,9 @@ bitbang_uart_io(bitbang_uart_t *bu, unsigned char rx)
 
    if (!bu->bcw)
     {
-     if(bu->data_to_send)
-      { 
-       bu->data_to_send=0;
+     if (bu->data_to_send)
+      {
+       bu->data_to_send = 0;
        dprintf ("uart data rec %c \n", bu->dataw);
        bu->leds |= 0x02;
        bu->bcw = 1;
@@ -182,29 +177,28 @@ bitbang_uart_io(bitbang_uart_t *bu, unsigned char rx)
  return (bu->outsr & 0x01);
 }
 
-
-unsigned char  
+unsigned char
 bitbang_uart_transmitting(bitbang_uart_t *bu)
 {
  return (bu->bcw | bu->data_to_send | bu->tcountw);
 }
 
-void 
+void
 bitbang_uart_send(bitbang_uart_t *bu, unsigned char data)
 {
-  bu->dataw=data;
-  bu->data_to_send=1;
+ bu->dataw = data;
+ bu->data_to_send = 1;
 }
 
-unsigned char  
+unsigned char
 bitbang_uart_data_available(bitbang_uart_t *bu)
 {
  return bu->data_recv;
 }
 
-unsigned char  
+unsigned char
 bitbang_uart_recv(bitbang_uart_t *bu)
 {
-  bu->data_recv=0;
-  return bu->datar;
+ bu->data_recv = 0;
+ return bu->datar;
 }

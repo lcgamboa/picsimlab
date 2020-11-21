@@ -117,6 +117,7 @@ class board_simavr: virtual public board
       
       unsigned char pin_rx;
       unsigned char pin_tx;
+      unsigned char uart_config;
 };
 
 #define UCSR0A 0XC0

@@ -224,9 +224,8 @@ board_simavr::MInit(const char * processor, const char * fname, float freq)
 
  serial_port_open (&serialfd, SERIALDEVICE);
 
- //TODO read baudrate value from avr 
  serialexbaud = 9600;
- serialbaud = serial_port_cfg (serialfd, serialexbaud);
+ serialbaud = serial_port_cfg (serialfd, serialbaud);
 
  bitbang_uart_init (&bb_uart);
 
@@ -235,6 +234,7 @@ board_simavr::MInit(const char * processor, const char * fname, float freq)
 
  pin_rx = 2; //PD0
  pin_tx = 3; //PD1  
+ uart_config = 0;
  return ret;
 }
 
@@ -1020,55 +1020,75 @@ board_simavr::UpdateHardware(void)
  unsigned char c;
  cont++;
 
- //FIXME  correct the baud rate
- if (cont > 1000)
+ if (avr->data[UCSR0B] & 0x10)//RXEN
   {
-   cont = 0;
-   if (serial_port_rec (serialfd, &c))
+   if (cont > 1000)
     {
-     avr_raise_irq (serial_irq + IRQ_UART_BYTE_OUT, c);
-    }
-
-   if (serial_port_get_dsr (serialfd))
-    {
-     if (aux)
+     cont = 0;
+     if (serial_port_rec (serialfd, &c))
       {
-       avr_reset (avr);
-       pins_reset ();
-       aux = 0;
+       avr_raise_irq (serial_irq + IRQ_UART_BYTE_OUT, c);
       }
-    }
-   else
-    {
-     aux = 1;
-    }
 
-   if (bitbang_uart_data_available (&bb_uart))
-    {
-     pins[pin_rx - 1 ].dir = PD_IN; //FIXME
-
-     unsigned char data = bitbang_uart_recv (&bb_uart);
-     //printf ("data recv:%02X  %c\n", data,data);
-     avr_raise_irq (serial_irq + IRQ_UART_BYTE_OUT, data);
-
-     /*
-     if (avr->data[UCSR0A & 0x02]) //U2Xn
+     if (serial_port_get_dsr (serialfd))
       {
-       serialexbaud = avr->frequency / (8 * ((avr->data[UBRR0H] << 8) | avr->data[UBRR0L]));
+       if (aux)
+        {
+         avr_reset (avr);
+         pins_reset ();
+         aux = 0;
+        }
       }
      else
       {
-       serialexbaud = avr->frequency / (16 * ((avr->data[UBRR0H] << 8) | avr->data[UBRR0L]));
+       aux = 1;
       }
-     */
-     //printf ("baud=%f\n", serialexbaud);
+
+     if (bitbang_uart_data_available (&bb_uart))
+      {
+       pins[pin_rx - 1 ].dir = PD_IN; //FIXME
+
+       unsigned char data = bitbang_uart_recv (&bb_uart);
+       //printf ("data recv:%02X  %c\n", data,data);
+       avr_raise_irq (serial_irq + IRQ_UART_BYTE_OUT, data);
+
+      }
+
+    }
+  }
+
+ if (avr->data[UCSR0B] & 0x18)//RXEN TXEN
+  {
+   if (!uart_config)
+    {
+     uart_config = 1;
+
+     if (avr->data[UCSR0A] & 0x02) //U2Xn
+      {
+       serialexbaud = avr->frequency / (8 * (((avr->data[UBRR0H] << 8) | avr->data[UBRR0L])+1));
+      }
+     else
+      {
+       serialexbaud = avr->frequency / (16 * (((avr->data[UBRR0H] << 8) | avr->data[UBRR0L])+1));
+      }
+
+     printf ("baud=%f\n", serialexbaud);
+
+     serialbaud = serial_port_cfg (serialfd, serialbaud);
+
+     bitbang_uart_init (&bb_uart);
+
+     bitbang_uart_set_speed (&bb_uart, serialbaud);
+     bitbang_uart_set_clk_freq (&bb_uart, avr->frequency);
 
     }
 
+   pins[pin_tx - 1 ].value = bitbang_uart_io (&bb_uart, pins[pin_rx - 1 ].value);
   }
-
- pins[pin_tx - 1 ].value = bitbang_uart_io (&bb_uart, pins[pin_rx - 1 ].value);
-
+ else
+  {
+   uart_config = 0;
+  }
 }
 
 void
