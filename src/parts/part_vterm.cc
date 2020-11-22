@@ -481,7 +481,10 @@ cpart_vterm::EvMouseButtonPress(uint button, uint x, uint y, uint state)
      switch (input[i].id)
       {
       case I_TERM:
-       wvterm->Show ();
+       if(button == 1)
+       {	       
+         wvterm->Show ();
+       }
        break;
       }
     }
