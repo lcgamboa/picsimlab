@@ -72,9 +72,9 @@ board_simavr::board_simavr(void)
 }
 
 void
-board_simavr::MSetSerial(const char * port) {
- //TODO change serial name
- //pic_set_serial(&pic,port,0,0,0);
+board_simavr::MSetSerial(const char * port)
+{
+
 }
 
 enum
@@ -225,7 +225,7 @@ board_simavr::MInit(const char * processor, const char * fname, float freq)
  serial_port_open (&serialfd, SERIALDEVICE);
 
  serialexbaud = 9600;
- serialbaud = serial_port_cfg (serialfd, serialbaud);
+ serialbaud = serial_port_cfg (serialfd, serialexbaud);
 
  bitbang_uart_init (&bb_uart);
 
@@ -863,7 +863,7 @@ board_simavr::MSetPinDOV(int pin, unsigned char ovalue)
  if (avr == NULL) return;
  if (!pins[pin - 1].dir)return;
  if (pins[pin - 1].ovalue == ovalue)return;
- //TODO this value is not used yet
+ //TODO default output value is not used yet (DOV)
  pins[pin - 1].ovalue = ovalue;
 }
 
@@ -996,7 +996,6 @@ board_simavr::MGetPinsValues(void)
 void
 board_simavr::SerialSend(unsigned char value)
 {
- pins[pin_tx - 1 ].dir = PD_OUT;
  serial_port_send (serialfd, value);
  bitbang_uart_send (&bb_uart, value);
 }
@@ -1046,12 +1045,9 @@ board_simavr::UpdateHardware(void)
 
      if (bitbang_uart_data_available (&bb_uart))
       {
-       pins[pin_rx - 1 ].dir = PD_IN; //FIXME
-
        unsigned char data = bitbang_uart_recv (&bb_uart);
        //printf ("data recv:%02X  %c\n", data,data);
        avr_raise_irq (serial_irq + IRQ_UART_BYTE_OUT, data);
-
       }
 
     }
@@ -1065,22 +1061,25 @@ board_simavr::UpdateHardware(void)
 
      if (avr->data[UCSR0A] & 0x02) //U2Xn
       {
-       serialexbaud = avr->frequency / (8 * (((avr->data[UBRR0H] << 8) | avr->data[UBRR0L])+1));
+       serialexbaud = avr->frequency / (8 * (((avr->data[UBRR0H] << 8) | avr->data[UBRR0L]) + 1));
       }
      else
       {
-       serialexbaud = avr->frequency / (16 * (((avr->data[UBRR0H] << 8) | avr->data[UBRR0L])+1));
+       serialexbaud = avr->frequency / (16 * (((avr->data[UBRR0H] << 8) | avr->data[UBRR0L]) + 1));
       }
 
-     printf ("baud=%f\n", serialexbaud);
 
-     serialbaud = serial_port_cfg (serialfd, serialbaud);
+     serialbaud = serial_port_cfg (serialfd, serialexbaud);
+
+     //printf ("baud=%i %f\n", serialbaud, serialexbaud);
 
      bitbang_uart_init (&bb_uart);
 
      bitbang_uart_set_speed (&bb_uart, serialbaud);
      bitbang_uart_set_clk_freq (&bb_uart, avr->frequency);
 
+     pins[pin_rx - 1 ].dir = PD_IN;
+     pins[pin_tx - 1 ].dir = PD_OUT;
     }
 
    pins[pin_tx - 1 ].value = bitbang_uart_io (&bb_uart, pins[pin_rx - 1 ].value);

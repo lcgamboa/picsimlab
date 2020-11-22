@@ -63,7 +63,7 @@ class cpart_vterm:public part
       vterm_t vt;
       unsigned short _ret; 
       unsigned int vterm_speed;
-      CPWindow wvterm;
+      CPWindow * wvterm;
       CText * vttext;
       CEdit * vtedit;
       CButton * vtbtn_send;

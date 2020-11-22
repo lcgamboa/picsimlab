@@ -47,9 +47,9 @@
 //uart support ============================================================
 
 int
-serial_port_open( serialfd_t * serialfd, const char * SERIALDEVICE)
+serial_port_open(serialfd_t * serialfd, const char * SERIALDEVICE)
 {
- 
+
  if (SERIALDEVICE[0] == 0)
   {
    return 0;
@@ -58,11 +58,11 @@ serial_port_open( serialfd_t * serialfd, const char * SERIALDEVICE)
 
 #ifdef _WIN_
  *serialfd = CreateFile (SERIALDEVICE, GENERIC_READ | GENERIC_WRITE,
-                        0, // exclusive access
-                        NULL, // no security
-                        OPEN_EXISTING,
-                        0, // no overlapped I/O
-                        NULL); // null template
+                         0, // exclusive access
+                         NULL, // no security
+                         OPEN_EXISTING,
+                         0, // no overlapped I/O
+                         NULL); // null template
  if (*serialfd == INVALID_HANDLE_VALUE)
   {
    *serialfd = 0;
@@ -107,110 +107,91 @@ serial_port_cfg(serialfd_t serialfd, float serialexbaud)
 
  if (serialfd <= 0) return 0;
 
- /*
- if(*serial_TXSTA & 0x04) //BRGH=1 
- {
-    serialexbaud=pic->freq/(16*((*pic->serial_SPBRG) +1));
- }
- else
- {
-     serialexbaud=pic->freq/(64*((*pic->serial_SPBRG) +1));
- }
-  */
- //FIXME: calculate 
- serialbaud = serialexbaud;
 
+ switch (((int) ((serialexbaud / 300.0) + 0.5)))
+  {
+  case 0 ... 1:
+   serialbaud = 300;
 #ifndef _WIN_
- BAUDRATE = B9600;
+   BAUDRATE = B300;
 #else
- BAUDRATE = 9600;
-#endif 
+   BAUDRATE = 300;
+#endif  
+   break;
+  case 2 ... 3:
+   serialbaud = 600;
+#ifndef _WIN_
+   BAUDRATE = B600;
+#else
+   BAUDRATE = 600;
+#endif  
+   break;
+  case 4 ... 7:
+   serialbaud = 1200;
+#ifndef _WIN_
+   BAUDRATE = B1200;
+#else
+   BAUDRATE = 1200;
+#endif  
+   break;
+  case 8 ... 15:
+   serialbaud = 2400;
+#ifndef _WIN_
+   BAUDRATE = B2400;
+#else
+   BAUDRATE = 2400;
+#endif  
+   break;
+  case 16 ... 31:
+   serialbaud = 4800;
+#ifndef _WIN_
+   BAUDRATE = B4800;
+#else
+   BAUDRATE = 4800;
+#endif  
+   break;
+  case 32 ... 63:
+   serialbaud = 9600;
+#ifndef _WIN_
+   BAUDRATE = B9600;
+#else
+   BAUDRATE = 9600;
+#endif  
+   break;
+  case 64 ... 127:
+   serialbaud = 19200;
+#ifndef _WIN_
+   BAUDRATE = B19200;
+#else
+   BAUDRATE = 19200;
+#endif  
+   break;
+  case 128 ... 191:
+   serialbaud = 38400;
+#ifndef _WIN_
+   BAUDRATE = B38400;
+#else
+   BAUDRATE = 38400;
+#endif  
+   break;
+  case 192 ... 383:
+   serialbaud = 57600;
+#ifndef _WIN_
+   BAUDRATE = B57600;
+#else
+   BAUDRATE = 57600;
+#endif  
+   break;
+  default:
+   serialbaud = 115200;
+#ifndef _WIN_
+   BAUDRATE = B115200;
+#else
+   BAUDRATE = 115200;
+#endif  
+   break;
+  }
 
- /*
-     switch(((int)((pic->serialexbaud/300.0)+0.5))) 
-     {
-        case 0 ... 1:
-           pic->serialbaud=300;
-           #ifndef _WIN_
-           BAUDRATE=B300;
-           #else
-           BAUDRATE=300;
-           #endif  
-           break; 
-        case 2 ... 3:
-           pic->serialbaud=600;
-           #ifndef _WIN_
-           BAUDRATE=B600;
-           #else
-           BAUDRATE=600;
-           #endif  
-           break; 
-        case 4 ... 7:
-           pic->serialbaud=1200;
-           #ifndef _WIN_
-           BAUDRATE=B1200;
-           #else
-           BAUDRATE=1200;
-           #endif  
-           break; 
-        case 8 ... 15:
-           pic->serialbaud=2400;
-           #ifndef _WIN_
-           BAUDRATE=B2400;
-           #else
-           BAUDRATE=2400;
-           #endif  
-           break; 
-        case 16 ... 31:
-           pic->serialbaud=4800;
-           #ifndef _WIN_
-           BAUDRATE=B4800;
-           #else
-           BAUDRATE=4800;
-           #endif  
-           break; 
-        case 32 ... 63:
-           pic->serialbaud=9600;
-           #ifndef _WIN_
-           BAUDRATE=B9600;
-           #else
-           BAUDRATE=9600;
-           #endif  
-           break; 
-        case 64 ... 127:
-           pic->serialbaud=19200;
-           #ifndef _WIN_
-           BAUDRATE=B19200;
-           #else
-           BAUDRATE=19200;
-           #endif  
-           break; 
-        case 128 ... 191:
-           pic->serialbaud=38400;
-           #ifndef _WIN_
-           BAUDRATE=B38400;
-           #else
-           BAUDRATE=38400;
-           #endif  
-           break; 
-        case 192 ... 383:
-           pic->serialbaud=57600;
-           #ifndef _WIN_
-           BAUDRATE=B57600;
-           #else
-           BAUDRATE=57600;
-           #endif  
-           break; 
-        default:
-           pic->serialbaud=115200;
-           #ifndef _WIN_
-           BAUDRATE=B115200;
-           #else
-           BAUDRATE=115200;
-           #endif  
-           break; 
-     } 
-  */
 
 #ifdef _WIN_
  //BOOL bPortReady;

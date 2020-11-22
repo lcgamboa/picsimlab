@@ -98,22 +98,24 @@ cpart_vterm::cpart_vterm(unsigned x, unsigned y)
 
  lending = LE_NL;
 
- wvterm.SetName ("window1"); //must be the same as in xml 
- wvterm.SetVisible (0);
- Application->ACreateWindow (&wvterm);
- wvterm.LoadXMLContextAndCreateChilds (Window1.GetSharePath () + lxT ("parts/vterm/terminal_1.lxrad"));
- wvterm.SetVisible (0);
- wvterm.Hide ();
+ wvterm = new CPWindow();
+ wvterm->SetName ("window1"); //must be the same as in xml 
+ wvterm->SetVisible (0);
+ Application->ACreateWindow (wvterm);
+ wvterm->LoadXMLContextAndCreateChilds (Window1.GetSharePath () + lxT ("parts/vterm/terminal_1.lxrad"));
+ wvterm->SetVisible (0);
+ wvterm->Hide ();
+ wvterm->SetCanDestroy (false);
  //wvterm.Draw ();
  //wvterm.Show ();
 
- vttext = (CText*) wvterm.GetChildByName ("text1");
- vtedit = (CEdit*) wvterm.GetChildByName ("edit1");
+ vttext = (CText*) wvterm->GetChildByName ("text1");
+ vtedit = (CEdit*) wvterm->GetChildByName ("edit1");
 
- vtbtn_send = ((CButton*) wvterm.GetChildByName ("button1"));
- vtbtn_clear = ((CButton*) wvterm.GetChildByName ("button2"));
- vtcmb_ending = ((CCombo*) wvterm.GetChildByName ("combo1"));
- vtcmb_speed = ((CCombo*) wvterm.GetChildByName ("combo2"));
+ vtbtn_send = ((CButton*) wvterm->GetChildByName ("button1"));
+ vtbtn_clear = ((CButton*) wvterm->GetChildByName ("button2"));
+ vtcmb_ending = ((CCombo*) wvterm->GetChildByName ("combo1"));
+ vtcmb_speed = ((CCombo*) wvterm->GetChildByName ("combo2"));
 
 
  vtbtn_send->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PartButtonEvent;
@@ -128,8 +130,10 @@ cpart_vterm::~cpart_vterm(void)
  delete Bitmap;
  canvas.Destroy ();
  vterm_end (&vt);
- wvterm.Hide ();
- wvterm.WDestroy ();
+ wvterm->Hide ();
+ wvterm->DestroyChilds ();
+ wvterm->SetCanDestroy (true);
+ wvterm->WDestroy ();
 }
 
 void
@@ -252,15 +256,15 @@ cpart_vterm::Draw(void)
       case 0:
        pin = pinv;
        if (input_pins[pin] == 0)
-	canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
+        canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
        else
-	canvas.RotatedText (Window5.GetPinName (input_pins[pin]), output[i].x1, output[i].y2, 90.0);
+        canvas.RotatedText (Window5.GetPinName (input_pins[pin]), output[i].x1, output[i].y2, 90.0);
       case 1:
        pin = pinv - 1;
        if (output_pins[pin] == 0)
-	canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
+        canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
        else
-	canvas.RotatedText (Window5.GetPinName (output_pins[pin]), output[i].x1, output[i].y2, 90.0);
+        canvas.RotatedText (Window5.GetPinName (output_pins[pin]), output[i].x1, output[i].y2, 90.0);
        break;
 
       }
@@ -270,6 +274,22 @@ cpart_vterm::Draw(void)
   }
 
  canvas.End ();
+
+
+ if (vt.count_in)
+  {
+   char str[200];
+   strncpy (str, (char *) vt.buff_in, vt.count_in);
+   str[vt.count_in] = 0;
+   vttext->Append (str);
+   vt.count_in = 0;
+
+   while (vttext->GetCountLines () > 1000)
+    {
+     vttext->SetCursorPos (0);
+     vttext->DelLine ();
+    }
+  }
 
 }
 
@@ -432,7 +452,7 @@ cpart_vterm::EvMouseButtonPress(uint button, uint x, uint y, uint state)
      switch (input[i].id)
       {
       case I_TERM:
-       wvterm.Show ();
+       wvterm->Show ();
        break;
       }
     }
@@ -440,18 +460,9 @@ cpart_vterm::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 }
 
 void
-cpart_vterm::PostProcess(void)
-{
- if (vt.count_in)
-  {
-   char str[200];
-   strncpy (str, (char *) vt.buff_in, vt.count_in);
-   str[vt.count_in] = 0;
-   vttext->Append (str);
-   vt.count_in = 0;
-  }
+cpart_vterm::PostProcess(void) {
 
-}
+ }
 
 part_init("IO Virtual term", cpart_vterm);
 
