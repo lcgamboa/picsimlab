@@ -98,7 +98,7 @@ cpart_vterm::cpart_vterm(unsigned x, unsigned y)
 
  lending = LE_NL;
 
- wvterm = new CPWindow();
+ wvterm = new CPWindow ();
  wvterm->SetName ("window1"); //must be the same as in xml 
  wvterm->SetVisible (0);
  Application->ACreateWindow (wvterm);
@@ -106,6 +106,9 @@ cpart_vterm::cpart_vterm(unsigned x, unsigned y)
  wvterm->SetVisible (0);
  wvterm->Hide ();
  wvterm->SetCanDestroy (false);
+
+ wvterm->EvOnShow = EVONSHOW & CPWindow5::PartEvent;
+
  //wvterm.Draw ();
  //wvterm.Show ();
 
@@ -122,6 +125,7 @@ cpart_vterm::cpart_vterm(unsigned x, unsigned y)
  vtbtn_clear->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PartButtonEvent;
  vtcmb_speed->EvOnComboChange = EVONCOMBOCHANGE & CPWindow5::PartEvent;
  vtcmb_ending->EvOnComboChange = EVONCOMBOCHANGE & CPWindow5::PartEvent;
+ vtedit->EvKeyboardPress = EVKEYBOARDPRESS & CPWindow5::PartButtonEvent;
 
 }
 
@@ -144,6 +148,8 @@ cpart_vterm::SetId(int _id)
  vtbtn_clear->SetTag (id);
  vtcmb_speed->SetTag (id);
  vtcmb_ending->SetTag (id);
+ vtedit->SetTag (id);
+ wvterm->SetTag (id);
 }
 
 void
@@ -153,11 +159,17 @@ cpart_vterm::ButtonEvent(CControl * control, uint button, uint x, uint y, uint s
   {
    send_text = 1;
   }
- if (control == vtbtn_clear)
+ else if (control == vtbtn_clear)
   {
    vttext->Clear ();
   }
-
+ else if (control == vtedit)
+  {
+   if (x == 13)
+    {
+     send_text = 1;
+    }
+  }
 }
 
 void
@@ -168,7 +180,7 @@ cpart_vterm::Event(CControl * control)
    vterm_speed = atoi (vtcmb_speed->GetText ());
    vterm_set_speed (&vt, vterm_speed);
   }
- if (control == vtcmb_ending)
+ else if (control == vtcmb_ending)
   {
    if (!vtcmb_ending->GetText ().Cmp ("No line ending"))
     {
@@ -187,6 +199,23 @@ cpart_vterm::Event(CControl * control)
      lending = LE_NL_CR;
     }
   }
+ else if (control == wvterm)
+  {
+   vtedit->SetWidth (wvterm->GetWidth () - 100);
+   vttext->SetWidth (wvterm->GetWidth () - 29);
+
+   vtbtn_send->SetX (wvterm->GetWidth () - 87);
+   vtbtn_clear->SetX (wvterm->GetWidth () - 90);
+   vtcmb_ending->SetX (wvterm->GetWidth () - 405);
+   vtcmb_speed->SetX (wvterm->GetWidth () - 215);
+
+   vttext->SetHeight (wvterm->GetHeight () - 119);
+
+   vtbtn_clear->SetY (wvterm->GetHeight () - 74);
+   vtcmb_ending->SetY (wvterm->GetHeight () - 73);
+   vtcmb_speed->SetY (wvterm->GetHeight () - 73);
+  }
+
 }
 
 void
@@ -460,9 +489,7 @@ cpart_vterm::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 }
 
 void
-cpart_vterm::PostProcess(void) {
-
- }
+cpart_vterm::PostProcess(void) { }
 
 part_init("IO Virtual term", cpart_vterm);
 
