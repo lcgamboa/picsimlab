@@ -215,7 +215,6 @@ cpart_vterm::Event(CControl * control)
    vtcmb_ending->SetY (wvterm->GetHeight () - 73);
    vtcmb_speed->SetY (wvterm->GetHeight () - 73);
   }
-
 }
 
 void
@@ -481,10 +480,10 @@ cpart_vterm::EvMouseButtonPress(uint button, uint x, uint y, uint state)
      switch (input[i].id)
       {
       case I_TERM:
-       if(button == 1)
-       {	       
+       if (button == 1)
+        {
          wvterm->Show ();
-       }
+        }
        break;
       }
     }
