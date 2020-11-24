@@ -453,7 +453,8 @@ pboard=NULL;
 cpustate=CPU_RUNNING;
 
 tgo=0;
-   
+  
+error=0;
 
 #ifdef NO_TOOLS
    menu1.DestroyChild (&menu1_Tools);

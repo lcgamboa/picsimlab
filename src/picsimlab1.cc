@@ -170,11 +170,17 @@ CPWindow1::timer2_EvOnTime(CControl * control)
     }
   }
  status.st[0] &= ~ST_T2;
- 
- #ifdef CONVERTER_MODE
- if(cvt_fname.Length () > 3 )
+
+ if (error & ERR_VERSION)
   {
-    SaveWorkspace (cvt_fname);
+   error &= ~ERR_VERSION;
+   Message_sz ("The loaded workspace was made with a newer version.\n Please update your PICSimLab.", 400, 200);
+  }
+
+#ifdef CONVERTER_MODE
+ if (cvt_fname.Length () > 3)
+  {
+   SaveWorkspace (cvt_fname);
   }
 #endif 
 
@@ -1119,6 +1125,25 @@ CPWindow1::LoadWorkspace(lxString fnpzw)
      strtok (NULL, " ");
      value = strtok (NULL, "\"");
      if ((name == NULL) || (value == NULL))continue;
+
+     if (!strcmp (name, "picsimlab_version"))
+      {
+       int maj, min, rev, ser;
+       int maj_, min_, rev_, ser_;
+       sscanf (_VERSION_, "%i.%i.%i", &maj, &min, &rev);
+       ser = maj * 10000 + min * 100 + rev;
+
+       sscanf (value, "%i.%i.%i", &maj_, &min_, &rev_);
+       ser_ = maj_ * 10000 + min_ * 100 + rev_;
+
+       if (ser_ > ser)
+        {
+         printf ("PICSimLab: .pzw file version error!\n");
+         error |= ERR_VERSION;
+        }
+
+       continue;
+      }
 #ifndef LEGACY081
      saveprefs (name, value);
 #else     
