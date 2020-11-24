@@ -75,9 +75,11 @@ usleep(unsigned int usec)
 #define msleep(x) usleep(x*1000)
 #endif        
 
+#ifdef CONVERTER_MODE
+static lxString cvt_fname;
+#endif
 
-
-int crt;
+static int crt;
 
 void
 CPWindow1::timer1_EvOnTime(CControl * control)
@@ -168,6 +170,14 @@ CPWindow1::timer2_EvOnTime(CControl * control)
     }
   }
  status.st[0] &= ~ST_T2;
+ 
+ #ifdef CONVERTER_MODE
+ if(cvt_fname.Length () > 3 )
+  {
+    SaveWorkspace (cvt_fname);
+  }
+#endif 
+
 }
 
 void
@@ -893,7 +903,6 @@ CPWindow1::_EvOnShow(CControl * control)
      spare_on = 0;
     }
   }
-
 }
 
 void
@@ -1250,7 +1259,7 @@ CPWindow1::LoadWorkspace(lxString fnpzw)
 
 #ifdef CONVERTER_MODE
  fnpzw.replace (fnpzw.Length () - 4, 5, "_.pzw");
- SaveWorkspace (fnpzw);
+ cvt_fname = fnpzw;
 #else
  snprintf (fzip, 1279, "%s/Readme.html", home);
  if (lxFileExists (fzip))
@@ -1335,8 +1344,9 @@ CPWindow1::SaveWorkspace(lxString fnpzw)
   Window4.WritePreferences ();
 
  if (pboard->GetUseSpareParts ())
-  Window5.WritePreferences ();
-
+  {
+   Window5.WritePreferences ();
+  }
 
  prefs.SaveToFile (fname);
 
