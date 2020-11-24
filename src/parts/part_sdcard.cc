@@ -73,7 +73,7 @@ cpart_SDCard::cpart_SDCard(unsigned x, unsigned y)
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
 
- Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
+ Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -110,6 +110,7 @@ cpart_SDCard::Draw(void)
 {
 
  int i;
+ int to;
 
  canvas.Init (1.0, 1.0, orientation);
 
@@ -125,7 +126,16 @@ cpart_SDCard::Draw(void)
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     canvas.RotatedText (lxT ("Img:") + lxString (sdcard_fname), output[i].x1, output[i].y1, 0);
+     to = strlen (sdcard_fname) + 4;
+     if (to < 45)
+      {
+       to = 0;
+      }
+     else
+      {
+       to = to - 45;
+      }
+     canvas.RotatedText (lxT ("Img:") + lxString (sdcard_fname + to), output[i].x1, output[i].y1, 0);
      break;
     default:
      canvas.SetColor (49, 61, 99);
@@ -207,6 +217,15 @@ cpart_SDCard::ReadPreferences(lxString value)
  Reset ();
  if (sdcard_fname[0] != '*')
   {
+#ifdef _WIN_   
+   if (!strncmp (sdcard_fname, "/tmp/", 5))
+    {
+     char buff[200];
+     strcpy (buff, (const char *) lxGetTempDir ("PICSimLab").c_str ());
+     strcat (buff, sdcard_fname + 4);
+     strcpy (sdcard_fname, buff);
+    }
+#endif   
    sdcard_set_filename (&sd, sdcard_fname);
    sdcard_set_card_present (&sd, 1);
   }
@@ -295,9 +314,9 @@ cpart_SDCard::Process(void)
     }
    _ret = ret;
   }
-  else
+ else
   {
-    _ret=0xFF; //invalid value
+   _ret = 0xFF; //invalid value
   }
 }
 
@@ -308,14 +327,21 @@ cpart_SDCard::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
  for (i = 0; i < inputc; i++)
   {
-   if (PointInside(x, y, input[i]))
+   if (PointInside (x, y, input[i]))
     {
      switch (input[i].id)
       {
       case I_CONN:
        Window5.filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
        Window5.filedialog1.SetFilter (lxT ("SD Card image (*.img)|*.img"));
-       Window5.filedialog1.SetFileName (lxT ("untitled.img"));
+       if (sdcard_fname[0] == '*')
+        {
+         Window5.filedialog1.SetFileName (lxT ("untitled.img"));
+        }
+       else
+        {
+         Window5.filedialog1.SetFileName (sdcard_fname);
+        }
        Window5.Setfdtype (id);
        Window5.filedialog1.Run ();
        break;

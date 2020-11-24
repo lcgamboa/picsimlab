@@ -25,7 +25,7 @@
   <OverrideRedirect type="bool">0</OverrideRedirect>
   <EvOnCreate type="Event">FALSE</EvOnCreate>
   <EvOnDestroy type="Event">FALSE</EvOnDestroy>
-  <EvOnShow type="Event">FALSE</EvOnShow>
+  <EvOnShow type="Event">TRUE</EvOnShow>
   <EvOnHide type="Event">FALSE</EvOnHide>
   <EvOnEnter type="Event">FALSE</EvOnEnter>
   <EvOnLeave type="Event">FALSE</EvOnLeave>
@@ -47,7 +47,7 @@
   <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
   <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
-  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardPress type="Event">TRUE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
@@ -105,7 +105,7 @@
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
   <Items type="lxStringList">No line ending,New line,Carriage return,Both NL and CR,</Items>
   <Text type="lxString">New Line</Text>
-  <ReadOnly type="bool">0</ReadOnly>
+  <ReadOnly type="bool">1</ReadOnly>
   <EvOnComboChange type="Event">TRUE</EvOnComboChange>
 </combo1>
 <combo2>
@@ -131,9 +131,9 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Items type="lxStringList">1200,4800,9600,19200,38400,57600,115200,</Items>
+  <Items type="lxStringList">1200,2400,4800,9600,19200,38400,57600,115200,</Items>
   <Text type="lxString">9600</Text>
-  <ReadOnly type="bool">0</ReadOnly>
+  <ReadOnly type="bool">1</ReadOnly>
   <EvOnComboChange type="Event">TRUE</EvOnComboChange>
 </combo2>
 <text1>

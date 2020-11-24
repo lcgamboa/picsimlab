@@ -110,7 +110,8 @@ cpart_VCD_Dump_an::Draw(void)
 {
 
  int i;
-
+ int to;
+ 
  const picpin * ppins = Window5.GetPinsValues ();
 
  canvas.Init (1.0, 1.0, orientation);
@@ -143,7 +144,16 @@ cpart_VCD_Dump_an::Draw(void)
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     canvas.RotatedText (f_vcd_name+lxString(" (Analogic)"), output[i].x1, output[i].y1, 0);
+     to = strlen (f_vcd_name)+5;
+     if (to < 48)
+      {
+       to = 0;
+      }
+     else
+      {
+       to = to - 48;
+      }
+     canvas.RotatedText ((f_vcd_name+to)+lxString(" (An)"), output[i].x1, output[i].y1, 0);
      break;
     case O_L1:
     case O_L2:

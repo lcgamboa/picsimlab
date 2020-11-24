@@ -164,7 +164,7 @@ cpart_vterm::ButtonEvent(CControl * control, uint button, uint x, uint y, uint s
    vttext->Clear ();
   }
  else if (control == vtedit)
-  {
+  {  
    if (x == 13)
     {
      send_text = 1;
@@ -386,7 +386,7 @@ cpart_vterm::ConfigurePropertiesWindow(CPWindow * WProp)
   }
 
 
- ((CCombo*) WProp->GetChildByName ("combo3"))->SetItems ("1200,4800,9600,19200,38400,57600,115200,");
+ ((CCombo*) WProp->GetChildByName ("combo3"))->SetItems ("1200,2400,4800,9600,19200,38400,57600,115200,");
  ((CCombo*) WProp->GetChildByName ("combo3"))->SetText (itoa (vterm_speed));
 
 

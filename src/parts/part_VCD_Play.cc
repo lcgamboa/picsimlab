@@ -68,7 +68,7 @@ cpart_VCD_Play::cpart_VCD_Play(unsigned x, unsigned y)
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
 
- Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
+ Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -110,7 +110,7 @@ cpart_VCD_Play::Draw(void)
 {
 
  int i;
-
+ int to;
  const picpin * ppins = Window5.GetPinsValues ();
 
  canvas.Init (1.0, 1.0, orientation);
@@ -143,7 +143,16 @@ cpart_VCD_Play::Draw(void)
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     canvas.RotatedText (f_vcd_name, output[i].x1, output[i].y1, 0);
+     to = strlen (f_vcd_name);
+     if (to < 48)
+      {
+       to = 0;
+      }
+     else
+      {
+       to = to - 48;
+      }
+     canvas.RotatedText (f_vcd_name + to, output[i].x1, output[i].y1, 0);
      break;
     case O_L1:
     case O_L2:
@@ -236,6 +245,15 @@ cpart_VCD_Play::ReadPreferences(lxString value)
 
  if (f_vcd_name[0] != '*')
   {
+#ifdef _WIN_   
+   if (!strncmp (f_vcd_name, "/tmp/", 5))
+    {
+     char buff[200];
+     strcpy (buff, (const char *) lxGetTempDir ("PICSimLab").c_str ());
+     strcat (buff, f_vcd_name + 4);
+     strcpy (f_vcd_name, buff);
+    }
+#endif 
    if (lxFileExists (f_vcd_name))
     {
      LoadVCD (f_vcd_name);
@@ -416,7 +434,7 @@ cpart_VCD_Play::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
  for (i = 0; i < inputc; i++)
   {
-   if (PointInside(x, y, input[i]))
+   if (PointInside (x, y, input[i]))
     {
 
      switch (input[i].id)
@@ -424,7 +442,14 @@ cpart_VCD_Play::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       case I_LOAD:
        Window5.filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
        Window5.filedialog1.SetFilter (lxT ("Value change dump (*.vcd)|*.vcd"));
-       Window5.filedialog1.SetFileName (lxT ("untitled.vcd"));
+       if (f_vcd_name[0] == '*')
+        {
+         Window5.filedialog1.SetFileName (lxT ("untitled.vcd"));
+        }
+       else
+        {
+         Window5.filedialog1.SetFileName (f_vcd_name);
+        }
        Window5.Setfdtype (id);
        Window5.filedialog1.Run ();
        break;

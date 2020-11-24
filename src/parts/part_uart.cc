@@ -155,15 +155,15 @@ cpart_UART::Draw(void)
       case 0:
        pin = pinv;
        if (input_pins[pin] == 0)
-	canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
+        canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
        else
-	canvas.RotatedText (Window5.GetPinName (input_pins[pin]), output[i].x1, output[i].y2, 90.0);
+        canvas.RotatedText (Window5.GetPinName (input_pins[pin]), output[i].x1, output[i].y2, 90.0);
       case 1:
        pin = pinv - 1;
        if (output_pins[pin] == 0)
-	canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
+        canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
        else
-	canvas.RotatedText (Window5.GetPinName (output_pins[pin]), output[i].x1, output[i].y2, 90.0);
+        canvas.RotatedText (Window5.GetPinName (output_pins[pin]), output[i].x1, output[i].y2, 90.0);
        break;
 
       }
@@ -261,7 +261,7 @@ cpart_UART::ConfigurePropertiesWindow(CPWindow * WProp)
   }
 
 
- ((CCombo*) WProp->GetChildByName ("combo4"))->SetItems ("4800,9600,115200,");
+ ((CCombo*) WProp->GetChildByName ("combo4"))->SetItems ("1200,2400,4800,9600,19200,38400,57600,115200,");
  ((CCombo*) WProp->GetChildByName ("combo4"))->SetText (itoa (uart_speed));
 
 
