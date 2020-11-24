@@ -278,6 +278,7 @@ public:
     void menu1_EvBoard(CControl * control);
     void menu1_EvMicrocontroller(CControl * control);
     void LoadWorkspace(lxString fnpzw);
+    void SaveWorkspace(lxString fnpzw);
     void LoadHexFile(lxString fname);
     void SetClock(float clk);
     float GetClock(void);

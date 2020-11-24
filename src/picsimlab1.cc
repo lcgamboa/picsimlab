@@ -25,6 +25,7 @@
 
 //main window
 
+//#define CONVERTER_MODE
 
 #include"picsimlab1.h"
 #include"picsimlab1_d.cc"
@@ -1247,6 +1248,10 @@ CPWindow1::LoadWorkspace(lxString fnpzw)
 
  _EvOnShow (this);
 
+#ifdef CONVERTER_MODE
+ fnpzw.replace (fnpzw.Length () - 4, 5, "_.pzw");
+ SaveWorkspace (fnpzw);
+#else
  snprintf (fzip, 1279, "%s/Readme.html", home);
  if (lxFileExists (fzip))
   {
@@ -1272,6 +1277,118 @@ CPWindow1::LoadWorkspace(lxString fnpzw)
 #endif     
     }
   }
+#endif 
+
+}
+
+void
+CPWindow1::SaveWorkspace(lxString fnpzw)
+{
+ char home[1024];
+ char fname[1280];
+
+#if  !defined(__EMSCRIPTEN__) &&  !defined(CONVERTER_MODE)
+ if (lxFileExists (fnpzw))
+  {
+
+   if (!Dialog (lxString ("Overwriting file: ") + basename (fnpzw) + "?"))
+    return;
+  }
+#endif
+
+ //write options
+
+ strncpy (home, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
+ snprintf (fname, 1279, "%s/picsimlab.ini", home);
+ prefs.SaveToFile (fname);
+
+ strncpy (home, (char*) lxGetTempDir (_T ("picsimlab")).char_str (), 1023);
+ strncat (home, "/picsimlab_workspace/", 1023);
+
+#ifdef CONVERTER_MODE
+ snprintf (fname, 1279, "rm -rf %s/*.ini", home);
+ system (fname);
+ snprintf (fname, 1279, "rm -rf %s/*.pcf", home);
+ system (fname);
+ snprintf (fname, 1279, "rm -rf %s/*.hex", home);
+ system (fname);
+#else 
+ lxRemoveDir (home);
+ lxCreateDir (home);
+#endif
+
+ snprintf (fname, 1279, "%s/picsimlab.ini", home);
+ prefs.Clear ();
+ saveprefs (lxT ("picsimlab_version"), _VERSION_);
+ saveprefs (lxT ("picsimlab_lab"), boards_list[lab].name_);
+ saveprefs (lxT ("picsimlab_debug"), itoa (debug));
+ saveprefs (lxT ("picsimlab_debugt"), itoa (debug_type));
+ saveprefs (lxT ("picsimlab_debugp"), itoa (debug_port));
+ saveprefs (lxT ("picsimlab_position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
+ saveprefs (lxT ("osc_on"), itoa (pboard->GetUseOscilloscope ()));
+ saveprefs (lxT ("spare_on"), itoa (pboard->GetUseSpareParts ()));
+ saveprefs (lxT ("picsimlab_lfile"), lxT (" "));
+
+ pboard->WritePreferences ();
+
+ if (pboard->GetUseOscilloscope ())
+  Window4.WritePreferences ();
+
+ if (pboard->GetUseSpareParts ())
+  Window5.WritePreferences ();
+
+
+ prefs.SaveToFile (fname);
+
+ //write memory
+ snprintf (fname, 1279, "%s/mdump_%s_%s.hex", home, boards_list[lab_].name_, (const char*) proc_.c_str ());
+
+ pboard->MDumpMemory (fname);
+
+ if (pboard->GetUseSpareParts ())
+  {
+   snprintf (fname, 1279, "%s/parts_%s.pcf", home, boards_list[lab_].name_);
+   Window5.SaveConfig (fname);
+   sprintf (fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
+   Window5.SavePinAlias (fname);
+  }
+
+ lxZipDir (home, fnpzw);
+
+ lxRemoveDir (home);
+
+
+ strncpy (home, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
+ snprintf (fname, 1279, "%s/picsimlab.ini", home);
+ prefs.Clear ();
+ prefs.LoadFromFile (fname);
+
+#ifdef __EMSCRIPTEN__
+ EM_ASM_ ({
+          var filename = UTF8ToString ($0);
+          var buf = FS.readFile (filename);
+          var blob = new Blob ([buf],
+           {
+            "type" : "application/octet-stream" });
+          var text = URL.createObjectURL (blob);
+
+          var element = document.createElement ('a');
+          element.setAttribute ('href', text);
+          element.setAttribute ('download', filename);
+
+          element.style.display = 'none';
+          document.body.appendChild (element);
+
+          element.click ();
+
+          document.body.removeChild (element);
+          URL.revokeObjectURL (text);
+ }, fnpzw.c_str ());
+#endif 
+
+#ifdef CONVERTER_MODE
+ WDestroy ();
+#endif
 }
 
 void
@@ -1300,99 +1417,7 @@ CPWindow1::filedialog2_EvOnClose(int retId)
 
  if (retId && (filedialog2.GetType () == (lxFD_SAVE | lxFD_CHANGE_DIR)))
   {
-   char home[1024];
-   char fname[1280];
-
-#ifndef __EMSCRIPTEN__
-   if (lxFileExists (filedialog2.GetFileName ()))
-    {
-
-     if (!Dialog (lxString ("Overwriting file: ") + basename (filedialog2.GetFileName ()) + "?"))
-      return;
-    }
-#endif
-
-   //write options
-
-   strncpy (home, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
-   snprintf (fname, 1279, "%s/picsimlab.ini", home);
-   prefs.SaveToFile (fname);
-
-   strncpy (home, (char*) lxGetTempDir (_T ("picsimlab")).char_str (), 1023);
-   strncat (home, "/picsimlab_workspace/", 1023);
-
-   lxRemoveDir (home);
-
-   lxCreateDir (home);
-
-   snprintf (fname, 1279, "%s/picsimlab.ini", home);
-   prefs.Clear ();
-   saveprefs (lxT ("picsimlab_lab"), boards_list[lab].name_);
-   saveprefs (lxT ("picsimlab_debug"), itoa (debug));
-   saveprefs (lxT ("picsimlab_debugt"), itoa (debug_type));
-   saveprefs (lxT ("picsimlab_debugp"), itoa (debug_port));
-   saveprefs (lxT ("picsimlab_position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
-   saveprefs (lxT ("osc_on"), itoa (pboard->GetUseOscilloscope ()));
-   saveprefs (lxT ("spare_on"), itoa (pboard->GetUseSpareParts ()));
-   saveprefs (lxT ("picsimlab_lfile"), lxT (" "));
-
-   pboard->WritePreferences ();
-
-   if (pboard->GetUseOscilloscope ())
-    Window4.WritePreferences ();
-
-   if (pboard->GetUseSpareParts ())
-    Window5.WritePreferences ();
-
-
-   prefs.SaveToFile (fname);
-
-   //write memory
-   snprintf (fname, 1279, "%s/mdump_%s_%s.hex", home, boards_list[lab_].name_, (const char*) proc_.c_str ());
-
-   pboard->MDumpMemory (fname);
-
-   if (pboard->GetUseSpareParts ())
-    {
-     snprintf (fname, 1279, "%s/parts_%s.pcf", home, boards_list[lab_].name_);
-     Window5.SaveConfig (fname);
-     sprintf (fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
-     Window5.SavePinAlias (fname);
-    }
-
-   lxZipDir (home, filedialog2.GetFileName ());
-
-   lxRemoveDir (home);
-
-
-   strncpy (home, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
-   snprintf (fname, 1279, "%s/picsimlab.ini", home);
-   prefs.Clear ();
-   prefs.LoadFromFile (fname);
-
-#ifdef __EMSCRIPTEN__
-   EM_ASM_ ({
-            var filename = UTF8ToString ($0);
-            var buf = FS.readFile (filename);
-            var blob = new Blob ([buf],
-             {
-              "type" : "application/octet-stream" });
-            var text = URL.createObjectURL (blob);
-
-            var element = document.createElement ('a');
-            element.setAttribute ('href', text);
-            element.setAttribute ('download', filename);
-
-            element.style.display = 'none';
-            document.body.appendChild (element);
-
-            element.click ();
-
-            document.body.removeChild (element);
-            URL.revokeObjectURL (text);
-   }, filedialog2.GetFileName ().c_str ());
-#endif 
-
+   SaveWorkspace (filedialog2.GetFileName ());
   }
 
 }
