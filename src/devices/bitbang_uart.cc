@@ -101,7 +101,7 @@ bitbang_uart_io(bitbang_uart_t *bu, unsigned char rx)
      bu->tcountr = 1;
 
      //printf("bit=%i mean=%i\n",  bu->bcr, bu->rxc);
-     if (bu->rxc > (bu->cycle_count >> 1))
+     if (bu->rxc > (bu->cycle_count << 3))
       {
        bu->insr = (bu->insr >> 1) | 0x8000;
       }
