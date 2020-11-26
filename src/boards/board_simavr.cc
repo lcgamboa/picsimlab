@@ -229,7 +229,7 @@ board_simavr::MInit(const char * processor, const char * fname, float freq)
 
  bitbang_uart_init (&bb_uart);
 
- bitbang_uart_set_speed (&bb_uart, serialbaud);
+ bitbang_uart_set_speed (&bb_uart, serialexbaud);
  bitbang_uart_set_clk_freq (&bb_uart, freq);
 
  pin_rx = 2; //PD0
@@ -1075,7 +1075,7 @@ board_simavr::UpdateHardware(void)
 
      bitbang_uart_init (&bb_uart);
 
-     bitbang_uart_set_speed (&bb_uart, serialbaud);
+     bitbang_uart_set_speed (&bb_uart, serialexbaud);
      bitbang_uart_set_clk_freq (&bb_uart, avr->frequency);
 
      pins[pin_rx - 1 ].dir = PD_IN;
