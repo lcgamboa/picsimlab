@@ -79,7 +79,9 @@ usleep(unsigned int usec)
 static lxString cvt_fname;
 #endif
 
+#ifndef _NOTHREAD
 static int crt;
+#endif
 
 void
 CPWindow1::timer1_EvOnTime(CControl * control)
@@ -963,6 +965,27 @@ CPWindow1::LoadHexFile(lxString fname)
 
  mcupwr = pa;
  timer1.SetRunState (1);
+
+#ifdef NO_DEBUG
+ statusbar1.SetField (1, lxT (" "));
+#else 
+ if (debug)
+  {
+   int ret = pboard->DebugInit (debug_type);
+   if (ret < 0)
+    {
+     statusbar1.SetField (1, lxT ("Debug: Error"));
+    }
+   else
+    {
+     statusbar1.SetField (1, lxT ("Debug: ") + pboard->GetDebugName () + ":" + itoa (debug_port));
+    }
+  }
+ else
+  {
+   statusbar1.SetField (1, lxT ("Debug: Off"));
+  }
+#endif
 }
 
 void

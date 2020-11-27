@@ -93,6 +93,7 @@ typedef struct sockaddr sockaddr;
 #define READE  0x80
 
 #ifdef _WIN_
+
 __attribute__ ((constructor))
 static void
 initialize_socket(void)
@@ -107,9 +108,10 @@ initialize_socket(void)
 
 __attribute__ ((destructor))
 static void
-finalize_socket(void) {
+finalize_socket(void)
+{
  WSACleanup ();
- }
+}
 #endif
 
 static int sockfd = -1;
