@@ -109,11 +109,7 @@ class cboard_PICGenios:public board_picsim
       ~cboard_PICGenios(void);
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
-#ifdef _EXPERIMENTAL_
       lxString GetSupportedDevices(void){return lxT("PIC16F1789,PIC16F1939,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,PIC18F47K40,");};
-#else
-      lxString GetSupportedDevices(void){return lxT("PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F4620,");};
-#endif
       lxString GetPictureFileName(void){return lxT("PICGenios/board.png");};
       lxString GetInputMapFile(void){return lxT("PICGenios/input.map");};
       lxString GetOutputMapFile(void){return lxT("PICGenios/output.map");};

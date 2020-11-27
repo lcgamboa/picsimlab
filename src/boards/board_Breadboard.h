@@ -87,11 +87,7 @@ class cboard_Breadboard:public board_picsim, public board_simavr
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
-#ifdef _EXPERIMENTAL_      
-      lxString GetSupportedDevices(void){return lxT("atmega328p,atmega2560,PIC16F18324,PIC16F18855,PIC16F1619,PIC16F1788,PIC16F1789,PIC16F1939,PIC16F628A,PIC16F648A,PIC16F84A,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,PIC18F27K40,PIC18F46J50,PIC18F47K40,");};
-#else
-      lxString GetSupportedDevices(void){return lxT("atmega328p,PIC16F628A,PIC16F648A,PIC16F84A,PIC16F777,PIC16F877A,PIC18F452,PIC18F4550,PIC18F4620,");};
-#endif      
+      lxString GetSupportedDevices(void){return lxT("atmega328p,atmega2560,PIC16F18324,PIC16F18855,PIC16F1619,PIC16F1788,PIC16F1789,PIC16F1939,PIC16F628A,PIC16F648A,PIC16F84A,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,PIC18F27K40,PIC18F46J50,PIC18F47K40,");};     
       //Return the filename of board picture 
       lxString GetPictureFileName(void){return lxT("Breadboard/board.png");};
       //Return the filename of board picture input map 
