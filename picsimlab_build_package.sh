@@ -33,8 +33,9 @@ mv picsimlab-${VERSION}.tar.gz picsimlab_${VERSION}.orig.tar.gz
 cd picsimlab-${VERSION}
 debuild -us -uc
 cd ..
+lversion=`lsb_release -d | cut -f2 | sed -e 's/ /_/'`
 if [[ -n "$1" ]]; then
-mv picsimlab_${VERSION}-1_amd64.deb  picsimlab_${VERSION}_experimetal_unbuntu_20.04_amd64.deb
+	mv picsimlab_${VERSION}-1_amd64.deb  picsimlab_${VERSION}_experimetal_${lversion}_amd64.deb
 else
-mv picsimlab_${VERSION}-1_amd64.deb  picsimlab_${VERSION}_unbuntu_20.04_amd64.deb
+mv picsimlab_${VERSION}-1_amd64.deb  picsimlab_${VERSION}_${lversion}_amd64.deb
 fi
