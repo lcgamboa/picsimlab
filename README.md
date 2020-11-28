@@ -142,7 +142,7 @@ If the problem is not in either of the previous two options, the problem is prob
   - [individual file counters](https://www.somsubhra.com/github-release-stats/?username=lcgamboa&repository=picsimlab) (grouped per release)
 
 - SourceForge [`picsimlab`](https://sourceforge.net/projects/picsim/) repo
-  - latest PICSimLab release [![Sourceforge Latest Relesases](https://img.shields.io/sourceforge/dt/picsim/v0.8.2)](https://sourceforge.net/projects/picsim/files/v0.8.2/)
+  - latest PICSimLab release [![Sourceforge Latest Relesases](https://img.shields.io/sourceforge/dt/picsim/v0.8.5)](https://sourceforge.net/projects/picsim/files/v0.8.5/)
   - all PICSimLab releases [![Sourceforge All Relesases](https://img.shields.io/sourceforge/dt/picsim)](https://sourceforge.net/projects/picsim/files/)
 
 Credit to [Shields IO](https://shields.io) for the badges and to

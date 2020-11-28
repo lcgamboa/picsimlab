@@ -1,3 +1,50 @@
+## v0.8.5 (2020-11-28)
+
+### New
+
+* Support to read version of workspaces. [lcgamboa]
+
+* Board_avr initial support to bitbang uart added. [lcgamboa]
+
+* Part virtual terminal added. [Luis Claudio Gambôa Lopes]
+
+* Gamepad Analogic part added. [Luis Claudio Gambôa Lopes]
+
+* Support to spare parts orientation (rotation 0, 90, 180 and 270) [Luis Claudio Gambôa Lopes]
+
+* Initial support to part LCD ili9341. [lcgamboa]
+
+* Part lcd ssd1306 SPI and I2C added. [lcgamboa]
+
+* Part Jumper Wires added. [lcgamboa]
+
+* New part IO UART. [lcgamboa]
+
+* SD card part added. [lcgamboa]
+
+* VCD Play part added. [lcgamboa]
+
+* Board STM32_H103 added. [lcgamboa]
+
+* Part ethernet shield w5500 added. [lcgamboa]
+
+* Support to pin name alias in spare part window. [lcgamboa]
+
+* Added support to PIC18F46J50. [lcgamboa]
+
+### Changes
+
+* More microcontrollers of PICSim added in PICGenios, Breadboard and McLab2 boards. [lcgamboa]
+
+### Fix
+
+* Picsim boards debug disable on load hex bug fixed. [lcgamboa]
+
+* Support to mean value in all pins of boards McLAb2 and PICGenios. [lcgamboa]
+
+* Signal generator fixed to generate digital signal. [lcgamboa]
+
+
 ## v0.8.2 (2020-08-25)
 
 ### New
