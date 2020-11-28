@@ -3,6 +3,7 @@ var hierarchy =
     [ "_info", "struct__info.html", null ],
     [ "avr_gdb_t", "structavr__gdb__t.html", null ],
     [ "avr_gdb_watchpoints_t", "structavr__gdb__watchpoints__t.html", null ],
+    [ "bitbang_uart_t", "structbitbang__uart__t.html", null ],
     [ "board", "classboard.html", [
       [ "board_gpsim", "classboard__gpsim.html", [
         [ "cboard_gpboard", "classcboard__gpboard.html", null ]

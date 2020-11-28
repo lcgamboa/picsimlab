@@ -2,6 +2,10 @@
 
 ### New
 
+* Support to read version of workspaces. [lcgamboa]
+
+* Board_avr initial support to bitbang uart added. [lcgamboa]
+
 * Part virtual terminal added. [Luis Claudio Gambôa Lopes]
 
 * Gamepad Analogic part added. [Luis Claudio Gambôa Lopes]
@@ -28,7 +32,13 @@
 
 * Added support to PIC18F46J50. [lcgamboa]
 
+### Changes
+
+* More microcontrollers of PICSim added in PICGenios, Breadboard and McLab2 boards. [lcgamboa]
+
 ### Fix
+
+* Picsim boards debug disable on load hex bug fixed. [lcgamboa]
 
 * Support to mean value in all pins of boards McLAb2 and PICGenios. [lcgamboa]
 

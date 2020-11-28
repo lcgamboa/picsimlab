@@ -1,18 +1,16 @@
 ### TODOs
 | Filename | line # | TODO
 |:------|:------:|:------
-| [src/picsimlab1.cc](src/picsimlab1.cc#L333) | 333 | verify initialization errors
+| [src/picsimlab1.cc](src/picsimlab1.cc#L352) | 352 | verify initialization errors
 | [src/picsimlab4.cc](src/picsimlab4.cc#L561) | 561 | select the better mode for channel trigguer
 | [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L103) | 103 | jumper support
 | [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L62) | 62 | TEMP cooler must don't work with AQUE=0
 | [src/boards/board_gpsim.cc](src/boards/board_gpsim.cc#L170) | 170 | add VCC and GND pins
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L76) | 76 | change serial name
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L227) | 227 | read baudrate value from avr
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L855) | 855 | this value is not used yet
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1091) | 1091 | avr ID pointer
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1098) | 1098 | avr EEPROM pointer
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1124) | 1124 | avr ID size
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1131) | 1131 | AVR EEPROM size
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L866) | 866 | default output value is not used yet (DOV)
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1154) | 1154 | avr ID pointer
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1161) | 1161 | avr EEPROM pointer
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1187) | 1187 | avr ID size
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1194) | 1194 | AVR EEPROM size
 | [src/devices/eth_w5500.cc](src/devices/eth_w5500.cc#L366) | 366 | add support to buffer size different of 2k
 | [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L141) | 141 | ssd1306 Scrolling Command Table
 | [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L155) | 155 | ssd1306 Continuous Vertical and Horizontal Scroll Setup
@@ -30,8 +28,6 @@
 ### FIXMEs
 | Filename | line # | FIXME
 |:------|:------:|:------
-| [src/serial_port.cc](src/serial_port.cc#L120) | 120 | calculate
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1005) | 1005 | correct the baud rate
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1117) | 1117 | avr CONFIG size
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1180) | 1180 | avr CONFIG size
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L118) | 118 | only for BANK=0;
 | [src/parts/part.cc](src/parts/part.cc#L334) | 334 | Erase  Bitmap = new xBitmap(image, &Window5);

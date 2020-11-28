@@ -37,5 +37,5 @@ var classcpart__vterm =
     [ "vtedit", "classcpart__vterm.html#aa93ef0c7ac6c226e366b63efb1871634", null ],
     [ "vterm_speed", "classcpart__vterm.html#a6a855b63a284928fd6994cec27df7d16", null ],
     [ "vttext", "classcpart__vterm.html#a68836e2eb7745365a82789d228297213", null ],
-    [ "wvterm", "classcpart__vterm.html#a717d064354dc13db11ea9c1454915207", null ]
+    [ "wvterm", "classcpart__vterm.html#ac5536ae9708a46b2593307e9afae836e", null ]
 ];

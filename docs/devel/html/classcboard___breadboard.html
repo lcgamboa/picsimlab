@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="picsimlab.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PICsimLab - PIC Simulator Laboratory
-   &#160;<span id="projectnumber">0.8.2</span>
+   &#160;<span id="projectnumber">0.8.5</span>
    </div>
    <div id="projectbrief">PICsimlab - API</div>
   </td>
@@ -108,12 +108,13 @@ Collaboration diagram for cboard_Breadboard:</div>
 <div class="dyncontent">
 <div class="center"><img src="classcboard___breadboard__coll__graph.png" border="0" usemap="#acboard___breadboard_coll__map" alt="Collaboration graph"/></div>
 <map name="cboard___breadboard_coll__map" id="cboard___breadboard_coll__map">
-<area shape="rect" title=" " alt="" coords="53,247,201,273"/>
-<area shape="rect" href="classboard__picsim.html" title=" " alt="" coords="5,171,115,197"/>
-<area shape="rect" href="classboard.html" title="Board class." alt="" coords="97,95,156,121"/>
-<area shape="rect" href="classboard__simavr.html" title=" " alt="" coords="139,171,250,197"/>
-<area shape="rect" href="structinput__t.html" title="input map struct" alt="" coords="45,5,112,32"/>
-<area shape="rect" href="structoutput__t.html" title="output map struct" alt="" coords="137,5,213,32"/>
+<area shape="rect" title=" " alt="" coords="56,260,204,287"/>
+<area shape="rect" href="classboard__picsim.html" title=" " alt="" coords="143,184,253,211"/>
+<area shape="rect" href="classboard.html" title="Board class." alt="" coords="157,95,215,121"/>
+<area shape="rect" href="classboard__simavr.html" title=" " alt="" coords="8,184,119,211"/>
+<area shape="rect" href="structinput__t.html" title="input map struct" alt="" coords="105,5,171,32"/>
+<area shape="rect" href="structoutput__t.html" title="output map struct" alt="" coords="196,5,272,32"/>
+<area shape="rect" href="structbitbang__uart__t.html" title=" " alt="" coords="5,95,121,121"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -772,6 +773,9 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memdesc:a3560420482e906713c4690b545c5a111 inherit pub_methods_classboard__simavr"><td class="mdescLeft">&#160;</td><td class="mdescRight">board microcontroller get data EEPROM memory size <br  />
  <br /></td></tr>
 <tr class="separator:a3560420482e906713c4690b545c5a111 inherit pub_methods_classboard__simavr"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cb3711aa8ebf67f009294f77670a252 inherit pub_methods_classboard__simavr"><td class="memItemLeft" align="right" valign="top"><a id="a1cb3711aa8ebf67f009294f77670a252"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SerialSend</b> (unsigned char value)</td></tr>
+<tr class="separator:a1cb3711aa8ebf67f009294f77670a252 inherit pub_methods_classboard__simavr"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -858,12 +862,15 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>serialbaud</b
 <tr class="memitem:a8013cdafcbb2ce77d0ec2a7d260b4e01 inherit pro_attribs_classboard__simavr"><td class="memItemLeft" align="right" valign="top"><a id="a8013cdafcbb2ce77d0ec2a7d260b4e01"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>serialexbaud</b></td></tr>
 <tr class="separator:a8013cdafcbb2ce77d0ec2a7d260b4e01 inherit pro_attribs_classboard__simavr"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3879167f3a3cf9e1943eb1391eec3659 inherit pro_attribs_classboard__simavr"><td class="memItemLeft" align="right" valign="top"><a id="a3879167f3a3cf9e1943eb1391eec3659"></a>
-serialfd_t&#160;</td><td class="memItemRight" valign="bottom"><b>serialfd</b></td></tr>
-<tr class="separator:a3879167f3a3cf9e1943eb1391eec3659 inherit pro_attribs_classboard__simavr"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0124c1947ab7581f357a3284e9125b71 inherit pro_attribs_classboard__simavr"><td class="memItemLeft" align="right" valign="top"><a id="a0124c1947ab7581f357a3284e9125b71"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>avr_debug_type</b></td></tr>
 <tr class="separator:a0124c1947ab7581f357a3284e9125b71 inherit pro_attribs_classboard__simavr"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3879167f3a3cf9e1943eb1391eec3659 inherit pro_attribs_classboard__simavr"><td class="memItemLeft" align="right" valign="top"><a id="a3879167f3a3cf9e1943eb1391eec3659"></a>
+serialfd_t&#160;</td><td class="memItemRight" valign="bottom"><b>serialfd</b></td></tr>
+<tr class="separator:a3879167f3a3cf9e1943eb1391eec3659 inherit pro_attribs_classboard__simavr"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7df28e86423d4a42b33a229d154b36a inherit pro_attribs_classboard__simavr"><td class="memItemLeft" align="right" valign="top"><a id="aa7df28e86423d4a42b33a229d154b36a"></a>
+<a class="el" href="structbitbang__uart__t.html">bitbang_uart_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>bb_uart</b></td></tr>
+<tr class="separator:aa7df28e86423d4a42b33a229d154b36a inherit pro_attribs_classboard__simavr"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/boards/<a class="el" href="board___breadboard_8h_source.html">board_Breadboard.h</a></li>

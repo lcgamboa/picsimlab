@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="picsimlab.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PICsimLab - PIC Simulator Laboratory
-   &#160;<span id="projectnumber">0.8.2</span>
+   &#160;<span id="projectnumber">0.8.5</span>
    </div>
    <div id="projectbrief">PICsimlab - API</div>
   </td>
@@ -94,7 +94,7 @@ $(document).ready(function(){initNavTree('uart_8h_source.html',''); initResizabl
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">   ########################################################################</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">   Copyright (c) : 2020-2020  Luis Claudio Gambôa Lopes</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">   This program is free software; you can redistribute it and/or modify</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">   it under the terms of the GNU General Public License as published by</span></div>
@@ -119,37 +119,28 @@ $(document).ready(function(){initNavTree('uart_8h_source.html',''); initResizabl
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;../serial_port.h&quot;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include&quot;bitbang_uart.h&quot;</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="structuart__t.html">   34</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> connected;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> arx;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> insr;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> outsr;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bcr;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> tcountr;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bcw;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> tcountw;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    serialfd_t serialfd;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> speed;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> count;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> rxc;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> leds;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;} <a class="code" href="structuart__t.html">uart_t</a>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    serialfd_t serialfd;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="structbitbang__uart__t.html">bitbang_uart_t</a> bb_uart;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;} <a class="code" href="structuart__t.html">uart_t</a>;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keywordtype">void</span> uart_rst(<a class="code" href="structuart__t.html">uart_t</a> *sr);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keywordtype">void</span> uart_init(<a class="code" href="structuart__t.html">uart_t</a> *sr);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keywordtype">void</span> uart_end(<a class="code" href="structuart__t.html">uart_t</a> *sr);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keywordtype">void</span> uart_set_clk_freq(<a class="code" href="structuart__t.html">uart_t</a> *sr, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> freq);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keywordtype">void</span> uart_set_port(<a class="code" href="structuart__t.html">uart_t</a> *sr,<span class="keyword">const</span> <span class="keywordtype">char</span> * port, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> speed);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> uart_io(<a class="code" href="structuart__t.html">uart_t</a> *sr, <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> rx);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#endif //UART</span></div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordtype">void</span> uart_rst(<a class="code" href="structuart__t.html">uart_t</a> *sr);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keywordtype">void</span> uart_init(<a class="code" href="structuart__t.html">uart_t</a> *sr);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">void</span> uart_end(<a class="code" href="structuart__t.html">uart_t</a> *sr);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keywordtype">void</span> uart_set_clk(<a class="code" href="structuart__t.html">uart_t</a> *sr, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> clk);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keywordtype">void</span> uart_set_port(<a class="code" href="structuart__t.html">uart_t</a> *sr,<span class="keyword">const</span> <span class="keywordtype">char</span> * port, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> speed);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> uart_io(<a class="code" href="structuart__t.html">uart_t</a> *sr, <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> rx);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#endif //UART</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="astructbitbang__uart__t_html"><div class="ttname"><a href="structbitbang__uart__t.html">bitbang_uart_t</a></div><div class="ttdef"><b>Definition:</b> bitbang_uart.h:33</div></div>
 <div class="ttc" id="astructuart__t_html"><div class="ttname"><a href="structuart__t.html">uart_t</a></div><div class="ttdef"><b>Definition:</b> uart.h:34</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

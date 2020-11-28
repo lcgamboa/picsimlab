@@ -3,6 +3,7 @@ var annotated_dup =
     [ "_info", "struct__info.html", "struct__info" ],
     [ "avr_gdb_t", "structavr__gdb__t.html", "structavr__gdb__t" ],
     [ "avr_gdb_watchpoints_t", "structavr__gdb__watchpoints__t.html", "structavr__gdb__watchpoints__t" ],
+    [ "bitbang_uart_t", "structbitbang__uart__t.html", "structbitbang__uart__t" ],
     [ "board", "classboard.html", "classboard" ],
     [ "board_desc", "structboard__desc.html", "structboard__desc" ],
     [ "board_gpsim", "classboard__gpsim.html", "classboard__gpsim" ],
