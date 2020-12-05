@@ -199,16 +199,25 @@ CPWindow5::PropComboChange(CCombo * control)
 void
 CPWindow5::PartButtonEvent(CControl * control, uint button, uint x, uint y, uint state)
 {
- if (control->GetTag () < (unsigned int)Window5.partsc)
+ if (control->GetTag () < (unsigned int) Window5.partsc)
   {
    Window5.parts[control->GetTag ()]->ButtonEvent (control, button, x, y, state);
   }
 }
 
 void
+CPWindow5::PartKeyEvent(CControl * control, uint keysym, uint ukeysym, uint state)
+{
+ if (control->GetTag () < (unsigned int) Window5.partsc)
+  {
+   Window5.parts[control->GetTag ()]->KeyEvent (control, keysym, ukeysym, state);
+  }
+}
+
+void
 CPWindow5::PartEvent(CControl * control)
 {
- if (control->GetTag () < (unsigned int)Window5.partsc)
+ if (control->GetTag () < (unsigned int) Window5.partsc)
   {
    Window5.parts[control->GetTag ()]->Event (control);
   }
@@ -217,6 +226,12 @@ CPWindow5::PartEvent(CControl * control)
 void
 CPWindow5::timer1_EvOnTime(CControl * control)
 {
+
+ for (int i = 0; i < partsc; i++)
+  {
+   parts[i]->Draw ();
+  }
+
 
  draw1.Canvas.Init (1.0, 1.0);
 
@@ -228,7 +243,6 @@ CPWindow5::timer1_EvOnTime(CControl * control)
 
  for (int i = 0; i < partsc; i++)
   {
-   parts[i]->Draw ();
    draw1.Canvas.PutBitmap (parts[i]->GetBitmap (), parts[i]->GetX (), parts[i]->GetY ());
   }
 
@@ -434,9 +448,9 @@ CPWindow5::LoadConfig(lxString fname)
        parts[partsc_]->ReadPreferences (temp);
        parts[partsc_]->SetId (partsc_);
        if (newformat)
-	{
-	 parts[partsc_]->SetOrientation (orient);
-	}
+        {
+         parts[partsc_]->SetOrientation (orient);
+        }
        partsc_++;
       }
      else
@@ -814,29 +828,29 @@ CPWindow5::filedialog1_EvOnClose(int retId)
       {
 
        if (!Dialog (lxString ("Overwriting file: ") + basename (filedialog1.GetFileName ()) + "?"))
-	return;
+        return;
       }
      SaveConfig (filedialog1.GetFileName ());
 #ifdef __EMSCRIPTEN__
      EM_ASM_ ({
-	      var filename = UTF8ToString ($0);
-	      var buf = FS.readFile (filename);
-	      var blob = new Blob ([buf],
-	       {
-		"type" : "application/octet-stream" });
-	      var text = URL.createObjectURL (blob);
+              var filename = UTF8ToString ($0);
+              var buf = FS.readFile (filename);
+              var blob = new Blob ([buf],
+               {
+                "type" : "application/octet-stream" });
+              var text = URL.createObjectURL (blob);
 
-	      var element = document.createElement ('a');
-	      element.setAttribute ('href', text);
-	      element.setAttribute ('download', filename);
+              var element = document.createElement ('a');
+              element.setAttribute ('href', text);
+              element.setAttribute ('download', filename);
 
-	      element.style.display = 'none';
-	      document.body.appendChild (element);
+              element.style.display = 'none';
+              document.body.appendChild (element);
 
-	      element.click ();
+              element.click ();
 
-	      document.body.removeChild (element);
-	      URL.revokeObjectURL (text);
+              document.body.removeChild (element);
+              URL.revokeObjectURL (text);
      }, filedialog1.GetFileName ().c_str ());
 #endif      
     }
@@ -855,29 +869,29 @@ CPWindow5::filedialog1_EvOnClose(int retId)
       {
 
        if (!Dialog (lxString ("Overwriting file: ") + basename (filedialog1.GetFileName ()) + "?"))
-	return;
+        return;
       }
      SavePinAlias (filedialog1.GetFileName ());
 #ifdef __EMSCRIPTEN__
      EM_ASM_ ({
-	      var filename = UTF8ToString ($0);
-	      var buf = FS.readFile (filename);
-	      var blob = new Blob ([buf],
-	       {
-		"type" : "application/octet-stream" });
-	      var text = URL.createObjectURL (blob);
+              var filename = UTF8ToString ($0);
+              var buf = FS.readFile (filename);
+              var blob = new Blob ([buf],
+               {
+                "type" : "application/octet-stream" });
+              var text = URL.createObjectURL (blob);
 
-	      var element = document.createElement ('a');
-	      element.setAttribute ('href', text);
-	      element.setAttribute ('download', filename);
+              var element = document.createElement ('a');
+              element.setAttribute ('href', text);
+              element.setAttribute ('download', filename);
 
-	      element.style.display = 'none';
-	      document.body.appendChild (element);
+              element.style.display = 'none';
+              document.body.appendChild (element);
 
-	      element.click ();
+              element.click ();
 
-	      document.body.removeChild (element);
-	      URL.revokeObjectURL (text);
+              document.body.removeChild (element);
+              URL.revokeObjectURL (text);
      }, filedialog1.GetFileName ().c_str ());
 #endif      
     }

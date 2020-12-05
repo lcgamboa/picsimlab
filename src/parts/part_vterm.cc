@@ -125,7 +125,7 @@ cpart_vterm::cpart_vterm(unsigned x, unsigned y)
  vtbtn_clear->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PartButtonEvent;
  vtcmb_speed->EvOnComboChange = EVONCOMBOCHANGE & CPWindow5::PartEvent;
  vtcmb_ending->EvOnComboChange = EVONCOMBOCHANGE & CPWindow5::PartEvent;
- vtedit->EvKeyboardPress = EVKEYBOARDPRESS & CPWindow5::PartButtonEvent;
+ vtedit->EvKeyboardPress = EVKEYBOARDPRESS & CPWindow5::PartKeyEvent;
 
 }
 
@@ -163,9 +163,15 @@ cpart_vterm::ButtonEvent(CControl * control, uint button, uint x, uint y, uint s
   {
    vttext->Clear ();
   }
- else if (control == vtedit)
+}
+
+void
+cpart_vterm::KeyEvent(CControl * control, uint keysym, uint ukeysym, uint state)
+{
+  printf("%i %i\n",keysym, ukeysym);	
+  if (control == vtedit)
   {  
-   if (x == 13)
+   if (ukeysym == 13)
     {
      send_text = 1;
     }

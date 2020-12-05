@@ -161,12 +161,17 @@ class part
      * @brief  Used by windows of parts 
      */ 
       virtual void ButtonEvent(CControl * control, uint button, uint x, uint y, uint state){};
+     
+     /**
+     * @brief  Used by windows of parts 
+     */ 
+      virtual void KeyEvent(CControl * control, uint keysym, uint ukeysym, uint state){};
 
      /**
      * @brief  Used by windows of parts 
      */  
       virtual void Event(CControl * control){};
-                      
+
      /**
      * @brief  Used by properties window filedialogs
      */ 

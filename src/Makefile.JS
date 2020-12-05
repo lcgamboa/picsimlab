@@ -46,8 +46,8 @@ LIBS+= ../teste/glib_js/target/lib/libglib-2.0.a
 #lxrad automatic generated block end, don't edit above!
 
 all: $(OBJS)
-	$(CC) $(CFLAGS) -s WASM=1 $(OBJS) -o picsimlab.html $(LIBS) --shell-file template.html 
-	$(CC) $(CFLAGS) -s WASM=0 $(OBJS) -o picsimlab_asmjs.html $(LIBS) --shell-file template_asmjs.html 
+	$(CC) $(CFLAGS) -s WASM=1 $(OBJS) -o picsimlab.html $(LIBS)  --shell-file template.html 
+	$(CC) $(CFLAGS) -s WASM=0 $(OBJS) -o picsimlab_asmjs.html $(LIBS)  --shell-file template_asmjs.html 
 
 %.o: %.cc
 	$(CC) -c $(CFLAGS) $< -o $@ 

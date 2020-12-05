@@ -51,6 +51,7 @@ class cpart_vterm:public part
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       void ButtonEvent(CControl * control, uint button, uint x, uint y, uint state);
+      void KeyEvent(CControl * control, uint keysym, uint ukeysym, uint state);
       void Event(CControl * control);
       lxString WritePreferences(void);
       void ReadPreferences(lxString value);
