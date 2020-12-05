@@ -94,19 +94,7 @@ cboard_STM32_H103::Reset(void)
 
  MReset (1);
 
- //verify serial port state and refresh status bar  
-#ifndef _WIN_
- if (serialfd[0] > 0)
-#else
- if (serialfd[0] != INVALID_HANDLE_VALUE)
-#endif
-  Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +
-                               lxString ().Format ("%4.1f", fabs ((100.0 * serialexbaud - 100.0 *
-                                                                   serialbaud) / serialexbaud)) + lxT ("%)"));
- else
-  Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
+ Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE));
 
  if (use_spare)Window5.Reset ();
 }
@@ -116,20 +104,8 @@ cboard_STM32_H103::Reset(void)
 void
 cboard_STM32_H103::RefreshStatus(void)
 {
- //verify serial port state and refresh status bar   
-#ifndef _WIN_
- if (serialfd[0] > 0)
-#else
- if (serialfd[0] != INVALID_HANDLE_VALUE)
-#endif
-  Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +
-                               lxString ().Format ("%4.1f", fabs ((100.0 * serialexbaud - 100.0 *
-                                                                   serialbaud) / serialexbaud)) + lxT ("%)"));
- else
-  Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
+ Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE));
 }
 
 //Called to save board preferences in configuration file
@@ -334,12 +310,12 @@ cboard_STM32_H103::Run_CPU(void)
   for (i = 0; i < Window1.GetNSTEP (); i++) //repeat for number of steps in 100ms
    {
 
-    
+
     if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
      {
       MSetPin (14, p_BUT);
      }
-     
+
     //verify if a breakpoint is reached if not run one instruction 
     MStep ();
     //Oscilloscope window process

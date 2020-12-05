@@ -80,31 +80,17 @@ cboard_Blue_Pill::cboard_Blue_Pill(void)
 
 //Destructor called once on board destruction 
 
-cboard_Blue_Pill::~cboard_Blue_Pill(void)
-{
-
-}
+cboard_Blue_Pill::~cboard_Blue_Pill(void) {
+ }
 
 //Reset board status
 
 void
 cboard_Blue_Pill::Reset(void)
 {
- MReset(1);
+ MReset (1);
 
- //verify serial port state and refresh status bar  
-#ifndef _WIN_
- if (serialfd[0] > 0)
-#else
- if (serialfd[0] != INVALID_HANDLE_VALUE)
-#endif
-  Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +
-                               lxString ().Format ("%4.1f", fabs ((100.0 * serialexbaud - 100.0 *
-                                                                 serialbaud) / serialexbaud)) + lxT ("%)"));
- else
-  Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
+ Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE));
 
  if (use_spare)Window5.Reset ();
 }
@@ -114,20 +100,7 @@ cboard_Blue_Pill::Reset(void)
 void
 cboard_Blue_Pill::RefreshStatus(void)
 {
- //verify serial port state and refresh status bar   
-#ifndef _WIN_
- if (serialfd[0] > 0)
-#else
- if (serialfd[0] != INVALID_HANDLE_VALUE)
-#endif
-  Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +
-                               lxString ().Format ("%4.1f", fabs ((100.0 * serialexbaud - 100.0 *
-                                                                 serialbaud) / serialexbaud)) + lxT ("%)"));
- else
-  Window1.statusbar1.SetField (2, lxT ("Serial: ") +
-                               lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
-
+ Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE));
 }
 
 //Called to save board preferences in configuration file
@@ -138,7 +111,7 @@ cboard_Blue_Pill::WritePreferences(void)
  //write selected microcontroller of board_x to preferences
  Window1.saveprefs (lxT ("Blue_Pill_proc"), Proc);
  //write microcontroller clock to preferences
- Window1.saveprefs (lxT ("Blue_Pill_clock"), lxString ().Format ("%2.1f", Window1.GetClock())); 
+ Window1.saveprefs (lxT ("Blue_Pill_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
 }
 
 //Called whe configuration file load  preferences 
@@ -154,27 +127,23 @@ cboard_Blue_Pill::ReadPreferences(char *name, char *value)
   }
  //read microcontroller clock
  if (!strcmp (name, "Blue_Pill_clock"))
- {
-  Window1.SetClock (atof(value));
- } 
+  {
+   Window1.SetClock (atof (value));
+  }
 }
 
 
 //Event on the board
 
 void
-cboard_Blue_Pill::EvKeyPress(uint key, uint mask)
-{
- 
-}
+cboard_Blue_Pill::EvKeyPress(uint key, uint mask) {
+ }
 
 //Event on the board
 
 void
-cboard_Blue_Pill::EvKeyRelease(uint key, uint mask)
-{
-
-}
+cboard_Blue_Pill::EvKeyRelease(uint key, uint mask) {
+ }
 
 //Event on the board
 
@@ -222,8 +191,8 @@ cboard_Blue_Pill::EvMouseButtonPress(uint button, uint x, uint y, uint state)
          Window1.Set_mcupwr (0);
          Window1.Set_mcurst (1);
         }
-        */ 
-       MReset(-1);
+        */
+       MReset (-1);
        p_MCLR = 0;
        break;
       }
@@ -253,12 +222,12 @@ cboard_Blue_Pill::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
         {
          Window1.Set_mcupwr (1);
          Window1.Set_mcurst (0);
-/*
-         if (reset (-1))
-          {
-           Reset ();
-          }
- */ 
+         /*
+                  if (reset (-1))
+                   {
+                    Reset ();
+                   }
+          */
         }
        p_MCLR = 1;
        break;
@@ -284,16 +253,16 @@ cboard_Blue_Pill::Draw(CDraw *draw, double scale)
   {
    if (!output[i].r)//if output shape is a rectangle
     {
-  
+
      draw->Canvas.SetFgColor (0, 0, 0); //black
 
      switch (output[i].id)//search for color of output
       {
       case O_LED: //White using pc13 mean value 
-       draw->Canvas.SetColor (pins[1].oavalue, 0 , 0);
+       draw->Canvas.SetColor (pins[1].oavalue, 0, 0);
        break;
       case O_LPWR: //Blue using mcupwr value
-       draw->Canvas.SetColor (225 * Window1.Get_mcupwr () + 30, 0 ,0 );
+       draw->Canvas.SetColor (225 * Window1.Get_mcupwr () + 30, 0, 0);
        break;
       }
 
@@ -321,7 +290,7 @@ cboard_Blue_Pill::Run_CPU(void)
 
 
  //reset pins mean value
- memset (alm, 0, 64* sizeof (unsigned int));
+ memset (alm, 0, 64 * sizeof (unsigned int));
 
 
  //Spare parts window pre process
@@ -336,7 +305,7 @@ cboard_Blue_Pill::Run_CPU(void)
     if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
      {
      }
-    */
+     */
     //verify if a breakpoint is reached if not run one instruction 
     MStep ();
     //Oscilloscope window process
@@ -352,7 +321,7 @@ cboard_Blue_Pill::Run_CPU(void)
      {
       j = -1; //reset counter
      }
-    
+
     j++; //counter increment
    }
 
@@ -361,12 +330,12 @@ cboard_Blue_Pill::Run_CPU(void)
   {
    pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEPJ) + 30);
   }
- 
+
  //Spare parts window pre post process
  if (use_spare)Window5.PostProcess ();
 
 }
 
 //Register the board in PICSimLab
-board_init("Blue Pill", cboard_Blue_Pill); 
+board_init("Blue Pill", cboard_Blue_Pill);
 
