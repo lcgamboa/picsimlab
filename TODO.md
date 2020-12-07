@@ -30,4 +30,3 @@
 |:------|:------:|:------
 | [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1180) | 1180 | avr CONFIG size
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L118) | 118 | only for BANK=0;
-| [src/parts/part.cc](src/parts/part.cc#L334) | 334 | Erase  Bitmap = new xBitmap(image, &Window5);

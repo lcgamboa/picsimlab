@@ -1,3 +1,10 @@
+## (unreleased)
+
+### Fix
+
+* Serial bitbang tx bug fixed. [lcgamboa]
+
+
 ## v0.8.5 (2020-11-28)
 
 ### New

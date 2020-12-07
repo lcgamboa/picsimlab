@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"classboard__picsim.html#ab22969635c8c55a31487ee1bdd429af8":[3,0,7,20],
 "classboard__picsim.html#ab38178c33122480c4e722f6dc1a7021e":[3,0,7,3],
 "classboard__picsim.html#ad44c70550527358e30ffd73ae4a37ddb":[3,0,7,23],
 "classboard__picsim.html#ad55b4689360c71604cc230b4d15c66cc":[3,0,7,36],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "classcboard___breadboard.html#ae94336109b1aa4de07e182d46f18400e":[3,0,13,22],
 "classcboard___breadboard.html#aeb6400ee4c1cf1359dd71d4abf53fb4b":[3,0,13,48],
 "classcboard___breadboard.html#af386b1e95735313a1242777d31833176":[3,0,13,11],
-"classcboard___curiosity.html":[3,0,14],
-"classcboard___curiosity.html#a028121016087a0ef7d9f4218899e364f":[3,0,14,18]
+"classcboard___curiosity.html":[3,0,14]
 };

@@ -331,7 +331,6 @@ part::SetOrientation (int _orientation)
   image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
   Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
-  //FIXME Erase  Bitmap = new xBitmap(image, &Window5); 
   image.Destroy ();
   canvas.Destroy ();
   canvas.Create (Window5.GetWWidget (), Bitmap);

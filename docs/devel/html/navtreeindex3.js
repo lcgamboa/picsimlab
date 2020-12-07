@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"classcboard___curiosity.html#a028121016087a0ef7d9f4218899e364f":[3,0,14,18],
 "classcboard___curiosity.html#a086f290eedca44bf9361d0a2b7e5780f":[3,0,14,0],
 "classcboard___curiosity.html#a0882b4465c09b49d6936173d4d2f31ae":[3,0,14,1],
 "classcboard___curiosity.html#a08f2f8c80620e840dbd7c768eb18900a":[3,0,14,21],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "classcboard___p_i_c_genios.html#ac68f73cbc848dbe0d8f000aec083d804":[3,0,20,9],
 "classcboard___p_i_c_genios.html#ac7b749e812432f6749b18bb717958806":[3,0,20,41],
 "classcboard___p_i_c_genios.html#ac96b7f02b4e9cb8fdcd657acb4190762":[3,0,20,70],
-"classcboard___p_i_c_genios.html#aca1b098f82d5a3b96e8b43270bbe4f34":[3,0,20,11],
-"classcboard___p_i_c_genios.html#acbc8bf481a8ccc27f5785880de81ccb4":[3,0,20,47]
+"classcboard___p_i_c_genios.html#aca1b098f82d5a3b96e8b43270bbe4f34":[3,0,20,11]
 };

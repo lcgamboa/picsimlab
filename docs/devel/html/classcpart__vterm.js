@@ -16,6 +16,7 @@ var classcpart__vterm =
     [ "GetOutputMapFile", "classcpart__vterm.html#ac23089f71970194a53a29f965c69e65f", null ],
     [ "GetPictureFileName", "classcpart__vterm.html#a0ade0b7aa2bfc1aadd7b031667262044", null ],
     [ "GetPropertiesWindowFile", "classcpart__vterm.html#af64633bc3ad0eafb04435d4959358baf", null ],
+    [ "KeyEvent", "classcpart__vterm.html#a24e01fb96d7f98e51050f140dc78e0f0", null ],
     [ "PostProcess", "classcpart__vterm.html#ac9701f0d3b53cee3288336d178f0d587", null ],
     [ "PreProcess", "classcpart__vterm.html#a74eaae50e57bb7a454ccc3e624d0e327", null ],
     [ "Process", "classcpart__vterm.html#ad7bceeed13a0365cd19425edea568c5b", null ],

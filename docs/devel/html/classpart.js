@@ -28,6 +28,7 @@ var classpart =
     [ "GetWidth", "classpart.html#ac03558e42c45d62e2f0d2404d01ef68b", null ],
     [ "GetX", "classpart.html#a3f754fb5a84f133ec7c4c0e360f309c1", null ],
     [ "GetY", "classpart.html#ac0766ad7bb0dfc363051895cf150261d", null ],
+    [ "KeyEvent", "classpart.html#a36e0a614a3f7602ee1d65bfddfd2c686", null ],
     [ "PointInside", "classpart.html#a99de50507d46d85ece50269de14e5992", null ],
     [ "PointInside", "classpart.html#a393f150c966be76ef1b1adeaa1594a73", null ],
     [ "PostProcess", "classpart.html#a408fcb3683c2ab3609e0b4ec6c1efbb4", null ],
