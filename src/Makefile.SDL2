@@ -16,6 +16,8 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
+override CFLAGS+= -D_ARCH_=\"Linux64_SDL2\" -D_DATE_=\"${DATE}\"
+
 override CFLAGS += -DEXT_BROWSER  -D_VERSION_=\"${VERSION}\" -Wall -ggdb -D_SHARE_=\"${sharedir}\"  `sdl2-config --cflags` -I/usr/include/lxrad_SDL2 -Wall  -D_REENTRANT
 
 override CFLAGS+=-fsanitize=address

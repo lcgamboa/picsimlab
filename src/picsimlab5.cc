@@ -769,7 +769,9 @@ CPWindow5::pmenu2_Help_EvMenuActive(CControl * control)
 void
 CPWindow5::pmenu2_About_EvMenuActive(CControl * control)
 {
- Message_sz (lxT ("Part ") + parts[PartSelected]->GetName () + lxT ("\nDeveloped by ") + parts[PartSelected]->GetAboutInfo (), 400, 200);
+ lxString stemp;
+ stemp.Printf (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: %s %s %s"), lxT (_VERSION_), lxT (_DATE_), lxT (_ARCH_));
+ Message_sz (stemp, 400, 200);
 }
 
 void

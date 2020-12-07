@@ -841,7 +841,9 @@ CPWindow1::menu1_Help_About_Board_EvMenuActive(CControl * control)
 void
 CPWindow1::menu1_Help_About_PICSimLab_EvMenuActive(CControl * control)
 {
- Message_sz (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: ") + lxString (lxT (_VERSION_)), 400, 200);
+ lxString stemp;
+ stemp.Printf (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: %s %s %s"), lxT (_VERSION_), lxT (_DATE_), lxT (_ARCH_));
+ Message_sz (stemp, 400, 200);
 }
 
 void

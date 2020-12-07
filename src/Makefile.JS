@@ -14,6 +14,7 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
+override CFLAGS+= -D_ARCH_=\"Javascript\" -D_DATE_=\"${DATE}\"
 override CFLAGS+= -Os
 #override CFLAGS+= -g4 --source-map-base -Werror
 override CFLAGS+=  -DEXT_BROWSER -DNO_DEBUG -DNO_TOOLS -s DEMANGLE_SUPPORT=0 \

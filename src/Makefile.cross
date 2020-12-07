@@ -7,7 +7,7 @@ WINDRES =  $(TOOL_PREFIX)windres
 STRIP =  $(TOOL_PREFIX)strip  
 PKG_CONFIG= -mms-bitfields -I../dev_w64/include/glib-2.0 -I../dev_w64/lib/glib-2.0/include
 
-
+override CFLAGS+= -D_ARCH_=\"Windows64_WX\" -D_DATE_=\"${DATE}\"
 override CFLAGS+= -Wall -g -O3 -D_WIN_ -I../dev_w64/include -I../dev_w64/include/lxrad -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  
 override CFLAGS+= -DEXT_BROWSER
 override CFLAGS+=-I../dev_w64/lib/wx/include/x86_64-w64-mingw32-msw-unicode-3.1 -I../dev_w64/include/wx-3.1 -D_FILE_OFFSET_BITS=64 -DWXUSINGDLL -D__WXMSW__
