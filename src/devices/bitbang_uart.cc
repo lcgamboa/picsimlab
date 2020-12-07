@@ -143,36 +143,36 @@ bitbang_uart_io(bitbang_uart_t *bu, unsigned char rx)
 
  //write tx
 
- bu->tcountw++;
-
- if (bu->tcountw >= (bu->cycle_count << 4))
+ if (!bu->bcw)
   {
-   bu->tcountw = 0;
-
-   if (!bu->bcw)
+   if (bu->data_to_send)
     {
-     if (bu->data_to_send)
-      {
-       bu->data_to_send = 0;
-       dprintf ("uart data rec %c \n", bu->dataw);
-       bu->leds |= 0x02;
-       bu->bcw = 1;
-       bu->outsr = (bu->dataw << 1) | 0x200;
-      }
+     bu->data_to_send = 0;
+     dprintf ("uart data to send %c \n", bu->dataw);
+     bu->leds |= 0x02;
+     bu->bcw = 1;
+     bu->outsr = (bu->dataw << 1) | 0xFE00;
+     //printf ("0x%04X %02X\n", bu->outsr, bu->dataw);
+     bu->tcountw = 0;
     }
-   else
+  }
+ else
+  {
+   bu->tcountw++;
+
+
+   if (bu->tcountw >= (bu->cycle_count << 4))
     {
+     bu->tcountw = 0;
+
      bu->outsr = (bu->outsr >> 1);
      bu->bcw++;
-     if (bu->bcw > 9)
+     if (bu->bcw > 10)
       {
        bu->bcw = 0;
       }
     }
-
   }
-
-
 
  return (bu->outsr & 0x01);
 }
@@ -180,7 +180,7 @@ bitbang_uart_io(bitbang_uart_t *bu, unsigned char rx)
 unsigned char
 bitbang_uart_transmitting(bitbang_uart_t *bu)
 {
- return (bu->bcw | bu->data_to_send | bu->tcountw);
+ return (bu->bcw > 0) ;
 }
 
 void

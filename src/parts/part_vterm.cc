@@ -168,7 +168,6 @@ cpart_vterm::ButtonEvent(CControl * control, uint button, uint x, uint y, uint s
 void
 cpart_vterm::KeyEvent(CControl * control, uint keysym, uint ukeysym, uint state)
 {
-  printf("%i %i\n",keysym, ukeysym);	
   if (control == vtedit)
   {  
    if (ukeysym == 13)
