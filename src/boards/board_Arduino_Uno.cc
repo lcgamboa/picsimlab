@@ -280,6 +280,7 @@ cboard_Arduino_Uno::Reset(void)
  //write switch state to pic pin 20 (RD1)
  //pic_set_pin(20,p_BT2); 
  avr_reset (avr);
+ avr->data[UCSR0B]=0x00; //FIX the simavr reset TX enabled
 
 
  //verify serial port state and refresh status bar  

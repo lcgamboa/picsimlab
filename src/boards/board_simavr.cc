@@ -161,7 +161,7 @@ board_simavr::MInit(const char * processor, const char * fname, float freq)
  //avr->log= LOG_DEBUG;
 
  avr_reset (avr);
-
+ avr->data[UCSR0B]=0x00; //FIX the simavr reset TX enabled
  pins_reset ();
 
  /*
@@ -1034,6 +1034,7 @@ board_simavr::UpdateHardware(void)
        if (aux)
         {
          avr_reset (avr);
+         avr->data[UCSR0B]=0x00; //FIX the simavr reset TX enabled
          pins_reset ();
          aux = 0;
         }
@@ -1109,6 +1110,7 @@ void
 board_simavr::MReset(int flags)
 {
  avr_reset (avr);
+ avr->data[UCSR0B]=0x00; //FIX the simavr reset TX enabled
  bitbang_uart_rst (&bb_uart);
 }
 
