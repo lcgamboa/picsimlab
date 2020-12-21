@@ -75,6 +75,7 @@ void lcd_ili9341_update(lcd_ili9341_t *lcd);
 //void lcd_pfc8833_end(lcd_pfc8833_t *lcd);
 
 unsigned char lcd_ili9341_SPI_io(lcd_ili9341_t *lcd, unsigned char din, unsigned char clk, unsigned char ncs, unsigned char nrst, unsigned char dc);
+unsigned char lcd_ili9341_8_io(lcd_ili9341_t *lcd, unsigned char dat, unsigned char wr, unsigned char rd, unsigned char ncs, unsigned char nrst, unsigned char dc);
 
 void lcd_ili9341_draw(lcd_ili9341_t *lcd, CCanvas * canvas,int x1,int y1,int w1,int h1, int picpwr);
 

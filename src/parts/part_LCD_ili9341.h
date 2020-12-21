@@ -40,9 +40,9 @@ class cpart_LCD_ili9341:public part
       ~cpart_LCD_ili9341(void);
       void Draw(void);
       void Process(void);
-      lxString GetPictureFileName(void){return lxT("LCD_ili9341/LCD_ili9341.png");};
-      lxString GetInputMapFile(void){return lxT("LCD_ili9341/LCD_ili9341_i.map");};
-      lxString GetOutputMapFile(void){return lxT("LCD_ili9341/LCD_ili9341_o.map");};
+      lxString GetPictureFileName(void);
+      lxString GetInputMapFile(void);
+      lxString GetOutputMapFile(void);
       lxString GetPropertiesWindowFile(void){return lxT("LCD_ili9341/LCD_ili9341.lxrad");};
       void Reset(void);
       void ConfigurePropertiesWindow(CPWindow *  WProp);
@@ -51,8 +51,10 @@ class cpart_LCD_ili9341:public part
       void ReadPreferences(lxString value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
+      void ComboChange(CCombo * control, lxString value);
+      void ChangeType(unsigned char tp); 
    private:
-      unsigned char input_pins[5]; 
+      unsigned char input_pins[13]; 
       lcd_ili9341_t lcd;
       unsigned char type_com;
 };

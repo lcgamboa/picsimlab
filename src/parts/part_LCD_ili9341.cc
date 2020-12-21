@@ -31,23 +31,23 @@
 /* outputs */
 enum
 {
- O_P1, O_P2, O_P3, O_P4, O_P5, O_F1, O_F2, O_LCD
+ O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_P9, O_P10, O_P11, O_P12, O_P13, O_F1, O_F2, O_LCD
+};
+
+/* types */
+enum
+{
+ TC_SPI = 0, TC_8BITS
 };
 
 cpart_LCD_ili9341::cpart_LCD_ili9341(unsigned x, unsigned y)
 {
  X = x;
  Y = y;
- ReadMaps ();
- Bitmap = NULL;
 
- lxImage image;
- 
- image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
- 
- Bitmap = lxGetBitmapRotated(&image, &Window5, orientation); 
- image.Destroy ();
- canvas.Create (Window5.GetWWidget (), Bitmap);
+ Bitmap = NULL;
+ type_com = -1;
+ ChangeType (TC_SPI);
 
  lcd_ili9341_init (&lcd);
  lcd_ili9341_rst (&lcd);
@@ -58,11 +58,67 @@ cpart_LCD_ili9341::cpart_LCD_ili9341(unsigned x, unsigned y)
  input_pins[3] = 0;
  input_pins[4] = 0;
 
- type_com = 0; //SPI
+ input_pins[5] = 0;
+ input_pins[6] = 0;
+ input_pins[7] = 0;
+ input_pins[8] = 0;
+ input_pins[9] = 0;
+ input_pins[10] = 0;
+ input_pins[11] = 0;
+ input_pins[12] = 0;
+
+}
+
+lxString
+cpart_LCD_ili9341::GetPictureFileName(void)
+{
+ switch (type_com)
+  {
+  case TC_SPI:
+   return lxT ("LCD_ili9341/LCD_ili9341.png");
+   break;
+  case TC_8BITS:
+   return lxT ("LCD_ili9341/LCD_ili9341_8.png");
+   break;
+  }
+ return lxT ("LCD_ili9341/LCD_ili9341.png");
+}
+
+lxString
+cpart_LCD_ili9341::GetInputMapFile(void)
+{
+ switch (type_com)
+  {
+  case TC_SPI:
+   return lxT ("LCD_ili9341/LCD_ili9341_i.map");
+   break;
+  case TC_8BITS:
+   return lxT ("LCD_ili9341/LCD_ili9341_8_i.map");
+   break;
+  }
+
+ return lxT ("LCD_ili9341 / LCD_ili9341_i.map");
+}
+
+lxString
+cpart_LCD_ili9341::GetOutputMapFile(void)
+{
+ switch (type_com)
+  {
+
+  case TC_SPI:
+   return lxT ("LCD_ili9341/LCD_ili9341_o.map");
+   break;
+  case TC_8BITS:
+   return lxT ("LCD_ili9341/LCD_ili9341_8_o.map");
+   break;
+  }
+ return lxT ("LCD_ili9341/LCD_ili9341_o.map");
 }
 
 cpart_LCD_ili9341::~cpart_LCD_ili9341(void)
 {
+
  delete Bitmap;
  canvas.Destroy ();
 }
@@ -88,6 +144,14 @@ cpart_LCD_ili9341::Draw(void)
     case O_P3:
     case O_P4:
     case O_P5:
+    case O_P6:
+    case O_P7:
+    case O_P8:
+    case O_P9:
+    case O_P10:
+    case O_P11:
+    case O_P12:
+    case O_P13:
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
@@ -109,35 +173,31 @@ cpart_LCD_ili9341::Draw(void)
      canvas.RotatedText ("GND", output[i].x1, output[i].y2, 90.0);
      break;
     case O_LCD:
-     //draw lcd text 
+     //draw lcd text
      if (lcd.update)
       {
        //canvas.SetColor (255, 255, 0);
        //canvas.Rectangle (1, output[i].x1-2, output[i].y1-2, output[i].x2 - output[i].x1+4, output[i].y2 - output[i].y1+4);
-  
-       canvas.SetColor (0, 90 + 40, 0);  
-       lcd_ili9341_draw (&lcd, &canvas, output[i].x1+4, output[i].y1-4, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, 1);
+
+       canvas.SetColor (0, 90 + 40, 0);
+       lcd_ili9341_draw (&lcd, &canvas, output[i].x1, output[i].y1 , output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, 1);
       }
      /*
-     else   
+     else
      {
-        canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2-output[i].x1,output[i].y2-output[i].y1 );
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2-output[i].x1,output[i].y2-output[i].y1 );
      }
       */
      break;
     }
-
-
   }
-
-
  canvas.End ();
-
 }
 
 unsigned short
 cpart_LCD_ili9341::get_in_id(char * name)
 {
+
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
 };
@@ -152,6 +212,15 @@ cpart_LCD_ili9341::get_out_id(char * name)
  if (strcmp (name, "P4") == 0)return O_P4;
  if (strcmp (name, "P5") == 0)return O_P5;
 
+ if (strcmp (name, "P6") == 0)return O_P6;
+ if (strcmp (name, "P7") == 0)return O_P7;
+ if (strcmp (name, "P8") == 0)return O_P8;
+ if (strcmp (name, "P9") == 0)return O_P9;
+ if (strcmp (name, "P10") == 0)return O_P10;
+ if (strcmp (name, "P11") == 0)return O_P11;
+ if (strcmp (name, "P12") == 0)return O_P12;
+ if (strcmp (name, "P13") == 0)return O_P13;
+
  if (strcmp (name, "F1") == 0)return O_F1;
  if (strcmp (name, "F2") == 0)return O_F2;
 
@@ -164,17 +233,26 @@ cpart_LCD_ili9341::get_out_id(char * name)
 lxString
 cpart_LCD_ili9341::WritePreferences(void)
 {
+
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4], type_com);
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
+          input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4], type_com,
+          input_pins[5], input_pins[6], input_pins[7], input_pins[8], input_pins[9], input_pins[10],
+          input_pins[11], input_pins[12]);
  return prefs;
 }
 
 void
 cpart_LCD_ili9341::ReadPreferences(lxString value)
 {
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &type_com);
+ unsigned char tp;
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
+         &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &tp,
+         &input_pins[5], &input_pins[6], &input_pins[7], &input_pins[8], &input_pins[9], &input_pins[10],
+         &input_pins[11], &input_pins[12]);
  Reset ();
+ ChangeType (tp);
 }
 
 void
@@ -228,16 +306,86 @@ cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow * WProp)
    ((CCombo*) WProp->GetChildByName ("combo5"))->SetText (itoa (input_pins[4]) + "  " + spin);
   }
 
- if (!type_com)
+
+ switch (type_com)
   {
+  case TC_SPI:
+   WProp->SetWidth (389);
+
+   ((CButton*) WProp->GetChildByName ("button1"))->SetX (104);
+   ((CButton*) WProp->GetChildByName ("button2"))->SetX (185);
+
    ((CCombo*) WProp->GetChildByName ("combo6"))->SetText ("SPI");
+
+   ((CCombo*) WProp->GetChildByName ("combo7"))->SetVisible (false);
+   ((CCombo*) WProp->GetChildByName ("combo8"))->SetVisible (false);
+   ((CCombo*) WProp->GetChildByName ("combo9"))->SetVisible (false);
+   ((CCombo*) WProp->GetChildByName ("combo10"))->SetVisible (false);
+   ((CCombo*) WProp->GetChildByName ("combo11"))->SetVisible (false);
+   ((CCombo*) WProp->GetChildByName ("combo12"))->SetVisible (false);
+   ((CCombo*) WProp->GetChildByName ("combo13"))->SetVisible (false);
+   ((CCombo*) WProp->GetChildByName ("combo14"))->SetVisible (false);
+
+   ((CLabel*) WProp->GetChildByName ("label9"))->SetVisible (false);
+   ((CLabel*) WProp->GetChildByName ("label10"))->SetVisible (false);
+   ((CLabel*) WProp->GetChildByName ("label11"))->SetVisible (false);
+   ((CLabel*) WProp->GetChildByName ("label12"))->SetVisible (false);
+   ((CLabel*) WProp->GetChildByName ("label13"))->SetVisible (false);
+   ((CLabel*) WProp->GetChildByName ("label14"))->SetVisible (false);
+   ((CLabel*) WProp->GetChildByName ("label15"))->SetVisible (false);
+   ((CLabel*) WProp->GetChildByName ("label16"))->SetVisible (false);
+
+   ((CLabel*) WProp->GetChildByName ("label5"))->SetText ("Pin 3 - CLK");
+   ((CLabel*) WProp->GetChildByName ("label4"))->SetText ("Pin 4 - DIN");
+   break;
+  case TC_8BITS:
+
+   WProp->SetWidth (740);
+
+   ((CButton*) WProp->GetChildByName ("button1"))->SetX (154);
+   ((CButton*) WProp->GetChildByName ("button2"))->SetX (235);
+
+   ((CCombo*) WProp->GetChildByName ("combo6"))->SetText ("8Bits");
+
+   ((CCombo*) WProp->GetChildByName ("combo7"))->SetVisible (true);
+   ((CCombo*) WProp->GetChildByName ("combo8"))->SetVisible (true);
+   ((CCombo*) WProp->GetChildByName ("combo9"))->SetVisible (true);
+   ((CCombo*) WProp->GetChildByName ("combo10"))->SetVisible (true);
+   ((CCombo*) WProp->GetChildByName ("combo11"))->SetVisible (true);
+   ((CCombo*) WProp->GetChildByName ("combo12"))->SetVisible (true);
+   ((CCombo*) WProp->GetChildByName ("combo13"))->SetVisible (true);
+   ((CCombo*) WProp->GetChildByName ("combo14"))->SetVisible (true);
+
+   ((CLabel*) WProp->GetChildByName ("label9"))->SetVisible (true);
+   ((CLabel*) WProp->GetChildByName ("label10"))->SetVisible (true);
+   ((CLabel*) WProp->GetChildByName ("label11"))->SetVisible (true);
+   ((CLabel*) WProp->GetChildByName ("label12"))->SetVisible (true);
+   ((CLabel*) WProp->GetChildByName ("label13"))->SetVisible (true);
+   ((CLabel*) WProp->GetChildByName ("label14"))->SetVisible (true);
+   ((CLabel*) WProp->GetChildByName ("label15"))->SetVisible (true);
+   ((CLabel*) WProp->GetChildByName ("label16"))->SetVisible (true);
+
+   ((CLabel*) WProp->GetChildByName ("label5"))->SetText ("Pin 3 - /WR");
+   ((CLabel*) WProp->GetChildByName ("label4"))->SetText ("Pin 4 - /RD");
+
+   lxString name;
+
+   for (int i = 0; i < 8; i++)
+    {
+     name.sprintf ("combo%i", i + 7);
+     ((CCombo*) WProp->GetChildByName (name))->SetItems (Items);
+     if (input_pins[5 + i] == 0)
+      ((CCombo*) WProp->GetChildByName (name))->SetText ("0  NC");
+     else
+      {
+       spin = Window5.GetPinName (input_pins[5 + i]);
+       ((CCombo*) WProp->GetChildByName (name))->SetText (itoa (input_pins[5 + i]) + "  " + spin);
+      }
+    }
+   break;
   }
- /*
- else
-  {
-   ((CCombo*) WProp->GetChildByName ("combo6"))->SetText ("I2C");
-  }
-*/
+
+ ((CCombo*) WProp->GetChildByName ("combo6"))->EvOnComboChange = EVONCOMBOCHANGE & CPWindow5::PropComboChange;
 
  ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
  ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
@@ -248,22 +396,25 @@ cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow * WProp)
 void
 cpart_LCD_ili9341::ReadPropertiesWindow(CPWindow * WProp)
 {
+
  input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
  input_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
  input_pins[2] = atoi (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ());
  input_pins[3] = atoi (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ());
  input_pins[4] = atoi (((CCombo*) WProp->GetChildByName ("combo5"))->GetText ());
 
- if (!((CCombo*) WProp->GetChildByName ("combo6"))->GetText ().Cmp ("SPI"))
+ if (type_com == TC_8BITS)
   {
-   type_com = 0;
+   input_pins[5] = atoi (((CCombo*) WProp->GetChildByName ("combo7"))->GetText ());
+   input_pins[6] = atoi (((CCombo*) WProp->GetChildByName ("combo8"))->GetText ());
+   input_pins[7] = atoi (((CCombo*) WProp->GetChildByName ("combo9"))->GetText ());
+   input_pins[8] = atoi (((CCombo*) WProp->GetChildByName ("combo10"))->GetText ());
+   input_pins[9] = atoi (((CCombo*) WProp->GetChildByName ("combo11"))->GetText ());
+   input_pins[10] = atoi (((CCombo*) WProp->GetChildByName ("combo12"))->GetText ());
+   input_pins[11] = atoi (((CCombo*) WProp->GetChildByName ("combo13"))->GetText ());
+   input_pins[12] = atoi (((CCombo*) WProp->GetChildByName ("combo14"))->GetText ());
   }
- /*
- else
-  {
-   type_com = 1;
-  }
- */
+
 }
 
 void
@@ -272,17 +423,92 @@ cpart_LCD_ili9341::Process(void)
  const picpin * ppins = Window5.GetPinsValues ();
 
 
- if (!type_com)
+ switch (type_com)
   {
+  case TC_SPI:
    if ((input_pins[0] > 0)
        &&(input_pins[1] > 0)
        &&(input_pins[2] > 0)
        &&(input_pins[3] > 0)
        &&(input_pins[4] > 0))
     {
+
      lcd_ili9341_SPI_io (&lcd, ppins[input_pins[1] - 1].value, ppins[input_pins[0] - 1].value, ppins[input_pins[4] - 1].value, ppins[input_pins[2] - 1].value, ppins[input_pins[3] - 1].value);
     }
+   break;
+  case TC_8BITS:
+   if ((input_pins[0] > 0)
+       &&(input_pins[1] > 0)
+       &&(input_pins[2] > 0)
+       &&(input_pins[3] > 0)
+       &&(input_pins[4] > 0)
+       &&(input_pins[5] > 0)
+       &&(input_pins[6] > 0)
+       &&(input_pins[7] > 0)
+       &&(input_pins[8] > 0)
+       &&(input_pins[9] > 0)
+       &&(input_pins[10] > 0)
+       &&(input_pins[11] > 0)
+       &&(input_pins[12] > 0))
+    {
+     unsigned char d = 0;
+     if ((input_pins[5] > 0)&&(ppins[input_pins[5] - 1].value)) d |= 0x01;
+     if ((input_pins[6] > 0)&&(ppins[input_pins[6] - 1].value)) d |= 0x02;
+     if ((input_pins[7] > 0)&&(ppins[input_pins[7] - 1].value)) d |= 0x04;
+     if ((input_pins[8] > 0)&&(ppins[input_pins[8] - 1].value)) d |= 0x08;
+     if ((input_pins[9] > 0)&&(ppins[input_pins[9] - 1].value)) d |= 0x10;
+     if ((input_pins[10] > 0)&&(ppins[input_pins[10] - 1].value)) d |= 0x20;
+     if ((input_pins[11] > 0)&&(ppins[input_pins[11] - 1].value)) d |= 0x40;
+     if ((input_pins[12] > 0)&&(ppins[input_pins[12] - 1].value)) d |= 0x80;
+     lcd_ili9341_8_io (&lcd, d, ppins[input_pins[0] - 1].value, ppins[input_pins[1] - 1].value, ppins[input_pins[4] - 1].value, ppins[input_pins[2] - 1].value, ppins[input_pins[3] - 1].value);
+    }
+   break;
   }
+}
+
+void
+cpart_LCD_ili9341::ComboChange(CCombo * control, lxString value)
+{
+ if (!value.Cmp ("SPI"))
+  {
+   ChangeType (TC_SPI);
+  }
+ else
+  {
+   ChangeType (TC_8BITS);
+  }
+}
+
+void
+cpart_LCD_ili9341::ChangeType(unsigned char tp)
+{
+
+
+
+ if (tp > 1)tp = 1;
+
+ //if same
+ if (tp == type_com) return;
+
+ if (Bitmap)
+  {
+
+   delete Bitmap;
+   canvas.Destroy ();
+  }
+
+ type_com = tp;
+
+ ReadMaps ();
+
+ lxImage image;
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
+
+ Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
+ image.Destroy ();
+
+ canvas.Create (Window5.GetWWidget (), Bitmap);
+
 }
 
 void

@@ -880,6 +880,7 @@ board_qemu_stm32::MStep(void)
    if ((n = recv (sockfd, &buff, 1, 0)) > 0)
     {
      pins[(0x7F & buff) - 1].value = ((0x80 & buff) > 0);
+     //printf("%02i %s=%i\n",0x7F & buff,(const char *)MGetPinName(0x7F & buff).c_str(), (0x80 & buff)>0);
     }
   }
 }
