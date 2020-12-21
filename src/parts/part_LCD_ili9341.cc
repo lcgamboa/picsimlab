@@ -372,7 +372,7 @@ cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow * WProp)
 
    for (int i = 0; i < 8; i++)
     {
-     name.sprintf ("combo%i", i + 7);
+     name.Printf ("combo%i", i + 7);
      ((CCombo*) WProp->GetChildByName (name))->SetItems (Items);
      if (input_pins[5 + i] == 0)
       ((CCombo*) WProp->GetChildByName (name))->SetText ("0  NC");
