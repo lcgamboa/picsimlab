@@ -215,35 +215,35 @@ board_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
 
  if (!Proc.compare ("stm32f103c8t6"))
   {
- //verify if serial port exists
- if (strstr (resp, SERIALDEVICE))
-  {
-   snprintf (cmd, 599, "qemu-stm32 -M stm32-f103c8-picsimlab -serial %s -qmp tcp:localhost:2500  -gdb tcp::%i -pflash \"%s\"",
-             SERIALDEVICE, Window1.Get_debug_port (), fname_);
+   //verify if serial port exists
+   if (strstr (resp, SERIALDEVICE))
+    {
+     snprintf (cmd, 599, "qemu-stm32 -M stm32-f103c8-picsimlab -serial %s -qmp tcp:localhost:2500  -gdb tcp::%i -pflash \"%s\"",
+               SERIALDEVICE, Window1.Get_debug_port (), fname_);
 
+    }
+   else
+    {
+     snprintf (cmd, 599, "qemu-stm32 -M stm32-f103c8-picsimlab -qmp tcp:localhost:2500 -gdb tcp::%i -pflash \"%s\"",
+               Window1.Get_debug_port (), fname_);
+    }
   }
  else
   {
-   snprintf (cmd, 599, "qemu-stm32 -M stm32-f103c8-picsimlab -qmp tcp:localhost:2500 -gdb tcp::%i -pflash \"%s\"",
-             Window1.Get_debug_port (), fname_);
-  }
-  }
- else
-  {
- //verify if serial port exists
- if (strstr (resp, SERIALDEVICE))
-  {
-   snprintf (cmd, 599, "qemu-stm32 -M stm32-p103-picsimlab -serial %s -qmp tcp:localhost:2500  -gdb tcp::%i -pflash \"%s\"",
-             SERIALDEVICE, Window1.Get_debug_port (), fname_);
+   //verify if serial port exists
+   if (strstr (resp, SERIALDEVICE))
+    {
+     snprintf (cmd, 599, "qemu-stm32 -M stm32-p103-picsimlab -serial %s -qmp tcp:localhost:2500  -gdb tcp::%i -pflash \"%s\"",
+               SERIALDEVICE, Window1.Get_debug_port (), fname_);
 
+    }
+   else
+    {
+     snprintf (cmd, 599, "qemu-stm32 -M stm32-p103-picsimlab -qmp tcp:localhost:2500 -gdb tcp::%i -pflash \"%s\"",
+               Window1.Get_debug_port (), fname_);
+    }
   }
- else
-  {
-   snprintf (cmd, 599, "qemu-stm32 -M stm32-p103-picsimlab -qmp tcp:localhost:2500 -gdb tcp::%i -pflash \"%s\"",
-             Window1.Get_debug_port (), fname_);
-  }
-  }
- 
+
  free (resp);
 
  printf ("picsimlab: %s\n", (const char *) cmd);
@@ -819,6 +819,7 @@ board_qemu_stm32::pins_reset(void)
 void
 board_qemu_stm32::MSetPin(int pin, unsigned char value)
 {
+ if(!pin)return;
  if ((connected)&&(pins[pin - 1].value != value))
   {
    unsigned char val = (0x7F & pin);
@@ -839,9 +840,132 @@ board_qemu_stm32::MSetPinDOV(int pin, unsigned char ovalue) {
  //set_pin_DOV (pin, ovalue);
 }
 
+
 void
-board_qemu_stm32::MSetAPin(int pin, float value) {
- //set_apin (pin, value);
+board_qemu_stm32::MSetAPin(int pin, float value)
+{
+ if(!pin)return;
+ if ((connected)&&(pins[pin - 1].avalue != value))
+  {
+
+   unsigned char channel = 0xFF;
+
+   pins[pin - 1].avalue = value;
+
+
+   if (!Proc.compare ("stm32f103c8t6"))
+    {
+     switch (pin)
+      {
+      case 10: //PA0
+       channel = 0;
+       break;
+      case 11: //PA1
+       channel = 1;
+       break;
+      case 12://PA2
+       channel = 2;
+       break;
+      case 13: //PA3
+       channel = 3;
+       break;
+      case 14: //PA4
+       channel = 4;
+       break;
+      case 15: //PA5
+       channel = 5;
+       break;
+      case 16: //PA6
+       channel = 6;
+       break;
+      case 17: //PA7
+       channel = 7;
+       break;
+      case 18: //PB0
+       channel = 8;
+       break;
+      case 19: //PB1
+       channel = 9;
+       break;
+      }
+    }
+   else if (!Proc.compare ("stm32f103rbt6"))
+    {
+     switch (pin)
+      {
+      case 8: //PC0
+       channel = 10;
+       break;
+      case 9: //PC1
+       channel = 11;
+       break;
+      case 10: //PC2
+       channel = 12;
+       break;
+      case 11: //PC3
+       channel = 13;
+       break;
+      case 14: //PA0
+       channel = 0;
+       break;
+      case 15: //PA1
+       channel = 1;
+       break;
+      case 16: //PA2
+       channel = 2;
+       break;
+      case 17: //PA3
+       channel = 3;
+       break;
+      case 20: //PA4
+       channel = 4;
+       break;
+      case 21: //PA5
+       channel = 5;
+       break;
+      case 22: //PA6
+       channel = 6;
+       break;
+      case 23: //PA7
+       channel = 7;
+       break;
+      case 24: //PC4
+       channel = 14;
+       break;
+      case 25: //PC5
+       channel = 15;
+       break;
+      case 26: //PB0
+       channel = 8;
+       break;
+      case 27: //PB1
+       channel = 9;
+       break;
+      }
+    }
+   if (channel != 0xFF)
+    {
+     if (value > 3.3)value = 3.3;
+     if (value < 0)value = 0;
+
+     unsigned short svalue = (unsigned short) (4096 * value / 3.3);
+
+     channel |= 0x40;
+     
+     unsigned char buff[3];
+     
+     buff[0]= channel;
+     buff[1]= svalue & 0xFF;
+     buff[2]= svalue >> 8;
+
+     if (send (sockfd, (const char *) buff, 3, MSG_NOSIGNAL) != 3)
+      {
+       printf ("picsimlab: send error : %s \n", strerror (errno));
+       exit (1);
+      }
+     //printf("Analog channel %02X = %i\n",channel,svalue);
+    }
+  }
 }
 
 unsigned char
