@@ -31,13 +31,13 @@
 /* outputs */
 enum
 {
- O_P1, O_P2, O_PO1, O_PO2, O_TP, O_AMPL, O_FREQ, O_MF
+ O_P1, O_P2, O_P3, O_PO1, O_PO2, O_PO3, O_TP, O_AMPL, O_OFFS, O_FREQ, O_MF
 };
 
 /* inputs */
 enum
 {
- I_PO1, I_PO2, I_TP, I_MF
+ I_PO1, I_PO2, I_PO3, I_TP, I_MF
 };
 
 cpart_SignalGenerator::cpart_SignalGenerator(unsigned x, unsigned y)
@@ -56,12 +56,15 @@ cpart_SignalGenerator::cpart_SignalGenerator(unsigned x, unsigned y)
 
 
  input_pins[0] = 0;
+ input_pins[1] = 0;
 
  values[0] = 0;
  values[1] = 0;
+ values[2] = 0;
 
  active[0] = 0;
  active[1] = 0;
+ active[2] = 0;
 
  type = 0;
  ts = 0;
@@ -95,16 +98,17 @@ cpart_SignalGenerator::Draw(void)
 
    switch (output[i].id)
     {
-    case O_P1:
+    case O_P2:
+    case O_P3:
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     if (input_pins[output[i].id - O_P1] == 0)
+     if (input_pins[output[i].id - O_P2] == 0)
       canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
      else
-      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
+      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P2]), output[i].x1, output[i].y1, 0);
      break;
-    case O_P2:
+    case O_P1:
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
@@ -112,6 +116,7 @@ cpart_SignalGenerator::Draw(void)
      break;
     case O_PO1:
     case O_PO2:
+    case O_PO3:
      canvas.SetColor (50, 50, 50);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetColor (250, 250, 250);
@@ -131,34 +136,41 @@ cpart_SignalGenerator::Draw(void)
       {
        v[1] = v[0];
        switch (type)
-	{
-	case 0:
-	 v[0] = (sin (tsi));
-	 break;
-	case 1:
-	 v[0] = ((sin (tsi) > 0) - 0.5)*2;
-	 break;
-	case 2:
-	 v[0] = ((acos (sin (tsi)) / 1.5708) - 1);
-	 break;
-	}
+        {
+        case 0:
+         v[0] = (sin (tsi));
+         break;
+        case 1:
+         v[0] = ((sin (tsi) > 0) - 0.5)*2;
+         break;
+        case 2:
+         v[0] = ((acos (sin (tsi)) / 1.5708) - 1);
+         break;
+        }
        tsi += 3 * 6.28 / sizex;
        if (j > 0)
-	{
-	 canvas.Line (output[i].x1 + j - 1, output[i].y1 + ((v[1] + 2.0) * sizey / 4.0), output[i].x1 + j, output[i].y1 + ((v[0] + 2.0) * sizey / 4.0));
-	}
+        {
+         canvas.Line (output[i].x1 + j - 1, output[i].y1 + ((v[1] + 2.0) * sizey / 4.0), output[i].x1 + j, output[i].y1 + ((v[0] + 2.0) * sizey / 4.0));
+        }
       }
 
      break;
     case O_AMPL:
-     temp.Printf ("A=%5.2f", ampl);
+     temp.Printf ("%5.2f", ampl);
+     canvas.SetColor (49, 61, 99);
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     canvas.SetFgColor (255, 255, 255);
+     canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
+     break;
+    case O_OFFS:
+     temp.Printf ("%5.2f", offs);
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
      canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
      break;
     case O_FREQ:
-     temp.Printf ("F=%5.2f", freq);
+     temp.Printf ("%5.2f", freq);
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
@@ -185,7 +197,8 @@ cpart_SignalGenerator::PreProcess(void)
  mcount = JUMPSTEPS_;
 
  freq = (maxfreq * values[1] / 148.0);
- ampl = (2.5 * values[0] / 148.0);
+ ampl = (5.0 * values[0] / 148.0);
+ offs = (5.0 * values[2] / 148.0);
 }
 
 void
@@ -201,13 +214,13 @@ cpart_SignalGenerator::Process(void)
    switch (type)
     {
     case 0:
-     v = (ampl * sin (freq * 6.28 * ts)) + 2.5;
+     v = (ampl * sin (freq * 6.28 * ts)) + offs;
      break;
     case 1:
-     v = ((sin (freq * 6.28 * ts) > 0) - 0.5)*2 * ampl + 2.5;
+     v = ((sin (freq * 6.28 * ts) > 0) - 0.5)*2 * ampl + offs;
      break;
     case 2:
-     v = ((acos (sin (freq * 6.28 * ts)) / 1.5708) - 1) * ampl + 2.5;
+     v = ((acos (sin (freq * 6.28 * ts)) / 1.5708) - 1) * ampl + offs;
      break;
     }
    ts += 4e-6;
@@ -218,12 +231,14 @@ cpart_SignalGenerator::Process(void)
     }
 
    Window5.SetAPin (input_pins[0], v);
-
-   unsigned char vald = v > 2.5;
+   Window5.SetAPin (input_pins[1], v);
+   
+   unsigned char vald = v > offs;
    if (vald != lastd)
     {
      lastd = vald;
      Window5.SetPin (input_pins[0], vald);
+     Window5.SetPin (input_pins[1], vald);
     }
    mcount = -1;
   }
@@ -266,6 +281,11 @@ cpart_SignalGenerator::EvMouseButtonPress(uint button, uint x, uint y, uint stat
        if (values[1] >= l)values[1] = l;
        active[1] = 1;
        break;
+      case I_PO3:
+       values[2] = y - input[i].y1;
+       if (values[2] >= l)values[2] = l;
+       active[2] = 1;
+       break;
       case I_TP:
        type++;
        if (type > 2)type = 0;
@@ -296,6 +316,9 @@ cpart_SignalGenerator::EvMouseButtonRelease(uint button, uint x, uint y, uint st
        break;
       case I_PO2:
        active[1] = 0;
+       break;
+      case I_PO3:
+       active[2] = 0;
        break;
       }
     }
@@ -330,17 +353,24 @@ cpart_SignalGenerator::EvMouseMove(uint button, uint x, uint y, uint state)
       {
       case I_PO1:
        if (active[0])
-	{
-	 values[0] = y - input[i].y1;
-	 if (values[0] >= l)values[0] = l;
-	}
+        {
+         values[0] = y - input[i].y1;
+         if (values[0] >= l)values[0] = l;
+        }
        break;
       case I_PO2:
        if (active[1])
-	{
-	 values[1] = y - input[i].y1;
-	 if (values[1] >= l)values[1] = l;
-	}
+        {
+         values[1] = y - input[i].y1;
+         if (values[1] >= l)values[1] = l;
+        }
+       break;
+      case I_PO3:
+       if (active[2])
+        {
+         values[2] = y - input[i].y1;
+         if (values[2] >= l)values[2] = l;
+        }
        break;
       }
     }
@@ -353,6 +383,7 @@ cpart_SignalGenerator::get_in_id(char * name)
 
  if (strcmp (name, "PO1") == 0)return I_PO1;
  if (strcmp (name, "PO2") == 0)return I_PO2;
+ if (strcmp (name, "PO3") == 0)return I_PO3;
  if (strcmp (name, "TP") == 0)return I_TP;
  if (strcmp (name, "MF") == 0)return I_MF;
 
@@ -366,11 +397,14 @@ cpart_SignalGenerator::get_out_id(char * name)
 
  if (strcmp (name, "P1") == 0)return O_P1;
  if (strcmp (name, "P2") == 0)return O_P2;
+ if (strcmp (name, "P3") == 0)return O_P3;
 
  if (strcmp (name, "PO1") == 0)return O_PO1;
  if (strcmp (name, "PO2") == 0)return O_PO2;
+ if (strcmp (name, "PO3") == 0)return O_PO3;
  if (strcmp (name, "TP") == 0)return O_TP;
  if (strcmp (name, "AMPL") == 0)return O_AMPL;
+ if (strcmp (name, "OFFS") == 0)return O_OFFS;
  if (strcmp (name, "FREQ") == 0)return O_FREQ;
  if (strcmp (name, "MF") == 0)return O_MF;
 
@@ -383,7 +417,8 @@ cpart_SignalGenerator::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%u", input_pins[0], values[0], values[1], type, maxfreq);
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%u,%hhu,%hhu", input_pins[0], values[0], values[1], type, maxfreq,
+          input_pins[1], values[2]);
 
  return prefs;
 }
@@ -391,7 +426,8 @@ cpart_SignalGenerator::WritePreferences(void)
 void
 cpart_SignalGenerator::ReadPreferences(lxString value)
 {
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%u", &input_pins[0], &values[0], &values[1], &type, &maxfreq);
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%u,%hhu,%hhu", &input_pins[0], &values[0], &values[1],
+         &type, &maxfreq, &input_pins[1], &values[2]);
 }
 
 void
@@ -409,6 +445,14 @@ cpart_SignalGenerator::ConfigurePropertiesWindow(CPWindow * WProp)
    ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (input_pins[0]) + "  " + spin);
   }
 
+ ((CCombo*) WProp->GetChildByName ("combo2"))->SetItems (Items);
+ if (input_pins[1] == 0)
+  ((CCombo*) WProp->GetChildByName ("combo2"))->SetText ("0  NC");
+ else
+  {
+   spin = Window5.GetPinName (input_pins[1]);
+   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText (itoa (input_pins[1]) + "  " + spin);
+  }
 
 
  ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
@@ -421,6 +465,7 @@ void
 cpart_SignalGenerator::ReadPropertiesWindow(CPWindow * WProp)
 {
  input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
+ input_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
 }
 
 part_init("Signal Generator", cpart_SignalGenerator);

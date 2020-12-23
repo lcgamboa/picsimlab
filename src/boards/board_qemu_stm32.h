@@ -74,6 +74,7 @@ class board_qemu_stm32: virtual public board
       int connected;
       char fname_[300];
       char fname_bak[300];
+      unsigned short ADCvalues[16];
 };
 
 #endif	/* BOARD_STM32_H */

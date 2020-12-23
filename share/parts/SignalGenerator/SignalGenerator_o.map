@@ -1,17 +1,20 @@
-<img src="[push_buttons] (sobrescrita)" width="209" height="200" border="0" usemap="#map" />
+<img src="[push_buttons] (sobrescrita)" width="277" height="216" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:Luis Claudio Gamboa Lopes       -->
-<area shape="rect" coords="131,93,180,112" href="P1" />
-<area shape="rect" coords="131,115,180,134" href="P2" />
-<area shape="rect" coords="126,143,202,162" href="AMPL" />
-<area shape="rect" coords="126,166,202,185" href="FREQ" />
-<area shape="rect" coords="72,13,104,171" href="PO2" />
-<area shape="rect" coords="11,13,43,171" href="PO1" />
-<area shape="rect" coords="123,14,199,65" href="TP" />
-<area shape="rect" coords="123,73,199,89" href="MF" />
+<!-- #$AUTHOR:Luis Claudio Gamboa Lopes        -->
+<area shape="rect" coords="79,13,111,171" href="PO1" />
+<area shape="rect" coords="140,13,172,171" href="PO2" />
+<area shape="rect" coords="18,13,50,171" href="PO3" />
+<area shape="rect" coords="191,15,267,65" href="TP" />
+<area shape="rect" coords="191,73,267,89" href="MF" />
+<area shape="rect" coords="200,93,249,108" href="P1" />
+<area shape="rect" coords="200,111,249,127" href="P2" />
+<area shape="rect" coords="64,188,124,208" href="AMPL" />
+<area shape="rect" coords="127,188,187,208" href="FREQ" />
+<area shape="rect" coords="200,130,249,146" href="P3" />
+<area shape="rect" coords="1,188,61,208" href="OFFS" />
 </map>

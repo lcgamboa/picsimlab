@@ -68,15 +68,16 @@ public:
     unsigned short get_in_id(char * name);
     unsigned short get_out_id(char * name);
 private:
-    unsigned char input_pins[1];
-    unsigned char values[2];
-    unsigned char active[2];
+    unsigned char input_pins[2];
+    unsigned char values[3];
+    unsigned char active[3];
     unsigned char type;
     float ts;
     long int mcount;
     int JUMPSTEPS_;
     float freq;
     float ampl;
+    float offs;
     unsigned int maxfreq;
     unsigned char lastd;
 };

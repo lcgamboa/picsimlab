@@ -56,6 +56,8 @@ board_qemu_stm32::board_qemu_stm32(void)
  sockmon = -1;
  fname_bak[0] = 0;
  fname_[0] = 0;
+
+ memset (&ADCvalues, 0xFF, 32);
 }
 
 board_qemu_stm32::~board_qemu_stm32(void) { }
@@ -819,7 +821,7 @@ board_qemu_stm32::pins_reset(void)
 void
 board_qemu_stm32::MSetPin(int pin, unsigned char value)
 {
- if(!pin)return;
+ if (!pin)return;
  if ((connected)&&(pins[pin - 1].value != value))
   {
    unsigned char val = (0x7F & pin);
@@ -828,8 +830,9 @@ board_qemu_stm32::MSetPin(int pin, unsigned char value)
     val |= 0x80;
    if (send (sockfd, (const char *) &val, 1, MSG_NOSIGNAL) != 1)
     {
-     printf ("picsimlab: send error : %s \n", strerror (errno));
-     exit (1);
+     //printf ("picsimlab MSetPin: send error : %s \n", strerror (errno));
+     //exit (1);
+     value = !value;
     }
    pins[pin - 1].value = value;
   }
@@ -840,18 +843,16 @@ board_qemu_stm32::MSetPinDOV(int pin, unsigned char ovalue) {
  //set_pin_DOV (pin, ovalue);
 }
 
-
 void
 board_qemu_stm32::MSetAPin(int pin, float value)
 {
- if(!pin)return;
+ if (!pin)return;
  if ((connected)&&(pins[pin - 1].avalue != value))
   {
 
    unsigned char channel = 0xFF;
 
    pins[pin - 1].avalue = value;
-
 
    if (!Proc.compare ("stm32f103c8t6"))
     {
@@ -950,20 +951,25 @@ board_qemu_stm32::MSetAPin(int pin, float value)
 
      unsigned short svalue = (unsigned short) (4096 * value / 3.3);
 
-     channel |= 0x40;
-     
-     unsigned char buff[3];
-     
-     buff[0]= channel;
-     buff[1]= svalue & 0xFF;
-     buff[2]= svalue >> 8;
-
-     if (send (sockfd, (const char *) buff, 3, MSG_NOSIGNAL) != 3)
+     pins[pin - 1].ptype = PT_ANALOG;
+        
+     if (ADCvalues[channel] != svalue)
       {
-       printf ("picsimlab: send error : %s \n", strerror (errno));
-       exit (1);
+       unsigned char buff[3];
+
+       buff[0] = channel | 0x40;
+       buff[1] = svalue & 0xFF;
+       buff[2] = svalue >> 8;
+
+       ADCvalues[channel] = svalue;
+       if (send (sockfd, (const char *) buff, 3, MSG_NOSIGNAL) != 3)
+        {
+         //printf ("picsimlab MSetAPin: send error : %s \n", strerror (errno));
+         //exit (1);
+         pins[pin - 1].avalue = value + 0.5;
+        }
+       //printf("Analog channel %02X = %i\n",channel,svalue);
       }
-     //printf("Analog channel %02X = %i\n",channel,svalue);
     }
   }
 }
