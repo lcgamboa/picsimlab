@@ -28,6 +28,7 @@
 
 #include"picsimlab4.h"
 #include"picsimlab1.h"
+#include"picsimlab5.h"
 
 #include"picsimlab4_d.cc"
 
@@ -52,7 +53,7 @@ double *ch[2];
 int tch = 0;
 
 void
-CPWindow4::DrawScreen (void)
+CPWindow4::DrawScreen(void)
 {
  draw1.Canvas.Init ();
 
@@ -163,7 +164,7 @@ CPWindow4::DrawScreen (void)
 }
 
 void
-CPWindow4::button1_EvMouseButtonClick (CControl * control, uint button, uint x, uint y, uint state)
+CPWindow4::button1_EvMouseButtonClick(CControl * control, uint button, uint x, uint y, uint state)
 {
 #ifndef __WXX11__ 
  colordialog1.SetColor (button1.GetColor ());
@@ -173,7 +174,7 @@ CPWindow4::button1_EvMouseButtonClick (CControl * control, uint button, uint x, 
 }
 
 void
-CPWindow4::button2_EvMouseButtonClick (CControl * control, uint button, uint x, uint y, uint state)
+CPWindow4::button2_EvMouseButtonClick(CControl * control, uint button, uint x, uint y, uint state)
 {
 #ifndef __WXX11__ 
  colordialog1.SetColor (button2.GetColor ());
@@ -183,14 +184,14 @@ CPWindow4::button2_EvMouseButtonClick (CControl * control, uint button, uint x, 
 }
 
 void
-CPWindow4::draw1_EvMouseButtonClick (CControl * control, uint button, uint x, uint y, uint state)
+CPWindow4::draw1_EvMouseButtonClick(CControl * control, uint button, uint x, uint y, uint state)
 {
  //code here:)
  mprint (lxT ("draw1_EvMouseButtonClick\n"));
 }
 
 void
-CPWindow4::SetBaseTimer (void)
+CPWindow4::SetBaseTimer(void)
 {
  board * pboard = Window1.GetBoard ();
 
@@ -212,8 +213,16 @@ CPWindow4::SetBaseTimer (void)
  combo3.DeleteItems ();
  for (int i = 1; i <= PinCount; i++)
   {
-   lxString spin = pboard->MGetPinName (i);
 
+   lxString spin;
+   if (pboard->GetUseSpareParts ())
+    {
+     spin = Window5.GetPinName (i);
+    }
+   else
+    {
+     spin = pboard->MGetPinName (i);
+    }
    if (spin.Cmp (lxT ("error")))
     {
      combo2.AddItem (itoa (i) + "  " + spin);
@@ -223,7 +232,15 @@ CPWindow4::SetBaseTimer (void)
 
  if (chp[0] <= PinCount)
   {
-   lxString spin = pboard->MGetPinName (chp[0]);
+   lxString spin;
+   if (pboard->GetUseSpareParts ())
+    {
+     spin = Window5.GetPinName (chp[0]);
+    }
+   else
+    {
+     spin = pboard->MGetPinName (chp[0]);
+    }
    combo2.SetText (itoa (chp[0]) + "  " + spin);
   }
  else
@@ -231,7 +248,15 @@ CPWindow4::SetBaseTimer (void)
 
  if (chp[1] <= PinCount)
   {
-   lxString spin = pboard->MGetPinName (chp[1]);
+   lxString spin;
+   if (pboard->GetUseSpareParts ())
+    {
+     spin = Window5.GetPinName (chp[1]);
+    }
+   else
+    {
+     spin = pboard->MGetPinName (chp[1]);
+    }
    combo3.SetText (itoa (chp[1]) + "  " + spin);
   }
  else
@@ -247,14 +272,14 @@ double pins_[2];
 int update = 0;
 
 void
-CPWindow4::SetSample (void)
+CPWindow4::SetSample(void)
 {
  double pins[2];
 
  const picpin * ppins = Window1.GetBoard ()->MGetPinsValues ();
 
  if (!run)return;
- 
+
  if ((ppins[chpin[0]].ptype == PT_ANALOG)&&(ppins[chpin[0]].dir == PD_IN))
   pins[0] = ppins[chpin[0]].avalue;
  else
@@ -316,7 +341,7 @@ CPWindow4::SetSample (void)
 }
 
 void
-CPWindow4::spind5_EvOnChangeSpinDouble (CControl * control)
+CPWindow4::spind5_EvOnChangeSpinDouble(CControl * control)
 {
  //spind5.SetMin ((Dt*WMAX)/10e-3);
 
@@ -338,19 +363,19 @@ CPWindow4::spind5_EvOnChangeSpinDouble (CControl * control)
 }
 
 void
-CPWindow4::togglebutton5_EvOnToggleButton (CControl * control)
+CPWindow4::togglebutton5_EvOnToggleButton(CControl * control)
 {
  usetrigger = togglebutton5.GetCheck ();
 }
 
 void
-CPWindow4::spind7_EvOnChangeSpinDouble (CControl * control)
+CPWindow4::spind7_EvOnChangeSpinDouble(CControl * control)
 {
  triggerlv = spind7.GetValue ();
 }
 
 void
-CPWindow4::timer1_EvOnTime (CControl * control)
+CPWindow4::timer1_EvOnTime(CControl * control)
 {
  if (update)
   {
@@ -362,19 +387,19 @@ CPWindow4::timer1_EvOnTime (CControl * control)
 }
 
 void
-CPWindow4::combo2_EvOnComboChange (CControl * control)
+CPWindow4::combo2_EvOnComboChange(CControl * control)
 {
  chpin[0] = atoi (combo2.GetText ()) - 1;
 }
 
 void
-CPWindow4::combo3_EvOnComboChange (CControl * control)
+CPWindow4::combo3_EvOnComboChange(CControl * control)
 {
  chpin[1] = atoi (combo3.GetText ()) - 1;
 }
 
 void
-CPWindow4::WritePreferences (void)
+CPWindow4::WritePreferences(void)
 {
  Window1.saveprefs (lxT ("osc_scale1"), ftoa (spind1.GetValue ()));
  Window1.saveprefs (lxT ("osc_offset1"), ftoa (spind2.GetValue ()));
@@ -399,7 +424,7 @@ CPWindow4::WritePreferences (void)
 }
 
 void
-CPWindow4::ReadPreferences (char *name, char *value)
+CPWindow4::ReadPreferences(char *name, char *value)
 {
  if (!strcmp (name, "osc_scale1"))
   {
@@ -494,16 +519,16 @@ CPWindow4::ReadPreferences (char *name, char *value)
 }
 
 void
-CPWindow4::_EvOnDestroy (CControl * control) { }
+CPWindow4::_EvOnDestroy(CControl * control) { }
 
 void
-CPWindow4::_EvOnShow (CControl * control)
+CPWindow4::_EvOnShow(CControl * control)
 {
  timer1.SetRunState (1);
 }
 
 void
-CPWindow4::_EvOnHide (CControl * control)
+CPWindow4::_EvOnHide(CControl * control)
 {
  timer1.SetRunState (0);
  board * pboard = Window1.GetBoard ();
@@ -514,7 +539,7 @@ CPWindow4::_EvOnHide (CControl * control)
 }
 
 void
-CPWindow4::spind6_EvOnChangeSpinDouble (CControl * control)
+CPWindow4::spind6_EvOnChangeSpinDouble(CControl * control)
 {
 
 
@@ -524,7 +549,7 @@ CPWindow4::spind6_EvOnChangeSpinDouble (CControl * control)
 //autoset
 
 void
-CPWindow4::button3_EvMouseButtonClick (CControl * control, uint button, uint x, uint y, uint state)
+CPWindow4::button3_EvMouseButtonClick(CControl * control, uint button, uint x, uint y, uint state)
 {
 
  int ce = togglebutton1.GetCheck () + togglebutton2.GetCheck ()*2;
@@ -569,7 +594,7 @@ CPWindow4::button3_EvMouseButtonClick (CControl * control, uint button, uint x, 
 //stop
 
 void
-CPWindow4::togglebutton6_EvOnToggleButton (CControl * control)
+CPWindow4::togglebutton6_EvOnToggleButton(CControl * control)
 {
  run = !togglebutton6.GetCheck ();
  spind1.SetEnable (run);
@@ -595,7 +620,7 @@ CPWindow4::togglebutton6_EvOnToggleButton (CControl * control)
 //save PNG
 
 void
-CPWindow4::button4_EvMouseButtonClick (CControl * control, uint button, uint x, uint y, uint state)
+CPWindow4::button4_EvMouseButtonClick(CControl * control, uint button, uint x, uint y, uint state)
 {
 
  filedialog1.SetType (lxFD_SAVE | lxFD_CHANGE_DIR);
@@ -604,7 +629,7 @@ CPWindow4::button4_EvMouseButtonClick (CControl * control, uint button, uint x, 
 }
 
 void
-CPWindow4::filedialog1_EvOnClose (int retId)
+CPWindow4::filedialog1_EvOnClose(int retId)
 {
  if (retId)
   {
@@ -613,7 +638,7 @@ CPWindow4::filedialog1_EvOnClose (int retId)
 }
 
 void
-CPWindow4::colordialog1_EvOnClose (int retId)
+CPWindow4::colordialog1_EvOnClose(int retId)
 {
 
  if (retId)

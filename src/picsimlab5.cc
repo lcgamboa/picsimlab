@@ -28,6 +28,7 @@
 
 #include"picsimlab1.h"
 #include"picsimlab2.h"
+#include"picsimlab4.h"
 #include"picsimlab5.h"
 #include"picsimlab5_d.cc"
 
@@ -47,7 +48,7 @@ CPWindow5::_EvOnShow(CControl * control)
  draw1.SetHeight (Height - 40);
 
  timer1.SetRunState (1);
-
+ Window4.SetBaseTimer ();
 }
 
 void
@@ -309,6 +310,7 @@ CPWindow5::draw1_EvKeyboardPress(CControl * control, const uint key, const uint 
   case 'P':
   case 'p':
    useAlias = !useAlias;
+   Window4.SetBaseTimer ();
    break;
   case '='://+
    scale += 0.1;
@@ -438,6 +440,7 @@ CPWindow5::LoadConfig(lxString fname)
      else if (!strcmp (name, "useAlias"))
       {
        sscanf (temp, "%hhu", &useAlias);
+       Window4.SetBaseTimer ();
       }
      else if (!strcmp (name, "version"))
       {
@@ -519,6 +522,7 @@ CPWindow5::LoadPinAlias(lxString fname, unsigned char show_error_msg)
    if (show_error_msg)
     {
      useAlias = 1;
+     Window4.SetBaseTimer ();
     }
    return 1;
   }
@@ -535,6 +539,7 @@ CPWindow5::DeleteParts(void)
  partsc = 0; //for disable process
  scale = 1.0;
  useAlias = 0;
+ Window4.SetBaseTimer ();
  //delete previous parts
 
  for (int i = 0; i < partsc_; i++)
@@ -634,6 +639,7 @@ void
 CPWindow5::menu1_Edit_Togglepinalias_EvMenuActive(CControl * control)
 {
  useAlias = !useAlias;
+ Window4.SetBaseTimer ();
 }
 
 void
@@ -720,6 +726,7 @@ CPWindow5::_EvOnHide(CControl * control)
   {
    pboard->SetUseSpareParts (0);
   }
+ Window4.SetBaseTimer ();
 }
 
 void

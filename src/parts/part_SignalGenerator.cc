@@ -210,24 +210,25 @@ cpart_SignalGenerator::Process(void)
  if (mcount > JUMPSTEPS_)
   {
    float v = 0;
+   float wt= freq * 2.0 * M_PI * ts;
 
    switch (type)
     {
     case 0:
-     v = (ampl * sin (freq * 6.28 * ts)) + offs;
+     v = (ampl * sin (wt)) + offs;
      break;
     case 1:
-     v = ((sin (freq * 6.28 * ts) > 0) - 0.5)*2 * ampl + offs;
+     v = ((sin (wt) > 0) - 0.5)*2 * ampl + offs;
      break;
     case 2:
-     v = ((acos (sin (freq * 6.28 * ts)) / 1.5708) - 1) * ampl + offs;
+     v = ((acos (sin (wt)) / 1.5708) - 1) * ampl + offs;
      break;
     }
    ts += 4e-6;
 
-   if (ts >= 128)
+   if (wt >=  2.0 * M_PI)
     {
-     ts = ts - 128;
+     ts = ts - (1.0/freq);
     }
 
    Window5.SetAPin (input_pins[0], v);
