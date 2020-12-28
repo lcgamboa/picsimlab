@@ -1315,8 +1315,9 @@ CPWindow1::LoadWorkspace(lxString fnpzw)
  if (lxFileExists (fzip))
   {
 #ifdef EXT_BROWSER
+#ifndef __EMSCRIPTEN__
    lxLaunchDefaultBrowser (lxT ("file://") + lxString (fzip));
-   //lxLaunchDefaultBrowser(lxT("https://lcgamboa.github.io/picsimlab/"));
+#endif
 #else    
    Window2.html1.SetLoadFile (fzip);
    Window2.Show ();
@@ -1328,8 +1329,9 @@ CPWindow1::LoadWorkspace(lxString fnpzw)
    if (lxFileExists (fzip))
     {
 #ifdef EXT_BROWSER
+#ifndef __EMSCRIPTEN__
      lxLaunchDefaultBrowser (lxT ("file://") + lxString (fzip));
-     //lxLaunchDefaultBrowser(lxT("https://lcgamboa.github.io/picsimlab/"));
+#endif
 #else      
      Window2.html1.SetLoadFile (fzip);
      Window2.Show ();

@@ -980,6 +980,7 @@ CPWindow5::GetPinName(unsigned char pin)
 {
 
  if (!pin) return "NC";
+ if (!pboard) return "NC";
 
  if (pin <= pboard->MGetPinCount ())
   {
