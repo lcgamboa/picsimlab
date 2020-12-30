@@ -37,7 +37,9 @@ lcd_ili9341_rst(lcd_ili9341_t *lcd)
   for (j = 0; j < 320; j++)
    lcd->ram[i][j] = 0xFF000000;
  lcd->bc = 0;
- lcd->aclk = -1;
+ lcd->pclk = -1;
+ lcd->pwr = -1;
+ lcd->prd = -1;
  lcd->update = 1;
  lcd->dat = 0;
  lcd->x = 0;
@@ -194,7 +196,7 @@ lcd_ili9341_process(lcd_ili9341_t *lcd)
     {
      lcd->cmd_val = lcd->dat;
      lcd->dat = lcd->last_cmd;
-     dprint ("command:%#04X  argument[%i]:%#04X ", lcd->dat, lcd->cmd_argc, lcd->cmd_val);
+     dprint ("command:%#04X  argument[%i]:%#04X", lcd->dat, lcd->cmd_argc, lcd->cmd_val);
     }
    else
     {
@@ -207,6 +209,33 @@ lcd_ili9341_process(lcd_ili9341_t *lcd)
      break;
     case 0x01:
      dprint ("Software Reset\n");
+     break;
+    case 0x04:
+     dprint ("Read Display Identification Information\n");
+     if (!lcd->cmd_argc)
+      {
+       lcd->last_cmd = lcd->dat;
+       lcd->cmd_argc = 4;
+      }
+     else
+      {
+       switch (lcd->cmd_argc)
+        {
+        case 4:
+         lcd->out = 0x01;
+         break;
+        case 3:
+         lcd->out = 0x02;
+         break;
+        case 2:
+         lcd->out = 0x03;
+         break;
+        case 1:
+         lcd->out = 0xFF;
+         break;
+        }
+       lcd->cmd_argc--;
+      }
      break;
     case 0x11:
      dprint ("Sleep OUT\n");
@@ -435,6 +464,33 @@ lcd_ili9341_process(lcd_ili9341_t *lcd)
        lcd->cmd_argc--;
       }
      break;
+    case 0xD3:
+     dprint ("Read ID4\n");
+     if (!lcd->cmd_argc)
+      {
+       lcd->last_cmd = lcd->dat;
+       lcd->cmd_argc = 4;
+      }
+     else
+      {
+       switch (lcd->cmd_argc)
+        {
+        case 4:
+         lcd->out = 0x00;
+         break;
+        case 3:
+         lcd->out = 0x93;
+         break;
+        case 2:
+         lcd->out = 0x41;
+         break;
+        case 1:
+         lcd->out = 0xFF;
+         break;
+        }
+       lcd->cmd_argc--;
+      }
+     break;
     case 0xE0:
      dprint ("Positive Gamma Correction\n");
      if (!lcd->cmd_argc)
@@ -546,7 +602,7 @@ lcd_ili9341_SPI_io(lcd_ili9341_t *lcd, unsigned char din, unsigned char clk, uns
 
 
  //transicao
- if ((lcd->aclk == 0)&&(clk == 1))
+ if ((lcd->pclk == 0)&&(clk == 1))
   {
 
    if (lcd->bc == 0)
@@ -564,11 +620,11 @@ lcd_ili9341_SPI_io(lcd_ili9341_t *lcd, unsigned char din, unsigned char clk, uns
     }
   }
 
- lcd->aclk = clk;
+ lcd->pclk = clk;
  return 1;
 }
 
-unsigned char
+unsigned short
 lcd_ili9341_8_io(lcd_ili9341_t *lcd, unsigned char dat, unsigned char wr, unsigned char rd, unsigned char ncs, unsigned char nrst, unsigned char dc)
 {
  //reset
@@ -580,7 +636,8 @@ lcd_ili9341_8_io(lcd_ili9341_t *lcd, unsigned char dat, unsigned char wr, unsign
      dcprint ("Hard reset\n");
      lcd->hrst = 1;
     }
-   return 1;
+   lcd->out = 0;
+   return 0;
   }
  else
   lcd->hrst = 0;
@@ -589,19 +646,39 @@ lcd_ili9341_8_io(lcd_ili9341_t *lcd, unsigned char dat, unsigned char wr, unsign
  if (ncs == 1)
   {
    //dprint ("No CS\n");
-   lcd->aclk = 1;
-   return 1;
+   lcd->pwr = 1;
+   lcd->prd = 1;
+   lcd->out &= ~0x0100;
+   return 0;
+  }
+ 
+  if (!rd)
+  {
+   lcd->out |= 0x0100;
+  }
+ else
+  {
+   lcd->out &= ~0x0100;
   }
 
  //transicao WR
- if ((lcd->aclk == 0)&&(wr == 1))
+ if ((lcd->pwr == 0)&&(wr == 1))
   {
    lcd->dc = dc;
    lcd->dat = dat;
    lcd_ili9341_process (lcd);
   }
- lcd->aclk = wr;
- return 1;
+ else if ((lcd->prd == 0)&&(rd == 1))
+  {
+   lcd->dc = dc;
+   lcd->dat = dat;
+   lcd_ili9341_process (lcd);
+   dprint ("Reading %02X\n", 0xFF & lcd->out);
+  }
+
+ lcd->pwr = wr;
+ lcd->prd = rd;
+ return lcd->out;
 }
 
 void

@@ -43,7 +43,9 @@
 typedef struct
 {
 unsigned long int ram[240][320];
-unsigned char aclk;
+unsigned char pclk; //previous clk
+unsigned char pwr;  //previous wr
+unsigned char prd;  //previous rw
 int bc;
 unsigned char hrst;
 unsigned char dat;
@@ -59,6 +61,7 @@ unsigned char last_cmd;
 unsigned char cmd_argc;
 unsigned char cmd_val;
 unsigned char dc;
+unsigned short out; //output value
 
 unsigned short col_start;
 unsigned short col_end;
@@ -75,7 +78,7 @@ void lcd_ili9341_update(lcd_ili9341_t *lcd);
 //void lcd_pfc8833_end(lcd_pfc8833_t *lcd);
 
 unsigned char lcd_ili9341_SPI_io(lcd_ili9341_t *lcd, unsigned char din, unsigned char clk, unsigned char ncs, unsigned char nrst, unsigned char dc);
-unsigned char lcd_ili9341_8_io(lcd_ili9341_t *lcd, unsigned char dat, unsigned char wr, unsigned char rd, unsigned char ncs, unsigned char nrst, unsigned char dc);
+unsigned short lcd_ili9341_8_io(lcd_ili9341_t *lcd, unsigned char dat, unsigned char wr, unsigned char rd, unsigned char ncs, unsigned char nrst, unsigned char dc);
 
 void lcd_ili9341_draw(lcd_ili9341_t *lcd, CCanvas * canvas,int x1,int y1,int w1,int h1, int picpwr);
 

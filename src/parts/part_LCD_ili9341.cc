@@ -180,7 +180,7 @@ cpart_LCD_ili9341::Draw(void)
        //canvas.Rectangle (1, output[i].x1-2, output[i].y1-2, output[i].x2 - output[i].x1+4, output[i].y2 - output[i].y1+4);
 
        canvas.SetColor (0, 90 + 40, 0);
-       lcd_ili9341_draw (&lcd, &canvas, output[i].x1, output[i].y1 , output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, 1);
+       lcd_ili9341_draw (&lcd, &canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, 1);
       }
      /*
      else
@@ -452,15 +452,28 @@ cpart_LCD_ili9341::Process(void)
        &&(input_pins[12] > 0))
     {
      unsigned char d = 0;
-     if ((input_pins[5] > 0)&&(ppins[input_pins[5] - 1].value)) d |= 0x01;
-     if ((input_pins[6] > 0)&&(ppins[input_pins[6] - 1].value)) d |= 0x02;
-     if ((input_pins[7] > 0)&&(ppins[input_pins[7] - 1].value)) d |= 0x04;
-     if ((input_pins[8] > 0)&&(ppins[input_pins[8] - 1].value)) d |= 0x08;
-     if ((input_pins[9] > 0)&&(ppins[input_pins[9] - 1].value)) d |= 0x10;
-     if ((input_pins[10] > 0)&&(ppins[input_pins[10] - 1].value)) d |= 0x20;
-     if ((input_pins[11] > 0)&&(ppins[input_pins[11] - 1].value)) d |= 0x40;
-     if ((input_pins[12] > 0)&&(ppins[input_pins[12] - 1].value)) d |= 0x80;
-     lcd_ili9341_8_io (&lcd, d, ppins[input_pins[0] - 1].value, ppins[input_pins[1] - 1].value, ppins[input_pins[4] - 1].value, ppins[input_pins[2] - 1].value, ppins[input_pins[3] - 1].value);
+     unsigned short ret;
+     if ((ppins[input_pins[5] - 1].value)) d |= 0x01;
+     if ((ppins[input_pins[6] - 1].value)) d |= 0x02;
+     if ((ppins[input_pins[7] - 1].value)) d |= 0x04;
+     if ((ppins[input_pins[8] - 1].value)) d |= 0x08;
+     if ((ppins[input_pins[9] - 1].value)) d |= 0x10;
+     if ((ppins[input_pins[10] - 1].value)) d |= 0x20;
+     if ((ppins[input_pins[11] - 1].value)) d |= 0x40;
+     if ((ppins[input_pins[12] - 1].value)) d |= 0x80;
+     ret = lcd_ili9341_8_io (&lcd, d, ppins[input_pins[0] - 1].value, ppins[input_pins[1] - 1].value, ppins[input_pins[4] - 1].value, ppins[input_pins[2] - 1].value, ppins[input_pins[3] - 1].value);
+     if (ret & 0x0100)
+      {
+       Window5.SetPin (input_pins[5], (ret & 0x01) > 0);
+       Window5.SetPin (input_pins[6], (ret & 0x02) > 0);
+       Window5.SetPin (input_pins[7], (ret & 0x04) > 0);
+       Window5.SetPin (input_pins[8], (ret & 0x08) > 0);
+       Window5.SetPin (input_pins[9], (ret & 0x10) > 0);
+       Window5.SetPin (input_pins[10], (ret & 0x20) > 0);
+       Window5.SetPin (input_pins[11], (ret & 0x40) > 0);
+       Window5.SetPin (input_pins[12], (ret & 0x80) > 0);
+      }
+
     }
    break;
   }
