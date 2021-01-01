@@ -29,6 +29,7 @@
 #include<lxrad.h>
 #include"part.h"
 #include"../devices/lcd_ili9341.h"
+#include"../devices/tsc_xpt2046.h"
 
 class cpart_LCD_ili9341:public part
 {
@@ -44,6 +45,9 @@ class cpart_LCD_ili9341:public part
       lxString GetInputMapFile(void);
       lxString GetOutputMapFile(void);
       lxString GetPropertiesWindowFile(void){return lxT("LCD_ili9341/LCD_ili9341.lxrad");};
+      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
+      void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
+      void EvMouseMove(uint button, uint x, uint y,uint state);
       void Reset(void);
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
@@ -55,8 +59,11 @@ class cpart_LCD_ili9341:public part
       void ChangeType(unsigned char tp); 
    private:
       unsigned char input_pins[13]; 
+      unsigned char touch_pins[5]; 
       lcd_ili9341_t lcd;
+      tsc_XPT2046_t  touch;
       unsigned char type_com;
+      unsigned char active[1];
 };
 
 

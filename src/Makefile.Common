@@ -23,7 +23,8 @@ OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimla
 OBJS_EXP =  boards/board_Xpress.o boards/board_Curiosity.o boards/board_x.o boards/board_Blue_Pill.o \
             boards/board_qemu_stm32.o boards/board_ucsim.o boards/board_uCboard.o \
             boards/board_STM32_H103.o boards/board_Curiosity_HPC.o \
-            boards/bridge_gpsim.o  boards/board_gpsim.o  boards/board_gpboard.o 
+            boards/bridge_gpsim.o  boards/board_gpsim.o  boards/board_gpboard.o \
+            devices/tsc_xpt2046.cc
  
 
 .DEFAULT_GOAL := all
