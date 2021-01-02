@@ -58,7 +58,7 @@ cpart_LCD_ili9341::cpart_LCD_ili9341(unsigned x, unsigned y)
  lcd_ili9341_init (&lcd);
  lcd_ili9341_rst (&lcd);
 
- tsc_XPT2046_init (&touch);
+ tsc_XPT2046_init (&touch, 240, 320);
  tsc_XPT2046_rst (&touch);
 
  input_pins[0] = 0;
@@ -445,7 +445,7 @@ cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow * WProp)
    ((CButton*) WProp->GetChildByName ("button2"))->SetY (486);
 
 
-   ((CCombo*) WProp->GetChildByName ("combo6"))->SetText ("SPI");
+   ((CCombo*) WProp->GetChildByName ("combo6"))->SetText ("SPI+Touch");
 
    ((CCombo*) WProp->GetChildByName ("combo7"))->SetVisible (false);
    ((CCombo*) WProp->GetChildByName ("combo8"))->SetVisible (false);
@@ -505,7 +505,7 @@ cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow * WProp)
    ((CButton*) WProp->GetChildByName ("button1"))->SetY (486);
    ((CButton*) WProp->GetChildByName ("button2"))->SetY (486);
 
-   ((CCombo*) WProp->GetChildByName ("combo6"))->SetText ("8Bits");
+   ((CCombo*) WProp->GetChildByName ("combo6"))->SetText ("8Bits+Touch");
 
    ((CCombo*) WProp->GetChildByName ("combo7"))->SetVisible (true);
    ((CCombo*) WProp->GetChildByName ("combo8"))->SetVisible (true);

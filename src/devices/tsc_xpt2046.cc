@@ -27,7 +27,7 @@
 #include<stdio.h>
 #include"tsc_xpt2046.h"
 
-#define dprintf if (0) {} else printf
+#define dprintf if (1) {} else printf
 
 #define BIT_S       0x80
 #define BIT_A2      0x40 
@@ -49,14 +49,17 @@ tsc_XPT2046_rst(tsc_XPT2046_t *tsc_)
  tsc_->byte = 0xFF;
  tsc_->pclk = -1;
  tsc_->cmd = 0;
+ tsc_->pint = 2;
 
  dprintf ("tsc_ rst\n");
 }
 
 void
-tsc_XPT2046_init(tsc_XPT2046_t *tsc_)
+tsc_XPT2046_init(tsc_XPT2046_t *tsc_, unsigned int w, unsigned int h)
 {
- dprintf ("tsc_ init\n");
+ tsc_->width = w;
+ tsc_->height = h;
+ dprintf ("tsc_ init %i %i\n",w,h);
  tsc_XPT2046_rst (tsc_);
 }
 
@@ -65,6 +68,17 @@ tsc_XPT2046_set_pos(tsc_XPT2046_t *tsc_, int x, int y)
 {
  tsc_->x = x;
  tsc_->y = y;
+
+
+ if ((x >= 0)&&(y >= 0))
+  {
+   tsc_->pint = 0;
+  }
+ else
+  {
+   tsc_->pint = 2;
+  }
+
  dprintf ("tsc_ set pos %i %i \n", x, y);
 }
 
@@ -90,19 +104,25 @@ tsc_XPT2046_SPI_io(tsc_XPT2046_t *tsc_, unsigned char clk, unsigned char din, un
      if (din)
       {
        tsc_->data = (tsc_->data << 1) | 1;
+
+       if (tsc_->byte)
+        {
+         tsc_->byte = 0;
+         tsc_->bit = 0;
+        }
       }
      else
       {
        tsc_->data = (tsc_->data << 1) & 0xFE;
       }
      tsc_->bit++;
-     
-     tsc_->datas = tsc_->datas >> 1; 
+
+     tsc_->datas = tsc_->datas << 1;
     }
 
    if (tsc_->bit == 8)
     {
-     
+
      if (tsc_->data & BIT_S)
       {
        tsc_->byte = 0;
@@ -118,7 +138,19 @@ tsc_XPT2046_SPI_io(tsc_XPT2046_t *tsc_, unsigned char clk, unsigned char din, un
          tsc_->cmd = tsc_->data;
          tsc_->byte++;
          dprintf ("tsc_ cmd 0x%02X OK\n", tsc_->cmd);
-         tsc_->datas = 0x55;
+
+         switch ((tsc_->cmd & 0x70) >> 4)
+          {
+          case 1: // Y -Position
+           tsc_->datas = (tsc_->x * 4095) / tsc_->height;
+           break;
+          case 5: // X -Position
+           tsc_->datas = (tsc_->y * 4095) / tsc_->width;
+           break;
+          default:
+           tsc_->datas = 0;
+           break;
+          }
         }
        else
         {
@@ -126,10 +158,6 @@ tsc_XPT2046_SPI_io(tsc_XPT2046_t *tsc_, unsigned char clk, unsigned char din, un
          tsc_->byte = 0xFF;
          dprintf ("tsc_ cmd 0x%02X ERROR\n", tsc_->cmd);
         }
-       break;
-      case 1:
-       tsc_->byte++;
-       tsc_->datas = 0x55;
        break;
       default:
        tsc_->byte++;
@@ -140,5 +168,5 @@ tsc_XPT2046_SPI_io(tsc_XPT2046_t *tsc_, unsigned char clk, unsigned char din, un
 
  tsc_->pclk = clk;
 
- return tsc_->datas & 0x01;
+ return ((tsc_->pint) | ((tsc_->datas & 0x1000) > 0 ));
 }
