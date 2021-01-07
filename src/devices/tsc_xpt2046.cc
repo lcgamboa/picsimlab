@@ -41,8 +41,8 @@
 void
 tsc_XPT2046_rst(tsc_XPT2046_t *tsc_)
 {
- tsc_->x = -1;
- tsc_->y = -1;
+ tsc_->x = 0;
+ tsc_->y = 0;
 
  tsc_->data = 0;
  tsc_->bit = 0xFF;
@@ -59,20 +59,19 @@ tsc_XPT2046_init(tsc_XPT2046_t *tsc_, unsigned int w, unsigned int h)
 {
  tsc_->width = w;
  tsc_->height = h;
- dprintf ("tsc_ init %i %i\n",w,h);
+ dprintf ("tsc_ init %i %i\n", w, h);
  tsc_XPT2046_rst (tsc_);
 }
 
 void
 tsc_XPT2046_set_pos(tsc_XPT2046_t *tsc_, int x, int y)
 {
- tsc_->x = x;
- tsc_->y = y;
-
 
  if ((x >= 0)&&(y >= 0))
   {
    tsc_->pint = 0;
+   tsc_->x = x;
+   tsc_->y = y;
   }
  else
   {
@@ -90,7 +89,7 @@ tsc_XPT2046_SPI_io(tsc_XPT2046_t *tsc_, unsigned char clk, unsigned char din, un
   {
    tsc_->bit = 0;
    tsc_->byte = 0;
-   return 0;
+   return (tsc_->pint);
   }
 
 
@@ -168,5 +167,5 @@ tsc_XPT2046_SPI_io(tsc_XPT2046_t *tsc_, unsigned char clk, unsigned char din, un
 
  tsc_->pclk = clk;
 
- return ((tsc_->pint) | ((tsc_->datas & 0x1000) > 0 ));
+ return ((tsc_->pint) | ((tsc_->datas & 0x1000) > 0));
 }
