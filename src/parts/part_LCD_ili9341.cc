@@ -31,7 +31,8 @@
 /* outputs */
 enum
 {
- O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_P9, O_P10, O_P11, O_P12, O_P13, O_F1, O_F2, O_LCD
+ O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_P9, O_P10, O_P11, O_P12, O_P13, O_F1, O_F2, O_LCD,
+ O_T1, O_T2, O_T3, O_T4, O_T5
 };
 
 /* inputs */
@@ -91,12 +92,16 @@ cpart_LCD_ili9341::GetPictureFileName(void)
  switch (type_com)
   {
   case TC_SPI:
-  case TC_SPI_TOUCH:
    return lxT ("LCD_ili9341/LCD_ili9341.png");
    break;
+  case TC_SPI_TOUCH:
+   return lxT ("LCD_ili9341/LCD_ili9341_t.png");
+   break;
   case TC_8BITS:
-  case TC_8BITS_TOUCH:
    return lxT ("LCD_ili9341/LCD_ili9341_8.png");
+   break;
+  case TC_8BITS_TOUCH:
+   return lxT ("LCD_ili9341/LCD_ili9341_8_t.png");
    break;
   }
  return lxT ("LCD_ili9341/LCD_ili9341.png");
@@ -112,8 +117,10 @@ cpart_LCD_ili9341::GetInputMapFile(void)
    return lxT ("LCD_ili9341/LCD_ili9341_i.map");
    break;
   case TC_8BITS:
-  case TC_8BITS_TOUCH:
    return lxT ("LCD_ili9341/LCD_ili9341_8_i.map");
+   break;
+  case TC_8BITS_TOUCH:
+   return lxT ("LCD_ili9341/LCD_ili9341_8_t_i.map");
    break;
   }
  return lxT ("LCD_ili9341 / LCD_ili9341_i.map");
@@ -125,12 +132,16 @@ cpart_LCD_ili9341::GetOutputMapFile(void)
  switch (type_com)
   {
   case TC_SPI:
-  case TC_SPI_TOUCH:
    return lxT ("LCD_ili9341/LCD_ili9341_o.map");
    break;
+  case TC_SPI_TOUCH:
+   return lxT ("LCD_ili9341/LCD_ili9341_t_o.map");
+   break;
   case TC_8BITS:
-  case TC_8BITS_TOUCH:
    return lxT ("LCD_ili9341/LCD_ili9341_8_o.map");
+   break;
+  case TC_8BITS_TOUCH:
+   return lxT ("LCD_ili9341/LCD_ili9341_8_t_o.map");
    break;
   }
  return lxT ("LCD_ili9341/LCD_ili9341_o.map");
@@ -179,6 +190,19 @@ cpart_LCD_ili9341::Draw(void)
       canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
      else
       canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2, 90.0);
+     break;
+    case O_T1:
+    case O_T2:
+    case O_T3:
+    case O_T4:
+    case O_T5:
+     canvas.SetColor (49, 61, 99);
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     canvas.SetFgColor (255, 255, 255);
+     if (touch_pins[output[i].id - O_T1] == 0)
+      canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
+     else
+      canvas.RotatedText (Window5.GetPinName (touch_pins[output[i].id - O_T1]), output[i].x1, output[i].y2, 90.0);
      break;
     case O_F2:
      canvas.SetColor (49, 61, 99);
@@ -247,6 +271,12 @@ cpart_LCD_ili9341::get_out_id(char * name)
  if (strcmp (name, "F2") == 0)return O_F2;
 
  if (strcmp (name, "LCD") == 0)return O_LCD;
+
+ if (strcmp (name, "T1") == 0)return O_T1;
+ if (strcmp (name, "T2") == 0)return O_T2;
+ if (strcmp (name, "T3") == 0)return O_T3;
+ if (strcmp (name, "T4") == 0)return O_T4;
+ if (strcmp (name, "T5") == 0)return O_T5;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
