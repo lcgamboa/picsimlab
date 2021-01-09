@@ -326,6 +326,7 @@ private:
     int ondraw;
     
     unsigned int error;
+    lxString pzw_ver;
 
     CItemMenu MBoard[BOARDS_MAX];
     CItemMenu MMicro[MAX_MIC];

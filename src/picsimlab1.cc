@@ -176,7 +176,7 @@ CPWindow1::timer2_EvOnTime(CControl * control)
  if (error & ERR_VERSION)
   {
    error &= ~ERR_VERSION;
-   Message_sz ("The loaded workspace was made with a newer version.\n Please update your PICSimLab.", 400, 200);
+   Message_sz ("The loaded workspace was made with a newer version "+pzw_ver+".\n Please update your PICSimLab " _VERSION_ " .", 450, 200);
   }
 
 #ifdef CONVERTER_MODE
@@ -1155,6 +1155,9 @@ CPWindow1::LoadWorkspace(lxString fnpzw)
       {
        int maj, min, rev, ser;
        int maj_, min_, rev_, ser_;
+       
+       pzw_ver = value;
+           
        sscanf (_VERSION_, "%i.%i.%i", &maj, &min, &rev);
        ser = maj * 10000 + min * 100 + rev;
 
@@ -1163,7 +1166,7 @@ CPWindow1::LoadWorkspace(lxString fnpzw)
 
        if (ser_ > ser)
         {
-         printf ("PICSimLab: .pzw file version error!\n");
+         printf ("PICSimLab: .pzw file version %i newer than PICSimLab %i!\n", ser_, ser);
          error |= ERR_VERSION;
         }
 
