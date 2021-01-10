@@ -1,16 +1,16 @@
 ### TODOs
 | Filename | line # | TODO
 |:------|:------:|:------
-| [src/picsimlab1.cc](src/picsimlab1.cc#L352) | 352 | verify initialization errors
-| [src/picsimlab4.cc](src/picsimlab4.cc#L561) | 561 | select the better mode for channel trigguer
+| [src/picsimlab1.cc](src/picsimlab1.cc#L359) | 359 | verify initialization errors
+| [src/picsimlab4.cc](src/picsimlab4.cc#L586) | 586 | select the better mode for channel trigguer
 | [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L103) | 103 | jumper support
 | [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L62) | 62 | TEMP cooler must don't work with AQUE=0
 | [src/boards/board_gpsim.cc](src/boards/board_gpsim.cc#L170) | 170 | add VCC and GND pins
 | [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L866) | 866 | default output value is not used yet (DOV)
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1154) | 1154 | avr ID pointer
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1161) | 1161 | avr EEPROM pointer
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1187) | 1187 | avr ID size
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1194) | 1194 | AVR EEPROM size
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1156) | 1156 | avr ID pointer
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1163) | 1163 | avr EEPROM pointer
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1189) | 1189 | avr ID size
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1196) | 1196 | AVR EEPROM size
 | [src/devices/eth_w5500.cc](src/devices/eth_w5500.cc#L366) | 366 | add support to buffer size different of 2k
 | [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L141) | 141 | ssd1306 Scrolling Command Table
 | [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L155) | 155 | ssd1306 Continuous Vertical and Horizontal Scroll Setup
@@ -28,5 +28,5 @@
 ### FIXMEs
 | Filename | line # | FIXME
 |:------|:------:|:------
-| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1180) | 1180 | avr CONFIG size
+| [src/boards/board_simavr.cc](src/boards/board_simavr.cc#L1182) | 1182 | avr CONFIG size
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L118) | 118 | only for BANK=0;

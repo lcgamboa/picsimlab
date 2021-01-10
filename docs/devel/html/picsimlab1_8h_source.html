@@ -352,26 +352,27 @@ $(document).ready(function(){initNavTree('picsimlab1_8h_source.html',''); initRe
 <div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    <span class="keywordtype">int</span> ondraw;</div>
 <div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    </div>
 <div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> error;</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160; </div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    CItemMenu MBoard[BOARDS_MAX];</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    CItemMenu MMicro[MAX_MIC];</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160; </div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;};</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160; </div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;<span class="keyword">extern</span> <a class="code" href="class_c_p_window1.html">CPWindow1</a> Window1;</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160; </div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;<span class="keyword">enum</span> {</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    CPU_RUNNING, CPU_STEPPING, CPU_HALTED, CPU_BREAKPOINT, CPU_ERROR</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;};</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160; </div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;<span class="preprocessor">#define ST_T1 0x01</span></div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;<span class="preprocessor">#define ST_T2 0x02</span></div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<span class="preprocessor">#define ST_TH 0x04</span></div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160; </div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;<span class="preprocessor">#define ERR_VERSION 0x1</span></div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160; </div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/*#CPWINDOW1*/</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160; </div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    lxString pzw_ver;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160; </div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    CItemMenu MBoard[BOARDS_MAX];</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    CItemMenu MMicro[MAX_MIC];</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160; </div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;};</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160; </div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;<span class="keyword">extern</span> <a class="code" href="class_c_p_window1.html">CPWindow1</a> Window1;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160; </div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;<span class="keyword">enum</span> {</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    CPU_RUNNING, CPU_STEPPING, CPU_HALTED, CPU_BREAKPOINT, CPU_ERROR</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;};</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160; </div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;<span class="preprocessor">#define ST_T1 0x01</span></div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<span class="preprocessor">#define ST_T2 0x02</span></div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<span class="preprocessor">#define ST_TH 0x04</span></div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160; </div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;<span class="preprocessor">#define ERR_VERSION 0x1</span></div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160; </div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/*#CPWINDOW1*/</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclassboard_html_a5f386ec52284ca79e4e56dad5377acb0"><div class="ttname"><a href="classboard.html#a5f386ec52284ca79e4e56dad5377acb0">board::MSetFreq</a></div><div class="ttdeci">virtual void MSetFreq(float freq)=0</div><div class="ttdoc">board microcontroller set frequency</div></div>
@@ -408,10 +409,10 @@ $(document).ready(function(){initNavTree('picsimlab1_8h_source.html',''); initRe
 <div class="ttc" id="aclassboard_html_a0d9a7ccfcd1ab5ea02eb32a186c95746"><div class="ttname"><a href="classboard.html#a0d9a7ccfcd1ab5ea02eb32a186c95746">board::DebugInit</a></div><div class="ttdeci">virtual int DebugInit(int dtyppe)=0</div><div class="ttdoc">Start debug support</div></div>
 <div class="ttc" id="aclassboard_html_ab808d093c900ea339aaefaa265dce09c"><div class="ttname"><a href="classboard.html#ab808d093c900ea339aaefaa265dce09c">board::GetSupportedDevices</a></div><div class="ttdeci">virtual lxString GetSupportedDevices(void)=0</div><div class="ttdoc">Return a list of supported microcontrollers.</div></div>
 <div class="ttc" id="aclass_c_p_window1_html_ae9c1fa118bae7bc54acb0eacc78c933b"><div class="ttname"><a href="class_c_p_window1.html#ae9c1fa118bae7bc54acb0eacc78c933b">CPWindow1::Set_mcurun</a></div><div class="ttdeci">void Set_mcurun(int pr)</div><div class="ttdoc">Set the run status of microcontroller Running/Stopped.</div><div class="ttdef"><b>Definition:</b> picsimlab1.h:227</div></div>
-<div class="ttc" id="aclass_c_p_window1_html_a5293ce669d8269ef2ecf2ed54fb3eb12"><div class="ttname"><a href="class_c_p_window1.html#a5293ce669d8269ef2ecf2ed54fb3eb12">CPWindow1::GetBoard</a></div><div class="ttdeci">board * GetBoard(void)</div><div class="ttdoc">Return a pointer to board object.</div><div class="ttdef"><b>Definition:</b> picsimlab1.cc:1014</div></div>
+<div class="ttc" id="aclass_c_p_window1_html_a5293ce669d8269ef2ecf2ed54fb3eb12"><div class="ttname"><a href="class_c_p_window1.html#a5293ce669d8269ef2ecf2ed54fb3eb12">CPWindow1::GetBoard</a></div><div class="ttdeci">board * GetBoard(void)</div><div class="ttdoc">Return a pointer to board object.</div><div class="ttdef"><b>Definition:</b> picsimlab1.cc:1023</div></div>
 <div class="ttc" id="aclassboard_html_a69b1f65477e03e435e8f36362ad90f7b"><div class="ttname"><a href="classboard.html#a69b1f65477e03e435e8f36362ad90f7b">board::EvMouseButtonPress</a></div><div class="ttdeci">virtual void EvMouseButtonPress(uint button, uint x, uint y, uint state)=0</div><div class="ttdoc">Event on the board.</div></div>
 <div class="ttc" id="aclassboard_html_a72492732c022e3022dab085144bac2c3"><div class="ttname"><a href="classboard.html#a72492732c022e3022dab085144bac2c3">board::EvKeyRelease</a></div><div class="ttdeci">virtual void EvKeyRelease(uint key, uint mask)=0</div><div class="ttdoc">Event on the board.</div></div>
-<div class="ttc" id="aclass_c_p_window1_html_abc98e682c927fc3071eb6da0880b795d"><div class="ttname"><a href="class_c_p_window1.html#abc98e682c927fc3071eb6da0880b795d">CPWindow1::saveprefs</a></div><div class="ttdeci">void saveprefs(lxString name, lxString value)</div><div class="ttdoc">Save the preferences.</div><div class="ttdef"><b>Definition:</b> picsimlab1.cc:617</div></div>
+<div class="ttc" id="aclass_c_p_window1_html_abc98e682c927fc3071eb6da0880b795d"><div class="ttname"><a href="class_c_p_window1.html#abc98e682c927fc3071eb6da0880b795d">CPWindow1::saveprefs</a></div><div class="ttdeci">void saveprefs(lxString name, lxString value)</div><div class="ttdoc">Save the preferences.</div><div class="ttdef"><b>Definition:</b> picsimlab1.cc:624</div></div>
 <div class="ttc" id="aclass_c_p_window1_html_a5ac98dc50ff5f47fd05ebd534d80d1f0"><div class="ttname"><a href="class_c_p_window1.html#a5ac98dc50ff5f47fd05ebd534d80d1f0">CPWindow1::GetSharePath</a></div><div class="ttdeci">lxString GetSharePath(void)</div><div class="ttdoc">Get the file path of resources.</div><div class="ttdef"><b>Definition:</b> picsimlab1.h:162</div></div>
 <div class="ttc" id="aclass_c_p_window1_html_af08244612c785b8acc158fbc5d95a444"><div class="ttname"><a href="class_c_p_window1.html#af08244612c785b8acc158fbc5d95a444">CPWindow1::Get_mcupwr</a></div><div class="ttdeci">int Get_mcupwr(void)</div><div class="ttdoc">Return actual power status of microcontroller ON/OFF.</div><div class="ttdef"><b>Definition:</b> picsimlab1.h:195</div></div>
 <div class="ttc" id="aclassboard_html_a803827850c5c111d0af986ca992f8bdb"><div class="ttname"><a href="classboard.html#a803827850c5c111d0af986ca992f8bdb">board::MEraseFlash</a></div><div class="ttdeci">virtual void MEraseFlash(void)=0</div><div class="ttdoc">board microcontroller erase flash memory (program)</div></div>

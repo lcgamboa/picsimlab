@@ -13,9 +13,11 @@ var dir_6fac9273c1f4413d2ee63ba6cd0b0eb2 =
     [ "ldd_max72xx.h", "ldd__max72xx_8h_source.html", null ],
     [ "mi2c_24CXXX.h", "mi2c__24_c_x_x_x_8h_source.html", null ],
     [ "mplabxd.h", "mplabxd_8h_source.html", null ],
+    [ "rcontrol.h", "rcontrol_8h_source.html", null ],
     [ "rtc_ds1307.h", "rtc__ds1307_8h_source.html", null ],
     [ "rtc_pfc8563.h", "rtc__pfc8563_8h_source.html", null ],
     [ "sdcard.h", "sdcard_8h_source.html", null ],
+    [ "tsc_xpt2046.h", "tsc__xpt2046_8h_source.html", null ],
     [ "uart.h", "uart_8h_source.html", null ],
     [ "vterm.h", "vterm_8h_source.html", null ]
 ];

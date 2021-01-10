@@ -21,15 +21,16 @@ var classcpart___signal_generator =
     [ "ReadPreferences", "classcpart___signal_generator.html#a0c8e371e8a05eac784469588c521a0d5", null ],
     [ "ReadPropertiesWindow", "classcpart___signal_generator.html#a31382fd4cdcb6ce5082c1206aea080f0", null ],
     [ "WritePreferences", "classcpart___signal_generator.html#a53239795c7a90a60982383ff6678547f", null ],
-    [ "active", "classcpart___signal_generator.html#aa479499243e26a5c6bfc59e055afac22", null ],
+    [ "active", "classcpart___signal_generator.html#a152a5b4ee00244d8e50441c924c398fc", null ],
     [ "ampl", "classcpart___signal_generator.html#a23907c253e316cc6c30853033d631d97", null ],
     [ "freq", "classcpart___signal_generator.html#a7ab916a29310390cff5da582c2a3f7c8", null ],
-    [ "input_pins", "classcpart___signal_generator.html#aacf323680f36db266e5197b6838861a1", null ],
+    [ "input_pins", "classcpart___signal_generator.html#aee2190e492aafe58356af73410a0c8e7", null ],
     [ "JUMPSTEPS_", "classcpart___signal_generator.html#aee94ee4b269b284e721ea97e9988449a", null ],
     [ "lastd", "classcpart___signal_generator.html#a6040e847b26f7fd2c754314c7db9e89c", null ],
     [ "maxfreq", "classcpart___signal_generator.html#ac6343d891f43e11a6cb279fdc5cc3ffb", null ],
     [ "mcount", "classcpart___signal_generator.html#a883b08ce75d505c0476093cb4879b370", null ],
+    [ "offs", "classcpart___signal_generator.html#a5c066c7a98bd78462c4a522cb53ca949", null ],
     [ "ts", "classcpart___signal_generator.html#a754ad8ebf98eb27c8efbe499727e7ca0", null ],
     [ "type", "classcpart___signal_generator.html#ae24aa8ce9b48210d08097264caaa5777", null ],
-    [ "values", "classcpart___signal_generator.html#a5358a13466c74f32ff001b06b7967258", null ]
+    [ "values", "classcpart___signal_generator.html#a11d0dca92089fa680b5fa21d6b24d8e9", null ]
 ];

@@ -26,6 +26,7 @@ var classboard__qemu__stm32 =
     [ "MStepResume", "classboard__qemu__stm32.html#af960654cf4a6e8d309d231db432e0e9b", null ],
     [ "pins_reset", "classboard__qemu__stm32.html#a717ea0cefa73e502fa100d5df27befa8", null ],
     [ "qemu_cmd", "classboard__qemu__stm32.html#a3cfd6afdff29fbd90c3ec086252c3dfc", null ],
+    [ "ADCvalues", "classboard__qemu__stm32.html#a95f70337ffd59cae0f9b5b9c27e8d12f", null ],
     [ "connected", "classboard__qemu__stm32.html#a7177b962cb3999060e8949e42ce20677", null ],
     [ "fname_", "classboard__qemu__stm32.html#a21afa11e3d70ce945c030526858f988d", null ],
     [ "fname_bak", "classboard__qemu__stm32.html#a51eb1c08240e5f6902b1e2a7750f4c25", null ],

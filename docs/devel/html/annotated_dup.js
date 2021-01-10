@@ -86,6 +86,7 @@ var annotated_dup =
     [ "rtc2_t", "structrtc2__t.html", "structrtc2__t" ],
     [ "rtc_t", "structrtc__t.html", "structrtc__t" ],
     [ "sdcard_t", "structsdcard__t.html", "structsdcard__t" ],
+    [ "tsc_XPT2046_t", "structtsc___x_p_t2046__t.html", "structtsc___x_p_t2046__t" ],
     [ "uart_t", "structuart__t.html", "structuart__t" ],
     [ "vcd_reg_t", "structvcd__reg__t.html", "structvcd__reg__t" ],
     [ "vterm_t", "structvterm__t.html", "structvterm__t" ]

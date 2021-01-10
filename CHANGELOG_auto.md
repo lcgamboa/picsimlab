@@ -1,6 +1,22 @@
 ## (unreleased)
 
+### New
+
+* Initial support to TCP remote control interface. [lcgamboa]
+
+* Initial support to touch controller xpt2046. [lcgamboa]
+
+* Support to read in ili9340 8 bit interface added. [lcgamboa]
+
+* Support to set offset in Signal Generator added. [lcgamboa]
+
+* Support to qemu_stm32 analog channels added. [lcgamboa]
+
+* Support to ili9341 8 bit parallel mode added. [lcgamboa]
+
 ### Fix
+
+* Correct state of uart txpin on reset fixed. [lcgamboa]
 
 * Serial bitbang tx bug fixed. [lcgamboa]
 

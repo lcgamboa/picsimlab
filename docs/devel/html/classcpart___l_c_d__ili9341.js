@@ -2,8 +2,13 @@ var classcpart___l_c_d__ili9341 =
 [
     [ "cpart_LCD_ili9341", "classcpart___l_c_d__ili9341.html#ae5827d06799a0c337c380470d5e4cde2", null ],
     [ "~cpart_LCD_ili9341", "classcpart___l_c_d__ili9341.html#aacea89d452f205c9d99cefd332a4a68f", null ],
+    [ "ChangeType", "classcpart___l_c_d__ili9341.html#ad7e8db90e8c5b521af7656a921b698d7", null ],
+    [ "ComboChange", "classcpart___l_c_d__ili9341.html#a0133ea1d5722e8dd946ef9d075a393a6", null ],
     [ "ConfigurePropertiesWindow", "classcpart___l_c_d__ili9341.html#a91a63727e5022e12c35904e294ca7541", null ],
     [ "Draw", "classcpart___l_c_d__ili9341.html#a0a91f53a62d0e0782a839c81f964d488", null ],
+    [ "EvMouseButtonPress", "classcpart___l_c_d__ili9341.html#a7865a0f85799c04aa2afd98b06fa6d40", null ],
+    [ "EvMouseButtonRelease", "classcpart___l_c_d__ili9341.html#acd4113c9c5702d9e82137f07ee189f72", null ],
+    [ "EvMouseMove", "classcpart___l_c_d__ili9341.html#ad9a784104aff7b581632ff0b6d3dc0d5", null ],
     [ "get_in_id", "classcpart___l_c_d__ili9341.html#ad47161c00856c4f26d86c7b28c9aca25", null ],
     [ "get_out_id", "classcpart___l_c_d__ili9341.html#ac2201a7f2706267cc7e89dfe0e8c4210", null ],
     [ "GetAboutInfo", "classcpart___l_c_d__ili9341.html#a6eee9e1904efd940cc7dd0e6dc7a9bc6", null ],
@@ -18,7 +23,10 @@ var classcpart___l_c_d__ili9341 =
     [ "ReadPropertiesWindow", "classcpart___l_c_d__ili9341.html#a33a302086175f45fad25e22d92e8d160", null ],
     [ "Reset", "classcpart___l_c_d__ili9341.html#a5950a85dda7994db1279ea34f2b7ce28", null ],
     [ "WritePreferences", "classcpart___l_c_d__ili9341.html#a443afcf145f2ae38a2f536c8c267571a", null ],
-    [ "input_pins", "classcpart___l_c_d__ili9341.html#ad2a40dbab7325b1395f2f71cd920e49d", null ],
+    [ "active", "classcpart___l_c_d__ili9341.html#aeabf40261fc5a8c6d23402162e11717f", null ],
+    [ "input_pins", "classcpart___l_c_d__ili9341.html#aef3b94ebc1367656f6ab57bd083fe63b", null ],
     [ "lcd", "classcpart___l_c_d__ili9341.html#ac44ca0238971eb2e75745f3fa225a9ea", null ],
+    [ "touch", "classcpart___l_c_d__ili9341.html#aee7e2e07b986e73cd5885b28f098205d", null ],
+    [ "touch_pins", "classcpart___l_c_d__ili9341.html#ad5bc9c746dfdb872fd4c909bb793210d", null ],
     [ "type_com", "classcpart___l_c_d__ili9341.html#ad111322e1f1de21db78bdd9477eeb3d1", null ]
 ];
