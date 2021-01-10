@@ -39,6 +39,8 @@ CPWindow1 Window1;
 #include"picsimlab4.h"
 #include"picsimlab5.h"
 
+#include"devices/rcontrol.h"
+
 #ifdef __EMSCRIPTEN__
 #include<emscripten.h>
 #endif
@@ -117,7 +119,11 @@ CPWindow1::timer1_EvOnTime(CControl * control)
  status.st[0] &= ~ST_T1;
 
  if (!tgo)
-  tgo = 1; //thread sync
+  {
+   tgo = 1; //thread sync
+  }
+ 
+ rcontrol_loop ();
 }
 
 void
@@ -176,7 +182,7 @@ CPWindow1::timer2_EvOnTime(CControl * control)
  if (error & ERR_VERSION)
   {
    error &= ~ERR_VERSION;
-   Message_sz ("The loaded workspace was made with a newer version "+pzw_ver+".\n Please update your PICSimLab " _VERSION_ " .", 450, 200);
+   Message_sz ("The loaded workspace was made with a newer version " + pzw_ver + ".\n Please update your PICSimLab " _VERSION_ " .", 450, 200);
   }
 
 #ifdef CONVERTER_MODE
@@ -329,6 +335,7 @@ CPWindow1::_EvOnCreate(CControl * control)
   }
  create++;
 
+ rcontrol_init (5000);
 }
 
 void
@@ -649,6 +656,8 @@ CPWindow1::_EvOnDestroy(CControl * control)
 
  Window4.Hide ();
  Window5.Hide ();
+
+ rcontrol_end ();
 
  timer1.SetRunState (0);
  timer2.SetRunState (0);
@@ -1155,9 +1164,9 @@ CPWindow1::LoadWorkspace(lxString fnpzw)
       {
        int maj, min, rev, ser;
        int maj_, min_, rev_, ser_;
-       
+
        pzw_ver = value;
-           
+
        sscanf (_VERSION_, "%i.%i.%i", &maj, &min, &rev);
        ser = maj * 10000 + min * 100 + rev;
 
