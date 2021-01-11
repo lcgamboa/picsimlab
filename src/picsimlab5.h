@@ -161,6 +161,9 @@ public:
     void Setfdtype(int value);
     bool SavePinAlias(lxString fname);
     bool LoadPinAlias(lxString fname, unsigned char show_error_msg = 0);
+    part * GetPart(int pn);
+    int GetPartsCount(void);
+    
 private:
     board *pboard;
     lxString PinNames[256];
@@ -169,7 +172,7 @@ private:
     unsigned char PinsCount;
     unsigned char useAlias;
     int partsc;
-    part *parts[MAX_PARTS];
+    part * parts[MAX_PARTS];
     CItemMenu MParts[MAX_PARTS];
     lxString PartToCreate;
     int PartSelected;

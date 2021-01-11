@@ -32,7 +32,7 @@ board::board(void)
  outputc = 0;
  use_oscope = 0;
  use_spare = 0;
- Proc=""; 
+ Proc = "";
  p_MCLR = 1;
 }
 
@@ -256,6 +256,18 @@ board::GetUseSpareParts(void)
 }
 
 void
+board::SetName(lxString name)
+{
+ Name = name;
+}
+
+lxString
+board::GetName(void)
+{
+ return Name;
+}
+
+void
 board::SetProcessorName(lxString proc)
 {
  Proc = proc;
@@ -266,3 +278,4 @@ board::GetProcessorName(void)
 {
  return Proc;
 }
+

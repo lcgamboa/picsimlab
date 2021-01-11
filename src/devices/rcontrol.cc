@@ -25,6 +25,7 @@
 
 
 #include "../picsimlab1.h"
+#include "../picsimlab5.h"
 #include "rcontrol.h"
 
 #define dprint if (0) {} else printf
@@ -55,6 +56,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<unistd.h>
+#include <lxrad_NOGUI/mstring.h>
 
 void setnblock(int sock_descriptor);
 
@@ -153,7 +155,7 @@ rcontrol_start(void)
  memset (buffer, 0, BSIZE);
  bp = 0;
 
- return sendtext ("\nPICSimLab Remote Control Interface\n\n  Type help to see supported commands\n\n");
+ return sendtext ("\nPICSimLab Remote Control Interface\n\n  Type help to see supported commands\n\n>");
 
 }
 
@@ -189,6 +191,9 @@ rcontrol_loop(void)
 {
  int n;
  int ret = 0;
+ lxString stemp;
+ board * Board;
+ part * Part;
 
  //open connection  
  if (sockfd < 0)
@@ -230,50 +235,118 @@ rcontrol_loop(void)
 
      dprint ("cmd[%s]\n", cmd);
 
+     switch (cmd[0])
+      {
+      case 'e':
+       if (!strcmp (cmd, "exit"))
+        {
+         sendtext ("Ok\n");
+         Window1.WDestroy ();
+         return 0;
+        }
+       else
+        {
+         ret = sendtext ("ERROR\n>");
+        }
+       break;
+      case 'h':
+       if (!strcmp (cmd, "help"))
+        {
+         ret += sendtext ("List of supported commands:\n");
+         ret += sendtext ("  exit    - shutdown PICSimLab\n");
+         ret += sendtext ("  help    - show this message\n");
+         ret += sendtext ("  info    - show actual setup info\n");
+         ret += sendtext ("  quit    - exit remote control interface\n");
+         ret += sendtext ("  reset   - reset the board\n");
+         ret += sendtext ("  version - show PICSimLab version\n");
 
-     if (!strcmp (cmd, "quit"))
-      {
-       sendtext ("Ok\n");
-       ret = 1;
-      }
-     else if (!strcmp (cmd, "exit"))
-      {
-       sendtext ("Ok\n");
-       Window1.WDestroy ();
-       return 0;
-      }
-     else if (!strcmp (cmd, "reset"))
-      {
-       Window1.GetBoard ()->MReset (0);
-       ret = sendtext ("Ok\n");
-      }
-     else if (!strcmp (cmd, "help"))
-      {
-       ret += sendtext ("List of supported commands:\n");
-       ret += sendtext ("  exit  - shutdown PICSimLab\n");
-       ret += sendtext ("  help  - show this message\n");
-       ret += sendtext ("  reset - reset the board\n");
-       ret += sendtext ("  quit  - exit remote control interface\n");
+         ret += sendtext ("Ok\n>");
+        }
+       else
+        {
+         ret = sendtext ("ERROR\n>");
+        }
+       break;
+      case 'i':
+       if (!strcmp (cmd, "info"))
+        {
+         Board = Window1.GetBoard ();
+         stemp.Printf ("Board:     %s\n", Board->GetName ());
+         ret += sendtext ((const char *) stemp.c_str ());
+         stemp.Printf ("Processor: %s\n", Board->GetProcessorName ());
+         ret += sendtext ((const char *) stemp.c_str ());
+         stemp.Printf ("Frequency: %f\n", Board->MGetFreq ());
+         ret += sendtext ((const char *) stemp.c_str ());
+         stemp.Printf ("Use Spare: %i\n", Board->GetUseSpareParts ());
+         ret += sendtext ((const char *) stemp.c_str ());
 
-       ret += sendtext ("Ok\n");
-      }
-     else
-      {
-       ret = sendtext ("ERROR\n");
-      }
+         if (Board->GetUseSpareParts ())
+           {
+            for (int i = 0; i < Window5.GetPartsCount (); i++)
+             {
+              Part = Window5.GetPart (i);
 
+              stemp.Printf ("  Part %i: %s\n", i, (const char *)Part->GetName ());
+              ret += sendtext ((const char *) stemp.c_str ());
+             }
+           }
+             ret += sendtext ("Ok\n>");
+        }
+       else
+        {
+             ret = sendtext ("ERROR\n>");
+        }
+             break;
+             case 'q':
+             if (!strcmp (cmd, "quit"))
+        {
+             sendtext ("Ok\n");
+             ret = 1;
+        }
+       else
+        {
+             ret = sendtext ("ERROR\n>");
+        }
+             break;
+             case 'r':
+             if (!strcmp (cmd, "reset"))
+        {
+             Window1.GetBoard ()->MReset (0);
+             ret = sendtext ("Ok\n>");
+        }
+       else
+        {
+             ret = sendtext ("ERROR\n>");
+        }
+             break;
+             case 'v':
+             if (!strcmp (cmd, "version"))
+        {
+             stemp.Printf (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: %s %s %s\n"), lxT (_VERSION_), lxT (_DATE_), lxT (_ARCH_));
+             ret += sendtext ((const char *) stemp.c_str ());
+             ret += sendtext ("Ok\n>");
+        }
+       else
+        {
+             ret = sendtext ("ERROR\n>");
+        }
+             break;
+             default:
+             ret = sendtext ("ERROR\n>");
+             break;
+      }
 
     }
    else
     {
-     bp += n;
-     if (bp > BSIZE)bp = BSIZE;
-    }
+             bp += n;
+             if (bp > BSIZE)bp = BSIZE;
+     }
 
 
 
 
-   /*
+             /*
         if ((n = recv (sockfd, (char *) ramreceived, dbg_board->DBGGetRAMSize (), MSG_WAITALL)) != (int) dbg_board->DBGGetRAMSize ())
          {
           printf ("receive error : %s \n", strerror (errno));
@@ -288,7 +361,7 @@ rcontrol_loop(void)
           reply = 0x01;
          }
     */
-   /*
+             /*
       if (send (sockfd, (char *) &reply, 1, MSG_NOSIGNAL) != 1)
        {
         printf ("send error : %s \n", strerror (errno));
@@ -297,9 +370,9 @@ rcontrol_loop(void)
     */
   }
 
- //close connection
- if (ret)rcontrol_stop ();
+             //close connection
+             if (ret)rcontrol_stop ();
 
- return ret;
-}
+             return ret;
+ }
 

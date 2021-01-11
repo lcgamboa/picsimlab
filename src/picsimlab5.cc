@@ -1158,3 +1158,19 @@ CPWindow5::Setfdtype(int value)
  fdtype = value;
  oldfname = filedialog1.GetFileName ();
 }
+
+part *
+CPWindow5::GetPart(int pn)
+{
+ if (pn < partsc)
+  {
+   return parts[pn];
+  }
+ return NULL;
+}
+
+int
+CPWindow5::GetPartsCount(void)
+{
+ return partsc;
+}

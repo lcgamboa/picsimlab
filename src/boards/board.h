@@ -194,6 +194,16 @@ class board
       int GetUseSpareParts(void);
      
      /**
+     * @brief Set board name registered in PICSimLab  
+     */ 
+      void  SetName(lxString name);
+     
+     /**
+     * @brief Get board name registered in PICSimLab  
+     */ 
+      lxString  GetName(void);  
+      
+     /**
      * @brief Set board processor   
      */ 
       void  SetProcessorName(lxString proc);
@@ -389,7 +399,8 @@ class board
       virtual unsigned int DBGGetEEPROM_Size(void) {INCOMPLETE; return 0;};
  
 protected:      
-      lxString Proc;          ///< Name of processor in use
+      lxString Name;        ///< Name of board registered in PICSimLab  
+      lxString Proc;        ///< Name of processor in use
       input_t  input[100];  ///< input map elements
       output_t output[100]; ///< output map elements 
       int inputc;           ///< input map elements counter 
