@@ -6,13 +6,13 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:Luis Claudio Gamboa Lopes -->
-<area shape="rect" coords="30,288,79,307" href="P1" />
-<area shape="rect" coords="90,288,139,307" href="P2" />
-<area shape="rect" coords="149,288,198,307" href="P3" />
-<area shape="rect" coords="207,288,256,307" href="P4" />
-<area shape="circle" coords="53,269,11" href="L1" />
-<area shape="circle" coords="113,269,11" href="L2" />
-<area shape="circle" coords="172,269,11" href="L3" />
-<area shape="circle" coords="233,270,11" href="L4" />
-<area shape="circle" coords="129,93,32" href="ROT" />
+<area shape="rect" coords="30,288,79,307" href="PN_1" />
+<area shape="rect" coords="90,288,139,307" href="PN_2" />
+<area shape="rect" coords="149,288,198,307" href="PN_3" />
+<area shape="rect" coords="207,288,256,307" href="PN_4" />
+<area shape="circle" coords="53,269,11" href="LD_1" />
+<area shape="circle" coords="113,269,11" href="LD_2" />
+<area shape="circle" coords="172,269,11" href="LD_3" />
+<area shape="circle" coords="233,270,11" href="LD_4" />
+<area shape="circle" coords="129,93,32" href="DG_ROT" />
 </map>

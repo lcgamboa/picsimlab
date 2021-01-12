@@ -143,16 +143,16 @@ unsigned short
 cpart_LCD_ssd1306::get_out_id(char * name)
 {
 
- if (strcmp (name, "P1") == 0)return O_P1;
- if (strcmp (name, "P2") == 0)return O_P2;
- if (strcmp (name, "P3") == 0)return O_P3;
- if (strcmp (name, "P4") == 0)return O_P4;
- if (strcmp (name, "P5") == 0)return O_P5;
+ if (strcmp (name, "PN_1") == 0)return O_P1;
+ if (strcmp (name, "PN_2") == 0)return O_P2;
+ if (strcmp (name, "PN_3") == 0)return O_P3;
+ if (strcmp (name, "PN_4") == 0)return O_P4;
+ if (strcmp (name, "PN_5") == 0)return O_P5;
 
- if (strcmp (name, "F1") == 0)return O_F1;
- if (strcmp (name, "F2") == 0)return O_F2;
+ if (strcmp (name, "PN_F1") == 0)return O_F1;
+ if (strcmp (name, "PN_F2") == 0)return O_F2;
 
- if (strcmp (name, "LCD") == 0)return O_LCD;
+ if (strcmp (name, "DS_LCD") == 0)return O_LCD;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;

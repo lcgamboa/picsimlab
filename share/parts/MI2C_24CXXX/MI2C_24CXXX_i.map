@@ -6,7 +6,7 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:lcganmboa@yahoo.com             -->
-<area shape="rect" coords="12,10,73,35" href="LOAD" />
-<area shape="rect" coords="13,39,74,65" href="SAVE" />
-<area shape="rect" coords="155,9,216,35" href="VIEW" />
+<area shape="rect" coords="12,10,73,35" href="PB_LOAD" />
+<area shape="rect" coords="13,39,74,65" href="PB_SAVE" />
+<area shape="rect" coords="155,9,216,35" href="PB_VIEW" />
 </map>

@@ -6,8 +6,8 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:lcganmboa@yahoo.com                            -->
-<area shape="rect" coords="52,83,70,181" href="RX" />
-<area shape="rect" coords="83,83,101,182" href="TX" />
-<area shape="rect" coords="62,32,84,44" href="LTX" />
-<area shape="rect" coords="62,50,84,62" href="LRX" />
+<area shape="rect" coords="52,83,70,181" href="PN_RX" />
+<area shape="rect" coords="83,83,101,182" href="PN_TX" />
+<area shape="rect" coords="62,32,84,44" href="LD_TX" />
+<area shape="rect" coords="62,50,84,62" href="LD_RX" />
 </map>

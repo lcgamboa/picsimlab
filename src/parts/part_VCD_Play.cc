@@ -191,9 +191,9 @@ cpart_VCD_Play::Draw(void)
 unsigned short
 cpart_VCD_Play::get_in_id(char * name)
 {
- if (strcmp (name, "PLAY") == 0)return I_PLAY;
- if (strcmp (name, "VIEW") == 0)return I_VIEW;
- if (strcmp (name, "LOAD") == 0)return I_LOAD;
+ if (strcmp (name, "PB_PLAY") == 0)return I_PLAY;
+ if (strcmp (name, "PB_VIEW") == 0)return I_VIEW;
+ if (strcmp (name, "PB_LOAD") == 0)return I_LOAD;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
@@ -203,26 +203,26 @@ unsigned short
 cpart_VCD_Play::get_out_id(char * name)
 {
 
- if (strcmp (name, "P1") == 0)return O_P1;
- if (strcmp (name, "P2") == 0)return O_P2;
- if (strcmp (name, "P3") == 0)return O_P3;
- if (strcmp (name, "P4") == 0)return O_P4;
- if (strcmp (name, "P5") == 0)return O_P5;
- if (strcmp (name, "P6") == 0)return O_P6;
- if (strcmp (name, "P7") == 0)return O_P7;
- if (strcmp (name, "P8") == 0)return O_P8;
+ if (strcmp (name, "PN_1") == 0)return O_P1;
+ if (strcmp (name, "PN_2") == 0)return O_P2;
+ if (strcmp (name, "PN_3") == 0)return O_P3;
+ if (strcmp (name, "PN_4") == 0)return O_P4;
+ if (strcmp (name, "PN_5") == 0)return O_P5;
+ if (strcmp (name, "PN_6") == 0)return O_P6;
+ if (strcmp (name, "PN_7") == 0)return O_P7;
+ if (strcmp (name, "PN_8") == 0)return O_P8;
 
- if (strcmp (name, "L1") == 0)return O_L1;
- if (strcmp (name, "L2") == 0)return O_L2;
- if (strcmp (name, "L3") == 0)return O_L3;
- if (strcmp (name, "L4") == 0)return O_L4;
- if (strcmp (name, "L5") == 0)return O_L5;
- if (strcmp (name, "L6") == 0)return O_L6;
- if (strcmp (name, "L7") == 0)return O_L7;
- if (strcmp (name, "L8") == 0)return O_L8;
+ if (strcmp (name, "LD_1") == 0)return O_L1;
+ if (strcmp (name, "LD_2") == 0)return O_L2;
+ if (strcmp (name, "LD_3") == 0)return O_L3;
+ if (strcmp (name, "LD_4") == 0)return O_L4;
+ if (strcmp (name, "LD_5") == 0)return O_L5;
+ if (strcmp (name, "LD_6") == 0)return O_L6;
+ if (strcmp (name, "LD_7") == 0)return O_L7;
+ if (strcmp (name, "LD_8") == 0)return O_L8;
 
- if (strcmp (name, "NAME") == 0)return O_NAME;
- if (strcmp (name, "REC") == 0)return O_PLAY;
+ if (strcmp (name, "DI_NAME") == 0)return O_NAME;
+ if (strcmp (name, "LD_REC") == 0)return O_PLAY;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;

@@ -233,15 +233,15 @@ unsigned short
 cpart_tempsys::get_out_id(char * name)
 {
 
- if (strcmp (name, "VT") == 0)return O_VT;
- if (strcmp (name, "HT") == 0)return O_HT;
- if (strcmp (name, "CO") == 0)return O_CO;
- if (strcmp (name, "TE") == 0)return O_TE;
- if (strcmp (name, "TA") == 0)return O_TA;
- if (strcmp (name, "F1") == 0)return O_F1;
- if (strcmp (name, "F2") == 0)return O_F2;
- if (strcmp (name, "OTA") == 0)return O_OTA;
- if (strcmp (name, "OTE") == 0)return O_OTE;
+ if (strcmp (name, "DG_VT") == 0)return O_VT;
+ if (strcmp (name, "PN_HT") == 0)return O_HT;
+ if (strcmp (name, "PN_CO") == 0)return O_CO;
+ if (strcmp (name, "PN_TE") == 0)return O_TE;
+ if (strcmp (name, "PN_TA") == 0)return O_TA;
+ if (strcmp (name, "PN_F1") == 0)return O_F1;
+ if (strcmp (name, "PN_F2") == 0)return O_F2;
+ if (strcmp (name, "DI_OTA") == 0)return O_OTA;
+ if (strcmp (name, "DI_OTE") == 0)return O_OTE;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;

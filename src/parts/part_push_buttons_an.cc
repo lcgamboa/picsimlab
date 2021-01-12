@@ -61,7 +61,7 @@ cpart_pbuttons_an::cpart_pbuttons_an(unsigned x, unsigned y)
  output_pins[0] = 0;
 
  output_value = active * 5.0;
-
+ 
 }
 
 void
@@ -214,16 +214,16 @@ cpart_pbuttons_an::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 unsigned short
 cpart_pbuttons_an::get_in_id(char * name)
 {
- if (strcmp (name, "B1") == 0)return I_B1;
- if (strcmp (name, "B2") == 0)return I_B2;
- if (strcmp (name, "B3") == 0)return I_B3;
- if (strcmp (name, "B4") == 0)return I_B4;
- if (strcmp (name, "B5") == 0)return I_B5;
- if (strcmp (name, "B6") == 0)return I_B6;
- if (strcmp (name, "B7") == 0)return I_B7;
- if (strcmp (name, "B8") == 0)return I_B8;
+ if (strcmp (name, "PB_1") == 0)return I_B1;
+ if (strcmp (name, "PB_2") == 0)return I_B2;
+ if (strcmp (name, "PB_3") == 0)return I_B3;
+ if (strcmp (name, "PB_4") == 0)return I_B4;
+ if (strcmp (name, "PB_5") == 0)return I_B5;
+ if (strcmp (name, "PB_6") == 0)return I_B6;
+ if (strcmp (name, "PB_7") == 0)return I_B7;
+ if (strcmp (name, "PB_8") == 0)return I_B8;
 
- if (strcmp (name, "J1") == 0)return I_J1;
+ if (strcmp (name, "JP_1") == 0)return I_J1;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
@@ -233,25 +233,25 @@ unsigned short
 cpart_pbuttons_an::get_out_id(char * name)
 {
 
- if (strcmp (name, "P1") == 0)return O_P1;
- if (strcmp (name, "P2") == 0)return O_P2;
- if (strcmp (name, "P3") == 0)return O_P3;
- if (strcmp (name, "P4") == 0)return O_P4;
- if (strcmp (name, "P5") == 0)return O_P5;
- if (strcmp (name, "P6") == 0)return O_P6;
- if (strcmp (name, "P7") == 0)return O_P7;
- if (strcmp (name, "P8") == 0)return O_P8;
+ if (strcmp (name, "PN_1") == 0)return O_P1;
+ if (strcmp (name, "PN_2") == 0)return O_P2;
+ if (strcmp (name, "PN_3") == 0)return O_P3;
+ if (strcmp (name, "PN_4") == 0)return O_P4;
+ if (strcmp (name, "PN_5") == 0)return O_P5;
+ if (strcmp (name, "PN_6") == 0)return O_P6;
+ if (strcmp (name, "PN_7") == 0)return O_P7;
+ if (strcmp (name, "PN_8") == 0)return O_P8;
 
- if (strcmp (name, "B1") == 0)return O_B1;
- if (strcmp (name, "B2") == 0)return O_B2;
- if (strcmp (name, "B3") == 0)return O_B3;
- if (strcmp (name, "B4") == 0)return O_B4;
- if (strcmp (name, "B5") == 0)return O_B5;
- if (strcmp (name, "B6") == 0)return O_B6;
- if (strcmp (name, "B7") == 0)return O_B7;
- if (strcmp (name, "B8") == 0)return O_B8;
+ if (strcmp (name, "PB_1") == 0)return O_B1;
+ if (strcmp (name, "PB_2") == 0)return O_B2;
+ if (strcmp (name, "PB_3") == 0)return O_B3;
+ if (strcmp (name, "PB_4") == 0)return O_B4;
+ if (strcmp (name, "PB_5") == 0)return O_B5;
+ if (strcmp (name, "PB_6") == 0)return O_B6;
+ if (strcmp (name, "PB_7") == 0)return O_B7;
+ if (strcmp (name, "PB_8") == 0)return O_B8;
 
- if (strcmp (name, "J1") == 0)return O_J1;
+ if (strcmp (name, "JP_1") == 0)return O_J1;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;

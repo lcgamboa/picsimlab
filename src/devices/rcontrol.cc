@@ -189,7 +189,7 @@ rcontrol_end(void)
 int
 rcontrol_loop(void)
 {
- int i;
+ int i, j;
  int n;
  int ret = 0;
  lxString stemp;
@@ -242,6 +242,7 @@ rcontrol_loop(void)
       case 'e':
        if (!strcmp (cmd, "exit"))
         {
+         //Command exit ========================================================
          sendtext ("Ok\n");
          Window1.WDestroy ();
          return 0;
@@ -254,12 +255,14 @@ rcontrol_loop(void)
       case 'g':
        if (!strncmp (cmd, "get ", 4))
         {
+         //Command get==========================================================
          char * ptr;
+         char * ptr2;
+         Board = Window1.GetBoard ();
 
          if ((ptr = strstr (cmd, "board.in[")))
           {
            int in = (ptr[9] - '0')*10 + (ptr[10] - '0');
-           Board = Window1.GetBoard ();
 
            if (in < Board->GetInputCount ())
             {
@@ -267,7 +270,7 @@ rcontrol_loop(void)
 
              if (Input->status != NULL)
               {
-               stemp.Printf ("board.in[%02i] %s = %i\n", in, Input->name, *((int *) Input->status));
+               stemp.Printf ("board.in[%02i] %s = %i\n", in, Input->name, *((unsigned char *) Input->status));
                sendtext ((const char *) stemp.c_str ());
                sendtext ("Ok\n>");
               }
@@ -285,7 +288,6 @@ rcontrol_loop(void)
          else if ((ptr = strstr (cmd, "board.out[")))
           {
            int out = (ptr[10] - '0')*10 + (ptr[11] - '0');
-           Board = Window1.GetBoard ();
 
            if (out < Board->GetOutputCount ())
             {
@@ -293,7 +295,7 @@ rcontrol_loop(void)
 
              if (Output->status != NULL)
               {
-               stemp.Printf ("board.out[%02i] %s = %i\n", out, Output->name,(int) *((float *) Output->status));
+               stemp.Printf ("board.out[%02i] %s = %i\n", out, Output->name, (int) *((float *) Output->status));
                sendtext ((const char *) stemp.c_str ());
                sendtext ("Ok\n>");
               }
@@ -306,6 +308,80 @@ rcontrol_loop(void)
             {
              ret = sendtext ("ERROR\n>");
 
+            }
+          }
+         else if (Board->GetUseSpareParts ())
+          {
+           if ((ptr = strstr (cmd, "part["))&&(ptr2 = strstr (cmd, "].in[")))
+            {
+             int pn = (ptr[5] - '0')*10 + (ptr[6] - '0');
+             int in = (ptr2[5] - '0')*10 + (ptr2[5] - '0');
+
+             if (pn < Window5.GetPartsCount ())
+              {
+               Part = Window5.GetPart (pn);
+               if (in < Part->GetInputCount ())
+                {
+                 Input = Part->GetInput (in);
+
+                 if (Input->status != NULL)
+                  {
+                   stemp.Printf ("part[%02i].in[%02i] %s = %i\n", pn, in, Input->name, *((unsigned char *) Input->status));
+                   sendtext ((const char *) stemp.c_str ());
+                   sendtext ("Ok\n>");
+                  }
+                 else
+                  {
+                   ret = sendtext ("ERROR\n>");
+                  }
+                }
+               else
+                {
+                 ret = sendtext ("ERROR\n>");
+                }
+              }
+             else
+              {
+               ret = sendtext ("ERROR\n>");
+
+              }
+            }
+           else if ((ptr = strstr (cmd, "part["))&&(ptr2 = strstr (cmd, "].out[")))
+            {
+             int pn = (ptr[5] - '0')*10 + (ptr[6] - '0');
+             int out = (ptr2[6] - '0')*10 + (ptr2[7] - '0');
+
+             if (pn < Window5.GetPartsCount ())
+              {
+               Part = Window5.GetPart (pn);
+               if (out < Part->GetOutputCount ())
+                {
+                 Output = Part->GetOutput (out);
+
+                 if (Output->status != NULL)
+                  {
+                   stemp.Printf ("part[%02i].out[%02i] %s = %i\n", pn, out, Output->name, (int) *((float *) Output->status));
+                   sendtext ((const char *) stemp.c_str ());
+                   sendtext ("Ok\n>");
+                  }
+                 else
+                  {
+                   ret = sendtext ("ERROR\n>");
+                  }
+                }
+               else
+                {
+                 ret = sendtext ("ERROR\n>");
+                }
+              }
+             else
+              {
+               ret = sendtext ("ERROR\n>");
+              }
+            }
+           else
+            {
+             ret = sendtext ("ERROR\n>");
             }
           }
          else
@@ -322,11 +398,12 @@ rcontrol_loop(void)
       case 'h':
        if (!strcmp (cmd, "help"))
         {
+         //Command help ========================================================
          ret += sendtext ("List of supported commands:\n");
          ret += sendtext ("  exit      - shutdown PICSimLab\n");
          ret += sendtext ("  get ob    - get object value\n");
          ret += sendtext ("  help      - show this message\n");
-         ret += sendtext ("  info      - show actual setup info\n");
+         ret += sendtext ("  info      - show actual setup info and objects\n");
          ret += sendtext ("  quit      - exit remote control interface\n");
          ret += sendtext ("  reset     - reset the board\n");
          ret += sendtext ("  set ob vl - set object with value\n");
@@ -342,6 +419,7 @@ rcontrol_loop(void)
       case 'i':
        if (!strcmp (cmd, "info"))
         {
+         //Command info ========================================================
          Board = Window1.GetBoard ();
          stemp.Printf ("Board:     %s\n", Board->GetName ());
          ret += sendtext ((const char *) stemp.c_str ());
@@ -360,7 +438,7 @@ rcontrol_loop(void)
 
            if (/*(Input->name[0] == 'P')&&(Input->name[1] == 'B')&&*/ (Input->status != NULL))
             {
-             stemp.Printf ("    board.in[%02i] %s = %i\n", i, Input->name, *((int *) Input->status));
+             stemp.Printf ("    board.in[%02i] %s = %i\n", i, Input->name, *((unsigned char *) Input->status));
              ret += sendtext ((const char *) stemp.c_str ());
             }
 
@@ -384,8 +462,33 @@ rcontrol_loop(void)
            for (i = 0; i < Window5.GetPartsCount (); i++)
             {
              Part = Window5.GetPart (i);
-             stemp.Printf ("  Part %i: %s\n", i, (const char *) Part->GetName ());
+             stemp.Printf ("  part[%02i]: %s\n", i, (const char *) Part->GetName ());
              ret += sendtext ((const char *) stemp.c_str ());
+
+             for (j = 0; j < Part->GetInputCount (); j++)
+              {
+               Input = Part->GetInput (j);
+               //stemp.Printf ("  Input %i : %s\n", i, Input->name);
+               //ret += sendtext ((const char *) stemp.c_str ());
+
+               if (/*(Input->name[0] == 'P')&&(Input->name[1] == 'B')&&*/ (Input->status != NULL))
+                {
+                 stemp.Printf ("    part[%02i].in[%02i] %s = %i\n", i, j, Input->name, *((unsigned char *) Input->status));
+                 ret += sendtext ((const char *) stemp.c_str ());
+                }
+              }
+             for (j = 0; j < Part->GetOutputCount (); j++)
+              {
+               Output = Part->GetOutput (j);
+               //stemp.Printf ("  Input %i : %s\n", i, Input->name);
+               //ret += sendtext ((const char *) stemp.c_str ());
+
+               if (/*(Input->name[0] == 'P')&&(Input->name[1] == 'B')&&*/ (Output->status != NULL))
+                {
+                 stemp.Printf ("    part[%02i].out[%02i] %s = %i\n", i, j, Output->name, (int) *((float *) Output->status));
+                 ret += sendtext ((const char *) stemp.c_str ());
+                }
+              }
             }
           }
          ret += sendtext ("Ok\n>");
@@ -398,6 +501,7 @@ rcontrol_loop(void)
       case 'q':
        if (!strcmp (cmd, "quit"))
         {
+         //Command quit ========================================================
          sendtext ("Ok\n");
          ret = 1;
         }
@@ -409,6 +513,7 @@ rcontrol_loop(void)
       case 'r':
        if (!strcmp (cmd, "reset"))
         {
+         //Command reset =======================================================
          Window1.GetBoard ()->MReset (0);
          ret = sendtext ("Ok\n>");
         }
@@ -420,17 +525,19 @@ rcontrol_loop(void)
       case 's':
        if (!strncmp (cmd, "set ", 4))
         {
+         //Command set =========================================================
          char * ptr;
+         char * ptr2;
+         Board = Window1.GetBoard ();
 
          if ((ptr = strstr (cmd, "board.in[")))
           {
            int in = (ptr[9] - '0')*10 + (ptr[10] - '0');
            int value;
-           Board = Window1.GetBoard ();
 
            sscanf (ptr + 12, "%i", &value);
 
-           printf ("in[%i] = %i \n", in, value);
+           printf ("board.in[%02i] = %i \n", in, value);
 
            if (in < Board->GetInputCount ())
             {
@@ -438,8 +545,47 @@ rcontrol_loop(void)
 
              if (Input->status != NULL)
               {
-               *((int *) Input->status) = value;
+               *((unsigned char *) Input->status) = value;
                sendtext ("Ok\n>");
+              }
+             else
+              {
+               ret = sendtext ("ERROR\n>");
+              }
+            }
+           else
+            {
+             ret = sendtext ("ERROR\n>");
+
+            }
+          }
+         else if (Board->GetUseSpareParts ()&&(ptr = strstr (cmd, "part["))&&(ptr2 = strstr (cmd, "].in[")))
+          {
+           int pn = (ptr[5] - '0')*10 + (ptr[6] - '0');
+           int in = (ptr2[5] - '0')*10 + (ptr2[6] - '0');
+           int value;
+
+           sscanf (ptr2 + 8, "%i", &value);
+
+           printf ("part[%02i].in[%02i] = %i \n", pn, in, value);
+
+           if (pn < Window5.GetPartsCount ())
+            {
+             Part = Window5.GetPart (pn);
+
+             if (in < Part->GetInputCount ())
+              {
+               Input = Part->GetInput (in);
+
+               if (Input->status != NULL)
+                {
+                 *((unsigned char *) Input->status) = value;
+                 sendtext ("Ok\n>");
+                }
+               else
+                {
+                 ret = sendtext ("ERROR\n>");
+                }
               }
              else
               {
@@ -466,6 +612,7 @@ rcontrol_loop(void)
       case 'v':
        if (!strcmp (cmd, "version"))
         {
+         //Command version =====================================================
          stemp.Printf (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: %s %s %s\n"), lxT (_VERSION_), lxT (_DATE_), lxT (_ARCH_));
          ret += sendtext ((const char *) stemp.c_str ());
          ret += sendtext ("Ok\n>");
@@ -476,10 +623,10 @@ rcontrol_loop(void)
         }
        break;
       default:
+       //Uknown command ========================================================
        ret = sendtext ("ERROR\n>");
        break;
       }
-
     }
    else
     {

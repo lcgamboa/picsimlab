@@ -6,13 +6,13 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:lcganmboa@yahoo.com              -->
-<area shape="rect" coords="93,34,138,52" href="IC" />
-<area shape="rect" coords="10,69,29,166" href="P1" />
-<area shape="rect" coords="40,69,58,166" href="P2" />
-<area shape="rect" coords="70,69,87,166" href="P3" />
-<area shape="rect" coords="100,69,117,166" href="P4" />
-<area shape="rect" coords="129,69,146,166" href="P5" />
-<area shape="rect" coords="160,69,178,166" href="P6" />
-<area shape="rect" coords="190,69,207,166" href="P7" />
-<area shape="rect" coords="220,69,236,167" href="P8" />
+<area shape="rect" coords="93,34,138,52" href="IC_8" />
+<area shape="rect" coords="10,69,29,166" href="PN_1" />
+<area shape="rect" coords="40,69,58,166" href="PN_2" />
+<area shape="rect" coords="70,69,87,166" href="PN_3" />
+<area shape="rect" coords="100,69,117,166" href="PN_4" />
+<area shape="rect" coords="129,69,146,166" href="PN_5" />
+<area shape="rect" coords="160,69,178,166" href="PN_6" />
+<area shape="rect" coords="190,69,207,166" href="PN_7" />
+<area shape="rect" coords="220,69,236,167" href="PN_8" />
 </map>

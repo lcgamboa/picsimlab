@@ -160,9 +160,9 @@ cpart_MI2C_24CXXX::Draw(void)
 unsigned short
 cpart_MI2C_24CXXX::get_in_id(char * name)
 {
- if (strcmp (name, "LOAD") == 0)return I_LOAD;
- if (strcmp (name, "SAVE") == 0)return I_SAVE;
- if (strcmp (name, "VIEW") == 0)return I_VIEW;
+ if (strcmp (name, "PB_LOAD") == 0)return I_LOAD;
+ if (strcmp (name, "PB_SAVE") == 0)return I_SAVE;
+ if (strcmp (name, "PB_VIEW") == 0)return I_VIEW;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
@@ -172,16 +172,16 @@ unsigned short
 cpart_MI2C_24CXXX::get_out_id(char * name)
 {
 
- if (strcmp (name, "P1") == 0)return O_P1;
- if (strcmp (name, "P2") == 0)return O_P2;
- if (strcmp (name, "P3") == 0)return O_P3;
- if (strcmp (name, "P4") == 0)return O_P4;
- if (strcmp (name, "P5") == 0)return O_P5;
- if (strcmp (name, "P6") == 0)return O_P6;
- if (strcmp (name, "P7") == 0)return O_P7;
- if (strcmp (name, "P8") == 0)return O_P8;
+ if (strcmp (name, "PN_1") == 0)return O_P1;
+ if (strcmp (name, "PN_2") == 0)return O_P2;
+ if (strcmp (name, "PN_3") == 0)return O_P3;
+ if (strcmp (name, "PN_4") == 0)return O_P4;
+ if (strcmp (name, "PN_5") == 0)return O_P5;
+ if (strcmp (name, "PN_6") == 0)return O_P6;
+ if (strcmp (name, "PN_7") == 0)return O_P7;
+ if (strcmp (name, "PN_8") == 0)return O_P8;
 
- if (strcmp (name, "IC") == 0)return O_IC;
+ if (strcmp (name, "IC_8") == 0)return O_IC;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;

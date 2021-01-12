@@ -302,8 +302,8 @@ cpart_ETH_w5500::Draw(void)
 unsigned short
 cpart_ETH_w5500::get_in_id(char * name)
 {
- if (strcmp (name, "CONN") == 0)return I_CONN;
- if (strcmp (name, "STAT") == 0)return I_STAT;
+ if (strcmp (name, "CN_CONN") == 0)return I_CONN;
+ if (strcmp (name, "ST_STAT") == 0)return I_STAT;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
@@ -313,16 +313,16 @@ unsigned short
 cpart_ETH_w5500::get_out_id(char * name)
 {
 
- if (strcmp (name, "P3") == 0)return O_P3;
- if (strcmp (name, "P5") == 0)return O_P5;
- if (strcmp (name, "P6") == 0)return O_P6;
- if (strcmp (name, "P7") == 0)return O_P7;
- if (strcmp (name, "P8") == 0)return O_P8;
- if (strcmp (name, "P9") == 0)return O_P9;
- if (strcmp (name, "LPWR") == 0)return O_LPWR;
- if (strcmp (name, "LLINK") == 0)return O_LLINK;
- if (strcmp (name, "LACT") == 0)return O_LACT;
- if (strcmp (name, "STAT") == 0)return O_STAT;
+ if (strcmp (name, "PN_3") == 0)return O_P3;
+ if (strcmp (name, "PN_5") == 0)return O_P5;
+ if (strcmp (name, "PN_6") == 0)return O_P6;
+ if (strcmp (name, "PN_7") == 0)return O_P7;
+ if (strcmp (name, "PN_8") == 0)return O_P8;
+ if (strcmp (name, "PN_9") == 0)return O_P9;
+ if (strcmp (name, "LD_PWR") == 0)return O_LPWR;
+ if (strcmp (name, "LD_LINK") == 0)return O_LLINK;
+ if (strcmp (name, "LD_ACT") == 0)return O_LACT;
+ if (strcmp (name, "ST_STAT") == 0)return O_STAT;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;

@@ -6,19 +6,19 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:lcganmboa@yahoo.com           -->
-<area shape="rect" coords="17,40,389,126" href="LCD" />
-<area shape="rect" coords="6,229,25,278" href="F1" />
-<area shape="rect" coords="35,229,54,278" href="F2" />
-<area shape="rect" coords="65,229,84,278" href="F3" />
-<area shape="rect" coords="95,229,114,278" href="P1" />
-<area shape="rect" coords="125,229,144,278" href="P11" />
-<area shape="rect" coords="155,229,174,278" href="P2" />
-<area shape="rect" coords="185,229,204,278" href="P3" />
-<area shape="rect" coords="217,229,236,278" href="P4" />
-<area shape="rect" coords="246,229,265,278" href="P5" />
-<area shape="rect" coords="276,229,295,278" href="P6" />
-<area shape="rect" coords="306,229,325,278" href="P7" />
-<area shape="rect" coords="335,229,354,278" href="P8" />
-<area shape="rect" coords="365,229,384,278" href="P9" />
-<area shape="rect" coords="395,229,414,278" href="P10" />
+<area shape="rect" coords="17,40,389,126" href="DS_LCD" />
+<area shape="rect" coords="6,229,25,278" href="PN_F1" />
+<area shape="rect" coords="35,229,54,278" href="PN_F2" />
+<area shape="rect" coords="65,229,84,278" href="PN_F3" />
+<area shape="rect" coords="95,229,114,278" href="PN_1" />
+<area shape="rect" coords="155,229,174,278" href="PN_2" />
+<area shape="rect" coords="185,229,204,278" href="PN_3" />
+<area shape="rect" coords="217,229,236,278" href="PN_4" />
+<area shape="rect" coords="246,229,265,278" href="PN_5" />
+<area shape="rect" coords="276,229,295,278" href="PN_6" />
+<area shape="rect" coords="306,229,325,278" href="PN_7" />
+<area shape="rect" coords="335,229,354,278" href="PN_8" />
+<area shape="rect" coords="365,229,384,278" href="PN_9" />
+<area shape="rect" coords="395,229,414,278" href="PN_10" />
+<area shape="rect" coords="125,229,144,278" href="PN_11" />
 </map>

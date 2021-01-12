@@ -43,7 +43,7 @@ cpart_leds::cpart_leds(unsigned x, unsigned y)
  lxImage image;
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
- Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
+ Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -137,23 +137,23 @@ unsigned short
 cpart_leds::get_out_id(char * name)
 {
 
- if (strcmp (name, "P1") == 0)return O_P1;
- if (strcmp (name, "P2") == 0)return O_P2;
- if (strcmp (name, "P3") == 0)return O_P3;
- if (strcmp (name, "P4") == 0)return O_P4;
- if (strcmp (name, "P5") == 0)return O_P5;
- if (strcmp (name, "P6") == 0)return O_P6;
- if (strcmp (name, "P7") == 0)return O_P7;
- if (strcmp (name, "P8") == 0)return O_P8;
+ if (strcmp (name, "PN_1") == 0)return O_P1;
+ if (strcmp (name, "PN_2") == 0)return O_P2;
+ if (strcmp (name, "PN_3") == 0)return O_P3;
+ if (strcmp (name, "PN_4") == 0)return O_P4;
+ if (strcmp (name, "PN_5") == 0)return O_P5;
+ if (strcmp (name, "PN_6") == 0)return O_P6;
+ if (strcmp (name, "PN_7") == 0)return O_P7;
+ if (strcmp (name, "PN_8") == 0)return O_P8;
 
- if (strcmp (name, "L1") == 0)return O_L1;
- if (strcmp (name, "L2") == 0)return O_L2;
- if (strcmp (name, "L3") == 0)return O_L3;
- if (strcmp (name, "L4") == 0)return O_L4;
- if (strcmp (name, "L5") == 0)return O_L5;
- if (strcmp (name, "L6") == 0)return O_L6;
- if (strcmp (name, "L7") == 0)return O_L7;
- if (strcmp (name, "L8") == 0)return O_L8;
+ if (strcmp (name, "LD_1") == 0)return O_L1;
+ if (strcmp (name, "LD_2") == 0)return O_L2;
+ if (strcmp (name, "LD_3") == 0)return O_L3;
+ if (strcmp (name, "LD_4") == 0)return O_L4;
+ if (strcmp (name, "LD_5") == 0)return O_L5;
+ if (strcmp (name, "LD_6") == 0)return O_L6;
+ if (strcmp (name, "LD_7") == 0)return O_L7;
+ if (strcmp (name, "LD_8") == 0)return O_L8;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
@@ -173,6 +173,68 @@ void
 cpart_leds::ReadPreferences(lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7]);
+
+ RegisterRemoteControl();
+}
+
+void
+cpart_leds::RegisterRemoteControl(void)
+{
+ const picpin * ppins = Window5.GetPinsValues ();
+ for (int i = 0; i < outputc; i++)
+  {
+   switch (output[i].id)
+    {
+    case O_L1:
+     if (input_pins[0])
+      {
+       output[i].status = (void *) &ppins[input_pins[0]-1].oavalue;
+      }
+     break;
+    case O_L2:
+     if (input_pins[1])
+      {
+       output[i].status = (void *) &ppins[input_pins[1]-1].oavalue;
+      }
+     break;
+    case O_L3:
+     if (input_pins[2])
+      {
+       output[i].status = (void *) &ppins[input_pins[2]-1].oavalue;
+      }
+     break;
+    case O_L4:
+     if (input_pins[3])
+      {
+       output[i].status = (void *) &ppins[input_pins[3]-1].oavalue;
+      }
+     break;
+    case O_L5:
+     if (input_pins[4])
+      {
+       output[i].status = (void *) &ppins[input_pins[4]-1].oavalue;
+      }
+     break;
+    case O_L6:
+     if (input_pins[5])
+      {
+       output[i].status = (void *) &ppins[input_pins[5]-1].oavalue;
+      }
+     break;
+    case O_L7:
+     if (input_pins[6])
+      {
+       output[i].status = (void *) &ppins[input_pins[6]-1].oavalue;
+      }
+     break;
+    case O_L8:
+     if (input_pins[7])
+      {
+       output[i].status = (void *) &ppins[input_pins[7]-1].oavalue;
+      }
+     break;
+    }
+  }
 }
 
 void
@@ -180,7 +242,7 @@ cpart_leds::ConfigurePropertiesWindow(CPWindow * WProp)
 {
  lxString Items = Window5.GetPinsNames ();
  lxString spin;
- 
+
  ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)
   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText ("0  NC");
@@ -271,6 +333,8 @@ cpart_leds::ReadPropertiesWindow(CPWindow * WProp)
  input_pins[5] = atoi (((CCombo*) WProp->GetChildByName ("combo6"))->GetText ());
  input_pins[6] = atoi (((CCombo*) WProp->GetChildByName ("combo7"))->GetText ());
  input_pins[7] = atoi (((CCombo*) WProp->GetChildByName ("combo8"))->GetText ());
+ 
+ RegisterRemoteControl();
 }
 
 

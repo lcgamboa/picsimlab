@@ -6,6 +6,6 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:lcganmboa@yahoo.com            -->
-<area shape="rect" coords="262,46,398,159" href="CONN" />
-<area shape="rect" coords="243,164,369,221" href="STAT" />
+<area shape="rect" coords="262,46,398,159" href="CN_CONN" />
+<area shape="rect" coords="243,164,369,221" href="ST_STAT" />
 </map>

@@ -306,15 +306,15 @@ unsigned short
 cpart_dtfunc::get_out_id(char * name)
 {
 
- if (strcmp (name, "P1") == 0)return O_P1;
- if (strcmp (name, "P2") == 0)return O_P2;
- if (strcmp (name, "IG") == 0)return O_IG;
- if (strcmp (name, "IO") == 0)return O_IO;
- if (strcmp (name, "OG") == 0)return O_OG;
- if (strcmp (name, "OO") == 0)return O_OO;
- if (strcmp (name, "TS") == 0)return O_TS;
- if (strcmp (name, "NUM") == 0)return O_NUM;
- if (strcmp (name, "DEN") == 0)return O_DEN;
+ if (strcmp (name, "PN_1") == 0)return O_P1;
+ if (strcmp (name, "PN_2") == 0)return O_P2;
+ if (strcmp (name, "PR_IG") == 0)return O_IG;
+ if (strcmp (name, "PR_IO") == 0)return O_IO;
+ if (strcmp (name, "PR_OG") == 0)return O_OG;
+ if (strcmp (name, "PR_OO") == 0)return O_OO;
+ if (strcmp (name, "PR_TS") == 0)return O_TS;
+ if (strcmp (name, "PR_NUM") == 0)return O_NUM;
+ if (strcmp (name, "PR_DEN") == 0)return O_DEN;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;

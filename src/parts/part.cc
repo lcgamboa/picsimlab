@@ -27,312 +27,347 @@
 #include "../picsimlab5.h"
 #include "part.h"
 
-part::part ()
+part::part()
 {
-  inputc = 0;
-  outputc = 0;
-  orientation = 0;
+ inputc = 0;
+ outputc = 0;
+ orientation = 0;
 }
 
 void
-part::ReadMaps (void)
+part::ReadMaps(void)
 {
-  inputc = 0;
-  outputc = 0;
-  ReadInputMap (Window1.GetSharePath () + lxT ("parts/") + GetInputMapFile ());
-  ReadOutputMap (Window1.GetSharePath () + lxT ("parts/") + GetOutputMapFile ());
+ inputc = 0;
+ outputc = 0;
+ ReadInputMap (Window1.GetSharePath () + lxT ("parts/") + GetInputMapFile ());
+ ReadOutputMap (Window1.GetSharePath () + lxT ("parts/") + GetOutputMapFile ());
 }
 
 void
-part::ReadInputMap (lxString fname)
+part::ReadInputMap(lxString fname)
 {
-  FILE *fin;
+ FILE *fin;
 
-  char line[256];
+ char line[256];
 
-  char *it;
-  char *shape;
-  char *coords;
-  char *name;
-  char *value;
-
-
-  int x1, y1, x2, y2, r;
+ char *it;
+ char *shape;
+ char *coords;
+ char *name;
+ char *value;
 
 
-  fin = fopen (fname.c_str (), "r");
+ int x1, y1, x2, y2, r;
 
-  if (fin)
+
+ fin = fopen (fname.c_str (), "r");
+
+ if (fin)
+  {
+   while (fgets (line, 256, fin))
     {
-      while (fgets (line, 256, fin))
+     it = strtok (line, "< =\"");
+     if (!strcmp ("img", it))
+      {
+       do
         {
-          it = strtok (line, "< =\"");
-          if (!strcmp ("img", it))
-            {
-              do
-                {
-                  name = strtok (NULL, "< =\"");
-                  value = strtok (NULL, "<=\"");
+         name = strtok (NULL, "< =\"");
+         value = strtok (NULL, "<=\"");
 
-                  if (!strcmp ("width", name))
-                    {
-                      sscanf (value, "%i", &x1);
-                      Width = x1;
-                      //Window1.SetplWidth(x1);
-                      //Window1.draw1.SetWidth(x1*Window1.GetScale());
-                      //Window1.SetWidth(185+x1*Window1.GetScale());
-                    }
+         if (!strcmp ("width", name))
+          {
+           sscanf (value, "%i", &x1);
+           Width = x1;
+           //Window1.SetplWidth(x1);
+           //Window1.draw1.SetWidth(x1*Window1.GetScale());
+           //Window1.SetWidth(185+x1*Window1.GetScale());
+          }
 
-                  if (!strcmp ("height", name))
-                    {
-                      sscanf (value, "%i", &y1);
-                      Height = y1;
-                      //Window1.SetplHeight(y1);
-                      //Window1.draw1.SetHeight(y1*Window1.GetScale());
-                      /*
-                      #ifdef _WIN_
-                                  Window1.SetHeight(75+y1*Window1.GetScale());
-                      #else
-                                  Window1.SetHeight(90+y1*Window1.GetScale());
-                      #endif
-                       */
-                    }
+         if (!strcmp ("height", name))
+          {
+           sscanf (value, "%i", &y1);
+           Height = y1;
+           //Window1.SetplHeight(y1);
+           //Window1.draw1.SetHeight(y1*Window1.GetScale());
+           /*
+           #ifdef _WIN_
+                       Window1.SetHeight(75+y1*Window1.GetScale());
+           #else
+                       Window1.SetHeight(90+y1*Window1.GetScale());
+           #endif
+            */
+          }
 
-                }
-              while (value != NULL);
-
-              //        printf("%s %s %s\n",name,shape,coords);
-
-            }
-          else if (!strcmp ("area", it))
-            {
-              strtok (NULL, "< =\"");
-              shape = strtok (NULL, "< =\"");
-              strtok (NULL, "< =\"");
-              coords = strtok (NULL, "< =\"");
-              strtok (NULL, "< =\"");
-              name = strtok (NULL, "< =\"");
-
-              //        printf("%s %s %s\n",name,shape,coords);
-
-              if (strcmp ("rect", shape) == 0)
-                {
-                  sscanf (coords, "%i,%i,%i,%i\n", &x1, &y1, &x2, &y2);
-                  //          printf("rect=%i,%i,%i,%i\n",x1,y1,x2,y2);
-
-                  input[inputc].x1 = x1;
-                  input[inputc].y1 = y1;
-                  input[inputc].x2 = x2;
-                  input[inputc].y2 = y2;
-                }
-              else
-                {
-                  sscanf (coords, "%i,%i,%i\n", &x1, &y1, &r);
-                  //          printf("circle=%i,%i,%i\n",x1,y1,r);
-                  input[inputc].x1 = x1 - r;
-                  input[inputc].y1 = y1 - r;
-                  input[inputc].x2 = x1 + r;
-                  input[inputc].y2 = y1 + r;
-
-                }
-              strcpy (input[inputc].name, name);
-              input[inputc].id = get_in_id (input[inputc].name);
-              inputc++;
-
-            }
         }
-      fclose (fin);
+       while (value != NULL);
+
+       //        printf("%s %s %s\n",name,shape,coords);
+
+      }
+     else if (!strcmp ("area", it))
+      {
+       strtok (NULL, "< =\"");
+       shape = strtok (NULL, "< =\"");
+       strtok (NULL, "< =\"");
+       coords = strtok (NULL, "< =\"");
+       strtok (NULL, "< =\"");
+       name = strtok (NULL, "< =\"");
+
+       //        printf("%s %s %s\n",name,shape,coords);
+
+       if (strcmp ("rect", shape) == 0)
+        {
+         sscanf (coords, "%i,%i,%i,%i\n", &x1, &y1, &x2, &y2);
+         //          printf("rect=%i,%i,%i,%i\n",x1,y1,x2,y2);
+
+         input[inputc].x1 = x1;
+         input[inputc].y1 = y1;
+         input[inputc].x2 = x2;
+         input[inputc].y2 = y2;
+        }
+       else
+        {
+         sscanf (coords, "%i,%i,%i\n", &x1, &y1, &r);
+         //          printf("circle=%i,%i,%i\n",x1,y1,r);
+         input[inputc].x1 = x1 - r;
+         input[inputc].y1 = y1 - r;
+         input[inputc].x2 = x1 + r;
+         input[inputc].y2 = y1 + r;
+
+        }
+       strcpy (input[inputc].name, name);
+       input[inputc].id = get_in_id (input[inputc].name);
+       input[inputc].status = NULL;
+       inputc++;
+
+      }
     }
-  else
-    {
-      //Message(lxT("Error open input.map")); Not use this in create!!
-      printf ("Error open input.map \"%s\"!\n", (const char*) fname.c_str ());
-    }
+   fclose (fin);
+  }
+ else
+  {
+   //Message(lxT("Error open input.map")); Not use this in create!!
+   printf ("Error open input.map \"%s\"!\n", (const char*) fname.c_str ());
+  }
 
 };
 
 void
-part::ReadOutputMap (lxString fname)
+part::ReadOutputMap(lxString fname)
 {
-  FILE *fin;
+ FILE *fin;
 
-  char line[256];
+ char line[256];
 
-  char *it;
-  char *shape;
-  char *coords;
-  char *name;
+ char *it;
+ char *shape;
+ char *coords;
+ char *name;
 
 
-  int x1, y1, x2, y2, r;
+ int x1, y1, x2, y2, r;
 
-  fin = fopen (fname.c_str (), "r");
+ fin = fopen (fname.c_str (), "r");
 
-  if (fin)
+ if (fin)
+  {
+   while (fgets (line, 256, fin))
     {
-      while (fgets (line, 256, fin))
+     it = strtok (line, "< =\"");
+     if (!strcmp ("area", it))
+      {
+       strtok (NULL, "< =\"");
+       shape = strtok (NULL, "< =\"");
+       strtok (NULL, "< =\"");
+       coords = strtok (NULL, "< =\"");
+       strtok (NULL, "< =\"");
+       name = strtok (NULL, "< =\"");
+
+       //        printf("%s %s %s\n",name,shape,coords);
+
+       if (!strcmp ("rect", shape))
         {
-          it = strtok (line, "< =\"");
-          if (!strcmp ("area", it))
-            {
-              strtok (NULL, "< =\"");
-              shape = strtok (NULL, "< =\"");
-              strtok (NULL, "< =\"");
-              coords = strtok (NULL, "< =\"");
-              strtok (NULL, "< =\"");
-              name = strtok (NULL, "< =\"");
+         sscanf (coords, "%i,%i,%i,%i\n", &x1, &y1, &x2, &y2);
+         //          printf("rect=%i,%i,%i,%i\n",x1,y1,x2,y2);
 
-              //        printf("%s %s %s\n",name,shape,coords);
-
-              if (!strcmp ("rect", shape))
-                {
-                  sscanf (coords, "%i,%i,%i,%i\n", &x1, &y1, &x2, &y2);
-                  //          printf("rect=%i,%i,%i,%i\n",x1,y1,x2,y2);
-
-                  output[outputc].x1 = x1;
-                  output[outputc].y1 = y1;
-                  output[outputc].x2 = x2;
-                  output[outputc].y2 = y2;
-                  output[outputc].r = 0;
-                  //          output[outputc].lval=-1;
-                  strcpy (output[outputc].name, name);
-                  output[outputc].id = get_out_id (output[outputc].name);
-                  outputc++;
-                }
-              else
-                {
-                  sscanf (coords, "%i,%i,%i\n", &x1, &y1, &r);
-                  //          printf("circle=%i,%i,%i\n",x1,y1,r);
-
-                  output[outputc].x1 = x1;
-                  output[outputc].y1 = y1;
-                  output[outputc].r = r;
-                  //          output[outputc].lval=-1;
-                  strcpy (output[outputc].name, name);
-                  output[outputc].id = get_out_id (output[outputc].name);
-                  outputc++;
-                }
-            }
+         output[outputc].x1 = x1;
+         output[outputc].y1 = y1;
+         output[outputc].x2 = x2;
+         output[outputc].y2 = y2;
+         output[outputc].r = 0;
+         //          output[outputc].lval=-1;
+         strcpy (output[outputc].name, name);
+         output[outputc].id = get_out_id (output[outputc].name);
+         output[outputc].status = NULL;
+         outputc++;
         }
+       else
+        {
+         sscanf (coords, "%i,%i,%i\n", &x1, &y1, &r);
+         //          printf("circle=%i,%i,%i\n",x1,y1,r);
 
-      fclose (fin);
+         output[outputc].x1 = x1;
+         output[outputc].y1 = y1;
+         output[outputc].r = r;
+         //          output[outputc].lval=-1;
+         strcpy (output[outputc].name, name);
+         output[outputc].id = get_out_id (output[outputc].name);
+         output[outputc].status = NULL;
+         outputc++;
+        }
+      }
     }
-  else
-    {
-      //Message(lxT("Error open output.map")); not use this in create!!!
-      printf ("Error open output.map \"%s\"!\n", (const char *) fname.c_str ());
-    }
+
+   fclose (fin);
+  }
+ else
+  {
+   //Message(lxT("Error open output.map")); not use this in create!!!
+   printf ("Error open output.map \"%s\"!\n", (const char *) fname.c_str ());
+  }
 
 };
 
 int
-part::PointInside (int x, int y)
+part::PointInside(int x, int y)
 {
 
-  switch (orientation)
-    {
-    case 0:
-    case 2:
-      if (((x >= X)&&(x <= (X + (int) Width)))&&((y >= Y)&&(y <= (Y + (int) Height))))
-        return 1;
-      else
-        return 0;
-      break;
-    case 1:
-    case 3:
-      if (((x >= X)&&(x <= (X + (int) Height)))&&((y >= Y)&&(y <= (Y + (int) Width))))
-        return 1;
-      else
-        return 0;
-      break;
-    }
-  return 0;
-}
-
-int
-part::PointInside (int x, int y, input_t input)
-{
-  int temp;
-  int X1=0, X2=0;
-  int Y1=0, Y2=0;
-
-  switch (orientation)
-    {
-    case 0:
-      X1 = input.x1;
-      Y1 = input.y1;
-      X2 = input.x2;
-      Y2 = input.y2;
-      break;
-    case 1:
-      X1 = Height - input.y1;
-      Y1 = input.x1;
-      X2 = Height - input.y2;
-      Y2 = input.x2;
-      break;
-    case 2:
-      X1 = Width - input.x1;
-      Y1 = Height - input.y1;
-      X2 = Width - input.x2;
-      Y2 = Height - input.y2;
-      break;
-    case 3:
-      X1 = input.y1;
-      Y1 = Width - input.x1;
-      X2 = input.y2;
-      Y2 = Width - input.x2;
-      break;
-    default:
-      break;
-    }
-
-  if (X1 > X2)
-    {
-      temp = X1;
-      X1 = X2;
-      X2 = temp;
-    }
-  if (Y1 > Y2)
-    {
-      temp = Y1;
-      Y1 = Y2;
-      Y2 = temp;
-    }
-
-
-  if (((x >= X1)&&(x <= X2)) && ((y >= Y1)&&(y <= Y2)))
+ switch (orientation)
+  {
+  case 0:
+  case 2:
+   if (((x >= X)&&(x <= (X + (int) Width)))&&((y >= Y)&&(y <= (Y + (int) Height))))
     return 1;
-  else
+   else
     return 0;
+   break;
+  case 1:
+  case 3:
+   if (((x >= X)&&(x <= (X + (int) Height)))&&((y >= Y)&&(y <= (Y + (int) Width))))
+    return 1;
+   else
+    return 0;
+   break;
+  }
+ return 0;
+}
+
+int
+part::PointInside(int x, int y, input_t input)
+{
+ int temp;
+ int X1 = 0, X2 = 0;
+ int Y1 = 0, Y2 = 0;
+
+ switch (orientation)
+  {
+  case 0:
+   X1 = input.x1;
+   Y1 = input.y1;
+   X2 = input.x2;
+   Y2 = input.y2;
+   break;
+  case 1:
+   X1 = Height - input.y1;
+   Y1 = input.x1;
+   X2 = Height - input.y2;
+   Y2 = input.x2;
+   break;
+  case 2:
+   X1 = Width - input.x1;
+   Y1 = Height - input.y1;
+   X2 = Width - input.x2;
+   Y2 = Height - input.y2;
+   break;
+  case 3:
+   X1 = input.y1;
+   Y1 = Width - input.x1;
+   X2 = input.y2;
+   Y2 = Width - input.x2;
+   break;
+  default:
+   break;
+  }
+
+ if (X1 > X2)
+  {
+   temp = X1;
+   X1 = X2;
+   X2 = temp;
+  }
+ if (Y1 > Y2)
+  {
+   temp = Y1;
+   Y1 = Y2;
+   Y2 = temp;
+  }
+
+
+ if (((x >= X1)&&(x <= X2)) && ((y >= Y1)&&(y <= Y2)))
+  return 1;
+ else
+  return 0;
 
 }
 
 int
-part::GetOrientation (void)
+part::GetOrientation(void)
 {
 
-  return orientation;
+ return orientation;
 }
 
 void
-part::SetOrientation (int _orientation)
+part::SetOrientation(int _orientation)
 {
 
-  if (orientation == _orientation)return;
+ if (orientation == _orientation)return;
 
-  if (!Bitmap)return;
+ if (!Bitmap)return;
 
-  orientation = _orientation;
+ orientation = _orientation;
 
-  delete Bitmap;
+ delete Bitmap;
 
-  lxImage image;
+ lxImage image;
 
-  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
-  Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
-  image.Destroy ();
-  canvas.Destroy ();
-  canvas.Create (Window5.GetWWidget (), Bitmap);
+ Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
+ image.Destroy ();
+ canvas.Destroy ();
+ canvas.Create (Window5.GetWWidget (), Bitmap);
 
+}
+
+int
+part::GetInputCount(void)
+{
+ return inputc;
+}
+
+input_t *
+part::GetInput(int n)
+{
+ if (n < inputc)
+  {
+   return &input[n];
+  }
+ return NULL;
+}
+
+int
+part::GetOutputCount(void)
+{
+ return outputc;
+}
+
+output_t *
+part::GetOutput(int n)
+{
+ if (n < outputc)
+  {
+   return &output[n];
+  }
+ return NULL;
 }

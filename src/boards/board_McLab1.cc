@@ -384,7 +384,12 @@ cboard_McLab1::Reset(void)
   }
  if (use_spare)Window5.Reset ();
  
- 
+ RegisterRemoteControl();
+}
+
+void
+cboard_McLab1::RegisterRemoteControl(void)
+{
  for (int i = 0; i < inputc; i++)
   {
    switch (input[i].id)
@@ -403,9 +408,6 @@ cboard_McLab1::Reset(void)
      break;
     case I_JP1:
      input[i].status = &jmp[0];
-     break;
-    default:
-     input[i].status = NULL;
      break;
     }
   }
@@ -457,7 +459,6 @@ cboard_McLab1::Reset(void)
     case O_F2:
     case O_G2:
     case O_P2:
-    default:
      output[i].status = NULL;
      break;
     }

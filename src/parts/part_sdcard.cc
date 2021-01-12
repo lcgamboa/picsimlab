@@ -178,7 +178,7 @@ cpart_SDCard::Draw(void)
 unsigned short
 cpart_SDCard::get_in_id(char * name)
 {
- if (strcmp (name, "CONN") == 0)return I_CONN;
+ if (strcmp (name, "CN_CONN") == 0)return I_CONN;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
@@ -188,11 +188,11 @@ unsigned short
 cpart_SDCard::get_out_id(char * name)
 {
 
- if (strcmp (name, "P3") == 0)return O_P3;
- if (strcmp (name, "P4") == 0)return O_P4;
- if (strcmp (name, "P5") == 0)return O_P5;
- if (strcmp (name, "P6") == 0)return O_P6;
- if (strcmp (name, "FILE") == 0)return O_FILE;
+ if (strcmp (name, "PN_3") == 0)return O_P3;
+ if (strcmp (name, "PN_4") == 0)return O_P4;
+ if (strcmp (name, "PN_5") == 0)return O_P5;
+ if (strcmp (name, "PN_6") == 0)return O_P6;
+ if (strcmp (name, "DI_FILE") == 0)return O_FILE;
 
 
  printf ("Erro output '%s' don't have a valid id! \n", name);

@@ -237,11 +237,11 @@ cpart_gamepad_an::EvKeyRelease(uint key, uint mask)
 unsigned short
 cpart_gamepad_an::get_in_id(char * name)
 {
- if (strcmp (name, "B1") == 0)return I_B1;
- if (strcmp (name, "B2") == 0)return I_B2;
- if (strcmp (name, "B3") == 0)return I_B3;
- if (strcmp (name, "B4") == 0)return I_B4;
- if (strcmp (name, "B5") == 0)return I_B5;
+ if (strcmp (name, "PB_1") == 0)return I_B1;
+ if (strcmp (name, "PB_2") == 0)return I_B2;
+ if (strcmp (name, "PB_3") == 0)return I_B3;
+ if (strcmp (name, "PB_4") == 0)return I_B4;
+ if (strcmp (name, "PB_5") == 0)return I_B5;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
@@ -251,7 +251,7 @@ unsigned short
 cpart_gamepad_an::get_out_id(char * name)
 {
 
- if (strcmp (name, "P1") == 0)return O_P1;
+ if (strcmp (name, "PN_1") == 0)return O_P1;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;

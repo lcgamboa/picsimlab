@@ -6,15 +6,15 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:Luis Claudio Gamboa Lopes        -->
-<area shape="rect" coords="79,13,111,171" href="PO1" />
-<area shape="rect" coords="140,13,172,171" href="PO2" />
-<area shape="rect" coords="18,13,50,171" href="PO3" />
-<area shape="rect" coords="191,15,267,65" href="TP" />
-<area shape="rect" coords="191,73,267,89" href="MF" />
-<area shape="rect" coords="200,93,249,108" href="P1" />
-<area shape="rect" coords="200,111,249,127" href="P2" />
-<area shape="rect" coords="64,188,124,208" href="AMPL" />
-<area shape="rect" coords="127,188,187,208" href="FREQ" />
-<area shape="rect" coords="200,130,249,146" href="P3" />
-<area shape="rect" coords="1,188,61,208" href="OFFS" />
+<area shape="rect" coords="79,13,111,171" href="PO_1" />
+<area shape="rect" coords="140,13,172,171" href="PO_2" />
+<area shape="rect" coords="18,13,50,171" href="PO_3" />
+<area shape="rect" coords="191,15,267,65" href="PB_TP" />
+<area shape="rect" coords="191,73,267,89" href="PB_MF" />
+<area shape="rect" coords="200,93,249,108" href="PN_1" />
+<area shape="rect" coords="200,111,249,127" href="PN_2" />
+<area shape="rect" coords="64,188,124,208" href="DI_AMPL" />
+<area shape="rect" coords="127,188,187,208" href="DI_FREQ" />
+<area shape="rect" coords="200,130,249,146" href="PN_3" />
+<area shape="rect" coords="1,188,61,208" href="DI_OFFS" />
 </map>

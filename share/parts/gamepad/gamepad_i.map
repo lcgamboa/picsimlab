@@ -6,11 +6,11 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:Luis Claudio Gamboa Lopes     -->
-<area shape="rect" coords="260,8,317,67" href="B1" />
-<area shape="rect" coords="318,60,368,115" href="B2" />
-<area shape="rect" coords="260,108,316,168" href="B3" />
-<area shape="rect" coords="207,62,259,113" href="B4" />
-<area shape="rect" coords="202,128,231,157" href="B5" />
-<area shape="rect" coords="150,129,178,155" href="B6" />
-<area shape="rect" coords="31,31,149,149" href="J1" />
+<area shape="rect" coords="260,8,317,67" href="PB_1" />
+<area shape="rect" coords="318,60,368,115" href="PB_2" />
+<area shape="rect" coords="260,108,316,168" href="PB_3" />
+<area shape="rect" coords="207,62,259,113" href="PB_4" />
+<area shape="rect" coords="202,128,231,157" href="PB_5" />
+<area shape="rect" coords="150,129,178,155" href="PB_6" />
+<area shape="rect" coords="31,31,149,149" href="AJ_1" />
 </map>

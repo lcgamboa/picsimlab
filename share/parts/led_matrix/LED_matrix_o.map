@@ -6,11 +6,11 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:gamboa     -->
-<area shape="rect" coords="5,11,205,211" href="LED" />
-<area shape="rect" coords="11,229,30,277" href="F1" />
-<area shape="rect" coords="41,229,59,277" href="F2" />
-<area shape="rect" coords="71,229,88,277" href="P1" />
-<area shape="rect" coords="101,229,118,277" href="P2" />
-<area shape="rect" coords="131,229,148,277" href="P3" />
-<area shape="rect" coords="162,229,179,277" href="P4" />
+<area shape="rect" coords="5,11,205,211" href="LM_LED" />
+<area shape="rect" coords="11,229,30,277" href="PN_F1" />
+<area shape="rect" coords="41,229,59,277" href="PN_F2" />
+<area shape="rect" coords="71,229,88,277" href="PN_1" />
+<area shape="rect" coords="101,229,118,277" href="PN_2" />
+<area shape="rect" coords="131,229,148,277" href="PN_3" />
+<area shape="rect" coords="162,229,179,277" href="PN_4" />
 </map>

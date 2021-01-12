@@ -32,18 +32,18 @@
 class cboard_McLab1:public board_picsim
 {
   private:
-     int p_BT1; 
-     int p_BT2;  
-     int p_BT3; 
-     int p_BT4;     
-     int jmp[1];
+     unsigned char p_BT1; 
+     unsigned char p_BT2;  
+     unsigned char p_BT3; 
+     unsigned char p_BT4;     
+     unsigned char jmp[1];
      unsigned int lm1[18]; //luminosidade media display
      unsigned int lm2[18]; //luminosidade media display
      
      
      CGauge *gauge1;
      CLabel *label1;
- 
+     void RegisterRemoteControl(void); 
    public:
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       cboard_McLab1(void);

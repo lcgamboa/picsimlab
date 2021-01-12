@@ -122,11 +122,11 @@ unsigned short
 cpart_rgb_led::get_out_id (char * name)
 {
 
- if (strcmp (name, "P1") == 0)return O_P1;
- if (strcmp (name, "P2") == 0)return O_P2;
- if (strcmp (name, "P3") == 0)return O_P3;
+ if (strcmp (name, "PN_1") == 0)return O_P1;
+ if (strcmp (name, "PN_2") == 0)return O_P2;
+ if (strcmp (name, "PN_3") == 0)return O_P3;
 
- if (strcmp (name, "L1") == 0)return O_L1;
+ if (strcmp (name, "LR_1") == 0)return O_L1;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;

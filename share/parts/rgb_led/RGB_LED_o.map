@@ -6,8 +6,8 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:Luis Claudio Gamboa Lopes    -->
-<area shape="rect" coords="1,89,50,108" href="P1" />
-<area shape="rect" coords="52,89,101,108" href="P2" />
-<area shape="rect" coords="103,89,152,108" href="P3" />
-<area shape="circle" coords="34,39,25" href="L1" />
+<area shape="rect" coords="1,89,50,108" href="PN_1" />
+<area shape="rect" coords="52,89,101,108" href="PN_2" />
+<area shape="rect" coords="103,89,152,108" href="PN_3" />
+<area shape="circle" coords="34,39,25" href="LR_1" />
 </map>

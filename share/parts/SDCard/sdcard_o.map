@@ -6,9 +6,9 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:lcganmboa@yahoo.com                       -->
-<area shape="rect" coords="34,5,362,28" href="FILE" />
-<area shape="rect" coords="52,105,70,171" href="P3" />
-<area shape="rect" coords="83,105,101,171" href="P4" />
-<area shape="rect" coords="115,104,132,172" href="P5" />
-<area shape="rect" coords="146,105,163,173" href="P6" />
+<area shape="rect" coords="34,5,362,28" href="DI_FILE" />
+<area shape="rect" coords="52,105,70,171" href="PN_3" />
+<area shape="rect" coords="83,105,101,171" href="PN_4" />
+<area shape="rect" coords="115,104,132,172" href="PN_5" />
+<area shape="rect" coords="146,105,163,173" href="PN_6" />
 </map>

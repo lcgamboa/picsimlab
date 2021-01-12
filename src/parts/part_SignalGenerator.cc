@@ -382,11 +382,11 @@ unsigned short
 cpart_SignalGenerator::get_in_id(char * name)
 {
 
- if (strcmp (name, "PO1") == 0)return I_PO1;
- if (strcmp (name, "PO2") == 0)return I_PO2;
- if (strcmp (name, "PO3") == 0)return I_PO3;
- if (strcmp (name, "TP") == 0)return I_TP;
- if (strcmp (name, "MF") == 0)return I_MF;
+ if (strcmp (name, "PO_1") == 0)return I_PO1;
+ if (strcmp (name, "PO_2") == 0)return I_PO2;
+ if (strcmp (name, "PO_3") == 0)return I_PO3;
+ if (strcmp (name, "PB_TP") == 0)return I_TP;
+ if (strcmp (name, "PB_MF") == 0)return I_MF;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
@@ -396,18 +396,18 @@ unsigned short
 cpart_SignalGenerator::get_out_id(char * name)
 {
 
- if (strcmp (name, "P1") == 0)return O_P1;
- if (strcmp (name, "P2") == 0)return O_P2;
- if (strcmp (name, "P3") == 0)return O_P3;
+ if (strcmp (name, "PN_1") == 0)return O_P1;
+ if (strcmp (name, "PN_2") == 0)return O_P2;
+ if (strcmp (name, "PN_3") == 0)return O_P3;
 
- if (strcmp (name, "PO1") == 0)return O_PO1;
- if (strcmp (name, "PO2") == 0)return O_PO2;
- if (strcmp (name, "PO3") == 0)return O_PO3;
- if (strcmp (name, "TP") == 0)return O_TP;
- if (strcmp (name, "AMPL") == 0)return O_AMPL;
- if (strcmp (name, "OFFS") == 0)return O_OFFS;
- if (strcmp (name, "FREQ") == 0)return O_FREQ;
- if (strcmp (name, "MF") == 0)return O_MF;
+ if (strcmp (name, "PO_1") == 0)return O_PO1;
+ if (strcmp (name, "PO_2") == 0)return O_PO2;
+ if (strcmp (name, "PO_3") == 0)return O_PO3;
+ if (strcmp (name, "PB_TP") == 0)return O_TP;
+ if (strcmp (name, "DI_AMPL") == 0)return O_AMPL;
+ if (strcmp (name, "DI_OFFS") == 0)return O_OFFS;
+ if (strcmp (name, "DI_FREQ") == 0)return O_FREQ;
+ if (strcmp (name, "PB_MF") == 0)return O_MF;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;

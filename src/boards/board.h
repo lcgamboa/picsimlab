@@ -462,6 +462,12 @@ public:
     };
 
 protected:
+    
+    /**
+     * @brief Register remote control variables
+     */
+    virtual void RegisterRemoteControl(void){};
+    
     lxString Name; ///< Name of board registered in PICSimLab  
     lxString Proc; ///< Name of processor in use
     input_t input[100]; ///< input map elements

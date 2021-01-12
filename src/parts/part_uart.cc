@@ -179,7 +179,7 @@ cpart_UART::Draw(void)
 unsigned short
 cpart_UART::get_in_id(char * name)
 {
- if (strcmp (name, "CONN") == 0)return I_CONN;
+ if (strcmp (name, "CN_CONN") == 0)return I_CONN;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
@@ -189,12 +189,12 @@ unsigned short
 cpart_UART::get_out_id(char * name)
 {
 
- if (strcmp (name, "RX") == 0)return O_RX;
- if (strcmp (name, "TX") == 0)return O_TX;
- if (strcmp (name, "LCON") == 0)return O_LCON;
- if (strcmp (name, "LTX") == 0)return O_LTX;
- if (strcmp (name, "LRX") == 0)return O_LRX;
- if (strcmp (name, "FILE") == 0)return O_FILE;
+ if (strcmp (name, "PN_RX") == 0)return O_RX;
+ if (strcmp (name, "PN_TX") == 0)return O_TX;
+ if (strcmp (name, "LD_CON") == 0)return O_LCON;
+ if (strcmp (name, "LD_TX") == 0)return O_LTX;
+ if (strcmp (name, "LD_RX") == 0)return O_LRX;
+ if (strcmp (name, "DI_FILE") == 0)return O_FILE;
 
 
  printf ("Erro output '%s' don't have a valid id! \n", name);

@@ -158,8 +158,8 @@ unsigned short
 cpart_servo::get_out_id (char * name)
 {
 
- if (strcmp (name, "P1") == 0)return O_P1;
- if (strcmp (name, "AXIS") == 0)return O_AXIS;
+ if (strcmp (name, "PN_1") == 0)return O_P1;
+ if (strcmp (name, "DG_AXIS") == 0)return O_AXIS;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;

@@ -73,6 +73,43 @@ cpart_switchs::cpart_switchs(unsigned x, unsigned y)
  output_value[6] = 0;
  output_value[7] = 0;
 
+ RegisterRemoteControl();
+}
+
+
+void
+cpart_switchs::RegisterRemoteControl(void)
+{
+ for (int i = 0; i < inputc; i++)
+  {
+   switch (input[i].id)
+    {
+    case I_S1:
+     input[i].status = &output_value[0];
+     break;
+    case I_S2:
+     input[i].status = &output_value[1];
+     break;
+    case I_S3:
+     input[i].status = &output_value[2];
+     break;
+    case I_S4:
+     input[i].status = &output_value[3];
+     break;
+    case I_S5:
+     input[i].status = &output_value[4];
+     break;
+    case I_S6:
+     input[i].status = &output_value[5];
+     break;
+    case I_S7:
+     input[i].status = &output_value[6];
+     break;
+    case I_S8:
+     input[i].status = &output_value[7];
+     break;
+    }
+  }
 }
 
 void
@@ -214,14 +251,14 @@ unsigned short
 cpart_switchs::get_in_id(char * name)
 {
 
- if (strcmp (name, "S1") == 0)return I_S1;
- if (strcmp (name, "S2") == 0)return I_S2;
- if (strcmp (name, "S3") == 0)return I_S3;
- if (strcmp (name, "S4") == 0)return I_S4;
- if (strcmp (name, "S5") == 0)return I_S5;
- if (strcmp (name, "S6") == 0)return I_S6;
- if (strcmp (name, "S7") == 0)return I_S7;
- if (strcmp (name, "S8") == 0)return I_S8;
+ if (strcmp (name, "SW_1") == 0)return I_S1;
+ if (strcmp (name, "SW_2") == 0)return I_S2;
+ if (strcmp (name, "SW_3") == 0)return I_S3;
+ if (strcmp (name, "SW_4") == 0)return I_S4;
+ if (strcmp (name, "SW_5") == 0)return I_S5;
+ if (strcmp (name, "SW_6") == 0)return I_S6;
+ if (strcmp (name, "SW_7") == 0)return I_S7;
+ if (strcmp (name, "SW_8") == 0)return I_S8;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
@@ -231,23 +268,23 @@ unsigned short
 cpart_switchs::get_out_id(char * name)
 {
 
- if (strcmp (name, "P1") == 0)return O_P1;
- if (strcmp (name, "P2") == 0)return O_P2;
- if (strcmp (name, "P3") == 0)return O_P3;
- if (strcmp (name, "P4") == 0)return O_P4;
- if (strcmp (name, "P5") == 0)return O_P5;
- if (strcmp (name, "P6") == 0)return O_P6;
- if (strcmp (name, "P7") == 0)return O_P7;
- if (strcmp (name, "P8") == 0)return O_P8;
+ if (strcmp (name, "PN_1") == 0)return O_P1;
+ if (strcmp (name, "PN_2") == 0)return O_P2;
+ if (strcmp (name, "PN_3") == 0)return O_P3;
+ if (strcmp (name, "PN_4") == 0)return O_P4;
+ if (strcmp (name, "PN_5") == 0)return O_P5;
+ if (strcmp (name, "PN_6") == 0)return O_P6;
+ if (strcmp (name, "PN_7") == 0)return O_P7;
+ if (strcmp (name, "PN_8") == 0)return O_P8;
 
- if (strcmp (name, "S1") == 0)return O_S1;
- if (strcmp (name, "S2") == 0)return O_S2;
- if (strcmp (name, "S3") == 0)return O_S3;
- if (strcmp (name, "S4") == 0)return O_S4;
- if (strcmp (name, "S5") == 0)return O_S5;
- if (strcmp (name, "S6") == 0)return O_S6;
- if (strcmp (name, "S7") == 0)return O_S7;
- if (strcmp (name, "S8") == 0)return O_S8;
+ if (strcmp (name, "SW_1") == 0)return O_S1;
+ if (strcmp (name, "SW_2") == 0)return O_S2;
+ if (strcmp (name, "SW_3") == 0)return O_S3;
+ if (strcmp (name, "SW_4") == 0)return O_S4;
+ if (strcmp (name, "SW_5") == 0)return O_S5;
+ if (strcmp (name, "SW_6") == 0)return O_S6;
+ if (strcmp (name, "SW_7") == 0)return O_S7;
+ if (strcmp (name, "SW_8") == 0)return O_S8;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;

@@ -6,6 +6,6 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:Luis Claudio Gamboa Lopes    -->
-<area shape="rect" coords="496,9,528,37" href="START" />
-<area shape="rect" coords="544,8,576,38" href="VIEW" />
+<area shape="rect" coords="496,9,528,37" href="PB_START" />
+<area shape="rect" coords="544,8,576,38" href="PB_VIEW" />
 </map>

@@ -6,13 +6,13 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:gamboa     -->
-<area shape="rect" coords="16,19,201,204" href="VT" />
-<area shape="rect" coords="313,61,361,79" href="CO" />
-<area shape="rect" coords="313,176,361,194" href="F2" />
-<area shape="rect" coords="313,147,361,165" href="F1" />
-<area shape="rect" coords="313,116,361,134" href="TA" />
-<area shape="rect" coords="313,88,361,106" href="TE" />
-<area shape="rect" coords="313,30,361,48" href="HT" />
-<area shape="rect" coords="250,215,350,233" href="OTA" />
-<area shape="rect" coords="250,246,350,264" href="OTE" />
+<area shape="rect" coords="16,19,201,204" href="DG_VT" />
+<area shape="rect" coords="313,61,361,79" href="PN_CO" />
+<area shape="rect" coords="313,176,361,194" href="PN_F2" />
+<area shape="rect" coords="313,147,361,165" href="PN_F1" />
+<area shape="rect" coords="313,116,361,134" href="PN_TA" />
+<area shape="rect" coords="313,88,361,106" href="PN_TE" />
+<area shape="rect" coords="313,30,361,48" href="PN_HT" />
+<area shape="rect" coords="250,215,350,233" href="DI_OTA" />
+<area shape="rect" coords="250,246,350,264" href="DI_OTE" />
 </map>

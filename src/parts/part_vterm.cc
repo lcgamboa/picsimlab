@@ -329,7 +329,7 @@ cpart_vterm::Draw(void)
 unsigned short
 cpart_vterm::get_in_id(char * name)
 {
- if (strcmp (name, "TERM") == 0)return I_TERM;
+ if (strcmp (name, "PB_TERM") == 0)return I_TERM;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
@@ -339,10 +339,10 @@ unsigned short
 cpart_vterm::get_out_id(char * name)
 {
 
- if (strcmp (name, "RX") == 0)return O_RX;
- if (strcmp (name, "TX") == 0)return O_TX;
- if (strcmp (name, "LTX") == 0)return O_LTX;
- if (strcmp (name, "LRX") == 0)return O_LRX;
+ if (strcmp (name, "PN_RX") == 0)return O_RX;
+ if (strcmp (name, "PN_TX") == 0)return O_TX;
+ if (strcmp (name, "LD_TX") == 0)return O_LTX;
+ if (strcmp (name, "LD_RX") == 0)return O_LRX;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;

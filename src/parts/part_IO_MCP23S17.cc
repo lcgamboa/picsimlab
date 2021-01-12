@@ -231,36 +231,36 @@ unsigned short
 cpart_IO_MCP23S17::get_out_id(char * name)
 {
 
- if (strcmp (name, "P1") == 0)return O_P1;
- if (strcmp (name, "P2") == 0)return O_P2;
- if (strcmp (name, "P3") == 0)return O_P3;
- if (strcmp (name, "P4") == 0)return O_P4;
- if (strcmp (name, "P5") == 0)return O_P5;
- if (strcmp (name, "P6") == 0)return O_P6;
- if (strcmp (name, "P7") == 0)return O_P7;
- if (strcmp (name, "P8") == 0)return O_P8;
- if (strcmp (name, "P9") == 0)return O_P9;
- if (strcmp (name, "P10") == 0)return O_P10;
- if (strcmp (name, "P11") == 0)return O_P11;
- if (strcmp (name, "P12") == 0)return O_P12;
- if (strcmp (name, "P13") == 0)return O_P13;
- if (strcmp (name, "P14") == 0)return O_P14;
- if (strcmp (name, "P15") == 0)return O_P15;
- if (strcmp (name, "P16") == 0)return O_P16;
- if (strcmp (name, "P17") == 0)return O_P17;
- if (strcmp (name, "P18") == 0)return O_P18;
- if (strcmp (name, "P19") == 0)return O_P19;
- if (strcmp (name, "P20") == 0)return O_P20;
- if (strcmp (name, "P21") == 0)return O_P21;
- if (strcmp (name, "P22") == 0)return O_P22;
- if (strcmp (name, "P23") == 0)return O_P23;
- if (strcmp (name, "P24") == 0)return O_P24;
- if (strcmp (name, "P25") == 0)return O_P25;
- if (strcmp (name, "P26") == 0)return O_P26;
- if (strcmp (name, "P27") == 0)return O_P27;
- if (strcmp (name, "P28") == 0)return O_P28;
+ if (strcmp (name, "PN_1") == 0)return O_P1;
+ if (strcmp (name, "PN_2") == 0)return O_P2;
+ if (strcmp (name, "PN_3") == 0)return O_P3;
+ if (strcmp (name, "PN_4") == 0)return O_P4;
+ if (strcmp (name, "PN_5") == 0)return O_P5;
+ if (strcmp (name, "PN_6") == 0)return O_P6;
+ if (strcmp (name, "PN_7") == 0)return O_P7;
+ if (strcmp (name, "PN_8") == 0)return O_P8;
+ if (strcmp (name, "PN_9") == 0)return O_P9;
+ if (strcmp (name, "PN_10") == 0)return O_P10;
+ if (strcmp (name, "PN_11") == 0)return O_P11;
+ if (strcmp (name, "PN_12") == 0)return O_P12;
+ if (strcmp (name, "PN_13") == 0)return O_P13;
+ if (strcmp (name, "PN_14") == 0)return O_P14;
+ if (strcmp (name, "PN_15") == 0)return O_P15;
+ if (strcmp (name, "PN_16") == 0)return O_P16;
+ if (strcmp (name, "PN_17") == 0)return O_P17;
+ if (strcmp (name, "PN_18") == 0)return O_P18;
+ if (strcmp (name, "PN_19") == 0)return O_P19;
+ if (strcmp (name, "PN_20") == 0)return O_P20;
+ if (strcmp (name, "PN_21") == 0)return O_P21;
+ if (strcmp (name, "PN_22") == 0)return O_P22;
+ if (strcmp (name, "PN_23") == 0)return O_P23;
+ if (strcmp (name, "PN_24") == 0)return O_P24;
+ if (strcmp (name, "PN_25") == 0)return O_P25;
+ if (strcmp (name, "PN_26") == 0)return O_P26;
+ if (strcmp (name, "PN_27") == 0)return O_P27;
+ if (strcmp (name, "PN_28") == 0)return O_P28;
 
- if (strcmp (name, "IC") == 0)return O_IC;
+ if (strcmp (name, "IC_28") == 0)return O_IC;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;

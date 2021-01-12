@@ -6,11 +6,11 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:lcganmboa@yahoo.com             -->
-<area shape="rect" coords="13,277,32,326" href="L1" />
-<area shape="rect" coords="43,278,62,327" href="L2" />
-<area shape="rect" coords="73,278,92,327" href="L3" />
-<area shape="rect" coords="103,278,122,327" href="L4" />
-<area shape="rect" coords="133,278,152,327" href="C1" />
-<area shape="rect" coords="163,278,182,327" href="C2" />
-<area shape="rect" coords="193,278,212,327" href="C3" />
+<area shape="rect" coords="13,277,32,326" href="PN_L1" />
+<area shape="rect" coords="43,278,62,327" href="PN_L2" />
+<area shape="rect" coords="73,278,92,327" href="PN_L3" />
+<area shape="rect" coords="103,278,122,327" href="PN_L4" />
+<area shape="rect" coords="133,278,152,327" href="PN_C1" />
+<area shape="rect" coords="163,278,182,327" href="PN_C2" />
+<area shape="rect" coords="193,278,212,327" href="PN_C3" />
 </map>

@@ -6,25 +6,25 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:lcganmboa@yahoo.com                      -->
-<area shape="rect" coords="136,19,456,259" href="LCD" />
-<area shape="rect" coords="9,272,28,327" href="F1" />
-<area shape="rect" coords="39,271,57,328" href="F2" />
-<area shape="rect" coords="70,271,87,328" href="P1" />
-<area shape="rect" coords="99,271,116,328" href="P2" />
-<area shape="rect" coords="130,271,147,327" href="P3" />
-<area shape="rect" coords="160,271,178,328" href="P4" />
-<area shape="rect" coords="190,271,207,329" href="P5" />
-<area shape="rect" coords="221,271,238,329" href="P6" />
-<area shape="rect" coords="250,271,267,329" href="P7" />
-<area shape="rect" coords="280,271,297,327" href="P8" />
-<area shape="rect" coords="310,271,327,327" href="P9" />
-<area shape="rect" coords="339,271,356,327" href="P10" />
-<area shape="rect" coords="369,271,386,326" href="P11" />
-<area shape="rect" coords="399,271,416,326" href="P12" />
-<area shape="rect" coords="429,271,446,326" href="P13" />
-<area shape="rect" coords="458,271,475,326" href="T1" />
-<area shape="rect" coords="488,271,505,326" href="T2" />
-<area shape="rect" coords="517,271,534,326" href="T3" />
-<area shape="rect" coords="547,271,564,325" href="T4" />
-<area shape="rect" coords="575,271,592,326" href="T5" />
+<area shape="rect" coords="136,19,456,259" href="DS_LCD" />
+<area shape="rect" coords="9,272,28,327" href="PN_F1" />
+<area shape="rect" coords="39,271,57,328" href="PN_F2" />
+<area shape="rect" coords="70,271,87,328" href="PN_1" />
+<area shape="rect" coords="99,271,116,328" href="PN_2" />
+<area shape="rect" coords="130,271,147,327" href="PN_3" />
+<area shape="rect" coords="160,271,178,328" href="PN_4" />
+<area shape="rect" coords="190,271,207,329" href="PN_5" />
+<area shape="rect" coords="221,271,238,329" href="PN_6" />
+<area shape="rect" coords="250,271,267,329" href="PN_7" />
+<area shape="rect" coords="280,271,297,327" href="PN_8" />
+<area shape="rect" coords="310,271,327,327" href="PN_9" />
+<area shape="rect" coords="339,271,356,327" href="PN_10" />
+<area shape="rect" coords="369,271,386,326" href="PN_11" />
+<area shape="rect" coords="399,271,416,326" href="PN_12" />
+<area shape="rect" coords="429,271,446,326" href="PN_13" />
+<area shape="rect" coords="458,271,475,326" href="PN_T1" />
+<area shape="rect" coords="488,271,505,326" href="PN_T2" />
+<area shape="rect" coords="517,271,534,326" href="PN_T3" />
+<area shape="rect" coords="547,271,564,325" href="PN_T4" />
+<area shape="rect" coords="575,271,592,326" href="PN_T5" />
 </map>

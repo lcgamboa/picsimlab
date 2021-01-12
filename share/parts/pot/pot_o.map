@@ -6,12 +6,12 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:Luis Claudio Gamboa Lopes    -->
-<area shape="rect" coords="5,175,54,194" href="P1" />
-<area shape="rect" coords="65,175,114,194" href="P2" />
-<area shape="rect" coords="125,175,174,194" href="P3" />
-<area shape="rect" coords="184,175,233,194" href="P4" />
-<area shape="rect" coords="72,13,104,171" href="PO2" />
-<area shape="rect" coords="11,13,43,171" href="PO1" />
-<area shape="rect" coords="132,13,164,171" href="PO3" />
-<area shape="rect" coords="190,13,222,171" href="PO4" />
+<area shape="rect" coords="5,175,54,194" href="PN_1" />
+<area shape="rect" coords="65,175,114,194" href="PN_2" />
+<area shape="rect" coords="125,175,174,194" href="PN_3" />
+<area shape="rect" coords="184,175,233,194" href="PN_4" />
+<area shape="rect" coords="72,13,104,171" href="PO_2" />
+<area shape="rect" coords="11,13,43,171" href="PO_1" />
+<area shape="rect" coords="132,13,164,171" href="PO_3" />
+<area shape="rect" coords="190,13,222,171" href="PO_4" />
 </map>

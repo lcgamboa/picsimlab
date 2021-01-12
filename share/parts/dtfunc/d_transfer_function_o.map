@@ -6,13 +6,13 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:Luis Claudio Gamboa Lopes     -->
-<area shape="rect" coords="16,57,48,74" href="P1" />
-<area shape="rect" coords="652,114,681,133" href="P2" />
-<area shape="rect" coords="99,56,129,75" href="IG" />
-<area shape="rect" coords="102,127,144,144" href="IO" />
-<area shape="rect" coords="289,91,446,111" href="NUM" />
-<area shape="rect" coords="289,118,446,139" href="DEN" />
-<area shape="rect" coords="480,104,512,120" href="OG" />
-<area shape="rect" coords="484,161,527,179" href="OO" />
-<area shape="rect" coords="353,24,390,39" href="TS" />
+<area shape="rect" coords="16,57,48,74" href="PN_1" />
+<area shape="rect" coords="652,114,681,133" href="PN_2" />
+<area shape="rect" coords="99,56,129,75" href="PR_IG" />
+<area shape="rect" coords="102,127,144,144" href="PR_IO" />
+<area shape="rect" coords="289,91,446,111" href="PR_NUM" />
+<area shape="rect" coords="289,118,446,139" href="PR_DEN" />
+<area shape="rect" coords="480,104,512,120" href="PR_OG" />
+<area shape="rect" coords="484,161,527,179" href="PR_OO" />
+<area shape="rect" coords="353,24,390,39" href="PR_TS" />
 </map>
