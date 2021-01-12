@@ -18,6 +18,7 @@ var classcpart__pbuttons =
     [ "PreProcess", "classcpart__pbuttons.html#a38bc0b0748047b1d2af49e008cef79db", null ],
     [ "ReadPreferences", "classcpart__pbuttons.html#a5e8c6413c7fef747175a37289c4fee13", null ],
     [ "ReadPropertiesWindow", "classcpart__pbuttons.html#a4b5fa0dc80339c06f6781bc7fad90f15", null ],
+    [ "RegisterRemoteControl", "classcpart__pbuttons.html#af9d075b4a3dafdcdbaf47f6d4829204b", null ],
     [ "Reset", "classcpart__pbuttons.html#a1961cd74faa053d5d3a03fc7fb21548b", null ],
     [ "WritePreferences", "classcpart__pbuttons.html#abe8c8244aba99d813ac81ab34238d68a", null ],
     [ "active", "classcpart__pbuttons.html#abfff075e2f9a36565629158980261652", null ],

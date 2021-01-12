@@ -12,6 +12,8 @@ var class_c_p_window5 =
     [ "draw1_EvMouseMove", "class_c_p_window5.html#a81754073db7ed8296a55c4bef972bfd3", null ],
     [ "filedialog1_EvOnClose", "class_c_p_window5.html#a349191a5555a215394cec03a78d5ab75", null ],
     [ "Get_i2c_bus", "class_c_p_window5.html#ac0db726dfb64849f899d203fb199840c", null ],
+    [ "GetPart", "class_c_p_window5.html#aa072c007c485f66ff3112fe5d9ba860e", null ],
+    [ "GetPartsCount", "class_c_p_window5.html#a8d5d7444c0437da2781ba7ae20f6b563", null ],
     [ "GetPinName", "class_c_p_window5.html#a6f859826910014d1bc32d94d2130bbb9", null ],
     [ "GetPinsNames", "class_c_p_window5.html#ab012f0ddc5fed1566f4b7ab53eb62be4", null ],
     [ "GetPinsValues", "class_c_p_window5.html#a5d129e67948cdf29d2646dbb4392db3e", null ],

@@ -17,6 +17,7 @@ var classcpart__switchs =
     [ "PreProcess", "classcpart__switchs.html#a24ceca1ebe69c4657636f9c0eb4e4bed", null ],
     [ "ReadPreferences", "classcpart__switchs.html#a01600b360eb0b2ac8f14fe0435b4a0b4", null ],
     [ "ReadPropertiesWindow", "classcpart__switchs.html#af906a9f63c31300383b58fe9c4237eef", null ],
+    [ "RegisterRemoteControl", "classcpart__switchs.html#a33448d6a32ac26188ff1c21554d8f2ad", null ],
     [ "Reset", "classcpart__switchs.html#a73f2747d64191dce616518f1fa350965", null ],
     [ "WritePreferences", "classcpart__switchs.html#ad30314eebb2b05362e0609f933af25fa", null ],
     [ "output_pins", "classcpart__switchs.html#adcfbf726837c6efb5532fa030dc37c79", null ],
