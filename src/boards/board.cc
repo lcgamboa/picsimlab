@@ -137,6 +137,7 @@ board::ReadInputMap(lxString fname)
         }
        strcpy (input[inputc].name, name);
        input[inputc].id = get_in_id (input[inputc].name);
+       input[inputc].status = NULL;
        inputc++;
 
       }
@@ -197,6 +198,7 @@ board::ReadOutputMap(lxString fname)
          //          output[outputc].lval=-1;
          strcpy (output[outputc].name, name);
          output[outputc].id = get_out_id (output[outputc].name);
+         output[outputc].status = NULL;
          outputc++;
         }
        else
@@ -210,6 +212,7 @@ board::ReadOutputMap(lxString fname)
          //          output[outputc].lval=-1;
          strcpy (output[outputc].name, name);
          output[outputc].id = get_out_id (output[outputc].name);
+         output[outputc].status = NULL;
          outputc++;
         }
       }

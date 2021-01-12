@@ -227,10 +227,9 @@ rcontrol_loop(void)
        buffer[i] = buffer[i + cmdsize];
       }
 
-     cmd[cmdsize - 1] = 0; //strip \n
-     if (cmd[cmdsize - 2] == '\r')
+     if (cmd[cmdsize - 1] == '\r')
       {
-       cmd[cmdsize - 2] = 0; //strip \r  
+       cmd[cmdsize - 1] = 0; //strip \r  
       }
 
      strcpy (cmd, (const char *) lowercase (cmd).c_str ());
@@ -252,16 +251,86 @@ rcontrol_loop(void)
          ret = sendtext ("ERROR\n>");
         }
        break;
+      case 'g':
+       if (!strncmp (cmd, "get ", 4))
+        {
+         char * ptr;
+
+         if ((ptr = strstr (cmd, "board.in[")))
+          {
+           int in = (ptr[9] - '0')*10 + (ptr[10] - '0');
+           Board = Window1.GetBoard ();
+
+           if (in < Board->GetInputCount ())
+            {
+             Input = Board->GetInput (in);
+
+             if (Input->status != NULL)
+              {
+               stemp.Printf ("board.in[%02i] %s = %i\n", in, Input->name, *((int *) Input->status));
+               sendtext ((const char *) stemp.c_str ());
+               sendtext ("Ok\n>");
+              }
+             else
+              {
+               ret = sendtext ("ERROR\n>");
+              }
+            }
+           else
+            {
+             ret = sendtext ("ERROR\n>");
+
+            }
+          }
+         else if ((ptr = strstr (cmd, "board.out[")))
+          {
+           int out = (ptr[10] - '0')*10 + (ptr[11] - '0');
+           Board = Window1.GetBoard ();
+
+           if (out < Board->GetOutputCount ())
+            {
+             Output = Board->GetOutput (out);
+
+             if (Output->status != NULL)
+              {
+               stemp.Printf ("board.out[%02i] %s = %i\n", out, Output->name,(int) *((float *) Output->status));
+               sendtext ((const char *) stemp.c_str ());
+               sendtext ("Ok\n>");
+              }
+             else
+              {
+               ret = sendtext ("ERROR\n>");
+              }
+            }
+           else
+            {
+             ret = sendtext ("ERROR\n>");
+
+            }
+          }
+         else
+          {
+           ret = sendtext ("ERROR\n>");
+          }
+         return 0;
+        }
+       else
+        {
+         ret = sendtext ("ERROR\n>");
+        }
+       break;
       case 'h':
        if (!strcmp (cmd, "help"))
         {
          ret += sendtext ("List of supported commands:\n");
-         ret += sendtext ("  exit    - shutdown PICSimLab\n");
-         ret += sendtext ("  help    - show this message\n");
-         ret += sendtext ("  info    - show actual setup info\n");
-         ret += sendtext ("  quit    - exit remote control interface\n");
-         ret += sendtext ("  reset   - reset the board\n");
-         ret += sendtext ("  version - show PICSimLab version\n");
+         ret += sendtext ("  exit      - shutdown PICSimLab\n");
+         ret += sendtext ("  get ob    - get object value\n");
+         ret += sendtext ("  help      - show this message\n");
+         ret += sendtext ("  info      - show actual setup info\n");
+         ret += sendtext ("  quit      - exit remote control interface\n");
+         ret += sendtext ("  reset     - reset the board\n");
+         ret += sendtext ("  set ob vl - set object with value\n");
+         ret += sendtext ("  version   - show PICSimLab version\n");
 
          ret += sendtext ("Ok\n>");
         }
@@ -291,7 +360,7 @@ rcontrol_loop(void)
 
            if (/*(Input->name[0] == 'P')&&(Input->name[1] == 'B')&&*/ (Input->status != NULL))
             {
-             stemp.Printf ("    Input[%2i] %s = %i\n", i, Input->name, *((int *) Input->status));
+             stemp.Printf ("    board.in[%02i] %s = %i\n", i, Input->name, *((int *) Input->status));
              ret += sendtext ((const char *) stemp.c_str ());
             }
 
@@ -305,7 +374,7 @@ rcontrol_loop(void)
 
            if (/*(Output->name[0] == 'L')&&(Output->name[1] == 'D')&& */(Output->status != NULL))
             {
-             stemp.Printf ("    Output[%2i] %s = %3.0f\n", i, Output->name, *((float *) Output->status));
+             stemp.Printf ("    board.out[%02i] %s = %3.0f\n", i, Output->name, *((float *) Output->status));
              ret += sendtext ((const char *) stemp.c_str ());
             }
           }
@@ -348,6 +417,52 @@ rcontrol_loop(void)
          ret = sendtext ("ERROR\n>");
         }
        break;
+      case 's':
+       if (!strncmp (cmd, "set ", 4))
+        {
+         char * ptr;
+
+         if ((ptr = strstr (cmd, "board.in[")))
+          {
+           int in = (ptr[9] - '0')*10 + (ptr[10] - '0');
+           int value;
+           Board = Window1.GetBoard ();
+
+           sscanf (ptr + 12, "%i", &value);
+
+           printf ("in[%i] = %i \n", in, value);
+
+           if (in < Board->GetInputCount ())
+            {
+             Input = Board->GetInput (in);
+
+             if (Input->status != NULL)
+              {
+               *((int *) Input->status) = value;
+               sendtext ("Ok\n>");
+              }
+             else
+              {
+               ret = sendtext ("ERROR\n>");
+              }
+            }
+           else
+            {
+             ret = sendtext ("ERROR\n>");
+
+            }
+          }
+         else
+          {
+           ret = sendtext ("ERROR\n>");
+          }
+         return 0;
+        }
+       else
+        {
+         ret = sendtext ("ERROR\n>");
+        }
+       break;
       case 'v':
        if (!strcmp (cmd, "version"))
         {
@@ -371,32 +486,6 @@ rcontrol_loop(void)
      bp += n;
      if (bp > BSIZE)bp = BSIZE;
     }
-
-
-
-
-   /*
-   if ((n = recv (sockfd, (char *) ramreceived, dbg_board->DBGGetRAMSize (), MSG_WAITALL)) != (int) dbg_board->DBGGetRAMSize ())
-   {
-printf ("receive error : %s \n", strerror (errno));
-ret = 1;
-reply = 0x01;
-   }
-  
-   if (send (sockfd, (char *) ramsend, dbg_board->DBGGetRAMSize (), MSG_NOSIGNAL) != (int) dbg_board->DBGGetRAMSize ())
-   {
-printf ("send error : %s \n", strerror (errno));
-ret = 1;
-reply = 0x01;
-   }
-    */
-   /*
-   if (send (sockfd, (char *) &reply, 1, MSG_NOSIGNAL) != 1)
-   {
-   printf ("send error : %s \n", strerror (errno));
-   ret = 1;
-   }
-    */
   }
 
  //close connection
