@@ -6,8 +6,8 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:lcganmboa@yahoo.com      -->
-<area shape="rect" coords="0,81,77,173" href="I_ICSP" />
-<area shape="rect" coords="23,13,82,62" href="I_PWR" />
-<area shape="circle" coords="129,95,20" href="I_RST" />
-<area shape="circle" coords="129,159,20" href="I_BUT" />
+<area shape="rect" coords="0,81,77,173" href="PG_ICSP" />
+<area shape="rect" coords="23,13,82,62" href="SW_PWR" />
+<area shape="circle" coords="129,95,20" href="PB_RST" />
+<area shape="circle" coords="129,159,20" href="PB_BUT" />
 </map>

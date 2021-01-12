@@ -54,11 +54,11 @@ enum
 unsigned short
 cboard_x::get_in_id(char * name)
 {
- if (strcmp (name, "I_ICSP") == 0)return I_ICSP;
- if (strcmp (name, "I_PWR") == 0)return I_PWR;
- if (strcmp (name, "I_RST") == 0)return I_RST;
- if (strcmp (name, "I_D0") == 0)return I_D0;
- if (strcmp (name, "I_D1") == 0)return I_D1;
+ if (strcmp (name, "PG_ICSP") == 0)return I_ICSP;
+ if (strcmp (name, "SW_PWR") == 0)return I_PWR;
+ if (strcmp (name, "PB_RST") == 0)return I_RST;
+ if (strcmp (name, "PB_D0") == 0)return I_D0;
+ if (strcmp (name, "SW_D1") == 0)return I_D1;
 
  printf ("Error input '%s' don't have a valid id! \n", name);
  return -1;
@@ -70,12 +70,12 @@ unsigned short
 cboard_x::get_out_id(char * name)
 {
 
- if (strcmp (name, "O_SD1") == 0)return O_SD1;
- if (strcmp (name, "O_LD0") == 0)return O_LD0;
- if (strcmp (name, "O_LD1") == 0)return O_LD1;
- if (strcmp (name, "O_LPWR") == 0)return O_LPWR;
- if (strcmp (name, "O_RB1") == 0)return O_RB1;
- if (strcmp (name, "O_RB0") == 0)return O_RB0;
+ if (strcmp (name, "SW_D1") == 0)return O_SD1;
+ if (strcmp (name, "LD_LD0") == 0)return O_LD0;
+ if (strcmp (name, "LD_LD1") == 0)return O_LD1;
+ if (strcmp (name, "LD_LPWR") == 0)return O_LPWR;
+ if (strcmp (name, "LD_RB1") == 0)return O_RB1;
+ if (strcmp (name, "LD_RB0") == 0)return O_RB0;
 
  printf ("Error output '%s' don't have a valid id! \n", name);
  return 1;

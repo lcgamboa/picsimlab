@@ -699,22 +699,22 @@ cboard_K16F::EvOnShow(void)
 unsigned short
 cboard_K16F::get_in_id(char * name)
 {
- if (strcmp (name, "RST") == 0)return I_RST;
- if (strcmp (name, "PWR") == 0)return I_PWR;
- if (strcmp (name, "ICSP") == 0)return I_ICSP;
- if (strcmp (name, "TC1") == 0)return I_TC1;
- if (strcmp (name, "TC2") == 0)return I_TC2;
- if (strcmp (name, "TC3") == 0)return I_TC3;
- if (strcmp (name, "TC4") == 0)return I_TC4;
- if (strcmp (name, "TC5") == 0)return I_TC5;
- if (strcmp (name, "TC6") == 0)return I_TC6;
- if (strcmp (name, "TC7") == 0)return I_TC7;
- if (strcmp (name, "TC8") == 0)return I_TC8;
- if (strcmp (name, "TC9") == 0)return I_TC9;
- if (strcmp (name, "TC*") == 0)return I_TCA;
- if (strcmp (name, "TC0") == 0)return I_TC0;
- if (strcmp (name, "TC#") == 0)return I_TCT;
- if (strcmp (name, "VIEW") == 0)return I_VIEW;
+ if (strcmp (name, "PB_RST") == 0)return I_RST;
+ if (strcmp (name, "SW_PWR") == 0)return I_PWR;
+ if (strcmp (name, "PG_ICSP") == 0)return I_ICSP;
+ if (strcmp (name, "KB_TC1") == 0)return I_TC1;
+ if (strcmp (name, "KB_TC2") == 0)return I_TC2;
+ if (strcmp (name, "KB_TC3") == 0)return I_TC3;
+ if (strcmp (name, "KB_TC4") == 0)return I_TC4;
+ if (strcmp (name, "KB_TC5") == 0)return I_TC5;
+ if (strcmp (name, "KB_TC6") == 0)return I_TC6;
+ if (strcmp (name, "KB_TC7") == 0)return I_TC7;
+ if (strcmp (name, "KB_TC8") == 0)return I_TC8;
+ if (strcmp (name, "KB_TC9") == 0)return I_TC9;
+ if (strcmp (name, "KB_TC*") == 0)return I_TCA;
+ if (strcmp (name, "KB_TC0") == 0)return I_TC0;
+ if (strcmp (name, "KB_TC#") == 0)return I_TCT;
+ if (strcmp (name, "MD_VIEW") == 0)return I_VIEW;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
@@ -724,12 +724,12 @@ unsigned short
 cboard_K16F::get_out_id(char * name)
 {
 
- if (strcmp (name, "RA1") == 0)return O_RA1;
- if (strcmp (name, "RA2") == 0)return O_RA2;
- if (strcmp (name, "RA6") == 0)return O_RA6;
- if (strcmp (name, "RA7") == 0)return O_RA7;
- if (strcmp (name, "LPWR") == 0)return O_LPWR;
- if (strcmp (name, "LCD") == 0)return O_LCD;
+ if (strcmp (name, "LD_RA1") == 0)return O_RA1;
+ if (strcmp (name, "LD_RA2") == 0)return O_RA2;
+ if (strcmp (name, "LD_RA6") == 0)return O_RA6;
+ if (strcmp (name, "LD_RA7") == 0)return O_RA7;
+ if (strcmp (name, "LD_LPWR") == 0)return O_LPWR;
+ if (strcmp (name, "DS_LCD") == 0)return O_LCD;
 
 
  printf ("Erro output '%s' don't have a valid id! \n", name);

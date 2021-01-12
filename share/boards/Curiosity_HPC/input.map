@@ -6,10 +6,10 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:medelk   -->
-<area shape="rect" coords="83,81,210,104" href="I_ICSP" />
-<area shape="rect" coords="167,151,206,191" href="I_RST" />
-<area shape="rect" coords="66,136,129,158" href="I_JMP" />
-<area shape="rect" coords="3,231,43,294" href="I_PWR" />
-<area shape="rect" coords="339,423,383,475" href="I_S1" />
-<area shape="rect" coords="462,424,503,473" href="I_S2" />
+<area shape="rect" coords="83,81,210,104" href="PG_ICSP" />
+<area shape="rect" coords="167,151,206,191" href="PB_RST" />
+<area shape="rect" coords="66,136,129,158" href="JP_1" />
+<area shape="rect" coords="3,231,43,294" href="SW_PWR" />
+<area shape="rect" coords="339,423,383,475" href="PB_S1" />
+<area shape="rect" coords="462,424,503,473" href="PB_S2" />
 </map>

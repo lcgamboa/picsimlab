@@ -6,18 +6,18 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:lcganmboa@yahoo.com    -->
-<area shape="rect" coords="738,130,766,158" href="RST" />
-<area shape="rect" coords="77,373,127,422" href="RB0" />
-<area shape="rect" coords="142,372,193,421" href="RB1" />
-<area shape="rect" coords="205,373,256,422" href="RB2" />
-<area shape="rect" coords="265,373,316,421" href="RB3" />
-<area shape="rect" coords="862,100,904,142" href="PWR" />
-<area shape="rect" coords="734,18,797,102" href="ICSP" />
-<area shape="rect" coords="453,388,496,399" href="JP1" />
-<area shape="rect" coords="453,416,496,427" href="JP2" />
-<area shape="rect" coords="454,443,497,454" href="JP3" />
-<area shape="rect" coords="505,404,548,415" href="JP4" />
-<area shape="rect" coords="505,427,548,438" href="JP5" />
-<area shape="rect" coords="504,448,547,459" href="JP6" />
-<area shape="rect" coords="556,106,597,157" href="VIEW" />
+<area shape="rect" coords="738,130,766,158" href="PB_RST" />
+<area shape="rect" coords="77,373,127,422" href="PB_RB0" />
+<area shape="rect" coords="142,372,193,421" href="PB_RB1" />
+<area shape="rect" coords="205,373,256,422" href="PB_RB2" />
+<area shape="rect" coords="265,373,316,421" href="PB_RB3" />
+<area shape="rect" coords="862,100,904,142" href="SW_PWR" />
+<area shape="rect" coords="734,18,797,102" href="PG_ICSP" />
+<area shape="rect" coords="453,388,496,399" href="JP_1" />
+<area shape="rect" coords="453,416,496,427" href="JP_2" />
+<area shape="rect" coords="454,443,497,454" href="JP_3" />
+<area shape="rect" coords="505,404,548,415" href="JP_4" />
+<area shape="rect" coords="505,427,548,438" href="JP_5" />
+<area shape="rect" coords="504,448,547,459" href="JP_6" />
+<area shape="rect" coords="556,106,597,157" href="MD_VIEW" />
 </map>

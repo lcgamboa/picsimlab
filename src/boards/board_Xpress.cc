@@ -49,10 +49,10 @@
 unsigned short
 cboard_Xpress::get_in_id(char * name)
 {
- if (strcmp (name, "I_ICSP") == 0)return I_ICSP;
- if (strcmp (name, "I_PWR") == 0)return I_PWR;
- if (strcmp (name, "I_RST") == 0)return I_RST;
- if (strcmp (name, "I_S1") == 0)return I_S1;
+ if (strcmp (name, "PG_ICSP") == 0)return I_ICSP;
+ if (strcmp (name, "SW_PWR") == 0)return I_PWR;
+ if (strcmp (name, "PB_RST") == 0)return I_RST;
+ if (strcmp (name, "PB_S1") == 0)return I_S1;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
@@ -64,11 +64,11 @@ unsigned short
 cboard_Xpress::get_out_id(char * name)
 {
 
- if (strcmp (name, "O_D1") == 0)return O_D1;
- if (strcmp (name, "O_D2") == 0)return O_D2;
- if (strcmp (name, "O_D3") == 0)return O_D3;
- if (strcmp (name, "O_D4") == 0)return O_D4;
- if (strcmp (name, "O_D5") == 0)return O_D5;
+ if (strcmp (name, "LD_D1") == 0)return O_D1;
+ if (strcmp (name, "LD_D2") == 0)return O_D2;
+ if (strcmp (name, "LD_D3") == 0)return O_D3;
+ if (strcmp (name, "LD_D4") == 0)return O_D4;
+ if (strcmp (name, "LD_D5") == 0)return O_D5;
 
 
  printf ("Erro output '%s' don't have a valid id! \n", name);

@@ -189,11 +189,14 @@ rcontrol_end(void)
 int
 rcontrol_loop(void)
 {
+ int i;
  int n;
  int ret = 0;
  lxString stemp;
  board * Board;
  part * Part;
+ input_t * Input;
+ output_t * Output;
 
  //open connection  
  if (sockfd < 0)
@@ -280,99 +283,125 @@ rcontrol_loop(void)
          stemp.Printf ("Use Spare: %i\n", Board->GetUseSpareParts ());
          ret += sendtext ((const char *) stemp.c_str ());
 
-         if (Board->GetUseSpareParts ())
-           {
-            for (int i = 0; i < Window5.GetPartsCount (); i++)
-             {
-              Part = Window5.GetPart (i);
+         for (i = 0; i < Board->GetInputCount (); i++)
+          {
+           Input = Board->GetInput (i);
+           //stemp.Printf ("  Input %i : %s\n", i, Input->name);
+           //ret += sendtext ((const char *) stemp.c_str ());
 
-              stemp.Printf ("  Part %i: %s\n", i, (const char *)Part->GetName ());
-              ret += sendtext ((const char *) stemp.c_str ());
-             }
-           }
-             ret += sendtext ("Ok\n>");
-        }
-       else
-        {
-             ret = sendtext ("ERROR\n>");
-        }
-             break;
-             case 'q':
-             if (!strcmp (cmd, "quit"))
-        {
-             sendtext ("Ok\n");
-             ret = 1;
-        }
-       else
-        {
-             ret = sendtext ("ERROR\n>");
-        }
-             break;
-             case 'r':
-             if (!strcmp (cmd, "reset"))
-        {
-             Window1.GetBoard ()->MReset (0);
-             ret = sendtext ("Ok\n>");
-        }
-       else
-        {
-             ret = sendtext ("ERROR\n>");
-        }
-             break;
-             case 'v':
-             if (!strcmp (cmd, "version"))
-        {
-             stemp.Printf (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: %s %s %s\n"), lxT (_VERSION_), lxT (_DATE_), lxT (_ARCH_));
+           if (/*(Input->name[0] == 'P')&&(Input->name[1] == 'B')&&*/ (Input->status != NULL))
+            {
+             stemp.Printf ("    Input[%2i] %s = %i\n", i, Input->name, *((int *) Input->status));
              ret += sendtext ((const char *) stemp.c_str ());
-             ret += sendtext ("Ok\n>");
+            }
+
+          }
+
+         for (i = 0; i < Board->GetOutputCount (); i++)
+          {
+           Output = Board->GetOutput (i);
+           //stemp.Printf ("  Output %i: %s\n", i, Output->name);
+           //ret += sendtext ((const char *) stemp.c_str ());
+
+           if (/*(Output->name[0] == 'L')&&(Output->name[1] == 'D')&& */(Output->status != NULL))
+            {
+             stemp.Printf ("    Output[%2i] %s = %3.0f\n", i, Output->name, *((float *) Output->status));
+             ret += sendtext ((const char *) stemp.c_str ());
+            }
+          }
+
+         if (Board->GetUseSpareParts ())
+          {
+           for (i = 0; i < Window5.GetPartsCount (); i++)
+            {
+             Part = Window5.GetPart (i);
+             stemp.Printf ("  Part %i: %s\n", i, (const char *) Part->GetName ());
+             ret += sendtext ((const char *) stemp.c_str ());
+            }
+          }
+         ret += sendtext ("Ok\n>");
         }
        else
         {
-             ret = sendtext ("ERROR\n>");
+         ret = sendtext ("ERROR\n>");
         }
-             break;
-             default:
-             ret = sendtext ("ERROR\n>");
-             break;
+       break;
+      case 'q':
+       if (!strcmp (cmd, "quit"))
+        {
+         sendtext ("Ok\n");
+         ret = 1;
+        }
+       else
+        {
+         ret = sendtext ("ERROR\n>");
+        }
+       break;
+      case 'r':
+       if (!strcmp (cmd, "reset"))
+        {
+         Window1.GetBoard ()->MReset (0);
+         ret = sendtext ("Ok\n>");
+        }
+       else
+        {
+         ret = sendtext ("ERROR\n>");
+        }
+       break;
+      case 'v':
+       if (!strcmp (cmd, "version"))
+        {
+         stemp.Printf (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: %s %s %s\n"), lxT (_VERSION_), lxT (_DATE_), lxT (_ARCH_));
+         ret += sendtext ((const char *) stemp.c_str ());
+         ret += sendtext ("Ok\n>");
+        }
+       else
+        {
+         ret = sendtext ("ERROR\n>");
+        }
+       break;
+      default:
+       ret = sendtext ("ERROR\n>");
+       break;
       }
 
     }
    else
     {
-             bp += n;
-             if (bp > BSIZE)bp = BSIZE;
-     }
+     bp += n;
+     if (bp > BSIZE)bp = BSIZE;
+    }
 
 
 
 
-             /*
-        if ((n = recv (sockfd, (char *) ramreceived, dbg_board->DBGGetRAMSize (), MSG_WAITALL)) != (int) dbg_board->DBGGetRAMSize ())
-         {
-          printf ("receive error : %s \n", strerror (errno));
-          ret = 1;
-          reply = 0x01;
-         }
+   /*
+   if ((n = recv (sockfd, (char *) ramreceived, dbg_board->DBGGetRAMSize (), MSG_WAITALL)) != (int) dbg_board->DBGGetRAMSize ())
+   {
+printf ("receive error : %s \n", strerror (errno));
+ret = 1;
+reply = 0x01;
+   }
   
-      if (send (sockfd, (char *) ramsend, dbg_board->DBGGetRAMSize (), MSG_NOSIGNAL) != (int) dbg_board->DBGGetRAMSize ())
-         {
-          printf ("send error : %s \n", strerror (errno));
-          ret = 1;
-          reply = 0x01;
-         }
+   if (send (sockfd, (char *) ramsend, dbg_board->DBGGetRAMSize (), MSG_NOSIGNAL) != (int) dbg_board->DBGGetRAMSize ())
+   {
+printf ("send error : %s \n", strerror (errno));
+ret = 1;
+reply = 0x01;
+   }
     */
-             /*
-      if (send (sockfd, (char *) &reply, 1, MSG_NOSIGNAL) != 1)
-       {
-        printf ("send error : %s \n", strerror (errno));
-        ret = 1;
-       }
+   /*
+   if (send (sockfd, (char *) &reply, 1, MSG_NOSIGNAL) != 1)
+   {
+   printf ("send error : %s \n", strerror (errno));
+   ret = 1;
+   }
     */
   }
 
-             //close connection
-             if (ret)rcontrol_stop ();
+ //close connection
+ if (ret)rcontrol_stop ();
 
-             return ret;
- }
+ return ret;
+}
 

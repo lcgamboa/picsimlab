@@ -279,3 +279,34 @@ board::GetProcessorName(void)
  return Proc;
 }
 
+int
+board::GetInputCount(void)
+{
+ return inputc;
+}
+
+input_t *
+board::GetInput(int n)
+{
+ if (n < inputc)
+  {
+   return &input[n];
+  }
+ return NULL;
+}
+
+int
+board::GetOutputCount(void)
+{
+ return outputc;
+}
+
+output_t *
+board::GetOutput(int n)
+{
+ if (n < outputc)
+  {
+   return &output[n];
+  }
+ return NULL;
+}

@@ -229,7 +229,7 @@ cboard_McLab1::Draw(CDraw *draw, double scale)
       }
      else
       {
-       if ((output[i].name[0] == 'R')&&(output[i].name[1] == 'B'))
+       if ((output[i].name[3] == 'R')&&(output[i].name[4] == 'B'))
         draw->Canvas.SetColor (30, 0, 0);
       }
 
@@ -383,6 +383,85 @@ cboard_McLab1::Reset(void)
    lm2[i] = 0;
   }
  if (use_spare)Window5.Reset ();
+ 
+ 
+ for (int i = 0; i < inputc; i++)
+  {
+   switch (input[i].id)
+    {
+    case I_RA1:
+     input[i].status = &p_BT1;
+     break;
+    case I_RA2:
+     input[i].status = &p_BT2;
+     break;
+    case I_RA3:
+     input[i].status = &p_BT3;
+     break;
+    case I_RA4:
+     input[i].status = &p_BT4;
+     break;
+    case I_JP1:
+     input[i].status = &jmp[0];
+     break;
+    default:
+     input[i].status = NULL;
+     break;
+    }
+  }
+
+ for (int i = 0; i < outputc; i++)
+  {
+   switch (output[i].id)
+    {
+    case O_RB0:
+     output[i].status = &pic.pins[5].oavalue;
+     break;
+    case O_RB1:
+     output[i].status = &pic.pins[6].oavalue;
+     break;
+    case O_RB2:
+     output[i].status = &pic.pins[7].oavalue;
+     break;
+    case O_RB3:
+     output[i].status = &pic.pins[8].oavalue;
+     break;
+    case O_RB4:
+     output[i].status = &pic.pins[9].oavalue;
+     break;
+    case O_RB5:
+     output[i].status = &pic.pins[10].oavalue;
+     break;
+    case O_RB6:
+     output[i].status = &pic.pins[11].oavalue;
+     break;
+    case O_RB7:
+     output[i].status = &pic.pins[12].oavalue;
+     break;
+    case O_RA0L:
+     output[i].status = &pic.pins[16].oavalue;
+     break;
+    case O_A1:
+    case O_B1:
+    case O_C1:
+    case O_D1:
+    case O_E1:
+    case O_F1:
+    case O_G1:
+    case O_P1:
+    case O_A2:
+    case O_B2:
+    case O_C2:
+    case O_D2:
+    case O_E2:
+    case O_F2:
+    case O_G2:
+    case O_P2:
+    default:
+     output[i].status = NULL;
+     break;
+    }
+  }
 }
 
 void
@@ -578,14 +657,14 @@ cboard_McLab1::EvKeyRelease(uint key, uint mask)
 unsigned short
 cboard_McLab1::get_in_id(char * name)
 {
- if (strcmp (name, "RST") == 0)return I_RST;
- if (strcmp (name, "RA1") == 0)return I_RA1;
- if (strcmp (name, "RA2") == 0)return I_RA2;
- if (strcmp (name, "RA3") == 0)return I_RA3;
- if (strcmp (name, "RA4") == 0)return I_RA4;
- if (strcmp (name, "PWR") == 0)return I_PWR;
- if (strcmp (name, "ICSP") == 0)return I_ICSP;
- if (strcmp (name, "JP1") == 0)return I_JP1;
+ if (strcmp (name, "PB_RST") == 0)return I_RST;
+ if (strcmp (name, "PB_RA1") == 0)return I_RA1;
+ if (strcmp (name, "PB_RA2") == 0)return I_RA2;
+ if (strcmp (name, "PB_RA3") == 0)return I_RA3;
+ if (strcmp (name, "PB_RA4") == 0)return I_RA4;
+ if (strcmp (name, "SW_PWR") == 0)return I_PWR;
+ if (strcmp (name, "PG_ICSP") == 0)return I_ICSP;
+ if (strcmp (name, "JP_1") == 0)return I_JP1;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
@@ -595,41 +674,41 @@ unsigned short
 cboard_McLab1::get_out_id(char * name)
 {
 
- if (strcmp (name, "RB0") == 0)return O_RB0;
- if (strcmp (name, "RB1") == 0)return O_RB1;
- if (strcmp (name, "RB2") == 0)return O_RB2;
- if (strcmp (name, "RB3") == 0)return O_RB3;
- if (strcmp (name, "RB4") == 0)return O_RB4;
- if (strcmp (name, "RB5") == 0)return O_RB5;
- if (strcmp (name, "RB6") == 0)return O_RB6;
- if (strcmp (name, "RB7") == 0)return O_RB7;
+ if (strcmp (name, "LD_RB0") == 0)return O_RB0;
+ if (strcmp (name, "LD_RB1") == 0)return O_RB1;
+ if (strcmp (name, "LD_RB2") == 0)return O_RB2;
+ if (strcmp (name, "LD_RB3") == 0)return O_RB3;
+ if (strcmp (name, "LD_RB4") == 0)return O_RB4;
+ if (strcmp (name, "LD_RB5") == 0)return O_RB5;
+ if (strcmp (name, "LD_RB6") == 0)return O_RB6;
+ if (strcmp (name, "LD_RB7") == 0)return O_RB7;
 
- if (strcmp (name, "RA0") == 0)return O_RA0;
- if (strcmp (name, "RA1") == 0)return O_RA1;
- if (strcmp (name, "RA2") == 0)return O_RA2;
- if (strcmp (name, "RA3") == 0)return O_RA3;
+ if (strcmp (name, "LD_RA0") == 0)return O_RA0;
+ if (strcmp (name, "LD_RA1") == 0)return O_RA1;
+ if (strcmp (name, "LD_RA2") == 0)return O_RA2;
+ if (strcmp (name, "LD_RA3") == 0)return O_RA3;
 
- if (strcmp (name, "RA0L") == 0)return O_RA0L;
+ if (strcmp (name, "LD_RA0L") == 0)return O_RA0L;
 
- if (strcmp (name, "A1") == 0)return O_A1;
- if (strcmp (name, "B1") == 0)return O_B1;
- if (strcmp (name, "C1") == 0)return O_C1;
- if (strcmp (name, "D1") == 0)return O_D1;
- if (strcmp (name, "E1") == 0)return O_E1;
- if (strcmp (name, "F1") == 0)return O_F1;
- if (strcmp (name, "G1") == 0)return O_G1;
- if (strcmp (name, "P1") == 0)return O_P1;
+ if (strcmp (name, "SS_A1") == 0)return O_A1;
+ if (strcmp (name, "SS_B1") == 0)return O_B1;
+ if (strcmp (name, "SS_C1") == 0)return O_C1;
+ if (strcmp (name, "SS_D1") == 0)return O_D1;
+ if (strcmp (name, "SS_E1") == 0)return O_E1;
+ if (strcmp (name, "SS_F1") == 0)return O_F1;
+ if (strcmp (name, "SS_G1") == 0)return O_G1;
+ if (strcmp (name, "SS_P1") == 0)return O_P1;
 
- if (strcmp (name, "A2") == 0)return O_A2;
- if (strcmp (name, "B2") == 0)return O_B2;
- if (strcmp (name, "C2") == 0)return O_C2;
- if (strcmp (name, "D2") == 0)return O_D2;
- if (strcmp (name, "E2") == 0)return O_E2;
- if (strcmp (name, "F2") == 0)return O_F2;
- if (strcmp (name, "G2") == 0)return O_G2;
- if (strcmp (name, "P2") == 0)return O_P2;
+ if (strcmp (name, "SS_A2") == 0)return O_A2;
+ if (strcmp (name, "SS_B2") == 0)return O_B2;
+ if (strcmp (name, "SS_C2") == 0)return O_C2;
+ if (strcmp (name, "SS_D2") == 0)return O_D2;
+ if (strcmp (name, "SS_E2") == 0)return O_E2;
+ if (strcmp (name, "SS_F2") == 0)return O_F2;
+ if (strcmp (name, "SS_G2") == 0)return O_G2;
+ if (strcmp (name, "SS_P2") == 0)return O_P2;
 
- if (strcmp (name, "JP1") == 0)return O_JP1;
+ if (strcmp (name, "JP_1") == 0)return O_JP1;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
@@ -640,7 +719,7 @@ cboard_McLab1::WritePreferences(void)
 {
  Window1.saveprefs (lxT ("McLab1_proc"), Proc);
  Window1.saveprefs (lxT ("McLab1_jmp"), lxString ().Format ("%i", jmp[0]));
- Window1.saveprefs (lxT ("McLab1_clock"), lxString ().Format ("%2.1f", Window1.GetClock()));
+ Window1.saveprefs (lxT ("McLab1_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
 }
 
 void
@@ -663,10 +742,10 @@ cboard_McLab1::ReadPreferences(char *name, char *value)
   {
    Proc = value;
   }
- 
-  if (!strcmp (name, "McLab1_clock"))
+
+ if (!strcmp (name, "McLab1_clock"))
   {
-   Window1.SetClock (atof(value));
+   Window1.SetClock (atof (value));
   }
 }
 

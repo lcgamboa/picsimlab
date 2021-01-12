@@ -6,12 +6,12 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:lcganmboa@yahoo.com   -->
-<area shape="rect" coords="132,312,188,368" href="RST" />
-<area shape="rect" coords="282,311,336,367" href="RA1" />
-<area shape="rect" coords="342,311,398,367" href="RA2" />
-<area shape="rect" coords="402,311,457,367" href="RA3" />
-<area shape="rect" coords="461,311,518,367" href="RA4" />
-<area shape="rect" coords="20,97,65,139" href="PWR" />
-<area shape="rect" coords="421,39,472,52" href="JP1" />
-<area shape="rect" coords="170,4,235,94" href="ICSP" />
+<area shape="rect" coords="132,312,188,368" href="PB_RST" />
+<area shape="rect" coords="282,311,336,367" href="PB_RA1" />
+<area shape="rect" coords="342,311,398,367" href="PB_RA2" />
+<area shape="rect" coords="402,311,457,367" href="PB_RA3" />
+<area shape="rect" coords="461,311,518,367" href="PB_RA4" />
+<area shape="rect" coords="20,97,65,139" href="SW_PWR" />
+<area shape="rect" coords="421,39,472,52" href="JP_1" />
+<area shape="rect" coords="170,4,235,94" href="PG_ICSP" />
 </map>

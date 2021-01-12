@@ -6,11 +6,11 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:medelk    -->
-<area shape="rect" coords="373,321,385,351" href="O_D5" />
-<area shape="rect" coords="474,320,486,350" href="O_D2" />
-<area shape="rect" coords="97,458,129,470" href="O_D6" />
-<area shape="rect" coords="62,136,132,156" href="O_JMP" />
-<area shape="rect" coords="406,321,418,351" href="O_D4" />
-<area shape="rect" coords="440,320,452,350" href="O_D3" />
-<area shape="rect" coords="188,460,220,470" href="O_D7" />
+<area shape="rect" coords="373,321,385,351" href="LD_D5" />
+<area shape="rect" coords="474,320,486,350" href="LD_D2" />
+<area shape="rect" coords="97,458,129,470" href="LD_D6" />
+<area shape="rect" coords="62,136,132,156" href="JP_1" />
+<area shape="rect" coords="406,321,418,351" href="LD_D4" />
+<area shape="rect" coords="440,320,452,350" href="LD_D3" />
+<area shape="rect" coords="188,460,220,470" href="LD_D7" />
 </map>

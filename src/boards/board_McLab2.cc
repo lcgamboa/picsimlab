@@ -404,7 +404,7 @@ cboard_McLab2::Draw(CDraw *draw, double scale)
 
      if ((output[i].name[0] == 'J')&&(output[i].name[1] == 'P'))
       {
-       if (!jmp[output[i].name[2] - 0x31])
+       if (!jmp[output[i].name[3] - 0x31])
         {
          draw->Canvas.SetColor (70, 70, 70);
          draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, (int) ((output[i].x2 - output[i].x1)*0.65), output[i].y2 - output[i].y1);
@@ -717,38 +717,38 @@ cboard_McLab2::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       case I_ICSP:
        {
         Window1.menu1_File_LoadHex_EvMenuActive (NULL);
-       };
+       }
        break;
 
       case I_JP1:
        {
         jmp[0] ^= 0x01;
-       };
+       }
        break;
       case I_JP2:
        {
         jmp[1] ^= 0x01;
-       };
+       }
        break;
       case I_JP3:
        {
         jmp[2] ^= 0x01;
-       };
+       }
        break;
       case I_JP4:
        {
         jmp[3] ^= 0x01;
-       };
+       }
        break;
       case I_JP5:
        {
         jmp[4] ^= 0x01;
-       };
+       }
        break;
       case I_JP6:
        {
         jmp[5] ^= 0x01;
-       };
+       }
        break;
 
 
@@ -775,7 +775,7 @@ cboard_McLab2::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
           Window1.statusbar1.SetField (0, lxT ("Running..."));
          }
-       };
+       }
        break;
 
       case I_RST:
@@ -786,29 +786,29 @@ cboard_McLab2::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           Window1.Set_mcurst (1);
          }
         p_MCLR = 0;
-       };
+       }
        break;
 
 
       case I_RB0:
        {
         p_BT1 = 0;
-       };
+       }
        break;
       case I_RB1:
        {
         p_BT2 = 0;
-       };
+       }
        break;
       case I_RB2:
        {
         p_BT3 = 0;
-       };
+       }
        break;
       case I_RB3:
        {
         p_BT4 = 0;
-       };
+       }
        break;
       case I_VIEW:
        FILE * fout;
@@ -884,28 +884,28 @@ cboard_McLab2::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
            }
          }
         p_MCLR = 1;
-       };
+       }
        break;
 
       case I_RB0:
        {
         p_BT1 = 1;
-       };
+       }
        break;
       case I_RB1:
        {
         p_BT2 = 1;
-       };
+       }
        break;
       case I_RB2:
        {
         p_BT3 = 1;
-       };
+       }
        break;
       case I_RB3:
        {
         p_BT4 = 1;
-       };
+       }
        break;
 
       }
@@ -968,24 +968,24 @@ cboard_McLab2::EvOnShow(void)
 unsigned short
 cboard_McLab2::get_in_id(char * name)
 {
- if (strcmp (name, "RST") == 0)return I_RST;
+ if (strcmp (name, "PB_RST") == 0)return I_RST;
 
- if (strcmp (name, "PWR") == 0)return I_PWR;
- if (strcmp (name, "ICSP") == 0)return I_ICSP;
+ if (strcmp (name, "SW_PWR") == 0)return I_PWR;
+ if (strcmp (name, "PG_ICSP") == 0)return I_ICSP;
 
- if (strcmp (name, "RB0") == 0)return I_RB0;
- if (strcmp (name, "RB1") == 0)return I_RB1;
- if (strcmp (name, "RB2") == 0)return I_RB2;
- if (strcmp (name, "RB3") == 0)return I_RB3;
+ if (strcmp (name, "PB_RB0") == 0)return I_RB0;
+ if (strcmp (name, "PB_RB1") == 0)return I_RB1;
+ if (strcmp (name, "PB_RB2") == 0)return I_RB2;
+ if (strcmp (name, "PB_RB3") == 0)return I_RB3;
 
- if (strcmp (name, "JP1") == 0)return I_JP1;
- if (strcmp (name, "JP2") == 0)return I_JP2;
- if (strcmp (name, "JP3") == 0)return I_JP3;
- if (strcmp (name, "JP4") == 0)return I_JP4;
- if (strcmp (name, "JP5") == 0)return I_JP5;
- if (strcmp (name, "JP6") == 0)return I_JP6;
+ if (strcmp (name, "JP_1") == 0)return I_JP1;
+ if (strcmp (name, "JP_2") == 0)return I_JP2;
+ if (strcmp (name, "JP_3") == 0)return I_JP3;
+ if (strcmp (name, "JP_4") == 0)return I_JP4;
+ if (strcmp (name, "JP_5") == 0)return I_JP5;
+ if (strcmp (name, "JP_6") == 0)return I_JP6;
 
- if (strcmp (name, "VIEW") == 0)return I_VIEW;
+ if (strcmp (name, "MD_VIEW") == 0)return I_VIEW;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
@@ -995,56 +995,56 @@ unsigned short
 cboard_McLab2::get_out_id(char * name)
 {
 
- if (strcmp (name, "RB0") == 0)return O_RB0;
- if (strcmp (name, "RB1") == 0)return O_RB1;
- if (strcmp (name, "RB2") == 0)return O_RB2;
- if (strcmp (name, "RB3") == 0)return O_RB3;
+ if (strcmp (name, "LD_RB0") == 0)return O_RB0;
+ if (strcmp (name, "LD_RB1") == 0)return O_RB1;
+ if (strcmp (name, "LD_RB2") == 0)return O_RB2;
+ if (strcmp (name, "LD_RB3") == 0)return O_RB3;
 
- if (strcmp (name, "A1") == 0)return O_A1;
- if (strcmp (name, "B1") == 0)return O_B1;
- if (strcmp (name, "C1") == 0)return O_C1;
- if (strcmp (name, "D1") == 0)return O_D1;
- if (strcmp (name, "E1") == 0)return O_E1;
- if (strcmp (name, "F1") == 0)return O_F1;
- if (strcmp (name, "G1") == 0)return O_G1;
- if (strcmp (name, "P1") == 0)return O_P1;
+ if (strcmp (name, "SS_A1") == 0)return O_A1;
+ if (strcmp (name, "SS_B1") == 0)return O_B1;
+ if (strcmp (name, "SS_C1") == 0)return O_C1;
+ if (strcmp (name, "SS_D1") == 0)return O_D1;
+ if (strcmp (name, "SS_E1") == 0)return O_E1;
+ if (strcmp (name, "SS_F1") == 0)return O_F1;
+ if (strcmp (name, "SS_G1") == 0)return O_G1;
+ if (strcmp (name, "SS_P1") == 0)return O_P1;
 
- if (strcmp (name, "A2") == 0)return O_A2;
- if (strcmp (name, "B2") == 0)return O_B2;
- if (strcmp (name, "C2") == 0)return O_C2;
- if (strcmp (name, "D2") == 0)return O_D2;
- if (strcmp (name, "E2") == 0)return O_E2;
- if (strcmp (name, "F2") == 0)return O_F2;
- if (strcmp (name, "G2") == 0)return O_G2;
- if (strcmp (name, "P2") == 0)return O_P2;
+ if (strcmp (name, "SS_A2") == 0)return O_A2;
+ if (strcmp (name, "SS_B2") == 0)return O_B2;
+ if (strcmp (name, "SS_C2") == 0)return O_C2;
+ if (strcmp (name, "SS_D2") == 0)return O_D2;
+ if (strcmp (name, "SS_E2") == 0)return O_E2;
+ if (strcmp (name, "SS_F2") == 0)return O_F2;
+ if (strcmp (name, "SS_G2") == 0)return O_G2;
+ if (strcmp (name, "SS_P2") == 0)return O_P2;
 
- if (strcmp (name, "LPWR") == 0)return O_LPWR;
- if (strcmp (name, "LCD") == 0)return O_LCD;
+ if (strcmp (name, "LD_LPWR") == 0)return O_LPWR;
+ if (strcmp (name, "DS_LCD") == 0)return O_LCD;
 
- if (strcmp (name, "A3") == 0)return O_A3;
- if (strcmp (name, "B3") == 0)return O_B3;
- if (strcmp (name, "C3") == 0)return O_C3;
- if (strcmp (name, "D3") == 0)return O_D3;
- if (strcmp (name, "E3") == 0)return O_E3;
- if (strcmp (name, "F3") == 0)return O_F3;
- if (strcmp (name, "G3") == 0)return O_G3;
- if (strcmp (name, "P3") == 0)return O_P3;
+ if (strcmp (name, "SS_A3") == 0)return O_A3;
+ if (strcmp (name, "SS_B3") == 0)return O_B3;
+ if (strcmp (name, "SS_C3") == 0)return O_C3;
+ if (strcmp (name, "SS_D3") == 0)return O_D3;
+ if (strcmp (name, "SS_E3") == 0)return O_E3;
+ if (strcmp (name, "SS_F3") == 0)return O_F3;
+ if (strcmp (name, "SS_G3") == 0)return O_G3;
+ if (strcmp (name, "SS_P3") == 0)return O_P3;
 
- if (strcmp (name, "A4") == 0)return O_A4;
- if (strcmp (name, "B4") == 0)return O_B4;
- if (strcmp (name, "C4") == 0)return O_C4;
- if (strcmp (name, "D4") == 0)return O_D4;
- if (strcmp (name, "E4") == 0)return O_E4;
- if (strcmp (name, "F4") == 0)return O_F4;
- if (strcmp (name, "G4") == 0)return O_G4;
- if (strcmp (name, "P4") == 0)return O_P4;
+ if (strcmp (name, "SS_A4") == 0)return O_A4;
+ if (strcmp (name, "SS_B4") == 0)return O_B4;
+ if (strcmp (name, "SS_C4") == 0)return O_C4;
+ if (strcmp (name, "SS_D4") == 0)return O_D4;
+ if (strcmp (name, "SS_E4") == 0)return O_E4;
+ if (strcmp (name, "SS_F4") == 0)return O_F4;
+ if (strcmp (name, "SS_G4") == 0)return O_G4;
+ if (strcmp (name, "SS_P4") == 0)return O_P4;
 
- if (strcmp (name, "JP1") == 0)return O_JP1;
- if (strcmp (name, "JP2") == 0)return O_JP2;
- if (strcmp (name, "JP3") == 0)return O_JP3;
- if (strcmp (name, "JP4") == 0)return O_JP4;
- if (strcmp (name, "JP5") == 0)return O_JP5;
- if (strcmp (name, "JP6") == 0)return O_JP6;
+ if (strcmp (name, "JP_1") == 0)return O_JP1;
+ if (strcmp (name, "JP_2") == 0)return O_JP2;
+ if (strcmp (name, "JP_3") == 0)return O_JP3;
+ if (strcmp (name, "JP_4") == 0)return O_JP4;
+ if (strcmp (name, "JP_5") == 0)return O_JP5;
+ if (strcmp (name, "JP_6") == 0)return O_JP6;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;

@@ -53,9 +53,9 @@ enum
 unsigned short
 cboard_gpboard::get_in_id(char * name)
 {
- if (strcmp (name, "I_ICSP") == 0)return I_ICSP;
- if (strcmp (name, "I_PWR") == 0)return I_PWR;
- if (strcmp (name, "I_RST") == 0)return I_RST;
+ if (strcmp (name, "PG_ICSP") == 0)return I_ICSP;
+ if (strcmp (name, "SW_PWR") == 0)return I_PWR;
+ if (strcmp (name, "PB_RST") == 0)return I_RST;
 
  printf ("Error input '%s' don't have a valid id! \n", name);
  return -1;
@@ -67,8 +67,8 @@ unsigned short
 cboard_gpboard::get_out_id(char * name)
 {
 
- if (strcmp (name, "O_MP") == 0)return O_MP;
- if (strcmp (name, "O_LPWR") == 0)return O_LPWR;
+ if (strcmp (name, "MP_CPU") == 0)return O_MP;
+ if (strcmp (name, "LD_LPWR") == 0)return O_LPWR;
 
 
  printf ("Error output '%s' don't have a valid id! \n", name);

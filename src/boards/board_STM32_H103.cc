@@ -49,10 +49,10 @@ enum
 unsigned short
 cboard_STM32_H103::get_in_id(char * name)
 {
- if (strcmp (name, "I_ICSP") == 0)return I_ICSP;
- if (strcmp (name, "I_PWR") == 0)return I_PWR;
- if (strcmp (name, "I_RST") == 0)return I_RST;
- if (strcmp (name, "I_BUT") == 0)return I_BUT;
+ if (strcmp (name, "PG_ICSP") == 0)return I_ICSP;
+ if (strcmp (name, "SW_PWR") == 0)return I_PWR;
+ if (strcmp (name, "PB_RST") == 0)return I_RST;
+ if (strcmp (name, "PB_BUT") == 0)return I_BUT;
 
  printf ("Error input '%s' don't have a valid id! \n", name);
  return -1;
@@ -64,8 +64,8 @@ unsigned short
 cboard_STM32_H103::get_out_id(char * name)
 {
 
- if (strcmp (name, "LED") == 0)return O_LED;
- if (strcmp (name, "LPWR") == 0)return O_LPWR;
+ if (strcmp (name, "LD_LED") == 0)return O_LED;
+ if (strcmp (name, "LD_LPWR") == 0)return O_LPWR;
 
 
  printf ("Error output '%s' don't have a valid id! \n", name);

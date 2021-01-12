@@ -50,9 +50,9 @@ enum
 unsigned short
 cboard_Arduino_Uno::get_in_id(char * name)
 {
- if (strcmp (name, "I_ICSP") == 0)return I_ICSP;
- if (strcmp (name, "I_PWR") == 0)return I_PWR;
- if (strcmp (name, "I_RST") == 0)return I_RST;
+ if (strcmp (name, "PG_ICSP") == 0)return I_ICSP;
+ if (strcmp (name, "SW_PWR") == 0)return I_PWR;
+ if (strcmp (name, "PB_RST") == 0)return I_RST;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
@@ -64,10 +64,10 @@ unsigned short
 cboard_Arduino_Uno::get_out_id(char * name)
 {
 
- if (strcmp (name, "O_L") == 0)return O_L;
- if (strcmp (name, "O_TX") == 0)return O_TX;
- if (strcmp (name, "O_RX") == 0)return O_RX;
- if (strcmp (name, "O_ON") == 0)return O_ON;
+ if (strcmp (name, "LD_L") == 0)return O_L;
+ if (strcmp (name, "LD_TX") == 0)return O_TX;
+ if (strcmp (name, "LD_RX") == 0)return O_RX;
+ if (strcmp (name, "LD_ON") == 0)return O_ON;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;

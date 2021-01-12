@@ -6,6 +6,6 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:lcganmboa@yahoo.com     -->
-<area shape="rect" coords="395,60,407,94" href="LPWR" />
-<area shape="rect" coords="396,123,407,157" href="LED" />
+<area shape="rect" coords="395,60,407,94" href="LD_PWR" />
+<area shape="rect" coords="396,123,407,157" href="LD_LED" />
 </map>

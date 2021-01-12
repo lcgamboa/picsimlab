@@ -6,10 +6,10 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:lcganmboa@yahoo.com   -->
-<area shape="circle" coords="320,451,7" href="RA1" />
-<area shape="circle" coords="572,132,7" href="LPWR" />
-<area shape="rect" coords="24,245,396,331" href="LCD" />
-<area shape="circle" coords="347,451,7" href="RA2" />
-<area shape="circle" coords="372,451,7" href="RA6" />
-<area shape="circle" coords="397,451,7" href="RA7" />
+<area shape="circle" coords="320,451,7" href="LD_RA1" />
+<area shape="circle" coords="572,132,7" href="LD_LPWR" />
+<area shape="rect" coords="24,245,396,331" href="DS_LCD" />
+<area shape="circle" coords="347,451,7" href="LD_RA2" />
+<area shape="circle" coords="372,451,7" href="LD_RA6" />
+<area shape="circle" coords="397,451,7" href="LD_RA7" />
 </map>
