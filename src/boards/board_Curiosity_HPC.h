@@ -29,10 +29,10 @@
 
 #include<lxrad.h>
 
-#include "board_picsim.h"
+#include "bsim_picsim.h"
 
 //New board Class derived from board class defined in board.h
-class cboard_Curiosity_HPC:public board_picsim
+class cboard_Curiosity_HPC:public bsim_picsim
 {
     private:
         int p_BT1; // Button S1
@@ -53,7 +53,7 @@ class cboard_Curiosity_HPC:public board_picsim
         CLabel *label5;   //label of gauge RA7
         CLabel *label6;   //label of second serial
         CCombo *combo1;  //combo of second serial
-
+        void RegisterRemoteControl(void); 
     public:
       lxString GetAboutInfo(void){return lxT("El-khadraouy Mohammed\n<mohammed.el-khadraouy@ecole.ensicaen.fr>\nand L.C. Gamboa \n <lcgamboa@yahoo.com>");};  
       //Constructor called once on board creation 

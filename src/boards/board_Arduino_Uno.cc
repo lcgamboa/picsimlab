@@ -34,16 +34,16 @@ enum
 {
  I_ICSP, //ICSP connector
  I_PWR, //Power button
- I_RST //Reset button
+ I_RST  //Reset button
 };
 
 /* ids of outputs of output map*/
 enum
 {
- O_L, //switch position (On/Off)
+ O_L,  //LED 
  O_RX, //LED on PD0
  O_TX, //LED on PD1
- O_ON //Power LED
+ O_ON  //Power LED
 };
 //return the input ids numbers of names used in input map
 
@@ -305,6 +305,22 @@ cboard_Arduino_Uno::Reset(void)
    }
   */
  if (use_spare)Window5.Reset ();
+ 
+ RegisterRemoteControl();
+}
+
+void
+cboard_Arduino_Uno::RegisterRemoteControl(void)
+{
+ for (int i = 0; i < outputc; i++)
+  {
+   switch (output[i].id)
+    {
+    case O_L:
+     output[i].status = &pins[18].oavalue;
+     break;
+    }
+  }
 }
 
 //Called ever 1s to refresh status

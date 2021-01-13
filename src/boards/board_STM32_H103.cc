@@ -97,7 +97,34 @@ cboard_STM32_H103::Reset(void)
  Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE));
 
  if (use_spare)Window5.Reset ();
+ 
+ RegisterRemoteControl();
 }
+
+void
+cboard_STM32_H103::RegisterRemoteControl(void)
+{
+ for (int i = 0; i < inputc; i++)
+  {
+   switch (input[i].id)
+    {
+    case I_BUT:
+     input[i].status = &p_BUT;
+     break;
+    }
+  }
+
+ for (int i = 0; i < outputc; i++)
+  {
+   switch (output[i].id)
+    {
+    case O_LED:
+     output[i].status = &pins[52].oavalue;
+     break;
+    }
+  }
+}
+
 
 //Called ever 1s to refresh status
 

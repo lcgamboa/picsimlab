@@ -28,14 +28,14 @@
 
 #include<lxrad.h>
 
-#include "board_picsim.h"
-#include "board_simavr.h"
+#include "bsim_picsim.h"
+#include "bsim_simavr.h"
 
 #define _PIC 0
 #define _AVR 1
 
 //new board class must be derived from board class defined in board.h
-class cboard_Breadboard:public board_picsim, public board_simavr
+class cboard_Breadboard:public bsim_picsim, public bsim_simavr
 {
   private:
       int ptype;

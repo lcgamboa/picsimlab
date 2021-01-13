@@ -26,10 +26,10 @@
 #ifndef BOARD_PICGenios_H
 #define	BOARD_PICGenios_H
 
-#include "board_picsim.h"
+#include "bsim_picsim.h"
 
 
-class cboard_PICGenios:public board_picsim
+class cboard_PICGenios:public bsim_picsim
 {
   private:
      int p_BT1; 
@@ -103,6 +103,7 @@ class cboard_PICGenios:public board_picsim
     
     char mi2c_tmp_name[200]; 
     
+    void RegisterRemoteControl(void);  
   public:
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cboard_PICGenios(void);

@@ -26,10 +26,10 @@
 #ifndef BOARD_K16F_H
 #define	BOARD_K16F_H
 
-#include "board_picsim.h"
+#include "bsim_picsim.h"
 
 
-class cboard_K16F:public board_picsim
+class cboard_K16F:public bsim_picsim
 {
   private:
     int p_CL1; 
@@ -47,7 +47,8 @@ class cboard_K16F:public board_picsim
      unsigned char d;
      unsigned char sda,sck;
      char mi2c_tmp_name[200];  
-    
+     
+     void RegisterRemoteControl(void);     
   public:
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cboard_K16F(void);

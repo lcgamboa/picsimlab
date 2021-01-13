@@ -334,7 +334,7 @@ cboard_PICGenios::MDumpMemory(const char * mfname)
    printf ("Error saving to file: %s \n", fname);
   }
 
- board_picsim::MDumpMemory (mfname);
+ bsim_picsim::MDumpMemory (mfname);
 }
 
 void
@@ -808,7 +808,7 @@ cboard_PICGenios::Run_CPU(void)
 
     if (use_oscope)Window4.SetSample ();
     if (use_spare)Window5.Process ();
-    
+
     //increment mean value counter if pin is high 
     if (j < pic.PINCOUNT)
      alm[j] += pins[j].value;
@@ -986,6 +986,96 @@ cboard_PICGenios::Reset(void)
   }
 
  if (use_spare)Window5.Reset ();
+
+ RegisterRemoteControl ();
+}
+
+void
+cboard_PICGenios::RegisterRemoteControl(void)
+{
+ for (int i = 0; i < inputc; i++)
+  {
+   switch (input[i].id)
+    {
+    case I_RB0:
+     input[i].status = &p_BT1;
+     break;
+    case I_RB1:
+     input[i].status = &p_BT2;
+     break;
+    case I_RB2:
+     input[i].status = &p_BT3;
+     break;
+    case I_RB3:
+     input[i].status = &p_BT4;
+     break;
+    case I_RB4:
+     input[i].status = &p_BT5;
+     break;
+    case I_RB5:
+     input[i].status = &p_BT6;
+     break;
+    case I_RA5:
+     input[i].status = &p_BT7;
+     break;
+
+    }
+  }
+
+ for (int i = 0; i < outputc; i++)
+  {
+   switch (output[i].id)
+    {
+    case O_RB0:
+     output[i].status = &pic.pins[32].oavalue;
+     break;
+    case O_RB1:
+     output[i].status = &pic.pins[33].oavalue;
+     break;
+    case O_RB2:
+     output[i].status = &pic.pins[34].oavalue;
+     break;
+    case O_RB3:
+     output[i].status = &pic.pins[35].oavalue;
+     break;
+    case O_RB4:
+     output[i].status = &pic.pins[36].oavalue;
+     break;
+    case O_RB5:
+     output[i].status = &pic.pins[37].oavalue;
+     break;
+    case O_RB6:
+     output[i].status = &pic.pins[38].oavalue;
+     break;
+    case O_RB7:
+     output[i].status = &pic.pins[39].oavalue;
+     break;
+    case O_RD0:
+     output[i].status = &pic.pins[18].oavalue;
+     break;
+    case O_RD1:
+     output[i].status = &pic.pins[19].oavalue;
+     break;
+    case O_RD2:
+     output[i].status = &pic.pins[20].oavalue;
+     break;
+    case O_RD3:
+     output[i].status = &pic.pins[21].oavalue;
+     break;
+    case O_RD4:
+     output[i].status = &pic.pins[26].oavalue;
+     break;
+    case O_RD5:
+     output[i].status = &pic.pins[27].oavalue;
+     break;
+    case O_RD6:
+     output[i].status = &pic.pins[28].oavalue;
+     break;
+    case O_RD7:
+     output[i].status = &pic.pins[29].oavalue;
+     break;
+    }
+  }
 }
 
 void
@@ -1822,7 +1912,7 @@ cboard_PICGenios::WritePreferences(void)
   sprintf (line + i, "%i", dip[i]);
 
  Window1.saveprefs (lxT ("PICGenios_dip"), line);
- Window1.saveprefs (lxT ("PICGenios_clock"), lxString ().Format ("%2.1f", Window1.GetClock()));
+ Window1.saveprefs (lxT ("PICGenios_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
 }
 
 void
@@ -1866,10 +1956,10 @@ cboard_PICGenios::ReadPreferences(char *name, char *value)
    else
     lcd_init (&lcd, 16, 4);
   }
- 
-  if (!strcmp (name, "PICGenios_clock"))
+
+ if (!strcmp (name, "PICGenios_clock"))
   {
-   Window1.SetClock (atof(value));
+   Window1.SetClock (atof (value));
   }
 }
 

@@ -28,10 +28,10 @@
 
 #include<lxrad.h>
 
-#include "board_ucsim.h"
+#include "bsim_ucsim.h"
 
 //new board class must be derived from board class defined in board.h
-class cboard_uCboard:public board_ucsim
+class cboard_uCboard:public bsim_ucsim
 {
    private:
        lxBitmap * micbmp;       

@@ -439,7 +439,7 @@ cboard_Breadboard::Run_CPU(void)
    //calculate mean value
    for (pi = 0; pi < MGetPinCount (); pi++)
     {
-     board_picsim::pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / (Window1.GetNSTEP () / pic.PINCOUNT)) + 30);
+     bsim_picsim::pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / (Window1.GetNSTEP () / pic.PINCOUNT)) + 30);
     }
    if (use_spare)Window5.PostProcess ();
    break;
@@ -451,14 +451,14 @@ cboard_Breadboard::Run_CPU(void)
    long long unsigned int cycle_start;
    int twostep = 0;
 
-   int pinc = board_simavr::MGetPinCount ();
+   int pinc = bsim_simavr::MGetPinCount ();
    //reset mean value
 
    memset (alm, 0, pinc * sizeof (unsigned int));
 
    //read pic.pins to a local variable to speed up 
 
-   pins = board_simavr::MGetPinsValues ();
+   pins = bsim_simavr::MGetPinsValues ();
 
    if (use_spare)Window5.PreProcess ();
 
@@ -484,7 +484,7 @@ cboard_Breadboard::Run_CPU(void)
            }
          }
        }
-      board_simavr::UpdateHardware ();
+      bsim_simavr::UpdateHardware ();
 
       //avr->sleep_usec=0;
       if (use_oscope)Window4.SetSample ();
@@ -506,7 +506,7 @@ cboard_Breadboard::Run_CPU(void)
    //calculate mean value
    for (pi = 0; pi < MGetPinCount (); pi++)
     {
-     board_simavr::pins[pi].oavalue = (int) (((225.0 * alm[pi]) / (Window1.GetNSTEP () / pinc)) + 30);
+     bsim_simavr::pins[pi].oavalue = (int) (((225.0 * alm[pi]) / (Window1.GetNSTEP () / pinc)) + 30);
     }
    if (use_spare)Window5.PostProcess ();
    break;
@@ -525,10 +525,10 @@ cboard_Breadboard::DebugInit(int dtyppe)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::DebugInit (dtyppe);
+   return bsim_picsim::DebugInit (dtyppe);
    break;
   case _AVR:
-   return board_simavr::DebugInit (dtyppe);
+   return bsim_simavr::DebugInit (dtyppe);
    break;
   }
  return 0;
@@ -540,10 +540,10 @@ cboard_Breadboard::GetDebugName(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::GetDebugName ();
+   return bsim_picsim::GetDebugName ();
    break;
   case _AVR:
-   return board_simavr::GetDebugName ();
+   return bsim_simavr::GetDebugName ();
    break;
   }
  return "";
@@ -555,10 +555,10 @@ cboard_Breadboard::DebugLoop(void)
  switch (ptype)
   {
   case _PIC:
-   board_picsim::DebugLoop ();
+   bsim_picsim::DebugLoop ();
    break;
   case _AVR:
-   board_simavr::DebugLoop ();
+   bsim_simavr::DebugLoop ();
    break;
   }
 }
@@ -569,10 +569,10 @@ cboard_Breadboard::CpuInitialized(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::CpuInitialized ();
+   return bsim_picsim::CpuInitialized ();
    break;
   case _AVR:
-   return board_simavr::CpuInitialized ();
+   return bsim_simavr::CpuInitialized ();
    break;
   }
  return 0;
@@ -584,10 +584,10 @@ cboard_Breadboard::MSetSerial(const char * port)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::MSetSerial (port);
+   return bsim_picsim::MSetSerial (port);
    break;
   case _AVR:
-   return board_simavr::MSetSerial (port);
+   return bsim_simavr::MSetSerial (port);
    break;
   }
 }
@@ -606,10 +606,10 @@ cboard_Breadboard::MInit(const char * processor, const char * fname, float freq)
  switch (ptype)
   {
   case _PIC:
-   ret = board_picsim::MInit (processor, fname, freq);
+   ret = bsim_picsim::MInit (processor, fname, freq);
    break;
   case _AVR:
-   ret = board_simavr::MInit (processor, fname, freq);
+   ret = bsim_simavr::MInit (processor, fname, freq);
    break;
   }
 
@@ -636,10 +636,10 @@ cboard_Breadboard::MEnd(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::MEnd ();
+   return bsim_picsim::MEnd ();
    break;
   case _AVR:
-   return board_simavr::MEnd ();
+   return bsim_simavr::MEnd ();
    break;
   }
 }
@@ -650,10 +650,10 @@ cboard_Breadboard::MDumpMemory(const char * fname)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::MDumpMemory (fname);
+   return bsim_picsim::MDumpMemory (fname);
    break;
   case _AVR:
-   return board_simavr::MDumpMemory (fname);
+   return bsim_simavr::MDumpMemory (fname);
    break;
   }
 }
@@ -664,10 +664,10 @@ cboard_Breadboard::MEraseFlash(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::MEraseFlash ();
+   return bsim_picsim::MEraseFlash ();
    break;
   case _AVR:
-   return board_simavr::MEraseFlash ();
+   return bsim_simavr::MEraseFlash ();
    break;
   }
 }
@@ -678,10 +678,10 @@ cboard_Breadboard::MSetFreq(float freq)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::MSetFreq (freq);
+   return bsim_picsim::MSetFreq (freq);
    break;
   case _AVR:
-   return board_simavr::MSetFreq (freq);
+   return bsim_simavr::MSetFreq (freq);
    break;
   }
 
@@ -693,10 +693,10 @@ cboard_Breadboard::MGetFreq(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::MGetFreq ();
+   return bsim_picsim::MGetFreq ();
    break;
   case _AVR:
-   return board_simavr::MGetFreq ();
+   return bsim_simavr::MGetFreq ();
    break;
   }
  return 0;
@@ -708,10 +708,10 @@ cboard_Breadboard::MGetInstClock(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::MGetInstClock ();
+   return bsim_picsim::MGetInstClock ();
    break;
   case _AVR:
-   return board_simavr::MGetInstClock ();
+   return bsim_simavr::MGetInstClock ();
    break;
   }
  return 0;
@@ -723,10 +723,10 @@ cboard_Breadboard::MGetPinCount(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::MGetPinCount ();
+   return bsim_picsim::MGetPinCount ();
    break;
   case _AVR:
-   return board_simavr::MGetPinCount ();
+   return bsim_simavr::MGetPinCount ();
    break;
   }
  return 0;
@@ -738,10 +738,10 @@ cboard_Breadboard::MGetPinName(int pin)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::MGetPinName (pin);
+   return bsim_picsim::MGetPinName (pin);
    break;
   case _AVR:
-   return board_simavr::MGetPinName (pin);
+   return bsim_simavr::MGetPinName (pin);
    break;
   }
  return "";
@@ -753,10 +753,10 @@ cboard_Breadboard::MSetPin(int pin, unsigned char value)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::MSetPin (pin, value);
+   return bsim_picsim::MSetPin (pin, value);
    break;
   case _AVR:
-   return board_simavr::MSetPin (pin, value);
+   return bsim_simavr::MSetPin (pin, value);
    break;
   }
 }
@@ -767,10 +767,10 @@ cboard_Breadboard::MSetPinDOV(int pin, unsigned char ovalue)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::MSetPinDOV (pin, ovalue);
+   return bsim_picsim::MSetPinDOV (pin, ovalue);
    break;
   case _AVR:
-   return board_simavr::MSetPinDOV (pin, ovalue);
+   return bsim_simavr::MSetPinDOV (pin, ovalue);
    break;
   }
 }
@@ -781,10 +781,10 @@ cboard_Breadboard::MSetAPin(int pin, float value)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::MSetAPin (pin, value);
+   return bsim_picsim::MSetAPin (pin, value);
    break;
   case _AVR:
-   return board_simavr::MSetAPin (pin, value);
+   return bsim_simavr::MSetAPin (pin, value);
    break;
   }
 }
@@ -795,10 +795,10 @@ cboard_Breadboard::MGetPin(int pin)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::MGetPin (pin);
+   return bsim_picsim::MGetPin (pin);
    break;
   case _AVR:
-   return board_simavr::MGetPin (pin);
+   return bsim_simavr::MGetPin (pin);
    break;
   }
  return 0;
@@ -810,10 +810,10 @@ cboard_Breadboard::MGetPinsValues(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::MGetPinsValues ();
+   return bsim_picsim::MGetPinsValues ();
    break;
   case _AVR:
-   return board_simavr::MGetPinsValues ();
+   return bsim_simavr::MGetPinsValues ();
    break;
   }
  return NULL;
@@ -825,10 +825,10 @@ cboard_Breadboard::MStep(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::MStep ();
+   return bsim_picsim::MStep ();
    break;
   case _AVR:
-   return board_simavr::MStep ();
+   return bsim_simavr::MStep ();
    break;
   }
 }
@@ -839,10 +839,10 @@ cboard_Breadboard::MStepResume(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::MStepResume ();
+   return bsim_picsim::MStepResume ();
    break;
   case _AVR:
-   return board_simavr::MStepResume ();
+   return bsim_simavr::MStepResume ();
    break;
   }
 }
@@ -853,10 +853,10 @@ cboard_Breadboard::DBGTestBP(unsigned int bp)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::DBGTestBP (bp);
+   return bsim_picsim::DBGTestBP (bp);
    break;
   case _AVR:
-   return board_simavr::DBGTestBP (bp);
+   return bsim_simavr::DBGTestBP (bp);
    break;
   }
  return 0;
@@ -868,10 +868,10 @@ cboard_Breadboard::MReset(int flags)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::MReset (flags);
+   return bsim_picsim::MReset (flags);
    break;
   case _AVR:
-   return board_simavr::MReset (flags);
+   return bsim_simavr::MReset (flags);
    break;
   }
 }
@@ -882,10 +882,10 @@ cboard_Breadboard::DBGGetProcID_p(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::DBGGetProcID_p ();
+   return bsim_picsim::DBGGetProcID_p ();
    break;
   case _AVR:
-   return board_simavr::DBGGetProcID_p ();
+   return bsim_simavr::DBGGetProcID_p ();
    break;
   }
  return NULL;
@@ -897,10 +897,10 @@ cboard_Breadboard::DBGGetPC(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::DBGGetPC ();
+   return bsim_picsim::DBGGetPC ();
    break;
   case _AVR:
-   return board_simavr::DBGGetPC ();
+   return bsim_simavr::DBGGetPC ();
    break;
   }
  return 0;
@@ -912,11 +912,11 @@ cboard_Breadboard::DBGSetPC(unsigned int pc)
  switch (ptype)
   {
   case _PIC:
-   board_picsim::DBGSetPC (pc);
+   bsim_picsim::DBGSetPC (pc);
    return;
    break;
   case _AVR:
-   board_simavr::DBGSetPC (pc);
+   bsim_simavr::DBGSetPC (pc);
    return;
    break;
   }
@@ -929,10 +929,10 @@ cboard_Breadboard::DBGGetRAM_p(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::DBGGetRAM_p ();
+   return bsim_picsim::DBGGetRAM_p ();
    break;
   case _AVR:
-   return board_simavr::DBGGetRAM_p ();
+   return bsim_simavr::DBGGetRAM_p ();
    break;
   }
  return NULL;
@@ -944,10 +944,10 @@ cboard_Breadboard::DBGGetROM_p(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::DBGGetROM_p ();
+   return bsim_picsim::DBGGetROM_p ();
    break;
   case _AVR:
-   return board_simavr::DBGGetROM_p ();
+   return bsim_simavr::DBGGetROM_p ();
    break;
   }
  return NULL;
@@ -959,10 +959,10 @@ cboard_Breadboard::DBGGetCONFIG_p(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::DBGGetCONFIG_p ();
+   return bsim_picsim::DBGGetCONFIG_p ();
    break;
   case _AVR:
-   return board_simavr::DBGGetCONFIG_p ();
+   return bsim_simavr::DBGGetCONFIG_p ();
    break;
   }
  return NULL;
@@ -974,10 +974,10 @@ cboard_Breadboard::DBGGetID_p(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::DBGGetID_p ();
+   return bsim_picsim::DBGGetID_p ();
    break;
   case _AVR:
-   return board_simavr::DBGGetID_p ();
+   return bsim_simavr::DBGGetID_p ();
    break;
   }
  return NULL;
@@ -989,10 +989,10 @@ cboard_Breadboard::DBGGetEEPROM_p(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::DBGGetEEPROM_p ();
+   return bsim_picsim::DBGGetEEPROM_p ();
    break;
   case _AVR:
-   return board_simavr::DBGGetEEPROM_p ();
+   return bsim_simavr::DBGGetEEPROM_p ();
    break;
   }
  return NULL;
@@ -1004,10 +1004,10 @@ cboard_Breadboard::DBGGetRAMSize(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::DBGGetRAMSize ();
+   return bsim_picsim::DBGGetRAMSize ();
    break;
   case _AVR:
-   return board_simavr::DBGGetRAMSize ();
+   return bsim_simavr::DBGGetRAMSize ();
    break;
   }
  return 0;
@@ -1019,10 +1019,10 @@ cboard_Breadboard::DBGGetROMSize(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::DBGGetROMSize ();
+   return bsim_picsim::DBGGetROMSize ();
    break;
   case _AVR:
-   return board_simavr::DBGGetROMSize ();
+   return bsim_simavr::DBGGetROMSize ();
    break;
   }
  return 0;
@@ -1034,10 +1034,10 @@ cboard_Breadboard::DBGGetCONFIGSize(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::DBGGetCONFIGSize ();
+   return bsim_picsim::DBGGetCONFIGSize ();
    break;
   case _AVR:
-   return board_simavr::DBGGetCONFIGSize ();
+   return bsim_simavr::DBGGetCONFIGSize ();
    break;
   }
  return 0;
@@ -1049,10 +1049,10 @@ cboard_Breadboard::DBGGetIDSize(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::DBGGetIDSize ();
+   return bsim_picsim::DBGGetIDSize ();
    break;
   case _AVR:
-   return board_simavr::DBGGetIDSize ();
+   return bsim_simavr::DBGGetIDSize ();
    break;
   }
  return 0;
@@ -1064,10 +1064,10 @@ cboard_Breadboard::DBGGetEEPROM_Size(void)
  switch (ptype)
   {
   case _PIC:
-   return board_picsim::DBGGetEEPROM_Size ();
+   return bsim_picsim::DBGGetEEPROM_Size ();
    break;
   case _AVR:
-   return board_simavr::DBGGetEEPROM_Size ();
+   return bsim_simavr::DBGGetEEPROM_Size ();
    break;
   }
  return 0;

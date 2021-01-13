@@ -328,7 +328,49 @@ cboard_Curiosity_HPC::Reset(void)
                                lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
  if (use_spare)Window5.Reset ();
+
+ RegisterRemoteControl ();
 }
+
+void
+cboard_Curiosity_HPC::RegisterRemoteControl(void)
+{
+ for (int i = 0; i < inputc; i++)
+  {
+   switch (input[i].id)
+    {
+    case I_S1:
+     input[i].status = &p_BT1;
+     break;
+    case I_S2:
+     input[i].status = &p_BT2;
+     break;
+    case I_JMP:
+     input[i].status = &jmp[0];
+     break;
+    }
+  }
+
+ for (int i = 0; i < outputc; i++)
+  {
+   switch (output[i].id)
+    {
+    case O_D2:
+     output[i].status = &pic.pins[5].oavalue;
+     break;
+    case O_D3:
+     output[i].status = &pic.pins[6].oavalue;
+     break;
+    case O_D4:
+     output[i].status = &pic.pins[9].oavalue;
+     break;
+    case O_D5:
+     output[i].status = &pic.pins[8].oavalue;
+     break;
+    }
+  }
+}
+
 
 //Called ever 1s to refresh status
 

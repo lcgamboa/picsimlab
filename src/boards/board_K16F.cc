@@ -61,7 +61,7 @@ enum
  I_TCA,
  I_TC0,
  I_TCT,
- I_VIEW    
+ I_VIEW
 };
 
 cboard_K16F::cboard_K16F(void)
@@ -128,7 +128,7 @@ cboard_K16F::MDumpMemory(const char * mfname)
    printf ("Error saving to file: %s \n", fname);
   }
 
- board_picsim::MDumpMemory (mfname);
+ bsim_picsim::MDumpMemory (mfname);
 }
 
 void
@@ -389,6 +389,42 @@ cboard_K16F::Reset(void)
    pic.pins[pi].oavalue = 0;
   }
  if (use_spare)Window5.Reset ();
+
+ RegisterRemoteControl ();
+}
+
+void
+cboard_K16F::RegisterRemoteControl(void)
+{
+/* 
+ for (int i = 0; i < inputc; i++)
+  {
+   switch (input[i].id)
+    {
+    case I_TC0:
+     input[i].status = &p_BT1;
+     break;
+    }
+  }
+*/
+ for (int i = 0; i < outputc; i++)
+  {
+   switch (output[i].id)
+    {
+    case O_RA1:
+     output[i].status = &pic.pins[17].oavalue;
+     break;
+    case O_RA2:
+     output[i].status = &pic.pins[0].oavalue;
+     break;
+    case O_RA6:
+     output[i].status = &pic.pins[14].oavalue;
+     break;
+    case O_RA7:
+     output[i].status = &pic.pins[15].oavalue;
+     break;
+    }
+  }
 }
 
 void
@@ -523,26 +559,28 @@ cboard_K16F::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           }
          fclose (fout);
 #ifdef __EMSCRIPTEN__
-   EM_ASM_({
-	   var filename=UTF8ToString($0);
-           var buf = FS.readFile(filename);
-           var blob = new Blob([buf],  {"type" : "application/octet-stream" });
-           var text = URL.createObjectURL(blob);
+         EM_ASM_ ({
+                  var filename = UTF8ToString ($0);
+                  var buf = FS.readFile (filename);
+                  var blob = new Blob ([buf],
+                   {
+                    "type" : "application/octet-stream" });
+                  var text = URL.createObjectURL (blob);
 
-	   var element = document.createElement('a');
-           element.setAttribute('href', text);
-           element.setAttribute('download', filename);
+                  var element = document.createElement ('a');
+                  element.setAttribute ('href', text);
+                  element.setAttribute ('download', filename);
 
-           element.style.display = 'none';
-           document.body.appendChild(element);
+                  element.style.display = 'none';
+                  document.body.appendChild (element);
 
-           element.click();
+                  element.click ();
 
-           document.body.removeChild(element);
-           URL.revokeObjectURL(text);
-	  },mi2c_tmp_name);
+                  document.body.removeChild (element);
+                  URL.revokeObjectURL (text);
+         }, mi2c_tmp_name);
 #else
-         lxLaunchDefaultApplication(mi2c_tmp_name);      
+         lxLaunchDefaultApplication (mi2c_tmp_name);
 #endif          
         }
        else
@@ -740,7 +778,7 @@ void
 cboard_K16F::WritePreferences(void)
 {
  Window1.saveprefs (lxT ("K16F_proc"), Proc);
- Window1.saveprefs (lxT ("K16F_clock"), lxString ().Format ("%2.1f", Window1.GetClock()));
+ Window1.saveprefs (lxT ("K16F_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
 }
 
 void
@@ -751,10 +789,10 @@ cboard_K16F::ReadPreferences(char *name, char *value)
   {
    Proc = value;
   }
- 
-  if (!strcmp (name, "K16F_clock"))
+
+ if (!strcmp (name, "K16F_clock"))
   {
-   Window1.SetClock (atof(value));
+   Window1.SetClock (atof (value));
   }
 }
 

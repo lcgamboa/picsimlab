@@ -93,6 +93,22 @@ cboard_Blue_Pill::Reset(void)
  Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE));
 
  if (use_spare)Window5.Reset ();
+ 
+ RegisterRemoteControl();
+}
+
+void
+cboard_Blue_Pill::RegisterRemoteControl(void)
+{
+ for (int i = 0; i < outputc; i++)
+  {
+   switch (output[i].id)
+    {
+    case O_LED:
+     output[i].status = &pins[1].oavalue;
+     break;
+    }
+  }
 }
 
 //Called ever 1s to refresh status

@@ -24,19 +24,19 @@
    ######################################################################## */
 
 
-#include "board_picsim.h"
+#include "bsim_picsim.h"
 
 #include"../picsimlab1.h"
 
 void
-board_picsim::MSetSerial(const char * port)
+bsim_picsim::MSetSerial(const char * port)
 {
  pic_set_serial (&pic, 0, port, 0, 0, 0);
  pic_set_serial (&pic, 1, "", 0, 0, 0);
 }
 
 int
-board_picsim::MInit(const char * processor, const char * fname, float freq)
+bsim_picsim::MInit(const char * processor, const char * fname, float freq)
 {
  lxString sproc = GetSupportedDevices ();
  int procn = 0;
@@ -111,7 +111,7 @@ board_picsim::MInit(const char * processor, const char * fname, float freq)
 }
 
 void
-board_picsim::MEnd(void)
+bsim_picsim::MEnd(void)
 {
  pic_end ();
  //prog_end();
@@ -119,37 +119,37 @@ board_picsim::MEnd(void)
 }
 
 void
-board_picsim::MEraseFlash(void)
+bsim_picsim::MEraseFlash(void)
 {
  pic_erase_flash ();
 }
 
 void
-board_picsim::MSetFreq(float freq)
+bsim_picsim::MSetFreq(float freq)
 {
  pic.freq = freq;
 }
 
 float
-board_picsim::MGetFreq(void)
+bsim_picsim::MGetFreq(void)
 {
  return pic.freq;
 }
 
 float
-board_picsim::MGetInstClock(void)
+bsim_picsim::MGetInstClock(void)
 {
  return pic.freq / 4.0;
 }
 
 int
-board_picsim::CpuInitialized(void)
+bsim_picsim::CpuInitialized(void)
 {
  return 1;
 }
 
 void
-board_picsim::MDumpMemory(const char * fname)
+bsim_picsim::MDumpMemory(const char * fname)
 {
  switch (getfprocbyname ((const char*) Proc.c_str ()))
   {
@@ -168,13 +168,13 @@ board_picsim::MDumpMemory(const char * fname)
 }
 
 int
-board_picsim::DebugInit(int dtyppe) //argument not used in picm only mplabx
+bsim_picsim::DebugInit(int dtyppe) //argument not used in picm only mplabx
 {
  return !mplabxd_init (this, Window1.Get_debug_port ()) - 1;
 }
 
 void
-board_picsim::DebugLoop(void)
+bsim_picsim::DebugLoop(void)
 {
  if (Window1.Get_mcupwr ())
   {
@@ -184,13 +184,13 @@ board_picsim::DebugLoop(void)
 }
 
 int
-board_picsim::MGetPinCount(void)
+bsim_picsim::MGetPinCount(void)
 {
  return pic.PINCOUNT;
 }
 
 lxString
-board_picsim::MGetPinName(int pin)
+bsim_picsim::MGetPinName(int pin)
 {
  char cbuf[10];
  lxString pinname;
@@ -201,116 +201,116 @@ board_picsim::MGetPinName(int pin)
 }
 
 void
-board_picsim::MSetPin(int pin, unsigned char value)
+bsim_picsim::MSetPin(int pin, unsigned char value)
 {
  pic_set_pin (pin, value);
 }
 
 void
-board_picsim::MSetPinDOV(int pin, unsigned char ovalue)
+bsim_picsim::MSetPinDOV(int pin, unsigned char ovalue)
 {
  pic_set_pin_DOV (pin, ovalue);
 }
 
 void
-board_picsim::MSetAPin(int pin, float value)
+bsim_picsim::MSetAPin(int pin, float value)
 {
  pic_set_apin (pin, value);
 }
 
 unsigned char
-board_picsim::MGetPin(int pin)
+bsim_picsim::MGetPin(int pin)
 {
  return pic_get_pin (pin);
 }
 
 const picpin *
-board_picsim::MGetPinsValues(void)
+bsim_picsim::MGetPinsValues(void)
 {
  return pic.pins;
 }
 
 void
-board_picsim::MStep(void)
+bsim_picsim::MStep(void)
 {
  pic_step ();
  if (pic.s2 == 1)pic_step ();
 }
 
 void
-board_picsim::MStepResume(void)
+bsim_picsim::MStepResume(void)
 {
  if (pic.s2 == 1)pic_step ();
 }
 
 int
-board_picsim::DBGTestBP(unsigned int bp)
+bsim_picsim::DBGTestBP(unsigned int bp)
 {
  return ((pic.pc == bp)&&(pic.s2 == 0));
 }
 
 void
-board_picsim::MReset(int flags)
+bsim_picsim::MReset(int flags)
 {
  pic_reset (flags);
 }
 
 unsigned short *
-board_picsim::DBGGetProcID_p(void)
+bsim_picsim::DBGGetProcID_p(void)
 {
  return (unsigned short *) &pic.processor;
 }
 
 unsigned int
-board_picsim::DBGGetPC(void)
+bsim_picsim::DBGGetPC(void)
 {
  return pic.pc;
 }
 
 void
-board_picsim::DBGSetPC(unsigned int pc)
+bsim_picsim::DBGSetPC(unsigned int pc)
 {
  pic.pc = pc;
 }
 
 unsigned char *
-board_picsim::DBGGetRAM_p(void)
+bsim_picsim::DBGGetRAM_p(void)
 {
  return pic.ram;
 }
 
 unsigned char *
-board_picsim::DBGGetROM_p(void)
+bsim_picsim::DBGGetROM_p(void)
 {
  return (unsigned char *) pic.prog;
 }
 
 unsigned char *
-board_picsim::DBGGetCONFIG_p(void)
+bsim_picsim::DBGGetCONFIG_p(void)
 {
  return (unsigned char *) pic.config;
 }
 
 unsigned char *
-board_picsim::DBGGetID_p(void)
+bsim_picsim::DBGGetID_p(void)
 {
  return (unsigned char *) pic.id;
 }
 
 unsigned char *
-board_picsim::DBGGetEEPROM_p(void)
+bsim_picsim::DBGGetEEPROM_p(void)
 {
  return pic.eeprom;
 }
 
 unsigned int
-board_picsim::DBGGetRAMSize(void)
+bsim_picsim::DBGGetRAMSize(void)
 {
  return pic.RAMSIZE;
 }
 
 unsigned int
-board_picsim::DBGGetROMSize(void)
+bsim_picsim::DBGGetROMSize(void)
 {
  if (pic.processor == getprocbyname ("PIC18F46J50"))
   {
@@ -323,20 +323,20 @@ board_picsim::DBGGetROMSize(void)
 }
 
 unsigned int
-board_picsim::DBGGetCONFIGSize(void)
+bsim_picsim::DBGGetCONFIGSize(void)
 {
  return pic.CONFIGSIZE * 2;
 
 }
 
 unsigned int
-board_picsim::DBGGetIDSize(void)
+bsim_picsim::DBGGetIDSize(void)
 {
  return pic.IDSIZE * 2;
 }
 
 unsigned int
-board_picsim::DBGGetEEPROM_Size(void)
+bsim_picsim::DBGGetEEPROM_Size(void)
 {
  return pic.EEPROMSIZE;
 }

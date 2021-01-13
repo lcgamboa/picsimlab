@@ -28,13 +28,13 @@
 
 #include<lxrad.h>
 
-#include "board_qemu_stm32.h"
+#include "bsim_qemu_stm32.h"
 
 //new board class must be derived from board class defined in board.h
-class cboard_Blue_Pill:public board_qemu_stm32
+class cboard_Blue_Pill:public bsim_qemu_stm32
 {
    private:
- 
+      void RegisterRemoteControl(void); 
    public:
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       //Constructor called once on board creation 

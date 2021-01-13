@@ -26,9 +26,9 @@
 #ifndef BOARD_McLab2_H
 #define	BOARD_McLab2_H
 
-#include "board_picsim.h"
+#include "bsim_picsim.h"
 
-class cboard_McLab2:public board_picsim
+class cboard_McLab2:public bsim_picsim
 {
    private:
      int p_BT1; 
@@ -72,6 +72,8 @@ class cboard_McLab2:public board_picsim
     lxaudio buzzer;
     
     char mi2c_tmp_name[200]; 
+    
+    void RegisterRemoteControl(void);     
   public:
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cboard_McLab2(void);

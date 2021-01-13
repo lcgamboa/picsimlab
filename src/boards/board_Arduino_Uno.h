@@ -28,10 +28,10 @@
 
 #include<lxrad.h>
 
-#include "board_simavr.h"
+#include "bsim_simavr.h"
 
 //new board class must be derived from board class defined in board.h
-class cboard_Arduino_Uno:public board_simavr
+class cboard_Arduino_Uno:public bsim_simavr
 {
   private: 
 
@@ -51,7 +51,8 @@ class cboard_Arduino_Uno:public board_simavr
      CLabel *label5;   //label of gauge 10
      CLabel *label6;   //label of gauge 11
      
- 
+     void RegisterRemoteControl(void); 
+      
    public:
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       //Constructor called once on board creation 

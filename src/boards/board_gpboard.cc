@@ -368,12 +368,12 @@ int
 cboard_gpboard::MInit(const char * processor, const char * fname, float freq)
 {
 
- int ret = board_gpsim::MInit (processor, fname, freq);
+ int ret = bsim_gpsim::MInit (processor, fname, freq);
 
  if (ret == -1)
   {
    printf ("PICSimLab: Unknown processor %s, loading default !\n", processor);
-   board_gpsim::MInit ("pic16f628a", fname, freq);
+   bsim_gpsim::MInit ("pic16f628a", fname, freq);
    Proc = "pic16f628a";
   }
 

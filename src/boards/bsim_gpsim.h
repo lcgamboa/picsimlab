@@ -24,17 +24,17 @@
    ######################################################################## */
 
 
-#ifndef BOARD_UCSIM_H
-#define	BOARD_UCSIM_H
+#ifndef BOARD_GPSIM_H
+#define	BOARD_GPSIM_H
 
 #include "board.h"
 
-class board_ucsim: virtual public board
+class bsim_gpsim: virtual public board
 {
   public:
-      board_ucsim(void);
+      bsim_gpsim(void);
       int DebugInit(int dtyppe); 
-      lxString GetDebugName(void){return "uCsim";};
+      lxString GetDebugName(void){return "none";};
       void DebugLoop(void);
       int CpuInitialized(void);
       void MSetSerial(const char * port);
@@ -66,8 +66,8 @@ class board_ucsim: virtual public board
 #else
       int serialfd;
 #endif      
-      int procid; 
+      lxString supported_devices;
 };
 
-#endif	/* BOARD_UCSIM_H */
+#endif	/* BOARD_GPSIM_H */
 

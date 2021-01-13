@@ -28,7 +28,7 @@
 #include "../picsimlab5.h"
 #include "rcontrol.h"
 
-#define dprint if (0) {} else printf
+#define dprint if (1) {} else printf
 
 #ifndef _POSIX_SOURCE
 #define _POSIX_SOURCE
@@ -421,9 +421,9 @@ rcontrol_loop(void)
         {
          //Command info ========================================================
          Board = Window1.GetBoard ();
-         stemp.Printf ("Board:     %s\n", Board->GetName ());
+         stemp.Printf ("Board:     %s\n", Board->GetName ().c_str ());
          ret += sendtext ((const char *) stemp.c_str ());
-         stemp.Printf ("Processor: %s\n", Board->GetProcessorName ());
+         stemp.Printf ("Processor: %s\n", Board->GetProcessorName ().c_str ());
          ret += sendtext ((const char *) stemp.c_str ());
          stemp.Printf ("Frequency: %f\n", Board->MGetFreq ());
          ret += sendtext ((const char *) stemp.c_str ());

@@ -28,10 +28,10 @@
 
 #include<lxrad.h>
 
-#include "board_gpsim.h"
+#include "bsim_gpsim.h"
 
 //new board class must be derived from board class defined in board.h
-class cboard_gpboard:public board_gpsim
+class cboard_gpboard:public bsim_gpsim
 {
    private:
        lxBitmap * micbmp;   

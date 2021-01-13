@@ -28,10 +28,10 @@
 
 #include<lxrad.h>
 
-#include "board_picsim.h"
+#include "bsim_picsim.h"
 
 //new board class must be derived from board class defined in board.h
-class cboard_x:public board_picsim
+class cboard_x:public bsim_picsim
 {
   private:
      int p_BT1;           //first board switch in RD0
@@ -44,7 +44,8 @@ class cboard_x:public board_picsim
      CLabel *label1;   //label of scroll AN0
      CLabel *label2;   //label of gauge RB0
      CLabel *label3;   //label of gauge RB1
- 
+     
+     void RegisterRemoteControl(void);  
    public:
       //Constructor called once on board creation 
       cboard_x(void);

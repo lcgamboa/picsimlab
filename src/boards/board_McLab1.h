@@ -27,9 +27,9 @@
 #define	BOARD_McLab1_H
 
 #include<lxrad.h>
-#include "board_picsim.h"
+#include "bsim_picsim.h"
 
-class cboard_McLab1:public board_picsim
+class cboard_McLab1:public bsim_picsim
 {
   private:
      unsigned char p_BT1; 

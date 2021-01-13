@@ -267,7 +267,43 @@ cboard_Xpress::Reset(void)
                                lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
  if (use_spare)Window5.Reset ();
+ 
+ RegisterRemoteControl();
 }
+
+void
+cboard_Xpress::RegisterRemoteControl(void)
+{
+ for (int i = 0; i < inputc; i++)
+  {
+   switch (input[i].id)
+    {
+    case I_S1:
+     input[i].status = &p_BT1;
+     break;
+    }
+  }
+
+ for (int i = 0; i < outputc; i++)
+  {
+   switch (output[i].id)
+    {
+    case O_D2:
+     output[i].status = &pic.pins[26].oavalue;
+     break;
+    case O_D3:
+     output[i].status = &pic.pins[27].oavalue;
+     break;
+    case O_D4:
+     output[i].status = &pic.pins[0].oavalue;
+     break;
+    case O_D5:
+     output[i].status = &pic.pins[1].oavalue;
+     break;
+    }
+  }
+}
+
 
 //Called ever 1s to refresh status
 

@@ -26,26 +26,26 @@
 
 #include "bridge_gpsim.h"
 
-#include "board_gpsim.h"
+#include "bsim_gpsim.h"
 #include"../picsimlab1.h"
 
 
 static const unsigned char GPSIM_PORTS[5] = {0, 1, 2, 3, 0xFF};
 
-board_gpsim::board_gpsim(void) {
+bsim_gpsim::bsim_gpsim(void) {
  char list[2000]; 
  supported_devices= bridge_gpsim_get_processor_list(list,1999);
 }
 
 void
-board_gpsim::MSetSerial(const char * port) {
+bsim_gpsim::MSetSerial(const char * port) {
  /*
  set_serial (&pic,0, port, 0, 0, 0);
  set_serial (&pic,1, "", 0, 0, 0);
   */ }
 
 int
-board_gpsim::MInit(const char * processor, const char * fname, float freq)
+bsim_gpsim::MInit(const char * processor, const char * fname, float freq)
 {
  int ret = -1;
 
@@ -77,45 +77,45 @@ board_gpsim::MInit(const char * processor, const char * fname, float freq)
 }
 
 void
-board_gpsim::MEnd(void)
+bsim_gpsim::MEnd(void)
 {
  bridge_gpsim_end ();
 }
 
 void
-board_gpsim::MEraseFlash(void) {
+bsim_gpsim::MEraseFlash(void) {
  //erase_flash ();
 }
 
 void
-board_gpsim::MSetFreq(float freq_)
+bsim_gpsim::MSetFreq(float freq_)
 {
  freq = freq_;
 }
 
 float
-board_gpsim::MGetFreq(void)
+bsim_gpsim::MGetFreq(void)
 {
  return freq;
 }
 
 float
-board_gpsim::MGetInstClock(void)
+bsim_gpsim::MGetInstClock(void)
 {
  return freq;
 }
 
 int
-board_gpsim::CpuInitialized(void)
+bsim_gpsim::CpuInitialized(void)
 {
  return 1;
 }
 
 void
-board_gpsim::DebugLoop(void) { }
+bsim_gpsim::DebugLoop(void) { }
 
 lxString
-board_gpsim::MGetPinName(int pin)
+bsim_gpsim::MGetPinName(int pin)
 {
  lxString pinname = "error";
 
@@ -126,25 +126,25 @@ board_gpsim::MGetPinName(int pin)
 }
 
 void
-board_gpsim::MDumpMemory(const char * fname)
+bsim_gpsim::MDumpMemory(const char * fname)
 {
  bridge_gpsim_dump_memory (fname);
 }
 
 int
-board_gpsim::DebugInit(int dtyppe) //argument not used in picm only mplabx
+bsim_gpsim::DebugInit(int dtyppe) //argument not used in picm only mplabx
 {
  return 0; //!mplabxd_init (this, Window1.Get_debug_port ()) - 1;
 }
 
 int
-board_gpsim::MGetPinCount(void)
+bsim_gpsim::MGetPinCount(void)
 {
  return bridge_gpsim_get_pin_count ();
 }
 
 void
-board_gpsim::pins_reset(void)
+bsim_gpsim::pins_reset(void)
 {
  for (int p = 0; p < MGetPinCount (); p++)
   {
@@ -176,41 +176,41 @@ board_gpsim::pins_reset(void)
 }
 
 void
-board_gpsim::MSetPin(int pin, unsigned char value)
+bsim_gpsim::MSetPin(int pin, unsigned char value)
 {
  bridge_gpsim_set_pin_value (pin,  value);
 }
 
 void
-board_gpsim::MSetPinDOV(int pin, unsigned char ovalue) {
+bsim_gpsim::MSetPinDOV(int pin, unsigned char ovalue) {
  //set_pin_DOV (pin, ovalue);
 }
 
 void
-board_gpsim::MSetAPin(int pin, float value) {
+bsim_gpsim::MSetAPin(int pin, float value) {
  //set_apin (pin, value);
 }
 
 unsigned char
-board_gpsim::MGetPin(int pin)
+bsim_gpsim::MGetPin(int pin)
 {
  return bridge_gpsim_get_pin_value (pin);
 }
 
 void
-board_gpsim::MReset(int flags)
+bsim_gpsim::MReset(int flags)
 {
  bridge_gpsim_reset ();
 }
 
 const picpin *
-board_gpsim::MGetPinsValues(void)
+bsim_gpsim::MGetPinsValues(void)
 {
  return pins;
 }
 
 void
-board_gpsim::MStep(void)
+bsim_gpsim::MStep(void)
 {
 
  bridge_gpsim_step ();
@@ -223,7 +223,7 @@ board_gpsim::MStep(void)
 }
 
 void
-board_gpsim::MStepResume(void) {
+bsim_gpsim::MStepResume(void) {
  //if (pic.s2 == 1)step ();
 }
 

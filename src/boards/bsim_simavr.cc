@@ -27,7 +27,7 @@
 #include<stdlib.h>
 #include<string.h>
 
-#include "board_simavr.h"
+#include "bsim_simavr.h"
 
 #include"../picsimlab1.h"
 
@@ -64,7 +64,7 @@ extern "C"
  int gdb_watch_find(const avr_gdb_watchpoints_t * w, uint32_t addr);
 }
 
-board_simavr::board_simavr(void)
+bsim_simavr::bsim_simavr(void)
 {
  avr = NULL;
  serial_irq = NULL;
@@ -72,7 +72,7 @@ board_simavr::board_simavr(void)
 }
 
 void
-board_simavr::MSetSerial(const char * port)
+bsim_simavr::MSetSerial(const char * port)
 {
 
 }
@@ -96,7 +96,7 @@ static const char * irq_names_uart[IRQ_UART_COUNT] = {
 static void uart_in_hook(struct avr_irq_t * irq, uint32_t value, void * param);
 
 void
-board_simavr::pins_reset(void)
+bsim_simavr::pins_reset(void)
 {
  for (int p = 0; p < MGetPinCount (); p++)
   {
@@ -120,7 +120,7 @@ avr_callback_sleep_raw_(avr_t *avr, avr_cycle_count_t how_long) { }
 static const unsigned char AVR_PORTS[12] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'};
 
 int
-board_simavr::MInit(const char * processor, const char * fname, float freq)
+bsim_simavr::MInit(const char * processor, const char * fname, float freq)
 {
  int ret;
  lxString sproc = GetSupportedDevices ();
@@ -239,7 +239,7 @@ board_simavr::MInit(const char * processor, const char * fname, float freq)
 }
 
 void
-board_simavr::MEnd(void)
+bsim_simavr::MEnd(void)
 {
  if (avr_debug_type)
   {
@@ -296,14 +296,14 @@ board_simavr::MEnd(void)
 }
 
 void
-board_simavr::MEraseFlash(void)
+bsim_simavr::MEraseFlash(void)
 {
  //pic_erase_flash();
  memset (avr->flash, 0xFF, avr->flashend);
 }
 
 void
-board_simavr::MSetFreq(float freq)
+bsim_simavr::MSetFreq(float freq)
 {
  if (avr)
   {
@@ -313,19 +313,19 @@ board_simavr::MSetFreq(float freq)
 }
 
 float
-board_simavr::MGetFreq(void)
+bsim_simavr::MGetFreq(void)
 {
  return avr->frequency;
 }
 
 float
-board_simavr::MGetInstClock(void)
+bsim_simavr::MGetInstClock(void)
 {
  return avr->frequency;
 }
 
 void
-board_simavr::MDumpMemory(const char * fname)
+bsim_simavr::MDumpMemory(const char * fname)
 {
  write_ihx_avr (fname);
 }
@@ -371,7 +371,7 @@ avr_callback_run_gdb_(avr_t * avr)
 }
 
 int
-board_simavr::DebugInit(int dtyppe)
+bsim_simavr::DebugInit(int dtyppe)
 {
  avr_debug_type = dtyppe;
 
@@ -396,7 +396,7 @@ board_simavr::DebugInit(int dtyppe)
 }
 
 lxString
-board_simavr::GetDebugName(void)
+bsim_simavr::GetDebugName(void)
 {
  if (avr_debug_type)
   {
@@ -409,7 +409,7 @@ board_simavr::GetDebugName(void)
 }
 
 void
-board_simavr::DebugLoop(void)
+bsim_simavr::DebugLoop(void)
 {
  if (Window1.Get_mcupwr ())
   {
@@ -426,13 +426,13 @@ board_simavr::DebugLoop(void)
 }
 
 int
-board_simavr::CpuInitialized(void)
+bsim_simavr::CpuInitialized(void)
 {
  return (avr != NULL);
 }
 
 int
-board_simavr::MGetPinCount(void)
+bsim_simavr::MGetPinCount(void)
 {
  if (avr == NULL) return 0;
  if (lxString (avr->mmcu).compare (lxT ("atmega328")) == 0)return 28;
@@ -442,7 +442,7 @@ board_simavr::MGetPinCount(void)
 }
 
 lxString
-board_simavr::MGetPinName(int pin)
+bsim_simavr::MGetPinName(int pin)
 {
  if (pin <= 0 || pin > MGetPinCount ())return "error";
 
@@ -846,7 +846,7 @@ board_simavr::MGetPinName(int pin)
 }
 
 void
-board_simavr::MSetPin(int pin, unsigned char value)
+bsim_simavr::MSetPin(int pin, unsigned char value)
 {
  if (pin <= 0 || pin > MGetPinCount ())return;
  if (avr == NULL) return;
@@ -857,7 +857,7 @@ board_simavr::MSetPin(int pin, unsigned char value)
 }
 
 void
-board_simavr::MSetPinDOV(int pin, unsigned char ovalue)
+bsim_simavr::MSetPinDOV(int pin, unsigned char ovalue)
 {
  if (pin <= 0 || pin > MGetPinCount ())return;
  if (avr == NULL) return;
@@ -868,7 +868,7 @@ board_simavr::MSetPinDOV(int pin, unsigned char ovalue)
 }
 
 void
-board_simavr::MSetAPin(int pin, float value)
+bsim_simavr::MSetAPin(int pin, float value)
 {
  if (pin <= 0 || pin > MGetPinCount ())return;
  if (!pins[pin - 1].dir)return;
@@ -980,7 +980,7 @@ board_simavr::MSetAPin(int pin, float value)
 }
 
 unsigned char
-board_simavr::MGetPin(int pin)
+bsim_simavr::MGetPin(int pin)
 {
  if (pin <= 0 || pin > MGetPinCount ())return -1;
 
@@ -988,13 +988,13 @@ board_simavr::MGetPin(int pin)
 }
 
 const picpin *
-board_simavr::MGetPinsValues(void)
+bsim_simavr::MGetPinsValues(void)
 {
  return pins;
 }
 
 void
-board_simavr::SerialSend(unsigned char value)
+bsim_simavr::SerialSend(unsigned char value)
 {
  serial_port_send (serialfd, value);
  bitbang_uart_send (&bb_uart, value);
@@ -1006,14 +1006,14 @@ board_simavr::SerialSend(unsigned char value)
 static void
 uart_in_hook(struct avr_irq_t * irq, uint32_t value, void * param)
 {
- ((board_simavr *) param)->SerialSend (value);
+ ((bsim_simavr *) param)->SerialSend (value);
 }
 
 int cont = 0;
 int aux = 1;
 
 void
-board_simavr::UpdateHardware(void)
+bsim_simavr::UpdateHardware(void)
 {
 
  unsigned char c;
@@ -1092,22 +1092,22 @@ board_simavr::UpdateHardware(void)
 }
 
 void
-board_simavr::MStep(void)
+bsim_simavr::MStep(void)
 {
  avr_run (avr);
 }
 
 void
-board_simavr::MStepResume(void) { }
+bsim_simavr::MStepResume(void) { }
 
 int
-board_simavr::DBGTestBP(unsigned int bp)
+bsim_simavr::DBGTestBP(unsigned int bp)
 {
  return (bp == avr->pc >> 1);
 }
 
 void
-board_simavr::MReset(int flags)
+bsim_simavr::MReset(int flags)
 {
  avr_reset (avr);
  avr->data[UCSR0B]=0x00; //FIX the simavr reset TX enabled
@@ -1115,83 +1115,83 @@ board_simavr::MReset(int flags)
 }
 
 unsigned short *
-board_simavr::DBGGetProcID_p(void)
+bsim_simavr::DBGGetProcID_p(void)
 {
  return 0;
 }
 
 unsigned int
-board_simavr::DBGGetPC(void)
+bsim_simavr::DBGGetPC(void)
 {
  return avr->pc >> 1;
 }
 
 void
-board_simavr::DBGSetPC(unsigned int pc)
+bsim_simavr::DBGSetPC(unsigned int pc)
 {
  avr->pc = pc << 1;
 }
 
 unsigned char *
-board_simavr::DBGGetRAM_p(void)
+bsim_simavr::DBGGetRAM_p(void)
 {
  return avr->data;
 }
 
 unsigned char *
-board_simavr::DBGGetROM_p(void)
+bsim_simavr::DBGGetROM_p(void)
 {
  return avr->flash;
 }
 
 unsigned char *
-board_simavr::DBGGetCONFIG_p(void)
+bsim_simavr::DBGGetCONFIG_p(void)
 {
  return avr->fuse;
 }
 
 unsigned char *
-board_simavr::DBGGetID_p(void)
+bsim_simavr::DBGGetID_p(void)
 {
  //TODO avr ID pointer
  return NULL;
 }
 
 unsigned char *
-board_simavr::DBGGetEEPROM_p(void)
+bsim_simavr::DBGGetEEPROM_p(void)
 {
  //TODO avr EEPROM pointer
  return NULL;
 }
 
 unsigned int
-board_simavr::DBGGetRAMSize(void)
+bsim_simavr::DBGGetRAMSize(void)
 {
  return avr->ramend + 1;
 }
 
 unsigned int
-board_simavr::DBGGetROMSize(void)
+bsim_simavr::DBGGetROMSize(void)
 {
  return avr->flashend + 1;
 }
 
 unsigned int
-board_simavr::DBGGetCONFIGSize(void)
+bsim_simavr::DBGGetCONFIGSize(void)
 {
  //FIXME avr CONFIG size
  return 3;
 }
 
 unsigned int
-board_simavr::DBGGetIDSize(void)
+bsim_simavr::DBGGetIDSize(void)
 {
  //TODO avr ID size
  return 0;
 }
 
 unsigned int
-board_simavr::DBGGetEEPROM_Size(void)
+bsim_simavr::DBGGetEEPROM_Size(void)
 {
  //TODO AVR EEPROM size
  return 0;
@@ -1201,7 +1201,7 @@ board_simavr::DBGGetEEPROM_Size(void)
 //hexfile support ============================================================
 
 int
-board_simavr::parse_hex(char *line, int bytes)
+bsim_simavr::parse_hex(char *line, int bytes)
 {
  char snum[200];
  int num;
@@ -1214,7 +1214,7 @@ board_simavr::parse_hex(char *line, int bytes)
 };
 
 unsigned char
-board_simavr::checksum(char* str)
+bsim_simavr::checksum(char* str)
 {
  unsigned int i;
  unsigned char acum = 0;
@@ -1228,7 +1228,7 @@ board_simavr::checksum(char* str)
 }
 
 int
-board_simavr::read_ihx_avr(const char * fname, int leeprom)
+bsim_simavr::read_ihx_avr(const char * fname, int leeprom)
 {
  FILE* fin;
  int lc = 0;
@@ -1352,7 +1352,7 @@ board_simavr::read_ihx_avr(const char * fname, int leeprom)
 };
 
 int
-board_simavr::write_ihx_avr(const char * fname)
+bsim_simavr::write_ihx_avr(const char * fname)
 {
 
  FILE * fout;

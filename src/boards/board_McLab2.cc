@@ -291,7 +291,7 @@ cboard_McLab2::MDumpMemory(const char * mfname)
    printf ("Error saving to file: %s \n", fname);
   }
 
- board_picsim::MDumpMemory (mfname);
+ bsim_picsim::MDumpMemory (mfname);
 }
 
 
@@ -699,6 +699,50 @@ cboard_McLab2::Reset(void)
    lm4[pi] = 0;
   }
  if (use_spare)Window5.Reset ();
+ 
+ RegisterRemoteControl();
+}
+
+void
+cboard_McLab2::RegisterRemoteControl(void)
+{
+ for (int i = 0; i < inputc; i++)
+  {
+   switch (input[i].id)
+    {
+    case I_RB0:
+     input[i].status = &p_BT1;
+     break;
+    case I_RB1:
+     input[i].status = &p_BT2;
+     break;
+    case I_RB2:
+     input[i].status = &p_BT3;
+     break;
+    case I_RB3:
+     input[i].status = &p_BT4;
+     break;
+    }
+  }
+
+ for (int i = 0; i < outputc; i++)
+  {
+   switch (output[i].id)
+    {
+    case O_RB0:
+     output[i].status = &pic.pins[32].oavalue;
+     break;
+    case O_RB1:
+     output[i].status = &pic.pins[33].oavalue;
+     break;
+    case O_RB2:
+     output[i].status = &pic.pins[34].oavalue;
+     break;
+    case O_RB3:
+     output[i].status = &pic.pins[35].oavalue;
+     break;
+    }
+  }
 }
 
 void

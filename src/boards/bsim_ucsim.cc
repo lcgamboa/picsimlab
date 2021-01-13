@@ -26,7 +26,7 @@
 
 #include <ucsim/ucsimlib.h>
 
-#include "board_ucsim.h"
+#include "bsim_ucsim.h"
 #include"../picsimlab1.h"
 
 #define PID_C51      0
@@ -58,20 +58,20 @@ static const char pinnames[3][40][10] = {
 
 static const unsigned char UCSIM_PORTS[5] = {0, 1, 2, 3, 0xFF};
 
-board_ucsim::board_ucsim(void)
+bsim_ucsim::bsim_ucsim(void)
 {
  procid = -1;
 }
 
 void
-board_ucsim::MSetSerial(const char * port) {
+bsim_ucsim::MSetSerial(const char * port) {
  /*
  set_serial (&pic,0, port, 0, 0, 0);
  set_serial (&pic,1, "", 0, 0, 0);
   */ }
 
 int
-board_ucsim::MInit(const char * processor, const char * fname, float freq)
+bsim_ucsim::MInit(const char * processor, const char * fname, float freq)
 {
  char fbuff[20];
  int ret = -1;
@@ -105,45 +105,45 @@ board_ucsim::MInit(const char * processor, const char * fname, float freq)
 }
 
 void
-board_ucsim::MEnd(void)
+bsim_ucsim::MEnd(void)
 {
  ucsim_end (); //TODO
 }
 
 void
-board_ucsim::MEraseFlash(void) {
+bsim_ucsim::MEraseFlash(void) {
  //erase_flash ();
 }
 
 void
-board_ucsim::MSetFreq(float freq_)
+bsim_ucsim::MSetFreq(float freq_)
 {
  freq = freq_;
 }
 
 float
-board_ucsim::MGetFreq(void)
+bsim_ucsim::MGetFreq(void)
 {
  return freq;
 }
 
 float
-board_ucsim::MGetInstClock(void)
+bsim_ucsim::MGetInstClock(void)
 {
  return freq;
 }
 
 int
-board_ucsim::CpuInitialized(void)
+bsim_ucsim::CpuInitialized(void)
 {
  return 1;
 }
 
 void
-board_ucsim::DebugLoop(void) { }
+bsim_ucsim::DebugLoop(void) { }
 
 lxString
-board_ucsim::MGetPinName(int pin)
+bsim_ucsim::MGetPinName(int pin)
 {
  lxString pinname = "error";
 
@@ -154,25 +154,25 @@ board_ucsim::MGetPinName(int pin)
 }
 
 void
-board_ucsim::MDumpMemory(const char * fname)
+bsim_ucsim::MDumpMemory(const char * fname)
 {
  ucsim_dump (fname);
 }
 
 int
-board_ucsim::DebugInit(int dtyppe) //argument not used in picm only mplabx
+bsim_ucsim::DebugInit(int dtyppe) //argument not used in picm only mplabx
 {
  return 0; //!mplabxd_init (this, Window1.Get_debug_port ()) - 1;
 }
 
 int
-board_ucsim::MGetPinCount(void)
+bsim_ucsim::MGetPinCount(void)
 {
  return pincount[procid];
 }
 
 void
-board_ucsim::pins_reset(void)
+bsim_ucsim::pins_reset(void)
 {
 
  if ((procid == PID_C51) || (procid == PID_Z80))
@@ -247,41 +247,41 @@ board_ucsim::pins_reset(void)
 }
 
 void
-board_ucsim::MSetPin(int pin, unsigned char value)
+bsim_ucsim::MSetPin(int pin, unsigned char value)
 {
  ucsim_set_pin (*pins[pin - 1].port, pins[pin - 1].pord, value);
 }
 
 void
-board_ucsim::MSetPinDOV(int pin, unsigned char ovalue) {
+bsim_ucsim::MSetPinDOV(int pin, unsigned char ovalue) {
  //set_pin_DOV (pin, ovalue);
 }
 
 void
-board_ucsim::MSetAPin(int pin, float value) {
+bsim_ucsim::MSetAPin(int pin, float value) {
  //set_apin (pin, value);
 }
 
 unsigned char
-board_ucsim::MGetPin(int pin)
+bsim_ucsim::MGetPin(int pin)
 {
  return ucsim_get_pin (*pins[pin - 1].port, pins[pin - 1].pord);
 }
 
 void
-board_ucsim::MReset(int flags)
+bsim_ucsim::MReset(int flags)
 {
  ucsim_reset ();
 }
 
 const picpin *
-board_ucsim::MGetPinsValues(void)
+bsim_ucsim::MGetPinsValues(void)
 {
  return pins;
 }
 
 void
-board_ucsim::MStep(void)
+bsim_ucsim::MStep(void)
 {
  volatile unsigned short p[4];
 
@@ -307,7 +307,7 @@ board_ucsim::MStep(void)
 }
 
 void
-board_ucsim::MStepResume(void) {
+bsim_ucsim::MStepResume(void) {
  //if (pic.s2 == 1)step ();
 }
 
