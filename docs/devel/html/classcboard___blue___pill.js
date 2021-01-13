@@ -17,6 +17,7 @@ var classcboard___blue___pill =
     [ "GetSupportedDevices", "classcboard___blue___pill.html#ae9ba5fa94e5b64ecb3463351dfdc26e9", null ],
     [ "ReadPreferences", "classcboard___blue___pill.html#afe9f5cf46be28ab46831477fc3d39f28", null ],
     [ "RefreshStatus", "classcboard___blue___pill.html#a4920655d2b985825524c8e59ba60a311", null ],
+    [ "RegisterRemoteControl", "classcboard___blue___pill.html#a19f163f16463817d7999a815da1a399d", null ],
     [ "Reset", "classcboard___blue___pill.html#a6325a62fb2fab61f5aa0e7cabdbc1f7c", null ],
     [ "Run_CPU", "classcboard___blue___pill.html#a4f824a4be703994c8ce39ba60b095c09", null ],
     [ "WritePreferences", "classcboard___blue___pill.html#a18b5ff3927f49f0d1979b6c22df94089", null ]

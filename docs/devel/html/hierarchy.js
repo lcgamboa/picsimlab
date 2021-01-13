@@ -5,10 +5,10 @@ var hierarchy =
     [ "avr_gdb_watchpoints_t", "structavr__gdb__watchpoints__t.html", null ],
     [ "bitbang_uart_t", "structbitbang__uart__t.html", null ],
     [ "board", "classboard.html", [
-      [ "board_gpsim", "classboard__gpsim.html", [
+      [ "bsim_gpsim", "classbsim__gpsim.html", [
         [ "cboard_gpboard", "classcboard__gpboard.html", null ]
       ] ],
-      [ "board_picsim", "classboard__picsim.html", [
+      [ "bsim_picsim", "classbsim__picsim.html", [
         [ "cboard_Breadboard", "classcboard___breadboard.html", null ],
         [ "cboard_Curiosity", "classcboard___curiosity.html", null ],
         [ "cboard_Curiosity_HPC", "classcboard___curiosity___h_p_c.html", null ],
@@ -19,15 +19,15 @@ var hierarchy =
         [ "cboard_x", "classcboard__x.html", null ],
         [ "cboard_Xpress", "classcboard___xpress.html", null ]
       ] ],
-      [ "board_qemu_stm32", "classboard__qemu__stm32.html", [
+      [ "bsim_qemu_stm32", "classbsim__qemu__stm32.html", [
         [ "cboard_Blue_Pill", "classcboard___blue___pill.html", null ],
         [ "cboard_STM32_H103", "classcboard___s_t_m32___h103.html", null ]
       ] ],
-      [ "board_simavr", "classboard__simavr.html", [
+      [ "bsim_simavr", "classbsim__simavr.html", [
         [ "cboard_Arduino_Uno", "classcboard___arduino___uno.html", null ],
         [ "cboard_Breadboard", "classcboard___breadboard.html", null ]
       ] ],
-      [ "board_ucsim", "classboard__ucsim.html", [
+      [ "bsim_ucsim", "classbsim__ucsim.html", [
         [ "cboard_uCboard", "classcboard__u_cboard.html", null ]
       ] ]
     ] ],

@@ -18,6 +18,7 @@ var classcboard___curiosity___h_p_c =
     [ "MSetSerial", "classcboard___curiosity___h_p_c.html#ae0c536d5ead648419c48ae1236d33470", null ],
     [ "ReadPreferences", "classcboard___curiosity___h_p_c.html#ac0aaa452a7f29a1a17b1a6d7adbaf45b", null ],
     [ "RefreshStatus", "classcboard___curiosity___h_p_c.html#ad511e3b1972d2cb3321dde530c6c7cb5", null ],
+    [ "RegisterRemoteControl", "classcboard___curiosity___h_p_c.html#a54b9d67b733f61338fc312f4341a78b5", null ],
     [ "Reset", "classcboard___curiosity___h_p_c.html#a4eb3fbf5b882351feb6624dd8856fa4a", null ],
     [ "Run_CPU", "classcboard___curiosity___h_p_c.html#af0d5e597397ef91d099df5736e2dcb24", null ],
     [ "WritePreferences", "classcboard___curiosity___h_p_c.html#a17767e0057def752b8a56b5ffd8e7296", null ],

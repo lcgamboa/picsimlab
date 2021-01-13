@@ -17,6 +17,7 @@ var classcboard___s_t_m32___h103 =
     [ "GetSupportedDevices", "classcboard___s_t_m32___h103.html#a5593c1a10136cc9f3d6c79f6666d6669", null ],
     [ "ReadPreferences", "classcboard___s_t_m32___h103.html#a7ac28e87ba7ebc69824e081729300b57", null ],
     [ "RefreshStatus", "classcboard___s_t_m32___h103.html#af8fa412bd89cc8522ecd76cbe38070a4", null ],
+    [ "RegisterRemoteControl", "classcboard___s_t_m32___h103.html#a212501bba414cdc527c6a3efca67515f", null ],
     [ "Reset", "classcboard___s_t_m32___h103.html#ace15c625192eb28c9ec0b567ec2c1858", null ],
     [ "Run_CPU", "classcboard___s_t_m32___h103.html#a2c974db517ef3660c188fe51c1c9b939", null ],
     [ "WritePreferences", "classcboard___s_t_m32___h103.html#a356555d41abbb301b79ceb35c3f6898e", null ],

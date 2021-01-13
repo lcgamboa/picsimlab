@@ -18,6 +18,7 @@ var classcboard___mc_lab2 =
     [ "MDumpMemory", "classcboard___mc_lab2.html#a3fd992914c05d8be517e9c3e52546a29", null ],
     [ "ReadPreferences", "classcboard___mc_lab2.html#ada7e84f2e4678eaf80b4c6376ff8b43b", null ],
     [ "RefreshStatus", "classcboard___mc_lab2.html#aa125041a77a57bd0a3db2275dea35bec", null ],
+    [ "RegisterRemoteControl", "classcboard___mc_lab2.html#afa76e06a7f3910da2ce577a51818d8d1", null ],
     [ "Reset", "classcboard___mc_lab2.html#a2a5a16d935acb77a49a55f2b183d697b", null ],
     [ "Run_CPU", "classcboard___mc_lab2.html#a94c266eaefaf0460f5ce43621084d349", null ],
     [ "WritePreferences", "classcboard___mc_lab2.html#a45794866419d5a5c2ec1a410c0a5e5d7", null ],

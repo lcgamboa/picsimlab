@@ -17,6 +17,7 @@ var classcboard___arduino___uno =
     [ "GetSupportedDevices", "classcboard___arduino___uno.html#a2a2def170a69009d2944e8bd7430954c", null ],
     [ "ReadPreferences", "classcboard___arduino___uno.html#accfdb40591dfa4a38c49c9f6bdb7de45", null ],
     [ "RefreshStatus", "classcboard___arduino___uno.html#a9030e92002c95369a17376805f7d5d20", null ],
+    [ "RegisterRemoteControl", "classcboard___arduino___uno.html#a4d2fe5e8a0fc65d6f66b4444ed21b7e1", null ],
     [ "Reset", "classcboard___arduino___uno.html#a303cb2cba4f6b6e1a1983c12197001aa", null ],
     [ "Run_CPU", "classcboard___arduino___uno.html#a21b445e5d55b200e6e1675638d04ca66", null ],
     [ "WritePreferences", "classcboard___arduino___uno.html#a7167e7edc3c1485a4e5f733adfa094eb", null ],

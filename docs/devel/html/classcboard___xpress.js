@@ -17,6 +17,7 @@ var classcboard___xpress =
     [ "GetSupportedDevices", "classcboard___xpress.html#a0a09dedd0c99be9800ba2eb706b586aa", null ],
     [ "ReadPreferences", "classcboard___xpress.html#a3d3ad9d9d8cd510076e1f3a97e66ee70", null ],
     [ "RefreshStatus", "classcboard___xpress.html#a514321709df6552aa1f7269c0c87d555", null ],
+    [ "RegisterRemoteControl", "classcboard___xpress.html#a52dd570f505cbd412d5ddb7dd0611a30", null ],
     [ "Reset", "classcboard___xpress.html#a3e550bc830febce4a72ea87b5b8074f5", null ],
     [ "Run_CPU", "classcboard___xpress.html#aee59cece08cf3ffb8c6d1f168ffc69a2", null ],
     [ "WritePreferences", "classcboard___xpress.html#aa890d488a0c174cfdac9809963043b57", null ],
