@@ -35,10 +35,12 @@
 class cboard_Curiosity_HPC:public bsim_picsim
 {
     private:
-        int p_BT1; // Button S1
-        int p_BT2;  // Button S2
+        unsigned char p_BT1; // Button S1
+        unsigned char p_BT2;  // Button S2
         
-        int jmp[1];  //jumper
+        unsigned char pot1;
+        
+        unsigned char jmp[1];  //jumper
 
          //controls to be added in simulator window
         CScroll *scroll1; //scroll for analog input AN0    
@@ -94,6 +96,7 @@ class cboard_Curiosity_HPC:public bsim_picsim
       unsigned short get_out_id(char * name);
       //Set Serial port name
       void MSetSerial(const char * port);
+      void board_Event(CControl * control);
 };
 
 #endif  /* BOARD_Curiosity_HPC_H */

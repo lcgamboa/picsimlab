@@ -34,12 +34,13 @@
 /* ids of inputs of input map*/
 enum
 {
- I_ICSP, //ICSP connector
+ I_ICSP,//ICSP connector
  I_PWR, //Power button
  I_RST, //Reset button
- I_S1, //S1 push button
- I_S2, //S2 push button
- I_JMP //JMP
+ I_S1,  //S1 push button
+ I_S2,  //S2 push button
+ I_JMP, //JMP
+ I_POT1 //potentiometer
 };
 
 /* ids of outputs of output map*/
@@ -65,6 +66,7 @@ cboard_Curiosity_HPC::get_in_id(char * name)
  if (strcmp (name, "PB_S1") == 0)return I_S1;
  if (strcmp (name, "PB_S2") == 0)return I_S2;
  if (strcmp (name, "JP_1") == 0)return I_JMP;
+ if (strcmp (name, "PO_1") == 0)return I_POT1;
 
  printf ("Error input '%s' don't have a valid id! \n", name);
  return -1;
@@ -96,6 +98,8 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void)
  ReadMaps (); //Read input and output board maps
  jmp[0] = 0;
 
+ pot1 = 100;
+
  //controls properties and creation
  //scroll1
  scroll1 = new CScroll ();
@@ -107,9 +111,10 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void)
  scroll1->SetHeight (22);
  scroll1->SetEnable (1);
  scroll1->SetVisible (1);
- scroll1->SetRange (100);
- scroll1->SetPosition (50);
+ scroll1->SetRange (200);
+ scroll1->SetPosition (100);
  scroll1->SetType (4);
+ scroll1->EvOnChangePosition = EVONCHANGEPOSITION & CPWindow1::board_Event;
  Window1.CreateChild (scroll1);
  //gauge1
  gauge1 = new CGauge ();
@@ -348,6 +353,9 @@ cboard_Curiosity_HPC::RegisterRemoteControl(void)
     case I_JMP:
      input[i].status = &jmp[0];
      break;
+    case I_POT1:
+     input[i].status = &pot1;
+     break;
     }
   }
 
@@ -403,6 +411,7 @@ cboard_Curiosity_HPC::WritePreferences(void)
  Window1.saveprefs (lxT ("Curiosity_HPC_jmp"), lxString ().Format ("%i", jmp[0]));
  Window1.saveprefs (lxT ("Curiosity_HPC_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
  Window1.saveprefs (lxT ("Curiosity_HPC_serial2"), combo1->GetText ());
+ Window1.saveprefs (lxT ("Curiosity_HPC_pot1"), lxString ().Format ("%i", pot1));
 }
 
 //Called whe configuration file load  preferences 
@@ -436,6 +445,13 @@ cboard_Curiosity_HPC::ReadPreferences(char *name, char *value)
    combo1->SetText (value);
    pic_set_serial (&pic, 1, value, 0, 0, 0);
   }
+
+ if (!strcmp (name, "Curiosity_HPC_pot1"))
+  {
+   pot1 = atoi (value);
+   scroll1->SetPosition (pot1);
+  }
+
 }
 
 //Event on the board
@@ -720,7 +736,7 @@ cboard_Curiosity_HPC::Run_CPU(void)
     if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
      {
       //set analog pin 2 (RA0 AN4) with value from scroll  
-      pic_set_apin (2, ((5.0 * (scroll1->GetPosition ())) / (scroll1->GetRange () - 1)));
+      pic_set_apin (2, (5.0 * pot1 / 199));
       j = -1; //reset counter
      }
 
@@ -735,5 +751,10 @@ cboard_Curiosity_HPC::Run_CPU(void)
  if (use_spare)Window5.PostProcess ();
 }
 
+void
+cboard_Curiosity_HPC::board_Event(CControl * control)
+{
+ pot1 = scroll1->GetPosition ();
+}
 
 board_init("Curiosity HPC", cboard_Curiosity_HPC);

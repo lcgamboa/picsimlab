@@ -208,7 +208,6 @@ cboard_K16F::Run_CPU(void)
  int j;
  unsigned char pi;
  const picpin * pins;
- unsigned char L[4];
  unsigned int alm[18]; //luminosidade media
 
 
@@ -234,43 +233,104 @@ cboard_K16F::Run_CPU(void)
     if (j >= JUMPSTEPS)
      {
       pic_set_pin (pic.mclr, p_MCLR);
-     }
 
-    L[0] = pic_get_pin (18);
-    L[1] = pic_get_pin (1);
-    L[2] = pic_get_pin (15);
-    L[3] = pic_get_pin (16);
-
-    if (((L[0])&&(p_CL1 == 1)) || ((L[1])&&(p_CL1 == 2)) ||
-        ((L[2])&&(p_CL1 == 3)) || ((L[3])&&(p_CL1 == 4)))
-     {
-      pic_set_pin (13, 1);
-     }
-    else
-     {
+      pic_set_pin (18, 0);
+      pic_set_pin (1, 0);
+      pic_set_pin (15, 0);
+      pic_set_pin (16, 0);
       pic_set_pin (13, 0);
-     }
-
-    if (((L[0])&&(p_CL2 == 1)) || ((L[1])&&(p_CL2 == 2)) ||
-        ((L[2])&&(p_CL2 == 3)) || ((L[3])&&(p_CL2 == 4)))
-     {
-      pic_set_pin (12, 1);
-     }
-    else
-     {
       pic_set_pin (12, 0);
+      pic_set_pin (11, 0);
+
      }
 
-    if (((L[0])&&(p_CL3 == 1)) || ((L[1])&&(p_CL3 == 2)) ||
-        ((L[2])&&(p_CL3 == 3)) || ((L[3])&&(p_CL3 == 4)))
+    //keyboard 
+
+    if (p_KEY1)
      {
-      pic_set_pin (11, 1);
+      pic_set_pin (18, pic_get_pin (13));
+      pic_set_pin (13, pic_get_pin (18));
      }
-    else
+
+
+    if (p_KEY2)
      {
-      pic_set_pin (11, 0);
+      pic_set_pin (18, pic_get_pin (12));
+      pic_set_pin (12, pic_get_pin (18));
      }
-    //} 
+
+
+    if (p_KEY3)
+     {
+      pic_set_pin (18, pic_get_pin (11));
+      pic_set_pin (11, pic_get_pin (18));
+     }
+
+
+    if (p_KEY4)
+     {
+      pic_set_pin (1, pic_get_pin (13));
+      pic_set_pin (13, pic_get_pin (1));
+     }
+
+
+    if (p_KEY5)
+     {
+      pic_set_pin (1, pic_get_pin (12));
+      pic_set_pin (12, pic_get_pin (1));
+     }
+
+
+    if (p_KEY6)
+     {
+      pic_set_pin (1, pic_get_pin (11));
+      pic_set_pin (11, pic_get_pin (1));
+     }
+
+
+    if (p_KEY7)
+     {
+      pic_set_pin (15, pic_get_pin (13));
+      pic_set_pin (13, pic_get_pin (15));
+     }
+
+
+    if (p_KEY8)
+     {
+      pic_set_pin (15, pic_get_pin (12));
+      pic_set_pin (12, pic_get_pin (15));
+     }
+
+
+    if (p_KEY9)
+     {
+      pic_set_pin (15, pic_get_pin (11));
+      pic_set_pin (11, pic_get_pin (15));
+     }
+
+
+    if (p_KEY10)
+     {
+      pic_set_pin (16, pic_get_pin (13));
+      pic_set_pin (13, pic_get_pin (16));
+     }
+
+
+    if (p_KEY11)
+     {
+      pic_set_pin (16, pic_get_pin (12));
+      pic_set_pin (12, pic_get_pin (16));
+     }
+
+
+    if (p_KEY12)
+     {
+      pic_set_pin (16, pic_get_pin (11));
+      pic_set_pin (11, pic_get_pin (16));
+     }
+
+
+
 
     if (!mplabxd_testbp ())pic_step ();
     if (use_oscope)Window4.SetSample ();
@@ -368,12 +428,22 @@ cboard_K16F::Reset(void)
  pic_set_pin_DOV (16, 0);
 
 
- p_CL1 = 0;
- p_CL2 = 0;
- p_CL3 = 0;
- pic_set_pin (13, p_CL1);
- pic_set_pin (12, p_CL2);
- pic_set_pin (11, p_CL3);
+ p_KEY1 = 0;
+ p_KEY2 = 0;
+ p_KEY3 = 0;
+ p_KEY4 = 0;
+ p_KEY5 = 0;
+ p_KEY6 = 0;
+ p_KEY7 = 0;
+ p_KEY8 = 0;
+ p_KEY9 = 0;
+ p_KEY10 = 0;
+ p_KEY11 = 0;
+ p_KEY12 = 0;
+
+ pic_set_pin (13, 0);
+ pic_set_pin (12, 0);
+ pic_set_pin (11, 0);
 
 #ifndef _WIN_
  if (pic.serial[0].serialfd > 0)
@@ -396,17 +466,50 @@ cboard_K16F::Reset(void)
 void
 cboard_K16F::RegisterRemoteControl(void)
 {
-/* 
+
  for (int i = 0; i < inputc; i++)
   {
    switch (input[i].id)
     {
-    case I_TC0:
-     input[i].status = &p_BT1;
+    case I_TC1:
+     input[i].status = &p_KEY1;
      break;
+    case I_TC2:
+     input[i].status = &p_KEY2;
+     break;
+    case I_TC3:
+     input[i].status = &p_KEY3;
+     break;
+    case I_TC4:
+     input[i].status = &p_KEY4;
+     break;
+    case I_TC5:
+     input[i].status = &p_KEY5;
+     break;
+    case I_TC6:
+     input[i].status = &p_KEY6;
+     break;
+    case I_TC7:
+     input[i].status = &p_KEY7;
+     break;
+    case I_TC8:
+     input[i].status = &p_KEY8;
+     break;
+    case I_TC9:
+     input[i].status = &p_KEY9;
+     break;
+    case I_TCA:
+     input[i].status = &p_KEY10;
+     break;
+    case I_TC0:
+     input[i].status = &p_KEY11;
+     break;
+    case I_TCT:
+     input[i].status = &p_KEY12;
+     break; 
     }
   }
-*/
+
  for (int i = 0; i < outputc; i++)
   {
    switch (output[i].id)
@@ -482,65 +585,65 @@ cboard_K16F::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
       case I_TC1:
        {
-        p_CL1 = 1;
+        p_KEY1 = 1;
        }
        break;
       case I_TC2:
        {
-        p_CL2 = 1;
+        p_KEY2 = 1;
        }
        break;
       case I_TC3:
        {
-        p_CL3 = 1;
+        p_KEY3 = 1;
        }
        break;
 
       case I_TC4:
        {
-        p_CL1 = 2;
+        p_KEY4 = 1;
        }
        break;
       case I_TC5:
        {
-        p_CL2 = 2;
+        p_KEY5 = 1;
        }
        break;
       case I_TC6:
        {
-        p_CL3 = 2;
+        p_KEY6 = 1;
        }
        break;
 
       case I_TC7:
        {
-        p_CL1 = 3;
+        p_KEY7 = 1;
        }
        break;
       case I_TC8:
        {
-        p_CL2 = 3;
+        p_KEY8 = 1;
        }
        break;
       case I_TC9:
        {
-        p_CL3 = 3;
+        p_KEY9 = 1;
        }
        break;
 
       case I_TCA:
        {
-        p_CL1 = 4;
+        p_KEY10 = 1;
        }
        break;
       case I_TC0:
        {
-        p_CL2 = 4;
+        p_KEY11 = 1;
        }
        break;
       case I_TCT:
        {
-        p_CL3 = 4;
+        p_KEY12 = 1;
        }
        break;
       case I_VIEW:
@@ -624,29 +727,66 @@ cboard_K16F::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 
 
       case I_TC1:
+       {
+        p_KEY1 = 0;
+       }
+       break;
       case I_TC4:
+       {
+        p_KEY4 = 0;
+       }
+       break;
       case I_TC7:
+       {
+        p_KEY7 = 0;
+       }
+       break;
       case I_TCA:
        {
-        p_CL1 = 0;
+        p_KEY10 = 0;
        }
        break;
 
       case I_TC2:
+       {
+        p_KEY2 = 0;
+       }
+       break;
+
       case I_TC5:
+       {
+        p_KEY5 = 0;
+       }
+       break;
+
       case I_TC8:
+       {
+        p_KEY8 = 0;
+       }
+       break;
+
       case I_TC0:
        {
-        p_CL2 = 0;
+        p_KEY11 = 0;
        }
        break;
 
       case I_TC3:
+       {
+        p_KEY3 = 0;
+       }
+       break;
       case I_TC6:
+       {
+        p_KEY6 = 0;
+       }
       case I_TC9:
+       {
+        p_KEY9 = 0;
+       }
       case I_TCT:
        {
-        p_CL3 = 0;
+        p_KEY12 = 0;
        }
        break;
       }
@@ -659,54 +799,54 @@ cboard_K16F::EvKeyPress(uint key, uint mask)
 {
  if (key == '1')
   {
-   p_CL1 = 1;
+   p_KEY1 = 1;
   }
  if (key == '2')
   {
-   p_CL2 = 1;
+   p_KEY2 = 1;
   }
  if (key == '3')
   {
-   p_CL3 = 1;
+   p_KEY3 = 1;
   }
 
  if (key == '4')
   {
-   p_CL1 = 2;
+   p_KEY4 = 1;
   }
  if (key == '5')
   {
-   p_CL2 = 2;
+   p_KEY5 = 1;
   }
  if (key == '6')
   {
-   p_CL3 = 2;
+   p_KEY6 = 1;
   }
 
  if (key == '7')
   {
-   p_CL1 = 3;
+   p_KEY7 = 1;
   }
  if (key == '8')
   {
-   p_CL2 = 3;
+   p_KEY8 = 1;
   }
  if (key == '9')
   {
-   p_CL3 = 3;
+   p_KEY9 = 1;
   }
 
  if (key == '*')
   {
-   p_CL1 = 4;
+   p_KEY10 = 1;
   }
  if (key == '0')
   {
-   p_CL2 = 4;
+   p_KEY11 = 1;
   }
  if (key == '#')
   {
-   p_CL3 = 4;
+   p_KEY12 = 1;
   }
 
 }
@@ -714,17 +854,56 @@ cboard_K16F::EvKeyPress(uint key, uint mask)
 void
 cboard_K16F::EvKeyRelease(uint key, uint mask)
 {
- if ((key == '1') || (key == '4') || (key == '7') || (key == '*'))
+ if (key == '1')
   {
-   p_CL1 = 0;
+   p_KEY1 = 0;
   }
- if ((key == '2') || (key == '5') || (key == '8') || (key == '0'))
+ if (key == '2')
   {
-   p_CL2 = 0;
+   p_KEY2 = 0;
   }
- if ((key == '3') || (key == '6') || (key == '9') || (key == '#'))
+ if (key == '3')
   {
-   p_CL3 = 0;
+   p_KEY3 = 0;
+  }
+
+ if (key == '4')
+  {
+   p_KEY4 = 0;
+  }
+ if (key == '5')
+  {
+   p_KEY5 = 0;
+  }
+ if (key == '6')
+  {
+   p_KEY6 = 0;
+  }
+
+ if (key == '7')
+  {
+   p_KEY7 = 0;
+  }
+ if (key == '8')
+  {
+   p_KEY8 = 0;
+  }
+ if (key == '9')
+  {
+   p_KEY9 = 0;
+  }
+
+ if (key == '*')
+  {
+   p_KEY10 = 0;
+  }
+ if (key == '0')
+  {
+   p_KEY11 = 0;
+  }
+ if (key == '#')
+  {
+   p_KEY12 = 0;
   }
 }
 

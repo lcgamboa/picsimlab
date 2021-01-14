@@ -78,7 +78,8 @@ enum
  O_JP3,
  O_JP4,
  O_JP5,
- O_JP6
+ O_JP6,
+ I_POT1
 };
 
 /*inputs*/
@@ -97,7 +98,7 @@ enum
  I_RB1,
  I_RB2,
  I_RB3,
- I_VIEW    
+ I_VIEW
 };
 
 //TODO jumper support
@@ -106,7 +107,7 @@ cboard_McLab2::cboard_McLab2(void)
 {
  char fname[1024];
  FILE * fout;
- 
+
  Proc = "PIC18F452";
 
  vp2in = 2.5;
@@ -138,6 +139,8 @@ cboard_McLab2::cboard_McLab2(void)
 
  buzzer.Init ();
 
+ pot1 = 100;
+
  //scroll1
  scroll1 = new CScroll ();
  scroll1->SetFOwner (&Window1);
@@ -148,9 +151,10 @@ cboard_McLab2::cboard_McLab2(void)
  scroll1->SetHeight (22);
  scroll1->SetEnable (1);
  scroll1->SetVisible (1);
- scroll1->SetRange (100);
- scroll1->SetPosition (50);
+ scroll1->SetRange (200);
+ scroll1->SetPosition (100);
  scroll1->SetType (4);
+ scroll1->EvOnChangePosition = EVONCHANGEPOSITION & CPWindow1::board_Event;
  Window1.CreateChild (scroll1);
  //gauge1
  gauge1 = new CGauge ();
@@ -251,7 +255,7 @@ cboard_McLab2::cboard_McLab2(void)
  close (mkstemp (mi2c_tmp_name));
  unlink (mi2c_tmp_name);
  strncat (mi2c_tmp_name, ".txt", 200);
- 
+
 }
 
 cboard_McLab2::~cboard_McLab2(void)
@@ -293,7 +297,6 @@ cboard_McLab2::MDumpMemory(const char * mfname)
 
  bsim_picsim::MDumpMemory (mfname);
 }
-
 
 void
 cboard_McLab2::Draw(CDraw *draw, double scale)
@@ -473,7 +476,7 @@ cboard_McLab2::Draw(CDraw *draw, double scale)
  rpmstp = ((float) Window1.GetNSTEPJ ()) / (0.64 * (pic.pins[15].oavalue - 29));
 
  //tensão p2
- vp2in = ((5.0 * (scroll1->GetPosition ())) / (scroll1->GetRange () - 1));
+ vp2in = (5.0 * pot1 / 199);
 
  //temperatura 
  ref = (0.2222 * (pic.pins[16].oavalue - 30))-(0.2222 * (pic.pins[15].oavalue - 30));
@@ -549,7 +552,7 @@ cboard_McLab2::Run_CPU(void)
     //increment mean value counter if pin is high 
     if (j < pic.PINCOUNT)
      alm[j] += pins[j].value;
-    
+
     if (j >= JUMPSTEPS)
      {
 
@@ -699,8 +702,8 @@ cboard_McLab2::Reset(void)
    lm4[pi] = 0;
   }
  if (use_spare)Window5.Reset ();
- 
- RegisterRemoteControl();
+
+ RegisterRemoteControl ();
 }
 
 void
@@ -721,6 +724,9 @@ cboard_McLab2::RegisterRemoteControl(void)
      break;
     case I_RB3:
      input[i].status = &p_BT4;
+     break;
+    case I_POT1:
+     input[i].status = &pot1;
      break;
     }
   }
@@ -870,26 +876,28 @@ cboard_McLab2::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           }
          fclose (fout);
 #ifdef __EMSCRIPTEN__
-   EM_ASM_({
-	   var filename=UTF8ToString($0);
-           var buf = FS.readFile(filename);
-           var blob = new Blob([buf],  {"type" : "application/octet-stream" });
-           var text = URL.createObjectURL(blob);
+         EM_ASM_ ({
+                  var filename = UTF8ToString ($0);
+                  var buf = FS.readFile (filename);
+                  var blob = new Blob ([buf],
+                   {
+                    "type" : "application/octet-stream" });
+                  var text = URL.createObjectURL (blob);
 
-	   var element = document.createElement('a');
-           element.setAttribute('href', text);
-           element.setAttribute('download', filename);
+                  var element = document.createElement ('a');
+                  element.setAttribute ('href', text);
+                  element.setAttribute ('download', filename);
 
-           element.style.display = 'none';
-           document.body.appendChild(element);
+                  element.style.display = 'none';
+                  document.body.appendChild (element);
 
-           element.click();
+                  element.click ();
 
-           document.body.removeChild(element);
-           URL.revokeObjectURL(text);
-	  },mi2c_tmp_name);
+                  document.body.removeChild (element);
+                  URL.revokeObjectURL (text);
+         }, mi2c_tmp_name);
 #else
-         lxLaunchDefaultApplication(mi2c_tmp_name);      
+         lxLaunchDefaultApplication (mi2c_tmp_name);
 #endif          
         }
        else
@@ -1090,6 +1098,8 @@ cboard_McLab2::get_out_id(char * name)
  if (strcmp (name, "JP_5") == 0)return O_JP5;
  if (strcmp (name, "JP_6") == 0)return O_JP6;
 
+ if (strcmp (name, "PO_1") == 0)return I_POT1;
+
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
 };
@@ -1121,7 +1131,8 @@ cboard_McLab2::WritePreferences(void)
   sprintf (line + i, "%i", jmp[i]);
 
  Window1.saveprefs (lxT ("McLab2_jmp"), line);
- Window1.saveprefs (lxT ("McLab2_clock"), lxString ().Format ("%2.1f", Window1.GetClock())); 
+ Window1.saveprefs (lxT ("McLab2_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
+ Window1.saveprefs (lxT ("McLab2_pot1"), lxString ().Format ("%i", pot1));
 }
 
 void
@@ -1143,13 +1154,24 @@ cboard_McLab2::ReadPreferences(char *name, char *value)
       jmp[i] = 1;
     }
   }
- 
-  if (!strcmp (name, "McLab2_clock"))
+
+ if (!strcmp (name, "McLab2_clock"))
   {
-   Window1.SetClock (atof(value));
+   Window1.SetClock (atof (value));
+  }
+
+ if (!strcmp (name, "McLab2_pot1"))
+  {
+   pot1 = atoi (value);
+   scroll1->SetPosition (pot1);
   }
 }
 
+void
+cboard_McLab2::board_Event(CControl * control)
+{
+ pot1 = scroll1->GetPosition ();
+}
 
 board_init("McLab2", cboard_McLab2);
 

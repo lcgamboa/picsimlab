@@ -34,9 +34,11 @@
 class cboard_Curiosity:public bsim_picsim
 {
   private:
-     int p_BT1;           //S1 switch
+     unsigned char p_BT1;           //S1 switch
 
-     int jmp[1];             //jmp
+     unsigned char pot1;
+     
+     unsigned char jmp[1];             //jmp
           
      //controls to be added in simulator window
      CScroll *scroll1; //scroll for analog input AN0    
@@ -89,6 +91,7 @@ class cboard_Curiosity:public bsim_picsim
       unsigned short get_in_id(char * name);
       //return the output ids numbers of names used in output map
       unsigned short get_out_id(char * name);
+      void board_Event(CControl * control);
 };
 
 #endif	/* BOARD_Curiosity_H */

@@ -23,6 +23,7 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+
 #include"../picsimlab1.h"
 #include"../picsimlab4.h"
 #include"../picsimlab5.h"
@@ -55,7 +56,7 @@ enum
  I_TC1, I_TC2, I_TC3, I_TC4, I_TC5, I_TC6, I_TC7, I_TC8, I_TC9,
  I_TCA, I_TC0, I_TCT, I_D01, I_D02, I_D03, I_D04, I_D05, I_D06, I_D07,
  I_D08, I_D09, I_D10, I_D11, I_D12, I_D13, I_D14, I_D15, I_D16, I_D17,
- I_D18, I_D19, I_D20, I_JP1, I_VIEW
+ I_D18, I_D19, I_D20, I_JP1, I_VIEW, I_POT1, I_POT2
 };
 
 
@@ -70,6 +71,9 @@ cboard_PICGenios::cboard_PICGenios(void)
 
  vtc = 0;
  vt = 0;
+
+ pot1 = 100;
+ pot2 = 100;
 
  vp1in = 2.5;
  vp2in = 2.5;
@@ -123,9 +127,11 @@ cboard_PICGenios::cboard_PICGenios(void)
  scroll1->SetHeight (22);
  scroll1->SetEnable (1);
  scroll1->SetVisible (1);
- scroll1->SetRange (100);
- scroll1->SetPosition (50);
+ scroll1->SetRange (200);
+ scroll1->SetPosition (100);
  scroll1->SetType (4);
+ scroll1->SetTag (1);
+ scroll1->EvOnChangePosition = EVONCHANGEPOSITION & CPWindow1::board_Event;
  Window1.CreateChild (scroll1);
  //scroll2
  scroll2 = new CScroll ();
@@ -137,9 +143,11 @@ cboard_PICGenios::cboard_PICGenios(void)
  scroll2->SetHeight (22);
  scroll2->SetEnable (1);
  scroll2->SetVisible (1);
- scroll2->SetRange (100);
- scroll2->SetPosition (50);
+ scroll2->SetRange (200);
+ scroll2->SetPosition (100);
  scroll2->SetType (4);
+ scroll2->SetTag (2);
+ scroll2->EvOnChangePosition = EVONCHANGEPOSITION & CPWindow1::board_Event;
  Window1.CreateChild (scroll2);
  //gauge1
  gauge1 = new CGauge ();
@@ -259,6 +267,7 @@ cboard_PICGenios::cboard_PICGenios(void)
  combo1->SetVisible (1);
  combo1->SetText (lxT ("hd44780 16x2"));
  combo1->SetItems (lxT ("hd44780 16x2,hd44780 16x4,"));
+ combo1->SetTag (3);
  combo1->EvOnComboChange = EVONCOMBOCHANGE & CPWindow1::board_Event;
  Window1.CreateChild (combo1);
 
@@ -629,8 +638,8 @@ cboard_PICGenios::Draw(CDraw *draw, double scale)
  rpmstp = ((float) Window1.GetNSTEPJ ()) / (0.64 * (pic.pins[16].oavalue - 29));
 
  //tensão p2
- vp2in = ((5.0 * (scroll1->GetPosition ())) / (scroll1->GetRange () - 1));
- vp1in = ((5.0 * (scroll2->GetPosition ())) / (scroll2->GetRange () - 1));
+ vp2in = (5.0 * pot1 / 199);
+ vp1in = (5.0 * pot2 / 199);
 
  //temperatura 
  ref = ((0.2222 * (pic.pins[23].oavalue - 30)))-(0.2222 * (pic.pins[16].oavalue - 30));
@@ -1018,7 +1027,48 @@ cboard_PICGenios::RegisterRemoteControl(void)
     case I_RA5:
      input[i].status = &p_BT7;
      break;
-
+    case I_TC1:
+     input[i].status = &p_KEY1;
+     break;
+    case I_TC2:
+     input[i].status = &p_KEY2;
+     break;
+    case I_TC3:
+     input[i].status = &p_KEY3;
+     break;
+    case I_TC4:
+     input[i].status = &p_KEY4;
+     break;
+    case I_TC5:
+     input[i].status = &p_KEY5;
+     break;
+    case I_TC6:
+     input[i].status = &p_KEY6;
+     break;
+    case I_TC7:
+     input[i].status = &p_KEY7;
+     break;
+    case I_TC8:
+     input[i].status = &p_KEY8;
+     break;
+    case I_TC9:
+     input[i].status = &p_KEY9;
+     break;
+    case I_TCA:
+     input[i].status = &p_KEY10;
+     break;
+    case I_TC0:
+     input[i].status = &p_KEY11;
+     break;
+    case I_TCT:
+     input[i].status = &p_KEY12;
+     break;
+    case I_POT1:
+     input[i].status = &pot2;
+     break;
+    case I_POT2:
+     input[i].status = &pot1;
+     break;
     }
   }
 
@@ -1782,6 +1832,9 @@ cboard_PICGenios::get_in_id(char * name)
  if (strcmp (name, "JP_1") == 0)return I_JP1;
  if (strcmp (name, "MD_VIEW") == 0)return I_VIEW;
 
+ if (strcmp (name, "PO_1") == 0)return I_POT1;
+ if (strcmp (name, "PO_2") == 0)return I_POT2;
+
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
 };
@@ -1913,6 +1966,10 @@ cboard_PICGenios::WritePreferences(void)
 
  Window1.saveprefs (lxT ("PICGenios_dip"), line);
  Window1.saveprefs (lxT ("PICGenios_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
+ 
+ Window1.saveprefs (lxT ("PICGenios_pot1"), lxString ().Format ("%i", pot1));
+ Window1.saveprefs (lxT ("PICGenios_pot2"), lxString ().Format ("%i", pot2));
+ 
 }
 
 void
@@ -1961,6 +2018,18 @@ cboard_PICGenios::ReadPreferences(char *name, char *value)
   {
    Window1.SetClock (atof (value));
   }
+ 
+  if (!strcmp (name, "PICGenios_pot1"))
+  {
+    pot1= atoi (value);
+    scroll1->SetPosition (pot1);
+  }
+ 
+  if (!strcmp (name, "PICGenios_pot2"))
+  {
+    pot2= atoi (value);
+    scroll2->SetPosition (pot2);
+  }
 }
 
 //Change lcd
@@ -1969,15 +2038,27 @@ void
 cboard_PICGenios::board_Event(CControl * control)
 {
 
- if (combo1->GetText ().Cmp (lxT ("hd44780 16x2")) == 0)
-  lcd_init (&lcd, 16, 2);
- else if (combo1->GetText ().Cmp (lxT ("hd44780 16x4")) == 0)
-  lcd_init (&lcd, 16, 4);
- else if (combo1->GetText ().Cmp (lxT ("hd44780 20x2")) == 0)
-  lcd_init (&lcd, 20, 2);
- else if (combo1->GetText ().Cmp (lxT ("hd44780 20x4")) == 0)
-  lcd_init (&lcd, 20, 4);
+ switch (control->GetTag ())
+  {
+  case 1: //scroll1
+   pot1 = scroll1->GetPosition ();
+   break;
+  case 2: //scroll2
+   pot2 = scroll2->GetPosition ();
+   break;
+  case 3: //combo
+   if (combo1->GetText ().Cmp (lxT ("hd44780 16x2")) == 0)
+    lcd_init (&lcd, 16, 2);
+   else if (combo1->GetText ().Cmp (lxT ("hd44780 16x4")) == 0)
+    lcd_init (&lcd, 16, 4);
+   else if (combo1->GetText ().Cmp (lxT ("hd44780 20x2")) == 0)
+    lcd_init (&lcd, 20, 2);
+   else if (combo1->GetText ().Cmp (lxT ("hd44780 20x4")) == 0)
+    lcd_init (&lcd, 20, 4);
+   break;
+  }
 }
+
 
 board_init("PICGenios", cboard_PICGenios);
 

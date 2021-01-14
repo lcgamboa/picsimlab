@@ -31,10 +31,10 @@
 
 /* ids of inputs of input map*/
 #define I_ICSP 1  //ICSP connector
-#define I_PWR 2  //Power button
-#define I_RST 3  //Reset button
-#define I_S1 4  //S1 push button
-
+#define I_PWR  2  //Power button
+#define I_RST  3  //Reset button
+#define I_S1   4  //S1 push button
+#define I_POT1 5  //potentiometer
 
 /* ids of outputs of output map*/
 #define O_D1 1  //LED D1
@@ -53,6 +53,7 @@ cboard_Xpress::get_in_id(char * name)
  if (strcmp (name, "SW_PWR") == 0)return I_PWR;
  if (strcmp (name, "PB_RST") == 0)return I_RST;
  if (strcmp (name, "PB_S1") == 0)return I_S1;
+ if (strcmp (name, "PO_1") == 0)return I_POT1;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
@@ -82,6 +83,8 @@ cboard_Xpress::cboard_Xpress(void)
  Proc = "PIC16F18855"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
 
+ pot1 = 100;
+
  //controls properties and creation
  //scroll1
  scroll1 = new CScroll ();
@@ -93,9 +96,10 @@ cboard_Xpress::cboard_Xpress(void)
  scroll1->SetHeight (22);
  scroll1->SetEnable (1);
  scroll1->SetVisible (1);
- scroll1->SetRange (100);
- scroll1->SetPosition (50);
+ scroll1->SetRange (200);
+ scroll1->SetPosition (100);
  scroll1->SetType (4);
+ scroll1->EvOnChangePosition = EVONCHANGEPOSITION & CPWindow1::board_Event;
  Window1.CreateChild (scroll1);
  //gauge1
  gauge1 = new CGauge ();
@@ -242,7 +246,7 @@ cboard_Xpress::~cboard_Xpress(void)
 void
 cboard_Xpress::Reset(void)
 {
- pic.pkg=QFN;
+ pic.pkg = QFN;
 
  pic_reset (1);
 
@@ -261,14 +265,14 @@ cboard_Xpress::Reset(void)
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
                                lxString ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
-                                                                 pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
+                                                                   pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
  if (use_spare)Window5.Reset ();
- 
- RegisterRemoteControl();
+
+ RegisterRemoteControl ();
 }
 
 void
@@ -280,6 +284,9 @@ cboard_Xpress::RegisterRemoteControl(void)
     {
     case I_S1:
      input[i].status = &p_BT1;
+     break;
+    case I_POT1:
+     input[i].status = &pot1;
      break;
     }
   }
@@ -319,7 +326,7 @@ cboard_Xpress::RefreshStatus(void)
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
                                lxString ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
-                                                                 pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
+                                                                   pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
@@ -333,7 +340,8 @@ cboard_Xpress::WritePreferences(void)
 {
  //write selected microcontroller of board_6 to preferences
  Window1.saveprefs (lxT ("Xpress_proc"), Proc);
- Window1.saveprefs (lxT ("Xpress_clock"), lxString ().Format ("%2.1f", Window1.GetClock())); 
+ Window1.saveprefs (lxT ("Xpress_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
+ Window1.saveprefs (lxT ("Xpress_pot1"), lxString ().Format ("%i", pot1));
 }
 
 //Called whe configuration file load  preferences 
@@ -348,7 +356,12 @@ cboard_Xpress::ReadPreferences(char *name, char *value)
   }
  if (!strcmp (name, "Xpress_clock"))
   {
-   Window1.SetClock (atof(value));
+   Window1.SetClock (atof (value));
+  }
+ if (!strcmp (name, "Xpress_pot1"))
+  {
+   pot1 = atoi (value);
+   scroll1->SetPosition (pot1);
   }
 }
 
@@ -605,8 +618,7 @@ cboard_Xpress::Run_CPU(void)
       }
        */
       //set analog pin 3 (RA4 ANA4) with value from scroll  
-      pic_set_apin (3, ((5.0 * (scroll1->GetPosition ())) /
-                        (scroll1->GetRange () - 1)));
+      pic_set_apin (3, (5.0 * pot1 / 199));
 
       j = -1; //reset counter
      }
@@ -621,6 +633,12 @@ cboard_Xpress::Run_CPU(void)
   }
 
  if (use_spare)Window5.PostProcess ();
+}
+
+void
+cboard_Xpress::board_Event(CControl * control)
+{
+ pot1 = scroll1->GetPosition ();
 }
 
 board_init("Xpress", cboard_Xpress);

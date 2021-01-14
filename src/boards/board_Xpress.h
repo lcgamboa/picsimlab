@@ -34,7 +34,9 @@
 class cboard_Xpress:public bsim_picsim
 {
   private:
-     int p_BT1;           //S1 switch
+     unsigned char p_BT1;           //S1 switch
+     
+     unsigned char pot1;
           
      //controls to be added in simulator window
      CScroll *scroll1; //scroll for analog input AN0    
@@ -87,6 +89,7 @@ class cboard_Xpress:public bsim_picsim
       unsigned short get_in_id(char * name);
       //return the output ids numbers of names used in output map
       unsigned short get_out_id(char * name);
+      void board_Event(CControl * control);
 };
 
 #endif	/* BOARD_Xpress_H */

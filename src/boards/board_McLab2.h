@@ -31,10 +31,13 @@
 class cboard_McLab2:public bsim_picsim
 {
    private:
-     int p_BT1; 
-     int p_BT2;  
-     int p_BT3; 
-     int p_BT4; 
+     unsigned char p_BT1; 
+     unsigned char p_BT2;  
+     unsigned char p_BT3; 
+     unsigned char p_BT4; 
+     
+     unsigned char pot1;
+     
      lcd_t lcd;
 
      mi2c_t mi2c;
@@ -55,7 +58,7 @@ class cboard_McLab2:public bsim_picsim
      unsigned char d;
      unsigned char sda,sck;
  
-    int jmp[8];
+    unsigned char jmp[8];
     unsigned int lm1[40]; //luminosidade media display
     unsigned int lm2[40]; //luminosidade media display
     unsigned int lm3[40]; //luminosidade media display
@@ -96,6 +99,7 @@ class cboard_McLab2:public bsim_picsim
       void ReadPreferences(char *name,char *value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
+      void board_Event(CControl * control);
 };
 
 

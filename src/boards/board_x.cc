@@ -32,11 +32,12 @@
 /* ids of inputs of input map*/
 enum
 {
- I_ICSP, //ICSP connector
+ I_ICSP,//ICSP connector
  I_PWR, //Power button
  I_RST, //Reset button
- I_D0, //RD0 push button
- I_D1 //RD1 switch
+ I_D0,  //RD0 push button
+ I_D1,  //RD1 switch
+ I_POT1 //potentiometer    
 };
 
 /* ids of outputs of output map*/
@@ -59,6 +60,7 @@ cboard_x::get_in_id(char * name)
  if (strcmp (name, "PB_RST") == 0)return I_RST;
  if (strcmp (name, "PB_D0") == 0)return I_D0;
  if (strcmp (name, "SW_D1") == 0)return I_D1;
+ if (strcmp (name, "PO_1") == 0)return I_POT1;
 
  printf ("Error input '%s' don't have a valid id! \n", name);
  return -1;
@@ -88,6 +90,8 @@ cboard_x::cboard_x(void)
  Proc = "PIC18F4550"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
 
+ pot1 = 100;
+
  //controls properties and creation
  //scroll1
  scroll1 = new CScroll ();
@@ -99,9 +103,10 @@ cboard_x::cboard_x(void)
  scroll1->SetHeight (22);
  scroll1->SetEnable (1);
  scroll1->SetVisible (1);
- scroll1->SetRange (100);
- scroll1->SetPosition (50);
+ scroll1->SetRange (200);
+ scroll1->SetPosition (100);
  scroll1->SetType (4);
+ scroll1->EvOnChangePosition = EVONCHANGEPOSITION & CPWindow1::board_Event;
  Window1.CreateChild (scroll1);
  //gauge1
  gauge1 = new CGauge ();
@@ -209,16 +214,17 @@ cboard_x::Reset(void)
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
                                lxString ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
-                                                                 pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
+                                                                   pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
  if (use_spare)Window5.Reset ();
- 
- RegisterRemoteControl();
+
+ RegisterRemoteControl ();
 }
 
+//Register variables to be controled by remote control
 void
 cboard_x::RegisterRemoteControl(void)
 {
@@ -231,6 +237,9 @@ cboard_x::RegisterRemoteControl(void)
      break;
     case I_D1:
      input[i].status = &p_BT2;
+     break;
+    case I_POT1:
+     input[i].status = &pot1;
      break;
     }
   }
@@ -256,7 +265,6 @@ cboard_x::RegisterRemoteControl(void)
 }
 
 //Called ever 1s to refresh status
-
 void
 cboard_x::RefreshStatus(void)
 {
@@ -269,7 +277,7 @@ cboard_x::RefreshStatus(void)
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
                                lxString ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
-                                                                 pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
+                                                                   pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
@@ -286,7 +294,9 @@ cboard_x::WritePreferences(void)
  //write switch state of board_x to preferences 
  Window1.saveprefs (lxT ("X_bt2"), lxString ().Format ("%i", p_BT2));
  //write microcontroller clock to preferences
- Window1.saveprefs (lxT ("X_clock"), lxString ().Format ("%2.1f", Window1.GetClock()));
+ Window1.saveprefs (lxT ("X_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
+ //write potentiometer position to preferences
+ Window1.saveprefs (lxT ("X_pot1"), lxString ().Format ("%i", pot1));
 }
 
 //Called whe configuration file load  preferences 
@@ -309,9 +319,16 @@ cboard_x::ReadPreferences(char *name, char *value)
   }
  //read microcontroller clock
  if (!strcmp (name, "X_clock"))
- {
-  Window1.SetClock (atof(value));
- }
+  {
+   Window1.SetClock (atof (value));
+  }
+
+ //read potentiometer position
+ if (!strcmp (name, "X_pot1"))
+  {
+   pot1 = atoi (value);
+   scroll1->SetPosition (pot1);
+  }
 }
 
 
@@ -579,8 +596,7 @@ cboard_x::Run_CPU(void)
      {
 
       //set analog pin 2 (AN0) with value from scroll  
-      pic_set_apin (2, ((5.0 * (scroll1->GetPosition ())) /
-                        (scroll1->GetRange () - 1)));
+      pic_set_apin (2, (5.0 * pot1 / 199));
 
       j = -1; //reset counter
      }
@@ -592,12 +608,18 @@ cboard_x::Run_CPU(void)
   {
    pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEPJ) + 30);
   }
- 
+
  //Spare parts window pre post process
  if (use_spare)Window5.PostProcess ();
 
 }
 
+void
+cboard_x::board_Event(CControl * control)
+{
+ pot1 = scroll1->GetPosition ();
+}
+
 //Register the board in PICSimLab
-board_init("X", cboard_x); 
+board_init("X", cboard_x);
 

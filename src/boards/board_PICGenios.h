@@ -32,26 +32,29 @@
 class cboard_PICGenios:public bsim_picsim
 {
   private:
-     int p_BT1; 
-     int p_BT2;  
-     int p_BT3; 
-     int p_BT4; 
-     int p_BT5; 
-     int p_BT6; 
-     int p_BT7;  
+     unsigned char p_BT1; 
+     unsigned char p_BT2;  
+     unsigned char p_BT3; 
+     unsigned char p_BT4; 
+     unsigned char p_BT5; 
+     unsigned char p_BT6; 
+     unsigned char p_BT7;  
      
-     int p_KEY1; 
-     int p_KEY2; 
-     int p_KEY3; 
-     int p_KEY4; 
-     int p_KEY5; 
-     int p_KEY6; 
-     int p_KEY7; 
-     int p_KEY8; 
-     int p_KEY9; 
-     int p_KEY10; 
-     int p_KEY11; 
-     int p_KEY12; 
+     unsigned char p_KEY1; 
+     unsigned char p_KEY2; 
+     unsigned char p_KEY3; 
+     unsigned char p_KEY4; 
+     unsigned char p_KEY5; 
+     unsigned char p_KEY6; 
+     unsigned char p_KEY7; 
+     unsigned char p_KEY8; 
+     unsigned char p_KEY9; 
+     unsigned char p_KEY10; 
+     unsigned char p_KEY11; 
+     unsigned char p_KEY12; 
+     
+     unsigned char pot1;
+     unsigned char pot2;
      
      int vtc;
      int vt;
@@ -126,7 +129,6 @@ class cboard_PICGenios:public bsim_picsim
       void ReadPreferences(char *name,char *value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
-      
       void board_Event(CControl * control);
 };
 

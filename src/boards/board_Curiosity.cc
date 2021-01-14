@@ -32,11 +32,12 @@
 /* ids of inputs of input map*/
 enum
 {
- I_ICSP, //ICSP connector
+ I_ICSP,//ICSP connector
  I_PWR, //Power button
  I_RST, //Reset button
- I_S1, //S1 push button
- I_JMP //JMP
+ I_S1,  //S1 push button
+ I_JMP, //JMP
+ I_POT1 //potentiometer   
 };
 
 /* ids of outputs of output map*/
@@ -60,6 +61,7 @@ cboard_Curiosity::get_in_id(char * name)
  if (strcmp (name, "PB_RST") == 0)return I_RST;
  if (strcmp (name, "PB_S1") == 0)return I_S1;
  if (strcmp (name, "JP_1") == 0)return I_JMP;
+ if (strcmp (name, "PO_1") == 0)return I_POT1;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
@@ -91,6 +93,8 @@ cboard_Curiosity::cboard_Curiosity(void)
  ReadMaps (); //Read input and output board maps
  jmp[0] = 0;
 
+ pot1 = 100;
+
  //controls properties and creation
  //scroll1
  scroll1 = new CScroll ();
@@ -102,9 +106,10 @@ cboard_Curiosity::cboard_Curiosity(void)
  scroll1->SetHeight (22);
  scroll1->SetEnable (1);
  scroll1->SetVisible (1);
- scroll1->SetRange (100);
- scroll1->SetPosition (50);
+ scroll1->SetRange (200);
+ scroll1->SetPosition (100);
  scroll1->SetType (4);
+ scroll1->EvOnChangePosition = EVONCHANGEPOSITION & CPWindow1::board_Event;
  Window1.CreateChild (scroll1);
  //gauge1
  gauge1 = new CGauge ();
@@ -268,14 +273,14 @@ cboard_Curiosity::Reset(void)
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
                                lxString ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
-                                                                 pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
+                                                                   pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
  if (use_spare)Window5.Reset ();
- 
- RegisterRemoteControl();
+
+ RegisterRemoteControl ();
 }
 
 void
@@ -287,6 +292,9 @@ cboard_Curiosity::RegisterRemoteControl(void)
     {
     case I_S1:
      input[i].status = &p_BT1;
+     break;
+    case I_POT1:
+     input[i].status = &pot1;
      break;
     }
   }
@@ -326,7 +334,7 @@ cboard_Curiosity::RefreshStatus(void)
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (pic.serial[0].serialbaud) + lxT ("(") +
                                lxString ().Format ("%4.1f", fabs ((100.0 * pic.serial[0].serialexbaud - 100.0 *
-                                                                 pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
+                                                                   pic.serial[0].serialbaud) / pic.serial[0].serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
@@ -341,7 +349,8 @@ cboard_Curiosity::WritePreferences(void)
  //write selected microcontroller of board_5 to preferences
  Window1.saveprefs (lxT ("Curiosity_proc"), Proc);
  Window1.saveprefs (lxT ("Curiosity_jmp"), lxString ().Format ("%i", jmp[0]));
- Window1.saveprefs (lxT ("Curiosity_clock"), lxString ().Format ("%2.1f", Window1.GetClock()));
+ Window1.saveprefs (lxT ("Curiosity_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
+ Window1.saveprefs (lxT ("Curiosity_pot1"), lxString ().Format ("%i", pot1));
 }
 
 //Called whe configuration file load  preferences 
@@ -366,10 +375,16 @@ cboard_Curiosity::ReadPreferences(char *name, char *value)
       jmp[i] = 1;
     }
   }
- 
-  if (!strcmp (name, "Curiosity_clock"))
+
+ if (!strcmp (name, "Curiosity_clock"))
   {
-   Window1.SetClock (atof(value));
+   Window1.SetClock (atof (value));
+  }
+
+ if (!strcmp (name, "Curiosity_pot1"))
+  {
+   pot1 = atoi (value);
+   scroll1->SetPosition (pot1);
   }
 }
 
@@ -651,8 +666,7 @@ cboard_Curiosity::Run_CPU(void)
       }
        */
       //set analog pin 16 (RC0 AN4) with value from scroll  
-      pic_set_apin (16, ((5.0 * (scroll1->GetPosition ())) /
-                         (scroll1->GetRange () - 1)));
+      pic_set_apin (16, (5.0 * pot1 / 199));
 
       j = -1; //reset counter
      }
@@ -666,6 +680,12 @@ cboard_Curiosity::Run_CPU(void)
    pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEPJ) + 30);
   }
  if (use_spare)Window5.PostProcess ();
+}
+
+void
+cboard_Curiosity::board_Event(CControl * control)
+{
+ pot1 = scroll1->GetPosition ();
 }
 
 board_init("Curiosity", cboard_Curiosity);

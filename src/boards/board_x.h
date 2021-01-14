@@ -34,9 +34,11 @@
 class cboard_x:public bsim_picsim
 {
   private:
-     int p_BT1;           //first board switch in RD0
-     int p_BT2;           //second board switch in RD1  
+     unsigned char p_BT1;           //first board switch in RD0
+     unsigned char p_BT2;           //second board switch in RD1  
 
+     unsigned char pot1;
+     
      //controls to be added in simulator window
      CScroll *scroll1; //scroll for analog input AN0    
      CGauge *gauge1;   //gauge to show mean value of RB0
@@ -85,6 +87,7 @@ class cboard_x:public bsim_picsim
       unsigned short get_in_id(char * name);
       //return the output ids numbers of names used in output map
       unsigned short get_out_id(char * name);
+      void board_Event(CControl * control);
 };
 
 #endif	/* BOARD_x_H */

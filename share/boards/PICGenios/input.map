@@ -5,7 +5,7 @@
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:lcganmboa@yahoo.com    -->
+<!-- #$AUTHOR:lcganmboa@yahoo.com     -->
 <area shape="rect" coords="742,627,769,653" href="PB_RST" />
 <area shape="rect" coords="382,405,413,434" href="PB_RB0" />
 <area shape="rect" coords="382,363,412,391" href="PB_RB1" />
@@ -50,4 +50,6 @@
 <area shape="rect" coords="721,374,730,403" href="DP_20" />
 <area shape="rect" coords="472,312,522,322" href="JP_1" />
 <area shape="rect" coords="549,478,594,514" href="MD_VIEW" />
+<area shape="rect" coords="383,497,434,549" href="PO_1" />
+<area shape="rect" coords="454,496,507,548" href="PO_2" />
 </map>
