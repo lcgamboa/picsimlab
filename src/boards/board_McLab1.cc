@@ -383,8 +383,8 @@ cboard_McLab1::Reset(void)
    lm2[i] = 0;
   }
  if (use_spare)Window5.Reset ();
- 
- RegisterRemoteControl();
+
+ RegisterRemoteControl ();
 }
 
 void
@@ -444,22 +444,52 @@ cboard_McLab1::RegisterRemoteControl(void)
      output[i].status = &pic.pins[16].oavalue;
      break;
     case O_A1:
+     output[i].status = &lm1[7];
+     break;
     case O_B1:
+     output[i].status = &lm1[8];
+     break;
     case O_C1:
+     output[i].status = &lm1[10];
+     break;
     case O_D1:
+     output[i].status = &lm1[11];
+     break;
     case O_E1:
+     output[i].status = &lm1[12];
+     break;
     case O_F1:
+     output[i].status = &lm1[6];
+     break;
     case O_G1:
+     output[i].status = &lm1[5];
+     break;
     case O_P1:
+     output[i].status = &lm1[9];
+     break;
     case O_A2:
+     output[i].status = &lm2[7];
+     break;
     case O_B2:
+     output[i].status = &lm2[8];
+     break;
     case O_C2:
+     output[i].status = &lm2[10];
+     break;
     case O_D2:
+     output[i].status = &lm2[11];
+     break;
     case O_E2:
+     output[i].status = &lm2[12];
+     break;
     case O_F2:
+     output[i].status = &lm2[6];
+     break;
     case O_G2:
+     output[i].status = &lm2[5];
+     break;
     case O_P2:
-     output[i].status = NULL;
+     output[i].status = &lm2[9];
      break;
     }
   }

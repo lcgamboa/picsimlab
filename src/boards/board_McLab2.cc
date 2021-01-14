@@ -750,6 +750,104 @@ cboard_McLab2::RegisterRemoteControl(void)
     case O_LCD:
      output[i].status = &lcd;
      break;
+    case O_A1:
+     output[i].status = &lm1[18];
+     break;
+     output[i].status = &lm1[19];
+     break;
+    case O_C1:
+     output[i].status = &lm1[20];
+     break;
+    case O_D1:
+     output[i].status = &lm1[21];
+     break;
+    case O_E1:
+     output[i].status = &lm1[26];
+     break;
+    case O_F1:
+     output[i].status = &lm1[27];
+     break;
+    case O_G1:
+     output[i].status = &lm1[28];
+     break;
+    case O_P1:
+     output[i].status = &lm1[29];
+     break;
+
+    case O_A2:
+     output[i].status = &lm2[18];
+     break;
+    case O_B2:
+     output[i].status = &lm2[19];
+     break;
+    case O_C2:
+     output[i].status = &lm2[20];
+     break;
+    case O_D2:
+     output[i].status = &lm2[21];
+     break;
+    case O_E2:
+     output[i].status = &lm2[26];
+     break;
+    case O_F2:
+     output[i].status = &lm2[27];
+     break;
+    case O_G2:
+     output[i].status = &lm2[28];
+     break;
+    case O_P2:
+     output[i].status = &lm2[29];
+     break;
+
+    case O_A3:
+     output[i].status = &lm3[18];
+     break;
+    case O_B3:
+     output[i].status = &lm3[19];
+     break;
+    case O_C3:
+     output[i].status = &lm3[20];
+     break;
+    case O_D3:
+     output[i].status = &lm3[21];
+     break;
+    case O_E3:
+     output[i].status = &lm3[26];
+     break;
+    case O_F3:
+     output[i].status = &lm3[27];
+     break;
+    case O_G3:
+     output[i].status = &lm3[28];
+     break;
+    case O_P3:
+     output[i].status = &lm3[29];
+     break;
+
+    case O_A4:
+     output[i].status = &lm4[18];
+     break;
+    case O_B4:
+     output[i].status = &lm4[19];
+     break;
+    case O_C4:
+     output[i].status = &lm4[20];
+     break;
+    case O_D4:
+     output[i].status = &lm4[21];
+     break;
+    case O_E4:
+     output[i].status = &lm4[26];
+     break;
+    case O_F4:
+     output[i].status = &lm4[27];
+     break;
+    case O_G4:
+     output[i].status = &lm4[28];
+     break;
+    case O_P4:
+     output[i].status = &lm4[29];
+     break;
     }
   }
 }
@@ -1041,7 +1139,7 @@ cboard_McLab2::get_in_id(char * name)
  if (strcmp (name, "JP_6") == 0)return I_JP6;
 
  if (strcmp (name, "MD_VIEW") == 0)return I_VIEW;
- 
+
  if (strcmp (name, "PO_2") == 0)return I_POT1;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
