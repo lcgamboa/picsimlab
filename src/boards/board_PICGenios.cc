@@ -1124,6 +1124,9 @@ cboard_PICGenios::RegisterRemoteControl(void)
     case O_RD7:
      output[i].status = &pic.pins[29].oavalue;
      break;
+    case O_LCD:
+     output[i].status = &lcd;
+     break;
     }
   }
 }
@@ -1966,10 +1969,10 @@ cboard_PICGenios::WritePreferences(void)
 
  Window1.saveprefs (lxT ("PICGenios_dip"), line);
  Window1.saveprefs (lxT ("PICGenios_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
- 
+
  Window1.saveprefs (lxT ("PICGenios_pot1"), lxString ().Format ("%i", pot1));
  Window1.saveprefs (lxT ("PICGenios_pot2"), lxString ().Format ("%i", pot2));
- 
+
 }
 
 void
@@ -2018,17 +2021,17 @@ cboard_PICGenios::ReadPreferences(char *name, char *value)
   {
    Window1.SetClock (atof (value));
   }
- 
-  if (!strcmp (name, "PICGenios_pot1"))
+
+ if (!strcmp (name, "PICGenios_pot1"))
   {
-    pot1= atoi (value);
-    scroll1->SetPosition (pot1);
+   pot1 = atoi (value);
+   scroll1->SetPosition (pot1);
   }
- 
-  if (!strcmp (name, "PICGenios_pot2"))
+
+ if (!strcmp (name, "PICGenios_pot2"))
   {
-    pot2= atoi (value);
-    scroll2->SetPosition (pot2);
+   pot2 = atoi (value);
+   scroll2->SetPosition (pot2);
   }
 }
 

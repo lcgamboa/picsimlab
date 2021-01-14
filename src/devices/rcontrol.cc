@@ -27,6 +27,7 @@
 #include "../picsimlab1.h"
 #include "../picsimlab5.h"
 #include "rcontrol.h"
+#include "lcd_hd44780.h"
 
 #define dprint if (1) {} else printf
 
@@ -295,8 +296,18 @@ rcontrol_loop(void)
 
              if (Output->status != NULL)
               {
-               stemp.Printf ("board.out[%02i] %s = %i\n", out, Output->name, (int) *((float *) Output->status));
-               sendtext ((const char *) stemp.c_str ());
+               if ((Output->name[0] == 'L')&&(Output->name[1] == 'D'))
+                {
+                 stemp.Printf ("board.out[%02i] %s = %3.0f\n", out, Output->name, *((float *) Output->status));
+                 ret += sendtext ((const char *) stemp.c_str ());
+                }
+               else if ((Output->name[0] == 'D')&&(Output->name[1] == 'S'))
+                {
+                 lcd_t * lcd = (lcd_t*) Output->status;
+                 stemp.Printf ("board.out[%02i] %s = |%.16s\n                       |%.16s\n",
+                               out, Output->name, &lcd->ddram_char[0], &lcd->ddram_char[40]);
+                 ret += sendtext ((const char *) stemp.c_str ());
+                }
                sendtext ("Ok\n>");
               }
              else
@@ -450,10 +461,20 @@ rcontrol_loop(void)
            //stemp.Printf ("  Output %i: %s\n", i, Output->name);
            //ret += sendtext ((const char *) stemp.c_str ());
 
-           if (/*(Output->name[0] == 'L')&&(Output->name[1] == 'D')&& */(Output->status != NULL))
+           if (Output->status != NULL)
             {
-             stemp.Printf ("    board.out[%02i] %s = %3.0f\n", i, Output->name, *((float *) Output->status));
-             ret += sendtext ((const char *) stemp.c_str ());
+             if ((Output->name[0] == 'L')&&(Output->name[1] == 'D'))
+              {
+               stemp.Printf ("    board.out[%02i] %s = %3.0f\n", i, Output->name, *((float *) Output->status));
+               ret += sendtext ((const char *) stemp.c_str ());
+              }
+             else if ((Output->name[0] == 'D')&&(Output->name[1] == 'S'))
+              {
+               lcd_t * lcd = (lcd_t*) Output->status;
+               stemp.Printf ("    board.out[%02i] %s = |%.16s\n                           |%.16s\n",
+                             i, Output->name, &lcd->ddram_char[0], &lcd->ddram_char[40]);
+               ret += sendtext ((const char *) stemp.c_str ());
+              }
             }
           }
 

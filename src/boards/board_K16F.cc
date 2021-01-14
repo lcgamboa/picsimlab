@@ -526,6 +526,9 @@ cboard_K16F::RegisterRemoteControl(void)
     case O_RA7:
      output[i].status = &pic.pins[15].oavalue;
      break;
+    case O_LCD:
+     output[i].status = &lcd; 
+     break;
     }
   }
 }

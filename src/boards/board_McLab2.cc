@@ -747,6 +747,9 @@ cboard_McLab2::RegisterRemoteControl(void)
     case O_RB3:
      output[i].status = &pic.pins[35].oavalue;
      break;
+    case O_LCD:
+     output[i].status = &lcd;
+     break;
     }
   }
 }
@@ -1038,6 +1041,8 @@ cboard_McLab2::get_in_id(char * name)
  if (strcmp (name, "JP_6") == 0)return I_JP6;
 
  if (strcmp (name, "MD_VIEW") == 0)return I_VIEW;
+ 
+ if (strcmp (name, "PO_2") == 0)return I_POT1;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
@@ -1098,7 +1103,6 @@ cboard_McLab2::get_out_id(char * name)
  if (strcmp (name, "JP_5") == 0)return O_JP5;
  if (strcmp (name, "JP_6") == 0)return O_JP6;
 
- if (strcmp (name, "PO_1") == 0)return I_POT1;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
