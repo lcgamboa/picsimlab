@@ -61,6 +61,7 @@ class cpart_LCD_hd44780:public part
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
     private:
+      void RegisterRemoteControl(void);          
       unsigned char input_pins[11]; 
       lcd_t lcd;
       int lcde;

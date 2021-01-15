@@ -118,12 +118,117 @@ cpart_keypad::cpart_keypad(unsigned x, unsigned y)
 
  memset (keys, 0, 16);
  memset (keys2, 0, 10);
- 
+
  refresh = 0;
 
  Bitmap = NULL;
 
  ChangeType (KT4x4);
+
+ RegisterRemoteControl ();
+}
+
+void
+cpart_keypad::RegisterRemoteControl(void)
+{
+
+ if ((type == KT4x3) || (type == KT4x4))
+  {
+   for (int i = 0; i < inputc; i++)
+    {
+     switch (input[i].id)
+      {
+      case I_K1:
+       input[i].status = &keys[0][0];
+       break;
+      case I_K2:
+       input[i].status = &keys[0][1];
+       break;
+      case I_K3:
+       input[i].status = &keys[0][2];
+       break;
+      case I_K4:
+       input[i].status = &keys[1][0];
+       break;
+      case I_K5:
+       input[i].status = &keys[1][1];
+       break;
+      case I_K6:
+       input[i].status = &keys[1][2];
+       break;
+      case I_K7:
+       input[i].status = &keys[2][0];
+       break;
+      case I_K8:
+       input[i].status = &keys[2][1];
+       break;
+      case I_K9:
+       input[i].status = &keys[2][2];
+       break;
+      case I_Ka:
+       input[i].status = &keys[3][0];
+       break;
+      case I_K0:
+       input[i].status = &keys[3][1];
+       break;
+      case I_KT:
+       input[i].status = &keys[3][2];
+       break;
+       //4x4 
+      case I_KA:
+       input[i].status = &keys[0][3];
+       break;
+      case I_KB:
+       input[i].status = &keys[1][3];
+       break;
+      case I_KC:
+       input[i].status = &keys[2][3];
+       break;
+      case I_KD:
+       input[i].status = &keys[3][3];
+       break;
+      }
+    }
+  }
+ else if (type == KT2x5)
+  {
+   for (int i = 0; i < inputc; i++)
+    {
+     switch (input[i].id)
+      {
+      case I_K1:
+       input[i].status = &keys2[0][0];
+       break;
+      case I_K2:
+       input[i].status = &keys2[0][1];
+       break;
+      case I_K3:
+       input[i].status = &keys2[0][2];
+       break;
+      case I_K4:
+       input[i].status = &keys2[0][3];
+       break;
+      case I_K5:
+       input[i].status = &keys2[0][4];
+       break;
+      case I_K6:
+       input[i].status = &keys2[1][0];
+       break;
+      case I_K7:
+       input[i].status = &keys2[1][1];
+       break;
+      case I_K8:
+       input[i].status = &keys2[1][2];
+       break;
+      case I_K9:
+       input[i].status = &keys2[1][3];
+       break;
+      case I_K0:
+       input[i].status = &keys2[1][4];
+       break;
+      }
+    }
+  }
 
 }
 
@@ -139,9 +244,9 @@ cpart_keypad::ChangeType(unsigned char tp)
 {
 
 
- if(!tp)tp=KT4x4;
- if(tp > KT2x5)tp=KT4x4; 
- 
+ if (!tp)tp = KT4x4;
+ if (tp > KT2x5)tp = KT4x4;
+
  //if same
  if (tp == type) return;
 
@@ -158,7 +263,7 @@ cpart_keypad::ChangeType(unsigned char tp)
  lxImage image;
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
- Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
+ Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
  image.Destroy ();
 
  canvas.Create (Window5.GetWWidget (), Bitmap);
@@ -193,7 +298,7 @@ cpart_keypad::Draw(void)
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     
+
      int id = output[i].id - O_L1;
      if ((type == KT2x5)&&(id > 1))
       {
@@ -278,38 +383,48 @@ cpart_keypad::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
  for (i = 0; i < inputc; i++)
   {
-   if (PointInside(x, y, input[i]))
+   if (PointInside (x, y, input[i]))
     {
 
      switch (input[i].id)
       {
-      case I_K1: keys[0][0] = 1; keys2[0][0] = 1;
+      case I_K1: keys[0][0] = 1;
+       keys2[0][0] = 1;
        break;
-      case I_K2: keys[0][1] = 1; keys2[0][1] = 1;
+      case I_K2: keys[0][1] = 1;
+       keys2[0][1] = 1;
        break;
-      case I_K3: keys[0][2] = 1; keys2[0][2] = 1;
+      case I_K3: keys[0][2] = 1;
+       keys2[0][2] = 1;
        break;
       case I_KA: keys[0][3] = 1;
        break;
-      case I_K4: keys[1][0] = 1; keys2[0][3] = 1;
+      case I_K4: keys[1][0] = 1;
+       keys2[0][3] = 1;
        break;
-      case I_K5: keys[1][1] = 1; keys2[0][4] = 1;
+      case I_K5: keys[1][1] = 1;
+       keys2[0][4] = 1;
        break;
-      case I_K6: keys[1][2] = 1; keys2[1][0] = 1;
+      case I_K6: keys[1][2] = 1;
+       keys2[1][0] = 1;
        break;
       case I_KB: keys[1][3] = 1;
        break;
-      case I_K7: keys[2][0] = 1; keys2[1][1] = 1;
+      case I_K7: keys[2][0] = 1;
+       keys2[1][1] = 1;
        break;
-      case I_K8: keys[2][1] = 1; keys2[1][2] = 1;
+      case I_K8: keys[2][1] = 1;
+       keys2[1][2] = 1;
        break;
-      case I_K9: keys[2][2] = 1; keys2[1][3] = 1;
+      case I_K9: keys[2][2] = 1;
+       keys2[1][3] = 1;
        break;
       case I_KC: keys[2][3] = 1;
        break;
       case I_Ka: keys[3][0] = 1;
        break;
-      case I_K0: keys[3][1] = 1; keys2[1][4] = 1;
+      case I_K0: keys[3][1] = 1;
+       keys2[1][4] = 1;
        break;
       case I_KT: keys[3][2] = 1;
        break;
@@ -327,37 +442,47 @@ cpart_keypad::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 
  for (i = 0; i < inputc; i++)
   {
-   if (PointInside(x, y, input[i]))
+   if (PointInside (x, y, input[i]))
     {
      switch (input[i].id)
       {
-      case I_K1: keys[0][0] = 0; keys2[0][0] = 0;
+      case I_K1: keys[0][0] = 0;
+       keys2[0][0] = 0;
        break;
-      case I_K2: keys[0][1] = 0; keys2[0][1] = 0;
+      case I_K2: keys[0][1] = 0;
+       keys2[0][1] = 0;
        break;
-      case I_K3: keys[0][2] = 0; keys2[0][2] = 0;
+      case I_K3: keys[0][2] = 0;
+       keys2[0][2] = 0;
        break;
       case I_KA: keys[0][3] = 0;
        break;
-      case I_K4: keys[1][0] = 0; keys2[0][3] = 0;
+      case I_K4: keys[1][0] = 0;
+       keys2[0][3] = 0;
        break;
-      case I_K5: keys[1][1] = 0; keys2[0][4] = 0;
+      case I_K5: keys[1][1] = 0;
+       keys2[0][4] = 0;
        break;
-      case I_K6: keys[1][2] = 0; keys2[1][0] = 0;
+      case I_K6: keys[1][2] = 0;
+       keys2[1][0] = 0;
        break;
       case I_KB: keys[1][3] = 0;
        break;
-      case I_K7: keys[2][0] = 0; keys2[1][1] = 0;
+      case I_K7: keys[2][0] = 0;
+       keys2[1][1] = 0;
        break;
-      case I_K8: keys[2][1] = 0; keys2[1][2] = 0;
+      case I_K8: keys[2][1] = 0;
+       keys2[1][2] = 0;
        break;
-      case I_K9: keys[2][2] = 0; keys2[1][3] = 0;
+      case I_K9: keys[2][2] = 0;
+       keys2[1][3] = 0;
        break;
       case I_KC: keys[2][3] = 0;
        break;
       case I_Ka: keys[3][0] = 0;
        break;
-      case I_K0: keys[3][1] = 0; keys2[1][4] = 0;
+      case I_K0: keys[3][1] = 0;
+       keys2[1][4] = 0;
        break;
       case I_KT: keys[3][2] = 0;
        break;
@@ -432,8 +557,8 @@ cpart_keypad::ReadPreferences(lxString value)
  memset (keys, 0, 16);
  memset (keys2, 0, 10);
  ChangeType (tp);
+ RegisterRemoteControl ();
 }
-
 
 void
 cpart_keypad::ConfigurePropertiesWindow(CPWindow * WProp)
@@ -587,6 +712,7 @@ cpart_keypad::ReadPropertiesWindow(CPWindow * WProp)
  memset (keys, 0, 16);
  memset (keys2, 0, 10);
 
+ RegisterRemoteControl ();
 }
 
 void

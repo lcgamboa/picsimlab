@@ -55,7 +55,7 @@ cpart_VCD_Dump::cpart_VCD_Dump(unsigned x, unsigned y)
  lxImage image;
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
- Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
+ Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -91,6 +91,21 @@ cpart_VCD_Dump::cpart_VCD_Dump(unsigned x, unsigned y)
  rec = 0;
  vcd_count = 0;
 
+ RegisterRemoteControl ();
+}
+
+void
+cpart_VCD_Dump::RegisterRemoteControl(void)
+{
+ for (int i = 0; i < inputc; i++)
+  {
+   switch (input[i].id)
+    {
+    case I_START:
+     input[i].status = &rec;
+     break;
+    }
+  }
 }
 
 cpart_VCD_Dump::~cpart_VCD_Dump(void)
@@ -112,7 +127,7 @@ cpart_VCD_Dump::Draw(void)
 
  int i;
  int to;
- 
+
  const picpin * ppins = Window5.GetPinsValues ();
 
  canvas.Init (1.0, 1.0, orientation);
@@ -154,7 +169,7 @@ cpart_VCD_Dump::Draw(void)
       {
        to = to - 48;
       }
-     canvas.RotatedText (f_vcd_name+to, output[i].x1, output[i].y1, 0);
+     canvas.RotatedText (f_vcd_name + to, output[i].x1, output[i].y1, 0);
      break;
     case O_L1:
     case O_L2:
@@ -387,7 +402,7 @@ cpart_VCD_Dump::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
  for (i = 0; i < inputc; i++)
   {
-   if (PointInside(x, y, input[i]))
+   if (PointInside (x, y, input[i]))
     {
 
      switch (input[i].id)

@@ -55,6 +55,7 @@ class cpart_ETH_w5500:public part
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
    private:
+      void RegisterRemoteControl(void);         
       unsigned char input_pins[4];
       unsigned char output_pins[2];
       eth_w5500_t ethw;

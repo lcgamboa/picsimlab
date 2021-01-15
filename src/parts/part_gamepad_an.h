@@ -56,6 +56,7 @@ class cpart_gamepad_an:public part
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
     private:
+      void RegisterRemoteControl(void);          
       unsigned char active;  
       unsigned char output_pins[1];    
       float output_value_an;

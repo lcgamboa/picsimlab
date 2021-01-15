@@ -210,7 +210,7 @@ cpart_SignalGenerator::Process(void)
  if (mcount > JUMPSTEPS_)
   {
    float v = 0;
-   float wt= freq * 2.0 * M_PI * ts;
+   float wt = freq * 2.0 * M_PI * ts;
 
    switch (type)
     {
@@ -226,14 +226,14 @@ cpart_SignalGenerator::Process(void)
     }
    ts += 4e-6;
 
-   if (wt >=  2.0 * M_PI)
+   if (wt >= 2.0 * M_PI)
     {
-     ts = ts - (1.0/freq);
+     ts = ts - (1.0 / freq);
     }
 
    Window5.SetAPin (input_pins[0], v);
    Window5.SetAPin (input_pins[1], v);
-   
+
    unsigned char vald = v > offs;
    if (vald != lastd)
     {
@@ -429,6 +429,28 @@ cpart_SignalGenerator::ReadPreferences(lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%u,%hhu,%hhu", &input_pins[0], &values[0], &values[1],
          &type, &maxfreq, &input_pins[1], &values[2]);
+
+ RegisterRemoteControl ();
+}
+
+void
+cpart_SignalGenerator::RegisterRemoteControl(void)
+{
+ for (int i = 0; i < outputc; i++)
+  {
+   switch (output[i].id)
+    {
+    case O_AMPL:
+     output[i].status = (void *) &ampl;
+     break;
+    case O_FREQ:
+     output[i].status = (void *) &freq;
+     break;
+    case O_OFFS:
+     output[i].status = (void *) &offs;
+     break;
+    }
+  }
 }
 
 void
@@ -467,6 +489,7 @@ cpart_SignalGenerator::ReadPropertiesWindow(CPWindow * WProp)
 {
  input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
  input_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
+ RegisterRemoteControl ();
 }
 
 part_init("Signal Generator", cpart_SignalGenerator);

@@ -50,9 +50,10 @@ class cpart_rgb_led:public part
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
      private:
+      void RegisterRemoteControl(void);           
       unsigned char input_pins[3];    
+      unsigned color[3];
 };
-
 
 
 

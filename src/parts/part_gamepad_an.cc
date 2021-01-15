@@ -62,7 +62,38 @@ cpart_gamepad_an::cpart_gamepad_an(unsigned x, unsigned y)
 
  output_value_an = active * 5.0;
 
+ RegisterRemoteControl();
 }
+
+
+void
+cpart_gamepad_an::RegisterRemoteControl(void)
+{
+ /*
+ for (int i = 0; i < inputc; i++)
+  {
+   switch (input[i].id)
+    {
+    case I_B1:
+     input[i].status = &output_value[0];
+     break;
+    case I_B2:
+     input[i].status = &output_value[1];
+     break;
+    case I_B3:
+     input[i].status = &output_value[2];
+     break;
+    case I_B4:
+     input[i].status = &output_value[3];
+     break;
+    case I_B5:
+     input[i].status = &output_value[4];
+     break;
+    }
+  }
+ */
+}
+
 
 void
 cpart_gamepad_an::Reset(void)

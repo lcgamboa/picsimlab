@@ -55,7 +55,7 @@ cpart_VCD_Dump_an::cpart_VCD_Dump_an(unsigned x, unsigned y)
  lxImage image;
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
- Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
+ Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -90,6 +90,21 @@ cpart_VCD_Dump_an::cpart_VCD_Dump_an(unsigned x, unsigned y)
  rec = 0;
  vcd_count = 0;
 
+ RegisterRemoteControl ();
+}
+
+void
+cpart_VCD_Dump_an::RegisterRemoteControl(void)
+{
+ for (int i = 0; i < inputc; i++)
+  {
+   switch (input[i].id)
+    {
+    case I_START:
+     input[i].status = &rec;
+     break;
+    }
+  }
 }
 
 cpart_VCD_Dump_an::~cpart_VCD_Dump_an(void)
@@ -111,7 +126,7 @@ cpart_VCD_Dump_an::Draw(void)
 
  int i;
  int to;
- 
+
  const picpin * ppins = Window5.GetPinsValues ();
 
  canvas.Init (1.0, 1.0, orientation);
@@ -144,7 +159,7 @@ cpart_VCD_Dump_an::Draw(void)
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     to = strlen (f_vcd_name)+5;
+     to = strlen (f_vcd_name) + 5;
      if (to < 48)
       {
        to = 0;
@@ -153,7 +168,7 @@ cpart_VCD_Dump_an::Draw(void)
       {
        to = to - 48;
       }
-     canvas.RotatedText ((f_vcd_name+to)+lxString(" (An)"), output[i].x1, output[i].y1, 0);
+     canvas.RotatedText ((f_vcd_name + to) + lxString (" (An)"), output[i].x1, output[i].y1, 0);
      break;
     case O_L1:
     case O_L2:
@@ -255,7 +270,6 @@ cpart_VCD_Dump_an::ReadPreferences(lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7]);
 }
-
 
 void
 cpart_VCD_Dump_an::ConfigurePropertiesWindow(CPWindow * WProp)
@@ -395,7 +409,7 @@ cpart_VCD_Dump_an::Process(void)
              fprintf (f_vcd, "#%li\n", vcd_count);
             }
            old_value_pins[i] = ppins[input_pins[i] - 1].oavalue;
-           fprintf (f_vcd, "r%f %c\n", old_value_pins[i]/51, markers[i]);
+           fprintf (f_vcd, "r%f %c\n", old_value_pins[i] / 51, markers[i]);
            fflush (f_vcd);
           }
         }
@@ -411,7 +425,7 @@ cpart_VCD_Dump_an::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
  for (i = 0; i < inputc; i++)
   {
-   if (PointInside(x, y, input[i]))
+   if (PointInside (x, y, input[i]))
     {
 
      switch (input[i].id)

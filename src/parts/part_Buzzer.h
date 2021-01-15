@@ -66,6 +66,7 @@ public:
     unsigned short get_in_id(char * name);
     unsigned short get_out_id(char * name);
 private:
+    void RegisterRemoteControl(void);      
     void ChangeType(unsigned char tp);
     unsigned char input_pins[1];
     lxaudio buzzer;

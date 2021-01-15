@@ -539,7 +539,10 @@ CPWindow5::DeleteParts(void)
  partsc = 0; //for disable process
  scale = 1.0;
  useAlias = 0;
- Window4.SetBaseTimer ();
+ if (Window4.GetVisible ())
+  {
+   Window4.SetBaseTimer ();
+  }
  //delete previous parts
 
  for (int i = 0; i < partsc_; i++)
@@ -726,7 +729,10 @@ CPWindow5::_EvOnHide(CControl * control)
   {
    pboard->SetUseSpareParts (0);
   }
- Window4.SetBaseTimer ();
+ if (Window4.GetVisible ())
+  {
+   Window4.SetBaseTimer ();
+  }
 }
 
 void

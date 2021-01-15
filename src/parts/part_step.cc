@@ -34,7 +34,7 @@ enum
  O_P1, O_P2, O_P3, O_P4, O_L1, O_L2, O_L3, O_L4, O_ROT
 };
 
-cpart_step::cpart_step (unsigned x, unsigned y)
+cpart_step::cpart_step(unsigned x, unsigned y)
 {
  X = x;
  Y = y;
@@ -43,7 +43,7 @@ cpart_step::cpart_step (unsigned x, unsigned y)
  lxImage image;
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
- Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
+ Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
  image.Destroy ();
 
  canvas.Create (Window5.GetWWidget (), Bitmap);
@@ -62,14 +62,14 @@ cpart_step::cpart_step (unsigned x, unsigned y)
 
 }
 
-cpart_step::~cpart_step (void)
+cpart_step::~cpart_step(void)
 {
  delete Bitmap;
- canvas.Destroy();
+ canvas.Destroy ();
 }
 
 void
-cpart_step::Draw (void)
+cpart_step::Draw(void)
 {
 
  int i;
@@ -110,8 +110,8 @@ cpart_step::Draw (void)
     case O_L2:
     case O_L3:
     case O_L4:
-     if(input_pins[output[i].id - O_L1] > 0 )
-       canvas.SetColor (ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
+     if (input_pins[output[i].id - O_L1] > 0)
+      canvas.SetColor (ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
      canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
      break;
     }
@@ -127,146 +127,146 @@ cpart_step::Draw (void)
 #define HSTEP (STEP/2.0)
 
 void
-cpart_step::Process (void)
+cpart_step::Process(void)
 {
  const picpin * ppins = Window5.GetPinsValues ();
 
- if((input_pins[0]>0)
- &&(input_pins[1]>0)
- &&(input_pins[2]>0)
- &&(input_pins[3]>0))
- {
-
- b1[1] = b1[0];
- b1[0] = ppins[input_pins[0] - 1].value - ppins[input_pins[2] - 1].value;
- b2[1] = b2[0];
- b2[0] = ppins[input_pins[1] - 1].value - ppins[input_pins[3] - 1].value;
-
- /*
- if((b1[1] != b1[0])||(b2[1] != b2[0]))
+ if ((input_pins[0] > 0)
+     &&(input_pins[1] > 0)
+     &&(input_pins[2] > 0)
+     &&(input_pins[3] > 0))
   {
-   unsigned char code=ppins[input_pins[0] - 1].value  | (ppins[input_pins[1] - 1].value<<1) |  (ppins[input_pins[2] - 1].value<<2) |  (ppins[input_pins[3] - 1].value <<3);
-    printf("%3i %3i %3i %3i  angle=%f  0x%02X\n",b1[0],b2[0],b1[1],b2[1],angle,code);
+
+   b1[1] = b1[0];
+   b1[0] = ppins[input_pins[0] - 1].value - ppins[input_pins[2] - 1].value;
+   b2[1] = b2[0];
+   b2[0] = ppins[input_pins[1] - 1].value - ppins[input_pins[3] - 1].value;
+
+   /*
+   if((b1[1] != b1[0])||(b2[1] != b2[0]))
+    {
+     unsigned char code=ppins[input_pins[0] - 1].value  | (ppins[input_pins[1] - 1].value<<1) |  (ppins[input_pins[2] - 1].value<<2) |  (ppins[input_pins[3] - 1].value <<3);
+      printf("%3i %3i %3i %3i  angle=%f  0x%02X\n",b1[0],b2[0],b1[1],b2[1],angle,code);
+    }
+    */
+
+   //foward full step
+   if ((b1[0] == 1) && (b2[0] == 0) && (b1[1] == 0) && (b2[1] == -1)) //0001
+    angle += STEP;
+
+   if ((b1[0] == 0) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == 0)) //0010
+    angle += STEP;
+
+   if ((b1[0] == -1) && (b2[0] == 0) && (b1[1] == 0) && (b2[1] == 1)) //0100
+    angle += STEP;
+
+   if ((b1[0] == 0)&& (b2[0] == -1) && (b1[1] == -1) && (b2[1] == 0)) //1000
+    angle += STEP;
+
+   //foward full step double phase
+   if ((b1[0] == 1) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == -1)) //0011
+    angle += STEP;
+
+   if ((b1[0] == -1) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == 1)) //0110
+    angle += STEP;
+
+   if ((b1[0] == -1) && (b2[0] == -1) && (b1[1] == -1) && (b2[1] == 1)) //1100
+    angle += STEP;
+
+   if ((b1[0] == 1)&& (b2[0] == -1) && (b1[1] == -1) && (b2[1] == -1)) //1001
+    angle += STEP;
+
+   //foward half step
+   if ((b1[0] == 1) && (b2[0] == 0) && (b1[1] == 1) && (b2[1] == -1))
+    angle += HSTEP;
+
+   if ((b1[0] == 1) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == 0))
+    angle += HSTEP;
+
+   if ((b1[0] == 0) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == 1))
+    angle += HSTEP;
+
+   if ((b1[0] == -1) && (b2[0] == 1) && (b1[1] == 0) && (b2[1] == 1))
+    angle += HSTEP;
+
+   if ((b1[0] == -1) && (b2[0] == 0) && (b1[1] == -1) && (b2[1] == 1))
+    angle += HSTEP;
+
+   if ((b1[0] == -1) && (b2[0] == -1) && (b1[1] == -1) && (b2[1] == 0))
+    angle += HSTEP;
+
+   if ((b1[0] == 0)&& (b2[0] == -1) && (b1[1] == -1) && (b2[1] = -1))
+    angle += HSTEP;
+
+   if ((b1[0] == 1)&& (b2[0] == -1) && (b1[1] == 0) && (b2[1] == -1))
+    angle += HSTEP;
+
+
+   //backward full step
+   if ((b1[0] == 0) && (b2[0] == -1) && (b1[1] == 1) && (b2[1] == 0)) //1000
+    angle -= STEP;
+
+   if ((b1[0] == 1) && (b2[0] == 0) && (b1[1] == 0) && (b2[1] == 1)) //0001
+    angle -= STEP;
+
+   if ((b1[0] == 0) && (b2[0] == 1) && (b1[1] == -1) && (b2[1] == 0)) //0010
+    angle -= STEP;
+
+   if ((b1[0] == -1) && (b2[0] == 0) && (b1[1] == 0)&& (b2[1] == -1)) //0100
+    angle -= STEP;
+
+   //backward full step double phase
+   if ((b1[0] == -1) && (b2[0] == -1) && (b1[1] == 1) && (b2[1] == -1)) //0011
+    angle -= STEP;
+
+   if ((b1[0] == -1) && (b2[0] == 1) && (b1[1] == -1) && (b2[1] == -1)) //0110
+    angle -= STEP;
+
+   if ((b1[0] == 1) && (b2[0] == 1) && (b1[1] == -1) && (b2[1] == 1)) //1100
+    angle -= STEP;
+
+   if ((b1[0] == 1)&& (b2[0] == -1) && (b1[1] == 1) && (b2[1] == 1)) //1001
+    angle -= STEP;
+
+
+   //backward half step
+   if ((b1[1] == 1) && (b2[1] == 0) && (b1[0] == 1) && (b2[0] == -1))
+    angle -= HSTEP;
+
+   if ((b1[1] == 1) && (b2[1] == 1) && (b1[0] == 1) && (b2[0] == 0))
+    angle -= HSTEP;
+
+   if ((b1[1] == 0) && (b2[1] == 1) && (b1[0] == 1) && (b2[0] == 1))
+    angle -= HSTEP;
+
+   if ((b1[1] == -1) && (b2[1] == 1) && (b1[0] == 0) && (b2[0] == 1))
+    angle -= HSTEP;
+
+   if ((b1[1] == -1) && (b2[1] == 0) && (b1[0] == -1) && (b2[0] == 1))
+    angle -= HSTEP;
+
+   if ((b1[1] == -1) && (b2[1] == -1) && (b1[0] == -1) && (b2[0] == 0))
+    angle -= HSTEP;
+
+   if ((b1[1] == 0)&& (b2[1] == -1) && (b1[0] == -1) && (b2[0] = -1))
+    angle -= HSTEP;
+
+   if ((b1[1] == 1)&& (b2[1] == -1) && (b1[0] == 0) && (b2[0] == -1))
+    angle -= HSTEP;
+
+   if (angle >= 2 * M_PI)angle -= 2 * M_PI;
   }
- */
- 
- //foward full step
- if ((b1[0] == 1) && (b2[0] == 0) && (b1[1] == 0) && (b2[1] == -1)) //0001
-  angle += STEP;
-
- if ((b1[0] == 0) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == 0)) //0010
-  angle += STEP;
-
- if ((b1[0] == -1) && (b2[0] == 0) && (b1[1] == 0) && (b2[1] == 1)) //0100
-  angle += STEP;
-
- if ((b1[0] == 0)&& (b2[0] == -1) && (b1[1] == -1) && (b2[1] == 0)) //1000
-  angle += STEP;
- 
-  //foward full step double phase
- if ((b1[0] == 1) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == -1)) //0011
-  angle += STEP;
-
- if ((b1[0] == -1) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == 1)) //0110
-  angle += STEP;
-
- if ((b1[0] == -1) && (b2[0] == -1) && (b1[1] == -1) && (b2[1] == 1)) //1100
-  angle += STEP;
-
- if ((b1[0] == 1)&& (b2[0] == -1) && (b1[1] == -1) && (b2[1] == -1)) //1001
-  angle += STEP;
-
- //foward half step
- if ((b1[0] == 1) && (b2[0] == 0) && (b1[1] == 1) && (b2[1] == -1))
-  angle += HSTEP;
-
- if ((b1[0] == 1) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == 0))
-  angle += HSTEP;
-
- if ((b1[0] == 0) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == 1))
-  angle += HSTEP;
-
- if ((b1[0] == -1) && (b2[0] == 1) && (b1[1] == 0) && (b2[1] == 1))
-  angle += HSTEP;
-
- if ((b1[0] == -1) && (b2[0] == 0) && (b1[1] == -1) && (b2[1] == 1))
-  angle += HSTEP;
-
- if ((b1[0] == -1) && (b2[0] == -1) && (b1[1] == -1) && (b2[1] == 0))
-  angle += HSTEP;
-
- if ((b1[0] == 0)&& (b2[0] == -1) && (b1[1] == -1) && (b2[1] = -1))
-  angle += HSTEP;
-
- if ((b1[0] == 1)&& (b2[0] == -1) && (b1[1] == 0) && (b2[1] == -1))
-  angle += HSTEP;
-
-
- //backward full step
- if ((b1[0] == 0) && (b2[0] == -1) && (b1[1] == 1) && (b2[1] == 0)) //1000
-  angle -= STEP;
-
- if ((b1[0] == 1) && (b2[0] == 0) && (b1[1] == 0) && (b2[1] == 1))  //0001
-  angle -= STEP;
-
- if ((b1[0] == 0) && (b2[0] == 1) && (b1[1] == -1) && (b2[1] == 0)) //0010
-  angle -= STEP;
-
- if ((b1[0] == -1) && (b2[0] == 0) && (b1[1] == 0)&& (b2[1] == -1)) //0100
-  angle -= STEP;
-
- //backward full step double phase
- if ((b1[0] == -1) && (b2[0] == -1) && (b1[1] == 1) && (b2[1] == -1)) //0011
-  angle -= STEP;
-
- if ((b1[0] == -1) && (b2[0] == 1) && (b1[1] == -1) && (b2[1] == -1)) //0110
-  angle -= STEP;
-
- if ((b1[0] == 1) && (b2[0] == 1) && (b1[1] == -1) && (b2[1] == 1)) //1100
-  angle -= STEP;
-
- if ((b1[0] == 1)&& (b2[0] == -1) && (b1[1] == 1) && (b2[1] == 1)) //1001
-  angle -= STEP;
- 
- 
- //backward half step
- if ((b1[1] == 1) && (b2[1] == 0) && (b1[0] == 1) && (b2[0] == -1))
-  angle -= HSTEP;
-
- if ((b1[1] == 1) && (b2[1] == 1) && (b1[0] == 1) && (b2[0] == 0))
-  angle -= HSTEP;
-
- if ((b1[1] == 0) && (b2[1] == 1) && (b1[0] == 1) && (b2[0] == 1))
-  angle -= HSTEP;
-
- if ((b1[1] == -1) && (b2[1] == 1) && (b1[0] == 0) && (b2[0] == 1))
-  angle -= HSTEP;
-
- if ((b1[1] == -1) && (b2[1] == 0) && (b1[0] == -1) && (b2[0] == 1))
-  angle -= HSTEP;
-
- if ((b1[1] == -1) && (b2[1] == -1) && (b1[0] == -1) && (b2[0] == 0))
-  angle -= HSTEP;
-
- if ((b1[1] == 0)&& (b2[1] == -1) && (b1[0] == -1) && (b2[0] = -1))
-  angle -= HSTEP;
-
- if ((b1[1] == 1)&& (b2[1] == -1) && (b1[0] == 0) && (b2[0] == -1))
-  angle -= HSTEP;
-
- if (angle >= 2 * M_PI)angle -= 2 * M_PI;
- }
 }
 
 unsigned short
-cpart_step::get_in_id (char * name)
+cpart_step::get_in_id(char * name)
 {
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
 }
 
 unsigned short
-cpart_step::get_out_id (char * name)
+cpart_step::get_out_id(char * name)
 {
 
  if (strcmp (name, "PN_1") == 0)return O_P1;
@@ -284,7 +284,7 @@ cpart_step::get_out_id (char * name)
 }
 
 lxString
-cpart_step::WritePreferences (void)
+cpart_step::WritePreferences(void)
 {
  char prefs[256];
 
@@ -294,14 +294,28 @@ cpart_step::WritePreferences (void)
 }
 
 void
-cpart_step::ReadPreferences (lxString value)
+cpart_step::ReadPreferences(lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3]);
+ RegisterRemoteControl ();
 }
 
+void
+cpart_step::RegisterRemoteControl(void)
+{
+ for (int i = 0; i < outputc; i++)
+  {
+   switch (output[i].id)
+    {
+    case O_ROT:
+     output[i].status = (void *) &angle;
+     break;
+    }
+  }
+}
 
 void
-cpart_step::ConfigurePropertiesWindow (CPWindow * WProp)
+cpart_step::ConfigurePropertiesWindow(CPWindow * WProp)
 {
  lxString Items = Window5.GetPinsNames ();
  lxString spin;
@@ -349,12 +363,13 @@ cpart_step::ConfigurePropertiesWindow (CPWindow * WProp)
 }
 
 void
-cpart_step::ReadPropertiesWindow (CPWindow * WProp)
+cpart_step::ReadPropertiesWindow(CPWindow * WProp)
 {
  input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
  input_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
  input_pins[2] = atoi (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ());
  input_pins[3] = atoi (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ());
+ RegisterRemoteControl ();
 }
 
 part_init("Step motor", cpart_step);

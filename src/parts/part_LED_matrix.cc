@@ -47,7 +47,7 @@ cpart_led_matrix::cpart_led_matrix(unsigned x, unsigned y)
 
  angle = 0;
 
- Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
+ Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -179,8 +179,23 @@ cpart_led_matrix::ReadPreferences(lxString value)
  output_pins[0] = Window5.RegisterIOpin (lxT ("DOUT"), outp);
 
  Reset ();
+
+ RegisterRemoteControl ();
 }
 
+void
+cpart_led_matrix::RegisterRemoteControl(void)
+{
+ for (int i = 0; i < outputc; i++)
+  {
+   switch (output[i].id)
+    {
+    case O_LED:
+     output[i].status = (void *) &ldd;
+     break;
+    }
+  }
+}
 
 void
 cpart_led_matrix::ConfigurePropertiesWindow(CPWindow * WProp)
@@ -214,9 +229,9 @@ cpart_led_matrix::ConfigurePropertiesWindow(CPWindow * WProp)
    spin = Window5.GetPinName (input_pins[2]);
    ((CCombo*) WProp->GetChildByName ("combo3"))->SetText (itoa (input_pins[2]) + "  " + spin);
   }
- 
- ((CLabel*) WProp->GetChildByName ("label6"))->SetText ("Pin 6 - Dout     "+itoa (output_pins[0]));
-  
+
+ ((CLabel*) WProp->GetChildByName ("label6"))->SetText ("Pin 6 - Dout     " + itoa (output_pins[0]));
+
  ((CCombo*) WProp->GetChildByName ("combo4"))->SetText (itoa (angle));
 
  ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
@@ -232,6 +247,8 @@ cpart_led_matrix::ReadPropertiesWindow(CPWindow * WProp)
  input_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
  input_pins[2] = atoi (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ());
  angle = atoi (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ());
+
+ RegisterRemoteControl ();
 }
 
 void

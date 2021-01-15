@@ -66,7 +66,8 @@ class cpart_servo:public part
       void SetOrientation(int orientation);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
-    private:  
+    private: 
+      void RegisterRemoteControl(void);          
       unsigned char input_pin; ///< pulse input pin  
       lxBitmap * BackGround;   ///< Background image
       float angle;             ///< angle of shaft

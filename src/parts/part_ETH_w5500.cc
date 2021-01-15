@@ -344,6 +344,21 @@ cpart_ETH_w5500::ReadPreferences(lxString value)
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &output_pins[0], &output_pins[1]);
 
  Reset ();
+ RegisterRemoteControl();
+}
+
+void
+cpart_ETH_w5500::RegisterRemoteControl(void)
+{
+ for (int i = 0; i < outputc; i++)
+  {
+   switch (output[i].id)
+    {
+    case O_STAT:
+       output[i].status = (void *) &ethw;
+     break;
+    }
+  }
 }
 
 void
@@ -425,6 +440,8 @@ cpart_ETH_w5500::ReadPropertiesWindow(CPWindow * WProp)
  input_pins [2] = atoi (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ());
  output_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo5"))->GetText ());
  input_pins [3] = atoi (((CCombo*) WProp->GetChildByName ("combo6"))->GetText ());
+ 
+ RegisterRemoteControl();
 }
 
 void

@@ -76,6 +76,7 @@ public:
     void ComboChange(CCombo * control, lxString value);
     void ChangeType(unsigned char type); 
 private:
+    void RegisterRemoteControl(void);      
     unsigned char input_pins[16];
     unsigned char output_pins[16];
     unsigned long output_pins_alm[16];

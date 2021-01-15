@@ -51,6 +51,7 @@ class cpart_VCD_Dump_an:public part
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
      private:
+      void RegisterRemoteControl(void);  
       unsigned char input_pins[8];    
       float old_value_pins[8];      
       char   f_vcd_name[200];

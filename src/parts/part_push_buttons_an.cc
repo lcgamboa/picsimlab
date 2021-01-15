@@ -51,7 +51,7 @@ cpart_pbuttons_an::cpart_pbuttons_an(unsigned x, unsigned y)
  lxImage image;
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
- Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
+ Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
  image.Destroy ();
 
  canvas.Create (Window5.GetWWidget (), Bitmap);
@@ -61,8 +61,44 @@ cpart_pbuttons_an::cpart_pbuttons_an(unsigned x, unsigned y)
  output_pins[0] = 0;
 
  output_value = active * 5.0;
- 
+
+ RegisterRemoteControl ();
 }
+
+void
+cpart_pbuttons_an::RegisterRemoteControl(void) {
+ /*
+ for (int i = 0; i < inputc; i++)
+  {
+   switch (input[i].id)
+    {
+    case I_B1:
+     input[i].status = &output_value[0];
+     break;
+    case I_B2:
+     input[i].status = &output_value[1];
+     break;
+    case I_B3:
+     input[i].status = &output_value[2];
+     break;
+    case I_B4:
+     input[i].status = &output_value[3];
+     break;
+    case I_B5:
+     input[i].status = &output_value[4];
+     break;
+    case I_B6:
+     input[i].status = &output_value[5];
+     break;
+    case I_B7:
+     input[i].status = &output_value[6];
+     break;
+    case I_B8:
+     input[i].status = &output_value[7];
+     break;
+    }
+  }
+  */ }
 
 void
 cpart_pbuttons_an::Reset(void)
@@ -99,18 +135,18 @@ cpart_pbuttons_an::Draw(void)
     {
     case O_P1:
      canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1+12);
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1 + 12);
      canvas.SetFgColor (255, 255, 255);
-     if(active) 
-        ftemp=(5.0*(output[i].id - O_P1))/8.0;
+     if (active)
+      ftemp = (5.0 * (output[i].id - O_P1)) / 8.0;
      else
-        ftemp=(5.0*(8-output[i].id - O_P1))/8.0;
-     temp=lxString().Format("%3.1f",ftemp)+lxT("V");
+      ftemp = (5.0 * (8 - output[i].id - O_P1)) / 8.0;
+     temp = lxString ().Format ("%3.1f", ftemp) + lxT ("V");
      canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
      if (output_pins[0] == 0)
-      canvas.RotatedText ("NC", output[i].x1, output[i].y1+12, 0);
+      canvas.RotatedText ("NC", output[i].x1, output[i].y1 + 12, 0);
      else
-      canvas.RotatedText (Window5.GetPinName (output_pins[0]), output[i].x1, output[i].y1+12, 0);
+      canvas.RotatedText (Window5.GetPinName (output_pins[0]), output[i].x1, output[i].y1 + 12, 0);
      break;
     case O_P2:
     case O_P3:
@@ -122,12 +158,12 @@ cpart_pbuttons_an::Draw(void)
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     if(active) 
-        ftemp=(5.0*(output[i].id - O_P1))/8.0;
+     if (active)
+      ftemp = (5.0 * (output[i].id - O_P1)) / 8.0;
      else
-        ftemp=(5.0*(8-output[i].id - O_P1))/8.0;
-      
-     temp=lxString().Format("%3.1f",ftemp)+lxT("V");
+      ftemp = (5.0 * (8 - output[i].id - O_P1)) / 8.0;
+
+     temp = lxString ().Format ("%3.1f", ftemp) + lxT ("V");
      canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
      break;
     }
@@ -142,7 +178,7 @@ cpart_pbuttons_an::Draw(void)
 void
 cpart_pbuttons_an::PreProcess(void)
 {
-   Window5.SetAPin (output_pins[0], output_value);
+ Window5.SetAPin (output_pins[0], output_value);
 }
 
 void
@@ -152,7 +188,7 @@ cpart_pbuttons_an::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
  for (i = 0; i < inputc; i++)
   {
-   if (PointInside(x, y, input[i]))
+   if (PointInside (x, y, input[i]))
     {
 
      switch (input[i].id)
@@ -186,7 +222,7 @@ cpart_pbuttons_an::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 
  for (i = 0; i < inputc; i++)
   {
-   if (PointInside(x, y, input[i]))
+   if (PointInside (x, y, input[i]))
     {
      switch (input[i].id)
       {
@@ -273,7 +309,6 @@ cpart_pbuttons_an::ReadPreferences(lxString value)
  sscanf (value.c_str (), "%hhu,%hhu", &output_pins[0], &active);
  output_value = active * 5.0;
 }
-
 
 void
 cpart_pbuttons_an::ConfigurePropertiesWindow(CPWindow * WProp)

@@ -170,6 +170,25 @@ cpart_Buzzer::ReadPreferences(lxString value)
  unsigned char tp;
  sscanf (value.c_str (), "%hhu,%hhu", &input_pins[0], &tp);
  ChangeType (tp);
+ RegisterRemoteControl();
+}
+
+void
+cpart_Buzzer::RegisterRemoteControl(void)
+{
+ const picpin * ppins = Window5.GetPinsValues ();
+ for (int i = 0; i < outputc; i++)
+  {
+   switch (output[i].id)
+    {
+    case O_L1:
+     if (input_pins[0])
+      {
+       output[i].status = (void *) &ppins[input_pins[0]-1].oavalue;
+      }
+     break;
+    }
+  }
 }
 
 void
@@ -206,6 +225,7 @@ cpart_Buzzer::ReadPropertiesWindow(CPWindow * WProp)
  input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
  unsigned char tp = ((CCombo*) WProp->GetChildByName ("combo2"))->GetText ().compare (lxT ("Active"));
  ChangeType (tp);
+ RegisterRemoteControl();
 }
 
 void

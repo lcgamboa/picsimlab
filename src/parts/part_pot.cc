@@ -70,7 +70,33 @@ cpart_pot::cpart_pot(unsigned x, unsigned y)
  active[2] = 0;
  active[3] = 0;
 
+ RegisterRemoteControl();
 }
+
+
+void
+cpart_pot::RegisterRemoteControl(void)
+{
+ for (int i = 0; i < inputc; i++)
+  {
+   switch (input[i].id)
+    {
+    case I_PO1:
+     input[i].status = &values[0];
+     break;
+    case I_PO2:
+     input[i].status = &values[1];
+     break;
+    case I_PO3:
+     input[i].status = &values[2];
+     break;
+    case I_PO4:
+     input[i].status = &values[3];
+     break;
+    }
+  }
+}
+
 
 cpart_pot::~cpart_pot(void)
 {

@@ -460,7 +460,7 @@ rcontrol_loop(void)
                    else if ((Output->name[0] == 'D')&&(Output->name[1] == 'S'))
                     {
                      lcd_t * lcd = (lcd_t*) Output->status;
-                     stemp.Printf ("part[%02i].out[%02i] %s = |%.16s\n                       |%.16s\n",
+                     stemp.Printf ("part[%02i].out[%02i] %s = |%.16s\n                          |%.16s\n",
                                    pn, out, Output->name, &lcd->ddram_char[0], &lcd->ddram_char[40]);
                      ret += sendtext ((const char *) stemp.c_str ());
                     }
@@ -671,7 +671,7 @@ rcontrol_loop(void)
                  else if ((Output->name[0] == 'D')&&(Output->name[1] == 'S'))
                   {
                    lcd_t * lcd = (lcd_t*) Output->status;
-                   stemp.Printf ("    part[%02i].out[%02i] %s = |%.16s\n                             |%.16s\n",
+                   stemp.Printf ("    part[%02i].out[%02i] %s = |%.16s\n                              |%.16s\n",
                                  i, j, Output->name, &lcd->ddram_char[0], &lcd->ddram_char[40]);
                    ret += sendtext ((const char *) stemp.c_str ());
                   }
@@ -758,7 +758,7 @@ rcontrol_loop(void)
 
            sscanf (ptr + 12, "%i", &value);
 
-           printf ("board.in[%02i] = %i \n", in, value);
+           dprint ("board.in[%02i] = %i \n", in, value);
 
            if (in < Board->GetInputCount ())
             {
@@ -788,7 +788,7 @@ rcontrol_loop(void)
 
            sscanf (ptr2 + 8, "%i", &value);
 
-           printf ("part[%02i].in[%02i] = %i \n", pn, in, value);
+           dprint ("part[%02i].in[%02i] = %i \n", pn, in, value);
 
            if (pn < Window5.GetPartsCount ())
             {

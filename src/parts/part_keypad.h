@@ -55,6 +55,7 @@ class cpart_keypad:public part
       void ComboChange(CCombo * control, lxString value);
       void ChangeType(unsigned char tp); 
     private:
+      void RegisterRemoteControl(void);          
       unsigned char type;  
       unsigned char pull;  
       unsigned char output_pins[8];    

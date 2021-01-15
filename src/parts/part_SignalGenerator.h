@@ -68,6 +68,7 @@ public:
     unsigned short get_in_id(char * name);
     unsigned short get_out_id(char * name);
 private:
+    void RegisterRemoteControl(void);      
     unsigned char input_pins[2];
     unsigned char values[3];
     unsigned char active[3];

@@ -34,7 +34,7 @@ enum
  O_P1, O_P2, O_P3, O_L1
 };
 
-cpart_rgb_led::cpart_rgb_led (unsigned x, unsigned y)
+cpart_rgb_led::cpart_rgb_led(unsigned x, unsigned y)
 {
  X = x;
  Y = y;
@@ -43,7 +43,7 @@ cpart_rgb_led::cpart_rgb_led (unsigned x, unsigned y)
  lxImage image;
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
- Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
+ Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -53,17 +53,20 @@ cpart_rgb_led::cpart_rgb_led (unsigned x, unsigned y)
  input_pins[1] = 0;
  input_pins[2] = 0;
 
+ color[0] = 0;
+ color[1] = 0;
+ color[2] = 0;
 
-};
+}
 
-cpart_rgb_led::~cpart_rgb_led (void)
+cpart_rgb_led::~cpart_rgb_led(void)
 {
  delete Bitmap;
- canvas.Destroy();
+ canvas.Destroy ();
 }
 
 void
-cpart_rgb_led::Draw (void)
+cpart_rgb_led::Draw(void)
 {
 
  int i;
@@ -92,14 +95,13 @@ cpart_rgb_led::Draw (void)
       canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
      break;
     case O_L1:
-     unsigned char r=0,g=0,b=0;
-     if(input_pins[0] > 0)
-	     r=ppins[input_pins[0] - 1].oavalue;
-     if(input_pins[1] > 0)
-	     g=ppins[input_pins[1] - 1].oavalue;
-     if(input_pins[2] > 0)
-	     b=ppins[input_pins[2] - 1].oavalue;
-     canvas.SetColor (r, g, b);
+     if (input_pins[0] > 0)
+      color[0] = ppins[input_pins[0] - 1].oavalue;
+     if (input_pins[1] > 0)
+      color[1] = ppins[input_pins[1] - 1].oavalue;
+     if (input_pins[2] > 0)
+      color[2] = ppins[input_pins[2] - 1].oavalue;
+     canvas.SetColor (color[0], color[1], color[2]);
      canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
      break;
     }
@@ -112,14 +114,14 @@ cpart_rgb_led::Draw (void)
 }
 
 unsigned short
-cpart_rgb_led::get_in_id (char * name)
+cpart_rgb_led::get_in_id(char * name)
 {
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
-};
+}
 
 unsigned short
-cpart_rgb_led::get_out_id (char * name)
+cpart_rgb_led::get_out_id(char * name)
 {
 
  if (strcmp (name, "PN_1") == 0)return O_P1;
@@ -130,10 +132,10 @@ cpart_rgb_led::get_out_id (char * name)
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
-};
+}
 
 lxString
-cpart_rgb_led::WritePreferences (void)
+cpart_rgb_led::WritePreferences(void)
 {
  char prefs[256];
 
@@ -143,18 +145,32 @@ cpart_rgb_led::WritePreferences (void)
 }
 
 void
-cpart_rgb_led::ReadPreferences (lxString value)
+cpart_rgb_led::ReadPreferences(lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2]);
+ RegisterRemoteControl ();
 }
 
+void
+cpart_rgb_led::RegisterRemoteControl(void)
+{
+ for (int i = 0; i < outputc; i++)
+  {
+   switch (output[i].id)
+    {
+    case O_L1:
+       output[i].status = (void *) color;
+     break;
+    }
+  }
+}
 
 void
-cpart_rgb_led::ConfigurePropertiesWindow (CPWindow * WProp)
+cpart_rgb_led::ConfigurePropertiesWindow(CPWindow * WProp)
 {
  lxString Items = Window5.GetPinsNames ();
  lxString spin;
- 
+
  ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)
   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText ("0  NC");
@@ -190,11 +206,13 @@ cpart_rgb_led::ConfigurePropertiesWindow (CPWindow * WProp)
 }
 
 void
-cpart_rgb_led::ReadPropertiesWindow (CPWindow * WProp)
+cpart_rgb_led::ReadPropertiesWindow(CPWindow * WProp)
 {
  input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
  input_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
  input_pins[2] = atoi (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ());
+
+ RegisterRemoteControl ();
 }
 
 part_init("RGB LED", cpart_rgb_led);

@@ -92,6 +92,22 @@ cpart_VCD_Play::cpart_VCD_Play(unsigned x, unsigned y)
  vcd_count = 0;
  vcd_ptr = 0;
  vcd_step = 0;
+
+ RegisterRemoteControl ();
+}
+
+void
+cpart_VCD_Play::RegisterRemoteControl(void)
+{
+ for (int i = 0; i < inputc; i++)
+  {
+   switch (input[i].id)
+    {
+    case I_PLAY:
+     input[i].status = &play;
+     break;
+    }
+  }
 }
 
 cpart_VCD_Play::~cpart_VCD_Play(void)

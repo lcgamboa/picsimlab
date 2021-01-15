@@ -48,7 +48,7 @@ cpart_7s_display::cpart_7s_display(unsigned x, unsigned y)
  lxImage image;
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
- Bitmap = lxGetBitmapRotated(&image, &Window5, orientation); 
+ Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -325,8 +325,119 @@ void
 cpart_7s_display::ReadPreferences(lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7], &input_pins[8], &input_pins[9], &input_pins[10], &input_pins[11]);
+
+ RegisterRemoteControl ();
 };
 
+void
+cpart_7s_display::RegisterRemoteControl(void)
+{
+ for (int i = 0; i < outputc; i++)
+  {
+   switch (output[i].id)
+    {
+    case O_A1:
+     output[i].status = (void *) &lm1[0];
+     break;
+    case O_B1:
+     output[i].status = (void *) &lm1[1];
+     break;
+    case O_C1:
+     output[i].status = (void *) &lm1[2];
+     break;
+    case O_D1:
+     output[i].status = (void *) &lm1[3];
+     break;
+    case O_E1:
+     output[i].status = (void *) &lm1[4];
+     break;
+    case O_F1:
+     output[i].status = (void *) &lm1[5];
+     break;
+    case O_G1:
+     output[i].status = (void *) &lm1[6];
+     break;
+    case O_P1:
+     output[i].status = (void *) &lm1[7];
+     break;
+
+    case O_A2:
+     output[i].status = (void *) &lm2[0];
+     break;
+    case O_B2:
+     output[i].status = (void *) &lm2[1];
+     break;
+    case O_C2:
+     output[i].status = (void *) &lm2[2];
+     break;
+    case O_D2:
+     output[i].status = (void *) &lm2[3];
+     break;
+    case O_E2:
+     output[i].status = (void *) &lm2[4];
+     break;
+    case O_F2:
+     output[i].status = (void *) &lm2[5];
+     break;
+    case O_G2:
+     output[i].status = (void *) &lm2[6];
+     break;
+    case O_P2:
+     output[i].status = (void *) &lm2[7];
+     break;
+
+    case O_A3:
+     output[i].status = (void *) &lm3[0];
+     break;
+    case O_B3:
+     output[i].status = (void *) &lm3[1];
+     break;
+    case O_C3:
+     output[i].status = (void *) &lm3[2];
+     break;
+    case O_D3:
+     output[i].status = (void *) &lm3[3];
+     break;
+    case O_E3:
+     output[i].status = (void *) &lm3[4];
+     break;
+    case O_F3:
+     output[i].status = (void *) &lm3[5];
+     break;
+    case O_G3:
+     output[i].status = (void *) &lm3[6];
+     break;
+    case O_P3:
+     output[i].status = (void *) &lm3[7];
+     break;
+
+    case O_A4:
+     output[i].status = (void *) &lm4[0];
+     break;
+    case O_B4:
+     output[i].status = (void *) &lm4[1];
+     break;
+    case O_C4:
+     output[i].status = (void *) &lm4[2];
+     break;
+    case O_D4:
+     output[i].status = (void *) &lm4[3];
+     break;
+    case O_E4:
+     output[i].status = (void *) &lm4[4];
+     break;
+    case O_F4:
+     output[i].status = (void *) &lm4[5];
+     break;
+    case O_G4:
+     output[i].status = (void *) &lm4[6];
+     break;
+    case O_P4:
+     output[i].status = (void *) &lm4[7];
+     break;
+    }
+  }
+}
 
 void
 cpart_7s_display::ConfigurePropertiesWindow(CPWindow * WProp)
@@ -463,6 +574,8 @@ cpart_7s_display::ReadPropertiesWindow(CPWindow * WProp)
  input_pins[9] = atoi (((CCombo*) WProp->GetChildByName ("combo10"))->GetText ());
  input_pins[10] = atoi (((CCombo*) WProp->GetChildByName ("combo11"))->GetText ());
  input_pins[11] = atoi (((CCombo*) WProp->GetChildByName ("combo12"))->GetText ());
+
+ RegisterRemoteControl ();
 }
 
 void

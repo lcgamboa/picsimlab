@@ -179,6 +179,22 @@ void
 cpart_servo::ReadPreferences (lxString value)
 {
  sscanf (value.c_str (), "%hhu", &input_pin);
+ RegisterRemoteControl();
+}
+
+
+void
+cpart_servo::RegisterRemoteControl(void)
+{
+ for (int i = 0; i < outputc; i++)
+  {
+   switch (output[i].id)
+    {
+    case O_AXIS:
+       output[i].status = (void *) &angle;
+     break;
+    }
+  }
 }
 
 void
@@ -207,6 +223,7 @@ void
 cpart_servo::ReadPropertiesWindow (CPWindow * WProp)
 {
  input_pin = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
+ RegisterRemoteControl();
 }
 
 void 

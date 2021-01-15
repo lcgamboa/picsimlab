@@ -87,9 +87,48 @@ cpart_gamepad::cpart_gamepad(unsigned x, unsigned y)
     }
   }
 
- valuex = jr;
- valuey = jr;
+ value[0] = jr;
+ value[1] = jr;
 
+ RegisterRemoteControl ();
+}
+
+void
+cpart_gamepad::RegisterRemoteControl(void)
+{
+ for (int i = 0; i < inputc; i++)
+  {
+   switch (input[i].id)
+    {
+    case I_B1:
+     input[i].status = &output_value[0];
+     break;
+    case I_B2:
+     input[i].status = &output_value[1];
+     break;
+    case I_B3:
+     input[i].status = &output_value[2];
+     break;
+    case I_B4:
+     input[i].status = &output_value[3];
+     break;
+    case I_B5:
+     input[i].status = &output_value[4];
+     break;
+    case I_B6:
+     input[i].status = &output_value[5];
+     break;
+    case I_B7:
+     input[i].status = &output_value[6];
+     break;
+    case I_B8:
+     input[i].status = &output_value[7];
+     break;
+    case I_J1:
+     input[i].status = value;
+     break;
+    }
+  }
 }
 
 cpart_gamepad::~cpart_gamepad(void)
@@ -135,7 +174,7 @@ cpart_gamepad::Draw(void)
      canvas.Circle (1, output[i].x1 + jr + 10, output[i].y1 + jr + 10, jr + 10);
      canvas.SetColor (250, 250, 250);
      //canvas.Rectangle (1,output[i].x1+valuex,output[i].y1+valuey,10,10);
-     canvas.Circle (1, output[i].x1 + valuex + 10, output[i].y1 + valuey + 10, 8);
+     canvas.Circle (1, output[i].x1 + value[0] + 10, output[i].y1 + value[1] + 10, 8);
      break;
     }
 
@@ -156,8 +195,8 @@ cpart_gamepad::PreProcess(void)
  Window5.SetPin (output_pins[3], output_value[3]);
  Window5.SetPin (output_pins[4], output_value[4]);
  Window5.SetPin (output_pins[5], output_value[5]);
- Window5.SetAPin (output_pins[6], 2.5 * (valuex) / jr);
- Window5.SetAPin (output_pins[7], 2.5 * (valuey) / jr);
+ Window5.SetAPin (output_pins[6], 2.5 * (value[0]) / jr);
+ Window5.SetAPin (output_pins[7], 2.5 * (value[1]) / jr);
 }
 
 void
@@ -165,7 +204,7 @@ cpart_gamepad::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
  int i;
  int temp;
- 
+
  for (i = 0; i < inputc; i++)
   {
    if (PointInside (x, y, input[i]))
@@ -187,22 +226,22 @@ cpart_gamepad::EvMouseButtonPress(uint button, uint x, uint y, uint state)
        break;
       case I_J1:
        switch (orientation)
-	{
-	case 1:
-	 temp = x;
-	 x = y;
-	 y = Height - temp;
-	 break;
-	case 2:
-	 x = Width - x;
-	 y = Height - y;
-	 break;
-	case 3:
-	 temp = y;
-	 y = x;
-	 x = Width - temp;
-	 break;
-	}
+        {
+        case 1:
+         temp = x;
+         x = y;
+         y = Height - temp;
+         break;
+        case 2:
+         x = Width - x;
+         y = Height - y;
+         break;
+        case 3:
+         temp = y;
+         y = x;
+         x = Width - temp;
+         break;
+        }
        float cx = ((float) fabs (x - input[i].x1)) - jr;
        float cy = ((float) fabs (y - input[i].y1)) - jr;
 
@@ -210,8 +249,8 @@ cpart_gamepad::EvMouseButtonPress(uint button, uint x, uint y, uint state)
        float angle = atan2 ((cy), (cx));
 
        if (module > jr)module = jr;
-       valuex = module * cos (angle) + jr;
-       valuey = module * sin (angle) + jr;
+       value[0] = module * cos (angle) + jr;
+       value[1] = module * sin (angle) + jr;
 
        active = 1;
 
@@ -247,8 +286,8 @@ cpart_gamepad::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
       case I_B7: output_value[6] = 1;
        break;
       case I_J1: active = 0;
-       valuex = jr;
-       valuey = jr;
+       value[0] = jr;
+       value[1] = jr;
        break;
       }
     }
@@ -270,36 +309,36 @@ cpart_gamepad::EvMouseMove(uint button, uint x, uint y, uint state)
       {
       case I_J1:
        if (active)
-	{
-	 switch (orientation)
-	  {
-	  case 1:
-	   temp = x;
-	   x = y;
-	   y = Height - temp;
-	   break;
-	  case 2:
-	   x = Width - x;
-	   y = Height - y;
-	   break;
-	  case 3:
-	   temp = y;
-	   y = x;
-	   x = Width - temp;
-	   break;
-	  }
+        {
+         switch (orientation)
+          {
+          case 1:
+           temp = x;
+           x = y;
+           y = Height - temp;
+           break;
+          case 2:
+           x = Width - x;
+           y = Height - y;
+           break;
+          case 3:
+           temp = y;
+           y = x;
+           x = Width - temp;
+           break;
+          }
 
-	 float cx = ((float) fabs (x - input[i].x1)) - jr;
-	 float cy = ((float) fabs (y - input[i].y1)) - jr;
+         float cx = ((float) fabs (x - input[i].x1)) - jr;
+         float cy = ((float) fabs (y - input[i].y1)) - jr;
 
-	 float module = sqrt (cx * cx + cy * cy);
-	 float angle = atan2 ((cy), (cx));
+         float module = sqrt (cx * cx + cy * cy);
+         float angle = atan2 ((cy), (cx));
 
-	 if (module > jr)module = jr;
-	 valuex = module * cos (angle) + jr;
-	 valuey = module * sin (angle) + jr;
+         if (module > jr)module = jr;
+         value[0] = module * cos (angle) + jr;
+         value[1] = module * sin (angle) + jr;
 
-	}
+        }
        break;
       }
     }
@@ -314,23 +353,23 @@ cpart_gamepad::EvKeyPress(uint key, uint mask)
   {
   case 'W':
   case 'w':
-   valuex = jr;
-   valuey = 0;
+   value[0] = jr;
+   value[1] = 0;
    break;
   case 'A':
   case 'a':
-   valuex = 0;
-   valuey = jr;
+   value[0] = 0;
+   value[1] = jr;
    break;
   case 'S':
   case 's':
-   valuex = jr;
-   valuey = 2 * jr;
+   value[0] = jr;
+   value[1] = 2 * jr;
    break;
   case 'D':
   case 'd':
-   valuex = 2 * jr;
-   valuey = jr;
+   value[0] = 2 * jr;
+   value[1] = jr;
    break;
   case 'I':
   case 'i':
@@ -376,8 +415,8 @@ cpart_gamepad::EvKeyRelease(uint key, uint mask)
   case 'a':
   case 's':
   case 'd':
-   valuex = jr;
-   valuey = jr;
+   value[0] = jr;
+   value[1] = jr;
    break;
   case 'I':
   case 'i':

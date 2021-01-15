@@ -60,6 +60,7 @@ public:
     unsigned short get_out_id(char * name);
     int LoadVCD(lxString fname);
 private:
+    void RegisterRemoteControl(void);   
     unsigned char output_pins[8];
     char f_vcd_name[200];
     unsigned char play;
