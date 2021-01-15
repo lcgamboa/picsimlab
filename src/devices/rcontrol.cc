@@ -57,7 +57,6 @@
 #include<stdlib.h>
 #include<string.h>
 #include<unistd.h>
-#include <lxrad_NOGUI/mstring.h>
 
 void setnblock(int sock_descriptor);
 
