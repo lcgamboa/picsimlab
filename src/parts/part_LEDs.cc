@@ -38,6 +38,8 @@ cpart_leds::cpart_leds(unsigned x, unsigned y)
 {
  X = x;
  Y = y;
+ active = 1;
+
  ReadMaps ();
 
  lxImage image;
@@ -108,7 +110,14 @@ cpart_leds::Draw(void)
     case O_L8:
      if (input_pins[output[i].id - O_L1] > 0)
       {
-       canvas.SetColor (ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
+       if(active)
+        {
+           canvas.SetColor (ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
+        }
+       else
+        {
+           canvas.SetColor (285- ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);  
+        }
       }
      else
       {
@@ -164,7 +173,7 @@ cpart_leds::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4], input_pins[5], input_pins[6], input_pins[7]);
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4], input_pins[5], input_pins[6], input_pins[7], active);
 
  return prefs;
 }
@@ -172,9 +181,9 @@ cpart_leds::WritePreferences(void)
 void
 cpart_leds::ReadPreferences(lxString value)
 {
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7]);
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7], &active);
 
- RegisterRemoteControl();
+ RegisterRemoteControl ();
 }
 
 void
@@ -188,49 +197,49 @@ cpart_leds::RegisterRemoteControl(void)
     case O_L1:
      if (input_pins[0])
       {
-       output[i].status = (void *) &ppins[input_pins[0]-1].oavalue;
+       output[i].status = (void *) &ppins[input_pins[0] - 1].oavalue;
       }
      break;
     case O_L2:
      if (input_pins[1])
       {
-       output[i].status = (void *) &ppins[input_pins[1]-1].oavalue;
+       output[i].status = (void *) &ppins[input_pins[1] - 1].oavalue;
       }
      break;
     case O_L3:
      if (input_pins[2])
       {
-       output[i].status = (void *) &ppins[input_pins[2]-1].oavalue;
+       output[i].status = (void *) &ppins[input_pins[2] - 1].oavalue;
       }
      break;
     case O_L4:
      if (input_pins[3])
       {
-       output[i].status = (void *) &ppins[input_pins[3]-1].oavalue;
+       output[i].status = (void *) &ppins[input_pins[3] - 1].oavalue;
       }
      break;
     case O_L5:
      if (input_pins[4])
       {
-       output[i].status = (void *) &ppins[input_pins[4]-1].oavalue;
+       output[i].status = (void *) &ppins[input_pins[4] - 1].oavalue;
       }
      break;
     case O_L6:
      if (input_pins[5])
       {
-       output[i].status = (void *) &ppins[input_pins[5]-1].oavalue;
+       output[i].status = (void *) &ppins[input_pins[5] - 1].oavalue;
       }
      break;
     case O_L7:
      if (input_pins[6])
       {
-       output[i].status = (void *) &ppins[input_pins[6]-1].oavalue;
+       output[i].status = (void *) &ppins[input_pins[6] - 1].oavalue;
       }
      break;
     case O_L8:
      if (input_pins[7])
       {
-       output[i].status = (void *) &ppins[input_pins[7]-1].oavalue;
+       output[i].status = (void *) &ppins[input_pins[7] - 1].oavalue;
       }
      break;
     }
@@ -315,6 +324,11 @@ cpart_leds::ConfigurePropertiesWindow(CPWindow * WProp)
    ((CCombo*) WProp->GetChildByName ("combo8"))->SetText (itoa (input_pins[7]) + "  " + spin);
   }
 
+ if (active)
+  ((CCombo*) WProp->GetChildByName ("combo9"))->SetText ("HIGH");
+ else
+  ((CCombo*) WProp->GetChildByName ("combo9"))->SetText ("LOW ");
+
 
  ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
  ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
@@ -333,8 +347,10 @@ cpart_leds::ReadPropertiesWindow(CPWindow * WProp)
  input_pins[5] = atoi (((CCombo*) WProp->GetChildByName ("combo6"))->GetText ());
  input_pins[6] = atoi (((CCombo*) WProp->GetChildByName ("combo7"))->GetText ());
  input_pins[7] = atoi (((CCombo*) WProp->GetChildByName ("combo8"))->GetText ());
+
+ active = (((CCombo*) WProp->GetChildByName ("combo9"))->GetText ().compare ("HIGH") == 0);
  
- RegisterRemoteControl();
+ RegisterRemoteControl ();
 }
 
 

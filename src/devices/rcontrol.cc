@@ -241,6 +241,7 @@ rcontrol_loop(void)
  int ret = 0;
  static unsigned char ss = 0; //seven segment 
  lxString stemp;
+ char lstemp[200];
  board * Board;
  part * Part;
  input_t * Input;
@@ -351,9 +352,9 @@ rcontrol_loop(void)
                else if ((Output->name[0] == 'D')&&(Output->name[1] == 'S'))
                 {
                  lcd_t * lcd = (lcd_t*) Output->status;
-                 stemp.Printf ("board.out[%02i] %s = |%.16s\n                       |%.16s\n",
+                 snprintf (lstemp,99,"board.out[%02i] %s = |%.16s\n                       |%.16s\n",
                                out, Output->name, &lcd->ddram_char[0], &lcd->ddram_char[40]);
-                 ret += sendtext ((const char *) stemp.c_str ());
+                 ret += sendtext (lstemp);      
                 }
                else if ((Output->name[0] == 'S')&&(Output->name[1] == 'S'))
                 {
@@ -459,9 +460,9 @@ rcontrol_loop(void)
                    else if ((Output->name[0] == 'D')&&(Output->name[1] == 'S'))
                     {
                      lcd_t * lcd = (lcd_t*) Output->status;
-                     stemp.Printf ("part[%02i].out[%02i] %s = |%.16s\n                          |%.16s\n",
+                     snprintf (lstemp,99,"part[%02i].out[%02i] %s = |%.16s\n                          |%.16s\n",
                                    pn, out, Output->name, &lcd->ddram_char[0], &lcd->ddram_char[40]);
-                     ret += sendtext ((const char *) stemp.c_str ());
+                     ret += sendtext (lstemp);
                     }
                    else if ((Output->name[0] == 'S')&&(Output->name[1] == 'S'))
                     {
@@ -594,9 +595,9 @@ rcontrol_loop(void)
              else if ((Output->name[0] == 'D')&&(Output->name[1] == 'S'))
               {
                lcd_t * lcd = (lcd_t*) Output->status;
-               stemp.Printf ("    board.out[%02i] %s = |%.16s\n                           |%.16s\n",
+               snprintf (lstemp, 199 , "    board.out[%02i] %s = |%.16s\n                           |%.16s\n",
                              i, Output->name, &lcd->ddram_char[0], &lcd->ddram_char[40]);
-               ret += sendtext ((const char *) stemp.c_str ());
+               ret += sendtext (lstemp);
               }
              else if ((Output->name[0] == 'S')&&(Output->name[1] == 'S'))
               {
@@ -670,9 +671,9 @@ rcontrol_loop(void)
                  else if ((Output->name[0] == 'D')&&(Output->name[1] == 'S'))
                   {
                    lcd_t * lcd = (lcd_t*) Output->status;
-                   stemp.Printf ("    part[%02i].out[%02i] %s = |%.16s\n                              |%.16s\n",
+                   snprintf (lstemp, 199, "    part[%02i].out[%02i] %s = |%.16s\n                              |%.16s\n",
                                  i, j, Output->name, &lcd->ddram_char[0], &lcd->ddram_char[40]);
-                   ret += sendtext ((const char *) stemp.c_str ());
+                   ret += sendtext (lstemp);
                   }
                  else if ((Output->name[0] == 'S')&&(Output->name[1] == 'S'))
                   {

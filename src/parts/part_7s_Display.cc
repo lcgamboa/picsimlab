@@ -43,6 +43,8 @@ cpart_7s_display::cpart_7s_display(unsigned x, unsigned y)
 {
  X = x;
  Y = y;
+ active = 1;
+
  ReadMaps ();
 
  lxImage image;
@@ -133,103 +135,103 @@ cpart_7s_display::Draw(void)
      canvas.SetFgColor (155, 155, 155);
      canvas.RotatedText ("VCC", output[i].x1, output[i].y2, 90.0);
      break;
-    case O_A1: canvas.SetColor (0, lm1[0], 0);
+    case O_A1: if(active){canvas.SetColor (0, lm1[0], 0);}else{canvas.SetColor (0, 285- lm1[0], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
-    case O_B1: canvas.SetColor (0, lm1[1], 0);
+    case O_B1: if(active){canvas.SetColor (0, lm1[1], 0);}else{canvas.SetColor (0, 285- lm1[1], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
-    case O_C1: canvas.SetColor (0, lm1[2], 0);
+    case O_C1: if(active){canvas.SetColor (0, lm1[2], 0);}else{canvas.SetColor (0, 285- lm1[2], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
-    case O_D1: canvas.SetColor (0, lm1[3], 0);
+    case O_D1: if(active){canvas.SetColor (0, lm1[3], 0);}else{canvas.SetColor (0, 285- lm1[3], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
-    case O_E1: canvas.SetColor (0, lm1[4], 0);
+    case O_E1: if(active){canvas.SetColor (0, lm1[4], 0);}else{canvas.SetColor (0, 285- lm1[4], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
-    case O_F1: canvas.SetColor (0, lm1[5], 0);
+    case O_F1: if(active){canvas.SetColor (0, lm1[5], 0);}else{canvas.SetColor (0, 285- lm1[5], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
-    case O_G1: canvas.SetColor (0, lm1[6], 0);
+    case O_G1: if(active){canvas.SetColor (0, lm1[6], 0);}else{canvas.SetColor (0, 285- lm1[6], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
-    case O_P1: canvas.SetColor (0, lm1[7], 0);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     break;
-
-    case O_A2: canvas.SetColor (0, lm2[0], 0);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     break;
-    case O_B2: canvas.SetColor (0, lm2[1], 0);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     break;
-    case O_C2: canvas.SetColor (0, lm2[2], 0);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     break;
-    case O_D2: canvas.SetColor (0, lm2[3], 0);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     break;
-    case O_E2: canvas.SetColor (0, lm2[4], 0);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     break;
-    case O_F2: canvas.SetColor (0, lm2[5], 0);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     break;
-    case O_G2: canvas.SetColor (0, lm2[6], 0);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     break;
-    case O_P2: canvas.SetColor (0, lm2[7], 0);
+    case O_P1: if(active){canvas.SetColor (0, lm1[7], 0);}else{canvas.SetColor (0, 285- lm1[7], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
 
-    case O_A3: canvas.SetColor (0, lm3[0], 0);
+    case O_A2: if(active){canvas.SetColor (0, lm2[0], 0);}else{canvas.SetColor (0, 285- lm2[0], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
-    case O_B3: canvas.SetColor (0, lm3[1], 0);
+    case O_B2: if(active){canvas.SetColor (0, lm2[1], 0);}else{canvas.SetColor (0, 285- lm2[1], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
-    case O_C3: canvas.SetColor (0, lm3[2], 0);
+    case O_C2: if(active){canvas.SetColor (0, lm2[2], 0);}else{canvas.SetColor (0, 285- lm2[2], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
-    case O_D3: canvas.SetColor (0, lm3[3], 0);
+    case O_D2: if(active){canvas.SetColor (0, lm2[3], 0);}else{canvas.SetColor (0, 285- lm2[3], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
-    case O_E3: canvas.SetColor (0, lm3[4], 0);
+    case O_E2: if(active){canvas.SetColor (0, lm2[4], 0);}else{canvas.SetColor (0, 285- lm2[4], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
-    case O_F3: canvas.SetColor (0, lm3[5], 0);
+    case O_F2: if(active){canvas.SetColor (0, lm2[5], 0);}else{canvas.SetColor (0, 285- lm2[5], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
-    case O_G3: canvas.SetColor (0, lm3[6], 0);
+    case O_G2: if(active){canvas.SetColor (0, lm2[6], 0);}else{canvas.SetColor (0, 285- lm2[6], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
-    case O_P3: canvas.SetColor (0, lm3[7], 0);
+    case O_P2: if(active){canvas.SetColor (0, lm2[7], 0);}else{canvas.SetColor (0, 285- lm2[7], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
 
-    case O_A4: canvas.SetColor (0, lm4[0], 0);
+    case O_A3: if(active){canvas.SetColor (0, lm3[0], 0);}else{canvas.SetColor (0, 285- lm3[0], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
-    case O_B4: canvas.SetColor (0, lm4[1], 0);
+    case O_B3: if(active){canvas.SetColor (0, lm3[1], 0);}else{canvas.SetColor (0, 285- lm3[1], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
-    case O_C4: canvas.SetColor (0, lm4[2], 0);
+    case O_C3: if(active){canvas.SetColor (0, lm3[2], 0);}else{canvas.SetColor (0, 285- lm3[2], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
-    case O_D4: canvas.SetColor (0, lm4[3], 0);
+    case O_D3: if(active){canvas.SetColor (0, lm3[3], 0);}else{canvas.SetColor (0, 285- lm3[3], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
-    case O_E4: canvas.SetColor (0, lm4[4], 0);
+    case O_E3: if(active){canvas.SetColor (0, lm3[4], 0);}else{canvas.SetColor (0, 285- lm3[4], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
-    case O_F4: canvas.SetColor (0, lm4[5], 0);
+    case O_F3: if(active){canvas.SetColor (0, lm3[5], 0);}else{canvas.SetColor (0, 285- lm3[5], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
-    case O_G4: canvas.SetColor (0, lm4[6], 0);
+    case O_G3: if(active){canvas.SetColor (0, lm3[6], 0);}else{canvas.SetColor (0, 285- lm3[6], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
-    case O_P4: canvas.SetColor (0, lm4[7], 0);
+    case O_P3: if(active){canvas.SetColor (0, lm3[7], 0);}else{canvas.SetColor (0, 285- lm3[7], 0);}
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     break;
+
+    case O_A4: if(active){canvas.SetColor (0, lm4[0], 0);}else{canvas.SetColor (0, 285- lm4[0], 0);}
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     break;
+    case O_B4: if(active){canvas.SetColor (0, lm4[1], 0);}else{canvas.SetColor (0, 285- lm4[1], 0);}
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     break;
+    case O_C4: if(active){canvas.SetColor (0, lm4[2], 0);}else{canvas.SetColor (0, 285- lm4[2], 0);}
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     break;
+    case O_D4: if(active){canvas.SetColor (0, lm4[3], 0);}else{canvas.SetColor (0, 285- lm4[3], 0);}
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     break;
+    case O_E4: if(active){canvas.SetColor (0, lm4[4], 0);}else{canvas.SetColor (0, 285- lm4[4], 0);}
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     break;
+    case O_F4: if(active){canvas.SetColor (0, lm4[5], 0);}else{canvas.SetColor (0, 285- lm4[5], 0);}
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     break;
+    case O_G4: if(active){canvas.SetColor (0, lm4[6], 0);}else{canvas.SetColor (0, 285- lm4[6], 0);}
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     break;
+    case O_P4: if(active){canvas.SetColor (0, lm4[7], 0);}else{canvas.SetColor (0, 285- lm4[7], 0);}
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
 
@@ -316,7 +318,10 @@ cpart_7s_display::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4], input_pins[5], input_pins[6], input_pins[7], input_pins[8], input_pins[9], input_pins[10], input_pins[11]);
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
+          input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4],
+          input_pins[5], input_pins[6], input_pins[7], input_pins[8], input_pins[9],
+          input_pins[10], input_pins[11], active);
 
  return prefs;
 };
@@ -324,7 +329,10 @@ cpart_7s_display::WritePreferences(void)
 void
 cpart_7s_display::ReadPreferences(lxString value)
 {
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7], &input_pins[8], &input_pins[9], &input_pins[10], &input_pins[11]);
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
+         &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4],
+         &input_pins[5], &input_pins[6], &input_pins[7], &input_pins[8], &input_pins[9],
+         &input_pins[10], &input_pins[11], &active);
 
  RegisterRemoteControl ();
 };
@@ -553,6 +561,12 @@ cpart_7s_display::ConfigurePropertiesWindow(CPWindow * WProp)
    ((CCombo*) WProp->GetChildByName ("combo12"))->SetText (itoa (input_pins[11]) + "  " + spin);
   }
 
+ if (active)
+  ((CCombo*) WProp->GetChildByName ("combo13"))->SetText ("HIGH");
+ else
+  ((CCombo*) WProp->GetChildByName ("combo13"))->SetText ("LOW ");
+
+
  ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
  ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
 
@@ -574,6 +588,8 @@ cpart_7s_display::ReadPropertiesWindow(CPWindow * WProp)
  input_pins[9] = atoi (((CCombo*) WProp->GetChildByName ("combo10"))->GetText ());
  input_pins[10] = atoi (((CCombo*) WProp->GetChildByName ("combo11"))->GetText ());
  input_pins[11] = atoi (((CCombo*) WProp->GetChildByName ("combo12"))->GetText ());
+
+ active = (((CCombo*) WProp->GetChildByName ("combo13"))->GetText ().compare ("HIGH") == 0);
 
  RegisterRemoteControl ();
 }

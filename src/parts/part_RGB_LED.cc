@@ -38,6 +38,8 @@ cpart_rgb_led::cpart_rgb_led(unsigned x, unsigned y)
 {
  X = x;
  Y = y;
+ active = 1;
+
  ReadMaps ();
 
  lxImage image;
@@ -101,6 +103,14 @@ cpart_rgb_led::Draw(void)
       color[1] = ppins[input_pins[1] - 1].oavalue;
      if (input_pins[2] > 0)
       color[2] = ppins[input_pins[2] - 1].oavalue;
+     
+     if(!active)
+      {
+        color[0]=285-color[0];
+        color[1]=285-color[1];
+        color[2]=285-color[2];
+      }
+     
      canvas.SetColor (color[0], color[1], color[2]);
      canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
      break;
@@ -139,7 +149,7 @@ cpart_rgb_led::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2]);
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], active);
 
  return prefs;
 }
@@ -147,7 +157,7 @@ cpart_rgb_led::WritePreferences(void)
 void
 cpart_rgb_led::ReadPreferences(lxString value)
 {
- sscanf (value.c_str (), "%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2]);
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &active);
  RegisterRemoteControl ();
 }
 
@@ -159,7 +169,7 @@ cpart_rgb_led::RegisterRemoteControl(void)
    switch (output[i].id)
     {
     case O_L1:
-       output[i].status = (void *) color;
+     output[i].status = (void *) color;
      break;
     }
   }
@@ -198,6 +208,12 @@ cpart_rgb_led::ConfigurePropertiesWindow(CPWindow * WProp)
    ((CCombo*) WProp->GetChildByName ("combo3"))->SetText (itoa (input_pins[2]) + "  " + spin);
   }
 
+ if (active)
+  ((CCombo*) WProp->GetChildByName ("combo4"))->SetText ("HIGH");
+ else
+  ((CCombo*) WProp->GetChildByName ("combo4"))->SetText ("LOW ");
+
+
 
  ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
  ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
@@ -211,6 +227,8 @@ cpart_rgb_led::ReadPropertiesWindow(CPWindow * WProp)
  input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
  input_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
  input_pins[2] = atoi (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ());
+
+ active = (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ().compare ("HIGH") == 0);
 
  RegisterRemoteControl ();
 }

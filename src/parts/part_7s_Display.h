@@ -53,6 +53,7 @@ public:
     unsigned short get_out_id(char * name);
 private:
     void RegisterRemoteControl(void);     
+    unsigned char active;     
     unsigned char input_pins[12];
     unsigned int lm1[8]; //luminosidade media display
     unsigned int lm2[8]; //luminosidade media display

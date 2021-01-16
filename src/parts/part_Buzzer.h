@@ -68,6 +68,7 @@ public:
 private:
     void RegisterRemoteControl(void);      
     void ChangeType(unsigned char tp);
+    unsigned char active; 
     unsigned char input_pins[1];
     lxaudio buzzer;
     long int mcount;

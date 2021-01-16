@@ -43,6 +43,8 @@ cpart_Buzzer::cpart_Buzzer(unsigned x, unsigned y)
 {
  X = x;
  Y = y;
+ active = 1;
+
  ReadMaps ();
 
  lxImage image;
@@ -122,9 +124,18 @@ cpart_Buzzer::Draw(void)
      canvas.SetFgColor (255, 255, 255);
      canvas.RotatedText ("GND", output[i].x1, output[i].y1, 0);
     case O_L1:
-     unsigned char r = 0;
+     unsigned char r = 30;
      if (input_pins[0] > 0)
-      r = ppins[input_pins[0] - 1].oavalue;
+      {
+       if (active)
+        {
+         r = ppins[input_pins[0] - 1].oavalue;
+        }
+       else
+        {
+         r = 285 - ppins[input_pins[0] - 1].oavalue;
+        }
+      }
      canvas.SetColor (r, 0, 0);
      canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
      break;
@@ -160,7 +171,7 @@ cpart_Buzzer::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu", input_pins[0], type);
+ sprintf (prefs, "%hhu,%hhu,%hhu", input_pins[0], type, active);
  return prefs;
 }
 
@@ -168,9 +179,9 @@ void
 cpart_Buzzer::ReadPreferences(lxString value)
 {
  unsigned char tp;
- sscanf (value.c_str (), "%hhu,%hhu", &input_pins[0], &tp);
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu", &input_pins[0], &tp, &active);
  ChangeType (tp);
- RegisterRemoteControl();
+ RegisterRemoteControl ();
 }
 
 void
@@ -184,7 +195,7 @@ cpart_Buzzer::RegisterRemoteControl(void)
     case O_L1:
      if (input_pins[0])
       {
-       output[i].status = (void *) &ppins[input_pins[0]-1].oavalue;
+       output[i].status = (void *) &ppins[input_pins[0] - 1].oavalue;
       }
      break;
     }
@@ -213,6 +224,12 @@ cpart_Buzzer::ConfigurePropertiesWindow(CPWindow * WProp)
    ((CCombo*) WProp->GetChildByName ("combo2"))->SetText ("Passive");
   }
 
+ if (active)
+  ((CCombo*) WProp->GetChildByName ("combo3"))->SetText ("HIGH");
+ else
+  ((CCombo*) WProp->GetChildByName ("combo3"))->SetText ("LOW ");
+
+
  ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
  ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
 
@@ -224,8 +241,11 @@ cpart_Buzzer::ReadPropertiesWindow(CPWindow * WProp)
 {
  input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
  unsigned char tp = ((CCombo*) WProp->GetChildByName ("combo2"))->GetText ().compare (lxT ("Active"));
+
+ active = (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ().compare ("HIGH") == 0);
+
  ChangeType (tp);
- RegisterRemoteControl();
+ RegisterRemoteControl ();
 }
 
 void
@@ -255,14 +275,20 @@ cpart_Buzzer::Process(void)
      if ((input_pins[0])&&(buffercount < buffersize))
       {
        /*       
-	      0.7837 z-1 - 0.7837 z-2
-	y1:  ----------------------
-	     1 - 1.196 z-1 + 0.2068 z-2
-	*/
+          0.7837 z-1 - 0.7837 z-2
+    y1:  ----------------------
+         1 - 1.196 z-1 + 0.2068 z-2
+        */
        in[2] = in[1];
        in[1] = in[0];
-       in[0] = ((2.0 * ppins[input_pins[0] - 1].value) - 1.0) * maxv * 0.5;
-
+       if (active)
+        {
+         in[0] = ((2.0 * ppins[input_pins[0] - 1].value) - 1.0) * maxv * 0.5;
+        }
+       else
+        {
+         in[0] = ((2.0 * (ppins[input_pins[0] - 1].value == 0)) - 1.0) * maxv * 0.5;
+        }
        out[2] = out[1];
        out[1] = out[0];
        out[0] = 0.7837 * in[1] - 0.7837 * in[2] + 1.196 * out[1] - 0.2068 * out[2];
@@ -283,13 +309,27 @@ cpart_Buzzer::PostProcess(void)
 
  if (type == ACTIVE)
   {
-   if ((ppins[input_pins[0] - 1].oavalue - 30) > 10)
+   if (active)
     {
-     buzzer.BeepStart ();
+     if (ppins[input_pins[0] - 1].oavalue > 40)
+      {
+       buzzer.BeepStart ();
+      }
+     else
+      {
+       buzzer.BeepStop ();
+      }
     }
    else
     {
-     buzzer.BeepStop ();
+     if ((285 - ppins[input_pins[0] - 1].oavalue) > 215)
+      {
+       buzzer.BeepStart ();
+      }
+     else
+      {
+       buzzer.BeepStop ();
+      }
     }
   }
  else
