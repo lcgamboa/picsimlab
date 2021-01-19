@@ -137,6 +137,8 @@ part::ReadInputMap(lxString fname)
         }
        strcpy (input[inputc].name, name);
        input[inputc].id = get_in_id (input[inputc].name);
+       input[inputc].cx = ((input[inputc].x2 - input[inputc].x1) / 2.0) + input[inputc].x1;
+       input[inputc].cy = ((input[inputc].y2 - input[inputc].y1) / 2.0) + input[inputc].y1;
        input[inputc].status = NULL;
        inputc++;
 
@@ -198,6 +200,8 @@ part::ReadOutputMap(lxString fname)
          //          output[outputc].lval=-1;
          strcpy (output[outputc].name, name);
          output[outputc].id = get_out_id (output[outputc].name);
+         output[outputc].cx = ((output[outputc].x2 - output[outputc].x1) / 2.0) + output[outputc].x1;
+         output[outputc].cy = ((output[outputc].y2 - output[outputc].y1) / 2.0) + output[outputc].y1;
          output[outputc].status = NULL;
          outputc++;
         }
@@ -208,10 +212,14 @@ part::ReadOutputMap(lxString fname)
 
          output[outputc].x1 = x1;
          output[outputc].y1 = y1;
+         output[outputc].x2 = 0;
+         output[outputc].y2 = 0;
          output[outputc].r = r;
          //          output[outputc].lval=-1;
          strcpy (output[outputc].name, name);
          output[outputc].id = get_out_id (output[outputc].name);
+         output[outputc].cx = output[outputc].x1;
+         output[outputc].cy = output[outputc].y1;
          output[outputc].status = NULL;
          outputc++;
         }
@@ -370,4 +378,28 @@ part::GetOutput(int n)
    return &output[n];
   }
  return NULL;
+}
+
+void
+part::RotateCoords(unsigned int * x, unsigned int *y)
+{
+ int temp;
+
+ switch (orientation)
+  {
+  case 1:
+   temp = *x;
+   *x = *y;
+   *y = Height - temp;
+   break;
+  case 2:
+   *x = Width - *x;
+   *y = Height - *y;
+   break;
+  case 3:
+   temp = *y;
+   *y = *x;
+   *x = Width - temp;
+   break;
+  }
 }

@@ -8,4 +8,6 @@
 <!-- #$AUTHOR:lcganmboa@yahoo.com       -->
 <area shape="rect" coords="29,207,49,219" href="LD_LPWR" />
 <area shape="rect" coords="29,232,49,244" href="LD_LED" />
+<area shape="rect" coords="113,143,145,175" href="PB_BUT" />
+<area shape="rect" coords="114,77,146,109" href="PB_RST" />
 </map>

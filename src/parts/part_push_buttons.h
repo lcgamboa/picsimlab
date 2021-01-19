@@ -24,44 +24,63 @@
    ######################################################################## */
 
 #ifndef PART_PUSH_BUTTONS_H
-#define	PART_PUSH_BUTTONS_H
+#define PART_PUSH_BUTTONS_H
 
 #include<lxrad.h>
 #include"part.h"
 
+class cpart_pbuttons : public part {
+public:
 
-class cpart_pbuttons:public part
-{
-   public:
-      lxString GetName(void){return lxT("Push buttons");};
-      lxString GetHelpURL(void){return lxT("Push_Buttons.html");};
-      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
-      cpart_pbuttons(unsigned x, unsigned y);
-      ~cpart_pbuttons(void);
-      void Draw(void);
-      void PreProcess(void);
-      lxString GetPictureFileName(void){return lxT("pbuttons/push_buttons.png");};
-      lxString GetInputMapFile(void){return lxT("pbuttons/push_buttons_i.map");};
-      lxString GetOutputMapFile(void){return lxT("pbuttons/push_buttons_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("pbuttons/push_buttons.lxrad");};
-      void Reset(void); 
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
-      void ConfigurePropertiesWindow(CPWindow *  WProp);
-      void ReadPropertiesWindow(CPWindow * WProp);
-      lxString WritePreferences(void);
-      void ReadPreferences(lxString value);
-      unsigned short get_in_id(char * name);
-      unsigned short get_out_id(char * name);
-    private:
-      void RegisterRemoteControl(void);  
-      unsigned char active;  
-      unsigned char output_pins[8];    
-      unsigned char output_value[8];
+    lxString GetName(void) {
+        return lxT("Push buttons");
+    };
+
+    lxString GetHelpURL(void) {
+        return lxT("Push_Buttons.html");
+    };
+
+    lxString GetAboutInfo(void) {
+        return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");
+    };
+    cpart_pbuttons(unsigned x, unsigned y);
+    ~cpart_pbuttons(void);
+    void Draw(void);
+    void PreProcess(void);
+
+    lxString GetPictureFileName(void) {
+        return lxT("pbuttons/push_buttons.png");
+    };
+
+    lxString GetInputMapFile(void) {
+        return lxT("pbuttons/push_buttons_i.map");
+    };
+
+    lxString GetOutputMapFile(void) {
+        return lxT("pbuttons/push_buttons_o.map");
+    };
+
+    lxString GetPropertiesWindowFile(void) {
+        return lxT("pbuttons/push_buttons.lxrad");
+    };
+    void Reset(void);
+    void EvMouseButtonPress(uint button, uint x, uint y, uint state);
+    void EvMouseButtonRelease(uint button, uint x, uint y, uint state);
+    void ConfigurePropertiesWindow(CPWindow * WProp);
+    void ReadPropertiesWindow(CPWindow * WProp);
+    lxString WritePreferences(void);
+    void ReadPreferences(lxString value);
+    unsigned short get_in_id(char * name);
+    unsigned short get_out_id(char * name);
+private:
+    void RegisterRemoteControl(void);
+    unsigned char active;
+    unsigned char output_pins[8];
+    unsigned char output_value[8];
 };
 
 
 
 
-#endif	/* PART_PUSH_BUTTONS_H */
+#endif /* PART_PUSH_BUTTONS_H */
 

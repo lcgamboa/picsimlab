@@ -32,29 +32,12 @@
 class cboard_PICGenios:public bsim_picsim
 {
   private:
-     unsigned char p_BT1; 
-     unsigned char p_BT2;  
-     unsigned char p_BT3; 
-     unsigned char p_BT4; 
-     unsigned char p_BT5; 
-     unsigned char p_BT6; 
-     unsigned char p_BT7;  
+     unsigned char p_BT[7]; 
+      
+     unsigned char p_KEY[12]; 
      
-     unsigned char p_KEY1; 
-     unsigned char p_KEY2; 
-     unsigned char p_KEY3; 
-     unsigned char p_KEY4; 
-     unsigned char p_KEY5; 
-     unsigned char p_KEY6; 
-     unsigned char p_KEY7; 
-     unsigned char p_KEY8; 
-     unsigned char p_KEY9; 
-     unsigned char p_KEY10; 
-     unsigned char p_KEY11; 
-     unsigned char p_KEY12; 
-     
-     unsigned char pot1;
-     unsigned char pot2;
+     unsigned char pot[2];
+     unsigned char active[2];
      
      int vtc;
      int vt;
@@ -92,10 +75,7 @@ class cboard_PICGenios:public bsim_picsim
     
     CGauge *gauge1;
     CGauge *gauge2;
-    CScroll *scroll1;
-    CScroll *scroll2;
-    CLabel *label1;
-    CLabel *label2;
+
     CLabel *label3;
     CLabel *label4;
     CLabel *label5;
@@ -119,6 +99,7 @@ class cboard_PICGenios:public bsim_picsim
       lxString GetOutputMapFile(void){return lxT("PICGenios/output.map");};
       void Reset(void);
       void MDumpMemory(const char * mfname);
+      void EvMouseMove(uint button, uint x, uint y, uint state);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
       void EvKeyPress(uint key, uint mask);

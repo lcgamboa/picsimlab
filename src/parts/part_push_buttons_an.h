@@ -57,6 +57,7 @@ class cpart_pbuttons_an:public part
       void RegisterRemoteControl(void);          
       unsigned char active;  
       unsigned char output_pins[1];    
+      unsigned char output_value_[8];
       float output_value;
 };
 

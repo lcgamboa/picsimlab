@@ -6,6 +6,7 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:Luis Claudio Gamboa Lopes    -->
+<area shape="circle" coords="331,124,14" href="PB_RST" />
 <area shape="rect" coords="67,525,113,580" href="I_PWR" />
 <area shape="rect" coords="16,238,48,293" href="SW_1" />
 <area shape="rect" coords="76,238,108,293" href="SW_2" />

@@ -35,20 +35,18 @@
 class cboard_Curiosity_HPC:public bsim_picsim
 {
     private:
-        unsigned char p_BT1; // Button S1
-        unsigned char p_BT2;  // Button S2
+        unsigned char p_BT[2]; // Button S1 and S2
         
         unsigned char pot1;
+        unsigned char active;
         
         unsigned char jmp[1];  //jumper
 
          //controls to be added in simulator window
-        CScroll *scroll1; //scroll for analog input AN0    
         CGauge *gauge1;   //gauge to show mean value of RA4
         CGauge *gauge2;   //gauge to show mean value of RA5
         CGauge *gauge3;   //gauge to show mean value of RA6
         CGauge *gauge4;   //gauge to show mean value of RA7
-        CLabel *label1;   //label of scroll AN4
         CLabel *label2;   //label of gauge RA4
         CLabel *label3;   //label of gauge RA5
         CLabel *label4;   //label of gauge RA6
@@ -80,6 +78,8 @@ class cboard_Curiosity_HPC:public bsim_picsim
       //Event on the board
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
       //Event on the board
+      void EvMouseMove(uint button, uint x, uint y, uint state);
+      //Event on the board
       void EvKeyPress(uint key, uint mask);
       //Event on the board
       void EvKeyRelease(uint key, uint mask);
@@ -96,7 +96,6 @@ class cboard_Curiosity_HPC:public bsim_picsim
       unsigned short get_out_id(char * name);
       //Set Serial port name
       void MSetSerial(const char * port);
-      void board_Event(CControl * control);
 };
 
 #endif  /* BOARD_Curiosity_HPC_H */

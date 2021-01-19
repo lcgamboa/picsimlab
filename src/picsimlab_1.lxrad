@@ -68,7 +68,7 @@
   <Visible type="bool">1</Visible>
   <Color type="String">#000001</Color>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
-  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseMove type="Event">TRUE</EvMouseMove>
   <EvMouseButtonPress type="Event">TRUE</EvMouseButtonPress>
   <EvMouseButtonRelease type="Event">TRUE</EvMouseButtonRelease>
   <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>

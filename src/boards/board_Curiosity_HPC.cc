@@ -34,18 +34,19 @@
 /* ids of inputs of input map*/
 enum
 {
- I_ICSP,//ICSP connector
+ I_POT1, //potentiometer
+ I_ICSP, //ICSP connector
  I_PWR, //Power button
  I_RST, //Reset button
- I_S1,  //S1 push button
- I_S2,  //S2 push button
- I_JMP, //JMP
- I_POT1 //potentiometer
+ I_S1, //S1 push button
+ I_S2, //S2 push button
+ I_JMP //JMP
 };
 
 /* ids of outputs of output map*/
 enum
 {
+ O_POT1, //potentiometer
  O_JMP, //JMP
  O_D2, //LED D2 
  O_D3, //LED D3 
@@ -53,6 +54,9 @@ enum
  O_D5, //LED D5 
  O_D6, //LED D6 
  O_D7, //LED D7 
+ O_RST, //Reset button
+ O_S1, //S1 push button
+ O_S2 //S2 push button 
 };
 
 //return the input ids numbers of names used in input map
@@ -86,6 +90,11 @@ cboard_Curiosity_HPC::get_out_id(char * name)
  if (strcmp (name, "LD_D6") == 0)return O_D6;
  if (strcmp (name, "LD_D7") == 0)return O_D7;
 
+ if (strcmp (name, "PB_S1") == 0)return O_S1;
+ if (strcmp (name, "PB_S2") == 0)return O_S2;
+ if (strcmp (name, "PO_1") == 0)return O_POT1;
+ if (strcmp (name, "PB_RST") == 0)return O_RST;
+
  printf ("Error output '%s' don't have a valid id! \n", name);
  return 1;
 }
@@ -100,22 +109,9 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void)
 
  pot1 = 100;
 
+ active = 0;
+
  //controls properties and creation
- //scroll1
- scroll1 = new CScroll ();
- scroll1->SetFOwner (&Window1);
- scroll1->SetName (lxT ("scroll1_p8"));
- scroll1->SetX (48);
- scroll1->SetY (200 - 120);
- scroll1->SetWidth (110);
- scroll1->SetHeight (22);
- scroll1->SetEnable (1);
- scroll1->SetVisible (1);
- scroll1->SetRange (200);
- scroll1->SetPosition (100);
- scroll1->SetType (4);
- scroll1->EvOnChangePosition = EVONCHANGEPOSITION & CPWindow1::board_Event;
- Window1.CreateChild (scroll1);
  //gauge1
  gauge1 = new CGauge ();
  gauge1->SetFOwner (&Window1);
@@ -172,19 +168,6 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void)
  gauge4->SetValue (0);
  gauge4->SetType (4);
  Window1.CreateChild (gauge4);
- //label1
- label1 = new CLabel ();
- label1->SetFOwner (&Window1);
- label1->SetName (lxT ("label1_p8"));
- label1->SetX (12);
- label1->SetY (200 - 120);
- label1->SetWidth (60);
- label1->SetHeight (20);
- label1->SetEnable (1);
- label1->SetVisible (1);
- label1->SetText (lxT ("AN4"));
- label1->SetAlign (1);
- Window1.CreateChild (label1);
  //label2
  label2 = new CLabel ();
  label2->SetFOwner (&Window1);
@@ -280,12 +263,10 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void)
 cboard_Curiosity_HPC::~cboard_Curiosity_HPC(void)
 {
  //controls destruction 
- Window1.DestroyChild (scroll1);
  Window1.DestroyChild (gauge1);
  Window1.DestroyChild (gauge2);
  Window1.DestroyChild (gauge3);
  Window1.DestroyChild (gauge4);
- Window1.DestroyChild (label1);
  Window1.DestroyChild (label2);
  Window1.DestroyChild (label3);
  Window1.DestroyChild (label4);
@@ -309,13 +290,13 @@ cboard_Curiosity_HPC::Reset(void)
 {
  pic_reset (1);
 
- p_BT1 = 1; //set push button  in default state (high) 
- p_BT2 = 1; //set push button  in default state (high) 
+ p_BT[0] = 1; //set push button  in default state (high) 
+ p_BT[1] = 1; //set push button  in default state (high) 
 
  //write button state to pic pin 25 (RB4)
- pic_set_pin (25, p_BT1);
+ pic_set_pin (25, p_BT[0]);
  //write button state to pic pin 16 (RC5)
- pic_set_pin (16, p_BT2);
+ pic_set_pin (16, p_BT[1]);
 
 
  //verify serial port state and refresh status bar  
@@ -345,10 +326,10 @@ cboard_Curiosity_HPC::RegisterRemoteControl(void)
    switch (input[i].id)
     {
     case I_S1:
-     input[i].status = &p_BT1;
+     input[i].status = &p_BT[0];
      break;
     case I_S2:
-     input[i].status = &p_BT2;
+     input[i].status = &p_BT[1];
      break;
     case I_JMP:
      input[i].status = &jmp[0];
@@ -449,7 +430,6 @@ cboard_Curiosity_HPC::ReadPreferences(char *name, char *value)
  if (!strcmp (name, "Curiosity_HPC_pot1"))
   {
    pot1 = atoi (value);
-   scroll1->SetPosition (pot1);
   }
 
 }
@@ -462,11 +442,11 @@ cboard_Curiosity_HPC::EvKeyPress(uint key, uint mask)
  //if keyboard key 1 is pressed then activate button (state=0)   
  if (key == '1')
   {
-   p_BT1 = 0;
+   p_BT[0] = 0;
   }
  if (key == '2')
   {
-   p_BT2 = 0;
+   p_BT[1] = 0;
   }
 
 }
@@ -479,11 +459,11 @@ cboard_Curiosity_HPC::EvKeyRelease(uint key, uint mask)
  //if keyboard key 1 is pressed then desactivate button (state=1)     
  if (key == '1')
   {
-   p_BT1 = 1;
+   p_BT[0] = 1;
   }
  if (key == '2')
   {
-   p_BT2 = 1;
+   p_BT[1] = 1;
   }
 }
 
@@ -515,8 +495,8 @@ cboard_Curiosity_HPC::EvMouseButtonPress(uint button, uint x, uint y, uint state
          Window1.Set_mcurun (0);
          Window1.Set_mcupwr (0);
          Reset ();
-         p_BT1 = 1;
-         p_BT2 = 1;
+         p_BT[0] = 1;
+         p_BT[1] = 1;
          Window1.statusbar1.SetField (0, lxT ("Stoped"));
         }
        else //if off turn on
@@ -534,24 +514,51 @@ cboard_Curiosity_HPC::EvMouseButtonPress(uint button, uint x, uint y, uint state
          Window1.Set_mcupwr (0);
          Window1.Set_mcurst (1);
         }
-       p_MCLR = 0;
+       p_RST = 0;
        break;
        //if event is over I_S1 area then activate button (state=0) 
       case I_S1:
-       p_BT1 = 0;
+       p_BT[0] = 0;
        break;
        //if event is over I_S2 area then activate button (state=0) 
       case I_S2:
-       p_BT2 = 0;
+       p_BT[1] = 0;
        break;
       case I_JMP:
        jmp[0] ^= 0x01;
        break;
-
+      case I_POT1:
+       {
+        active = 1;
+        pot1 = CalcAngle (i, x, y);
+       }
+       break;
       }
     }
   }
 
+}
+
+void
+cboard_Curiosity_HPC::EvMouseMove(uint button, uint x, uint y, uint state)
+{
+ int i;
+
+ for (i = 0; i < inputc; i++)
+  {
+   switch (input[i].id)
+    {
+    case I_POT1:
+     if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+      {
+       if (active)
+        {
+         pot1 = CalcAngle (i, x, y);
+        }
+      }
+     break;
+    }
+  }
 }
 
 //Event on the board
@@ -581,15 +588,20 @@ cboard_Curiosity_HPC::EvMouseButtonRelease(uint button, uint x, uint y, uint sta
            Reset ();
           }
         }
-       p_MCLR = 1;
+       p_RST = 1;
        break;
        //if event is over I_S1 area then deactivate button (state=1) 
       case I_S1:
-       p_BT1 = 1;
+       p_BT[0] = 1;
        break;
        //if event is over I_S2 area then deactivate button (state=1) 
       case I_S2:
-       p_BT2 = 1;
+       p_BT[1] = 1;
+       break;
+      case I_POT1:
+       {
+        active = 0;
+       }
        break;
       }
     }
@@ -634,12 +646,56 @@ cboard_Curiosity_HPC::Draw(CDraw *draw, double scale)
       case O_JMP:
        draw->Canvas.SetColor (150, 150, 150);
        break;
+      case O_S1:
+      case O_S2:
+      case O_RST:
+       draw->Canvas.SetColor (100, 100, 100);
+       break;
+      case O_POT1:
+       draw->Canvas.SetColor (66, 109, 246);
+       break;
       }
 
      //draw a rectangle
      draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
-     if (output[i].id == O_JMP)
+     if ((output[i].id == O_S1) || (output[i].id == O_S2))
+      {
+       if (p_BT[output[i].id - O_S1])
+        {
+         draw->Canvas.SetColor (15, 15, 15);
+        }
+       else
+        {
+         draw->Canvas.SetColor (55, 55, 55);
+        }
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 13);
+      }
+     else if (output[i].id == O_RST)
+      {
+       if (p_RST)
+        {
+         draw->Canvas.SetColor (15, 15, 15);
+        }
+       else
+        {
+         draw->Canvas.SetColor (55, 55, 55);
+        }
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 13);
+      }
+     else if (output[i].id == O_POT1)
+      {
+
+       draw->Canvas.SetColor (250, 250, 250);
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 15);
+
+       draw->Canvas.SetColor (150, 150, 150);
+       int x = -10 * sin ((5.585 * (pot1 / 200.0)) + 0.349);
+       int y = 10 * cos ((5.585 * (pot1 / 200.0)) + 0.349);
+       draw->Canvas.Circle (1, output[i].cx + x, output[i].cy + y, 3);
+
+      }
+     else if (output[i].id == O_JMP)
       {
        if (!jmp[0])
         {
@@ -719,9 +775,9 @@ cboard_Curiosity_HPC::Run_CPU(void)
 
     if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
      {
-      pic_set_pin (pic.mclr, p_MCLR);
-      pic_set_pin (25, p_BT1); //Set pin 25 (RB4) with button state 
-      pic_set_pin (16, p_BT2); //Set pin 16 (RC5) with button state
+      pic_set_pin (pic.mclr, p_RST);
+      pic_set_pin (25, p_BT[0]); //Set pin 25 (RB4) with button state 
+      pic_set_pin (16, p_BT[1]); //Set pin 16 (RC5) with button state
      }
 
     //verify if a breakpoint is reached if not run one instruction 
@@ -751,10 +807,5 @@ cboard_Curiosity_HPC::Run_CPU(void)
  if (use_spare)Window5.PostProcess ();
 }
 
-void
-cboard_Curiosity_HPC::board_Event(CControl * control)
-{
- pot1 = scroll1->GetPosition ();
-}
 
 board_init("Curiosity HPC", cboard_Curiosity_HPC);

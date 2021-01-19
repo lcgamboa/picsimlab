@@ -141,11 +141,11 @@ cpart_pot::Draw(void)
      canvas.SetColor (50, 50, 50);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetColor (250, 250, 250);
-     snprintf (val, 10, "%4.2f", 5.0 * (148 - values[output[i].id - O_PO1]) / 148.0);
-     canvas.Rectangle (1, output[i].x1 + 6, output[i].y1 + values[output[i].id - O_PO1], 20, 10);
+     snprintf (val, 10, "%4.2f", 5.0 * (200 - values[output[i].id - O_PO1]) / 200.0);
+     canvas.Rectangle (1, output[i].x1 + 6, output[i].y1 + values[output[i].id - O_PO1]/1.35, 20, 10);
      canvas.SetColor (150, 0, 0);
      canvas.SetFont (font_p);
-     canvas.RotatedText (val, output[i].x1 + 6, output[i].y1 + values[output[i].id - O_PO1], 0);
+     canvas.RotatedText (val, output[i].x1 + 6, output[i].y1 + values[output[i].id - O_PO1]/1.35, 0);
      break;
      break;
     }
@@ -160,10 +160,10 @@ cpart_pot::Draw(void)
 void
 cpart_pot::PreProcess(void)
 {
- Window5.SetAPin (input_pins[0], 5.0 * (148 - values[0]) / 148.0);
- Window5.SetAPin (input_pins[1], 5.0 * (148 - values[1]) / 148.0);
- Window5.SetAPin (input_pins[2], 5.0 * (148 - values[2]) / 148.0);
- Window5.SetAPin (input_pins[3], 5.0 * (148 - values[3]) / 148.0);
+ Window5.SetAPin (input_pins[0], 5.0 * (200 - values[0]) / 200.0);
+ Window5.SetAPin (input_pins[1], 5.0 * (200 - values[1]) / 200.0);
+ Window5.SetAPin (input_pins[2], 5.0 * (200 - values[2]) / 200.0);
+ Window5.SetAPin (input_pins[3], 5.0 * (200 - values[3]) / 200.0);
 }
 
 void
@@ -171,45 +171,32 @@ cpart_pot::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
 
  int i;
- unsigned int l;
 
  for (i = 0; i < inputc; i++)
   {
    if (PointInside (x, y, input[i]))
     {
-     l = (input[i].y2 - input[i].y1 - 10);
-     switch (orientation)
-      {
-      case 1:
-       y = Height - x;
-       break;
-      case 2:
-       y = Height - y;
-       break;
-      case 3:
-       y = x;
-       break;
-      }
+     RotateCoords (&x, &y);
      switch (input[i].id)
       {
       case I_PO1:
-       values[0] = y - input[i].y1;
-       if (values[0] >= l)values[0] = l;
+       values[0] = (y - input[i].y1)*1.35;
+       if (values[0] > 200)values[0] = 200;
        active[0] = 1;
        break;
       case I_PO2:
-       values[1] = y - input[i].y1;
-       if (values[1] >= l)values[1] = l;
+       values[1] = (y - input[i].y1)*1.35;
+       if (values[1] > 200)values[1] = 200;
        active[1] = 1;
        break;
       case I_PO3:
-       values[2] = y - input[i].y1;
-       if (values[2] >= l)values[2] = l;
+       values[2] = (y - input[i].y1)*1.35;
+       if (values[2] > 200)values[2] = 200;
        active[2] = 1;
        break;
       case I_PO4:
-       values[3] = y - input[i].y1;
-       if (values[3] >= l)values[3] = l;
+       values[3] = (y - input[i].y1)*1.35;
+       if (values[3] > 200)values[3] = 200;
        active[3] = 1;
        break;
       }
@@ -251,31 +238,17 @@ cpart_pot::EvMouseMove(uint button, uint x, uint y, uint state)
 {
 
  int i;
- unsigned int l;
 
  for (i = 0; i < inputc; i++)
   {
    if (PointInside (x, y, input[i]))
     {
-     l = (input[i].y2 - input[i].y1) - 10;
-
-     switch (orientation)
-      {
-      case 1:
-       y = Height - x;
-       break;
-      case 2:
-       y = Height - y;
-       break;
-      case 3:
-       y = x;
-       break;
-      }
+     RotateCoords (&x, &y);
 
      if (active[input[i].id - I_PO1])
       {
-       values[input[i].id - I_PO1] = y - input[i].y1;
-       if (values[input[i].id - I_PO1] >= l)values[input[i].id - I_PO1] = l;
+       values[input[i].id - I_PO1] = (y - input[i].y1)*1.35;
+       if (values[input[i].id - I_PO1] > 200)values[input[i].id - I_PO1] = 200;
       }
     }
   }

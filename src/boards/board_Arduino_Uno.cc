@@ -34,16 +34,17 @@ enum
 {
  I_ICSP, //ICSP connector
  I_PWR, //Power button
- I_RST  //Reset button
+ I_RST //Reset button
 };
 
 /* ids of outputs of output map*/
 enum
 {
- O_L,  //LED 
+ O_L, //LED 
  O_RX, //LED on PD0
  O_TX, //LED on PD1
- O_ON  //Power LED
+ O_ON, //Power LED
+ O_RST //Reset button
 };
 //return the input ids numbers of names used in input map
 
@@ -68,6 +69,7 @@ cboard_Arduino_Uno::get_out_id(char * name)
  if (strcmp (name, "LD_TX") == 0)return O_TX;
  if (strcmp (name, "LD_RX") == 0)return O_RX;
  if (strcmp (name, "LD_ON") == 0)return O_ON;
+ if (strcmp (name, "PB_RST") == 0)return O_RST;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
@@ -280,7 +282,7 @@ cboard_Arduino_Uno::Reset(void)
  //write switch state to pic pin 20 (RD1)
  //pic_set_pin(20,p_BT2); 
  avr_reset (avr);
- avr->data[UCSR0B]=0x00; //FIX the simavr reset TX enabled
+ avr->data[UCSR0B] = 0x00; //FIX the simavr reset TX enabled
 
 
  //verify serial port state and refresh status bar  
@@ -292,7 +294,7 @@ cboard_Arduino_Uno::Reset(void)
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +
                                lxString ().Format ("%4.1f", fabs ((100.0 * serialexbaud - 100.0 *
-                                                                 serialbaud) / serialexbaud)) + lxT ("%)"));
+                                                                   serialbaud) / serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
@@ -305,8 +307,8 @@ cboard_Arduino_Uno::Reset(void)
    }
   */
  if (use_spare)Window5.Reset ();
- 
- RegisterRemoteControl();
+
+ RegisterRemoteControl ();
 }
 
 void
@@ -337,7 +339,7 @@ cboard_Arduino_Uno::RefreshStatus(void)
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (":") + itoa (serialbaud) + lxT ("(") +
                                lxString ().Format ("%4.1f", fabs ((100.0 * serialexbaud - 100.0 *
-                                                                 serialbaud) / serialexbaud)) + lxT ("%)"));
+                                                                   serialbaud) / serialexbaud)) + lxT ("%)"));
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
@@ -446,7 +448,7 @@ cboard_Arduino_Uno::EvMouseButtonPress(uint button, uint x, uint y, uint state)
          Window1.Set_mcupwr (0);
          Window1.Set_mcurst (1);
         }
-       p_MCLR = 0;
+       p_RST = 0;
        break;
       }
     }
@@ -479,7 +481,7 @@ cboard_Arduino_Uno::EvMouseButtonRelease(uint button, uint x, uint y, uint state
          Reset ();
 
         }
-       p_MCLR = 1;
+       p_RST = 1;
        break;
 
       }
@@ -518,6 +520,9 @@ cboard_Arduino_Uno::Draw(CDraw *draw, double scale)
       case O_L:
        draw->Canvas.SetColor (0, pins[18].oavalue, 0);
        break;
+      case O_RST:
+       draw->Canvas.SetColor (100, 100, 100);
+       break;
       default:
        draw->Canvas.SetColor (0, 0, 0);
        break;
@@ -525,6 +530,19 @@ cboard_Arduino_Uno::Draw(CDraw *draw, double scale)
 
      draw->Canvas.Rectangle (1, output[i].x1, output[i].y1,
                              output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
+     if (output[i].id == O_RST)
+      {
+       if (p_RST)
+        {
+         draw->Canvas.SetColor (15, 15, 15);
+        }
+       else
+        {
+         draw->Canvas.SetColor (55, 55, 55);
+        }
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
+      }
     }
   }
 
@@ -583,22 +601,22 @@ cboard_Arduino_Uno::Run_CPU(void)
 
     //verify if a breakpoint is reached if not run one instruction   
     if (avr_debug_type || (!mplabxd_testbp ()))
-    {
-     if (twostep)
-      {
-       twostep = 0; //NOP   
-      }
-     else
-      {
-       cycle_start = avr->cycle;
-       avr_run (avr);
-       if ((avr->cycle - cycle_start) > 1)
-        {
-         twostep = 1;
-        }
-      }
-    }
-      
+     {
+      if (twostep)
+       {
+        twostep = 0; //NOP   
+       }
+      else
+       {
+        cycle_start = avr->cycle;
+        avr_run (avr);
+        if ((avr->cycle - cycle_start) > 1)
+         {
+          twostep = 1;
+         }
+       }
+     }
+
 
     UpdateHardware ();
 

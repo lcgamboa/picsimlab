@@ -13,4 +13,7 @@
 <area shape="rect" coords="353,295,359,310" href="LD_D6" />
 <area shape="rect" coords="364,295,370,310" href="LD_D5" />
 <area shape="rect" coords="341,295,347,310" href="LD_D7" />
+<area shape="rect" coords="66,294,95,315" href="PB_S1" />
+<area shape="rect" coords="389,259,439,307" href="PO_1" />
+<area shape="rect" coords="52,129,82,149" href="PB_RST" />
 </map>

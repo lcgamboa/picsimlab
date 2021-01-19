@@ -82,4 +82,26 @@
 <area shape="rect" coords="721,374,730,403" href="DP_20" />
 <area shape="rect" coords="527,53,713,240" href="MT_VT" />
 <area shape="rect" coords="472,312,522,322" href="JP_1" />
+<area shape="rect" coords="382,405,413,434" href="PB_RB0" />
+<area shape="rect" coords="382,363,412,391" href="PB_RB1" />
+<area shape="rect" coords="381,324,412,352" href="PB_RB2" />
+<area shape="rect" coords="200,484,232,513" href="PB_RB3" />
+<area shape="rect" coords="200,535,232,564" href="PB_RB4" />
+<area shape="rect" coords="202,589,234,618" href="PB_RB5" />
+<area shape="rect" coords="201,640,233,669" href="PB_RA5" />
+<area shape="rect" coords="25,482,56,511" href="KB_TC1" />
+<area shape="rect" coords="86,482,116,511" href="KB_TC2" />
+<area shape="rect" coords="144,484,175,512" href="KB_TC3" />
+<area shape="rect" coords="27,534,58,563" href="KB_TC4" />
+<area shape="rect" coords="87,533,117,562" href="KB_TC5" />
+<area shape="rect" coords="143,533,174,562" href="KB_TC6" />
+<area shape="rect" coords="28,588,59,615" href="KB_TC7" />
+<area shape="rect" coords="87,589,117,616" href="KB_TC8" />
+<area shape="rect" coords="144,590,175,617" href="KB_TC9" />
+<area shape="rect" coords="28,640,59,669" href="KB_TC*" />
+<area shape="rect" coords="85,640,117,670" href="KB_TC0" />
+<area shape="rect" coords="143,641,176,670" href="KB_TC#" />
+<area shape="rect" coords="383,497,434,549" href="PO_2" />
+<area shape="rect" coords="454,496,507,548" href="PO_1" />
+<area shape="rect" coords="742,627,769,653" href="PB_RST" />
 </map>

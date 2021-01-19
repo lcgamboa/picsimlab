@@ -35,6 +35,7 @@
 /* outputs */
 enum
 {
+ O_POT1,
  O_RB0,
  O_RB1,
  O_RB2,
@@ -79,12 +80,17 @@ enum
  O_JP4,
  O_JP5,
  O_JP6,
- I_POT1
+ O_RST,
+ O_BRB0,
+ O_BRB1,
+ O_BRB2,
+ O_BRB3
 };
 
 /*inputs*/
 enum
 {
+ I_POT1,
  I_RST,
  I_PWR,
  I_ICSP,
@@ -141,21 +147,8 @@ cboard_McLab2::cboard_McLab2(void)
 
  pot1 = 100;
 
- //scroll1
- scroll1 = new CScroll ();
- scroll1->SetFOwner (&Window1);
- scroll1->SetName (lxT ("scroll1_p3"));
- scroll1->SetX (12);
- scroll1->SetY (133);
- scroll1->SetWidth (140);
- scroll1->SetHeight (22);
- scroll1->SetEnable (1);
- scroll1->SetVisible (1);
- scroll1->SetRange (200);
- scroll1->SetPosition (100);
- scroll1->SetType (4);
- scroll1->EvOnChangePosition = EVONCHANGEPOSITION & CPWindow1::board_Event;
- Window1.CreateChild (scroll1);
+ active = 0;
+
  //gauge1
  gauge1 = new CGauge ();
  gauge1->SetFOwner (&Window1);
@@ -184,19 +177,6 @@ cboard_McLab2::cboard_McLab2(void)
  gauge2->SetValue (0);
  gauge2->SetType (4);
  Window1.CreateChild (gauge2);
- //label1
- label1 = new CLabel ();
- label1->SetFOwner (&Window1);
- label1->SetName (lxT ("label1_p3"));
- label1->SetX (12);
- label1->SetY (109);
- label1->SetWidth (60);
- label1->SetHeight (20);
- label1->SetEnable (1);
- label1->SetVisible (1);
- label1->SetText (lxT ("Pot. P2"));
- label1->SetAlign (1);
- Window1.CreateChild (label1);
  //label2
  label2 = new CLabel ();
  label2->SetFOwner (&Window1);
@@ -264,10 +244,8 @@ cboard_McLab2::~cboard_McLab2(void)
  buzzer.End ();
  mi2c_end (&mi2c);
 
- Window1.DestroyChild (scroll1);
  Window1.DestroyChild (gauge1);
  Window1.DestroyChild (gauge2);
- Window1.DestroyChild (label1);
  Window1.DestroyChild (label2);
  Window1.DestroyChild (label3);
  Window1.DestroyChild (label4);
@@ -390,12 +368,62 @@ cboard_McLab2::Draw(CDraw *draw, double scale)
       case O_LCD: draw->Canvas.SetColor (0, 90 * Window1.Get_mcupwr () + 40, 0);
        break;
 
+      case O_BRB0:
+      case O_BRB1:
+      case O_BRB2:
+      case O_BRB3:
+      case O_RST:
+       draw->Canvas.SetColor (100, 100, 100);
+       break;
+
+      case O_POT1:
+       draw->Canvas.SetColor (66, 109, 246);
+       break;
+
       default: if ((output[i].name[0] == 'J')&&(output[i].name[1] == 'P')) draw->Canvas.SetColor (150, 150, 150);
        break;
       }
 
      if (output[i].id != O_LCD)
       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
+
+     if ((output[i].id >= O_BRB0)&&(output[i].id <= O_BRB3))
+      {
+       if (p_BT[output[i].id - O_BRB0])
+        {
+         draw->Canvas.SetColor (15, 15, 15);
+        }
+       else
+        {
+         draw->Canvas.SetColor (55, 55, 55);
+        }
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 19);
+      }
+     else if (output[i].id == O_RST)
+      {
+       if (p_RST)
+        {
+         draw->Canvas.SetColor (15, 15, 15);
+        }
+       else
+        {
+         draw->Canvas.SetColor (55, 55, 55);
+        }
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
+      }
+     else if (output[i].id == O_POT1)
+      {
+
+       draw->Canvas.SetColor (250, 250, 250);
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 15);
+
+       draw->Canvas.SetColor (150, 150, 150);
+       int x = -10 * sin ((5.585 * (pot1 / 200.0)) + 0.349);
+       int y = 10 * cos ((5.585 * (pot1 / 200.0)) + 0.349);
+       draw->Canvas.Circle (1, output[i].cx + x, output[i].cy + y, 3);
+
+      }
 
      //draw lcd text 
 
@@ -420,7 +448,7 @@ cboard_McLab2::Draw(CDraw *draw, double scale)
          draw->Canvas.Rectangle (1, output[i].x1 + ((int) ((output[i].x2 - output[i].x1)*0.35)), output[i].y1, (int) ((output[i].x2 - output[i].x1)*0.65), output[i].y2 - output[i].y1);
          draw->Canvas.SetColor (220, 220, 0);
          draw->Canvas.Circle (1, output[i].x1 + (int) ((output[i].x2 - output[i].x1)*0.20), output[i].y1 + ((output[i].y2 - output[i].y1) / 2), 3);
-        };
+        }
       }
 
     }
@@ -443,9 +471,9 @@ cboard_McLab2::Draw(CDraw *draw, double scale)
      if (output[i].id == O_LPWR)draw->Canvas.SetColor (0, 255 * Window1.Get_mcupwr (), 0);
 
      draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
-    };
+    }
 
-  };
+  }
  //end draw
 
  draw->Canvas.End ();
@@ -492,7 +520,7 @@ cboard_McLab2::Draw(CDraw *draw, double scale)
  //referencia
  pic_set_apin (5, 2.5);
 
-};
+}
 
 void
 cboard_McLab2::Run_CPU(void)
@@ -530,12 +558,12 @@ cboard_McLab2::Run_CPU(void)
 
     if (j >= JUMPSTEPS)
      {
-      pic_set_pin (pic.mclr, p_MCLR);
+      pic_set_pin (pic.mclr, p_RST);
 
-      pic_set_pin (33, p_BT1);
-      pic_set_pin (34, p_BT2);
-      pic_set_pin (35, p_BT3);
-      pic_set_pin (36, p_BT4);
+      pic_set_pin (33, p_BT[0]);
+      pic_set_pin (34, p_BT[1]);
+      pic_set_pin (35, p_BT[2]);
+      pic_set_pin (36, p_BT[3]);
 
       rpmc++;
       if (rpmc > rpmstp)
@@ -674,16 +702,16 @@ cboard_McLab2::Reset(void)
  mi2c_rst (&mi2c);
 
 
- p_BT1 = 1;
- p_BT2 = 1;
- p_BT3 = 1;
- p_BT4 = 1;
+ p_BT[0] = 1;
+ p_BT[1] = 1;
+ p_BT[2] = 1;
+ p_BT[3] = 1;
 
 
- pic_set_pin (33, p_BT1);
- pic_set_pin (34, p_BT2);
- pic_set_pin (35, p_BT3);
- pic_set_pin (36, p_BT4);
+ pic_set_pin (33, p_BT[0]);
+ pic_set_pin (34, p_BT[1]);
+ pic_set_pin (35, p_BT[2]);
+ pic_set_pin (36, p_BT[3]);
 
 #ifndef _WIN_
  if (pic.serial[0].serialfd > 0)
@@ -714,16 +742,16 @@ cboard_McLab2::RegisterRemoteControl(void)
    switch (input[i].id)
     {
     case I_RB0:
-     input[i].status = &p_BT1;
+     input[i].status = &p_BT[0];
      break;
     case I_RB1:
-     input[i].status = &p_BT2;
+     input[i].status = &p_BT[1];
      break;
     case I_RB2:
-     input[i].status = &p_BT3;
+     input[i].status = &p_BT[2];
      break;
     case I_RB3:
-     input[i].status = &p_BT4;
+     input[i].status = &p_BT[3];
      break;
     case I_POT1:
      input[i].status = &pot1;
@@ -911,10 +939,10 @@ cboard_McLab2::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           Window1.Set_mcupwr (0);
           Reset ();
 
-          p_BT1 = 0;
-          p_BT2 = 0;
-          p_BT3 = 0;
-          p_BT4 = 0;
+          p_BT[0] = 0;
+          p_BT[1] = 0;
+          p_BT[2] = 0;
+          p_BT[3] = 0;
           Window1.statusbar1.SetField (0, lxT ("Stoped"));
          }
         else
@@ -936,29 +964,35 @@ cboard_McLab2::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           Window1.Set_mcupwr (0);
           Window1.Set_mcurst (1);
          }
-        p_MCLR = 0;
+        p_RST = 0;
        }
        break;
 
 
       case I_RB0:
        {
-        p_BT1 = 0;
+        p_BT[0] = 0;
        }
        break;
       case I_RB1:
        {
-        p_BT2 = 0;
+        p_BT[1] = 0;
        }
        break;
       case I_RB2:
        {
-        p_BT3 = 0;
+        p_BT[2] = 0;
        }
        break;
       case I_RB3:
        {
-        p_BT4 = 0;
+        p_BT[3] = 0;
+       }
+       break;
+      case I_POT1:
+       {
+        active = 1;
+        pot1 = CalcAngle (i, x, y);
        }
        break;
       case I_VIEW:
@@ -1011,7 +1045,29 @@ cboard_McLab2::EvMouseButtonPress(uint button, uint x, uint y, uint state)
   }
 
 
-};
+}
+
+void
+cboard_McLab2::EvMouseMove(uint button, uint x, uint y, uint state)
+{
+ int i;
+
+ for (i = 0; i < inputc; i++)
+  {
+   switch (input[i].id)
+    {
+    case I_POT1:
+     if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+      {
+       if (active)
+        {
+         pot1 = CalcAngle (i, x, y);
+        }
+      }
+     break;
+    }
+  }
+}
 
 void
 cboard_McLab2::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
@@ -1036,81 +1092,85 @@ cboard_McLab2::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
             Reset ();
            }
          }
-        p_MCLR = 1;
+        p_RST = 1;
        }
        break;
 
       case I_RB0:
        {
-        p_BT1 = 1;
+        p_BT[0] = 1;
        }
        break;
       case I_RB1:
        {
-        p_BT2 = 1;
+        p_BT[1] = 1;
        }
        break;
       case I_RB2:
        {
-        p_BT3 = 1;
+        p_BT[2] = 1;
        }
        break;
       case I_RB3:
        {
-        p_BT4 = 1;
+        p_BT[3] = 1;
        }
        break;
-
+      case I_POT1:
+       {
+        active = 0;
+       }
+       break;
       }
     }
   }
 
-};
+}
 
 void
 cboard_McLab2::EvKeyPress(uint key, uint mask)
 {
  if (key == '1')
   {
-   p_BT1 = 0;
+   p_BT[0] = 0;
   }
  if (key == '2')
   {
-   p_BT2 = 0;
+   p_BT[1] = 0;
   }
  if (key == '3')
   {
-   p_BT3 = 0;
+   p_BT[2] = 0;
   }
  if (key == '4')
   {
-   p_BT4 = 0;
+   p_BT[3] = 0;
   }
-};
+}
 
 void
 cboard_McLab2::EvKeyRelease(uint key, uint mask)
 {
  if (key == '1')
   {
-   p_BT1 = 1;
+   p_BT[0] = 1;
   }
 
  if (key == '2')
   {
-   p_BT2 = 1;
+   p_BT[1] = 1;
   }
 
  if (key == '3')
   {
-   p_BT3 = 1;
+   p_BT[2] = 1;
   }
 
  if (key == '4')
   {
-   p_BT4 = 1;
+   p_BT[3] = 1;
   }
-};
+}
 
 void
 cboard_McLab2::EvOnShow(void)
@@ -1144,7 +1204,7 @@ cboard_McLab2::get_in_id(char * name)
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
-};
+}
 
 unsigned short
 cboard_McLab2::get_out_id(char * name)
@@ -1201,10 +1261,18 @@ cboard_McLab2::get_out_id(char * name)
  if (strcmp (name, "JP_5") == 0)return O_JP5;
  if (strcmp (name, "JP_6") == 0)return O_JP6;
 
+ if (strcmp (name, "PB_RB0") == 0)return O_BRB0;
+ if (strcmp (name, "PB_RB1") == 0)return O_BRB1;
+ if (strcmp (name, "PB_RB2") == 0)return O_BRB2;
+ if (strcmp (name, "PB_RB3") == 0)return O_BRB3;
+
+ if (strcmp (name, "PO_2") == 0)return O_POT1;
+
+ if (strcmp (name, "PB_RST") == 0)return O_RST;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
-};
+}
 
 void
 cboard_McLab2::RefreshStatus(void)
@@ -1220,7 +1288,7 @@ cboard_McLab2::RefreshStatus(void)
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
-};
+}
 
 void
 cboard_McLab2::WritePreferences(void)
@@ -1265,15 +1333,9 @@ cboard_McLab2::ReadPreferences(char *name, char *value)
  if (!strcmp (name, "McLab2_pot1"))
   {
    pot1 = atoi (value);
-   scroll1->SetPosition (pot1);
   }
 }
 
-void
-cboard_McLab2::board_Event(CControl * control)
-{
- pot1 = scroll1->GetPosition ();
-}
 
 board_init("McLab2", cboard_McLab2);
 

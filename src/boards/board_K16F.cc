@@ -35,6 +35,7 @@
 /* outputs */
 enum
 {
+ O_RST,
  O_RA1,
  O_RA2,
  O_RA6,
@@ -153,7 +154,9 @@ cboard_K16F::Draw(CDraw *draw, double scale)
       {
       case O_LCD: draw->Canvas.SetColor (0, 90 * Window1.Get_mcupwr () + 40, 0);
        break;
-
+      case O_RST:
+       draw->Canvas.SetColor (100, 100, 100);
+       break;
       }
 
 
@@ -166,7 +169,18 @@ cboard_K16F::Draw(CDraw *draw, double scale)
       {
        lcd_draw (&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, Window1.Get_mcupwr ());
       }
-
+     else if (output[i].id == O_RST)
+      {
+       if (p_RST)
+        {
+         draw->Canvas.SetColor (15, 15, 15);
+        }
+       else
+        {
+         draw->Canvas.SetColor (55, 55, 55);
+        }
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
+      }
     }
    else
     {
@@ -232,7 +246,7 @@ cboard_K16F::Run_CPU(void)
    {
     if (j >= JUMPSTEPS)
      {
-      pic_set_pin (pic.mclr, p_MCLR);
+      pic_set_pin (pic.mclr, p_RST);
 
       pic_set_pin (18, 0);
       pic_set_pin (1, 0);
@@ -506,7 +520,7 @@ cboard_K16F::RegisterRemoteControl(void)
      break;
     case I_TCT:
      input[i].status = &p_KEY12;
-     break; 
+     break;
     }
   }
 
@@ -527,7 +541,7 @@ cboard_K16F::RegisterRemoteControl(void)
      output[i].status = &pic.pins[15].oavalue;
      break;
     case O_LCD:
-     output[i].status = &lcd; 
+     output[i].status = &lcd;
      break;
     }
   }
@@ -581,7 +595,7 @@ cboard_K16F::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           Window1.Set_mcupwr (0);
           Window1.Set_mcurst (1);
          }
-        p_MCLR = 0;
+        p_RST = 0;
        }
        break;
 
@@ -724,7 +738,7 @@ cboard_K16F::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
             Reset ();
            }
          }
-        p_MCLR = 1;
+        p_RST = 1;
        }
        break;
 
@@ -950,7 +964,7 @@ cboard_K16F::get_out_id(char * name)
  if (strcmp (name, "LD_RA7") == 0)return O_RA7;
  if (strcmp (name, "LD_LPWR") == 0)return O_LPWR;
  if (strcmp (name, "DS_LCD") == 0)return O_LCD;
-
+ if (strcmp (name, "PB_RST") == 0)return O_RST;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;

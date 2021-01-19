@@ -8,5 +8,5 @@
 <!-- #$AUTHOR:lcganmboa@yahoo.com    -->
 <area shape="rect" coords="309,151,383,213" href="PG_ICSP" />
 <area shape="rect" coords="309,21,363,60" href="SW_PWR" />
-<area shape="circle" coords="331,124,14" href="PB_RST" />
+<area shape="rect" coords="314,108,346,140" href="PB_RST" />
 </map>

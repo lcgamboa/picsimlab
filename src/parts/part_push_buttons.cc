@@ -187,11 +187,29 @@ cpart_pbuttons::Draw(void)
      else
       canvas.RotatedText (Window5.GetPinName (output_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
      break;
+    case O_B1:
+    case O_B2:
+    case O_B3:
+    case O_B4:
+    case O_B5:
+    case O_B6:
+    case O_B7:
+    case O_B8:
+     canvas.SetColor (100, 100, 100);
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     if (output_value[output[i].id - O_B1] == active)
+      {
+       canvas.SetColor (55, 55, 55);
+      }
+     else
+      {
+       canvas.SetColor (15, 15, 15);
+      }
+     canvas.Circle (1, output[i].cx, output[i].cy, 10);
+     break;
     }
   }
-
  canvas.End ();
-
 }
 
 void

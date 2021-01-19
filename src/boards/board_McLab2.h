@@ -31,12 +31,10 @@
 class cboard_McLab2:public bsim_picsim
 {
    private:
-     unsigned char p_BT1; 
-     unsigned char p_BT2;  
-     unsigned char p_BT3; 
-     unsigned char p_BT4; 
+     unsigned char p_BT[4]; 
      
      unsigned char pot1;
+     unsigned char active;
      
      lcd_t lcd;
 
@@ -66,8 +64,6 @@ class cboard_McLab2:public bsim_picsim
     
     CGauge *gauge1;
     CGauge *gauge2;
-    CScroll *scroll1;
-    CLabel *label1;
     CLabel *label2;
     CLabel *label3;
     CLabel *label4;
@@ -91,6 +87,7 @@ class cboard_McLab2:public bsim_picsim
       void MDumpMemory(const char * mfname);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
+      void EvMouseMove(uint button, uint x, uint y, uint state);
       void EvKeyPress(uint key, uint mask);
       void EvKeyRelease(uint key, uint mask);
       void EvOnShow(void);
@@ -99,7 +96,6 @@ class cboard_McLab2:public bsim_picsim
       void ReadPreferences(char *name,char *value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
-      void board_Event(CControl * control);
 };
 
 

@@ -10,4 +10,5 @@
 <area shape="rect" coords="181,94,191,101" href="LD_TX" />
 <area shape="rect" coords="181,107,191,114" href="LD_RX" />
 <area shape="rect" coords="333,93,343,100" href="LD_ON" />
+<area shape="rect" coords="64,16,92,44" href="PB_RST" />
 </map>

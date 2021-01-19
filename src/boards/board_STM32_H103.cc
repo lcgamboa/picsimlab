@@ -43,6 +43,8 @@ enum
 {
  O_LPWR, //Power LED
  O_LED, //LED on PC13 output
+ O_BUT, //User button
+ O_RST //Reset button
 };
 //return the input ids numbers of names used in input map
 
@@ -66,7 +68,8 @@ cboard_STM32_H103::get_out_id(char * name)
 
  if (strcmp (name, "LD_LED") == 0)return O_LED;
  if (strcmp (name, "LD_LPWR") == 0)return O_LPWR;
-
+ if (strcmp (name, "PB_BUT") == 0)return O_BUT;
+ if (strcmp (name, "PB_RST") == 0)return O_RST;
 
  printf ("Error output '%s' don't have a valid id! \n", name);
  return 1;
@@ -97,8 +100,8 @@ cboard_STM32_H103::Reset(void)
  Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE));
 
  if (use_spare)Window5.Reset ();
- 
- RegisterRemoteControl();
+
+ RegisterRemoteControl ();
 }
 
 void
@@ -223,7 +226,7 @@ cboard_STM32_H103::EvMouseButtonPress(uint button, uint x, uint y, uint state)
         }
         */
        MReset (-1);
-       p_MCLR = 0;
+       p_RST = 0;
        break;
       case I_BUT:
        p_BUT = 1;
@@ -262,7 +265,7 @@ cboard_STM32_H103::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
                    }
           */
         }
-       p_MCLR = 1;
+       p_RST = 1;
        break;
       case I_BUT:
        p_BUT = 0;
@@ -296,13 +299,42 @@ cboard_STM32_H103::Draw(CDraw *draw, double scale)
       {
       case O_LED: //White using pc12 mean value 
        draw->Canvas.SetColor (0, pins[52].oavalue, 0);
+       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
        break;
       case O_LPWR: //Blue using mcupwr value
        draw->Canvas.SetColor (225 * Window1.Get_mcupwr () + 30, 0, 0);
+       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
+       break;
+      case O_BUT:
+       draw->Canvas.SetColor (100, 100, 100);
+       draw->Canvas.Rectangle (1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1, output[i].y2 - output[i].y1 - 1);
+       if (p_BUT)
+        {
+         draw->Canvas.SetColor (55, 55, 55);
+        }
+       else
+        {
+         draw->Canvas.SetColor (15, 15, 15);
+        }
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
+       break;
+      case O_RST:
+       draw->Canvas.SetColor (100, 100, 100);
+       draw->Canvas.Rectangle (1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1, output[i].y2 - output[i].y1 - 1);
+       if (p_RST)
+        {
+         draw->Canvas.SetColor (15, 15, 15);
+        }
+       else
+        {
+         draw->Canvas.SetColor (55, 55, 55);
+        }
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
        break;
       }
 
-     draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
     }
 
   }

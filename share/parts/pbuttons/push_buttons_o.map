@@ -14,13 +14,12 @@
 <area shape="rect" coords="307,65,356,84" href="PN_6" />
 <area shape="rect" coords="367,65,416,84" href="PN_7" />
 <area shape="rect" coords="426,65,475,84" href="PN_8" />
-<area shape="rect" coords="485,18,494,55" href="JP_1" />
-<area shape="circle" coords="32,33,11" href="PB_1" />
-<area shape="circle" coords="91,33,11" href="PB_2" />
-<area shape="circle" coords="150,34,11" href="PB_3" />
-<area shape="circle" coords="211,34,11" href="PB_4" />
-<area shape="circle" coords="269,35,11" href="PB_5" />
-<area shape="circle" coords="330,35,11" href="PB_6" />
-<area shape="circle" coords="390,35,11" href="PB_7" />
-<area shape="circle" coords="448,36,11" href="PB_8" />
+<area shape="rect" coords="16,16,48,47" href="PB_1" />
+<area shape="rect" coords="76,16,108,47" href="PB_2" />
+<area shape="rect" coords="135,17,167,48" href="PB_3" />
+<area shape="rect" coords="195,17,227,48" href="PB_4" />
+<area shape="rect" coords="253,18,285,49" href="PB_5" />
+<area shape="rect" coords="314,18,346,49" href="PB_6" />
+<area shape="rect" coords="374,18,406,49" href="PB_7" />
+<area shape="rect" coords="433,19,465,50" href="PB_8" />
 </map>

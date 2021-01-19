@@ -31,13 +31,13 @@
 /* outputs */
 enum
 {
- O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_B1, O_B2, O_B3, O_B4, O_B5, O_B6, O_B7, O_B8, O_J1
+ O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_B1, O_B2, O_B3, O_B4, O_B5, O_B6, O_J1
 };
 
 /* inputs */
 enum
 {
- I_B1, I_B2, I_B3, I_B4, I_B5, I_B6, I_B7, I_B8, I_J1
+ I_B1, I_B2, I_B3, I_B4, I_B5, I_B6, I_J1
 };
 
 cpart_gamepad::cpart_gamepad(unsigned x, unsigned y)
@@ -71,8 +71,6 @@ cpart_gamepad::cpart_gamepad(unsigned x, unsigned y)
  output_value[3] = 1;
  output_value[4] = 1;
  output_value[5] = 1;
- output_value[6] = 1;
- output_value[7] = 1;
 
  active = 0;
 
@@ -117,12 +115,6 @@ cpart_gamepad::RegisterRemoteControl(void)
      break;
     case I_B6:
      input[i].status = &output_value[5];
-     break;
-    case I_B7:
-     input[i].status = &output_value[6];
-     break;
-    case I_B8:
-     input[i].status = &output_value[7];
      break;
     case I_J1:
      input[i].status = value;
@@ -176,13 +168,45 @@ cpart_gamepad::Draw(void)
      //canvas.Rectangle (1,output[i].x1+valuex,output[i].y1+valuey,10,10);
      canvas.Circle (1, output[i].x1 + value[0] + 10, output[i].y1 + value[1] + 10, 8);
      break;
+    case O_B5:
+    case O_B6:
+     if (output_value[output[i].id - O_B1])
+      {
+       canvas.SetColor (15, 15, 15);
+      }
+     else
+      {
+       canvas.SetColor (55, 55, 55);
+      }
+     canvas.Circle (1, output[i].cx, output[i].cy, 11);
+     break;
+    case O_B1:
+    case O_B3:
+     if (output_value[output[i].id - O_B1])
+      {
+       canvas.SetColor (250, 224, 0);
+      }
+     else
+      {
+       canvas.SetColor (0x9c, 0x94, 0x47);
+      }
+     canvas.Circle (1, output[i].cx, output[i].cy, 25);
+     break;
+    case O_B2:
+    case O_B4:
+     if (output_value[output[i].id - O_B1])
+      {
+       canvas.SetColor (3, 114, 212);
+      }
+     else
+      {
+       canvas.SetColor (64, 87, 106);
+      }
+     canvas.Circle (1, output[i].cx, output[i].cy, 25);
+     break;
     }
-
-
-  };
-
+  }
  canvas.End ();
-
 }
 
 void
@@ -203,7 +227,6 @@ void
 cpart_gamepad::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
  int i;
- int temp;
 
  for (i = 0; i < inputc; i++)
   {
@@ -225,23 +248,8 @@ cpart_gamepad::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       case I_B6: output_value[5] = 0;
        break;
       case I_J1:
-       switch (orientation)
-        {
-        case 1:
-         temp = x;
-         x = y;
-         y = Height - temp;
-         break;
-        case 2:
-         x = Width - x;
-         y = Height - y;
-         break;
-        case 3:
-         temp = y;
-         y = x;
-         x = Width - temp;
-         break;
-        }
+       RotateCoords (&x, &y);
+
        float cx = ((float) fabs (x - input[i].x1)) - jr;
        float cy = ((float) fabs (y - input[i].y1)) - jr;
 
@@ -283,8 +291,6 @@ cpart_gamepad::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
        break;
       case I_B6: output_value[5] = 1;
        break;
-      case I_B7: output_value[6] = 1;
-       break;
       case I_J1: active = 0;
        value[0] = jr;
        value[1] = jr;
@@ -299,7 +305,6 @@ cpart_gamepad::EvMouseMove(uint button, uint x, uint y, uint state)
 {
 
  int i;
- int temp;
 
  for (i = 0; i < inputc; i++)
   {
@@ -310,23 +315,7 @@ cpart_gamepad::EvMouseMove(uint button, uint x, uint y, uint state)
       case I_J1:
        if (active)
         {
-         switch (orientation)
-          {
-          case 1:
-           temp = x;
-           x = y;
-           y = Height - temp;
-           break;
-          case 2:
-           x = Width - x;
-           y = Height - y;
-           break;
-          case 3:
-           temp = y;
-           y = x;
-           x = Width - temp;
-           break;
-          }
+         RotateCoords (&x, &y);
 
          float cx = ((float) fabs (x - input[i].x1)) - jr;
          float cy = ((float) fabs (y - input[i].y1)) - jr;
@@ -395,10 +384,6 @@ cpart_gamepad::EvKeyPress(uint key, uint mask)
   case 'o':
    output_value[5] = 0;
    break;
-  case 'R':
-  case 'r':
-   output_value[6] = 0;
-   break;
   }
 }
 
@@ -442,10 +427,6 @@ cpart_gamepad::EvKeyRelease(uint key, uint mask)
   case 'o':
    output_value[5] = 1;
    break;
-  case 'R':
-  case 'r':
-   output_value[6] = 1;
-   break;
   }
 }
 
@@ -484,8 +465,6 @@ cpart_gamepad::get_out_id(char * name)
  if (strcmp (name, "PB_4") == 0)return O_B4;
  if (strcmp (name, "PB_5") == 0)return O_B5;
  if (strcmp (name, "PB_6") == 0)return O_B6;
- if (strcmp (name, "PB_7") == 0)return O_B7;
- if (strcmp (name, "PB_8") == 0)return O_B8;
 
  if (strcmp (name, "AJ_1") == 0)return O_J1;
 

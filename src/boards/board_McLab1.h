@@ -32,14 +32,10 @@
 class cboard_McLab1:public bsim_picsim
 {
   private:
-     unsigned char p_BT1; 
-     unsigned char p_BT2;  
-     unsigned char p_BT3; 
-     unsigned char p_BT4;     
+     unsigned char p_BT[4]; 
      unsigned char jmp[1];
      unsigned int lm1[18]; //luminosidade media display
      unsigned int lm2[18]; //luminosidade media display
-     
      
      CGauge *gauge1;
      CLabel *label1;

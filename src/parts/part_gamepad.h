@@ -58,7 +58,7 @@ class cpart_gamepad:public part
     private:
       void RegisterRemoteControl(void);          
       unsigned char output_pins[8];    
-      unsigned char output_value[8];
+      unsigned char output_value[6];
       unsigned char value[2];
       unsigned char active;
       

@@ -41,7 +41,8 @@ enum
 enum
 {
  O_LPWR, //Power LED
- O_MP
+ O_MP, //uController name
+ O_RST //Reset button    
 };
 //return the input ids numbers of names used in input map
 
@@ -64,6 +65,7 @@ cboard_Breadboard::get_out_id(char * name)
 
  if (strcmp (name, "LD_LPWR") == 0)return O_LPWR;
  if (strcmp (name, "MP_CPU") == 0)return O_MP;
+ if (strcmp (name, "PB_RST") == 0)return O_RST;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
@@ -120,7 +122,7 @@ cboard_Breadboard::Reset(void)
    break;
   case _AVR:
    avr_reset (avr);
-   avr->data[UCSR0B]=0x00; //FIX the simavr reset TX enabled
+   avr->data[UCSR0B] = 0x00; //FIX the simavr reset TX enabled
 
    //verify serial port state and refresh status bar  
 #ifndef _WIN_
@@ -286,7 +288,7 @@ cboard_Breadboard::EvMouseButtonPress(uint button, uint x, uint y, uint state)
          Window1.Set_mcupwr (0);
          Window1.Set_mcurst (1);
         }
-       p_MCLR = 0;
+       p_RST = 0;
        break;
       }
     }
@@ -318,7 +320,7 @@ cboard_Breadboard::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
          Reset ();
 
         }
-       p_MCLR = 1;
+       p_RST = 1;
        break;
       }
     }
@@ -336,6 +338,8 @@ cboard_Breadboard::Draw(CDraw *draw, double scale)
  lxRect rec;
  lxSize ps;
 
+ lxFont font ((MGetPinCount () >= 100) ? 9 : ((MGetPinCount () > 14) ? 12 : 10)
+                  , lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
 
  draw->Canvas.Init (scale, scale); //initialize draw context
 
@@ -353,10 +357,6 @@ cboard_Breadboard::Draw(CDraw *draw, double scale)
      break;
     case O_MP:
 
-     lxFont font (
-                  (MGetPinCount () >= 100) ? 9 : ((MGetPinCount () > 14) ? 12 : 10)
-                  , lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
-
      draw->Canvas.SetFont (font);
 
      ps = micbmp->GetSize ();
@@ -368,6 +368,20 @@ cboard_Breadboard::Draw(CDraw *draw, double scale)
      rec.width = ps.GetWidth ();
      rec.height = ps.GetHeight ();
      draw->Canvas.TextOnRect (Proc, rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
+     break;
+    case O_RST:
+     draw->Canvas.SetColor (100, 100, 100);
+     draw->Canvas.Rectangle (1, output[i].x1, output[i].y1,
+                             output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     if (p_RST)
+      {
+       draw->Canvas.SetColor (15, 15, 15);
+      }
+     else
+      {
+       draw->Canvas.SetColor (55, 55, 55);
+      }
+     draw->Canvas.Circle (1, output[i].cx, output[i].cy, 10);
      break;
     }
 
@@ -411,7 +425,7 @@ cboard_Breadboard::Run_CPU(void)
 
       if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
        {
-        pic_set_pin (pic.mclr, p_MCLR);
+        pic_set_pin (pic.mclr, p_RST);
        }
 
       //verify if a breakpoint is reached if not run one instruction 
@@ -616,11 +630,11 @@ cboard_Breadboard::MInit(const char * processor, const char * fname, float freq)
  lxImage image;
 
 
- if (!image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) +lxT(".png")))
+ if (!image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".png")))
   {
    image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic6.png"));
    printf ("picsimlab: IC package with %i pins not found!\n", MGetPinCount ());
-   printf ("picsimlab: %s not found!\n",(const char *)(Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT(".png")).c_str());
+   printf ("picsimlab: %s not found!\n", (const char *) (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".png")).c_str ());
   }
 
  if (micbmp) delete micbmp;

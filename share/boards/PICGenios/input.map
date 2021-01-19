@@ -15,7 +15,6 @@
 <area shape="rect" coords="202,589,234,618" href="PB_RB5" />
 <area shape="rect" coords="201,640,233,669" href="PB_RA5" />
 <area shape="rect" coords="846,713,894,772" href="SW_PWR" />
-<area shape="rect" coords="262,709,381,771" href="PG_ICSP" />
 <area shape="rect" coords="25,482,56,511" href="KB_TC1" />
 <area shape="rect" coords="86,482,116,511" href="KB_TC2" />
 <area shape="rect" coords="144,484,175,512" href="KB_TC3" />
@@ -28,6 +27,9 @@
 <area shape="rect" coords="28,640,59,669" href="KB_TC*" />
 <area shape="rect" coords="85,640,117,670" href="KB_TC0" />
 <area shape="rect" coords="143,641,176,670" href="KB_TC#" />
+<area shape="rect" coords="383,497,434,549" href="PO_2" />
+<area shape="rect" coords="454,496,507,548" href="PO_1" />
+<area shape="rect" coords="262,709,381,771" href="PG_ICSP" />
 <area shape="rect" coords="488,374,497,403" href="DP_01" />
 <area shape="rect" coords="499,374,508,403" href="DP_02" />
 <area shape="rect" coords="510,374,519,403" href="DP_03" />
@@ -50,6 +52,4 @@
 <area shape="rect" coords="721,374,730,403" href="DP_20" />
 <area shape="rect" coords="472,312,522,322" href="JP_1" />
 <area shape="rect" coords="549,478,594,514" href="MD_VIEW" />
-<area shape="rect" coords="383,497,434,549" href="PO_1" />
-<area shape="rect" coords="454,496,507,548" href="PO_2" />
 </map>

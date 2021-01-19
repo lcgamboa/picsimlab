@@ -89,6 +89,7 @@ CPWindow1::CPWindow1(void)
   draw1.SetVisible(1);
   draw1.SetColor(lxT("#000001"));
   draw1.SetPopupMenu(NULL);
+  draw1.EvMouseMove=EVMOUSEMOVE & CPWindow1::draw1_EvMouseMove;
   draw1.EvMouseButtonPress=EVMOUSEBUTTONPRESS & CPWindow1::draw1_EvMouseButtonPress;
   draw1.EvMouseButtonRelease=EVMOUSEBUTTONRELEASE & CPWindow1::draw1_EvMouseButtonRelease;
   draw1.EvKeyboardPress=EVKEYBOARDPRESS & CPWindow1::draw1_EvKeyboardPress;

@@ -36,6 +36,9 @@
 /* outputs */
 enum
 {
+ O_RST, O_BRB0, O_BRB1, O_BRB2, O_BRB3, O_BRB4, O_BRB5, O_BRA5,
+ O_TC1, O_TC2, O_TC3, O_TC4, O_TC5, O_TC6, O_TC7, O_TC8, O_TC9,
+ O_TCA, O_TC0, O_TCT, O_POT1, O_POT2,
  O_RB0, O_RB1, O_RB2, O_RB3, O_RB4, O_RB5, O_RB6, O_RB7, O_LPWR, O_LCD,
  O_A1, O_B1, O_C1, O_D1, O_E1, O_F1, O_G1, O_P1,
  O_A2, O_B2, O_C2, O_D2, O_E2, O_F2, O_G2, O_P2,
@@ -44,19 +47,20 @@ enum
  O_RD0, O_RD1, O_RD2, O_RD3, O_RD4, O_RD5, O_RD6, O_RD7,
  O_RL1, O_RL2, O_D01, O_D02, O_D03, O_D04, O_D05, O_D06, O_D07, O_D08,
  O_D09, O_D10, O_D11, O_D12, O_D13, O_D14, O_D15, O_D16, O_D17, O_D18,
- O_D19, O_D20, O_VT, O_PRG, O_RUN, O_JP1
+ O_D19, O_D20, O_VT, O_PRG, O_RUN, O_JP1,
 };
 
 /*inputs*/
 
 enum
 {
- I_RST, I_RA1, I_RA2, I_RA3, I_RA4, I_RA5, I_PWR, I_ICSP,
- I_RB0, I_RB1, I_RB2, I_RB3, I_RB4, I_RB5,
+ I_RB0, I_RB1, I_RB2, I_RB3, I_RB4, I_RB5, I_RA5,
  I_TC1, I_TC2, I_TC3, I_TC4, I_TC5, I_TC6, I_TC7, I_TC8, I_TC9,
- I_TCA, I_TC0, I_TCT, I_D01, I_D02, I_D03, I_D04, I_D05, I_D06, I_D07,
+ I_TCA, I_TC0, I_TCT, I_POT1, I_POT2,
+ I_RST, I_PWR, I_ICSP,
+ I_D01, I_D02, I_D03, I_D04, I_D05, I_D06, I_D07,
  I_D08, I_D09, I_D10, I_D11, I_D12, I_D13, I_D14, I_D15, I_D16, I_D17,
- I_D18, I_D19, I_D20, I_JP1, I_VIEW, I_POT1, I_POT2
+ I_D18, I_D19, I_D20, I_JP1, I_VIEW
 };
 
 
@@ -72,8 +76,11 @@ cboard_PICGenios::cboard_PICGenios(void)
  vtc = 0;
  vt = 0;
 
- pot1 = 100;
- pot2 = 100;
+ pot[0] = 100;
+ pot[1] = 100;
+
+ active[0] = 0;
+ active[1] = 0;
 
  vp1in = 2.5;
  vp2in = 2.5;
@@ -117,38 +124,6 @@ cboard_PICGenios::cboard_PICGenios(void)
 
  buzzer.Init ();
 
- //scroll1
- scroll1 = new CScroll ();
- scroll1->SetFOwner (&Window1);
- scroll1->SetName (lxT ("scroll1_p4"));
- scroll1->SetX (12);
- scroll1->SetY (193 + 20);
- scroll1->SetWidth (140);
- scroll1->SetHeight (22);
- scroll1->SetEnable (1);
- scroll1->SetVisible (1);
- scroll1->SetRange (200);
- scroll1->SetPosition (100);
- scroll1->SetType (4);
- scroll1->SetTag (1);
- scroll1->EvOnChangePosition = EVONCHANGEPOSITION & CPWindow1::board_Event;
- Window1.CreateChild (scroll1);
- //scroll2
- scroll2 = new CScroll ();
- scroll2->SetFOwner (&Window1);
- scroll2->SetName (lxT ("scroll2_p4"));
- scroll2->SetX (12);
- scroll2->SetY (141 + 20);
- scroll2->SetWidth (140);
- scroll2->SetHeight (22);
- scroll2->SetEnable (1);
- scroll2->SetVisible (1);
- scroll2->SetRange (200);
- scroll2->SetPosition (100);
- scroll2->SetType (4);
- scroll2->SetTag (2);
- scroll2->EvOnChangePosition = EVONCHANGEPOSITION & CPWindow1::board_Event;
- Window1.CreateChild (scroll2);
  //gauge1
  gauge1 = new CGauge ();
  gauge1->SetFOwner (&Window1);
@@ -177,32 +152,6 @@ cboard_PICGenios::cboard_PICGenios(void)
  gauge2->SetValue (0);
  gauge2->SetType (4);
  Window1.CreateChild (gauge2);
- //label1
- label1 = new CLabel ();
- label1->SetFOwner (&Window1);
- label1->SetName (lxT ("label1_p4"));
- label1->SetX (12);
- label1->SetY (117 + 20);
- label1->SetWidth (60);
- label1->SetHeight (20);
- label1->SetEnable (1);
- label1->SetVisible (1);
- label1->SetText (lxT ("Pot. P1"));
- label1->SetAlign (1);
- Window1.CreateChild (label1);
- //label2
- label2 = new CLabel ();
- label2->SetFOwner (&Window1);
- label2->SetName (lxT ("label2_p4"));
- label2->SetX (12);
- label2->SetY (169 + 20);
- label2->SetWidth (60);
- label2->SetHeight (20);
- label2->SetEnable (1);
- label2->SetVisible (1);
- label2->SetText (lxT ("Pot. P2"));
- label2->SetAlign (1);
- Window1.CreateChild (label2);
  //label3
  label3 = new CLabel ();
  label3->SetFOwner (&Window1);
@@ -308,12 +257,9 @@ cboard_PICGenios::~cboard_PICGenios(void)
  mi2c_end (&mi2c);
  rtc2_end (&rtc2);
 
- Window1.DestroyChild (scroll1);
- Window1.DestroyChild (scroll2);
+
  Window1.DestroyChild (gauge1);
  Window1.DestroyChild (gauge2);
- Window1.DestroyChild (label1);
- Window1.DestroyChild (label2);
  Window1.DestroyChild (label3);
  Window1.DestroyChild (label4);
  Window1.DestroyChild (label5);
@@ -461,10 +407,62 @@ cboard_PICGenios::Draw(CDraw *draw, double scale)
         draw->Canvas.SetColor (0, 15, 0);
        break;
 
-
       case O_LCD: draw->Canvas.SetColor (0, 90 * Window1.Get_mcupwr () + 40, 0);
        break;
+      case O_BRB0:
+      case O_BRB1:
+      case O_BRB2:
+      case O_BRB3:
+      case O_BRB4:
+      case O_BRB5:
+      case O_BRA5:
+       draw->Canvas.SetColor (100, 100, 100);
+       draw->Canvas.Rectangle (1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1, output[i].y2 - output[i].y1 - 1);
+       if (p_BT[output[i].id - O_BRB0])
+        {
+         draw->Canvas.SetColor (15, 15, 15);
+        }
+       else
+        {
+         draw->Canvas.SetColor (55, 55, 55);
+        }
+       break;
+      case O_RST:
+       draw->Canvas.SetColor (100, 100, 100);
+       draw->Canvas.Rectangle (1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1, output[i].y2 - output[i].y1 - 1);
+       if (p_RST)
+        {
+         draw->Canvas.SetColor (15, 15, 15);
+        }
+       else
+        {
+         draw->Canvas.SetColor (55, 55, 55);
+        }
+       break;
+      case O_TC1:
+      case O_TC2:
+      case O_TC3:
+      case O_TC4:
+      case O_TC5:
+      case O_TC6:
+      case O_TC7:
+      case O_TC8:
+      case O_TC9:
+      case O_TCA:
+      case O_TC0:
+      case O_TCT:
+       draw->Canvas.SetColor (100, 100, 100);
+       draw->Canvas.Rectangle (1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1, output[i].y2 - output[i].y1 - 1);
 
+       if (p_BT[output[i].id - O_BRB0])
+        {
+         draw->Canvas.SetColor (55, 55, 55);
+        }
+       else
+        {
+         draw->Canvas.SetColor (15, 15, 15);
+        }
+       break;
       default:
        if ((output[i].name[0] == 'D')&&(output[i].name[1] == 'P'))
         {
@@ -474,8 +472,32 @@ cboard_PICGenios::Draw(CDraw *draw, double scale)
       }
      if (output[i].id == O_JP1) draw->Canvas.SetColor (150, 150, 150);
 
-     if ((output[i].id != O_LCD)&&(output[i].id != O_VT))
-      draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     if ((output[i].id >= O_BRB0)&&(output[i].id <= O_TCT))
+      {
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
+      }
+     else if (output[i].id == O_RST)
+      {
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
+      }
+     else if ((output[i].id == O_POT1) || (output[i].id == O_POT2))
+      {
+       draw->Canvas.SetColor (66, 109, 246);
+       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
+       draw->Canvas.SetColor (250, 250, 250);
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 15);
+
+       draw->Canvas.SetColor (150, 150, 150);
+       int x = -10 * sin ((5.585 * (pot[output[i].id - O_POT1] / 200.0)) + 0.349);
+       int y = 10 * cos ((5.585 * (pot[output[i].id - O_POT1] / 200.0)) + 0.349);
+       draw->Canvas.Circle (1, output[i].cx + x, output[i].cy + y, 3);
+
+      }
+     else if ((output[i].id != O_LCD)&&(output[i].id != O_VT))
+      {
+       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+      }
 
 
      //draw cooler 
@@ -546,7 +568,7 @@ cboard_PICGenios::Draw(CDraw *draw, double scale)
          draw->Canvas.Rectangle (1, output[i].x1 + ((int) ((output[i].x2 - output[i].x1)*0.35)), output[i].y1, (int) ((output[i].x2 - output[i].x1)*0.65), output[i].y2 - output[i].y1);
          draw->Canvas.SetColor (220, 220, 0);
          draw->Canvas.Circle (1, output[i].x1 + (int) ((output[i].x2 - output[i].x1)*0.20), output[i].y1 + ((output[i].y2 - output[i].y1) / 2), 3);
-        };
+        }
       }
 
     }
@@ -638,8 +660,8 @@ cboard_PICGenios::Draw(CDraw *draw, double scale)
  rpmstp = ((float) Window1.GetNSTEPJ ()) / (0.64 * (pic.pins[16].oavalue - 29));
 
  //tensão p2
- vp2in = (5.0 * pot1 / 199);
- vp1in = (5.0 * pot2 / 199);
+ vp2in = (5.0 * pot[0] / 199);
+ vp1in = (5.0 * pot[1] / 199);
 
  //temperatura 
  ref = ((0.2222 * (pic.pins[23].oavalue - 30)))-(0.2222 * (pic.pins[16].oavalue - 30));
@@ -698,15 +720,15 @@ cboard_PICGenios::Run_CPU(void)
     if (j >= JUMPSTEPS)
      {
 
-      pic_set_pin (pic.mclr, p_MCLR);
+      pic_set_pin (pic.mclr, p_RST);
 
-      pic_set_pin (33, p_BT1);
-      pic_set_pin (34, p_BT2);
-      pic_set_pin (35, p_BT3);
-      pic_set_pin (36, p_BT4);
-      pic_set_pin (37, p_BT5);
-      pic_set_pin (38, p_BT6);
-      pic_set_pin (7, p_BT7);
+      pic_set_pin (33, p_BT[0]);
+      pic_set_pin (34, p_BT[1]);
+      pic_set_pin (35, p_BT[2]);
+      pic_set_pin (36, p_BT[3]);
+      pic_set_pin (37, p_BT[4]);
+      pic_set_pin (38, p_BT[5]);
+      pic_set_pin (7, p_BT[6]);
 
       pic_set_pin (39, 1);
       pic_set_pin (40, 1);
@@ -725,73 +747,73 @@ cboard_PICGenios::Run_CPU(void)
 
       //keyboard 
 
-      if (p_KEY1)
+      if (p_KEY[0])
        {
         pic_set_pin (22, pic_get_pin (33));
         pic_set_pin (33, pic_get_pin (22));
        }
 
-      if (p_KEY2)
+      if (p_KEY[1])
        {
         pic_set_pin (22, pic_get_pin (34));
         pic_set_pin (34, pic_get_pin (22));
        }
 
-      if (p_KEY3)
+      if (p_KEY[2])
        {
         pic_set_pin (22, pic_get_pin (35));
         pic_set_pin (35, pic_get_pin (22));
        }
 
-      if (p_KEY4)
+      if (p_KEY[3])
        {
         pic_set_pin (21, pic_get_pin (33));
         pic_set_pin (33, pic_get_pin (21));
        }
 
-      if (p_KEY5)
+      if (p_KEY[4])
        {
         pic_set_pin (21, pic_get_pin (34));
         pic_set_pin (34, pic_get_pin (21));
        }
 
-      if (p_KEY6)
+      if (p_KEY[5])
        {
         pic_set_pin (21, pic_get_pin (35));
         pic_set_pin (35, pic_get_pin (21));
        }
 
-      if (p_KEY7)
+      if (p_KEY[6])
        {
         pic_set_pin (20, pic_get_pin (33));
         pic_set_pin (33, pic_get_pin (20));
        }
 
-      if (p_KEY8)
+      if (p_KEY[7])
        {
         pic_set_pin (20, pic_get_pin (34));
         pic_set_pin (34, pic_get_pin (20));
        }
 
-      if (p_KEY9)
+      if (p_KEY[8])
        {
         pic_set_pin (20, pic_get_pin (35));
         pic_set_pin (35, pic_get_pin (20));
        }
 
-      if (p_KEY10)
+      if (p_KEY[9])
        {
         pic_set_pin (19, pic_get_pin (33));
         pic_set_pin (33, pic_get_pin (19));
        }
 
-      if (p_KEY11)
+      if (p_KEY[10])
        {
         pic_set_pin (19, pic_get_pin (34));
         pic_set_pin (34, pic_get_pin (19));
        }
 
-      if (p_KEY12)
+      if (p_KEY[11])
        {
         pic_set_pin (19, pic_get_pin (35));
         pic_set_pin (35, pic_get_pin (19));
@@ -939,33 +961,33 @@ cboard_PICGenios::Reset(void)
  mi2c_rst (&mi2c);
  rtc2_rst (&rtc2);
 
- p_BT1 = 1;
- p_BT2 = 1;
- p_BT3 = 1;
- p_BT4 = 1;
- p_BT5 = 1;
- p_BT6 = 1;
- p_BT7 = 1;
+ p_BT[0] = 1;
+ p_BT[1] = 1;
+ p_BT[2] = 1;
+ p_BT[3] = 1;
+ p_BT[4] = 1;
+ p_BT[5] = 1;
+ p_BT[6] = 1;
 
- pic_set_pin (33, p_BT1);
- pic_set_pin (34, p_BT2);
- pic_set_pin (35, p_BT3);
- pic_set_pin (36, p_BT4);
- pic_set_pin (37, p_BT5);
- pic_set_pin (38, p_BT6);
- pic_set_pin (7, p_BT7);
- p_KEY1 = 0;
- p_KEY2 = 0;
- p_KEY3 = 0;
- p_KEY4 = 0;
- p_KEY5 = 0;
- p_KEY6 = 0;
- p_KEY7 = 0;
- p_KEY8 = 0;
- p_KEY9 = 0;
- p_KEY10 = 0;
- p_KEY11 = 0;
- p_KEY12 = 0;
+ pic_set_pin (33, p_BT[0]);
+ pic_set_pin (34, p_BT[1]);
+ pic_set_pin (35, p_BT[2]);
+ pic_set_pin (36, p_BT[3]);
+ pic_set_pin (37, p_BT[4]);
+ pic_set_pin (38, p_BT[5]);
+ pic_set_pin (7, p_BT[6]);
+ p_KEY[0] = 0;
+ p_KEY[1] = 0;
+ p_KEY[2] = 0;
+ p_KEY[3] = 0;
+ p_KEY[4] = 0;
+ p_KEY[5] = 0;
+ p_KEY[6] = 0;
+ p_KEY[7] = 0;
+ p_KEY[8] = 0;
+ p_KEY[9] = 0;
+ p_KEY[10] = 0;
+ p_KEY[11] = 0;
  pic_set_pin (33, 0);
  pic_set_pin (34, 0);
  pic_set_pin (35, 0);
@@ -1007,67 +1029,67 @@ cboard_PICGenios::RegisterRemoteControl(void)
    switch (input[i].id)
     {
     case I_RB0:
-     input[i].status = &p_BT1;
+     input[i].status = &p_BT[0];
      break;
     case I_RB1:
-     input[i].status = &p_BT2;
+     input[i].status = &p_BT[1];
      break;
     case I_RB2:
-     input[i].status = &p_BT3;
+     input[i].status = &p_BT[2];
      break;
     case I_RB3:
-     input[i].status = &p_BT4;
+     input[i].status = &p_BT[3];
      break;
     case I_RB4:
-     input[i].status = &p_BT5;
+     input[i].status = &p_BT[4];
      break;
     case I_RB5:
-     input[i].status = &p_BT6;
+     input[i].status = &p_BT[5];
      break;
     case I_RA5:
-     input[i].status = &p_BT7;
+     input[i].status = &p_BT[6];
      break;
     case I_TC1:
-     input[i].status = &p_KEY1;
+     input[i].status = &p_KEY[0];
      break;
     case I_TC2:
-     input[i].status = &p_KEY2;
+     input[i].status = &p_KEY[1];
      break;
     case I_TC3:
-     input[i].status = &p_KEY3;
+     input[i].status = &p_KEY[2];
      break;
     case I_TC4:
-     input[i].status = &p_KEY4;
+     input[i].status = &p_KEY[3];
      break;
     case I_TC5:
-     input[i].status = &p_KEY5;
+     input[i].status = &p_KEY[4];
      break;
     case I_TC6:
-     input[i].status = &p_KEY6;
+     input[i].status = &p_KEY[5];
      break;
     case I_TC7:
-     input[i].status = &p_KEY7;
+     input[i].status = &p_KEY[6];
      break;
     case I_TC8:
-     input[i].status = &p_KEY8;
+     input[i].status = &p_KEY[7];
      break;
     case I_TC9:
-     input[i].status = &p_KEY9;
+     input[i].status = &p_KEY[8];
      break;
     case I_TCA:
-     input[i].status = &p_KEY10;
+     input[i].status = &p_KEY[9];
      break;
     case I_TC0:
-     input[i].status = &p_KEY11;
+     input[i].status = &p_KEY[10];
      break;
     case I_TCT:
-     input[i].status = &p_KEY12;
+     input[i].status = &p_KEY[11];
      break;
     case I_POT1:
-     input[i].status = &pot2;
+     input[i].status = &pot[1];
      break;
     case I_POT2:
-     input[i].status = &pot1;
+     input[i].status = &pot[0];
      break;
     }
   }
@@ -1232,6 +1254,29 @@ cboard_PICGenios::RegisterRemoteControl(void)
 }
 
 void
+cboard_PICGenios::EvMouseMove(uint button, uint x, uint y, uint state)
+{
+ int i;
+
+ for (i = 0; i < inputc; i++)
+  {
+   switch (input[i].id)
+    {
+    case I_POT1:
+    case I_POT2:
+     if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+      {
+       if (active[input[i].id - I_POT1])
+        {
+         pot[input[i].id - I_POT1] = CalcAngle (i, x, y);
+        }
+      }
+     break;
+    }
+  }
+}
+
+void
 cboard_PICGenios::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
 
@@ -1247,109 +1292,109 @@ cboard_PICGenios::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       case I_ICSP:
        {
         Window1.menu1_File_LoadHex_EvMenuActive (NULL);
-       };
+       }
        break;
 
 
       case I_D01:
        {
         dip[0] ^= 0x01;
-       };
+       }
        break;
       case I_D02:
        {
         dip[1] ^= 0x01;
-       };
+       }
        break;
       case I_D03:
        {
         dip[2] ^= 0x01;
-       };
+       }
        break;
       case I_D04:
        {
         dip[3] ^= 0x01;
-       };
+       }
        break;
       case I_D05:
        {
         dip[4] ^= 0x01;
-       };
+       }
        break;
       case I_D06:
        {
         dip[5] ^= 0x01;
-       };
+       }
        break;
       case I_D07:
        {
         dip[6] ^= 0x01;
-       };
+       }
        break;
       case I_D08:
        {
         dip[7] ^= 0x01;
-       };
+       }
        break;
       case I_D09:
        {
         dip[8] ^= 0x01;
-       };
+       }
        break;
       case I_D10:
        {
         dip[9] ^= 0x01;
-       };
+       }
        break;
       case I_D11:
        {
         dip[10] ^= 0x01;
-       };
+       }
        break;
       case I_D12:
        {
         dip[11] ^= 0x01;
-       };
+       }
        break;
       case I_D13:
        {
         dip[12] ^= 0x01;
-       };
+       }
        break;
       case I_D14:
        {
         dip[13] ^= 0x01;
-       };
+       }
        break;
       case I_D15:
        {
         dip[14] ^= 0x01;
-       };
+       }
        break;
       case I_D16:
        {
         dip[15] ^= 0x01;
-       };
+       }
        break;
       case I_D17:
        {
         dip[16] ^= 0x01;
-       };
+       }
        break;
       case I_D18:
        {
         dip[17] ^= 0x01;
-       };
+       }
        break;
       case I_D19:
        {
         dip[18] ^= 0x01;
-       };
+       }
        break;
       case I_D20:
        {
         dip[19] ^= 0x01;
-       };
+       }
        break;
 
       case I_PWR:
@@ -1360,10 +1405,14 @@ cboard_PICGenios::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           Window1.Set_mcupwr (0);
           Reset ();
 
-          p_BT1 = 0;
-          p_BT2 = 0;
-          p_BT3 = 0;
-          p_BT4 = 0;
+          p_BT[0] = 0;
+          p_BT[1] = 0;
+          p_BT[2] = 0;
+          p_BT[3] = 0;
+          p_BT[4] = 0;
+          p_BT[5] = 0;
+          p_BT[6] = 0;
+
           Window1.statusbar1.SetField (0, lxT ("Stoped"));
          }
         else
@@ -1375,7 +1424,7 @@ cboard_PICGenios::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
           Window1.statusbar1.SetField (0, lxT ("Running..."));
          }
-       };
+       }
        break;
 
       case I_RST:
@@ -1385,131 +1434,125 @@ cboard_PICGenios::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           Window1.Set_mcupwr (0);
           Window1.Set_mcurst (1);
          }
-        p_MCLR = 0;
-       };
+        p_RST = 0;
+       }
        break;
 
       case I_JP1:
        {
         jmp[0] ^= 0x01;
-       };
-       break;
-       /*
-       case I_RA1:
-         {
-           p_BT1=0;
-         };break;
-       case I_RA2:
-         {
-           p_BT2=0; 
-         };break;
-       case I_RA3:
-         {
-           p_BT3=0; 
-         };break;
-       case I_RA4:
-         {
-           p_BT4=0; 
-         };break;
-        */
-      case I_RA5:
-       {
-        p_BT7 = 0;
-       };
+       }
        break;
       case I_RB0:
        {
-        p_BT1 = 0;
-       };
+        p_BT[0] = 0;
+       }
        break;
       case I_RB1:
        {
-        p_BT2 = 0;
-       };
+        p_BT[1] = 0;
+       }
        break;
       case I_RB2:
        {
-        p_BT3 = 0;
-       };
+        p_BT[2] = 0;
+       }
        break;
       case I_RB3:
        {
-        p_BT4 = 0;
-       };
+        p_BT[3] = 0;
+       }
        break;
       case I_RB4:
        {
-        p_BT5 = 0;
-       };
+        p_BT[4] = 0;
+       }
        break;
       case I_RB5:
        {
-        p_BT6 = 0;
-       };
+        p_BT[5] = 0;
+       }
        break;
-
+      case I_RA5:
+       {
+        p_BT[6] = 0;
+       }
+       break;
       case I_TC1:
        {
-        p_KEY1 = 1;
-       };
+        p_KEY[0] = 1;
+       }
        break;
       case I_TC2:
        {
-        p_KEY2 = 1;
-       };
+        p_KEY[1] = 1;
+       }
        break;
       case I_TC3:
        {
-        p_KEY3 = 1;
-       };
+        p_KEY[2] = 1;
+       }
        break;
 
       case I_TC4:
        {
-        p_KEY4 = 1;
-       };
+        p_KEY[3] = 1;
+       }
        break;
       case I_TC5:
        {
-        p_KEY5 = 1;
-       };
+        p_KEY[4] = 1;
+       }
        break;
       case I_TC6:
        {
-        p_KEY6 = 1;
-       };
+        p_KEY[5] = 1;
+       }
        break;
 
       case I_TC7:
        {
-        p_KEY7 = 1;
-       };
+        p_KEY[6] = 1;
+       }
        break;
       case I_TC8:
        {
-        p_KEY8 = 1;
-       };
+        p_KEY[7] = 1;
+       }
        break;
       case I_TC9:
        {
-        p_KEY9 = 1;
-       };
+        p_KEY[8] = 1;
+       }
        break;
 
       case I_TCA:
        {
-        p_KEY10 = 1;
-       };
+        p_KEY[9] = 1;
+       }
        break;
       case I_TC0:
        {
-        p_KEY11 = 1;
-       };
+        p_KEY[10] = 1;
+       }
        break;
       case I_TCT:
        {
-        p_KEY12 = 1;
-       };
+        p_KEY[11] = 1;
+
+       }
+       break;
+      case I_POT1:
+       {
+        active[0] = 1;
+        pot[0] = CalcAngle (i, x, y);
+       }
+       break;
+      case I_POT2:
+       {
+        active[1] = 1;
+        pot[1] = CalcAngle (i, x, y);
+       }
        break;
       case I_VIEW:
        FILE * fout;
@@ -1584,125 +1627,116 @@ cboard_PICGenios::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
             Reset ();
            }
          }
-        p_MCLR = 1;
-       };
-       break;
-       /*
-         case I_RA1:
-         {
-           p_BT1=1; 
-         };break;
-         case I_RA2:
-         {
-           p_BT2=1; 
-         };break;
-         case I_RA3:
-         {
-           p_BT3=1; 
-         };break;
-         case I_RA4:
-         {
-           p_BT4=1; 
-         };break;
-        */
-      case I_RA5:
-       {
-        p_BT7 = 1;
-       };
+        p_RST = 1;
+       }
        break;
       case I_RB0:
        {
-        p_BT1 = 1;
-       };
+        p_BT[0] = 1;
+       }
        break;
       case I_RB1:
        {
-        p_BT2 = 1;
-       };
+        p_BT[1] = 1;
+       }
        break;
       case I_RB2:
        {
-        p_BT3 = 1;
-       };
+        p_BT[2] = 1;
+       }
        break;
       case I_RB3:
        {
-        p_BT4 = 1;
-       };
+        p_BT[3] = 1;
+       }
        break;
       case I_RB4:
        {
-        p_BT5 = 1;
-       };
+        p_BT[4] = 1;
+       }
        break;
       case I_RB5:
        {
-        p_BT6 = 1;
-       };
+        p_BT[5] = 1;
+       }
        break;
-
+      case I_RA5:
+       {
+        p_BT[6] = 1;
+       }
+       break;
       case I_TC1:
        {
-        p_KEY1 = 0;
-       };
+        p_KEY[0] = 0;
+       }
        break;
       case I_TC2:
        {
-        p_KEY2 = 0;
-       };
+        p_KEY[1] = 0;
+       }
        break;
       case I_TC3:
        {
-        p_KEY3 = 0;
-       };
+        p_KEY[2] = 0;
+       }
        break;
 
       case I_TC4:
        {
-        p_KEY4 = 0;
-       };
+        p_KEY[3] = 0;
+       }
        break;
       case I_TC5:
        {
-        p_KEY5 = 0;
-       };
+        p_KEY[4] = 0;
+       }
        break;
       case I_TC6:
        {
-        p_KEY6 = 0;
-       };
+        p_KEY[5] = 0;
+       }
        break;
 
       case I_TC7:
        {
-        p_KEY7 = 0;
-       };
+        p_KEY[6] = 0;
+       }
        break;
       case I_TC8:
        {
-        p_KEY8 = 0;
-       };
+        p_KEY[7] = 0;
+       }
        break;
       case I_TC9:
        {
-        p_KEY9 = 0;
-       };
+        p_KEY[8] = 0;
+       }
        break;
 
       case I_TCA:
        {
-        p_KEY10 = 0;
-       };
+        p_KEY[9] = 0;
+       }
        break;
       case I_TC0:
        {
-        p_KEY11 = 0;
-       };
+        p_KEY[10] = 0;
+       }
        break;
       case I_TCT:
        {
-        p_KEY12 = 0;
-       };
+        p_KEY[11] = 0;
+       }
+       break;
+      case I_POT1:
+       {
+        active[0] = 0;
+       }
+       break;
+      case I_POT2:
+       {
+        active[1] = 0;
+       }
        break;
       }
     }
@@ -1715,79 +1749,83 @@ cboard_PICGenios::EvKeyPress(uint key, uint mask)
 {
  if (key == '1')
   {
-   p_KEY1 = 1;
+   p_KEY[0] = 1;
   }
  if (key == '2')
   {
-   p_KEY2 = 1;
+   p_KEY[1] = 1;
   }
  if (key == '3')
   {
-   p_KEY3 = 1;
+   p_KEY[2] = 1;
   }
 
  if (key == '4')
   {
-   p_KEY4 = 1;
+   p_KEY[3] = 1;
   }
  if (key == '5')
   {
-   p_KEY5 = 1;
+   p_KEY[4] = 1;
   }
  if (key == '6')
   {
-   p_KEY6 = 1;
+   p_KEY[5] = 1;
   }
 
  if (key == '7')
   {
-   p_KEY7 = 1;
+   p_KEY[6] = 1;
   }
  if (key == '8')
   {
-   p_KEY8 = 1;
+   p_KEY[7] = 1;
   }
  if (key == '9')
   {
-   p_KEY9 = 1;
+   p_KEY[8] = 1;
   }
 
  if (key == '*')
   {
-   p_KEY10 = 1;
+   p_KEY[9] = 1;
   }
  if (key == '0')
   {
-   p_KEY11 = 1;
+   p_KEY[10] = 1;
   }
  if (key == '#')
   {
-   p_KEY12 = 1;
+   p_KEY[11] = 1;
   }
 
  if (key == 'Q')
   {
-   p_BT1 = 0;
+   p_BT[0] = 0;
   }
  if (key == 'W')
   {
-   p_BT2 = 0;
+   p_BT[1] = 0;
   }
  if (key == 'E')
   {
-   p_BT3 = 0;
+   p_BT[2] = 0;
   }
  if (key == 'R')
   {
-   p_BT4 = 0;
+   p_BT[3] = 0;
   }
  if (key == 'T')
   {
-   p_BT5 = 0;
+   p_BT[4] = 0;
   }
  if (key == 'Y')
   {
-   p_BT6 = 0;
+   p_BT[5] = 0;
+  }
+ if (key == 'U')
+  {
+   p_BT[6] = 0;
   }
 }
 
@@ -1797,79 +1835,83 @@ cboard_PICGenios::EvKeyRelease(uint key, uint mask)
 
  if (key == '1')
   {
-   p_KEY1 = 0;
+   p_KEY[0] = 0;
   }
  if (key == '2')
   {
-   p_KEY2 = 0;
+   p_KEY[1] = 0;
   }
  if (key == '3')
   {
-   p_KEY3 = 0;
+   p_KEY[2] = 0;
   }
 
  if (key == '4')
   {
-   p_KEY4 = 0;
+   p_KEY[3] = 0;
   }
  if (key == '5')
   {
-   p_KEY5 = 0;
+   p_KEY[4] = 0;
   }
  if (key == '6')
   {
-   p_KEY6 = 0;
+   p_KEY[5] = 0;
   }
 
  if (key == '7')
   {
-   p_KEY7 = 0;
+   p_KEY[6] = 0;
   }
  if (key == '8')
   {
-   p_KEY8 = 0;
+   p_KEY[7] = 0;
   }
  if (key == '9')
   {
-   p_KEY9 = 0;
+   p_KEY[8] = 0;
   }
 
  if (key == '*')
   {
-   p_KEY10 = 0;
+   p_KEY[9] = 0;
   }
  if (key == '0')
   {
-   p_KEY11 = 0;
+   p_KEY[10] = 0;
   }
  if (key == '#')
   {
-   p_KEY12 = 0;
+   p_KEY[11] = 0;
   }
 
  if (key == 'Q')
   {
-   p_BT1 = 1;
+   p_BT[0] = 1;
   }
  if (key == 'W')
   {
-   p_BT2 = 1;
+   p_BT[1] = 1;
   }
  if (key == 'E')
   {
-   p_BT3 = 1;
+   p_BT[2] = 1;
   }
  if (key == 'R')
   {
-   p_BT4 = 1;
+   p_BT[3] = 1;
   }
  if (key == 'T')
   {
-   p_BT5 = 1;
+   p_BT[4] = 1;
   }
  if (key == 'Y')
   {
-   p_BT6 = 1;
+   p_BT[5] = 1;
+  }
+ if (key == 'U')
+  {
+   p_BT[6] = 1;
   }
 }
 
@@ -1883,11 +1925,6 @@ unsigned short
 cboard_PICGenios::get_in_id(char * name)
 {
  if (strcmp (name, "PB_RST") == 0)return I_RST;
- if (strcmp (name, "PB_RA1") == 0)return I_RA1;
- if (strcmp (name, "PB_RA2") == 0)return I_RA2;
- if (strcmp (name, "PB_RA3") == 0)return I_RA3;
- if (strcmp (name, "PB_RA4") == 0)return I_RA4;
- if (strcmp (name, "PB_RA5") == 0)return I_RA5;
  if (strcmp (name, "SW_PWR") == 0)return I_PWR;
  if (strcmp (name, "PG_ICSP") == 0)return I_ICSP;
 
@@ -1897,6 +1934,7 @@ cboard_PICGenios::get_in_id(char * name)
  if (strcmp (name, "PB_RB3") == 0)return I_RB3;
  if (strcmp (name, "PB_RB4") == 0)return I_RB4;
  if (strcmp (name, "PB_RB5") == 0)return I_RB5;
+ if (strcmp (name, "PB_RA5") == 0)return I_RA5;
 
  if (strcmp (name, "KB_TC1") == 0)return I_TC1;
  if (strcmp (name, "KB_TC2") == 0)return I_TC2;
@@ -1940,11 +1978,13 @@ cboard_PICGenios::get_in_id(char * name)
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
-};
+}
 
 unsigned short
 cboard_PICGenios::get_out_id(char * name)
 {
+
+ if (strcmp (name, "PB_RST") == 0)return O_RST;
 
  if (strcmp (name, "LD_RB0") == 0)return O_RB0;
  if (strcmp (name, "LD_RB1") == 0)return O_RB1;
@@ -2033,9 +2073,33 @@ cboard_PICGenios::get_out_id(char * name)
 
  if (strcmp (name, "JP_1") == 0)return O_JP1;
 
+ if (strcmp (name, "PB_RB0") == 0)return O_BRB0;
+ if (strcmp (name, "PB_RB1") == 0)return O_BRB1;
+ if (strcmp (name, "PB_RB2") == 0)return O_BRB2;
+ if (strcmp (name, "PB_RB3") == 0)return O_BRB3;
+ if (strcmp (name, "PB_RB4") == 0)return O_BRB4;
+ if (strcmp (name, "PB_RB5") == 0)return O_BRB5;
+ if (strcmp (name, "PB_RA5") == 0)return O_BRA5;
+
+ if (strcmp (name, "KB_TC1") == 0)return O_TC1;
+ if (strcmp (name, "KB_TC2") == 0)return O_TC2;
+ if (strcmp (name, "KB_TC3") == 0)return O_TC3;
+ if (strcmp (name, "KB_TC4") == 0)return O_TC4;
+ if (strcmp (name, "KB_TC5") == 0)return O_TC5;
+ if (strcmp (name, "KB_TC6") == 0)return O_TC6;
+ if (strcmp (name, "KB_TC7") == 0)return O_TC7;
+ if (strcmp (name, "KB_TC8") == 0)return O_TC8;
+ if (strcmp (name, "KB_TC9") == 0)return O_TC9;
+ if (strcmp (name, "KB_TC*") == 0)return O_TCA;
+ if (strcmp (name, "KB_TC0") == 0)return O_TC0;
+ if (strcmp (name, "KB_TC#") == 0)return O_TCT;
+
+ if (strcmp (name, "PO_1") == 0)return O_POT1;
+ if (strcmp (name, "PO_2") == 0)return O_POT2;
+
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
-};
+}
 
 void
 cboard_PICGenios::RefreshStatus(void)
@@ -2051,7 +2115,7 @@ cboard_PICGenios::RefreshStatus(void)
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
-};
+}
 
 void
 cboard_PICGenios::WritePreferences(void)
@@ -2070,8 +2134,8 @@ cboard_PICGenios::WritePreferences(void)
  Window1.saveprefs (lxT ("PICGenios_dip"), line);
  Window1.saveprefs (lxT ("PICGenios_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
 
- Window1.saveprefs (lxT ("PICGenios_pot1"), lxString ().Format ("%i", pot1));
- Window1.saveprefs (lxT ("PICGenios_pot2"), lxString ().Format ("%i", pot2));
+ Window1.saveprefs (lxT ("PICGenios_pot1"), lxString ().Format ("%i", pot[0]));
+ Window1.saveprefs (lxT ("PICGenios_pot2"), lxString ().Format ("%i", pot[1]));
 
 }
 
@@ -2124,14 +2188,12 @@ cboard_PICGenios::ReadPreferences(char *name, char *value)
 
  if (!strcmp (name, "PICGenios_pot1"))
   {
-   pot1 = atoi (value);
-   scroll1->SetPosition (pot1);
+   pot[0] = atoi (value);
   }
 
  if (!strcmp (name, "PICGenios_pot2"))
   {
-   pot2 = atoi (value);
-   scroll2->SetPosition (pot2);
+   pot[1] = atoi (value);
   }
 }
 
@@ -2141,25 +2203,15 @@ void
 cboard_PICGenios::board_Event(CControl * control)
 {
 
- switch (control->GetTag ())
-  {
-  case 1: //scroll1
-   pot1 = scroll1->GetPosition ();
-   break;
-  case 2: //scroll2
-   pot2 = scroll2->GetPosition ();
-   break;
-  case 3: //combo
-   if (combo1->GetText ().Cmp (lxT ("hd44780 16x2")) == 0)
-    lcd_init (&lcd, 16, 2);
-   else if (combo1->GetText ().Cmp (lxT ("hd44780 16x4")) == 0)
-    lcd_init (&lcd, 16, 4);
-   else if (combo1->GetText ().Cmp (lxT ("hd44780 20x2")) == 0)
-    lcd_init (&lcd, 20, 2);
-   else if (combo1->GetText ().Cmp (lxT ("hd44780 20x4")) == 0)
-    lcd_init (&lcd, 20, 4);
-   break;
-  }
+ if (combo1->GetText ().Cmp (lxT ("hd44780 16x2")) == 0)
+  lcd_init (&lcd, 16, 2);
+ else if (combo1->GetText ().Cmp (lxT ("hd44780 16x4")) == 0)
+  lcd_init (&lcd, 16, 4);
+ else if (combo1->GetText ().Cmp (lxT ("hd44780 20x2")) == 0)
+  lcd_init (&lcd, 20, 2);
+ else if (combo1->GetText ().Cmp (lxT ("hd44780 20x4")) == 0)
+  lcd_init (&lcd, 20, 4);
+
 }
 
 

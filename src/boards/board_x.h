@@ -34,16 +34,17 @@
 class cboard_x:public bsim_picsim
 {
   private:
-     unsigned char p_BT1;           //first board switch in RD0
+     unsigned char p_BT1;           //first board push button in RD0
      unsigned char p_BT2;           //second board switch in RD1  
-
-     unsigned char pot1;
      
-     //controls to be added in simulator window
-     CScroll *scroll1; //scroll for analog input AN0    
+     //value of potentiometer
+     unsigned char pot1;
+     //flag to control if potentiometer is active
+     unsigned char active;
+     
+     //controls to be added in simulator window 
      CGauge *gauge1;   //gauge to show mean value of RB0
      CGauge *gauge2;   //gauge to show mean value of RB1
-     CLabel *label1;   //label of scroll AN0
      CLabel *label2;   //label of gauge RB0
      CLabel *label3;   //label of gauge RB1
      
@@ -73,6 +74,8 @@ class cboard_x:public bsim_picsim
       //Event on the board
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
       //Event on the board
+      void EvMouseMove(uint button, uint x, uint y, uint state);
+      //Event on the board
       void EvKeyPress(uint key,uint mask);
       //Event on the board
       void EvKeyRelease(uint key,uint mask);
@@ -87,7 +90,6 @@ class cboard_x:public bsim_picsim
       unsigned short get_in_id(char * name);
       //return the output ids numbers of names used in output map
       unsigned short get_out_id(char * name);
-      void board_Event(CControl * control);
 };
 
 #endif	/* BOARD_x_H */

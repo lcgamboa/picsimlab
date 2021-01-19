@@ -45,6 +45,8 @@ typedef struct {
     unsigned int x2; ///< x2 position
     unsigned int y1; ///< y1 position
     unsigned int y2; ///< y2 position
+    unsigned int cx; ///< center x position
+    unsigned int cy; ///< center y position
     char name[10]; ///< region name
     unsigned short id; ///< region ID
     void * status;
@@ -59,6 +61,8 @@ typedef struct {
     unsigned int x2; ///< x2 position
     unsigned int y1; ///< y1 position
     unsigned int y2; ///< y2 position
+    unsigned int cx; ///< center x position
+    unsigned int cy; ///< center y position    
     unsigned int r;
     char name[10]; ///< region name
     unsigned short id; ///<  region ID
@@ -116,7 +120,12 @@ public:
      * @brief  Event on the board
      */
     virtual void EvMouseButtonRelease(uint button, uint x, uint y, uint state) = 0;
-
+    
+    /**
+     * @brief  Event on the board
+     */
+    virtual void EvMouseMove(uint button, uint x, uint y, uint state) {};
+    
     /**
      * @brief  Event on the board
      */
@@ -460,6 +469,11 @@ public:
         INCOMPLETE;
         return 0;
     };
+     
+    /**
+     * @brief  Calc rotary potentiometer angle    
+     */
+    unsigned char CalcAngle(int i,  int x, int y);
 
 protected:
     
@@ -476,7 +490,7 @@ protected:
     int outputc; ///< output map elements counter   
     int use_oscope; ///< use oscilloscope window
     int use_spare; ///< use spare parts window             
-    int p_MCLR; ///< board /RESET pin state
+    unsigned char p_RST; ///< board /RESET pin state
 
     /**
      * @brief  Read maps 

@@ -37,16 +37,15 @@ class cboard_Curiosity:public bsim_picsim
      unsigned char p_BT1;           //S1 switch
 
      unsigned char pot1;
+     unsigned char active;
      
      unsigned char jmp[1];             //jmp
           
      //controls to be added in simulator window
-     CScroll *scroll1; //scroll for analog input AN0    
      CGauge *gauge1;   //gauge to show mean value of RA5
      CGauge *gauge2;   //gauge to show mean value of RA1
      CGauge *gauge3;   //gauge to show mean value of RA2
      CGauge *gauge4;   //gauge to show mean value of RC5
-     CLabel *label1;   //label of scroll AN4
      CLabel *label2;   //label of gauge RA5
      CLabel *label3;   //label of gauge RA1
      CLabel *label4;   //label of gauge RA2
@@ -77,6 +76,8 @@ class cboard_Curiosity:public bsim_picsim
       //Event on the board
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
       //Event on the board
+      void EvMouseMove(uint button, uint x, uint y, uint state);
+      //Event on the board
       void EvKeyPress(uint key, uint mask);
       //Event on the board
       void EvKeyRelease(uint key, uint mask);
@@ -91,7 +92,6 @@ class cboard_Curiosity:public bsim_picsim
       unsigned short get_in_id(char * name);
       //return the output ids numbers of names used in output map
       unsigned short get_out_id(char * name);
-      void board_Event(CControl * control);
 };
 
 #endif	/* BOARD_Curiosity_H */

@@ -7,4 +7,9 @@
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:Luis Claudio Gamboa Lopes          -->
 <area shape="rect" coords="185,49,234,68" href="PN_1" />
+<area shape="rect" coords="119,61,171,113" href="PB_1" />
+<area shape="rect" coords="66,11,118,63" href="PB_2" />
+<area shape="rect" coords="66,112,118,164" href="PB_3" />
+<area shape="rect" coords="15,62,67,114" href="PB_4" />
+<area shape="rect" coords="186,117,215,146" href="PB_5" />
 </map>

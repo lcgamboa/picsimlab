@@ -45,7 +45,8 @@ enum
 enum
 {
  O_LPWR, //Power LED
- O_MP,
+ O_MP, // uController name
+ O_RST //Reset button
 };
 
 //return the input ids numbers of names used in input map
@@ -69,7 +70,7 @@ cboard_gpboard::get_out_id(char * name)
 
  if (strcmp (name, "MP_CPU") == 0)return O_MP;
  if (strcmp (name, "LD_LPWR") == 0)return O_LPWR;
-
+ if (strcmp (name, "PB_RST") == 0)return O_RST;
 
  printf ("Error output '%s' don't have a valid id! \n", name);
  return 1;
@@ -206,7 +207,7 @@ cboard_gpboard::EvMouseButtonPress(uint button, uint x, uint y, uint state)
         }
         */
        MReset (-1);
-       p_MCLR = 0;
+       p_RST = 0;
        break;
       }
     }
@@ -242,7 +243,7 @@ cboard_gpboard::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
                    }
           */
         }
-       p_MCLR = 1;
+       p_RST = 1;
        break;
       }
     }
@@ -260,7 +261,9 @@ cboard_gpboard::Draw(CDraw *draw, double scale)
  int i;
  lxRect rec;
  lxSize ps;
-
+ lxFont font ((MGetPinCount () >= 100) ? 9 : ((MGetPinCount () > 14) ? 12 : 10)
+                    , lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
+ 
  draw->Canvas.Init (scale, scale); //initialize draw context
 
  //board_x draw 
@@ -278,9 +281,6 @@ cboard_gpboard::Draw(CDraw *draw, double scale)
        draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
        break;
       case O_MP:
-       lxFont font (
-                    (MGetPinCount () >= 100) ? 9 : ((MGetPinCount () > 14) ? 12 : 10)
-                    , lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
 
        draw->Canvas.SetFont (font);
 
@@ -293,6 +293,20 @@ cboard_gpboard::Draw(CDraw *draw, double scale)
        rec.width = ps.GetWidth ();
        rec.height = ps.GetHeight ();
        draw->Canvas.TextOnRect (Proc, rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
+       break;
+      case O_RST:
+       draw->Canvas.SetColor (100, 100, 100);
+       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1,
+                               output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       if (p_RST)
+        {
+         draw->Canvas.SetColor (15, 15, 15);
+        }
+       else
+        {
+         draw->Canvas.SetColor (55, 55, 55);
+        }
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 10);
        break;
       }
     }

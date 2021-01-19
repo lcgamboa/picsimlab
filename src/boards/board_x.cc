@@ -32,24 +32,28 @@
 /* ids of inputs of input map*/
 enum
 {
- I_ICSP,//ICSP connector
+ I_POT1, //potentiometer   
+ I_ICSP, //ICSP connector
  I_PWR, //Power button
  I_RST, //Reset button
- I_D0,  //RD0 push button
- I_D1,  //RD1 switch
- I_POT1 //potentiometer    
+ I_D0, //RD0 push button
+ I_D1 //RD1 switch
 };
 
 /* ids of outputs of output map*/
 enum
 {
+ O_POT1, //potentiometer  
+ O_RST, //Reset button
  O_SD1, //switch position (On/Off)
  O_LD0, //LED on RD0 push button
  O_LD1, //LED on RD1 switch
  O_LPWR, //Power LED
  O_RB0, //LED on RB0 output
- O_RB1 //LED on RB1 output
+ O_RB1, //LED on RB1 output
+ O_BD0 //RD1 switch     
 };
+
 //return the input ids numbers of names used in input map
 
 unsigned short
@@ -78,6 +82,9 @@ cboard_x::get_out_id(char * name)
  if (strcmp (name, "LD_LPWR") == 0)return O_LPWR;
  if (strcmp (name, "LD_RB1") == 0)return O_RB1;
  if (strcmp (name, "LD_RB0") == 0)return O_RB0;
+ if (strcmp (name, "PB_D0") == 0)return O_BD0;
+ if (strcmp (name, "PO_1") == 0)return O_POT1;
+ if (strcmp (name, "PB_RST") == 0)return O_RST;
 
  printf ("Error output '%s' don't have a valid id! \n", name);
  return 1;
@@ -92,22 +99,9 @@ cboard_x::cboard_x(void)
 
  pot1 = 100;
 
+ active = 0;
+
  //controls properties and creation
- //scroll1
- scroll1 = new CScroll ();
- scroll1->SetFOwner (&Window1);
- scroll1->SetName (lxT ("scroll1_px"));
- scroll1->SetX (12);
- scroll1->SetY (273 - 160);
- scroll1->SetWidth (140);
- scroll1->SetHeight (22);
- scroll1->SetEnable (1);
- scroll1->SetVisible (1);
- scroll1->SetRange (200);
- scroll1->SetPosition (100);
- scroll1->SetType (4);
- scroll1->EvOnChangePosition = EVONCHANGEPOSITION & CPWindow1::board_Event;
- Window1.CreateChild (scroll1);
  //gauge1
  gauge1 = new CGauge ();
  gauge1->SetFOwner (&Window1);
@@ -136,19 +130,6 @@ cboard_x::cboard_x(void)
  gauge2->SetValue (0);
  gauge2->SetType (4);
  Window1.CreateChild (gauge2);
- //label1
- label1 = new CLabel ();
- label1->SetFOwner (&Window1);
- label1->SetName (lxT ("label1_px"));
- label1->SetX (12);
- label1->SetY (249 - 160);
- label1->SetWidth (60);
- label1->SetHeight (20);
- label1->SetEnable (1);
- label1->SetVisible (1);
- label1->SetText (lxT ("AN0"));
- label1->SetAlign (1);
- Window1.CreateChild (label1);
  //label2
  label2 = new CLabel ();
  label2->SetFOwner (&Window1);
@@ -182,10 +163,8 @@ cboard_x::cboard_x(void)
 cboard_x::~cboard_x(void)
 {
  //controls destruction 
- Window1.DestroyChild (scroll1);
  Window1.DestroyChild (gauge1);
  Window1.DestroyChild (gauge2);
- Window1.DestroyChild (label1);
  Window1.DestroyChild (label2);
  Window1.DestroyChild (label3);
 }
@@ -225,6 +204,7 @@ cboard_x::Reset(void)
 }
 
 //Register variables to be controled by remote control
+
 void
 cboard_x::RegisterRemoteControl(void)
 {
@@ -265,6 +245,7 @@ cboard_x::RegisterRemoteControl(void)
 }
 
 //Called ever 1s to refresh status
+
 void
 cboard_x::RefreshStatus(void)
 {
@@ -327,7 +308,6 @@ cboard_x::ReadPreferences(char *name, char *value)
  if (!strcmp (name, "X_pot1"))
   {
    pot1 = atoi (value);
-   scroll1->SetPosition (pot1);
   }
 }
 
@@ -410,7 +390,7 @@ cboard_x::EvMouseButtonPress(uint button, uint x, uint y, uint state)
          Window1.Set_mcupwr (0);
          Window1.Set_mcurst (1);
         }
-       p_MCLR = 0;
+       p_RST = 0;
        break;
        //if event is over I_D0 area then activate button (state=0) 
       case I_D0:
@@ -420,10 +400,40 @@ cboard_x::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       case I_D1:
        p_BT2 ^= 1;
        break;
+      case I_POT1:
+       {
+        active = 1;
+        pot1 = CalcAngle (i, x, y);
+       }
+       break;
       }
     }
   }
 
+}
+
+//Event on the board
+
+void
+cboard_x::EvMouseMove(uint button, uint x, uint y, uint state)
+{
+ int i;
+
+ for (i = 0; i < inputc; i++)
+  {
+   switch (input[i].id)
+    {
+    case I_POT1:
+     if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+      {
+       if (active)
+        {
+         pot1 = CalcAngle (i, x, y);
+        }
+      }
+     break;
+    }
+  }
 }
 
 //Event on the board
@@ -453,11 +463,16 @@ cboard_x::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
            Reset ();
           }
         }
-       p_MCLR = 1;
+       p_RST = 1;
        break;
        //if event is over I_D0 area then deactivate button (state=1) 
       case I_D0:
        p_BT1 = 1;
+       break;
+      case I_POT1:
+       {
+        active = 0;
+       }
        break;
       }
     }
@@ -504,6 +519,50 @@ cboard_x::Draw(CDraw *draw, double scale)
                                  output[i].y1, output[i].x2 - output[i].x1,
                                  (int) ((output[i].y2 - output[i].y1)*0.65));
         }
+      }
+     else if (output[i].id == O_BD0)
+      {
+       draw->Canvas.SetColor (250, 250, 250);
+       draw->Canvas.Rectangle (1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1, output[i].y2 - output[i].y1 - 1);
+
+       if (p_BT1)
+        {
+         draw->Canvas.SetColor (15, 15, 15);
+        }
+       else
+        {
+         draw->Canvas.SetColor (55, 55, 55);
+        }
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 21);
+      }
+     else if (output[i].id == O_RST)
+      {
+       draw->Canvas.SetColor (250, 250, 250);
+       draw->Canvas.Rectangle (1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1, output[i].y2 - output[i].y1 - 1);
+
+       if (p_RST)
+        {
+         draw->Canvas.SetColor (15, 15, 15);
+        }
+       else
+        {
+         draw->Canvas.SetColor (55, 55, 55);
+        }
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 21);
+      }
+     else if (output[i].id == O_POT1)
+      {
+       draw->Canvas.SetColor (66, 109, 246);
+       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
+       draw->Canvas.SetColor (250, 250, 250);
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 15);
+
+       draw->Canvas.SetColor (150, 150, 150);
+       int x = -10 * sin ((5.585 * (pot1 / 200.0)) + 0.349);
+       int y = 10 * cos ((5.585 * (pot1 / 200.0)) + 0.349);
+       draw->Canvas.Circle (1, output[i].cx + x, output[i].cy + y, 3);
+
       }
     }
    else //if output shape is a circle
@@ -576,7 +635,7 @@ cboard_x::Run_CPU(void)
 
     if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
      {
-      pic_set_pin (pic.mclr, p_MCLR);
+      pic_set_pin (pic.mclr, p_RST);
       pic_set_pin (19, p_BT1); //Set pin 19 (RD0) with button state 
       pic_set_pin (20, p_BT2); //Set pin 20 (RD1) with switch state 
      }
@@ -614,11 +673,6 @@ cboard_x::Run_CPU(void)
 
 }
 
-void
-cboard_x::board_Event(CControl * control)
-{
- pot1 = scroll1->GetPosition ();
-}
 
 //Register the board in PICSimLab
 board_init("X", cboard_x);

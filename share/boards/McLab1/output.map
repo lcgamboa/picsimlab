@@ -36,4 +36,9 @@
 <area shape="rect" coords="481,103,505,108" href="SS_G2" />
 <area shape="rect" coords="511,132,515,136" href="SS_P2" />
 <area shape="rect" coords="421,39,472,52" href="JP_1" />
+<area shape="rect" coords="282,311,336,367" href="PB_RA1" />
+<area shape="rect" coords="342,311,398,367" href="PB_RA2" />
+<area shape="rect" coords="402,311,457,367" href="PB_RA3" />
+<area shape="rect" coords="461,311,518,367" href="PB_RA4" />
+<area shape="rect" coords="132,312,188,368" href="PB_RST" />
 </map>

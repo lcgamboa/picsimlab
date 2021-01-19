@@ -113,6 +113,7 @@ public:
     void timer1_EvOnTime(CControl * control);
     void timer2_EvOnTime(CControl * control);
     void filedialog1_EvOnClose(const int retId);
+    void draw1_EvMouseMove(CControl * control, const uint button, const uint x, const uint y, const uint state);
     void draw1_EvMouseButtonPress(CControl * control, const uint button, const uint x, const uint y, const uint state);
     void draw1_EvMouseButtonRelease(CControl * control, const uint button, const uint x, const uint y, const uint state);
     void draw1_EvKeyboardPress(CControl * control, const uint key, const uint hkey, const uint mask);

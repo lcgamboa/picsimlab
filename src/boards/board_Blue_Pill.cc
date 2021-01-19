@@ -42,6 +42,7 @@ enum
 {
  O_LPWR, //Power LED
  O_LED, //LED on PC13 output
+ O_RST //Reset button
 };
 //return the input ids numbers of names used in input map
 
@@ -64,7 +65,7 @@ cboard_Blue_Pill::get_out_id(char * name)
 
  if (strcmp (name, "LD_LED") == 0)return O_LED;
  if (strcmp (name, "LD_PWR") == 0)return O_LPWR;
-
+ if (strcmp (name, "PB_RST") == 0)return O_RST;
 
  printf ("Error output '%s' don't have a valid id! \n", name);
  return 1;
@@ -80,8 +81,7 @@ cboard_Blue_Pill::cboard_Blue_Pill(void)
 
 //Destructor called once on board destruction 
 
-cboard_Blue_Pill::~cboard_Blue_Pill(void) {
- }
+cboard_Blue_Pill::~cboard_Blue_Pill(void) { }
 
 //Reset board status
 
@@ -93,8 +93,8 @@ cboard_Blue_Pill::Reset(void)
  Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE));
 
  if (use_spare)Window5.Reset ();
- 
- RegisterRemoteControl();
+
+ RegisterRemoteControl ();
 }
 
 void
@@ -152,14 +152,12 @@ cboard_Blue_Pill::ReadPreferences(char *name, char *value)
 //Event on the board
 
 void
-cboard_Blue_Pill::EvKeyPress(uint key, uint mask) {
- }
+cboard_Blue_Pill::EvKeyPress(uint key, uint mask) { }
 
 //Event on the board
 
 void
-cboard_Blue_Pill::EvKeyRelease(uint key, uint mask) {
- }
+cboard_Blue_Pill::EvKeyRelease(uint key, uint mask) { }
 
 //Event on the board
 
@@ -209,7 +207,7 @@ cboard_Blue_Pill::EvMouseButtonPress(uint button, uint x, uint y, uint state)
         }
         */
        MReset (-1);
-       p_MCLR = 0;
+       p_RST = 0;
        break;
       }
     }
@@ -245,7 +243,7 @@ cboard_Blue_Pill::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
                    }
           */
         }
-       p_MCLR = 1;
+       p_RST = 1;
        break;
       }
     }
@@ -280,9 +278,25 @@ cboard_Blue_Pill::Draw(CDraw *draw, double scale)
       case O_LPWR: //Blue using mcupwr value
        draw->Canvas.SetColor (225 * Window1.Get_mcupwr () + 30, 0, 0);
        break;
+      case O_RST:
+       draw->Canvas.SetColor (100, 100, 100);
+       break;
       }
 
      draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
+     if (output[i].id == O_RST)
+      {
+       if (p_RST)
+        {
+         draw->Canvas.SetColor (15, 15, 15);
+        }
+       else
+        {
+         draw->Canvas.SetColor (55, 55, 55);
+        }
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
+      }
     }
 
   }

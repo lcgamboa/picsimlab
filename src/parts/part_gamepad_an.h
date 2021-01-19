@@ -60,6 +60,7 @@ class cpart_gamepad_an:public part
       unsigned char active;  
       unsigned char output_pins[1];    
       float output_value_an;
+      unsigned char output_value[5];
 };
 
 

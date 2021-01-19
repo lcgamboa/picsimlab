@@ -35,6 +35,7 @@ class cboard_STM32_H103:public bsim_qemu_stm32
 {
    private:
      unsigned char p_BUT;
+
      void RegisterRemoteControl(void);        
    public:
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 

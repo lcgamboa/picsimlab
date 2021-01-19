@@ -33,7 +33,7 @@ board::board(void)
  use_oscope = 0;
  use_spare = 0;
  Proc = "";
- p_MCLR = 1;
+ p_RST = 1;
 }
 
 board::~board(void) { }
@@ -133,13 +133,13 @@ board::ReadInputMap(lxString fname)
          input[inputc].y1 = y1 - r;
          input[inputc].x2 = x1 + r;
          input[inputc].y2 = y1 + r;
-
         }
        strcpy (input[inputc].name, name);
-       input[inputc].id = get_in_id (input[inputc].name);
+       input[inputc].id = get_in_id (input[inputc].name);       
+       input[inputc].cx = ((input[inputc].x2 - input[inputc].x1) / 2.0) + input[inputc].x1;
+       input[inputc].cy = ((input[inputc].y2 - input[inputc].y1) / 2.0) + input[inputc].y1;
        input[inputc].status = NULL;
        inputc++;
-
       }
     }
    fclose (fin);
@@ -198,6 +198,8 @@ board::ReadOutputMap(lxString fname)
          //          output[outputc].lval=-1;
          strcpy (output[outputc].name, name);
          output[outputc].id = get_out_id (output[outputc].name);
+         output[outputc].cx = ((output[outputc].x2 - output[outputc].x1) / 2.0) + output[outputc].x1;
+         output[outputc].cy = ((output[outputc].y2 - output[outputc].y1) / 2.0) + output[outputc].y1;
          output[outputc].status = NULL;
          outputc++;
         }
@@ -208,10 +210,14 @@ board::ReadOutputMap(lxString fname)
 
          output[outputc].x1 = x1;
          output[outputc].y1 = y1;
+         output[outputc].x2 = 0;
+         output[outputc].y2 = 0;
          output[outputc].r = r;
          //          output[outputc].lval=-1;
          strcpy (output[outputc].name, name);
          output[outputc].id = get_out_id (output[outputc].name);
+         output[outputc].cx = output[outputc].x1;
+         output[outputc].cy = output[outputc].y1;
          output[outputc].status = NULL;
          outputc++;
         }
@@ -312,4 +318,34 @@ board::GetOutput(int n)
    return &output[n];
   }
  return NULL;
+}
+
+unsigned char
+board::CalcAngle(int in, int x, int y)
+{
+ int dx = input[in].cx - x; 
+ int dy = y - input[in].cy;
+ double angle = 0;
+
+ if ((dx >= 0)&&(dy >= 0))
+  {
+   angle = atan2 (dx, dy) * 180 / M_PI;
+  }
+ else if ((dx >= 0)&&(dy < 0))
+  {
+   angle = 180 - (atan2 (dx, -dy) * 180 / M_PI);
+  }
+ else if ((dx < 0)&&(dy < 0))
+  {
+   angle = (atan2 (-dx, -dy) * 180 / M_PI) + 180;
+  }
+ else if ((dx < 0)&&(dy >= 0))
+  {
+   angle = 360 - (atan2 (-dx, dy) * 180 / M_PI);
+  }
+
+ if (angle > 340) angle = 340;
+ if (angle < 20) angle = 20;
+
+ return (199 * (angle - 20) / 320.0);
 }

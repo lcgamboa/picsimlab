@@ -30,18 +30,27 @@
 #include"board_Xpress.h"
 
 /* ids of inputs of input map*/
-#define I_ICSP 1  //ICSP connector
-#define I_PWR  2  //Power button
-#define I_RST  3  //Reset button
-#define I_S1   4  //S1 push button
-#define I_POT1 5  //potentiometer
+enum
+{
+ I_POT1, //potentiometer 
+ I_ICSP, //ICSP connector
+ I_PWR, //Power button
+ I_RST, //Reset button
+ I_S1 //S1 push button
+};
 
 /* ids of outputs of output map*/
-#define O_D1 1  //LED D1
-#define O_D2 2  //LED D2 
-#define O_D3 3  //LED D3 
-#define O_D4 4  //LED D4 
-#define O_D5 5  //LED D5 
+enum
+{
+ O_POT1,
+ O_D1, //LED D1
+ O_D2, //LED D2 
+ O_D3, //LED D3
+ O_D4, //LED D4 
+ O_D5, //LED D5 
+ O_RST, //Reset button
+ O_S1 //S1 push button
+};
 
 
 //return the input ids numbers of names used in input map
@@ -71,6 +80,9 @@ cboard_Xpress::get_out_id(char * name)
  if (strcmp (name, "LD_D4") == 0)return O_D4;
  if (strcmp (name, "LD_D5") == 0)return O_D5;
 
+ if (strcmp (name, "PB_S1") == 0)return O_S1;
+ if (strcmp (name, "PO_1") == 0)return O_POT1;
+ if (strcmp (name, "PB_RST") == 0)return O_RST;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
@@ -85,22 +97,9 @@ cboard_Xpress::cboard_Xpress(void)
 
  pot1 = 100;
 
+ active = 0;
+
  //controls properties and creation
- //scroll1
- scroll1 = new CScroll ();
- scroll1->SetFOwner (&Window1);
- scroll1->SetName (lxT ("scroll1_p6"));
- scroll1->SetX (48);
- scroll1->SetY (200 - 110);
- scroll1->SetWidth (110);
- scroll1->SetHeight (22);
- scroll1->SetEnable (1);
- scroll1->SetVisible (1);
- scroll1->SetRange (200);
- scroll1->SetPosition (100);
- scroll1->SetType (4);
- scroll1->EvOnChangePosition = EVONCHANGEPOSITION & CPWindow1::board_Event;
- Window1.CreateChild (scroll1);
  //gauge1
  gauge1 = new CGauge ();
  gauge1->SetFOwner (&Window1);
@@ -157,19 +156,6 @@ cboard_Xpress::cboard_Xpress(void)
  gauge4->SetValue (0);
  gauge4->SetType (4);
  Window1.CreateChild (gauge4);
- //label1
- label1 = new CLabel ();
- label1->SetFOwner (&Window1);
- label1->SetName (lxT ("label1_p6"));
- label1->SetX (12);
- label1->SetY (200 - 110);
- label1->SetWidth (60);
- label1->SetHeight (20);
- label1->SetEnable (1);
- label1->SetVisible (1);
- label1->SetText (lxT ("AN4"));
- label1->SetAlign (1);
- Window1.CreateChild (label1);
  //label2
  label2 = new CLabel ();
  label2->SetFOwner (&Window1);
@@ -229,12 +215,10 @@ cboard_Xpress::cboard_Xpress(void)
 cboard_Xpress::~cboard_Xpress(void)
 {
  //controls destruction 
- Window1.DestroyChild (scroll1);
  Window1.DestroyChild (gauge1);
  Window1.DestroyChild (gauge2);
  Window1.DestroyChild (gauge3);
  Window1.DestroyChild (gauge4);
- Window1.DestroyChild (label1);
  Window1.DestroyChild (label2);
  Window1.DestroyChild (label3);
  Window1.DestroyChild (label4);
@@ -361,7 +345,6 @@ cboard_Xpress::ReadPreferences(char *name, char *value)
  if (!strcmp (name, "Xpress_pot1"))
   {
    pot1 = atoi (value);
-   scroll1->SetPosition (pot1);
   }
 }
 
@@ -439,17 +422,44 @@ cboard_Xpress::EvMouseButtonPress(uint button, uint x, uint y, uint state)
          Window1.Set_mcupwr (0);
          Window1.Set_mcurst (1);
         }
-       p_MCLR = 0;
+       p_RST = 0;
        break;
        //if event is over I_S1 area then activate button (state=0) 
       case I_S1:
        p_BT1 = 0;
        break;
-
+      case I_POT1:
+       {
+        active = 1;
+        pot1 = CalcAngle (i, x, y);
+       }
+       break;
       }
     }
   }
 
+}
+
+void
+cboard_Xpress::EvMouseMove(uint button, uint x, uint y, uint state)
+{
+ int i;
+
+ for (i = 0; i < inputc; i++)
+  {
+   switch (input[i].id)
+    {
+    case I_POT1:
+     if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&(input[i].y2 >= y)))
+      {
+       if (active)
+        {
+         pot1 = CalcAngle (i, x, y);
+        }
+      }
+     break;
+    }
+  }
 }
 
 //Event on the board
@@ -479,11 +489,16 @@ cboard_Xpress::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
            Reset ();
           }
         }
-       p_MCLR = 1;
+       p_RST = 1;
        break;
        //if event is over I_S1 area then deactivate button (state=1) 
       case I_S1:
        p_BT1 = 1;
+       break;
+      case I_POT1:
+       {
+        active = 0;
+       }
        break;
       }
     }
@@ -527,16 +542,54 @@ cboard_Xpress::Draw(CDraw *draw, double scale)
       case O_D5: //Red using pin 2 mean value (RA3)
        draw->Canvas.SetColor (pic.pins[1].oavalue, 0, 0);
        break;
+      case O_S1:
+      case O_RST:
+       draw->Canvas.SetColor (100, 100, 100);
+       break;
+      case O_POT1:
+       draw->Canvas.SetColor (66, 109, 246);
+       break;
       }
 
      //draw a rectangle
      draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
+     if (output[i].id == O_S1)
+      {
+       if (p_BT1)
+        {
+         draw->Canvas.SetColor (15, 15, 15);
+        }
+       else
+        {
+         draw->Canvas.SetColor (55, 55, 55);
+        }
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
+      }
+     else if (output[i].id == O_RST)
+      {
+       if (p_RST)
+        {
+         draw->Canvas.SetColor (15, 15, 15);
+        }
+       else
+        {
+         draw->Canvas.SetColor (55, 55, 55);
+        }
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
+      }
+     else if (output[i].id == O_POT1)
+      {
 
-    }
-   else //if output shape is a circle
-    {
+       draw->Canvas.SetColor (250, 250, 250);
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 15);
 
+       draw->Canvas.SetColor (150, 150, 150);
+       int x = -10 * sin ((5.585 * (pot1 / 200.0)) + 0.349);
+       int y = 10 * cos ((5.585 * (pot1 / 200.0)) + 0.349);
+       draw->Canvas.Circle (1, output[i].cx + x, output[i].cy + y, 3);
+
+      }
     }
 
   }
@@ -595,7 +648,7 @@ cboard_Xpress::Run_CPU(void)
 
     if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
      {
-      pic_set_pin (pic.mclr, p_MCLR);
+      pic_set_pin (pic.mclr, p_RST);
       pic_set_pin (4, p_BT1); //Set pin 4 (RA5) with button state 
      }
 
@@ -635,11 +688,6 @@ cboard_Xpress::Run_CPU(void)
  if (use_spare)Window5.PostProcess ();
 }
 
-void
-cboard_Xpress::board_Event(CControl * control)
-{
- pot1 = scroll1->GetPosition ();
-}
 
 board_init("Xpress", cboard_Xpress);
 

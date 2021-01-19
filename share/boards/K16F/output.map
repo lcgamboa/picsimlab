@@ -12,4 +12,5 @@
 <area shape="circle" coords="347,451,7" href="LD_RA2" />
 <area shape="circle" coords="372,451,7" href="LD_RA6" />
 <area shape="circle" coords="397,451,7" href="LD_RA7" />
+<area shape="rect" coords="411,64,438,91" href="PB_RST" />
 </map>

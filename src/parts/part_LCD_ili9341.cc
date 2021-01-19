@@ -773,30 +773,14 @@ cpart_LCD_ili9341::ChangeType(unsigned char tp)
 void
 cpart_LCD_ili9341::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
-
- int i, temp;
+ int i;
 
  for (i = 0; i < inputc; i++)
   {
    if (PointInside (x, y, input[i]))
     {
-     switch (orientation)
-      {
-      case 1:
-       temp = x;
-       x = y;
-       y = Height - temp;
-       break;
-      case 2:
-       x = Width - x;
-       y = Height - y;
-       break;
-      case 3:
-       temp = y;
-       y = x;
-       x = Width - temp;
-       break;
-      }
+     RotateCoords (&x, &y);
+
      switch (input[i].id)
       {
       case I_LCD:
@@ -832,31 +816,14 @@ cpart_LCD_ili9341::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 void
 cpart_LCD_ili9341::EvMouseMove(uint button, uint x, uint y, uint state)
 {
-
- int i, temp;
-
+ int i;
+ 
  for (i = 0; i < inputc; i++)
   {
    if (PointInside (x, y, input[i]))
     {
 
-     switch (orientation)
-      {
-      case 1:
-       temp = x;
-       x = y;
-       y = Height - temp;
-       break;
-      case 2:
-       x = Width - x;
-       y = Height - y;
-       break;
-      case 3:
-       temp = y;
-       y = x;
-       x = Width - temp;
-       break;
-      }
+     RotateCoords (&x, &y);
 
      if (active[input[i].id - I_LCD])
       {

@@ -275,6 +275,11 @@ public:
      */
     int PointInside(int x, int y);
 
+    /**
+     * @brief  Return coords x y rotated by orientation  
+     */
+    void RotateCoords(unsigned int * x, unsigned int * y);
+
 
     /**
      * @brief  Return the orientation to draw

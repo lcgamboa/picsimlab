@@ -60,7 +60,12 @@ enum
  O_F2,
  O_G2,
  O_P2,
- O_JP1
+ O_JP1,
+ O_BRA1,
+ O_BRA2,
+ O_BRA3,
+ O_BRA4,
+ O_RST
 };
 
 /*inputs*/
@@ -176,10 +181,43 @@ cboard_McLab1::Draw(CDraw *draw, double scale)
        draw->Canvas.SetColor (30, 0, 0);
       }
 
+
+
+
      if (output[i].id == O_JP1) draw->Canvas.SetColor (150, 150, 150);
 
-     draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-
+     if ((output[i].id >= O_BRA1)&&(output[i].id <= O_BRA4))
+      {
+       draw->Canvas.SetColor (100, 100, 100);
+       draw->Canvas.Rectangle (1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1, output[i].y2 - output[i].y1 - 1);
+       if (p_BT[output[i].id - O_BRA1])
+        {
+         draw->Canvas.SetColor (15, 15, 15);
+        }
+       else
+        {
+         draw->Canvas.SetColor (55, 55, 55);
+        }
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy , 19);
+      }
+     else if (output[i].id == O_RST)
+      {
+       draw->Canvas.SetColor (100, 100, 100);
+       draw->Canvas.Rectangle (1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1, output[i].y2 - output[i].y1 - 1);
+       if (p_RST)
+        {
+         draw->Canvas.SetColor (15, 15, 15);
+        }
+       else
+        {
+         draw->Canvas.SetColor (55, 55, 55);
+        }
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy , 19);
+      }
+     else
+      {
+       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+      }
 
      if (output[i].id == O_JP1)
       {
@@ -303,11 +341,11 @@ cboard_McLab1::Run_CPU(void)
 
     if (j >= JUMPSTEPS)
      {
-      pic_set_pin (pic.mclr, p_MCLR);
-      pic_set_pin (18, p_BT1);
-      pic_set_pin (1, p_BT2);
-      pic_set_pin (2, p_BT3);
-      pic_set_pin (3, p_BT4);
+      pic_set_pin (pic.mclr, p_RST);
+      pic_set_pin (18, p_BT[0]);
+      pic_set_pin (1, p_BT[1]);
+      pic_set_pin (2, p_BT[2]);
+      pic_set_pin (3, p_BT[3]);
      }
 
     if (!mplabxd_testbp ())pic_step ();
@@ -327,9 +365,9 @@ for(pi=0;pi < pic.PINCOUNT;pi++)
 }
        */
       //pull-up extern 
-      if ((pins[17].dir)&&(p_BT1))alm[17]++;
-      if ((pins[0].dir)&&(p_BT2))alm[0]++;
-      if ((pins[1].dir)&&(p_BT3))alm[1]++;
+      if ((pins[17].dir)&&(p_BT[0]))alm[17]++;
+      if ((pins[0].dir)&&(p_BT[1]))alm[0]++;
+      if ((pins[1].dir)&&(p_BT[2]))alm[1]++;
 
       if (jmp[0])
        {
@@ -365,15 +403,15 @@ cboard_McLab1::Reset(void)
 {
  pic_reset (1);
 
- p_BT1 = 1;
- p_BT2 = 1;
- p_BT3 = 1;
- p_BT4 = 1;
+ p_BT[0] = 1;
+ p_BT[1] = 1;
+ p_BT[2] = 1;
+ p_BT[3] = 1;
 
- pic_set_pin (18, p_BT1);
- pic_set_pin (1, p_BT2);
- pic_set_pin (2, p_BT3);
- pic_set_pin (3, p_BT4);
+ pic_set_pin (18, p_BT[0]);
+ pic_set_pin (1, p_BT[1]);
+ pic_set_pin (2, p_BT[2]);
+ pic_set_pin (3, p_BT[3]);
 
  Window1.statusbar1.SetField (2, lxT (""));
 
@@ -395,16 +433,16 @@ cboard_McLab1::RegisterRemoteControl(void)
    switch (input[i].id)
     {
     case I_RA1:
-     input[i].status = &p_BT1;
+     input[i].status = &p_BT[0];
      break;
     case I_RA2:
-     input[i].status = &p_BT2;
+     input[i].status = &p_BT[1];
      break;
     case I_RA3:
-     input[i].status = &p_BT3;
+     input[i].status = &p_BT[2];
      break;
     case I_RA4:
-     input[i].status = &p_BT4;
+     input[i].status = &p_BT[3];
      break;
     case I_JP1:
      input[i].status = &jmp[0];
@@ -530,10 +568,10 @@ cboard_McLab1::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           Window1.Set_mcupwr (0);
           Reset ();
 
-          p_BT1 = 0;
-          p_BT2 = 0;
-          p_BT3 = 0;
-          p_BT4 = 0;
+          p_BT[0] = 1;
+          p_BT[1] = 1;
+          p_BT[2] = 1;
+          p_BT[3] = 1;
           Window1.statusbar1.SetField (0, lxT ("Stoped"));
          }
         else
@@ -554,28 +592,28 @@ cboard_McLab1::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           Window1.Set_mcupwr (0);
           Window1.Set_mcurst (1);
          }
-        p_MCLR = 0;
+        p_RST = 0;
        }
        break;
 
       case I_RA1:
        {
-        p_BT1 = 0;
+        p_BT[0] = 0;
        }
        break;
       case I_RA2:
        {
-        p_BT2 = 0;
+        p_BT[1] = 0;
        }
        break;
       case I_RA3:
        {
-        p_BT3 = 0;
+        p_BT[2] = 0;
        }
        break;
       case I_RA4:
        {
-        p_BT4 = 0;
+        p_BT[3] = 0;
        }
        break;
 
@@ -608,28 +646,28 @@ cboard_McLab1::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
             Reset ();
            }
          }
-        p_MCLR = 1;
+        p_RST = 1;
        }
        break;
 
       case I_RA1:
        {
-        p_BT1 = 1;
+        p_BT[0] = 1;
        }
        break;
       case I_RA2:
        {
-        p_BT2 = 1;
+        p_BT[1] = 1;
        }
        break;
       case I_RA3:
        {
-        p_BT3 = 1;
+        p_BT[2] = 1;
        }
        break;
       case I_RA4:
        {
-        p_BT4 = 1;
+        p_BT[3] = 1;
        }
        break;
 
@@ -645,19 +683,19 @@ cboard_McLab1::EvKeyPress(uint key, uint mask)
 {
  if (key == '1')
   {
-   p_BT1 = 0;
+   p_BT[0] = 0;
   }
  if (key == '2')
   {
-   p_BT2 = 0;
+   p_BT[1] = 0;
   }
  if (key == '3')
   {
-   p_BT3 = 0;
+   p_BT[2] = 0;
   }
  if (key == '4')
   {
-   p_BT4 = 0;
+   p_BT[3] = 0;
   }
 }
 
@@ -666,22 +704,22 @@ cboard_McLab1::EvKeyRelease(uint key, uint mask)
 {
  if (key == '1')
   {
-   p_BT1 = 1;
+   p_BT[0] = 1;
   }
 
  if (key == '2')
   {
-   p_BT2 = 1;
+   p_BT[1] = 1;
   }
 
  if (key == '3')
   {
-   p_BT3 = 1;
+   p_BT[2] = 1;
   }
 
  if (key == '4')
   {
-   p_BT4 = 1;
+   p_BT[3] = 1;
   }
 }
 
@@ -739,8 +777,15 @@ cboard_McLab1::get_out_id(char * name)
  if (strcmp (name, "SS_G2") == 0)return O_G2;
  if (strcmp (name, "SS_P2") == 0)return O_P2;
 
- if (strcmp (name, "JP_1") == 0)return O_JP1;
+ if (strcmp (name, "PB_RA1") == 0)return O_BRA1;
+ if (strcmp (name, "PB_RA2") == 0)return O_BRA2;
+ if (strcmp (name, "PB_RA3") == 0)return O_BRA3;
+ if (strcmp (name, "PB_RA4") == 0)return O_BRA4;
 
+ if (strcmp (name, "JP_1") == 0)return O_JP1;
+ 
+ if (strcmp (name, "PB_RST") == 0)return O_RST;
+ 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
 }

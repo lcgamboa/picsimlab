@@ -195,6 +195,17 @@ CPWindow1::timer2_EvOnTime(CControl * control)
 }
 
 void
+CPWindow1::draw1_EvMouseMove(CControl * control, uint button, uint x, uint y, uint state)
+{
+
+ x = x / scale;
+ y = y / scale;
+
+ pboard->EvMouseMove (button, x, y, state);
+
+}
+
+void
 CPWindow1::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uint y, uint state)
 {
 
