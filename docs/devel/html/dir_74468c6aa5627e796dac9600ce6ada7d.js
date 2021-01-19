@@ -21,6 +21,7 @@ var dir_74468c6aa5627e796dac9600ce6ada7d =
     [ "part_LEDs.h", "part___l_e_ds_8h_source.html", null ],
     [ "part_MI2C_24CXXX.h", "part___m_i2_c__24_c_x_x_x_8h_source.html", null ],
     [ "part_pot.h", "part__pot_8h_source.html", null ],
+    [ "part_pot_r.h", "part__pot__r_8h_source.html", null ],
     [ "part_push_buttons.h", "part__push__buttons_8h_source.html", null ],
     [ "part_push_buttons_an.h", "part__push__buttons__an_8h_source.html", null ],
     [ "part_RGB_LED.h", "part___r_g_b___l_e_d_8h_source.html", null ],

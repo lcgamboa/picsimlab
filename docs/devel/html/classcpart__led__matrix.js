@@ -16,6 +16,7 @@ var classcpart__led__matrix =
     [ "Process", "classcpart__led__matrix.html#a56e19bc963443c18dfa293abe837e7cb", null ],
     [ "ReadPreferences", "classcpart__led__matrix.html#a74148b20a474cf156d34e7d74f1c0890", null ],
     [ "ReadPropertiesWindow", "classcpart__led__matrix.html#acb01fbee290c7798645f2d935abebf97", null ],
+    [ "RegisterRemoteControl", "classcpart__led__matrix.html#a8699b06838446510933322057d8fd381", null ],
     [ "WritePreferences", "classcpart__led__matrix.html#a6163d4cdcc01a9516e50837c1d0bc95a", null ],
     [ "angle", "classcpart__led__matrix.html#a5c09cd609234c3d06ab26ef9f2a4d5af", null ],
     [ "input_pins", "classcpart__led__matrix.html#aad725ca94bfe400a3fdac7b5b0631554", null ],

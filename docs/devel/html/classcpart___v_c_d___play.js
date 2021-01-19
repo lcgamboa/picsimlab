@@ -20,6 +20,7 @@ var classcpart___v_c_d___play =
     [ "Process", "classcpart___v_c_d___play.html#aeb7eb44291d485c5ca391cfd7746c50b", null ],
     [ "ReadPreferences", "classcpart___v_c_d___play.html#a35ecf1adea5f78571fd9ab10d9bafddf", null ],
     [ "ReadPropertiesWindow", "classcpart___v_c_d___play.html#aa42c616d17900d95813f948421325eed", null ],
+    [ "RegisterRemoteControl", "classcpart___v_c_d___play.html#a5083ed0b6556e06ef5860be854cf22ed", null ],
     [ "WritePreferences", "classcpart___v_c_d___play.html#ab509076adfbb3e9ae13e454879fdaefb", null ],
     [ "f_vcd_name", "classcpart___v_c_d___play.html#a1310b7abe60cf993825511ad281c86b4", null ],
     [ "output_pins", "classcpart___v_c_d___play.html#a576b0f9454eede60b5d6adb15ac82598", null ],

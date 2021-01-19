@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('classcboard__x.html',''); initResizabl
 Inheritance diagram for cboard_x:</div>
 <div class="dyncontent">
 <div class="center"><img src="classcboard__x__inherit__graph.png" border="0" usemap="#acboard__x_inherit__map" alt="Inheritance graph"/></div>
-<map name="cboard__x_inherit__map" id="acboard__x_inherit__map">
+<map name="cboard__x_inherit__map" id="cboard__x_inherit__map">
 <area shape="rect" title=" " alt="" coords="17,155,98,181"/>
 <area shape="rect" href="classbsim__picsim.html" title=" " alt="" coords="5,80,109,107"/>
 <area shape="rect" href="classboard.html" title="Board class." alt="" coords="28,5,87,32"/>
@@ -107,7 +107,7 @@ Inheritance diagram for cboard_x:</div>
 Collaboration diagram for cboard_x:</div>
 <div class="dyncontent">
 <div class="center"><img src="classcboard__x__coll__graph.png" border="0" usemap="#acboard__x_coll__map" alt="Collaboration graph"/></div>
-<map name="cboard__x_coll__map" id="acboard__x_coll__map">
+<map name="cboard__x_coll__map" id="cboard__x_coll__map">
 <area shape="rect" title=" " alt="" coords="46,247,127,273"/>
 <area shape="rect" href="classbsim__picsim.html" title=" " alt="" coords="35,171,139,197"/>
 <area shape="rect" href="classboard.html" title="Board class." alt="" coords="57,95,116,121"/>
@@ -159,6 +159,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcboard__x.html#a0d8811cf02dd7638f25f151e278eaafe">EvMouseButtonRelease</a> (uint button, uint x, uint y, uint state)</td></tr>
 <tr class="memdesc:a0d8811cf02dd7638f25f151e278eaafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Event on the board. <br /></td></tr>
 <tr class="separator:a0d8811cf02dd7638f25f151e278eaafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10ee7f6090b28326392e4516d02b08f7"><td class="memItemLeft" align="right" valign="top"><a id="a10ee7f6090b28326392e4516d02b08f7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcboard__x.html#a10ee7f6090b28326392e4516d02b08f7">EvMouseMove</a> (uint button, uint x, uint y, uint state)</td></tr>
+<tr class="memdesc:a10ee7f6090b28326392e4516d02b08f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Event on the board. <br /></td></tr>
+<tr class="separator:a10ee7f6090b28326392e4516d02b08f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ec35f699502dc726d0d127f9fda8bb1"><td class="memItemLeft" align="right" valign="top"><a id="a4ec35f699502dc726d0d127f9fda8bb1"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcboard__x.html#a4ec35f699502dc726d0d127f9fda8bb1">EvKeyPress</a> (uint key, uint mask)</td></tr>
 <tr class="memdesc:a4ec35f699502dc726d0d127f9fda8bb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Event on the board. <br /></td></tr>
@@ -441,6 +445,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 <tr class="memdesc:a3f75b98d23eee2ccd94965d567220f86 inherit pub_methods_classboard"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get board input <br  />
  <br /></td></tr>
 <tr class="separator:a3f75b98d23eee2ccd94965d567220f86 inherit pub_methods_classboard"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad33f3c379cd910e781572ea1c110f844 inherit pub_methods_classboard"><td class="memItemLeft" align="right" valign="top"><a id="ad33f3c379cd910e781572ea1c110f844"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#ad33f3c379cd910e781572ea1c110f844">CalcAngle</a> (int i, int x, int y)</td></tr>
+<tr class="memdesc:ad33f3c379cd910e781572ea1c110f844 inherit pub_methods_classboard"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calc rotary potentiometer angle <br  />
+ <br /></td></tr>
+<tr class="separator:ad33f3c379cd910e781572ea1c110f844 inherit pub_methods_classboard"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -451,24 +460,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a765fb6033b1c5e50601bb7b90203fd1a"><td class="memItemLeft" align="right" valign="top"><a id="a765fb6033b1c5e50601bb7b90203fd1a"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>p_BT1</b></td></tr>
-<tr class="separator:a765fb6033b1c5e50601bb7b90203fd1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac33aa442ec66f4f191da0c5bd084cf3a"><td class="memItemLeft" align="right" valign="top"><a id="ac33aa442ec66f4f191da0c5bd084cf3a"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>p_BT2</b></td></tr>
-<tr class="separator:ac33aa442ec66f4f191da0c5bd084cf3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27356b8faed9556b1893e6f17b3d7e56"><td class="memItemLeft" align="right" valign="top"><a id="a27356b8faed9556b1893e6f17b3d7e56"></a>
-CScroll *&#160;</td><td class="memItemRight" valign="bottom"><b>scroll1</b></td></tr>
-<tr class="separator:a27356b8faed9556b1893e6f17b3d7e56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a65cd1336e5783da831738054bc7a78"><td class="memItemLeft" align="right" valign="top"><a id="a9a65cd1336e5783da831738054bc7a78"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>p_BT1</b></td></tr>
+<tr class="separator:a9a65cd1336e5783da831738054bc7a78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bdb999041c02caf994d655614025b5b"><td class="memItemLeft" align="right" valign="top"><a id="a5bdb999041c02caf994d655614025b5b"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>p_BT2</b></td></tr>
+<tr class="separator:a5bdb999041c02caf994d655614025b5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f3ffed12606ba1905f756615092b977"><td class="memItemLeft" align="right" valign="top"><a id="a1f3ffed12606ba1905f756615092b977"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>pot1</b></td></tr>
+<tr class="separator:a1f3ffed12606ba1905f756615092b977"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0b02797423ba173d76ed25fece03bf2"><td class="memItemLeft" align="right" valign="top"><a id="ab0b02797423ba173d76ed25fece03bf2"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>active</b></td></tr>
+<tr class="separator:ab0b02797423ba173d76ed25fece03bf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68701632f6cb78552e5e22333a66a136"><td class="memItemLeft" align="right" valign="top"><a id="a68701632f6cb78552e5e22333a66a136"></a>
 CGauge *&#160;</td><td class="memItemRight" valign="bottom"><b>gauge1</b></td></tr>
 <tr class="separator:a68701632f6cb78552e5e22333a66a136"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac745db44897867e19cba3c63d1dd48ac"><td class="memItemLeft" align="right" valign="top"><a id="ac745db44897867e19cba3c63d1dd48ac"></a>
 CGauge *&#160;</td><td class="memItemRight" valign="bottom"><b>gauge2</b></td></tr>
 <tr class="separator:ac745db44897867e19cba3c63d1dd48ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6499d8f1e7b6813459f5d36b7969fb3"><td class="memItemLeft" align="right" valign="top"><a id="aa6499d8f1e7b6813459f5d36b7969fb3"></a>
-CLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>label1</b></td></tr>
-<tr class="separator:aa6499d8f1e7b6813459f5d36b7969fb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdb2ddced9425be6e42cc0d69799b0a2"><td class="memItemLeft" align="right" valign="top"><a id="acdb2ddced9425be6e42cc0d69799b0a2"></a>
 CLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>label2</b></td></tr>
 <tr class="separator:acdb2ddced9425be6e42cc0d69799b0a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -523,10 +532,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 <tr class="memdesc:ac41e7f65ae979416dd133853774e206e inherit pro_attribs_classboard"><td class="mdescLeft">&#160;</td><td class="mdescRight">use spare parts window <br  />
  <br /></td></tr>
 <tr class="separator:ac41e7f65ae979416dd133853774e206e inherit pro_attribs_classboard"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1032804a2ca54d248911d4fdc1ee860a inherit pro_attribs_classboard"><td class="memItemLeft" align="right" valign="top"><a id="a1032804a2ca54d248911d4fdc1ee860a"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a1032804a2ca54d248911d4fdc1ee860a">p_MCLR</a></td></tr>
-<tr class="memdesc:a1032804a2ca54d248911d4fdc1ee860a inherit pro_attribs_classboard"><td class="mdescLeft">&#160;</td><td class="mdescRight">board /RESET pin state <br /></td></tr>
-<tr class="separator:a1032804a2ca54d248911d4fdc1ee860a inherit pro_attribs_classboard"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a851447b6b05b5f600cb587aae0c778 inherit pro_attribs_classboard"><td class="memItemLeft" align="right" valign="top"><a id="a7a851447b6b05b5f600cb587aae0c778"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a7a851447b6b05b5f600cb587aae0c778">p_RST</a></td></tr>
+<tr class="memdesc:a7a851447b6b05b5f600cb587aae0c778 inherit pro_attribs_classboard"><td class="mdescLeft">&#160;</td><td class="mdescRight">board /RESET pin state <br /></td></tr>
+<tr class="separator:a7a851447b6b05b5f600cb587aae0c778 inherit pro_attribs_classboard"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/boards/<a class="el" href="board__x_8h_source.html">board_x.h</a></li>

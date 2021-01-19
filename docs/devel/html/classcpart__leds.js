@@ -17,5 +17,6 @@ var classcpart__leds =
     [ "ReadPropertiesWindow", "classcpart__leds.html#a5af44da2e99931fc0b966c5da495cb93", null ],
     [ "RegisterRemoteControl", "classcpart__leds.html#a58303193d88c8d50ab90c32062665eea", null ],
     [ "WritePreferences", "classcpart__leds.html#a65b039be56794e7efdc602209b7876e6", null ],
+    [ "active", "classcpart__leds.html#a584166aadce067229f2bf84fcb33747c", null ],
     [ "input_pins", "classcpart__leds.html#aecd055bf1f783a9ca05ba4ff1acb0597", null ]
 ];

@@ -7,6 +7,7 @@ var classcboard__x =
     [ "EvKeyRelease", "classcboard__x.html#af6cb57797d9e100a624d3029c509d0bc", null ],
     [ "EvMouseButtonPress", "classcboard__x.html#aeca24c97cafc120f6e293faa0e877fda", null ],
     [ "EvMouseButtonRelease", "classcboard__x.html#a0d8811cf02dd7638f25f151e278eaafe", null ],
+    [ "EvMouseMove", "classcboard__x.html#a10ee7f6090b28326392e4516d02b08f7", null ],
     [ "EvOnShow", "classcboard__x.html#a783c1167e8b6085af3892bc82c6b3692", null ],
     [ "get_in_id", "classcboard__x.html#af22b7401d801dc22ca407acd9d1d2367", null ],
     [ "get_out_id", "classcboard__x.html#a253842be321749318a561d88b559773d", null ],
@@ -21,12 +22,12 @@ var classcboard__x =
     [ "Reset", "classcboard__x.html#a123c6c7d672c47c24eb192d620b14bde", null ],
     [ "Run_CPU", "classcboard__x.html#a84da87615eacef12186e019610b407fc", null ],
     [ "WritePreferences", "classcboard__x.html#a1a8ef6de897499136d5d6220b2e7a25f", null ],
+    [ "active", "classcboard__x.html#ab0b02797423ba173d76ed25fece03bf2", null ],
     [ "gauge1", "classcboard__x.html#a68701632f6cb78552e5e22333a66a136", null ],
     [ "gauge2", "classcboard__x.html#ac745db44897867e19cba3c63d1dd48ac", null ],
-    [ "label1", "classcboard__x.html#aa6499d8f1e7b6813459f5d36b7969fb3", null ],
     [ "label2", "classcboard__x.html#acdb2ddced9425be6e42cc0d69799b0a2", null ],
     [ "label3", "classcboard__x.html#aa2ee0d2d26fa58836c81651f937fcada", null ],
-    [ "p_BT1", "classcboard__x.html#a765fb6033b1c5e50601bb7b90203fd1a", null ],
-    [ "p_BT2", "classcboard__x.html#ac33aa442ec66f4f191da0c5bd084cf3a", null ],
-    [ "scroll1", "classcboard__x.html#a27356b8faed9556b1893e6f17b3d7e56", null ]
+    [ "p_BT1", "classcboard__x.html#a9a65cd1336e5783da831738054bc7a78", null ],
+    [ "p_BT2", "classcboard__x.html#a5bdb999041c02caf994d655614025b5b", null ],
+    [ "pot1", "classcboard__x.html#a1f3ffed12606ba1905f756615092b977", null ]
 ];

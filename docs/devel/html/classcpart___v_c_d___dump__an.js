@@ -17,6 +17,7 @@ var classcpart___v_c_d___dump__an =
     [ "Process", "classcpart___v_c_d___dump__an.html#a5021a58aa5989c23c76e29cb1c117498", null ],
     [ "ReadPreferences", "classcpart___v_c_d___dump__an.html#a1be2531de9817a83ddc48023b65035d0", null ],
     [ "ReadPropertiesWindow", "classcpart___v_c_d___dump__an.html#a19c5af71edc24e9d69e05ac6b6cef1fa", null ],
+    [ "RegisterRemoteControl", "classcpart___v_c_d___dump__an.html#aa0118e573fa972f8cd4c2775796900c5", null ],
     [ "WritePreferences", "classcpart___v_c_d___dump__an.html#a134e815c6aa433336c96d3576ddf9d42", null ],
     [ "f_vcd", "classcpart___v_c_d___dump__an.html#ae64c7a058e9ad7cedd2e0a5dccd829ef", null ],
     [ "f_vcd_name", "classcpart___v_c_d___dump__an.html#a5fc41a7ee07e4f8c16779b92898d9ecf", null ],

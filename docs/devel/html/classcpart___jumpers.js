@@ -20,6 +20,7 @@ var classcpart___jumpers =
     [ "Process", "classcpart___jumpers.html#a85b4136f99b6d37f6c3e928ee59f09b0", null ],
     [ "ReadPreferences", "classcpart___jumpers.html#ad2673704eeec2d4e3899c009f21887fd", null ],
     [ "ReadPropertiesWindow", "classcpart___jumpers.html#a9c767ea278a949ef8d2abf7e0364f76a", null ],
+    [ "RegisterRemoteControl", "classcpart___jumpers.html#acfd862082f21597de9d35c9a35182e5e", null ],
     [ "WritePreferences", "classcpart___jumpers.html#abed2c84e4a3484fc61313d0d4118b14d", null ],
     [ "ID", "classcpart___jumpers.html#aa7ae072397332a531f45b0a8cef343bf", null ],
     [ "input_pins", "classcpart___jumpers.html#aec70d127b3c09f9c9974870ce620bb2c", null ],

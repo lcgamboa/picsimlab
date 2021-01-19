@@ -19,6 +19,7 @@ var classcpart___e_t_h__w5500 =
     [ "Process", "classcpart___e_t_h__w5500.html#a64623939dfafd4d99e0dd5452bde3220", null ],
     [ "ReadPreferences", "classcpart___e_t_h__w5500.html#aa43e0bf97fd40020f59964542c3bb0d5", null ],
     [ "ReadPropertiesWindow", "classcpart___e_t_h__w5500.html#a9e1a23bfc8fdae05171658016ffaab61", null ],
+    [ "RegisterRemoteControl", "classcpart___e_t_h__w5500.html#a2513a6bf348299ee97ca2e3b882a0494", null ],
     [ "Reset", "classcpart___e_t_h__w5500.html#a7148a639411f3e091d453f84a58ffb6c", null ],
     [ "WritePreferences", "classcpart___e_t_h__w5500.html#ac9a2ea1a0f92ef8f96bc958f9ca28e86", null ],
     [ "_ret", "classcpart___e_t_h__w5500.html#a4ca12b2408b679534ca44a0f8a4b4008", null ],

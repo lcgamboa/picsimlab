@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['p_5fmclr_460',['p_MCLR',['../classboard.html#a1032804a2ca54d248911d4fdc1ee860a',1,'board']]],
-  ['proc_461',['Proc',['../classboard.html#a92f1e7588769e3cbc7cc0667c1bf3b8c',1,'board']]]
+  ['p_5frst_470',['p_RST',['../classboard.html#a7a851447b6b05b5f600cb587aae0c778',1,'board']]],
+  ['proc_471',['Proc',['../classboard.html#a92f1e7588769e3cbc7cc0667c1bf3b8c',1,'board']]]
 ];

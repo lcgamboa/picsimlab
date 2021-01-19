@@ -20,6 +20,7 @@ var classcpart__keypad =
     [ "Process", "classcpart__keypad.html#a9fb2bf6e68a2116300428944e0d63ed8", null ],
     [ "ReadPreferences", "classcpart__keypad.html#a85b5a7ee5c9a08b5228de33657f0fc48", null ],
     [ "ReadPropertiesWindow", "classcpart__keypad.html#ad23adb747c44885116097adf75fb0157", null ],
+    [ "RegisterRemoteControl", "classcpart__keypad.html#af7f3aefe848f3651fb5e49ca58cc2426", null ],
     [ "WritePreferences", "classcpart__keypad.html#ac369dadfd6346e0e60a96692ab1810bb", null ],
     [ "keys", "classcpart__keypad.html#a6896c36cc13a7dc34b2dd0c838537967", null ],
     [ "keys2", "classcpart__keypad.html#adc06e1f274355d4f47a6b75196b2d9be", null ],

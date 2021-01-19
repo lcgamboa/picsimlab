@@ -25,8 +25,5 @@ var classcboard___mc_lab1 =
     [ "label1", "classcboard___mc_lab1.html#a48889859ff9077955200512b943200f0", null ],
     [ "lm1", "classcboard___mc_lab1.html#a3a6bfe9b4859bde4c0e4f6239daf51d8", null ],
     [ "lm2", "classcboard___mc_lab1.html#ae61c1f87bd0b39da67d4f8a62fd75e7e", null ],
-    [ "p_BT1", "classcboard___mc_lab1.html#a5a4d605ec4ca56ae7da4e18398f45480", null ],
-    [ "p_BT2", "classcboard___mc_lab1.html#a1dbfd46c9d80ea711ff707435aae6aa9", null ],
-    [ "p_BT3", "classcboard___mc_lab1.html#a4d020f2804045bbb41d38d09acf19e8e", null ],
-    [ "p_BT4", "classcboard___mc_lab1.html#ab1829c772ab4fc32907abd9303cfdbbe", null ]
+    [ "p_BT", "classcboard___mc_lab1.html#a70c2922ac39d9bd0e34861a604a18cc7", null ]
 ];

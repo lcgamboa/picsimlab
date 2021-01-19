@@ -19,6 +19,7 @@ var classcpart__pot =
     [ "PreProcess", "classcpart__pot.html#ab4c306a8fa31d41bb16be64cfb33066b", null ],
     [ "ReadPreferences", "classcpart__pot.html#aeb64696bf34b3fff68770ebd053f1d5a", null ],
     [ "ReadPropertiesWindow", "classcpart__pot.html#a99192b5916a60d69d36ab7b6ef3488d5", null ],
+    [ "RegisterRemoteControl", "classcpart__pot.html#addfe477fed06cc2195c4ee627a8275f2", null ],
     [ "WritePreferences", "classcpart__pot.html#a1b42ef8d670a856ef47af37747a6f4cb", null ],
     [ "active", "classcpart__pot.html#a501e20d6fbeafcd17707d089e6bfb5af", null ],
     [ "input_pins", "classcpart__pot.html#a5c0c3b536c83c6ed59d121942963fa81", null ],

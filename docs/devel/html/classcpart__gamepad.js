@@ -21,11 +21,11 @@ var classcpart__gamepad =
     [ "PreProcess", "classcpart__gamepad.html#a0f9740476c5db66ebbc2ef43b68d4b01", null ],
     [ "ReadPreferences", "classcpart__gamepad.html#a2da81052e5dd6e171a4bb8226eaf26e2", null ],
     [ "ReadPropertiesWindow", "classcpart__gamepad.html#a1e73018c36eb564d0bec96ad653c0343", null ],
+    [ "RegisterRemoteControl", "classcpart__gamepad.html#ac72c3b96076e9b222a2ff183e8961e11", null ],
     [ "WritePreferences", "classcpart__gamepad.html#aba47a8c404c0b825e0d84c0aa78ad9e6", null ],
     [ "active", "classcpart__gamepad.html#ae294a7117d0005e91e9d8c5cfe2c6e2e", null ],
     [ "jr", "classcpart__gamepad.html#a27775a8803013a398001ffebd8f7a5eb", null ],
     [ "output_pins", "classcpart__gamepad.html#a1b5a640b8f225ae20f57eac1dad8111e", null ],
-    [ "output_value", "classcpart__gamepad.html#a97634f9259d1aa74fc5cca1207874645", null ],
-    [ "valuex", "classcpart__gamepad.html#a6506883148e9eaf04b05074cab739b60", null ],
-    [ "valuey", "classcpart__gamepad.html#a8ac029fa1226bba922875f9d1e180b26", null ]
+    [ "output_value", "classcpart__gamepad.html#a9522eb215a8c5dd5d931b5844a608bf6", null ],
+    [ "value", "classcpart__gamepad.html#acf9529dfa18211d6b46412d28ea022c2", null ]
 ];

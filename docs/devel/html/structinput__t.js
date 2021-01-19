@@ -1,5 +1,7 @@
 var structinput__t =
 [
+    [ "cx", "structinput__t.html#ae63c55ca19134eccd72636e215e30529", null ],
+    [ "cy", "structinput__t.html#ab0c200cf2cc9ad297b441c984ba9bde6", null ],
     [ "id", "structinput__t.html#abe43c23b664e9053363c94fde0e2f4ce", null ],
     [ "name", "structinput__t.html#a3b1ff707fb82e2a731d3b6097eaa313e", null ],
     [ "status", "structinput__t.html#aa46e9709c149cb3cdc28825ba28fb7ed", null ],

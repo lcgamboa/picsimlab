@@ -1,5 +1,7 @@
 var structoutput__t =
 [
+    [ "cx", "structoutput__t.html#ad051fb510501ead87279b2500ff5b235", null ],
+    [ "cy", "structoutput__t.html#a8c48df24637854cd5ff1f5942d13285a", null ],
     [ "id", "structoutput__t.html#a7c42d3f23b23b1fa08f869f269104a9e", null ],
     [ "name", "structoutput__t.html#a7cf3bb99ac5c2da3c4a9f3767c2c6534", null ],
     [ "r", "structoutput__t.html#ae37f087fce961294c1e90296452f2e0b", null ],

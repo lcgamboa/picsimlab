@@ -45,6 +45,7 @@ var classpart =
     [ "ReadPropertiesWindow", "classpart.html#a8fb524bfa1f3edb951ccc7a75c564e6d", null ],
     [ "RegisterRemoteControl", "classpart.html#aecbcd4d1e3d02ea8efda7633b3c277ba", null ],
     [ "Reset", "classpart.html#a9da0412a19116a4f52381c17af4e530f", null ],
+    [ "RotateCoords", "classpart.html#a992a5000e6919e07c4553ed6817f8360", null ],
     [ "SetId", "classpart.html#a28e6c02a001c633b76caefe61b666f1a", null ],
     [ "SetOrientation", "classpart.html#a2e5becd7108e8fab479a0a47a013c460", null ],
     [ "SetX", "classpart.html#aeb1dcec741ed0694dc2c779d7e2de2d1", null ],

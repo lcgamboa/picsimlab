@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('classbsim__simavr.html',''); initResiz
 Inheritance diagram for bsim_simavr:</div>
 <div class="dyncontent">
 <div class="center"><img src="classbsim__simavr__inherit__graph.png" border="0" usemap="#absim__simavr_inherit__map" alt="Inheritance graph"/></div>
-<map name="bsim__simavr_inherit__map" id="absim__simavr_inherit__map">
+<map name="bsim__simavr_inherit__map" id="bsim__simavr_inherit__map">
 <area shape="rect" title=" " alt="" coords="118,80,225,107"/>
 <area shape="rect" href="classcboard___arduino___uno.html" title=" " alt="" coords="5,155,161,181"/>
 <area shape="rect" href="classcboard___breadboard.html" title=" " alt="" coords="185,155,333,181"/>
@@ -111,7 +111,7 @@ Inheritance diagram for bsim_simavr:</div>
 Collaboration diagram for bsim_simavr:</div>
 <div class="dyncontent">
 <div class="center"><img src="classbsim__simavr__coll__graph.png" border="0" usemap="#absim__simavr_coll__map" alt="Collaboration graph"/></div>
-<map name="bsim__simavr_coll__map" id="absim__simavr_coll__map">
+<map name="bsim__simavr_coll__map" id="bsim__simavr_coll__map">
 <area shape="rect" title=" " alt="" coords="89,184,196,211"/>
 <area shape="rect" href="classboard.html" title="Board class." alt="" coords="57,95,116,121"/>
 <area shape="rect" href="structinput__t.html" title="input map struct" alt="" coords="5,5,72,32"/>
@@ -344,6 +344,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a7d59fb4f740646eb2a41c2528776c729">EvMouseButtonRelease</a> (uint button, uint x, uint y, uint state)=0</td></tr>
 <tr class="memdesc:a7d59fb4f740646eb2a41c2528776c729 inherit pub_methods_classboard"><td class="mdescLeft">&#160;</td><td class="mdescRight">Event on the board. <br /></td></tr>
 <tr class="separator:a7d59fb4f740646eb2a41c2528776c729 inherit pub_methods_classboard"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad961650c2a9866f192f3186ba9fc496b inherit pub_methods_classboard"><td class="memItemLeft" align="right" valign="top"><a id="ad961650c2a9866f192f3186ba9fc496b"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#ad961650c2a9866f192f3186ba9fc496b">EvMouseMove</a> (uint button, uint x, uint y, uint state)</td></tr>
+<tr class="memdesc:ad961650c2a9866f192f3186ba9fc496b inherit pub_methods_classboard"><td class="mdescLeft">&#160;</td><td class="mdescRight">Event on the board. <br /></td></tr>
+<tr class="separator:ad961650c2a9866f192f3186ba9fc496b inherit pub_methods_classboard"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a45a6e6f2ed67d282ac303abbde1725 inherit pub_methods_classboard"><td class="memItemLeft" align="right" valign="top"><a id="a6a45a6e6f2ed67d282ac303abbde1725"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a6a45a6e6f2ed67d282ac303abbde1725">EvKeyPress</a> (uint key, uint mask)=0</td></tr>
 <tr class="memdesc:a6a45a6e6f2ed67d282ac303abbde1725 inherit pub_methods_classboard"><td class="mdescLeft">&#160;</td><td class="mdescRight">Event on the board. <br /></td></tr>
@@ -450,6 +454,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 virtual lxString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#ab6ef377f7097d785acea08dde6ac7aa2">GetAboutInfo</a> (void)=0</td></tr>
 <tr class="memdesc:ab6ef377f7097d785acea08dde6ac7aa2 inherit pub_methods_classboard"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the about information of part. <br /></td></tr>
 <tr class="separator:ab6ef377f7097d785acea08dde6ac7aa2 inherit pub_methods_classboard"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad33f3c379cd910e781572ea1c110f844 inherit pub_methods_classboard"><td class="memItemLeft" align="right" valign="top"><a id="ad33f3c379cd910e781572ea1c110f844"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#ad33f3c379cd910e781572ea1c110f844">CalcAngle</a> (int i, int x, int y)</td></tr>
+<tr class="memdesc:ad33f3c379cd910e781572ea1c110f844 inherit pub_methods_classboard"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calc rotary potentiometer angle <br  />
+ <br /></td></tr>
+<tr class="separator:ad33f3c379cd910e781572ea1c110f844 inherit pub_methods_classboard"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -540,10 +549,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 <tr class="memdesc:ac41e7f65ae979416dd133853774e206e inherit pro_attribs_classboard"><td class="mdescLeft">&#160;</td><td class="mdescRight">use spare parts window <br  />
  <br /></td></tr>
 <tr class="separator:ac41e7f65ae979416dd133853774e206e inherit pro_attribs_classboard"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1032804a2ca54d248911d4fdc1ee860a inherit pro_attribs_classboard"><td class="memItemLeft" align="right" valign="top"><a id="a1032804a2ca54d248911d4fdc1ee860a"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a1032804a2ca54d248911d4fdc1ee860a">p_MCLR</a></td></tr>
-<tr class="memdesc:a1032804a2ca54d248911d4fdc1ee860a inherit pro_attribs_classboard"><td class="mdescLeft">&#160;</td><td class="mdescRight">board /RESET pin state <br /></td></tr>
-<tr class="separator:a1032804a2ca54d248911d4fdc1ee860a inherit pro_attribs_classboard"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a851447b6b05b5f600cb587aae0c778 inherit pro_attribs_classboard"><td class="memItemLeft" align="right" valign="top"><a id="a7a851447b6b05b5f600cb587aae0c778"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classboard.html#a7a851447b6b05b5f600cb587aae0c778">p_RST</a></td></tr>
+<tr class="memdesc:a7a851447b6b05b5f600cb587aae0c778 inherit pro_attribs_classboard"><td class="mdescLeft">&#160;</td><td class="mdescRight">board /RESET pin state <br /></td></tr>
+<tr class="separator:a7a851447b6b05b5f600cb587aae0c778 inherit pro_attribs_classboard"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>

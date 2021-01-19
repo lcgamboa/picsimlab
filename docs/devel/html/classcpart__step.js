@@ -16,6 +16,7 @@ var classcpart__step =
     [ "Process", "classcpart__step.html#af3b32031e0fe2e8157e8ecdf266f2ad6", null ],
     [ "ReadPreferences", "classcpart__step.html#a7765f0118fb9f8446766f8602e5f3d02", null ],
     [ "ReadPropertiesWindow", "classcpart__step.html#aebf72a6adc9000547adbdabebda5b2ac", null ],
+    [ "RegisterRemoteControl", "classcpart__step.html#a1f3c31d7af8511da3051dd0e6269cc2d", null ],
     [ "WritePreferences", "classcpart__step.html#a4803a54e5ef75db78bfe93a4dfa10ade", null ],
     [ "angle", "classcpart__step.html#ad39c9f3771b18c983395d0d851288077", null ],
     [ "b1", "classcpart__step.html#a83e5b7d2bdf56b8ed93361335442e5e9", null ],

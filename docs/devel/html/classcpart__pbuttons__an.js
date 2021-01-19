@@ -18,9 +18,11 @@ var classcpart__pbuttons__an =
     [ "PreProcess", "classcpart__pbuttons__an.html#a81b3baf854161771e6db1b96ed293064", null ],
     [ "ReadPreferences", "classcpart__pbuttons__an.html#a01958239cad5b9abed2a2d927ebe64f3", null ],
     [ "ReadPropertiesWindow", "classcpart__pbuttons__an.html#ae6a3d0d4f6df7c26f95e531e52a5edcb", null ],
+    [ "RegisterRemoteControl", "classcpart__pbuttons__an.html#abbda84ef2fc01f51996974b7ba17785d", null ],
     [ "Reset", "classcpart__pbuttons__an.html#ac05e616b626c5f9b81271cebe53234d3", null ],
     [ "WritePreferences", "classcpart__pbuttons__an.html#a9d8b311ec89d169a50c9eca5e7938753", null ],
     [ "active", "classcpart__pbuttons__an.html#a22cb99b4b18138fa451ae71636726012", null ],
     [ "output_pins", "classcpart__pbuttons__an.html#a94276fb99c84bcbc1a2463c9b36f5af9", null ],
-    [ "output_value", "classcpart__pbuttons__an.html#a4b8306b73670e2fd275f09c2f715b887", null ]
+    [ "output_value", "classcpart__pbuttons__an.html#a4b8306b73670e2fd275f09c2f715b887", null ],
+    [ "output_value_", "classcpart__pbuttons__an.html#ae7a34f3d9c234e96aacbc8825b0fded4", null ]
 ];

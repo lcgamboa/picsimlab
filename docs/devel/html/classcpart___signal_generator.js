@@ -20,6 +20,7 @@ var classcpart___signal_generator =
     [ "Process", "classcpart___signal_generator.html#a7306ebd605a503a76886138e59f11d67", null ],
     [ "ReadPreferences", "classcpart___signal_generator.html#a0c8e371e8a05eac784469588c521a0d5", null ],
     [ "ReadPropertiesWindow", "classcpart___signal_generator.html#a31382fd4cdcb6ce5082c1206aea080f0", null ],
+    [ "RegisterRemoteControl", "classcpart___signal_generator.html#adaddb40dbff5cb1e1354bfa632dd05a2", null ],
     [ "WritePreferences", "classcpart___signal_generator.html#a53239795c7a90a60982383ff6678547f", null ],
     [ "active", "classcpart___signal_generator.html#a152a5b4ee00244d8e50441c924c398fc", null ],
     [ "ampl", "classcpart___signal_generator.html#a23907c253e316cc6c30853033d631d97", null ],

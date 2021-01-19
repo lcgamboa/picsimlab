@@ -2,6 +2,14 @@
 
 ### New
 
+* Push buttons and potentiometer animation implemented. [lcgamboa]
+
+* New part rotary potentiometer. [lcgamboa]
+
+* Support to active parts with low input signal for LEDs, RGB LED, Buzzer and 7 segments display. [lcgamboa]
+
+* Support to save board potentiometers position. [lcgamboa]
+
 * Initial support to TCP remote control interface. [lcgamboa]
 
 * Initial support to touch controller xpt2046. [lcgamboa]

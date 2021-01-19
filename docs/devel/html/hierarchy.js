@@ -76,6 +76,7 @@ var hierarchy =
       [ "cpart_pbuttons", "classcpart__pbuttons.html", null ],
       [ "cpart_pbuttons_an", "classcpart__pbuttons__an.html", null ],
       [ "cpart_pot", "classcpart__pot.html", null ],
+      [ "cpart_pot_r", "classcpart__pot__r.html", null ],
       [ "cpart_rgb_led", "classcpart__rgb__led.html", null ],
       [ "cpart_RTC_ds1307", "classcpart___r_t_c__ds1307.html", null ],
       [ "cpart_RTC_pfc8563", "classcpart___r_t_c__pfc8563.html", null ],

@@ -47,6 +47,7 @@ var annotated_dup =
     [ "cpart_pbuttons", "classcpart__pbuttons.html", "classcpart__pbuttons" ],
     [ "cpart_pbuttons_an", "classcpart__pbuttons__an.html", "classcpart__pbuttons__an" ],
     [ "cpart_pot", "classcpart__pot.html", "classcpart__pot" ],
+    [ "cpart_pot_r", "classcpart__pot__r.html", "classcpart__pot__r" ],
     [ "cpart_rgb_led", "classcpart__rgb__led.html", "classcpart__rgb__led" ],
     [ "cpart_RTC_ds1307", "classcpart___r_t_c__ds1307.html", "classcpart___r_t_c__ds1307" ],
     [ "cpart_RTC_pfc8563", "classcpart___r_t_c__pfc8563.html", "classcpart___r_t_c__pfc8563" ],

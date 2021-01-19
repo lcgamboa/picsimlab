@@ -19,6 +19,7 @@ var classcpart___l_c_d__hd44780 =
     [ "Process", "classcpart___l_c_d__hd44780.html#a4c189c7ec3e92dde7ec744e3a7227d80", null ],
     [ "ReadPreferences", "classcpart___l_c_d__hd44780.html#a6bb9dfe09fabf2f607bb02d505d63d89", null ],
     [ "ReadPropertiesWindow", "classcpart___l_c_d__hd44780.html#a7c6267f7d279d1c121d1cc1f207c6242", null ],
+    [ "RegisterRemoteControl", "classcpart___l_c_d__hd44780.html#a92eb5418d5f5c65e4556fe3a07c840ca", null ],
     [ "Reset", "classcpart___l_c_d__hd44780.html#a174b8dcf7ab2cad01b42b59eceb189db", null ],
     [ "SetOrientation", "classcpart___l_c_d__hd44780.html#a2d9fd9127edd0b8b4cb4594f5ec6d2e2", null ],
     [ "WritePreferences", "classcpart___l_c_d__hd44780.html#aba5d38350722e9ea141bb47c42b22c6b", null ],

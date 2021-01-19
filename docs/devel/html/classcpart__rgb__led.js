@@ -15,6 +15,9 @@ var classcpart__rgb__led =
     [ "GetPropertiesWindowFile", "classcpart__rgb__led.html#a2538c0f6ec6ddd5f7a8800dab252a866", null ],
     [ "ReadPreferences", "classcpart__rgb__led.html#a395b7e536dde11224372c7d2be616a35", null ],
     [ "ReadPropertiesWindow", "classcpart__rgb__led.html#ad7dda55243c008757938a41121342aee", null ],
+    [ "RegisterRemoteControl", "classcpart__rgb__led.html#a0962405143b97ce42d1c4fe2e3ed7e5c", null ],
     [ "WritePreferences", "classcpart__rgb__led.html#aff90f5f1185e1daa98c89a3e2390a779", null ],
+    [ "active", "classcpart__rgb__led.html#af8d106c4b5f8ddbfaed4a4fcdf213860", null ],
+    [ "color", "classcpart__rgb__led.html#ac5e2abb306fc7da2fd0739ac8d731874", null ],
     [ "input_pins", "classcpart__rgb__led.html#a35dde70a418ca340aab9a149aa1dfcf5", null ]
 ];

@@ -1,10 +1,10 @@
 ### TODOs
 | Filename | line # | TODO
 |:------|:------:|:------
-| [src/picsimlab1.cc](src/picsimlab1.cc#L359) | 359 | verify initialization errors
+| [src/picsimlab1.cc](src/picsimlab1.cc#L370) | 370 | verify initialization errors
 | [src/picsimlab4.cc](src/picsimlab4.cc#L586) | 586 | select the better mode for channel trigguer
-| [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L103) | 103 | jumper support
-| [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L62) | 62 | TEMP cooler must don't work with AQUE=0
+| [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L110) | 110 | jumper support
+| [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L67) | 67 | TEMP cooler must don't work with AQUE=0
 | [src/boards/bsim_gpsim.cc](src/boards/bsim_gpsim.cc#L170) | 170 | add VCC and GND pins
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L866) | 866 | default output value is not used yet (DOV)
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1156) | 1156 | avr ID pointer
