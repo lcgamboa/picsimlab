@@ -403,7 +403,8 @@ cboard_x::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       case I_POT1:
        {
         active = 1;
-        pot1 = CalcAngle (i, x, y);
+        pot1 = (x - input[i].x1)*2.77;
+        if (pot1 > 199)pot1 = 199;
        }
        break;
       }
@@ -428,7 +429,8 @@ cboard_x::EvMouseMove(uint button, uint x, uint y, uint state)
       {
        if (active)
         {
-         pot1 = CalcAngle (i, x, y);
+         pot1 = (x - input[i].x1)*2.77;
+         if (pot1 > 199)pot1 = 199;
         }
       }
      break;
@@ -552,17 +554,10 @@ cboard_x::Draw(CDraw *draw, double scale)
       }
      else if (output[i].id == O_POT1)
       {
-       draw->Canvas.SetColor (66, 109, 246);
+       draw->Canvas.SetColor (50, 50, 50);
        draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-
        draw->Canvas.SetColor (250, 250, 250);
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 15);
-
-       draw->Canvas.SetColor (150, 150, 150);
-       int x = -10 * sin ((5.585 * (pot1 / 200.0)) + 0.349);
-       int y = 10 * cos ((5.585 * (pot1 / 200.0)) + 0.349);
-       draw->Canvas.Circle (1, output[i].cx + x, output[i].cy + y, 3);
-
+       draw->Canvas.Rectangle (1, output[i].x1 + pot1 / 2.77, output[i].y1 + 5, 10, 20);
       }
     }
    else //if output shape is a circle

@@ -581,12 +581,12 @@ cboard_Xpress::Draw(CDraw *draw, double scale)
      else if (output[i].id == O_POT1)
       {
 
-       draw->Canvas.SetColor (250, 250, 250);
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 15);
+       draw->Canvas.SetColor (26, 69, 206);
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 20);
 
        draw->Canvas.SetColor (150, 150, 150);
-       int x = -10 * sin ((5.585 * (pot1 / 200.0)) + 0.349);
-       int y = 10 * cos ((5.585 * (pot1 / 200.0)) + 0.349);
+       int x = -16 * sin ((5.585 * (pot1 / 200.0)) + 0.349);
+       int y = 16 * cos ((5.585 * (pot1 / 200.0)) + 0.349);
        draw->Canvas.Circle (1, output[i].cx + x, output[i].cy + y, 3);
 
       }
