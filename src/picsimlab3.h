@@ -41,11 +41,14 @@ class CPWindow3:public CPWindow
   CCombo combo3;
   CLabel label4;
   CSpin spin1;
+  CSpin spin2;
+  CLabel label5;
+  CButton button2;
   /*#Events*/
   void _EvOnCreate(CControl * control);
   void _EvOnShow(CControl * control);
-  void button1_EvMouseButtonClick(CControl * control,const uint button,const uint x,const uint y,const uint state);
-
+  void button1_EvMouseButtonClick(CControl * control, const uint button, const uint x,const  uint y,const  uint state);
+  void button2_EvMouseButtonClick(CControl * control, const uint button, const uint x,const  uint y, const uint state);
   /*#Others*/
   CPWindow3(void);
 };

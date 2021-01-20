@@ -429,6 +429,7 @@ mcudbg=0;
 debug=0;
 debug_type=0;
 debug_port=1234;
+remotec_port=5000;
 osc_on= 0;
 spare_on= 0;
 status.status=0;

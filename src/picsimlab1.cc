@@ -122,7 +122,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
   {
    tgo = 1; //thread sync
   }
- 
+
  rcontrol_loop ();
 }
 
@@ -346,7 +346,7 @@ CPWindow1::_EvOnCreate(CControl * control)
   }
  create++;
 
- rcontrol_init (5000);
+ rcontrol_init (remotec_port);
 }
 
 void
@@ -417,7 +417,7 @@ CPWindow1::Configure(CControl * control, const char * home)
          lab_ = i;
 
          pboard = create_board (&lab, &lab_);
-         pboard->SetName(boards_list[lab].name);
+         pboard->SetName (boards_list[lab].name);
          SetClock (2.0); //Default clock
 
         }
@@ -433,6 +433,11 @@ CPWindow1::Configure(CControl * control, const char * home)
          sscanf (value, "%i", &debug_type);
         }
 
+       if (!strcmp (name, "picsimlab_remotecp"))
+        {
+         sscanf (value, "%hu", &remotec_port);
+        }
+       
        if (!strcmp (name, "picsimlab_debugp"))
         {
          sscanf (value, "%hu", &debug_port);
@@ -695,6 +700,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
  saveprefs (lxT ("picsimlab_debug"), itoa (debug));
  saveprefs (lxT ("picsimlab_debugt"), itoa (debug_type));
  saveprefs (lxT ("picsimlab_debugp"), itoa (debug_port));
+ saveprefs (lxT ("picsimlab_remotecp"), itoa (remotec_port));
  saveprefs (lxT ("picsimlab_position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
  saveprefs (lxT ("osc_on"), itoa (pboard->GetUseOscilloscope ()));
  saveprefs (lxT ("spare_on"), itoa (pboard->GetUseSpareParts ()));
@@ -1597,6 +1603,25 @@ CPWindow1::GetClock(void)
  return atof (combo1.GetText ());
 }
 
+void
+CPWindow1::Set_debug_port(unsigned short dp)
+{
+ debug_port = dp;
+ if (debug)
+  {
+   togglebutton1.SetCheck (0);
+   togglebutton1_EvOnToggleButton (this);
+  }
+}
+
+void
+CPWindow1::Set_remotec_port(unsigned short rcp)
+{
+ remotec_port = rcp;
+
+ rcontrol_end ();
+ rcontrol_init (remotec_port);
+}
 
 
 #ifdef __EMSCRIPTEN__

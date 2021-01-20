@@ -66,6 +66,8 @@ CPWindow3::button1_EvMouseButtonClick(CControl * control, uint button, uint x, u
  Window1.Set_debug_type (combo3.GetText ().compare ("GDB") == 0);
  
  Window1.Set_debug_port (spin1.GetValue ());
+
+ Window1.Set_remotec_port (spin2.GetValue ());
  
 #ifdef _USE_PICSTARTP_ 
  if (combo1.GetText () == combo2.GetText ())
@@ -84,6 +86,11 @@ CPWindow3::button1_EvMouseButtonClick(CControl * control, uint button, uint x, u
  if (osc_on) Window1.menu1_Modules_Oscilloscope_EvMenuActive (this);
  if (spare_on) Window1.menu1_Modules_Spareparts_EvMenuActive (this);
 
+ WDestroy ();
+}
+void
+CPWindow3::button2_EvMouseButtonClick(CControl * control, uint button, uint x, uint y, uint state)
+{
  WDestroy ();
 }
 
@@ -121,6 +128,8 @@ CPWindow3::_EvOnShow(CControl * control)
   }
  
   spin1.SetValue (Window1.Get_debug_port ());
+  
+  spin2.SetValue (Window1.Get_remotec_port ());
 }
 
 

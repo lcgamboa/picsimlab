@@ -191,6 +191,13 @@ public:
     };
 
     /**
+     * @brief  Return the selected remote control port
+     */
+    unsigned short Get_remotec_port(void) {
+        return remotec_port;
+    };
+
+    /**
      * @brief  Return actual power status of microcontroller ON/OFF
      */
     int Get_mcupwr(void) {
@@ -237,9 +244,9 @@ public:
         debug_type = dt;
     };
     
-    void Set_debug_port(unsigned short dp) {
-        debug_port = dp;
-    };
+    void Set_debug_port(unsigned short dp);
+      
+    void Set_remotec_port(unsigned short rcp);
     
     void Set_mcudbg(int pd);
 
@@ -294,6 +301,7 @@ private:
     int debug;
     int debug_type;
     unsigned short debug_port;
+    unsigned short remotec_port;
     int osc_on;
     int spare_on;
 
