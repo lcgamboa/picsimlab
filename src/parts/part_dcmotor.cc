@@ -99,7 +99,8 @@ void
 cpart_encoder::Draw(void)
 {
 
- int i, x, y;
+ int i;
+ char val[10];
 
  canvas.Init (1.0, 1.0, orientation);
 
@@ -131,8 +132,8 @@ cpart_encoder::Draw(void)
      canvas.Circle (1, output[i].cx, output[i].cy, 25);
 
      canvas.SetColor (250, 250, 250);
-     x = -18 * sin ((2 * M_PI * (value / 200.0)));
-     y = 18 * cos ((2 * M_PI * (value / 200.0)));
+     int x = -18 * sin ((2 * M_PI * (value / 200.0)));
+     int y = 18 * cos ((2 * M_PI * (value / 200.0)));
      canvas.Circle (1, output[i].cx + x, output[i].cy + y, 5);
      /*
      canvas.SetColor (250, 250, 250);
@@ -141,18 +142,7 @@ cpart_encoder::Draw(void)
      canvas.SetColor (150, 0, 0);
      canvas.SetFont (font_p);
      canvas.RotatedText (val, output[i].x1 + 6, output[i].y2 + 6, 0);
-      */
-     break;
-    case O_BTN:
-     if (p_BTN)
-      {
-       canvas.SetColor (170, 170, 170);
-      }
-     else
-      {
-       canvas.SetColor (130, 130, 130);
-      }
-     canvas.Circle (1, output[i].cx, output[i].cy, 9);
+     */
      break;
     }
 
@@ -190,7 +180,7 @@ cpart_encoder::PreProcess(void)
 
    state = (((value_old) % 10)*10) / 25;
 
-   dir = ((da > 0) ? 1 : 0);
+   dir = ((da > 0) ? 1: 0 );
 
 
    dprintf ("da=%i  %i  %i state=%i  dir=%i\n", da, value_, value_old, state, dir);
@@ -221,7 +211,6 @@ cpart_encoder::PreProcess(void)
    step = 0;
   }
 
- if (input_pins[2])Window5.SetPin (input_pins[2], p_BTN);
 }
 
 void
@@ -283,11 +272,8 @@ cpart_encoder::EvMouseButtonPress(uint button, uint x, uint y, uint state)
      switch (input[i].id)
       {
       case I_RT1:
-       if (p_BTN)
-        {
-         value = CalcAngle (i, x, y);
-         active = 1;
-        }
+       value = CalcAngle (i, x, y);
+       active = 1;
        break;
       case I_BTN:
        p_BTN = 0;

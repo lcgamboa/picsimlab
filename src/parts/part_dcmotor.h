@@ -23,8 +23,8 @@
 	   For e-mail suggestions :  lcgamboa@yahoo.com
 	   ######################################################################## */
 
-#ifndef PART_ENCODER_H
-#define	PART_ENCODER_H
+#ifndef PART_POT_H
+#define	PART_POT_H
 
 #include<lxrad.h>
 #include"part.h"
@@ -70,5 +70,5 @@ class cpart_encoder:public part
 
 
 
-#endif	/* ENCODER */
+#endif	/* POT */
 
