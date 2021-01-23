@@ -55,10 +55,10 @@ cpart_pot::cpart_pot(unsigned x, unsigned y)
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
 
- input_pins[0] = 0;
- input_pins[1] = 0;
- input_pins[2] = 0;
- input_pins[3] = 0;
+ output_pins[0] = 0;
+ output_pins[1] = 0;
+ output_pins[2] = 0;
+ output_pins[3] = 0;
 
  values[0] = 0;
  values[1] = 0;
@@ -129,10 +129,10 @@ cpart_pot::Draw(void)
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     if (input_pins[output[i].id - O_P1] == 0)
+     if (output_pins[output[i].id - O_P1] == 0)
       canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
      else
-      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
+      canvas.RotatedText (Window5.GetPinName (output_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
      break;
     case O_PO1:
     case O_PO2:
@@ -160,10 +160,10 @@ cpart_pot::Draw(void)
 void
 cpart_pot::PreProcess(void)
 {
- Window5.SetAPin (input_pins[0], 5.0 * (200 - values[0]) / 200.0);
- Window5.SetAPin (input_pins[1], 5.0 * (200 - values[1]) / 200.0);
- Window5.SetAPin (input_pins[2], 5.0 * (200 - values[2]) / 200.0);
- Window5.SetAPin (input_pins[3], 5.0 * (200 - values[3]) / 200.0);
+ Window5.SetAPin (output_pins[0], 5.0 * (200 - values[0]) / 200.0);
+ Window5.SetAPin (output_pins[1], 5.0 * (200 - values[1]) / 200.0);
+ Window5.SetAPin (output_pins[2], 5.0 * (200 - values[2]) / 200.0);
+ Window5.SetAPin (output_pins[3], 5.0 * (200 - values[3]) / 200.0);
 }
 
 void
@@ -290,7 +290,7 @@ cpart_pot::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3], values[0], values[1], values[2], values[3]);
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", output_pins[0], output_pins[1], output_pins[2], output_pins[3], values[0], values[1], values[2], values[3]);
 
  return prefs;
 }
@@ -298,7 +298,7 @@ cpart_pot::WritePreferences(void)
 void
 cpart_pot::ReadPreferences(lxString value)
 {
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &values[0], &values[1], &values[2], &values[3]);
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &output_pins[2], &output_pins[3], &values[0], &values[1], &values[2], &values[3]);
 }
 
 void
@@ -308,39 +308,39 @@ cpart_pot::ConfigurePropertiesWindow(CPWindow * WProp)
  lxString spin;
 
  ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
- if (input_pins[0] == 0)
+ if (output_pins[0] == 0)
   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText ("0  NC");
  else
   {
-   spin = Window5.GetPinName (input_pins[0]);
-   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (input_pins[0]) + "  " + spin);
+   spin = Window5.GetPinName (output_pins[0]);
+   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (output_pins[0]) + "  " + spin);
   }
 
  ((CCombo*) WProp->GetChildByName ("combo2"))->SetItems (Items);
- if (input_pins[1] == 0)
+ if (output_pins[1] == 0)
   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText ("0  NC");
  else
   {
-   spin = Window5.GetPinName (input_pins[1]);
-   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText (itoa (input_pins[1]) + "  " + spin);
+   spin = Window5.GetPinName (output_pins[1]);
+   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText (itoa (output_pins[1]) + "  " + spin);
   }
 
  ((CCombo*) WProp->GetChildByName ("combo3"))->SetItems (Items);
- if (input_pins[2] == 0)
+ if (output_pins[2] == 0)
   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText ("0  NC");
  else
   {
-   spin = Window5.GetPinName (input_pins[2]);
-   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText (itoa (input_pins[2]) + "  " + spin);
+   spin = Window5.GetPinName (output_pins[2]);
+   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText (itoa (output_pins[2]) + "  " + spin);
   }
 
  ((CCombo*) WProp->GetChildByName ("combo4"))->SetItems (Items);
- if (input_pins[3] == 0)
+ if (output_pins[3] == 0)
   ((CCombo*) WProp->GetChildByName ("combo4"))->SetText ("0  NC");
  else
   {
-   spin = Window5.GetPinName (input_pins[3]);
-   ((CCombo*) WProp->GetChildByName ("combo4"))->SetText (itoa (input_pins[3]) + "  " + spin);
+   spin = Window5.GetPinName (output_pins[3]);
+   ((CCombo*) WProp->GetChildByName ("combo4"))->SetText (itoa (output_pins[3]) + "  " + spin);
   }
 
 
@@ -353,10 +353,10 @@ cpart_pot::ConfigurePropertiesWindow(CPWindow * WProp)
 void
 cpart_pot::ReadPropertiesWindow(CPWindow * WProp)
 {
- input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
- input_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
- input_pins[2] = atoi (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ());
- input_pins[3] = atoi (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ());
+ output_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
+ output_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
+ output_pins[2] = atoi (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ());
+ output_pins[3] = atoi (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ());
 }
 
 

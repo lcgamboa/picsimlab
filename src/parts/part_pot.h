@@ -54,7 +54,7 @@ class cpart_pot:public part
       unsigned short get_out_id(char * name);
     private:
       void RegisterRemoteControl(void);          
-      unsigned char input_pins[4]; 
+      unsigned char output_pins[4]; 
       unsigned char values[4];
       unsigned char active[4];
 };

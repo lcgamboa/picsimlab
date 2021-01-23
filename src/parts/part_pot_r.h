@@ -23,8 +23,8 @@
 	   For e-mail suggestions :  lcgamboa@yahoo.com
 	   ######################################################################## */
 
-#ifndef PART_POT_H
-#define	PART_POT_H
+#ifndef PART_POTR_H
+#define	PART_POTR_H
 
 #include<lxrad.h>
 #include"part.h"
@@ -55,7 +55,7 @@ class cpart_pot_r:public part
     private:
       void RegisterRemoteControl(void);    
       unsigned char CalcAngle(int i, int x, int y);      
-      unsigned char input_pins[4]; 
+      unsigned char output_pins[4]; 
       unsigned char values[4];
       unsigned char active[4];
 };
@@ -63,5 +63,5 @@ class cpart_pot_r:public part
 
 
 
-#endif	/* POT */
+#endif	/* POTR */
 

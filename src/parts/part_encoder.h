@@ -56,7 +56,7 @@ class cpart_encoder:public part
     private:
       void RegisterRemoteControl(void);    
       unsigned char CalcAngle(int i, int x, int y);      
-      unsigned char input_pins[3]; 
+      unsigned char output_pins[3]; 
       unsigned char value;
       unsigned char value_old;
       unsigned char active;

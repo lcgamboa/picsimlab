@@ -23,30 +23,27 @@
 	   For e-mail suggestions :  lcgamboa@yahoo.com
 	   ######################################################################## */
 
-#ifndef PART_POT_H
-#define	PART_POT_H
+#ifndef PART_DCMOTOR_H
+#define	PART_DCMOTOR_H
 
 #include<lxrad.h>
 #include"part.h"
 
-class cpart_encoder:public part
+class cpart_dcmotor:public part
 {
     public:
-      lxString GetName(void){return lxT("Encoder");};
-      lxString GetHelpURL(void){return lxT("Encoder.html");};
+      lxString GetName(void){return lxT("DC Motor");};
+      lxString GetHelpURL(void){return lxT("DC_Motor.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
-      cpart_encoder(unsigned x, unsigned y);
-      ~cpart_encoder(void); 
+      cpart_dcmotor(unsigned x, unsigned y);
+      ~cpart_dcmotor(void); 
       void Draw(void);
       void PreProcess(void);
       void Process(void);
-      lxString GetPictureFileName(void){return lxT("encoder/encoder.png");};
-      lxString GetInputMapFile(void){return lxT("encoder/encoder_i.map");};
-      lxString GetOutputMapFile(void){return lxT("encoder/encoder_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("encoder/encoder.lxrad");};
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
-      void EvMouseMove(uint button, uint x, uint y,uint state);
+      lxString GetPictureFileName(void){return lxT("dcmotor/dcmotor.png");};
+      lxString GetInputMapFile(void){return lxT("dcmotor/dcmotor_i.map");};
+      lxString GetOutputMapFile(void){return lxT("dcmotor/dcmotor_o.map");};
+      lxString GetPropertiesWindowFile(void){return lxT("dcmotor/dcmotor.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       lxString WritePreferences(void);
@@ -54,21 +51,20 @@ class cpart_encoder:public part
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
     private:
-      void RegisterRemoteControl(void);    
-      unsigned char CalcAngle(int i, int x, int y);      
-      unsigned char input_pins[3]; 
+      void RegisterRemoteControl(void);      
+      unsigned char input_pins[3];
+      unsigned char output_pins[2];
       unsigned char value;
       unsigned char value_old;
-      unsigned char active;
-      unsigned char p_BTN;
       int step;
       int count;
       int state;
       int dir;
+      int speed;
 };
 
 
 
 
-#endif	/* POT */
+#endif	/* DCMOTOR */
 

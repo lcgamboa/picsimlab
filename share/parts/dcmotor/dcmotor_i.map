@@ -6,9 +6,4 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:Luis Claudio Gamboa Lopes      -->
-<area shape="rect" coords="65,83,82,137" href="PN_1" />
-<area shape="rect" coords="93,83,110,137" href="PN_2" />
-<area shape="rect" coords="121,83,138,137" href="PN_3" />
-<area shape="rect" coords="54,14,118,78" href="RT_1" />
-<area shape="rect" coords="76,36,95,54" href="PB_1" />
 </map>

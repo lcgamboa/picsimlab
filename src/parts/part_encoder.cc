@@ -59,14 +59,17 @@ cpart_encoder::cpart_encoder(unsigned x, unsigned y)
 
  p_BTN = 1;
 
- input_pins[0] = 0;
- input_pins[1] = 0;
- input_pins[2] = 0;
+ output_pins[0] = 0;
+ output_pins[1] = 0;
+ output_pins[2] = 0;
 
  value = 0;
  value_old = 0;
 
  active = 0;
+
+ count = 0;
+ state = 0;
 
  RegisterRemoteControl ();
 
@@ -118,10 +121,10 @@ cpart_encoder::Draw(void)
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     if (input_pins[output[i].id - O_P1] == 0)
+     if (output_pins[output[i].id - O_P1] == 0)
       canvas.RotatedText ("NC", output[i].x1 - 3, output[i].y2, 90);
      else
-      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1 - 3, output[i].y2, 90);
+      canvas.RotatedText (Window5.GetPinName (output_pins[output[i].id - O_P1]), output[i].x1 - 3, output[i].y2, 90);
      break;
     case O_RT1:
      canvas.SetColor (50, 50, 50);
@@ -168,51 +171,59 @@ cpart_encoder::PreProcess(void)
 {
 
  unsigned char value_ = value;
- int da;
+ float da;
 
  value_ = value;
 
- da = ((value_ * 10) / 25) - ((value_old * 10) / 25);
+ da = (value_ / 2.5) - (value_old / 2.5);
 
  if (da < -40)
   {
-   da = (((value_ + 200) * 10) / 25) - ((value_old * 10) / 25);
+   da = ((value_ + 200) / 2.5) - (value_old / 2.5);
   }
  if (da > 40)
   {
-   da = (((value_ - 200) * 10) / 25) - ((value_old * 10) / 25);
+   da = ((value_ - 200) / 2.5) - (value_old / 2.5);
   }
 
  if (da != 0)
   {
 
-
-
-   state = (((value_old) % 10)*10) / 25;
-
    dir = ((da > 0) ? 1 : 0);
 
-
-   dprintf ("da=%i  %i  %i state=%i  dir=%i\n", da, value_, value_old, state, dir);
-
-   switch (state)
+   if (da == 0)
     {
-    case 0:
-     if (input_pins[0])Window5.SetPin (input_pins[0], 0);
-     break;
-    case 1:
-     if (input_pins[1])Window5.SetPin (input_pins[1], 1);
-     break;
-    case 2:
-     if (input_pins[0])Window5.SetPin (input_pins[0], 1);
-     break;
-    case 3:
-     if (input_pins[1])Window5.SetPin (input_pins[1], 0);
-     break;
+     step = 0;
+    }
+   else if (fabs (da) < 1.0)
+    {
+     state = (((value_old) % 10)*10) / 25;
+
+     switch (state)
+      {
+      case 0:
+       if (output_pins[0])Window5.SetPin (output_pins[0], 0);
+       break;
+      case 1:
+       if (output_pins[1])Window5.SetPin (output_pins[1], 1);
+       break;
+      case 2:
+       if (output_pins[0])Window5.SetPin (output_pins[0], 1);
+       break;
+      case 3:
+       if (output_pins[1])Window5.SetPin (output_pins[1], 0);
+       break;
+      }
+     step = 0;
+      //FIXME on slow speed output is not 90 degrees 
+    }
+   else
+    {
+     step = Window1.GetBoard ()->MGetInstClock () / ((da > 0) ? da * 10 : -da * 10);
     }
 
-   step = Window1.GetBoard ()->MGetInstClock () / ((da > 0) ? da * 10 : -da * 10);
-   count = 0;
+   dprintf ("state=%i da=%f  %3i  %3i  dir=%i step=%i\n", state, da, value_, value_old, dir, step);
+
 
    value_old = value_;
   }
@@ -221,7 +232,7 @@ cpart_encoder::PreProcess(void)
    step = 0;
   }
 
- if (input_pins[2])Window5.SetPin (input_pins[2], p_BTN);
+ if (output_pins[2])Window5.SetPin (output_pins[2], p_BTN);
 }
 
 void
@@ -253,16 +264,16 @@ cpart_encoder::Process(void)
      switch (state)
       {
       case 0:
-       if (input_pins[0])Window5.SetPin (input_pins[0], 0);
+       if (output_pins[0])Window5.SetPin (output_pins[0], 0);
        break;
       case 1:
-       if (input_pins[1])Window5.SetPin (input_pins[1], 1);
+       if (output_pins[1])Window5.SetPin (output_pins[1], 1);
        break;
       case 2:
-       if (input_pins[0])Window5.SetPin (input_pins[0], 1);
+       if (output_pins[0])Window5.SetPin (output_pins[0], 1);
        break;
       case 3:
-       if (input_pins[1])Window5.SetPin (input_pins[1], 0);
+       if (output_pins[1])Window5.SetPin (output_pins[1], 0);
        break;
       }
     }
@@ -398,7 +409,7 @@ cpart_encoder::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], value);
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu", output_pins[0], output_pins[1], output_pins[2], value);
 
  return prefs;
 }
@@ -406,7 +417,7 @@ cpart_encoder::WritePreferences(void)
 void
 cpart_encoder::ReadPreferences(lxString value)
 {
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &this->value);
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &output_pins[2], &this->value);
 
  value_old = this->value;
 }
@@ -418,30 +429,30 @@ cpart_encoder::ConfigurePropertiesWindow(CPWindow * WProp)
  lxString spin;
 
  ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
- if (input_pins[0] == 0)
+ if (output_pins[0] == 0)
   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText ("0  NC");
  else
   {
-   spin = Window5.GetPinName (input_pins[0]);
-   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (input_pins[0]) + "  " + spin);
+   spin = Window5.GetPinName (output_pins[0]);
+   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (output_pins[0]) + "  " + spin);
   }
 
  ((CCombo*) WProp->GetChildByName ("combo2"))->SetItems (Items);
- if (input_pins[1] == 0)
+ if (output_pins[1] == 0)
   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText ("0  NC");
  else
   {
-   spin = Window5.GetPinName (input_pins[1]);
-   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText (itoa (input_pins[1]) + "  " + spin);
+   spin = Window5.GetPinName (output_pins[1]);
+   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText (itoa (output_pins[1]) + "  " + spin);
   }
 
  ((CCombo*) WProp->GetChildByName ("combo3"))->SetItems (Items);
- if (input_pins[2] == 0)
+ if (output_pins[2] == 0)
   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText ("0  NC");
  else
   {
-   spin = Window5.GetPinName (input_pins[2]);
-   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText (itoa (input_pins[2]) + "  " + spin);
+   spin = Window5.GetPinName (output_pins[2]);
+   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText (itoa (output_pins[2]) + "  " + spin);
   }
 
 
@@ -454,9 +465,9 @@ cpart_encoder::ConfigurePropertiesWindow(CPWindow * WProp)
 void
 cpart_encoder::ReadPropertiesWindow(CPWindow * WProp)
 {
- input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
- input_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
- input_pins[2] = atoi (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ());
+ output_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
+ output_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
+ output_pins[2] = atoi (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ());
 }
 
 

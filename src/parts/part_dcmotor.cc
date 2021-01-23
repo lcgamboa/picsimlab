@@ -26,7 +26,7 @@
 #include"../picsimlab1.h"
 #include"../picsimlab4.h"
 #include"../picsimlab5.h"
-#include"part_encoder.h"
+#include"part_dcmotor.h"
 
 
 #define dprintf if (1) {} else printf
@@ -34,16 +34,10 @@
 /* outputs */
 enum
 {
- O_RT1, O_BTN, O_P1, O_P2, O_P3
+ O_MT1, O_ST, O_P1, O_P2, O_P3, O_P4, O_P5
 };
 
-/* inputs */
-enum
-{
- I_RT1, I_BTN
-};
-
-cpart_encoder::cpart_encoder(unsigned x, unsigned y)
+cpart_dcmotor::cpart_dcmotor(unsigned x, unsigned y)
 {
  X = x;
  Y = y;
@@ -57,7 +51,8 @@ cpart_encoder::cpart_encoder(unsigned x, unsigned y)
 
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
- p_BTN = 1;
+ output_pins[0] = 0;
+ output_pins[1] = 0;
 
  input_pins[0] = 0;
  input_pins[1] = 0;
@@ -66,41 +61,39 @@ cpart_encoder::cpart_encoder(unsigned x, unsigned y)
  value = 0;
  value_old = 0;
 
- active = 0;
+ state = 0;
+ count = 0;
 
  RegisterRemoteControl ();
 
 }
 
 void
-cpart_encoder::RegisterRemoteControl(void)
+cpart_dcmotor::RegisterRemoteControl(void)
 {
  for (int i = 0; i < inputc; i++)
   {
    switch (input[i].id)
     {
-    case I_RT1:
+    case O_MT1:
      input[i].status = &value;
-     break;
-    case I_BTN:
-     input[i].status = &p_BTN;
      break;
     }
   }
 }
 
-cpart_encoder::~cpart_encoder(void)
+cpart_dcmotor::~cpart_dcmotor(void)
 {
  delete Bitmap;
  canvas.Destroy ();
 }
 
 void
-cpart_encoder::Draw(void)
+cpart_dcmotor::Draw(void)
 {
 
- int i;
- char val[10];
+ int i, x, y, hsp;
+ //char val[10];
 
  canvas.Init (1.0, 1.0, orientation);
 
@@ -115,25 +108,39 @@ cpart_encoder::Draw(void)
     {
     case O_P1:
     case O_P2:
-    case O_P3:
      canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     if (input_pins[output[i].id - O_P1] == 0)
+     if (output_pins[output[i].id - O_P1] == 0)
       canvas.RotatedText ("NC", output[i].x1 - 3, output[i].y2, 90);
      else
-      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1 - 3, output[i].y2, 90);
+      canvas.RotatedText (Window5.GetPinName (output_pins[output[i].id - O_P1]), output[i].x1 - 3, output[i].y2, 90);
      break;
-    case O_RT1:
-     canvas.SetColor (50, 50, 50);
+    case O_P3:
+    case O_P4:
+    case O_P5:
+     canvas.SetColor (49, 61, 99);
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     canvas.SetFgColor (255, 255, 255);
+     if (input_pins[output[i].id - O_P3] == 0)
+      canvas.RotatedText ("NC", output[i].x1 - 3, output[i].y2, 90);
+     else
+      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P3]), output[i].x1 - 3, output[i].y2, 90);
+     break;
+    case O_MT1:
+     canvas.SetColor (165, 165, 165);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
-     canvas.SetColor (150, 150, 150);
-     canvas.Circle (1, output[i].cx, output[i].cy, 25);
 
      canvas.SetColor (250, 250, 250);
-     int x = -18 * sin ((2 * M_PI * (value / 200.0)));
-     int y = 18 * cos ((2 * M_PI * (value / 200.0)));
+     canvas.Circle (1, output[i].cx, output[i].cy, 25);
+     canvas.SetColor (5, 5, 5);
+     canvas.Circle (1, output[i].cx, output[i].cy, 2);
+
+
+     canvas.SetColor (250, 0, 0);
+     x = -18 * sin ((2 * M_PI * (value / 200.0)));
+     y = 18 * cos ((2 * M_PI * (value / 200.0)));
      canvas.Circle (1, output[i].cx + x, output[i].cy + y, 5);
      /*
      canvas.SetColor (250, 250, 250);
@@ -142,7 +149,44 @@ cpart_encoder::Draw(void)
      canvas.SetColor (150, 0, 0);
      canvas.SetFont (font_p);
      canvas.RotatedText (val, output[i].x1 + 6, output[i].y2 + 6, 0);
-     */
+      */
+     break;
+    case O_ST:
+     canvas.SetFgColor (0, 0, 0);
+     canvas.SetBgColor (200, 200, 200);
+     canvas.Rectangle (1, output[i].x1 - 2, output[i].y1 - 2, output[i].x2 - output[i].x1 + 4, output[i].y2 - output[i].y1 + 4);
+
+
+     hsp = (speed / 3);
+
+     if (hsp > 21)
+      {
+       canvas.SetColor (0, 255, 0);
+       if (hsp > 32) hsp = 32;
+      }
+     else if (hsp > 10)
+      {
+       canvas.SetColor (255, 255, 0);
+      }
+     else
+      {
+       canvas.SetColor (255, 0, 0);
+      }
+
+
+
+
+
+     if (dir)
+      {
+       canvas.Rectangle (1, output[i].x1, output[i].y1 + 32, output[i].x2 - output[i].x1, hsp);
+      }
+     else
+      {
+       canvas.Rectangle (1, output[i].x1, output[i].y1 + (32 - hsp), output[i].x2 - output[i].x1, hsp);
+      }
+
+
      break;
     }
 
@@ -154,67 +198,109 @@ cpart_encoder::Draw(void)
 }
 
 void
-cpart_encoder::PreProcess(void)
+cpart_dcmotor::PreProcess(void)
 {
 
- unsigned char value_ = value;
- int da;
+ const picpin * ppins = Window5.GetPinsValues ();
 
- value_ = value;
 
- da = ((value_ * 10) / 25) - ((value_old * 10) / 25);
+ int ia = 0, ib = 0;
+ float da;
+
+ if (input_pins[0])
+  {
+   ia = ppins[input_pins[0] - 1].value;
+  }
+
+ if (input_pins[1])
+  {
+   ib = ppins[input_pins[1] - 1].value;
+  }
+
+ if (input_pins[2])
+  {
+   //TODO Add transfer funcion of dc motor
+   speed = (ppins[input_pins[2] - 1].oavalue - 30) / 2.24;
+  }
+
+ if (ia && !ib)
+  {
+   dir = 0;
+   value += speed / 3;
+   if (value > 199)value -= 200;
+  }
+ else if (!ia && ib)
+  {
+   dir = 1;
+   value -= speed / 3;
+   if (value > 199)value -= 57;
+  }
+ else
+  {
+   speed = 0;
+  }
+
+
+ da = (value / 2.5) - (value_old / 2.5);
 
  if (da < -40)
   {
-   da = (((value_ + 200) * 10) / 25) - ((value_old * 10) / 25);
+   da = ((value + 200) / 2.5) - (value_old / 2.5);
   }
  if (da > 40)
   {
-   da = (((value_ - 200) * 10) / 25) - ((value_old * 10) / 25);
+   da = ((value - 200) / 2.5) - (value_old / 2.5);
   }
 
- if (da != 0)
+ if (da == 0)
   {
-
-
-
-   state = (((value_old) % 10)*10) / 25;
-
-   dir = ((da > 0) ? 1: 0 );
-
-
-   dprintf ("da=%i  %i  %i state=%i  dir=%i\n", da, value_, value_old, state, dir);
+   step = 0;
+  }
+ else if (fabs (da) < 1.0)
+  {
+   state = ((value_old) % 10) / 2.5;
 
    switch (state)
     {
     case 0:
-     if (input_pins[0])Window5.SetPin (input_pins[0], 0);
+     if (output_pins[0])Window5.SetPin (output_pins[0], 0);
      break;
     case 1:
-     if (input_pins[1])Window5.SetPin (input_pins[1], 1);
+     if (output_pins[1])Window5.SetPin (output_pins[1], 1);
      break;
     case 2:
-     if (input_pins[0])Window5.SetPin (input_pins[0], 1);
+     if (output_pins[0])Window5.SetPin (output_pins[0], 1);
      break;
     case 3:
-     if (input_pins[1])Window5.SetPin (input_pins[1], 0);
+     if (output_pins[1])Window5.SetPin (output_pins[1], 0);
      break;
     }
+   step = 0;
+   //int new_state = ((value) % 10) / 2.5;
 
-   step = Window1.GetBoard ()->MGetInstClock () / ((da > 0) ? da * 10 : -da * 10);
-   count = 0;
-
-   value_old = value_;
+   //FIXME on slow speed output is not 90 degrees 
+   /*
+   ///printf ("s=%i ns=%i \n", state, new_state);
+   if (state != new_state)
+    {
+     printf ("need step \n");
+     //step = Window1.GetBoard ()->MGetInstClock () / ((da > 0) ? da * 10 : -da * 10);
+    }
+    */
   }
  else
   {
-   step = 0;
+   step = Window1.GetBoard ()->MGetInstClock () / ((da > 0) ? da * 10 : -da * 10);
   }
+
+ dprintf ("state=%i da=%f  %3i  %3i  dir=%i  step=%i\n", state, da, value, value_old, dir, step);
+
+ value_old = value;
 
 }
 
 void
-cpart_encoder::Process(void)
+cpart_dcmotor::Process(void)
 {
 
  if (step)
@@ -242,192 +328,112 @@ cpart_encoder::Process(void)
      switch (state)
       {
       case 0:
-       if (input_pins[0])Window5.SetPin (input_pins[0], 0);
+       if (output_pins[0])Window5.SetPin (output_pins[0], 0);
        break;
       case 1:
-       if (input_pins[1])Window5.SetPin (input_pins[1], 1);
+       if (output_pins[1])Window5.SetPin (output_pins[1], 1);
        break;
       case 2:
-       if (input_pins[0])Window5.SetPin (input_pins[0], 1);
+       if (output_pins[0])Window5.SetPin (output_pins[0], 1);
        break;
       case 3:
-       if (input_pins[1])Window5.SetPin (input_pins[1], 0);
+       if (output_pins[1])Window5.SetPin (output_pins[1], 0);
        break;
       }
     }
   }
-}
-
-void
-cpart_encoder::EvMouseButtonPress(uint button, uint x, uint y, uint state)
-{
-
- int i;
-
- for (i = 0; i < inputc; i++)
-  {
-   if (PointInside (x, y, input[i]))
-    {
-     RotateCoords (&x, &y);
-     switch (input[i].id)
-      {
-      case I_RT1:
-       value = CalcAngle (i, x, y);
-       active = 1;
-       break;
-      case I_BTN:
-       p_BTN = 0;
-       break;
-      }
-    }
-  }
-
-}
-
-void
-cpart_encoder::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
-{
- int i;
-
- for (i = 0; i < inputc; i++)
-  {
-   if (PointInside (x, y, input[i]))
-    {
-     switch (input[i].id)
-      {
-      case I_RT1:
-       active = 0;
-       break;
-      case I_BTN:
-       p_BTN = 1;
-       break;
-      }
-    }
-  }
-}
-
-void
-cpart_encoder::EvMouseMove(uint button, uint x, uint y, uint state)
-{
-
- int i;
-
- for (i = 0; i < inputc; i++)
-  {
-   if (PointInside (x, y, input[i]))
-    {
-     RotateCoords (&x, &y);
-
-     if (active)
-      {
-       value = CalcAngle (i, x, y);
-      }
-    }
-  }
-}
-
-unsigned char
-cpart_encoder::CalcAngle(int i, int x, int y)
-{
- int dx = input[i].cx - x;
- int dy = y - input[i].cy;
- double angle = 0;
-
- if ((dx >= 0)&&(dy >= 0))
-  {
-   angle = atan2 (dx, dy) * 180 / M_PI;
-  }
- else if ((dx >= 0)&&(dy < 0))
-  {
-   angle = 180 - (atan2 (dx, -dy) * 180 / M_PI);
-  }
- else if ((dx < 0)&&(dy < 0))
-  {
-   angle = (atan2 (-dx, -dy) * 180 / M_PI) + 180;
-  }
- else if ((dx < 0)&&(dy >= 0))
-  {
-   angle = 360 - (atan2 (-dx, dy) * 180 / M_PI);
-  }
-
- return (200 * angle / 360.0);
 }
 
 unsigned short
-cpart_encoder::get_in_id(char * name)
+cpart_dcmotor::get_in_id(char * name)
 {
-
- if (strcmp (name, "RT_1") == 0)return I_RT1;
- if (strcmp (name, "PB_1") == 0)return I_BTN;
-
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
 }
 
 unsigned short
-cpart_encoder::get_out_id(char * name)
+cpart_dcmotor::get_out_id(char * name)
 {
 
  if (strcmp (name, "PN_1") == 0)return O_P1;
  if (strcmp (name, "PN_2") == 0)return O_P2;
  if (strcmp (name, "PN_3") == 0)return O_P3;
+ if (strcmp (name, "PN_4") == 0)return O_P4;
+ if (strcmp (name, "PN_5") == 0)return O_P5;
 
- if (strcmp (name, "RT_1") == 0)return O_RT1;
- if (strcmp (name, "PB_1") == 0)return O_BTN;
+ if (strcmp (name, "ST_1") == 0)return O_ST;
+ if (strcmp (name, "MT_1") == 0)return O_MT1;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
 }
 
 lxString
-cpart_encoder::WritePreferences(void)
+cpart_dcmotor::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], value);
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu", output_pins[0], output_pins[1], input_pins[0], input_pins[1], input_pins[2]);
 
  return prefs;
 }
 
 void
-cpart_encoder::ReadPreferences(lxString value)
+cpart_dcmotor::ReadPreferences(lxString value)
 {
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &this->value);
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &input_pins[0], &input_pins[1], &input_pins[2]);
 
- value_old = this->value;
 }
 
 void
-cpart_encoder::ConfigurePropertiesWindow(CPWindow * WProp)
+cpart_dcmotor::ConfigurePropertiesWindow(CPWindow * WProp)
 {
  lxString Items = Window5.GetPinsNames ();
  lxString spin;
 
  ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
- if (input_pins[0] == 0)
+ if (output_pins[0] == 0)
   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText ("0  NC");
  else
   {
-   spin = Window5.GetPinName (input_pins[0]);
-   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (input_pins[0]) + "  " + spin);
+   spin = Window5.GetPinName (output_pins[0]);
+   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (output_pins[0]) + "  " + spin);
   }
 
  ((CCombo*) WProp->GetChildByName ("combo2"))->SetItems (Items);
- if (input_pins[1] == 0)
+ if (output_pins[1] == 0)
   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText ("0  NC");
  else
   {
-   spin = Window5.GetPinName (input_pins[1]);
-   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText (itoa (input_pins[1]) + "  " + spin);
+   spin = Window5.GetPinName (output_pins[1]);
+   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText (itoa (output_pins[1]) + "  " + spin);
   }
 
  ((CCombo*) WProp->GetChildByName ("combo3"))->SetItems (Items);
- if (input_pins[2] == 0)
+ if (input_pins[0] == 0)
   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText ("0  NC");
  else
   {
+   spin = Window5.GetPinName (input_pins[0]);
+   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText (itoa (input_pins[0]) + "  " + spin);
+  }
+
+ ((CCombo*) WProp->GetChildByName ("combo4"))->SetItems (Items);
+ if (input_pins[1] == 0)
+  ((CCombo*) WProp->GetChildByName ("combo4"))->SetText ("0  NC");
+ else
+  {
+   spin = Window5.GetPinName (input_pins[1]);
+   ((CCombo*) WProp->GetChildByName ("combo4"))->SetText (itoa (input_pins[1]) + "  " + spin);
+  }
+
+ ((CCombo*) WProp->GetChildByName ("combo5"))->SetItems (Items);
+ if (input_pins[2] == 0)
+  ((CCombo*) WProp->GetChildByName ("combo5"))->SetText ("0  NC");
+ else
+  {
    spin = Window5.GetPinName (input_pins[2]);
-   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText (itoa (input_pins[2]) + "  " + spin);
+   ((CCombo*) WProp->GetChildByName ("combo5"))->SetText (itoa (input_pins[2]) + "  " + spin);
   }
 
 
@@ -438,13 +444,15 @@ cpart_encoder::ConfigurePropertiesWindow(CPWindow * WProp)
 }
 
 void
-cpart_encoder::ReadPropertiesWindow(CPWindow * WProp)
+cpart_dcmotor::ReadPropertiesWindow(CPWindow * WProp)
 {
- input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
- input_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
- input_pins[2] = atoi (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ());
+ output_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
+ output_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
+ input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ());
+ input_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ());
+ input_pins[2] = atoi (((CCombo*) WProp->GetChildByName ("combo5"))->GetText ());
 }
 
 
-part_init("Encoder", cpart_encoder);
+part_init("DC Motor", cpart_dcmotor);
 
