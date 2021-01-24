@@ -58,9 +58,10 @@ class cpart_dcmotor:public part
       unsigned char value_old;
       int step;
       int count;
-      int state;
-      int dir;
-      int speed;
+      unsigned char state;
+      unsigned char dir;
+      unsigned char speed;
+      unsigned char * status[3];
 };
 
 

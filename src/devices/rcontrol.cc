@@ -233,13 +233,95 @@ decodess(unsigned char v)
   }
 }
 
+static void
+ProcessInput(const char * msg, input_t * Input, int * ret)
+{
+ lxString stemp;
+
+ stemp.Printf ("%s %s= %i\n", msg, Input->name, *((unsigned char *) Input->status));
+ *ret += sendtext ((const char *) stemp.c_str ());
+}
+
+static void
+ProcessOutput(const char * msg, output_t * Output, int * ret)
+{
+ lxString stemp;
+ char lstemp[200];
+ static unsigned char ss = 0; //seven segment 
+
+
+ if ((Output->name[0] == 'L')&&(Output->name[1] == 'D'))
+  {
+   stemp.Printf ("%s %s= %3.0f\n", msg, Output->name, *((float *) Output->status));
+   *ret += sendtext ((const char *) stemp.c_str ());
+  }
+ else if ((Output->name[0] == 'D')&&(Output->name[1] == 'S'))
+  {
+   lcd_t * lcd = (lcd_t*) Output->status;
+   snprintf (lstemp, 199, "%s %s= |%.16s\n", msg, Output->name, &lcd->ddram_char[0]);
+
+   int size = strlen (lstemp) - 18;
+   for (int x = 0; x < size; x++)
+    {
+     lstemp[x + size + 18] = ' ';
+    }
+   snprintf (lstemp + (2 * size + 18), 199, "|%.16s\n", &lcd->ddram_char[40]);
+   *ret += sendtext (lstemp);
+  }
+ else if ((Output->name[0] == 'M')&&(Output->name[1] == 'T'))
+  {
+   unsigned char **status = (unsigned char **) Output->status;
+   snprintf (lstemp, 199, "%s %s-> dir= %i speed= %i position= %i\n",
+             msg, Output->name, *status[0], *status[1], *status[2]);
+   *ret += sendtext (lstemp);
+  }
+ else if ((Output->name[0] == 'D')&&(Output->name[1] == 'G'))
+  {
+   snprintf (lstemp, 199, "%s %s-> angle= %5.1f\n",
+             msg, Output->name, *((float*) Output->status)*180.0/M_PI);
+   *ret += sendtext (lstemp);
+  }
+ else if ((Output->name[0] == 'S')&&(Output->name[1] == 'S'))
+  {
+   switch (Output->name[3])
+    {
+    case 'A':
+     ss = 0x00;
+     if (*((int *) Output->status) > 60) ss |= 0x01;
+     break;
+    case 'B':
+     if (*((int *) Output->status) > 60) ss |= 0x02;
+     break;
+    case 'C':
+     if (*((int *) Output->status) > 60) ss |= 0x04;
+     break;
+    case 'D':
+     if (*((int *) Output->status) > 60) ss |= 0x08;
+     break;
+    case 'E':
+     if (*((int *) Output->status) > 60) ss |= 0x10;
+     break;
+    case 'F':
+     if (*((int *) Output->status) > 60) ss |= 0x20;
+     break;
+    case 'G':
+     if (*((int *) Output->status) > 60) ss |= 0x40;
+     break;
+    case 'P':
+     if (*((int *) Output->status) > 60) ss |= 0x80;
+     stemp.Printf ("%s SS_%c= %c\n", msg, Output->name[4], decodess (ss));
+     *ret += sendtext ((const char *) stemp.c_str ());
+     break;
+    }
+  }
+}
+
 int
 rcontrol_loop(void)
 {
  int i, j;
  int n;
  int ret = 0;
- static unsigned char ss = 0; //seven segment 
  lxString stemp;
  char lstemp[200];
  board * Board;
@@ -319,8 +401,8 @@ rcontrol_loop(void)
 
              if (Input->status != NULL)
               {
-               stemp.Printf ("board.in[%02i] %s = %i\n", in, Input->name, *((unsigned char *) Input->status));
-               sendtext ((const char *) stemp.c_str ());
+               snprintf (lstemp, 100, "board.in[%02i]", in);
+               ProcessInput (lstemp, Input, &ret);
                sendtext ("Ok\n>");
               }
              else
@@ -344,51 +426,8 @@ rcontrol_loop(void)
 
              if (Output->status != NULL)
               {
-               if ((Output->name[0] == 'L')&&(Output->name[1] == 'D'))
-                {
-                 stemp.Printf ("board.out[%02i] %s = %3.0f\n", out, Output->name, *((float *) Output->status));
-                 ret += sendtext ((const char *) stemp.c_str ());
-                }
-               else if ((Output->name[0] == 'D')&&(Output->name[1] == 'S'))
-                {
-                 lcd_t * lcd = (lcd_t*) Output->status;
-                 snprintf (lstemp,99,"board.out[%02i] %s = |%.16s\n                       |%.16s\n",
-                               out, Output->name, &lcd->ddram_char[0], &lcd->ddram_char[40]);
-                 ret += sendtext (lstemp);      
-                }
-               else if ((Output->name[0] == 'S')&&(Output->name[1] == 'S'))
-                {
-                 switch (Output->name[3])
-                  {
-                  case 'A':
-                   ss = 0x00;
-                   if (*((int *) Output->status) > 60) ss |= 0x01;
-                   break;
-                  case 'B':
-                   if (*((int *) Output->status) > 60) ss |= 0x02;
-                   break;
-                  case 'C':
-                   if (*((int *) Output->status) > 60) ss |= 0x04;
-                   break;
-                  case 'D':
-                   if (*((int *) Output->status) > 60) ss |= 0x08;
-                   break;
-                  case 'E':
-                   if (*((int *) Output->status) > 60) ss |= 0x10;
-                   break;
-                  case 'F':
-                   if (*((int *) Output->status) > 60) ss |= 0x20;
-                   break;
-                  case 'G':
-                   if (*((int *) Output->status) > 60) ss |= 0x40;
-                   break;
-                  case 'P':
-                   if (*((int *) Output->status) > 60) ss |= 0x80;
-                   stemp.Printf ("board.out[%02i] SS_%c = %c\n", out, Output->name[4], decodess (ss));
-                   ret += sendtext ((const char *) stemp.c_str ());
-                   break;
-                  }
-                }
+               snprintf (lstemp, 100, "board.out[%02i]", out);
+               ProcessOutput (lstemp, Output, &ret);
                sendtext ("Ok\n>");
               }
              else
@@ -418,8 +457,8 @@ rcontrol_loop(void)
 
                  if (Input->status != NULL)
                   {
-                   stemp.Printf ("part[%02i].in[%02i] %s = %i\n", pn, in, Input->name, *((unsigned char *) Input->status));
-                   sendtext ((const char *) stemp.c_str ());
+                   snprintf (lstemp, 100, "part[%02i].in[%02i]", pn, in);
+                   ProcessInput (lstemp, Input, &ret);
                    sendtext ("Ok\n>");
                   }
                  else
@@ -452,51 +491,8 @@ rcontrol_loop(void)
 
                  if (Output->status != NULL)
                   {
-                   if ((Output->name[0] == 'L')&&(Output->name[1] == 'D'))
-                    {
-                     stemp.Printf ("part[%02i].out[%02i] %s = %3.0f\n", pn, out, Output->name, *((float *) Output->status));
-                     ret += sendtext ((const char *) stemp.c_str ());
-                    }
-                   else if ((Output->name[0] == 'D')&&(Output->name[1] == 'S'))
-                    {
-                     lcd_t * lcd = (lcd_t*) Output->status;
-                     snprintf (lstemp,99,"part[%02i].out[%02i] %s = |%.16s\n                          |%.16s\n",
-                                   pn, out, Output->name, &lcd->ddram_char[0], &lcd->ddram_char[40]);
-                     ret += sendtext (lstemp);
-                    }
-                   else if ((Output->name[0] == 'S')&&(Output->name[1] == 'S'))
-                    {
-                     switch (Output->name[3])
-                      {
-                      case 'A':
-                       ss = 0x00;
-                       if (*((int *) Output->status) > 60) ss |= 0x01;
-                       break;
-                      case 'B':
-                       if (*((int *) Output->status) > 60) ss |= 0x02;
-                       break;
-                      case 'C':
-                       if (*((int *) Output->status) > 60) ss |= 0x04;
-                       break;
-                      case 'D':
-                       if (*((int *) Output->status) > 60) ss |= 0x08;
-                       break;
-                      case 'E':
-                       if (*((int *) Output->status) > 60) ss |= 0x10;
-                       break;
-                      case 'F':
-                       if (*((int *) Output->status) > 60) ss |= 0x20;
-                       break;
-                      case 'G':
-                       if (*((int *) Output->status) > 60) ss |= 0x40;
-                       break;
-                      case 'P':
-                       if (*((int *) Output->status) > 60) ss |= 0x80;
-                       stemp.Printf ("part[%02i].out[%02i] SS_%c = %c\n", pn, out, Output->name[4], decodess (ss));
-                       ret += sendtext ((const char *) stemp.c_str ());
-                       break;
-                      }
-                    }
+                   snprintf (lstemp, 100, "part[%02i].out[%02i]", pn, out);
+                   ProcessOutput (lstemp, Output, &ret);
                    sendtext ("Ok\n>");
                   }
                  else
@@ -568,70 +564,20 @@ rcontrol_loop(void)
          for (i = 0; i < Board->GetInputCount (); i++)
           {
            Input = Board->GetInput (i);
-           //stemp.Printf ("  Input %i : %s\n", i, Input->name);
-           //ret += sendtext ((const char *) stemp.c_str ());
-
-           if (/*(Input->name[0] == 'P')&&(Input->name[1] == 'B')&&*/ (Input->status != NULL))
+           if ((Input->status != NULL))
             {
-             stemp.Printf ("    board.in[%02i] %s = %i\n", i, Input->name, *((unsigned char *) Input->status));
-             ret += sendtext ((const char *) stemp.c_str ());
+             snprintf (lstemp, 100, "    board.in[%02i]", i);
+             ProcessInput (lstemp, Input, &ret);
             }
-
           }
 
          for (i = 0; i < Board->GetOutputCount (); i++)
           {
            Output = Board->GetOutput (i);
-           //stemp.Printf ("  Output %i: %s\n", i, Output->name);
-           //ret += sendtext ((const char *) stemp.c_str ());
-
            if (Output->status != NULL)
             {
-             if ((Output->name[0] == 'L')&&(Output->name[1] == 'D'))
-              {
-               stemp.Printf ("    board.out[%02i] %s = %3.0f\n", i, Output->name, *((float *) Output->status));
-               ret += sendtext ((const char *) stemp.c_str ());
-              }
-             else if ((Output->name[0] == 'D')&&(Output->name[1] == 'S'))
-              {
-               lcd_t * lcd = (lcd_t*) Output->status;
-               snprintf (lstemp, 199 , "    board.out[%02i] %s = |%.16s\n                           |%.16s\n",
-                             i, Output->name, &lcd->ddram_char[0], &lcd->ddram_char[40]);
-               ret += sendtext (lstemp);
-              }
-             else if ((Output->name[0] == 'S')&&(Output->name[1] == 'S'))
-              {
-               switch (Output->name[3])
-                {
-                case 'A':
-                 ss = 0x00;
-                 if (*((int *) Output->status) > 60) ss |= 0x01;
-                 break;
-                case 'B':
-                 if (*((int *) Output->status) > 60) ss |= 0x02;
-                 break;
-                case 'C':
-                 if (*((int *) Output->status) > 60) ss |= 0x04;
-                 break;
-                case 'D':
-                 if (*((int *) Output->status) > 60) ss |= 0x08;
-                 break;
-                case 'E':
-                 if (*((int *) Output->status) > 60) ss |= 0x10;
-                 break;
-                case 'F':
-                 if (*((int *) Output->status) > 60) ss |= 0x20;
-                 break;
-                case 'G':
-                 if (*((int *) Output->status) > 60) ss |= 0x40;
-                 break;
-                case 'P':
-                 if (*((int *) Output->status) > 60) ss |= 0x80;
-                 stemp.Printf ("    board.out[%02i] SS_%c = %c\n", i, Output->name[4], decodess (ss));
-                 ret += sendtext ((const char *) stemp.c_str ());
-                 break;
-                }
-              }
+             snprintf (lstemp, 100, "    board.out[%02i]", i);
+             ProcessOutput (lstemp, Output, &ret);
             }
           }
 
@@ -646,68 +592,19 @@ rcontrol_loop(void)
              for (j = 0; j < Part->GetInputCount (); j++)
               {
                Input = Part->GetInput (j);
-               //stemp.Printf ("  Input %i : %s\n", i, Input->name);
-               //ret += sendtext ((const char *) stemp.c_str ());
-
                if (Input->status != NULL)
                 {
-                 stemp.Printf ("    part[%02i].in[%02i] %s = %i\n", i, j, Input->name, *((unsigned char *) Input->status));
-                 ret += sendtext ((const char *) stemp.c_str ());
+                 snprintf (lstemp, 100, "    part[%02i].in[%02i]", i, j);
+                 ProcessInput (lstemp, Input, &ret);
                 }
               }
              for (j = 0; j < Part->GetOutputCount (); j++)
               {
                Output = Part->GetOutput (j);
-               //stemp.Printf ("  Input %i : %s\n", i, Input->name);
-               //ret += sendtext ((const char *) stemp.c_str ());
-
                if (Output->status != NULL)
                 {
-                 if ((Output->name[0] == 'L')&&(Output->name[1] == 'D'))
-                  {
-                   stemp.Printf ("    part[%02i].out[%02i] %s = %i\n", i, j, Output->name, (int) *((float *) Output->status));
-                   ret += sendtext ((const char *) stemp.c_str ());
-                  }
-                 else if ((Output->name[0] == 'D')&&(Output->name[1] == 'S'))
-                  {
-                   lcd_t * lcd = (lcd_t*) Output->status;
-                   snprintf (lstemp, 199, "    part[%02i].out[%02i] %s = |%.16s\n                              |%.16s\n",
-                                 i, j, Output->name, &lcd->ddram_char[0], &lcd->ddram_char[40]);
-                   ret += sendtext (lstemp);
-                  }
-                 else if ((Output->name[0] == 'S')&&(Output->name[1] == 'S'))
-                  {
-                   switch (Output->name[3])
-                    {
-                    case 'A':
-                     ss = 0x00;
-                     if (*((int *) Output->status) > 60) ss |= 0x01;
-                     break;
-                    case 'B':
-                     if (*((int *) Output->status) > 60) ss |= 0x02;
-                     break;
-                    case 'C':
-                     if (*((int *) Output->status) > 60) ss |= 0x04;
-                     break;
-                    case 'D':
-                     if (*((int *) Output->status) > 60) ss |= 0x08;
-                     break;
-                    case 'E':
-                     if (*((int *) Output->status) > 60) ss |= 0x10;
-                     break;
-                    case 'F':
-                     if (*((int *) Output->status) > 60) ss |= 0x20;
-                     break;
-                    case 'G':
-                     if (*((int *) Output->status) > 60) ss |= 0x40;
-                     break;
-                    case 'P':
-                     if (*((int *) Output->status) > 60) ss |= 0x80;
-                     stemp.Printf ("    part[%02i].out[%02i] SS_%c = %c\n", i, j, Output->name[4], decodess (ss));
-                     ret += sendtext ((const char *) stemp.c_str ());
-                     break;
-                    }
-                  }
+                 snprintf (lstemp, 100, "    part[%02i].out[%02i]", i, j);
+                 ProcessOutput (lstemp, Output, &ret);
                 }
               }
             }

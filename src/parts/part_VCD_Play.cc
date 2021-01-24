@@ -104,7 +104,8 @@ cpart_VCD_Play::RegisterRemoteControl(void)
    switch (input[i].id)
     {
     case I_PLAY:
-     input[i].status = &play;
+     //TODO add support to remote control
+     //input[i].status = &play;
      break;
     }
   }

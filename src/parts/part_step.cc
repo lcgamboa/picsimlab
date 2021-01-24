@@ -255,6 +255,9 @@ cpart_step::Process(void)
     angle -= HSTEP;
 
    if (angle >= 2 * M_PI)angle -= 2 * M_PI;
+   
+   if (angle <= -2 * M_PI)angle += 2 * M_PI;
+   
   }
 }
 

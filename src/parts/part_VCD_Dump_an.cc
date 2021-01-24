@@ -101,6 +101,7 @@ cpart_VCD_Dump_an::RegisterRemoteControl(void)
    switch (input[i].id)
     {
     case I_START:
+     //TODO add support to remote control
      input[i].status = &rec;
      break;
     }

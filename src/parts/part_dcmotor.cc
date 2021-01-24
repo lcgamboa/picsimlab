@@ -71,12 +71,15 @@ cpart_dcmotor::cpart_dcmotor(unsigned x, unsigned y)
 void
 cpart_dcmotor::RegisterRemoteControl(void)
 {
- for (int i = 0; i < inputc; i++)
+ for (int i = 0; i < outputc; i++)
   {
-   switch (input[i].id)
+   switch (output[i].id)
     {
     case O_MT1:
-     input[i].status = &value;
+     status[0] = &dir;
+     status[1] = &speed;
+     status[2] = &value;
+     output[i].status = &status;
      break;
     }
   }
