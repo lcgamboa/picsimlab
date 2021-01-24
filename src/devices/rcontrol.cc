@@ -155,7 +155,7 @@ rcontrol_start(void)
  memset (buffer, 0, BSIZE);
  bp = 0;
 
- return sendtext ("\nPICSimLab Remote Control Interface\n\n  Type help to see supported commands\n\n>");
+ return sendtext ("\r\nPICSimLab Remote Control Interface\r\n\r\n  Type help to see supported commands\r\n\r\n>");
 
 }
 
@@ -238,7 +238,7 @@ ProcessInput(const char * msg, input_t * Input, int * ret)
 {
  lxString stemp;
 
- stemp.Printf ("%s %s= %i\n", msg, Input->name, *((unsigned char *) Input->status));
+ stemp.Printf ("%s %s= %i\r\n", msg, Input->name, *((unsigned char *) Input->status));
  *ret += sendtext ((const char *) stemp.c_str ());
 }
 
@@ -252,33 +252,33 @@ ProcessOutput(const char * msg, output_t * Output, int * ret)
 
  if ((Output->name[0] == 'L')&&(Output->name[1] == 'D'))
   {
-   stemp.Printf ("%s %s= %3.0f\n", msg, Output->name, *((float *) Output->status));
+   stemp.Printf ("%s %s= %3.0f\r\n", msg, Output->name, *((float *) Output->status));
    *ret += sendtext ((const char *) stemp.c_str ());
   }
  else if ((Output->name[0] == 'D')&&(Output->name[1] == 'S'))
   {
    lcd_t * lcd = (lcd_t*) Output->status;
-   snprintf (lstemp, 199, "%s %s= |%.16s\n", msg, Output->name, &lcd->ddram_char[0]);
+   snprintf (lstemp, 199, "%s %s= |%.16s\r\n", msg, Output->name, &lcd->ddram_char[0]);
 
-   int size = strlen (lstemp) - 18;
+   int size = strlen (lstemp) - 19;
    for (int x = 0; x < size; x++)
     {
-     lstemp[x + size + 18] = ' ';
+     lstemp[x + size + 19] = ' ';
     }
-   snprintf (lstemp + (2 * size + 18), 199, "|%.16s\n", &lcd->ddram_char[40]);
+   snprintf (lstemp + (2 * size + 19), 199, "|%.16s\r\n", &lcd->ddram_char[40]);
    *ret += sendtext (lstemp);
   }
  else if ((Output->name[0] == 'M')&&(Output->name[1] == 'T'))
   {
    unsigned char **status = (unsigned char **) Output->status;
-   snprintf (lstemp, 199, "%s %s-> dir= %i speed= %i position= %i\n",
+   snprintf (lstemp, 199, "%s %s-> dir= %i speed= %i position= %i\r\n",
              msg, Output->name, *status[0], *status[1], *status[2]);
    *ret += sendtext (lstemp);
   }
  else if ((Output->name[0] == 'D')&&(Output->name[1] == 'G'))
   {
-   snprintf (lstemp, 199, "%s %s-> angle= %5.1f\n",
-             msg, Output->name, *((float*) Output->status)*180.0/M_PI);
+   snprintf (lstemp, 199, "%s %s-> angle= %5.1f\r\n",
+             msg, Output->name, *((float*) Output->status)*180.0 / M_PI);
    *ret += sendtext (lstemp);
   }
  else if ((Output->name[0] == 'S')&&(Output->name[1] == 'S'))
@@ -309,7 +309,7 @@ ProcessOutput(const char * msg, output_t * Output, int * ret)
      break;
     case 'P':
      if (*((int *) Output->status) > 60) ss |= 0x80;
-     stemp.Printf ("%s SS_%c= %c\n", msg, Output->name[4], decodess (ss));
+     stemp.Printf ("%s SS_%c= %c\r\n", msg, Output->name[4], decodess (ss));
      *ret += sendtext ((const char *) stemp.c_str ());
      break;
     }
@@ -337,6 +337,16 @@ rcontrol_loop(void)
 
  n = recv (sockfd, (char *) &buffer[bp], 1024 - bp, 0);
 
+ //remove putty telnet handshake
+ if (buffer[bp + n] == 3)
+  {
+   for (int x = 0; x < bp + n + 1; x++)
+    {
+     buffer[x] = 0;
+    }
+   n = 0;
+   bp = 0;
+  }
 
  if (n > 0)
   {
@@ -355,8 +365,9 @@ rcontrol_loop(void)
 
      for (int i = 0; i < BSIZE - cmdsize; i++)
       {
-       buffer[i] = buffer[i + cmdsize];
+       buffer[i] = buffer[i + cmdsize + 1];
       }
+     bp -= cmdsize - n + 1;
 
      if (cmd[cmdsize - 1] == '\r')
       {
@@ -374,13 +385,13 @@ rcontrol_loop(void)
        if (!strcmp (cmd, "exit"))
         {
          //Command exit ========================================================
-         sendtext ("Ok\n");
+         sendtext ("Ok\r\n");
          Window1.WDestroy ();
          return 0;
         }
        else
         {
-         ret = sendtext ("ERROR\n>");
+         ret = sendtext ("ERROR\r\n>");
         }
        break;
       case 'g':
@@ -403,16 +414,16 @@ rcontrol_loop(void)
               {
                snprintf (lstemp, 100, "board.in[%02i]", in);
                ProcessInput (lstemp, Input, &ret);
-               sendtext ("Ok\n>");
+               sendtext ("Ok\r\n>");
               }
              else
               {
-               ret = sendtext ("ERROR\n>");
+               ret = sendtext ("ERROR\r\n>");
               }
             }
            else
             {
-             ret = sendtext ("ERROR\n>");
+             ret = sendtext ("ERROR\r\n>");
 
             }
           }
@@ -428,16 +439,16 @@ rcontrol_loop(void)
               {
                snprintf (lstemp, 100, "board.out[%02i]", out);
                ProcessOutput (lstemp, Output, &ret);
-               sendtext ("Ok\n>");
+               sendtext ("Ok\r\n>");
               }
              else
               {
-               ret = sendtext ("ERROR\n>");
+               ret = sendtext ("ERROR\r\n>");
               }
             }
            else
             {
-             ret = sendtext ("ERROR\n>");
+             ret = sendtext ("ERROR\r\n>");
 
             }
           }
@@ -459,21 +470,21 @@ rcontrol_loop(void)
                   {
                    snprintf (lstemp, 100, "part[%02i].in[%02i]", pn, in);
                    ProcessInput (lstemp, Input, &ret);
-                   sendtext ("Ok\n>");
+                   sendtext ("Ok\r\n>");
                   }
                  else
                   {
-                   ret = sendtext ("ERROR\n>");
+                   ret = sendtext ("ERROR\r\n>");
                   }
                 }
                else
                 {
-                 ret = sendtext ("ERROR\n>");
+                 ret = sendtext ("ERROR\r\n>");
                 }
               }
              else
               {
-               ret = sendtext ("ERROR\n>");
+               ret = sendtext ("ERROR\r\n>");
 
               }
             }
@@ -493,58 +504,58 @@ rcontrol_loop(void)
                   {
                    snprintf (lstemp, 100, "part[%02i].out[%02i]", pn, out);
                    ProcessOutput (lstemp, Output, &ret);
-                   sendtext ("Ok\n>");
+                   sendtext ("Ok\r\n>");
                   }
                  else
                   {
-                   ret = sendtext ("ERROR\n>");
+                   ret = sendtext ("ERROR\r\n>");
                   }
                 }
                else
                 {
-                 ret = sendtext ("ERROR\n>");
+                 ret = sendtext ("ERROR\r\n>");
                 }
               }
              else
               {
-               ret = sendtext ("ERROR\n>");
+               ret = sendtext ("ERROR\r\n>");
               }
             }
            else
             {
-             ret = sendtext ("ERROR\n>");
+             ret = sendtext ("ERROR\r\n>");
             }
           }
          else
           {
-           ret = sendtext ("ERROR\n>");
+           ret = sendtext ("ERROR\r\n>");
           }
          return 0;
         }
        else
         {
-         ret = sendtext ("ERROR\n>");
+         ret = sendtext ("ERROR\r\n>");
         }
        break;
       case 'h':
        if (!strcmp (cmd, "help"))
         {
          //Command help ========================================================
-         ret += sendtext ("List of supported commands:\n");
-         ret += sendtext ("  exit      - shutdown PICSimLab\n");
-         ret += sendtext ("  get ob    - get object value\n");
-         ret += sendtext ("  help      - show this message\n");
-         ret += sendtext ("  info      - show actual setup info and objects\n");
-         ret += sendtext ("  quit      - exit remote control interface\n");
-         ret += sendtext ("  reset     - reset the board\n");
-         ret += sendtext ("  set ob vl - set object with value\n");
-         ret += sendtext ("  version   - show PICSimLab version\n");
+         ret += sendtext ("List of supported commands:\r\n");
+         ret += sendtext ("  exit      - shutdown PICSimLab\r\n");
+         ret += sendtext ("  get ob    - get object value\r\n");
+         ret += sendtext ("  help      - show this message\r\n");
+         ret += sendtext ("  info      - show actual setup info and objects\r\n");
+         ret += sendtext ("  quit      - exit remote control interface\r\n");
+         ret += sendtext ("  reset     - reset the board\r\n");
+         ret += sendtext ("  set ob vl - set object with value\r\n");
+         ret += sendtext ("  version   - show PICSimLab version\r\n");
 
-         ret += sendtext ("Ok\n>");
+         ret += sendtext ("Ok\r\n>");
         }
        else
         {
-         ret = sendtext ("ERROR\n>");
+         ret = sendtext ("ERROR\r\n>");
         }
        break;
       case 'i':
@@ -552,13 +563,13 @@ rcontrol_loop(void)
         {
          //Command info ========================================================
          Board = Window1.GetBoard ();
-         stemp.Printf ("Board:     %s\n", Board->GetName ().c_str ());
+         stemp.Printf ("Board:     %s\r\n", Board->GetName ().c_str ());
          ret += sendtext ((const char *) stemp.c_str ());
-         stemp.Printf ("Processor: %s\n", Board->GetProcessorName ().c_str ());
+         stemp.Printf ("Processor: %s\r\n", Board->GetProcessorName ().c_str ());
          ret += sendtext ((const char *) stemp.c_str ());
-         stemp.Printf ("Frequency: %10.0f Hz\n", Board->MGetFreq ());
+         stemp.Printf ("Frequency: %10.0f Hz\r\n", Board->MGetFreq ());
          ret += sendtext ((const char *) stemp.c_str ());
-         stemp.Printf ("Use Spare: %i\n", Board->GetUseSpareParts ());
+         stemp.Printf ("Use Spare: %i\r\n", Board->GetUseSpareParts ());
          ret += sendtext ((const char *) stemp.c_str ());
 
          for (i = 0; i < Board->GetInputCount (); i++)
@@ -586,7 +597,7 @@ rcontrol_loop(void)
            for (i = 0; i < Window5.GetPartsCount (); i++)
             {
              Part = Window5.GetPart (i);
-             stemp.Printf ("  part[%02i]: %s\n", i, (const char *) Part->GetName ());
+             stemp.Printf ("  part[%02i]: %s\r\n", i, (const char *) Part->GetName ());
              ret += sendtext ((const char *) stemp.c_str ());
 
              for (j = 0; j < Part->GetInputCount (); j++)
@@ -609,23 +620,23 @@ rcontrol_loop(void)
               }
             }
           }
-         ret += sendtext ("Ok\n>");
+         ret += sendtext ("Ok\r\n>");
         }
        else
         {
-         ret = sendtext ("ERROR\n>");
+         ret = sendtext ("ERROR\r\n>");
         }
        break;
       case 'q':
        if (!strcmp (cmd, "quit"))
         {
          //Command quit ========================================================
-         sendtext ("Ok\n");
+         sendtext ("Ok\r\n");
          ret = 1;
         }
        else
         {
-         ret = sendtext ("ERROR\n>");
+         ret = sendtext ("ERROR\r\n>");
         }
        break;
       case 'r':
@@ -633,11 +644,11 @@ rcontrol_loop(void)
         {
          //Command reset =======================================================
          Window1.GetBoard ()->MReset (0);
-         ret = sendtext ("Ok\n>");
+         ret = sendtext ("Ok\r\n>");
         }
        else
         {
-         ret = sendtext ("ERROR\n>");
+         ret = sendtext ("ERROR\r\n>");
         }
        break;
       case 's':
@@ -655,7 +666,7 @@ rcontrol_loop(void)
 
            sscanf (ptr + 12, "%i", &value);
 
-           dprint ("board.in[%02i] = %i \n", in, value);
+           dprint ("board.in[%02i] = %i \r\n", in, value);
 
            if (in < Board->GetInputCount ())
             {
@@ -664,16 +675,16 @@ rcontrol_loop(void)
              if (Input->status != NULL)
               {
                *((unsigned char *) Input->status) = value;
-               sendtext ("Ok\n>");
+               sendtext ("Ok\r\n>");
               }
              else
               {
-               ret = sendtext ("ERROR\n>");
+               ret = sendtext ("ERROR\r\n>");
               }
             }
            else
             {
-             ret = sendtext ("ERROR\n>");
+             ret = sendtext ("ERROR\r\n>");
 
             }
           }
@@ -685,7 +696,7 @@ rcontrol_loop(void)
 
            sscanf (ptr2 + 8, "%i", &value);
 
-           dprint ("part[%02i].in[%02i] = %i \n", pn, in, value);
+           dprint ("part[%02i].in[%02i] = %i \r\n", pn, in, value);
 
            if (pn < Window5.GetPartsCount ())
             {
@@ -698,51 +709,51 @@ rcontrol_loop(void)
                if (Input->status != NULL)
                 {
                  *((unsigned char *) Input->status) = value;
-                 sendtext ("Ok\n>");
+                 sendtext ("Ok\r\n>");
                 }
                else
                 {
-                 ret = sendtext ("ERROR\n>");
+                 ret = sendtext ("ERROR\r\n>");
                 }
               }
              else
               {
-               ret = sendtext ("ERROR\n>");
+               ret = sendtext ("ERROR\r\n>");
               }
             }
            else
             {
-             ret = sendtext ("ERROR\n>");
+             ret = sendtext ("ERROR\r\n>");
 
             }
           }
          else
           {
-           ret = sendtext ("ERROR\n>");
+           ret = sendtext ("ERROR\r\n>");
           }
          return 0;
         }
        else
         {
-         ret = sendtext ("ERROR\n>");
+         ret = sendtext ("ERROR\r\n>");
         }
        break;
       case 'v':
        if (!strcmp (cmd, "version"))
         {
          //Command version =====================================================
-         stemp.Printf (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: %s %s %s\n"), lxT (_VERSION_), lxT (_DATE_), lxT (_ARCH_));
+         stemp.Printf (lxT ("Developed by L.C. Gamboa\r\n <lcgamboa@yahoo.com>\r\n Version: %s %s %s\r\n"), lxT (_VERSION_), lxT (_DATE_), lxT (_ARCH_));
          ret += sendtext ((const char *) stemp.c_str ());
-         ret += sendtext ("Ok\n>");
+         ret += sendtext ("Ok\r\n>");
         }
        else
         {
-         ret = sendtext ("ERROR\n>");
+         ret = sendtext ("ERROR\r\n>");
         }
        break;
       default:
        //Uknown command ========================================================
-       ret = sendtext ("ERROR\n>");
+       ret = sendtext ("ERROR\r\n>");
        break;
       }
     }

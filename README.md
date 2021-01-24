@@ -1,5 +1,5 @@
 
-# PICSimLab - PIC Simulator Laboratory
+# PICSimLab - Programmable IC Simulator Laboratory
 
 PICSimLab is a realtime emulator of development boards with integrated MPLABX/avr-gdb debugger. 
 PICSimLab supports some [picsim](https://github.com/lcgamboa/picsim) microcontrollers and 
