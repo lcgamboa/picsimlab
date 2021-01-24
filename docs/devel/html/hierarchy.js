@@ -56,7 +56,9 @@ var hierarchy =
     [ "part", "classpart.html", [
       [ "cpart_7s_display", "classcpart__7s__display.html", null ],
       [ "cpart_Buzzer", "classcpart___buzzer.html", null ],
+      [ "cpart_dcmotor", "classcpart__dcmotor.html", null ],
       [ "cpart_dtfunc", "classcpart__dtfunc.html", null ],
+      [ "cpart_encoder", "classcpart__encoder.html", null ],
       [ "cpart_ETH_w5500", "classcpart___e_t_h__w5500.html", null ],
       [ "cpart_gamepad", "classcpart__gamepad.html", null ],
       [ "cpart_gamepad_an", "classcpart__gamepad__an.html", null ],

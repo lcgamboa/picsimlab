@@ -53,16 +53,17 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"class_c_p_window4.html#adce48b721e0aba4513f117bf91fc9e52",
-"classbsim__picsim.html#a46cb9fe4157165d307a48757a6e09b9f",
-"classcboard___breadboard.html#abaa340c70832452380cdac475dee49e8",
-"classcboard___p_i_c_genios.html#aa7038d740ab6ad1a5b0c143b15f863a1",
-"classcpart___e_t_h__w5500.html#ac9a2ea1a0f92ef8f96bc958f9ca28e86",
-"classcpart___m_i2_c__24_c_x_x_x.html#aa59f0f6825a1324d8d3e52fa2b24327a",
-"classcpart___v_c_d___play.html#ac55cd34fa0d69b3098418c155baad136",
-"classcpart__pot__r.html#a2c1681fe8729ae4dab287cb1a916d615",
-"classpart.html#aff06ce861fa36bc2010b95e25cedf9f2",
-"structio___p_c_f8574__t.html#a1c94bfe8db2c8d8d9c833417573c9059"
+"class_c_p_window4.html#aaa0a8618ad60d017b343f6d175644365",
+"classbsim__picsim.html#a15b87c79a4ef52db423332860a4b2f87",
+"classcboard___breadboard.html#aa1ecb68c64827e2109b698e2e9df73fe",
+"classcboard___p_i_c_genios.html#a68146788c6169d4d476a0570a87a8425",
+"classcpart___e_t_h__w5500.html#a96afd6dcadc3bab52e7342949383551f",
+"classcpart___m_i2_c__24_c_x_x_x.html#a439ffe2d2fe85bc92db4e6bf52c7cdff",
+"classcpart___v_c_d___play.html#aa806a7ef6d8a41145fde130c22f4d55b",
+"classcpart__pbuttons.html#a75a611d0dda5d339430b80fc147c1212",
+"classcpart__vterm.html#adbd597b51a37072597c81ecf5688ac5e",
+"structdhcp.html#a0f4b48b29b52e8851ca7f4c87c36d074",
+"structsdcard__t.html#a07804cc23baa7ad5988b3a6687eeca35"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

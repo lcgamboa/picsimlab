@@ -24,9 +24,15 @@
 | [src/devices/rtc_ds1307.cc](src/devices/rtc_ds1307.cc#L408) | 408 | int output
 | [src/devices/rtc_pfc8563.cc](src/devices/rtc_pfc8563.cc#L408) | 408 | int output and countdown timer
 | [src/parts/part_IO_MCP23S17.cc](src/parts/part_IO_MCP23S17.cc#L487) | 487 | only write support implemented
+| [src/parts/part_VCD_Dump.cc](src/parts/part_VCD_Dump.cc#L105) | 105 | add support to remote control
+| [src/parts/part_VCD_Dump_an.cc](src/parts/part_VCD_Dump_an.cc#L104) | 104 | add support to remote control
+| [src/parts/part_VCD_Play.cc](src/parts/part_VCD_Play.cc#L107) | 107 | add support to remote control
+| [src/parts/part_dcmotor.cc](src/parts/part_dcmotor.cc#L225) | 225 | Add transfer funcion of dc motor
 
 ### FIXMEs
 | Filename | line # | FIXME
 |:------|:------:|:------
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1182) | 1182 | avr CONFIG size
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L118) | 118 | only for BANK=0;
+| [src/parts/part_dcmotor.cc](src/parts/part_dcmotor.cc#L284) | 284 | on slow speed output is not 90 degrees
+| [src/parts/part_encoder.cc](src/parts/part_encoder.cc#L218) | 218 | on slow speed output is not 90 degrees

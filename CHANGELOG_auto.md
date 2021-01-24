@@ -2,6 +2,12 @@
 
 ### New
 
+* Part DC Motor added. [lcgamboa]
+
+* Part encoder (rotary) added. [lcgamboa]
+
+* Support to configure remote control port number in configuration window. [lcgamboa]
+
 * Push buttons and potentiometer animation implemented. [lcgamboa]
 
 * New part rotary potentiometer. [lcgamboa]

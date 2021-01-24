@@ -23,6 +23,6 @@ var classcpart__pot__r =
     [ "RegisterRemoteControl", "classcpart__pot__r.html#a4b8e15f0f0d303817540c4f9016ae48e", null ],
     [ "WritePreferences", "classcpart__pot__r.html#aa66cab9d1501539201da098160dc3424", null ],
     [ "active", "classcpart__pot__r.html#a1c8bfa7be9dbbc3523cc0d18e2781202", null ],
-    [ "input_pins", "classcpart__pot__r.html#a8d864209f3bc382e8ec5aa6952d14fbf", null ],
+    [ "output_pins", "classcpart__pot__r.html#a712f25185b9a777d4cea4b915be84eed", null ],
     [ "values", "classcpart__pot__r.html#ae5028ffcdf8d6c24c514bf1238b630f5", null ]
 ];

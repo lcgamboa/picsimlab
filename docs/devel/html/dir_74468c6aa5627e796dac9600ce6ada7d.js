@@ -4,6 +4,8 @@ var dir_74468c6aa5627e796dac9600ce6ada7d =
     [ "part_7s_Display.h", "part__7s___display_8h_source.html", null ],
     [ "part_Buzzer.h", "part___buzzer_8h_source.html", null ],
     [ "part_d_transfer_function.h", "part__d__transfer__function_8h_source.html", null ],
+    [ "part_dcmotor.h", "part__dcmotor_8h_source.html", null ],
+    [ "part_encoder.h", "part__encoder_8h_source.html", null ],
     [ "part_ETH_w5500.h", "part___e_t_h__w5500_8h_source.html", null ],
     [ "part_gamepad.h", "part__gamepad_8h_source.html", null ],
     [ "part_gamepad_an.h", "part__gamepad__an_8h_source.html", null ],
