@@ -24,7 +24,7 @@
 */
 var NAVTREE =
 [
-  [ "PICsimLab - PIC Simulator Laboratory", "index.html", [
+  [ "PICSimLab - Programmable IC Simulator Laboratory", "index.html", [
     [ "Introduction", "index.html#intro_sec", null ],
     [ "Part example", "index.html#partex", [
       [ "part_servo.h", "index.html#pinc", null ],

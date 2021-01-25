@@ -2,15 +2,16 @@
 .MATH    { font-family: "Century Schoolbook", serif; }
 .MATH I  { font-family: "Century Schoolbook", serif; font-style: italic }
 .BOLDMATH { font-family: "Century Schoolbook", serif; font-weight: bold }
-DIV.equation { text-align-last:justify; white-space: nowrap; } /* place eq nos */
 SPAN.MATH { display:inline-block; }	/* don't stretch spaces inside eqn */
 
 DIV.author_info { text-align:center; } /* latex centers author */
 
 .LEFT    { text-align:left; }
+.FLOATLEFT    { float:left; }
 .CENTER  { text-align:center; }
 .CENTER > * { margin:auto; }
 .RIGHT   { text-align:right; }
+.FLOATRIGHT   { float:right; }
 .TOP     { vertical-align:top; }
 .MIDDLE  { vertical-align:middle; }
 .BOTTOM  { vertical-align:bottom; }
@@ -20,7 +21,8 @@ IMG.RIGHT   { float:right; }
 IMG.TOP     { vertical-align:top; }
 IMG.BOTTOM  { vertical-align:baseline; }
 
-CAPTION.BOTTOM { caption-side:bottom; }
+/* captions for latex tables and figures appear at bottom */
+CAPTION { caption-side:bottom; }
 
 DL.COMPACT > dt { float:left; padding-right: 1em; }
 BODY { width:95%; max-width:50em; margin:auto; }
@@ -45,13 +47,14 @@ H4		{  }
 H5		{  }
 
 /* mathematics styles */
-DIV.displaymath		{ text-align:center; }	/* math displays */
+DIV.displaymath { text-align:center; margin-top:1em; margin-bottom:1em; }
+	/* math displays: margins for \abovedisplayskip \belowdisplayskip */
 TD.eqno			{ width:0; }	/* equation-number cells */
 TABLE.PAD TD	{ padding:3px; }
 TABLE.BORDER TD	{ border:1px solid black; }
 TABLE.equation	{ width:100%; }	/* place eq nos at right/left edge */
 TABLE.equation > *	{ vertical-align:baseline; }
-TABLE.equation TD	{ white-space:nowrap; }
+TABLE.equation TD	{ white-space:nowrap; padding-bottom:5px; }
 TABLE		{ border-collapse: collapse; }
 
 /* document-specific styles come next */
