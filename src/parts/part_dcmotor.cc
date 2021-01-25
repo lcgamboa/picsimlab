@@ -323,7 +323,7 @@ cpart_dcmotor::Process(void)
      else
       {
        state--;
-       if (state < 0) state = 3;
+       if (state > 3) state = 3;
       }
 
 
