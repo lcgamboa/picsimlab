@@ -1,3 +1,39 @@
+## v0.8.6 (2021-01-25)
+
+### New
+
+* Part DC Motor added. [lcgamboa]
+
+* Part encoder (rotary) added. [lcgamboa]
+
+* Support to configure remote control port number in configuration window. [lcgamboa]
+
+* Push buttons and potentiometer animation implemented. [lcgamboa]
+
+* New part rotary potentiometer. [lcgamboa]
+
+* Support to active parts with low input signal for LEDs, RGB LED, Buzzer and 7 segments display. [lcgamboa]
+
+* Support to save board potentiometers position. [lcgamboa]
+
+* Initial support to TCP remote control interface. [lcgamboa]
+
+* Initial support to touch controller xpt2046. [lcgamboa]
+
+* Support to read in ili9340 8 bit interface added. [lcgamboa]
+
+* Support to set offset in Signal Generator added. [lcgamboa]
+
+* Support to qemu_stm32 analog channels added. [lcgamboa]
+
+* Support to ili9341 8 bit parallel mode added. [lcgamboa]
+
+### Fix
+
+* Correct state of uart txpin on reset fixed. [lcgamboa]
+
+* Serial bitbang tx bug fixed. [lcgamboa]
+
 ## v0.8.5 (2020-11-28)
 
 ### New

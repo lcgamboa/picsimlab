@@ -46,6 +46,7 @@ cl sudo ./dkms-install.sh
 #cl make clean;make -j4
 #cl sudo make install
 sudo usermod -a -G dialout `whoami`
+cl sudo modprobe tty0tty
 cd ../../
 echo -e "\033[1;32m ---------------------- build and install simavr ------------------------- \033[0m"
 cd simavr
