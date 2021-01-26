@@ -573,19 +573,15 @@ cboard_Arduino_Uno::Run_CPU(void)
  unsigned int alm[40];
 
  int JUMPSTEPS = Window1.GetJUMPSTEPS ()*4.0; //number of steps skipped
- long int NSTEPJ = Window1.GetNSTEPJ (); //number of steps in 100ms
+ int pinc = MGetPinCount ();
+ long int NSTEP = 4.0 * Window1.GetNSTEP () / pinc; //number of steps in 100ms
 
  long long unsigned int cycle_start;
  int twostep = 0;
 
- int pinc = MGetPinCount ();
+
  //reset mean value
- /*
- for(pi=0;pi < MGetPinCount();pi++)
- {
-   alm[pi]=0;
- }
-  */
+
  memset (alm, 0, pinc * sizeof (unsigned int));
 
  //read pic.pins to a local variable to speed up 
@@ -625,8 +621,7 @@ cboard_Arduino_Uno::Run_CPU(void)
     if (use_spare)Window5.Process ();
 
     //increment mean value counter if pin is high
-    if (j < pinc)
-     alm[j] += pins[j].value;
+    alm[i % pinc] += pins[i % pinc].value;
 
     if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
      {
@@ -642,7 +637,7 @@ cboard_Arduino_Uno::Run_CPU(void)
  //calculate mean value
  for (pi = 0; pi < MGetPinCount (); pi++)
   {
-   cboard_Arduino_Uno::pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEPJ) + 30);
+   cboard_Arduino_Uno::pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEP) + 30);
   }
 
  if (use_spare)Window5.PostProcess ();

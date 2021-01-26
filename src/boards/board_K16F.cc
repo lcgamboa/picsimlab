@@ -226,16 +226,10 @@ cboard_K16F::Run_CPU(void)
 
 
  int JUMPSTEPS = Window1.GetJUMPSTEPS ();
- long int NSTEPJ = Window1.GetNSTEPJ ();
+ long int NSTEP = Window1.GetNSTEP () / pic.PINCOUNT;
 
  pins = pic.pins;
 
- /*
- for(pi=0;pi < pic.PINCOUNT;pi++)
-      {
-        alm[pi]=0;
-      }
-  */
  memset (alm, 0, 18 * sizeof (unsigned int));
 
  if (use_spare)Window5.PreProcess ();
@@ -350,17 +344,11 @@ cboard_K16F::Run_CPU(void)
     if (use_oscope)Window4.SetSample ();
     if (use_spare)Window5.Process ();
 
-    if (j < pic.PINCOUNT)
-     alm[j] += pins[j].value;
+    //increment mean value counter if pin is high
+    alm[i % pic.PINCOUNT] += pins[i % pic.PINCOUNT].value;
+    
     if (j >= JUMPSTEPS)
      {
-      /*    
-      for(pi=0;pi < pic.PINCOUNT;pi++)
-      {
-         alm[pi]+=pins[pi].value;
-         //if((!pins[pi].dir)&&(pins[pi].value)) lm[pi]++;
-      }
-       */
       j = -1;
      }
     j++;
@@ -421,7 +409,7 @@ cboard_K16F::Run_CPU(void)
 
  for (pi = 0; pi < pic.PINCOUNT; pi++)
   {
-   pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEPJ) + 30);
+   pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEP) + 30);
   }
 
  if (use_spare)Window5.PostProcess ();

@@ -611,7 +611,7 @@ cboard_x::Run_CPU(void)
  unsigned int alm[40];
 
  int JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
- long int NSTEPJ = Window1.GetNSTEPJ (); //number of steps in 100ms
+ long int NSTEP = Window1.GetNSTEP () / MGetPinCount (); //number of steps in 100ms
 
 
  //reset pins mean value
@@ -642,9 +642,8 @@ cboard_x::Run_CPU(void)
     //Spare parts window process
     if (use_spare)Window5.Process ();
 
-    //increment mean value counter if pin is high 
-    if (j < pic.PINCOUNT)
-     alm[j] += pins[j].value;
+    //increment mean value counter if pin is high
+    alm[i % pic.PINCOUNT] += pins[i % pic.PINCOUNT].value;
 
     if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
      {
@@ -660,7 +659,7 @@ cboard_x::Run_CPU(void)
  //calculate mean value
  for (pi = 0; pi < pic.PINCOUNT; pi++)
   {
-   pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEPJ) + 30);
+   pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEP) + 30);
   }
 
  //Spare parts window pre post process

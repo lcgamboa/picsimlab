@@ -198,7 +198,7 @@ cboard_McLab1::Draw(CDraw *draw, double scale)
         {
          draw->Canvas.SetColor (55, 55, 55);
         }
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy , 19);
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 19);
       }
      else if (output[i].id == O_RST)
       {
@@ -212,7 +212,7 @@ cboard_McLab1::Draw(CDraw *draw, double scale)
         {
          draw->Canvas.SetColor (55, 55, 55);
         }
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy , 19);
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 19);
       }
      else
       {
@@ -315,14 +315,7 @@ cboard_McLab1::Run_CPU(void)
 
  int JUMPSTEPS = Window1.GetJUMPSTEPS ();
  long int NSTEPJ = Window1.GetNSTEPJ ();
- /*
- for(i=0;i < pic.PINCOUNT;i++)
- {
-    alm[i]=0;
-    alm1[i]=0;
-    alm2[i]=0;
- }
-  */
+
  memset (alm, 0, 18 * sizeof (unsigned int));
  memset (alm1, 0, 18 * sizeof (unsigned int));
  memset (alm2, 0, 18 * sizeof (unsigned int));
@@ -336,9 +329,6 @@ cboard_McLab1::Run_CPU(void)
  if (Window1.Get_mcupwr ())
   for (i = 0; i < Window1.GetNSTEP (); i++)
    {
-
-
-
     if (j >= JUMPSTEPS)
      {
       pic_set_pin (pic.mclr, p_RST);
@@ -352,18 +342,12 @@ cboard_McLab1::Run_CPU(void)
     if (use_oscope)Window4.SetSample ();
     if (use_spare)Window5.Process ();
 
-    if (j < pic.PINCOUNT)
-     alm[j] += pins[j].value;
+    //increment mean value counter if pin is high
+    alm[i % pic.PINCOUNT] += pins[i % pic.PINCOUNT].value;
 
     if (j >= JUMPSTEPS)
      {
-      /*
-for(pi=0;pi < pic.PINCOUNT;pi++)
-{
-   alm[pi]+=pins[pi].value;
-   //if((!pins[pi].dir)&&(pins[pi].value)) alm[pi]++;
-}
-       */
+
       //pull-up extern 
       if ((pins[17].dir)&&(p_BT[0]))alm[17]++;
       if ((pins[0].dir)&&(p_BT[1]))alm[0]++;
@@ -385,7 +369,7 @@ for(pi=0;pi < pic.PINCOUNT;pi++)
 
  for (i = 0; i < pic.PINCOUNT; i++)
   {
-   pic.pins[i].oavalue = (int) (((225.0 * alm[i]) / NSTEPJ) + 30);
+   pic.pins[i].oavalue = (int) (((225.0 * alm[i]) / (Window1.GetNSTEP () / pic.PINCOUNT)) + 30);
    lm1[i] = (int) (((600.0 * alm1[i]) / NSTEPJ) + 30);
    lm2[i] = (int) (((600.0 * alm2[i]) / NSTEPJ) + 30);
    if (lm1[i] > 255)lm1[i] = 255;
@@ -783,9 +767,9 @@ cboard_McLab1::get_out_id(char * name)
  if (strcmp (name, "PB_RA4") == 0)return O_BRA4;
 
  if (strcmp (name, "JP_1") == 0)return O_JP1;
- 
+
  if (strcmp (name, "PB_RST") == 0)return O_RST;
- 
+
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
 }

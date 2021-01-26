@@ -339,7 +339,7 @@ cboard_Breadboard::Draw(CDraw *draw, double scale)
  lxSize ps;
 
  lxFont font ((MGetPinCount () >= 100) ? 9 : ((MGetPinCount () > 14) ? 12 : 10)
-                  , lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
+              , lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
 
  draw->Canvas.Init (scale, scale); //initialize draw context
 
@@ -401,14 +401,14 @@ cboard_Breadboard::Run_CPU(void)
  const picpin * pins;
  unsigned int alm[100];
  int JUMPSTEPS = 0;
- //long int NSTEPJ = 0;
+ long int NSTEP = 0;
 
  switch (ptype)
   {
   case _PIC:
 
    JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
-   //NSTEPJ = Window1.GetNSTEPJ (); //number of steps in 100ms
+   NSTEP = Window1.GetNSTEP () / pic.PINCOUNT; //number of steps in 100ms
 
    //reset mean value
    memset (alm, 0, 100 * sizeof (unsigned int));
@@ -438,14 +438,6 @@ cboard_Breadboard::Run_CPU(void)
 
       if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
        {
-        /*  
-        //increment mean value counter if pin is high  
-        for(pi=0;pi < pic.PINCOUNT;pi++)
-        {
-         alm[pi]+=pins[pi].value;
-        }
-         */
-
         j = -1; //reset counter
        }
       j++; //counter increment
@@ -453,19 +445,19 @@ cboard_Breadboard::Run_CPU(void)
    //calculate mean value
    for (pi = 0; pi < MGetPinCount (); pi++)
     {
-     bsim_picsim::pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / (Window1.GetNSTEP () / pic.PINCOUNT)) + 30);
+     bsim_picsim::pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEP) + 30);
     }
    if (use_spare)Window5.PostProcess ();
    break;
   case _AVR:
 
+   int pinc = bsim_simavr::MGetPinCount ();
    JUMPSTEPS = Window1.GetJUMPSTEPS ()*4.0; //number of steps skipped
-   //NSTEPJ = Window1.GetNSTEPJ (); //number of steps in 100ms
+   NSTEP = 4.0 * Window1.GetNSTEP () / pinc; //number of steps in 100ms
 
    long long unsigned int cycle_start;
    int twostep = 0;
 
-   int pinc = bsim_simavr::MGetPinCount ();
    //reset mean value
 
    memset (alm, 0, pinc * sizeof (unsigned int));
@@ -520,7 +512,7 @@ cboard_Breadboard::Run_CPU(void)
    //calculate mean value
    for (pi = 0; pi < MGetPinCount (); pi++)
     {
-     bsim_simavr::pins[pi].oavalue = (int) (((225.0 * alm[pi]) / (Window1.GetNSTEP () / pinc)) + 30);
+     bsim_simavr::pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEP) + 30);
     }
    if (use_spare)Window5.PostProcess ();
    break;

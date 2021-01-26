@@ -699,6 +699,7 @@ cboard_PICGenios::Run_CPU(void)
 
  int JUMPSTEPS = Window1.GetJUMPSTEPS ();
  long int NSTEPJ = Window1.GetNSTEPJ ();
+ long int NSTEP = Window1.GetNSTEP () / pic.PINCOUNT;
 
  if (use_spare)Window5.PreProcess ();
 
@@ -840,9 +841,8 @@ cboard_PICGenios::Run_CPU(void)
     if (use_oscope)Window4.SetSample ();
     if (use_spare)Window5.Process ();
 
-    //increment mean value counter if pin is high 
-    if (j < pic.PINCOUNT)
-     alm[j] += pins[j].value;
+    //increment mean value counter if pin is high
+    alm[i % pic.PINCOUNT] += pins[i % pic.PINCOUNT].value;
 
     if (j >= JUMPSTEPS)
      {
@@ -935,7 +935,7 @@ cboard_PICGenios::Run_CPU(void)
    if (pic.pins[i].port == P_VDD)
     pic.pins[i].oavalue = 255;
    else
-    pic.pins[i].oavalue = (int) (((225.0 * alm[i]) / NSTEPJ) + 30);
+    pic.pins[i].oavalue = (int) (((225.0 * alm[i]) / NSTEP) + 30);
 
    lm1[i] = (int) (((600.0 * alm1[i]) / NSTEPJ) + 30);
    lm2[i] = (int) (((600.0 * alm2[i]) / NSTEPJ) + 30);

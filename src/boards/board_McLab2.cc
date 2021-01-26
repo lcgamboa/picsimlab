@@ -577,9 +577,8 @@ cboard_McLab2::Run_CPU(void)
     if (use_oscope)Window4.SetSample ();
     if (use_spare)Window5.Process ();
 
-    //increment mean value counter if pin is high 
-    if (j < pic.PINCOUNT)
-     alm[j] += pins[j].value;
+    //increment mean value counter if pin is high
+    alm[i % pic.PINCOUNT] += pins[i % pic.PINCOUNT].value;
 
     if (j >= JUMPSTEPS)
      {
@@ -678,7 +677,7 @@ cboard_McLab2::Run_CPU(void)
    if (pic.pins[pi].port == P_VDD)
     pic.pins[pi].oavalue = 255;
    else
-    pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEPJ) + 30);
+    pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / (Window1.GetNSTEP () / pic.PINCOUNT)) + 30);
 
    lm1[pi] = (int) (((600.0 * alm1[pi]) / NSTEPJ) + 30);
    lm2[pi] = (int) (((600.0 * alm2[pi]) / NSTEPJ) + 30);

@@ -670,16 +670,11 @@ cboard_Curiosity::Run_CPU(void)
  unsigned int alm[20];
 
  int JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
- long int NSTEPJ = Window1.GetNSTEPJ (); //number of steps in 100ms
+ long int NSTEP = Window1.GetNSTEP () / pic.PINCOUNT; //number of steps in 100ms
 
 
  //reset mean value
- /*
- for(pi=0;pi < pic.PINCOUNT;pi++)
- {
-   alm[pi]=0;
- }
-  */
+
  memset (alm, 0, 20 * sizeof (unsigned int));
 
 
@@ -705,19 +700,12 @@ cboard_Curiosity::Run_CPU(void)
     if (use_oscope)Window4.SetSample ();
     if (use_spare)Window5.Process ();
 
-    //increment mean value counter if pin is high 
-    if (j < pic.PINCOUNT)
-     alm[j] += pins[j].value;
+
+    //increment mean value counter if pin is high
+    alm[i % pic.PINCOUNT] += pins[i % pic.PINCOUNT].value;
 
     if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
      {
-      /*  
-      //increment mean value counter if pin is high  
-      for(pi=0;pi < pic.PINCOUNT;pi++)
-      {
-       alm[pi]+=pins[pi].value;
-      }
-       */
       //set analog pin 16 (RC0 AN4) with value from scroll  
       pic_set_apin (16, (5.0 * pot1 / 199));
 
@@ -730,7 +718,7 @@ cboard_Curiosity::Run_CPU(void)
  //calculate mean value
  for (pi = 0; pi < pic.PINCOUNT; pi++)
   {
-   pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEPJ) + 30);
+   pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEP) + 30);
   }
  if (use_spare)Window5.PostProcess ();
 }
