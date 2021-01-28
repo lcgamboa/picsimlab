@@ -206,7 +206,7 @@ bsim_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
 #ifdef _WIN_  
  if (!lxFileExists (Window1.GetSharePath () + lxT ("/../qemu-stm32.exe")))
 #else
- if ((!lxFileExists ("/usr/bin/qemu-stm32"))&&(!lxFileExists ("/usr/local/bin/qemu-stm32")))
+ if (!lxFileExists (dirname(lxGetExecutablePath()) + lxT("/qemu-stm32")))
 #endif  
   {
    Message ("qemu-stm32 not found!");
@@ -275,7 +275,7 @@ bsim_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
       );
   */
 #else
- lxExecute (cmd, lxEXEC_MAKE_GROUP_LEADER);
+ lxExecute (dirname(lxGetExecutablePath()) + lxT("/") +cmd, lxEXEC_MAKE_GROUP_LEADER);
 #endif  
 
  //monitor  

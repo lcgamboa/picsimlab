@@ -14,7 +14,7 @@ install -d  "AppDir/usr/share/glib-2.0/schemas"
 cp /usr/share/glib-2.0/schemas/com.geda.gtkwave.gschema.xml AppDir/usr/share/glib-2.0/schemas
 glib-compile-schemas AppDir/usr/share/glib-2.0/schemas/ || echo "No AppDir/usr/share/glib-2.0/schemas/"
 if [[ -n "$1" ]]; then
-  cp /usr/local/bin/qemu-stm32 AppDir/usr/bin
+  cp /usr/bin/qemu-stm32 AppDir/usr/bin
   teste/linuxdeploy-x86_64.AppImage --appdir AppDir --executable=AppDir/usr/bin/qemu-stm32
 fi
 teste/linuxdeploy-x86_64.AppImage --appdir AppDir --executable=AppDir/usr/bin/cutecom

@@ -77,7 +77,7 @@ cl make clean;make -j4
 cd arm-softmmu
 cl cp qemu-system-arm qemu-stm32
 cl strip qemu-stm32
-cl sudo cp qemu-stm32 /usr/local/bin/
+cl sudo cp qemu-stm32 /usr/bin/
 cd ../../
 echo -e "\033[1;32m ---------------------- build and install picsimlab ---------------------- \033[0m"
 #git pull
