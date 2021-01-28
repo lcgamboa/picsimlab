@@ -42,7 +42,6 @@ install: all
 	sed -i 's/picsimlab/picsimlab\_NOGUI/g' ${appdir}/picsimlab_NOGUI.desktop
 	sed -i 's/PICSimLab/PICSimLab\_NOGUI/g' ${appdir}/picsimlab_NOGUI.desktop
 	$(CP) -drvf ../share/* ${sharedir} 
-	$(CP) -drvf ../docs ${sharedir} 
 	$(CP) -dvf picsimlab_NOGUI ${execdir}
 	strip ${execdir}/picsimlab_NOGUI
 	$(CP) -drvf ../share/picsimlab.png ${sharedir}/../icons/hicolor/64x64/apps/picsimlab_NOGUI.png

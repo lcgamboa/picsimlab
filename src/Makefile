@@ -57,9 +57,8 @@ install_app: all
 	${sharedir}/../icons/hicolor/64x64/mimetypes/ ${sharedir}/../mime/application/
 	$(CP) -dvf  ../share/picsimlab.desktop ${appdir}/
 	$(CP) -drvf ../share/* ${sharedir} 
-	$(CP) -drvf ../docs ${sharedir} 
 	$(CP) -dvf picsimlab ${execdir}
-	strip ${execdir}/picsimlab
+	strip ${execdir}picsimlab
 	$(CP) -drvf ../share/picsimlab.png ${sharedir}/../icons/hicolor/64x64/apps/
 	$(CP) -drvf ../share/application-x-picsimlab-workspace.png  ${sharedir}/../icons/hicolor/64x64/mimetypes/
 	$(CP) -drvf ../share/application-x-picsimlab-workspace.xml ${sharedir}/../mime/application/x-picsimlab-workspace.xml
