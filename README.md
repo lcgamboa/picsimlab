@@ -53,7 +53,7 @@ In first time build:
 ```
 git clone https://github.com/lcgamboa/picsimlab.git
 cd picsimlab
-./picsimlab_build_all_and_deps.sh
+./picsimlab_build_all_and_install.sh
 ```
 
 To recompile use:
@@ -91,7 +91,7 @@ make FILE=Makefile.cross_32 -j4
 
 Experimental version can be built using the parameter "exp" on scripts:
 ```
-./picsimlab_build_all_and_deps.sh exp
+./picsimlab_build_all_and_install.sh exp
 ./picsimlab_build_w64.sh exp
 ./picsimlab_build_w32.sh exp
 ```
