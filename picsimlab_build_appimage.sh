@@ -14,6 +14,7 @@ install -d  "AppDir/usr/share/glib-2.0/schemas"
 cp /usr/share/glib-2.0/schemas/com.geda.gtkwave.gschema.xml AppDir/usr/share/glib-2.0/schemas
 glib-compile-schemas AppDir/usr/share/glib-2.0/schemas/ || echo "No AppDir/usr/share/glib-2.0/schemas/"
 wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+chmod a+x linuxdeploy-x86_64.AppImage
 mv linuxdeploy-x86_64.AppImage /tmp/
 if [[ -n "$1" ]]; then
   cp /usr/bin/qemu-stm32 AppDir/usr/bin
@@ -32,6 +33,7 @@ echo "" >> /tmp/AppRun
 echo "\$APPDIR/usr/bin/picsimlab \$@" >> /tmp/AppRun
 chmod a+x /tmp/AppRun
 /tmp/linuxdeploy-x86_64.AppImage --custom-apprun=/tmp/AppRun --appdir AppDir --output appimage
+install -d "release_${VERSION}"
 if [[ -n "$1" ]]; then
   mv PICSimLab-${VERSION}-x86_64.AppImage release_${VERSION}/PICSimLab-${VERSION}_experimetal-x86_64.AppImage 
 else
@@ -49,6 +51,10 @@ cd AppDir/usr/share/picsimlab
 find . -type f -name '*.png' -exec rm {} +
 find . -type f -name '*.xcf' -exec rm {} +
 cd -
+if [[ -n "$1" ]]; then
+  cp /usr/bin/qemu-stm32 AppDir/usr/bin
+  /tmp/linuxdeploy-x86_64.AppImage --appdir AppDir --executable=AppDir/usr/bin/qemu-stm32
+fi
 /tmp/linuxdeploy-x86_64.AppImage --appdir AppDir --output appimage
 if [[ -n "$1" ]]; then
   mv PICSimLab_NOGUI-${VERSION}-x86_64.AppImage ../release_${VERSION}/PICSimLab_NOGUI-${VERSION}_experimental-x86_64.AppImage 
