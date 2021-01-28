@@ -246,19 +246,14 @@ CPWindow1::_EvOnCreate(CControl * control)
  lxFileName fn;
  lxFileName fn_spare;
 
- strncpy (home, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
+ strncpy (home, (char*) lxGetUserDataDir (lxT ("picsimlab")).char_str (), 1023);
 
 
  if (!create)
   {
    PATH = lxGetCwd ();
 
-#ifndef _WIN_
-   share = lxString (_SHARE_);
-#else
    share = dirname (lxGetExecutablePath ()) + lxT ("/") + lxString (_SHARE_);
-#endif
-
 
    if (Application->Aargc == 2)
     {
@@ -1520,7 +1515,7 @@ CPWindow1::menu1_Tools_SerialTerm_EvMenuActive(CControl * control)
  lxExecute (share + lxT ("/../tools/cutecom/cutecom.exe"));
 #else
 
- lxExecute ("cutecom", lxEXEC_MAKE_GROUP_LEADER);
+ lxExecute (dirname(lxGetExecutablePath ())+"/cutecom", lxEXEC_MAKE_GROUP_LEADER);
 #endif  
 }
 
@@ -1531,7 +1526,7 @@ CPWindow1::menu1_Tools_SerialRemoteTank_EvMenuActive(CControl * control)
  lxExecute (share + lxT ("/../srtank.exe"));
 #else
 
- lxExecute ("srtank", lxEXEC_MAKE_GROUP_LEADER);
+ lxExecute (dirname(lxGetExecutablePath ())+"/srtank", lxEXEC_MAKE_GROUP_LEADER);
 #endif  
 }
 
@@ -1541,7 +1536,7 @@ CPWindow1::menu1_Tools_Esp8266ModemSimulator_EvMenuActive(CControl * control)
 #ifdef _WIN_  
  lxExecute (share + lxT ("/../espmsim.exe"));
 #else
- lxExecute ("espmsim", lxEXEC_MAKE_GROUP_LEADER);
+ lxExecute (dirname(lxGetExecutablePath ())+"/espmsim", lxEXEC_MAKE_GROUP_LEADER);
 #endif  
 }
 

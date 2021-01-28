@@ -2,7 +2,7 @@ include ../../VERSION
 
 CC = g++
 
-prefix=/usr
+prefix=$(DESTDIR)/usr
 
 RM= rm -f
 CP= cp
@@ -35,6 +35,9 @@ run: all
 
 install: all
 	$(CP) -dvf  ../../share/espmsim.desktop ${appdir} 
+	$(CP) -dvf espmsim ${execdir}
+
+install_app: all
 	$(CP) -dvf espmsim ${execdir}
 
 uninstall:

@@ -2,7 +2,7 @@ include ../../VERSION
 
 CC = g++
 
-prefix=/usr
+prefix=$(DESTDIR)/usr
 
 RM= rm -f
 CP= cp
@@ -36,6 +36,9 @@ run: all
 
 install: all
 	$(CP) -dvf  ../../share/srtank.desktop ${appdir} 
+	$(CP) -dvf srtank ${execdir}
+
+install_app: all
 	$(CP) -dvf srtank ${execdir}
 
 uninstall:

@@ -2,7 +2,7 @@
 Name=PICSimLab
 Comment="PIC Simulator Laboratory"
 Exec=picsimlab
-Icon=/usr/share/picsimlab/picsimlab.png
+Icon=picsimlab
 Terminal=false
 Type=Application
 Categories=Development;Engineering;Electronics;

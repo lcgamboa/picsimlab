@@ -4,7 +4,7 @@ CC = g++
 
 PKG_CONFIG= `pkg-config --cflags glib-2.0` 
 
-prefix=/usr
+prefix=$(DESTDIR)/usr
 
 RM= rm -f
 CP= cp
@@ -17,7 +17,7 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-override CFLAGS += -DEXT_BROWSER -D_VERSION_=\"${VERSION}\" -Wall -g -O0  -D_SHARE_=\"${sharedir}\"  -I/usr/include/lxrad_NOGUI -Wall  -D_REENTRANT
+override CFLAGS += -DEXT_BROWSER -D_VERSION_=\"${VERSION}\" -Wall -g -O2  -D_SHARE_=\"../share/picsimlab/\"  -I/usr/include/lxrad_NOGUI -Wall  -D_REENTRANT
 
 override CFLAGS+= -D_NOTHREAD
 #override CFLAGS+=-fsanitize=address
@@ -36,20 +36,25 @@ all: $(OBJS)
 	$(CC) -c $(CFLAGS) $< -o $@ 
 
 install: all
-	${MKDIR} ${sharedir}
-	$(CP) -dvf  ../share/picsimlab.desktop ${appdir} 
+	install -d $(execdir) $(sharedir) $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \
+	${sharedir}/../icons/hicolor/64x64/mimetypes/ ${sharedir}/../mime/application/
+	$(CP) -dvf  ../share/picsimlab.desktop ${appdir}/picsimlab_NOGUI.desktop
+	sed -i 's/picsimlab/picsimlab\_NOGUI/g' ${appdir}/picsimlab_NOGUI.desktop
+	sed -i 's/PICSimLab/PICSimLab\_NOGUI/g' ${appdir}/picsimlab_NOGUI.desktop
 	$(CP) -drvf ../share/* ${sharedir} 
 	$(CP) -drvf ../docs ${sharedir} 
-	$(CP) -dvf picsimlab ${execdir}
-	xdg-icon-resource install --context mimetypes --size 48 ../share/application-x-picsimlab-workspace.png application-x-picsimlab-workspace
-	xdg-mime install --mode system ../share/application-x-picsimlab-workspace.xml
-	xdg-mime default picsimlab.desktop application/x-picsimlab-workspace
-	update-mime-database /usr/share/mime &
-	update-desktop-database ${appdir} &
+	$(CP) -dvf picsimlab_NOGUI ${execdir}
+	strip ${execdir}/picsimlab_NOGUI
+	$(CP) -drvf ../share/picsimlab.png ${sharedir}/../icons/hicolor/64x64/apps/picsimlab_NOGUI.png
+	#$(CP) -drvf ../share/application-x-picsimlab-workspace.png  ${sharedir}/../icons/hicolor/64x64/mimetypes/
+	#$(CP) -drvf ../share/application-x-picsimlab-workspace.xml ${sharedir}/../mime/application/x-picsimlab-workspace.xml
+	#xdg-mime default picsimlab.desktop application/x-picsimlab-workspace
+	#update-mime-database /usr/share/mime &
+	#update-desktop-database ${appdir} &
 
 uninstall:
 	$(RM) -drvf ${sharedir} 
-	$(RM) -dvf ${execdir}picsimlab
+	$(RM) -dvf ${execdir}picsimlab_NOGUI
 	$(RM) -dvf ${appdir}picsimlab.desktop
 	xdg-icon-resource uninstall  --context mimetypes --size 48 application-x-picsimlab-workspace
 	xdg-mime uninstall  --mode system ../share/application-x-picsimlab-workspace.xml

@@ -12,6 +12,8 @@ exp:$(SUBDIRS)
 
 install:$(SUBDIRS) 
 
+install_app:$(SUBDIRS) 
+
 clean:$(SUBDIRS) 
 	rm -Rf *.exe *.zip
 
