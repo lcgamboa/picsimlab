@@ -3,6 +3,16 @@
 
 export VERSION=${VERSION}
 
+cp build_all
+git clone https://github.com/lcgamboa/lxrad_nogui.git
+echo -e "\033[1;32m ---------------------- build and install lxrad nogui -------------------------- \033[0m"
+cd lxrad_nogui
+git pull
+cl make clean;make -j4
+cl sudo make install
+cd ..
+cd ..
+
 rm -rf AppDir
 make clean
 make -j4 $1
@@ -13,6 +23,7 @@ cp /usr/bin/gtkwave AppDir/usr/bin
 install -d  "AppDir/usr/share/glib-2.0/schemas"
 cp /usr/share/glib-2.0/schemas/com.geda.gtkwave.gschema.xml AppDir/usr/share/glib-2.0/schemas
 glib-compile-schemas AppDir/usr/share/glib-2.0/schemas/ || echo "No AppDir/usr/share/glib-2.0/schemas/"
+cp -r /usr/share/tcltk/tcl8.6  Appdir/usr/lib/
 wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
 chmod a+x linuxdeploy-x86_64.AppImage
 mv linuxdeploy-x86_64.AppImage /tmp/
@@ -35,9 +46,9 @@ chmod a+x /tmp/AppRun
 /tmp/linuxdeploy-x86_64.AppImage --custom-apprun=/tmp/AppRun --appdir AppDir --output appimage
 install -d "release_${VERSION}"
 if [[ -n "$1" ]]; then
-  mv PICSimLab-${VERSION}-x86_64.AppImage release_${VERSION}/PICSimLab-${VERSION}_experimetal-x86_64.AppImage 
+  mv -f PICSimLab-${VERSION}-x86_64.AppImage release_${VERSION}/PICSimLab-${VERSION}_experimetal-x86_64.AppImage 
 else
-  mv PICSimLab-${VERSION}-x86_64.AppImage release_${VERSION}
+  mv -f PICSimLab-${VERSION}-x86_64.AppImage release_${VERSION}
 fi	
 rm -rf AppDir
 
@@ -57,8 +68,8 @@ if [[ -n "$1" ]]; then
 fi
 /tmp/linuxdeploy-x86_64.AppImage --appdir AppDir --output appimage
 if [[ -n "$1" ]]; then
-  mv PICSimLab_NOGUI-${VERSION}-x86_64.AppImage ../release_${VERSION}/PICSimLab_NOGUI-${VERSION}_experimental-x86_64.AppImage 
+  mv -f PICSimLab_NOGUI-${VERSION}-x86_64.AppImage ../release_${VERSION}/PICSimLab_NOGUI-${VERSION}_experimental-x86_64.AppImage 
 else
-  mv PICSimLab_NOGUI-${VERSION}-x86_64.AppImage ../release_${VERSION}
+  mv -f PICSimLab_NOGUI-${VERSION}-x86_64.AppImage ../release_${VERSION}
 fi	
 rm -rf AppDir
