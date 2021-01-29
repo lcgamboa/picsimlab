@@ -1,15 +1,15 @@
-#!/usr/bin/bash -x
+#!/bin/bash -x
 . VERSION
 
 export VERSION=${VERSION}
 
-cp build_all
+cd build_all
 git clone https://github.com/lcgamboa/lxrad_nogui.git
 echo -e "\033[1;32m ---------------------- build and install lxrad nogui -------------------------- \033[0m"
 cd lxrad_nogui
 git pull
-cl make clean;make -j4
-cl sudo make install
+make clean;make -j4
+sudo make install
 cd ..
 cd ..
 
@@ -23,7 +23,7 @@ cp /usr/bin/gtkwave AppDir/usr/bin
 install -d  "AppDir/usr/share/glib-2.0/schemas"
 cp /usr/share/glib-2.0/schemas/com.geda.gtkwave.gschema.xml AppDir/usr/share/glib-2.0/schemas
 glib-compile-schemas AppDir/usr/share/glib-2.0/schemas/ || echo "No AppDir/usr/share/glib-2.0/schemas/"
-cp -r /usr/share/tcltk/tcl8.6  Appdir/usr/lib/
+cp -r /usr/share/tcltk/tcl8.6  AppDir/usr/lib/
 wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
 chmod a+x linuxdeploy-x86_64.AppImage
 mv linuxdeploy-x86_64.AppImage /tmp/
