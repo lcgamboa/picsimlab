@@ -3,6 +3,8 @@
 
 export VERSION=${VERSION}
 
+sudo apt-get -y install libminizip-dev
+install -d build_all
 cd build_all
 git clone https://github.com/lcgamboa/lxrad_nogui.git
 echo -e "\033[1;32m ---------------------- build and install lxrad nogui -------------------------- \033[0m"
@@ -18,12 +20,13 @@ make clean
 make -j4 $1
 make DESTDIR=`pwd`/AppDir install_app
 rm -rf AppDir/usr/share/picsimlab/docs/
-cp /usr/bin/cutecom AppDir/usr/bin
+#cp /usr/bin/cutecom AppDir/usr/bin
 cp /usr/bin/gtkwave AppDir/usr/bin
 install -d  "AppDir/usr/share/glib-2.0/schemas"
 cp /usr/share/glib-2.0/schemas/com.geda.gtkwave.gschema.xml AppDir/usr/share/glib-2.0/schemas
 glib-compile-schemas AppDir/usr/share/glib-2.0/schemas/ || echo "No AppDir/usr/share/glib-2.0/schemas/"
-cp -r /usr/share/tcltk/tcl8.6  AppDir/usr/lib/
+install -d AppDir/usr/lib/tcl8.6
+cp -rv /usr/share/tcltk/tcl8.6/*  AppDir/usr/lib/tcl8.6/
 wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
 chmod a+x linuxdeploy-x86_64.AppImage
 mv linuxdeploy-x86_64.AppImage /tmp/
@@ -31,7 +34,7 @@ if [[ -n "$1" ]]; then
   cp /usr/bin/qemu-stm32 AppDir/usr/bin
   /tmp/linuxdeploy-x86_64.AppImage --appdir AppDir --executable=AppDir/usr/bin/qemu-stm32
 fi
-/tmp/linuxdeploy-x86_64.AppImage --appdir AppDir --executable=AppDir/usr/bin/cutecom
+#/tmp/linuxdeploy-x86_64.AppImage --appdir AppDir --executable=AppDir/usr/bin/cutecom
 /tmp/linuxdeploy-x86_64.AppImage --appdir AppDir --executable=AppDir/usr/bin/gtkwave
 rm -rf /tmp/AppRun
 echo "#!/usr/bin/bash" >> /tmp/AppRun

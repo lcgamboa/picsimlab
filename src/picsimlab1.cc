@@ -1514,8 +1514,17 @@ CPWindow1::menu1_Tools_SerialTerm_EvMenuActive(CControl * control)
 #ifdef _WIN_  
  lxExecute (share + lxT ("/../tools/cutecom/cutecom.exe"));
 #else
-
- lxExecute (dirname(lxGetExecutablePath ())+"/cutecom", lxEXEC_MAKE_GROUP_LEADER);
+ //lxExecute (dirname(lxGetExecutablePath ())+"/cutecom", lxEXEC_MAKE_GROUP_LEADER);
+ //using system binary
+lxExecute ("cutecom", lxEXEC_MAKE_GROUP_LEADER);
+ 
+if( !(lxFileExists (dirname(lxGetExecutablePath ())+"/cutecom")
+ || lxFileExists ("/usr/bin/cutecom")
+ || lxFileExists ("/usr/local/bin/cutecom")))
+ {
+  printf("cutecom não instalado\n");
+  Message_sz ("The cutecom application is not found!\n\nPlease install cutecom in your system!\n\n In Debian based distro use: sudo apt-get install cutecom",500,240);
+ }
 #endif  
 }
 
