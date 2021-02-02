@@ -72,10 +72,7 @@ bsim_simavr::bsim_simavr(void)
 }
 
 void
-bsim_simavr::MSetSerial(const char * port)
-{
-
-}
+bsim_simavr::MSetSerial(const char * port) { }
 
 enum
 {
@@ -161,7 +158,7 @@ bsim_simavr::MInit(const char * processor, const char * fname, float freq)
  //avr->log= LOG_DEBUG;
 
  avr_reset (avr);
- avr->data[UCSR0B]=0x00; //FIX the simavr reset TX enabled
+ avr->data[UCSR0B] = 0x00; //FIX the simavr reset TX enabled
  pins_reset ();
 
  /*
@@ -1009,39 +1006,36 @@ uart_in_hook(struct avr_irq_t * irq, uint32_t value, void * param)
  ((bsim_simavr *) param)->SerialSend (value);
 }
 
-int cont = 0;
-int aux = 1;
-
 void
 bsim_simavr::UpdateHardware(void)
 {
-
+ static int cont = 0;
+ static int aux = 1;
  unsigned char c;
  cont++;
 
- if (avr->data[UCSR0B] & 0x10)//RXEN
+ if (cont > 1000)
   {
-   if (cont > 1000)
+   cont = 0;
+
+   if (serial_port_get_dsr (serialfd))
     {
-     cont = 0;
+     if (aux)
+      {
+       MReset (0);
+       aux = 0;
+      }
+    }
+   else
+    {
+     aux = 1;
+    }
+
+   if (avr->data[UCSR0B] & 0x10)//RXEN
+    {
      if (serial_port_rec (serialfd, &c))
       {
        avr_raise_irq (serial_irq + IRQ_UART_BYTE_OUT, c);
-      }
-
-     if (serial_port_get_dsr (serialfd))
-      {
-       if (aux)
-        {
-         avr_reset (avr);
-         avr->data[UCSR0B]=0x00; //FIX the simavr reset TX enabled
-         pins_reset ();
-         aux = 0;
-        }
-      }
-     else
-      {
-       aux = 1;
       }
 
      if (bitbang_uart_data_available (&bb_uart))
@@ -1110,7 +1104,7 @@ void
 bsim_simavr::MReset(int flags)
 {
  avr_reset (avr);
- avr->data[UCSR0B]=0x00; //FIX the simavr reset TX enabled
+ avr->data[UCSR0B] = 0x00; //FIX the simavr reset TX enabled
  bitbang_uart_rst (&bb_uart);
 }
 
