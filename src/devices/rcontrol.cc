@@ -98,7 +98,7 @@ rcontrol_init(unsigned short tcpport)
    serv.sin_port = htons (tcpport);
 
    if (bind (listenfd, (sockaddr *) & serv, sizeof (serv)) < 0)
-    {
+    { 
      printf ("rcontrol: bind error : %s \n", strerror (errno));
      return 1;
     }
@@ -179,11 +179,11 @@ rcontrol_end(void)
   {
    rcontrol_stop ();
    dprint ("rcontrol: end\n");
-   shutdown (listenfd, SHUT_RDWR);
-   close (listenfd);
+   //shutdown (listenfd, SHUT_RDWR);
+   //close (listenfd);
   }
- listenfd = -1;
- server_started = 0;
+ //listenfd = -1;
+ //server_started = 0;
 }
 
 static char
