@@ -1,3 +1,16 @@
+## (unreleased)
+
+### New
+
+* Command "pins" to show pins status and dir in control interface. [lcgamboa]
+
+### Fix
+
+* Arduino IDE bootloaders reset to programm bug fixed. [lcgamboa]
+
+* No value on pins on debug stepping bug removed. [lcgamboa]
+
+
 ## v0.8.6 (2021-01-25)
 
 ### New
