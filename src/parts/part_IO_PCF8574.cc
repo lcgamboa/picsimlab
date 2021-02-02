@@ -111,6 +111,7 @@ cpart_IO_PCF8574::cpart_IO_PCF8574(unsigned x, unsigned y)
  mcount = 0;
  memset (output_pins_alm, 0, 9 * sizeof (unsigned long));
 
+ _ret=255;
 }
 
 cpart_IO_PCF8574::~cpart_IO_PCF8574(void)

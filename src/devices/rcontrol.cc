@@ -328,6 +328,7 @@ rcontrol_loop(void)
  part * Part;
  input_t * Input;
  output_t * Output;
+ const picpin * pins;
 
  //open connection  
  if (sockfd < 0)
@@ -337,19 +338,18 @@ rcontrol_loop(void)
 
  n = recv (sockfd, (char *) &buffer[bp], 1024 - bp, 0);
 
- //remove putty telnet handshake
- if (buffer[bp + n] == 3)
-  {
-   for (int x = 0; x < bp + n + 1; x++)
-    {
-     buffer[x] = 0;
-    }
-   n = 0;
-   bp = 0;
-  }
-
  if (n > 0)
   {
+   //remove putty telnet handshake
+   if (buffer[bp + n] == 3)
+    {
+     for (int x = 0; x < bp + n + 1; x++)
+      {
+       buffer[x] = 0;
+      }
+     n = 0;
+     bp = 0;
+    }
 
    if (strchr (buffer, '\n'))
     {
@@ -363,7 +363,7 @@ rcontrol_loop(void)
       }
      cmd[cmdsize] = 0;
 
-     for (int i = 0; i < BSIZE - cmdsize; i++)
+     for (int i = 0; i < BSIZE - cmdsize - 1; i++)
       {
        buffer[i] = buffer[i + cmdsize + 1];
       }
@@ -546,6 +546,7 @@ rcontrol_loop(void)
          ret += sendtext ("  get ob    - get object value\r\n");
          ret += sendtext ("  help      - show this message\r\n");
          ret += sendtext ("  info      - show actual setup info and objects\r\n");
+         ret += sendtext ("  pins      - show pins directions and values\r\n");
          ret += sendtext ("  quit      - exit remote control interface\r\n");
          ret += sendtext ("  reset     - reset the board\r\n");
          ret += sendtext ("  set ob vl - set object with value\r\n");
@@ -619,6 +620,27 @@ rcontrol_loop(void)
                 }
               }
             }
+          }
+         ret += sendtext ("Ok\r\n>");
+        }
+       else
+        {
+         ret = sendtext ("ERROR\r\n>");
+        }
+       break;
+      case 'p':
+       if (!strcmp (cmd, "pins"))
+        {
+         //Command pins ========================================================
+         Board = Window1.GetBoard ();
+         pins = Board->MGetPinsValues ();
+         int p2 = Board->MGetPinCount () / 2;
+         for (i = 0; i < p2; i++)
+          {
+           snprintf (lstemp, 100, "  pin[%02i] (%8s) %c %i                 pin[%02i] (%8s) %c %i \r\n",
+                     i + 1, (const char *) Board->MGetPinName (i + 1).c_str (), (pins[i].dir == PD_IN) ? '<' : '>', pins[i].value,
+                     i + 1 + p2, (const char *) Board->MGetPinName (i + 1 + p2).c_str (), (pins[i + p2].dir == PD_IN) ? '<' : '>', pins[i + p2].value);
+           ret += sendtext (lstemp);
           }
          ret += sendtext ("Ok\r\n>");
         }
