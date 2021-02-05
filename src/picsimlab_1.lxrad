@@ -177,7 +177,7 @@
   <Name type="String">menu1_Tools</Name>
   <Tag type="int">0</Tag>
   <Text type="String">Tools</Text>
-  <MenuItems type="MenuItems">Serial Term,Serial Remote Tank,Esp8266 Modem Simulator,Arduino Bootloader,</MenuItems>
+  <MenuItems type="MenuItems">Serial Term,Serial Remote Tank,Esp8266 Modem Simulator,Arduino Bootloader,MPLABX Debugger Plugin,</MenuItems>
 </menu1_Tools>
 <menu1_Help>
   <Class type="String">CPMenu</Class>
@@ -303,6 +303,15 @@
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_Tools_ArduinoBootloader>
+<menu1_Tools_MPLABXDebuggerPlugin>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Tools_MPLABXDebuggerPlugin</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">MPLABX Debugger Plugin</Text>
+  <Enable type="bool">1</Enable>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Tools_MPLABXDEbuggerPlugin>
 <menu1_Help_Contents>
   <Class type="String">CItemMenu</Class>
   <Name type="String">menu1_Help_Contents</Name>
