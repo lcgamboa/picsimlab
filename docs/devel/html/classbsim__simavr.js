@@ -24,7 +24,7 @@ var classbsim__simavr =
     [ "MEnd", "classbsim__simavr.html#af7b9791066bf2656e5fd32a4babd8a06", null ],
     [ "MEraseFlash", "classbsim__simavr.html#a8b0d5088f7036a8df5a06fd08312179d", null ],
     [ "MGetFreq", "classbsim__simavr.html#a3ea25fb4906bda8c47dc853074d12e47", null ],
-    [ "MGetInstClock", "classbsim__simavr.html#ac38f0d49104fab4362a44f723d4fdf31", null ],
+    [ "MGetInstClockFreq", "classbsim__simavr.html#a058cf2b0cd8100d454a16ddcac64ac7a", null ],
     [ "MGetPin", "classbsim__simavr.html#a5a1170c9c980b4be1589dbfbdd003df6", null ],
     [ "MGetPinCount", "classbsim__simavr.html#a06be60432e220aaa6cf94d01a8dd4b35", null ],
     [ "MGetPinName", "classbsim__simavr.html#a25028b31abbff2ed4f34c4d52e839e96", null ],

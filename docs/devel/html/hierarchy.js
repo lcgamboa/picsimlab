@@ -81,6 +81,7 @@ var hierarchy =
       [ "cpart_encoder", "classcpart__encoder.html", null ],
       [ "cpart_gamepad", "classcpart__gamepad.html", null ],
       [ "cpart_gamepad_an", "classcpart__gamepad__an.html", null ],
+      [ "cpart_hcsr04", "classcpart__hcsr04.html", null ],
       [ "cpart_keypad", "classcpart__keypad.html", null ],
       [ "cpart_led_matrix", "classcpart__led__matrix.html", null ],
       [ "cpart_leds", "classcpart__leds.html", null ],

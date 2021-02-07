@@ -9,7 +9,7 @@ var classbsim__gpsim =
     [ "MEnd", "classbsim__gpsim.html#af16b0e6c9e33ecdd2368dad20288e3d5", null ],
     [ "MEraseFlash", "classbsim__gpsim.html#a52903a060a83adf871a90063d4e45531", null ],
     [ "MGetFreq", "classbsim__gpsim.html#ac74d83c55cd5fae3ecc5018395c8a40e", null ],
-    [ "MGetInstClock", "classbsim__gpsim.html#a19a248e6c7abb04cb652986d2c462f44", null ],
+    [ "MGetInstClockFreq", "classbsim__gpsim.html#a1be06779c0e8bb739d29a6f29aded588", null ],
     [ "MGetPin", "classbsim__gpsim.html#a8d8d07b398be4381feb2401ea94e330c", null ],
     [ "MGetPinCount", "classbsim__gpsim.html#a8ad9e53d6350a454b3cd11804803f8cf", null ],
     [ "MGetPinName", "classbsim__gpsim.html#a0ebe1935ff3e7aab78c9ae7e830b4807", null ],

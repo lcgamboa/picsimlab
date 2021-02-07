@@ -9,6 +9,7 @@ var dir_74468c6aa5627e796dac9600ce6ada7d =
     [ "part_ETH_w5500.h", "part___e_t_h__w5500_8h_source.html", null ],
     [ "part_gamepad.h", "part__gamepad_8h_source.html", null ],
     [ "part_gamepad_an.h", "part__gamepad__an_8h_source.html", null ],
+    [ "part_hcsr04.h", "part__hcsr04_8h_source.html", null ],
     [ "part_IO_74xx595.h", "part___i_o__74xx595_8h_source.html", null ],
     [ "part_IO_MCP23S17.h", "part___i_o___m_c_p23_s17_8h_source.html", null ],
     [ "part_IO_PCF8574.h", "part___i_o___p_c_f8574_8h_source.html", null ],

@@ -22,7 +22,7 @@ var classbsim__picsim =
     [ "MEnd", "classbsim__picsim.html#a4a6bb211a7b051d14887c7896d63b2e6", null ],
     [ "MEraseFlash", "classbsim__picsim.html#a15119b9c3fde470e4a94ec777ba203db", null ],
     [ "MGetFreq", "classbsim__picsim.html#a8b83ae5ef550c213267fb0a336df935e", null ],
-    [ "MGetInstClock", "classbsim__picsim.html#a4da68281320075d2a0a0d5c2162d65e1", null ],
+    [ "MGetInstClockFreq", "classbsim__picsim.html#a44239488bfdb23caeab48e77b39579b0", null ],
     [ "MGetPin", "classbsim__picsim.html#ad4da286516617fc6c196880429650920", null ],
     [ "MGetPinCount", "classbsim__picsim.html#aecec611827d34618579fb87641f97997", null ],
     [ "MGetPinName", "classbsim__picsim.html#a6339955f40096724564d309128564b2e", null ],

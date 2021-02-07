@@ -2,9 +2,15 @@
 
 ### New
 
+* Part Ultrasonic HC-SR04 added. [lcgamboa]
+
+* Menu entry to download MPLABX debugger plugin. [lcgamboa]
+
 * Command "pins" to show pins status and dir in control interface. [lcgamboa]
 
 ### Fix
+
+* Support to use windows serial ports above COM9. [lcgamboa]
 
 * Arduino IDE bootloaders reset to programm bug fixed. [lcgamboa]
 

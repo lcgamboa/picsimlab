@@ -9,7 +9,7 @@ var classbsim__ucsim =
     [ "MEnd", "classbsim__ucsim.html#a9faeac6fe7c5aaf344005c300b23e4c7", null ],
     [ "MEraseFlash", "classbsim__ucsim.html#a6c69f9afbf0861c0ea2939c9ed6f00f3", null ],
     [ "MGetFreq", "classbsim__ucsim.html#a414fbc9d84ac4f529e62b98937e82db6", null ],
-    [ "MGetInstClock", "classbsim__ucsim.html#a92c29cb27e8a138a638c40095a8ddb45", null ],
+    [ "MGetInstClockFreq", "classbsim__ucsim.html#a1514efccf99702ada0772f23d8367d04", null ],
     [ "MGetPin", "classbsim__ucsim.html#a855172e01a47bcf27138de184435d0dd", null ],
     [ "MGetPinCount", "classbsim__ucsim.html#a79e1e582d382a86942e372ec6d5e20c5", null ],
     [ "MGetPinName", "classbsim__ucsim.html#a4320acd4db98e6fc5b53d53c9cac7c40", null ],

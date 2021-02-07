@@ -10,7 +10,7 @@ var classbsim__qemu__stm32 =
     [ "MEnd", "classbsim__qemu__stm32.html#a5ed5cbec31a62e582fcfbdc4a5ef819a", null ],
     [ "MEraseFlash", "classbsim__qemu__stm32.html#a2f372472893a38fc38d827ae8c1e3c24", null ],
     [ "MGetFreq", "classbsim__qemu__stm32.html#ac1df8480e25822a1e82824863c2c17d5", null ],
-    [ "MGetInstClock", "classbsim__qemu__stm32.html#a39eff296d3ded64678bc983d1c90358f", null ],
+    [ "MGetInstClockFreq", "classbsim__qemu__stm32.html#af1fd29b8fbdb3a73cf97a388c1061c19", null ],
     [ "MGetPin", "classbsim__qemu__stm32.html#a6863e22c4ad20e2ad274f75541e5fb55", null ],
     [ "MGetPinCount", "classbsim__qemu__stm32.html#a1849b3bac0557546cfb9eb5785257f36", null ],
     [ "MGetPinName", "classbsim__qemu__stm32.html#a06019e8ccda596fd80c9f447dc77c574", null ],

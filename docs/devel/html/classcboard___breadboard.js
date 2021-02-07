@@ -37,7 +37,7 @@ var classcboard___breadboard =
     [ "MEnd", "classcboard___breadboard.html#ab1b0bc92c01a445c4b5232e5d3d91528", null ],
     [ "MEraseFlash", "classcboard___breadboard.html#acfeab228d817ac72f185de8d8a1cd829", null ],
     [ "MGetFreq", "classcboard___breadboard.html#ac163b0d66c787f8ca271a8147e1bb73f", null ],
-    [ "MGetInstClock", "classcboard___breadboard.html#a8d81e292a2df86852774d241d2e50ae3", null ],
+    [ "MGetInstClockFreq", "classcboard___breadboard.html#a95273dc1ad0ca947f5bff91f48899904", null ],
     [ "MGetPin", "classcboard___breadboard.html#a92944b6c733ff7039c84f43e43ce69e7", null ],
     [ "MGetPinCount", "classcboard___breadboard.html#a5d9316f737044314ce772ed495c2d144", null ],
     [ "MGetPinName", "classcboard___breadboard.html#a6be70b2486c0e7f1e457c5ef11dc1aff", null ],
