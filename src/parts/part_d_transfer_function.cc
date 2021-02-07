@@ -62,7 +62,7 @@ cpart_dtfunc::cpart_dtfunc(unsigned x, unsigned y)
  out_gain = 0.01;
  out_off = 0.27;
 
- nsamples= sample * Window1.GetBoard ()->MGetInstClock ();
+ nsamples= sample * Window1.GetBoard ()->MGetInstClockFreq ();
  
  refresh = 0;
 
@@ -163,7 +163,7 @@ cpart_dtfunc::Draw(void)
 
  canvas.End ();
 
- nsamples= sample * Window1.GetBoard ()->MGetInstClock ();
+ nsamples= sample * Window1.GetBoard ()->MGetInstClockFreq ();
  
 }
 

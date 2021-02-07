@@ -193,7 +193,7 @@ cpart_SignalGenerator::Draw(void)
 void
 cpart_SignalGenerator::PreProcess(void)
 {
- JUMPSTEPS_ = (Window1.GetBoard ()->MGetInstClock () / 250000);
+ JUMPSTEPS_ = (Window1.GetBoard ()->MGetInstClockFreq () / 250000);
  mcount = JUMPSTEPS_;
 
  freq = (maxfreq * values[1] / 148.0);

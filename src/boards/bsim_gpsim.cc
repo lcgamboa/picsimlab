@@ -100,7 +100,7 @@ bsim_gpsim::MGetFreq(void)
 }
 
 float
-bsim_gpsim::MGetInstClock(void)
+bsim_gpsim::MGetInstClockFreq(void)
 {
  return freq;
 }

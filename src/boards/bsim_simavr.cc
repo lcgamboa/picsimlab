@@ -316,7 +316,7 @@ bsim_simavr::MGetFreq(void)
 }
 
 float
-bsim_simavr::MGetInstClock(void)
+bsim_simavr::MGetInstClockFreq(void)
 {
  return avr->frequency;
 }

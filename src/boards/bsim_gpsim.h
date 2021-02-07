@@ -44,7 +44,7 @@ class bsim_gpsim: virtual public board
       void MEraseFlash(void);
       void MSetFreq(float freq);
       float MGetFreq(void);
-      float MGetInstClock(void);
+      float MGetInstClockFreq(void);
       int MGetPinCount(void);
       lxString MGetPinName(int pin);
       void MSetPin(int pin, unsigned char value);

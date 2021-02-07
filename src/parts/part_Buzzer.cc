@@ -254,7 +254,7 @@ cpart_Buzzer::PreProcess(void)
  if (type == PASSIVE)
   {
 
-   JUMPSTEPS_ = (Window1.GetBoard ()->MGetInstClock () / samplerate) - 100;
+   JUMPSTEPS_ = (Window1.GetBoard ()->MGetInstClockFreq () / samplerate) - 100;
    mcount = JUMPSTEPS_;
 
   }

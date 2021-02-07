@@ -137,7 +137,7 @@ cpart_servo::Process (void)
 
  if ((in_[0] == 0)&&(in_[1] == 1))//low
   {
-   angle_ = ((time / Window1.GetBoard ()->MGetInstClock ()) - 0.0015)*3141.59265359;
+   angle_ = ((time / Window1.GetBoard ()->MGetInstClockFreq ()) - 0.0015)*3141.59265359;
 
    if (angle_ > M_PI / 2.0)angle_ = M_PI / 2.0;
    if (angle_ < -M_PI / 2.0)angle_ = -M_PI / 2.0;

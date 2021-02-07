@@ -709,15 +709,15 @@ cboard_Breadboard::MGetFreq(void)
 }
 
 float
-cboard_Breadboard::MGetInstClock(void)
+cboard_Breadboard::MGetInstClockFreq(void)
 {
  switch (ptype)
   {
   case _PIC:
-   return bsim_picsim::MGetInstClock ();
+   return bsim_picsim::MGetInstClockFreq ();
    break;
   case _AVR:
-   return bsim_simavr::MGetInstClock ();
+   return bsim_simavr::MGetInstClockFreq ();
    break;
   }
  return 0;

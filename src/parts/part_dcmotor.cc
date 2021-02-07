@@ -293,7 +293,7 @@ cpart_dcmotor::PreProcess(void)
   }
  else
   {
-   step = Window1.GetBoard ()->MGetInstClock () / ((da > 0) ? da * 10 : -da * 10);
+   step = Window1.GetBoard ()->MGetInstClockFreq () / ((da > 0) ? da * 10 : -da * 10);
   }
 
  dprintf ("state=%i da=%f  %3i  %3i  dir=%i  step=%i\n", state, da, value, value_old, dir, step);

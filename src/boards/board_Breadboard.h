@@ -53,7 +53,7 @@ class cboard_Breadboard:public bsim_picsim, public bsim_simavr
       void MEraseFlash(void);
       void MSetFreq(float freq);
       float MGetFreq(void);
-      float MGetInstClock(void);
+      float MGetInstClockFreq(void);
       int MGetPinCount(void);
       lxString MGetPinName(int pin);
       void MSetPin(int pin, unsigned char value);

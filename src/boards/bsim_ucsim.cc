@@ -128,7 +128,7 @@ bsim_ucsim::MGetFreq(void)
 }
 
 float
-bsim_ucsim::MGetInstClock(void)
+bsim_ucsim::MGetInstClockFreq(void)
 {
  return freq;
 }

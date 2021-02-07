@@ -137,7 +137,7 @@ bsim_picsim::MGetFreq(void)
 }
 
 float
-bsim_picsim::MGetInstClock(void)
+bsim_picsim::MGetInstClockFreq(void)
 {
  return pic.freq / 4.0;
 }

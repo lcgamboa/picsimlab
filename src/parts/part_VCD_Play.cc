@@ -388,7 +388,7 @@ cpart_VCD_Play::ReadPropertiesWindow(CPWindow * WProp)
 void
 cpart_VCD_Play::PreProcess(void)
 {
- vcd_inc = 1.0 / ((timescale * 1e-9) * Window1.GetBoard ()->MGetInstClock ());
+ vcd_inc = 1.0 / ((timescale * 1e-9) * Window1.GetBoard ()->MGetInstClockFreq ());
 }
 
 void

@@ -307,7 +307,7 @@ public:
     /**
      * @brief board microcontroller get cpu internal clock (in PIC frequency/4)   
      */
-    virtual float MGetInstClock(void) = 0;
+    virtual float MGetInstClockFreq(void) = 0;
 
     /**
      * @brief board microcontroller pin count   

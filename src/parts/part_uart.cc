@@ -285,7 +285,7 @@ cpart_UART::ReadPropertiesWindow(CPWindow * WProp)
 void
 cpart_UART::PreProcess(void)
 {
- uart_set_clk_freq (&sr, Window1.GetBoard ()->MGetInstClock ());
+ uart_set_clk_freq (&sr, Window1.GetBoard ()->MGetInstClockFreq ());
 }
 
 void

@@ -369,7 +369,7 @@ bsim_qemu_stm32::MGetFreq(void)
 }
 
 float
-bsim_qemu_stm32::MGetInstClock(void)
+bsim_qemu_stm32::MGetInstClockFreq(void)
 {
  return freq;
 }

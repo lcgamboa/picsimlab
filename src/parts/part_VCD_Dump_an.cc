@@ -434,7 +434,7 @@ cpart_VCD_Dump_an::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       case I_START:
        if (!rec)
         {
-         float tscale = 1.0e9 / Window1.GetBoard ()->MGetInstClock (); //ns step
+         float tscale = 1.0e9 / Window1.GetBoard ()->MGetInstClockFreq (); //ns step
 
          f_vcd = fopen (f_vcd_name, "w");
          vcd_count = 0;
