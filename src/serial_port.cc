@@ -57,7 +57,9 @@ serial_port_open(serialfd_t * serialfd, const char * SERIALDEVICE)
 
 
 #ifdef _WIN_
- *serialfd = CreateFile (SERIALDEVICE, GENERIC_READ | GENERIC_WRITE,
+ char wserial[100];
+ snprintf(wserial,99,"\\\\.\\%s",SERIALDEVICE);
+ *serialfd = CreateFile (wserial, GENERIC_READ | GENERIC_WRITE,
                          0, // exclusive access
                          NULL, // no security
                          OPEN_EXISTING,
