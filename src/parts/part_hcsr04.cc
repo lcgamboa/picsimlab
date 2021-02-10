@@ -128,11 +128,11 @@ cpart_hcsr04::Draw(void)
      canvas.SetColor (50, 50, 50);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetColor (250, 250, 250);
-     snprintf (val, 10, "%4.2f", 4.0 * (200 - value) / 200.0);
+     snprintf (val, 10, "%3i", (int)(400.0 * (200 - value) / 200.0));
      canvas.Rectangle (1, output[i].x1 + 6, output[i].y1 + value / 1.35, 20, 10);
      canvas.SetColor (150, 0, 0);
      canvas.SetFont (font_p);
-     canvas.RotatedText (val, output[i].x1 + 6, output[i].y1 + value / 1.35, 0);
+     canvas.RotatedText (val, output[i].x1 + 8, output[i].y1 + value / 1.35, 0);
      break;
     }
   }
@@ -149,25 +149,8 @@ cpart_hcsr04::Process(void)
 
  if ((input_pins[0])&&(output_pins[0]))
   {
-   //tigger
-   if ((!pins[input_pins[0] - 1].value)&& (old_value))
-    {
-     //200us  8 cycles of 40KHz
-     delay = 200e-6 * Window1.GetBoard ()->MGetInstClockFreq ();
-     count = 0;
-    }
-   old_value = pins[input_pins[0] - 1].value;
 
-   if (delay)
-    {
-     delay--;
-     if (!delay)
-      {
-       count = (200-value) * 116.144018583e-6 * Window1.GetBoard ()->MGetInstClockFreq ();
-       Window5.SetPin (output_pins[0], 1);
-      }
-    }
-
+   //output  
    if (count)
     {
      count--;
@@ -176,6 +159,26 @@ cpart_hcsr04::Process(void)
        Window5.SetPin (output_pins[0], 0);
       }
     }
+
+   //pulse 48 kHz
+   if (delay)
+    {
+     delay--;
+     if (!delay)
+      {
+       count = (200 - value) * 116.144018583e-6 * Window1.GetBoard ()->MGetInstClockFreq ();
+       Window5.SetPin (output_pins[0], 1);
+      }
+    }
+
+   //trigger
+   if ((!pins[input_pins[0] - 1].value)&& (old_value))
+    {
+     //200us  8 cycles of 40KHz
+     delay = 200e-6 * Window1.GetBoard ()->MGetInstClockFreq ();
+     count = 0;
+    }
+   old_value = pins[input_pins[0] - 1].value;
   }
 }
 
