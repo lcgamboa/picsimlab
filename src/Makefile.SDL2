@@ -24,7 +24,7 @@ override CFLAGS+=-fsanitize=address
 override CFLAGS+= -D_NOTHREAD
 
 #LIBS = `lxrad_SDL2-config --libs` -lpicsim -lsimavr -lelf -lminizip  $(ELIBS) 
-LIBS =  ../../LXRAD_SDL2/lib/liblxrad_SDL2.a -lpthread -lSDL2_ttf -lSDL2_image -lSDL2 -lopenal  ../../picsim/src/libpicsim_dbg.a  ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a -lelf -lminizip $(ELIBS)
+LIBS =  ../../LXRAD_SDL2/lib/liblxrad_SDL2.a -lpthread -lSDL2_gfx -lSDL2_ttf -lSDL2_image -lSDL2 -lopenal  ../../picsim/src/libpicsim_dbg.a  ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a -lelf -lminizip $(ELIBS)
 
 
 
