@@ -478,5 +478,5 @@ cpart_pbuttons::ReadPropertiesWindow(CPWindow * WProp)
 }
 
 
-part_init("Push buttons", cpart_pbuttons);
+part_init("Push buttons", cpart_pbuttons, "Input");
 

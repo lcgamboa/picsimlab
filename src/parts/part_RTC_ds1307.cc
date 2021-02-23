@@ -235,5 +235,5 @@ cpart_RTC_ds1307::Process(void)
 
 }
 
-part_init("RTC ds1307", cpart_RTC_ds1307);
+part_init("RTC ds1307", cpart_RTC_ds1307,"Other");
 

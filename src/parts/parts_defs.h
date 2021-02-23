@@ -32,22 +32,23 @@
 
 extern int NUM_PARTS;
 
-#define part_init(name, function)  \
+#define part_init(name, function, menu)  \
 static part * function ## _create(unsigned int x, unsigned int y){\
    return new function ( x ,y);};\
     static void __attribute__((constructor)) function ## _init(void);\
     static void function ## _init(void){\
-    part_register(name , function ## _create );}
+    part_register(name , function ## _create , menu);}
 
 typedef part * (* part_create_func)(unsigned int x, unsigned int y);
 
-void part_register(const char * name, part_create_func pcreate);
+void part_register(const char * name, part_create_func pcreate, const char * menu);
 
 part * create_part(lxString name, unsigned int x, unsigned int y);
 
 typedef struct {
     char name[30];
     part_create_func pcreate;
+    char menu[30];
 } part_desc;
 
 extern part_desc parts_list[MAX_PARTS];

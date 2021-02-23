@@ -34,7 +34,7 @@
   <Class type="String">CMenu</Class>
   <Name type="String">menu1</Name>
   <Tag type="int">0</Tag>
-  <MenuItems type="MenuItems">File,Edit,Add,Help,</MenuItems>
+  <MenuItems type="MenuItems">File,Edit,Inputs,Outputs,Others,Help,</MenuItems>
 </menu1>
 <draw1>
   <Class type="String">CDraw</Class>
@@ -77,13 +77,27 @@
   <Text type="String">Edit</Text>
   <MenuItems type="MenuItems">Clear pin alias,Toggle pin alias,Edit pin alias,Reload pin alias,Zoom in,Zoom out,</MenuItems>
 </menu1_Edit>
-<menu1_Add>
+<menu1_Inputs>
   <Class type="String">CPMenu</Class>
-  <Name type="String">menu1_Add</Name>
+  <Name type="String">menu1_Inputs</Name>
   <Tag type="int">0</Tag>
-  <Text type="String">Add</Text>
+  <Text type="String">Inputs</Text>
   <MenuItems type="MenuItems"></MenuItems>
-</menu1_Add>
+</menu1_Inputs>
+<menu1_Outputs>
+  <Class type="String">CPMenu</Class>
+  <Name type="String">menu1_Outputs</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Outputs</Text>
+  <MenuItems type="MenuItems"></MenuItems>
+</menu1_Outputs>
+<menu1_Others>
+  <Class type="String">CPMenu</Class>
+  <Name type="String">menu1_Others</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Others</Text>
+  <MenuItems type="MenuItems"></MenuItems>
+</menu1_Others>
 <pmenu2>
   <Class type="String">CPMenu</Class>
   <Name type="String">pmenu2</Name>

@@ -269,5 +269,5 @@ cpart_LCD_pcf8833::Process (void)
 
 }
 
-part_init("LCD pcf8833", cpart_LCD_pcf8833);
+part_init("LCD pcf8833", cpart_LCD_pcf8833, "Output");
 

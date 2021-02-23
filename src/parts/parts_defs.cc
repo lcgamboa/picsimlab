@@ -51,7 +51,7 @@ create_part(lxString name, unsigned int x, unsigned int y)
 }
 
 void
-part_register(const char * name, part_create_func pcreate)
+part_register(const char * name, part_create_func pcreate, const char * menu)
 {
  int in;
 
@@ -79,6 +79,7 @@ part_register(const char * name, part_create_func pcreate)
  //insert new
  parts_list[in].pcreate = pcreate;
  strncpy (parts_list[in].name, name, 30);
+ strncpy (parts_list[in].menu, menu, 30);
 
  NUM_PARTS++;
 }

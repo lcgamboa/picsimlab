@@ -840,5 +840,5 @@ cpart_LCD_ili9341::Reset(void)
  tsc_XPT2046_rst (&touch);
 }
 
-part_init("LCD ili9341", cpart_LCD_ili9341);
+part_init("LCD ili9341", cpart_LCD_ili9341, "Output");
 

@@ -354,5 +354,5 @@ cpart_leds::ReadPropertiesWindow(CPWindow * WProp)
 }
 
 
-part_init("LEDs", cpart_leds);
+part_init("LEDs", cpart_leds, "Output");
 

@@ -561,5 +561,5 @@ cpart_IO_MCP23S17::PostProcess(void)
  Window5.WritePinOA (output_pins[15], (ppins[output_pins[15] - 1].oavalue + ((output_pins_alm[15]*255.0) / NSTEPJ)) / 2);
 }
 
-part_init("IO MCP23S17", cpart_IO_MCP23S17);
+part_init("IO MCP23S17", cpart_IO_MCP23S17, "Other");
 

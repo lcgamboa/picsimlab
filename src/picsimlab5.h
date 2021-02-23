@@ -44,7 +44,9 @@ public:
     CMenu menu1;
     CDraw draw1;
     CPMenu menu1_File;
-    CPMenu menu1_Add;
+    CPMenu menu1_Inputs;
+    CPMenu menu1_Outputs;
+    CPMenu menu1_Others;
     CPMenu pmenu2;
     CItemMenu pmenu2_Properties;
     CItemMenu pmenu2_Move;

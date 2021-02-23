@@ -499,5 +499,5 @@ cpart_ETH_w5500::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 void
 cpart_ETH_w5500::PostProcess(void) { }
 
-part_init("ETH w5500", cpart_ETH_w5500);
+part_init("ETH w5500", cpart_ETH_w5500, "Other");
 

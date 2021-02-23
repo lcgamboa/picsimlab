@@ -365,5 +365,5 @@ cpart_Buzzer::ChangeType(unsigned char tp)
   }
 }
 
-part_init("Buzzer", cpart_Buzzer);
+part_init("Buzzer", cpart_Buzzer, "Output");
 

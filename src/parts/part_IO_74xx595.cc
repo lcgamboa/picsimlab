@@ -408,5 +408,5 @@ cpart_IO_74xx595::PostProcess(void)
 
 }
 
-part_init("IO 74xx595", cpart_IO_74xx595);
+part_init("IO 74xx595", cpart_IO_74xx595, "Other");
 

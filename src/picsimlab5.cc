@@ -71,7 +71,19 @@ CPWindow5::_EvOnCreate(CControl * control)
    MParts[i].SetName (parts_list[i].name);
    MParts[i].SetText (parts_list[i].name);
    MParts[i].EvMenuActive = EVMENUACTIVE & CPWindow5::menu1_EvMenuActive;
-   menu1_Add.CreateChild (&MParts[i]);
+
+   if (!strcmp (parts_list[i].menu, "Input"))
+    {
+     menu1_Inputs.CreateChild (&MParts[i]);
+    }
+   else if (!strcmp (parts_list[i].menu, "Output"))
+    {
+     menu1_Outputs.CreateChild (&MParts[i]);
+    }
+   else
+    {
+     menu1_Others.CreateChild (&MParts[i]);
+    }
   }
 }
 

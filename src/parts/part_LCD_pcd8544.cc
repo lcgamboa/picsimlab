@@ -267,5 +267,5 @@ cpart_LCD_pcd8544::Process (void)
 
 }
 
-part_init("LCD pcd8544", cpart_LCD_pcd8544);
+part_init("LCD pcd8544", cpart_LCD_pcd8544, "Output");
 

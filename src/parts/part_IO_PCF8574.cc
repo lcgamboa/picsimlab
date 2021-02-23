@@ -436,5 +436,5 @@ cpart_IO_PCF8574::PostProcess(void)
 
 }
 
-part_init("IO PCF8574", cpart_IO_PCF8574);
+part_init("IO PCF8574", cpart_IO_PCF8574, "Other");
 

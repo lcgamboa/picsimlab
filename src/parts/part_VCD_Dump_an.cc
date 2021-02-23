@@ -512,5 +512,5 @@ cpart_VCD_Dump_an::EvMouseButtonPress(uint button, uint x, uint y, uint state)
   }
 }
 
-part_init("VCD Dump (Analogic)", cpart_VCD_Dump_an);
+part_init("VCD Dump (Analogic)", cpart_VCD_Dump_an , "Output");
 

@@ -269,5 +269,5 @@ cpart_led_matrix::Process(void)
 
 }
 
-part_init("LED Matrix", cpart_led_matrix);
+part_init("LED Matrix", cpart_led_matrix, "Output");
 

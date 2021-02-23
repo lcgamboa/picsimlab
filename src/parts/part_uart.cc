@@ -337,5 +337,5 @@ cpart_UART::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 void
 cpart_UART::PostProcess(void) { }
 
-part_init("IO UART", cpart_UART);
+part_init("IO UART", cpart_UART, "Other");
 

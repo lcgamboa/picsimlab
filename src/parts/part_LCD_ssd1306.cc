@@ -293,5 +293,5 @@ cpart_LCD_ssd1306::Process(void)
 
 }
 
-part_init("LCD ssd1306", cpart_LCD_ssd1306);
+part_init("LCD ssd1306", cpart_LCD_ssd1306, "Output");
 

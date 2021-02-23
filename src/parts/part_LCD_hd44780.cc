@@ -492,5 +492,5 @@ cpart_LCD_hd44780::SetOrientation(int _orientation)
  Reset ();
 }
 
-part_init("LCD hd44780", cpart_LCD_hd44780);
+part_init("LCD hd44780", cpart_LCD_hd44780, "Output");
 

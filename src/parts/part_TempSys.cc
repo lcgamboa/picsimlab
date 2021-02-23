@@ -342,5 +342,5 @@ cpart_tempsys::SetOrientation(int _orientation)
  
 }
 
-part_init("Temperature System", cpart_tempsys);
+part_init("Temperature System", cpart_tempsys, "Other");
 

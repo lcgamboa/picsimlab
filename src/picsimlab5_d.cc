@@ -27,7 +27,7 @@ CPWindow5::CPWindow5(void)
   menu1.SetClass(lxT("CMenu"));
   menu1.SetName(lxT("menu1"));
   menu1.SetTag(0);
-  menu1.SetMenuItems(lxT("File,Edit,Add,Help,"));
+  menu1.SetMenuItems(lxT("File,Edit,Inputs,Outputs,Others,Help,"));
   CreateChild(&menu1);
   //draw1
   draw1.SetFOwner(this);
@@ -67,14 +67,30 @@ CPWindow5::CPWindow5(void)
   menu1_Edit.SetText(lxT("Edit"));
   menu1_Edit.SetMenuItems(lxT("Clear pin alias,Toggle pin alias,Edit pin alias,Reload pin alias,Zoom in,Zoom out,"));
   menu1.CreateChild(&menu1_Edit);
-  //menu1_Add
-  menu1_Add.SetFOwner(this);
-  menu1_Add.SetClass(lxT("CPMenu"));
-  menu1_Add.SetName(lxT("menu1_Add"));
-  menu1_Add.SetTag(0);
-  menu1_Add.SetText(lxT("Add"));
-  menu1_Add.SetMenuItems(lxT(""));
-  menu1.CreateChild(&menu1_Add);
+  //menu1_Inputs
+  menu1_Inputs.SetFOwner(this);
+  menu1_Inputs.SetClass(lxT("CPMenu"));
+  menu1_Inputs.SetName(lxT("menu1_Inputs"));
+  menu1_Inputs.SetTag(0);
+  menu1_Inputs.SetText(lxT("Inputs"));
+  menu1_Inputs.SetMenuItems(lxT(""));
+  menu1.CreateChild(&menu1_Inputs);
+  //menu1_Outputs
+  menu1_Outputs.SetFOwner(this);
+  menu1_Outputs.SetClass(lxT("CPMenu"));
+  menu1_Outputs.SetName(lxT("menu1_Outputs"));
+  menu1_Outputs.SetTag(0);
+  menu1_Outputs.SetText(lxT("Outputs"));
+  menu1_Outputs.SetMenuItems(lxT(""));
+  menu1.CreateChild(&menu1_Outputs);
+  //menu1_Others
+  menu1_Others.SetFOwner(this);
+  menu1_Others.SetClass(lxT("CPMenu"));
+  menu1_Others.SetName(lxT("menu1_Others"));
+  menu1_Others.SetTag(0);
+  menu1_Others.SetText(lxT("Others"));
+  menu1_Others.SetMenuItems(lxT(""));
+  menu1.CreateChild(&menu1_Others);
   //pmenu2
   pmenu2.SetFOwner(this);
   pmenu2.SetClass(lxT("CPMenu"));

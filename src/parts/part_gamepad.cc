@@ -586,5 +586,5 @@ cpart_gamepad::ReadPropertiesWindow(CPWindow * WProp)
 
 }
 
-part_init("Gamepad", cpart_gamepad);
+part_init("Gamepad", cpart_gamepad, "Input");
 

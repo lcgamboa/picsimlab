@@ -244,6 +244,6 @@ cpart_servo::SetOrientation(int _orientation)
 }
 
 //Register the part in PICSimLab spare parts list
-part_init("Servo motor", cpart_servo);
+part_init("Servo motor", cpart_servo, "Output");
 
 

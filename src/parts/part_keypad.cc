@@ -732,5 +732,5 @@ cpart_keypad::ComboChange(CCombo * control, lxString value)
   }
 }
 
-part_init("Keypad", cpart_keypad);
+part_init("Keypad", cpart_keypad, "Input");
 
