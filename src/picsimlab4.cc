@@ -60,7 +60,7 @@ CPWindow4::DrawScreen(void)
  //Clear background
  draw1.Canvas.SetFgColor (0, 0, 0);
  draw1.Canvas.SetBgColor (0, 0, 0);
- draw1.Canvas.Rectangle (1, 0, 0, WMAX, HMAX);
+ draw1.Canvas.Rectangle (1, 0, 0, WMAX, HMAX + 30);
  //draw lines
  draw1.Canvas.SetFgColor (50, 50, 50);
 
@@ -158,6 +158,48 @@ CPWindow4::DrawScreen(void)
  pts[2].x = nivel[2] + 3;
  draw1.Canvas.Polygon (1, pts, 3);
 
+ lxString text;
+
+ draw1.Canvas.SetFgColor (0, 0, 0);
+ draw1.Canvas.SetBgColor (0, 0, 0);
+ draw1.Canvas.Rectangle (1, 0, HMAX, WMAX, HMAX + 30);
+
+ draw1.Canvas.SetFgColor (button1.GetColor ());
+ if (togglebutton1.GetCheck ())
+  {
+   text.Printf ("CH1 %6.2fV %6.2fV %c", spind1.GetValue (), spind2.GetValue (), ((togglebutton3.GetCheck () == 1) ? 'I' : 'N'));
+  }
+ else
+  {
+   text.Printf ("CH1 Off");
+  }
+ draw1.Canvas.Text (text, 10, HMAX + 1);
+
+ draw1.Canvas.SetFgColor (button2.GetColor ());
+ if (togglebutton2.GetCheck ())
+  {
+   text.Printf ("CH2 %6.2fV %6.2fV %c", spind3.GetValue (), spind4.GetValue (), ((togglebutton4.GetCheck () == 1) ? 'I' : 'N'));
+  }
+ else
+  {
+   text.Printf ("CH2 Off");
+  }
+ draw1.Canvas.Text (text, 10, HMAX + 14);
+
+ draw1.Canvas.SetFgColor (200, 200, 200);
+ text.Printf ("TM %6.3fms  %6.3fms", spind5.GetValue (), spind6.GetValue ());
+ draw1.Canvas.Text (text, WMAX / 2, HMAX + 1);
+
+ draw1.Canvas.SetFgColor (200, 200, 0);
+ if (togglebutton5.GetCheck ())
+  {
+   text.Printf ("TRG CH%s %6.2fV ", combo1.GetText ().c_str (), spind7.GetValue ());
+  }
+ else
+  {
+   text.Printf ("TRG Off");
+  }
+ draw1.Canvas.Text (text, WMAX / 2, HMAX + 14);
 
  draw1.Canvas.End ();
 
