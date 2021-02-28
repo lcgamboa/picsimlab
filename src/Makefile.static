@@ -22,8 +22,9 @@ override CFLAGS+= -DEXT_BROWSER
 #override CFLAGS+=-fsanitize=address
 
 
-LIBS=  ../../picsim/src/libpicsim.a ../../lxrad/lib/liblxrad.a  \
-       ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a\
+LIBS=  ../../picsim/src/libpicsim.a ../../lxrad/lib/liblxrad.a \
+       ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a \
+       ../../lunasvg/build/liblunasvg.a \
       -lopenal `wx-config --libs` `wx-config --libs stc` 
 
 exp: LIBS+=../../uCsim_picsimlab/picsimlab/libucsim.a -lgpsim
