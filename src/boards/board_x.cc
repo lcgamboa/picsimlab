@@ -524,7 +524,7 @@ cboard_x::Draw(CDraw *draw, double scale)
       }
      else if (output[i].id == O_BD0)
       {
-       draw->Canvas.SetColor (250, 250, 250);
+       draw->Canvas.SetColor (150, 150, 150);
        draw->Canvas.Rectangle (1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1, output[i].y2 - output[i].y1 - 1);
 
        if (p_BT1)
@@ -535,11 +535,11 @@ cboard_x::Draw(CDraw *draw, double scale)
         {
          draw->Canvas.SetColor (55, 55, 55);
         }
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 21);
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
       }
      else if (output[i].id == O_RST)
       {
-       draw->Canvas.SetColor (250, 250, 250);
+       draw->Canvas.SetColor (150, 150, 150);
        draw->Canvas.Rectangle (1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1, output[i].y2 - output[i].y1 - 1);
 
        if (p_RST)
@@ -550,14 +550,14 @@ cboard_x::Draw(CDraw *draw, double scale)
         {
          draw->Canvas.SetColor (55, 55, 55);
         }
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 21);
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
       }
      else if (output[i].id == O_POT1)
       {
-       draw->Canvas.SetColor (50, 50, 50);
+       draw->Canvas.SetColor (0, 50, 215);
        draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
        draw->Canvas.SetColor (250, 250, 250);
-       draw->Canvas.Rectangle (1, output[i].x1 + pot1 / 2.77, output[i].y1 + 5, 10, 20);
+       draw->Canvas.Rectangle (1, output[i].x1 + pot1 / 2.77, output[i].y1 + 2, 10, 15);
       }
     }
    else //if output shape is a circle

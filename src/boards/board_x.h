@@ -62,7 +62,7 @@ class cboard_x:public bsim_picsim
       //Return a list of board supported microcontrollers
       lxString GetSupportedDevices(void){return lxT("PIC16F877A,PIC18F4550,PIC18F4620,");};
       //Return the filename of board picture 
-      lxString GetPictureFileName(void){return lxT("x/board.png");};
+      lxString GetPictureFileName(void){return lxT("x/board.svg");};
       //Return the filename of board picture input map 
       lxString GetInputMapFile(void){return lxT("x/input.map");};
       //Return the filename of board picture output map 
