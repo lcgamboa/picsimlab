@@ -139,7 +139,7 @@ If the problem is not in either of the previous two options, the problem is prob
   - latest PICSimLab release
 [![Github Latest Release](https://img.shields.io/github/downloads/lcgamboa/picsimlab/latest/total.svg)](https://github.com/lcgamboa/picsimlab/releases/)
   - all PICSimLab releases [![Github All Releases](https://img.shields.io/github/downloads/lcgamboa/picsimlab/total.svg)](https://github.com/lcgamboa/picsimlab/releases/)
-  - [individual file counters](https://www.somsubhra.com/github-release-stats/?username=lcgamboa&repository=picsimlab) (grouped per release)
+  - [individual file counters](https://somsubhra.github.io?username=lcgamboa&repository=picsimlab) (grouped per release)
 
 - SourceForge [`picsimlab`](https://sourceforge.net/projects/picsim/) repo
   - latest PICSimLab release [![Sourceforge Latest Relesases](https://img.shields.io/sourceforge/dt/picsim/v0.8.6)](https://sourceforge.net/projects/picsim/files/v0.8.6/)
