@@ -635,7 +635,7 @@ cboard_PICGenios::Draw(CDraw *draw, double scale)
  draw->Update ();
 
 
- if (((0.4444 * (pic.pins[15].oavalue - 30)) > 10)&&(Window1.Get_mcupwr ()) && jmp[0])
+ if ((((pic.pins[15].oavalue - 55)/2) > 10)&&(Window1.Get_mcupwr ()) && jmp[0])
   {
    if (!sound_on)
     {
@@ -652,19 +652,19 @@ cboard_PICGenios::Draw(CDraw *draw, double scale)
 
 
  //Ventilador
- gauge1->SetValue (0.4444 * (pic.pins[16].oavalue - 30));
+ gauge1->SetValue ((pic.pins[16].oavalue - 55)/2);
  //Aquecedor
- gauge2->SetValue (0.4444 * (pic.pins[23].oavalue - 30));
+ gauge2->SetValue ((pic.pins[23].oavalue - 55)/2);
 
  //sensor ventilador
- rpmstp = ((float) Window1.GetNSTEPJ ()) / (0.64 * (pic.pins[16].oavalue - 29));
+ rpmstp = ((float) Window1.GetNSTEPJ ()) / (0.7196 * (pic.pins[16].oavalue - 54));
 
  //tensão p2
  vp2in = (5.0 * pot[0] / 199);
  vp1in = (5.0 * pot[1] / 199);
 
  //temperatura 
- ref = ((0.2222 * (pic.pins[23].oavalue - 30)))-(0.2222 * (pic.pins[16].oavalue - 30));
+ ref = ((0.25 * (pic.pins[23].oavalue - 55)))-(0.25 * (pic.pins[16].oavalue - 55));
 
  temp[1] = temp[0];
  temp[0] = ((27.5 + ref)*0.003) + temp[1]*(0.997);
@@ -820,7 +820,7 @@ cboard_PICGenios::Run_CPU(void)
         pic_set_pin (35, pic_get_pin (19));
        }
 
-      if (pic.pins[16].oavalue > 30)
+      if (pic.pins[16].oavalue > 55)
        {
         rpmc++;
         if (rpmc > rpmstp)
@@ -935,7 +935,7 @@ cboard_PICGenios::Run_CPU(void)
    if (pic.pins[i].port == P_VDD)
     pic.pins[i].oavalue = 255;
    else
-    pic.pins[i].oavalue = (int) (((225.0 * alm[i]) / NSTEP) + 30);
+    pic.pins[i].oavalue = (int) (((200.0 * alm[i]) / NSTEP) + 55);
 
    lm1[i] = (int) (((600.0 * alm1[i]) / NSTEPJ) + 30);
    lm2[i] = (int) (((600.0 * alm2[i]) / NSTEPJ) + 30);

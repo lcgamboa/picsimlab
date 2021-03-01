@@ -78,7 +78,7 @@ cpart_ETH_w5500::cpart_ETH_w5500(unsigned x, unsigned y)
 
  lxImage image(&Window5);
 
- image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), orientation);
 
 
  Bitmap = lxGetBitmapRotated(&image, &Window5, orientation); 

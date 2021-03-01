@@ -409,7 +409,7 @@ cboard_K16F::Run_CPU(void)
 
  for (pi = 0; pi < pic.PINCOUNT; pi++)
   {
-   pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEP) + 30);
+   pic.pins[pi].oavalue = (int) (((200.0 * alm[pi]) / NSTEP) + 55);
   }
 
  if (use_spare)Window5.PostProcess ();

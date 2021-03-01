@@ -43,7 +43,7 @@ cpart_LCD_pcf8833::cpart_LCD_pcf8833 (unsigned x, unsigned y)
 
  lxImage image(&Window5);
 
- image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), orientation);
 
 
  Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);

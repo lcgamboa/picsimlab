@@ -509,7 +509,7 @@ cboard_Arduino_Uno::Draw(CDraw *draw, double scale)
      switch (output[i].id)
       {
       case O_ON:
-       draw->Canvas.SetColor (0, 225 * Window1.Get_mcupwr () + 30, 0);
+       draw->Canvas.SetColor (0, 200 * Window1.Get_mcupwr () + 55, 0);
        break;
       case O_RX:
        draw->Canvas.SetColor (0, 255 - pins[1].oavalue, 0);
@@ -553,12 +553,12 @@ cboard_Arduino_Uno::Draw(CDraw *draw, double scale)
  draw->Update ();
 
 
- gauge1->SetValue (0.45 * (pins[4].oavalue - 30));
- gauge2->SetValue (0.45 * (pins[10].oavalue - 30));
- gauge3->SetValue (0.45 * (pins[11].oavalue - 30));
- gauge4->SetValue (0.45 * (pins[14].oavalue - 30));
- gauge5->SetValue (0.45 * (pins[15].oavalue - 30));
- gauge6->SetValue (0.45 * (pins[16].oavalue - 30));
+ gauge1->SetValue ((pins[4].oavalue - 55)/2);
+ gauge2->SetValue ((pins[10].oavalue - 55)/2);
+ gauge3->SetValue ((pins[11].oavalue - 55)/2);
+ gauge4->SetValue ((pins[14].oavalue - 55)/2);
+ gauge5->SetValue ((pins[15].oavalue - 55)/2);
+ gauge6->SetValue ((pins[16].oavalue - 55)/2);
 
 }
 
@@ -637,7 +637,7 @@ cboard_Arduino_Uno::Run_CPU(void)
  //calculate mean value
  for (pi = 0; pi < MGetPinCount (); pi++)
   {
-   cboard_Arduino_Uno::pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEP) + 30);
+   cboard_Arduino_Uno::pins[pi].oavalue = (int) (((200.0 * alm[pi]) / NSTEP) + 55);
   }
 
  if (use_spare)Window5.PostProcess ();

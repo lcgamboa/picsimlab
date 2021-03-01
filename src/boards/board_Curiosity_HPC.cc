@@ -629,7 +629,7 @@ cboard_Curiosity_HPC::Draw(CDraw *draw, double scale)
      switch (output[i].id)//search for color of output
       {
       case O_D6: //green using picpwr value
-       draw->Canvas.SetColor (0, 225 * Window1.Get_mcupwr () + 30, 0);
+       draw->Canvas.SetColor (0, 200 * Window1.Get_mcupwr () + 55, 0);
        break;
       case O_D2: //Red using pin 6 mean  value (RA4) 
        draw->Canvas.SetColor (pic.pins[5].oavalue, 0, 0);
@@ -728,13 +728,13 @@ cboard_Curiosity_HPC::Draw(CDraw *draw, double scale)
 
 
  //RA4 mean value to gauge1
- gauge1->SetValue (0.4444 * (pic.pins[5].oavalue - 30));
+ gauge1->SetValue ((pic.pins[5].oavalue - 55) / 2);
  //RA5 mean value to gauge2
- gauge2->SetValue (0.4444 * (pic.pins[6].oavalue - 30));
+ gauge2->SetValue ((pic.pins[6].oavalue - 55) / 2);
  //RA6 mean value to gauge3
- gauge3->SetValue (0.4444 * (pic.pins[9].oavalue - 30));
+ gauge3->SetValue ((pic.pins[9].oavalue - 55) / 2);
  //RA7 mean value to gauge4
- gauge4->SetValue (0.4444 * (pic.pins[8].oavalue - 30));
+ gauge4->SetValue ((pic.pins[8].oavalue - 55) / 2);
 
 
 }
@@ -795,7 +795,7 @@ cboard_Curiosity_HPC::Run_CPU(void)
  //calculate mean value
  for (pi = 0; pi < pic.PINCOUNT; pi++)
   {
-   pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEP) + 30);
+   pic.pins[pi].oavalue = (int) (((200.0 * alm[pi]) / NSTEP) + 55);
   }
  if (use_spare)Window5.PostProcess ();
 }

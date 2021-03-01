@@ -303,7 +303,7 @@ cboard_STM32_H103::Draw(CDraw *draw, double scale)
 
        break;
       case O_LPWR: //Blue using mcupwr value
-       draw->Canvas.SetColor (225 * Window1.Get_mcupwr () + 30, 0, 0);
+       draw->Canvas.SetColor (200 * Window1.Get_mcupwr () + 55, 0, 0);
        draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
        break;
@@ -397,7 +397,7 @@ cboard_STM32_H103::Run_CPU(void)
  //calculate mean value
  for (pi = 0; pi < MGetPinCount (); pi++)
   {
-   pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEP) + 30);
+   pins[pi].oavalue = (int) (((200.0 * alm[pi]) / NSTEP) + 55);
   }
 
  //Spare parts window pre post process

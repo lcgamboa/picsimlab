@@ -481,7 +481,7 @@ cboard_McLab2::Draw(CDraw *draw, double scale)
 
 
 
- if (((0.4444 * (pic.pins[6].oavalue - 30)) > 40) && Window1.Get_mcupwr ())
+ if ((((pic.pins[6].oavalue - 55)/2) > 40) && Window1.Get_mcupwr ())
   {
    if (!sound_on)
     {
@@ -496,18 +496,18 @@ cboard_McLab2::Draw(CDraw *draw, double scale)
   }
 
  //Ventilador
- gauge1->SetValue (0.4444 * (pic.pins[15].oavalue - 30));
+ gauge1->SetValue ((pic.pins[15].oavalue - 55)/2);
  //Aquecedor
- gauge2->SetValue (0.4444 * (pic.pins[16].oavalue - 30));
+ gauge2->SetValue ((pic.pins[16].oavalue - 55)/2);
 
  //sensor ventilador)
- rpmstp = ((float) Window1.GetNSTEPJ ()) / (0.64 * (pic.pins[15].oavalue - 29));
+ rpmstp = ((float) Window1.GetNSTEPJ ()) / (0.7196 * (pic.pins[15].oavalue - 54));
 
  //tensão p2
  vp2in = (5.0 * pot1 / 199);
 
  //temperatura 
- ref = (0.2222 * (pic.pins[16].oavalue - 30))-(0.2222 * (pic.pins[15].oavalue - 30));
+ ref = (0.25 * (pic.pins[16].oavalue - 55))-(0.25 * (pic.pins[15].oavalue - 55));
 
  if (ref < 0)
   ref = 0;
@@ -677,7 +677,7 @@ cboard_McLab2::Run_CPU(void)
    if (pic.pins[pi].port == P_VDD)
     pic.pins[pi].oavalue = 255;
    else
-    pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / (Window1.GetNSTEP () / pic.PINCOUNT)) + 30);
+    pic.pins[pi].oavalue = (int) (((200.0 * alm[pi]) / (Window1.GetNSTEP () / pic.PINCOUNT)) + 55);
 
    lm1[pi] = (int) (((600.0 * alm1[pi]) / NSTEPJ) + 30);
    lm2[pi] = (int) (((600.0 * alm2[pi]) / NSTEPJ) + 30);

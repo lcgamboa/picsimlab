@@ -47,7 +47,7 @@ cpart_tempsys::cpart_tempsys(unsigned x, unsigned y)
  ReadMaps ();
 
  lxImage image(&Window5);
- image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), orientation);
 
  Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
  image.Destroy ();
@@ -149,7 +149,7 @@ cpart_tempsys::Draw(void)
      break;
     case O_VT:
      if (input_pins[1] == 0)break;
-     if (ppins[input_pins[1] - 1].oavalue > 30) vtc++;
+     if (ppins[input_pins[1] - 1].oavalue > 55) vtc++;
 
      if (vtc > (4 - 0.04 * ppins[input_pins[1] - 1].oavalue))
       {
@@ -163,12 +163,12 @@ cpart_tempsys::Draw(void)
 
  //sensor ventilador
  if (input_pins[1] > 0)
-  rpmstp = ((float) Window1.GetNSTEPJ ()) / (0.64 * (ppins[input_pins[1] - 1].oavalue - 29));
+  rpmstp = ((float) Window1.GetNSTEPJ ()) / (0.7196 * (ppins[input_pins[1] - 1].oavalue - 54));
  //temperatura 
  if (input_pins[0] > 0)
-  ref = (0.2222 * (ppins[input_pins[0] - 1].oavalue - 30));
+  ref = (0.25 * (ppins[input_pins[0] - 1].oavalue - 55));
  if (input_pins[1] > 0)
-  ref -= (0.2222 * (ppins[input_pins[1] - 1].oavalue - 30));
+  ref -= (0.25 * (ppins[input_pins[1] - 1].oavalue - 55));
 
  temp[1] = temp[0];
  temp[0] = ((27.5 + ref)*0.003) + temp[1]*(0.997);
@@ -195,7 +195,7 @@ cpart_tempsys::Process(void)
 
    if ((input_pins[1] > 0)&&(input_pins[3] > 0))
     {
-     if (ppins[input_pins[1] - 1].oavalue > 30)
+     if (ppins[input_pins[1] - 1].oavalue > 55)
       {
        rpmc++;
        if (rpmc > rpmstp)

@@ -106,7 +106,7 @@ cpart_IO_MCP23S17::cpart_IO_MCP23S17(unsigned x, unsigned y)
 
  lxImage image(&Window5);
 
- image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), orientation);
 
 
  Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
