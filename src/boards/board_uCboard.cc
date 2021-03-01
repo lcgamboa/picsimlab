@@ -82,9 +82,9 @@ cboard_uCboard::cboard_uCboard(void)
 {
  Proc = "C51"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
- lxImage image;
+ lxImage image(&Window1);
  image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.png"));
- micbmp = new lxBitmap (image, &Window1);
+ micbmp = new lxBitmap (&image, &Window1);
 #
  serialfd = INVALID_HANDLE_VALUE;
 }
@@ -391,7 +391,7 @@ cboard_uCboard::MInit(const char * processor, const char * fname, float freq)
    Proc = "C51";
   }
 
- lxImage image;
+ lxImage image(&Window1);
 
  if (!image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".png")))
   {
@@ -401,7 +401,7 @@ cboard_uCboard::MInit(const char * processor, const char * fname, float freq)
   }
 
  if (micbmp) delete micbmp;
- micbmp = new lxBitmap (image, &Window1);
+ micbmp = new lxBitmap (&image, &Window1);
 
 
  return ret;

@@ -53,7 +53,7 @@ cpart_RTC_pfc8563::cpart_RTC_pfc8563(unsigned x, unsigned y)
  ReadMaps ();
  Bitmap = NULL;
 
- lxImage image;
+ lxImage image(&Window5);
 
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 

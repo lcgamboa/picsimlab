@@ -52,7 +52,7 @@ cpart_VCD_Dump::cpart_VCD_Dump(unsigned x, unsigned y)
  Y = y;
  ReadMaps ();
 
- lxImage image;
+ lxImage image(&Window5);
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
  Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);

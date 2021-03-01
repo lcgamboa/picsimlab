@@ -98,16 +98,16 @@ cboard_PICGenios::cboard_PICGenios(void)
  lcde = 0;
  sound_on = 0;
 
- lxImage image;
+ lxImage image(&Window1);
  image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT1.png"));
- vent[0] = new lxBitmap (image, &Window1);
+ vent[0] = new lxBitmap (&image, &Window1);
  image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT2.png"));
- vent[1] = new lxBitmap (image, &Window1);
+ vent[1] = new lxBitmap (&image, &Window1);
 
  image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/lcd2.png"));
- lcdbmp[0] = new lxBitmap (image, &Window1);
+ lcdbmp[0] = new lxBitmap (&image, &Window1);
  image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/lcd4.png"));
- lcdbmp[1] = new lxBitmap (image, &Window1);
+ lcdbmp[1] = new lxBitmap (&image, &Window1);
 
  image.Destroy ();
 

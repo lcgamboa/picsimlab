@@ -80,7 +80,7 @@ cpart_IO_PCF8574::cpart_IO_PCF8574(unsigned x, unsigned y)
  ReadMaps ();
  Bitmap = NULL;
 
- lxImage image;
+ lxImage image(&Window5);
 
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 

@@ -41,7 +41,7 @@ cpart_LCD_pcd8544::cpart_LCD_pcd8544 (unsigned x, unsigned y)
  ReadMaps ();
  Bitmap = NULL;
 
- lxImage image;
+ lxImage image(&Window5);
 
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
