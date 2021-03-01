@@ -17,7 +17,9 @@ sharedir= ${prefix}/share/picsimlab/
 FLAGS =  -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"${sharedir}\"  -Wall -O2 `lxrad-config --cxxflags`
 FLAGS+= -DEXT_BROWSER
 
-LIBS=  ../../../lxrad/lib/liblxrad.a  `wx-config --libs` `wx-config --libs stc` 
+LIBS=  ../../../lxrad/lib/liblxrad.a \
+       ../../../lunasvg/build/liblunasvg.a \
+       `wx-config --libs` `wx-config --libs stc` 
 
 OBJS = psrtank.o srtank1.o srtank2.o  serial.o
 

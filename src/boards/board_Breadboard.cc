@@ -79,9 +79,9 @@ cboard_Breadboard::cboard_Breadboard(void)
  Proc = "PIC18F4550"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
 
- lxImage image;
+ lxImage image(&Window1);
  image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.png"));
- micbmp = new lxBitmap (image, &Window1);
+ micbmp = new lxBitmap (&image, &Window1);
 
 }
 
@@ -619,7 +619,7 @@ cboard_Breadboard::MInit(const char * processor, const char * fname, float freq)
    break;
   }
 
- lxImage image;
+ lxImage image(&Window1);
 
 
  if (!image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".png")))
@@ -630,7 +630,7 @@ cboard_Breadboard::MInit(const char * processor, const char * fname, float freq)
   }
 
  if (micbmp) delete micbmp;
- micbmp = new lxBitmap (image, &Window1);
+ micbmp = new lxBitmap (&image, &Window1);
 
 
  return ret;

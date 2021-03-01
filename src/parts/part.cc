@@ -337,7 +337,7 @@ part::SetOrientation(int _orientation)
 
  delete Bitmap;
 
- lxImage image;
+ lxImage image(&Window5);
 
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 

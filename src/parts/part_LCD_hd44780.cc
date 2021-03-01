@@ -37,7 +37,7 @@ enum
 void
 cpart_LCD_hd44780::Reset(void)
 {
- lxImage image;
+ lxImage image(&Window5);
 
  switch (model)
   {

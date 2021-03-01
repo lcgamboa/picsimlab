@@ -46,7 +46,7 @@ cpart_tempsys::cpart_tempsys(unsigned x, unsigned y)
  Y = y;
  ReadMaps ();
 
- lxImage image;
+ lxImage image(&Window5);
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
  Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
@@ -328,7 +328,7 @@ cpart_tempsys::SetOrientation(int _orientation)
  delete vent[0];
  delete vent[1];
  
- lxImage image;
+ lxImage image(&Window5);
   
  image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT1.png"));
  vent[0] = lxGetBitmapRotated(&image, &Window1, _orientation);

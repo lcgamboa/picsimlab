@@ -63,7 +63,7 @@ cpart_MI2C_24CXXX::cpart_MI2C_24CXXX(unsigned x, unsigned y)
  ReadMaps ();
  Bitmap = NULL;
 
- lxImage image;
+ lxImage image(&Window5);
 
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
 
