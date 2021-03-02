@@ -339,9 +339,9 @@ part::SetOrientation(int _orientation)
 
  lxImage image(&Window5);
 
- image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), orientation);
 
- Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
+ Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
  canvas.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);

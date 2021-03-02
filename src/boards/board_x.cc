@@ -51,7 +51,8 @@ enum
  O_LPWR, //Power LED
  O_RB0, //LED on RB0 output
  O_RB1, //LED on RB1 output
- O_BD0 //RD1 switch     
+ O_BD0, //RD1 switch     
+ O_CPU //CPU name
 };
 
 //return the input ids numbers of names used in input map
@@ -85,6 +86,7 @@ cboard_x::get_out_id(char * name)
  if (strcmp (name, "PB_D0") == 0)return O_BD0;
  if (strcmp (name, "PO_1") == 0)return O_POT1;
  if (strcmp (name, "PB_RST") == 0)return O_RST;
+ if (strcmp (name, "MP_CPU") == 0)return O_CPU;
 
  printf ("Error output '%s' don't have a valid id! \n", name);
  return 1;
@@ -524,9 +526,8 @@ cboard_x::Draw(CDraw *draw, double scale)
       }
      else if (output[i].id == O_BD0)
       {
-       draw->Canvas.SetColor (150, 150, 150);
-       draw->Canvas.Rectangle (1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1, output[i].y2 - output[i].y1 - 1);
-
+       draw->Canvas.SetColor (102, 102, 102);
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 10);
        if (p_BT1)
         {
          draw->Canvas.SetColor (15, 15, 15);
@@ -535,12 +536,12 @@ cboard_x::Draw(CDraw *draw, double scale)
         {
          draw->Canvas.SetColor (55, 55, 55);
         }
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 8);
       }
      else if (output[i].id == O_RST)
       {
-       draw->Canvas.SetColor (150, 150, 150);
-       draw->Canvas.Rectangle (1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1, output[i].y2 - output[i].y1 - 1);
+       draw->Canvas.SetColor (102, 102, 102);
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 10);
 
        if (p_RST)
         {
@@ -550,7 +551,7 @@ cboard_x::Draw(CDraw *draw, double scale)
         {
          draw->Canvas.SetColor (55, 55, 55);
         }
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 8);
       }
      else if (output[i].id == O_POT1)
       {
@@ -559,33 +560,60 @@ cboard_x::Draw(CDraw *draw, double scale)
        draw->Canvas.SetColor (250, 250, 250);
        draw->Canvas.Rectangle (1, output[i].x1 + pot1 / 2.77, output[i].y1 + 2, 10, 15);
       }
+     else if (output[i].id == O_CPU)
+      {
+
+       //lxFont font ((MGetPinCount () >= 100) ? 9 : ((MGetPinCount () > 14) ? 12 : 10)
+       //            , lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
+       //draw->Canvas.SetFont (font);
+       int x, y, w, h;
+       draw->Canvas.SetColor (26, 26, 26);
+       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
+       draw->Canvas.SetColor (200, 200, 200);
+       w = output[i].x2 - output[i].x1;
+       h = output[i].y2 - output[i].y2;
+       x = output[i].x1 + (w  / 2) + 7;
+       y = output[i].y1 + (h/2) + (Proc.length ());
+       draw->Canvas.RotatedText (Proc, x, y, 270);
+      }
     }
    else //if output shape is a circle
     {
-
      draw->Canvas.SetFgColor (0, 0, 0); //black
 
      switch (output[i].id)//search for color of output
       {
       case O_LD0: //White using pin 19 mean value (RD0)
-       draw->Canvas.SetColor (pic.pins[18].oavalue, pic.pins[18].oavalue, pic.pins[18].oavalue);
+       draw->Canvas.SetBgColor (pic.pins[18].oavalue, pic.pins[18].oavalue, pic.pins[18].oavalue);
        break;
       case O_LD1: //Yelllow using pin 20 mean value (RD1)
-       draw->Canvas.SetColor (pic.pins[19].oavalue, pic.pins[19].oavalue, 0);
+       draw->Canvas.SetBgColor (pic.pins[19].oavalue, pic.pins[19].oavalue, 0);
        break;
       case O_LPWR: //Blue using mcupwr value
-       draw->Canvas.SetColor (0, 0, 225 * Window1.Get_mcupwr () + 30);
+       draw->Canvas.SetBgColor (0, 0, 200 * Window1.Get_mcupwr () + 55);
        break;
       case O_RB0: //Green using pin 33 mean value (RB0)
-       draw->Canvas.SetColor (0, pic.pins[32].oavalue, 0);
+       draw->Canvas.SetBgColor (0, pic.pins[32].oavalue, 0);
        break;
       case O_RB1: //Red using pin 34 mean value (RB1)
-       draw->Canvas.SetColor (pic.pins[33].oavalue, 0, 0);
+       draw->Canvas.SetBgColor (pic.pins[33].oavalue, 0, 0);
        break;
       }
 
      //draw a circle
-     draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
+     lxColor color1 = draw->Canvas.GetBgColor ();
+     int r = color1.Red () - 120;
+     int g = color1.Green () - 120;
+     int b = color1.Blue () - 120;
+     if (r < 0)r = 0;
+     if (g < 0)g = 0;
+     if (b < 0)b = 0;
+     lxColor color2 (r, g, b);
+     draw->Canvas.SetBgColor (color2);
+     draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 1);
+     draw->Canvas.SetBgColor (color1);
+     draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 2);
     }
 
   }
@@ -595,9 +623,9 @@ cboard_x::Draw(CDraw *draw, double scale)
  draw->Update ();
 
  //RB0 mean value to gauge1
- gauge1->SetValue (0.4444 * (pic.pins[33].oavalue - 30));
+ gauge1->SetValue ((pic.pins[33].oavalue - 55)/2);
  //RB1 mean value to gauge2
- gauge2->SetValue (0.44444 * (pic.pins[32].oavalue - 30));
+ gauge2->SetValue ((pic.pins[32].oavalue - 55)/2);
 
 }
 
@@ -659,7 +687,7 @@ cboard_x::Run_CPU(void)
  //calculate mean value
  for (pi = 0; pi < pic.PINCOUNT; pi++)
   {
-   pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEP) + 30);
+   pic.pins[pi].oavalue = (int) (((200.0 * alm[pi]) / NSTEP) + 55);
   }
 
  //Spare parts window pre post process

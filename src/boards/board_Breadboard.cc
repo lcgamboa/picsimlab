@@ -352,7 +352,7 @@ cboard_Breadboard::Draw(CDraw *draw, double scale)
    switch (output[i].id)//search for color of output
     {
     case O_LPWR: //Blue using mcupwr value
-     draw->Canvas.SetColor (0, 0, 225 * Window1.Get_mcupwr () + 30);
+     draw->Canvas.SetColor (0, 0, 200 * Window1.Get_mcupwr () + 55);
      draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
     case O_MP:
@@ -445,7 +445,7 @@ cboard_Breadboard::Run_CPU(void)
    //calculate mean value
    for (pi = 0; pi < MGetPinCount (); pi++)
     {
-     bsim_picsim::pic.pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEP) + 30);
+     bsim_picsim::pic.pins[pi].oavalue = (int) (((200.0 * alm[pi]) / NSTEP) + 55);
     }
    if (use_spare)Window5.PostProcess ();
    break;
@@ -512,7 +512,7 @@ cboard_Breadboard::Run_CPU(void)
    //calculate mean value
    for (pi = 0; pi < MGetPinCount (); pi++)
     {
-     bsim_simavr::pins[pi].oavalue = (int) (((225.0 * alm[pi]) / NSTEP) + 30);
+     bsim_simavr::pins[pi].oavalue = (int) (((200.0 * alm[pi]) / NSTEP) + 55);
     }
    if (use_spare)Window5.PostProcess ();
    break;

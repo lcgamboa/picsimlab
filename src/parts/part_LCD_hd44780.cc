@@ -42,7 +42,7 @@ cpart_LCD_hd44780::Reset(void)
  switch (model)
   {
   case LCD16x2:
-   image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
+   image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), orientation);
    break;
   case LCD16x4:
    image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName_ ());
@@ -57,7 +57,7 @@ cpart_LCD_hd44780::Reset(void)
 
  if (Bitmap)delete Bitmap;
 
- Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
+ Bitmap = new lxBitmap (&image, &Window5);
  canvas.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
  image.Destroy ();

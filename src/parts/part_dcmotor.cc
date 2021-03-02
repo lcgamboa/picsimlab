@@ -44,9 +44,9 @@ cpart_dcmotor::cpart_dcmotor(unsigned x, unsigned y)
  ReadMaps ();
 
  lxImage image(&Window5);
- image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), orientation);
 
- Bitmap = lxGetBitmapRotated (&image, &Window5, orientation);
+ Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
 
  canvas.Create (Window5.GetWWidget (), Bitmap);
@@ -223,7 +223,7 @@ cpart_dcmotor::PreProcess(void)
  if (input_pins[2])
   {
    //TODO Add transfer funcion of dc motor
-   speed = (ppins[input_pins[2] - 1].oavalue - 30) / 2.24;
+   speed = (ppins[input_pins[2] - 1].oavalue - 55) / 2;
   }
 
  if (ia && !ib)

@@ -296,7 +296,7 @@ cboard_McLab1::Draw(CDraw *draw, double scale)
  draw->Update ();
 
  //Lâmpada
- gauge1->SetValue (0.4444 * (pic.pins[16].oavalue - 30));
+ gauge1->SetValue ((pic.pins[16].oavalue - 55)/2);
 
 }
 
@@ -369,7 +369,7 @@ cboard_McLab1::Run_CPU(void)
 
  for (i = 0; i < pic.PINCOUNT; i++)
   {
-   pic.pins[i].oavalue = (int) (((225.0 * alm[i]) / (Window1.GetNSTEP () / pic.PINCOUNT)) + 30);
+   pic.pins[i].oavalue = (int) (((200.0 * alm[i]) / (Window1.GetNSTEP () / pic.PINCOUNT)) + 55);
    lm1[i] = (int) (((600.0 * alm1[i]) / NSTEPJ) + 30);
    lm2[i] = (int) (((600.0 * alm2[i]) / NSTEPJ) + 30);
    if (lm1[i] > 255)lm1[i] = 255;

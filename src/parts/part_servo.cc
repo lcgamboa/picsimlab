@@ -48,12 +48,12 @@ cpart_servo::cpart_servo (unsigned x, unsigned y)
  ReadMaps ();
 
  lxImage image(&Window5);
- image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), orientation);
 
  Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
  image.Destroy ();
 
- image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), orientation);
  BackGround = lxGetBitmapRotated(&image, &Window5, orientation);
  image.Destroy ();
 
@@ -234,7 +234,7 @@ cpart_servo::SetOrientation(int _orientation)
  
  lxImage image(&Window5);
  
- image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ());
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), orientation);
  
  BackGround = lxGetBitmapRotated(&image, &Window5, _orientation); 
  image.Destroy ();
