@@ -186,7 +186,7 @@ class cboard_PQDB:public bsim_picsim
       void Draw(CDraw *draw,double scale);
       void Run_CPU(void);
       lxString GetSupportedDevices(void){return lxT("PIC18F4520,");};
-      lxString GetPictureFileName(void){return lxT("PQDB/pqdb.png");};
+      lxString GetPictureFileName(void){return lxT("PQDB/pqdb.svg");};
       lxString GetInputMapFile(void){return lxT("PQDB/input.map");};
       lxString GetOutputMapFile(void){return lxT("PQDB/output.map");};
       void Reset(void);
