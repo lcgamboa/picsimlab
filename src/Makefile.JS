@@ -41,6 +41,7 @@ LIBS+= ../../LXRAD_SDL2/teste/zlib-master/contrib/minizip/minizip.a
 LIBS+= ../../ucsim-0.6/picsimlab/libucsim.ajs
 LIBS+= ../teste/glib_js/target/lib/libgpsim.a
 LIBS+= ../teste/glib_js/target/lib/libglib-2.0.a
+LIBS+= ../../lunasvg/buildjs/liblunasvg.a
 
 #LIBS = `lxrad_SDL2-config --libs` -lpicsim -lsimavr -lelf
 

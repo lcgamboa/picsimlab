@@ -176,8 +176,6 @@ class cboard_PQDB:public bsim_picsim
     
     lxaudio buzzer;
     
-    char mi2c_tmp_name[200]; 
-    
     void RegisterRemoteControl(void);  
   public:
       lxString GetAboutInfo(void){return lxT("R.M.A. Almeida	  \n <rodrigomax@unifei.edu.br>");};

@@ -252,7 +252,7 @@ CPWindow4::CPWindow4(void)
   colordialog1.SetClass(lxT("CColorDialog"));
   colordialog1.SetName(lxT("colordialog1"));
   colordialog1.SetTag(0);
-  colordialog1.SetColorName(lxT("RED"));
+  colordialog1.SetColorName(lxT("red"));
   colordialog1.EvOnClose=EVONCLOSE & CPWindow4::colordialog1_EvOnClose;
   CreateChild(&colordialog1);
   //togglebutton5

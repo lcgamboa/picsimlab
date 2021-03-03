@@ -122,8 +122,9 @@ CPWindow1::timer1_EvOnTime(CControl * control)
   {
    tgo = 1; //thread sync
   }
-
+#ifndef __EMSCRIPTEN__
  rcontrol_loop ();
+#endif 
 }
 
 void
@@ -340,8 +341,9 @@ CPWindow1::_EvOnCreate(CControl * control)
     }
   }
  create++;
-
+#ifndef __EMSCRIPTEN__
  rcontrol_init (remotec_port);
+#endif 
 }
 
 void
@@ -667,9 +669,9 @@ CPWindow1::_EvOnDestroy(CControl * control)
 
  Window4.Hide ();
  Window5.Hide ();
-
+#ifndef __EMSCRIPTEN__
  rcontrol_end ();
-
+#endif
  timer1.SetRunState (0);
  timer2.SetRunState (0);
  msleep (100);
@@ -1628,9 +1630,10 @@ void
 CPWindow1::Set_remotec_port(unsigned short rcp)
 {
  remotec_port = rcp;
-
+#ifndef __EMSCRIPTEN__
  rcontrol_end ();
  rcontrol_init (remotec_port);
+#endif 
 }
 
 

@@ -396,7 +396,7 @@
   <Class type="lxString">CColorDialog</Class>
   <Name type="lxString">colordialog1</Name>
   <Tag type="int">0</Tag>
-  <ColorName type="lxString">RED</ColorName>
+  <ColorName type="lxString">red</ColorName>
   <EvOnClose type="Event">TRUE</EvOnClose>
 </colordialog1>
 <togglebutton5>
