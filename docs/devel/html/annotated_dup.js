@@ -21,6 +21,7 @@ var annotated_dup =
     [ "cboard_McLab1", "classcboard___mc_lab1.html", "classcboard___mc_lab1" ],
     [ "cboard_McLab2", "classcboard___mc_lab2.html", "classcboard___mc_lab2" ],
     [ "cboard_PICGenios", "classcboard___p_i_c_genios.html", "classcboard___p_i_c_genios" ],
+    [ "cboard_PQDB", "classcboard___p_q_d_b.html", "classcboard___p_q_d_b" ],
     [ "cboard_STM32_H103", "classcboard___s_t_m32___h103.html", "classcboard___s_t_m32___h103" ],
     [ "cboard_uCboard", "classcboard__u_cboard.html", "classcboard__u_cboard" ],
     [ "cboard_x", "classcboard__x.html", "classcboard__x" ],

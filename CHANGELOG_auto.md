@@ -2,6 +2,12 @@
 
 ### New
 
+* Support to use SVG instead PNG for boards pictures. [lcgamboa]
+
+* Oscilloscope channel info on screen added. [lcgamboa]
+
+* Spare part window menu "add" split in "Inputs", "Outputs" and "Others" [lcgamboa]
+
 * Part Ultrasonic HC-SR04 added. [lcgamboa]
 
 * Menu entry to download MPLABX debugger plugin. [lcgamboa]
@@ -15,6 +21,18 @@
 * Arduino IDE bootloaders reset to programm bug fixed. [lcgamboa]
 
 * No value on pins on debug stepping bug removed. [lcgamboa]
+
+### Other
+
+* Merge pull request #30 from rmaalmeida/master. [lcgamboa]
+
+* Adding PQDB board to the project. [Rodrigo Almeida]
+
+* Adding PQDB board to the project. [Rodrigo Almeida]
+
+* Merge pull request #2 from lcgamboa/master. [Rodrigo Almeida]
+
+* Merge pull request #1 from lcgamboa/master. [Rodrigo Almeida]
 
 
 ## v0.8.6 (2021-01-25)

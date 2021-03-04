@@ -11,6 +11,7 @@ var dir_44b8a28b46c46acb1deed65f25aca5e6 =
     [ "board_McLab1.h", "board___mc_lab1_8h_source.html", null ],
     [ "board_McLab2.h", "board___mc_lab2_8h_source.html", null ],
     [ "board_PICGenios.h", "board___p_i_c_genios_8h_source.html", null ],
+    [ "board_PQDB.h", "board___p_q_d_b_8h_source.html", null ],
     [ "board_STM32_H103.h", "board___s_t_m32___h103_8h_source.html", null ],
     [ "board_uCboard.h", "board__u_cboard_8h_source.html", null ],
     [ "board_x.h", "board__x_8h_source.html", null ],

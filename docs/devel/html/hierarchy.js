@@ -16,6 +16,7 @@ var hierarchy =
         [ "cboard_McLab1", "classcboard___mc_lab1.html", null ],
         [ "cboard_McLab2", "classcboard___mc_lab2.html", null ],
         [ "cboard_PICGenios", "classcboard___p_i_c_genios.html", null ],
+        [ "cboard_PQDB", "classcboard___p_q_d_b.html", null ],
         [ "cboard_Xpress", "classcboard___xpress.html", null ],
         [ "cboard_x", "classcboard__x.html", null ]
       ] ],

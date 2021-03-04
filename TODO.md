@@ -1,8 +1,8 @@
 ### TODOs
 | Filename | line # | TODO
 |:------|:------:|:------
-| [src/picsimlab1.cc](src/picsimlab1.cc#L365) | 365 | verify initialization errors
-| [src/picsimlab4.cc](src/picsimlab4.cc#L586) | 586 | select the better mode for channel trigguer
+| [src/picsimlab1.cc](src/picsimlab1.cc#L367) | 367 | verify initialization errors
+| [src/picsimlab4.cc](src/picsimlab4.cc#L628) | 628 | select the better mode for channel trigguer
 | [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L110) | 110 | jumper support
 | [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L67) | 67 | TEMP cooler must don't work with AQUE=0
 | [src/boards/bsim_gpsim.cc](src/boards/bsim_gpsim.cc#L170) | 170 | add VCC and GND pins
