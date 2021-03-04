@@ -109,7 +109,7 @@ cpart_IO_74xx595::cpart_IO_74xx595(unsigned x, unsigned y)
 
  mcount = 0;
  memset (output_pins_alm, 0, 9 * sizeof (unsigned long));
-
+ _ret = 0;
 }
 
 cpart_IO_74xx595::~cpart_IO_74xx595(void)

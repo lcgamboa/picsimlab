@@ -24,7 +24,7 @@
    ######################################################################## */
 
 #ifndef BOARD_PQDB_H
-#define	BOARD_PQDB_H
+#define BOARD_PQDB_H
 
 #include "bsim_picsim.h"
 
@@ -52,14 +52,10 @@
 #define DISP_1_PIN    2
 #define TX_PIN        1
 #define RX_PIN        0
-*/
+ */
 
 //PIC18f4550 style
 //zero index, pin 1 ->0; pin 18 -> 17
-#define RA0 1
-#define RA1 2
-
-#define RC1 15
 
 
 #define RA0 1
@@ -75,6 +71,8 @@
 #define RB6 38
 #define RB7 39
 
+#define RC1 15
+
 #define RD0 18
 #define RD1 19
 #define RD2 20
@@ -84,6 +82,15 @@
 #define RD6 28
 #define RD7 29
 
+#define PSRD0 40
+#define PSRD1 41
+#define PSRD2 42
+#define PSRD3 43
+#define PSRD4 44
+#define PSRD5 45
+#define PSRD6 46
+#define PSRD7 47
+
 #define SRD0 0x01
 #define SRD1 0x02
 #define SRD2 0x04
@@ -92,7 +99,6 @@
 #define SRD5 0x20
 #define SRD6 0x40
 #define SRD7 0x80
-
 
 #define SDA_PIN       RB4
 #define SCL_PIN       RB3
@@ -123,84 +129,90 @@
 #define LDR_PIN AN1_PIN
 #define POT_PIN AN0_PIN
 
-class cboard_PQDB:public bsim_picsim
-{
-  private:
+class cboard_PQDB : public bsim_picsim {
+private:
+
+    unsigned char p_KEY[10];
+
+    unsigned char pot;
+    unsigned char active;
+
+    int vtc;
+    int vt;
+
+    //external peripherals
+    lcd_t lcd;
+    unsigned char d;
+
+    rtc2_t rtc2;
+    unsigned char sda, sck;
+
+    io_74xx595_t shiftReg;
+    unsigned char srDATA, srCLK, srLAT;
+    unsigned long shiftReg_alm[8];
+    unsigned short _srret; 
       
-	unsigned char p_KEY[10]; 
+    int lcde;
 
-	unsigned char pot;
-	unsigned char active;
+    int sound_on;
 
-	int vtc;
-	int vt;
+    float vPOT;
+    float vLDR;
+    float vLM;
 
-	//external peripherals
-	lcd_t lcd;
-	unsigned char d;
+    float vp2[2];
+    float temp[2];
+    float ref;
 
-	rtc2_t rtc2;
-    unsigned char sda,sck;
-	
-	io_74xx595_t shiftReg;
-	unsigned char srDATA, srCLK, srLAT;
+    int rpmstp;
+    int rpmc;
 
-	int lcde;
+    int lm7seg[32]; //luminosidade media display
 
-	int sound_on;
-
-	float vPOT;
-	float vLDR;
-	float vLM;
-	
-	float vp2[2];
-	float temp[2];
-	float ref;
-
-	int rpmstp;
-	int rpmc;
-
-
-	int lm7seg[32];//luminosidade media display
-	int lmrgb[3];//luminosidade media display
-    
-    
-    /* CGauge *gauge1;
-    CGauge *gauge2;
-
-    CLabel *label3;
-    CLabel *label4;
-    CLabel *label5;
-    CLabel *label6;
-    CCombo *combo1;  */
-    
     lxaudio buzzer;
-    
-    void RegisterRemoteControl(void);  
-  public:
-      lxString GetAboutInfo(void){return lxT("R.M.A. Almeida	  \n <rodrigomax@unifei.edu.br>");};
-      cboard_PQDB(void);
-      ~cboard_PQDB(void);
-      void Draw(CDraw *draw,double scale);
-      void Run_CPU(void);
-      lxString GetSupportedDevices(void){return lxT("PIC18F4520,");};
-      lxString GetPictureFileName(void){return lxT("PQDB/pqdb.svg");};
-      lxString GetInputMapFile(void){return lxT("PQDB/input.map");};
-      lxString GetOutputMapFile(void){return lxT("PQDB/output.map");};
-      void Reset(void);
-      void EvMouseMove(uint button, uint x, uint y, uint state);
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
-      void EvKeyPress(uint key, uint mask);
-      void EvKeyRelease(uint key, uint mask);
-      void EvOnShow(void);
-      void RefreshStatus(void);
-      void WritePreferences(void);
-      void ReadPreferences(char *name,char *value);
-      unsigned short get_in_id(char * name);
-      unsigned short get_out_id(char * name);
+
+    void RegisterRemoteControl(void);
+public:
+
+    lxString GetAboutInfo(void) {
+        return lxT("R.M.A. Almeida	  \n <rodrigomax@unifei.edu.br>");
+    };
+    cboard_PQDB(void);
+    ~cboard_PQDB(void);
+    void Draw(CDraw *draw, double scale);
+    void Run_CPU(void);
+
+    lxString GetSupportedDevices(void) {
+        return lxT("PIC18F4520,");
+    };
+
+    lxString GetPictureFileName(void) {
+        return lxT("PQDB/pqdb.svg");
+    };
+
+    lxString GetInputMapFile(void) {
+        return lxT("PQDB/input.map");
+    };
+
+    lxString GetOutputMapFile(void) {
+        return lxT("PQDB/output.map");
+    };
+    void Reset(void);
+    void EvMouseMove(uint button, uint x, uint y, uint state);
+    void EvMouseButtonPress(uint button, uint x, uint y, uint state);
+    void EvMouseButtonRelease(uint button, uint x, uint y, uint state);
+    void EvKeyPress(uint key, uint mask);
+    void EvKeyRelease(uint key, uint mask);
+    void EvOnShow(void);
+    void RefreshStatus(void);
+    void WritePreferences(void);
+    void ReadPreferences(char *name, char *value);
+    unsigned short get_in_id(char * name);
+    unsigned short get_out_id(char * name);
+    lxString MGetPinName(int pin);
+    int MGetPinCount(void);
 };
 
 
-#endif	/* BOARD_4_H */
+#endif /* BOARD_4_H */
 

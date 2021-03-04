@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@
                 } \
             }
 
-#define selectColorByPinValue(PIN_ID) selectColorByValue(pic.pins[PIN_ID].value)
+#define selectColorByPinValue(PIN_ID) draw->Canvas.SetBgColor(pic.pins[PIN_ID].oavalue, 0 ,0);draw->Canvas.SetFgColor(205, 180 ,180)
 
 /* outputs */
 enum
@@ -95,12 +95,8 @@ cboard_PQDB::cboard_PQDB(void)
  lcde = 0;
  sound_on = 0;
 
- lmrgb[0] = 0;
- lmrgb[1] = 0;
- lmrgb[2] = 0;
-
  sda = 0;
- 
+
  srDATA = 0;
  srCLK = 0;
  srLAT = 0;
@@ -108,106 +104,12 @@ cboard_PQDB::cboard_PQDB(void)
  lcd_init (& lcd, 16, 2);
  rtc2_init (& rtc2);
  io_74xx595_init (&shiftReg);
+ _srret = 0;
 
  ReadMaps ();
 
  buzzer.Init ();
 
- //gauge1
- /*  gauge1 = new CGauge();
-  gauge1 -> SetFOwner( & Window1);
-  gauge1 -> SetName(lxT("gauge1_p4"));
-  gauge1 -> SetX(13);
-  gauge1 -> SetY(302 + 20);
-  gauge1 -> SetWidth(140);
-  gauge1 -> SetHeight(20);
-  gauge1 -> SetEnable(1);
-  gauge1 -> SetVisible(1);
-  gauge1 -> SetRange(100);
-  gauge1 -> SetValue(0);
-  gauge1 -> SetType(4); */
- //Window1.CreateChild(gauge1);
- /* gauge2
- gauge2 = new CGauge();
- gauge2 -> SetFOwner( & Window1);
- gauge2 -> SetName(lxT("gauge2_p4"));
- gauge2 -> SetX(12);
- gauge2 -> SetY(250 + 20);
- gauge2 -> SetWidth(140);
- gauge2 -> SetHeight(20);
- gauge2 -> SetEnable(1);
- gauge2 -> SetVisible(1);
- gauge2 -> SetRange(100);
- gauge2 -> SetValue(0);
- gauge2 -> SetType(4);
- Window1.CreateChild(gauge2); */
- //label3
- /* label3 = new CLabel();
- label3 -> SetFOwner( & Window1);
- label3 -> SetName(lxT("label3_p4"));
- label3 -> SetX(12);
- label3 -> SetY(226 + 20);
- label3 -> SetWidth(60);
- label3 -> SetHeight(20);
- label3 -> SetEnable(1);
- label3 -> SetVisible(1);
- label3 -> SetText(lxT("Heater"));
- label3 -> SetAlign(1);
- Window1.CreateChild(label3); */
- //label4
- /* label4 = new CLabel();
- label4 -> SetFOwner( & Window1);
- label4 -> SetName(lxT("label4_p4"));
- label4 -> SetX(13);
- label4 -> SetY(277 + 20);
- label4 -> SetWidth(60);
- label4 -> SetHeight(20);
- label4 -> SetEnable(1);
- label4 -> SetVisible(1);
- label4 -> SetText(lxT("Cooler"));
- label4 -> SetAlign(1);
- Window1.CreateChild(label4); */
- //label5
- /* label5 = new CLabel();
- label5 -> SetFOwner( & Window1);
- label5 -> SetName(lxT("label5_p4"));
- label5 -> SetX(13);
- label5 -> SetY(332 + 20);
- label5 -> SetWidth(120);
- label5 -> SetHeight(24);
- label5 -> SetEnable(1);
- label5 -> SetVisible(1);
- label5 -> SetText(lxT("Temp: 00.0°C"));
- label5 -> SetAlign(1);
- Window1.CreateChild(label5); */
- //label6
- /* label6 = new CLabel();
- label6 -> SetFOwner( & Window1);
- label6 -> SetName(lxT("label6_p4"));
- label6 -> SetX(13);
- label6 -> SetY(54 + 20);
- label6 -> SetWidth(120);
- label6 -> SetHeight(24);
- label6 -> SetEnable(1);
- label6 -> SetVisible(1);
- label6 -> SetText(lxT("LCD"));
- label6 -> SetAlign(1);
- Window1.CreateChild(label6); */
- //combo1
- /* combo1 = new CCombo();
- combo1 -> SetFOwner( & Window1);
- combo1 -> SetName(lxT("combo1_p4"));
- combo1 -> SetX(13);
- combo1 -> SetY(78 + 20);
- combo1 -> SetWidth(130);
- combo1 -> SetHeight(24);
- combo1 -> SetEnable(1);
- combo1 -> SetVisible(1);
- combo1 -> SetText(lxT("hd44780 16x2"));
- combo1 -> SetItems(lxT("hd44780 16x2,hd44780 16x4,"));
- combo1 -> SetTag(3);
- combo1 -> EvOnComboChange = EVONCOMBOCHANGE & CPWindow1::board_Event;
- Window1.CreateChild(combo1); */
 
 }
 
@@ -216,16 +118,7 @@ cboard_PQDB::~cboard_PQDB(void)
  buzzer.BeepStop ();
  buzzer.End ();
 
-
  rtc2_end (& rtc2);
-
- /*  Window1.DestroyChild(gauge1);
-  Window1.DestroyChild(gauge2);
-  Window1.DestroyChild(label3);
-  Window1.DestroyChild(label4);
-  Window1.DestroyChild(label5);
-  Window1.DestroyChild(label6);
-  Window1.DestroyChild(combo1); */
 
 }
 
@@ -233,11 +126,12 @@ void
 cboard_PQDB::Draw(CDraw * draw, double scale)
 {
  int i;
+
  draw -> Canvas.Init (scale, scale);
 
  lcd_blink (& lcd);
 
- //lab4 draw 
+ //pqdb draw 
  for (i = 0; i < outputc; i++)
   {
    if (!output[i].r)
@@ -279,7 +173,7 @@ cboard_PQDB::Draw(CDraw * draw, double scale)
       case O_F4:
       case O_G4:
       case O_P4:
-       draw -> Canvas.SetColor (255, 255 - lm7seg[output[i].id], 255 - lm7seg[output[i].id]);
+       draw -> Canvas.SetColor (lm7seg[output[i].id], 55, 55);
        break;
       case O_LCD:
        draw -> Canvas.SetColor (0, 90 * Window1.Get_mcupwr () + 40, 0);
@@ -337,7 +231,7 @@ cboard_PQDB::Draw(CDraw * draw, double scale)
        selectColorByPinValue (SCL_PIN);
        break;
       case O_SDA:
-       //use sda instead pinValue becouse switching input/output
+       //use sda instead pinValue because switching input/output
        selectColorByValue (sda);
        break;
       case O_TX:
@@ -354,7 +248,7 @@ cboard_PQDB::Draw(CDraw * draw, double scale)
       case O_SOD5:
       case O_SOD6:
       case O_SOD7:
-       selectColorByValue ((shiftReg.out & (1 << (output[i].id - O_SOD0))));
+       selectColorByPinValue (PSRD0 + (output[i].id - O_SOD0));
        break;
       case O_TC1:
       case O_TC2:
@@ -391,7 +285,7 @@ cboard_PQDB::Draw(CDraw * draw, double scale)
       }
      else if (output[i].id == O_POT)
       {
-       draw -> Canvas.SetColor (00, 17, 117);
+       draw -> Canvas.SetColor (100, 120, 100);
        draw -> Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
        draw -> Canvas.SetColor (250, 250, 250);
@@ -428,7 +322,7 @@ cboard_PQDB::Draw(CDraw * draw, double scale)
 
      if (output[i].id == O_RGB)
       {
-       draw -> Canvas.SetColor (lmrgb[0], lmrgb[1], lmrgb[2]);
+       draw -> Canvas.SetColor (pic.pins[LED_RED_PIN].oavalue, pic.pins[LED_GREEN_PIN].oavalue, pic.pins[LED_BLUE_PIN].oavalue);
        draw -> Canvas.Circle (1, output[i].cx, output[i].cy, 19);
       }
     }
@@ -488,6 +382,8 @@ cboard_PQDB::Run_CPU(void)
 
  memset (alm, 0, 40 * sizeof (unsigned int));
 
+ memset (shiftReg_alm, 0, 8 * sizeof (unsigned long));
+
  pins = pic.pins;
 
  j = JUMPSTEPS;
@@ -546,6 +442,7 @@ cboard_PQDB::Run_CPU(void)
 
      if (j >= JUMPSTEPS)
       {
+
        //contabilizando a média do 7 segmentos
        for (int iDisp = DISP_1_PIN; iDisp <= DISP_4_PIN; iDisp++)
         {
@@ -555,57 +452,9 @@ cboard_PQDB::Run_CPU(void)
             {
              if (shiftReg.out & (1 << iSeg))
               {
-               if (lm7seg[(iDisp - DISP_1_PIN)*8 + iSeg] < 254)
-                {
-                 lm7seg[(iDisp - DISP_1_PIN)*8 + iSeg]++;
-                }
-
-              }
-             else
-              {
-               lm7seg[(iDisp - DISP_1_PIN)*8 + iSeg] *= 0.8;
+               alm7seg[(iDisp - DISP_1_PIN)*8 + iSeg]++;
               }
             }
-          }
-        }
-       //contabilizando luminosidade do RGB
-       if (pins[LED_RED_PIN].value)
-        {
-         lmrgb[0]++;
-         if (lmrgb[0] > 255) lmrgb[0] = 255;
-        }
-       else
-        {
-         lmrgb[0]--;
-         if (lmrgb[0] < 0)
-          {
-           lmrgb[0] = 0;
-          }
-        }
-       if (pins[LED_GREEN_PIN].value)
-        {
-         lmrgb[1]++;
-         if (lmrgb[1] > 255) lmrgb[1] = 255;
-        }
-       else
-        {
-         lmrgb[1]--;
-         if (lmrgb[1] < 0)
-          {
-           lmrgb[1] = 0;
-          }
-        }
-       if (pins[LED_BLUE_PIN].value)
-        {
-         lmrgb[2]++;
-         if (lmrgb[2] > 255) lmrgb[2] = 255;
-        }
-       else
-        {
-         lmrgb[2]--;
-         if (lmrgb[2] < 0)
-          {
-           lmrgb[2] = 0;
           }
         }
 
@@ -615,6 +464,16 @@ cboard_PQDB::Run_CPU(void)
        pic_set_apin (POT_PIN + 1, vPOT); //pot
        pic_set_apin (LDR_PIN + 1, vLDR); //ldr
        pic_set_apin (LM_PIN + 1, vLM); //temp
+
+       //valor medio shift register
+       if (pic.pins[pic.PINCOUNT].value)shiftReg_alm[0]++;
+       if (pic.pins[pic.PINCOUNT + 1].value)shiftReg_alm[1]++;
+       if (pic.pins[pic.PINCOUNT + 2].value)shiftReg_alm[2]++;
+       if (pic.pins[pic.PINCOUNT + 3].value)shiftReg_alm[3]++;
+       if (pic.pins[pic.PINCOUNT + 4].value)shiftReg_alm[4]++;
+       if (pic.pins[pic.PINCOUNT + 5].value)shiftReg_alm[5]++;
+       if (pic.pins[pic.PINCOUNT + 6].value)shiftReg_alm[6]++;
+       if (pic.pins[pic.PINCOUNT + 7].value)shiftReg_alm[7]++;
 
        j = -1;
       }
@@ -679,29 +538,57 @@ cboard_PQDB::Run_CPU(void)
       {
        srLAT = pins[SO_EN_PIN].value;
       }
-     io_74xx595_io (&shiftReg, srDATA, srCLK, srLAT, 1);
-    }
-
-   //fim STEP
-
-   alm[23] = 0; //aquecedor
-   alm[16] = 0; //ventilador
-
-
-   for (i = 0; i < pic.PINCOUNT; i++)
-    {
-     if (pic.pins[i].port == P_VDD)
+     unsigned short ret = io_74xx595_io (&shiftReg, srDATA, srCLK, srLAT, 1);
+     if (_srret != ret)
       {
-       pic.pins[i].oavalue = 255;
+       pic.pins[PSRD0].value = (ret & 0x01) != 0;
+       pic.pins[PSRD1].value = (ret & 0x02) != 0;
+       pic.pins[PSRD2].value = (ret & 0x04) != 0;
+       pic.pins[PSRD3].value = (ret & 0x08) != 0;
+       pic.pins[PSRD4].value = (ret & 0x10) != 0;
+       pic.pins[PSRD5].value = (ret & 0x20) != 0;
+       pic.pins[PSRD6].value = (ret & 0x40) != 0;
+       pic.pins[PSRD7].value = (ret & 0x80) != 0;
       }
-     else
-      {
-       pic.pins[i].oavalue = (int) (((200.0 * alm[i]) / NSTEP) + 55);
-      }
+     _srret = ret;
     }
-
-   if (use_spare) Window5.PostProcess ();
   }
+ //fim STEP
+
+ //alm[23] = 0; //aquecedor
+ //alm[16] = 0; //ventilador
+
+
+ for (i = 0; i < pic.PINCOUNT; i++)
+  {
+   if (pic.pins[i].port == P_VDD)
+    {
+     pic.pins[i].oavalue = 255;
+    }
+   else
+    {
+     pic.pins[i].oavalue = (int) (((200.0 * alm[i]) / NSTEP) + 55);
+    }
+  }
+
+ long int NSTEPJ = Window1.GetNSTEPJ ();
+
+ for (i = 0; i < 32; i++)
+  {
+   lm7seg[i] = (int) (((3000.0 * alm7seg[i]) / NSTEPJ) + 30);
+   if (lm7seg[i] > 255)lm7seg[i] = 255;
+  }
+
+ //sr mean value
+ pic.pins[PSRD0].oavalue = (pic.pins[PSRD0].oavalue + ((shiftReg_alm[0]*255.0) / NSTEPJ)) / 2;
+ pic.pins[PSRD1].oavalue = (pic.pins[PSRD1].oavalue + ((shiftReg_alm[1]*255.0) / NSTEPJ)) / 2;
+ pic.pins[PSRD2].oavalue = (pic.pins[PSRD2].oavalue + ((shiftReg_alm[2]*255.0) / NSTEPJ)) / 2;
+ pic.pins[PSRD3].oavalue = (pic.pins[PSRD3].oavalue + ((shiftReg_alm[3]*255.0) / NSTEPJ)) / 2;
+ pic.pins[PSRD4].oavalue = (pic.pins[PSRD4].oavalue + ((shiftReg_alm[4]*255.0) / NSTEPJ)) / 2;
+ pic.pins[PSRD5].oavalue = (pic.pins[PSRD5].oavalue + ((shiftReg_alm[5]*255.0) / NSTEPJ)) / 2;
+ pic.pins[PSRD6].oavalue = (pic.pins[PSRD6].oavalue + ((shiftReg_alm[6]*255.0) / NSTEPJ)) / 2;
+ pic.pins[PSRD7].oavalue = (pic.pins[PSRD7].oavalue + ((shiftReg_alm[7]*255.0) / NSTEPJ)) / 2;
+ if (use_spare) Window5.PostProcess ();
 
 }
 
@@ -1288,8 +1175,6 @@ cboard_PQDB::get_out_id(char * name)
 void
 cboard_PQDB::RefreshStatus(void)
 {
- //    label5 -> SetText(lxT("Temp: ") + lxString().Format("%5.2f", temp[0]) + lxT("°C"));
-
 #ifndef _WIN_
  if (pic.serial[0].serialfd > 0)
 #else
@@ -1327,5 +1212,83 @@ cboard_PQDB::ReadPreferences(char * name, char * value)
    pot = atoi (value);
   }
 }
+
+lxString
+cboard_PQDB::MGetPinName(int pin)
+{
+ if (pin <= bsim_picsim::MGetPinCount ())
+  {
+   lxString pname = bsim_picsim::MGetPinName (pin);
+
+   switch (pin)
+    {
+    case 2:
+     pname += "(AD0)";
+     break;
+    case 3:
+     pname += "(AD1)";
+     break;
+    case 4:
+     pname += "(AD2)";
+     break;
+    case 16:
+     pname += "(D9)";
+     break;
+    case 19:
+     pname += "(D2)";
+     break;
+    case 20:
+     pname += "(D3)";
+     break;
+    case 21:
+     pname += "(D4)";
+     break;
+    case 22:
+     pname += "(D5)";
+     break;
+    case 27:
+     pname += "(D6)";
+     break;
+    case 28:
+     pname += "(D7)";
+     break;
+    case 29:
+     pname += "(D8)";
+     break;
+    case 30:
+     pname += "(D10)";
+     break;
+    case 33:
+     pname += "(D11)";
+     break;
+    case 34:
+     pname += "(D12)";
+     break;
+    case 35:
+     pname += "(D13)";
+     break;
+    case 36:
+     pname += "(SCL)";
+     break;
+    case 37:
+     pname += "(SDA)";
+     break;
+    }
+   return pname;
+  }
+ else
+  {
+   lxString pinname;
+   pinname.Printf ("d%i", pin - bsim_picsim::MGetPinCount () - 1);
+   return pinname;
+  }
+}
+
+int
+cboard_PQDB::MGetPinCount(void)
+{
+ return bsim_picsim::MGetPinCount () + 8;
+}
+
 
 board_init("PQDB", cboard_PQDB);
