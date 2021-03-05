@@ -40,7 +40,7 @@ class cpart_pbuttons_an:public part
       ~cpart_pbuttons_an(void);
       void Draw(void);
       void PreProcess(void);
-      lxString GetPictureFileName(void){return lxT("pbuttons/push_buttons.png");};
+      lxString GetPictureFileName(void){return lxT("pbuttons/push_buttons.svg");};
       lxString GetInputMapFile(void){return lxT("pbuttons/push_buttons_i.map");};
       lxString GetOutputMapFile(void){return lxT("pbuttons/push_buttons_o.map");};
       lxString GetPropertiesWindowFile(void){return lxT("pbuttons_an/push_buttons_an.lxrad");};

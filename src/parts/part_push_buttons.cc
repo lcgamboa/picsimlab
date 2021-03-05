@@ -196,7 +196,7 @@ cpart_pbuttons::Draw(void)
     case O_B7:
     case O_B8:
      canvas.SetColor (100, 100, 100);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     canvas.Circle (1, output[i].cx, output[i].cy, 10);
      if (output_value[output[i].id - O_B1] == active)
       {
        canvas.SetColor (55, 55, 55);
@@ -205,7 +205,7 @@ cpart_pbuttons::Draw(void)
       {
        canvas.SetColor (15, 15, 15);
       }
-     canvas.Circle (1, output[i].cx, output[i].cy, 10);
+     canvas.Circle (1, output[i].cx, output[i].cy, 8);
      break;
     }
   }
