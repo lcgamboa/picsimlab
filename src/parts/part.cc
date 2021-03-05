@@ -31,7 +31,8 @@ part::part()
 {
  inputc = 0;
  outputc = 0;
- orientation = 0;
+ Orientation = 0;
+ Scale = 1.0;
 }
 
 void
@@ -240,7 +241,7 @@ int
 part::PointInside(int x, int y)
 {
 
- switch (orientation)
+ switch (Orientation)
   {
   case 0:
   case 2:
@@ -267,7 +268,7 @@ part::PointInside(int x, int y, input_t input)
  int X1 = 0, X2 = 0;
  int Y1 = 0, Y2 = 0;
 
- switch (orientation)
+ switch (Orientation)
   {
   case 0:
    X1 = input.x1;
@@ -310,36 +311,63 @@ part::PointInside(int x, int y, input_t input)
    Y2 = temp;
   }
 
-
  if (((x >= X1)&&(x <= X2)) && ((y >= Y1)&&(y <= Y2)))
   return 1;
  else
   return 0;
-
 }
 
 int
 part::GetOrientation(void)
 {
-
- return orientation;
+ return Orientation;
 }
 
 void
-part::SetOrientation(int _orientation)
+part::SetOrientation(int orientation)
 {
 
- if (orientation == _orientation)return;
+ if (Orientation == orientation)return;
 
  if (!Bitmap)return;
 
- orientation = _orientation;
+ Orientation = orientation;
 
  delete Bitmap;
 
  lxImage image(&Window5);
 
- image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), orientation);
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
+
+ Bitmap = new lxBitmap (&image, &Window5);
+ image.Destroy ();
+ canvas.Destroy ();
+ canvas.Create (Window5.GetWWidget (), Bitmap);
+
+}
+
+float
+part::GetScale(void)
+{
+
+ return Scale;
+}
+
+void
+part::SetScale(float scale)
+{
+
+ if (Scale == scale)return;
+
+ if (!Bitmap)return;
+
+ Scale = scale;
+
+ delete Bitmap;
+
+ lxImage image(&Window5);
+
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
@@ -385,7 +413,7 @@ part::RotateCoords(unsigned int * x, unsigned int *y)
 {
  int temp;
 
- switch (orientation)
+ switch (Orientation)
   {
   case 1:
    temp = *x;

@@ -127,6 +127,7 @@ CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
    else
     {
      parts[partsc]->SetId (partsc);
+     parts[partsc]->SetScale (scale);
      partsc++;
     }
    PartToCreate = "";
@@ -252,14 +253,10 @@ CPWindow5::timer1_EvOnTime(CControl * control)
  draw1.Canvas.SetBgColor (50, 50, 50);
  draw1.Canvas.Rectangle (1, 0, 0, draw1.GetWidth (), draw1.GetHeight ());
 
- draw1.Canvas.ChangeScale (scale, scale);
-
  for (int i = 0; i < partsc; i++)
   {
-   draw1.Canvas.PutBitmap (parts[i]->GetBitmap (), parts[i]->GetX (), parts[i]->GetY ());
+   draw1.Canvas.PutBitmap (parts[i]->GetBitmap (), parts[i]->GetX () * scale, parts[i]->GetY () * scale);
   }
-
- draw1.Canvas.ChangeScale (1.0, 1.0);
 
  if (useAlias)
   {
@@ -325,12 +322,10 @@ CPWindow5::draw1_EvKeyboardPress(CControl * control, const uint key, const uint 
    Window4.SetBaseTimer ();
    break;
   case '='://+
-   scale += 0.1;
-   if (scale > 2)scale = 2;
+   menu1_Edit_Zoomin_EvMenuActive (this);
    break;
   case '-':
-   scale -= 0.1;
-   if (scale < 0.1)scale = 0.1;
+   menu1_Edit_Zoomout_EvMenuActive (this);
    break;
   default:
    for (int i = 0; i < partsc; i++)
@@ -465,6 +460,7 @@ CPWindow5::LoadConfig(lxString fname)
        if (newformat)
         {
          parts[partsc_]->SetOrientation (orient);
+         parts[partsc_]->SetScale (scale);
         }
        partsc_++;
       }
@@ -686,6 +682,11 @@ CPWindow5::menu1_Edit_Zoomin_EvMenuActive(CControl * control)
 {
  scale += 0.1;
  if (scale > 2)scale = 2;
+
+ for (int i = 0; i < partsc; i++)
+  {
+   parts[i]->SetScale (scale);
+  }
 }
 
 void
@@ -693,6 +694,10 @@ CPWindow5::menu1_Edit_Zoomout_EvMenuActive(CControl * control)
 {
  scale -= 0.1;
  if (scale < 0.1)scale = 0.1;
+ for (int i = 0; i < partsc; i++)
+  {
+   parts[i]->SetScale (scale);
+  }
 }
 
 void

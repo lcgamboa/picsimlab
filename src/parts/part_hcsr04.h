@@ -4,7 +4,7 @@
 
 	   ########################################################################
 
-	   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+	   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
 
 	   This program is free software; you can redistribute it and/or modify
 	   it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ class cpart_hcsr04:public part
 {
     public:
       lxString GetName(void){return lxT("Ultrasonic HC-SR04");};
-      lxString GetHelpURL(void){return lxT("Ultrasonic_HC-SR04.html");};
+      lxString GetHelpURL(void){return lxT("Ultrasonic_HC_SR04.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_hcsr04(unsigned x, unsigned y);
       ~cpart_hcsr04(void); 

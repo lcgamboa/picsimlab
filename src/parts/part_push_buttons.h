@@ -49,7 +49,7 @@ public:
     void PreProcess(void);
 
     lxString GetPictureFileName(void) {
-        return lxT("pbuttons/push_buttons.svg");
+        return lxT("pbuttons/push_buttons.png");
     };
 
     lxString GetInputMapFile(void) {

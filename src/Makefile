@@ -16,14 +16,14 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-override CFLAGS+= -D_VERSION_=\"$(VERSION)\" -Wall -g -O2 -D_SHARE_=\"../share/picsimlab/\"  `lxrad-config --cxxflags`
+override CFLAGS+= -D_VERSION_=\"$(VERSION)\" -Wall -g -O0 -D_SHARE_=\"../share/picsimlab/\"  `lxrad-config --cxxflags`
 override CFLAGS+= -DEXT_BROWSER
 #override CFLAGS+=-fsanitize=address
 override CFLAGS+= -D_ARCH_=\"Linux64_WX\" -D_DATE_=\"${DATE}\"
 
-LIBS =  `lxrad-config --libs` -lpicsim -lsimavr -lelf $(ELIBS)
-#LIBS=  ../../picsim/src/libpicsim_dbg.a ../../LXRAD_WX/libteste/liblxrad.a  ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a\
-      -lopenal `wx-config --libs` `wx-config --libs stc` 
+#LIBS =  `lxrad-config --libs` -lpicsim -lsimavr -lelf $(ELIBS)
+LIBS=  ../../picsim/src/libpicsim_dbg.a ../../LXRAD_WX/libteste/liblxrad.a  ../../lunasvg/build/liblunasvg.a \
+     ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a  -lopenal `wx-config --libs` `wx-config --libs stc` $(ELIBS)
 
 
 #lxrad automatic generated block end, don't edit above!

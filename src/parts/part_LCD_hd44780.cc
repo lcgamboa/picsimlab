@@ -42,16 +42,16 @@ cpart_LCD_hd44780::Reset(void)
  switch (model)
   {
   case LCD16x2:
-   image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), orientation);
+   image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
    break;
   case LCD16x4:
-   image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName_ ());
+   image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName_ (), Orientation, Scale, Scale);
    break;
   case LCD20x2:
-   image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName__ ());
+   image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName__ (), Orientation, Scale, Scale);
    break;
   case LCD20x4:
-   image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName___ ());
+   image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName___ (), Orientation, Scale, Scale);
    break;
   }
 
@@ -121,7 +121,7 @@ cpart_LCD_hd44780::Draw(void)
 
  if ((model == LCD16x4) || (model == LCD20x4)) yoff = 96;
 
- canvas.Init (1.0, 1.0, orientation);
+ canvas.Init (Scale, Scale, Orientation);
 
  lcd_blink (&lcd);
 

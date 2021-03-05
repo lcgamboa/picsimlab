@@ -279,8 +279,7 @@ public:
      * @brief  Return coords x y rotated by orientation  
      */
     void RotateCoords(unsigned int * x, unsigned int * y);
-
-
+    
     /**
      * @brief  Return the orientation to draw
      */
@@ -291,6 +290,16 @@ public:
      */
     virtual void SetOrientation(int orientation);
 
+    /**
+     * @brief  Return the orientation to draw
+     */
+    float GetScale(void);
+
+    /**
+     * @brief  Set the orientation to draw
+     */
+    virtual void SetScale(float scale);
+    
     /**
      * @brief  Set the part ID, don't be called by user
      */
@@ -317,7 +326,8 @@ protected:
     lxBitmap * Bitmap; ///< Internal Bitmap   
     CCanvas canvas; ///< Internal Canvas to draw in bitmap
     unsigned int refresh; ///< redraw is needed 
-    int orientation; ///< orientation to draw part
+    int Orientation; ///< orientation to draw part
+    float Scale; ///< scale to draw part
 
     /**
      * @brief  read maps

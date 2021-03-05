@@ -47,9 +47,9 @@ cpart_tempsys::cpart_tempsys(unsigned x, unsigned y)
  ReadMaps ();
 
  lxImage image(&Window5);
- image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), orientation);
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
- Bitmap = lxGetBitmapRotated(&image, &Window5, orientation);
+ Bitmap = new lxBitmap(&image, &Window5);
  image.Destroy ();
 
  canvas.Create (Window5.GetWWidget (), Bitmap);
@@ -57,12 +57,12 @@ cpart_tempsys::cpart_tempsys(unsigned x, unsigned y)
  vtc = 0;
  vt = 0;
 
- image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT1.png"));
- vent[0] = lxGetBitmapRotated(&image, &Window1, orientation);
+ image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT1.png"), Orientation, Scale, Scale);
+ vent[0] = new lxBitmap(&image, &Window1);
  image.Destroy ();
 
- image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT2.png"));
- vent[1] = lxGetBitmapRotated(&image, &Window1, orientation);
+ image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT2.png"), Orientation, Scale, Scale);
+ vent[1] = new lxBitmap(&image, &Window1);
  image.Destroy ();
 
  input_pins[0] = 0;
@@ -100,7 +100,7 @@ cpart_tempsys::Draw(void)
 
  const picpin * ppins = Window5.GetPinsValues ();
 
- canvas.Init (1.0, 1.0, orientation);
+ canvas.Init (Scale, Scale, Orientation);
 
  lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);

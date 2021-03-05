@@ -47,7 +47,7 @@ cpart_SignalGenerator::cpart_SignalGenerator(unsigned x, unsigned y)
  ReadMaps ();
 
  lxImage image(&Window5);
- image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), orientation);
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
@@ -88,7 +88,7 @@ cpart_SignalGenerator::Draw(void)
  float tsi;
  int sizex;
  int sizey;
- canvas.Init (1.0, 1.0, orientation);
+ canvas.Init (Scale, Scale, Orientation);
 
  lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
@@ -258,7 +258,7 @@ cpart_SignalGenerator::EvMouseButtonPress(uint button, uint x, uint y, uint stat
    if (PointInside (x, y, input[i]))
     {
      l = (input[i].y2 - input[i].y1 - 10);
-     switch (orientation)
+     switch (Orientation)
       {
       case 1:
        y = Height - x;
@@ -338,7 +338,7 @@ cpart_SignalGenerator::EvMouseMove(uint button, uint x, uint y, uint state)
    if (PointInside (x, y, input[i]))
     {
      l = (input[i].y2 - input[i].y1 - 10);
-     switch (orientation)
+     switch (Orientation)
       {
       case 1:
        y = Height - x;
