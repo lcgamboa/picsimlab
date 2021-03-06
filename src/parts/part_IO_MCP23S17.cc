@@ -104,12 +104,12 @@ cpart_IO_MCP23S17::cpart_IO_MCP23S17(unsigned x, unsigned y)
  ReadMaps ();
  Bitmap = NULL;
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
 
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
 
- Bitmap = new lxBitmap(&image, &Window5);
+ Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -147,10 +147,10 @@ cpart_IO_MCP23S17::cpart_IO_MCP23S17(unsigned x, unsigned y)
 
  mcount = 0;
  memset (output_pins_alm, 0, 16 * sizeof (unsigned long));
- 
- _PA=0xFA;//dummy value
- _PB=0xFA;
- 
+
+ _PA = 0xFA; //dummy value
+ _PB = 0xFA;
+
 }
 
 cpart_IO_MCP23S17::~cpart_IO_MCP23S17(void)
@@ -498,11 +498,11 @@ cpart_IO_MCP23S17::Process(void)
    Window5.WritePin (output_pins[6], (mcp.regs[OLATA] & 0x40) != 0);
    Window5.WritePin (output_pins[7], (mcp.regs[OLATA] & 0x80) != 0);
   }
- 
+
  if (_PB != mcp.regs[OLATB])
   {
-   Window5.WritePin (output_pins[8],  (mcp.regs[OLATB] & 0x01) != 0);
-   Window5.WritePin (output_pins[9],  (mcp.regs[OLATB] & 0x02) != 0);
+   Window5.WritePin (output_pins[8], (mcp.regs[OLATB] & 0x01) != 0);
+   Window5.WritePin (output_pins[9], (mcp.regs[OLATB] & 0x02) != 0);
    Window5.WritePin (output_pins[10], (mcp.regs[OLATB] & 0x04) != 0);
    Window5.WritePin (output_pins[11], (mcp.regs[OLATB] & 0x08) != 0);
    Window5.WritePin (output_pins[12], (mcp.regs[OLATB] & 0x10) != 0);
@@ -513,28 +513,28 @@ cpart_IO_MCP23S17::Process(void)
  _PA = mcp.regs[OLATA];
  _PB = mcp.regs[OLATB];
 
-  mcount++;
+ mcount++;
  if (mcount >= JUMPSTEPS_)
   {
-   if (ppins[output_pins[0]-1].value)output_pins_alm[0]++;
-   if (ppins[output_pins[1]-1].value)output_pins_alm[1]++;
-   if (ppins[output_pins[2]-1].value)output_pins_alm[2]++;
-   if (ppins[output_pins[3]-1].value)output_pins_alm[3]++;
-   if (ppins[output_pins[4]-1].value)output_pins_alm[4]++;
-   if (ppins[output_pins[5]-1].value)output_pins_alm[5]++;
-   if (ppins[output_pins[6]-1].value)output_pins_alm[6]++;
-   if (ppins[output_pins[7]-1].value)output_pins_alm[7]++;
-   if (ppins[output_pins[8]-1].value)output_pins_alm[8]++;
-   if (ppins[output_pins[9]-1].value)output_pins_alm[9]++;
-   if (ppins[output_pins[10]-1].value)output_pins_alm[10]++;
-   if (ppins[output_pins[11]-1].value)output_pins_alm[11]++;
-   if (ppins[output_pins[12]-1].value)output_pins_alm[12]++;
-   if (ppins[output_pins[13]-1].value)output_pins_alm[13]++;
-   if (ppins[output_pins[14]-1].value)output_pins_alm[14]++;
-   if (ppins[output_pins[15]-1].value)output_pins_alm[15]++;
+   if (ppins[output_pins[0] - 1].value)output_pins_alm[0]++;
+   if (ppins[output_pins[1] - 1].value)output_pins_alm[1]++;
+   if (ppins[output_pins[2] - 1].value)output_pins_alm[2]++;
+   if (ppins[output_pins[3] - 1].value)output_pins_alm[3]++;
+   if (ppins[output_pins[4] - 1].value)output_pins_alm[4]++;
+   if (ppins[output_pins[5] - 1].value)output_pins_alm[5]++;
+   if (ppins[output_pins[6] - 1].value)output_pins_alm[6]++;
+   if (ppins[output_pins[7] - 1].value)output_pins_alm[7]++;
+   if (ppins[output_pins[8] - 1].value)output_pins_alm[8]++;
+   if (ppins[output_pins[9] - 1].value)output_pins_alm[9]++;
+   if (ppins[output_pins[10] - 1].value)output_pins_alm[10]++;
+   if (ppins[output_pins[11] - 1].value)output_pins_alm[11]++;
+   if (ppins[output_pins[12] - 1].value)output_pins_alm[12]++;
+   if (ppins[output_pins[13] - 1].value)output_pins_alm[13]++;
+   if (ppins[output_pins[14] - 1].value)output_pins_alm[14]++;
+   if (ppins[output_pins[15] - 1].value)output_pins_alm[15]++;
    mcount = -1;
   }
-  
+
 }
 
 void
@@ -543,22 +543,22 @@ cpart_IO_MCP23S17::PostProcess(void)
  long int NSTEPJ = Window1.GetNSTEPJ ();
  const picpin * ppins = Window5.GetPinsValues ();
 
- Window5.WritePinOA (output_pins[0], (ppins[output_pins[0] - 1].oavalue + ((output_pins_alm[0]*255.0) / NSTEPJ)) / 2);
- Window5.WritePinOA (output_pins[1], (ppins[output_pins[1] - 1].oavalue + ((output_pins_alm[1]*255.0) / NSTEPJ)) / 2);
- Window5.WritePinOA (output_pins[2], (ppins[output_pins[2] - 1].oavalue + ((output_pins_alm[2]*255.0) / NSTEPJ)) / 2);
- Window5.WritePinOA (output_pins[3], (ppins[output_pins[3] - 1].oavalue + ((output_pins_alm[3]*255.0) / NSTEPJ)) / 2);
- Window5.WritePinOA (output_pins[4], (ppins[output_pins[4] - 1].oavalue + ((output_pins_alm[4]*255.0) / NSTEPJ)) / 2);
- Window5.WritePinOA (output_pins[5], (ppins[output_pins[5] - 1].oavalue + ((output_pins_alm[5]*255.0) / NSTEPJ)) / 2);
- Window5.WritePinOA (output_pins[6], (ppins[output_pins[6] - 1].oavalue + ((output_pins_alm[6]*255.0) / NSTEPJ)) / 2);
- Window5.WritePinOA (output_pins[7], (ppins[output_pins[7] - 1].oavalue + ((output_pins_alm[7]*255.0) / NSTEPJ)) / 2);
- Window5.WritePinOA (output_pins[8], (ppins[output_pins[8] - 1].oavalue + ((output_pins_alm[8]*255.0) / NSTEPJ)) / 2);
- Window5.WritePinOA (output_pins[9], (ppins[output_pins[9] - 1].oavalue + ((output_pins_alm[9]*255.0) / NSTEPJ)) / 2);
- Window5.WritePinOA (output_pins[10], (ppins[output_pins[10] - 1].oavalue + ((output_pins_alm[10]*255.0) / NSTEPJ)) / 2);
- Window5.WritePinOA (output_pins[11], (ppins[output_pins[11] - 1].oavalue + ((output_pins_alm[11]*255.0) / NSTEPJ)) / 2);
- Window5.WritePinOA (output_pins[12], (ppins[output_pins[12] - 1].oavalue + ((output_pins_alm[12]*255.0) / NSTEPJ)) / 2);
- Window5.WritePinOA (output_pins[13], (ppins[output_pins[13] - 1].oavalue + ((output_pins_alm[13]*255.0) / NSTEPJ)) / 2);
- Window5.WritePinOA (output_pins[14], (ppins[output_pins[14] - 1].oavalue + ((output_pins_alm[14]*255.0) / NSTEPJ)) / 2);
- Window5.WritePinOA (output_pins[15], (ppins[output_pins[15] - 1].oavalue + ((output_pins_alm[15]*255.0) / NSTEPJ)) / 2);
+ Window5.WritePinOA (output_pins[0], (ppins[output_pins[0] - 1].oavalue + ((output_pins_alm[0]*200.0) / NSTEPJ) + 55) / 2);
+ Window5.WritePinOA (output_pins[1], (ppins[output_pins[1] - 1].oavalue + ((output_pins_alm[1]*200.0) / NSTEPJ) + 55) / 2);
+ Window5.WritePinOA (output_pins[2], (ppins[output_pins[2] - 1].oavalue + ((output_pins_alm[2]*200.0) / NSTEPJ) + 55) / 2);
+ Window5.WritePinOA (output_pins[3], (ppins[output_pins[3] - 1].oavalue + ((output_pins_alm[3]*200.0) / NSTEPJ) + 55) / 2);
+ Window5.WritePinOA (output_pins[4], (ppins[output_pins[4] - 1].oavalue + ((output_pins_alm[4]*200.0) / NSTEPJ) + 55) / 2);
+ Window5.WritePinOA (output_pins[5], (ppins[output_pins[5] - 1].oavalue + ((output_pins_alm[5]*200.0) / NSTEPJ) + 55) / 2);
+ Window5.WritePinOA (output_pins[6], (ppins[output_pins[6] - 1].oavalue + ((output_pins_alm[6]*200.0) / NSTEPJ) + 55) / 2);
+ Window5.WritePinOA (output_pins[7], (ppins[output_pins[7] - 1].oavalue + ((output_pins_alm[7]*200.0) / NSTEPJ) + 55) / 2);
+ Window5.WritePinOA (output_pins[8], (ppins[output_pins[8] - 1].oavalue + ((output_pins_alm[8]*200.0) / NSTEPJ) + 55) / 2);
+ Window5.WritePinOA (output_pins[9], (ppins[output_pins[9] - 1].oavalue + ((output_pins_alm[9]*200.0) / NSTEPJ) + 55) / 2);
+ Window5.WritePinOA (output_pins[10], (ppins[output_pins[10] - 1].oavalue + ((output_pins_alm[10]*200.0) / NSTEPJ) + 55) / 2);
+ Window5.WritePinOA (output_pins[11], (ppins[output_pins[11] - 1].oavalue + ((output_pins_alm[11]*200.0) / NSTEPJ) + 55) / 2);
+ Window5.WritePinOA (output_pins[12], (ppins[output_pins[12] - 1].oavalue + ((output_pins_alm[12]*200.0) / NSTEPJ) + 55) / 2);
+ Window5.WritePinOA (output_pins[13], (ppins[output_pins[13] - 1].oavalue + ((output_pins_alm[13]*200.0) / NSTEPJ) + 55) / 2);
+ Window5.WritePinOA (output_pins[14], (ppins[output_pins[14] - 1].oavalue + ((output_pins_alm[14]*200.0) / NSTEPJ) + 55) / 2);
+ Window5.WritePinOA (output_pins[15], (ppins[output_pins[15] - 1].oavalue + ((output_pins_alm[15]*200.0) / NSTEPJ) + 55) / 2);
 }
 
 part_init("IO MCP23S17", cpart_IO_MCP23S17, "Other");

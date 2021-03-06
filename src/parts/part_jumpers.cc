@@ -52,12 +52,12 @@ cpart_Jumpers::cpart_Jumpers(unsigned x, unsigned y)
  ReadMaps ();
  Bitmap = NULL;
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
 
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
 
- Bitmap = new lxBitmap(&image, &Window5);
+ Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -362,7 +362,7 @@ cpart_Jumpers::ReadPreferences(lxString value)
   }
 
  Reset ();
- RegisterRemoteControl();
+ RegisterRemoteControl ();
 }
 
 void
@@ -376,49 +376,49 @@ cpart_Jumpers::RegisterRemoteControl(void)
     case O_L1:
      if (input_pins[0])
       {
-       output[i].status = (void *) &ppins[input_pins[0]-1].oavalue;
+       output[i].status = (void *) &ppins[input_pins[0] - 1].oavalue;
       }
      break;
     case O_L2:
      if (input_pins[1])
       {
-       output[i].status = (void *) &ppins[input_pins[1]-1].oavalue;
+       output[i].status = (void *) &ppins[input_pins[1] - 1].oavalue;
       }
      break;
     case O_L3:
      if (input_pins[2])
       {
-       output[i].status = (void *) &ppins[input_pins[2]-1].oavalue;
+       output[i].status = (void *) &ppins[input_pins[2] - 1].oavalue;
       }
      break;
     case O_L4:
      if (input_pins[3])
       {
-       output[i].status = (void *) &ppins[input_pins[3]-1].oavalue;
+       output[i].status = (void *) &ppins[input_pins[3] - 1].oavalue;
       }
      break;
     case O_L5:
      if (input_pins[4])
       {
-       output[i].status = (void *) &ppins[input_pins[4]-1].oavalue;
+       output[i].status = (void *) &ppins[input_pins[4] - 1].oavalue;
       }
      break;
     case O_L6:
      if (input_pins[5])
       {
-       output[i].status = (void *) &ppins[input_pins[5]-1].oavalue;
+       output[i].status = (void *) &ppins[input_pins[5] - 1].oavalue;
       }
      break;
     case O_L7:
      if (input_pins[6])
       {
-       output[i].status = (void *) &ppins[input_pins[6]-1].oavalue;
+       output[i].status = (void *) &ppins[input_pins[6] - 1].oavalue;
       }
      break;
     case O_L8:
      if (input_pins[7])
       {
-       output[i].status = (void *) &ppins[input_pins[7]-1].oavalue;
+       output[i].status = (void *) &ppins[input_pins[7] - 1].oavalue;
       }
      break;
     }
@@ -549,7 +549,7 @@ cpart_Jumpers::ReadPropertiesWindow(CPWindow * WProp)
     }
   }
 
-  RegisterRemoteControl();
+ RegisterRemoteControl ();
 }
 
 void
@@ -611,7 +611,7 @@ cpart_Jumpers::PostProcess(void)
  for (int i = 0; i < 16; i++)
   {
 
-   Window5.WritePinOA (output_pins[i], (ppins[output_pins[i] - 1].oavalue + ((output_pins_alm[i]*255.0) / NSTEPJ)) / 2);
+   Window5.WritePinOA (output_pins[i], (ppins[output_pins[i] - 1].oavalue + ((output_pins_alm[i]*200.0) / NSTEPJ) + 55) / 2);
   }
 }
 

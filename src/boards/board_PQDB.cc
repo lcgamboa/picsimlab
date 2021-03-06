@@ -580,14 +580,14 @@ cboard_PQDB::Run_CPU(void)
   }
 
  //sr mean value
- pic.pins[PSRD0].oavalue = (pic.pins[PSRD0].oavalue + ((shiftReg_alm[0]*255.0) / NSTEPJ)) / 2;
- pic.pins[PSRD1].oavalue = (pic.pins[PSRD1].oavalue + ((shiftReg_alm[1]*255.0) / NSTEPJ)) / 2;
- pic.pins[PSRD2].oavalue = (pic.pins[PSRD2].oavalue + ((shiftReg_alm[2]*255.0) / NSTEPJ)) / 2;
- pic.pins[PSRD3].oavalue = (pic.pins[PSRD3].oavalue + ((shiftReg_alm[3]*255.0) / NSTEPJ)) / 2;
- pic.pins[PSRD4].oavalue = (pic.pins[PSRD4].oavalue + ((shiftReg_alm[4]*255.0) / NSTEPJ)) / 2;
- pic.pins[PSRD5].oavalue = (pic.pins[PSRD5].oavalue + ((shiftReg_alm[5]*255.0) / NSTEPJ)) / 2;
- pic.pins[PSRD6].oavalue = (pic.pins[PSRD6].oavalue + ((shiftReg_alm[6]*255.0) / NSTEPJ)) / 2;
- pic.pins[PSRD7].oavalue = (pic.pins[PSRD7].oavalue + ((shiftReg_alm[7]*255.0) / NSTEPJ)) / 2;
+ pic.pins[PSRD0].oavalue = (pic.pins[PSRD0].oavalue + ((shiftReg_alm[0]*200.0) / NSTEPJ) + 55) / 2;
+ pic.pins[PSRD1].oavalue = (pic.pins[PSRD1].oavalue + ((shiftReg_alm[1]*200.0) / NSTEPJ) + 55) / 2;
+ pic.pins[PSRD2].oavalue = (pic.pins[PSRD2].oavalue + ((shiftReg_alm[2]*200.0) / NSTEPJ) + 55) / 2;
+ pic.pins[PSRD3].oavalue = (pic.pins[PSRD3].oavalue + ((shiftReg_alm[3]*200.0) / NSTEPJ) + 55) / 2;
+ pic.pins[PSRD4].oavalue = (pic.pins[PSRD4].oavalue + ((shiftReg_alm[4]*200.0) / NSTEPJ) + 55) / 2;
+ pic.pins[PSRD5].oavalue = (pic.pins[PSRD5].oavalue + ((shiftReg_alm[5]*200.0) / NSTEPJ) + 55) / 2;
+ pic.pins[PSRD6].oavalue = (pic.pins[PSRD6].oavalue + ((shiftReg_alm[6]*200.0) / NSTEPJ) + 55) / 2;
+ pic.pins[PSRD7].oavalue = (pic.pins[PSRD7].oavalue + ((shiftReg_alm[7]*200.0) / NSTEPJ) + 55) / 2;
  if (use_spare) Window5.PostProcess ();
 
 }
