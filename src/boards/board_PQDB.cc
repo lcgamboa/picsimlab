@@ -305,6 +305,8 @@ cboard_PQDB::Draw(CDraw * draw, double scale)
      //draw lcd text 
      if (output[i].id == O_LCD)
       {
+       //strech lcd background
+       draw -> Canvas.Rectangle (1, output[i].x1 - 8, output[i].y1 - 10, output[i].x2 - output[i].x1 + 17, output[i].y2 - output[i].y1 + 20);
        lcd_draw (&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, Window1.Get_mcupwr ());
       }
 
