@@ -8,8 +8,8 @@
 <!-- #$AUTHOR:lcganmboa@yahoo.com       -->
 <area shape="rect" coords="124,353,132,373" href="SW_D1" />
 <area shape="rect" coords="66,38,148,57" href="PO_1" />
-<area shape="rect" coords="97,149,129,181" href="PB_RST" />
-<area shape="rect" coords="33,303,65,335" href="PB_D0" />
+<area shape="rect" coords="98,150,129,181" href="PB_RST" />
+<area shape="rect" coords="34,304,65,335" href="PB_D0" />
 <area shape="circle" coords="55,424,16" href="LD_LD0" />
 <area shape="circle" coords="128,423,16" href="LD_LD1" />
 <area shape="circle" coords="390,95,16" href="LD_LPWR" />
