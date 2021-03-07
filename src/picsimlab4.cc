@@ -237,6 +237,8 @@ CPWindow4::SetBaseTimer(void)
 {
  board * pboard = Window1.GetBoard ();
 
+ if (!pboard)return;
+
  int PinCount = pboard->MGetPinCount ();
 
  if (pboard->CpuInitialized () == 0)return;

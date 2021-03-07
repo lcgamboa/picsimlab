@@ -101,9 +101,9 @@ CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
 
  for (int i = 0; i < partsc; i++)
   {
-   if (parts[i]->PointInside ((int) x, (int) y))
+   if (parts[i]->PointInside ((int) (x - offsetx), (int) (y - offsety)))
     {
-     parts[i]->EvMouseButtonPress (button, x - parts[i]->GetX (), y - parts[i]->GetY (), state);
+     parts[i]->EvMouseButtonPress (button, (x - offsetx) - parts[i]->GetX (), (y - offsety) - parts[i]->GetY (), state);
      if (button == 3)
       {
        PartSelected = i;
@@ -124,7 +124,7 @@ CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
   {
    //timer1.SetRunState (0); 
    lxSetCursor (lxCursor (lxCURSOR_ARROW));
-   parts[partsc] = create_part ((char *) PartToCreate.char_str (), x, y);
+   parts[partsc] = create_part ((char *) PartToCreate.char_str (), x - offsetx, y - offsety);
 
    if (parts[partsc] == NULL)
     {
@@ -138,6 +138,28 @@ CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
     }
    PartToCreate = "";
    _EvOnShow (control);
+   return;
+  }
+
+ if (button == 1)
+  {
+   lxSetCursor (lxCursor (lxCURSOR_SIZENWSE));
+
+   if (state)
+    {
+     mouse_scale = 1;
+    }
+   else
+    {
+     mouse_scroll = 1;
+    }
+   mdx = x;
+   mdy = y;
+  }
+ else if (button == 3)
+  {
+   offsetx = 0;
+   offsety = 0;
   }
 }
 
@@ -149,6 +171,8 @@ CPWindow5::draw1_EvMouseButtonRelease(CControl * control, uint button, uint x, u
 
  PartToMove = -1;
 
+ mouse_scroll = 0;
+ mouse_scale = 0;
 
  lxSetCursor (lxCursor (lxCURSOR_ARROW));
  mdx = 0;
@@ -156,9 +180,9 @@ CPWindow5::draw1_EvMouseButtonRelease(CControl * control, uint button, uint x, u
 
  for (int i = 0; i < partsc; i++)
   {
-   if (parts[i]->PointInside (x, y))
+   if (parts[i]->PointInside (x - offsetx, y - offsety))
     {
-     parts[i]->EvMouseButtonRelease (button, x - parts[i]->GetX (), y - parts[i]->GetY (), state);
+     parts[i]->EvMouseButtonRelease (button, (x - offsetx) - parts[i]->GetX (), (y - offsety) - parts[i]->GetY (), state);
      return;
     }
   }
@@ -291,7 +315,27 @@ CPWindow5::draw1_EvMouseMove(CControl * control, uint button, uint x, uint y, ui
  x = x / scale;
  y = y / scale;
 
- if (PartToMove >= 0)
+ if (mouse_scroll)
+  {
+   offsetx -= mdx - x;
+   offsety -= mdy - y;
+   mdx = x;
+   mdy = y;
+  }
+ else if (mouse_scale)
+  {
+   if ((mdy - (int) y) > scale)
+    {
+     menu1_Edit_Zoomin_EvMenuActive (this);
+     mdy = y;
+    }
+   else if ((mdy - (int) y) < -scale)
+    {
+     menu1_Edit_Zoomout_EvMenuActive (this);
+     mdy = y;
+    }
+  }
+ else if (PartToMove >= 0)
   {
 
 
@@ -310,7 +354,7 @@ CPWindow5::draw1_EvMouseMove(CControl * control, uint button, uint x, uint y, ui
     {
      if (parts[i]->PointInside (x, y))
       {
-       parts[i]->EvMouseMove (button, x - parts[i]->GetX (), y - parts[i]->GetY (), state);
+       parts[i]->EvMouseMove (button, (x - offsetx) - parts[i]->GetX (), (y - offsety) - parts[i]->GetY (), state);
        return;
       }
     }

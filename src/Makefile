@@ -16,7 +16,7 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-override CFLAGS+= -D_VERSION_=\"$(VERSION)\" -Wall -g -O0 -D_SHARE_=\"../share/picsimlab/\"  `lxrad-config --cxxflags`
+override CFLAGS+= -D_VERSION_=\"$(VERSION)\" -Wall -g -O2 -D_SHARE_=\"../share/picsimlab/\"  `lxrad-config --cxxflags`
 override CFLAGS+= -DEXT_BROWSER
 #override CFLAGS+=-fsanitize=address
 override CFLAGS+= -D_ARCH_=\"Linux64_WX\" -D_DATE_=\"${DATE}\"

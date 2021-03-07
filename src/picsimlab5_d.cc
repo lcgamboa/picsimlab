@@ -322,4 +322,6 @@ CPWindow5::CPWindow5(void)
   alias_fname="";
   offsetx=0;
   offsety=0;
+  mouse_scroll=0;
+  mouse_scale=0;
 }

@@ -190,6 +190,8 @@ private:
     lxString alias_fname;
     int offsetx;
     int offsety;
+    int mouse_scroll;
+    int mouse_scale;
 };
 
 extern CPWindow5 Window5;
