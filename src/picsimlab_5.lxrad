@@ -281,4 +281,10 @@
   <Type type="int">129</Type>
   <EvOnClose type="Event">TRUE</EvOnClose>
 </filedialog1>
+<statusbar1>
+  <Class type="String">CStatusbar</Class>
+  <Name type="String">statusbar1</Name>
+  <Tag type="int">0</Tag>
+  <Fields type="StringList">alias,scale,offset,</Fields>
+</statusbar1>
 </window5>

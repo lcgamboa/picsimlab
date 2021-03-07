@@ -45,7 +45,13 @@ void
 CPWindow5::_EvOnShow(CControl * control)
 {
  draw1.SetWidth (Width - 15);
- draw1.SetHeight (Height - 40);
+ //draw1.SetHeight (Height - 40);
+
+#ifdef _WIN_
+ draw1.SetHeight (Height - 75);
+#else
+ draw1.SetHeight (Height - 90);
+#endif
 
  timer1.SetRunState (1);
  Window4.SetBaseTimer ();
@@ -240,6 +246,7 @@ CPWindow5::PartEvent(CControl * control)
 void
 CPWindow5::timer1_EvOnTime(CControl * control)
 {
+ static int tc = 0;
 
  for (int i = 0; i < partsc; i++)
   {
@@ -255,28 +262,27 @@ CPWindow5::timer1_EvOnTime(CControl * control)
 
  for (int i = 0; i < partsc; i++)
   {
-   draw1.Canvas.PutBitmap (parts[i]->GetBitmap (), parts[i]->GetX () * scale, parts[i]->GetY () * scale);
+   draw1.Canvas.PutBitmap (parts[i]->GetBitmap (), (parts[i]->GetX () + offsetx) * scale, (parts[i]->GetY () + offsety) * scale);
   }
-
- if (useAlias)
-  {
-   draw1.Canvas.SetFgColor (180, 180, 00);
-   draw1.Canvas.Text ("Alias On", 10, 5);
-  }
- else
-  {
-   draw1.Canvas.SetFgColor (180, 180, 180);
-   draw1.Canvas.Text ("Alias Off", 10, 5);
-  }
-
- draw1.Canvas.SetFgColor (180, 180, 180);
- lxString temp;
- temp.Printf ("Scale %3.1f", scale);
- draw1.Canvas.Text (temp, 10, 20);
 
  draw1.Canvas.End ();
  draw1.Update ();
 
+ tc++;
+
+ if (tc > 3)
+  {
+   tc = 0;
+   lxString field;
+   field.Printf ("Use Alias: %s", (useAlias == 1) ? "On" : "Off");
+   statusbar1.SetField (0, field);
+
+   field.Printf ("Scale: %3.1f", scale);
+   statusbar1.SetField (1, field);
+
+   field.Printf ("Offset: %3i %3i", offsetx, offsety);
+   statusbar1.SetField (2, field);
+  }
 }
 
 void
@@ -326,6 +332,18 @@ CPWindow5::draw1_EvKeyboardPress(CControl * control, const uint key, const uint 
    break;
   case '-':
    menu1_Edit_Zoomout_EvMenuActive (this);
+   break;
+  case LXK_UP:
+   offsety += 10;
+   break;
+  case LXK_DOWN:
+   offsety -= 10;
+   break;
+  case LXK_LEFT:
+   offsetx += 10;
+   break;
+  case LXK_RIGHT:
+   offsetx -= 10;
    break;
   default:
    for (int i = 0; i < partsc; i++)

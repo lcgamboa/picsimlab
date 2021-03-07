@@ -71,6 +71,7 @@ public:
     CItemMenu menu1_Help_Contents;
     CItemMenu menu1_Help_About;
     CFileDialog filedialog1;
+    CStatusbar statusbar1;
     /*#Events*/
     void _EvOnCreate(CControl * control);
     void _EvOnShow(CControl * control);
@@ -187,6 +188,8 @@ private:
     int fdtype;
     lxString oldfname;
     lxString alias_fname;
+    int offsetx;
+    int offsety;
 };
 
 extern CPWindow5 Window5;

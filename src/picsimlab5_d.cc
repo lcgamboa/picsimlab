@@ -297,6 +297,13 @@ CPWindow5::CPWindow5(void)
   filedialog1.SetType(129);
   filedialog1.EvOnClose=EVONCLOSE & CPWindow5::filedialog1_EvOnClose;
   CreateChild(&filedialog1);
+  //statusbar1
+  statusbar1.SetFOwner(this);
+  statusbar1.SetClass(lxT("CStatusbar"));
+  statusbar1.SetName(lxT("statusbar1"));
+  statusbar1.SetTag(0);
+  statusbar1.SetFields(lxT("alias,scale,offset,"));
+  CreateChild(&statusbar1);
   /*#Others*/
 //lxrad automatic generated block end, don't edit above!
   
@@ -313,4 +320,6 @@ CPWindow5::CPWindow5(void)
   fdtype = -1;
   useAlias=0;
   alias_fname="";
+  offsetx=0;
+  offsety=0;
 }
