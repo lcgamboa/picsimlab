@@ -201,8 +201,8 @@ CPWindow5::pmenu2_Properties_EvMenuActive(CControl * control)
 
    parts[PartSelected]->ConfigurePropertiesWindow (&wprop);
 
-   wprop.SetX (parts[PartSelected]->GetX () + GetX ());
-   wprop.SetY (parts[PartSelected]->GetY () + GetY ());
+   wprop.SetX (parts[PartSelected]->GetX () + GetX () - offsetx);
+   wprop.SetY (parts[PartSelected]->GetY () + GetY () - offsety);
 
    wprop.Draw ();
    wprop.ShowExclusive ();
