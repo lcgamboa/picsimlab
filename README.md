@@ -1,12 +1,19 @@
 
 # PICSimLab - Programmable IC Simulator Laboratory
 
-PICSimLab is a realtime emulator of development boards with integrated MPLABX/avr-gdb debugger. 
+PICSimLab is a realtime emulator of [development boards](https://lcgamboa.github.io/picsimlab/Boards.html) with integrated 
+MPLABX/avr-gdb debugger. 
 PICSimLab supports some [picsim](https://github.com/lcgamboa/picsim) microcontrollers and 
 some [simavr](https://github.com/buserror/simavr) microcontrollers. 
 PICSimLab have integration with MPLABX/Arduino IDE for programming the boards microcontrollers.
 
-The experimental version supports [uCsim](http://mazsola.iit.uni-miskolc.hu/~drdani/embedded/ucsim/), 
+PICSimlab supports several devices (spare parts) that can be connected to the boards for simulation. 
+As for example LEDs and push buttons for simple outputs and inputs and some more complex ones like the ethernet 
+shield w5500 for internet connection or the color graphic display ili9340 with touchscreen. 
+The documentation of the complete list can be accessed in the [documentation](https://lcgamboa.github.io/picsimlab/Spare_Parts.html). 
+
+The [experimental version boards](https://lcgamboa.github.io/picsimlab/Experimental_Boards.html) supports 
+[uCsim](http://mazsola.iit.uni-miskolc.hu/~drdani/embedded/ucsim/), 
 [gpsim](http://gpsim.sourceforge.net/) and [qemu-stm32](http://beckus.github.io/qemu_stm32/) simulators
 in addition to the stable ones.
 
@@ -15,37 +22,37 @@ in addition to the stable ones.
 
 ![PICsimLab](docs/picsimlab4.png?raw=true "PICsimLab")
 
-## Requirements for compiling:
+## More info
 
-wxwidget 	- For graphic suport		   http://www.wxwidgets.org
+### For users
 
-picsim          - PIC simulator                    https://github.com/lcgamboa/picsim 
+[Online Documentation](https://lcgamboa.github.io/picsimlab/)
 
-lxrad           - Graphic library                  https://github.com/lcgamboa/lxrad 
+[Examples](https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html)
 
-simavr          - AVR simulator                    https://github.com/buserror/simavr
+[Online version of PICSimLab](https://lcgamboa.github.io/)
 
-## Utils:
+[Changelog](./CHANGELOG.md)
 
-picsimlab_md    - for debug with MPLABX      https://github.com/lcgamboa/picsimlab_md
+### For developers
 
-com0com		- For serial emulation in windows  http://com0com.sourceforge.net/ 
+[Development Documentation](https://lcgamboa.github.io/picsimlab/devel/html/)
 
-tty0tty 	- For serial emulation in linux    https://github.com/lcgamboa/tty0tty 
+[TODO list](./TODO.md)
 
 ## Stable version executables download 
 
+If you are on Linux or Windows you can download the last version at:
+
 https://github.com/lcgamboa/picsimlab/releases
 
-If you are on macOS you can run picsimlab using Wine:
+If you are on macOS you can run PICSimLab using Wine:
 
 - Download and install [`xquartz`](https://www.xquartz.org)
 - Download and install [Wine](https://dl.winehq.org/wine-builds/macosx/download.html)
 - Download the executable and double-click it to run the installer
 
 ## Install from source
-
-
 
 ### In Debian Linux and derivatives Linux native:
 
@@ -102,6 +109,11 @@ make FILE=Makefile.cross -j4  exp
 make FILE=Makefile.cross_32 -j4 exp
 ```
 
+### macOS from source
+
+Theoretically it is possible to compile PICSimLab natively on macOS. But I do not have access to any computer
+ with macOS to try to compile and until today nobody has communicated that they managed to do it. (help wanted) 
+
 
 ## Troubleshooting:
 The simulation in PICSimLab consists of 3 parts:
@@ -119,19 +131,51 @@ Errors in the microcontroller simulation can be detected using code debugging. A
 If the problem is not in either of the previous two options, the problem is probably in PICSimLab. A good practice is to send a source code together with a PICSimLab workspace (.pzw file) to open the issue about the problem.
 
 
-## Info
+## Libraries and projects used in PICSimLab (all free software):
 
-[Online Documentation](https://lcgamboa.github.io/picsimlab/)
+### Graphic interface
 
-[Development Documentation](https://lcgamboa.github.io/picsimlab/devel/html/)
+wxwidgets 	- For graphic suport		   http://www.wxwidgets.org
 
-[Examples](https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html)
+lxrad           - Graphic library                  https://github.com/lcgamboa/lxrad 
 
-[Changelog](./CHANGELOG.md)
+lunasvg         - Support to use SVG               https://github.com/sammycage/lunasvg
 
-[TODO list](./TODO.md)
+### Microcontroller simulation
 
-[Online version of PICSimLab](https://lcgamboa.github.io/)
+picsim          - PIC simulator                    https://github.com/lcgamboa/picsim 
+
+simavr          - AVR simulator                    https://github.com/buserror/simavr
+
+ucsim           - 8051, STM8 and Z80 simulator     http://mazsola.iit.uni-miskolc.hu/~drdani/embedded/ucsim/
+
+qemu-stm32      - STM32 simulator                  https://github.com/beckus/qemu_stm32/
+
+gpsim           - PIC simulator                    http://gpsim.sourceforge.net/
+
+### Data visualization
+
+gtkwave         - Wave viewer                      http://gtkwave.sourceforge.net/
+
+### Graphic edition
+
+gimp		- pictures and img maps edition    https://www.gimp.org/
+
+inkscape	- SVG pictures edition		   https://inkscape.org/
+
+pcbdraw		- To convert kicad pcb to SVG      https://github.com/yaqwsx/PcbDraw
+
+### Circuit design
+
+kicad		- To design circuits and pcbs      https://kicad.org/
+
+## Utils:
+
+picsimlab_md    - for debug with MPLABX      https://github.com/lcgamboa/picsimlab_md
+
+com0com		- For serial emulation in windows  http://com0com.sourceforge.net/ 
+
+tty0tty 	- For serial emulation in linux    https://github.com/lcgamboa/tty0tty 
 
 ## Download analytics
 
