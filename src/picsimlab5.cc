@@ -144,15 +144,7 @@ CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
  if (button == 1)
   {
    lxSetCursor (lxCursor (lxCURSOR_SIZENWSE));
-
-   if (state)
-    {
-     mouse_scale = 1;
-    }
-   else
-    {
-     mouse_scroll = 1;
-    }
+   mouse_scroll = 1;
    mdx = x;
    mdy = y;
   }
@@ -172,7 +164,6 @@ CPWindow5::draw1_EvMouseButtonRelease(CControl * control, uint button, uint x, u
  PartToMove = -1;
 
  mouse_scroll = 0;
- mouse_scale = 0;
 
  lxSetCursor (lxCursor (lxCURSOR_ARROW));
  mdx = 0;
@@ -310,6 +301,19 @@ CPWindow5::timer1_EvOnTime(CControl * control)
 }
 
 void
+CPWindow5::draw1_EvMouseWheel(CControl * control, const int rotation)
+{
+ if (rotation > 0)
+  {
+   menu1_Edit_Zoomin_EvMenuActive (this);
+  }
+ else
+  {
+   menu1_Edit_Zoomout_EvMenuActive (this);
+  }
+}
+
+void
 CPWindow5::draw1_EvMouseMove(CControl * control, uint button, uint x, uint y, uint state)
 {
  x = x / scale;
@@ -321,19 +325,6 @@ CPWindow5::draw1_EvMouseMove(CControl * control, uint button, uint x, uint y, ui
    offsety -= mdy - y;
    mdx = x;
    mdy = y;
-  }
- else if (mouse_scale)
-  {
-   if ((mdy - (int) y) > scale)
-    {
-     menu1_Edit_Zoomin_EvMenuActive (this);
-     mdy = y;
-    }
-   else if ((mdy - (int) y) < -scale)
-    {
-     menu1_Edit_Zoomout_EvMenuActive (this);
-     mdy = y;
-    }
   }
  else if (PartToMove >= 0)
   {

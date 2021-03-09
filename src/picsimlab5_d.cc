@@ -48,6 +48,7 @@ CPWindow5::CPWindow5(void)
   draw1.EvMouseButtonRelease=EVMOUSEBUTTONRELEASE & CPWindow5::draw1_EvMouseButtonRelease;
   draw1.EvKeyboardPress=EVKEYBOARDPRESS & CPWindow5::draw1_EvKeyboardPress;
   draw1.EvKeyboardRelease=EVKEYBOARDRELEASE & CPWindow5::draw1_EvKeyboardRelease;
+  draw1.EvMouseWheel=EVMOUSEWHEEL & CPWindow5::draw1_EvMouseWheel;
   draw1.SetTransparent(0);
   draw1.SetImgFileName(lxT(""));
   CreateChild(&draw1);
@@ -323,5 +324,4 @@ CPWindow5::CPWindow5(void)
   offsetx=0;
   offsety=0;
   mouse_scroll=0;
-  mouse_scale=0;
 }

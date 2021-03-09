@@ -81,6 +81,7 @@ public:
     void draw1_EvMouseButtonRelease(CControl * control, const uint button, const uint x, const uint y, const uint state);
     void draw1_EvKeyboardPress(CControl * control, const uint key, const uint hkey, const uint mask);
     void draw1_EvKeyboardRelease(CControl * control, const uint key, const uint hkey, const uint mask);
+    void draw1_EvMouseWheel(CControl * control, const int rotation);
     void pmenu2_Properties_EvMenuActive(CControl * control);
     void timer1_EvOnTime(CControl * control);
     void menu1_File_Newconfiguration_EvMenuActive(CControl * control);
@@ -191,7 +192,6 @@ private:
     int offsetx;
     int offsety;
     int mouse_scroll;
-    int mouse_scale;
 };
 
 extern CPWindow5 Window5;
