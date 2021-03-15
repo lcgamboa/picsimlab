@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -79,7 +79,7 @@ public:
     /**
      * @brief Called ever 100ms to draw board 
      */
-    virtual void Draw(CDraw *draw, double scale) = 0;
+    virtual void Draw(CDraw *draw) = 0;
 
     /**
      * @brief Paralle thread called ever 100ms to run cpu code 
@@ -475,6 +475,11 @@ public:
      */
     unsigned char CalcAngle(int i,  int x, int y);
 
+    /**
+     * @brief  Set board draw scale    
+     */    
+    virtual void SetScale (double scale);
+
 protected:
     
     /**
@@ -491,7 +496,8 @@ protected:
     int use_oscope; ///< use oscilloscope window
     int use_spare; ///< use spare parts window             
     unsigned char p_RST; ///< board /RESET pin state
-
+    double Scale;
+    
     /**
      * @brief  Read maps 
      */

@@ -59,7 +59,7 @@ class cboard_Curiosity:public bsim_picsim
       //Destructor called once on board destruction 
       ~cboard_Curiosity(void); 
       //Called ever 100ms to draw board
-      void Draw(CDraw *draw,double scale);
+      void Draw(CDraw *draw);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
       lxString GetSupportedDevices(void){return lxT("PIC16F1619,");};

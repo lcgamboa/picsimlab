@@ -42,7 +42,7 @@ class cboard_Blue_Pill:public bsim_qemu_stm32
       //Destructor called once on board destruction 
       ~cboard_Blue_Pill(void); 
       //Called ever 100ms to draw board
-      void Draw(CDraw *draw,double scale);
+      void Draw(CDraw *draw);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
       lxString GetSupportedDevices(void){return lxT("stm32f103c8t6,");};

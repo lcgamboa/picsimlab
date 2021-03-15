@@ -123,11 +123,11 @@ cboard_PQDB::~cboard_PQDB(void)
 }
 
 void
-cboard_PQDB::Draw(CDraw * draw, double scale)
+cboard_PQDB::Draw(CDraw * draw)
 {
  int i;
 
- draw -> Canvas.Init (scale, scale);
+ draw -> Canvas.Init (Scale, Scale);
 
  lcd_blink (& lcd);
 

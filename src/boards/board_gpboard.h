@@ -36,19 +36,20 @@ class cboard_gpboard:public bsim_gpsim
    private:
        lxBitmap * micbmp;   
    public:
+      void SetScale (double scale);
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       //Constructor called once on board creation 
       cboard_gpboard(void);
       //Destructor called once on board destruction 
       ~cboard_gpboard(void); 
       //Called ever 100ms to draw board
-      void Draw(CDraw *draw,double scale);
+      void Draw(CDraw *draw);
       void Run_CPU(void);
       int MInit(const char * processor, const char * fname, float freq);
       //Return a list of board supported microcontrollers
       lxString GetSupportedDevices(void){return supported_devices;};
       //Return the filename of board picture 
-      lxString GetPictureFileName(void){return lxT("gpboard/board.png");};
+      lxString GetPictureFileName(void){return lxT("gpboard/board.svg");};
       //Return the filename of board picture input map 
       lxString GetInputMapFile(void){return lxT("gpboard/input.map");};
       //Return the filename of board picture output map 

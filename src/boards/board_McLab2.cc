@@ -277,11 +277,11 @@ cboard_McLab2::MDumpMemory(const char * mfname)
 }
 
 void
-cboard_McLab2::Draw(CDraw *draw, double scale)
+cboard_McLab2::Draw(CDraw *draw)
 {
  int i;
 
- draw->Canvas.Init (scale, scale);
+ draw->Canvas.Init (Scale, Scale);
 
 
 

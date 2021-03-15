@@ -60,7 +60,7 @@ class cboard_Arduino_Uno:public bsim_simavr
       //Destructor called once on board destruction 
       ~cboard_Arduino_Uno(void); 
       //Called ever 100ms to draw board
-      void Draw(CDraw *draw,double scale);
+      void Draw(CDraw *draw);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
       lxString GetSupportedDevices(void){return lxT("atmega328p,");};

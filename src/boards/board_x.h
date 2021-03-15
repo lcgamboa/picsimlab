@@ -57,7 +57,7 @@ class cboard_x:public bsim_picsim
       //Return the about info of board
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       //Called ever 100ms to draw board
-      void Draw(CDraw *draw,double scale);
+      void Draw(CDraw *draw);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
       lxString GetSupportedDevices(void){return lxT("PIC16F877A,PIC18F4550,PIC18F4620,");};

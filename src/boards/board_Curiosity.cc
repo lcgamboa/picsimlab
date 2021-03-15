@@ -532,11 +532,11 @@ cboard_Curiosity::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 //This is the critical code for simulator running speed
 
 void
-cboard_Curiosity::Draw(CDraw *draw, double scale)
+cboard_Curiosity::Draw(CDraw *draw)
 {
  int i;
 
- draw->Canvas.Init (scale, scale); //initialize draw context
+ draw->Canvas.Init (Scale, Scale); //initialize draw context
 
  //board_5 draw 
  for (i = 0; i < outputc; i++) //run over all outputs

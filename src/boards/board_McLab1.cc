@@ -123,11 +123,11 @@ cboard_McLab1::~cboard_McLab1(void)
 }
 
 void
-cboard_McLab1::Draw(CDraw *draw, double scale)
+cboard_McLab1::Draw(CDraw *draw)
 {
  int i;
 
- draw->Canvas.Init (scale, scale);
+ draw->Canvas.Init (Scale, Scale);
 
 
 

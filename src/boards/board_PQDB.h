@@ -179,7 +179,7 @@ public:
     };
     cboard_PQDB(void);
     ~cboard_PQDB(void);
-    void Draw(CDraw *draw, double scale);
+    void Draw(CDraw *draw);
     void Run_CPU(void);
 
     lxString GetSupportedDevices(void) {

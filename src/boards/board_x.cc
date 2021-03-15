@@ -489,11 +489,11 @@ cboard_x::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 //This is the critical code for simulator running speed
 
 void
-cboard_x::Draw(CDraw *draw, double scale)
+cboard_x::Draw(CDraw *draw)
 {
  int i;
 
- draw->Canvas.Init (scale, scale); //initialize draw context
+ draw->Canvas.Init (Scale, Scale); //initialize draw context
 
  //board_x draw 
  for (i = 0; i < outputc; i++) //run over all outputs

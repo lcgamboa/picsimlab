@@ -63,7 +63,7 @@ class cboard_K16F:public bsim_picsim
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cboard_K16F(void);
       ~cboard_K16F(void);
-      void Draw(CDraw *draw,double scale);
+      void Draw(CDraw *draw);
       void Run_CPU(void);
       lxString GetSupportedDevices(void){return lxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
       lxString GetPictureFileName(void){return lxT("K16F/board.png");};

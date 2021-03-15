@@ -1,12 +1,12 @@
-<img src="[board_x] (imported)" width="391" height="246" border="0" usemap="#map" />
+<img src="[board_x] (imported)" width="487" height="309" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:lcganmboa@yahoo.com    -->
-<area shape="rect" coords="309,151,383,213" href="PG_ICSP" />
-<area shape="rect" coords="309,21,363,60" href="SW_PWR" />
-<area shape="rect" coords="314,108,346,140" href="PB_RST" />
+<!-- #$AUTHOR:lcganmboa@yahoo.com      -->
+<area shape="rect" coords="434,192,481,231" href="PG_ICSP" />
+<area shape="rect" coords="418,10,485,63" href="SW_PWR" />
+<area shape="rect" coords="445,106,476,137" href="PB_RST" />
 </map>

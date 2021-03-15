@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="38" height="45" version="1.1" viewBox="0 0 7.1816 8.5046" xmlns="http://www.w3.org/2000/svg">
+ <path d="m6.3818 1.166h-5.537v1e-7h-0.6815v6.2h6.9v-6.2z" fill="#333333" stroke="#000000" stroke-width=".092604"/>
+ <path d="m7.1383 1.091h-0.7565" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m0.84476 1.091h-0.7565" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m5.3913 1.091h-1.016" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m2.8513 1.091h-1.016" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m0.088257 1.091v6.35" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m0.088257 7.441h0.7565" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m6.3818 7.441h0.7565" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m1.8353 7.441h1.016" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m4.3753 7.441h1.016" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m7.1383 7.441v-6.35" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m7.1383 1.091-0.075 0.075" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m0.088257 1.091 0.075 0.075" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m5.3913 1.166h-1.016" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m2.8513 1.166h-1.016" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m0.088257 7.441 0.075-0.075" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m7.1383 7.441-0.075-0.075" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m1.8353 7.366h1.016" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m4.3753 7.366h1.016" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m0.16326 1.166 0.32372 0.32372" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m7.0633 1.166-0.32372 0.32372" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m0.16326 7.366 0.32372-0.32372" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m0.3807 5.0153 0.10628-0.00311" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m0.3807 5.0153v-1.4987" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m0.3807 3.5166 0.10628 0.00311" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m7.0633 7.366-0.32372-0.32372" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m0.48698 3.5197c0.38324 0.038517 0.675 0.36107 0.675 0.74624-3e-7 0.38517-0.29176 0.70772-0.675 0.74624l-3.6e-7 6e-7v2.03h6.2526v-5.5526h-6.2526z" fill="#1a1a1a" fill-rule="evenodd" stroke="#000000" stroke-width=".092604"/>
+ <path d="m0.40129 5.0159a0.75 0.75 0 0 1-0.020587-5.738e-4" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <path d="m0.3807 3.5166a0.75 0.75 0 0 1 0.020587-5.725e-4" fill="none" stroke="#000000" stroke-width=".092604"/>
+ <g transform="rotate(-90 -15.174 30.898)" stroke="#000000" stroke-width=".092604">
+  <path d="m15.268 48.923h0.3811-1e-4v1.524h1e-4 -1.0911v-1.524z" fill="#cccccc" fill-rule="evenodd"/>
+  <path d="m15.268 48.923v1.524" fill="none"/>
+ </g>
+ <g transform="rotate(-90 -13.904 29.628)" stroke="#000000" stroke-width=".092604">
+  <path d="m15.268 48.923h0.3811-1e-4v1.524h1e-4 -1.0911v-1.524z" fill="#cccccc" fill-rule="evenodd"/>
+  <path d="m15.268 48.923v1.524" fill="none"/>
+ </g>
+ <g transform="rotate(-90 -16.444 32.168)" stroke="#000000" stroke-width=".092604">
+  <path d="m15.268 48.923h0.3811-1e-4v1.524h1e-4 -1.0911v-1.524z" fill="#cccccc" fill-rule="evenodd"/>
+  <path d="m15.268 48.923v1.524" fill="none"/>
+ </g>
+ <g transform="rotate(-90 -11.528 34.543)" stroke="#000000" stroke-width=".092604">
+  <path d="m15.268 48.923h0.3811-1e-4v1.524h1e-4 -1.0911v-1.524z" fill="#cccccc" fill-rule="evenodd"/>
+  <path d="m15.268 48.923v1.524" fill="none"/>
+ </g>
+ <g transform="rotate(-90 -10.258 33.273)" stroke="#000000" stroke-width=".092604">
+  <path d="m15.268 48.923h0.3811-1e-4v1.524h1e-4 -1.0911v-1.524z" fill="#cccccc" fill-rule="evenodd"/>
+  <path d="m15.268 48.923v1.524" fill="none"/>
+ </g>
+ <g transform="rotate(-90 -12.798 35.813)" stroke="#000000" stroke-width=".092604">
+  <path d="m15.268 48.923h0.3811-1e-4v1.524h1e-4 -1.0911v-1.524z" fill="#cccccc" fill-rule="evenodd"/>
+  <path d="m15.268 48.923v1.524" fill="none"/>
+ </g>
+</svg>

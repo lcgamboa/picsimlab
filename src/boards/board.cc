@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -34,6 +34,7 @@ board::board(void)
  use_spare = 0;
  Proc = "";
  p_RST = 1;
+ Scale = 1.0;
 }
 
 board::~board(void) { }
@@ -348,4 +349,10 @@ board::CalcAngle(int in, int x, int y)
  if (angle < 20) angle = 20;
 
  return (199 * (angle - 20) / 320.0);
+}
+
+void 
+board::SetScale (double scale)
+{
+ Scale= scale;
 }

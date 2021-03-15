@@ -293,7 +293,7 @@ cboard_PICGenios::MDumpMemory(const char * mfname)
 }
 
 void
-cboard_PICGenios::Draw(CDraw *draw, double scale)
+cboard_PICGenios::Draw(CDraw *draw)
 {
  int i;
 
@@ -310,7 +310,7 @@ cboard_PICGenios::Draw(CDraw *draw, double scale)
  pic_set_pin (30, 1);
 
 
- draw->Canvas.Init (scale, scale);
+ draw->Canvas.Init (Scale, Scale);
 
 
  lcd_blink (&lcd);

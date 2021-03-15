@@ -112,7 +112,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
    crt = 1;
   }
 #endif
- pboard->Draw (&draw1, scale);
+ pboard->Draw (&draw1);
  label1.Draw ();
  ondraw = 1;
 
@@ -923,6 +923,7 @@ CPWindow1::_EvOnShow(CControl * control)
 
 
    draw1.SetImgFileName (share + lxT ("boards/") + pboard->GetPictureFileName (), scale, scale);
+   pboard->SetScale (scale);
    pboard->EvOnShow ();
 
    if (osc_on)

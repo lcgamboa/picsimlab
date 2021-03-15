@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2015-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@ class cboard_Breadboard:public bsim_picsim, public bsim_simavr
       int ptype;
       lxBitmap * micbmp;
    public:
+      void SetScale (double scale);
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       int DebugInit(int dtyppe); 
       lxString GetDebugName(void);
@@ -84,12 +85,12 @@ class cboard_Breadboard:public bsim_picsim, public bsim_simavr
       //Destructor called once on board destruction 
       ~cboard_Breadboard(void); 
       //Called ever 100ms to draw board
-      void Draw(CDraw *draw,double scale);
+      void Draw(CDraw *draw);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
-      lxString GetSupportedDevices(void){return lxT("atmega328p,atmega2560,PIC16F18324,PIC16F18855,PIC16F1619,PIC16F1788,PIC16F1789,PIC16F1939,PIC16F628A,PIC16F648A,PIC16F84A,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,PIC18F27K40,PIC18F46J50,PIC18F47K40,");};     
+      lxString GetSupportedDevices(void){return lxT("atmega328p,atmega2560,PIC16F18324,PIC16F18855,PIC16F1619,PIC16F1788,PIC16F1789,PIC16F1939,PIC16F628A,PIC16F648A,PIC16F84A,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,PIC18F27K40,PIC18F46J50,PIC18F47K40,PIC18F67J94,");};     
       //Return the filename of board picture 
-      lxString GetPictureFileName(void){return lxT("Breadboard/board.png");};
+      lxString GetPictureFileName(void){return lxT("Breadboard/board.svg");};
       //Return the filename of board picture input map 
       lxString GetInputMapFile(void){return lxT("Breadboard/input.map");};
       //Return the filename of board picture output map 

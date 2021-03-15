@@ -613,11 +613,11 @@ cboard_Curiosity_HPC::EvMouseButtonRelease(uint button, uint x, uint y, uint sta
 //This is the critical code for simulator running speed
 
 void
-cboard_Curiosity_HPC::Draw(CDraw *draw, double scale)
+cboard_Curiosity_HPC::Draw(CDraw *draw)
 {
  int i;
 
- draw->Canvas.Init (scale, scale); //initialize draw context
+ draw->Canvas.Init (Scale, Scale); //initialize draw context
 
  //board_8 draw 
  for (i = 0; i < outputc; i++) //run over all outputs

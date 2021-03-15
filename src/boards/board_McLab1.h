@@ -44,7 +44,7 @@ class cboard_McLab1:public bsim_picsim
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       cboard_McLab1(void);
       ~cboard_McLab1(void);
-      void Draw(CDraw *draw,double scale);
+      void Draw(CDraw *draw);
       void Run_CPU(void);
       lxString GetSupportedDevices(void){return lxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
       lxString GetPictureFileName(void){return lxT("McLab1/board.png");};

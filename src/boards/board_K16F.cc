@@ -133,11 +133,11 @@ cboard_K16F::MDumpMemory(const char * mfname)
 }
 
 void
-cboard_K16F::Draw(CDraw *draw, double scale)
+cboard_K16F::Draw(CDraw *draw)
 {
  int i;
 
- draw->Canvas.Init (scale, scale);
+ draw->Canvas.Init (Scale, Scale);
 
 
  lcd_blink (&lcd);
