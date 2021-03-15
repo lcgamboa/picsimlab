@@ -337,7 +337,7 @@ part::SetOrientation(int orientation)
 
  lxImage image(&Window5);
 
- image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale, 0);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
@@ -367,7 +367,7 @@ part::SetScale(float scale)
 
  lxImage image(&Window5);
 
- image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale, 0);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();

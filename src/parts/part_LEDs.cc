@@ -43,8 +43,8 @@ cpart_leds::cpart_leds(unsigned x, unsigned y)
  ReadMaps ();
 
  lxImage image (&Window5);
- image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
-
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale, 0);
+ 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
