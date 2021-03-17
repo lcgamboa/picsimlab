@@ -65,7 +65,7 @@ class cboard_Arduino_Uno:public bsim_simavr
       //Return a list of board supported microcontrollers
       lxString GetSupportedDevices(void){return lxT("atmega328p,");};
       //Return the filename of board picture 
-      lxString GetPictureFileName(void){return lxT("Arduino_Uno/board.png");};
+      lxString GetPictureFileName(void){return lxT("Arduino_Uno/board.svg");};
       //Return the filename of board picture input map 
       lxString GetInputMapFile(void){return lxT("Arduino_Uno/input.map");};
       //Return the filename of board picture output map 

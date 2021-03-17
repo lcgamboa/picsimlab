@@ -528,11 +528,9 @@ cboard_Arduino_Uno::Draw(CDraw *draw)
        break;
       }
 
-     draw->Canvas.Rectangle (1, output[i].x1, output[i].y1,
-                             output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-
      if (output[i].id == O_RST)
       {
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
        if (p_RST)
         {
          draw->Canvas.SetColor (15, 15, 15);
@@ -542,6 +540,12 @@ cboard_Arduino_Uno::Draw(CDraw *draw)
          draw->Canvas.SetColor (55, 55, 55);
         }
        draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
+      }
+     else
+      {
+       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1,
+                               output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
       }
     }
   }
@@ -553,12 +557,12 @@ cboard_Arduino_Uno::Draw(CDraw *draw)
  draw->Update ();
 
 
- gauge1->SetValue ((pins[4].oavalue - 55)/2);
- gauge2->SetValue ((pins[10].oavalue - 55)/2);
- gauge3->SetValue ((pins[11].oavalue - 55)/2);
- gauge4->SetValue ((pins[14].oavalue - 55)/2);
- gauge5->SetValue ((pins[15].oavalue - 55)/2);
- gauge6->SetValue ((pins[16].oavalue - 55)/2);
+ gauge1->SetValue ((pins[4].oavalue - 55) / 2);
+ gauge2->SetValue ((pins[10].oavalue - 55) / 2);
+ gauge3->SetValue ((pins[11].oavalue - 55) / 2);
+ gauge4->SetValue ((pins[14].oavalue - 55) / 2);
+ gauge5->SetValue ((pins[15].oavalue - 55) / 2);
+ gauge6->SetValue ((pins[16].oavalue - 55) / 2);
 
 }
 
