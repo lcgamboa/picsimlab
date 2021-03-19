@@ -451,7 +451,7 @@ over=0;
 
 plWidth=10;
 plHeight=10;
-scale=0.8;
+scale=1.0;
 
 create=0;
 
