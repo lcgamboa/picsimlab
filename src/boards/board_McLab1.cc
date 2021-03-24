@@ -137,7 +137,7 @@ cboard_McLab1::Draw(CDraw *draw)
   {
    if (!output[i].r)//rectangle
     {
-     draw->Canvas.SetFgColor (55, 0, 0);
+     draw->Canvas.SetFgColor (0, 0, 0);
 
      if (jmp[0])
       {
@@ -244,7 +244,9 @@ cboard_McLab1::Draw(CDraw *draw)
     }//circle
    else
     {
-     draw->Canvas.SetFgColor (0, 0, 0);
+     int led = 1;
+
+     draw->Canvas.SetFgColor (55, 0, 0);
 
      if (!jmp[0])
       {
@@ -274,46 +276,53 @@ cboard_McLab1::Draw(CDraw *draw)
         {
          draw->Canvas.SetBgColor (55, 0, 0);
         }
-       else
-        {
-         draw->Canvas.SetFgColor (55, 0, 0);
-         switch (output[i].id)
-          {
-          case O_P1: draw->Canvas.SetBgColor (lm1[9], 0, 0);
-           break;
-          case O_P2: draw->Canvas.SetBgColor (lm2[9], 0, 0);
-           break;
-          }
-        }
       }
 
      switch (output[i].id)
       {
-      case O_RA0: draw->Canvas.SetBgColor (0, pic.pins[16].oavalue, 0);
+      case O_RA0: draw->Canvas.SetFgColor (0, 55, 0);
+       draw->Canvas.SetBgColor (0, pic.pins[16].oavalue, 0);
        break;
-      case O_RA1: draw->Canvas.SetBgColor (0, pic.pins[17].oavalue, 0);
+      case O_RA1: draw->Canvas.SetFgColor (0, 55, 0);
+       draw->Canvas.SetBgColor (0, pic.pins[17].oavalue, 0);
        break;
-      case O_RA2: draw->Canvas.SetBgColor (0, pic.pins[0].oavalue, 0);
+      case O_RA2: draw->Canvas.SetFgColor (0, 55, 0);
+       draw->Canvas.SetBgColor (0, pic.pins[0].oavalue, 0);
        break;
-      case O_RA3: draw->Canvas.SetBgColor (0, pic.pins[1].oavalue, 0);
+      case O_RA3: draw->Canvas.SetFgColor (0, 55, 0);
+       draw->Canvas.SetBgColor (0, pic.pins[1].oavalue, 0);
        break;
-      case O_RA0L: draw->Canvas.SetBgColor (pic.pins[16].oavalue, pic.pins[16].oavalue, 0);
+      case O_RA0L: draw->Canvas.SetFgColor (55, 55, 0);
+       draw->Canvas.SetBgColor (pic.pins[16].oavalue, pic.pins[16].oavalue, 0);
+       break;
+      case O_P1: led = 0;
+       draw->Canvas.SetBgColor (lm1[9], 0, 0);
+       break;
+      case O_P2: led = 0;
+       draw->Canvas.SetBgColor (lm2[9], 0, 0);
        break;
       }
 
-     //draw a LED
-     lxColor color1 = draw->Canvas.GetBgColor ();
-     int r = color1.Red () - 120;
-     int g = color1.Green () - 120;
-     int b = color1.Blue () - 120;
-     if (r < 0)r = 0;
-     if (g < 0)g = 0;
-     if (b < 0)b = 0;
-     lxColor color2 (r, g, b);
-     draw->Canvas.SetBgColor (color2);
-     draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 1);
-     draw->Canvas.SetBgColor (color1);
-     draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 2);
+     if (led)
+      {
+       //draw a LED
+       lxColor color1 = draw->Canvas.GetBgColor ();
+       int r = color1.Red () - 120;
+       int g = color1.Green () - 120;
+       int b = color1.Blue () - 120;
+       if (r < 0)r = 0;
+       if (g < 0)g = 0;
+       if (b < 0)b = 0;
+       lxColor color2 (r, g, b);
+       draw->Canvas.SetBgColor (color2);
+       draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 1);
+       draw->Canvas.SetBgColor (color1);
+       draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 2);
+      }
+     else
+      {
+       draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
+      }
     }
 
   }

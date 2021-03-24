@@ -309,7 +309,7 @@ cboard_McLab2::Draw(CDraw *draw)
    if (!output[i].r)//rectangle
     {
 
-     draw->Canvas.SetFgColor (55, 0, 0);
+     draw->Canvas.SetFgColor (0, 0, 0);
 
      switch (output[i].id)
       {
@@ -485,6 +485,8 @@ cboard_McLab2::Draw(CDraw *draw)
     }
    else //circle
     {
+     int led = 1;
+
      draw->Canvas.SetFgColor (55, 0, 0);
 
 
@@ -500,29 +502,40 @@ cboard_McLab2::Draw(CDraw *draw)
        break;
       case O_LPWR: draw->Canvas.SetBgColor (0, 200 * Window1.Get_mcupwr () + 55, 0);
        break;
-      case O_P1: draw->Canvas.SetBgColor (lm1[29], 0, 0);
+      case O_P1: led = 0;
+       draw->Canvas.SetBgColor (lm1[29], 0, 0);
        break;
-      case O_P2: draw->Canvas.SetBgColor (lm2[29], 0, 0);
+      case O_P2: led = 0;
+       draw->Canvas.SetBgColor (lm2[29], 0, 0);
        break;
-      case O_P3: draw->Canvas.SetBgColor (lm3[29], 0, 0);
+      case O_P3: led = 0;
+       draw->Canvas.SetBgColor (lm3[29], 0, 0);
        break;
-      case O_P4: draw->Canvas.SetBgColor (lm4[29], 0, 0);
+      case O_P4: led = 0;
+       draw->Canvas.SetBgColor (lm4[29], 0, 0);
        break;
       }
 
-     //draw a LED
-     lxColor color1 = draw->Canvas.GetBgColor ();
-     int r = color1.Red () - 120;
-     int g = color1.Green () - 120;
-     int b = color1.Blue () - 120;
-     if (r < 0)r = 0;
-     if (g < 0)g = 0;
-     if (b < 0)b = 0;
-     lxColor color2 (r, g, b);
-     draw->Canvas.SetBgColor (color2);
-     draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 1);
-     draw->Canvas.SetBgColor (color1);
-     draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 2);
+     if (led)
+      {
+       //draw a LED
+       lxColor color1 = draw->Canvas.GetBgColor ();
+       int r = color1.Red () - 120;
+       int g = color1.Green () - 120;
+       int b = color1.Blue () - 120;
+       if (r < 0)r = 0;
+       if (g < 0)g = 0;
+       if (b < 0)b = 0;
+       lxColor color2 (r, g, b);
+       draw->Canvas.SetBgColor (color2);
+       draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 1);
+       draw->Canvas.SetBgColor (color1);
+       draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 2);
+      }
+     else
+      {
+       draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
+      }
     }
 
   }
