@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -94,7 +94,7 @@ class cboard_PICGenios:public bsim_picsim
       void Draw(CDraw *draw);
       void Run_CPU(void);
       lxString GetSupportedDevices(void){return lxT("PIC16F1789,PIC16F1939,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,PIC18F47K40,");};
-      lxString GetPictureFileName(void){return lxT("PICGenios/board.png");};
+      lxString GetPictureFileName(void){return lxT("PICGenios/board.svg");};
       lxString GetInputMapFile(void){return lxT("PICGenios/input.map");};
       lxString GetOutputMapFile(void){return lxT("PICGenios/output.map");};
       void Reset(void);

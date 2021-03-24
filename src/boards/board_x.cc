@@ -570,7 +570,7 @@ cboard_x::Draw(CDraw *draw)
        draw->Canvas.SetColor (26, 26, 26);
        draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
-       draw->Canvas.SetColor (200, 200, 200);
+       draw->Canvas.SetColor (230, 230, 230);
        w = output[i].x2 - output[i].x1;
        h = output[i].y2 - output[i].y2;
        x = output[i].x1 + (w  / 2) + 7;
@@ -601,7 +601,7 @@ cboard_x::Draw(CDraw *draw)
        break;
       }
 
-     //draw a circle
+     //draw a LED
      lxColor color1 = draw->Canvas.GetBgColor ();
      int r = color1.Red () - 120;
      int g = color1.Green () - 120;

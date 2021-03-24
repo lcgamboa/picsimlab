@@ -1,24 +1,24 @@
-<img src="picsimlab2.png" width="906" height="487" border="0" usemap="#map" />
+<img src="picsimlab2.png" width="1037" height="564" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:lcganmboa@yahoo.com     -->
-<area shape="rect" coords="738,130,766,158" href="PB_RST" />
-<area shape="rect" coords="77,373,127,422" href="PB_RB0" />
-<area shape="rect" coords="142,372,193,421" href="PB_RB1" />
-<area shape="rect" coords="205,373,256,422" href="PB_RB2" />
-<area shape="rect" coords="265,373,316,421" href="PB_RB3" />
-<area shape="rect" coords="862,100,904,142" href="SW_PWR" />
-<area shape="rect" coords="734,18,797,102" href="PG_ICSP" />
-<area shape="rect" coords="453,388,496,399" href="JP_1" />
-<area shape="rect" coords="453,416,496,427" href="JP_2" />
-<area shape="rect" coords="454,443,497,454" href="JP_3" />
-<area shape="rect" coords="505,404,548,415" href="JP_4" />
-<area shape="rect" coords="505,427,548,438" href="JP_5" />
-<area shape="rect" coords="504,448,547,459" href="JP_6" />
-<area shape="rect" coords="556,106,597,157" href="MD_VIEW" />
-<area shape="rect" coords="615,236,665,286" href="PO_2" />
+<!-- #$AUTHOR:lcganmboa@yahoo.com        -->
+<area shape="rect" coords="856,150,889,183" href="PB_RST" />
+<area shape="rect" coords="60,451,125,516" href="PB_RB0" />
+<area shape="rect" coords="139,451,204,516" href="PB_RB1" />
+<area shape="rect" coords="218,450,283,515" href="PB_RB2" />
+<area shape="rect" coords="294,448,359,513" href="PB_RB3" />
+<area shape="rect" coords="977,131,1019,173" href="SW_PWR" />
+<area shape="rect" coords="822,36,891,110" href="PG_ICSP" />
+<area shape="rect" coords="486,491,529,502" href="JP_1" />
+<area shape="rect" coords="485,514,528,525" href="JP_2" />
+<area shape="rect" coords="486,537,529,548" href="JP_3" />
+<area shape="rect" coords="541,491,584,502" href="JP_4" />
+<area shape="rect" coords="540,514,583,525" href="JP_5" />
+<area shape="rect" coords="541,537,584,548" href="JP_6" />
+<area shape="rect" coords="602,296,643,347" href="MD_VIEW" />
+<area shape="rect" coords="676,296,731,351" href="PO_2" />
 </map>

@@ -288,7 +288,7 @@ cboard_uCboard::Draw(CDraw *draw)
        draw->Canvas.ChangeScale (1.0, 1.0);
        draw->Canvas.PutBitmap (micbmp, output[i].x1*Scale, output[i].y1 * Scale);
        draw->Canvas.ChangeScale (Scale, Scale);
-       draw->Canvas.SetFgColor (255, 255, 255);
+       draw->Canvas.SetFgColor (230, 230, 230);
 
        rec.x = output[i].x1;
        rec.y = output[i].y1;

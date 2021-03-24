@@ -1,25 +1,25 @@
-<img src="picsimlab2.png" width="620" height="480" border="0" usemap="#map" />
+<img src="picsimlab2.png" width="806" height="706" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:lcganmboa@yahoo.com    -->
-<area shape="rect" coords="411,64,438,91" href="PB_RST" />
-<area shape="rect" coords="577,69,613,100" href="SW_PWR" />
-<area shape="rect" coords="193,20,255,100" href="PG_ICSP" />
-<area shape="rect" coords="448,233,490,275" href="KB_TC1" />
-<area shape="rect" coords="493,233,535,275" href="KB_TC2" />
-<area shape="rect" coords="541,232,583,274" href="KB_TC3" />
-<area shape="rect" coords="449,280,491,322" href="KB_TC4" />
-<area shape="rect" coords="491,280,533,322" href="KB_TC5" />
-<area shape="rect" coords="540,279,582,321" href="KB_TC6" />
-<area shape="rect" coords="448,327,490,369" href="KB_TC7" />
-<area shape="rect" coords="497,330,539,372" href="KB_TC8" />
-<area shape="rect" coords="541,327,583,369" href="KB_TC9" />
-<area shape="rect" coords="451,376,493,418" href="KB_TC*" />
-<area shape="rect" coords="496,376,538,418" href="KB_TC0" />
-<area shape="rect" coords="542,376,584,418" href="KB_TC#" />
-<area shape="rect" coords="252,115,290,165" href="MD_VIEW" />
+<!-- #$AUTHOR:lcganmboa@yahoo.com       -->
+<area shape="rect" coords="149,230,182,263" href="PB_RST" />
+<area shape="rect" coords="667,163,709,205" href="SW_PWR" />
+<area shape="rect" coords="156,2,228,75" href="PG_ICSP" />
+<area shape="rect" coords="549,338,593,378" href="KB_TC1" />
+<area shape="rect" coords="629,339,673,377" href="KB_TC2" />
+<area shape="rect" coords="708,338,751,376" href="KB_TC3" />
+<area shape="rect" coords="549,412,592,450" href="KB_TC4" />
+<area shape="rect" coords="629,412,672,451" href="KB_TC5" />
+<area shape="rect" coords="708,411,751,451" href="KB_TC6" />
+<area shape="rect" coords="549,485,593,523" href="KB_TC7" />
+<area shape="rect" coords="629,485,673,524" href="KB_TC8" />
+<area shape="rect" coords="708,485,753,524" href="KB_TC9" />
+<area shape="rect" coords="549,560,594,597" href="KB_TC*" />
+<area shape="rect" coords="629,559,673,598" href="KB_TC0" />
+<area shape="rect" coords="708,559,750,598" href="KB_TC#" />
+<area shape="rect" coords="307,136,345,189" href="MD_VIEW" />
 </map>

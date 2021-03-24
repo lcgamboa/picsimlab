@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2019  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -41,7 +41,8 @@ enum
  O_RA6,
  O_RA7,
  O_LPWR,
- O_LCD
+ O_LCD,
+ O_MP
 };
 
 /*inputs*/
@@ -75,7 +76,7 @@ cboard_K16F::cboard_K16F(void)
  clko = 0;
  d = 0;
  lcde = 0;
-
+ 
  lcd_init (&lcd, 16, 2);
  mi2c_init (&mi2c, 512);
  rtc_init (&rtc);
@@ -145,7 +146,7 @@ cboard_K16F::Draw(CDraw *draw)
  //lab2 draw 
  for (i = 0; i < outputc; i++)
   {
-   if (!output[i].r)
+   if (!output[i].r)//rectangle
     {
 
      draw->Canvas.SetFgColor (30, 0, 0);
@@ -157,20 +158,24 @@ cboard_K16F::Draw(CDraw *draw)
       case O_RST:
        draw->Canvas.SetColor (100, 100, 100);
        break;
+      case O_MP:
+       draw->Canvas.SetColor (26, 26, 26);
+       break;
       }
-
-
-     if (output[i].id != O_LCD)
-      draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
      //draw lcd text 
 
-     if ((output[i].id == O_LCD)&&(lcd.update))
+     if (output[i].id == O_LCD)
       {
-       lcd_draw (&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, Window1.Get_mcupwr ());
+       if (lcd.update)
+        {
+         draw->Canvas.Rectangle (1, output[i].x1 - 1, output[i].y1 - 1, output[i].x2 - output[i].x1 + 2, output[i].y2 - output[i].y1 + 3);
+         lcd_draw (&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, Window1.Get_mcupwr ());
+        }
       }
      else if (output[i].id == O_RST)
       {
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
        if (p_RST)
         {
          draw->Canvas.SetColor (15, 15, 15);
@@ -181,27 +186,49 @@ cboard_K16F::Draw(CDraw *draw)
         }
        draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
       }
+     else if (output[i].id == O_MP)
+      {
+       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       draw->Canvas.SetColor (230, 230, 230);
+       draw->Canvas.RotatedText (Proc, output[i].x2, output[i].y1 + 5, -90);
+      }
+     else
+      {
+       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+      }
     }
-   else
+   else //circle
     {
      draw->Canvas.SetFgColor (0, 0, 0);
 
 
      switch (output[i].id)
       {
-      case O_RA1: draw->Canvas.SetColor (pic.pins[17].oavalue, 0, 0);
+      case O_RA1: draw->Canvas.SetBgColor (pic.pins[17].oavalue, 0, 0);
        break;
-      case O_RA2: draw->Canvas.SetColor (pic.pins[0].oavalue, 0, 0);
+      case O_RA2: draw->Canvas.SetBgColor (pic.pins[0].oavalue, 0, 0);
        break;
-      case O_RA6: draw->Canvas.SetColor (pic.pins[14].oavalue, 0, 0);
+      case O_RA6: draw->Canvas.SetBgColor (pic.pins[14].oavalue, 0, 0);
        break;
-      case O_RA7: draw->Canvas.SetColor (pic.pins[15].oavalue, 0, 0);
+      case O_RA7: draw->Canvas.SetBgColor (pic.pins[15].oavalue, 0, 0);
+       break;
+      case O_LPWR: draw->Canvas.SetBgColor (0, 200 * Window1.Get_mcupwr () + 55, 0);
        break;
       }
 
-     if (output[i].id == O_LPWR)draw->Canvas.SetColor (0, 255 * Window1.Get_mcupwr (), 0);
-
-     draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
+     //draw a LED
+     lxColor color1 = draw->Canvas.GetBgColor ();
+     int r = color1.Red () - 120;
+     int g = color1.Green () - 120;
+     int b = color1.Blue () - 120;
+     if (r < 0)r = 0;
+     if (g < 0)g = 0;
+     if (b < 0)b = 0;
+     lxColor color2 (r, g, b);
+     draw->Canvas.SetBgColor (color2);
+     draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 1);
+     draw->Canvas.SetBgColor (color1);
+     draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 2);
     }
   }
 
@@ -346,7 +373,7 @@ cboard_K16F::Run_CPU(void)
 
     //increment mean value counter if pin is high
     alm[i % pic.PINCOUNT] += pins[i % pic.PINCOUNT].value;
-    
+
     if (j >= JUMPSTEPS)
      {
       j = -1;
@@ -460,6 +487,7 @@ cboard_K16F::Reset(void)
   {
    pic.pins[pi].oavalue = 0;
   }
+
  if (use_spare)Window5.Reset ();
 
  RegisterRemoteControl ();
@@ -516,6 +544,7 @@ cboard_K16F::RegisterRemoteControl(void)
   {
    switch (output[i].id)
     {
+
     case O_RA1:
      output[i].status = &pic.pins[17].oavalue;
      break;
@@ -693,6 +722,7 @@ cboard_K16F::EvMouseButtonPress(uint button, uint x, uint y, uint state)
         }
        else
         {
+
          printf ("Error saving to file: %s \n", mi2c_tmp_name);
         }
        break;
@@ -791,6 +821,7 @@ cboard_K16F::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
        }
       case I_TCT:
        {
+
         p_KEY12 = 0;
        }
        break;
@@ -851,6 +882,7 @@ cboard_K16F::EvKeyPress(uint key, uint mask)
   }
  if (key == '#')
   {
+
    p_KEY12 = 1;
   }
 
@@ -908,6 +940,7 @@ cboard_K16F::EvKeyRelease(uint key, uint mask)
   }
  if (key == '#')
   {
+
    p_KEY12 = 0;
   }
 }
@@ -915,6 +948,7 @@ cboard_K16F::EvKeyRelease(uint key, uint mask)
 void
 cboard_K16F::EvOnShow(void)
 {
+
  lcd.update = 1;
 }
 
@@ -936,6 +970,7 @@ cboard_K16F::get_in_id(char * name)
  if (strcmp (name, "KB_TC*") == 0)return I_TCA;
  if (strcmp (name, "KB_TC0") == 0)return I_TC0;
  if (strcmp (name, "KB_TC#") == 0)return I_TCT;
+
  if (strcmp (name, "MD_VIEW") == 0)return I_VIEW;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
@@ -954,6 +989,8 @@ cboard_K16F::get_out_id(char * name)
  if (strcmp (name, "DS_LCD") == 0)return O_LCD;
  if (strcmp (name, "PB_RST") == 0)return O_RST;
 
+ if (strcmp (name, "MP_CPU") == 0)return O_MP;
+
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
 }
@@ -961,6 +998,7 @@ cboard_K16F::get_out_id(char * name)
 void
 cboard_K16F::WritePreferences(void)
 {
+
  Window1.saveprefs (lxT ("K16F_proc"), Proc);
  Window1.saveprefs (lxT ("K16F_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
 }
@@ -976,6 +1014,7 @@ cboard_K16F::ReadPreferences(char *name, char *value)
 
  if (!strcmp (name, "K16F_clock"))
   {
+
    Window1.SetClock (atof (value));
   }
 }

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -66,7 +66,7 @@ class cboard_K16F:public bsim_picsim
       void Draw(CDraw *draw);
       void Run_CPU(void);
       lxString GetSupportedDevices(void){return lxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
-      lxString GetPictureFileName(void){return lxT("K16F/board.png");};
+      lxString GetPictureFileName(void){return lxT("K16F/board.svg");};
       lxString GetInputMapFile(void){return lxT("K16F/input.map");};
       lxString GetOutputMapFile(void){return lxT("K16F/output.map");};
       void Reset(void);

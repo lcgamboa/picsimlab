@@ -1,59 +1,61 @@
-<img src="picsimlab2.png" width="906" height="487" border="0" usemap="#map" />
+<img src="picsimlab2.png" width="1037" height="564" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:lcganmboa@yahoo.com   -->
-<area shape="circle" coords="102,338,7" href="LD_RB0" />
-<area shape="circle" coords="165,338,7" href="LD_RB1" />
-<area shape="circle" coords="227,337,7" href="LD_RB2" />
-<area shape="circle" coords="286,339,7" href="LD_RB3" />
-<area shape="circle" coords="793,156,7" href="LD_LPWR" />
-<area shape="rect" coords="27,90,399,176" href="DS_LCD" />
-<area shape="rect" coords="105,267,126,271" href="SS_A1" />
-<area shape="rect" coords="127,273,131,289" href="SS_B1" />
-<area shape="rect" coords="127,296,131,314" href="SS_C1" />
-<area shape="rect" coords="105,314,126,318" href="SS_D1" />
-<area shape="rect" coords="100,296,104,313" href="SS_E1" />
-<area shape="rect" coords="100,272,104,289" href="SS_F1" />
-<area shape="rect" coords="105,291,126,295" href="SS_G1" />
-<area shape="rect" coords="135,318,138,321" href="SS_P1" />
-<area shape="rect" coords="156,268,177,272" href="SS_A2" />
-<area shape="rect" coords="178,274,182,290" href="SS_B2" />
-<area shape="rect" coords="178,296,182,314" href="SS_C2" />
-<area shape="rect" coords="156,314,177,318" href="SS_D2" />
-<area shape="rect" coords="151,296,155,313" href="SS_E2" />
-<area shape="rect" coords="151,273,155,290" href="SS_F2" />
-<area shape="rect" coords="156,291,177,295" href="SS_G2" />
-<area shape="rect" coords="185,318,188,321" href="SS_P2" />
-<area shape="rect" coords="207,268,228,272" href="SS_A3" />
-<area shape="rect" coords="229,274,233,290" href="SS_B3" />
-<area shape="rect" coords="229,296,233,314" href="SS_C3" />
-<area shape="rect" coords="207,314,228,318" href="SS_D3" />
-<area shape="rect" coords="202,296,206,313" href="SS_E3" />
-<area shape="rect" coords="202,273,206,290" href="SS_F3" />
-<area shape="rect" coords="207,291,228,295" href="SS_G3" />
-<area shape="rect" coords="236,318,239,321" href="SS_P3" />
-<area shape="rect" coords="260,268,281,272" href="SS_A4" />
-<area shape="rect" coords="282,273,286,289" href="SS_B4" />
-<area shape="rect" coords="282,296,286,314" href="SS_C4" />
-<area shape="rect" coords="260,314,281,318" href="SS_D4" />
-<area shape="rect" coords="255,296,259,313" href="SS_E4" />
-<area shape="rect" coords="255,273,259,290" href="SS_F4" />
-<area shape="rect" coords="260,291,281,295" href="SS_G4" />
-<area shape="rect" coords="290,318,293,321" href="SS_P4" />
-<area shape="rect" coords="454,387,497,399" href="JP_1" />
-<area shape="rect" coords="454,416,497,428" href="JP_2" />
-<area shape="rect" coords="454,443,497,455" href="JP_3" />
-<area shape="rect" coords="505,405,549,416" href="JP_4" />
-<area shape="rect" coords="505,427,548,439" href="JP_5" />
-<area shape="rect" coords="505,449,548,460" href="JP_6" />
-<area shape="rect" coords="77,373,127,422" href="PB_RB0" />
-<area shape="rect" coords="142,372,193,421" href="PB_RB1" />
-<area shape="rect" coords="205,373,256,422" href="PB_RB2" />
-<area shape="rect" coords="265,373,316,421" href="PB_RB3" />
-<area shape="rect" coords="615,236,665,286" href="PO_2" />
-<area shape="rect" coords="738,130,766,158" href="PB_RST" />
+<!-- #$AUTHOR:lcganmboa@yahoo.com         -->
+<area shape="circle" coords="99,391,11" href="LD_RB0" />
+<area shape="circle" coords="174,391,11" href="LD_RB1" />
+<area shape="circle" coords="249,392,11" href="LD_RB2" />
+<area shape="circle" coords="322,391,11" href="LD_RB3" />
+<area shape="circle" coords="927,147,11" href="LD_LPWR" />
+<area shape="rect" coords="48,93,420,179" href="DS_LCD" />
+<area shape="rect" coords="85,271,114,281" href="SS_A1" />
+<area shape="rect" coords="115,275,124,315" href="SS_B1" />
+<area shape="rect" coords="115,316,124,356" href="SS_C1" />
+<area shape="rect" coords="85,350,114,360" href="SS_D1" />
+<area shape="rect" coords="75,316,84,356" href="SS_E1" />
+<area shape="rect" coords="75,275,84,315" href="SS_F1" />
+<area shape="rect" coords="85,311,114,321" href="SS_G1" />
+<area shape="circle" coords="128,360,5" href="SS_P1" />
+<area shape="rect" coords="159,271,188,281" href="SS_A2" />
+<area shape="rect" coords="189,275,198,315" href="SS_B2" />
+<area shape="rect" coords="189,316,198,356" href="SS_C2" />
+<area shape="rect" coords="159,350,188,360" href="SS_D2" />
+<area shape="rect" coords="149,316,158,356" href="SS_E2" />
+<area shape="rect" coords="149,275,158,315" href="SS_F2" />
+<area shape="rect" coords="159,311,188,321" href="SS_G2" />
+<area shape="circle" coords="202,360,5" href="SS_P2" />
+<area shape="rect" coords="234,271,263,281" href="SS_A3" />
+<area shape="rect" coords="264,275,273,315" href="SS_B3" />
+<area shape="rect" coords="264,316,273,356" href="SS_C3" />
+<area shape="rect" coords="234,350,263,360" href="SS_D3" />
+<area shape="rect" coords="224,316,233,356" href="SS_E3" />
+<area shape="rect" coords="224,275,233,315" href="SS_F3" />
+<area shape="rect" coords="234,311,263,321" href="SS_G3" />
+<area shape="circle" coords="277,360,5" href="SS_P3" />
+<area shape="rect" coords="309,271,338,281" href="SS_A4" />
+<area shape="rect" coords="339,275,348,315" href="SS_B4" />
+<area shape="rect" coords="339,316,348,356" href="SS_C4" />
+<area shape="rect" coords="309,350,338,360" href="SS_D4" />
+<area shape="rect" coords="299,316,308,356" href="SS_E4" />
+<area shape="rect" coords="299,275,308,315" href="SS_F4" />
+<area shape="rect" coords="309,311,338,321" href="SS_G4" />
+<area shape="circle" coords="352,360,5" href="SS_P4" />
+<area shape="rect" coords="486,491,529,502" href="JP_1" />
+<area shape="rect" coords="485,514,528,525" href="JP_2" />
+<area shape="rect" coords="486,537,529,548" href="JP_3" />
+<area shape="rect" coords="541,491,584,502" href="JP_4" />
+<area shape="rect" coords="540,514,583,525" href="JP_5" />
+<area shape="rect" coords="541,537,584,548" href="JP_6" />
+<area shape="rect" coords="856,150,889,183" href="PB_RST" />
+<area shape="rect" coords="60,451,125,516" href="PB_RB0" />
+<area shape="rect" coords="139,451,204,516" href="PB_RB1" />
+<area shape="rect" coords="218,450,283,515" href="PB_RB2" />
+<area shape="rect" coords="294,448,359,513" href="PB_RB3" />
+<area shape="rect" coords="676,296,731,351" href="PO_2" />
+<area shape="rect" coords="513,194,547,358" href="MP_CPU" />
+<area shape="rect" coords="803,310,1032,538" href="MT_VT" />
 </map>
