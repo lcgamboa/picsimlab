@@ -336,6 +336,8 @@ private:
 
     int ondraw;
     
+    int need_resize;
+    
     unsigned int error;
     lxString pzw_ver;
 

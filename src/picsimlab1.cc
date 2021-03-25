@@ -112,6 +112,63 @@ CPWindow1::timer1_EvOnTime(CControl * control)
    crt = 1;
   }
 #endif
+
+
+ if (need_resize)
+  {
+   double scalex, scaley, scale_temp;
+
+   scalex = ((Window1.GetWidth () - 185)*1.0) / plWidth;
+#ifdef _WIN_
+   scaley = ((Window1.GetHeight () - 75)*1.0) / plHeight;
+#else
+   scaley = ((Window1.GetHeight () - 90)*1.0) / plHeight;
+#endif
+
+   if (scalex < 0.1)scalex = 0.1;
+   if (scaley < 0.1)scaley = 0.1;
+   if (scalex > 4)scalex = 4;
+   if (scaley > 4)scaley = 4;
+
+   if (scalex < scaley)
+    scale_temp = scalex;
+   else
+    scale_temp = scaley;
+
+   if (scale != scale_temp)
+    {
+     scale = scale_temp;
+
+     int nw = (plWidth * scale);
+     if (nw == 0)nw = 1;
+     int nh = (plHeight * scale);
+     if (nh == 0)nh = 1;
+
+     draw1.SetWidth (nw);
+     draw1.SetHeight (nh);
+
+     draw1.SetImgFileName (share + lxT ("boards/") + pboard->GetPictureFileName (), scale, scale);
+    }
+
+   pboard->SetScale (scale);
+   pboard->EvOnShow ();
+
+   if (osc_on)
+    {
+     menu1_Modules_Oscilloscope_EvMenuActive (this);
+     osc_on = 0;
+    }
+   if (spare_on)
+    {
+     menu1_Modules_Spareparts_EvMenuActive (this);
+     spare_on = 0;
+    }
+  }
+ else
+  {
+   need_resize++;
+  }
+
  pboard->Draw (&draw1);
  label1.Draw ();
  ondraw = 1;
@@ -415,6 +472,14 @@ CPWindow1::Configure(CControl * control, const char * home)
 
          pboard = create_board (&lab, &lab_);
          pboard->SetName (boards_list[lab].name);
+         if (pboard->GetScale () < scale)
+          {
+           scale = pboard->GetScale ();
+          }
+         else
+          {
+           pboard->SetScale(scale);
+          }
          SetClock (2.0); //Default clock
 
         }
@@ -892,51 +957,7 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
 void
 CPWindow1::_EvOnShow(CControl * control)
 {
- double scalex, scaley;
-
- if (timer1.GetRunState ())
-  {
-   scalex = ((Window1.GetWidth () - 185)*1.0) / plWidth;
-#ifdef _WIN_
-   scaley = ((Window1.GetHeight () - 75)*1.0) / plHeight;
-#else
-   scaley = ((Window1.GetHeight () - 90)*1.0) / plHeight;
-#endif
-
-   if (scalex < 0.1)scalex = 0.1;
-   if (scaley < 0.1)scaley = 0.1;
-   if (scalex > 4)scalex = 4;
-   if (scaley > 4)scaley = 4;
-
-   if (scalex < scaley)
-    scale = scalex;
-   else
-    scale = scaley;
-
-   int nw = (plWidth * scale);
-   if (nw == 0)nw = 1;
-   int nh = (plHeight * scale);
-   if (nh == 0)nh = 1;
-
-   draw1.SetWidth (nw);
-   draw1.SetHeight (nh);
-
-
-   draw1.SetImgFileName (share + lxT ("boards/") + pboard->GetPictureFileName (), scale, scale);
-   pboard->SetScale (scale);
-   pboard->EvOnShow ();
-
-   if (osc_on)
-    {
-     menu1_Modules_Oscilloscope_EvMenuActive (this);
-     osc_on = 0;
-    }
-   if (spare_on)
-    {
-     menu1_Modules_Spareparts_EvMenuActive (this);
-     spare_on = 0;
-    }
-  }
+ need_resize = 0;
 }
 
 void

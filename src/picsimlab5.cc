@@ -44,17 +44,9 @@ CPWindow5 Window5;
 void
 CPWindow5::_EvOnShow(CControl * control)
 {
- draw1.SetWidth (Width - 15);
- //draw1.SetHeight (Height - 40);
-
-#ifdef _WIN_
- draw1.SetHeight (Height - 75);
-#else
- draw1.SetHeight (Height - 90);
-#endif
-
+ need_resize = 0;
  timer1.SetRunState (1);
- Window4.SetBaseTimer ();
+
 }
 
 void
@@ -262,6 +254,22 @@ void
 CPWindow5::timer1_EvOnTime(CControl * control)
 {
  static int tc = 0;
+
+ if (need_resize)
+  {
+   draw1.SetWidth (Width - 15);
+   //draw1.SetHeight (Height - 40);
+#ifdef _WIN_
+   draw1.SetHeight (Height - 75);
+#else
+   draw1.SetHeight (Height - 90);
+#endif
+   Window4.SetBaseTimer ();
+  }
+ else
+  {
+   need_resize++;
+  }
 
  for (int i = 0; i < partsc; i++)
   {

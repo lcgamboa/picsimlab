@@ -192,6 +192,7 @@ private:
     int offsetx;
     int offsety;
     int mouse_scroll;
+    int need_resize;
 };
 
 extern CPWindow5 Window5;

@@ -479,6 +479,11 @@ public:
      * @brief  Set board draw scale    
      */    
     virtual void SetScale (double scale);
+    
+     /**
+     * @brief  Get board draw scale    
+     */    
+    double GetScale (void);
 
 protected:
     

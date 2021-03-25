@@ -34,7 +34,7 @@ board::board(void)
  use_spare = 0;
  Proc = "";
  p_RST = 1;
- Scale = 1.0;
+ Scale = Window1.GetScale ();
 }
 
 board::~board(void) { }
@@ -94,6 +94,10 @@ board::ReadInputMap(lxString fname)
              float scalex = ((lxGetDisplayWidth (0) - 185)*1.0) / board_w;
              Window1.draw1.SetWidth (board_w * scalex);
              Window1.SetWidth (lxGetDisplayWidth (0));
+             if (scalex < Scale)
+              {
+               Scale = scalex;
+              }
             }
            else
             {
@@ -122,6 +126,10 @@ board::ReadInputMap(lxString fname)
              Window1.draw1.SetHeight (board_h * scaley);
              Window1.SetHeight (lxGetDisplayHeight (0));
              Window1.SetWidth (185 + board_w * scaley);
+             if (scaley < Scale)
+              {
+               Scale = scaley;
+              }
             }
            else
             {
@@ -386,4 +394,10 @@ void
 board::SetScale(double scale)
 {
  Scale = scale;
+}
+
+double
+board::GetScale(void)
+{
+ return Scale;
 }

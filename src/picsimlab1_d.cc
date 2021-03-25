@@ -468,6 +468,8 @@ tgo=0;
   
 error=0;
 
+need_resize=0;
+
 #ifdef NO_TOOLS
    menu1.DestroyChild (&menu1_Tools);
 #endif
