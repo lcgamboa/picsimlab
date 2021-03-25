@@ -12770,8 +12770,8 @@
     <title>b'Rectangle'</title>
    </g>
    <g id="pref_20_Shape2DView" transform="matrix(1 0 0 -1 .264 1.9336)" stroke-width=".092604">
-    <path d="m-0.23-1.1662c1.1107-1.4286 3.3998-0.64289 3.3998 1.1662 0 1.8091-2.2892 2.5948-3.3998 1.1662v4e-7 -1.1662z" fill="#800000" fill-rule="evenodd" stroke="#191919" stroke-width=".092604"/>
-    <circle cx="1.27" cy="-1.5099e-15" r="1.5" fill="#ff0000" stroke="#191919" stroke-width=".092604"/>
+    <path d="m-0.23-1.1662c1.1107-1.4286 3.3998-0.64289 3.3998 1.1662 0 1.8091-2.2892 2.5948-3.3998 1.1662v4e-7 -1.1662z" fill="#008000" fill-rule="evenodd" stroke="#191919" stroke-width=".092604"/>
+    <circle cx="1.27" cy="-1.5099e-15" r="1.5" fill="#00ff00" stroke="#191919" stroke-width=".092604"/>
     <title>b'Shape2DView'</title>
    </g>
   </g>
@@ -12821,8 +12821,8 @@
     <title>b'Rectangle'</title>
    </g>
    <g id="pref_23_Shape2DView" transform="matrix(1 0 0 -1 .264 1.9336)" stroke-width=".092604">
-    <path d="m-0.23-1.1662c1.1107-1.4286 3.3998-0.64289 3.3998 1.1662 0 1.8091-2.2892 2.5948-3.3998 1.1662v4e-7 -1.1662z" fill="#800000" fill-rule="evenodd" stroke="#191919" stroke-width=".092604"/>
-    <circle cx="1.27" cy="-1.5099e-15" r="1.5" fill="#ff0000" stroke="#191919" stroke-width=".092604"/>
+    <path d="m-0.23-1.1662c1.1107-1.4286 3.3998-0.64289 3.3998 1.1662 0 1.8091-2.2892 2.5948-3.3998 1.1662v4e-7 -1.1662z" fill="#008000" fill-rule="evenodd" stroke="#191919" stroke-width=".092604"/>
+    <circle cx="1.27" cy="-1.5099e-15" r="1.5" fill="#00ff00" stroke="#191919" stroke-width=".092604"/>
     <title>b'Shape2DView'</title>
    </g>
   </g>
@@ -12832,8 +12832,8 @@
     <title>b'Rectangle'</title>
    </g>
    <g id="pref_24_Shape2DView" transform="matrix(1 0 0 -1 .264 1.9336)" stroke-width=".092604">
-    <path d="m-0.23-1.1662c1.1107-1.4286 3.3998-0.64289 3.3998 1.1662 0 1.8091-2.2892 2.5948-3.3998 1.1662v4e-7 -1.1662z" fill="#800000" fill-rule="evenodd" stroke="#191919" stroke-width=".092604"/>
-    <circle cx="1.27" cy="-1.5099e-15" r="1.5" fill="#ff0000" stroke="#191919" stroke-width=".092604"/>
+    <path d="m-0.23-1.1662c1.1107-1.4286 3.3998-0.64289 3.3998 1.1662 0 1.8091-2.2892 2.5948-3.3998 1.1662v4e-7 -1.1662z" fill="#008000" fill-rule="evenodd" stroke="#191919" stroke-width=".092604"/>
+    <circle cx="1.27" cy="-1.5099e-15" r="1.5" fill="#00ff00" stroke="#191919" stroke-width=".092604"/>
     <title>b'Shape2DView'</title>
    </g>
   </g>
@@ -17300,8 +17300,8 @@
     <title>b'Rectangle'</title>
    </g>
    <g id="pref_125_Shape2DView" transform="matrix(1 0 0 -1 .264 1.9336)" stroke-width=".092604">
-    <path d="m-0.23-1.1662c1.1107-1.4286 3.3998-0.64289 3.3998 1.1662 0 1.8091-2.2892 2.5948-3.3998 1.1662v4e-7 -1.1662z" fill="#800000" fill-rule="evenodd" stroke="#191919" stroke-width=".092604"/>
-    <circle cx="1.27" cy="-1.5099e-15" r="1.5" fill="#ff0000" stroke="#191919" stroke-width=".092604"/>
+    <path d="m-0.23-1.1662c1.1107-1.4286 3.3998-0.64289 3.3998 1.1662 0 1.8091-2.2892 2.5948-3.3998 1.1662v4e-7 -1.1662z" fill="#008000" fill-rule="evenodd" stroke="#191919" stroke-width=".092604"/>
+    <circle cx="1.27" cy="-1.5099e-15" r="1.5" fill="#00ff00" stroke="#191919" stroke-width=".092604"/>
     <title>b'Shape2DView'</title>
    </g>
   </g>
@@ -19086,50 +19086,50 @@
   <g transform="matrix(0 -393.7 393.7 0 48945 53625)">
    <namedview bordercolor="#666666" borderopacity="1" gridtolerance="10" guidetolerance="10" objecttolerance="10" pagecolor="#ffffff" showgrid="false"/>
    <path d="m19.24 12.79h-19.05v-12.6h19.05z" fill="#0a0a0a" fill-rule="evenodd" stroke="#000000" stroke-width=".092604"/>
-   <circle transform="scale(1,-1)" cx="2.3362" cy="-11.472" r=".75" fill="#ff0000" stroke="#000000" stroke-width=".092604"/>
-   <rect x="3.1321" y="9.1886" width="6.8649" height="1.4914" fill="#ff0000" stroke="#000000" stroke-width=".092604"/>
-   <rect x="10.222" y="9.1975" width="6.8649" height="1.4914" fill="#ff0000" stroke="#000000" stroke-width=".092604"/>
-   <rect x="3.1321" y="2.2135" width="6.8649" height="1.4914" fill="#ff0000" stroke="#000000" stroke-width=".092604"/>
-   <rect x="10.222" y="2.2224" width="6.8649" height="1.4914" fill="#ff0000" stroke="#000000" stroke-width=".092604"/>
-   <rect transform="rotate(90)" x="3.8917" y="-3.9014" width="5.1032" height="1.5035" fill="#ff0000" stroke="#000000" stroke-width=".080166"/>
-   <rect transform="rotate(90)" x="3.9189" y="-10.868" width="5.1032" height="1.5035" fill="#ff0000" stroke="#000000" stroke-width=".080166"/>
-   <rect transform="rotate(90)" x="3.9006" y="-17.856" width="5.1032" height="1.5035" fill="#ff0000" stroke="#000000" stroke-width=".080166"/>
+   <circle transform="scale(1,-1)" cx="2.3362" cy="-11.472" r=".75" fill="#00ff00" stroke="#000000" stroke-width=".092604"/>
+   <rect x="3.1321" y="9.1886" width="6.8649" height="1.4914" fill="#00ff00" stroke="#000000" stroke-width=".092604"/>
+   <rect x="10.222" y="9.1975" width="6.8649" height="1.4914" fill="#00ff00" stroke="#000000" stroke-width=".092604"/>
+   <rect x="3.1321" y="2.2135" width="6.8649" height="1.4914" fill="#00ff00" stroke="#000000" stroke-width=".092604"/>
+   <rect x="10.222" y="2.2224" width="6.8649" height="1.4914" fill="#00ff00" stroke="#000000" stroke-width=".092604"/>
+   <rect transform="rotate(90)" x="3.8917" y="-3.9014" width="5.1032" height="1.5035" fill="#00ff00" stroke="#000000" stroke-width=".080166"/>
+   <rect transform="rotate(90)" x="3.9189" y="-10.868" width="5.1032" height="1.5035" fill="#00ff00" stroke="#000000" stroke-width=".080166"/>
+   <rect transform="rotate(90)" x="3.9006" y="-17.856" width="5.1032" height="1.5035" fill="#00ff00" stroke="#000000" stroke-width=".080166"/>
   </g>
   <g transform="matrix(0 -393.7 393.7 0 43645 53625)">
    <namedview bordercolor="#666666" borderopacity="1" gridtolerance="10" guidetolerance="10" objecttolerance="10" pagecolor="#ffffff" showgrid="false"/>
    <path d="m19.24 12.79h-19.05v-12.6h19.05z" fill="#0a0a0a" fill-rule="evenodd" stroke="#000000" stroke-width=".092604"/>
-   <circle transform="scale(1,-1)" cx="2.3362" cy="-11.472" r=".75" fill="#ff0000" stroke="#000000" stroke-width=".092604"/>
-   <rect x="3.1321" y="9.1886" width="6.8649" height="1.4914" fill="#ff0000" stroke="#000000" stroke-width=".092604"/>
-   <rect x="10.222" y="9.1975" width="6.8649" height="1.4914" fill="#ff0000" stroke="#000000" stroke-width=".092604"/>
-   <rect x="3.1321" y="2.2135" width="6.8649" height="1.4914" fill="#ff0000" stroke="#000000" stroke-width=".092604"/>
-   <rect x="10.222" y="2.2224" width="6.8649" height="1.4914" fill="#ff0000" stroke="#000000" stroke-width=".092604"/>
-   <rect transform="rotate(90)" x="3.8917" y="-3.9014" width="5.1032" height="1.5035" fill="#ff0000" stroke="#000000" stroke-width=".080166"/>
-   <rect transform="rotate(90)" x="3.9189" y="-10.868" width="5.1032" height="1.5035" fill="#ff0000" stroke="#000000" stroke-width=".080166"/>
-   <rect transform="rotate(90)" x="3.9006" y="-17.856" width="5.1032" height="1.5035" fill="#ff0000" stroke="#000000" stroke-width=".080166"/>
+   <circle transform="scale(1,-1)" cx="2.3362" cy="-11.472" r=".75" fill="#00ff00" stroke="#000000" stroke-width=".092604"/>
+   <rect x="3.1321" y="9.1886" width="6.8649" height="1.4914" fill="#00ff00" stroke="#000000" stroke-width=".092604"/>
+   <rect x="10.222" y="9.1975" width="6.8649" height="1.4914" fill="#00ff00" stroke="#000000" stroke-width=".092604"/>
+   <rect x="3.1321" y="2.2135" width="6.8649" height="1.4914" fill="#00ff00" stroke="#000000" stroke-width=".092604"/>
+   <rect x="10.222" y="2.2224" width="6.8649" height="1.4914" fill="#00ff00" stroke="#000000" stroke-width=".092604"/>
+   <rect transform="rotate(90)" x="3.8917" y="-3.9014" width="5.1032" height="1.5035" fill="#00ff00" stroke="#000000" stroke-width=".080166"/>
+   <rect transform="rotate(90)" x="3.9189" y="-10.868" width="5.1032" height="1.5035" fill="#00ff00" stroke="#000000" stroke-width=".080166"/>
+   <rect transform="rotate(90)" x="3.9006" y="-17.856" width="5.1032" height="1.5035" fill="#00ff00" stroke="#000000" stroke-width=".080166"/>
   </g>
   <g transform="matrix(0 -393.7 393.7 0 38245 53625)">
    <namedview bordercolor="#666666" borderopacity="1" gridtolerance="10" guidetolerance="10" objecttolerance="10" pagecolor="#ffffff" showgrid="false"/>
    <path d="m19.24 12.79h-19.05v-12.6h19.05z" fill="#0a0a0a" fill-rule="evenodd" stroke="#000000" stroke-width=".092604"/>
-   <circle transform="scale(1,-1)" cx="2.3362" cy="-11.472" r=".75" fill="#ff0000" stroke="#000000" stroke-width=".092604"/>
-   <rect x="3.1321" y="9.1886" width="6.8649" height="1.4914" fill="#ff0000" stroke="#000000" stroke-width=".092604"/>
-   <rect x="10.222" y="9.1975" width="6.8649" height="1.4914" fill="#ff0000" stroke="#000000" stroke-width=".092604"/>
-   <rect x="3.1321" y="2.2135" width="6.8649" height="1.4914" fill="#ff0000" stroke="#000000" stroke-width=".092604"/>
-   <rect x="10.222" y="2.2224" width="6.8649" height="1.4914" fill="#ff0000" stroke="#000000" stroke-width=".092604"/>
-   <rect transform="rotate(90)" x="3.8917" y="-3.9014" width="5.1032" height="1.5035" fill="#ff0000" stroke="#000000" stroke-width=".080166"/>
-   <rect transform="rotate(90)" x="3.9189" y="-10.868" width="5.1032" height="1.5035" fill="#ff0000" stroke="#000000" stroke-width=".080166"/>
-   <rect transform="rotate(90)" x="3.9006" y="-17.856" width="5.1032" height="1.5035" fill="#ff0000" stroke="#000000" stroke-width=".080166"/>
+   <circle transform="scale(1,-1)" cx="2.3362" cy="-11.472" r=".75" fill="#00ff00" stroke="#000000" stroke-width=".092604"/>
+   <rect x="3.1321" y="9.1886" width="6.8649" height="1.4914" fill="#00ff00" stroke="#000000" stroke-width=".092604"/>
+   <rect x="10.222" y="9.1975" width="6.8649" height="1.4914" fill="#00ff00" stroke="#000000" stroke-width=".092604"/>
+   <rect x="3.1321" y="2.2135" width="6.8649" height="1.4914" fill="#00ff00" stroke="#000000" stroke-width=".092604"/>
+   <rect x="10.222" y="2.2224" width="6.8649" height="1.4914" fill="#00ff00" stroke="#000000" stroke-width=".092604"/>
+   <rect transform="rotate(90)" x="3.8917" y="-3.9014" width="5.1032" height="1.5035" fill="#00ff00" stroke="#000000" stroke-width=".080166"/>
+   <rect transform="rotate(90)" x="3.9189" y="-10.868" width="5.1032" height="1.5035" fill="#00ff00" stroke="#000000" stroke-width=".080166"/>
+   <rect transform="rotate(90)" x="3.9006" y="-17.856" width="5.1032" height="1.5035" fill="#00ff00" stroke="#000000" stroke-width=".080166"/>
   </g>
   <g transform="matrix(0 -393.7 393.7 0 32845 53625)">
    <namedview bordercolor="#666666" borderopacity="1" gridtolerance="10" guidetolerance="10" objecttolerance="10" pagecolor="#ffffff" showgrid="false"/>
    <path d="m19.24 12.79h-19.05v-12.6h19.05z" fill="#0a0a0a" fill-rule="evenodd" stroke="#000000" stroke-width=".092604"/>
-   <circle transform="scale(1,-1)" cx="2.3362" cy="-11.472" r=".75" fill="#ff0000" stroke="#000000" stroke-width=".092604"/>
-   <rect x="3.1321" y="9.1886" width="6.8649" height="1.4914" fill="#ff0000" stroke="#000000" stroke-width=".092604"/>
-   <rect x="10.222" y="9.1975" width="6.8649" height="1.4914" fill="#ff0000" stroke="#000000" stroke-width=".092604"/>
-   <rect x="3.1321" y="2.2135" width="6.8649" height="1.4914" fill="#ff0000" stroke="#000000" stroke-width=".092604"/>
-   <rect x="10.222" y="2.2224" width="6.8649" height="1.4914" fill="#ff0000" stroke="#000000" stroke-width=".092604"/>
-   <rect transform="rotate(90)" x="3.8917" y="-3.9014" width="5.1032" height="1.5035" fill="#ff0000" stroke="#000000" stroke-width=".080166"/>
-   <rect transform="rotate(90)" x="3.9189" y="-10.868" width="5.1032" height="1.5035" fill="#ff0000" stroke="#000000" stroke-width=".080166"/>
-   <rect transform="rotate(90)" x="3.9006" y="-17.856" width="5.1032" height="1.5035" fill="#ff0000" stroke="#000000" stroke-width=".080166"/>
+   <circle transform="scale(1,-1)" cx="2.3362" cy="-11.472" r=".75" fill="#00ff00" stroke="#000000" stroke-width=".092604"/>
+   <rect x="3.1321" y="9.1886" width="6.8649" height="1.4914" fill="#00ff00" stroke="#000000" stroke-width=".092604"/>
+   <rect x="10.222" y="9.1975" width="6.8649" height="1.4914" fill="#00ff00" stroke="#000000" stroke-width=".092604"/>
+   <rect x="3.1321" y="2.2135" width="6.8649" height="1.4914" fill="#00ff00" stroke="#000000" stroke-width=".092604"/>
+   <rect x="10.222" y="2.2224" width="6.8649" height="1.4914" fill="#00ff00" stroke="#000000" stroke-width=".092604"/>
+   <rect transform="rotate(90)" x="3.8917" y="-3.9014" width="5.1032" height="1.5035" fill="#00ff00" stroke="#000000" stroke-width=".080166"/>
+   <rect transform="rotate(90)" x="3.9189" y="-10.868" width="5.1032" height="1.5035" fill="#00ff00" stroke="#000000" stroke-width=".080166"/>
+   <rect transform="rotate(90)" x="3.9006" y="-17.856" width="5.1032" height="1.5035" fill="#00ff00" stroke="#000000" stroke-width=".080166"/>
   </g>
   <g transform="matrix(393.7 0 0 393.7 81660 66260)">
    <namedview bordercolor="#666666" borderopacity="1" gridtolerance="10" guidetolerance="10" objecttolerance="10" pagecolor="#ffffff" showgrid="false"/>

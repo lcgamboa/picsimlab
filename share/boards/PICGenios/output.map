@@ -5,7 +5,11 @@
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:lcganmboa@yahoo.com          -->
+<!-- #$AUTHOR:lcganmboa@yahoo.com           -->
+<area shape="rect" coords="31,430,100,533" href="SS_1" />
+<area shape="rect" coords="109,430,178,533" href="SS_2" />
+<area shape="rect" coords="187,430,256,533" href="SS_3" />
+<area shape="rect" coords="263,430,332,533" href="SS_4" />
 <area shape="circle" coords="1107,834,11" href="LD_PWR" />
 <area shape="rect" coords="120,87,492,173" href="DS_LCD" />
 <area shape="rect" coords="51,435,80,445" href="SS_A1" />

@@ -36,6 +36,7 @@
 /* outputs */
 enum
 {
+ O_SS1, O_SS2, O_SS3, O_SS4,
  O_RST, O_BRB0, O_BRB1, O_BRB2, O_BRB3, O_BRB4, O_BRB5, O_BRA5,
  O_TC1, O_TC2, O_TC3, O_TC4, O_TC5, O_TC6, O_TC7, O_TC8, O_TC9,
  O_TCA, O_TC0, O_TCT, O_POT1, O_POT2,
@@ -444,6 +445,12 @@ cboard_PICGenios::Draw(CDraw *draw)
       case O_MP:
        draw->Canvas.SetColor (26, 26, 26);
        break;
+      case O_SS1:
+      case O_SS2:
+      case O_SS3:
+      case O_SS4:
+       draw->Canvas.SetColor (10, 10, 10);
+       break;
       default:
        if ((output[i].name[0] == 'D')&&(output[i].name[1] == 'P'))
         {
@@ -636,7 +643,9 @@ cboard_PICGenios::Draw(CDraw *draw)
        draw->Canvas.SetBgColor (0, lm4[29], 0);
        led = 0;
        break;
-      case O_LPWR: draw->Canvas.SetFgColor (0, 55, 0);
+      case O_RUN:
+      case O_LPWR: 
+       draw->Canvas.SetFgColor (0, 55, 0);
        draw->Canvas.SetBgColor (0, 200 * Window1.Get_mcupwr () + 55, 0);
        break;
       }
@@ -2045,6 +2054,11 @@ cboard_PICGenios::get_out_id(char * name)
 
  if (strcmp (name, "LD_PRG") == 0)return O_PRG;
  if (strcmp (name, "LD_RUN") == 0)return O_RUN;
+
+ if (strcmp (name, "SS_1") == 0)return O_SS1;
+ if (strcmp (name, "SS_2") == 0)return O_SS2;
+ if (strcmp (name, "SS_3") == 0)return O_SS3;
+ if (strcmp (name, "SS_4") == 0)return O_SS4;
 
  if (strcmp (name, "SS_A1") == 0)return O_A1;
  if (strcmp (name, "SS_B1") == 0)return O_B1;

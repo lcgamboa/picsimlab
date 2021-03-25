@@ -31,6 +31,8 @@
 /* outputs */
 enum
 {
+ O_SS1,
+ O_SS2,
  O_RB0,
  O_RB1,
  O_RB2,
@@ -218,12 +220,12 @@ cboard_McLab1::Draw(CDraw *draw)
        draw->Canvas.SetColor (230, 230, 230);
        draw->Canvas.RotatedText (Proc, output[i].x1 + 5, output[i].y1, 0);
       }
-     else
+     else if ((output[i].id >= O_SS1)&&(output[i].id <= O_SS2))
       {
+       draw->Canvas.SetColor (10, 10, 10);
        draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
       }
-
-     if (output[i].id == O_JP1)
+     else if (output[i].id == O_JP1)
       {
        if (!jmp[0])
         {
@@ -240,6 +242,11 @@ cboard_McLab1::Draw(CDraw *draw)
          draw->Canvas.Circle (1, output[i].x1 + (int) ((output[i].x2 - output[i].x1)*0.20), output[i].y1 + ((output[i].y2 - output[i].y1) / 2), 3);
         }
       }
+     else
+      {
+       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+      }
+
 
     }//circle
    else
@@ -779,6 +786,9 @@ cboard_McLab1::get_out_id(char * name)
  if (strcmp (name, "LD_RA3") == 0)return O_RA3;
 
  if (strcmp (name, "LD_RA0L") == 0)return O_RA0L;
+
+ if (strcmp (name, "SS_1") == 0)return O_SS1;
+ if (strcmp (name, "SS_2") == 0)return O_SS2;
 
  if (strcmp (name, "SS_A1") == 0)return O_A1;
  if (strcmp (name, "SS_B1") == 0)return O_B1;

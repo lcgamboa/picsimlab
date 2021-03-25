@@ -35,6 +35,10 @@
 /* outputs */
 enum
 {
+ O_SS1,
+ O_SS2,
+ O_SS3,
+ O_SS4,
  O_POT1,
  O_RB0,
  O_RB1,
@@ -382,6 +386,13 @@ cboard_McLab2::Draw(CDraw *draw)
       case O_BRB3:
       case O_RST:
        draw->Canvas.SetColor (100, 100, 100);
+       break;
+
+      case O_SS1:
+      case O_SS2:
+      case O_SS3:
+      case O_SS4:
+       draw->Canvas.SetColor (10, 10, 10);
        break;
 
       case O_POT1:
@@ -1278,6 +1289,11 @@ cboard_McLab2::get_out_id(char * name)
  if (strcmp (name, "LD_RB1") == 0)return O_RB1;
  if (strcmp (name, "LD_RB2") == 0)return O_RB2;
  if (strcmp (name, "LD_RB3") == 0)return O_RB3;
+
+ if (strcmp (name, "SS_1") == 0)return O_SS1;
+ if (strcmp (name, "SS_2") == 0)return O_SS2;
+ if (strcmp (name, "SS_3") == 0)return O_SS3;
+ if (strcmp (name, "SS_4") == 0)return O_SS4;
 
  if (strcmp (name, "SS_A1") == 0)return O_A1;
  if (strcmp (name, "SS_B1") == 0)return O_B1;

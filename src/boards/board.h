@@ -489,8 +489,8 @@ protected:
     
     lxString Name; ///< Name of board registered in PICSimLab  
     lxString Proc; ///< Name of processor in use
-    input_t input[100]; ///< input map elements
-    output_t output[100]; ///< output map elements 
+    input_t input[120]; ///< input map elements
+    output_t output[120]; ///< output map elements 
     int inputc; ///< input map elements counter 
     int outputc; ///< output map elements counter   
     int use_oscope; ///< use oscilloscope window

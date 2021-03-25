@@ -317,6 +317,10 @@ bsim_picsim::DBGGetROMSize(void)
   {
    return (pic.ROMSIZE - 4)*2; //anomalous size!!! 
   }
+ else if (pic.processor == getprocbyname ("PIC18F67J94"))
+  {
+   return (pic.ROMSIZE - 8)*2; //anomalous size!!! 
+  }
  else
   {
    return pic.ROMSIZE * 2;
