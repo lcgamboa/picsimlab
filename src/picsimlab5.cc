@@ -255,7 +255,7 @@ CPWindow5::timer1_EvOnTime(CControl * control)
 {
  static int tc = 0;
 
- if (need_resize)
+ if (need_resize == 1)
   {
    draw1.SetWidth (Width - 15);
    //draw1.SetHeight (Height - 40);
@@ -266,10 +266,8 @@ CPWindow5::timer1_EvOnTime(CControl * control)
 #endif
    Window4.SetBaseTimer ();
   }
- else
-  {
-   need_resize++;
-  }
+
+ need_resize++;
 
  for (int i = 0; i < partsc; i++)
   {

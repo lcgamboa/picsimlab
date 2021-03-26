@@ -114,7 +114,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
 #endif
 
 
- if (need_resize)
+ if (need_resize == 1)
   {
    double scalex, scaley, scale_temp;
 
@@ -164,10 +164,8 @@ CPWindow1::timer1_EvOnTime(CControl * control)
      spare_on = 0;
     }
   }
- else
-  {
-   need_resize++;
-  }
+
+ need_resize++;
 
  pboard->Draw (&draw1);
  label1.Draw ();
@@ -478,7 +476,7 @@ CPWindow1::Configure(CControl * control, const char * home)
           }
          else
           {
-           pboard->SetScale(scale);
+           pboard->SetScale (scale);
           }
          SetClock (2.0); //Default clock
 
