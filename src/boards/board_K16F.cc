@@ -137,7 +137,8 @@ void
 cboard_K16F::Draw(CDraw *draw)
 {
  int i;
-
+ lxFont font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
+ 
  draw->Canvas.Init (Scale, Scale);
 
 
@@ -188,6 +189,7 @@ cboard_K16F::Draw(CDraw *draw)
       }
      else if (output[i].id == O_MP)
       {
+       draw->Canvas.SetFont (font);
        draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
        draw->Canvas.SetColor (230, 230, 230);
        draw->Canvas.RotatedText (Proc, output[i].x2, output[i].y1 + 5, -90);

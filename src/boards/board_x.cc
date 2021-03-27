@@ -493,6 +493,8 @@ cboard_x::Draw(CDraw *draw)
 {
  int i;
 
+ lxFont font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
+
  draw->Canvas.Init (Scale, Scale); //initialize draw context
 
  //board_x draw 
@@ -562,10 +564,7 @@ cboard_x::Draw(CDraw *draw)
       }
      else if (output[i].id == O_CPU)
       {
-
-       //lxFont font ((MGetPinCount () >= 100) ? 9 : ((MGetPinCount () > 14) ? 12 : 10)
-       //            , lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
-       //draw->Canvas.SetFont (font);
+       draw->Canvas.SetFont (font);
        int x, y, w, h;
        draw->Canvas.SetColor (26, 26, 26);
        draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
@@ -573,8 +572,8 @@ cboard_x::Draw(CDraw *draw)
        draw->Canvas.SetColor (230, 230, 230);
        w = output[i].x2 - output[i].x1;
        h = output[i].y2 - output[i].y2;
-       x = output[i].x1 + (w  / 2) + 7;
-       y = output[i].y1 + (h/2) + (Proc.length ());
+       x = output[i].x1 + (w / 2) + 7;
+       y = output[i].y1 + (h / 2) + (Proc.length ());
        draw->Canvas.RotatedText (Proc, x, y, 270);
       }
     }
@@ -623,9 +622,9 @@ cboard_x::Draw(CDraw *draw)
  draw->Update ();
 
  //RB0 mean value to gauge1
- gauge1->SetValue ((pic.pins[33].oavalue - 55)/2);
+ gauge1->SetValue ((pic.pins[33].oavalue - 55) / 2);
  //RB1 mean value to gauge2
- gauge2->SetValue ((pic.pins[32].oavalue - 55)/2);
+ gauge2->SetValue ((pic.pins[32].oavalue - 55) / 2);
 
 }
 

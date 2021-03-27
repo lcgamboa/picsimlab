@@ -297,6 +297,7 @@ void
 cboard_PICGenios::Draw(CDraw *draw)
 {
  int i;
+ lxFont font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
 
  pic_set_pin (39, 1);
  pic_set_pin (40, 1);
@@ -552,6 +553,7 @@ cboard_PICGenios::Draw(CDraw *draw)
       }
      else if (output[i].id == O_MP)
       {
+       draw->Canvas.SetFont (font);
        draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
        draw->Canvas.SetColor (230, 230, 230);
        draw->Canvas.RotatedText (Proc, output[i].x1 + 20, output[i].y1 + 50, -90);
@@ -644,7 +646,7 @@ cboard_PICGenios::Draw(CDraw *draw)
        led = 0;
        break;
       case O_RUN:
-      case O_LPWR: 
+      case O_LPWR:
        draw->Canvas.SetFgColor (0, 55, 0);
        draw->Canvas.SetBgColor (0, 200 * Window1.Get_mcupwr () + 55, 0);
        break;
