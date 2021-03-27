@@ -71,7 +71,7 @@ void
 cpart_servo::Draw (void)
 {
  
- canvas.SetBitmap (BackGround, 1.0, 1.0);
+ canvas.SetBitmap (BackGround, 1.0, 1.0); //FIXME draw servo error on scale or rotate
 
  int i;
 
@@ -233,10 +233,11 @@ cpart_servo::SetOrientation(int _orientation)
  delete BackGround;
  
  lxImage image(&Window5);
- 
+  
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
- 
- BackGround = lxGetBitmapRotated(&image, &Window5, _orientation); 
+
+ BackGround = new lxBitmap(&image, &Window5);
+
  image.Destroy ();
  
  part::SetOrientation (_orientation);

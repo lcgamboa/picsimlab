@@ -46,10 +46,10 @@ cpart_tempsys::cpart_tempsys(unsigned x, unsigned y)
  Y = y;
  ReadMaps ();
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
- Bitmap = new lxBitmap(&image, &Window5);
+ Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
 
  canvas.Create (Window5.GetWWidget (), Bitmap);
@@ -57,12 +57,12 @@ cpart_tempsys::cpart_tempsys(unsigned x, unsigned y)
  vtc = 0;
  vt = 0;
 
- image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT1.png"), Orientation, Scale, Scale);
- vent[0] = new lxBitmap(&image, &Window1);
+ image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT1.svg"), Orientation, Scale * 0.81, Scale * 0.81);
+ vent[0] = new lxBitmap (&image, &Window1);
  image.Destroy ();
 
- image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT2.png"), Orientation, Scale, Scale);
- vent[1] = new lxBitmap(&image, &Window1);
+ image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT2.svg"), Orientation, Scale * 0.81, Scale * 0.81);
+ vent[1] = new lxBitmap (&image, &Window1);
  image.Destroy ();
 
  input_pins[0] = 0;
@@ -321,25 +321,25 @@ cpart_tempsys::ReadPropertiesWindow(CPWindow * WProp)
  input_pins[3] = atoi (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ());
 }
 
-void 
+void
 cpart_tempsys::SetOrientation(int _orientation)
 {
- 
+
  delete vent[0];
  delete vent[1];
- 
- lxImage image(&Window5);
-  
- image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT1.png"));
- vent[0] = lxGetBitmapRotated(&image, &Window1, _orientation);
+
+ lxImage image (&Window5);
+
+ image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT1.svg"), Orientation, Scale * 0.81, Scale * 0.81);
+ vent[0] = new lxBitmap (&image, &Window1);
  image.Destroy ();
 
- image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT2.png"));
- vent[1] = lxGetBitmapRotated(&image, &Window1, _orientation);
+ image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT2.svg"), Orientation, Scale * 0.81, Scale * 0.81);
+ vent[1] = new lxBitmap (&image, &Window1);
  image.Destroy ();
- 
+
  part::SetOrientation (_orientation);
- 
+
 }
 
 part_init("Temperature System", cpart_tempsys, "Other");
