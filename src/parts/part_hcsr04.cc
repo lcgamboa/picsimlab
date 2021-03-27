@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@
 /* outputs */
 enum
 {
- O_P1, O_P2, O_PO1
+ O_P1, O_P2, O_F1, O_F2, O_PO1
 };
 
 /* inputs */
@@ -46,7 +46,7 @@ cpart_hcsr04::cpart_hcsr04(unsigned x, unsigned y)
  Y = y;
  ReadMaps ();
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
@@ -124,15 +124,31 @@ cpart_hcsr04::Draw(void)
      else
       canvas.RotatedText (Window5.GetPinName (output_pins[output[i].id - O_P2]), output[i].x1, output[i].y2, 90);
      break;
-    case O_PO1:
-     canvas.SetColor (50, 50, 50);
+    case O_F1:
+     canvas.SetColor (49, 61, 99);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     canvas.SetFgColor (155, 155, 155);
+     canvas.RotatedText ("+5V", output[i].x1, output[i].y2, 90);
+     break;
+    case O_F2:
+     canvas.SetColor (49, 61, 99);
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     canvas.SetFgColor (155, 155, 155);
+     canvas.RotatedText ("GND", output[i].x1, output[i].y2, 90);
+     break;
+    case O_PO1:
+     canvas.SetColor (179, 179, 179);
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     canvas.SetFgColor (0, 0, 0);
+     canvas.SetBgColor (96, 96, 96);
+     canvas.Rectangle (1, output[i].x1 + 9, output[i].y1 + 9, output[i].x2 - output[i].x1 - 18, output[i].y2 - output[i].y1 - 18);
+     canvas.SetBgColor (46, 46, 46);
+     canvas.Rectangle (1, output[i].x1, output[i].y1 + value / 1.66, 32, 20);
+     snprintf (val, 10, "%3i", (int) (400.0 * (200 - value) / 200.0));
      canvas.SetColor (250, 250, 250);
-     snprintf (val, 10, "%3i", (int)(400.0 * (200 - value) / 200.0));
-     canvas.Rectangle (1, output[i].x1 + 6, output[i].y1 + value / 1.35, 20, 10);
-     canvas.SetColor (150, 0, 0);
      canvas.SetFont (font_p);
-     canvas.RotatedText (val, output[i].x1 + 8, output[i].y1 + value / 1.35, 0);
+     canvas.RotatedText (val, output[i].x1 + 8, output[i].y1 + 5 + value / 1.66, 0);
+     canvas.SetFont (font);
      break;
     }
   }
@@ -196,7 +212,7 @@ cpart_hcsr04::EvMouseButtonPress(uint button, uint x, uint y, uint state)
      switch (input[i].id)
       {
       case I_PO1:
-       value = (y - input[i].y1)*1.35;
+       value = (y - input[i].y1)*1.66;
        if (value > 200)value = 200;
        active = 1;
        break;
@@ -239,7 +255,7 @@ cpart_hcsr04::EvMouseMove(uint button, uint x, uint y, uint state)
 
      if (active)
       {
-       value = (y - input[i].y1)*1.35;
+       value = (y - input[i].y1)*1.66;
        if (value > 200)value = 200;
       }
     }
@@ -262,6 +278,9 @@ cpart_hcsr04::get_out_id(char * name)
 
  if (strcmp (name, "PN_1") == 0)return O_P1;
  if (strcmp (name, "PN_2") == 0)return O_P2;
+
+ if (strcmp (name, "PN_F1") == 0)return O_F1;
+ if (strcmp (name, "PN_F2") == 0)return O_F2;
 
  if (strcmp (name, "PO_1") == 0)return O_PO1;
 
