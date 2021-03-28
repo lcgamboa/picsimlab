@@ -477,11 +477,11 @@ cboard_PICGenios::Draw(CDraw *draw)
        draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
        draw->Canvas.SetBgColor (250, 250, 250);
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 15);
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 20);
 
        draw->Canvas.SetBgColor (150, 150, 150);
-       int x = -10 * sin ((5.585 * (pot[output[i].id - O_POT1] / 200.0)) + 0.349);
-       int y = 10 * cos ((5.585 * (pot[output[i].id - O_POT1] / 200.0)) + 0.349);
+       int x = -15 * sin ((5.585 * (pot[output[i].id - O_POT1] / 200.0)) + 0.349);
+       int y = 15 * cos ((5.585 * (pot[output[i].id - O_POT1] / 200.0)) + 0.349);
        draw->Canvas.Circle (1, output[i].cx + x, output[i].cy + y, 3);
 
       }

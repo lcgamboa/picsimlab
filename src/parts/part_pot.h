@@ -4,7 +4,7 @@
 
 	   ########################################################################
 
-	   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+	   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
 	   This program is free software; you can redistribute it and/or modify
 	   it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ class cpart_pot:public part
       ~cpart_pot(void); 
       void Draw(void);
       void PreProcess(void);
-      lxString GetPictureFileName(void){return lxT("pot/pot.png");};
+      lxString GetPictureFileName(void){return lxT("pot/pot.svg");};
       lxString GetInputMapFile(void){return lxT("pot/pot_i.map");};
       lxString GetOutputMapFile(void){return lxT("pot/pot_o.map");};
       lxString GetPropertiesWindowFile(void){return lxT("pot/pot.lxrad");};

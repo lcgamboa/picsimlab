@@ -43,7 +43,7 @@ public:
     void Process(void);
 
     lxString GetPictureFileName(void) {
-        return lxT("tempsys/TempSys.png");
+        return lxT("tempsys/TempSys.svg");
     };
 
     lxString GetInputMapFile(void) {

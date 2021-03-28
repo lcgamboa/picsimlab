@@ -354,7 +354,7 @@ part::GetScale(void)
 }
 
 void
-part::SetScale(float scale)
+part::SetScale(double scale)
 {
 
  if (Scale == scale)return;

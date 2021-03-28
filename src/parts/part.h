@@ -298,7 +298,7 @@ public:
     /**
      * @brief  Set the orientation to draw
      */
-    virtual void SetScale(float scale);
+    virtual void SetScale(double scale);
     
     /**
      * @brief  Set the part ID, don't be called by user
@@ -327,7 +327,7 @@ protected:
     CCanvas canvas; ///< Internal Canvas to draw in bitmap
     unsigned int refresh; ///< redraw is needed 
     int Orientation; ///< orientation to draw part
-    float Scale; ///< scale to draw part
+    double Scale; ///< scale to draw part
 
     /**
      * @brief  read maps

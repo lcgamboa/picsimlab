@@ -34,7 +34,7 @@ enum
  O_P1, O_AXIS
 };
 
-cpart_servo::cpart_servo (unsigned x, unsigned y)
+cpart_servo::cpart_servo(unsigned x, unsigned y)
 {
  X = x;
  Y = y;
@@ -47,30 +47,30 @@ cpart_servo::cpart_servo (unsigned x, unsigned y)
 
  ReadMaps ();
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
- Bitmap = new lxBitmap(&image, &Window5);
+ Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
 
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
- BackGround = new lxBitmap(&image, &Window5);
+ BackGround = new lxBitmap (&image, &Window5);
  image.Destroy ();
 
  canvas.Create (Window5.GetWWidget (), Bitmap);
 }
 
-cpart_servo::~cpart_servo (void)
+cpart_servo::~cpart_servo(void)
 {
  delete Bitmap;
  delete BackGround;
- canvas.Destroy();
+ canvas.Destroy ();
 }
 
 void
-cpart_servo::Draw (void)
+cpart_servo::Draw(void)
 {
- 
+
  canvas.SetBitmap (BackGround, 1.0, 1.0); //FIXME draw servo error on scale or rotate
 
  int i;
@@ -120,12 +120,12 @@ cpart_servo::Draw (void)
 }
 
 void
-cpart_servo::Process (void)
+cpart_servo::Process(void)
 {
 
  const picpin * ppins = Window5.GetPinsValues ();
 
- if(input_pin == 0)return;
+ if (input_pin == 0)return;
 
  in_[1] = in_[0];
  in_[0] = ppins[input_pin - 1].value;
@@ -148,14 +148,14 @@ cpart_servo::Process (void)
 }
 
 unsigned short
-cpart_servo::get_in_id (char * name)
+cpart_servo::get_in_id(char * name)
 {
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
 }
 
 unsigned short
-cpart_servo::get_out_id (char * name)
+cpart_servo::get_out_id(char * name)
 {
 
  if (strcmp (name, "PN_1") == 0)return O_P1;
@@ -166,7 +166,7 @@ cpart_servo::get_out_id (char * name)
 }
 
 lxString
-cpart_servo::WritePreferences (void)
+cpart_servo::WritePreferences(void)
 {
  char prefs[256];
 
@@ -176,12 +176,11 @@ cpart_servo::WritePreferences (void)
 }
 
 void
-cpart_servo::ReadPreferences (lxString value)
+cpart_servo::ReadPreferences(lxString value)
 {
  sscanf (value.c_str (), "%hhu", &input_pin);
- RegisterRemoteControl();
+ RegisterRemoteControl ();
 }
-
 
 void
 cpart_servo::RegisterRemoteControl(void)
@@ -191,14 +190,14 @@ cpart_servo::RegisterRemoteControl(void)
    switch (output[i].id)
     {
     case O_AXIS:
-       output[i].status = (void *) &angle;
+     output[i].status = (void *) &angle;
      break;
     }
   }
 }
 
 void
-cpart_servo::ConfigurePropertiesWindow (CPWindow * WProp)
+cpart_servo::ConfigurePropertiesWindow(CPWindow * WProp)
 {
  lxString Items = Window5.GetPinsNames ();
  lxString spin;
@@ -220,28 +219,47 @@ cpart_servo::ConfigurePropertiesWindow (CPWindow * WProp)
 }
 
 void
-cpart_servo::ReadPropertiesWindow (CPWindow * WProp)
+cpart_servo::ReadPropertiesWindow(CPWindow * WProp)
 {
  input_pin = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
- RegisterRemoteControl();
+ RegisterRemoteControl ();
 }
 
-void 
-cpart_servo::SetOrientation(int _orientation)
+void
+cpart_servo::SetOrientation(int orientation)
 {
- 
+ if (Orientation == orientation)return;
+
+ part::SetOrientation (orientation);
+
  delete BackGround;
- 
- lxImage image(&Window5);
-  
+
+ lxImage image (&Window5);
+
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
- BackGround = new lxBitmap(&image, &Window5);
+ BackGround = new lxBitmap (&image, &Window5);
 
  image.Destroy ();
- 
- part::SetOrientation (_orientation);
- 
+}
+
+void
+cpart_servo::SetScale(double scale)
+{
+
+ if (Scale == scale)return;
+
+ part::SetScale (scale);
+
+ delete BackGround;
+
+ lxImage image (&Window5);
+
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
+
+ BackGround = new lxBitmap (&image, &Window5);
+
+ image.Destroy ();
 }
 
 //Register the part in PICSimLab spare parts list
