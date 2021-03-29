@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -35,9 +35,9 @@ enum
 };
 
 void
-cpart_LCD_hd44780::Reset(void)
+cpart_LCD_hd44780::InitGraphics(void)
 {
- lxImage image(&Window5);
+ lxImage image (&Window5);
 
  switch (model)
   {
@@ -61,6 +61,12 @@ cpart_LCD_hd44780::Reset(void)
  canvas.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
  image.Destroy ();
+}
+
+void
+cpart_LCD_hd44780::Reset(void)
+{
+ InitGraphics ();
 
  switch (model)
   {
@@ -242,7 +248,7 @@ cpart_LCD_hd44780::ReadPreferences(lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7], &input_pins[8], &input_pins[9], &input_pins[10], &model);
  Reset ();
- RegisterRemoteControl();
+ RegisterRemoteControl ();
 }
 
 void
@@ -253,7 +259,7 @@ cpart_LCD_hd44780::RegisterRemoteControl(void)
    switch (output[i].id)
     {
     case O_LCD:
-       output[i].status = (void *) &lcd;
+     output[i].status = (void *) &lcd;
      break;
     }
   }
@@ -411,8 +417,8 @@ cpart_LCD_hd44780::ReadPropertiesWindow(CPWindow * WProp)
 
 
  Reset ();
- 
- RegisterRemoteControl();
+
+ RegisterRemoteControl ();
 }
 
 void
@@ -489,7 +495,16 @@ void
 cpart_LCD_hd44780::SetOrientation(int _orientation)
 {
  part::SetOrientation (_orientation);
- Reset ();
+ InitGraphics ();
+ lcd.update=1;
+}
+
+void
+cpart_LCD_hd44780::SetScale(double scale)
+{
+ part::SetScale (scale);
+ InitGraphics ();
+ lcd.update=1;
 }
 
 part_init("LCD hd44780", cpart_LCD_hd44780, "Output");

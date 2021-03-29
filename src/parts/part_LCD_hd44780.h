@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -45,10 +45,10 @@ class cpart_LCD_hd44780:public part
       ~cpart_LCD_hd44780(void);
       void Draw(void);
       void Process(void);
-      lxString GetPictureFileName(void){return lxT("LCD_hd44780/LCD_hd44780.png");};
-      lxString GetPictureFileName_(void){return lxT("LCD_hd44780/LCD_hd44780_.png");};
-      lxString GetPictureFileName__(void){return lxT("LCD_hd44780/LCD_hd44780__.png");};
-      lxString GetPictureFileName___(void){return lxT("LCD_hd44780/LCD_hd44780___.png");};
+      lxString GetPictureFileName(void){return lxT("LCD_hd44780/LCD_hd44780.svg");};
+      lxString GetPictureFileName_(void){return lxT("LCD_hd44780/LCD_hd44780_.svg");};
+      lxString GetPictureFileName__(void){return lxT("LCD_hd44780/LCD_hd44780__.svg");};
+      lxString GetPictureFileName___(void){return lxT("LCD_hd44780/LCD_hd44780___.svg");};
       lxString GetInputMapFile(void){return lxT("LCD_hd44780/LCD_hd44780_i.map");};
       lxString GetOutputMapFile(void){return lxT("LCD_hd44780/LCD_hd44780_o.map");};
       lxString GetPropertiesWindowFile(void){return lxT("LCD_hd44780/LCD_hd44780.lxrad");};
@@ -57,10 +57,12 @@ class cpart_LCD_hd44780:public part
       void ReadPropertiesWindow(CPWindow * WProp);
       lxString WritePreferences(void);
       void SetOrientation(int orientation);
+      void SetScale(double scale);
       void ReadPreferences(lxString value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
     private:
+      void InitGraphics(void);  
       void RegisterRemoteControl(void);          
       unsigned char input_pins[11]; 
       lcd_t lcd;
