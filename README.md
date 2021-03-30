@@ -18,15 +18,15 @@ The [experimental version boards](https://lcgamboa.github.io/picsimlab/Experimen
 in addition to the stable ones.
 
 
-![PICsimLab](docs/screenshot.png?raw=true "PICsimLab")
+![PICsimLab](https://raw.githubusercontent.com/lcgamboa/picsimlab_docs/main/screenshot.png "PICsimLab")
 
-![PICsimLab](docs/picsimlab4.png?raw=true "PICsimLab")
+![PICsimLab](https://raw.githubusercontent.com/lcgamboa/picsimlab_docs/main/picsimlab4.png "PICsimLab")
 
 ## More info
 
 ### For users
 
-[Online Documentation](https://lcgamboa.github.io/picsimlab/)
+[Online Documentation](https://lcgamboa.github.io/picsimlab_docs/)
 
 [Examples](https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html)
 
@@ -36,7 +36,7 @@ in addition to the stable ones.
 
 ### For developers
 
-[Development Documentation](https://lcgamboa.github.io/picsimlab/devel/html/)
+[Development Documentation](https://lcgamboa.github.io/picsimlab_docs/devel/html/)
 
 [TODO list](./TODO.md)
 
@@ -157,7 +157,7 @@ gpsim           - PIC simulator                    http://gpsim.sourceforge.net/
 
 gtkwave         - Wave viewer                      http://gtkwave.sourceforge.net/
 
-### Graphic edition
+### Graphic editing
 
 gimp		- pictures and img maps edition    https://www.gimp.org/
 
