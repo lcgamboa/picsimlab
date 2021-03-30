@@ -58,7 +58,7 @@ If you are on macOS you can run PICSimLab using Wine:
 
 In first time build:
 ```
-git clone https://github.com/lcgamboa/picsimlab.git
+git clone --depth=1 https://github.com/lcgamboa/picsimlab.git
 cd picsimlab
 ./picsimlab_build_all_and_install.sh
 ```

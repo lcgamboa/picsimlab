@@ -903,7 +903,7 @@ CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
 {
 #ifdef EXT_BROWSER
  //lxLaunchDefaultBrowser(lxT("file://")+share + lxT ("docs/picsimlab.html"));
- lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/"));
+ lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab_docs/"));
 #else 
  Window2.html1.SetLoadFile (share + lxT ("docs/picsimlab.html"));
  Window2.Show ();
@@ -915,7 +915,7 @@ CPWindow1::menu1_Help_Board_EvMenuActive(CControl * control)
 {
  lxString bname = lxString (boards_list[lab].name_).substr (0, 12);
 
- lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/Features_Board_") + bname + lxT (".html"));
+ lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab_docs/Features_Board_") + bname + lxT (".html"));
 }
 
 void

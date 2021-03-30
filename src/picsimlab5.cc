@@ -852,7 +852,7 @@ CPWindow5::pmenu2_Delete_EvMenuActive(CControl * control)
 void
 CPWindow5::pmenu2_Help_EvMenuActive(CControl * control)
 {
- lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/") + parts[PartSelected]->GetHelpURL ());
+ lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab_docs/") + parts[PartSelected]->GetHelpURL ());
 }
 
 void
@@ -866,7 +866,7 @@ CPWindow5::menu1_Help_Contents_EvMenuActive(CControl * control)
 {
 #ifdef EXT_BROWSER
  //lxLaunchDefaultBrowser(lxT("file://")+share + lxT ("docs/picsimlab.html"));
- lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab/Spare_Parts.html"));
+ lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab_docs/Spare_Parts.html"));
 #else 
  Window2.html1.SetLoadFile (Window1.GetSharePath () + lxT ("docs/picsimlab.html"));
  Window2.Show ();

@@ -17,24 +17,24 @@ cl sudo apt-get -y install linux-headers-`uname -r` dkms
 cl mkdir build_all
 cd build_all
 echo -e "\033[1;32m ---------------------- download deps -------------------------------------\033[0m"
-git clone https://github.com/lcgamboa/picsim.git
-git clone https://github.com/lcgamboa/lxrad.git
-git clone https://github.com/lcgamboa/tty0tty.git
-git clone https://github.com/lcgamboa/simavr.git
+git clone --depth=1 https://github.com/lcgamboa/picsim.git
+git clone --depth=1 https://github.com/lcgamboa/lxrad.git
+git clone --depth=1 https://github.com/lcgamboa/tty0tty.git
+git clone --depth=1 https://github.com/lcgamboa/simavr.git
 if [[ -n "$BUILD_EXPERIMETAL" ]]; then
 cl sudo apt-get -y install bison++ python libglib2.0-dev libpixman-1-dev libfdt-dev gpsim-dev gpsim
-git clone https://github.com/lcgamboa/uCsim_picsimlab.git
-git clone https://github.com/lcgamboa/qemu_stm32.git
+git clone --depth=1 https://github.com/lcgamboa/uCsim_picsimlab.git
+git clone --depth=1 --no-single-branch https://github.com/lcgamboa/qemu_stm32.git
 fi	
 echo -e "\033[1;32m ---------------------- build and install picsim ------------------------- \033[0m"
 cd picsim
-cl git pull
+cl git pull --no-rebase
 cl make clean;make -j4
 cl sudo make install
 cd ..
 echo -e "\033[1;32m ---------------------- build and install lxrad -------------------------- \033[0m"
 cd lxrad
-git pull
+git pull --no-rebase
 cl ./make_deps.sh
 cl autoconf
 cl ./configure --prefix=/usr
@@ -43,7 +43,7 @@ cl sudo make install
 cd ..
 echo -e "\033[1;32m ---------------------- build and install tty0tty ------------------------ \033[0m"
 cd tty0tty/module
-git pull
+git pull --no-rebase
 cl sudo ./dkms-install.sh
 #cl make clean;make -j4
 #cl sudo make install
@@ -52,14 +52,14 @@ cl sudo modprobe tty0tty
 cd ../../
 echo -e "\033[1;32m ---------------------- build and install simavr ------------------------- \033[0m"
 cd simavr
-git pull
+git pull --no-rebase
 cl make clean;make -j4 
 cl sudo make install
 cd ../
 if [[ -z "$BUILD_EXPERIMETAL" ]]; then
 echo -e "\033[1;32m ---------------------- build and install picsimlab ---------------------- \033[0m"
 cd ../
-#git pull
+#git pull --no-rebase
 cl make clean;make -j4
 cl sudo make install
 else	
@@ -82,7 +82,7 @@ cl strip qemu-stm32
 cl sudo cp qemu-stm32 /usr/bin/
 cd ../../
 echo -e "\033[1;32m ---------------------- build and install picsimlab ---------------------- \033[0m"
-#git pull
+#git pull --no-rebase
 cd ../
 cl make clean;make -j4 exp
 cl sudo make install
