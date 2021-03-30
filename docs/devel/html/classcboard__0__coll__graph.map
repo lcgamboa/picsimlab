@@ -1,8 +1,0 @@
-<map id="cboard_0" name="cboard_0">
-<area shape="rect" id="node1" title=" " alt="" coords="62,247,143,273"/>
-<area shape="rect" id="node2" href="$classboard__pic.html" title=" " alt="" coords="5,171,91,197"/>
-<area shape="rect" id="node3" href="$classboard.html" title="Board class." alt="" coords="73,95,132,121"/>
-<area shape="rect" id="node6" href="$classboard__avr.html" title=" " alt="" coords="115,171,202,197"/>
-<area shape="rect" id="node4" href="$structinput__t.html" title="input map struct" alt="" coords="21,5,88,32"/>
-<area shape="rect" id="node5" href="$structoutput__t.html" title="output map struct" alt="" coords="113,5,189,32"/>
-</map>

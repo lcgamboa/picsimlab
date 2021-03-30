@@ -1,8 +1,0 @@
-<map id="cpart_UART" name="cpart_UART">
-<area shape="rect" id="node1" title=" " alt="" coords="124,184,223,211"/>
-<area shape="rect" id="node2" href="$classpart.html" title="PART class." alt="" coords="111,95,159,121"/>
-<area shape="rect" id="node3" href="$structinput__t.html" title="input map struct" alt="" coords="5,5,72,32"/>
-<area shape="rect" id="node4" href="$structoutput__t.html" title="output map struct" alt="" coords="97,5,173,32"/>
-<area shape="rect" id="node5" href="$structuart__t.html" title=" " alt="" coords="203,95,263,121"/>
-<area shape="rect" id="node6" href="$structbitbang__uart__t.html" title=" " alt="" coords="197,5,313,32"/>
-</map>

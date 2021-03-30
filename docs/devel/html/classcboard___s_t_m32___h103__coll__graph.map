@@ -1,7 +1,0 @@
-<map id="cboard_STM32_H103" name="cboard_STM32_H103">
-<area shape="rect" id="node1" title=" " alt="" coords="7,247,166,273"/>
-<area shape="rect" id="node2" href="$classbsim__qemu__stm32.html" title=" " alt="" coords="13,171,160,197"/>
-<area shape="rect" id="node3" href="$classboard.html" title="Board class." alt="" coords="57,95,116,121"/>
-<area shape="rect" id="node4" href="$structinput__t.html" title="input map struct" alt="" coords="5,5,72,32"/>
-<area shape="rect" id="node5" href="$structoutput__t.html" title="output map struct" alt="" coords="97,5,173,32"/>
-</map>

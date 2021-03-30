@@ -1,6 +1,0 @@
-(sym_lib_table
-  (lib (name b4-rescue)(type Legacy)(uri /home/gamboa/ownCloud/projetos/picsimlab/docs/kicad/b4/b4-rescue.lib)(options "")(descr ""))
-  (lib (name dips-s)(type Legacy)(uri /home/gamboa/Desktop/microcontroladores/picsim_boards/componentes/lib/dips-s.lib)(options "")(descr ""))
-  (lib (name relay)(type Legacy)(uri /home/gamboa/Desktop/microcontroladores/picsim_boards/componentes/lib/relay.lib)(options "")(descr ""))
-  (lib (name w_device)(type Legacy)(uri /home/gamboa/Desktop/microcontroladores/picsim_boards/componentes/lib/w_device.lib)(options "")(descr ""))
-)

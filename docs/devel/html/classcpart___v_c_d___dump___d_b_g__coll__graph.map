@@ -1,6 +1,0 @@
-<map id="cpart_VCD_Dump_DBG" name="cpart_VCD_Dump_DBG">
-<area shape="rect" id="node1" title=" " alt="" coords="5,171,177,197"/>
-<area shape="rect" id="node2" href="$classpart.html" title="PART class." alt="" coords="67,95,115,121"/>
-<area shape="rect" id="node3" href="$structinput__t.html" title="input map struct" alt="" coords="10,5,77,32"/>
-<area shape="rect" id="node4" href="$structoutput__t.html" title="output map struct" alt="" coords="101,5,177,32"/>
-</map>

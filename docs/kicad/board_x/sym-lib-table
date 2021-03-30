@@ -1,4 +1,0 @@
-(sym_lib_table
-  (lib (name board_x-rescue)(type Legacy)(uri /home/gamboa/ownCloud/projetos/picsimlab/docs/kicad/board_x/board_x-rescue.lib)(options "")(descr ""))
-  (lib (name 18f4550)(type Legacy)(uri /home/gamboa/ownCloud/projetos/picsimlab/docs/kicad/board_x/lib/18f4550.lib)(options "")(descr ""))
-)

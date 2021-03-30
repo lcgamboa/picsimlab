@@ -1,6 +1,0 @@
-<map id="board_simavr" name="board_simavr">
-<area shape="rect" id="node1" title=" " alt="" coords="116,80,227,107"/>
-<area shape="rect" id="node3" href="$classcboard___arduino___uno.html" title=" " alt="" coords="5,155,161,181"/>
-<area shape="rect" id="node4" href="$classcboard___breadboard.html" title=" " alt="" coords="185,155,333,181"/>
-<area shape="rect" id="node2" href="$classboard.html" title="Board class." alt="" coords="142,5,201,32"/>
-</map>
