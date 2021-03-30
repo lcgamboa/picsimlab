@@ -1,16 +1,16 @@
 ### TODOs
 | Filename | line # | TODO
 |:------|:------:|:------
-| [src/picsimlab1.cc](src/picsimlab1.cc#L367) | 367 | verify initialization errors
-| [src/picsimlab4.cc](src/picsimlab4.cc#L628) | 628 | select the better mode for channel trigguer
-| [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L110) | 110 | jumper support
-| [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L67) | 67 | TEMP cooler must don't work with AQUE=0
+| [src/picsimlab1.cc](src/picsimlab1.cc#L422) | 422 | verify initialization errors
+| [src/picsimlab4.cc](src/picsimlab4.cc#L630) | 630 | select the better mode for channel trigguer
+| [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L116) | 116 | jumper support
+| [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L68) | 68 | TEMP cooler must don't work with AQUE=0
 | [src/boards/bsim_gpsim.cc](src/boards/bsim_gpsim.cc#L170) | 170 | add VCC and GND pins
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L863) | 863 | default output value is not used yet (DOV)
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1150) | 1150 | avr ID pointer
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1157) | 1157 | avr EEPROM pointer
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1183) | 1183 | avr ID size
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1190) | 1190 | AVR EEPROM size
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L894) | 894 | default output value is not used yet (DOV)
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1181) | 1181 | avr ID pointer
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1188) | 1188 | avr EEPROM pointer
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1214) | 1214 | avr ID size
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1221) | 1221 | AVR EEPROM size
 | [src/devices/eth_w5500.cc](src/devices/eth_w5500.cc#L366) | 366 | add support to buffer size different of 2k
 | [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L141) | 141 | ssd1306 Scrolling Command Table
 | [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L155) | 155 | ssd1306 Continuous Vertical and Horizontal Scroll Setup
@@ -32,7 +32,7 @@
 ### FIXMEs
 | Filename | line # | FIXME
 |:------|:------:|:------
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1176) | 1176 | avr CONFIG size
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1207) | 1207 | avr CONFIG size
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L118) | 118 | only for BANK=0;
 | [src/parts/part_dcmotor.cc](src/parts/part_dcmotor.cc#L284) | 284 | on slow speed output is not 90 degrees
 | [src/parts/part_encoder.cc](src/parts/part_encoder.cc#L218) | 218 | on slow speed output is not 90 degrees

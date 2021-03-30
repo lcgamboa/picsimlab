@@ -2,6 +2,16 @@
 
 ### New
 
+* Initial support to Franzininho DIY board with attiny85. [lcgamboa]
+
+* Resize board to display size when board size is bigger than display. [lcgamboa]
+
+* Support to scroll ans scale spare parts window with mouse. [lcgamboa]
+
+* Added a status bar int the Spare parts window to show alias, scale and offset. [lcgamboa]
+
+* Support to use SVG instead PNG for part pictures. [lcgamboa]
+
 * Support to use SVG instead PNG for boards pictures. [lcgamboa]
 
 * Oscilloscope channel info on screen added. [lcgamboa]
@@ -13,6 +23,10 @@
 * Menu entry to download MPLABX debugger plugin. [lcgamboa]
 
 * Command "pins" to show pins status and dir in control interface. [lcgamboa]
+
+### Changes
+
+* Docs moved to picsimlab_docs repo. [lcgamboa]
 
 ### Fix
 
