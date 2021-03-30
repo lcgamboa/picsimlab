@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -838,6 +838,20 @@ cpart_LCD_ili9341::Reset(void)
 {
  lcd_ili9341_rst (&lcd);
  tsc_XPT2046_rst (&touch);
+}
+
+void
+cpart_LCD_ili9341::SetOrientation(int _orientation)
+{
+ part::SetOrientation (_orientation);
+ lcd_ili9341_update(&lcd);
+}
+
+void
+cpart_LCD_ili9341::SetScale(double scale)
+{
+ part::SetScale (scale);
+ lcd_ili9341_update(&lcd);
 }
 
 part_init("LCD ili9341", cpart_LCD_ili9341, "Output");

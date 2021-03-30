@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -266,10 +266,6 @@ cpart_LCD_ssd1306::Process(void)
 {
  const picpin * ppins = Window5.GetPinsValues ();
 
-
-
-
-
  if (type_com)
   {
    if ((input_pins[0] > 0)&&(input_pins[1] > 0))
@@ -289,8 +285,20 @@ cpart_LCD_ssd1306::Process(void)
      lcd_ssd1306_SPI_io (&lcd, ppins[input_pins[1] - 1].value, ppins[input_pins[0] - 1].value, ppins[input_pins[4] - 1].value, ppins[input_pins[2] - 1].value, ppins[input_pins[3] - 1].value);
     }
   }
+}
 
+void
+cpart_LCD_ssd1306::SetOrientation(int _orientation)
+{
+ part::SetOrientation (_orientation);
+ lcd_ssd1306_update(&lcd);
+}
 
+void
+cpart_LCD_ssd1306::SetScale(double scale)
+{
+ part::SetScale (scale);
+ lcd_ssd1306_update(&lcd);
 }
 
 part_init("LCD ssd1306", cpart_LCD_ssd1306, "Output");

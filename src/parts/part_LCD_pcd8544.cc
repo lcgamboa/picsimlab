@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -264,7 +264,20 @@ cpart_LCD_pcd8544::Process (void)
  {
   lcd_pcd8544_io (&lcd, ppins[input_pins[3] - 1].value, ppins[input_pins[4] - 1].value, ppins[input_pins[1] - 1].value, ppins[input_pins[0] - 1].value, ppins[input_pins[2] - 1].value);
  }
+}
 
+void
+cpart_LCD_pcd8544::SetOrientation(int _orientation)
+{
+ part::SetOrientation (_orientation);
+ lcd_pcd8544_update(&lcd);
+}
+
+void
+cpart_LCD_pcd8544::SetScale(double scale)
+{
+ part::SetScale (scale);
+ lcd_pcd8544_update(&lcd);
 }
 
 part_init("LCD pcd8544", cpart_LCD_pcd8544, "Output");
