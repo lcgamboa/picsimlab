@@ -129,7 +129,7 @@ void
 cboard_McLab1::Draw(CDraw *draw)
 {
  int i;
- lxFont font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
+ lxFont font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  draw->Canvas.Init (Scale, Scale);
 
 

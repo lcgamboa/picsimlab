@@ -262,7 +262,7 @@ cboard_gpboard::Draw(CDraw *draw)
  lxRect rec;
  lxSize ps;
  lxFont font ((MGetPinCount () >= 44) ? 5 : ((MGetPinCount () > 14) ? 12 : 4)
-              , lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
+              , lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
 
  draw->Canvas.Init (Scale, Scale); //initialize draw context
 

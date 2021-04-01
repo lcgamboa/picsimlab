@@ -297,7 +297,7 @@ void
 cboard_PICGenios::Draw(CDraw *draw)
 {
  int i;
- lxFont font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_NORMAL);
+ lxFont font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
 
  pic_set_pin (39, 1);
  pic_set_pin (40, 1);
