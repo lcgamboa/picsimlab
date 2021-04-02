@@ -47,7 +47,7 @@ typedef struct {
     unsigned int y2; ///< y2 position
     unsigned int cx; ///< center x position
     unsigned int cy; ///< center y position
-    char name[10]; ///< region name
+    char name[10];   ///< region name
     unsigned short id; ///< region ID
     void * status;
 } input_t;
