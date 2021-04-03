@@ -143,6 +143,8 @@ CPWindow1::timer1_EvOnTime(CControl * control)
      if (nw == 0)nw = 1;
      int nh = (plHeight * scale);
      if (nh == 0)nh = 1;
+     
+     scale =  ((double)nw)/plWidth;
 
      draw1.SetWidth (nw);
      draw1.SetHeight (nh);
