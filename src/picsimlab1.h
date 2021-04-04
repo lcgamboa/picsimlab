@@ -334,7 +334,7 @@ private:
     float over;
     int create;
 
-    int ondraw;
+    int crt;
     
     int need_resize;
     

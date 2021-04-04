@@ -458,7 +458,7 @@ create=0;
 FNAME=lxT(" ");
 OldPath=lxT("");
     
-ondraw=0;    
+crt=1;    
 
 pboard=NULL;
 

@@ -81,16 +81,12 @@ usleep(unsigned int usec)
 static lxString cvt_fname;
 #endif
 
-#ifndef _NOTHREAD
-static int crt;
-#endif
-
 void
 CPWindow1::timer1_EvOnTime(CControl * control)
 {
  status.st[0] |= ST_T1;
 
-#ifdef _NOTHREAD
+ #ifdef _NOTHREAD
  if (timer1.GetOverTime () < 10)
   {
    label1.SetColor (0, 0, 0);
@@ -100,20 +96,32 @@ CPWindow1::timer1_EvOnTime(CControl * control)
    label1.SetColor (255, 0, 0);
   }
 #else   
- if (!ondraw)
+ if (!tgo)
   {
-   if (!crt)
-    label1.SetColor (0, 0, 0);
+   if (crt)
+    {
+     label1.SetColor (0, 0, 0);
+     label1.Draw ();
+    }
    crt = 0;
   }
  else
   {
-   label1.SetColor (255, 0, 0);
+   if (!crt)
+    {
+     label1.SetColor (255, 0, 0);
+     label1.Draw ();
+    }
    crt = 1;
   }
 #endif
 
+ if (!tgo)
+  {
+   tgo = 1; //thread sync
+  }
 
+ 
  if (need_resize == 1)
   {
    double scalex, scaley, scale_temp;
@@ -143,8 +151,8 @@ CPWindow1::timer1_EvOnTime(CControl * control)
      if (nw == 0)nw = 1;
      int nh = (plHeight * scale);
      if (nh == 0)nh = 1;
-     
-     scale =  ((double)nw)/plWidth;
+
+     scale = ((double) nw) / plWidth;
 
      draw1.SetWidth (nw);
      draw1.SetHeight (nh);
@@ -170,18 +178,12 @@ CPWindow1::timer1_EvOnTime(CControl * control)
  need_resize++;
 
  pboard->Draw (&draw1);
- label1.Draw ();
- ondraw = 1;
 
- status.st[0] &= ~ST_T1;
-
- if (!tgo)
-  {
-   tgo = 1; //thread sync
-  }
 #ifndef __EMSCRIPTEN__
  rcontrol_loop ();
 #endif 
+
+ status.st[0] &= ~ST_T1;
 }
 
 void
@@ -194,10 +196,9 @@ CPWindow1::thread1_EvThreadRun(CControl*)
    if (tgo)
     {
      status.st[1] |= ST_TH;
-     tgo = 0;
      pboard->Run_CPU ();
      if (debug)pboard->DebugLoop ();
-     ondraw = 0;
+     tgo = 0;
      status.st[1] &= ~ST_TH;
     }
    else
