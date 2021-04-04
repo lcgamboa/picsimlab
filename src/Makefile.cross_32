@@ -1,17 +1,17 @@
 include Makefile.Common
 
 TOOL_PREFIX=i686-w64-mingw32-
-CC = $(TOOL_PREFIX)g++
+CXX = $(TOOL_PREFIX)g++
 WINDRES =  $(TOOL_PREFIX)windres  
 STRIP =  $(TOOL_PREFIX)strip 
 PKG_CONFIG= -mms-bitfields -I../dev_w32/include/glib-2.0 -I../dev_w32/lib/glib-2.0/include
 
-override CFLAGS+= -D_ARCH_=\"Windows32_WX\" -D_DATE_=\"${DATE}\"
-override CFLAGS+= -Wall -g -O2 -D_WIN_ -I../dev_w32/include -I../dev_w32/include/lxrad -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  
-override CFLAGS+= -DEXT_BROWSER
-override CFLAGS+= -I../dev_w32/lib/wx/include/i686-w64-mingw32-msw-unicode-3.1 -I../dev_w32/include/wx-3.1 -D_FILE_OFFSET_BITS=64 -DWXUSINGDLL -D__WXMSW__ -mthreads
+override CXXFLAGS+= -D_ARCH_=\"Windows32_WX\" -D_DATE_=\"${DATE}\"
+override CXXFLAGS+= -Wall -g -O2 -D_WIN_ -I../dev_w32/include -I../dev_w32/include/lxrad -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  
+override CXXFLAGS+= -DEXT_BROWSER
+override CXXFLAGS+= -I../dev_w32/lib/wx/include/i686-w64-mingw32-msw-unicode-3.1 -I../dev_w32/include/wx-3.1 -D_FILE_OFFSET_BITS=64 -DWXUSINGDLL -D__WXMSW__ -mthreads
 
-#CFLAGS +=`i686-w64-mingw32-msw-unicode-3.1  --cxxflags` 
+#CXXFLAGS +=`i686-w64-mingw32-msw-unicode-3.1  --cxxflags` 
 
 LIBS= -llxrad -lOpenAL32 -lpicsim  -lsimavr -lws2_32 -L../dev_w32/lib $(ELIBS)
 LIBS+= -Wl,--subsystem,windows -mwindows 
@@ -20,16 +20,21 @@ LIBS+= -lwx_mswu_core-3.1-i686-w64-mingw32 -lwx_baseu-3.1-i686-w64-mingw32
 #LIBS+=`i686-w64-mingw32-msw-unicode-3.1 --libs` 
 
 all: $(OBJS)
-	$(WINDRES) picsimlab_res.rc  -O coff -o picsimlab_res.o
-	$(CC) $(CFLAGS) $(OBJS) picsimlab_res.o -opicsimlab.exe $(LIBS)
-	$(STRIP) picsimlab.exe
-	mv *.exe ../picsimlab_win32/
+	@echo "Linking picsimlab"
+	@$(WINDRES) picsimlab_res.rc  -O coff -o picsimlab_res.o
+	@$(CXX) $(CXXFLAGS) $(OBJS) picsimlab_res.o -opicsimlab.exe $(LIBS)
+	@$(STRIP) picsimlab.exe
+	@mv *.exe ../picsimlab_win32/
 
 %.o: %.cc
-	$(CC) -c $(CFLAGS) $< -o $@ 
+	@echo "Compiling $<"
+	@$(CXX) -c $(CXXFLAGS) $< -o $@ 
 
-run: all
-	wine ./picsimlab.exe
+run: 
+	cd ../picsimlab_win32/; wine ./picsimlab.exe
+
+debug:
+	cd ../picsimlab_win32/; wine /usr/share/win32/gdbserver.exe localhost:1234 picsimlab.exe
 
 install:
 

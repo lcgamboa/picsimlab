@@ -42,8 +42,9 @@ exp: $(OBJS_EXP)  all
 rebuild:
 	rm -rf picsimlab
 
-override CFLAGS+= $(EFLAGS) -DEXT_BROWSER_EXAMPLES -DLEGACY081 
+override CXXFLAGS+= $(EFLAGS) -DEXT_BROWSER_EXAMPLES -DLEGACY081 
 
 
 boards/bridge_gpsim.o: boards/bridge_gpsim.cc
-	$(CC) $(CFLAGS)  $(PKG_CONFIG)  boards/bridge_gpsim.cc  -c -o boards/bridge_gpsim.o 
+	@echo "Compiling $<"
+	@$(CXX) $(CXXFLAGS)  $(PKG_CONFIG)  boards/bridge_gpsim.cc  -c -o boards/bridge_gpsim.o 

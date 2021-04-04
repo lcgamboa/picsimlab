@@ -28,10 +28,12 @@ OBJS = pespmsim.o espmsim1.o espmsim2.o serial.o tcp.o
 exp: all
 
 all: $(OBJS)
-	$(CC) $(FLAGS) $(OBJS) -oespmsim $(LIBS)
+	@echo "Linking espmsim"
+	@$(CC) $(FLAGS) $(OBJS) -oespmsim $(LIBS)
 
 %.o: %.cc
-	$(CC) -c $(FLAGS) $< 
+	@echo "Compiling $<"
+	@$(CC) -c $(FLAGS) $< 
 
 run: all
 	./espmsim

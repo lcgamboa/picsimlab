@@ -21,12 +21,14 @@ OBJS = pespmsim.o espmsim1.o espmsim2.o serial.o tcp.o
 exp: all
 
 all: $(OBJS)
-	$(WINDRES) espmsim_res.rc  -O coff -o espmsim_res.o
-	$(CC) $(FLAGS) $(OBJS) espmsim_res.o -oespmsim.exe $(LIBS)
-	mv *.exe ../../picsimlab_win64/
+	@echo "Linking espmsim"
+	@$(WINDRES) espmsim_res.rc  -O coff -o espmsim_res.o
+	@$(CC) $(FLAGS) $(OBJS) espmsim_res.o -oespmsim.exe $(LIBS)
+	@mv *.exe ../../picsimlab_win64/
 
 %.o: %.cc
-	$(CC) -c $(FLAGS) $< 
+	@echo "Compiling $<"
+	@$(CC) -c $(FLAGS) $< 
 
 run: all
 	wine2 espmsim.exe

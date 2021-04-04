@@ -1,6 +1,6 @@
 include Makefile.Common
 
-CC = g++
+CXX= g++
 
 PKG_CONFIG= `pkg-config --cflags glib-2.0` 
 
@@ -16,10 +16,10 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-override CFLAGS+= -D_VERSION_=\"$(VERSION)\" -Wall -g -O2 -D_SHARE_=\"../share/picsimlab/\"  `lxrad-config --cxxflags`
-override CFLAGS+= -DEXT_BROWSER
-#override CFLAGS+=-fsanitize=address
-override CFLAGS+= -D_ARCH_=\"Linux64_WX\" -D_DATE_=\"${DATE}\"
+override CXXFLAGS+= -D_VERSION_=\"$(VERSION)\" -Wall -g -O2 -D_SHARE_=\"../share/picsimlab/\"  `lxrad-config --cxxflags`
+override CXXFLAGS+= -DEXT_BROWSER
+#override CXXFLAGS+=-fsanitize=address
+override CXXFLAGS+= -D_ARCH_=\"Linux64_WX\" -D_DATE_=\"${DATE}\"
 
 LIBS =  `lxrad-config --libs` -lpicsim -lsimavr -lelf $(ELIBS)
 #LIBS=  ../../picsim/src/libpicsim_dbg.a ../../LXRAD_WX/libteste/liblxrad.a  ../../lunasvg/build/liblunasvg.a \
@@ -33,10 +33,12 @@ LIBS =  `lxrad-config --libs` -lpicsim -lsimavr -lelf $(ELIBS)
 all: picsimlab
 	
 picsimlab: $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -opicsimlab $(LIBS) 
+	@echo "Linking picsimlab"
+	@$(CXX) $(CXXFLAGS) $(OBJS) -opicsimlab $(LIBS) 
 
 %.o: %.cc
-	$(CC) -c $(CFLAGS) $< -o $@ 
+	@echo "Compiling $<"
+	@$(CXX) -c $(CXXFLAGS) $< -o $@ 
 
 install: all
 	${MKDIR} ${sharedir}

@@ -26,10 +26,12 @@ OBJS = psrtank.o srtank1.o srtank2.o  serial.o
 exp: all
 
 all: $(OBJS)
-	$(CC) $(FLAGS) $(OBJS) -osrtank $(LIBS)
+	@echo "Linking srtank"
+	@$(CC) $(FLAGS) $(OBJS) -osrtank $(LIBS)
 
 %.o: %.cc
-	$(CC) -c $(FLAGS) $< 
+	@echo "Compiling $<"
+	@$(CC) -c $(FLAGS) $< 
 
 run: all
 	./srtank

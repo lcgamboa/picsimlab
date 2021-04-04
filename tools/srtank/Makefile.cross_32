@@ -17,12 +17,14 @@ OBJS = psrtank.o srtank1.o srtank2.o serial.o
 exp: all
 
 all: $(OBJS)
-	$(WINDRES) srtank_res.rc  -O coff -o srtank_res.o
-	$(CC) $(FLAGS) $(OBJS) srtank_res.o  -osrtank.exe $(LIBS)
-	mv *.exe ../../picsimlab_win32/
+	@echo "Linking srtank"
+	@$(WINDRES) srtank_res.rc  -O coff -o srtank_res.o
+	@$(CC) $(FLAGS) $(OBJS) srtank_res.o  -osrtank.exe $(LIBS)
+	@mv *.exe ../../picsimlab_win32/
 
 %.o: %.cc
-	$(CC) -c $(FLAGS) $< 
+	@echo "Compiling $<"
+	@$(CC) -c $(FLAGS) $< 
 
 run: all
 	wine2 srtank.exe

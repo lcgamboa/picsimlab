@@ -1,6 +1,6 @@
 include Makefile.Common
 
-CC = g++
+CXX= g++
 
 PKG_CONFIG= `pkg-config --cflags glib-2.0` 
 
@@ -16,12 +16,12 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-override CFLAGS+= -D_ARCH_=\"Linux64_SDL2\" -D_DATE_=\"${DATE}\"
+override CXXFLAGS+= -D_ARCH_=\"Linux64_SDL2\" -D_DATE_=\"${DATE}\"
 
-override CFLAGS += -DEXT_BROWSER  -D_VERSION_=\"${VERSION}\" -Wall -ggdb -D_SHARE_=\"../share/picsimlab/\"  `sdl2-config --cflags` -I/usr/include/lxrad_SDL2 -Wall  -D_REENTRANT
+override CXXFLAGS += -DEXT_BROWSER  -D_VERSION_=\"${VERSION}\" -Wall -ggdb -D_SHARE_=\"../share/picsimlab/\"  `sdl2-config --cflags` -I/usr/include/lxrad_SDL2 -Wall  -D_REENTRANT
 
-override CFLAGS+=-fsanitize=address
-override CFLAGS+= -D_NOTHREAD
+override CXXFLAGS+=-fsanitize=address
+override CXXFLAGS+= -D_NOTHREAD
 
 #LIBS = `lxrad_SDL2-config --libs` -lpicsim -lsimavr -lelf -lminizip  $(ELIBS) 
 LIBS =  ../../LXRAD_SDL2/lib/liblxrad_SDL2.a -lpthread -lSDL2_gfx -lSDL2_ttf -lSDL2_image -lSDL2 -lopenal \
@@ -31,10 +31,12 @@ LIBS =  ../../LXRAD_SDL2/lib/liblxrad_SDL2.a -lpthread -lSDL2_gfx -lSDL2_ttf -lS
 #lxrad automatic generated block end, don't edit above!
 
 all: $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -opicsimlab_SDL2 $(LIBS) 
+	@echo "Linking picsimlab"
+	@$(CXX) $(CXXFLAGS) $(OBJS) -opicsimlab_SDL2 $(LIBS) 
 
 %.o: %.cc
-	$(CC) -c $(CFLAGS) $< -o $@ 
+	@echo "Compiling $<"
+	@$(CXX) -c $(CXXFLAGS) $< -o $@ 
 
 install: all
 	${MKDIR} ${sharedir}
