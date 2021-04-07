@@ -155,8 +155,8 @@ public:
      */
     void saveprefs(lxString name, lxString value);
 
-    void Configure(CControl * control, const char * home);
-    void board_Event(CControl * control);
+    void Configure(CControl * control, const char * home, int use_default_board = 0);
+    void board_Event(CControl * control); 
     void thread1_EvThreadRun(CControl * control);
 
     /**

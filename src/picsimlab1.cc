@@ -86,7 +86,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
 {
  status.st[0] |= ST_T1;
 
- #ifdef _NOTHREAD
+#ifdef _NOTHREAD
  if (timer1.GetOverTime () < 10)
   {
    label1.SetColor (0, 0, 0);
@@ -121,7 +121,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
    tgo = 1; //thread sync
   }
 
- 
+
  if (need_resize == 1)
   {
    double scalex, scaley, scale_temp;
@@ -304,6 +304,7 @@ CPWindow1::_EvOnCreate(CControl * control)
  char home[1024];
  lxFileName fn;
  lxFileName fn_spare;
+ int use_default_board = 0;
 
  strncpy (home, (char*) lxGetUserDataDir (lxT ("picsimlab")).char_str (), 1023);
 
@@ -318,6 +319,7 @@ CPWindow1::_EvOnCreate(CControl * control)
     {
      fn.Assign (Application->Aargv[1]);
      fn.MakeAbsolute ();
+     use_default_board=1;
     }
    else if ((Application->Aargc >= 3) && (Application->Aargc <= 5))
     {
@@ -370,7 +372,7 @@ CPWindow1::_EvOnCreate(CControl * control)
   }
 
  //load options
- Configure (control, home);
+ Configure (control, home, use_default_board);
 
  if (!create)
   {
@@ -405,7 +407,7 @@ CPWindow1::_EvOnCreate(CControl * control)
 }
 
 void
-CPWindow1::Configure(CControl * control, const char * home)
+CPWindow1::Configure(CControl * control, const char * home, int use_default_board)
 {
 
  char line[1024];
@@ -460,16 +462,23 @@ CPWindow1::Configure(CControl * control, const char * home)
 
        if (!strcmp (name, "picsimlab_lab"))
         {
-         for (i = 0; i < BOARDS_LAST; i++)
+         if (use_default_board)
           {
-           if (!strcmp (boards_list[i].name_, value))
-            {
-             break;
-            }
+           lab = 0;
+           lab_ = 0;
           }
-
-         lab = i;
-         lab_ = i;
+         else
+          {
+           for (i = 0; i < BOARDS_LAST; i++)
+            {
+             if (!strcmp (boards_list[i].name_, value))
+              {
+               break;
+              }
+            }
+           lab = i;
+           lab_ = i;
+          }
 
          pboard = create_board (&lab, &lab_);
          pboard->SetName (boards_list[lab].name);
