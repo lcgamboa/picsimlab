@@ -111,18 +111,12 @@ board::ReadInputMap(lxString fname)
            sscanf (value, "%i", &board_h);
            Window1.SetplHeight (board_h);
 
-#ifdef _WIN_
-           unsigned int wh = 75 + board_h * Window1.GetScale ();
-#else
            unsigned int wh = 90 + board_h * Window1.GetScale ();
-#endif
+
            if (wh > lxGetDisplayHeight (0))
             {
-#ifdef _WIN_
-             float scaley = ((lxGetDisplayHeight (0) - 75)*1.0) / board_h;
-#else
              float scaley = ((lxGetDisplayHeight (0) - 90)*1.0) / board_h;
-#endif
+
              Window1.draw1.SetHeight (board_h * scaley);
              Window1.SetHeight (lxGetDisplayHeight (0));
              Window1.SetWidth (185 + board_w * scaley);

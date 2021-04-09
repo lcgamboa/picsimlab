@@ -15,8 +15,9 @@ override CXXFLAGS+=-I../dev_w64/lib/wx/include/x86_64-w64-mingw32-msw-unicode-3.
 
 LIBS= -llxrad -lOpenAL32 -lpicsim  -lsimavr -lws2_32 -L../dev_w64/lib $(ELIBS)
 LIBS+= -Wl,--subsystem,windows -mwindows 
-#LIBS+= -Wl,--subsystem,console -mconsole 
 LIBS+= -lwx_mswu_core-3.1-x86_64-w64-mingw32 -lwx_baseu-3.1-x86_64-w64-mingw32 
+
+exp: LIBS+= -Wl,--subsystem,console -mconsole 
 
 #LIBS+=`x86_64-w64-mingw32-msw-unicode-3.1 --libs` 
 

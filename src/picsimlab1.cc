@@ -127,11 +127,8 @@ CPWindow1::timer1_EvOnTime(CControl * control)
    double scalex, scaley, scale_temp;
 
    scalex = ((Window1.GetWidth () - 185)*1.0) / plWidth;
-#ifdef _WIN_
-   scaley = ((Window1.GetHeight () - 75)*1.0) / plHeight;
-#else
    scaley = ((Window1.GetHeight () - 90)*1.0) / plHeight;
-#endif
+
 
    if (scalex < 0.1)scalex = 0.1;
    if (scaley < 0.1)scaley = 0.1;
