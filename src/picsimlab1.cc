@@ -757,7 +757,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
 
 
  //write options
- strcpy (home, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str ());
+ strcpy (home, (char*) lxGetUserDataDir (lxT ("picsimlab")).char_str ());
 
  lxCreateDir (home);
 
@@ -1168,10 +1168,10 @@ CPWindow1::LoadWorkspace(lxString fnpzw)
    return;
   }
  //write options
- strncpy (fzip, (char*) lxGetTempDir (_T ("picsimlab")).char_str (), 1023);
+ strncpy (fzip, (char*) lxGetTempDir (lxT ("picsimlab")).char_str (), 1023);
  strncat (fzip, "/", 1023);
 
- strncpy (home, (char*) lxGetTempDir (_T ("picsimlab")).char_str (), 1023);
+ strncpy (home, (char*) lxGetTempDir (lxT ("picsimlab")).char_str (), 1023);
  strncat (home, "/picsimlab_workspace/", 1023);
 
  lxRemoveDir (home);
@@ -1414,11 +1414,11 @@ CPWindow1::SaveWorkspace(lxString fnpzw)
 
  //write options
 
- strncpy (home, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
+ strncpy (home, (char*) lxGetUserDataDir (lxT ("picsimlab")).char_str (), 1023);
  snprintf (fname, 1279, "%s/picsimlab.ini", home);
  prefs.SaveToFile (fname);
 
- strncpy (home, (char*) lxGetTempDir (_T ("picsimlab")).char_str (), 1023);
+ strncpy (home, (char*) lxGetTempDir (lxT ("picsimlab")).char_str (), 1023);
  strncat (home, "/picsimlab_workspace/", 1023);
 
 #ifdef CONVERTER_MODE
@@ -1475,7 +1475,7 @@ CPWindow1::SaveWorkspace(lxString fnpzw)
  lxRemoveDir (home);
 
 
- strncpy (home, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
+ strncpy (home, (char*) lxGetUserDataDir (lxT ("picsimlab")).char_str (), 1023);
  snprintf (fname, 1279, "%s/picsimlab.ini", home);
  prefs.Clear ();
  prefs.LoadFromFile (fname);

@@ -221,7 +221,7 @@ cboard_PICGenios::cboard_PICGenios(void)
  combo1->EvOnComboChange = EVONCOMBOCHANGE & CPWindow1::board_Event;
  Window1.CreateChild (combo1);
 
- strncpy (fname, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
+ strncpy (fname, (char*) lxGetUserDataDir (lxT ("picsimlab")).char_str (), 1023);
  strncat (fname, "/mdump_PICGenios_EEPROM.bin", 1023);
 
  fout = fopen (fname, "rb");
@@ -276,7 +276,7 @@ cboard_PICGenios::MDumpMemory(const char * mfname)
  FILE * fout;
  char fname[1024];
 
- strncpy (fname, (char*) lxGetUserDataDir (_T ("picsimlab")).char_str (), 1023);
+ strncpy (fname, (char*) lxGetUserDataDir (lxT ("picsimlab")).char_str (), 1023);
  strncat (fname, "/mdump_PICGenios_EEPROM.bin", 1023);
 
  fout = fopen (fname, "wb");
