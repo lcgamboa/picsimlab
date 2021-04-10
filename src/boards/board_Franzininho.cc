@@ -250,8 +250,7 @@ cboard_Franzininho::cboard_Franzininho(void)
 
 //Destructor called once on board destruction 
 
-cboard_Franzininho::~cboard_Franzininho(void)
-{
+cboard_Franzininho::~cboard_Franzininho(void) {
  /*
  //controls destruction 
  Window1.DestroyChild (gauge1);
@@ -267,8 +266,7 @@ cboard_Franzininho::~cboard_Franzininho(void)
  Window1.DestroyChild (label4);
  Window1.DestroyChild (label5);
  Window1.DestroyChild (label6);
-*/
-}
+  */ }
 
 //Reset board status
 
@@ -530,16 +528,17 @@ cboard_Franzininho::Draw(CDraw *draw)
     }
    else //circle
     {
+     draw->Canvas.SetFgColor (0, 0, 0);
      switch (output[i].id)
       {
       case O_ON:
-       draw->Canvas.SetColor (0, 200 * Window1.Get_mcupwr () + 55, 0);
+       draw->Canvas.SetBgColor (0, 200 * Window1.Get_mcupwr () + 55, 0);
        break;
       case O_L:
-       draw->Canvas.SetColor (pins[5].oavalue, pins[5].oavalue, 0);
+       draw->Canvas.SetBgColor (pins[5].oavalue, pins[5].oavalue, 0);
        break;
       default:
-       draw->Canvas.SetColor (0, 0, 0);
+       draw->Canvas.SetBgColor (0, 0, 0);
        break;
       }
 
@@ -565,14 +564,14 @@ cboard_Franzininho::Draw(CDraw *draw)
  draw->Canvas.End ();
  draw->Update ();
 
-/*
- gauge1->SetValue ((pins[4].oavalue - 55) / 2);
- gauge2->SetValue ((pins[10].oavalue - 55) / 2);
- gauge3->SetValue ((pins[11].oavalue - 55) / 2);
- gauge4->SetValue ((pins[14].oavalue - 55) / 2);
- gauge5->SetValue ((pins[15].oavalue - 55) / 2);
- gauge6->SetValue ((pins[16].oavalue - 55) / 2);
-*/
+ /*
+  gauge1->SetValue ((pins[4].oavalue - 55) / 2);
+  gauge2->SetValue ((pins[10].oavalue - 55) / 2);
+  gauge3->SetValue ((pins[11].oavalue - 55) / 2);
+  gauge4->SetValue ((pins[14].oavalue - 55) / 2);
+  gauge5->SetValue ((pins[15].oavalue - 55) / 2);
+  gauge6->SetValue ((pins[16].oavalue - 55) / 2);
+  */
 }
 
 void
