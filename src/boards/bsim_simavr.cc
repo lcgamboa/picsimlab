@@ -168,6 +168,10 @@ bsim_simavr::MInit(const char * processor, const char * fname, float freq)
   {
    avr->reset_pc = 0x07000; // bootloader 0x3800
   }
+ else
+  {
+   avr->reset_pc = 0x0000;
+  }
 
  avr->avcc = 5000;
 
