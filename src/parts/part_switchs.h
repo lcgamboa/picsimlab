@@ -40,7 +40,7 @@ class cpart_switchs:public part
       ~cpart_switchs(void);
       void Draw(void);
       void PreProcess(void);
-      lxString GetPictureFileName(void){return lxT("switchs/switchs.png");};
+      lxString GetPictureFileName(void){return lxT("switchs/switchs.svg");};
       lxString GetInputMapFile(void){return lxT("switchs/switchs_i.map");};
       lxString GetOutputMapFile(void){return lxT("switchs/switchs_o.map");};
       lxString GetPropertiesWindowFile(void){return lxT("switchs/switchs.lxrad");};
@@ -56,6 +56,7 @@ class cpart_switchs:public part
       void RegisterRemoteControl(void);  
       unsigned char output_pins[8];   
       unsigned char output_value[8];
+      lxFont font;
 };
 
 

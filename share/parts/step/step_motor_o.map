@@ -1,18 +1,18 @@
-<img src="[step_motor] (sobrescrita)" width="259" height="329" border="0" usemap="#map" />
+<img src="[step_motor] (sobrescrita)" width="295" height="454" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:Luis Claudio Gamboa Lopes -->
-<area shape="rect" coords="30,288,79,307" href="PN_1" />
-<area shape="rect" coords="90,288,139,307" href="PN_2" />
-<area shape="rect" coords="149,288,198,307" href="PN_3" />
-<area shape="rect" coords="207,288,256,307" href="PN_4" />
-<area shape="circle" coords="53,269,11" href="LD_1" />
-<area shape="circle" coords="113,269,11" href="LD_2" />
-<area shape="circle" coords="172,269,11" href="LD_3" />
-<area shape="circle" coords="233,270,11" href="LD_4" />
-<area shape="circle" coords="129,93,32" href="DG_ROT" />
+<!-- #$AUTHOR:Luis Claudio Gamboa Lopes   -->
+<area shape="rect" coords="33,417,82,436" href="PN_1" />
+<area shape="rect" coords="93,417,142,436" href="PN_2" />
+<area shape="rect" coords="152,417,201,436" href="PN_3" />
+<area shape="rect" coords="210,417,259,436" href="PN_4" />
+<area shape="circle" coords="94,391,11" href="LD_1" />
+<area shape="circle" coords="130,391,11" href="LD_2" />
+<area shape="circle" coords="169,391,11" href="LD_3" />
+<area shape="circle" coords="204,391,11" href="LD_4" />
+<area shape="circle" coords="147,163,51" href="DG_ROT" />
 </map>

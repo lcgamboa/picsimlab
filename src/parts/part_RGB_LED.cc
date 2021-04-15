@@ -35,6 +35,7 @@ enum
 };
 
 cpart_rgb_led::cpart_rgb_led(unsigned x, unsigned y)
+:font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -76,8 +77,6 @@ cpart_rgb_led::Draw(void)
  const picpin * ppins = Window5.GetPinsValues ();
 
  canvas.Init (Scale, Scale, Orientation);
-
- lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
 
  for (i = 0; i < outputc; i++)
@@ -110,9 +109,12 @@ cpart_rgb_led::Draw(void)
         color[1]=285-color[1];
         color[2]=285-color[2];
       }
-     
-     canvas.SetColor (color[0], color[1], color[2]);
-     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
+   
+     canvas.SetColor (255, 255, 224);
+     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r-5);
+     canvas.SetFgColor (0, 0, 0);
+     canvas.SetBgColor (color[0], color[1], color[2]);
+     canvas.Circle (1, output[i].x1-0.5, output[i].y1, output[i].r-7);
      break;
     }
 

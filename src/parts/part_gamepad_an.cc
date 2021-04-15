@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@ enum
 };
 
 cpart_gamepad_an::cpart_gamepad_an(unsigned x, unsigned y)
+: font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -48,7 +49,7 @@ cpart_gamepad_an::cpart_gamepad_an(unsigned x, unsigned y)
 
  ReadMaps ();
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
@@ -124,7 +125,6 @@ cpart_gamepad_an::Draw(void)
  lxString temp;
  canvas.Init (Scale, Scale, Orientation);
 
- lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
 
  for (i = 0; i < outputc; i++)
@@ -134,17 +134,20 @@ cpart_gamepad_an::Draw(void)
     {
     case O_P1:
      canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1 + 30, output[i].y2 - output[i].y1 + 30);
-     canvas.SetFgColor (255, 255, 255);
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1 + 10, output[i].y2 - output[i].y1 + 20);
+     canvas.SetFgColor (155, 155, 155);
 
      temp = lxString ().Format ("%3.1f", output_value_an) + lxT ("V");
-     canvas.RotatedText ("Out= " + temp, output[i].x1, output[i].y1 + 30, 0);
+     canvas.RotatedText ("Out " + temp, output[i].x1, output[i].y1 + 20, 0);
+     canvas.SetFgColor (255, 255, 255);
      if (output_pins[0] == 0)
       canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
      else
       canvas.RotatedText (Window5.GetPinName (output_pins[0]), output[i].x1, output[i].y1, 0);
      break;
     case O_B5:
+     canvas.SetColor (102, 102, 102);
+     canvas.Circle (1, output[i].cx, output[i].cy, 10);
      if (output_value[output[i].id - O_B1])
       {
        canvas.SetColor (15, 15, 15);
@@ -153,31 +156,31 @@ cpart_gamepad_an::Draw(void)
       {
        canvas.SetColor (55, 55, 55);
       }
-     canvas.Circle (1, output[i].cx, output[i].cy, 11);
+     canvas.Circle (1, output[i].cx, output[i].cy, 8);
      break;
     case O_B2:
     case O_B3:
      if (output_value[output[i].id - O_B1])
       {
-       canvas.SetColor (250, 224, 0);
+       canvas.SetColor (244, 244, 0);
       }
      else
       {
        canvas.SetColor (0x9c, 0x94, 0x47);
       }
-     canvas.Circle (1, output[i].cx, output[i].cy, 25);
+     canvas.Circle (1, output[i].cx, output[i].cy, 20);
      break;
     case O_B1:
     case O_B4:
      if (output_value[output[i].id - O_B1])
       {
-       canvas.SetColor (3, 114, 212);
+       canvas.SetColor (0, 0, 214);
       }
      else
       {
        canvas.SetColor (64, 87, 106);
       }
-     canvas.Circle (1, output[i].cx, output[i].cy, 25);
+     canvas.Circle (1, output[i].cx, output[i].cy, 20);
      break;
     }
   }
@@ -193,23 +196,23 @@ cpart_gamepad_an::PreProcess(void)
 
  if (!output_value[0])
   {
-   output_value_an = (active * 5.0 * (0.25 / 5.0))+((!active)*5.0 * (3.75 / 5.0));
+   output_value_an = (active * 0)+((!active)*5);
   }
  else if (!output_value[1])
   {
-   output_value_an = (active * 5.0 * (0.75 / 5.0))+((!active)*5.0 * (2.5 / 5.0));
+   output_value_an = (active * 0.708)+((!active)*4.292);
   }
  else if (!output_value[2])
   {
-   output_value_an = (active * 5.0 * (1.5 / 5.0))+((!active)*5.0 * (1.5 / 5.0));
+   output_value_an = (active * 1.61)+((!active)*3.39);
   }
  else if (!output_value[3])
   {
-   output_value_an = (active * 5.0 * (2.5 / 5.0))+((!active)*5.0 * (0.75 / 5.0));
+   output_value_an = (active * 2.468)+((!active)*2.532);
   }
  else if (!output_value[4])
   {
-   output_value_an = (active * 5.0 * (3.75 / 5.0))+((!active)*5.0 * (0.25 / 5.0));
+   output_value_an = (active * 3.621)+((!active)*1.379);
   }
 
  Window5.SetAPin (output_pins[0], output_value_an);

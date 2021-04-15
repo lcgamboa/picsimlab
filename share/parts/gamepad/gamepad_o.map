@@ -1,24 +1,24 @@
-<img src="[push_buttons] (sobrescrita)" width="380" height="235" border="0" usemap="#map" />
+<img src="[push_buttons] (sobrescrita)" width="399" height="282" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:Luis Claudio Gamboa Lopes        -->
-<area shape="rect" coords="17,180,66,199" href="PN_1" />
-<area shape="rect" coords="17,206,66,225" href="PN_2" />
-<area shape="rect" coords="89,180,138,199" href="PN_3" />
-<area shape="rect" coords="89,206,138,225" href="PN_4" />
-<area shape="rect" coords="165,181,214,200" href="PN_5" />
-<area shape="rect" coords="165,206,214,225" href="PN_6" />
-<area shape="rect" coords="233,181,282,200" href="PN_7" />
-<area shape="rect" coords="233,206,282,225" href="PN_8" />
-<area shape="rect" coords="31,31,149,149" href="AJ_1" />
-<area shape="rect" coords="262,12,314,64" href="PB_1" />
-<area shape="rect" coords="314,61,366,113" href="PB_2" />
-<area shape="rect" coords="262,112,314,164" href="PB_3" />
-<area shape="rect" coords="209,62,261,114" href="PB_4" />
-<area shape="rect" coords="202,127,232,157" href="PB_5" />
-<area shape="rect" coords="148,127,178,157" href="PB_6" />
+<!-- #$AUTHOR:Luis Claudio Gamboa Lopes         -->
+<area shape="rect" coords="17,236,66,255" href="PN_1" />
+<area shape="rect" coords="17,258,66,277" href="PN_2" />
+<area shape="rect" coords="100,236,149,255" href="PN_3" />
+<area shape="rect" coords="100,258,149,277" href="PN_4" />
+<area shape="rect" coords="184,237,233,256" href="PN_5" />
+<area shape="rect" coords="184,258,233,277" href="PN_6" />
+<area shape="rect" coords="267,237,316,256" href="PN_7" />
+<area shape="rect" coords="267,258,316,277" href="PN_8" />
+<area shape="rect" coords="265,30,317,82" href="PB_1" />
+<area shape="rect" coords="327,92,379,144" href="PB_2" />
+<area shape="rect" coords="265,153,317,205" href="PB_3" />
+<area shape="rect" coords="204,92,256,144" href="PB_4" />
+<area shape="rect" coords="197,177,227,207" href="PB_5" />
+<area shape="rect" coords="135,178,165,208" href="PB_6" />
+<area shape="rect" coords="19,58,137,176" href="AJ_1" />
 </map>

@@ -4,7 +4,7 @@
 
 	   ########################################################################
 
-	   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+	   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
 	   This program is free software; you can redistribute it and/or modify
 	   it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ class cpart_dcmotor:public part
       void Draw(void);
       void PreProcess(void);
       void Process(void);
-      lxString GetPictureFileName(void){return lxT("dcmotor/dcmotor.png");};
+      lxString GetPictureFileName(void){return lxT("dcmotor/dcmotor.svg");};
       lxString GetInputMapFile(void){return lxT("dcmotor/dcmotor_i.map");};
       lxString GetOutputMapFile(void){return lxT("dcmotor/dcmotor_o.map");};
       lxString GetPropertiesWindowFile(void){return lxT("dcmotor/dcmotor.lxrad");};
@@ -62,6 +62,7 @@ class cpart_dcmotor:public part
       unsigned char dir;
       unsigned char speed;
       unsigned char * status[3];
+      lxFont font;
 };
 
 

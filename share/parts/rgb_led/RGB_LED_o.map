@@ -1,13 +1,13 @@
-<img src="[push_buttons] (sobrescrita)" width="155" height="112" border="0" usemap="#map" />
+<img src="[push_buttons] (sobrescrita)" width="160" height="89" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:Luis Claudio Gamboa Lopes    -->
-<area shape="rect" coords="1,89,50,108" href="PN_1" />
-<area shape="rect" coords="52,89,101,108" href="PN_2" />
-<area shape="rect" coords="103,89,152,108" href="PN_3" />
-<area shape="circle" coords="34,39,25" href="LR_1" />
+<!-- #$AUTHOR:Luis Claudio Gamboa Lopes      -->
+<area shape="rect" coords="1,66,43,85" href="PN_1" />
+<area shape="rect" coords="47,66,89,85" href="PN_2" />
+<area shape="rect" coords="93,66,135,85" href="PN_3" />
+<area shape="circle" coords="56,22,21" href="LR_1" />
 </map>

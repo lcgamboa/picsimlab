@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@ enum
 };
 
 cpart_switchs::cpart_switchs(unsigned x, unsigned y)
+:font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -150,7 +151,6 @@ cpart_switchs::Draw(void)
 
  canvas.Init ( Scale, Scale, Orientation);
 
- lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
 
  for (i = 0; i < outputc; i++)
@@ -183,10 +183,11 @@ cpart_switchs::Draw(void)
     case O_S7:
     case O_S8:
 
-     canvas.SetColor (100, 100, 100);
+     canvas.SetFgColor(0,0,0);
+     canvas.SetBgColor (100, 100, 100);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetColor (255, 255, 255);
-     canvas.Rectangle (1, output[i].x1 + 2, output[i].y1 + 28 - 20 * output_value[output[i].id - O_S1], 18, 10);
+     canvas.SetBgColor (26, 26, 26);
+     canvas.Rectangle (1, output[i].x1 + 2, output[i].y1 + 16 - 14 * output_value[output[i].id - O_S1], 14, 14);
 
      break;
 

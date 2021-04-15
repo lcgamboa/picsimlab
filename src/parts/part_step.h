@@ -40,7 +40,7 @@ class cpart_step:public part
       ~cpart_step(void);
       void Draw(void);
       void Process(void);
-      lxString GetPictureFileName(void){return lxT("step/step_motor.png");};
+      lxString GetPictureFileName(void){return lxT("step/step_motor.svg");};
       lxString GetInputMapFile(void){return lxT("step/step_motor_i.map");};
       lxString GetOutputMapFile(void){return lxT("step/step_motor_o.map");};
       lxString GetPropertiesWindowFile(void){return lxT("step/step_motor.lxrad");};
@@ -56,6 +56,9 @@ class cpart_step:public part
       float angle;
       int b1[2];
       int b2[2];
+      lxColor color1; 
+      lxColor color2;        
+      lxFont font;
 };
 
 

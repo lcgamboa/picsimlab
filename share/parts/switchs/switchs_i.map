@@ -1,17 +1,17 @@
-<img src="[push_buttons] (sobrescrita)" width="548" height="92" border="0" usemap="#map" />
+<img src="[push_buttons] (sobrescrita)" width="426" height="135" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:Luis Claudio Gamboa Lopes   -->
-<area shape="rect" coords="16,4,48,59" href="SW_1" />
-<area shape="rect" coords="76,4,108,59" href="SW_2" />
-<area shape="rect" coords="135,4,167,59" href="SW_3" />
-<area shape="rect" coords="195,4,227,59" href="SW_4" />
-<area shape="rect" coords="253,4,285,59" href="SW_5" />
-<area shape="rect" coords="314,4,346,59" href="SW_6" />
-<area shape="rect" coords="374,4,406,59" href="SW_7" />
-<area shape="rect" coords="432,4,464,59" href="SW_8" />
+<!-- #$AUTHOR:Luis Claudio Gamboa Lopes    -->
+<area shape="rect" coords="8,13,26,45" href="SW_1" />
+<area shape="rect" coords="57,13,75,45" href="SW_2" />
+<area shape="rect" coords="106,13,124,45" href="SW_3" />
+<area shape="rect" coords="155,13,173,45" href="SW_4" />
+<area shape="rect" coords="204,13,222,45" href="SW_5" />
+<area shape="rect" coords="253,13,271,45" href="SW_6" />
+<area shape="rect" coords="302,13,320,45" href="SW_7" />
+<area shape="rect" coords="350,13,368,45" href="SW_8" />
 </map>

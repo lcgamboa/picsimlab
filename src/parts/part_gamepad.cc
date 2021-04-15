@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -41,20 +41,19 @@ enum
 };
 
 cpart_gamepad::cpart_gamepad(unsigned x, unsigned y)
+: font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
  ReadMaps ();
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
 
  canvas.Create (Window5.GetWWidget (), Bitmap);
-
-
 
  output_pins[0] = 0;
  output_pins[1] = 0;
@@ -136,7 +135,6 @@ cpart_gamepad::Draw(void)
 
  canvas.Init (Scale, Scale, Orientation);
 
- lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
 
  for (i = 0; i < outputc; i++)
@@ -161,15 +159,17 @@ cpart_gamepad::Draw(void)
       canvas.RotatedText (Window5.GetPinName (output_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
      break;
     case O_J1:
-     canvas.SetColor (50, 50, 50);
-     //canvas.Rectangle (1,output[i].x1,output[i].y1,output[i].x2-output[i].x1,output[i].y2-output[i].y1);
+     canvas.SetColor (26, 26, 26);
      canvas.Circle (1, output[i].x1 + jr + 10, output[i].y1 + jr + 10, jr + 10);
+     canvas.SetColor (51, 51, 51);
+     canvas.Circle (1, output[i].x1 + jr + 10, output[i].y1 + jr + 10, jr - 4);
      canvas.SetColor (250, 250, 250);
-     //canvas.Rectangle (1,output[i].x1+valuex,output[i].y1+valuey,10,10);
      canvas.Circle (1, output[i].x1 + value[0] + 10, output[i].y1 + value[1] + 10, 8);
      break;
     case O_B5:
     case O_B6:
+     canvas.SetColor (102, 102, 102);
+     canvas.Circle (1, output[i].cx, output[i].cy, 10);
      if (output_value[output[i].id - O_B1])
       {
        canvas.SetColor (15, 15, 15);
@@ -178,31 +178,31 @@ cpart_gamepad::Draw(void)
       {
        canvas.SetColor (55, 55, 55);
       }
-     canvas.Circle (1, output[i].cx, output[i].cy, 11);
+     canvas.Circle (1, output[i].cx, output[i].cy, 8);
      break;
     case O_B1:
     case O_B3:
      if (output_value[output[i].id - O_B1])
       {
-       canvas.SetColor (250, 224, 0);
+       canvas.SetColor (244, 244, 0);
       }
      else
       {
        canvas.SetColor (0x9c, 0x94, 0x47);
       }
-     canvas.Circle (1, output[i].cx, output[i].cy, 25);
+     canvas.Circle (1, output[i].cx, output[i].cy, 20);
      break;
     case O_B2:
     case O_B4:
      if (output_value[output[i].id - O_B1])
       {
-       canvas.SetColor (3, 114, 212);
+       canvas.SetColor (0, 0, 214);
       }
      else
       {
        canvas.SetColor (64, 87, 106);
       }
-     canvas.Circle (1, output[i].cx, output[i].cy, 25);
+     canvas.Circle (1, output[i].cx, output[i].cy, 20);
      break;
     }
   }

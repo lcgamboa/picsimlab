@@ -40,7 +40,7 @@ class cpart_encoder:public part
       void Draw(void);
       void PreProcess(void);
       void Process(void);
-      lxString GetPictureFileName(void){return lxT("encoder/encoder.png");};
+      lxString GetPictureFileName(void){return lxT("encoder/encoder.svg");};
       lxString GetInputMapFile(void){return lxT("encoder/encoder_i.map");};
       lxString GetOutputMapFile(void){return lxT("encoder/encoder_o.map");};
       lxString GetPropertiesWindowFile(void){return lxT("encoder/encoder.lxrad");};
@@ -65,6 +65,7 @@ class cpart_encoder:public part
       int count;
       int state;
       int dir;
+      lxFont font;   
 };
 
 

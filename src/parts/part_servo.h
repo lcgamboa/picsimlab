@@ -55,7 +55,7 @@ class cpart_servo:public part
       
       void Draw(void);
       void Process(void);
-      lxString GetPictureFileName(void){return lxT("servo/servo_motor.png");};
+      lxString GetPictureFileName(void){return lxT("servo/servo_motor.svg");};
       lxString GetInputMapFile(void){return lxT("servo/servo_motor_i.map");};
       lxString GetOutputMapFile(void){return lxT("servo/servo_motor_o.map");};
       lxString GetPropertiesWindowFile(void){return lxT("servo/servo_motor.lxrad");};
@@ -75,6 +75,7 @@ class cpart_servo:public part
       float angle_;            ///< old angle of shaft
       unsigned char in_[2];    ///< input pin memory
       int time;                ///< pulse time
+      lxFont font;
 };
 
 #endif	/* PART_SERVO */

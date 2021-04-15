@@ -35,12 +35,13 @@ enum
 };
 
 cpart_step::cpart_step(unsigned x, unsigned y)
+:font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
  ReadMaps ();
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
@@ -71,12 +72,11 @@ cpart_step::~cpart_step(void)
 void
 cpart_step::Draw(void)
 {
-
+ float x2, y2;
  int i;
  const picpin * ppins = Window5.GetPinsValues ();
 
  canvas.Init (Scale, Scale, Orientation);
- lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
 
  for (i = 0; i < outputc; i++)
@@ -97,22 +97,48 @@ cpart_step::Draw(void)
       canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
      break;
     case O_ROT:
-     canvas.SetLineWidth (8);
-     canvas.SetColor (250, 250, 250);
+     canvas.SetColor (77, 77, 77);
+     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 10);
+     canvas.SetFgColor (0, 0, 0);
+     canvas.SetBgColor (250, 250, 250);
      canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
-     canvas.SetColor (55, 55, 55);
-     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r / 5);
-
-     canvas.Line (output[i].x1, output[i].y1, output[i].x1 + output[i].r * sin (angle), output[i].y1 + output[i].r * cos (angle));
+     canvas.SetBgColor (55, 55, 55);
+     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r / 3);
+     canvas.SetLineWidth (8);
+     x2 = output[i].x1 + (output[i].r - 2) * sin (angle);
+     y2 = output[i].y1 + (output[i].r - 2) * cos (angle);
+     canvas.Line (output[i].x1, output[i].y1, x2, y2);
+     canvas.SetLineWidth (6);
+     canvas.SetFgColor (77, 77, 77);
+     canvas.Line (output[i].x1, output[i].y1, x2, y2);
      canvas.SetLineWidth (1);
      break;
     case O_L1:
     case O_L2:
     case O_L3:
     case O_L4:
+     canvas.SetFgColor (0, 0, 0);
      if (input_pins[output[i].id - O_L1] > 0)
-      canvas.SetColor (ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
-     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
+      {
+       canvas.SetBgColor (ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
+      }
+     else
+      {
+       canvas.SetBgColor (55, 0, 0);
+      }
+     //draw a LED
+     color1 = canvas.GetBgColor ();
+     int r = color1.Red () - 120;
+     int g = color1.Green () - 120;
+     int b = color1.Blue () - 120;
+     if (r < 0)r = 0;
+     if (g < 0)g = 0;
+     if (b < 0)b = 0;
+     color2.Set (r, g, b);
+     canvas.SetBgColor (color2);
+     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 1);
+     canvas.SetBgColor (color1);
+     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 2);
      break;
     }
 
@@ -255,9 +281,9 @@ cpart_step::Process(void)
     angle -= HSTEP;
 
    if (angle >= 2 * M_PI)angle -= 2 * M_PI;
-   
+
    if (angle <= -2 * M_PI)angle += 2 * M_PI;
-   
+
   }
 }
 

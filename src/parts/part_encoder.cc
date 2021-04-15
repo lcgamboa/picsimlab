@@ -44,6 +44,7 @@ enum
 };
 
 cpart_encoder::cpart_encoder(unsigned x, unsigned y)
+:font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -105,9 +106,6 @@ cpart_encoder::Draw(void)
  int i, x, y;
 
  canvas.Init (Scale, Scale, Orientation);
-
- lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
- lxFont font_p (6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
 
  for (i = 0; i < outputc; i++)
@@ -127,33 +125,26 @@ cpart_encoder::Draw(void)
       canvas.RotatedText (Window5.GetPinName (output_pins[output[i].id - O_P1]), output[i].x1 - 3, output[i].y2, 90);
      break;
     case O_RT1:
-     canvas.SetColor (50, 50, 50);
+     canvas.SetColor (102, 102, 102);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
-     canvas.SetColor (150, 150, 150);
+     canvas.SetFgColor (0, 0, 0);
+     canvas.SetBgColor (44, 44, 44);
      canvas.Circle (1, output[i].cx, output[i].cy, 25);
 
-     canvas.SetColor (250, 250, 250);
+     canvas.SetBgColor (250, 250, 250);
      x = -18 * sin ((2 * M_PI * (value / 200.0)));
      y = 18 * cos ((2 * M_PI * (value / 200.0)));
      canvas.Circle (1, output[i].cx + x, output[i].cy + y, 5);
-     /*
-     canvas.SetColor (250, 250, 250);
-     canvas.Rectangle (1, output[i].x1 + 6, output[i].y2 + 6, 20, 10);
-     snprintf (val, 10, "%4.2f", 5.0 * (value) / 200.0);
-     canvas.SetColor (150, 0, 0);
-     canvas.SetFont (font_p);
-     canvas.RotatedText (val, output[i].x1 + 6, output[i].y2 + 6, 0);
-      */
      break;
     case O_BTN:
      if (p_BTN)
       {
-       canvas.SetColor (170, 170, 170);
+       canvas.SetColor (77, 77, 77);
       }
      else
       {
-       canvas.SetColor (130, 130, 130);
+       canvas.SetColor (22, 22, 22);
       }
      canvas.Circle (1, output[i].cx, output[i].cy, 9);
      break;

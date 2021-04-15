@@ -1,25 +1,25 @@
-<img src="[push_buttons] (sobrescrita)" width="548" height="92" border="0" usemap="#map" />
+<img src="[push_buttons] (sobrescrita)" width="426" height="135" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:Luis Claudio Gamboa Lopes   -->
-<area shape="rect" coords="8,65,57,84" href="PN_1" />
-<area shape="rect" coords="68,65,117,84" href="PN_2" />
-<area shape="rect" coords="128,65,177,84" href="PN_3" />
-<area shape="rect" coords="187,65,236,84" href="PN_4" />
-<area shape="rect" coords="245,65,294,84" href="PN_5" />
-<area shape="rect" coords="307,65,356,84" href="PN_6" />
-<area shape="rect" coords="367,65,416,84" href="PN_7" />
-<area shape="rect" coords="426,65,475,84" href="PN_8" />
-<area shape="rect" coords="21,9,43,54" href="SW_1" />
-<area shape="rect" coords="81,9,103,54" href="SW_2" />
-<area shape="rect" coords="140,9,162,54" href="SW_3" />
-<area shape="rect" coords="200,9,222,54" href="SW_4" />
-<area shape="rect" coords="258,9,280,54" href="SW_5" />
-<area shape="rect" coords="319,9,341,54" href="SW_6" />
-<area shape="rect" coords="379,9,401,54" href="SW_7" />
-<area shape="rect" coords="437,9,459,54" href="SW_8" />
+<!-- #$AUTHOR:Luis Claudio Gamboa Lopes    -->
+<area shape="rect" coords="2,106,48,126" href="PN_1" />
+<area shape="rect" coords="53,106,99,126" href="PN_2" />
+<area shape="rect" coords="104,106,150,126" href="PN_3" />
+<area shape="rect" coords="155,106,201,126" href="PN_4" />
+<area shape="rect" coords="205,106,251,126" href="PN_5" />
+<area shape="rect" coords="255,106,301,126" href="PN_6" />
+<area shape="rect" coords="306,106,352,126" href="PN_7" />
+<area shape="rect" coords="357,106,403,126" href="PN_8" />
+<area shape="rect" coords="8,13,26,45" href="SW_1" />
+<area shape="rect" coords="57,13,75,45" href="SW_2" />
+<area shape="rect" coords="106,13,124,45" href="SW_3" />
+<area shape="rect" coords="155,13,173,45" href="SW_4" />
+<area shape="rect" coords="204,13,222,45" href="SW_5" />
+<area shape="rect" coords="253,13,271,45" href="SW_6" />
+<area shape="rect" coords="302,13,320,45" href="SW_7" />
+<area shape="rect" coords="350,13,368,45" href="SW_8" />
 </map>

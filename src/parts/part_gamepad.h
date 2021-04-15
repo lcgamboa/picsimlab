@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ class cpart_gamepad:public part
       ~cpart_gamepad(void);
       void Draw(void);
       void PreProcess(void);
-      lxString GetPictureFileName(void){return lxT("gamepad/gamepad.png");};
+      lxString GetPictureFileName(void){return lxT("gamepad/gamepad.svg");};
       lxString GetInputMapFile(void){return lxT("gamepad/gamepad_i.map");};
       lxString GetOutputMapFile(void){return lxT("gamepad/gamepad_o.map");};
       lxString GetPropertiesWindowFile(void){return lxT("gamepad/gamepad.lxrad");};
@@ -61,8 +61,8 @@ class cpart_gamepad:public part
       unsigned char output_value[6];
       unsigned char value[2];
       unsigned char active;
-      
       unsigned int jr;
+      lxFont font;
 };
 
 

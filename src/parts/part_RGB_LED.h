@@ -39,7 +39,7 @@ class cpart_rgb_led:public part
       cpart_rgb_led(unsigned x, unsigned y);
       ~cpart_rgb_led(void);
       void Draw(void);
-      lxString GetPictureFileName(void){return lxT("rgb_led/RGB_LED.png");};
+      lxString GetPictureFileName(void){return lxT("rgb_led/RGB_LED.svg");};
       lxString GetInputMapFile(void){return lxT("rgb_led/RGB_LED_i.map");};
       lxString GetOutputMapFile(void){return lxT("rgb_led/RGB_LED_o.map");};
       lxString GetPropertiesWindowFile(void){return lxT("rgb_led/RGB_LED.lxrad");};
@@ -54,6 +54,7 @@ class cpart_rgb_led:public part
       unsigned char active;       
       unsigned char input_pins[3];    
       unsigned color[3];
+      lxFont font;
 };
 
 

@@ -35,6 +35,7 @@ enum
 };
 
 cpart_servo::cpart_servo(unsigned x, unsigned y)
+:font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -90,7 +91,6 @@ cpart_servo::Draw(void)
 
  canvas.Init (Scale, Scale, Orientation);
 
- lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
 
  for (i = 0; i < outputc; i++)
@@ -107,9 +107,14 @@ cpart_servo::Draw(void)
 
    if (output[i].id == O_AXIS)
     {
-     canvas.SetFgColor (255, 255, 255);
+     float x2 = output[i].x1 + output[i].r * sin (angle);
+     float y2 = output[i].y1 - output[i].r * cos (angle);
+     canvas.SetFgColor (0, 0, 0);
      canvas.SetLineWidth (20);
-     canvas.Line (output[i].x1, output[i].y1, output[i].x1 + output[i].r * sin (angle), output[i].y1 - output[i].r * cos (angle));
+     canvas.Line (output[i].x1, output[i].y1, x2, y2);
+     canvas.SetFgColor (255, 255, 255);
+     canvas.SetLineWidth (18);
+     canvas.Line (output[i].x1, output[i].y1, x2, y2);
     }
 
 
