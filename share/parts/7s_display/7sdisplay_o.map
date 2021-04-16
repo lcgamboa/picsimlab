@@ -1,55 +1,58 @@
-<img src="picsimlab2.png" width="365" height="263" border="0" usemap="#map" />
+<img src="picsimlab2.png" width="416" height="266" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:lcganmboa@yahoo.com        -->
-<area shape="rect" coords="74,72,94,75" href="SS_A1" />
-<area shape="rect" coords="95,77,98,91" href="SS_B1" />
-<area shape="rect" coords="95,96,98,112" href="SS_C1" />
-<area shape="rect" coords="74,113,94,116" href="SS_D1" />
-<area shape="rect" coords="70,97,73,112" href="SS_E1" />
-<area shape="rect" coords="70,76,73,91" href="SS_F1" />
-<area shape="rect" coords="74,92,94,95" href="SS_G1" />
-<area shape="rect" coords="103,119,106,122" href="SS_P1" />
-<area shape="rect" coords="125,72,145,75" href="SS_A2" />
-<area shape="rect" coords="146,76,149,91" href="SS_B2" />
-<area shape="rect" coords="146,96,149,112" href="SS_C2" />
-<area shape="rect" coords="125,113,145,116" href="SS_D2" />
-<area shape="rect" coords="121,96,124,111" href="SS_E2" />
-<area shape="rect" coords="121,76,124,91" href="SS_F2" />
-<area shape="rect" coords="125,92,145,95" href="SS_G2" />
-<area shape="rect" coords="151,119,154,122" href="SS_P2" />
-<area shape="rect" coords="176,73,196,76" href="SS_A3" />
-<area shape="rect" coords="197,77,200,92" href="SS_B3" />
-<area shape="rect" coords="197,97,200,113" href="SS_C3" />
-<area shape="rect" coords="176,113,196,116" href="SS_D3" />
-<area shape="rect" coords="172,97,175,112" href="SS_E3" />
-<area shape="rect" coords="172,77,175,92" href="SS_F3" />
-<area shape="rect" coords="176,93,196,96" href="SS_G3" />
-<area shape="rect" coords="203,119,206,122" href="SS_P3" />
-<area shape="rect" coords="229,74,249,77" href="SS_A4" />
-<area shape="rect" coords="250,77,253,92" href="SS_B4" />
-<area shape="rect" coords="250,97,253,113" href="SS_C4" />
-<area shape="rect" coords="229,113,249,116" href="SS_D4" />
-<area shape="rect" coords="225,97,228,112" href="SS_E4" />
-<area shape="rect" coords="225,77,228,92" href="SS_F4" />
-<area shape="rect" coords="229,93,249,96" href="SS_G4" />
-<area shape="rect" coords="258,120,261,123" href="SS_P4" />
-<area shape="rect" coords="10,158,29,207" href="PN_SA" />
-<area shape="rect" coords="37,158,56,207" href="PN_SB" />
-<area shape="rect" coords="62,158,81,207" href="PN_SC" />
-<area shape="rect" coords="87,158,106,207" href="PN_SD" />
-<area shape="rect" coords="110,158,129,207" href="PN_SE" />
-<area shape="rect" coords="136,158,155,207" href="PN_SF" />
-<area shape="rect" coords="161,158,180,207" href="PN_SG" />
-<area shape="rect" coords="185,158,204,207" href="PN_SP" />
-<area shape="rect" coords="209,158,228,207" href="PN_DISP1" />
-<area shape="rect" coords="234,158,253,207" href="PN_DISP2" />
-<area shape="rect" coords="259,158,278,207" href="PN_DISP3" />
-<area shape="rect" coords="284,158,303,207" href="PN_DISP4" />
-<area shape="rect" coords="309,158,328,207" href="PN_FX1" />
-<area shape="rect" coords="333,158,352,207" href="PN_FX2" />
+<!-- #$AUTHOR:lcganmboa@yahoo.com          -->
+<area shape="rect" coords="17,27,86,130" href="SS_1" />
+<area shape="rect" coords="97,27,166,130" href="SS_2" />
+<area shape="rect" coords="176,27,245,130" href="SS_3" />
+<area shape="rect" coords="255,27,324,130" href="SS_4" />
+<area shape="rect" coords="37,32,66,42" href="SS_A1" />
+<area shape="rect" coords="67,36,76,76" href="SS_B1" />
+<area shape="rect" coords="67,77,76,117" href="SS_C1" />
+<area shape="rect" coords="37,111,66,121" href="SS_D1" />
+<area shape="rect" coords="27,77,36,117" href="SS_E1" />
+<area shape="rect" coords="27,36,36,76" href="SS_F1" />
+<area shape="rect" coords="37,72,66,82" href="SS_G1" />
+<area shape="circle" coords="80,121,5" href="SS_P1" />
+<area shape="rect" coords="117,32,146,42" href="SS_A2" />
+<area shape="rect" coords="147,36,156,76" href="SS_B2" />
+<area shape="rect" coords="147,77,156,117" href="SS_C2" />
+<area shape="rect" coords="117,111,146,121" href="SS_D2" />
+<area shape="rect" coords="107,77,116,117" href="SS_E2" />
+<area shape="rect" coords="107,36,116,76" href="SS_F2" />
+<area shape="rect" coords="117,72,146,82" href="SS_G2" />
+<area shape="circle" coords="160,121,5" href="SS_P2" />
+<area shape="rect" coords="196,32,225,42" href="SS_A3" />
+<area shape="rect" coords="226,36,235,76" href="SS_B3" />
+<area shape="rect" coords="226,77,235,117" href="SS_C3" />
+<area shape="rect" coords="196,111,225,121" href="SS_D3" />
+<area shape="rect" coords="186,77,195,117" href="SS_E3" />
+<area shape="rect" coords="186,36,195,76" href="SS_F3" />
+<area shape="rect" coords="196,72,225,82" href="SS_G3" />
+<area shape="circle" coords="239,121,5" href="SS_P3" />
+<area shape="rect" coords="275,32,304,42" href="SS_A4" />
+<area shape="rect" coords="305,36,314,76" href="SS_B4" />
+<area shape="rect" coords="305,77,314,117" href="SS_C4" />
+<area shape="rect" coords="275,111,304,121" href="SS_D4" />
+<area shape="rect" coords="265,77,274,117" href="SS_E4" />
+<area shape="rect" coords="265,36,274,76" href="SS_F4" />
+<area shape="rect" coords="275,72,304,82" href="SS_G4" />
+<area shape="circle" coords="318,121,5" href="SS_P4" />
+<area shape="rect" coords="6,185,25,234" href="PN_SA" />
+<area shape="rect" coords="33,185,52,234" href="PN_SB" />
+<area shape="rect" coords="61,185,80,234" href="PN_SC" />
+<area shape="rect" coords="88,185,107,234" href="PN_SD" />
+<area shape="rect" coords="117,185,136,234" href="PN_SE" />
+<area shape="rect" coords="145,185,164,234" href="PN_SF" />
+<area shape="rect" coords="175,185,194,234" href="PN_SG" />
+<area shape="rect" coords="204,185,223,234" href="PN_SP" />
+<area shape="rect" coords="231,185,250,234" href="PN_DISP1" />
+<area shape="rect" coords="259,185,278,234" href="PN_DISP2" />
+<area shape="rect" coords="288,185,307,234" href="PN_DISP3" />
+<area shape="rect" coords="315,185,334,234" href="PN_DISP4" />
+<area shape="rect" coords="342,192,361,234" href="PN_FX1" />
 </map>

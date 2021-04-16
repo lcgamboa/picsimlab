@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2019-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2019-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ public:
     void PostProcess(void);
 
     lxString GetPictureFileName(void) {
-        return lxT("Buzzer/Buzzer.png");
+        return lxT("Buzzer/Buzzer.svg");
     };
 
     lxString GetInputMapFile(void) {
@@ -81,6 +81,9 @@ private:
     unsigned int maxv;
     float in[3];
     float out[3]; 
+    lxFont font;
+    lxColor color1; 
+    lxColor color2;  
 };
 
 

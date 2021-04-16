@@ -40,6 +40,7 @@ enum
 };
 
 cpart_Buzzer::cpart_Buzzer(unsigned x, unsigned y)
+: font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -47,7 +48,7 @@ cpart_Buzzer::cpart_Buzzer(unsigned x, unsigned y)
 
  ReadMaps ();
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
@@ -100,7 +101,6 @@ cpart_Buzzer::Draw(void)
 
  canvas.Init (Scale, Scale, Orientation);
 
- lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
 
  for (i = 0; i < outputc; i++)
@@ -123,21 +123,35 @@ cpart_Buzzer::Draw(void)
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
      canvas.RotatedText ("GND", output[i].x1, output[i].y1, 0);
+     break;
     case O_L1:
-     unsigned char r = 30;
+     canvas.SetFgColor (0, 0, 0);
+     color1.Set (55, 0, 0);
+
      if (input_pins[0] > 0)
       {
        if (active)
         {
-         r = ppins[input_pins[0] - 1].oavalue;
+         color1.Set (ppins[input_pins[0] - 1].oavalue, 0, 0);
         }
        else
         {
-         r = 285 - ppins[input_pins[0] - 1].oavalue;
+         color1.Set (310 - ppins[input_pins[0] - 1].oavalue, 0, 0);
         }
       }
-     canvas.SetColor (r, 0, 0);
-     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
+     //draw a LED
+     canvas.SetBgColor (color1);
+     int r = color1.Red () - 120;
+     int g = color1.Green () - 120;
+     int b = color1.Blue () - 120;
+     if (r < 0)r = 0;
+     if (g < 0)g = 0;
+     if (b < 0)b = 0;
+     color2.Set (r, g, b);
+     canvas.SetBgColor (color2);
+     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 1);
+     canvas.SetBgColor (color1);
+     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 2);
      break;
     }
 
@@ -311,7 +325,7 @@ cpart_Buzzer::PostProcess(void)
   {
    if (active)
     {
-     if (ppins[input_pins[0] - 1].oavalue > 40)
+     if (ppins[input_pins[0] - 1].oavalue > 65)
       {
        buzzer.BeepStart ();
       }
@@ -322,7 +336,7 @@ cpart_Buzzer::PostProcess(void)
     }
    else
     {
-     if ((285 - ppins[input_pins[0] - 1].oavalue) > 215)
+     if ((310 - ppins[input_pins[0] - 1].oavalue) > 215)
       {
        buzzer.BeepStart ();
       }

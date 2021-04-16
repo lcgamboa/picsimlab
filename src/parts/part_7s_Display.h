@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2019  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ public:
     void PreProcess (void);
     void Process(void); 
     void PostProcess (void);
-    lxString GetPictureFileName(void) {return lxT("7s_display/7sdisplay.png"); };
+    lxString GetPictureFileName(void) {return lxT("7s_display/7sdisplay.svg"); };
     lxString GetInputMapFile(void) {return lxT("7s_display/7sdisplay_i.map"); };
     lxString GetOutputMapFile(void) {return lxT("7s_display/7sdisplay_o.map");};
     lxString GetPropertiesWindowFile(void) {return lxT("7s_display/7sdisplay.lxrad");};
@@ -66,6 +66,7 @@ private:
     unsigned int alm4[8];
     long int mcount;
     int JUMPSTEPS_;
+    lxFont font;
 };
 
 
