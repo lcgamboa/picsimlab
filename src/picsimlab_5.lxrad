@@ -34,7 +34,7 @@
   <Class type="String">CMenu</Class>
   <Name type="String">menu1</Name>
   <Tag type="int">0</Tag>
-  <MenuItems type="MenuItems">File,Edit,Inputs,Outputs,Others,Help,</MenuItems>
+  <MenuItems type="MenuItems">File,Edit,Inputs,Outputs,Others,Virtual,Help,</MenuItems>
 </menu1>
 <draw1>
   <Class type="String">CDraw</Class>
@@ -98,6 +98,13 @@
   <Text type="String">Others</Text>
   <MenuItems type="MenuItems"></MenuItems>
 </menu1_Others>
+<menu1_Virtual>
+  <Class type="String">CPMenu</Class>
+  <Name type="String">menu1_Virtual</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Virtual</Text>
+  <MenuItems type="MenuItems"></MenuItems>
+</menu1_Virtual>
 <pmenu2>
   <Class type="String">CPMenu</Class>
   <Name type="String">pmenu2</Name>

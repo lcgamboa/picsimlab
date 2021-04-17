@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -47,6 +47,7 @@ public:
     CPMenu menu1_Inputs;
     CPMenu menu1_Outputs;
     CPMenu menu1_Others;
+    CPMenu menu1_Virtual;
     CPMenu pmenu2;
     CItemMenu pmenu2_Properties;
     CItemMenu pmenu2_Move;

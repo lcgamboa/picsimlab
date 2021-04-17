@@ -78,6 +78,10 @@ CPWindow5::_EvOnCreate(CControl * control)
     {
      menu1_Outputs.CreateChild (&MParts[i]);
     }
+   else if (!strcmp (parts_list[i].menu, "Virtual"))
+    {
+     menu1_Virtual.CreateChild (&MParts[i]);
+    }
    else
     {
      menu1_Others.CreateChild (&MParts[i]);

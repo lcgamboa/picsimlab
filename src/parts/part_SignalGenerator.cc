@@ -492,5 +492,5 @@ cpart_SignalGenerator::ReadPropertiesWindow(CPWindow * WProp)
  RegisterRemoteControl ();
 }
 
-part_init("Signal Generator", cpart_SignalGenerator, "Input");
+part_init("Signal Generator", cpart_SignalGenerator, "Virtual");
 

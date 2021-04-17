@@ -498,5 +498,5 @@ cpart_vterm::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 void
 cpart_vterm::PostProcess(void) { }
 
-part_init("IO Virtual term", cpart_vterm, "Other");
+part_init("IO Virtual term", cpart_vterm, "Virtual");
 

@@ -27,7 +27,7 @@ CPWindow5::CPWindow5(void)
   menu1.SetClass(lxT("CMenu"));
   menu1.SetName(lxT("menu1"));
   menu1.SetTag(0);
-  menu1.SetMenuItems(lxT("File,Edit,Inputs,Outputs,Others,Help,"));
+  menu1.SetMenuItems(lxT("File,Edit,Inputs,Outputs,Others,Virtual,Help,"));
   CreateChild(&menu1);
   //draw1
   draw1.SetFOwner(this);
@@ -92,6 +92,14 @@ CPWindow5::CPWindow5(void)
   menu1_Others.SetText(lxT("Others"));
   menu1_Others.SetMenuItems(lxT(""));
   menu1.CreateChild(&menu1_Others);
+  //menu1_Virtual
+  menu1_Virtual.SetFOwner(this);
+  menu1_Virtual.SetClass(lxT("CPMenu"));
+  menu1_Virtual.SetName(lxT("menu1_Virtual"));
+  menu1_Virtual.SetTag(0);
+  menu1_Virtual.SetText(lxT("Virtual"));
+  menu1_Virtual.SetMenuItems(lxT(""));
+  menu1.CreateChild(&menu1_Virtual);
   //pmenu2
   pmenu2.SetFOwner(this);
   pmenu2.SetClass(lxT("CPMenu"));
