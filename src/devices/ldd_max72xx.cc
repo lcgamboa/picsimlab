@@ -182,7 +182,7 @@ ldd_max72xx_draw(ldd_max72xx_t *ldd, CCanvas * canvas, int x1, int y1, int w1, i
        canvas->SetColor (100, 100, 100);
       }
 
-     canvas->Circle (1, x1 + (y * 25) + 12, y1 + (x * 25) + 12, 10);
+     canvas->Circle (1, x1 + (y * 20) + 10, y1 + (x * 20) + 10, 7);
     }
   }
 }

@@ -1,16 +1,16 @@
-<img src="[LED_matrix] (overwritten)" width="210" height="340" border="0" usemap="#map" />
+<img src="[LED_matrix] (overwritten)" width="166" height="263" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:gamboa     -->
-<area shape="rect" coords="5,11,205,211" href="LM_LED" />
-<area shape="rect" coords="11,229,30,277" href="PN_F1" />
-<area shape="rect" coords="41,229,59,277" href="PN_F2" />
-<area shape="rect" coords="71,229,88,277" href="PN_1" />
-<area shape="rect" coords="101,229,118,277" href="PN_2" />
-<area shape="rect" coords="131,229,148,277" href="PN_3" />
-<area shape="rect" coords="162,229,179,277" href="PN_4" />
+<!-- #$AUTHOR:gamboa       -->
+<area shape="rect" coords="2,7,162,167" href="LM_LED" />
+<area shape="rect" coords="11,170,30,218" href="PN_F1" />
+<area shape="rect" coords="37,170,55,218" href="PN_F2" />
+<area shape="rect" coords="63,170,80,218" href="PN_1" />
+<area shape="rect" coords="88,170,105,218" href="PN_2" />
+<area shape="rect" coords="114,170,131,218" href="PN_3" />
+<area shape="rect" coords="139,170,156,211" href="PN_4" />
 </map>

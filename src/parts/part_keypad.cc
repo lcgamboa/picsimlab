@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2019-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2019-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -52,16 +52,16 @@ cpart_keypad::GetPictureFileName(void)
  switch (type)
   {
   case KT4x4:
-   return lxT ("keypad/keypad_4x4.png");
+   return lxT ("keypad/keypad_4x4.svg");
    break;
   case KT4x3:
-   return lxT ("keypad/keypad_4x3.png");
+   return lxT ("keypad/keypad_4x3.svg");
    break;
   case KT2x5:
-   return lxT ("keypad/keypad_2x5.png");
+   return lxT ("keypad/keypad_2x5.svg");
    break;
   }
- return lxT ("keypad/keypad_4x4.png");
+ return lxT ("keypad/keypad_4x4.svg");
 }
 
 lxString

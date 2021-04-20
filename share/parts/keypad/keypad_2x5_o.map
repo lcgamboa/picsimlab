@@ -1,16 +1,16 @@
-<img src="picsimlab2.png" width="291" height="254" border="0" usemap="#map" />
+<img src="picsimlab2.png" width="432" height="371" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:lcganmboa@yahoo.com             -->
-<area shape="rect" coords="13,164,32,213" href="PN_L1" />
-<area shape="rect" coords="43,164,62,213" href="PN_L2" />
-<area shape="rect" coords="75,164,94,213" href="PN_C1" />
-<area shape="rect" coords="103,164,122,213" href="PN_C2" />
-<area shape="rect" coords="133,164,152,213" href="PN_C3" />
-<area shape="rect" coords="163,164,182,213" href="PN_C4" />
-<area shape="rect" coords="193,165,212,214" href="PN_C5" />
+<!-- #$AUTHOR:lcganmboa@yahoo.com              -->
+<area shape="rect" coords="138,271,157,320" href="PN_L1" />
+<area shape="rect" coords="163,271,182,320" href="PN_L2" />
+<area shape="rect" coords="189,271,208,320" href="PN_C1" />
+<area shape="rect" coords="213,271,232,320" href="PN_C2" />
+<area shape="rect" coords="238,271,257,320" href="PN_C3" />
+<area shape="rect" coords="263,271,282,320" href="PN_C4" />
+<area shape="rect" coords="288,272,307,321" href="PN_C5" />
 </map>

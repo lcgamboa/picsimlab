@@ -1,25 +1,25 @@
-<img src="picsimlab2.png" width="246" height="368" border="0" usemap="#map" />
+<img src="picsimlab2.png" width="355" height="510" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:lcganmboa@yahoo.com        -->
-<area shape="rect" coords="13,11,59,57" href="KB_1" />
-<area shape="rect" coords="69,12,115,58" href="KB_2" />
-<area shape="rect" coords="128,12,174,58" href="KB_3" />
-<area shape="rect" coords="185,12,231,58" href="KB_A" />
-<area shape="rect" coords="12,66,58,112" href="KB_4" />
-<area shape="rect" coords="69,65,115,111" href="KB_5" />
-<area shape="rect" coords="128,67,174,113" href="KB_6" />
-<area shape="rect" coords="185,66,231,112" href="KB_B" />
-<area shape="rect" coords="11,120,57,166" href="KB_7" />
-<area shape="rect" coords="69,121,115,167" href="KB_8" />
-<area shape="rect" coords="128,121,174,167" href="KB_9" />
-<area shape="rect" coords="185,122,231,168" href="KB_C" />
-<area shape="rect" coords="12,176,58,222" href="KB_a" />
-<area shape="rect" coords="69,176,115,222" href="KB_0" />
-<area shape="rect" coords="128,176,174,222" href="KB_T" />
-<area shape="rect" coords="186,177,232,223" href="KB_D" />
+<!-- #$AUTHOR:lcganmboa@yahoo.com         -->
+<area shape="rect" coords="45,67,99,121" href="KB_1" />
+<area shape="rect" coords="115,67,169,121" href="KB_2" />
+<area shape="rect" coords="186,67,240,121" href="KB_3" />
+<area shape="rect" coords="257,67,311,121" href="KB_A" />
+<area shape="rect" coords="44,136,98,190" href="KB_4" />
+<area shape="rect" coords="115,136,169,190" href="KB_5" />
+<area shape="rect" coords="186,136,240,190" href="KB_6" />
+<area shape="rect" coords="258,136,312,190" href="KB_B" />
+<area shape="rect" coords="45,206,99,260" href="KB_7" />
+<area shape="rect" coords="115,206,169,260" href="KB_8" />
+<area shape="rect" coords="186,206,240,260" href="KB_9" />
+<area shape="rect" coords="258,206,312,260" href="KB_C" />
+<area shape="rect" coords="44,275,98,329" href="KB_a" />
+<area shape="rect" coords="115,275,169,329" href="KB_0" />
+<area shape="rect" coords="187,275,241,329" href="KB_T" />
+<area shape="rect" coords="258,275,312,329" href="KB_D" />
 </map>
