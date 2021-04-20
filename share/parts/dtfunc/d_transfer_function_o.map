@@ -1,18 +1,19 @@
-<img src="[d_transfer_function] (overwritten)" width="702" height="201" border="0" usemap="#map" />
+<img src="[d_transfer_function] (overwritten)" width="600" height="188" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:Luis Claudio Gamboa Lopes     -->
-<area shape="rect" coords="16,57,48,74" href="PN_1" />
-<area shape="rect" coords="652,114,681,133" href="PN_2" />
-<area shape="rect" coords="99,56,129,75" href="PR_IG" />
-<area shape="rect" coords="102,127,144,144" href="PR_IO" />
-<area shape="rect" coords="289,91,446,111" href="PR_NUM" />
-<area shape="rect" coords="289,118,446,139" href="PR_DEN" />
-<area shape="rect" coords="480,104,512,120" href="PR_OG" />
-<area shape="rect" coords="484,161,527,179" href="PR_OO" />
-<area shape="rect" coords="353,24,390,39" href="PR_TS" />
+<!-- #$AUTHOR:Luis Claudio Gamboa Lopes        -->
+<area shape="rect" coords="12,53,46,63" href="PN_1" />
+<area shape="rect" coords="542,113,577,123" href="PN_2" />
+<area shape="rect" coords="116,94,159,104" href="PR_IG" />
+<area shape="rect" coords="6,143,53,153" href="PR_IO" />
+<area shape="rect" coords="205,82,365,92" href="PR_NUM" />
+<area shape="rect" coords="205,106,365,116" href="PR_DEN" />
+<area shape="rect" coords="396,94,439,104" href="PR_OG" />
+<area shape="rect" coords="386,154,433,164" href="PR_OO" />
+<area shape="rect" coords="267,23,301,32" href="PR_TS" />
+<area shape="rect" coords="199,102,370,103" href="GP_LINE" />
 </map>

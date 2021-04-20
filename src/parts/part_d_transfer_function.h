@@ -40,7 +40,7 @@ class cpart_dtfunc:public part
       ~cpart_dtfunc(void);
       void Draw(void);
       void Process(void);
-      lxString GetPictureFileName(void){return lxT("dtfunc/d_transfer_function.png");};
+      lxString GetPictureFileName(void){return lxT("dtfunc/d_transfer_function.svg");};
       lxString GetInputMapFile(void){return lxT("dtfunc/d_transfer_function_i.map");};
       lxString GetOutputMapFile(void){return lxT("dtfunc/d_transfer_function_o.map");};
       lxString GetPropertiesWindowFile(void){return lxT("dtfunc/d_transfer_function.lxrad");};

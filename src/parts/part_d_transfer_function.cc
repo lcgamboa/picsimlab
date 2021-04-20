@@ -31,20 +31,20 @@
 /* outputs */
 enum
 {
- O_P1, O_P2, O_IG, O_IO, O_OG, O_OO, O_NUM, O_DEN, O_TS
+ O_P1, O_P2, O_IG, O_IO, O_OG, O_OO, O_NUM, O_DEN, O_TS, O_LINE
 };
 
-cpart_dtfunc::cpart_dtfunc(unsigned x, unsigned y):
-font (7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cpart_dtfunc::cpart_dtfunc(unsigned x, unsigned y) :
+font(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
  ReadMaps ();
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
- Bitmap = new lxBitmap(&image, &Window5);
+ Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -63,8 +63,8 @@ font (7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  out_gain = 0.01;
  out_off = 0.27;
 
- nsamples= sample * Window1.GetBoard ()->MGetInstClockFreq ();
- 
+ nsamples = sample * Window1.GetBoard ()->MGetInstClockFreq ();
+
  refresh = 0;
 
 }
@@ -72,7 +72,7 @@ font (7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 cpart_dtfunc::~cpart_dtfunc(void)
 {
  delete Bitmap;
- canvas.Destroy();
+ canvas.Destroy ();
 }
 
 void
@@ -94,7 +94,7 @@ cpart_dtfunc::Draw(void)
     {
     case O_P1:
     case O_P2:
-     canvas.SetColor (255, 255, 255);
+     canvas.SetColor (249, 249, 249);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (0, 0, 0);
      if (output[i].id == O_P1)
@@ -142,7 +142,7 @@ cpart_dtfunc::Draw(void)
      canvas.RotatedText (eq, output[i].x1, output[i].y1, 0);
      break;
     case O_DEN:
-     canvas.SetColor (240, 240, 240);
+     canvas.SetColor (220, 220, 220);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
      strncpy (eq, "[", 99);
@@ -154,7 +154,10 @@ cpart_dtfunc::Draw(void)
      strncat (eq, "]", 99);
      canvas.SetFgColor (0, 0, 0);
      canvas.RotatedText (eq, output[i].x1, output[i].y1, 0);
-
+     break;
+    case O_LINE:
+     canvas.SetColor (0, 0, 0);
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      break;
     }
 
@@ -163,8 +166,8 @@ cpart_dtfunc::Draw(void)
 
  canvas.End ();
 
- nsamples= sample * Window1.GetBoard ()->MGetInstClockFreq ();
- 
+ nsamples = sample * Window1.GetBoard ()->MGetInstClockFreq ();
+
 }
 
 void
@@ -173,19 +176,19 @@ cpart_dtfunc::Process(void)
 
  if (refresh > nsamples)
   {
-   refresh=0;
-   
+   refresh = 0;
+
    const picpin * ppins = Window5.GetPinsValues ();
 
    float in, out, pinv;
 
-   if(input_pin == 0)return;
-   pinv= (ppins[input_pin - 1].oavalue-30)*0.022502250225;
+   if (input_pin == 0)return;
+   pinv = (ppins[input_pin - 1].oavalue - 30)*0.022502250225;
    //pinv = (ppins[input_pin - 1].value) *5.0;
 
-   
+
    in = pinv * in_gain + in_off;
- 
+
    v[3] = v[2];
    v[2] = v[1];
    v[1] = v[0];
@@ -194,9 +197,9 @@ cpart_dtfunc::Process(void)
 
    out = out * out_gain + out_off;
 
-   if(out < 0.0)out=0.0;
-   if(out > 5.0)out=5.0;
-   
+   if (out < 0.0)out = 0.0;
+   if (out > 5.0)out = 5.0;
+
    Window5.SetAPin (output_pin, out);
 
   }
@@ -315,6 +318,7 @@ cpart_dtfunc::get_out_id(char * name)
  if (strcmp (name, "PR_TS") == 0)return O_TS;
  if (strcmp (name, "PR_NUM") == 0)return O_NUM;
  if (strcmp (name, "PR_DEN") == 0)return O_DEN;
+ if (strcmp (name, "GP_LINE") == 0)return O_LINE;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
@@ -343,7 +347,6 @@ cpart_dtfunc::ReadPreferences(lxString value)
          &num[0], &num[1], &num[2], &num[3],
          &den[0], &den[1], &den[2], &den[3]);
 }
-
 
 void
 cpart_dtfunc::ConfigurePropertiesWindow(CPWindow * WProp)
@@ -476,5 +479,5 @@ cpart_dtfunc::ReadPropertiesWindow(CPWindow * WProp)
 }
 
 
-part_init("D. Transfer function" , cpart_dtfunc, "Virtual");
+part_init("D. Transfer function", cpart_dtfunc, "Virtual");
 
