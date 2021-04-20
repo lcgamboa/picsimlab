@@ -35,6 +35,7 @@ class cboard_uCboard:public bsim_ucsim
 {
    private:
        lxBitmap * micbmp;       
+       lxFont font;
    public:
       void SetScale (double scale);
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};

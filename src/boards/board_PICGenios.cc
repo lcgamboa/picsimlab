@@ -67,7 +67,8 @@ enum
 
 //TODO TEMP cooler must don't work with AQUE=0
 
-cboard_PICGenios::cboard_PICGenios(void)
+cboard_PICGenios::cboard_PICGenios(void):
+font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  char fname[1024];
  FILE * fout;
@@ -297,7 +298,6 @@ void
 cboard_PICGenios::Draw(CDraw *draw)
 {
  int i;
- lxFont font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
 
  pic_set_pin (39, 1);
  pic_set_pin (40, 1);
@@ -655,14 +655,14 @@ cboard_PICGenios::Draw(CDraw *draw)
      if (led)
       {
        //draw a LED
-       lxColor color1 = draw->Canvas.GetBgColor ();
+       color1 = draw->Canvas.GetBgColor ();
        int r = color1.Red () - 120;
        int g = color1.Green () - 120;
        int b = color1.Blue () - 120;
        if (r < 0)r = 0;
        if (g < 0)g = 0;
        if (b < 0)b = 0;
-       lxColor color2 (r, g, b);
+       color2.Set (r, g, b);
        draw->Canvas.SetBgColor (color2);
        draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 1);
        draw->Canvas.SetBgColor (color1);

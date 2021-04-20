@@ -40,6 +40,9 @@ class cboard_McLab1:public bsim_picsim
      CGauge *gauge1;
      CLabel *label1;
      void RegisterRemoteControl(void); 
+     lxColor color1;
+     lxColor color2;
+     lxFont font;     
    public:
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       cboard_McLab1(void);

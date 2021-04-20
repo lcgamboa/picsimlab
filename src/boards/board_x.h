@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2015-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -48,7 +48,12 @@ class cboard_x:public bsim_picsim
      CLabel *label2;   //label of gauge RB0
      CLabel *label3;   //label of gauge RB1
      
+     //Register controls for remote interface called once on board creation 
      void RegisterRemoteControl(void);  
+     
+     lxColor color1;//LEDs color 1
+     lxColor color2;//LEDs color 2   
+     lxFont font;
    public:
       //Constructor called once on board creation 
       cboard_x(void);

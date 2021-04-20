@@ -77,7 +77,10 @@ class cboard_McLab2:public bsim_picsim
     
     char mi2c_tmp_name[200]; 
     
-    void RegisterRemoteControl(void);     
+    void RegisterRemoteControl(void);  
+    lxColor color1;
+    lxColor color2;
+    lxFont font;
   public:
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cboard_McLab2(void);

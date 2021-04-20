@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2015-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -94,7 +94,8 @@ cboard_x::get_out_id(char * name)
 
 //Constructor called once on board creation 
 
-cboard_x::cboard_x(void)
+cboard_x::cboard_x(void):
+font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  Proc = "PIC18F4550"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
@@ -493,8 +494,6 @@ cboard_x::Draw(CDraw *draw)
 {
  int i;
 
- lxFont font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
-
  draw->Canvas.Init (Scale, Scale); //initialize draw context
 
  //board_x draw 
@@ -601,14 +600,14 @@ cboard_x::Draw(CDraw *draw)
       }
 
      //draw a LED
-     lxColor color1 = draw->Canvas.GetBgColor ();
+     color1 = draw->Canvas.GetBgColor ();
      int r = color1.Red () - 120;
      int g = color1.Green () - 120;
      int b = color1.Blue () - 120;
      if (r < 0)r = 0;
      if (g < 0)g = 0;
      if (b < 0)b = 0;
-     lxColor color2 (r, g, b);
+     color2.Set (r, g, b);
      draw->Canvas.SetBgColor (color2);
      draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 1);
      draw->Canvas.SetBgColor (color1);

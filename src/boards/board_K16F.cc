@@ -66,7 +66,8 @@ enum
  I_VIEW
 };
 
-cboard_K16F::cboard_K16F(void)
+cboard_K16F::cboard_K16F(void):
+font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  char fname[1024];
  FILE * fout;
@@ -137,10 +138,8 @@ void
 cboard_K16F::Draw(CDraw *draw)
 {
  int i;
- lxFont font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  
  draw->Canvas.Init (Scale, Scale);
-
 
  lcd_blink (&lcd);
 
@@ -219,14 +218,14 @@ cboard_K16F::Draw(CDraw *draw)
       }
 
      //draw a LED
-     lxColor color1 = draw->Canvas.GetBgColor ();
+     color1 = draw->Canvas.GetBgColor ();
      int r = color1.Red () - 120;
      int g = color1.Green () - 120;
      int b = color1.Blue () - 120;
      if (r < 0)r = 0;
      if (g < 0)g = 0;
      if (b < 0)b = 0;
-     lxColor color2 (r, g, b);
+     color2.Set (r, g, b);
      draw->Canvas.SetBgColor (color2);
      draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 1);
      draw->Canvas.SetBgColor (color1);

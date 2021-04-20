@@ -34,7 +34,8 @@ enum
  O_P1, O_P2, O_P3, O_P4, O_P5, O_F1, O_F2, O_F3, O_LCD
 };
 
-cpart_LCD_pcd8544::cpart_LCD_pcd8544 (unsigned x, unsigned y)
+cpart_LCD_pcd8544::cpart_LCD_pcd8544 (unsigned x, unsigned y):
+font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -74,7 +75,6 @@ cpart_LCD_pcd8544::Draw (void)
 
  canvas.Init (Scale, Scale, Orientation);
 
- lxFont font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
 
  for (i = 0; i < outputc; i++)

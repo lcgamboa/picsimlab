@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2019-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2019-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -56,7 +56,8 @@ const char pin_values[8][10] = {
  "+5V"
 };
 
-cpart_VCD_Play::cpart_VCD_Play(unsigned x, unsigned y)
+cpart_VCD_Play::cpart_VCD_Play(unsigned x, unsigned y):
+font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -132,7 +133,6 @@ cpart_VCD_Play::Draw(void)
 
  canvas.Init (Scale, Scale, Orientation);
 
- lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
 
  for (i = 0; i < outputc; i++)

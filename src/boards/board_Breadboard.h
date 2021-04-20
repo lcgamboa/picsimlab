@@ -40,6 +40,7 @@ class cboard_Breadboard:public bsim_picsim, public bsim_simavr
   private:
       int ptype;
       lxBitmap * micbmp;
+      lxFont font;
    public:
       void SetScale (double scale);
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 

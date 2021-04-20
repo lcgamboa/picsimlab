@@ -40,7 +40,9 @@ enum
  I_PO1, I_PO2, I_PO3, I_PO4
 };
 
-cpart_pot_r::cpart_pot_r(unsigned x, unsigned y)
+cpart_pot_r::cpart_pot_r(unsigned x, unsigned y):
+font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
+font_p (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -112,8 +114,6 @@ cpart_pot_r::Draw(void)
 
  canvas.Init (Scale, Scale, Orientation);
 
- lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
- lxFont font_p (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
 
  for (i = 0; i < outputc; i++)

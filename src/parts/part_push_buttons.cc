@@ -40,7 +40,8 @@ enum
  I_B1, I_B2, I_B3, I_B4, I_B5, I_B6, I_B7, I_B8, I_J1
 };
 
-cpart_pbuttons::cpart_pbuttons(unsigned x, unsigned y)
+cpart_pbuttons::cpart_pbuttons(unsigned x, unsigned y):
+font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -163,7 +164,6 @@ cpart_pbuttons::Draw(void)
 
  canvas.Init (Scale, Scale, Orientation);
 
- lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
 
  for (i = 0; i < outputc; i++)

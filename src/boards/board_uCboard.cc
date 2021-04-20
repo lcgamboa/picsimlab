@@ -24,6 +24,7 @@
    ######################################################################## */
 
 //include files
+
 #include"../picsimlab1.h"
 #include"../picsimlab4.h" //Oscilloscope
 #include"../picsimlab5.h" //Spare Parts
@@ -78,7 +79,8 @@ cboard_uCboard::get_out_id(char * name)
 
 //Constructor called once on board creation 
 
-cboard_uCboard::cboard_uCboard(void)
+cboard_uCboard::cboard_uCboard(void):
+font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  Proc = "C51"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
@@ -261,9 +263,9 @@ cboard_uCboard::Draw(CDraw *draw)
  int i;
  lxRect rec;
  lxSize ps;
- lxFont font ((MGetPinCount () >= 100) ? 9 : ((MGetPinCount () > 14) ? 12 : 10)
-              , lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
 
+ font.SetPointSize ((MGetPinCount () >= 100) ? 9 : ((MGetPinCount () > 14) ? 12 : 10));
+            
  draw->Canvas.Init (Scale, Scale); //initialize draw context
 
  //board_x draw 

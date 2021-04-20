@@ -73,7 +73,8 @@ cboard_Breadboard::get_out_id(char * name)
 
 //Constructor called once on board creation 
 
-cboard_Breadboard::cboard_Breadboard(void)
+cboard_Breadboard::cboard_Breadboard(void):
+font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  ptype = _PIC;
  Proc = "PIC18F4550"; //default microcontroller if none defined in preferences
@@ -338,8 +339,7 @@ cboard_Breadboard::Draw(CDraw *draw)
  lxRect rec;
  lxSize ps;
 
- lxFont font ((MGetPinCount () >= 44) ? 5 : ((MGetPinCount () > 14) ? 12 : 10)
-              , lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
+ font.SetPointSize ((MGetPinCount () >= 44) ? 5 : ((MGetPinCount () > 14) ? 12 : 10));
 
  draw->Canvas.Init (Scale, Scale); //initialize draw context
 

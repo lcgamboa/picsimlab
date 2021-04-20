@@ -53,6 +53,9 @@ class cpart_leds:public part
       void RegisterRemoteControl(void);
       unsigned char active; 
       unsigned char input_pins[8];    
+      lxFont font;
+      lxColor color1;
+      lxColor color2;
 };
 
 

@@ -73,6 +73,7 @@ private:
     char f_mi2c_name[200];
     char f_mi2c_tmp_name[200];
     FILE * f_mi2c;
+    lxFont font;
 };
 
 

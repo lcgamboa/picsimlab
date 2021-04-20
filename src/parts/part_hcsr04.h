@@ -61,6 +61,8 @@ class cpart_hcsr04:public part
       unsigned int  count;
       unsigned int  delay;
       unsigned char old_value;
+      lxFont font;
+      lxFont font_p;
 };
 
 

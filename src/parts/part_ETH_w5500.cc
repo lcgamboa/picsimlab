@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -69,7 +69,8 @@ const char pin_values[10][10] = {
  */
 
 
-cpart_ETH_w5500::cpart_ETH_w5500(unsigned x, unsigned y)
+cpart_ETH_w5500::cpart_ETH_w5500(unsigned x, unsigned y):
+font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -125,7 +126,6 @@ cpart_ETH_w5500::Draw(void)
  char sport[10];
  canvas.Init (Scale, Scale, Orientation);
 
- lxFont font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
 
  for (i = 0; i < outputc; i++)

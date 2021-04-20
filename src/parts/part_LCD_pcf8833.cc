@@ -34,7 +34,8 @@ enum
  O_P1, O_P2, O_P3, O_P4, O_F1, O_F2, O_F3, O_F4, O_F5, O_LCD
 };
 
-cpart_LCD_pcf8833::cpart_LCD_pcf8833 (unsigned x, unsigned y)
+cpart_LCD_pcf8833::cpart_LCD_pcf8833 (unsigned x, unsigned y):
+font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -73,7 +74,6 @@ cpart_LCD_pcf8833::Draw (void)
 
  canvas.Init (Scale, Scale, Orientation);
 
- lxFont font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
 
  for (i = 0; i < outputc; i++)

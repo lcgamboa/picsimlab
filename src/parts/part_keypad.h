@@ -61,6 +61,7 @@ class cpart_keypad:public part
       unsigned char output_pins[8];    
       unsigned char keys[4][4];
       unsigned char keys2[2][5];
+      lxFont font;
 };
 
 

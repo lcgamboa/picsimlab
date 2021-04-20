@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -61,6 +61,7 @@ class cpart_SDCard:public part
       sdcard_t sd;
       unsigned short _ret; 
       char sdcard_fname[200];
+      lxFont font;
 };
 
 

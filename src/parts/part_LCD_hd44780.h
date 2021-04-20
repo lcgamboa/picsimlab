@@ -68,6 +68,7 @@ class cpart_LCD_hd44780:public part
       lcd_t lcd;
       int lcde;
       unsigned char model;
+      lxFont font;
 };
 
 

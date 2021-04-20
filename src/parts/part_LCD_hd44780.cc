@@ -87,7 +87,8 @@ cpart_LCD_hd44780::Reset(void)
  lcde = 0;
 }
 
-cpart_LCD_hd44780::cpart_LCD_hd44780(unsigned x, unsigned y)
+cpart_LCD_hd44780::cpart_LCD_hd44780(unsigned x, unsigned y):
+font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)   
 {
  X = x;
  Y = y;
@@ -131,7 +132,6 @@ cpart_LCD_hd44780::Draw(void)
 
  lcd_blink (&lcd);
 
- lxFont font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
 
  for (i = 0; i < outputc; i++)

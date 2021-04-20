@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2017-2018  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2017-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -52,7 +52,8 @@ class cboard_Franzininho:public bsim_simavr
      CLabel *label6;   //label of gauge 11
  */    
      void RegisterRemoteControl(void); 
-      
+     lxColor color1;
+     lxColor color2;
    public:
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       //Constructor called once on board creation 

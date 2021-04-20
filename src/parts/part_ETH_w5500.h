@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -61,6 +61,7 @@ class cpart_ETH_w5500:public part
       eth_w5500_t ethw;
       unsigned char link;
       unsigned short _ret; 
+      lxFont font;
 };
 
 

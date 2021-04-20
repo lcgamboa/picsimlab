@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2019-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2019-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -52,6 +52,7 @@ class cpart_RTC_ds1307:public part
    private:
       unsigned char input_pins[3]; 
       rtc2_t rtc2;
+      lxFont font;
 };
 
 

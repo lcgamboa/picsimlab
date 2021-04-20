@@ -55,6 +55,7 @@ class cpart_LCD_pcd8544:public part
    private:
       unsigned char input_pins[5]; 
       lcd_pcd8544_t lcd;
+      lxFont font;
 };
 
 

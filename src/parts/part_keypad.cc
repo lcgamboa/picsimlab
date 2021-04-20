@@ -100,7 +100,8 @@ cpart_keypad::GetOutputMapFile(void)
  return lxT ("keypad/keypad_4x4_o.map");
 }
 
-cpart_keypad::cpart_keypad(unsigned x, unsigned y)
+cpart_keypad::cpart_keypad(unsigned x, unsigned y):
+font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)   
 {
  X = x;
  Y = y;
@@ -278,7 +279,6 @@ cpart_keypad::Draw(void)
 
  canvas.Init (Scale, Scale, Orientation);
 
- lxFont font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
  canvas.SetFont (font);
 
  for (i = 0; i < outputc; i++)

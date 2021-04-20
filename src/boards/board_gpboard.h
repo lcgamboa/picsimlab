@@ -35,6 +35,7 @@ class cboard_gpboard:public bsim_gpsim
 {
    private:
        lxBitmap * micbmp;   
+       lxFont font;
    public:
       void SetScale (double scale);
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};

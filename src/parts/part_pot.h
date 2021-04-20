@@ -57,6 +57,8 @@ class cpart_pot:public part
       unsigned char output_pins[4]; 
       unsigned char values[4];
       unsigned char active[4];
+      lxFont font;
+      lxFont font_p;
 };
 
 

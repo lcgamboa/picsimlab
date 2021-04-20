@@ -66,6 +66,7 @@ class cpart_LCD_ili9341:public part
       tsc_XPT2046_t  touch;
       unsigned char type_com;
       unsigned char active[1];
+      lxFont font;
 };
 
 
