@@ -92,19 +92,19 @@ cpart_LCD_ili9341::GetPictureFileName(void)
  switch (type_com)
   {
   case TC_SPI:
-   return lxT ("LCD_ili9341/LCD_ili9341.png");
+   return lxT ("LCD_ili9341/LCD_ili9341.svg");
    break;
   case TC_SPI_TOUCH:
-   return lxT ("LCD_ili9341/LCD_ili9341_t.png");
+   return lxT ("LCD_ili9341/LCD_ili9341_t.svg");
    break;
   case TC_8BITS:
-   return lxT ("LCD_ili9341/LCD_ili9341_8.png");
+   return lxT ("LCD_ili9341/LCD_ili9341_8.svg");
    break;
   case TC_8BITS_TOUCH:
-   return lxT ("LCD_ili9341/LCD_ili9341_8_t.png");
+   return lxT ("LCD_ili9341/LCD_ili9341_8_t.svg");
    break;
   }
- return lxT ("LCD_ili9341/LCD_ili9341.png");
+ return lxT ("LCD_ili9341/LCD_ili9341.svg");
 }
 
 lxString

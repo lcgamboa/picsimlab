@@ -1,22 +1,22 @@
-<img src="picsimlab2.png" width="350" height="382" border="0" usemap="#map" />
+<img src="picsimlab2.png" width="496" height="506" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:lcganmboa@yahoo.com                    -->
-<area shape="rect" coords="14,19,334,259" href="DS_LCD" />
-<area shape="rect" coords="9,272,28,329" href="PN_F1" />
-<area shape="rect" coords="39,271,57,330" href="PN_F2" />
-<area shape="rect" coords="70,272,87,330" href="PN_1" />
-<area shape="rect" coords="99,271,116,329" href="PN_2" />
-<area shape="rect" coords="130,271,147,329" href="PN_3" />
-<area shape="rect" coords="160,271,178,330" href="PN_4" />
-<area shape="rect" coords="190,271,207,330" href="PN_5" />
-<area shape="rect" coords="215,271,232,326" href="PN_T1" />
-<area shape="rect" coords="244,271,261,326" href="PN_T2" />
-<area shape="rect" coords="273,271,290,326" href="PN_T3" />
-<area shape="rect" coords="302,271,319,324" href="PN_T4" />
-<area shape="rect" coords="331,271,348,326" href="PN_T5" />
+<!-- #$AUTHOR:lcganmboa@yahoo.com                     -->
+<area shape="rect" coords="117,55,437,295" href="DS_LCD" />
+<area shape="rect" coords="16,370,35,427" href="PN_F1" />
+<area shape="rect" coords="48,369,66,428" href="PN_F2" />
+<area shape="rect" coords="79,370,96,428" href="PN_1" />
+<area shape="rect" coords="109,370,126,428" href="PN_2" />
+<area shape="rect" coords="142,369,159,427" href="PN_3" />
+<area shape="rect" coords="174,368,192,427" href="PN_4" />
+<area shape="rect" coords="205,368,222,427" href="PN_5" />
+<area shape="rect" coords="237,371,254,426" href="PN_T1" />
+<area shape="rect" coords="269,371,286,426" href="PN_T2" />
+<area shape="rect" coords="302,371,319,426" href="PN_T3" />
+<area shape="rect" coords="333,373,350,426" href="PN_T4" />
+<area shape="rect" coords="365,371,382,426" href="PN_T5" />
 </map>

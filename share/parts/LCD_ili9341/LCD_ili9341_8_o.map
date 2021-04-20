@@ -1,25 +1,25 @@
-<img src="picsimlab2.png" width="449" height="382" border="0" usemap="#map" />
+<img src="picsimlab2.png" width="496" height="506" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:lcganmboa@yahoo.com                    -->
-<area shape="rect" coords="63,19,383,259" href="DS_LCD" />
-<area shape="rect" coords="9,272,28,327" href="PN_F1" />
-<area shape="rect" coords="39,271,57,328" href="PN_F2" />
-<area shape="rect" coords="70,271,87,328" href="PN_1" />
-<area shape="rect" coords="99,271,116,328" href="PN_2" />
-<area shape="rect" coords="130,271,147,327" href="PN_3" />
-<area shape="rect" coords="160,271,178,328" href="PN_4" />
-<area shape="rect" coords="190,271,207,329" href="PN_5" />
-<area shape="rect" coords="221,271,238,329" href="PN_6" />
-<area shape="rect" coords="250,271,267,329" href="PN_7" />
-<area shape="rect" coords="280,271,297,327" href="PN_8" />
-<area shape="rect" coords="310,271,327,327" href="PN_9" />
-<area shape="rect" coords="339,271,356,327" href="PN_10" />
-<area shape="rect" coords="369,271,386,326" href="PN_11" />
-<area shape="rect" coords="399,269,416,326" href="PN_12" />
-<area shape="rect" coords="429,269,446,326" href="PN_13" />
+<!-- #$AUTHOR:lcganmboa@yahoo.com                     -->
+<area shape="rect" coords="117,55,437,295" href="DS_LCD" />
+<area shape="rect" coords="16,368,35,423" href="PN_F1" />
+<area shape="rect" coords="49,366,67,423" href="PN_F2" />
+<area shape="rect" coords="80,366,97,423" href="PN_1" />
+<area shape="rect" coords="112,366,129,423" href="PN_2" />
+<area shape="rect" coords="143,367,160,423" href="PN_3" />
+<area shape="rect" coords="174,366,192,423" href="PN_4" />
+<area shape="rect" coords="205,365,222,423" href="PN_5" />
+<area shape="rect" coords="237,365,254,423" href="PN_6" />
+<area shape="rect" coords="269,365,286,423" href="PN_7" />
+<area shape="rect" coords="301,367,318,423" href="PN_8" />
+<area shape="rect" coords="332,367,349,423" href="PN_9" />
+<area shape="rect" coords="364,367,381,423" href="PN_10" />
+<area shape="rect" coords="396,368,413,423" href="PN_11" />
+<area shape="rect" coords="428,366,445,423" href="PN_12" />
+<area shape="rect" coords="459,366,476,423" href="PN_13" />
 </map>
