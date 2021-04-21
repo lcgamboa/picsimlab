@@ -44,7 +44,7 @@ public:
     void Process(void);
 
     lxString GetPictureFileName(void) {
-        return lxT("MI2C_24CXXX/MI2C_24CXXX.png");
+        return lxT("MI2C_24CXXX/MI2C_24CXXX.svg");
     };
 
     lxString GetInputMapFile(void) {

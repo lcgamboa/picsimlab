@@ -73,8 +73,8 @@ const char pin_values[16][10] = {
  "+5V"
 };
 
-cpart_IO_PCF8574::cpart_IO_PCF8574(unsigned x, unsigned y):
-font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cpart_IO_PCF8574::cpart_IO_PCF8574(unsigned x, unsigned y) :
+font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -139,10 +139,10 @@ cpart_IO_PCF8574::Draw(void)
    switch (output[i].id)
     {
     case O_IC:
-     canvas.SetColor (0, 0, 0);
+     canvas.SetColor (26, 26, 26);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     canvas.RotatedText ("PCF8574", output[i].x1, output[i].y2 - 15, 0.0);
+     canvas.RotatedText ("PCF8574", output[i].x1 + 14, output[i].y2 - 15, 0.0);
      break;
     default:
      canvas.SetColor (49, 61, 99);

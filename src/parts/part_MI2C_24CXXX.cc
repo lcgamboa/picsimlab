@@ -121,7 +121,7 @@ cpart_MI2C_24CXXX::Draw(void)
     case O_IC:
      char buff[10];
      snprintf (buff, 9, "24C%02i", kbits);
-     canvas.SetColor (0, 0, 0);
+     canvas.SetColor (26, 26, 26);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
      canvas.RotatedText (buff, output[i].x1, output[i].y2 - 15, 0);

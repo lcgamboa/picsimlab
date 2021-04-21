@@ -97,8 +97,8 @@ const char pin_values[28][10] = {
  {17},
 };
 
-cpart_IO_MCP23S17::cpart_IO_MCP23S17(unsigned x, unsigned y):
-font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cpart_IO_MCP23S17::cpart_IO_MCP23S17(unsigned x, unsigned y) :
+font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -178,10 +178,10 @@ cpart_IO_MCP23S17::Draw(void)
    switch (output[i].id)
     {
     case O_IC:
-     canvas.SetColor (0, 0, 0);
+     canvas.SetColor (26, 26, 26);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
-     canvas.RotatedText ("MCP23S17", output[i].x1, output[i].y2 - 15, 0.0);
+     canvas.RotatedText ("MCP23S17", output[i].x1 + 50, output[i].y2 - 15, 0.0);
      break;
     default:
      canvas.SetColor (49, 61, 99);

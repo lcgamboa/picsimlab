@@ -46,20 +46,21 @@ const char pin_values[8][10] = {
  "+5V"
 };
 
-cpart_RTC_ds1307::cpart_RTC_ds1307(unsigned x, unsigned y):
-font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cpart_RTC_ds1307::cpart_RTC_ds1307(unsigned x, unsigned y) :
+font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
+font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)    
 {
  X = x;
  Y = y;
  ReadMaps ();
  Bitmap = NULL;
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
 
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
 
- Bitmap = new lxBitmap(&image, &Window5);
+ Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -75,7 +76,7 @@ cpart_RTC_ds1307::~cpart_RTC_ds1307(void)
 {
  rtc2_end (&rtc2);
  delete Bitmap;
- canvas.Destroy();
+ canvas.Destroy ();
 }
 
 void
@@ -94,7 +95,8 @@ cpart_RTC_ds1307::Draw(void)
    switch (output[i].id)
     {
     case O_IC:
-     canvas.SetColor (0, 0, 0);
+     canvas.SetFont (font_p);
+     canvas.SetColor (26, 26, 26);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
      canvas.RotatedText ("DS1307", output[i].x1, output[i].y2 - 15, 0.0);
@@ -106,7 +108,7 @@ cpart_RTC_ds1307::Draw(void)
      canvas.SetFgColor (255, 255, 255);
      canvas.RotatedText (pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0);
 
-     int pinv =pin_values[output[i].id - O_P1][0]; 
+     int pinv = pin_values[output[i].id - O_P1][0];
      if (pinv > 10)
       {
        canvas.SetFgColor (155, 155, 155);
@@ -175,7 +177,6 @@ cpart_RTC_ds1307::ReadPreferences(lxString value)
  Reset ();
 }
 
-
 void
 cpart_RTC_ds1307::ConfigurePropertiesWindow(CPWindow * WProp)
 {
@@ -227,13 +228,13 @@ void
 cpart_RTC_ds1307::Process(void)
 {
  const picpin * ppins = Window5.GetPinsValues ();
- 
- if((input_pins[0]>0)&&(input_pins[1]>0))
-   Window5.Set_i2c_bus (input_pins[0] - 1, rtc2_io (&rtc2, ppins[input_pins[1] - 1].value, ppins[input_pins[0] - 1].value));
- if(input_pins[0]>0)
-   Window5.SetPin (input_pins[0], Window5.Get_i2c_bus (input_pins[0] - 1));
+
+ if ((input_pins[0] > 0)&&(input_pins[1] > 0))
+  Window5.Set_i2c_bus (input_pins[0] - 1, rtc2_io (&rtc2, ppins[input_pins[1] - 1].value, ppins[input_pins[0] - 1].value));
+ if (input_pins[0] > 0)
+  Window5.SetPin (input_pins[0], Window5.Get_i2c_bus (input_pins[0] - 1));
 
 }
 
-part_init("RTC ds1307", cpart_RTC_ds1307,"Other");
+part_init("RTC ds1307", cpart_RTC_ds1307, "Other");
 

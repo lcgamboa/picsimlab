@@ -39,7 +39,7 @@ class cpart_RTC_ds1307:public part
       ~cpart_RTC_ds1307(void);
       void Draw(void);
       void Process(void);
-      lxString GetPictureFileName(void){return lxT("Common/IC8.png");};
+      lxString GetPictureFileName(void){return lxT("Common/IC8.svg");};
       lxString GetInputMapFile(void){return lxT("Common/IC8_i.map");};
       lxString GetOutputMapFile(void){return lxT("Common/IC8_o.map");};
       lxString GetPropertiesWindowFile(void){return lxT("RTC_ds1307/RTC_ds1307.lxrad");};
@@ -53,6 +53,7 @@ class cpart_RTC_ds1307:public part
       unsigned char input_pins[3]; 
       rtc2_t rtc2;
       lxFont font;
+      lxFont font_p;      
 };
 
 

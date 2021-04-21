@@ -1,38 +1,38 @@
-<img src="picsimlab2.png" width="416" height="281" border="0" usemap="#map" />
+<img src="picsimlab2.png" width="382" height="312" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:lcganmboa@yahoo.com                 -->
-<area shape="rect" coords="188,137,233,155" href="IC_28" />
-<area shape="rect" coords="6,163,25,250" href="PN_1" />
-<area shape="rect" coords="36,163,54,250" href="PN_2" />
-<area shape="rect" coords="65,163,82,250" href="PN_3" />
-<area shape="rect" coords="95,163,112,250" href="PN_4" />
-<area shape="rect" coords="123,171,143,250" href="PN_5" />
-<area shape="rect" coords="155,171,173,250" href="PN_6" />
-<area shape="rect" coords="184,171,203,250" href="PN_7" />
-<area shape="rect" coords="213,171,232,251" href="PN_8" />
-<area shape="rect" coords="245,171,264,251" href="PN_9" />
-<area shape="rect" coords="273,171,292,251" href="PN_10" />
-<area shape="rect" coords="304,164,321,252" href="PN_11" />
-<area shape="rect" coords="334,163,351,251" href="PN_12" />
-<area shape="rect" coords="364,163,381,251" href="PN_13" />
-<area shape="rect" coords="394,163,412,251" href="PN_14" />
-<area shape="rect" coords="394,3,411,91" href="PN_15" />
-<area shape="rect" coords="365,2,381,91" href="PN_16" />
-<area shape="rect" coords="334,3,351,91" href="PN_17" />
-<area shape="rect" coords="304,1,321,89" href="PN_18" />
-<area shape="rect" coords="273,3,291,91" href="PN_19" />
-<area shape="rect" coords="243,3,261,91" href="PN_20" />
-<area shape="rect" coords="217,2,233,90" href="PN_21" />
-<area shape="rect" coords="185,4,202,91" href="PN_22" />
-<area shape="rect" coords="155,3,173,90" href="PN_23" />
-<area shape="rect" coords="125,2,142,89" href="PN_24" />
-<area shape="rect" coords="95,3,112,90" href="PN_25" />
+<!-- #$AUTHOR:lcganmboa@yahoo.com                  -->
+<area shape="rect" coords="115,146,259,164" href="IC_28" />
+<area shape="rect" coords="12,188,31,275" href="PN_1" />
+<area shape="rect" coords="37,188,55,275" href="PN_2" />
+<area shape="rect" coords="63,188,80,275" href="PN_3" />
+<area shape="rect" coords="89,188,106,275" href="PN_4" />
+<area shape="rect" coords="114,188,134,275" href="PN_5" />
+<area shape="rect" coords="141,189,159,275" href="PN_6" />
+<area shape="rect" coords="165,189,184,275" href="PN_7" />
+<area shape="rect" coords="192,190,211,275" href="PN_8" />
+<area shape="rect" coords="219,189,238,276" href="PN_9" />
+<area shape="rect" coords="244,188,263,276" href="PN_10" />
+<area shape="rect" coords="269,189,286,277" href="PN_11" />
+<area shape="rect" coords="294,188,311,276" href="PN_12" />
+<area shape="rect" coords="321,188,338,276" href="PN_13" />
+<area shape="rect" coords="346,188,364,276" href="PN_14" />
+<area shape="rect" coords="349,2,366,90" href="PN_15" />
+<area shape="rect" coords="322,1,338,90" href="PN_16" />
+<area shape="rect" coords="296,2,313,90" href="PN_17" />
+<area shape="rect" coords="271,2,288,90" href="PN_18" />
+<area shape="rect" coords="245,2,263,90" href="PN_19" />
+<area shape="rect" coords="219,2,237,90" href="PN_20" />
+<area shape="rect" coords="194,2,210,90" href="PN_21" />
+<area shape="rect" coords="168,3,185,90" href="PN_22" />
+<area shape="rect" coords="142,3,160,90" href="PN_23" />
+<area shape="rect" coords="116,3,133,90" href="PN_24" />
+<area shape="rect" coords="91,3,108,90" href="PN_25" />
 <area shape="rect" coords="65,3,82,90" href="PN_26" />
-<area shape="rect" coords="36,3,54,90" href="PN_27" />
-<area shape="rect" coords="5,3,24,90" href="PN_28" />
+<area shape="rect" coords="39,3,57,90" href="PN_27" />
+<area shape="rect" coords="13,3,32,90" href="PN_28" />
 </map>

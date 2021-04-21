@@ -47,7 +47,8 @@ const char pin_values[8][10] = {
 };
 
 cpart_RTC_pfc8563::cpart_RTC_pfc8563(unsigned x, unsigned y):
-font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
+font_p (6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -95,7 +96,8 @@ cpart_RTC_pfc8563::Draw(void)
    switch (output[i].id)
     {
     case O_IC:
-     canvas.SetColor (0, 0, 0);
+     canvas.SetFont (font_p);
+     canvas.SetColor (26, 26, 26);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
      canvas.RotatedText ("PFC8563", output[i].x1, output[i].y2 - 15, 0.0);

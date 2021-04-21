@@ -42,7 +42,7 @@ class cpart_IO_PCF8574:public part
       void PreProcess (void);
       void Process(void); 
       void PostProcess (void);
-      lxString GetPictureFileName(void){return lxT("Common/IC16.png");};
+      lxString GetPictureFileName(void){return lxT("Common/IC16.svg");};
       lxString GetInputMapFile(void){return lxT("Common/IC16_i.map");};
       lxString GetOutputMapFile(void){return lxT("Common/IC16_o.map");};
       lxString GetPropertiesWindowFile(void){return lxT("IO_PCF8574/IO_PCF8574.lxrad");};
