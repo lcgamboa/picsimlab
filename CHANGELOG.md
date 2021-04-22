@@ -1,3 +1,46 @@
+## v0.8.7 (2021-04-22)
+
+### New
+
+* All pictures converted to SVG. [lcgamboa]
+
+* Initial support to Franzininho DIY board with attiny85. [lcgamboa]
+
+* Resize board to display size when board size is bigger than display. [lcgamboa]
+
+* Support to scroll ans scale spare parts window with mouse. [lcgamboa]
+
+* Added a status bar int the Spare parts window to show alias, scale and offset. [lcgamboa]
+
+* Adding PQDB board to the project. [Rodrigo Almeida]
+
+* Support to use SVG instead PNG for boards and part pictures. [lcgamboa]
+
+* Oscilloscope channel info on screen added. [lcgamboa]
+
+* Spare part window menu "add" split in "Inputs", "Outputs","Others" and "Virtual" [lcgamboa]
+
+* Part Ultrasonic HC-SR04 added. [lcgamboa]
+
+* Menu entry to download MPLABX debugger plugin. [lcgamboa]
+
+* Command "pins" to show pins status and dir in control interface. [lcgamboa]
+
+### Changes
+
+* Docs moved to picsimlab_docs repo. [lcgamboa]
+
+### Fix
+
+* Missing +5V on atemga2560 and attiny85 added. [lcgamboa]
+
+* Support to use windows serial ports above COM9. [lcgamboa]
+
+* Arduino IDE bootloaders reset to programm bug fixed. [lcgamboa]
+
+* No value on pins on debug stepping bug removed. [lcgamboa]
+
+
 ## v0.8.6 (2021-01-25)
 
 ### New

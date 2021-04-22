@@ -1,6 +1,8 @@
-## (unreleased)
+## v0.8.7 (2021-04-22)
 
 ### New
+
+* New menu "virtual" in spare parts window. [lcgamboa]
 
 * Initial support to Franzininho DIY board with attiny85. [lcgamboa]
 
@@ -29,6 +31,8 @@
 * Docs moved to picsimlab_docs repo. [lcgamboa]
 
 ### Fix
+
+* Missing +5V on atemga2560 and attiny85 added. [lcgamboa]
 
 * Support to use windows serial ports above COM9. [lcgamboa]
 
