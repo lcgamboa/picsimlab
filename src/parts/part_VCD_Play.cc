@@ -56,15 +56,15 @@ const char pin_values[8][10] = {
  "+5V"
 };
 
-cpart_VCD_Play::cpart_VCD_Play(unsigned x, unsigned y):
-font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cpart_VCD_Play::cpart_VCD_Play(unsigned x, unsigned y) :
+font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
  ReadMaps ();
  Bitmap = NULL;
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
 
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
@@ -129,6 +129,8 @@ cpart_VCD_Play::Draw(void)
 
  int i;
  int to;
+ int r, g, b;
+
  const picpin * ppins = Window5.GetPinsValues ();
 
  canvas.Init (Scale, Scale, Orientation);
@@ -187,7 +189,20 @@ cpart_VCD_Play::Draw(void)
       {
        canvas.SetColor (30, 0, 0);
       }
+     canvas.SetFgColor (0, 0, 0);
+     //draw a circle
+     color1 = canvas.GetBgColor ();
+     r = color1.Red () - 120;
+     g = color1.Green () - 120;
+     b = color1.Blue () - 120;
+     if (r < 0)r = 0;
+     if (g < 0)g = 0;
+     if (b < 0)b = 0;
+     color2.Set (r, g, b);
+     canvas.SetBgColor (color2);
      canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
+     canvas.SetBgColor (color1);
+     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 3);
      break;
     case O_PLAY:
      if (play > 0)
@@ -198,7 +213,20 @@ cpart_VCD_Play::Draw(void)
       {
        canvas.SetColor (255, 0, 0);
       }
+     canvas.SetFgColor (0, 0, 0);
+     //draw a circle
+     color1 = canvas.GetBgColor ();
+     r = color1.Red () - 120;
+     g = color1.Green () - 120;
+     b = color1.Blue () - 120;
+     if (r < 0)r = 0;
+     if (g < 0)g = 0;
+     if (b < 0)b = 0;
+     color2.Set (r, g, b);
+     canvas.SetBgColor (color2);
      canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
+     canvas.SetBgColor (color1);
+     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 3);
      break;
     }
   }
@@ -504,7 +532,7 @@ cpart_VCD_Play::EvMouseButtonPress(uint button, uint x, uint y, uint state)
        lxExecute (Window1.GetSharePath () + lxT ("/../tools/gtkwave/bin/gtkwave.exe ") + f_vcd_name);
 #else
 
-       lxExecute (dirname(lxGetExecutablePath ())+lxString ("/gtkwave ") + f_vcd_name, lxEXEC_MAKE_GROUP_LEADER);
+       lxExecute (dirname (lxGetExecutablePath ()) + lxString ("/gtkwave ") + f_vcd_name, lxEXEC_MAKE_GROUP_LEADER);
 #endif
 #endif
        break;

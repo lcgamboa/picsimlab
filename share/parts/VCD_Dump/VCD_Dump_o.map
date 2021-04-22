@@ -1,27 +1,27 @@
-<img src="[push_buttons] (sobrescrita)" width="584" height="92" border="0" usemap="#map" />
+<img src="[push_buttons] (sobrescrita)" width="583" height="146" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:Luis Claudio Gamboa Lopes     -->
-<area shape="rect" coords="8,65,57,84" href="PN_1" />
-<area shape="rect" coords="68,65,117,84" href="PN_2" />
-<area shape="rect" coords="128,65,177,84" href="PN_3" />
-<area shape="rect" coords="187,65,236,84" href="PN_4" />
-<area shape="rect" coords="245,65,294,84" href="PN_5" />
-<area shape="rect" coords="307,65,356,84" href="PN_6" />
-<area shape="rect" coords="367,65,416,84" href="PN_7" />
-<area shape="rect" coords="426,65,475,84" href="PN_8" />
-<area shape="circle" coords="32,33,11" href="LD_1" />
-<area shape="circle" coords="91,33,11" href="LD_2" />
-<area shape="circle" coords="150,34,11" href="LD_3" />
-<area shape="circle" coords="211,34,11" href="LD_4" />
-<area shape="circle" coords="269,35,11" href="LD_5" />
-<area shape="circle" coords="330,35,11" href="LD_6" />
-<area shape="circle" coords="390,35,11" href="LD_7" />
-<area shape="circle" coords="448,36,11" href="LD_8" />
-<area shape="rect" coords="107,3,453,18" href="DI_NAME" />
-<area shape="circle" coords="513,65,13" href="LD_REC" />
+<!-- #$AUTHOR:Luis Claudio Gamboa Lopes      -->
+<area shape="rect" coords="7,104,56,123" href="PN_1" />
+<area shape="rect" coords="69,104,118,123" href="PN_2" />
+<area shape="rect" coords="132,104,181,123" href="PN_3" />
+<area shape="rect" coords="192,104,241,123" href="PN_4" />
+<area shape="rect" coords="256,104,305,123" href="PN_5" />
+<area shape="rect" coords="319,104,368,123" href="PN_6" />
+<area shape="rect" coords="380,104,429,123" href="PN_7" />
+<area shape="rect" coords="443,104,492,123" href="PN_8" />
+<area shape="circle" coords="38,41,15" href="LD_1" />
+<area shape="circle" coords="100,41,15" href="LD_2" />
+<area shape="circle" coords="163,42,15" href="LD_3" />
+<area shape="circle" coords="226,42,15" href="LD_4" />
+<area shape="circle" coords="290,42,15" href="LD_5" />
+<area shape="circle" coords="352,42,15" href="LD_6" />
+<area shape="circle" coords="415,43,15" href="LD_7" />
+<area shape="circle" coords="473,44,15" href="LD_8" />
+<area shape="rect" coords="110,3,486,18" href="DI_NAME" />
+<area shape="circle" coords="538,107,15" href="LD_REC" />
 </map>

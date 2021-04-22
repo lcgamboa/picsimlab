@@ -127,13 +127,13 @@ cpart_SDCard::Draw(void)
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
      canvas.SetFgColor (255, 255, 255);
      to = strlen (sdcard_fname) + 4;
-     if (to < 45)
+     if (to < 38)
       {
        to = 0;
       }
      else
       {
-       to = to - 45;
+       to = to - 38;
       }
      canvas.RotatedText (lxT ("Img:") + lxString (sdcard_fname + to), output[i].x1, output[i].y1, 0);
      break;

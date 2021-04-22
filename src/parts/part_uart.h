@@ -42,7 +42,7 @@ class cpart_UART:public part
       void PreProcess (void);
       void Process(void); 
       void PostProcess (void);
-      lxString GetPictureFileName(void){return lxT("UART/uart.png");};
+      lxString GetPictureFileName(void){return lxT("UART/uart.svg");};
       lxString GetInputMapFile(void){return lxT("UART/uart_i.map");};
       lxString GetOutputMapFile(void){return lxT("UART/uart_o.map");};
       lxString GetPropertiesWindowFile(void){return lxT("UART/uart.lxrad");};

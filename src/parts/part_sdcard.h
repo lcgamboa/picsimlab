@@ -42,7 +42,7 @@ class cpart_SDCard:public part
       void PreProcess (void);
       void Process(void); 
       void PostProcess (void);
-      lxString GetPictureFileName(void){return lxT("SDCard/sdcard.png");};
+      lxString GetPictureFileName(void){return lxT("SDCard/sdcard.svg");};
       lxString GetInputMapFile(void){return lxT("SDCard/sdcard_i.map");};
       lxString GetOutputMapFile(void){return lxT("SDCard/sdcard_o.map");};
       lxString GetPropertiesWindowFile(void){return lxT("SDCard/sdcard.lxrad");};

@@ -42,7 +42,7 @@ class cpart_ETH_w5500:public part
       void PreProcess (void);
       void Process(void); 
       void PostProcess (void);
-      lxString GetPictureFileName(void){return lxT("ETH_w5500/w5500.png");};
+      lxString GetPictureFileName(void){return lxT("ETH_w5500/w5500.svg");};
       lxString GetInputMapFile(void){return lxT("ETH_w5500/w5500_i.map");};
       lxString GetOutputMapFile(void){return lxT("ETH_w5500/w5500_o.map");};
       lxString GetPropertiesWindowFile(void){return lxT("ETH_w5500/w5500.lxrad");};

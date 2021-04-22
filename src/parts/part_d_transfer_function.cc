@@ -31,7 +31,7 @@
 /* outputs */
 enum
 {
- O_P1, O_P2, O_IG, O_IO, O_OG, O_OO, O_NUM, O_DEN, O_TS, O_LINE
+ O_P1, O_P2, O_IG, O_IO, O_OG, O_OO, O_NUM, O_DEN, O_TS
 };
 
 cpart_dtfunc::cpart_dtfunc(unsigned x, unsigned y) :
@@ -155,14 +155,8 @@ cpart_dtfunc::Draw(void)
      canvas.SetFgColor (0, 0, 0);
      canvas.RotatedText (eq, output[i].x1, output[i].y1, 0);
      break;
-    case O_LINE:
-     canvas.SetColor (0, 0, 0);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     break;
     }
-
-
-  };
+  }
 
  canvas.End ();
 
@@ -318,7 +312,6 @@ cpart_dtfunc::get_out_id(char * name)
  if (strcmp (name, "PR_TS") == 0)return O_TS;
  if (strcmp (name, "PR_NUM") == 0)return O_NUM;
  if (strcmp (name, "PR_DEN") == 0)return O_DEN;
- if (strcmp (name, "GP_LINE") == 0)return O_LINE;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;

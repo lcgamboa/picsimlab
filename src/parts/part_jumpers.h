@@ -53,7 +53,7 @@ public:
     void PostProcess(void);
 
     lxString GetPictureFileName(void) {
-        return lxT("jumpers/jumper.png");
+        return lxT("jumpers/jumper.svg");
     };
 
     lxString GetInputMapFile(void) {

@@ -46,7 +46,7 @@ public:
     void Draw(void);
     void PreProcess(void);
     void Process(void);
-    lxString GetPictureFileName(void){return lxT("VCD_Play/VCD_Play.png");};
+    lxString GetPictureFileName(void){return lxT("VCD_Play/VCD_Play.svg");};
     lxString GetInputMapFile(void){return lxT("VCD_Play/VCD_Play_i.map");};
     lxString GetOutputMapFile(void){return lxT("VCD_Play/VCD_Play_o.map");};
     lxString GetPropertiesWindowFile(void){return lxT("VCD_Play/VCD_Play.lxrad");};
@@ -72,6 +72,8 @@ private:
     int vcd_data_count;
     int vcd_ptr;
     lxFont font;
+    lxColor color1;
+    lxColor color2;    
 };
 
 #endif /* PART_VCD_Play_H */
