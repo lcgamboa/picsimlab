@@ -44,7 +44,7 @@ public:
     void Process(void);
 
     lxString GetPictureFileName(void) {
-        return lxT("SignalGenerator/SignalGenerator.png");
+        return lxT("SignalGenerator/SignalGenerator.svg");
     };
 
     lxString GetInputMapFile(void) {

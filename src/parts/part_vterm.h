@@ -42,7 +42,7 @@ class cpart_vterm:public part
       void PreProcess (void);
       void Process(void); 
       void PostProcess (void);
-      lxString GetPictureFileName(void){return lxT("vterm/vterm.png");};
+      lxString GetPictureFileName(void){return lxT("vterm/vterm.svg");};
       lxString GetInputMapFile(void){return lxT("vterm/vterm_i.map");};
       lxString GetOutputMapFile(void){return lxT("vterm/vterm_o.map");};
       lxString GetPropertiesWindowFile(void){return lxT("vterm/vterm.lxrad");};

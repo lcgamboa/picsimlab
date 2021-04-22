@@ -40,14 +40,14 @@ enum
  I_PO1, I_PO2, I_PO3, I_TP, I_MF
 };
 
-cpart_SignalGenerator::cpart_SignalGenerator(unsigned x, unsigned y):
-font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cpart_SignalGenerator::cpart_SignalGenerator(unsigned x, unsigned y) :
+font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
  ReadMaps ();
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
@@ -117,10 +117,20 @@ cpart_SignalGenerator::Draw(void)
     case O_PO1:
     case O_PO2:
     case O_PO3:
-     canvas.SetColor (50, 50, 50);
+     canvas.SetColor (179, 179, 179);
      canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     canvas.SetFgColor (0, 0, 0);
+     canvas.SetBgColor (96, 96, 96);
+     canvas.Rectangle (1, output[i].x1 + 9, output[i].y1 + 9, output[i].x2 - output[i].x1 - 18, output[i].y2 - output[i].y1 - 18);
+     canvas.SetBgColor (46, 46, 46);
+     canvas.Rectangle (1, output[i].x1, output[i].y1 + values[output[i].id - O_PO1] / 1.66, 32, 20);
+     /*
+     snprintf (val, 10, "%4.2f", 5.0 * (200 - values[output[i].id - O_PO1]) / 200.0);
      canvas.SetColor (250, 250, 250);
-     canvas.Rectangle (1, output[i].x1 + 6, output[i].y1 + values[output[i].id - O_PO1], 20, 10);
+     canvas.SetFont (font_p);
+     canvas.RotatedText (val, output[i].x1 + 4, output[i].y1 + 5 + values[output[i].id - O_PO1] / 1.66, 0);
+     canvas.SetFont (font);
+      */
      break;
     case O_TP:
      canvas.SetColor (255, 255, 255);
@@ -196,9 +206,9 @@ cpart_SignalGenerator::PreProcess(void)
  JUMPSTEPS_ = (Window1.GetBoard ()->MGetInstClockFreq () / 250000);
  mcount = JUMPSTEPS_;
 
- freq = (maxfreq * values[1] / 148.0);
- ampl = (5.0 * values[0] / 148.0);
- offs = (5.0 * values[2] / 148.0);
+ freq = (maxfreq * values[1] / 200.0);
+ ampl = (5.0 * values[0] / 200.0);
+ offs = (5.0 * values[2] / 200.0);
 }
 
 void
@@ -251,13 +261,11 @@ cpart_SignalGenerator::EvMouseButtonPress(uint button, uint x, uint y, uint stat
 {
 
  int i;
- unsigned int l;
 
  for (i = 0; i < inputc; i++)
   {
    if (PointInside (x, y, input[i]))
     {
-     l = (input[i].y2 - input[i].y1 - 10);
      switch (Orientation)
       {
       case 1:
@@ -273,18 +281,18 @@ cpart_SignalGenerator::EvMouseButtonPress(uint button, uint x, uint y, uint stat
      switch (input[i].id)
       {
       case I_PO1:
-       values[0] = y - input[i].y1;
-       if (values[0] >= l)values[0] = l;
+       values[0] = (y - input[i].y1)*1.66;
+       if (values[0] > 200)values[0] = 200;
        active[0] = 1;
        break;
       case I_PO2:
-       values[1] = y - input[i].y1;
-       if (values[1] >= l)values[1] = l;
+       values[1] = (y - input[i].y1)*1.66;
+       if (values[1] > 200)values[1] = 200;
        active[1] = 1;
        break;
       case I_PO3:
-       values[2] = y - input[i].y1;
-       if (values[2] >= l)values[2] = l;
+       values[2] = (y - input[i].y1)*1.66;
+       if (values[2] > 200)values[2] = 200;
        active[2] = 1;
        break;
       case I_TP:
@@ -331,13 +339,11 @@ cpart_SignalGenerator::EvMouseMove(uint button, uint x, uint y, uint state)
 {
 
  int i;
- unsigned int l;
 
  for (i = 0; i < inputc; i++)
   {
    if (PointInside (x, y, input[i]))
     {
-     l = (input[i].y2 - input[i].y1 - 10);
      switch (Orientation)
       {
       case 1:
@@ -355,22 +361,22 @@ cpart_SignalGenerator::EvMouseMove(uint button, uint x, uint y, uint state)
       case I_PO1:
        if (active[0])
         {
-         values[0] = y - input[i].y1;
-         if (values[0] >= l)values[0] = l;
+         values[0] = (y - input[i].y1)*1.66;
+         if (values[0] > 200)values[0] = 200;
         }
        break;
       case I_PO2:
        if (active[1])
         {
-         values[1] = y - input[i].y1;
-         if (values[1] >= l)values[1] = l;
+         values[1] = (y - input[i].y1)*1.66;
+         if (values[1] > 200)values[1] = 200;
         }
        break;
       case I_PO3:
        if (active[2])
         {
-         values[2] = y - input[i].y1;
-         if (values[2] >= l)values[2] = l;
+         values[2] = (y - input[i].y1)*1.66;
+         if (values[2] > 200)values[2] = 200;
         }
        break;
       }
