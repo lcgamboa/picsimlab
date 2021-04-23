@@ -152,7 +152,7 @@ cpart_pbuttons_an::Draw(void)
     {
     case O_P1:
      canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1 + 12);
+     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1 + 10);
      canvas.SetFgColor (255, 255, 255);
      if (active)
       ftemp = (5.0 * (output[i].id - O_P1)) / 8.0;
