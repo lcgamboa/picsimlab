@@ -316,7 +316,7 @@ CPWindow1::_EvOnCreate(CControl * control)
     {
      fn.Assign (Application->Aargv[1]);
      fn.MakeAbsolute ();
-     use_default_board=1;
+     use_default_board = 1;
     }
    else if ((Application->Aargc >= 3) && (Application->Aargc <= 5))
     {
@@ -530,6 +530,18 @@ CPWindow1::Configure(CControl * control, const char * home, int use_default_boar
          SetY (j);
         }
 
+       if (!strcmp (name, "picsimlab_scale"))
+        {
+         if (!create)
+          {
+           sscanf (value, "%lf", &scale);
+           draw1.SetWidth (plWidth * scale);
+           SetWidth (185 + plWidth * scale);
+           draw1.SetHeight (plHeight * scale);
+           SetHeight (90 + plHeight * scale);
+           pboard->SetScale (scale);
+          }
+        }
 
        if (!strcmp (name, "picsimlab_lpath"))
         {
@@ -771,6 +783,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
  saveprefs (lxT ("picsimlab_debugp"), itoa (debug_port));
  saveprefs (lxT ("picsimlab_remotecp"), itoa (remotec_port));
  saveprefs (lxT ("picsimlab_position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
+ saveprefs (lxT ("picsimlab_scale"), ftoa (scale));
  saveprefs (lxT ("osc_on"), itoa (pboard->GetUseOscilloscope ()));
  saveprefs (lxT ("spare_on"), itoa (pboard->GetUseSpareParts ()));
 #ifndef _WIN_
@@ -826,6 +839,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
  GetX ();
  GetY ();
 
+ scale = 1.0;
 }
 
 void
@@ -1441,6 +1455,7 @@ CPWindow1::SaveWorkspace(lxString fnpzw)
  saveprefs (lxT ("picsimlab_debugt"), itoa (debug_type));
  saveprefs (lxT ("picsimlab_debugp"), itoa (debug_port));
  saveprefs (lxT ("picsimlab_position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
+ saveprefs (lxT ("picsimlab_scale"), ftoa (scale));
  saveprefs (lxT ("osc_on"), itoa (pboard->GetUseOscilloscope ()));
  saveprefs (lxT ("spare_on"), itoa (pboard->GetUseSpareParts ()));
  saveprefs (lxT ("picsimlab_lfile"), lxT (" "));
