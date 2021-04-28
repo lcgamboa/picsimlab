@@ -135,47 +135,66 @@ If the problem is not in either of the previous two options, the problem is prob
 
 ### Graphic interface
 
-wxwidgets 	- For graphic suport		   http://www.wxwidgets.org
+- **wxwidgets** 	- For graphic suport		   
+  - http://www.wxwidgets.org
 
-lxrad           - Graphic library                  https://github.com/lcgamboa/lxrad 
+- **lxrad**           - Graphic library                  
+  - https://github.com/lcgamboa/lxrad 
 
-lunasvg         - Support to use SVG               https://github.com/sammycage/lunasvg
+- **lunasvg**         - Support to use SVG               
+  - https://github.com/sammycage/lunasvg
 
 ### Microcontroller simulation
 
-picsim          - PIC simulator                    https://github.com/lcgamboa/picsim 
+- **picsim**          - PIC simulator                    
+  - https://github.com/lcgamboa/picsim 
 
-simavr          - AVR simulator                    https://github.com/buserror/simavr
+- **simavr**          - AVR simulator                    
+  - original: https://github.com/buserror/simavr 						   
+  - modified version used by PICSimLab: https://github.com/lcgamboa/simavr 
 
-ucsim           - 8051, STM8 and Z80 simulator     http://mazsola.iit.uni-miskolc.hu/~drdani/embedded/ucsim/
+- **ucsim**           - 8051, STM8 and Z80 simulator     
+  - original: http://mazsola.iit.uni-miskolc.hu/~drdani/embedded/ucsim/
+  - modified version used by PICSimLab: https://github.com/lcgamboa/uCsim_picsimlab
 
-qemu-stm32      - STM32 simulator                  https://github.com/beckus/qemu_stm32/
+- **qemu-stm32**      - STM32 simulator                  
+  - original: https://github.com/beckus/qemu_stm32/
+  - modified version used by PICSimLab: https://github.com/lcgamboa/qemu_stm32/tree/picsimlab
 
-gpsim           - PIC simulator                    http://gpsim.sourceforge.net/
+- **gpsim**           - PIC simulator                    
+  - http://gpsim.sourceforge.net/
 
 ### Data visualization
 
-gtkwave         - Wave viewer                      http://gtkwave.sourceforge.net/
+- **gtkwave**         - Wave viewer                      
+  - http://gtkwave.sourceforge.net/
 
 ### Graphic editing
 
-gimp		- pictures and img maps edition    https://www.gimp.org/
+- **gimp**		- pictures and img maps edition    
+  - https://www.gimp.org/
 
-inkscape	- SVG pictures edition		   https://inkscape.org/
+- **inkscape**	- SVG pictures edition		   
+  - https://inkscape.org/
 
-pcbdraw		- To convert kicad pcb to SVG      https://github.com/yaqwsx/PcbDraw
+- **pcbdraw**		- To convert kicad pcb to SVG      
+  - https://github.com/yaqwsx/PcbDraw
 
 ### Circuit design
 
-kicad		- To design circuits and pcbs      https://kicad.org/
+- **kicad**		- To design circuits and pcbs      
+  - https://kicad.org/
 
 ## Utils:
 
-picsimlab_md    - for debug with MPLABX      https://github.com/lcgamboa/picsimlab_md
+- **picsimlab_md**      - for debug with MPLABX      
+  - https://github.com/lcgamboa/picsimlab_md
 
-com0com		- For serial emulation in windows  http://com0com.sourceforge.net/ 
+- **com0com**		- For serial emulation in windows  
+  - http://com0com.sourceforge.net/ 
 
-tty0tty 	- For serial emulation in linux    https://github.com/lcgamboa/tty0tty 
+- **tty0tty**   	- For serial emulation in linux    
+  - https://github.com/lcgamboa/tty0tty 
 
 ## Download analytics
 
