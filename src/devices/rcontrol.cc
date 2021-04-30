@@ -271,7 +271,7 @@ ProcessOutput(const char * msg, output_t * Output, int * ret)
  else if ((Output->name[0] == 'M')&&(Output->name[1] == 'T'))
   {
    unsigned char **status = (unsigned char **) Output->status;
-   snprintf (lstemp, 199, "%s %s-> dir= %i speed= %i position= %i\r\n",
+   snprintf (lstemp, 199, "%s %s-> dir= %i speed= %3i position= %3i\r\n",
              msg, Output->name, *status[0], *status[1], *status[2]);
    *ret += sendtext (lstemp);
   }
@@ -457,7 +457,7 @@ rcontrol_loop(void)
            if ((ptr = strstr (cmd, "part["))&&(ptr2 = strstr (cmd, "].in[")))
             {
              int pn = (ptr[5] - '0')*10 + (ptr[6] - '0');
-             int in = (ptr2[5] - '0')*10 + (ptr2[5] - '0');
+             int in = (ptr2[5] - '0')*10 + (ptr2[6] - '0');
 
              if (pn < Window5.GetPartsCount ())
               {

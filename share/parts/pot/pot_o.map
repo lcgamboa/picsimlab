@@ -10,8 +10,8 @@
 <area shape="rect" coords="72,192,121,211" href="PN_2" />
 <area shape="rect" coords="134,192,183,211" href="PN_3" />
 <area shape="rect" coords="194,192,243,211" href="PN_4" />
-<area shape="rect" coords="78,28,110,168" href="PO_2" />
 <area shape="rect" coords="16,28,48,168" href="PO_1" />
+<area shape="rect" coords="78,28,110,168" href="PO_2" />
 <area shape="rect" coords="140,28,172,168" href="PO_3" />
 <area shape="rect" coords="200,28,232,168" href="PO_4" />
 </map>

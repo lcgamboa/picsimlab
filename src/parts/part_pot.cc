@@ -40,9 +40,9 @@ enum
  I_PO1, I_PO2, I_PO3, I_PO4
 };
 
-cpart_pot::cpart_pot(unsigned x, unsigned y):
-font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
-font_p (7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cpart_pot::cpart_pot(unsigned x, unsigned y) :
+font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
+font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -142,11 +142,11 @@ cpart_pot::Draw(void)
      canvas.SetBgColor (96, 96, 96);
      canvas.Rectangle (1, output[i].x1 + 9, output[i].y1 + 9, output[i].x2 - output[i].x1 - 18, output[i].y2 - output[i].y1 - 18);
      canvas.SetBgColor (46, 46, 46);
-     canvas.Rectangle (1, output[i].x1, output[i].y1 + values[output[i].id - O_PO1] / 1.66, 32, 20);
-     snprintf (val, 10, "%4.2f", 5.0 * (200 - values[output[i].id - O_PO1]) / 200.0);
+     canvas.Rectangle (1, output[i].x1, output[i].y1 + (200 - values[output[i].id - O_PO1]) / 1.66, 32, 20);
+     snprintf (val, 10, "%4.2f", 5.0 * (values[output[i].id - O_PO1]) / 200.0);
      canvas.SetColor (250, 250, 250);
      canvas.SetFont (font_p);
-     canvas.RotatedText (val, output[i].x1 + 4, output[i].y1 + 5 + values[output[i].id - O_PO1] / 1.66, 0);
+     canvas.RotatedText (val, output[i].x1 + 4, output[i].y1 + 5 + (200 - values[output[i].id - O_PO1]) / 1.66, 0);
      canvas.SetFont (font);
     }
   }
@@ -158,10 +158,10 @@ cpart_pot::Draw(void)
 void
 cpart_pot::PreProcess(void)
 {
- Window5.SetAPin (output_pins[0], 5.0 * (200 - values[0]) / 200.0);
- Window5.SetAPin (output_pins[1], 5.0 * (200 - values[1]) / 200.0);
- Window5.SetAPin (output_pins[2], 5.0 * (200 - values[2]) / 200.0);
- Window5.SetAPin (output_pins[3], 5.0 * (200 - values[3]) / 200.0);
+ Window5.SetAPin (output_pins[0], 5.0 * (values[0]) / 200.0);
+ Window5.SetAPin (output_pins[1], 5.0 * (values[1]) / 200.0);
+ Window5.SetAPin (output_pins[2], 5.0 * (values[2]) / 200.0);
+ Window5.SetAPin (output_pins[3], 5.0 * (values[3]) / 200.0);
 }
 
 void
@@ -178,23 +178,23 @@ cpart_pot::EvMouseButtonPress(uint button, uint x, uint y, uint state)
      switch (input[i].id)
       {
       case I_PO1:
-       values[0] = (y - input[i].y1)*1.66;
-       if (values[0] > 200)values[0] = 200;
+       values[0] = 200-((y - input[i].y1)*1.66);
+       if (values[0] > 200)values[0] = 0;
        active[0] = 1;
        break;
       case I_PO2:
-       values[1] = (y - input[i].y1)*1.66;
-       if (values[1] > 200)values[1] = 200;
+       values[1] = 200-((y - input[i].y1)*1.66);
+       if (values[1] > 200)values[1] = 0;
        active[1] = 1;
        break;
       case I_PO3:
-       values[2] = (y - input[i].y1)*1.66;
-       if (values[2] > 200)values[2] = 200;
+       values[2] = 200-((y - input[i].y1)*1.66);
+       if (values[2] > 200)values[2] = 0;
        active[2] = 1;
        break;
       case I_PO4:
-       values[3] = (y - input[i].y1)*1.66;
-       if (values[3] > 200)values[3] = 200;
+       values[3] = 200-((y - input[i].y1)*1.66);
+       if (values[3] > 200)values[3] = 0;
        active[3] = 1;
        break;
       }
@@ -245,8 +245,8 @@ cpart_pot::EvMouseMove(uint button, uint x, uint y, uint state)
 
      if (active[input[i].id - I_PO1])
       {
-       values[input[i].id - I_PO1] = (y - input[i].y1)*1.66;
-       if (values[input[i].id - I_PO1] > 200)values[input[i].id - I_PO1] = 200;
+       values[input[i].id - I_PO1] = 200 - ((y - input[i].y1)*1.66);
+       if (values[input[i].id - I_PO1] > 200)values[input[i].id - I_PO1] = 0;
       }
     }
   }

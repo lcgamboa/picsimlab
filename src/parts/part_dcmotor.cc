@@ -38,13 +38,13 @@ enum
 };
 
 cpart_dcmotor::cpart_dcmotor(unsigned x, unsigned y)
-:font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+: font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
  ReadMaps ();
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
@@ -66,6 +66,9 @@ cpart_dcmotor::cpart_dcmotor(unsigned x, unsigned y)
  count = 0;
 
  RegisterRemoteControl ();
+
+ dir = 0;
+ speed = 0;
 
 }
 
