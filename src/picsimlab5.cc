@@ -353,7 +353,7 @@ CPWindow5::draw1_EvMouseMove(CControl * control, uint button, uint x, uint y, ui
   {
    for (int i = 0; i < partsc; i++)
     {
-     if (parts[i]->PointInside (x, y))
+     if (parts[i]->PointInside (x - offsetx, y - offsety))
       {
        parts[i]->EvMouseMove (button, (x - offsetx) - parts[i]->GetX (), (y - offsety) - parts[i]->GetY (), state);
        return;
