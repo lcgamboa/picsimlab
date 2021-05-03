@@ -661,17 +661,14 @@ cpart_7s_display_dec::Process(void)
     {
      if (value & (0x01 << i))
       {
-       if (ppins[input_pins[4] - 1].value) alm1[i]++;
-       if (ppins[input_pins[5] - 1].value) alm2[i]++;
-       if (ppins[input_pins[6] - 1].value) alm3[i]++;
-       if (ppins[input_pins[7] - 1].value) alm4[i]++;
+       if (input_pins[4] && ppins[input_pins[4] - 1].value) alm1[i]++;
+       if (input_pins[5] && ppins[input_pins[5] - 1].value) alm2[i]++;
+       if (input_pins[6] && ppins[input_pins[6] - 1].value) alm3[i]++;
+       if (input_pins[7] && ppins[input_pins[7] - 1].value) alm4[i]++;
       }
-
     }
-
    mcount = -1;
   }
-
 }
 
 void
