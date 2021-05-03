@@ -79,7 +79,7 @@ cpart_7s_display::cpart_7s_display(unsigned x, unsigned y)
  memset (alm2, 0, 8 * sizeof (unsigned int));
  memset (alm3, 0, 8 * sizeof (unsigned int));
  memset (alm4, 0, 8 * sizeof (unsigned int));
-};
+}
 
 cpart_7s_display::~cpart_7s_display(void)
 {
@@ -476,7 +476,7 @@ cpart_7s_display::get_in_id(char * name)
 {
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
-};
+}
 
 unsigned short
 cpart_7s_display::get_out_id(char * name)
@@ -541,7 +541,7 @@ cpart_7s_display::get_out_id(char * name)
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
-};
+}
 
 lxString
 cpart_7s_display::WritePreferences(void)
@@ -554,7 +554,7 @@ cpart_7s_display::WritePreferences(void)
           input_pins[10], input_pins[11], active);
 
  return prefs;
-};
+}
 
 void
 cpart_7s_display::ReadPreferences(lxString value)
@@ -565,7 +565,7 @@ cpart_7s_display::ReadPreferences(lxString value)
          &input_pins[10], &input_pins[11], &active);
 
  RegisterRemoteControl ();
-};
+}
 
 void
 cpart_7s_display::RegisterRemoteControl(void)

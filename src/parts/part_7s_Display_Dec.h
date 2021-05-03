@@ -33,7 +33,7 @@ class cpart_7s_display_dec : public part {
 public:
 
     lxString GetName(void) {return lxT("7 Segments Display (w/dec)"); };
-    lxString GetHelpURL(void){return lxT("Segments_Display_(w/dec).html");};
+    lxString GetHelpURL(void){return lxT("Segments_Display_w_dec.html");};
     lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
     cpart_7s_display_dec(unsigned x, unsigned y);
     ~cpart_7s_display_dec(void);
@@ -41,9 +41,9 @@ public:
     void PreProcess (void);
     void Process(void); 
     void PostProcess (void);
-    lxString GetPictureFileName(void) {return lxT("7s_display_dec/7sdisplay_dec.svg"); };
-    lxString GetInputMapFile(void) {return lxT("7s_display_dec/7sdisplay_dec_i.map"); };
-    lxString GetOutputMapFile(void) {return lxT("7s_display_dec/7sdisplay_dec_o.map");};
+    lxString GetPictureFileName(void);
+    lxString GetInputMapFile(void);
+    lxString GetOutputMapFile(void);
     lxString GetPropertiesWindowFile(void) {return lxT("7s_display_dec/7sdisplay_dec.lxrad");};
     void ConfigurePropertiesWindow(CPWindow * wprop);
     void ReadPropertiesWindow(CPWindow * WProp);
@@ -51,6 +51,7 @@ public:
     void ReadPreferences(lxString value);
     unsigned short get_in_id(char * name);
     unsigned short get_out_id(char * name);
+    void ChangeType(unsigned char tp); 
 private:
     void RegisterRemoteControl(void);     
     unsigned char input_pins[8];
@@ -66,6 +67,8 @@ private:
     long int mcount;
     int JUMPSTEPS_;
     lxFont font;
+    unsigned char type;
+    unsigned char latchs[4];
 };
 
 

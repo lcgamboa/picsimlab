@@ -45,15 +45,6 @@ cpart_7s_display_dec::cpart_7s_display_dec(unsigned x, unsigned y)
  X = x;
  Y = y;
 
- ReadMaps ();
-
- lxImage image (&Window5);
- image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
-
- Bitmap = new lxBitmap (&image, &Window5);
- image.Destroy ();
- canvas.Create (Window5.GetWWidget (), Bitmap);
-
  input_pins[0] = 0;
  input_pins[1] = 0;
  input_pins[2] = 0;
@@ -62,6 +53,11 @@ cpart_7s_display_dec::cpart_7s_display_dec(unsigned x, unsigned y)
  input_pins[5] = 0;
  input_pins[6] = 0;
  input_pins[7] = 0;
+
+ latchs[0] = 0;
+ latchs[1] = 0;
+ latchs[2] = 0;
+ latchs[3] = 0;
 
  mcount = 0;
 
@@ -74,7 +70,11 @@ cpart_7s_display_dec::cpart_7s_display_dec(unsigned x, unsigned y)
  memset (alm2, 0, 8 * sizeof (unsigned int));
  memset (alm3, 0, 8 * sizeof (unsigned int));
  memset (alm4, 0, 8 * sizeof (unsigned int));
-};
+
+ Bitmap = NULL;
+ type = 1; //to force type change
+ ChangeType (0);
+}
 
 cpart_7s_display_dec::~cpart_7s_display_dec(void)
 {
@@ -274,7 +274,7 @@ cpart_7s_display_dec::get_in_id(char * name)
 {
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
-};
+}
 
 unsigned short
 cpart_7s_display_dec::get_out_id(char * name)
@@ -336,29 +336,32 @@ cpart_7s_display_dec::get_out_id(char * name)
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
-};
+}
 
 lxString
 cpart_7s_display_dec::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
           input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4],
-          input_pins[5], input_pins[6], input_pins[7]);
+          input_pins[5], input_pins[6], input_pins[7], type);
 
  return prefs;
-};
+}
 
 void
 cpart_7s_display_dec::ReadPreferences(lxString value)
 {
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
-         &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4],
-         &input_pins[5], &input_pins[6], &input_pins[7]);
+ unsigned char type_;
 
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
+         &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4],
+         &input_pins[5], &input_pins[6], &input_pins[7], &type_);
+
+ ChangeType (type_);
  RegisterRemoteControl ();
-};
+}
 
 void
 cpart_7s_display_dec::RegisterRemoteControl(void)
@@ -548,6 +551,14 @@ cpart_7s_display_dec::ConfigurePropertiesWindow(CPWindow * WProp)
    ((CCombo*) WProp->GetChildByName ("combo8"))->SetText (itoa (input_pins[7]) + "  " + spin);
   }
 
+ if (type == 0)
+  ((CCombo*) WProp->GetChildByName ("combo9"))->SetText ("MUX");
+ else
+  {
+   ((CCombo*) WProp->GetChildByName ("combo9"))->SetText ("LATCH");
+  }
+
+
  ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
  ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
 
@@ -565,6 +576,10 @@ cpart_7s_display_dec::ReadPropertiesWindow(CPWindow * WProp)
  input_pins[5] = atoi (((CCombo*) WProp->GetChildByName ("combo6"))->GetText ());
  input_pins[6] = atoi (((CCombo*) WProp->GetChildByName ("combo7"))->GetText ());
  input_pins[7] = atoi (((CCombo*) WProp->GetChildByName ("combo8"))->GetText ());
+
+ unsigned char type_ = (((CCombo*) WProp->GetChildByName ("combo9"))->GetText ().Cmp ("MUX")) != 0;
+
+ ChangeType (type_);
 
  RegisterRemoteControl ();
 }
@@ -592,7 +607,6 @@ cpart_7s_display_dec::Process(void)
 
  mcount++;
 
-
  if (mcount > JUMPSTEPS_)
   {
 
@@ -601,7 +615,6 @@ cpart_7s_display_dec::Process(void)
    if (input_pins[1] && ppins[input_pins[1] - 1].value) value |= 0x02;
    if (input_pins[2] && ppins[input_pins[2] - 1].value) value |= 0x04;
    if (input_pins[3] && ppins[input_pins[3] - 1].value) value |= 0x08;
-
 
    switch (value)
     {
@@ -657,16 +670,38 @@ cpart_7s_display_dec::Process(void)
      value = 0;
     }
 
-   for (i = 0; i < 8; i++)
+
+   if (!type)
     {
-     if (value & (0x01 << i))
+     //MUX
+     for (i = 0; i < 8; i++)
       {
-       if (input_pins[4] && ppins[input_pins[4] - 1].value) alm1[i]++;
-       if (input_pins[5] && ppins[input_pins[5] - 1].value) alm2[i]++;
-       if (input_pins[6] && ppins[input_pins[6] - 1].value) alm3[i]++;
-       if (input_pins[7] && ppins[input_pins[7] - 1].value) alm4[i]++;
+       if (value & (0x01 << i))
+        {
+         if (input_pins[4] && ppins[input_pins[4] - 1].value) alm1[i]++;
+         if (input_pins[5] && ppins[input_pins[5] - 1].value) alm2[i]++;
+         if (input_pins[6] && ppins[input_pins[6] - 1].value) alm3[i]++;
+         if (input_pins[7] && ppins[input_pins[7] - 1].value) alm4[i]++;
+        }
       }
     }
+   else
+    {
+     //LATCH
+     if (input_pins[4] && !ppins[input_pins[4] - 1].value) latchs[0] = value;
+     if (input_pins[5] && !ppins[input_pins[5] - 1].value) latchs[1] = value;
+     if (input_pins[6] && !ppins[input_pins[6] - 1].value) latchs[2] = value;
+     if (input_pins[7] && !ppins[input_pins[7] - 1].value) latchs[3] = value;
+
+     for (i = 0; i < 8; i++)
+      {
+       if (latchs[0] & (0x01 << i)) alm1[i]++;
+       if (latchs[1] & (0x01 << i)) alm2[i]++;
+       if (latchs[2] & (0x01 << i)) alm3[i]++;
+       if (latchs[3] & (0x01 << i)) alm4[i]++;
+      }
+    }
+
    mcount = -1;
   }
 }
@@ -688,6 +723,81 @@ cpart_7s_display_dec::PostProcess(void)
    if (lm3[i] > 255)lm3[i] = 255;
    if (lm4[i] > 255)lm4[i] = 255;
   }
+}
+
+lxString
+cpart_7s_display_dec::GetPictureFileName(void)
+{
+ switch (type)
+  {
+  case 0:
+   return lxT ("7s_display_dec/7sdisplay_dec.svg");
+   break;
+  case 1:
+   return lxT ("7s_display_dec/7sdisplay_latch.svg");
+   break;
+  }
+
+ return lxT ("7s_display_dec/7sdisplay_dec.svg");
+}
+
+lxString
+cpart_7s_display_dec::GetInputMapFile(void)
+{
+ switch (type)
+  {
+  case 0:
+   return lxT ("7s_display_dec/7sdisplay_dec_i.map");
+   break;
+  case 1:
+   return lxT ("7s_display_dec/7sdisplay_latch_i.map");
+   break;
+  }
+
+ return lxT ("7s_display_dec/7sdisplay_dec_i.map");
+}
+
+lxString
+cpart_7s_display_dec::GetOutputMapFile(void)
+{
+ switch (type)
+  {
+  case 0:
+   return lxT ("7s_display_dec/7sdisplay_dec_o.map");
+   break;
+  case 1:
+   return lxT ("7s_display_dec/7sdisplay_latch_o.map");
+   break;
+  }
+
+ return lxT ("7s_display_dec/7sdisplay_dec_o.map");
+}
+
+void
+cpart_7s_display_dec::ChangeType(unsigned char tp)
+{
+
+ //if same
+ if (tp == type) return;
+
+ if (Bitmap)
+  {
+   delete Bitmap;
+   canvas.Destroy ();
+  }
+
+ type = tp;
+
+ ReadMaps ();
+
+ lxImage image (&Window5);
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
+
+ Bitmap = new lxBitmap (&image, &Window5);
+ image.Destroy ();
+
+ canvas.Create (Window5.GetWWidget (), Bitmap);
+
 }
 
 

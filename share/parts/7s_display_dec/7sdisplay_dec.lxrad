@@ -2,10 +2,10 @@
   <Class type="lxString">CPWindow</Class>
   <Name type="lxString">window1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">562</X>
-  <Y type="int">147</Y>
+  <X type="int">429</X>
+  <Y type="int">151</Y>
   <Width type="uint">370</Width>
-  <Height type="uint">422</Height>
+  <Height type="uint">484</Height>
   <Hint type="lxString"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
@@ -34,7 +34,7 @@
   <Name type="lxString">button1</Name>
   <Tag type="int">0</Tag>
   <X type="int">108</X>
-  <Y type="int">337</Y>
+  <Y type="int">382</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="lxString"></Hint>
@@ -58,8 +58,8 @@
   <Class type="lxString">CButton</Class>
   <Name type="lxString">button2</Name>
   <Tag type="int">0</Tag>
-  <X type="int">190</X>
-  <Y type="int">337</Y>
+  <X type="int">191</X>
+  <Y type="int">382</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="lxString"></Hint>
@@ -140,7 +140,7 @@
   <Name type="lxString">combo3</Name>
   <Tag type="int">0</Tag>
   <X type="int">122</X>
-  <Y type="int">104</Y>
+  <Y type="int">101</Y>
   <Width type="uint">200</Width>
   <Height type="uint">26</Height>
   <Hint type="lxString"></Hint>
@@ -168,7 +168,7 @@
   <Name type="lxString">combo4</Name>
   <Tag type="int">0</Tag>
   <X type="int">122</X>
-  <Y type="int">139</Y>
+  <Y type="int">136</Y>
   <Width type="uint">200</Width>
   <Height type="uint">26</Height>
   <Hint type="lxString"></Hint>
@@ -196,7 +196,7 @@
   <Name type="lxString">label1</Name>
   <Tag type="int">0</Tag>
   <X type="int">54</X>
-  <Y type="int">32</Y>
+  <Y type="int">34</Y>
   <Width type="uint">60</Width>
   <Height type="uint">20</Height>
   <Hint type="lxString"></Hint>
@@ -328,7 +328,7 @@
   <Name type="lxString">combo6</Name>
   <Tag type="int">0</Tag>
   <X type="int">122</X>
-  <Y type="int">210</Y>
+  <Y type="int">208</Y>
   <Width type="uint">200</Width>
   <Height type="uint">26</Height>
   <Hint type="lxString"></Hint>
@@ -511,4 +511,58 @@
   <Text type="lxString">D4</Text>
   <Align type="CAlign">1</Align>
 </label8>
+<combo9>
+  <Class type="lxString">CCombo</Class>
+  <Name type="lxString">combo9</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">122</X>
+  <Y type="int">327</Y>
+  <Width type="uint">200</Width>
+  <Height type="uint">26</Height>
+  <Hint type="lxString"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="lxString">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Items type="lxStringList">MUX,LATCH,</Items>
+  <Text type="lxString">MUX</Text>
+  <ReadOnly type="bool">0</ReadOnly>
+  <EvOnComboChange type="Event">FALSE</EvOnComboChange>
+</combo9>
+<label9>
+  <Class type="lxString">CLabel</Class>
+  <Name type="lxString">label9</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">53</X>
+  <Y type="int">331</Y>
+  <Width type="uint">60</Width>
+  <Height type="uint">20</Height>
+  <Hint type="lxString"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="lxString">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Text type="lxString">Type</Text>
+  <Align type="CAlign">1</Align>
+</label9>
 </window1>
