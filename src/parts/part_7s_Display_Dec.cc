@@ -648,6 +648,7 @@ cpart_7s_display_dec::Process(void)
     case 9:
      value = 0x6F;
      break;
+     /*
     case 10:
      value = 0x77;
      break;
@@ -666,6 +667,7 @@ cpart_7s_display_dec::Process(void)
     case 15:
      value = 0x71;
      break;
+     */
     default:
      value = 0;
     }
