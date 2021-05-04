@@ -123,7 +123,7 @@ cpart_SignalGenerator::Draw(void)
      canvas.SetBgColor (96, 96, 96);
      canvas.Rectangle (1, output[i].x1 + 9, output[i].y1 + 9, output[i].x2 - output[i].x1 - 18, output[i].y2 - output[i].y1 - 18);
      canvas.SetBgColor (46, 46, 46);
-     canvas.Rectangle (1, output[i].x1, output[i].y1 + values[output[i].id - O_PO1] / 1.66, 32, 20);
+     canvas.Rectangle (1, output[i].x1, output[i].y1 + values[output[i].id - O_PO1] / 1.66, 32, 19);
      /*
      snprintf (val, 10, "%4.2f", 5.0 * (200 - values[output[i].id - O_PO1]) / 200.0);
      canvas.SetColor (250, 250, 250);
