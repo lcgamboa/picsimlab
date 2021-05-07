@@ -27,6 +27,9 @@
 
 //#define CONVERTER_MODE
 
+//timer debug
+//#define TDEBUG
+
 #include"picsimlab1.h"
 #include"picsimlab1_d.cc"
 
@@ -40,6 +43,8 @@ CPWindow1 Window1;
 #include"picsimlab5.h"
 
 #include"devices/rcontrol.h"
+
+
 
 #ifdef __EMSCRIPTEN__
 #include<emscripten.h>
@@ -81,27 +86,61 @@ usleep(unsigned int usec)
 static lxString cvt_fname;
 #endif
 
+#ifdef TDEBUG
+#ifdef _WIN_
+
+double
+cpuTime()
+{
+ FILETIME a, b, c, d;
+ if (GetProcessTimes (GetCurrentProcess (), &a, &b, &c, &d) != 0)
+  {
+   //  Returns total user time.
+   //  Can be tweaked to include kernel times as well.
+   return
+   (double) (d.dwLowDateTime |
+             ((unsigned long long) d.dwHighDateTime << 32)) * 0.0000001;
+  }
+ else
+  {
+   //  Handle error
+   return 0;
+  }
+}
+#else
+#include <time.h>
+#include <sys/time.h>
+
+double
+cpuTime()
+{
+ return (double) clock () / CLOCKS_PER_SEC;
+}
+#endif
+#endif
+
 void
 CPWindow1::timer1_EvOnTime(CControl * control)
 {
+ sync = 1;
  status.st[0] |= ST_T1;
 
 #ifdef _NOTHREAD
  if (timer1.GetOverTime () < 10)
   {
-   label1.SetColor (0, 0, 0);
+   label2.SetColor (0, 0, 0);
   }
  else
   {
-   label1.SetColor (255, 0, 0);
+   label2.SetColor (255, 0, 0);
   }
 #else   
- if (!tgo)
+ if ((!tgo)&&(timer1.GetTime () == 100))
   {
    if (crt)
     {
-     label1.SetColor (0, 0, 0);
-     label1.Draw ();
+     label2.SetColor (0, 0, 0);
+     label2.Draw ();
     }
    crt = 0;
   }
@@ -109,16 +148,37 @@ CPWindow1::timer1_EvOnTime(CControl * control)
   {
    if (!crt)
     {
-     label1.SetColor (255, 0, 0);
-     label1.Draw ();
+     label2.SetColor (255, 0, 0);
+     label2.Draw ();
     }
    crt = 1;
   }
 #endif
-
+ 
  if (!tgo)
   {
-   tgo = 1; //thread sync
+   zerocount++;
+
+   if (zerocount > 20)
+    {
+     zerocount = 0;
+
+     if (timer1.GetTime () > 100)
+      {
+       timer1.SetTime (timer1.GetTime () - 10);
+      }
+    }
+  }
+ else
+  {
+   zerocount = 0;
+  }
+ tgo++;
+
+ if (tgo > 3)
+  {
+   timer1.SetTime (timer1.GetTime () + 10);
+   tgo = 1;
   }
 
 
@@ -176,27 +236,34 @@ CPWindow1::timer1_EvOnTime(CControl * control)
 
  pboard->Draw (&draw1);
 
-#ifndef __EMSCRIPTEN__
- rcontrol_loop ();
-#endif 
-
  status.st[0] &= ~ST_T1;
 }
 
 void
 CPWindow1::thread1_EvThreadRun(CControl*)
 {
-
+#ifdef TDEBUG
+ double t0, t1;
+#endif
  do
   {
 
    if (tgo)
     {
+#ifdef TDEBUG     
+     t0 = cpuTime ();
+#endif     
      status.st[1] |= ST_TH;
      pboard->Run_CPU ();
      if (debug)pboard->DebugLoop ();
-     tgo = 0;
+     //tgo = 0;
+     tgo--;
      status.st[1] &= ~ST_TH;
+#ifdef TDEBUG     
+     t1 = cpuTime ();
+     printf ("PTime= %lf  tgo= %2i  zeroc= %2i  Timer= %3u  Perc.= %4.1lf\n",
+             t1 - t0, tgo, zerocount, Window1.timer1.GetTime (), (t1 - t0) / (Window1.timer1.GetTime ()*1e-5));
+#endif     
     }
    else
     {
@@ -204,6 +271,17 @@ CPWindow1::thread1_EvThreadRun(CControl*)
     }
   }
  while (!thread1.TestDestroy ());
+}
+
+void
+CPWindow1::thread2_EvThreadRun(CControl*)
+{
+ do
+  {
+   usleep (1000);
+   rcontrol_loop ();
+  }
+ while (!thread2.TestDestroy ());
 }
 
 void
@@ -233,6 +311,9 @@ CPWindow1::timer2_EvOnTime(CControl * control)
      break;
     }
   }
+ 
+ label2.SetText (lxString ().Format ("Spd: %3.2fx", 100.0/timer1.GetTime ()));
+    
  status.st[0] &= ~ST_T2;
 
  if (error & ERR_VERSION)
@@ -247,6 +328,11 @@ CPWindow1::timer2_EvOnTime(CControl * control)
    SaveWorkspace (cvt_fname);
   }
 #endif 
+
+ if (settodestroy)
+  {
+   WDestroy ();
+  }
 
 }
 
@@ -676,6 +762,9 @@ CPWindow1::Configure(CControl * control, const char * home, int use_default_boar
 
 
  thread1.Run (); //parallel thread
+#ifndef __EMSCRIPTEN__ 
+ thread2.Run (); //parallel thread
+#endif 
  timer1.SetRunState (1);
  timer2.SetRunState (1);
 
@@ -715,6 +804,9 @@ CPWindow1::combo1_EvOnComboChange(CControl * control)
 
 
  Application->ProcessEvents ();
+
+ tgo = 1;
+ timer1.SetTime (100);
 }
 
 void
@@ -758,6 +850,7 @@ CPWindow1::_EvOnDestroy(CControl * control)
 #endif
  timer1.SetRunState (0);
  timer2.SetRunState (0);
+ tgo = 1;
  msleep (100);
  while (status.status)
   {
@@ -765,8 +858,9 @@ CPWindow1::_EvOnDestroy(CControl * control)
    Application->ProcessEvents ();
   }
  thread1.Destroy ();
-
-
+#ifndef __EMSCRIPTEN__
+ thread2.Destroy ();
+#endif
 
  //write options
  strcpy (home, (char*) lxGetUserDataDir (lxT ("picsimlab")).char_str ());
@@ -1678,6 +1772,12 @@ CPWindow1::Set_remotec_port(unsigned short rcp)
  rcontrol_end ();
  rcontrol_init (remotec_port);
 #endif 
+}
+
+void
+CPWindow1::SetToDestroy(void)
+{
+ settodestroy = 1;
 }
 
 

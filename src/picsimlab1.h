@@ -78,6 +78,7 @@ public:
     CDraw draw1;
     CCombo combo1;
     CLabel label1;
+    CLabel label2;    
     CMenu menu1;
     CPMenu menu1_File;
     CPMenu menu1_Board;
@@ -146,8 +147,12 @@ public:
     //lxrad automatic generated block end, don't edit above!
 
     CThread thread1;
+    CThread thread2;
     int tgo;
 
+    int settodestroy;
+    void SetToDestroy(void);
+     
     CPWindow1(void);
 
     /**
@@ -158,6 +163,7 @@ public:
     void Configure(CControl * control, const char * home, int use_default_board = 0);
     void board_Event(CControl * control); 
     void thread1_EvThreadRun(CControl * control);
+    void thread2_EvThreadRun(CControl * control);
 
     /**
      * @brief  Get the file path of resources
@@ -292,6 +298,9 @@ public:
     void LoadHexFile(lxString fname);
     void SetClock(float clk);
     float GetClock(void);
+    
+    void SetSync(unsigned char s){sync=s;};
+    unsigned char GetSync(void){return sync;};
 private:
     lxString share;
 
@@ -335,11 +344,14 @@ private:
     int create;
 
     int crt;
+    int zerocount;
     
     int need_resize;
     
     unsigned int error;
     lxString pzw_ver;
+    
+    unsigned char sync;
 
     CItemMenu MBoard[BOARDS_MAX];
     CItemMenu MMicro[MAX_MIC];

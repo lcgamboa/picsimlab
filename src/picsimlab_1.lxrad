@@ -83,17 +83,17 @@
   <ImgFileName type="File"></ImgFileName>
 </draw1>
 <combo1>
-  <Class type="String">CCombo</Class>
-  <Name type="String">combo1</Name>
+  <Class type="lxString">CCombo</Class>
+  <Name type="lxString">combo1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">11</X>
-  <Y type="int">33</Y>
-  <Width type="uint">89</Width>
+  <X type="int">84</X>
+  <Y type="int">6</Y>
+  <Width type="uint">83</Width>
   <Height type="uint">25</Height>
-  <Hint type="String"></Hint>
+  <Hint type="lxString"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
-  <Color type="String">#000001</Color>
+  <Color type="lxString">#000001</Color>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">FALSE</EvMouseMove>
   <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
@@ -102,27 +102,26 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Items type="StringList">64,48,40,32,20,16,10,8,4,2,1,</Items>
-  <Text type="String">2</Text>
+  <Items type="lxStringList">64,48,40,32,20,16,10,8,4,2,1,</Items>
+  <Text type="lxString">64</Text>
   <ReadOnly type="bool">0</ReadOnly>
   <EvOnComboChange type="Event">TRUE</EvOnComboChange>
 </combo1>
 <label1>
-  <Class type="String">CLabel</Class>
-  <Name type="String">label1</Name>
+  <Class type="lxString">CLabel</Class>
+  <Name type="lxString">label1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">12</X>
+  <X type="int">6</X>
   <Y type="int">10</Y>
-  <Width type="uint">89</Width>
+  <Width type="uint">73</Width>
   <Height type="uint">21</Height>
-  <Hint type="String"></Hint>
+  <Hint type="lxString"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
-  <Color type="String">#000001</Color>
+  <Color type="lxString">#000001</Color>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">FALSE</EvMouseMove>
   <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
@@ -131,13 +130,38 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Clock (MHz)</Text>
+  <Text type="lxString">Clk(MHz)</Text>
   <Align type="CAlign">1</Align>
 </label1>
+<label2>
+  <Class type="lxString">CLabel</Class>
+  <Name type="lxString">label2</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">6</X>
+  <Y type="int">38</Y>
+  <Width type="uint">76</Width>
+  <Height type="uint">21</Height>
+  <Hint type="lxString"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="lxString">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Text type="lxString">Spd: 1.00x</Text>
+  <Align type="CAlign">1</Align>
+</label2>
 <menu1>
   <Class type="String">CMenu</Class>
   <Name type="String">menu1</Name>
@@ -311,7 +335,7 @@
   <Enable type="bool">1</Enable>
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
-</menu1_Tools_MPLABXDEbuggerPlugin>
+</menu1_Tools_MPLABXDebuggerPlugin>
 <menu1_Help_Contents>
   <Class type="String">CItemMenu</Class>
   <Name type="String">menu1_Help_Contents</Name>
@@ -364,17 +388,17 @@
   <Fields type="StringList">port,stats,serial,</Fields>
 </statusbar1>
 <togglebutton1>
-  <Class type="String">CToggleButton</Class>
-  <Name type="String">togglebutton1</Name>
+  <Class type="lxString">CToggleButton</Class>
+  <Name type="lxString">togglebutton1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">112</X>
-  <Y type="int">12</Y>
-  <Width type="uint">50</Width>
-  <Height type="uint">50</Height>
-  <Hint type="String"></Hint>
+  <X type="int">84</X>
+  <Y type="int">34</Y>
+  <Width type="uint">83</Width>
+  <Height type="uint">27</Height>
+  <Hint type="lxString"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
-  <Color type="String">#000001</Color>
+  <Color type="lxString">#000001</Color>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">FALSE</EvMouseMove>
   <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
@@ -383,11 +407,10 @@
   <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
   <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
   <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Text type="String">Debug</Text>
+  <Text type="lxString">Debug</Text>
   <Check type="Int">0</Check>
   <EvOnToggleButton type="Event">TRUE</EvOnToggleButton>
 </togglebutton1>

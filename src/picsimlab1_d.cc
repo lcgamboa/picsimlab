@@ -102,9 +102,9 @@ CPWindow1::CPWindow1(void)
   combo1.SetClass(lxT("CCombo"));
   combo1.SetName(lxT("combo1"));
   combo1.SetTag(0);
-  combo1.SetX(11);
-  combo1.SetY(33);
-  combo1.SetWidth(89);
+  combo1.SetX(84);
+  combo1.SetY(6);
+  combo1.SetWidth(83);
   combo1.SetHeight(25);
   combo1.SetHint(lxT(""));
   combo1.SetEnable(1);
@@ -121,18 +121,35 @@ CPWindow1::CPWindow1(void)
   label1.SetClass(lxT("CLabel"));
   label1.SetName(lxT("label1"));
   label1.SetTag(0);
-  label1.SetX(12);
+  label1.SetX(6);
   label1.SetY(10);
-  label1.SetWidth(89);
+  label1.SetWidth(73);
   label1.SetHeight(21);
   label1.SetHint(lxT(""));
   label1.SetEnable(1);
   label1.SetVisible(1);
   label1.SetColor(lxT("#000001"));
   label1.SetPopupMenu(NULL);
-  label1.SetText(lxT("Clock (MHz)"));
+  label1.SetText(lxT("Clk(MHz)"));
   label1.SetAlign(1);
   CreateChild(&label1);
+  //label2
+  label2.SetFOwner(this);
+  label2.SetClass(lxT("CLabel"));
+  label2.SetName(lxT("label2"));
+  label2.SetTag(0);
+  label2.SetX(6);
+  label2.SetY(38);
+  label2.SetWidth(76);
+  label2.SetHeight(21);
+  label2.SetHint(lxT(""));
+  label2.SetEnable(1);
+  label2.SetVisible(1);
+  label2.SetColor(lxT("#000001"));
+  label2.SetPopupMenu(NULL);
+  label2.SetText(lxT("Spd: 1.00x"));
+  label2.SetAlign(1);
+  CreateChild(&label2);
   //menu1
   menu1.SetFOwner(this);
   menu1.SetClass(lxT("CMenu"));
@@ -390,10 +407,10 @@ CPWindow1::CPWindow1(void)
   togglebutton1.SetClass(lxT("CToggleButton"));
   togglebutton1.SetName(lxT("togglebutton1"));
   togglebutton1.SetTag(0);
-  togglebutton1.SetX(112);
-  togglebutton1.SetY(12);
-  togglebutton1.SetWidth(50);
-  togglebutton1.SetHeight(50);
+  togglebutton1.SetX(84);
+  togglebutton1.SetY(34);
+  togglebutton1.SetWidth(83);
+  togglebutton1.SetHeight(27);
   togglebutton1.SetHint(lxT(""));
   togglebutton1.SetEnable(1);
   togglebutton1.SetVisible(1);
@@ -426,6 +443,14 @@ CPWindow1::CPWindow1(void)
   thread1.EvThreadRun=EVTHREADRUN & CPWindow1::thread1_EvThreadRun;
   CreateChild(&thread1);
 
+  //thread2
+  thread2.SetFOwner(this);
+  thread2.SetClass(lxT("CThread"));
+  thread2.SetName(lxT("thread2"));
+  thread2.SetTag(0);
+  thread2.EvThreadRun=EVTHREADRUN & CPWindow1::thread2_EvThreadRun;
+  CreateChild(&thread2);
+  
   JUMPSTEPS=DEFAULTJS;
   
   NSTEP=NSTEPKT;
@@ -459,6 +484,7 @@ FNAME=lxT(" ");
 OldPath=lxT("");
     
 crt=1;    
+zerocount=0;
 
 pboard=NULL;
 
@@ -469,6 +495,10 @@ tgo=0;
 error=0;
 
 need_resize=0;
+
+settodestroy=0;
+
+sync=0;
 
 #ifdef NO_TOOLS
    menu1.DestroyChild (&menu1_Tools);
