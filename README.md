@@ -56,6 +56,8 @@ If you are on macOS you can run PICSimLab using Wine:
 
 ### In Debian Linux and derivatives Linux native:
 
+**Using a user with permission to run the sudo command:**
+
 In first time build:
 ```
 git clone --depth=1 https://github.com/lcgamboa/picsimlab.git

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -865,6 +865,11 @@ rcontrol_loop(void)
      bp += n;
      if (bp > BSIZE)bp = BSIZE;
     }
+  }
+ else
+  {
+   //socket close by client
+   if (n == 0)ret = 1;
   }
 
  //close connection

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gamboa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gamboa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -126,15 +126,12 @@ CPWindow1::timer1_EvOnTime(CControl * control)
  status.st[0] |= ST_T1;
 
 #ifdef _NOTHREAD
- if (timer1.GetOverTime () < 10)
+ if (timer1.GetOverTime () >= 10)
   {
-   label2.SetColor (0, 0, 0);
+   tgo++;
   }
- else
-  {
-   label2.SetColor (255, 0, 0);
-  }
-#else   
+#endif 
+ 
  if ((!tgo)&&(timer1.GetTime () == 100))
   {
    if (crt)
@@ -153,19 +150,19 @@ CPWindow1::timer1_EvOnTime(CControl * control)
     }
    crt = 1;
   }
-#endif
+
  
  if (!tgo)
   {
    zerocount++;
 
-   if (zerocount > 20)
+   if (zerocount > 3)
     {
      zerocount = 0;
 
      if (timer1.GetTime () > 100)
       {
-       timer1.SetTime (timer1.GetTime () - 10);
+       timer1.SetTime (timer1.GetTime () - 5);
       }
     }
   }
@@ -177,7 +174,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
 
  if (tgo > 3)
   {
-   timer1.SetTime (timer1.GetTime () + 10);
+   timer1.SetTime (timer1.GetTime () + 5);
    tgo = 1;
   }
 
@@ -256,7 +253,6 @@ CPWindow1::thread1_EvThreadRun(CControl*)
      status.st[1] |= ST_TH;
      pboard->Run_CPU ();
      if (debug)pboard->DebugLoop ();
-     //tgo = 0;
      tgo--;
      status.st[1] &= ~ST_TH;
 #ifdef TDEBUG     
