@@ -10,7 +10,7 @@ fi
 echo -e "\033[1;32m ---------------------- update and install packages ---------------------- \033[0m"
 cl sudo apt-get update
 cl sudo apt-get -y upgrade
-cl sudo apt-get -y install git doxygen autoconf gcc g++ make libwxgtk3.0-gtk3-dev \
+cl sudo apt-get -y install git doxygen gcc g++ make libwxgtk3.0-gtk3-dev \
 libelf-dev freeglut3-dev cutecom gcc-avr avr-libc libopenal-dev libncurses-dev gtkwave \
 gedit cmake
 cl sudo apt-get -y install linux-headers-`uname -r` dkms 
@@ -36,7 +36,6 @@ echo -e "\033[1;32m ---------------------- build and install lxrad -------------
 cd lxrad
 git pull --no-rebase
 cl ./make_deps.sh
-cl autoconf
 cl ./configure --prefix=/usr
 cl make clean;make -j4
 cl sudo make install
