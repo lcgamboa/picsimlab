@@ -1044,6 +1044,7 @@ void
 cboard_PQDB::EvOnShow(void)
 {
  lcd.update = 1;
+ board::EvOnShow();
 }
 
 unsigned short

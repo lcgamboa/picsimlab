@@ -1251,6 +1251,7 @@ void
 cboard_McLab2::EvOnShow(void)
 {
  lcd.update = 1;
+ board::EvOnShow();
 }
 
 unsigned short

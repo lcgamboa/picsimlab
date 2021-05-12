@@ -333,7 +333,7 @@ rcontrol_loop(void)
  //open connection  
  if (sockfd < 0)
   {
-   if (rcontrol_start ())return 1;
+   return rcontrol_start ();
   }
 
  n = recv (sockfd, (char *) &buffer[bp], 1024 - bp, 0);
@@ -832,7 +832,7 @@ rcontrol_loop(void)
          Window1.SetSync (0);
          while (!Window1.GetSync ())
           {
-           usleep (1);
+           usleep (1); //FIXME avoid use of usleep to reduce cpu usage
           }
          ret = sendtext ("Ok\r\n>");
         }

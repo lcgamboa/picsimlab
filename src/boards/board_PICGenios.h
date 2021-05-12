@@ -66,10 +66,11 @@ class cboard_PICGenios:public bsim_picsim
     int jmp[1];
     int dip[20];
 
-    unsigned int lm1[40]; //luminosidade media display
-    unsigned int lm2[40]; //luminosidade media display
-    unsigned int lm3[40]; //luminosidade media display
-    unsigned int lm4[40]; //luminosidade media display
+    unsigned int lm1[40]; //7s display mean value
+    unsigned int lm2[40];
+    unsigned int lm3[40];
+    unsigned int lm4[40];
+    
     lxBitmap * vent[2];
     lxBitmap * lcdbmp[2];
     

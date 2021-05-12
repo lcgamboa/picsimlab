@@ -301,6 +301,10 @@ public:
     
     void SetSync(unsigned char s){sync=s;};
     unsigned char GetSync(void){return sync;};
+    
+    lxCondition * cpu_cond;
+    lxMutex * cpu_mutex;
+    
 private:
     lxString share;
 

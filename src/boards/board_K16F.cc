@@ -949,8 +949,8 @@ cboard_K16F::EvKeyRelease(uint key, uint mask)
 void
 cboard_K16F::EvOnShow(void)
 {
-
  lcd.update = 1;
+ board::EvOnShow();
 }
 
 unsigned short

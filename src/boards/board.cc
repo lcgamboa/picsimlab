@@ -46,6 +46,11 @@ board::ReadMaps(void)
  outputc = 0;
  ReadInputMap (Window1.GetSharePath () + lxT ("boards/") + GetInputMapFile ());
  ReadOutputMap (Window1.GetSharePath () + lxT ("boards/") + GetOutputMapFile ());
+
+ for (int i = 0; i < outputc; i++)
+  {
+   output_ids[get_out_id (output[i].name)] = &output[i];
+  }
 }
 
 void
@@ -223,13 +228,11 @@ board::ReadOutputMap(lxString fname)
         {
          sscanf (coords, "%i,%i,%i,%i\n", &x1, &y1, &x2, &y2);
          //          printf("rect=%i,%i,%i,%i\n",x1,y1,x2,y2);
-
          output[outputc].x1 = x1;
          output[outputc].y1 = y1;
          output[outputc].x2 = x2;
          output[outputc].y2 = y2;
          output[outputc].r = 0;
-         //          output[outputc].lval=-1;
          strcpy (output[outputc].name, name);
          output[outputc].id = get_out_id (output[outputc].name);
          output[outputc].cx = ((output[outputc].x2 - output[outputc].x1) / 2.0) + output[outputc].x1;
@@ -241,13 +244,11 @@ board::ReadOutputMap(lxString fname)
         {
          sscanf (coords, "%i,%i,%i\n", &x1, &y1, &r);
          //          printf("circle=%i,%i,%i\n",x1,y1,r);
-
          output[outputc].x1 = x1;
          output[outputc].y1 = y1;
          output[outputc].x2 = 0;
          output[outputc].y2 = 0;
          output[outputc].r = r;
-         //          output[outputc].lval=-1;
          strcpy (output[outputc].name, name);
          output[outputc].id = get_out_id (output[outputc].name);
          output[outputc].cx = output[outputc].x1;
@@ -394,4 +395,13 @@ double
 board::GetScale(void)
 {
  return Scale;
+}
+
+void
+board::EvOnShow(void)
+{
+ for (int i = 0; i < outputc; i++)
+  {
+   output[i].update = 1;
+  }
 }

@@ -58,7 +58,6 @@ class cboard_McLab1:public bsim_picsim
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
       void EvKeyPress(uint key, uint mask);
       void EvKeyRelease(uint key, uint mask);
-      void EvOnShow(void){};
       void WritePreferences(void);
       void ReadPreferences(char *name,char *value);
       unsigned short get_in_id(char * name);

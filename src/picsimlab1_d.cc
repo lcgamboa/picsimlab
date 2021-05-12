@@ -500,6 +500,9 @@ settodestroy=0;
 
 sync=0;
 
+cpu_mutex = NULL;
+cpu_cond = NULL;
+
 #ifdef NO_TOOLS
    menu1.DestroyChild (&menu1_Tools);
 #endif
