@@ -50,6 +50,7 @@ typedef struct {
     char name[10];   ///< region name
     unsigned short id; ///< region ID
     void * status; ///< rcontrol status
+    unsigned char * update; ///< output need draw update
 } input_t;
 
 /**

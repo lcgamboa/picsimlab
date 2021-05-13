@@ -1404,7 +1404,6 @@ cboard_PICGenios::RegisterRemoteControl(void)
     case O_P4:
      output[i].status = &lm4[29];
      break;
-
     }
   }
 }

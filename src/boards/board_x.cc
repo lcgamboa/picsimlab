@@ -324,12 +324,14 @@ cboard_x::EvKeyPress(uint key, uint mask)
  if (key == '1')
   {
    p_BT1 = 0;
+   output_ids[O_BD0]->update = 1;
   }
 
  //if keyboard key 2 is pressed then toggle switch state   
  if (key == '2')
   {
    p_BT2 ^= 1;
+   output_ids[O_SD1]->update = 1;
   }
 
 }
@@ -343,6 +345,7 @@ cboard_x::EvKeyRelease(uint key, uint mask)
  if (key == '1')
   {
    p_BT1 = 1;
+   output_ids[O_BD0]->update = 1;
   }
 
 }
@@ -504,7 +507,6 @@ cboard_x::Draw(CDraw *draw)
  int update = 0; //verifiy if updated is needed
  int i;
 
- draw->Canvas.Init (Scale, Scale); //initialize draw context
 
  //board_x draw 
  for (i = 0; i < outputc; i++) //run over all outputs
@@ -636,7 +638,7 @@ cboard_x::Draw(CDraw *draw)
     }
   }
  //end draw
- 
+
  if (update)
   {
    draw->Canvas.End ();

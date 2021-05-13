@@ -440,6 +440,7 @@ cboard_Arduino_Uno::EvMouseButtonPress(uint button, uint x, uint y, uint state)
          Reset ();
          Window1.statusbar1.SetField (0, lxT ("Running..."));
         }
+       output_ids[O_ON]->update = 1;
        break;
        //if event is over I_RST area then turn off and reset
       case I_RST:
@@ -449,6 +450,7 @@ cboard_Arduino_Uno::EvMouseButtonPress(uint button, uint x, uint y, uint state)
          Window1.Set_mcurst (1);
         }
        p_RST = 0;
+       output_ids[O_RST]->update = 1;
        break;
       }
     }
@@ -482,8 +484,8 @@ cboard_Arduino_Uno::EvMouseButtonRelease(uint button, uint x, uint y, uint state
 
         }
        p_RST = 1;
+       output_ids[O_RST]->update = 1;
        break;
-
       }
     }
   }
@@ -498,65 +500,75 @@ void
 cboard_Arduino_Uno::Draw(CDraw *draw)
 {
  int i;
+ int update = 0; //verifiy if updated is needed
 
- draw->Canvas.Init (Scale, Scale); //initialize draw context
 
  //board  draw 
  for (i = 0; i < outputc; i++) //run over all outputs
   {
-   if (!output[i].r)//if output shape is a rectangle
+   if (output[i].update)//only if need update
     {
-     switch (output[i].id)
-      {
-      case O_ON:
-       draw->Canvas.SetColor (0, 200 * Window1.Get_mcupwr () + 55, 0);
-       break;
-      case O_RX:
-       draw->Canvas.SetColor (0, 255 - pins[1].oavalue, 0);
-       break;
-      case O_TX:
-       draw->Canvas.SetColor (0, 255 - ((unsigned char) pins[2].oavalue * 10), 0);
-       break;
-      case O_L:
-       draw->Canvas.SetColor (0, pins[18].oavalue, 0);
-       break;
-      case O_RST:
-       draw->Canvas.SetColor (100, 100, 100);
-       break;
-      default:
-       draw->Canvas.SetColor (0, 0, 0);
-       break;
-      }
+     output[i].update = 0;
 
-     if (output[i].id == O_RST)
+     if (!update)
       {
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
-       if (p_RST)
+       draw->Canvas.Init (Scale, Scale);
+      }
+     update++; //set to update buffer
+     if (!output[i].r)//if output shape is a rectangle
+      {
+       switch (output[i].id)
         {
-         draw->Canvas.SetColor (15, 15, 15);
+        case O_ON:
+         draw->Canvas.SetColor (0, 200 * Window1.Get_mcupwr () + 55, 0);
+         break;
+        case O_RX:
+         draw->Canvas.SetColor (0, (255 - pins[1].oavalue)*Window1.Get_mcupwr (), 0);
+         break;
+        case O_TX:
+         draw->Canvas.SetColor (0, (255 - ((unsigned char) pins[2].oavalue * 10))*Window1.Get_mcupwr (), 0);
+         break;
+        case O_L:
+         draw->Canvas.SetColor (0, pins[18].oavalue, 0);
+         break;
+        case O_RST:
+         draw->Canvas.SetColor (100, 100, 100);
+         break;
+        default:
+         draw->Canvas.SetColor (0, 0, 0);
+         break;
+        }
+
+       if (output[i].id == O_RST)
+        {
+         draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
+         if (p_RST)
+          {
+           draw->Canvas.SetColor (15, 15, 15);
+          }
+         else
+          {
+           draw->Canvas.SetColor (55, 55, 55);
+          }
+         draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
         }
        else
         {
-         draw->Canvas.SetColor (55, 55, 55);
-        }
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
-      }
-     else
-      {
-       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1,
-                               output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+         draw->Canvas.Rectangle (1, output[i].x1, output[i].y1,
+                                 output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
+        }
       }
     }
   }
 
-
-
  //end draw
- draw->Canvas.End ();
- draw->Update ();
-
-
+ if (update)
+  {
+   draw->Canvas.End ();
+   draw->Update ();
+  }
+ 
  gauge1->SetValue ((pins[4].oavalue - 55) / 2);
  gauge2->SetValue ((pins[10].oavalue - 55) / 2);
  gauge3->SetValue ((pins[11].oavalue - 55) / 2);
@@ -645,6 +657,23 @@ cboard_Arduino_Uno::Run_CPU(void)
   }
 
  if (use_spare)Window5.PostProcess ();
+
+ //verifiy if LEDS need update 
+ if (output_ids[O_RX]->value != pins[1].oavalue)
+  {
+   output_ids[O_RX]->value = pins[1].oavalue;
+   output_ids[O_RX]->update = 1;
+  }
+ if (output_ids[O_TX]->value != pins[2].oavalue)
+  {
+   output_ids[O_TX]->value = pins[2].oavalue;
+   output_ids[O_TX]->update = 1;
+  }
+ if (output_ids[O_L]->value != pins[18].oavalue)
+  {
+   output_ids[O_L]->value = pins[18].oavalue;
+   output_ids[O_L]->update = 1;
+  }
 }
 
 

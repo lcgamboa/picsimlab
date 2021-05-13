@@ -73,15 +73,15 @@ cboard_Breadboard::get_out_id(char * name)
 
 //Constructor called once on board creation 
 
-cboard_Breadboard::cboard_Breadboard(void):
-font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cboard_Breadboard::cboard_Breadboard(void) :
+font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  ptype = _PIC;
  Proc = "PIC18F4550"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
 
  lxImage image (&Window1);
- image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.svg"), 0, Scale, Scale,1);
+ image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.svg"), 0, Scale, Scale, 1);
  micbmp = new lxBitmap (&image, &Window1);
 
 }
@@ -281,6 +281,7 @@ cboard_Breadboard::EvMouseButtonPress(uint button, uint x, uint y, uint state)
          Reset ();
          Window1.statusbar1.SetField (0, lxT ("Running..."));
         }
+       output_ids[O_LPWR]->update = 1;
        break;
        //if event is over I_RST area then turn off and reset
       case I_RST:
@@ -290,6 +291,7 @@ cboard_Breadboard::EvMouseButtonPress(uint button, uint x, uint y, uint state)
          Window1.Set_mcurst (1);
         }
        p_RST = 0;
+       output_ids[O_RST]->update = 1;
        break;
       }
     }
@@ -322,6 +324,7 @@ cboard_Breadboard::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 
         }
        p_RST = 1;
+       output_ids[O_RST]->update = 1;
        break;
       }
     }
@@ -338,59 +341,68 @@ cboard_Breadboard::Draw(CDraw *draw)
  int i;
  lxRect rec;
  lxSize ps;
-
- font.SetPointSize ((MGetPinCount () >= 44) ? 5 : ((MGetPinCount () > 14) ? 12 : 10));
-
- draw->Canvas.Init (Scale, Scale); //initialize draw context
+ int update = 0; //verifiy if updated is needed
 
  //board_0 draw 
  for (i = 0; i < outputc; i++) //run over all outputs
   {
-
-   draw->Canvas.SetFgColor (0, 0, 0); //black
-
-   switch (output[i].id)//search for color of output
+   if (output[i].update)//only if need update
     {
-    case O_LPWR: //Blue using mcupwr value
-     draw->Canvas.SetColor (0, 0, 200 * Window1.Get_mcupwr () + 55);
-     draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     break;
-    case O_MP:
+     output[i].update = 0;
 
-     draw->Canvas.SetFont (font);
-
-     ps = micbmp->GetSize ();
-     draw->Canvas.ChangeScale (1.0, 1.0);
-     draw->Canvas.PutBitmap (micbmp, output[i].x1*Scale, output[i].y1 * Scale);
-     draw->Canvas.ChangeScale (Scale, Scale);
-     draw->Canvas.SetFgColor (230, 230, 230);
-
-     rec.x = output[i].x1;
-     rec.y = output[i].y1;
-     rec.width = ps.GetWidth () / Scale;
-     rec.height = ps.GetHeight () / Scale;
-     draw->Canvas.TextOnRect (Proc, rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
-     break;
-    case O_RST:
-     draw->Canvas.SetColor (100, 100, 100);
-     draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
-     if (p_RST)
+     if (!update)
       {
-       draw->Canvas.SetColor (15, 15, 15);
+       draw->Canvas.Init (Scale, Scale);
       }
-     else
+     update++; //set to update buffer
+
+     draw->Canvas.SetFgColor (0, 0, 0); //black
+
+     switch (output[i].id)//search for color of output
       {
-       draw->Canvas.SetColor (55, 55, 55);
+      case O_LPWR: //Blue using mcupwr value
+       draw->Canvas.SetColor (0, 0, 200 * Window1.Get_mcupwr () + 55);
+       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       break;
+      case O_MP:
+       font.SetPointSize ((MGetPinCount () >= 44) ? 5 : ((MGetPinCount () > 14) ? 12 : 10));
+       draw->Canvas.SetFont (font);
+
+       ps = micbmp->GetSize ();
+       draw->Canvas.ChangeScale (1.0, 1.0);
+       draw->Canvas.PutBitmap (micbmp, output[i].x1*Scale, output[i].y1 * Scale);
+       draw->Canvas.ChangeScale (Scale, Scale);
+       draw->Canvas.SetFgColor (230, 230, 230);
+
+       rec.x = output[i].x1;
+       rec.y = output[i].y1;
+       rec.width = ps.GetWidth () / Scale;
+       rec.height = ps.GetHeight () / Scale;
+       draw->Canvas.TextOnRect (Proc, rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
+       break;
+      case O_RST:
+       draw->Canvas.SetColor (100, 100, 100);
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
+       if (p_RST)
+        {
+         draw->Canvas.SetColor (15, 15, 15);
+        }
+       else
+        {
+         draw->Canvas.SetColor (55, 55, 55);
+        }
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
+       break;
       }
-     draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
-     break;
     }
-
   }
-
+ 
  //end draw
- draw->Canvas.End ();
- draw->Update ();
+ if (update)
+  {
+   draw->Canvas.End ();
+   draw->Update ();
+  }
 }
 
 void
@@ -623,9 +635,9 @@ cboard_Breadboard::MInit(const char * processor, const char * fname, float freq)
  lxImage image (&Window1);
 
 
- if (!image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg"), 0, Scale, Scale,1))
+ if (!image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg"), 0, Scale, Scale, 1))
   {
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic6.svg"), 0, Scale, Scale,1);
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic6.svg"), 0, Scale, Scale, 1);
    printf ("picsimlab: IC package with %i pins not found!\n", MGetPinCount ());
    printf ("picsimlab: %s not found!\n", (const char *) (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg")).c_str ());
   }
@@ -1091,9 +1103,9 @@ cboard_Breadboard::SetScale(double scale)
 
  lxImage image (&Window1);
 
- if (!image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg"), 0, Scale, Scale,1))
+ if (!image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg"), 0, Scale, Scale, 1))
   {
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic6.svg"), 0, Scale, Scale,1);
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic6.svg"), 0, Scale, Scale, 1);
    printf ("picsimlab: IC package with %i pins not found!\n", MGetPinCount ());
    printf ("picsimlab: %s not found!\n", (const char *) (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg")).c_str ());
   }

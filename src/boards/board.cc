@@ -178,6 +178,7 @@ board::ReadInputMap(lxString fname)
        input[inputc].cx = ((input[inputc].x2 - input[inputc].x1) / 2.0) + input[inputc].x1;
        input[inputc].cy = ((input[inputc].y2 - input[inputc].y1) / 2.0) + input[inputc].y1;
        input[inputc].status = NULL;
+       input[inputc].update = NULL;
        inputc++;
       }
     }
