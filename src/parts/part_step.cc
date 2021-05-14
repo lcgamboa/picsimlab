@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ enum
 };
 
 cpart_step::cpart_step(unsigned x, unsigned y)
-:font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+: font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -76,77 +76,88 @@ cpart_step::Draw(void)
  int i;
  const picpin * ppins = Window5.GetPinsValues ();
 
- canvas.Init (Scale, Scale, Orientation);
- canvas.SetFont (font);
+ Update = 0;
+
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_P1:
-    case O_P2:
-    case O_P3:
-    case O_P4:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     if (input_pins[output[i].id - O_P1] == 0)
-      canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
-     else
-      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
-     break;
-    case O_ROT:
-     canvas.SetColor (77, 77, 77);
-     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 10);
-     canvas.SetFgColor (0, 0, 0);
-     canvas.SetBgColor (250, 250, 250);
-     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
-     canvas.SetBgColor (55, 55, 55);
-     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r / 3);
-     canvas.SetLineWidth (8);
-     x2 = output[i].x1 + (output[i].r - 2) * sin (angle);
-     y2 = output[i].y1 + (output[i].r - 2) * cos (angle);
-     canvas.Line (output[i].x1, output[i].y1, x2, y2);
-     canvas.SetLineWidth (6);
-     canvas.SetFgColor (77, 77, 77);
-     canvas.Line (output[i].x1, output[i].y1, x2, y2);
-     canvas.SetLineWidth (1);
-     break;
-    case O_L1:
-    case O_L2:
-    case O_L3:
-    case O_L4:
-     canvas.SetFgColor (0, 0, 0);
-     if (input_pins[output[i].id - O_L1] > 0)
+     output[i].update = 0;
+
+     if (!Update)
       {
-       canvas.SetBgColor (ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
       }
-     else
+     Update++; //set to update buffer
+
+     switch (output[i].id)
       {
-       canvas.SetBgColor (55, 0, 0);
+      case O_P1:
+      case O_P2:
+      case O_P3:
+      case O_P4:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       if (input_pins[output[i].id - O_P1] == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
+       else
+        canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
+       break;
+      case O_ROT:
+       canvas.SetColor (77, 77, 77);
+       canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 10);
+       canvas.SetFgColor (0, 0, 0);
+       canvas.SetBgColor (250, 250, 250);
+       canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
+       canvas.SetBgColor (55, 55, 55);
+       canvas.Circle (1, output[i].x1, output[i].y1, output[i].r / 3);
+       canvas.SetLineWidth (8);
+       x2 = output[i].x1 + (output[i].r - 2) * sin (angle);
+       y2 = output[i].y1 + (output[i].r - 2) * cos (angle);
+       canvas.Line (output[i].x1, output[i].y1, x2, y2);
+       canvas.SetLineWidth (6);
+       canvas.SetFgColor (77, 77, 77);
+       canvas.Line (output[i].x1, output[i].y1, x2, y2);
+       canvas.SetLineWidth (1);
+       break;
+      case O_L1:
+      case O_L2:
+      case O_L3:
+      case O_L4:
+       canvas.SetFgColor (0, 0, 0);
+       if (input_pins[output[i].id - O_L1] > 0)
+        {
+         canvas.SetBgColor (ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
+        }
+       else
+        {
+         canvas.SetBgColor (55, 0, 0);
+        }
+       //draw a LED
+       color1 = canvas.GetBgColor ();
+       int r = color1.Red () - 120;
+       int g = color1.Green () - 120;
+       int b = color1.Blue () - 120;
+       if (r < 0)r = 0;
+       if (g < 0)g = 0;
+       if (b < 0)b = 0;
+       color2.Set (r, g, b);
+       canvas.SetBgColor (color2);
+       canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 1);
+       canvas.SetBgColor (color1);
+       canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 2);
+       break;
       }
-     //draw a LED
-     color1 = canvas.GetBgColor ();
-     int r = color1.Red () - 120;
-     int g = color1.Green () - 120;
-     int b = color1.Blue () - 120;
-     if (r < 0)r = 0;
-     if (g < 0)g = 0;
-     if (b < 0)b = 0;
-     color2.Set (r, g, b);
-     canvas.SetBgColor (color2);
-     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 1);
-     canvas.SetBgColor (color1);
-     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 2);
-     break;
     }
-
-
   }
 
- canvas.End ();
-
+ if (Update)
+  {
+   canvas.End ();
+  }
 }
 
 #define STEP (1.8*M_PI/180.0)
@@ -285,6 +296,29 @@ cpart_step::Process(void)
    if (angle <= -2 * M_PI)angle += 2 * M_PI;
 
   }
+}
+
+void
+cpart_step::PostProcess(void)
+{
+
+ const picpin * ppins = Window5.GetPinsValues ();
+
+ for (int i = 0; i < 4; i++)
+  {
+   if (input_pins[i] && (output_ids[O_L1 + i]->value != ppins[input_pins[i] - 1].oavalue))
+    {
+     output_ids[O_L1 + i]->value = ppins[input_pins[i] - 1].oavalue;
+     output_ids[O_L1 + i]->update = 1;
+    }
+  }
+
+ if (output_ids[O_ROT]->fvalue != angle)
+  {
+   output_ids[O_ROT]->fvalue = angle;
+   output_ids[O_ROT]->update = 1;
+  }
+
 }
 
 unsigned short

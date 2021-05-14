@@ -86,7 +86,7 @@ usleep(unsigned int usec)
 static lxString cvt_fname;
 #endif
 
-#ifdef TDEBUG
+#if defined(TDEBUG) || defined(_NOTHREAD)  
 #ifdef _WIN_
 
 double
@@ -125,12 +125,6 @@ CPWindow1::timer1_EvOnTime(CControl * control)
  sync = 1;
  status.st[0] |= ST_T1;
 
-#ifdef _NOTHREAD
- if (timer1.GetOverTime () >= 10)
-  {
-   tgo++;
-  }
-#endif 
 
  if ((!tgo)&&(timer1.GetTime () == 100))
   {
@@ -151,12 +145,6 @@ CPWindow1::timer1_EvOnTime(CControl * control)
    crt = 1;
   }
 
-#ifdef _NOTHREAD
- if (!tgo)
-  {
-   tgo++;
-  }
-#else 
  if (!tgo)
   {
    zerocount++;
@@ -176,18 +164,18 @@ CPWindow1::timer1_EvOnTime(CControl * control)
    zerocount = 0;
   }
 
-  tgo++;
-  
+ tgo++;
+#ifndef _NOTHREAD
  cpu_mutex->Lock ();
  cpu_cond->Signal ();
  cpu_mutex->Unlock ();
+#endif
 
  if (tgo > 3)
   {
    timer1.SetTime (timer1.GetTime () + 5);
    tgo = 1;
   }
-#endif
 
  if (need_resize == 1)
   {
@@ -249,7 +237,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
 void
 CPWindow1::thread1_EvThreadRun(CControl*)
 {
-#ifdef TDEBUG
+#if defined(TDEBUG) || defined(_NOTHREAD)  
  double t0, t1;
 #endif
  do
@@ -257,7 +245,7 @@ CPWindow1::thread1_EvThreadRun(CControl*)
 
    if (tgo)
     {
-#ifdef TDEBUG     
+#if defined(TDEBUG) || defined(_NOTHREAD)     
      t0 = cpuTime ();
 #endif     
      status.st[1] |= ST_TH;
@@ -265,18 +253,30 @@ CPWindow1::thread1_EvThreadRun(CControl*)
      if (debug)pboard->DebugLoop ();
      tgo--;
      status.st[1] &= ~ST_TH;
-#ifdef TDEBUG     
+#if defined(TDEBUG) || defined(_NOTHREAD)       
      t1 = cpuTime ();
-     printf ("PTime= %lf  tgo= %2i  zeroc= %2i  Timer= %3u  Perc.= %4.1lf\n",
-             t1 - t0, tgo, zerocount, Window1.timer1.GetTime (), (t1 - t0) / (Window1.timer1.GetTime ()*1e-5));
+     if ((t1 - t0) / (Window1.timer1.GetTime ()*1e-5) > 110)
+      {
+       tgo++;
+      }
+     else
+      {
+       tgo = 0;
+      }
+#ifdef TDEBUG      
+     printf ("PTime= %lf  tgo= %2i  zeroc= %2i  Timer= %3u Perc.= %4.1lf\n",
+             t1 - t0, tgo, zerocount, Window1.timer1.GetTime (),
+             (t1 - t0) / (Window1.timer1.GetTime ()*1e-5));
 #endif
+#endif     
     }
    else
     {
-     //usleep (1);
+#ifndef _NOTHREAD         
      cpu_mutex->Lock ();
      cpu_cond->Wait ();
      cpu_mutex->Unlock ();
+#endif     
     }
 
   }
@@ -402,9 +402,6 @@ CPWindow1::_EvOnCreate(CControl * control)
  lxFileName fn_spare;
  int use_default_board = 0;
 
- cpu_mutex = new lxMutex ();
- cpu_cond = new lxCondition (*cpu_mutex);
-
  strncpy (home, (char*) lxGetUserDataDir (lxT ("picsimlab")).char_str (), 1023);
 
 
@@ -523,6 +520,15 @@ CPWindow1::Configure(CControl * control, const char * home, int use_default_boar
  mcurun = 1;
  mcupwr = 1;
  mcurst = 0;
+
+#ifndef _NOTHREAD    
+ if (cpu_mutex == NULL)
+  {
+   cpu_mutex = new lxMutex ();
+   cpu_cond = new lxCondition (*cpu_mutex);
+  }
+#endif
+
  //TODO: verify initialization errors
  snprintf (fname, 1023, "%s/picsimlab.ini", home);
 
@@ -874,9 +880,11 @@ CPWindow1::_EvOnDestroy(CControl * control)
    Application->ProcessEvents ();
   }
  tgo = 100000;
+#ifndef _NOTHREAD    
  cpu_mutex->Lock ();
  cpu_cond->Signal ();
  cpu_mutex->Unlock ();
+#endif 
  thread1.Destroy ();
  tgo = 0;
 
@@ -957,8 +965,12 @@ CPWindow1::_EvOnDestroy(CControl * control)
 
  scale = 1.0;
 
- delete cpu_mutex;
+#ifndef _NOTHREAD    
  delete cpu_cond;
+ delete cpu_mutex;
+ cpu_cond = NULL;
+ cpu_mutex = NULL;
+#endif
 }
 
 void

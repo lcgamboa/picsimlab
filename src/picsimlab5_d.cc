@@ -333,4 +333,5 @@ CPWindow5::CPWindow5(void)
   offsety=0;
   mouse_scroll=0;
   need_resize=0;
+  update_all=1;
 }

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ part::part()
  outputc = 0;
  Orientation = 0;
  Scale = 1.0;
+ Update = 1;
 }
 
 void
@@ -350,6 +351,10 @@ part::SetOrientation(int orientation)
  canvas.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
+ for (int i = 0; i < outputc; i++)
+  {
+   output[i].update = 1;
+  }
 }
 
 float
@@ -380,6 +385,10 @@ part::SetScale(double scale)
  canvas.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
+ for (int i = 0; i < outputc; i++)
+  {
+   output[i].update = 1;
+  }
 }
 
 int
@@ -435,5 +444,21 @@ part::RotateCoords(unsigned int * x, unsigned int *y)
    *y = *x;
    *x = Width - temp;
    break;
+  }
+}
+
+unsigned char
+part::GetUpdate(void)
+{
+ return Update;
+}
+
+void
+part::SetUpdate(unsigned char upd)
+{
+ Update = upd;
+ for (int i = 0; i < outputc; i++)
+  {
+   output[i].update = Update;
   }
 }

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -306,6 +306,16 @@ public:
     virtual void SetId(int _id) {
         id = _id;
     };
+    
+     /**
+     * @brief  Return if part need Draw update
+     */
+    unsigned char GetUpdate(void);
+    
+     /**
+     * @brief  Set part to Draw update
+     */
+    void SetUpdate(unsigned char upd);
 
 protected:
 
@@ -329,6 +339,7 @@ protected:
     unsigned int refresh; ///< redraw is needed 
     int Orientation; ///< orientation to draw part
     double Scale; ///< scale to draw part
+    unsigned int Update; ///< part need draw Update
 
     /**
      * @brief  read maps

@@ -40,6 +40,7 @@ class cpart_step:public part
       ~cpart_step(void);
       void Draw(void);
       void Process(void);
+      void PostProcess(void);
       lxString GetPictureFileName(void){return lxT("step/step_motor.svg");};
       lxString GetInputMapFile(void){return lxT("step/step_motor_i.map");};
       lxString GetOutputMapFile(void){return lxT("step/step_motor_o.map");};

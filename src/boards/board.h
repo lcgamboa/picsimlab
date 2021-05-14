@@ -70,6 +70,7 @@ typedef struct {
     void * status; ///< rcontrol status
     unsigned char update; ///< need draw update
     unsigned char value; ///< value 
+    float fvalue; ///< value 
 } output_t;
 
 /**

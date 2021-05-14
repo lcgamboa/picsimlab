@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -44,9 +44,15 @@ CPWindow5 Window5;
 void
 CPWindow5::_EvOnShow(CControl * control)
 {
- need_resize = 0;
- timer1.SetRunState (1);
-
+ if (Visible)
+  {
+   need_resize = 0;
+   timer1.SetRunState (1);
+   for (int i = 0; i < partsc; i++)
+    {
+     parts[i]->SetUpdate (1);
+    }
+  }
 }
 
 void
@@ -148,6 +154,7 @@ CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
   {
    offsetx = 0;
    offsety = 0;
+   update_all = 1;
   }
 }
 
@@ -207,6 +214,7 @@ CPWindow5::PropClose(int tag)
  wprop.HideExclusive ();
  //wprop.SetCanDestroy (true);
  wprop.WDestroy ();
+ update_all = 1;
 }
 
 void
@@ -258,6 +266,7 @@ void
 CPWindow5::timer1_EvOnTime(CControl * control)
 {
  static int tc = 0;
+ int update = 0;
 
  if (need_resize == 1)
   {
@@ -269,6 +278,8 @@ CPWindow5::timer1_EvOnTime(CControl * control)
    draw1.SetHeight (Height - 90);
 #endif
    Window4.SetBaseTimer ();
+
+   update_all = 1;
   }
 
  need_resize++;
@@ -276,22 +287,43 @@ CPWindow5::timer1_EvOnTime(CControl * control)
  for (int i = 0; i < partsc; i++)
   {
    parts[i]->Draw ();
+   if (parts[i]->GetUpdate ())update++;
   }
 
-
- draw1.Canvas.Init (1.0, 1.0);
-
- draw1.Canvas.SetFgColor (50, 50, 50);
- draw1.Canvas.SetBgColor (50, 50, 50);
- draw1.Canvas.Rectangle (1, 0, 0, draw1.GetWidth (), draw1.GetHeight ());
-
- for (int i = 0; i < partsc; i++)
+ if (update_all)
   {
-   draw1.Canvas.PutBitmap (parts[i]->GetBitmap (), (parts[i]->GetX () + offsetx) * scale, (parts[i]->GetY () + offsety) * scale);
+   for (int i = 0; i < partsc; i++)
+    {
+     parts[i]->SetUpdate (1);
+    }
+   update = 1;
   }
 
- draw1.Canvas.End ();
- draw1.Update ();
+ //printf ("part update %i\n", update);
+
+ if (update)
+  {
+   draw1.Canvas.Init (1.0, 1.0);
+
+   if (update_all)
+    {
+     draw1.Canvas.SetFgColor (50, 50, 50);
+     draw1.Canvas.SetBgColor (50, 50, 50);
+     draw1.Canvas.Rectangle (1, 0, 0, draw1.GetWidth (), draw1.GetHeight ());
+     update_all = 0;
+    }
+
+   for (int i = 0; i < partsc; i++)
+    {
+     if (parts[i]->GetUpdate ())
+      {
+       draw1.Canvas.PutBitmap (parts[i]->GetBitmap (), (parts[i]->GetX () + offsetx) * scale, (parts[i]->GetY () + offsety) * scale);
+      }
+    }
+
+   draw1.Canvas.End ();
+   draw1.Update ();
+  }
 
  tc++;
 
@@ -335,6 +367,7 @@ CPWindow5::draw1_EvMouseMove(CControl * control, uint button, uint x, uint y, ui
    offsety -= mdy - y;
    mdx = x;
    mdy = y;
+   update_all = 1;
   }
  else if (PartToMove >= 0)
   {
@@ -348,6 +381,7 @@ CPWindow5::draw1_EvMouseMove(CControl * control, uint button, uint x, uint y, ui
 
    parts[PartToMove]->SetX (x + mdx);
    parts[PartToMove]->SetY (y + mdy);
+   update_all = 1;
   }
  else
   {
@@ -380,15 +414,19 @@ CPWindow5::draw1_EvKeyboardPress(CControl * control, const uint key, const uint 
    break;
   case LXK_UP:
    offsety += 10;
+   update_all = 1;
    break;
   case LXK_DOWN:
    offsety -= 10;
+   update_all = 1;
    break;
   case LXK_LEFT:
    offsetx += 10;
+   update_all = 1;
    break;
   case LXK_RIGHT:
    offsetx -= 10;
+   update_all = 1;
    break;
   default:
    for (int i = 0; i < partsc; i++)
@@ -745,13 +783,14 @@ CPWindow5::menu1_Edit_Zoomin_EvMenuActive(CControl * control)
 {
  scale += 0.1;
  if (scale > 2)scale = 2;
- 
- scale= trunc(scale*10)/10.0;
+
+ scale = trunc (scale * 10) / 10.0;
 
  for (int i = 0; i < partsc; i++)
   {
    parts[i]->SetScale (scale);
   }
+ update_all = 1;
 }
 
 void
@@ -759,13 +798,14 @@ CPWindow5::menu1_Edit_Zoomout_EvMenuActive(CControl * control)
 {
  scale -= 0.1;
  if (scale < 0.1)scale = 0.1;
- 
- scale= trunc(scale*10)/10.0;
- 
+
+ scale = trunc (scale * 10) / 10.0;
+
  for (int i = 0; i < partsc; i++)
   {
    parts[i]->SetScale (scale);
   }
+ update_all = 1;
 }
 
 void
@@ -856,6 +896,8 @@ CPWindow5::pmenu2_Delete_EvMenuActive(CControl * control)
  partsc_--;
 
  partsc = partsc_;
+
+ update_all = 1;
 }
 
 void
