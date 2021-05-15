@@ -40,9 +40,9 @@ enum
  I_PO1
 };
 
-cpart_hcsr04::cpart_hcsr04(unsigned x, unsigned y):
-font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
-font_p (7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cpart_hcsr04::cpart_hcsr04(unsigned x, unsigned y) :
+font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
+font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -97,64 +97,75 @@ cpart_hcsr04::Draw(void)
  int i;
  char val[10];
 
- canvas.Init (Scale, Scale, Orientation);
-
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_P1:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     if (input_pins[output[i].id - O_P1] == 0)
-      canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90);
-     else
-      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2, 90);
-     break;
-    case O_P2:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     if (output_pins[output[i].id - O_P2] == 0)
-      canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90);
-     else
-      canvas.RotatedText (Window5.GetPinName (output_pins[output[i].id - O_P2]), output[i].x1, output[i].y2, 90);
-     break;
-    case O_F1:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (155, 155, 155);
-     canvas.RotatedText ("+5V", output[i].x1, output[i].y2, 90);
-     break;
-    case O_F2:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (155, 155, 155);
-     canvas.RotatedText ("GND", output[i].x1, output[i].y2, 90);
-     break;
-    case O_PO1:
-     canvas.SetColor (179, 179, 179);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (0, 0, 0);
-     canvas.SetBgColor (96, 96, 96);
-     canvas.Rectangle (1, output[i].x1 + 9, output[i].y1 + 9, output[i].x2 - output[i].x1 - 18, output[i].y2 - output[i].y1 - 18);
-     canvas.SetBgColor (46, 46, 46);
-     canvas.Rectangle (1, output[i].x1, output[i].y1 + value / 1.66, 32, 19);
-     snprintf (val, 10, "%3i", (int) (400.0 * (200 - value) / 200.0));
-     canvas.SetColor (250, 250, 250);
-     canvas.SetFont (font_p);
-     canvas.RotatedText (val, output[i].x1 + 8, output[i].y1 + 5 + value / 1.66, 0);
-     canvas.SetFont (font);
-     break;
+     output[i].update = 0;
+
+     if (!Update)
+      {
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
+      }
+     Update++; //set to update buffer
+
+     switch (output[i].id)
+      {
+      case O_P1:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       if (input_pins[output[i].id - O_P1] == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90);
+       else
+        canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2, 90);
+       break;
+      case O_P2:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       if (output_pins[output[i].id - O_P2] == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90);
+       else
+        canvas.RotatedText (Window5.GetPinName (output_pins[output[i].id - O_P2]), output[i].x1, output[i].y2, 90);
+       break;
+      case O_F1:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (155, 155, 155);
+       canvas.RotatedText ("+5V", output[i].x1, output[i].y2, 90);
+       break;
+      case O_F2:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (155, 155, 155);
+       canvas.RotatedText ("GND", output[i].x1, output[i].y2, 90);
+       break;
+      case O_PO1:
+       canvas.SetColor (179, 179, 179);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (0, 0, 0);
+       canvas.SetBgColor (96, 96, 96);
+       canvas.Rectangle (1, output[i].x1 + 9, output[i].y1 + 9, output[i].x2 - output[i].x1 - 18, output[i].y2 - output[i].y1 - 18);
+       canvas.SetBgColor (46, 46, 46);
+       canvas.Rectangle (1, output[i].x1, output[i].y1 + value / 1.66, 32, 19);
+       snprintf (val, 10, "%3i", (int) (400.0 * (200 - value) / 200.0));
+       canvas.SetColor (250, 250, 250);
+       canvas.SetFont (font_p);
+       canvas.RotatedText (val, output[i].x1 + 8, output[i].y1 + 5 + value / 1.66, 0);
+       canvas.SetFont (font);
+       break;
+      }
     }
   }
 
- canvas.End ();
-
+ if (Update)
+  {
+   canvas.End ();
+  }
 }
 
 void
@@ -215,6 +226,7 @@ cpart_hcsr04::EvMouseButtonPress(uint button, uint x, uint y, uint state)
        value = (y - input[i].y1)*1.66;
        if (value > 200)value = 200;
        active = 1;
+       output_ids[O_PO1]->update = 1;
        break;
       }
     }
@@ -235,6 +247,7 @@ cpart_hcsr04::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
       {
       case I_PO1:
        active = 0;
+       output_ids[O_PO1]->update = 1;
        break;
       }
     }
@@ -257,6 +270,7 @@ cpart_hcsr04::EvMouseMove(uint button, uint x, uint y, uint state)
       {
        value = (y - input[i].y1)*1.66;
        if (value > 200)value = 200;
+       output_ids[O_PO1]->update = 1;
       }
     }
   }

@@ -44,13 +44,13 @@ enum
 };
 
 cpart_encoder::cpart_encoder(unsigned x, unsigned y)
-:font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+: font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
  ReadMaps ();
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
@@ -105,56 +105,66 @@ cpart_encoder::Draw(void)
 
  int i, x, y;
 
- canvas.Init (Scale, Scale, Orientation);
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_P1:
-    case O_P2:
-    case O_P3:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     if (output_pins[output[i].id - O_P1] == 0)
-      canvas.RotatedText ("NC", output[i].x1 - 3, output[i].y2, 90);
-     else
-      canvas.RotatedText (Window5.GetPinName (output_pins[output[i].id - O_P1]), output[i].x1 - 3, output[i].y2, 90);
-     break;
-    case O_RT1:
-     canvas.SetColor (102, 102, 102);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     output[i].update = 0;
 
-     canvas.SetFgColor (0, 0, 0);
-     canvas.SetBgColor (44, 44, 44);
-     canvas.Circle (1, output[i].cx, output[i].cy, 25);
+     if (!Update)
+      {
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
+      }
+     Update++; //set to update buffer
 
-     canvas.SetBgColor (250, 250, 250);
-     x = -18 * sin ((2 * M_PI * (value / 200.0)));
-     y = 18 * cos ((2 * M_PI * (value / 200.0)));
-     canvas.Circle (1, output[i].cx + x, output[i].cy + y, 5);
-     break;
-    case O_BTN:
-     if (p_BTN)
+     switch (output[i].id)
       {
-       canvas.SetColor (77, 77, 77);
+      case O_P1:
+      case O_P2:
+      case O_P3:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       if (output_pins[output[i].id - O_P1] == 0)
+        canvas.RotatedText ("NC", output[i].x1 - 3, output[i].y2, 90);
+       else
+        canvas.RotatedText (Window5.GetPinName (output_pins[output[i].id - O_P1]), output[i].x1 - 3, output[i].y2, 90);
+       break;
+      case O_RT1:
+       canvas.SetColor (102, 102, 102);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
+       canvas.SetFgColor (0, 0, 0);
+       canvas.SetBgColor (44, 44, 44);
+       canvas.Circle (1, output[i].cx, output[i].cy, 25);
+
+       canvas.SetBgColor (250, 250, 250);
+       x = -18 * sin ((2 * M_PI * (value / 200.0)));
+       y = 18 * cos ((2 * M_PI * (value / 200.0)));
+       canvas.Circle (1, output[i].cx + x, output[i].cy + y, 5);
+       break;
+      case O_BTN:
+       if (p_BTN)
+        {
+         canvas.SetColor (77, 77, 77);
+        }
+       else
+        {
+         canvas.SetColor (22, 22, 22);
+        }
+       canvas.Circle (1, output[i].cx, output[i].cy, 9);
+       break;
       }
-     else
-      {
-       canvas.SetColor (22, 22, 22);
-      }
-     canvas.Circle (1, output[i].cx, output[i].cy, 9);
-     break;
     }
-
-
   }
 
- canvas.End ();
-
+ if (Update)
+  {
+   canvas.End ();
+  }
 }
 
 void
@@ -206,7 +216,7 @@ cpart_encoder::PreProcess(void)
        break;
       }
      step = 0;
-      //FIXME on slow speed output is not 90 degrees 
+     //FIXME on slow speed output is not 90 degrees 
     }
    else
     {
@@ -289,10 +299,13 @@ cpart_encoder::EvMouseButtonPress(uint button, uint x, uint y, uint state)
         {
          value = CalcAngle (i, x, y);
          active = 1;
+         output_ids[O_BTN]->update = 1;
+         output_ids[O_RT1]->update = 1;
         }
        break;
       case I_BTN:
        p_BTN = 0;
+       output_ids[O_BTN]->update = 1;
        break;
       }
     }
@@ -313,9 +326,12 @@ cpart_encoder::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
       {
       case I_RT1:
        active = 0;
+       output_ids[O_BTN]->update = 1;
+       output_ids[O_RT1]->update = 1;
        break;
       case I_BTN:
        p_BTN = 1;
+       output_ids[O_BTN]->update = 1;
        break;
       }
     }
@@ -337,6 +353,8 @@ cpart_encoder::EvMouseMove(uint button, uint x, uint y, uint state)
      if (active)
       {
        value = CalcAngle (i, x, y);
+       output_ids[O_BTN]->update = 1;
+       output_ids[O_RT1]->update = 1;
       }
     }
   }

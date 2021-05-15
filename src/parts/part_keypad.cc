@@ -100,8 +100,8 @@ cpart_keypad::GetOutputMapFile(void)
  return lxT ("keypad/keypad_4x4_o.map");
 }
 
-cpart_keypad::cpart_keypad(unsigned x, unsigned y):
-font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)   
+cpart_keypad::cpart_keypad(unsigned x, unsigned y) :
+font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -261,7 +261,7 @@ cpart_keypad::ChangeType(unsigned char tp)
 
  ReadMaps ();
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
@@ -277,45 +277,54 @@ cpart_keypad::Draw(void)
 
  int i;
 
- canvas.Init (Scale, Scale, Orientation);
-
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_L1:
-    case O_L2:
-    case O_L3:
-    case O_L4:
-    case O_C1:
-    case O_C2:
-    case O_C3:
-    case O_C4:
-    case O_C5:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
+     output[i].update = 0;
 
-     int id = output[i].id - O_L1;
-     if ((type == KT2x5)&&(id > 1))
+     if (!Update)
       {
-       id -= 2;
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
       }
-     if (output_pins[id] == 0)
-      canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
-     else
-      canvas.RotatedText (Window5.GetPinName (output_pins[id]), output[i].x1, output[i].y2, 90.0);
-     break;
+     Update++; //set to update buffer
+
+     switch (output[i].id)
+      {
+      case O_L1:
+      case O_L2:
+      case O_L3:
+      case O_L4:
+      case O_C1:
+      case O_C2:
+      case O_C3:
+      case O_C4:
+      case O_C5:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+
+       int id = output[i].id - O_L1;
+       if ((type == KT2x5)&&(id > 1))
+        {
+         id -= 2;
+        }
+       if (output_pins[id] == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
+       else
+        canvas.RotatedText (Window5.GetPinName (output_pins[id]), output[i].x1, output[i].y2, 90.0);
+       break;
+      }
     }
-
-
   }
 
- canvas.End ();
-
+ if (Update)
+  {
+   canvas.End ();
+  }
 }
 
 void

@@ -40,9 +40,9 @@ enum
  I_PO1, I_PO2, I_PO3, I_PO4
 };
 
-cpart_pot_r::cpart_pot_r(unsigned x, unsigned y):
-font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
-font_p (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cpart_pot_r::cpart_pot_r(unsigned x, unsigned y) :
+font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
+font_p(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -112,57 +112,66 @@ cpart_pot_r::Draw(void)
  int i;
  char val[10];
 
- canvas.Init (Scale, Scale, Orientation);
-
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_P1:
-    case O_P2:
-    case O_P3:
-    case O_P4:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     if (output_pins[output[i].id - O_P1] == 0)
-      canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
-     else
-      canvas.RotatedText (Window5.GetPinName (output_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
-     break;
-    case O_PO1:
-    case O_PO2:
-    case O_PO3:
-    case O_PO4:
-     canvas.SetFgColor (0, 0, 0);
-     canvas.SetBgColor (66, 109, 246);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     output[i].update = 0;
 
-     canvas.SetBgColor (250, 250, 250);
-     canvas.Circle (1, output[i].cx, output[i].cy, 17);
+     if (!Update)
+      {
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
+      }
+     Update++; //set to update buffer
 
-     canvas.SetBgColor (150, 150, 150);
-     int x = -13 * sin ((5.585 * (values[output[i].id - O_PO1] / 200.0)) + 0.349);
-     int y = 13 * cos ((5.585 * (values[output[i].id - O_PO1] / 200.0)) + 0.349);
-     canvas.Circle (1, output[i].cx + x, output[i].cy + y, 2);
+     switch (output[i].id)
+      {
+      case O_P1:
+      case O_P2:
+      case O_P3:
+      case O_P4:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       if (output_pins[output[i].id - O_P1] == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
+       else
+        canvas.RotatedText (Window5.GetPinName (output_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
+       break;
+      case O_PO1:
+      case O_PO2:
+      case O_PO3:
+      case O_PO4:
+       canvas.SetFgColor (0, 0, 0);
+       canvas.SetBgColor (66, 109, 246);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1 + 6, output[i].y2 + 6, 30, 15);
-     snprintf (val, 10, "%4.2f", 5.0 * (values[output[i].id - O_PO1]) / 200.0);
-     canvas.SetColor (250, 250, 250);
-     canvas.SetFont (font_p);
-     canvas.RotatedText (val, output[i].x1 + 6, output[i].y2 + 6, 0);
-     break;
+       canvas.SetBgColor (250, 250, 250);
+       canvas.Circle (1, output[i].cx, output[i].cy, 17);
+
+       canvas.SetBgColor (150, 150, 150);
+       int x = -13 * sin ((5.585 * (values[output[i].id - O_PO1] / 200.0)) + 0.349);
+       int y = 13 * cos ((5.585 * (values[output[i].id - O_PO1] / 200.0)) + 0.349);
+       canvas.Circle (1, output[i].cx + x, output[i].cy + y, 2);
+
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1 + 6, output[i].y2 + 6, 30, 15);
+       snprintf (val, 10, "%4.2f", 5.0 * (values[output[i].id - O_PO1]) / 200.0);
+       canvas.SetColor (250, 250, 250);
+       canvas.SetFont (font_p);
+       canvas.RotatedText (val, output[i].x1 + 6, output[i].y2 + 6, 0);
+       break;
+      }
     }
-
-
   }
 
- canvas.End ();
-
+ if (Update)
+  {
+   canvas.End ();
+  }
 }
 
 void
@@ -190,18 +199,22 @@ cpart_pot_r::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       case I_PO1:
        values[0] = CalcAngle (i, x, y);
        active[0] = 1;
+       output_ids[O_PO1]->update=1;
        break;
       case I_PO2:
        values[1] = CalcAngle (i, x, y);
        active[1] = 1;
+       output_ids[O_PO2]->update=1;
        break;
       case I_PO3:
        values[2] = CalcAngle (i, x, y);
        active[2] = 1;
+       output_ids[O_PO3]->update=1;
        break;
       case I_PO4:
        values[3] = CalcAngle (i, x, y);
        active[3] = 1;
+       output_ids[O_PO4]->update=1;
        break;
       }
     }
@@ -222,15 +235,19 @@ cpart_pot_r::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
       {
       case I_PO1:
        active[0] = 0;
+       output_ids[O_PO1]->update = 1;
        break;
       case I_PO2:
        active[1] = 0;
+       output_ids[O_PO2]->update=1;
        break;
       case I_PO3:
        active[2] = 0;
+       output_ids[O_PO3]->update=1;
        break;
       case I_PO4:
        active[3] = 0;
+       output_ids[O_PO4]->update=1;
        break;
       }
     }
@@ -252,6 +269,7 @@ cpart_pot_r::EvMouseMove(uint button, uint x, uint y, uint state)
      if (active[input[i].id - I_PO1])
       {
        values[input[i].id - I_PO1] = CalcAngle (i, x, y);
+       output_ids[O_PO1+input[i].id - I_PO1]->update=1;
       }
     }
   }

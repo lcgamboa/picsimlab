@@ -878,6 +878,7 @@ CPWindow5::pmenu2_Rotate_EvMenuActive(CControl * control)
 
  parts[PartSelected]->SetOrientation (orientation);
 
+ update_all = 1;
 }
 
 void

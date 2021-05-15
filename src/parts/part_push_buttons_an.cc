@@ -40,8 +40,8 @@ enum
  I_B1, I_B2, I_B3, I_B4, I_B5, I_B6, I_B7, I_B8, I_J1
 };
 
-cpart_pbuttons_an::cpart_pbuttons_an(unsigned x, unsigned y):
-font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cpart_pbuttons_an::cpart_pbuttons_an(unsigned x, unsigned y) :
+font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -49,7 +49,7 @@ font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 
  ReadMaps ();
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
@@ -141,71 +141,84 @@ cpart_pbuttons_an::Draw(void)
  int i;
  lxString temp;
  float ftemp;
- canvas.Init (Scale, Scale, Orientation);
 
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_P1:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1 + 10);
-     canvas.SetFgColor (255, 255, 255);
-     if (active)
-      ftemp = (5.0 * (output[i].id - O_P1)) / 8.0;
-     else
-      ftemp = (5.0 * (8 - output[i].id - O_P1)) / 8.0;
-     temp = lxString ().Format ("%3.1f", ftemp) + lxT ("V");
-     canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
-     if (output_pins[0] == 0)
-      canvas.RotatedText ("NC", output[i].x1, output[i].y1 + 12, 0);
-     else
-      canvas.RotatedText (Window5.GetPinName (output_pins[0]), output[i].x1, output[i].y1 + 12, 0);
-     break;
-    case O_P2:
-    case O_P3:
-    case O_P4:
-    case O_P5:
-    case O_P6:
-    case O_P7:
-    case O_P8:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     if (active)
-      ftemp = (5.0 * (output[i].id - O_P1)) / 8.0;
-     else
-      ftemp = (5.0 * (8 - output[i].id - O_P1)) / 8.0;
+     output[i].update = 0;
 
-     temp = lxString ().Format ("%3.1f", ftemp) + lxT ("V");
-     canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
-     break;
-    case O_B1:
-    case O_B2:
-    case O_B3:
-    case O_B4:
-    case O_B5:
-    case O_B6:
-    case O_B7:
-    case O_B8:
-     canvas.SetColor (100, 100, 100);
-     canvas.Circle (1, output[i].cx, output[i].cy, 10);
-     if (output_value_[output[i].id - O_B1] == active)
+     if (!Update)
       {
-       canvas.SetColor (55, 55, 55);
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
       }
-     else
+     Update++; //set to update buffer
+
+     switch (output[i].id)
       {
-       canvas.SetColor (15, 15, 15);
+      case O_P1:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1 + 8);
+       canvas.SetFgColor (255, 255, 255);
+       if (active)
+        ftemp = (5.0 * (output[i].id - O_P1)) / 8.0;
+       else
+        ftemp = (5.0 * (8 - output[i].id - O_P1)) / 8.0;
+       temp = lxString ().Format ("%3.1f", ftemp) + lxT ("V");
+       canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
+       if (output_pins[0] == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y1 + 12, 0);
+       else
+        canvas.RotatedText (Window5.GetPinName (output_pins[0]), output[i].x1, output[i].y1 + 12, 0);
+       break;
+      case O_P2:
+      case O_P3:
+      case O_P4:
+      case O_P5:
+      case O_P6:
+      case O_P7:
+      case O_P8:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       if (active)
+        ftemp = (5.0 * (output[i].id - O_P1)) / 8.0;
+       else
+        ftemp = (5.0 * (8 - output[i].id - O_P1)) / 8.0;
+
+       temp = lxString ().Format ("%3.1f", ftemp) + lxT ("V");
+       canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
+       break;
+      case O_B1:
+      case O_B2:
+      case O_B3:
+      case O_B4:
+      case O_B5:
+      case O_B6:
+      case O_B7:
+      case O_B8:
+       canvas.SetColor (100, 100, 100);
+       canvas.Circle (1, output[i].cx, output[i].cy, 10);
+       if (output_value_[output[i].id - O_B1] == active)
+        {
+         canvas.SetColor (55, 55, 55);
+        }
+       else
+        {
+         canvas.SetColor (15, 15, 15);
+        }
+       canvas.Circle (1, output[i].cx, output[i].cy, 8);
+       break;
       }
-     canvas.Circle (1, output[i].cx, output[i].cy, 8);
-     break;
     }
   }
- canvas.End ();
+ if (Update)
+  {
+   canvas.End ();
+  }
 }
 
 void
@@ -263,27 +276,35 @@ cpart_pbuttons_an::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       {
       case I_B1:
        output_value_[0] = active;
+       output_ids[O_B1]->update = 1;
        break;
       case I_B2:
        output_value_[1] = active;
+       output_ids[O_B2]->update = 1;
        break;
       case I_B3:
        output_value_[2] = active;
+       output_ids[O_B3]->update = 1;
        break;
       case I_B4:
        output_value_[3] = active;
+       output_ids[O_B4]->update = 1;
        break;
       case I_B5:
        output_value_[4] = active;
+       output_ids[O_B5]->update = 1;
        break;
       case I_B6:
        output_value_[5] = active;
+       output_ids[O_B6]->update = 1;
        break;
       case I_B7:
        output_value_[6] = active;
+       output_ids[O_B7]->update = 1;
        break;
       case I_B8:
        output_value_[7] = active;
+       output_ids[O_B8]->update = 1;
        break;
       }
     }
@@ -303,27 +324,35 @@ cpart_pbuttons_an::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
       {
       case I_B1:
        output_value_[0] = !active;
+       output_ids[O_B1]->update = 1;
        break;
       case I_B2:
        output_value_[1] = !active;
+       output_ids[O_B2]->update = 1;
        break;
       case I_B3:
        output_value_[2] = !active;
+       output_ids[O_B3]->update = 1;
        break;
       case I_B4:
        output_value_[3] = !active;
+       output_ids[O_B4]->update = 1;
        break;
       case I_B5:
        output_value_[4] = !active;
+       output_ids[O_B5]->update = 1;
        break;
       case I_B6:
        output_value_[5] = !active;
+       output_ids[O_B6]->update = 1;
        break;
       case I_B7:
        output_value_[6] = !active;
+       output_ids[O_B7]->update = 1;
        break;
       case I_B8:
        output_value_[7] = !active;
+       output_ids[O_B8]->update = 1;
        break;
       }
     }

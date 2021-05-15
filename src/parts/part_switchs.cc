@@ -41,16 +41,16 @@ enum
 };
 
 cpart_switchs::cpart_switchs(unsigned x, unsigned y)
-:font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+: font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
  ReadMaps ();
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
- Bitmap = new lxBitmap(&image, &Window5);
+ Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
 
  canvas.Create (Window5.GetWWidget (), Bitmap);
@@ -74,9 +74,8 @@ cpart_switchs::cpart_switchs(unsigned x, unsigned y)
  output_value[6] = 0;
  output_value[7] = 0;
 
- RegisterRemoteControl();
+ RegisterRemoteControl ();
 }
-
 
 void
 cpart_switchs::RegisterRemoteControl(void)
@@ -149,70 +148,76 @@ cpart_switchs::Draw(void)
 
  int i;
 
- canvas.Init ( Scale, Scale, Orientation);
-
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_P1:
-    case O_P2:
-    case O_P3:
-    case O_P4:
-    case O_P5:
-    case O_P6:
-    case O_P7:
-    case O_P8:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     if (output_pins[output[i].id - O_P1] == 0)
-      canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
-     else
-      canvas.RotatedText (Window5.GetPinName (output_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
-     break;
-    case O_S1:
-    case O_S2:
-    case O_S3:
-    case O_S4:
-    case O_S5:
-    case O_S6:
-    case O_S7:
-    case O_S8:
+     output[i].update = 0;
 
-     canvas.SetFgColor(0,0,0);
-     canvas.SetBgColor (100, 100, 100);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetBgColor (26, 26, 26);
-     canvas.Rectangle (1, output[i].x1 + 2, output[i].y1 + 16 - 14 * output_value[output[i].id - O_S1], 14, 14);
+     if (!Update)
+      {
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
+      }
+     Update++; //set to update buffer
 
-     break;
+     switch (output[i].id)
+      {
+      case O_P1:
+      case O_P2:
+      case O_P3:
+      case O_P4:
+      case O_P5:
+      case O_P6:
+      case O_P7:
+      case O_P8:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       if (output_pins[output[i].id - O_P1] == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
+       else
+        canvas.RotatedText (Window5.GetPinName (output_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
+       break;
+      case O_S1:
+      case O_S2:
+      case O_S3:
+      case O_S4:
+      case O_S5:
+      case O_S6:
+      case O_S7:
+      case O_S8:
 
-
+       canvas.SetFgColor (0, 0, 0);
+       canvas.SetBgColor (100, 100, 100);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetBgColor (26, 26, 26);
+       canvas.Rectangle (1, output[i].x1 + 2, output[i].y1 + 16 - 14 * output_value[output[i].id - O_S1], 14, 14);
+       break;
+      }
     }
-
-
   }
 
- canvas.End ();
-
+ if (Update)
+  {
+   canvas.End ();
+  }
 }
 
 void
 cpart_switchs::PreProcess(void)
 {
 
-   if (output_pins[0] > 0)Window5.SetPin (output_pins[0], output_value[0]);
-   if (output_pins[1] > 0)Window5.SetPin (output_pins[1], output_value[1]);
-   if (output_pins[2] > 0)Window5.SetPin (output_pins[2], output_value[2]);
-   if (output_pins[3] > 0)Window5.SetPin (output_pins[3], output_value[3]);
-   if (output_pins[4] > 0)Window5.SetPin (output_pins[4], output_value[4]);
-   if (output_pins[5] > 0)Window5.SetPin (output_pins[5], output_value[5]);
-   if (output_pins[6] > 0)Window5.SetPin (output_pins[6], output_value[6]);
-   if (output_pins[7] > 0)Window5.SetPin (output_pins[7], output_value[7]);
+ if (output_pins[0] > 0)Window5.SetPin (output_pins[0], output_value[0]);
+ if (output_pins[1] > 0)Window5.SetPin (output_pins[1], output_value[1]);
+ if (output_pins[2] > 0)Window5.SetPin (output_pins[2], output_value[2]);
+ if (output_pins[3] > 0)Window5.SetPin (output_pins[3], output_value[3]);
+ if (output_pins[4] > 0)Window5.SetPin (output_pins[4], output_value[4]);
+ if (output_pins[5] > 0)Window5.SetPin (output_pins[5], output_value[5]);
+ if (output_pins[6] > 0)Window5.SetPin (output_pins[6], output_value[6]);
+ if (output_pins[7] > 0)Window5.SetPin (output_pins[7], output_value[7]);
 
 }
 
@@ -223,25 +228,41 @@ cpart_switchs::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
  for (i = 0; i < inputc; i++)
   {
-   if (PointInside(x, y, input[i]))
+   if (PointInside (x, y, input[i]))
     {
      switch (input[i].id)
       {
-      case I_S1: output_value[0] ^= 1;
+      case I_S1:
+       output_value[0] ^= 1;
+       output_ids[O_S1]->update = 1;
        break;
-      case I_S2: output_value[1] ^= 1;
+      case I_S2:
+       output_value[1] ^= 1;
+       output_ids[O_S2]->update = 1;
        break;
-      case I_S3: output_value[2] ^= 1;
+      case I_S3:
+       output_value[2] ^= 1;
+       output_ids[O_S3]->update = 1;
        break;
-      case I_S4: output_value[3] ^= 1;
+      case I_S4:
+       output_value[3] ^= 1;
+       output_ids[O_S4]->update = 1;
        break;
-      case I_S5: output_value[4] ^= 1;
+      case I_S5:
+       output_value[4] ^= 1;
+       output_ids[O_S5]->update = 1;
        break;
-      case I_S6: output_value[5] ^= 1;
+      case I_S6:
+       output_value[5] ^= 1;
+       output_ids[O_S6]->update = 1;
        break;
-      case I_S7: output_value[6] ^= 1;
+      case I_S7:
+       output_value[6] ^= 1;
+       output_ids[O_S7]->update = 1;
        break;
-      case I_S8: output_value[7] ^= 1;
+      case I_S8:
+       output_value[7] ^= 1;
+       output_ids[O_S8]->update = 1;
        break;
       }
     }
@@ -310,7 +331,6 @@ cpart_switchs::ReadPreferences(lxString value)
          &output_pins[0], &output_pins[1], &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7],
          &output_value[0], &output_value[1], &output_value[2], &output_value[3], &output_value[4], &output_value[5], &output_value[6], &output_value[7]);
 }
-
 
 void
 cpart_switchs::ConfigurePropertiesWindow(CPWindow * WProp)
