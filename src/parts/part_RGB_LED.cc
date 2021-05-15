@@ -35,7 +35,7 @@ enum
 };
 
 cpart_rgb_led::cpart_rgb_led(unsigned x, unsigned y)
-:font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+: font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -43,7 +43,7 @@ cpart_rgb_led::cpart_rgb_led(unsigned x, unsigned y)
 
  ReadMaps ();
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
@@ -76,52 +76,82 @@ cpart_rgb_led::Draw(void)
 
  const picpin * ppins = Window5.GetPinsValues ();
 
- canvas.Init (Scale, Scale, Orientation);
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_P1:
-    case O_P2:
-    case O_P3:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     if (input_pins[output[i].id - O_P1] == 0)
-      canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
-     else
-      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
-     break;
-    case O_L1:
-     if (input_pins[0] > 0)
-      color[0] = ppins[input_pins[0] - 1].oavalue;
-     if (input_pins[1] > 0)
-      color[1] = ppins[input_pins[1] - 1].oavalue;
-     if (input_pins[2] > 0)
-      color[2] = ppins[input_pins[2] - 1].oavalue;
-     
-     if(!active)
-      {
-        color[0]=285-color[0];
-        color[1]=285-color[1];
-        color[2]=285-color[2];
-      }
-   
-     canvas.SetColor (255, 255, 224);
-     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r-5);
-     canvas.SetFgColor (0, 0, 0);
-     canvas.SetBgColor (color[0], color[1], color[2]);
-     canvas.Circle (1, output[i].x1-0.5, output[i].y1, output[i].r-7);
-     break;
-    }
+     output[i].update = 0;
 
+     if (!Update)
+      {
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
+      }
+     Update++; //set to update buffer
+
+     switch (output[i].id)
+      {
+      case O_P1:
+      case O_P2:
+      case O_P3:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       if (input_pins[output[i].id - O_P1] == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
+       else
+        canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
+       break;
+      case O_L1:
+       if (input_pins[0] > 0)
+        color[0] = ppins[input_pins[0] - 1].oavalue;
+       if (input_pins[1] > 0)
+        color[1] = ppins[input_pins[1] - 1].oavalue;
+       if (input_pins[2] > 0)
+        color[2] = ppins[input_pins[2] - 1].oavalue;
+
+       if (!active)
+        {
+         color[0] = 285 - color[0];
+         color[1] = 285 - color[1];
+         color[2] = 285 - color[2];
+        }
+
+       canvas.SetColor (255, 255, 224);
+       canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 5);
+       canvas.SetFgColor (0, 0, 0);
+       canvas.SetBgColor (color[0], color[1], color[2]);
+       canvas.Circle (1, output[i].x1 - 0.5, output[i].y1, output[i].r - 7);
+       break;
+      }
+    }
   }
 
+ if (Update)
+  {
+   canvas.End ();
+  }
+}
 
- canvas.End ();
+void
+cpart_rgb_led::PostProcess(void)
+{
+
+ const picpin * ppins = Window5.GetPinsValues ();
+
+ unsigned int color = 0;
+
+ if (input_pins[0])color |= ((unsigned char) ppins[input_pins[0] - 1].oavalue);
+ if (input_pins[1])color |= (((unsigned char) ppins[input_pins[1] - 1].oavalue) << 8);
+ if (input_pins[2])color |= (((unsigned char) ppins[input_pins[2] - 1].oavalue) << 16);
+
+ if (output_ids[O_L1]->fvalue != color)
+  {
+   output_ids[O_L1]->fvalue = color;
+   output_ids[O_L1]->update = 1;
+  }
 
 }
 

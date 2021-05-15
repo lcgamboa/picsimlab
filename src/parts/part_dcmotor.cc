@@ -102,96 +102,97 @@ cpart_dcmotor::Draw(void)
  int i, x, y, hsp;
  //char val[10];
 
- canvas.Init (Scale, Scale, Orientation);
-
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_P1:
-    case O_P2:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     if (output_pins[output[i].id - O_P1] == 0)
-      canvas.RotatedText ("NC", output[i].x1 - 3, output[i].y2, 90);
-     else
-      canvas.RotatedText (Window5.GetPinName (output_pins[output[i].id - O_P1]), output[i].x1 - 3, output[i].y2, 90);
-     break;
-    case O_P3:
-    case O_P4:
-    case O_P5:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     if (input_pins[output[i].id - O_P3] == 0)
-      canvas.RotatedText ("NC", output[i].x1 - 3, output[i].y2, 90);
-     else
-      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P3]), output[i].x1 - 3, output[i].y2, 90);
-     break;
-    case O_MT1:
-     canvas.SetColor (153, 153, 153);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     output[i].update = 0;
 
-
-     canvas.SetColor (250, 250, 250);
-     canvas.Circle (1, output[i].cx, output[i].cy, 25);
-     canvas.SetColor (5, 5, 5);
-     canvas.Circle (1, output[i].cx, output[i].cy, 2);
-
-
-     canvas.SetColor (250, 0, 0);
-     x = -18 * sin ((2 * M_PI * (value / 200.0)));
-     y = 18 * cos ((2 * M_PI * (value / 200.0)));
-     canvas.Circle (1, output[i].cx + x, output[i].cy + y, 5);
-     break;
-    case O_ST:
-     canvas.SetFgColor (0, 0, 0);
-     canvas.SetBgColor (200, 200, 200);
-     canvas.Rectangle (1, output[i].x1 - 2, output[i].y1 - 2, output[i].x2 - output[i].x1 + 4, output[i].y2 - output[i].y1 + 4);
-
-
-     hsp = (speed / 3);
-
-     if (hsp > 21)
+     if (!Update)
       {
-       canvas.SetColor (0, 255, 0);
-       if (hsp > 32) hsp = 32;
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
       }
-     else if (hsp > 10)
+     Update++; //set to update buffer
+
+     switch (output[i].id)
       {
-       canvas.SetColor (255, 255, 0);
+      case O_P1:
+      case O_P2:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       if (output_pins[output[i].id - O_P1] == 0)
+        canvas.RotatedText ("NC", output[i].x1 - 3, output[i].y2, 90);
+       else
+        canvas.RotatedText (Window5.GetPinName (output_pins[output[i].id - O_P1]), output[i].x1 - 3, output[i].y2, 90);
+       break;
+      case O_P3:
+      case O_P4:
+      case O_P5:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       if (input_pins[output[i].id - O_P3] == 0)
+        canvas.RotatedText ("NC", output[i].x1 - 3, output[i].y2, 90);
+       else
+        canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P3]), output[i].x1 - 3, output[i].y2, 90);
+       break;
+      case O_MT1:
+       canvas.SetColor (153, 153, 153);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
+       canvas.SetColor (250, 250, 250);
+       canvas.Circle (1, output[i].cx, output[i].cy, 25);
+       canvas.SetColor (5, 5, 5);
+       canvas.Circle (1, output[i].cx, output[i].cy, 2);
+
+       canvas.SetColor (250, 0, 0);
+       x = -18 * sin ((2 * M_PI * (value / 200.0)));
+       y = 18 * cos ((2 * M_PI * (value / 200.0)));
+       canvas.Circle (1, output[i].cx + x, output[i].cy + y, 5);
+       break;
+      case O_ST:
+       canvas.SetFgColor (0, 0, 0);
+       canvas.SetBgColor (200, 200, 200);
+       canvas.Rectangle (1, output[i].x1 - 2, output[i].y1 - 2, output[i].x2 - output[i].x1 + 4, output[i].y2 - output[i].y1 + 4);
+
+
+       hsp = (speed / 3);
+
+       if (hsp > 21)
+        {
+         canvas.SetColor (0, 255, 0);
+         if (hsp > 32) hsp = 32;
+        }
+       else if (hsp > 10)
+        {
+         canvas.SetColor (255, 255, 0);
+        }
+       else
+        {
+         canvas.SetColor (255, 0, 0);
+        }
+
+       if (dir)
+        {
+         canvas.Rectangle (1, output[i].x1, output[i].y1 + 32, output[i].x2 - output[i].x1, hsp);
+        }
+       else
+        {
+         canvas.Rectangle (1, output[i].x1, output[i].y1 + (32 - hsp), output[i].x2 - output[i].x1, hsp);
+        }
+       break;
       }
-     else
-      {
-       canvas.SetColor (255, 0, 0);
-      }
-
-
-
-
-
-     if (dir)
-      {
-       canvas.Rectangle (1, output[i].x1, output[i].y1 + 32, output[i].x2 - output[i].x1, hsp);
-      }
-     else
-      {
-       canvas.Rectangle (1, output[i].x1, output[i].y1 + (32 - hsp), output[i].x2 - output[i].x1, hsp);
-      }
-
-
-     break;
     }
-
-
   }
 
- canvas.End ();
-
+ if (Update)
+  {
+   canvas.End ();
+  }
 }
 
 void
@@ -338,6 +339,17 @@ cpart_dcmotor::Process(void)
        break;
       }
     }
+  }
+}
+
+void
+cpart_dcmotor::PostProcess(void)
+{
+ if (output_ids[O_MT1]->value != value)
+  {
+   output_ids[O_MT1]->value = value;
+   output_ids[O_MT1]->update = 1;
+   output_ids[O_ST]->update = 1;  
   }
 }
 

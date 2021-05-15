@@ -396,7 +396,7 @@ cboard_Breadboard::Draw(CDraw *draw)
       }
     }
   }
- 
+
  //end draw
  if (update)
   {
@@ -1103,13 +1103,19 @@ cboard_Breadboard::SetScale(double scale)
 
  lxImage image (&Window1);
 
- if (!image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg"), 0, Scale, Scale, 1))
+ if (MGetPinCount ())
   {
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic6.svg"), 0, Scale, Scale, 1);
-   printf ("picsimlab: IC package with %i pins not found!\n", MGetPinCount ());
-   printf ("picsimlab: %s not found!\n", (const char *) (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg")).c_str ());
+   if (!image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg"), 0, Scale, Scale, 1))
+    {
+     image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic6.svg"), 0, Scale, Scale, 1);
+     printf ("picsimlab: IC package with %i pins not found!\n", MGetPinCount ());
+     printf ("picsimlab: %s not found!\n", (const char *) (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg")).c_str ());
+    }
   }
-
+ else
+  {
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.svg"), 0, Scale, Scale, 1);
+  }
  if (micbmp) delete micbmp;
  micbmp = new lxBitmap (&image, &Window1);
 

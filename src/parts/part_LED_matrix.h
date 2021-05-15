@@ -42,6 +42,7 @@ public:
     ~cpart_led_matrix(void);
     void Draw(void);
     void Process(void);
+    void PostProcess(void);
 
     lxString GetPictureFileName(void) {
         return lxT("led_matrix/LED_matrix.svg");

@@ -41,8 +41,8 @@ enum
 
 int cpart_Jumpers::countID = 0;
 
-cpart_Jumpers::cpart_Jumpers(unsigned x, unsigned y):
-font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cpart_Jumpers::cpart_Jumpers(unsigned x, unsigned y) :
+font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  char buff[2];
 
@@ -128,40 +128,52 @@ cpart_Jumpers::Draw(void)
  lxString pname;
  unsigned char c;
 
- canvas.Init (Scale, Scale, Orientation);
-
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_L1 ... O_L16:
-     c = ppins[output_pins[output[i].id - O_L1] - 1].oavalue;
-     canvas.SetColor (c, c, 0);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     break;
-    case O_I1 ... O_I16:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     pname.Printf ("%2i-%s", output[i].id - O_I1 + 1, Window5.GetPinName (input_pins[output[i].id - O_I1]).c_str ());
-     canvas.SetFgColor (255, 255, 255);
-     canvas.RotatedText (pname, output[i].x1, output[i].y2, 90.0);
-     break;
-    case O_O1 ... O_O16:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     pname.Printf ("%2i-%s", output[i].id - O_O1 + 1, Window5.GetPinName (output_pins[output[i].id - O_O1]).c_str ());
-     canvas.SetFgColor (255, 255, 255);
-     canvas.RotatedText (pname, output[i].x1, output[i].y2, 90.0);
-     break;
-    default:
-     break;
+     output[i].update = 0;
+
+     if (!Update)
+      {
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
+      }
+     Update++; //set to update buffer
+
+     switch (output[i].id)
+      {
+      case O_L1 ... O_L16:
+       c = ppins[output_pins[output[i].id - O_L1] - 1].oavalue;
+       canvas.SetColor (c, c, 0);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       break;
+      case O_I1 ... O_I16:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       pname.Printf ("%2i-%s", output[i].id - O_I1 + 1, Window5.GetPinName (input_pins[output[i].id - O_I1]).c_str ());
+       canvas.SetFgColor (255, 255, 255);
+       canvas.RotatedText (pname, output[i].x1, output[i].y2, 90.0);
+       break;
+      case O_O1 ... O_O16:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       pname.Printf ("%2i-%s", output[i].id - O_O1 + 1, Window5.GetPinName (output_pins[output[i].id - O_O1]).c_str ());
+       canvas.SetFgColor (255, 255, 255);
+       canvas.RotatedText (pname, output[i].x1, output[i].y2, 90.0);
+       break;
+      default:
+       break;
+      }
     }
   }
- canvas.End ();
 
+ if (Update)
+  {
+   canvas.End ();
+  }
 }
 
 unsigned short
@@ -610,8 +622,13 @@ cpart_Jumpers::PostProcess(void)
 
  for (int i = 0; i < 16; i++)
   {
-
    Window5.WritePinOA (output_pins[i], (ppins[output_pins[i] - 1].oavalue + ((output_pins_alm[i]*200.0) / NSTEPJ) + 55) / 2);
+
+   if (output_pins[i] && (output_ids[O_L1 + i]->value != ppins[output_pins[i] - 1].oavalue))
+    {
+     output_ids[O_L1 + i]->value = ppins[output_pins[i] - 1].oavalue;
+     output_ids[O_L1 + i]->update = 1;
+    }
   }
 }
 

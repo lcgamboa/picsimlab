@@ -34,15 +34,15 @@ enum
  O_P1, O_P2, O_P3, O_P4, O_F1, O_F2, O_LED
 };
 
-cpart_led_matrix::cpart_led_matrix(unsigned x, unsigned y):
-font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cpart_led_matrix::cpart_led_matrix(unsigned x, unsigned y) :
+font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
  ReadMaps ();
  Bitmap = NULL;
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
 
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
@@ -75,62 +75,72 @@ cpart_led_matrix::Draw(void)
 {
  int i;
 
- canvas.Init (Scale, Scale, Orientation);
-
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_P1:
-    case O_P2:
-    case O_P3:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     if (input_pins[output[i].id - O_P1] == 0)
-      canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
-     else
-      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2, 90.0);
-     break;
-    case O_P4:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     if (output_pins[output[i].id - O_P4] == 0)
-      canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
-     else
-      canvas.RotatedText (itoa (output_pins[output[i].id - O_P4]), output[i].x1, output[i].y2, 90.0);
-     break;
-     break;
-    case O_F1:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (155, 155, 155);
-     canvas.RotatedText ("5V", output[i].x1, output[i].y2, 90.0);
-     break;
-    case O_F2:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (155, 155, 155);
-     canvas.RotatedText ("GND", output[i].x1, output[i].y2, 90.0);
-     break;
-    case O_LED:
-     //draw ldd text 
-     if (ldd.update)
+     output[i].update = 0;
+
+     if (!Update)
       {
-       canvas.SetColor (0, 90 + 40, 0);
-       ldd_max72xx_draw (&ldd, &canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, 1, angle);
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
       }
-     break;
+     Update++; //set to update buffer
+
+     switch (output[i].id)
+      {
+      case O_P1:
+      case O_P2:
+      case O_P3:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       if (input_pins[output[i].id - O_P1] == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
+       else
+        canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2, 90.0);
+       break;
+      case O_P4:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       if (output_pins[output[i].id - O_P4] == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
+       else
+        canvas.RotatedText (itoa (output_pins[output[i].id - O_P4]), output[i].x1, output[i].y2, 90.0);
+       break;
+       break;
+      case O_F1:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (155, 155, 155);
+       canvas.RotatedText ("5V", output[i].x1, output[i].y2, 90.0);
+       break;
+      case O_F2:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (155, 155, 155);
+       canvas.RotatedText ("GND", output[i].x1, output[i].y2, 90.0);
+       break;
+      case O_LED:
+       //draw ldd text 
+       if (ldd.update)
+        {
+         canvas.SetColor (0, 90 + 40, 0);
+         ldd_max72xx_draw (&ldd, &canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, 1, angle);
+        }
+       break;
+      }
     }
   }
 
-
- canvas.End ();
-
+ if (Update)
+  {
+   canvas.End ();
+  }
 }
 
 unsigned short
@@ -266,7 +276,12 @@ cpart_led_matrix::Process(void)
      Window5.WritePin (output_pins[0], out);
     }
   }
+}
 
+void
+cpart_led_matrix::PostProcess(void)
+{
+ if (ldd.update)output_ids[O_LED]->update = 1;
 }
 
 part_init("LED Matrix", cpart_led_matrix, "Output");

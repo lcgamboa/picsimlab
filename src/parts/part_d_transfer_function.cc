@@ -83,82 +83,94 @@ cpart_dtfunc::Draw(void)
  char buff[20];
  char eq[100];
 
- canvas.Init (Scale, Scale, Orientation);
-
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_P1:
-    case O_P2:
-     canvas.SetColor (249, 249, 249);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (0, 0, 0);
-     if (output[i].id == O_P1)
-      {
-       if (input_pin == 0)
-        canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
-       else
-        canvas.RotatedText (Window5.GetPinName (input_pin), output[i].x1, output[i].y1, 0);
-      }
-     if (output[i].id == O_P2)
-      {
-       if (output_pin == 0)
-        canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
-       else
-        canvas.RotatedText (Window5.GetPinName (output_pin), output[i].x1, output[i].y1, 0);
-      }
-     break;
-    case O_IG:
-    case O_IO:
-    case O_OG:
-    case O_OO:
-    case O_TS:
-     canvas.SetColor (220, 220, 220);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (0, 0, 0);
-     if (output[i].id == O_IG)snprintf (buff, 19, "%5.2f", in_gain);
-     if (output[i].id == O_IO)snprintf (buff, 19, "%5.2f", in_off);
-     if (output[i].id == O_OG)snprintf (buff, 19, "%5.2f", out_gain);
-     if (output[i].id == O_OO)snprintf (buff, 19, "%5.2f", out_off);
-     if (output[i].id == O_TS)snprintf (buff, 19, "%5.2f", sample);
-     canvas.RotatedText (buff, output[i].x1, output[i].y1, 0);
-     break;
-    case O_NUM:
-     canvas.SetColor (220, 220, 220);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     output[i].update = 0;
 
-     strncpy (eq, "[", 99);
-     for (int i = 0; i < ordern; i++)
+     if (!Update)
       {
-       snprintf (buff, 19, "%+6.3f ", num[i]);
-       strncat (eq, buff, 99);
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
       }
-     strncat (eq, "]", 99);
-     canvas.SetFgColor (0, 0, 0);
-     canvas.RotatedText (eq, output[i].x1, output[i].y1, 0);
-     break;
-    case O_DEN:
-     canvas.SetColor (220, 220, 220);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     Update++; //set to update buffer
 
-     strncpy (eq, "[", 99);
-     for (int i = 0; i < orderd; i++)
+     switch (output[i].id)
       {
-       snprintf (buff, 19, "%+6.3f ", den[i]);
-       strncat (eq, buff, 99);
+      case O_P1:
+      case O_P2:
+       canvas.SetColor (249, 249, 249);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (0, 0, 0);
+       if (output[i].id == O_P1)
+        {
+         if (input_pin == 0)
+          canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
+         else
+          canvas.RotatedText (Window5.GetPinName (input_pin), output[i].x1, output[i].y1, 0);
+        }
+       if (output[i].id == O_P2)
+        {
+         if (output_pin == 0)
+          canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
+         else
+          canvas.RotatedText (Window5.GetPinName (output_pin), output[i].x1, output[i].y1, 0);
+        }
+       break;
+      case O_IG:
+      case O_IO:
+      case O_OG:
+      case O_OO:
+      case O_TS:
+       canvas.SetColor (220, 220, 220);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (0, 0, 0);
+       if (output[i].id == O_IG)snprintf (buff, 19, "%5.2f", in_gain);
+       if (output[i].id == O_IO)snprintf (buff, 19, "%5.2f", in_off);
+       if (output[i].id == O_OG)snprintf (buff, 19, "%5.2f", out_gain);
+       if (output[i].id == O_OO)snprintf (buff, 19, "%5.2f", out_off);
+       if (output[i].id == O_TS)snprintf (buff, 19, "%5.2f", sample);
+       canvas.RotatedText (buff, output[i].x1, output[i].y1, 0);
+       break;
+      case O_NUM:
+       canvas.SetColor (220, 220, 220);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
+       strncpy (eq, "[", 99);
+       for (int i = 0; i < ordern; i++)
+        {
+         snprintf (buff, 19, "%+6.3f ", num[i]);
+         strncat (eq, buff, 99);
+        }
+       strncat (eq, "]", 99);
+       canvas.SetFgColor (0, 0, 0);
+       canvas.RotatedText (eq, output[i].x1, output[i].y1, 0);
+       break;
+      case O_DEN:
+       canvas.SetColor (220, 220, 220);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
+       strncpy (eq, "[", 99);
+       for (int i = 0; i < orderd; i++)
+        {
+         snprintf (buff, 19, "%+6.3f ", den[i]);
+         strncat (eq, buff, 99);
+        }
+       strncat (eq, "]", 99);
+       canvas.SetFgColor (0, 0, 0);
+       canvas.RotatedText (eq, output[i].x1, output[i].y1, 0);
+       break;
       }
-     strncat (eq, "]", 99);
-     canvas.SetFgColor (0, 0, 0);
-     canvas.RotatedText (eq, output[i].x1, output[i].y1, 0);
-     break;
     }
   }
 
- canvas.End ();
+ if (Update)
+  {
+   canvas.End ();
+  }
 
  nsamples = sample * Window1.GetBoard ()->MGetInstClockFreq ();
 

@@ -40,6 +40,7 @@ class cpart_LCD_ssd1306:public part
       ~cpart_LCD_ssd1306(void);
       void Draw(void);
       void Process(void);
+      void PostProcess(void);
       lxString GetPictureFileName(void){return lxT("LCD_ssd1306/LCD_ssd1306.svg");};
       lxString GetInputMapFile(void){return lxT("LCD_ssd1306/LCD_ssd1306_i.map");};
       lxString GetOutputMapFile(void){return lxT("LCD_ssd1306/LCD_ssd1306_o.map");};

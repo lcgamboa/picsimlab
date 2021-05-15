@@ -40,6 +40,7 @@ class cpart_dcmotor:public part
       void Draw(void);
       void PreProcess(void);
       void Process(void);
+      void PostProcess(void);
       lxString GetPictureFileName(void){return lxT("dcmotor/dcmotor.svg");};
       lxString GetInputMapFile(void){return lxT("dcmotor/dcmotor_i.map");};
       lxString GetOutputMapFile(void){return lxT("dcmotor/dcmotor_o.map");};

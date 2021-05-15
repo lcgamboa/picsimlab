@@ -573,6 +573,8 @@ CPWindow5::LoadConfig(lxString fname)
    partsc = partsc_;
   }
 
+ update_all = 1;
+
  return ret;
 }
 
@@ -673,6 +675,7 @@ CPWindow5::menu1_File_Newconfiguration_EvMenuActive(CControl * control)
     }
 #endif   
    DeleteParts ();
+   update_all = 1;
   }
 }
 

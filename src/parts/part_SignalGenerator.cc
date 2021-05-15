@@ -89,115 +89,127 @@ cpart_SignalGenerator::Draw(void)
  float tsi;
  int sizex;
  int sizey;
- canvas.Init (Scale, Scale, Orientation);
 
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_P2:
-    case O_P3:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     if (input_pins[output[i].id - O_P2] == 0)
-      canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
-     else
-      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P2]), output[i].x1, output[i].y1, 0);
-     break;
-    case O_P1:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     canvas.RotatedText ("GND", output[i].x1, output[i].y1, 0);
-     break;
-    case O_PO1:
-    case O_PO2:
-    case O_PO3:
-     canvas.SetColor (179, 179, 179);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (0, 0, 0);
-     canvas.SetBgColor (96, 96, 96);
-     canvas.Rectangle (1, output[i].x1 + 9, output[i].y1 + 9, output[i].x2 - output[i].x1 - 18, output[i].y2 - output[i].y1 - 18);
-     canvas.SetBgColor (46, 46, 46);
-     canvas.Rectangle (1, output[i].x1, output[i].y1 + values[output[i].id - O_PO1] / 1.66, 32, 19);
-     /*
-     snprintf (val, 10, "%4.2f", 5.0 * (200 - values[output[i].id - O_PO1]) / 200.0);
-     canvas.SetColor (250, 250, 250);
-     canvas.SetFont (font_p);
-     canvas.RotatedText (val, output[i].x1 + 4, output[i].y1 + 5 + values[output[i].id - O_PO1] / 1.66, 0);
-     canvas.SetFont (font);
-      */
-     break;
-    case O_TP:
-     canvas.SetColor (255, 255, 255);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (0, 0, 0);
+     output[i].update = 0;
 
-     v[0] = 0;
-     tsi = 0;
-     sizex = output[i].x2 - output[i].x1;
-     sizey = output[i].y2 - output[i].y1;
-
-     for (j = 1; j < sizex; j++)
+     if (!Update)
       {
-       v[1] = v[0];
-       switch (type)
-        {
-        case 0:
-         v[0] = (sin (tsi));
-         break;
-        case 1:
-         v[0] = ((sin (tsi) > 0) - 0.5)*2;
-         break;
-        case 2:
-         v[0] = ((acos (sin (tsi)) / 1.5708) - 1);
-         break;
-        }
-       tsi += 3 * 6.28 / sizex;
-       if (j > 0)
-        {
-         canvas.Line (output[i].x1 + j - 1, output[i].y1 + ((v[1] + 2.0) * sizey / 4.0), output[i].x1 + j, output[i].y1 + ((v[0] + 2.0) * sizey / 4.0));
-        }
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
       }
+     Update++; //set to update buffer
 
-     break;
-    case O_AMPL:
-     temp.Printf ("%5.2f", ampl);
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
-     break;
-    case O_OFFS:
-     temp.Printf ("%5.2f", offs);
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
-     break;
-    case O_FREQ:
-     temp.Printf ("%5.2f", freq);
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
-     break;
-    case O_MF:
-     canvas.SetColor (255, 255, 255);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetColor (0, 0, 0);
-     temp.Printf ("F x %i", maxfreq);
-     canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
-     break;
+     switch (output[i].id)
+      {
+      case O_P2:
+      case O_P3:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       if (input_pins[output[i].id - O_P2] == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
+       else
+        canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P2]), output[i].x1, output[i].y1, 0);
+       break;
+      case O_P1:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       canvas.RotatedText ("GND", output[i].x1, output[i].y1, 0);
+       break;
+      case O_PO1:
+      case O_PO2:
+      case O_PO3:
+       canvas.SetColor (179, 179, 179);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (0, 0, 0);
+       canvas.SetBgColor (96, 96, 96);
+       canvas.Rectangle (1, output[i].x1 + 9, output[i].y1 + 9, output[i].x2 - output[i].x1 - 18, output[i].y2 - output[i].y1 - 18);
+       canvas.SetBgColor (46, 46, 46);
+       canvas.Rectangle (1, output[i].x1, output[i].y1 + values[output[i].id - O_PO1] / 1.66, 32, 19);
+       /*
+       snprintf (val, 10, "%4.2f", 5.0 * (200 - values[output[i].id - O_PO1]) / 200.0);
+       canvas.SetColor (250, 250, 250);
+       canvas.SetFont (font_p);
+       canvas.RotatedText (val, output[i].x1 + 4, output[i].y1 + 5 + values[output[i].id - O_PO1] / 1.66, 0);
+       canvas.SetFont (font);
+        */
+       break;
+      case O_TP:
+       canvas.SetColor (255, 255, 255);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (0, 0, 0);
+
+       v[0] = 0;
+       tsi = 0;
+       sizex = output[i].x2 - output[i].x1;
+       sizey = output[i].y2 - output[i].y1;
+
+       for (j = 1; j < sizex; j++)
+        {
+         v[1] = v[0];
+         switch (type)
+          {
+          case 0:
+           v[0] = (sin (tsi));
+           break;
+          case 1:
+           v[0] = ((sin (tsi) > 0) - 0.5)*2;
+           break;
+          case 2:
+           v[0] = ((acos (sin (tsi)) / 1.5708) - 1);
+           break;
+          }
+         tsi += 3 * 6.28 / sizex;
+         if (j > 0)
+          {
+           canvas.Line (output[i].x1 + j - 1, output[i].y1 + ((v[1] + 2.0) * sizey / 4.0), output[i].x1 + j, output[i].y1 + ((v[0] + 2.0) * sizey / 4.0));
+          }
+        }
+
+       break;
+      case O_AMPL:
+       temp.Printf ("%5.2f", ampl);
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
+       break;
+      case O_OFFS:
+       temp.Printf ("%5.2f", offs);
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
+       break;
+      case O_FREQ:
+       temp.Printf ("%5.2f", freq);
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
+       break;
+      case O_MF:
+       canvas.SetColor (255, 255, 255);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetColor (0, 0, 0);
+       temp.Printf ("F x %i", maxfreq);
+       canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
+       break;
+      }
     }
   }
 
- canvas.End ();
-
+ if (Update)
+  {
+   canvas.End ();
+  }
 }
 
 void
@@ -284,24 +296,32 @@ cpart_SignalGenerator::EvMouseButtonPress(uint button, uint x, uint y, uint stat
        values[0] = (y - input[i].y1)*1.66;
        if (values[0] > 200)values[0] = 200;
        active[0] = 1;
+       output_ids[O_PO1]->update = 1;
+       output_ids[O_AMPL]->update=1;
        break;
       case I_PO2:
        values[1] = (y - input[i].y1)*1.66;
        if (values[1] > 200)values[1] = 200;
        active[1] = 1;
+       output_ids[O_PO2]->update = 1;
+       output_ids[O_FREQ]->update=1;
        break;
       case I_PO3:
        values[2] = (y - input[i].y1)*1.66;
        if (values[2] > 200)values[2] = 200;
        active[2] = 1;
+       output_ids[O_PO3]->update = 1;
+       output_ids[O_OFFS]->update=1;
        break;
       case I_TP:
        type++;
        if (type > 2)type = 0;
+       output_ids[O_TP]->update = 1;
        break;
       case I_MF:
        maxfreq *= 10;
        if (maxfreq > 10000)maxfreq = 1;
+       output_ids[O_MF]->update = 1;
        break;
       }
     }
@@ -322,12 +342,18 @@ cpart_SignalGenerator::EvMouseButtonRelease(uint button, uint x, uint y, uint st
       {
       case I_PO1:
        active[0] = 0;
+       output_ids[O_PO1]->update = 1;
+       output_ids[O_AMPL]->update=1;
        break;
       case I_PO2:
        active[1] = 0;
+       output_ids[O_PO2]->update = 1;
+       output_ids[O_FREQ]->update=1;
        break;
       case I_PO3:
        active[2] = 0;
+       output_ids[O_PO3]->update = 1;
+       output_ids[O_OFFS]->update=1;
        break;
       }
     }
@@ -363,6 +389,8 @@ cpart_SignalGenerator::EvMouseMove(uint button, uint x, uint y, uint state)
         {
          values[0] = (y - input[i].y1)*1.66;
          if (values[0] > 200)values[0] = 200;
+         output_ids[O_PO1]->update = 1;
+         output_ids[O_AMPL]->update=1;
         }
        break;
       case I_PO2:
@@ -370,6 +398,8 @@ cpart_SignalGenerator::EvMouseMove(uint button, uint x, uint y, uint state)
         {
          values[1] = (y - input[i].y1)*1.66;
          if (values[1] > 200)values[1] = 200;
+         output_ids[O_PO2]->update = 1;
+         output_ids[O_FREQ]->update=1;
         }
        break;
       case I_PO3:
@@ -377,6 +407,8 @@ cpart_SignalGenerator::EvMouseMove(uint button, uint x, uint y, uint state)
         {
          values[2] = (y - input[i].y1)*1.66;
          if (values[2] > 200)values[2] = 200;
+         output_ids[O_PO3]->update = 1;
+         output_ids[O_OFFS]->update=1;
         }
        break;
       }

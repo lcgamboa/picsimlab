@@ -46,21 +46,21 @@ const char pin_values[8][10] = {
  "+5V"
 };
 
-cpart_RTC_pfc8563::cpart_RTC_pfc8563(unsigned x, unsigned y):
-font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
-font_p (6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cpart_RTC_pfc8563::cpart_RTC_pfc8563(unsigned x, unsigned y) :
+font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
+font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
  ReadMaps ();
  Bitmap = NULL;
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
 
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
 
- Bitmap = new lxBitmap(&image, &Window5);
+ Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -77,7 +77,7 @@ cpart_RTC_pfc8563::~cpart_RTC_pfc8563(void)
 {
  rtc_end (&rtc);
  delete Bitmap;
- canvas.Destroy();
+ canvas.Destroy ();
 }
 
 void
@@ -86,48 +86,59 @@ cpart_RTC_pfc8563::Draw(void)
 
  int i;
 
- canvas.Init (Scale, Scale, Orientation);
-
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_IC:
-     canvas.SetFont (font_p);
-     canvas.SetColor (26, 26, 26);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     canvas.RotatedText ("PFC8563", output[i].x1, output[i].y2 - 15, 0.0);
-     break;
-    default:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     output[i].update = 0;
 
-     canvas.SetFgColor (255, 255, 255);
-     canvas.RotatedText (pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0);
-
-     int pinv =pin_values[output[i].id - O_P1][0]; 
-     if (pinv > 10)
+     if (!Update)
       {
-       canvas.SetFgColor (155, 155, 155);
-       canvas.RotatedText (pin_values[output[i].id - O_P1], output[i].x1, output[i].y2 - 30, 90.0);
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
       }
-     else
+     Update++; //set to update buffer
+
+     switch (output[i].id)
       {
-       if (input_pins[pinv] == 0)
-        canvas.RotatedText ("NC", output[i].x1, output[i].y2 - 30, 90.0);
+      case O_IC:
+       canvas.SetFont (font_p);
+       canvas.SetColor (26, 26, 26);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       canvas.RotatedText ("PFC8563", output[i].x1, output[i].y2 - 15, 0.0);
+       break;
+      default:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
+       canvas.SetFgColor (255, 255, 255);
+       canvas.RotatedText (pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0);
+
+       int pinv = pin_values[output[i].id - O_P1][0];
+       if (pinv > 10)
+        {
+         canvas.SetFgColor (155, 155, 155);
+         canvas.RotatedText (pin_values[output[i].id - O_P1], output[i].x1, output[i].y2 - 30, 90.0);
+        }
        else
-        canvas.RotatedText (Window5.GetPinName (input_pins[pinv]), output[i].x1, output[i].y2 - 30, 90.0);
+        {
+         if (input_pins[pinv] == 0)
+          canvas.RotatedText ("NC", output[i].x1, output[i].y2 - 30, 90.0);
+         else
+          canvas.RotatedText (Window5.GetPinName (input_pins[pinv]), output[i].x1, output[i].y2 - 30, 90.0);
+        }
+       break;
       }
-     break;
     }
   }
 
-
- canvas.End ();
+ if (Update)
+  {
+   canvas.End ();
+  }
 
  rtc_update (&rtc);
 }
@@ -174,7 +185,6 @@ cpart_RTC_pfc8563::ReadPreferences(lxString value)
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3]);
  Reset ();
 }
-
 
 void
 cpart_RTC_pfc8563::ConfigurePropertiesWindow(CPWindow * WProp)
@@ -238,10 +248,10 @@ cpart_RTC_pfc8563::Process(void)
 {
  const picpin * ppins = Window5.GetPinsValues ();
 
- if((input_pins[1]>0)&&(input_pins[2]>0))
-   Window5.Set_i2c_bus (input_pins[1] - 1, rtc_io (&rtc, ppins[input_pins[2] - 1].value, ppins[input_pins[1] - 1].value));
- if(input_pins[1]>0)
-   Window5.SetPin (input_pins[1], Window5.Get_i2c_bus (input_pins[1] - 1));
+ if ((input_pins[1] > 0)&&(input_pins[2] > 0))
+  Window5.Set_i2c_bus (input_pins[1] - 1, rtc_io (&rtc, ppins[input_pins[2] - 1].value, ppins[input_pins[1] - 1].value));
+ if (input_pins[1] > 0)
+  Window5.SetPin (input_pins[1], Window5.Get_i2c_bus (input_pins[1] - 1));
 
 }
 
