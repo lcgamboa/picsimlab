@@ -582,6 +582,7 @@ cpart_VCD_Play::filedialog_EvOnClose(int retId)
      strncpy (f_vcd_name, Window5.filedialog1.GetFileName ().c_str (), 199);
      LoadVCD (f_vcd_name);
     }
+   output_ids[O_NAME]->update = 1;
   }
 }
 

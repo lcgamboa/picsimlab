@@ -382,6 +382,7 @@ cpart_SDCard::filedialog_EvOnClose(int retId)
 
     }
   }
+ output_ids[O_FILE]->update = 1;
 }
 
 void
