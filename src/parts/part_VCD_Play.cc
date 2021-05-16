@@ -44,18 +44,6 @@ enum
  I_PLAY, I_VIEW, I_LOAD
 };
 
-const char pin_names[8][10] = {"A0", "A1", "A2", "VSS", "SDA", "SCL", "WP", "VCC"};
-const char pin_values[8][10] = {
- {0},
- {1},
- {2},
- "GND",
- {3},
- {4},
- "GND",
- "+5V"
-};
-
 cpart_VCD_Play::cpart_VCD_Play(unsigned x, unsigned y) :
 font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
