@@ -33,43 +33,43 @@
 //new board class must be derived from board class defined in board.h
 class cboard_Franzininho:public bsim_simavr
 {
-  private: 
+  private:
 /*
-     //controls to be added in simulator window   
+     //controls to be added in simulator window
      CGauge *gauge1;   //gauge to show mean value of 3
      CGauge *gauge2;   //gauge to show mean value of 5
      CGauge *gauge3;   //gauge to show mean value of 6
      CGauge *gauge4;   //gauge to show mean value of 9
      CGauge *gauge5;   //gauge to show mean value of 10
      CGauge *gauge6;   //gauge to show mean value of 11
-     
-     
+
+
      CLabel *label1;   //label of gauge 3
      CLabel *label2;   //label of gauge 5
      CLabel *label3;   //label of gauge 6
      CLabel *label4;   //label of gauge 9
      CLabel *label5;   //label of gauge 10
      CLabel *label6;   //label of gauge 11
- */    
-     void RegisterRemoteControl(void); 
+ */
+     void RegisterRemoteControl(void);
      lxColor color1;
      lxColor color2;
    public:
-      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
-      //Constructor called once on board creation 
+      lxString GetAboutInfo(void){return lxT("Fábio Souza e Felipe Alvares\n <contato@franzininho.com.br>\n https://franzininho.com.br/");};
+      //Constructor called once on board creation
       cboard_Franzininho(void);
-      //Destructor called once on board destruction 
-      ~cboard_Franzininho(void); 
+      //Destructor called once on board destruction
+      ~cboard_Franzininho(void);
       //Called ever 100ms to draw board
       void Draw(CDraw *draw);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
       lxString GetSupportedDevices(void){return lxT("attiny85,");};
-      //Return the filename of board picture 
+      //Return the filename of board picture
       lxString GetPictureFileName(void){return lxT("Franzininho/board.svg");};
-      //Return the filename of board picture input map 
+      //Return the filename of board picture input map
       lxString GetInputMapFile(void){return lxT("Franzininho/input.map");};
-      //Return the filename of board picture output map 
+      //Return the filename of board picture output map
       lxString GetOutputMapFile(void){return lxT("Franzininho/output.map");};
       //Reset board status
       void Reset(void);
@@ -85,7 +85,7 @@ class cboard_Franzininho:public bsim_simavr
       void RefreshStatus(void);
       //Called to save board preferences in configuration file
       void WritePreferences(void);
-      //Called whe configuration file load  preferences 
+      //Called whe configuration file load  preferences
       void ReadPreferences(char *name,char *value);
       //return the input ids numbers of names used in input map
       unsigned short get_in_id(char * name);

@@ -40,9 +40,15 @@ enum
 /* ids of outputs of output map*/
 enum
 {
- O_L, //LED 
+ O_L, //LED
  O_ON, //Power LED
- O_RST //Reset button
+ O_RST, //Reset button
+ O_PB0, //PIN PB0
+ O_PB1, //PIN PB1
+ O_PB2, //PIN PB2
+ O_PB3, //PIN PB3
+ O_PB4, //PIN PB4
+ O_PB5  //PIN PB5
 };
 //return the input ids numbers of names used in input map
 
@@ -66,12 +72,18 @@ cboard_Franzininho::get_out_id(char * name)
  if (strcmp (name, "LD_L") == 0)return O_L;
  if (strcmp (name, "LD_ON") == 0)return O_ON;
  if (strcmp (name, "PB_RST") == 0)return O_RST;
+ if (strcmp (name, "P_PB0") == 0)return O_PB0;
+ if (strcmp (name, "P_PB1") == 0)return O_PB1;
+ if (strcmp (name, "P_PB2") == 0)return O_PB2;
+ if (strcmp (name, "P_PB3") == 0)return O_PB3;
+ if (strcmp (name, "P_PB4") == 0)return O_PB4;
+ if (strcmp (name, "P_PB5") == 0)return O_PB5;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
 }
 
-//Constructor called once on board creation 
+//Constructor called once on board creation
 
 cboard_Franzininho::cboard_Franzininho(void)
 {
@@ -248,11 +260,11 @@ cboard_Franzininho::cboard_Franzininho(void)
   */
 }
 
-//Destructor called once on board destruction 
+//Destructor called once on board destruction
 
 cboard_Franzininho::~cboard_Franzininho(void) {
  /*
- //controls destruction 
+ //controls destruction
  Window1.DestroyChild (gauge1);
  Window1.DestroyChild (gauge2);
  Window1.DestroyChild (gauge3);
@@ -275,14 +287,14 @@ cboard_Franzininho::Reset(void)
 {
 
  //write button state to pic pin 19 (RD0)
- //pic_set_pin(19,p_BT1); 
+ //pic_set_pin(19,p_BT1);
  //write switch state to pic pin 20 (RD1)
- //pic_set_pin(20,p_BT2); 
+ //pic_set_pin(20,p_BT2);
  avr_reset (avr);
  //avr->data[UCSR0B] = 0x00; //FIX the simavr reset TX enabled
 
 
- //verify serial port state and refresh status bar  
+ //verify serial port state and refresh status bar
 #ifndef _WIN_
  if (serialfd > 0)
 #else
@@ -321,7 +333,7 @@ cboard_Franzininho::RegisterRemoteControl(void)
 void
 cboard_Franzininho::RefreshStatus(void)
 {
- //verify serial port state and refresh status bar   
+ //verify serial port state and refresh status bar
 #ifndef _WIN_
  if (serialfd > 0)
 #else
@@ -366,7 +378,7 @@ cboard_Franzininho::WritePreferences(void)
  Window1.saveprefs (lxT ("Franzininho_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
 }
 
-//Called whe configuration file load  preferences 
+//Called whe configuration file load  preferences
 
 void
 cboard_Franzininho::ReadPreferences(char *name, char *value)
@@ -402,7 +414,7 @@ cboard_Franzininho::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
  int i;
 
- //search for the input area which owner the event    
+ //search for the input area which owner the event
  for (i = 0; i < inputc; i++)
   {
    if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&
@@ -411,7 +423,7 @@ cboard_Franzininho::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
      switch (input[i].id)
       {
-       //if event is over I_ISCP area then load hex file  
+       //if event is over I_ISCP area then load hex file
       case I_ICSP:
        Window1.menu1_File_LoadHex_EvMenuActive (NULL);
        break;
@@ -454,7 +466,7 @@ cboard_Franzininho::EvMouseButtonRelease(uint button, uint x, uint y, uint state
 {
  int i;
 
- //search for the input area which owner the event  
+ //search for the input area which owner the event
  for (i = 0; i < inputc; i++)
   {
    if (((input[i].x1 <= x)&&(input[i].x2 >= x))&&((input[i].y1 <= y)&&
@@ -462,7 +474,7 @@ cboard_Franzininho::EvMouseButtonRelease(uint button, uint x, uint y, uint state
     {
      switch (input[i].id)
       {
-       //if event is over I_RST area then turn on  
+       //if event is over I_RST area then turn on
       case I_RST:
        if (Window1.Get_mcurst ())//if powered
         {
@@ -492,7 +504,7 @@ cboard_Franzininho::Draw(CDraw *draw)
 
  draw->Canvas.Init (Scale, Scale); //initialize draw context
 
- //board  draw 
+ //board  draw
  for (i = 0; i < outputc; i++) //run over all outputs
   {
    if (!output[i].r)//if output shape is a rectangle
@@ -501,6 +513,24 @@ cboard_Franzininho::Draw(CDraw *draw)
       {
       case O_RST:
        draw->Canvas.SetColor (100, 100, 100);
+       break;
+      case O_PB0:
+        draw->Canvas.SetColor (pins[5].oavalue, 0, 0);
+       break;
+      case O_PB1:
+        draw->Canvas.SetColor (pins[6].oavalue, 0, 0);
+       break;
+      case O_PB2:
+        draw->Canvas.SetColor (pins[7].oavalue, 0, 0);
+       break;
+      case O_PB3:
+        draw->Canvas.SetColor (pins[2].oavalue, 0, 0);
+       break;
+      case O_PB4:
+        draw->Canvas.SetColor (pins[3].oavalue, 0, 0);
+       break;
+      case O_PB5:
+        draw->Canvas.SetColor (pins[1].oavalue, 0, 0);
        break;
       default:
        draw->Canvas.SetColor (0, 0, 0);
@@ -526,6 +556,7 @@ cboard_Franzininho::Draw(CDraw *draw)
                                output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
       }
     }
+
    else //circle
     {
      draw->Canvas.SetFgColor (0, 0, 0);
@@ -596,7 +627,7 @@ cboard_Franzininho::Run_CPU(void)
 
  memset (alm, 0, pinc * sizeof (unsigned int));
 
- //read pic.pins to a local variable to speed up 
+ //read pic.pins to a local variable to speed up
 
  pins = MGetPinsValues ();
 
@@ -607,12 +638,12 @@ cboard_Franzininho::Run_CPU(void)
   for (i = 0; i < (Window1.GetNSTEP ()*4); i++) //repeat for number of steps in 100ms
    {
 
-    //verify if a breakpoint is reached if not run one instruction   
+    //verify if a breakpoint is reached if not run one instruction
     if (avr_debug_type || (!mplabxd_testbp ()))
      {
       if (twostep)
        {
-        twostep = 0; //NOP   
+        twostep = 0; //NOP
        }
       else
        {
@@ -635,15 +666,15 @@ cboard_Franzininho::Run_CPU(void)
     //increment mean value counter if pin is high
     alm[i % pinc] += pins[i % pinc].value;
 
-    if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
+    if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
      {
-      //set analog pin 2 (AN0) with value from scroll  
+      //set analog pin 2 (AN0) with value from scroll
       //pic_set_apin(2,((5.0*(scroll1->GetPosition()))/
       //  (scroll1->GetRange()-1)));
 
       j = -1; //reset counter
      }
-    j++; //counter increment   
+    j++; //counter increment
    }
 
  //calculate mean value

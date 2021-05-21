@@ -1,12 +1,18 @@
-<img src="[picsimlab7] (overwritten)" width="375" height="174" border="0" usemap="#map" />
+<img src="[Franzininho-DIY-V2RV2_atualizado] (importada)" width="241" height="114" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:Luis Claudio Gamboa Lopes     -->
-<area shape="rect" coords="281,10,314,43" href="PB_RST" />
-<area shape="circle" coords="205,150,11" href="LD_ON" />
-<area shape="circle" coords="234,150,11" href="LD_L" />
+<!-- #$AUTHOR:Felipe   -->
+<area shape="rect" coords="180,6,201,26" href="PB_RST" />
+<area shape="circle" coords="148,99,7" href="LD_L" />
+<area shape="circle" coords="128,99,7" href="LD_ON" />
+<area shape="rect" coords="190,67,197,76" href="P_PB2" />
+<area shape="rect" coords="180,67,187,76" href="P_PB1" />
+<area shape="rect" coords="171,67,178,76" href="P_PB0" />
+<area shape="rect" coords="200,38,206,45" href="P_PB5" />
+<area shape="rect" coords="190,38,197,45" href="P_PB3" />
+<area shape="rect" coords="180,38,188,45" href="P_PB4" />
 </map>
