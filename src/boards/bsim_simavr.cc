@@ -164,7 +164,7 @@ bsim_simavr::MInit(const char * processor, const char * fname, float freq)
   {
    avr->reset_pc = 0x3E000;
   }
- else if ((lxString (avr->mmcu).compare (lxT ("atmega328p")) == 0))
+ else if (((lxString (avr->mmcu).compare (lxT ("atmega328p")) == 0))||((lxString (avr->mmcu).compare (lxT ("atmega328")) == 0)))
   {
    avr->reset_pc = 0x07000; // bootloader 0x3800
   }

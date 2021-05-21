@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -98,7 +98,7 @@ rcontrol_init(unsigned short tcpport)
    serv.sin_port = htons (tcpport);
 
    if (bind (listenfd, (sockaddr *) & serv, sizeof (serv)) < 0)
-    { 
+    {
      printf ("rcontrol: bind error : %s \n", strerror (errno));
      return 1;
     }
@@ -252,7 +252,7 @@ ProcessOutput(const char * msg, output_t * Output, int * ret)
 
  if ((Output->name[0] == 'L')&&(Output->name[1] == 'D'))
   {
-   stemp.Printf ("%s %s= %3.0f\r\n", msg, Output->name, *((float *) Output->status));
+   stemp.Printf ("%s %s= %3.0f\r\n", msg, Output->name, *((float *) Output->status) - 55);
    *ret += sendtext ((const char *) stemp.c_str ());
   }
  else if ((Output->name[0] == 'D')&&(Output->name[1] == 'S'))
@@ -271,7 +271,7 @@ ProcessOutput(const char * msg, output_t * Output, int * ret)
  else if ((Output->name[0] == 'M')&&(Output->name[1] == 'T'))
   {
    unsigned char **status = (unsigned char **) Output->status;
-   snprintf (lstemp, 199, "%s %s-> dir= %i speed= %i position= %i\r\n",
+   snprintf (lstemp, 199, "%s %s-> dir= %i speed= %3i position= %3i\r\n",
              msg, Output->name, *status[0], *status[1], *status[2]);
    *ret += sendtext (lstemp);
   }
@@ -333,7 +333,7 @@ rcontrol_loop(void)
  //open connection  
  if (sockfd < 0)
   {
-   if (rcontrol_start ())return 1;
+   return rcontrol_start ();
   }
 
  n = recv (sockfd, (char *) &buffer[bp], 1024 - bp, 0);
@@ -386,7 +386,7 @@ rcontrol_loop(void)
         {
          //Command exit ========================================================
          sendtext ("Ok\r\n");
-         Window1.WDestroy ();
+         Window1.SetToDestroy ();
          return 0;
         }
        else
@@ -402,9 +402,9 @@ rcontrol_loop(void)
          char * ptr2;
          Board = Window1.GetBoard ();
 
-         if ((ptr = strstr (cmd, "board.in[")))
+         if ((ptr = strstr (cmd, " board.in[")))
           {
-           int in = (ptr[9] - '0')*10 + (ptr[10] - '0');
+           int in = (ptr[10] - '0')*10 + (ptr[11] - '0');
 
            if (in < Board->GetInputCount ())
             {
@@ -427,9 +427,9 @@ rcontrol_loop(void)
 
             }
           }
-         else if ((ptr = strstr (cmd, "board.out[")))
+         else if ((ptr = strstr (cmd, " board.out[")))
           {
-           int out = (ptr[10] - '0')*10 + (ptr[11] - '0');
+           int out = (ptr[11] - '0')*10 + (ptr[12] - '0');
 
            if (out < Board->GetOutputCount ())
             {
@@ -452,12 +452,42 @@ rcontrol_loop(void)
 
             }
           }
+         else if ((ptr = strstr (cmd, " apin[")))
+          {
+           int pin = (ptr[6] - '0')*10 + (ptr[7] - '0');
+           if (Board->GetUseSpareParts ())
+            {
+             pins = Window5.GetPinsValues ();
+            }
+           else
+            {
+             Board = Window1.GetBoard ();
+             pins = Board->MGetPinsValues ();
+            }
+           snprintf (lstemp, 100, "apin[%02i]= %i \r\nOk\r\n>", pin, (int) pins[pin - 1].oavalue - 55);
+           sendtext (lstemp);
+          }
+         else if ((ptr = strstr (cmd, " pin[")))
+          {
+           int pin = (ptr[5] - '0')*10 + (ptr[6] - '0');
+           if (Board->GetUseSpareParts ())
+            {
+             pins = Window5.GetPinsValues ();
+            }
+           else
+            {
+             Board = Window1.GetBoard ();
+             pins = Board->MGetPinsValues ();
+            }
+           snprintf (lstemp, 100, "pin[%02i]= %i \r\nOk\r\n>", pin, pins[pin - 1].value);
+           sendtext (lstemp);
+          }
          else if (Board->GetUseSpareParts ())
           {
            if ((ptr = strstr (cmd, "part["))&&(ptr2 = strstr (cmd, "].in[")))
             {
              int pn = (ptr[5] - '0')*10 + (ptr[6] - '0');
-             int in = (ptr2[5] - '0')*10 + (ptr2[5] - '0');
+             int in = (ptr2[5] - '0')*10 + (ptr2[6] - '0');
 
              if (pn < Window5.GetPartsCount ())
               {
@@ -550,6 +580,7 @@ rcontrol_loop(void)
          ret += sendtext ("  quit      - exit remote control interface\r\n");
          ret += sendtext ("  reset     - reset the board\r\n");
          ret += sendtext ("  set ob vl - set object with value\r\n");
+         ret += sendtext ("  sync      - wait to syncronize with timer event\r\n");
          ret += sendtext ("  version   - show PICSimLab version\r\n");
 
          ret += sendtext ("Ok\r\n>");
@@ -681,12 +712,12 @@ rcontrol_loop(void)
          char * ptr2;
          Board = Window1.GetBoard ();
 
-         if ((ptr = strstr (cmd, "board.in[")))
+         if ((ptr = strstr (cmd, " board.in[")))
           {
-           int in = (ptr[9] - '0')*10 + (ptr[10] - '0');
+           int in = (ptr[10] - '0')*10 + (ptr[11] - '0');
            int value;
 
-           sscanf (ptr + 12, "%i", &value);
+           sscanf (ptr + 13, "%i", &value);
 
            dprint ("board.in[%02i] = %i \r\n", in, value);
 
@@ -709,6 +740,46 @@ rcontrol_loop(void)
              ret = sendtext ("ERROR\r\n>");
 
             }
+          }
+         else if ((ptr = strstr (cmd, " apin[")))
+          {
+           int pin = (ptr[6] - '0')*10 + (ptr[7] - '0');
+           int value;
+
+           sscanf (ptr + 9, "%i", &value);
+
+           dprint ("apin[%02i] = %i \r\n", pin, value);
+
+           if (Board->GetUseSpareParts ())
+            {
+             Window5.SetAPin (pin, value / 40.0);
+            }
+           else
+            {
+             Board = Window1.GetBoard ();
+             Board->MSetAPin (pin, value / 40.0);
+            }
+           sendtext ("Ok\r\n>");
+          }
+         else if ((ptr = strstr (cmd, " pin[")))
+          {
+           int pin = (ptr[5] - '0')*10 + (ptr[6] - '0');
+           int value;
+
+           sscanf (ptr + 8, "%i", &value);
+
+           dprint ("pin[%02i] = %i \r\n", pin, value);
+
+           if (Board->GetUseSpareParts ())
+            {
+             Window5.SetPin (pin, value);
+            }
+           else
+            {
+             Board = Window1.GetBoard ();
+             Board->MSetPin (pin, value);
+            }
+           sendtext ("Ok\r\n>");
           }
          else if (Board->GetUseSpareParts ()&&(ptr = strstr (cmd, "part["))&&(ptr2 = strstr (cmd, "].in[")))
           {
@@ -755,6 +826,16 @@ rcontrol_loop(void)
           }
          return 0;
         }
+       if (!strcmp (cmd, "sync"))
+        {
+         //Command sync =====================================================
+         Window1.SetSync (0);
+         while (!Window1.GetSync ())
+          {
+           usleep (1); //FIXME avoid use of usleep to reduce cpu usage
+          }
+         ret = sendtext ("Ok\r\n>");
+        }
        else
         {
          ret = sendtext ("ERROR\r\n>");
@@ -784,6 +865,11 @@ rcontrol_loop(void)
      bp += n;
      if (bp > BSIZE)bp = BSIZE;
     }
+  }
+ else
+  {
+   //socket close by client
+   if (n == 0)ret = 1;
   }
 
  //close connection

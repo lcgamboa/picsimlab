@@ -45,6 +45,7 @@ class cpart_LCD_hd44780:public part
       ~cpart_LCD_hd44780(void);
       void Draw(void);
       void Process(void);
+      void PostProcess(void);
       lxString GetPictureFileName(void){return lxT("LCD_hd44780/LCD_hd44780.svg");};
       lxString GetPictureFileName_(void){return lxT("LCD_hd44780/LCD_hd44780_.svg");};
       lxString GetPictureFileName__(void){return lxT("LCD_hd44780/LCD_hd44780__.svg");};

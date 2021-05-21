@@ -39,6 +39,7 @@ class cpart_VCD_Dump:public part
       ~cpart_VCD_Dump(void);
       void Draw(void);
       void Process(void);
+      void PostProcess(void);
       lxString GetPictureFileName(void){return lxT("VCD_Dump/VCD_Dump.svg");};
       lxString GetInputMapFile(void){return lxT("VCD_Dump/VCD_Dump_i.map");};
       lxString GetOutputMapFile(void){return lxT("VCD_Dump/VCD_Dump_o.map");};

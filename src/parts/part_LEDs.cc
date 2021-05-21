@@ -34,8 +34,8 @@ enum
  O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_L1, O_L2, O_L3, O_L4, O_L5, O_L6, O_L7, O_L8
 };
 
-cpart_leds::cpart_leds(unsigned x, unsigned y):
-font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cpart_leds::cpart_leds(unsigned x, unsigned y) :
+font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -45,7 +45,7 @@ font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 
  lxImage image (&Window5);
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
- 
+
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
@@ -75,77 +75,101 @@ cpart_leds::Draw(void)
 
  const picpin * ppins = Window5.GetPinsValues ();
 
- canvas.Init (Scale, Scale, Orientation);
-
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_P1:
-    case O_P2:
-    case O_P3:
-    case O_P4:
-    case O_P5:
-    case O_P6:
-    case O_P7:
-    case O_P8:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     if (input_pins[output[i].id - O_P1] == 0)
-      canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
-     else
-      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
-     break;
-    case O_L1:
-    case O_L2:
-    case O_L3:
-    case O_L4:
-    case O_L5:
-    case O_L6:
-    case O_L7:
-    case O_L8:
-     if (input_pins[output[i].id - O_L1] > 0)
+     output[i].update = 0;
+
+     if (!Update)
       {
-       if (active)
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
+      }
+     Update++; //set to update buffer
+
+     switch (output[i].id)
+      {
+      case O_P1:
+      case O_P2:
+      case O_P3:
+      case O_P4:
+      case O_P5:
+      case O_P6:
+      case O_P7:
+      case O_P8:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       if (input_pins[output[i].id - O_P1] == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
+       else
+        canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
+       break;
+      case O_L1:
+      case O_L2:
+      case O_L3:
+      case O_L4:
+      case O_L5:
+      case O_L6:
+      case O_L7:
+      case O_L8:
+       if (input_pins[output[i].id - O_L1] > 0)
         {
-         canvas.SetBgColor (ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
+         if (active)
+          {
+           canvas.SetBgColor (ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
+          }
+         else
+          {
+           canvas.SetBgColor (310 - ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
+          }
         }
        else
         {
-         canvas.SetBgColor (310 - ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
+         canvas.SetBgColor (55, 0, 0);
         }
+       canvas.SetFgColor (0, 0, 0);
+       //draw a circle
+       color1 = canvas.GetBgColor ();
+       int r = color1.Red () - 120;
+       int g = color1.Green () - 120;
+       int b = color1.Blue () - 120;
+       if (r < 0)r = 0;
+       if (g < 0)g = 0;
+       if (b < 0)b = 0;
+       color2.Set (r, g, b);
+       canvas.SetBgColor (color2);
+       canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
+       canvas.SetBgColor (color1);
+       canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 3);
+       break;
       }
-     else
-      {
-       canvas.SetBgColor (55, 0, 0);
-      }
-     canvas.SetFgColor (0, 0, 0);
-     //draw a circle
-     color1 = canvas.GetBgColor ();
-     int r = color1.Red () - 120;
-     int g = color1.Green () - 120;
-     int b = color1.Blue () - 120;
-     if (r < 0)r = 0;
-     if (g < 0)g = 0;
-     if (b < 0)b = 0;
-     color2.Set(r, g, b);
-     canvas.SetBgColor (color2);
-     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r );
-     canvas.SetBgColor (color1);
-     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 3);
-     break;
     }
+  }
 
+ if (Update)
+  {
+   canvas.End ();
+  }
+}
 
-  };
+void
+cpart_leds::PostProcess(void)
+{
 
+ const picpin * ppins = Window5.GetPinsValues ();
 
- canvas.End ();
-
+ for (int i = 0; i < 8; i++)
+  {
+   if (input_pins[i] && (output_ids[O_L1 + i]->value != ppins[input_pins[i] - 1].oavalue))
+    {
+     output_ids[O_L1 + i]->value = ppins[input_pins[i] - 1].oavalue;
+     output_ids[O_L1 + i]->update = 1;
+    }
+  }
 }
 
 unsigned short

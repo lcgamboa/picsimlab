@@ -61,8 +61,7 @@ class cboard_Blue_Pill:public bsim_qemu_stm32
       //Event on the board
       void EvKeyPress(uint key,uint mask);
       //Event on the board
-      void EvKeyRelease(uint key,uint mask);
-      void EvOnShow(void){};
+      void EvKeyRelease(uint key, uint mask);      
       //Called ever 1s to refresh status
       void RefreshStatus(void);
       //Called to save board preferences in configuration file

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ part::part()
  outputc = 0;
  Orientation = 0;
  Scale = 1.0;
+ Update = 1;
 }
 
 void
@@ -42,6 +43,11 @@ part::ReadMaps(void)
  outputc = 0;
  ReadInputMap (Window1.GetSharePath () + lxT ("parts/") + GetInputMapFile ());
  ReadOutputMap (Window1.GetSharePath () + lxT ("parts/") + GetOutputMapFile ());
+
+ for (int i = 0; i < outputc; i++)
+  {
+   output_ids[get_out_id (output[i].name)] = &output[i];
+  }
 }
 
 void
@@ -141,6 +147,7 @@ part::ReadInputMap(lxString fname)
        input[inputc].cx = ((input[inputc].x2 - input[inputc].x1) / 2.0) + input[inputc].x1;
        input[inputc].cy = ((input[inputc].y2 - input[inputc].y1) / 2.0) + input[inputc].y1;
        input[inputc].status = NULL;
+       input[inputc].update = NULL;
        inputc++;
 
       }
@@ -335,7 +342,7 @@ part::SetOrientation(int orientation)
 
  delete Bitmap;
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
 
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
@@ -344,6 +351,10 @@ part::SetOrientation(int orientation)
  canvas.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
+ for (int i = 0; i < outputc; i++)
+  {
+   output[i].update = 1;
+  }
 }
 
 float
@@ -365,15 +376,19 @@ part::SetScale(double scale)
 
  delete Bitmap;
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
 
- image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale, 0 , &Scale);
- 
+ image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale, 0, &Scale);
+
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
  canvas.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
+ for (int i = 0; i < outputc; i++)
+  {
+   output[i].update = 1;
+  }
 }
 
 int
@@ -429,5 +444,21 @@ part::RotateCoords(unsigned int * x, unsigned int *y)
    *y = *x;
    *x = Width - temp;
    break;
+  }
+}
+
+unsigned char
+part::GetUpdate(void)
+{
+ return Update;
+}
+
+void
+part::SetUpdate(unsigned char upd)
+{
+ Update = upd;
+ for (int i = 0; i < outputc; i++)
+  {
+   output[i].update = Update;
   }
 }

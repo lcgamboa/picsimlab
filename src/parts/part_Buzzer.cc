@@ -99,66 +99,77 @@ cpart_Buzzer::Draw(void)
 
  const picpin * ppins = Window5.GetPinsValues ();
 
- canvas.Init (Scale, Scale, Orientation);
-
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-   canvas.SetFgColor (30, 0, 0);
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_P1:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     if (input_pins[output[i].id - O_P1] == 0)
-      canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
-     else
-      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
-     break;
-    case O_P2:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     canvas.RotatedText ("GND", output[i].x1, output[i].y1, 0);
-     break;
-    case O_L1:
-     canvas.SetFgColor (0, 0, 0);
-     color1.Set (55, 0, 0);
+     output[i].update = 0;
 
-     if (input_pins[0] > 0)
+     if (!Update)
       {
-       if (active)
-        {
-         color1.Set (ppins[input_pins[0] - 1].oavalue, 0, 0);
-        }
-       else
-        {
-         color1.Set (310 - ppins[input_pins[0] - 1].oavalue, 0, 0);
-        }
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
       }
-     //draw a LED
-     canvas.SetBgColor (color1);
-     int r = color1.Red () - 120;
-     int g = color1.Green () - 120;
-     int b = color1.Blue () - 120;
-     if (r < 0)r = 0;
-     if (g < 0)g = 0;
-     if (b < 0)b = 0;
-     color2.Set (r, g, b);
-     canvas.SetBgColor (color2);
-     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 1);
-     canvas.SetBgColor (color1);
-     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 2);
-     break;
+     Update++; //set to update buffer
+
+     canvas.SetFgColor (30, 0, 0);
+
+     switch (output[i].id)
+      {
+      case O_P1:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       if (input_pins[output[i].id - O_P1] == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
+       else
+        canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
+       break;
+      case O_P2:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       canvas.RotatedText ("GND", output[i].x1, output[i].y1, 0);
+       break;
+      case O_L1:
+       canvas.SetFgColor (0, 0, 0);
+       color1.Set (55, 0, 0);
+
+       if (input_pins[0] > 0)
+        {
+         if (active)
+          {
+           color1.Set (ppins[input_pins[0] - 1].oavalue, 0, 0);
+          }
+         else
+          {
+           color1.Set (310 - ppins[input_pins[0] - 1].oavalue, 0, 0);
+          }
+        }
+       //draw a LED
+       canvas.SetBgColor (color1);
+       int r = color1.Red () - 120;
+       int g = color1.Green () - 120;
+       int b = color1.Blue () - 120;
+       if (r < 0)r = 0;
+       if (g < 0)g = 0;
+       if (b < 0)b = 0;
+       color2.Set (r, g, b);
+       canvas.SetBgColor (color2);
+       canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 1);
+       canvas.SetBgColor (color1);
+       canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 2);
+       break;
+      }
     }
-
-
   }
 
- canvas.End ();
+ if (Update)
+  {
+   canvas.End ();
+  }
 }
 
 unsigned short
@@ -350,6 +361,12 @@ cpart_Buzzer::PostProcess(void)
   {
    buzzer.SoundPlay (buffer, buffersize);
    buffercount = 0;
+  }
+
+ if (input_pins[0] && (output_ids[O_L1]->value != ppins[input_pins[0] - 1].oavalue))
+  {
+   output_ids[O_L1 ]->value = ppins[input_pins[0] - 1].oavalue;
+   output_ids[O_L1 ]->update = 1;
   }
 
 }

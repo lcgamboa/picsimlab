@@ -34,19 +34,19 @@ enum
  O_P1, O_P2, O_P3, O_P4, O_P5, O_F1, O_F2, O_LCD
 };
 
-cpart_LCD_ssd1306::cpart_LCD_ssd1306(unsigned x, unsigned y):
-font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cpart_LCD_ssd1306::cpart_LCD_ssd1306(unsigned x, unsigned y) :
+font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
  ReadMaps ();
  Bitmap = NULL;
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
 
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
- Bitmap = new lxBitmap(&image, &Window5);
+ Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -74,62 +74,70 @@ cpart_LCD_ssd1306::Draw(void)
 
  int i;
 
- canvas.Init (Scale, Scale, Orientation);
-
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_P1:
-    case O_P2:
-    case O_P3:
-    case O_P4:
-    case O_P5:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     if (input_pins[output[i].id - O_P1] == 0)
-      canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
-     else
-      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2, 90.0);
-     break;
-    case O_F2:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (155, 155, 155);
-     canvas.RotatedText ("3.3V", output[i].x1, output[i].y2, 90.0);
-     break;
-    case O_F1:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (155, 155, 155);
-     canvas.RotatedText ("GND", output[i].x1, output[i].y2, 90.0);
-     break;
-    case O_LCD:
-     //draw lcd text 
-     if (lcd.update)
+     output[i].update = 0;
+
+     if (!Update)
       {
-       canvas.SetColor (0, 90 + 40, 0);
-       lcd_ssd1306_draw (&lcd, &canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, 1);
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
       }
-     /*
-     else   
-     {
-        canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2-output[i].x1,output[i].y2-output[i].y1 );
-     }
-      */
-     break;
+     Update++; //set to update buffer
+
+     switch (output[i].id)
+      {
+      case O_P1:
+      case O_P2:
+      case O_P3:
+      case O_P4:
+      case O_P5:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       if (input_pins[output[i].id - O_P1] == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
+       else
+        canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2, 90.0);
+       break;
+      case O_F2:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (155, 155, 155);
+       canvas.RotatedText ("3.3V", output[i].x1, output[i].y2, 90.0);
+       break;
+      case O_F1:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (155, 155, 155);
+       canvas.RotatedText ("GND", output[i].x1, output[i].y2, 90.0);
+       break;
+      case O_LCD:
+       //draw lcd text 
+       if (lcd.update)
+        {
+         canvas.SetColor (0, 90 + 40, 0);
+         lcd_ssd1306_draw (&lcd, &canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, 1);
+        }
+       /*
+       else   
+       {
+          canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2-output[i].x1,output[i].y2-output[i].y1 );
+       }
+        */
+       break;
+      }
     }
+  }
 
-
-  };
-
-
- canvas.End ();
-
+ if (Update)
+  {
+   canvas.End ();
+  }
 }
 
 unsigned short
@@ -270,7 +278,7 @@ cpart_LCD_ssd1306::Process(void)
   {
    if ((input_pins[0] > 0)&&(input_pins[1] > 0))
     Window5.Set_i2c_bus (input_pins[1] - 1, lcd_ssd1306_I2C_io (&lcd, ppins[input_pins[1] - 1].value, ppins[input_pins[0] - 1].value));
-   
+
    if (input_pins[1] > 0)
     Window5.SetPin (input_pins[1], Window5.Get_i2c_bus (input_pins[1] - 1));
   }
@@ -288,17 +296,23 @@ cpart_LCD_ssd1306::Process(void)
 }
 
 void
+cpart_LCD_ssd1306::PostProcess(void)
+{
+ if (lcd.update)output_ids[O_LCD]->update = 1;
+}
+
+void
 cpart_LCD_ssd1306::SetOrientation(int _orientation)
 {
  part::SetOrientation (_orientation);
- lcd_ssd1306_update(&lcd);
+ lcd_ssd1306_update (&lcd);
 }
 
 void
 cpart_LCD_ssd1306::SetScale(double scale)
 {
  part::SetScale (scale);
- lcd_ssd1306_update(&lcd);
+ lcd_ssd1306_update (&lcd);
 }
 
 part_init("LCD ssd1306", cpart_LCD_ssd1306, "Output");

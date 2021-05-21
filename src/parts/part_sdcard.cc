@@ -61,15 +61,15 @@ const char pin_values[10][10] = {
  */
 
 
-cpart_SDCard::cpart_SDCard(unsigned x, unsigned y):
-font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cpart_SDCard::cpart_SDCard(unsigned x, unsigned y) :
+font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
  ReadMaps ();
  Bitmap = NULL;
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
 
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
@@ -113,66 +113,76 @@ cpart_SDCard::Draw(void)
  int i;
  int to;
 
- canvas.Init (Scale, Scale, Orientation);
-
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_FILE:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     to = strlen (sdcard_fname) + 4;
-     if (to < 38)
-      {
-       to = 0;
-      }
-     else
-      {
-       to = to - 38;
-      }
-     canvas.RotatedText (lxT ("Img:") + lxString (sdcard_fname + to), output[i].x1, output[i].y1, 0);
-     break;
-    default:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     output[i].update = 0;
 
-     canvas.SetFgColor (155, 155, 155);
-
-     int pinv = output[i].id - O_P3;
-     int pin = 0;
-     switch (pinv)
+     if (!Update)
       {
-      case 0:
-      case 4:
-       pin = pinv > 1;
-       if (output_pins[pin] == 0)
-        canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
+      }
+     Update++; //set to update buffer
+
+     switch (output[i].id)
+      {
+      case O_FILE:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       to = strlen (sdcard_fname) + 4;
+       if (to < 38)
+        {
+         to = 0;
+        }
        else
-        canvas.RotatedText (Window5.GetPinName (output_pins[pin]), output[i].x1, output[i].y2, 90.0);
+        {
+         to = to - 38;
+        }
+       canvas.RotatedText (lxT ("Img:") + lxString (sdcard_fname + to), output[i].x1, output[i].y1, 0);
        break;
-      case 1:
-      case 2:
-      case 3:
-       pinv++;
-      case 5:
-       pin = pinv - 2;
-       if (input_pins[pin] == 0)
-        canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
-       else
-        canvas.RotatedText (Window5.GetPinName (input_pins[pin]), output[i].x1, output[i].y2, 90.0);
-      }
-     break;
-    }
+      default:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
+       canvas.SetFgColor (155, 155, 155);
+
+       int pinv = output[i].id - O_P3;
+       int pin = 0;
+       switch (pinv)
+        {
+        case 0:
+        case 4:
+         pin = pinv > 1;
+         if (output_pins[pin] == 0)
+          canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
+         else
+          canvas.RotatedText (Window5.GetPinName (output_pins[pin]), output[i].x1, output[i].y2, 90.0);
+         break;
+        case 1:
+        case 2:
+        case 3:
+         pinv++;
+        case 5:
+         pin = pinv - 2;
+         if (input_pins[pin] == 0)
+          canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
+         else
+          canvas.RotatedText (Window5.GetPinName (input_pins[pin]), output[i].x1, output[i].y2, 90.0);
+        }
+       break;
+      }
+    }
   }
 
- canvas.End ();
-
+ if (Update)
+  {
+   canvas.End ();
+  }
 }
 
 unsigned short
@@ -372,6 +382,7 @@ cpart_SDCard::filedialog_EvOnClose(int retId)
 
     }
   }
+ output_ids[O_FILE]->update = 1;
 }
 
 void

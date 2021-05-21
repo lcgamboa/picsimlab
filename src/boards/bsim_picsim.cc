@@ -28,6 +28,11 @@
 
 #include"../picsimlab1.h"
 
+bsim_picsim::bsim_picsim()
+{
+ pic.PINCOUNT = 0;
+}
+
 void
 bsim_picsim::MSetSerial(const char * port)
 {

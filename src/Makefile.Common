@@ -19,7 +19,7 @@ OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimla
  parts/part_sdcard.o devices/sdcard.o devices/uart.o parts/part_uart.o  parts/part_jumpers.o \
  devices/lcd_ssd1306.o parts/part_LCD_ssd1306.o devices/lcd_ili9341.o parts/part_LCD_ili9341.o \
  parts/part_gamepad_an.o devices/vterm.o parts/part_vterm.o  parts/part_pot_r.o parts/part_encoder.o \
- parts/part_dcmotor.o parts/part_hcsr04.o
+ parts/part_dcmotor.o parts/part_hcsr04.o parts/part_7s_Display_Dec.o
  
 
 OBJS_EXP =  boards/board_Xpress.o boards/board_Curiosity.o boards/board_x.o boards/board_Blue_Pill.o \

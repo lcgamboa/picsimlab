@@ -34,20 +34,20 @@ enum
  O_P1, O_P2, O_P3, O_P4, O_F1, O_F2, O_F3, O_F4, O_F5, O_LCD
 };
 
-cpart_LCD_pcf8833::cpart_LCD_pcf8833 (unsigned x, unsigned y):
-font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cpart_LCD_pcf8833::cpart_LCD_pcf8833(unsigned x, unsigned y) :
+font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
  ReadMaps ();
  Bitmap = NULL;
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
 
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
 
- Bitmap = new lxBitmap(&image, &Window5);
+ Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
@@ -60,102 +60,110 @@ font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  input_pins[3] = 0;
 };
 
-cpart_LCD_pcf8833::~cpart_LCD_pcf8833 (void)
+cpart_LCD_pcf8833::~cpart_LCD_pcf8833(void)
 {
  delete Bitmap;
- canvas.Destroy();
+ canvas.Destroy ();
 }
 
 void
-cpart_LCD_pcf8833::Draw (void)
+cpart_LCD_pcf8833::Draw(void)
 {
 
  int i;
 
- canvas.Init (Scale, Scale, Orientation);
-
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_P1:
-    case O_P2:
-    case O_P3:
-    case O_P4:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     if (input_pins[output[i].id - O_P1] == 0)
-      canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
-     else
-      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2, 90.0);
-     break;
-    case O_F1:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (155, 155, 155);
-     canvas.RotatedText ("3.3V", output[i].x1, output[i].y2, 90.0);
-     break;
-    case O_F2:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (155, 155, 155);
-     canvas.RotatedText ("3.3V", output[i].x1, output[i].y2, 90.0);
-     break;
-    case O_F3:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (155, 155, 155);
-     canvas.RotatedText ("GND", output[i].x1, output[i].y2, 90.0);
-     break;
-    case O_F4:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (155, 155, 155);
-     canvas.RotatedText ("GND", output[i].x1, output[i].y2, 90.0);
-     break;
-    case O_F5:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (155, 155, 155);
-     canvas.RotatedText ("6V", output[i].x1, output[i].y2, 90.0);
-     break;
-    case O_LCD:
-     //draw lcd text 
-     if (lcd.update)
+     output[i].update = 0;
+
+     if (!Update)
       {
-       canvas.SetColor (0, 90 + 40, 0);
-       lcd_pcf8833_draw (&lcd, &canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, 1);
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
       }
-     /*
-     else   
-     {
-        canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2-output[i].x1,output[i].y2-output[i].y1 );
-     }
-      */
-     break;
+     Update++; //set to update buffer
+
+     switch (output[i].id)
+      {
+      case O_P1:
+      case O_P2:
+      case O_P3:
+      case O_P4:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       if (input_pins[output[i].id - O_P1] == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
+       else
+        canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2, 90.0);
+       break;
+      case O_F1:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (155, 155, 155);
+       canvas.RotatedText ("3.3V", output[i].x1, output[i].y2, 90.0);
+       break;
+      case O_F2:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (155, 155, 155);
+       canvas.RotatedText ("3.3V", output[i].x1, output[i].y2, 90.0);
+       break;
+      case O_F3:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (155, 155, 155);
+       canvas.RotatedText ("GND", output[i].x1, output[i].y2, 90.0);
+       break;
+      case O_F4:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (155, 155, 155);
+       canvas.RotatedText ("GND", output[i].x1, output[i].y2, 90.0);
+       break;
+      case O_F5:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (155, 155, 155);
+       canvas.RotatedText ("6V", output[i].x1, output[i].y2, 90.0);
+       break;
+      case O_LCD:
+       //draw lcd text 
+       if (lcd.update)
+        {
+         canvas.SetColor (0, 90 + 40, 0);
+         lcd_pcf8833_draw (&lcd, &canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, 1);
+        }
+       /*
+       else   
+       {
+          canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2-output[i].x1,output[i].y2-output[i].y1 );
+       }
+        */
+       break;
+      }
     }
+  }
 
-
-  };
-
-
- canvas.End ();
-
+ if (Update)
+  {
+   canvas.End ();
+  }
 }
 
 unsigned short
-cpart_LCD_pcf8833::get_in_id (char * name)
+cpart_LCD_pcf8833::get_in_id(char * name)
 {
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
 };
 
 unsigned short
-cpart_LCD_pcf8833::get_out_id (char * name)
+cpart_LCD_pcf8833::get_out_id(char * name)
 {
 
  if (strcmp (name, "PN_1") == 0)return O_P1;
@@ -176,7 +184,7 @@ cpart_LCD_pcf8833::get_out_id (char * name)
 };
 
 lxString
-cpart_LCD_pcf8833::WritePreferences (void)
+cpart_LCD_pcf8833::WritePreferences(void)
 {
  char prefs[256];
 
@@ -186,19 +194,18 @@ cpart_LCD_pcf8833::WritePreferences (void)
 }
 
 void
-cpart_LCD_pcf8833::ReadPreferences (lxString value)
+cpart_LCD_pcf8833::ReadPreferences(lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3]);
  Reset ();
 }
 
-
 void
-cpart_LCD_pcf8833::ConfigurePropertiesWindow (CPWindow * WProp)
+cpart_LCD_pcf8833::ConfigurePropertiesWindow(CPWindow * WProp)
 {
  lxString Items = Window5.GetPinsNames ();
  lxString spin;
- 
+
  ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
  if (input_pins[0] == 0)
   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText ("0  NC");
@@ -242,7 +249,7 @@ cpart_LCD_pcf8833::ConfigurePropertiesWindow (CPWindow * WProp)
 }
 
 void
-cpart_LCD_pcf8833::ReadPropertiesWindow (CPWindow * WProp)
+cpart_LCD_pcf8833::ReadPropertiesWindow(CPWindow * WProp)
 {
 
  input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
@@ -253,33 +260,37 @@ cpart_LCD_pcf8833::ReadPropertiesWindow (CPWindow * WProp)
 }
 
 void
-cpart_LCD_pcf8833::Process (void)
+cpart_LCD_pcf8833::Process(void)
 {
  const picpin * ppins = Window5.GetPinsValues ();
 
+ if ((input_pins[0])
+     &&(input_pins[1])
+     &&(input_pins[2])
+     &&(input_pins[3]))
+  {
+   lcd_pcf8833_io (&lcd, ppins[input_pins[1] - 1].value, ppins[input_pins[2] - 1].value, ppins[input_pins[3] - 1].value, ppins[input_pins[0] - 1].value);
+  }
+}
 
-
- if((input_pins[0])
- &&(input_pins[1])
- &&(input_pins[2])
- &&(input_pins[3]))
- {
-  lcd_pcf8833_io (&lcd, ppins[input_pins[1] - 1].value, ppins[input_pins[2] - 1].value, ppins[input_pins[3] - 1].value, ppins[input_pins[0] - 1].value);
- }
+void
+cpart_LCD_pcf8833::PostProcess(void)
+{
+ if (lcd.update)output_ids[O_LCD]->update = 1;
 }
 
 void
 cpart_LCD_pcf8833::SetOrientation(int _orientation)
 {
  part::SetOrientation (_orientation);
- lcd_pcf8833_update(&lcd);
+ lcd_pcf8833_update (&lcd);
 }
 
 void
 cpart_LCD_pcf8833::SetScale(double scale)
 {
  part::SetScale (scale);
- lcd_pcf8833_update(&lcd);
+ lcd_pcf8833_update (&lcd);
 }
 
 part_init("LCD pcf8833", cpart_LCD_pcf8833, "Output");

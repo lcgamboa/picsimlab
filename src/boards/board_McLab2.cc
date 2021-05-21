@@ -115,8 +115,8 @@ enum
 
 //TODO jumper support
 
-cboard_McLab2::cboard_McLab2(void):
-font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cboard_McLab2::cboard_McLab2(void) :
+font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  char fname[1024];
  FILE * fout;
@@ -301,260 +301,302 @@ void
 cboard_McLab2::Draw(CDraw *draw)
 {
  int i;
-
- draw->Canvas.Init (Scale, Scale);
+ int update = 0; //verifiy if updated is needed
 
  lcd_blink (&lcd);
 
  //lab3 draw
  for (i = 0; i < outputc; i++)
   {
-   if (!output[i].r)//rectangle
+   if (output[i].update)//only if need update
     {
+     output[i].update = 0;
 
-     draw->Canvas.SetFgColor (0, 0, 0);
-
-     switch (output[i].id)
+     if (!update)
       {
-      case O_A1: draw->Canvas.SetBgColor (lm1[18], 0, 0);
-       break;
-      case O_B1: draw->Canvas.SetBgColor (lm1[19], 0, 0);
-       break;
-      case O_C1: draw->Canvas.SetBgColor (lm1[20], 0, 0);
-       break;
-      case O_D1: draw->Canvas.SetBgColor (lm1[21], 0, 0);
-       break;
-      case O_E1: draw->Canvas.SetBgColor (lm1[26], 0, 0);
-       break;
-      case O_F1: draw->Canvas.SetBgColor (lm1[27], 0, 0);
-       break;
-      case O_G1: draw->Canvas.SetBgColor (lm1[28], 0, 0);
-       break;
-
-      case O_A2: draw->Canvas.SetBgColor (lm2[18], 0, 0);
-       break;
-      case O_B2: draw->Canvas.SetBgColor (lm2[19], 0, 0);
-       break;
-      case O_C2: draw->Canvas.SetBgColor (lm2[20], 0, 0);
-       break;
-      case O_D2: draw->Canvas.SetBgColor (lm2[21], 0, 0);
-       break;
-      case O_E2: draw->Canvas.SetBgColor (lm2[26], 0, 0);
-       break;
-      case O_F2: draw->Canvas.SetBgColor (lm2[27], 0, 0);
-       break;
-      case O_G2: draw->Canvas.SetBgColor (lm2[28], 0, 0);
-       break;
-
-      case O_A3: draw->Canvas.SetBgColor (lm3[18], 0, 0);
-       break;
-      case O_B3: draw->Canvas.SetBgColor (lm3[19], 0, 0);
-       break;
-      case O_C3: draw->Canvas.SetBgColor (lm3[20], 0, 0);
-       break;
-      case O_D3: draw->Canvas.SetBgColor (lm3[21], 0, 0);
-       break;
-      case O_E3: draw->Canvas.SetBgColor (lm3[26], 0, 0);
-       break;
-      case O_F3: draw->Canvas.SetBgColor (lm3[27], 0, 0);
-       break;
-      case O_G3: draw->Canvas.SetBgColor (lm3[28], 0, 0);
-       break;
-
-      case O_A4: draw->Canvas.SetBgColor (lm4[18], 0, 0);
-       break;
-      case O_B4: draw->Canvas.SetBgColor (lm4[19], 0, 0);
-       break;
-      case O_C4: draw->Canvas.SetBgColor (lm4[20], 0, 0);
-       break;
-      case O_D4: draw->Canvas.SetBgColor (lm4[21], 0, 0);
-       break;
-      case O_E4: draw->Canvas.SetBgColor (lm4[26], 0, 0);
-       break;
-      case O_F4: draw->Canvas.SetBgColor (lm4[27], 0, 0);
-       break;
-      case O_G4: draw->Canvas.SetBgColor (lm4[28], 0, 0);
-       break;
-
-      case O_LCD: draw->Canvas.SetColor (0, 90 * Window1.Get_mcupwr () + 40, 0);
-       break;
-
-      case O_BRB0:
-      case O_BRB1:
-      case O_BRB2:
-      case O_BRB3:
-      case O_RST:
-       draw->Canvas.SetColor (100, 100, 100);
-       break;
-
-      case O_SS1:
-      case O_SS2:
-      case O_SS3:
-      case O_SS4:
-       draw->Canvas.SetColor (10, 10, 10);
-       break;
-
-      case O_POT1:
-       draw->Canvas.SetBgColor (66, 109, 246);
-       break;
-
-      case O_MP:
-       draw->Canvas.SetColor (26, 26, 26);
-       break;
-
-      default: if ((output[i].name[0] == 'J')&&(output[i].name[1] == 'P')) draw->Canvas.SetColor (150, 150, 150);
-       break;
+       draw->Canvas.Init (Scale, Scale);
       }
+     update++; //set to update buffer
 
-
-     if ((output[i].id >= O_BRB0)&&(output[i].id <= O_BRB3))
+     if (!output[i].r)//rectangle
       {
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 22);
-       if (p_BT[output[i].id - O_BRB0])
+
+       draw->Canvas.SetFgColor (0, 0, 0);
+
+       switch (output[i].id)
         {
-         draw->Canvas.SetColor (15, 15, 15);
+        case O_A1: draw->Canvas.SetBgColor (lm1[18], 0, 0);
+         break;
+        case O_B1: draw->Canvas.SetBgColor (lm1[19], 0, 0);
+         break;
+        case O_C1: draw->Canvas.SetBgColor (lm1[20], 0, 0);
+         break;
+        case O_D1: draw->Canvas.SetBgColor (lm1[21], 0, 0);
+         break;
+        case O_E1: draw->Canvas.SetBgColor (lm1[26], 0, 0);
+         break;
+        case O_F1: draw->Canvas.SetBgColor (lm1[27], 0, 0);
+         break;
+        case O_G1: draw->Canvas.SetBgColor (lm1[28], 0, 0);
+         break;
+
+        case O_A2: draw->Canvas.SetBgColor (lm2[18], 0, 0);
+         break;
+        case O_B2: draw->Canvas.SetBgColor (lm2[19], 0, 0);
+         break;
+        case O_C2: draw->Canvas.SetBgColor (lm2[20], 0, 0);
+         break;
+        case O_D2: draw->Canvas.SetBgColor (lm2[21], 0, 0);
+         break;
+        case O_E2: draw->Canvas.SetBgColor (lm2[26], 0, 0);
+         break;
+        case O_F2: draw->Canvas.SetBgColor (lm2[27], 0, 0);
+         break;
+        case O_G2: draw->Canvas.SetBgColor (lm2[28], 0, 0);
+         break;
+
+        case O_A3: draw->Canvas.SetBgColor (lm3[18], 0, 0);
+         break;
+        case O_B3: draw->Canvas.SetBgColor (lm3[19], 0, 0);
+         break;
+        case O_C3: draw->Canvas.SetBgColor (lm3[20], 0, 0);
+         break;
+        case O_D3: draw->Canvas.SetBgColor (lm3[21], 0, 0);
+         break;
+        case O_E3: draw->Canvas.SetBgColor (lm3[26], 0, 0);
+         break;
+        case O_F3: draw->Canvas.SetBgColor (lm3[27], 0, 0);
+         break;
+        case O_G3: draw->Canvas.SetBgColor (lm3[28], 0, 0);
+         break;
+
+        case O_A4: draw->Canvas.SetBgColor (lm4[18], 0, 0);
+         break;
+        case O_B4: draw->Canvas.SetBgColor (lm4[19], 0, 0);
+         break;
+        case O_C4: draw->Canvas.SetBgColor (lm4[20], 0, 0);
+         break;
+        case O_D4: draw->Canvas.SetBgColor (lm4[21], 0, 0);
+         break;
+        case O_E4: draw->Canvas.SetBgColor (lm4[26], 0, 0);
+         break;
+        case O_F4: draw->Canvas.SetBgColor (lm4[27], 0, 0);
+         break;
+        case O_G4: draw->Canvas.SetBgColor (lm4[28], 0, 0);
+         break;
+
+        case O_LCD: draw->Canvas.SetColor (0, 90 * Window1.Get_mcupwr () + 40, 0);
+         break;
+
+        case O_BRB0:
+        case O_BRB1:
+        case O_BRB2:
+        case O_BRB3:
+        case O_RST:
+         draw->Canvas.SetColor (100, 100, 100);
+         break;
+
+        case O_SS1:
+         output_ids[O_A1]->update = 1;
+         output_ids[O_B1]->update = 1;
+         output_ids[O_C1]->update = 1;
+         output_ids[O_D1]->update = 1;
+         output_ids[O_E1]->update = 1;
+         output_ids[O_F1]->update = 1;
+         output_ids[O_G1]->update = 1;
+         output_ids[O_P1]->update = 1;
+         draw->Canvas.SetColor (10, 10, 10);
+         break;
+        case O_SS2:
+         output_ids[O_A2]->update = 1;
+         output_ids[O_B2]->update = 1;
+         output_ids[O_C2]->update = 1;
+         output_ids[O_D2]->update = 1;
+         output_ids[O_E2]->update = 1;
+         output_ids[O_F2]->update = 1;
+         output_ids[O_G2]->update = 1;
+         output_ids[O_P2]->update = 1;
+         draw->Canvas.SetColor (10, 10, 10);
+         break;
+        case O_SS3:
+         output_ids[O_A3]->update = 1;
+         output_ids[O_B3]->update = 1;
+         output_ids[O_C3]->update = 1;
+         output_ids[O_D3]->update = 1;
+         output_ids[O_E3]->update = 1;
+         output_ids[O_F3]->update = 1;
+         output_ids[O_G3]->update = 1;
+         output_ids[O_P3]->update = 1;
+         draw->Canvas.SetColor (10, 10, 10);
+         break;
+        case O_SS4:
+         output_ids[O_A4]->update = 1;
+         output_ids[O_B4]->update = 1;
+         output_ids[O_C4]->update = 1;
+         output_ids[O_D4]->update = 1;
+         output_ids[O_E4]->update = 1;
+         output_ids[O_F4]->update = 1;
+         output_ids[O_G4]->update = 1;
+         output_ids[O_P4]->update = 1;
+         draw->Canvas.SetColor (10, 10, 10);
+         break;
+
+        case O_POT1:
+         draw->Canvas.SetBgColor (66, 109, 246);
+         break;
+
+        case O_MP:
+         draw->Canvas.SetColor (26, 26, 26);
+         break;
+
+        default: if ((output[i].name[0] == 'J')&&(output[i].name[1] == 'P')) draw->Canvas.SetColor (150, 150, 150);
+         break;
         }
-       else
+
+
+       if ((output[i].id >= O_BRB0)&&(output[i].id <= O_BRB3))
         {
-         draw->Canvas.SetColor (55, 55, 55);
+         draw->Canvas.Circle (1, output[i].cx, output[i].cy, 22);
+         if (p_BT[output[i].id - O_BRB0])
+          {
+           draw->Canvas.SetColor (15, 15, 15);
+          }
+         else
+          {
+           draw->Canvas.SetColor (55, 55, 55);
+          }
+         draw->Canvas.Circle (1, output[i].cx, output[i].cy, 19);
         }
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 19);
-      }
-     else if (output[i].id == O_RST)
-      {
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
-       if (p_RST)
+       else if (output[i].id == O_RST)
         {
-         draw->Canvas.SetColor (15, 15, 15);
+         draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
+         if (p_RST)
+          {
+           draw->Canvas.SetColor (15, 15, 15);
+          }
+         else
+          {
+           draw->Canvas.SetColor (55, 55, 55);
+          }
+         draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
         }
-       else
+       else if (output[i].id == O_POT1)
         {
-         draw->Canvas.SetColor (55, 55, 55);
+         draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
+         draw->Canvas.SetBgColor (250, 250, 250);
+         draw->Canvas.Circle (1, output[i].cx, output[i].cy, 20);
+
+         draw->Canvas.SetBgColor (150, 150, 150);
+         int x = -15 * sin ((5.585 * (pot1 / 200.0)) + 0.349);
+         int y = 15 * cos ((5.585 * (pot1 / 200.0)) + 0.349);
+         draw->Canvas.Circle (1, output[i].cx + x, output[i].cy + y, 3);
+
         }
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
-      }
-     else if (output[i].id == O_POT1)
-      {
-       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-
-       draw->Canvas.SetBgColor (250, 250, 250);
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 20);
-
-       draw->Canvas.SetBgColor (150, 150, 150);
-       int x = -15 * sin ((5.585 * (pot1 / 200.0)) + 0.349);
-       int y = 15 * cos ((5.585 * (pot1 / 200.0)) + 0.349);
-       draw->Canvas.Circle (1, output[i].cx + x, output[i].cy + y, 3);
-
-      }
-     else if (output[i].id == O_MP)
-      {
-       draw->Canvas.SetFont (font);
-       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-       draw->Canvas.SetColor (230, 230, 230);
-       draw->Canvas.RotatedText (Proc, output[i].x1 + 10, output[i].y2 - 50, 90);
-      }
-     else if (output[i].id == O_VT)
-      {
-       if (gauge1->GetValue () > 20) vtc++;
-
-       if (vtc > (4 - 0.04 * gauge1->GetValue ()))
+       else if (output[i].id == O_MP)
         {
-         vtc = 0;
+         draw->Canvas.SetFont (font);
+         draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+         draw->Canvas.SetColor (230, 230, 230);
+         draw->Canvas.RotatedText (Proc, output[i].x1 + 10, output[i].y2 - 50, 90);
+        }
+       else if (output[i].id == O_VT)
+        {
          draw->Canvas.PutBitmap (vent[vt], output[i].x1, output[i].y1);
-         vt ^= 1;
         }
-      }
-     else if (output[i].id == O_LCD)
-      {
-       if (lcd.update)
+       else if (output[i].id == O_LCD)
         {
-         draw->Canvas.Rectangle (1, output[i].x1 - 1, output[i].y1 - 1, output[i].x2 - output[i].x1 + 2, output[i].y2 - output[i].y1 + 3);
-         lcd_draw (&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, Window1.Get_mcupwr ());
+         if (lcd.update)
+          {
+           draw->Canvas.Rectangle (1, output[i].x1 - 1, output[i].y1 - 1, output[i].x2 - output[i].x1 + 2, output[i].y2 - output[i].y1 + 3);
+           lcd_draw (&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, Window1.Get_mcupwr ());
+          }
         }
-      }
-     else if ((output[i].name[0] == 'J')&&(output[i].name[1] == 'P'))
-      {
-       if (!jmp[output[i].name[3] - 0x31])
+       else if ((output[i].name[0] == 'J')&&(output[i].name[1] == 'P'))
         {
-         draw->Canvas.SetColor (70, 70, 70);
-         draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, (int) ((output[i].x2 - output[i].x1)*0.65), output[i].y2 - output[i].y1);
-         draw->Canvas.SetColor (220, 220, 0);
-         draw->Canvas.Circle (1, output[i].x1 + (int) ((output[i].x2 - output[i].x1)*0.80), output[i].y1 + ((output[i].y2 - output[i].y1) / 2), 3);
+         if (!jmp[output[i].name[3] - 0x31])
+          {
+           draw->Canvas.SetColor (70, 70, 70);
+           draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, (int) ((output[i].x2 - output[i].x1)*0.65), output[i].y2 - output[i].y1);
+           draw->Canvas.SetColor (220, 220, 0);
+           draw->Canvas.Circle (1, output[i].x1 + (int) ((output[i].x2 - output[i].x1)*0.80), output[i].y1 + ((output[i].y2 - output[i].y1) / 2), 3);
+          }
+         else
+          {
+           draw->Canvas.SetColor (70, 70, 70);
+           draw->Canvas.Rectangle (1, output[i].x1 + ((int) ((output[i].x2 - output[i].x1)*0.35)), output[i].y1, (int) ((output[i].x2 - output[i].x1)*0.65), output[i].y2 - output[i].y1);
+           draw->Canvas.SetColor (220, 220, 0);
+           draw->Canvas.Circle (1, output[i].x1 + (int) ((output[i].x2 - output[i].x1)*0.20), output[i].y1 + ((output[i].y2 - output[i].y1) / 2), 3);
+          }
         }
        else
         {
-         draw->Canvas.SetColor (70, 70, 70);
-         draw->Canvas.Rectangle (1, output[i].x1 + ((int) ((output[i].x2 - output[i].x1)*0.35)), output[i].y1, (int) ((output[i].x2 - output[i].x1)*0.65), output[i].y2 - output[i].y1);
-         draw->Canvas.SetColor (220, 220, 0);
-         draw->Canvas.Circle (1, output[i].x1 + (int) ((output[i].x2 - output[i].x1)*0.20), output[i].y1 + ((output[i].y2 - output[i].y1) / 2), 3);
+         draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
         }
       }
-     else
+     else //circle
       {
-       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       int led = 1;
+
+       draw->Canvas.SetFgColor (55, 0, 0);
+
+
+       switch (output[i].id)
+        {
+        case O_RB0: draw->Canvas.SetBgColor (pic.pins[32].oavalue, 0, 0);
+         break;
+        case O_RB1: draw->Canvas.SetBgColor (pic.pins[33].oavalue, 0, 0);
+         break;
+        case O_RB2: draw->Canvas.SetBgColor (pic.pins[34].oavalue, 0, 0);
+         break;
+        case O_RB3: draw->Canvas.SetBgColor (pic.pins[35].oavalue, 0, 0);
+         break;
+        case O_LPWR: draw->Canvas.SetBgColor (0, 200 * Window1.Get_mcupwr () + 55, 0);
+         break;
+        case O_P1: led = 0;
+         draw->Canvas.SetBgColor (lm1[29], 0, 0);
+         break;
+        case O_P2: led = 0;
+         draw->Canvas.SetBgColor (lm2[29], 0, 0);
+         break;
+        case O_P3: led = 0;
+         draw->Canvas.SetBgColor (lm3[29], 0, 0);
+         break;
+        case O_P4: led = 0;
+         draw->Canvas.SetBgColor (lm4[29], 0, 0);
+         break;
+        }
+
+       if (led)
+        {
+         //draw a LED
+         color1 = draw->Canvas.GetBgColor ();
+         int r = color1.Red () - 120;
+         int g = color1.Green () - 120;
+         int b = color1.Blue () - 120;
+         if (r < 0)r = 0;
+         if (g < 0)g = 0;
+         if (b < 0)b = 0;
+         color2.Set (r, g, b);
+         draw->Canvas.SetBgColor (color2);
+         draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 1);
+         draw->Canvas.SetBgColor (color1);
+         draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 2);
+        }
+       else
+        {
+         draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
+        }
       }
     }
-   else //circle
-    {
-     int led = 1;
-
-     draw->Canvas.SetFgColor (55, 0, 0);
-
-
-     switch (output[i].id)
-      {
-      case O_RB0: draw->Canvas.SetBgColor (pic.pins[32].oavalue, 0, 0);
-       break;
-      case O_RB1: draw->Canvas.SetBgColor (pic.pins[33].oavalue, 0, 0);
-       break;
-      case O_RB2: draw->Canvas.SetBgColor (pic.pins[34].oavalue, 0, 0);
-       break;
-      case O_RB3: draw->Canvas.SetBgColor (pic.pins[35].oavalue, 0, 0);
-       break;
-      case O_LPWR: draw->Canvas.SetBgColor (0, 200 * Window1.Get_mcupwr () + 55, 0);
-       break;
-      case O_P1: led = 0;
-       draw->Canvas.SetBgColor (lm1[29], 0, 0);
-       break;
-      case O_P2: led = 0;
-       draw->Canvas.SetBgColor (lm2[29], 0, 0);
-       break;
-      case O_P3: led = 0;
-       draw->Canvas.SetBgColor (lm3[29], 0, 0);
-       break;
-      case O_P4: led = 0;
-       draw->Canvas.SetBgColor (lm4[29], 0, 0);
-       break;
-      }
-
-     if (led)
-      {
-       //draw a LED
-       color1 = draw->Canvas.GetBgColor ();
-       int r = color1.Red () - 120;
-       int g = color1.Green () - 120;
-       int b = color1.Blue () - 120;
-       if (r < 0)r = 0;
-       if (g < 0)g = 0;
-       if (b < 0)b = 0;
-       color2.Set (r, g, b);
-       draw->Canvas.SetBgColor (color2);
-       draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 1);
-       draw->Canvas.SetBgColor (color1);
-       draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 2);
-      }
-     else
-      {
-       draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
-      }
-    }
-
   }
  //end draw
 
- draw->Canvas.End ();
- draw->Update ();
-
+ if (update)
+  {
+   draw->Canvas.End ();
+   draw->Update ();
+  }
 
 
  if ((((pic.pins[6].oavalue - 55) / 2) > 40) && Window1.Get_mcupwr ())
@@ -571,18 +613,26 @@ cboard_McLab2::Draw(CDraw *draw)
    sound_on = 0;
   }
 
- //Ventilador
+ //Cooler
  gauge1->SetValue ((pic.pins[15].oavalue - 55) / 2);
- //Aquecedor
+ if (gauge1->GetValue () > 20) vtc++;
+ if (vtc > (4 - 0.04 * gauge1->GetValue ()))
+  {
+   vtc = 0;
+   vt ^= 1;
+   output_ids[O_VT]->update = 1;
+  }
+
+ //Heater
  gauge2->SetValue ((pic.pins[16].oavalue - 55) / 2);
 
- //sensor ventilador)
+ //thacometer
  rpmstp = ((float) Window1.GetNSTEPJ ()) / (0.7196 * (pic.pins[15].oavalue - 54));
 
- //tensão p2
+ //potentiometer
  vp2in = (5.0 * pot1 / 199);
 
- //temperatura 
+ //temp
  ref = (0.25 * (pic.pins[16].oavalue - 55))-(0.25 * (pic.pins[15].oavalue - 55));
 
  if (ref < 0)
@@ -766,6 +816,53 @@ cboard_McLab2::Run_CPU(void)
   }
 
  if (use_spare)Window5.PostProcess ();
+
+ if (lcd.update) output_ids[O_LCD]->update = 1;
+
+ //verifiy if LEDS need update 
+ for (i = 0; i < 4; i++)
+  {
+   //PORTB LEDS
+   if (output_ids[O_RB0 + i]->value != pic.pins[32 + i].oavalue)
+    {
+     output_ids[O_RB0 + i]->value = pic.pins[32 + i].oavalue;
+     output_ids[O_RB0 + i]->update = 1;
+    }
+  }
+
+ for (i = 0; i < 8; i++)
+  {
+
+   if (i < 4)
+    {
+     j = i;
+    }
+   else
+    {
+     j = i + 4;
+    }
+   //7s DISP
+   if (output_ids[O_A1 + i]->value != lm1[18 + j])
+    {
+     output_ids[O_A1 + i]->value = lm1[18 + j];
+     output_ids[O_SS1]->update = 1;
+    }
+   if (output_ids[O_A2 + i]->value != lm2[18 + j])
+    {
+     output_ids[O_A2 + i]->value = lm2[18 + j];
+     output_ids[O_SS2]->update = 1;
+    }
+   if (output_ids[O_A3 + i]->value != lm3[18 + j])
+    {
+     output_ids[O_A3 + i]->value = lm3[18 + j];
+     output_ids[O_SS3]->update = 1;
+    }
+   if (output_ids[O_A4 + i]->value != lm4[18 + j])
+    {
+     output_ids[O_A4 + i]->value = lm4[18 + j];
+     output_ids[O_SS4]->update = 1;
+    }
+  }
 }
 
 void
@@ -977,31 +1074,37 @@ cboard_McLab2::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       case I_JP1:
        {
         jmp[0] ^= 0x01;
+        output_ids[O_JP1]->update = 1;
        }
        break;
       case I_JP2:
        {
         jmp[1] ^= 0x01;
+        output_ids[O_JP2]->update = 1;
        }
        break;
       case I_JP3:
        {
         jmp[2] ^= 0x01;
+        output_ids[O_JP3]->update = 1;
        }
        break;
       case I_JP4:
        {
         jmp[3] ^= 0x01;
+        output_ids[O_JP4]->update = 1;
        }
        break;
       case I_JP5:
        {
         jmp[4] ^= 0x01;
+        output_ids[O_JP5]->update = 1;
        }
        break;
       case I_JP6:
        {
         jmp[5] ^= 0x01;
+        output_ids[O_JP6]->update = 1;
        }
        break;
 
@@ -1030,8 +1133,8 @@ cboard_McLab2::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           Window1.statusbar1.SetField (0, lxT ("Running..."));
          }
        }
+       output_ids[O_LPWR]->update = 1;
        break;
-
       case I_RST:
        {
         if (Window1.Get_mcupwr () && pic_reset (-1))
@@ -1040,34 +1143,39 @@ cboard_McLab2::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           Window1.Set_mcurst (1);
          }
         p_RST = 0;
+        output_ids[O_RST]->update = 1;
        }
        break;
-
 
       case I_RB0:
        {
         p_BT[0] = 0;
+        output_ids[O_BRB0]->update = 1;
        }
        break;
       case I_RB1:
        {
         p_BT[1] = 0;
+        output_ids[O_BRB1]->update = 1;
        }
        break;
       case I_RB2:
        {
         p_BT[2] = 0;
+        output_ids[O_BRB2]->update = 1;
        }
        break;
       case I_RB3:
        {
         p_BT[3] = 0;
+        output_ids[O_BRB3]->update = 1;
        }
        break;
       case I_POT1:
        {
         active = 1;
         pot1 = CalcAngle (i, x, y);
+        output_ids[O_POT1]->update = 1;
        }
        break;
       case I_VIEW:
@@ -1118,8 +1226,6 @@ cboard_McLab2::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       }
     }
   }
-
-
 }
 
 void
@@ -1137,6 +1243,7 @@ cboard_McLab2::EvMouseMove(uint button, uint x, uint y, uint state)
        if (active)
         {
          pot1 = CalcAngle (i, x, y);
+         output_ids[O_POT1]->update = 1;
         }
       }
      break;
@@ -1168,32 +1275,38 @@ cboard_McLab2::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
            }
          }
         p_RST = 1;
+        output_ids[O_RST]->update = 1;
        }
        break;
 
       case I_RB0:
        {
         p_BT[0] = 1;
+        output_ids[O_BRB0]->update = 1;
        }
        break;
       case I_RB1:
        {
         p_BT[1] = 1;
+        output_ids[O_BRB1]->update = 1;
        }
        break;
       case I_RB2:
        {
         p_BT[2] = 1;
+        output_ids[O_BRB2]->update = 1;
        }
        break;
       case I_RB3:
        {
         p_BT[3] = 1;
+        output_ids[O_BRB3]->update = 1;
        }
        break;
       case I_POT1:
        {
         active = 0;
+        output_ids[O_POT1]->update = 1;
        }
        break;
       }
@@ -1208,18 +1321,22 @@ cboard_McLab2::EvKeyPress(uint key, uint mask)
  if (key == '1')
   {
    p_BT[0] = 0;
+   output_ids[O_BRB0]->update = 1;
   }
  if (key == '2')
   {
    p_BT[1] = 0;
+   output_ids[O_BRB1]->update = 1;
   }
  if (key == '3')
   {
    p_BT[2] = 0;
+   output_ids[O_BRB2]->update = 1;
   }
  if (key == '4')
   {
    p_BT[3] = 0;
+   output_ids[O_BRB3]->update = 1;
   }
 }
 
@@ -1229,21 +1346,25 @@ cboard_McLab2::EvKeyRelease(uint key, uint mask)
  if (key == '1')
   {
    p_BT[0] = 1;
+   output_ids[O_BRB0]->update = 1;
   }
 
  if (key == '2')
   {
    p_BT[1] = 1;
+   output_ids[O_BRB1]->update = 1;
   }
 
  if (key == '3')
   {
    p_BT[2] = 1;
+   output_ids[O_BRB2]->update = 1;
   }
 
  if (key == '4')
   {
    p_BT[3] = 1;
+   output_ids[O_BRB3]->update = 1;
   }
 }
 
@@ -1251,6 +1372,7 @@ void
 cboard_McLab2::EvOnShow(void)
 {
  lcd.update = 1;
+ board::EvOnShow ();
 }
 
 unsigned short

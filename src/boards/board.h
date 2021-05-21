@@ -49,7 +49,8 @@ typedef struct {
     unsigned int cy; ///< center y position
     char name[10];   ///< region name
     unsigned short id; ///< region ID
-    void * status;
+    void * status; ///< rcontrol status
+    unsigned char * update; ///< output need draw update
 } input_t;
 
 /**
@@ -66,7 +67,10 @@ typedef struct {
     unsigned int r;
     char name[10]; ///< region name
     unsigned short id; ///<  region ID
-    void * status;
+    void * status; ///< rcontrol status
+    unsigned char update; ///< need draw update
+    unsigned char value; ///< value 
+    float fvalue; ///< value 
 } output_t;
 
 /**
@@ -139,7 +143,7 @@ public:
     /**
      * @brief  Event on the board
      */
-    virtual void EvOnShow(void) = 0;
+    virtual void EvOnShow(void);
 
     /**
      * @brief  Called ever 1s to refresh status
@@ -496,6 +500,7 @@ protected:
     lxString Proc; ///< Name of processor in use
     input_t input[120]; ///< input map elements
     output_t output[120]; ///< output map elements 
+    output_t * output_ids[120]; ///< output map elements by id order
     int inputc; ///< input map elements counter 
     int outputc; ///< output map elements counter   
     int use_oscope; ///< use oscilloscope window
