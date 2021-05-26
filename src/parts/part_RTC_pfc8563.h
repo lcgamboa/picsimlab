@@ -51,7 +51,7 @@ class cpart_RTC_pfc8563:public part
       unsigned short get_out_id(char * name);
    private:
       unsigned char input_pins[4]; 
-      rtc_t rtc;
+      rtc_pfc8563_t rtc;
       lxFont font;
       lxFont font_p;      
 };

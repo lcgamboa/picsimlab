@@ -51,7 +51,7 @@ class cpart_RTC_ds1307:public part
       unsigned short get_out_id(char * name);
    private:
       unsigned char input_pins[3]; 
-      rtc2_t rtc2;
+      rtc_ds1307_t rtc2;
       lxFont font;
       lxFont font_p;      
 };

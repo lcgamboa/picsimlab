@@ -102,7 +102,7 @@ cboard_PQDB::cboard_PQDB(void)
  srLAT = 0;
 
  lcd_init (& lcd, 16, 2);
- rtc2_init (& rtc2);
+ rtc_ds1307_init (& rtc2);
  io_74xx595_init (&shiftReg);
  _srret = 0;
 
@@ -118,7 +118,7 @@ cboard_PQDB::~cboard_PQDB(void)
  buzzer.BeepStop ();
  buzzer.End ();
 
- rtc2_end (& rtc2);
+ rtc_ds1307_end (& rtc2);
 
 }
 
@@ -349,7 +349,7 @@ cboard_PQDB::Draw(CDraw * draw)
    draw -> Update ();
   }
 
- rtc2_update (& rtc2);
+ rtc_ds1307_update (& rtc2);
 
  if (((0.5 * (pic.pins[PWM_PIN].oavalue - 55)) > 10) && (Window1.Get_mcupwr ()))
   {
@@ -539,7 +539,7 @@ cboard_PQDB::Run_CPU(void)
       {
        sck = pins[SCL_PIN].value;
       }
-     pic_set_pin (SDA_PIN + 1, rtc2_io (& rtc2, sck, sda));
+     pic_set_pin (SDA_PIN + 1, rtc_ds1307_I2C_io (& rtc2, sck, sda));
 
 
      //74hc595 code
@@ -716,7 +716,7 @@ cboard_PQDB::Reset(void)
  pic_reset (1);
 
  lcd_rst (& lcd);
- rtc2_rst (& rtc2);
+ rtc_ds1307_rst (& rtc2);
  io_74xx595_rst (&shiftReg);
 
  p_KEY[0] = 0;

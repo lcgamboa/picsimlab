@@ -45,7 +45,7 @@ class cboard_PICGenios:public bsim_picsim
      lcd_t lcd;
 
      mi2c_t mi2c;
-     rtc2_t rtc2;
+     rtc_ds1307_t rtc2;
 
      int lcde;
 

@@ -64,8 +64,8 @@ font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
- rtc_init (&rtc);
- rtc_rst (&rtc);
+ rtc_pfc8563_init (&rtc);
+ rtc_pfc8563_rst (&rtc);
 
  input_pins[0] = 0;
  input_pins[1] = 0;
@@ -75,7 +75,7 @@ font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 
 cpart_RTC_pfc8563::~cpart_RTC_pfc8563(void)
 {
- rtc_end (&rtc);
+ rtc_pfc8563_end (&rtc);
  delete Bitmap;
  canvas.Destroy ();
 }
@@ -140,7 +140,7 @@ cpart_RTC_pfc8563::Draw(void)
    canvas.End ();
   }
 
- rtc_update (&rtc);
+ rtc_pfc8563_update (&rtc);
 }
 
 unsigned short
@@ -249,7 +249,7 @@ cpart_RTC_pfc8563::Process(void)
  const picpin * ppins = Window5.GetPinsValues ();
 
  if ((input_pins[1] > 0)&&(input_pins[2] > 0))
-  Window5.Set_i2c_bus (input_pins[1] - 1, rtc_io (&rtc, ppins[input_pins[2] - 1].value, ppins[input_pins[1] - 1].value));
+  Window5.Set_i2c_bus (input_pins[1] - 1, rtc_pfc8563_I2C_io (&rtc, ppins[input_pins[2] - 1].value, ppins[input_pins[1] - 1].value));
  if (input_pins[1] > 0)
   Window5.SetPin (input_pins[1], Window5.Get_i2c_bus (input_pins[1] - 1));
 

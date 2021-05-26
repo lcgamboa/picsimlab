@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -24,8 +24,8 @@
    ######################################################################## */
 
 
-#ifndef BITBAMG_UART
-#define BITBAMG_UART
+#ifndef BITBANG_UART
+#define BITBANG_UART
 
 #include <stdio.h>
 
@@ -62,5 +62,5 @@ unsigned char  bitbang_uart_recv(bitbang_uart_t *bu);
 
 unsigned char bitbang_uart_io(bitbang_uart_t *bu, unsigned char rx);
 
-#endif //BITBAMG_UART
+#endif //BITBANG_UART
 

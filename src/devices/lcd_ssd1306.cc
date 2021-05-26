@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -36,6 +36,9 @@ lcd_ssd1306_rst(lcd_ssd1306_t *lcd)
  for (i = 0; i < 128; i++)
   for (j = 0; j < 8; j++)
    lcd->ram[i][j] = 0xFF00;
+
+ bitbang_i2c_rst (&lcd->bb_i2c);
+
  lcd->bc = 0;
  lcd->aclk = -1;
  lcd->update = 1;
@@ -53,18 +56,13 @@ lcd_ssd1306_rst(lcd_ssd1306_t *lcd)
  lcd->pag_start = 0;
  lcd->pag_end = 7;
 
- //i2c
- lcd->sdao = -1; //0
- lcd->byte = 0xFF;
- lcd->ctrl = 0;
- lcd->ret = 0;
- lcd->addr = 0x78; //0x7A
 }
 
 void
 lcd_ssd1306_init(lcd_ssd1306_t *lcd)
 {
  lcd->hrst = 0;
+ bitbang_i2c_init (&lcd->bb_i2c, 0x3C);
  lcd_ssd1306_rst (lcd);
 }
 
@@ -429,102 +427,26 @@ lcd_ssd1306_SPI_io(lcd_ssd1306_t *lcd, unsigned char din, unsigned char clk, uns
 unsigned char
 lcd_ssd1306_I2C_io(lcd_ssd1306_t *lcd, unsigned char sda, unsigned char scl)
 {
+ unsigned char ret = bitbang_i2c_io (&lcd->bb_i2c, scl, sda);
 
- if ((lcd->sdao == sda)&&(lcd->aclk == scl))return lcd->ret;
-
- if ((lcd->sdao == 1)&&(sda == 0)&&(scl == 1)&&(lcd->aclk == 1)) //start
+ switch (bitbang_i2c_get_status (&lcd->bb_i2c))
   {
-   lcd->bc = 0;
-   lcd->byte = 0;
-   lcd->dat = 0;
-   lcd->ctrl = 0;
-   lcd->ret = 0;
-   dcprint ("lcd start!\n");
-  }
-
- if ((lcd->sdao == 0)&&(sda == 1)&&(scl == 1)&&(lcd->aclk == 1)) //stop
-  {
-   lcd->bc = 0xFF;
-   lcd->byte = 0xFF;
-   lcd->ctrl = 0;
-   lcd->ret = 0;
-   dcprint ("lcd stop!\n");
-  }
-
-
- if ((lcd->bc < 9)&&(lcd->aclk == 0)&&(scl == 1)) //data 
-  {
-
-   if (lcd->bc < 8)
+  case I2C_DATAW:
+   if (lcd->bb_i2c.byte == 2)
     {
-     lcd->dat |= (sda << (7 - lcd->bc));
+     lcd->dc = (lcd->bb_i2c.datar & 0x40) > 0;
+     dcprint ("lcd ctrl = %02X\n", lcd->bb_i2c.datar);
     }
-
-   //printf("byte=%i bc=%i\n",lcd->byte,lcd->bc);
-   lcd->bc++;
-  }
-
- if ((lcd->bc < 10)&&(lcd->aclk == 1)&&(scl == 0)&&(lcd->ctrl == 0x071)) //data 
-  {
-   if (lcd->bc < 8)
+   else 
     {
-     lcd->ret = 1; //((lcd->datas & (1 << (7 - lcd->bc))) > 0);
-     //dprintf("lcd send %i %i (%02X)\n",lcd->bit,lcd->ret,lcd->datas);  
-    }
-   else
-    {
-     lcd->ret = 0;
-    }
-  }
-
-
- if (lcd->bc == 9)
-  {
-   //dcprint ("lcd data %02X\n", lcd->dat);
-
-   if (lcd->byte == 0)
-    {
-     lcd->ctrl = lcd->dat;
-     dcprint ("lcd addr = %02X\n", lcd->ctrl);
-     lcd->ret = 0;
-    }
-   else if (lcd->byte == 1)
-    {
-     lcd->dc = (lcd->dat & 0x40) > 0;
-     dcprint ("lcd ctrl = %02X\n", lcd->dat);
-     lcd->ret = 0;
-    }
-   else if ((lcd->ctrl) == lcd->addr)
-    {
-
-     if ((lcd->ctrl & 0x01) == 0)
-      {
+       lcd->dat= lcd->bb_i2c.datar; 
        dcprint ("write lcd =%02X\n", lcd->dat);
-
-       lcd_ssd1306_process (lcd);
-
-       lcd->ret = 0;
-       //lcd->byte = 0;
-      }
+       lcd_ssd1306_process (lcd); 
     }
-   /*
-   else if ((lcd->ctrl) == (lcd->addr | 1)) //read
-    {
-
-     //lcd->datas = lcd->data;
-     dprint ("lcd read =%02X\n", lcd->datas);
-    }
-    */
-
-   lcd->bc = 0;
-   lcd->dat = 0;
-   lcd->byte++;
+   break;
   }
 
-
- lcd->sdao = sda;
- lcd->aclk = scl;
- return lcd->ret;
+ return ret;
 }
 
 void
@@ -532,8 +454,8 @@ lcd_ssd1306_draw(lcd_ssd1306_t *lcd, CCanvas * canvas, int x1, int y1, int w1, i
 {
  unsigned char x, y, z;
 
- lxColor front(0xb4, 0xff, 0xfc);
- lxColor back(0x0f, 0x0f, 0x17);
+ lxColor front (0xb4, 0xff, 0xfc);
+ lxColor back (0x0f, 0x0f, 0x17);
 
 
  lcd->update = 0;

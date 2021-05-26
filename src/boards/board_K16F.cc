@@ -80,7 +80,7 @@ font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 
  lcd_init (&lcd, 16, 2);
  mi2c_init (&mi2c, 512);
- rtc_init (&rtc);
+ rtc_pfc8563_init (&rtc);
  ReadMaps ();
 
  strncpy (fname, (char*) lxGetUserDataDir (lxT ("picsimlab")).char_str (), 1023);
@@ -107,7 +107,7 @@ font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 cboard_K16F::~cboard_K16F(void)
 {
  mi2c_end (&mi2c);
- rtc_end (&rtc);
+ rtc_pfc8563_end (&rtc);
  unlink (mi2c_tmp_name);
 }
 
@@ -250,7 +250,7 @@ cboard_K16F::Draw(CDraw *draw)
    draw->Update ();
   }
 
- rtc_update (&rtc);
+ rtc_pfc8563_update (&rtc);
 }
 
 void
@@ -440,7 +440,7 @@ cboard_K16F::Run_CPU(void)
      {
       sck = pins[1].value;
      }
-    pic_set_pin (3, mi2c_io (&mi2c, sck, sda) | rtc_io (&rtc, sck, sda));
+    pic_set_pin (3, mi2c_io (&mi2c, sck, sda) | rtc_pfc8563_I2C_io (&rtc, sck, sda));
    }
  //fim STEP
 
@@ -485,7 +485,7 @@ cboard_K16F::Reset(void)
 
  lcd_rst (&lcd);
  mi2c_rst (&mi2c);
- rtc_rst (&rtc);
+ rtc_pfc8563_rst (&rtc);
  pic_set_pin_DOV (18, 0);
  pic_set_pin_DOV (1, 0);
  pic_set_pin_DOV (15, 0);

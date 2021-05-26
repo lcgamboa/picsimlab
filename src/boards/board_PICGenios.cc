@@ -115,7 +115,7 @@ font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 
  lcd_init (&lcd, 16, 2);
  mi2c_init (&mi2c, 4);
- rtc2_init (&rtc2);
+ rtc_ds1307_init (&rtc2);
 
  ReadMaps ();
 
@@ -257,7 +257,7 @@ cboard_PICGenios::~cboard_PICGenios(void)
  lcdbmp[1] = NULL;
 
  mi2c_end (&mi2c);
- rtc2_end (&rtc2);
+ rtc_ds1307_end (&rtc2);
 
 
  Window1.DestroyChild (gauge1);
@@ -722,7 +722,7 @@ cboard_PICGenios::Draw(CDraw *draw)
    draw->Update ();
   }
 
- rtc2_update (&rtc2);
+ rtc_ds1307_update (&rtc2);
 
  //buzzer
  if ((((pic.pins[15].oavalue - 55) / 2) > 10)&&(Window1.Get_mcupwr ()) && jmp[0])
@@ -1016,7 +1016,7 @@ cboard_PICGenios::Run_CPU(void)
      {
       sck = pins[17].value;
      }
-    pic_set_pin (23, mi2c_io (&mi2c, sck, sda) | rtc2_io (&rtc2, sck, sda));
+    pic_set_pin (23, mi2c_io (&mi2c, sck, sda) | rtc_ds1307_I2C_io (&rtc2, sck, sda));
 
    }
 
@@ -1115,7 +1115,7 @@ cboard_PICGenios::Reset(void)
 
  lcd_rst (&lcd);
  mi2c_rst (&mi2c);
- rtc2_rst (&rtc2);
+ rtc_ds1307_rst (&rtc2);
 
  p_BT[0] = 1;
  p_BT[1] = 1;

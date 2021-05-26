@@ -64,8 +64,8 @@ font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  image.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
 
- rtc2_init (&rtc2);
- rtc2_rst (&rtc2);
+ rtc_ds1307_init (&rtc2);
+ rtc_ds1307_rst (&rtc2);
 
  input_pins[0] = 0;
  input_pins[1] = 0;
@@ -74,7 +74,7 @@ font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 
 cpart_RTC_ds1307::~cpart_RTC_ds1307(void)
 {
- rtc2_end (&rtc2);
+ rtc_ds1307_end (&rtc2);
  delete Bitmap;
  canvas.Destroy ();
 }
@@ -139,7 +139,7 @@ cpart_RTC_ds1307::Draw(void)
    canvas.End ();
   }
 
- rtc2_update (&rtc2);
+ rtc_ds1307_update (&rtc2);
 }
 
 unsigned short
@@ -239,7 +239,7 @@ cpart_RTC_ds1307::Process(void)
  const picpin * ppins = Window5.GetPinsValues ();
 
  if ((input_pins[0] > 0)&&(input_pins[1] > 0))
-  Window5.Set_i2c_bus (input_pins[0] - 1, rtc2_io (&rtc2, ppins[input_pins[1] - 1].value, ppins[input_pins[0] - 1].value));
+  Window5.Set_i2c_bus (input_pins[0] - 1, rtc_ds1307_I2C_io (&rtc2, ppins[input_pins[1] - 1].value, ppins[input_pins[0] - 1].value));
  if (input_pins[0] > 0)
   Window5.SetPin (input_pins[0], Window5.Get_i2c_bus (input_pins[0] - 1));
 

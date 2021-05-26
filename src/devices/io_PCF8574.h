@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,29 +23,12 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include<time.h>
+#include"bitbang_i2c.h"
 
-typedef struct
-{
-
-unsigned char  addr;
-    
-unsigned char  data;
-
-unsigned char datab;
-unsigned char datas;
-
-unsigned char ctrl;
-
-unsigned char sclo;
-unsigned char sdao;
-
-unsigned char ret;
-
-unsigned char bit;
-unsigned char byte;
-
-}io_PCF8574_t;
+typedef struct {
+    bitbang_i2c_t bb_i2c;
+    unsigned char data;
+} io_PCF8574_t;
 
 
 void io_PCF8574_rst(io_PCF8574_t *ioe8);
@@ -54,4 +37,4 @@ void io_PCF8574_end(io_PCF8574_t *ioe8);
 void io_PCF8574_set_addr(io_PCF8574_t *ioe8, unsigned char addr);
 
 
-unsigned char io_PCF8574_io(io_PCF8574_t *ioe8, unsigned char scl, unsigned char sda);
+unsigned char io_PCF8574_I2C_io(io_PCF8574_t *ioe8, unsigned char scl, unsigned char sda);

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,34 +23,23 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-typedef struct
-{
-unsigned int SIZE;
-unsigned char ADDRB;
+#include"bitbang_i2c.h"
 
-unsigned char *data;
-unsigned short addr;
+typedef struct {
+    bitbang_i2c_t bb_i2c;
 
-unsigned char datab;
-unsigned char datas;
+    unsigned int SIZE;
+    unsigned char ADDRB;
 
-unsigned char ctrl;
+    unsigned char *data;
+    unsigned short addr;
 
-unsigned char sclo;
-unsigned char sdao;
-
-unsigned char ret;
-
-unsigned char bit;
-unsigned char byte;
-
-unsigned char maddr;
-}mi2c_t;
+} mi2c_t;
 
 
 void mi2c_init_null(mi2c_t *mem);
 void mi2c_rst(mi2c_t *mem);
-void mi2c_init(mi2c_t *mem,int sizekbits);
+void mi2c_init(mi2c_t *mem, int sizekbits);
 void mi2c_end(mi2c_t *mem);
 void mi2c_set_addr(mi2c_t *mem, unsigned char addr);
 

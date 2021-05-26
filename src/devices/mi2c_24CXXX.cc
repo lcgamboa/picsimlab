@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -37,26 +37,16 @@ mi2c_set_addr(mi2c_t *mem, unsigned char addr)
 {
  if (mem->SIZE >= 4096)
   {
-   mem->maddr = addr << 1;
+   bitbang_i2c_set_addr (&mem->bb_i2c, addr);
   }
 }
 
 void
 mi2c_rst(mi2c_t *mem)
 {
+ bitbang_i2c_rst (&mem->bb_i2c);
 
- mem->sdao = 0;
- mem->sclo = 1;
- mem->bit = 0xFF;
- mem->byte = 0xFF;
- mem->datab = 0;
- mem->ctrl = 0;
- mem->ret = 0;
  dprintf ("mi2c rst\n");
-
- //for(i=0;i<100;i++)
- //printf("%02X ",mem->data[i]);
- //printf("\n");
 }
 
 void
@@ -81,8 +71,13 @@ mi2c_init(mi2c_t *mem, int sizekbits)
  mem->data = (unsigned char *) calloc (mem->SIZE, sizeof (unsigned char));
 
  memset (mem->data, 0xFF, mem->SIZE);
+
+ if (mem->ADDRB == 2)
+  bitbang_i2c_init (&mem->bb_i2c, 0x50);
+ else
+  bitbang_i2c_init (&mem->bb_i2c, 0x50, 0xF0);
+
  mi2c_rst (mem);
- mem->maddr = 0x50<<1;
 }
 
 void
@@ -97,133 +92,66 @@ mi2c_end(mi2c_t *mem)
 unsigned char
 mi2c_io(mi2c_t *mem, unsigned char scl, unsigned char sda)
 {
+ unsigned char ret = bitbang_i2c_io (&mem->bb_i2c, scl, sda);
 
- if ((mem->sdao == 1)&&(sda == 0)&&(scl == 1)&&(mem->sclo == 1)) //start
+ switch (bitbang_i2c_get_status (&mem->bb_i2c))
   {
-   mem->bit = 0;
-   mem->byte = 0;
-   mem->datab = 0;
-   mem->ctrl = 0;
-   mem->ret = 0;
-   dprintf ("---->mem start!\n");
-  }
-
- if ((mem->sdao == 0)&&(sda == 1)&&(scl == 1)&&(mem->sclo == 1)) //stop
-  {
-   mem->bit = 0xFF;
-   mem->byte = 0xFF;
-   mem->ctrl = 0;
-   mem->ret = 0;
-   dprintf ("---> mem stop!\n");
-  }
-
-
- if ((mem->bit < 9)&&(mem->sclo == 0)&&(scl == 1)) //data 
-  {
-
-   if (mem->bit < 8)
+  case I2C_ADDR:
+   if ((mem->bb_i2c.datar & 0x01) == 0x00)
     {
-     mem->datab |= (sda << (7 - mem->bit));
+     if (mem->ADDRB == 2)
+      mem->addr = 0;
+     else
+      {
+       mem->addr = ((mem->bb_i2c.datar & 0x0E) << 7);
+      }
     }
 
-   mem->bit++;
-  }
-
- if ((mem->bit < 9)&&(mem->sclo == 1)&&(scl == 0)&&(mem->ctrl == 0x0A1)) //data 
-  {
-   if (mem->bit < 8)
+   break;
+  case I2C_DATAW:
+   if (mem->ADDRB == 2)
     {
-     mem->ret = ((mem->datas & (1 << (7 - mem->bit))) > 0);
-     //dprintf("send %i %i (%02X)\n",mem->bit,mem->ret,mem->datas);  
+     if (mem->bb_i2c.byte == 2)
+      {
+       mem->addr |= (mem->bb_i2c.datar << 8);
+       dprintf ("----> mem add = %02X\n", mem->addr);
+      }
+     if (mem->bb_i2c.byte == 3)
+      {
+       mem->addr |= mem->bb_i2c.datar;
+       dprintf ("----> mem add = %02X\n", mem->addr);
+      }
     }
    else
     {
-     mem->ret = 0;
+     if (mem->bb_i2c.byte == 2)
+      {
+       mem->addr |= mem->bb_i2c.datar;
+       dprintf ("----> mem add = %02X\n", mem->addr);
+      }
     }
+
+   if (mem->bb_i2c.byte > mem->ADDRB + 1)
+    {
+     mem->data[mem->addr] = mem->bb_i2c.datar;
+     dprintf ("write mem[%04X]=%02X\n", mem->addr, mem->bb_i2c.datar);
+     mem->addr++;
+     if (mem->addr >= mem->SIZE)
+      {
+       mem->addr -= mem->SIZE;
+      }
+    }
+   break;
+  case I2C_DATAR:
+   bitbang_i2c_send (&mem->bb_i2c, mem->data[mem->addr]);
+   dprintf ("mi2c read[%04X]=%02X\n", mem->addr, mem->data[mem->addr]);
+   mem->addr++;
+   if (mem->addr >= mem->SIZE)
+    {
+     mem->addr -= mem->SIZE;
+    }
+   break;
   }
 
-
- if (mem->bit == 9)
-  {
-   dprintf ("mi2c data %02X\n", mem->datab);
-
-   if (mem->byte == 0)
-    {
-     if (mem->ADDRB == 2)
-      mem->ctrl = mem->datab;
-     else
-      mem->ctrl = mem->datab & 0xF1;
-
-     dprintf ("----> mem ctrl = %02X\n", mem->ctrl);
-     mem->ret = 0;
-
-     if ((mem->ctrl & 0x01) == 0x00)
-      {
-       if (mem->ADDRB == 2)
-        mem->addr = 0;
-       else
-        {
-         mem->addr = ((mem->datab & 0x0E) << 7);
-        }
-      }
-
-    }
-
-   if (mem->ctrl == mem->maddr)
-    {
-     if (mem->ADDRB == 2)
-      {
-       if (mem->byte == 1)
-        {
-         mem->addr |= (mem->datab << 8);
-         dprintf ("----> mem add = %02X\n", mem->addr);
-        }
-       if (mem->byte == 2)
-        {
-         mem->addr |= mem->datab;
-         dprintf ("----> mem add = %02X\n", mem->addr);
-        }
-      }
-     else
-      {
-       if (mem->byte == 1)
-        {
-         mem->addr |= mem->datab;
-         dprintf ("----> mem add = %02X\n", mem->addr);
-        };
-      }
-
-     if ((mem->byte > mem->ADDRB)&&((mem->ctrl & 0x01) == 0))
-      {
-       mem->data[mem->addr] = mem->datab;
-       dprintf ("write mem[%04X]=%02X\n", mem->addr, mem->datab);
-       mem->addr++;
-      }
-     mem->ret = 0;
-    }
-   else if (mem->ctrl == (mem->maddr | 1)) //read
-    {
-     if (mem->byte < mem->SIZE)
-      {
-       mem->datas = mem->data[mem->addr];
-       dprintf ("mi2c read[%04X]=%02X\n", mem->addr, mem->datas);
-       mem->addr++;
-      }
-     else
-      {
-       mem->ctrl = 0xFF;
-      }
-    }
-
-
-
-   mem->bit = 0;
-   mem->datab = 0;
-   mem->byte++;
-  }
-
-
- mem->sdao = sda;
- mem->sclo = scl;
- return mem->ret;
+ return ret;
 }

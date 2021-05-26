@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -24,38 +24,26 @@
    ######################################################################## */
 
 #include<time.h>
+#include"bitbang_i2c.h"
 
-typedef struct
-{
+typedef struct {
+    bitbang_i2c_t bb_i2c;
 
-unsigned char *data;
-unsigned short addr;
-
-unsigned char datab;
-unsigned char datas;
-
-unsigned char ctrl;
-
-unsigned char sclo;
-unsigned char sdao;
-
-unsigned char ret;
-
-unsigned char bit;
-unsigned char byte;
-
-struct tm dtime;
-time_t systime;
-time_t rtctime;
-int ucont;
-}rtc2_t;
+    unsigned char data[64];
+    unsigned short addr;
+    
+    struct tm dtime;
+    time_t systime;
+    time_t rtctime;
+    int ucont;
+} rtc_ds1307_t;
 
 
-void rtc2_rst(rtc2_t *rtc);
-void rtc2_init(rtc2_t *rtc);
-void rtc2_update(rtc2_t *rtc);
-void rtc2_end(rtc2_t *rtc);
-void rtc2_setUtime(rtc2_t *rtc, time_t utime);
-time_t rtc2_getUtime(rtc2_t *rtc);
+void rtc_ds1307_rst (rtc_ds1307_t *rtc);
+void rtc_ds1307_init (rtc_ds1307_t *rtc);
+void rtc_ds1307_update(rtc_ds1307_t *rtc);
+void rtc_ds1307_end(rtc_ds1307_t *rtc);
+void rtc_ds1307_setUtime(rtc_ds1307_t *rtc, time_t utime);
+time_t rtc_ds1307_getUtime(rtc_ds1307_t *rtc);
 
-unsigned char rtc2_io(rtc2_t *rtc, unsigned char scl, unsigned char sda);
+unsigned char rtc_ds1307_I2C_io(rtc_ds1307_t *rtc, unsigned char scl, unsigned char sda);

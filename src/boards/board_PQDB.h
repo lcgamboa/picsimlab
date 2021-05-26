@@ -144,7 +144,7 @@ private:
     lcd_t lcd;
     unsigned char d;
 
-    rtc2_t rtc2;
+    rtc_ds1307_t rtc2;
     unsigned char sda, sck;
 
     io_74xx595_t shiftReg;

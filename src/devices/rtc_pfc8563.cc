@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -34,43 +34,33 @@
 #define dprintf if (1) {} else printf
 
 void
-rtc_rst(rtc_t *rtc)
+rtc_pfc8563_rst(rtc_pfc8563_t *rtc)
 {
+ bitbang_i2c_rst (&rtc->bb_i2c);
 
- rtc->sdao = 0;
- rtc->sclo = 1;
- rtc->bit = 0xFF;
- rtc->byte = 0xFF;
- rtc->datab = 0;
- rtc->ctrl = 0;
- rtc->ret = 0;
+ rtc->addr = 0;
  rtc->ucont = 0;
  dprintf ("rtc rst\n");
-
- //for(i=0;i<16;i++)
- //printf("%02X ",rtc->data[i]);
- //printf("\n");
 }
 
 void
-rtc_init(rtc_t *rtc)
+rtc_pfc8563_init(rtc_pfc8563_t *rtc)
 {
  time_t utime;
  dprintf ("rtc init\n");
 
- rtc->data = (unsigned char *) calloc (16, sizeof (unsigned char));
+ bitbang_i2c_init (&rtc->bb_i2c, 0x51);
 
  memset (rtc->data, 0xFF, 16);
- rtc_rst (rtc);
-
+ rtc_pfc8563_rst (rtc);
 
  utime = time (NULL);
- rtc_setUtime (rtc, utime);
+ rtc_pfc8563_setUtime (rtc, utime);
 
 }
 
 void
-rtc_setUtime(rtc_t *rtc, time_t utime)
+rtc_pfc8563_setUtime(rtc_pfc8563_t *rtc, time_t utime)
 {
  rtc->systime = time (NULL);
  rtc->rtctime = utime;
@@ -92,7 +82,7 @@ rtc_setUtime(rtc_t *rtc, time_t utime)
 }
 
 time_t
-rtc_getUtime(rtc_t *rtc)
+rtc_pfc8563_getUtime(rtc_pfc8563_t *rtc)
 {
  return mktime (&rtc->dtime);
 }
@@ -101,7 +91,7 @@ static int rtcc = 0;
 static int alarm;
 
 void
-rtc_update(rtc_t *rtc)
+rtc_pfc8563_update(rtc_pfc8563_t *rtc)
 {
  rtcc++;
 
@@ -235,7 +225,7 @@ rtc_update(rtc_t *rtc)
 #endif    
      time_t now = time (NULL);
      int dsys = now - rtc->systime;
-     int drtc = rtc_getUtime (rtc) - rtc->rtctime;
+     int drtc = rtc_pfc8563_getUtime (rtc) - rtc->rtctime;
      int drift = dsys - drtc;
 #ifdef _DEBUG    
      printf ("sys=%i rtc=%i drift=%i\n", dsys, drtc, dsys - drtc);
@@ -246,9 +236,9 @@ rtc_update(rtc_t *rtc)
 #ifdef _DEBUG      
        printf ("resync ...\n");
 #endif      
-       rtc_setUtime (rtc, rtc_getUtime (rtc) + drift);
+       rtc_pfc8563_setUtime (rtc, rtc_pfc8563_getUtime (rtc) + drift);
        rtc->systime = now;
-       rtc->rtctime = rtc_getUtime (rtc);
+       rtc->rtctime = rtc_pfc8563_getUtime (rtc);
       }
 
 
@@ -259,150 +249,82 @@ rtc_update(rtc_t *rtc)
 }
 
 void
-rtc_end(rtc_t *rtc)
+rtc_pfc8563_end(rtc_pfc8563_t *rtc)
 {
  dprintf ("rtc end\n");
- if (rtc->data)
-  free (rtc->data);
- rtc->data = NULL;
 }
 
 unsigned char
-rtc_io(rtc_t *rtc, unsigned char scl, unsigned char sda)
+rtc_pfc8563_I2C_io(rtc_pfc8563_t *rtc, unsigned char scl, unsigned char sda)
 {
 
- if ((rtc->sdao == 1)&&(sda == 0)&&(scl == 1)&&(rtc->sclo == 1)) //start
+ unsigned char ret = bitbang_i2c_io (&rtc->bb_i2c, scl, sda);
+
+ switch (bitbang_i2c_get_status (&rtc->bb_i2c))
   {
-   rtc->bit = 0;
-   rtc->byte = 0;
-   rtc->datab = 0;
-   rtc->ctrl = 0;
-   rtc->ret = 0;
-   dprintf ("rtc start!\n");
-  }
+  case I2C_DATAW:
 
- if ((rtc->sdao == 0)&&(sda == 1)&&(scl == 1)&&(rtc->sclo == 1)) //stop
-  {
-   rtc->bit = 0xFF;
-   rtc->byte = 0xFF;
-   rtc->ctrl = 0;
-   rtc->ret = 0;
-   dprintf ("rtc stop!\n");
-  }
-
-
- if ((rtc->bit < 9)&&(rtc->sclo == 0)&&(scl == 1)) //data 
-  {
-
-   if (rtc->bit < 8)
+   if (rtc->bb_i2c.byte == 2)
     {
-     rtc->datab |= (sda << (7 - rtc->bit));
-    }
-
-   rtc->bit++;
-  }
-
- if ((rtc->bit < 9)&&(rtc->sclo == 1)&&(scl == 0)&&(rtc->ctrl == 0x0A3)) //data 
-  {
-   if (rtc->bit < 8)
-    {
-     rtc->ret = ((rtc->datas & (1 << (7 - rtc->bit))) > 0);
-     //dprintf ("send %i %i (%02X)\n", rtc->bit, rtc->ret, rtc->datas);
+     rtc->addr = rtc->bb_i2c.datar;
     }
    else
     {
-     rtc->ret = 0;
+     dprintf ("write rtc[%04X]=%02X\n", rtc->addr, rtc->bb_i2c.datar);
+     rtc->data[rtc->addr] = rtc->bb_i2c.datar;
+
+     switch (rtc->addr)
+      {
+      case 2:
+       rtc->dtime.tm_sec = (((rtc->bb_i2c.datar & 0xF0) >> 4)*10)+(rtc->bb_i2c.datar & 0x0F);
+       break;
+      case 3:
+       rtc->dtime.tm_min = (((rtc->bb_i2c.datar & 0xF0) >> 4)*10)+(rtc->bb_i2c.datar & 0x0F);
+       break;
+      case 4:
+       rtc->dtime.tm_hour = (((rtc->bb_i2c.datar & 0xF0) >> 4)*10)+(rtc->bb_i2c.datar & 0x0F);
+       break;
+      case 5:
+       rtc->dtime.tm_mday = (((rtc->bb_i2c.datar & 0xF0) >> 4)*10)+(rtc->bb_i2c.datar & 0x0F);
+       break;
+      case 6:
+       rtc->dtime.tm_wday = (((rtc->bb_i2c.datar & 0xF0) >> 4)*10)+(rtc->bb_i2c.datar & 0x0F);
+       break;
+      case 7:
+       rtc->dtime.tm_mon = (((rtc->bb_i2c.datar & 0xF0) >> 4)*10)+(rtc->bb_i2c.datar & 0x0F);
+       break;
+      case 8:
+       rtc->dtime.tm_year = (rtc->dtime.tm_year & 0xFF00) | ((((rtc->bb_i2c.datar & 0xF0) >> 4)*10)+(rtc->bb_i2c.datar & 0x0F));
+       break;
+      default:
+       break;
+      }
+
+     rtc->addr++;
+     if (rtc->addr > 15)
+      {
+       rtc->addr -= 16;
+      }
+
+     rtc->systime = time (NULL);
+     rtc->rtctime = rtc_pfc8563_getUtime (rtc);
+     rtc->ucont = 0;
     }
+
+   break;
+  case I2C_DATAR:
+   bitbang_i2c_send (&rtc->bb_i2c, rtc->data[rtc->addr]);
+   dprintf ("rtc read[%04X]=%02X\n", rtc->addr, rtc->data[rtc->addr]);
+   rtc->addr++;
+   if (rtc->addr > 15)
+    {
+     rtc->addr -= 16;
+    }
+   break;
   }
 
+ return ret;
 
- if (rtc->bit == 9)
-  {
-   dprintf ("rtc data %02X\n", rtc->datab);
-
-   if (rtc->byte == 0)
-    {
-     rtc->ctrl = rtc->datab;
-     dprintf ("rtc ctrl = %02X\n", rtc->ctrl);
-     rtc->ret = 0;
-
-     if ((rtc->ctrl & 0x01) == 0x00)
-      {
-       rtc->addr = ((rtc->ctrl & 0x0E) << 7);
-      }
-
-    }
-
-   if ((rtc->ctrl) == 0xA2)
-    {
-     if (rtc->byte == 1)rtc->addr = rtc->datab;
-
-     if (((rtc->byte > 1)&&(rtc->ctrl & 0x01) == 0))
-      {
-       dprintf ("write rtc[%04X]=%02X\n", rtc->addr, rtc->datab);
-       rtc->data[rtc->addr] = rtc->datab;
-
-       switch (rtc->addr)
-        {
-        case 2:
-         rtc->dtime.tm_sec = (((rtc->datab & 0xF0) >> 4)*10)+(rtc->datab & 0x0F);
-         break;
-        case 3:
-         rtc->dtime.tm_min = (((rtc->datab & 0xF0) >> 4)*10)+(rtc->datab & 0x0F);
-         break;
-        case 4:
-         rtc->dtime.tm_hour = (((rtc->datab & 0xF0) >> 4)*10)+(rtc->datab & 0x0F);
-         break;
-        case 5:
-         rtc->dtime.tm_mday = (((rtc->datab & 0xF0) >> 4)*10)+(rtc->datab & 0x0F);
-         break;
-        case 6:
-         rtc->dtime.tm_wday = (((rtc->datab & 0xF0) >> 4)*10)+(rtc->datab & 0x0F);
-         break;
-        case 7:
-         rtc->dtime.tm_mon = (((rtc->datab & 0xF0) >> 4)*10)+(rtc->datab & 0x0F);
-         break;
-        case 8:
-         rtc->dtime.tm_year = (rtc->dtime.tm_year & 0xFF00) | ((((rtc->datab & 0xF0) >> 4)*10)+(rtc->datab & 0x0F));
-         break;
-        default:
-         break;
-        }
-
-       rtc->addr++;
-       rtc->ret = 0;
-
-       rtc->systime = time (NULL);
-       rtc->rtctime = rtc_getUtime (rtc);
-       rtc->ucont = 0;
-      }
-    }
-   else if ((rtc->ctrl) == 0xA3) //read
-    {
-     if (rtc->byte < 16)
-      {
-       rtc->datas = rtc->data[rtc->addr];
-       dprintf ("rtc read[%04X]=%02X\n", rtc->addr, rtc->datas);
-       rtc->addr++;
-      }
-     else
-      {
-       rtc->ctrl = 0xFF;
-      }
-    }
-
-
-
-
-   rtc->bit = 0;
-   rtc->datab = 0;
-   rtc->byte++;
-  }
-
-
- rtc->sdao = sda;
- rtc->sclo = scl;
- return rtc->ret;
 }
 
 //TODO int output and countdown timer

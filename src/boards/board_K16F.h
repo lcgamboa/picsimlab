@@ -49,7 +49,7 @@ class cboard_K16F:public bsim_picsim
      lcd_t lcd;
 
      mi2c_t mi2c;
-     rtc_t rtc;
+     rtc_pfc8563_t rtc;
      
      int lcde;
 

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -24,39 +24,27 @@
    ######################################################################## */
 
 #include<time.h>
+#include"bitbang_i2c.h"
 
-typedef struct
-{
+typedef struct {
+    bitbang_i2c_t bb_i2c;
 
-unsigned char *data;
-unsigned short addr;
+    unsigned char data[16];
+    unsigned short addr;
 
-unsigned char datab;
-unsigned char datas;
-
-unsigned char ctrl;
-
-unsigned char sclo;
-unsigned char sdao;
-
-unsigned char ret;
-
-unsigned char bit;
-unsigned char byte;
-
-struct tm dtime;
-time_t systime;
-time_t rtctime;
-int ucont;
-}rtc_t;
+    struct tm dtime;
+    time_t systime;
+    time_t rtctime;
+    int ucont;
+} rtc_pfc8563_t;
 
 
-void rtc_rst(rtc_t *rtc);
-void rtc_init(rtc_t *rtc);
-void rtc_update(rtc_t *rtc);
-void rtc_end(rtc_t *rtc);
-void rtc_setUtime(rtc_t *rtc,time_t utime);
-time_t rtc_getUtime(rtc_t *rtc);
+void rtc_pfc8563_rst(rtc_pfc8563_t *rtc);
+void rtc_pfc8563_init(rtc_pfc8563_t *rtc);
+void rtc_pfc8563_update(rtc_pfc8563_t *rtc);
+void rtc_pfc8563_end(rtc_pfc8563_t *rtc);
+void rtc_pfc8563_setUtime(rtc_pfc8563_t *rtc, time_t utime);
+time_t rtc_pfc8563_getUtime(rtc_pfc8563_t *rtc);
 
 
-unsigned char rtc_io(rtc_t *rtc, unsigned char scl, unsigned char sda);
+unsigned char rtc_pfc8563_I2C_io(rtc_pfc8563_t *rtc, unsigned char scl, unsigned char sda);
