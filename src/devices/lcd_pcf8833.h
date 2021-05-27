@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 #define	LCD_PCF8833
     
 #include<lxrad.h>
+#include"bitbang_spi.h"
 
 /* pinout
   1 VCC
@@ -45,8 +46,8 @@
 typedef struct
 {
 unsigned int ram[132][132];
-unsigned char aclk;
-int bc,dc;
+bitbang_spi_t bb_spi;
+int dc;
 unsigned char colm;
 unsigned char madctl;
 unsigned char hrst;
@@ -65,7 +66,6 @@ unsigned char cmax;
 void lcd_pcf8833_rst(lcd_pcf8833_t *lcd);
 void lcd_pcf8833_init(lcd_pcf8833_t *lcd);
 void lcd_pcf8833_update(lcd_pcf8833_t *lcd);
-//void lcd_pcf8833_end(lcd_pcf8833_t *lcd);
 
 unsigned char lcd_pcf8833_io(lcd_pcf8833_t *lcd, unsigned char pdat, unsigned char clk, unsigned char ncs, unsigned char nrst);
 

@@ -38,9 +38,8 @@ lcd_ssd1306_rst(lcd_ssd1306_t *lcd)
    lcd->ram[i][j] = 0xFF00;
 
  bitbang_i2c_rst (&lcd->bb_i2c);
+ bitbang_spi_rst (&lcd->bb_spi);
 
- lcd->bc = 0;
- lcd->aclk = -1;
  lcd->update = 1;
  lcd->dat = 0;
  lcd->x = 0;
@@ -63,6 +62,7 @@ lcd_ssd1306_init(lcd_ssd1306_t *lcd)
 {
  lcd->hrst = 0;
  bitbang_i2c_init (&lcd->bb_i2c, 0x3C);
+ bitbang_spi_init (&lcd->bb_spi);
  lcd_ssd1306_rst (lcd);
 }
 
@@ -75,12 +75,10 @@ lcd_ssd1306_update(lcd_ssd1306_t *lcd)
   for (j = 0; j < 8; j++)
    lcd->ram[i][j] |= 0xFF00;
 }
-//void lcd_ssd1306_end(lcd_ssd1306_t *lcd){}
 
 static void
 lcd_ssd1306_process(lcd_ssd1306_t *lcd)
 {
-
 
  if (lcd->dc == 0)//command
   {
@@ -393,34 +391,18 @@ lcd_ssd1306_SPI_io(lcd_ssd1306_t *lcd, unsigned char din, unsigned char clk, uns
  else
   lcd->hrst = 0;
 
- //cs
- if (ncs == 1)
+
+ bitbang_spi_io (&lcd->bb_spi, clk, din, ncs);
+
+ switch (bitbang_spi_get_status (&lcd->bb_spi))
   {
-   //dprint ("No CS\n");
-   return 1;
+  case SPI_DATA:
+   lcd->dat = lcd->bb_spi.data;
+   lcd->dc = dc;
+   lcd_ssd1306_process (lcd);
+   break;
   }
 
-
- //transicao
- if ((lcd->aclk == 0)&&(clk == 1))
-  {
-
-   if (lcd->bc == 0)
-    {
-     lcd->dat = 0;
-    }
-   lcd->dat |= din << (7 - lcd->bc);
-   lcd->bc++;
-
-   if (lcd->bc >= 8)//8 bits received
-    {
-     lcd->bc = 0;
-     lcd->dc = dc;
-     lcd_ssd1306_process (lcd);
-    }
-  }
-
- lcd->aclk = clk;
  return 1;
 }
 
@@ -437,11 +419,11 @@ lcd_ssd1306_I2C_io(lcd_ssd1306_t *lcd, unsigned char sda, unsigned char scl)
      lcd->dc = (lcd->bb_i2c.datar & 0x40) > 0;
      dcprint ("lcd ctrl = %02X\n", lcd->bb_i2c.datar);
     }
-   else 
+   else
     {
-       lcd->dat= lcd->bb_i2c.datar; 
-       dcprint ("write lcd =%02X\n", lcd->dat);
-       lcd_ssd1306_process (lcd); 
+     lcd->dat = lcd->bb_i2c.datar;
+     dcprint ("write lcd =%02X\n", lcd->dat);
+     lcd_ssd1306_process (lcd);
     }
    break;
   }

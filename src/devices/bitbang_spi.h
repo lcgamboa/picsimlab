@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,43 +23,31 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+#ifndef BITBANG_SPI
+#define BITBANG_SPI
 
-#ifndef LCD_PCD8544
-#define LCD_PCD8544
+//operation status
+#define SPI_DATA 0x01
 
-#include<lxrad.h>
-#include"bitbang_spi.h"
-
-/* pinout
-  1 /RST
-  2 /CE
-  3 DC
-  4 DIN
-  5 CLK
-  6 VCC
-  7 BL
-  8 GND
- */
 
 typedef struct {
-    unsigned short int ram[84][6];
-    bitbang_spi_t bb_spi;
-    unsigned char hrst;
-    unsigned char dat;
-    unsigned char h, v, d, e, pd;
-    unsigned char x, y;
-    unsigned char update;
-} lcd_pcd8544_t;
+    unsigned char aclk;
+    unsigned short insr;
+    unsigned short outsr;
+    unsigned char bc;
+    unsigned short status;
+    unsigned char data;
+    unsigned char ret;
+    unsigned char lenght;
+} bitbang_spi_t;
 
 
-void lcd_pcd8544_rst(lcd_pcd8544_t *lcd);
-void lcd_pcd8544_init(lcd_pcd8544_t *lcd);
-void lcd_pcd8544_update(lcd_pcd8544_t *lcd);
+void bitbang_spi_init(bitbang_spi_t *spi, unsigned char lenght = 8);
+void bitbang_spi_rst(bitbang_spi_t *spi);
+unsigned char bitbang_spi_get_status(bitbang_spi_t *spi);
+void bitbang_spi_send(bitbang_spi_t *spi, unsigned char data);
 
-unsigned char lcd_pcd8544_io(lcd_pcd8544_t *lcd, unsigned char din, unsigned char clk, unsigned char ncs, unsigned char nrst, unsigned char dc);
+//periferic 
+unsigned char bitbang_spi_io(bitbang_spi_t *spi, unsigned char clk, unsigned char mosi,unsigned char cs);
 
-void lcd_pcd8544_draw(lcd_pcd8544_t *lcd, CCanvas * canvas, int x1, int y1, int w1, int h1, int picpwr);
-
-
-#endif //LCD_PCD8544
-
+#endif //BITBANG_SPI

@@ -28,6 +28,7 @@
 #define	LCD_ILI9341
     
 #include<lxrad.h>
+#include"bitbang_spi.h"
 
 /* pinout
   1 /RST
@@ -43,10 +44,9 @@
 typedef struct
 {
 unsigned long int ram[240][320];
-unsigned char pclk; //previous clk
 unsigned char pwr;  //previous wr
 unsigned char prd;  //previous rw
-int bc;
+bitbang_spi_t bb_spi;
 unsigned char hrst;
 unsigned char dat;
 unsigned char am;  //address mode
@@ -75,7 +75,6 @@ unsigned long color;
 void lcd_ili9341_rst(lcd_ili9341_t *lcd);
 void lcd_ili9341_init(lcd_ili9341_t *lcd);
 void lcd_ili9341_update(lcd_ili9341_t *lcd);
-//void lcd_pfc8833_end(lcd_pfc8833_t *lcd);
 
 unsigned char lcd_ili9341_SPI_io(lcd_ili9341_t *lcd, unsigned char din, unsigned char clk, unsigned char ncs, unsigned char nrst, unsigned char dc);
 unsigned short lcd_ili9341_8_io(lcd_ili9341_t *lcd, unsigned char dat, unsigned char wr, unsigned char rd, unsigned char ncs, unsigned char nrst, unsigned char dc);

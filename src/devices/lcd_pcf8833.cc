@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -84,369 +84,346 @@
 #define MY 0x80
 #define MX 0x40
 
-
 void
-lcd_pcf8833_rst (lcd_pcf8833_t *lcd)
+lcd_pcf8833_rst(lcd_pcf8833_t *lcd)
 {
-  int i, j;
-  for (i = 0; i < 132; i++)
-    for (j = 0; j < 132; j++)
-      lcd->ram[i][j] = 0xFF000000;
-  lcd->bc = 0;
-  lcd->aclk = 1;
-  lcd->tp = 0;
-  lcd->update = 1;
-  lcd->dat = 0;
+ int i, j;
+ for (i = 0; i < 132; i++)
+  for (j = 0; j < 132; j++)
+   lcd->ram[i][j] = 0xFF000000;
 
-  lcd->cmin = 0;
-  lcd->cmax = 131;
-  lcd->rmin = 0;
-  lcd->rmax = 131;
+ lcd->tp = 0;
+ lcd->update = 1;
+ lcd->dat = 0;
+
+ lcd->cmin = 0;
+ lcd->cmax = 131;
+ lcd->rmin = 0;
+ lcd->rmax = 131;
+ bitbang_spi_rst (&lcd->bb_spi);
 }
 
 void
-lcd_pcf8833_init (lcd_pcf8833_t *lcd)
+lcd_pcf8833_init(lcd_pcf8833_t *lcd)
 {
 
+ lcd->tp = 0;
+ lcd->update = 1;
+ lcd->hrst = 0;
+ lcd->dat = 0;
+ lcd->colm = 3;
 
-  lcd->bc = 0;
-  lcd->aclk = 1;
-  lcd->tp = 0;
-  lcd->update = 1;
-  lcd->hrst = 0;
-  lcd->dat = 0;
-  lcd->colm = 3;
+ lcd->cmin = 0;
+ lcd->cmax = 131;
+ lcd->rmin = 0;
+ lcd->rmax = 131;
 
-  lcd->cmin = 0;
-  lcd->cmax = 131;
-  lcd->rmin = 0;
-  lcd->rmax = 131;
+ bitbang_spi_init (&lcd->bb_spi, 9);
 }
 
 void
-lcd_pcf8833_update (lcd_pcf8833_t *lcd)
+lcd_pcf8833_update(lcd_pcf8833_t *lcd)
 {
-  lcd->update = 1;
+ lcd->update = 1;
 }
 //void lcd_pcf8833_end(lcd_pcf8833_t *lcd){}
 
 unsigned char
-lcd_pcf8833_io (lcd_pcf8833_t *lcd, unsigned char pdat, unsigned char clk, unsigned char ncs, unsigned char nrst)
+lcd_pcf8833_io(lcd_pcf8833_t *lcd, unsigned char pdat, unsigned char clk, unsigned char ncs, unsigned char nrst)
 {
 
 
-  //reset
-  if (nrst == 0)
+ //reset
+ if (nrst == 0)
+  {
+   if (!lcd->hrst)
     {
-      if (!lcd->hrst)
-        {
-          lcd_pcf8833_rst (lcd);
-          dprint ("Hard reset\n");
-          lcd->hrst = 1;
-        }
-      return 1;
+     lcd_pcf8833_rst (lcd);
+     dprint ("Hard reset\n");
+     lcd->hrst = 1;
     }
-  else
-    lcd->hrst = 0;
+   return 1;
+  }
+ else
+  lcd->hrst = 0;
 
-  //cs
-  if (ncs == 1)
+ bitbang_spi_io (&lcd->bb_spi, clk, pdat, ncs);
+
+ switch (bitbang_spi_get_status (&lcd->bb_spi))
+  {
+  case SPI_DATA:
+   
+   lcd->tp = (lcd->bb_spi.insr & 0x100)>>8;
+   lcd->dat = lcd->bb_spi.data;
+   
+   if (lcd->tp == 0)//command
     {
-      dprint ("No CS\n");
-      return 1;
+     lcd->command = lcd->dat;
+     dprint ("command:%#04X  ", lcd->command);
+     switch (lcd->command)
+      {
+      case NOP:
+       dprint ("NOP");
+       break;
+      case SWRESET: //Software Reset
+       lcd_pcf8833_rst (lcd);
+       dprint ("SWRESET");
+       break;
+      case BSTRON: //Booster ON
+       dprint ("BSTRON");
+       break;
+      case SLEEPOUT: //Sleep Out
+       dprint ("SLEEPOUT");
+       break;
+      case NORON: //Normal display mode
+       dprint ("NORON");
+       break;
+      case INVOFF: //Display inversion on
+       dprint ("INVOFF");
+       break;
+      case INVON: //Display inversion on
+       dprint ("INVON");
+       break;
+      case DISPON: //Display On
+       dprint ("DISPON");
+       break;
+      case DOR: //Data order
+       dprint ("DOR");
+       break;
+      case MADCTL: //Memory data access control (ARG)
+       dprint ("MADCTL");
+       lcd->dc = 0;
+       break;
+      case COLMOD: //Bit per Pixel (ARG)
+       dprint ("COLMOD");
+       lcd->dc = 0;
+       break;
+      case SETCON: //Set Constrast (ARG)
+       dprint ("SETCON");
+       break;
+      case CASET: //Column Adress Set (ARG,ARG)
+       lcd->dc = 0;
+       dprint ("CASET");
+       break;
+      case PASET: //Page Adress Set (ARG,ARG)
+       lcd->dc = 0;
+       dprint ("PASET");
+       break;
+      case 0x2D: //Define Color Table(20 bytes) 
+       dprint ("Command not implemented!!!!");
+       break;
+      case RAMWR: //Memory Write
+       lcd->x = lcd->cmin;
+       lcd->y = lcd->rmin;
+       lcd->dc = 0;
+       dprint ("RAWWR");
+       break;
+      default:
+       dprint ("Unknown command not implemented!!!!");
+       break;
+      }
+     dprint ("\n");
     }
-
-
-  //transicao
-  if ((lcd->aclk == 0)&&(clk == 1))
+   else //data
     {
-      if (lcd->bc == 0)
+     if (lcd->command != RAMWR)
+      {
+       dprint ("dat:%#04X\n", lcd->dat);
+      }
+     if (lcd->command == CASET)
+      {
+       switch (lcd->dc)
         {
-          if (pdat == 1)
-            lcd->tp = 1;
-          else
-            lcd->tp = 0;
-          lcd->dat = 0;
+        case 0:
+         lcd->cmin = lcd->dat;
+         lcd->dc++;
+         break;
+        case 1:
+         lcd->cmax = lcd->dat;
+         lcd->dc++;
+         break;
         }
-      else
+      }
+
+     if (lcd->command == PASET)
+      {
+       switch (lcd->dc)
         {
-          lcd->dat |= pdat << (8 - lcd->bc);
+        case 0:
+         lcd->rmin = lcd->dat;
+         lcd->dc++;
+         break;
+        case 1:
+         lcd->rmax = lcd->dat;
+         lcd->dc++;
+         break;
         }
-      lcd->bc++;
+      }
 
-      if (lcd->bc >= 9)//9 bits received
+     if (lcd->command == COLMOD)
+      {
+       switch (lcd->dc)
         {
-          lcd->bc = 0;
+        case 0:
+         lcd->colm = lcd->dat;
+         lcd->dc++;
+         break;
+        }
+      }
+     if (lcd->command == MADCTL)
+      {
+       switch (lcd->dc)
+        {
+        case 0:
+         lcd->madctl = lcd->dat;
+         lcd->dc++;
+         break;
+        }
+      }
 
-          if (lcd->tp == 0)//command
+     if (lcd->command == RAMWR)
+      {
+       switch (lcd->colm)
+        {
+        case 0x03:
+         switch (lcd->dc)
+          {
+          case 0:
+           lcd->r = ((lcd->dat & 0xF0) >> 4);
+           lcd->g = (lcd->dat & 0x0F);
+           lcd->dc++;
+           break;
+          case 1:
+           lcd->b = ((lcd->dat & 0xF0) >> 4);
+
+           lcd->color = 0xFF000000 | (lcd->r << 20) | (lcd->g << 12) | (lcd->b << 4);
+           if ((lcd->madctl & MX) && (lcd->madctl & MX))
+            lcd->ram[131 - lcd->x][131 - lcd->y] = lcd->color;
+           else if (lcd->madctl & MX)
+            lcd->ram[131 - lcd->x][lcd->y] = lcd->color;
+           else if (lcd->madctl & MY)
+            lcd->ram[lcd->x][131 - lcd->y] = lcd->color;
+           else
+            lcd->ram[lcd->x][lcd->y] = lcd->color;
+           lcd->update = 1;
+           lcd->x++;
+           if (lcd->x > lcd->cmax)
             {
-              lcd->command = lcd->dat;
-              dprint ("command:%#04X  ", lcd->command);
-              switch (lcd->command)
-                {
-                case NOP:
-                  dprint ("NOP");
-                  break;
-                case SWRESET: //Software Reset
-                  lcd_pcf8833_rst (lcd);
-                  dprint ("SWRESET");
-                  break;
-                case BSTRON: //Booster ON
-                  dprint ("BSTRON");
-                  break;
-                case SLEEPOUT: //Sleep Out
-                  dprint ("SLEEPOUT");
-                  break;
-                case NORON: //Normal display mode
-                  dprint ("NORON");
-                  break;
-                case INVOFF: //Display inversion on
-                  dprint ("INVOFF");
-                  break;
-                case INVON: //Display inversion on
-                  dprint ("INVON");
-                  break;
-                case DISPON: //Display On
-                  dprint ("DISPON");
-                  break;
-                case DOR: //Data order
-                  dprint ("DOR");
-                  break;
-                case MADCTL: //Memory data access control (ARG)
-                  dprint ("MADCTL");
-                  lcd->dc = 0;
-                  break;
-                case COLMOD: //Bit per Pixel (ARG)
-                  dprint ("COLMOD");
-                  lcd->dc = 0;
-                  break;
-                case SETCON: //Set Constrast (ARG)
-                  dprint ("SETCON");
-                  break;
-                case CASET: //Column Adress Set (ARG,ARG)
-                  lcd->dc = 0;
-                  dprint ("CASET");
-                  break;
-                case PASET: //Page Adress Set (ARG,ARG)
-                  lcd->dc = 0;
-                  dprint ("PASET");
-                  break;
-                case 0x2D: //Define Color Table(20 bytes) 
-                  dprint ("Command not implemented!!!!");
-                  break;
-                case RAMWR: //Memory Write
-                  lcd->x = lcd->cmin;
-                  lcd->y = lcd->rmin;
-                  lcd->dc = 0;
-                  dprint ("RAWWR");
-                  break;
-                default:
-                  dprint ("Unknown command not implemented!!!!");
-                  break;
-                }
-              dprint ("\n");
+             lcd->x = lcd->cmin;
+             lcd->y++;
+             if (lcd->y > lcd->rmax)
+              {
+               lcd->y = lcd->rmin;
+              }
             }
-          else //data
+           lcd->r = (lcd->dat & 0x0F);
+           lcd->dc++;
+           break;
+          default:
+           lcd->g = ((lcd->dat & 0xF0) >> 4);
+           lcd->b = (lcd->dat & 0x0F);
+
+           lcd->color = 0xFF000000 | (lcd->r << 20) | (lcd->g << 12) | (lcd->b << 4);
+           if ((lcd->madctl & MX) && (lcd->madctl & MX))
+            lcd->ram[131 - lcd->x][131 - lcd->y] = lcd->color;
+           else if (lcd->madctl & MX)
+            lcd->ram[131 - lcd->x][lcd->y] = lcd->color;
+           else if (lcd->madctl & MY)
+            lcd->ram[lcd->x][131 - lcd->y] = lcd->color;
+           else
+            lcd->ram[lcd->x][lcd->y] = lcd->color;
+           lcd->update = 1;
+           lcd->x++;
+           if (lcd->x > lcd->cmax)
             {
-              if (lcd->command != RAMWR)
-               {
-                dprint ("dat:%#04X\n", lcd->dat);
-               }
-              if (lcd->command == CASET)
-                {
-                  switch (lcd->dc)
-                    {
-                    case 0:
-                      lcd->cmin = lcd->dat;
-                      lcd->dc++;
-                      break;
-                    case 1:
-                      lcd->cmax = lcd->dat;
-                      lcd->dc++;
-                      break;
-                    }
-                }
-
-              if (lcd->command == PASET)
-                {
-                  switch (lcd->dc)
-                    {
-                    case 0:
-                      lcd->rmin = lcd->dat;
-                      lcd->dc++;
-                      break;
-                    case 1:
-                      lcd->rmax = lcd->dat;
-                      lcd->dc++;
-                      break;
-                    }
-                }
-
-              if (lcd->command == COLMOD)
-                {
-                  switch (lcd->dc)
-                    {
-                    case 0:
-                      lcd->colm = lcd->dat;
-                      lcd->dc++;
-                      break;
-                    }
-                }
-              if (lcd->command == MADCTL)
-                {
-                  switch (lcd->dc)
-                    {
-                    case 0:
-                      lcd->madctl = lcd->dat;
-                      lcd->dc++;
-                      break;
-                    }
-                }
-
-              if (lcd->command == RAMWR)
-                {
-                  switch (lcd->colm)
-                    {
-                    case 0x03:
-                      switch (lcd->dc)
-                        {
-                        case 0:
-                          lcd->r = ((lcd->dat & 0xF0) >> 4);
-                          lcd->g = (lcd->dat & 0x0F);
-                          lcd->dc++;
-                          break;
-                        case 1:
-                          lcd->b = ((lcd->dat & 0xF0) >> 4);
-
-                          lcd->color = 0xFF000000|(lcd->r << 20) | (lcd->g << 12) | (lcd->b<<4);
-                          if((lcd->madctl & MX) && (lcd->madctl & MX)) 
-                             lcd->ram[131-lcd->x][131-lcd->y] = lcd->color;
-                          else if(lcd->madctl & MX)
-                             lcd->ram[131-lcd->x][lcd->y] = lcd->color;
-                          else if(lcd->madctl & MY)
-                             lcd->ram[lcd->x][131-lcd->y] = lcd->color;
-                          else 
-                            lcd->ram[lcd->x][lcd->y] = lcd->color;                
-                          lcd->update = 1;
-                          lcd->x++;
-                          if (lcd->x > lcd->cmax)
-                            {
-                              lcd->x = lcd->cmin;
-                              lcd->y++;
-                              if (lcd->y > lcd->rmax)
-                                {
-                                  lcd->y = lcd->rmin;
-                                }
-                            }
-                          lcd->r = (lcd->dat & 0x0F);
-                          lcd->dc++;
-                          break;
-                        default:
-                          lcd->g = ((lcd->dat & 0xF0) >> 4);
-                          lcd->b = (lcd->dat & 0x0F);
-
-                          lcd->color = 0xFF000000|(lcd->r << 20) | (lcd->g << 12) | (lcd->b<<4);
-                               if((lcd->madctl & MX) && (lcd->madctl & MX)) 
-                             lcd->ram[131-lcd->x][131-lcd->y] = lcd->color;
-                          else if(lcd->madctl & MX)
-                             lcd->ram[131-lcd->x][lcd->y] = lcd->color;
-                          else if(lcd->madctl & MY)
-                             lcd->ram[lcd->x][131-lcd->y] = lcd->color;
-                          else 
-                            lcd->ram[lcd->x][lcd->y] = lcd->color;  
-                          lcd->update = 1;
-                          lcd->x++;
-                          if (lcd->x > lcd->cmax)
-                            {
-                              lcd->x = lcd->cmin;
-                              lcd->y++;
-                              if (lcd->y > lcd->rmax)
-                                {
-                                  lcd->y = lcd->rmin;
-                                }
-                            }
-                          lcd->dc = 0;
-                          break;
-                        }
-                      break;
-                    case 0x05:
-                        switch (lcd->dc)
-                        {
-                        case 0:
-                          lcd->r = ((lcd->dat & 0xF8) >> 3);
-                          lcd->g = (lcd->dat & 0x07)<<3;
-                          lcd->dc++;
-                          break;
-                        case 1:
-                          lcd->g = (lcd->g|((lcd->dat & 0xE0)>>5));
-                          lcd->b = (lcd->dat & 0x1F);
-
-                          lcd->color = 0xFF000000| (lcd->r << 19) | (lcd->g << 10) | (lcd->b<<3);
-                          
-                          if((lcd->madctl & MX) && (lcd->madctl & MX)) 
-                             lcd->ram[131-lcd->x][131-lcd->y] = lcd->color;
-                          else if(lcd->madctl & MX)
-                             lcd->ram[131-lcd->x][lcd->y] = lcd->color;
-                          else if(lcd->madctl & MY)
-                             lcd->ram[lcd->x][131-lcd->y] = lcd->color;
-                          else 
-                            lcd->ram[lcd->x][lcd->y] = lcd->color;   
-                          lcd->update = 1;
-                          lcd->x++;
-                          if (lcd->x > lcd->cmax)
-                            {
-                              lcd->x = lcd->cmin;
-                              lcd->y++;
-                              if (lcd->y > lcd->rmax)
-                                {
-                                  lcd->y = lcd->rmin;
-                                }
-                            }
-                          lcd->dc=0;
-                          break;
-                       }
-                      break;
-                    }
-                }
+             lcd->x = lcd->cmin;
+             lcd->y++;
+             if (lcd->y > lcd->rmax)
+              {
+               lcd->y = lcd->rmin;
+              }
             }
-        }
-    }
+           lcd->dc = 0;
+           break;
+          }
+         break;
+        case 0x05:
+         switch (lcd->dc)
+          {
+          case 0:
+           lcd->r = ((lcd->dat & 0xF8) >> 3);
+           lcd->g = (lcd->dat & 0x07) << 3;
+           lcd->dc++;
+           break;
+          case 1:
+           lcd->g = (lcd->g | ((lcd->dat & 0xE0) >> 5));
+           lcd->b = (lcd->dat & 0x1F);
 
-  lcd->aclk = clk;
-  return 1;
+           lcd->color = 0xFF000000 | (lcd->r << 19) | (lcd->g << 10) | (lcd->b << 3);
+
+           if ((lcd->madctl & MX) && (lcd->madctl & MX))
+            lcd->ram[131 - lcd->x][131 - lcd->y] = lcd->color;
+           else if (lcd->madctl & MX)
+            lcd->ram[131 - lcd->x][lcd->y] = lcd->color;
+           else if (lcd->madctl & MY)
+            lcd->ram[lcd->x][131 - lcd->y] = lcd->color;
+           else
+            lcd->ram[lcd->x][lcd->y] = lcd->color;
+           lcd->update = 1;
+           lcd->x++;
+           if (lcd->x > lcd->cmax)
+            {
+             lcd->x = lcd->cmin;
+             lcd->y++;
+             if (lcd->y > lcd->rmax)
+              {
+               lcd->y = lcd->rmin;
+              }
+            }
+           lcd->dc = 0;
+           break;
+          }
+         break;
+        }
+      }
+    }
+   break;
+  }
+
+ return 1;
 }
 
 void
-lcd_pcf8833_draw (lcd_pcf8833_t *lcd, CCanvas * canvas, int x1, int y1, int w1, int h1, int picpwr)
+lcd_pcf8833_draw(lcd_pcf8833_t *lcd, CCanvas * canvas, int x1, int y1, int w1, int h1, int picpwr)
 {
-  unsigned char x, y;
+ unsigned char x, y;
 
-  //canvas->Rectangle (1, x1, y1, w1, h1);//erase all
+ //canvas->Rectangle (1, x1, y1, w1, h1);//erase all
 
-  lcd->update = 0;
+ lcd->update = 0;
 
-  for (x = 0; x < 132; x++)
+ for (x = 0; x < 132; x++)
+  {
+   for (y = 0; y < 132; y++)
     {
-      for (y = 0; y < 132; y++)
-        {
-          
-         
-          if(lcd->ram[x][y] & 0xFF000000)
-          {
-            unsigned int color = lcd->ram[x][y];  
-            unsigned char r = ((color & 0x00FF0000)>>16);
-            unsigned char g = ((color & 0x0000FF00)>>8);
-            unsigned char b =  (color & 0x000000FF);
-            
-            lcd->ram[x][y]&=0x00FFFFFF;//clear draw
 
-            canvas->SetFgColor (r, g, b);
-            canvas->SetColor (r, g, b);
-          //canvas->Rectangle (1, x1+(x*2), y1+(y*2), 2,2 );
-            canvas->Point (x1 + x, y1 + y);
-          }
-        }
+
+     if (lcd->ram[x][y] & 0xFF000000)
+      {
+       unsigned int color = lcd->ram[x][y];
+       unsigned char r = ((color & 0x00FF0000) >> 16);
+       unsigned char g = ((color & 0x0000FF00) >> 8);
+       unsigned char b = (color & 0x000000FF);
+
+       lcd->ram[x][y] &= 0x00FFFFFF; //clear draw
+
+       canvas->SetFgColor (r, g, b);
+       canvas->SetColor (r, g, b);
+       //canvas->Rectangle (1, x1+(x*2), y1+(y*2), 2,2 );
+       canvas->Point (x1 + x, y1 + y);
+      }
     }
+  }
 
 }
 

@@ -36,8 +36,8 @@ lcd_ili9341_rst(lcd_ili9341_t *lcd)
  for (i = 0; i < 240; i++)
   for (j = 0; j < 320; j++)
    lcd->ram[i][j] = 0xFF000000;
- lcd->bc = 0;
- lcd->pclk = -1;
+
+ bitbang_spi_rst (&lcd->bb_spi);
  lcd->pwr = -1;
  lcd->prd = -1;
  lcd->update = 1;
@@ -64,6 +64,7 @@ void
 lcd_ili9341_init(lcd_ili9341_t *lcd)
 {
  lcd->hrst = 0;
+ bitbang_spi_init (&lcd->bb_spi);
  lcd_ili9341_rst (lcd);
 }
 
@@ -76,7 +77,6 @@ lcd_ili9341_update(lcd_ili9341_t *lcd)
   for (j = 0; j < 320; j++)
    lcd->ram[i][j] |= 0xFF000000;
 }
-//void lcd_ili9341_end(lcd_ili9341_t *lcd){}
 
 static void
 lcd_ili9341_readdata(lcd_ili9341_t *lcd)
@@ -593,34 +593,17 @@ lcd_ili9341_SPI_io(lcd_ili9341_t *lcd, unsigned char din, unsigned char clk, uns
  else
   lcd->hrst = 0;
 
- //cs
- if (ncs == 1)
+ bitbang_spi_io (&lcd->bb_spi, clk, din, ncs);
+
+ switch (bitbang_spi_get_status (&lcd->bb_spi))
   {
-   //dprint ("No CS\n");
-   return 1;
+  case SPI_DATA:
+   lcd->dat = lcd->bb_spi.data;
+   lcd->dc = dc;
+   lcd_ili9341_process (lcd);
+   break;
   }
 
-
- //transicao
- if ((lcd->pclk == 0)&&(clk == 1))
-  {
-
-   if (lcd->bc == 0)
-    {
-     lcd->dat = 0;
-    }
-   lcd->dat |= din << (7 - lcd->bc);
-   lcd->bc++;
-
-   if (lcd->bc >= 8)//8 bits received
-    {
-     lcd->bc = 0;
-     lcd->dc = dc;
-     lcd_ili9341_process (lcd);
-    }
-  }
-
- lcd->pclk = clk;
  return 1;
 }
 
@@ -651,8 +634,8 @@ lcd_ili9341_8_io(lcd_ili9341_t *lcd, unsigned char dat, unsigned char wr, unsign
    lcd->out &= ~0x0100;
    return 0;
   }
- 
-  if (!rd)
+
+ if (!rd)
   {
    lcd->out |= 0x0100;
   }

@@ -29,6 +29,7 @@
 
 #include<lxrad.h>
 #include"bitbang_i2c.h"
+#include"bitbang_spi.h"
 
 /* pinout
   1 /RST
@@ -43,8 +44,6 @@
 
 typedef struct {
     unsigned short int ram[128][8];
-    unsigned char aclk;
-    int bc;
     unsigned char hrst;
     unsigned char dat;
     unsigned char am; //address mode
@@ -61,7 +60,8 @@ typedef struct {
     unsigned char col_end;
     unsigned char pag_start;
     unsigned char pag_end;
-    //i2c
+    
+    bitbang_spi_t bb_spi;
     bitbang_i2c_t bb_i2c;
 } lcd_ssd1306_t;
 
@@ -69,7 +69,6 @@ typedef struct {
 void lcd_ssd1306_rst(lcd_ssd1306_t *lcd);
 void lcd_ssd1306_init(lcd_ssd1306_t *lcd);
 void lcd_ssd1306_update(lcd_ssd1306_t *lcd);
-//void lcd_pfc8833_end(lcd_pfc8833_t *lcd);
 
 unsigned char lcd_ssd1306_SPI_io(lcd_ssd1306_t *lcd, unsigned char din, unsigned char clk, unsigned char ncs, unsigned char nrst, unsigned char dc);
 unsigned char lcd_ssd1306_I2C_io(lcd_ssd1306_t *lcd, unsigned char sda, unsigned char scl);

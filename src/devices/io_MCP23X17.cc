@@ -258,8 +258,6 @@ io_MCP23X17_SPI_io(io_MCP23X17_t *mcp, unsigned char si, unsigned char sck, unsi
 
  mcp->asck = sck;
 
-
-
  return 0;
 }
 
