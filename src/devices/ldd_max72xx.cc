@@ -34,20 +34,18 @@ ldd_max72xx_rst(ldd_max72xx_t *ldd)
  int i;
  for (i = 0; i < 8; i++)
   ldd->ram[i] = 0;
- ldd->bc = 0;
- ldd->aclk = 1;
+ bitbang_spi_rst (&ldd->bb_spi);
  ldd->update = 1;
  ldd->dat = 0;
  ldd->dout = 0;
+ ldd->ancs = 0;
 }
 
 void
 ldd_max72xx_init(ldd_max72xx_t *ldd)
 {
- ldd->bc = 0;
- ldd->aclk = 1;
- ldd->update = 1;
- ldd->dat = 0;
+ bitbang_spi_init (&ldd->bb_spi, 16);
+ ldd_max72xx_rst (ldd);
 }
 
 void
@@ -102,38 +100,23 @@ ldd_max72xx_io(ldd_max72xx_t *ldd, unsigned char din, unsigned char clk, unsigne
     }
 
    ldd->update = 1;
-
-   ldd->bc = 0;
-   ldd->ancs = ncs;
-   return 1;
+   ldd->bb_spi.bit = 0;
+   ldd->bb_spi.byte = 0;
+   return 0;
   }
  ldd->ancs = ncs;
 
- //transicao
- if ((ldd->aclk == 0)&&(clk == 1))//rising edge
+ unsigned char ret = bitbang_spi_io (&ldd->bb_spi, clk, din, ncs);
+
+ switch (bitbang_spi_get_status (&ldd->bb_spi))
   {
-/*
-   if (ldd->bc == 0)
-    {
-     ldd->dat = 0;
-    }
- *       ldd->dat |= din << (15 - ldd->bc);
- */
-  
-   ldd->dout= (ldd->dat & 0x8000) > 0;
-   ldd->dat= (ldd->dat<<1) | din;
-   
-   ldd->bc++;
-
-   if (ldd->bc >= 16)//16 bits received
-    {
-     ldd->bc = 0;
-    }
-
+  case SPI_DATA:
+   ldd->dat = ldd->bb_spi.insr;
+   bitbang_spi_send(&ldd->bb_spi, ldd->bb_spi.insr >> 1);
+   break;
   }
 
- ldd->aclk = clk;
- return ldd->dout;
+ return ret;
 }
 
 void
@@ -159,7 +142,7 @@ ldd_max72xx_draw(ldd_max72xx_t *ldd, CCanvas * canvas, int x1, int y1, int w1, i
        break;
       case 180:
        a = x;
-       b = 7-y;
+       b = 7 - y;
        break;
       case 270:
        a = 7 - y;

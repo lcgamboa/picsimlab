@@ -242,7 +242,7 @@ part::ReadOutputMap(lxString fname)
    printf ("Error open output.map \"%s\"!\n", (const char *) fname.c_str ());
   }
 
-};
+}
 
 int
 part::PointInside(int x, int y)

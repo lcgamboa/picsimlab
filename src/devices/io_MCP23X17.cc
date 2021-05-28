@@ -149,20 +149,11 @@ io_MCP23X17_rst(io_MCP23X17_t *mcp)
  for (int i = 0; i < 22; i++)
   mcp->regs[i] = 0;
  mcp->reg_addr = 0;
- mcp->addr = 0x40;
 
- mcp->data = 0;
- mcp->bit = 0xFF;
- mcp->byte = 0xFF;
- mcp->asck = -1;
+ bitbang_i2c_rst (&mcp->bb_i2c);
+ bitbang_spi_rst (&mcp->bb_spi);
+
  mcp->op = 0;
-
- //i2c
- mcp->sdao = -1; //0
- mcp->datab = 0;
- mcp->ctrl = 0;
- mcp->ret = 0;
-
  dprintf ("mcp rst\n");
 }
 
@@ -170,6 +161,9 @@ void
 io_MCP23X17_init(io_MCP23X17_t *mcp)
 {
  dprintf ("mcp init\n");
+ mcp->addr = 0x40;
+ bitbang_i2c_init (&mcp->bb_i2c, mcp->addr >> 1);
+ bitbang_spi_init (&mcp->bb_spi);
  io_MCP23X17_rst (mcp);
 }
 
@@ -177,183 +171,101 @@ void
 io_MCP23X17_set_addr(io_MCP23X17_t *mcp, unsigned char addr)
 {
  mcp->addr = addr << 1;
+ bitbang_i2c_set_addr (&mcp->bb_i2c, addr);
 }
 
 unsigned char
 io_MCP23X17_SPI_io(io_MCP23X17_t *mcp, unsigned char si, unsigned char sck, unsigned char rst, unsigned char cs)
 {
-
- if (cs)
-  {
-   mcp->bit = 0;
-   mcp->byte = 0;
-   return 0;
-  }
-
  if (!rst)
   {
    io_MCP23X17_rst (mcp);
    return 0;
   }
 
+ unsigned char ret = bitbang_spi_io (&mcp->bb_spi, sck, si, cs);
 
- //transicao
- if ((mcp->asck == 0)&&(sck == 1))//rising edge
+ switch (bitbang_spi_get_status (&mcp->bb_spi))
   {
-   if (mcp->bit == 8) mcp->bit = 0;
+  case SPI_DATA:
 
-   if (mcp->bit < 8)
+   switch (mcp->bb_spi.byte)
     {
-     if (si)
+    case 1:
+     if ((mcp->bb_spi.data8 & 0xFE) == mcp->addr)
       {
-       mcp->data = (mcp->data << 1) | 1;
+       mcp->op = mcp->bb_spi.data8 & 0x01;
+       dprintf ("mcp addr 0x%02X OK\n", mcp->addr);
       }
      else
       {
-       mcp->data = (mcp->data << 1) & 0xFE;
-      }
-     mcp->bit++;
-    }
+       mcp->bb_spi.bit = 0x80;
 
-   if (mcp->bit == 8)
-    {
-     //dprintf ("-------mcp data 0x%02X  byte=%i\n", mcp->data,mcp->byte);
-     mcp->bit = 0;
-     switch (mcp->byte)
-      {
-      case 0:
-       if ((mcp->data & 0xFE) == mcp->addr)
-        {
-         mcp->op = mcp->data & 0x01;
-         mcp->byte++;
-         dprintf ("mcp addr 0x%02X OK\n", mcp->addr);
-        }
-       else
-        {
-         mcp->bit = 0xFF;
-         mcp->byte = 0xFF;
-         dprintf ("mcp addr 0x%02X ERROR\n", mcp->addr);
-        }
-       break;
-      case 1:
-       mcp->reg_addr = mcp->data;
-       mcp->byte++;
-       dprintf ("mcp reg addr 0x%02X\n", mcp->data);
-       break;
-      default:
-       if (mcp->op)
-        {
-         dprintf ("mcp data read [0x%02X] 0x%02X\n", mcp->reg_addr, mcp->data);
-         mcp->datas = read_reg (mcp);
-        }
-       else
-        {
-         dprintf ("mcp data write [0x%02X] 0x%02X\n", mcp->reg_addr, mcp->data);
-         write_reg (mcp, mcp->data);
-        }
-       break;
+       dprintf ("mcp addr 0x%02X ERROR\n", mcp->addr);
       }
+     break;
+    case 2:
+     mcp->reg_addr = mcp->bb_spi.data8;
+     dprintf ("mcp reg addr 0x%02X\n", mcp->bb_spi.data8);
+     break;
+    default:
+     if (mcp->op)
+      {
+       dprintf ("mcp data read [0x%02X] 0x%02X\n", mcp->reg_addr, mcp->bb_spi.data8);
+       bitbang_spi_send (&mcp->bb_spi, read_reg (mcp));
+      }
+     else
+      {
+       dprintf ("mcp data write [0x%02X] 0x%02X\n", mcp->reg_addr, mcp->bb_spi.data8);
+       write_reg (mcp, mcp->bb_spi.data8);
+      }
+     break;
     }
+   break;
   }
 
- mcp->asck = sck;
-
- return 0;
+ return ret;
 }
 
 unsigned char
 io_MCP23X17_I2C_io(io_MCP23X17_t *mcp, unsigned char scl, unsigned char sda)
 {
+/*
+ NOT tested !!!!
+ 
+ unsigned char ret = bitbang_i2c_io (&mcp->bb_i2c, scl, sda);
 
- if ((mcp->sdao == sda)&&(mcp->asck == scl))return mcp->ret;
-
- if ((mcp->sdao == 1)&&(sda == 0)&&(scl == 1)&&(mcp->asck == 1)) //start
+ switch (bitbang_i2c_get_status (&mcp->C))
   {
-   mcp->bit = 0;
-   mcp->byte = 0;
-   mcp->datab = 0;
-   mcp->ctrl = 0;
-   mcp->ret = 0;
-   dprintf ("mcp start!\n");
-  }
-
- if ((mcp->sdao == 0)&&(sda == 1)&&(scl == 1)&&(mcp->asck == 1)) //stop
-  {
-   mcp->bit = 0xFF;
-   mcp->byte = 0xFF;
-   mcp->ctrl = 0;
-   mcp->ret = 0;
-   dprintf ("mcp stop!\n");
-  }
-
-
- if ((mcp->bit < 9)&&(mcp->asck == 0)&&(scl == 1)) //data 
-  {
-
-   if (mcp->bit < 8)
+  case I2C_DATAW:
+   dprintf ("write mcp =%02X\n", mcp->bb_i2c.datar);
+    switch (mcp->bb_i2c.byte)
     {
-     mcp->datab |= (sda << (7 - mcp->bit));
-    }
-
-   mcp->bit++;
-  }
-
- if ((mcp->bit < 9)&&(mcp->asck == 1)&&(scl == 0)&&(mcp->ctrl == 0x071)) //data 
-  {
-   if (mcp->bit < 8)
-    {
-     mcp->ret = ((mcp->datas & (1 << (7 - mcp->bit))) > 0);
-     //dprintf("mcp send %i %i (%02X)\n",mcp->bit,mcp->ret,mcp->datas);  
-    }
-   else
-    {
-     mcp->ret = 0;
-    }
-  }
-
-
- if (mcp->bit == 9)
-  {
-   dprintf ("mcp data %02X\n", mcp->datab);
-
-   if (mcp->byte == 0)
-    {
-     mcp->ctrl = mcp->datab;
-     dprintf ("mcp ctrl = %02X\n", mcp->ctrl);
-     mcp->ret = 0;
-
-    }
-
-   if ((mcp->ctrl) == mcp->addr)
-    {
-
-     if (((mcp->byte > 0)&&(mcp->ctrl & 0x01) == 0))
+    case 1:
+     mcp->reg_addr = mcp->bb_i2c.datar;
+     dprintf ("mcp reg addr 0x%02X\n", mcp->bb_i2c.datar);
+     break;
+    default:
+     if (mcp->op)
       {
-       dprintf ("write mcp =%02X\n", mcp->datab);
-
-       mcp->data = mcp->datab;
-
-       mcp->ret = 0;
-
+       dprintf ("mcp data read [0x%02X] 0x%02X\n", mcp->reg_addr, mcp->bb_spi.data);
+       bitbang_spi_send (&mcp->bb_spi, read_reg (mcp));
       }
+     else
+      {
+       dprintf ("mcp data write [0x%02X] 0x%02X\n", mcp->reg_addr, mcp->bb_spi.data);
+       write_reg (mcp, mcp->bb_spi.data);
+      }
+     break;
     }
-   else if ((mcp->ctrl) == (mcp->addr | 1)) //read
-    {
-
-     mcp->datas = mcp->data;
-     dprintf ("mcp read =%02X\n", mcp->datas);
-    }
-
-
-
-
-   mcp->bit = 0;
-   mcp->datab = 0;
-   mcp->byte++;
+   break;
+  case I2C_DATAR:
+   bitbang_i2c_send (&mcp->bb_i2c, read_reg (mcp));
+   dprintf ("mcp read =%02X\n", mcp->bb_i2c.datas);
+   break;
   }
 
-
- mcp->sdao = sda;
- mcp->asck = scl;
- return mcp->ret;
+ return ret;
+ */
+ return 0;
 }

@@ -26,7 +26,9 @@
 
 #ifndef ETH_W5500
 #define	ETH_W5500
-    
+
+#include"bitbang_spi.h"
+
 //BSB
 #define B_COMMON 0x00 //00000 Selects Common Register.
 #define B_SCK0RG 0x01 //00001 Selects Socket 0 Register
@@ -201,12 +203,9 @@ typedef struct
 {
 unsigned char link;     
 unsigned char active;    
-unsigned char asclk;
-unsigned short insr;
-unsigned short outsr;
+bitbang_spi_t bb_spi;
 unsigned short addr;
 unsigned char control;
-unsigned int bc;
 unsigned char Common[0x40]; 
 unsigned char Socket[8][0x30]; 
 int sockfd[8];

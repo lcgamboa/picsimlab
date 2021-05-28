@@ -32,20 +32,22 @@
 
 typedef struct {
     unsigned char aclk;
-    unsigned short insr;
-    unsigned short outsr;
-    unsigned char bc;
+    unsigned int insr;
+    unsigned int outsr;
+    unsigned char bit;
+    unsigned int byte;
     unsigned short status;
-    unsigned char data;
+    unsigned char data8;
     unsigned char ret;
     unsigned char lenght;
+    unsigned int outbitmask;
 } bitbang_spi_t;
 
 
 void bitbang_spi_init(bitbang_spi_t *spi, unsigned char lenght = 8);
 void bitbang_spi_rst(bitbang_spi_t *spi);
 unsigned char bitbang_spi_get_status(bitbang_spi_t *spi);
-void bitbang_spi_send(bitbang_spi_t *spi, unsigned char data);
+void bitbang_spi_send(bitbang_spi_t *spi, unsigned int data);
 
 //periferic 
 unsigned char bitbang_spi_io(bitbang_spi_t *spi, unsigned char clk, unsigned char mosi,unsigned char cs);

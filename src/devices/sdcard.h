@@ -28,6 +28,7 @@
 #define SDCARD
 
 #include <stdio.h>
+#include"bitbang_spi.h"
 
 // SD card commands
 #define CMD0 0X00
@@ -60,13 +61,10 @@
 typedef struct {
     FILE * fd;
     unsigned char card_present;
-    unsigned char aclk;
-    unsigned short insr;
-    unsigned short outsr;
+    bitbang_spi_t bb_spi;
     unsigned long arg;
     unsigned char cmd;
     unsigned char crc;
-    unsigned int bc;
     unsigned short replyc;
     unsigned char reply[MAX_REPLY];
     unsigned char ap_cmd;

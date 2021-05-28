@@ -26,7 +26,9 @@
 
 #ifndef TSC_XPT2046
 #define	TSC_XPT2046
-    
+
+#include"bitbang_spi.h"
+
 typedef struct
 {
 unsigned int height;
@@ -34,14 +36,8 @@ unsigned int width;
 int x;
 int y;
 unsigned char cmd;
-unsigned char bit;
-unsigned char byte;
-unsigned char data;
-unsigned char pclk;
-
 unsigned char pint;
-unsigned short datas;
-
+bitbang_spi_t bb_spi;
 }tsc_XPT2046_t;
 
 

@@ -61,6 +61,10 @@ cpart_LCD_hd44780::InitGraphics(void)
  canvas.Destroy ();
  canvas.Create (Window5.GetWWidget (), Bitmap);
  image.Destroy ();
+ for (int i = 0; i < outputc; i++)
+  {
+   output[i].update = 1;
+  }
 }
 
 void
@@ -110,7 +114,7 @@ font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  input_pins[9] = 0;
  input_pins[10] = 0;
 
-};
+}
 
 cpart_LCD_hd44780::~cpart_LCD_hd44780(void)
 {

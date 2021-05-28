@@ -25,8 +25,10 @@
 
 
 #ifndef IO_MCP23X17
-#define	IO_MCP23X17
-    
+#define IO_MCP23X17
+
+#include"bitbang_i2c.h"
+#include"bitbang_spi.h"
 
 /*
  pinout
@@ -59,7 +61,7 @@
 26 GPA5
 27 GPA6
 28 GPA7
-*/
+ */
 
 //BANK 0 addr
 #define IODIRA    0x00
@@ -85,34 +87,22 @@
 #define OLATA     0x14
 #define OLATB     0x15
 
-typedef struct
-{
-unsigned char regs[22];
-unsigned char reg_addr;
-unsigned char addr;
-
-unsigned char op;
-unsigned char bit;
-unsigned char byte;
-unsigned char data;
-unsigned char asck;
-
-//i2c
-unsigned char datab;
-unsigned char datas;
-unsigned char ctrl;
-unsigned char sdao;
-unsigned char ret;
-
-}io_MCP23X17_t;
+typedef struct {
+    unsigned char regs[22];
+    unsigned char reg_addr;
+    unsigned char op;
+    unsigned char addr;
+    bitbang_spi_t bb_spi;
+    bitbang_i2c_t bb_i2c;
+} io_MCP23X17_t;
 
 
 void io_MCP23X17_rst(io_MCP23X17_t *mcp);
 void io_MCP23X17_init(io_MCP23X17_t *mcp);
 void io_MCP23X17_set_addr(io_MCP23X17_t *mcp, unsigned char addr);
 
-unsigned char  io_MCP23X17_SPI_io(io_MCP23X17_t *mcp, unsigned char si, unsigned char sck, unsigned char rst, unsigned char cs);
-unsigned char  io_MCP23X17_I2C_io(io_MCP23X17_t *mcp, unsigned char scl, unsigned char sda);
+unsigned char io_MCP23X17_SPI_io(io_MCP23X17_t *mcp, unsigned char si, unsigned char sck, unsigned char rst, unsigned char cs);
+unsigned char io_MCP23X17_I2C_io(io_MCP23X17_t *mcp, unsigned char scl, unsigned char sda);
 
 #endif //IO_MCP23X17
 

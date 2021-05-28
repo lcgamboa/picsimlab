@@ -44,10 +44,7 @@ tsc_XPT2046_rst(tsc_XPT2046_t *tsc_)
  tsc_->x = 0;
  tsc_->y = 0;
 
- tsc_->data = 0;
- tsc_->bit = 0xFF;
- tsc_->byte = 0xFF;
- tsc_->pclk = -1;
+ bitbang_spi_rst (&tsc_->bb_spi);
  tsc_->cmd = 0;
  tsc_->pint = 2;
 
@@ -60,6 +57,7 @@ tsc_XPT2046_init(tsc_XPT2046_t *tsc_, unsigned int w, unsigned int h)
  tsc_->width = w;
  tsc_->height = h;
  dprintf ("tsc_ init %i %i\n", w, h);
+ bitbang_spi_init (&tsc_->bb_spi);
  tsc_XPT2046_rst (tsc_);
 }
 
@@ -85,87 +83,58 @@ unsigned char
 tsc_XPT2046_SPI_io(tsc_XPT2046_t *tsc_, unsigned char clk, unsigned char din, unsigned char cs)
 {
 
- if (cs)
+ //restart
+ if ((din)&&(tsc_->bb_spi.byte))
   {
-   tsc_->bit = 0;
-   tsc_->byte = 0;
-   return (tsc_->pint);
+   tsc_->bb_spi.byte = 0;
+   tsc_->bb_spi.bit = 0;
   }
 
 
- //transicao
- if ((tsc_->pclk == 0)&&(clk == 1))//rising edge
+ bitbang_spi_io (&tsc_->bb_spi, clk, din, cs);
+
+ switch (bitbang_spi_get_status (&tsc_->bb_spi))
   {
-   if (tsc_->bit == 8) tsc_->bit = 0;
-
-   if (tsc_->bit < 8)
+  case SPI_DATA:
+   if (tsc_->bb_spi.data8 & BIT_S)
     {
-     if (din)
-      {
-       tsc_->data = (tsc_->data << 1) | 1;
+     tsc_->bb_spi.byte = 0;
+    }
 
-       if (tsc_->byte)
+   //dprintf ("-------tsc_ data 0x%02X  byte=%i\n", tsc_->data,tsc_->byte);
+
+   switch (tsc_->bb_spi.byte)
+    {
+    case 0:
+     if (tsc_->bb_spi.data8 & BIT_S)
+      {
+       tsc_->cmd = tsc_->bb_spi.data8;
+       dprintf ("tsc_ cmd 0x%02X OK\n", tsc_->cmd);
+       
+       switch ((tsc_->cmd & 0x70) >> 4)
         {
-         tsc_->byte = 0;
-         tsc_->bit = 0;
+        case 1: // Y -Position
+         tsc_->bb_spi.outsr = (tsc_->x * 4095) / tsc_->height;
+         break;
+        case 5: // X -Position
+         tsc_->bb_spi.outsr = (tsc_->y * 4095) / tsc_->width;
+         break;
+        default:
+         tsc_->bb_spi.outsr = 0;
+         break;
         }
       }
      else
       {
-       tsc_->data = (tsc_->data << 1) & 0xFE;
+       tsc_->bb_spi.bit = 0x80;
+       tsc_->bb_spi.byte = 0xFF;
+       dprintf ("tsc_ cmd 0x%02X ERROR\n", tsc_->cmd);
       }
-     tsc_->bit++;
-
-     tsc_->datas = tsc_->datas << 1;
+     break;
     }
 
-   if (tsc_->bit == 8)
-    {
-
-     if (tsc_->data & BIT_S)
-      {
-       tsc_->byte = 0;
-      }
-
-     //dprintf ("-------tsc_ data 0x%02X  byte=%i\n", tsc_->data,tsc_->byte);
-     tsc_->bit = 0;
-     switch (tsc_->byte)
-      {
-      case 0:
-       if (tsc_->data & BIT_S)
-        {
-         tsc_->cmd = tsc_->data;
-         tsc_->byte++;
-         dprintf ("tsc_ cmd 0x%02X OK\n", tsc_->cmd);
-
-         switch ((tsc_->cmd & 0x70) >> 4)
-          {
-          case 1: // Y -Position
-           tsc_->datas = (tsc_->x * 4095) / tsc_->height;
-           break;
-          case 5: // X -Position
-           tsc_->datas = (tsc_->y * 4095) / tsc_->width;
-           break;
-          default:
-           tsc_->datas = 0;
-           break;
-          }
-        }
-       else
-        {
-         tsc_->bit = 0xFF;
-         tsc_->byte = 0xFF;
-         dprintf ("tsc_ cmd 0x%02X ERROR\n", tsc_->cmd);
-        }
-       break;
-      default:
-       tsc_->byte++;
-       break;
-      }
-    }
+   break;
   }
 
- tsc_->pclk = clk;
-
- return ((tsc_->pint) | ((tsc_->datas & 0x1000) > 0));
+ return ((tsc_->pint) | ((tsc_->bb_spi.outsr & 0x1000) > 0));
 }

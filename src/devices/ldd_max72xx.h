@@ -28,6 +28,7 @@
 #define	LDD_MAX72XX
     
 #include<lxrad.h>
+#include"bitbang_spi.h"
 
 /* pinout
   1 DIN
@@ -59,9 +60,8 @@
 typedef struct
 {
 unsigned char ram[8];
-unsigned char aclk;
-unsigned char ancs;
-int bc;
+bitbang_spi_t bb_spi;
+unsigned short ancs;
 unsigned short dat;
 unsigned char update;
 unsigned short dout;

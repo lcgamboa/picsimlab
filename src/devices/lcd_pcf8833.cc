@@ -154,7 +154,7 @@ lcd_pcf8833_io(lcd_pcf8833_t *lcd, unsigned char pdat, unsigned char clk, unsign
   case SPI_DATA:
    
    lcd->tp = (lcd->bb_spi.insr & 0x100)>>8;
-   lcd->dat = lcd->bb_spi.data;
+   lcd->dat = lcd->bb_spi.data8;
    
    if (lcd->tp == 0)//command
     {

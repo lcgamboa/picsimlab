@@ -38,7 +38,8 @@ bitbang_spi_rst(bitbang_spi_t *spi)
  spi->aclk = 1;
  spi->insr = 0;
  spi->outsr = 0;
- spi->bc = 0;
+ spi->bit = 0;
+ spi->byte = 0;
  spi->status = 0;
  dprintf ("bitbang_spi rst\n");
 }
@@ -47,6 +48,9 @@ void
 bitbang_spi_init(bitbang_spi_t *spi, unsigned char lenght)
 {
  dprintf ("bitbang_spi init \n");
+
+ spi->outbitmask = 1 << (lenght - 1);
+
  spi->lenght = lenght;
  bitbang_spi_rst (spi);
 }
@@ -59,7 +63,8 @@ bitbang_spi_io(bitbang_spi_t *spi, unsigned char clk, unsigned char mosi, unsign
   {
    spi->insr = 0;
    spi->outsr = 0;
-   spi->bc = 0;
+   spi->bit = 0;
+   spi->byte = 0;
    return 1;
   }
 
@@ -72,19 +77,21 @@ bitbang_spi_io(bitbang_spi_t *spi, unsigned char clk, unsigned char mosi, unsign
     }
    else
     {
-     spi->insr = (spi->insr << 1) & 0xFFFE;
+     spi->insr = (spi->insr << 1) & 0xFFFFFFFE;
     }
    spi->outsr = (spi->outsr << 1);
-   spi->bc++;
 
-   if (spi->bc >= spi->lenght)
+   spi->bit++;
+
+   if (spi->bit == spi->lenght)
     {
      spi->status = SPI_DATA;
-     spi->data = spi->insr & 0xFF;
-     spi->bc = 0;
+     spi->data8 = spi->insr & 0xFF;
+     spi->bit = 0;
+     spi->byte++;
     }
 
-   spi->ret = ((spi->outsr & 0x080) > 0);
+   spi->ret = ((spi->outsr & spi->outbitmask) > 0);
   }
  spi->aclk = clk;
 
@@ -100,8 +107,9 @@ bitbang_spi_get_status(bitbang_spi_t *spi)
 }
 
 void
-bitbang_spi_send(bitbang_spi_t *spi, unsigned char data)
+bitbang_spi_send(bitbang_spi_t *spi, unsigned int data)
 {
  spi->outsr = data;
+ spi->ret = ((spi->outsr & spi->outbitmask) > 0);
  dprintf ("bitbang_spi data to send 0x%02x \n", data);
 }
