@@ -156,6 +156,7 @@ cpart_pot::Draw(void)
        canvas.SetFont (font_p);
        canvas.RotatedText (val, output[i].x1 + 4, output[i].y1 + 5 + (200 - values[output[i].id - O_PO1]) / 1.66, 0);
        canvas.SetFont (font);
+       break;
       }
     }
   }

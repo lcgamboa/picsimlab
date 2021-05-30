@@ -8,13 +8,14 @@ OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimla
  devices/lcd_hd44780.o devices/mi2c_24CXXX.o devices/rtc_ds1307.o devices/rtc_pfc8563.o devices/lcd_pcf8833.o\
  devices/lcd_pcd8544.o devices/mplabxd.o devices/ldd_max72xx.o devices/io_74xx595.o devices/io_PCF8574.o\
  devices/io_MCP23X17.o devices/rcontrol.o devices/tsc_xpt2046.cc devices/bitbang_i2c.o devices/bitbang_spi.o\
+ devices/sen_mpu6050.o\
  parts/parts_defs.o parts/part.o parts/part_servo.o parts/part_step.o parts/part_d_transfer_function.o\
  parts/part_LEDs.o parts/part_push_buttons.o parts/part_switchs.o parts/part_pot.o parts/part_RGB_LED.o\
  parts/part_LCD_hd44780.o parts/part_LCD_pcf8833.o parts/part_LCD_pcd8544.o parts/part_gamepad.o\
  parts/part_LED_matrix.o parts/part_7s_Display.o parts/part_TempSys.o parts/part_keypad.o \
  parts/part_MI2C_24CXXX.o parts/part_RTC_ds1307.o parts/part_RTC_pfc8563.o parts/part_IO_74xx595.o \
  parts/part_VCD_Dump.o parts/part_IO_PCF8574.o parts/part_Buzzer.o parts/part_SignalGenerator.o \
- parts/part_push_buttons_an.o parts/part_VCD_Dump_an.o parts/part_IO_MCP23S17.o \
+ parts/part_push_buttons_an.o parts/part_VCD_Dump_an.o parts/part_IO_MCP23S17.o parts/part_MPU6050.o\
  devices/bitbang_uart.o  parts/part_ETH_w5500.o devices/eth_w5500.o parts/part_VCD_Play.o \
  parts/part_sdcard.o devices/sdcard.o devices/uart.o parts/part_uart.o  parts/part_jumpers.o \
  devices/lcd_ssd1306.o parts/part_LCD_ssd1306.o devices/lcd_ili9341.o parts/part_LCD_ili9341.o \
