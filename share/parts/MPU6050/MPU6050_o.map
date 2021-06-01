@@ -14,10 +14,10 @@
 <area shape="rect" coords="145,210,163,283" href="PN_6" />
 <area shape="rect" coords="170,210,187,283" href="PN_7" />
 <area shape="rect" coords="196,210,212,283" href="PN_8" />
-<area shape="rect" coords="15,26,47,166" href="PO_1" />
-<area shape="rect" coords="77,26,109,166" href="PO_2" />
-<area shape="rect" coords="136,26,168,166" href="PO_3" />
-<area shape="rect" coords="220,26,252,166" href="PO_4" />
-<area shape="rect" coords="280,26,312,166" href="PO_5" />
-<area shape="rect" coords="343,26,375,166" href="PO_6" />
+<area shape="rect" coords="15,26,47,166" href="DS_1" />
+<area shape="rect" coords="77,26,109,166" href="DS_2" />
+<area shape="rect" coords="136,26,168,166" href="DS_3" />
+<area shape="rect" coords="220,26,252,166" href="DS_4" />
+<area shape="rect" coords="280,26,312,166" href="DS_5" />
+<area shape="rect" coords="343,26,375,166" href="DS_6" />
 </map>

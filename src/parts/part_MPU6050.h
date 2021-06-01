@@ -44,7 +44,8 @@ public:
     void Draw(void);
     void PreProcess(void);
     void Process(void);
-
+    void PostProcess(void);
+    
     lxString GetPictureFileName(void) {
         return lxT("MPU6050/MPU6050.svg");
     };
@@ -69,18 +70,18 @@ public:
     void ReadPreferences(lxString value);
     unsigned short get_in_id(char * name);
     unsigned short get_out_id(char * name);
+    void setMpuReg(unsigned char addr, unsigned char val );
+    unsigned char getValues(unsigned char addr);
 private:
     void RegisterRemoteControl(void);
     unsigned char mpu_pins[6];
     mpu6050_t mpu;
     lxFont font;
     lxFont font_p;
-    unsigned char values[6];
     unsigned char active[6];
+    double asens;
+    double gsens;
 };
-
-
-
 
 #endif /* PART_MPU6050_H */
 

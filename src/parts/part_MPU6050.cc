@@ -31,17 +31,15 @@
 /* inputs */
 enum
 {
- I_PO1, I_PO2, I_PO3, I_PO4, I_PO5, I_PO6
+ I_DS1, I_DS2, I_DS3, I_DS4, I_DS5, I_DS6
 };
 
 /* outputs */
 enum
 {
- O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_PO1, O_PO2, O_PO3, O_PO4, O_PO5, O_PO6
+ O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_DS1, O_DS2, O_DS3, O_DS4, O_DS5, O_DS6
 };
 
-#define GYRO_CONFIG       0x1B 
-#define ACCEL_CONFIG      0x1C 
 
 const char pin_names[8][10] = {"VCC", "GND", "SCL", "SDA", "XDA", "XCL", "AD0", "INT"};
 const char pin_values[8][10] = {
@@ -82,13 +80,6 @@ font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  mpu_pins[4] = 0;
  mpu_pins[5] = 0;
 
- values[0] = 100;
- values[1] = 100;
- values[2] = 150;
- values[3] = 100;
- values[4] = 100;
- values[5] = 100;
-
  active[0] = 0;
  active[1] = 0;
  active[2] = 0;
@@ -110,23 +101,23 @@ cpart_MPU6050::RegisterRemoteControl(void)
   {
    switch (input[i].id)
     {
-    case I_PO1:
-     input[i].status = &values[0];
+    case I_DS1:
+     input[i].status = &mpu.regs[ACCEL_XOUT_H];
      break;
-    case I_PO2:
-     input[i].status = &values[1];
+    case I_DS2:
+     input[i].status = &mpu.regs[ACCEL_YOUT_H];
      break;
-    case I_PO3:
-     input[i].status = &values[2];
+    case I_DS3:
+     input[i].status = &mpu.regs[ACCEL_ZOUT_H];
      break;
-    case I_PO4:
-     input[i].status = &values[3];
+    case I_DS4:
+     input[i].status = &mpu.regs[GYRO_XOUT_H];
      break;
-    case I_PO5:
-     input[i].status = &values[4];
+    case I_DS5:
+     input[i].status = &mpu.regs[GYRO_YOUT_H];
      break;
-    case I_PO6:
-     input[i].status = &values[5];
+    case I_DS6:
+     input[i].status = &mpu.regs[GYRO_ZOUT_H];
      break;
     }
   }
@@ -163,65 +154,65 @@ cpart_MPU6050::Draw(void)
 
      switch (output[i].id)
       {
-      case O_PO1:
-      case O_PO2:
-      case O_PO3:
+      case O_DS1:
+      case O_DS2:
+      case O_DS3:
        canvas.SetColor (179, 179, 179);
        canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
        canvas.SetFgColor (0, 0, 0);
        canvas.SetBgColor (96, 96, 96);
        canvas.Rectangle (1, output[i].x1 + 9, output[i].y1 + 9, output[i].x2 - output[i].x1 - 18, output[i].y2 - output[i].y1 - 18);
        canvas.SetBgColor (46, 46, 46);
-       canvas.Rectangle (1, output[i].x1, output[i].y1 + (200 - values[output[i].id - O_PO1]) / 1.66, 32, 19);
+       canvas.Rectangle (1, output[i].x1, output[i].y1 + (200 - getValues (output[i].id - O_DS1)) / 1.66, 32, 19);
 
        switch ((mpu.regs[ACCEL_CONFIG]&0x18) >> 3)
         {
         case 0: //2g
-         snprintf (val, 10, "%4.2f", 2 * ((values[output[i].id - O_PO1]) - 100) / 100.0);
+         snprintf (val, 10, "%4.2f", 2 * ((getValues (output[i].id - O_DS1)) - 100) / 100.0);
          break;
         case 1: //4g
-         snprintf (val, 10, "%4.2f", 4 * ((values[output[i].id - O_PO1]) - 100) / 100.0);
+         snprintf (val, 10, "%4.2f", 4 * ((getValues (output[i].id - O_DS1)) - 100) / 100.0);
          break;
         case 2: //8g
-         snprintf (val, 10, "%4.2f", 8 * ((values[output[i].id - O_PO1]) - 100) / 100.0);
+         snprintf (val, 10, "%4.2f", 8 * ((getValues (output[i].id - O_DS1)) - 100) / 100.0);
          break;
         case 3: //16g
-         snprintf (val, 10, "%4.2f", 16 * ((values[output[i].id - O_PO1]) - 100) / 100.0);
+         snprintf (val, 10, "%4.2f", 16 * ((getValues (output[i].id - O_DS1)) - 100) / 100.0);
          break;
         }
        canvas.SetColor (250, 250, 250);
        canvas.SetFont (font_p);
-       canvas.RotatedText (val, output[i].x1 + 2, output[i].y1 + 5 + (200 - values[output[i].id - O_PO1]) / 1.66, 0);
+       canvas.RotatedText (val, output[i].x1 + 2, output[i].y1 + 5 + (200 - getValues (output[i].id - O_DS1)) / 1.66, 0);
        canvas.SetFont (font);
        break;
-      case O_PO4:
-      case O_PO5:
-      case O_PO6:
+      case O_DS4:
+      case O_DS5:
+      case O_DS6:
        canvas.SetColor (179, 179, 179);
        canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
        canvas.SetFgColor (0, 0, 0);
        canvas.SetBgColor (96, 96, 96);
        canvas.Rectangle (1, output[i].x1 + 9, output[i].y1 + 9, output[i].x2 - output[i].x1 - 18, output[i].y2 - output[i].y1 - 18);
        canvas.SetBgColor (46, 46, 46);
-       canvas.Rectangle (1, output[i].x1, output[i].y1 + (200 - values[output[i].id - O_PO1]) / 1.66, 32, 19);
+       canvas.Rectangle (1, output[i].x1, output[i].y1 + (200 - getValues (output[i].id - O_DS1)) / 1.66, 32, 19);
        switch ((mpu.regs[GYRO_CONFIG]&0x18) >> 3)
         {
         case 0: //250g/s
-         snprintf (val, 10, "%4.0f", 250 * ((values[output[i].id - O_PO1]) - 100) / 100.0);
+         snprintf (val, 10, "%4.0f", 250 * ((getValues (output[i].id - O_DS1)) - 100) / 100.0);
          break;
         case 1: //500g/s
-         snprintf (val, 10, "%4.0f", 500 * ((values[output[i].id - O_PO1]) - 100) / 100.0);
+         snprintf (val, 10, "%4.0f", 500 * ((getValues (output[i].id - O_DS1)) - 100) / 100.0);
          break;
         case 2: //1000g/s
-         snprintf (val, 10, "%4.0f", 1000 * ((values[output[i].id - O_PO1]) - 100) / 100.0);
+         snprintf (val, 10, "%4.0f", 1000 * ((getValues (output[i].id - O_DS1)) - 100) / 100.0);
          break;
         case 3: //2000g/s
-         snprintf (val, 10, "%4.0f", 2000 * ((values[output[i].id - O_PO1]) - 100) / 100.0);
+         snprintf (val, 10, "%4.0f", 2000 * ((getValues (output[i].id - O_DS1)) - 100) / 100.0);
          break;
         }
        canvas.SetColor (250, 250, 250);
        canvas.SetFont (font_p);
-       canvas.RotatedText (val, output[i].x1 + 2, output[i].y1 + 5 + (200 - values[output[i].id - O_PO1]) / 1.66, 0);
+       canvas.RotatedText (val, output[i].x1 + 2, output[i].y1 + 5 + (200 - getValues (output[i].id - O_DS1)) / 1.66, 0);
        canvas.SetFont (font);
        break;
       default:
@@ -258,12 +249,12 @@ cpart_MPU6050::Draw(void)
 unsigned short
 cpart_MPU6050::get_in_id(char * name)
 {
- if (strcmp (name, "PO_1") == 0)return I_PO1;
- if (strcmp (name, "PO_2") == 0)return I_PO2;
- if (strcmp (name, "PO_3") == 0)return I_PO3;
- if (strcmp (name, "PO_4") == 0)return I_PO4;
- if (strcmp (name, "PO_5") == 0)return I_PO5;
- if (strcmp (name, "PO_6") == 0)return I_PO6;
+ if (strcmp (name, "DS_1") == 0)return I_DS1;
+ if (strcmp (name, "DS_2") == 0)return I_DS2;
+ if (strcmp (name, "DS_3") == 0)return I_DS3;
+ if (strcmp (name, "DS_4") == 0)return I_DS4;
+ if (strcmp (name, "DS_5") == 0)return I_DS5;
+ if (strcmp (name, "DS_6") == 0)return I_DS6;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
@@ -282,12 +273,12 @@ cpart_MPU6050::get_out_id(char * name)
  if (strcmp (name, "PN_7") == 0)return O_P7;
  if (strcmp (name, "PN_8") == 0)return O_P8;
 
- if (strcmp (name, "PO_1") == 0)return O_PO1;
- if (strcmp (name, "PO_2") == 0)return O_PO2;
- if (strcmp (name, "PO_3") == 0)return O_PO3;
- if (strcmp (name, "PO_4") == 0)return O_PO4;
- if (strcmp (name, "PO_5") == 0)return O_PO5;
- if (strcmp (name, "PO_6") == 0)return O_PO6;
+ if (strcmp (name, "DS_1") == 0)return O_DS1;
+ if (strcmp (name, "DS_2") == 0)return O_DS2;
+ if (strcmp (name, "DS_3") == 0)return O_DS3;
+ if (strcmp (name, "DS_4") == 0)return O_DS4;
+ if (strcmp (name, "DS_5") == 0)return O_DS5;
+ if (strcmp (name, "DS_6") == 0)return O_DS6;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
@@ -405,16 +396,15 @@ cpart_MPU6050::PreProcess(void)
   }
 
  mpu6050_set_addr (&mpu, addr);
+ /*
+  float sens = 2 << ((mpu.regs[ACCEL_CONFIG]&0x18) >> 3);
 
- float sens = 2 << ((mpu.regs[ACCEL_CONFIG]&0x18) >> 3);
+  mpu6050_set_accel (&mpu, sens * ((values[0] - 100) / 100.0), sens * ((values[1] - 100) / 100.0), sens * ((values[2] - 100) / 100.0));
 
- mpu6050_set_accel (&mpu, sens * ((values[0] - 100) / 100.0), sens * ((values[1] - 100) / 100.0), sens * ((values[2] - 100) / 100.0));
+  sens = 250 << ((mpu.regs[ACCEL_CONFIG]&0x18) >> 3);
 
-
- sens = 250 << ((mpu.regs[ACCEL_CONFIG]&0x18) >> 3);
-
- mpu6050_set_gyro (&mpu, sens * ((values[3] - 100) / 100.0), sens * ((values[4] - 100) / 100.0), sens * ((values[5] - 100) / 100.0));
-
+  mpu6050_set_gyro (&mpu, sens * ((values[3] - 100) / 100.0), sens * ((values[4] - 100) / 100.0), sens * ((values[5] - 100) / 100.0));
+  */
 }
 
 void
@@ -431,10 +421,125 @@ cpart_MPU6050::Process(void)
 }
 
 void
+cpart_MPU6050::PostProcess(void)
+{
+ switch ((mpu.regs[ACCEL_CONFIG]&0x18) >> 3)
+  {
+  case 0: //2g
+   asens = 16383 / 50.0;
+   break;
+  case 1: //4g
+   asens = 8191 / 25.0;
+   break;
+  case 2: //8g
+   asens = 4095 / 12.5;
+   break;
+  case 3: //16g
+   asens = 2047 / 6.25;
+   break;
+  }
+
+
+ switch ((mpu.regs[GYRO_CONFIG]&0x18) >> 3)
+  {
+  case 0: //250g/s
+   gsens = 131 * 2.5;
+   break;
+  case 1: //500g/s
+   gsens = 65.5 * 5;
+   break;
+  case 2: //1000g/s
+   gsens = 32.8 * 10;
+   break;
+  case 3: //2000g/s
+   gsens = 16.4 * 20;
+   break;
+  }
+}
+
+void
+cpart_MPU6050::setMpuReg(unsigned char addr, unsigned char val)
+{
+ unsigned char reg = 0;
+ short sv = 0;
+
+ switch (addr)
+  {
+  case 0:
+   reg = ACCEL_XOUT_H;
+   sv = (val - 100) * asens;
+   break;
+  case 1:
+   reg = ACCEL_YOUT_H;
+   sv = (val - 100) * asens;
+   break;
+  case 2:
+   reg = ACCEL_ZOUT_H;
+   sv = (val - 100) * asens;
+   break;
+  case 3:
+   reg = GYRO_XOUT_H;
+   sv = (val - 100) * gsens;
+   break;
+  case 4:
+   reg = GYRO_YOUT_H;
+   sv = (val - 100) * gsens;
+   break;
+  case 5:
+   reg = GYRO_ZOUT_H;
+   sv = (val - 100) * gsens;
+   break;
+  }
+
+ mpu.regs[reg] = (sv & 0xFF00) >> 8;
+ mpu.regs[reg + 1] = sv & 0x00FF;
+}
+
+unsigned char
+cpart_MPU6050::getValues(unsigned char addr)
+{
+ short temp;
+ unsigned char value = 0;
+
+ switch (addr)
+  {
+  case 0:
+   temp = ((mpu.regs[ACCEL_XOUT_H] << 8) + mpu.regs[ACCEL_XOUT_L]);
+   value = (temp / asens) + 100;
+   break;
+  case 1:
+   temp = ((mpu.regs[ACCEL_YOUT_H] << 8) + mpu.regs[ACCEL_YOUT_L]);
+   value = (temp / asens) + 100;
+   break;
+  case 2:
+   temp = ((mpu.regs[ACCEL_ZOUT_H] << 8) + mpu.regs[ACCEL_ZOUT_L]);
+   value = (temp / asens) + 100;
+   break;
+  case 3:
+   temp = ((mpu.regs[GYRO_XOUT_H] << 8) + mpu.regs[GYRO_XOUT_L]);
+   value = (temp / gsens) + 100;
+   break;
+  case 4:
+   temp = ((mpu.regs[GYRO_YOUT_H] << 8) + mpu.regs[GYRO_YOUT_L]);
+   value = (temp / gsens) + 100;
+   break;
+  case 5:
+   temp = ((mpu.regs[GYRO_ZOUT_H] << 8) + mpu.regs[GYRO_ZOUT_L]);
+   value = (temp / gsens) + 100;
+   break;
+  }
+
+ if (value > 200) value = 200;
+
+ return value;
+}
+
+void
 cpart_MPU6050::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
 
  int i;
+ unsigned char value;
 
  for (i = 0; i < inputc; i++)
   {
@@ -443,41 +548,47 @@ cpart_MPU6050::EvMouseButtonPress(uint button, uint x, uint y, uint state)
      RotateCoords (&x, &y);
      switch (input[i].id)
       {
-      case I_PO1:
-       values[0] = 200 - ((y - input[i].y1)*1.66);
-       if (values[0] > 200)values[0] = 0;
+      case I_DS1:
+       value = 200 - ((y - input[i].y1)*1.66);
+       if (value > 200)value = 0;
+       setMpuReg (0, value);
        active[0] = 1;
-       output_ids[O_PO1]->update = 1;
+       output_ids[O_DS1]->update = 1;
        break;
-      case I_PO2:
-       values[1] = 200 - ((y - input[i].y1)*1.66);
-       if (values[1] > 200)values[1] = 0;
+      case I_DS2:
+       value = 200 - ((y - input[i].y1)*1.66);
+       if (value > 200)value = 0;
+       setMpuReg (1, value);
        active[1] = 1;
-       output_ids[O_PO2]->update = 1;
+       output_ids[O_DS2]->update = 1;
        break;
-      case I_PO3:
-       values[2] = 200 - ((y - input[i].y1)*1.66);
-       if (values[2] > 200)values[2] = 0;
+      case I_DS3:
+       value = 200 - ((y - input[i].y1)*1.66);
+       if (value > 200)value = 0;
+       setMpuReg (2, value);
        active[2] = 1;
-       output_ids[O_PO3]->update = 1;
+       output_ids[O_DS3]->update = 1;
        break;
-      case I_PO4:
-       values[3] = 200 - ((y - input[i].y1)*1.66);
-       if (values[3] > 200)values[3] = 0;
+      case I_DS4:
+       value = 200 - ((y - input[i].y1)*1.66);
+       if (value > 200)value = 0;
+       setMpuReg (3, value);
        active[3] = 1;
-       output_ids[O_PO4]->update = 1;
+       output_ids[O_DS4]->update = 1;
        break;
-      case I_PO5:
-       values[4] = 200 - ((y - input[i].y1)*1.66);
-       if (values[4] > 200)values[4] = 0;
+      case I_DS5:
+       value = 200 - ((y - input[i].y1)*1.66);
+       if (value > 200)value = 0;
+       setMpuReg (4, value);
        active[4] = 1;
-       output_ids[O_PO5]->update = 1;
+       output_ids[O_DS5]->update = 1;
        break;
-      case I_PO6:
-       values[5] = 200 - ((y - input[i].y1)*1.66);
-       if (values[5] > 200)values[5] = 0;
+      case I_DS6:
+       value = 200 - ((y - input[i].y1)*1.66);
+       if (value > 200)value = 0;
+       setMpuReg (5, value);
        active[5] = 1;
-       output_ids[O_PO6]->update = 1;
+       output_ids[O_DS6]->update = 1;
        break;
       }
     }
@@ -496,29 +607,29 @@ cpart_MPU6050::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
     {
      switch (input[i].id)
       {
-      case I_PO1:
+      case I_DS1:
        active[0] = 0;
-       output_ids[O_PO1]->update = 1;
+       output_ids[O_DS1]->update = 1;
        break;
-      case I_PO2:
+      case I_DS2:
        active[1] = 0;
-       output_ids[O_PO2]->update = 1;
+       output_ids[O_DS2]->update = 1;
        break;
-      case I_PO3:
+      case I_DS3:
        active[2] = 0;
-       output_ids[O_PO3]->update = 1;
+       output_ids[O_DS3]->update = 1;
        break;
-      case I_PO4:
+      case I_DS4:
        active[3] = 0;
-       output_ids[O_PO4]->update = 1;
+       output_ids[O_DS4]->update = 1;
        break;
-      case I_PO5:
+      case I_DS5:
        active[4] = 0;
-       output_ids[O_PO5]->update = 1;
+       output_ids[O_DS5]->update = 1;
        break;
-      case I_PO6:
+      case I_DS6:
        active[5] = 0;
-       output_ids[O_PO6]->update = 1;
+       output_ids[O_DS6]->update = 1;
        break;
       }
     }
@@ -530,6 +641,7 @@ cpart_MPU6050::EvMouseMove(uint button, uint x, uint y, uint state)
 {
 
  int i;
+ unsigned char value;
 
  for (i = 0; i < inputc; i++)
   {
@@ -537,12 +649,13 @@ cpart_MPU6050::EvMouseMove(uint button, uint x, uint y, uint state)
     {
      RotateCoords (&x, &y);
 
-     if (active[input[i].id - I_PO1])
+     if (active[input[i].id - I_DS1])
       {
-       values[input[i].id - I_PO1] = 200 - ((y - input[i].y1)*1.66);
-       if (values[input[i].id - I_PO1] > 200)values[input[i].id - I_PO1] = 0;
+       value = 200 - ((y - input[i].y1)*1.66);
+       if (value > 200)value = 0;
 
-       output_ids[O_PO1 + input[i].id - I_PO1]->update = 1;
+       output_ids[O_DS1 + input[i].id - I_DS1]->update = 1;
+       setMpuReg (input[i].id - I_DS1, value);
       }
     }
   }
