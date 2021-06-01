@@ -326,6 +326,7 @@ protected:
 
     int id; ///< part ID
     input_t input[100]; ///< input map elements
+    input_t * input_ids[100]; ///< input map elements by id order
     output_t output[100]; ///< output map elements 
     output_t * output_ids[100]; ///< output map elements by id order
     int inputc; ///< input map elements counter 

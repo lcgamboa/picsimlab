@@ -313,9 +313,9 @@ cpart_step::PostProcess(void)
     }
   }
 
- if (output_ids[O_ROT]->fvalue != angle)
+ if (output_ids[O_ROT]->value_f != angle)
   {
-   output_ids[O_ROT]->fvalue = angle;
+   output_ids[O_ROT]->value_f = angle;
    output_ids[O_ROT]->update = 1;
   }
 

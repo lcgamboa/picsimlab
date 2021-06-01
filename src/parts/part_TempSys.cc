@@ -228,9 +228,9 @@ cpart_tempsys::Process(void)
 void
 cpart_tempsys::PostProcess(void)
 {
- if (output_ids[O_OTE]->fvalue != temp[0])
+ if (output_ids[O_OTE]->value_f != temp[0])
   {
-   output_ids[O_OTE]->fvalue = temp[0];
+   output_ids[O_OTE]->value_f = temp[0];
    output_ids[O_OTE]->update = 1;
   }
 

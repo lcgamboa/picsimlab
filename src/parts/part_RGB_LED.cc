@@ -147,9 +147,9 @@ cpart_rgb_led::PostProcess(void)
  if (input_pins[1])color |= (((unsigned char) ppins[input_pins[1] - 1].oavalue) << 8);
  if (input_pins[2])color |= (((unsigned char) ppins[input_pins[2] - 1].oavalue) << 16);
 
- if (output_ids[O_L1]->fvalue != color)
+ if (output_ids[O_L1]->value_f != color)
   {
-   output_ids[O_L1]->fvalue = color;
+   output_ids[O_L1]->value_f = color;
    output_ids[O_L1]->update = 1;
   }
 

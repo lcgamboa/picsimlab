@@ -47,10 +47,15 @@ typedef struct {
     unsigned int y2; ///< y2 position
     unsigned int cx; ///< center x position
     unsigned int cy; ///< center y position
-    char name[10];   ///< region name
+    char name[10]; ///< region name
     unsigned short id; ///< region ID
     void * status; ///< rcontrol status
     unsigned char * update; ///< output need draw update
+    union {
+        unsigned char value; ///< updated value 
+        short value_s; ///< updated value short
+        float value_f; ///< updated value float
+    };
 } input_t;
 
 /**
@@ -69,8 +74,11 @@ typedef struct {
     unsigned short id; ///<  region ID
     void * status; ///< rcontrol status
     unsigned char update; ///< need draw update
-    unsigned char value; ///< value 
-    float fvalue; ///< value 
+    union {
+        unsigned char value; ///< updated value 
+        short value_s; ///< updated value short
+        float value_f; ///< updated value float
+    };
 } output_t;
 
 /**
@@ -124,12 +132,13 @@ public:
      * @brief  Event on the board
      */
     virtual void EvMouseButtonRelease(uint button, uint x, uint y, uint state) = 0;
-    
+
     /**
      * @brief  Event on the board
      */
-    virtual void EvMouseMove(uint button, uint x, uint y, uint state) {};
-    
+    virtual void EvMouseMove(uint button, uint x, uint y, uint state) {
+    };
+
     /**
      * @brief  Event on the board
      */
@@ -473,29 +482,30 @@ public:
         INCOMPLETE;
         return 0;
     };
-     
+
     /**
      * @brief  Calc rotary potentiometer angle    
      */
-    unsigned char CalcAngle(int i,  int x, int y);
+    unsigned char CalcAngle(int i, int x, int y);
 
     /**
      * @brief  Set board draw scale    
-     */    
-    virtual void SetScale (double scale);
-    
-     /**
+     */
+    virtual void SetScale(double scale);
+
+    /**
      * @brief  Get board draw scale    
-     */    
-    double GetScale (void);
+     */
+    double GetScale(void);
 
 protected:
-    
+
     /**
      * @brief Register remote control variables
      */
-    virtual void RegisterRemoteControl(void){};
-    
+    virtual void RegisterRemoteControl(void) {
+    };
+
     lxString Name; ///< Name of board registered in PICSimLab  
     lxString Proc; ///< Name of processor in use
     input_t input[120]; ///< input map elements
@@ -507,7 +517,7 @@ protected:
     int use_spare; ///< use spare parts window             
     unsigned char p_RST; ///< board /RESET pin state
     double Scale;
-    
+
     /**
      * @brief  Read maps 
      */

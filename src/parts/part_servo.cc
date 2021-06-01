@@ -163,9 +163,9 @@ cpart_servo::PostProcess(void)
   }
  
  
-  if (output_ids[O_AXIS]->fvalue != angle)
+  if (output_ids[O_AXIS]->value_f != angle)
   {
-   output_ids[O_AXIS]->fvalue = angle;
+   output_ids[O_AXIS]->value_f = angle;
    output_ids[O_AXIS]->update = 1;
    output_ids[O_P1]->update = 1; 
   }

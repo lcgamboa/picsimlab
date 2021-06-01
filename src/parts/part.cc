@@ -44,6 +44,11 @@ part::ReadMaps(void)
  ReadInputMap (Window1.GetSharePath () + lxT ("parts/") + GetInputMapFile ());
  ReadOutputMap (Window1.GetSharePath () + lxT ("parts/") + GetOutputMapFile ());
 
+ for (int i = 0; i < inputc; i++)
+  {
+   input_ids[get_in_id (input[i].name)] = &input[i];
+  }
+ 
  for (int i = 0; i < outputc; i++)
   {
    output_ids[get_out_id (output[i].name)] = &output[i];
@@ -159,8 +164,7 @@ part::ReadInputMap(lxString fname)
    //Message(lxT("Error open input.map")); Not use this in create!!
    printf ("Error open input.map \"%s\"!\n", (const char*) fname.c_str ());
   }
-
-};
+}
 
 void
 part::ReadOutputMap(lxString fname)
