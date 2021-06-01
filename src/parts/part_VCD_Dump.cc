@@ -92,6 +92,12 @@ font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  rec = 0;
  vcd_count = 0;
 
+#ifdef _WIN_
+ viewer = Window1.GetSharePath () + lxT ("/../tools/gtkwave/bin/gtkwave.exe");
+#else
+ viewer = dirname (lxGetExecutablePath ()) + lxString ("/gtkwave");
+#endif
+
  RegisterRemoteControl ();
 }
 
@@ -290,7 +296,7 @@ cpart_VCD_Dump::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4], input_pins[5], input_pins[6], input_pins[7]);
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%s", input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4], input_pins[5], input_pins[6], input_pins[7], viewer.c_str ());
 
  return prefs;
 }
@@ -298,7 +304,20 @@ cpart_VCD_Dump::WritePreferences(void)
 void
 cpart_VCD_Dump::ReadPreferences(lxString value)
 {
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7]);
+ char buff[2048];
+
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%s", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7], buff);
+
+ viewer = buff;
+
+ if (!lxFileExists (viewer)) //use default
+  {
+#ifdef _WIN_
+   viewer = Window1.GetSharePath () + lxT ("/../tools/gtkwave/bin/gtkwave.exe");
+#else
+   viewer = dirname (lxGetExecutablePath ()) + lxString ("/gtkwave");
+#endif
+  }
 }
 
 void
@@ -379,11 +398,20 @@ cpart_VCD_Dump::ConfigurePropertiesWindow(CPWindow * WProp)
    ((CCombo*) WProp->GetChildByName ("combo8"))->SetText (itoa (input_pins[7]) + "  " + spin);
   }
 
+ ((CEdit*) WProp->GetChildByName ("edit1"))->SetText (viewer);
 
  ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
  ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
 
  ((CButton*) WProp->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+
+ ((CButton*) WProp->GetChildByName ("button3"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+ ((CButton*) WProp->GetChildByName ("button3"))->SetTag (2 + id);
+
+ Window5.filedialog1.SetFileName (viewer);
+
+ VDWProp = WProp;
+
 }
 
 void
@@ -397,12 +425,50 @@ cpart_VCD_Dump::ReadPropertiesWindow(CPWindow * WProp)
  input_pins[5] = atoi (((CCombo*) WProp->GetChildByName ("combo6"))->GetText ());
  input_pins[6] = atoi (((CCombo*) WProp->GetChildByName ("combo7"))->GetText ());
  input_pins[7] = atoi (((CCombo*) WProp->GetChildByName ("combo8"))->GetText ());
+
+
+ viewer = ((CEdit*) WProp->GetChildByName ("edit1"))->GetText ();
+
+ if (!lxFileExists (viewer)) //use default
+  {
+#ifdef _WIN_
+   viewer = Window1.GetSharePath () + lxT ("/../tools/gtkwave/bin/gtkwave.exe");
+#else
+   viewer = dirname (lxGetExecutablePath ()) + lxString ("/gtkwave");
+#endif
+  }
+
+}
+
+void
+cpart_VCD_Dump::filedialog_EvOnClose(int retId)
+{
+ if (retId)
+  {
+   if ((Window5.filedialog1.GetType () == (lxFD_OPEN | lxFD_CHANGE_DIR)))
+    {
+     if (lxFileExists (Window5.filedialog1.GetFileName ()))
+      {
+       viewer = Window5.filedialog1.GetFileName ();
+       ((CEdit*) VDWProp->GetChildByName ("edit1"))->SetText (viewer);
+      }
+     else//use default
+      {
+#ifdef _WIN_
+       viewer = Window1.GetSharePath () + lxT ("/../tools/gtkwave/bin/gtkwave.exe");
+#else
+
+       viewer = dirname (lxGetExecutablePath ()) + lxString ("/gtkwave");
+#endif
+       ((CEdit*) VDWProp->GetChildByName ("edit1"))->SetText (viewer);
+      }
+    }
+  }
 }
 
 void
 cpart_VCD_Dump::Process(void)
 {
-
 
  if (rec)
   {
@@ -441,6 +507,7 @@ cpart_VCD_Dump::PostProcess(void)
   {
    if (input_pins[i] && (output_ids[O_L1 + i]->value != ppins[input_pins[i] - 1].oavalue))
     {
+
      output_ids[O_L1 + i]->value = ppins[input_pins[i] - 1].oavalue;
      output_ids[O_L1 + i]->update = 1;
     }
@@ -537,10 +604,9 @@ cpart_VCD_Dump::EvMouseButtonPress(uint button, uint x, uint y, uint state)
        }, f_vcd_name);
 #else
 #ifdef _WIN_
-       lxExecute (Window1.GetSharePath () + lxT ("/../tools/gtkwave/bin/gtkwave.exe ") + f_vcd_name);
+       lxExecute (viewer + lxT (" ") + f_vcd_name);
 #else
-
-       lxExecute (dirname (lxGetExecutablePath ()) + lxString ("/gtkwave ") + f_vcd_name, lxEXEC_MAKE_GROUP_LEADER);
+       lxExecute (viewer + lxT (" ") + f_vcd_name, lxEXEC_MAKE_GROUP_LEADER);
 #endif
 #endif
        break;

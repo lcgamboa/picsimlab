@@ -49,6 +49,7 @@ class cpart_VCD_Dump:public part
       void ReadPropertiesWindow(CPWindow * WProp);
       lxString WritePreferences(void);
       void ReadPreferences(lxString value);
+      void filedialog_EvOnClose(int retId);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
      private:
@@ -61,7 +62,9 @@ class cpart_VCD_Dump:public part
       unsigned char rec;
       lxFont font;
       lxColor color1;
-      lxColor color2;         
+      lxColor color2;      
+      lxString viewer;
+      CPWindow * VDWProp;
 };
 
 

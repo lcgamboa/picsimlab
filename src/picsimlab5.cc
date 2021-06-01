@@ -220,7 +220,19 @@ CPWindow5::PropClose(int tag)
 void
 CPWindow5::PropButtonRelease(CControl * control, uint button, uint x, uint y, uint state)
 {
- Window5.PropClose (control->GetTag ());
+ switch (control->GetTag ())
+  {
+  case 0:
+  case 1:
+   Window5.PropClose (control->GetTag ());
+   break;
+  default://browse filedialog
+   Window5.filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
+   Window5.filedialog1.SetFilter (lxT ("All Files (*.*)|*.*"));
+   Window5.Setfdtype (control->GetTag () - 2);
+   Window5.filedialog1.Run ();
+   break;
+  }
 }
 
 void
