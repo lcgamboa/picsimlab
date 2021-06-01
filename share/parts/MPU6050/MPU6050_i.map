@@ -6,10 +6,10 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:lcganmboa@yahoo.com                 -->
-<area shape="rect" coords="15,26,47,166" href="DS_1" />
-<area shape="rect" coords="77,26,109,166" href="DS_2" />
-<area shape="rect" coords="136,26,168,166" href="DS_3" />
-<area shape="rect" coords="220,26,252,166" href="DS_4" />
-<area shape="rect" coords="280,26,312,166" href="DS_5" />
-<area shape="rect" coords="343,26,375,166" href="DS_6" />
+<area shape="rect" coords="15,26,47,166" href="VS_1" />
+<area shape="rect" coords="77,26,109,166" href="VS_2" />
+<area shape="rect" coords="136,26,168,166" href="VS_3" />
+<area shape="rect" coords="220,26,252,166" href="VS_4" />
+<area shape="rect" coords="280,26,312,166" href="VS_5" />
+<area shape="rect" coords="343,26,375,166" href="VS_6" />
 </map>

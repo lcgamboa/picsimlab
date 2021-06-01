@@ -233,14 +233,33 @@ decodess(unsigned char v)
   }
 }
 
+/* Defined types
+ VS - value short
+ */
 static void
 ProcessInput(const char * msg, input_t * Input, int * ret)
 {
  lxString stemp;
-
- stemp.Printf ("%s %s= %i\r\n", msg, Input->name, *((unsigned char *) Input->status));
- *ret += sendtext ((const char *) stemp.c_str ());
+ if ((Input->name[0] == 'V')&&(Input->name[1] == 'S'))
+  {
+   short temp = ((*((unsigned char *) Input->status)) << 8) | (*(((unsigned char *) (Input->status)) + 1));
+   stemp.Printf ("%s %s= %i\r\n", msg, Input->name, temp);
+   *ret += sendtext ((const char *) stemp.c_str ());
+  }
+ else
+  {
+   stemp.Printf ("%s %s= %i\r\n", msg, Input->name, *((unsigned char *) Input->status));
+   *ret += sendtext ((const char *) stemp.c_str ());
+  }
 }
+
+/* Defined types
+ LD - led
+ DS - Display LCD
+ MT - DC motor
+ GD - step and servo angles
+ SS - seven sgments 
+ */
 
 static void
 ProcessOutput(const char * msg, output_t * Output, int * ret)
@@ -801,7 +820,19 @@ rcontrol_loop(void)
 
                if (Input->status != NULL)
                 {
-                 *((unsigned char *) Input->status) = value;
+                 if ((Input->name[0] == 'V')&&(Input->name[1] == 'S'))
+                  {
+                   *((unsigned char *) Input->status) = (value & 0xFF00) >> 8;
+                   *(((unsigned char *) Input->status) + 1) = value & 0x00FF;
+                  }
+                 else
+                  {
+                   *((unsigned char *) Input->status) = value;
+                  }
+                 if (Input->update)
+                  {
+                   *Input->update = 1;
+                  }
                  sendtext ("Ok\r\n>");
                 }
                else
