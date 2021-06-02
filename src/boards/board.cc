@@ -179,6 +179,9 @@ board::ReadInputMap(lxString fname)
        input[inputc].cy = ((input[inputc].y2 - input[inputc].y1) / 2.0) + input[inputc].y1;
        input[inputc].status = NULL;
        input[inputc].update = NULL;
+       input[inputc].value = 0;
+       input[inputc].value_s = 0;
+       input[inputc].value_f = 0;
        inputc++;
       }
     }
@@ -239,6 +242,9 @@ board::ReadOutputMap(lxString fname)
          output[outputc].cx = ((output[outputc].x2 - output[outputc].x1) / 2.0) + output[outputc].x1;
          output[outputc].cy = ((output[outputc].y2 - output[outputc].y1) / 2.0) + output[outputc].y1;
          output[outputc].status = NULL;
+         output[outputc].value = 0;
+         output[outputc].value_s = 0;
+         output[outputc].value_f = 0;
          outputc++;
         }
        else
@@ -255,6 +261,9 @@ board::ReadOutputMap(lxString fname)
          output[outputc].cx = output[outputc].x1;
          output[outputc].cy = output[outputc].y1;
          output[outputc].status = NULL;
+         output[outputc].value = 0;
+         output[outputc].value_s = 0;
+         output[outputc].value_f = 0;
          outputc++;
         }
       }

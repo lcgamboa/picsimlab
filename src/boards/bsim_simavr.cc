@@ -62,14 +62,14 @@ extern "C"
  void gdb_send_quick_status(avr_gdb_t * g, uint8_t signal);
  int gdb_network_handler(avr_gdb_t * g, uint32_t dosleep);
  int gdb_watch_find(const avr_gdb_watchpoints_t * w, uint32_t addr);
-}
+};
 
 bsim_simavr::bsim_simavr(void)
 {
  avr = NULL;
  serial_irq = NULL;
  avr_debug_type = 0;
-}
+};
 
 void
 bsim_simavr::MSetSerial(const char * port) { }
@@ -1256,7 +1256,7 @@ bsim_simavr::parse_hex(char *line, int bytes)
  sscanf (snum, "%X", &num);
 
  return num;
-};
+}
 
 unsigned char
 bsim_simavr::checksum(char* str)
@@ -1394,7 +1394,7 @@ bsim_simavr::read_ihx_avr(const char * fname, int leeprom)
    return HEX_NFOUND;
   }
  return 0; //no error
-};
+}
 
 int
 bsim_simavr::write_ihx_avr(const char * fname)

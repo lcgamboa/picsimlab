@@ -45,5 +45,5 @@ Initialize
   Application->Load ();
 
   return 0;
-};
+}
 
