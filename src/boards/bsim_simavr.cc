@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -100,7 +100,7 @@ bsim_simavr::pins_reset(void)
    pins[p].avalue = 0;
    pins[p].lvalue = 0;
    pins[p].value = 0;
-   pins[p].ptype = PT_CMOS;
+   pins[p].ptype = PT_DIGITAL;
    pins[p].dir = PD_IN;
    pins[p].ovalue = 0;
    pins[p].oavalue = 0;
@@ -109,20 +109,44 @@ bsim_simavr::pins_reset(void)
  //VCC pins
  if (lxString (avr->mmcu).compare (lxT ("atmega2560")) == 0)
   {
+   //VCC
    pins[9].value = 1;
+   pins[9].ptype = PT_POWER;
    pins[30].value = 1;
+   pins[30].ptype = PT_POWER;
    pins[60].value = 1;
+   pins[60].ptype = PT_POWER;
    pins[79].value = 1;
+   pins[79].ptype = PT_POWER;
    pins[99].value = 1;
+   pins[99].ptype = PT_POWER;
+   //GND
+   pins[10].ptype = PT_POWER;
+   pins[31].ptype = PT_POWER;
+   pins[61].ptype = PT_POWER;
+   pins[80].ptype = PT_POWER;
+   pins[98].ptype = PT_POWER;
   }
  else if (lxString (avr->mmcu).compare (lxT ("attiny85")) == 0)
   {
+   //VCC
    pins[7].value = 1;
+   pins[7].ptype = PT_POWER;
+   //GND
+   pins[3].ptype = PT_POWER;
   }
  else//atmega328p
   {
+   //VCC
    pins[6].value = 1;
+   pins[6].ptype = PT_POWER;
    pins[19].value = 1;
+   pins[19].ptype = PT_POWER;
+   //GND
+   pins[7].ptype = PT_POWER;
+   pins[21].ptype = PT_POWER;
+   //AREF
+   pins[20].ptype = PT_ANAREF;
   }
 }
 
@@ -164,7 +188,7 @@ bsim_simavr::MInit(const char * processor, const char * fname, float freq)
   {
    avr->reset_pc = 0x3E000;
   }
- else if (((lxString (avr->mmcu).compare (lxT ("atmega328p")) == 0))||((lxString (avr->mmcu).compare (lxT ("atmega328")) == 0)))
+ else if (((lxString (avr->mmcu).compare (lxT ("atmega328p")) == 0)) || ((lxString (avr->mmcu).compare (lxT ("atmega328")) == 0)))
   {
    avr->reset_pc = 0x07000; // bootloader 0x3800
   }

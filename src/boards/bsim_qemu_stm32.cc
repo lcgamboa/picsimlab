@@ -804,7 +804,7 @@ bsim_qemu_stm32::pins_reset(void)
    pins[p].avalue = 0;
    pins[p].lvalue = 0;
    pins[p].value = 0;
-   pins[p].ptype = PT_CMOS;
+   pins[p].ptype = PT_DIGITAL;
    pins[p].dir = PD_IN;
    pins[p].ovalue = 0;
    pins[p].oavalue = 0;

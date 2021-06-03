@@ -762,6 +762,7 @@ CPWindow5::menu1_Edit_Clearpinalias_EvMenuActive(CControl * control)
   {
    PinAlias[i] = PinNames[i];
   }
+ update_all = 1;
 }
 
 void
@@ -794,6 +795,7 @@ void
 CPWindow5::menu1_Edit_Reloadpinalias_EvMenuActive(CControl * control)
 {
  LoadPinAlias (alias_fname);
+ update_all = 1;
 }
 
 void
