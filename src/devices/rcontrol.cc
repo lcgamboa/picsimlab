@@ -727,7 +727,7 @@ rcontrol_loop(void)
          //Command pinsl ========================================================
          Board = Window1.GetBoard ();
          pins = Board->MGetPinsValues ();
-         snprintf (lstemp, 100, "%i pins [%s]:\r\n", Board->MGetPinCount (), Board->GetProcessorName ().c_str ());
+         snprintf (lstemp, 100, "%i pins [%s]:\r\n", Board->MGetPinCount (), (const char *)Board->GetProcessorName ().c_str ());
          ret += sendtext (lstemp);
          for (i = 0; i < Board->MGetPinCount (); i++)
           {

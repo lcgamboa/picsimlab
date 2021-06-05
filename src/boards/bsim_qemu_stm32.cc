@@ -23,14 +23,6 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-
-#include "bsim_qemu_stm32.h"
-#include"../picsimlab1.h"
-#include"../serial_port.h"
-
-void setblock(int sock_descriptor);
-void setnblock(int sock_descriptor);
-
 #ifndef _WIN_
 #include<sys/types.h>
 #include<sys/socket.h>
@@ -45,6 +37,13 @@ void setnblock(int sock_descriptor);
 #define _TCP_
 #define MSG_NOSIGNAL 0
 #endif
+
+#include "bsim_qemu_stm32.h"
+#include"../picsimlab1.h"
+#include"../serial_port.h"
+
+void setblock(int sock_descriptor);
+void setnblock(int sock_descriptor);
 
 static int listenfd = -1;
 static int listenfd_mon = -1;

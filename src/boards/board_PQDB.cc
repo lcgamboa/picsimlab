@@ -110,7 +110,6 @@ cboard_PQDB::cboard_PQDB(void)
 
  buzzer.Init ();
 
-
 }
 
 cboard_PQDB::~cboard_PQDB(void)
@@ -746,6 +745,12 @@ cboard_PQDB::Reset(void)
   }
 
  if (use_spare) Window5.Reset ();
+
+ for (int i = 0; i < 8; i++)
+  {
+   pic.pins[PSRD0 + i].ptype = PT_DIGITAL;
+   pic.pins[PSRD0 + i].dir = PD_OUT;
+  }
 
  RegisterRemoteControl ();
 }

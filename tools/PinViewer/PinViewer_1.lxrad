@@ -1,0 +1,96 @@
+<window1>
+  <Class type="lxString">CPWindow</Class>
+  <Name type="lxString">window1</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">427</X>
+  <Y type="int">200</Y>
+  <Width type="uint">400</Width>
+  <Height type="uint">400</Height>
+  <Hint type="lxString"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="lxString">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">TRUE</EvMouseWheel>
+  <Title type="lxString">PinViewer</Title>
+  <OverrideRedirect type="bool">0</OverrideRedirect>
+  <EvOnCreate type="Event">FALSE</EvOnCreate>
+  <EvOnDestroy type="Event">TRUE</EvOnDestroy>
+  <EvOnShow type="Event">TRUE</EvOnShow>
+  <EvOnHide type="Event">FALSE</EvOnHide>
+  <EvOnEnter type="Event">FALSE</EvOnEnter>
+  <EvOnLeave type="Event">FALSE</EvOnLeave>
+<menu1>
+  <Class type="lxString">CMenu</Class>
+  <Name type="lxString">menu1</Name>
+  <Tag type="int">0</Tag>
+  <MenuItems type="MenuItems">File,</MenuItems>
+</menu1>
+<statusbar1>
+  <Class type="lxString">CStatusbar</Class>
+  <Name type="lxString">statusbar1</Name>
+  <Tag type="int">0</Tag>
+  <Fields type="lxStringList">status,</Fields>
+</statusbar1>
+<draw1>
+  <Class type="lxString">CDraw</Class>
+  <Name type="lxString">draw1</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">2</X>
+  <Y type="int">2</Y>
+  <Width type="uint">383</Width>
+  <Height type="uint">360</Height>
+  <Hint type="lxString"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="lxString">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">TRUE</EvMouseMove>
+  <EvMouseButtonPress type="Event">TRUE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">TRUE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">TRUE</EvMouseWheel>
+  <Transparent type="bool">0</Transparent>
+  <ImgFileName type="File"></ImgFileName>
+</draw1>
+<menu1_File>
+  <Class type="lxString">CPMenu</Class>
+  <Name type="lxString">menu1_File</Name>
+  <Tag type="int">0</Tag>
+  <Text type="lxString">File</Text>
+  <MenuItems type="MenuItems">Exit,</MenuItems>
+</menu1_File>
+<menu1_File_Exit>
+  <Class type="lxString">CItemMenu</Class>
+  <Name type="lxString">menu1_File_Exit</Name>
+  <Tag type="int">0</Tag>
+  <Text type="lxString">Exit</Text>
+  <Enable type="bool">1</Enable>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_File_Exit>
+<timer1>
+  <Class type="lxString">CTimer</Class>
+  <Name type="lxString">timer1</Name>
+  <Tag type="int">0</Tag>
+  <Time type="int">250</Time>
+  <RunState type="int">0</RunState>
+  <EvOnTime type="Event">TRUE</EvOnTime>
+</timer1>
+</window1>

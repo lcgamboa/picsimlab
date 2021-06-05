@@ -464,7 +464,10 @@ sdcard_set_filename(sdcard_t *sd, const char * fname)
    sd->card_present = 1;
 
    sd->disk_size = sb.st_size >> 10;
+#ifdef _WIN_
+   dprintf ("sdcard size=%li kb  ->  %lli blocks\n", sd->disk_size, sb.st_size / 512);
+#else   
    dprintf ("sdcard size=%li kb  ->  %li blocks\n", sd->disk_size, sb.st_size / 512);
-
+#endif
   }
 }

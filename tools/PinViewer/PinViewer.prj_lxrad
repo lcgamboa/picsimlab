@@ -1,0 +1,8 @@
+<LXRAD_Project>
+  <Version type="lxString">0.8</Version>
+  <PName type="lxString">PinViewer</PName>
+  <POptions type="lxString">-Wall -O2</POptions>
+  <PLibs type="lxString"> </PLibs>
+  <PIncludeFile type="lxString"> </PIncludeFile>
+  <PNW type="lxString">1</PNW>
+</LXRAD_Project>

@@ -1,4 +1,4 @@
-#include<lxrad.h>
+//#include<lxrad.h>
 #include"srtank1.h"
 #include"srtank2.h"
 

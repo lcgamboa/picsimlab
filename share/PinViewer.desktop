@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=PinViewer
+Comment="PICSimLab PinViewer"
+Exec=PinViewer
+Icon=/usr/share/picsimlab/PinViewer.png
+Terminal=false
+Type=Application
+Categories=Development;Engineering;Electronics;

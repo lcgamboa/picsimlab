@@ -100,6 +100,7 @@ public:
     CItemMenu menu1_Tools_Esp8266ModemSimulator;
     CItemMenu menu1_Tools_ArduinoBootloader;
     CItemMenu menu1_Tools_MPLABXDebuggerPlugin;
+    CItemMenu menu1_Tools_PinViewer;
     CItemMenu menu1_Help_Contents;
     CItemMenu menu1_Help_Board;
     CItemMenu menu1_Help_Examples;
@@ -135,6 +136,7 @@ public:
     void menu1_Tools_Esp8266ModemSimulator_EvMenuActive(CControl * control);
     void menu1_Tools_ArduinoBootloader_EvMenuActive(CControl * control);
     void menu1_Tools_MPLABXDebuggerPlugin_EvMenuActive(CControl * control);
+    void menu1_Tools_PinViewer_EvMenuActive(CControl * control);
     void menu1_Help_Contents_EvMenuActive(CControl * control);
     void menu1_Help_Examples_EvMenuActive(CControl * control);
     void menu1_Help_Board_EvMenuActive(CControl * control);

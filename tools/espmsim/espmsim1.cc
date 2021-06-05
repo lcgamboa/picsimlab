@@ -1,4 +1,5 @@
 
+#include"tcp.h"
 
 #include"espmsim1.h"
 
@@ -8,7 +9,6 @@
 CPWindow1::CPWindow1(void){};
 #endif
 
-#include"tcp.h"
 #include"serial.h"
 #include"espmsim2.h"
 

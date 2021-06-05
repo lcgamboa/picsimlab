@@ -1693,7 +1693,7 @@ CPWindow1::menu1_Tools_SerialTerm_EvMenuActive(CControl * control)
 #else
  //lxExecute (dirname(lxGetExecutablePath ())+"/cutecom", lxEXEC_MAKE_GROUP_LEADER);
  //using system binary
- lxExecute ("cutecom", lxEXEC_MAKE_GROUP_LEADER);
+ lxExecute ("cutecom");
 
  if (!(lxFileExists (dirname (lxGetExecutablePath ()) + "/cutecom")
        || lxFileExists ("/usr/bin/cutecom")
@@ -1712,7 +1712,7 @@ CPWindow1::menu1_Tools_SerialRemoteTank_EvMenuActive(CControl * control)
  lxExecute (share + lxT ("/../srtank.exe"));
 #else
 
- lxExecute (dirname (lxGetExecutablePath ()) + "/srtank", lxEXEC_MAKE_GROUP_LEADER);
+ lxExecute (dirname (lxGetExecutablePath ()) + "/srtank");
 #endif  
 }
 
@@ -1722,7 +1722,7 @@ CPWindow1::menu1_Tools_Esp8266ModemSimulator_EvMenuActive(CControl * control)
 #ifdef _WIN_  
  lxExecute (share + lxT ("/../espmsim.exe"));
 #else
- lxExecute (dirname (lxGetExecutablePath ()) + "/espmsim", lxEXEC_MAKE_GROUP_LEADER);
+ lxExecute (dirname (lxGetExecutablePath ()) + "/espmsim");
 #endif  
 }
 
@@ -1736,6 +1736,16 @@ void
 CPWindow1::menu1_Tools_MPLABXDebuggerPlugin_EvMenuActive(CControl * control)
 {
  lxLaunchDefaultBrowser (lxT ("https://github.com/lcgamboa/picsimlab_md/releases"));
+}
+
+void
+CPWindow1::menu1_Tools_PinViewer_EvMenuActive(CControl * control)
+{
+#ifdef _WIN_  
+ lxExecute (share + lxT ("/../PinViewer.exe "+itoa(remotec_port)));
+#else
+ lxExecute (dirname (lxGetExecutablePath ()) + "/PinViewer "+itoa(remotec_port));
+#endif  
 }
 
 void

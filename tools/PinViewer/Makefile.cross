@@ -1,0 +1,35 @@
+include ../../VERSION
+
+CC =  x86_64-w64-mingw32-g++
+WINDRES =  x86_64-w64-mingw32-windres  
+
+FLAGS = -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\" -Wall -O2 -D_WIN_ -I../../dev_w64/include
+FLAGS+= -DEXT_BROWSER
+FLAGS+= -I../../dev_w64/lib/wx/include/x86_64-w64-mingw32-msw-unicode-3.1 -I../../dev_w64/include/wx-3.1 -D_FILE_OFFSET_BITS=64 -DWXUSINGDLL -D__WXMSW__ -I../../dev_w64/include/lxrad/
+#FLAGS+=`x86_64-w64-mingw32-msw-unicode-3.1  --cxxflags ` 
+
+LIBS = -llxrad -lws2_32 -L../../dev_w64/lib 
+LIBS+= -Wl,--subsystem,windows -mwindows -lwx_mswu_core-3.1-x86_64-w64-mingw32 -lwx_baseu-3.1-x86_64-w64-mingw32 
+LIBS+= -Wl,--subsystem,console -mconsole
+
+OBJS = pPinViewer.o PinViewer1.o 
+
+exp: all
+
+all: $(OBJS)
+	@echo "Linking PinViewer"
+	@$(WINDRES) PinViewer_res.rc  -O coff -o PinViewer_res.o
+	@$(CC) $(FLAGS) $(OBJS) PinViewer_res.o  -oPinViewer.exe $(LIBS)
+	@mv *.exe ../../picsimlab_win64/
+
+%.o: %.cc
+	@echo "Compiling $<"
+	@$(CC) -c $(FLAGS) $< 
+
+run: all
+	wine2 PinViewer.exe
+
+install: all
+
+clean:
+	rm -f PinViewer.exe *.o core 
