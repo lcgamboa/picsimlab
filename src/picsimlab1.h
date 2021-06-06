@@ -162,7 +162,7 @@ public:
      */
     void saveprefs(lxString name, lxString value);
 
-    void Configure(CControl * control, const char * home, int use_default_board = 0);
+    void Configure(const char * home, int use_default_board = 0, int create = 0 );
     void board_Event(CControl * control); 
     void thread1_EvThreadRun(CControl * control);
     void thread2_EvThreadRun(CControl * control);
@@ -263,6 +263,10 @@ public:
     void SetPATH(lxString path) {
         PATH = path;
     };
+    
+    lxString GetHOME(void) {
+        return HOME;
+    };
 
     void SetFNAME(lxString fname) {
         FNAME = fname;
@@ -300,6 +304,7 @@ public:
     void LoadHexFile(lxString fname);
     void SetClock(float clk);
     float GetClock(void);
+    void EndSimulation(void);
     
     void SetSync(unsigned char s){sync=s;};
     unsigned char GetSync(void){return sync;};
@@ -333,6 +338,7 @@ private:
     long int NSTEPJ;
     int JUMPSTEPS;
     lxString PATH;
+    lxString HOME;
     lxString FNAME;
     lxString OldPath;
     char cpustate;
@@ -347,7 +353,6 @@ private:
     board *pboard;
 
     float over;
-    int create;
 
     int crt;
     int zerocount;

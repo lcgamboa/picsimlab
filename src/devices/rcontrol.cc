@@ -174,16 +174,22 @@ rcontrol_stop(void)
 void
 rcontrol_end(void)
 {
+   rcontrol_stop ();
+   dprint ("rcontrol: end\n");
+}
+
+void
+rcontrol_server_end(void)
+{
 
  if (server_started)
   {
-   rcontrol_stop ();
-   dprint ("rcontrol: end\n");
-   //shutdown (listenfd, SHUT_RDWR);
-   //close (listenfd);
+   dprint ("rcontrol: server end\n");
+   shutdown (listenfd, SHUT_RDWR);
+   close (listenfd);
   }
- //listenfd = -1;
- //server_started = 0;
+ listenfd = -1;
+ server_started = 0;
 }
 
 static char
@@ -431,7 +437,7 @@ rcontrol_loop(void)
        if (!strcmp (cmd, "exit"))
         {
          //Command exit ========================================================
-         sendtext ("Ok\r\n");
+         sendtext ("Ok\r\n>");
          Window1.SetToDestroy ();
          return 0;
         }
@@ -727,7 +733,7 @@ rcontrol_loop(void)
          //Command pinsl ========================================================
          Board = Window1.GetBoard ();
          pins = Board->MGetPinsValues ();
-         snprintf (lstemp, 100, "%i pins [%s]:\r\n", Board->MGetPinCount (), (const char *)Board->GetProcessorName ().c_str ());
+         snprintf (lstemp, 100, "%i pins [%s]:\r\n", Board->MGetPinCount (), (const char *) Board->GetProcessorName ().c_str ());
          ret += sendtext (lstemp);
          for (i = 0; i < Board->MGetPinCount (); i++)
           {
@@ -753,7 +759,7 @@ rcontrol_loop(void)
        if (!strcmp (cmd, "quit"))
         {
          //Command quit ========================================================
-         sendtext ("Ok\r\n");
+         sendtext ("Ok\r\n>");
          ret = 1;
         }
        else
@@ -950,7 +956,25 @@ rcontrol_loop(void)
  else
   {
    //socket close by client
-   if (n == 0)ret = 1;
+   if (n < 0)
+    {
+#ifndef _WIN_         
+     if (errno != EAGAIN)
+#else
+     if (WSAGetLastError () != WSAEWOULDBLOCK)
+#endif   
+      {
+       ret = 1;//recv ERROR
+      }
+     else
+      {
+       ret = 0;//recv no data 
+      }
+    }
+   else
+    {
+     ret = 0;//recv no data
+    }
   }
 
  //close connection

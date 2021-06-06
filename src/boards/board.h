@@ -298,6 +298,11 @@ public:
     virtual void MEnd(void) = 0;
 
     /**
+     * @brief board servers shutdown   
+     */
+    virtual void EndServers(void) {};
+    
+    /**
      * @brief board microcontroller save non volatile memory to hex file   
      */
     virtual void MDumpMemory(const char * fname) = 0;

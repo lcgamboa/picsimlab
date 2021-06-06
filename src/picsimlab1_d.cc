@@ -488,7 +488,6 @@ plWidth=10;
 plHeight=10;
 scale=1.0;
 
-create=0;
 
 FNAME=lxT(" ");
 OldPath=lxT("");
@@ -509,6 +508,9 @@ need_resize=0;
 settodestroy=0;
 
 sync=0;
+
+PATH="";
+HOME="";
 
 #ifndef _NOTHREAD    
 cpu_mutex = NULL;

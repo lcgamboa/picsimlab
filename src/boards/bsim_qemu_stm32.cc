@@ -205,7 +205,7 @@ bsim_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
 #ifdef _WIN_  
  if (!lxFileExists (Window1.GetSharePath () + lxT ("/../qemu-stm32.exe")))
 #else
- if (!lxFileExists (dirname(lxGetExecutablePath()) + lxT("/qemu-stm32")))
+ if (!lxFileExists (dirname (lxGetExecutablePath ()) + lxT ("/qemu-stm32")))
 #endif  
   {
    Message ("qemu-stm32 not found!");
@@ -274,7 +274,7 @@ bsim_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
       );
   */
 #else
- lxExecute (dirname(lxGetExecutablePath()) + lxT("/") +cmd, lxEXEC_MAKE_GROUP_LEADER);
+ lxExecute (dirname (lxGetExecutablePath ()) + lxT ("/") + cmd, lxEXEC_MAKE_GROUP_LEADER);
 #endif  
 
  //monitor  
@@ -348,6 +348,16 @@ bsim_qemu_stm32::MEnd(void)
   {
    lxRenameFile (fname_bak, fname_);
   }
+}
+
+void
+bsim_qemu_stm32::EndServers(void)
+{
+ if (listenfd >= 0)close (listenfd);
+ if (listenfd_mon >= 0)close (listenfd_mon);
+
+ listenfd = -1;
+ listenfd_mon = -1;
 }
 
 void
@@ -951,7 +961,7 @@ bsim_qemu_stm32::MSetAPin(int pin, float value)
      unsigned short svalue = (unsigned short) (4096 * value / 3.3);
 
      pins[pin - 1].ptype = PT_ANALOG;
-        
+
      if (ADCvalues[channel] != svalue)
       {
        unsigned char buff[3];

@@ -229,8 +229,8 @@ CPWindow1::timer1_EvOnTime(CControl * control)
    char * mvalue;
    char * avalue;
    char * name;
-   if(send_cmd ("pinsl") < 0)return;
-   
+   if (send_cmd ("pinsl") < 0)return;
+
 
    str = strtok (buff, "\r\n");
    int i = 0;
@@ -425,13 +425,13 @@ CPWindow1::send_cmd(const char * message)
  do
   {
 
-   if ((n = recv (sockfd, buff + bp, 1024 - n, 0)) > 0)
+   if ((n = recv (sockfd, buff + bp, 1, 0)) > 0)
     {
-     buff[bp + n] = 0;
-     //printf ("%s", buff + bp);
      bp += n;
+     buff[bp] = 0;
+     //printf ("%c", buff[bp-1]);
     }
-   else if (n < 0)
+   else 
     {
      printf ("recv error : %s \n", strerror (errno));
      connected = 0;
@@ -440,7 +440,7 @@ CPWindow1::send_cmd(const char * message)
     }
 
   }
- while (strcmp (&buff[bp - 5], "Ok\r\n>") && strcmp (&buff[bp - 4], "Ok\r\n") && strcmp (&buff[bp - 8], "ERROR\r\n>"));
+ while (((bp < 5) || (strcmp (&buff[bp - 5], "Ok\r\n>"))) && ((bp < 8) || strcmp (&buff[bp - 8], "ERROR\r\n>")));
 
  return bp;
 }

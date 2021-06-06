@@ -80,8 +80,8 @@ CPWindow3::button1_EvMouseButtonClick(CControl * control, uint button, uint x, u
 #ifdef _USE_PICSTARTP_
  strcpy (PROGDEVICE, (char*) combo2.GetText ().char_str ());
 #endif
- Window1._EvOnDestroy (control);
- Window1._EvOnCreate (control);
+ Window1.EndSimulation ();
+ Window1.Configure (Window1.GetHOME());
 
  if (osc_on) Window1.menu1_Modules_Oscilloscope_EvMenuActive (this);
  if (spare_on) Window1.menu1_Modules_Spareparts_EvMenuActive (this);

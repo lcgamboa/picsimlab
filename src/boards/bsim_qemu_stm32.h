@@ -57,6 +57,7 @@ class bsim_qemu_stm32: virtual public board
       void MStepResume(void);
       void MReset(int flags);
       void pins_reset(void);
+      void EndServers(void);
  protected:
       int qemu_cmd(const char * cmd, int raw =0);
 #ifdef _WIN_
