@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -109,6 +109,7 @@ class bsim_simavr: virtual public board
       int avr_debug_type;
       serialfd_t  serialfd;    
       bitbang_uart_t bb_uart;  
+      unsigned char * eeprom;
  private:
       int parse_hex(char *line,int bytes);
       unsigned char checksum(char* str);

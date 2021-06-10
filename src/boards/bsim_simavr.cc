@@ -28,8 +28,8 @@
 #include<string.h>
 
 #include "bsim_simavr.h"
-
 #include"../picsimlab1.h"
+#include "simavr/avr_eeprom.h"
 
 //gdb debug hack stuff
 extern "C"
@@ -69,7 +69,8 @@ bsim_simavr::bsim_simavr(void)
  avr = NULL;
  serial_irq = NULL;
  avr_debug_type = 0;
-};
+ eeprom = NULL;
+}
 
 void
 bsim_simavr::MSetSerial(const char * port) { }
@@ -179,6 +180,21 @@ bsim_simavr::MInit(const char * processor, const char * fname, float freq)
  avr_init (avr);
 
  avr->sleep = avr_callback_sleep_raw_;
+
+ //using ee =0 ioctl return the pointer to internal eeprom data instead load values in the pointer 
+ avr_eeprom_desc_t epromd;
+ epromd.ee = 0;
+ epromd.offset = 0;
+ epromd.size = avr->e2end + 1;
+
+ if (avr_ioctl (avr, AVR_IOCTL_EEPROM_GET, &epromd))
+  {
+   eeprom = epromd.ee;
+  }
+ else
+  {
+   eeprom = NULL;
+  }
 
  ret = read_ihx_avr (fname, 1);
 
@@ -1377,16 +1393,34 @@ bsim_simavr::read_ihx_avr(const char * fname, int leeprom)
                          } 
                          else
           */
-         //{
-         //prog mem
-         mptr = (char*) avr->flash;
-         for (bc = 0; bc < nbytes; bc++)
+         if (addrh == 0x0081)
           {
-           addrx = (addrh << 16) | (addr + bc);
-           if (addrx <= avr->flashend)
-            mptr[addrx] = parse_hex (line + 9 + (bc * 2), 2);
+           //EEPROM
+           if (leeprom == 1)
+            {
+             for (bc = 0; bc < nbytes; bc++)
+              {
+               addrx = addr + bc;
+               if (addrx <= avr->e2end)
+                {
+                 eeprom[addrx] = parse_hex (line + 9 + (bc * 2), 2);
+                }
+              }
+            }
           }
-         //}
+         else
+          {
+           //prog mem
+           mptr = (char*) avr->flash;
+           for (bc = 0; bc < nbytes; bc++)
+            {
+             addrx = (addrh << 16) | (addr + bc);
+             if (addrx <= avr->flashend)
+              {
+               mptr[addrx] = parse_hex (line + 9 + (bc * 2), 2);
+              }
+            }
+          }
          //}
          //}
          break;
@@ -1565,27 +1599,26 @@ bsim_simavr::write_ihx_avr(const char * fname)
            fprintf(fout,":%02X%04X00%s%02X\n",nb,iaddr,values,sum);
        }
     */
-   /*  
  //eeprom
      nb=0;
      sum=0;
-     fprintf(fout,":0200000400F00A\n");
-     for(i=0;i<pic->EEPROMSIZE;i++)
+     fprintf(fout,":02000004008179\n");
+     for(i=0;i <= avr->e2end;i++)
      {
     
        if(nb==0)
        {
          iaddr=i;
-         sprintf(values,"%02X",pic->eeprom[i]);
+         sprintf(values,"%02X",eeprom[i]);
        }
        else
        {
-         sprintf(tmp,"%s%02X",values,pic->eeprom[i]);
+         sprintf(tmp,"%s%02X",values,eeprom[i]);
          strcpy(values,tmp);
        }
 
        nb++;
-       sum+=pic->eeprom[i];
+       sum+=eeprom[i];
        if(nb==16)
        {
          sum+=nb;
@@ -1606,8 +1639,7 @@ bsim_simavr::write_ihx_avr(const char * fname)
          sum=(~sum)+1; 
          fprintf(fout,":%02X%04X00%s%02X\n",nb,iaddr,values,sum);
      }
-    */
-
+     
    //end
    fprintf (fout, ":00000001FF\n");
    fclose (fout);
