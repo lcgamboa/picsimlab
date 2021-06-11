@@ -417,7 +417,7 @@ cpart_VCD_Play::ReadPropertiesWindow(CPWindow * WProp)
 void
 cpart_VCD_Play::PreProcess(void)
 {
- vcd_inc = 1.0 / ((timescale * 1e-9) * Window1.GetBoard ()->MGetInstClockFreq ());
+ vcd_inc = 1.0 / ((timescale * 1e-12) * Window1.GetBoard ()->MGetInstClockFreq ());
 }
 
 void
@@ -612,8 +612,10 @@ cpart_VCD_Play::LoadVCD(lxString fname)
        id = strtok (buff, " \n\r");
        if (!strcmp (id, "$timescale"))
         {
+         int itimescale;
          value = strtok (NULL, " ");
-         sscanf (value, "%fns", &timescale);
+         sscanf (value, "%ips", &itimescale);
+         timescale=itimescale;
         }
        else if (!strcmp (id, "$var"))
         {
