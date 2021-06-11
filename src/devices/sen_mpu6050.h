@@ -29,6 +29,7 @@ typedef struct {
     unsigned char regs[0x76];
     unsigned char addr;
     bitbang_i2c_t bb_i2c;
+    unsigned int update;
 } mpu6050_t;
 
 

@@ -48,6 +48,8 @@ mpu6050_rst(mpu6050_t *mpu)
   {
    mpu->regs[i] = 0;
   }
+ 
+ mpu->update=1;
 
  mpu->regs[PWR_MGMT_1] = 0x40;
  mpu->regs[WHO_AM_I] = 0x68;
@@ -59,7 +61,6 @@ void
 mpu6050_init(mpu6050_t *mpu)
 {
  dprintf ("mpu6050 init\n");
-
  bitbang_i2c_init (&mpu->bb_i2c, 0x68);
  mpu6050_rst (mpu);
 }
@@ -99,10 +100,12 @@ mpu6050_io_I2C(mpu6050_t *mpu, unsigned char scl, unsigned char sda)
        break;
       case SIGNAL_PATH_RESET:
       case SMPLRT_DIV:
+      case INT_PIN_CONFIG: 
+       break;
       case CONFIG:
       case GYRO_CONFIG:
       case ACCEL_CONFIG:
-      case INT_PIN_CONFIG: 
+       mpu->update=1;
        break;
       default:
        dprintf ("mpu write to register 0x%02X not defined yet !!!!!!!!\n", mpu->addr);
