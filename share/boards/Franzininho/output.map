@@ -5,8 +5,8 @@
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:Felipe   -->
-<area shape="rect" coords="180,6,201,26" href="PB_RST" />
+<!-- #$AUTHOR:Felipe    -->
+<area shape="rect" coords="184,10,197,23" href="PB_RST_O" />
 <area shape="circle" coords="148,99,7" href="LD_L" />
 <area shape="circle" coords="128,99,7" href="LD_ON" />
 <area shape="rect" coords="190,67,197,76" href="P_PB2" />
@@ -15,4 +15,10 @@
 <area shape="rect" coords="200,38,206,45" href="P_PB5" />
 <area shape="rect" coords="190,38,197,45" href="P_PB3" />
 <area shape="rect" coords="180,38,188,45" href="P_PB4" />
+<area shape="rect" coords="220,40,223,43" href="BP_5" />
+<area shape="rect" coords="220,50,223,53" href="BP_4" />
+<area shape="rect" coords="220,59,223,62" href="BP_3" />
+<area shape="rect" coords="220,69,223,72" href="BP_2" />
+<area shape="rect" coords="220,79,223,82" href="BP_1" />
+<area shape="rect" coords="220,89,223,92" href="BP_0" />
 </map>

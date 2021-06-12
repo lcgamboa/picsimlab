@@ -57,7 +57,7 @@ cboard_Franzininho::get_in_id(char * name)
 {
  if (strcmp (name, "PG_ICSP") == 0)return I_ICSP;
  if (strcmp (name, "SW_PWR") == 0)return I_PWR;
- if (strcmp (name, "PB_RST") == 0)return I_RST;
+ if (strcmp (name, "PB_RST_I") == 0)return I_RST;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
@@ -71,13 +71,19 @@ cboard_Franzininho::get_out_id(char * name)
 
  if (strcmp (name, "LD_L") == 0)return O_L;
  if (strcmp (name, "LD_ON") == 0)return O_ON;
- if (strcmp (name, "PB_RST") == 0)return O_RST;
+ if (strcmp (name, "PB_RST_O") == 0)return O_RST;
  if (strcmp (name, "P_PB0") == 0)return O_PB0;
  if (strcmp (name, "P_PB1") == 0)return O_PB1;
  if (strcmp (name, "P_PB2") == 0)return O_PB2;
  if (strcmp (name, "P_PB3") == 0)return O_PB3;
  if (strcmp (name, "P_PB4") == 0)return O_PB4;
  if (strcmp (name, "P_PB5") == 0)return O_PB5;
+ if (strcmp (name, "BP_0") == 0)return O_PB0;
+ if (strcmp (name, "BP_1") == 0)return O_PB1;
+ if (strcmp (name, "BP_2") == 0)return O_PB2;
+ if (strcmp (name, "BP_3") == 0)return O_PB3;
+ if (strcmp (name, "BP_4") == 0)return O_PB5;
+ if (strcmp (name, "BP_5") == 0)return O_PB4;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
@@ -515,22 +521,22 @@ cboard_Franzininho::Draw(CDraw *draw)
        draw->Canvas.SetColor (100, 100, 100);
        break;
       case O_PB0:
-        draw->Canvas.SetColor (pins[5].oavalue, 0, 0);
+        draw->Canvas.SetColor (pins[4].oavalue, 0, 0);
        break;
       case O_PB1:
-        draw->Canvas.SetColor (pins[6].oavalue, 0, 0);
+        draw->Canvas.SetColor (pins[5].oavalue, 0, 0);
        break;
       case O_PB2:
-        draw->Canvas.SetColor (pins[7].oavalue, 0, 0);
+        draw->Canvas.SetColor (pins[6].oavalue, 0, 0);
        break;
       case O_PB3:
-        draw->Canvas.SetColor (pins[2].oavalue, 0, 0);
+        draw->Canvas.SetColor (pins[1].oavalue, 0, 0);
        break;
       case O_PB4:
-        draw->Canvas.SetColor (pins[3].oavalue, 0, 0);
+        draw->Canvas.SetColor (pins[2].oavalue, 0, 0);
        break;
       case O_PB5:
-        draw->Canvas.SetColor (pins[1].oavalue, 0, 0);
+        draw->Canvas.SetColor (pins[0].oavalue, 0, 0);
        break;
       default:
        draw->Canvas.SetColor (0, 0, 0);
