@@ -552,6 +552,65 @@ rcontrol_loop(void)
            ret += sendtext (lstemp);
           }
         }
+       else if (strstr (cmd, "dumpf"))
+        {
+         //Command dumpf ========================================================
+         Board = Window1.GetBoard ();
+         unsigned int addr;
+         unsigned int size;
+         int ret = sscanf (cmd + 5, "%x %u \n", &addr, &size);
+
+         if (ret == -1) //all
+          {
+           for (unsigned int i = 0; i < Board->DBGGetROMSize (); i += 16)
+            {
+             snprintf (lstemp, 100, "%04X: ", i);
+             ret += sendtext (lstemp);
+             for (int j = 0; j < 16; j++)
+              {
+               snprintf (lstemp, 100, "%02X ", Board->DBGGetROM_p ()[j + i ]);
+               ret += sendtext (lstemp);
+              }
+             snprintf (lstemp, 100, "\r\n");
+             ret += sendtext (lstemp);
+            }
+           snprintf (lstemp, 100, "\r\nOK\r\n>");
+           ret += sendtext (lstemp);
+          }
+         else if (ret == 1) //only one addr
+          {
+           if (addr < Board->DBGGetROMSize ())
+            {
+             snprintf (lstemp, 100, "%04X: %02X ", addr, Board->DBGGetROM_p ()[addr]);
+             ret += sendtext (lstemp);
+             snprintf (lstemp, 100, "\r\nOK\r\n>");
+             ret += sendtext (lstemp);
+            }
+           else
+            {
+             ret = sendtext ("ERROR\r\n>");
+            }
+          }
+         else // vector from addr 
+          {
+           for (unsigned int i = addr; (i < (addr + size)) && i < Board->DBGGetROMSize (); i += 16)
+            {
+             snprintf (lstemp, 100, "%04X: ", i);
+             ret += sendtext (lstemp);
+
+             for (unsigned int j = 0; (j < 16) && (j < size - (i - addr)) && (i + j) < Board->DBGGetROMSize (); j++)
+              {
+               snprintf (lstemp, 100, "%02X ", Board->DBGGetROM_p ()[j + i ]);
+               ret += sendtext (lstemp);
+              }
+
+             snprintf (lstemp, 100, "\r\n");
+             ret += sendtext (lstemp);
+            }
+           snprintf (lstemp, 100, "\r\nOK\r\n>");
+           ret += sendtext (lstemp);
+          }
+        }
        else
         {
          ret = sendtext ("ERROR\r\n>");
@@ -787,8 +846,9 @@ rcontrol_loop(void)
         {
          //Command help ========================================================
          ret += sendtext ("List of supported commands:\r\n");
-         ret += sendtext ("  dumpr [a] [s]- dump ram memory\r\n");
-         ret += sendtext ("  dumpe [a] [s]- dump eeprom memory\r\n");
+         ret += sendtext ("  dumpe [a] [s]- dump internal EEPROM memory\r\n");
+         ret += sendtext ("  dumpf [a] [s]- dump Flash memory\r\n");
+         ret += sendtext ("  dumpr [a] [s]- dump RAM memory\r\n");
          ret += sendtext ("  exit         - shutdown PICSimLab\r\n");
          ret += sendtext ("  get ob       - get object value\r\n");
          ret += sendtext ("  help         - show this message\r\n");
