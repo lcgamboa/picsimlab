@@ -456,16 +456,14 @@ rcontrol_loop(void)
              snprintf (lstemp, 100, "\r\n");
              ret += sendtext (lstemp);
             }
-           snprintf (lstemp, 100, "\r\nOK\r\n>");
+           snprintf (lstemp, 100, "\r\nOk\r\n>");
            ret += sendtext (lstemp);
           }
          else if (ret == 1) //only one addr
           {
            if (addr < Board->DBGGetRAMSize ())
             {
-             snprintf (lstemp, 100, "%04X: %02X ", addr, Board->DBGGetRAM_p ()[addr]);
-             ret += sendtext (lstemp);
-             snprintf (lstemp, 100, "\r\nOK\r\n>");
+             snprintf (lstemp, 100, "%04X: %02X \r\nOk\r\n>", addr, Board->DBGGetRAM_p ()[addr]);
              ret += sendtext (lstemp);
             }
            else
@@ -489,7 +487,7 @@ rcontrol_loop(void)
              snprintf (lstemp, 100, "\r\n");
              ret += sendtext (lstemp);
             }
-           snprintf (lstemp, 100, "\r\nOK\r\n>");
+           snprintf (lstemp, 100, "\r\nOk\r\n>");
            ret += sendtext (lstemp);
           }
         }
@@ -515,16 +513,14 @@ rcontrol_loop(void)
              snprintf (lstemp, 100, "\r\n");
              ret += sendtext (lstemp);
             }
-           snprintf (lstemp, 100, "\r\nOK\r\n>");
+           snprintf (lstemp, 100, "\r\nOk\r\n>");
            ret += sendtext (lstemp);
           }
          else if (ret == 1) //only one addr
           {
            if (addr < Board->DBGGetEEPROM_Size ())
             {
-             snprintf (lstemp, 100, "%04X: %02X ", addr, Board->DBGGetEEPROM_p ()[addr]);
-             ret += sendtext (lstemp);
-             snprintf (lstemp, 100, "\r\nOK\r\n>");
+             snprintf (lstemp, 100, "%04X: %02X \r\nOk\r\n>", addr, Board->DBGGetEEPROM_p ()[addr]);
              ret += sendtext (lstemp);
             }
            else
@@ -548,7 +544,7 @@ rcontrol_loop(void)
              snprintf (lstemp, 100, "\r\n");
              ret += sendtext (lstemp);
             }
-           snprintf (lstemp, 100, "\r\nOK\r\n>");
+           snprintf (lstemp, 100, "\r\nOk\r\n>");
            ret += sendtext (lstemp);
           }
         }
@@ -574,16 +570,14 @@ rcontrol_loop(void)
              snprintf (lstemp, 100, "\r\n");
              ret += sendtext (lstemp);
             }
-           snprintf (lstemp, 100, "\r\nOK\r\n>");
+           snprintf (lstemp, 100, "\r\nOk\r\n>");
            ret += sendtext (lstemp);
           }
          else if (ret == 1) //only one addr
           {
            if (addr < Board->DBGGetROMSize ())
             {
-             snprintf (lstemp, 100, "%04X: %02X ", addr, Board->DBGGetROM_p ()[addr]);
-             ret += sendtext (lstemp);
-             snprintf (lstemp, 100, "\r\nOK\r\n>");
+             snprintf (lstemp, 100, "%04X: %02X \r\nOk\r\n>", addr, Board->DBGGetROM_p ()[addr]);
              ret += sendtext (lstemp);
             }
            else
@@ -607,7 +601,7 @@ rcontrol_loop(void)
              snprintf (lstemp, 100, "\r\n");
              ret += sendtext (lstemp);
             }
-           snprintf (lstemp, 100, "\r\nOK\r\n>");
+           snprintf (lstemp, 100, "\r\nOk\r\n>");
            ret += sendtext (lstemp);
           }
         }
