@@ -39,6 +39,7 @@ class cpart_leds:public part
       cpart_leds(unsigned x, unsigned y);
       ~cpart_leds(void);
       void Draw(void);
+      void PostProcess(void);
       lxString GetPictureFileName(void){return lxT("leds/LEDs.svg");};
       lxString GetInputMapFile(void){return lxT("leds/LEDs_i.map");};
       lxString GetOutputMapFile(void){return lxT("leds/LEDs_o.map");};

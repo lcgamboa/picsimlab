@@ -35,7 +35,7 @@ enum
 };
 
 cpart_servo::cpart_servo(unsigned x, unsigned y)
-:font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+: font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -72,56 +72,51 @@ void
 cpart_servo::Draw(void)
 {
 
- canvas.SetBitmap (BackGround, 1.0, 1.0); //FIXME draw servo error on scale or rotate
-
  int i;
 
-
- if (angle > angle_)
-  {
-   angle -= 0.2;
-   if (angle < angle_) angle = angle_;
-  }
-
- if (angle < angle_)
-  {
-   angle += 0.2;
-   if (angle > angle_) angle = angle_;
-  }
-
- canvas.Init (Scale, Scale, Orientation);
-
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   if (output[i].id == O_P1)
+   if (output[i].update)//only if need update
     {
-     canvas.SetFgColor (255, 255, 255);
-     if (input_pin == 0)
-      canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
-     else
-      canvas.RotatedText (Window5.GetPinName (input_pin), output[i].x1, output[i].y1, 0);
+     output[i].update = 0;
+
+     if (!Update)
+      {
+       canvas.SetBitmap (BackGround, 1.0, 1.0); //FIXME draw servo error on scale or rotate
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
+      }
+     Update++; //set to update buffer
+
+     if (output[i].id == O_P1)
+      {
+       canvas.SetFgColor (255, 255, 255);
+       if (input_pin == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
+       else
+        canvas.RotatedText (Window5.GetPinName (input_pin), output[i].x1, output[i].y1, 0);
+      }
+
+     if (output[i].id == O_AXIS)
+      {
+       float x2 = output[i].x1 + output[i].r * sin (angle);
+       float y2 = output[i].y1 - output[i].r * cos (angle);
+       canvas.SetFgColor (0, 0, 0);
+       canvas.SetLineWidth (20);
+       canvas.Line (output[i].x1, output[i].y1, x2, y2);
+       canvas.SetFgColor (255, 255, 255);
+       canvas.SetLineWidth (18);
+       canvas.Line (output[i].x1, output[i].y1, x2, y2);
+      }
     }
-
-   if (output[i].id == O_AXIS)
-    {
-     float x2 = output[i].x1 + output[i].r * sin (angle);
-     float y2 = output[i].y1 - output[i].r * cos (angle);
-     canvas.SetFgColor (0, 0, 0);
-     canvas.SetLineWidth (20);
-     canvas.Line (output[i].x1, output[i].y1, x2, y2);
-     canvas.SetFgColor (255, 255, 255);
-     canvas.SetLineWidth (18);
-     canvas.Line (output[i].x1, output[i].y1, x2, y2);
-    }
-
-
   }
 
- canvas.End ();
-
+ if (Update)
+  {
+   canvas.End ();
+  }
 }
 
 void
@@ -150,6 +145,30 @@ cpart_servo::Process(void)
   }
 
  time++;
+}
+
+void
+cpart_servo::PostProcess(void)
+{
+ if (angle > angle_)
+  {
+   angle -= 0.2;
+   if (angle < angle_) angle = angle_;
+  }
+
+ if (angle < angle_)
+  {
+   angle += 0.2;
+   if (angle > angle_) angle = angle_;
+  }
+ 
+ 
+  if (output_ids[O_AXIS]->fvalue != angle)
+  {
+   output_ids[O_AXIS]->fvalue = angle;
+   output_ids[O_AXIS]->update = 1;
+   output_ids[O_P1]->update = 1; 
+  }
 }
 
 unsigned short

@@ -48,7 +48,7 @@ const char pin_values[8][10] = {
 
 cpart_RTC_ds1307::cpart_RTC_ds1307(unsigned x, unsigned y) :
 font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
-font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)    
+font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -85,50 +85,59 @@ cpart_RTC_ds1307::Draw(void)
 
  int i;
 
- canvas.Init (Scale, Scale, Orientation);
-
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_IC:
-     canvas.SetFont (font_p);
-     canvas.SetColor (26, 26, 26);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     canvas.RotatedText ("DS1307", output[i].x1, output[i].y2 - 15, 0.0);
-     break;
-    default:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+     output[i].update = 0;
 
-     canvas.SetFgColor (255, 255, 255);
-     canvas.RotatedText (pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0);
-
-     int pinv = pin_values[output[i].id - O_P1][0];
-     if (pinv > 10)
+     if (!Update)
       {
-       canvas.SetFgColor (155, 155, 155);
-       canvas.RotatedText (pin_values[output[i].id - O_P1], output[i].x1, output[i].y2 - 30, 90.0);
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
       }
-     else
+     Update++; //set to update buffer
+
+     switch (output[i].id)
       {
-       if (input_pins[pinv] == 0)
-        canvas.RotatedText ("NC", output[i].x1, output[i].y2 - 30, 90.0);
+      case O_IC:
+       canvas.SetFont (font_p);
+       canvas.SetColor (26, 26, 26);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       canvas.RotatedText ("DS1307", output[i].x1, output[i].y2 - 15, 0.0);
+       break;
+      default:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
+       canvas.SetFgColor (255, 255, 255);
+       canvas.RotatedText (pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0);
+
+       int pinv = pin_values[output[i].id - O_P1][0];
+       if (pinv > 10)
+        {
+         canvas.SetFgColor (155, 155, 155);
+         canvas.RotatedText (pin_values[output[i].id - O_P1], output[i].x1, output[i].y2 - 30, 90.0);
+        }
        else
-        canvas.RotatedText (Window5.GetPinName (input_pins[pinv]), output[i].x1, output[i].y2 - 30, 90.0);
+        {
+         if (input_pins[pinv] == 0)
+          canvas.RotatedText ("NC", output[i].x1, output[i].y2 - 30, 90.0);
+         else
+          canvas.RotatedText (Window5.GetPinName (input_pins[pinv]), output[i].x1, output[i].y2 - 30, 90.0);
+        }
+       break;
       }
-     break;
     }
-
-
   }
 
-
- canvas.End ();
+ if (Update)
+  {
+   canvas.End ();
+  }
 
  rtc2_update (&rtc2);
 }

@@ -1,3 +1,20 @@
+
+## v0.8.8 (2021-05-08)
+
+### New
+
+* New part 7 segment display with BCD-7S decoder. [lcgamboa]
+
+### Changes
+
+* Remote control running in one separated thread and support to show real simulation speed. [lcgamboa]
+
+### Fix
+
+* Error on arduino uno bootloader addr fixed. [lcgamboa]
+* Memory leek of lxrad library removed. [lcgamboa]
+
+
 ## v0.8.7 (2021-04-22)
 
 ### New

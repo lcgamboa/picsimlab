@@ -41,6 +41,7 @@ class cpart_LCD_ili9341:public part
       ~cpart_LCD_ili9341(void);
       void Draw(void);
       void Process(void);
+      void PostProcess(void);
       lxString GetPictureFileName(void);
       lxString GetInputMapFile(void);
       lxString GetOutputMapFile(void);

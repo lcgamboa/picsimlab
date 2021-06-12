@@ -64,7 +64,6 @@ class cboard_STM32_H103:public bsim_qemu_stm32
       void EvKeyPress(uint key,uint mask);
       //Event on the board
       void EvKeyRelease(uint key,uint mask);
-      void EvOnShow(void){};
       //Called ever 1s to refresh status
       void RefreshStatus(void);
       //Called to save board preferences in configuration file

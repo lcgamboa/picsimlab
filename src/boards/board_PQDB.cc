@@ -126,215 +126,230 @@ void
 cboard_PQDB::Draw(CDraw * draw)
 {
  int i;
-
- draw -> Canvas.Init (Scale, Scale);
+ int update = 0; //verifiy if updated is needed
 
  lcd_blink (& lcd);
 
  //pqdb draw 
  for (i = 0; i < outputc; i++)
   {
-   if (!output[i].r)
+   if (output[i].update)//only if need update
     {
+     output[i].update = 0;
 
-     draw -> Canvas.SetFgColor (30, 0, 0);
-     //seven segments display
-     switch (output[i].id)
+     if (!update)
       {
-      case O_A1:
-      case O_B1:
-      case O_C1:
-      case O_D1:
-      case O_E1:
-      case O_F1:
-      case O_G1:
-      case O_P1:
-      case O_A2:
-      case O_B2:
-      case O_C2:
-      case O_D2:
-      case O_E2:
-      case O_F2:
-      case O_G2:
-      case O_P2:
-      case O_A3:
-      case O_B3:
-      case O_C3:
-      case O_D3:
-      case O_E3:
-      case O_F3:
-      case O_G3:
-      case O_P3:
-      case O_A4:
-      case O_B4:
-      case O_C4:
-      case O_D4:
-      case O_E4:
-      case O_F4:
-      case O_G4:
-      case O_P4:
-       draw -> Canvas.SetColor (lm7seg[output[i].id], 55, 55);
-       break;
-      case O_LCD:
-       draw -> Canvas.SetColor (0, 90 * Window1.Get_mcupwr () + 40, 0);
-       break;
-      case O_RST:
-       draw -> Canvas.SetColor (100, 100, 100);
-       draw -> Canvas.Rectangle (1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1, output[i].y2 - output[i].y1 - 1);
-       if (p_RST)
+       draw->Canvas.Init (Scale, Scale);
+      }
+     update++; //set to update buffer
+
+     if (!output[i].r)
+      {
+
+       draw -> Canvas.SetFgColor (30, 0, 0);
+       //seven segments display
+       switch (output[i].id)
         {
-         draw -> Canvas.SetColor (15, 15, 15);
+        case O_A1:
+        case O_B1:
+        case O_C1:
+        case O_D1:
+        case O_E1:
+        case O_F1:
+        case O_G1:
+        case O_P1:
+        case O_A2:
+        case O_B2:
+        case O_C2:
+        case O_D2:
+        case O_E2:
+        case O_F2:
+        case O_G2:
+        case O_P2:
+        case O_A3:
+        case O_B3:
+        case O_C3:
+        case O_D3:
+        case O_E3:
+        case O_F3:
+        case O_G3:
+        case O_P3:
+        case O_A4:
+        case O_B4:
+        case O_C4:
+        case O_D4:
+        case O_E4:
+        case O_F4:
+        case O_G4:
+        case O_P4:
+         draw -> Canvas.SetColor (lm7seg[output[i].id], 55, 55);
+         break;
+        case O_LCD:
+         draw -> Canvas.SetColor (0, 90 * Window1.Get_mcupwr () + 40, 0);
+         break;
+        case O_RST:
+         draw -> Canvas.SetColor (100, 100, 100);
+         draw -> Canvas.Rectangle (1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1, output[i].y2 - output[i].y1 - 1);
+         if (p_RST)
+          {
+           draw -> Canvas.SetColor (15, 15, 15);
+          }
+         else
+          {
+           draw -> Canvas.SetColor (55, 55, 55);
+          }
+         break;
+
+        case O_SOEN:
+         selectColorByPinValue (SO_EN_PIN);
+         break;
+        case O_SOCLK:
+         selectColorByPinValue (SO_CLK_PIN);
+         break;
+        case O_SODATA:
+         selectColorByPinValue (SO_DATA_PIN);
+         break;
+        case O_DISP1:
+         selectColorByPinValue (DISP_1_PIN);
+         break;
+        case O_DISP2:
+         selectColorByPinValue (DISP_2_PIN);
+         break;
+        case O_DISP3:
+         selectColorByPinValue (DISP_3_PIN);
+         break;
+        case O_DISP4:
+         selectColorByPinValue (DISP_4_PIN);
+         break;
+        case O_KP1:
+         selectColorByPinValue (KEYPAD_1_PIN);
+         break;
+        case O_KP2:
+         selectColorByPinValue (KEYPAD_2_PIN);
+         break;
+        case O_PWM:
+         selectColorByPinValue (PWM_PIN);
+         break;
+        case O_LCDRS:
+         selectColorByPinValue (LCD_RS_PIN);
+         break;
+        case O_LCDEN:
+         selectColorByPinValue (LCD_EN_PIN);
+         break;
+        case O_SCL:
+         selectColorByPinValue (SCL_PIN);
+         break;
+        case O_SDA:
+         //use sda instead pinValue because switching input/output
+         selectColorByValue (sda);
+         break;
+        case O_TX:
+         selectColorByPinValue (TX_PIN);
+         break;
+        case O_RX:
+         selectColorByPinValue (RX_PIN);
+         break;
+        case O_SOD0:
+        case O_SOD1:
+        case O_SOD2:
+        case O_SOD3:
+        case O_SOD4:
+        case O_SOD5:
+        case O_SOD6:
+        case O_SOD7:
+         selectColorByPinValue (PSRD0 + (output[i].id - O_SOD0));
+         break;
+        case O_TC1:
+        case O_TC2:
+        case O_TC3:
+        case O_TC4:
+        case O_TC5:
+        case O_TC6:
+        case O_TC7:
+        case O_TC8:
+        case O_TC9:
+        case O_TC0:
+         draw -> Canvas.SetColor (100, 100, 100);
+         draw -> Canvas.Rectangle (1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1, output[i].y2 - output[i].y1 - 1);
+         if (p_KEY[output[i].id - O_TC1])
+          {
+           draw->Canvas.SetColor (80, 80, 80);
+          }
+         else
+          {
+           draw->Canvas.SetColor (15, 15, 15);
+          }
+         break;
+        default:
+         break;
         }
-       else
+
+       if ((output[i].id >= O_TC1) && (output[i].id <= O_TC0))
         {
-         draw -> Canvas.SetColor (55, 55, 55);
+         draw -> Canvas.Circle (1, output[i].cx, output[i].cy, 9);
         }
-       break;
-
-      case O_SOEN:
-       selectColorByPinValue (SO_EN_PIN);
-       break;
-      case O_SOCLK:
-       selectColorByPinValue (SO_CLK_PIN);
-       break;
-      case O_SODATA:
-       selectColorByPinValue (SO_DATA_PIN);
-       break;
-      case O_DISP1:
-       selectColorByPinValue (DISP_1_PIN);
-       break;
-      case O_DISP2:
-       selectColorByPinValue (DISP_2_PIN);
-       break;
-      case O_DISP3:
-       selectColorByPinValue (DISP_3_PIN);
-       break;
-      case O_DISP4:
-       selectColorByPinValue (DISP_4_PIN);
-       break;
-      case O_KP1:
-       selectColorByPinValue (KEYPAD_1_PIN);
-       break;
-      case O_KP2:
-       selectColorByPinValue (KEYPAD_2_PIN);
-       break;
-      case O_PWM:
-       selectColorByPinValue (PWM_PIN);
-       break;
-      case O_LCDRS:
-       selectColorByPinValue (LCD_RS_PIN);
-       break;
-      case O_LCDEN:
-       selectColorByPinValue (LCD_EN_PIN);
-       break;
-      case O_SCL:
-       selectColorByPinValue (SCL_PIN);
-       break;
-      case O_SDA:
-       //use sda instead pinValue because switching input/output
-       selectColorByValue (sda);
-       break;
-      case O_TX:
-       selectColorByPinValue (TX_PIN);
-       break;
-      case O_RX:
-       selectColorByPinValue (RX_PIN);
-       break;
-      case O_SOD0:
-      case O_SOD1:
-      case O_SOD2:
-      case O_SOD3:
-      case O_SOD4:
-      case O_SOD5:
-      case O_SOD6:
-      case O_SOD7:
-       selectColorByPinValue (PSRD0 + (output[i].id - O_SOD0));
-       break;
-      case O_TC1:
-      case O_TC2:
-      case O_TC3:
-      case O_TC4:
-      case O_TC5:
-      case O_TC6:
-      case O_TC7:
-      case O_TC8:
-      case O_TC9:
-      case O_TC0:
-       draw -> Canvas.SetColor (100, 100, 100);
-       draw -> Canvas.Rectangle (1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1, output[i].y2 - output[i].y1 - 1);
-       if (p_KEY[output[i].id - O_TC1])
+       else if (output[i].id == O_RST)
         {
-         draw->Canvas.SetColor (80, 80, 80);
+         draw -> Canvas.Circle (1, output[i].cx, output[i].cy, 9);
         }
-       else
+       else if (output[i].id == O_POT)
         {
-         draw->Canvas.SetColor (15, 15, 15);
+         draw -> Canvas.SetColor (100, 120, 100);
+         draw -> Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
+         draw -> Canvas.SetColor (250, 250, 250);
+         draw -> Canvas.Circle (1, output[i].cx, output[i].cy, 38);
+
+         draw -> Canvas.SetColor (50, 50, 50);
+         int x = -30 * sin ((5.585 * (pot / 200.0)) + 0.349);
+         int y = 30 * cos ((5.585 * (pot / 200.0)) + 0.349);
+         draw -> Canvas.Circle (1, output[i].cx + x, output[i].cy + y, 4);
+
         }
-       break;
-      default:
-       break;
-      }
+       else if ((output[i].id != O_LCD))
+        {
+         draw -> Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+        }
 
-     if ((output[i].id >= O_TC1) && (output[i].id <= O_TC0))
-      {
-       draw -> Canvas.Circle (1, output[i].cx, output[i].cy, 9);
-      }
-     else if (output[i].id == O_RST)
-      {
-       draw -> Canvas.Circle (1, output[i].cx, output[i].cy, 9);
-      }
-     else if (output[i].id == O_POT)
-      {
-       draw -> Canvas.SetColor (100, 120, 100);
-       draw -> Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-
-       draw -> Canvas.SetColor (250, 250, 250);
-       draw -> Canvas.Circle (1, output[i].cx, output[i].cy, 38);
-
-       draw -> Canvas.SetColor (50, 50, 50);
-       int x = -30 * sin ((5.585 * (pot / 200.0)) + 0.349);
-       int y = 30 * cos ((5.585 * (pot / 200.0)) + 0.349);
-       draw -> Canvas.Circle (1, output[i].cx + x, output[i].cy + y, 4);
+       //draw lcd text 
+       if (output[i].id == O_LCD)
+        {
+         //strech lcd background
+         draw -> Canvas.Rectangle (1, output[i].x1 - 8, output[i].y1 - 10, output[i].x2 - output[i].x1 + 17, output[i].y2 - output[i].y1 + 20);
+         lcd_draw (&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, Window1.Get_mcupwr ());
+        }
 
       }
-     else if ((output[i].id != O_LCD))
+     else
       {
-       draw -> Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-      }
+       draw -> Canvas.SetFgColor (0, 0, 0);
+       draw -> Canvas.SetColor (25, 15, 15);
 
-     //draw lcd text 
-     if (output[i].id == O_LCD)
-      {
-       //strech lcd background
-       draw -> Canvas.Rectangle (1, output[i].x1 - 8, output[i].y1 - 10, output[i].x2 - output[i].x1 + 17, output[i].y2 - output[i].y1 + 20);
-       lcd_draw (&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, Window1.Get_mcupwr ());
+       if (output[i].id == O_LPWR)
+        {
+         draw -> Canvas.SetColor (0, 255 * Window1.Get_mcupwr (), 0);
+        }
+       draw -> Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
+
+       if (output[i].id == O_RGB)
+        {
+         draw -> Canvas.SetColor (pic.pins[LED_RED_PIN].oavalue, pic.pins[LED_GREEN_PIN].oavalue, pic.pins[LED_BLUE_PIN].oavalue);
+         draw -> Canvas.Circle (1, output[i].cx, output[i].cy, 19);
+        }
       }
 
     }
-   else
-    {
-     draw -> Canvas.SetFgColor (0, 0, 0);
-     draw -> Canvas.SetColor (25, 15, 15);
-
-     if (output[i].id == O_LPWR)
-      {
-       draw -> Canvas.SetColor (0, 255 * Window1.Get_mcupwr (), 0);
-      }
-     draw -> Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
-
-     if (output[i].id == O_RGB)
-      {
-       draw -> Canvas.SetColor (pic.pins[LED_RED_PIN].oavalue, pic.pins[LED_GREEN_PIN].oavalue, pic.pins[LED_BLUE_PIN].oavalue);
-       draw -> Canvas.Circle (1, output[i].cx, output[i].cy, 19);
-      }
-    }
-
   }
- rtc2_update (& rtc2);
+
  //end draw
 
- draw -> Canvas.End ();
- draw -> Update ();
+ if (update)
+  {
+   draw -> Canvas.End ();
+   draw -> Update ();
+  }
+
+ rtc2_update (& rtc2);
 
  if (((0.5 * (pic.pins[PWM_PIN].oavalue - 55)) > 10) && (Window1.Get_mcupwr ()))
   {
@@ -592,6 +607,106 @@ cboard_PQDB::Run_CPU(void)
  pic.pins[PSRD7].oavalue = (pic.pins[PSRD7].oavalue + ((shiftReg_alm[7]*200.0) / NSTEPJ) + 55) / 2;
  if (use_spare) Window5.PostProcess ();
 
+ if (lcd.update) output_ids[O_LCD]->update = 1;
+ //verifiy if LEDS need update 
+ for (i = 0; i < 32; i++)
+  {
+   if (output_ids[O_A1 + i]->value != lm7seg[O_A1 + i])
+    {
+     output_ids[O_A1 + i]->value = lm7seg[O_A1 + i];
+     output_ids[O_A1 + i]->update = 1;
+    }
+  }
+
+ for (i = 0; i < 8; i++)
+  {
+   if (output_ids[O_SOD0 + i]->value != pic.pins[PSRD0 + i].oavalue)
+    {
+     output_ids[O_SOD0 + i]->value = pic.pins[PSRD0 + i].oavalue;
+     output_ids[O_SOD0 + i]->update = 1;
+    }
+  }
+
+ if (output_ids[O_SOEN]->value != pic.pins[SO_EN_PIN].oavalue)
+  {
+   output_ids[O_SOEN]->value = pic.pins[SO_EN_PIN].oavalue;
+   output_ids[O_SOEN]->update = 1;
+  }
+ if (output_ids[O_SOCLK]->value != pic.pins[SO_CLK_PIN].oavalue)
+  {
+   output_ids[O_SOCLK]->value = pic.pins[SO_CLK_PIN].oavalue;
+   output_ids[O_SOCLK]->update = 1;
+  }
+ if (output_ids[O_SODATA]->value != pic.pins[SO_DATA_PIN].oavalue)
+  {
+   output_ids[O_SODATA]->value = pic.pins[SO_DATA_PIN].oavalue;
+   output_ids[O_SODATA]->update = 1;
+  }
+ if (output_ids[O_DISP1]->value != pic.pins[DISP_1_PIN].oavalue)
+  {
+   output_ids[O_DISP1]->value = pic.pins[DISP_1_PIN].oavalue;
+   output_ids[O_DISP1]->update = 1;
+  }
+ if (output_ids[O_DISP2]->value != pic.pins[DISP_2_PIN].oavalue)
+  {
+   output_ids[O_DISP2]->value = pic.pins[DISP_2_PIN].oavalue;
+   output_ids[O_DISP2]->update = 1;
+  }
+ if (output_ids[O_DISP3]->value != pic.pins[DISP_3_PIN].oavalue)
+  {
+   output_ids[O_DISP3]->value = pic.pins[DISP_3_PIN].oavalue;
+   output_ids[O_DISP3]->update = 1;
+  }
+ if (output_ids[O_DISP4]->value != pic.pins[DISP_4_PIN].oavalue)
+  {
+   output_ids[O_DISP4]->value = pic.pins[DISP_4_PIN].oavalue;
+   output_ids[O_DISP4]->update = 1;
+  }
+ if (output_ids[O_KP1]->value != pic.pins[KEYPAD_1_PIN].oavalue)
+  {
+   output_ids[O_KP1]->value = pic.pins[KEYPAD_1_PIN].oavalue;
+   output_ids[O_KP1]->update = 1;
+  }
+ if (output_ids[O_KP2]->value != pic.pins[KEYPAD_2_PIN].oavalue)
+  {
+   output_ids[O_KP2]->value = pic.pins[KEYPAD_2_PIN].oavalue;
+   output_ids[O_KP2]->update = 1;
+  }
+ if (output_ids[O_PWM]->value != pic.pins[PWM_PIN].oavalue)
+  {
+   output_ids[O_PWM]->value = pic.pins[PWM_PIN].oavalue;
+   output_ids[O_PWM]->update = 1;
+  }
+ if (output_ids[O_LCDRS]->value != pic.pins[LCD_RS_PIN].oavalue)
+  {
+   output_ids[O_LCDRS]->value = pic.pins[LCD_RS_PIN].oavalue;
+   output_ids[O_LCDRS]->update = 1;
+  }
+ if (output_ids[O_LCDEN]->value != pic.pins[LCD_EN_PIN].oavalue)
+  {
+   output_ids[O_LCDEN]->value = pic.pins[LCD_EN_PIN].oavalue;
+   output_ids[O_LCDEN]->update = 1;
+  }
+ if (output_ids[O_SCL]->value != pic.pins[SCL_PIN].oavalue)
+  {
+   output_ids[O_SCL]->value = pic.pins[SCL_PIN].oavalue;
+   output_ids[O_SCL]->update = 1;
+  }
+ if (output_ids[O_SDA]->value != sda)
+  {
+   output_ids[O_SDA]->value = sda;
+   output_ids[O_SDA]->update = 1;
+  }
+ if (output_ids[O_TX]->value != pic.pins[TX_PIN].oavalue)
+  {
+   output_ids[O_TX]->value = pic.pins[TX_PIN].oavalue;
+   output_ids[O_TX]->update = 1;
+  }
+ if (output_ids[O_RX]->value != pic.pins[RX_PIN].oavalue)
+  {
+   output_ids[O_RX]->value = pic.pins[RX_PIN].oavalue;
+   output_ids[O_RX]->update = 1;
+  }
 }
 
 void
@@ -739,6 +854,7 @@ cboard_PQDB::EvMouseMove(uint button, uint x, uint y, uint state)
        if (active)
         {
          pot = CalcAngle (i, x, y);
+         output_ids[O_POT]->update = 1;
         }
       }
      break;
@@ -782,6 +898,7 @@ cboard_PQDB::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           Window1.statusbar1.SetField (0, lxT ("Running..."));
          }
        }
+       output_ids[O_LPWR]->update = 1;
        break;
 
       case I_RST:
@@ -792,66 +909,78 @@ cboard_PQDB::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           Window1.Set_mcurst (1);
          }
         p_RST = 0;
+        output_ids[O_RST]->update = 1;
        }
        break;
 
       case I_TC1:
        {
         p_KEY[0] = 1;
+        output_ids[O_TC1]->update = 1;
        }
        break;
       case I_TC2:
        {
         p_KEY[1] = 1;
+        output_ids[O_TC2]->update = 1;
        }
        break;
       case I_TC3:
        {
         p_KEY[2] = 1;
+        output_ids[O_TC3]->update = 1;
        }
        break;
 
       case I_TC4:
        {
         p_KEY[3] = 1;
+        output_ids[O_TC4]->update = 1;
        }
        break;
       case I_TC5:
        {
         p_KEY[4] = 1;
+        output_ids[O_TC5]->update = 1;
        }
        break;
       case I_TC6:
        {
         p_KEY[5] = 1;
+        output_ids[O_TC6]->update = 1;
        }
        break;
 
       case I_TC7:
        {
         p_KEY[6] = 1;
+        output_ids[O_TC7]->update = 1;
        }
        break;
       case I_TC8:
        {
         p_KEY[7] = 1;
+        output_ids[O_TC8]->update = 1;
        }
        break;
       case I_TC9:
        {
         p_KEY[8] = 1;
+        output_ids[O_TC9]->update = 1;
        }
        break;
 
       case I_TC0:
        {
         p_KEY[9] = 1;
+        output_ids[O_TC0]->update = 1;
        }
        break;
       case I_POT:
        {
         active = 1;
         pot = CalcAngle (i, x, y);
+        output_ids[O_POT]->update = 1;
        }
        break;
       }
@@ -883,65 +1012,77 @@ cboard_PQDB::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
            }
          }
         p_RST = 1;
+        output_ids[O_RST]->update = 1;
        }
        break;
 
       case I_TC1:
        {
         p_KEY[0] = 0;
+        output_ids[O_TC1]->update = 1;
        }
        break;
       case I_TC2:
        {
         p_KEY[1] = 0;
+        output_ids[O_TC2]->update = 1;
        }
        break;
       case I_TC3:
        {
         p_KEY[2] = 0;
+        output_ids[O_TC3]->update = 1;
        }
        break;
 
       case I_TC4:
        {
         p_KEY[3] = 0;
+        output_ids[O_TC4]->update = 1;
        }
        break;
       case I_TC5:
        {
         p_KEY[4] = 0;
+        output_ids[O_TC5]->update = 1;
        }
        break;
       case I_TC6:
        {
         p_KEY[5] = 0;
+        output_ids[O_TC6]->update = 1;
        }
        break;
 
       case I_TC7:
        {
         p_KEY[6] = 0;
+        output_ids[O_TC7]->update = 1;
        }
        break;
       case I_TC8:
        {
         p_KEY[7] = 0;
+        output_ids[O_TC8]->update = 1;
        }
        break;
       case I_TC9:
        {
         p_KEY[8] = 0;
+        output_ids[O_TC9]->update = 1;
        }
        break;
 
       case I_TC0:
        {
         p_KEY[9] = 0;
+        output_ids[O_TC0]->update = 1;
        }
        break;
       case I_POT:
        {
         active = 0;
+        output_ids[O_POT]->update = 1;
        }
        break;
       }
@@ -956,42 +1097,52 @@ cboard_PQDB::EvKeyPress(uint key, uint mask)
  if (key == '1')
   {
    p_KEY[0] = 1;
+   output_ids[O_TC1]->update = 1;
   }
  if (key == '2')
   {
    p_KEY[1] = 1;
+   output_ids[O_TC2]->update = 1;
   }
  if (key == '3')
   {
    p_KEY[2] = 1;
+   output_ids[O_TC3]->update = 1;
   }
  if (key == '4')
   {
    p_KEY[3] = 1;
+   output_ids[O_TC4]->update = 1;
   }
  if (key == '5')
   {
    p_KEY[4] = 1;
+   output_ids[O_TC5]->update = 1;
   }
  if (key == '6')
   {
    p_KEY[5] = 1;
+   output_ids[O_TC6]->update = 1;
   }
  if (key == '7')
   {
    p_KEY[6] = 1;
+   output_ids[O_TC7]->update = 1;
   }
  if (key == '8')
   {
    p_KEY[7] = 1;
+   output_ids[O_TC8]->update = 1;
   }
  if (key == '9')
   {
    p_KEY[8] = 1;
+   output_ids[O_TC9]->update = 1;
   }
  if (key == '0')
   {
    p_KEY[9] = 1;
+   output_ids[O_TC0]->update = 1;
   }
 }
 
@@ -1001,42 +1152,52 @@ cboard_PQDB::EvKeyRelease(uint key, uint mask)
  if (key == '1')
   {
    p_KEY[0] = 0;
+   output_ids[O_TC1]->update = 1;
   }
  if (key == '2')
   {
    p_KEY[1] = 0;
+   output_ids[O_TC2]->update = 1;
   }
  if (key == '3')
   {
    p_KEY[2] = 0;
+   output_ids[O_TC3]->update = 1;
   }
  if (key == '4')
   {
    p_KEY[3] = 0;
+   output_ids[O_TC4]->update = 1;
   }
  if (key == '5')
   {
    p_KEY[4] = 0;
+   output_ids[O_TC5]->update = 1;
   }
  if (key == '6')
   {
    p_KEY[5] = 0;
+   output_ids[O_TC6]->update = 1;
   }
  if (key == '7')
   {
    p_KEY[6] = 0;
+   output_ids[O_TC7]->update = 1;
   }
  if (key == '8')
   {
    p_KEY[7] = 0;
+   output_ids[O_TC8]->update = 1;
   }
  if (key == '9')
   {
    p_KEY[8] = 0;
+   output_ids[O_TC9]->update = 1;
   }
  if (key == '0')
   {
    p_KEY[9] = 0;
+   output_ids[O_TC0]->update = 1;
   }
 }
 
@@ -1044,6 +1205,7 @@ void
 cboard_PQDB::EvOnShow(void)
 {
  lcd.update = 1;
+ board::EvOnShow ();
 }
 
 unsigned short

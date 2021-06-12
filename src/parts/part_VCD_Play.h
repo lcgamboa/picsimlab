@@ -46,6 +46,7 @@ public:
     void Draw(void);
     void PreProcess(void);
     void Process(void);
+    void PostProcess(void);
     lxString GetPictureFileName(void){return lxT("VCD_Play/VCD_Play.svg");};
     lxString GetInputMapFile(void){return lxT("VCD_Play/VCD_Play_i.map");};
     lxString GetOutputMapFile(void){return lxT("VCD_Play/VCD_Play_o.map");};

@@ -41,7 +41,7 @@ public:
     ~cpart_tempsys(void);
     void Draw(void);
     void Process(void);
-
+    void PostProcess(void);
     lxString GetPictureFileName(void) {
         return lxT("tempsys/TempSys.svg");
     };

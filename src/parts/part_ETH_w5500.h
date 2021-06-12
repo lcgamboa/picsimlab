@@ -62,6 +62,7 @@ class cpart_ETH_w5500:public part
       unsigned char link;
       unsigned short _ret; 
       lxFont font;
+      unsigned int sts[8][4];
 };
 
 

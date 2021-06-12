@@ -40,6 +40,7 @@ class cpart_LCD_pcd8544:public part
       ~cpart_LCD_pcd8544(void);
       void Draw(void);
       void Process(void);
+      void PostProcess(void);
       lxString GetPictureFileName(void){return lxT("LCD_pcd8544/LCD_pcd8544.svg");};
       lxString GetInputMapFile(void){return lxT("LCD_pcd8544/LCD_pcd8544_i.map");};
       lxString GetOutputMapFile(void){return lxT("LCD_pcd8544/LCD_pcd8544_o.map");};

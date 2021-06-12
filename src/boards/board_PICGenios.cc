@@ -67,8 +67,8 @@ enum
 
 //TODO TEMP cooler must don't work with AQUE=0
 
-cboard_PICGenios::cboard_PICGenios(void):
-font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cboard_PICGenios::cboard_PICGenios(void) :
+font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  char fname[1024];
  FILE * fout;
@@ -298,6 +298,7 @@ void
 cboard_PICGenios::Draw(CDraw *draw)
 {
  int i;
+ int update = 0;
 
  pic_set_pin (39, 1);
  pic_set_pin (40, 1);
@@ -312,376 +313,418 @@ cboard_PICGenios::Draw(CDraw *draw)
  pic_set_pin (30, 1);
 
 
- draw->Canvas.Init (Scale, Scale);
-
-
  lcd_blink (&lcd);
 
 
  //lab4 draw 
  for (i = 0; i < outputc; i++)
   {
-   if (!output[i].r)//rectangle
+
+   if (output[i].update)
     {
+     output[i].update = 0;
 
-     draw->Canvas.SetFgColor (0, 0, 0);
-
-     switch (output[i].id)
+     if (!update)
       {
-      case O_A1: draw->Canvas.SetBgColor (0, lm1[18], 0);
-       break;
-      case O_B1: draw->Canvas.SetBgColor (0, lm1[19], 0);
-       break;
-      case O_C1: draw->Canvas.SetBgColor (0, lm1[20], 0);
-       break;
-      case O_D1: draw->Canvas.SetBgColor (0, lm1[21], 0);
-       break;
-      case O_E1: draw->Canvas.SetBgColor (0, lm1[26], 0);
-       break;
-      case O_F1: draw->Canvas.SetBgColor (0, lm1[27], 0);
-       break;
-      case O_G1: draw->Canvas.SetBgColor (0, lm1[28], 0);
-       break;
+       draw->Canvas.Init (Scale, Scale);
+      }
+     update++;
 
-      case O_A2: draw->Canvas.SetBgColor (0, lm2[18], 0);
-       break;
-      case O_B2: draw->Canvas.SetBgColor (0, lm2[19], 0);
-       break;
-      case O_C2: draw->Canvas.SetBgColor (0, lm2[20], 0);
-       break;
-      case O_D2: draw->Canvas.SetBgColor (0, lm2[21], 0);
-       break;
-      case O_E2: draw->Canvas.SetBgColor (0, lm2[26], 0);
-       break;
-      case O_F2: draw->Canvas.SetBgColor (0, lm2[27], 0);
-       break;
-      case O_G2: draw->Canvas.SetBgColor (0, lm2[28], 0);
-       break;
+     if (!output[i].r)//rectangle
+      {
 
-      case O_A3: draw->Canvas.SetBgColor (0, lm3[18], 0);
-       break;
-      case O_B3: draw->Canvas.SetBgColor (0, lm3[19], 0);
-       break;
-      case O_C3: draw->Canvas.SetBgColor (0, lm3[20], 0);
-       break;
-      case O_D3: draw->Canvas.SetBgColor (0, lm3[21], 0);
-       break;
-      case O_E3: draw->Canvas.SetBgColor (0, lm3[26], 0);
-       break;
-      case O_F3: draw->Canvas.SetBgColor (0, lm3[27], 0);
-       break;
-      case O_G3: draw->Canvas.SetBgColor (0, lm3[28], 0);
-       break;
+       draw->Canvas.SetFgColor (0, 0, 0);
 
-      case O_A4: draw->Canvas.SetBgColor (0, lm4[18], 0);
-       break;
-      case O_B4: draw->Canvas.SetBgColor (0, lm4[19], 0);
-       break;
-      case O_C4: draw->Canvas.SetBgColor (0, lm4[20], 0);
-       break;
-      case O_D4: draw->Canvas.SetBgColor (0, lm4[21], 0);
-       break;
-      case O_E4: draw->Canvas.SetBgColor (0, lm4[26], 0);
-       break;
-      case O_F4: draw->Canvas.SetBgColor (0, lm4[27], 0);
-       break;
-      case O_G4: draw->Canvas.SetBgColor (0, lm4[28], 0);
-       break;
-
-      case O_LCD: draw->Canvas.SetColor (0, 90 * Window1.Get_mcupwr () + 40, 0);
-       break;
-      case O_BRB0:
-      case O_BRB1:
-      case O_BRB2:
-      case O_BRB3:
-      case O_BRB4:
-      case O_BRB5:
-      case O_BRA5:
-       draw->Canvas.SetColor (100, 100, 100);
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
-       if (p_BT[output[i].id - O_BRB0])
+       switch (output[i].id)
         {
-         draw->Canvas.SetColor (15, 15, 15);
-        }
-       else
-        {
-         draw->Canvas.SetColor (55, 55, 55);
-        }
-       break;
-      case O_RST:
-       draw->Canvas.SetColor (100, 100, 100);
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
-       if (p_RST)
-        {
-         draw->Canvas.SetColor (15, 15, 15);
-        }
-       else
-        {
-         draw->Canvas.SetColor (55, 55, 55);
-        }
-       break;
-      case O_TC1:
-      case O_TC2:
-      case O_TC3:
-      case O_TC4:
-      case O_TC5:
-      case O_TC6:
-      case O_TC7:
-      case O_TC8:
-      case O_TC9:
-      case O_TCA:
-      case O_TC0:
-      case O_TCT:
-       draw->Canvas.SetColor (100, 100, 100);
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
-       if (p_BT[output[i].id - O_BRB0])
-        {
-         draw->Canvas.SetColor (55, 55, 55);
-        }
-       else
-        {
-         draw->Canvas.SetColor (15, 15, 15);
-        }
-       break;
-      case O_MP:
-       draw->Canvas.SetColor (26, 26, 26);
-       break;
-      case O_SS1:
-      case O_SS2:
-      case O_SS3:
-      case O_SS4:
-       draw->Canvas.SetColor (10, 10, 10);
-       break;
-      default:
-       if ((output[i].name[0] == 'D')&&(output[i].name[1] == 'P'))
-        {
-         draw->Canvas.SetBgColor (250, 250, 250);
+        case O_A1: draw->Canvas.SetBgColor (0, lm1[18], 0);
          break;
-        }
-      }
+        case O_B1: draw->Canvas.SetBgColor (0, lm1[19], 0);
+         break;
+        case O_C1: draw->Canvas.SetBgColor (0, lm1[20], 0);
+         break;
+        case O_D1: draw->Canvas.SetBgColor (0, lm1[21], 0);
+         break;
+        case O_E1: draw->Canvas.SetBgColor (0, lm1[26], 0);
+         break;
+        case O_F1: draw->Canvas.SetBgColor (0, lm1[27], 0);
+         break;
+        case O_G1: draw->Canvas.SetBgColor (0, lm1[28], 0);
+         break;
 
+        case O_A2: draw->Canvas.SetBgColor (0, lm2[18], 0);
+         break;
+        case O_B2: draw->Canvas.SetBgColor (0, lm2[19], 0);
+         break;
+        case O_C2: draw->Canvas.SetBgColor (0, lm2[20], 0);
+         break;
+        case O_D2: draw->Canvas.SetBgColor (0, lm2[21], 0);
+         break;
+        case O_E2: draw->Canvas.SetBgColor (0, lm2[26], 0);
+         break;
+        case O_F2: draw->Canvas.SetBgColor (0, lm2[27], 0);
+         break;
+        case O_G2: draw->Canvas.SetBgColor (0, lm2[28], 0);
+         break;
 
-     if (output[i].id == O_JP1) draw->Canvas.SetColor (150, 150, 150);
+        case O_A3: draw->Canvas.SetBgColor (0, lm3[18], 0);
+         break;
+        case O_B3: draw->Canvas.SetBgColor (0, lm3[19], 0);
+         break;
+        case O_C3: draw->Canvas.SetBgColor (0, lm3[20], 0);
+         break;
+        case O_D3: draw->Canvas.SetBgColor (0, lm3[21], 0);
+         break;
+        case O_E3: draw->Canvas.SetBgColor (0, lm3[26], 0);
+         break;
+        case O_F3: draw->Canvas.SetBgColor (0, lm3[27], 0);
+         break;
+        case O_G3: draw->Canvas.SetBgColor (0, lm3[28], 0);
+         break;
 
-     if ((output[i].id >= O_BRB0)&&(output[i].id <= O_TCT))
-      {
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
-      }
-     else if (output[i].id == O_RST)
-      {
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
-      }
-     else if ((output[i].id == O_POT1) || (output[i].id == O_POT2))
-      {
-       draw->Canvas.SetBgColor (66, 109, 246);
-       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+        case O_A4: draw->Canvas.SetBgColor (0, lm4[18], 0);
+         break;
+        case O_B4: draw->Canvas.SetBgColor (0, lm4[19], 0);
+         break;
+        case O_C4: draw->Canvas.SetBgColor (0, lm4[20], 0);
+         break;
+        case O_D4: draw->Canvas.SetBgColor (0, lm4[21], 0);
+         break;
+        case O_E4: draw->Canvas.SetBgColor (0, lm4[26], 0);
+         break;
+        case O_F4: draw->Canvas.SetBgColor (0, lm4[27], 0);
+         break;
+        case O_G4: draw->Canvas.SetBgColor (0, lm4[28], 0);
+         break;
 
-       draw->Canvas.SetBgColor (250, 250, 250);
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 20);
-
-       draw->Canvas.SetBgColor (150, 150, 150);
-       int x = -15 * sin ((5.585 * (pot[output[i].id - O_POT1] / 200.0)) + 0.349);
-       int y = 15 * cos ((5.585 * (pot[output[i].id - O_POT1] / 200.0)) + 0.349);
-       draw->Canvas.Circle (1, output[i].cx + x, output[i].cy + y, 3);
-
-      }
-     else if ((output[i].id != O_LCD)&&(output[i].id != O_VT))
-      {
-       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-      }
-
-     if (output[i].id == O_VT)
-      {
-       if (gauge1->GetValue () > 20) vtc++;
-
-       if (vtc > (4 - 0.04 * gauge1->GetValue ()))
-        {
-         vtc = 0;
-         draw->Canvas.PutBitmap (vent[vt], output[i].x1, output[i].y1);
-         vt ^= 1;
-        }
-      }
-     else if (output[i].id == O_LCD)
-      {
-       if (lcd.update)
-        {
-         if (lcd.lnum == 2)
+        case O_LCD: draw->Canvas.SetColor (0, 90 * Window1.Get_mcupwr () + 40, 0);
+         break;
+        case O_BRB0:
+        case O_BRB1:
+        case O_BRB2:
+        case O_BRB3:
+        case O_BRB4:
+        case O_BRB5:
+        case O_BRA5:
+         draw->Canvas.SetColor (100, 100, 100);
+         draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
+         if (p_BT[output[i].id - O_BRB0])
           {
-           draw->Canvas.PutBitmap (lcdbmp[0], output[i].x1 - 41, output[i].y1 - 60);
+           draw->Canvas.SetColor (15, 15, 15);
           }
          else
           {
-           draw->Canvas.PutBitmap (lcdbmp[1], output[i].x1 - 41, output[i].y1 - 60);
+           draw->Canvas.SetColor (55, 55, 55);
           }
-
-         draw->Canvas.Rectangle (1, output[i].x1 - 1, output[i].y1 - 2, output[i].x2 - output[i].x1 + 2, output[i].y2 - output[i].y1 + ((lcd.lnum == 2) ? 3 : 78));
-         if (dip[0])
+         break;
+        case O_RST:
+         draw->Canvas.SetColor (100, 100, 100);
+         draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
+         if (p_RST)
           {
-           lcd_draw (&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, Window1.Get_mcupwr ());
+           draw->Canvas.SetColor (15, 15, 15);
+          }
+         else
+          {
+           draw->Canvas.SetColor (55, 55, 55);
+          }
+         break;
+        case O_TC1:
+        case O_TC2:
+        case O_TC3:
+        case O_TC4:
+        case O_TC5:
+        case O_TC6:
+        case O_TC7:
+        case O_TC8:
+        case O_TC9:
+        case O_TCA:
+        case O_TC0:
+        case O_TCT:
+         draw->Canvas.SetColor (100, 100, 100);
+         draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
+         if (p_BT[output[i].id - O_BRB0])
+          {
+           draw->Canvas.SetColor (55, 55, 55);
+          }
+         else
+          {
+           draw->Canvas.SetColor (15, 15, 15);
+          }
+         break;
+        case O_MP:
+         draw->Canvas.SetColor (26, 26, 26);
+         break;
+        case O_SS1:
+         output_ids[O_A1]->update = 1;
+         output_ids[O_B1]->update = 1;
+         output_ids[O_C1]->update = 1;
+         output_ids[O_D1]->update = 1;
+         output_ids[O_E1]->update = 1;
+         output_ids[O_F1]->update = 1;
+         output_ids[O_G1]->update = 1;
+         output_ids[O_P1]->update = 1;
+         draw->Canvas.SetColor (10, 10, 10);
+         break;
+        case O_SS2:
+         output_ids[O_A2]->update = 1;
+         output_ids[O_B2]->update = 1;
+         output_ids[O_C2]->update = 1;
+         output_ids[O_D2]->update = 1;
+         output_ids[O_E2]->update = 1;
+         output_ids[O_F2]->update = 1;
+         output_ids[O_G2]->update = 1;
+         output_ids[O_P2]->update = 1;
+         draw->Canvas.SetColor (10, 10, 10);
+         break;
+        case O_SS3:
+         output_ids[O_A3]->update = 1;
+         output_ids[O_B3]->update = 1;
+         output_ids[O_C3]->update = 1;
+         output_ids[O_D3]->update = 1;
+         output_ids[O_E3]->update = 1;
+         output_ids[O_F3]->update = 1;
+         output_ids[O_G3]->update = 1;
+         output_ids[O_P3]->update = 1;
+         draw->Canvas.SetColor (10, 10, 10);
+         break;
+        case O_SS4:
+         output_ids[O_A4]->update = 1;
+         output_ids[O_B4]->update = 1;
+         output_ids[O_C4]->update = 1;
+         output_ids[O_D4]->update = 1;
+         output_ids[O_E4]->update = 1;
+         output_ids[O_F4]->update = 1;
+         output_ids[O_G4]->update = 1;
+         output_ids[O_P4]->update = 1;
+         draw->Canvas.SetColor (10, 10, 10);
+         break;
+        default:
+         if ((output[i].name[0] == 'D')&&(output[i].name[1] == 'P'))
+          {
+           draw->Canvas.SetBgColor (250, 250, 250);
+           break;
           }
         }
-      }
-     else if ((output[i].name[0] == 'D')&&(output[i].name[1] == 'P'))
-      {
-       if (dip[(((output[i].name[3] - 0x30)*10)+(output[i].name[4] - 0x30)) - 1 ])
-        {
-         draw->Canvas.SetBgColor (70, 70, 70);
-         draw->Canvas.Rectangle (1, output[i].x1, output[i].y1 + ((int) ((output[i].y2 - output[i].y1)*0.35)), output[i].x2 - output[i].x1, (int) ((output[i].y2 - output[i].y1)*0.65));
-        }
-       else
-        {
-         draw->Canvas.SetBgColor (70, 70, 70);
-         draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, (int) ((output[i].y2 - output[i].y1)*0.65));
-        }
-      }
-     else if (output[i].id == O_JP1)
-      {
-       if (!jmp[0])
-        {
-         draw->Canvas.SetColor (70, 70, 70);
-         draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, (int) ((output[i].x2 - output[i].x1)*0.65), output[i].y2 - output[i].y1);
-         draw->Canvas.SetColor (220, 220, 0);
-         draw->Canvas.Circle (1, output[i].x1 + (int) ((output[i].x2 - output[i].x1)*0.80), output[i].y1 + ((output[i].y2 - output[i].y1) / 2), 3);
-        }
-       else
-        {
-         draw->Canvas.SetColor (70, 70, 70);
-         draw->Canvas.Rectangle (1, output[i].x1 + ((int) ((output[i].x2 - output[i].x1)*0.35)), output[i].y1, (int) ((output[i].x2 - output[i].x1)*0.65), output[i].y2 - output[i].y1);
-         draw->Canvas.SetColor (220, 220, 0);
-         draw->Canvas.Circle (1, output[i].x1 + (int) ((output[i].x2 - output[i].x1)*0.20), output[i].y1 + ((output[i].y2 - output[i].y1) / 2), 3);
-        }
-      }
-     else if (output[i].id == O_MP)
-      {
-       draw->Canvas.SetFont (font);
-       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-       draw->Canvas.SetColor (230, 230, 230);
-       draw->Canvas.RotatedText (Proc, output[i].x1 + 20, output[i].y1 + 50, -90);
-      }
 
+
+       if (output[i].id == O_JP1) draw->Canvas.SetColor (150, 150, 150);
+
+       if ((output[i].id >= O_BRB0)&&(output[i].id <= O_TCT))
+        {
+         draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
+        }
+       else if (output[i].id == O_RST)
+        {
+         draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
+        }
+       else if ((output[i].id == O_POT1) || (output[i].id == O_POT2))
+        {
+         draw->Canvas.SetBgColor (66, 109, 246);
+         draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
+         draw->Canvas.SetBgColor (250, 250, 250);
+         draw->Canvas.Circle (1, output[i].cx, output[i].cy, 20);
+
+         draw->Canvas.SetBgColor (150, 150, 150);
+         int x = -15 * sin ((5.585 * (pot[output[i].id - O_POT1] / 200.0)) + 0.349);
+         int y = 15 * cos ((5.585 * (pot[output[i].id - O_POT1] / 200.0)) + 0.349);
+         draw->Canvas.Circle (1, output[i].cx + x, output[i].cy + y, 3);
+
+        }
+       else if ((output[i].id != O_LCD)&&(output[i].id != O_VT))
+        {
+         draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+        }
+
+       if (output[i].id == O_VT)
+        {
+         draw->Canvas.PutBitmap (vent[vt], output[i].x1, output[i].y1);
+        }
+       else if (output[i].id == O_LCD)
+        {
+         if (lcd.update)
+          {
+           if (lcd.lnum == 2)
+            {
+             draw->Canvas.PutBitmap (lcdbmp[0], output[i].x1 - 41, output[i].y1 - 60);
+            }
+           else
+            {
+             draw->Canvas.PutBitmap (lcdbmp[1], output[i].x1 - 41, output[i].y1 - 60);
+            }
+
+           draw->Canvas.Rectangle (1, output[i].x1 - 1, output[i].y1 - 2, output[i].x2 - output[i].x1 + 2, output[i].y2 - output[i].y1 + ((lcd.lnum == 2) ? 3 : 78));
+           if (dip[0])
+            {
+             lcd_draw (&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, Window1.Get_mcupwr ());
+            }
+          }
+        }
+       else if ((output[i].name[0] == 'D')&&(output[i].name[1] == 'P'))
+        {
+         if (dip[(((output[i].name[3] - 0x30)*10)+(output[i].name[4] - 0x30)) - 1 ])
+          {
+           draw->Canvas.SetBgColor (70, 70, 70);
+           draw->Canvas.Rectangle (1, output[i].x1, output[i].y1 + ((int) ((output[i].y2 - output[i].y1)*0.35)), output[i].x2 - output[i].x1, (int) ((output[i].y2 - output[i].y1)*0.65));
+          }
+         else
+          {
+           draw->Canvas.SetBgColor (70, 70, 70);
+           draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, (int) ((output[i].y2 - output[i].y1)*0.65));
+          }
+        }
+       else if (output[i].id == O_JP1)
+        {
+         if (!jmp[0])
+          {
+           draw->Canvas.SetColor (70, 70, 70);
+           draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, (int) ((output[i].x2 - output[i].x1)*0.65), output[i].y2 - output[i].y1);
+           draw->Canvas.SetColor (220, 220, 0);
+           draw->Canvas.Circle (1, output[i].x1 + (int) ((output[i].x2 - output[i].x1)*0.80), output[i].y1 + ((output[i].y2 - output[i].y1) / 2), 3);
+          }
+         else
+          {
+           draw->Canvas.SetColor (70, 70, 70);
+           draw->Canvas.Rectangle (1, output[i].x1 + ((int) ((output[i].x2 - output[i].x1)*0.35)), output[i].y1, (int) ((output[i].x2 - output[i].x1)*0.65), output[i].y2 - output[i].y1);
+           draw->Canvas.SetColor (220, 220, 0);
+           draw->Canvas.Circle (1, output[i].x1 + (int) ((output[i].x2 - output[i].x1)*0.20), output[i].y1 + ((output[i].y2 - output[i].y1) / 2), 3);
+          }
+        }
+       else if (output[i].id == O_MP)
+        {
+         draw->Canvas.SetFont (font);
+         draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+         draw->Canvas.SetColor (230, 230, 230);
+         draw->Canvas.RotatedText (Proc, output[i].x1 + 20, output[i].y1 + 50, -90);
+        }
+
+      }
+     else //circle output
+      {
+       int led = 1;
+
+       draw->Canvas.SetColor (55, 0, 0);
+
+       if (dip[9])
+        switch (output[i].id)
+         {
+         case O_RB0: draw->Canvas.SetBgColor (pic.pins[32].oavalue, 0, 0);
+          break;
+         case O_RB1: draw->Canvas.SetBgColor (pic.pins[33].oavalue, 0, 0);
+          break;
+         case O_RB2: draw->Canvas.SetBgColor (pic.pins[34].oavalue, 0, 0);
+          break;
+         case O_RB3: draw->Canvas.SetBgColor (pic.pins[35].oavalue, 0, 0);
+          break;
+         case O_RB4: draw->Canvas.SetBgColor (pic.pins[36].oavalue, 0, 0);
+          break;
+         case O_RB5: draw->Canvas.SetBgColor (pic.pins[37].oavalue, 0, 0);
+          break;
+         case O_RB6: draw->Canvas.SetBgColor (pic.pins[38].oavalue, 0, 0);
+          break;
+         case O_RB7: draw->Canvas.SetBgColor (pic.pins[39].oavalue, 0, 0);
+          break;
+         }
+
+       if (dip[8])
+        switch (output[i].id)
+         {
+         case O_RD0: draw->Canvas.SetBgColor (pic.pins[18].oavalue, 0, 0);
+          break;
+         case O_RD1: draw->Canvas.SetBgColor (pic.pins[19].oavalue, 0, 0);
+          break;
+         case O_RD2: draw->Canvas.SetBgColor (pic.pins[20].oavalue, 0, 0);
+          break;
+         case O_RD3: draw->Canvas.SetBgColor (pic.pins[21].oavalue, 0, 0);
+          break;
+         case O_RD4: draw->Canvas.SetBgColor (pic.pins[26].oavalue, 0, 0);
+          break;
+         case O_RD5: draw->Canvas.SetBgColor (pic.pins[27].oavalue, 0, 0);
+          break;
+         case O_RD6: draw->Canvas.SetBgColor (pic.pins[28].oavalue, 0, 0);
+          break;
+         case O_RD7: draw->Canvas.SetBgColor (pic.pins[29].oavalue, 0, 0);
+          break;
+         }
+
+       switch (output[i].id)
+        {
+        case O_RL1:
+         draw->Canvas.SetFgColor (0, 55, 0);
+         if (dip[3])
+          draw->Canvas.SetBgColor (0, pic.pins[14].oavalue, 0);
+         else
+          draw->Canvas.SetBgColor (0, 15, 0);
+         break;
+        case O_RL2:
+         draw->Canvas.SetFgColor (0, 55, 0);
+         if (dip[4])
+          draw->Canvas.SetBgColor (0, pic.pins[7].oavalue, 0);
+         else
+          draw->Canvas.SetBgColor (0, 15, 0);
+         break;
+        case O_P1:
+         draw->Canvas.SetFgColor (0, 55, 0);
+         draw->Canvas.SetBgColor (0, lm1[29], 0);
+         led = 0;
+         break;
+        case O_P2:
+         draw->Canvas.SetFgColor (0, 55, 0);
+         draw->Canvas.SetBgColor (0, lm2[29], 0);
+         led = 0;
+         break;
+        case O_P3:
+         draw->Canvas.SetFgColor (0, 55, 0);
+         draw->Canvas.SetBgColor (0, lm3[29], 0);
+         led = 0;
+         break;
+        case O_P4:
+         draw->Canvas.SetFgColor (0, 55, 0);
+         draw->Canvas.SetBgColor (0, lm4[29], 0);
+         led = 0;
+         break;
+        case O_RUN:
+        case O_LPWR:
+         draw->Canvas.SetFgColor (0, 55, 0);
+         draw->Canvas.SetBgColor (0, 200 * Window1.Get_mcupwr () + 55, 0);
+         break;
+        }
+
+       if (led)
+        {
+         //draw a LED
+         color1 = draw->Canvas.GetBgColor ();
+         int r = color1.Red () - 120;
+         int g = color1.Green () - 120;
+         int b = color1.Blue () - 120;
+         if (r < 0)r = 0;
+         if (g < 0)g = 0;
+         if (b < 0)b = 0;
+         color2.Set (r, g, b);
+         draw->Canvas.SetBgColor (color2);
+         draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 1);
+         draw->Canvas.SetBgColor (color1);
+         draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 2);
+        }
+       else
+        {
+         draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 1);
+        }
+      }
     }
-   else //circle output
-    {
-     int led = 1;
-
-     draw->Canvas.SetColor (55, 0, 0);
-
-
-     if (dip[9])
-      switch (output[i].id)
-       {
-       case O_RB0: draw->Canvas.SetBgColor (pic.pins[32].oavalue, 0, 0);
-        break;
-       case O_RB1: draw->Canvas.SetBgColor (pic.pins[33].oavalue, 0, 0);
-        break;
-       case O_RB2: draw->Canvas.SetBgColor (pic.pins[34].oavalue, 0, 0);
-        break;
-       case O_RB3: draw->Canvas.SetBgColor (pic.pins[35].oavalue, 0, 0);
-        break;
-       case O_RB4: draw->Canvas.SetBgColor (pic.pins[36].oavalue, 0, 0);
-        break;
-       case O_RB5: draw->Canvas.SetBgColor (pic.pins[37].oavalue, 0, 0);
-        break;
-       case O_RB6: draw->Canvas.SetBgColor (pic.pins[38].oavalue, 0, 0);
-        break;
-       case O_RB7: draw->Canvas.SetBgColor (pic.pins[39].oavalue, 0, 0);
-        break;
-       }
-
-
-     if (dip[8])
-      switch (output[i].id)
-       {
-       case O_RD0: draw->Canvas.SetBgColor (pic.pins[18].oavalue, 0, 0);
-        break;
-       case O_RD1: draw->Canvas.SetBgColor (pic.pins[19].oavalue, 0, 0);
-        break;
-       case O_RD2: draw->Canvas.SetBgColor (pic.pins[20].oavalue, 0, 0);
-        break;
-       case O_RD3: draw->Canvas.SetBgColor (pic.pins[21].oavalue, 0, 0);
-        break;
-       case O_RD4: draw->Canvas.SetBgColor (pic.pins[26].oavalue, 0, 0);
-        break;
-       case O_RD5: draw->Canvas.SetBgColor (pic.pins[27].oavalue, 0, 0);
-        break;
-       case O_RD6: draw->Canvas.SetBgColor (pic.pins[28].oavalue, 0, 0);
-        break;
-       case O_RD7: draw->Canvas.SetBgColor (pic.pins[29].oavalue, 0, 0);
-        break;
-       }
-     switch (output[i].id)
-      {
-      case O_RL1:
-       draw->Canvas.SetFgColor (0, 55, 0);
-       if (dip[3])
-        draw->Canvas.SetBgColor (0, pic.pins[14].oavalue, 0);
-       else
-        draw->Canvas.SetBgColor (0, 15, 0);
-       break;
-      case O_RL2:
-       draw->Canvas.SetFgColor (0, 55, 0);
-       if (dip[4])
-        draw->Canvas.SetBgColor (0, pic.pins[7].oavalue, 0);
-       else
-        draw->Canvas.SetBgColor (0, 15, 0);
-       break;
-      case O_P1:
-       draw->Canvas.SetFgColor (0, 55, 0);
-       draw->Canvas.SetBgColor (0, lm1[29], 0);
-       led = 0;
-       break;
-      case O_P2:
-       draw->Canvas.SetFgColor (0, 55, 0);
-       draw->Canvas.SetBgColor (0, lm2[29], 0);
-       led = 0;
-       break;
-      case O_P3:
-       draw->Canvas.SetFgColor (0, 55, 0);
-       draw->Canvas.SetBgColor (0, lm3[29], 0);
-       led = 0;
-       break;
-      case O_P4:
-       draw->Canvas.SetFgColor (0, 55, 0);
-       draw->Canvas.SetBgColor (0, lm4[29], 0);
-       led = 0;
-       break;
-      case O_RUN:
-      case O_LPWR:
-       draw->Canvas.SetFgColor (0, 55, 0);
-       draw->Canvas.SetBgColor (0, 200 * Window1.Get_mcupwr () + 55, 0);
-       break;
-      }
-
-     if (led)
-      {
-       //draw a LED
-       color1 = draw->Canvas.GetBgColor ();
-       int r = color1.Red () - 120;
-       int g = color1.Green () - 120;
-       int b = color1.Blue () - 120;
-       if (r < 0)r = 0;
-       if (g < 0)g = 0;
-       if (b < 0)b = 0;
-       color2.Set (r, g, b);
-       draw->Canvas.SetBgColor (color2);
-       draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 1);
-       draw->Canvas.SetBgColor (color1);
-       draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 2);
-      }
-     else
-      {
-       draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 1);
-      }
-    }
-
   }
- rtc2_update (&rtc2);
  //end draw
 
- draw->Canvas.End ();
- draw->Update ();
+ if (update)
+  {
+   draw->Canvas.End ();
+   draw->Update ();
+  }
 
+ rtc2_update (&rtc2);
 
+ //buzzer
  if ((((pic.pins[15].oavalue - 55) / 2) > 10)&&(Window1.Get_mcupwr ()) && jmp[0])
   {
    if (!sound_on)
@@ -696,21 +739,27 @@ cboard_PICGenios::Draw(CDraw *draw)
    sound_on = 0;
   }
 
-
-
- //Ventilador
+ //Cooler
  gauge1->SetValue ((pic.pins[16].oavalue - 55) / 2);
- //Aquecedor
+ if (gauge1->GetValue () > 20) vtc++;
+ if (vtc > (4 - 0.04 * gauge1->GetValue ()))
+  {
+   vtc = 0;
+   vt ^= 1;
+   output_ids[O_VT]->update = 1;
+  }
+
+ //Heater
  gauge2->SetValue ((pic.pins[23].oavalue - 55) / 2);
 
- //sensor ventilador
+ //thacometer
  rpmstp = ((float) Window1.GetNSTEPJ ()) / (0.7196 * (pic.pins[16].oavalue - 54));
 
- //tensão p2
+ //potentiometers
  vp2in = (5.0 * pot[0] / 199);
  vp1in = (5.0 * pot[1] / 199);
 
- //temperatura 
+ //temp 
  ref = ((0.25 * (pic.pins[23].oavalue - 55)))-(0.25 * (pic.pins[16].oavalue - 55));
 
  temp[1] = temp[0];
@@ -724,7 +773,7 @@ cboard_PICGenios::Draw(CDraw *draw)
  else
   pic_set_apin (4, 0);
 
- //referencia
+ //ref
  //pic_set_apin(pic,5,2.5);
 
 }
@@ -995,6 +1044,66 @@ cboard_PICGenios::Run_CPU(void)
   }
 
  if (use_spare)Window5.PostProcess ();
+
+ if ((lcd.update)&&(dip[0])) output_ids[O_LCD]->update = 1;
+
+ for (i = 0; i < 8; i++)
+  {
+   //PORTB LEDS
+   if ((dip[9])&&(output_ids[O_RB0 + i]->value != pic.pins[32 + i].oavalue))
+    {
+     output_ids[O_RB0 + i]->value = pic.pins[32 + i].oavalue;
+     output_ids[O_RB0 + i]->update = 1;
+    }
+
+   if (i < 4)
+    {
+     j = i;
+    }
+   else
+    {
+     j = i + 4;
+    }
+   //PORTD LEDS
+   if ((dip[8])&& (output_ids[O_RD0 + i]->value != pic.pins[18 + j].oavalue))
+    {
+     output_ids[O_RD0 + i]->value = pic.pins[18 + j].oavalue;
+     output_ids[O_RD0 + i]->update = 1;
+    }
+   //7s DISP
+   if (output_ids[O_A1 + i]->value != lm1[18 + j])
+    {
+     output_ids[O_A1 + i]->value = lm1[18 + j];
+     output_ids[O_SS1]->update = 1;
+    }
+   if (output_ids[O_A2 + i]->value != lm2[18 + j])
+    {
+     output_ids[O_A2 + i]->value = lm2[18 + j];
+     output_ids[O_SS2]->update = 1;
+    }
+   if (output_ids[O_A3 + i]->value != lm3[18 + j])
+    {
+     output_ids[O_A3 + i]->value = lm3[18 + j];
+     output_ids[O_SS3]->update = 1;
+    }
+   if (output_ids[O_A4 + i]->value != lm4[18 + j])
+    {
+     output_ids[O_A4 + i]->value = lm4[18 + j];
+     output_ids[O_SS4]->update = 1;
+    }
+  }
+
+ //RELAY
+ if ((dip[3])&& (output_ids[O_RL1]->value != pic.pins[14].oavalue))
+  {
+   output_ids[O_RL1]->value = pic.pins[14].oavalue;
+   output_ids[O_RL1]->update = 1;
+  }
+ if ((dip[4])&& (output_ids[O_RL2]->value != pic.pins[7].oavalue))
+  {
+   output_ids[O_RL2]->value = pic.pins[7].oavalue;
+   output_ids[O_RL2]->update = 1;
+  }
 
 }
 
@@ -1295,7 +1404,6 @@ cboard_PICGenios::RegisterRemoteControl(void)
     case O_P4:
      output[i].status = &lm4[29];
      break;
-
     }
   }
 }
@@ -1316,6 +1424,7 @@ cboard_PICGenios::EvMouseMove(uint button, uint x, uint y, uint state)
        if (active[input[i].id - I_POT1])
         {
          pot[input[i].id - I_POT1] = CalcAngle (i, x, y);
+         output_ids[O_POT1 + input[i].id - I_POT1]->update = 1;
         }
       }
      break;
@@ -1342,105 +1451,146 @@ cboard_PICGenios::EvMouseButtonPress(uint button, uint x, uint y, uint state)
        }
        break;
 
-
       case I_D01:
        {
         dip[0] ^= 0x01;
+        output_ids[O_D01]->update = 1;
+
+        output_ids[O_LCD]->update = 1;
        }
        break;
       case I_D02:
        {
         dip[1] ^= 0x01;
+        output_ids[O_D02]->update = 1;
        }
        break;
       case I_D03:
        {
         dip[2] ^= 0x01;
+        output_ids[O_D03]->update = 1;
        }
        break;
       case I_D04:
        {
         dip[3] ^= 0x01;
+        output_ids[O_D04]->update = 1;
+        output_ids[O_RL1]->update = 1;
        }
        break;
       case I_D05:
        {
         dip[4] ^= 0x01;
+        output_ids[O_D05]->update = 1;
+        output_ids[O_RL2]->update = 1;
        }
        break;
       case I_D06:
        {
         dip[5] ^= 0x01;
+        output_ids[O_D06]->update = 1;
        }
        break;
       case I_D07:
        {
         dip[6] ^= 0x01;
+        output_ids[O_D07]->update = 1;
        }
        break;
       case I_D08:
        {
         dip[7] ^= 0x01;
+        output_ids[O_D08]->update = 1;
        }
        break;
       case I_D09:
        {
         dip[8] ^= 0x01;
+        output_ids[O_D09]->update = 1;
+
+        output_ids[O_RD0]->update = 1;
+        output_ids[O_RD1]->update = 1;
+        output_ids[O_RD2]->update = 1;
+        output_ids[O_RD3]->update = 1;
+        output_ids[O_RD4]->update = 1;
+        output_ids[O_RD5]->update = 1;
+        output_ids[O_RD6]->update = 1;
+        output_ids[O_RD7]->update = 1;
        }
        break;
       case I_D10:
        {
         dip[9] ^= 0x01;
+        output_ids[O_D10]->update = 1;
+
+        output_ids[O_RB0]->update = 1;
+        output_ids[O_RB1]->update = 1;
+        output_ids[O_RB2]->update = 1;
+        output_ids[O_RB3]->update = 1;
+        output_ids[O_RB4]->update = 1;
+        output_ids[O_RB5]->update = 1;
+        output_ids[O_RB6]->update = 1;
+        output_ids[O_RB7]->update = 1;
        }
        break;
       case I_D11:
        {
         dip[10] ^= 0x01;
+        output_ids[O_D11]->update = 1;
        }
        break;
       case I_D12:
        {
         dip[11] ^= 0x01;
+        output_ids[O_D12]->update = 1;
        }
        break;
       case I_D13:
        {
         dip[12] ^= 0x01;
+        output_ids[O_D13]->update = 1;
        }
        break;
       case I_D14:
        {
         dip[13] ^= 0x01;
+        output_ids[O_D14]->update = 1;
        }
        break;
       case I_D15:
        {
         dip[14] ^= 0x01;
+        output_ids[O_D15]->update = 1;
        }
        break;
       case I_D16:
        {
         dip[15] ^= 0x01;
+        output_ids[O_D16]->update = 1;
        }
        break;
       case I_D17:
        {
         dip[16] ^= 0x01;
+        output_ids[O_D17]->update = 1;
        }
        break;
       case I_D18:
        {
         dip[17] ^= 0x01;
+        output_ids[O_D18]->update = 1;
        }
        break;
       case I_D19:
        {
         dip[18] ^= 0x01;
+        output_ids[O_D19]->update = 1;
        }
        break;
       case I_D20:
        {
         dip[19] ^= 0x01;
+        output_ids[O_D20]->update = 1;
        }
        break;
 
@@ -1471,6 +1621,8 @@ cboard_PICGenios::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
           Window1.statusbar1.SetField (0, lxT ("Running..."));
          }
+        output_ids[O_LPWR]->update = 1;
+        output_ids[O_RUN]->update = 1;
        }
        break;
 
@@ -1482,123 +1634,145 @@ cboard_PICGenios::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           Window1.Set_mcurst (1);
          }
         p_RST = 0;
+        output_ids[O_RST]->update = 1;
        }
        break;
 
       case I_JP1:
        {
         jmp[0] ^= 0x01;
+        output_ids[O_JP1]->update = 1;
        }
        break;
       case I_RB0:
        {
         p_BT[0] = 0;
+        output_ids[O_BRB0]->update = 1;
        }
        break;
       case I_RB1:
        {
         p_BT[1] = 0;
+        output_ids[O_BRB1]->update = 1;
        }
        break;
       case I_RB2:
        {
         p_BT[2] = 0;
+        output_ids[O_BRB2]->update = 1;
        }
        break;
       case I_RB3:
        {
         p_BT[3] = 0;
+        output_ids[O_BRB3]->update = 1;
        }
        break;
       case I_RB4:
        {
         p_BT[4] = 0;
+        output_ids[O_BRB4]->update = 1;
        }
        break;
       case I_RB5:
        {
         p_BT[5] = 0;
+        output_ids[O_BRB5]->update = 1;
        }
        break;
       case I_RA5:
        {
         p_BT[6] = 0;
+        output_ids[O_BRA5]->update = 1;
        }
        break;
       case I_TC1:
        {
         p_KEY[0] = 1;
+        output_ids[O_TC1]->update = 1;
        }
        break;
       case I_TC2:
        {
         p_KEY[1] = 1;
+        output_ids[O_TC2]->update = 1;
        }
        break;
       case I_TC3:
        {
         p_KEY[2] = 1;
+        output_ids[O_TC3]->update = 1;
        }
        break;
 
       case I_TC4:
        {
         p_KEY[3] = 1;
+        output_ids[O_TC4]->update = 1;
        }
        break;
       case I_TC5:
        {
         p_KEY[4] = 1;
+        output_ids[O_TC5]->update = 1;
        }
        break;
       case I_TC6:
        {
         p_KEY[5] = 1;
+        output_ids[O_TC6]->update = 1;
        }
        break;
 
       case I_TC7:
        {
         p_KEY[6] = 1;
+        output_ids[O_TC7]->update = 1;
        }
        break;
       case I_TC8:
        {
         p_KEY[7] = 1;
+        output_ids[O_TC8]->update = 1;
        }
        break;
       case I_TC9:
        {
         p_KEY[8] = 1;
+        output_ids[O_TC9]->update = 1;
        }
        break;
 
       case I_TCA:
        {
         p_KEY[9] = 1;
+        output_ids[O_TCA]->update = 1;
        }
        break;
       case I_TC0:
        {
         p_KEY[10] = 1;
+        output_ids[O_TC0]->update = 1;
        }
        break;
       case I_TCT:
        {
         p_KEY[11] = 1;
-
+        output_ids[O_TCT]->update = 1;
        }
        break;
       case I_POT1:
        {
         active[0] = 1;
         pot[0] = CalcAngle (i, x, y);
+        output_ids[O_POT1]->update = 1;
        }
        break;
       case I_POT2:
        {
         active[1] = 1;
         pot[1] = CalcAngle (i, x, y);
+        output_ids[O_POT2]->update = 1;
        }
        break;
       case I_VIEW:
@@ -1675,114 +1849,136 @@ cboard_PICGenios::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
            }
          }
         p_RST = 1;
+        output_ids[O_RST]->update = 1;
        }
        break;
       case I_RB0:
        {
         p_BT[0] = 1;
+        output_ids[O_BRB0]->update = 1;
        }
        break;
       case I_RB1:
        {
         p_BT[1] = 1;
+        output_ids[O_BRB1]->update = 1;
        }
        break;
       case I_RB2:
        {
         p_BT[2] = 1;
+        output_ids[O_BRB2]->update = 1;
        }
        break;
       case I_RB3:
        {
         p_BT[3] = 1;
+        output_ids[O_BRB3]->update = 1;
        }
        break;
       case I_RB4:
        {
         p_BT[4] = 1;
+        output_ids[O_BRB4]->update = 1;
        }
        break;
       case I_RB5:
        {
         p_BT[5] = 1;
+        output_ids[O_BRB5]->update = 1;
        }
        break;
       case I_RA5:
        {
         p_BT[6] = 1;
+        output_ids[O_BRA5]->update = 1;
        }
        break;
       case I_TC1:
        {
         p_KEY[0] = 0;
+        output_ids[O_TC1]->update = 1;
        }
        break;
       case I_TC2:
        {
         p_KEY[1] = 0;
+        output_ids[O_TC2]->update = 1;
        }
        break;
       case I_TC3:
        {
         p_KEY[2] = 0;
+        output_ids[O_TC3]->update = 1;
        }
        break;
 
       case I_TC4:
        {
         p_KEY[3] = 0;
+        output_ids[O_TC4]->update = 1;
        }
        break;
       case I_TC5:
        {
         p_KEY[4] = 0;
+        output_ids[O_TC5]->update = 1;
        }
        break;
       case I_TC6:
        {
         p_KEY[5] = 0;
+        output_ids[O_TC6]->update = 1;
        }
        break;
 
       case I_TC7:
        {
         p_KEY[6] = 0;
+        output_ids[O_TC7]->update = 1;
        }
        break;
       case I_TC8:
        {
         p_KEY[7] = 0;
+        output_ids[O_TC8]->update = 1;
        }
        break;
       case I_TC9:
        {
         p_KEY[8] = 0;
+        output_ids[O_TC9]->update = 1;
        }
        break;
 
       case I_TCA:
        {
         p_KEY[9] = 0;
+        output_ids[O_TCA]->update = 1;
        }
        break;
       case I_TC0:
        {
         p_KEY[10] = 0;
+        output_ids[O_TC0]->update = 1;
        }
        break;
       case I_TCT:
        {
         p_KEY[11] = 0;
+        output_ids[O_TCT]->update = 1;
        }
        break;
       case I_POT1:
        {
         active[0] = 0;
+        output_ids[O_POT1]->update = 1;
        }
        break;
       case I_POT2:
        {
         active[1] = 0;
+        output_ids[O_POT2]->update = 1;
        }
        break;
       }
@@ -1797,82 +1993,101 @@ cboard_PICGenios::EvKeyPress(uint key, uint mask)
  if (key == '1')
   {
    p_KEY[0] = 1;
+   output_ids[O_TC1]->update = 1;
   }
  if (key == '2')
   {
    p_KEY[1] = 1;
+   output_ids[O_TC2]->update = 1;
   }
  if (key == '3')
   {
    p_KEY[2] = 1;
+   output_ids[O_TC3]->update = 1;
   }
 
  if (key == '4')
   {
    p_KEY[3] = 1;
+   output_ids[O_TC4]->update = 1;
   }
  if (key == '5')
   {
    p_KEY[4] = 1;
+   output_ids[O_TC5]->update = 1;
   }
  if (key == '6')
   {
    p_KEY[5] = 1;
+   output_ids[O_TC6]->update = 1;
   }
 
  if (key == '7')
   {
    p_KEY[6] = 1;
+   output_ids[O_TC7]->update = 1;
   }
  if (key == '8')
   {
    p_KEY[7] = 1;
+   output_ids[O_TC8]->update = 1;
   }
  if (key == '9')
   {
    p_KEY[8] = 1;
+   output_ids[O_TC9]->update = 1;
   }
 
  if (key == '*')
   {
    p_KEY[9] = 1;
+   output_ids[O_TCA]->update = 1;
   }
  if (key == '0')
   {
    p_KEY[10] = 1;
+   output_ids[O_TC0]->update = 1;
   }
  if (key == '#')
   {
    p_KEY[11] = 1;
+   output_ids[O_TCT]->update = 1;
   }
 
  if (key == 'Q')
   {
    p_BT[0] = 0;
+   output_ids[O_BRB0]->update = 1;
   }
  if (key == 'W')
   {
    p_BT[1] = 0;
+   output_ids[O_BRB1]->update = 1;
   }
  if (key == 'E')
   {
    p_BT[2] = 0;
+   output_ids[O_BRB2]->update = 1;
   }
  if (key == 'R')
   {
    p_BT[3] = 0;
+   output_ids[O_BRB3]->update = 1;
   }
  if (key == 'T')
   {
    p_BT[4] = 0;
+   output_ids[O_BRB4]->update = 1;
   }
  if (key == 'Y')
   {
    p_BT[5] = 0;
+   output_ids[O_BRB5]->update = 1;
   }
  if (key == 'U')
   {
    p_BT[6] = 0;
+   output_ids[O_BRA5]->update = 1;
   }
 }
 
@@ -1883,82 +2098,101 @@ cboard_PICGenios::EvKeyRelease(uint key, uint mask)
  if (key == '1')
   {
    p_KEY[0] = 0;
+   output_ids[O_TC1]->update = 1;
   }
  if (key == '2')
   {
    p_KEY[1] = 0;
+   output_ids[O_TC2]->update = 1;
   }
  if (key == '3')
   {
    p_KEY[2] = 0;
+   output_ids[O_TC3]->update = 1;
   }
 
  if (key == '4')
   {
    p_KEY[3] = 0;
+   output_ids[O_TC4]->update = 1;
   }
  if (key == '5')
   {
    p_KEY[4] = 0;
+   output_ids[O_TC5]->update = 1;
   }
  if (key == '6')
   {
    p_KEY[5] = 0;
+   output_ids[O_TC6]->update = 1;
   }
 
  if (key == '7')
   {
    p_KEY[6] = 0;
+   output_ids[O_TC7]->update = 1;
   }
  if (key == '8')
   {
    p_KEY[7] = 0;
+   output_ids[O_TC8]->update = 1;
   }
  if (key == '9')
   {
    p_KEY[8] = 0;
+   output_ids[O_TC9]->update = 1;
   }
 
  if (key == '*')
   {
    p_KEY[9] = 0;
+   output_ids[O_TCA]->update = 1;
   }
  if (key == '0')
   {
    p_KEY[10] = 0;
+   output_ids[O_TC0]->update = 1;
   }
  if (key == '#')
   {
    p_KEY[11] = 0;
+   output_ids[O_TCT]->update = 1;
   }
 
  if (key == 'Q')
   {
    p_BT[0] = 1;
+   output_ids[O_BRB0]->update = 1;
   }
  if (key == 'W')
   {
    p_BT[1] = 1;
+   output_ids[O_BRB1]->update = 1;
   }
  if (key == 'E')
   {
    p_BT[2] = 1;
+   output_ids[O_BRB2]->update = 1;
   }
  if (key == 'R')
   {
    p_BT[3] = 1;
+   output_ids[O_BRB3]->update = 1;
   }
  if (key == 'T')
   {
    p_BT[4] = 1;
+   output_ids[O_BRB4]->update = 1;
   }
  if (key == 'Y')
   {
    p_BT[5] = 1;
+   output_ids[O_BRB5]->update = 1;
   }
  if (key == 'U')
   {
    p_BT[6] = 1;
+   output_ids[O_BRA5]->update = 1;
   }
 }
 
@@ -1966,6 +2200,7 @@ void
 cboard_PICGenios::EvOnShow(void)
 {
  lcd.update = 1;
+ board::EvOnShow();
 }
 
 unsigned short

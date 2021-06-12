@@ -66,8 +66,8 @@ enum
  I_VIEW
 };
 
-cboard_K16F::cboard_K16F(void):
-font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cboard_K16F::cboard_K16F(void) :
+font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  char fname[1024];
  FILE * fout;
@@ -77,7 +77,7 @@ font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  clko = 0;
  d = 0;
  lcde = 0;
- 
+
  lcd_init (&lcd, 16, 2);
  mi2c_init (&mi2c, 512);
  rtc_init (&rtc);
@@ -138,109 +138,119 @@ void
 cboard_K16F::Draw(CDraw *draw)
 {
  int i;
- 
- draw->Canvas.Init (Scale, Scale);
+ int update = 0; //verifiy if updated is needed
 
  lcd_blink (&lcd);
 
  //lab2 draw 
  for (i = 0; i < outputc; i++)
   {
-   if (!output[i].r)//rectangle
+   if (output[i].update)//only if need update
     {
+     output[i].update = 0;
 
-     draw->Canvas.SetFgColor (30, 0, 0);
-
-     switch (output[i].id)
+     if (!update)
       {
-      case O_LCD: draw->Canvas.SetColor (0, 90 * Window1.Get_mcupwr () + 40, 0);
-       break;
-      case O_RST:
-       draw->Canvas.SetColor (100, 100, 100);
-       break;
-      case O_MP:
-       draw->Canvas.SetColor (26, 26, 26);
-       break;
+       draw->Canvas.Init (Scale, Scale);
       }
+     update++; //set to update buffer
 
-     //draw lcd text 
-
-     if (output[i].id == O_LCD)
+     if (!output[i].r)//rectangle
       {
-       if (lcd.update)
+
+       draw->Canvas.SetFgColor (30, 0, 0);
+
+       switch (output[i].id)
         {
-         draw->Canvas.Rectangle (1, output[i].x1 - 1, output[i].y1 - 1, output[i].x2 - output[i].x1 + 2, output[i].y2 - output[i].y1 + 3);
-         lcd_draw (&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, Window1.Get_mcupwr ());
+        case O_LCD: draw->Canvas.SetColor (0, 90 * Window1.Get_mcupwr () + 40, 0);
+         break;
+        case O_RST:
+         draw->Canvas.SetColor (100, 100, 100);
+         break;
+        case O_MP:
+         draw->Canvas.SetColor (26, 26, 26);
+         break;
         }
-      }
-     else if (output[i].id == O_RST)
-      {
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
-       if (p_RST)
+
+       //draw lcd text 
+
+       if (output[i].id == O_LCD)
         {
-         draw->Canvas.SetColor (15, 15, 15);
+         if (lcd.update)
+          {
+           draw->Canvas.Rectangle (1, output[i].x1 - 1, output[i].y1 - 1, output[i].x2 - output[i].x1 + 2, output[i].y2 - output[i].y1 + 3);
+           lcd_draw (&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, Window1.Get_mcupwr ());
+          }
+        }
+       else if (output[i].id == O_RST)
+        {
+         draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
+         if (p_RST)
+          {
+           draw->Canvas.SetColor (15, 15, 15);
+          }
+         else
+          {
+           draw->Canvas.SetColor (55, 55, 55);
+          }
+         draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
+        }
+       else if (output[i].id == O_MP)
+        {
+         draw->Canvas.SetFont (font);
+         draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+         draw->Canvas.SetColor (230, 230, 230);
+         draw->Canvas.RotatedText (Proc, output[i].x2, output[i].y1 + 5, -90);
         }
        else
         {
-         draw->Canvas.SetColor (55, 55, 55);
+         draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
         }
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
       }
-     else if (output[i].id == O_MP)
+     else //circle
       {
-       draw->Canvas.SetFont (font);
-       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-       draw->Canvas.SetColor (230, 230, 230);
-       draw->Canvas.RotatedText (Proc, output[i].x2, output[i].y1 + 5, -90);
-      }
-     else
-      {
-       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-      }
-    }
-   else //circle
-    {
-     draw->Canvas.SetFgColor (0, 0, 0);
+       draw->Canvas.SetFgColor (0, 0, 0);
 
 
-     switch (output[i].id)
-      {
-      case O_RA1: draw->Canvas.SetBgColor (pic.pins[17].oavalue, 0, 0);
-       break;
-      case O_RA2: draw->Canvas.SetBgColor (pic.pins[0].oavalue, 0, 0);
-       break;
-      case O_RA6: draw->Canvas.SetBgColor (pic.pins[14].oavalue, 0, 0);
-       break;
-      case O_RA7: draw->Canvas.SetBgColor (pic.pins[15].oavalue, 0, 0);
-       break;
-      case O_LPWR: draw->Canvas.SetBgColor (0, 200 * Window1.Get_mcupwr () + 55, 0);
-       break;
-      }
+       switch (output[i].id)
+        {
+        case O_RA1: draw->Canvas.SetBgColor (pic.pins[17].oavalue, 0, 0);
+         break;
+        case O_RA2: draw->Canvas.SetBgColor (pic.pins[0].oavalue, 0, 0);
+         break;
+        case O_RA6: draw->Canvas.SetBgColor (pic.pins[14].oavalue, 0, 0);
+         break;
+        case O_RA7: draw->Canvas.SetBgColor (pic.pins[15].oavalue, 0, 0);
+         break;
+        case O_LPWR: draw->Canvas.SetBgColor (0, 200 * Window1.Get_mcupwr () + 55, 0);
+         break;
+        }
 
-     //draw a LED
-     color1 = draw->Canvas.GetBgColor ();
-     int r = color1.Red () - 120;
-     int g = color1.Green () - 120;
-     int b = color1.Blue () - 120;
-     if (r < 0)r = 0;
-     if (g < 0)g = 0;
-     if (b < 0)b = 0;
-     color2.Set (r, g, b);
-     draw->Canvas.SetBgColor (color2);
-     draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 1);
-     draw->Canvas.SetBgColor (color1);
-     draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 2);
+       //draw a LED
+       color1 = draw->Canvas.GetBgColor ();
+       int r = color1.Red () - 120;
+       int g = color1.Green () - 120;
+       int b = color1.Blue () - 120;
+       if (r < 0)r = 0;
+       if (g < 0)g = 0;
+       if (b < 0)b = 0;
+       color2.Set (r, g, b);
+       draw->Canvas.SetBgColor (color2);
+       draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r + 1);
+       draw->Canvas.SetBgColor (color1);
+       draw->Canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 2);
+      }
     }
   }
 
- rtc_update (&rtc);
-
  //end draw
+ if (update)
+  {
+   draw->Canvas.End ();
+   draw->Update ();
+  }
 
- draw->Canvas.End ();
- draw->Update ();
-
-
+ rtc_update (&rtc);
 }
 
 void
@@ -441,6 +451,30 @@ cboard_K16F::Run_CPU(void)
   }
 
  if (use_spare)Window5.PostProcess ();
+
+ if (lcd.update) output_ids[O_LCD]->update = 1;
+
+ //verifiy if LEDS need update 
+ if (output_ids[O_RA1]->value != pic.pins[17].oavalue)
+  {
+   output_ids[O_RA1]->value = pic.pins[17].oavalue;
+   output_ids[O_RA1]->update = 1;
+  }
+ if (output_ids[O_RA2]->value != pic.pins[0].oavalue)
+  {
+   output_ids[O_RA2]->value = pic.pins[0].oavalue;
+   output_ids[O_RA2]->update = 1;
+  }
+ if (output_ids[O_RA6]->value != pic.pins[14].oavalue)
+  {
+   output_ids[O_RA6]->value = pic.pins[14].oavalue;
+   output_ids[O_RA6]->update = 1;
+  }
+ if (output_ids[O_RA7]->value != pic.pins[15].oavalue)
+  {
+   output_ids[O_RA7]->value = pic.pins[15].oavalue;
+   output_ids[O_RA7]->update = 1;
+  }
 }
 
 void
@@ -604,8 +638,8 @@ cboard_K16F::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           Window1.statusbar1.SetField (0, lxT ("Running..."));
          }
        }
+       output_ids[O_LPWR]->update = 1;
        break;
-
       case I_RST:
        {
         if (Window1.Get_mcupwr () && pic_reset (-1))
@@ -614,10 +648,9 @@ cboard_K16F::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           Window1.Set_mcurst (1);
          }
         p_RST = 0;
+        output_ids[O_RST]->update = 1;
        }
        break;
-
-
       case I_TC1:
        {
         p_KEY1 = 1;
@@ -730,8 +763,6 @@ cboard_K16F::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       }
     }
   }
-
-
 }
 
 void
@@ -758,9 +789,9 @@ cboard_K16F::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
            }
          }
         p_RST = 1;
+        output_ids[O_RST]->update = 1;
        }
        break;
-
 
       case I_TC1:
        {
@@ -822,7 +853,6 @@ cboard_K16F::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
        }
       case I_TCT:
        {
-
         p_KEY12 = 0;
        }
        break;
@@ -949,8 +979,8 @@ cboard_K16F::EvKeyRelease(uint key, uint mask)
 void
 cboard_K16F::EvOnShow(void)
 {
-
  lcd.update = 1;
+ board::EvOnShow ();
 }
 
 unsigned short

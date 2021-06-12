@@ -1,7 +1,7 @@
 ### TODOs
 | Filename | line # | TODO
 |:------|:------:|:------
-| [src/picsimlab1.cc](src/picsimlab1.cc#L424) | 424 | verify initialization errors
+| [src/picsimlab1.cc](src/picsimlab1.cc#L506) | 506 | verify initialization errors
 | [src/picsimlab4.cc](src/picsimlab4.cc#L630) | 630 | select the better mode for channel trigguer
 | [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L116) | 116 | jumper support
 | [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L68) | 68 | TEMP cooler must don't work with AQUE=0
@@ -27,12 +27,12 @@
 | [src/parts/part_VCD_Dump.cc](src/parts/part_VCD_Dump.cc#L106) | 106 | add support to remote control
 | [src/parts/part_VCD_Dump_an.cc](src/parts/part_VCD_Dump_an.cc#L105) | 105 | add support to remote control
 | [src/parts/part_VCD_Play.cc](src/parts/part_VCD_Play.cc#L108) | 108 | add support to remote control
-| [src/parts/part_dcmotor.cc](src/parts/part_dcmotor.cc#L216) | 216 | Add transfer funcion of dc motor
+| [src/parts/part_dcmotor.cc](src/parts/part_dcmotor.cc#L219) | 219 | Add transfer funcion of dc motor
 
 ### FIXMEs
 | Filename | line # | FIXME
 |:------|:------:|:------
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1227) | 1227 | avr CONFIG size
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L118) | 118 | only for BANK=0;
-| [src/parts/part_dcmotor.cc](src/parts/part_dcmotor.cc#L275) | 275 | on slow speed output is not 90 degrees
+| [src/parts/part_dcmotor.cc](src/parts/part_dcmotor.cc#L278) | 278 | on slow speed output is not 90 degrees
 | [src/parts/part_encoder.cc](src/parts/part_encoder.cc#L209) | 209 | on slow speed output is not 90 degrees

@@ -39,6 +39,7 @@ class cpart_rgb_led:public part
       cpart_rgb_led(unsigned x, unsigned y);
       ~cpart_rgb_led(void);
       void Draw(void);
+      void PostProcess(void);
       lxString GetPictureFileName(void){return lxT("rgb_led/RGB_LED.svg");};
       lxString GetInputMapFile(void){return lxT("rgb_led/RGB_LED_i.map");};
       lxString GetOutputMapFile(void){return lxT("rgb_led/RGB_LED_o.map");};

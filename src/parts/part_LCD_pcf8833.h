@@ -40,6 +40,7 @@ class cpart_LCD_pcf8833:public part
       ~cpart_LCD_pcf8833(void);
       void Draw(void);
       void Process(void);
+      void PostProcess(void);
       lxString GetPictureFileName(void){return lxT("LCD_pcf8833/LCD_pcf8833.svg");};
       lxString GetInputMapFile(void){return lxT("LCD_pcf8833/LCD_pcf8833_i.map");};
       lxString GetOutputMapFile(void){return lxT("LCD_pcf8833/LCD_pcf8833_o.map");};

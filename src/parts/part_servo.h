@@ -55,6 +55,7 @@ class cpart_servo:public part
       
       void Draw(void);
       void Process(void);
+      void PostProcess(void);
       lxString GetPictureFileName(void){return lxT("servo/servo_motor.svg");};
       lxString GetInputMapFile(void){return lxT("servo/servo_motor_i.map");};
       lxString GetOutputMapFile(void){return lxT("servo/servo_motor_o.map");};

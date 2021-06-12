@@ -132,116 +132,124 @@ cpart_VCD_Dump_an::Draw(void)
 
  const picpin * ppins = Window5.GetPinsValues ();
 
- canvas.Init (Scale, Scale, Orientation);
-
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_P1:
-    case O_P2:
-    case O_P3:
-    case O_P4:
-    case O_P5:
-    case O_P6:
-    case O_P7:
-    case O_P8:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     if (input_pins[output[i].id - O_P1] == 0)
-      canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
-     else
-      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
-     break;
-    case O_NAME:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     to = strlen (f_vcd_name) + 5;
-     if (to < 48)
+     output[i].update = 0;
+
+     if (!Update)
       {
-       to = 0;
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
       }
-     else
+     Update++; //set to update buffer
+
+     switch (output[i].id)
       {
-       to = to - 48;
-      }
-     canvas.RotatedText ((f_vcd_name + to) + lxString (" (An)"), output[i].x1, output[i].y1, 0);
-     break;
-    case O_L1:
-    case O_L2:
-    case O_L3:
-    case O_L4:
-    case O_L5:
-    case O_L6:
-    case O_L7:
-    case O_L8:
-     if (input_pins[output[i].id - O_L1] > 0)
-      {
-       if (ppins[input_pins[output[i].id - O_L1] - 1].dir == PD_IN)
+      case O_P1:
+      case O_P2:
+      case O_P3:
+      case O_P4:
+      case O_P5:
+      case O_P6:
+      case O_P7:
+      case O_P8:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       if (input_pins[output[i].id - O_P1] == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
+       else
+        canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
+       break;
+      case O_NAME:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       to = strlen (f_vcd_name) + 5;
+       if (to < 48)
         {
-         canvas.SetColor (ppins[input_pins[output[i].id - O_L1] - 1].avalue * 51, 0, 0);
+         to = 0;
         }
        else
         {
-         canvas.SetColor (ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
+         to = to - 48;
         }
+       canvas.RotatedText ((f_vcd_name + to) + lxString (" (An)"), output[i].x1, output[i].y1, 0);
+       break;
+      case O_L1:
+      case O_L2:
+      case O_L3:
+      case O_L4:
+      case O_L5:
+      case O_L6:
+      case O_L7:
+      case O_L8:
+       if (input_pins[output[i].id - O_L1] > 0)
+        {
+         if (ppins[input_pins[output[i].id - O_L1] - 1].dir == PD_IN)
+          {
+           canvas.SetColor (ppins[input_pins[output[i].id - O_L1] - 1].avalue * 51, 0, 0);
+          }
+         else
+          {
+           canvas.SetColor (ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
+          }
+        }
+       else
+        {
+         canvas.SetColor (30, 0, 0);
+        }
+       canvas.SetFgColor (0, 0, 0);
+       //draw a circle
+       color1 = canvas.GetBgColor ();
+       r = color1.Red () - 120;
+       g = color1.Green () - 120;
+       b = color1.Blue () - 120;
+       if (r < 0)r = 0;
+       if (g < 0)g = 0;
+       if (b < 0)b = 0;
+       color2.Set (r, g, b);
+       canvas.SetBgColor (color2);
+       canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
+       canvas.SetBgColor (color1);
+       canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 3);
+       break;
+      case O_REC:
+       if (rec > 0)
+        {
+         canvas.SetColor (0, 255, 0);
+        }
+       else
+        {
+         canvas.SetColor (255, 0, 0);
+        }
+       canvas.SetFgColor (0, 0, 0);
+       //draw a circle
+       color1 = canvas.GetBgColor ();
+       r = color1.Red () - 120;
+       g = color1.Green () - 120;
+       b = color1.Blue () - 120;
+       if (r < 0)r = 0;
+       if (g < 0)g = 0;
+       if (b < 0)b = 0;
+       color2.Set (r, g, b);
+       canvas.SetBgColor (color2);
+       canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
+       canvas.SetBgColor (color1);
+       canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 3);
+       break;
       }
-     else
-      {
-       canvas.SetColor (30, 0, 0);
-      }
-     canvas.SetFgColor (0, 0, 0);
-     //draw a circle
-     color1 = canvas.GetBgColor ();
-     r = color1.Red () - 120;
-     g = color1.Green () - 120;
-     b = color1.Blue () - 120;
-     if (r < 0)r = 0;
-     if (g < 0)g = 0;
-     if (b < 0)b = 0;
-     color2.Set (r, g, b);
-     canvas.SetBgColor (color2);
-     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
-     canvas.SetBgColor (color1);
-     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 3);
-     break;
-    case O_REC:
-     if (rec > 0)
-      {
-       canvas.SetColor (0, 255, 0);
-      }
-     else
-      {
-       canvas.SetColor (255, 0, 0);
-      }
-     canvas.SetFgColor (0, 0, 0);
-     //draw a circle
-     color1 = canvas.GetBgColor ();
-     r = color1.Red () - 120;
-     g = color1.Green () - 120;
-     b = color1.Blue () - 120;
-     if (r < 0)r = 0;
-     if (g < 0)g = 0;
-     if (b < 0)b = 0;
-     color2.Set (r, g, b);
-     canvas.SetBgColor (color2);
-     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r);
-     canvas.SetBgColor (color1);
-     canvas.Circle (1, output[i].x1, output[i].y1, output[i].r - 3);
-     break;
     }
+  }
 
-
-  };
-
-
- canvas.End ();
-
+ if (Update)
+  {
+   canvas.End ();
+  }
 }
 
 unsigned short
@@ -401,7 +409,6 @@ void
 cpart_VCD_Dump_an::Process(void)
 {
 
-
  if (rec)
   {
    const picpin * ppins = Window5.GetPinsValues ();
@@ -442,6 +449,22 @@ cpart_VCD_Dump_an::Process(void)
           }
         }
       }
+    }
+  }
+}
+
+void
+cpart_VCD_Dump_an::PostProcess(void)
+{
+
+ const picpin * ppins = Window5.GetPinsValues ();
+
+ for (int i = 0; i < 8; i++)
+  {
+   if (input_pins[i] && (output_ids[O_L1 + i]->value != ppins[input_pins[i] - 1].oavalue))
+    {
+     output_ids[O_L1 + i]->value = ppins[input_pins[i] - 1].oavalue;
+     output_ids[O_L1 + i]->update = 1;
     }
   }
 }
@@ -502,6 +525,7 @@ cpart_VCD_Dump_an::EvMouseButtonPress(uint button, uint x, uint y, uint state)
            f_vcd = NULL;
           }
         }
+       output_ids[O_REC]->update = 1;
        break;
       case I_VIEW:
 #ifdef __EMSCRIPTEN__

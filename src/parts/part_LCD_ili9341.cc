@@ -47,8 +47,8 @@ enum
  TC_SPI = 0, TC_8BITS, TC_SPI_TOUCH, TC_8BITS_TOUCH
 };
 
-cpart_LCD_ili9341::cpart_LCD_ili9341(unsigned x, unsigned y):
-font (8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cpart_LCD_ili9341::cpart_LCD_ili9341(unsigned x, unsigned y) :
+font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -161,81 +161,93 @@ cpart_LCD_ili9341::Draw(void)
 
  int i;
 
- canvas.Init (Scale, Scale, Orientation);
-
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_P1:
-    case O_P2:
-    case O_P3:
-    case O_P4:
-    case O_P5:
-    case O_P6:
-    case O_P7:
-    case O_P8:
-    case O_P9:
-    case O_P10:
-    case O_P11:
-    case O_P12:
-    case O_P13:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     if (input_pins[output[i].id - O_P1] == 0)
-      canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
-     else
-      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2, 90.0);
-     break;
-    case O_T1:
-    case O_T2:
-    case O_T3:
-    case O_T4:
-    case O_T5:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     if (touch_pins[output[i].id - O_T1] == 0)
-      canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
-     else
-      canvas.RotatedText (Window5.GetPinName (touch_pins[output[i].id - O_T1]), output[i].x1, output[i].y2, 90.0);
-     break;
-    case O_F2:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (155, 155, 155);
-     canvas.RotatedText ("3.3V", output[i].x1, output[i].y2, 90.0);
-     break;
-    case O_F1:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (155, 155, 155);
-     canvas.RotatedText ("GND", output[i].x1, output[i].y2, 90.0);
-     break;
-    case O_LCD:
-     //draw lcd text
-     if (lcd.update)
-      {
-       //canvas.SetColor (255, 255, 0);
-       //canvas.Rectangle (1, output[i].x1-2, output[i].y1-2, output[i].x2 - output[i].x1+4, output[i].y2 - output[i].y1+4);
+     output[i].update = 0;
 
-       canvas.SetColor (0, 90 + 40, 0);
-       lcd_ili9341_draw (&lcd, &canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, 1);
+     if (!Update)
+      {
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
       }
-     /*
-     else
-     {
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2-output[i].x1,output[i].y2-output[i].y1 );
-     }
-      */
-     break;
+     Update++; //set to update buffer
+
+     switch (output[i].id)
+      {
+      case O_P1:
+      case O_P2:
+      case O_P3:
+      case O_P4:
+      case O_P5:
+      case O_P6:
+      case O_P7:
+      case O_P8:
+      case O_P9:
+      case O_P10:
+      case O_P11:
+      case O_P12:
+      case O_P13:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       if (input_pins[output[i].id - O_P1] == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
+       else
+        canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2, 90.0);
+       break;
+      case O_T1:
+      case O_T2:
+      case O_T3:
+      case O_T4:
+      case O_T5:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       if (touch_pins[output[i].id - O_T1] == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
+       else
+        canvas.RotatedText (Window5.GetPinName (touch_pins[output[i].id - O_T1]), output[i].x1, output[i].y2, 90.0);
+       break;
+      case O_F2:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (155, 155, 155);
+       canvas.RotatedText ("3.3V", output[i].x1, output[i].y2, 90.0);
+       break;
+      case O_F1:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (155, 155, 155);
+       canvas.RotatedText ("GND", output[i].x1, output[i].y2, 90.0);
+       break;
+      case O_LCD:
+       //draw lcd text
+       if (lcd.update)
+        {
+         //canvas.SetColor (255, 255, 0);
+         //canvas.Rectangle (1, output[i].x1-2, output[i].y1-2, output[i].x2 - output[i].x1+4, output[i].y2 - output[i].y1+4);
+
+         canvas.SetColor (0, 90 + 40, 0);
+         lcd_ili9341_draw (&lcd, &canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, 1);
+        }
+       /*
+       else
+       {
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2-output[i].x1,output[i].y2-output[i].y1 );
+       }
+        */
+       break;
+      }
     }
   }
- canvas.End ();
+ if (Update)
+  {
+   canvas.End ();
+  }
 }
 
 unsigned short
@@ -720,6 +732,12 @@ cpart_LCD_ili9341::Process(void)
 }
 
 void
+cpart_LCD_ili9341::PostProcess(void)
+{
+ if (lcd.update)output_ids[O_LCD]->update = 1;
+}
+
+void
 cpart_LCD_ili9341::ComboChange(CCombo * control, lxString value)
 {
  if (!value.Cmp ("SPI"))
@@ -760,7 +778,7 @@ cpart_LCD_ili9341::ChangeType(unsigned char tp)
 
  ReadMaps ();
 
- lxImage image(&Window5);
+ lxImage image (&Window5);
  image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
@@ -817,7 +835,7 @@ void
 cpart_LCD_ili9341::EvMouseMove(uint button, uint x, uint y, uint state)
 {
  int i;
- 
+
  for (i = 0; i < inputc; i++)
   {
    if (PointInside (x, y, input[i]))
@@ -844,14 +862,14 @@ void
 cpart_LCD_ili9341::SetOrientation(int _orientation)
 {
  part::SetOrientation (_orientation);
- lcd_ili9341_update(&lcd);
+ lcd_ili9341_update (&lcd);
 }
 
 void
 cpart_LCD_ili9341::SetScale(double scale)
 {
  part::SetScale (scale);
- lcd_ili9341_update(&lcd);
+ lcd_ili9341_update (&lcd);
 }
 
 part_init("LCD ili9341", cpart_LCD_ili9341, "Output");

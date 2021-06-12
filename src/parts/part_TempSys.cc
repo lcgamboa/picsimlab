@@ -40,8 +40,8 @@ enum
  I_PO1, I_PO2, I_PO3, I_PO4
 };
 
-cpart_tempsys::cpart_tempsys(unsigned x, unsigned y):
-font (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cpart_tempsys::cpart_tempsys(unsigned x, unsigned y) :
+font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
@@ -101,69 +101,87 @@ cpart_tempsys::Draw(void)
 
  const picpin * ppins = Window5.GetPinsValues ();
 
- canvas.Init (Scale, Scale, Orientation);
-
- canvas.SetFont (font);
+ Update = 0;
 
  for (i = 0; i < outputc; i++)
   {
-
-   switch (output[i].id)
+   if (output[i].update)//only if need update
     {
-    case O_HT:
-    case O_CO:
-    case O_TA:
-    case O_TE:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     if (input_pins[output[i].id - O_HT] == 0)
-      canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
-     else
-      canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_HT]), output[i].x1, output[i].y1, 0);
-     break;
-    case O_F1:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (155, 155, 155);
-     canvas.RotatedText ("12V", output[i].x1, output[i].y1, 0);
-     break;
-    case O_F2:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (155, 155, 155);
-     canvas.RotatedText ("GND", output[i].x1, output[i].y1, 0);
-     break;
-    case O_OTA:
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     canvas.RotatedText ("Ambient=27.5C", output[i].x1, output[i].y1, 0);
-     break;
-    case O_OTE:
-     str.Printf (lxT ("Temp.=%5.2fC"), temp[0]);
-     canvas.SetColor (49, 61, 99);
-     canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-     canvas.SetFgColor (255, 255, 255);
-     canvas.RotatedText (str, output[i].x1, output[i].y1, 0);
-     break;
-    case O_VT:
-     if (input_pins[1] == 0)break;
-     if (ppins[input_pins[1] - 1].oavalue > 55) vtc++;
+     output[i].update = 0;
 
-     if (vtc > (4 - 0.04 * ppins[input_pins[1] - 1].oavalue))
+     if (!Update)
       {
-       vtc = 0;
-       canvas.PutBitmap (vent[vt], output[i].x1, output[i].y1);
-       vt ^= 1;
+       canvas.Init (Scale, Scale, Orientation);
+       canvas.SetFont (font);
       }
-     break;
+     Update++; //set to update buffer
+
+     switch (output[i].id)
+      {
+      case O_HT:
+      case O_CO:
+      case O_TA:
+      case O_TE:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       if (input_pins[output[i].id - O_HT] == 0)
+        canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
+       else
+        canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_HT]), output[i].x1, output[i].y1, 0);
+       break;
+      case O_F1:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (155, 155, 155);
+       canvas.RotatedText ("12V", output[i].x1, output[i].y1, 0);
+       break;
+      case O_F2:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (155, 155, 155);
+       canvas.RotatedText ("GND", output[i].x1, output[i].y1, 0);
+       break;
+      case O_OTA:
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       canvas.RotatedText ("Ambient=27.5C", output[i].x1, output[i].y1, 0);
+       break;
+      case O_OTE:
+       str.Printf (lxT ("Temp.=%5.2fC"), temp[0]);
+       canvas.SetColor (49, 61, 99);
+       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+       canvas.SetFgColor (255, 255, 255);
+       canvas.RotatedText (str, output[i].x1, output[i].y1, 0);
+       break;
+      case O_VT:
+       canvas.PutBitmap (vent[vt], output[i].x1, output[i].y1);
+       break;
+      }
     }
   }
 
+ if (Update)
+  {
+   canvas.End ();
+  }
+
+
  //sensor ventilador
  if (input_pins[1] > 0)
-  rpmstp = ((float) Window1.GetNSTEPJ ()) / (0.7196 * (ppins[input_pins[1] - 1].oavalue - 54));
+  {
+   rpmstp = ((float) Window1.GetNSTEPJ ()) / (0.7196 * (ppins[input_pins[1] - 1].oavalue - 54));
+
+   if (ppins[input_pins[1] - 1].oavalue > 55) vtc++;
+
+   if (vtc > (4 - 0.04 * ppins[input_pins[1] - 1].oavalue))
+    {
+     vtc = 0;
+     vt ^= 1;
+    }
+  }
+
  //temperatura 
  if (input_pins[0] > 0)
   ref = (0.25 * (ppins[input_pins[0] - 1].oavalue - 55));
@@ -178,15 +196,11 @@ cpart_tempsys::Draw(void)
 
  Window5.SetAPin (input_pins[2], temp[0] / 100.0);
 
- canvas.End ();
-
 }
 
 void
 cpart_tempsys::Process(void)
 {
-
-
  if (!refresh)
   {
    refresh = Window1.GetJUMPSTEPS ();
@@ -209,6 +223,22 @@ cpart_tempsys::Process(void)
     }
   }
  refresh--;
+}
+
+void
+cpart_tempsys::PostProcess(void)
+{
+ if (output_ids[O_OTE]->fvalue != temp[0])
+  {
+   output_ids[O_OTE]->fvalue = temp[0];
+   output_ids[O_OTE]->update = 1;
+  }
+
+ if (output_ids[O_VT]->value != vt)
+  {
+   output_ids[O_VT]->value = vt;
+   output_ids[O_VT]->update = 1;
+  }
 
 }
 
@@ -324,20 +354,20 @@ cpart_tempsys::ReadPropertiesWindow(CPWindow * WProp)
 void
 cpart_tempsys::SetOrientation(int _orientation)
 {
-/*
- delete vent[0];
- delete vent[1];
+ /*
+  delete vent[0];
+  delete vent[1];
 
- lxImage image (&Window5);
+  lxImage image (&Window5);
 
- image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT1.svg"), Orientation, Scale * 0.867, Scale * 0.867);
- vent[0] = new lxBitmap (&image, &Window1);
- image.Destroy ();
+  image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT1.svg"), Orientation, Scale * 0.867, Scale * 0.867);
+  vent[0] = new lxBitmap (&image, &Window1);
+  image.Destroy ();
 
- image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT2.svg"), Orientation, Scale * 0.867, Scale * 0.867);
- vent[1] = new lxBitmap (&image, &Window1);
- image.Destroy ();
-*/
+  image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT2.svg"), Orientation, Scale * 0.867, Scale * 0.867);
+  vent[1] = new lxBitmap (&image, &Window1);
+  image.Destroy ();
+  */
  part::SetOrientation (_orientation);
 
 }

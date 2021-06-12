@@ -81,7 +81,6 @@ class cboard_Curiosity:public bsim_picsim
       void EvKeyPress(uint key, uint mask);
       //Event on the board
       void EvKeyRelease(uint key, uint mask);
-      void EvOnShow(void){};
       //Called ever 1s to refresh status
       void RefreshStatus(void);
       //Called to save board preferences in configuration file
