@@ -65,12 +65,22 @@ CPWindow1::PointInside(int i, int x, int y)
 
  int X = 185;
  int Y = i * 15 + 22;
- const int Width = 52;
- const int Height = 8;
+ int Width = 52;
+ int Height = 8;
 
  if (((x >= X)&&(x <= (X + Width)))&&((y >= Y)&&(y <= (Y + Height))))
   {
    return 1;
+  }
+
+ X = 98;
+ Y = i * 15 + 22;
+ Width = 20;
+ Height = 8;
+
+ if (((x >= X)&&(x <= (X + Width)))&&((y >= Y)&&(y <= (Y + Height))))
+  {
+   return 2;
   }
 
  return 0;
@@ -81,18 +91,18 @@ CPWindow1::draw1_EvMouseButtonPress(CControl * control, const uint button, const
 {
  float fx = x / scale;
  float fy = y / scale;
-
+ lxString temp;
 
  for (int i = 0; i < pincount; i++)
   {
-   if (PointInside (i, (int) (fx - offsetx), (int) (fy - offsety)))
+   if (PointInside (i, (int) (fx - offsetx), (int) (fy - offsety)) == 1)
     {
 
      if ((pins[i].type == 'D') && (pins[i].dir == 'I'))
       {
        //printf ("botão pino %i\n", i + 1);
 
-       lxString temp;
+
 
        if (pins[i].dvalue == '0')
         {
@@ -109,7 +119,8 @@ CPWindow1::draw1_EvMouseButtonPress(CControl * control, const uint button, const
      else if (pins[i].type == 'A')
       {
        lxString temp;
-       float val = (fx - offsetx - 185)*4;
+       float val = (fx - offsetx - 185) / 10;
+       if (val > 5.0)val = 5.0;
        temp.Printf ("set apin[%02i] %f", i + 1, val);
        send_cmd (temp);
        //printf(buff);
@@ -117,6 +128,19 @@ CPWindow1::draw1_EvMouseButtonPress(CControl * control, const uint button, const
       }
 
      return;
+    }
+   if (PointInside (i, (int) (fx - offsetx), (int) (fy - offsety)) == 2)
+    {
+     if ((pins[i].type == 'D') && (pins[i].dir == 'I'))
+      {
+       temp.Printf ("set apin[%02i] 2.500", i + 1);
+       send_cmd (temp);
+      }
+     else if (pins[i].type == 'A')
+      {
+       temp.Printf ("set pin[%02i] 0", i + 1);
+       send_cmd (temp);
+      }
     }
   }
 
@@ -165,6 +189,20 @@ void
 CPWindow1::menu1_File_Exit_EvMenuActive(CControl * control)
 {
  WDestroy ();
+}
+
+void
+CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
+{
+ lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab_docs/PinViewer/"));
+}
+
+void
+CPWindow1::menu1_Help_About_EvMenuActive(CControl * control)
+{
+ lxString stemp;
+ stemp.Printf (lxT ("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: %s %s %s"), lxT (_VERSION_), lxT (_DATE_), lxT (_ARCH_));
+ Message_sz (stemp, 400, 200);
 }
 
 void
@@ -431,7 +469,7 @@ CPWindow1::send_cmd(const char * message)
      buff[bp] = 0;
      //printf ("%c", buff[bp-1]);
     }
-   else 
+   else
     {
      printf ("recv error : %s \n", strerror (errno));
      connected = 0;

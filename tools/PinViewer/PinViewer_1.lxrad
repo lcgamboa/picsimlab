@@ -34,7 +34,7 @@
   <Class type="lxString">CMenu</Class>
   <Name type="lxString">menu1</Name>
   <Tag type="int">0</Tag>
-  <MenuItems type="MenuItems">File,</MenuItems>
+  <MenuItems type="MenuItems">File,Help,</MenuItems>
 </menu1>
 <statusbar1>
   <Class type="lxString">CStatusbar</Class>
@@ -85,6 +85,31 @@
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_File_Exit>
+<menu1_Help>
+  <Class type="lxString">CPMenu</Class>
+  <Name type="lxString">menu1_Help</Name>
+  <Tag type="int">0</Tag>
+  <Text type="lxString">Help</Text>
+  <MenuItems type="MenuItems">Contents,About,</MenuItems>
+</menu1_Help>
+<menu1_Help_Contents>
+  <Class type="lxString">CItemMenu</Class>
+  <Name type="lxString">menu1_Help_Contents</Name>
+  <Tag type="int">0</Tag>
+  <Text type="lxString">Contents</Text>
+  <Enable type="bool">1</Enable>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Help_Contents>
+<menu1_Help_About>
+  <Class type="lxString">CItemMenu</Class>
+  <Name type="lxString">menu1_Help_About</Name>
+  <Tag type="int">0</Tag>
+  <Text type="lxString">About</Text>
+  <Enable type="bool">1</Enable>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Help_About>
 <timer1>
   <Class type="lxString">CTimer</Class>
   <Name type="lxString">timer1</Name>

@@ -25,7 +25,7 @@ CPWindow1::CPWindow1(void)
   menu1.SetClass(lxT("CMenu"));
   menu1.SetName(lxT("menu1"));
   menu1.SetTag(0);
-  menu1.SetMenuItems(lxT("File,"));
+  menu1.SetMenuItems(lxT("File,Help,"));
   CreateChild(&menu1);
   //statusbar1
   statusbar1.SetFOwner(this);
@@ -73,6 +73,34 @@ CPWindow1::CPWindow1(void)
   menu1_File_Exit.SetSubMenu(NULL);
   menu1_File_Exit.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_File_Exit_EvMenuActive;
   menu1_File.CreateChild(&menu1_File_Exit);
+  //menu1_Help
+  menu1_Help.SetFOwner(this);
+  menu1_Help.SetClass(lxT("CPMenu"));
+  menu1_Help.SetName(lxT("menu1_Help"));
+  menu1_Help.SetTag(0);
+  menu1_Help.SetText(lxT("Help"));
+  menu1_Help.SetMenuItems(lxT("Contents,About,"));
+  menu1.CreateChild(&menu1_Help);
+  //menu1_Help_Contents
+  menu1_Help_Contents.SetFOwner(this);
+  menu1_Help_Contents.SetClass(lxT("CItemMenu"));
+  menu1_Help_Contents.SetName(lxT("menu1_Help_Contents"));
+  menu1_Help_Contents.SetTag(0);
+  menu1_Help_Contents.SetText(lxT("Contents"));
+  menu1_Help_Contents.SetEnable(1);
+  menu1_Help_Contents.SetSubMenu(NULL);
+  menu1_Help_Contents.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Help_Contents_EvMenuActive;
+  menu1_Help.CreateChild(&menu1_Help_Contents);
+  //menu1_Help_About
+  menu1_Help_About.SetFOwner(this);
+  menu1_Help_About.SetClass(lxT("CItemMenu"));
+  menu1_Help_About.SetName(lxT("menu1_Help_About"));
+  menu1_Help_About.SetTag(0);
+  menu1_Help_About.SetText(lxT("About"));
+  menu1_Help_About.SetEnable(1);
+  menu1_Help_About.SetSubMenu(NULL);
+  menu1_Help_About.EvMenuActive=EVMENUACTIVE & CPWindow1::menu1_Help_About_EvMenuActive;
+  menu1_Help.CreateChild(&menu1_Help_About);
   //timer1
   timer1.SetFOwner(this);
   timer1.SetClass(lxT("CTimer"));

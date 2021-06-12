@@ -42,6 +42,9 @@ class CPWindow1:public CPWindow
   CDraw draw1;
   CPMenu menu1_File;
   CItemMenu menu1_File_Exit;
+  CPMenu menu1_Help;
+  CItemMenu menu1_Help_Contents;
+  CItemMenu menu1_Help_About;
   CTimer timer1;
   /*#Events*/
   void _EvOnCreate(CControl * control); 
@@ -53,6 +56,8 @@ class CPWindow1:public CPWindow
   void draw1_EvMouseButtonRelease(CControl * control, const uint button, const uint x,const  uint y, const uint state);
   void draw1_EvMouseWheel(CControl * control, const int rotation);
   void menu1_File_Exit_EvMenuActive(CControl * control);
+  void menu1_Help_Contents_EvMenuActive(CControl * control);
+  void menu1_Help_About_EvMenuActive(CControl * control);
   void timer1_EvOnTime(CControl * control);
 
   /*#Others*/
