@@ -174,8 +174,8 @@ rcontrol_stop(void)
 void
 rcontrol_end(void)
 {
-   rcontrol_stop ();
-   dprint ("rcontrol: end\n");
+ rcontrol_stop ();
+ dprint ("rcontrol: end\n");
 }
 
 void
@@ -433,6 +433,130 @@ rcontrol_loop(void)
 
      switch (cmd[0])
       {
+      case 'd':
+       if (strstr (cmd, "dumpr"))
+        {
+         //Command dumpr ========================================================
+         Board = Window1.GetBoard ();
+         unsigned int addr;
+         unsigned int size;
+         int ret = sscanf (cmd + 5, "%x %u \n", &addr, &size);
+
+         if (ret == -1) //all
+          {
+           for (unsigned int i = 0; i < Board->DBGGetRAMSize (); i += 16)
+            {
+             snprintf (lstemp, 100, "%04X: ", i);
+             ret += sendtext (lstemp);
+             for (int j = 0; j < 16; j++)
+              {
+               snprintf (lstemp, 100, "%02X ", Board->DBGGetRAM_p ()[j + i ]);
+               ret += sendtext (lstemp);
+              }
+             snprintf (lstemp, 100, "\r\n");
+             ret += sendtext (lstemp);
+            }
+           snprintf (lstemp, 100, "\r\nOK\r\n>");
+           ret += sendtext (lstemp);
+          }
+         else if (ret == 1) //only one addr
+          {
+           if (addr < Board->DBGGetRAMSize ())
+            {
+             snprintf (lstemp, 100, "%04X: %02X ", addr, Board->DBGGetRAM_p ()[addr]);
+             ret += sendtext (lstemp);
+             snprintf (lstemp, 100, "\r\nOK\r\n>");
+             ret += sendtext (lstemp);
+            }
+           else
+            {
+             ret = sendtext ("ERROR\r\n>");
+            }
+          }
+         else // vector from addr 
+          {
+           for (unsigned int i = addr; (i < (addr + size)) && i < Board->DBGGetRAMSize (); i += 16)
+            {
+             snprintf (lstemp, 100, "%04X: ", i);
+             ret += sendtext (lstemp);
+
+             for (unsigned int j = 0; (j < 16) && (j < size - (i - addr)) && (i + j) < Board->DBGGetRAMSize (); j++)
+              {
+               snprintf (lstemp, 100, "%02X ", Board->DBGGetRAM_p ()[j + i ]);
+               ret += sendtext (lstemp);
+              }
+
+             snprintf (lstemp, 100, "\r\n");
+             ret += sendtext (lstemp);
+            }
+           snprintf (lstemp, 100, "\r\nOK\r\n>");
+           ret += sendtext (lstemp);
+          }
+        }
+       else if (strstr (cmd, "dumpe"))
+        {
+         //Command dumpe ========================================================
+         Board = Window1.GetBoard ();
+         unsigned int addr;
+         unsigned int size;
+         int ret = sscanf (cmd + 5, "%x %u \n", &addr, &size);
+
+         if (ret == -1) //all
+          {
+           for (unsigned int i = 0; i < Board->DBGGetEEPROM_Size (); i += 16)
+            {
+             snprintf (lstemp, 100, "%04X: ", i);
+             ret += sendtext (lstemp);
+             for (int j = 0; j < 16; j++)
+              {
+               snprintf (lstemp, 100, "%02X ", Board->DBGGetEEPROM_p ()[j + i ]);
+               ret += sendtext (lstemp);
+              }
+             snprintf (lstemp, 100, "\r\n");
+             ret += sendtext (lstemp);
+            }
+           snprintf (lstemp, 100, "\r\nOK\r\n>");
+           ret += sendtext (lstemp);
+          }
+         else if (ret == 1) //only one addr
+          {
+           if (addr < Board->DBGGetEEPROM_Size ())
+            {
+             snprintf (lstemp, 100, "%04X: %02X ", addr, Board->DBGGetEEPROM_p ()[addr]);
+             ret += sendtext (lstemp);
+             snprintf (lstemp, 100, "\r\nOK\r\n>");
+             ret += sendtext (lstemp);
+            }
+           else
+            {
+             ret = sendtext ("ERROR\r\n>");
+            }
+          }
+         else // vector from addr 
+          {
+           for (unsigned int i = addr; (i < (addr + size)) && i < Board->DBGGetEEPROM_Size (); i += 16)
+            {
+             snprintf (lstemp, 100, "%04X: ", i);
+             ret += sendtext (lstemp);
+
+             for (unsigned int j = 0; (j < 16) && (j < size - (i - addr)) && (i + j) < Board->DBGGetEEPROM_Size (); j++)
+              {
+               snprintf (lstemp, 100, "%02X ", Board->DBGGetEEPROM_p ()[j + i ]);
+               ret += sendtext (lstemp);
+              }
+
+             snprintf (lstemp, 100, "\r\n");
+             ret += sendtext (lstemp);
+            }
+           snprintf (lstemp, 100, "\r\nOK\r\n>");
+           ret += sendtext (lstemp);
+          }
+        }
+       else
+        {
+         ret = sendtext ("ERROR\r\n>");
+        }
+       break;
       case 'e':
        if (!strcmp (cmd, "exit"))
         {
@@ -516,8 +640,8 @@ rcontrol_loop(void)
              Board = Window1.GetBoard ();
              pins = Board->MGetPinsValues ();
             }
-           snprintf (lstemp, 100, "apin[%02i]= %i \r\nOk\r\n>", pin, (int) pins[pin - 1].oavalue - 55);
-           sendtext (lstemp);
+           snprintf (lstemp, 100, "apin[%02i]= %5.3f \r\nOk\r\n>", pin, pins[pin - 1].avalue);
+           ret = sendtext (lstemp);
           }
          else if ((ptr = strstr (cmd, " pin[")))
           {
@@ -533,6 +657,45 @@ rcontrol_loop(void)
             }
            snprintf (lstemp, 100, "pin[%02i]= %i \r\nOk\r\n>", pin, pins[pin - 1].value);
            sendtext (lstemp);
+          }
+         else if ((ptr = strstr (cmd, " pinl[")))
+          {
+           int pin = (ptr[6] - '0')*10 + (ptr[7] - '0');
+           if (Board->GetUseSpareParts ())
+            {
+             pins = Window5.GetPinsValues ();
+            }
+           else
+            {
+             Board = Window1.GetBoard ();
+             pins = Board->MGetPinsValues ();
+            }
+           snprintf (lstemp, 100, "pin[%02i] %c %c %i %03i %5.3f \"%-8s\" \r\nOk\r\n>",
+                     pin,
+                     pintypetoletter (pins[pin - 1].ptype),
+                     (pins[pin - 1].dir == PD_IN) ? 'I' : 'O',
+                     pins[pin - 1].value,
+                     (int) (pins[pin - 1].oavalue - 55),
+                     pins[pin - 1].avalue,
+                     (const char *) Board->MGetPinName (pin).c_str ()
+                     );
+           ret = sendtext (lstemp);
+          }
+         else if ((ptr = strstr (cmd, " pinm[")))
+          {
+           int pin = (ptr[6] - '0')*10 + (ptr[7] - '0');
+           if (Board->GetUseSpareParts ())
+            {
+             pins = Window5.GetPinsValues ();
+            }
+           else
+            {
+             Board = Window1.GetBoard ();
+             pins = Board->MGetPinsValues ();
+            }
+           snprintf (lstemp, 100, "pin[%02i] %03i\r\nOk\r\n>",
+                     pin, (int) (pins[pin - 1].oavalue - 55));
+           ret = sendtext (lstemp);
           }
          else if (Board->GetUseSpareParts ())
           {
@@ -624,17 +787,19 @@ rcontrol_loop(void)
         {
          //Command help ========================================================
          ret += sendtext ("List of supported commands:\r\n");
-         ret += sendtext ("  exit      - shutdown PICSimLab\r\n");
-         ret += sendtext ("  get ob    - get object value\r\n");
-         ret += sendtext ("  help      - show this message\r\n");
-         ret += sendtext ("  info      - show actual setup info and objects\r\n");
-         ret += sendtext ("  pins      - show pins directions and values\r\n");
-         ret += sendtext ("  pinsl     - show pins formated info\r\n");
-         ret += sendtext ("  quit      - exit remote control interface\r\n");
-         ret += sendtext ("  reset     - reset the board\r\n");
-         ret += sendtext ("  set ob vl - set object with value\r\n");
-         ret += sendtext ("  sync      - wait to syncronize with timer event\r\n");
-         ret += sendtext ("  version   - show PICSimLab version\r\n");
+         ret += sendtext ("  dumpr [a] [s]- dump ram memory\r\n");
+         ret += sendtext ("  dumpe [a] [s]- dump eeprom memory\r\n");
+         ret += sendtext ("  exit         - shutdown PICSimLab\r\n");
+         ret += sendtext ("  get ob       - get object value\r\n");
+         ret += sendtext ("  help         - show this message\r\n");
+         ret += sendtext ("  info         - show actual setup info and objects\r\n");
+         ret += sendtext ("  pins         - show pins directions and values\r\n");
+         ret += sendtext ("  pinsl        - show pins formated info\r\n");
+         ret += sendtext ("  quit         - exit remote control interface\r\n");
+         ret += sendtext ("  reset        - reset the board\r\n");
+         ret += sendtext ("  set ob vl    - set object with value\r\n");
+         ret += sendtext ("  sync         - wait to syncronize with timer event\r\n");
+         ret += sendtext ("  version      - show PICSimLab version\r\n");
 
          ret += sendtext ("Ok\r\n>");
         }
@@ -819,20 +984,20 @@ rcontrol_loop(void)
          else if ((ptr = strstr (cmd, " apin[")))
           {
            int pin = (ptr[6] - '0')*10 + (ptr[7] - '0');
-           int value;
+           float value;
 
-           sscanf (ptr + 9, "%i", &value);
+           sscanf (ptr + 9, "%f", &value);
 
-           dprint ("apin[%02i] = %i \r\n", pin, value);
+           dprint ("apin[%02i] = %f \r\n", pin, value);
 
            if (Board->GetUseSpareParts ())
             {
-             Window5.SetAPin (pin, value / 40.0);
+             Window5.SetAPin (pin, value);
             }
            else
             {
              Board = Window1.GetBoard ();
-             Board->MSetAPin (pin, value / 40.0);
+             Board->MSetAPin (pin, value);
             }
            sendtext ("Ok\r\n>");
           }
@@ -964,16 +1129,16 @@ rcontrol_loop(void)
      if (WSAGetLastError () != WSAEWOULDBLOCK)
 #endif   
       {
-       ret = 1;//recv ERROR
+       ret = 1; //recv ERROR
       }
      else
       {
-       ret = 0;//recv no data 
+       ret = 0; //recv no data 
       }
     }
    else
     {
-     ret = 0;//recv no data
+     ret = 0; //recv no data
     }
   }
 

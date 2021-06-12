@@ -1245,8 +1245,7 @@ bsim_simavr::DBGGetID_p(void)
 unsigned char *
 bsim_simavr::DBGGetEEPROM_p(void)
 {
- //TODO avr EEPROM pointer
- return NULL;
+ return eeprom;
 }
 
 unsigned int
@@ -1278,8 +1277,7 @@ bsim_simavr::DBGGetIDSize(void)
 unsigned int
 bsim_simavr::DBGGetEEPROM_Size(void)
 {
- //TODO AVR EEPROM size
- return 0;
+ return avr->e2end + 1;
 }
 
 
@@ -1599,47 +1597,47 @@ bsim_simavr::write_ihx_avr(const char * fname)
            fprintf(fout,":%02X%04X00%s%02X\n",nb,iaddr,values,sum);
        }
     */
- //eeprom
-     nb=0;
-     sum=0;
-     fprintf(fout,":02000004008179\n");
-     for(i=0;i <= avr->e2end;i++)
-     {
-    
-       if(nb==0)
-       {
-         iaddr=i;
-         sprintf(values,"%02X",eeprom[i]);
-       }
-       else
-       {
-         sprintf(tmp,"%s%02X",values,eeprom[i]);
-         strcpy(values,tmp);
-       }
+   //eeprom
+   nb = 0;
+   sum = 0;
+   fprintf (fout, ":02000004008179\n");
+   for (i = 0; i <= avr->e2end; i++)
+    {
 
-       nb++;
-       sum+=eeprom[i];
-       if(nb==16)
-       {
-         sum+=nb;
-         sum+=(iaddr&0x00FF);
-         sum+=((iaddr&0xFF00)>>8);
+     if (nb == 0)
+      {
+       iaddr = i;
+       sprintf (values, "%02X", eeprom[i]);
+      }
+     else
+      {
+       sprintf (tmp, "%s%02X", values, eeprom[i]);
+       strcpy (values, tmp);
+      }
+
+     nb++;
+     sum += eeprom[i];
+     if (nb == 16)
+      {
+       sum += nb;
+       sum += (iaddr & 0x00FF);
+       sum += ((iaddr & 0xFF00) >> 8);
        //printf("sum=%02X %02X %02X\n",sum,~sum,(~sum)+1);
-         sum=(~sum)+1; 
-         fprintf(fout,":%02X%04X00%s%02X\n",nb,iaddr,values,sum);
-         nb=0;
-         sum=0;
-       }
-     }
-     if(nb)
-     {
-         sum+=nb;
-         sum+=(iaddr&0x00FF);
-         sum+=((iaddr&0xFF00)>>8);
-         sum=(~sum)+1; 
-         fprintf(fout,":%02X%04X00%s%02X\n",nb,iaddr,values,sum);
-     }
-     
+       sum = (~sum) + 1;
+       fprintf (fout, ":%02X%04X00%s%02X\n", nb, iaddr, values, sum);
+       nb = 0;
+       sum = 0;
+      }
+    }
+   if (nb)
+    {
+     sum += nb;
+     sum += (iaddr & 0x00FF);
+     sum += ((iaddr & 0xFF00) >> 8);
+     sum = (~sum) + 1;
+     fprintf (fout, ":%02X%04X00%s%02X\n", nb, iaddr, values, sum);
+    }
+
    //end
    fprintf (fout, ":00000001FF\n");
    fclose (fout);
