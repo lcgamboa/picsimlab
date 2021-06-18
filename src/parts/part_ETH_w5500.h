@@ -34,7 +34,7 @@ class cpart_ETH_w5500:public part
 {
    public:
       lxString GetName(void){return lxT("ETH w5500");};
-      lxString GetHelpURL(void){return lxT("ETH_w5500.html");};
+      lxString GetHelpURL(void){return lxT("ETHw5500.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cpart_ETH_w5500(unsigned x, unsigned y);
       ~cpart_ETH_w5500(void);

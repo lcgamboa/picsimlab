@@ -34,7 +34,7 @@ class cpart_IO_MCP23S17:public part
 {
    public:
       lxString GetName(void){return lxT("IO MCP23S17");};
-      lxString GetHelpURL(void){return lxT("IO_MCP23S17.html");};
+      lxString GetHelpURL(void){return lxT("IOMCP23S17.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cpart_IO_MCP23S17(unsigned x, unsigned y);
       ~cpart_IO_MCP23S17(void);

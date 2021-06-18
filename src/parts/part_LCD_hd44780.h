@@ -39,7 +39,7 @@ class cpart_LCD_hd44780:public part
 {
    public:
       lxString GetName(void){return lxT("LCD hd44780");};
-      lxString GetHelpURL(void){return lxT("LCD_hd44780.html");};
+      lxString GetHelpURL(void){return lxT("LCDhd44780.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};      
       cpart_LCD_hd44780(unsigned x, unsigned y);
       ~cpart_LCD_hd44780(void);

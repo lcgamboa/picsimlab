@@ -33,7 +33,7 @@ class cpart_RTC_pfc8563:public part
 {
    public:
       lxString GetName(void){return lxT("RTC pfc8563");};
-      lxString GetHelpURL(void){return lxT("RTC_pfc8563.html");};
+      lxString GetHelpURL(void){return lxT("RTCpfc8563.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_RTC_pfc8563(unsigned x, unsigned y);
       ~cpart_RTC_pfc8563(void);

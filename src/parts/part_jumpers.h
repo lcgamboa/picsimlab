@@ -39,7 +39,7 @@ public:
     };
 
     lxString GetHelpURL(void) {
-        return lxT("Jumper_Wires.html");
+        return lxT("JumperWires.html");
     };
 
     lxString GetAboutInfo(void) {

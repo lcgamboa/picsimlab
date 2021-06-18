@@ -38,7 +38,7 @@ class cpart_servo:public part
 {
    public:
       lxString GetName(void){return lxT("Servo motor");};
-      lxString GetHelpURL(void){return lxT("Servo_Motor.html");};
+      lxString GetHelpURL(void){return lxT("ServoMotor.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};      
       
      /**

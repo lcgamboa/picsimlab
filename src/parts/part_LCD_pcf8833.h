@@ -34,7 +34,7 @@ class cpart_LCD_pcf8833:public part
 {
    public:
       lxString GetName(void){return lxT("LCD pcf8833");};
-      lxString GetHelpURL(void){return lxT("LCD_pcf8833.html");};
+      lxString GetHelpURL(void){return lxT("LCDpcf8833.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_LCD_pcf8833(unsigned x, unsigned y);
       ~cpart_LCD_pcf8833(void);

@@ -33,7 +33,7 @@ class cpart_7s_display_dec : public part {
 public:
 
     lxString GetName(void) {return lxT("7 Segments Display (w/dec)"); };
-    lxString GetHelpURL(void){return lxT("Segments_Display_w_dec.html");};
+    lxString GetHelpURL(void){return lxT("7SegmentsDisplaywdec.html");};
     lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
     cpart_7s_display_dec(unsigned x, unsigned y);
     ~cpart_7s_display_dec(void);

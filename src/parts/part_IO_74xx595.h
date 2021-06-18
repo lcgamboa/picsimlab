@@ -34,7 +34,7 @@ class cpart_IO_74xx595:public part
 {
    public:
       lxString GetName(void){return lxT("IO 74xx595");};
-      lxString GetHelpURL(void){return lxT("IO_74xx595.html");};
+      lxString GetHelpURL(void){return lxT("IO74xx595.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cpart_IO_74xx595(unsigned x, unsigned y);
       ~cpart_IO_74xx595(void);

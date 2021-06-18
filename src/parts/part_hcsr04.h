@@ -33,7 +33,7 @@ class cpart_hcsr04:public part
 {
     public:
       lxString GetName(void){return lxT("Ultrasonic HC-SR04");};
-      lxString GetHelpURL(void){return lxT("Ultrasonic_HC_SR04.html");};
+      lxString GetHelpURL(void){return lxT("UltrasonicHCSR04.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_hcsr04(unsigned x, unsigned y);
       ~cpart_hcsr04(void); 

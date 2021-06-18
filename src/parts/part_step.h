@@ -34,7 +34,7 @@ class cpart_step:public part
 {
    public:
       lxString GetName(void){return lxT("Step motor");}; 
-      lxString GetHelpURL(void){return lxT("Step_Motor.html");};
+      lxString GetHelpURL(void){return lxT("StepMotor.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_step(unsigned x, unsigned y);
       ~cpart_step(void);

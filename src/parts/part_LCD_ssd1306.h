@@ -34,7 +34,7 @@ class cpart_LCD_ssd1306:public part
 {
    public:
       lxString GetName(void){return lxT("LCD ssd1306");};
-      lxString GetHelpURL(void){return lxT("LCD_ssd1306.html");};
+      lxString GetHelpURL(void){return lxT("LCDssd1306.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_LCD_ssd1306(unsigned x, unsigned y);
       ~cpart_LCD_ssd1306(void);

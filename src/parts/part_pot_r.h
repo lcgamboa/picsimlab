@@ -33,7 +33,7 @@ class cpart_pot_r:public part
 {
     public:
       lxString GetName(void){return lxT("Potentiometers (Rotary)");};
-      lxString GetHelpURL(void){return lxT("Potentiometers_Rotary.html");};
+      lxString GetHelpURL(void){return lxT("PotentiometersRotary.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_pot_r(unsigned x, unsigned y);
       ~cpart_pot_r(void); 

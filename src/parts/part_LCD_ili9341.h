@@ -35,7 +35,7 @@ class cpart_LCD_ili9341:public part
 {
    public:
       lxString GetName(void){return lxT("LCD ili9341");};
-      lxString GetHelpURL(void){return lxT("LCD_ili9341.html");};
+      lxString GetHelpURL(void){return lxT("LCDili9341.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_LCD_ili9341(unsigned x, unsigned y);
       ~cpart_LCD_ili9341(void);

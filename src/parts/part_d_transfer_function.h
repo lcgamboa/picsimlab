@@ -34,7 +34,7 @@ class cpart_dtfunc:public part
 {
    public:
       lxString GetName(void){return lxT("D. Transfer function");};
-      lxString GetHelpURL(void){return lxT("D_Transfer_Function.html");};
+      lxString GetHelpURL(void){return lxT("DTransferFunction.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_dtfunc(unsigned x, unsigned y);
       ~cpart_dtfunc(void);

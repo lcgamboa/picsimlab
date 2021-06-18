@@ -34,7 +34,7 @@ class cpart_vterm:public part
 {
    public:
       lxString GetName(void){return lxT("IO Virtual term");};
-      lxString GetHelpURL(void){return lxT("IO_Virtual_term.html");};
+      lxString GetHelpURL(void){return lxT("IOVirtualterm.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cpart_vterm(unsigned x, unsigned y);
       ~cpart_vterm(void);

@@ -34,7 +34,7 @@ class cpart_gamepad_an:public part
 {
    public:
       lxString GetName(void){return lxT("Gamepad (Analogic)");};
-      lxString GetHelpURL(void){return lxT("Gamepad_Analogic.html");};
+      lxString GetHelpURL(void){return lxT("GamepadAnalogic.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_gamepad_an(unsigned x, unsigned y);
       ~cpart_gamepad_an(void);

@@ -33,7 +33,7 @@ class cpart_RTC_ds1307:public part
 {
    public:
       lxString GetName(void){return lxT("RTC ds1307");};
-      lxString GetHelpURL(void){return lxT("RTC_ds1307.html");};
+      lxString GetHelpURL(void){return lxT("RTCds1307.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_RTC_ds1307(unsigned x, unsigned y);
       ~cpart_RTC_ds1307(void);

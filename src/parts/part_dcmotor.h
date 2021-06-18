@@ -33,7 +33,7 @@ class cpart_dcmotor:public part
 {
     public:
       lxString GetName(void){return lxT("DC Motor");};
-      lxString GetHelpURL(void){return lxT("DC_Motor.html");};
+      lxString GetHelpURL(void){return lxT("DCMotor.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_dcmotor(unsigned x, unsigned y);
       ~cpart_dcmotor(void); 

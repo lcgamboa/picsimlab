@@ -36,7 +36,7 @@ public:
     lxString GetName(void) {
         return lxT("LED Matrix");
     };
-    lxString GetHelpURL(void){return lxT("LED_Matrix.html");};
+    lxString GetHelpURL(void){return lxT("LEDMatrix.html");};
     lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
     cpart_led_matrix(unsigned x, unsigned y);
     ~cpart_led_matrix(void);

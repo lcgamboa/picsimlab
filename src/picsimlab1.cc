@@ -861,9 +861,9 @@ void
 CPWindow1::_EvOnDestroy(CControl * control)
 {
  rcontrol_server_end ();
- 
- pboard->EndServers();
- 
+
+ pboard->EndServers ();
+
  EndSimulation ();
 }
 
@@ -1065,7 +1065,9 @@ CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
 {
 #ifdef EXT_BROWSER
  //lxLaunchDefaultBrowser(lxT("file://")+share + lxT ("docs/picsimlab.html"));
- lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab_docs/"));
+ lxString stemp;
+ stemp.Printf (lxT ("https://lcgamboa.github.io/picsimlab_docs/%s/index.html"), lxT (_VERSION_));
+ lxLaunchDefaultBrowser (stemp);
 #else 
  Window2.html1.SetLoadFile (share + lxT ("docs/picsimlab.html"));
  Window2.Show ();
@@ -1075,9 +1077,19 @@ CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
 void
 CPWindow1::menu1_Help_Board_EvMenuActive(CControl * control)
 {
- lxString bname = lxString (boards_list[lab].name_).substr (0, 12);
+ char bname[20];
+ strncpy (bname, boards_list[lab].name_, 12);
 
- lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab_docs/Features_Board_") + bname + lxT (".html"));
+ char * ptr;
+ //remove _ from names
+ while ((ptr = strchr (bname, '_')))
+  {
+   strcpy (ptr, ptr + 1);
+  }
+
+ lxString stemp;
+ stemp.Printf (lxT ("https://lcgamboa.github.io/picsimlab_docs/%s/%s.html"), lxT (_VERSION_), bname);
+ lxLaunchDefaultBrowser (stemp);
 }
 
 void
@@ -1250,7 +1262,7 @@ CPWindow1::menu1_EvBoard(CControl * control)
 
  FNAME = lxT (" ");
  EndSimulation ();
- Configure(HOME);
+ Configure (HOME);
  need_resize = 0;
 }
 
@@ -1266,7 +1278,7 @@ CPWindow1::menu1_EvMicrocontroller(CControl * control)
 
  FNAME = lxT (" ");
  EndSimulation ();
- Configure(HOME);
+ Configure (HOME);
  need_resize = 0;
 }
 
@@ -1279,7 +1291,7 @@ CPWindow1::togglebutton1_EvOnToggleButton(CControl * control)
  debug = togglebutton1.GetCheck ();
 
  EndSimulation ();
- Configure(HOME);
+ Configure (HOME);
  need_resize = 0;
 
  if (osc_on) menu1_Modules_Oscilloscope_EvMenuActive (this);

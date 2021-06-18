@@ -39,7 +39,7 @@ class cpart_VCD_Play : public part {
 public:
 
     lxString GetName(void) { return lxT("VCD Play");};
-    lxString GetHelpURL(void){return lxT("VCD_Play.html");};
+    lxString GetHelpURL(void){return lxT("VCDPlay.html");};
     lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
     cpart_VCD_Play(unsigned x, unsigned y);
     ~cpart_VCD_Play(void);

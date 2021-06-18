@@ -35,7 +35,7 @@ public:
     lxString GetName(void) {
         return lxT("Temperature System");
     };
-    lxString GetHelpURL(void){return lxT("Temperature_System.html");};
+    lxString GetHelpURL(void){return lxT("TemperatureSystem.html");};
     lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
     cpart_tempsys(unsigned x, unsigned y);
     ~cpart_tempsys(void);

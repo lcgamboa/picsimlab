@@ -34,7 +34,7 @@ class cpart_UART:public part
 {
    public:
       lxString GetName(void){return lxT("IO UART");};
-      lxString GetHelpURL(void){return lxT("IO_UART.html");};
+      lxString GetHelpURL(void){return lxT("IOUART.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cpart_UART(unsigned x, unsigned y);
       ~cpart_UART(void);

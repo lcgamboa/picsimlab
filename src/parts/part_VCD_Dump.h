@@ -33,7 +33,7 @@ class cpart_VCD_Dump:public part
 {
    public:
       lxString GetName(void){return lxT("VCD Dump");};
-      lxString GetHelpURL(void){return lxT("VCD_dump.html");};
+      lxString GetHelpURL(void){return lxT("VCDdump.html");};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_VCD_Dump(unsigned x, unsigned y);
       ~cpart_VCD_Dump(void);

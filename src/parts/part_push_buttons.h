@@ -37,7 +37,7 @@ public:
     };
 
     lxString GetHelpURL(void) {
-        return lxT("Push_Buttons.html");
+        return lxT("PushButtons.html");
     };
 
     lxString GetAboutInfo(void) {

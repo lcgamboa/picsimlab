@@ -35,7 +35,7 @@ public:
     lxString GetName(void) {
         return lxT("Signal Generator");
     };
-    lxString GetHelpURL(void){return lxT("Signal_Generator.html");};
+    lxString GetHelpURL(void){return lxT("SignalGenerator.html");};
     lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
     cpart_SignalGenerator(unsigned x, unsigned y);
     ~cpart_SignalGenerator(void);
