@@ -303,6 +303,12 @@ cpart_MPU6050::ConfigurePropertiesWindow(CPWindow * WProp)
  lxString Items = Window5.GetPinsNames ();
  lxString spin;
 
+ 
+ ((CCombo*) WProp->GetChildByName ("combo1"))->SetText ("+5V");
+ 
+ ((CCombo*) WProp->GetChildByName ("combo2"))->SetText ("GND");
+ 
+ 
  ((CCombo*) WProp->GetChildByName ("combo3"))->SetItems (Items);
  if (mpu_pins[0] == 0)
   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText ("0  NC");
