@@ -48,7 +48,7 @@ void setnblock(int sock_descriptor);
 static int listenfd = -1;
 static int listenfd_mon = -1;
 
-bsim_qemu_stm32::bsim_qemu_stm32(void)
+bsim_qemu_stm32::bsim_qemu_stm32(const lxString name) : board(name)
 {
  connected = 0;
  sockfd = -1;
@@ -208,7 +208,9 @@ bsim_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
  if (!lxFileExists (dirname (lxGetExecutablePath ()) + lxT ("/qemu-stm32")))
 #endif  
   {
-   Message ("qemu-stm32 not found!");
+   printf ("picsimlab: qemu-stm32 not found! \n");
+   //FIXME show error message using picsimlab main window
+   //Message ("qemu-stm32 not found!");
    return -1;
   }
 
@@ -327,7 +329,7 @@ bsim_qemu_stm32::MEnd(void)
   {
    qemu_cmd ("quit");
   }
- connected = 0;
+
  if (sockfd >= 0)close (sockfd);
  if (sockmon >= 0)close (sockmon);
 
@@ -344,10 +346,13 @@ bsim_qemu_stm32::MEnd(void)
 #else
  usleep (200000);
 #endif
- if (fname_bak[0])
+
+ if (connected && fname_bak[0])
   {
    lxRenameFile (fname_bak, fname_);
   }
+
+ connected = 0;
 }
 
 void
