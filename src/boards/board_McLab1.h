@@ -29,6 +29,8 @@
 #include<lxrad.h>
 #include "bsim_picsim.h"
 
+#define	BOARD_McLab1_Name "McLab1"
+
 class cboard_McLab1:public bsim_picsim
 {
   private:
@@ -44,15 +46,14 @@ class cboard_McLab1:public bsim_picsim
      lxColor color2;
      lxFont font;     
    public:
+      //Return the board name
+      lxString GetName(void) {return lxT(BOARD_McLab1_Name); };
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       cboard_McLab1(void);
       ~cboard_McLab1(void);
       void Draw(CDraw *draw);
       void Run_CPU(void);
       lxString GetSupportedDevices(void){return lxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
-      lxString GetPictureFileName(void){return lxT("McLab1/board.svg");};
-      lxString GetInputMapFile(void){return lxT("McLab1/input.map");};
-      lxString GetOutputMapFile(void){return lxT("McLab1/output.map");};
       void Reset(void);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);

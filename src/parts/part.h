@@ -44,7 +44,7 @@ public:
     /**
      * @brief  Return the help url of part
      */
-    virtual lxString GetHelpURL(void) = 0;
+    virtual lxString GetHelpURL(void);
 
     /**
      * @brief  Return the about information of part
@@ -77,22 +77,17 @@ public:
     /**
      * @brief  Return the filename of part picture
      */
-    virtual lxString GetPictureFileName(void) = 0;
+    virtual lxString GetPictureFileName(void);
 
     /**
-     * @brief  Return the filename of part picture input map
+     * @brief  Return the filename of part picture map
      */
-    virtual lxString GetInputMapFile(void) = 0;
-
-    /**
-     * @brief  Return the filename of part picture output map
-     */
-    virtual lxString GetOutputMapFile(void) = 0;
+    virtual lxString GetMapFile(void);
 
     /**
      * @brief  Return the filename of properties window XML file
      */
-    virtual lxString GetPropertiesWindowFile(void) = 0;
+    virtual lxString GetPropertiesWindowFile(void);
 
     /**
      * @brief Get part input count  

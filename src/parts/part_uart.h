@@ -30,11 +30,12 @@
 #include"part.h"
 #include"../devices/uart.h"
 
+#define	PART_UART_Name "IO UART"
+
 class cpart_UART:public part
 {
    public:
-      lxString GetName(void){return lxT("IO UART");};
-      lxString GetHelpURL(void){return lxT("IOUART.html");};
+      lxString GetName(void){return lxT(PART_UART_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cpart_UART(unsigned x, unsigned y);
       ~cpart_UART(void);
@@ -42,10 +43,6 @@ class cpart_UART:public part
       void PreProcess (void);
       void Process(void); 
       void PostProcess (void);
-      lxString GetPictureFileName(void){return lxT("UART/uart.svg");};
-      lxString GetInputMapFile(void){return lxT("UART/uart_i.map");};
-      lxString GetOutputMapFile(void){return lxT("UART/uart_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("UART/uart.lxrad");};
       void Reset(void);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  WProp);

@@ -48,7 +48,7 @@ enum
  O_PB2, //PIN PB2
  O_PB3, //PIN PB3
  O_PB4, //PIN PB4
- O_PB5  //PIN PB5
+ O_PB5 //PIN PB5
 };
 //return the input ids numbers of names used in input map
 
@@ -521,22 +521,22 @@ cboard_Franzininho::Draw(CDraw *draw)
        draw->Canvas.SetColor (100, 100, 100);
        break;
       case O_PB0:
-        draw->Canvas.SetColor (pins[4].oavalue, 0, 0);
+       draw->Canvas.SetColor (pins[4].oavalue, 0, 0);
        break;
       case O_PB1:
-        draw->Canvas.SetColor (pins[5].oavalue, 0, 0);
+       draw->Canvas.SetColor (pins[5].oavalue, 0, 0);
        break;
       case O_PB2:
-        draw->Canvas.SetColor (pins[6].oavalue, 0, 0);
+       draw->Canvas.SetColor (pins[6].oavalue, 0, 0);
        break;
       case O_PB3:
-        draw->Canvas.SetColor (pins[1].oavalue, 0, 0);
+       draw->Canvas.SetColor (pins[1].oavalue, 0, 0);
        break;
       case O_PB4:
-        draw->Canvas.SetColor (pins[2].oavalue, 0, 0);
+       draw->Canvas.SetColor (pins[2].oavalue, 0, 0);
        break;
       case O_PB5:
-        draw->Canvas.SetColor (pins[0].oavalue, 0, 0);
+       draw->Canvas.SetColor (pins[0].oavalue, 0, 0);
        break;
       default:
        draw->Canvas.SetColor (0, 0, 0);
@@ -693,5 +693,5 @@ cboard_Franzininho::Run_CPU(void)
 }
 
 
-board_init("Franzininho", cboard_Franzininho);
+board_init(BOARD_Franzininho_Name, cboard_Franzininho);
 

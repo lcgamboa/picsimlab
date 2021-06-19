@@ -287,6 +287,6 @@ cpart_servo::SetScale(double scale)
 }
 
 //Register the part in PICSimLab spare parts list
-part_init("Servo motor", cpart_servo, "Output");
+part_init(PART_SERVO_Name, cpart_servo, "Output");
 
 

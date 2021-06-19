@@ -30,11 +30,12 @@
 #include"part.h"
 #include"../devices/io_MCP23X17.h"
 
+#define	PART_IO_MCP23S17_Name "IO MCP23S17"
+
 class cpart_IO_MCP23S17:public part
 {
    public:
-      lxString GetName(void){return lxT("IO MCP23S17");};
-      lxString GetHelpURL(void){return lxT("IOMCP23S17.html");};
+      lxString GetName(void){return lxT(PART_IO_MCP23S17_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cpart_IO_MCP23S17(unsigned x, unsigned y);
       ~cpart_IO_MCP23S17(void);
@@ -43,9 +44,7 @@ class cpart_IO_MCP23S17:public part
       void Process(void); 
       void PostProcess (void);
       lxString GetPictureFileName(void){return lxT("Common/IC28.svg");};
-      lxString GetInputMapFile(void){return lxT("Common/IC28_i.map");};
-      lxString GetOutputMapFile(void){return lxT("Common/IC28_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("IO_MCP23S17/IO_MCP23S17.lxrad");};
+      lxString GetMapFile(void){return lxT("Common/IC28.map");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       lxString WritePreferences(void);

@@ -742,5 +742,5 @@ cboard_x::Run_CPU(void)
 
 
 //Register the board in PICSimLab
-board_init("X", cboard_x);
+board_init(BOARD_x_Name, cboard_x);
 

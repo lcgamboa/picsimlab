@@ -1460,4 +1460,4 @@ cboard_PQDB::MGetPinCount(void)
 }
 
 
-board_init("PQDB", cboard_PQDB);
+board_init(BOARD_PQDB_Name, cboard_PQDB);

@@ -29,20 +29,19 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define	PART_RTC_DS1307_Name "RTC ds1307"
+
 class cpart_RTC_ds1307:public part
 {
    public:
-      lxString GetName(void){return lxT("RTC ds1307");};
-      lxString GetHelpURL(void){return lxT("RTCds1307.html");};
+      lxString GetName(void){return lxT(PART_RTC_DS1307_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_RTC_ds1307(unsigned x, unsigned y);
       ~cpart_RTC_ds1307(void);
       void Draw(void);
       void Process(void);
       lxString GetPictureFileName(void){return lxT("Common/IC8.svg");};
-      lxString GetInputMapFile(void){return lxT("Common/IC8_i.map");};
-      lxString GetOutputMapFile(void){return lxT("Common/IC8_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("RTC_ds1307/RTC_ds1307.lxrad");};
+      lxString GetMapFile(void){return lxT("Common/IC8.map");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       lxString WritePreferences(void);

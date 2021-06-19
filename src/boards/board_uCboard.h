@@ -30,6 +30,8 @@
 
 #include "bsim_ucsim.h"
 
+#define BOARD_uCboard_Name "uCboard"
+
 //new board class must be derived from board class defined in board.h
 class cboard_uCboard:public bsim_ucsim
 {
@@ -38,6 +40,8 @@ class cboard_uCboard:public bsim_ucsim
        lxFont font;
    public:
       void SetScale (double scale);
+      //Return the board name
+      lxString GetName(void) {return lxT(BOARD_uCboard_Name); }; 
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       //Constructor called once on board creation 
       cboard_uCboard(void);
@@ -49,12 +53,6 @@ class cboard_uCboard:public bsim_ucsim
       int MInit(const char * processor, const char * fname, float freq);
       //Return a list of board supported microcontrollers
       lxString GetSupportedDevices(void){return lxT("C51,STM8S103,Z80,");};
-      //Return the filename of board picture 
-      lxString GetPictureFileName(void){return lxT("uCboard/board.svg");};
-      //Return the filename of board picture input map 
-      lxString GetInputMapFile(void){return lxT("uCboard/input.map");};
-      //Return the filename of board picture output map 
-      lxString GetOutputMapFile(void){return lxT("uCboard/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

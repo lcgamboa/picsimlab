@@ -30,6 +30,8 @@
 
 #include "bsim_gpsim.h"
 
+#define	BOARD_gpboard_Name "gpboard"
+
 //new board class must be derived from board class defined in board.h
 class cboard_gpboard:public bsim_gpsim
 {
@@ -38,6 +40,8 @@ class cboard_gpboard:public bsim_gpsim
        lxFont font;
    public:
       void SetScale (double scale);
+      //Return the board name
+      lxString GetName(void) {return lxT(BOARD_gpboard_Name); };
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       //Constructor called once on board creation 
       cboard_gpboard(void);
@@ -49,12 +53,6 @@ class cboard_gpboard:public bsim_gpsim
       int MInit(const char * processor, const char * fname, float freq);
       //Return a list of board supported microcontrollers
       lxString GetSupportedDevices(void){return supported_devices;};
-      //Return the filename of board picture 
-      lxString GetPictureFileName(void){return lxT("gpboard/board.svg");};
-      //Return the filename of board picture input map 
-      lxString GetInputMapFile(void){return lxT("gpboard/input.map");};
-      //Return the filename of board picture output map 
-      lxString GetOutputMapFile(void){return lxT("gpboard/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

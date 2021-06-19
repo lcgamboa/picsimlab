@@ -106,17 +106,12 @@ public:
     /**
      * @brief Return the filename of board picture  
      */
-    virtual lxString GetPictureFileName(void) = 0;
+    virtual lxString GetPictureFileName(void);
 
     /**
-     * @brief  Return the filename of board picture input map
+     * @brief  Return the filename of board picture map
      */
-    virtual lxString GetInputMapFile(void) = 0;
-
-    /**
-     * @brief  Return the filename of board picture output map
-     */
-    virtual lxString GetOutputMapFile(void) = 0;
+    virtual lxString GetMapFile(void);
 
     /**
      * @brief  Reset board status
@@ -218,14 +213,9 @@ public:
     int GetUseSpareParts(void);
 
     /**
-     * @brief Set board name registered in PICSimLab  
-     */
-    void SetName(lxString name);
-
-    /**
      * @brief Get board name registered in PICSimLab  
      */
-    lxString GetName(void);
+    virtual lxString GetName(void) = 0;
 
     /**
      * @brief Set board processor   
@@ -510,8 +500,7 @@ protected:
      */
     virtual void RegisterRemoteControl(void) {
     };
-
-    lxString Name; ///< Name of board registered in PICSimLab  
+ 
     lxString Proc; ///< Name of processor in use
     input_t input[120]; ///< input map elements
     output_t output[120]; ///< output map elements 

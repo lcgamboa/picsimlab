@@ -29,11 +29,12 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define	PART_DCMOTOR_Name "DC Motor"
+
 class cpart_dcmotor:public part
 {
     public:
-      lxString GetName(void){return lxT("DC Motor");};
-      lxString GetHelpURL(void){return lxT("DCMotor.html");};
+      lxString GetName(void){return lxT(PART_DCMOTOR_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_dcmotor(unsigned x, unsigned y);
       ~cpart_dcmotor(void); 
@@ -41,10 +42,6 @@ class cpart_dcmotor:public part
       void PreProcess(void);
       void Process(void);
       void PostProcess(void);
-      lxString GetPictureFileName(void){return lxT("dcmotor/dcmotor.svg");};
-      lxString GetInputMapFile(void){return lxT("dcmotor/dcmotor_i.map");};
-      lxString GetOutputMapFile(void){return lxT("dcmotor/dcmotor_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("dcmotor/dcmotor.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       lxString WritePreferences(void);

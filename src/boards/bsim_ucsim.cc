@@ -291,7 +291,7 @@ bsim_ucsim::MStep(void)
  p[1] = ucsim_get_port (1);
  p[2] = ucsim_get_port (2);
  p[3] = ucsim_get_port (3);
- 
+
  for (int i = 0; i < MGetPinCount (); i++)
   {
    if (*pins[i].port < 4)
@@ -303,7 +303,7 @@ bsim_ucsim::MStep(void)
       }
     }
   }
-     
+
 }
 
 void

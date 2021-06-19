@@ -628,5 +628,5 @@ cpart_VCD_Dump_an::EvMouseButtonPress(uint button, uint x, uint y, uint state)
   }
 }
 
-part_init("VCD Dump (Analogic)", cpart_VCD_Dump_an, "Virtual");
+part_init(PART_VCD_DUMP_AN_Name, cpart_VCD_Dump_an, "Virtual");
 

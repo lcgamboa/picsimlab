@@ -30,6 +30,8 @@
 
 #include "bsim_simavr.h"
 
+#define BOARD_Arduino_Uno_Name "Arduino Uno"
+
 //new board class must be derived from board class defined in board.h
 class cboard_Arduino_Uno:public bsim_simavr
 {
@@ -54,6 +56,7 @@ class cboard_Arduino_Uno:public bsim_simavr
      void RegisterRemoteControl(void); 
       
    public:
+      lxString GetName(void) {return lxT(BOARD_Arduino_Uno_Name); }; 
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       //Constructor called once on board creation 
       cboard_Arduino_Uno(void);
@@ -64,12 +67,6 @@ class cboard_Arduino_Uno:public bsim_simavr
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
       lxString GetSupportedDevices(void){return lxT("atmega328p,");};
-      //Return the filename of board picture 
-      lxString GetPictureFileName(void){return lxT("Arduino_Uno/board.svg");};
-      //Return the filename of board picture input map 
-      lxString GetInputMapFile(void){return lxT("Arduino_Uno/input.map");};
-      //Return the filename of board picture output map 
-      lxString GetOutputMapFile(void){return lxT("Arduino_Uno/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

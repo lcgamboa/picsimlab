@@ -411,5 +411,5 @@ cpart_pot_r::ReadPropertiesWindow(CPWindow * WProp)
 }
 
 
-part_init("Potentiometers (Rotary)", cpart_pot_r, "Input");
+part_init(PART_POTR_Name, cpart_pot_r, "Input");
 

@@ -294,5 +294,5 @@ cpart_LCD_pcd8544::SetScale(double scale)
  lcd_pcd8544_update (&lcd);
 }
 
-part_init("LCD pcd8544", cpart_LCD_pcd8544, "Output");
+part_init(PART_LCD_PCD8544_Name, cpart_LCD_pcd8544, "Output");
 

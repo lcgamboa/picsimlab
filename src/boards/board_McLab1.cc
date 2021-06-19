@@ -138,7 +138,7 @@ cboard_McLab1::Draw(CDraw *draw)
    if (output[i].update)//only if need update
     {
      output[i].update = 0;
-     
+
      if (!update)
       {
        draw->Canvas.Init (Scale, Scale);
@@ -427,7 +427,7 @@ cboard_McLab1::Run_CPU(void)
       if ((pins[17].dir)&&(p_BT[0]))alm[17]++;
       if ((pins[0].dir)&&(p_BT[1]))alm[0]++;
       if ((pins[1].dir)&&(p_BT[2]))alm[1]++;
-      */
+       */
       if (jmp[0])
        {
         for (pi = 5; pi < 13; pi++)
@@ -936,5 +936,5 @@ cboard_McLab1::ReadPreferences(char *name, char *value)
   }
 }
 
-board_init("McLab1", cboard_McLab1);
+board_init(BOARD_McLab1_Name, cboard_McLab1);
 

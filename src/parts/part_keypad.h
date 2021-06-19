@@ -29,21 +29,19 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define	PART_KEYPAD_Name "Keypad"
 
 class cpart_keypad:public part
 {
    public:
-      lxString GetName(void){return lxT("Keypad");};
-      lxString GetHelpURL(void){return lxT("Keypad.html");};
+      lxString GetName(void){return lxT(PART_KEYPAD_Name);};;
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_keypad(unsigned x, unsigned y);
       ~cpart_keypad(void);
       void Draw(void);
       void Process(void);
       lxString GetPictureFileName(void);
-      lxString GetInputMapFile(void);
-      lxString GetOutputMapFile(void);
-      lxString GetPropertiesWindowFile(void){return lxT("keypad/keypad.lxrad");};
+      lxString GetMapFile(void);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  WProp);

@@ -673,5 +673,5 @@ cpart_MPU6050::EvMouseMove(uint button, uint x, uint y, uint state)
 
 
 
-part_init("MPU6050", cpart_MPU6050, "Input");
+part_init(PART_MPU6050_Name, cpart_MPU6050, "Input");
 

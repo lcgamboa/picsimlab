@@ -581,7 +581,6 @@ CPWindow1::Configure(const char * home, int use_default_board, int create)
           }
 
          pboard = create_board (&lab, &lab_);
-         pboard->SetName (boards_list[lab].name);
          if (pboard->GetScale () < scale)
           {
            scale = pboard->GetScale ();

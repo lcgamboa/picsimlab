@@ -29,15 +29,13 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define PART_PUSH_BUTTONS_Name "Push Buttons"
+
 class cpart_pbuttons : public part {
 public:
 
     lxString GetName(void) {
-        return lxT("Push buttons");
-    };
-
-    lxString GetHelpURL(void) {
-        return lxT("PushButtons.html");
+        return lxT(PART_PUSH_BUTTONS_Name);
     };
 
     lxString GetAboutInfo(void) {
@@ -47,22 +45,6 @@ public:
     ~cpart_pbuttons(void);
     void Draw(void);
     void PreProcess(void);
-
-    lxString GetPictureFileName(void) {
-        return lxT("pbuttons/push_buttons.svg");
-    };
-
-    lxString GetInputMapFile(void) {
-        return lxT("pbuttons/push_buttons_i.map");
-    };
-
-    lxString GetOutputMapFile(void) {
-        return lxT("pbuttons/push_buttons_o.map");
-    };
-
-    lxString GetPropertiesWindowFile(void) {
-        return lxT("pbuttons/push_buttons.lxrad");
-    };
     void Reset(void);
     void EvMouseButtonPress(uint button, uint x, uint y, uint state);
     void EvMouseButtonRelease(uint button, uint x, uint y, uint state);

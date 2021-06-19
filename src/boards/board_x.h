@@ -30,6 +30,8 @@
 
 #include "bsim_picsim.h"
 
+#define	BOARD_x_Name "X"
+
 //new board class must be derived from board class defined in board.h
 class cboard_x:public bsim_picsim
 {
@@ -59,6 +61,8 @@ class cboard_x:public bsim_picsim
       cboard_x(void);
       //Destructor called once on board destruction 
       ~cboard_x(void); 
+      //Return the board name
+      lxString GetName(void) {return lxT(BOARD_x_Name); }; 
       //Return the about info of board
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       //Called ever 100ms to draw board
@@ -66,12 +70,6 @@ class cboard_x:public bsim_picsim
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
       lxString GetSupportedDevices(void){return lxT("PIC16F877A,PIC18F4550,PIC18F4620,");};
-      //Return the filename of board picture 
-      lxString GetPictureFileName(void){return lxT("x/board.svg");};
-      //Return the filename of board picture input map 
-      lxString GetInputMapFile(void){return lxT("x/input.map");};
-      //Return the filename of board picture output map 
-      lxString GetOutputMapFile(void){return lxT("x/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

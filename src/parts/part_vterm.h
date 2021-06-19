@@ -30,11 +30,12 @@
 #include"part.h"
 #include"../devices/vterm.h"
 
+#define	PART_vterm_Name "IO Virtual Term"
+
 class cpart_vterm:public part
 {
    public:
-      lxString GetName(void){return lxT("IO Virtual term");};
-      lxString GetHelpURL(void){return lxT("IOVirtualterm.html");};
+      lxString GetName(void){return lxT(PART_vterm_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cpart_vterm(unsigned x, unsigned y);
       ~cpart_vterm(void);
@@ -42,10 +43,6 @@ class cpart_vterm:public part
       void PreProcess (void);
       void Process(void); 
       void PostProcess (void);
-      lxString GetPictureFileName(void){return lxT("vterm/vterm.svg");};
-      lxString GetInputMapFile(void){return lxT("vterm/vterm_i.map");};
-      lxString GetOutputMapFile(void){return lxT("vterm/vterm_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("vterm/vterm.lxrad");};
       void Reset(void);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  WProp);

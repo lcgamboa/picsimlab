@@ -29,6 +29,8 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define PART_VCD_Play_Name "VCD Play"
+
 typedef struct
 {
 unsigned long count;
@@ -38,8 +40,7 @@ unsigned char data;
 class cpart_VCD_Play : public part {
 public:
 
-    lxString GetName(void) { return lxT("VCD Play");};
-    lxString GetHelpURL(void){return lxT("VCDPlay.html");};
+    lxString GetName(void) { return lxT(PART_VCD_Play_Name);};
     lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
     cpart_VCD_Play(unsigned x, unsigned y);
     ~cpart_VCD_Play(void);
@@ -47,10 +48,6 @@ public:
     void PreProcess(void);
     void Process(void);
     void PostProcess(void);
-    lxString GetPictureFileName(void){return lxT("VCD_Play/VCD_Play.svg");};
-    lxString GetInputMapFile(void){return lxT("VCD_Play/VCD_Play_i.map");};
-    lxString GetOutputMapFile(void){return lxT("VCD_Play/VCD_Play_o.map");};
-    lxString GetPropertiesWindowFile(void){return lxT("VCD_Play/VCD_Play.lxrad");};
     void EvMouseButtonPress(uint button, uint x, uint y,uint state);
     void ConfigurePropertiesWindow(CPWindow * WProp);
     void filedialog_EvOnClose(int retId);

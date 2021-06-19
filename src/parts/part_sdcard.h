@@ -30,11 +30,12 @@
 #include"part.h"
 #include"../devices/sdcard.h"
 
+#define	PART_SDCARD_Name "SD Card"
+
 class cpart_SDCard:public part
 {
    public:
-      lxString GetName(void){return lxT("SD Card");};
-      lxString GetHelpURL(void){return lxT("SDCard.html");};
+      lxString GetName(void){return lxT(PART_SDCARD_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cpart_SDCard(unsigned x, unsigned y);
       ~cpart_SDCard(void);
@@ -42,10 +43,6 @@ class cpart_SDCard:public part
       void PreProcess (void);
       void Process(void); 
       void PostProcess (void);
-      lxString GetPictureFileName(void){return lxT("SDCard/sdcard.svg");};
-      lxString GetInputMapFile(void){return lxT("SDCard/sdcard_i.map");};
-      lxString GetOutputMapFile(void){return lxT("SDCard/sdcard_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("SDCard/sdcard.lxrad");};
       void Reset(void);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  WProp);

@@ -29,35 +29,20 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define PART_MI2C_24CXXX_Name "MEM 24CXXX"
+
 class cpart_MI2C_24CXXX : public part {
 public:
 
     lxString GetName(void) {
-        return lxT("MEM 24CXXX");
+        return lxT(PART_MI2C_24CXXX_Name);
     };
-    lxString GetHelpURL(void){return lxT("MEM24CXXX.html");};
     lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
     cpart_MI2C_24CXXX(unsigned x, unsigned y);
     ~cpart_MI2C_24CXXX(void);
     void Draw(void);
     void PreProcess(void);
     void Process(void);
-
-    lxString GetPictureFileName(void) {
-        return lxT("MI2C_24CXXX/MI2C_24CXXX.svg");
-    };
-
-    lxString GetInputMapFile(void) {
-        return lxT("MI2C_24CXXX/MI2C_24CXXX_i.map");
-    };
-
-    lxString GetOutputMapFile(void) {
-        return lxT("Common/IC8_o.map");
-    };
-
-    lxString GetPropertiesWindowFile(void) {
-        return lxT("MI2C_24CXXX/MI2C_24CXXX.lxrad");
-    };
     void EvMouseButtonPress(uint button, uint x, uint y,uint state);
     void ConfigurePropertiesWindow(CPWindow * WProp);
     void filedialog_EvOnClose(int retId);

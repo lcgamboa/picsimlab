@@ -29,21 +29,17 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define	PART_LEDS_Name "LEDs"
 
 class cpart_leds:public part
 {
    public:
-      lxString GetName(void){return lxT("LEDs");};
-      lxString GetHelpURL(void){return lxT("LEDs.html");};
+      lxString GetName(void){return lxT(PART_LEDS_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_leds(unsigned x, unsigned y);
       ~cpart_leds(void);
       void Draw(void);
       void PostProcess(void);
-      lxString GetPictureFileName(void){return lxT("leds/LEDs.svg");};
-      lxString GetInputMapFile(void){return lxT("leds/LEDs_i.map");};
-      lxString GetOutputMapFile(void){return lxT("leds/LEDs_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("leds/LEDs.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       lxString WritePreferences(void);

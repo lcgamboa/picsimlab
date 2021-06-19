@@ -30,6 +30,8 @@
 
 #include "bsim_picsim.h"
 
+#define	BOARD_Curiosity_Name "Curiosity"
+
 //new board class must be derived from board class defined in board.h
 class cboard_Curiosity:public bsim_picsim
 {
@@ -53,6 +55,8 @@ class cboard_Curiosity:public bsim_picsim
      
      void RegisterRemoteControl(void); 
    public:
+      //Return the board name
+      lxString GetName(void) {return lxT(BOARD_Curiosity_Name); }; 
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       //Constructor called once on board creation 
       cboard_Curiosity(void);
@@ -65,10 +69,6 @@ class cboard_Curiosity:public bsim_picsim
       lxString GetSupportedDevices(void){return lxT("PIC16F1619,");};
       //Return the filename of board picture 
       lxString GetPictureFileName(void){return lxT("Curiosity/board.png");};
-      //Return the filename of board picture input map 
-      lxString GetInputMapFile(void){return lxT("Curiosity/input.map");};
-      //Return the filename of board picture output map 
-      lxString GetOutputMapFile(void){return lxT("Curiosity/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

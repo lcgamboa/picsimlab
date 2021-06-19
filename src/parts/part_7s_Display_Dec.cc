@@ -807,46 +807,31 @@ cpart_7s_display_dec::GetPictureFileName(void)
  switch (type)
   {
   case 0:
-   return lxT ("7s_display_dec/7sdisplay_dec.svg");
+   return lxT ("7 Segments Display (Decoder)/7sdisplay_dec.svg");
    break;
   case 1:
-   return lxT ("7s_display_dec/7sdisplay_latch.svg");
+   return lxT ("7 Segments Display (Decoder)/7sdisplay_latch.svg");
    break;
   }
 
- return lxT ("7s_display_dec/7sdisplay_dec.svg");
+ return lxT ("7 Segments Display (Decoder)/7sdisplay_dec.svg");
 }
 
+
 lxString
-cpart_7s_display_dec::GetInputMapFile(void)
+cpart_7s_display_dec::GetMapFile(void)
 {
  switch (type)
   {
   case 0:
-   return lxT ("7s_display_dec/7sdisplay_dec_i.map");
+   return lxT ("7 Segments Display (Decoder)/7sdisplay_dec.map");
    break;
   case 1:
-   return lxT ("7s_display_dec/7sdisplay_latch_i.map");
+   return lxT ("7 Segments Display (Decoder)/7sdisplay_latch.map");
    break;
   }
 
- return lxT ("7s_display_dec/7sdisplay_dec_i.map");
-}
-
-lxString
-cpart_7s_display_dec::GetOutputMapFile(void)
-{
- switch (type)
-  {
-  case 0:
-   return lxT ("7s_display_dec/7sdisplay_dec_o.map");
-   break;
-  case 1:
-   return lxT ("7s_display_dec/7sdisplay_latch_o.map");
-   break;
-  }
-
- return lxT ("7s_display_dec/7sdisplay_dec_o.map");
+ return lxT ("7s_display_dec/7sdisplay_dec.map");
 }
 
 void
@@ -877,7 +862,7 @@ cpart_7s_display_dec::ChangeType(unsigned char tp)
 }
 
 
-part_init("7 Segments Display (w/dec)", cpart_7s_display_dec, "Output");
+part_init(PART_7S_DISPLAY_DEC_Name, cpart_7s_display_dec, "Output");
 
 
 

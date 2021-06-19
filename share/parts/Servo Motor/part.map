@@ -1,0 +1,11 @@
+<img src="[servo_motor] (overwritten)" width="174" height="273" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:Luis Claudio Gamboa Lopes    -->
+<area shape="rect" coords="55,240,115,259" href="O_PN_1" />
+<area shape="circle" coords="87,114,71" href="O_DG_AXIS" />
+</map>

@@ -687,5 +687,5 @@ cpart_gamepad::ReadPropertiesWindow(CPWindow * WProp)
  output_pins[7] = atoi (((CCombo*) WProp->GetChildByName ("combo8"))->GetText ());
 }
 
-part_init("Gamepad", cpart_gamepad, "Input");
+part_init(PART_GAMEPAD_Name, cpart_gamepad, "Input");
 

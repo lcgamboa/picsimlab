@@ -77,7 +77,7 @@ cboard_Arduino_Uno::get_out_id(char * name)
 
 //Constructor called once on board creation 
 
-cboard_Arduino_Uno::cboard_Arduino_Uno(void)
+cboard_Arduino_Uno::cboard_Arduino_Uno(void) 
 {
 
  Proc = "atmega328p"; //default microcontroller if none defined in preferences
@@ -523,10 +523,10 @@ cboard_Arduino_Uno::Draw(CDraw *draw)
          draw->Canvas.SetColor (0, 200 * Window1.Get_mcupwr () + 55, 0);
          break;
         case O_RX:
-         draw->Canvas.SetColor (0, (255 - pins[1].oavalue)*Window1.Get_mcupwr (), 0);
+         draw->Canvas.SetColor (0, (255 - pins[1].oavalue) * Window1.Get_mcupwr (), 0);
          break;
         case O_TX:
-         draw->Canvas.SetColor (0, (255 - ((unsigned char) pins[2].oavalue * 10))*Window1.Get_mcupwr (), 0);
+         draw->Canvas.SetColor (0, (255 - ((unsigned char) pins[2].oavalue * 10)) * Window1.Get_mcupwr (), 0);
          break;
         case O_L:
          draw->Canvas.SetColor (0, pins[18].oavalue, 0);
@@ -568,7 +568,7 @@ cboard_Arduino_Uno::Draw(CDraw *draw)
    draw->Canvas.End ();
    draw->Update ();
   }
- 
+
  gauge1->SetValue ((pins[4].oavalue - 55) / 2);
  gauge2->SetValue ((pins[10].oavalue - 55) / 2);
  gauge3->SetValue ((pins[11].oavalue - 55) / 2);
@@ -677,5 +677,5 @@ cboard_Arduino_Uno::Run_CPU(void)
 }
 
 
-board_init("Arduino Uno", cboard_Arduino_Uno);
+board_init(BOARD_Arduino_Uno_Name, cboard_Arduino_Uno);
 

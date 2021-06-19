@@ -30,11 +30,12 @@
 #include"part.h"
 #include"../devices/io_74xx595.h"
 
+#define	PART_IO_74XX595_Name "IO 74xx595"
+
 class cpart_IO_74xx595:public part
 {
    public:
-      lxString GetName(void){return lxT("IO 74xx595");};
-      lxString GetHelpURL(void){return lxT("IO74xx595.html");};
+      lxString GetName(void){return lxT(PART_IO_74XX595_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cpart_IO_74xx595(unsigned x, unsigned y);
       ~cpart_IO_74xx595(void);
@@ -43,9 +44,7 @@ class cpart_IO_74xx595:public part
       void Process(void); 
       void PostProcess (void);
       lxString GetPictureFileName(void){return lxT("Common/IC16.svg");};
-      lxString GetInputMapFile(void){return lxT("Common/IC16_i.map");};
-      lxString GetOutputMapFile(void){return lxT("Common/IC16_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("io_74xx595/IO_74xx595.lxrad");};
+      lxString GetMapFile(void){return lxT("Common/IC16.map");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       lxString WritePreferences(void);

@@ -1,0 +1,38 @@
+<img src="picsimlab2.png" width="382" height="312" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:lcganmboa@yahoo.com                  -->
+<area shape="rect" coords="115,146,259,164" href="O_IC_28" />
+<area shape="rect" coords="12,188,31,275" href="O_PN_1" />
+<area shape="rect" coords="37,188,55,275" href="O_PN_2" />
+<area shape="rect" coords="63,188,80,275" href="O_PN_3" />
+<area shape="rect" coords="89,188,106,275" href="O_PN_4" />
+<area shape="rect" coords="114,188,134,275" href="O_PN_5" />
+<area shape="rect" coords="141,189,159,275" href="O_PN_6" />
+<area shape="rect" coords="165,189,184,275" href="O_PN_7" />
+<area shape="rect" coords="192,190,211,275" href="O_PN_8" />
+<area shape="rect" coords="219,189,238,276" href="O_PN_9" />
+<area shape="rect" coords="244,188,263,276" href="O_PN_10" />
+<area shape="rect" coords="269,189,286,277" href="O_PN_11" />
+<area shape="rect" coords="294,188,311,276" href="O_PN_12" />
+<area shape="rect" coords="321,188,338,276" href="O_PN_13" />
+<area shape="rect" coords="346,188,364,276" href="O_PN_14" />
+<area shape="rect" coords="349,2,366,90" href="O_PN_15" />
+<area shape="rect" coords="322,1,338,90" href="O_PN_16" />
+<area shape="rect" coords="296,2,313,90" href="O_PN_17" />
+<area shape="rect" coords="271,2,288,90" href="O_PN_18" />
+<area shape="rect" coords="245,2,263,90" href="O_PN_19" />
+<area shape="rect" coords="219,2,237,90" href="O_PN_20" />
+<area shape="rect" coords="194,2,210,90" href="O_PN_21" />
+<area shape="rect" coords="168,3,185,90" href="O_PN_22" />
+<area shape="rect" coords="142,3,160,90" href="O_PN_23" />
+<area shape="rect" coords="116,3,133,90" href="O_PN_24" />
+<area shape="rect" coords="91,3,108,90" href="O_PN_25" />
+<area shape="rect" coords="65,3,82,90" href="O_PN_26" />
+<area shape="rect" coords="39,3,57,90" href="O_PN_27" />
+<area shape="rect" coords="13,3,32,90" href="O_PN_28" />
+</map>

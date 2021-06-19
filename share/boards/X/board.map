@@ -1,0 +1,21 @@
+<img src="[board_x] (imported)" width="448" height="491" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:lcganmboa@yahoo.com          -->
+<area shape="rect" coords="196,45,280,58" href="I_PG_ICSP" />
+<area shape="rect" coords="409,30,441,46" href="I_SW_PWR" />
+<area shape="rect" coords="133,379,142,401" href="B_SW_D1" />
+<area shape="rect" coords="74,42,156,61" href="B_PO_1" />
+<area shape="rect" coords="105,162,138,195" href="B_PB_RST" />
+<area shape="rect" coords="37,327,70,360" href="B_PB_D0" />
+<area shape="circle" coords="59,454,17" href="O_LD_LD0" />
+<area shape="circle" coords="137,454,17" href="O_LD_LD1" />
+<area shape="circle" coords="418,102,17" href="O_LD_LPWR" />
+<area shape="circle" coords="418,189,17" href="O_LD_RB1" />
+<area shape="circle" coords="418,232,17" href="O_LD_RB0" />
+<area shape="rect" coords="227,220,247,328" href="O_MP_CPU" />
+</map>

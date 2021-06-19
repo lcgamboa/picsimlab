@@ -29,20 +29,17 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define	PART_HCSR0404_Name "Ultrasonic HC-SR04"
+
 class cpart_hcsr04:public part
 {
     public:
-      lxString GetName(void){return lxT("Ultrasonic HC-SR04");};
-      lxString GetHelpURL(void){return lxT("UltrasonicHCSR04.html");};
+      lxString GetName(void){return lxT(PART_HCSR0404_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_hcsr04(unsigned x, unsigned y);
       ~cpart_hcsr04(void); 
       void Draw(void);
       void Process(void);
-      lxString GetPictureFileName(void){return lxT("hcsr04/hcsr04.svg");};
-      lxString GetInputMapFile(void){return lxT("hcsr04/hcsr04_i.map");};
-      lxString GetOutputMapFile(void){return lxT("hcsr04/hcsr04_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("hcsr04/hcsr04.lxrad");};
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
       void EvMouseMove(uint button, uint x, uint y,uint state);

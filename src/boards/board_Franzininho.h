@@ -30,6 +30,8 @@
 
 #include "bsim_simavr.h"
 
+#define	BOARD_Franzininho_Name "Franzininho"
+
 //new board class must be derived from board class defined in board.h
 class cboard_Franzininho:public bsim_simavr
 {
@@ -55,6 +57,8 @@ class cboard_Franzininho:public bsim_simavr
      lxColor color1;
      lxColor color2;
    public:
+      //Return the board name
+      lxString GetName(void) {return lxT(BOARD_Franzininho_Name); };
       lxString GetAboutInfo(void){return lxT("Fábio Souza e Felipe Alvares\n <contato@franzininho.com.br>\n https://franzininho.com.br/");};
       //Constructor called once on board creation
       cboard_Franzininho(void);
@@ -65,12 +69,6 @@ class cboard_Franzininho:public bsim_simavr
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
       lxString GetSupportedDevices(void){return lxT("attiny85,");};
-      //Return the filename of board picture
-      lxString GetPictureFileName(void){return lxT("Franzininho/board.svg");};
-      //Return the filename of board picture input map
-      lxString GetInputMapFile(void){return lxT("Franzininho/input.map");};
-      //Return the filename of board picture output map
-      lxString GetOutputMapFile(void){return lxT("Franzininho/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

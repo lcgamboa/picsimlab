@@ -33,7 +33,7 @@
 class bsim_picsim: virtual public board
 {
   public:
-      bsim_picsim();
+      bsim_picsim(void);
       int DebugInit(int dtyppe); 
       lxString GetDebugName(void){return "MDB";};
       void DebugLoop(void);

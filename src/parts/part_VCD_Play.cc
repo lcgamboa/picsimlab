@@ -696,5 +696,5 @@ cpart_VCD_Play::LoadVCD(lxString fname)
 }
 
 
-part_init("VCD Play", cpart_VCD_Play, "Virtual");
+part_init(PART_VCD_Play_Name, cpart_VCD_Play, "Virtual");
 

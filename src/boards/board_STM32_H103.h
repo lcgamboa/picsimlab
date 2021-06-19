@@ -30,6 +30,8 @@
 
 #include "bsim_qemu_stm32.h"
 
+#define	BOARD_STM32_H103_Name "STM32 H103"
+
 //new board class must be derived from board class defined in board.h
 class cboard_STM32_H103:public bsim_qemu_stm32
 {
@@ -38,6 +40,8 @@ class cboard_STM32_H103:public bsim_qemu_stm32
 
      void RegisterRemoteControl(void);        
    public:
+      //Return the board name
+      lxString GetName(void) {return lxT(BOARD_STM32_H103_Name); };
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       //Constructor called once on board creation 
       cboard_STM32_H103(void);
@@ -49,11 +53,7 @@ class cboard_STM32_H103:public bsim_qemu_stm32
       //Return a list of board supported microcontrollers
       lxString GetSupportedDevices(void){return lxT("stm32f103rbt6,");};
       //Return the filename of board picture 
-      lxString GetPictureFileName(void){return lxT("STM32_H103/board.png");};
-      //Return the filename of board picture input map 
-      lxString GetInputMapFile(void){return lxT("STM32_H103/input.map");};
-      //Return the filename of board picture output map 
-      lxString GetOutputMapFile(void){return lxT("STM32_H103/output.map");};
+      lxString GetPictureFileName(void){return lxT("STM32 H103/board.png");};
       //Reset board status
       void Reset(void);
       //Event on the board

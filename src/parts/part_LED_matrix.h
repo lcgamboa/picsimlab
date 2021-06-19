@@ -30,35 +30,20 @@
 #include"part.h"
 #include"../devices/ldd_max72xx.h"
 
+#define PART_LED_MATRIX_Name "LED Matrix"
+
 class cpart_led_matrix : public part {
 public:
 
     lxString GetName(void) {
-        return lxT("LED Matrix");
+        return lxT(PART_LED_MATRIX_Name);
     };
-    lxString GetHelpURL(void){return lxT("LEDMatrix.html");};
     lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
     cpart_led_matrix(unsigned x, unsigned y);
     ~cpart_led_matrix(void);
     void Draw(void);
     void Process(void);
     void PostProcess(void);
-
-    lxString GetPictureFileName(void) {
-        return lxT("led_matrix/LED_matrix.svg");
-    };
-
-    lxString GetInputMapFile(void) {
-        return lxT("led_matrix/LED_matrix_i.map");
-    };
-
-    lxString GetOutputMapFile(void) {
-        return lxT("led_matrix/LED_matrix_o.map");
-    };
-
-    lxString GetPropertiesWindowFile(void) {
-        return lxT("led_matrix/LED_matrix.lxrad");
-    };
     void ConfigurePropertiesWindow(CPWindow * WProp);
     void ReadPropertiesWindow(CPWindow * WProp);
     lxString WritePreferences(void);

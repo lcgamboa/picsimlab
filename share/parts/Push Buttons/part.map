@@ -1,0 +1,25 @@
+<img src="[push_buttons] (sobrescrita)" width="584" height="112" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:Luis Claudio Gamboa Lopes    -->
+<area shape="rect" coords="21,82,70,101" href="O_PN_1" />
+<area shape="rect" coords="83,82,132,101" href="O_PN_2" />
+<area shape="rect" coords="146,82,195,101" href="O_PN_3" />
+<area shape="rect" coords="207,82,256,101" href="O_PN_4" />
+<area shape="rect" coords="269,82,318,101" href="O_PN_5" />
+<area shape="rect" coords="333,82,382,101" href="O_PN_6" />
+<area shape="rect" coords="395,82,444,101" href="O_PN_7" />
+<area shape="rect" coords="456,82,505,101" href="O_PN_8" />
+<area shape="rect" coords="22,28,52,58" href="B_PB_1" />
+<area shape="rect" coords="84,28,114,58" href="B_PB_2" />
+<area shape="rect" coords="146,28,176,58" href="B_PB_3" />
+<area shape="rect" coords="208,28,238,58" href="B_PB_4" />
+<area shape="rect" coords="271,28,301,58" href="B_PB_5" />
+<area shape="rect" coords="334,28,364,58" href="B_PB_6" />
+<area shape="rect" coords="395,28,425,58" href="B_PB_7" />
+<area shape="rect" coords="456,28,486,58" href="B_PB_8" />
+</map>

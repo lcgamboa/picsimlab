@@ -41,8 +41,8 @@ part::ReadMaps(void)
 {
  inputc = 0;
  outputc = 0;
- ReadInputMap (Window1.GetSharePath () + lxT ("parts/") + GetInputMapFile ());
- ReadOutputMap (Window1.GetSharePath () + lxT ("parts/") + GetOutputMapFile ());
+ ReadInputMap (Window1.GetSharePath () + lxT ("parts/") + GetMapFile ());
+ ReadOutputMap (Window1.GetSharePath () + lxT ("parts/") + GetMapFile ());
 
  for (int i = 0; i < inputc; i++)
   {
@@ -127,37 +127,39 @@ part::ReadInputMap(lxString fname)
 
        //        printf("%s %s %s\n",name,shape,coords);
 
-       if (strcmp ("rect", shape) == 0)
+       if (((name[0] == 'I') || (name[0] == 'B'))&&(name[1] == '_'))
         {
-         sscanf (coords, "%i,%i,%i,%i\n", &x1, &y1, &x2, &y2);
-         //          printf("rect=%i,%i,%i,%i\n",x1,y1,x2,y2);
+         if (strcmp ("rect", shape) == 0)
+          {
+           sscanf (coords, "%i,%i,%i,%i\n", &x1, &y1, &x2, &y2);
+           //          printf("rect=%i,%i,%i,%i\n",x1,y1,x2,y2);
 
-         input[inputc].x1 = x1;
-         input[inputc].y1 = y1;
-         input[inputc].x2 = x2;
-         input[inputc].y2 = y2;
+           input[inputc].x1 = x1;
+           input[inputc].y1 = y1;
+           input[inputc].x2 = x2;
+           input[inputc].y2 = y2;
+          }
+         else
+          {
+           sscanf (coords, "%i,%i,%i\n", &x1, &y1, &r);
+           //          printf("circle=%i,%i,%i\n",x1,y1,r);
+           input[inputc].x1 = x1 - r;
+           input[inputc].y1 = y1 - r;
+           input[inputc].x2 = x1 + r;
+           input[inputc].y2 = y1 + r;
+
+          }
+         strcpy (input[inputc].name, name + 2);
+         input[inputc].id = get_in_id (input[inputc].name);
+         input[inputc].cx = ((input[inputc].x2 - input[inputc].x1) / 2.0) + input[inputc].x1;
+         input[inputc].cy = ((input[inputc].y2 - input[inputc].y1) / 2.0) + input[inputc].y1;
+         input[inputc].status = NULL;
+         input[inputc].update = NULL;
+         input[inputc].value = 0;
+         input[inputc].value_s = 0;
+         input[inputc].value_f = 0;
+         inputc++;
         }
-       else
-        {
-         sscanf (coords, "%i,%i,%i\n", &x1, &y1, &r);
-         //          printf("circle=%i,%i,%i\n",x1,y1,r);
-         input[inputc].x1 = x1 - r;
-         input[inputc].y1 = y1 - r;
-         input[inputc].x2 = x1 + r;
-         input[inputc].y2 = y1 + r;
-
-        }
-       strcpy (input[inputc].name, name);
-       input[inputc].id = get_in_id (input[inputc].name);
-       input[inputc].cx = ((input[inputc].x2 - input[inputc].x1) / 2.0) + input[inputc].x1;
-       input[inputc].cy = ((input[inputc].y2 - input[inputc].y1) / 2.0) + input[inputc].y1;
-       input[inputc].status = NULL;
-       input[inputc].update = NULL;
-       input[inputc].value = 0;
-       input[inputc].value_s = 0;
-       input[inputc].value_f = 0;
-       inputc++;
-
       }
     }
    fclose (fin);
@@ -201,48 +203,49 @@ part::ReadOutputMap(lxString fname)
        name = strtok (NULL, "< =\"");
 
        //        printf("%s %s %s\n",name,shape,coords);
-
-       if (!strcmp ("rect", shape))
+       if (((name[0] == 'O') || (name[0] == 'B'))&&(name[1] == '_'))
         {
-         sscanf (coords, "%i,%i,%i,%i\n", &x1, &y1, &x2, &y2);
-         //          printf("rect=%i,%i,%i,%i\n",x1,y1,x2,y2);
+         if (!strcmp ("rect", shape))
+          {
+           sscanf (coords, "%i,%i,%i,%i\n", &x1, &y1, &x2, &y2);
+           //          printf("rect=%i,%i,%i,%i\n",x1,y1,x2,y2);
 
-         output[outputc].x1 = x1;
-         output[outputc].y1 = y1;
-         output[outputc].x2 = x2;
-         output[outputc].y2 = y2;
-         output[outputc].r = 0;
-         //          output[outputc].lval=-1;
-         strcpy (output[outputc].name, name);
-         output[outputc].id = get_out_id (output[outputc].name);
-         output[outputc].cx = ((output[outputc].x2 - output[outputc].x1) / 2.0) + output[outputc].x1;
-         output[outputc].cy = ((output[outputc].y2 - output[outputc].y1) / 2.0) + output[outputc].y1;
-         output[outputc].status = NULL;
-         output[outputc].value = 0;
-         output[outputc].value_s = 0;
-         output[outputc].value_f = 0;
-         outputc++;
-        }
-       else
-        {
-         sscanf (coords, "%i,%i,%i\n", &x1, &y1, &r);
-         //          printf("circle=%i,%i,%i\n",x1,y1,r);
-
-         output[outputc].x1 = x1;
-         output[outputc].y1 = y1;
-         output[outputc].x2 = 0;
-         output[outputc].y2 = 0;
-         output[outputc].r = r;
-         //          output[outputc].lval=-1;
-         strcpy (output[outputc].name, name);
-         output[outputc].id = get_out_id (output[outputc].name);
-         output[outputc].cx = output[outputc].x1;
-         output[outputc].cy = output[outputc].y1;
-         output[outputc].status = NULL;
-         output[outputc].value = 0;
-         output[outputc].value_s = 0;
-         output[outputc].value_f = 0;
-         outputc++;
+           output[outputc].x1 = x1;
+           output[outputc].y1 = y1;
+           output[outputc].x2 = x2;
+           output[outputc].y2 = y2;
+           output[outputc].r = 0;
+           //          output[outputc].lval=-1;
+           strcpy (output[outputc].name, name + 2);
+           output[outputc].id = get_out_id (output[outputc].name);
+           output[outputc].cx = ((output[outputc].x2 - output[outputc].x1) / 2.0) + output[outputc].x1;
+           output[outputc].cy = ((output[outputc].y2 - output[outputc].y1) / 2.0) + output[outputc].y1;
+           output[outputc].status = NULL;
+           output[outputc].value = 0;
+           output[outputc].value_s = 0;
+           output[outputc].value_f = 0;
+           outputc++;
+          }
+         else
+          {
+           sscanf (coords, "%i,%i,%i\n", &x1, &y1, &r);
+           //          printf("circle=%i,%i,%i\n",x1,y1,r);
+           output[outputc].x1 = x1;
+           output[outputc].y1 = y1;
+           output[outputc].x2 = 0;
+           output[outputc].y2 = 0;
+           output[outputc].r = r;
+           //          output[outputc].lval=-1;
+           strcpy (output[outputc].name, name + 2);
+           output[outputc].id = get_out_id (output[outputc].name);
+           output[outputc].cx = output[outputc].x1;
+           output[outputc].cy = output[outputc].y1;
+           output[outputc].status = NULL;
+           output[outputc].value = 0;
+           output[outputc].value_s = 0;
+           output[outputc].value_f = 0;
+           outputc++;
+          }
         }
       }
     }
@@ -474,4 +477,61 @@ part::SetUpdate(unsigned char upd)
   {
    output[i].update = Update;
   }
+}
+
+lxString
+part::GetPictureFileName(void)
+{
+ return GetName () + lxT ("/part.svg");
+}
+
+lxString
+part::GetMapFile(void)
+{
+ return GetName () + lxT ("/part.map");
+}
+
+lxString
+part::GetPropertiesWindowFile(void)
+{
+ return GetName () + lxT ("/part.lxrad");
+}
+
+lxString
+part::GetHelpURL(void)
+{
+ char pname[50];
+ strncpy (pname, (const char *) GetName ().c_str (), 49);
+
+ char * ptr;
+ //remove space from names
+ while ((ptr = strchr (pname, ' ')))
+  {
+   strcpy (ptr, ptr + 1);
+  }
+ //remove ( from names
+ while ((ptr = strchr (pname, '(')))
+  {
+   strcpy (ptr, ptr + 1);
+  }
+ //remove ) from names
+ while ((ptr = strchr (pname, ')')))
+  {
+   strcpy (ptr, ptr + 1);
+  }
+ //remove . from names
+ while ((ptr = strchr (pname, '.')))
+  {
+   strcpy (ptr, ptr + 1);
+  }
+ //remove - from names
+ while ((ptr = strchr (pname, '-')))
+  {
+   strcpy (ptr, ptr + 1);
+  }
+ 
+ lxString stemp;
+ stemp.Printf (lxT ("%s.html"), pname);
+
+ return stemp;
 }

@@ -32,7 +32,8 @@
 
 static const unsigned char GPSIM_PORTS[5] = {0, 1, 2, 3, 0xFF};
 
-bsim_gpsim::bsim_gpsim(void) {
+bsim_gpsim::bsim_gpsim(void)
+{
  char list[2000]; 
  supported_devices= bridge_gpsim_get_processor_list(list,1999);
 }

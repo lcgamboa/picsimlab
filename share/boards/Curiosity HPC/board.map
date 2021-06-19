@@ -1,0 +1,22 @@
+<img src="[Curiosity_HPC] (imported)" width="910" height="502" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:medelk    -->
+<area shape="rect" coords="83,81,210,104" href="I_PG_ICSP" />
+<area shape="rect" coords="167,151,206,191" href="B_PB_RST" />
+<area shape="rect" coords="66,136,129,158" href="B_JP_1" />
+<area shape="rect" coords="3,231,43,294" href="B_SW_PWR" />
+<area shape="rect" coords="339,423,383,475" href="B_PB_S1" />
+<area shape="rect" coords="462,424,503,473" href="B_PB_S2" />
+<area shape="rect" coords="247,340,324,410" href="B_PO_1" />
+<area shape="rect" coords="373,321,385,351" href="O_LD_D5" />
+<area shape="rect" coords="474,320,486,350" href="O_LD_D2" />
+<area shape="rect" coords="97,458,129,470" href="O_LD_D6" />
+<area shape="rect" coords="406,321,418,351" href="O_LD_D4" />
+<area shape="rect" coords="440,320,452,350" href="O_LD_D3" />
+<area shape="rect" coords="188,460,220,470" href="O_LD_D7" />
+</map>

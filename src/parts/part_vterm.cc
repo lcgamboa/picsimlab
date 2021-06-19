@@ -103,7 +103,7 @@ font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  wvterm->SetName ("window1"); //must be the same as in xml 
  wvterm->SetVisible (0);
  Application->ACreateWindow (wvterm);
- wvterm->LoadXMLContextAndCreateChilds (Window1.GetSharePath () + lxT ("parts/vterm/terminal_1.lxrad"));
+ wvterm->LoadXMLContextAndCreateChilds (Window1.GetSharePath () + lxT ("parts/IO Virtual Term/terminal_1.lxrad"));
  wvterm->SetVisible (0);
  wvterm->Hide ();
  wvterm->SetCanDestroy (false);
@@ -518,5 +518,5 @@ cpart_vterm::PostProcess(void)
   }
 }
 
-part_init("IO Virtual term", cpart_vterm, "Virtual");
+part_init(PART_vterm_Name, cpart_vterm, "Virtual");
 

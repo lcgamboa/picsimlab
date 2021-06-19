@@ -29,11 +29,12 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define PART_7S_DISPLAY_Name "7 Segments Display"
+
 class cpart_7s_display : public part {
 public:
 
-    lxString GetName(void) {return lxT("7 Segments Display"); };
-    lxString GetHelpURL(void){return lxT("7SegmentsDisplay.html");};
+    lxString GetName(void) {return lxT(PART_7S_DISPLAY_Name); };
     lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
     cpart_7s_display(unsigned x, unsigned y);
     ~cpart_7s_display(void);
@@ -41,10 +42,6 @@ public:
     void PreProcess (void);
     void Process(void); 
     void PostProcess (void);
-    lxString GetPictureFileName(void) {return lxT("7s_display/7sdisplay.svg"); };
-    lxString GetInputMapFile(void) {return lxT("7s_display/7sdisplay_i.map"); };
-    lxString GetOutputMapFile(void) {return lxT("7s_display/7sdisplay_o.map");};
-    lxString GetPropertiesWindowFile(void) {return lxT("7s_display/7sdisplay.lxrad");};
     void ConfigurePropertiesWindow(CPWindow * wprop);
     void ReadPropertiesWindow(CPWindow * WProp);
     lxString WritePreferences(void);

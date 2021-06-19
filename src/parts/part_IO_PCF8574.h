@@ -30,11 +30,12 @@
 #include"part.h"
 #include"../devices/io_PCF8574.h"
 
+#define	PART_IO_PCF8574_Name "IO PCF8574"
+
 class cpart_IO_PCF8574:public part
 {
    public:
-      lxString GetName(void){return lxT("IO PCF8574");};
-      lxString GetHelpURL(void){return lxT("IOPCF8574.html");};
+      lxString GetName(void){return lxT(PART_IO_PCF8574_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};      
       cpart_IO_PCF8574(unsigned x, unsigned y);
       ~cpart_IO_PCF8574(void);
@@ -43,9 +44,7 @@ class cpart_IO_PCF8574:public part
       void Process(void); 
       void PostProcess (void);
       lxString GetPictureFileName(void){return lxT("Common/IC16.svg");};
-      lxString GetInputMapFile(void){return lxT("Common/IC16_i.map");};
-      lxString GetOutputMapFile(void){return lxT("Common/IC16_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("IO_PCF8574/IO_PCF8574.lxrad");};
+      lxString GetMapFile(void){return lxT("Common/IC16.map");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       lxString WritePreferences(void);

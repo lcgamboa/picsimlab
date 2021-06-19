@@ -29,20 +29,17 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define	PART_POTR_Name "Potentiometers (Rotary)"
+
 class cpart_pot_r:public part
 {
     public:
-      lxString GetName(void){return lxT("Potentiometers (Rotary)");};
-      lxString GetHelpURL(void){return lxT("PotentiometersRotary.html");};
+      lxString GetName(void){return lxT(PART_POTR_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_pot_r(unsigned x, unsigned y);
       ~cpart_pot_r(void); 
       void Draw(void);
       void PreProcess(void);
-      lxString GetPictureFileName(void){return lxT("pot_r/pot_r.svg");};
-      lxString GetInputMapFile(void){return lxT("pot_r/pot_r_i.map");};
-      lxString GetOutputMapFile(void){return lxT("pot_r/pot_r_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("pot_r/pot_r.lxrad");};
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
       void EvMouseMove(uint button, uint x, uint y,uint state);

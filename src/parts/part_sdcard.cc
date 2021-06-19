@@ -388,5 +388,5 @@ cpart_SDCard::filedialog_EvOnClose(int retId)
 void
 cpart_SDCard::PostProcess(void) { }
 
-part_init("SD Card", cpart_SDCard, "Other");
+part_init(PART_SDCARD_Name, cpart_SDCard, "Other");
 

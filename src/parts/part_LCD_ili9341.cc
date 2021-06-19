@@ -93,59 +93,41 @@ cpart_LCD_ili9341::GetPictureFileName(void)
  switch (type_com)
   {
   case TC_SPI:
-   return lxT ("LCD_ili9341/LCD_ili9341.svg");
+   return lxT ("LCD ili9341/LCD_ili9341.svg");
    break;
   case TC_SPI_TOUCH:
-   return lxT ("LCD_ili9341/LCD_ili9341_t.svg");
+   return lxT ("LCD ili9341/LCD_ili9341_t.svg");
    break;
   case TC_8BITS:
-   return lxT ("LCD_ili9341/LCD_ili9341_8.svg");
+   return lxT ("LCD ili9341/LCD_ili9341_8.svg");
    break;
   case TC_8BITS_TOUCH:
-   return lxT ("LCD_ili9341/LCD_ili9341_8_t.svg");
+   return lxT ("LCD ili9341/LCD_ili9341_8_t.svg");
    break;
   }
- return lxT ("LCD_ili9341/LCD_ili9341.svg");
+ return lxT ("LCD ili9341/LCD_ili9341.svg");
 }
 
+
 lxString
-cpart_LCD_ili9341::GetInputMapFile(void)
+cpart_LCD_ili9341::GetMapFile(void)
 {
  switch (type_com)
   {
   case TC_SPI:
-  case TC_SPI_TOUCH:
-   return lxT ("LCD_ili9341/LCD_ili9341_i.map");
-   break;
-  case TC_8BITS:
-   return lxT ("LCD_ili9341/LCD_ili9341_8_i.map");
-   break;
-  case TC_8BITS_TOUCH:
-   return lxT ("LCD_ili9341/LCD_ili9341_8_t_i.map");
-   break;
-  }
- return lxT ("LCD_ili9341 / LCD_ili9341_i.map");
-}
-
-lxString
-cpart_LCD_ili9341::GetOutputMapFile(void)
-{
- switch (type_com)
-  {
-  case TC_SPI:
-   return lxT ("LCD_ili9341/LCD_ili9341_o.map");
+   return lxT ("LCD ili9341/LCD_ili9341.map");
    break;
   case TC_SPI_TOUCH:
-   return lxT ("LCD_ili9341/LCD_ili9341_t_o.map");
+   return lxT ("LCD ili9341/LCD_ili9341_t.map");
    break;
   case TC_8BITS:
-   return lxT ("LCD_ili9341/LCD_ili9341_8_o.map");
+   return lxT ("LCD ili9341/LCD_ili9341_8.map");
    break;
   case TC_8BITS_TOUCH:
-   return lxT ("LCD_ili9341/LCD_ili9341_8_t_o.map");
+   return lxT ("LCD ili9341/LCD_ili9341_8_t.map");
    break;
   }
- return lxT ("LCD_ili9341/LCD_ili9341_o.map");
+ return lxT ("LCD ili9341/LCD_ili9341.map");
 }
 
 cpart_LCD_ili9341::~cpart_LCD_ili9341(void)
@@ -872,5 +854,5 @@ cpart_LCD_ili9341::SetScale(double scale)
  lcd_ili9341_update (&lcd);
 }
 
-part_init("LCD ili9341", cpart_LCD_ili9341, "Output");
+part_init(PART_LCD_iLI9341_Name, cpart_LCD_ili9341, "Output");
 

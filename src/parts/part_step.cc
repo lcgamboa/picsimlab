@@ -435,5 +435,5 @@ cpart_step::ReadPropertiesWindow(CPWindow * WProp)
  RegisterRemoteControl ();
 }
 
-part_init("Step motor", cpart_step, "Output");
+part_init(PART_STEP_Name, cpart_step, "Output");
 

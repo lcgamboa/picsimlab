@@ -29,21 +29,18 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define	PART_ENCODER_Name "Encoder"
+
 class cpart_encoder:public part
 {
     public:
-      lxString GetName(void){return lxT("Encoder");};
-      lxString GetHelpURL(void){return lxT("Encoder.html");};
+      lxString GetName(void){return lxT(PART_ENCODER_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_encoder(unsigned x, unsigned y);
       ~cpart_encoder(void); 
       void Draw(void);
       void PreProcess(void);
       void Process(void);
-      lxString GetPictureFileName(void){return lxT("encoder/encoder.svg");};
-      lxString GetInputMapFile(void){return lxT("encoder/encoder_i.map");};
-      lxString GetOutputMapFile(void){return lxT("encoder/encoder_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("encoder/encoder.lxrad");};
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
       void EvMouseMove(uint button, uint x, uint y,uint state);

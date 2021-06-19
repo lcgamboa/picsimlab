@@ -29,35 +29,20 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define PART_SIGNALGENERATOR_Name "Signal Generator"
+
 class cpart_SignalGenerator : public part {
 public:
 
     lxString GetName(void) {
-        return lxT("Signal Generator");
+        return lxT(PART_SIGNALGENERATOR_Name);
     };
-    lxString GetHelpURL(void){return lxT("SignalGenerator.html");};
     lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
     cpart_SignalGenerator(unsigned x, unsigned y);
     ~cpart_SignalGenerator(void);
     void Draw(void);
     void PreProcess(void);
     void Process(void);
-
-    lxString GetPictureFileName(void) {
-        return lxT("SignalGenerator/SignalGenerator.svg");
-    };
-
-    lxString GetInputMapFile(void) {
-        return lxT("SignalGenerator/SignalGenerator_i.map");
-    };
-
-    lxString GetOutputMapFile(void) {
-        return lxT("SignalGenerator/SignalGenerator_o.map");
-    };
-
-    lxString GetPropertiesWindowFile(void) {
-        return lxT("SignalGenerator/SignalGenerator.lxrad");
-    };
     void EvMouseButtonPress(uint button, uint x, uint y, uint state);
     void EvMouseButtonRelease(uint button, uint x, uint y, uint state);
     void EvMouseMove(uint button, uint x, uint y, uint state);

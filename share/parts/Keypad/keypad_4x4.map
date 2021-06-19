@@ -1,0 +1,33 @@
+<img src="picsimlab2.png" width="355" height="510" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:lcganmboa@yahoo.com         -->
+<area shape="rect" coords="45,67,99,121" href="I_KB_1" />
+<area shape="rect" coords="115,67,169,121" href="I_KB_2" />
+<area shape="rect" coords="186,67,240,121" href="I_KB_3" />
+<area shape="rect" coords="257,67,311,121" href="I_KB_A" />
+<area shape="rect" coords="44,136,98,190" href="I_KB_4" />
+<area shape="rect" coords="115,136,169,190" href="I_KB_5" />
+<area shape="rect" coords="186,136,240,190" href="I_KB_6" />
+<area shape="rect" coords="258,136,312,190" href="I_KB_B" />
+<area shape="rect" coords="45,206,99,260" href="I_KB_7" />
+<area shape="rect" coords="115,206,169,260" href="I_KB_8" />
+<area shape="rect" coords="186,206,240,260" href="I_KB_9" />
+<area shape="rect" coords="258,206,312,260" href="I_KB_C" />
+<area shape="rect" coords="44,275,98,329" href="I_KB_a" />
+<area shape="rect" coords="115,275,169,329" href="I_KB_0" />
+<area shape="rect" coords="187,275,241,329" href="I_KB_T" />
+<area shape="rect" coords="258,275,312,329" href="I_KB_D" />
+<area shape="rect" coords="88,412,107,461" href="O_PN_L1" />
+<area shape="rect" coords="112,413,131,462" href="O_PN_L2" />
+<area shape="rect" coords="137,413,156,462" href="O_PN_L3" />
+<area shape="rect" coords="163,413,182,462" href="O_PN_L4" />
+<area shape="rect" coords="187,413,206,462" href="O_PN_C1" />
+<area shape="rect" coords="213,413,232,462" href="O_PN_C2" />
+<area shape="rect" coords="237,413,256,462" href="O_PN_C3" />
+<area shape="rect" coords="263,413,282,462" href="O_PN_C4" />
+</map>

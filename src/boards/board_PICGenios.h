@@ -28,6 +28,7 @@
 
 #include "bsim_picsim.h"
 
+#define	BOARD_PICGenios_Name "PICGenios"
 
 class cboard_PICGenios:public bsim_picsim
 {
@@ -92,15 +93,14 @@ class cboard_PICGenios:public bsim_picsim
     lxColor color2;    
     lxFont font;
   public:
+      //Return the board name
+      lxString GetName(void) {return lxT(BOARD_PICGenios_Name); };
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cboard_PICGenios(void);
       ~cboard_PICGenios(void);
       void Draw(CDraw *draw);
       void Run_CPU(void);
       lxString GetSupportedDevices(void){return lxT("PIC16F1789,PIC16F1939,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,PIC18F47K40,");};
-      lxString GetPictureFileName(void){return lxT("PICGenios/board.svg");};
-      lxString GetInputMapFile(void){return lxT("PICGenios/input.map");};
-      lxString GetOutputMapFile(void){return lxT("PICGenios/output.map");};
       void Reset(void);
       void MDumpMemory(const char * mfname);
       void EvMouseMove(uint button, uint x, uint y, uint state);

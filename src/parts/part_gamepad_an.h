@@ -29,21 +29,17 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define	PART_GAMEPAD_AN_Name "Gamepad (Analogic)"
 
 class cpart_gamepad_an:public part
 {
    public:
-      lxString GetName(void){return lxT("Gamepad (Analogic)");};
-      lxString GetHelpURL(void){return lxT("GamepadAnalogic.html");};
+      lxString GetName(void){return lxT(PART_GAMEPAD_AN_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_gamepad_an(unsigned x, unsigned y);
       ~cpart_gamepad_an(void);
       void Draw(void);
       void PreProcess(void);
-      lxString GetPictureFileName(void){return lxT("gamepad_an/gamepad_an.svg");};
-      lxString GetInputMapFile(void){return lxT("gamepad_an/gamepad_an_i.map");};
-      lxString GetOutputMapFile(void){return lxT("gamepad_an/gamepad_an_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("gamepad_an/gamepad_an.lxrad");};
       void Reset(void); 
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);

@@ -255,5 +255,5 @@ cpart_RTC_pfc8563::Process(void)
 
 }
 
-part_init("RTC pfc8563", cpart_RTC_pfc8563, "Other");
+part_init(PART_RTC_PFC8563_Name, cpart_RTC_pfc8563, "Other");
 

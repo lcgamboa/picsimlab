@@ -734,5 +734,5 @@ cpart_Jumpers::ComboChange(CCombo * control, lxString value)
  ChangeType (ntype);
 }
 
-part_init("Jumper Wires", cpart_Jumpers, "Other");
+part_init(PART_JUMPERS_Name, cpart_Jumpers, "Other");
 

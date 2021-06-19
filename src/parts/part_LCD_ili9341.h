@@ -31,11 +31,12 @@
 #include"../devices/lcd_ili9341.h"
 #include"../devices/tsc_xpt2046.h"
 
+#define	PART_LCD_iLI9341_Name "LCD ili9341"
+
 class cpart_LCD_ili9341:public part
 {
    public:
-      lxString GetName(void){return lxT("LCD ili9341");};
-      lxString GetHelpURL(void){return lxT("LCDili9341.html");};
+      lxString GetName(void){return lxT(PART_LCD_iLI9341_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_LCD_ili9341(unsigned x, unsigned y);
       ~cpart_LCD_ili9341(void);
@@ -43,9 +44,7 @@ class cpart_LCD_ili9341:public part
       void Process(void);
       void PostProcess(void);
       lxString GetPictureFileName(void);
-      lxString GetInputMapFile(void);
-      lxString GetOutputMapFile(void);
-      lxString GetPropertiesWindowFile(void){return lxT("LCD_ili9341/LCD_ili9341.lxrad");};
+      lxString GetMapFile(void);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
       void EvMouseMove(uint button, uint x, uint y,uint state);

@@ -473,5 +473,5 @@ cpart_gamepad_an::ReadPropertiesWindow(CPWindow * WProp)
 
 }
 
-part_init("Gamepad (Analogic)", cpart_gamepad_an, "Input");
+part_init(PART_GAMEPAD_AN_Name, cpart_gamepad_an, "Input");
 

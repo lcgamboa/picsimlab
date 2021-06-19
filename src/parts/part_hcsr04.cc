@@ -358,5 +358,5 @@ cpart_hcsr04::ReadPropertiesWindow(CPWindow * WProp)
 }
 
 
-part_init("Ultrasonic HC-SR04", cpart_hcsr04, "Input");
+part_init(PART_HCSR0404_Name, cpart_hcsr04, "Input");
 

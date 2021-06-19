@@ -29,6 +29,7 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define	PART_LCD_HD44780_Name "LCD hd44780"
 
 #define LCD16x2 1
 #define LCD16x4 2
@@ -38,21 +39,17 @@
 class cpart_LCD_hd44780:public part
 {
    public:
-      lxString GetName(void){return lxT("LCD hd44780");};
-      lxString GetHelpURL(void){return lxT("LCDhd44780.html");};
+      lxString GetName(void){return lxT(PART_LCD_HD44780_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};      
       cpart_LCD_hd44780(unsigned x, unsigned y);
       ~cpart_LCD_hd44780(void);
       void Draw(void);
       void Process(void);
       void PostProcess(void);
-      lxString GetPictureFileName(void){return lxT("LCD_hd44780/LCD_hd44780.svg");};
-      lxString GetPictureFileName_(void){return lxT("LCD_hd44780/LCD_hd44780_.svg");};
-      lxString GetPictureFileName__(void){return lxT("LCD_hd44780/LCD_hd44780__.svg");};
-      lxString GetPictureFileName___(void){return lxT("LCD_hd44780/LCD_hd44780___.svg");};
-      lxString GetInputMapFile(void){return lxT("LCD_hd44780/LCD_hd44780_i.map");};
-      lxString GetOutputMapFile(void){return lxT("LCD_hd44780/LCD_hd44780_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("LCD_hd44780/LCD_hd44780.lxrad");};
+      lxString GetPictureFileName(void){return lxT("LCD hd44780/LCD_hd44780.svg");};
+      lxString GetPictureFileName_(void){return lxT("LCD hd44780/LCD_hd44780_.svg");};
+      lxString GetPictureFileName__(void){return lxT("LCD hd44780/LCD_hd44780__.svg");};
+      lxString GetPictureFileName___(void){return lxT("LCD hd44780/LCD_hd44780___.svg");};
       void Reset(void);
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);

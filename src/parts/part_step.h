@@ -29,22 +29,18 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define	PART_STEP_Name "Step Motor"
 
 class cpart_step:public part
 {
    public:
-      lxString GetName(void){return lxT("Step motor");}; 
-      lxString GetHelpURL(void){return lxT("StepMotor.html");};
+      lxString GetName(void){return lxT(PART_STEP_Name);}; 
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_step(unsigned x, unsigned y);
       ~cpart_step(void);
       void Draw(void);
       void Process(void);
       void PostProcess(void);
-      lxString GetPictureFileName(void){return lxT("step/step_motor.svg");};
-      lxString GetInputMapFile(void){return lxT("step/step_motor_i.map");};
-      lxString GetOutputMapFile(void){return lxT("step/step_motor_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("step/step_motor.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       lxString WritePreferences(void);

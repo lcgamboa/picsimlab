@@ -29,21 +29,19 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define	PART_PUSH_BUTTONS_AN_Name "Push Buttons (Analogic)"
 
 class cpart_pbuttons_an:public part
 {
    public:
-      lxString GetName(void){return lxT("Push buttons (Analogic)");};
-      lxString GetHelpURL(void){return lxT("PushButtonsAnalogic.html");};
+      lxString GetName(void){return lxT(PART_PUSH_BUTTONS_AN_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_pbuttons_an(unsigned x, unsigned y);
       ~cpart_pbuttons_an(void);
       void Draw(void);
       void PreProcess(void);
-      lxString GetPictureFileName(void){return lxT("pbuttons/push_buttons.svg");};
-      lxString GetInputMapFile(void){return lxT("pbuttons/push_buttons_i.map");};
-      lxString GetOutputMapFile(void){return lxT("pbuttons/push_buttons_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("pbuttons_an/push_buttons_an.lxrad");};
+      lxString GetPictureFileName(void){return lxT("Push Buttons/part.svg");};
+      lxString GetMapFile(void){return lxT("Push Buttons/part.map");};
       void Reset(void); 
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);

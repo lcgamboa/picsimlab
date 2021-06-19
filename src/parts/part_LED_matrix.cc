@@ -284,5 +284,5 @@ cpart_led_matrix::PostProcess(void)
  if (ldd.update)output_ids[O_LED]->update = 1;
 }
 
-part_init("LED Matrix", cpart_led_matrix, "Output");
+part_init(PART_LED_MATRIX_Name, cpart_led_matrix, "Output");
 

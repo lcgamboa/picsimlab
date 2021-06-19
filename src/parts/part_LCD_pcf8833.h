@@ -30,21 +30,18 @@
 #include"part.h"
 #include"../devices/lcd_pcf8833.h"
 
+#define	PART_LCD_PCF8833_Name "LCD pcf8833"
+
 class cpart_LCD_pcf8833:public part
 {
    public:
-      lxString GetName(void){return lxT("LCD pcf8833");};
-      lxString GetHelpURL(void){return lxT("LCDpcf8833.html");};
+      lxString GetName(void){return lxT(PART_LCD_PCF8833_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_LCD_pcf8833(unsigned x, unsigned y);
       ~cpart_LCD_pcf8833(void);
       void Draw(void);
       void Process(void);
       void PostProcess(void);
-      lxString GetPictureFileName(void){return lxT("LCD_pcf8833/LCD_pcf8833.svg");};
-      lxString GetInputMapFile(void){return lxT("LCD_pcf8833/LCD_pcf8833_i.map");};
-      lxString GetOutputMapFile(void){return lxT("LCD_pcf8833/LCD_pcf8833_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("LCD_pcf8833/LCD_pcf8833.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       lxString WritePreferences(void);

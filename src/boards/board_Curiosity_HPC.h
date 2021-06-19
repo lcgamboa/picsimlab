@@ -31,6 +31,8 @@
 
 #include "bsim_picsim.h"
 
+#define BOARD_Curiosity_HPC_Name "Curiosity HPC"
+
 //New board Class derived from board class defined in board.h
 class cboard_Curiosity_HPC:public bsim_picsim
 {
@@ -55,6 +57,8 @@ class cboard_Curiosity_HPC:public bsim_picsim
         CCombo *combo1;  //combo of second serial
         void RegisterRemoteControl(void); 
     public:
+      //Return the board name
+      lxString GetName(void) {return lxT(BOARD_Curiosity_HPC_Name); };  
       lxString GetAboutInfo(void){return lxT("El-khadraouy Mohammed\n<mohammed.el-khadraouy@ecole.ensicaen.fr>\nand L.C. Gamboa \n <lcgamboa@yahoo.com>");};  
       //Constructor called once on board creation 
       cboard_Curiosity_HPC(void);
@@ -66,11 +70,7 @@ class cboard_Curiosity_HPC:public bsim_picsim
       //Return a list of board supported microcontrollers
       lxString GetSupportedDevices(void){return lxT("PIC16F1619,PIC18F27K40,");};
       //Return the filename of board picture 
-      lxString GetPictureFileName(void){return lxT("Curiosity_HPC/board.png");};
-      //Return the filename of board picture input map 
-      lxString GetInputMapFile(void){return lxT("Curiosity_HPC/input.map");};
-      //Return the filename of board picture output map 
-      lxString GetOutputMapFile(void){return lxT("Curiosity_HPC/output.map");};
+      lxString GetPictureFileName(void){return lxT("Curiosity HPC/board.png");};
       //Reset board status
       void Reset(void);
       //Event on the board

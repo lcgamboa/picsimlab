@@ -29,21 +29,21 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define	PART_VCD_DUMP_AN_Name "VCD Dump (Analogic)"
+
 class cpart_VCD_Dump_an:public part
 {
    public:
-      lxString GetName(void){return lxT("VCD Dump (Analogic)");};
-      lxString GetHelpURL(void){return lxT("VCDdumpAnalogic.html");};
+      lxString GetName(void){return lxT(PART_VCD_DUMP_AN_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_VCD_Dump_an(unsigned x, unsigned y);
       ~cpart_VCD_Dump_an(void);
       void Draw(void);
       void Process(void);
       void PostProcess(void);
-      lxString GetPictureFileName(void){return lxT("VCD_Dump/VCD_Dump.svg");};
-      lxString GetInputMapFile(void){return lxT("VCD_Dump/VCD_Dump_i.map");};
-      lxString GetOutputMapFile(void){return lxT("VCD_Dump/VCD_Dump_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("VCD_Dump/VCD_Dump.lxrad");};
+      lxString GetPictureFileName(void){return lxT("VCD Dump/part.svg");};
+      lxString GetMapFile(void){return lxT("VCD Dump/part.map");};
+      lxString GetPropertiesWindowFile(void){return lxT("VCD Dump/part.lxrad");};
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);

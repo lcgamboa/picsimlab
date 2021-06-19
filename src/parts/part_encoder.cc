@@ -480,5 +480,5 @@ cpart_encoder::ReadPropertiesWindow(CPWindow * WProp)
 }
 
 
-part_init("Encoder", cpart_encoder, "Input");
+part_init(PART_ENCODER_Name, cpart_encoder, "Input");
 

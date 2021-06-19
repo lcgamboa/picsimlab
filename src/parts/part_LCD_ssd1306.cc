@@ -315,5 +315,5 @@ cpart_LCD_ssd1306::SetScale(double scale)
  lcd_ssd1306_update (&lcd);
 }
 
-part_init("LCD ssd1306", cpart_LCD_ssd1306, "Output");
+part_init(PART_LCD_SSD1306_Name, cpart_LCD_ssd1306, "Output");
 

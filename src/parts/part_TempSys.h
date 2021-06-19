@@ -29,34 +29,20 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define PART_TEMPSYS_Name "Temperature System"
+
 class cpart_tempsys : public part {
 public:
 
     lxString GetName(void) {
-        return lxT("Temperature System");
+        return lxT(PART_TEMPSYS_Name);
     };
-    lxString GetHelpURL(void){return lxT("TemperatureSystem.html");};
     lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
     cpart_tempsys(unsigned x, unsigned y);
     ~cpart_tempsys(void);
     void Draw(void);
     void Process(void);
     void PostProcess(void);
-    lxString GetPictureFileName(void) {
-        return lxT("tempsys/TempSys.svg");
-    };
-
-    lxString GetInputMapFile(void) {
-        return lxT("tempsys/TempSys_i.map");
-    };
-
-    lxString GetOutputMapFile(void) {
-        return lxT("tempsys/TempSys_o.map");
-    };
-
-    lxString GetPropertiesWindowFile(void) {
-        return lxT("tempsys/TempSys.lxrad");
-    };
     void EvMouseButtonPress(uint button, uint x, uint y, uint state);
     void EvMouseButtonRelease(uint button, uint x, uint y, uint state);
     void EvMouseMove(uint button, uint x, uint y, uint state);

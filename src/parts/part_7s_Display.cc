@@ -961,7 +961,7 @@ cpart_7s_display::PostProcess(void)
 }
 
 
-part_init("7 Segments Display", cpart_7s_display, "Output");
+part_init(PART_7S_DISPLAY_Name, cpart_7s_display, "Output");
 
 
 

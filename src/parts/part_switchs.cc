@@ -431,5 +431,5 @@ cpart_switchs::ReadPropertiesWindow(CPWindow * WProp)
  output_pins[7] = atoi (((CCombo*) WProp->GetChildByName ("combo8"))->GetText ());
 }
 
-part_init("Switchs", cpart_switchs, "Input");
+part_init(PART_SWITCHS_Name, cpart_switchs, "Input");
 

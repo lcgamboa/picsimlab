@@ -380,5 +380,5 @@ cpart_pot::ReadPropertiesWindow(CPWindow * WProp)
 }
 
 
-part_init("Potentiometers", cpart_pot, "Input");
+part_init(PART_POT_Name, cpart_pot, "Input");
 

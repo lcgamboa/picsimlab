@@ -28,7 +28,7 @@
 
 #include"../picsimlab1.h"
 
-bsim_picsim::bsim_picsim()
+bsim_picsim::bsim_picsim(void)
 {
  pic.PINCOUNT = 0;
 }

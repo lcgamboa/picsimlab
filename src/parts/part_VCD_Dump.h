@@ -29,21 +29,18 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define	PART_VCD_DUMP_Name "VCD Dump"
+
 class cpart_VCD_Dump:public part
 {
    public:
-      lxString GetName(void){return lxT("VCD Dump");};
-      lxString GetHelpURL(void){return lxT("VCDdump.html");};
+      lxString GetName(void){return lxT(PART_VCD_DUMP_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_VCD_Dump(unsigned x, unsigned y);
       ~cpart_VCD_Dump(void);
       void Draw(void);
       void Process(void);
       void PostProcess(void);
-      lxString GetPictureFileName(void){return lxT("VCD_Dump/VCD_Dump.svg");};
-      lxString GetInputMapFile(void){return lxT("VCD_Dump/VCD_Dump_i.map");};
-      lxString GetOutputMapFile(void){return lxT("VCD_Dump/VCD_Dump_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("VCD_Dump/VCD_Dump.lxrad");};
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);

@@ -1,0 +1,16 @@
+<img src="[picsimlab7] (overwritten)" width="402" height="304" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:Luis Claudio Gamboa Lopes     -->
+<area shape="rect" coords="32,10,65,43" href="B_PB_RST" />
+<area shape="rect" coords="4,234,75,288" href="I_SW_PWR" />
+<area shape="rect" coords="367,124,394,166" href="I_PG_ICSP" />
+<area shape="rect" coords="158,53,169,63" href="O_LD_L" />
+<area shape="rect" coords="158,90,169,100" href="O_LD_TX" />
+<area shape="rect" coords="158,112,169,122" href="O_LD_RX" />
+<area shape="rect" coords="359,70,370,80" href="O_LD_ON" />
+</map>

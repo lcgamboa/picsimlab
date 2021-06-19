@@ -1,0 +1,18 @@
+<img src="[step_motor] (sobrescrita)" width="295" height="454" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:Luis Claudio Gamboa Lopes   -->
+<area shape="rect" coords="33,417,82,436" href="O_PN_1" />
+<area shape="rect" coords="93,417,142,436" href="O_PN_2" />
+<area shape="rect" coords="152,417,201,436" href="O_PN_3" />
+<area shape="rect" coords="210,417,259,436" href="O_PN_4" />
+<area shape="circle" coords="94,391,11" href="O_LD_1" />
+<area shape="circle" coords="130,391,11" href="O_LD_2" />
+<area shape="circle" coords="169,391,11" href="O_LD_3" />
+<area shape="circle" coords="204,391,11" href="O_LD_4" />
+<area shape="circle" coords="147,163,51" href="O_DG_ROT" />
+</map>

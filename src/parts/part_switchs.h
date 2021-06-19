@@ -29,21 +29,17 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define	PART_SWITCHS_Name "Switchs"
 
 class cpart_switchs:public part
 {
    public:
-      lxString GetName(void){return lxT("Switchs");}; 
-      lxString GetHelpURL(void){return lxT("Switchs.html");};
+      lxString GetName(void){return lxT(PART_SWITCHS_Name);}; 
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_switchs(unsigned x, unsigned y);
       ~cpart_switchs(void);
       void Draw(void);
       void PreProcess(void);
-      lxString GetPictureFileName(void){return lxT("switchs/switchs.svg");};
-      lxString GetInputMapFile(void){return lxT("switchs/switchs_i.map");};
-      lxString GetOutputMapFile(void){return lxT("switchs/switchs_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("switchs/switchs.lxrad");};
       void Reset(void); 
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  WProp);

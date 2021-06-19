@@ -29,6 +29,8 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define	PART_SERVO_Name "Servo Motor"
+
     /**
      * @brief servo motor part class
      *
@@ -37,8 +39,7 @@
 class cpart_servo:public part
 {
    public:
-      lxString GetName(void){return lxT("Servo motor");};
-      lxString GetHelpURL(void){return lxT("ServoMotor.html");};
+      lxString GetName(void){return lxT(PART_SERVO_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};      
       
      /**
@@ -56,10 +57,6 @@ class cpart_servo:public part
       void Draw(void);
       void Process(void);
       void PostProcess(void);
-      lxString GetPictureFileName(void){return lxT("servo/servo_motor.svg");};
-      lxString GetInputMapFile(void){return lxT("servo/servo_motor_i.map");};
-      lxString GetOutputMapFile(void){return lxT("servo/servo_motor_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("servo/servo_motor.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       lxString WritePreferences(void);

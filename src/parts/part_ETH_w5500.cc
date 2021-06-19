@@ -537,5 +537,5 @@ cpart_ETH_w5500::PostProcess(void)
 
 }
 
-part_init("ETH w5500", cpart_ETH_w5500, "Other");
+part_init(PART_ETH_W5500_Name, cpart_ETH_w5500, "Other");
 

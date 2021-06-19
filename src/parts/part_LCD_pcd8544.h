@@ -30,21 +30,18 @@
 #include"part.h"
 #include"../devices/lcd_pcd8544.h"
 
+#define	PART_LCD_PCD8544_Name "LCD pcd8544"
+
 class cpart_LCD_pcd8544:public part
 {
    public:
-      lxString GetName(void){return lxT("LCD pcd8544");};
-      lxString GetHelpURL(void){return lxT("LCDpcd8544.html");};
+      lxString GetName(void){return lxT(PART_LCD_PCD8544_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_LCD_pcd8544(unsigned x, unsigned y);
       ~cpart_LCD_pcd8544(void);
       void Draw(void);
       void Process(void);
       void PostProcess(void);
-      lxString GetPictureFileName(void){return lxT("LCD_pcd8544/LCD_pcd8544.svg");};
-      lxString GetInputMapFile(void){return lxT("LCD_pcd8544/LCD_pcd8544_i.map");};
-      lxString GetOutputMapFile(void){return lxT("LCD_pcd8544/LCD_pcd8544_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("LCD_pcd8544/LCD_pcd8544.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       lxString WritePreferences(void);

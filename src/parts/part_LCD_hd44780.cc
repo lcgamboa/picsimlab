@@ -525,5 +525,5 @@ cpart_LCD_hd44780::SetScale(double scale)
  lcd.update = 1;
 }
 
-part_init("LCD hd44780", cpart_LCD_hd44780, "Output");
+part_init(PART_LCD_HD44780_Name, cpart_LCD_hd44780, "Output");
 

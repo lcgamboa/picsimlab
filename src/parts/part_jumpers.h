@@ -29,17 +29,15 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define PART_JUMPERS_Name "Jumper Wires"
+
 class cpart_Jumpers : public part {
     int ID;
     static int countID;
 public:
     
     lxString GetName(void) {
-        return lxT("Jumper Wires");
-    };
-
-    lxString GetHelpURL(void) {
-        return lxT("JumperWires.html");
+        return lxT(PART_JUMPERS_Name);
     };
 
     lxString GetAboutInfo(void) {
@@ -51,22 +49,6 @@ public:
     void PreProcess(void);
     void Process(void);
     void PostProcess(void);
-
-    lxString GetPictureFileName(void) {
-        return lxT("jumpers/jumper.svg");
-    };
-
-    lxString GetInputMapFile(void) {
-        return lxT("jumpers/jumper_i.map");
-    };
-
-    lxString GetOutputMapFile(void) {
-        return lxT("jumpers/jumper_o.map");
-    };
-
-    lxString GetPropertiesWindowFile(void) {
-        return lxT("jumpers/jumper.lxrad");
-    };
     void ConfigurePropertiesWindow(CPWindow * WProp);
     void ReadPropertiesWindow(CPWindow * WProp);
     lxString WritePreferences(void);

@@ -801,4 +801,4 @@ cboard_Curiosity_HPC::Run_CPU(void)
 }
 
 
-board_init("Curiosity HPC", cboard_Curiosity_HPC);
+board_init(BOARD_Curiosity_HPC_Name, cboard_Curiosity_HPC);

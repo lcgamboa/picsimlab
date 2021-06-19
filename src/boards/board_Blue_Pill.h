@@ -30,12 +30,16 @@
 
 #include "bsim_qemu_stm32.h"
 
+#define BOARD_Blue_Pill_Name "Blue Pill"
+
 //new board class must be derived from board class defined in board.h
 class cboard_Blue_Pill:public bsim_qemu_stm32
 {
    private:
       void RegisterRemoteControl(void); 
    public:
+      //Return the board name
+      lxString GetName(void) {return lxT(BOARD_Blue_Pill_Name); };
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       //Constructor called once on board creation 
       cboard_Blue_Pill(void);
@@ -47,11 +51,7 @@ class cboard_Blue_Pill:public bsim_qemu_stm32
       //Return a list of board supported microcontrollers
       lxString GetSupportedDevices(void){return lxT("stm32f103c8t6,");};
       //Return the filename of board picture 
-      lxString GetPictureFileName(void){return lxT("Blue_Pill/board.png");};
-      //Return the filename of board picture input map 
-      lxString GetInputMapFile(void){return lxT("Blue_Pill/input.map");};
-      //Return the filename of board picture output map 
-      lxString GetOutputMapFile(void){return lxT("Blue_Pill/output.map");};
+      lxString GetPictureFileName(void){return lxT("Blue Pill/board.png");};
       //Reset board status
       void Reset(void);
       //Event on the board

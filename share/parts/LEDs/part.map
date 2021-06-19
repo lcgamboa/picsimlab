@@ -1,0 +1,25 @@
+<img src="[push_buttons] (sobrescrita)" width="583" height="112" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:Luis Claudio Gamboa Lopes     -->
+<area shape="rect" coords="7,86,56,105" href="O_PN_1" />
+<area shape="rect" coords="69,86,118,105" href="O_PN_2" />
+<area shape="rect" coords="132,86,181,105" href="O_PN_3" />
+<area shape="rect" coords="192,86,241,105" href="O_PN_4" />
+<area shape="rect" coords="256,86,305,105" href="O_PN_5" />
+<area shape="rect" coords="319,86,368,105" href="O_PN_6" />
+<area shape="rect" coords="380,86,429,105" href="O_PN_7" />
+<area shape="rect" coords="443,86,492,105" href="O_PN_8" />
+<area shape="circle" coords="38,23,15" href="O_LD_1" />
+<area shape="circle" coords="100,23,15" href="O_LD_2" />
+<area shape="circle" coords="163,24,15" href="O_LD_3" />
+<area shape="circle" coords="226,24,15" href="O_LD_4" />
+<area shape="circle" coords="290,24,15" href="O_LD_5" />
+<area shape="circle" coords="352,24,15" href="O_LD_6" />
+<area shape="circle" coords="415,25,15" href="O_LD_7" />
+<area shape="circle" coords="473,25,15" href="O_LD_8" />
+</map>

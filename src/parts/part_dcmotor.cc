@@ -463,5 +463,5 @@ cpart_dcmotor::ReadPropertiesWindow(CPWindow * WProp)
 }
 
 
-part_init("DC Motor", cpart_dcmotor, "Output");
+part_init(PART_DCMOTOR_Name, cpart_dcmotor, "Output");
 

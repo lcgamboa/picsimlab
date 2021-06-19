@@ -30,11 +30,12 @@
 #include"part.h"
 #include"../devices/eth_w5500.h"
 
+#define	PART_ETH_W5500_Name "ETH w5500"
+
 class cpart_ETH_w5500:public part
 {
    public:
-      lxString GetName(void){return lxT("ETH w5500");};
-      lxString GetHelpURL(void){return lxT("ETHw5500.html");};
+      lxString GetName(void){return lxT(PART_ETH_W5500_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cpart_ETH_w5500(unsigned x, unsigned y);
       ~cpart_ETH_w5500(void);
@@ -42,10 +43,6 @@ class cpart_ETH_w5500:public part
       void PreProcess (void);
       void Process(void); 
       void PostProcess (void);
-      lxString GetPictureFileName(void){return lxT("ETH_w5500/w5500.svg");};
-      lxString GetInputMapFile(void){return lxT("ETH_w5500/w5500_i.map");};
-      lxString GetOutputMapFile(void){return lxT("ETH_w5500/w5500_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("ETH_w5500/w5500.lxrad");};
       void Reset(void);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void ConfigurePropertiesWindow(CPWindow *  WProp);

@@ -30,21 +30,18 @@
 #include"part.h"
 #include"../devices/lcd_ssd1306.h"
 
+#define	PART_LCD_SSD1306_Name "LCD ssd1306"
+
 class cpart_LCD_ssd1306:public part
 {
    public:
-      lxString GetName(void){return lxT("LCD ssd1306");};
-      lxString GetHelpURL(void){return lxT("LCDssd1306.html");};
+      lxString GetName(void){return lxT(PART_LCD_SSD1306_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_LCD_ssd1306(unsigned x, unsigned y);
       ~cpart_LCD_ssd1306(void);
       void Draw(void);
       void Process(void);
       void PostProcess(void);
-      lxString GetPictureFileName(void){return lxT("LCD_ssd1306/LCD_ssd1306.svg");};
-      lxString GetInputMapFile(void){return lxT("LCD_ssd1306/LCD_ssd1306_i.map");};
-      lxString GetOutputMapFile(void){return lxT("LCD_ssd1306/LCD_ssd1306_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("LCD_ssd1306/LCD_ssd1306.lxrad");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       lxString WritePreferences(void);

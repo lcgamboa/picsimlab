@@ -31,13 +31,14 @@
 
 #include"../devices/sen_mpu6050.h"
 
+#define PART_MPU6050_Name "MPU6050"
+
 class cpart_MPU6050 : public part {
 public:
 
     lxString GetName(void) {
-        return lxT("MPU6050");
+        return lxT(PART_MPU6050_Name);
     };
-    lxString GetHelpURL(void){return lxT("MPU6050.html");};
     lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
     cpart_MPU6050(unsigned x, unsigned y);
     ~cpart_MPU6050(void);
@@ -45,22 +46,6 @@ public:
     void PreProcess(void);
     void Process(void);
     void PostProcess(void);
-    
-    lxString GetPictureFileName(void) {
-        return lxT("MPU6050/MPU6050.svg");
-    };
-
-    lxString GetInputMapFile(void) {
-        return lxT("MPU6050/MPU6050_i.map");
-    };
-
-    lxString GetOutputMapFile(void) {
-        return lxT("MPU6050/MPU6050_o.map");
-    };
-
-    lxString GetPropertiesWindowFile(void) {
-        return lxT("MPU6050/MPU6050.lxrad");
-    };
     void EvMouseButtonPress(uint button, uint x, uint y,uint state);
     void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
     void EvMouseMove(uint button, uint x, uint y,uint state);

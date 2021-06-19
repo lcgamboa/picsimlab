@@ -360,5 +360,5 @@ cpart_UART::PostProcess(void)
 
 }
 
-part_init("IO UART", cpart_UART, "Other");
+part_init(PART_UART_Name, cpart_UART, "Other");
 

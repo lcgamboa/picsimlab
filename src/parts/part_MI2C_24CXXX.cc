@@ -490,5 +490,5 @@ cpart_MI2C_24CXXX::filedialog_EvOnClose(int retId)
   }
 }
 
-part_init("MEM 24CXXX", cpart_MI2C_24CXXX, "Other");
+part_init(PART_MI2C_24CXXX_Name, cpart_MI2C_24CXXX, "Other");
 

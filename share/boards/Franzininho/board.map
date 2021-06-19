@@ -1,0 +1,27 @@
+<img src="[Franzininho-DIY-V2RV2_atualizado] (importada)" width="241" height="114" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:Felipe      -->
+<area shape="rect" coords="5,38,60,76" href="I_PG_ICSP" />
+<area shape="rect" coords="8,3,27,19" href="I_SW_PWR" />
+<area shape="rect" coords="180,6,201,26" href="I_PB_RST_I" />
+<area shape="rect" coords="184,10,197,23" href="O_PB_RST_O" />
+<area shape="circle" coords="148,99,7" href="O_LD_L" />
+<area shape="circle" coords="128,99,7" href="O_LD_ON" />
+<area shape="rect" coords="190,67,197,76" href="O_P_PB2" />
+<area shape="rect" coords="180,67,187,76" href="O_P_PB1" />
+<area shape="rect" coords="171,67,178,76" href="O_P_PB0" />
+<area shape="rect" coords="200,38,206,45" href="O_P_PB5" />
+<area shape="rect" coords="190,38,197,45" href="O_P_PB3" />
+<area shape="rect" coords="180,38,188,45" href="O_P_PB4" />
+<area shape="rect" coords="220,40,223,43" href="O_BP_5" />
+<area shape="rect" coords="220,50,223,53" href="O_BP_4" />
+<area shape="rect" coords="220,59,223,62" href="O_BP_3" />
+<area shape="rect" coords="220,69,223,72" href="O_BP_2" />
+<area shape="rect" coords="220,79,223,82" href="O_BP_1" />
+<area shape="rect" coords="220,89,223,92" href="O_BP_0" />
+</map>

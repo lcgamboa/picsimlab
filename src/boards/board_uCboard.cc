@@ -79,7 +79,7 @@ cboard_uCboard::get_out_id(char * name)
 
 //Constructor called once on board creation 
 
-cboard_uCboard::cboard_uCboard(void):
+cboard_uCboard::cboard_uCboard(void) :
 font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  Proc = "C51"; //default microcontroller if none defined in preferences
@@ -434,5 +434,5 @@ cboard_uCboard::SetScale(double scale)
 }
 
 //Register the board in PICSimLab
-board_init("uCboard", cboard_uCboard);
+board_init(BOARD_uCboard_Name, cboard_uCboard);
 

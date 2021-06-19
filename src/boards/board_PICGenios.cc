@@ -2200,7 +2200,7 @@ void
 cboard_PICGenios::EvOnShow(void)
 {
  lcd.update = 1;
- board::EvOnShow();
+ board::EvOnShow ();
 }
 
 unsigned short
@@ -2504,6 +2504,6 @@ cboard_PICGenios::board_Event(CControl * control)
 }
 
 
-board_init("PICGenios", cboard_PICGenios);
+board_init(BOARD_PICGenios_Name, cboard_PICGenios);
 
 

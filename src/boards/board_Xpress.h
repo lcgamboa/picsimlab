@@ -30,6 +30,8 @@
 
 #include "bsim_picsim.h"
 
+#define BOARD_Xpress_Name "Xpress"
+
 //new board class must be derived from board class defined in board.h
 class cboard_Xpress:public bsim_picsim
 {
@@ -51,6 +53,8 @@ class cboard_Xpress:public bsim_picsim
      
      void RegisterRemoteControl(void); 
    public:
+      //Return the board name 
+      lxString GetName(void) {return lxT(BOARD_Xpress_Name); }; 
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       //Constructor called once on board creation 
       cboard_Xpress(void);
@@ -63,10 +67,6 @@ class cboard_Xpress:public bsim_picsim
       lxString GetSupportedDevices(void){return lxT("PIC16F18855,");};
       //Return the filename of board picture 
       lxString GetPictureFileName(void){return lxT("Xpress/board.png");};
-      //Return the filename of board picture input map 
-      lxString GetInputMapFile(void){return lxT("Xpress/input.map");};
-      //Return the filename of board picture output map 
-      lxString GetOutputMapFile(void){return lxT("Xpress/output.map");};
       //Reset board status
       void Reset(void);
       //Event on the board

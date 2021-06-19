@@ -78,13 +78,13 @@ cboard_gpboard::get_out_id(char * name)
 
 //Constructor called once on board creation 
 
-cboard_gpboard::cboard_gpboard(void):
-font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cboard_gpboard::cboard_gpboard(void) :
+font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  Proc = "pic16f628a"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
  lxImage image (&Window1);
- image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.svg"), 0, Scale, Scale,1);
+ image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.svg"), 0, Scale, Scale, 1);
  micbmp = new lxBitmap (&image, &Window1);
  serialfd = INVALID_HANDLE_VALUE;
 }
@@ -262,7 +262,7 @@ cboard_gpboard::Draw(CDraw *draw)
  int i;
  lxRect rec;
  lxSize ps;
- 
+
  font.SetPointSize ((MGetPinCount () >= 44) ? 5 : ((MGetPinCount () > 14) ? 12 : 4));
 
  draw->Canvas.Init (Scale, Scale); //initialize draw context
@@ -395,9 +395,9 @@ cboard_gpboard::MInit(const char * processor, const char * fname, float freq)
 
  lxImage image (&Window1);
 
- if (!image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg"), 0, Scale, Scale,1))
+ if (!image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg"), 0, Scale, Scale, 1))
   {
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic6.svg"), 0, Scale, Scale,1);
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic6.svg"), 0, Scale, Scale, 1);
    printf ("picsimlab: IC package with %i pins not found!\n", MGetPinCount ());
    printf ("picsimlab: %s not found!\n", (const char *) (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg")).c_str ());
   }
@@ -420,9 +420,9 @@ cboard_gpboard::SetScale(double scale)
 
  lxImage image (&Window1);
 
- if (!image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg"), 0, Scale, Scale,1))
+ if (!image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg"), 0, Scale, Scale, 1))
   {
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic6.svg"), 0, Scale, Scale,1);
+   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic6.svg"), 0, Scale, Scale, 1);
    printf ("picsimlab: IC package with %i pins not found!\n", MGetPinCount ());
    printf ("picsimlab: %s not found!\n", (const char *) (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg")).c_str ());
   }
@@ -433,5 +433,5 @@ cboard_gpboard::SetScale(double scale)
 }
 
 //Register the board in PICSimLab
-board_init("gpboard", cboard_gpboard);
+board_init(BOARD_gpboard_Name, cboard_gpboard);
 

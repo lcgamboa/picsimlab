@@ -265,5 +265,5 @@ cpart_rgb_led::ReadPropertiesWindow(CPWindow * WProp)
  RegisterRemoteControl ();
 }
 
-part_init("RGB LED", cpart_rgb_led, "Output");
+part_init(PART_RGB_LED_Name, cpart_rgb_led, "Output");
 

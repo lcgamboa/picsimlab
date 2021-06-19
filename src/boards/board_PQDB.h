@@ -30,6 +30,8 @@
 
 #include "../devices/io_74xx595.h"
 
+#define BOARD_PQDB_Name "PQDB"
+
 //Pin definitions
 //Arduino style
 /*
@@ -173,7 +175,8 @@ private:
 
     void RegisterRemoteControl(void);
 public:
-
+    //Return the board name
+    lxString GetName(void) {return lxT(BOARD_PQDB_Name); };
     lxString GetAboutInfo(void) {
         return lxT("R.M.A. Almeida	  \n <rodrigomax@unifei.edu.br>");
     };
@@ -186,17 +189,6 @@ public:
         return lxT("PIC18F4520,");
     };
 
-    lxString GetPictureFileName(void) {
-        return lxT("PQDB/pqdb.svg");
-    };
-
-    lxString GetInputMapFile(void) {
-        return lxT("PQDB/input.map");
-    };
-
-    lxString GetOutputMapFile(void) {
-        return lxT("PQDB/output.map");
-    };
     void Reset(void);
     void EvMouseMove(uint button, uint x, uint y, uint state);
     void EvMouseButtonPress(uint button, uint x, uint y, uint state);

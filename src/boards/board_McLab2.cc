@@ -1543,7 +1543,7 @@ cboard_McLab2::ReadPreferences(char *name, char *value)
 }
 
 
-board_init("McLab2", cboard_McLab2);
+board_init(BOARD_McLab2_Name, cboard_McLab2);
 
 
 

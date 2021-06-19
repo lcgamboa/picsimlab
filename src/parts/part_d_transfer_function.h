@@ -29,21 +29,17 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define	PART_DTRANSFERF_Name "D. Transfer Function"
 
 class cpart_dtfunc:public part
 {
    public:
-      lxString GetName(void){return lxT("D. Transfer function");};
-      lxString GetHelpURL(void){return lxT("DTransferFunction.html");};
+      lxString GetName(void){return lxT(PART_DTRANSFERF_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_dtfunc(unsigned x, unsigned y);
       ~cpart_dtfunc(void);
       void Draw(void);
       void Process(void);
-      lxString GetPictureFileName(void){return lxT("dtfunc/d_transfer_function.svg");};
-      lxString GetInputMapFile(void){return lxT("dtfunc/d_transfer_function_i.map");};
-      lxString GetOutputMapFile(void){return lxT("dtfunc/d_transfer_function_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("dtfunc/d_transfer_function.lxrad");};
       void Reset(void);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);
       void EvMouseButtonRelease(uint button, uint x, uint y,uint state);

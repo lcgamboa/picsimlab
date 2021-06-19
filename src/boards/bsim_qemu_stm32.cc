@@ -48,7 +48,7 @@ void setnblock(int sock_descriptor);
 static int listenfd = -1;
 static int listenfd_mon = -1;
 
-bsim_qemu_stm32::bsim_qemu_stm32(const lxString name) : board(name)
+bsim_qemu_stm32::bsim_qemu_stm32(void)
 {
  connected = 0;
  sockfd = -1;

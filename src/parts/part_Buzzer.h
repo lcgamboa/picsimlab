@@ -29,13 +29,14 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define PART_BUZZER_Name "Buzzer"
+
 class cpart_Buzzer : public part {
 public:
 
     lxString GetName(void) {
-        return lxT("Buzzer");
+        return lxT(PART_BUZZER_Name);
     };
-    lxString GetHelpURL(void){return lxT("Buzzer.html");};
     lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
     cpart_Buzzer(unsigned x, unsigned y);
     ~cpart_Buzzer(void);
@@ -43,22 +44,6 @@ public:
     void PreProcess(void);
     void Process(void);
     void PostProcess(void);
-
-    lxString GetPictureFileName(void) {
-        return lxT("Buzzer/Buzzer.svg");
-    };
-
-    lxString GetInputMapFile(void) {
-        return lxT("Buzzer/Buzzer_i.map");
-    };
-
-    lxString GetOutputMapFile(void) {
-        return lxT("Buzzer/Buzzer_o.map");
-    };
-
-    lxString GetPropertiesWindowFile(void) {
-        return lxT("Buzzer/Buzzer.lxrad");
-    };
     void ConfigurePropertiesWindow(CPWindow * WProp);
     void ReadPropertiesWindow(CPWindow * WProp);
     lxString WritePreferences(void);

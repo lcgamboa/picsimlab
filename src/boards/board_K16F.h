@@ -28,6 +28,7 @@
 
 #include "bsim_picsim.h"
 
+#define	BOARD_K16F_Name "K16F"
 
 class cboard_K16F:public bsim_picsim
 {
@@ -63,15 +64,14 @@ class cboard_K16F:public bsim_picsim
      lxColor color2;
      lxFont font;
   public:
+      //Return the board name
+      lxString GetName(void) {return lxT(BOARD_K16F_Name); };
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cboard_K16F(void);
       ~cboard_K16F(void);
       void Draw(CDraw *draw);
       void Run_CPU(void);
       lxString GetSupportedDevices(void){return lxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
-      lxString GetPictureFileName(void){return lxT("K16F/board.svg");};
-      lxString GetInputMapFile(void){return lxT("K16F/input.map");};
-      lxString GetOutputMapFile(void){return lxT("K16F/output.map");};
       void Reset(void);
       void MDumpMemory(const char * mfname);
       void EvMouseButtonPress(uint button, uint x, uint y,uint state);

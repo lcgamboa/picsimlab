@@ -293,5 +293,5 @@ cpart_LCD_pcf8833::SetScale(double scale)
  lcd_pcf8833_update (&lcd);
 }
 
-part_init("LCD pcf8833", cpart_LCD_pcf8833, "Output");
+part_init(PART_LCD_PCF8833_Name, cpart_LCD_pcf8833, "Output");
 

@@ -1066,4 +1066,4 @@ cboard_K16F::RefreshStatus(void)
 }
 
 
-board_init("K16F", cboard_K16F);
+board_init(BOARD_K16F_Name, cboard_K16F);

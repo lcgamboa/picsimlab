@@ -670,5 +670,5 @@ cboard_Xpress::Run_CPU(void)
 }
 
 
-board_init("Xpress", cboard_Xpress);
+board_init(BOARD_Xpress_Name , cboard_Xpress);
 

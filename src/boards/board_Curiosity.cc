@@ -724,5 +724,5 @@ cboard_Curiosity::Run_CPU(void)
 }
 
 
-board_init("Curiosity", cboard_Curiosity);
+board_init(BOARD_Curiosity_Name, cboard_Curiosity);
 

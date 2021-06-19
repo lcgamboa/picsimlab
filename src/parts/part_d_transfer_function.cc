@@ -484,5 +484,5 @@ cpart_dtfunc::ReadPropertiesWindow(CPWindow * WProp)
 }
 
 
-part_init("D. Transfer function", cpart_dtfunc, "Virtual");
+part_init(PART_DTRANSFERF_Name, cpart_dtfunc, "Virtual");
 

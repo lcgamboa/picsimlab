@@ -29,20 +29,19 @@
 #include<lxrad.h>
 #include"part.h"
 
+#define	PART_RTC_PFC8563_Name "RTC pfc8563"
+
 class cpart_RTC_pfc8563:public part
 {
    public:
-      lxString GetName(void){return lxT("RTC pfc8563");};
-      lxString GetHelpURL(void){return lxT("RTCpfc8563.html");};
+      lxString GetName(void){return lxT(PART_RTC_PFC8563_Name);};
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_RTC_pfc8563(unsigned x, unsigned y);
       ~cpart_RTC_pfc8563(void);
       void Draw(void);
       void Process(void);
       lxString GetPictureFileName(void){return lxT("Common/IC8.svg");};
-      lxString GetInputMapFile(void){return lxT("Common/IC8_i.map");};
-      lxString GetOutputMapFile(void){return lxT("Common/IC8_o.map");};
-      lxString GetPropertiesWindowFile(void){return lxT("RTC_pfc8563/RTC_pfc8563.lxrad");};
+      lxString GetMapFile(void){return lxT("Common/IC8.map");};
       void ConfigurePropertiesWindow(CPWindow *  WProp);
       void ReadPropertiesWindow(CPWindow * WProp);
       lxString WritePreferences(void);

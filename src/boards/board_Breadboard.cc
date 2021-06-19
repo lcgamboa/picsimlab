@@ -1121,5 +1121,5 @@ cboard_Breadboard::SetScale(double scale)
 
 }
 
-board_init("Breadboard", cboard_Breadboard);
+board_init(BOARD_Breadboard_Name, cboard_Breadboard);
 

@@ -478,5 +478,5 @@ cpart_pbuttons_an::ReadPropertiesWindow(CPWindow * WProp)
 
 }
 
-part_init("Push buttons (Analogic)", cpart_pbuttons_an, "Input");
+part_init(PART_PUSH_BUTTONS_AN_Name, cpart_pbuttons_an, "Input");
 
