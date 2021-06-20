@@ -2,6 +2,49 @@
 
 ### New
 
+* New part LM35 temperature sensor. [lcgamboa]
+
+* Support to dump Flash memory in rcontrol interface. [lcgamboa]
+
+* Support to dump RAM and internal EEPROM memory in rcontrol interface. [lcgamboa]
+
+* Support to save EEPROM of AVR MCU between PICSimLab sessions. [lcgamboa]
+
+* Pin Viewer tool added. [lcgamboa]
+
+* VCD Dump support to change external VCD viewer (eg. use pulseview instead gtkwave) [lcgamboa]
+
+* New part MPU6050 accel and gyro added (only raw values, no FIFO or DMP) [lcgamboa]
+
+* Support to only draw parts when need update to reduce cpu usage. [lcgamboa]
+
+* Support to only draw board when need update to reduce cpu usage. [lcgamboa]
+
+### Fix
+
+* Removed the problem that caused PICSimLab don't start when qemu-stm32 was not found. [lcgamboa]
+
+### Other
+
+* Merge pull request #38 from dantop03/master. [lcgamboa]
+
+* Merge branch 'master' of https://github.com/dantop03/picsimlab Correções. [dantop03]
+
+* Correções imagem e arquivos Franzininho. [dantop03]
+
+* Merge pull request #37 from dantop03/master. [lcgamboa]
+
+* Merge branch 'lcgamboa:master' into master. [dantop03]
+
+* Atualização arquivos Franzininho. [dantop03]
+
+* New board pic for Franzinino DIY. [dantop03]
+
+
+## v0.8.8 (2021-05-08)
+
+### New
+
 * New part 7 segment display with BCD-7S decoder. [lcgamboa]
 
 ### Changes
