@@ -273,7 +273,9 @@ CPWindow1::menu1_File_Exit_EvMenuActive(CControl * control)
 void
 CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
 {
- lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab_docs/PinViewer/"));
+ lxString stemp;
+ stemp.Printf (lxT ("https://lcgamboa.github.io/picsimlab_docs/%s/PinViewer.html"), lxT (_VERSION_));
+ lxLaunchDefaultBrowser (stemp);
 }
 
 void

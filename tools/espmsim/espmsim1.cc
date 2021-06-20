@@ -653,7 +653,9 @@ void
 CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
 {
 #ifdef EXT_BROWSER
- lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab_docs/espmsim/"));
+ lxString stemp;
+ stemp.Printf (lxT ("https://lcgamboa.github.io/picsimlab_docs/%s/Esp8266ModemSimulator.html"), lxT (_VERSION_));
+ lxLaunchDefaultBrowser (stemp);
 #else	
   Window2.html1.SetLoadFile(lxString(lxT(_SHARE_))+lxT("docs/espmsim/espmsim.html"));  
   Window2.Show();
