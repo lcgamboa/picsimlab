@@ -365,7 +365,7 @@ cboard_Breadboard::Draw(CDraw *draw)
        draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
        break;
       case O_MP:
-       font.SetPointSize ((MGetPinCount () >= 44) ? 5 : ((MGetPinCount () > 14) ? 12 : 10));
+       font.SetPointSize (((MGetPinCount () >= 44)||(MGetPinCount () <= 8) ) ? 6 : ((MGetPinCount () > 14) ? 12 : 10));
        draw->Canvas.SetFont (font);
 
        ps = micbmp->GetSize ();

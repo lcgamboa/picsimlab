@@ -60,25 +60,73 @@ CPWindow1::_EvOnDestroy(CControl * control)
 }
 
 int
-CPWindow1::PointInside(int i, int x, int y)
+CPWindow1::PointInside(int i, int x_, int y_)
 {
 
- int X = 185;
- int Y = i * 15 + 22;
+ int X = 0;
+ int Y = 0;
+ int x = 0;
+ int y = 0;
  int Width = 52;
  int Height = 8;
 
- if (((x >= X)&&(x <= (X + Width)))&&((y >= Y)&&(y <= (Y + Height))))
+ if (pincount <= 8)
+  {
+   x = 0;
+   y = i * 15 + 20;
+  }
+ else if (pincount <= 40)
+  {
+   if (i < pincount / 2)
+    {
+     x = 0;
+     y = i * 15 + 20;
+    }
+   else
+    {
+     x = 300;
+     y = (i - (pincount / 2)) * 15 + 20;
+    }
+  }
+ else //pincount > 40 
+  {
+   if (i < pincount / 4)
+    {
+     x = 0;
+     y = i * 15 + 20;
+    }
+   else if (i < pincount / 2)
+    {
+     x = 300;
+     y = (i - (pincount / 4)) * 15 + 20;
+    }
+   else if (i < pincount * 3 / 4)
+    {
+     x = 600;
+     y = (i - (pincount * 2 / 4)) * 15 + 20;
+    }
+   else
+    {
+     y = (i - (pincount * 3 / 4)) * 15 + 20;
+     x = 900;
+    }
+  }
+
+ //button offset 
+ X = 185 + x;
+ Y = y;
+
+ if (((x_ >= X)&&(x_ <= (X + Width)))&&((y_ >= Y)&&(y_ <= (Y + Height))))
   {
    return 1;
   }
 
- X = 98;
- Y = i * 15 + 22;
+ X = 98 + x;
+ Y = y;
  Width = 20;
  Height = 8;
 
- if (((x >= X)&&(x <= (X + Width)))&&((y >= Y)&&(y <= (Y + Height))))
+ if (((x_ >= X)&&(x_ <= (X + Width)))&&((y_ >= Y)&&(y_ <= (Y + Height))))
   {
    return 2;
   }
@@ -119,7 +167,38 @@ CPWindow1::draw1_EvMouseButtonPress(CControl * control, const uint button, const
      else if (pins[i].type == 'A')
       {
        lxString temp;
-       float val = (fx - offsetx - 185) / 10;
+       int x = 0;
+       if (pincount <= 40)
+        {
+         if (i < pincount / 2)
+          {
+           x = 0;
+          }
+         else
+          {
+           x = 300;
+          }
+        }
+       else //pincount > 40 
+        {
+         if (i < pincount / 4)
+          {
+           x = 0;
+          }
+         else if (i < pincount / 2)
+          {
+           x = 300;
+          }
+         else if (i < pincount * 3 / 4)
+          {
+           x = 600;
+          }
+         else
+          {
+           x = 900;
+          }
+        }
+       float val = (fx - offsetx - 185 - x) / 10;
        if (val > 5.0)val = 5.0;
        temp.Printf ("set apin[%02i] %f", i + 1, val);
        send_cmd (temp);
@@ -283,9 +362,22 @@ CPWindow1::timer1_EvOnTime(CControl * control)
      int y = GetY ();
      SetX (x); //update position
      SetY (y);
-     SetHeight (pincount * 15 + 130);
-     SetWidth (280);
 
+     if (pincount <= 8)
+      {
+       SetHeight (pincount * 15 + 130);
+       SetWidth (280);
+      }
+     else if (pincount <= 40)
+      {
+       SetHeight ((pincount / 2) * 15 + 130);
+       SetWidth (580);
+      }
+     else
+      {
+       SetHeight ((pincount / 4) * 15 + 130);
+       SetWidth (1170);
+      }
      scale = 1.0;
      offsetx = 0;
      offsety = 0;
@@ -295,9 +387,52 @@ CPWindow1::timer1_EvOnTime(CControl * control)
 
    while (pinsc)
     {
-     int y = i * 15 + 20;
+     int y = 0;
+     int x = 0;
      int mv;
      float av;
+
+     if (pincount <= 8)
+      {
+       x = 0;
+       y = i * 15 + 20;
+      }
+     else if (pincount <= 40)
+      {
+       if (i < pincount / 2)
+        {
+         x = 0;
+         y = i * 15 + 20;
+        }
+       else
+        {
+         x = 300;
+         y = (i - (pincount / 2)) * 15 + 20;
+        }
+      }
+     else //pincount > 40 
+      {
+       if (i < pincount / 4)
+        {
+         x = 0;
+         y = i * 15 + 20;
+        }
+       else if (i < pincount / 2)
+        {
+         x = 300;
+         y = (i - (pincount / 4)) * 15 + 20;
+        }
+       else if (i < pincount * 3 / 4)
+        {
+         x = 600;
+         y = (i - (pincount * 2 / 4)) * 15 + 20;
+        }
+       else
+        {
+         y = (i - (pincount * 3 / 4)) * 15 + 20;
+         x = 900;
+        }
+      }
 
      strtok (NULL, " \"\r\n");
      type = strtok (NULL, " \"\r\n");
@@ -316,7 +451,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
       case 'D':
        draw1.Canvas.SetFgColor (0, 0, 0);
        draw1.Canvas.SetBgColor (0, 0, 100);
-       draw1.Canvas.Rectangle (1, 8 + offsetx, y - 1 + offsety, 238, 14);
+       draw1.Canvas.Rectangle (1, 8 + offsetx + x, y - 1 + offsety, 238, 14);
        sprintf (line, "%2i %-8s %s %s %s ", i + 1, name, type, dir, dvalue);
 
        if (dir[0] == 'I')
@@ -327,7 +462,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
         {
          draw1.Canvas.SetColor (0x66, 0x65, 0x28);
         }
-       draw1.Canvas.Rectangle (1, 98 + offsetx, y + 1 + offsety, 142, 10);
+       draw1.Canvas.Rectangle (1, 98 + offsetx + x, y + 1 + offsety, 142, 10);
 
        if (dvalue[0] == '0')
         {
@@ -338,27 +473,27 @@ CPWindow1::timer1_EvOnTime(CControl * control)
         {
          draw1.Canvas.SetColor (0, 0, 200);
         }
-       draw1.Canvas.Rectangle (1, 134 + offsetx, y + 2 + offsety, 30, 8);
+       draw1.Canvas.Rectangle (1, 134 + offsetx + x, y + 2 + offsety, 30, 8);
 
        draw1.Canvas.SetFgColor (255, 255, 255);
-       draw1.Canvas.Text (line, 10 + offsetx, y - 1 + offsety);
+       draw1.Canvas.Text (line, 10 + offsetx + x, y - 1 + offsety);
 
        //togle and mean
        if (dir[0] == 'I')
         {
          draw1.Canvas.SetColor (200, 100, 30);
-         draw1.Canvas.Rectangle (1, 185 + offsetx, y + 2 + offsety, 52, 8);
+         draw1.Canvas.Rectangle (1, 185 + offsetx + x, y + 2 + offsety, 52, 8);
          draw1.Canvas.SetFgColor (255, 255, 255);
-         draw1.Canvas.Text ("Toggle", 187 + offsetx, y - 1 + offsety);
+         draw1.Canvas.Text ("Toggle", 187 + offsetx + x, y - 1 + offsety);
         }
        else
         {
 
          sscanf (mvalue, "%i", &mv);
          draw1.Canvas.SetColor (200, 200, 200);
-         draw1.Canvas.Rectangle (1, 185 + offsetx, y + 2 + offsety, 52, 8);
+         draw1.Canvas.Rectangle (1, 185 + offsetx + x, y + 2 + offsety, 52, 8);
          draw1.Canvas.SetColor (0, 0, 200);
-         draw1.Canvas.Rectangle (1, 186 + offsetx, y + 3 + offsety, mv / 4, 6);
+         draw1.Canvas.Rectangle (1, 186 + offsetx + x, y + 3 + offsety, mv / 4, 6);
         }
 
        break;
@@ -366,27 +501,27 @@ CPWindow1::timer1_EvOnTime(CControl * control)
        sprintf (line, "%2i %-8s %s %s %s", i + 1, name, type, dir, avalue);
        draw1.Canvas.SetFgColor (0, 0, 0);
        draw1.Canvas.SetBgColor (0, 100, 0);
-       draw1.Canvas.Rectangle (1, 8 + offsetx, y - 1 + offsety, 238, 14);
+       draw1.Canvas.Rectangle (1, 8 + offsetx + x, y - 1 + offsety, 238, 14);
        draw1.Canvas.SetFgColor (255, 255, 255);
-       draw1.Canvas.Text (line, 10 + offsetx, y - 1 + offsety);
+       draw1.Canvas.Text (line, 10 + offsetx + x, y - 1 + offsety);
 
        //draw gauge 
        sscanf (avalue, "%f", &av);
        mv = av * 10;
        draw1.Canvas.SetColor (200, 200, 200);
-       draw1.Canvas.Rectangle (1, 185 + offsetx, y + 2 + offsety, 52, 8);
+       draw1.Canvas.Rectangle (1, 185 + offsetx + x, y + 2 + offsety, 52, 8);
        draw1.Canvas.SetColor (255, 255, 0);
-       draw1.Canvas.Rectangle (1, 186 + offsetx, y + 3 + offsety, mv, 6);
+       draw1.Canvas.Rectangle (1, 186 + offsetx + x, y + 3 + offsety, mv, 6);
        pins[i].avalue = av;
        break;
 
       default:
        draw1.Canvas.SetFgColor (0, 0, 0);
        draw1.Canvas.SetBgColor (100, 100, 100);
-       draw1.Canvas.Rectangle (1, 8 + offsetx, y - 1 + offsety, 238, 14);
+       draw1.Canvas.Rectangle (1, 8 + offsetx + x, y - 1 + offsety, 238, 14);
        sprintf (line, "%2i %-8s %s", i + 1, name, type);
        draw1.Canvas.SetFgColor (255, 255, 255);
-       draw1.Canvas.Text (line, 10 + offsetx, y - 1 + offsety);
+       draw1.Canvas.Text (line, 10 + offsetx + x, y - 1 + offsety);
        break;
       }
 
