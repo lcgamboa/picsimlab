@@ -581,6 +581,9 @@ CPWindow5::LoadConfig(lxString fname)
      else
       {
        printf ("Erro loading part: %s \n", name);
+       lxString temp;
+       temp.Printf ("Spare parts:\nErro loading part: %s \n", name);
+       Window1.RegisterError (temp);
       }
     }
    partsc = partsc_;

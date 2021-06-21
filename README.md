@@ -36,6 +36,10 @@ in addition to the stable ones.
 
 [Changelog](./CHANGELOG.md)
 
+[PICSimLab on Twitter](https://twitter.com/PICSimLab)
+
+[PICSimLab on Discord](https://discord.com/invite/fMT8szFYq7)
+
 ### For developers
 
 [Development Documentation](https://lcgamboa.github.io/picsimlab_docs/devel/html/)
@@ -53,6 +57,14 @@ If you are on macOS you can run PICSimLab using Wine:
 - Download and install [`xquartz`](https://www.xquartz.org)
 - Download and install [Wine](https://dl.winehq.org/wine-builds/macosx/download.html)
 - Download the executable and double-click it to run the installer
+
+## Unstable last code version executables download 
+
+The binaries of last code available on github can be downloaded at: [Sourceforge.net](https://sourceforge.net/projects/picsim/files/latest%20code%20build%20%28unstable%29/)
+ 
+The unstable test version have the unreleased features of [Changelog_auto.md](./CHANGELOG_auto.md)
+
+If you need a specific binary that is not available please contact me. 
 
 ## Install from source
 

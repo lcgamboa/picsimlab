@@ -305,7 +305,7 @@ public:
     void SetClock(float clk);
     float GetClock(void);
     void EndSimulation(void);
-    
+    void RegisterError(const lxString error);
     void SetSync(unsigned char s){sync=s;};
     unsigned char GetSync(void){return sync;};
 #ifndef _NOTHREAD    
@@ -359,7 +359,7 @@ private:
     
     int need_resize;
     
-    unsigned int error;
+    lxStringList Errors;
     lxString pzw_ver;
     
     unsigned char sync;
@@ -378,8 +378,6 @@ enum {
 #define ST_T1 0x01
 #define ST_T2 0x02
 #define ST_TH 0x04
-
-#define ERR_VERSION 0x1
 
 #endif /*#CPWINDOW1*/
 

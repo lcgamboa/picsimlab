@@ -501,7 +501,7 @@ cpustate=CPU_RUNNING;
 
 tgo=0;
   
-error=0;
+Errors.Clear();
 
 need_resize=0;
 

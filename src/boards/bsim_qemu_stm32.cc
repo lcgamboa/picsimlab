@@ -209,8 +209,7 @@ bsim_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
 #endif  
   {
    printf ("picsimlab: qemu-stm32 not found! \n");
-   //FIXME show error message using picsimlab main window
-   //Message ("qemu-stm32 not found!");
+   Window1.RegisterError ("qemu-stm32 not found!");
    return -1;
   }
 
