@@ -300,6 +300,9 @@ CPWindow1::thread2_EvThreadRun(CControl*)
 void
 CPWindow1::timer2_EvOnTime(CControl * control)
 {
+ //avoid run again before terminate previous
+ if (status.st[0] & ST_T2)return;
+
  status.st[0] |= ST_T2;
  if (pboard != NULL)
   {
@@ -327,13 +330,14 @@ CPWindow1::timer2_EvOnTime(CControl * control)
 
  label2.SetText (lxString ().Format ("Spd: %3.2fx", 100.0 / timer1.GetTime ()));
 
- status.st[0] &= ~ST_T2;
 
- if(Errors.GetLinesCount ())
+ if (Errors.GetLinesCount ())
   {
    Message_sz (Errors.GetLine (0), 450, 200);
    Errors.DelLine (0);
   }
+
+ status.st[0] &= ~ST_T2;
 
 #ifdef CONVERTER_MODE
  if (cvt_fname.Length () > 3)
@@ -1895,7 +1899,7 @@ extern "C"
 }
 #endif
 
-void 
+void
 CPWindow1::RegisterError(const lxString error)
 {
  Errors.AddLine (error);
