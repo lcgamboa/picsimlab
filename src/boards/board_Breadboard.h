@@ -114,6 +114,7 @@ class cboard_Breadboard:public bsim_picsim, public bsim_simavr
       unsigned short get_in_id(char * name);
       //return the output ids numbers of names used in output map
       unsigned short get_out_id(char * name);
+      void EndServers(void);
 };
 
 #endif	/* BOARD_Breadboard_H */

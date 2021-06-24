@@ -210,9 +210,12 @@ mplabxd_init(board * mboard, unsigned short tcpport)
      printf ("mplabxd: listen error : %s \n", strerror (errno));
      return 1;
     }
+   setnblock (listenfd);
    server_started = 1;
+  }
 
-
+ if (!ramsend)
+  {
    ramsend = (unsigned char*) malloc (dbg_board->DBGGetRAMSize ());
    ramreceived = (unsigned char*) malloc (dbg_board->DBGGetRAMSize ());
   }
@@ -230,15 +233,10 @@ mplabxd_start(void)
 #endif
  clilen = sizeof (cli);
 
- setnblock (listenfd);
-
- if (
-     (sockfd =
-      accept (listenfd, (sockaddr *) & cli, & clilen)) < 0)
+ if ((sockfd = accept (listenfd, (sockaddr *) & cli, & clilen)) < 0)
   {
    return 1;
   }
-
 
  setnblock (sockfd);
  dprint ("Debug connected!---------------------------------\n");
@@ -261,20 +259,30 @@ void
 mplabxd_end(void)
 {
 
- if (server_started)
+ mplabxd_stop ();
+ if (ramsend)
   {
-   mplabxd_stop ();
-   dprint ("mplabxd_end\n");
-   shutdown (listenfd, SHUT_RDWR);
-   close (listenfd);
    free (ramsend);
    free (ramreceived);
+   ramsend = NULL;
+   ramreceived = NULL;
+   dbg_board = NULL;
+  }
+}
+
+void
+mplabxd_server_end(void)
+{
+
+ if (server_started)
+  {
+   dprint ("mplabxd: server end\n");
+   shutdown (listenfd, SHUT_RDWR);
+   close (listenfd);
   }
  listenfd = -1;
  server_started = 0;
- dbg_board = NULL;
 }
-
 
 static int bpc = 0;
 static unsigned int bp[100];

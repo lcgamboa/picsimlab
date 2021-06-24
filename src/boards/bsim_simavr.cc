@@ -1280,6 +1280,11 @@ bsim_simavr::DBGGetEEPROM_Size(void)
  return avr->e2end + 1;
 }
 
+void
+bsim_simavr::EndServers(void)
+{
+ mplabxd_server_end ();
+}
 
 //hexfile support ============================================================
 

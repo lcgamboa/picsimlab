@@ -1121,5 +1121,11 @@ cboard_Breadboard::SetScale(double scale)
 
 }
 
+void
+cboard_Breadboard::EndServers(void)
+{
+ mplabxd_server_end ();
+}
+
 board_init(BOARD_Breadboard_Name, cboard_Breadboard);
 

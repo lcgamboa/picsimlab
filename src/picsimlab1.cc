@@ -864,9 +864,7 @@ void
 CPWindow1::_EvOnDestroy(CControl * control)
 {
  rcontrol_server_end ();
-
  pboard->EndServers ();
-
  EndSimulation ();
 }
 

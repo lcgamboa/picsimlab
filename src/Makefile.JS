@@ -17,8 +17,8 @@ execdir= ${prefix}/bin/
 override CXXFLAGS+= -D_ARCH_=\"Javascript\" -D_DATE_=\"${DATE}\"
 override CXXFLAGS+= -Os
 #override CXXFLAGS+= -g4 --source-map-base -Werror
-override CXXFLAGS+=  -DEXT_BROWSER -DNO_DEBUG -DNO_TOOLS -s DEMANGLE_SUPPORT=0 \
-        -s SAFE_HEAP=0 -s ASSERTIONS=0 -s TOTAL_MEMORY=128MB -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_GFX=2\
+override CXXFLAGS+=  -DEXT_BROWSER -DNO_DEBUG -DNO_TOOLS \
+        -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_GFX=2\
 	-s SDL2_IMAGE_FORMATS='["png","bmp"]' -s USE_SDL_TTF=2 --preload-file assets --preload-file home \
 	-D_VERSION_=\"${VERSION}\" -Wall -D_SHARE_=\"/assets/share/\" -I../../LXRAD_SDL2/include/ \
 	-I../../picsim/include/  -I../../ucsim-0.6/picsimlab/\
@@ -28,9 +28,10 @@ override CXXFLAGS+=  -DEXT_BROWSER -DNO_DEBUG -DNO_TOOLS -s DEMANGLE_SUPPORT=0 \
 
 override CXXFLAGS+= --pre-js load.js
 #	-s "BINARYEN_TRAP_MODE='clamp'" 
-override CXXFLAGS+= -s EXPORTED_FUNCTIONS='["_main","_file_ready","_lxrad_scale_up","_lxrad_scale_down"]' \
-	 -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' 
 
+LINK= -s DEMANGLE_SUPPORT=0  -s SAFE_HEAP=0 -s ASSERTIONS=0 -s TOTAL_MEMORY=128MB \
+      -s EXPORTED_FUNCTIONS='["_main","_file_ready","_lxrad_scale_up","_lxrad_scale_down","_dirt_load"]' \
+      -s EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' 
 
 #CXXFLAGS+=-s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 
 #CXXFLAGS+=--emrun
@@ -49,8 +50,8 @@ LIBS+= ../../lunasvg/buildjs/liblunasvg.a
 
 all: $(OBJS)
 	@echo "Linking picsimlab"
-	@$(CXX) $(CXXFLAGS) -s WASM=1 $(OBJS) -o picsimlab.html $(LIBS)  --shell-file template.html 
-	@$(CXX) $(CXXFLAGS) -s WASM=0 $(OBJS) -o picsimlab_asmjs.html $(LIBS)  --shell-file template_asmjs.html 
+	@$(CXX) $(CXXFLAGS) $(LINK) -s WASM=1 $(OBJS) -o picsimlab.html $(LIBS)  --shell-file template.html 
+	@$(CXX) $(CXXFLAGS) $(LINK) -s WASM=0 $(OBJS) -o picsimlab_asmjs.html $(LIBS)  --shell-file template_asmjs.html 
 
 %.o: %.cc
 	@echo "Compiling $<"

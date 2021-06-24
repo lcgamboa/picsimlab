@@ -108,8 +108,8 @@ rcontrol_init(unsigned short tcpport)
      printf ("rcontrol: listen error : %s \n", strerror (errno));
      return 1;
     }
+   setnblock (listenfd);
    server_started = 1;
-
   }
  return 0;
 }
@@ -139,15 +139,10 @@ rcontrol_start(void)
 #endif
  clilen = sizeof (cli);
 
- setnblock (listenfd);
-
- if (
-     (sockfd =
-      accept (listenfd, (sockaddr *) & cli, & clilen)) < 0)
+ if ((sockfd = accept (listenfd, (sockaddr *) & cli, & clilen)) < 0)
   {
    return 1;
   }
-
 
  setnblock (sockfd);
  dprint ("rcontrol: Client connected!---------------------------------\n");
@@ -156,7 +151,6 @@ rcontrol_start(void)
  bp = 0;
 
  return sendtext ("\r\nPICSimLab Remote Control Interface\r\n\r\n  Type help to see supported commands\r\n\r\n>");
-
 }
 
 void

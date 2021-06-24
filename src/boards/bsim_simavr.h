@@ -84,7 +84,8 @@ class bsim_simavr: virtual public board
       unsigned int DBGGetCONFIGSize(void);
       unsigned int DBGGetIDSize(void);
       unsigned int DBGGetEEPROM_Size(void);
-      
+      void EndServers(void);
+            
       static void out_hook( struct avr_irq_t* irq, uint32_t value, void* param )
       {      
          picpin * p  = (picpin *)param;

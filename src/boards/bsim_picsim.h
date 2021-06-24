@@ -70,7 +70,7 @@ class bsim_picsim: virtual public board
       unsigned int DBGGetCONFIGSize(void);
       unsigned int DBGGetIDSize(void);
       unsigned int DBGGetEEPROM_Size(void);
-      
+      void EndServers(void);
  protected:
       _pic pic;
 

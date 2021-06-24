@@ -350,3 +350,9 @@ bsim_picsim::DBGGetEEPROM_Size(void)
 {
  return pic.EEPROMSIZE;
 }
+
+void
+bsim_picsim::EndServers(void)
+{
+ mplabxd_server_end ();
+}
