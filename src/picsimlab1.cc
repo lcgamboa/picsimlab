@@ -255,6 +255,8 @@ CPWindow1::thread1_EvThreadRun(CControl*)
      status.st[1] &= ~ST_TH;
 #if defined(TDEBUG) || defined(_NOTHREAD)       
      t1 = cpuTime ();
+#endif     
+#if defined(_NOTHREAD)     
      if ((t1 - t0) / (Window1.timer1.GetTime ()*1e-5) > 110)
       {
        tgo++;
@@ -263,12 +265,12 @@ CPWindow1::thread1_EvThreadRun(CControl*)
       {
        tgo = 0;
       }
+#endif     
 #ifdef TDEBUG      
      printf ("PTime= %lf  tgo= %2i  zeroc= %2i  Timer= %3u Perc.= %4.1lf\n",
              t1 - t0, tgo, zerocount, Window1.timer1.GetTime (),
              (t1 - t0) / (Window1.timer1.GetTime ()*1e-5));
 #endif
-#endif     
     }
    else
     {
