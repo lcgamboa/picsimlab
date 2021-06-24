@@ -12,17 +12,17 @@ For code editing and debugging the same tools used for a real board should be us
 PICSimLab supports several devices (spare parts) that can be connected to the boards for simulation. 
 As for example LEDs and push buttons for simple outputs and inputs and some more complex ones like the ethernet 
 shield w5500 for internet connection or the color graphic display ili9340 with touchscreen. 
-The the complete list of parts can be accessed in the [documentation](https://lcgamboa.github.io/picsimlab_docs/0.8.9/Spare_Parts.html). 
+The the complete list of parts can be accessed in the [documentation](https://lcgamboa.github.io/picsimlab_docs/0.8.9/SpareParts.html). 
 
-The [experimental version boards](https://lcgamboa.github.io/picsimlab_docs/0.8.9/Experimental_Boards.html) supports 
+The [experimental version boards](https://lcgamboa.github.io/picsimlab_docs/0.8.9/ExperimentalBoards.html) supports 
 [uCsim](http://mazsola.iit.uni-miskolc.hu/~drdani/embedded/ucsim/), 
 [gpsim](http://gpsim.sourceforge.net/) and [qemu-stm32](http://beckus.github.io/qemu_stm32/) simulators
 in addition to the stable ones.
 
 
-![PICsimLab](https://raw.githubusercontent.com/lcgamboa/picsimlab_docs/0.8.9/main/screenshot.png "PICsimLab")
+![PICsimLab](https://raw.githubusercontent.com/lcgamboa/picsimlab_docs/main/0.8.9/img/screenshot.png "PICsimLab")
 
-![PICsimLab](https://raw.githubusercontent.com/lcgamboa/picsimlab_docs/0.8.9/main/picsimlab4.png "PICsimLab")
+![PICsimLab](https://raw.githubusercontent.com/lcgamboa/picsimlab_docs/main/0.8.9/img/picsimlab4.png "PICsimLab")
 
 ## More info
 
