@@ -29,7 +29,7 @@
 #include<lxrad.h>
 #include"part.h"
 
-#define	PART_LM35_Name "LM35"
+#define	PART_LM35_Name "LM35 (Temperature)"
 
 class cpart_lm35:public part
 {
