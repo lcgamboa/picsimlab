@@ -2,6 +2,12 @@
 
 ### New
 
+* New part Fixed Voltage. [lcgamboa]
+
+* New part SHT3X temperature and humidity sensor. [lcgamboa]
+
+* New part FM50 temperature sensor. [lcgamboa]
+
 * New part LM35 temperature sensor. [lcgamboa]
 
 * Support to dump Flash memory in rcontrol interface. [lcgamboa]
