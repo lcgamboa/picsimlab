@@ -122,6 +122,10 @@ cpuTime()
 void
 CPWindow1::timer1_EvOnTime(CControl * control)
 {
+
+ //avoid run again before terminate previous
+ if (status.st[0] & (ST_T1 | ST_DI))return;
+
  sync = 1;
  status.st[0] |= ST_T1;
 
@@ -303,7 +307,7 @@ void
 CPWindow1::timer2_EvOnTime(CControl * control)
 {
  //avoid run again before terminate previous
- if (status.st[0] & ST_T2)return;
+ if (status.st[0] & (ST_T2 | ST_DI))return;
 
  status.st[0] |= ST_T2;
  if (pboard != NULL)
@@ -1141,15 +1145,17 @@ CPWindow1::menu1_File_Configure_EvMenuActive(CControl * control)
  Window3.ShowExclusive ();
 }
 
-void
+int
 CPWindow1::LoadHexFile(lxString fname)
 {
  int pa;
+ int ret = 0;
 
  pa = mcupwr;
  mcupwr = 0;
 
- timer1.SetRunState (0);
+ //timer1.SetRunState (0);
+ status.st[0] |= ST_DI;
  msleep (100);
  while (status.status & 0x41)
   {
@@ -1163,11 +1169,11 @@ CPWindow1::LoadHexFile(lxString fname)
  switch (pboard->MInit (pboard->GetProcessorName (), fname.char_str (), NSTEP * NSTEPKF))
   {
   case HEX_NFOUND:
-   Message (lxT ("File not found!"));
+   RegisterError (lxT ("Hex file not found!"));
    mcurun = 0;
    break;
   case HEX_CHKSUM:
-   Message (lxT ("File checksum error!"));
+   RegisterError (lxT ("Hex file checksum error!"));
    pboard->MEraseFlash ();
    mcurun = 0;
    break;
@@ -1184,9 +1190,11 @@ CPWindow1::LoadHexFile(lxString fname)
  else
   SetTitle (lxT ("PICSimLab - ") + lxString (boards_list[lab].name) + lxT (" - ") + pboard->GetProcessorName ());
 
+ ret = !mcurun;
 
  mcupwr = pa;
- timer1.SetRunState (1);
+ //timer1.SetRunState (1);
+ status.st[0] &= ~ST_DI;
 
 #ifdef NO_DEBUG
  statusbar1.SetField (1, lxT (" "));
@@ -1208,6 +1216,8 @@ CPWindow1::LoadHexFile(lxString fname)
    statusbar1.SetField (1, lxT ("Debug: Off"));
   }
 #endif
+
+ return ret;
 }
 
 void

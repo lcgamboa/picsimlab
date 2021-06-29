@@ -183,26 +183,29 @@ cboard_Breadboard::RefreshStatus(void)
     Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                  lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
-   switch (avr->state)
+   if (avr)
     {
-    case cpu_Limbo: Window1.SetCpuState (CPU_ERROR);
-     break;
-    case cpu_Stopped: Window1.SetCpuState (CPU_HALTED);
-     break;
-    case cpu_Running: Window1.SetCpuState (CPU_RUNNING);
-     break;
-    case cpu_Sleeping: Window1.SetCpuState (CPU_HALTED);
-     break;
-    case cpu_Step: Window1.SetCpuState (CPU_STEPPING);
-     break;
-    case cpu_StepDone: Window1.SetCpuState (CPU_STEPPING);
-     break;
-    case cpu_Done: Window1.SetCpuState (CPU_HALTED);
-     break;
-    case cpu_Crashed: Window1.SetCpuState (CPU_ERROR);
+     switch (avr->state)
+      {
+      case cpu_Limbo: Window1.SetCpuState (CPU_ERROR);
+       break;
+      case cpu_Stopped: Window1.SetCpuState (CPU_HALTED);
+       break;
+      case cpu_Running: Window1.SetCpuState (CPU_RUNNING);
+       break;
+      case cpu_Sleeping: Window1.SetCpuState (CPU_HALTED);
+       break;
+      case cpu_Step: Window1.SetCpuState (CPU_STEPPING);
+       break;
+      case cpu_StepDone: Window1.SetCpuState (CPU_STEPPING);
+       break;
+      case cpu_Done: Window1.SetCpuState (CPU_HALTED);
+       break;
+      case cpu_Crashed: Window1.SetCpuState (CPU_ERROR);
+       break;
+      }
      break;
     }
-   break;
   }
 
 }
@@ -365,7 +368,7 @@ cboard_Breadboard::Draw(CDraw *draw)
        draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
        break;
       case O_MP:
-       font.SetPointSize (((MGetPinCount () >= 44)||(MGetPinCount () <= 8) ) ? 6 : ((MGetPinCount () > 14) ? 12 : 10));
+       font.SetPointSize (((MGetPinCount () >= 44) || (MGetPinCount () <= 8)) ? 6 : ((MGetPinCount () > 14) ? 12 : 10));
        draw->Canvas.SetFont (font);
 
        ps = micbmp->GetSize ();

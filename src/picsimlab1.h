@@ -301,7 +301,7 @@ public:
     void menu1_EvMicrocontroller(CControl * control);
     void LoadWorkspace(lxString fnpzw);
     void SaveWorkspace(lxString fnpzw);
-    void LoadHexFile(lxString fname);
+    int LoadHexFile(lxString fname);
     void SetClock(float clk);
     float GetClock(void);
     void EndSimulation(void);
@@ -378,6 +378,7 @@ enum {
 #define ST_T1 0x01
 #define ST_T2 0x02
 #define ST_TH 0x04
+#define ST_DI 0x80 //DISABLE
 
 #endif /*#CPWINDOW1*/
 

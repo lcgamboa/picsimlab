@@ -399,7 +399,7 @@ rcontrol_loop(void)
 
    if (strchr (buffer, '\n'))
     {
-     char cmd[100];
+     char cmd[BSIZE];
      int cmdsize = 0;
 
      while (buffer[cmdsize] != '\n')
@@ -841,6 +841,7 @@ rcontrol_loop(void)
          ret += sendtext ("  get ob       - get object value\r\n");
          ret += sendtext ("  help         - show this message\r\n");
          ret += sendtext ("  info         - show actual setup info and objects\r\n");
+         ret += sendtext ("  loadhex file - load hex file (use full path)\r\n");
          ret += sendtext ("  pins         - show pins directions and values\r\n");
          ret += sendtext ("  pinsl        - show pins formated info\r\n");
          ret += sendtext ("  quit         - exit remote control interface\r\n");
@@ -919,6 +920,33 @@ rcontrol_loop(void)
             }
           }
          ret += sendtext ("Ok\r\n>");
+        }
+       else
+        {
+         ret = sendtext ("ERROR\r\n>");
+        }
+       break;
+      case 'l':
+       if (!strncmp (cmd, "loadhex", 7))
+        {
+         //Command loadhex ========================================================
+         char * ptr;
+         if ((ptr = strchr (cmd, '\r')))
+          {
+           ptr[0] = 0;
+          }
+         if ((ptr = strchr (cmd, '\n')))
+          {
+           ptr[0] = 0;
+          }
+         if (Window1.LoadHexFile (cmd + 8))
+          {
+           ret += sendtext ("ERROR\r\n>");
+          }
+         else
+          {
+           ret += sendtext ("Ok\r\n>");
+          }
         }
        else
         {

@@ -352,25 +352,27 @@ cboard_Franzininho::RefreshStatus(void)
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
-
- switch (avr->state)
+ if (avr)
   {
-  case cpu_Limbo: Window1.SetCpuState (CPU_ERROR);
-   break;
-  case cpu_Stopped: Window1.SetCpuState (CPU_HALTED);
-   break;
-  case cpu_Running: Window1.SetCpuState (CPU_RUNNING);
-   break;
-  case cpu_Sleeping: Window1.SetCpuState (CPU_HALTED);
-   break;
-  case cpu_Step: Window1.SetCpuState (CPU_STEPPING);
-   break;
-  case cpu_StepDone: Window1.SetCpuState (CPU_STEPPING);
-   break;
-  case cpu_Done: Window1.SetCpuState (CPU_HALTED);
-   break;
-  case cpu_Crashed: Window1.SetCpuState (CPU_ERROR);
-   break;
+   switch (avr->state)
+    {
+    case cpu_Limbo: Window1.SetCpuState (CPU_ERROR);
+     break;
+    case cpu_Stopped: Window1.SetCpuState (CPU_HALTED);
+     break;
+    case cpu_Running: Window1.SetCpuState (CPU_RUNNING);
+     break;
+    case cpu_Sleeping: Window1.SetCpuState (CPU_HALTED);
+     break;
+    case cpu_Step: Window1.SetCpuState (CPU_STEPPING);
+     break;
+    case cpu_StepDone: Window1.SetCpuState (CPU_STEPPING);
+     break;
+    case cpu_Done: Window1.SetCpuState (CPU_HALTED);
+     break;
+    case cpu_Crashed: Window1.SetCpuState (CPU_ERROR);
+     break;
+    }
   }
 }
 

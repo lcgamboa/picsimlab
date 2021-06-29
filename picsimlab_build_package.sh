@@ -21,6 +21,7 @@ tar xvfz ../picsimlab-${VERSION}.tar.gz
 mv src/Makefile.static src/Makefile
 mv tools/srtank/Makefile.static tools/srtank/Makefile
 mv tools/espmsim/Makefile.static tools/espmsim/Makefile
+mv tools/PinViewer/Makefile.static tools/PinViewer/Makefile
 if [[ -n "$1" ]]; then
 PWD=`pwd`	
 echo -e "\noverride_dh_auto_build:\n\tmake -j4 $1\n\n" >> debian/rules
