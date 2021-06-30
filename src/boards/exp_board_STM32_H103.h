@@ -23,36 +23,37 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_gpboard_H
-#define	BOARD_gpboard_H
+#ifndef BOARD_STM32_H103_H
+#define	BOARD_STM32_H103_H
 
 #include<lxrad.h>
 
-#include "bsim_gpsim.h"
+#include "exp_bsim_qemu_stm32.h"
 
-#define	BOARD_gpboard_Name "gpboard"
+#define	BOARD_STM32_H103_Name "STM32 H103"
 
 //new board class must be derived from board class defined in board.h
-class cboard_gpboard:public bsim_gpsim
+class cboard_STM32_H103:public bsim_qemu_stm32
 {
    private:
-       lxBitmap * micbmp;   
-       lxFont font;
+     unsigned char p_BUT;
+
+     void RegisterRemoteControl(void);        
    public:
-      void SetScale (double scale);
       //Return the board name
-      lxString GetName(void) {return lxT(BOARD_gpboard_Name); };
-      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
+      lxString GetName(void) {return lxT(BOARD_STM32_H103_Name); };
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       //Constructor called once on board creation 
-      cboard_gpboard(void);
+      cboard_STM32_H103(void);
       //Destructor called once on board destruction 
-      ~cboard_gpboard(void); 
+      ~cboard_STM32_H103(void); 
       //Called ever 100ms to draw board
       void Draw(CDraw *draw);
       void Run_CPU(void);
-      int MInit(const char * processor, const char * fname, float freq);
       //Return a list of board supported microcontrollers
-      lxString GetSupportedDevices(void){return supported_devices;};
+      lxString GetSupportedDevices(void){return lxT("stm32f103rbt6,");};
+      //Return the filename of board picture 
+      lxString GetPictureFileName(void){return lxT("STM32 H103/board.png");};
       //Reset board status
       void Reset(void);
       //Event on the board
@@ -75,6 +76,5 @@ class cboard_gpboard:public bsim_gpsim
       unsigned short get_out_id(char * name);
 };
 
-
-#endif	/* BOARD_gpboard_H */
+#endif	/* BOARD_STM32_H103_H */
 

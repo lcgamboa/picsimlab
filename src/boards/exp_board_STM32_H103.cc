@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2015-2020  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -24,15 +24,10 @@
    ######################################################################## */
 
 //include files
-
 #include"../picsimlab1.h"
 #include"../picsimlab4.h" //Oscilloscope
 #include"../picsimlab5.h" //Spare Parts
-#include"board_uCboard.h"
-
-#ifndef _WIN_
-#define INVALID_HANDLE_VALUE -1;
-#endif
+#include"exp_board_STM32_H103.h"
 
 /* ids of inputs of input map*/
 enum
@@ -40,24 +35,26 @@ enum
  I_ICSP, //ICSP connector
  I_PWR, //Power button
  I_RST, //Reset button
+ I_BUT, //User button
 };
 
 /* ids of outputs of output map*/
 enum
 {
  O_LPWR, //Power LED
- O_MP, // uController name
+ O_LED, //LED on PC13 output
+ O_BUT, //User button
  O_RST //Reset button
 };
-
 //return the input ids numbers of names used in input map
 
 unsigned short
-cboard_uCboard::get_in_id(char * name)
+cboard_STM32_H103::get_in_id(char * name)
 {
  if (strcmp (name, "PG_ICSP") == 0)return I_ICSP;
  if (strcmp (name, "SW_PWR") == 0)return I_PWR;
  if (strcmp (name, "PB_RST") == 0)return I_RST;
+ if (strcmp (name, "PB_BUT") == 0)return I_BUT;
 
  printf ("Error input '%s' don't have a valid id! \n", name);
  return -1;
@@ -66,11 +63,12 @@ cboard_uCboard::get_in_id(char * name)
 //return the output ids numbers of names used in output map
 
 unsigned short
-cboard_uCboard::get_out_id(char * name)
+cboard_STM32_H103::get_out_id(char * name)
 {
 
- if (strcmp (name, "IC_CPU") == 0)return O_MP;
+ if (strcmp (name, "LD_LED") == 0)return O_LED;
  if (strcmp (name, "LD_LPWR") == 0)return O_LPWR;
+ if (strcmp (name, "PB_BUT") == 0)return O_BUT;
  if (strcmp (name, "PB_RST") == 0)return O_RST;
 
  printf ("Error output '%s' don't have a valid id! \n", name);
@@ -79,72 +77,91 @@ cboard_uCboard::get_out_id(char * name)
 
 //Constructor called once on board creation 
 
-cboard_uCboard::cboard_uCboard(void) :
-font (10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
+cboard_STM32_H103::cboard_STM32_H103(void)
 {
- Proc = "C51"; //default microcontroller if none defined in preferences
+ Proc = "stm32f103rbt6"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
- lxImage image (&Window1);
- image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.svg"), 0, Scale, Scale,1);
- micbmp = new lxBitmap (&image, &Window1);
-#
- serialfd = INVALID_HANDLE_VALUE;
+ p_BUT = 0;
 }
 
 //Destructor called once on board destruction 
 
-cboard_uCboard::~cboard_uCboard(void)
-{
- delete micbmp;
- micbmp = NULL;
-}
+cboard_STM32_H103::~cboard_STM32_H103(void) { }
 
 //Reset board status
 
 void
-cboard_uCboard::Reset(void)
+cboard_STM32_H103::Reset(void)
 {
+ p_BUT = 0;
+
  MReset (1);
 
  Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE));
 
  if (use_spare)Window5.Reset ();
+
+ RegisterRemoteControl ();
 }
+
+void
+cboard_STM32_H103::RegisterRemoteControl(void)
+{
+ for (int i = 0; i < inputc; i++)
+  {
+   switch (input[i].id)
+    {
+    case I_BUT:
+     input[i].status = &p_BUT;
+     break;
+    }
+  }
+
+ for (int i = 0; i < outputc; i++)
+  {
+   switch (output[i].id)
+    {
+    case O_LED:
+     output[i].status = &pins[52].oavalue;
+     break;
+    }
+  }
+}
+
 
 //Called ever 1s to refresh status
 
 void
-cboard_uCboard::RefreshStatus(void)
+cboard_STM32_H103::RefreshStatus(void)
 {
 
  Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE));
-
 }
 
 //Called to save board preferences in configuration file
 
 void
-cboard_uCboard::WritePreferences(void)
+cboard_STM32_H103::WritePreferences(void)
 {
  //write selected microcontroller of board_x to preferences
- Window1.saveprefs (lxT ("uCboard_proc"), Proc);
+ Window1.saveprefs (lxT ("STM32_H103_proc"), Proc);
  //write microcontroller clock to preferences
- Window1.saveprefs (lxT ("uCboard_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
+ Window1.saveprefs (lxT ("STM32_H103_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
 }
 
 //Called whe configuration file load  preferences 
 
 void
-cboard_uCboard::ReadPreferences(char *name, char *value)
+cboard_STM32_H103::ReadPreferences(char *name, char *value)
 {
 
  //read microcontroller of preferences
- if (!strcmp (name, "uCboard_proc"))
+ if (!strcmp (name, "STM32_H103_proc"))
   {
    Proc = value;
   }
  //read microcontroller clock
- if (!strcmp (name, "uCboard_clock"))
+ if (!strcmp (name, "STM32_H103_clock"))
   {
    Window1.SetClock (atof (value));
   }
@@ -154,17 +171,17 @@ cboard_uCboard::ReadPreferences(char *name, char *value)
 //Event on the board
 
 void
-cboard_uCboard::EvKeyPress(uint key, uint mask) { }
+cboard_STM32_H103::EvKeyPress(uint key, uint mask) { }
 
 //Event on the board
 
 void
-cboard_uCboard::EvKeyRelease(uint key, uint mask) { }
+cboard_STM32_H103::EvKeyRelease(uint key, uint mask) { }
 
 //Event on the board
 
 void
-cboard_uCboard::EvMouseButtonPress(uint button, uint x, uint y, uint state)
+cboard_STM32_H103::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
 
  int i;
@@ -211,6 +228,9 @@ cboard_uCboard::EvMouseButtonPress(uint button, uint x, uint y, uint state)
        MReset (-1);
        p_RST = 0;
        break;
+      case I_BUT:
+       p_BUT = 1;
+       break;
       }
     }
   }
@@ -220,7 +240,7 @@ cboard_uCboard::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 //Event on the board
 
 void
-cboard_uCboard::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
+cboard_STM32_H103::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 {
  int i;
 
@@ -247,6 +267,9 @@ cboard_uCboard::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
         }
        p_RST = 1;
        break;
+      case I_BUT:
+       p_BUT = 0;
+       break;
       }
     }
   }
@@ -258,14 +281,10 @@ cboard_uCboard::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 //This is the critical code for simulator running speed
 
 void
-cboard_uCboard::Draw(CDraw *draw)
+cboard_STM32_H103::Draw(CDraw *draw)
 {
  int i;
- lxRect rec;
- lxSize ps;
 
- font.SetPointSize ((MGetPinCount () >= 100) ? 9 : ((MGetPinCount () > 14) ? 12 : 10));
-            
  draw->Canvas.Init (Scale, Scale); //initialize draw context
 
  //board_x draw 
@@ -278,29 +297,32 @@ cboard_uCboard::Draw(CDraw *draw)
 
      switch (output[i].id)//search for color of output
       {
+      case O_LED: //White using pc12 mean value 
+       draw->Canvas.SetColor (0, pins[52].oavalue, 0);
+       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
+       break;
       case O_LPWR: //Blue using mcupwr value
        draw->Canvas.SetColor (200 * Window1.Get_mcupwr () + 55, 0, 0);
        draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
        break;
-      case O_MP:
-
-       draw->Canvas.SetFont (font);
-
-       ps = micbmp->GetSize ();
-       draw->Canvas.ChangeScale (1.0, 1.0);
-       draw->Canvas.PutBitmap (micbmp, output[i].x1*Scale, output[i].y1 * Scale);
-       draw->Canvas.ChangeScale (Scale, Scale);
-       draw->Canvas.SetFgColor (230, 230, 230);
-
-       rec.x = output[i].x1;
-       rec.y = output[i].y1;
-       rec.width = ps.GetWidth () / Scale;
-       rec.height = ps.GetHeight () / Scale;
-       draw->Canvas.TextOnRect (Proc, rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
+      case O_BUT:
+       draw->Canvas.SetColor (100, 100, 100);
+       draw->Canvas.Rectangle (1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1, output[i].y2 - output[i].y1 - 1);
+       if (p_BUT)
+        {
+         draw->Canvas.SetColor (55, 55, 55);
+        }
+       else
+        {
+         draw->Canvas.SetColor (15, 15, 15);
+        }
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
        break;
       case O_RST:
        draw->Canvas.SetColor (100, 100, 100);
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
+       draw->Canvas.Rectangle (1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1, output[i].y2 - output[i].y1 - 1);
        if (p_RST)
         {
          draw->Canvas.SetColor (15, 15, 15);
@@ -309,9 +331,10 @@ cboard_uCboard::Draw(CDraw *draw)
         {
          draw->Canvas.SetColor (55, 55, 55);
         }
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
+       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
        break;
       }
+
     }
 
   }
@@ -323,7 +346,7 @@ cboard_uCboard::Draw(CDraw *draw)
 }
 
 void
-cboard_uCboard::Run_CPU(void)
+cboard_STM32_H103::Run_CPU(void)
 {
  int i;
  int j;
@@ -347,11 +370,12 @@ cboard_uCboard::Run_CPU(void)
   for (i = 0; i < Window1.GetNSTEP (); i++) //repeat for number of steps in 100ms
    {
 
-    /*
+
     if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
      {
+      MSetPin (14, p_BUT);
      }
-     */
+
     //verify if a breakpoint is reached if not run one instruction 
     MStep ();
     //Oscilloscope window process
@@ -381,58 +405,6 @@ cboard_uCboard::Run_CPU(void)
 
 }
 
-int
-cboard_uCboard::MInit(const char * processor, const char * fname, float freq)
-{
-
- int ret = bsim_ucsim::MInit (processor, fname, freq);
-
- if (ret == -1)
-  {
-   printf ("PICSimLab: Unknown processor %s, loading default !\n", processor);
-   bsim_ucsim::MInit ("C51", fname, freq);
-   Proc = "C51";
-  }
-
- lxImage image (&Window1);
-
- if (!image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg"), 0, Scale, Scale,1))
-  {
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic6.svg"), 0, Scale, Scale,1);
-   printf ("picsimlab: IC package with %i pins not found!\n", MGetPinCount ());
-   printf ("picsimlab: %s not found!\n", (const char *) (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg")).c_str ());
-  }
-
- if (micbmp) delete micbmp;
- micbmp = new lxBitmap (&image, &Window1);
-
-
- return ret;
-}
-
-void
-cboard_uCboard::SetScale(double scale)
-{
-
- if (Scale == scale)return;
-
- Scale = scale;
-
-
- lxImage image (&Window1);
-
- if (!image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg"), 0, Scale, Scale,1))
-  {
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic6.svg"), 0, Scale, Scale,1);
-   printf ("picsimlab: IC package with %i pins not found!\n", MGetPinCount ());
-   printf ("picsimlab: %s not found!\n", (const char *) (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg")).c_str ());
-  }
-
- if (micbmp) delete micbmp;
- micbmp = new lxBitmap (&image, &Window1);
-
-}
-
 //Register the board in PICSimLab
-board_init(BOARD_uCboard_Name, cboard_uCboard);
+board_init(BOARD_STM32_H103_Name, cboard_STM32_H103);
 

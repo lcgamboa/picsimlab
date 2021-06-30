@@ -24,9 +24,9 @@
    ######################################################################## */
 
 
-#include "bridge_gpsim.h"
+#include "exp_bridge_gpsim.h"
 
-#include "bsim_gpsim.h"
+#include "exp_bsim_gpsim.h"
 #include"../picsimlab1.h"
 
 

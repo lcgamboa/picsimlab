@@ -26,7 +26,7 @@
 
 #include <ucsim/ucsimlib.h>
 
-#include "bsim_ucsim.h"
+#include "exp_bsim_ucsim.h"
 #include"../picsimlab1.h"
 
 #define PID_C51      0

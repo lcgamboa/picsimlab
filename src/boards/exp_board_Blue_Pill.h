@@ -23,36 +23,35 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_uCboard_H
-#define	BOARD_uCboard_H
+#ifndef BOARD_Blue_Pill_H
+#define	BOARD_Blue_Pill_H
 
 #include<lxrad.h>
 
-#include "bsim_ucsim.h"
+#include "exp_bsim_qemu_stm32.h"
 
-#define BOARD_uCboard_Name "uCboard"
+#define BOARD_Blue_Pill_Name "Blue Pill"
 
 //new board class must be derived from board class defined in board.h
-class cboard_uCboard:public bsim_ucsim
+class cboard_Blue_Pill:public bsim_qemu_stm32
 {
    private:
-       lxBitmap * micbmp;       
-       lxFont font;
+      void RegisterRemoteControl(void); 
    public:
-      void SetScale (double scale);
       //Return the board name
-      lxString GetName(void) {return lxT(BOARD_uCboard_Name); }; 
-      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
+      lxString GetName(void) {return lxT(BOARD_Blue_Pill_Name); };
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       //Constructor called once on board creation 
-      cboard_uCboard(void);
+      cboard_Blue_Pill(void);
       //Destructor called once on board destruction 
-      ~cboard_uCboard(void); 
+      ~cboard_Blue_Pill(void); 
       //Called ever 100ms to draw board
       void Draw(CDraw *draw);
       void Run_CPU(void);
-      int MInit(const char * processor, const char * fname, float freq);
       //Return a list of board supported microcontrollers
-      lxString GetSupportedDevices(void){return lxT("C51,STM8S103,Z80,");};
+      lxString GetSupportedDevices(void){return lxT("stm32f103c8t6,");};
+      //Return the filename of board picture 
+      lxString GetPictureFileName(void){return lxT("Blue Pill/board.png");};
       //Reset board status
       void Reset(void);
       //Event on the board
@@ -62,7 +61,7 @@ class cboard_uCboard:public bsim_ucsim
       //Event on the board
       void EvKeyPress(uint key,uint mask);
       //Event on the board
-      void EvKeyRelease(uint key,uint mask);
+      void EvKeyRelease(uint key, uint mask);      
       //Called ever 1s to refresh status
       void RefreshStatus(void);
       //Called to save board preferences in configuration file
@@ -75,6 +74,5 @@ class cboard_uCboard:public bsim_ucsim
       unsigned short get_out_id(char * name);
 };
 
-
-#endif	/* BOARD_uCboard_H */
+#endif	/* BOARD_Blue_Pill_H */
 

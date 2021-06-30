@@ -27,7 +27,7 @@
 #include"../picsimlab1.h"
 #include"../picsimlab4.h" //Oscilloscope
 #include"../picsimlab5.h" //Spare Parts
-#include"board_gpboard.h"
+#include"exp_board_gpboard.h"
 
 #ifndef _WIN_
 #define INVALID_HANDLE_VALUE -1;

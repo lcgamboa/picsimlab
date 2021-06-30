@@ -29,7 +29,7 @@
 #include"../picsimlab4.h"   //Oscilloscope 
 #include"../picsimlab5.h"   //Spare Parts
 #include"../serial_port.h"
-#include"board_Curiosity_HPC.h"
+#include"exp_board_Curiosity_HPC.h"
 
 /* ids of inputs of input map*/
 enum

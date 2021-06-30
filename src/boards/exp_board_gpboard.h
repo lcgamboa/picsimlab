@@ -23,35 +23,36 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_Blue_Pill_H
-#define	BOARD_Blue_Pill_H
+#ifndef BOARD_gpboard_H
+#define	BOARD_gpboard_H
 
 #include<lxrad.h>
 
-#include "bsim_qemu_stm32.h"
+#include "exp_bsim_gpsim.h"
 
-#define BOARD_Blue_Pill_Name "Blue Pill"
+#define	BOARD_gpboard_Name "gpboard"
 
 //new board class must be derived from board class defined in board.h
-class cboard_Blue_Pill:public bsim_qemu_stm32
+class cboard_gpboard:public bsim_gpsim
 {
    private:
-      void RegisterRemoteControl(void); 
+       lxBitmap * micbmp;   
+       lxFont font;
    public:
+      void SetScale (double scale);
       //Return the board name
-      lxString GetName(void) {return lxT(BOARD_Blue_Pill_Name); };
-      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
+      lxString GetName(void) {return lxT(BOARD_gpboard_Name); };
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       //Constructor called once on board creation 
-      cboard_Blue_Pill(void);
+      cboard_gpboard(void);
       //Destructor called once on board destruction 
-      ~cboard_Blue_Pill(void); 
+      ~cboard_gpboard(void); 
       //Called ever 100ms to draw board
       void Draw(CDraw *draw);
       void Run_CPU(void);
+      int MInit(const char * processor, const char * fname, float freq);
       //Return a list of board supported microcontrollers
-      lxString GetSupportedDevices(void){return lxT("stm32f103c8t6,");};
-      //Return the filename of board picture 
-      lxString GetPictureFileName(void){return lxT("Blue Pill/board.png");};
+      lxString GetSupportedDevices(void){return supported_devices;};
       //Reset board status
       void Reset(void);
       //Event on the board
@@ -61,7 +62,7 @@ class cboard_Blue_Pill:public bsim_qemu_stm32
       //Event on the board
       void EvKeyPress(uint key,uint mask);
       //Event on the board
-      void EvKeyRelease(uint key, uint mask);      
+      void EvKeyRelease(uint key,uint mask);
       //Called ever 1s to refresh status
       void RefreshStatus(void);
       //Called to save board preferences in configuration file
@@ -74,5 +75,6 @@ class cboard_Blue_Pill:public bsim_qemu_stm32
       unsigned short get_out_id(char * name);
 };
 
-#endif	/* BOARD_Blue_Pill_H */
+
+#endif	/* BOARD_gpboard_H */
 

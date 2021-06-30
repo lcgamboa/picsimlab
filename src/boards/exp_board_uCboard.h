@@ -23,37 +23,36 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_STM32_H103_H
-#define	BOARD_STM32_H103_H
+#ifndef BOARD_uCboard_H
+#define	BOARD_uCboard_H
 
 #include<lxrad.h>
 
-#include "bsim_qemu_stm32.h"
+#include "exp_bsim_ucsim.h"
 
-#define	BOARD_STM32_H103_Name "STM32 H103"
+#define BOARD_uCboard_Name "uCboard"
 
 //new board class must be derived from board class defined in board.h
-class cboard_STM32_H103:public bsim_qemu_stm32
+class cboard_uCboard:public bsim_ucsim
 {
    private:
-     unsigned char p_BUT;
-
-     void RegisterRemoteControl(void);        
+       lxBitmap * micbmp;       
+       lxFont font;
    public:
+      void SetScale (double scale);
       //Return the board name
-      lxString GetName(void) {return lxT(BOARD_STM32_H103_Name); };
-      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
+      lxString GetName(void) {return lxT(BOARD_uCboard_Name); }; 
+      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       //Constructor called once on board creation 
-      cboard_STM32_H103(void);
+      cboard_uCboard(void);
       //Destructor called once on board destruction 
-      ~cboard_STM32_H103(void); 
+      ~cboard_uCboard(void); 
       //Called ever 100ms to draw board
       void Draw(CDraw *draw);
       void Run_CPU(void);
+      int MInit(const char * processor, const char * fname, float freq);
       //Return a list of board supported microcontrollers
-      lxString GetSupportedDevices(void){return lxT("stm32f103rbt6,");};
-      //Return the filename of board picture 
-      lxString GetPictureFileName(void){return lxT("STM32 H103/board.png");};
+      lxString GetSupportedDevices(void){return lxT("C51,STM8S103,Z80,");};
       //Reset board status
       void Reset(void);
       //Event on the board
@@ -76,5 +75,6 @@ class cboard_STM32_H103:public bsim_qemu_stm32
       unsigned short get_out_id(char * name);
 };
 
-#endif	/* BOARD_STM32_H103_H */
+
+#endif	/* BOARD_uCboard_H */
 

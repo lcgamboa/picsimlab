@@ -5,7 +5,7 @@
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:lcganmboa@yahoo.com          -->
+<!-- #$AUTHOR:lcgamboa@yahoo.com          -->
 <area shape="rect" coords="196,45,280,58" href="I_PG_ICSP" />
 <area shape="rect" coords="409,30,441,46" href="I_SW_PWR" />
 <area shape="rect" coords="133,379,142,401" href="B_SW_D1" />

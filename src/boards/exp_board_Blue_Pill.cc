@@ -27,7 +27,7 @@
 #include"../picsimlab1.h"
 #include"../picsimlab4.h" //Oscilloscope
 #include"../picsimlab5.h" //Spare Parts
-#include"board_STM32_H103.h"
+#include"exp_board_Blue_Pill.h"
 
 /* ids of inputs of input map*/
 enum
@@ -35,7 +35,6 @@ enum
  I_ICSP, //ICSP connector
  I_PWR, //Power button
  I_RST, //Reset button
- I_BUT, //User button
 };
 
 /* ids of outputs of output map*/
@@ -43,18 +42,16 @@ enum
 {
  O_LPWR, //Power LED
  O_LED, //LED on PC13 output
- O_BUT, //User button
  O_RST //Reset button
 };
 //return the input ids numbers of names used in input map
 
 unsigned short
-cboard_STM32_H103::get_in_id(char * name)
+cboard_Blue_Pill::get_in_id(char * name)
 {
  if (strcmp (name, "PG_ICSP") == 0)return I_ICSP;
  if (strcmp (name, "SW_PWR") == 0)return I_PWR;
  if (strcmp (name, "PB_RST") == 0)return I_RST;
- if (strcmp (name, "PB_BUT") == 0)return I_BUT;
 
  printf ("Error input '%s' don't have a valid id! \n", name);
  return -1;
@@ -63,12 +60,11 @@ cboard_STM32_H103::get_in_id(char * name)
 //return the output ids numbers of names used in output map
 
 unsigned short
-cboard_STM32_H103::get_out_id(char * name)
+cboard_Blue_Pill::get_out_id(char * name)
 {
 
  if (strcmp (name, "LD_LED") == 0)return O_LED;
- if (strcmp (name, "LD_LPWR") == 0)return O_LPWR;
- if (strcmp (name, "PB_BUT") == 0)return O_BUT;
+ if (strcmp (name, "LD_PWR") == 0)return O_LPWR;
  if (strcmp (name, "PB_RST") == 0)return O_RST;
 
  printf ("Error output '%s' don't have a valid id! \n", name);
@@ -77,24 +73,21 @@ cboard_STM32_H103::get_out_id(char * name)
 
 //Constructor called once on board creation 
 
-cboard_STM32_H103::cboard_STM32_H103(void)
+cboard_Blue_Pill::cboard_Blue_Pill(void)
 {
- Proc = "stm32f103rbt6"; //default microcontroller if none defined in preferences
+ Proc = "stm32f103c8t6"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
- p_BUT = 0;
 }
 
 //Destructor called once on board destruction 
 
-cboard_STM32_H103::~cboard_STM32_H103(void) { }
+cboard_Blue_Pill::~cboard_Blue_Pill(void) { }
 
 //Reset board status
 
 void
-cboard_STM32_H103::Reset(void)
+cboard_Blue_Pill::Reset(void)
 {
- p_BUT = 0;
-
  MReset (1);
 
  Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE));
@@ -105,63 +98,51 @@ cboard_STM32_H103::Reset(void)
 }
 
 void
-cboard_STM32_H103::RegisterRemoteControl(void)
+cboard_Blue_Pill::RegisterRemoteControl(void)
 {
- for (int i = 0; i < inputc; i++)
-  {
-   switch (input[i].id)
-    {
-    case I_BUT:
-     input[i].status = &p_BUT;
-     break;
-    }
-  }
-
  for (int i = 0; i < outputc; i++)
   {
    switch (output[i].id)
     {
     case O_LED:
-     output[i].status = &pins[52].oavalue;
+     output[i].status = &pins[1].oavalue;
      break;
     }
   }
 }
 
-
 //Called ever 1s to refresh status
 
 void
-cboard_STM32_H103::RefreshStatus(void)
+cboard_Blue_Pill::RefreshStatus(void)
 {
-
  Window1.statusbar1.SetField (2, lxT ("Serial: ") + lxString::FromAscii (SERIALDEVICE));
 }
 
 //Called to save board preferences in configuration file
 
 void
-cboard_STM32_H103::WritePreferences(void)
+cboard_Blue_Pill::WritePreferences(void)
 {
  //write selected microcontroller of board_x to preferences
- Window1.saveprefs (lxT ("STM32_H103_proc"), Proc);
+ Window1.saveprefs (lxT ("Blue_Pill_proc"), Proc);
  //write microcontroller clock to preferences
- Window1.saveprefs (lxT ("STM32_H103_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
+ Window1.saveprefs (lxT ("Blue_Pill_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
 }
 
 //Called whe configuration file load  preferences 
 
 void
-cboard_STM32_H103::ReadPreferences(char *name, char *value)
+cboard_Blue_Pill::ReadPreferences(char *name, char *value)
 {
 
  //read microcontroller of preferences
- if (!strcmp (name, "STM32_H103_proc"))
+ if (!strcmp (name, "Blue_Pill_proc"))
   {
    Proc = value;
   }
  //read microcontroller clock
- if (!strcmp (name, "STM32_H103_clock"))
+ if (!strcmp (name, "Blue_Pill_clock"))
   {
    Window1.SetClock (atof (value));
   }
@@ -171,17 +152,17 @@ cboard_STM32_H103::ReadPreferences(char *name, char *value)
 //Event on the board
 
 void
-cboard_STM32_H103::EvKeyPress(uint key, uint mask) { }
+cboard_Blue_Pill::EvKeyPress(uint key, uint mask) { }
 
 //Event on the board
 
 void
-cboard_STM32_H103::EvKeyRelease(uint key, uint mask) { }
+cboard_Blue_Pill::EvKeyRelease(uint key, uint mask) { }
 
 //Event on the board
 
 void
-cboard_STM32_H103::EvMouseButtonPress(uint button, uint x, uint y, uint state)
+cboard_Blue_Pill::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
 
  int i;
@@ -228,9 +209,6 @@ cboard_STM32_H103::EvMouseButtonPress(uint button, uint x, uint y, uint state)
        MReset (-1);
        p_RST = 0;
        break;
-      case I_BUT:
-       p_BUT = 1;
-       break;
       }
     }
   }
@@ -240,7 +218,7 @@ cboard_STM32_H103::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 //Event on the board
 
 void
-cboard_STM32_H103::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
+cboard_Blue_Pill::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 {
  int i;
 
@@ -267,9 +245,6 @@ cboard_STM32_H103::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
         }
        p_RST = 1;
        break;
-      case I_BUT:
-       p_BUT = 0;
-       break;
       }
     }
   }
@@ -281,7 +256,7 @@ cboard_STM32_H103::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 //This is the critical code for simulator running speed
 
 void
-cboard_STM32_H103::Draw(CDraw *draw)
+cboard_Blue_Pill::Draw(CDraw *draw)
 {
  int i;
 
@@ -297,32 +272,21 @@ cboard_STM32_H103::Draw(CDraw *draw)
 
      switch (output[i].id)//search for color of output
       {
-      case O_LED: //White using pc12 mean value 
-       draw->Canvas.SetColor (0, pins[52].oavalue, 0);
-       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-
+      case O_LED: //White using pc13 mean value 
+       draw->Canvas.SetColor (pins[1].oavalue, 0, 0);
        break;
       case O_LPWR: //Blue using mcupwr value
        draw->Canvas.SetColor (200 * Window1.Get_mcupwr () + 55, 0, 0);
-       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-
-       break;
-      case O_BUT:
-       draw->Canvas.SetColor (100, 100, 100);
-       draw->Canvas.Rectangle (1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1, output[i].y2 - output[i].y1 - 1);
-       if (p_BUT)
-        {
-         draw->Canvas.SetColor (55, 55, 55);
-        }
-       else
-        {
-         draw->Canvas.SetColor (15, 15, 15);
-        }
-       draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
        break;
       case O_RST:
        draw->Canvas.SetColor (100, 100, 100);
-       draw->Canvas.Rectangle (1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1, output[i].y2 - output[i].y1 - 1);
+       break;
+      }
+
+     draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
+     if (output[i].id == O_RST)
+      {
        if (p_RST)
         {
          draw->Canvas.SetColor (15, 15, 15);
@@ -332,9 +296,7 @@ cboard_STM32_H103::Draw(CDraw *draw)
          draw->Canvas.SetColor (55, 55, 55);
         }
        draw->Canvas.Circle (1, output[i].cx, output[i].cy, 11);
-       break;
       }
-
     }
 
   }
@@ -346,7 +308,7 @@ cboard_STM32_H103::Draw(CDraw *draw)
 }
 
 void
-cboard_STM32_H103::Run_CPU(void)
+cboard_Blue_Pill::Run_CPU(void)
 {
  int i;
  int j;
@@ -370,12 +332,11 @@ cboard_STM32_H103::Run_CPU(void)
   for (i = 0; i < Window1.GetNSTEP (); i++) //repeat for number of steps in 100ms
    {
 
-
+    /*
     if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
      {
-      MSetPin (14, p_BUT);
      }
-
+     */
     //verify if a breakpoint is reached if not run one instruction 
     MStep ();
     //Oscilloscope window process
@@ -406,5 +367,5 @@ cboard_STM32_H103::Run_CPU(void)
 }
 
 //Register the board in PICSimLab
-board_init(BOARD_STM32_H103_Name, cboard_STM32_H103);
+board_init(BOARD_Blue_Pill_Name, cboard_Blue_Pill);
 
