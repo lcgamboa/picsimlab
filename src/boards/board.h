@@ -503,6 +503,7 @@ protected:
  
     lxString Proc; ///< Name of processor in use
     input_t input[120]; ///< input map elements
+    input_t * input_ids[120]; ///< input map elements by id order
     output_t output[120]; ///< output map elements 
     output_t * output_ids[120]; ///< output map elements by id order
     int inputc; ///< input map elements counter 

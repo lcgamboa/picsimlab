@@ -68,7 +68,7 @@ unsigned short
 cboard_gpboard::get_out_id(char * name)
 {
 
- if (strcmp (name, "MP_CPU") == 0)return O_MP;
+ if (strcmp (name, "IC_CPU") == 0)return O_MP;
  if (strcmp (name, "LD_LPWR") == 0)return O_LPWR;
  if (strcmp (name, "PB_RST") == 0)return O_RST;
 

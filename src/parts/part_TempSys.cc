@@ -263,7 +263,7 @@ unsigned short
 cpart_tempsys::get_out_id(char * name)
 {
 
- if (strcmp (name, "DG_VT") == 0)return O_VT;
+ if (strcmp (name, "MC_VT") == 0)return O_VT;
  if (strcmp (name, "PN_HT") == 0)return O_HT;
  if (strcmp (name, "PN_CO") == 0)return O_CO;
  if (strcmp (name, "PN_TE") == 0)return O_TE;

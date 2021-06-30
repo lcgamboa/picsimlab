@@ -63,6 +63,6 @@
 <area shape="rect" coords="299,275,308,315" href="O_SS_F4" />
 <area shape="rect" coords="309,311,338,321" href="O_SS_G4" />
 <area shape="circle" coords="352,360,5" href="O_SS_P4" />
-<area shape="rect" coords="513,194,547,358" href="O_MP_CPU" />
-<area shape="rect" coords="803,310,1032,538" href="O_MT_VT" />
+<area shape="rect" coords="513,194,547,358" href="O_IC_CPU" />
+<area shape="rect" coords="803,310,1032,538" href="O_MC_VT" />
 </map>

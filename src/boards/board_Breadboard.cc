@@ -64,7 +64,7 @@ cboard_Breadboard::get_out_id(char * name)
 {
 
  if (strcmp (name, "LD_LPWR") == 0)return O_LPWR;
- if (strcmp (name, "MP_CPU") == 0)return O_MP;
+ if (strcmp (name, "IC_CPU") == 0)return O_MP;
  if (strcmp (name, "PB_RST") == 0)return O_RST;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);

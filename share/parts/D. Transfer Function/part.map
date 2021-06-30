@@ -8,11 +8,11 @@
 <!-- #$AUTHOR:Luis Claudio Gamboa Lopes        -->
 <area shape="rect" coords="12,53,46,63" href="O_PN_1" />
 <area shape="rect" coords="542,113,577,123" href="O_PN_2" />
-<area shape="rect" coords="116,94,159,104" href="O_PR_IG" />
-<area shape="rect" coords="6,143,53,153" href="O_PR_IO" />
-<area shape="rect" coords="205,82,365,92" href="O_PR_NUM" />
-<area shape="rect" coords="205,106,365,116" href="O_PR_DEN" />
-<area shape="rect" coords="396,94,439,104" href="O_PR_OG" />
-<area shape="rect" coords="386,154,433,164" href="O_PR_OO" />
-<area shape="rect" coords="267,23,301,32" href="O_PR_TS" />
+<area shape="rect" coords="116,94,159,104" href="O_DI_IG" />
+<area shape="rect" coords="6,143,53,153" href="O_DI_IO" />
+<area shape="rect" coords="205,82,365,92" href="O_DI_NUM" />
+<area shape="rect" coords="205,106,365,116" href="O_DI_DEN" />
+<area shape="rect" coords="396,94,439,104" href="O_DI_OG" />
+<area shape="rect" coords="386,154,433,164" href="O_DI_OO" />
+<area shape="rect" coords="267,23,301,32" href="O_DI_TS" />
 </map>

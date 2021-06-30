@@ -110,6 +110,6 @@
 <area shape="circle" coords="597,861,11" href="O_LD_RUN" />
 <area shape="circle" coords="1109,313,11" href="O_LD_RL1" />
 <area shape="circle" coords="1110,549,11" href="O_LD_RL2" />
-<area shape="rect" coords="722,38,950,265" href="O_MT_VT" />
-<area shape="rect" coords="900,674,928,832" href="O_MP_CPU" />
+<area shape="rect" coords="722,38,950,265" href="O_MC_VT" />
+<area shape="rect" coords="900,674,928,832" href="O_IC_CPU" />
 </map>

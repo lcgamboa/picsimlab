@@ -6,7 +6,7 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:gamboa      -->
-<area shape="rect" coords="12,24,208,220" href="O_DG_VT" />
+<area shape="rect" coords="12,24,208,220" href="O_MC_VT" />
 <area shape="rect" coords="283,75,331,91" href="O_PN_CO" />
 <area shape="rect" coords="283,160,331,176" href="O_PN_F2" />
 <area shape="rect" coords="283,139,331,155" href="O_PN_F1" />

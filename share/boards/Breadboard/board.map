@@ -10,5 +10,5 @@
 <area shape="rect" coords="448,12,520,68" href="I_SW_PWR" />
 <area shape="rect" coords="478,115,511,148" href="B_PB_RST" />
 <area shape="rect" coords="417,16,428,25" href="O_LD_LPWR" />
-<area shape="rect" coords="58,123,327,220" href="O_MP_CPU" />
+<area shape="rect" coords="58,123,327,220" href="O_IC_CPU" />
 </map>

@@ -161,13 +161,13 @@ cpart_servo::PostProcess(void)
    angle += 0.2;
    if (angle > angle_) angle = angle_;
   }
- 
- 
-  if (output_ids[O_AXIS]->value_f != angle)
+
+
+ if (output_ids[O_AXIS]->value_f != angle)
   {
    output_ids[O_AXIS]->value_f = angle;
    output_ids[O_AXIS]->update = 1;
-   output_ids[O_P1]->update = 1; 
+   output_ids[O_P1]->update = 1;
   }
 }
 
@@ -209,15 +209,7 @@ cpart_servo::ReadPreferences(lxString value)
 void
 cpart_servo::RegisterRemoteControl(void)
 {
- for (int i = 0; i < outputc; i++)
-  {
-   switch (output[i].id)
-    {
-    case O_AXIS:
-     output[i].status = (void *) &angle;
-     break;
-    }
-  }
+ output_ids[O_AXIS]->status = (void *) &angle;
 }
 
 void

@@ -257,7 +257,7 @@ ProcessInput(const char * msg, input_t * Input, int * ret)
  LD - led
  DS - Display LCD
  MT - DC motor
- GD - step and servo angles
+ DG - step and servo angles
  SS - seven sgments 
  */
 
@@ -1045,6 +1045,10 @@ rcontrol_loop(void)
               {
                *((unsigned char *) Input->status) = value;
                sendtext ("Ok\r\n>");
+               if (Input->update)
+                {
+                 *Input->update = 1;
+                }
               }
              else
               {

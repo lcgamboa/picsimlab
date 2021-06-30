@@ -2356,7 +2356,7 @@ cboard_PICGenios::get_out_id(char * name)
  if (strcmp (name, "DP_18") == 0)return O_D18;
  if (strcmp (name, "DP_19") == 0)return O_D19;
  if (strcmp (name, "DP_20") == 0)return O_D20;
- if (strcmp (name, "MT_VT") == 0) return O_VT;
+ if (strcmp (name, "MC_VT") == 0) return O_VT;
 
  if (strcmp (name, "JP_1") == 0)return O_JP1;
 
@@ -2384,7 +2384,7 @@ cboard_PICGenios::get_out_id(char * name)
  if (strcmp (name, "PO_1") == 0)return O_POT1;
  if (strcmp (name, "PO_2") == 0)return O_POT2;
 
- if (strcmp (name, "MP_CPU") == 0)return O_MP;
+ if (strcmp (name, "IC_CPU") == 0)return O_MP;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;

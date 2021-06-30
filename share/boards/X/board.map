@@ -17,5 +17,5 @@
 <area shape="circle" coords="418,102,17" href="O_LD_LPWR" />
 <area shape="circle" coords="418,189,17" href="O_LD_RB1" />
 <area shape="circle" coords="418,232,17" href="O_LD_RB0" />
-<area shape="rect" coords="227,220,247,328" href="O_MP_CPU" />
+<area shape="rect" coords="227,220,247,328" href="O_IC_CPU" />
 </map>

@@ -59,7 +59,5 @@ class cpart_step:public part
 };
 
 
-
-
 #endif	/* PART_STEP */
 

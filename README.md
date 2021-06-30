@@ -42,7 +42,7 @@ in addition to the stable ones.
 
 ### For developers
 
-[Development Documentation](https://lcgamboa.github.io/picsimlab_docs/0.8.9/devel/html/)
+[Development Documentation](https://lcgamboa.github.io/picsimlab_docs/devel/html/)
 
 [TODO list](./TODO.md)
 
