@@ -265,7 +265,7 @@ void
 cpart_Buzzer::ReadPropertiesWindow(CPWindow * WProp)
 {
  input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
- unsigned char tp = ((CCombo*) WProp->GetChildByName ("combo2"))->GetText ().compare (lxT ("Active"));
+ unsigned char tp = (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ().compare (lxT ("Active")) != 0 );
 
  active = (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ().compare ("HIGH") == 0);
 
