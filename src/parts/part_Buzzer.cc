@@ -359,7 +359,8 @@ cpart_Buzzer::PostProcess(void)
   }
  else
   {
-   buzzer.SoundPlay (buffer, buffersize);
+   
+   buzzer.SoundPlay (buffer, buffercount*2);//FIXME some buffers are lost
    buffercount = 0;
   }
 
