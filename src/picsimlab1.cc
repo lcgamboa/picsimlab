@@ -129,8 +129,12 @@ CPWindow1::timer1_EvOnTime(CControl * control)
  sync = 1;
  status.st[0] |= ST_T1;
 
-
+#ifdef _NOTHREAD
+ printf("ovtimer = %i \n",timer1.GetOverTime ());
+ if(timer1.GetOverTime () < 100)
+#else 
  if ((!tgo)&&(timer1.GetTime () == 100))
+#endif  
   {
    if (crt)
     {
@@ -241,7 +245,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
 void
 CPWindow1::thread1_EvThreadRun(CControl*)
 {
-#if defined(TDEBUG) || defined(_NOTHREAD)  
+#if defined(TDEBUG) //|| defined(_NOTHREAD)  
  double t0, t1;
 #endif
  do
@@ -249,7 +253,7 @@ CPWindow1::thread1_EvThreadRun(CControl*)
 
    if (tgo)
     {
-#if defined(TDEBUG) || defined(_NOTHREAD)     
+#if defined(TDEBUG) //|| defined(_NOTHREAD)     
      t0 = cpuTime ();
 #endif     
      status.st[1] |= ST_TH;
@@ -257,10 +261,11 @@ CPWindow1::thread1_EvThreadRun(CControl*)
      if (debug)pboard->DebugLoop ();
      tgo--;
      status.st[1] &= ~ST_TH;
-#if defined(TDEBUG) || defined(_NOTHREAD)       
+#if defined(TDEBUG) //|| defined(_NOTHREAD)       
      t1 = cpuTime ();
 #endif     
 #if defined(_NOTHREAD)     
+     /*
      if ((t1 - t0) / (Window1.timer1.GetTime ()*1e-5) > 110)
       {
        tgo++;
@@ -269,6 +274,8 @@ CPWindow1::thread1_EvThreadRun(CControl*)
       {
        tgo = 0;
       }
+      */
+     tgo=0;
 #endif     
 #ifdef TDEBUG      
      printf ("PTime= %lf  tgo= %2i  zeroc= %2i  Timer= %3u Perc.= %4.1lf\n",
@@ -1119,8 +1126,8 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
 
 #ifdef EXT_BROWSER_EXAMPLES
  //lxLaunchDefaultBrowser(lxT("file://")+share + lxT ("docs/picsimlab.html"));
- lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html#board_" + lxString (boards_list[lab].name_) + lxT ("_") + pboard->GetProcessorName ()));
- WDestroy ();
+ lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab_examples/board_"+lxString (boards_list[lab].name_) + ".html#board_" + lxString (boards_list[lab].name_) + lxT ("_") + pboard->GetProcessorName ()));
+ SetToDestroy ();
 #else 
  OldPath = filedialog2.GetDir ();
 

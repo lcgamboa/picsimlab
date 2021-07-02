@@ -33,6 +33,7 @@ LINK= -s DEMANGLE_SUPPORT=0 -s SAFE_HEAP=0 -s ASSERTIONS=0 -s TOTAL_MEMORY=128MB
       -s EXPORTED_FUNCTIONS='["_main","_file_ready","_lxrad_scale_up","_lxrad_scale_down","_dirt_load"]' \
       -s EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' 
 
+#-s PROXY_TO_PTHREAD
 #CXXFLAGS+=--emrun
 #CXXFLAGS+= -D_NOTHREAD 
 

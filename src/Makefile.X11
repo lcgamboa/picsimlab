@@ -17,7 +17,7 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-override CXXFLAGS += -DEXT_BROWSER -D_VERSION_=\"${VERSION}\" -Wall -g -O0  -D_SHARE_=\"../share/picsimlab/\"  -I/usr/include/lxrad_X11 -Wall  -D_REENTRANT
+override CXXFLAGS += -DEXT_BROWSER -D_VERSION_=\"${VERSION}\" -Wall -g -O2  -D_SHARE_=\"../share/picsimlab/\"  -I/usr/include/lxrad_X11 -Wall  -D_REENTRANT
 
 override CXXFLAGS+= -D_NOTHREAD
 #override CXXFLAGS+=-fsanitize=address
@@ -25,7 +25,9 @@ override CXXFLAGS+= -D_NOTHREAD
 override CXXFLAGS+= -D_ARCH_=\"Linux64_X11\" -D_DATE_=\"${DATE}\"
 
 #LIBS = `lxrad_X11-config --libs` -lpicsim -lsimavr -lelf -lminizip $(ELIBS)
-LIBS =  ../../LXRAD_X11/lib/liblxrad_X11.a  -lopenal -lminizip -lXpm -lImlib2 -lX11 -lpthread \
+LIBS =  ../../LXRAD_X11/lib/liblxrad_X11.a 
+#LIBS =  ../../LXRAD_X11/lib/liblxrad_X11_mt.a 
+LIBS+= -lopenal -lminizip -lXpm -lImlib2 -lX11 -lpthread \
  ../../picsim/src/libpicsim_dbg.a  ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a -lelf -lminizip $(ELIBS) \
  ../../lunasvg/build/liblunasvg.a
 

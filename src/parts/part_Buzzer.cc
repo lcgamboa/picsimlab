@@ -265,7 +265,7 @@ void
 cpart_Buzzer::ReadPropertiesWindow(CPWindow * WProp)
 {
  input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
- unsigned char tp = (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ().compare (lxT ("Active")) != 0 );
+ unsigned char tp = (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ().compare (lxT ("Active")) != 0);
 
  active = (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ().compare ("HIGH") == 0);
 
@@ -279,7 +279,10 @@ cpart_Buzzer::PreProcess(void)
  if (type == PASSIVE)
   {
 
-   JUMPSTEPS_ = (Window1.GetBoard ()->MGetInstClockFreq () / samplerate) - 100;
+   JUMPSTEPS_ = (Window1.GetBoard ()->MGetInstClockFreq () / samplerate);
+
+   JUMPSTEPS_ *= 100.0 / Window1.timer1.GetTime (); //Adjust to sample at the same time to the timer 
+
    mcount = JUMPSTEPS_;
 
   }
@@ -359,8 +362,10 @@ cpart_Buzzer::PostProcess(void)
   }
  else
   {
-   
-   buzzer.SoundPlay (buffer, buffercount*2);//FIXME some buffers are lost
+
+   //int ret=
+   buzzer.SoundPlay (buffer, (buffercount)*2);
+   //printf("ret=%i buffercount=%i sample=%i time=%f  timer=%i\n",ret,buffercount,samplerate,((float)(buffercount))/samplerate , Window1.timer1.GetTime ());
    buffercount = 0;
   }
 
