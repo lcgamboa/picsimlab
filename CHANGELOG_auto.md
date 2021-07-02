@@ -28,9 +28,13 @@
 
 ### Fix
 
+* Buzzer passive mode audio clicks removed. [lcgamboa]
+
 * Removed the problem that caused PICSimLab don't start when qemu-stm32 was not found. [lcgamboa]
 
 ### Other
+
+* Rcontrol new command loadhex. [lcgamboa]
 
 * Merge pull request #38 from dantop03/master. [lcgamboa]
 
