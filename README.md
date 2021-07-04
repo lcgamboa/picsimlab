@@ -30,7 +30,7 @@ in addition to the stable ones.
 
 [Online Documentation](https://lcgamboa.github.io/picsimlab_docs/0.8.9/)
 
-[Examples](https://lcgamboa.github.io/picsimlab_examples/examples/examples_index.html)
+[Examples](https://lcgamboa.github.io/picsimlab_examples/examples_index.html)
 
 [Online version of PICSimLab](https://lcgamboa.github.io/)
 
