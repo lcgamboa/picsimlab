@@ -130,8 +130,8 @@ CPWindow1::timer1_EvOnTime(CControl * control)
  status.st[0] |= ST_T1;
 
 #ifdef _NOTHREAD
- printf("ovtimer = %i \n",timer1.GetOverTime ());
- if(timer1.GetOverTime () < 100)
+ printf ("ovtimer = %i \n", timer1.GetOverTime ());
+ if (timer1.GetOverTime () < 100)
 #else 
  if ((!tgo)&&(timer1.GetTime () == 100))
 #endif  
@@ -275,7 +275,7 @@ CPWindow1::thread1_EvThreadRun(CControl*)
        tgo = 0;
       }
       */
-     tgo=0;
+     tgo = 0;
 #endif     
 #ifdef TDEBUG      
      printf ("PTime= %lf  tgo= %2i  zeroc= %2i  Timer= %3u Perc.= %4.1lf\n",
@@ -1126,7 +1126,7 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
 
 #ifdef EXT_BROWSER_EXAMPLES
  //lxLaunchDefaultBrowser(lxT("file://")+share + lxT ("docs/picsimlab.html"));
- lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab_examples/board_"+lxString (boards_list[lab].name_) + ".html#board_" + lxString (boards_list[lab].name_) + lxT ("_") + pboard->GetProcessorName ()));
+ lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab_examples/board_" + lxString (boards_list[lab].name_) + ".html#board_" + lxString (boards_list[lab].name_) + lxT ("_") + pboard->GetProcessorName ()));
  SetToDestroy ();
 #else 
  OldPath = filedialog2.GetDir ();
@@ -1164,7 +1164,8 @@ CPWindow1::LoadHexFile(lxString fname)
  //timer1.SetRunState (0);
  status.st[0] |= ST_DI;
  msleep (100);
- while (status.status & 0x41)
+ if (tgo)tgo = 1;
+ while (status.status & 0x0401)
   {
    msleep (1);
    Application->ProcessEvents ();

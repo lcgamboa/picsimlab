@@ -420,8 +420,7 @@ rcontrol_loop(void)
        cmd[cmdsize - 1] = 0; //strip \r  
       }
 
-     strcpy (cmd, (const char *) lowercase (cmd).c_str ());
-
+     //strcpy (cmd, (const char *) lowercase (cmd).c_str ());
 
      dprint ("cmd[%s]\n", cmd);
 
