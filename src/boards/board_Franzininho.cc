@@ -299,7 +299,7 @@ cboard_Franzininho::Reset(void)
  avr_reset (avr);
  //avr->data[UCSR0B] = 0x00; //FIX the simavr reset TX enabled
 
-
+/*
  //verify serial port state and refresh status bar
 #ifndef _WIN_
  if (serialfd > 0)
@@ -313,8 +313,9 @@ cboard_Franzininho::Reset(void)
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
-
-
+*/
+ Window1.statusbar1.SetField (2,""); 
+ 
  if (use_spare)Window5.Reset ();
 
  RegisterRemoteControl ();
@@ -339,6 +340,7 @@ cboard_Franzininho::RegisterRemoteControl(void)
 void
 cboard_Franzininho::RefreshStatus(void)
 {
+ /*
  //verify serial port state and refresh status bar
 #ifndef _WIN_
  if (serialfd > 0)
@@ -352,6 +354,7 @@ cboard_Franzininho::RefreshStatus(void)
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
+ */
  if (avr)
   {
    switch (avr->state)
