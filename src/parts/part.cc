@@ -41,8 +41,8 @@ part::ReadMaps(void)
 {
  inputc = 0;
  outputc = 0;
- ReadInputMap (Window1.GetSharePath () + lxT ("parts/") + GetMapFile ());
- ReadOutputMap (Window1.GetSharePath () + lxT ("parts/") + GetMapFile ());
+ ReadInputMap (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetMapFile ()));
+ ReadOutputMap (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetMapFile ()));
 
  for (int i = 0; i < inputc; i++)
   {
@@ -360,7 +360,7 @@ part::SetOrientation(int orientation)
 
  lxImage image (&Window5);
 
- image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
+ image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
@@ -394,7 +394,7 @@ part::SetScale(double scale)
 
  lxImage image (&Window5);
 
- image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale, 0, &Scale);
+ image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale, 0, &Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();

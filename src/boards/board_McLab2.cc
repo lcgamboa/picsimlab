@@ -159,9 +159,9 @@ font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  active = 0;
 
  lxImage image (&Window1);
- image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT1.svg"));
+ image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/VT1.svg")));
  vent[0] = new lxBitmap (&image, &Window1);
- image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/VT2.svg"));
+ image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/VT2.svg")));
  vent[1] = new lxBitmap (&image, &Window1);
 
  image.Destroy ();

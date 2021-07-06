@@ -42,16 +42,16 @@ cpart_LCD_hd44780::InitGraphics(void)
  switch (model)
   {
   case LCD16x2:
-   image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName (), Orientation, Scale, Scale);
+   image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
    break;
   case LCD16x4:
-   image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName_ (), Orientation, Scale, Scale);
+   image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName_ ()), Orientation, Scale, Scale);
    break;
   case LCD20x2:
-   image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName__ (), Orientation, Scale, Scale);
+   image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName__ ()), Orientation, Scale, Scale);
    break;
   case LCD20x4:
-   image.LoadFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName___ (), Orientation, Scale, Scale);
+   image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName___ ()), Orientation, Scale, Scale);
    break;
   }
 

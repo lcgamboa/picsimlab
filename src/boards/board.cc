@@ -44,8 +44,8 @@ board::ReadMaps(void)
 {
  inputc = 0;
  outputc = 0;
- ReadInputMap (Window1.GetSharePath () + lxT ("boards/") + GetMapFile ());
- ReadOutputMap (Window1.GetSharePath () + lxT ("boards/") + GetMapFile ());
+ ReadInputMap (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/") + GetMapFile ()));
+ ReadOutputMap (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/") + GetMapFile ()));
 
  for (int i = 0; i < inputc; i++)
   {

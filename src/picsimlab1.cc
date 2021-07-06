@@ -217,7 +217,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
      draw1.SetWidth (nw);
      draw1.SetHeight (nh);
 
-     draw1.SetImgFileName (share + lxT ("boards/") + pboard->GetPictureFileName (), scale, scale);
+     draw1.SetImgFileName (lxGetLocalFile(share + lxT ("boards/") + pboard->GetPictureFileName ()), scale, scale);
     }
 
    pboard->SetScale (scale);
@@ -425,7 +425,14 @@ CPWindow1::_EvOnCreate(CControl * control)
 
  PATH = lxGetCwd ();
 
- share = dirname (lxGetExecutablePath ()) + lxT ("/") + lxString (_SHARE_);
+ if (lxString (_SHARE_).Contains ("http"))
+  {
+   share = lxString (_SHARE_);
+  }
+ else
+  {
+   share = dirname (lxGetExecutablePath ()) + lxT ("/") + lxString (_SHARE_);
+  }
 
  if (Application->Aargc == 2)
   {
@@ -735,7 +742,7 @@ CPWindow1::Configure(const char * home, int use_default_board, int create)
  filedialog1.SetDir (PATH);
 
 
- draw1.SetImgFileName (share + lxT ("boards/") + pboard->GetPictureFileName (), scale, scale);
+ draw1.SetImgFileName (lxGetLocalFile(share + lxT ("boards/") + pboard->GetPictureFileName ()), scale, scale);
 
  pboard->MSetSerial (SERIALDEVICE);
 

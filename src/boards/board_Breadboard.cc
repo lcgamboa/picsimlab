@@ -81,7 +81,7 @@ font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  ReadMaps (); //Read input and output board maps
 
  lxImage image (&Window1);
- image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.svg"), 0, Scale, Scale, 1);
+ image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/ic40.svg")), 0, Scale, Scale, 1);
  micbmp = new lxBitmap (&image, &Window1);
 
 }
@@ -638,9 +638,9 @@ cboard_Breadboard::MInit(const char * processor, const char * fname, float freq)
  lxImage image (&Window1);
 
 
- if (!image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg"), 0, Scale, Scale, 1))
+ if (!image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg")), 0, Scale, Scale, 1))
   {
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic6.svg"), 0, Scale, Scale, 1);
+   image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/ic6.svg")), 0, Scale, Scale, 1);
    printf ("picsimlab: IC package with %i pins not found!\n", MGetPinCount ());
    printf ("picsimlab: %s not found!\n", (const char *) (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg")).c_str ());
   }
@@ -1108,16 +1108,16 @@ cboard_Breadboard::SetScale(double scale)
 
  if (MGetPinCount ())
   {
-   if (!image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg"), 0, Scale, Scale, 1))
+   if (!image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg")), 0, Scale, Scale, 1))
     {
-     image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic6.svg"), 0, Scale, Scale, 1);
+     image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/ic6.svg")), 0, Scale, Scale, 1);
      printf ("picsimlab: IC package with %i pins not found!\n", MGetPinCount ());
      printf ("picsimlab: %s not found!\n", (const char *) (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg")).c_str ());
     }
   }
  else
   {
-   image.LoadFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.svg"), 0, Scale, Scale, 1);
+   image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/ic40.svg")), 0, Scale, Scale, 1);
   }
  if (micbmp) delete micbmp;
  micbmp = new lxBitmap (&image, &Window1);
