@@ -50,7 +50,7 @@ LIBS+= ../../lunasvg/buildjsmt/liblunasvg.a
 
 all: $(OBJS)
 	@echo "Linking picsimlab"
-	@$(CXX) $(CXXFLAGS) $(OBJS) -o picsimlab_mt.html $(LIBS) $(LINK) --shell-file template_mt.html 
+	@$(CXX) $(CXXFLAGS) $(OBJS) -o picsimlab_mt.html $(LIBS) $(LINK) --shell-file template.html 
 
 %.o: %.cc
 	@echo "Compiling $<"
@@ -79,5 +79,5 @@ run: all
 	./picsimlab
 
 clean:
-	$(RM) *.o core */*.o picsimlab.html picsimlab_asmjs.html picsimlab.js *.wasm *.map *.pre *.data *.wast *.mem\
-	       	picsimlab_asmjs.js
+	$(RM) *.o core */*.o picsimlab_mt.html picsimlab_mt.js *.wasm *.map *.pre *.data *.wast *.mem\
+	       	 picsimlab_mt.worker.js

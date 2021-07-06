@@ -50,16 +50,17 @@ LIBS+= ../../lunasvg/buildjs/liblunasvg.a
 
 all: $(OBJS)
 	@echo "Linking picsimlab"
-	@$(CXX) $(CXXFLAGS) $(LINK) -s WASM=1 $(OBJS) -o picsimlab.html $(LIBS)  --shell-file template.html 
-	@$(CXX) $(CXXFLAGS) $(LINK) -s WASM=0 $(OBJS) -o picsimlab_asmjs.html $(LIBS)  --shell-file template_asmjs.html 
+	@$(CXX) $(CXXFLAGS) $(LINK) -s WASM=1 $(OBJS) -o picsimlab_wasm.html $(LIBS)  --shell-file template.html 
+	@$(CXX) $(CXXFLAGS) $(LINK) -s WASM=0 $(OBJS) -o picsimlab_asmjs.html $(LIBS)  --shell-file template.html 
+	cp picsimlab_wasm.data picsimlab.data
 
 %.o: %.cc
 	@echo "Compiling $<"
 	@$(CXX) -c $(CXXFLAGS) $< -o $@ 
 
 
-JS_FILES=  emsc.js picsimlab_asmjs.js picsimlab.html picsimlab_mt.js  picsimlab.wasm \
-	picsimlab_asmjs.html  picsimlab.css picsimlab.js picsimlab_mt.wasm \
+JS_FILES=  emsc.js picsimlab_asmjs.js picsimlab_wasm.html picsimlab.html picsimlab_mt.js  picsimlab_wasm.wasm \
+	picsimlab_asmjs.html  picsimlab.css picsimlab_wasm.js picsimlab_mt.wasm \
 	picsimlab_asmjs.html.mem picsimlab.data picsimlab_mt.html picsimlab_mt.worker.js
 
 
@@ -68,11 +69,13 @@ EXP_DIR= ../../lcgamboa.github.io/js_exp/
 
 install: 
 	cp -fv $(JS_FILES) $(JS_DIR)
+	sed -i 's/picsimlab_wasm\.data/picsimlab\.data/g' $(JS_DIR)picsimlab_wasm.js
 	sed -i 's/picsimlab_asmjs\.data/picsimlab\.data/g' $(JS_DIR)picsimlab_asmjs.js
 	sed -i 's/picsimlab_mt\.data/picsimlab\.data/g' $(JS_DIR)picsimlab_mt.js
 
 install_exp: 
 	cp -fv $(JS_FILES) $(EXP_DIR)
+	sed -i 's/picsimlab_wasm\.data/picsimlab\.data/g' $(EXP_DIR)picsimlab_wasm.js
 	sed -i 's/picsimlab_asmjs\.data/picsimlab\.data/g' $(EXP_DIR)picsimlab_asmjs.js
 	sed -i 's/picsimlab_mt\.data/picsimlab\.data/g' $(EXP_DIR)picsimlab_mt.js
 
@@ -88,5 +91,5 @@ run: all
 	./picsimlab
 
 clean:
-	$(RM) *.o core */*.o picsimlab.html picsimlab_asmjs.html picsimlab.js *.wasm *.map *.pre *.data *.wast *.mem\
+	$(RM) *.o core */*.o picsimlab_wasm.html picsimlab_asmjs.html picsimlab_wasm.js *.wasm *.map *.pre *.data *.wast *.mem\
 	       	picsimlab_asmjs.js
