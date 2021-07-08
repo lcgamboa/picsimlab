@@ -119,6 +119,11 @@ cpuTime()
 #endif
 #endif
 
+extern "C"
+{
+ void file_ready(const char *fname, const char * dir = NULL);
+}
+
 void
 CPWindow1::timer1_EvOnTime(CControl * control)
 {
@@ -130,7 +135,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
  status.st[0] |= ST_T1;
 
 #ifdef _NOTHREAD
- printf ("ovtimer = %i \n", timer1.GetOverTime ());
+ //printf ("overtimer = %i \n", timer1.GetOverTime ());
  if (timer1.GetOverTime () < 100)
 #else 
  if ((!tgo)&&(timer1.GetTime () == 100))
@@ -217,7 +222,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
      draw1.SetWidth (nw);
      draw1.SetHeight (nh);
 
-     draw1.SetImgFileName (lxGetLocalFile(share + lxT ("boards/") + pboard->GetPictureFileName ()), scale, scale);
+     draw1.SetImgFileName (lxGetLocalFile (share + lxT ("boards/") + pboard->GetPictureFileName ()), scale, scale);
     }
 
    pboard->SetScale (scale);
@@ -742,7 +747,7 @@ CPWindow1::Configure(const char * home, int use_default_board, int create)
  filedialog1.SetDir (PATH);
 
 
- draw1.SetImgFileName (lxGetLocalFile(share + lxT ("boards/") + pboard->GetPictureFileName ()), scale, scale);
+ draw1.SetImgFileName (lxGetLocalFile (share + lxT ("boards/") + pboard->GetPictureFileName ()), scale, scale);
 
  pboard->MSetSerial (SERIALDEVICE);
 
@@ -1151,6 +1156,13 @@ void
 CPWindow1::_EvOnShow(CControl * control)
 {
  need_resize = 0;
+}
+
+void
+CPWindow1::_EvOnDropFile(CControl * control, const lxString fname)
+{
+ printf ("PICSimLab: File droped: %s\n", (const char *) fname.c_str ());
+ file_ready (basename (fname), dirname (fname));
 }
 
 void
@@ -1876,53 +1888,58 @@ CPWindow1::SetToDestroy(void)
 }
 
 
-#ifdef __EMSCRIPTEN__
 extern "C"
 {
-
  void
- file_ready(const char *fname)
+ file_ready(const char *fname, const char * dir)
  {
+  const char tmp[] = "/tmp";
+
+  if (!dir)
+   {
+    dir = tmp;
+   }
+
   if (strstr (fname, ".pzw"))
    {
-    printf ("Loading .pzw...\n");
+    printf ("PICSimLab: Loading .pzw...\n");
     Window1.filedialog2.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
-    Window1.filedialog2.SetDir ("/tmp/");
+    Window1.filedialog2.SetDir (dir);
     Window1.filedialog2.SetFileName (fname);
     Window1.filedialog2_EvOnClose (1);
    }
   else if (strstr (fname, ".hex"))
    {
-    printf ("Loading .hex...\n");
+    printf ("PICSimLab: Loading .hex...\n");
     Window1.filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
-    Window1.filedialog1.SetDir ("/tmp/");
+    Window1.filedialog1.SetDir (dir);
     Window1.filedialog1.SetFileName (fname);
     Window1.filedialog1_EvOnClose (1);
    }
   else if (strstr (fname, ".pcf"))
    {
     char buff[1024];
-    strncpy (buff, "/tmp/", 1023);
+    strncpy (buff, dir, 1023);
     strncat (buff, fname, 1023);
-    printf ("Loading .pcf...\n");
+    printf ("PICSimLab: Loading .pcf...\n");
     Window5.LoadConfig (buff);
     Window1.menu1_Modules_Spareparts_EvMenuActive (&Window1);
    }
   else if (strstr (fname, ".ppa"))
    {
     char buff[1024];
-    strncpy (buff, "/tmp/", 1023);
+    strncpy (buff, dir, 1023);
     strncat (buff, fname, 1023);
-    printf ("Loading .ppa...\n");
+    printf ("PICSimLab: Loading .ppa...\n");
     Window5.LoadPinAlias (buff);
    }
   else
    {
-    printf ("Unknow file %s !!\n", fname);
+    printf ("PICSimLab: Unknow file type %s !!\n", fname);
    }
  }
 }
-#endif
+
 
 void
 CPWindow1::RegisterError(const lxString error)

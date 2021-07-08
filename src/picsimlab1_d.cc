@@ -44,9 +44,11 @@ CPWindow1::CPWindow1(void)
   SetPopupMenu(NULL);
   SetTitle(lxT("Picsimlab"));
   SetOverrideRedirect(0);
+  SetDragAcceptFiles (true);
   EvOnCreate=EVONCREATE & CPWindow1::_EvOnCreate;
   EvOnDestroy=EVONDESTROY & CPWindow1::_EvOnDestroy;
   EvOnShow=EVONSHOW & CPWindow1::_EvOnShow;
+  EvOnDropFile = EVONDROPFILE & CPWindow1::_EvOnDropFile;
   //timer1
   timer1.SetFOwner(this);
   timer1.SetClass(lxT("CTimer"));
@@ -89,11 +91,13 @@ CPWindow1::CPWindow1(void)
   draw1.SetVisible(1);
   draw1.SetColor(lxT("#000001"));
   draw1.SetPopupMenu(NULL);
+  draw1.SetDragAcceptFiles (true);
   draw1.EvMouseMove=EVMOUSEMOVE & CPWindow1::draw1_EvMouseMove;
   draw1.EvMouseButtonPress=EVMOUSEBUTTONPRESS & CPWindow1::draw1_EvMouseButtonPress;
   draw1.EvMouseButtonRelease=EVMOUSEBUTTONRELEASE & CPWindow1::draw1_EvMouseButtonRelease;
   draw1.EvKeyboardPress=EVKEYBOARDPRESS & CPWindow1::draw1_EvKeyboardPress;
   draw1.EvKeyboardRelease=EVKEYBOARDRELEASE & CPWindow1::draw1_EvKeyboardRelease;
+  draw1.EvOnDropFile = EVONDROPFILE & CPWindow1::_EvOnDropFile;
   draw1.SetTransparent(0);
   draw1.SetImgFileName(lxT(""));
   CreateChild(&draw1);
