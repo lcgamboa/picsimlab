@@ -1035,7 +1035,29 @@ bsim_simavr::MSetAPin(int pin, float value)
      break;
     }
   }
- else
+ else if (lxString (avr->mmcu).compare (lxT ("attiny85")) == 0)
+  {
+   switch (pin)
+    {
+    case 5:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 0), (int) (value * 1000));
+     break;
+    case 7:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 1), (int) (value * 1000));
+     break;
+    case 3:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 2), (int) (value * 1000));
+     break;
+    case 2:
+     pins[pin - 1].ptype = PT_ANALOG;
+     avr_raise_irq (avr_io_getirq (avr, AVR_IOCTL_ADC_GETIRQ, 3), (int) (value * 1000));
+     break;
+    }
+  }
+ else//atmega328
   {
    switch (pin)
     {
