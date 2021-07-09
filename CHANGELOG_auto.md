@@ -2,6 +2,8 @@
 
 ### New
 
+* Support to open files using drag and drop. [lcgamboa]
+
 * New part Fixed Voltage. [lcgamboa]
 
 * New part SHT3X temperature and humidity sensor. [lcgamboa]

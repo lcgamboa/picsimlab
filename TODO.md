@@ -1,7 +1,7 @@
 ### TODOs
 | Filename | line # | TODO
 |:------|:------:|:------
-| [src/picsimlab1.cc](src/picsimlab1.cc#L537) | 537 | verify initialization errors
+| [src/picsimlab1.cc](src/picsimlab1.cc#L556) | 556 | verify initialization errors
 | [src/picsimlab4.cc](src/picsimlab4.cc#L630) | 630 | select the better mode for channel trigguer
 | [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L116) | 116 | jumper support
 | [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L68) | 68 | TEMP cooler must don't work with AQUE=0
@@ -30,7 +30,7 @@
 ### FIXMEs
 | Filename | line # | FIXME
 |:------|:------:|:------
-| [src/picsimlab1.cc](src/picsimlab1.cc#L792) | 792 | remote control disabled
+| [src/picsimlab1.cc](src/picsimlab1.cc#L811) | 811 | remote control disabled
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1266) | 1266 | avr CONFIG size
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L118) | 118 | only for BANK=0;
 | [src/parts/part_dcmotor.cc](src/parts/part_dcmotor.cc#L279) | 279 | on slow speed output is not 90 degrees

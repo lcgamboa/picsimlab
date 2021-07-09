@@ -314,15 +314,7 @@ cboard_Arduino_Uno::Reset(void)
 void
 cboard_Arduino_Uno::RegisterRemoteControl(void)
 {
- for (int i = 0; i < outputc; i++)
-  {
-   switch (output[i].id)
-    {
-    case O_L:
-     output[i].status = &pins[18].oavalue;
-     break;
-    }
-  }
+ output_ids[O_L]->status = &pins[18].oavalue;
 }
 
 //Called ever 1s to refresh status
