@@ -490,8 +490,7 @@ CPWindow1::timer1_EvOnTime(CControl * control)
         }
        else
         {
-
-         sscanf (mvalue, "%i", &mv);
+         sscanf (mvalue, "%3d", &mv);
          draw1.Canvas.SetColor (200, 200, 200);
          draw1.Canvas.Rectangle (1, 185 + offsetx + x, y + 2 + offsety, 52, 8);
          draw1.Canvas.SetColor (0, 0, 200);
