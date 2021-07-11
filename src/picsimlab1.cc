@@ -71,7 +71,7 @@ usleep(unsigned int usec)
  HANDLE timer;
  LARGE_INTEGER ft;
 
- ft.QuadPart = -(10 * (__int64)usec);
+ ft.QuadPart = -(10 * (__int64) usec);
 
  timer = CreateWaitableTimer (NULL, TRUE, NULL);
  SetWaitableTimer (timer, &ft, 0, NULL, NULL, 0);
@@ -1887,9 +1887,37 @@ CPWindow1::SetToDestroy(void)
  settodestroy = 1;
 }
 
+void
+CPWindow1::RegisterError(const lxString error)
+{
+ Errors.AddLine (error);
+}
+
+void
+CPWindow1::SetSimulationRun(int run)
+{
+ if (run)
+  {
+   Window1.status.st[0] &= ~ST_DI;
+  }
+ else
+  {
+   Window1.status.st[0] |= ST_DI;
+  }
+}
+
+int
+CPWindow1::GetSimulationRun(void)
+{
+ return (Window1.status.st[0] & ST_DI) > 0;
+}
+
+
+//emscripten interface
 
 extern "C"
 {
+
  void
  file_ready(const char *fname, const char * dir)
  {
@@ -1938,11 +1966,6 @@ extern "C"
     printf ("PICSimLab: Unknow file type %s !!\n", fname);
    }
  }
-}
-
-
-void
-CPWindow1::RegisterError(const lxString error)
-{
- Errors.AddLine (error);
+ 
+ 
 }

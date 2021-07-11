@@ -313,9 +313,10 @@ public:
     lxCondition * cpu_cond;
     lxMutex * cpu_mutex;
 #endif    
+    void SetSimulationRun(int run);
+    int GetSimulationRun(void);
 private:
     lxString share;
-
     int pa;
     int mcurun;
     int mcupwr;
@@ -327,7 +328,6 @@ private:
     unsigned short remotec_port;
     int osc_on;
     int spare_on;
-
     union {
         char st[2];
         unsigned short int status;

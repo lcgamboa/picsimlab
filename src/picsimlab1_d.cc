@@ -482,7 +482,6 @@ remotec_port=5000;
 osc_on= 0;
 spare_on= 0;
 status.status=0;
-
 lab=1;
 lab_=1;
 

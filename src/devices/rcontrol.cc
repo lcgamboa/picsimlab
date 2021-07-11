@@ -846,6 +846,7 @@ rcontrol_loop(void)
          ret += sendtext ("  quit         - exit remote control interface\r\n");
          ret += sendtext ("  reset        - reset the board\r\n");
          ret += sendtext ("  set ob vl    - set object with value\r\n");
+         ret += sendtext ("  sim [cmd]    - show simulation status or execute cmd start/stop\r\n");
          ret += sendtext ("  sync         - wait to syncronize with timer event\r\n");
          ret += sendtext ("  version      - show PICSimLab version\r\n");
 
@@ -1157,7 +1158,35 @@ rcontrol_loop(void)
           }
          return 0;
         }
-       if (!strcmp (cmd, "sync"))
+       else if (!strncmp (cmd, "sim", 3))
+        {
+         //Command sim =====================================================
+         Window1.SetSync (0);
+
+         if (strstr (cmd + 3, "stop"))
+          {
+           Window1.SetSimulationRun (0);
+           ret = sendtext ("Ok\r\n>");
+          }
+         else if (strstr (cmd + 3, "start"))
+          {
+           Window1.SetSimulationRun (1);
+           ret = sendtext ("Ok\r\n>");
+          }
+         else
+          {
+           if (Window1.GetSimulationRun ())
+            {
+             ret = sendtext ("Simulation stopped\r\nOk\r\n>");
+            }
+           else
+            {
+             ret = sendtext ("Simulation running\r\nOk\r\n>");
+            }
+          }
+
+        }
+       else if (!strcmp (cmd, "sync"))
         {
          //Command sync =====================================================
          Window1.SetSync (0);
