@@ -309,12 +309,13 @@ public:
     void RegisterError(const lxString error);
     void SetSync(unsigned char s){sync=s;};
     unsigned char GetSync(void){return sync;};
+    void SetSimulationRun(int run);
+    int GetSimulationRun(void);
+    void DrawBoard(void);
 #ifndef _NOTHREAD    
     lxCondition * cpu_cond;
     lxMutex * cpu_mutex;
 #endif    
-    void SetSimulationRun(int run);
-    int GetSimulationRun(void);
 private:
     lxString share;
     int pa;

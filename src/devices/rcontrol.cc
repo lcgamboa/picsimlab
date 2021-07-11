@@ -1177,11 +1177,11 @@ rcontrol_loop(void)
           {
            if (Window1.GetSimulationRun ())
             {
-             ret = sendtext ("Simulation stopped\r\nOk\r\n>");
+             ret = sendtext ("Simulation running\r\nOk\r\n>");
             }
            else
             {
-             ret = sendtext ("Simulation running\r\nOk\r\n>");
+             ret = sendtext ("Simulation stopped\r\nOk\r\n>");
             }
           }
 

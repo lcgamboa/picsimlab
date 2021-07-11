@@ -168,7 +168,14 @@ bsim_ucsim::DebugInit(int dtyppe) //argument not used in picm only mplabx
 int
 bsim_ucsim::MGetPinCount(void)
 {
- return pincount[procid];
+ if (procid != -1)
+  {
+   return pincount[procid];
+  }
+ else
+  {
+   return 0;
+  }
 }
 
 void

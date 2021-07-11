@@ -190,7 +190,16 @@ CPWindow1::timer1_EvOnTime(CControl * control)
    tgo = 1;
   }
 
- if (need_resize == 1)
+ DrawBoard ();
+
+ status.st[0] &= ~ST_T1;
+}
+
+void
+CPWindow1::DrawBoard(void)
+{
+
+ if (need_resize)
   {
    double scalex, scaley, scale_temp;
 
@@ -225,8 +234,11 @@ CPWindow1::timer1_EvOnTime(CControl * control)
      draw1.SetImgFileName (lxGetLocalFile (share + lxT ("boards/") + pboard->GetPictureFileName ()), scale, scale);
     }
 
-   pboard->SetScale (scale);
-   pboard->EvOnShow ();
+   if (pboard)
+    {
+     pboard->SetScale (scale);
+     pboard->EvOnShow ();
+    }
 
    if (osc_on)
     {
@@ -238,13 +250,13 @@ CPWindow1::timer1_EvOnTime(CControl * control)
      menu1_Modules_Spareparts_EvMenuActive (this);
      spare_on = 0;
     }
+   need_resize = 0;
   }
 
- need_resize++;
-
- pboard->Draw (&draw1);
-
- status.st[0] &= ~ST_T1;
+ if (pboard)
+  {
+   pboard->Draw (&draw1);
+  }
 }
 
 void
@@ -899,7 +911,7 @@ CPWindow1::EndSimulation(void)
  char home[1024];
  char fname[1280];
 
-
+ SetSimulationRun (1);
  Window4.Hide ();
  Window5.Hide ();
 #ifndef __EMSCRIPTEN__
@@ -1155,7 +1167,11 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
 void
 CPWindow1::_EvOnShow(CControl * control)
 {
- need_resize = 0;
+ need_resize = 1;
+ if (!GetSimulationRun ())
+  {
+   DrawBoard ();
+  }
 }
 
 void
@@ -1303,7 +1319,7 @@ CPWindow1::menu1_EvBoard(CControl * control)
  FNAME = lxT (" ");
  EndSimulation ();
  Configure (HOME);
- need_resize = 0;
+ need_resize = 1;
 }
 
 //change microcontroller
@@ -1319,7 +1335,7 @@ CPWindow1::menu1_EvMicrocontroller(CControl * control)
  FNAME = lxT (" ");
  EndSimulation ();
  Configure (HOME);
- need_resize = 0;
+ need_resize = 1;
 }
 
 void
@@ -1332,7 +1348,7 @@ CPWindow1::togglebutton1_EvOnToggleButton(CControl * control)
 
  EndSimulation ();
  Configure (HOME);
- need_resize = 0;
+ need_resize = 1;
 
  if (osc_on) menu1_Modules_Oscilloscope_EvMenuActive (this);
  if (spare_on) menu1_Modules_Spareparts_EvMenuActive (this);
@@ -1565,7 +1581,7 @@ CPWindow1::LoadWorkspace(lxString fnpzw)
 
  Configure (home);
 
- need_resize = 0;
+ need_resize = 1;
 
 #ifdef CONVERTER_MODE
  fnpzw.replace (fnpzw.Length () - 4, 5, "_.pzw");
@@ -1909,7 +1925,7 @@ CPWindow1::SetSimulationRun(int run)
 int
 CPWindow1::GetSimulationRun(void)
 {
- return (Window1.status.st[0] & ST_DI) > 0;
+ return (Window1.status.st[0] & ST_DI) == 0;
 }
 
 
@@ -1966,6 +1982,6 @@ extern "C"
     printf ("PICSimLab: Unknow file type %s !!\n", fname);
    }
  }
- 
- 
+
+
 }
