@@ -153,6 +153,7 @@ mpu6050_set_accel(mpu6050_t *mpu, double x, double y, double z)
  switch ((mpu->regs[ACCEL_CONFIG]&0x18) >> 3)
   {
   case 0: //2g
+  default: 
    sens = 16384;
    break;
   case 1: //4g
@@ -186,6 +187,7 @@ mpu6050_set_gyro(mpu6050_t *mpu, double x, double y, double z)
  switch ((mpu->regs[GYRO_CONFIG]&0x18) >> 3)
   {
   case 0: //250g/s
+  default:
    sens = 131;
    break;
   case 1: //500g/s

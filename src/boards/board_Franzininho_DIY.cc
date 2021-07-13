@@ -27,7 +27,7 @@
 #include"../picsimlab1.h"
 #include"../picsimlab4.h" //Oscilloscope
 #include"../picsimlab5.h" //Spare Parts
-#include"board_Franzininho.h"
+#include"board_Franzininho_DIY.h"
 
 /* ids of inputs of input map*/
 enum
@@ -59,7 +59,7 @@ enum
 //return the input ids numbers of names used in input map
 
 unsigned short
-cboard_Franzininho::get_in_id(char * name)
+cboard_Franzininho_DIY::get_in_id(char * name)
 {
  if (strcmp (name, "PG_ICSP") == 0)return I_ICSP;
  if (strcmp (name, "SW_PWR") == 0)return I_PWR;
@@ -72,7 +72,7 @@ cboard_Franzininho::get_in_id(char * name)
 //return the output ids numbers of names used in output map
 
 unsigned short
-cboard_Franzininho::get_out_id(char * name)
+cboard_Franzininho_DIY::get_out_id(char * name)
 {
 
  if (strcmp (name, "LD_L") == 0)return O_L;
@@ -97,7 +97,7 @@ cboard_Franzininho::get_out_id(char * name)
 
 //Constructor called once on board creation
 
-cboard_Franzininho::cboard_Franzininho(void)
+cboard_Franzininho_DIY::cboard_Franzininho_DIY(void)
 {
 
  Proc = "attiny85"; //default microcontroller if none defined in preferences
@@ -107,12 +107,12 @@ cboard_Franzininho::cboard_Franzininho(void)
 
 //Destructor called once on board destruction
 
-cboard_Franzininho::~cboard_Franzininho(void) { }
+cboard_Franzininho_DIY::~cboard_Franzininho_DIY(void) { }
 
 //Reset board status
 
 void
-cboard_Franzininho::Reset(void)
+cboard_Franzininho_DIY::Reset(void)
 {
 
  avr_reset (avr);
@@ -125,7 +125,7 @@ cboard_Franzininho::Reset(void)
 }
 
 void
-cboard_Franzininho::RegisterRemoteControl(void)
+cboard_Franzininho_DIY::RegisterRemoteControl(void)
 {
  output_ids[O_L]->status = &pins[5].oavalue;
 }
@@ -133,7 +133,7 @@ cboard_Franzininho::RegisterRemoteControl(void)
 //Called ever 1s to refresh status
 
 void
-cboard_Franzininho::RefreshStatus(void)
+cboard_Franzininho_DIY::RefreshStatus(void)
 {
  if (avr)
   {
@@ -162,25 +162,25 @@ cboard_Franzininho::RefreshStatus(void)
 //Called to save board preferences in configuration file
 
 void
-cboard_Franzininho::WritePreferences(void)
+cboard_Franzininho_DIY::WritePreferences(void)
 {
  //write selected microcontroller of board_x to preferences
- Window1.saveprefs (lxT ("Franzininho_proc"), Proc);
- Window1.saveprefs (lxT ("Franzininho_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
+ Window1.saveprefs (lxT ("Franzininho_DIY_proc"), Proc);
+ Window1.saveprefs (lxT ("Franzininho_DIY_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
 }
 
 //Called whe configuration file load  preferences
 
 void
-cboard_Franzininho::ReadPreferences(char *name, char *value)
+cboard_Franzininho_DIY::ReadPreferences(char *name, char *value)
 {
  //read microcontroller of preferences
- if (!strcmp (name, "Franzininho_proc"))
+ if (!strcmp (name, "Franzininho_DIY_proc"))
   {
    Proc = value;
   }
 
- if (!strcmp (name, "Franzininho_clock"))
+ if (!strcmp (name, "Franzininho_DIY_clock"))
   {
    Window1.SetClock (atof (value));
   }
@@ -190,17 +190,17 @@ cboard_Franzininho::ReadPreferences(char *name, char *value)
 //Event on the board
 
 void
-cboard_Franzininho::EvKeyPress(uint key, uint mask) { }
+cboard_Franzininho_DIY::EvKeyPress(uint key, uint mask) { }
 
 //Event on the board
 
 void
-cboard_Franzininho::EvKeyRelease(uint key, uint mask) { }
+cboard_Franzininho_DIY::EvKeyRelease(uint key, uint mask) { }
 
 //Event on the board
 
 void
-cboard_Franzininho::EvMouseButtonPress(uint button, uint x, uint y, uint state)
+cboard_Franzininho_DIY::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
 
  int i;
@@ -255,7 +255,7 @@ cboard_Franzininho::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 //Event on the board
 
 void
-cboard_Franzininho::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
+cboard_Franzininho_DIY::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
 {
  int i;
 
@@ -292,7 +292,7 @@ cboard_Franzininho::EvMouseButtonRelease(uint button, uint x, uint y, uint state
 //This is the critical code for simulator running speed
 
 void
-cboard_Franzininho::Draw(CDraw *draw)
+cboard_Franzininho_DIY::Draw(CDraw *draw)
 {
  int i;
  int update = 0; //verifiy if updated is needed
@@ -410,7 +410,7 @@ cboard_Franzininho::Draw(CDraw *draw)
 }
 
 void
-cboard_Franzininho::Run_CPU(void)
+cboard_Franzininho_DIY::Run_CPU(void)
 {
 
  int i;
@@ -470,7 +470,7 @@ cboard_Franzininho::Run_CPU(void)
  //calculate mean value
  for (pi = 0; pi < MGetPinCount (); pi++)
   {
-   cboard_Franzininho::pins[pi].oavalue = (int) (((200.0 * alm[pi]) / NSTEP) + 55);
+   cboard_Franzininho_DIY::pins[pi].oavalue = (int) (((200.0 * alm[pi]) / NSTEP) + 55);
   }
 
  if (use_spare)Window5.PostProcess ();
@@ -522,5 +522,5 @@ cboard_Franzininho::Run_CPU(void)
 }
 
 
-board_init(BOARD_Franzininho_Name, cboard_Franzininho);
+board_init(BOARD_Franzininho_DIY_Name, cboard_Franzininho_DIY);
 

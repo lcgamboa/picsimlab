@@ -23,17 +23,17 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_Franzininho_H
-#define	BOARD_Franzininho_H
+#ifndef BOARD_Franzininho_DIY_H
+#define	BOARD_Franzininho_DIY_H
 
 #include<lxrad.h>
 
 #include "bsim_simavr.h"
 
-#define	BOARD_Franzininho_Name "Franzininho"
+#define	BOARD_Franzininho_DIY_Name "Franzininho DIY"
 
 //new board class must be derived from board class defined in board.h
-class cboard_Franzininho:public bsim_simavr
+class cboard_Franzininho_DIY:public bsim_simavr
 {
   private:
 /*
@@ -58,12 +58,12 @@ class cboard_Franzininho:public bsim_simavr
      lxColor color2;
    public:
       //Return the board name
-      lxString GetName(void) {return lxT(BOARD_Franzininho_Name); };
+      lxString GetName(void) {return lxT(BOARD_Franzininho_DIY_Name); };
       lxString GetAboutInfo(void){return lxT("Fábio Souza e Felipe Alvares\n <contato@franzininho.com.br>\n https://franzininho.com.br/");};
       //Constructor called once on board creation
-      cboard_Franzininho(void);
+      cboard_Franzininho_DIY(void);
       //Destructor called once on board destruction
-      ~cboard_Franzininho(void);
+      ~cboard_Franzininho_DIY(void);
       //Called ever 100ms to draw board
       void Draw(CDraw *draw);
       void Run_CPU(void);
@@ -91,5 +91,5 @@ class cboard_Franzininho:public bsim_simavr
       unsigned short get_out_id(char * name);
 };
 
-#endif	/* BOARD_Franzininho_H */
+#endif	/* BOARD_Franzininho_DIY_H */
 
