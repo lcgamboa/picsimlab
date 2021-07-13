@@ -619,6 +619,10 @@ CPWindow1::Configure(const char * home, int use_default_board, int create)
             }
            lab = i;
            lab_ = i;
+           if (lab == BOARDS_LAST)
+            {
+             RegisterError (lxString ("Invalid board ") + value + "!\n Using default board!");
+            }
           }
 
          pboard = create_board (&lab, &lab_);

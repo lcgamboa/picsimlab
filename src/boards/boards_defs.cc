@@ -43,7 +43,7 @@ create_board(int *lab, int *lab_)
   }
  else
   {
-   mprint (lxT ("Invalid Board! Using Default!\n"));
+   mprint (lxT ("PICSimLab: Invalid board! Using default!\n"));
    *lab = 0; //default  
    *lab_ = 0; //default  
    pboard = boards_list[0].bcreate ();
