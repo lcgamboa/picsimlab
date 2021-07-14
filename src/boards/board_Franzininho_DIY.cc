@@ -454,6 +454,14 @@ cboard_Franzininho_DIY::Run_CPU(void)
          {
           twostep = 1;
          }
+
+        //TinyDebug support
+        if (avr->data[TDDR])
+         {
+          printf ("%c", avr->data[TDDR]);
+          serial_port_send (serialfd, avr->data[TDDR]);
+          avr->data[TDDR] = 0;
+         }
        }
      }
 
@@ -521,6 +529,40 @@ cboard_Franzininho_DIY::Run_CPU(void)
 
 }
 
+void
+cboard_Franzininho_DIY::UpdateHardware(void)
+{
+
+ if (avr->data[TDCR] & 0x01)//Enabled
+  {
+   //static int cont = 0;
+   //unsigned char c;
+   //cont++;
+
+   if (!uart_config)
+    {
+     uart_config = 1;
+     serialbaud = 115200;
+     serialbaud = serial_port_cfg (serialfd, serialexbaud);
+    }
+   /*
+    if (cont > 1000)
+     {
+      cont = 0;
+
+      if (serial_port_rec (serialfd, &c))
+       {
+        avr->data[TDDR] = c;
+        avr->data[TDCR] |= (1 << 4);
+       }
+     }
+    */
+  }
+ else
+  {
+   uart_config = 0;
+  }
+}
 
 board_init(BOARD_Franzininho_DIY_Name, cboard_Franzininho_DIY);
 

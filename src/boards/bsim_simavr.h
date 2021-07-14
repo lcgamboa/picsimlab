@@ -66,7 +66,7 @@ class bsim_simavr: virtual public board
       void MSetAPin(int pin, float value);
       unsigned char MGetPin(int pin);  
       const picpin * MGetPinsValues(void); 
-      void UpdateHardware(void);
+      virtual void UpdateHardware(void);
       void MStep(void);
       void MStepResume(void);
       int DBGTestBP(unsigned int bp);
@@ -111,6 +111,7 @@ class bsim_simavr: virtual public board
       serialfd_t  serialfd;    
       bitbang_uart_t bb_uart;  
       unsigned char * eeprom;
+      unsigned char uart_config;
  private:
       int parse_hex(char *line,int bytes);
       unsigned char checksum(char* str);
@@ -119,7 +120,6 @@ class bsim_simavr: virtual public board
       
       unsigned char pin_rx;
       unsigned char pin_tx;
-      unsigned char uart_config;
 };
 
 #define UCSR0A 0XC0
