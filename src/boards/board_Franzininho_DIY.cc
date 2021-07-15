@@ -418,8 +418,9 @@ cboard_Franzininho_DIY::Run_CPU(void)
  const picpin *pins;
  unsigned int alm[40];
 
- int pinc = MGetPinCount ();
- long int NSTEP = 4.0 * Window1.GetNSTEP () / pinc; //number of steps in 100ms
+ const int pinc = MGetPinCount ();
+ const long int NSTEP = 4.0 * Window1.GetNSTEP (); //number of steps in 100ms
+ const float RNSTEP = 200.0 * pinc / NSTEP;
 
  long long unsigned int cycle_start;
  int twostep = 0;
@@ -436,7 +437,7 @@ cboard_Franzininho_DIY::Run_CPU(void)
  if (use_spare)Window5.PreProcess ();
 
  if (Window1.Get_mcupwr ()) //if powered
-  for (i = 0; i < (Window1.GetNSTEP ()*4); i++) //repeat for number of steps in 100ms
+  for (i = 0; i < NSTEP; i++) //repeat for number of steps in 100ms
    {
 
     //verify if a breakpoint is reached if not run one instruction
@@ -454,7 +455,6 @@ cboard_Franzininho_DIY::Run_CPU(void)
          {
           twostep = 1;
          }
-
         //TinyDebug support
         if (avr->data[TDDR])
          {
@@ -478,7 +478,7 @@ cboard_Franzininho_DIY::Run_CPU(void)
  //calculate mean value
  for (pi = 0; pi < MGetPinCount (); pi++)
   {
-   cboard_Franzininho_DIY::pins[pi].oavalue = (int) (((200.0 * alm[pi]) / NSTEP) + 55);
+   cboard_Franzininho_DIY::pins[pi].oavalue = (int) ((alm[pi] * RNSTEP) + 55);
   }
 
  if (use_spare)Window5.PostProcess ();

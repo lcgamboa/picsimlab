@@ -84,7 +84,7 @@ font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  Proc = "pic16f628a"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
  lxImage image (&Window1);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/ic40.svg")), 0, Scale, Scale, 1);
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("boards/Common/ic40.svg")), 0, Scale, Scale, 1);
  micbmp = new lxBitmap (&image, &Window1);
  serialfd = INVALID_HANDLE_VALUE;
 }
@@ -325,14 +325,14 @@ void
 cboard_gpboard::Run_CPU(void)
 {
  int i;
- int j;
+ //int j;
  unsigned char pi;
  unsigned int alm[64];
- int pinc = MGetPinCount ();
+ const int pinc = MGetPinCount ();
 
- int JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
- long int NSTEP = Window1.GetNSTEP () / pinc; //number of steps in 100ms
-
+ //const int JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
+ const long int NSTEP = Window1.GetNSTEP (); //number of steps in 100ms
+ const float RNSTEP = 200.0 * pinc / NSTEP;
 
  //reset pins mean value
  memset (alm, 0, 64 * sizeof (unsigned int));
@@ -341,7 +341,7 @@ cboard_gpboard::Run_CPU(void)
  //Spare parts window pre process
  if (use_spare)Window5.PreProcess ();
 
- j = JUMPSTEPS; //step counter
+ //j = JUMPSTEPS; //step counter
  if (Window1.Get_mcupwr ()) //if powered
   for (i = 0; i < Window1.GetNSTEP (); i++) //repeat for number of steps in 100ms
    {
@@ -360,19 +360,20 @@ cboard_gpboard::Run_CPU(void)
 
     //increment mean value counter if pin is high
     alm[i % pinc] += pins[i % pinc].value;
+    /*
+     if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
+      {
+       j = -1; //reset counter
+      }
 
-    if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
-     {
-      j = -1; //reset counter
-     }
-
-    j++; //counter increment
+     j++; //counter increment
+     */
    }
 
  //calculate mean value
  for (pi = 0; pi < MGetPinCount (); pi++)
   {
-   pins[pi].oavalue = (int) (((200.0 * alm[pi]) / NSTEP) + 55);
+   pins[pi].oavalue = (int) ((alm[pi] * RNSTEP) + 55);
   }
 
  //Spare parts window pre post process
@@ -395,9 +396,9 @@ cboard_gpboard::MInit(const char * processor, const char * fname, float freq)
 
  lxImage image (&Window1);
 
- if (!image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg")), 0, Scale, Scale, 1))
+ if (!image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg")), 0, Scale, Scale, 1))
   {
-   image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/ic6.svg")), 0, Scale, Scale, 1);
+   image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("boards/Common/ic6.svg")), 0, Scale, Scale, 1);
    printf ("picsimlab: IC package with %i pins not found!\n", MGetPinCount ());
    printf ("picsimlab: %s not found!\n", (const char *) (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg")).c_str ());
   }
@@ -420,9 +421,9 @@ cboard_gpboard::SetScale(double scale)
 
  lxImage image (&Window1);
 
- if (!image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg")), 0, Scale, Scale, 1))
+ if (!image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg")), 0, Scale, Scale, 1))
   {
-   image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/ic6.svg")), 0, Scale, Scale, 1);
+   image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("boards/Common/ic6.svg")), 0, Scale, Scale, 1);
    printf ("picsimlab: IC package with %i pins not found!\n", MGetPinCount ());
    printf ("picsimlab: %s not found!\n", (const char *) (Window1.GetSharePath () + lxT ("boards/Common/ic") + itoa (MGetPinCount ()) + lxT (".svg")).c_str ());
   }

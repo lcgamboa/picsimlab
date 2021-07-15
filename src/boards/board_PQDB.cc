@@ -389,9 +389,10 @@ cboard_PQDB::Run_CPU(void)
 
  float alm7seg[32]; //luminosidade media display 7 seg
 
- int JUMPSTEPS = Window1.GetJUMPSTEPS ();
- long int NSTEP = Window1.GetNSTEP () / pic.PINCOUNT;
-
+ const int JUMPSTEPS = Window1.GetJUMPSTEPS ();
+ const long int NSTEP = Window1.GetNSTEP ();
+ const float RNSTEP = 200.0 * pic.PINCOUNT / NSTEP;
+ 
  if (use_spare) Window5.PreProcess ();
 
  memset (alm7seg, 0, 32 * sizeof (unsigned int));
@@ -406,7 +407,7 @@ cboard_PQDB::Run_CPU(void)
 
  if (Window1.Get_mcupwr ())
   {
-   for (i = 0; i < Window1.GetNSTEP (); i++)
+   for (i = 0; i < NSTEP; i++)
     {
      if (j >= JUMPSTEPS)
       {
@@ -583,11 +584,11 @@ cboard_PQDB::Run_CPU(void)
     }
    else
     {
-     pic.pins[i].oavalue = (int) (((200.0 * alm[i]) / NSTEP) + 55);
+     pic.pins[i].oavalue = (int) ((alm[i]*RNSTEP) + 55);
     }
   }
 
- long int NSTEPJ = Window1.GetNSTEPJ ();
+ const long int NSTEPJ = Window1.GetNSTEPJ ();
 
  for (i = 0; i < 32; i++)
   {

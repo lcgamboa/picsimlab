@@ -101,14 +101,14 @@ font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  sound_on = 0;
 
  lxImage image (&Window1);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/VT1.svg")));
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("boards/Common/VT1.svg")));
  vent[0] = new lxBitmap (&image, &Window1);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/VT2.svg")));
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("boards/Common/VT2.svg")));
  vent[1] = new lxBitmap (&image, &Window1);
 
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/lcd2.svg")));
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("boards/Common/lcd2.svg")));
  lcdbmp[0] = new lxBitmap (&image, &Window1);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/lcd4.svg")));
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("boards/Common/lcd4.svg")));
  lcdbmp[1] = new lxBitmap (&image, &Window1);
 
  image.Destroy ();
@@ -793,9 +793,10 @@ cboard_PICGenios::Run_CPU(void)
  unsigned int alm3[40]; //luminosidade media display
  unsigned int alm4[40]; //luminosidade media display
 
- int JUMPSTEPS = Window1.GetJUMPSTEPS ();
- long int NSTEPJ = Window1.GetNSTEPJ ();
- long int NSTEP = Window1.GetNSTEP () / pic.PINCOUNT;
+ const int JUMPSTEPS = Window1.GetJUMPSTEPS ();
+ const long int NSTEPJ = Window1.GetNSTEPJ ();
+ const long int NSTEP = Window1.GetNSTEP ();
+ const float RNSTEP = 200.0 * pic.PINCOUNT / NSTEP;
 
  if (use_spare)Window5.PreProcess ();
 
@@ -811,7 +812,7 @@ cboard_PICGenios::Run_CPU(void)
  j = JUMPSTEPS;
 
  if (Window1.Get_mcupwr ())
-  for (i = 0; i < Window1.GetNSTEP (); i++)
+  for (i = 0; i < NSTEP; i++)
    {
 
     if (j >= JUMPSTEPS)
@@ -1031,7 +1032,7 @@ cboard_PICGenios::Run_CPU(void)
    if (pic.pins[i].port == P_VDD)
     pic.pins[i].oavalue = 255;
    else
-    pic.pins[i].oavalue = (int) (((200.0 * alm[i]) / NSTEP) + 55);
+    pic.pins[i].oavalue = (int) ((alm[i] * RNSTEP) + 55);
 
    lm1[i] = (int) (((600.0 * alm1[i]) / NSTEPJ) + 55);
    lm2[i] = (int) (((600.0 * alm2[i]) / NSTEPJ) + 55);

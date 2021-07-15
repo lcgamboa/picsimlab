@@ -311,14 +311,14 @@ void
 cboard_Blue_Pill::Run_CPU(void)
 {
  int i;
- int j;
+ //int j;
  unsigned char pi;
  unsigned int alm[64];
- int pinc = MGetPinCount ();
+ const int pinc = MGetPinCount ();
 
- int JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
- long int NSTEP = Window1.GetNSTEP () / pinc; //number of steps in 100ms
-
+ //const int JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
+ const long int NSTEP = Window1.GetNSTEP (); //number of steps in 100ms
+ const float RNSTEP = 200.0 * pinc / NSTEP;
 
  //reset pins mean value
  memset (alm, 0, 64 * sizeof (unsigned int));
@@ -327,9 +327,9 @@ cboard_Blue_Pill::Run_CPU(void)
  //Spare parts window pre process
  if (use_spare)Window5.PreProcess ();
 
- j = JUMPSTEPS; //step counter
+ //j = JUMPSTEPS; //step counter
  if (Window1.Get_mcupwr ()) //if powered
-  for (i = 0; i < Window1.GetNSTEP (); i++) //repeat for number of steps in 100ms
+  for (i = 0; i < NSTEP; i++) //repeat for number of steps in 100ms
    {
 
     /*
@@ -346,19 +346,20 @@ cboard_Blue_Pill::Run_CPU(void)
 
     //increment mean value counter if pin is high
     alm[i % pinc] += pins[i % pinc].value;
-
+/*
     if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
      {
       j = -1; //reset counter
      }
 
     j++; //counter increment
+ */ 
    }
 
  //calculate mean value
  for (pi = 0; pi < MGetPinCount (); pi++)
   {
-   pins[pi].oavalue = (int) (((200.0 * alm[pi]) / NSTEP) + 55);
+   pins[pi].oavalue = (int) ((alm[pi] * RNSTEP) + 55);
   }
 
  //Spare parts window pre post process

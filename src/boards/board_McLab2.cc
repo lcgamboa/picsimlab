@@ -159,9 +159,9 @@ font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  active = 0;
 
  lxImage image (&Window1);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/VT1.svg")));
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("boards/Common/VT1.svg")));
  vent[0] = new lxBitmap (&image, &Window1);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/VT2.svg")));
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("boards/Common/VT2.svg")));
  vent[1] = new lxBitmap (&image, &Window1);
 
  image.Destroy ();
@@ -663,8 +663,10 @@ cboard_McLab2::Run_CPU(void)
  unsigned int alm4[40]; //luminosidade media display     
 
 
- int JUMPSTEPS = Window1.GetJUMPSTEPS ();
- long int NSTEPJ = Window1.GetNSTEPJ ();
+ const int JUMPSTEPS = Window1.GetJUMPSTEPS ();
+ const long int NSTEPJ = Window1.GetNSTEPJ ();
+ const long int NSTEP = Window1.GetNSTEP ();
+ const float RNSTEP = 200.0 * pic.PINCOUNT / NSTEP;
 
  memset (alm, 0, 40 * sizeof (unsigned int));
  memset (alm1, 0, 40 * sizeof (unsigned int));
@@ -678,7 +680,7 @@ cboard_McLab2::Run_CPU(void)
 
  j = JUMPSTEPS;
  if (Window1.Get_mcupwr ())
-  for (i = 0; i < Window1.GetNSTEP (); i++)
+  for (i = 0; i < NSTEP; i++)
    {
 
 
@@ -803,7 +805,7 @@ cboard_McLab2::Run_CPU(void)
    if (pic.pins[pi].port == P_VDD)
     pic.pins[pi].oavalue = 255;
    else
-    pic.pins[pi].oavalue = (int) (((200.0 * alm[pi]) / (Window1.GetNSTEP () / pic.PINCOUNT)) + 55);
+    pic.pins[pi].oavalue = (int) ((alm[pi] * RNSTEP) + 55);
 
    lm1[pi] = (int) (((600.0 * alm1[pi]) / NSTEPJ) + 30);
    lm2[pi] = (int) (((600.0 * alm2[pi]) / NSTEPJ) + 30);

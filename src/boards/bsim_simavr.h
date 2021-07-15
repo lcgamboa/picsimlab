@@ -112,6 +112,7 @@ class bsim_simavr: virtual public board
       bitbang_uart_t bb_uart;  
       unsigned char * eeprom;
       unsigned char uart_config;
+      unsigned char has_usart;
  private:
       int parse_hex(char *line,int bytes);
       unsigned char checksum(char* str);

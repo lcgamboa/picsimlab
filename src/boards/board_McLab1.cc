@@ -387,8 +387,10 @@ cboard_McLab1::Run_CPU(void)
  unsigned int alm2[18]; //luminosidade media display
 
 
- int JUMPSTEPS = Window1.GetJUMPSTEPS ();
- long int NSTEPJ = Window1.GetNSTEPJ ();
+ const int JUMPSTEPS = Window1.GetJUMPSTEPS ();
+ const long int NSTEPJ = Window1.GetNSTEPJ ();
+ const long int NSTEP = Window1.GetNSTEP ();
+ const float RNSTEP = 200.0 * pic.PINCOUNT / NSTEP;
 
  memset (alm, 0, 18 * sizeof (unsigned int));
  memset (alm1, 0, 18 * sizeof (unsigned int));
@@ -401,7 +403,7 @@ cboard_McLab1::Run_CPU(void)
 
  j = JUMPSTEPS;
  if (Window1.Get_mcupwr ())
-  for (i = 0; i < Window1.GetNSTEP (); i++)
+  for (i = 0; i < NSTEP; i++)
    {
     if (j >= JUMPSTEPS)
      {
@@ -444,7 +446,7 @@ cboard_McLab1::Run_CPU(void)
 
  for (i = 0; i < pic.PINCOUNT; i++)
   {
-   pic.pins[i].oavalue = (int) (((200.0 * alm[i]) / (Window1.GetNSTEP () / pic.PINCOUNT)) + 55);
+   pic.pins[i].oavalue = (int) ((alm[i] * RNSTEP) + 55);
    lm1[i] = (int) (((600.0 * alm1[i]) / NSTEPJ) + 30);
    lm2[i] = (int) (((600.0 * alm2[i]) / NSTEPJ) + 30);
    if (lm1[i] > 255)lm1[i] = 255;

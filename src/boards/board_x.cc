@@ -215,12 +215,12 @@ cboard_x::RegisterRemoteControl(void)
  input_ids[I_BD0]->status = &p_BT1;
  input_ids[I_SD1]->status = &p_BT2;
  input_ids[I_POT1]->status = &pot1;
- 
+
  //register output to be updated on input change
  input_ids[I_BD0]->update = &output_ids[O_BD0]->update;
  input_ids[I_SD1]->update = &output_ids[O_SD1]->update;
  input_ids[I_POT1]->update = &output_ids[O_POT1]->update;
- 
+
  //register outputa
  output_ids[O_RB0]->status = &pic.pins[32].oavalue;
  output_ids[O_RB1]->status = &pic.pins[33].oavalue;
@@ -642,9 +642,9 @@ cboard_x::Run_CPU(void)
  const picpin * pins;
  unsigned int alm[40];
 
- int JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
- long int NSTEP = Window1.GetNSTEP () / MGetPinCount (); //number of steps in 100ms
-
+ const int JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
+ const long int NSTEP = Window1.GetNSTEP (); //number of steps in 100ms
+ const float RNSTEP = 200.0 * pic.PINCOUNT / NSTEP;
 
  //reset pins mean value
  memset (alm, 0, 40 * sizeof (unsigned int));
@@ -657,7 +657,7 @@ cboard_x::Run_CPU(void)
 
  j = JUMPSTEPS; //step counter
  if (Window1.Get_mcupwr ()) //if powered
-  for (i = 0; i < Window1.GetNSTEP (); i++) //repeat for number of steps in 100ms
+  for (i = 0; i < NSTEP; i++) //repeat for number of steps in 100ms
    {
 
     if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
@@ -691,7 +691,7 @@ cboard_x::Run_CPU(void)
  //calculate mean value
  for (pi = 0; pi < pic.PINCOUNT; pi++)
   {
-   pic.pins[pi].oavalue = (int) (((200.0 * alm[pi]) / NSTEP) + 55);
+   pic.pins[pi].oavalue = (int) ((alm[pi] * RNSTEP) + 55);
   }
 
  //Spare parts window pre post process

@@ -352,11 +352,11 @@ cboard_STM32_H103::Run_CPU(void)
  int j;
  unsigned char pi;
  unsigned int alm[64];
- int pinc = MGetPinCount ();
+ const int pinc = MGetPinCount ();
 
- int JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
- long int NSTEP = Window1.GetNSTEP () / pinc; //number of steps in 100ms
-
+ const int JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
+ const long int NSTEP = Window1.GetNSTEP (); //number of steps in 100ms
+ const float RNSTEP = 200.0 * pinc / NSTEP;
 
  //reset pins mean value
  memset (alm, 0, 64 * sizeof (unsigned int));
@@ -367,7 +367,7 @@ cboard_STM32_H103::Run_CPU(void)
 
  j = JUMPSTEPS; //step counter
  if (Window1.Get_mcupwr ()) //if powered
-  for (i = 0; i < Window1.GetNSTEP (); i++) //repeat for number of steps in 100ms
+  for (i = 0; i < NSTEP; i++) //repeat for number of steps in 100ms
    {
 
 
@@ -397,7 +397,7 @@ cboard_STM32_H103::Run_CPU(void)
  //calculate mean value
  for (pi = 0; pi < MGetPinCount (); pi++)
   {
-   pins[pi].oavalue = (int) (((200.0 * alm[pi]) / NSTEP) + 55);
+   pins[pi].oavalue = (int) ((alm[pi] * RNSTEP) + 55);
   }
 
  //Spare parts window pre post process

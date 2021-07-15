@@ -578,14 +578,15 @@ cboard_Arduino_Uno::Run_CPU(void)
 {
 
  int i;
- int j;
+ //int j;
  unsigned char pi;
  const picpin *pins;
  unsigned int alm[40];
 
- int JUMPSTEPS = Window1.GetJUMPSTEPS ()*4.0; //number of steps skipped
- int pinc = MGetPinCount ();
- long int NSTEP = 4.0 * Window1.GetNSTEP () / pinc; //number of steps in 100ms
+ //int JUMPSTEPS = Window1.GetJUMPSTEPS ()*4.0; //number of steps skipped
+ const int pinc = MGetPinCount ();
+ const long int NSTEP = 4.0 * Window1.GetNSTEP (); //number of steps in 100ms
+ const float RNSTEP = 200.0 * pinc / NSTEP;
 
  long long unsigned int cycle_start;
  int twostep = 0;
@@ -601,9 +602,9 @@ cboard_Arduino_Uno::Run_CPU(void)
 
  if (use_spare)Window5.PreProcess ();
 
- j = JUMPSTEPS; //step counter
+ //j = JUMPSTEPS; //step counter
  if (Window1.Get_mcupwr ()) //if powered
-  for (i = 0; i < (Window1.GetNSTEP ()*4); i++) //repeat for number of steps in 100ms
+  for (i = 0; i < NSTEP; i++) //repeat for number of steps in 100ms
    {
 
     //verify if a breakpoint is reached if not run one instruction   
@@ -633,22 +634,23 @@ cboard_Arduino_Uno::Run_CPU(void)
 
     //increment mean value counter if pin is high
     alm[i % pinc] += pins[i % pinc].value;
+    /*
+        if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
+         {
+          //set analog pin 2 (AN0) with value from scroll  
+          //pic_set_apin(2,((5.0*(scroll1->GetPosition()))/
+          //  (scroll1->GetRange()-1)));
 
-    if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
-     {
-      //set analog pin 2 (AN0) with value from scroll  
-      //pic_set_apin(2,((5.0*(scroll1->GetPosition()))/
-      //  (scroll1->GetRange()-1)));
-
-      j = -1; //reset counter
-     }
-    j++; //counter increment   
+          j = -1; //reset counter
+         }
+        j++; //counter increment   
+     */
    }
 
  //calculate mean value
  for (pi = 0; pi < MGetPinCount (); pi++)
   {
-   cboard_Arduino_Uno::pins[pi].oavalue = (int) (((200.0 * alm[pi]) / NSTEP) + 55);
+   cboard_Arduino_Uno::pins[pi].oavalue = (int) ((alm[pi] * RNSTEP) + 55);
   }
 
  if (use_spare)Window5.PostProcess ();

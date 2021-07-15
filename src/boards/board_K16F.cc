@@ -263,8 +263,9 @@ cboard_K16F::Run_CPU(void)
  unsigned int alm[18]; //luminosidade media
 
 
- int JUMPSTEPS = Window1.GetJUMPSTEPS ();
- long int NSTEP = Window1.GetNSTEP () / pic.PINCOUNT;
+ const int JUMPSTEPS = Window1.GetJUMPSTEPS ();
+ const long int NSTEP = Window1.GetNSTEP ();
+ const float RNSTEP = 200.0 * pic.PINCOUNT / NSTEP;
 
  pins = pic.pins;
 
@@ -274,7 +275,7 @@ cboard_K16F::Run_CPU(void)
 
  j = JUMPSTEPS;
  if (Window1.Get_mcupwr ())
-  for (i = 0; i < Window1.GetNSTEP (); i++)
+  for (i = 0; i < NSTEP; i++)
    {
     if (j >= JUMPSTEPS)
      {
@@ -447,7 +448,7 @@ cboard_K16F::Run_CPU(void)
 
  for (pi = 0; pi < pic.PINCOUNT; pi++)
   {
-   pic.pins[pi].oavalue = (int) (((200.0 * alm[pi]) / NSTEP) + 55);
+   pic.pins[pi].oavalue = (int) ((alm[pi] * RNSTEP) + 55);
   }
 
  if (use_spare)Window5.PostProcess ();
