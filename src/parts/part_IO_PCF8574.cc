@@ -83,7 +83,7 @@ font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 
  lxImage image (&Window5);
 
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
 
 
  Bitmap = new lxBitmap (&image, &Window5);
@@ -379,6 +379,10 @@ cpart_IO_PCF8574::PreProcess(void)
 
  io_PCF8574_set_addr (&ioe8, addr);
 
+ if (input_pins[1] > 0)
+  {
+   Window5.Reset_i2c_bus (input_pins[1] - 1);
+  }
 }
 
 void

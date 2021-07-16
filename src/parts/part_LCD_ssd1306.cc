@@ -44,7 +44,7 @@ font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 
  lxImage image (&Window5);
 
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
@@ -267,6 +267,15 @@ cpart_LCD_ssd1306::ReadPropertiesWindow(CPWindow * WProp)
    type_com = 1;
   }
 
+}
+
+void
+cpart_LCD_ssd1306::PreProcess(void)
+{
+ if (input_pins[1] > 0)
+  {
+   Window5.Reset_i2c_bus (input_pins[1] - 1);
+  }
 }
 
 void

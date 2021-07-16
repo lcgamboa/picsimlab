@@ -507,27 +507,27 @@ part::GetHelpURL(void)
  //remove space from names
  while ((ptr = strchr (pname, ' ')))
   {
-   strcpy (ptr, ptr + 1);
+   memmove (ptr, ptr + 1, strlen (ptr) + 1);
   }
  //remove ( from names
  while ((ptr = strchr (pname, '(')))
   {
-   strcpy (ptr, ptr + 1);
+   memmove (ptr, ptr + 1, strlen (ptr) + 1);
   }
  //remove ) from names
  while ((ptr = strchr (pname, ')')))
   {
-   strcpy (ptr, ptr + 1);
+   memmove (ptr, ptr + 1, strlen (ptr) + 1);
   }
  //remove . from names
  while ((ptr = strchr (pname, '.')))
   {
-   strcpy (ptr, ptr + 1);
+   memmove (ptr, ptr + 1, strlen (ptr) + 1);
   }
  //remove - from names
  while ((ptr = strchr (pname, '-')))
   {
-   strcpy (ptr, ptr + 1);
+   memmove (ptr, ptr + 1, strlen (ptr) + 1);
   }
  
  lxString stemp;

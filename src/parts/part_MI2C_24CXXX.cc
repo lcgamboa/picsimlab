@@ -66,7 +66,7 @@ font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 
  lxImage image (&Window5);
 
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
@@ -352,6 +352,11 @@ cpart_MI2C_24CXXX::PreProcess(void)
   }
 
  mi2c_set_addr (&mi2c, addr);
+
+ if (input_pins[3] > 0)
+  {
+   Window5.Reset_i2c_bus (input_pins[3] - 1);
+  }
 }
 
 void

@@ -40,6 +40,7 @@ class cpart_LCD_ssd1306:public part
       cpart_LCD_ssd1306(unsigned x, unsigned y);
       ~cpart_LCD_ssd1306(void);
       void Draw(void);
+      void PreProcess(void);
       void Process(void);
       void PostProcess(void);
       void ConfigurePropertiesWindow(CPWindow *  WProp);

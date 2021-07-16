@@ -57,7 +57,7 @@ font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 
  lxImage image (&Window5);
 
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
 
 
  Bitmap = new lxBitmap (&image, &Window5);
@@ -231,6 +231,15 @@ cpart_RTC_ds1307::ReadPropertiesWindow(CPWindow * WProp)
  input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo5"))->GetText ());
  input_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo6"))->GetText ());
  input_pins[2] = atoi (((CCombo*) WProp->GetChildByName ("combo7"))->GetText ());
+}
+
+void
+cpart_RTC_ds1307::PreProcess(void)
+{
+ if (input_pins[0] > 0)
+  {
+   Window5.Reset_i2c_bus (input_pins[0] - 1);
+  }
 }
 
 void

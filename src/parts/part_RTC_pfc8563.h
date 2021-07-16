@@ -39,6 +39,7 @@ class cpart_RTC_pfc8563:public part
       cpart_RTC_pfc8563(unsigned x, unsigned y);
       ~cpart_RTC_pfc8563(void);
       void Draw(void);
+      void PreProcess(void);
       void Process(void);
       lxString GetPictureFileName(void){return lxT("Common/IC8.svg");};
       lxString GetMapFile(void){return lxT("Common/IC8.map");};

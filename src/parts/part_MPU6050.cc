@@ -64,7 +64,7 @@ font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 
  lxImage image (&Window5);
 
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
@@ -303,12 +303,12 @@ cpart_MPU6050::ConfigurePropertiesWindow(CPWindow * WProp)
  lxString Items = Window5.GetPinsNames ();
  lxString spin;
 
- 
+
  ((CCombo*) WProp->GetChildByName ("combo1"))->SetText ("+5V");
- 
+
  ((CCombo*) WProp->GetChildByName ("combo2"))->SetText ("GND");
- 
- 
+
+
  ((CCombo*) WProp->GetChildByName ("combo3"))->SetItems (Items);
  if (mpu_pins[0] == 0)
   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText ("0  NC");
@@ -406,6 +406,11 @@ cpart_MPU6050::PreProcess(void)
 
   mpu6050_set_gyro (&mpu, sens * ((values[3] - 100) / 100.0), sens * ((values[4] - 100) / 100.0), sens * ((values[5] - 100) / 100.0));
   */
+
+ if (mpu_pins[1] > 0)
+  {
+   Window5.Reset_i2c_bus (mpu_pins[1] - 1);
+  }
 }
 
 void

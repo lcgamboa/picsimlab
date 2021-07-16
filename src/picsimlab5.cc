@@ -843,7 +843,6 @@ CPWindow5::PreProcess(void)
 void
 CPWindow5::Process(void)
 {
- memset (i2c_bus, 0, PinsCount);
  for (int i = 0; i < partsc; i++)
   {
    parts[i]->Process ();
@@ -1079,13 +1078,21 @@ CPWindow5::filedialog1_EvOnClose(int retId)
 }
 
 void
+CPWindow5::Reset_i2c_bus(unsigned char pin)
+{
+ if (pin < IOINIT)
+  {
+   i2c_bus[pin] = 0;
+  }
+}
+
+void
 CPWindow5::Set_i2c_bus(unsigned char pin, unsigned char value)
 {
  if (pin < IOINIT)
   {
    i2c_bus[pin] |= value;
   }
-
 }
 
 unsigned char

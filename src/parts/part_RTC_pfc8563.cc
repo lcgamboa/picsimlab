@@ -244,6 +244,15 @@ cpart_RTC_pfc8563::ReadPropertiesWindow(CPWindow * WProp)
 }
 
 void
+cpart_RTC_pfc8563::PreProcess(void)
+{
+ if (input_pins[1] > 0)
+  {
+   Window5.Reset_i2c_bus (input_pins[1] - 1);
+  }
+}
+
+void
 cpart_RTC_pfc8563::Process(void)
 {
  const picpin * ppins = Window5.GetPinsValues ();
