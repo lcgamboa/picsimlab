@@ -783,7 +783,7 @@ cboard_PICGenios::Run_CPU(void)
 {
  int i;
  int j;
- unsigned char pi;
+ unsigned char pi, pj;
  unsigned char pinv;
  const picpin * pins;
 
@@ -810,7 +810,7 @@ cboard_PICGenios::Run_CPU(void)
 
 
  j = JUMPSTEPS;
-
+ pi = 0;
  if (Window1.Get_mcupwr ())
   for (i = 0; i < NSTEP; i++)
    {
@@ -939,18 +939,20 @@ cboard_PICGenios::Run_CPU(void)
     if (use_spare)Window5.Process ();
 
     //increment mean value counter if pin is high
-    alm[i % pic.PINCOUNT] += pins[i % pic.PINCOUNT].value;
+    alm[pi] += pins[pi].value;
+    pi++;
+    if (pi == pic.PINCOUNT)pi = 0;
 
     if (j >= JUMPSTEPS)
      {
 
-      for (pi = 18; pi < 30; pi++)
+      for (pj = 18; pj < 30; pj++)
        {
-        pinv = pins[pi].value;
-        if ((pinv)&&(pins[3].value)&&(dip[10])) alm1[pi]++;
-        if ((pinv)&&(pins[4].value)&&(dip[11])) alm2[pi]++;
-        if ((pinv)&&(pins[5].value)&&(dip[12])) alm3[pi]++;
-        if ((pinv)&&(pins[6].value)&&(dip[13])) alm4[pi]++;
+        pinv = pins[pj].value;
+        if ((pinv)&&(pins[3].value)&&(dip[10])) alm1[pj]++;
+        if ((pinv)&&(pins[4].value)&&(dip[11])) alm2[pj]++;
+        if ((pinv)&&(pins[5].value)&&(dip[12])) alm3[pj]++;
+        if ((pinv)&&(pins[6].value)&&(dip[13])) alm4[pj]++;
        }
 
       if (dip[7])alm[32] = 0;

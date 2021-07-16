@@ -653,7 +653,7 @@ cboard_McLab2::Run_CPU(void)
 {
  int i;
  int j;
- unsigned char pi;
+ unsigned char pi, pj;
  unsigned char pinv;
  const picpin * pins;
  unsigned int alm[40]; //luminosidade media
@@ -679,6 +679,7 @@ cboard_McLab2::Run_CPU(void)
  if (use_spare)Window5.PreProcess ();
 
  j = JUMPSTEPS;
+ pi = 0;
  if (Window1.Get_mcupwr ())
   for (i = 0; i < NSTEP; i++)
    {
@@ -706,18 +707,20 @@ cboard_McLab2::Run_CPU(void)
     if (use_spare)Window5.Process ();
 
     //increment mean value counter if pin is high
-    alm[i % pic.PINCOUNT] += pins[i % pic.PINCOUNT].value;
+    alm[pi] += pins[pi].value;
+    pi++;
+    if (pi == pic.PINCOUNT)pi = 0;
 
     if (j >= JUMPSTEPS)
      {
 
-      for (pi = 18; pi < 30; pi++)
+      for (pj = 18; pj < 30; pj++)
        {
         pinv = pins[pi].value;
-        if ((pinv)&&(pins[39].value)) alm1[pi]++;
-        if ((pinv)&&(pins[38].value)) alm2[pi]++;
-        if ((pinv)&&(pins[37].value)) alm3[pi]++;
-        if ((pinv)&&(pins[36].value)) alm4[pi]++;
+        if ((pinv)&&(pins[39].value)) alm1[pj]++;
+        if ((pinv)&&(pins[38].value)) alm2[pj]++;
+        if ((pinv)&&(pins[37].value)) alm3[pj]++;
+        if ((pinv)&&(pins[36].value)) alm4[pj]++;
        }
 
 

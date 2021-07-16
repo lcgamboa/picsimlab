@@ -274,6 +274,7 @@ cboard_K16F::Run_CPU(void)
  if (use_spare)Window5.PreProcess ();
 
  j = JUMPSTEPS;
+ pi = 0;
  if (Window1.Get_mcupwr ())
   for (i = 0; i < NSTEP; i++)
    {
@@ -384,7 +385,9 @@ cboard_K16F::Run_CPU(void)
     if (use_spare)Window5.Process ();
 
     //increment mean value counter if pin is high
-    alm[i % pic.PINCOUNT] += pins[i % pic.PINCOUNT].value;
+    alm[pi] += pins[pi].value;
+    pi++;
+    if (pi == pic.PINCOUNT)pi = 0;
 
     if (j >= JUMPSTEPS)
      {

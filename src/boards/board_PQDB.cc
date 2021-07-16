@@ -383,6 +383,7 @@ cboard_PQDB::Run_CPU(void)
 {
  int i;
  int j;
+ int pi;
  const picpin * pins;
 
  unsigned int alm[40]; //valor médio dos pinos de IO
@@ -392,7 +393,7 @@ cboard_PQDB::Run_CPU(void)
  const int JUMPSTEPS = Window1.GetJUMPSTEPS ();
  const long int NSTEP = Window1.GetNSTEP ();
  const float RNSTEP = 200.0 * pic.PINCOUNT / NSTEP;
- 
+
  if (use_spare) Window5.PreProcess ();
 
  memset (alm7seg, 0, 32 * sizeof (unsigned int));
@@ -404,7 +405,7 @@ cboard_PQDB::Run_CPU(void)
  pins = pic.pins;
 
  j = JUMPSTEPS;
-
+ pi = 0;
  if (Window1.Get_mcupwr ())
   {
    for (i = 0; i < NSTEP; i++)
@@ -455,7 +456,9 @@ cboard_PQDB::Run_CPU(void)
      if (use_spare) Window5.Process ();
 
      //increment mean value counter if pin is high
-     alm[i % pic.PINCOUNT] += pins[i % pic.PINCOUNT].value;
+     alm[pi] += pins[pi].value;
+     pi++;
+     if (pi == pic.PINCOUNT)pi = 0;
 
      if (j >= JUMPSTEPS)
       {
@@ -584,7 +587,7 @@ cboard_PQDB::Run_CPU(void)
     }
    else
     {
-     pic.pins[i].oavalue = (int) ((alm[i]*RNSTEP) + 55);
+     pic.pins[i].oavalue = (int) ((alm[i] * RNSTEP) + 55);
     }
   }
 

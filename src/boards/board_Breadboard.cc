@@ -434,6 +434,7 @@ cboard_Breadboard::Run_CPU(void)
     if (use_spare)Window5.PreProcess ();
 
     j = JUMPSTEPS; //step counter
+    pi = 0;
     if (Window1.Get_mcupwr ()) //if powered
      for (i = 0; i < NSTEP; i++) //repeat for number of steps in 100ms
       {
@@ -449,7 +450,9 @@ cboard_Breadboard::Run_CPU(void)
        if (use_spare)Window5.Process ();
 
        //increment mean value counter if pin is high
-       alm[i % pic.PINCOUNT] += pins[i % pic.PINCOUNT].value;
+       alm[pi] += pins[pi].value;
+       pi++;
+       if (pi == pic.PINCOUNT)pi = 0;
 
        if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
         {
@@ -486,6 +489,7 @@ cboard_Breadboard::Run_CPU(void)
     if (use_spare)Window5.PreProcess ();
 
     //j = JUMPSTEPS; //step counter
+    pi = 0;
     if (Window1.Get_mcupwr ()) //if powered
      for (i = 0; i < NSTEP; i++) //repeat for number of steps in 100ms
       {
@@ -514,7 +518,9 @@ cboard_Breadboard::Run_CPU(void)
        if (use_spare)Window5.Process ();
 
        //increment mean value counter if pin is high
-       alm[i % pinc] += pins[i % pinc].value;
+       alm[pi] += pins[pi].value;
+       pi++;
+       if (pi == pinc)pi = 0;
        /*
        if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
         {
@@ -525,7 +531,7 @@ cboard_Breadboard::Run_CPU(void)
          j = -1; //reset counter
         }
        j++; //counter increment   
-       */
+        */
       }
     //calculate mean value
     for (pi = 0; pi < MGetPinCount (); pi++)

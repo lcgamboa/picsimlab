@@ -436,6 +436,7 @@ cboard_Franzininho_DIY::Run_CPU(void)
 
  if (use_spare)Window5.PreProcess ();
 
+ pi = 0;
  if (Window1.Get_mcupwr ()) //if powered
   for (i = 0; i < NSTEP; i++) //repeat for number of steps in 100ms
    {
@@ -471,7 +472,9 @@ cboard_Franzininho_DIY::Run_CPU(void)
     if (use_spare)Window5.Process ();
 
     //increment mean value counter if pin is high
-    alm[i % pinc] += pins[i % pinc].value;
+    alm[pi] += pins[pi].value;
+    pi++;
+    if (pi == pinc)pi = 0;
 
    }
 

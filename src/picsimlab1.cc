@@ -1119,14 +1119,14 @@ CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
 void
 CPWindow1::menu1_Help_Board_EvMenuActive(CControl * control)
 {
- char bname[20];
- strncpy (bname, boards_list[lab].name_, 12);
+ char bname[30];
+ strncpy (bname, boards_list[lab].name_, 29);
 
  char * ptr;
  //remove _ from names
  while ((ptr = strchr (bname, '_')))
   {
-   strcpy (ptr, ptr + 1);
+   memmove (ptr, ptr + 1, strlen (ptr) + 1);
   }
 
  lxString stemp;
