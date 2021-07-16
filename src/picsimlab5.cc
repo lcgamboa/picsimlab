@@ -834,16 +834,38 @@ CPWindow5::menu1_Edit_Zoomout_EvMenuActive(CControl * control)
 void
 CPWindow5::PreProcess(void)
 {
- for (int i = 0; i < partsc; i++)
+ int i;
+
+ memset (i2c_bus, 0, PinsCount);
+
+ for (i = 0; i < partsc; i++)
   {
    parts[i]->PreProcess ();
+  }
+
+ i2c_bus_count = 0;
+ for (i = 0; i < PinsCount; i++)
+  {
+   if (i2c_bus[i] > 1)//need register bus
+    {
+     i2c_bus_ptr[i2c_bus_count] = i;
+     i2c_bus_count++;
+    }
+   i2c_bus[i] = 0;
   }
 }
 
 void
 CPWindow5::Process(void)
 {
- for (int i = 0; i < partsc; i++)
+ int i;
+ 
+ for (i = 0; i < i2c_bus_count; i++)
+  {
+   i2c_bus[i2c_bus_ptr[i]] = 0;
+  }
+ 
+ for (i = 0; i < partsc; i++)
   {
    parts[i]->Process ();
   }
@@ -1082,7 +1104,7 @@ CPWindow5::Reset_i2c_bus(unsigned char pin)
 {
  if (pin < IOINIT)
   {
-   i2c_bus[pin] = 0;
+   i2c_bus[pin]++; //count i2c devices inb bus
   }
 }
 

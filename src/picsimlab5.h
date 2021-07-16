@@ -187,6 +187,8 @@ private:
     float scale;
     lxString LoadConfigFile;
     unsigned char i2c_bus[IOINIT];
+    int i2c_bus_count;
+    unsigned char i2c_bus_ptr[IOINIT];
     CPWindow wprop;
     int fdtype;
     lxString oldfname;
