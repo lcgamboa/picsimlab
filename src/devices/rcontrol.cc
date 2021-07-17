@@ -1177,7 +1177,8 @@ rcontrol_loop(void)
           {
            if (Window1.GetSimulationRun ())
             {
-             ret = sendtext ("Simulation running\r\nOk\r\n>");
+             
+             ret = sendtext (lxString ().Format ("Simulation running %5.2fx\r\nOk\r\n>", 100.0 / Window1.timer1.GetTime ()));
             }
            else
             {

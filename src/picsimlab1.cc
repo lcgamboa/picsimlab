@@ -640,8 +640,12 @@ CPWindow1::Configure(const char * home, int use_default_board, int create)
 
        if (!strcmp (name, "picsimlab_debug"))
         {
+#ifdef NO_DEBUG
+         debug = 0;
+#else         
          sscanf (value, "%i", &debug);
          togglebutton1.SetCheck (debug);
+#endif         
         }
 
        if (!strcmp (name, "picsimlab_debugt"))
