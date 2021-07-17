@@ -174,9 +174,16 @@ bsim_picsim::MDumpMemory(const char * fname)
 }
 
 int
-bsim_picsim::DebugInit(int dtyppe) //argument not used in picm only mplabx
+bsim_picsim::DebugInit(int dtyppe) //argument not used in pic, it only use mplabx
 {
- return !mplabxd_init (this, Window1.Get_debug_port ()) - 1;
+ int ret = !mplabxd_init (this, Window1.Get_debug_port ()) - 1;
+
+ if (ret < 0)
+  {
+   Window1.RegisterError ("Error starting MPLABX debugger support !");
+  }
+
+ return ret;
 }
 
 void

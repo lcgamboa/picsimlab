@@ -459,6 +459,7 @@ bsim_simavr::DebugInit(int dtyppe)
    avr->gdb_port = Window1.Get_debug_port ();
    if (avr_gdb_init (avr))
     {
+     Window1.RegisterError ("Error starting GDB debugger support !");
      return -1;
     }
    else
@@ -470,7 +471,13 @@ bsim_simavr::DebugInit(int dtyppe)
   }
  else
   {
-   return !mplabxd_init (this, Window1.Get_debug_port ()) - 1;
+   int ret = !mplabxd_init (this, Window1.Get_debug_port ()) - 1;
+
+   if (ret < 0)
+    {
+     Window1.RegisterError ("Error starting MPLABX debugger support !");
+    }
+   return ret;
   }
 }
 

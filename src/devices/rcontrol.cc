@@ -100,6 +100,7 @@ rcontrol_init(unsigned short tcpport)
    if (bind (listenfd, (sockaddr *) & serv, sizeof (serv)) < 0)
     {
      printf ("rcontrol: bind error : %s \n", strerror (errno));
+     Window1.RegisterError (lxString ().Format ("Can't open rcontrol TCP port %i\n It is already in use by another application!",tcpport));
      return 1;
     }
 
