@@ -36,7 +36,7 @@ enum
 
 enum
 {
- ACTIVE = 0, PASSIVE
+ ACTIVE = 0, PASSIVE, TONE
 };
 
 cpart_Buzzer::cpart_Buzzer(unsigned x, unsigned y)
@@ -49,7 +49,7 @@ cpart_Buzzer::cpart_Buzzer(unsigned x, unsigned y)
  ReadMaps ();
 
  lxImage image (&Window5);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
@@ -67,6 +67,10 @@ cpart_Buzzer::cpart_Buzzer(unsigned x, unsigned y)
  buffer = NULL;
  maxv = buzzer.GetMax ();
  buffercount = 0;
+ ctone = 0;
+ ftone = 0;
+ optone = 0;
+ oftone = 0;
 
  in[0] = 0;
  in[1] = 0;
@@ -213,18 +217,9 @@ void
 cpart_Buzzer::RegisterRemoteControl(void)
 {
  const picpin * ppins = Window5.GetPinsValues ();
- for (int i = 0; i < outputc; i++)
-  {
-   switch (output[i].id)
-    {
-    case O_L1:
-     if (input_pins[0])
-      {
-       output[i].status = (void *) &ppins[input_pins[0] - 1].oavalue;
-      }
-     break;
-    }
-  }
+
+ output_ids[O_L1]->status = (void *) &ppins[input_pins[0] - 1].oavalue;
+
 }
 
 void
@@ -242,11 +237,15 @@ cpart_Buzzer::ConfigurePropertiesWindow(CPWindow * WProp)
    ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (input_pins[0]) + "  " + spin);
   }
 
- if (type == 0)
+ if (type == ACTIVE)
   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText ("Active");
- else
+ else if (type == PASSIVE)
   {
    ((CCombo*) WProp->GetChildByName ("combo2"))->SetText ("Passive");
+  }
+ else //TONE 
+  {
+   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText ("Tone");
   }
 
  if (active)
@@ -265,7 +264,22 @@ void
 cpart_Buzzer::ReadPropertiesWindow(CPWindow * WProp)
 {
  input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
- unsigned char tp = (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ().compare (lxT ("Active")) != 0);
+
+ unsigned char tp = 0;
+
+ lxString mode = ((CCombo*) WProp->GetChildByName ("combo2"))->GetText ();
+ if (mode.compare (lxT ("Active")) == 0)
+  {
+   tp = ACTIVE;
+  }
+ else if (mode.compare (lxT ("Passive")) == 0)
+  {
+   tp = PASSIVE;
+  }
+ else //TONE
+  {
+   tp = TONE;
+  }
 
  active = (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ().compare ("HIGH") == 0);
 
@@ -278,14 +292,19 @@ cpart_Buzzer::PreProcess(void)
 {
  if (type == PASSIVE)
   {
-
    JUMPSTEPS_ = (Window1.GetBoard ()->MGetInstClockFreq () / samplerate);
-
    JUMPSTEPS_ *= 100.0 / Window1.timer1.GetTime (); //Adjust to sample at the same time to the timer 
-
    mcount = JUMPSTEPS_;
-
   }
+ else if (type == TONE)
+  {
+   JUMPSTEPS_ = (Window1.GetBoard ()->MGetInstClockFreq () / samplerate);
+   mcount = JUMPSTEPS_;
+   ctone = 0;
+   optone = 0;
+   ftone = 0;
+  }
+
 }
 
 void
@@ -294,14 +313,13 @@ cpart_Buzzer::Process(void)
 
  if (type == PASSIVE)
   {
-   const picpin * ppins = Window5.GetPinsValues ();
-
    mcount++;
-
    if (mcount > JUMPSTEPS_)
     {
      if ((input_pins[0])&&(buffercount < buffersize))
       {
+       const picpin * ppins = Window5.GetPinsValues ();
+
        /*       
           0.7837 z-1 - 0.7837 z-2
     y1:  ----------------------
@@ -325,6 +343,26 @@ cpart_Buzzer::Process(void)
 
       }
 
+     mcount = 0;
+    }
+  }
+ else if (type == TONE)
+  {
+   mcount++;
+   if (mcount > JUMPSTEPS_)
+    {
+     if (input_pins[0])
+      {
+       const picpin * ppins = Window5.GetPinsValues ();
+
+       if ((!optone)&&(ppins[input_pins[0] - 1].value))
+        {
+         ftone = (ftone + ctone) / 2.0;
+         ctone = 0;
+        }
+       optone = ppins[input_pins[0] - 1].value;
+       ctone++;
+      }
      mcount = 0;
     }
   }
@@ -360,13 +398,43 @@ cpart_Buzzer::PostProcess(void)
       }
     }
   }
- else
+ else if (type == PASSIVE)
   {
 
    //int ret=
-   buzzer.SoundPlay (buffer, (buffercount)*2);
+   buzzer.SoundPlay (buffer, buffercount);
    //printf("ret=%i buffercount=%i sample=%i time=%f  timer=%i\n",ret,buffercount,samplerate,((float)(buffercount))/samplerate , Window1.timer1.GetTime ());
    buffercount = 0;
+  }
+ else //TONE
+  {
+
+   float freq;
+
+   if (ftone > 5)
+    {
+     freq = samplerate / ftone;
+    }
+   else
+    {
+     freq = 0;
+    }
+
+   if (freq > 100)
+    {
+     if (fabs (oftone - freq) > 10.0)
+      {
+       buzzer.BeepStop ();
+       buzzer.BeepStart (freq, 0.5, 1);
+       oftone = freq;
+      }
+    }
+   else
+    {
+     buzzer.BeepStop ();
+     oftone = 0;
+    }
+
   }
 
  if (input_pins[0] && (output_ids[O_L1]->value != ppins[input_pins[0] - 1].oavalue))
@@ -382,7 +450,7 @@ cpart_Buzzer::ChangeType(unsigned char tp)
 {
  if (type == tp) return;
 
- if (type == ACTIVE)
+ if ((type == ACTIVE) || (type == TONE))
   {
    buzzer.BeepStop ();
    if (!buffer)
@@ -391,7 +459,7 @@ cpart_Buzzer::ChangeType(unsigned char tp)
     }
    type = tp;
   }
- else //PASSIVE
+ else if (type == PASSIVE)
   {
    if (buffer)
     {

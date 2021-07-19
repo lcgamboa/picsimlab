@@ -208,7 +208,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <Items type="lxStringList">Active,Passive,</Items>
+  <Items type="lxStringList">Active,Passive,Tone,</Items>
   <Text type="lxString">Active</Text>
   <ReadOnly type="bool">0</ReadOnly>
   <EvOnComboChange type="Event">FALSE</EvOnComboChange>

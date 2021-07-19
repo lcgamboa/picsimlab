@@ -37,7 +37,10 @@ public:
     lxString GetName(void) {
         return lxT(PART_BUZZER_Name);
     };
-    lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
+
+    lxString GetAboutInfo(void) {
+        return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");
+    };
     cpart_Buzzer(unsigned x, unsigned y);
     ~cpart_Buzzer(void);
     void Draw(void);
@@ -51,9 +54,9 @@ public:
     unsigned short get_in_id(char * name);
     unsigned short get_out_id(char * name);
 private:
-    void RegisterRemoteControl(void);      
+    void RegisterRemoteControl(void);
     void ChangeType(unsigned char tp);
-    unsigned char active; 
+    unsigned char active;
     unsigned char input_pins[1];
     lxaudio buzzer;
     long int mcount;
@@ -64,11 +67,15 @@ private:
     unsigned int buffersize;
     unsigned int buffercount;
     unsigned int maxv;
+    unsigned char optone;
+    unsigned int ctone;
+    float ftone;
+    float oftone;
     float in[3];
-    float out[3]; 
+    float out[3];
     lxFont font;
-    lxColor color1; 
-    lxColor color2;  
+    lxColor color1;
+    lxColor color2;
 };
 
 
