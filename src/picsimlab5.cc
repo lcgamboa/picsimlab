@@ -859,12 +859,12 @@ void
 CPWindow5::Process(void)
 {
  int i;
- 
+
  for (i = 0; i < i2c_bus_count; i++)
   {
    i2c_bus[i2c_bus_ptr[i]] = 0;
   }
- 
+
  for (i = 0; i < partsc; i++)
   {
    parts[i]->Process ();
@@ -901,6 +901,10 @@ CPWindow5::_EvOnHide(CControl * control)
  if (Window4.GetVisible ())
   {
    Window4.SetBaseTimer ();
+  }
+ for (int i = 0; i < partsc; i++)
+  {
+   parts[i]->Stop ();
   }
 }
 

@@ -114,6 +114,12 @@ public:
      */
     virtual void Reset(void) {
     };
+    
+     /**
+     * @brief  Stop part simulation 
+     */
+    virtual void Stop(void) {
+    };
 
     /**
      * @brief  Event handler on the part

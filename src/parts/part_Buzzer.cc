@@ -304,7 +304,15 @@ cpart_Buzzer::PreProcess(void)
    optone = 0;
    ftone = 0;
   }
+}
 
+void
+cpart_Buzzer::Stop(void)
+{
+ if ((type == ACTIVE) || (type == TONE))
+  {
+   buzzer.BeepStop ();
+  }
 }
 
 void

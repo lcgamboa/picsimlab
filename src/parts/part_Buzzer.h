@@ -47,6 +47,7 @@ public:
     void PreProcess(void);
     void Process(void);
     void PostProcess(void);
+    void Stop(void);
     void ConfigurePropertiesWindow(CPWindow * WProp);
     void ReadPropertiesWindow(CPWindow * WProp);
     lxString WritePreferences(void);
