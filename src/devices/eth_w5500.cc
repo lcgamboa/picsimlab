@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -858,7 +858,7 @@ eth_w5500_process(eth_w5500_t *eth)
 
 
        eth->listenfd[eth->listenfd_map[n]] = eth->sockfd[n];
-       if (bind (eth->listenfd[eth->listenfd_map[n]], (sockaddr *) & serv, sizeof (serv)) < 0)
+       if (bind (eth->listenfd[eth->listenfd_map[n]], (sockaddr *) & serv, sizeof (serv)))
         {
          printf ("eth_w5500: bind error : %s \n", strerror (errno));
          close (eth->sockfd[n]);
@@ -1209,7 +1209,7 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
                    serv.sin_family = AF_INET;
                    serv.sin_addr.s_addr = htonl (INADDR_ANY);
                    serv.sin_port = htons (skt_port);
-                   if (bind (eth->listenfd[eth->listenfd_map[n]], (sockaddr *) & serv, sizeof (serv)) < 0)
+                   if (bind (eth->listenfd[eth->listenfd_map[n]], (sockaddr *) & serv, sizeof (serv)))
                     {
                      printf ("eth_w5500: bind error : %s \n", strerror (errno));
                      close (eth->sockfd[n]);
@@ -1220,7 +1220,7 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
                      eth->listenfd_port[eth->listenfd_map[n]] = 0;
                      break;
                     }
-                   if (listen (eth->listenfd[eth->listenfd_map[n]], SOMAXCONN) < 0)
+                   if (listen (eth->listenfd[eth->listenfd_map[n]], SOMAXCONN))
                     {
                      printf ("eth_w5500: listen error : %s \n", strerror (errno));
                      close (eth->sockfd[n]);

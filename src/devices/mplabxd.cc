@@ -199,14 +199,14 @@ mplabxd_init(board * mboard, unsigned short tcpport)
    serv.sin_addr.s_addr = htonl (INADDR_ANY);
    serv.sin_port = htons (tcpport);
 
-   if (bind (listenfd, (sockaddr *) & serv, sizeof (serv)) < 0)
+   if (bind (listenfd, (sockaddr *) & serv, sizeof (serv)))
     {
      printf ("mplabxd: bind error : %s \n", strerror (errno));
      Window1.RegisterError (lxString ().Format ("Can't open mplabxd TCP port %i\n It is already in use by another application!",tcpport));
      return 1;
     }
 
-   if (listen (listenfd, SOMAXCONN) < 0)
+   if (listen (listenfd, SOMAXCONN))
     {
      printf ("mplabxd: listen error : %s \n", strerror (errno));
      return 1;

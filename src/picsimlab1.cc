@@ -1995,5 +1995,18 @@ extern "C"
    }
  }
 
+#ifdef __EMSCRIPTEN__
 
+ void
+ SimRun(int run)
+ {
+  Window1.SetSimulationRun (int run);
+ }
+
+ int
+ SimStat(void)
+ {
+  return Window1.GetSimulationRun (void)
+ }
+#endif
 }

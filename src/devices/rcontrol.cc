@@ -97,14 +97,14 @@ rcontrol_init(unsigned short tcpport)
    serv.sin_addr.s_addr = htonl (INADDR_ANY);
    serv.sin_port = htons (tcpport);
 
-   if (bind (listenfd, (sockaddr *) & serv, sizeof (serv)) < 0)
+   if (bind (listenfd, (sockaddr *) & serv, sizeof (serv)))
     {
      printf ("rcontrol: bind error : %s \n", strerror (errno));
      Window1.RegisterError (lxString ().Format ("Can't open rcontrol TCP port %i\n It is already in use by another application!",tcpport));
      return 1;
     }
 
-   if (listen (listenfd, SOMAXCONN) < 0)
+   if (listen (listenfd, SOMAXCONN))
     {
      printf ("rcontrol: listen error : %s \n", strerror (errno));
      return 1;

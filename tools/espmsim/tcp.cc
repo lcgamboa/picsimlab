@@ -133,13 +133,13 @@ skt_server (int port)	/* simple TCP server */
   serv.sin_port = htons (port);
 
 
-  if (bind (listenfd, (sockaddr *) & serv, sizeof (serv)) < 0)
+  if (bind (listenfd, (sockaddr *) & serv, sizeof (serv)))
     {
       printf ("bind error : %s \n", strerror (errno));
       return -2;
     };
 
-  if (listen (listenfd, SOMAXCONN) < 0)
+  if (listen (listenfd, SOMAXCONN))
     {
       printf ("listen error : %s \n", strerror (errno));
       return -3;

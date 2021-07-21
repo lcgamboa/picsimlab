@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -138,13 +138,13 @@ bsim_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
    strncpy (serv.sun_path + 1, "picsimlab_qemu", sizeof (serv.sun_path) - 2);
 #endif
 
-   if (bind (listenfd, (sockaddr *) & serv, sizeof (serv)) < 0)
+   if (bind (listenfd, (sockaddr *) & serv, sizeof (serv)))
     {
      printf ("picsimlab: qemu_stm32 bind error : %s \n", strerror (errno));
      exit (1);
     }
 
-   if (listen (listenfd, SOMAXCONN) < 0)
+   if (listen (listenfd, SOMAXCONN))
     {
      printf ("picsimlab: qemu_stm32 listen error : %s \n", strerror (errno));
      exit (1);
@@ -165,13 +165,13 @@ bsim_qemu_stm32::MInit(const char * processor, const char * fname, float freq)
    serv_mon.sin_addr.s_addr = htonl (INADDR_ANY);
    serv_mon.sin_port = htons (2500);
 
-   if (bind (listenfd_mon, (sockaddr *) & serv_mon, sizeof (serv_mon)) < 0)
+   if (bind (listenfd_mon, (sockaddr *) & serv_mon, sizeof (serv_mon)))
     {
      printf ("picsimlab: qemu_stm32 monitor bind error : %s \n", strerror (errno));
      exit (1);
     }
 
-   if (listen (listenfd_mon, SOMAXCONN) < 0)
+   if (listen (listenfd_mon, SOMAXCONN))
     {
      printf ("picsimlab: qemu_stm32 monitor listen error : %s \n", strerror (errno));
      exit (1);
