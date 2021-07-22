@@ -2000,13 +2000,13 @@ extern "C"
  void
  SimRun(int run)
  {
-  Window1.SetSimulationRun (int run);
+  Window1.SetSimulationRun (run);
  }
 
  int
  SimStat(void)
  {
-  return Window1.GetSimulationRun (void)
+  return Window1.GetSimulationRun ();
  }
 #endif
 }

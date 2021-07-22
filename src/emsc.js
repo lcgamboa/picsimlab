@@ -197,4 +197,15 @@ function ui_open_filepicker() {
     get_id('filepicker').click();
 }
 
+function togglePlay() {
+    let classes = get_id('play_btn').classList;
+    classes.toggle("paused");
+    let result = classes.contains("paused");
+    if (result) {
+      Module.ccall('SimRun', null , ['int'], [0]);
+    } else {
+      Module.ccall('SimRun', null , ['int'], [1]);
+    }
+
+}
 
