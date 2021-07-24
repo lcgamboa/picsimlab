@@ -2,6 +2,8 @@
 
 ### New
 
+* Support to TinyDebug message write added to Franzininho DIY board. [lcgamboa]
+
 * Support to open files using drag and drop. [lcgamboa]
 
 * New part Fixed Voltage. [lcgamboa]

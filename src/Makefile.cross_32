@@ -7,7 +7,7 @@ STRIP =  $(TOOL_PREFIX)strip
 PKG_CONFIG= -mms-bitfields -I../dev_w32/include/glib-2.0 -I../dev_w32/lib/glib-2.0/include
 
 override CXXFLAGS+= -D_ARCH_=\"Windows32_WX\" -D_DATE_=\"${DATE}\"
-override CXXFLAGS+= -Wall -g -O2 -D_WIN_ -I../dev_w32/include -I../dev_w32/include/lxrad -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  
+override CXXFLAGS+= -Wall -g -O2 -flto -D_WIN_ -I../dev_w32/include -I../dev_w32/include/lxrad -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  
 override CXXFLAGS+= -DEXT_BROWSER
 override CXXFLAGS+= -I../dev_w32/lib/wx/include/i686-w64-mingw32-msw-unicode-3.1 -I../dev_w32/include/wx-3.1 -D_FILE_OFFSET_BITS=64 -DWXUSINGDLL -D__WXMSW__ -mthreads
 

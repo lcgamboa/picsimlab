@@ -1,13 +1,13 @@
 ### TODOs
 | Filename | line # | TODO
 |:------|:------:|:------
-| [src/picsimlab1.cc](src/picsimlab1.cc#L568) | 568 | verify initialization errors
+| [src/picsimlab1.cc](src/picsimlab1.cc#L572) | 572 | verify initialization errors
 | [src/picsimlab4.cc](src/picsimlab4.cc#L630) | 630 | select the better mode for channel trigguer
 | [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L116) | 116 | jumper support
 | [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L68) | 68 | TEMP cooler must don't work with AQUE=0
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L954) | 954 | default output value is not used yet (DOV)
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1263) | 1263 | avr ID pointer
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1295) | 1295 | avr ID size
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L983) | 983 | default output value is not used yet (DOV)
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1298) | 1298 | avr ID pointer
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1330) | 1330 | avr ID size
 | [src/boards/exp_bsim_gpsim.cc](src/boards/exp_bsim_gpsim.cc#L171) | 171 | add VCC and GND pins
 | [src/devices/eth_w5500.cc](src/devices/eth_w5500.cc#L363) | 363 | add support to buffer size different of 2k
 | [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L137) | 137 | ssd1306 Scrolling Command Table
@@ -30,8 +30,8 @@
 ### FIXMEs
 | Filename | line # | FIXME
 |:------|:------:|:------
-| [src/picsimlab1.cc](src/picsimlab1.cc#L823) | 823 | remote control disabled
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1288) | 1288 | avr CONFIG size
+| [src/picsimlab1.cc](src/picsimlab1.cc#L835) | 835 | remote control disabled
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1323) | 1323 | avr CONFIG size
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L118) | 118 | only for BANK=0;
 | [src/parts/part_dcmotor.cc](src/parts/part_dcmotor.cc#L279) | 279 | on slow speed output is not 90 degrees
 | [src/parts/part_encoder.cc](src/parts/part_encoder.cc#L219) | 219 | on slow speed output is not 90 degrees
