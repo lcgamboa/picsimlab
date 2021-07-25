@@ -34,6 +34,7 @@ sed -i 's/`wx-config --libs` `wx-config --libs stc`/ -lminizip -lpthread/g' src/
 sed -i 's/picsimlab /picsimlab_NOGUI /g' src/Makefile
 mv tools/srtank/Makefile.static tools/srtank/Makefile
 mv tools/espmsim/Makefile.static tools/espmsim/Makefile
+mv tools/PinViewer/Makefile.static tools/PinViewer/Makefile
 rm -rf share/*/*/*.png
 if [[ -n "$1" ]]; then
  PWD=`pwd`	
