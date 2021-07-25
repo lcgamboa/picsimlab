@@ -1,3 +1,45 @@
+## v0.8.9 (2021-07-25)
+
+### New
+
+* Support to TinyDebug message write added to Franzininho DIY board. [lcgamboa]
+
+* Support to open files using drag and drop. [lcgamboa]
+
+* Buzzer new passive mode Tone added. [lcgamboa]
+
+* New part Fixed Voltage. [lcgamboa]
+
+* New part SHT3X temperature and humidity sensor. [lcgamboa]
+
+* New part FM50 temperature sensor. [lcgamboa]
+
+* New part LM35 temperature sensor. [lcgamboa]
+
+* Support to dump Flash memory in rcontrol interface. [lcgamboa]
+
+* Support to dump RAM and internal EEPROM memory in rcontrol interface. [lcgamboa]
+
+* Support to save EEPROM of AVR MCU between PICSimLab sessions. [lcgamboa]
+
+* Pin Viewer tool added. [lcgamboa]
+
+* VCD Dump support to change external VCD viewer (eg. use pulseview instead gtkwave) [lcgamboa]
+
+* New part MPU6050 accel and gyro added (only raw values, no FIFO or DMP) [lcgamboa]
+
+* Support to only draw when need update to reduce cpu usage. [lcgamboa]
+
+* Rcontrol new command loadhex. [lcgamboa]
+
+* New board picture for Franzinino DIY. [dantop03]
+
+### Fix
+
+* Buzzer passive mode audio clicks removed. [lcgamboa]
+
+* Removed the problem that caused PICSimLab don't start when qemu-stm32 was not found. [lcgamboa]
+
 
 ## v0.8.8 (2021-05-08)
 
