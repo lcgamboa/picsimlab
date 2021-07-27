@@ -116,11 +116,11 @@ sdcard_io(sdcard_t *sd, unsigned char mosi, unsigned char clk, unsigned char ss)
   {
   case SPI_DATA:
 
-   dsprintf ("sdcard byte in 0x%02X  out 0x%02X\n", sd->bb_spi.insr & 0xFF, sd->bb_spi.outsr >> 8);
+   dsprintf ("sdcard byte in 0x%02X  out 0x%02X\n", sd->bb_spi.insr & 0xFF, (sd->bb_spi.outsr >> 8) &0xFF);
 
    if ((sd->data_wc)&&(sd->bb_spi.byte == 1))
     {
-
+     sd->bb_spi.byte = 0;
      sd->bb_spi.outsr = (sd->bb_spi.outsr & 0xFF00) | 0xFF;
      if (sd->data_wc == 515)//token
       {
