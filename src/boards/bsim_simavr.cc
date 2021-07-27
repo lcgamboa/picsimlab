@@ -1220,6 +1220,7 @@ bsim_simavr::UpdateHardware(void)
 
      pins[pin_rx - 1 ].dir = PD_IN;
      pins[pin_tx - 1 ].dir = PD_OUT;
+     pins[pin_rx - 1 ].value = 1;
     }
 
    pins[pin_tx - 1 ].value = bitbang_uart_io (&bb_uart, pins[pin_rx - 1 ].value);

@@ -283,7 +283,7 @@ cboard_Arduino_Uno::Reset(void)
  //pic_set_pin(20,p_BT2); 
  avr_reset (avr);
  avr->data[UCSR0B] = 0x00; //FIX the simavr reset TX enabled
-
+ bitbang_uart_rst (&bb_uart);
 
  //verify serial port state and refresh status bar  
 #ifndef _WIN_
