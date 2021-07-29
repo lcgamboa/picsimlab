@@ -401,8 +401,7 @@ CPWindow4::spind5_EvOnChangeSpinDouble(CControl * control)
  spind6.SetMin (-5 * spind5.GetValue ());
  spind6.SetMax (5 * spind5.GetValue ());
 
- spind6.SetValue (0);
- toffset = WMAX / 2;
+ spind6_EvOnChangeSpinDouble(this);
  //printf("Dt=%e Rt=%e  Rt/Dt=%f   xz=%f\n",Dt,Rt,Rt/Dt,xz);
 }
 
@@ -460,7 +459,7 @@ CPWindow4::WritePreferences(void)
  Window1.saveprefs (lxT ("osc_ch2"), combo3.GetText ());
 
  Window1.saveprefs (lxT ("osc_tscale"), ftoa (spind5.GetValue ()));
- //Window1.saveprefs(lxT("osc_toffset"),ftoa(spind6.GetValue()));
+ Window1.saveprefs (lxT ("osc_toffset"), ftoa (spind6.GetValue ()));
  Window1.saveprefs (lxT ("osc_usetrigger"), itoa (togglebutton5.GetCheck ()));
  Window1.saveprefs (lxT ("osc_tch"), combo1.GetText ());
  Window1.saveprefs (lxT ("osc_tlevel"), ftoa (spind7.GetValue ()));
@@ -535,6 +534,11 @@ CPWindow4::ReadPreferences(char *name, char *value)
  if (!strcmp (name, "osc_tscale"))
   {
    spind5.SetValue (atof (value));
+  }
+
+ if (!strcmp (name, "osc_toffset"))
+  {
+   spind6.SetValue (atof (value));
   }
 
  if (!strcmp (name, "osc_usetrigger"))
