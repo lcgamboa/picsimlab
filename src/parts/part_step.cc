@@ -42,7 +42,7 @@ cpart_step::cpart_step(unsigned x, unsigned y)
  ReadMaps ();
 
  lxImage image (&Window5);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
@@ -174,127 +174,136 @@ cpart_step::Process(void)
      &&(input_pins[3] > 0))
   {
 
+   //case all pins are zero, return
+   if ((!ppins[input_pins[0] - 1].value)&&
+       (!ppins[input_pins[1] - 1].value)&&
+       (!ppins[input_pins[2] - 1].value)&&
+       (!ppins[input_pins[3] - 1].value))
+    {
+     return;
+    }
+
    b1[1] = b1[0];
    b1[0] = ppins[input_pins[0] - 1].value - ppins[input_pins[2] - 1].value;
    b2[1] = b2[0];
    b2[0] = ppins[input_pins[1] - 1].value - ppins[input_pins[3] - 1].value;
 
-   /*
-   if((b1[1] != b1[0])||(b2[1] != b2[0]))
+
+   if ((b1[1] != b1[0]) || (b2[1] != b2[0]))
     {
-     unsigned char code=ppins[input_pins[0] - 1].value  | (ppins[input_pins[1] - 1].value<<1) |  (ppins[input_pins[2] - 1].value<<2) |  (ppins[input_pins[3] - 1].value <<3);
-      printf("%3i %3i %3i %3i  angle=%f  0x%02X\n",b1[0],b2[0],b1[1],b2[1],angle,code);
+     /*
+     unsigned char code = ppins[input_pins[0] - 1].value | (ppins[input_pins[1] - 1].value << 1) | (ppins[input_pins[2] - 1].value << 2) | (ppins[input_pins[3] - 1].value << 3);
+     printf ("%3i %3i %3i %3i  angle=%f  0x%02X\n", b1[0], b2[0], b1[1], b2[1], angle, code);
+      */
+
+     //foward full step
+     if ((b1[0] == 1) && (b2[0] == 0) && (b1[1] == 0) && (b2[1] == -1)) //0001
+      angle += STEP;
+
+     if ((b1[0] == 0) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == 0)) //0010
+      angle += STEP;
+
+     if ((b1[0] == -1) && (b2[0] == 0) && (b1[1] == 0) && (b2[1] == 1)) //0100
+      angle += STEP;
+
+     if ((b1[0] == 0)&& (b2[0] == -1) && (b1[1] == -1) && (b2[1] == 0)) //1000
+      angle += STEP;
+
+     //foward full step double phase
+     if ((b1[0] == 1) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == -1)) //0011
+      angle += STEP;
+
+     if ((b1[0] == -1) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == 1)) //0110
+      angle += STEP;
+
+     if ((b1[0] == -1) && (b2[0] == -1) && (b1[1] == -1) && (b2[1] == 1)) //1100
+      angle += STEP;
+
+     if ((b1[0] == 1)&& (b2[0] == -1) && (b1[1] == -1) && (b2[1] == -1)) //1001
+      angle += STEP;
+
+     //foward half step
+     if ((b1[0] == 1) && (b2[0] == 0) && (b1[1] == 1) && (b2[1] == -1))
+      angle += HSTEP;
+
+     if ((b1[0] == 1) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == 0))
+      angle += HSTEP;
+
+     if ((b1[0] == 0) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == 1))
+      angle += HSTEP;
+
+     if ((b1[0] == -1) && (b2[0] == 1) && (b1[1] == 0) && (b2[1] == 1))
+      angle += HSTEP;
+
+     if ((b1[0] == -1) && (b2[0] == 0) && (b1[1] == -1) && (b2[1] == 1))
+      angle += HSTEP;
+
+     if ((b1[0] == -1) && (b2[0] == -1) && (b1[1] == -1) && (b2[1] == 0))
+      angle += HSTEP;
+
+     if ((b1[0] == 0)&& (b2[0] == -1) && (b1[1] == -1) && (b2[1] = -1))
+      angle += HSTEP;
+
+     if ((b1[0] == 1)&& (b2[0] == -1) && (b1[1] == 0) && (b2[1] == -1))
+      angle += HSTEP;
+
+
+     //backward full step
+     if ((b1[0] == 0) && (b2[0] == -1) && (b1[1] == 1) && (b2[1] == 0)) //1000
+      angle -= STEP;
+
+     if ((b1[0] == 1) && (b2[0] == 0) && (b1[1] == 0) && (b2[1] == 1)) //0001
+      angle -= STEP;
+
+     if ((b1[0] == 0) && (b2[0] == 1) && (b1[1] == -1) && (b2[1] == 0)) //0010
+      angle -= STEP;
+
+     if ((b1[0] == -1) && (b2[0] == 0) && (b1[1] == 0)&& (b2[1] == -1)) //0100
+      angle -= STEP;
+
+     //backward full step double phase
+     if ((b1[0] == -1) && (b2[0] == -1) && (b1[1] == 1) && (b2[1] == -1)) //0011
+      angle -= STEP;
+
+     if ((b1[0] == -1) && (b2[0] == 1) && (b1[1] == -1) && (b2[1] == -1)) //0110
+      angle -= STEP;
+
+     if ((b1[0] == 1) && (b2[0] == 1) && (b1[1] == -1) && (b2[1] == 1)) //1100
+      angle -= STEP;
+
+     if ((b1[0] == 1)&& (b2[0] == -1) && (b1[1] == 1) && (b2[1] == 1)) //1001
+      angle -= STEP;
+
+
+     //backward half step
+     if ((b1[1] == 1) && (b2[1] == 0) && (b1[0] == 1) && (b2[0] == -1))
+      angle -= HSTEP;
+
+     if ((b1[1] == 1) && (b2[1] == 1) && (b1[0] == 1) && (b2[0] == 0))
+      angle -= HSTEP;
+
+     if ((b1[1] == 0) && (b2[1] == 1) && (b1[0] == 1) && (b2[0] == 1))
+      angle -= HSTEP;
+
+     if ((b1[1] == -1) && (b2[1] == 1) && (b1[0] == 0) && (b2[0] == 1))
+      angle -= HSTEP;
+
+     if ((b1[1] == -1) && (b2[1] == 0) && (b1[0] == -1) && (b2[0] == 1))
+      angle -= HSTEP;
+
+     if ((b1[1] == -1) && (b2[1] == -1) && (b1[0] == -1) && (b2[0] == 0))
+      angle -= HSTEP;
+
+     if ((b1[1] == 0)&& (b2[1] == -1) && (b1[0] == -1) && (b2[0] = -1))
+      angle -= HSTEP;
+
+     if ((b1[1] == 1)&& (b2[1] == -1) && (b1[0] == 0) && (b2[0] == -1))
+      angle -= HSTEP;
+
+     if (angle >= 2 * M_PI)angle -= 2 * M_PI;
+
+     if (angle <= -2 * M_PI)angle += 2 * M_PI;
     }
-    */
-
-   //foward full step
-   if ((b1[0] == 1) && (b2[0] == 0) && (b1[1] == 0) && (b2[1] == -1)) //0001
-    angle += STEP;
-
-   if ((b1[0] == 0) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == 0)) //0010
-    angle += STEP;
-
-   if ((b1[0] == -1) && (b2[0] == 0) && (b1[1] == 0) && (b2[1] == 1)) //0100
-    angle += STEP;
-
-   if ((b1[0] == 0)&& (b2[0] == -1) && (b1[1] == -1) && (b2[1] == 0)) //1000
-    angle += STEP;
-
-   //foward full step double phase
-   if ((b1[0] == 1) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == -1)) //0011
-    angle += STEP;
-
-   if ((b1[0] == -1) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == 1)) //0110
-    angle += STEP;
-
-   if ((b1[0] == -1) && (b2[0] == -1) && (b1[1] == -1) && (b2[1] == 1)) //1100
-    angle += STEP;
-
-   if ((b1[0] == 1)&& (b2[0] == -1) && (b1[1] == -1) && (b2[1] == -1)) //1001
-    angle += STEP;
-
-   //foward half step
-   if ((b1[0] == 1) && (b2[0] == 0) && (b1[1] == 1) && (b2[1] == -1))
-    angle += HSTEP;
-
-   if ((b1[0] == 1) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == 0))
-    angle += HSTEP;
-
-   if ((b1[0] == 0) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == 1))
-    angle += HSTEP;
-
-   if ((b1[0] == -1) && (b2[0] == 1) && (b1[1] == 0) && (b2[1] == 1))
-    angle += HSTEP;
-
-   if ((b1[0] == -1) && (b2[0] == 0) && (b1[1] == -1) && (b2[1] == 1))
-    angle += HSTEP;
-
-   if ((b1[0] == -1) && (b2[0] == -1) && (b1[1] == -1) && (b2[1] == 0))
-    angle += HSTEP;
-
-   if ((b1[0] == 0)&& (b2[0] == -1) && (b1[1] == -1) && (b2[1] = -1))
-    angle += HSTEP;
-
-   if ((b1[0] == 1)&& (b2[0] == -1) && (b1[1] == 0) && (b2[1] == -1))
-    angle += HSTEP;
-
-
-   //backward full step
-   if ((b1[0] == 0) && (b2[0] == -1) && (b1[1] == 1) && (b2[1] == 0)) //1000
-    angle -= STEP;
-
-   if ((b1[0] == 1) && (b2[0] == 0) && (b1[1] == 0) && (b2[1] == 1)) //0001
-    angle -= STEP;
-
-   if ((b1[0] == 0) && (b2[0] == 1) && (b1[1] == -1) && (b2[1] == 0)) //0010
-    angle -= STEP;
-
-   if ((b1[0] == -1) && (b2[0] == 0) && (b1[1] == 0)&& (b2[1] == -1)) //0100
-    angle -= STEP;
-
-   //backward full step double phase
-   if ((b1[0] == -1) && (b2[0] == -1) && (b1[1] == 1) && (b2[1] == -1)) //0011
-    angle -= STEP;
-
-   if ((b1[0] == -1) && (b2[0] == 1) && (b1[1] == -1) && (b2[1] == -1)) //0110
-    angle -= STEP;
-
-   if ((b1[0] == 1) && (b2[0] == 1) && (b1[1] == -1) && (b2[1] == 1)) //1100
-    angle -= STEP;
-
-   if ((b1[0] == 1)&& (b2[0] == -1) && (b1[1] == 1) && (b2[1] == 1)) //1001
-    angle -= STEP;
-
-
-   //backward half step
-   if ((b1[1] == 1) && (b2[1] == 0) && (b1[0] == 1) && (b2[0] == -1))
-    angle -= HSTEP;
-
-   if ((b1[1] == 1) && (b2[1] == 1) && (b1[0] == 1) && (b2[0] == 0))
-    angle -= HSTEP;
-
-   if ((b1[1] == 0) && (b2[1] == 1) && (b1[0] == 1) && (b2[0] == 1))
-    angle -= HSTEP;
-
-   if ((b1[1] == -1) && (b2[1] == 1) && (b1[0] == 0) && (b2[0] == 1))
-    angle -= HSTEP;
-
-   if ((b1[1] == -1) && (b2[1] == 0) && (b1[0] == -1) && (b2[0] == 1))
-    angle -= HSTEP;
-
-   if ((b1[1] == -1) && (b2[1] == -1) && (b1[0] == -1) && (b2[0] == 0))
-    angle -= HSTEP;
-
-   if ((b1[1] == 0)&& (b2[1] == -1) && (b1[0] == -1) && (b2[0] = -1))
-    angle -= HSTEP;
-
-   if ((b1[1] == 1)&& (b2[1] == -1) && (b1[0] == 0) && (b2[0] == -1))
-    angle -= HSTEP;
-
-   if (angle >= 2 * M_PI)angle -= 2 * M_PI;
-
-   if (angle <= -2 * M_PI)angle += 2 * M_PI;
-
   }
 }
 
