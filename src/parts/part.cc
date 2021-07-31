@@ -41,8 +41,8 @@ part::ReadMaps(void)
 {
  inputc = 0;
  outputc = 0;
- ReadInputMap (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetMapFile ()));
- ReadOutputMap (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetMapFile ()));
+ ReadInputMap (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetMapFile ()));
+ ReadOutputMap (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetMapFile ()));
 
  for (int i = 0; i < inputc; i++)
   {
@@ -360,7 +360,7 @@ part::SetOrientation(int orientation)
 
  lxImage image (&Window5);
 
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
@@ -394,7 +394,7 @@ part::SetScale(double scale)
 
  lxImage image (&Window5);
 
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale, 0, &Scale);
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale, 0, &Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
@@ -529,9 +529,45 @@ part::GetHelpURL(void)
   {
    memmove (ptr, ptr + 1, strlen (ptr) + 1);
   }
- 
+
  lxString stemp;
  stemp.Printf (lxT ("%s.html"), pname);
 
  return stemp;
 }
+
+//Draw Functions
+
+void
+part::draw_slider(const output_t * output, const unsigned char pos, const lxString val, const lxFont font)
+{
+ float dy = pos / 1.66;
+ canvas.SetFgColor (255, 255, 255);
+ canvas.SetBgColor (89, 89, 89);
+ canvas.Rectangle (1, output->x1, output->y1, output->x2 - output->x1, output->y2 - output->y1);
+ canvas.SetColor (0, 0, 200);
+ canvas.Rectangle (1, output->x1 + 1, output->y1 + 1 + dy, output->x2 - output->x1 - 2, output->y2 - output->y1 - 2 - dy);
+
+ canvas.SetFgColor (0, 0, 0);
+ canvas.SetBgColor (46, 46, 46);
+ canvas.Rectangle (1, output->x1, output->y1 + pos / 1.66, 32, 19);
+ canvas.SetColor (250, 250, 250);
+ canvas.SetFont (font);
+ canvas.RotatedText (val, output->x1 + 1, output->y1 + 5 + pos / 1.66, 0);
+}
+
+void
+part::draw_potentiometer(const output_t * output, const unsigned char pos, const lxString val, const lxFont font)
+{
+ canvas.SetColor (179, 179, 179);
+ canvas.Rectangle (1, output->x1, output->y1, output->x2 - output->x1, output->y2 - output->y1);
+ canvas.SetFgColor (0, 0, 0);
+ canvas.SetBgColor (96, 96, 96);
+ canvas.Rectangle (1, output->x1 + 9, output->y1 + 9, output->x2 - output->x1 - 18, output->y2 - output->y1 - 18);
+ canvas.SetBgColor (46, 46, 46);
+ canvas.Rectangle (1, output->x1, output->y1 + (200 - pos) / 1.66, 32, 19);
+ canvas.SetColor (250, 250, 250);
+ canvas.SetFont (font);
+ canvas.RotatedText (val, output->x1 + 4, output->y1 + 5 + (200 - pos) / 1.66, 0);
+}
+

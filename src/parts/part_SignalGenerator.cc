@@ -48,7 +48,7 @@ font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  ReadMaps ();
 
  lxImage image (&Window5);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
@@ -126,20 +126,7 @@ cpart_SignalGenerator::Draw(void)
       case O_PO1:
       case O_PO2:
       case O_PO3:
-       canvas.SetColor (179, 179, 179);
-       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-       canvas.SetFgColor (0, 0, 0);
-       canvas.SetBgColor (96, 96, 96);
-       canvas.Rectangle (1, output[i].x1 + 9, output[i].y1 + 9, output[i].x2 - output[i].x1 - 18, output[i].y2 - output[i].y1 - 18);
-       canvas.SetBgColor (46, 46, 46);
-       canvas.Rectangle (1, output[i].x1, output[i].y1 + values[output[i].id - O_PO1] / 1.66, 32, 19);
-       /*
-       snprintf (val, 10, "%4.2f", 5.0 * (200 - values[output[i].id - O_PO1]) / 200.0);
-       canvas.SetColor (250, 250, 250);
-       canvas.SetFont (font_p);
-       canvas.RotatedText (val, output[i].x1 + 4, output[i].y1 + 5 + values[output[i].id - O_PO1] / 1.66, 0);
-       canvas.SetFont (font);
-        */
+       draw_potentiometer (&output[i], 200 - values[output[i].id - O_PO1], "", font);
        break;
       case O_TP:
        canvas.SetColor (255, 255, 255);
@@ -297,21 +284,21 @@ cpart_SignalGenerator::EvMouseButtonPress(uint button, uint x, uint y, uint stat
        if (values[0] > 200)values[0] = 200;
        active[0] = 1;
        output_ids[O_PO1]->update = 1;
-       output_ids[O_AMPL]->update=1;
+       output_ids[O_AMPL]->update = 1;
        break;
       case I_PO2:
        values[1] = (y - input[i].y1)*1.66;
        if (values[1] > 200)values[1] = 200;
        active[1] = 1;
        output_ids[O_PO2]->update = 1;
-       output_ids[O_FREQ]->update=1;
+       output_ids[O_FREQ]->update = 1;
        break;
       case I_PO3:
        values[2] = (y - input[i].y1)*1.66;
        if (values[2] > 200)values[2] = 200;
        active[2] = 1;
        output_ids[O_PO3]->update = 1;
-       output_ids[O_OFFS]->update=1;
+       output_ids[O_OFFS]->update = 1;
        break;
       case I_TP:
        type++;
@@ -343,17 +330,17 @@ cpart_SignalGenerator::EvMouseButtonRelease(uint button, uint x, uint y, uint st
       case I_PO1:
        active[0] = 0;
        output_ids[O_PO1]->update = 1;
-       output_ids[O_AMPL]->update=1;
+       output_ids[O_AMPL]->update = 1;
        break;
       case I_PO2:
        active[1] = 0;
        output_ids[O_PO2]->update = 1;
-       output_ids[O_FREQ]->update=1;
+       output_ids[O_FREQ]->update = 1;
        break;
       case I_PO3:
        active[2] = 0;
        output_ids[O_PO3]->update = 1;
-       output_ids[O_OFFS]->update=1;
+       output_ids[O_OFFS]->update = 1;
        break;
       }
     }
@@ -390,7 +377,7 @@ cpart_SignalGenerator::EvMouseMove(uint button, uint x, uint y, uint state)
          values[0] = (y - input[i].y1)*1.66;
          if (values[0] > 200)values[0] = 200;
          output_ids[O_PO1]->update = 1;
-         output_ids[O_AMPL]->update=1;
+         output_ids[O_AMPL]->update = 1;
         }
        break;
       case I_PO2:
@@ -399,7 +386,7 @@ cpart_SignalGenerator::EvMouseMove(uint button, uint x, uint y, uint state)
          values[1] = (y - input[i].y1)*1.66;
          if (values[1] > 200)values[1] = 200;
          output_ids[O_PO2]->update = 1;
-         output_ids[O_FREQ]->update=1;
+         output_ids[O_FREQ]->update = 1;
         }
        break;
       case I_PO3:
@@ -408,7 +395,7 @@ cpart_SignalGenerator::EvMouseMove(uint button, uint x, uint y, uint state)
          values[2] = (y - input[i].y1)*1.66;
          if (values[2] > 200)values[2] = 200;
          output_ids[O_PO3]->update = 1;
-         output_ids[O_OFFS]->update=1;
+         output_ids[O_OFFS]->update = 1;
         }
        break;
       }

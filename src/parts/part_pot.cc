@@ -49,7 +49,7 @@ font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  ReadMaps ();
 
  lxImage image (&Window5);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
@@ -144,17 +144,8 @@ cpart_pot::Draw(void)
       case O_PO2:
       case O_PO3:
       case O_PO4:
-       canvas.SetColor (179, 179, 179);
-       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-       canvas.SetFgColor (0, 0, 0);
-       canvas.SetBgColor (96, 96, 96);
-       canvas.Rectangle (1, output[i].x1 + 9, output[i].y1 + 9, output[i].x2 - output[i].x1 - 18, output[i].y2 - output[i].y1 - 18);
-       canvas.SetBgColor (46, 46, 46);
-       canvas.Rectangle (1, output[i].x1, output[i].y1 + (200 - values[output[i].id - O_PO1]) / 1.66, 32, 19);
        snprintf (val, 10, "%4.2f", 5.0 * (values[output[i].id - O_PO1]) / 200.0);
-       canvas.SetColor (250, 250, 250);
-       canvas.SetFont (font_p);
-       canvas.RotatedText (val, output[i].x1 + 4, output[i].y1 + 5 + (200 - values[output[i].id - O_PO1]) / 1.66, 0);
+       draw_potentiometer (&output[i], values[output[i].id - O_PO1], val, font_p);
        canvas.SetFont (font);
        break;
       }

@@ -49,7 +49,7 @@ font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  ReadMaps ();
 
  lxImage image (&Window5);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
@@ -130,17 +130,8 @@ cpart_lm35::Draw(void)
        canvas.RotatedText ("GND", output[i].x1, output[i].y2, 90);
        break;
       case O_PO1:
-       canvas.SetColor (179, 179, 179);
-       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-       canvas.SetFgColor (0, 0, 0);
-       canvas.SetBgColor (96, 96, 96);
-       canvas.Rectangle (1, output[i].x1 + 9, output[i].y1 + 9, output[i].x2 - output[i].x1 - 18, output[i].y2 - output[i].y1 - 18);
-       canvas.SetBgColor (46, 46, 46);
-       canvas.Rectangle (1, output[i].x1, output[i].y1 + value / 1.66, 32, 19);
        snprintf (val, 10, "%5.1f", (0.74 * (200 - value) + 2));
-       canvas.SetColor (250, 250, 250);
-       canvas.SetFont (font_p);
-       canvas.RotatedText (val, output[i].x1 + 1, output[i].y1 + 5 + value / 1.66, 0);
+       draw_slider (&output[i], value, val, font_p);
        canvas.SetFont (font);
        break;
       }

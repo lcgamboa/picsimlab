@@ -152,14 +152,6 @@ cpart_MPU6050::Draw(void)
       case O_VS1:
       case O_VS2:
       case O_VS3:
-       canvas.SetColor (179, 179, 179);
-       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-       canvas.SetFgColor (0, 0, 0);
-       canvas.SetBgColor (96, 96, 96);
-       canvas.Rectangle (1, output[i].x1 + 9, output[i].y1 + 9, output[i].x2 - output[i].x1 - 18, output[i].y2 - output[i].y1 - 18);
-       canvas.SetBgColor (46, 46, 46);
-       canvas.Rectangle (1, output[i].x1, output[i].y1 + (200 - getValues (output[i].id - O_VS1)) / 1.66, 32, 19);
-
        switch ((mpu.regs[ACCEL_CONFIG]&0x18) >> 3)
         {
         case 0: //2g
@@ -175,21 +167,12 @@ cpart_MPU6050::Draw(void)
          snprintf (val, 10, "%4.2f", 16 * ((getValues (output[i].id - O_VS1)) - 100) / 100.0);
          break;
         }
-       canvas.SetColor (250, 250, 250);
-       canvas.SetFont (font_p);
-       canvas.RotatedText (val, output[i].x1 + 2, output[i].y1 + 5 + (200 - getValues (output[i].id - O_VS1)) / 1.66, 0);
+       draw_slider (&output[i], 200 - getValues (output[i].id - O_VS1), val, font_p);
        canvas.SetFont (font);
        break;
       case O_VS4:
       case O_VS5:
       case O_VS6:
-       canvas.SetColor (179, 179, 179);
-       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-       canvas.SetFgColor (0, 0, 0);
-       canvas.SetBgColor (96, 96, 96);
-       canvas.Rectangle (1, output[i].x1 + 9, output[i].y1 + 9, output[i].x2 - output[i].x1 - 18, output[i].y2 - output[i].y1 - 18);
-       canvas.SetBgColor (46, 46, 46);
-       canvas.Rectangle (1, output[i].x1, output[i].y1 + (200 - getValues (output[i].id - O_VS1)) / 1.66, 32, 19);
        switch ((mpu.regs[GYRO_CONFIG]&0x18) >> 3)
         {
         case 0: //250g/s
@@ -205,9 +188,7 @@ cpart_MPU6050::Draw(void)
          snprintf (val, 10, "%4.0f", 2000 * ((getValues (output[i].id - O_VS1)) - 100) / 100.0);
          break;
         }
-       canvas.SetColor (250, 250, 250);
-       canvas.SetFont (font_p);
-       canvas.RotatedText (val, output[i].x1 + 2, output[i].y1 + 5 + (200 - getValues (output[i].id - O_VS1)) / 1.66, 0);
+       draw_slider (&output[i], 200 - getValues (output[i].id - O_VS1), val, font_p);
        canvas.SetFont (font);
        break;
       default:

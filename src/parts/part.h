@@ -353,6 +353,9 @@ protected:
      */
     int PointInside(int x, int y, input_t input);
 
+    void draw_slider(const output_t * output,  const unsigned char pos, const lxString val, const lxFont font);
+    void draw_potentiometer(const output_t * output,  const unsigned char pos, const lxString val, const lxFont font);
+    
 private:
 
     /**
