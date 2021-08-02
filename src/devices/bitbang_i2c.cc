@@ -131,8 +131,12 @@ bitbang_i2c_io(bitbang_i2c_t *i2c, unsigned char scl, unsigned char sda)
         {
          i2c->data_reading = 1;
          dprintf ("bitbang_i2c READ \n");
+         i2c->status = I2C_DATAR;
         }
-       i2c->status = I2C_ADDR;
+       else
+        {
+         i2c->status = I2C_ADDR;
+        }
        i2c->datar = i2c->datab;
        i2c->bit = 0;
        i2c->datab = 0;
@@ -146,7 +150,7 @@ bitbang_i2c_io(bitbang_i2c_t *i2c, unsigned char scl, unsigned char sda)
        i2c->byte = 0xFF;
       }
     }
-   else if (i2c->data_reading == 0)//data
+   else if (!i2c->data_reading)//data
     {
      dprintf ("bitbang_i2c received OK %02X\n", i2c->datab);
      i2c->datar = i2c->datab;
@@ -155,8 +159,7 @@ bitbang_i2c_io(bitbang_i2c_t *i2c, unsigned char scl, unsigned char sda)
      i2c->byte++;
      i2c->status = I2C_DATAW;
     }
-
-   if (i2c->data_reading)
+   else if (i2c->data_reading)
     {
      i2c->datar = i2c->datab;
      i2c->bit = 0;
@@ -165,6 +168,7 @@ bitbang_i2c_io(bitbang_i2c_t *i2c, unsigned char scl, unsigned char sda)
      i2c->status = I2C_DATAR;
      dprintf ("bitbang_i2c need data to send\n");
     }
+
   }
 
  i2c->sdao = sda;

@@ -143,8 +143,8 @@ mi2c_io(mi2c_t *mem, unsigned char scl, unsigned char sda)
     }
    break;
   case I2C_DATAR:
-   bitbang_i2c_send (&mem->bb_i2c, mem->data[mem->addr]);
    dprintf ("mi2c read[%04X]=%02X\n", mem->addr, mem->data[mem->addr]);
+   bitbang_i2c_send (&mem->bb_i2c, mem->data[mem->addr]);
    mem->addr++;
    if (mem->addr >= mem->SIZE)
     {
