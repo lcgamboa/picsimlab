@@ -54,7 +54,8 @@ static char buff[2048];
 //static char cmd[256];
 
 //static void setblock(int sock_descriptor);
-static void setnblock(int sock_descriptor);
+static void
+setnblock(int sock_descriptor);
 
 typedef struct
 {
@@ -141,18 +142,18 @@ test_load(const char * fname)
    return 0;
   }
 
- if(strstr(pexe,".exe"))
- {
+ if (strstr (pexe, ".exe"))
+  {
    sprintf (cmd, "wine %s %s &", pexe, fname);
    system (cmd);
-   sleep (10);//wait
- }
+   sleep (10); //wait
+  }
  else
- {
-   sprintf (cmd, "%s %s &", pexe, fname); 
+  {
+   sprintf (cmd, "%s %s &", pexe, fname);
    system (cmd);
-   sleep (1);//wait
- }
+   sleep (1); //wait
+  }
 
 
  if ((sockfd = socket (PF_INET, SOCK_STREAM, 0)) < 0)
@@ -226,6 +227,38 @@ test_serial_recv_wait(char * data, const int timeout)
  return ret;
 }
 
+int
+test_serial_recv_str(char * data, const int size, const int timeout)
+{
+ int i = 0;
+
+ int ret = 0;
+
+
+ while ((ret = test_serial_recv_wait (&data[i], timeout)))
+  {
+
+   if (data[i] == '\n')
+    {
+     data[i] = 0;
+     break;
+    }
+
+   i++;
+   if (i >= size)
+    {
+
+     data[size - 1] = 0;
+     break;
+    }
+
+  }
+
+
+ return ret;
+}
+
+
 //rcontrol 
 
 int
@@ -271,6 +304,7 @@ test_send_rcmd(const char * message)
     }
 
   }
+
  while (((bp < 5) || (strcmp (&buff[bp - 5], "Ok\r\n>"))) && ((bp < 8) || strcmp (&buff[bp - 8], "ERROR\r\n>")));
 
  return bp;
@@ -279,6 +313,7 @@ test_send_rcmd(const char * message)
 char *
 test_get_cmd_resp(void)
 {
+
  return buff;
 }
 
@@ -293,6 +328,7 @@ initialize_socket(void)
  WSAStartup (wVersionRequested, &wsaData);
  if (wsaData.wVersion != wVersionRequested)
   {
+
    fprintf (stderr, "\n Wrong version\n");
    return;
   }
@@ -302,6 +338,7 @@ __attribute__ ((destructor))
 static void
 finalize_socket(void)
 {
+
  WSACleanup ();
 }
 #endif
@@ -326,6 +363,7 @@ setnblock(int sock_descriptor)
    //printf("Error fcntl nblock !!!!!!!\n");  
   }
 #else
+
  unsigned long iMode = 1;
  ioctlsocket (sock_descriptor, FIONBIO, &iMode);
 #endif 
@@ -336,27 +374,27 @@ void
 setblock(int sock_descriptor)
 {
 #ifndef _WIN_
- int flags;
- // Set socket to blocking 
+int flags;
+// Set socket to blocking 
 
- if ((flags = fcntl (sock_descriptor, F_GETFL, 0)) < 0)
-  {
-   // Handle error 
-   //printf("Error fcntl block !!!!!!!\n");  
-  }
+if ((flags = fcntl (sock_descriptor, F_GETFL, 0)) < 0)
+{
+// Handle error 
+//printf("Error fcntl block !!!!!!!\n");  
+}
 
 
- if (fcntl (sock_descriptor, F_SETFL, flags & (~O_NONBLOCK)) < 0)
-  {
-   // Handle error 
-   //printf("Error fcntl block !!!!!!!\n");  
-  }
+if (fcntl (sock_descriptor, F_SETFL, flags & (~O_NONBLOCK)) < 0)
+{
+// Handle error 
+//printf("Error fcntl block !!!!!!!\n");  
+}
 #else
- unsigned long iMode = 0;
- ioctlsocket (sock_descriptor, FIONBIO, &iMode);
+unsigned long iMode = 0;
+ioctlsocket (sock_descriptor, FIONBIO, &iMode);
 #endif
 }
-*/
+ */
 
 int
 test_file_exist(const char * fname)

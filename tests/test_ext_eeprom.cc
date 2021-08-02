@@ -23,36 +23,49 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef TESTS_H
-#define TESTS_H
+#include<stdio.h>
+#include<unistd.h>
+#include<string.h>
 
-#define MAX_TESTS 20
+#include"tests.h"
 
-//extern int NUM_TESTS;
+static int
+test_ext_eeprom(void * arg)
+{
+ char ret[256];
 
-#define register_test(name,function, arg)  \
-    static void __attribute__((constructor)) name## _register(void);\
-    static void name## _register(void){\
-    test_register(#name , function , arg);}
+ printf ("test external eeprom i2c \n");
+
+ if (!test_load ("ext_eeprom/extee_uno.pzw"))
+  {
+   return 0;
+  }
 
 
-typedef int (* test_run_func)(void * arg);
+ do
+  {
 
-void test_register(const char * name, test_run_func trun, void* arg);
+   if (!test_serial_recv_str (ret, 256, 1000))
+    {
+     printf ("Error on recv\n");
+     test_end ();
+     return 0;
+    }
+   printf ("%s\n", ret);
 
-//control
-int test_load(const char * fname);
-int test_send_rcmd(const char * message);
-char * test_get_cmd_resp(void);
-int test_end();
+  }
+ while (!strstr (ret, "Errors: "));
 
-//serial
-int test_serial_send(const char data);
-int test_serial_recv(char *data);
-int test_serial_recv_wait(char * data, const int timeout);
-int test_serial_recv_str(char * data, const int size, const int timeout=0);
+ if (strncmp (ret, "Errors: 0", 9))
+  {
+   test_end ();
+   return 0;
+  }
 
-int test_file_exist(const char * fname);
+ return test_end ();
+}
 
-#endif /* TESTS_H */
+
+register_test(ext_eeprom, test_ext_eeprom, NULL);
+
 
