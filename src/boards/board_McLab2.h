@@ -103,6 +103,7 @@ class cboard_McLab2:public bsim_picsim
       void RefreshStatus(void);
       void WritePreferences(void);
       void ReadPreferences(char *name,char *value);
+      void SetScale(double scale);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
 };

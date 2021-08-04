@@ -115,6 +115,7 @@ class cboard_PICGenios:public bsim_picsim
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
       void board_Event(CControl * control);
+      void SetScale(double scale);
 };
 
 

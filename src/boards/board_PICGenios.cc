@@ -272,6 +272,35 @@ cboard_PICGenios::~cboard_PICGenios(void)
 }
 
 void
+cboard_PICGenios::SetScale(double scale)
+{
+ if (Scale != scale)
+  {
+   Scale = scale;
+   if (vent[0])
+    {
+     delete vent[0];
+     delete vent[1];
+     delete lcdbmp[0];
+     delete lcdbmp[1];
+     lxImage image (&Window1);
+     image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("boards/Common/VT1.svg")), 0, Scale, Scale);
+     vent[0] = new lxBitmap (&image, &Window1);
+     image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("boards/Common/VT2.svg")), 0, Scale, Scale);
+     vent[1] = new lxBitmap (&image, &Window1);
+
+     image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("boards/Common/lcd2.svg")), 0, Scale, Scale);
+     lcdbmp[0] = new lxBitmap (&image, &Window1);
+     image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("boards/Common/lcd4.svg")), 0, Scale, Scale);
+     lcdbmp[1] = new lxBitmap (&image, &Window1);
+
+     image.Destroy ();
+    }
+
+  }
+}
+
+void
 cboard_PICGenios::MDumpMemory(const char * mfname)
 {
  FILE * fout;
@@ -539,21 +568,24 @@ cboard_PICGenios::Draw(CDraw *draw)
 
        if (output[i].id == O_VT)
         {
-         draw->Canvas.PutBitmap (vent[vt], output[i].x1, output[i].y1);
+         draw->Canvas.ChangeScale (1.0, 1.0);
+         draw->Canvas.PutBitmap (vent[vt], output[i].x1*Scale, output[i].y1 * Scale);
+         draw->Canvas.ChangeScale (Scale, Scale);
         }
        else if (output[i].id == O_LCD)
         {
          if (lcd.update)
           {
+           draw->Canvas.ChangeScale (1.0, 1.0);
            if (lcd.lnum == 2)
             {
-             draw->Canvas.PutBitmap (lcdbmp[0], output[i].x1 - 41, output[i].y1 - 60);
+             draw->Canvas.PutBitmap (lcdbmp[0], (output[i].x1 - 41) * Scale, (output[i].y1 - 58) * Scale);
             }
            else
             {
-             draw->Canvas.PutBitmap (lcdbmp[1], output[i].x1 - 41, output[i].y1 - 60);
+             draw->Canvas.PutBitmap (lcdbmp[1], (output[i].x1 - 41) * Scale, (output[i].y1 - 58) * Scale);
             }
-
+           draw->Canvas.ChangeScale (Scale, Scale);
            draw->Canvas.Rectangle (1, output[i].x1 - 1, output[i].y1 - 2, output[i].x2 - output[i].x1 + 2, output[i].y2 - output[i].y1 + ((lcd.lnum == 2) ? 3 : 78));
            if (dip[0])
             {
