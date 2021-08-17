@@ -71,6 +71,6 @@ test_serial(void * arg)
 }
 
 
-register_test(serial, test_serial, NULL);
+register_test("Uno Serial", test_serial, NULL);
 
 

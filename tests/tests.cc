@@ -103,14 +103,14 @@ main(int argc, char ** argv)
 
  for (int i = 0; i < NUM_TESTS; i++)
   {
-   printf ("======== test: %-20s ==============\n", tests_list[i].name);
+   printf ("======== test: %-25s ==============\n", tests_list[i].name);
    tests_list[i].result = tests_list[i].trun (tests_list[i].arg);
   }
 
  printf ("\n\n======== Results ==============\n");
  for (int i = 0; i < NUM_TESTS; i++)
   {
-   printf ("test: %-20s : %s\n", tests_list[i].name, (tests_list[i].result ? "\033[1;32m Success\033[0m" : "\033[1;31m Fail\033[0m"));
+   printf ("test: %-25s : %s\n", tests_list[i].name, (tests_list[i].result ? "\033[1;32m Success\033[0m" : "\033[1;31m Fail\033[0m"));
   }
 
  serial.Close ();
@@ -121,7 +121,7 @@ void
 test_register(const char * name, test_run_func trun, void* arg)
 {
 
- strncpy (tests_list[NUM_TESTS].name, name, 20);
+ strncpy (tests_list[NUM_TESTS].name, name, 25);
  tests_list[NUM_TESTS].trun = trun;
  tests_list[NUM_TESTS].arg = arg;
  tests_list[NUM_TESTS].result = 0;

@@ -30,10 +30,10 @@
 
 //extern int NUM_TESTS;
 
-#define register_test(name,function, arg)  \
-    static void __attribute__((constructor)) name## _register(void);\
-    static void name## _register(void){\
-    test_register(#name , function , arg);}
+#define register_test(description,function, arg)  \
+    static void __attribute__((constructor)) function## _register(void);\
+    static void function## _register(void){\
+    test_register(description , function , arg);}
 
 
 typedef int (* test_run_func)(void * arg);

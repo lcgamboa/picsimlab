@@ -66,6 +66,6 @@ test_ext_eeprom(void * arg)
 }
 
 
-register_test(ext_eeprom, test_ext_eeprom, NULL);
+register_test("Uno ext. eeprom 24C04", test_ext_eeprom, NULL);
 
 
