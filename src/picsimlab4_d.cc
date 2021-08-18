@@ -618,4 +618,12 @@ CPWindow4::CPWindow4(void)
   chpin[1]=1;
   toffset=250;
   run=1;
+  
+  fp = 0;
+  tch = 0;
+  is = 0;
+  t = 0;
+  tr = 0;
+  update = 0;
+  font = NULL;
 };

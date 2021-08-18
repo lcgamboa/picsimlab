@@ -29,6 +29,23 @@
 #include<lxrad.h>
 #include <picsim/picsim.h>
 
+#define WMAX 350
+#define HMAX 250
+
+#define NPOINTS (2*WMAX)
+
+typedef struct
+{
+  double Vrms;
+  double Vavr;
+  double Vmax;
+  double Vmin;
+  double Freq;
+  double FCycle_ms;
+  double PCycle_ms;
+  double Duty;
+} ch_status_t;
+
 /**
  * @brief CPWindow4 class
  *
@@ -108,16 +125,29 @@ public:
     void SetSample(void);
     
     void DrawScreen(void);
+    
+    void CalculateStats(int channel);
 private:
-    double Dt;
-    double Rt;
-    double xz;
+    CButton * ctrl;
+    double Dt;  //Delta T 
+    double Rt;  //Relative delta T
+    double xz;  
     int usetrigger;
     double triggerlv;
-    int chpin[2];
+    int tch;  //trigger channel
     int toffset;
+    int chpin[2];
     int run;
-    CButton * ctrl;
+    double databuffer[2][2][NPOINTS]; //flip buffers + 2 channels + 700 points
+    int fp;   //actual flip buffer
+    double *ch[2]; //actual channel data (pointer to databuffer)
+    ch_status_t ch_status[2]; //channel measurament status
+    double pins_[2]; //last value of input pins
+    int is;   //input samples
+    double t; //time
+    int tr;   //trigger
+    int update;
+    lxFont * font;
 };
 
 extern CPWindow4 Window4;
