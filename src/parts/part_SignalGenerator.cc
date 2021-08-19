@@ -250,7 +250,7 @@ cpart_SignalGenerator::Process(void)
      Window5.SetPin (input_pins[0], vald);
      Window5.SetPin (input_pins[1], vald);
     }
-   mcount = -1;
+   mcount = 1;
   }
 
 }
