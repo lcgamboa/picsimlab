@@ -47,7 +47,7 @@ CPWindow4::DrawScreen(void)
  //Clear background
  draw1.Canvas.SetFgColor (0, 0, 0);
  draw1.Canvas.SetBgColor (0, 0, 0);
- draw1.Canvas.Rectangle (1, 0, 0, WMAX, HMAX + 30);
+ draw1.Canvas.Rectangle (1, 0, 0, WMAX + 80, HMAX + 30);
 
  //draw grid lines
  draw1.Canvas.SetFgColor (50, 50, 50);
@@ -190,25 +190,80 @@ CPWindow4::DrawScreen(void)
  draw1.Canvas.Text (text, WMAX / 2, HMAX + 14);
 
 
- //draw ch 0 stats
- if (togglebutton1.GetCheck ())
+ lxString text1;
+ lxString text2;
+ const int x = WMAX + 2;
+ int y;
+
+ for (int i = 0; i < 5; i++)
   {
-   draw1.Canvas.SetFgColor (button1.GetColor ());
-   text.Printf ("Freq: %4.0f Hz", ch_status[0].Freq);
-   draw1.Canvas.Text (text, 2, 4);
-   text.Printf ("Duty: %4.0f %%", ch_status[0].Duty);
-   draw1.Canvas.Text (text, 2, 16);
+   y = (56 * i);
+
+   //Clear background
+   draw1.Canvas.SetFgColor (200, 200, 200);
+   draw1.Canvas.SetBgColor (0, 0, 0);
+   draw1.Canvas.Rectangle (1, x, y, 77, 55);
+
+   switch (measures[i])
+    {
+    case 1:
+     text = "Vmax";
+     text1.Printf ("%7.3f V", ch_status[0].Vmax);
+     text2.Printf ("%7.3f V", ch_status[1].Vmax);
+     break;
+    case 2:
+     text = "Vmin";
+     text1.Printf ("%7.3f V", ch_status[0].Vmin);
+     text2.Printf ("%7.3f V", ch_status[1].Vmin);
+     break;
+    case 3:
+     text = "Vavg";
+     text1.Printf ("%7.3f V", ch_status[0].Vavr);
+     text2.Printf ("%7.3f V", ch_status[1].Vavr);
+     break;
+    case 4:
+     text = "Vrms";
+     text1.Printf ("%7.3f V", ch_status[0].Vrms);
+     text2.Printf ("%7.3f V", ch_status[1].Vrms);
+     break;
+    case 5:
+     text = "Frequency";
+     text1.Printf ("%7.0f Hz", ch_status[0].Freq);
+     text2.Printf ("%7.0f Hz", ch_status[1].Freq);
+     break;
+    case 6:
+     text = "Duty";
+     text1.Printf ("%7.0f %%", ch_status[0].Duty);
+     text2.Printf ("%7.0f %%", ch_status[1].Duty);
+     break;
+    case 7:
+     text = "Pos. cycle";
+     text1.Printf ("%7.3f ms", ch_status[0].PCycle_ms);
+     text2.Printf ("%7.3f ms", ch_status[1].PCycle_ms);
+     break;
+    case 8:
+     text = "Full cycle";
+     text1.Printf ("%7.3f ms", ch_status[0].FCycle_ms);
+     text2.Printf ("%7.3f ms", ch_status[1].FCycle_ms);
+     break;
+    default:
+     text = "";
+     text1 = "";
+     text2 = "";
+    }
+
+   if (text.size () > 0)
+    {
+     draw1.Canvas.SetFgColor (200, 200, 200);
+     draw1.Canvas.Text (text, x + 4, y + 4);
+     draw1.Canvas.SetFgColor (button1.GetColor ());
+     draw1.Canvas.Text (text1, x + 2, y + 20);
+     draw1.Canvas.SetFgColor (button2.GetColor ());
+     draw1.Canvas.Text (text2, x + 2, y + 34);
+    }
+
   }
 
- //draw ch 1 stats
- if (togglebutton2.GetCheck ())
-  {
-   draw1.Canvas.SetFgColor (button2.GetColor ());
-   text.Printf ("Freq: %4.0f Hz", ch_status[1].Freq);
-   draw1.Canvas.Text (text, 4 + WMAX / 2, 4);
-   text.Printf ("Duty: %4.0f %%", ch_status[1].Duty);
-   draw1.Canvas.Text (text, 4 + WMAX / 2, 16);
-  }
 
  draw1.Canvas.End ();
 
@@ -433,8 +488,22 @@ CPWindow4::timer1_EvOnTime(CControl * control)
    if (count >= 5) //Update at 2Hz
     {
      count = 0;
-     if (togglebutton1.GetCheck ()) CalculateStats (0);
-     if (togglebutton2.GetCheck ()) CalculateStats (1);
+     if (togglebutton1.GetCheck ())
+      {
+       CalculateStats (0);
+      }
+     else
+      {
+       memset (&ch_status[0], 0, sizeof (ch_status_t));
+      }
+     if (togglebutton2.GetCheck ())
+      {
+       CalculateStats (1);
+      }
+     else
+      {
+       memset (&ch_status[1], 0, sizeof (ch_status_t));
+      }
     }
    DrawScreen ();
    if (togglebutton6.GetCheck () && spind1.GetEnable ())
@@ -477,6 +546,13 @@ CPWindow4::WritePreferences(void)
  Window1.saveprefs (lxT ("osc_tch"), combo1.GetText ());
  Window1.saveprefs (lxT ("osc_tlevel"), ftoa (spind7.GetValue ()));
  Window1.saveprefs (lxT ("osc_position"), itoa (GetX ()) + lxT (",") + itoa (GetY ()));
+
+ Window1.saveprefs (lxT ("osc_measures"),
+                    itoa (measures[0]) + lxT (",") +
+                    itoa (measures[1]) + lxT (",") +
+                    itoa (measures[2]) + lxT (",") +
+                    itoa (measures[3]) + lxT (",") +
+                    itoa (measures[4]));
 }
 
 void
@@ -576,6 +652,11 @@ CPWindow4::ReadPreferences(char *name, char *value)
    sscanf (value, "%i,%i", &i, &j);
    SetX (i);
    SetY (j);
+  }
+
+ if (!strcmp (name, "osc_measures"))
+  {
+   sscanf (value, "%i,%i,%i,%i,%i", &measures[0], &measures[1], &measures[2], &measures[3], &measures[4]);
   }
 }
 
@@ -739,7 +820,7 @@ CPWindow4::CalculateStats(int channel)
  for (i = 1; i < (NPOINTS / 2) - 1; i++)
   {
    val = -ch[channel][i];
-   
+
    if (ch_status[channel].Vmax < val)
     ch_status[channel].Vmax = val;
    if (ch_status[channel].Vmin > val)
@@ -783,8 +864,8 @@ CPWindow4::CalculateStats(int channel)
 
  if (pulseValid)
   {
-   ch_status[channel].PCycle_ms = avgPCycleWidth * 100;
-   ch_status[channel].FCycle_ms = avgFCycleWidth * 100;
+   ch_status[channel].PCycle_ms = avgPCycleWidth * 1000;
+   ch_status[channel].FCycle_ms = avgFCycleWidth * 1000;
    ch_status[channel].Freq = 1.0 / avgFCycleWidth;
    ch_status[channel].Duty = avgPCycleWidth * 100 / avgFCycleWidth;
   }
@@ -807,3 +888,54 @@ CPWindow4::CalculateStats(int channel)
  printf ("Vmin %lf V\n", ch_status[channel].Vmax);
   */
 }
+
+void
+CPWindow4::button5_EvMouseButtonPress(CControl * control, const uint button, const uint x, const uint y, const uint state)
+{
+ measures[0]++;
+ if (measures[0] >= MAX_MEASURES)
+  {
+   measures[0] = 0;
+  }
+}
+
+void
+CPWindow4::button6_EvMouseButtonPress(CControl * control, const uint button, const uint x, const uint y, const uint state)
+{
+ measures[1]++;
+ if (measures[1] >= MAX_MEASURES)
+  {
+   measures[1] = 0;
+  }
+}
+
+void
+CPWindow4::button7_EvMouseButtonPress(CControl * control, const uint button, const uint x, const uint y, const uint state)
+{
+ measures[2]++;
+ if (measures[2] >= MAX_MEASURES)
+  {
+   measures[2] = 0;
+  }
+}
+
+void
+CPWindow4::button8_EvMouseButtonPress(CControl * control, const uint button, const uint x, const uint y, const uint state)
+{
+ measures[3]++;
+ if (measures[3] >= MAX_MEASURES)
+  {
+   measures[3] = 0;
+  }
+}
+
+void
+CPWindow4::button9_EvMouseButtonPress(CControl * control, const uint button, const uint x, const uint y, const uint state)
+{
+ measures[4]++;
+ if (measures[4] >= MAX_MEASURES)
+  {
+   measures[4] = 0;
+  }
+}
+

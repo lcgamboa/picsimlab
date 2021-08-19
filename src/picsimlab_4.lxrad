@@ -4,11 +4,12 @@
   <Tag type="int">0</Tag>
   <X type="int">283</X>
   <Y type="int">159</Y>
-  <Width type="uint">868</Width>
+  <Width type="uint">998</Width>
   <Height type="uint">388</Height>
   <Hint type="lxString"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">0</Visible>
+  <Color type="lxString">#000001</Color>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">FALSE</EvMouseMove>
   <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
@@ -20,12 +21,13 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Title type="lxString">PICSimLab - Oscilloscope</Title>
   <OverrideRedirect type="bool">0</OverrideRedirect>
-  <EvOnCreate type="Event">FALSE</EvOnCreate>
+  <EvOnCreate type="Event">TRUE</EvOnCreate>
   <EvOnDestroy type="Event">TRUE</EvOnDestroy>
   <EvOnShow type="Event">TRUE</EvOnShow>
-  <EvOnHide type="Event">TRUE</EvOnHide>
+  <EvOnHide type="Event">FALSE</EvOnHide>
   <EvOnEnter type="Event">FALSE</EvOnEnter>
   <EvOnLeave type="Event">FALSE</EvOnLeave>
 <draw1>
@@ -34,7 +36,7 @@
   <Tag type="int">0</Tag>
   <X type="int">13</X>
   <Y type="int">13</Y>
-  <Width type="uint">350</Width>
+  <Width type="uint">430</Width>
   <Height type="uint">280</Height>
   <Hint type="lxString"></Hint>
   <Enable type="bool">1</Enable>
@@ -51,6 +53,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Transparent type="bool">0</Transparent>
   <ImgFileName type="File"></ImgFileName>
 </draw1>
@@ -58,8 +61,8 @@
   <Class type="lxString">CSpind</Class>
   <Name type="lxString">spind1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">380</X>
-  <Y type="int">66</Y>
+  <X type="int">510</X>
+  <Y type="int">64</Y>
   <Width type="uint">150</Width>
   <Height type="uint">34</Height>
   <Hint type="lxString"></Hint>
@@ -77,6 +80,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Value type="double">2.000000</Value>
   <Min type="double">0.100000</Min>
   <Max type="double">100.000000</Max>
@@ -88,7 +92,7 @@
   <Class type="lxString">CSpind</Class>
   <Name type="lxString">spind2</Name>
   <Tag type="int">0</Tag>
-  <X type="int">380</X>
+  <X type="int">510</X>
   <Y type="int">125</Y>
   <Width type="uint">150</Width>
   <Height type="uint">34</Height>
@@ -107,6 +111,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Value type="double">0.000000</Value>
   <Min type="double">-100.000000</Min>
   <Max type="double">100.000000</Max>
@@ -118,7 +123,7 @@
   <Class type="lxString">CSpind</Class>
   <Name type="lxString">spind3</Name>
   <Tag type="int">0</Tag>
-  <X type="int">536</X>
+  <X type="int">665</X>
   <Y type="int">66</Y>
   <Width type="uint">150</Width>
   <Height type="uint">34</Height>
@@ -137,6 +142,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Value type="double">2.000000</Value>
   <Min type="double">0.100000</Min>
   <Max type="double">100.000000</Max>
@@ -148,7 +154,7 @@
   <Class type="lxString">CSpind</Class>
   <Name type="lxString">spind4</Name>
   <Tag type="int">0</Tag>
-  <X type="int">536</X>
+  <X type="int">665</X>
   <Y type="int">125</Y>
   <Width type="uint">150</Width>
   <Height type="uint">34</Height>
@@ -167,6 +173,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Value type="double">0.000000</Value>
   <Min type="double">-100.000000</Min>
   <Max type="double">100.000000</Max>
@@ -178,7 +185,7 @@
   <Class type="lxString">CSpind</Class>
   <Name type="lxString">spind5</Name>
   <Tag type="int">0</Tag>
-  <X type="int">692</X>
+  <X type="int">822</X>
   <Y type="int">66</Y>
   <Width type="uint">150</Width>
   <Height type="uint">34</Height>
@@ -197,19 +204,20 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">TRUE</EvMouseWheel>
   <Value type="double">10.000000</Value>
   <Min type="double">0.001000</Min>
   <Max type="double">200.000000</Max>
   <Inc type="double">0.001000</Inc>
   <Digits type="int">3</Digits>
-  <EvOnChangeSpinDouble type="Event">TRUE</EvOnChangeSpinDouble>
+  <EvOnChangeSpinDouble type="Event">FALSE</EvOnChangeSpinDouble>
 </spind5>
 <spind6>
   <Class type="lxString">CSpind</Class>
   <Name type="lxString">spind6</Name>
   <Tag type="int">0</Tag>
-  <X type="int">692</X>
-  <Y type="int">126</Y>
+  <X type="int">822</X>
+  <Y type="int">127</Y>
   <Width type="uint">150</Width>
   <Height type="uint">34</Height>
   <Hint type="lxString"></Hint>
@@ -227,18 +235,19 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">TRUE</EvMouseWheel>
   <Value type="double">0.000000</Value>
   <Min type="double">-100.000000</Min>
   <Max type="double">100.000000</Max>
   <Inc type="double">0.001000</Inc>
   <Digits type="int">3</Digits>
-  <EvOnChangeSpinDouble type="Event">TRUE</EvOnChangeSpinDouble>
+  <EvOnChangeSpinDouble type="Event">FALSE</EvOnChangeSpinDouble>
 </spind6>
 <togglebutton1>
   <Class type="lxString">CToggleButton</Class>
   <Name type="lxString">togglebutton1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">380</X>
+  <X type="int">510</X>
   <Y type="int">162</Y>
   <Width type="uint">150</Width>
   <Height type="uint">32</Height>
@@ -257,6 +266,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">On</Text>
   <Check type="Int">1</Check>
   <EvOnToggleButton type="Event">FALSE</EvOnToggleButton>
@@ -265,7 +275,7 @@
   <Class type="lxString">CButton</Class>
   <Name type="lxString">button1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">380</X>
+  <X type="int">510</X>
   <Y type="int">198</Y>
   <Width type="uint">150</Width>
   <Height type="uint">32</Height>
@@ -284,13 +294,14 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Color</Text>
 </button1>
 <togglebutton2>
   <Class type="lxString">CToggleButton</Class>
   <Name type="lxString">togglebutton2</Name>
   <Tag type="int">0</Tag>
-  <X type="int">536</X>
+  <X type="int">665</X>
   <Y type="int">162</Y>
   <Width type="uint">150</Width>
   <Height type="uint">32</Height>
@@ -309,6 +320,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">On</Text>
   <Check type="Int">1</Check>
   <EvOnToggleButton type="Event">FALSE</EvOnToggleButton>
@@ -317,7 +329,7 @@
   <Class type="lxString">CButton</Class>
   <Name type="lxString">button2</Name>
   <Tag type="int">0</Tag>
-  <X type="int">536</X>
+  <X type="int">665</X>
   <Y type="int">198</Y>
   <Width type="uint">150</Width>
   <Height type="uint">32</Height>
@@ -336,13 +348,14 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Color</Text>
 </button2>
 <togglebutton3>
   <Class type="lxString">CToggleButton</Class>
   <Name type="lxString">togglebutton3</Name>
   <Tag type="int">0</Tag>
-  <X type="int">380</X>
+  <X type="int">510</X>
   <Y type="int">234</Y>
   <Width type="uint">150</Width>
   <Height type="uint">32</Height>
@@ -361,6 +374,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Inv</Text>
   <Check type="Int">0</Check>
   <EvOnToggleButton type="Event">FALSE</EvOnToggleButton>
@@ -369,7 +383,7 @@
   <Class type="lxString">CToggleButton</Class>
   <Name type="lxString">togglebutton4</Name>
   <Tag type="int">0</Tag>
-  <X type="int">536</X>
+  <X type="int">665</X>
   <Y type="int">234</Y>
   <Width type="uint">150</Width>
   <Height type="uint">32</Height>
@@ -388,6 +402,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Inv</Text>
   <Check type="Int">0</Check>
   <EvOnToggleButton type="Event">FALSE</EvOnToggleButton>
@@ -396,14 +411,14 @@
   <Class type="lxString">CColorDialog</Class>
   <Name type="lxString">colordialog1</Name>
   <Tag type="int">0</Tag>
-  <ColorName type="lxString">red</ColorName>
+  <ColorName type="lxString">RED</ColorName>
   <EvOnClose type="Event">TRUE</EvOnClose>
 </colordialog1>
 <togglebutton5>
   <Class type="lxString">CToggleButton</Class>
   <Name type="lxString">togglebutton5</Name>
   <Tag type="int">0</Tag>
-  <X type="int">692</X>
+  <X type="int">822</X>
   <Y type="int">186</Y>
   <Width type="uint">150</Width>
   <Height type="uint">32</Height>
@@ -422,15 +437,16 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">TRUE</EvMouseWheel>
   <Text type="lxString">Trigger</Text>
   <Check type="Int">1</Check>
-  <EvOnToggleButton type="Event">TRUE</EvOnToggleButton>
+  <EvOnToggleButton type="Event">FALSE</EvOnToggleButton>
 </togglebutton5>
 <spind7>
   <Class type="lxString">CSpind</Class>
   <Name type="lxString">spind7</Name>
   <Tag type="int">0</Tag>
-  <X type="int">692</X>
+  <X type="int">822</X>
   <Y type="int">304</Y>
   <Width type="uint">150</Width>
   <Height type="uint">34</Height>
@@ -449,18 +465,19 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">TRUE</EvMouseWheel>
   <Value type="double">2.500000</Value>
   <Min type="double">-100.000000</Min>
   <Max type="double">100.000000</Max>
   <Inc type="double">0.010000</Inc>
   <Digits type="int">2</Digits>
-  <EvOnChangeSpinDouble type="Event">TRUE</EvOnChangeSpinDouble>
+  <EvOnChangeSpinDouble type="Event">FALSE</EvOnChangeSpinDouble>
 </spind7>
 <combo1>
   <Class type="lxString">CCombo</Class>
   <Name type="lxString">combo1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">692</X>
+  <X type="int">822</X>
   <Y type="int">245</Y>
   <Width type="uint">150</Width>
   <Height type="uint">32</Height>
@@ -479,6 +496,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList">1,2,</Items>
   <Text type="lxString">1</Text>
   <ReadOnly type="bool">0</ReadOnly>
@@ -515,10 +533,11 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">TRUE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString">1</Text>
   <ReadOnly type="bool">0</ReadOnly>
-  <EvOnComboChange type="Event">TRUE</EvOnComboChange>
+  <EvOnComboChange type="Event">FALSE</EvOnComboChange>
 </combo2>
 <combo3>
   <Class type="lxString">CCombo</Class>
@@ -543,16 +562,17 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">TRUE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString">2</Text>
   <ReadOnly type="bool">0</ReadOnly>
-  <EvOnComboChange type="Event">TRUE</EvOnComboChange>
+  <EvOnComboChange type="Event">FALSE</EvOnComboChange>
 </combo3>
 <label1>
   <Class type="lxString">CLabel</Class>
   <Name type="lxString">label1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">414</X>
+  <X type="int">544</X>
   <Y type="int">44</Y>
   <Width type="uint">91</Width>
   <Height type="uint">20</Height>
@@ -571,6 +591,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Ch 1 (V/div)</Text>
   <Align type="CAlign">1</Align>
 </label1>
@@ -578,7 +599,7 @@
   <Class type="lxString">CLabel</Class>
   <Name type="lxString">label2</Name>
   <Tag type="int">0</Tag>
-  <X type="int">570</X>
+  <X type="int">700</X>
   <Y type="int">44</Y>
   <Width type="uint">88</Width>
   <Height type="uint">20</Height>
@@ -597,6 +618,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Ch 2 (V/div)</Text>
   <Align type="CAlign">1</Align>
 </label2>
@@ -604,7 +626,7 @@
   <Class type="lxString">CLabel</Class>
   <Name type="lxString">label3</Name>
   <Tag type="int">0</Tag>
-  <X type="int">706</X>
+  <X type="int">836</X>
   <Y type="int">163</Y>
   <Width type="uint">119</Width>
   <Height type="uint">20</Height>
@@ -623,6 +645,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Trigger On/Off</Text>
   <Align type="CAlign">1</Align>
 </label3>
@@ -630,7 +653,7 @@
   <Class type="lxString">CLabel</Class>
   <Name type="lxString">label4</Name>
   <Tag type="int">0</Tag>
-  <X type="int">715</X>
+  <X type="int">845</X>
   <Y type="int">43</Y>
   <Width type="uint">104</Width>
   <Height type="uint">20</Height>
@@ -649,6 +672,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Time (ms/div)</Text>
   <Align type="CAlign">1</Align>
 </label4>
@@ -656,7 +680,7 @@
   <Class type="lxString">CLabel</Class>
   <Name type="lxString">label5</Name>
   <Tag type="int">0</Tag>
-  <X type="int">714</X>
+  <X type="int">844</X>
   <Y type="int">104</Y>
   <Width type="uint">100</Width>
   <Height type="uint">20</Height>
@@ -675,6 +699,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Time off. (ms)</Text>
   <Align type="CAlign">1</Align>
 </label5>
@@ -682,7 +707,7 @@
   <Class type="lxString">CLabel</Class>
   <Name type="lxString">label6</Name>
   <Tag type="int">0</Tag>
-  <X type="int">707</X>
+  <X type="int">837</X>
   <Y type="int">222</Y>
   <Width type="uint">122</Width>
   <Height type="uint">20</Height>
@@ -701,6 +726,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Trigger channel</Text>
   <Align type="CAlign">1</Align>
 </label6>
@@ -708,7 +734,7 @@
   <Class type="lxString">CLabel</Class>
   <Name type="lxString">label7</Name>
   <Tag type="int">0</Tag>
-  <X type="int">705</X>
+  <X type="int">835</X>
   <Y type="int">283</Y>
   <Width type="uint">128</Width>
   <Height type="uint">20</Height>
@@ -727,6 +753,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Trigger level (V)</Text>
   <Align type="CAlign">1</Align>
 </label7>
@@ -734,7 +761,7 @@
   <Class type="lxString">CLabel</Class>
   <Name type="lxString">label8</Name>
   <Tag type="int">0</Tag>
-  <X type="int">415</X>
+  <X type="int">545</X>
   <Y type="int">103</Y>
   <Width type="uint">91</Width>
   <Height type="uint">20</Height>
@@ -753,6 +780,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Ch 1 off. (V)</Text>
   <Align type="CAlign">1</Align>
 </label8>
@@ -760,8 +788,8 @@
   <Class type="lxString">CLabel</Class>
   <Name type="lxString">label9</Name>
   <Tag type="int">0</Tag>
-  <X type="int">569</X>
-  <Y type="int">103</Y>
+  <X type="int">699</X>
+  <Y type="int">104</Y>
   <Width type="uint">89</Width>
   <Height type="uint">20</Height>
   <Hint type="lxString"></Hint>
@@ -779,6 +807,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Ch 2 off. (V)</Text>
   <Align type="CAlign">1</Align>
 </label9>
@@ -805,6 +834,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Ch 1</Text>
   <Align type="CAlign">1</Align>
 </label10>
@@ -831,6 +861,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Ch 2</Text>
   <Align type="CAlign">1</Align>
 </label11>
@@ -838,7 +869,7 @@
   <Class type="lxString">CButton</Class>
   <Name type="lxString">button3</Name>
   <Tag type="int">0</Tag>
-  <X type="int">380</X>
+  <X type="int">510</X>
   <Y type="int">7</Y>
   <Width type="uint">150</Width>
   <Height type="uint">32</Height>
@@ -857,13 +888,14 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Autoset</Text>
 </button3>
 <togglebutton6>
   <Class type="lxString">CToggleButton</Class>
   <Name type="lxString">togglebutton6</Name>
   <Tag type="int">0</Tag>
-  <X type="int">536</X>
+  <X type="int">665</X>
   <Y type="int">7</Y>
   <Width type="uint">150</Width>
   <Height type="uint">32</Height>
@@ -882,15 +914,16 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">TRUE</EvMouseWheel>
   <Text type="lxString">Stop</Text>
   <Check type="Int">0</Check>
-  <EvOnToggleButton type="Event">TRUE</EvOnToggleButton>
+  <EvOnToggleButton type="Event">FALSE</EvOnToggleButton>
 </togglebutton6>
 <togglebutton7>
   <Class type="lxString">CToggleButton</Class>
   <Name type="lxString">togglebutton7</Name>
   <Tag type="int">0</Tag>
-  <X type="int">692</X>
+  <X type="int">822</X>
   <Y type="int">7</Y>
   <Width type="uint">150</Width>
   <Height type="uint">32</Height>
@@ -909,6 +942,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Single</Text>
   <Check type="Int">0</Check>
   <EvOnToggleButton type="Event">FALSE</EvOnToggleButton>
@@ -936,6 +970,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Save Png</Text>
 </button4>
 <filedialog1>
@@ -947,4 +982,134 @@
   <Type type="int">129</Type>
   <EvOnClose type="Event">TRUE</EvOnClose>
 </filedialog1>
+<button5>
+  <Class type="lxString">CButton</Class>
+  <Name type="lxString">button5</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">450</X>
+  <Y type="int">46</Y>
+  <Width type="uint">30</Width>
+  <Height type="uint">20</Height>
+  <Hint type="lxString"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="lxString">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">TRUE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
+  <Text type="lxString"></Text>
+</button5>
+<button6>
+  <Class type="lxString">CButton</Class>
+  <Name type="lxString">button6</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">450</X>
+  <Y type="int">96</Y>
+  <Width type="uint">30</Width>
+  <Height type="uint">20</Height>
+  <Hint type="lxString"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="lxString">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">TRUE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
+  <Text type="lxString"></Text>
+</button6>
+<button7>
+  <Class type="lxString">CButton</Class>
+  <Name type="lxString">button7</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">450</X>
+  <Y type="int">146</Y>
+  <Width type="uint">30</Width>
+  <Height type="uint">20</Height>
+  <Hint type="lxString"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="lxString">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">TRUE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
+  <Text type="lxString"></Text>
+</button7>
+<button8>
+  <Class type="lxString">CButton</Class>
+  <Name type="lxString">button8</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">450</X>
+  <Y type="int">196</Y>
+  <Width type="uint">30</Width>
+  <Height type="uint">20</Height>
+  <Hint type="lxString"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="lxString">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">TRUE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
+  <Text type="lxString"></Text>
+</button8>
+<button9>
+  <Class type="lxString">CButton</Class>
+  <Name type="lxString">button9</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">451</X>
+  <Y type="int">246</Y>
+  <Width type="uint">30</Width>
+  <Height type="uint">20</Height>
+  <Hint type="lxString"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="lxString">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">TRUE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
+  <Text type="lxString"></Text>
+</button9>
 </window4>

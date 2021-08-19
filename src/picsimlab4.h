@@ -34,6 +34,8 @@
 
 #define NPOINTS (2*WMAX)
 
+#define MAX_MEASURES 9
+
 typedef struct
 {
   double Vrms;
@@ -91,6 +93,11 @@ public:
     CToggleButton togglebutton7;
     CButton button4;
     CFileDialog filedialog1;
+    CButton button5;
+    CButton button6;
+    CButton button7;
+    CButton button8;
+    CButton button9;
     /*#Events*/
     void _EvOnDestroy(CControl * control);
     void _EvOnShow(CControl * control);
@@ -110,6 +117,12 @@ public:
     void button4_EvMouseButtonClick(CControl * control, const uint button, const uint x, const uint y, const uint state);
     void filedialog1_EvOnClose(const int retId);
     void colordialog1_EvOnClose(const int retId);
+    void button5_EvMouseButtonPress(CControl * control, const uint button, const uint x,const  uint y, const uint state);
+    void button6_EvMouseButtonPress(CControl * control, const uint button, const uint x,const  uint y, const uint state);
+    void button7_EvMouseButtonPress(CControl * control, const uint button, const uint x,const  uint y, const uint state);
+    void button8_EvMouseButtonPress(CControl * control, const uint button, const uint x,const  uint y, const uint state);
+    void button9_EvMouseButtonPress(CControl * control, const uint button, const uint x,const  uint y, const uint state);
+
 
     /*#Others*/
     //lxrad automatic generated block end, don't edit above!
@@ -148,6 +161,7 @@ private:
     int tr;   //trigger
     int update;
     lxFont * font;
+    int measures[5];
 };
 
 extern CPWindow4 Window4;
