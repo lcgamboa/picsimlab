@@ -34,7 +34,7 @@
 
 #define NPOINTS (2*WMAX)
 
-#define MAX_MEASURES 9
+#define MAX_MEASURES 10
 
 typedef struct
 {

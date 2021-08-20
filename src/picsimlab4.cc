@@ -232,7 +232,7 @@ CPWindow4::DrawScreen(void)
      text2.Printf ("%7.0f Hz", ch_status[1].Freq);
      break;
     case 6:
-     text = "Duty";
+     text = "Duty cycle";
      text1.Printf ("%7.0f %%", ch_status[0].Duty);
      text2.Printf ("%7.0f %%", ch_status[1].Duty);
      break;
@@ -242,6 +242,11 @@ CPWindow4::DrawScreen(void)
      text2.Printf ("%7.3f ms", ch_status[1].PCycle_ms);
      break;
     case 8:
+     text = "Neg. cycle";
+     text1.Printf ("%7.3f ms", ch_status[0].FCycle_ms - ch_status[0].PCycle_ms);
+     text2.Printf ("%7.3f ms", ch_status[1].FCycle_ms - ch_status[1].PCycle_ms);
+     break;
+    case 9:
      text = "Full cycle";
      text1.Printf ("%7.3f ms", ch_status[0].FCycle_ms);
      text2.Printf ("%7.3f ms", ch_status[1].FCycle_ms);
