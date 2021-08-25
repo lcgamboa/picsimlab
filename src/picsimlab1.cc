@@ -186,7 +186,10 @@ CPWindow1::timer1_EvOnTime(CControl * control)
 
  if (tgo > 3)
   {
-   timer1.SetTime (timer1.GetTime () + 5);
+   if (timer1.GetTime () < 330)
+    {
+     timer1.SetTime (timer1.GetTime () + 5);
+    }
    tgo = 1;
   }
 
@@ -1210,7 +1213,7 @@ CPWindow1::LoadHexFile(lxString fname)
 
  //timer1.SetRunState (0);
  status.st[0] |= ST_DI;
- msleep (100);
+ msleep (timer1.GetTime ());
  if (tgo)tgo = 1;
  while (status.status & 0x0401)
   {
