@@ -815,11 +815,11 @@ CPWindow4::CalculateStats(int channel)
  int i = 1;
  bool ltr_down = (val < ch_status[channel].Vavr); //last transition down
  bool firstUp = true;
- uint16_t ltrsHigh = 0; //last transition sample high number
- uint16_t sumFCW = 0; //Full cycle width sum
- uint16_t sumPCW = 0; //Positive semi-cycle width sum
- uint16_t numFCycles = 0; //Number of full cycles
- uint16_t numPCycles = 0; //Number of positive semi-cycles
+ unsigned short ltrsHigh = 0; //last transition sample high number
+ unsigned short sumFCW = 0; //Full cycle width sum
+ unsigned short sumPCW = 0; //Positive semi-cycle width sum
+ unsigned short numFCycles = 0; //Number of full cycles
+ unsigned short numPCycles = 0; //Number of positive semi-cycles
 
 
  for (i = 1; i < (NPOINTS / 2) - 1; i++)

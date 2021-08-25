@@ -17,10 +17,12 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-override CXXFLAGS += -DEXT_BROWSER -D_VERSION_=\"${VERSION}\" -Wall -flto -g -O2  -D_SHARE_=\"../share/picsimlab/\"  -I/usr/include/lxrad_NOGUI -Wall  -D_REENTRANT
+override CXXFLAGS += -DEXT_BROWSER -D_VERSION_=\"${VERSION}\" -Wall -g -O2  -D_SHARE_=\"../share/picsimlab/\"  -I/usr/include/lxrad_NOGUI -Wall  -D_REENTRANT
 
 override CXXFLAGS+= -D_NOTHREAD
 #override CXXFLAGS+=-fsanitize=address
+override CXXFLAGS+= -flto
+#override CXXFLAGS+=-fno-omit-frame-pointer
 
 override CXXFLAGS+= -D_ARCH_=\"Linux64_NOGUI\" -D_DATE_=\"${DATE}\"
 
