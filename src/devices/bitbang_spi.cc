@@ -45,7 +45,7 @@ bitbang_spi_rst(bitbang_spi_t *spi)
 }
 
 void
-bitbang_spi_init(bitbang_spi_t *spi, unsigned char lenght)
+bitbang_spi_init(bitbang_spi_t *spi, const unsigned char lenght)
 {
  dprintf ("bitbang_spi init \n");
 
@@ -56,7 +56,7 @@ bitbang_spi_init(bitbang_spi_t *spi, unsigned char lenght)
 }
 
 unsigned char
-bitbang_spi_io(bitbang_spi_t *spi, unsigned char clk, unsigned char mosi, unsigned char cs)
+bitbang_spi_io(bitbang_spi_t *spi, const unsigned char clk, const unsigned char din, const unsigned char cs)
 {
 
  if (cs)//not selected
@@ -69,9 +69,9 @@ bitbang_spi_io(bitbang_spi_t *spi, unsigned char clk, unsigned char mosi, unsign
   }
 
  //transicao
- if ((spi->aclk == 0)&&(clk == 1))//rising edge
+ if ((!spi->aclk)&&(clk))//rising edge
   {
-   if (mosi)
+   if (din)
     {
      spi->insr = (spi->insr << 1) | 1;
     }
@@ -90,10 +90,65 @@ bitbang_spi_io(bitbang_spi_t *spi, unsigned char clk, unsigned char mosi, unsign
      spi->bit = 0;
      spi->byte++;
     }
+   else
+    {
+     spi->status = SPI_BIT;
+    }
 
    spi->ret = ((spi->outsr & spi->outbitmask) > 0);
   }
  spi->aclk = clk;
+
+ return spi->ret;
+}
+
+#define ioSPI_clk 0
+#define ioSPI_din 1
+#define ioSPI_cs  2
+
+unsigned char
+bitbang_spi_io_(bitbang_spi_t *spi, const unsigned char ** pins_value)
+{
+
+ if (*pins_value[ioSPI_cs])//not selected
+  {
+   spi->insr = 0;
+   spi->outsr = 0;
+   spi->bit = 0;
+   spi->byte = 0;
+   return 1;
+  }
+
+ //transicao
+ if ((!spi->aclk)&&(*pins_value[ioSPI_clk]))//rising edge
+  {
+   if (*pins_value[ioSPI_din])
+    {
+     spi->insr = (spi->insr << 1) | 1;
+    }
+   else
+    {
+     spi->insr = (spi->insr << 1) & 0xFFFFFFFE;
+    }
+   spi->outsr = (spi->outsr << 1);
+
+   spi->bit++;
+
+   if (spi->bit == spi->lenght)
+    {
+     spi->status = SPI_DATA;
+     spi->data8 = spi->insr & 0xFF;
+     spi->bit = 0;
+     spi->byte++;
+    }
+   else
+    {
+     spi->status = SPI_BIT;
+    }
+
+   spi->ret = ((spi->outsr & spi->outbitmask) > 0);
+  }
+ spi->aclk = *pins_value[ioSPI_clk];
 
  return spi->ret;
 }
@@ -107,7 +162,7 @@ bitbang_spi_get_status(bitbang_spi_t *spi)
 }
 
 void
-bitbang_spi_send(bitbang_spi_t *spi, unsigned int data)
+bitbang_spi_send(bitbang_spi_t *spi, const unsigned int data)
 {
  spi->outsr = data;
  spi->ret = ((spi->outsr & spi->outbitmask) > 0);

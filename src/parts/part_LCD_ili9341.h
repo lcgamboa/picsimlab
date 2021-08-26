@@ -41,6 +41,7 @@ class cpart_LCD_ili9341:public part
       cpart_LCD_ili9341(unsigned x, unsigned y);
       ~cpart_LCD_ili9341(void);
       void Draw(void);
+      void PreProcess(void);
       void Process(void);
       void PostProcess(void);
       lxString GetPictureFileName(void);
@@ -67,6 +68,13 @@ class cpart_LCD_ili9341:public part
       unsigned char type_com;
       unsigned char active[1];
       lxFont font;
+      int valid_lcd_pins;
+      int valid_touch_pins;
+      const unsigned char * pins_value[13];
+      const unsigned char * tpins_value[5];
+      const unsigned char * tpins_int_value;
+      unsigned short lret;
+      unsigned short tret;
 };
 
 

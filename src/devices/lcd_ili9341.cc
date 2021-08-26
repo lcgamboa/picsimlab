@@ -575,12 +575,19 @@ lcd_ili9341_process(lcd_ili9341_t *lcd)
   }
 }
 
+
+#define ioSPI_clk  0
+#define ioSPI_din  1 
+#define ioSPI_ncs  2 
+#define ioSPI_nrst 4
+#define ioSPI_dc   3
+
 unsigned char
-lcd_ili9341_SPI_io(lcd_ili9341_t *lcd, unsigned char din, unsigned char clk, unsigned char ncs, unsigned char nrst, unsigned char dc)
+lcd_ili9341_SPI_io(lcd_ili9341_t *lcd, const unsigned char **pins_value)
 {
 
  //reset
- if (nrst == 0)
+ if (*pins_value[ioSPI_nrst] == 0)
   {
    if (!lcd->hrst)
     {
@@ -593,13 +600,13 @@ lcd_ili9341_SPI_io(lcd_ili9341_t *lcd, unsigned char din, unsigned char clk, uns
  else
   lcd->hrst = 0;
 
- bitbang_spi_io (&lcd->bb_spi, clk, din, ncs);
+ bitbang_spi_io_ (&lcd->bb_spi, pins_value);
 
  switch (bitbang_spi_get_status (&lcd->bb_spi))
   {
   case SPI_DATA:
    lcd->dat = lcd->bb_spi.data8;
-   lcd->dc = dc;
+   lcd->dc = *pins_value[ioSPI_dc];
    lcd_ili9341_process (lcd);
    break;
   }
@@ -607,11 +614,26 @@ lcd_ili9341_SPI_io(lcd_ili9341_t *lcd, unsigned char din, unsigned char clk, uns
  return 1;
 }
 
+
+#define io8b_wr    0
+#define io8b_rd    1
+#define io8b_nrst  2
+#define io8b_dc    3
+#define io8b_ncs   4
+#define io8b_d0    5
+#define io8b_d1    6
+#define io8b_d2    7
+#define io8b_d3    8
+#define io8b_d4    9
+#define io8b_d5   10
+#define io8b_d6   11
+#define io8b_d7   12
+
 unsigned short
-lcd_ili9341_8_io(lcd_ili9341_t *lcd, unsigned char dat, unsigned char wr, unsigned char rd, unsigned char ncs, unsigned char nrst, unsigned char dc)
+lcd_ili9341_8_io(lcd_ili9341_t *lcd, const unsigned char ** pins_value)
 {
  //reset
- if (nrst == 0)
+ if (! *pins_value[io8b_nrst])
   {
    if (!lcd->hrst)
     {
@@ -626,7 +648,7 @@ lcd_ili9341_8_io(lcd_ili9341_t *lcd, unsigned char dat, unsigned char wr, unsign
   lcd->hrst = 0;
 
  //cs
- if (ncs == 1)
+ if (*pins_value[io8b_ncs])
   {
    //dprint ("No CS\n");
    lcd->pwr = 1;
@@ -635,7 +657,7 @@ lcd_ili9341_8_io(lcd_ili9341_t *lcd, unsigned char dat, unsigned char wr, unsign
    return 0;
   }
 
- if (!rd)
+ if (! *pins_value[io8b_rd])
   {
    lcd->out |= 0x0100;
   }
@@ -645,27 +667,43 @@ lcd_ili9341_8_io(lcd_ili9341_t *lcd, unsigned char dat, unsigned char wr, unsign
   }
 
  //transicao WR
- if ((lcd->pwr == 0)&&(wr == 1))
+ if ((!lcd->pwr)&&(*pins_value[io8b_wr]))
   {
-   lcd->dc = dc;
-   lcd->dat = dat;
+   lcd->dc = *pins_value[io8b_dc];
+   lcd->dat = 0;
+   if (*pins_value[io8b_d0]) lcd->dat |= 0x01;
+   if (*pins_value[io8b_d1]) lcd->dat |= 0x02;
+   if (*pins_value[io8b_d2]) lcd->dat |= 0x04;
+   if (*pins_value[io8b_d3]) lcd->dat |= 0x08;
+   if (*pins_value[io8b_d4]) lcd->dat |= 0x10;
+   if (*pins_value[io8b_d5]) lcd->dat |= 0x20;
+   if (*pins_value[io8b_d6]) lcd->dat |= 0x40;
+   if (*pins_value[io8b_d7]) lcd->dat |= 0x80;
    lcd_ili9341_process (lcd);
   }
- else if ((lcd->prd == 0)&&(rd == 1))
+ else if ((!lcd->prd)&&(*pins_value[io8b_rd]))
   {
-   lcd->dc = dc;
-   lcd->dat = dat;
+   lcd->dc = *pins_value[io8b_dc];
+   lcd->dat = 0;
+   if (*pins_value[io8b_d0]) lcd->dat |= 0x01;
+   if (*pins_value[io8b_d1]) lcd->dat |= 0x02;
+   if (*pins_value[io8b_d2]) lcd->dat |= 0x04;
+   if (*pins_value[io8b_d3]) lcd->dat |= 0x08;
+   if (*pins_value[io8b_d4]) lcd->dat |= 0x10;
+   if (*pins_value[io8b_d5]) lcd->dat |= 0x20;
+   if (*pins_value[io8b_d6]) lcd->dat |= 0x40;
+   if (*pins_value[io8b_d7]) lcd->dat |= 0x80;
    lcd_ili9341_process (lcd);
    dprint ("Reading %02X\n", 0xFF & lcd->out);
   }
 
- lcd->pwr = wr;
- lcd->prd = rd;
+ lcd->pwr = *pins_value[io8b_wr];
+ lcd->prd = *pins_value[io8b_rd];
  return lcd->out;
 }
 
 void
-lcd_ili9341_draw(lcd_ili9341_t *lcd, CCanvas * canvas, int x1, int y1, int w1, int h1, int picpwr)
+lcd_ili9341_draw(lcd_ili9341_t *lcd, CCanvas * canvas, const int x1, const int y1, const int w1, const int h1, const int picpwr)
 {
  unsigned short x, y;
  unsigned char r, g, b;

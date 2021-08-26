@@ -76,10 +76,10 @@ void lcd_ili9341_rst(lcd_ili9341_t *lcd);
 void lcd_ili9341_init(lcd_ili9341_t *lcd);
 void lcd_ili9341_update(lcd_ili9341_t *lcd);
 
-unsigned char lcd_ili9341_SPI_io(lcd_ili9341_t *lcd, unsigned char din, unsigned char clk, unsigned char ncs, unsigned char nrst, unsigned char dc);
-unsigned short lcd_ili9341_8_io(lcd_ili9341_t *lcd, unsigned char dat, unsigned char wr, unsigned char rd, unsigned char ncs, unsigned char nrst, unsigned char dc);
+unsigned char lcd_ili9341_SPI_io(lcd_ili9341_t *lcd, const unsigned char **pins_value);
+unsigned short lcd_ili9341_8_io(lcd_ili9341_t *lcd, const unsigned char **pins_value);
 
-void lcd_ili9341_draw(lcd_ili9341_t *lcd, CCanvas * canvas,int x1,int y1,int w1,int h1, int picpwr);
+void lcd_ili9341_draw(lcd_ili9341_t *lcd, CCanvas * canvas,const int x1,const int y1,const int w1,const int h1,const  int picpwr);
 
 
 #endif //LCD_ILI9341

@@ -85,6 +85,12 @@ font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  touch_pins[4] = 0;
 
  active[0] = 0;
+
+ lret = -1;
+ tret = -1;
+
+ valid_lcd_pins = 0;
+ valid_touch_pins = 0;
 }
 
 lxString
@@ -107,7 +113,6 @@ cpart_LCD_ili9341::GetPictureFileName(void)
   }
  return lxT ("LCD ili9341/LCD_ili9341.svg");
 }
-
 
 lxString
 cpart_LCD_ili9341::GetMapFile(void)
@@ -610,7 +615,7 @@ cpart_LCD_ili9341::ReadPropertiesWindow(CPWindow * WProp)
  input_pins[3] = atoi (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ());
  input_pins[4] = atoi (((CCombo*) WProp->GetChildByName ("combo5"))->GetText ());
 
- if (type_com == TC_8BITS)
+ if ((type_com == TC_8BITS) || (type_com == TC_8BITS_TOUCH))
   {
    input_pins[5] = atoi (((CCombo*) WProp->GetChildByName ("combo7"))->GetText ());
    input_pins[6] = atoi (((CCombo*) WProp->GetChildByName ("combo8"))->GetText ());
@@ -634,11 +639,12 @@ cpart_LCD_ili9341::ReadPropertiesWindow(CPWindow * WProp)
 }
 
 void
-cpart_LCD_ili9341::Process(void)
+cpart_LCD_ili9341::PreProcess(void)
 {
- unsigned short ret;
  const picpin * ppins = Window5.GetPinsValues ();
 
+ valid_lcd_pins = 0;
+ valid_touch_pins = 0;
 
  switch (type_com)
   {
@@ -650,8 +656,12 @@ cpart_LCD_ili9341::Process(void)
        &&(input_pins[3] > 0)
        &&(input_pins[4] > 0))
     {
-
-     lcd_ili9341_SPI_io (&lcd, ppins[input_pins[1] - 1].value, ppins[input_pins[0] - 1].value, ppins[input_pins[4] - 1].value, ppins[input_pins[2] - 1].value, ppins[input_pins[3] - 1].value);
+     pins_value[0] = &ppins[input_pins[0] - 1].value;
+     pins_value[1] = &ppins[input_pins[1] - 1].value;
+     pins_value[2] = &ppins[input_pins[4] - 1].value;
+     pins_value[3] = &ppins[input_pins[3] - 1].value;
+     pins_value[4] = &ppins[input_pins[2] - 1].value;
+     valid_lcd_pins = 1;
     }
    break;
   case TC_8BITS:
@@ -670,28 +680,11 @@ cpart_LCD_ili9341::Process(void)
        &&(input_pins[11] > 0)
        &&(input_pins[12] > 0))
     {
-     unsigned char d = 0;
-     if ((ppins[input_pins[5] - 1].value)) d |= 0x01;
-     if ((ppins[input_pins[6] - 1].value)) d |= 0x02;
-     if ((ppins[input_pins[7] - 1].value)) d |= 0x04;
-     if ((ppins[input_pins[8] - 1].value)) d |= 0x08;
-     if ((ppins[input_pins[9] - 1].value)) d |= 0x10;
-     if ((ppins[input_pins[10] - 1].value)) d |= 0x20;
-     if ((ppins[input_pins[11] - 1].value)) d |= 0x40;
-     if ((ppins[input_pins[12] - 1].value)) d |= 0x80;
-     ret = lcd_ili9341_8_io (&lcd, d, ppins[input_pins[0] - 1].value, ppins[input_pins[1] - 1].value, ppins[input_pins[4] - 1].value, ppins[input_pins[2] - 1].value, ppins[input_pins[3] - 1].value);
-     if (ret & 0x0100)
+     for (int i = 0; i < 13; i++)
       {
-       Window5.SetPin (input_pins[5], (ret & 0x01) > 0);
-       Window5.SetPin (input_pins[6], (ret & 0x02) > 0);
-       Window5.SetPin (input_pins[7], (ret & 0x04) > 0);
-       Window5.SetPin (input_pins[8], (ret & 0x08) > 0);
-       Window5.SetPin (input_pins[9], (ret & 0x10) > 0);
-       Window5.SetPin (input_pins[10], (ret & 0x20) > 0);
-       Window5.SetPin (input_pins[11], (ret & 0x40) > 0);
-       Window5.SetPin (input_pins[12], (ret & 0x80) > 0);
+       pins_value[i] = &ppins[input_pins[i] - 1].value;
       }
-
+     valid_lcd_pins = 1;
     }
    break;
   }
@@ -703,14 +696,85 @@ cpart_LCD_ili9341::Process(void)
   case TC_8BITS_TOUCH:
    if ((touch_pins[0] > 0)
        &&(touch_pins[1] > 0)
-       &&(touch_pins[2] > 0))
+       &&(touch_pins[2] > 0)
+       &&(touch_pins[3] > 0))
     {
-     ret = tsc_XPT2046_SPI_io (&touch, ppins[touch_pins[0] - 1].value, ppins[touch_pins[2] - 1].value, ppins[touch_pins[1] - 1].value);
-     Window5.SetPin (touch_pins[3], (ret & 0x01) > 0);
-     Window5.SetPin (touch_pins[4], (ret & 0x02) > 0);
+     
+     tpins_value[0] = &ppins[touch_pins[0] - 1].value;
+     tpins_value[1] = &ppins[touch_pins[2] - 1].value;
+     tpins_value[2] = &ppins[touch_pins[1] - 1].value;
+      
+     valid_touch_pins = 1;
+    }
+   if (touch_pins[4] > 0)
+    {
+     tpins_int_value = &ppins[touch_pins[4] - 1].value;
+    }
+   else
+    {
+     tpins_int_value = NULL;
     }
    break;
   }
+
+}
+
+void
+cpart_LCD_ili9341::Process(void)
+{
+ unsigned short ret;
+
+ switch (type_com)
+  {
+  case TC_SPI:
+  case TC_SPI_TOUCH:
+   if (valid_lcd_pins)
+    {
+     lcd_ili9341_SPI_io (&lcd, pins_value);
+    }
+   break;
+  case TC_8BITS:
+  case TC_8BITS_TOUCH:
+   if (valid_lcd_pins)
+    {
+     ret = lcd_ili9341_8_io (&lcd, pins_value);
+     if ((ret != lret)&&(ret & 0x0100))
+      {
+       Window5.SetPin (input_pins[5], (ret & 0x01));
+       Window5.SetPin (input_pins[6], (ret & 0x02) >> 1);
+       Window5.SetPin (input_pins[7], (ret & 0x04) >> 2);
+       Window5.SetPin (input_pins[8], (ret & 0x08) >> 3);
+       Window5.SetPin (input_pins[9], (ret & 0x10) >> 4);
+       Window5.SetPin (input_pins[10], (ret & 0x20) >> 5);
+       Window5.SetPin (input_pins[11], (ret & 0x40) >> 6);
+       Window5.SetPin (input_pins[12], (ret & 0x80) >> 7);
+       lret = ret;
+      }
+
+    }
+   break;
+  }
+
+ //Touch constroller
+ if (valid_touch_pins)
+  {
+   ret = tsc_XPT2046_SPI_io (&touch, tpins_value);
+
+   if (ret != tret)
+    {
+     Window5.SetPin (touch_pins[3], (ret & 0x01));
+     tret = ret;
+    }
+   if (tpins_int_value)
+    {
+     const unsigned char value = (ret & 0x02) >> 1;
+     if (*tpins_int_value != value)
+      {
+       Window5.SetPin (touch_pins[4], value);
+      }
+    }
+  }
+
 }
 
 void
@@ -761,7 +825,7 @@ cpart_LCD_ili9341::ChangeType(unsigned char tp)
  ReadMaps ();
 
  lxImage image (&Window5);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();

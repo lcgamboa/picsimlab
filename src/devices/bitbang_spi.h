@@ -28,7 +28,7 @@
 
 //operation status
 #define SPI_DATA 0x01
-
+#define SPI_BIT  0x02
 
 typedef struct {
     unsigned char aclk;
@@ -44,12 +44,13 @@ typedef struct {
 } bitbang_spi_t;
 
 
-void bitbang_spi_init(bitbang_spi_t *spi, unsigned char lenght = 8);
+void bitbang_spi_init(bitbang_spi_t *spi, const unsigned char lenght = 8);
 void bitbang_spi_rst(bitbang_spi_t *spi);
 unsigned char bitbang_spi_get_status(bitbang_spi_t *spi);
-void bitbang_spi_send(bitbang_spi_t *spi, unsigned int data);
+void bitbang_spi_send(bitbang_spi_t *spi, const unsigned int data);
 
 //periferic 
-unsigned char bitbang_spi_io(bitbang_spi_t *spi, unsigned char clk, unsigned char mosi,unsigned char cs);
+unsigned char bitbang_spi_io(bitbang_spi_t *spi, const unsigned char clk, const unsigned char din,const unsigned char cs);
+unsigned char bitbang_spi_io_(bitbang_spi_t *spi, const unsigned char ** pins_value);
 
 #endif //BITBANG_SPI
