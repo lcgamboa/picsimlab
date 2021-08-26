@@ -43,10 +43,11 @@ tsc_XPT2046_rst(tsc_XPT2046_t *tsc_)
 {
  tsc_->x = 0;
  tsc_->y = 0;
+ tsc_->press = 0;
 
  bitbang_spi_rst (&tsc_->bb_spi);
  tsc_->cmd = 0;
- tsc_->pint = 2;
+ tsc_->ret = 2;
 
  dprintf ("tsc_ rst\n");
 }
@@ -67,31 +68,37 @@ tsc_XPT2046_set_pos(tsc_XPT2046_t *tsc_, int x, int y)
 
  if ((x >= 0)&&(y >= 0))
   {
-   tsc_->pint = 0;
+   tsc_->ret &= ~2;
    tsc_->x = x;
    tsc_->y = y;
+   tsc_->press = 1000;
   }
  else
   {
-   tsc_->pint = 2;
+   tsc_->ret |= 2;
+   tsc_->press = 0;
   }
 
  dprintf ("tsc_ set pos %i %i \n", x, y);
 }
 
+#define ioSPI_clk 0
+#define ioSPI_din 1
+#define ioSPI_cs  2
+
 unsigned char
-tsc_XPT2046_SPI_io(tsc_XPT2046_t *tsc_, unsigned char clk, unsigned char din, unsigned char cs)
+tsc_XPT2046_SPI_io(tsc_XPT2046_t *tsc_, const unsigned char **pins_value)
 {
 
  //restart
- if ((din)&&(tsc_->bb_spi.byte))
+ if ((*pins_value[ioSPI_din])&&(tsc_->bb_spi.byte))
   {
    tsc_->bb_spi.byte = 0;
    tsc_->bb_spi.bit = 0;
   }
 
 
- bitbang_spi_io (&tsc_->bb_spi, clk, din, cs);
+ bitbang_spi_io_ (&tsc_->bb_spi, pins_value);
 
  switch (bitbang_spi_get_status (&tsc_->bb_spi))
   {
@@ -110,11 +117,17 @@ tsc_XPT2046_SPI_io(tsc_XPT2046_t *tsc_, unsigned char clk, unsigned char din, un
       {
        tsc_->cmd = tsc_->bb_spi.data8;
        dprintf ("tsc_ cmd 0x%02X OK\n", tsc_->cmd);
-       
+
        switch ((tsc_->cmd & 0x70) >> 4)
         {
         case 1: // Y -Position
          tsc_->bb_spi.outsr = (tsc_->x * 4095) / tsc_->height;
+         break;
+        case 3: // Z1
+         tsc_->bb_spi.outsr = tsc_->press;
+         break;
+        case 4: // Z2
+         tsc_->bb_spi.outsr = 4095;
          break;
         case 5: // X -Position
          tsc_->bb_spi.outsr = (tsc_->y * 4095) / tsc_->width;
@@ -132,9 +145,18 @@ tsc_XPT2046_SPI_io(tsc_XPT2046_t *tsc_, unsigned char clk, unsigned char din, un
       }
      break;
     }
-
+   //break;
+  case SPI_BIT:
+   if (tsc_->bb_spi.outsr & 0x1000)
+    {
+     tsc_->ret |= 1;
+    }
+   else
+    {
+     tsc_->ret &= ~1;
+    }
    break;
   }
 
- return ((tsc_->pint) | ((tsc_->bb_spi.outsr & 0x1000) > 0));
+ return tsc_->ret;
 }
