@@ -50,7 +50,7 @@ font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  ReadMaps ();
 
  lxImage image (&Window5);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
@@ -76,6 +76,15 @@ font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  output_value[5] = !active;
  output_value[6] = !active;
  output_value[7] = !active;
+
+ bounce[0] = 0;
+ bounce[1] = 0;
+ bounce[2] = 0;
+ bounce[3] = 0;
+ bounce[4] = 0;
+ bounce[5] = 0;
+ bounce[6] = 0;
+ bounce[7] = 0;
 
  RegisterRemoteControl ();
 
@@ -228,17 +237,62 @@ cpart_pbuttons::Draw(void)
 void
 cpart_pbuttons::PreProcess(void)
 {
+ const picpin * ppins = Window5.GetPinsValues ();
+ do_bounce = 0;
 
+ int bnum = 0;
 
- Window5.SetPin (output_pins[0], output_value[0]);
- Window5.SetPin (output_pins[1], output_value[1]);
- Window5.SetPin (output_pins[2], output_value[2]);
- Window5.SetPin (output_pins[3], output_value[3]);
- Window5.SetPin (output_pins[4], output_value[4]);
- Window5.SetPin (output_pins[5], output_value[5]);
- Window5.SetPin (output_pins[6], output_value[6]);
- Window5.SetPin (output_pins[7], output_value[7]);
+ for (int i = 0; i < 8; i++)
+  {
+   if (output_pins[i])
+    {
+     if ((ppins[ output_pins[i] - 1].dir == PD_IN)&&(ppins[ output_pins[i] - 1].value != output_value[i]))
+      {
 
+       if (!bnum)
+        {
+         bnum = (90.0 * rand () / RAND_MAX) + 10;
+         btime = Window1.GetBoard ()->MGetInstClockFreq () / (1000 * bnum);
+         bcount = btime;
+        }
+       bounce[i] = bnum;
+       do_bounce = 1;
+      }
+    }
+  }
+
+}
+
+void
+cpart_pbuttons::Process(void)
+{
+ if (do_bounce)
+  {
+   btime--;
+
+   if (!btime)
+    {
+     const picpin * ppins = Window5.GetPinsValues ();
+     btime = bcount;
+
+     for (int i = 0; i < 8; i++)
+      {
+       if (bounce[i])
+        {
+         bounce[i]--;
+         if (bounce[i])
+          {
+           Window5.SetPin (output_pins[i], !ppins[output_pins[i] - 1].value);
+          }
+         else
+          {
+           Window5.SetPin (output_pins[i], output_value[i]);
+           do_bounce = 0;
+          }
+        }
+      }
+    }
+  }
 }
 
 void

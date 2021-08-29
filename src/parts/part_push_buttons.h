@@ -45,6 +45,7 @@ public:
     ~cpart_pbuttons(void);
     void Draw(void);
     void PreProcess(void);
+    void Process(void);
     void Reset(void);
     void EvMouseButtonPress(uint button, uint x, uint y, uint state);
     void EvMouseButtonRelease(uint button, uint x, uint y, uint state);
@@ -59,6 +60,10 @@ private:
     unsigned char active;
     unsigned char output_pins[8];
     unsigned char output_value[8];
+    unsigned char bounce[8];
+    int do_bounce;
+    int bcount;
+    int btime;
     lxFont font;
 };
 
