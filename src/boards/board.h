@@ -532,6 +532,7 @@ private:
 
 };
 
+extern int ioupdated;
 
 #endif /* BOARD_H */
 

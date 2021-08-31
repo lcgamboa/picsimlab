@@ -44,6 +44,7 @@ cpart_7s_display_dec::cpart_7s_display_dec(unsigned x, unsigned y)
 {
  X = x;
  Y = y;
+ aways_update = 1;
 
  input_pins[0] = 0;
  input_pins[1] = 0;

@@ -632,6 +632,7 @@ cboard_Arduino_Uno::Run_CPU(void)
     //avr->sleep_usec=0;
     if (use_oscope)Window4.SetSample ();
     if (use_spare)Window5.Process ();
+    ioupdated = 0;
 
     //increment mean value counter if pin is high
     alm[pi] += pins[pi].value;

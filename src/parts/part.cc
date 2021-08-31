@@ -29,6 +29,7 @@
 
 part::part()
 {
+ aways_update = 0;
  inputc = 0;
  outputc = 0;
  Orientation = 0;
@@ -571,3 +572,8 @@ part::draw_potentiometer(const output_t * output, const unsigned char pos, const
  canvas.RotatedText (val, output->x1 + 4, output->y1 + 5 + (200 - pos) / 1.66, 0);
 }
 
+int
+part::GetAwaysUpdate(void)
+{
+ return aways_update;
+}

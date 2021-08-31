@@ -139,6 +139,11 @@ CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
     {
      parts[partsc]->SetId (partsc);
      parts[partsc]->SetScale (scale);
+     if (parts[partsc]->GetAwaysUpdate ())
+      {
+       parts_aup[partsc_aup] = parts[partsc];
+       partsc_aup++;
+      }
      partsc++;
     }
    PartToCreate = "";
@@ -536,11 +541,12 @@ CPWindow5::LoadConfig(lxString fname)
  if (ret)
   {
    int partsc_;
+   int partsc_aup_;
    prefs.LoadFromFile (fname);
 
    DeleteParts ();
    partsc_ = 0;
-
+   partsc_aup_ = 0;
 
    if (prefs.GetLine (0).Contains ("version"))
     {
@@ -579,6 +585,11 @@ CPWindow5::LoadConfig(lxString fname)
          parts[partsc_]->SetOrientation (orient);
          parts[partsc_]->SetScale (scale);
         }
+       if (parts[partsc_]->GetAwaysUpdate ())
+        {
+         parts_aup[partsc_aup_] = parts[partsc_];
+         partsc_aup_++;
+        }
        partsc_++;
       }
      else
@@ -590,6 +601,7 @@ CPWindow5::LoadConfig(lxString fname)
       }
     }
    partsc = partsc_;
+   partsc_aup = partsc_aup_;
   }
 
  update_all = 1;
@@ -668,6 +680,8 @@ CPWindow5::DeleteParts(void)
 {
  int partsc_ = partsc;
  partsc = 0; //for disable process
+ partsc_aup = 0;
+
  scale = 1.0;
  useAlias = 0;
  if (Window4.GetVisible ())
@@ -868,9 +882,19 @@ CPWindow5::Process(void)
    i2c_bus[i2c_bus_ptr[i]] = 0;
   }
 
- for (i = 0; i < partsc; i++)
+ if (ioupdated)
   {
-   parts[i]->Process ();
+   for (i = 0; i < partsc; i++)
+    {
+     parts[i]->Process ();
+    }
+  }
+ else
+  {
+   for (i = 0; i < partsc_aup; i++)
+    {
+     parts_aup[i]->Process ();
+    }
   }
 }
 
@@ -935,9 +959,19 @@ CPWindow5::pmenu2_Rotate_EvMenuActive(CControl * control)
 void
 CPWindow5::pmenu2_Delete_EvMenuActive(CControl * control)
 {
-
+ int PartSelected_aup = partsc_aup;
  int partsc_ = partsc;
+ int partsc_aup_ = partsc_aup;
  partsc = 0; //disable process
+ partsc_aup = 0;
+
+ for (int i = 0; i < partsc_aup_; i++)
+  {
+   if (parts_aup[i] == parts[PartSelected])
+    {
+     PartSelected_aup = i;
+    }
+  }
 
  delete parts[PartSelected];
 
@@ -947,7 +981,17 @@ CPWindow5::pmenu2_Delete_EvMenuActive(CControl * control)
   }
  partsc_--;
 
+ if (PartSelected_aup < partsc_aup_)
+  {
+   for (int i = PartSelected_aup; i < partsc_aup_ - 1; i++)
+    {
+     parts_aup[i] = parts_aup[i + 1];
+    }
+   partsc_aup--;
+  }
+
  partsc = partsc_;
+ partsc_aup = partsc_aup_;
 
  update_all = 1;
 }

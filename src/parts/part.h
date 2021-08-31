@@ -317,6 +317,11 @@ public:
      * @brief  Set part to Draw update
      */
     void SetUpdate(unsigned char upd);
+    
+    /**
+     * @brief  Return if part need to be update every clock cycle
+     */
+    int GetAwaysUpdate(void);
 
 protected:
 
@@ -342,7 +347,8 @@ protected:
     int Orientation; ///< orientation to draw part
     double Scale; ///< scale to draw part
     unsigned int Update; ///< part need draw Update
-
+    int aways_update; ///< part need to be update every clock cycle
+        
     /**
      * @brief  read maps
      */

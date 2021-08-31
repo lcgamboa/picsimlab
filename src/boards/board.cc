@@ -26,8 +26,11 @@
 #include "../picsimlab1.h"
 #include "board.h"
 
+int ioupdated = 0;
+
 board::board(void)
 {
+ ioupdated = 1;
  inputc = 0;
  outputc = 0;
  use_oscope = 0;

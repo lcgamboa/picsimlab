@@ -1149,6 +1149,7 @@ static void
 uart_in_hook(struct avr_irq_t * irq, uint32_t value, void * param)
 {
  ((bsim_simavr *) param)->SerialSend (value);
+ ioupdated = 1;
 }
 
 void

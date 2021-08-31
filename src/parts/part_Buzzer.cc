@@ -45,7 +45,8 @@ cpart_Buzzer::cpart_Buzzer(unsigned x, unsigned y)
  X = x;
  Y = y;
  active = 1;
-
+ aways_update = 1;
+ 
  ReadMaps ();
 
  lxImage image (&Window5);

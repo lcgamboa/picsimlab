@@ -319,6 +319,7 @@ CPWindow5::CPWindow5(void)
   pboard = NULL; 
   
   partsc=0;  
+  partsc_aup=0;
   PartToCreate="";
   PartToMove=-1;
   PartSelected=-1;

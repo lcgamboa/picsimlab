@@ -45,6 +45,7 @@ font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
+ aways_update = 1;
  ReadMaps ();
 
  lxImage image (&Window5);

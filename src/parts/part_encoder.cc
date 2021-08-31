@@ -48,6 +48,8 @@ cpart_encoder::cpart_encoder(unsigned x, unsigned y)
 {
  X = x;
  Y = y;
+ aways_update = 1;
+ 
  ReadMaps ();
 
  lxImage image (&Window5);

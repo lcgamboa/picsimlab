@@ -90,12 +90,14 @@ class bsim_simavr: virtual public board
       {      
          picpin * p  = (picpin *)param;
          p->value=value;
+         ioupdated = 1;
       }
 
       static void ddr_hook( struct avr_irq_t* irq, uint32_t value, void* param )
       {
          picpin * p = (picpin *)param;
          p->dir=!(value & (1<<p->pord));
+         ioupdated = 1;
       }
       
       void SerialSend(unsigned char value);

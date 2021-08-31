@@ -39,6 +39,7 @@ cpart_servo::cpart_servo(unsigned x, unsigned y)
 {
  X = x;
  Y = y;
+ aways_update = 1;
  input_pin = 0;
  angle = 0;
  angle_ = 0;

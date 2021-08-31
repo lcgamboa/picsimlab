@@ -179,6 +179,8 @@ private:
     unsigned char useAlias;
     int partsc;
     part * parts[MAX_PARTS];
+    int partsc_aup; //aways update list
+    part * parts_aup[MAX_PARTS];//aways update list
     CItemMenu MParts[MAX_PARTS];
     lxString PartToCreate;
     int PartSelected;

@@ -70,6 +70,7 @@ const char pin_values[10][10] = {
 cpart_vterm::cpart_vterm(unsigned x, unsigned y) :
 font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
+ aways_update = 1;
  X = x;
  Y = y;
  ReadMaps ();
