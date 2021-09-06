@@ -35,6 +35,8 @@ typedef struct {
     unsigned char connected;
     serialfd_t serialfd;
     bitbang_uart_t bb_uart;
+    unsigned int rxcount;
+    unsigned int rxmax;
 } uart_t;
 
 

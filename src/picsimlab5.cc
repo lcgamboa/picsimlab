@@ -987,7 +987,7 @@ CPWindow5::pmenu2_Delete_EvMenuActive(CControl * control)
     {
      parts_aup[i] = parts_aup[i + 1];
     }
-   partsc_aup--;
+   partsc_aup_--;
   }
 
  partsc = partsc_;

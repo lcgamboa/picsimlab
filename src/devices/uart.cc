@@ -39,6 +39,8 @@ uart_rst(uart_t *sr)
 {
  bitbang_uart_rst (&sr->bb_uart);
  dprintf ("rst uart\n");
+ sr->rxcount = 0;
+ sr->rxmax = 0;
 }
 
 void
@@ -66,6 +68,8 @@ void
 uart_set_clk_freq(uart_t *sr, unsigned long freq)
 {
  bitbang_uart_set_clk_freq (&sr->bb_uart, freq);
+ sr->rxmax = sr->bb_uart.cycle_count * 16;
+ sr->rxcount = sr->rxmax + 1;
 }
 
 unsigned char
@@ -78,15 +82,22 @@ uart_io(uart_t *sr, unsigned char rx)
    return 1;
   }
 
- if (!bitbang_uart_transmitting (&sr->bb_uart))
+ if (sr->rxcount > sr->rxmax)//wait to read one byte 
   {
-   unsigned char data;
-   if (serial_port_rec (sr->serialfd, &data))
+   if (!bitbang_uart_transmitting (&sr->bb_uart))
     {
-     bitbang_uart_send (&sr->bb_uart, data);
+     unsigned char data;
+     if (serial_port_rec (sr->serialfd, &data))
+      {
+       bitbang_uart_send (&sr->bb_uart, data);
+      }
+     sr->rxcount = 1;
     }
   }
-
+ else
+  {
+   sr->rxcount++;
+  }
 
  ret = bitbang_uart_io (&sr->bb_uart, rx);
 
@@ -94,6 +105,8 @@ uart_io(uart_t *sr, unsigned char rx)
   {
    serial_port_send (sr->serialfd, bitbang_uart_recv (&sr->bb_uart));
   }
+
+
 
  return ret;
 }
