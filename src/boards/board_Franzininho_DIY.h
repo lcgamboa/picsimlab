@@ -66,7 +66,6 @@ class cboard_Franzininho_DIY:public bsim_simavr
       ~cboard_Franzininho_DIY(void);
       //Called ever 100ms to draw board
       void Draw(CDraw *draw);
-      void UpdateHardware(void);
       void Run_CPU(void);
       //Return a list of board supported microcontrollers
       lxString GetSupportedDevices(void){return lxT("attiny85,");};
@@ -91,9 +90,6 @@ class cboard_Franzininho_DIY:public bsim_simavr
       //return the output ids numbers of names used in output map
       unsigned short get_out_id(char * name);
 };
-
-#define TDDR	0x3A
-#define TDCR	0x3B
 
 #endif	/* BOARD_Franzininho_DIY_H */
 

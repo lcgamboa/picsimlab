@@ -471,7 +471,7 @@ cboard_Franzininho_DIY::Run_CPU(void)
     if (use_oscope)Window4.SetSample ();
     if (use_spare)Window5.Process ();
     ioupdated = 0;
-    
+
     //increment mean value counter if pin is high
     alm[pi] += pins[pi].value;
     pi++;
@@ -531,41 +531,6 @@ cboard_Franzininho_DIY::Run_CPU(void)
    output_ids[O_PPB5]->update = 1;
   }
 
-}
-
-void
-cboard_Franzininho_DIY::UpdateHardware(void)
-{
-
- if (avr->data[TDCR] & 0x01)//Enabled
-  {
-   //static int cont = 0;
-   //unsigned char c;
-   //cont++;
-
-   if (!uart_config)
-    {
-     uart_config = 1;
-     serialbaud = 115200;
-     serialbaud = serial_port_cfg (serialfd, serialexbaud);
-    }
-   /*
-    if (cont > 1000)
-     {
-      cont = 0;
-
-      if (serial_port_rec (serialfd, &c))
-       {
-        avr->data[TDDR] = c;
-        avr->data[TDCR] |= (1 << 4);
-       }
-     }
-    */
-  }
- else
-  {
-   uart_config = 0;
-  }
 }
 
 board_init(BOARD_Franzininho_DIY_Name, cboard_Franzininho_DIY);

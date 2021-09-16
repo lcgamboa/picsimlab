@@ -31,6 +31,8 @@
 #include"../picsimlab1.h"
 #include "simavr/avr_eeprom.h"
 
+#define dprintf if (1) {} else printf
+
 //gdb debug hack stuff
 extern "C"
 {
@@ -73,6 +75,8 @@ bsim_simavr::bsim_simavr(void)
  has_usart = 0;
 }
 
+//uart stuff
+
 void
 bsim_simavr::MSetSerial(const char * port) { }
 
@@ -88,11 +92,125 @@ static const char * irq_names_uart[IRQ_UART_COUNT] = {
  /*[IRQ_UART_BYTE_OUT] =*/ "8>uart.out",
 };
 
-
 /*
  * called when a byte is send via the uart on the AVR
  */
 static void uart_in_hook(struct avr_irq_t * irq, uint32_t value, void * param);
+
+
+//USI
+
+static uint8_t
+avr_usi_read(struct avr_t * avr, avr_io_addr_t addr, void * param)
+{
+
+ uint8_t v = avr_core_watch_read (avr, addr);
+
+ switch (addr)
+  {
+  case USICR:
+   dprintf ("USI ------------------- avr_usi_read  USICR [%02x] = %02x\n", addr, v);
+   break;
+  case USISR:
+   dprintf ("USI ------------------- avr_usi_read  USISR[%02x] = %02x\n", addr, v);
+   break;
+  }
+
+ return v;
+}
+
+static void
+avr_usi_write(struct avr_t * avr, avr_io_addr_t addr, uint8_t v, void * param)
+{
+
+ usi_t * USI = (usi_t *) &(((bsim_simavr *) param)->USI);
+
+ switch (addr)
+  {
+  case USICR:
+   dprintf ("USI ------------------- avr_usi_write USICR [%02x] = %02x\n", addr, v);
+   avr_core_watch_write (avr, addr, v);
+
+   if (v & 0x01) //TOGLE
+    {
+     unsigned char val = !USI->scl->value;
+     dprintf ("Set CLK = %i\n", val);
+     avr_raise_irq (USI->scl_irq, val | AVR_IOPORT_OUTPUT);
+
+     if (val) //update DR
+      {
+       v = avr->data[USIDR];
+       v = (v << 1) | USI->sda->value;
+
+       if (v & 0x80)
+        {
+         USI->out = 1;
+        }
+       else
+        {
+         USI->out = 0;
+        }
+
+       avr->data[USIDR] = v;
+      }
+     else
+      {
+       if (USI->sda->dir == PD_OUT)
+        {
+         avr_raise_irq (USI->sda_irq, USI->out | AVR_IOPORT_OUTPUT);
+         dprintf ("write sda %i\n", USI->out);
+        }
+      }
+
+
+     //counter
+     v = avr_core_watch_read (avr, USISR);
+     unsigned char count = v & 0x0F;
+     count++;
+     if (count > 15)
+      {
+       count = 0;
+       v |= 0x40; //set USIOIF
+      }
+     v = (v & 0xF0) | count;
+     avr_core_watch_write (avr, USISR, v);
+    }
+
+   break;
+  case USISR:
+   {
+    dprintf ("USI ------------------- avr_usi_write USISR [%02x] = %02x\n", addr, v);
+
+    unsigned char ov = avr_core_watch_read (avr, addr);
+    v = (~(v & 0xF0) & (ov & 0xF0)) | (v & 0x0F); //clear flags   
+    avr_core_watch_write (avr, addr, v);
+
+   }
+   break;
+  case USIDR:
+   dprintf ("USI ------------------- avr_usi_write USIDR [%02x] = %02x\n", addr, v);
+   avr_core_watch_write (avr, addr, v);
+
+   if (USI->sda->dir == PD_OUT)
+    {
+     if (v & 0x80)
+      {
+       USI->out = 1;
+      }
+     else
+      {
+       USI->out = 0;
+      }
+     avr_raise_irq (USI->sda_irq, USI->out | AVR_IOPORT_OUTPUT);
+    }
+   break;
+  case USIBR:
+   dprintf ("USI ------------------- avr_usi_write USIBR [%02x] = %02x\n", addr, v);
+   break;
+  }
+
+
+}
 
 void
 bsim_simavr::pins_reset(void)
@@ -211,11 +329,11 @@ bsim_simavr::MInit(const char * processor, const char * fname, float freq)
    avr->reset_pc = 0x07000; // bootloader 0x3800
    has_usart = 1;
   }
- else
+ else //attiny85
   {
    avr->reset_pc = 0x0000;
   }
-
+ avr->vcc  = 5000;
  avr->avcc = 5000;
 
  //avr->log= LOG_DEBUG;
@@ -266,7 +384,7 @@ bsim_simavr::MInit(const char * processor, const char * fname, float freq)
     }
   }
 
-
+ //UART
  if (has_usart)
   {
    // disable the uart stdio 
@@ -305,6 +423,28 @@ bsim_simavr::MInit(const char * processor, const char * fname, float freq)
   }
 
  uart_config = 0;
+
+ //USI
+ if (!has_usart)
+  {
+   USI.scl = 0;
+   USI.sda = 0;
+   //for attiny85
+   #define PB2 7
+   #define PB0 5
+   USI.scl = &pins[PB2 - 1];
+   USI.sda = &pins[PB0 - 1];
+   USI.scl_irq = Write_stat_irq[PB2 - 1];
+   USI.sda_irq = Write_stat_irq[PB0 - 1];
+
+   avr_register_io_read (avr, USISR, avr_usi_read, this);
+   avr_register_io_write (avr, USISR, avr_usi_write, this);
+   avr_register_io_read (avr, USICR, avr_usi_read, this);
+   avr_register_io_write (avr, USICR, avr_usi_write, this);
+   avr_register_io_write (avr, USIBR, avr_usi_write, this);
+   avr_register_io_write (avr, USIDR, avr_usi_write, this);
+  }
+
  return ret;
 }
 
@@ -329,7 +469,6 @@ bsim_simavr::MEnd(void)
   avr_free_irq (Write_stat_irq[i], 1);
 
  avr_free_irq (serial_irq, IRQ_UART_COUNT);
-
 
  for (int i = 0; i < avr->irq_pool.count; i++)
   {
@@ -1155,80 +1294,139 @@ uart_in_hook(struct avr_irq_t * irq, uint32_t value, void * param)
 void
 bsim_simavr::UpdateHardware(void)
 {
- static int cont = 0;
- static int aux = 1;
- unsigned char c;
- cont++;
 
- if (cont > 1000)
+ if (has_usart)
   {
-   cont = 0;
+   static int cont = 0;
+   static int aux = 1;
+   unsigned char c;
+   cont++;
 
-   if (serial_port_get_dsr (serialfd))
+   if (cont > 1000)
     {
-     if (aux)
+     cont = 0;
+
+     if (serial_port_get_dsr (serialfd))
       {
-       MReset (0);
-       aux = 0;
-      }
-    }
-   else
-    {
-     aux = 1;
-    }
-
-   if (avr->data[UCSR0B] & 0x10)//RXEN
-    {
-     if (serial_port_rec (serialfd, &c))
-      {
-       avr_raise_irq (serial_irq + IRQ_UART_BYTE_OUT, c);
-      }
-
-     if (bitbang_uart_data_available (&bb_uart))
-      {
-       unsigned char data = bitbang_uart_recv (&bb_uart);
-       //printf ("data recv:%02X  %c\n", data,data);
-       avr_raise_irq (serial_irq + IRQ_UART_BYTE_OUT, data);
-      }
-
-    }
-  }
-
- if (avr->data[UCSR0B] & 0x18)//RXEN TXEN
-  {
-   if (!uart_config)
-    {
-     uart_config = 1;
-
-     if (avr->data[UCSR0A] & 0x02) //U2Xn
-      {
-       serialexbaud = avr->frequency / (8 * (((avr->data[UBRR0H] << 8) | avr->data[UBRR0L]) + 1));
+       if (aux)
+        {
+         MReset (0);
+         aux = 0;
+        }
       }
      else
       {
-       serialexbaud = avr->frequency / (16 * (((avr->data[UBRR0H] << 8) | avr->data[UBRR0L]) + 1));
+       aux = 1;
       }
 
+     if (avr->data[UCSR0B] & 0x10)//RXEN
+      {
+       if (serial_port_rec (serialfd, &c))
+        {
+         avr_raise_irq (serial_irq + IRQ_UART_BYTE_OUT, c);
+        }
 
-     serialbaud = serial_port_cfg (serialfd, serialexbaud);
+       if (bitbang_uart_data_available (&bb_uart))
+        {
+         unsigned char data = bitbang_uart_recv (&bb_uart);
+         //printf ("data recv:%02X  %c\n", data,data);
+         avr_raise_irq (serial_irq + IRQ_UART_BYTE_OUT, data);
+        }
 
-     //printf ("baud=%i %f\n", serialbaud, serialexbaud);
-
-     bitbang_uart_init (&bb_uart);
-
-     bitbang_uart_set_speed (&bb_uart, serialexbaud);
-     bitbang_uart_set_clk_freq (&bb_uart, avr->frequency);
-
-     pins[pin_rx - 1 ].dir = PD_IN;
-     pins[pin_tx - 1 ].dir = PD_OUT;
-     pins[pin_rx - 1 ].value = 1;
+      }
     }
 
-   pins[pin_tx - 1 ].value = bitbang_uart_io (&bb_uart, pins[pin_rx - 1 ].value);
+   if (avr->data[UCSR0B] & 0x18)//RXEN TXEN
+    {
+     if (!uart_config)
+      {
+       uart_config = 1;
+
+       if (avr->data[UCSR0A] & 0x02) //U2Xn
+        {
+         serialexbaud = avr->frequency / (8 * (((avr->data[UBRR0H] << 8) | avr->data[UBRR0L]) + 1));
+        }
+       else
+        {
+         serialexbaud = avr->frequency / (16 * (((avr->data[UBRR0H] << 8) | avr->data[UBRR0L]) + 1));
+        }
+
+
+       serialbaud = serial_port_cfg (serialfd, serialexbaud);
+
+       //printf ("baud=%i %f\n", serialbaud, serialexbaud);
+
+       bitbang_uart_init (&bb_uart);
+
+       bitbang_uart_set_speed (&bb_uart, serialexbaud);
+       bitbang_uart_set_clk_freq (&bb_uart, avr->frequency);
+
+       pins[pin_rx - 1 ].dir = PD_IN;
+       pins[pin_tx - 1 ].dir = PD_OUT;
+       pins[pin_rx - 1 ].value = 1;
+      }
+
+     pins[pin_tx - 1 ].value = bitbang_uart_io (&bb_uart, pins[pin_rx - 1 ].value);
+    }
+   else
+    {
+     uart_config = 0;
+    }
   }
- else
+ else//USI
   {
-   uart_config = 0;
+   if (avr->data[TDCR] & 0x01)//Enabled
+    {
+     //static int cont = 0;
+     //unsigned char c;
+     //cont++;
+
+     if (!uart_config)
+      {
+       uart_config = 1;
+       serialbaud = 115200;
+       serialbaud = serial_port_cfg (serialfd, serialexbaud);
+      }
+     /*
+      if (cont > 1000)
+       {
+        cont = 0;
+
+        if (serial_port_rec (serialfd, &c))
+         {
+          avr->data[TDDR] = c;
+          avr->data[TDCR] |= (1 << 4);
+         }
+       }
+      */
+    }
+   else
+    {
+     uart_config = 0;
+    }
+
+   //i2c start
+   if ((USI.sdao == 1)&&(USI.sda->value == 0)&&(USI.scl->value == 1)&&(USI.sclo == 1)) //start
+    {
+     dprintf ("start detected\n");
+     unsigned char v = avr_core_watch_read (avr, USISR);
+     v |= 0x80; //set USISIF  
+     avr_core_watch_write (avr, USISR, v);
+    }
+
+   //i2c stop
+   if ((USI.sdao == 0)&&(USI.sda->value == 1)&&(USI.scl->value == 1)&&(USI.sclo == 1))
+    {
+     dprintf ("stop detected\n");
+     unsigned char v = avr_core_watch_read (avr, USISR);
+     v |= 0x20; //set USIPF  
+     avr_core_watch_write (avr, USISR, v);
+    }
+
+
+   USI.sdao = USI.sda->value;
+   USI.sclo = USI.scl->value;
+
   }
 }
 
