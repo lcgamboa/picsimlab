@@ -109,10 +109,10 @@ avr_usi_read(struct avr_t * avr, avr_io_addr_t addr, void * param)
  switch (addr)
   {
   case USICR:
-   dprintf ("USI ------------------- avr_usi_read  USICR [%02x] = %02x\n", addr, v);
+   dprintf ("USI: avr_usi_read  USICR [%02x] = %02x\n", addr, v);
    break;
   case USISR:
-   dprintf ("USI ------------------- avr_usi_read  USISR[%02x] = %02x\n", addr, v);
+   dprintf ("USI: avr_usi_read  USISR[%02x] = %02x\n", addr, v);
    break;
   }
 
@@ -128,16 +128,16 @@ avr_usi_write(struct avr_t * avr, avr_io_addr_t addr, uint8_t v, void * param)
  switch (addr)
   {
   case USICR:
-   dprintf ("USI ------------------- avr_usi_write USICR [%02x] = %02x\n", addr, v);
-   avr_core_watch_write (avr, addr, v);
+   dprintf ("USI: avr_usi_write USICR [%02x] = %02x\n", addr, v);
+   avr_core_watch_write (avr, addr, v & 0xFE);
 
    if (v & 0x01) //TOGLE
     {
-     unsigned char val = !USI->scl->value;
-     dprintf ("Set CLK = %i\n", val);
-     avr_raise_irq (USI->scl_irq, val | AVR_IOPORT_OUTPUT);
+     unsigned char edge = !USI->scl->value;
+     dprintf ("USI: Set CLK = %i\n", edge);
+     avr_raise_irq (USI->scl_irq, edge | AVR_IOPORT_OUTPUT);
 
-     if (val) //update DR
+     if (edge) //update DR up edge
       {
        v = avr->data[USIDR];
        v = (v << 1) | USI->sda->value;
@@ -152,14 +152,17 @@ avr_usi_write(struct avr_t * avr, avr_io_addr_t addr, uint8_t v, void * param)
         }
 
        avr->data[USIDR] = v;
+       USI->sda->dir = PD_OUT;
+       //avr_set_r (avr, 0x37, avr_core_watch_read (avr, 0x37) | 1);
       }
-     else
+     else //down edge
       {
-       if (USI->sda->dir == PD_OUT)
-        {
-         avr_raise_irq (USI->sda_irq, USI->out | AVR_IOPORT_OUTPUT);
-         dprintf ("write sda %i\n", USI->out);
-        }
+       USI->sda->dir = PD_IN;
+       //USI->sda->value = USI->out;
+       //avr_set_r (avr, 0x37, avr_core_watch_read (avr, 0x37)& 0xFE);
+       avr_raise_irq (USI->sda_irq, USI->out | AVR_IOPORT_OUTPUT);
+       dprintf ("USI:  write sda %i\n", USI->out);
+              
       }
 
 
@@ -171,6 +174,9 @@ avr_usi_write(struct avr_t * avr, avr_io_addr_t addr, uint8_t v, void * param)
       {
        count = 0;
        v |= 0x40; //set USIOIF
+       //copy to USIDR to USIBR
+       avr_core_watch_write (avr, USIBR, avr_core_watch_read (avr, USIDR));
+       dprintf ("USI: Received, set USIBR [%02x] = %02x\n", USIBR, avr_core_watch_read (avr, USIBR));
       }
      v = (v & 0xF0) | count;
      avr_core_watch_write (avr, USISR, v);
@@ -179,7 +185,7 @@ avr_usi_write(struct avr_t * avr, avr_io_addr_t addr, uint8_t v, void * param)
    break;
   case USISR:
    {
-    dprintf ("USI ------------------- avr_usi_write USISR [%02x] = %02x\n", addr, v);
+    dprintf ("USI: avr_usi_write USISR [%02x] = %02x\n", addr, v);
 
     unsigned char ov = avr_core_watch_read (avr, addr);
     v = (~(v & 0xF0) & (ov & 0xF0)) | (v & 0x0F); //clear flags   
@@ -188,24 +194,23 @@ avr_usi_write(struct avr_t * avr, avr_io_addr_t addr, uint8_t v, void * param)
    }
    break;
   case USIDR:
-   dprintf ("USI ------------------- avr_usi_write USIDR [%02x] = %02x\n", addr, v);
+   dprintf ("USI: avr_usi_write USIDR [%02x] = %02x\n", addr, v);
    avr_core_watch_write (avr, addr, v);
 
-   if (USI->sda->dir == PD_OUT)
+   USI->sda->dir = PD_OUT;
+   if (v & 0x80)
     {
-     if (v & 0x80)
-      {
-       USI->out = 1;
-      }
-     else
-      {
-       USI->out = 0;
-      }
-     avr_raise_irq (USI->sda_irq, USI->out | AVR_IOPORT_OUTPUT);
+     USI->out = 1;
     }
+   else
+    {
+     USI->out = 0;
+    }
+   avr_raise_irq (USI->sda_irq, USI->out | AVR_IOPORT_OUTPUT);
+
    break;
   case USIBR:
-   dprintf ("USI ------------------- avr_usi_write USIBR [%02x] = %02x\n", addr, v);
+   dprintf ("USI: avr_usi_write USIBR [%02x] = %02x\n", addr, v);
    break;
   }
 
@@ -333,7 +338,7 @@ bsim_simavr::MInit(const char * processor, const char * fname, float freq)
   {
    avr->reset_pc = 0x0000;
   }
- avr->vcc  = 5000;
+ avr->vcc = 5000;
  avr->avcc = 5000;
 
  //avr->log= LOG_DEBUG;
@@ -430,8 +435,8 @@ bsim_simavr::MInit(const char * processor, const char * fname, float freq)
    USI.scl = 0;
    USI.sda = 0;
    //for attiny85
-   #define PB2 7
-   #define PB0 5
+#define PB2 7
+#define PB0 5
    USI.scl = &pins[PB2 - 1];
    USI.sda = &pins[PB0 - 1];
    USI.scl_irq = Write_stat_irq[PB2 - 1];
@@ -1408,7 +1413,7 @@ bsim_simavr::UpdateHardware(void)
    //i2c start
    if ((USI.sdao == 1)&&(USI.sda->value == 0)&&(USI.scl->value == 1)&&(USI.sclo == 1)) //start
     {
-     dprintf ("start detected\n");
+     dprintf ("USI: start detected\n");
      unsigned char v = avr_core_watch_read (avr, USISR);
      v |= 0x80; //set USISIF  
      avr_core_watch_write (avr, USISR, v);
@@ -1417,7 +1422,7 @@ bsim_simavr::UpdateHardware(void)
    //i2c stop
    if ((USI.sdao == 0)&&(USI.sda->value == 1)&&(USI.scl->value == 1)&&(USI.sclo == 1))
     {
-     dprintf ("stop detected\n");
+     dprintf ("USI: stop detected\n");
      unsigned char v = avr_core_watch_read (avr, USISR);
      v |= 0x20; //set USIPF  
      avr_core_watch_write (avr, USISR, v);

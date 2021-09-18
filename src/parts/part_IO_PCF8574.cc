@@ -393,9 +393,11 @@ cpart_IO_PCF8574::Process(void)
 
  if ((input_pins[0] > 0)&&(input_pins[1] > 0))
   Window5.Set_i2c_bus (input_pins[1] - 1, io_PCF8574_I2C_io (&ioe8, ppins[input_pins[0] - 1].value, ppins[input_pins[1] - 1].value));
+ /*
+ //FIXME error using with rtc
  if (input_pins[1] > 0)
   Window5.SetPin (input_pins[1], Window5.Get_i2c_bus (input_pins[1] - 1));
-
+*/
 
  if (_ret != ioe8.data)
   {
