@@ -59,10 +59,10 @@ class cpart_LCD_hd44780:public part
       void ReadPreferences(lxString value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
+      unsigned char input_pins[11]; 
     private:
       void InitGraphics(void);  
       void RegisterRemoteControl(void);          
-      unsigned char input_pins[11]; 
       lcd_t lcd;
       int lcde;
       unsigned char model;

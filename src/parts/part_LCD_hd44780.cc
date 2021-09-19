@@ -27,6 +27,7 @@
 #include"../picsimlab4.h"
 #include"../picsimlab5.h"
 #include"part_LCD_hd44780.h"
+#include"part_IO_PCF8574.h"
 
 /* outputs */
 enum
@@ -42,16 +43,16 @@ cpart_LCD_hd44780::InitGraphics(void)
  switch (model)
   {
   case LCD16x2:
-   image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+   image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
    break;
   case LCD16x4:
-   image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName_ ()), Orientation, Scale, Scale);
+   image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName_ ()), Orientation, Scale, Scale);
    break;
   case LCD20x2:
-   image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName__ ()), Orientation, Scale, Scale);
+   image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName__ ()), Orientation, Scale, Scale);
    break;
   case LCD20x4:
-   image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName___ ()), Orientation, Scale, Scale);
+   image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName___ ()), Orientation, Scale, Scale);
    break;
   }
 
@@ -527,3 +528,48 @@ cpart_LCD_hd44780::SetScale(double scale)
 
 part_init(PART_LCD_HD44780_Name, cpart_LCD_hd44780, "Output");
 
+
+//Combined hd44780 + IO PCF8574
+
+static part *
+cpart_LCD_hd44780_i2c_create(unsigned int x, unsigned int y)
+{
+ cpart_IO_PCF8574 * pcf = (cpart_IO_PCF8574 *) Window5.AddPart ("IO PCF8574", x, y + 365);
+
+ const unsigned char * pcf_pins = pcf->get_output_pins ();
+
+ cpart_LCD_hd44780 * lcd = new cpart_LCD_hd44780 (x, y);
+
+ //connect lcd to pcf
+ lcd->input_pins[0] = pcf_pins[0];
+ lcd->input_pins[1] = pcf_pins[2];
+ lcd->input_pins[6] = pcf_pins[4];
+ lcd->input_pins[7] = pcf_pins[5];
+ lcd->input_pins[8] = pcf_pins[6];
+ lcd->input_pins[9] = pcf_pins[7];
+
+
+ //find GND
+ for (int i = 0; i < 255; i++)
+  {
+   if (!Window5.GetPinName (i).Cmp ("GND"))
+    {
+     lcd->input_pins[2] = i;
+     lcd->input_pins[3] = i;
+     lcd->input_pins[4] = i;
+     lcd->input_pins[5] = i;
+     lcd->input_pins[10] = i;
+     break;
+    }
+  }
+
+ return lcd;
+}
+
+static void __attribute__ ((constructor)) cpart_LCD_hd44780_i2c_init(void);
+
+static void
+cpart_LCD_hd44780_i2c_init(void)
+{
+ part_register (PART_LCD_HD44780_Name" I2C", cpart_LCD_hd44780_i2c_create, "Output");
+}

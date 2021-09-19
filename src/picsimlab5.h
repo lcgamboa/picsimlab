@@ -169,7 +169,7 @@ public:
     bool LoadPinAlias(lxString fname, unsigned char show_error_msg = 0);
     part * GetPart(int pn);
     int GetPartsCount(void);
-    
+    part * AddPart(const char * partname, const int x , const int y);
 private:
     board *pboard;
     lxString PinNames[256];

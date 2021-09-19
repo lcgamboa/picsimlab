@@ -129,23 +129,7 @@ CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
   {
    //timer1.SetRunState (0); 
    lxSetCursor (lxCursor (lxCURSOR_ARROW));
-   parts[partsc] = create_part ((char *) PartToCreate.char_str (), x - offsetx, y - offsety);
-
-   if (parts[partsc] == NULL)
-    {
-     Message (lxT ("Erro creating part: ") + PartToCreate);
-    }
-   else
-    {
-     parts[partsc]->SetId (partsc);
-     parts[partsc]->SetScale (scale);
-     if (parts[partsc]->GetAwaysUpdate ())
-      {
-       parts_aup[partsc_aup] = parts[partsc];
-       partsc_aup++;
-      }
-     partsc++;
-    }
+   AddPart ((char *) PartToCreate.char_str (), x - offsetx, y - offsety);
    PartToCreate = "";
    _EvOnShow (control);
    return;
@@ -164,6 +148,33 @@ CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
    offsety = 0;
    update_all = 1;
   }
+}
+
+part *
+CPWindow5::AddPart(const char * partname, const int x, const int y)
+{
+ 
+ part * newpart= create_part (partname, x, y);
+ 
+ parts[partsc] = newpart; 
+ 
+ if (parts[partsc] == NULL)
+  {
+   Message (lxT ("Erro creating part: ") + lxString(partname));
+  }
+ else
+  {
+   parts[partsc]->SetId (partsc);
+   parts[partsc]->SetScale (scale);
+   if (parts[partsc]->GetAwaysUpdate ())
+    {
+     parts_aup[partsc_aup] = parts[partsc];
+     partsc_aup++;
+    }
+   partsc++;
+  }
+ 
+ return newpart;
 }
 
 void

@@ -124,6 +124,12 @@ cpart_IO_PCF8574::~cpart_IO_PCF8574(void)
  canvas.Destroy ();
 }
 
+const unsigned char *
+cpart_IO_PCF8574::get_output_pins(void)
+{
+ return output_pins;
+}
+
 void
 cpart_IO_PCF8574::Draw(void)
 {
@@ -397,7 +403,7 @@ cpart_IO_PCF8574::Process(void)
  //FIXME error using with rtc
  if (input_pins[1] > 0)
   Window5.SetPin (input_pins[1], Window5.Get_i2c_bus (input_pins[1] - 1));
-*/
+  */
 
  if (_ret != ioe8.data)
   {

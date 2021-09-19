@@ -51,6 +51,7 @@ class cpart_IO_PCF8574:public part
       void ReadPreferences(lxString value);
       unsigned short get_in_id(char * name);
       unsigned short get_out_id(char * name);
+      const unsigned char * get_output_pins(void);
    private:
       unsigned char input_pins[5];
       unsigned char output_pins[9];
