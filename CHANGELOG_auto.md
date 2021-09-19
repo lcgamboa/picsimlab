@@ -2,6 +2,31 @@
 
 ### New
 
+* Support to add combined part LCD_hd44780 with PCF8574 I2C expander. [lcgamboa]
+
+* Support to ATtiny85 USI TWI master mode. [lcgamboa]
+
+* Push buttons bounce effect added. [lcgamboa]
+
+* Oscilloscope support to show measures in screen added. [lcgamboa]
+
+### Changes
+
+* Speed optimization to only process parts when io is updated (only simavr) [lcgamboa]
+
+### Fix
+
+* IO Uart part slow simulation bug removed. [lcgamboa]
+
+* Signal Generator part frequency shift error removed. [lcgamboa]
+
+* Removed the bug when all pins of step motor part are zero. [lcgamboa]
+
+
+## v0.8.9 (2021-07-25)
+
+### New
+
 * Support to TinyDebug message write added to Franzininho DIY board. [lcgamboa]
 
 * Support to open files using drag and drop. [lcgamboa]

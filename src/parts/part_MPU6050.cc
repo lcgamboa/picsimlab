@@ -402,9 +402,6 @@ cpart_MPU6050::Process(void)
  if ((mpu_pins[0] > 0)&&(mpu_pins[1] > 0))
   Window5.Set_i2c_bus (mpu_pins[1] - 1, mpu6050_io_I2C (&mpu, ppins[mpu_pins[0] - 1].value, ppins[mpu_pins[1] - 1].value));
 
- if (mpu_pins[1] > 0)
-  Window5.SetPin (mpu_pins[1], Window5.Get_i2c_bus (mpu_pins[1] - 1));
-
 }
 
 void

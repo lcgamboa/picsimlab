@@ -249,8 +249,6 @@ cpart_RTC_ds1307::Process(void)
 
  if ((input_pins[0] > 0)&&(input_pins[1] > 0))
   Window5.Set_i2c_bus (input_pins[0] - 1, rtc_ds1307_I2C_io (&rtc2, ppins[input_pins[1] - 1].value, ppins[input_pins[0] - 1].value));
- if (input_pins[0] > 0)
-  Window5.SetPin (input_pins[0], Window5.Get_i2c_bus (input_pins[0] - 1));
 
 }
 

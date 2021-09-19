@@ -367,9 +367,6 @@ cpart_MI2C_24CXXX::Process(void)
  if ((input_pins[3] > 0)&&(input_pins[4] > 0))
   Window5.Set_i2c_bus (input_pins[3] - 1, mi2c_io (&mi2c, ppins[input_pins[4] - 1].value, ppins[input_pins[3] - 1].value));
 
- if (input_pins[3] > 0)
-  Window5.SetPin (input_pins[3], Window5.Get_i2c_bus (input_pins[3] - 1));
-
 }
 
 void

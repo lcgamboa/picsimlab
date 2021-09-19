@@ -259,8 +259,6 @@ cpart_RTC_pfc8563::Process(void)
 
  if ((input_pins[1] > 0)&&(input_pins[2] > 0))
   Window5.Set_i2c_bus (input_pins[1] - 1, rtc_pfc8563_I2C_io (&rtc, ppins[input_pins[2] - 1].value, ppins[input_pins[1] - 1].value));
- if (input_pins[1] > 0)
-  Window5.SetPin (input_pins[1], Window5.Get_i2c_bus (input_pins[1] - 1));
 
 }
 

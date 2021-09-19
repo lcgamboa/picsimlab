@@ -397,28 +397,26 @@ cpart_IO_PCF8574::Process(void)
 {
  const picpin * ppins = Window5.GetPinsValues ();
 
- if ((input_pins[0] > 0)&&(input_pins[1] > 0))
-  Window5.Set_i2c_bus (input_pins[1] - 1, io_PCF8574_I2C_io (&ioe8, ppins[input_pins[0] - 1].value, ppins[input_pins[1] - 1].value));
- /*
- //FIXME error using with rtc
- if (input_pins[1] > 0)
-  Window5.SetPin (input_pins[1], Window5.Get_i2c_bus (input_pins[1] - 1));
-  */
-
- if (_ret != ioe8.data)
+ if (ioupdated)
   {
-   Window5.WritePin (output_pins[0], (ioe8.data & 0x01) != 0);
-   Window5.WritePin (output_pins[1], (ioe8.data & 0x02) != 0);
-   Window5.WritePin (output_pins[2], (ioe8.data & 0x04) != 0);
-   Window5.WritePin (output_pins[3], (ioe8.data & 0x08) != 0);
-   Window5.WritePin (output_pins[4], (ioe8.data & 0x10) != 0);
-   Window5.WritePin (output_pins[5], (ioe8.data & 0x20) != 0);
-   Window5.WritePin (output_pins[6], (ioe8.data & 0x40) != 0);
-   Window5.WritePin (output_pins[7], (ioe8.data & 0x80) != 0);
-   //Window5.WritePin (output_pins[8], (ioe8.data & 0x100) != 0);
-  }
- _ret = ioe8.data;
 
+   if ((input_pins[0] > 0)&&(input_pins[1] > 0))
+    Window5.Set_i2c_bus (input_pins[1] - 1, io_PCF8574_I2C_io (&ioe8, ppins[input_pins[0] - 1].value, ppins[input_pins[1] - 1].value));
+
+   if (_ret != ioe8.data)
+    {
+     Window5.WritePin (output_pins[0], (ioe8.data & 0x01) != 0);
+     Window5.WritePin (output_pins[1], (ioe8.data & 0x02) != 0);
+     Window5.WritePin (output_pins[2], (ioe8.data & 0x04) != 0);
+     Window5.WritePin (output_pins[3], (ioe8.data & 0x08) != 0);
+     Window5.WritePin (output_pins[4], (ioe8.data & 0x10) != 0);
+     Window5.WritePin (output_pins[5], (ioe8.data & 0x20) != 0);
+     Window5.WritePin (output_pins[6], (ioe8.data & 0x40) != 0);
+     Window5.WritePin (output_pins[7], (ioe8.data & 0x80) != 0);
+     //Window5.WritePin (output_pins[8], (ioe8.data & 0x100) != 0);
+    }
+   _ret = ioe8.data;
+  }
 
  mcount++;
  if (mcount >= JUMPSTEPS_)
@@ -435,8 +433,6 @@ cpart_IO_PCF8574::Process(void)
 
    mcount = -1;
   }
-
-
 }
 
 void

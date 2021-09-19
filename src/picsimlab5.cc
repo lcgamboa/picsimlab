@@ -153,14 +153,14 @@ CPWindow5::draw1_EvMouseButtonPress(CControl * control, uint button, uint x, uin
 part *
 CPWindow5::AddPart(const char * partname, const int x, const int y)
 {
- 
- part * newpart= create_part (partname, x, y);
- 
- parts[partsc] = newpart; 
- 
+
+ part * newpart = create_part (partname, x, y);
+
+ parts[partsc] = newpart;
+
  if (parts[partsc] == NULL)
   {
-   Message (lxT ("Erro creating part: ") + lxString(partname));
+   Message (lxT ("Erro creating part: ") + lxString (partname));
   }
  else
   {
@@ -173,7 +173,7 @@ CPWindow5::AddPart(const char * partname, const int x, const int y)
     }
    partsc++;
   }
- 
+
  return newpart;
 }
 
@@ -888,16 +888,21 @@ CPWindow5::Process(void)
 {
  int i;
 
- for (i = 0; i < i2c_bus_count; i++)
-  {
-   i2c_bus[i2c_bus_ptr[i]] = 0;
-  }
+
 
  if (ioupdated)
   {
+   for (i = 0; i < i2c_bus_count; i++)
+    {
+     i2c_bus[i2c_bus_ptr[i]] = 0;
+    }
    for (i = 0; i < partsc; i++)
     {
      parts[i]->Process ();
+    }
+   for (i = 0; i < i2c_bus_count; i++)
+    {
+     Window5.SetPin (i2c_bus_ptr[i] + 1, i2c_bus[i2c_bus_ptr[i]]);
     }
   }
  else
@@ -907,6 +912,7 @@ CPWindow5::Process(void)
      parts_aup[i]->Process ();
     }
   }
+
 }
 
 void
