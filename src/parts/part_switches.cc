@@ -26,7 +26,7 @@
 #include"../picsimlab1.h"
 #include"../picsimlab4.h"
 #include"../picsimlab5.h"
-#include"part_switchs.h"
+#include"part_switches.h"
 
 /* outputs */
 enum
@@ -40,7 +40,7 @@ enum
  I_S1, I_S2, I_S3, I_S4, I_S5, I_S6, I_S7, I_S8
 };
 
-cpart_switchs::cpart_switchs(unsigned x, unsigned y)
+cpart_switches::cpart_switches(unsigned x, unsigned y)
 : font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
@@ -78,7 +78,7 @@ cpart_switchs::cpart_switchs(unsigned x, unsigned y)
 }
 
 void
-cpart_switchs::RegisterRemoteControl(void)
+cpart_switches::RegisterRemoteControl(void)
 {
  for (int i = 0; i < inputc; i++)
   {
@@ -113,7 +113,7 @@ cpart_switchs::RegisterRemoteControl(void)
 }
 
 void
-cpart_switchs::Reset(void)
+cpart_switches::Reset(void)
 {
 
  //force pin update
@@ -136,14 +136,14 @@ cpart_switchs::Reset(void)
  if (output_pins[7] > 0)Window5.SetPin (output_pins[7], output_value[7]);
 }
 
-cpart_switchs::~cpart_switchs(void)
+cpart_switches::~cpart_switches(void)
 {
  delete Bitmap;
  canvas.Destroy ();
 }
 
 void
-cpart_switchs::Draw(void)
+cpart_switches::Draw(void)
 {
 
  int i;
@@ -207,7 +207,7 @@ cpart_switchs::Draw(void)
 }
 
 void
-cpart_switchs::PreProcess(void)
+cpart_switches::PreProcess(void)
 {
 
  if (output_pins[0] > 0)Window5.SetPin (output_pins[0], output_value[0]);
@@ -222,7 +222,7 @@ cpart_switchs::PreProcess(void)
 }
 
 void
-cpart_switchs::EvMouseButtonPress(uint button, uint x, uint y, uint state)
+cpart_switches::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 {
  int i;
 
@@ -270,7 +270,7 @@ cpart_switchs::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 }
 
 unsigned short
-cpart_switchs::get_in_id(char * name)
+cpart_switches::get_in_id(char * name)
 {
 
  if (strcmp (name, "SW_1") == 0)return I_S1;
@@ -287,7 +287,7 @@ cpart_switchs::get_in_id(char * name)
 }
 
 unsigned short
-cpart_switchs::get_out_id(char * name)
+cpart_switches::get_out_id(char * name)
 {
 
  if (strcmp (name, "PN_1") == 0)return O_P1;
@@ -313,7 +313,7 @@ cpart_switchs::get_out_id(char * name)
 }
 
 lxString
-cpart_switchs::WritePreferences(void)
+cpart_switches::WritePreferences(void)
 {
  char prefs[256];
 
@@ -325,7 +325,7 @@ cpart_switchs::WritePreferences(void)
 }
 
 void
-cpart_switchs::ReadPreferences(lxString value)
+cpart_switches::ReadPreferences(lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
          &output_pins[0], &output_pins[1], &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7],
@@ -333,7 +333,7 @@ cpart_switchs::ReadPreferences(lxString value)
 }
 
 void
-cpart_switchs::ConfigurePropertiesWindow(CPWindow * WProp)
+cpart_switches::ConfigurePropertiesWindow(CPWindow * WProp)
 {
  lxString Items = Window5.GetPinsNames ();
  lxString spin;
@@ -418,7 +418,7 @@ cpart_switchs::ConfigurePropertiesWindow(CPWindow * WProp)
 }
 
 void
-cpart_switchs::ReadPropertiesWindow(CPWindow * WProp)
+cpart_switches::ReadPropertiesWindow(CPWindow * WProp)
 {
 
  output_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
@@ -431,5 +431,5 @@ cpart_switchs::ReadPropertiesWindow(CPWindow * WProp)
  output_pins[7] = atoi (((CCombo*) WProp->GetChildByName ("combo8"))->GetText ());
 }
 
-part_init(PART_SWITCHS_Name, cpart_switchs, "Input");
+part_init(PART_SWITCHES_Name, cpart_switches, "Input");
 

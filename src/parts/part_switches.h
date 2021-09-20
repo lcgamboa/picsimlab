@@ -23,21 +23,21 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef PART_SWITCHS_H
-#define	PART_SWITCHS_H
+#ifndef PART_SWITCHES_H
+#define	PART_SWITCHES_H
 
 #include<lxrad.h>
 #include"part.h"
 
-#define	PART_SWITCHS_Name "Switchs"
+#define	PART_SWITCHES_Name "Switches"
 
-class cpart_switchs:public part
+class cpart_switches:public part
 {
    public:
-      lxString GetName(void){return lxT(PART_SWITCHS_Name);}; 
+      lxString GetName(void){return lxT(PART_SWITCHES_Name);}; 
       lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
-      cpart_switchs(unsigned x, unsigned y);
-      ~cpart_switchs(void);
+      cpart_switches(unsigned x, unsigned y);
+      ~cpart_switches(void);
       void Draw(void);
       void PreProcess(void);
       void Reset(void); 
@@ -56,7 +56,5 @@ class cpart_switchs:public part
 };
 
 
-
-
-#endif	/* SWITCHS */
+#endif	/* SWITCHES */
 
