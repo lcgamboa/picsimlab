@@ -381,6 +381,7 @@ cboard_K16F::Run_CPU(void)
 
 
     if (!mplabxd_testbp ())pic_step ();
+    ioupdated = pic.ioupdated;
     if (use_oscope)Window4.SetSample ();
     if (use_spare)Window5.Process ();
 
@@ -445,6 +446,8 @@ cboard_K16F::Run_CPU(void)
       sck = pins[1].value;
      }
     pic_set_pin (3, mi2c_io (&mi2c, sck, sda) | rtc_pfc8563_I2C_io (&rtc, sck, sda));
+    
+    pic.ioupdated = 0;
    }
  //fim STEP
 

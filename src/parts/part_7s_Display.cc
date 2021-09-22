@@ -44,6 +44,8 @@ cpart_7s_display::cpart_7s_display(unsigned x, unsigned y)
 {
  X = x;
  Y = y;
+ aways_update = 1;
+ 
  active = 1;
 
  ReadMaps ();

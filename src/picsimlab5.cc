@@ -574,6 +574,13 @@ CPWindow5::LoadConfig(lxString fname)
       {
        sscanf (prefs.GetLine (i).c_str (), "%255[^,],%i,%i:%255[^\n]", name, &x, &y, temp);
       }
+
+     //typo fix
+     if (!strcmp (name, "Switchs"))
+      {
+       strcpy (name, "Switches");
+      }
+
      if (!strcmp (name, "scale"))
       {
        sscanf (temp, "%f", &scale);

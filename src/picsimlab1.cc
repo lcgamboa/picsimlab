@@ -1295,7 +1295,6 @@ CPWindow1::menu1_Modules_Oscilloscope_EvMenuActive(CControl * control)
 {
  pboard->SetUseOscilloscope (1);
  Window4.Show ();
- Window4.timer1.SetRunState (1);
 }
 
 board *

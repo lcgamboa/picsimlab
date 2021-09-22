@@ -446,8 +446,10 @@ cboard_Breadboard::Run_CPU(void)
 
        //verify if a breakpoint is reached if not run one instruction 
        if (!mplabxd_testbp ())pic_step ();
+       ioupdated = pic.ioupdated;
+       
        if (use_oscope)Window4.SetSample ();
-       if (use_spare)Window5.Process ();
+       if (use_spare)Window5.Process (); 
 
        //increment mean value counter if pin is high
        alm[pi] += pins[pi].value;
@@ -459,6 +461,7 @@ cboard_Breadboard::Run_CPU(void)
          j = -1; //reset counter
         }
        j++; //counter increment
+       pic.ioupdated = 0;
       }
     //calculate mean value
     for (pi = 0; pi < MGetPinCount (); pi++)

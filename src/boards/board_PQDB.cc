@@ -451,7 +451,7 @@ cboard_PQDB::Run_CPU(void)
       }
 
      if (!mplabxd_testbp ()) pic_step ();
-
+     ioupdated = pic.ioupdated;
      if (use_oscope) Window4.SetSample ();
      if (use_spare) Window5.Process ();
 
@@ -572,6 +572,8 @@ cboard_PQDB::Run_CPU(void)
       }
      _srret = ret;
     }
+
+   pic.ioupdated = 0;
   }
  //fim STEP
 

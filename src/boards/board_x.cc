@@ -670,6 +670,7 @@ cboard_x::Run_CPU(void)
 
     //verify if a breakpoint is reached if not run one instruction 
     if (!mplabxd_testbp ())pic_step ();
+    ioupdated = pic.ioupdated;
     //Oscilloscope window process
     if (use_oscope)Window4.SetSample ();
     //Spare parts window process
@@ -689,6 +690,7 @@ cboard_x::Run_CPU(void)
       j = -1; //reset counter
      }
     j++; //counter increment
+    pic.ioupdated = 0;
    }
 
  //calculate mean value

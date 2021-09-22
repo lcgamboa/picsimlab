@@ -88,6 +88,7 @@ font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  X = x;
  Y = y;
+ aways_update = 1;
  pull = 0;
  type = 0;
 

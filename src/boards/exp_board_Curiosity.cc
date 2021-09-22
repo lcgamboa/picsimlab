@@ -698,6 +698,7 @@ cboard_Curiosity::Run_CPU(void)
 
     //verify if a breakpoint is reached if not run one instruction 
     if (!mplabxd_testbp ())pic_step ();
+    ioupdated = pic.ioupdated;
     if (use_oscope)Window4.SetSample ();
     if (use_spare)Window5.Process ();
 
@@ -716,6 +717,7 @@ cboard_Curiosity::Run_CPU(void)
      }
 
     j++; //counter increment
+    pic.ioupdated = 0;
    }
 
  //calculate mean value

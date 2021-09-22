@@ -678,12 +678,12 @@ CPWindow4::_EvOnDestroy(CControl * control)
 void
 CPWindow4::_EvOnShow(CControl * control)
 {
- timer1.SetRunState (1);
-
  if (!font)
   {
    font = new lxFont (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
   }
+
+ timer1.SetRunState (1);
 }
 
 void

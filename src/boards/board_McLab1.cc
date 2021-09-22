@@ -416,6 +416,7 @@ cboard_McLab1::Run_CPU(void)
      }
 
     if (!mplabxd_testbp ())pic_step ();
+    ioupdated = pic.ioupdated;
     if (use_oscope)Window4.SetSample ();
     if (use_spare)Window5.Process ();
 
@@ -445,6 +446,7 @@ cboard_McLab1::Run_CPU(void)
       j = -1;
      }
     j++;
+    pic.ioupdated = 0;
    }
 
  for (i = 0; i < pic.PINCOUNT; i++)

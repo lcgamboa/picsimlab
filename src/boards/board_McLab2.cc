@@ -725,6 +725,7 @@ cboard_McLab2::Run_CPU(void)
      }
 
     if (!mplabxd_testbp ())pic_step ();
+    ioupdated = pic.ioupdated;
     if (use_oscope)Window4.SetSample ();
     if (use_spare)Window5.Process ();
 
@@ -822,6 +823,7 @@ cboard_McLab2::Run_CPU(void)
      }
     pic_set_pin (23, mi2c_io (&mi2c, sck, sda));
 
+    pic.ioupdated = 0;
    }
  //fim STEP
 
