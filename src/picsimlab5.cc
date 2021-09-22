@@ -580,6 +580,19 @@ CPWindow5::LoadConfig(lxString fname)
       {
        strcpy (name, "Switches");
       }
+     else if (!strcmp (name, "IO Virtual term"))
+      {
+       strcpy (name, "IO Virtual Term");
+      }
+     else if (!strcmp (name, "Push buttons"))
+      {
+       strcpy (name, "Push Buttons");
+      }
+     else if (!strcmp (name, "Push buttons (Analogic)"))
+      {
+       strcpy (name, "Push Buttons (Analogic)");
+      }
+
 
      if (!strcmp (name, "scale"))
       {
