@@ -499,80 +499,82 @@ cboard_PQDB::Run_CPU(void)
       }
      j++;
 
-     //lcd display code
-     if ((!pins[LCD_EN_PIN].dir) && (!pins[LCD_EN_PIN].value))
+     if (ioupdated)
       {
-       if (!lcde)
+       //lcd display code
+       if ((!pins[LCD_EN_PIN].dir) && (!pins[LCD_EN_PIN].value))
         {
-         d = (shiftReg.out & 0x0f) << 4;
+         if (!lcde)
+          {
+           d = (shiftReg.out & 0x0f) << 4;
 
-         if ((!pins[LCD_RS_PIN].dir) && (!pins[LCD_RS_PIN].value))
-          {
-           lcd_cmd (&lcd, d);
+           if ((!pins[LCD_RS_PIN].dir) && (!pins[LCD_RS_PIN].value))
+            {
+             lcd_cmd (&lcd, d);
+            }
+           else if ((!pins[LCD_RS_PIN].dir) && (pins[LCD_RS_PIN].value))
+            {
+             lcd_data (&lcd, d);
+            }
+           lcde = 1;
           }
-         else if ((!pins[LCD_RS_PIN].dir) && (pins[LCD_RS_PIN].value))
-          {
-           lcd_data (&lcd, d);
-          }
-         lcde = 1;
         }
-      }
-     else
-      {
-       lcde = 0;
-      }
-     //end display code     
+       else
+        {
+         lcde = 0;
+        }
+       //end display code     
 
 
-     //ds1307 over i2c code
-     if (pins[SDA_PIN].dir)
-      {
-       sda = 1;
-      }
-     else
-      {
-       sda = pins[SDA_PIN].value;
-      }
-     if (pins[SCL_PIN].dir)
-      {
-       sck = 1;
-       pic_set_pin (SCL_PIN + 1, 1);
-      }
-     else
-      {
-       sck = pins[SCL_PIN].value;
-      }
-     pic_set_pin (SDA_PIN + 1, rtc_ds1307_I2C_io (& rtc2, sck, sda));
+       //ds1307 over i2c code
+       if (pins[SDA_PIN].dir)
+        {
+         sda = 1;
+        }
+       else
+        {
+         sda = pins[SDA_PIN].value;
+        }
+       if (pins[SCL_PIN].dir)
+        {
+         sck = 1;
+         pic_set_pin (SCL_PIN + 1, 1);
+        }
+       else
+        {
+         sck = pins[SCL_PIN].value;
+        }
+       pic_set_pin (SDA_PIN + 1, rtc_ds1307_I2C_io (& rtc2, sck, sda));
 
 
-     //74hc595 code
-     if (pins[SO_DATA_PIN].dir == 0)
-      {
-       srDATA = pins[SO_DATA_PIN].value;
+       //74hc595 code
+       if (pins[SO_DATA_PIN].dir == 0)
+        {
+         srDATA = pins[SO_DATA_PIN].value;
+        }
+       if (pins[SO_CLK_PIN].dir == 0)
+        {
+         srCLK = pins[SO_CLK_PIN].value;
+        }
+       if (pins[SO_EN_PIN].dir == 0)
+        {
+         srLAT = pins[SO_EN_PIN].value;
+        }
+       unsigned short ret = io_74xx595_io (&shiftReg, srDATA, srCLK, srLAT, 1);
+       if (_srret != ret)
+        {
+         pic.pins[PSRD0].value = (ret & 0x01) != 0;
+         pic.pins[PSRD1].value = (ret & 0x02) != 0;
+         pic.pins[PSRD2].value = (ret & 0x04) != 0;
+         pic.pins[PSRD3].value = (ret & 0x08) != 0;
+         pic.pins[PSRD4].value = (ret & 0x10) != 0;
+         pic.pins[PSRD5].value = (ret & 0x20) != 0;
+         pic.pins[PSRD6].value = (ret & 0x40) != 0;
+         pic.pins[PSRD7].value = (ret & 0x80) != 0;
+        }
+       _srret = ret;
       }
-     if (pins[SO_CLK_PIN].dir == 0)
-      {
-       srCLK = pins[SO_CLK_PIN].value;
-      }
-     if (pins[SO_EN_PIN].dir == 0)
-      {
-       srLAT = pins[SO_EN_PIN].value;
-      }
-     unsigned short ret = io_74xx595_io (&shiftReg, srDATA, srCLK, srLAT, 1);
-     if (_srret != ret)
-      {
-       pic.pins[PSRD0].value = (ret & 0x01) != 0;
-       pic.pins[PSRD1].value = (ret & 0x02) != 0;
-       pic.pins[PSRD2].value = (ret & 0x04) != 0;
-       pic.pins[PSRD3].value = (ret & 0x08) != 0;
-       pic.pins[PSRD4].value = (ret & 0x10) != 0;
-       pic.pins[PSRD5].value = (ret & 0x20) != 0;
-       pic.pins[PSRD6].value = (ret & 0x40) != 0;
-       pic.pins[PSRD7].value = (ret & 0x80) != 0;
-      }
-     _srret = ret;
     }
-
    pic.ioupdated = 0;
   }
  //fim STEP

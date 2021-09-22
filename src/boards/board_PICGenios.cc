@@ -999,60 +999,63 @@ cboard_PICGenios::Run_CPU(void)
      }
     j++;
 
-    //lcd dipins[2].display code
-
-    if ((!pins[8].dir)&&(!pins[8].value))
+    if (ioupdated)
      {
-      if (!lcde)
+      //lcd dipins[2].display code
+
+      if ((!pins[8].dir)&&(!pins[8].value))
        {
-        d = 0;
-        if (pins[29].value) d |= 0x80;
-        if (pins[28].value) d |= 0x40;
-        if (pins[27].value) d |= 0x20;
-        if (pins[26].value) d |= 0x10;
-        if (pins[21].value) d |= 0x08;
-        if (pins[20].value) d |= 0x04;
-        if (pins[19].value) d |= 0x02;
-        if (pins[18].value) d |= 0x01;
+        if (!lcde)
+         {
+          d = 0;
+          if (pins[29].value) d |= 0x80;
+          if (pins[28].value) d |= 0x40;
+          if (pins[27].value) d |= 0x20;
+          if (pins[26].value) d |= 0x10;
+          if (pins[21].value) d |= 0x08;
+          if (pins[20].value) d |= 0x04;
+          if (pins[19].value) d |= 0x02;
+          if (pins[18].value) d |= 0x01;
 
-        if ((!pins[9].dir)&&(!pins[9].value))
-         {
-          lcd_cmd (&lcd, d);
+          if ((!pins[9].dir)&&(!pins[9].value))
+           {
+            lcd_cmd (&lcd, d);
+           }
+          else if ((!pins[9].dir)&&(pins[9].value))
+           {
+            lcd_data (&lcd, d);
+           }
+          lcde = 1;
          }
-        else if ((!pins[9].dir)&&(pins[9].value))
-         {
-          lcd_data (&lcd, d);
-         }
-        lcde = 1;
        }
-     }
-    else
-     {
-      lcde = 0;
-     }
-    //end display code     
+      else
+       {
+        lcde = 0;
+       }
+      //end display code     
 
-    //i2c code
-    if (pins[22].dir)
-     {
-      sda = 1;
-     }
-    else
-     {
-      sda = pins[22].value;
-     }
+      //i2c code
+      if (pins[22].dir)
+       {
+        sda = 1;
+       }
+      else
+       {
+        sda = pins[22].value;
+       }
 
-    if (pins[17].dir)
-     {
-      sck = 1;
-      pic_set_pin (18, 1);
-     }
-    else
-     {
-      sck = pins[17].value;
-     }
-    pic_set_pin (23, mi2c_io (&mi2c, sck, sda) | rtc_ds1307_I2C_io (&rtc2, sck, sda));
+      if (pins[17].dir)
+       {
+        sck = 1;
+        pic_set_pin (18, 1);
+       }
+      else
+       {
+        sck = pins[17].value;
+       }
+      pic_set_pin (23, mi2c_io (&mi2c, sck, sda) | rtc_ds1307_I2C_io (&rtc2, sck, sda));
 
+     }
     pic.ioupdated = 0;
    }
 

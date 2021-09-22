@@ -396,57 +396,59 @@ cboard_K16F::Run_CPU(void)
      }
     j++;
 
-    //serial lcd display code
-    if ((pins[9].value)&&(!clko))
+    if (ioupdated)
      {
-      d = (d << 1) | pins[8].value;
-     }
-
-    clko = pins[9].value;
-
-    if ((!pins[16].dir)&&(!pins[16].value))
-     {
-      if (!lcde)
+      //serial lcd display code
+      if ((pins[9].value)&&(!clko))
        {
-
-        if ((!pins[8].dir)&&(!pins[8].value))
-         {
-          lcd_cmd (&lcd, d);
-         }
-        else if ((!pins[8].dir)&&(pins[8].value))
-         {
-          lcd_data (&lcd, d);
-         }
-        lcde = 1;
+        d = (d << 1) | pins[8].value;
        }
-     }
-    else
-     {
-      lcde = 0;
-     }
+
+      clko = pins[9].value;
+
+      if ((!pins[16].dir)&&(!pins[16].value))
+       {
+        if (!lcde)
+         {
+
+          if ((!pins[8].dir)&&(!pins[8].value))
+           {
+            lcd_cmd (&lcd, d);
+           }
+          else if ((!pins[8].dir)&&(pins[8].value))
+           {
+            lcd_data (&lcd, d);
+           }
+          lcde = 1;
+         }
+       }
+      else
+       {
+        lcde = 0;
+       }
 
 
-    //i2c code
-    if (pins[2].dir)
-     {
-      sda = 1;
-     }
-    else
-     {
-      sda = pins[2].value;
-     }
+      //i2c code
+      if (pins[2].dir)
+       {
+        sda = 1;
+       }
+      else
+       {
+        sda = pins[2].value;
+       }
 
-    if (pins[1].dir)
-     {
-      sck = 1;
-      pic_set_pin (2, 1);
+      if (pins[1].dir)
+       {
+        sck = 1;
+        pic_set_pin (2, 1);
+       }
+      else
+       {
+        sck = pins[1].value;
+       }
+      pic_set_pin (3, mi2c_io (&mi2c, sck, sda) | rtc_pfc8563_I2C_io (&rtc, sck, sda));
      }
-    else
-     {
-      sck = pins[1].value;
-     }
-    pic_set_pin (3, mi2c_io (&mi2c, sck, sda) | rtc_pfc8563_I2C_io (&rtc, sck, sda));
-    
     pic.ioupdated = 0;
    }
  //fim STEP
