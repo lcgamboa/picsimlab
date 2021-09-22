@@ -739,13 +739,12 @@ cboard_McLab2::Run_CPU(void)
 
       for (pj = 18; pj < 30; pj++)
        {
-        pinv = pins[pi].value;
+        pinv = pins[pj].value;
         if ((pinv)&&(pins[39].value)) alm1[pj]++;
         if ((pinv)&&(pins[38].value)) alm2[pj]++;
         if ((pinv)&&(pins[37].value)) alm3[pj]++;
         if ((pinv)&&(pins[36].value)) alm4[pj]++;
        }
-
 
       j = -1;
      }
