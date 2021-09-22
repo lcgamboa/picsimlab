@@ -894,7 +894,7 @@ CPWindow5::PreProcess(void)
  i2c_bus_count = 0;
  for (i = 0; i < PinsCount; i++)
   {
-   if (i2c_bus[i] > 1)//need register bus
+   if (i2c_bus[i] > 0)//need register bus
     {
      i2c_bus_ptr[i2c_bus_count] = i;
      i2c_bus_count++;
@@ -1201,14 +1201,7 @@ CPWindow5::Set_i2c_bus(unsigned char pin, unsigned char value)
 {
  if (pin < IOINIT)
   {
-   if (i2c_bus_count)
-    {
      i2c_bus[pin] |= value;
-    }
-   else
-    {
-     i2c_bus[pin] = value;
-    }
   }
 }
 
