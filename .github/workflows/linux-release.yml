@@ -19,8 +19,8 @@ jobs:
     - name: checkout sources
       uses: actions/checkout@v2
 
-        #- name: Install sudo package
-        #run:  apt update && apt install sudo
+    - name: Install sudo package
+      run:  apt update && apt install sudo
     
     - name: build_all_static
       run: ./picsimlab_build_all_static.sh
@@ -30,17 +30,19 @@ jobs:
         ./picsimlab_build_package.sh
         source .github/workflows/scripts/set_version.sh
         export VERSION_="${VERSION}_${DATE}"
+        echo "Version is: ${VERSION_}"
+
     - uses: actions/upload-artifact@v2
       with:
         name: picsimlab_pkg
-        path: release_${VERSION_}/*.deb
+        path: release_${{env.VERSION_}}/*.deb
 
     - name: continuous release
       uses: softprops/action-gh-release@v1
       if: github.ref == 'refs/heads/master' 
       with:
         prerelease: true
-        files: release_${VERSION_}/*.deb
+        files: release_${{env.VERSION_}}/*.deb
         tag_name: continuous
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -49,7 +51,7 @@ jobs:
       name: tagged release
       uses: softprops/action-gh-release@v1
       with:
-        files: release_${VERSION_}/*.deb
+        files: release_${{env.VERSION_}}/*.deb
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
