@@ -1,6 +1,8 @@
 #!/bin/bash -x 
 . VERSION
 
+VERSION_="${VERSION}_${DATE}"
+
 rm -rf build_all/picsimlab*
 sudo apt-get install devscripts debmake debhelper sed
 git archive --format=tar master > build_all/picsimlab-${VERSION}.tar 
@@ -34,9 +36,11 @@ mv picsimlab-${VERSION}.tar.gz picsimlab_${VERSION}.orig.tar.gz
 cd picsimlab-${VERSION}
 debuild -us -uc
 cd ..
-lversion=`lsb_release -d | cut -f2 | sed -e 's/ /_/g'`
+DESTDIR=release_${VERSION_}
+mkdir ../${DESTDIR}
+lversion=`lsb_release -d | cut -f2 | sed -e 's/ /_/g' | sed -e 's/\//_/g'`
 if [[ -n "$1" ]]; then
-	mv picsimlab_${VERSION}-1_amd64.deb  picsimlab_${VERSION}_experimetal_${lversion}_amd64.deb
+	mv picsimlab_${VERSION}-1_amd64.deb  ../${DESTDIR}/picsimlab_${VERSION_}_experimetal_${lversion}_amd64.deb
 else
-mv picsimlab_${VERSION}-1_amd64.deb  picsimlab_${VERSION}_${lversion}_amd64.deb
+	mv picsimlab_${VERSION}-1_amd64.deb  ../${DESTDIR}/picsimlab_${VERSION_}_${lversion}_amd64.deb
 fi

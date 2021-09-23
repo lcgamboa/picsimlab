@@ -1,0 +1,55 @@
+name: C/C++ CI
+
+on:
+  workflow_run:
+    workflows: ["Release setup"]
+    types: [completed]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    
+    - name: Job info
+      run: |
+        echo "GitHub Ref: ${{ github.ref }}"
+        echo "Event: ${{ github.event }}"
+    
+    - name: checkout sources
+      uses: actions/checkout@v2
+
+        #- name: Install sudo package
+        #run:  apt update && apt install sudo
+    
+    - name: build_all_static
+      run: ./picsimlab_build_all_static.sh
+
+    - name: package artifacts
+      run: |
+        picsimlab_build_package.sh
+        source .github/workflows/scripts/set_version.sh
+        export VERSION_="${VERSION}_${DATE}"
+    - uses: actions/upload-artifact@v2
+      with:
+        name: picsimlab_pkg
+        path: release_${VERSION_}/*.deb
+
+    - name: continuous release
+      uses: softprops/action-gh-release@v1
+      if: github.ref == 'refs/heads/master' 
+      with:
+        prerelease: true
+        files: release_${VERSION_}/*.deb
+        tag_name: continuous
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - if: (startsWith(github.ref, 'refs/tags/')) 
+      name: tagged release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: release_${VERSION_}/*.deb
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

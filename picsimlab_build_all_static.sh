@@ -58,15 +58,15 @@ cl make clean;make
 cl make clean;make
 ln -s . ucsim
 cd ../../
-#echo -e "\033[1;32m ---------------------- build qemu_stm32 --------------------- \033[0m"
-#cd qemu_stm32
-#cl git checkout picsimlab
-#cl ./configure --target-list="arm-softmmu" --disable-werror --disable-sdl --disable-vnc --disable-docs --disable-blobs --static --disable-virtfs --disable-libusb --disable-libnfs --disable-vhost-net --disable-vde --disable-bluez --disable-curses --disable-gtk --python=/usr/bin/python2
-#cl make clean;make -j4
-#cd arm-softmmu
-#cl cp qemu-system-arm qemu-stm32
-#cl strip qemu-stm32
-#cd ../../
+echo -e "\033[1;32m ---------------------- build qemu_stm32 --------------------- \033[0m"
+cd qemu_stm32
+cl git checkout picsimlab
+cl ./configure --target-list="arm-softmmu" --disable-werror --disable-sdl --disable-vnc --disable-docs --disable-blobs --static --disable-virtfs --disable-libusb --disable-libnfs --disable-vhost-net --disable-vde --disable-bluez --disable-curses --disable-gtk --python=/usr/bin/python2
+cl make clean;make -j4
+cd arm-softmmu
+cl cp qemu-system-arm qemu-stm32
+cl strip qemu-stm32
+cd ../../
 echo -e "\033[1;32m ---------------------- build picsimlab ---------------------- \033[0m"
 #git pull --no-rebase
 cd ../
