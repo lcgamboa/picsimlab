@@ -27,7 +27,7 @@ jobs:
 
     - name: package artifacts
       run: |
-        picsimlab_build_package.sh
+        ./picsimlab_build_package.sh
         source .github/workflows/scripts/set_version.sh
         export VERSION_="${VERSION}_${DATE}"
     - uses: actions/upload-artifact@v2
