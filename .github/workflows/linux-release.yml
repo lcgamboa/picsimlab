@@ -19,8 +19,8 @@ jobs:
     - name: checkout sources
       uses: actions/checkout@v2
 
-    - name: Install sudo package
-      run:  apt update && apt install sudo
+        #- name: Install sudo package
+        #run:  apt update && apt install sudo
     
     - name: build_all_static
       run: ./picsimlab_build_all_static.sh
