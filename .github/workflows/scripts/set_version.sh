@@ -1,5 +1,5 @@
 #!/bin/bash
-. ../../../VERSION
+. VERSION
 
 set -e
 # Get the last tag which is not the top-of-head continuous tag
