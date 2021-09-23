@@ -29,20 +29,20 @@ jobs:
       run: |
         ./picsimlab_build_package.sh
         source .github/workflows/scripts/set_version.sh
-        export VERSION_="${VERSION}_${DATE}"
-        echo "Version is: ${VERSION_}"
+        #export VERSION_="${VERSION}_${DATE}"
+        #echo "Version is: ${VERSION_}"
 
     - uses: actions/upload-artifact@v2
       with:
         name: picsimlab_pkg
-        path: release_${{env.VERSION_}}/*.deb
+        path: release*/*.deb
 
     - name: continuous release
       uses: softprops/action-gh-release@v1
       if: github.ref == 'refs/heads/master' 
       with:
         prerelease: true
-        files: release_${{env.VERSION_}}/*.deb
+        files: release_*/*.deb
         tag_name: continuous
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -51,7 +51,7 @@ jobs:
       name: tagged release
       uses: softprops/action-gh-release@v1
       with:
-        files: release_${{env.VERSION_}}/*.deb
+        files: release_*/*.deb
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
