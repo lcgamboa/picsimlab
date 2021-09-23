@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Install sudo package
-      run:  sudo apt update && sudo apt install sudo
+    #- name: Install sudo package
+    #run:  apt update && apt install sudo
     - name: build_all
-      run: ./picsimlab_build_all_and_install.sh
+      run: ./picsimlab_build_all_static.sh exp

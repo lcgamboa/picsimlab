@@ -16,18 +16,23 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
+LIBPATH  ?= ../../
+
+override CXXFLAGS=  -I$(LIBPATH)/picsim/include/ -I$(LIBPATH)/lxrad/include/ \
+       -I$(LIBPATH)/simavr/simavr/sim/ -I$(LIBPATH)/uCsim_picsimlab/picsimlab/ 
+
 override CXXFLAGS+= -D_ARCH_=\"Linux64_WX\" -D_DATE_=\"${DATE}\"
-override CXXFLAGS += -D_VERSION_=\"$(VERSION)\" -Wall -O2 -D_SHARE_=\"../share/picsimlab/\" `lxrad-config --cxxflags`
-override CXXFLAGS+= -DEXT_BROWSER -flto
+override CXXFLAGS+= -D_VERSION_=\"$(VERSION)\" -Wall -O2 -D_SHARE_=\"../share/picsimlab/\" `wx-config --cxxflags`
+override CXXFLAGS+= -DEXT_BROWSER -flto 
 #override CXXFLAGS+=-fsanitize=address
 
 
-LIBS=  ../../picsim/src/libpicsim.a ../../lxrad/lib/liblxrad.a \
-       ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a \
-       ../../lunasvg/build/liblunasvg.a \
+LIBS=  $(LIBPATH)/picsim/src/libpicsim.a $(LIBPATH)/lxrad/lib/liblxrad.a \
+       $(LIBPATH)/simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a \
+       $(LIBPATH)/lunasvg/build/liblunasvg.a \
       -lopenal `wx-config --libs` `wx-config --libs stc` 
 
-exp: LIBS+=../../uCsim_picsimlab/picsimlab/libucsim.a -lgpsim
+exp: LIBS+=$(LIBPATH)/uCsim_picsimlab/picsimlab/libucsim.a -lgpsim
 
 #lxrad automatic generated block end, don't edit above!
 

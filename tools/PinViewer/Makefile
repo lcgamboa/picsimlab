@@ -15,7 +15,7 @@ sharedir= ${prefix}/share/picsimlab/
 #lxrad automatic generated block start, don't edit below!
 
 FLAGS =  -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"${sharedir}\"  -Wall -O2 `lxrad-config --cxxflags`
-FLAGS+= -D_ARCH_=\"Linux64_WX\" -D_DATE_=\"${DATE}\"
+FLAGS+= -D_ARCH_=\"Linux64_WX\" -D_DATE_=\"${DATE}\" -flto
 
 LIBS = `lxrad-config --libs`  
 
