@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     steps:
     
@@ -23,11 +23,14 @@ jobs:
         #run:  apt update && apt install sudo
     
     - name: build_all_static
-      run: ./picsimlab_build_all_static.sh
+      run: ./picsimlab_build_all_static.sh exp
 
     - name: package artifacts
       run: |
         ./picsimlab_build_package.sh
+        ./picsimlab_build_package.sh exp
+        ./picsimlab_build_appimage.sh
+        ./picsimlab_build_appimage.sh exp
         source .github/workflows/scripts/set_version.sh
         #export VERSION_="${VERSION}_${DATE}"
         #echo "Version is: ${VERSION_}"
@@ -35,14 +38,14 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: picsimlab_pkg
-        path: release*/*.deb
+        path: release*/*
 
     - name: continuous release
       uses: softprops/action-gh-release@v1
       if: github.ref == 'refs/heads/master' 
       with:
         prerelease: true
-        files: release_*/*.deb
+        files: release_*/*
         tag_name: continuous
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -51,7 +54,7 @@ jobs:
       name: tagged release
       uses: softprops/action-gh-release@v1
       with:
-        files: release_*/*.deb
+        files: release_*/*
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
