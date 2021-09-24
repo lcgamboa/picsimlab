@@ -7,6 +7,7 @@ on:
 
 jobs:
   build:
+    if: "!contains(github.event.commits[0].message, '!minor')"
     runs-on: ubuntu-18.04
 
     steps:
