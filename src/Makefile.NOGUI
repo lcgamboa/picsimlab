@@ -17,7 +17,12 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-override CXXFLAGS += -DEXT_BROWSER -D_VERSION_=\"${VERSION}\" -Wall -g -O2  -D_SHARE_=\"../share/picsimlab/\"  -I/usr/include/lxrad_NOGUI -Wall  -D_REENTRANT
+LIBPATH  ?= ../build_all/
+
+override CXXFLAGS+=  -I$(LIBPATH)/picsim/include/ -I$(LIBPATH)/lxrad_nogui/include/ \
+       -I$(LIBPATH)/simavr/simavr/sim/ -I$(LIBPATH)/uCsim_picsimlab/picsimlab/ 
+
+override CXXFLAGS += -DEXT_BROWSER -D_VERSION_=\"${VERSION}\" -Wall -g -O2  -D_SHARE_=\"../share/picsimlab/\"   -Wall  -D_REENTRANT
 
 override CXXFLAGS+= -D_NOTHREAD
 #override CXXFLAGS+=-fsanitize=address
@@ -26,8 +31,12 @@ override CXXFLAGS+= -flto
 
 override CXXFLAGS+= -D_ARCH_=\"Linux64_NOGUI\" -D_DATE_=\"${DATE}\"
 
-LIBS = `lxrad_NOGUI-config --libs` -lpicsim -lsimavr -lelf $(ELIBS)
-#LIBS =  ../../LXRAD_NOGUI/lib/liblxrad_NOGUI.a  -lopenal -lminizip  -lpthread ../../picsim/src/libpicsim_dbg.a  ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a -lelf -lminizip $(ELIBS)
+LIBS=  $(LIBPATH)/picsim/src/libpicsim.a $(LIBPATH)/lxrad_nogui/lib/liblxrad_NOGUI.a \
+       $(LIBPATH)/simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a \
+       $(LIBPATH)/lunasvg/build/liblunasvg.a \
+      -lopenal -lminizip -pthread  
+
+exp: LIBS+=$(LIBPATH)/uCsim_picsimlab/picsimlab/libucsim.a -lgpsim
 
 #lxrad automatic generated block end, don't edit above!
 

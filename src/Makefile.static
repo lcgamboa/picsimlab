@@ -18,7 +18,7 @@ execdir= ${prefix}/bin/
 
 LIBPATH  ?= ../../
 
-override CXXFLAGS=  -I$(LIBPATH)/picsim/include/ -I$(LIBPATH)/lxrad/include/ \
+override CXXFLAGS+=  -I$(LIBPATH)/picsim/include/ -I$(LIBPATH)/lxrad/include/ \
        -I$(LIBPATH)/simavr/simavr/sim/ -I$(LIBPATH)/uCsim_picsimlab/picsimlab/ 
 
 override CXXFLAGS+= -D_ARCH_=\"Linux64_WX\" -D_DATE_=\"${DATE}\"
