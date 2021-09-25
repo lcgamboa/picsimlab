@@ -6,7 +6,7 @@ on:
     types: [completed]
 
 jobs:
-  buildLinux:
+  buildWindows:
     if: "!contains(github.event.commits[0].message, '!minor')"
     runs-on: ubuntu-18.04
 
@@ -24,14 +24,13 @@ jobs:
         #run:  apt update && apt install sudo
     
     - name: build_all_static
-      run: ./picsimlab_build_all_static.sh exp
+      run: ./picsimlab_build_w64.sh
+      run: ./picsimlab_build_w32.sh
 
     - name: package artifacts
-      run: |
-        ./picsimlab_build_package.sh
-        ./picsimlab_build_package.sh exp
-        ./picsimlab_build_appimage.sh
-        ./picsimlab_build_appimage.sh exp
+        run: |
+        ./picsimlab_build_windows_zip.sh
+        ./picsimlab_build_windows_zip.sh exp
 
     - uses: actions/upload-artifact@v2
       with:

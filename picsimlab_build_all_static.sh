@@ -12,7 +12,7 @@ cl sudo apt-get update
 cl sudo apt-get -y upgrade
 cl sudo apt-get -y install git doxygen gcc g++ make libwxgtk3.0-gtk3-dev \
 libelf-dev freeglut3-dev cutecom gcc-avr avr-libc libopenal-dev libncurses-dev gtkwave \
-gedit cmake
+gedit cmake ccache
 cl sudo apt-get -y install linux-headers-`uname -r` dkms 
 cl mkdir build_all
 cd build_all
@@ -47,7 +47,7 @@ cd ../
 if [[ -z "$BUILD_EXPERIMETAL" ]]; then
 echo -e "\033[1;32m ---------------------- build picsimlab ---------------------- \033[0m"
 cd ../
-cl make clean;make -j4 LIBPATH="../build_all/" FILE=Makefile.static
+cl make clean;make CXX="ccache g++" -j4 LIBPATH="../build_all/" FILE=Makefile.static
 else	
 echo -e "\033[1;32m ---------------------- build uCsim ---------------------------------- \033[0m"
 cd uCsim_picsimlab
@@ -70,7 +70,7 @@ cd ../../
 echo -e "\033[1;32m ---------------------- build picsimlab ---------------------- \033[0m"
 #git pull --no-rebase
 cd ../
-cl make clean;make -j4 exp LIBPATH="../build_all/" FILE=Makefile.static
+cl make clean;make CXX="ccache g++" -j4 exp LIBPATH="../build_all/" FILE=Makefile.static
 fi
 user=`whoami`
 cl sudo usermod -a -G dialout $user
