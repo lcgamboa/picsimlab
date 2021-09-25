@@ -28,7 +28,7 @@ jobs:
       run: ./picsimlab_build_w32.sh
 
     - name: package artifacts
-        run: |
+      run: |
         ./picsimlab_build_windows_zip.sh
         ./picsimlab_build_windows_zip.sh exp
 
