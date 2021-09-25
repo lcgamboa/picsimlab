@@ -5,6 +5,8 @@
 #VERSION="${VERSION_STABLE}"
 VERSION="${VERSION}_${DATE}"
 
+DIR=`pwd`
+
 if [ "$#" -ne 0 ]; then
 BUILD_EXPERIMETAL=1
 fi
@@ -32,13 +34,13 @@ rm -Rf picsimlab
 mkdir picsimlab
 cd picsimlab
 tar xvf ../picsimlab.tar
-cp -Rv share/ /home/gamboa/projetos/picsimlab/picsimlab_win32/
-cp -Rv docs/ /home/gamboa/projetos/picsimlab/picsimlab_win32/share/
-cp -Rv share/ /home/gamboa/projetos/picsimlab/picsimlab_win64/
-cp -Rv docs/ /home/gamboa/projetos/picsimlab/picsimlab_win64/share/
+cp -Rv share/ ${DIR}/picsimlab_win32/
+cp -Rv docs/  ${DIR}/picsimlab_win32/share/
+cp -Rv share/ ${DIR}/picsimlab_win64/
+cp -Rv docs/  ${DIR}/picsimlab_win64/share/
 
 #cria instalacao windows
-cd /home/gamboa/projetos/picsimlab/
+cd ${DIR}
 rm -Rf picsimlab_win32/share/docs
 rm -Rf picsimlab_win64/share/docs 
 if [[ -z "$BUILD_EXPERIMETAL" ]]; then
