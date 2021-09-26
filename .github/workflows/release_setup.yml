@@ -15,6 +15,6 @@ jobs:
       if: github.ref == 'refs/heads/master'
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "continuous"
+        automatic_release_tag: "latestbuild"
         prerelease: true
-        title: "Continuous release"
+        title: "Latest code build (unstable)"

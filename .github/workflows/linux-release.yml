@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: Linux release
 
 on:
   workflow_run:
@@ -38,13 +38,13 @@ jobs:
         name: picsimlab_pkg
         path: release*/*
 
-    - name: continuous release
+    - name: Latest code build release
       uses: softprops/action-gh-release@v1
       if: github.ref == 'refs/heads/master' 
       with:
         prerelease: true
         files: release_*/*
-        tag_name: continuous
+        tag_name: latestbuild
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

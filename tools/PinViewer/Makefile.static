@@ -47,6 +47,9 @@ install: all
 	$(CP) -dvf  ../../share/PinViewer.desktop ${appdir} 
 	$(CP) -dvf PinViewer ${execdir}
 
+install_app: all
+	$(CP) -dvf PinViewer ${execdir}
+
 uninstall:
 	$(RM) -dvf ${execdir}PinViewer
 	$(RM) -dvf ${appdir}PinViewer.desktop

@@ -57,6 +57,17 @@ install: all
 	#update-mime-database /usr/share/mime &
 	#update-desktop-database ${appdir} &
 
+install_app: all
+	install -d $(execdir) $(sharedir) $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \
+	${sharedir}/../icons/hicolor/64x64/mimetypes/ ${sharedir}/../mime/application/
+	$(CP) -dvf  ../share/picsimlab.desktop ${appdir}/
+	$(CP) -drvf ../share/* ${sharedir} 
+	$(CP) -dvf picsimlab ${execdir}
+	strip ${execdir}picsimlab
+	$(CP) -drvf ../share/picsimlab.png ${sharedir}/../icons/hicolor/64x64/apps/
+	$(CP) -drvf ../share/application-x-picsimlab-workspace.png  ${sharedir}/../icons/hicolor/64x64/mimetypes/
+	$(CP) -drvf ../share/application-x-picsimlab-workspace.xml ${sharedir}/../mime/application/x-picsimlab-workspace.xml
+
 install_docs:
 	$(CP) -drvf ../docs ${sharedir} 
 		
