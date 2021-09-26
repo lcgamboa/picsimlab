@@ -1,4 +1,7 @@
 
+[![Linux release](https://github.com/lcgamboa/picsimlab/actions/workflows/linux-release.yml/badge.svg)](https://github.com/lcgamboa/picsimlab/actions/workflows/linux-release.yml)
+[![Windows release](https://github.com/lcgamboa/picsimlab/actions/workflows/windows-release.yml/badge.svg)](https://github.com/lcgamboa/picsimlab/actions/workflows/windows-release.yml)
+
 # PICSimLab - Programmable IC Simulator Laboratory
 
 PICSimLab is a realtime emulator of [development boards](https://lcgamboa.github.io/picsimlab_docs/stable/Boards.html) with integrated 
@@ -60,7 +63,7 @@ If you are on macOS you can run PICSimLab using Wine:
 
 ## Unstable last code version executables download 
 
-The binaries of last code available on github can be downloaded at: [Sourceforge.net](https://sourceforge.net/projects/picsim/files/latest%20code%20build%20%28unstable%29/)
+The binaries of last code available on github can be downloaded at: [Latest code build (unstable) release](https://github.com/lcgamboa/picsimlab/releases/tag/latestbuild)
  
 The unstable test version have the unreleased features of [Changelog_auto.md](./CHANGELOG_auto.md)
 
