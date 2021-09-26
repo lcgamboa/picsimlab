@@ -7,7 +7,7 @@ on:
 
 jobs:
   buildLinux:
-    if: "!contains(github.event.commits[0].message, '!minor')"
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-18.04
 
     steps:
