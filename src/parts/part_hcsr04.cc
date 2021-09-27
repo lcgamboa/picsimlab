@@ -50,7 +50,7 @@ font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  ReadMaps ();
 
  lxImage image (&Window5);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
@@ -264,6 +264,10 @@ cpart_hcsr04::EvMouseMove(uint button, uint x, uint y, uint state)
        if (value > 200)value = 200;
        output_ids[O_PO1]->update = 1;
       }
+    }
+   else
+    {
+     active = 0;
     }
   }
 }

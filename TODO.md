@@ -26,6 +26,8 @@
 | [src/parts/part_VCD_Dump_an.cc](src/parts/part_VCD_Dump_an.cc#L112) | 112 | add support to remote control
 | [src/parts/part_VCD_Play.cc](src/parts/part_VCD_Play.cc#L97) | 97 | add support to remote control
 | [src/parts/part_dcmotor.cc](src/parts/part_dcmotor.cc#L221) | 221 | Add transfer funcion of dc motor
+| [src/parts/part_ds1621.cc](src/parts/part_ds1621.cc#L312) | 312 | set addr
+| [src/parts/part_ds1621.cc](src/parts/part_ds1621.cc#L325) | 325 | implement Tout output
 
 ### FIXMEs
 | Filename | line # | FIXME

@@ -49,11 +49,11 @@ cpart_encoder::cpart_encoder(unsigned x, unsigned y)
  X = x;
  Y = y;
  aways_update = 1;
- 
+
  ReadMaps ();
 
  lxImage image (&Window5);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
@@ -357,6 +357,13 @@ cpart_encoder::EvMouseMove(uint button, uint x, uint y, uint state)
        value = CalcAngle (i, x, y);
        output_ids[O_BTN]->update = 1;
        output_ids[O_RT1]->update = 1;
+      }
+    }
+   else
+    {
+     if (input[i].id == I_RT1)
+      {
+       active = 0;
       }
     }
   }

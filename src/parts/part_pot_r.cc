@@ -49,7 +49,7 @@ font_p(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  ReadMaps ();
 
  lxImage image (&Window5);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
@@ -199,22 +199,22 @@ cpart_pot_r::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       case I_PO1:
        values[0] = CalcAngle (i, x, y);
        active[0] = 1;
-       output_ids[O_PO1]->update=1;
+       output_ids[O_PO1]->update = 1;
        break;
       case I_PO2:
        values[1] = CalcAngle (i, x, y);
        active[1] = 1;
-       output_ids[O_PO2]->update=1;
+       output_ids[O_PO2]->update = 1;
        break;
       case I_PO3:
        values[2] = CalcAngle (i, x, y);
        active[2] = 1;
-       output_ids[O_PO3]->update=1;
+       output_ids[O_PO3]->update = 1;
        break;
       case I_PO4:
        values[3] = CalcAngle (i, x, y);
        active[3] = 1;
-       output_ids[O_PO4]->update=1;
+       output_ids[O_PO4]->update = 1;
        break;
       }
     }
@@ -239,15 +239,15 @@ cpart_pot_r::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
        break;
       case I_PO2:
        active[1] = 0;
-       output_ids[O_PO2]->update=1;
+       output_ids[O_PO2]->update = 1;
        break;
       case I_PO3:
        active[2] = 0;
-       output_ids[O_PO3]->update=1;
+       output_ids[O_PO3]->update = 1;
        break;
       case I_PO4:
        active[3] = 0;
-       output_ids[O_PO4]->update=1;
+       output_ids[O_PO4]->update = 1;
        break;
       }
     }
@@ -269,8 +269,12 @@ cpart_pot_r::EvMouseMove(uint button, uint x, uint y, uint state)
      if (active[input[i].id - I_PO1])
       {
        values[input[i].id - I_PO1] = CalcAngle (i, x, y);
-       output_ids[O_PO1+input[i].id - I_PO1]->update=1;
+       output_ids[O_PO1 + input[i].id - I_PO1]->update = 1;
       }
+    }
+   else
+    {
+     active[input[i].id - I_PO1] = 0;
     }
   }
 }

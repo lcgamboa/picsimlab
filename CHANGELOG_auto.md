@@ -2,6 +2,12 @@
 
 ### New
 
+* New part DS1621 I2C temperature sensor. [lcgamboa]
+
+* New part DS1621 I2C temperature sensor. [lcgamboa]
+
+* New part DS1621 I2C temperature sensor. [lcgamboa]
+
 * Support to add combined part LCD_hd44780 with PCF8574 I2C expander. [lcgamboa]
 
 * Support to ATtiny85 USI TWI master mode. [lcgamboa]
@@ -12,9 +18,15 @@
 
 ### Changes
 
+* Makefiles updated! [lcgamboa]
+
+* Speed optimization to only process parts when io is updated (only PICSim and simavr backend) [lcgamboa]
+
 * Speed optimization to only process parts when io is updated (only simavr) [lcgamboa]
 
 ### Fix
+
+* Board McLab2 7 segments display bug removed. [lcgamboa]
 
 * IO Uart part slow simulation bug removed. [lcgamboa]
 

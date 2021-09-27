@@ -651,6 +651,10 @@ cpart_MPU6050::EvMouseMove(uint button, uint x, uint y, uint state)
        setMpuReg (input[i].id - I_VS1, value);
       }
     }
+   else
+    {
+     active[input[i].id - I_VS1] = 0;
+    }
   }
 }
 

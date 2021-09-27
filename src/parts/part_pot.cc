@@ -262,6 +262,10 @@ cpart_pot::EvMouseMove(uint button, uint x, uint y, uint state)
        output_ids[O_PO1 + input[i].id - I_PO1]->update = 1;
       }
     }
+   else
+    {
+     active[input[i].id - I_PO1] = 0;
+    }
   }
 }
 

@@ -48,7 +48,7 @@ cpart_gamepad::cpart_gamepad(unsigned x, unsigned y)
  ReadMaps ();
 
  lxImage image (&Window5);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
@@ -147,7 +147,7 @@ cpart_gamepad::Draw(void)
        canvas.SetFont (font);
       }
      Update++; //set to update buffer
-     
+
      switch (output[i].id)
       {
       case O_P1:
@@ -369,6 +369,15 @@ cpart_gamepad::EvMouseMove(uint button, uint x, uint y, uint state)
        break;
       }
     }
+   /*
+   else
+    {
+     if (input[i].id == I_J1)
+      {
+       active = 0;
+      }
+    }
+    */ 
   }
 }
 

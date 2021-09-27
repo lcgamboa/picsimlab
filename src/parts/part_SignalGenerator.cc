@@ -401,6 +401,10 @@ cpart_SignalGenerator::EvMouseMove(uint button, uint x, uint y, uint state)
        break;
       }
     }
+   else
+    {
+     active[input[i].id - I_PO1] = 0;
+    }
   }
 }
 
