@@ -457,6 +457,10 @@ cboard_Xpress::EvMouseMove(uint button, uint x, uint y, uint state)
          pot1 = CalcAngle (i, x, y);
         }
       }
+     else
+      {
+       active = 0;
+      }
      break;
     }
   }

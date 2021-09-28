@@ -426,6 +426,10 @@ cboard_x::EvMouseMove(uint button, uint x, uint y, uint state)
          output_ids[O_POT1]->update = 1;
         }
       }
+     else
+      {
+       active = 0;
+      }
      break;
     }
   }
