@@ -59,7 +59,7 @@ class cpart_vterm:public part
       unsigned char input_pins[1];
       unsigned char output_pins[1];
       vterm_t vt;
-      unsigned short _ret; 
+      int _ret; 
       unsigned int vterm_speed;
       CPWindow * wvterm;
       CText * vttext;

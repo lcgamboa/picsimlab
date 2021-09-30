@@ -56,13 +56,13 @@ void
 vterm_end(vterm_t *vt) { }
 
 void
-vterm_set_clk_freq(vterm_t *vt, unsigned long freq)
+vterm_set_clk_freq(vterm_t *vt, const unsigned long freq)
 {
  bitbang_uart_set_clk_freq (&vt->bb_uart, freq);
 }
 
 unsigned char
-vterm_io(vterm_t *vt, unsigned char rx)
+vterm_io(vterm_t *vt, const unsigned char rx)
 {
  unsigned char ret;
 
@@ -95,7 +95,7 @@ vterm_io(vterm_t *vt, unsigned char rx)
 }
 
 void
-vterm_set_speed(vterm_t *vt, unsigned int speed)
+vterm_set_speed(vterm_t *vt, const unsigned int speed)
 {
  bitbang_uart_set_speed (&vt->bb_uart, speed);
 }

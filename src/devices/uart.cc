@@ -65,7 +65,7 @@ uart_end(uart_t *sr)
 }
 
 void
-uart_set_clk_freq(uart_t *sr, unsigned long freq)
+uart_set_clk_freq(uart_t *sr, const unsigned long freq)
 {
  bitbang_uart_set_clk_freq (&sr->bb_uart, freq);
  sr->rxmax = sr->bb_uart.cycle_count * 16;
@@ -73,7 +73,7 @@ uart_set_clk_freq(uart_t *sr, unsigned long freq)
 }
 
 unsigned char
-uart_io(uart_t *sr, unsigned char rx)
+uart_io(uart_t *sr, const unsigned char rx)
 {
  unsigned char ret;
 
@@ -112,7 +112,7 @@ uart_io(uart_t *sr, unsigned char rx)
 }
 
 void
-uart_set_port(uart_t *sr, const char * port, unsigned int speed)
+uart_set_port(uart_t *sr, const char * port, const unsigned int speed)
 {
 
  if (sr->connected)

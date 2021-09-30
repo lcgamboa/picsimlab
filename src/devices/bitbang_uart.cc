@@ -65,14 +65,14 @@ void
 bitbang_uart_end(bitbang_uart_t *bu) { }
 
 void
-bitbang_uart_set_clk_freq(bitbang_uart_t *bu, unsigned long freq)
+bitbang_uart_set_clk_freq(bitbang_uart_t *bu, const unsigned long freq)
 {
  bu->freq = freq;
  bu->cycle_count = bu->freq / (16 * bu->speed);
 }
 
 void
-bitbang_uart_set_speed(bitbang_uart_t *bu, unsigned int speed)
+bitbang_uart_set_speed(bitbang_uart_t *bu, const unsigned int speed)
 {
  if (speed)
   {
@@ -80,13 +80,13 @@ bitbang_uart_set_speed(bitbang_uart_t *bu, unsigned int speed)
   }
  else
   {
-   speed = 1;
+   bu->speed = 1;
   }
  bu->cycle_count = bu->freq / (16 * bu->speed);
 }
 
 unsigned char
-bitbang_uart_io(bitbang_uart_t *bu, unsigned char rx)
+bitbang_uart_io(bitbang_uart_t *bu, const unsigned char rx)
 {
 
  //read rx
@@ -184,7 +184,7 @@ bitbang_uart_transmitting(bitbang_uart_t *bu)
 }
 
 void
-bitbang_uart_send(bitbang_uart_t *bu, unsigned char data)
+bitbang_uart_send(bitbang_uart_t *bu, const unsigned char data)
 {
  bu->dataw = data;
  bu->data_to_send = 1;

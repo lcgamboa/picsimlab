@@ -57,13 +57,13 @@ typedef struct {
 } bitbang_i2c_t;
 
 
-void bitbang_i2c_init(bitbang_i2c_t *i2c, unsigned char addr, unsigned char addr_mask = 0xFE);
+void bitbang_i2c_init(bitbang_i2c_t *i2c, const unsigned char addr, const unsigned char addr_mask = 0xFE);
 void bitbang_i2c_rst(bitbang_i2c_t *i2c);
-void bitbang_i2c_set_addr(bitbang_i2c_t *i2c, unsigned char addr);
+void bitbang_i2c_set_addr(bitbang_i2c_t *i2c, const unsigned char addr);
 unsigned char bitbang_i2c_get_status(bitbang_i2c_t *i2c);
-void bitbang_i2c_send(bitbang_i2c_t *i2c, unsigned char data);
+void bitbang_i2c_send(bitbang_i2c_t *i2c, const unsigned char data);
 
 //periferic 
-unsigned char bitbang_i2c_io(bitbang_i2c_t *i2c, unsigned char scl, unsigned char sda);
+unsigned char bitbang_i2c_io(bitbang_i2c_t *i2c, const unsigned char scl, const unsigned char sda);
 
 #endif //BITBANG_I2C

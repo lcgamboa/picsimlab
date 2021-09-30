@@ -33,7 +33,7 @@
 #define dprintf if (1) {} else printf
 
 void
-bitbang_i2c_set_addr(bitbang_i2c_t *i2c, unsigned char addr)
+bitbang_i2c_set_addr(bitbang_i2c_t *i2c, const unsigned char addr)
 {
  //dprintf ("bitbang_i2c %2x set_addr 0x%02X \n",i2c->addr>>1, addr);
  i2c->addr = addr << 1;
@@ -54,7 +54,7 @@ bitbang_i2c_rst(bitbang_i2c_t *i2c)
 }
 
 void
-bitbang_i2c_init(bitbang_i2c_t *i2c, unsigned char addr, unsigned char addr_mask)
+bitbang_i2c_init(bitbang_i2c_t *i2c, const unsigned char addr, const unsigned char addr_mask)
 {
  dprintf ("bitbang_i2c %2x init\n", addr);
  i2c->addr = addr << 1;
@@ -63,7 +63,7 @@ bitbang_i2c_init(bitbang_i2c_t *i2c, unsigned char addr, unsigned char addr_mask
 }
 
 unsigned char
-bitbang_i2c_io(bitbang_i2c_t *i2c, unsigned char scl, unsigned char sda)
+bitbang_i2c_io(bitbang_i2c_t *i2c, const unsigned char scl, const unsigned char sda)
 {
 
  if ((i2c->sdao == sda)&&(i2c->sclo == scl))
@@ -188,7 +188,7 @@ bitbang_i2c_get_status(bitbang_i2c_t *i2c)
 }
 
 void
-bitbang_i2c_send(bitbang_i2c_t *i2c, unsigned char data)
+bitbang_i2c_send(bitbang_i2c_t *i2c, const unsigned char data)
 {
  i2c->datas = data;
  dprintf ("bitbang_i2c %2x data to send 0x%02x \n", i2c->addr >> 1, data);

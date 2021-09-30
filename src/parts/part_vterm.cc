@@ -78,7 +78,7 @@ font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 
  lxImage image (&Window5);
 
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
 
 
  Bitmap = new lxBitmap (&image, &Window5);
@@ -456,19 +456,16 @@ cpart_vterm::PreProcess(void)
 void
 cpart_vterm::Process(void)
 {
+
+ int ret = 0;
+
+ unsigned char val = 1;
+
  const picpin * ppins = Window5.GetPinsValues ();
-
- unsigned short ret = 0;
-
- unsigned char val;
 
  if (input_pins[0])
   {
    val = ppins[input_pins[0] - 1].value;
-  }
- else
-  {
-   val = 1;
   }
 
  ret = vterm_io (&vt, val);
@@ -504,8 +501,8 @@ cpart_vterm::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 }
 
 void
-cpart_vterm::PostProcess(void) 
-{ 
+cpart_vterm::PostProcess(void)
+{
  if (output_ids[O_LTX]->value != (vt.bb_uart.leds & 0x02))
   {
    output_ids[O_LTX]->value = (vt.bb_uart.leds & 0x02);

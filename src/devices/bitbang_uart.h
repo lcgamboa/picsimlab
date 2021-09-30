@@ -53,14 +53,14 @@ typedef struct {
 void bitbang_uart_rst(bitbang_uart_t *bu);
 void bitbang_uart_init(bitbang_uart_t *bu);
 void bitbang_uart_end(bitbang_uart_t *bu);
-void bitbang_uart_set_clk_freq(bitbang_uart_t *bu, unsigned long freq);
-void bitbang_uart_set_speed(bitbang_uart_t *bu, unsigned int speed);
+void bitbang_uart_set_clk_freq(bitbang_uart_t *bu, const unsigned long freq);
+void bitbang_uart_set_speed(bitbang_uart_t *bu, const unsigned int speed);
 unsigned char  bitbang_uart_transmitting(bitbang_uart_t *bu);
-void bitbang_uart_send(bitbang_uart_t *bu, unsigned char data);
+void bitbang_uart_send(bitbang_uart_t *bu, const unsigned char data);
 unsigned char  bitbang_uart_data_available(bitbang_uart_t *bu);
 unsigned char  bitbang_uart_recv(bitbang_uart_t *bu);
 
-unsigned char bitbang_uart_io(bitbang_uart_t *bu, unsigned char rx);
+unsigned char bitbang_uart_io(bitbang_uart_t *bu, const unsigned char rx);
 
 #endif //BITBANG_UART
 
