@@ -13,7 +13,7 @@ override CXXFLAGS+= -I../dev_w32/lib/wx/include/i686-w64-mingw32-msw-unicode-3.1
 
 #CXXFLAGS +=`i686-w64-mingw32-msw-unicode-3.1  --cxxflags` 
 
-LIBS= -llxrad -lOpenAL32 -lpicsim  -lsimavr -lws2_32 -L../dev_w32/lib $(ELIBS)
+LIBS= -llxrad -lOpenAL32 -lpicsim  -lsimavr -lucsim -lws2_32 -L../dev_w32/lib $(ELIBS)
 LIBS+= -Wl,--subsystem,windows -mwindows 
 LIBS+= -lwx_mswu_core-3.1-i686-w64-mingw32 -lwx_baseu-3.1-i686-w64-mingw32 
 
