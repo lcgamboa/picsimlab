@@ -279,6 +279,11 @@ void
 bsim_ucsim::MReset(int flags)
 {
  ucsim_reset ();
+
+ ports[0] = 0;
+ ports[1] = 0;
+ ports[2] = 0;
+ ports[3] = 0;
 }
 
 const picpin *
@@ -290,27 +295,37 @@ bsim_ucsim::MGetPinsValues(void)
 void
 bsim_ucsim::MStep(void)
 {
- volatile unsigned short p[4];
+ ioupdated = 0;
 
  ucsim_step ();
+
+ volatile unsigned short p[4];
 
  p[0] = ucsim_get_port (0);
  p[1] = ucsim_get_port (1);
  p[2] = ucsim_get_port (2);
  p[3] = ucsim_get_port (3);
 
- for (int i = 0; i < MGetPinCount (); i++)
+ if ((p[0] != ports[0]) || (p[1] != ports[1]) || (p[2] != ports[2]) || (p[3] != ports[3]))
   {
-   if (*pins[i].port < 4)
+   ioupdated = 1;
+   ports[0] = p[0];
+   ports[1] = p[1];
+   ports[2] = p[2];
+   ports[3] = p[3];
+
+   for (int i = 0; i < MGetPinCount (); i++)
     {
-     pins[i].value = (p[*pins[i].port] & (0x0001 << pins[i].pord)) > 0;
-     if (procid != PID_C51)
+     if (*pins[i].port < 4)
       {
-       pins[i].dir = (p[*pins[i].port] & (0x0100 << pins[i].pord)) > 0;
+       pins[i].value = (ports[*pins[i].port] & (0x0001 << pins[i].pord)) > 0;
+       if (procid != PID_C51)
+        {
+         pins[i].dir = (ports[*pins[i].port] & (0x0100 << pins[i].pord)) > 0;
+        }
       }
     }
   }
-
 }
 
 void

@@ -67,6 +67,7 @@ class bsim_ucsim: virtual public board
       int serialfd;
 #endif      
       int procid; 
+      unsigned short ports[4];
 };
 
 #endif	/* BOARD_UCSIM_H */
