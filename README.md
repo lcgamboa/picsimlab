@@ -23,9 +23,9 @@ The [experimental version boards](https://lcgamboa.github.io/picsimlab_docs/stab
 in addition to the stable ones.
 
 
-![PICsimLab](https://lcgamboa.github.io/picsimlab_docs/stable/img/screenshot.png "PICsimLab")
+![PICsimLab](https://lcgamboa.github.io/picsimlab_docs/gifs/analog.gif "PICsimLab")
 
-![PICsimLab](https://lcgamboa.github.io/picsimlab_docs/stable/img/picsimlab4.png "PICsimLab")
+![PICsimLab](https://lcgamboa.github.io/picsimlab_docs/gifs/main.gif "PICsimLab")
 
 ## More info
 
