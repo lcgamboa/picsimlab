@@ -22,7 +22,7 @@ override CXXFLAGS+= -DEXT_BROWSER
 #override CXXFLAGS+=-fsanitize=address
 #override CXXFLAGS+=-fno-omit-frame-pointer
 
-LIBS =  `lxrad-config --libs` -lpicsim -lsimavr -lelf $(ELIBS)
+LIBS =  `lxrad-config --libs` -lpicsim -lsimavr -lelf -lucsim $(ELIBS)
 #LIBS=  ../../picsim/src/libpicsim_dbg.a ../../LXRAD_WX/libteste/liblxrad.a  ../../lunasvg/build/liblunasvg.a \
      ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a  -lopenal `wx-config --libs` `wx-config --libs stc` $(ELIBS)
 

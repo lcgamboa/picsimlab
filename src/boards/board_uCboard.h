@@ -28,7 +28,7 @@
 
 #include<lxrad.h>
 
-#include "exp_bsim_ucsim.h"
+#include "bsim_ucsim.h"
 
 #define BOARD_uCboard_Name "uCboard"
 

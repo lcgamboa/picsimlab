@@ -55,14 +55,7 @@ git pull --no-rebase
 cl make clean;make -j4 
 cl sudo make install
 cd ../
-if [[ -z "$BUILD_EXPERIMETAL" ]]; then
-echo -e "\033[1;32m ---------------------- build and install picsimlab ---------------------- \033[0m"
-cd ../
-#git pull --no-rebase
-cl make clean;make -j4
-cl sudo make install
-else	
-echo -e "\033[1;32m ---------------------- build and uCsim ---------------------------------- \033[0m"
+echo -e "\033[1;32m ---------------------- build and install uCsim ---------------------------------- \033[0m"
 cd uCsim_picsimlab
 cl ./config_linux.sh
 cl make clean;make -j4
@@ -70,6 +63,13 @@ cd picsimlab
 cl make clean;make -j4
 cl sudo make install
 cd ../../
+if [[ -z "$BUILD_EXPERIMETAL" ]]; then
+echo -e "\033[1;32m ---------------------- build and install picsimlab ---------------------- \033[0m"
+cd ../
+#git pull --no-rebase
+cl make clean;make -j4
+cl sudo make install
+else	
 echo -e "\033[1;32m ---------------------- build and install qemu_stm32 --------------------- \033[0m"
 cd qemu_stm32
 cl git checkout picsimlab

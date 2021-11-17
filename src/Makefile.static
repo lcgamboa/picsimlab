@@ -30,9 +30,10 @@ override CXXFLAGS+= -DEXT_BROWSER -flto
 LIBS=  $(LIBPATH)/picsim/src/libpicsim.a $(LIBPATH)/lxrad/lib/liblxrad.a \
        $(LIBPATH)/simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a \
        $(LIBPATH)/lunasvg/build/liblunasvg.a \
+       $(LIBPATH)/uCsim_picsimlab/picsimlab/libucsim.a \
       -lopenal `wx-config --libs` `wx-config --libs stc` 
 
-exp: LIBS+=$(LIBPATH)/uCsim_picsimlab/picsimlab/libucsim.a -lgpsim
+exp: LIBS+= -lgpsim
 
 #lxrad automatic generated block end, don't edit above!
 

@@ -44,12 +44,7 @@ git pull --no-rebase
 cl make clean;make -j4 
 cl ln -s ../sim/ simavr/sim/simavr
 cd ../
-if [[ -z "$BUILD_EXPERIMETAL" ]]; then
-echo -e "\033[1;32m ---------------------- build picsimlab ---------------------- \033[0m"
-cd ../
-cl make clean;make CXX="ccache g++" -j4 LIBPATH="../build_all/" FILE=Makefile.static
-else	
-echo -e "\033[1;32m ---------------------- build uCsim ---------------------------------- \033[0m"
+echo -e "\033[1;32m ---------------------- build uCsim -------------------------- \033[0m"
 cd uCsim_picsimlab
 cl ./config_linux.sh
 cl make clean;make -j4
@@ -58,6 +53,11 @@ cl make clean;make
 cl make clean;make
 ln -s . ucsim
 cd ../../
+if [[ -z "$BUILD_EXPERIMETAL" ]]; then
+echo -e "\033[1;32m ---------------------- build picsimlab ---------------------- \033[0m"
+cd ../
+cl make clean;make CXX="ccache g++" -j4 LIBPATH="../build_all/" FILE=Makefile.static
+else	
 echo -e "\033[1;32m ---------------------- build qemu_stm32 --------------------- \033[0m"
 cd qemu_stm32
 cl git checkout picsimlab

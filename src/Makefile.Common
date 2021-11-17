@@ -18,7 +18,7 @@ OBJS_EXP+=boards/board_x.o
 
 exp: OBJS+=$(OBJS_EXP)  
 exp: EFLAGS=-D_EXPERIMENTAL_ 
-exp: ELIBS=  -lucsim  -lgpsim 
+exp: ELIBS= -lgpsim 
 exp: rebuild
 exp: $(OBJS_EXP)  all
 
