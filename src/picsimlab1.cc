@@ -359,6 +359,9 @@ CPWindow1::timer2_EvOnTime(CControl * control)
     case CPU_BREAKPOINT:
      statusbar1.SetField (0, lxT ("BreakPoint!"));
      break;
+    case CPU_POWER_OFF:
+     statusbar1.SetField (0, lxT ("Power Off!"));
+     break;
     case CPU_ERROR:
      statusbar1.SetField (0, lxT ("Error!"));
      break;
@@ -1304,7 +1307,7 @@ CPWindow1::GetBoard(void)
 }
 
 void
-CPWindow1::SetCpuState(unsigned char cs)
+CPWindow1::SetCpuState(const unsigned char cs)
 {
  cpustate = cs;
 }

@@ -63,6 +63,10 @@ extern char SERIALDEVICE[100];
 #include "boards/board.h"
 #include "boards/boards_defs.h"
 
+enum {
+    CPU_RUNNING, CPU_STEPPING, CPU_HALTED, CPU_BREAKPOINT, CPU_ERROR, CPU_POWER_OFF
+};
+
 /**
  * @brief CPWindow1 class
  *
@@ -216,13 +220,6 @@ public:
     };
 
     /**
-     * @brief  Return the run status of microcontroller Running/Stopped
-     */
-    int Get_mcurun(void) {
-        return mcurun;
-    };
-
-    /**
      * @brief  Retunr if microcontroller reset pin is enabled
      */
     int Get_mcurst(void) {
@@ -238,14 +235,12 @@ public:
      */
     void Set_mcupwr(int pp) {
         mcupwr = pp;
+        if(mcupwr)
+          SetCpuState (CPU_RUNNING);
+        else
+          SetCpuState (CPU_POWER_OFF);  
     };
 
-    /**
-     * @brief  Set the run status of microcontroller Running/Stopped
-     */
-    void Set_mcurun(int pr) {
-        mcurun = pr;
-    };
 
     void Set_mcurst(int pr) {
         mcurst = pr;
@@ -297,7 +292,7 @@ public:
      */
     board * GetBoard(void);
 
-    void SetCpuState(unsigned char cs);
+    void SetCpuState(const unsigned char cs);
     void menu1_EvBoard(CControl * control);
     void menu1_EvMicrocontroller(CControl * control);
     void LoadWorkspace(lxString fnpzw);
@@ -372,10 +367,6 @@ private:
 };
 
 extern CPWindow1 Window1;
-
-enum {
-    CPU_RUNNING, CPU_STEPPING, CPU_HALTED, CPU_BREAKPOINT, CPU_ERROR
-};
 
 #define ST_T1 0x01
 #define ST_T2 0x02

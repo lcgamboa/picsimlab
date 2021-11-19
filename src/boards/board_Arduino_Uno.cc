@@ -335,28 +335,38 @@ cboard_Arduino_Uno::RefreshStatus(void)
  else
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
-
- if (avr)
+ if (Window1.Get_mcupwr ())
   {
-   switch (avr->state)
+   if (avr)
     {
-    case cpu_Limbo: Window1.SetCpuState (CPU_ERROR);
-     break;
-    case cpu_Stopped: Window1.SetCpuState (CPU_HALTED);
-     break;
-    case cpu_Running: Window1.SetCpuState (CPU_RUNNING);
-     break;
-    case cpu_Sleeping: Window1.SetCpuState (CPU_HALTED);
-     break;
-    case cpu_Step: Window1.SetCpuState (CPU_STEPPING);
-     break;
-    case cpu_StepDone: Window1.SetCpuState (CPU_STEPPING);
-     break;
-    case cpu_Done: Window1.SetCpuState (CPU_HALTED);
-     break;
-    case cpu_Crashed: Window1.SetCpuState (CPU_ERROR);
-     break;
+     switch (avr->state)
+      {
+      case cpu_Limbo: Window1.SetCpuState (CPU_ERROR);
+       break;
+      case cpu_Stopped: Window1.SetCpuState (CPU_HALTED);
+       break;
+      case cpu_Running: Window1.SetCpuState (CPU_RUNNING);
+       break;
+      case cpu_Sleeping: Window1.SetCpuState (CPU_HALTED);
+       break;
+      case cpu_Step: Window1.SetCpuState (CPU_STEPPING);
+       break;
+      case cpu_StepDone: Window1.SetCpuState (CPU_STEPPING);
+       break;
+      case cpu_Done: Window1.SetCpuState (CPU_HALTED);
+       break;
+      case cpu_Crashed: Window1.SetCpuState (CPU_ERROR);
+       break;
+      }
     }
+   else
+    {
+     Window1.SetCpuState (CPU_ERROR);
+    }
+  }
+ else
+  {
+   Window1.SetCpuState (CPU_POWER_OFF);
   }
 }
 
@@ -423,17 +433,13 @@ cboard_Arduino_Uno::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       case I_PWR:
        if (Window1.Get_mcupwr ()) //if on turn off
         {
-         Window1.Set_mcurun (0);
          Window1.Set_mcupwr (0);
          Reset ();
-         Window1.SetCpuState (CPU_HALTED);
         }
        else //if off turn on
         {
          Window1.Set_mcupwr (1);
-         Window1.Set_mcurun (1);
          Reset ();
-         Window1.SetCpuState (CPU_RUNNING);
         }
        output_ids[O_ON]->update = 1;
        break;
