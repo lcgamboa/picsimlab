@@ -36,29 +36,29 @@ class cpart_Jumpers : public part {
     static int countID;
 public:
     
-    lxString GetName(void) {
+    lxString GetName(void) override {
         return lxT(PART_JUMPERS_Name);
     };
 
-    lxString GetAboutInfo(void) {
+    lxString GetAboutInfo(void) override {
         return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");
     };
     cpart_Jumpers(unsigned x, unsigned y);
     ~cpart_Jumpers(void);
-    void Draw(void);
-    void PreProcess(void);
-    void Process(void);
-    void PostProcess(void);
-    void ConfigurePropertiesWindow(CPWindow * WProp);
-    void ReadPropertiesWindow(CPWindow * WProp);
-    lxString WritePreferences(void);
-    void ReadPreferences(lxString value);
-    unsigned short get_in_id(char * name);
-    unsigned short get_out_id(char * name);
-    void ComboChange(CCombo * control, lxString value);
-    void ChangeType(unsigned char type); 
+    void Draw(void) override;
+    void PreProcess(void) override;
+    void Process(void) override;
+    void PostProcess(void) override;
+    void ConfigurePropertiesWindow(CPWindow * WProp) override;
+    void ReadPropertiesWindow(CPWindow * WProp) override;
+    lxString WritePreferences(void) override;
+    void ReadPreferences(lxString value) override;
+    unsigned short get_in_id(char * name) override;
+    unsigned short get_out_id(char * name) override;
+    void ComboChange(CCombo * control, lxString value) override; 
 private:
-    void RegisterRemoteControl(void);      
+    void ChangeType(unsigned char type);
+    void RegisterRemoteControl(void) override;      
     unsigned char input_pins[16];
     unsigned char output_pins[16];
     unsigned long output_pins_alm[16];
@@ -74,8 +74,6 @@ private:
 #define JWT_MF 0x01
 #define JWT_FM 0x02
 #define JWT_FF 0x03
-
-
 
 #endif /* PART_IJUMPERS_H */
 

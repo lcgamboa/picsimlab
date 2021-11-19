@@ -53,40 +53,40 @@ class cboard_Arduino_Uno:public bsim_simavr
      CLabel *label5;   //label of gauge 10
      CLabel *label6;   //label of gauge 11
      
-     void RegisterRemoteControl(void); 
+     void RegisterRemoteControl(void) override; 
       
    public:
-      lxString GetName(void) {return lxT(BOARD_Arduino_Uno_Name); }; 
-      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
+      lxString GetName(void) override {return lxT(BOARD_Arduino_Uno_Name); }; 
+      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       //Constructor called once on board creation 
       cboard_Arduino_Uno(void);
       //Destructor called once on board destruction 
       ~cboard_Arduino_Uno(void); 
       //Called ever 100ms to draw board
-      void Draw(CDraw *draw);
-      void Run_CPU(void);
+      void Draw(CDraw *draw) override;
+      void Run_CPU(void) override;
       //Return a list of board supported microcontrollers
-      lxString GetSupportedDevices(void){return lxT("atmega328p,");};
+      lxString GetSupportedDevices(void)  override {return lxT("atmega328p,");};
       //Reset board status
-      void Reset(void);
+      void Reset(void) override;
       //Event on the board
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
+      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
       //Event on the board
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
+      void EvMouseButtonRelease(uint button, uint x, uint y,uint state) override;
       //Event on the board
-      void EvKeyPress(uint key, uint mask);
+      void EvKeyPress(uint key, uint mask) override;
       //Event on the board
-      void EvKeyRelease(uint key, uint mask);
+      void EvKeyRelease(uint key, uint mask) override;
       //Called ever 1s to refresh status
-      void RefreshStatus(void);
+      void RefreshStatus(void) override;
       //Called to save board preferences in configuration file
-      void WritePreferences(void);
+      void WritePreferences(void) override;
       //Called whe configuration file load  preferences 
-      void ReadPreferences(char *name,char *value);
+      void ReadPreferences(char *name,char *value) override;
       //return the input ids numbers of names used in input map
-      unsigned short get_in_id(char * name);
+      unsigned short get_in_id(char * name) override;
       //return the output ids numbers of names used in output map
-      unsigned short get_out_id(char * name);
+      unsigned short get_out_id(char * name) override;
 };
 
 #endif	/* BOARD_Arduino_Uno_H */

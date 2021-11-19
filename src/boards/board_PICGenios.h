@@ -88,36 +88,35 @@ class cboard_PICGenios:public bsim_picsim
     
     char mi2c_tmp_name[200]; 
     
-    void RegisterRemoteControl(void);  
+    void RegisterRemoteControl(void) override;  
     lxColor color1;
     lxColor color2;    
     lxFont font;
   public:
       //Return the board name
-      lxString GetName(void) {return lxT(BOARD_PICGenios_Name); };
-      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
+      lxString GetName(void) override {return lxT(BOARD_PICGenios_Name); };
+      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cboard_PICGenios(void);
       ~cboard_PICGenios(void);
-      void Draw(CDraw *draw);
-      void Run_CPU(void);
-      lxString GetSupportedDevices(void){return lxT("PIC16F1789,PIC16F1939,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,PIC18F47K40,");};
-      void Reset(void);
-      void MDumpMemory(const char * mfname);
-      void EvMouseMove(uint button, uint x, uint y, uint state);
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
-      void EvKeyPress(uint key, uint mask);
-      void EvKeyRelease(uint key, uint mask);
-      void EvOnShow(void);
-      void RefreshStatus(void);
-      void WritePreferences(void);
-      void ReadPreferences(char *name,char *value);
-      unsigned short get_in_id(char * name);
-      unsigned short get_out_id(char * name);
-      void board_Event(CControl * control);
-      void SetScale(double scale);
+      void Draw(CDraw *draw) override;
+      void Run_CPU(void) override;
+      lxString GetSupportedDevices(void) override {return lxT("PIC16F1789,PIC16F1939,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,PIC18F47K40,");};
+      void Reset(void) override;
+      void MDumpMemory(const char * mfname) override;
+      void EvMouseMove(uint button, uint x, uint y, uint state) override;
+      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
+      void EvMouseButtonRelease(uint button, uint x, uint y,uint state) override;
+      void EvKeyPress(uint key, uint mask) override;
+      void EvKeyRelease(uint key, uint mask) override;
+      void EvOnShow(void) override;
+      void RefreshStatus(void) override;
+      void WritePreferences(void) override;
+      void ReadPreferences(char *name,char *value) override;
+      unsigned short get_in_id(char * name) override;
+      unsigned short get_out_id(char * name) override;
+      void board_Event(CControl * control) override;
+      void SetScale(double scale) override;
 };
-
 
 #endif	/* BOARD_4_H */
 

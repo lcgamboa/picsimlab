@@ -59,34 +59,32 @@ class cboard_K16F:public bsim_picsim
      unsigned char sda,sck;
      char mi2c_tmp_name[200];  
      
-     void RegisterRemoteControl(void);    
+     void RegisterRemoteControl(void) override;    
      lxColor color1;
      lxColor color2;
      lxFont font;
   public:
       //Return the board name
-      lxString GetName(void) {return lxT(BOARD_K16F_Name); };
-      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
+      lxString GetName(void) override {return lxT(BOARD_K16F_Name); };
+      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cboard_K16F(void);
       ~cboard_K16F(void);
-      void Draw(CDraw *draw);
-      void Run_CPU(void);
-      lxString GetSupportedDevices(void){return lxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
-      void Reset(void);
-      void MDumpMemory(const char * mfname);
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
-      void EvKeyPress(uint key, uint mask);
-      void EvKeyRelease(uint key,uint mask);      
-      void EvOnShow(void);
-      void RefreshStatus(void);
-      void WritePreferences(void);
-      void ReadPreferences(char *name,char *value);
-      unsigned short get_in_id(char * name);
-      unsigned short get_out_id(char * name);
+      void Draw(CDraw *draw) override;
+      void Run_CPU(void) override;
+      lxString GetSupportedDevices(void) override {return lxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
+      void Reset(void) override;
+      void MDumpMemory(const char * mfname) override;
+      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
+      void EvMouseButtonRelease(uint button, uint x, uint y,uint state) override;
+      void EvKeyPress(uint key, uint mask) override;
+      void EvKeyRelease(uint key,uint mask) override;      
+      void EvOnShow(void) override;
+      void RefreshStatus(void) override;
+      void WritePreferences(void) override;
+      void ReadPreferences(char *name,char *value) override;
+      unsigned short get_in_id(char * name) override;
+      unsigned short get_out_id(char * name) override;
 };
-
-
 
 #endif	/* BOARD_K16F_H */
 

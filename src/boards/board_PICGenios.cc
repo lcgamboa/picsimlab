@@ -1644,7 +1644,6 @@ cboard_PICGenios::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           Window1.Set_mcurun (0);
           Window1.Set_mcupwr (0);
           Reset ();
-
           p_BT[0] = 0;
           p_BT[1] = 0;
           p_BT[2] = 0;
@@ -1652,17 +1651,14 @@ cboard_PICGenios::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           p_BT[4] = 0;
           p_BT[5] = 0;
           p_BT[6] = 0;
-
-          Window1.statusbar1.SetField (0, lxT ("Stoped"));
+          Window1.SetCpuState (CPU_HALTED);
          }
         else
          {
           Window1.Set_mcupwr (1);
           Window1.Set_mcurun (1);
           Reset ();
-
-
-          Window1.statusbar1.SetField (0, lxT ("Running..."));
+          Window1.SetCpuState (CPU_RUNNING);
          }
         output_ids[O_LPWR]->update = 1;
         output_ids[O_RUN]->update = 1;

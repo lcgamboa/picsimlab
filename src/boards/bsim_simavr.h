@@ -55,45 +55,46 @@ typedef struct {
 class bsim_simavr : virtual public board {
 public:
     bsim_simavr(void); //Called once on board creation
-    int DebugInit(int dtyppe);
-    lxString GetDebugName(void);
-    void DebugLoop(void);
-    int CpuInitialized(void);
-    void MSetSerial(const char * port);
-    int MInit(const char * processor, const char * fname, float freq);
-    void MEnd(void);
-    void MDumpMemory(const char * fname);
-    void MEraseFlash(void);
-    void MSetFreq(float freq);
-    float MGetFreq(void);
-    float MGetInstClockFreq(void);
-    int MGetPinCount(void);
-    lxString MGetPinName(int pin);
-    void MSetPin(int pin, unsigned char value);
-    void MSetPinDOV(int pin, unsigned char ovalue);
-    void MSetAPin(int pin, float value);
-    unsigned char MGetPin(int pin);
-    const picpin * MGetPinsValues(void);
-    virtual void UpdateHardware(void);
-    void MStep(void);
-    void MStepResume(void);
-    int DBGTestBP(unsigned int bp);
-    void MReset(int flags);
-    unsigned short * DBGGetProcID_p(void);
-    unsigned int DBGGetPC(void);
-    void DBGSetPC(unsigned int pc);
-    unsigned char * DBGGetRAM_p(void);
-    unsigned char * DBGGetROM_p(void);
-    unsigned char * DBGGetCONFIG_p(void);
-    unsigned char * DBGGetID_p(void);
-    unsigned char * DBGGetEEPROM_p(void);
-    unsigned int DBGGetRAMSize(void);
-    unsigned int DBGGetROMSize(void);
-    unsigned int DBGGetCONFIGSize(void);
-    unsigned int DBGGetIDSize(void);
-    unsigned int DBGGetEEPROM_Size(void);
-    void EndServers(void);
+    int DebugInit(int dtyppe) override;
+    lxString GetDebugName(void) override;
+    void DebugLoop(void) override;
+    int CpuInitialized(void) override;
+    void MSetSerial(const char * port) override;
+    int MInit(const char * processor, const char * fname, float freq) override;
+    void MEnd(void) override;
+    void MDumpMemory(const char * fname) override;
+    void MEraseFlash(void) override;
+    void MSetFreq(float freq) override;
+    float MGetFreq(void) override;
+    float MGetInstClockFreq(void) override;
+    int MGetPinCount(void) override;
+    lxString MGetPinName(int pin) override;
+    void MSetPin(int pin, unsigned char value) override;
+    void MSetPinDOV(int pin, unsigned char ovalue) override;
+    void MSetAPin(int pin, float value) override;
+    unsigned char MGetPin(int pin) override;
+    const picpin * MGetPinsValues(void) override;
+    void MStep(void) override;
+    void MStepResume(void) override;
+    int DBGTestBP(unsigned int bp) override;
+    void MReset(int flags) override;
+    unsigned short * DBGGetProcID_p(void) override;
+    unsigned int DBGGetPC(void) override;
+    void DBGSetPC(unsigned int pc) override;
+    unsigned char * DBGGetRAM_p(void) override;
+    unsigned char * DBGGetROM_p(void) override;
+    unsigned char * DBGGetCONFIG_p(void) override;
+    unsigned char * DBGGetID_p(void) override;
+    unsigned char * DBGGetEEPROM_p(void) override;
+    unsigned int DBGGetRAMSize(void) override;
+    unsigned int DBGGetROMSize(void) override;
+    unsigned int DBGGetCONFIGSize(void) override;
+    unsigned int DBGGetIDSize(void) override;
+    unsigned int DBGGetEEPROM_Size(void) override;
+    void EndServers(void) override;
 
+    virtual void UpdateHardware(void);
+    
     static void out_hook(struct avr_irq_t* irq, uint32_t value, void* param) {
         picpin * p = (picpin *) param;
         p->value = value;
@@ -107,8 +108,9 @@ public:
     }
 
     void SerialSend(unsigned char value);
-    usi_t USI;
-protected:
+    
+    usi_t USI;    
+protected:    
     avr_t * avr;
     avr_irq_t * serial_irq;
     picpin pins[256];

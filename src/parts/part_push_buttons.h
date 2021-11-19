@@ -34,29 +34,29 @@
 class cpart_pbuttons : public part {
 public:
 
-    lxString GetName(void) {
+    lxString GetName(void)  override {
         return lxT(PART_PUSH_BUTTONS_Name);
     };
 
-    lxString GetAboutInfo(void) {
+    lxString GetAboutInfo(void)  override {
         return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");
     };
     cpart_pbuttons(unsigned x, unsigned y);
     ~cpart_pbuttons(void);
-    void Draw(void);
-    void PreProcess(void);
-    void Process(void);
-    void Reset(void);
-    void EvMouseButtonPress(uint button, uint x, uint y, uint state);
-    void EvMouseButtonRelease(uint button, uint x, uint y, uint state);
-    void ConfigurePropertiesWindow(CPWindow * WProp);
-    void ReadPropertiesWindow(CPWindow * WProp);
-    lxString WritePreferences(void);
-    void ReadPreferences(lxString value);
-    unsigned short get_in_id(char * name);
-    unsigned short get_out_id(char * name);
+    void Draw(void) override;
+    void PreProcess(void) override;
+    void Process(void) override;
+    void Reset(void) override;
+    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
+    void EvMouseButtonRelease(uint button, uint x, uint y, uint state) override;
+    void ConfigurePropertiesWindow(CPWindow * WProp) override;
+    void ReadPropertiesWindow(CPWindow * WProp) override;
+    lxString WritePreferences(void) override;
+    void ReadPreferences(lxString value) override;
+    unsigned short get_in_id(char * name) override;
+    unsigned short get_out_id(char * name) override;
 private:
-    void RegisterRemoteControl(void);
+    void RegisterRemoteControl(void) override;
     unsigned char active;
     unsigned char output_pins[8];
     unsigned char output_value[8];
@@ -66,9 +66,6 @@ private:
     int btime;
     lxFont font;
 };
-
-
-
 
 #endif /* PART_PUSH_BUTTONS_H */
 

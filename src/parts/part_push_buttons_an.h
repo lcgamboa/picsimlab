@@ -34,34 +34,31 @@
 class cpart_pbuttons_an:public part
 {
    public:
-      lxString GetName(void){return lxT(PART_PUSH_BUTTONS_AN_Name);};
-      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
+      lxString GetName(void) override {return lxT(PART_PUSH_BUTTONS_AN_Name);};
+      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_pbuttons_an(unsigned x, unsigned y);
       ~cpart_pbuttons_an(void);
-      void Draw(void);
-      void PreProcess(void);
-      lxString GetPictureFileName(void){return lxT("Push Buttons/part.svg");};
-      lxString GetMapFile(void){return lxT("Push Buttons/part.map");};
-      void Reset(void); 
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
-      void ConfigurePropertiesWindow(CPWindow *  WProp);
-      void ReadPropertiesWindow(CPWindow * WProp);
-      lxString WritePreferences(void);
-      void ReadPreferences(lxString value);
-      unsigned short get_in_id(char * name);
-      unsigned short get_out_id(char * name);
+      void Draw(void) override;
+      void PreProcess(void) override;
+      lxString GetPictureFileName(void) override {return lxT("Push Buttons/part.svg");};
+      lxString GetMapFile(void) override {return lxT("Push Buttons/part.map");};
+      void Reset(void) override; 
+      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
+      void EvMouseButtonRelease(uint button, uint x, uint y,uint state) override;
+      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
+      void ReadPropertiesWindow(CPWindow * WProp) override;
+      lxString WritePreferences(void) override;
+      void ReadPreferences(lxString value) override;
+      unsigned short get_in_id(char * name) override;
+      unsigned short get_out_id(char * name) override;
     private:
-      void RegisterRemoteControl(void);          
+      void RegisterRemoteControl(void) override;          
       unsigned char active;  
       unsigned char output_pins[1];    
       unsigned char output_value_[8];
       float output_value;
       lxFont font;
 };
-
-
-
 
 #endif	/* PART_PUSH_BUTTONS_AN_H */
 

@@ -34,29 +34,26 @@
 class cpart_leds:public part
 {
    public:
-      lxString GetName(void){return lxT(PART_LEDS_Name);};
-      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
+      lxString GetName(void) override {return lxT(PART_LEDS_Name);};
+      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_leds(unsigned x, unsigned y);
       ~cpart_leds(void);
-      void Draw(void);
-      void PostProcess(void);
-      void ConfigurePropertiesWindow(CPWindow *  WProp);
-      void ReadPropertiesWindow(CPWindow * WProp);
-      lxString WritePreferences(void);
-      void ReadPreferences(lxString value);
-      unsigned short get_in_id(char * name);
-      unsigned short get_out_id(char * name);
+      void Draw(void) override;
+      void PostProcess(void) override;
+      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
+      void ReadPropertiesWindow(CPWindow * WProp) override;
+      lxString WritePreferences(void) override;
+      void ReadPreferences(lxString value) override;
+      unsigned short get_in_id(char * name) override;
+      unsigned short get_out_id(char * name) override;
      private:   
-      void RegisterRemoteControl(void);
+      void RegisterRemoteControl(void) override;
       unsigned char active; 
       unsigned char input_pins[8];    
       lxFont font;
       lxColor color1;
       lxColor color2;
 };
-
-
-
 
 #endif	/* PART_LEDS */
 

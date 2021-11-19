@@ -173,36 +173,36 @@ private:
 
     lxaudio buzzer;
 
-    void RegisterRemoteControl(void);
+    void RegisterRemoteControl(void) override;
 public:
     //Return the board name
-    lxString GetName(void) {return lxT(BOARD_PQDB_Name); };
-    lxString GetAboutInfo(void) {
+    lxString GetName(void) override {return lxT(BOARD_PQDB_Name); };
+    lxString GetAboutInfo(void) override {
         return lxT("R.M.A. Almeida	  \n <rodrigomax@unifei.edu.br>");
     };
     cboard_PQDB(void);
     ~cboard_PQDB(void);
-    void Draw(CDraw *draw);
-    void Run_CPU(void);
+    void Draw(CDraw *draw) override;
+    void Run_CPU(void) override;
 
-    lxString GetSupportedDevices(void) {
+    lxString GetSupportedDevices(void) override {
         return lxT("PIC18F4520,");
     };
 
-    void Reset(void);
-    void EvMouseMove(uint button, uint x, uint y, uint state);
-    void EvMouseButtonPress(uint button, uint x, uint y, uint state);
-    void EvMouseButtonRelease(uint button, uint x, uint y, uint state);
-    void EvKeyPress(uint key, uint mask);
-    void EvKeyRelease(uint key, uint mask);
-    void EvOnShow(void);
-    void RefreshStatus(void);
-    void WritePreferences(void);
-    void ReadPreferences(char *name, char *value);
-    unsigned short get_in_id(char * name);
-    unsigned short get_out_id(char * name);
-    lxString MGetPinName(int pin);
-    int MGetPinCount(void);
+    void Reset(void) override;
+    void EvMouseMove(uint button, uint x, uint y, uint state) override;
+    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
+    void EvMouseButtonRelease(uint button, uint x, uint y, uint state) override;
+    void EvKeyPress(uint key, uint mask) override;
+    void EvKeyRelease(uint key, uint mask) override;
+    void EvOnShow(void) override;
+    void RefreshStatus(void) override;
+    void WritePreferences(void) override;
+    void ReadPreferences(char *name, char *value) override;
+    unsigned short get_in_id(char * name) override;
+    unsigned short get_out_id(char * name) override;
+    lxString MGetPinName(int pin) override;
+    int MGetPinCount(void) override;
 };
 
 

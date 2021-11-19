@@ -34,25 +34,25 @@
 class cpart_7s_display_dec : public part {
 public:
 
-    lxString GetName(void) {return lxT(PART_7S_DISPLAY_DEC_Name); };
-    lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
+    lxString GetName(void) override {return lxT(PART_7S_DISPLAY_DEC_Name); };
+    lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
     cpart_7s_display_dec(unsigned x, unsigned y);
     ~cpart_7s_display_dec(void);
-    void Draw(void);
-    void PreProcess (void);
-    void Process(void); 
-    void PostProcess (void);
-    lxString GetPictureFileName(void);
-    lxString GetMapFile(void);
-    void ConfigurePropertiesWindow(CPWindow * wprop);
-    void ReadPropertiesWindow(CPWindow * WProp);
-    lxString WritePreferences(void);
-    void ReadPreferences(lxString value);
-    unsigned short get_in_id(char * name);
-    unsigned short get_out_id(char * name);
-    void ChangeType(unsigned char tp); 
+    void Draw(void) override;
+    void PreProcess (void) override;
+    void Process(void) override; 
+    void PostProcess (void) override;
+    lxString GetPictureFileName(void) override;
+    lxString GetMapFile(void) override;
+    void ConfigurePropertiesWindow(CPWindow * wprop) override;
+    void ReadPropertiesWindow(CPWindow * WProp) override;
+    lxString WritePreferences(void) override;
+    void ReadPreferences(lxString value) override;
+    unsigned short get_in_id(char * name) override;
+    unsigned short get_out_id(char * name) override;
 private:
-    void RegisterRemoteControl(void);     
+    void RegisterRemoteControl(void) override;     
+    void ChangeType(unsigned char tp); 
     unsigned char input_pins[8];
     unsigned int lm1[8]; //luminosidade media display
     unsigned int lm2[8]; //luminosidade media display
@@ -69,9 +69,6 @@ private:
     unsigned char type;
     unsigned char latchs[4];
 };
-
-
-
 
 #endif /* PART_7S_DISPLAY_DEC */
 

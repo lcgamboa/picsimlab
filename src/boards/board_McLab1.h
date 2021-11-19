@@ -41,28 +41,28 @@ class cboard_McLab1:public bsim_picsim
      
      CGauge *gauge1;
      CLabel *label1;
-     void RegisterRemoteControl(void); 
+     void RegisterRemoteControl(void) override; 
      lxColor color1;
      lxColor color2;
      lxFont font;     
    public:
       //Return the board name
-      lxString GetName(void) {return lxT(BOARD_McLab1_Name); };
-      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
+      lxString GetName(void) override {return lxT(BOARD_McLab1_Name); };
+      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
       cboard_McLab1(void);
       ~cboard_McLab1(void);
-      void Draw(CDraw *draw);
-      void Run_CPU(void);
-      lxString GetSupportedDevices(void){return lxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
-      void Reset(void);
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
-      void EvKeyPress(uint key, uint mask);
-      void EvKeyRelease(uint key, uint mask);
-      void WritePreferences(void);
-      void ReadPreferences(char *name,char *value);
-      unsigned short get_in_id(char * name);
-      unsigned short get_out_id(char * name);
+      void Draw(CDraw *draw) override;
+      void Run_CPU(void) override;
+      lxString GetSupportedDevices(void) override {return lxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
+      void Reset(void) override;
+      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
+      void EvMouseButtonRelease(uint button, uint x, uint y,uint state) override;
+      void EvKeyPress(uint key, uint mask) override;
+      void EvKeyRelease(uint key, uint mask) override;
+      void WritePreferences(void) override;
+      void ReadPreferences(char *name,char *value) override;
+      unsigned short get_in_id(char * name) override;
+      unsigned short get_out_id(char * name) override;
 };
 
 

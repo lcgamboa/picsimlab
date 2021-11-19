@@ -34,30 +34,27 @@
 class cpart_RTC_pfc8563:public part
 {
    public:
-      lxString GetName(void){return lxT(PART_RTC_PFC8563_Name);};
-      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
+      lxString GetName(void) override {return lxT(PART_RTC_PFC8563_Name);};
+      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_RTC_pfc8563(unsigned x, unsigned y);
       ~cpart_RTC_pfc8563(void);
-      void Draw(void);
-      void PreProcess(void);
-      void Process(void);
-      lxString GetPictureFileName(void){return lxT("Common/IC8.svg");};
-      lxString GetMapFile(void){return lxT("Common/IC8.map");};
-      void ConfigurePropertiesWindow(CPWindow *  WProp);
-      void ReadPropertiesWindow(CPWindow * WProp);
-      lxString WritePreferences(void);
-      void ReadPreferences(lxString value);
-      unsigned short get_in_id(char * name);
-      unsigned short get_out_id(char * name);
+      void Draw(void) override;
+      void PreProcess(void) override;
+      void Process(void) override;
+      lxString GetPictureFileName(void) override {return lxT("Common/IC8.svg");};
+      lxString GetMapFile(void) override {return lxT("Common/IC8.map");};
+      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
+      void ReadPropertiesWindow(CPWindow * WProp) override;
+      lxString WritePreferences(void) override;
+      void ReadPreferences(lxString value) override;
+      unsigned short get_in_id(char * name) override;
+      unsigned short get_out_id(char * name) override;
    private:
       unsigned char input_pins[4]; 
       rtc_pfc8563_t rtc;
       lxFont font;
       lxFont font_p;      
 };
-
-
-
 
 #endif	/* PART_RTC_PFC8563_H */
 

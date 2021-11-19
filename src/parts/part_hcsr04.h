@@ -34,23 +34,23 @@
 class cpart_hcsr04:public part
 {
     public:
-      lxString GetName(void){return lxT(PART_HCSR0404_Name);};
-      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
+      lxString GetName(void) override {return lxT(PART_HCSR0404_Name);};
+      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_hcsr04(unsigned x, unsigned y);
       ~cpart_hcsr04(void); 
-      void Draw(void);
-      void Process(void);
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
-      void EvMouseMove(uint button, uint x, uint y,uint state);
-      void ConfigurePropertiesWindow(CPWindow *  WProp);
-      void ReadPropertiesWindow(CPWindow * WProp);
-      lxString WritePreferences(void);
-      void ReadPreferences(lxString value);
-      unsigned short get_in_id(char * name);
-      unsigned short get_out_id(char * name);
+      void Draw(void) override;
+      void Process(void) override;
+      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
+      void EvMouseButtonRelease(uint button, uint x, uint y,uint state) override;
+      void EvMouseMove(uint button, uint x, uint y,uint state) override;
+      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
+      void ReadPropertiesWindow(CPWindow * WProp) override;
+      lxString WritePreferences(void) override;
+      void ReadPreferences(lxString value) override;
+      unsigned short get_in_id(char * name) override;
+      unsigned short get_out_id(char * name) override;
     private:
-      void RegisterRemoteControl(void);          
+      void RegisterRemoteControl(void) override;          
       unsigned char input_pins[1];
       unsigned char output_pins[1];
       unsigned char value;

@@ -36,31 +36,31 @@
 class cpart_LCD_ili9341:public part
 {
    public:
-      lxString GetName(void){return lxT(PART_LCD_iLI9341_Name);};
-      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
+      lxString GetName(void) override {return lxT(PART_LCD_iLI9341_Name);};
+      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_LCD_ili9341(unsigned x, unsigned y);
       ~cpart_LCD_ili9341(void);
-      void Draw(void);
-      void PreProcess(void);
-      void Process(void);
-      void PostProcess(void);
-      lxString GetPictureFileName(void);
-      lxString GetMapFile(void);
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
-      void EvMouseMove(uint button, uint x, uint y,uint state);
-      void Reset(void);
-      void ConfigurePropertiesWindow(CPWindow *  WProp);
-      void ReadPropertiesWindow(CPWindow * WProp);
-      lxString WritePreferences(void);
-      void SetOrientation(int orientation);
-      void SetScale(double scale);
-      void ReadPreferences(lxString value);
-      unsigned short get_in_id(char * name);
-      unsigned short get_out_id(char * name);
-      void ComboChange(CCombo * control, lxString value);
-      void ChangeType(unsigned char tp); 
+      void Draw(void) override;
+      void PreProcess(void) override;
+      void Process(void) override;
+      void PostProcess(void) override;
+      lxString GetPictureFileName(void) override;
+      lxString GetMapFile(void) override;
+      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
+      void EvMouseButtonRelease(uint button, uint x, uint y,uint state) override;
+      void EvMouseMove(uint button, uint x, uint y,uint state) override;
+      void Reset(void) override;
+      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
+      void ReadPropertiesWindow(CPWindow * WProp) override;
+      lxString WritePreferences(void) override;
+      void SetOrientation(int orientation) override;
+      void SetScale(double scale) override;
+      void ReadPreferences(lxString value) override;
+      unsigned short get_in_id(char * name) override;
+      unsigned short get_out_id(char * name) override;
+      void ComboChange(CCombo * control, lxString value) override; 
    private:
+      void ChangeType(unsigned char tp); 
       unsigned char input_pins[13]; 
       unsigned char touch_pins[5]; 
       lcd_ili9341_t lcd;
@@ -77,7 +77,4 @@ class cpart_LCD_ili9341:public part
       unsigned short tret;
 };
 
-
-
 #endif	/* PART_LCD_iLI9341_H */
-

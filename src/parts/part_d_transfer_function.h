@@ -34,23 +34,23 @@
 class cpart_dtfunc:public part
 {
    public:
-      lxString GetName(void){return lxT(PART_DTRANSFERF_Name);};
-      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
+      lxString GetName(void) override {return lxT(PART_DTRANSFERF_Name);};
+      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_dtfunc(unsigned x, unsigned y);
       ~cpart_dtfunc(void);
-      void Draw(void);
-      void Process(void);
-      void Reset(void);
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
-      void EvKeyPress(uint key, uint mask);
-      void EvKeyRelease(uint key, uint mask);
-      void ConfigurePropertiesWindow(CPWindow *  WProp);
-      void ReadPropertiesWindow(CPWindow * WProp);
-      lxString WritePreferences(void);
-      void ReadPreferences(lxString value);
-      unsigned short get_in_id(char * name);
-      unsigned short get_out_id(char * name);
+      void Draw(void) override;
+      void Process(void) override;
+      void Reset(void) override;
+      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
+      void EvMouseButtonRelease(uint button, uint x, uint y,uint state) override;
+      void EvKeyPress(uint key, uint mask) override;
+      void EvKeyRelease(uint key, uint mask) override;
+      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
+      void ReadPropertiesWindow(CPWindow * WProp) override;
+      lxString WritePreferences(void) override;
+      void ReadPreferences(lxString value) override;
+      unsigned short get_in_id(char * name) override;
+      unsigned short get_out_id(char * name) override;
    private:
       unsigned char input_pin;
       unsigned char output_pin;
@@ -67,9 +67,6 @@ class cpart_dtfunc:public part
       long unsigned int nsamples;
       lxFont font;
 };
-
-
-
 
 #endif	/* PART_DTRANSFERF_H */
 

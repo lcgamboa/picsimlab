@@ -497,14 +497,14 @@ cboard_Curiosity_HPC::EvMouseButtonPress(uint button, uint x, uint y, uint state
          Reset ();
          p_BT[0] = 1;
          p_BT[1] = 1;
-         Window1.statusbar1.SetField (0, lxT ("Stoped"));
+         Window1.SetCpuState (CPU_HALTED);
         }
        else //if off turn on
         {
          Window1.Set_mcupwr (1);
          Window1.Set_mcurun (1);
          Reset ();
-         Window1.statusbar1.SetField (0, lxT ("Running..."));
+         Window1.SetCpuState (CPU_RUNNING);
         }
        break;
        //if event is over I_RST area then turn off and reset

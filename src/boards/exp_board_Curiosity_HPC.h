@@ -55,46 +55,46 @@ class cboard_Curiosity_HPC:public bsim_picsim
         CLabel *label5;   //label of gauge RA7
         CLabel *label6;   //label of second serial
         CCombo *combo1;  //combo of second serial
-        void RegisterRemoteControl(void); 
+        void RegisterRemoteControl(void) override; 
     public:
       //Return the board name
-      lxString GetName(void) {return lxT(BOARD_Curiosity_HPC_Name); };  
-      lxString GetAboutInfo(void){return lxT("El-khadraouy Mohammed\n<mohammed.el-khadraouy@ecole.ensicaen.fr>\nand L.C. Gamboa \n <lcgamboa@yahoo.com>");};  
+      lxString GetName(void) override {return lxT(BOARD_Curiosity_HPC_Name); };  
+      lxString GetAboutInfo(void) override {return lxT("El-khadraouy Mohammed\n<mohammed.el-khadraouy@ecole.ensicaen.fr>\nand L.C. Gamboa \n <lcgamboa@yahoo.com>");};  
       //Constructor called once on board creation 
       cboard_Curiosity_HPC(void);
       //Destructor called once on board destruction 
       ~cboard_Curiosity_HPC(void); 
       //Called ever 100ms to draw board
-      void Draw(CDraw *draw);
-      void Run_CPU(void);
+      void Draw(CDraw *draw) override;
+      void Run_CPU(void) override;
       //Return a list of board supported microcontrollers
-      lxString GetSupportedDevices(void){return lxT("PIC16F1619,PIC18F27K40,");};
+      lxString GetSupportedDevices(void) override {return lxT("PIC16F1619,PIC18F27K40,");};
       //Return the filename of board picture 
-      lxString GetPictureFileName(void){return lxT("Curiosity HPC/board.png");};
+      lxString GetPictureFileName(void) override {return lxT("Curiosity HPC/board.png");};
       //Reset board status
-      void Reset(void);
+      void Reset(void) override;
       //Event on the board
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
+      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
       //Event on the board
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
+      void EvMouseButtonRelease(uint button, uint x, uint y,uint state) override;
       //Event on the board
-      void EvMouseMove(uint button, uint x, uint y, uint state);
+      void EvMouseMove(uint button, uint x, uint y, uint state) override;
       //Event on the board
-      void EvKeyPress(uint key, uint mask);
+      void EvKeyPress(uint key, uint mask) override;
       //Event on the board
-      void EvKeyRelease(uint key, uint mask);
+      void EvKeyRelease(uint key, uint mask) override;
       //Called ever 1s to refresh status
-      void RefreshStatus(void);
+      void RefreshStatus(void) override;
       //Called to save board preferences in configuration file
-      void WritePreferences(void);
+      void WritePreferences(void) override;
       //Called whe configuration file load  preferences 
-      void ReadPreferences(char *name,char *value);
+      void ReadPreferences(char *name,char *value) override;
       //return the input ids numbers of names used in input map
-      unsigned short get_in_id(char * name);
+      unsigned short get_in_id(char * name) override;
       //return the output ids numbers of names used in output map
-      unsigned short get_out_id(char * name);
+      unsigned short get_out_id(char * name) override;
       //Set Serial port name
-      void MSetSerial(const char * port);
+      void MSetSerial(const char * port) override;
 };
 
 #endif  /* BOARD_Curiosity_HPC_H */

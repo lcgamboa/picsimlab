@@ -34,23 +34,23 @@
 class cpart_MI2C_24CXXX : public part {
 public:
 
-    lxString GetName(void) {
+    lxString GetName(void) override {
         return lxT(PART_MI2C_24CXXX_Name);
     };
-    lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
+    lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
     cpart_MI2C_24CXXX(unsigned x, unsigned y);
     ~cpart_MI2C_24CXXX(void);
-    void Draw(void);
-    void PreProcess(void);
-    void Process(void);
-    void EvMouseButtonPress(uint button, uint x, uint y,uint state);
-    void ConfigurePropertiesWindow(CPWindow * WProp);
-    void filedialog_EvOnClose(int retId);
-    void ReadPropertiesWindow(CPWindow * WProp);
-    lxString WritePreferences(void);
-    void ReadPreferences(lxString value);
-    unsigned short get_in_id(char * name);
-    unsigned short get_out_id(char * name);
+    void Draw(void) override;
+    void PreProcess(void) override;
+    void Process(void) override;
+    void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
+    void ConfigurePropertiesWindow(CPWindow * WProp) override;
+    void filedialog_EvOnClose(int retId) override;
+    void ReadPropertiesWindow(CPWindow * WProp) override;
+    lxString WritePreferences(void) override;
+    void ReadPreferences(lxString value) override;
+    unsigned short get_in_id(char * name) override;
+    unsigned short get_out_id(char * name) override;
 private:
     unsigned char input_pins[5];
     mi2c_t mi2c;
@@ -60,9 +60,6 @@ private:
     FILE * f_mi2c;
     lxFont font;
 };
-
-
-
 
 #endif /* PART_MI2C_24CXXX_H */
 

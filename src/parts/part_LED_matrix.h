@@ -35,32 +35,29 @@
 class cpart_led_matrix : public part {
 public:
 
-    lxString GetName(void) {
+    lxString GetName(void)  override {
         return lxT(PART_LED_MATRIX_Name);
     };
-    lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
+    lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
     cpart_led_matrix(unsigned x, unsigned y);
     ~cpart_led_matrix(void);
-    void Draw(void);
-    void Process(void);
-    void PostProcess(void);
-    void ConfigurePropertiesWindow(CPWindow * WProp);
-    void ReadPropertiesWindow(CPWindow * WProp);
-    lxString WritePreferences(void);
-    void ReadPreferences(lxString value);
-    unsigned short get_in_id(char * name);
-    unsigned short get_out_id(char * name);
+    void Draw(void) override;
+    void Process(void) override;
+    void PostProcess(void) override;
+    void ConfigurePropertiesWindow(CPWindow * WProp) override;
+    void ReadPropertiesWindow(CPWindow * WProp) override;
+    lxString WritePreferences(void) override;
+    void ReadPreferences(lxString value) override;
+    unsigned short get_in_id(char * name) override;
+    unsigned short get_out_id(char * name) override;
 private:
-    void RegisterRemoteControl(void);      
+    void RegisterRemoteControl(void) override;      
     unsigned char input_pins[3];
     unsigned char output_pins[1];
     ldd_max72xx_t ldd;
     int angle;
     lxFont font;
 };
-
-
-
 
 #endif /* PART_LED_MATRIX_H */
 

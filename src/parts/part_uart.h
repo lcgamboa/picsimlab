@@ -35,22 +35,22 @@
 class cpart_UART:public part
 {
    public:
-      lxString GetName(void){return lxT(PART_UART_Name);};
-      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
+      lxString GetName(void) override {return lxT(PART_UART_Name);};
+      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
       cpart_UART(unsigned x, unsigned y);
       ~cpart_UART(void);
-      void Draw(void);
-      void PreProcess (void);
-      void Process(void); 
-      void PostProcess (void);
-      void Reset(void);
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
-      void ConfigurePropertiesWindow(CPWindow *  WProp);
-      void ReadPropertiesWindow(CPWindow * WProp);
-      lxString WritePreferences(void);
-      void ReadPreferences(lxString value);
-      unsigned short get_in_id(char * name);
-      unsigned short get_out_id(char * name);
+      void Draw(void) override;
+      void PreProcess (void) override;
+      void Process(void) override; 
+      void PostProcess (void) override;
+      void Reset(void) override;
+      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
+      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
+      void ReadPropertiesWindow(CPWindow * WProp) override;
+      lxString WritePreferences(void) override;
+      void ReadPreferences(lxString value) override;
+      unsigned short get_in_id(char * name) override;
+      unsigned short get_out_id(char * name) override;
    private:
       unsigned char input_pins[1];
       unsigned char output_pins[1];
@@ -60,9 +60,6 @@ class cpart_UART:public part
       unsigned int uart_speed;
       lxFont font;
 };
-
-
-
 
 #endif	/* PART_UART_H */
 

@@ -35,29 +35,25 @@
 class cpart_LCD_pcf8833:public part
 {
    public:
-      lxString GetName(void){return lxT(PART_LCD_PCF8833_Name);};
-      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
+      lxString GetName(void) override {return lxT(PART_LCD_PCF8833_Name);};
+      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_LCD_pcf8833(unsigned x, unsigned y);
       ~cpart_LCD_pcf8833(void);
-      void Draw(void);
-      void Process(void);
-      void PostProcess(void);
-      void ConfigurePropertiesWindow(CPWindow *  WProp);
-      void ReadPropertiesWindow(CPWindow * WProp);
-      lxString WritePreferences(void);
-      void SetOrientation(int orientation);
-      void SetScale(double scale);      
-      void ReadPreferences(lxString value);
-      unsigned short get_in_id(char * name);
-      unsigned short get_out_id(char * name);
+      void Draw(void) override;
+      void Process(void) override;
+      void PostProcess(void) override;
+      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
+      void ReadPropertiesWindow(CPWindow * WProp) override;
+      lxString WritePreferences(void) override;
+      void SetOrientation(int orientation) override;
+      void SetScale(double scale) override;      
+      void ReadPreferences(lxString value) override;
+      unsigned short get_in_id(char * name) override;
+      unsigned short get_out_id(char * name) override;
     private:
       unsigned char input_pins[4]; 
       lcd_pcf8833_t lcd;
       lxFont font;
 };
 
-
-
-
 #endif	/* PART_LCD_PCF8833_H */
-

@@ -62,7 +62,6 @@ cboard_Breadboard::get_in_id(char * name)
 unsigned short
 cboard_Breadboard::get_out_id(char * name)
 {
-
  if (strcmp (name, "LD_LPWR") == 0)return O_LPWR;
  if (strcmp (name, "IC_CPU") == 0)return O_MP;
  if (strcmp (name, "PB_RST") == 0)return O_RST;
@@ -275,14 +274,14 @@ cboard_Breadboard::EvMouseButtonPress(uint button, uint x, uint y, uint state)
          Window1.Set_mcurun (0);
          Window1.Set_mcupwr (0);
          Reset ();
-         Window1.statusbar1.SetField (0, lxT ("Stoped"));
+         Window1.SetCpuState (CPU_HALTED);
         }
        else //if off turn on
         {
          Window1.Set_mcupwr (1);
          Window1.Set_mcurun (1);
          Reset ();
-         Window1.statusbar1.SetField (0, lxT ("Running..."));
+         Window1.SetCpuState (CPU_RUNNING);
         }
        output_ids[O_LPWR]->update = 1;
        break;

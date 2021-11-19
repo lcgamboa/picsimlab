@@ -634,17 +634,14 @@ cboard_K16F::EvMouseButtonPress(uint button, uint x, uint y, uint state)
           Window1.Set_mcurun (0);
           Window1.Set_mcupwr (0);
           Reset ();
-
-          Window1.statusbar1.SetField (0, lxT ("Stoped"));
+          Window1.SetCpuState (CPU_HALTED);
          }
         else
          {
           Window1.Set_mcupwr (1);
           Window1.Set_mcurun (1);
           Reset ();
-
-
-          Window1.statusbar1.SetField (0, lxT ("Running..."));
+          Window1.SetCpuState (CPU_RUNNING);
          }
        }
        output_ids[O_LPWR]->update = 1;

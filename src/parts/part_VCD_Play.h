@@ -40,25 +40,25 @@ unsigned char data;
 class cpart_VCD_Play : public part {
 public:
 
-    lxString GetName(void) { return lxT(PART_VCD_Play_Name);};
-    lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
+    lxString GetName(void) override { return lxT(PART_VCD_Play_Name);};
+    lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
     cpart_VCD_Play(unsigned x, unsigned y);
     ~cpart_VCD_Play(void);
-    void Draw(void);
-    void PreProcess(void);
-    void Process(void);
-    void PostProcess(void);
-    void EvMouseButtonPress(uint button, uint x, uint y,uint state);
-    void ConfigurePropertiesWindow(CPWindow * WProp);
-    void filedialog_EvOnClose(int retId);
-    void ReadPropertiesWindow(CPWindow * WProp);
-    lxString WritePreferences(void);
-    void ReadPreferences(lxString value);
-    unsigned short get_in_id(char * name);
-    unsigned short get_out_id(char * name);
+    void Draw(void) override;
+    void PreProcess(void) override;
+    void Process(void) override;
+    void PostProcess(void) override;
+    void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
+    void ConfigurePropertiesWindow(CPWindow * WProp) override;
+    void filedialog_EvOnClose(int retId) override;
+    void ReadPropertiesWindow(CPWindow * WProp) override;
+    lxString WritePreferences(void) override;
+    void ReadPreferences(lxString value) override;
+    unsigned short get_in_id(char * name) override;
+    unsigned short get_out_id(char * name) override;
     int LoadVCD(lxString fname);
 private:
-    void RegisterRemoteControl(void);   
+    void RegisterRemoteControl(void) override;   
     unsigned char output_pins[8];
     char f_vcd_name[200];
     unsigned char play;
@@ -75,4 +75,3 @@ private:
 };
 
 #endif /* PART_VCD_Play_H */
-

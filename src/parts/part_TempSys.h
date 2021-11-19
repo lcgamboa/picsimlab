@@ -34,25 +34,25 @@
 class cpart_tempsys : public part {
 public:
 
-    lxString GetName(void) {
+    lxString GetName(void) override {
         return lxT(PART_TEMPSYS_Name);
     };
-    lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
+    lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
     cpart_tempsys(unsigned x, unsigned y);
     ~cpart_tempsys(void);
-    void Draw(void);
-    void Process(void);
-    void PostProcess(void);
-    void EvMouseButtonPress(uint button, uint x, uint y, uint state);
-    void EvMouseButtonRelease(uint button, uint x, uint y, uint state);
-    void EvMouseMove(uint button, uint x, uint y, uint state);
-    void ConfigurePropertiesWindow(CPWindow * WProp);
-    void ReadPropertiesWindow(CPWindow * WProp);
-    lxString WritePreferences(void);
-    void ReadPreferences(lxString value);
-    void SetOrientation(int orientation);
-    unsigned short get_in_id(char * name);
-    unsigned short get_out_id(char * name);
+    void Draw(void) override;
+    void Process(void) override;
+    void PostProcess(void) override;
+    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
+    void EvMouseButtonRelease(uint button, uint x, uint y, uint state) override;
+    void EvMouseMove(uint button, uint x, uint y, uint state) override;
+    void ConfigurePropertiesWindow(CPWindow * WProp) override;
+    void ReadPropertiesWindow(CPWindow * WProp) override;
+    lxString WritePreferences(void) override;
+    void ReadPreferences(lxString value) override;
+    void SetOrientation(int orientation) override;
+    unsigned short get_in_id(char * name) override;
+    unsigned short get_out_id(char * name) override;
 private:
     unsigned char input_pins[4];
     lxBitmap * vent[2];
@@ -64,9 +64,6 @@ private:
     int rpmc;
     lxFont font;
 };
-
-
-
 
 #endif /* PART_TEMPSYS */
 

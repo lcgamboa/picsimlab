@@ -34,26 +34,26 @@
 class cpart_keypad:public part
 {
    public:
-      lxString GetName(void){return lxT(PART_KEYPAD_Name);};;
-      lxString GetAboutInfo(void){return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
+      lxString GetName(void) override {return lxT(PART_KEYPAD_Name);};;
+      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
       cpart_keypad(unsigned x, unsigned y);
       ~cpart_keypad(void);
-      void Draw(void);
-      void Process(void);
-      lxString GetPictureFileName(void);
-      lxString GetMapFile(void);
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state);
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state);
-      void ConfigurePropertiesWindow(CPWindow *  WProp);
-      void ReadPropertiesWindow(CPWindow * WProp);
-      lxString WritePreferences(void);
-      void ReadPreferences(lxString value);
-      unsigned short get_in_id(char * name);
-      unsigned short get_out_id(char * name);
-      void ComboChange(CCombo * control, lxString value);
-      void ChangeType(unsigned char tp); 
+      void Draw(void) override;
+      void Process(void) override;
+      lxString GetPictureFileName(void) override;
+      lxString GetMapFile(void) override;
+      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
+      void EvMouseButtonRelease(uint button, uint x, uint y,uint state) override;
+      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
+      void ReadPropertiesWindow(CPWindow * WProp) override;
+      lxString WritePreferences(void) override;
+      void ReadPreferences(lxString value) override;
+      unsigned short get_in_id(char * name) override;
+      unsigned short get_out_id(char * name) override;
+      void ComboChange(CCombo * control, lxString value) override; 
     private:
-      void RegisterRemoteControl(void);          
+      void ChangeType(unsigned char tp);  
+      void RegisterRemoteControl(void) override;          
       unsigned char type;  
       unsigned char pull;  
       unsigned char output_pins[8];    
