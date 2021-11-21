@@ -181,10 +181,14 @@ bsim_remote::DataAvaliable(void)
 {
  if (!connected) return 0;
 
- //setnblock (sockfd);
  char dp;
+#ifndef _WIN_         
  int ret = recv (sockfd, &dp, 1, MSG_PEEK | MSG_DONTWAIT);
- //setblock (sockfd);
+#else
+ setnblock (sockfd);
+ int ret = recv (sockfd, &dp, 1, MSG_PEEK );
+ setblock (sockfd);
+#endif   
 
  if (ret != 1)
   {
