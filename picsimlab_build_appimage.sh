@@ -57,6 +57,7 @@ chmod +x appimagetool-x86_64.AppImage
 mv appimagetool-x86_64.AppImage /tmp/
 ./PICSimLab-${VERSION}-x86_64.AppImage --appimage-extract
 rm -rf squashfs-root/usr/lib/libgmodule*
+rm -rf squashfs-root/usr/lib/libgdk_pixbuf*
 /tmp/appimagetool-x86_64.AppImage -v squashfs-root
 rm -rf squashfs-root/
 #rename package
