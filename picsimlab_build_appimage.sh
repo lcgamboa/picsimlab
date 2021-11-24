@@ -51,6 +51,16 @@ echo "\$APPDIR/usr/bin/picsimlab \$@" >> /tmp/AppRun
 chmod a+x /tmp/AppRun
 /tmp/linuxdeploy-x86_64.AppImage --custom-apprun=/tmp/AppRun --appdir AppDir --output appimage
 install -d "release_${VERSION}"
+#remove libgmodule
+wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+chmod +x appimagetool-x86_64.AppImage
+mv appimagetool-x86_64.AppImage /tmp/
+./PICSimLab-${VERSION}-x86_64.AppImage --appimage-extract
+rm -rf squashfs-root/usr/lib/libgmodule*
+/tmp/appimagetool-x86_64.AppImage -v squashfs-root
+rm -rf squashfs-root/
+#rename package
+mv PICSimLab-x86_64.AppImage PICSimLab-${VERSION}-x86_64.AppImage 
 if [[ -n "$1" ]]; then
   mv -f PICSimLab-${VERSION}-x86_64.AppImage release_${VERSION}/PICSimLab-${VERSION}_experimetal-x86_64.AppImage 
 else
