@@ -19,9 +19,9 @@ fi
 
 #compila windows 32 e 64 bits
 make clean
-make CXX="ccache x86_64-w64-mingw32-g++" FILE=Makefile.cross -j4 ${TARGET}
+make CXX="ccache x86_64-w64-mingw32-g++" FILE=Makefile.cross -j$(nproc) ${TARGET}
 make clean
-make CXX="ccache i686-w64-mingw32-g++" FILE=Makefile.cross_32 -j4 ${TARGET}
+make CXX="ccache i686-w64-mingw32-g++" FILE=Makefile.cross_32 -j$(nproc) ${TARGET}
 make clean
 cd ..
 rm -Rf picsimlab_win32/share/ 

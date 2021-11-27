@@ -12,4 +12,4 @@ g++-mingw-w64-i686 wget unzip ccache
 cl wget https://github.com/lcgamboa/picsimlab/releases/download/v${VERSION_STABLE}/picsimlab_${VERSION_STABLE}_w32-dev.zip
 cl unzip -o picsimlab_${VERSION_STABLE}_w32-dev.zip
 make clean
-make CXX="ccache i686-w64-mingw32-g++" FILE=Makefile.cross_32 -j4 ${1}
+make CXX="ccache i686-w64-mingw32-g++" FILE=Makefile.cross_32 -j$(nproc) ${1}

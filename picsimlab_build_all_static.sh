@@ -28,7 +28,7 @@ fi
 echo -e "\033[1;32m ---------------------- build picsim ------------------------- \033[0m"
 cd picsim
 cl git pull --no-rebase
-cl make clean;make -j4
+cl make clean;make -j$(nproc)
 cl ln -s ../include/ include/picsim
 cd ..
 echo -e "\033[1;32m ---------------------- build lxrad -------------------------- \033[0m"
@@ -36,18 +36,18 @@ cd lxrad
 git pull --no-rebase
 cl ./make_deps.sh
 cl ./configure --prefix=/usr
-cl make clean;make -j4
+cl make clean;make -j$(nproc)
 cd ..
 echo -e "\033[1;32m ---------------------- build simavr ------------------------- \033[0m"
 cd simavr
 git pull --no-rebase
-cl make clean;make -j4 
+cl make clean;make build-simavr -j$(nproc) 
 cl ln -s ../sim/ simavr/sim/simavr
 cd ../
 echo -e "\033[1;32m ---------------------- build uCsim -------------------------- \033[0m"
 cd uCsim_picsimlab
 cl ./config_linux.sh
-cl make clean;make -j4
+cl make clean;make -j$(nproc)
 cd picsimlab
 cl make clean;make
 cl make clean;make
@@ -56,13 +56,13 @@ cd ../../
 if [[ -z "$BUILD_EXPERIMETAL" ]]; then
 echo -e "\033[1;32m ---------------------- build picsimlab ---------------------- \033[0m"
 cd ../
-cl make clean;make CXX="ccache g++" -j4 LIBPATH="../build_all/" FILE=Makefile.static
+cl make clean;make CXX="ccache g++" -j$(nproc) LIBPATH="../build_all/" FILE=Makefile.static
 else	
 echo -e "\033[1;32m ---------------------- build qemu_stm32 --------------------- \033[0m"
 cd qemu_stm32
 cl git checkout picsimlab
 cl ./configure --target-list="arm-softmmu" --disable-werror --disable-sdl --disable-vnc --disable-docs --disable-blobs --static --disable-virtfs --disable-libusb --disable-libnfs --disable-vhost-net --disable-vde --disable-bluez --disable-curses --disable-gtk --python=/usr/bin/python2
-cl make clean;make -j4
+cl make clean;make -j$(nproc)
 cd arm-softmmu
 cl cp qemu-system-arm qemu-stm32
 cl strip qemu-stm32
@@ -70,7 +70,7 @@ cd ../../
 echo -e "\033[1;32m ---------------------- build picsimlab ---------------------- \033[0m"
 #git pull --no-rebase
 cd ../
-cl make clean;make CXX="ccache g++" -j4 exp LIBPATH="../build_all/" FILE=Makefile.static
+cl make clean;make CXX="ccache g++" -j$(nproc) exp LIBPATH="../build_all/" FILE=Makefile.static
 fi
 user=`whoami`
 cl sudo usermod -a -G dialout $user

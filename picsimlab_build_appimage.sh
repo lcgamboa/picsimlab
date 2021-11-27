@@ -12,7 +12,7 @@ git clone https://github.com/lcgamboa/lxrad_nogui.git
 echo -e "\033[1;32m ---------------------- build lxrad nogui -------------------------- \033[0m"
 cd lxrad_nogui
 git pull
-make clean;make -j4
+make clean;make -j$(nproc)
 sudo make install
 cd ..
 cd ..
@@ -20,7 +20,7 @@ cd ..
 rm -rf AppDir
 echo -e "\033[1;32m ---------------------- build picsimlab -------------------------- \033[0m"
 make clean
-make -j4 LIBPATH="../build_all/" FILE=Makefile.static $1
+make -j$(nproc) LIBPATH="../build_all/" FILE=Makefile.static $1
 make LIBPATH="../build_all/" FILE=Makefile.static DESTDIR=`pwd`/AppDir install_app
 rm -rf AppDir/usr/share/picsimlab/docs/
 #cp /usr/bin/cutecom AppDir/usr/bin
@@ -73,7 +73,7 @@ cd src
 rm -rf AppDir
 echo -e "\033[1;32m ---------------------- build picsimlab nogui -------------------------- \033[0m"
 make clean
-make -j4 LIBPATH="../build_all/" -f Makefile.NOGUI $1
+make -j$(nproc) LIBPATH="../build_all/" -f Makefile.NOGUI $1
 make LIBPATH="../build_all/" -f Makefile.NOGUI DESTDIR=AppDir install
 rm -rf AppDir/usr/share/picsimlab/docs/
 cd AppDir/usr/share/picsimlab 

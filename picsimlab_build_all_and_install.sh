@@ -29,7 +29,7 @@ fi
 echo -e "\033[1;32m ---------------------- build and install picsim ------------------------- \033[0m"
 cd picsim
 cl git pull --no-rebase
-cl make clean;make -j4
+cl make clean;make -j$(nproc)
 cl sudo make install
 cd ..
 echo -e "\033[1;32m ---------------------- build and install lxrad -------------------------- \033[0m"
@@ -37,14 +37,14 @@ cd lxrad
 git pull --no-rebase
 cl ./make_deps.sh
 cl ./configure --prefix=/usr
-cl make clean;make -j4
+cl make clean;make -j$(nproc)
 cl sudo make install
 cd ..
 echo -e "\033[1;32m ---------------------- build and install tty0tty ------------------------ \033[0m"
 cd tty0tty/module
 git pull --no-rebase
 cl sudo ./dkms-install.sh
-#cl make clean;make -j4
+#cl make clean;make -j$(nproc)
 #cl sudo make install
 sudo usermod -a -G dialout `whoami`
 cl sudo modprobe tty0tty
@@ -52,29 +52,29 @@ cd ../../
 echo -e "\033[1;32m ---------------------- build and install simavr ------------------------- \033[0m"
 cd simavr
 git pull --no-rebase
-cl make clean;make -j4 
-cl sudo make install
+cl make clean;make build-simavr -j$(nproc) 
+cl sudo make install-simavr
 cd ../
 echo -e "\033[1;32m ---------------------- build and install uCsim -------------------------- \033[0m"
 cd uCsim_picsimlab
 cl ./config_linux.sh
-cl make clean;make -j4
+cl make clean;make -j$(nproc)
 cd picsimlab
-cl make clean;make -j4
+cl make clean;make -j$(nproc)
 cl sudo make install
 cd ../../
 if [[ -z "$BUILD_EXPERIMETAL" ]]; then
 echo -e "\033[1;32m ---------------------- build and install picsimlab ---------------------- \033[0m"
 cd ../
 #git pull --no-rebase
-cl make clean;make -j4
+cl make clean;make -j$(nproc)
 cl sudo make install
 else	
 echo -e "\033[1;32m ---------------------- build and install qemu_stm32 --------------------- \033[0m"
 cd qemu_stm32
 cl git checkout picsimlab
 cl ./configure --target-list="arm-softmmu" --disable-werror --disable-sdl --disable-vnc --disable-docs --disable-blobs --static --disable-virtfs --disable-libusb --disable-libnfs --disable-vhost-net --disable-vde --disable-bluez --disable-curses --disable-gtk
-cl make clean;make -j4
+cl make clean;make -j$(nproc)
 cd arm-softmmu
 cl cp qemu-system-arm qemu-stm32
 cl strip qemu-stm32
@@ -83,7 +83,7 @@ cd ../../
 echo -e "\033[1;32m ---------------------- build and install picsimlab ---------------------- \033[0m"
 #git pull --no-rebase
 cd ../
-cl make clean;make -j4 exp
+cl make clean;make -j$(nproc) exp
 cl sudo make install
 fi
 user=`whoami`

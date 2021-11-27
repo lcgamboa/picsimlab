@@ -10,7 +10,7 @@ echo -e "\033[1;32m ---------------------- build and install lxrad nogui -------
 mv lxrad_nogui lxrad_NOGUI
 cd lxrad_NOGUI
 git pull
-make clean;make -j4
+make clean;make -j$(nproc)
 sudo make install
 cd ..
 tar  --delete -f picsimlab-${VERSION}.tar "docs/kicad"
@@ -38,7 +38,7 @@ mv tools/PinViewer/Makefile.static tools/PinViewer/Makefile
 rm -rf share/*/*/*.png
 if [[ -n "$1" ]]; then
  PWD=`pwd`	
- echo -e "\noverride_dh_auto_build:\n\tmake -j4 $1\n\n" >> debian/rules
+ echo -e "\noverride_dh_auto_build:\n\tmake -j$(nproc) $1\n\n" >> debian/rules
  echo -e "\noverride_dh_auto_install:\n\tdh_auto_install\n\tinstall -p -D -m 0755 ../qemu_stm32/arm-softmmu/qemu-stm32 ${PWD}/debian/picsimlab/usr/bin/qemu-stm32\n\n" >> debian/rules
  sed -i 's/Depends: gtkwave, cutecom, gedit,/Depends: gpsim, /g' debian/control
 else
