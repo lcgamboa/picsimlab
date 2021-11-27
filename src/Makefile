@@ -4,7 +4,8 @@ CXX= g++
 
 PKG_CONFIG= `pkg-config --cflags glib-2.0` 
 
-prefix=$(DESTDIR)/usr
+DESTDIR ?= /usr
+prefix = $(DESTDIR)
 
 RM= rm -f
 CP= cp
