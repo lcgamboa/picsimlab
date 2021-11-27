@@ -42,8 +42,8 @@ picsimlab: $(OBJS)
 	@$(CXX) -c $(CXXFLAGS) $< -o $@ 
 
 install: all
-	${MKDIR} ${sharedir}
-	${MKDIR} ${sharedir}docs/
+	install -d $(execdir) $(sharedir) $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \
+	${sharedir}/../icons/hicolor/64x64/mimetypes/ ${sharedir}/../mime/application/
 	$(CP) -dvf  ../share/picsimlab.desktop ${appdir} 
 	$(CP) -drvf ../share/* ${sharedir}
 	$(CP) -dvf picsimlab ${execdir}
