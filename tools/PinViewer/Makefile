@@ -2,7 +2,8 @@ include ../../VERSION
 
 CC = g++
 
-prefix=$(DESTDIR)/usr
+DESTDIR ?= /usr
+prefix = $(DESTDIR)
 
 RM= rm -f
 CP= cp
