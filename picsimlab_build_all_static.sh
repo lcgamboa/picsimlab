@@ -77,5 +77,8 @@ cl sudo usermod -a -G dialout $user
 echo -e "\033[1;32m ---------------------- done! -------------------------------------------- \033[0m"
 echo -e "\033[1;32m logout your session and login to use serial \033[0m"
 if xhost > /dev/null 2>&1 ; then
+cd share
+ln -s ../share/ picsimlab
+cd ..
 cl ./src/picsimlab
 fi
