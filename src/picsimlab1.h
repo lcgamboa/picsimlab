@@ -153,8 +153,9 @@ public:
     /*#Others*/
     //lxrad automatic generated block end, don't edit above!
 
-    CThread thread1;
-    CThread thread2;
+    CThread thread1;//main simulation
+    CThread thread2;//rcontrol
+    CThread thread3;//boards
     int tgo;
 
     int settodestroy;
@@ -171,6 +172,7 @@ public:
     void board_Event(CControl * control); 
     void thread1_EvThreadRun(CControl * control);
     void thread2_EvThreadRun(CControl * control);
+    void thread3_EvThreadRun(CControl * control);
 
     /**
      * @brief  Get the file path of resources

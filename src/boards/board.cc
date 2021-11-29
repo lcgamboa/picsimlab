@@ -47,8 +47,8 @@ board::ReadMaps(void)
 {
  inputc = 0;
  outputc = 0;
- ReadInputMap (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/") + GetMapFile ()));
- ReadOutputMap (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/") + GetMapFile ()));
+ ReadInputMap (lxGetLocalFile (Window1.GetSharePath () + lxT ("boards/") + GetMapFile ()));
+ ReadOutputMap (lxGetLocalFile (Window1.GetSharePath () + lxT ("boards/") + GetMapFile ()));
 
  for (int i = 0; i < inputc; i++)
   {
@@ -426,4 +426,15 @@ lxString
 board::GetMapFile(void)
 {
  return GetName () + lxT ("/board.map");
+}
+
+void
+board::StartThread(void)
+{
+#ifndef __EMSCRIPTEN__ 
+ if (!Window1.thread3.GetRunState ())
+  {
+   Window1.thread3.Run ();
+  }
+#endif 
 }

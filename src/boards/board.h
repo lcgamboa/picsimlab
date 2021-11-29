@@ -148,6 +148,11 @@ public:
      * @brief  Event on the board
      */
     virtual void EvOnShow(void);
+    
+    /**
+     * @brief  Event on the board
+     */
+    virtual void EvThreadRun(CThread& thread){};
 
     /**
      * @brief  Called ever 1s to refresh status
@@ -492,7 +497,7 @@ public:
      * @brief  Get board draw scale    
      */
     double GetScale(void);
-
+    
 protected:
 
     /**
@@ -517,6 +522,11 @@ protected:
      * @brief  Read maps 
      */
     void ReadMaps(void);
+    
+    /**
+     * @brief  Start parallel thread    
+     */
+    void StartThread(void);
 
 private:
 

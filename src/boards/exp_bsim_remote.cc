@@ -172,6 +172,7 @@ bsim_remote::TestConnection(void)
    printf ("picsimlab: Ripes connected to PICSimLab!\n");
 
    connected = 1;
+   StartThread ();
   }
  return connected;
 }
@@ -186,7 +187,7 @@ bsim_remote::DataAvaliable(void)
  int ret = recv (sockfd, &dp, 1, MSG_PEEK | MSG_DONTWAIT);
 #else
  setnblock (sockfd);
- int ret = recv (sockfd, &dp, 1, MSG_PEEK );
+ int ret = recv (sockfd, &dp, 1, MSG_PEEK);
  setblock (sockfd);
 #endif   
 
@@ -656,23 +657,42 @@ bsim_remote::recv_payload(char * buff, const uint32_t payload_size)
 int32_t
 bsim_remote::send_cmd(const uint32_t cmd, const char * payload, const uint32_t payload_size)
 {
+#define BSIZE 1024
+
+ char buffer[BSIZE];
  uint32_t ret;
  cmd_header_t cmd_header;
 
  cmd_header.msg_type = htonl (cmd);
  cmd_header.payload_size = htonl (payload_size);
- if ((ret = send (sockfd, (const char *) &cmd_header, sizeof ( cmd_header), MSG_NOSIGNAL)) != sizeof ( cmd_header))
+
+ unsigned int dsize = sizeof ( cmd_header);
+ const char * dp = (const char *) &cmd_header;
+
+
+ if (payload_size)
+  {
+   for (unsigned int i = 0; i < dsize; i++)
+    {
+     buffer[i] = dp[i];
+    }
+   for (unsigned int i = 0; i < payload_size; i++)
+    {
+     buffer[dsize + i] = payload[i];
+    }
+   dsize += payload_size;
+   if (dsize > BSIZE)
+    {
+     printf ("PICSimLab: Send Overflow\n");
+     exit (-1);
+    }
+   dp = buffer;
+  }
+
+ if ((ret = send (sockfd, dp, dsize, MSG_NOSIGNAL)) != dsize)
   {
    printf ("send error : %s \n", strerror (errno));
    return -1;
-  }
- if (payload_size)
-  {
-   if ((ret += send (sockfd, payload, payload_size, MSG_NOSIGNAL)) != payload_size + sizeof ( cmd_header))
-    {
-     printf ("send error : %s \n", strerror (errno));
-     return -1;
-    }
   }
  return ret;
 }

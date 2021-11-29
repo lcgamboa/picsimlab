@@ -465,6 +465,14 @@ CPWindow1::CPWindow1(void)
   thread2.EvThreadRun=EVTHREADRUN & CPWindow1::thread2_EvThreadRun;
   CreateChild(&thread2);
   
+  //thread3
+  thread3.SetFOwner(this);
+  thread3.SetClass(lxT("CThread"));
+  thread3.SetName(lxT("thread3"));
+  thread3.SetTag(0);
+  thread3.EvThreadRun=EVTHREADRUN & CPWindow1::thread3_EvThreadRun;
+  CreateChild(&thread3);
+  
   JUMPSTEPS=DEFAULTJS;
   
   NSTEP=NSTEPKT;

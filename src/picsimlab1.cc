@@ -80,13 +80,13 @@ usleep(unsigned int usec)
 }
 #else
 #define msleep(x) usleep(x*1000)
-#endif        
+#endif
 
 #ifdef CONVERTER_MODE
 static lxString cvt_fname;
 #endif
 
-#if defined(TDEBUG) || defined(_NOTHREAD)  
+#if defined(TDEBUG) || defined(_NOTHREAD)
 #ifdef _WIN_
 
 double
@@ -137,9 +137,9 @@ CPWindow1::timer1_EvOnTime(CControl * control)
 #ifdef _NOTHREAD
  //printf ("overtimer = %i \n", timer1.GetOverTime ());
  if (timer1.GetOverTime () < 100)
-#else 
+#else
  if ((!tgo)&&(timer1.GetTime () == 100))
-#endif  
+#endif
   {
    if (crt)
     {
@@ -206,11 +206,11 @@ CPWindow1::DrawBoard(void)
   {
    double scalex, scaley, scale_temp;
 
-#ifndef _WIN_  
+#ifndef _WIN_
    scalex = ((Window1.GetWidth () - 185)*1.0) / plWidth;
 #else
    scalex = ((Window1.GetWidth () - 190)*1.0) / plWidth;
-#endif   
+#endif
    scaley = ((Window1.GetHeight () - 90)*1.0) / plHeight;
 
 
@@ -269,7 +269,7 @@ CPWindow1::DrawBoard(void)
 void
 CPWindow1::thread1_EvThreadRun(CControl*)
 {
-#if defined(TDEBUG) //|| defined(_NOTHREAD)  
+#if defined(TDEBUG) //|| defined(_NOTHREAD)
  double t0, t1;
 #endif
  do
@@ -277,18 +277,18 @@ CPWindow1::thread1_EvThreadRun(CControl*)
 
    if (tgo)
     {
-#if defined(TDEBUG) //|| defined(_NOTHREAD)     
+#if defined(TDEBUG) //|| defined(_NOTHREAD)
      t0 = cpuTime ();
-#endif     
+#endif
      status.st[1] |= ST_TH;
      pboard->Run_CPU ();
      if (debug)pboard->DebugLoop ();
      tgo--;
      status.st[1] &= ~ST_TH;
-#if defined(TDEBUG) //|| defined(_NOTHREAD)       
+#if defined(TDEBUG) //|| defined(_NOTHREAD)
      t1 = cpuTime ();
-#endif     
-#if defined(_NOTHREAD)     
+#endif
+#if defined(_NOTHREAD)
      /*
      if ((t1 - t0) / (Window1.timer1.GetTime ()*1e-5) > 110)
       {
@@ -300,8 +300,8 @@ CPWindow1::thread1_EvThreadRun(CControl*)
       }
       */
      tgo = 0;
-#endif     
-#ifdef TDEBUG      
+#endif
+#ifdef TDEBUG
      printf ("PTime= %lf  tgo= %2i  zeroc= %2i  Timer= %3u Perc.= %4.1lf\n",
              t1 - t0, tgo, zerocount, Window1.timer1.GetTime (),
              (t1 - t0) / (Window1.timer1.GetTime ()*1e-5));
@@ -309,11 +309,11 @@ CPWindow1::thread1_EvThreadRun(CControl*)
     }
    else
     {
-#ifndef _NOTHREAD         
+#ifndef _NOTHREAD
      cpu_mutex->Lock ();
      cpu_cond->Wait ();
      cpu_mutex->Unlock ();
-#endif     
+#endif
     }
 
   }
@@ -332,6 +332,12 @@ CPWindow1::thread2_EvThreadRun(CControl*)
     }
   }
  while (!thread2.TestDestroy ());
+}
+
+void
+CPWindow1::thread3_EvThreadRun(CControl*)
+{
+ pboard->EvThreadRun (thread3);
 }
 
 void
@@ -384,7 +390,7 @@ CPWindow1::timer2_EvOnTime(CControl * control)
   {
    SaveWorkspace (cvt_fname);
   }
-#endif 
+#endif
 
  if (settodestroy)
   {
@@ -521,7 +527,7 @@ CPWindow1::_EvOnCreate(CControl * control)
  Configure (home, use_default_board, 1);
 
 
- //search for file name 
+ //search for file name
  if (Application->Aargc == 2)
   {
    LoadWorkspace (fn.GetFullPath ());
@@ -567,7 +573,7 @@ CPWindow1::Configure(const char * home, int use_default_board, int create)
  mcupwr = 1;
  mcurst = 0;
 
-#ifndef _NOTHREAD    
+#ifndef _NOTHREAD
  if (cpu_mutex == NULL)
   {
    cpu_mutex = new lxMutex ();
@@ -580,10 +586,10 @@ CPWindow1::Configure(const char * home, int use_default_board, int create)
 
  SERIALDEVICE[0] = ' ';
  SERIALDEVICE[1] = 0;
-#ifdef _USE_PICSTARTP_ 
+#ifdef _USE_PICSTARTP_
  PROGDEVICE[0] = ' ';
  PROGDEVICE[1] = 0;
-#endif   
+#endif
  pboard = NULL;
 
  prefs.Clear ();
@@ -601,14 +607,14 @@ CPWindow1::Configure(const char * home, int use_default_board, int create)
        if ((name == NULL) || (value == NULL))continue;
 #ifndef _WIN_
        if (!strcmp ("picsimlab_lser", name))strcpy (SERIALDEVICE, value);
-#ifdef _USE_PICSTARTP_      
+#ifdef _USE_PICSTARTP_
        if (!strcmp ("picsimlab_lprog", name))strcpy (PROGDEVICE, value);
-#endif      
+#endif
 #else
        if (!strcmp ("picsimlab_wser", name))strcpy (SERIALDEVICE, value);
-#ifdef _USE_PICSTARTP_      
+#ifdef _USE_PICSTARTP_
        if (!strcmp ("picsimlab_wprog", name))strcpy (PROGDEVICE, value);
-#endif      
+#endif
 #endif
 
        if (!strcmp (name, "picsimlab_lab"))
@@ -652,10 +658,10 @@ CPWindow1::Configure(const char * home, int use_default_board, int create)
         {
 #ifdef NO_DEBUG
          debug = 0;
-#else         
+#else
          sscanf (value, "%i", &debug);
          togglebutton1.SetCheck (debug);
-#endif         
+#endif
         }
 
        if (!strcmp (name, "picsimlab_debugt"))
@@ -731,21 +737,21 @@ CPWindow1::Configure(const char * home, int use_default_board, int create)
   {
    printf ("Error open config file \"%s\"!\n", fname);
 
-   lab = 0; //default  
-   lab_ = 0; //default  
+   lab = 0; //default
+   lab_ = 0; //default
 
    pboard = boards_list[0].bcreate ();
 
-#ifndef _WIN_   
+#ifndef _WIN_
    strcpy (SERIALDEVICE, "/dev/tnt2");
-#ifdef _USE_PICSTARTP_   
+#ifdef _USE_PICSTARTP_
    strcpy (PROGDEVICE, "/dev/tnt4");
-#endif   
+#endif
 #else
    strcpy (SERIALDEVICE, "com6");
-#ifdef _USE_PICSTARTP_   
+#ifdef _USE_PICSTARTP_
    strcpy (PROGDEVICE, "com8");
-#endif   
+#endif
 #endif
   }
 
@@ -814,7 +820,7 @@ CPWindow1::Configure(const char * home, int use_default_board, int create)
 
 #ifdef NO_DEBUG
  statusbar1.SetField (1, lxT (" "));
-#else 
+#else
  if (debug)
   {
    int ret = pboard->DebugInit (debug_type);
@@ -837,10 +843,10 @@ CPWindow1::Configure(const char * home, int use_default_board, int create)
 
 
  thread1.Run (); //parallel thread
-#ifndef __EMSCRIPTEN__ 
- //FIXME remote control disabled 
+#ifndef __EMSCRIPTEN__
+ //FIXME remote control disabled
  thread2.Run (); //parallel thread
-#endif 
+#endif
  timer1.SetRunState (1);
  timer2.SetRunState (1);
 
@@ -865,7 +871,7 @@ CPWindow1::Configure(const char * home, int use_default_board, int create)
 
 #ifndef __EMSCRIPTEN__
  rcontrol_init (remotec_port);
-#endif 
+#endif
 }
 
 //Change  frequency
@@ -944,16 +950,20 @@ CPWindow1::EndSimulation(void)
    Application->ProcessEvents ();
   }
  tgo = 100000;
-#ifndef _NOTHREAD    
+#ifndef _NOTHREAD
  cpu_mutex->Lock ();
  cpu_cond->Signal ();
  cpu_mutex->Unlock ();
-#endif 
+#endif
  thread1.Destroy ();
  tgo = 0;
 
 #ifndef __EMSCRIPTEN__
  thread2.Destroy ();
+ if (thread3.GetRunState ())
+  {
+   thread3.Destroy ();
+  }
 #endif
 
  //write options
@@ -976,12 +986,12 @@ CPWindow1::EndSimulation(void)
  saveprefs (lxT ("spare_on"), itoa (pboard->GetUseSpareParts ()));
 #ifndef _WIN_
  saveprefs (lxT ("picsimlab_lser"), SERIALDEVICE);
-#ifdef _USE_PICSTARTP_    
+#ifdef _USE_PICSTARTP_
  saveprefs (lxT ("picsimlab_lprog"), PROGDEVICE);
-#endif    
+#endif
 #else
  saveprefs ("picsimlab_wser", SERIALDEVICE);
-#ifdef _USE_PICSTARTP_    
+#ifdef _USE_PICSTARTP_
  saveprefs ("picsimlab_wprog", PROGDEVICE);
 #endif
 #endif
@@ -1029,7 +1039,7 @@ CPWindow1::EndSimulation(void)
 
  scale = 1.0;
 
-#ifndef _NOTHREAD    
+#ifndef _NOTHREAD
  delete cpu_cond;
  delete cpu_mutex;
  cpu_cond = NULL;
@@ -1042,10 +1052,10 @@ CPWindow1::menu1_File_LoadHex_EvMenuActive(CControl * control)
 {
 #ifdef __EMSCRIPTEN__
  EM_ASM_ ({toggle_load_panel ();});
-#else     
+#else
  filedialog1.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
  filedialog1.Run ();
-#endif 
+#endif
 }
 
 void
@@ -1057,9 +1067,9 @@ CPWindow1::menu1_File_SaveHex_EvMenuActive(CControl * control)
  filedialog1.SetDir ("/tmp/");
  filedialog1.SetFileName ("untitled.hex");
  filedialog1_EvOnClose (1);
-#else 
+#else
  filedialog1.Run ();
-#endif 
+#endif
 }
 
 void
@@ -1104,7 +1114,7 @@ CPWindow1::filedialog1_EvOnClose(int retId)
             document.body.removeChild (element);
             URL.revokeObjectURL (text);
    }, filedialog1.GetFileName ().c_str ());
-#endif 
+#endif
   }
 
  mcupwr = pa;
@@ -1124,10 +1134,10 @@ CPWindow1::menu1_Help_Contents_EvMenuActive(CControl * control)
  lxString stemp;
  stemp.Printf (lxT ("https://lcgamboa.github.io/picsimlab_docs/%s/index.html"), lxT (_VERSION_));
  lxLaunchDefaultBrowser (stemp);
-#else 
+#else
  Window2.html1.SetLoadFile (share + lxT ("docs/picsimlab.html"));
  Window2.Show ();
-#endif 
+#endif
 }
 
 void
@@ -1170,7 +1180,7 @@ CPWindow1::menu1_Help_Examples_EvMenuActive(CControl * control)
  //lxLaunchDefaultBrowser(lxT("file://")+share + lxT ("docs/picsimlab.html"));
  lxLaunchDefaultBrowser (lxT ("https://lcgamboa.github.io/picsimlab_examples/board_" + lxString (boards_list[lab].name_) + ".html#board_" + lxString (boards_list[lab].name_) + lxT ("_") + pboard->GetProcessorName ()));
  SetToDestroy ();
-#else 
+#else
  OldPath = filedialog2.GetDir ();
 
  filedialog2.SetDir (share + lxT ("/docs/hex/board_") + lxString (boards_list[lab].name_) + lxT ("/") + pboard->GetProcessorName () + lxT ("/"));
@@ -1259,7 +1269,7 @@ CPWindow1::LoadHexFile(lxString fname)
 
 #ifdef NO_DEBUG
  statusbar1.SetField (1, lxT (" "));
-#else 
+#else
  if (debug)
   {
    int ret = pboard->DebugInit (debug_type);
@@ -1381,9 +1391,9 @@ CPWindow1::menu1_File_SaveWorkspace_EvMenuActive(CControl * control)
  filedialog2.SetDir ("/tmp/");
  filedialog2.SetFileName ("untitled.pzw");
  filedialog2_EvOnClose (1);
-#else 
+#else
  filedialog2.Run ();
-#endif 
+#endif
 }
 
 //legacy format support before 0.8.2
@@ -1424,7 +1434,7 @@ CPWindow1::LoadWorkspace(lxString fnpzw)
  int lc;
  char * value;
  char * name;
-#ifdef LEGACY081 
+#ifdef LEGACY081
  char name_[100];
  char value_[400];
  int llab = 0;
@@ -1464,7 +1474,7 @@ CPWindow1::LoadWorkspace(lxString fnpzw)
       }
 #ifndef LEGACY081
      saveprefs (name, value);
-#else     
+#else
      strncpy (name_, name, 99);
      strncpy (value_, value, 399);
 
@@ -1591,7 +1601,7 @@ CPWindow1::LoadWorkspace(lxString fnpzw)
       }
 
      saveprefs (name_, value_);
-#endif     
+#endif
     }
   }
  prefs.SaveToFile (fzip);
@@ -1611,10 +1621,10 @@ CPWindow1::LoadWorkspace(lxString fnpzw)
 #ifndef __EMSCRIPTEN__
    lxLaunchDefaultBrowser (lxT ("file://") + lxString (fzip));
 #endif
-#else    
+#else
    Window2.html1.SetLoadFile (fzip);
    Window2.Show ();
-#endif   
+#endif
   }
  else
   {
@@ -1625,13 +1635,13 @@ CPWindow1::LoadWorkspace(lxString fnpzw)
 #ifndef __EMSCRIPTEN__
      lxLaunchDefaultBrowser (lxT ("file://") + lxString (fzip));
 #endif
-#else      
+#else
      Window2.html1.SetLoadFile (fzip);
      Window2.Show ();
-#endif     
+#endif
     }
   }
-#endif 
+#endif
 
 }
 
@@ -1666,7 +1676,7 @@ CPWindow1::SaveWorkspace(lxString fnpzw)
  system (fname);
  snprintf (fname, 1279, "rm -rf %s/*.hex", home);
  system (fname);
-#else 
+#else
  lxRemoveDir (home);
  lxCreateDir (home);
 #endif
@@ -1740,7 +1750,7 @@ CPWindow1::SaveWorkspace(lxString fnpzw)
           document.body.removeChild (element);
           URL.revokeObjectURL (text);
  }, fnpzw.c_str ());
-#endif 
+#endif
 
 #ifdef CONVERTER_MODE
  WDestroy ();
@@ -1752,7 +1762,7 @@ CPWindow1::menu1_File_LoadWorkspace_EvMenuActive(CControl * control)
 {
 #ifdef __EMSCRIPTEN__
  EM_ASM_ ({toggle_load_panel ();});
-#else     
+#else
  filedialog2.SetType (lxFD_OPEN | lxFD_CHANGE_DIR);
  filedialog2.Run ();
 #endif
@@ -1781,7 +1791,7 @@ CPWindow1::filedialog2_EvOnClose(int retId)
 void
 CPWindow1::menu1_Tools_SerialTerm_EvMenuActive(CControl * control)
 {
-#ifdef _WIN_  
+#ifdef _WIN_
  lxExecute (share + lxT ("/../tools/cutecom/cutecom.exe"));
 #else
  //lxExecute (dirname(lxGetExecutablePath ())+"/cutecom", lxEXEC_MAKE_GROUP_LEADER);
@@ -1795,28 +1805,28 @@ CPWindow1::menu1_Tools_SerialTerm_EvMenuActive(CControl * control)
    printf ("cutecom não instalado\n");
    Message_sz ("The cutecom application is not found!\n\nPlease install cutecom in your system!\n\n In Debian based distro use: sudo apt-get install cutecom", 500, 240);
   }
-#endif  
+#endif
 }
 
 void
 CPWindow1::menu1_Tools_SerialRemoteTank_EvMenuActive(CControl * control)
 {
-#ifdef _WIN_  
+#ifdef _WIN_
  lxExecute (share + lxT ("/../srtank.exe"));
 #else
 
  lxExecute (dirname (lxGetExecutablePath ()) + "/srtank");
-#endif  
+#endif
 }
 
 void
 CPWindow1::menu1_Tools_Esp8266ModemSimulator_EvMenuActive(CControl * control)
 {
-#ifdef _WIN_  
+#ifdef _WIN_
  lxExecute (share + lxT ("/../espmsim.exe"));
 #else
  lxExecute (dirname (lxGetExecutablePath ()) + "/espmsim");
-#endif  
+#endif
 }
 
 void
@@ -1834,11 +1844,11 @@ CPWindow1::menu1_Tools_MPLABXDebuggerPlugin_EvMenuActive(CControl * control)
 void
 CPWindow1::menu1_Tools_PinViewer_EvMenuActive(CControl * control)
 {
-#ifdef _WIN_  
+#ifdef _WIN_
  lxExecute (share + lxT ("/../PinViewer.exe " + itoa (remotec_port)));
 #else
  lxExecute (dirname (lxGetExecutablePath ()) + "/PinViewer " + itoa (remotec_port));
-#endif  
+#endif
 }
 
 void
@@ -1911,7 +1921,7 @@ CPWindow1::Set_remotec_port(unsigned short rcp)
 #ifndef __EMSCRIPTEN__
  rcontrol_end ();
  rcontrol_init (remotec_port);
-#endif 
+#endif
 }
 
 void

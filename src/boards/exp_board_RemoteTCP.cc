@@ -143,7 +143,7 @@ cboard_RemoteTCP::MInit(const char * processor, const char * fname, float freq)
  micbmp = new lxBitmap (&image, &Window1);
 
  Window1.Set_mcupwr (0);
-
+ 
  return ret;
 }
 
@@ -435,7 +435,18 @@ cboard_RemoteTCP::Run_CPU(void)
 void
 cboard_RemoteTCP::MStep(void)
 {
+ /*
  if (DataAvaliable ())
+  {
+
+  }
+ */
+}
+
+void 
+cboard_RemoteTCP::EvThreadRun(CThread& thread)
+{
+ do
   {
    cmd_header_t cmd_header;
 
@@ -615,6 +626,8 @@ cboard_RemoteTCP::MStep(void)
      break;
     }
   }
+ while (!thread.TestDestroy ());
+
 }
 
 //Register the board in PICSimLab
