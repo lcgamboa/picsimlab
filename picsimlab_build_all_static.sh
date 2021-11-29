@@ -48,8 +48,8 @@ echo -e "\033[1;32m ---------------------- build uCsim -------------------------
 cd uCsim_picsimlab
 cl ./config_linux.sh
 cl make clean;make -j$(nproc)
-cl make -f s51.src/Makefile -f picsimlab/print.mak print-OBJECTS_SHARED
 cd picsimlab
+make clean;make
 cl make clean;make
 ln -s . ucsim
 cd ../../
