@@ -41,7 +41,8 @@ rtc_ds1307_rst(rtc_ds1307_t *rtc)
 
  rtc->addr = 0;
  rtc->ucont = 0;
-
+ rtc->rtcc = 0;
+ rtc->alarm = 0;
  dprintf ("rtc rst\n");
 }
 
@@ -86,17 +87,14 @@ rtc_ds1307_getUtime(rtc_ds1307_t *rtc)
  return mktime (&rtc->dtime);
 }
 
-static int rtcc2 = 0;
-static int alarm2;
-
 void
 rtc_ds1307_update(rtc_ds1307_t *rtc)
 {
- rtcc2++;
+ rtc->rtcc++;
 
- if (rtcc2 >= 10)
+ if (rtc->rtcc >= 10)
   {
-   rtcc2 = 0;
+   rtc->rtcc = 0;
    if ((rtc->data[0] & 0x80) == 0)
     {
      /*      
@@ -146,7 +144,7 @@ rtc_ds1307_update(rtc_ds1307_t *rtc)
     }
 
    //alarm
-   alarm2 = 0;
+   rtc->alarm = 0;
    /*
    //minute
      if((rtc->data[0x9]&0x80) == 0)
@@ -289,7 +287,7 @@ rtc_ds1307_I2C_io(rtc_ds1307_t *rtc, unsigned char scl, unsigned char sda)
        rtc->dtime.tm_wday = (((rtc->bb_i2c.datar & 0xF0) >> 4)*10)+(rtc->bb_i2c.datar & 0x0F);
        break;
       case 5:
-       rtc->dtime.tm_mon = (((rtc->bb_i2c.datar & 0xF0) >> 4)*10)+(rtc->bb_i2c.datar & 0x0F);
+       rtc->dtime.tm_mon = ((((rtc->bb_i2c.datar - 1) & 0xF0) >> 4)*10)+((rtc->bb_i2c.datar - 1) & 0x0F);
        break;
       case 6:
        rtc->dtime.tm_year = (rtc->dtime.tm_year & 0xFF00) | ((((rtc->bb_i2c.datar & 0xF0) >> 4)*10)+(rtc->bb_i2c.datar & 0x0F));

@@ -36,6 +36,8 @@ typedef struct {
     time_t systime;
     time_t rtctime;
     int ucont;
+    int rtcc;
+    int alarm;
 } rtc_ds1307_t;
 
 

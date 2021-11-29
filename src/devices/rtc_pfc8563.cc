@@ -40,6 +40,8 @@ rtc_pfc8563_rst(rtc_pfc8563_t *rtc)
 
  rtc->addr = 0;
  rtc->ucont = 0;
+ rtc->rtcc = 0;
+ rtc->alarm = 0;
  dprintf ("rtc rst\n");
 }
 
@@ -87,17 +89,14 @@ rtc_pfc8563_getUtime(rtc_pfc8563_t *rtc)
  return mktime (&rtc->dtime);
 }
 
-static int rtcc = 0;
-static int alarm;
-
 void
 rtc_pfc8563_update(rtc_pfc8563_t *rtc)
 {
- rtcc++;
+ rtc->rtcc++;
 
- if (rtcc >= 10)
+ if (rtc->rtcc >= 10)
   {
-   rtcc = 0;
+   rtc->rtcc = 0;
    if ((rtc->data[0] & 0x20) == 0)
     {
      /*       
@@ -148,18 +147,18 @@ rtc_pfc8563_update(rtc_pfc8563_t *rtc)
     };
 
    //alarm
-   alarm = 0;
+   rtc->alarm = 0;
 
    //minute
    if ((rtc->data[0x9]&0x80) == 0)
     {
      if ((rtc->data[0x9]&0x7F) == (rtc->data[0x3]&0x7F))
       {
-       alarm = 1;
+       rtc->alarm = 1;
       }
      else
       {
-       alarm = 0;
+       rtc->alarm = 0;
       }
     }
 
@@ -168,11 +167,11 @@ rtc_pfc8563_update(rtc_pfc8563_t *rtc)
     {
      if ((rtc->data[0xA]&0x3F) == (rtc->data[0x4]&0x3F))
       {
-       alarm = 1;
+       rtc->alarm = 1;
       }
      else
       {
-       alarm = 0;
+       rtc->alarm = 0;
       }
     }
 
@@ -181,11 +180,11 @@ rtc_pfc8563_update(rtc_pfc8563_t *rtc)
     {
      if ((rtc->data[0xB]&0x3F) == (rtc->data[0x5]&0x3F))
       {
-       alarm = 1;
+       rtc->alarm = 1;
       }
      else
       {
-       alarm = 0;
+       rtc->alarm = 0;
       }
     }
 
@@ -194,15 +193,15 @@ rtc_pfc8563_update(rtc_pfc8563_t *rtc)
     {
      if ((rtc->data[0xC]&0x07) == (rtc->data[0x6]&0x07))
       {
-       alarm = 1;
+       rtc->alarm = 1;
       }
      else
       {
-       alarm = 0;
+       rtc->alarm = 0;
       }
     }
 
-   if (alarm)
+   if (rtc->alarm)
     {
 
      rtc->data[0x2] |= 0x08; //AF
@@ -291,7 +290,7 @@ rtc_pfc8563_I2C_io(rtc_pfc8563_t *rtc, unsigned char scl, unsigned char sda)
        rtc->dtime.tm_wday = (((rtc->bb_i2c.datar & 0xF0) >> 4)*10)+(rtc->bb_i2c.datar & 0x0F);
        break;
       case 7:
-       rtc->dtime.tm_mon = (((rtc->bb_i2c.datar & 0xF0) >> 4)*10)+(rtc->bb_i2c.datar & 0x0F);
+       rtc->dtime.tm_mon = ((((rtc->bb_i2c.datar - 1) & 0xF0) >> 4)*10)+((rtc->bb_i2c.datar - 1) & 0x0F);
        break;
       case 8:
        rtc->dtime.tm_year = (rtc->dtime.tm_year & 0xFF00) | ((((rtc->bb_i2c.datar & 0xF0) >> 4)*10)+(rtc->bb_i2c.datar & 0x0F));
