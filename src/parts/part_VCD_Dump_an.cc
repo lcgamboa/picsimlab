@@ -55,7 +55,7 @@ font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  ReadMaps ();
 
  lxImage image (&Window5);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
 
  Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
@@ -91,13 +91,13 @@ font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 
  rec = 0;
  vcd_count = 0;
-
-#ifdef _WIN_
- viewer = Window1.GetSharePath () + lxT ("/../tools/gtkwave/bin/gtkwave.exe");
-#else
- viewer = dirname (lxGetExecutablePath ()) + lxString ("/gtkwave");
-#endif
-
+ /*
+ #ifdef _WIN_
+  viewer = Window1.GetSharePath () + lxT ("/../tools/gtkwave/bin/gtkwave.exe");
+ #else
+  viewer = dirname (lxGetExecutablePath ()) + lxString ("/gtkwave");
+ #endif
+  */
  RegisterRemoteControl ();
 }
 
@@ -303,7 +303,7 @@ cpart_VCD_Dump_an::WritePreferences(void)
 {
  char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%s", input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4], input_pins[5], input_pins[6], input_pins[7], (const char *) viewer.c_str ());
+ sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4], input_pins[5], input_pins[6], input_pins[7] /*(const char *) viewer.c_str ()*/);
 
  return prefs;
 }
@@ -311,20 +311,23 @@ cpart_VCD_Dump_an::WritePreferences(void)
 void
 cpart_VCD_Dump_an::ReadPreferences(lxString value)
 {
- char buff[2048];
+ sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7]);
+ /* 
+  char buff[2048];
 
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%s", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7], buff);
+  sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%s", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7], buff);
 
- viewer = buff;
+  viewer = buff;
 
- if (!lxFileExists (viewer)) //use default
-  {
-#ifdef _WIN_
-   viewer = Window1.GetSharePath () + lxT ("/../tools/gtkwave/bin/gtkwave.exe");
-#else
-   viewer = dirname (lxGetExecutablePath ()) + lxString ("/gtkwave");
-#endif
-  }
+  if (!lxFileExists (viewer)) //use default
+   {
+ #ifdef _WIN_
+    viewer = Window1.GetSharePath () + lxT ("/../tools/gtkwave/bin/gtkwave.exe");
+ #else
+    viewer = dirname (lxGetExecutablePath ()) + lxString ("/gtkwave");
+ #endif
+   }
+  */
 }
 
 void
@@ -405,17 +408,17 @@ cpart_VCD_Dump_an::ConfigurePropertiesWindow(CPWindow * WProp)
    ((CCombo*) WProp->GetChildByName ("combo8"))->SetText (itoa (input_pins[7]) + "  " + spin);
   }
 
- ((CEdit*) WProp->GetChildByName ("edit1"))->SetText (viewer);
+ //((CEdit*) WProp->GetChildByName ("edit1"))->SetText (viewer);
 
  ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
  ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
 
  ((CButton*) WProp->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
 
- ((CButton*) WProp->GetChildByName ("button3"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
- ((CButton*) WProp->GetChildByName ("button3"))->SetTag (2 + id);
+ //((CButton*) WProp->GetChildByName ("button3"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+ //((CButton*) WProp->GetChildByName ("button3"))->SetTag (2 + id);
 
- Window5.filedialog1.SetFileName (viewer);
+ //Window5.filedialog1.SetFileName (viewer);
 
  VDWProp = WProp;
 
@@ -433,19 +436,21 @@ cpart_VCD_Dump_an::ReadPropertiesWindow(CPWindow * WProp)
  input_pins[6] = atoi (((CCombo*) WProp->GetChildByName ("combo7"))->GetText ());
  input_pins[7] = atoi (((CCombo*) WProp->GetChildByName ("combo8"))->GetText ());
 
+ /*
+  viewer = ((CEdit*) WProp->GetChildByName ("edit1"))->GetText ();
 
- viewer = ((CEdit*) WProp->GetChildByName ("edit1"))->GetText ();
-
- if (!lxFileExists (viewer)) //use default
-  {
-#ifdef _WIN_
-   viewer = Window1.GetSharePath () + lxT ("/../tools/gtkwave/bin/gtkwave.exe");
-#else
-   viewer = dirname (lxGetExecutablePath ()) + lxString ("/gtkwave");
-#endif
-  }
+  if (!lxFileExists (viewer)) //use default
+   {
+ #ifdef _WIN_
+    viewer = Window1.GetSharePath () + lxT ("/../tools/gtkwave/bin/gtkwave.exe");
+ #else
+    viewer = dirname (lxGetExecutablePath ()) + lxString ("/gtkwave");
+ #endif
+   }
+  */
 }
 
+/*
 void
 cpart_VCD_Dump_an::filedialog_EvOnClose(int retId)
 {
@@ -471,6 +476,7 @@ cpart_VCD_Dump_an::filedialog_EvOnClose(int retId)
     }
   }
 }
+*/
 
 void
 cpart_VCD_Dump_an::Process(void)
@@ -571,7 +577,7 @@ cpart_VCD_Dump_an::EvMouseButtonPress(uint button, uint x, uint y, uint state)
                   "$var real 32 ]  8-%s $end\n"
                   "$upscope $end\n"
                   "$enddefinitions $end\n"
-                  , (int)tscale,
+                  , (int) tscale,
                   (const char *) Window5.GetPinName (input_pins[0]).c_str (),
                   (const char *) Window5.GetPinName (input_pins[1]).c_str (),
                   (const char *) Window5.GetPinName (input_pins[2]).c_str (),
@@ -618,9 +624,11 @@ cpart_VCD_Dump_an::EvMouseButtonPress(uint button, uint x, uint y, uint state)
        }, f_vcd_name);
 #else
 #ifdef _WIN_
-       lxExecute (viewer + lxT (" ") + f_vcd_name);
+       //lxExecute (viewer + lxT (" ") + f_vcd_name);
+       lxExecute (Window1.GetSharePath () + lxT ("/../tools/gtkwave/bin/gtkwave.exe ") + f_vcd_name);
 #else
-       lxExecute (viewer + lxT (" ") + f_vcd_name, lxEXEC_MAKE_GROUP_LEADER);
+       //lxExecute (viewer + lxT (" ") + f_vcd_name, lxEXEC_MAKE_GROUP_LEADER);
+       lxLaunchDefaultApplication (f_vcd_name);
 #endif
 #endif
        break;

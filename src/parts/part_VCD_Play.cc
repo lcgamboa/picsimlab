@@ -550,8 +550,8 @@ cpart_VCD_Play::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 #ifdef _WIN_
        lxExecute (Window1.GetSharePath () + lxT ("/../tools/gtkwave/bin/gtkwave.exe ") + f_vcd_name);
 #else
-
-       lxExecute (dirname (lxGetExecutablePath ()) + lxString ("/gtkwave ") + f_vcd_name, lxEXEC_MAKE_GROUP_LEADER);
+       //lxExecute (dirname (lxGetExecutablePath ()) + lxString ("/gtkwave ") + f_vcd_name, lxEXEC_MAKE_GROUP_LEADER);
+       lxLaunchDefaultApplication(f_vcd_name);
 #endif
 #endif
        break;
