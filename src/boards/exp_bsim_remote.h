@@ -93,6 +93,7 @@ class bsim_remote: virtual public board
       unsigned short ADCvalues[16];
       unsigned short Dirs[2]  = {0xFF, 0xFF};
       unsigned short Ports[2] = {0x00, 0x00};
+      unsigned short TickTimer = 0;
 };
 
 #endif	/* BOARD_REMOTETCP_H */

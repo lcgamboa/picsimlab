@@ -343,6 +343,7 @@ cboard_uCboard::Run_CPU(void)
  const int pinc = MGetPinCount ();
 
  //const int JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
+ //FIXME NSTEP must be multiplied for 4
  const long int NSTEP = Window1.GetNSTEP (); //number of steps in 100ms
  const float RNSTEP = 200.0 * pinc / NSTEP;
 

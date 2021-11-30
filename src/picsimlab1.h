@@ -309,6 +309,7 @@ public:
     void SetSimulationRun(int run);
     int GetSimulationRun(void);
     void DrawBoard(void);
+    double GetIdleMs(void);
 #ifndef _NOTHREAD    
     lxCondition * cpu_cond;
     lxMutex * cpu_mutex;
@@ -357,6 +358,8 @@ private:
     int zerocount;
     
     int need_resize;
+    
+    double idle_ms; 
     
     lxStringList Errors;
     lxString pzw_ver;

@@ -243,6 +243,9 @@ bsim_remote::EndServers(void)
 {
  if (listenfd >= 0)close (listenfd);
  listenfd = -1;
+ 
+ if (sockfd >= 0)close (sockfd);
+ sockfd = -1;
 }
 
 void
@@ -617,6 +620,11 @@ void
 bsim_remote::MReset(int flags)
 {
  Disconnect ();
+ Dirs[0]  = 0xFF;
+ Dirs[1]  = 0xFF;
+ Ports[0] = 0x00;
+ Ports[1] = 0x00;
+ TickTimer=0;
 }
 
 const picpin *

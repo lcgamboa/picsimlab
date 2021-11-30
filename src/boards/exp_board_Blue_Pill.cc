@@ -312,8 +312,8 @@ cboard_Blue_Pill::Run_CPU(void)
  unsigned int alm[64];
  const int pinc = MGetPinCount ();
 
- //const int JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
- const long int NSTEP = Window1.GetNSTEP (); //number of steps in 100ms
+ //const int JUMPSTEPS = 4.0 * Window1.GetJUMPSTEPS (); //number of steps skipped
+ const long int NSTEP = 4.0 * Window1.GetNSTEP (); //number of steps in 100ms
  const float RNSTEP = 200.0 * pinc / NSTEP;
 
  //reset pins mean value

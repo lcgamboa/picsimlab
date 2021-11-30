@@ -41,10 +41,27 @@
 #define dprintf if (1) {} else printf
 
 
+const char json_info[] = "{"
+    "  \"name\": \"PICSimLab\","
+    "  \"description\": \"PICSimLab IO\","
+    "  \"base address\": 0,"
+    "  \"address width\": 2,"
+    "  \"symbols\": {"
+    "    \"PORTA\": 0,"
+    "    \"DIRA\":  2,"
+    "    \"PORTB\": 4,"
+    "    \"DIRB\":  6,"
+    "    \"TICKTIMER\":  8,"
+    "    \"PFREQ\":  10"
+    "  }"
+    "}";
+
 #define PORTA 0
 #define DIRA  2
 #define PORTB 4
 #define DIRB  6
+#define TICKTIMER 8
+#define PFREQ 10
 
 /* ids of inputs of input map*/
 enum
@@ -143,7 +160,7 @@ cboard_RemoteTCP::MInit(const char * processor, const char * fname, float freq)
  micbmp = new lxBitmap (&image, &Window1);
 
  Window1.Set_mcupwr (0);
- 
+
  return ret;
 }
 
@@ -376,7 +393,7 @@ cboard_RemoteTCP::Run_CPU(void)
  const int pinc = MGetPinCount ();
 
  //const int JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
- const long int NSTEP = Window1.GetNSTEP (); //number of steps in 100ms
+ const long int NSTEP = 4.0 * Window1.GetNSTEP (); //number of steps in 100ms
  const float RNSTEP = 200.0 * pinc / NSTEP;
 
  //reset pins mean value
@@ -388,6 +405,17 @@ cboard_RemoteTCP::Run_CPU(void)
 
  //Spare parts window pre process
  if (use_spare)Window5.PreProcess ();
+
+
+
+
+ double delay = (Window1.GetIdleMs ()*1000) / NSTEP;
+
+ unsigned int countM = 1100 / delay; //added 100us of overhead
+ unsigned int count = countM;
+
+ //printf ("idle %6.1f   %10.5f  %u\n", Window1.GetIdleMs (), delay, count);
+
 
  //j = JUMPSTEPS; //step counter
  pi = 0;
@@ -401,7 +429,19 @@ cboard_RemoteTCP::Run_CPU(void)
      }
      */
     //verify if a breakpoint is reached if not run one instruction 
-    MStep ();
+    //MStep ();
+
+    --count;
+    if (!count)
+     {
+      usleep (1000);
+      count = countM;
+      if (TickTimer)
+      {
+       TickTimer--;
+      }
+     }
+
     //Oscilloscope window process
     if (use_oscope)Window4.SetSample ();
     //Spare parts window process
@@ -433,17 +473,15 @@ cboard_RemoteTCP::Run_CPU(void)
 }
 
 void
-cboard_RemoteTCP::MStep(void)
-{
+cboard_RemoteTCP::MStep(void) {
  /*
  if (DataAvaliable ())
   {
 
   }
- */
-}
+  */ }
 
-void 
+void
 cboard_RemoteTCP::EvThreadRun(CThread& thread)
 {
  do
@@ -462,18 +500,6 @@ cboard_RemoteTCP::EvThreadRun(CThread& thread)
     {
     case VB_PINFO:
      {
-      const char json_info[] = "{"
-          "  \"name\": \"PICSimLab\","
-          "  \"description\": \"PICSimLab IO\","
-          "  \"base address\": 0,"
-          "  \"address width\": 2,"
-          "  \"symbols\": {"
-          "    \"PORTA\": 0,"
-          "    \"DIRA\":  2,"
-          "    \"PORTB\": 4,"
-          "    \"DIRB\":  6"
-          "  }"
-          "}";
       if (send_cmd (VB_PINFO, json_info, strlen (json_info)) < 0)
        {
         ConnectionError ("send_cmd");
@@ -556,6 +582,9 @@ cboard_RemoteTCP::EvThreadRun(CThread& thread)
              }
            }
           break;
+         case TICKTIMER:
+          TickTimer = payload[1];
+          break;
          }
 
         dprintf ("VB_PWRITE reg[%i] = %x\n", payload[0], payload[1]);
@@ -593,6 +622,12 @@ cboard_RemoteTCP::EvThreadRun(CThread& thread)
         break;
        case DIRB:
         payload[1] = htonl (Dirs[1]);
+        break;
+       case TICKTIMER:
+        payload[1] = htonl (TickTimer);
+        break;
+       case PFREQ:
+        payload[1] = htonl (MGetFreq () / 1000000);
         break;
        default:
         payload[1] = htonl (0);

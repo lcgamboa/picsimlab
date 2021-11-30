@@ -27,7 +27,7 @@
 
 //#define CONVERTER_MODE
 
-//timer debug
+//print timer debug info
 //#define TDEBUG
 
 #include"picsimlab1.h"
@@ -86,7 +86,6 @@ usleep(unsigned int usec)
 static lxString cvt_fname;
 #endif
 
-#if defined(TDEBUG) || defined(_NOTHREAD)
 #ifdef _WIN_
 
 double
@@ -117,7 +116,7 @@ cpuTime()
  return (double) clock () / CLOCKS_PER_SEC;
 }
 #endif
-#endif
+
 
 extern "C"
 {
@@ -269,25 +268,22 @@ CPWindow1::DrawBoard(void)
 void
 CPWindow1::thread1_EvThreadRun(CControl*)
 {
-#if defined(TDEBUG) //|| defined(_NOTHREAD)
- double t0, t1;
-#endif
+ double t0, t1, etime ;
  do
   {
 
    if (tgo)
     {
-#if defined(TDEBUG) //|| defined(_NOTHREAD)
      t0 = cpuTime ();
-#endif
+
      status.st[1] |= ST_TH;
      pboard->Run_CPU ();
      if (debug)pboard->DebugLoop ();
      tgo--;
      status.st[1] &= ~ST_TH;
-#if defined(TDEBUG) //|| defined(_NOTHREAD)
+
      t1 = cpuTime ();
-#endif
+
 #if defined(_NOTHREAD)
      /*
      if ((t1 - t0) / (Window1.timer1.GetTime ()*1e-5) > 110)
@@ -301,11 +297,15 @@ CPWindow1::thread1_EvThreadRun(CControl*)
       */
      tgo = 0;
 #endif
+     etime = t1 - t0;
+     idle_ms = (idle_ms * 0.9) +((Window1.timer1.GetTime () - etime * 1000)*0.1);
 #ifdef TDEBUG
-     printf ("PTime= %lf  tgo= %2i  zeroc= %2i  Timer= %3u Perc.= %4.1lf\n",
-             t1 - t0, tgo, zerocount, Window1.timer1.GetTime (),
-             (t1 - t0) / (Window1.timer1.GetTime ()*1e-5));
+     float ld = (etime) / (Window1.timer1.GetTime ()*1e-5);
+     printf ("PTime= %lf  tgo= %2i  zeroc= %2i  Timer= %3u Perc.= %5.1lf Idle= %5.1lf\n",
+             etime, tgo, zerocount, Window1.timer1.GetTime (),
+             ld, idle_ms);
 #endif
+     if (idle_ms < 0) idle_ms = 0;
     }
    else
     {
@@ -1955,6 +1955,11 @@ CPWindow1::GetSimulationRun(void)
  return (Window1.status.st[0] & ST_DI) == 0;
 }
 
+double
+CPWindow1::GetIdleMs(void)
+{
+ return idle_ms;
+}
 
 //emscripten interface
 
