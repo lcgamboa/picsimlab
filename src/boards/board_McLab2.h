@@ -91,7 +91,7 @@ class cboard_McLab2:public bsim_picsim
       ~cboard_McLab2(void);
       void Draw(CDraw *draw) override;
       void Run_CPU(void) override;
-      lxString GetSupportedDevices(void) override {return lxT("PIC16F1789,PIC16F1939,PIC16F777,PIC16F877A,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,PIC18F47K40,");};
+      lxString GetSupportedDevices(void) override {return lxT("PIC16F1789,PIC16F1939,PIC16F777,PIC16F877A,PIC16F887,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,PIC18F47K40,");};
       void Reset(void) override;
       void MDumpMemory(const char * mfname) override;
       void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;

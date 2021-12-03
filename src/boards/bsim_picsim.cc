@@ -84,8 +84,11 @@ bsim_picsim::MInit(const char * processor, const char * fname, float freq)
           (pic.processor == getprocbyname ("PIC16F777")) ||
           (pic.processor == getprocbyname ("PIC16F877A")))
   {
-
    pic.config[0] |= 0x0800;
+  }
+ else if ((pic.processor == getprocbyname ("PIC16F887")))
+  {
+   pic.config[0] |= 0x2000;
   }
  else if ((pic.processor == getprocbyname ("PIC18F452")) ||
           (pic.processor == getprocbyname ("PIC18F4520")) ||
