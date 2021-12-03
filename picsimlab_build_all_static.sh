@@ -80,5 +80,10 @@ if xhost > /dev/null 2>&1 ; then
 cd share
 ln -s ../share/ picsimlab
 cd ..
+cd src
+ln -s ../tools/srtank/srtank srtank
+ln -s ../tools/espmsim/espmsim espmsim
+ln -s ../tools/PinViewer/PinViewer PinViewer
+cd ..
 cl ./src/picsimlab
 fi
