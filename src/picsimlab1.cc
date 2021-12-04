@@ -1794,7 +1794,7 @@ CPWindow1::menu1_Tools_SerialTerm_EvMenuActive(CControl * control)
 #ifdef _WIN_
  lxExecute (share + lxT ("/../tools/cutecom/cutecom.exe"));
 #else
-#ifndef USE_XDG_OPEN
+#if !defined(USE_XDG_OPEN) && !defined(FLATPACK_TARGET)
  //using system binary
  lxExecute ("cutecom");
 
