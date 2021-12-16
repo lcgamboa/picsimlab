@@ -2,6 +2,10 @@
 
 ### New
 
+* New spare part LDR. [lcgamboa]
+
+* Support to PIC16F887 added to boards Breadboard, McLab2 and PICGenios. [lcgamboa]
+
 * New board RemoteTCP with Ripes support added. [lcgamboa]
 
 * New part DS1621 I2C temperature sensor. [lcgamboa]
@@ -20,6 +24,10 @@
 
 ### Changes
 
+* Use default application to open VCD files in VCDDump part. [lcgamboa]
+
+* Appimage scripts updated. [lcgamboa]
+
 * Build scripts updated. [lcgamboa]
 
 * Move uCboard from experimental to stable version. [lcgamboa]
@@ -34,6 +42,8 @@
 
 ### Fix
 
+* Fixes month writing issue in RTCs. [lcgamboa]
+
 * Windows build. [lcgamboa]
 
 * Fix power off statusbar messages. [lcgamboa]
@@ -45,6 +55,10 @@
 * Signal Generator part frequency shift error removed. [lcgamboa]
 
 * Removed the bug when all pins of step motor part are zero. [lcgamboa]
+
+### Other
+
+* VERSION date updated. [lcgamboa]
 
 
 ## v0.8.9 (2021-07-25)
