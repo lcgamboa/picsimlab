@@ -23,21 +23,21 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef PART_SHT3X_H
-#define	PART_SHT3X_H
+#ifndef PART_LDR_H
+#define	PART_LDR_H
 
 #include<lxrad.h>
 #include"part.h"
 
-#define	PART_SHT3X_Name "SHT3X (Temp. Hum.)"
+#define	PART_LDR_Name "LDR"
 
-class cpart_sht3x:public part
+class cpart_LDR:public part
 {
     public:
-      lxString GetName(void) override {return lxT(PART_SHT3X_Name);};
+      lxString GetName(void) override {return lxT(PART_LDR_Name);};
       lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
-      cpart_sht3x(unsigned x, unsigned y);
-      ~cpart_sht3x(void); 
+      cpart_LDR(unsigned x, unsigned y);
+      ~cpart_LDR(void); 
       void Draw(void) override;
       void PostProcess(void) override;
       void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
@@ -52,11 +52,14 @@ class cpart_sht3x:public part
     private:
       void RegisterRemoteControl(void) override;          
       unsigned char output_pins[2];
-      unsigned char values[2];
-      unsigned char active[2];
+      unsigned char value;
+      unsigned char active;
       lxFont font;
       lxFont font_p;
+      float vthreshold;
+      float lux;
+      float vout;
 };
 
-#endif	/* SHT3X */
+#endif	/* LDR */
 
