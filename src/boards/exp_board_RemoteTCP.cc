@@ -434,7 +434,11 @@ cboard_RemoteTCP::Run_CPU(void)
     --count;
     if (!count)
      {
+#ifdef _WIN_
+      Sleep (1);
+#else	     
       usleep (1000);
+#endif      
       count = countM;
       if (TickTimer)
       {

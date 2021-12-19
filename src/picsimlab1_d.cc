@@ -523,6 +523,8 @@ sync=0;
 PATH="";
 HOME="";
 
+Workspacefn="";
+
 #ifndef _NOTHREAD    
 cpu_mutex = NULL;
 cpu_cond = NULL;

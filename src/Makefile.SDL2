@@ -25,10 +25,10 @@ override CXXFLAGS += -DEXT_BROWSER  -D_VERSION_=\"${VERSION}\" -Wall -ggdb -O2 \
 override CXXFLAGS+=-fsanitize=address
 #override CXXFLAGS+= -D_NOTHREAD
 
-#LIBS = `lxrad_SDL2-config --libs` -lpicsim -lsimavr -lelf -lminizip  $(ELIBS) 
+#LIBS = `lxrad_SDL2-config --libs` -lpicsim -lsimavr -lelf -lminizip -lucsim  $(ELIBS) 
 LIBS =  ../../LXRAD_SDL2/lib/liblxrad_SDL2_mt.a -lpthread -lSDL2_gfx -lSDL2_ttf -lSDL2_image -lSDL2 -lopenal \
   ../../picsim/src/libpicsim_dbg.a  ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a -lelf -lminizip $(ELIBS) \
-  ../../lunasvg/build/liblunasvg.a
+  ../../lunasvg/build/liblunasvg.a -lucsim 
 
 #lxrad automatic generated block end, don't edit above!
 

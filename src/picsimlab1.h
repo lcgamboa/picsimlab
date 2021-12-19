@@ -302,7 +302,7 @@ public:
     int LoadHexFile(lxString fname);
     void SetClock(float clk);
     float GetClock(void);
-    void EndSimulation(void);
+    void EndSimulation(int saveold = 0);
     void RegisterError(const lxString error);
     void SetSync(unsigned char s){sync=s;};
     unsigned char GetSync(void){return sync;};
@@ -369,6 +369,7 @@ private:
     CItemMenu MBoard[BOARDS_MAX];
     CItemMenu MMicro[MAX_MIC];
 
+    lxString Workspacefn;
 };
 
 extern CPWindow1 Window1;

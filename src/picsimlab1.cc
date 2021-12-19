@@ -452,6 +452,8 @@ CPWindow1::_EvOnCreate(CControl * control)
  lxFileName fn_spare;
  int use_default_board = 0;
 
+ Workspacefn = "";
+
  strncpy (home, (char*) lxGetUserDataDir (lxT ("picsimlab")).char_str (), 1023);
 
  HOME = home;
@@ -930,10 +932,26 @@ CPWindow1::_EvOnDestroy(CControl * control)
 }
 
 void
-CPWindow1::EndSimulation(void)
+CPWindow1::EndSimulation(int saveold)
 {
  char home[1024];
  char fname[1280];
+
+ if (Workspacefn.length () > 0)
+  {
+   if (saveold)
+    {
+     const int labt = lab;
+     lab = lab_;
+     SaveWorkspace (Workspacefn);
+     lab = labt;
+    }
+   else
+    {
+     SaveWorkspace (Workspacefn);
+    }
+   Workspacefn = "";
+  }
 
  SetSimulationRun (1);
  Window4.Hide ();
@@ -1342,9 +1360,8 @@ CPWindow1::menu1_EvBoard(CControl * control)
 {
  lab_ = lab;
  lab = atoi (((CItemMenu*) control)->GetName ());
-
  FNAME = lxT (" ");
- EndSimulation ();
+ EndSimulation (1);
  Configure (HOME);
  need_resize = 1;
 }
@@ -1427,6 +1444,8 @@ CPWindow1::LoadWorkspace(lxString fnpzw)
  lxUnzipDir (fnpzw, fzip);
 
  EndSimulation ();
+
+ Workspacefn = fnpzw;
 
  snprintf (fzip, 1279, "%s/picsimlab.ini", home);
  lxStringList prefsw;
@@ -1655,10 +1674,12 @@ CPWindow1::SaveWorkspace(lxString fnpzw)
  if (lxFileExists (fnpzw))
   {
 
-   if (!Dialog (lxString ("Overwriting file: ") + basename (fnpzw) + "?"))
+   if (!Dialog_sz (lxString ("Overwriting file: ") + basename (fnpzw) + "?", 400, 200))
     return;
   }
 #endif
+
+ Workspacefn = fnpzw;
 
  //write options
 
@@ -1711,13 +1732,12 @@ CPWindow1::SaveWorkspace(lxString fnpzw)
 
  pboard->MDumpMemory (fname);
 
- if (pboard->GetUseSpareParts ())
-  {
-   snprintf (fname, 1279, "%s/parts_%s.pcf", home, boards_list[lab_].name_);
-   Window5.SaveConfig (fname);
-   sprintf (fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
-   Window5.SavePinAlias (fname);
-  }
+ //write spare part config
+ snprintf (fname, 1279, "%s/parts_%s.pcf", home, boards_list[lab_].name_);
+ Window5.SaveConfig (fname);
+ sprintf (fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
+ Window5.SavePinAlias (fname);
+
 
  lxZipDir (home, fnpzw);
 
