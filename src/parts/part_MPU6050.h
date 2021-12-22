@@ -36,7 +36,7 @@
 class cpart_MPU6050 : public part {
 public:
 
-    lxString GetName(void) {
+    lxString GetName(void) override {
         return lxT(PART_MPU6050_Name);
     };
     lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          

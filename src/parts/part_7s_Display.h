@@ -45,7 +45,7 @@ public:
     void ConfigurePropertiesWindow(CPWindow * wprop) override;
     void ReadPropertiesWindow(CPWindow * WProp) override;
     lxString WritePreferences(void) override;
-    void ReadPreferences(lxString value);
+    void ReadPreferences(lxString value) override;
     unsigned short get_in_id(char * name) override;
     unsigned short get_out_id(char * name) override;
 private:

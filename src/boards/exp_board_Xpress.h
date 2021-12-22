@@ -51,7 +51,7 @@ class cboard_Xpress:public bsim_picsim
      CLabel *label4;   //label of gauge RA2
      CLabel *label5;   //label of gauge RC5
      
-     void RegisterRemoteControl(void); 
+     void RegisterRemoteControl(void) override; 
    public:
       //Return the board name 
       lxString GetName(void) override {return lxT(BOARD_Xpress_Name); }; 

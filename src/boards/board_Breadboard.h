@@ -44,7 +44,7 @@ class cboard_Breadboard:public bsim_picsim, public bsim_simavr
       lxBitmap * micbmp;
       lxFont font;
    public:
-      void SetScale (double scale);
+      void SetScale (double scale) override;
       //Return the board name
       lxString GetName(void) override {return lxT(BOARD_Breadboard_Name); };
       lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 

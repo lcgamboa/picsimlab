@@ -69,7 +69,7 @@ class bsim_picsim: virtual public board
       unsigned int DBGGetROMSize(void) override;
       unsigned int DBGGetCONFIGSize(void) override;
       unsigned int DBGGetIDSize(void) override;
-      unsigned int DBGGetEEPROM_Size(void);
+      unsigned int DBGGetEEPROM_Size(void) override;
       void EndServers(void) override;
  protected:
       _pic pic;

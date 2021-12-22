@@ -38,7 +38,7 @@ class cboard_STM32_H103:public bsim_qemu_stm32
    private:
      unsigned char p_BUT;
 
-     void RegisterRemoteControl(void);        
+     void RegisterRemoteControl(void) override;        
    public:
       //Return the board name
       lxString GetName(void) override {return lxT(BOARD_STM32_H103_Name); };
