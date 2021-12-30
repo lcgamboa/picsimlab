@@ -2,6 +2,8 @@
 
 ### New
 
+* Support to automatic save the last open workspace file (.pzw) [lcgamboa]
+
 * New spare part LDR. [lcgamboa]
 
 * Support to PIC16F887 added to boards Breadboard, McLab2 and PICGenios. [lcgamboa]
@@ -23,6 +25,8 @@
 * Oscilloscope support to show measures in screen added. [lcgamboa]
 
 ### Changes
+
+* Debian changelog updated. [lcgamboa]
 
 * Use default application to open VCD files in VCDDump part. [lcgamboa]
 
