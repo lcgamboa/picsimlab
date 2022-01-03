@@ -51,8 +51,11 @@ const char json_info[] = "{"
     "    \"DIRA\":  2,"
     "    \"PORTB\": 4,"
     "    \"DIRB\":  6,"
-    "    \"TICKTIMER\":  8,"
-    "    \"PFREQ\":  10"
+    "    \"T0CNT\": 8,"
+    "    \"T0STA\": 10,"
+    "    \"T0CON\": 12,"
+    "    \"T0PR\":  14,"
+    "    \"PFREQ\": 16"
     "  }"
     "}";
 
@@ -60,8 +63,11 @@ const char json_info[] = "{"
 #define DIRA  2
 #define PORTB 4
 #define DIRB  6
-#define TICKTIMER 8
-#define PFREQ 10
+#define T0CNT 8
+#define T0STA 10
+#define T0CON 12
+#define T0PR  14
+#define PFREQ 16
 
 /* ids of inputs of input map*/
 enum
@@ -407,8 +413,6 @@ cboard_RemoteTCP::Run_CPU(void)
  if (use_spare)Window5.PreProcess ();
 
 
-
-
  double delay = (Window1.GetIdleMs ()*1000) / NSTEP;
 
  unsigned int countM = 1100 / delay; //added 100us of overhead
@@ -436,14 +440,25 @@ cboard_RemoteTCP::Run_CPU(void)
      {
 #ifdef _WIN_
       Sleep (1);
-#else	     
+#else      
       usleep (1000);
 #endif      
       count = countM;
-      if (TickTimer)
-      {
-       TickTimer--;
-      }
+     }
+
+    if (t0CON & 0x8000)//Timer on
+     {
+      t0iclk++; //prescaler clk
+      if (t0iclk == (t0CON & 0x7FFF))
+       {
+        t0iclk = 0;
+        t0CNT++;
+        if (t0CNT == t0PR) //max value
+         {
+          t0CNT = 0;
+          t0STA |= 1; //overflow
+         }
+       }
      }
 
     //Oscilloscope window process
@@ -586,8 +601,17 @@ cboard_RemoteTCP::EvThreadRun(CThread& thread)
              }
            }
           break;
-         case TICKTIMER:
-          TickTimer = payload[1];
+         case T0CNT:
+          t0CNT = payload[1];
+          break;
+         case T0CON:
+          t0CON = payload[1];
+          break;
+         case T0STA:
+          t0STA = payload[1];
+          break;
+         case T0PR:
+          t0PR = payload[1];
           break;
          }
 
@@ -627,8 +651,17 @@ cboard_RemoteTCP::EvThreadRun(CThread& thread)
        case DIRB:
         payload[1] = htonl (Dirs[1]);
         break;
-       case TICKTIMER:
-        payload[1] = htonl (TickTimer);
+       case T0CNT:
+        payload[1] = htonl (t0CNT);
+        break;
+       case T0CON:
+        payload[1] = htonl (t0CON);
+        break;
+       case T0STA:
+        payload[1] = htonl (t0STA);
+        break;
+       case T0PR:
+        payload[1] = htonl (t0PR);
         break;
        case PFREQ:
         payload[1] = htonl (MGetFreq () / 1000000);

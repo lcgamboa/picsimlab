@@ -624,7 +624,11 @@ bsim_remote::MReset(int flags)
  Dirs[1]  = 0xFF;
  Ports[0] = 0x00;
  Ports[1] = 0x00;
- TickTimer=0;
+ t0CNT = 0;
+ t0STA = 0;
+ t0CON = 0x7FFF;
+ t0PR  = 0xFFFF;
+ t0iclk = 0;
 }
 
 const picpin *
