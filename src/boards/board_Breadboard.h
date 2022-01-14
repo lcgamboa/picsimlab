@@ -69,7 +69,6 @@ class cboard_Breadboard:public bsim_picsim, public bsim_simavr
       const picpin * MGetPinsValues(void) override;  
       void MStep(void) override;
       void MStepResume(void) override;
-      int DBGTestBP(unsigned int bp) override;
       void MReset(int flags) override;
       unsigned short * DBGGetProcID_p(void) override;
       unsigned int  DBGGetPC(void) override;

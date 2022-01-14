@@ -297,7 +297,7 @@ mplabxd_testbp(void)
  if (!Window1.Get_mcudbg ())
   for (i = 0; i < bpc; i++)
    {
-    if (dbg_board->DBGTestBP (bp[i]))
+    if (dbg_board->DBGGetPC () == bp[i])
      {
       dprint ("breakpoint 0x%04X!!!!!=========================\n", bp[i]);
       Window1.SetCpuState (CPU_BREAKPOINT);

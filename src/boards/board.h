@@ -373,14 +373,6 @@ public:
     virtual void MReset(int flags) = 0;
 
     /**
-     * @brief board microcontroller test if in breakpoint   
-     */
-    virtual int DBGTestBP(unsigned int bp) {
-        INCOMPLETE;
-        return 0;
-    };
-
-    /**
      * @brief board microcontroller get pointer to processor ID   
      */
     virtual unsigned short * DBGGetProcID_p(void) {
@@ -479,6 +471,22 @@ public:
      * @brief  board microcontroller get data EEPROM memory size    
      */
     virtual unsigned int DBGGetEEPROM_Size(void) {
+        INCOMPLETE;
+        return 0;
+    };
+    
+    /**
+     * @brief  board microcontroller get last ram write address  
+     */
+    virtual unsigned int DBGGetRAMLAWR(void) {
+        INCOMPLETE;
+        return 0;
+    };
+    
+    /**
+     * @brief  board microcontroller get last ram read address  
+     */
+    virtual unsigned int DBGGetRAMLARD(void) {
         INCOMPLETE;
         return 0;
     };

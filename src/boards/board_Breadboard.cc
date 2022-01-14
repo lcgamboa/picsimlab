@@ -890,21 +890,6 @@ cboard_Breadboard::MStepResume(void)
   }
 }
 
-int
-cboard_Breadboard::DBGTestBP(unsigned int bp)
-{
- switch (ptype)
-  {
-  case _PIC:
-   return bsim_picsim::DBGTestBP (bp);
-   break;
-  case _AVR:
-   return bsim_simavr::DBGTestBP (bp);
-   break;
-  }
- return 0;
-}
-
 void
 cboard_Breadboard::MReset(int flags)
 {

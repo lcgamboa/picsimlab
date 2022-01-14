@@ -55,7 +55,6 @@ class bsim_picsim: virtual public board
       const picpin * MGetPinsValues(void) override;  
       void MStep(void) override;
       void MStepResume(void) override;
-      int DBGTestBP(unsigned int bp) override;
       void MReset(int flags) override;
       unsigned short * DBGGetProcID_p(void) override;
       unsigned int  DBGGetPC(void) override;
@@ -70,6 +69,8 @@ class bsim_picsim: virtual public board
       unsigned int DBGGetCONFIGSize(void) override;
       unsigned int DBGGetIDSize(void) override;
       unsigned int DBGGetEEPROM_Size(void) override;
+      unsigned int DBGGetRAMLAWR(void) override;
+      unsigned int DBGGetRAMLARD(void) override;
       void EndServers(void) override;
  protected:
       _pic pic;

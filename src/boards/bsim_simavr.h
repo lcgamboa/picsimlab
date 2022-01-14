@@ -76,7 +76,6 @@ public:
     const picpin * MGetPinsValues(void) override;
     void MStep(void) override;
     void MStepResume(void) override;
-    int DBGTestBP(unsigned int bp) override;
     void MReset(int flags) override;
     unsigned short * DBGGetProcID_p(void) override;
     unsigned int DBGGetPC(void) override;

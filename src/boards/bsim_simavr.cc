@@ -1444,11 +1444,6 @@ bsim_simavr::MStep(void)
 void
 bsim_simavr::MStepResume(void) { }
 
-int
-bsim_simavr::DBGTestBP(unsigned int bp)
-{
- return (bp == avr->pc >> 1);
-}
 
 void
 bsim_simavr::MReset(int flags)

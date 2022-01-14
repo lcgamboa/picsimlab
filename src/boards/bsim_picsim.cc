@@ -259,12 +259,6 @@ bsim_picsim::MStepResume(void)
  if (pic.s2 == 1)pic_step ();
 }
 
-int
-bsim_picsim::DBGTestBP(unsigned int bp)
-{
- return ((pic.pc == bp)&&(pic.s2 == 0));
-}
-
 void
 bsim_picsim::MReset(int flags)
 {
@@ -359,6 +353,18 @@ unsigned int
 bsim_picsim::DBGGetEEPROM_Size(void)
 {
  return pic.EEPROMSIZE;
+}
+
+unsigned int
+bsim_picsim::DBGGetRAMLAWR(void)
+{
+ return pic.lram;
+}
+
+unsigned int
+bsim_picsim::DBGGetRAMLARD(void)
+{
+ return pic.rram;
 }
 
 void
