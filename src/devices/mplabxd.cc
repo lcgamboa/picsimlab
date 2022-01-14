@@ -65,32 +65,35 @@ static WSADATA wsaData;
 typedef struct sockaddr sockaddr;
 
 
+//debug protocol commands
 
-#define STARTD 0xF0
-#define STOPD  0xFF
+#define STARTD 0xF0 //start debug
+#define STOPD  0xFF //stop  debug
 
 
-#define STEP   0x01
-#define RESET  0x05
-#define RUN    0x10
-#define HALT   0x15
-#define GETPC  0x20
-#define SETPC  0x25
-#define SETBK  0x30
-#define STRUN  0x31
-#define GETID  0x35
-#define GETNAM 0x36
-#define PROGD  0x40
-#define PROGP  0x45
-#define PROGC  0x50
-#define PROGI  0x55
-#define PROGE  0x57
-#define READD  0x60
-#define READDV 0x61
-#define READP  0x65
-#define READC  0x70
-#define READI  0x75
-#define READE  0x80
+#define STEP   0x01  //do one step
+#define RESET  0x05  //do reset
+#define RUN    0x10  //run
+#define HALT   0x15  //halt
+#define GETPC  0x20  //return PC
+#define SETPC  0x25  //set PC
+#define SETBK  0x30  //set Breakpoint
+#define STRUN  0x31  //Return Run status
+#define SDWBK  0x32  //set data write Breakpoint
+#define SDRBK  0x33  //set data read Breakpoint
+#define GETID  0x35  //Return CPU ID
+#define GETNAM 0x36  //Retunr CPU name
+#define PROGD  0x40  //Write all data ram
+#define PROGP  0x45  //Write all program flash
+#define PROGC  0x50  //Write all Configuration 
+#define PROGI  0x55  //Write all IDs
+#define PROGE  0x57  //Write all data EEPROM 
+#define READD  0x60  //Read all data RAM 
+#define READDV 0x61  //Read data value from RAM
+#define READP  0x65  //Read all program flash
+#define READC  0x70  //Read all Configuration
+#define READI  0x75  //Read all IDs
+#define READE  0x80  //Read all data EEPROM 
 
 #ifdef _WIN_
 
@@ -202,7 +205,7 @@ mplabxd_init(board * mboard, unsigned short tcpport)
    if (bind (listenfd, (sockaddr *) & serv, sizeof (serv)))
     {
      printf ("mplabxd: bind error : %s \n", strerror (errno));
-     Window1.RegisterError (lxString ().Format ("Can't open mplabxd TCP port %i\n It is already in use by another application!",tcpport));
+     Window1.RegisterError (lxString ().Format ("Can't open mplabxd TCP port %i\n It is already in use by another application!", tcpport));
      return 1;
     }
 
@@ -285,8 +288,20 @@ mplabxd_server_end(void)
  server_started = 0;
 }
 
+enum
+{
+ BKCODE = 1, BKWDATA, BKRDATA
+};
+
+//code 
 static int bpc = 0;
 static unsigned int bp[100];
+//data write
+static int bpdwc = 0;
+static unsigned int bpdw[100];
+//data read
+static int bpdrc = 0;
+static unsigned int bpdr[100];
 
 static unsigned short dbuff[2];
 
@@ -295,17 +310,38 @@ mplabxd_testbp(void)
 {
  int i;
  if (!Window1.Get_mcudbg ())
-  for (i = 0; i < bpc; i++)
-   {
-    if (dbg_board->DBGGetPC () == bp[i])
-     {
-      dprint ("breakpoint 0x%04X!!!!!=========================\n", bp[i]);
-      Window1.SetCpuState (CPU_BREAKPOINT);
-      Window1.Set_mcudbg (1);
-      return Window1.Get_mcudbg ();
-     }
-   }
-
+  {
+   for (i = 0; i < bpc; i++)
+    {
+     if (dbg_board->DBGGetPC () == bp[i])
+      {
+       dprint ("breakpoint 0x%04X!!!!!=========================\n", bp[i]);
+       Window1.SetCpuState (CPU_BREAKPOINT);
+       Window1.Set_mcudbg (1);
+       return Window1.Get_mcudbg ();
+      }
+    }
+   for (i = 0; i < bpdwc; i++)
+    {
+     if (dbg_board->DBGGetRAMLAWR () == bpdw[i])
+      {
+       dprint ("breakpoint data wr 0x%04X!!!!!=========================\n", bpdw[i]);
+       Window1.SetCpuState (CPU_BREAKPOINT);
+       Window1.Set_mcudbg (1);
+       return Window1.Get_mcudbg ();
+      }
+    }
+   for (i = 0; i < bpdrc; i++)
+    {
+     if (dbg_board->DBGGetRAMLARD () == bpdr[i])
+      {
+       dprint ("breakpoint data rd 0x%04X!!!!!=========================\n", bpdr[i]);
+       Window1.SetCpuState (CPU_BREAKPOINT);
+       Window1.Set_mcudbg (1);
+       return Window1.Get_mcudbg ();
+      }
+    }
+  }
  return Window1.Get_mcudbg ();
 }
 
@@ -355,6 +391,8 @@ mplabxd_loop(void)
      Window1.Set_mcudbg (0);
      Window1.SetCpuState (CPU_RUNNING);
      bpc = 0;
+     bpdwc = 0;
+     bpdrc = 0;
      break;
     case STEP:
      dprint ("STEP cmd\n");
@@ -433,6 +471,54 @@ mplabxd_loop(void)
        reply = 0x01;
       }
      dprint ("STRUN cmd =%i\n", Window1.Get_mcudbg ());
+     break;
+    case SDWBK:
+     if ((n = recv (sockfd, (char *) &bpdwc, 2, MSG_WAITALL)) != 2)
+      {
+       printf ("mplabxd: receive error : %s \n", strerror (errno));
+       ret = 1;
+       reply = 0x01;
+      }
+     dprint ("bpdw count =%i\n", bpdwc);
+     if (bpdwc >= 100)bpdwc = 100;
+     if (bpdwc > 0)
+      {
+       if ((n = recv (sockfd, (char *) &bpdw, bpdwc * 4, MSG_WAITALL)) != bpdwc * 4)
+        {
+         printf ("mplabxd: receive error : %s \n", strerror (errno));
+         ret = 1;
+         reply = 0x01;
+        }
+#ifdef _DEBUG_
+       for (i = 0; i < bpdwc; i++)
+        printf ("bpdw %i = %#06X\n", i, bpdw[i]);
+#endif
+      }
+     dprint ("SETBK cmd\n");
+     break;
+    case SDRBK:
+     if ((n = recv (sockfd, (char *) &bpdrc, 2, MSG_WAITALL)) != 2)
+      {
+       printf ("mplabxd: receive error : %s \n", strerror (errno));
+       ret = 1;
+       reply = 0x01;
+      }
+     dprint ("bpdr count =%i\n", bpdrc);
+     if (bpdrc >= 100)bpdrc = 100;
+     if (bpdrc > 0)
+      {
+       if ((n = recv (sockfd, (char *) &bpdr, bpdrc * 4, MSG_WAITALL)) != bpdrc * 4)
+        {
+         printf ("mplabxd: receive error : %s \n", strerror (errno));
+         ret = 1;
+         reply = 0x01;
+        }
+#ifdef _DEBUG_
+       for (i = 0; i < bpdrc; i++)
+        printf ("bpdr %i = %#06X\n", i, bpdr[i]);
+#endif
+      }
+     dprint ("SETBK cmd\n");
      break;
     case GETID:
      dprint ("GETID cmd\n");
