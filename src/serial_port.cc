@@ -96,7 +96,6 @@ serial_port_close(serialfd_t serialfd)
 #else    
    close (serialfd);
 #endif
-   serialfd = 0;
   }
  return 0;
 }
@@ -243,7 +242,7 @@ serial_port_cfg(serialfd_t serialfd, float serialexbaud)
 
  //        tcgetattr(fd,&oldtio); /* save current port settings */
 
- bzero (&newtio, sizeof (newtio));
+ memset (&newtio, 0, sizeof (newtio));
  newtio.c_cflag = BAUDRATE | CS8 | CLOCAL | CREAD;
  newtio.c_iflag = IGNPAR | IGNBRK;
  newtio.c_oflag = 0;
@@ -508,8 +507,8 @@ serial_port_list(void)
    resp[0] = 0;
    for (i = 0; i < globbuf.gl_pathc; i++)
     {
-     strcat (resp, globbuf.gl_pathv[i]);
-     strcat (resp, ",");
+     strncat (resp, globbuf.gl_pathv[i],length);
+     strncat (resp, ",",length);
     }
   }
 

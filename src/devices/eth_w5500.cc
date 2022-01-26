@@ -497,7 +497,6 @@ eth_w5500_fake_dhcp_reply(eth_w5500_t *eth, int n)
 {
  char temp_buff[0x4000];
  char skt_addr[30];
- unsigned short skt_port;
  dhcp_t * dhcp_pack = (dhcp_t *) & eth->TX_Mem[eth->TX_ptr[n]];
  int size;
  unsigned short addr;
@@ -600,14 +599,13 @@ eth_w5500_fake_dhcp_reply(eth_w5500_t *eth, int n)
 
  //reply fake receive
  sprintf (skt_addr, "%i.%i.%i.%i", eth->Socket[n][Sn_DIPR0], eth->Socket[n][Sn_DIPR1], eth->Socket[n][Sn_DIPR2], eth->Socket[n][Sn_DIPR3]);
- skt_port = readWord (eth->Socket[n], Sn_DPORT0);
 
  eth->active = 2;
 
  s = 240 + op;
  memcpy (temp_buff + 8, dhcp_pack, s);
 
- dsprintf ("Socket %i Received %i from %s:%i\n", n, s, skt_addr, skt_port);
+ dsprintf ("Socket %i Received %i from %s:%i\n", n, s, skt_addr, readWord (eth->Socket[n], Sn_DPORT0));
 
  temp_buff[0] = eth->Socket[n][Sn_DIPR0];
  temp_buff[1] = eth->Socket[n][Sn_DIPR1];
@@ -900,7 +898,7 @@ eth_w5500_process(eth_w5500_t *eth)
          eth->active = 2;
          eth->Socket[n][Sn_IR] |= 0x04;
 
-         strcpy (skt_addr, inet_ntoa (serv.sin_addr));
+         strncpy (skt_addr, inet_ntoa (serv.sin_addr), 29);
          skt_port = ntohs (serv.sin_port);
 
          eth->Socket[n][Sn_DIPR0] = (serv.sin_addr.s_addr & 0x000000FF);
@@ -1243,8 +1241,7 @@ eth_w5500_io(eth_w5500_t *eth, unsigned char mosi, unsigned char sclk, unsigned 
                  eth->Socket[n][Sn_SR] = SOCK_SYNSENT;
                  conn_timeout[n] = 0;
                  sprintf (skt_addr, "%i.%i.%i.%i", eth->Socket[n][Sn_DIPR0], eth->Socket[n][Sn_DIPR1], eth->Socket[n][Sn_DIPR2], eth->Socket[n][Sn_DIPR3]);
-                 skt_port = readWord (eth->Socket[n], Sn_DPORT0);
-                 dsprintf ("Socket %i try to connect to %s:%i\n", n, skt_addr, skt_port);
+                 dsprintf ("Socket %i try to connect to %s:%i\n", n, skt_addr, readWord (eth->Socket[n], Sn_DPORT0));
 
                  break;
                 case DISCON:
