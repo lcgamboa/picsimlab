@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -115,6 +115,7 @@ font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  input_pins[9] = 0;
  input_pins[10] = 0;
 
+ lcde = 0; 
 }
 
 cpart_LCD_hd44780::~cpart_LCD_hd44780(void)
@@ -439,19 +440,16 @@ cpart_LCD_hd44780::Process(void)
 {
  const picpin * ppins = Window5.GetPinsValues ();
 
-
- //lcd dipins[2].display code
-
-
- if ((input_pins[1] > 0) &&(!ppins[input_pins[1] - 1].value))
+ if (input_pins[1] > 0) //EN
   {
-   if (!lcde)
+   if(input_pins[10] > 0) //R/W
     {
-     if (input_pins[10] > 0)
-      {
-       if (!ppins[input_pins[10] - 1].value)
+     if (!ppins[input_pins[10] - 1].value)
+      { 
+       //Write   
+       if  (lcde && (!ppins[input_pins[1] - 1].value)) 
         {
-         //Write
+         //EN falling edge  
          unsigned char d = 0;
          if ((input_pins[9] > 0)&&(ppins[input_pins[9] - 1].value)) d |= 0x80;
          if ((input_pins[8] > 0)&&(ppins[input_pins[8] - 1].value)) d |= 0x40;
@@ -471,17 +469,22 @@ cpart_LCD_hd44780::Process(void)
            lcd_data (&lcd, d);
           }
         }
-       else //Read
+      }
+      else 
+      {
+        //Read
+        if  (!lcde && (ppins[input_pins[1] - 1].value)) 
         {
+         //EN rising edge  
          unsigned char val = 0;
          if (!ppins[input_pins[0] - 1].value)
-          {
-           val = lcd_read_busyf_acounter (&lcd);
-          }
-         else
-          {
-           val = lcd_read_data (&lcd);
-          }
+         {
+          val = lcd_read_busyf_acounter (&lcd);
+         }
+        else
+         {
+          val = lcd_read_data (&lcd);
+         }
 
          if (input_pins[9] > 0)Window5.SetPin (input_pins[9], (val & 0x80) > 0);
          if (input_pins[8] > 0)Window5.SetPin (input_pins[8], (val & 0x40) > 0);
@@ -493,14 +496,13 @@ cpart_LCD_hd44780::Process(void)
          if (input_pins[2] > 0)Window5.SetPin (input_pins[2], (val & 0x01) > 0);
         }
       }
-     lcde = 1;
     }
+    lcde = ppins[input_pins[1] - 1].value;
   }
  else
   {
    lcde = 0;
   }
- //end display code
 
 }
 

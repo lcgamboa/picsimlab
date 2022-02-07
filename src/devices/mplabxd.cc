@@ -494,7 +494,7 @@ mplabxd_loop(void)
         printf ("bpdw %i = %#06X\n", i, bpdw[i]);
 #endif
       }
-     dprint ("SETBK cmd\n");
+     dprint ("SDWBK cmd\n");
      break;
     case SDRBK:
      if ((n = recv (sockfd, (char *) &bpdrc, 2, MSG_WAITALL)) != 2)
@@ -518,7 +518,7 @@ mplabxd_loop(void)
         printf ("bpdr %i = %#06X\n", i, bpdr[i]);
 #endif
       }
-     dprint ("SETBK cmd\n");
+     dprint ("SDRBK cmd\n");
      break;
     case GETID:
      dprint ("GETID cmd\n");

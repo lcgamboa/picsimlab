@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -261,7 +261,7 @@ lcd_cmd(lcd_t * lcd, char cmd)
  int i;
 
 
- //switch betwwen 8 ou 4 bits communication
+ //switch betwwen 8 or 4 bits communication
  if (!(lcd->flags & L_DL))
   {
    if (lcd->bc)
@@ -492,7 +492,7 @@ lcd_data(lcd_t * lcd, char data)
    return;
   }
 
- //switch betwwen 8 ou 4 bits communication
+ //switch betwwen 8 or 4 bits communication
  if (!(lcd->flags & L_DL))
   {
    if (lcd->bc)
@@ -581,7 +581,26 @@ unsigned char
 lcd_read_busyf_acounter(lcd_t * lcd)
 {
  //busy flag aways 0
- return (0x7F & lcd->addr_counter);
+ unsigned char status= (0x7F & lcd->addr_counter);
+
+ //switch betwwen 8 or 4 bits communication
+ if (!(lcd->flags & L_DL))
+  {
+   if (lcd->bc)
+    {
+     lcd->bc = 0;
+     status = (0x0F & status) << 4;
+    }
+   else
+    {
+     lcd->bc = 1;
+     //status = status & 0xF0;
+    }
+  }
+#ifdef _DEBUG
+ printf ("LCD read flags=0x%02X bc=%i \n", (unsigned char) status, lcd->bc);
+#endif  
+  return  status;
 }
 
 char
@@ -592,6 +611,8 @@ lcd_read_data(lcd_t * lcd)
  if (lcd->addr_mode == LCD_ADDR_DDRAM)
   {
    ret = lcd->ddram_char[lcd->addr_counter];
+   if(lcd->bc)
+   {
    if (lcd->flags & L_DID)
     {
      lcd->addr_counter++;
@@ -602,11 +623,13 @@ lcd_read_data(lcd_t * lcd)
      lcd->addr_counter--;
      if (lcd->addr_counter >= DDRMAX)lcd->addr_counter = DDRMAX - 1;
     }
-
+   }
   }
  else
   {
    ret = lcd->cgram_char[lcd->addr_counter];
+   if(lcd->bc)
+   {
    if (lcd->flags & L_DID)
     {
      lcd->addr_counter++;
@@ -617,7 +640,27 @@ lcd_read_data(lcd_t * lcd)
      lcd->addr_counter--;
      if (lcd->addr_counter >= 64)lcd->addr_counter = 63;
     }
+   }
   }
+
+ //switch betwwen 8 or 4 bits communication
+ if (!(lcd->flags & L_DL))
+  {
+   if (lcd->bc)
+    {
+     lcd->bc = 0;
+     ret = (0x0F & ret) << 4;
+    }
+   else
+    {
+     lcd->bc = 1;
+     //ret = ret & 0xF0;
+    }
+  }
+
+#ifdef _DEBUG
+ printf ("LCD read data=0x%02X  bc=%i\n", (unsigned char) ret, lcd->bc);
+#endif  
 
  return ret;
 }
