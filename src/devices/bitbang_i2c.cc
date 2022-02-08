@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -29,6 +29,9 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+
+#define ACK  0
+#define NACK 1
 
 #define dprintf if (1) {} else printf
 
@@ -68,12 +71,14 @@ bitbang_i2c_io(bitbang_i2c_t *i2c, const unsigned char scl, const unsigned char 
 
  if ((i2c->sdao == sda)&&(i2c->sclo == scl))
   {
+   //No edge, return the last value 
    //dprintf ("bitbang_i2c %2x nret = %i\n", i2c->addr >> 1, i2c->ret);
    return i2c->ret;
   }
 
- if ((i2c->sdao == 1)&&(sda == 0)&&(scl == 1)&&(i2c->sclo == 1)) //start
+ if ((i2c->sdao == 1)&&(sda == 0)&&(scl == 1)&&(i2c->sclo == 1)) 
   {
+   //start 
    i2c->bit = 0;
    i2c->byte = 0;
    i2c->datab = 0;
@@ -83,8 +88,9 @@ bitbang_i2c_io(bitbang_i2c_t *i2c, const unsigned char scl, const unsigned char 
    i2c->status = I2C_START;
   }
 
- if ((i2c->sdao == 0)&&(sda == 1)&&(scl == 1)&&(i2c->sclo == 1)) //stop
+ if ((i2c->sdao == 0)&&(sda == 1)&&(scl == 1)&&(i2c->sclo == 1)) 
   {
+   //stop 
    i2c->bit = 0xFF;
    i2c->byte = 0xFF;
    i2c->ret = 0;
@@ -94,9 +100,9 @@ bitbang_i2c_io(bitbang_i2c_t *i2c, const unsigned char scl, const unsigned char 
   }
 
 
- if ((i2c->bit < 9)&&(i2c->sclo == 0)&&(scl == 1)) //data in
+ if ((i2c->bit < 9)&&(i2c->sclo == 0)&&(scl == 1)) 
   {
-
+   //data in
    if (i2c->bit < 8)
     {
      i2c->datab |= (sda << (7 - i2c->bit));
@@ -105,8 +111,9 @@ bitbang_i2c_io(bitbang_i2c_t *i2c, const unsigned char scl, const unsigned char 
    i2c->bit++;
   }
 
- if ((i2c->bit < 9)&&(i2c->sclo == 1)&&(scl == 0) && i2c->data_reading) //data out
+ if ((i2c->bit < 9)&&(i2c->sclo == 1)&&(scl == 0) && i2c->data_reading) 
   {
+   //data out 
    if (i2c->bit < 8)
     {
      i2c->ret = ((i2c->datas & (1 << (7 - i2c->bit))) > 0);
@@ -114,12 +121,34 @@ bitbang_i2c_io(bitbang_i2c_t *i2c, const unsigned char scl, const unsigned char 
     }
    else
     {
-     i2c->ret = 0;
+     i2c->ret = ACK;
     }
   }
 
 
- if (i2c->bit == 9)
+ if (i2c->bit == 8)
+  {
+  if (i2c->byte == 0)//ADDR
+    {
+     if ((i2c->datab & i2c->addr_mask) == i2c->addr)
+      {
+       //valid address 
+       i2c->ret =ACK;
+      }
+     else 
+      {
+       //invalid address 
+       i2c->ret =NACK;
+      }
+    }
+   else if (!i2c->data_reading)
+    {
+     //data 
+     i2c->ret = ACK;
+    }
+  }
+
+  if (i2c->bit == 9)
   {
    dprintf ("bitbang_i2c %02x data %02X\n", i2c->addr >> 1, i2c->datab);
 
@@ -143,7 +172,7 @@ bitbang_i2c_io(bitbang_i2c_t *i2c, const unsigned char scl, const unsigned char 
        i2c->bit = 0;
        i2c->datab = 0;
        i2c->byte++;
-       i2c->ret = 0;
+       //i2c->ret = 0;
       }
      else //invalid address
       {
@@ -160,7 +189,7 @@ bitbang_i2c_io(bitbang_i2c_t *i2c, const unsigned char scl, const unsigned char 
      i2c->datab = 0;
      i2c->byte++;
      i2c->status = I2C_DATAW;
-    }
+    } 
    else if (i2c->data_reading)
     {
      i2c->datar = i2c->datab;
@@ -170,7 +199,6 @@ bitbang_i2c_io(bitbang_i2c_t *i2c, const unsigned char scl, const unsigned char 
      i2c->status = I2C_DATAR;
      dprintf ("bitbang_i2c %2x need data to send\n", i2c->addr >> 1);
     }
-
   }
 
  i2c->sdao = sda;

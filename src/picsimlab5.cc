@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -914,7 +914,7 @@ CPWindow5::Process(void)
   {
    for (i = 0; i < i2c_bus_count; i++)
     {
-     i2c_bus[i2c_bus_ptr[i]] = 0;
+     i2c_bus[i2c_bus_ptr[i]] = 1;
     }
    for (i = 0; i < partsc; i++)
     {
@@ -1192,7 +1192,7 @@ CPWindow5::Reset_i2c_bus(unsigned char pin)
 {
  if (pin < IOINIT)
   {
-   i2c_bus[pin]++; //count i2c devices inb bus
+   i2c_bus[pin]++; //count i2c devices in bus
   }
 }
 
@@ -1201,7 +1201,7 @@ CPWindow5::Set_i2c_bus(unsigned char pin, unsigned char value)
 {
  if (pin < IOINIT)
   {
-     i2c_bus[pin] |= value;
+     i2c_bus[pin] &= value;
   }
 }
 
