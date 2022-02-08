@@ -544,13 +544,13 @@ cpart_LCD_hd44780_i2c_create(unsigned int x, unsigned int y)
 
  //connect lcd to pcf
  lcd->input_pins[0] = pcf_pins[0];
+ lcd->input_pins[10] = pcf_pins[1];
  lcd->input_pins[1] = pcf_pins[2];
  lcd->input_pins[6] = pcf_pins[4];
  lcd->input_pins[7] = pcf_pins[5];
  lcd->input_pins[8] = pcf_pins[6];
  lcd->input_pins[9] = pcf_pins[7];
-
-
+      
  //find GND
  for (int i = 0; i < 255; i++)
   {
@@ -560,7 +560,6 @@ cpart_LCD_hd44780_i2c_create(unsigned int x, unsigned int y)
      lcd->input_pins[3] = i;
      lcd->input_pins[4] = i;
      lcd->input_pins[5] = i;
-     lcd->input_pins[10] = i;
      break;
     }
   }

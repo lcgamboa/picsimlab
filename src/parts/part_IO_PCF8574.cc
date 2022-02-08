@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2019-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2019-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -399,23 +399,33 @@ cpart_IO_PCF8574::Process(void)
 
  if (ioupdated)
   {
+   ioe8.dataOut=0x00;
+   ioe8.dataOut |= ppins[output_pins[0] - 1].lsvalue; 
+   ioe8.dataOut |= ppins[output_pins[1] - 1].lsvalue << 1; 
+   ioe8.dataOut |= ppins[output_pins[2] - 1].lsvalue << 2; 
+   ioe8.dataOut |= ppins[output_pins[3] - 1].lsvalue << 3; 
+   ioe8.dataOut |= ppins[output_pins[4] - 1].lsvalue << 4; 
+   ioe8.dataOut |= ppins[output_pins[5] - 1].lsvalue << 5; 
+   ioe8.dataOut |= ppins[output_pins[6] - 1].lsvalue << 6; 
+   ioe8.dataOut |= ppins[output_pins[7] - 1].lsvalue << 7; 
+   ioe8.dataOut &= ioe8.dataIn; //mask with input 
 
    if ((input_pins[0] > 0)&&(input_pins[1] > 0))
     Window5.Set_i2c_bus (input_pins[1] - 1, io_PCF8574_I2C_io (&ioe8, ppins[input_pins[0] - 1].value, ppins[input_pins[1] - 1].value));
 
-   if (_ret != ioe8.data)
+   if (_ret != ioe8.dataIn)
     {
-     Window5.WritePin (output_pins[0], (ioe8.data & 0x01) != 0);
-     Window5.WritePin (output_pins[1], (ioe8.data & 0x02) != 0);
-     Window5.WritePin (output_pins[2], (ioe8.data & 0x04) != 0);
-     Window5.WritePin (output_pins[3], (ioe8.data & 0x08) != 0);
-     Window5.WritePin (output_pins[4], (ioe8.data & 0x10) != 0);
-     Window5.WritePin (output_pins[5], (ioe8.data & 0x20) != 0);
-     Window5.WritePin (output_pins[6], (ioe8.data & 0x40) != 0);
-     Window5.WritePin (output_pins[7], (ioe8.data & 0x80) != 0);
+     Window5.WritePin (output_pins[0], (ioe8.dataIn & 0x01) != 0);
+     Window5.WritePin (output_pins[1], (ioe8.dataIn & 0x02) != 0);
+     Window5.WritePin (output_pins[2], (ioe8.dataIn & 0x04) != 0);
+     Window5.WritePin (output_pins[3], (ioe8.dataIn & 0x08) != 0);
+     Window5.WritePin (output_pins[4], (ioe8.dataIn & 0x10) != 0);
+     Window5.WritePin (output_pins[5], (ioe8.dataIn & 0x20) != 0);
+     Window5.WritePin (output_pins[6], (ioe8.dataIn & 0x40) != 0);
+     Window5.WritePin (output_pins[7], (ioe8.dataIn & 0x80) != 0);
      //Window5.WritePin (output_pins[8], (ioe8.data & 0x100) != 0);
     }
-   _ret = ioe8.data;
+   _ret = ioe8.dataIn;
   }
 
  mcount++;

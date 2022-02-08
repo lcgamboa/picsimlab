@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -27,7 +27,8 @@
 
 typedef struct {
     bitbang_i2c_t bb_i2c;
-    unsigned char data;
+    unsigned char dataIn;
+    unsigned char dataOut;
 } io_PCF8574_t;
 
 

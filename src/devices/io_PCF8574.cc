@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@ void
 io_PCF8574_set_addr(io_PCF8574_t *ioe8, unsigned char addr)
 {
  bitbang_i2c_set_addr (&ioe8->bb_i2c, addr);
+ //dprintf ("ioe8 set addr = 0x%02X\n", addr);
 }
 
 void
@@ -50,7 +51,8 @@ io_PCF8574_init(io_PCF8574_t *ioe8)
 {
  dprintf ("ioe8 init\n");
  bitbang_i2c_init (&ioe8->bb_i2c, 0x27);
- ioe8->data = 0;
+ ioe8->dataIn = 0;
+ ioe8->dataOut = 0;
  io_PCF8574_rst (ioe8);
 }
 
@@ -69,11 +71,12 @@ io_PCF8574_I2C_io(io_PCF8574_t *ioe8, unsigned char scl, unsigned char sda)
  switch (bitbang_i2c_get_status (&ioe8->bb_i2c))
   {
   case I2C_DATAW:
-   ioe8->data = ioe8->bb_i2c.datar;
+   ioe8->dataIn = ioe8->bb_i2c.datar;
+   dprintf ("ioe8 write =%02X\n", ioe8->dataIn);
    break;
   case I2C_DATAR:
-   bitbang_i2c_send (&ioe8->bb_i2c, ioe8->data);
-   dprintf ("ioe8 read =%02X\n", ioe8->data);
+   bitbang_i2c_send (&ioe8->bb_i2c, ioe8->dataOut);
+   dprintf ("ioe8 read =%02X\n", ioe8->dataOut);
    break;
   }
 

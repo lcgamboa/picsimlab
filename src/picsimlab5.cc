@@ -1295,6 +1295,11 @@ CPWindow5::SetPin(unsigned char pin, unsigned char value)
 {
  if (pin)
   {
+   if ((pin > PinsCount))
+    {
+      Pins[pin - 1].lsvalue = value; //for open collector simulation
+    } 
+
    if ((Pins[pin - 1].dir) &&((Pins[pin - 1].value != value)))
     {
      if ((pin > PinsCount))
