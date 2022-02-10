@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -1053,7 +1053,7 @@ cboard_PICGenios::Run_CPU(void)
        {
         sck = pins[17].value;
        }
-      pic_set_pin (23, mi2c_io (&mi2c, sck, sda) | rtc_ds1307_I2C_io (&rtc2, sck, sda));
+      pic_set_pin (23, mi2c_io (&mi2c, sck, sda) & rtc_ds1307_I2C_io (&rtc2, sck, sda));
 
      }
     pic.ioupdated = 0;

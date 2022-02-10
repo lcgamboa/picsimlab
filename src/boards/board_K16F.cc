@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -447,7 +447,7 @@ cboard_K16F::Run_CPU(void)
        {
         sck = pins[1].value;
        }
-      pic_set_pin (3, mi2c_io (&mi2c, sck, sda) | rtc_pfc8563_I2C_io (&rtc, sck, sda));
+      pic_set_pin (3, mi2c_io (&mi2c, sck, sda) & rtc_pfc8563_I2C_io (&rtc, sck, sda));
      }
     pic.ioupdated = 0;
    }

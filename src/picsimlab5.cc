@@ -1353,6 +1353,7 @@ CPWindow5::WritePin(unsigned char pin, unsigned char value)
 {
  if (pin > PinsCount)
   {
+   Pins[pin - 1].lsvalue = value; //for open collector simulation 
    Pins[pin - 1].value = value;
   }
 }
