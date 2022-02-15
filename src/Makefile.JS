@@ -61,7 +61,8 @@ all: $(OBJS)
 
 JS_FILES=  emsc.js picsimlab_asmjs.js picsimlab_wasm.html picsimlab.html picsimlab_mt.js  picsimlab_wasm.wasm \
 	picsimlab_asmjs.html  picsimlab.css picsimlab_wasm.js picsimlab_mt.wasm \
-	picsimlab_asmjs.html.mem picsimlab.data picsimlab_mt.html picsimlab_mt.worker.js
+	picsimlab_asmjs.html.mem picsimlab.data picsimlab_mt.html picsimlab_mt.worker.js \
+	coi-serviceworker.js
 
 
 JS_DIR= ../../lcgamboa.github.io/js/

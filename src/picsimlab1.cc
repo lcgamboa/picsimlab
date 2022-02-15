@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gamboa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gamboa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -43,8 +43,6 @@ CPWindow1 Window1;
 #include"picsimlab5.h"
 
 #include"devices/rcontrol.h"
-
-
 
 #ifdef __EMSCRIPTEN__
 #include<emscripten.h>
@@ -937,6 +935,7 @@ CPWindow1::EndSimulation(int saveold)
  char home[1024];
  char fname[1280];
 
+#ifndef __EMSCRIPTEN__
  if (Workspacefn.length () > 0)
   {
    if (saveold)
@@ -952,6 +951,7 @@ CPWindow1::EndSimulation(int saveold)
     }
    Workspacefn = "";
   }
+#endif
 
  SetSimulationRun (1);
  Window4.Hide ();
