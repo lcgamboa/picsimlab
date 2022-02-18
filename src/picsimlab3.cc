@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -72,7 +72,7 @@ CPWindow3::button1_EvMouseButtonClick(CControl * control, uint button, uint x, u
 #ifdef _USE_PICSTARTP_ 
  if (combo1.GetText () == combo2.GetText ())
   {
-   Message (lxT ("Use diferent ports!"));
+   Message_sz (lxT ("Use diferent ports!"),, 400, 200);
    return;
   }
 #endif

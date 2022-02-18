@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2019-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2019-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -547,12 +547,7 @@ cpart_VCD_Play::EvMouseButtonPress(uint button, uint x, uint y, uint state)
                 URL.revokeObjectURL (text);
        }, f_vcd_name);
 #else
-#ifdef _WIN_
-       lxExecute (Window1.GetSharePath () + lxT ("/../tools/gtkwave/bin/gtkwave.exe ") + f_vcd_name);
-#else
-       //lxExecute (dirname (lxGetExecutablePath ()) + lxString ("/gtkwave ") + f_vcd_name, lxEXEC_MAKE_GROUP_LEADER);
        lxLaunchDefaultApplication(f_vcd_name);
-#endif
 #endif
        break;
       }

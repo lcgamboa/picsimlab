@@ -10,7 +10,7 @@ PKG_CONFIG= -mms-bitfields -I../dev_w64/include/glib-2.0 -I../dev_w64/lib/glib-2
 override CXXFLAGS+= -D_ARCH_=\"Windows64_WX\" -D_DATE_=\"${DATE}\"
 override CXXFLAGS+= -Wall -g -D_WIN_ -I../dev_w64/include -I../dev_w64/include/lxrad -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  
 override CXXFLAGS+= -DEXT_BROWSER
-override CXXFLAGS+= -O2 -flto
+override CXXFLAGS+= -O2 
 override CXXFLAGS+=-I../dev_w64/lib/wx/include/x86_64-w64-mingw32-msw-unicode-3.1 -I../dev_w64/include/wx-3.1 -D_FILE_OFFSET_BITS=64 -DWXUSINGDLL -D__WXMSW__
 #CXXFLAGS+=`x86_64-w64-mingw32-msw-unicode-3.1  --cxxflags` 
 

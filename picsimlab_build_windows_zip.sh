@@ -73,8 +73,8 @@ fi
 
 
 if [[ -n "$BUILD_EXPERIMETAL" ]]; then
-  zip -r picsimlab_${VERSION}_experimental_win64.zip picsimlab_win64/ 
-  zip -r picsimlab_${VERSION}_experimental_win32.zip picsimlab_win32/ 
+  zip -r picsimlab_${VERSION}_win64_experimental.zip picsimlab_win64/ 
+  zip -r picsimlab_${VERSION}_win32_experimental.zip picsimlab_win32/ 
 else
   zip -r picsimlab_${VERSION}_win64.zip picsimlab_win64/ 
   zip -r picsimlab_${VERSION}_win32.zip picsimlab_win32/ 

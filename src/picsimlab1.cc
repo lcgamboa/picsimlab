@@ -1811,21 +1811,6 @@ CPWindow1::filedialog2_EvOnClose(int retId)
 void
 CPWindow1::menu1_Tools_SerialTerm_EvMenuActive(CControl * control)
 {
-#ifdef _WIN_
- lxExecute (share + lxT ("/../tools/cutecom/cutecom.exe"));
-#else
-#if !defined(USE_XDG_OPEN) && !defined(FLATPAK_TARGET)
- //using system binary
- lxExecute ("cutecom");
-
- if (!(lxFileExists (dirname (lxGetExecutablePath ()) + "/cutecom")
-       || lxFileExists ("/usr/bin/cutecom")
-       || lxFileExists ("/usr/local/bin/cutecom")))
-  {
-   printf ("cutecom não instalado\n");
-   Message_sz ("The cutecom application is not found!\n\nPlease install cutecom in your system!\n\n In Debian based distro use: sudo apt-get install cutecom", 500, 240);
-  }
-#else
  char stfname[1024];
  snprintf (stfname, 1024, "%s/open_w_cutecom_or_gtkterm.sterm", (const char *) lxGetTempDir ("PICSimLab").c_str ());
 
@@ -1836,14 +1821,11 @@ CPWindow1::menu1_Tools_SerialTerm_EvMenuActive(CControl * control)
    fout = fopen (stfname, "w");
    if (fout)
     {
-     int buff = 0x11223344;
-     fwrite (&buff, 4, 1, fout);
+     fprintf (fout,"To associate .sterm extension, open this file with one serial terminal (cutecom, gtkterm, ...)");
     }
    fclose (fout);
   }
  lxLaunchDefaultApplication (stfname);
-#endif
-#endif
 }
 
 void

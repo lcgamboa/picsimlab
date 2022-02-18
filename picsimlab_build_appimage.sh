@@ -63,9 +63,9 @@ rm -rf squashfs-root/
 #rename package
 mv PICSimLab-x86_64.AppImage PICSimLab-${VERSION}-x86_64.AppImage 
 if [[ -n "$1" ]]; then
-  mv -f PICSimLab-${VERSION}-x86_64.AppImage release_${VERSION}/PICSimLab-${VERSION}_experimetal-x86_64.AppImage 
+  mv -f PICSimLab-${VERSION}-x86_64.AppImage release_${VERSION}/PICSimLab-${VERSION}_Linux_experimetal_x86_64.AppImage 
 else
-  mv -f PICSimLab-${VERSION}-x86_64.AppImage release_${VERSION}
+  mv -f PICSimLab-${VERSION}-x86_64.AppImage release_${VERSION}/PICSimLab-${VERSION}_Linux_x86_64.AppImage 
 fi	
 rm -rf AppDir
 
@@ -86,8 +86,8 @@ if [[ -n "$1" ]]; then
 fi
 /tmp/linuxdeploy-x86_64.AppImage --appdir AppDir --output appimage
 if [[ -n "$1" ]]; then
-  mv -f PICSimLab_NOGUI-${VERSION}-x86_64.AppImage ../release_${VERSION}/PICSimLab_NOGUI-${VERSION}_experimental-x86_64.AppImage 
+  mv -f PICSimLab_NOGUI-${VERSION}-x86_64.AppImage ../release_${VERSION}/PICSimLab_NOGUI-${VERSION}_Linux_experimental_x86_64.AppImage 
 else
-  mv -f PICSimLab_NOGUI-${VERSION}-x86_64.AppImage ../release_${VERSION}
+  mv -f PICSimLab_NOGUI-${VERSION}-x86_64.AppImage ../release_${VERSION}/PICSimLab_NOGUI-${VERSION}_Linux_x86_64.AppImage 
 fi	
 rm -rf AppDir

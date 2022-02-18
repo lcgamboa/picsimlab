@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2019-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2019-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -457,7 +457,8 @@ cpart_MI2C_24CXXX::filedialog_EvOnClose(int retId)
      if (lxFileExists (Window5.filedialog1.GetFileName ()))
       {
 
-       if (!Dialog (lxString ("Overwriting file: ") + basename (Window5.filedialog1.GetFileName ()) + "?"))
+       if (!Dialog_sz (lxString ("Overwriting file: ") + 
+            basename (Window5.filedialog1.GetFileName ()) + "?", 400, 200))
         return;
       }
 

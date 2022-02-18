@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -234,7 +234,7 @@ cpart_dtfunc::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
       switch(input[i].id) 
       { 
         case I_P1:
-           Message("P1");
+           Message("P1", 400, 200);
            break; 
       }
     }

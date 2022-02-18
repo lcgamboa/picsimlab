@@ -160,7 +160,7 @@ CPWindow5::AddPart(const char * partname, const int x, const int y)
 
  if (parts[partsc] == NULL)
   {
-   Message (lxT ("Erro creating part: ") + lxString (partname));
+   Message_sz (lxT ("Erro creating part: ") + lxString (partname), 400, 200);
   }
  else
   {
@@ -734,7 +734,7 @@ CPWindow5::menu1_File_Newconfiguration_EvMenuActive(CControl * control)
  if (partsc > 0)
   {
 #ifndef __EMSCRIPTEN__
-   if (Dialog ("Save current configuration?"))
+   if (Dialog_sz ("Save current configuration?", 400, 200))
     {
      menu1_File_Saveconfiguration_EvMenuActive (control);
     }
@@ -838,7 +838,7 @@ CPWindow5::menu1_Edit_Editpinalias_EvMenuActive(CControl * control)
   }
  else
   {
-   Message ("Pin alias file don't exist!");
+   Message_sz ("Pin alias file don't exist!", 400, 200);
   }
 }
 
@@ -1106,7 +1106,8 @@ CPWindow5::filedialog1_EvOnClose(int retId)
      if (lxFileExists (filedialog1.GetFileName ()))
       {
 
-       if (!Dialog (lxString ("Overwriting file: ") + basename (filedialog1.GetFileName ()) + "?"))
+       if (!Dialog_sz (lxString ("Overwriting file: ") + 
+            basename (filedialog1.GetFileName ()) + "?", 400, 200))
         return;
       }
      SaveConfig (filedialog1.GetFileName ());
@@ -1147,7 +1148,8 @@ CPWindow5::filedialog1_EvOnClose(int retId)
      if (lxFileExists (filedialog1.GetFileName ()))
       {
 
-       if (!Dialog (lxString ("Overwriting file: ") + basename (filedialog1.GetFileName ()) + "?"))
+       if (!Dialog_sz (lxString ("Overwriting file: ") + 
+             basename (filedialog1.GetFileName ()) + "?", 400, 200))
         return;
       }
      SavePinAlias (filedialog1.GetFileName ());
