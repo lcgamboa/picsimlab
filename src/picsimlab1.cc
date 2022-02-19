@@ -1821,6 +1821,8 @@ CPWindow1::menu1_Tools_SerialTerm_EvMenuActive(CControl * control)
    fout = fopen (stfname, "w");
    if (fout)
     {
+     int buff = 0x11223344;//fake magic number
+     fwrite (&buff, 4, 1, fout); 
      fprintf (fout,"To associate .sterm extension, open this file with one serial terminal (cutecom, gtkterm, ...)");
     }
    fclose (fout);
@@ -2050,3 +2052,16 @@ extern "C"
  }
 #endif
 }
+
+#ifdef FAKESJLJ
+typedef unsigned _Unwind_Exception_Class __attribute__((__mode__(__DI__)));
+
+void __gxx_personality_sj0(int version,
+		      int actions,
+		      _Unwind_Exception_Class exception_class,
+		      void *ue_header,
+		      void *context)
+{
+  std::abort();
+}
+#endif
