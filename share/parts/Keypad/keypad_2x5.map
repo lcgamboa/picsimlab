@@ -6,16 +6,16 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:lcganmboa@yahoo.com          -->
-<area shape="rect" coords="44,69,98,123" href="I_KB_1" />
-<area shape="rect" coords="115,70,169,124" href="I_KB_2" />
-<area shape="rect" coords="186,70,240,124" href="I_KB_3" />
-<area shape="rect" coords="258,70,312,124" href="I_KB_4" />
-<area shape="rect" coords="329,70,383,124" href="I_KB_5" />
-<area shape="rect" coords="44,139,98,193" href="I_KB_6" />
-<area shape="rect" coords="115,139,169,193" href="I_KB_7" />
-<area shape="rect" coords="187,140,241,194" href="I_KB_8" />
-<area shape="rect" coords="258,139,312,193" href="I_KB_9" />
-<area shape="rect" coords="329,139,383,193" href="I_KB_0" />
+<area shape="rect" coords="44,69,98,123" href="B_KB_1" />
+<area shape="rect" coords="115,70,169,124" href="B_KB_2" />
+<area shape="rect" coords="186,70,240,124" href="B_KB_3" />
+<area shape="rect" coords="258,70,312,124" href="B_KB_4" />
+<area shape="rect" coords="329,70,383,124" href="B_KB_5" />
+<area shape="rect" coords="44,139,98,193" href="B_KB_6" />
+<area shape="rect" coords="115,139,169,193" href="B_KB_7" />
+<area shape="rect" coords="187,140,241,194" href="B_KB_8" />
+<area shape="rect" coords="258,139,312,193" href="B_KB_9" />
+<area shape="rect" coords="329,139,383,193" href="B_KB_0" />
 <area shape="rect" coords="138,271,157,320" href="O_PN_L1" />
 <area shape="rect" coords="163,271,182,320" href="O_PN_L2" />
 <area shape="rect" coords="189,271,208,320" href="O_PN_C1" />

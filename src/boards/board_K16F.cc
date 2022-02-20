@@ -35,6 +35,18 @@
 /* outputs */
 enum
 {
+ O_TC1,
+ O_TC2,
+ O_TC3,
+ O_TC4,
+ O_TC5,
+ O_TC6,
+ O_TC7,
+ O_TC8,
+ O_TC9,
+ O_TCA,
+ O_TC0,
+ O_TCT, 
  O_RST,
  O_RA1,
  O_RA2,
@@ -48,9 +60,6 @@ enum
 /*inputs*/
 enum
 {
- I_RST,
- I_PWR,
- I_ICSP,
  I_TC1,
  I_TC2,
  I_TC3,
@@ -63,6 +72,9 @@ enum
  I_TCA,
  I_TC0,
  I_TCT,
+ I_RST,
+ I_PWR,
+ I_ICSP,
  I_VIEW
 };
 
@@ -201,6 +213,23 @@ cboard_K16F::Draw(CDraw *draw)
          draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
          draw->Canvas.SetColor (230, 230, 230);
          draw->Canvas.RotatedText (Proc, output[i].x2, output[i].y1 + 5, -90);
+        }
+        else if (output[i].id <= O_TCT)
+        {
+         if(output[i].value)
+         {
+           draw->Canvas.SetLineWidth(4);
+           draw->Canvas.SetColor (255, 0, 0);
+         }
+         else
+         {
+          draw->Canvas.SetLineWidth(6);
+          draw->Canvas.SetColor (249, 249, 249);  
+         }
+
+         draw->Canvas.Rectangle (0, output[i].x1 + 3, output[i].y1 + 3, output[i].x2 - output[i].x1 -6,
+                            output[i].y2 - output[i].y1 - 6 );
+         draw->Canvas.SetLineWidth(1);                   
         }
        else
         {
@@ -656,64 +685,88 @@ cboard_K16F::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       case I_TC1:
        {
         p_KEY1 = 1;
+        output_ids[O_TC1]->value = 1;
+        output_ids[O_TC1]->update = 1;
        }
        break;
       case I_TC2:
        {
         p_KEY2 = 1;
+        output_ids[O_TC2]->value = 1;
+        output_ids[O_TC2]->update = 1;
        }
        break;
       case I_TC3:
        {
         p_KEY3 = 1;
+        output_ids[O_TC3]->value = 1;
+        output_ids[O_TC3]->update = 1;
        }
        break;
 
       case I_TC4:
        {
         p_KEY4 = 1;
+        output_ids[O_TC4]->value = 1;
+        output_ids[O_TC4]->update = 1;
        }
        break;
       case I_TC5:
        {
         p_KEY5 = 1;
+        output_ids[O_TC5]->value = 1;
+        output_ids[O_TC5]->update = 1;
        }
        break;
       case I_TC6:
        {
         p_KEY6 = 1;
+        output_ids[O_TC6]->value = 1;
+        output_ids[O_TC6]->update = 1;
        }
        break;
 
       case I_TC7:
        {
         p_KEY7 = 1;
+        output_ids[O_TC7]->value = 1;
+        output_ids[O_TC7]->update = 1;
        }
        break;
       case I_TC8:
        {
         p_KEY8 = 1;
+        output_ids[O_TC8]->value = 1;
+        output_ids[O_TC8]->update = 1;
        }
        break;
       case I_TC9:
        {
         p_KEY9 = 1;
+        output_ids[O_TC9]->value = 1;
+        output_ids[O_TC9]->update = 1;
        }
        break;
 
       case I_TCA:
        {
         p_KEY10 = 1;
+        output_ids[O_TCA]->value = 1;
+        output_ids[O_TCA]->update = 1;
        }
        break;
       case I_TC0:
        {
         p_KEY11 = 1;
+        output_ids[O_TC0]->value = 1;
+        output_ids[O_TC0]->update = 1;
        }
        break;
       case I_TCT:
        {
         p_KEY12 = 1;
+        output_ids[O_TCT]->value = 1;
+        output_ids[O_TCT]->update = 1;
        }
        break;
       case I_VIEW:
@@ -798,64 +851,88 @@ cboard_K16F::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
       case I_TC1:
        {
         p_KEY1 = 0;
+        output_ids[O_TC1]->value = 0;
+        output_ids[O_TC1]->update = 1;
        }
        break;
       case I_TC4:
        {
         p_KEY4 = 0;
+        output_ids[O_TC4]->value = 0;
+        output_ids[O_TC4]->update = 1;
        }
        break;
       case I_TC7:
        {
         p_KEY7 = 0;
+        output_ids[O_TC7]->value = 0;
+        output_ids[O_TC7]->update = 1;
        }
        break;
       case I_TCA:
        {
         p_KEY10 = 0;
+        output_ids[O_TCA]->value = 0;
+        output_ids[O_TCA]->update = 1;
        }
        break;
 
       case I_TC2:
        {
         p_KEY2 = 0;
+        output_ids[O_TC2]->value = 0;
+        output_ids[O_TC2]->update = 1;
        }
        break;
 
       case I_TC5:
        {
         p_KEY5 = 0;
+        output_ids[O_TC5]->value = 0;
+        output_ids[O_TC5]->update = 1;
        }
        break;
 
       case I_TC8:
        {
         p_KEY8 = 0;
+        output_ids[O_TC8]->value = 0;
+        output_ids[O_TC8]->update = 1;
        }
        break;
 
       case I_TC0:
        {
         p_KEY11 = 0;
+        output_ids[O_TC0]->value = 0;
+        output_ids[O_TC0]->update = 1;
        }
        break;
 
       case I_TC3:
        {
         p_KEY3 = 0;
+        output_ids[O_TC3]->value = 0;
+        output_ids[O_TC3]->update = 1;
        }
        break;
       case I_TC6:
        {
         p_KEY6 = 0;
+        output_ids[O_TC6]->value = 0;
+        output_ids[O_TC6]->update = 1;
        }
       case I_TC9:
        {
         p_KEY9 = 0;
+        output_ids[O_TC9]->value = 0;
+        output_ids[O_TC9]->update = 1;
        }
       case I_TCT:
        {
         p_KEY12 = 0;
+        output_ids[O_TCT]->value = 0;
+        output_ids[O_TCT]->update = 1;
        }
        break;
       }
@@ -1021,6 +1098,19 @@ cboard_K16F::get_out_id(char * name)
  if (strcmp (name, "LD_LPWR") == 0)return O_LPWR;
  if (strcmp (name, "DS_LCD") == 0)return O_LCD;
  if (strcmp (name, "PB_RST") == 0)return O_RST;
+
+ if (strcmp (name, "KB_TC1") == 0)return O_TC1;
+ if (strcmp (name, "KB_TC2") == 0)return O_TC2;
+ if (strcmp (name, "KB_TC3") == 0)return O_TC3;
+ if (strcmp (name, "KB_TC4") == 0)return O_TC4;
+ if (strcmp (name, "KB_TC5") == 0)return O_TC5;
+ if (strcmp (name, "KB_TC6") == 0)return O_TC6;
+ if (strcmp (name, "KB_TC7") == 0)return O_TC7;
+ if (strcmp (name, "KB_TC8") == 0)return O_TC8;
+ if (strcmp (name, "KB_TC9") == 0)return O_TC9;
+ if (strcmp (name, "KB_TC*") == 0)return O_TCA;
+ if (strcmp (name, "KB_TC0") == 0)return O_TC0;
+ if (strcmp (name, "KB_TC#") == 0)return O_TCT;
 
  if (strcmp (name, "IC_CPU") == 0)return O_MP;
 

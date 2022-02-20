@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2019-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2019-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 /* outputs */
 enum
 {
+ O_K1, O_K2, O_K3, O_KA, O_K4, O_K5, O_K6, O_KB, O_K7, O_K8, O_K9, O_KC, O_Ka, O_K0, O_KT, O_KD,
  O_L1, O_L2, O_L3, O_L4, O_C1, O_C2, O_C3, O_C4, O_C5
 };
 
@@ -287,6 +288,7 @@ cpart_keypad::Draw(void)
       case O_C3:
       case O_C4:
       case O_C5:
+      {
        canvas.SetColor (49, 61, 99);
        canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
        canvas.SetFgColor (255, 255, 255);
@@ -300,6 +302,30 @@ cpart_keypad::Draw(void)
         canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90.0);
        else
         canvas.RotatedText (Window5.GetPinName (output_pins[id]), output[i].x1, output[i].y2, 90.0);
+       }
+       break;
+       case O_K1 ... O_KD:
+         if(output[i].value)
+         {
+           canvas.SetLineWidth(4);
+           canvas.SetColor (255, 255, 0);
+         }
+         else
+         {
+          canvas.SetLineWidth(6);
+          if((output[i].id == O_Ka)||(output[i].id == O_KT)|| !((output[i].id + 1) % 4 ))
+          {
+           canvas.SetColor (190, 46, 37);    
+          } 
+          else
+          {
+            canvas.SetColor (50, 118, 179);
+          }  
+         }
+
+         canvas.Rectangle (0, output[i].x1 + 5, output[i].y1 + 5, output[i].x2 - output[i].x1 -10,
+                            output[i].y2 - output[i].y1 - 10 );
+         canvas.SetLineWidth(1);                    
        break;
       }
     }
@@ -383,45 +409,77 @@ cpart_keypad::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       {
       case I_K1: keys[0][0] = 1;
        keys2[0][0] = 1;
+       output_ids[O_K1]->value = 1;
+       output_ids[O_K1]->update = 1;
        break;
       case I_K2: keys[0][1] = 1;
        keys2[0][1] = 1;
+       output_ids[O_K2]->value = 1;
+       output_ids[O_K2]->update = 1;
        break;
       case I_K3: keys[0][2] = 1;
        keys2[0][2] = 1;
+       output_ids[O_K3]->value = 1;
+       output_ids[O_K3]->update = 1;
        break;
       case I_KA: keys[0][3] = 1;
+       output_ids[O_KA]->value = 1;
+       output_ids[O_KA]->update = 1;
        break;
       case I_K4: keys[1][0] = 1;
        keys2[0][3] = 1;
+       output_ids[O_K4]->value = 1;
+       output_ids[O_K4]->update = 1;
        break;
       case I_K5: keys[1][1] = 1;
        keys2[0][4] = 1;
+       output_ids[O_K5]->value = 1;
+       output_ids[O_K5]->update = 1;
        break;
       case I_K6: keys[1][2] = 1;
        keys2[1][0] = 1;
+       output_ids[O_K6]->value = 1;
+       output_ids[O_K6]->update = 1;
        break;
       case I_KB: keys[1][3] = 1;
+       output_ids[O_KB]->value = 1;
+       output_ids[O_KB]->update = 1;
        break;
       case I_K7: keys[2][0] = 1;
        keys2[1][1] = 1;
+       output_ids[O_K7]->value = 1;
+       output_ids[O_K7]->update = 1;
        break;
       case I_K8: keys[2][1] = 1;
        keys2[1][2] = 1;
+       output_ids[O_K8]->value = 1;
+       output_ids[O_K8]->update = 1;
        break;
       case I_K9: keys[2][2] = 1;
        keys2[1][3] = 1;
+       output_ids[O_K9]->value = 1;
+       output_ids[O_K9]->update = 1;
        break;
       case I_KC: keys[2][3] = 1;
+       output_ids[O_KC]->value = 1;
+       output_ids[O_KC]->update = 1;
        break;
       case I_Ka: keys[3][0] = 1;
+       output_ids[O_Ka]->value = 1;
+       output_ids[O_Ka]->update = 1;
        break;
       case I_K0: keys[3][1] = 1;
        keys2[1][4] = 1;
+       output_ids[O_K0]->value = 1;
+       output_ids[O_K0]->update = 1;
        break;
       case I_KT: keys[3][2] = 1;
+       output_ids[O_KT]->value = 1;
+       output_ids[O_KT]->update = 1;
        break;
       case I_KD: keys[3][3] = 1;
+       output_ids[O_KD]->value = 1;
+       output_ids[O_KD]->update = 1;
        break;
       }
     }
@@ -441,45 +499,77 @@ cpart_keypad::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
       {
       case I_K1: keys[0][0] = 0;
        keys2[0][0] = 0;
+       output_ids[O_K1]->value = 0;
+       output_ids[O_K1]->update = 1;
        break;
       case I_K2: keys[0][1] = 0;
        keys2[0][1] = 0;
+       output_ids[O_K2]->value = 0;
+       output_ids[O_K2]->update = 1;
        break;
       case I_K3: keys[0][2] = 0;
        keys2[0][2] = 0;
+       output_ids[O_K3]->value = 0;
+       output_ids[O_K3]->update = 1;
        break;
       case I_KA: keys[0][3] = 0;
+       output_ids[O_KA]->value = 0;
+       output_ids[O_KA]->update = 1;
        break;
       case I_K4: keys[1][0] = 0;
        keys2[0][3] = 0;
+       output_ids[O_K4]->value = 0;
+       output_ids[O_K4]->update = 1; 
        break;
       case I_K5: keys[1][1] = 0;
        keys2[0][4] = 0;
+       output_ids[O_K5]->value = 0;
+       output_ids[O_K5]->update = 1;
        break;
       case I_K6: keys[1][2] = 0;
        keys2[1][0] = 0;
+       output_ids[O_K6]->value = 0;
+       output_ids[O_K6]->update = 1;
        break;
       case I_KB: keys[1][3] = 0;
+       output_ids[O_KB]->value = 0;
+       output_ids[O_KB]->update = 1;
        break;
       case I_K7: keys[2][0] = 0;
        keys2[1][1] = 0;
+       output_ids[O_K7]->value = 0;
+       output_ids[O_K7]->update = 1;
        break;
       case I_K8: keys[2][1] = 0;
+       output_ids[O_K8]->value = 0;
+       output_ids[O_K8]->update = 1;
        keys2[1][2] = 0;
        break;
       case I_K9: keys[2][2] = 0;
        keys2[1][3] = 0;
+       output_ids[O_K9]->value = 0;
+       output_ids[O_K9]->update = 1;
        break;
       case I_KC: keys[2][3] = 0;
+       output_ids[O_KC]->value = 0;
+       output_ids[O_KC]->update = 1;
        break;
       case I_Ka: keys[3][0] = 0;
+       output_ids[O_Ka]->value = 0;
+       output_ids[O_Ka]->update = 1;
        break;
       case I_K0: keys[3][1] = 0;
        keys2[1][4] = 0;
+       output_ids[O_K0]->value = 0;
+       output_ids[O_K0]->update = 1;
        break;
       case I_KT: keys[3][2] = 0;
+       output_ids[O_KT]->value = 0;
+       output_ids[O_KT]->update = 1;
        break;
       case I_KD: keys[3][3] = 0;
+       output_ids[O_KD]->value = 0;
+       output_ids[O_KD]->update = 1;
        break;
       }
     }
@@ -527,6 +617,26 @@ cpart_keypad::get_out_id(char * name)
  if (strcmp (name, "PN_C3") == 0)return O_C3;
  if (strcmp (name, "PN_C4") == 0)return O_C4;
  if (strcmp (name, "PN_C5") == 0)return O_C5;
+
+ if (strcmp (name, "KB_1") == 0)return O_K1;
+ if (strcmp (name, "KB_2") == 0)return O_K2;
+ if (strcmp (name, "KB_3") == 0)return O_K3;
+ if (strcmp (name, "KB_A") == 0)return O_KA;
+
+ if (strcmp (name, "KB_4") == 0)return O_K4;
+ if (strcmp (name, "KB_5") == 0)return O_K5;
+ if (strcmp (name, "KB_6") == 0)return O_K6;
+ if (strcmp (name, "KB_B") == 0)return O_KB;
+
+ if (strcmp (name, "KB_7") == 0)return O_K7;
+ if (strcmp (name, "KB_8") == 0)return O_K8;
+ if (strcmp (name, "KB_9") == 0)return O_K9;
+ if (strcmp (name, "KB_C") == 0)return O_KC;
+
+ if (strcmp (name, "KB_a") == 0)return O_Ka;
+ if (strcmp (name, "KB_0") == 0)return O_K0;
+ if (strcmp (name, "KB_T") == 0)return O_KT;
+ if (strcmp (name, "KB_D") == 0)return O_KD;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
