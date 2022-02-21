@@ -253,6 +253,7 @@ font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  unlink (mi2c_tmp_name);
  strncat (mi2c_tmp_name, ".txt", 200);
 
+ SWBounce_init(&bounce, 4);
 }
 
 cboard_McLab2::~cboard_McLab2(void)
@@ -272,6 +273,8 @@ cboard_McLab2::~cboard_McLab2(void)
  Window1.DestroyChild (label4);
 
  unlink (mi2c_tmp_name);
+
+ SWBounce_end(&bounce);
 }
 
 void
@@ -678,12 +681,13 @@ cboard_McLab2::Run_CPU(void)
  unsigned char pi, pj;
  unsigned char pinv;
  const picpin * pins;
+ int bret;
+ 
  unsigned int alm[40]; //luminosidade media
  unsigned int alm1[40]; //luminosidade media display
  unsigned int alm2[40]; //luminosidade media display
  unsigned int alm3[40]; //luminosidade media display
  unsigned int alm4[40]; //luminosidade media display     
-
 
  const int JUMPSTEPS = Window1.GetJUMPSTEPS ();
  const long int NSTEPJ = Window1.GetNSTEPJ ();
@@ -700,6 +704,18 @@ cboard_McLab2::Run_CPU(void)
 
  if (use_spare)Window5.PreProcess ();
 
+ unsigned char p_BT_[4];
+ memcpy(p_BT_, p_BT, 4);
+
+ SWBounce_prepare(&bounce, Window1.GetBoard ()->MGetInstClockFreq ());
+ for(int pl=0; pl < 4; pl++)
+ {
+   if ((pins[33+pl - 1].dir == PD_IN)&&(pins[33+pl - 1].value != p_BT_[pl]))
+   {
+     SWBounce_bounce(&bounce, pl);
+   }
+ }
+
  j = JUMPSTEPS;
  pi = 0;
  if (Window1.Get_mcupwr ())
@@ -711,10 +727,13 @@ cboard_McLab2::Run_CPU(void)
      {
       pic_set_pin (pic.mclr, p_RST);
 
-      pic_set_pin (33, p_BT[0]);
-      pic_set_pin (34, p_BT[1]);
-      pic_set_pin (35, p_BT[2]);
-      pic_set_pin (36, p_BT[3]);
+      if(!bounce.do_bounce)
+      { 
+       pic_set_pin (33, p_BT_[0]);
+       pic_set_pin (34, p_BT_[1]);
+       pic_set_pin (35, p_BT_[2]);
+       pic_set_pin (36, p_BT_[3]);
+      }
 
       rpmc++;
       if (rpmc > rpmstp)
@@ -723,6 +742,28 @@ cboard_McLab2::Run_CPU(void)
         pic_set_pin (15, !pic_get_pin (15));
        }
      }
+
+      if(bounce.do_bounce)
+      {
+       bret = SWBounce_process(&bounce); 
+       if (bret)
+       {
+        for(int pl=0; pl < 4; pl++)
+        {
+         if (bounce.bounce[pl])
+         {
+          if (bret == 1)
+          {
+           pic_set_pin (33+pl, !pins[33+pl - 1].value);
+          }
+         else
+          {
+           pic_set_pin (33+pl, p_BT_[pl]);
+          }
+         }
+        }
+       }
+      }
 
     if (!mplabxd_testbp ())pic_step ();
     ioupdated = pic.ioupdated;

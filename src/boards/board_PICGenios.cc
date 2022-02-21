@@ -240,6 +240,8 @@ font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  close (mkstemp (mi2c_tmp_name));
  unlink (mi2c_tmp_name);
  strncat (mi2c_tmp_name, ".txt", 200);
+
+ SWBounce_init(&bounce, 7);
 }
 
 cboard_PICGenios::~cboard_PICGenios(void)
@@ -269,6 +271,8 @@ cboard_PICGenios::~cboard_PICGenios(void)
  Window1.DestroyChild (combo1);
 
  unlink (mi2c_tmp_name);
+
+ SWBounce_end(&bounce);
 }
 
 void
@@ -818,6 +822,7 @@ cboard_PICGenios::Run_CPU(void)
  unsigned char pi, pj;
  unsigned char pinv;
  const picpin * pins;
+ int bret;
 
  unsigned int alm[40]; //luminosidade media
  unsigned int alm1[40]; //luminosidade media display
@@ -839,7 +844,22 @@ cboard_PICGenios::Run_CPU(void)
  memset (alm4, 0, 40 * sizeof (unsigned int));
 
  pins = pic.pins;
+ 
+ unsigned char p_BT_[7];
+ memcpy(p_BT_, p_BT, 7);
 
+ SWBounce_prepare(&bounce, Window1.GetBoard ()->MGetInstClockFreq ());
+ for(int pl=0; pl < 6; pl++)
+ {
+  if ((pins[33+pl - 1].dir == PD_IN)&&(pins[33+pl - 1].value != p_BT_[pl]))
+  {
+    SWBounce_bounce(&bounce, pl);
+  }
+ }
+ if ((pins[7 - 1].dir == PD_IN)&&(pins[7 - 1].value != p_BT_[6]))
+ {
+   SWBounce_bounce(&bounce, 6);
+ }
 
  j = JUMPSTEPS;
  pi = 0;
@@ -851,15 +871,17 @@ cboard_PICGenios::Run_CPU(void)
      {
 
       pic_set_pin (pic.mclr, p_RST);
-
-      pic_set_pin (33, p_BT[0]);
-      pic_set_pin (34, p_BT[1]);
-      pic_set_pin (35, p_BT[2]);
-      pic_set_pin (36, p_BT[3]);
-      pic_set_pin (37, p_BT[4]);
-      pic_set_pin (38, p_BT[5]);
-      pic_set_pin (7, p_BT[6]);
-
+      
+      if(!bounce.do_bounce)
+      { 
+       pic_set_pin (33, p_BT_[0]);
+       pic_set_pin (34, p_BT_[1]);
+       pic_set_pin (35, p_BT_[2]);
+       pic_set_pin (36, p_BT_[3]);
+       pic_set_pin (37, p_BT_[4]);
+       pic_set_pin (38, p_BT_[5]);
+       pic_set_pin (7, p_BT_[6]);
+      }
       pic_set_pin (39, 1);
       pic_set_pin (40, 1);
 
@@ -873,7 +895,6 @@ cboard_PICGenios::Run_CPU(void)
       pic_set_pin(29,1);
       pic_set_pin(30,1);
        */
-
 
       //keyboard 
 
@@ -961,9 +982,40 @@ cboard_PICGenios::Run_CPU(void)
        }
       else
        pic_set_pin (15, 0);
-
-
      }
+
+     if(bounce.do_bounce)
+      {
+        bret = SWBounce_process(&bounce); 
+        if (bret)
+        {
+          for(int pl=0; pl < 6; pl++)
+          {
+            if (bounce.bounce[pl])
+            { 
+              if (bret == 1)
+              {
+                pic_set_pin (33+pl, !pins[33+pl - 1].value);
+              }
+              else
+              {
+                pic_set_pin (33+pl, p_BT_[pl]);
+              }
+            }
+           }
+          if (bounce.bounce[6])
+          { 
+            if (bret == 1)
+            {
+              pic_set_pin (7, !pins[7 - 1].value);
+            }
+           else
+            {
+              pic_set_pin (7, p_BT_[6]);
+            }
+          }
+        }
+      }
 
     if (!mplabxd_testbp ())pic_step ();
     ioupdated = pic.ioupdated;

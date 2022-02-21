@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -46,6 +46,7 @@ cpart_switches::cpart_switches(unsigned x, unsigned y)
  X = x;
  Y = y;
  ReadMaps ();
+ aways_update = 1;
 
  lxImage image (&Window5);
  image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
@@ -73,6 +74,8 @@ cpart_switches::cpart_switches(unsigned x, unsigned y)
  output_value[5] = 0;
  output_value[6] = 0;
  output_value[7] = 0;
+
+ SWBounce_init(&bounce, 8);
 
  RegisterRemoteControl ();
 }
@@ -140,6 +143,7 @@ cpart_switches::~cpart_switches(void)
 {
  delete Bitmap;
  canvas.Destroy ();
+ SWBounce_end(&bounce);
 }
 
 void
@@ -209,17 +213,49 @@ cpart_switches::Draw(void)
 void
 cpart_switches::PreProcess(void)
 {
+ const picpin * ppins = Window5.GetPinsValues ();
 
- if (output_pins[0] > 0)Window5.SetPin (output_pins[0], output_value[0]);
- if (output_pins[1] > 0)Window5.SetPin (output_pins[1], output_value[1]);
- if (output_pins[2] > 0)Window5.SetPin (output_pins[2], output_value[2]);
- if (output_pins[3] > 0)Window5.SetPin (output_pins[3], output_value[3]);
- if (output_pins[4] > 0)Window5.SetPin (output_pins[4], output_value[4]);
- if (output_pins[5] > 0)Window5.SetPin (output_pins[5], output_value[5]);
- if (output_pins[6] > 0)Window5.SetPin (output_pins[6], output_value[6]);
- if (output_pins[7] > 0)Window5.SetPin (output_pins[7], output_value[7]);
+ SWBounce_prepare(&bounce, Window1.GetBoard ()->MGetInstClockFreq ());
+
+ for (int i = 0; i < 8; i++)
+  {
+   if (output_pins[i])
+    {
+     if ((ppins[ output_pins[i] - 1].dir == PD_IN)&&(ppins[ output_pins[i] - 1].value != output_value[i]))
+      {
+       SWBounce_bounce(&bounce, i);
+      }
+    }
+  }
 
 }
+
+
+void
+cpart_switches::Process(void)
+{
+   const int ret = SWBounce_process(&bounce); 
+   if (ret)
+    {
+     const picpin * ppins = Window5.GetPinsValues ();
+
+     for (int i = 0; i < 8; i++)
+      {
+       if (bounce.bounce[i])
+        {
+         if (ret == 1)
+          {
+           Window5.SetPin (output_pins[i], !ppins[output_pins[i] - 1].value);
+          }
+         else
+          {
+           Window5.SetPin (output_pins[i], output_value[i]);
+          }
+        }
+      }
+    }
+}
+
 
 void
 cpart_switches::EvMouseButtonPress(uint button, uint x, uint y, uint state)

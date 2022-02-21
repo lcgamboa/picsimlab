@@ -1,7 +1,7 @@
 ### TODOs
 | Filename | line # | TODO
 |:------|:------:|:------
-| [src/picsimlab1.cc](src/picsimlab1.cc#L586) | 586 | verify initialization errors
+| [src/picsimlab1.cc](src/picsimlab1.cc#L584) | 584 | verify initialization errors
 | [src/picsimlab4.cc](src/picsimlab4.cc#L745) | 745 | select the better mode for channel trigguer
 | [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L116) | 116 | jumper support
 | [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L68) | 68 | TEMP cooler must don't work with AQUE=0
@@ -22,8 +22,8 @@
 | [src/devices/rtc_ds1307.cc](src/devices/rtc_ds1307.cc#L325) | 325 | int output
 | [src/devices/rtc_pfc8563.cc](src/devices/rtc_pfc8563.cc#L329) | 329 | int output and countdown timer
 | [src/parts/part_IO_MCP23S17.cc](src/parts/part_IO_MCP23S17.cc#L497) | 497 | only write support implemented
-| [src/parts/part_VCD_Dump.cc](src/parts/part_VCD_Dump.cc#L114) | 114 | add support to remote control
-| [src/parts/part_VCD_Dump_an.cc](src/parts/part_VCD_Dump_an.cc#L112) | 112 | add support to remote control
+| [src/parts/part_VCD_Dump.cc](src/parts/part_VCD_Dump.cc#L107) | 107 | add support to remote control
+| [src/parts/part_VCD_Dump_an.cc](src/parts/part_VCD_Dump_an.cc#L106) | 106 | add support to remote control
 | [src/parts/part_VCD_Play.cc](src/parts/part_VCD_Play.cc#L97) | 97 | add support to remote control
 | [src/parts/part_dcmotor.cc](src/parts/part_dcmotor.cc#L221) | 221 | Add transfer funcion of dc motor
 | [src/parts/part_ds1621.cc](src/parts/part_ds1621.cc#L312) | 312 | set addr
@@ -32,7 +32,7 @@
 ### FIXMEs
 | Filename | line # | FIXME
 |:------|:------:|:------
-| [src/picsimlab1.cc](src/picsimlab1.cc#L849) | 849 | remote control disabled
+| [src/picsimlab1.cc](src/picsimlab1.cc#L847) | 847 | remote control disabled
 | [src/boards/board_uCboard.cc](src/boards/board_uCboard.cc#L346) | 346 | NSTEP must be multiplied for 4
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1523) | 1523 | avr CONFIG size
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L118) | 118 | only for BANK=0;

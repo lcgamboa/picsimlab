@@ -2,6 +2,8 @@
 
 ### New
 
+* Bounce effect added to Switches part and boards McLab1, McLab2, X and PICGenios. [lcgamboa]
+
 * LCD HD44780 support to read in 4bits mode. [lcgamboa]
 
 * Support to RAM data write/read breakpoints for PIC16F/18F added. [lcgamboa]
@@ -31,6 +33,12 @@
 * Oscilloscope support to show measures in screen added. [lcgamboa]
 
 ### Changes
+
+* Use system default application to open the serial terminal. [lcgamboa]
+
+* Disable autosave workspace for online version. [lcgamboa]
+
+* IO PCF8574 I2C expander support to read pins added. [lcgamboa]
 
 * Debian changelog updated. [lcgamboa]
 

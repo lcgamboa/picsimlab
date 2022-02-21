@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 
 #include<lxrad.h>
 #include"part.h"
+#include"../devices/swbounce.h"
 
 #define	PART_SWITCHES_Name "Switches"
 
@@ -40,6 +41,7 @@ class cpart_switches:public part
       ~cpart_switches(void);
       void Draw(void) override;
       void PreProcess(void) override;
+      void Process(void) override;
       void Reset(void) override; 
       void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
       void ConfigurePropertiesWindow(CPWindow *  WProp) override;
@@ -53,6 +55,7 @@ class cpart_switches:public part
       unsigned char output_pins[8];   
       unsigned char output_value[8];
       lxFont font;
+      SWBounce_t bounce;
 };
 
 

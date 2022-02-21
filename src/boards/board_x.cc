@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2015-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -159,6 +159,8 @@ font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  label3->SetText (lxT ("RB1"));
  label3->SetAlign (1);
  Window1.CreateChild (label3);
+
+ SWBounce_init(&bounce, 2);
 }
 
 //Destructor called once on board destruction 
@@ -170,6 +172,7 @@ cboard_x::~cboard_x(void)
  Window1.DestroyChild (gauge2);
  Window1.DestroyChild (label2);
  Window1.DestroyChild (label3);
+ SWBounce_end(&bounce);
 }
 
 //Reset board status
@@ -641,7 +644,8 @@ cboard_x::Run_CPU(void)
  unsigned char pi;
  const picpin * pins;
  unsigned int alm[40];
-
+ int bret;
+ 
  const int JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
  const long int NSTEP = Window1.GetNSTEP (); //number of steps in 100ms
  const float RNSTEP = 200.0 * pic.PINCOUNT / NSTEP;
@@ -655,6 +659,20 @@ cboard_x::Run_CPU(void)
  //Spare parts window pre process
  if (use_spare)Window5.PreProcess ();
 
+ SWBounce_prepare(&bounce, Window1.GetBoard ()->MGetInstClockFreq ());
+ 
+ unsigned char p_BT1_ = p_BT1; 
+ unsigned char p_BT2_ = p_BT2; 
+
+ if ((pins[19 - 1].dir == PD_IN)&&(pins[19 - 1].value != p_BT1_))
+ {
+   SWBounce_bounce(&bounce, 0);
+ }
+ if ((pins[20 - 1].dir == PD_IN)&&(pins[20 - 1].value != p_BT2_))
+ {
+   SWBounce_bounce(&bounce, 1);
+ }
+
  j = JUMPSTEPS; //step counter
  pi = 0;
  if (Window1.Get_mcupwr ()) //if powered
@@ -664,8 +682,41 @@ cboard_x::Run_CPU(void)
     if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
      {
       pic_set_pin (pic.mclr, p_RST);
-      pic_set_pin (19, p_BT1); //Set pin 19 (RD0) with button state 
-      pic_set_pin (20, p_BT2); //Set pin 20 (RD1) with switch state 
+      if(!bounce.do_bounce)
+      {
+       pic_set_pin (19, p_BT1_); //Set pin 19 (RD0) with button state 
+       pic_set_pin (20, p_BT2_); //Set pin 20 (RD1) with switch state 
+      }
+     }
+
+     if(bounce.do_bounce)
+     {
+       bret = SWBounce_process(&bounce); 
+       if (bret)
+       {
+       if (bounce.bounce[0])
+        {
+         if (bret == 1)
+          {
+           pic_set_pin (19, !pins[19 - 1].value);
+          }
+         else
+          {
+           pic_set_pin (19, p_BT1_);
+          }
+        }
+        if (bounce.bounce[1])
+        {
+         if (bret == 1)
+          {
+           pic_set_pin (20, !pins[20 - 1].value);
+          }
+         else
+          {
+           pic_set_pin (20, p_BT2_);
+          }
+        }
+       }
      }
 
     //verify if a breakpoint is reached if not run one instruction 

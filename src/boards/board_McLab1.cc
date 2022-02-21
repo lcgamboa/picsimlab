@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -118,12 +118,14 @@ font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  label1->SetText (lxT ("LAMP"));
  label1->SetAlign (1);
  Window1.CreateChild (label1);
+ SWBounce_init(&bounce, 4);
 }
 
 cboard_McLab1::~cboard_McLab1(void)
 {
  Window1.DestroyChild (gauge1);
  Window1.DestroyChild (label1);
+ SWBounce_end(&bounce);
 }
 
 void
@@ -385,7 +387,7 @@ cboard_McLab1::Run_CPU(void)
  unsigned int alm[18]; //luminosidade media
  unsigned int alm1[18]; //luminosidade media display
  unsigned int alm2[18]; //luminosidade media display
-
+ int bret; 
 
  const int JUMPSTEPS = Window1.GetJUMPSTEPS ();
  const long int NSTEPJ = Window1.GetNSTEPJ ();
@@ -401,6 +403,28 @@ cboard_McLab1::Run_CPU(void)
 
  if (use_spare)Window5.PreProcess ();
 
+ unsigned char p_BT_[4];
+ memcpy(p_BT_, p_BT, 4);
+
+ SWBounce_prepare(&bounce, Window1.GetBoard ()->MGetInstClockFreq ());
+
+ if ((pins[18 - 1].dir == PD_IN)&&(pins[18 - 1].value != p_BT_[0]))
+ {
+   SWBounce_bounce(&bounce, 0);
+ }
+ if ((pins[1 - 1].dir == PD_IN)&&(pins[1 - 1].value != p_BT_[1]))
+ {
+   SWBounce_bounce(&bounce, 1);
+ }
+ if ((pins[2 - 1].dir == PD_IN)&&(pins[2 - 1].value != p_BT_[2]))
+ {
+   SWBounce_bounce(&bounce, 2);
+ }
+ if ((pins[3 - 1].dir == PD_IN)&&(pins[3 - 1].value != p_BT_[3]))
+ {
+   SWBounce_bounce(&bounce, 3);
+ }
+
  j = JUMPSTEPS;
  pi = 0;
  if (Window1.Get_mcupwr ())
@@ -409,11 +433,66 @@ cboard_McLab1::Run_CPU(void)
     if (j >= JUMPSTEPS)
      {
       pic_set_pin (pic.mclr, p_RST);
-      pic_set_pin (18, p_BT[0]);
-      pic_set_pin (1, p_BT[1]);
-      pic_set_pin (2, p_BT[2]);
-      pic_set_pin (3, p_BT[3]);
+      if(!bounce.do_bounce)
+      {
+        pic_set_pin (18, p_BT_[0]);
+        pic_set_pin (1, p_BT_[1]);
+        pic_set_pin (2, p_BT_[2]);
+        pic_set_pin (3, p_BT_[3]);
+      }
      }
+
+    if(bounce.do_bounce)
+    {
+     bret = SWBounce_process(&bounce); 
+     if (bret)
+     {
+       if (bounce.bounce[0])
+        {
+         if (bret == 1)
+          {
+           pic_set_pin (18, !pins[18 - 1].value);
+          }
+         else
+          {
+           pic_set_pin (18, p_BT_[0]);
+          }
+        }
+        if (bounce.bounce[1])
+        {
+         if (bret == 1)
+          {
+           pic_set_pin (1, !pins[1 - 1].value);
+          }
+         else
+          {
+           pic_set_pin (1, p_BT_[1]);
+          }
+        }
+        if (bounce.bounce[2])
+        {
+         if (bret == 1)
+          {
+           pic_set_pin (2, !pins[2 - 1].value);
+          }
+         else
+          {
+           pic_set_pin (2, p_BT_[2]);
+          }
+        }
+        if (bounce.bounce[3])
+        {
+         if (bret == 1)
+          {
+           pic_set_pin (3, !pins[3 - 1].value);
+          }
+         else
+          {
+           pic_set_pin (3, p_BT_[3]);
+          }
+        }
+      } 
+    }
 
     if (!mplabxd_testbp ())pic_step ();
     ioupdated = pic.ioupdated;

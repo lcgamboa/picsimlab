@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 
 #include<lxrad.h>
 #include "bsim_picsim.h"
+#include"../devices/swbounce.h"
 
 #define	BOARD_McLab1_Name "McLab1"
 
@@ -44,7 +45,8 @@ class cboard_McLab1:public bsim_picsim
      void RegisterRemoteControl(void) override; 
      lxColor color1;
      lxColor color2;
-     lxFont font;     
+     lxFont font;   
+     SWBounce_t bounce;  
    public:
       //Return the board name
       lxString GetName(void) override {return lxT(BOARD_McLab1_Name); };

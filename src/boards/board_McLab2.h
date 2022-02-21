@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 #define	BOARD_McLab2_H
 
 #include "bsim_picsim.h"
+#include"../devices/swbounce.h"
 
 #define	BOARD_McLab2_Name "McLab2"
 
@@ -83,6 +84,7 @@ class cboard_McLab2:public bsim_picsim
     lxColor color1;
     lxColor color2;
     lxFont font;
+    SWBounce_t bounce;
   public:
       //Return the board name
       lxString GetName(void) override {return lxT(BOARD_McLab2_Name); };
