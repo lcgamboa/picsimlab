@@ -8,6 +8,9 @@ cl sudo apt-get update
 cl sudo apt-get -y upgrade
 cl sudo apt-get -y install flatpak flatpak-builder
 
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak install flathub org.freedesktop.Platform//21.08 org.freedesktop.Sdk//21.08 -y
+
 #VERSION="${VERSION_STABLE}"
 VERSION="${VERSION}_${DATE}"
 
