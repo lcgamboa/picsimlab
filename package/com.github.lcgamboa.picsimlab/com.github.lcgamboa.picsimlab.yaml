@@ -1,0 +1,134 @@
+app-id: com.github.lcgamboa.picsimlab
+runtime: org.freedesktop.Platform
+runtime-version: '21.08'
+sdk: org.freedesktop.Sdk
+command: picsimlab
+rename-desktop-file: picsimlab.desktop
+rename-icon: picsimlab
+rename-icon: application-x-picsimlab-workspace  
+finish-args:
+  - --device=dri
+  - --device=all
+  - --filesystem=xdg-documents
+  - --filesystem=home
+  - --filesystem=/tmp/
+  - --persist=.picsimlab
+  - --share=ipc
+  - --share=network  
+  - --socket=x11
+  - --socket=pulseaudio
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - /lib/libwx_gtk3u_adv*
+  - /lib/libwx_baseu_xml*  
+  - /share/man
+  - '*.a'
+  - '*.la'
+modules:
+  - name: picsimlab
+    builddir: true
+    buildsystem: simple
+    build-commands:
+     - make -j$(nproc) CXXFLAGS=-DFLATPAK_TARGET
+     - make install_app DESTDIR=/app 
+    sources:
+      - type: git
+        url: https://github.com/lcgamboa/picsimlab.git 
+        branch: master
+    modules:
+      - name: picsim
+        buildsystem: simple
+        build-commands:
+          - make -j$(nproc)
+          - make install DESTDIR=/app 
+        sources:
+          - type: git
+            url: https://github.com/lcgamboa/picsim.git
+            branch: master  
+      - name: simavr
+        buildsystem: simple
+        build-commands:
+          - make build-simavr -j$(nproc) 
+          - make install-simavr DESTDIR=/app 
+        sources:
+          - type: git
+            url: https://github.com/lcgamboa/simavr.git
+            branch: master  
+      - name: ucsim
+        buildsystem: simple
+        build-commands:
+          - ./configure CFLAGS=-fPIC CXXFLAGS=-fPIC --prefix=/app
+          - make -j$(nproc)
+          - cd picsimlab; make clean; make  
+          - cd picsimlab; make install DESTDIR=/app 
+        sources:
+          - type: git
+            url: https://github.com/lcgamboa/uCsim_picsimlab.git
+            branch: picsimlab 
+      - name: lxrad
+        buildsystem: simple
+        build-commands:
+          - cd lunasvg; mkdir build
+          - cd lunasvg/build;export CXXFLAGS="-fPIC -flto"; export CFLAGS="-fPIC -flto"; cmake ..; make  
+          - ./configure --prefix=/app 
+          - make -j$(nproc) noadv=1
+          - make install DESTDIR=/app noadv=1 
+        sources:
+          - type: git
+            url: https://github.com/lcgamboa/lxrad.git 
+            branch: master
+            #url: https://github.com/lcgamboa/lxrad/archive/refs/tags/v0.8.9.tar.gz
+            #sha256: 63c89cc3253823c20aaaf38543eb5682362b76b187cef86a725e23343ba8b77f
+          - type: archive
+            url: https://github.com/sammycage/lunasvg/archive/refs/tags/v2.3.0.tar.gz  
+            sha256: c1a4faef9bc2f65f8c64a2770c7e10753178e7318b8f6e09b1a4f1a495524e7c
+            dest: lunasvg  
+        modules:
+          - name : wxgtk
+            config-opts:
+              - --disable-precomp-headers
+              - --enable-graphics_ctx
+              - --disable-mediactrl
+              - --enable-unicode
+              - --disable-webview   
+              - --disable-webviewwebkit  
+              - --disable-webviewie
+              - --with-gtk=3
+              - --with-libjpeg=sys
+              - --with-libpng=sys
+              - --with-libtiff=sys
+              - --with-libxpm=sys
+              - --without-opengl
+              - --with-regex=builtin
+              - --disable-stc
+              - --disable-html
+              - --disable-mediactrl
+              - --disable-debugreport
+              - --disable-ribbon
+              - --disable-richtext
+              - --disable-xrc
+              - --disable-propgrid
+              - --disable-calendar
+              - --disable-grid
+              - --disable-joystick
+              - --disable-taskbaricon
+              - --disable-sound
+              - --disable-wizarddlg
+              - --disable-sash
+              - --without-expat
+              - --disable-dialupman
+              - --disable-fs_inet
+              - --disable-url
+              - --disable-ftp
+              - --disable-protocol-ftp
+              - --disable-datepick
+              - --disable-aui
+              - --disable-protocol-http
+              - --disable-ipc
+              - --disable-http     
+            sources:
+              - type: archive
+                url : https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.5/wxWidgets-3.1.5.tar.bz2
+                sha256: d7b3666de33aa5c10ea41bb9405c40326e1aeb74ee725bb88f90f1d50270a224
+
