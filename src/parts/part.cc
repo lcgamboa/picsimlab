@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -341,6 +341,19 @@ part::PointInside(int x, int y, input_t input)
   return 0;
 }
 
+void 
+part::LoadImage(void)
+{
+ lxImage image (&Window5);
+
+ image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+
+ Bitmap = new lxBitmap (&image, &Window5);
+ image.Destroy ();
+ canvas.Destroy ();
+ canvas.Create (Window5.GetWWidget (), Bitmap);
+}
+
 int
 part::GetOrientation(void)
 {
@@ -359,15 +372,8 @@ part::SetOrientation(int orientation)
 
  delete Bitmap;
 
- lxImage image (&Window5);
-
- image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
-
- Bitmap = new lxBitmap (&image, &Window5);
- image.Destroy ();
- canvas.Destroy ();
- canvas.Create (Window5.GetWWidget (), Bitmap);
-
+ LoadImage();
+ 
  for (int i = 0; i < outputc; i++)
   {
    output[i].update = 1;
@@ -393,14 +399,7 @@ part::SetScale(double scale)
 
  delete Bitmap;
 
- lxImage image (&Window5);
-
- image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale, 0, &Scale);
-
- Bitmap = new lxBitmap (&image, &Window5);
- image.Destroy ();
- canvas.Destroy ();
- canvas.Create (Window5.GetWWidget (), Bitmap);
+ LoadImage();
 
  for (int i = 0; i < outputc; i++)
   {
@@ -576,4 +575,10 @@ int
 part::GetAwaysUpdate(void)
 {
  return aways_update;
+}
+
+void 
+part::SetAwaysUpdate(int sau)
+{
+ aways_update = sau;
 }

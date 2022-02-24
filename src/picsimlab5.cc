@@ -166,11 +166,6 @@ CPWindow5::AddPart(const char * partname, const int x, const int y)
   {
    parts[partsc]->SetId (partsc);
    parts[partsc]->SetScale (scale);
-   if (parts[partsc]->GetAwaysUpdate ())
-    {
-     parts_aup[partsc_aup] = parts[partsc];
-     partsc_aup++;
-    }
    partsc++;
   }
 
@@ -516,7 +511,6 @@ CPWindow5::LoadConfig(lxString fname)
  lxStringList prefs;
  int newformat = 0;
 
-
  pboard = Window1.GetBoard ();
 
  for (int i = 0; i < 256; i++)
@@ -615,11 +609,6 @@ CPWindow5::LoadConfig(lxString fname)
         {
          parts[partsc_]->SetOrientation (orient);
          parts[partsc_]->SetScale (scale);
-        }
-       if (parts[partsc_]->GetAwaysUpdate ())
-        {
-         parts_aup[partsc_aup_] = parts[partsc_];
-         partsc_aup_++;
         }
        partsc_++;
       }
@@ -886,9 +875,16 @@ CPWindow5::PreProcess(void)
 
  memset (i2c_bus, 0, PinsCount);
 
+
+ partsc_aup = 0;
  for (i = 0; i < partsc; i++)
   {
    parts[i]->PreProcess ();
+   if (parts[i]->GetAwaysUpdate ())
+    {
+     parts_aup[partsc_aup] = parts[i];
+     partsc_aup++;
+    }
   }
 
  i2c_bus_count = 0;
@@ -907,8 +903,6 @@ void
 CPWindow5::Process(void)
 {
  int i;
-
-
 
  if (ioupdated)
   {
@@ -996,20 +990,10 @@ CPWindow5::pmenu2_Rotate_EvMenuActive(CControl * control)
 void
 CPWindow5::pmenu2_Delete_EvMenuActive(CControl * control)
 {
- int PartSelected_aup = partsc_aup;
  int partsc_ = partsc;
- int partsc_aup_ = partsc_aup;
  partsc = 0; //disable process
- partsc_aup = 0;
-
- for (int i = 0; i < partsc_aup_; i++)
-  {
-   if (parts_aup[i] == parts[PartSelected])
-    {
-     PartSelected_aup = i;
-    }
-  }
-
+ partsc_aup = 0; 
+  
  delete parts[PartSelected];
 
  for (int i = PartSelected; i < partsc_ - 1; i++)
@@ -1018,17 +1002,7 @@ CPWindow5::pmenu2_Delete_EvMenuActive(CControl * control)
   }
  partsc_--;
 
- if (PartSelected_aup < partsc_aup_)
-  {
-   for (int i = PartSelected_aup; i < partsc_aup_ - 1; i++)
-    {
-     parts_aup[i] = parts_aup[i + 1];
-    }
-   partsc_aup_--;
-  }
-
  partsc = partsc_;
- partsc_aup = partsc_aup_;
 
  update_all = 1;
 }

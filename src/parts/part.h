@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -280,7 +280,12 @@ public:
      * @brief  Return coords x y rotated by orientation  
      */
     void RotateCoords(unsigned int * x, unsigned int * y);
-    
+
+    /**
+     * @brief  Load Part Image
+     */
+    virtual void LoadImage(void);
+
     /**
      * @brief  Return the orientation to draw
      */
@@ -322,6 +327,11 @@ public:
      * @brief  Return if part need to be update every clock cycle
      */
     int GetAwaysUpdate(void);
+
+    /**
+     * @brief  Set if part need to be update every clock cycle
+     */
+    void SetAwaysUpdate(int sau);
 
 protected:
 

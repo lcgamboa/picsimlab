@@ -46,7 +46,6 @@ font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  X = x;
  Y = y;
  active = 1;
- aways_update = 1;
  
  ReadMaps ();
 
@@ -247,6 +246,7 @@ cpart_pbuttons::PreProcess(void)
     }
   }
 
+  SetAwaysUpdate(bounce.do_bounce);
 }
 
 void

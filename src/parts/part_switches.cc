@@ -46,7 +46,6 @@ cpart_switches::cpart_switches(unsigned x, unsigned y)
  X = x;
  Y = y;
  ReadMaps ();
- aways_update = 1;
 
  lxImage image (&Window5);
  image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
@@ -227,6 +226,8 @@ cpart_switches::PreProcess(void)
       }
     }
   }
+
+  SetAwaysUpdate(bounce.do_bounce);
 
 }
 
