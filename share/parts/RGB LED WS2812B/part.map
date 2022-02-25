@@ -1,0 +1,14 @@
+<img src="[LED_matrix] (overwritten)" width="104" height="169" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:gamboa          -->
+<area shape="rect" coords="54,13,79,38" href="O_LR_LED" />
+<area shape="rect" coords="12,71,31,119" href="O_PN_F1" />
+<area shape="rect" coords="36,71,54,119" href="O_PN_2" />
+<area shape="rect" coords="60,71,77,119" href="O_PN_F2" />
+<area shape="rect" coords="82,71,99,119" href="O_PN_1" />
+</map>
