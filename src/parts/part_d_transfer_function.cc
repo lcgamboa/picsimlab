@@ -41,13 +41,7 @@ font(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  Y = y;
  ReadMaps ();
 
- lxImage image (&Window5);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
-
- Bitmap = new lxBitmap (&image, &Window5);
- image.Destroy ();
- canvas.Create (Window5.GetWWidget (), Bitmap);
-
+ LoadImage();
 
  input_pin = 0;
  output_pin = 0;

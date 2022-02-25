@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2019-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2019-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -48,14 +48,7 @@ font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  aways_update = 1;
  ReadMaps ();
 
- lxImage image (&Window5);
- image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
-
- Bitmap = new lxBitmap (&image, &Window5);
- image.Destroy ();
-
- canvas.Create (Window5.GetWWidget (), Bitmap);
-
+ LoadImage();
 
  input_pins[0] = 0;
  input_pins[1] = 0;

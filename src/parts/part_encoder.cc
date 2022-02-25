@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -52,13 +52,7 @@ cpart_encoder::cpart_encoder(unsigned x, unsigned y)
 
  ReadMaps ();
 
- lxImage image (&Window5);
- image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
-
- Bitmap = new lxBitmap (&image, &Window5);
- image.Destroy ();
-
- canvas.Create (Window5.GetWWidget (), Bitmap);
+ LoadImage();
 
  p_BTN = 1;
 

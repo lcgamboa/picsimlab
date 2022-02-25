@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -54,8 +54,7 @@ class cpart_LCD_hd44780:public part
       void ConfigurePropertiesWindow(CPWindow *  WProp) override;
       void ReadPropertiesWindow(CPWindow * WProp) override;
       lxString WritePreferences(void) override;
-      void SetOrientation(int orientation) override;
-      void SetScale(double scale) override;
+      void LoadImage(void) override;
       void ReadPreferences(lxString value) override;
       unsigned short get_in_id(char * name) override;
       unsigned short get_out_id(char * name) override;

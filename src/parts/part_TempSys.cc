@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -48,17 +48,12 @@ font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  aways_update = 1;
  ReadMaps ();
 
- lxImage image (&Window5);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
-
- Bitmap = new lxBitmap (&image, &Window5);
- image.Destroy ();
-
- canvas.Create (Window5.GetWWidget (), Bitmap);
+ LoadImage();
 
  vtc = 0;
  vt = 0;
 
+ lxImage image(&Window5);
  image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/VT1.svg")), Orientation, Scale * 0.867, Scale * 0.867);
  vent[0] = new lxBitmap (&image, &Window1);
  image.Destroy ();
@@ -352,26 +347,6 @@ cpart_tempsys::ReadPropertiesWindow(CPWindow * WProp)
  input_pins[3] = atoi (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ());
 }
 
-void
-cpart_tempsys::SetOrientation(int _orientation)
-{
- /*
-  delete vent[0];
-  delete vent[1];
-
-  lxImage image (&Window5);
-
-  image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/VT1.svg"), Orientation, Scale * 0.867, Scale * 0.867);
-  vent[0] = new lxBitmap (&image, &Window1);
-  image.Destroy ();
-
-  image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("boards/Common/VT2.svg"), Orientation, Scale * 0.867, Scale * 0.867);
-  vent[1] = new lxBitmap (&image, &Window1);
-  image.Destroy ();
-  */
- part::SetOrientation (_orientation);
-
-}
 
 part_init(PART_TEMPSYS_Name, cpart_tempsys, "Other");
 

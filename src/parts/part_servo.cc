@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -49,17 +49,10 @@ cpart_servo::cpart_servo(unsigned x, unsigned y)
 
  ReadMaps ();
 
- lxImage image (&Window5);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+ BackGround = NULL;
 
- Bitmap = new lxBitmap (&image, &Window5);
- image.Destroy ();
+ LoadImage();
 
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
- BackGround = new lxBitmap (&image, &Window5);
- image.Destroy ();
-
- canvas.Create (Window5.GetWWidget (), Bitmap);
 }
 
 cpart_servo::~cpart_servo(void)
@@ -243,41 +236,27 @@ cpart_servo::ReadPropertiesWindow(CPWindow * WProp)
 }
 
 void
-cpart_servo::SetOrientation(int orientation)
-{
- if (Orientation == orientation)return;
-
- part::SetOrientation (orientation);
-
- delete BackGround;
-
- lxImage image (&Window5);
-
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
-
- BackGround = new lxBitmap (&image, &Window5);
-
- image.Destroy ();
-}
-
-void
-cpart_servo::SetScale(double scale)
+cpart_servo::LoadImage(void)
 {
 
- if (Scale == scale)return;
-
- part::SetScale (scale);
-
- delete BackGround;
-
  lxImage image (&Window5);
-
  image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
 
- BackGround = new lxBitmap (&image, &Window5);
-
+ Bitmap = new lxBitmap (&image, &Window5);
  image.Destroy ();
-}
+
+ image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+ 
+ if(BackGround)
+ {
+  delete BackGround;
+ }
+ BackGround = new lxBitmap (&image, &Window5);
+ image.Destroy ();
+
+ canvas.Destroy ();
+ canvas.Create (Window5.GetWWidget (), Bitmap);
+ }
 
 //Register the part in PICSimLab spare parts list
 part_init(PART_SERVO_Name, cpart_servo, "Output");

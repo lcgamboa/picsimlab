@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -815,22 +815,14 @@ cpart_LCD_ili9341::ChangeType(unsigned char tp)
 
  if (Bitmap)
   {
-
    delete Bitmap;
-   canvas.Destroy ();
   }
 
  type_com = tp;
 
  ReadMaps ();
 
- lxImage image (&Window5);
- image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
-
- Bitmap = new lxBitmap (&image, &Window5);
- image.Destroy ();
-
- canvas.Create (Window5.GetWWidget (), Bitmap);
+ LoadImage();
 
 }
 

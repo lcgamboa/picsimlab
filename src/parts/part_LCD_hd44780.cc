@@ -36,42 +36,9 @@ enum
 };
 
 void
-cpart_LCD_hd44780::InitGraphics(void)
-{
- lxImage image (&Window5);
-
- switch (model)
-  {
-  case LCD16x2:
-   image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
-   break;
-  case LCD16x4:
-   image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName_ ()), Orientation, Scale, Scale);
-   break;
-  case LCD20x2:
-   image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName__ ()), Orientation, Scale, Scale);
-   break;
-  case LCD20x4:
-   image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName___ ()), Orientation, Scale, Scale);
-   break;
-  }
-
- if (Bitmap)delete Bitmap;
-
- Bitmap = new lxBitmap (&image, &Window5);
- canvas.Destroy ();
- canvas.Create (Window5.GetWWidget (), Bitmap);
- image.Destroy ();
- for (int i = 0; i < outputc; i++)
-  {
-   output[i].update = 1;
-  }
-}
-
-void
 cpart_LCD_hd44780::Reset(void)
 {
- InitGraphics ();
+ LoadImage ();
 
  switch (model)
   {
@@ -512,20 +479,38 @@ cpart_LCD_hd44780::PostProcess(void)
  if (lcd.update)output_ids[O_LCD]->update = 1;
 }
 
-void
-cpart_LCD_hd44780::SetOrientation(int _orientation)
+void 
+cpart_LCD_hd44780::LoadImage(void) 
 {
- part::SetOrientation (_orientation);
- InitGraphics ();
- lcd.update = 1;
-}
+ lxImage image (&Window5);
 
-void
-cpart_LCD_hd44780::SetScale(double scale)
-{
- part::SetScale (scale);
- InitGraphics ();
- lcd.update = 1;
+ switch (model)
+  {
+  case LCD16x2:
+   image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+   break;
+  case LCD16x4:
+   image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName_ ()), Orientation, Scale, Scale);
+   break;
+  case LCD20x2:
+   image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName__ ()), Orientation, Scale, Scale);
+   break;
+  case LCD20x4:
+   image.LoadFile (lxGetLocalFile (Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName___ ()), Orientation, Scale, Scale);
+   break;
+  }
+
+ Bitmap = new lxBitmap (&image, &Window5);
+ canvas.Destroy ();
+ canvas.Create (Window5.GetWWidget (), Bitmap);
+ image.Destroy ();
+
+ for (int i = 0; i < outputc; i++)
+  {
+   output[i].update = 1;
+  }
+  
+  lcd.update = 1;
 }
 
 part_init(PART_LCD_HD44780_Name, cpart_LCD_hd44780, "Output");

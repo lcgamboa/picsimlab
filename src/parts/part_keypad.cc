@@ -239,20 +239,13 @@ cpart_keypad::ChangeType(unsigned char tp)
  if (Bitmap)
   {
    delete Bitmap;
-   canvas.Destroy ();
   }
 
  type = tp;
 
  ReadMaps ();
 
- lxImage image (&Window5);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
-
- Bitmap = new lxBitmap (&image, &Window5);
- image.Destroy ();
-
- canvas.Create (Window5.GetWWidget (), Bitmap);
+ LoadImage();
 
 }
 
