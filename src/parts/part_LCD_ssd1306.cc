@@ -305,16 +305,9 @@ cpart_LCD_ssd1306::PostProcess(void)
 }
 
 void
-cpart_LCD_ssd1306::SetOrientation(int _orientation)
+cpart_LCD_ssd1306::LoadImage(void)
 {
- part::SetOrientation (_orientation);
- lcd_ssd1306_update (&lcd);
-}
-
-void
-cpart_LCD_ssd1306::SetScale(double scale)
-{
- part::SetScale (scale);
+ part::LoadImage();
  lcd_ssd1306_update (&lcd);
 }
 

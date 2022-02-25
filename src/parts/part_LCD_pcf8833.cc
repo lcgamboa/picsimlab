@@ -273,16 +273,9 @@ cpart_LCD_pcf8833::PostProcess(void)
 }
 
 void
-cpart_LCD_pcf8833::SetOrientation(int _orientation)
+cpart_LCD_pcf8833::LoadImage(void)
 {
- part::SetOrientation (_orientation);
- lcd_pcf8833_update (&lcd);
-}
-
-void
-cpart_LCD_pcf8833::SetScale(double scale)
-{
- part::SetScale (scale);
+ part::LoadImage();
  lcd_pcf8833_update (&lcd);
 }
 

@@ -274,18 +274,12 @@ cpart_LCD_pcd8544::PostProcess(void)
 }
 
 void
-cpart_LCD_pcd8544::SetOrientation(int _orientation)
+cpart_LCD_pcd8544::LoadImage(void)
 {
- part::SetOrientation (_orientation);
+ part::LoadImage();
  lcd_pcd8544_update (&lcd);
 }
 
-void
-cpart_LCD_pcd8544::SetScale(double scale)
-{
- part::SetScale (scale);
- lcd_pcd8544_update (&lcd);
-}
 
 part_init(PART_LCD_PCD8544_Name, cpart_LCD_pcd8544, "Output");
 

@@ -897,18 +897,12 @@ cpart_LCD_ili9341::Reset(void)
 }
 
 void
-cpart_LCD_ili9341::SetOrientation(int _orientation)
+cpart_LCD_ili9341::LoadImage(void)
 {
- part::SetOrientation (_orientation);
+ part::LoadImage();
  lcd_ili9341_update (&lcd);
 }
 
-void
-cpart_LCD_ili9341::SetScale(double scale)
-{
- part::SetScale (scale);
- lcd_ili9341_update (&lcd);
-}
 
 part_init(PART_LCD_iLI9341_Name, cpart_LCD_ili9341, "Output");
 
