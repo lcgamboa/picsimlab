@@ -2,6 +2,8 @@
 
 ### New
 
+* New RGB LED WS2812B part added. [lcgamboa]
+
 * Bounce effect added to Switches part and boards McLab1, McLab2, X and PICGenios. [lcgamboa]
 
 * LCD HD44780 support to read in 4bits mode. [lcgamboa]

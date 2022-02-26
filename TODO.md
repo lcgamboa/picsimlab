@@ -21,13 +21,13 @@
 | [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L98) | 98 | display test
 | [src/devices/rtc_ds1307.cc](src/devices/rtc_ds1307.cc#L325) | 325 | int output
 | [src/devices/rtc_pfc8563.cc](src/devices/rtc_pfc8563.cc#L329) | 329 | int output and countdown timer
-| [src/parts/part_IO_MCP23S17.cc](src/parts/part_IO_MCP23S17.cc#L497) | 497 | only write support implemented
-| [src/parts/part_VCD_Dump.cc](src/parts/part_VCD_Dump.cc#L107) | 107 | add support to remote control
-| [src/parts/part_VCD_Dump_an.cc](src/parts/part_VCD_Dump_an.cc#L106) | 106 | add support to remote control
-| [src/parts/part_VCD_Play.cc](src/parts/part_VCD_Play.cc#L97) | 97 | add support to remote control
-| [src/parts/part_dcmotor.cc](src/parts/part_dcmotor.cc#L221) | 221 | Add transfer funcion of dc motor
-| [src/parts/part_ds1621.cc](src/parts/part_ds1621.cc#L312) | 312 | set addr
-| [src/parts/part_ds1621.cc](src/parts/part_ds1621.cc#L325) | 325 | implement Tout output
+| [src/parts/part_IO_MCP23S17.cc](src/parts/part_IO_MCP23S17.cc#L490) | 490 | only write support implemented
+| [src/parts/part_VCD_Dump.cc](src/parts/part_VCD_Dump.cc#L102) | 102 | add support to remote control
+| [src/parts/part_VCD_Dump_an.cc](src/parts/part_VCD_Dump_an.cc#L101) | 101 | add support to remote control
+| [src/parts/part_VCD_Play.cc](src/parts/part_VCD_Play.cc#L89) | 89 | add support to remote control
+| [src/parts/part_dcmotor.cc](src/parts/part_dcmotor.cc#L215) | 215 | Add transfer funcion of dc motor
+| [src/parts/part_ds1621.cc](src/parts/part_ds1621.cc#L306) | 306 | set addr
+| [src/parts/part_ds1621.cc](src/parts/part_ds1621.cc#L319) | 319 | implement Tout output
 
 ### FIXMEs
 | Filename | line # | FIXME
@@ -36,5 +36,5 @@
 | [src/boards/board_uCboard.cc](src/boards/board_uCboard.cc#L346) | 346 | NSTEP must be multiplied for 4
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1523) | 1523 | avr CONFIG size
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L118) | 118 | only for BANK=0;
-| [src/parts/part_dcmotor.cc](src/parts/part_dcmotor.cc#L280) | 280 | on slow speed output is not 90 degrees
-| [src/parts/part_encoder.cc](src/parts/part_encoder.cc#L221) | 221 | on slow speed output is not 90 degrees
+| [src/parts/part_dcmotor.cc](src/parts/part_dcmotor.cc#L274) | 274 | on slow speed output is not 90 degrees
+| [src/parts/part_encoder.cc](src/parts/part_encoder.cc#L215) | 215 | on slow speed output is not 90 degrees
