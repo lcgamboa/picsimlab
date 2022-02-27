@@ -231,6 +231,7 @@ void
 cboard_Xpress::Reset(void)
 {
  pic.pkg = QFN;
+ pic.vcc = 3.3;
 
  pic_reset (1);
 
@@ -656,7 +657,7 @@ cboard_Xpress::Run_CPU(void)
     if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
      {
       //set analog pin 3 (RA4 ANA4) with value from scroll  
-      pic_set_apin (3, (5.0 * pot1 / 199));
+      pic_set_apin (3, (3.3 * pot1 / 199));
 
       j = -1; //reset counter
      }
