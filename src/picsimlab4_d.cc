@@ -718,4 +718,5 @@ CPWindow4::CPWindow4(void)
   measures[3]=0;
   measures[4]=0;
   
+  vmax = 5.0;
 };

@@ -43,6 +43,7 @@ class cboard_Breadboard:public bsim_picsim, public bsim_simavr
       int ptype;
       lxBitmap * micbmp;
       lxFont font;
+      unsigned char jmp[1];  //jumper
    public:
       void SetScale (double scale) override;
       //Return the board name
@@ -59,6 +60,8 @@ class cboard_Breadboard:public bsim_picsim, public bsim_simavr
       void MEraseFlash(void) override;
       void MSetFreq(float freq) override;
       float MGetFreq(void) override;
+      void MSetVCC(float vcc) override;
+      float MGetVCC(void) override;
       float MGetInstClockFreq(void) override;
       int MGetPinCount(void) override;
       lxString MGetPinName(int pin) override;

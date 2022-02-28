@@ -541,6 +541,19 @@ bsim_simavr::MGetFreq(void)
  return avr->frequency;
 }
 
+void 
+bsim_simavr::MSetVCC(float vcc)
+{
+  pic->vcc =vcc * 1000;
+}
+
+float 
+bsim_simavr::MGetVCC(void)
+{
+ return avr->vcc /1000.0;
+}
+
+
 float
 bsim_simavr::MGetInstClockFreq(void)
 {

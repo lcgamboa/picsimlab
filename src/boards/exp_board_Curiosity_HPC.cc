@@ -107,6 +107,8 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void)
  ReadMaps (); //Read input and output board maps
  jmp[0] = 0;
 
+ pic.vcc = 5.0;
+
  pot1 = 100;
 
  active = 0;
@@ -313,7 +315,17 @@ cboard_Curiosity_HPC::Reset(void)
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
+ if(jmp[0]) 
+ {
+   pic.vcc = 3.3;
+ }
+ else
+ {
+   pic.vcc = 5.0;
+ }
+ 
  if (use_spare)Window5.Reset ();
+ if (use_oscope)Window4.Reset();
 
  RegisterRemoteControl ();
 }
@@ -522,6 +534,7 @@ cboard_Curiosity_HPC::EvMouseButtonPress(uint button, uint x, uint y, uint state
        break;
       case I_JMP:
        jmp[0] ^= 0x01;
+       Reset();
        break;
       case I_POT1:
        {

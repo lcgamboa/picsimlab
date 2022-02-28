@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015-2019  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2015-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -99,6 +99,7 @@ cboard_Curiosity::cboard_Curiosity(void)
  ReadMaps (); //Read input and output board maps
  jmp[0] = 0;
 
+ pic.vcc = 5.0;
  pot1 = 100;
 
  active = 0;
@@ -256,7 +257,17 @@ cboard_Curiosity::Reset(void)
   Window1.statusbar1.SetField (2, lxT ("Serial: ") +
                                lxString::FromAscii (SERIALDEVICE) + lxT (" (ERROR)"));
 
+ if(jmp[0]) 
+ {
+   pic.vcc = 5.0;
+ }
+ else
+ {
+   pic.vcc = 3.3;
+ }
+ 
  if (use_spare)Window5.Reset ();
+ if (use_oscope)Window4.Reset();
 
  RegisterRemoteControl ();
 }
@@ -443,6 +454,7 @@ cboard_Curiosity::EvMouseButtonPress(uint button, uint x, uint y, uint state)
        break;
       case I_JMP:
        jmp[0] ^= 0x01;
+       Reset();  
        break;
       case I_POT1:
        {
@@ -711,7 +723,7 @@ cboard_Curiosity::Run_CPU(void)
     if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip 
      {
       //set analog pin 16 (RC0 AN4) with value from scroll  
-      pic_set_apin (16, (5.0 * pot1 / 199));
+      pic_set_apin (16, (pic.vcc * pot1 / 199));
 
       j = -1; //reset counter
      }

@@ -945,6 +945,7 @@ CPWindow5::Reset(void)
   {
    parts[i]->Reset ();
   }
+  update_all = 1;
 }
 
 void

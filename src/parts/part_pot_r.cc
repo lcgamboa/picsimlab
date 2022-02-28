@@ -65,8 +65,9 @@ font_p(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  active[2] = 0;
  active[3] = 0;
 
- RegisterRemoteControl ();
+ vmax = 5.0;
 
+ RegisterRemoteControl ();
 }
 
 void
@@ -96,6 +97,12 @@ cpart_pot_r::~cpart_pot_r(void)
 {
  delete Bitmap;
  canvas.Destroy ();
+}
+
+void 
+cpart_pot_r::Reset(void)
+{
+   vmax = Window1.GetBoard()->MGetVCC();
 }
 
 void
@@ -152,7 +159,7 @@ cpart_pot_r::Draw(void)
 
        canvas.SetColor (49, 61, 99);
        canvas.Rectangle (1, output[i].x1 + 6, output[i].y2 + 6, 30, 15);
-       snprintf (val, 10, "%4.2f", 5.0 * (values[output[i].id - O_PO1]) / 200.0);
+       snprintf (val, 10, "%4.2f", vmax * (values[output[i].id - O_PO1]) / 200.0);
        canvas.SetColor (250, 250, 250);
        canvas.SetFont (font_p);
        canvas.RotatedText (val, output[i].x1 + 6, output[i].y2 + 6, 0);
@@ -170,10 +177,10 @@ cpart_pot_r::Draw(void)
 void
 cpart_pot_r::PreProcess(void)
 {
- Window5.SetAPin (output_pins[0], 5.0 * (values[0]) / 200.0);
- Window5.SetAPin (output_pins[1], 5.0 * (values[1]) / 200.0);
- Window5.SetAPin (output_pins[2], 5.0 * (values[2]) / 200.0);
- Window5.SetAPin (output_pins[3], 5.0 * (values[3]) / 200.0);
+ Window5.SetAPin (output_pins[0], vmax * (values[0]) / 200.0);
+ Window5.SetAPin (output_pins[1], vmax * (values[1]) / 200.0);
+ Window5.SetAPin (output_pins[2], vmax * (values[2]) / 200.0);
+ Window5.SetAPin (output_pins[3], vmax * (values[3]) / 200.0);
 }
 
 void

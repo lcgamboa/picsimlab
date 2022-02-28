@@ -59,6 +59,8 @@ cpart_gamepad_an::cpart_gamepad_an(unsigned x, unsigned y)
 
  output_pins[0] = 0;
 
+ vmax = 5.0;
+
  RegisterRemoteControl ();
 
 }
@@ -93,7 +95,9 @@ void
 cpart_gamepad_an::Reset(void)
 {
  //release all
- output_value_an = active * 5.0;
+ vmax = Window1.GetBoard()->MGetVCC();
+
+ output_value_an = active * vmax;
 
  output_value[0] = 1;
  output_value[1] = 1;
@@ -198,7 +202,7 @@ cpart_gamepad_an::Draw(void)
 void
 cpart_gamepad_an::PreProcess(void)
 {
- output_value_an = 5.0 * active;
+ output_value_an = vmax * active;
 
  if (!output_value[0])
   {
@@ -222,6 +226,12 @@ cpart_gamepad_an::PreProcess(void)
   }
 
  Window5.SetAPin (output_pins[0], output_value_an);
+
+ if(output_value_an != output_value_an_)
+ {
+   output_ids[O_P1]->update = 1;
+ }
+ output_value_an_ = output_value_an;
 }
 
 void
@@ -239,27 +249,22 @@ cpart_gamepad_an::EvMouseButtonPress(uint button, uint x, uint y, uint state)
       case I_B1:
        output_value[0] = 0;
        output_ids[O_B1]->update = 1;
-       output_ids[O_P1]->update = 1;
        break;
       case I_B2:
        output_value[1] = 0;
        output_ids[O_B2]->update = 1;
-       output_ids[O_P1]->update = 1;
        break;
       case I_B3:
        output_value[2] = 0;
        output_ids[O_B3]->update = 1;
-       output_ids[O_P1]->update = 1;
        break;
       case I_B4:
        output_value[3] = 0;
        output_ids[O_B4]->update = 1;
-       output_ids[O_P1]->update = 1;
        break;
       case I_B5:
        output_value[4] = 0;
        output_ids[O_B5]->update = 1;
-       output_ids[O_P1]->update = 1;
        break;
       }
     }
@@ -280,27 +285,22 @@ cpart_gamepad_an::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
       case I_B1:
        output_value[0] = 1;
        output_ids[O_B1]->update = 1;
-       output_ids[O_P1]->update = 1;
        break;
       case I_B2:
        output_value[1] = 1;
        output_ids[O_B2]->update = 1;
-       output_ids[O_P1]->update = 1;
        break;
       case I_B3:
        output_value[2] = 1;
        output_ids[O_B3]->update = 1;
-       output_ids[O_P1]->update = 1;
        break;
       case I_B4:
        output_value[3] = 1;
        output_ids[O_B4]->update = 1;
-       output_ids[O_P1]->update = 1;
        break;
       case I_B5:
        output_value[4] = 1;
        output_ids[O_B5]->update = 1;
-       output_ids[O_P1]->update = 1;
        break;
       }
     }
@@ -317,31 +317,26 @@ cpart_gamepad_an::EvKeyPress(uint key, uint mask)
   case 'i':
    output_value[1] = 0;
    output_ids[O_B2]->update = 1;
-   output_ids[O_P1]->update = 1;
    break;
   case 'J':
   case 'j':
    output_value[3] = 0;
    output_ids[O_B4]->update = 1;
-   output_ids[O_P1]->update = 1;
    break;
   case 'K':
   case 'k':
    output_value[2] = 0;
    output_ids[O_B3]->update = 1;
-   output_ids[O_P1]->update = 1;
    break;
   case 'L':
   case 'l':
    output_value[0] = 0;
    output_ids[O_B1]->update = 1;
-   output_ids[O_P1]->update = 1;
    break;
   case 'O':
   case 'o':
    output_value[4] = 0;
    output_ids[O_B5]->update = 1;
-   output_ids[O_P1]->update = 1;
    break;
   }
 }
@@ -355,31 +350,26 @@ cpart_gamepad_an::EvKeyRelease(uint key, uint mask)
   case 'i':
    output_value[1] = 1;
    output_ids[O_B2]->update = 1;
-   output_ids[O_P1]->update = 1;
    break;
   case 'J':
   case 'j':
    output_value[3] = 1;
    output_ids[O_B4]->update = 1;
-   output_ids[O_P1]->update = 1;
    break;
   case 'K':
   case 'k':
    output_value[2] = 1;
    output_ids[O_B3]->update = 1;
-   output_ids[O_P1]->update = 1;
    break;
   case 'L':
   case 'l':
    output_value[0] = 1;
    output_ids[O_B1]->update = 1;
-   output_ids[O_P1]->update = 1;
    break;
   case 'O':
   case 'o':
    output_value[4] = 1;
    output_ids[O_B5]->update = 1;
-   output_ids[O_P1]->update = 1;
    break;
   }
 }
@@ -427,7 +417,7 @@ void
 cpart_gamepad_an::ReadPreferences(lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu", &output_pins[0], &active);
- output_value_an = active * 5.0;
+ output_value_an = active * vmax;
 }
 
 void

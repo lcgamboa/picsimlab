@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2015-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -34,7 +34,8 @@ enum
 {
  I_ICSP, //ICSP connector
  I_PWR, //Power button
- I_RST //Reset button
+ I_RST, //Reset button
+ I_JMP  //Vcc selection
 };
 
 /* ids of outputs of output map*/
@@ -42,7 +43,8 @@ enum
 {
  O_LPWR, //Power LED
  O_MP, //uController name
- O_RST //Reset button    
+ O_RST, //Reset button   
+ O_JMP  //Vcc selection 
 };
 //return the input ids numbers of names used in input map
 
@@ -52,6 +54,7 @@ cboard_Breadboard::get_in_id(char * name)
  if (strcmp (name, "PG_ICSP") == 0)return I_ICSP;
  if (strcmp (name, "SW_PWR") == 0)return I_PWR;
  if (strcmp (name, "PB_RST") == 0)return I_RST;
+ if (strcmp (name, "JP_1") == 0)return I_JMP;
 
  printf ("Erro input '%s' don't have a valid id! \n", name);
  return -1;
@@ -65,6 +68,7 @@ cboard_Breadboard::get_out_id(char * name)
  if (strcmp (name, "LD_LPWR") == 0)return O_LPWR;
  if (strcmp (name, "IC_CPU") == 0)return O_MP;
  if (strcmp (name, "PB_RST") == 0)return O_RST;
+ if (strcmp (name, "JP_1") == 0)return O_JMP;
 
  printf ("Erro output '%s' don't have a valid id! \n", name);
  return 1;
@@ -76,6 +80,8 @@ cboard_Breadboard::cboard_Breadboard(void) :
 font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
  ptype = _PIC;
+ jmp[0] = 0;
+ pic.vcc = 5.0;
  Proc = "PIC18F4550"; //default microcontroller if none defined in preferences
  ReadMaps (); //Read input and output board maps
 
@@ -141,7 +147,17 @@ cboard_Breadboard::Reset(void)
 
   }
 
+ if(jmp[0]) 
+ {
+   MSetVCC(3.3);
+ }
+ else
+ {
+   MSetVCC(5.0);
+ }
+ 
  if (use_spare)Window5.Reset ();
+ if (use_oscope)Window4.Reset();
 }
 
 //Called ever 1s to refresh status
@@ -230,6 +246,7 @@ cboard_Breadboard::WritePreferences(void)
  //write selected microcontroller of board_x to preferences
  Window1.saveprefs (lxT ("Breadboard_proc"), Proc);
  Window1.saveprefs (lxT ("Breadboard_clock"), lxString ().Format ("%2.1f", Window1.GetClock ()));
+ Window1.saveprefs (lxT ("Breadboard_jmp"), lxString ().Format ("%i", jmp[0]));
 }
 
 //Called whe configuration file load  preferences 
@@ -246,6 +263,17 @@ cboard_Breadboard::ReadPreferences(char *name, char *value)
   {
    Window1.SetClock (atof (value));
   }
+ if (!strcmp (name, "Breadboard_jmp"))
+  {
+   int i;
+   for (i = 0; i < 1; i++)
+    {
+     if (value[i] == '0')
+      jmp[i] = 0;
+     else
+      jmp[i] = 1;
+    }
+  } 
 }
 
 
@@ -303,6 +331,11 @@ cboard_Breadboard::EvMouseButtonPress(uint button, uint x, uint y, uint state)
         }
        p_RST = 0;
        output_ids[O_RST]->update = 1;
+       break;
+      case I_JMP:
+       jmp[0] ^= 0x01;
+       Reset();
+       output_ids[O_JMP]->update = 1;
        break;
       }
     }
@@ -404,6 +437,24 @@ cboard_Breadboard::Draw(CDraw *draw)
         }
        draw->Canvas.Circle (1, output[i].cx, output[i].cy, 9);
        break;
+      case O_JMP:
+       draw->Canvas.SetColor (0, 0, 0);
+       draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1 , output[i].y2 - output[i].y1);
+         
+       if (!jmp[0])
+        {
+         draw->Canvas.SetBgColor (70, 70, 70);
+         draw->Canvas.Rectangle (1, output[i].x1, output[i].y1, (int) ((output[i].x2 - output[i].x1)*0.65), output[i].y2 - output[i].y1);
+         draw->Canvas.SetBgColor (220, 220, 0);
+         draw->Canvas.Circle (1, output[i].x1 + (int) ((output[i].x2 - output[i].x1)*0.80), output[i].y1 + ((output[i].y2 - output[i].y1) / 2), 3);
+        }
+       else
+        {
+         draw->Canvas.SetBgColor (70, 70, 70);
+         draw->Canvas.Rectangle (1, output[i].x1 + ((int) ((output[i].x2 - output[i].x1)*0.35)), output[i].y1, (int) ((output[i].x2 - output[i].x1)*0.65), output[i].y2 - output[i].y1);
+         draw->Canvas.SetBgColor (220, 220, 0);
+         draw->Canvas.Circle (1, output[i].x1 + (int) ((output[i].x2 - output[i].x1)*0.20), output[i].y1 + ((output[i].y2 - output[i].y1) / 2), 3);
+        } 
       }
     }
   }
@@ -740,6 +791,36 @@ cboard_Breadboard::MGetFreq(void)
    break;
   case _AVR:
    return bsim_simavr::MGetFreq ();
+   break;
+  }
+ return 0;
+}
+
+void
+cboard_Breadboard::MSetVCC(float vcc)
+{
+ switch (ptype)
+  {
+  case _PIC:
+   return bsim_picsim::MSetVCC (vcc);
+   break;
+  case _AVR:
+   return bsim_simavr::MSetVCC (vcc);
+   break;
+  }
+
+}
+
+float
+cboard_Breadboard::MGetVCC(void)
+{
+ switch (ptype)
+  {
+  case _PIC:
+   return bsim_picsim::MGetVCC ();
+   break;
+  case _AVR:
+   return bsim_simavr::MGetVCC ();
    break;
   }
  return 0;

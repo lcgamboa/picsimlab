@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -390,12 +390,12 @@ CPWindow4::SetSample(void)
  if ((ppins[chpin[0]].ptype == PT_ANALOG)&&(ppins[chpin[0]].dir == PD_IN))
   pins[0] = ppins[chpin[0]].avalue;
  else
-  pins[0] = ppins[chpin[0]].value * 5.0;
+  pins[0] = ppins[chpin[0]].value * vmax;
 
  if ((ppins[chpin[1]].ptype == PT_ANALOG)&&(ppins[chpin[1]].dir == PD_IN))
   pins[1] = ppins[chpin[1]].avalue;
  else
-  pins[1] = ppins[chpin[1]].value * 5.0;
+  pins[1] = ppins[chpin[1]].value * vmax;
 
  //sampling
  if (t > Rt)
@@ -683,7 +683,15 @@ CPWindow4::_EvOnShow(CControl * control)
    font = new lxFont (9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
   }
 
+ Reset();
+  
  timer1.SetRunState (1);
+}
+
+void
+CPWindow4::Reset(void)
+{
+ vmax = Window1.GetBoard()->MGetVCC();
 }
 
 void

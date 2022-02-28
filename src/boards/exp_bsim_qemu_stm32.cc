@@ -381,6 +381,18 @@ bsim_qemu_stm32::MGetFreq(void)
  return freq;
 }
 
+void 
+bsim_qemu_stm32::MSetVCC(float vcc)
+{
+  printf("qemu_stm32: Incomplete!!!!\n");
+}
+
+float 
+bsim_qemu_stm32::MGetVCC(void)
+{
+ return 3.3;
+}
+
 float
 bsim_qemu_stm32::MGetInstClockFreq(void)
 {

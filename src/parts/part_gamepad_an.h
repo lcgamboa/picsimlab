@@ -56,8 +56,10 @@ class cpart_gamepad_an:public part
       unsigned char active;  
       unsigned char output_pins[1];    
       float output_value_an;
+      float output_value_an_;
       unsigned char output_value[5];
       lxFont font;
+      float vmax;
 };
 
 #endif	/* PART_GAMEPAD_AN_H */

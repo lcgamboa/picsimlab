@@ -65,6 +65,8 @@ font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  active[2] = 0;
  active[3] = 0;
 
+ vmax = 5.0;
+
  RegisterRemoteControl ();
 }
 
@@ -96,6 +98,13 @@ cpart_pot::~cpart_pot(void)
  delete Bitmap;
  canvas.Destroy ();
 }
+
+void 
+cpart_pot::Reset(void)
+{
+   vmax = Window1.GetBoard()->MGetVCC();
+}
+
 
 void
 cpart_pot::Draw(void)
@@ -137,7 +146,7 @@ cpart_pot::Draw(void)
       case O_PO2:
       case O_PO3:
       case O_PO4:
-       snprintf (val, 10, "%4.2f", 5.0 * (values[output[i].id - O_PO1]) / 200.0);
+       snprintf (val, 10, "%4.2f", vmax * (values[output[i].id - O_PO1]) / 200.0);
        draw_potentiometer (&output[i], values[output[i].id - O_PO1], val, font_p);
        canvas.SetFont (font);
        break;
@@ -154,10 +163,10 @@ cpart_pot::Draw(void)
 void
 cpart_pot::PreProcess(void)
 {
- Window5.SetAPin (output_pins[0], 5.0 * (values[0]) / 200.0);
- Window5.SetAPin (output_pins[1], 5.0 * (values[1]) / 200.0);
- Window5.SetAPin (output_pins[2], 5.0 * (values[2]) / 200.0);
- Window5.SetAPin (output_pins[3], 5.0 * (values[3]) / 200.0);
+ Window5.SetAPin (output_pins[0], vmax * (values[0]) / 200.0);
+ Window5.SetAPin (output_pins[1], vmax * (values[1]) / 200.0);
+ Window5.SetAPin (output_pins[2], vmax * (values[2]) / 200.0);
+ Window5.SetAPin (output_pins[3], vmax * (values[3]) / 200.0);
 }
 
 void

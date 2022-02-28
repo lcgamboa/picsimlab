@@ -145,6 +145,18 @@ bsim_picsim::MGetFreq(void)
  return pic.freq;
 }
 
+void 
+bsim_picsim::MSetVCC(float vcc)
+{
+  pic.vcc =vcc;
+}
+
+float 
+bsim_picsim::MGetVCC(void)
+{
+ return pic.vcc;
+}
+
 float
 bsim_picsim::MGetInstClockFreq(void)
 {

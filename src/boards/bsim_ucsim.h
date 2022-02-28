@@ -44,6 +44,8 @@ class bsim_ucsim: virtual public board
       void MEraseFlash(void) override;
       void MSetFreq(float freq) override;
       float MGetFreq(void) override;
+      void MSetVCC(float vcc) override;
+      float MGetVCC(void) override;
       float MGetInstClockFreq(void) override;
       int MGetPinCount(void) override;
       lxString MGetPinName(int pin) override;

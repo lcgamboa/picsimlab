@@ -127,6 +127,19 @@ bsim_ucsim::MGetFreq(void)
  return freq;
 }
 
+void 
+bsim_ucsim::MSetVCC(float vcc)
+{
+  printf("ucsim: Incomplete!!!!\n");
+}
+
+float 
+bsim_ucsim::MGetVCC(void)
+{
+ return 5.0;
+}
+
+
 float
 bsim_ucsim::MGetInstClockFreq(void)
 {

@@ -47,6 +47,7 @@ class cpart_pot:public part
       void ReadPropertiesWindow(CPWindow * WProp) override;
       lxString WritePreferences(void) override;
       void ReadPreferences(lxString value) override;
+      void Reset(void) override;
       unsigned short get_in_id(char * name) override;
       unsigned short get_out_id(char * name) override;
     private:
@@ -56,6 +57,7 @@ class cpart_pot:public part
       unsigned char active[4];
       lxFont font;
       lxFont font_p;
+      float vmax;
 };
 
 

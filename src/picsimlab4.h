@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2017  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -131,7 +131,8 @@ public:
     void WritePreferences(void);
     void ReadPreferences(char *name, char *value);
     void SetBaseTimer(void);
-
+    void Reset(void);
+     
     /**
      * @brief  Sample and update oscilloscope data aquisition
      */
@@ -162,6 +163,7 @@ private:
     int update;
     lxFont * font;
     int measures[5];
+    float vmax;
 };
 
 extern CPWindow4 Window4;

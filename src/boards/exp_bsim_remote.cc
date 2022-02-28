@@ -265,6 +265,18 @@ bsim_remote::MGetFreq(void)
  return freq;
 }
 
+void 
+bsim_remote::MSetVCC(float vcc)
+{
+  printf("remote: Incomplete!!!!\n");
+}
+
+float 
+bsim_remote::MGetVCC(void)
+{
+ return 5.0;
+}
+
 float
 bsim_remote::MGetInstClockFreq(void)
 {

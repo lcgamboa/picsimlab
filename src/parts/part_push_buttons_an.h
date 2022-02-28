@@ -58,6 +58,7 @@ class cpart_pbuttons_an:public part
       unsigned char output_value_[8];
       float output_value;
       lxFont font;
+      float vmax;
 };
 
 #endif	/* PART_PUSH_BUTTONS_AN_H */

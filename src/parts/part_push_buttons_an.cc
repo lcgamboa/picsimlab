@@ -62,7 +62,9 @@ font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 
  output_pins[0] = 0;
 
- output_value = active * 5.0;
+ vmax = 5.0; 
+
+ output_value = active * vmax;
 
  RegisterRemoteControl ();
 }
@@ -116,7 +118,9 @@ cpart_pbuttons_an::Reset(void)
  output_value_[6] = !active;
  output_value_[7] = !active;
 
- output_value = active * 5.0;
+ vmax = Window1.GetBoard()->MGetVCC();
+
+ output_value = active * vmax;
 
  Window5.SetAPin (output_pins[0], output_value);
 
@@ -158,9 +162,9 @@ cpart_pbuttons_an::Draw(void)
        canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1 + 8);
        canvas.SetFgColor (255, 255, 255);
        if (active)
-        ftemp = (5.0 * (output[i].id - O_P1)) / 8.0;
+        ftemp = (vmax * (output[i].id - O_P1)) / 8.0;
        else
-        ftemp = (5.0 * (8 - output[i].id - O_P1)) / 8.0;
+        ftemp = (vmax * (8 - output[i].id - O_P1)) / 8.0;
        temp = lxString ().Format ("%3.1f", ftemp) + lxT ("V");
        canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
        if (output_pins[0] == 0)
@@ -179,9 +183,9 @@ cpart_pbuttons_an::Draw(void)
        canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
        canvas.SetFgColor (255, 255, 255);
        if (active)
-        ftemp = (5.0 * (output[i].id - O_P1)) / 8.0;
+        ftemp = (vmax * (output[i].id - O_P1)) / 8.0;
        else
-        ftemp = (5.0 * (8 - output[i].id - O_P1)) / 8.0;
+        ftemp = (vmax* (8 - output[i].id - O_P1)) / 8.0;
 
        temp = lxString ().Format ("%3.1f", ftemp) + lxT ("V");
        canvas.RotatedText (temp, output[i].x1, output[i].y1, 0);
@@ -218,39 +222,39 @@ cpart_pbuttons_an::Draw(void)
 void
 cpart_pbuttons_an::PreProcess(void)
 {
- output_value = active * 5.0;
+ output_value = active * vmax;
 
  if (output_value_[0] == active)
   {
-   output_value = (active * 5.0 * (0.0 / 8.0))+((!active)*5.0 * (8.0 / 8.0));
+   output_value = (active * vmax * (0.0 / 8.0))+((!active)*vmax * (8.0 / 8.0));
   }
  else if (output_value_[1] == active)
   {
-   output_value = (active * 5.0 * (1.0 / 8.0))+((!active)*5.0 * (7.0 / 8.0));
+   output_value = (active * vmax * (1.0 / 8.0))+((!active)*vmax * (7.0 / 8.0));
   }
  else if (output_value_[2] == active)
   {
-   output_value = (active * 5.0 * (2.0 / 8.0))+((!active)*5.0 * (6.0 / 8.0));
+   output_value = (active * vmax * (2.0 / 8.0))+((!active)*vmax * (6.0 / 8.0));
   }
  else if (output_value_[3] == active)
   {
-   output_value = (active * 5.0 * (3.0 / 8.0))+((!active)*5.0 * (5.0 / 8.0));
+   output_value = (active * vmax * (3.0 / 8.0))+((!active)*vmax * (vmax / 8.0));
   }
  else if (output_value_[4] == active)
   {
-   output_value = (active * 5.0 * (4.0 / 8.0))+((!active)*5.0 * (4.0 / 8.0));
+   output_value = (active * vmax * (4.0 / 8.0))+((!active)*vmax * (4.0 / 8.0));
   }
  else if (output_value_[5] == active)
   {
-   output_value = (active * 5.0 * (5.0 / 8.0))+((!active)*5.0 * (3.0 / 8.0));
+   output_value = (active * vmax * (vmax / 8.0))+((!active)*vmax * (3.0 / 8.0));
   }
  else if (output_value_[6] == active)
   {
-   output_value = (active * 5.0 * (6.0 / 8.0))+((!active)*5.0 * (2.0 / 8.0));
+   output_value = (active * vmax * (6.0 / 8.0))+((!active)*vmax * (2.0 / 8.0));
   }
  else if (output_value_[7] == active)
   {
-   output_value = (active * 5.0 * (7.0 / 8.0))+((!active)*5.0 * (1.0 / 8.0));
+   output_value = (active * vmax * (7.0 / 8.0))+((!active)*vmax * (1.0 / 8.0));
   }
 
  Window5.SetAPin (output_pins[0], output_value);
@@ -413,7 +417,7 @@ void
 cpart_pbuttons_an::ReadPreferences(lxString value)
 {
  sscanf (value.c_str (), "%hhu,%hhu", &output_pins[0], &active);
- output_value = active * 5.0;
+ output_value = active * vmax;
  output_value_[0] = !active;
  output_value_[1] = !active;
  output_value_[2] = !active;
@@ -459,7 +463,7 @@ cpart_pbuttons_an::ReadPropertiesWindow(CPWindow * WProp)
 
  active = (((CCombo*) WProp->GetChildByName ("combo9"))->GetText ().compare ("HIGH") == 0);
 
- output_value = active * 5.0;
+ output_value = active * vmax;
 
  output_value_[0] = !active;
  output_value_[1] = !active;

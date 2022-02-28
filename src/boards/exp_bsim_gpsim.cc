@@ -100,6 +100,18 @@ bsim_gpsim::MGetFreq(void)
  return freq;
 }
 
+void 
+bsim_gpsim::MSetVCC(float vcc)
+{
+  printf("gpsim: Incomplete!!!!\n");
+}
+
+float 
+bsim_gpsim::MGetVCC(void)
+{
+ return 5.0;
+}
+
 float
 bsim_gpsim::MGetInstClockFreq(void)
 {

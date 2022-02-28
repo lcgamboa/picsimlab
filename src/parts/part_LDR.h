@@ -47,6 +47,7 @@ class cpart_LDR:public part
       void ReadPropertiesWindow(CPWindow * WProp) override;
       lxString WritePreferences(void) override;
       void ReadPreferences(lxString value) override;
+      void Reset(void) override;
       unsigned short get_in_id(char * name) override;
       unsigned short get_out_id(char * name) override;
     private:
@@ -59,6 +60,7 @@ class cpart_LDR:public part
       float vthreshold;
       float lux;
       float vout;
+      float vmax;
 };
 
 #endif	/* LDR */

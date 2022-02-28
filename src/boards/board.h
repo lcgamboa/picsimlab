@@ -318,6 +318,16 @@ public:
     virtual float MGetFreq(void) = 0;
 
     /**
+     * @brief board microcontroller set vcc   
+     */
+    virtual void MSetVCC(float vcc) = 0;
+
+    /**
+     * @brief board microcontroller get vcc   
+     */
+    virtual float MGetVCC(void) = 0;
+
+    /**
      * @brief board microcontroller get cpu internal clock (in PIC frequency/4)   
      */
     virtual float MGetInstClockFreq(void) = 0;

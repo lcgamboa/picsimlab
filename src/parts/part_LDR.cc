@@ -52,6 +52,7 @@ font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 
  output_pins[0] = 0;
  output_pins[1] = 0;
+ vmax = 5.0;
  vthreshold = 2.5;
  value = 0;
  active = 0;
@@ -76,6 +77,12 @@ cpart_LDR::~cpart_LDR(void)
 {
  delete Bitmap;
  canvas.Destroy ();
+}
+
+void 
+cpart_LDR::Reset(void)
+{
+   vmax = Window1.GetBoard()->MGetVCC();
 }
 
 void
@@ -165,15 +172,18 @@ cpart_LDR::PostProcess(void)
  const float gamma = 0.7;
  const float r10 = 20000.0;
  const float res = r10 / (powf (10, gamma * log10 (lux / 10.0)));
- vout = (res * 5.0) / (res + 10000.0);
+ vout = (res * vmax) / (res + 10000.0);
  const int vd = (vout > vthreshold) ? 1 : 0;
 
- if (output_pins[0] && (output_ids[O_LED]->value != vd))
-  {
+ if(output_ids[O_LED]->value != vd)
+ {
+   if (output_pins[0] )
+   {
+     Window5.SetPin (output_pins[0], vd);
+   }
    output_ids[O_LED]->update = 1;
-   Window5.SetPin (output_pins[0], vd);
    output_ids[O_LED]->value = vd;
-  }
+ }
 
  if (output_pins[1])
   {
@@ -321,6 +331,7 @@ cpart_LDR::ConfigurePropertiesWindow(CPWindow * WProp)
    ((CCombo*) WProp->GetChildByName ("combo2"))->SetText (itoa (output_pins[1]) + "  " + spin);
   }
 
+ ((CSpind*) WProp->GetChildByName ("spind1"))->SetMax (vmax);
  ((CSpind*) WProp->GetChildByName ("spind1"))->SetValue (vthreshold);
 
  ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
