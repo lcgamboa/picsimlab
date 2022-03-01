@@ -166,6 +166,7 @@ CPWindow5::AddPart(const char * partname, const int x, const int y)
   {
    parts[partsc]->SetId (partsc);
    parts[partsc]->SetScale (scale);
+   parts[partsc]->Reset();
    partsc++;
   }
 
