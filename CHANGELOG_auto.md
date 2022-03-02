@@ -2,6 +2,8 @@
 
 ### New
 
+* Support to use +3V3 instead only +5V in some boards. [lcgamboa]
+
 * New RGB LED WS2812B part added. [lcgamboa]
 
 * Bounce effect added to Switches part and boards McLab1, McLab2, X and PICGenios. [lcgamboa]
@@ -61,6 +63,8 @@
 * Speed optimization to only process parts when io is updated (only simavr) [lcgamboa]
 
 ### Fix
+
+* Save external EEPROM from boards to workspace files. [lcgamboa]
 
 * Bitbang I2C ACK fixed for all I2C parts. [lcgamboa]
 

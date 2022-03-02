@@ -6,8 +6,7 @@
 
 PICSimLab is a realtime emulator of [development boards](https://lcgamboa.github.io/picsimlab_docs/stable/Boards.html) with integrated 
 MPLABX/avr-gdb debugger. 
-PICSimLab supports some [picsim](https://github.com/lcgamboa/picsim) microcontrollers and 
-some [simavr](https://github.com/buserror/simavr) microcontrollers. 
+PICSimLab supports some microcontrollers from [picsim](https://github.com/lcgamboa/picsim),some from [simavr](https://github.com/buserror/simavr) and some from [uCsim](http://mazsola.iit.uni-miskolc.hu/~drdani/embedded/ucsim/).
 PICSimLab have integration with MPLABX/Arduino IDE for programming the boards microcontrollers.
 As the purpose of PICSimLab is to emulate real hardware it does not have any source code editing support.
 For code editing and debugging the same tools used for a real board should be used with PICSimLab, such as MPLABX or Arduino IDE. 
@@ -18,8 +17,7 @@ shield w5500 for internet connection or the color graphic display ili9340 with t
 The the complete list of parts can be accessed in the [documentation](https://lcgamboa.github.io/picsimlab_docs/stable/SpareParts.html). 
 
 The [experimental version boards](https://lcgamboa.github.io/picsimlab_docs/stable/ExperimentalBoards.html) supports 
-[uCsim](http://mazsola.iit.uni-miskolc.hu/~drdani/embedded/ucsim/), 
-[gpsim](http://gpsim.sourceforge.net/) and [qemu-stm32](http://beckus.github.io/qemu_stm32/) simulators
+[qemu-stm32](http://beckus.github.io/qemu_stm32/) and [gpsim](http://gpsim.sourceforge.net/) simulators
 in addition to the stable ones.
 
 
@@ -187,6 +185,9 @@ If the problem is not in either of the previous two options, the problem is prob
 
 - **gtkwave**         - Wave viewer                      
   - http://gtkwave.sourceforge.net/
+
+- **Pulseview**       - Logic analyzer (with protocol decoder support)and MSO GUI for sigrok
+  - https://sigrok.org/wiki/PulseView
 
 ### Graphic editing
 

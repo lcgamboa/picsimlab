@@ -1,40 +1,40 @@
 ### TODOs
 | Filename | line # | TODO
 |:------|:------:|:------
-| [src/picsimlab1.cc](src/picsimlab1.cc#L584) | 584 | verify initialization errors
-| [src/picsimlab4.cc](src/picsimlab4.cc#L745) | 745 | select the better mode for channel trigguer
-| [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L116) | 116 | jumper support
-| [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L68) | 68 | TEMP cooler must don't work with AQUE=0
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1127) | 1127 | default output value is not used yet (DOV)
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1498) | 1498 | avr ID pointer
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1530) | 1530 | avr ID size
-| [src/boards/exp_bsim_gpsim.cc](src/boards/exp_bsim_gpsim.cc#L171) | 171 | add VCC and GND pins
-| [src/devices/eth_w5500.cc](src/devices/eth_w5500.cc#L363) | 363 | add support to buffer size different of 2k
-| [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L137) | 137 | ssd1306 Scrolling Command Table
-| [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L151) | 151 | ssd1306 Continuous Vertical and Horizontal Scroll Setup
-| [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L170) | 170 | ssd1306 Set Vertical Scroll
-| [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L278) | 278 | ssd1306 Set Display Offset
-| [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L82) | 82 | decode
-| [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L85) | 85 | itensity
-| [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L88) | 88 | scan limit
-| [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L91) | 91 | shutdown
-| [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L98) | 98 | display test
-| [src/devices/rtc_ds1307.cc](src/devices/rtc_ds1307.cc#L325) | 325 | int output
-| [src/devices/rtc_pfc8563.cc](src/devices/rtc_pfc8563.cc#L329) | 329 | int output and countdown timer
-| [src/parts/part_IO_MCP23S17.cc](src/parts/part_IO_MCP23S17.cc#L490) | 490 | only write support implemented
-| [src/parts/part_VCD_Dump.cc](src/parts/part_VCD_Dump.cc#L102) | 102 | add support to remote control
-| [src/parts/part_VCD_Dump_an.cc](src/parts/part_VCD_Dump_an.cc#L101) | 101 | add support to remote control
-| [src/parts/part_VCD_Play.cc](src/parts/part_VCD_Play.cc#L89) | 89 | add support to remote control
-| [src/parts/part_dcmotor.cc](src/parts/part_dcmotor.cc#L215) | 215 | Add transfer funcion of dc motor
-| [src/parts/part_ds1621.cc](src/parts/part_ds1621.cc#L306) | 306 | set addr
-| [src/parts/part_ds1621.cc](src/parts/part_ds1621.cc#L319) | 319 | implement Tout output
+| [src/picsimlab1.cc](src/picsimlab1.cc#L485) | 485 | verify initialization errors
+| [src/picsimlab4.cc](src/picsimlab4.cc#L635) | 635 | select the better mode for channel trigguer
+| [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L98) | 98 | jumper support
+| [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L193) | 193 | TEMP cooler must don't work with AQUE=0
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1016) | 1016 | default output value is not used yet (DOV)
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1328) | 1328 | avr ID pointer
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1350) | 1350 | avr ID size
+| [src/boards/exp_bsim_gpsim.cc](src/boards/exp_bsim_gpsim.cc#L142) | 142 | add VCC and GND pins
+| [src/devices/eth_w5500.cc](src/devices/eth_w5500.cc#L471) | 471 | add support to buffer size different of 2k
+| [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L122) | 122 | ssd1306 Scrolling Command Table
+| [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L133) | 133 | ssd1306 Continuous Vertical and Horizontal Scroll Setup
+| [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L149) | 149 | ssd1306 Set Vertical Scroll
+| [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L240) | 240 | ssd1306 Set Display Offset
+| [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L72) | 72 | decode
+| [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L75) | 75 | itensity
+| [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L78) | 78 | scan limit
+| [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L81) | 81 | shutdown
+| [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L88) | 88 | display test
+| [src/devices/rtc_ds1307.cc](src/devices/rtc_ds1307.cc#L299) | 299 | int output
+| [src/devices/rtc_pfc8563.cc](src/devices/rtc_pfc8563.cc#L281) | 281 | int output and countdown timer
+| [src/parts/part_IO_MCP23S17.cc](src/parts/part_IO_MCP23S17.cc#L440) | 440 | only write support implemented
+| [src/parts/part_VCD_Dump.cc](src/parts/part_VCD_Dump.cc#L90) | 90 | add support to remote control
+| [src/parts/part_VCD_Dump_an.cc](src/parts/part_VCD_Dump_an.cc#L90) | 90 | add support to remote control
+| [src/parts/part_VCD_Play.cc](src/parts/part_VCD_Play.cc#L78) | 78 | add support to remote control
+| [src/parts/part_dcmotor.cc](src/parts/part_dcmotor.cc#L191) | 191 | Add transfer funcion of dc motor
+| [src/parts/part_ds1621.cc](src/parts/part_ds1621.cc#L271) | 271 | set addr
+| [src/parts/part_ds1621.cc](src/parts/part_ds1621.cc#L283) | 283 | implement Tout output
 
 ### FIXMEs
 | Filename | line # | FIXME
 |:------|:------:|:------
-| [src/picsimlab1.cc](src/picsimlab1.cc#L847) | 847 | remote control disabled
-| [src/boards/board_uCboard.cc](src/boards/board_uCboard.cc#L346) | 346 | NSTEP must be multiplied for 4
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1523) | 1523 | avr CONFIG size
-| [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L118) | 118 | only for BANK=0;
-| [src/parts/part_dcmotor.cc](src/parts/part_dcmotor.cc#L274) | 274 | on slow speed output is not 90 degrees
-| [src/parts/part_encoder.cc](src/parts/part_encoder.cc#L215) | 215 | on slow speed output is not 90 degrees
+| [src/picsimlab1.cc](src/picsimlab1.cc#L712) | 712 | remote control disabled
+| [src/boards/board_uCboard.cc](src/boards/board_uCboard.cc#L297) | 297 | NSTEP must be multiplied for 4
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1345) | 1345 | avr CONFIG size
+| [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L134) | 134 | only for BANK=0;
+| [src/parts/part_dcmotor.cc](src/parts/part_dcmotor.cc#L244) | 244 | on slow speed output is not 90 degrees
+| [src/parts/part_encoder.cc](src/parts/part_encoder.cc#L190) | 190 | on slow speed output is not 90 degrees
