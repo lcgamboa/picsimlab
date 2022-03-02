@@ -24,41 +24,40 @@
    ######################################################################## */
 
 #ifndef PART_RTC_DS1307_H
-#define	PART_RTC_DS1307_H
+#define PART_RTC_DS1307_H
 
-#include<lxrad.h>
-#include"part.h"
+#include <lxrad.h>
 #include "../devices/sen_ds1621.h"
+#include "part.h"
 
-#define	PART_DS1621_Name "DS1621 (Temperature I2C)"
+#define PART_DS1621_Name "DS1621 (Temperature I2C)"
 
-class cpart_ds1621:public part
-{
-   public:
-      lxString GetName(void) override {return lxT(PART_DS1621_Name);};
-      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
-      cpart_ds1621(unsigned x, unsigned y);
-      ~cpart_ds1621(void);
-      void Draw(void) override;
-      void PreProcess(void) override;
-      void Process(void) override;
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state) override;
-      void EvMouseMove(uint button, uint x, uint y,uint state) override;
-      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
-      void ReadPropertiesWindow(CPWindow * WProp) override;
-      lxString WritePreferences(void) override;
-      void ReadPreferences(lxString value) override;
-      unsigned short get_in_id(char * name) override;
-      unsigned short get_out_id(char * name) override;
-   private:
-      unsigned char input_pins[6]; 
-      sen_ds1621_t ds1621;
-      unsigned char value;
-      unsigned char active;
-      lxFont font;
-      lxFont font_p;      
+class cpart_ds1621 : public part {
+public:
+    lxString GetName(void) override { return lxT(PART_DS1621_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    cpart_ds1621(unsigned x, unsigned y);
+    ~cpart_ds1621(void);
+    void Draw(void) override;
+    void PreProcess(void) override;
+    void Process(void) override;
+    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
+    void EvMouseButtonRelease(uint button, uint x, uint y, uint state) override;
+    void EvMouseMove(uint button, uint x, uint y, uint state) override;
+    void ConfigurePropertiesWindow(CPWindow* WProp) override;
+    void ReadPropertiesWindow(CPWindow* WProp) override;
+    lxString WritePreferences(void) override;
+    void ReadPreferences(lxString value) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
+
+private:
+    unsigned char input_pins[6];
+    sen_ds1621_t ds1621;
+    unsigned char value;
+    unsigned char active;
+    lxFont font;
+    lxFont font_p;
 };
 
-#endif	/* PART_v_H */
-
+#endif /* PART_v_H */

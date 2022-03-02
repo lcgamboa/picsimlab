@@ -24,45 +24,41 @@
    ######################################################################## */
 
 #ifndef PART_SDCARD_H
-#define	PART_SDCARD_H
+#define PART_SDCARD_H
 
-#include<lxrad.h>
-#include"part.h"
-#include"../devices/sdcard.h"
+#include <lxrad.h>
+#include "../devices/sdcard.h"
+#include "part.h"
 
-#define	PART_SDCARD_Name "SD Card"
+#define PART_SDCARD_Name "SD Card"
 
-class cpart_SDCard:public part
-{
-   public:
-      lxString GetName(void) override {return lxT(PART_SDCARD_Name);};
-      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
-      cpart_SDCard(unsigned x, unsigned y);
-      ~cpart_SDCard(void);
-      void Draw(void) override;
-      void PreProcess (void) override;
-      void Process(void) override; 
-      void PostProcess (void) override;
-      void Reset(void) override;
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
-      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
-      void ReadPropertiesWindow(CPWindow * WProp) override;
-      lxString WritePreferences(void) override;
-      void ReadPreferences(lxString value) override;
-      void filedialog_EvOnClose(int retId) override;
-      unsigned short get_in_id(char * name) override;
-      unsigned short get_out_id(char * name) override;
-   private:
-      unsigned char input_pins[3];
-      unsigned char output_pins[1];
-      sdcard_t sd;
-      unsigned short _ret; 
-      char sdcard_fname[200];
-      lxFont font;
+class cpart_SDCard : public part {
+public:
+    lxString GetName(void) override { return lxT(PART_SDCARD_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    cpart_SDCard(unsigned x, unsigned y);
+    ~cpart_SDCard(void);
+    void Draw(void) override;
+    void PreProcess(void) override;
+    void Process(void) override;
+    void PostProcess(void) override;
+    void Reset(void) override;
+    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
+    void ConfigurePropertiesWindow(CPWindow* WProp) override;
+    void ReadPropertiesWindow(CPWindow* WProp) override;
+    lxString WritePreferences(void) override;
+    void ReadPreferences(lxString value) override;
+    void filedialog_EvOnClose(int retId) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
+
+private:
+    unsigned char input_pins[3];
+    unsigned char output_pins[1];
+    sdcard_t sd;
+    unsigned short _ret;
+    char sdcard_fname[200];
+    lxFont font;
 };
 
-
-
-
-#endif	/* PART_SDCARD_H */
-
+#endif /* PART_SDCARD_H */

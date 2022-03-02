@@ -26,43 +26,41 @@
 #ifndef PART_LED_WS2812B_H
 #define PART_LED_WS2812B_H
 
+#include <lxrad.h>
 #include "../devices/led_ws2812b.h"
 #include "part.h"
-#include <lxrad.h>
 
 #define PART_LED_WS2812B_Name "RGB LED WS2812B"
 
 class cpart_led_ws2812b : public part {
 public:
-  lxString GetName(void) override { return lxT(PART_LED_WS2812B_Name); };
-  lxString GetAboutInfo(void) override {
-    return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");
-  };
-  cpart_led_ws2812b(unsigned x, unsigned y);
-  ~cpart_led_ws2812b(void);
-  void Draw(void) override;
-  void PreProcess(void) override;
-  void Process(void) override;
-  void PostProcess(void) override;
-  void ConfigurePropertiesWindow(CPWindow *WProp) override;
-  void ReadPropertiesWindow(CPWindow *WProp) override;
-  lxString WritePreferences(void) override;
-  void ReadPreferences(lxString value) override;
-  void LoadImage(void) override;
-  unsigned short get_in_id(char *name) override;
-  unsigned short get_out_id(char *name) override;
+    lxString GetName(void) override { return lxT(PART_LED_WS2812B_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    cpart_led_ws2812b(unsigned x, unsigned y);
+    ~cpart_led_ws2812b(void);
+    void Draw(void) override;
+    void PreProcess(void) override;
+    void Process(void) override;
+    void PostProcess(void) override;
+    void ConfigurePropertiesWindow(CPWindow* WProp) override;
+    void ReadPropertiesWindow(CPWindow* WProp) override;
+    lxString WritePreferences(void) override;
+    void ReadPreferences(lxString value) override;
+    void LoadImage(void) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
 
 private:
-  void ChangeType(const unsigned int rows,const unsigned int cols, const unsigned char diffuser );
-  void RegisterRemoteControl(void) override;
-  unsigned char input_pins[1];
-  unsigned char output_pins[1];
-  led_ws2812b_t led;
-  lxFont font;
-  int OWidth;
-  int OHeight;
-  int xoff;
-  int yoff;
+    void ChangeType(const unsigned int rows, const unsigned int cols, const unsigned char diffuser);
+    void RegisterRemoteControl(void) override;
+    unsigned char input_pins[1];
+    unsigned char output_pins[1];
+    led_ws2812b_t led;
+    lxFont font;
+    int OWidth;
+    int OHeight;
+    int xoff;
+    int yoff;
 };
 
 #endif /* PART_LED_WS2812B_H */

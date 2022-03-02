@@ -23,30 +23,26 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-
 #ifndef TSC_XPT2046
-#define	TSC_XPT2046
+#define TSC_XPT2046
 
-#include"bitbang_spi.h"
+#include "bitbang_spi.h"
 
-typedef struct
-{
-unsigned int height;
-unsigned int width;
-int x;
-int y;
-int press;
-unsigned char cmd;
-unsigned char ret;
-bitbang_spi_t bb_spi;
-}tsc_XPT2046_t;
+typedef struct {
+    unsigned int height;
+    unsigned int width;
+    int x;
+    int y;
+    int press;
+    unsigned char cmd;
+    unsigned char ret;
+    bitbang_spi_t bb_spi;
+} tsc_XPT2046_t;
 
+void tsc_XPT2046_rst(tsc_XPT2046_t* tsc_);
+void tsc_XPT2046_init(tsc_XPT2046_t* tsc_, unsigned int w, unsigned int h);
+void tsc_XPT2046_set_pos(tsc_XPT2046_t* tsc_, int x, int y);
 
-void tsc_XPT2046_rst(tsc_XPT2046_t *tsc_);
-void tsc_XPT2046_init(tsc_XPT2046_t *tsc_, unsigned int w, unsigned int h);
-void tsc_XPT2046_set_pos(tsc_XPT2046_t *tsc_, int x , int y);
+unsigned char tsc_XPT2046_SPI_io(tsc_XPT2046_t* tsc_, const unsigned char** pins_value);
 
-unsigned char  tsc_XPT2046_SPI_io(tsc_XPT2046_t *tsc_, const unsigned char **pins_value);
-
-#endif //TSC_XPT2046
-
+#endif  // TSC_XPT2046

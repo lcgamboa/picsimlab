@@ -23,13 +23,12 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-
 #ifndef UART
 #define UART
 
 #include <stdio.h>
 #include "../serial_port.h"
-#include"bitbang_uart.h"
+#include "bitbang_uart.h"
 
 typedef struct {
     unsigned char connected;
@@ -39,14 +38,12 @@ typedef struct {
     unsigned int rxmax;
 } uart_t;
 
+void uart_rst(uart_t* sr);
+void uart_init(uart_t* sr);
+void uart_end(uart_t* sr);
+void uart_set_clk_freq(uart_t* sr, const unsigned long freq);
+void uart_set_port(uart_t* sr, const char* port, const unsigned int speed);
 
-void uart_rst(uart_t *sr);
-void uart_init(uart_t *sr);
-void uart_end(uart_t *sr);
-void uart_set_clk_freq(uart_t *sr, const unsigned long freq);
-void uart_set_port(uart_t *sr, const char * port, const unsigned int speed);
+unsigned char uart_io(uart_t* sr, const unsigned char rx);
 
-unsigned char uart_io(uart_t *sr, const unsigned char rx);
-
-#endif //UART
-
+#endif  // UART

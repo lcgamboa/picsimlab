@@ -38,48 +38,43 @@
 #define MAXROWS 64
 #define MAXCOLS 64
 
-typedef struct
-{
-union
-{
-  unsigned int fcolor;
-  struct 
-  {
-    unsigned char B;
-    unsigned char R;
-    unsigned char G;   
-    unsigned char PAD;
-  };
-};
+typedef struct {
+    union {
+        unsigned int fcolor;
+        struct {
+            unsigned char B;
+            unsigned char R;
+            unsigned char G;
+            unsigned char PAD;
+        };
+    };
 } rgb_color;
 
-
 typedef struct {
-  int T0H;
-  int TRES;
-  int ccounter; //cycle counter
-  unsigned int bit; //bit counter
-  unsigned int nrows;
-  unsigned int ncols;
-  unsigned int nleds;
-  unsigned int nbits;
-  unsigned int ledc; //led counter
-  unsigned char diffuser;
-  rgb_color * color; //RGB array
-  unsigned short adin;
-  unsigned int dat;
-  unsigned char update;
+    int T0H;
+    int TRES;
+    int ccounter;      // cycle counter
+    unsigned int bit;  // bit counter
+    unsigned int nrows;
+    unsigned int ncols;
+    unsigned int nleds;
+    unsigned int nbits;
+    unsigned int ledc;  // led counter
+    unsigned char diffuser;
+    rgb_color* color;  // RGB array
+    unsigned short adin;
+    unsigned int dat;
+    unsigned char update;
 } led_ws2812b_t;
 
-void led_ws2812b_rst(led_ws2812b_t *led);
-void led_ws2812b_init(led_ws2812b_t *led, const int rows, const int cols, const int diffuser);
-void led_ws2812b_end(led_ws2812b_t *led);
-void led_ws2812b_prepare(led_ws2812b_t *led, const float freq);
+void led_ws2812b_rst(led_ws2812b_t* led);
+void led_ws2812b_init(led_ws2812b_t* led, const int rows, const int cols, const int diffuser);
+void led_ws2812b_end(led_ws2812b_t* led);
+void led_ws2812b_prepare(led_ws2812b_t* led, const float freq);
 
-unsigned char led_ws2812b_io(led_ws2812b_t *led, const unsigned char din);
+unsigned char led_ws2812b_io(led_ws2812b_t* led, const unsigned char din);
 
-void led_ws2812b_draw(led_ws2812b_t *led, CCanvas *canvas, const int x1,
-                      const int y1, const int w1, const int h1,
+void led_ws2812b_draw(led_ws2812b_t* led, CCanvas* canvas, const int x1, const int y1, const int w1, const int h1,
                       const int picpwr);
 
-#endif // LED_WS2812B
+#endif  // LED_WS2812B

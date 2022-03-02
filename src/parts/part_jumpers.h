@@ -26,46 +26,43 @@
 #ifndef PART_JUMPERS_H
 #define PART_JUMPERS_H
 
-#include<lxrad.h>
-#include"part.h"
+#include <lxrad.h>
+#include "part.h"
 
 #define PART_JUMPERS_Name "Jumper Wires"
 
 class cpart_Jumpers : public part {
     int ID;
     static int countID;
-public:
-    
-    lxString GetName(void) override {
-        return lxT(PART_JUMPERS_Name);
-    };
 
-    lxString GetAboutInfo(void) override {
-        return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");
-    };
+public:
+    lxString GetName(void) override { return lxT(PART_JUMPERS_Name); };
+
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
     cpart_Jumpers(unsigned x, unsigned y);
     ~cpart_Jumpers(void);
     void Draw(void) override;
     void PreProcess(void) override;
     void Process(void) override;
     void PostProcess(void) override;
-    void ConfigurePropertiesWindow(CPWindow * WProp) override;
-    void ReadPropertiesWindow(CPWindow * WProp) override;
+    void ConfigurePropertiesWindow(CPWindow* WProp) override;
+    void ReadPropertiesWindow(CPWindow* WProp) override;
     lxString WritePreferences(void) override;
     void ReadPreferences(lxString value) override;
-    unsigned short get_in_id(char * name) override;
-    unsigned short get_out_id(char * name) override;
-    void ComboChange(CCombo * control, lxString value) override; 
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
+    void ComboChange(CCombo* control, lxString value) override;
+
 private:
     void ChangeType(unsigned char type);
-    void RegisterRemoteControl(void) override;      
+    void RegisterRemoteControl(void) override;
     unsigned char input_pins[16];
     unsigned char output_pins[16];
     unsigned long output_pins_alm[16];
     long mcount;
     int JUMPSTEPS_;
     lxString jname;
-    unsigned char type; 
+    unsigned char type;
     lxFont font;
 };
 
@@ -76,4 +73,3 @@ private:
 #define JWT_FF 0x03
 
 #endif /* PART_IJUMPERS_H */
-

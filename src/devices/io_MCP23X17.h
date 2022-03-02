@@ -23,12 +23,11 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-
 #ifndef IO_MCP23X17
 #define IO_MCP23X17
 
-#include"bitbang_i2c.h"
-#include"bitbang_spi.h"
+#include "bitbang_i2c.h"
+#include "bitbang_spi.h"
 
 /*
  pinout
@@ -41,8 +40,8 @@
 7  GPB6
 8  GPB7
 9  VDD
-10 VSS 
-11 NC  - /CS   
+10 VSS
+11 NC  - /CS
 12 SCK - SCK
 12 SDA - SI
 14 NC  - SO
@@ -63,29 +62,29 @@
 28 GPA7
  */
 
-//BANK 0 addr
-#define IODIRA    0x00
-#define IODIRB    0x01
-#define IPOLA     0x02
-#define IPOLB     0x03
-#define GPINTENA  0x04
-#define GPINTENB  0x05
-#define DEFVALA   0x06
-#define DEFVALB   0x07
-#define INTCONA   0x08
-#define INTCONB   0x09
-#define IOCON     0x0A
-#define IOCON_    0x0B
-#define GPPUA     0x0C
-#define GPPUB     0x0D
-#define INTFA     0x0E
-#define INTFB     0x0F
-#define INTCAPA   0x10 
-#define INTCAPB   0x11
-#define GPIOA     0x12
-#define GPIOB     0x13
-#define OLATA     0x14
-#define OLATB     0x15
+// BANK 0 addr
+#define IODIRA 0x00
+#define IODIRB 0x01
+#define IPOLA 0x02
+#define IPOLB 0x03
+#define GPINTENA 0x04
+#define GPINTENB 0x05
+#define DEFVALA 0x06
+#define DEFVALB 0x07
+#define INTCONA 0x08
+#define INTCONB 0x09
+#define IOCON 0x0A
+#define IOCON_ 0x0B
+#define GPPUA 0x0C
+#define GPPUB 0x0D
+#define INTFA 0x0E
+#define INTFB 0x0F
+#define INTCAPA 0x10
+#define INTCAPB 0x11
+#define GPIOA 0x12
+#define GPIOB 0x13
+#define OLATA 0x14
+#define OLATB 0x15
 
 typedef struct {
     unsigned char regs[22];
@@ -96,13 +95,12 @@ typedef struct {
     bitbang_i2c_t bb_i2c;
 } io_MCP23X17_t;
 
+void io_MCP23X17_rst(io_MCP23X17_t* mcp);
+void io_MCP23X17_init(io_MCP23X17_t* mcp);
+void io_MCP23X17_set_addr(io_MCP23X17_t* mcp, unsigned char addr);
 
-void io_MCP23X17_rst(io_MCP23X17_t *mcp);
-void io_MCP23X17_init(io_MCP23X17_t *mcp);
-void io_MCP23X17_set_addr(io_MCP23X17_t *mcp, unsigned char addr);
+unsigned char io_MCP23X17_SPI_io(io_MCP23X17_t* mcp, unsigned char si, unsigned char sck, unsigned char rst,
+                                 unsigned char cs);
+unsigned char io_MCP23X17_I2C_io(io_MCP23X17_t* mcp, unsigned char scl, unsigned char sda);
 
-unsigned char io_MCP23X17_SPI_io(io_MCP23X17_t *mcp, unsigned char si, unsigned char sck, unsigned char rst, unsigned char cs);
-unsigned char io_MCP23X17_I2C_io(io_MCP23X17_t *mcp, unsigned char scl, unsigned char sda);
-
-#endif //IO_MCP23X17
-
+#endif  // IO_MCP23X17

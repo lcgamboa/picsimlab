@@ -23,7 +23,7 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include"bitbang_i2c.h"
+#include "bitbang_i2c.h"
 
 typedef struct {
     bitbang_i2c_t bb_i2c;
@@ -31,11 +31,9 @@ typedef struct {
     unsigned char dataOut;
 } io_PCF8574_t;
 
+void io_PCF8574_rst(io_PCF8574_t* ioe8);
+void io_PCF8574_init(io_PCF8574_t* ioe8);
+void io_PCF8574_end(io_PCF8574_t* ioe8);
+void io_PCF8574_set_addr(io_PCF8574_t* ioe8, unsigned char addr);
 
-void io_PCF8574_rst(io_PCF8574_t *ioe8);
-void io_PCF8574_init(io_PCF8574_t *ioe8);
-void io_PCF8574_end(io_PCF8574_t *ioe8);
-void io_PCF8574_set_addr(io_PCF8574_t *ioe8, unsigned char addr);
-
-
-unsigned char io_PCF8574_I2C_io(io_PCF8574_t *ioe8, unsigned char scl, unsigned char sda);
+unsigned char io_PCF8574_I2C_io(io_PCF8574_t* ioe8, unsigned char scl, unsigned char sda);

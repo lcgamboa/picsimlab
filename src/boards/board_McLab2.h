@@ -24,93 +24,94 @@
    ######################################################################## */
 
 #ifndef BOARD_McLab2_H
-#define	BOARD_McLab2_H
+#define BOARD_McLab2_H
 
+#include "../devices/swbounce.h"
 #include "bsim_picsim.h"
-#include"../devices/swbounce.h"
 
-#define	BOARD_McLab2_Name "McLab2"
+#define BOARD_McLab2_Name "McLab2"
 
-class cboard_McLab2:public bsim_picsim
-{
-   private:
-     unsigned char p_BT[4]; 
-     
-     unsigned char pot1;
-     unsigned char active;
-     
-     lcd_t lcd;
+class cboard_McLab2 : public bsim_picsim {
+private:
+    unsigned char p_BT[4];
 
-     mi2c_t mi2c;
+    unsigned char pot1;
+    unsigned char active;
 
-     int vtc;
-     int vt;
-     
-     int lcde;
+    lcd_t lcd;
 
-     int sound_on;
+    mi2c_t mi2c;
 
+    int vtc;
+    int vt;
 
-     float vp2in;
-     float vp2[2];
-     float temp[2];
-     float ref;
+    int lcde;
 
-     int rpmstp;
-     int rpmc;
+    int sound_on;
 
-     unsigned char d;
-     unsigned char sda,sck;
- 
+    float vp2in;
+    float vp2[2];
+    float temp[2];
+    float ref;
+
+    int rpmstp;
+    int rpmc;
+
+    unsigned char d;
+    unsigned char sda, sck;
+
     unsigned char jmp[8];
-    unsigned int lm1[40]; //luminosidade media display
-    unsigned int lm2[40]; //luminosidade media display
-    unsigned int lm3[40]; //luminosidade media display
-    unsigned int lm4[40]; //luminosidade media display     
-    
-    CGauge *gauge1;
-    CGauge *gauge2;
-    CLabel *label2;
-    CLabel *label3;
-    CLabel *label4;
+    unsigned int lm1[40];  // luminosidade media display
+    unsigned int lm2[40];  // luminosidade media display
+    unsigned int lm3[40];  // luminosidade media display
+    unsigned int lm4[40];  // luminosidade media display
+
+    CGauge* gauge1;
+    CGauge* gauge2;
+    CLabel* label2;
+    CLabel* label3;
+    CLabel* label4;
 
     lxaudio buzzer;
-    
-    lxBitmap * vent[2];
-    
-    char mi2c_tmp_name[200]; 
-    
-    void RegisterRemoteControl(void) override;  
+
+    lxBitmap* vent[2];
+
+    char mi2c_tmp_name[200];
+
+    void RegisterRemoteControl(void) override;
     lxColor color1;
     lxColor color2;
     lxFont font;
     SWBounce_t bounce;
-  public:
-      //Return the board name
-      lxString GetName(void) override {return lxT(BOARD_McLab2_Name); };
-      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
-      cboard_McLab2(void);
-      ~cboard_McLab2(void);
-      void Draw(CDraw *draw) override;
-      void Run_CPU(void) override;
-      lxString GetSupportedDevices(void) override {return lxT("PIC16F1789,PIC16F1939,PIC16F777,PIC16F877A,PIC16F887,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4620,PIC18F47K40,");};
-      int MInit(const char * processor, const char * fname, float freq) override;
-      void Reset(void) override;
-      void MDumpMemory(const char * mfname) override;
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state) override;
-      void EvMouseMove(uint button, uint x, uint y, uint state) override;
-      void EvKeyPress(uint key, uint mask) override;
-      void EvKeyRelease(uint key, uint mask) override;
-      void EvOnShow(void) override;
-      void RefreshStatus(void) override;
-      void WritePreferences(void) override;
-      void ReadPreferences(char *name,char *value) override;
-      void SetScale(double scale) override;
-      unsigned short get_in_id(char * name) override;
-      unsigned short get_out_id(char * name) override;
+
+public:
+    // Return the board name
+    lxString GetName(void) override { return lxT(BOARD_McLab2_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    cboard_McLab2(void);
+    ~cboard_McLab2(void);
+    void Draw(CDraw* draw) override;
+    void Run_CPU(void) override;
+    lxString GetSupportedDevices(void) override {
+        return lxT(
+            "PIC16F1789,PIC16F1939,PIC16F777,PIC16F877A,PIC16F887,PIC18F452,PIC18F4520,PIC18F4550,PIC18F45K50,"
+            "PIC18F4620,PIC18F47K40,");
+    };
+    int MInit(const char* processor, const char* fname, float freq) override;
+    void Reset(void) override;
+    void MDumpMemory(const char* mfname) override;
+    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
+    void EvMouseButtonRelease(uint button, uint x, uint y, uint state) override;
+    void EvMouseMove(uint button, uint x, uint y, uint state) override;
+    void EvKeyPress(uint key, uint mask) override;
+    void EvKeyRelease(uint key, uint mask) override;
+    void EvOnShow(void) override;
+    void RefreshStatus(void) override;
+    void WritePreferences(void) override;
+    void ReadPreferences(char* name, char* value) override;
+    void SetScale(double scale) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
 };
 
-
-#endif	/* BOARD_McLab2_H */
-
+#endif /* BOARD_McLab2_H */

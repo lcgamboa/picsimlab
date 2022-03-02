@@ -28,32 +28,28 @@
 
 #include "board.h"
 
-#define board_init(name, function)  \
-    static board * function ## _create(void){\
-    return new function ();};\
-    static void __attribute__((constructor)) function ## _init (void);\
-    static void function ## _init (void){\
-    board_register(name, function ## _create );}
+#define board_init(name, function)                                    \
+    static board* function##_create(void) { return new function(); }; \
+    static void __attribute__((constructor)) function##_init(void);   \
+    static void function##_init(void) { board_register(name, function##_create); }
 
+typedef board* (*board_create_func)(void);
 
-typedef board * (* board_create_func)(void);
+void board_register(const char* name, board_create_func bcreate);
 
-void board_register(const char * name, board_create_func bcreate);
-
-//boards object creation
-board * create_board(int *lab, int *lab_);
+// boards object creation
+board* create_board(int* lab, int* lab_);
 
 #define BOARDS_MAX 20
 
 extern int BOARDS_LAST;
 
 typedef struct {
-    char name[30];  //name
-    char name_[30]; //name without spaces
+    char name[30];   // name
+    char name_[30];  // name without spaces
     board_create_func bcreate;
 } board_desc;
 
 extern board_desc boards_list[BOARDS_MAX];
 
 #endif /* BOARDS_DEFS_H */
-

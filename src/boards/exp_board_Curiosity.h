@@ -24,74 +24,73 @@
    ######################################################################## */
 
 #ifndef BOARD_Curiosity_H
-#define	BOARD_Curiosity_H
+#define BOARD_Curiosity_H
 
-#include<lxrad.h>
+#include <lxrad.h>
 
 #include "bsim_picsim.h"
 
-#define	BOARD_Curiosity_Name "Curiosity"
+#define BOARD_Curiosity_Name "Curiosity"
 
-//new board class must be derived from board class defined in board.h
-class cboard_Curiosity:public bsim_picsim
-{
-  private:
-     unsigned char p_BT1;           //S1 switch
+// new board class must be derived from board class defined in board.h
+class cboard_Curiosity : public bsim_picsim {
+private:
+    unsigned char p_BT1;  // S1 switch
 
-     unsigned char pot1;
-     unsigned char active;
-     
-     unsigned char jmp[1];             //jmp
-          
-     //controls to be added in simulator window
-     CGauge *gauge1;   //gauge to show mean value of RA5
-     CGauge *gauge2;   //gauge to show mean value of RA1
-     CGauge *gauge3;   //gauge to show mean value of RA2
-     CGauge *gauge4;   //gauge to show mean value of RC5
-     CLabel *label2;   //label of gauge RA5
-     CLabel *label3;   //label of gauge RA1
-     CLabel *label4;   //label of gauge RA2
-     CLabel *label5;   //label of gauge RC5
-     
-     void RegisterRemoteControl(void) override; 
-   public:
-      //Return the board name
-      lxString GetName(void) override {return lxT(BOARD_Curiosity_Name); }; 
-      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
-      //Constructor called once on board creation 
-      cboard_Curiosity(void);
-      //Destructor called once on board destruction 
-      ~cboard_Curiosity(void); 
-      //Called ever 100ms to draw board
-      void Draw(CDraw *draw) override;
-      void Run_CPU(void) override;
-      //Return a list of board supported microcontrollers
-      lxString GetSupportedDevices(void) override {return lxT("PIC16F1619,");};
-      //Return the filename of board picture 
-      lxString GetPictureFileName(void) override {return lxT("Curiosity/board.png");};
-      //Reset board status
-      void Reset(void) override;
-      //Event on the board
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
-      //Event on the board
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state) override;
-      //Event on the board
-      void EvMouseMove(uint button, uint x, uint y, uint state) override;
-      //Event on the board
-      void EvKeyPress(uint key, uint mask) override;
-      //Event on the board
-      void EvKeyRelease(uint key, uint mask) override;
-      //Called ever 1s to refresh status
-      void RefreshStatus(void) override;
-      //Called to save board preferences in configuration file
-      void WritePreferences(void) override;
-      //Called whe configuration file load  preferences 
-      void ReadPreferences(char *name,char *value) override;
-      //return the input ids numbers of names used in input map
-      unsigned short get_in_id(char * name) override;
-      //return the output ids numbers of names used in output map
-      unsigned short get_out_id(char * name) override;
+    unsigned char pot1;
+    unsigned char active;
+
+    unsigned char jmp[1];  // jmp
+
+    // controls to be added in simulator window
+    CGauge* gauge1;  // gauge to show mean value of RA5
+    CGauge* gauge2;  // gauge to show mean value of RA1
+    CGauge* gauge3;  // gauge to show mean value of RA2
+    CGauge* gauge4;  // gauge to show mean value of RC5
+    CLabel* label2;  // label of gauge RA5
+    CLabel* label3;  // label of gauge RA1
+    CLabel* label4;  // label of gauge RA2
+    CLabel* label5;  // label of gauge RC5
+
+    void RegisterRemoteControl(void) override;
+
+public:
+    // Return the board name
+    lxString GetName(void) override { return lxT(BOARD_Curiosity_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    // Constructor called once on board creation
+    cboard_Curiosity(void);
+    // Destructor called once on board destruction
+    ~cboard_Curiosity(void);
+    // Called ever 100ms to draw board
+    void Draw(CDraw* draw) override;
+    void Run_CPU(void) override;
+    // Return a list of board supported microcontrollers
+    lxString GetSupportedDevices(void) override { return lxT("PIC16F1619,"); };
+    // Return the filename of board picture
+    lxString GetPictureFileName(void) override { return lxT("Curiosity/board.png"); };
+    // Reset board status
+    void Reset(void) override;
+    // Event on the board
+    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
+    // Event on the board
+    void EvMouseButtonRelease(uint button, uint x, uint y, uint state) override;
+    // Event on the board
+    void EvMouseMove(uint button, uint x, uint y, uint state) override;
+    // Event on the board
+    void EvKeyPress(uint key, uint mask) override;
+    // Event on the board
+    void EvKeyRelease(uint key, uint mask) override;
+    // Called ever 1s to refresh status
+    void RefreshStatus(void) override;
+    // Called to save board preferences in configuration file
+    void WritePreferences(void) override;
+    // Called whe configuration file load  preferences
+    void ReadPreferences(char* name, char* value) override;
+    // return the input ids numbers of names used in input map
+    unsigned short get_in_id(char* name) override;
+    // return the output ids numbers of names used in output map
+    unsigned short get_out_id(char* name) override;
 };
 
-#endif	/* BOARD_Curiosity_H */
-
+#endif /* BOARD_Curiosity_H */

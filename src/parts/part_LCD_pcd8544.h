@@ -24,36 +24,35 @@
    ######################################################################## */
 
 #ifndef PART_LCD_PCD8544_H
-#define	PART_LCD_PCD8544_H
+#define PART_LCD_PCD8544_H
 
-#include<lxrad.h>
-#include"part.h"
-#include"../devices/lcd_pcd8544.h"
+#include <lxrad.h>
+#include "../devices/lcd_pcd8544.h"
+#include "part.h"
 
-#define	PART_LCD_PCD8544_Name "LCD pcd8544"
+#define PART_LCD_PCD8544_Name "LCD pcd8544"
 
-class cpart_LCD_pcd8544:public part
-{
-   public:
-      lxString GetName(void) override {return lxT(PART_LCD_PCD8544_Name);};
-      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
-      cpart_LCD_pcd8544(unsigned x, unsigned y);
-      ~cpart_LCD_pcd8544(void);
-      void Draw(void) override;
-      void Process(void) override;
-      void PostProcess(void) override;
-      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
-      void ReadPropertiesWindow(CPWindow * WProp) override;
-      lxString WritePreferences(void) override;
-      void LoadImage(void) override;   
-      void ReadPreferences(lxString value) override;
-      unsigned short get_in_id(char * name) override;
-      unsigned short get_out_id(char * name) override;
-   private:
-      unsigned char input_pins[5]; 
-      lcd_pcd8544_t lcd;
-      lxFont font;
+class cpart_LCD_pcd8544 : public part {
+public:
+    lxString GetName(void) override { return lxT(PART_LCD_PCD8544_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    cpart_LCD_pcd8544(unsigned x, unsigned y);
+    ~cpart_LCD_pcd8544(void);
+    void Draw(void) override;
+    void Process(void) override;
+    void PostProcess(void) override;
+    void ConfigurePropertiesWindow(CPWindow* WProp) override;
+    void ReadPropertiesWindow(CPWindow* WProp) override;
+    lxString WritePreferences(void) override;
+    void LoadImage(void) override;
+    void ReadPreferences(lxString value) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
+
+private:
+    unsigned char input_pins[5];
+    lcd_pcd8544_t lcd;
+    lxFont font;
 };
 
-#endif	/* PART_LCD_PCD8544_H */
-
+#endif /* PART_LCD_PCD8544_H */

@@ -24,36 +24,35 @@
    ######################################################################## */
 
 #ifndef PART_FIXEDV_H
-#define	PART_FIXEDV_H
+#define PART_FIXEDV_H
 
-#include<lxrad.h>
-#include"part.h"
+#include <lxrad.h>
+#include "part.h"
 
-#define	PART_FIXEDV_Name "Fixed Voltage"
+#define PART_FIXEDV_Name "Fixed Voltage"
 
-class cpart_fixedv:public part
-{
-    public:
-      lxString GetName(void) override {return lxT(PART_FIXEDV_Name);};
-      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
-      cpart_fixedv(unsigned x, unsigned y);
-      ~cpart_fixedv(void); 
-      void Draw(void) override;
-      void PostProcess(void) override;
-      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
-      void ReadPropertiesWindow(CPWindow * WProp) override;
-      lxString WritePreferences(void) override;
-      void ReadPreferences(lxString value) override;
-      unsigned short get_in_id(char * name) override;
-      unsigned short get_out_id(char * name) override;
-    private:
-      void RegisterRemoteControl(void) override;          
-      unsigned char output_pins[1];
-      unsigned char value;
-      unsigned char active;
-      lxFont font;
-      lxFont font_b;
+class cpart_fixedv : public part {
+public:
+    lxString GetName(void) override { return lxT(PART_FIXEDV_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    cpart_fixedv(unsigned x, unsigned y);
+    ~cpart_fixedv(void);
+    void Draw(void) override;
+    void PostProcess(void) override;
+    void ConfigurePropertiesWindow(CPWindow* WProp) override;
+    void ReadPropertiesWindow(CPWindow* WProp) override;
+    lxString WritePreferences(void) override;
+    void ReadPreferences(lxString value) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
+
+private:
+    void RegisterRemoteControl(void) override;
+    unsigned char output_pins[1];
+    unsigned char value;
+    unsigned char active;
+    lxFont font;
+    lxFont font_b;
 };
 
-#endif	/* POT */
-
+#endif /* POT */

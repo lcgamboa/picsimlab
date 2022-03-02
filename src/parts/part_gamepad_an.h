@@ -24,43 +24,42 @@
    ######################################################################## */
 
 #ifndef PART_GAMEPAD_AN_H
-#define	PART_GAMEPAD_AN_H
+#define PART_GAMEPAD_AN_H
 
-#include<lxrad.h>
-#include"part.h"
+#include <lxrad.h>
+#include "part.h"
 
-#define	PART_GAMEPAD_AN_Name "Gamepad (Analogic)"
+#define PART_GAMEPAD_AN_Name "Gamepad (Analogic)"
 
-class cpart_gamepad_an:public part
-{
-   public:
-      lxString GetName(void) override {return lxT(PART_GAMEPAD_AN_Name);};
-      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
-      cpart_gamepad_an(unsigned x, unsigned y);
-      ~cpart_gamepad_an(void);
-      void Draw(void) override;
-      void PreProcess(void) override;
-      void Reset(void) override; 
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state) override;
-      void EvKeyPress(uint key,uint mask) override;
-      void EvKeyRelease(uint key,uint mask) override;
-      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
-      void ReadPropertiesWindow(CPWindow * WProp) override;
-      lxString WritePreferences(void) override;
-      void ReadPreferences(lxString value) override;
-      unsigned short get_in_id(char * name) override;
-      unsigned short get_out_id(char * name) override;
-    private:
-      void RegisterRemoteControl(void) override;          
-      unsigned char active;  
-      unsigned char output_pins[1];    
-      float output_value_an;
-      float output_value_an_;
-      unsigned char output_value[5];
-      lxFont font;
-      float vmax;
+class cpart_gamepad_an : public part {
+public:
+    lxString GetName(void) override { return lxT(PART_GAMEPAD_AN_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    cpart_gamepad_an(unsigned x, unsigned y);
+    ~cpart_gamepad_an(void);
+    void Draw(void) override;
+    void PreProcess(void) override;
+    void Reset(void) override;
+    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
+    void EvMouseButtonRelease(uint button, uint x, uint y, uint state) override;
+    void EvKeyPress(uint key, uint mask) override;
+    void EvKeyRelease(uint key, uint mask) override;
+    void ConfigurePropertiesWindow(CPWindow* WProp) override;
+    void ReadPropertiesWindow(CPWindow* WProp) override;
+    lxString WritePreferences(void) override;
+    void ReadPreferences(lxString value) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
+
+private:
+    void RegisterRemoteControl(void) override;
+    unsigned char active;
+    unsigned char output_pins[1];
+    float output_value_an;
+    float output_value_an_;
+    unsigned char output_value[5];
+    lxFont font;
+    float vmax;
 };
 
-#endif	/* PART_GAMEPAD_AN_H */
-
+#endif /* PART_GAMEPAD_AN_H */

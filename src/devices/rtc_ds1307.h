@@ -23,15 +23,15 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include<time.h>
-#include"bitbang_i2c.h"
+#include <time.h>
+#include "bitbang_i2c.h"
 
 typedef struct {
     bitbang_i2c_t bb_i2c;
 
     unsigned char data[64];
     unsigned short addr;
-    
+
     struct tm dtime;
     time_t systime;
     time_t rtctime;
@@ -40,12 +40,11 @@ typedef struct {
     int alarm;
 } rtc_ds1307_t;
 
+void rtc_ds1307_rst(rtc_ds1307_t* rtc);
+void rtc_ds1307_init(rtc_ds1307_t* rtc);
+void rtc_ds1307_update(rtc_ds1307_t* rtc);
+void rtc_ds1307_end(rtc_ds1307_t* rtc);
+void rtc_ds1307_setUtime(rtc_ds1307_t* rtc, time_t utime);
+time_t rtc_ds1307_getUtime(rtc_ds1307_t* rtc);
 
-void rtc_ds1307_rst (rtc_ds1307_t *rtc);
-void rtc_ds1307_init (rtc_ds1307_t *rtc);
-void rtc_ds1307_update(rtc_ds1307_t *rtc);
-void rtc_ds1307_end(rtc_ds1307_t *rtc);
-void rtc_ds1307_setUtime(rtc_ds1307_t *rtc, time_t utime);
-time_t rtc_ds1307_getUtime(rtc_ds1307_t *rtc);
-
-unsigned char rtc_ds1307_I2C_io(rtc_ds1307_t *rtc, unsigned char scl, unsigned char sda);
+unsigned char rtc_ds1307_I2C_io(rtc_ds1307_t* rtc, unsigned char scl, unsigned char sda);

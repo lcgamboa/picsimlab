@@ -26,21 +26,16 @@
 #ifndef PART_BUZZER_H
 #define PART_BUZZER_H
 
-#include<lxrad.h>
-#include"part.h"
+#include <lxrad.h>
+#include "part.h"
 
 #define PART_BUZZER_Name "Buzzer"
 
 class cpart_Buzzer : public part {
 public:
+    lxString GetName(void) override { return lxT(PART_BUZZER_Name); };
 
-    lxString GetName(void) override {
-        return lxT(PART_BUZZER_Name);
-    };
-
-    lxString GetAboutInfo(void) override {
-        return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");
-    };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
     cpart_Buzzer(unsigned x, unsigned y);
     ~cpart_Buzzer(void);
     void Draw(void) override;
@@ -48,12 +43,13 @@ public:
     void Process(void) override;
     void PostProcess(void) override;
     void Stop(void) override;
-    void ConfigurePropertiesWindow(CPWindow * WProp) override;
-    void ReadPropertiesWindow(CPWindow * WProp) override;
+    void ConfigurePropertiesWindow(CPWindow* WProp) override;
+    void ReadPropertiesWindow(CPWindow* WProp) override;
     lxString WritePreferences(void) override;
     void ReadPreferences(lxString value) override;
-    unsigned short get_in_id(char * name) override;
-    unsigned short get_out_id(char * name) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
+
 private:
     void RegisterRemoteControl(void) override;
     void ChangeType(unsigned char tp);
@@ -64,7 +60,7 @@ private:
     int JUMPSTEPS_;
     unsigned char type;
     unsigned int samplerate;
-    short *buffer;
+    short* buffer;
     unsigned int buffersize;
     unsigned int buffercount;
     unsigned int maxv;
@@ -80,4 +76,3 @@ private:
 };
 
 #endif /* PART_BUZZER */
-

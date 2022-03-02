@@ -24,46 +24,42 @@
    ######################################################################## */
 
 #ifndef PART_ETH_W5500_H
-#define	PART_ETH_W5500_H
+#define PART_ETH_W5500_H
 
-#include<lxrad.h>
-#include"part.h"
-#include"../devices/eth_w5500.h"
+#include <lxrad.h>
+#include "../devices/eth_w5500.h"
+#include "part.h"
 
-#define	PART_ETH_W5500_Name "ETH w5500"
+#define PART_ETH_W5500_Name "ETH w5500"
 
-class cpart_ETH_w5500:public part
-{
-   public:
-      lxString GetName(void) override {return lxT(PART_ETH_W5500_Name);};
-      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
-      cpart_ETH_w5500(unsigned x, unsigned y);
-      ~cpart_ETH_w5500(void);
-      void Draw(void) override;
-      void PreProcess (void) override;
-      void Process(void) override; 
-      void PostProcess (void) override;
-      void Reset(void) override;
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
-      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
-      void ReadPropertiesWindow(CPWindow * WProp) override;
-      lxString WritePreferences(void) override;
-      void ReadPreferences(lxString value) override;
-      unsigned short get_in_id(char * name) override;
-      unsigned short get_out_id(char * name) override;
-   private:
-      void RegisterRemoteControl(void) override;         
-      unsigned char input_pins[4];
-      unsigned char output_pins[2];
-      eth_w5500_t ethw;
-      unsigned char link;
-      unsigned short _ret; 
-      lxFont font;
-      unsigned int sts[8][4];
+class cpart_ETH_w5500 : public part {
+public:
+    lxString GetName(void) override { return lxT(PART_ETH_W5500_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    cpart_ETH_w5500(unsigned x, unsigned y);
+    ~cpart_ETH_w5500(void);
+    void Draw(void) override;
+    void PreProcess(void) override;
+    void Process(void) override;
+    void PostProcess(void) override;
+    void Reset(void) override;
+    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
+    void ConfigurePropertiesWindow(CPWindow* WProp) override;
+    void ReadPropertiesWindow(CPWindow* WProp) override;
+    lxString WritePreferences(void) override;
+    void ReadPreferences(lxString value) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
+
+private:
+    void RegisterRemoteControl(void) override;
+    unsigned char input_pins[4];
+    unsigned char output_pins[2];
+    eth_w5500_t ethw;
+    unsigned char link;
+    unsigned short _ret;
+    lxFont font;
+    unsigned int sts[8][4];
 };
 
-
-
-
-#endif	/* PART_ETH_W5500_H */
-
+#endif /* PART_ETH_W5500_H */

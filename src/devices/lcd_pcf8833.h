@@ -23,12 +23,11 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-
 #ifndef LCD_PCF8833
-#define	LCD_PCF8833
-    
-#include<lxrad.h>
-#include"bitbang_spi.h"
+#define LCD_PCF8833
+
+#include <lxrad.h>
+#include "bitbang_spi.h"
 
 /* pinout
   1 VCC
@@ -43,34 +42,31 @@
  10 VLED+
 */
 
-typedef struct
-{
-unsigned int ram[132][132];
-bitbang_spi_t bb_spi;
-int dc;
-unsigned char colm;
-unsigned char madctl;
-unsigned char hrst;
-unsigned char tp,dat;
-unsigned char x,y,r,g,b;
-unsigned int color;
-unsigned char update;
-unsigned char command;
-unsigned char rmin;
-unsigned char rmax;
-unsigned char cmin;
-unsigned char cmax;
-}lcd_pcf8833_t;
+typedef struct {
+    unsigned int ram[132][132];
+    bitbang_spi_t bb_spi;
+    int dc;
+    unsigned char colm;
+    unsigned char madctl;
+    unsigned char hrst;
+    unsigned char tp, dat;
+    unsigned char x, y, r, g, b;
+    unsigned int color;
+    unsigned char update;
+    unsigned char command;
+    unsigned char rmin;
+    unsigned char rmax;
+    unsigned char cmin;
+    unsigned char cmax;
+} lcd_pcf8833_t;
 
+void lcd_pcf8833_rst(lcd_pcf8833_t* lcd);
+void lcd_pcf8833_init(lcd_pcf8833_t* lcd);
+void lcd_pcf8833_update(lcd_pcf8833_t* lcd);
 
-void lcd_pcf8833_rst(lcd_pcf8833_t *lcd);
-void lcd_pcf8833_init(lcd_pcf8833_t *lcd);
-void lcd_pcf8833_update(lcd_pcf8833_t *lcd);
+unsigned char lcd_pcf8833_io(lcd_pcf8833_t* lcd, unsigned char pdat, unsigned char clk, unsigned char ncs,
+                             unsigned char nrst);
 
-unsigned char lcd_pcf8833_io(lcd_pcf8833_t *lcd, unsigned char pdat, unsigned char clk, unsigned char ncs, unsigned char nrst);
+void lcd_pcf8833_draw(lcd_pcf8833_t* lcd, CCanvas* canvas, int x1, int y1, int w1, int h1, int picpwr);
 
-void lcd_pcf8833_draw(lcd_pcf8833_t *lcd, CCanvas * canvas,int x1,int y1,int w1,int h1, int picpwr);
-
-
-#endif //LCD_PCF8833
-
+#endif  // LCD_PCF8833

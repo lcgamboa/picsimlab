@@ -24,37 +24,36 @@
    ######################################################################## */
 
 #ifndef PART_RTC_DS1307_H
-#define	PART_RTC_DS1307_H
+#define PART_RTC_DS1307_H
 
-#include<lxrad.h>
-#include"part.h"
+#include <lxrad.h>
+#include "part.h"
 
-#define	PART_RTC_DS1307_Name "RTC ds1307"
+#define PART_RTC_DS1307_Name "RTC ds1307"
 
-class cpart_RTC_ds1307:public part
-{
-   public:
-      lxString GetName(void) override {return lxT(PART_RTC_DS1307_Name);};
-      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
-      cpart_RTC_ds1307(unsigned x, unsigned y);
-      ~cpart_RTC_ds1307(void);
-      void Draw(void) override;
-      void PreProcess(void) override;
-      void Process(void) override;
-      lxString GetPictureFileName(void) override {return lxT("Common/IC8.svg");};
-      lxString GetMapFile(void) override {return lxT("Common/IC8.map");};
-      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
-      void ReadPropertiesWindow(CPWindow * WProp) override;
-      lxString WritePreferences(void) override;
-      void ReadPreferences(lxString value) override;
-      unsigned short get_in_id(char * name) override;
-      unsigned short get_out_id(char * name) override;
-   private:
-      unsigned char input_pins[3]; 
-      rtc_ds1307_t rtc2;
-      lxFont font;
-      lxFont font_p;      
+class cpart_RTC_ds1307 : public part {
+public:
+    lxString GetName(void) override { return lxT(PART_RTC_DS1307_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    cpart_RTC_ds1307(unsigned x, unsigned y);
+    ~cpart_RTC_ds1307(void);
+    void Draw(void) override;
+    void PreProcess(void) override;
+    void Process(void) override;
+    lxString GetPictureFileName(void) override { return lxT("Common/IC8.svg"); };
+    lxString GetMapFile(void) override { return lxT("Common/IC8.map"); };
+    void ConfigurePropertiesWindow(CPWindow* WProp) override;
+    void ReadPropertiesWindow(CPWindow* WProp) override;
+    lxString WritePreferences(void) override;
+    void ReadPreferences(lxString value) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
+
+private:
+    unsigned char input_pins[3];
+    rtc_ds1307_t rtc2;
+    lxFont font;
+    lxFont font_p;
 };
 
-#endif	/* PART_v_H */
-
+#endif /* PART_v_H */

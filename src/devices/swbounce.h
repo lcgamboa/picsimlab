@@ -23,25 +23,23 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-
 #ifndef SWBOUNCE
-#define	SWBOUNCE
+#define SWBOUNCE
 
-typedef struct{
+typedef struct {
     int swcount;
-    unsigned char * bounce;
+    unsigned char* bounce;
     int do_bounce;
     int bcount;
-    int btime;  
-    int bnum;    
+    int btime;
+    int bnum;
     float system_freq;
-}SWBounce_t;
+} SWBounce_t;
 
-void SWBounce_init(SWBounce_t * swb, const int swcount);
-void SWBounce_end(SWBounce_t * swb);
-void SWBounce_prepare(SWBounce_t * swb, const float system_freq);
-void SWBounce_bounce(SWBounce_t * swb, const int sw);
-int SWBounce_process(SWBounce_t * swb);
+void SWBounce_init(SWBounce_t* swb, const int swcount);
+void SWBounce_end(SWBounce_t* swb);
+void SWBounce_prepare(SWBounce_t* swb, const float system_freq);
+void SWBounce_bounce(SWBounce_t* swb, const int sw);
+int SWBounce_process(SWBounce_t* swb);
 
-#endif //SWBOUNCE
-
+#endif  // SWBOUNCE

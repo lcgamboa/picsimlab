@@ -23,8 +23,8 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include<time.h>
-#include"bitbang_i2c.h"
+#include <time.h>
+#include "bitbang_i2c.h"
 
 typedef struct {
     bitbang_i2c_t bb_i2c;
@@ -35,11 +35,10 @@ typedef struct {
     short Temp;
 } sen_ds1621_t;
 
+void sen_ds1621_rst(sen_ds1621_t* ds1621);
+void sen_ds1621_init(sen_ds1621_t* ds1621);
+void sen_ds1621_end(sen_ds1621_t* ds1621);
+void sen_ds1621_setTemp(sen_ds1621_t* ds1621, float temp);
+void sen_ds1621_set_addr(sen_ds1621_t* ds1621, unsigned char addr);
 
-void sen_ds1621_rst (sen_ds1621_t *ds1621);
-void sen_ds1621_init (sen_ds1621_t *ds1621);
-void sen_ds1621_end(sen_ds1621_t *ds1621);
-void sen_ds1621_setTemp(sen_ds1621_t *ds1621, float temp);
-void sen_ds1621_set_addr(sen_ds1621_t *ds1621, unsigned char addr);
-
-unsigned char sen_ds1621_I2C_io(sen_ds1621_t *ds1621, unsigned char scl, unsigned char sda);
+unsigned char sen_ds1621_I2C_io(sen_ds1621_t* ds1621, unsigned char scl, unsigned char sda);

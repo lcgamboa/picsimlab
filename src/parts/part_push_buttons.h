@@ -26,22 +26,17 @@
 #ifndef PART_PUSH_BUTTONS_H
 #define PART_PUSH_BUTTONS_H
 
-#include<lxrad.h>
-#include"part.h"
-#include"../devices/swbounce.h"
+#include <lxrad.h>
+#include "../devices/swbounce.h"
+#include "part.h"
 
 #define PART_PUSH_BUTTONS_Name "Push Buttons"
 
 class cpart_pbuttons : public part {
 public:
+    lxString GetName(void) override { return lxT(PART_PUSH_BUTTONS_Name); };
 
-    lxString GetName(void)  override {
-        return lxT(PART_PUSH_BUTTONS_Name);
-    };
-
-    lxString GetAboutInfo(void)  override {
-        return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");
-    };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
     cpart_pbuttons(unsigned x, unsigned y);
     ~cpart_pbuttons(void);
     void Draw(void) override;
@@ -50,12 +45,13 @@ public:
     void Reset(void) override;
     void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
     void EvMouseButtonRelease(uint button, uint x, uint y, uint state) override;
-    void ConfigurePropertiesWindow(CPWindow * WProp) override;
-    void ReadPropertiesWindow(CPWindow * WProp) override;
+    void ConfigurePropertiesWindow(CPWindow* WProp) override;
+    void ReadPropertiesWindow(CPWindow* WProp) override;
     lxString WritePreferences(void) override;
     void ReadPreferences(lxString value) override;
-    unsigned short get_in_id(char * name) override;
-    unsigned short get_out_id(char * name) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
+
 private:
     void RegisterRemoteControl(void) override;
     unsigned char active;
@@ -66,4 +62,3 @@ private:
 };
 
 #endif /* PART_PUSH_BUTTONS_H */
-

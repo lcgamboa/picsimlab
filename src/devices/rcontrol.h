@@ -26,11 +26,10 @@
 #ifndef RCONTROL_H
 #define RCONTROL_H
 
-//PICSimLab remote control
+// PICSimLab remote control
 int rcontrol_init(unsigned short tcpport);
 int rcontrol_loop(void);
 void rcontrol_end(void);
 void rcontrol_server_end(void);
 
 #endif /* RCONTROL_H */
-

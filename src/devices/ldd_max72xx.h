@@ -23,12 +23,11 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-
 #ifndef LDD_MAX72XX
-#define	LDD_MAX72XX
-    
-#include<lxrad.h>
-#include"bitbang_spi.h"
+#define LDD_MAX72XX
+
+#include <lxrad.h>
+#include "bitbang_spi.h"
 
 /* pinout
   1 DIN
@@ -54,28 +53,24 @@
   21 SEGE
   22 SEGDP
   23 SEGD
-  24 DOUT 
+  24 DOUT
 */
 
-typedef struct
-{
-unsigned char ram[8];
-bitbang_spi_t bb_spi;
-unsigned short ancs;
-unsigned short dat;
-unsigned char update;
-unsigned short dout;
-}ldd_max72xx_t;
+typedef struct {
+    unsigned char ram[8];
+    bitbang_spi_t bb_spi;
+    unsigned short ancs;
+    unsigned short dat;
+    unsigned char update;
+    unsigned short dout;
+} ldd_max72xx_t;
 
+void ldd_max72xx_rst(ldd_max72xx_t* ldd);
+void ldd_max72xx_init(ldd_max72xx_t* ldd);
+void ldd_max72xx_update(ldd_max72xx_t* ldd);
 
-void ldd_max72xx_rst(ldd_max72xx_t *ldd);
-void ldd_max72xx_init(ldd_max72xx_t *ldd);
-void ldd_max72xx_update(ldd_max72xx_t *ldd);
+unsigned char ldd_max72xx_io(ldd_max72xx_t* ldd, unsigned char din, unsigned char clk, unsigned char ncs);
 
-unsigned char ldd_max72xx_io(ldd_max72xx_t *ldd, unsigned char din, unsigned char clk, unsigned char ncs);
+void ldd_max72xx_draw(ldd_max72xx_t* ldd, CCanvas* canvas, int x1, int y1, int w1, int h1, int picpwr, int angle);
 
-void ldd_max72xx_draw(ldd_max72xx_t *ldd, CCanvas * canvas,int x1,int y1,int w1,int h1, int picpwr, int angle);
-
-
-#endif //LDD_MAX72XX
-
+#endif  // LDD_MAX72XX

@@ -24,40 +24,38 @@
    ######################################################################## */
 
 #ifndef PART_SWITCHES_H
-#define	PART_SWITCHES_H
+#define PART_SWITCHES_H
 
-#include<lxrad.h>
-#include"part.h"
-#include"../devices/swbounce.h"
+#include <lxrad.h>
+#include "../devices/swbounce.h"
+#include "part.h"
 
-#define	PART_SWITCHES_Name "Switches"
+#define PART_SWITCHES_Name "Switches"
 
-class cpart_switches:public part
-{
-   public:
-      lxString GetName(void) override {return lxT(PART_SWITCHES_Name);}; 
-      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
-      cpart_switches(unsigned x, unsigned y);
-      ~cpart_switches(void);
-      void Draw(void) override;
-      void PreProcess(void) override;
-      void Process(void) override;
-      void Reset(void) override; 
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
-      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
-      void ReadPropertiesWindow(CPWindow * WProp) override;
-      lxString WritePreferences(void) override;
-      void ReadPreferences(lxString value) override;
-      unsigned short get_in_id(char * name) override;
-      unsigned short get_out_id(char * name) override;
-    private:
-      void RegisterRemoteControl(void) override;  
-      unsigned char output_pins[8];   
-      unsigned char output_value[8];
-      lxFont font;
-      SWBounce_t bounce;
+class cpart_switches : public part {
+public:
+    lxString GetName(void) override { return lxT(PART_SWITCHES_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    cpart_switches(unsigned x, unsigned y);
+    ~cpart_switches(void);
+    void Draw(void) override;
+    void PreProcess(void) override;
+    void Process(void) override;
+    void Reset(void) override;
+    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
+    void ConfigurePropertiesWindow(CPWindow* WProp) override;
+    void ReadPropertiesWindow(CPWindow* WProp) override;
+    lxString WritePreferences(void) override;
+    void ReadPreferences(lxString value) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
+
+private:
+    void RegisterRemoteControl(void) override;
+    unsigned char output_pins[8];
+    unsigned char output_value[8];
+    lxFont font;
+    SWBounce_t bounce;
 };
 
-
-#endif	/* SWITCHES */
-
+#endif /* SWITCHES */

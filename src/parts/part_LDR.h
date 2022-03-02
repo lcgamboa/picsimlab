@@ -24,44 +24,43 @@
    ######################################################################## */
 
 #ifndef PART_LDR_H
-#define	PART_LDR_H
+#define PART_LDR_H
 
-#include<lxrad.h>
-#include"part.h"
+#include <lxrad.h>
+#include "part.h"
 
-#define	PART_LDR_Name "LDR"
+#define PART_LDR_Name "LDR"
 
-class cpart_LDR:public part
-{
-    public:
-      lxString GetName(void) override {return lxT(PART_LDR_Name);};
-      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
-      cpart_LDR(unsigned x, unsigned y);
-      ~cpart_LDR(void); 
-      void Draw(void) override;
-      void PostProcess(void) override;
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state) override;
-      void EvMouseMove(uint button, uint x, uint y,uint state) override;
-      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
-      void ReadPropertiesWindow(CPWindow * WProp) override;
-      lxString WritePreferences(void) override;
-      void ReadPreferences(lxString value) override;
-      void Reset(void) override;
-      unsigned short get_in_id(char * name) override;
-      unsigned short get_out_id(char * name) override;
-    private:
-      void RegisterRemoteControl(void) override;          
-      unsigned char output_pins[2];
-      unsigned char value;
-      unsigned char active;
-      lxFont font;
-      lxFont font_p;
-      float vthreshold;
-      float lux;
-      float vout;
-      float vmax;
+class cpart_LDR : public part {
+public:
+    lxString GetName(void) override { return lxT(PART_LDR_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    cpart_LDR(unsigned x, unsigned y);
+    ~cpart_LDR(void);
+    void Draw(void) override;
+    void PostProcess(void) override;
+    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
+    void EvMouseButtonRelease(uint button, uint x, uint y, uint state) override;
+    void EvMouseMove(uint button, uint x, uint y, uint state) override;
+    void ConfigurePropertiesWindow(CPWindow* WProp) override;
+    void ReadPropertiesWindow(CPWindow* WProp) override;
+    lxString WritePreferences(void) override;
+    void ReadPreferences(lxString value) override;
+    void Reset(void) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
+
+private:
+    void RegisterRemoteControl(void) override;
+    unsigned char output_pins[2];
+    unsigned char value;
+    unsigned char active;
+    lxFont font;
+    lxFont font_p;
+    float vthreshold;
+    float lux;
+    float vout;
+    float vmax;
 };
 
-#endif	/* LDR */
-
+#endif /* LDR */

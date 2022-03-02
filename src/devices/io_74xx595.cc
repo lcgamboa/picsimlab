@@ -23,57 +23,44 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+#include "io_74xx595.h"
 
-#include"io_74xx595.h"
-
-void
-io_74xx595_rst(io_74xx595_t *sr)
-{
- sr->asclk = 1;
- sr->alclk = 1;
- sr->dsr = 0;
- sr->sout = 0;
- sr->out = 0;
+void io_74xx595_rst(io_74xx595_t* sr) {
+    sr->asclk = 1;
+    sr->alclk = 1;
+    sr->dsr = 0;
+    sr->sout = 0;
+    sr->out = 0;
 }
 
-void
-io_74xx595_init(io_74xx595_t *sr)
-{
- io_74xx595_rst(sr); 
+void io_74xx595_init(io_74xx595_t* sr) {
+    io_74xx595_rst(sr);
 }
 
-unsigned short
-io_74xx595_io(io_74xx595_t *sr, unsigned char A, unsigned char sclk, unsigned char lclk, unsigned char rst)
-{
-
- if (!rst)
-  {
-   io_74xx595_rst(sr);
-   return sr->out;
-  }
-
-
- //transicao
- if ((sr->asclk == 0)&&(sclk == 1))//rising edge
-  {
-   if (A)
-    {
-     sr->dsr = (sr->dsr << 1) | 1;
+unsigned short io_74xx595_io(io_74xx595_t* sr, unsigned char A, unsigned char sclk, unsigned char lclk,
+                             unsigned char rst) {
+    if (!rst) {
+        io_74xx595_rst(sr);
+        return sr->out;
     }
-   else
+
+    // transicao
+    if ((sr->asclk == 0) && (sclk == 1))  // rising edge
     {
-     sr->dsr = (sr->dsr << 1) & 0x1FE;
+        if (A) {
+            sr->dsr = (sr->dsr << 1) | 1;
+        } else {
+            sr->dsr = (sr->dsr << 1) & 0x1FE;
+        }
     }
-  }
- sr->asclk = sclk;
+    sr->asclk = sclk;
 
- //transicao
- if ((sr->alclk == 0)&&(lclk == 1))//rising edge
-  {
-   sr->out = sr->dsr;
-  }
- sr->alclk = lclk;
+    // transicao
+    if ((sr->alclk == 0) && (lclk == 1))  // rising edge
+    {
+        sr->out = sr->dsr;
+    }
+    sr->alclk = lclk;
 
-
- return (sr->dsr & 0x0100)| sr->out ;
+    return (sr->dsr & 0x0100) | sr->out;
 }

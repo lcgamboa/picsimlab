@@ -26,18 +26,15 @@
 #ifndef PART_SIGNALGENERATOR_H
 #define PART_SIGNALGENERATOR_H
 
-#include<lxrad.h>
-#include"part.h"
+#include <lxrad.h>
+#include "part.h"
 
 #define PART_SIGNALGENERATOR_Name "Signal Generator"
 
 class cpart_SignalGenerator : public part {
 public:
-
-    lxString GetName(void) override {
-        return lxT(PART_SIGNALGENERATOR_Name);
-    };
-    lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
+    lxString GetName(void) override { return lxT(PART_SIGNALGENERATOR_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
     cpart_SignalGenerator(unsigned x, unsigned y);
     ~cpart_SignalGenerator(void);
     void Draw(void) override;
@@ -46,14 +43,15 @@ public:
     void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
     void EvMouseButtonRelease(uint button, uint x, uint y, uint state) override;
     void EvMouseMove(uint button, uint x, uint y, uint state) override;
-    void ConfigurePropertiesWindow(CPWindow * WProp) override;
-    void ReadPropertiesWindow(CPWindow * WProp) override;
+    void ConfigurePropertiesWindow(CPWindow* WProp) override;
+    void ReadPropertiesWindow(CPWindow* WProp) override;
     lxString WritePreferences(void) override;
     void ReadPreferences(lxString value) override;
-    unsigned short get_in_id(char * name) override;
-    unsigned short get_out_id(char * name) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
+
 private:
-    void RegisterRemoteControl(void) override;      
+    void RegisterRemoteControl(void) override;
     unsigned char input_pins[2];
     unsigned char values[3];
     unsigned char active[3];
@@ -70,4 +68,3 @@ private:
 };
 
 #endif /* SIGNALGENERATOR */
-

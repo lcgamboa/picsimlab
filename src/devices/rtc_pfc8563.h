@@ -23,8 +23,8 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include<time.h>
-#include"bitbang_i2c.h"
+#include <time.h>
+#include "bitbang_i2c.h"
 
 typedef struct {
     bitbang_i2c_t bb_i2c;
@@ -40,13 +40,11 @@ typedef struct {
     int alarm;
 } rtc_pfc8563_t;
 
+void rtc_pfc8563_rst(rtc_pfc8563_t* rtc);
+void rtc_pfc8563_init(rtc_pfc8563_t* rtc);
+void rtc_pfc8563_update(rtc_pfc8563_t* rtc);
+void rtc_pfc8563_end(rtc_pfc8563_t* rtc);
+void rtc_pfc8563_setUtime(rtc_pfc8563_t* rtc, time_t utime);
+time_t rtc_pfc8563_getUtime(rtc_pfc8563_t* rtc);
 
-void rtc_pfc8563_rst(rtc_pfc8563_t *rtc);
-void rtc_pfc8563_init(rtc_pfc8563_t *rtc);
-void rtc_pfc8563_update(rtc_pfc8563_t *rtc);
-void rtc_pfc8563_end(rtc_pfc8563_t *rtc);
-void rtc_pfc8563_setUtime(rtc_pfc8563_t *rtc, time_t utime);
-time_t rtc_pfc8563_getUtime(rtc_pfc8563_t *rtc);
-
-
-unsigned char rtc_pfc8563_I2C_io(rtc_pfc8563_t *rtc, unsigned char scl, unsigned char sda);
+unsigned char rtc_pfc8563_I2C_io(rtc_pfc8563_t* rtc, unsigned char scl, unsigned char sda);

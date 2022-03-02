@@ -23,29 +23,27 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-
 #ifndef LCD_H
-#define	LCD_H
-    
-#include<lxrad.h>
-    
+#define LCD_H
+
+#include <lxrad.h>
+
 #define DDRMAX 80
 
+#define L_FNT 0x0200  // Sets character font
+#define L_NLI 0x0100  // Sets number of display line
 
-#define L_FNT 0x0200  //Sets character font
-#define L_NLI 0x0100  //Sets number of display line
+#define L_DL 0x0080  // Sets interface data length
 
-#define L_DL  0x0080  //Sets interface data length
+#define L_LR 0x0040  // Sets shift direction
+#define L_CD 0x0020  // Sets cursor-move or display-shift
 
-#define L_LR  0x0040  //Sets shift direction
-#define L_CD  0x0020  //Sets cursor-move or display-shift
+#define L_DID 0x0010  // Sets cursor move direction
+#define L_DSH 0x0008  // specifies to shift the display
 
-#define L_DID 0x0010  //Sets cursor move direction
-#define L_DSH 0x0008  //specifies to shift the display
-
-#define L_DON 0x0004  //Sets On/Off of all display
-#define L_CON 0x0002  //Sets cursor On/Off 
-#define L_CBL 0x0001  //Set blink of cursor position character
+#define L_DON 0x0004  // Sets On/Off of all display
+#define L_CON 0x0002  // Sets cursor On/Off
+#define L_CBL 0x0001  // Set blink of cursor position character
 
 /*
 I/D  	0 = Decrement cursor position  	1 = Increment cursor position
@@ -62,46 +60,41 @@ BF  	0 = Can accept instruction  	1 = Internal operation in progress
 */
 
 #define LCD_ADDR_CGRAM 0
-#define LCD_ADDR_DDRAM 1 
+#define LCD_ADDR_DDRAM 1
 
-typedef struct
-{
-unsigned short int flags;
-unsigned char addr_counter;
-unsigned char addr_mode;
-unsigned char update;   //redraw 
-unsigned int blinkc;    //blink count timer
-unsigned char blink;    //cursor state
-char shift;             //display shift
-char ddram_char[DDRMAX];//ddram 
-char cgram[8][5]; //cgram font mapped
-char cgram_char[64]; //cgram
-char bc;
-char buff;
-unsigned char cnum;     //number of columns 16 or 20
-unsigned char lnum;     //number of lines 1,2 or 4 
-}lcd_t;
+typedef struct {
+    unsigned short int flags;
+    unsigned char addr_counter;
+    unsigned char addr_mode;
+    unsigned char update;     // redraw
+    unsigned int blinkc;      // blink count timer
+    unsigned char blink;      // cursor state
+    char shift;               // display shift
+    char ddram_char[DDRMAX];  // ddram
+    char cgram[8][5];         // cgram font mapped
+    char cgram_char[64];      // cgram
+    char bc;
+    char buff;
+    unsigned char cnum;  // number of columns 16 or 20
+    unsigned char lnum;  // number of lines 1,2 or 4
+} lcd_t;
 
+void lcd_cmd(lcd_t* lcd, char cmd);
 
+void lcd_data(lcd_t* lcd, char data);
 
-void lcd_cmd(lcd_t * lcd, char cmd);
+unsigned char lcd_read_busyf_acounter(lcd_t* lcd);
 
-void lcd_data(lcd_t * lcd, char data);
+char lcd_read_data(lcd_t* lcd);
 
-unsigned char lcd_read_busyf_acounter(lcd_t * lcd);
+void lcd_rst(lcd_t* lcd);
 
-char lcd_read_data(lcd_t * lcd);
+void lcd_init(lcd_t* lcd, unsigned char cnum, unsigned char lnum);
 
-void lcd_rst(lcd_t * lcd);
+void lcd_on(lcd_t* lcd, int onoff);
 
-void lcd_init(lcd_t * lcd, unsigned char cnum, unsigned char lnum);
+void lcd_blink(lcd_t* lcd);
 
-void lcd_on(lcd_t * lcd,int onoff);
-
-void lcd_blink(lcd_t * lcd);
-
-void lcd_draw(lcd_t * lcd, CCanvas * canvas,int x1,int y1,int w1,int h1, int picpwr);
-
+void lcd_draw(lcd_t* lcd, CCanvas* canvas, int x1, int y1, int w1, int h1, int picpwr);
 
 #endif
-

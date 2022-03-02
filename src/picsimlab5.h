@@ -23,12 +23,12 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef CPWINDOW5 
+#ifndef CPWINDOW5
 #define CPWINDOW5
 
-#include<lxrad.h>
-#include"parts/part.h"
-#include"parts/parts_defs.h"
+#include <lxrad.h>
+#include "parts/part.h"
+#include "parts/parts_defs.h"
 
 #define IOINIT 110
 
@@ -39,7 +39,7 @@
  */
 class CPWindow5 : public CPWindow {
 public:
-    //lxrad automatic generated block start, don't edit below!
+    // lxrad automatic generated block start, don't edit below!
     /*#Controls*/
     CMenu menu1;
     CDraw draw1;
@@ -54,7 +54,7 @@ public:
     CItemMenu pmenu2_Rotate;
     CItemMenu pmenu2_Delete;
     CItemMenu pmenu2_Help;
-    CItemMenu pmenu2_About;    
+    CItemMenu pmenu2_About;
     CTimer timer1;
     CItemMenu menu1_File_Newconfiguration;
     CItemMenu menu1_File_Saveconfiguration;
@@ -63,55 +63,55 @@ public:
     CItemMenu menu1_File_Loadpinalias;
     CPMenu menu1_Edit;
     CItemMenu menu1_Edit_Clearpinalias;
-    CItemMenu menu1_Edit_Togglepinalias;  
-    CItemMenu menu1_Edit_Editpinalias;  
-    CItemMenu menu1_Edit_Reloadpinalias;  
+    CItemMenu menu1_Edit_Togglepinalias;
+    CItemMenu menu1_Edit_Editpinalias;
+    CItemMenu menu1_Edit_Reloadpinalias;
     CItemMenu menu1_Edit_Zoomin;
-    CItemMenu menu1_Edit_Zoomout;  
+    CItemMenu menu1_Edit_Zoomout;
     CPMenu menu1_Help;
     CItemMenu menu1_Help_Contents;
     CItemMenu menu1_Help_About;
     CFileDialog filedialog1;
     CStatusbar statusbar1;
     /*#Events*/
-    void _EvOnCreate(CControl * control);
-    void _EvOnShow(CControl * control);
-    void _EvOnHide(CControl * control);
-    void draw1_EvMouseMove(CControl * control, const uint button, const uint x, const uint y, const uint state);
-    void draw1_EvMouseButtonPress(CControl * control, const uint button, const uint x, const uint y, const uint state);
-    void draw1_EvMouseButtonRelease(CControl * control, const uint button, const uint x, const uint y, const uint state);
-    void draw1_EvKeyboardPress(CControl * control, const uint key, const uint hkey, const uint mask);
-    void draw1_EvKeyboardRelease(CControl * control, const uint key, const uint hkey, const uint mask);
-    void draw1_EvMouseWheel(CControl * control, const int rotation);
-    void pmenu2_Properties_EvMenuActive(CControl * control);
-    void timer1_EvOnTime(CControl * control);
-    void menu1_File_Newconfiguration_EvMenuActive(CControl * control);
-    void menu1_File_Saveconfiguration_EvMenuActive(CControl * control);
-    void menu1_File_Loadconfiguration_EvMenuActive(CControl * control);
-    void menu1_File_Loadpinalias_EvMenuActive(CControl * control);
-    void menu1_File_Savepinalias_EvMenuActive(CControl * control);
-    void menu1_Edit_Clearpinalias_EvMenuActive(CControl * control);
-    void menu1_Edit_Togglepinalias_EvMenuActive(CControl * control);
-    void menu1_Edit_Editpinalias_EvMenuActive(CControl * control);
-    void menu1_Edit_Reloadpinalias_EvMenuActive(CControl * control);
-    void menu1_Edit_Zoomin_EvMenuActive(CControl * control);
-    void menu1_Edit_Zoomout_EvMenuActive(CControl * control);    
-    void pmenu2_Move_EvMenuActive(CControl * control);
-    void pmenu2_Rotate_EvMenuActive(CControl * control);
-    void pmenu2_Delete_EvMenuActive(CControl * control);
-    void pmenu2_Help_EvMenuActive(CControl * control);
-    void pmenu2_About_EvMenuActive(CControl * control);
-    void menu1_Help_Contents_EvMenuActive(CControl * control);
-    void menu1_Help_About_EvMenuActive(CControl * control);
+    void _EvOnCreate(CControl* control);
+    void _EvOnShow(CControl* control);
+    void _EvOnHide(CControl* control);
+    void draw1_EvMouseMove(CControl* control, const uint button, const uint x, const uint y, const uint state);
+    void draw1_EvMouseButtonPress(CControl* control, const uint button, const uint x, const uint y, const uint state);
+    void draw1_EvMouseButtonRelease(CControl* control, const uint button, const uint x, const uint y, const uint state);
+    void draw1_EvKeyboardPress(CControl* control, const uint key, const uint hkey, const uint mask);
+    void draw1_EvKeyboardRelease(CControl* control, const uint key, const uint hkey, const uint mask);
+    void draw1_EvMouseWheel(CControl* control, const int rotation);
+    void pmenu2_Properties_EvMenuActive(CControl* control);
+    void timer1_EvOnTime(CControl* control);
+    void menu1_File_Newconfiguration_EvMenuActive(CControl* control);
+    void menu1_File_Saveconfiguration_EvMenuActive(CControl* control);
+    void menu1_File_Loadconfiguration_EvMenuActive(CControl* control);
+    void menu1_File_Loadpinalias_EvMenuActive(CControl* control);
+    void menu1_File_Savepinalias_EvMenuActive(CControl* control);
+    void menu1_Edit_Clearpinalias_EvMenuActive(CControl* control);
+    void menu1_Edit_Togglepinalias_EvMenuActive(CControl* control);
+    void menu1_Edit_Editpinalias_EvMenuActive(CControl* control);
+    void menu1_Edit_Reloadpinalias_EvMenuActive(CControl* control);
+    void menu1_Edit_Zoomin_EvMenuActive(CControl* control);
+    void menu1_Edit_Zoomout_EvMenuActive(CControl* control);
+    void pmenu2_Move_EvMenuActive(CControl* control);
+    void pmenu2_Rotate_EvMenuActive(CControl* control);
+    void pmenu2_Delete_EvMenuActive(CControl* control);
+    void pmenu2_Help_EvMenuActive(CControl* control);
+    void pmenu2_About_EvMenuActive(CControl* control);
+    void menu1_Help_Contents_EvMenuActive(CControl* control);
+    void menu1_Help_About_EvMenuActive(CControl* control);
     void filedialog1_EvOnClose(const int retId);
 
     /*#Others*/
     CPWindow5(void);
-    //lxrad automatic generated block end, don't edit above!
-    void menu1_EvMenuActive(CControl * control);
+    // lxrad automatic generated block end, don't edit above!
+    void menu1_EvMenuActive(CControl* control);
 
     /**
-     * @brief  Execute the process code of spare parts N times (where N is the number of steps in 100ms)  
+     * @brief  Execute the process code of spare parts N times (where N is the number of steps in 100ms)
      */
     void Process(void);
 
@@ -119,7 +119,7 @@ public:
      * @brief  Execute the pre process code of spare parts one time per 100ms
      */
     void PreProcess(void);
-    
+
     /**
      * @brief  Execute the post process code of spare parts one time per 100ms
      */
@@ -133,17 +133,17 @@ public:
     bool LoadConfig(lxString fname);
     void DeleteParts(void);
     void WritePreferences(void);
-    void ReadPreferences(char *name, char *value);
-    void PropButtonRelease(CControl * control, uint button, uint x, uint y, uint state);
-    void PropComboChange(CCombo * control);
+    void ReadPreferences(char* name, char* value);
+    void PropButtonRelease(CControl* control, uint button, uint x, uint y, uint state);
+    void PropComboChange(CCombo* control);
     void PropClose(int tag);
     void Reset_i2c_bus(unsigned char pin);
     void Set_i2c_bus(unsigned char pin, unsigned char value);
     unsigned char Get_i2c_bus(unsigned char pin);
-    void PartButtonEvent(CControl * control, uint button, uint x, uint y, uint state);
-    void PartKeyEvent(CControl * control, uint keysm, uint ukeysym, uint state);
-    void PartEvent(CControl * control);
-  
+    void PartButtonEvent(CControl* control, uint button, uint x, uint y, uint state);
+    void PartKeyEvent(CControl* control, uint keysm, uint ukeysym, uint state);
+    void PartEvent(CControl* control);
+
     /**
      * @brief  Return the name of all pins
      */
@@ -154,7 +154,7 @@ public:
      */
     lxString GetPinName(unsigned char pin);
 
-    const picpin * GetPinsValues(void);
+    const picpin* GetPinsValues(void);
     void SetPin(unsigned char pin, unsigned char value);
     void SetAPin(unsigned char pin, float value);
     void SetPinDOV(unsigned char pin, unsigned char ovalue);
@@ -167,20 +167,21 @@ public:
     void Setfdtype(int value);
     bool SavePinAlias(lxString fname);
     bool LoadPinAlias(lxString fname, unsigned char show_error_msg = 0);
-    part * GetPart(int pn);
+    part* GetPart(int pn);
     int GetPartsCount(void);
-    part * AddPart(const char * partname, const int x , const int y);
+    part* AddPart(const char* partname, const int x, const int y);
+
 private:
-    board *pboard;
+    board* pboard;
     lxString PinNames[256];
     lxString PinAlias[256];
-    picpin * Pins;
+    picpin* Pins;
     unsigned char PinsCount;
     unsigned char useAlias;
     int partsc;
-    part * parts[MAX_PARTS];
-    int partsc_aup; //aways update list
-    part * parts_aup[MAX_PARTS];//aways update list
+    part* parts[MAX_PARTS];
+    int partsc_aup;              // aways update list
+    part* parts_aup[MAX_PARTS];  // aways update list
     CItemMenu MParts[MAX_PARTS];
     lxString PartToCreate;
     int PartSelected;
@@ -205,4 +206,3 @@ private:
 extern CPWindow5 Window5;
 
 #endif /*#CPWINDOW5*/
-

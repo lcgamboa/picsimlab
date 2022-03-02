@@ -23,53 +23,51 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-
 #ifndef BOARD_GPSIM_H
-#define	BOARD_GPSIM_H
+#define BOARD_GPSIM_H
 
 #include "board.h"
 
-class bsim_gpsim: virtual public board
-{
-  public:
-      bsim_gpsim(void);
-      int DebugInit(int dtyppe) override; 
-      lxString GetDebugName(void) override {return "none";};
-      void DebugLoop(void) override;
-      int CpuInitialized(void) override;
-      void MSetSerial(const char * port) override;
-      int MInit(const char * processor, const char * fname, float freq) override;
-      void MEnd(void) override;
-      void MDumpMemory(const char * fname) override;
-      void MEraseFlash(void) override;
-      void MSetFreq(float freq) override;
-      float MGetFreq(void) override;
-      void MSetVCC(float vcc) override;
-      float MGetVCC(void) override;
-      float MGetInstClockFreq(void) override;
-      int MGetPinCount(void) override;
-      lxString MGetPinName(int pin) override;
-      void MSetPin(int pin, unsigned char value) override;
-      void MSetPinDOV(int pin, unsigned char ovalue) override;      
-      void MSetAPin(int pin, float value) override;
-      unsigned char MGetPin(int pin) override;  
-      const picpin * MGetPinsValues(void) override;  
-      void MStep(void) override;
-      void MStepResume(void) override;
-      void MReset(int flags) override;
- protected:
-      void pins_reset(void);
-      picpin pins[256];
-      unsigned int serialbaud; 
-      float serialexbaud;
-      float freq;
+class bsim_gpsim : virtual public board {
+public:
+    bsim_gpsim(void);
+    int DebugInit(int dtyppe) override;
+    lxString GetDebugName(void) override { return "none"; };
+    void DebugLoop(void) override;
+    int CpuInitialized(void) override;
+    void MSetSerial(const char* port) override;
+    int MInit(const char* processor, const char* fname, float freq) override;
+    void MEnd(void) override;
+    void MDumpMemory(const char* fname) override;
+    void MEraseFlash(void) override;
+    void MSetFreq(float freq) override;
+    float MGetFreq(void) override;
+    void MSetVCC(float vcc) override;
+    float MGetVCC(void) override;
+    float MGetInstClockFreq(void) override;
+    int MGetPinCount(void) override;
+    lxString MGetPinName(int pin) override;
+    void MSetPin(int pin, unsigned char value) override;
+    void MSetPinDOV(int pin, unsigned char ovalue) override;
+    void MSetAPin(int pin, float value) override;
+    unsigned char MGetPin(int pin) override;
+    const picpin* MGetPinsValues(void) override;
+    void MStep(void) override;
+    void MStepResume(void) override;
+    void MReset(int flags) override;
+
+protected:
+    void pins_reset(void);
+    picpin pins[256];
+    unsigned int serialbaud;
+    float serialexbaud;
+    float freq;
 #ifdef _WIN_
-      HANDLE serialfd;
+    HANDLE serialfd;
 #else
-      int serialfd;
-#endif      
-      lxString supported_devices;
+    int serialfd;
+#endif
+    lxString supported_devices;
 };
 
-#endif	/* BOARD_GPSIM_H */
-
+#endif /* BOARD_GPSIM_H */

@@ -32,8 +32,8 @@
 
 #define BOARD_PQDB_Name "PQDB"
 
-//Pin definitions
-//Arduino style
+// Pin definitions
+// Arduino style
 /*
 #define SDA_PIN      18
 #define SCL_PIN      19
@@ -47,7 +47,7 @@
 #define LCD_EN_PIN    6
 #define DISP_4_PIN    5
 #define LED_BLUE_PIN  4
-#define DISP_3_PIN    4 
+#define DISP_3_PIN    4
 #define LED_GREEN_PIN 3
 #define DISP_2_PIN    3
 #define LED_RED_PIN   2
@@ -56,9 +56,8 @@
 #define RX_PIN        0
  */
 
-//PIC18f4550 style
-//zero index, pin 1 ->0; pin 18 -> 17
-
+// PIC18f4550 style
+// zero index, pin 1 ->0; pin 18 -> 17
 
 #define RA0 1
 #define RA1 2
@@ -102,38 +101,37 @@
 #define SRD6 0x40
 #define SRD7 0x80
 
-#define SDA_PIN       RB4
-#define SCL_PIN       RB3
-#define KEYPAD_1_PIN  RB2
-#define KEYPAD_2_PIN  RB1
-#define SO_CLK_PIN    RB0
-#define SO_EN_PIN     RD7
-#define PWM_PIN       RC1
-#define SO_DATA_PIN   RD6
-#define LCD_RS_PIN    RD5
-#define LCD_EN_PIN    RD4
-#define DISP_4_PIN    RD3
-#define DISP_3_PIN    RD2
-#define DISP_2_PIN    RD1
-#define DISP_1_PIN    RD0
-#define TX_PIN        1
-#define RX_PIN        0
+#define SDA_PIN RB4
+#define SCL_PIN RB3
+#define KEYPAD_1_PIN RB2
+#define KEYPAD_2_PIN RB1
+#define SO_CLK_PIN RB0
+#define SO_EN_PIN RD7
+#define PWM_PIN RC1
+#define SO_DATA_PIN RD6
+#define LCD_RS_PIN RD5
+#define LCD_EN_PIN RD4
+#define DISP_4_PIN RD3
+#define DISP_3_PIN RD2
+#define DISP_2_PIN RD1
+#define DISP_1_PIN RD0
+#define TX_PIN 1
+#define RX_PIN 0
 
-#define LED_BLUE_PIN  DISP_3_PIN
+#define LED_BLUE_PIN DISP_3_PIN
 #define LED_GREEN_PIN DISP_2_PIN
-#define LED_RED_PIN   DISP_1_PIN
+#define LED_RED_PIN DISP_1_PIN
 
-#define AN2_PIN    RA2
-#define AN1_PIN    RA1
-#define AN0_PIN    RA0
+#define AN2_PIN RA2
+#define AN1_PIN RA1
+#define AN0_PIN RA0
 
-#define LM_PIN  AN2_PIN
+#define LM_PIN AN2_PIN
 #define LDR_PIN AN1_PIN
 #define POT_PIN AN0_PIN
 
 class cboard_PQDB : public bsim_picsim {
 private:
-
     unsigned char p_KEY[10];
 
     unsigned char pot;
@@ -142,7 +140,7 @@ private:
     int vtc;
     int vt;
 
-    //external peripherals
+    // external peripherals
     lcd_t lcd;
     unsigned char d;
 
@@ -152,8 +150,8 @@ private:
     io_74xx595_t shiftReg;
     unsigned char srDATA, srCLK, srLAT;
     unsigned long shiftReg_alm[8];
-    unsigned short _srret; 
-      
+    unsigned short _srret;
+
     int lcde;
 
     int sound_on;
@@ -169,25 +167,22 @@ private:
     int rpmstp;
     int rpmc;
 
-    int lm7seg[32]; //luminosidade media display
+    int lm7seg[32];  // luminosidade media display
 
     lxaudio buzzer;
 
     void RegisterRemoteControl(void) override;
+
 public:
-    //Return the board name
-    lxString GetName(void) override {return lxT(BOARD_PQDB_Name); };
-    lxString GetAboutInfo(void) override {
-        return lxT("R.M.A. Almeida	  \n <rodrigomax@unifei.edu.br>");
-    };
+    // Return the board name
+    lxString GetName(void) override { return lxT(BOARD_PQDB_Name); };
+    lxString GetAboutInfo(void) override { return lxT("R.M.A. Almeida	  \n <rodrigomax@unifei.edu.br>"); };
     cboard_PQDB(void);
     ~cboard_PQDB(void);
-    void Draw(CDraw *draw) override;
+    void Draw(CDraw* draw) override;
     void Run_CPU(void) override;
 
-    lxString GetSupportedDevices(void) override {
-        return lxT("PIC18F4520,");
-    };
+    lxString GetSupportedDevices(void) override { return lxT("PIC18F4520,"); };
 
     void Reset(void) override;
     void EvMouseMove(uint button, uint x, uint y, uint state) override;
@@ -198,13 +193,11 @@ public:
     void EvOnShow(void) override;
     void RefreshStatus(void) override;
     void WritePreferences(void) override;
-    void ReadPreferences(char *name, char *value) override;
-    unsigned short get_in_id(char * name) override;
-    unsigned short get_out_id(char * name) override;
+    void ReadPreferences(char* name, char* value) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
     lxString MGetPinName(int pin) override;
     int MGetPinCount(void) override;
 };
 
-
 #endif /* BOARD_4_H */
-

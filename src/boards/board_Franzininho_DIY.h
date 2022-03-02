@@ -24,72 +24,73 @@
    ######################################################################## */
 
 #ifndef BOARD_Franzininho_DIY_H
-#define	BOARD_Franzininho_DIY_H
+#define BOARD_Franzininho_DIY_H
 
-#include<lxrad.h>
+#include <lxrad.h>
 
 #include "bsim_simavr.h"
 
-#define	BOARD_Franzininho_DIY_Name "Franzininho DIY"
+#define BOARD_Franzininho_DIY_Name "Franzininho DIY"
 
-//new board class must be derived from board class defined in board.h
-class cboard_Franzininho_DIY:public bsim_simavr
-{
-  private:
-/*
-     //controls to be added in simulator window
-     CGauge *gauge1;   //gauge to show mean value of 3
-     CGauge *gauge2;   //gauge to show mean value of 5
-     CGauge *gauge3;   //gauge to show mean value of 6
-     CGauge *gauge4;   //gauge to show mean value of 9
-     CGauge *gauge5;   //gauge to show mean value of 10
-     CGauge *gauge6;   //gauge to show mean value of 11
+// new board class must be derived from board class defined in board.h
+class cboard_Franzininho_DIY : public bsim_simavr {
+private:
+    /*
+         //controls to be added in simulator window
+         CGauge *gauge1;   //gauge to show mean value of 3
+         CGauge *gauge2;   //gauge to show mean value of 5
+         CGauge *gauge3;   //gauge to show mean value of 6
+         CGauge *gauge4;   //gauge to show mean value of 9
+         CGauge *gauge5;   //gauge to show mean value of 10
+         CGauge *gauge6;   //gauge to show mean value of 11
 
 
-     CLabel *label1;   //label of gauge 3
-     CLabel *label2;   //label of gauge 5
-     CLabel *label3;   //label of gauge 6
-     CLabel *label4;   //label of gauge 9
-     CLabel *label5;   //label of gauge 10
-     CLabel *label6;   //label of gauge 11
- */
-     void RegisterRemoteControl(void) override;
-     lxColor color1;
-     lxColor color2;
-   public:
-      //Return the board name
-      lxString GetName(void) override {return lxT(BOARD_Franzininho_DIY_Name); };
-      lxString GetAboutInfo(void) override {return lxT("Fábio Souza e Felipe Alvares\n <contato@franzininho.com.br>\n https://franzininho.com.br/");};
-      //Constructor called once on board creation
-      cboard_Franzininho_DIY(void);
-      //Destructor called once on board destruction
-      ~cboard_Franzininho_DIY(void);
-      //Called ever 100ms to draw board
-      void Draw(CDraw *draw) override;
-      void Run_CPU(void) override;
-      //Return a list of board supported microcontrollers
-      lxString GetSupportedDevices(void) override {return lxT("attiny85,");};
-      //Reset board status
-      void Reset(void) override;
-      //Event on the board
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
-      //Event on the board
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state) override;
-      //Event on the board
-      void EvKeyPress(uint key, uint mask) override;
-      //Event on the board
-      void EvKeyRelease(uint key, uint mask) override;
-      //Called ever 1s to refresh status
-      void RefreshStatus(void) override;
-      //Called to save board preferences in configuration file
-      void WritePreferences(void) override;
-      //Called whe configuration file load  preferences
-      void ReadPreferences(char *name,char *value) override;
-      //return the input ids numbers of names used in input map
-      unsigned short get_in_id(char * name) override;
-      //return the output ids numbers of names used in output map
-      unsigned short get_out_id(char * name) override;
+         CLabel *label1;   //label of gauge 3
+         CLabel *label2;   //label of gauge 5
+         CLabel *label3;   //label of gauge 6
+         CLabel *label4;   //label of gauge 9
+         CLabel *label5;   //label of gauge 10
+         CLabel *label6;   //label of gauge 11
+     */
+    void RegisterRemoteControl(void) override;
+    lxColor color1;
+    lxColor color2;
+
+public:
+    // Return the board name
+    lxString GetName(void) override { return lxT(BOARD_Franzininho_DIY_Name); };
+    lxString GetAboutInfo(void) override {
+        return lxT("Fábio Souza e Felipe Alvares\n <contato@franzininho.com.br>\n https://franzininho.com.br/");
+    };
+    // Constructor called once on board creation
+    cboard_Franzininho_DIY(void);
+    // Destructor called once on board destruction
+    ~cboard_Franzininho_DIY(void);
+    // Called ever 100ms to draw board
+    void Draw(CDraw* draw) override;
+    void Run_CPU(void) override;
+    // Return a list of board supported microcontrollers
+    lxString GetSupportedDevices(void) override { return lxT("attiny85,"); };
+    // Reset board status
+    void Reset(void) override;
+    // Event on the board
+    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
+    // Event on the board
+    void EvMouseButtonRelease(uint button, uint x, uint y, uint state) override;
+    // Event on the board
+    void EvKeyPress(uint key, uint mask) override;
+    // Event on the board
+    void EvKeyRelease(uint key, uint mask) override;
+    // Called ever 1s to refresh status
+    void RefreshStatus(void) override;
+    // Called to save board preferences in configuration file
+    void WritePreferences(void) override;
+    // Called whe configuration file load  preferences
+    void ReadPreferences(char* name, char* value) override;
+    // return the input ids numbers of names used in input map
+    unsigned short get_in_id(char* name) override;
+    // return the output ids numbers of names used in output map
+    unsigned short get_out_id(char* name) override;
 };
 
-#endif	/* BOARD_Franzininho_DIY_H */
-
+#endif /* BOARD_Franzininho_DIY_H */

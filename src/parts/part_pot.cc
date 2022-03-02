@@ -23,359 +23,317 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include"../picsimlab1.h"
-#include"../picsimlab4.h"
-#include"../picsimlab5.h"
-#include"part_pot.h"
+#include "part_pot.h"
+#include "../picsimlab1.h"
+#include "../picsimlab4.h"
+#include "../picsimlab5.h"
 
 /* outputs */
-enum
-{
- O_P1, O_P2, O_P3, O_P4, O_PO1, O_PO2, O_PO3, O_PO4
-};
+enum { O_P1, O_P2, O_P3, O_P4, O_PO1, O_PO2, O_PO3, O_PO4 };
 
 /* inputs */
-enum
-{
- I_PO1, I_PO2, I_PO3, I_PO4
-};
+enum { I_PO1, I_PO2, I_PO3, I_PO4 };
 
-cpart_pot::cpart_pot(unsigned x, unsigned y) :
-font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
-font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
-{
- X = x;
- Y = y;
- ReadMaps ();
+cpart_pot::cpart_pot(unsigned x, unsigned y)
+    : font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
+      font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    X = x;
+    Y = y;
+    ReadMaps();
 
- LoadImage();
+    LoadImage();
 
- output_pins[0] = 0;
- output_pins[1] = 0;
- output_pins[2] = 0;
- output_pins[3] = 0;
+    output_pins[0] = 0;
+    output_pins[1] = 0;
+    output_pins[2] = 0;
+    output_pins[3] = 0;
 
- values[0] = 0;
- values[1] = 0;
- values[2] = 0;
- values[3] = 0;
+    values[0] = 0;
+    values[1] = 0;
+    values[2] = 0;
+    values[3] = 0;
 
- active[0] = 0;
- active[1] = 0;
- active[2] = 0;
- active[3] = 0;
+    active[0] = 0;
+    active[1] = 0;
+    active[2] = 0;
+    active[3] = 0;
 
- vmax = 5.0;
+    vmax = 5.0;
 
- RegisterRemoteControl ();
+    RegisterRemoteControl();
 }
 
-void
-cpart_pot::RegisterRemoteControl(void)
-{
- for (int i = 0; i < inputc; i++)
-  {
-   switch (input[i].id)
-    {
-    case I_PO1:
-     input[i].status = &values[0];
-     break;
-    case I_PO2:
-     input[i].status = &values[1];
-     break;
-    case I_PO3:
-     input[i].status = &values[2];
-     break;
-    case I_PO4:
-     input[i].status = &values[3];
-     break;
+void cpart_pot::RegisterRemoteControl(void) {
+    for (int i = 0; i < inputc; i++) {
+        switch (input[i].id) {
+            case I_PO1:
+                input[i].status = &values[0];
+                break;
+            case I_PO2:
+                input[i].status = &values[1];
+                break;
+            case I_PO3:
+                input[i].status = &values[2];
+                break;
+            case I_PO4:
+                input[i].status = &values[3];
+                break;
+        }
     }
-  }
 }
 
-cpart_pot::~cpart_pot(void)
-{
- delete Bitmap;
- canvas.Destroy ();
+cpart_pot::~cpart_pot(void) {
+    delete Bitmap;
+    canvas.Destroy();
 }
 
-void 
-cpart_pot::Reset(void)
-{
-   vmax = Window1.GetBoard()->MGetVCC();
+void cpart_pot::Reset(void) {
+    vmax = Window1.GetBoard()->MGetVCC();
 }
 
+void cpart_pot::Draw(void) {
+    int i;
+    char val[10];
 
-void
-cpart_pot::Draw(void)
-{
+    Update = 0;
 
- int i;
- char val[10];
+    for (i = 0; i < outputc; i++) {
+        if (output[i].update)  // only if need update
+        {
+            output[i].update = 0;
 
- Update = 0;
+            if (!Update) {
+                canvas.Init(Scale, Scale, Orientation);
+                canvas.SetFont(font);
+            }
+            Update++;  // set to update buffer
 
- for (i = 0; i < outputc; i++)
-  {
-   if (output[i].update)//only if need update
-    {
-     output[i].update = 0;
-
-     if (!Update)
-      {
-       canvas.Init (Scale, Scale, Orientation);
-       canvas.SetFont (font);
-      }
-     Update++; //set to update buffer
-
-     switch (output[i].id)
-      {
-      case O_P1:
-      case O_P2:
-      case O_P3:
-      case O_P4:
-       canvas.SetColor (49, 61, 99);
-       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-       canvas.SetFgColor (255, 255, 255);
-       if (output_pins[output[i].id - O_P1] == 0)
-        canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
-       else
-        canvas.RotatedText (Window5.GetPinName (output_pins[output[i].id - O_P1]), output[i].x1, output[i].y1, 0);
-       break;
-      case O_PO1:
-      case O_PO2:
-      case O_PO3:
-      case O_PO4:
-       snprintf (val, 10, "%4.2f", vmax * (values[output[i].id - O_PO1]) / 200.0);
-       draw_potentiometer (&output[i], values[output[i].id - O_PO1], val, font_p);
-       canvas.SetFont (font);
-       break;
-      }
+            switch (output[i].id) {
+                case O_P1:
+                case O_P2:
+                case O_P3:
+                case O_P4:
+                    canvas.SetColor(49, 61, 99);
+                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                     output[i].y2 - output[i].y1);
+                    canvas.SetFgColor(255, 255, 255);
+                    if (output_pins[output[i].id - O_P1] == 0)
+                        canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
+                    else
+                        canvas.RotatedText(Window5.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1,
+                                           output[i].y1, 0);
+                    break;
+                case O_PO1:
+                case O_PO2:
+                case O_PO3:
+                case O_PO4:
+                    snprintf(val, 10, "%4.2f", vmax * (values[output[i].id - O_PO1]) / 200.0);
+                    draw_potentiometer(&output[i], values[output[i].id - O_PO1], val, font_p);
+                    canvas.SetFont(font);
+                    break;
+            }
+        }
     }
-  }
 
- if (Update)
-  {
-   canvas.End ();
-  }
-}
-
-void
-cpart_pot::PreProcess(void)
-{
- Window5.SetAPin (output_pins[0], vmax * (values[0]) / 200.0);
- Window5.SetAPin (output_pins[1], vmax * (values[1]) / 200.0);
- Window5.SetAPin (output_pins[2], vmax * (values[2]) / 200.0);
- Window5.SetAPin (output_pins[3], vmax * (values[3]) / 200.0);
-}
-
-void
-cpart_pot::EvMouseButtonPress(uint button, uint x, uint y, uint state)
-{
-
- int i;
-
- for (i = 0; i < inputc; i++)
-  {
-   if (PointInside (x, y, input[i]))
-    {
-     RotateCoords (&x, &y);
-     switch (input[i].id)
-      {
-      case I_PO1:
-       values[0] = 200 - ((y - input[i].y1)*1.66);
-       if (values[0] > 200)values[0] = 0;
-       active[0] = 1;
-       output_ids[O_PO1]->update = 1;
-       break;
-      case I_PO2:
-       values[1] = 200 - ((y - input[i].y1)*1.66);
-       if (values[1] > 200)values[1] = 0;
-       active[1] = 1;
-       output_ids[O_PO2]->update = 1;
-       break;
-      case I_PO3:
-       values[2] = 200 - ((y - input[i].y1)*1.66);
-       if (values[2] > 200)values[2] = 0;
-       active[2] = 1;
-       output_ids[O_PO3]->update = 1;
-       break;
-      case I_PO4:
-       values[3] = 200 - ((y - input[i].y1)*1.66);
-       if (values[3] > 200)values[3] = 0;
-       active[3] = 1;
-       output_ids[O_PO4]->update = 1;
-       break;
-      }
+    if (Update) {
+        canvas.End();
     }
-  }
-
 }
 
-void
-cpart_pot::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
-{
- int i;
+void cpart_pot::PreProcess(void) {
+    Window5.SetAPin(output_pins[0], vmax * (values[0]) / 200.0);
+    Window5.SetAPin(output_pins[1], vmax * (values[1]) / 200.0);
+    Window5.SetAPin(output_pins[2], vmax * (values[2]) / 200.0);
+    Window5.SetAPin(output_pins[3], vmax * (values[3]) / 200.0);
+}
 
- for (i = 0; i < inputc; i++)
-  {
-   if (PointInside (x, y, input[i]))
-    {
-     switch (input[i].id)
-      {
-      case I_PO1:
-       active[0] = 0;
-       output_ids[O_PO1]->update = 1;
-       break;
-      case I_PO2:
-       active[1] = 0;
-       output_ids[O_PO2]->update = 1;
-       break;
-      case I_PO3:
-       active[2] = 0;
-       output_ids[O_PO3]->update = 1;
-       break;
-      case I_PO4:
-       active[3] = 0;
-       output_ids[O_PO4]->update = 1;
-       break;
-      }
+void cpart_pot::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
+    int i;
+
+    for (i = 0; i < inputc; i++) {
+        if (PointInside(x, y, input[i])) {
+            RotateCoords(&x, &y);
+            switch (input[i].id) {
+                case I_PO1:
+                    values[0] = 200 - ((y - input[i].y1) * 1.66);
+                    if (values[0] > 200)
+                        values[0] = 0;
+                    active[0] = 1;
+                    output_ids[O_PO1]->update = 1;
+                    break;
+                case I_PO2:
+                    values[1] = 200 - ((y - input[i].y1) * 1.66);
+                    if (values[1] > 200)
+                        values[1] = 0;
+                    active[1] = 1;
+                    output_ids[O_PO2]->update = 1;
+                    break;
+                case I_PO3:
+                    values[2] = 200 - ((y - input[i].y1) * 1.66);
+                    if (values[2] > 200)
+                        values[2] = 0;
+                    active[2] = 1;
+                    output_ids[O_PO3]->update = 1;
+                    break;
+                case I_PO4:
+                    values[3] = 200 - ((y - input[i].y1) * 1.66);
+                    if (values[3] > 200)
+                        values[3] = 0;
+                    active[3] = 1;
+                    output_ids[O_PO4]->update = 1;
+                    break;
+            }
+        }
     }
-  }
 }
 
-void
-cpart_pot::EvMouseMove(uint button, uint x, uint y, uint state)
-{
+void cpart_pot::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
+    int i;
 
- int i;
-
- for (i = 0; i < inputc; i++)
-  {
-   if (PointInside (x, y, input[i]))
-    {
-     RotateCoords (&x, &y);
-
-     if (active[input[i].id - I_PO1])
-      {
-       values[input[i].id - I_PO1] = 200 - ((y - input[i].y1)*1.66);
-       if (values[input[i].id - I_PO1] > 200)values[input[i].id - I_PO1] = 0;
-
-       output_ids[O_PO1 + input[i].id - I_PO1]->update = 1;
-      }
+    for (i = 0; i < inputc; i++) {
+        if (PointInside(x, y, input[i])) {
+            switch (input[i].id) {
+                case I_PO1:
+                    active[0] = 0;
+                    output_ids[O_PO1]->update = 1;
+                    break;
+                case I_PO2:
+                    active[1] = 0;
+                    output_ids[O_PO2]->update = 1;
+                    break;
+                case I_PO3:
+                    active[2] = 0;
+                    output_ids[O_PO3]->update = 1;
+                    break;
+                case I_PO4:
+                    active[3] = 0;
+                    output_ids[O_PO4]->update = 1;
+                    break;
+            }
+        }
     }
-   else
-    {
-     active[input[i].id - I_PO1] = 0;
+}
+
+void cpart_pot::EvMouseMove(uint button, uint x, uint y, uint state) {
+    int i;
+
+    for (i = 0; i < inputc; i++) {
+        if (PointInside(x, y, input[i])) {
+            RotateCoords(&x, &y);
+
+            if (active[input[i].id - I_PO1]) {
+                values[input[i].id - I_PO1] = 200 - ((y - input[i].y1) * 1.66);
+                if (values[input[i].id - I_PO1] > 200)
+                    values[input[i].id - I_PO1] = 0;
+
+                output_ids[O_PO1 + input[i].id - I_PO1]->update = 1;
+            }
+        } else {
+            active[input[i].id - I_PO1] = 0;
+        }
     }
-  }
 }
 
-unsigned short
-cpart_pot::get_in_id(char * name)
-{
+unsigned short cpart_pot::get_in_id(char* name) {
+    if (strcmp(name, "PO_1") == 0)
+        return I_PO1;
+    if (strcmp(name, "PO_2") == 0)
+        return I_PO2;
+    if (strcmp(name, "PO_3") == 0)
+        return I_PO3;
+    if (strcmp(name, "PO_4") == 0)
+        return I_PO4;
 
- if (strcmp (name, "PO_1") == 0)return I_PO1;
- if (strcmp (name, "PO_2") == 0)return I_PO2;
- if (strcmp (name, "PO_3") == 0)return I_PO3;
- if (strcmp (name, "PO_4") == 0)return I_PO4;
-
- printf ("Erro input '%s' don't have a valid id! \n", name);
- return -1;
+    printf("Erro input '%s' don't have a valid id! \n", name);
+    return -1;
 }
 
-unsigned short
-cpart_pot::get_out_id(char * name)
-{
+unsigned short cpart_pot::get_out_id(char* name) {
+    if (strcmp(name, "PN_1") == 0)
+        return O_P1;
+    if (strcmp(name, "PN_2") == 0)
+        return O_P2;
+    if (strcmp(name, "PN_3") == 0)
+        return O_P3;
+    if (strcmp(name, "PN_4") == 0)
+        return O_P4;
 
- if (strcmp (name, "PN_1") == 0)return O_P1;
- if (strcmp (name, "PN_2") == 0)return O_P2;
- if (strcmp (name, "PN_3") == 0)return O_P3;
- if (strcmp (name, "PN_4") == 0)return O_P4;
+    if (strcmp(name, "PO_1") == 0)
+        return O_PO1;
+    if (strcmp(name, "PO_2") == 0)
+        return O_PO2;
+    if (strcmp(name, "PO_3") == 0)
+        return O_PO3;
+    if (strcmp(name, "PO_4") == 0)
+        return O_PO4;
 
- if (strcmp (name, "PO_1") == 0)return O_PO1;
- if (strcmp (name, "PO_2") == 0)return O_PO2;
- if (strcmp (name, "PO_3") == 0)return O_PO3;
- if (strcmp (name, "PO_4") == 0)return O_PO4;
-
- printf ("Erro output '%s' don't have a valid id! \n", name);
- return 1;
+    printf("Erro output '%s' don't have a valid id! \n", name);
+    return 1;
 }
 
-lxString
-cpart_pot::WritePreferences(void)
-{
- char prefs[256];
+lxString cpart_pot::WritePreferences(void) {
+    char prefs[256];
 
- sprintf (prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", output_pins[0], output_pins[1], output_pins[2], output_pins[3], values[0], values[1], values[2], values[3]);
+    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", output_pins[0], output_pins[1], output_pins[2],
+            output_pins[3], values[0], values[1], values[2], values[3]);
 
- return prefs;
+    return prefs;
 }
 
-void
-cpart_pot::ReadPreferences(lxString value)
-{
- sscanf (value.c_str (), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &output_pins[2], &output_pins[3], &values[0], &values[1], &values[2], &values[3]);
+void cpart_pot::ReadPreferences(lxString value) {
+    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &output_pins[2],
+           &output_pins[3], &values[0], &values[1], &values[2], &values[3]);
 }
 
-void
-cpart_pot::ConfigurePropertiesWindow(CPWindow * WProp)
-{
- lxString Items = Window5.GetPinsNames ();
- lxString spin;
+void cpart_pot::ConfigurePropertiesWindow(CPWindow* WProp) {
+    lxString Items = Window5.GetPinsNames();
+    lxString spin;
 
- ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
- if (output_pins[0] == 0)
-  ((CCombo*) WProp->GetChildByName ("combo1"))->SetText ("0  NC");
- else
-  {
-   spin = Window5.GetPinName (output_pins[0]);
-   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (output_pins[0]) + "  " + spin);
-  }
+    ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
+    if (output_pins[0] == 0)
+        ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
+    else {
+        spin = Window5.GetPinName(output_pins[0]);
+        ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(output_pins[0]) + "  " + spin);
+    }
 
- ((CCombo*) WProp->GetChildByName ("combo2"))->SetItems (Items);
- if (output_pins[1] == 0)
-  ((CCombo*) WProp->GetChildByName ("combo2"))->SetText ("0  NC");
- else
-  {
-   spin = Window5.GetPinName (output_pins[1]);
-   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText (itoa (output_pins[1]) + "  " + spin);
-  }
+    ((CCombo*)WProp->GetChildByName("combo2"))->SetItems(Items);
+    if (output_pins[1] == 0)
+        ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
+    else {
+        spin = Window5.GetPinName(output_pins[1]);
+        ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(output_pins[1]) + "  " + spin);
+    }
 
- ((CCombo*) WProp->GetChildByName ("combo3"))->SetItems (Items);
- if (output_pins[2] == 0)
-  ((CCombo*) WProp->GetChildByName ("combo3"))->SetText ("0  NC");
- else
-  {
-   spin = Window5.GetPinName (output_pins[2]);
-   ((CCombo*) WProp->GetChildByName ("combo3"))->SetText (itoa (output_pins[2]) + "  " + spin);
-  }
+    ((CCombo*)WProp->GetChildByName("combo3"))->SetItems(Items);
+    if (output_pins[2] == 0)
+        ((CCombo*)WProp->GetChildByName("combo3"))->SetText("0  NC");
+    else {
+        spin = Window5.GetPinName(output_pins[2]);
+        ((CCombo*)WProp->GetChildByName("combo3"))->SetText(itoa(output_pins[2]) + "  " + spin);
+    }
 
- ((CCombo*) WProp->GetChildByName ("combo4"))->SetItems (Items);
- if (output_pins[3] == 0)
-  ((CCombo*) WProp->GetChildByName ("combo4"))->SetText ("0  NC");
- else
-  {
-   spin = Window5.GetPinName (output_pins[3]);
-   ((CCombo*) WProp->GetChildByName ("combo4"))->SetText (itoa (output_pins[3]) + "  " + spin);
-  }
+    ((CCombo*)WProp->GetChildByName("combo4"))->SetItems(Items);
+    if (output_pins[3] == 0)
+        ((CCombo*)WProp->GetChildByName("combo4"))->SetText("0  NC");
+    else {
+        spin = Window5.GetPinName(output_pins[3]);
+        ((CCombo*)WProp->GetChildByName("combo4"))->SetText(itoa(output_pins[3]) + "  " + spin);
+    }
 
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
+        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
- ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
- ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
-
- ((CButton*) WProp->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
+        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
 }
 
-void
-cpart_pot::ReadPropertiesWindow(CPWindow * WProp)
-{
- output_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
- output_pins[1] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
- output_pins[2] = atoi (((CCombo*) WProp->GetChildByName ("combo3"))->GetText ());
- output_pins[3] = atoi (((CCombo*) WProp->GetChildByName ("combo4"))->GetText ());
+void cpart_pot::ReadPropertiesWindow(CPWindow* WProp) {
+    output_pins[0] = atoi(((CCombo*)WProp->GetChildByName("combo1"))->GetText());
+    output_pins[1] = atoi(((CCombo*)WProp->GetChildByName("combo2"))->GetText());
+    output_pins[2] = atoi(((CCombo*)WProp->GetChildByName("combo3"))->GetText());
+    output_pins[3] = atoi(((CCombo*)WProp->GetChildByName("combo4"))->GetText());
 }
-
 
 part_init(PART_POT_Name, cpart_pot, "Input");
-

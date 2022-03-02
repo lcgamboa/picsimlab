@@ -23,7 +23,7 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include"bitbang_i2c.h"
+#include "bitbang_i2c.h"
 
 typedef struct {
     bitbang_i2c_t bb_i2c;
@@ -31,16 +31,15 @@ typedef struct {
     unsigned int SIZE;
     unsigned char ADDRB;
 
-    unsigned char *data;
+    unsigned char* data;
     unsigned short addr;
 
 } mi2c_t;
 
+void mi2c_init_null(mi2c_t* mem);
+void mi2c_rst(mi2c_t* mem);
+void mi2c_init(mi2c_t* mem, int sizekbits);
+void mi2c_end(mi2c_t* mem);
+void mi2c_set_addr(mi2c_t* mem, unsigned char addr);
 
-void mi2c_init_null(mi2c_t *mem);
-void mi2c_rst(mi2c_t *mem);
-void mi2c_init(mi2c_t *mem, int sizekbits);
-void mi2c_end(mi2c_t *mem);
-void mi2c_set_addr(mi2c_t *mem, unsigned char addr);
-
-unsigned char mi2c_io(mi2c_t *mem, unsigned char scl, unsigned char sda);
+unsigned char mi2c_io(mi2c_t* mem, unsigned char scl, unsigned char sda);

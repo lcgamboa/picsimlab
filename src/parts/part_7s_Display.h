@@ -26,36 +26,36 @@
 #ifndef PART_7S_DISPLAY_H
 #define PART_7S_DISPLAY_H
 
-#include<lxrad.h>
-#include"part.h"
+#include <lxrad.h>
+#include "part.h"
 
 #define PART_7S_DISPLAY_Name "7 Segments Display"
 
 class cpart_7s_display : public part {
 public:
-
-    lxString GetName(void) override {return lxT(PART_7S_DISPLAY_Name); };
-    lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
+    lxString GetName(void) override { return lxT(PART_7S_DISPLAY_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
     cpart_7s_display(unsigned x, unsigned y);
     ~cpart_7s_display(void);
     void Draw(void) override;
-    void PreProcess (void) override;
-    void Process(void) override; 
-    void PostProcess (void) override;
-    void ConfigurePropertiesWindow(CPWindow * wprop) override;
-    void ReadPropertiesWindow(CPWindow * WProp) override;
+    void PreProcess(void) override;
+    void Process(void) override;
+    void PostProcess(void) override;
+    void ConfigurePropertiesWindow(CPWindow* wprop) override;
+    void ReadPropertiesWindow(CPWindow* WProp) override;
     lxString WritePreferences(void) override;
     void ReadPreferences(lxString value) override;
-    unsigned short get_in_id(char * name) override;
-    unsigned short get_out_id(char * name) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
+
 private:
-    void RegisterRemoteControl(void) override;     
-    unsigned char active;     
+    void RegisterRemoteControl(void) override;
+    unsigned char active;
     unsigned char input_pins[12];
-    unsigned int lm1[8]; //luminosidade media display
-    unsigned int lm2[8]; //luminosidade media display
-    unsigned int lm3[8]; //luminosidade media display
-    unsigned int lm4[8]; //luminosidade media display
+    unsigned int lm1[8];  // luminosidade media display
+    unsigned int lm2[8];  // luminosidade media display
+    unsigned int lm3[8];  // luminosidade media display
+    unsigned int lm4[8];  // luminosidade media display
 
     unsigned int alm1[8];
     unsigned int alm2[8];
@@ -67,4 +67,3 @@ private:
 };
 
 #endif /* PART_7S_DISPLAY */
-

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.lcgamboa.picsimlab</id>
+  
+  <name>PICsimLab </name>
+  <summary> Programmable IC Simulator Laboratory </summary>
+  
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-2.0-or-later</project_license>
+  
+  <description>
+    <p>
+      PICSimLab is a realtime emulator of development boards with integrated MPLABX/avr-gdb debugger. PICSimLab supports some picsim microcontrollers and some simavr microcontrollers. PICSimLab have integration with MPLABX/Arduino IDE for programming the boards microcontrollers. As the purpose of PICSimLab is to emulate real hardware it does not have any source code editing support. For code editing and debugging the same tools used for a real board should be used with PICSimLab, such as MPLABX or Arduino IDE.
+    </p>
+    <p>
+      PICSimLab supports several devices (spare parts) that can be connected to the boards for simulation. As for example LEDs and push buttons for simple outputs and inputs and some more complex ones like the ethernet shield w5500 for internet connection or the color graphic display ili9340 with touchscreen. The the complete list of parts can be accessed in the documentation.
+    </p>
+    <p>
+      The experimental version boards supports uCsim, gpsim and qemu-stm32 simulators in addition to the stable ones.
+    </p>
+  </description>
+  
+  <launchable type="desktop-id">picsimlab.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://lcgamboa.github.io/picsimlab_docs/stable/img/screenshot.png</image>
+    </screenshot>
+  </screenshots>
+  <content_rating type="oars-1.0" />
+</component>

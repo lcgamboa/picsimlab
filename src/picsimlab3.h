@@ -23,37 +23,35 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef CPWINDOW3 
+#ifndef CPWINDOW3
 #define CPWINDOW3
 
-#include<lxrad.h>
+#include <lxrad.h>
 
-class CPWindow3:public CPWindow
-{
-  public:
-  /*#Controls*/
-  CLabel label1;
-  CLabel label2;
-  CButton button1;
-  CCombo combo1;
-  CCombo combo2;
-  CLabel label3;
-  CCombo combo3;
-  CLabel label4;
-  CSpin spin1;
-  CSpin spin2;
-  CLabel label5;
-  CButton button2;
-  /*#Events*/
-  void _EvOnCreate(CControl * control);
-  void _EvOnShow(CControl * control);
-  void button1_EvMouseButtonClick(CControl * control, const uint button, const uint x,const  uint y,const  uint state);
-  void button2_EvMouseButtonClick(CControl * control, const uint button, const uint x,const  uint y, const uint state);
-  /*#Others*/
-  CPWindow3(void);
+class CPWindow3 : public CPWindow {
+public:
+    /*#Controls*/
+    CLabel label1;
+    CLabel label2;
+    CButton button1;
+    CCombo combo1;
+    CCombo combo2;
+    CLabel label3;
+    CCombo combo3;
+    CLabel label4;
+    CSpin spin1;
+    CSpin spin2;
+    CLabel label5;
+    CButton button2;
+    /*#Events*/
+    void _EvOnCreate(CControl* control);
+    void _EvOnShow(CControl* control);
+    void button1_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y, const uint state);
+    void button2_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y, const uint state);
+    /*#Others*/
+    CPWindow3(void);
 };
 
-extern CPWindow3 Window3 ;
+extern CPWindow3 Window3;
 
 #endif /*#CPWINDOW3*/
-

@@ -23,17 +23,16 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-
 #ifndef VTERM
 #define VTERM
 
 #include <stdio.h>
-#include"bitbang_uart.h"
+#include "bitbang_uart.h"
 
 #define SBUFFMAX 128
 
 typedef struct {
-    bitbang_uart_t bb_uart;    
+    bitbang_uart_t bb_uart;
     unsigned char buff_in[SBUFFMAX];
     unsigned char count_in;
     unsigned char buff_out[SBUFFMAX];
@@ -41,14 +40,12 @@ typedef struct {
     unsigned char out_ptr;
 } vterm_t;
 
+void vterm_rst(vterm_t* vt);
+void vterm_init(vterm_t* vt);
+void vterm_end(vterm_t* vt);
+void vterm_set_clk_freq(vterm_t* vt, const unsigned long freq);
+void vterm_set_speed(vterm_t* vt, const unsigned int speed);
 
-void vterm_rst(vterm_t *vt);
-void vterm_init(vterm_t *vt);
-void vterm_end(vterm_t *vt);
-void vterm_set_clk_freq(vterm_t *vt, const unsigned long freq);
-void vterm_set_speed(vterm_t *vt, const unsigned int speed);
+unsigned char vterm_io(vterm_t* vt, const unsigned char rx);
 
-unsigned char vterm_io(vterm_t *vt, const unsigned char rx);
-
-#endif //VTERM
-
+#endif  // VTERM

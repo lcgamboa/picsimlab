@@ -24,49 +24,48 @@
    ######################################################################## */
 
 #ifndef PART_LCD_HD44780_H
-#define	PART_LCD_HD44780_H
+#define PART_LCD_HD44780_H
 
-#include<lxrad.h>
-#include"part.h"
+#include <lxrad.h>
+#include "part.h"
 
-#define	PART_LCD_HD44780_Name "LCD hd44780"
+#define PART_LCD_HD44780_Name "LCD hd44780"
 
 #define LCD16x2 1
 #define LCD16x4 2
 #define LCD20x2 4
 #define LCD20x4 8
 
-class cpart_LCD_hd44780:public part
-{
-   public:
-      lxString GetName(void) override {return lxT(PART_LCD_HD44780_Name);};
-      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};      
-      cpart_LCD_hd44780(unsigned x, unsigned y);
-      ~cpart_LCD_hd44780(void);
-      void Draw(void) override;
-      void Process(void) override;
-      void PostProcess(void) override;
-      lxString GetPictureFileName(void) override {return lxT("LCD hd44780/LCD_hd44780.svg");};
-      lxString GetPictureFileName_(void)  {return lxT("LCD hd44780/LCD_hd44780_.svg");};
-      lxString GetPictureFileName__(void)  {return lxT("LCD hd44780/LCD_hd44780__.svg");};
-      lxString GetPictureFileName___(void)  {return lxT("LCD hd44780/LCD_hd44780___.svg");};
-      void Reset(void) override;
-      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
-      void ReadPropertiesWindow(CPWindow * WProp) override;
-      lxString WritePreferences(void) override;
-      void LoadImage(void) override;
-      void ReadPreferences(lxString value) override;
-      unsigned short get_in_id(char * name) override;
-      unsigned short get_out_id(char * name) override;
-      unsigned char input_pins[11]; 
-    private:
-      void InitGraphics(void);  
-      void RegisterRemoteControl(void) override;          
-      lcd_t lcd;
-      int lcde;
-      unsigned char model;
-      lxFont font;
+class cpart_LCD_hd44780 : public part {
+public:
+    lxString GetName(void) override { return lxT(PART_LCD_HD44780_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    cpart_LCD_hd44780(unsigned x, unsigned y);
+    ~cpart_LCD_hd44780(void);
+    void Draw(void) override;
+    void Process(void) override;
+    void PostProcess(void) override;
+    lxString GetPictureFileName(void) override { return lxT("LCD hd44780/LCD_hd44780.svg"); };
+    lxString GetPictureFileName_(void) { return lxT("LCD hd44780/LCD_hd44780_.svg"); };
+    lxString GetPictureFileName__(void) { return lxT("LCD hd44780/LCD_hd44780__.svg"); };
+    lxString GetPictureFileName___(void) { return lxT("LCD hd44780/LCD_hd44780___.svg"); };
+    void Reset(void) override;
+    void ConfigurePropertiesWindow(CPWindow* WProp) override;
+    void ReadPropertiesWindow(CPWindow* WProp) override;
+    lxString WritePreferences(void) override;
+    void LoadImage(void) override;
+    void ReadPreferences(lxString value) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
+    unsigned char input_pins[11];
+
+private:
+    void InitGraphics(void);
+    void RegisterRemoteControl(void) override;
+    lcd_t lcd;
+    int lcde;
+    unsigned char model;
+    lxFont font;
 };
 
-#endif	/* PART_LCD_HD44780 */
-
+#endif /* PART_LCD_HD44780 */

@@ -24,57 +24,56 @@
    ######################################################################## */
 
 #ifndef BOARD_STM32_H103_H
-#define	BOARD_STM32_H103_H
+#define BOARD_STM32_H103_H
 
-#include<lxrad.h>
+#include <lxrad.h>
 
 #include "exp_bsim_qemu_stm32.h"
 
-#define	BOARD_STM32_H103_Name "STM32 H103"
+#define BOARD_STM32_H103_Name "STM32 H103"
 
-//new board class must be derived from board class defined in board.h
-class cboard_STM32_H103:public bsim_qemu_stm32
-{
-   private:
-     unsigned char p_BUT;
+// new board class must be derived from board class defined in board.h
+class cboard_STM32_H103 : public bsim_qemu_stm32 {
+private:
+    unsigned char p_BUT;
 
-     void RegisterRemoteControl(void) override;        
-   public:
-      //Return the board name
-      lxString GetName(void) override {return lxT(BOARD_STM32_H103_Name); };
-      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");}; 
-      //Constructor called once on board creation 
-      cboard_STM32_H103(void);
-      //Destructor called once on board destruction 
-      ~cboard_STM32_H103(void); 
-      //Called ever 100ms to draw board
-      void Draw(CDraw *draw) override;
-      void Run_CPU(void) override;
-      //Return a list of board supported microcontrollers
-      lxString GetSupportedDevices(void) override {return lxT("stm32f103rbt6,");};
-      //Return the filename of board picture 
-      lxString GetPictureFileName(void) override {return lxT("STM32 H103/board.png");};
-      //Reset board status
-      void Reset(void) override;
-      //Event on the board
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
-      //Event on the board
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state) override;
-      //Event on the board
-      void EvKeyPress(uint key,uint mask) override;
-      //Event on the board
-      void EvKeyRelease(uint key,uint mask) override;
-      //Called ever 1s to refresh status
-      void RefreshStatus(void) override;
-      //Called to save board preferences in configuration file
-      void WritePreferences(void) override;
-      //Called whe configuration file load  preferences 
-      void ReadPreferences(char *name,char *value) override;
-      //return the input ids numbers of names used in input map
-      unsigned short get_in_id(char * name) override;
-      //return the output ids numbers of names used in output map
-      unsigned short get_out_id(char * name) override;
+    void RegisterRemoteControl(void) override;
+
+public:
+    // Return the board name
+    lxString GetName(void) override { return lxT(BOARD_STM32_H103_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    // Constructor called once on board creation
+    cboard_STM32_H103(void);
+    // Destructor called once on board destruction
+    ~cboard_STM32_H103(void);
+    // Called ever 100ms to draw board
+    void Draw(CDraw* draw) override;
+    void Run_CPU(void) override;
+    // Return a list of board supported microcontrollers
+    lxString GetSupportedDevices(void) override { return lxT("stm32f103rbt6,"); };
+    // Return the filename of board picture
+    lxString GetPictureFileName(void) override { return lxT("STM32 H103/board.png"); };
+    // Reset board status
+    void Reset(void) override;
+    // Event on the board
+    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
+    // Event on the board
+    void EvMouseButtonRelease(uint button, uint x, uint y, uint state) override;
+    // Event on the board
+    void EvKeyPress(uint key, uint mask) override;
+    // Event on the board
+    void EvKeyRelease(uint key, uint mask) override;
+    // Called ever 1s to refresh status
+    void RefreshStatus(void) override;
+    // Called to save board preferences in configuration file
+    void WritePreferences(void) override;
+    // Called whe configuration file load  preferences
+    void ReadPreferences(char* name, char* value) override;
+    // return the input ids numbers of names used in input map
+    unsigned short get_in_id(char* name) override;
+    // return the output ids numbers of names used in output map
+    unsigned short get_out_id(char* name) override;
 };
 
-#endif	/* BOARD_STM32_H103_H */
-
+#endif /* BOARD_STM32_H103_H */

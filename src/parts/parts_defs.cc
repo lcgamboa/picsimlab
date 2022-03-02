@@ -23,63 +23,50 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-
-#include"parts_defs.h" 
+#include "parts_defs.h"
 
 part_desc parts_list[MAX_PARTS];
 
-
 int NUM_PARTS = 0;
 
-//boards object creation
+// boards object creation
 
-part *
-create_part(lxString name, unsigned int x, unsigned int y)
-{
- part * part_ = NULL;
+part* create_part(lxString name, unsigned int x, unsigned int y) {
+    part* part_ = NULL;
 
- for (int i = 0; i < NUM_PARTS; i++)
-  {
-   if (name.compare (parts_list[i].name) == 0)
-    {
-     part_ = parts_list[i].pcreate (x, y);
-     break;
+    for (int i = 0; i < NUM_PARTS; i++) {
+        if (name.compare(parts_list[i].name) == 0) {
+            part_ = parts_list[i].pcreate(x, y);
+            break;
+        }
     }
-  }
 
- return part_;
+    return part_;
 }
 
-void
-part_register(const char * name, part_create_func pcreate, const char * menu)
-{
- int in;
+void part_register(const char* name, part_create_func pcreate, const char* menu) {
+    int in;
 
- if (NUM_PARTS == MAX_PARTS)
-  {
-   printf ("Number of parts greater than MAX_PARTS!\n");
-   exit (-1);
-  }
-
- //insert in ascendent order
- in = NUM_PARTS;
- for (int i = NUM_PARTS; i > 0; i--)
-  {
-   if ( strcmp(name, parts_list[i - 1].name) > 0)
-    {
-     break;
+    if (NUM_PARTS == MAX_PARTS) {
+        printf("Number of parts greater than MAX_PARTS!\n");
+        exit(-1);
     }
-   else
-    {
-     in = i - 1;
-     memcpy ((void *) &parts_list[i], (void *) &parts_list[i - 1], sizeof (part_desc));
+
+    // insert in ascendent order
+    in = NUM_PARTS;
+    for (int i = NUM_PARTS; i > 0; i--) {
+        if (strcmp(name, parts_list[i - 1].name) > 0) {
+            break;
+        } else {
+            in = i - 1;
+            memcpy((void*)&parts_list[i], (void*)&parts_list[i - 1], sizeof(part_desc));
+        }
     }
-  }
 
- //insert new
- parts_list[in].pcreate = pcreate;
- strncpy (parts_list[in].name, name, 30);
- strncpy (parts_list[in].menu, menu, 30);
+    // insert new
+    parts_list[in].pcreate = pcreate;
+    strncpy(parts_list[in].name, name, 30);
+    strncpy(parts_list[in].menu, menu, 30);
 
- NUM_PARTS++;
+    NUM_PARTS++;
 }

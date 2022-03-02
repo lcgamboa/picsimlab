@@ -24,68 +24,66 @@
    ######################################################################## */
 
 #ifndef BOARD_K16F_H
-#define	BOARD_K16F_H
+#define BOARD_K16F_H
 
 #include "bsim_picsim.h"
 
-#define	BOARD_K16F_Name "K16F"
+#define BOARD_K16F_Name "K16F"
 
-class cboard_K16F:public bsim_picsim
-{
-  private:
-      
-    unsigned char p_KEY1; 
-    unsigned char p_KEY2; 
-    unsigned char p_KEY3; 
-    unsigned char p_KEY4; 
-    unsigned char p_KEY5; 
-    unsigned char p_KEY6; 
-    unsigned char p_KEY7; 
-    unsigned char p_KEY8; 
-    unsigned char p_KEY9; 
-    unsigned char p_KEY10; 
-    unsigned char p_KEY11; 
-    unsigned char p_KEY12; 
+class cboard_K16F : public bsim_picsim {
+private:
+    unsigned char p_KEY1;
+    unsigned char p_KEY2;
+    unsigned char p_KEY3;
+    unsigned char p_KEY4;
+    unsigned char p_KEY5;
+    unsigned char p_KEY6;
+    unsigned char p_KEY7;
+    unsigned char p_KEY8;
+    unsigned char p_KEY9;
+    unsigned char p_KEY10;
+    unsigned char p_KEY11;
+    unsigned char p_KEY12;
 
-     lcd_t lcd;
+    lcd_t lcd;
 
-     mi2c_t mi2c;
-     rtc_pfc8563_t rtc;
-     
-     int lcde;
+    mi2c_t mi2c;
+    rtc_pfc8563_t rtc;
 
-     unsigned char clko;
-     unsigned char d;
-     unsigned char sda,sck;
-     char mi2c_tmp_name[200];  
-     
-     void RegisterRemoteControl(void) override;    
-     lxColor color1;
-     lxColor color2;
-     lxFont font;
-  public:
-      //Return the board name
-      lxString GetName(void) override {return lxT(BOARD_K16F_Name); };
-      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
-      cboard_K16F(void);
-      ~cboard_K16F(void);
-      void Draw(CDraw *draw) override;
-      void Run_CPU(void) override;
-      lxString GetSupportedDevices(void) override {return lxT("PIC16F628A,PIC16F648A,PIC16F84A,");};
-      int MInit(const char * processor, const char * fname, float freq) override;
-      void Reset(void) override;
-      void MDumpMemory(const char * mfname) override;
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state) override;
-      void EvKeyPress(uint key, uint mask) override;
-      void EvKeyRelease(uint key,uint mask) override;      
-      void EvOnShow(void) override;
-      void RefreshStatus(void) override;
-      void WritePreferences(void) override;
-      void ReadPreferences(char *name,char *value) override;
-      unsigned short get_in_id(char * name) override;
-      unsigned short get_out_id(char * name) override;
+    int lcde;
+
+    unsigned char clko;
+    unsigned char d;
+    unsigned char sda, sck;
+    char mi2c_tmp_name[200];
+
+    void RegisterRemoteControl(void) override;
+    lxColor color1;
+    lxColor color2;
+    lxFont font;
+
+public:
+    // Return the board name
+    lxString GetName(void) override { return lxT(BOARD_K16F_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    cboard_K16F(void);
+    ~cboard_K16F(void);
+    void Draw(CDraw* draw) override;
+    void Run_CPU(void) override;
+    lxString GetSupportedDevices(void) override { return lxT("PIC16F628A,PIC16F648A,PIC16F84A,"); };
+    int MInit(const char* processor, const char* fname, float freq) override;
+    void Reset(void) override;
+    void MDumpMemory(const char* mfname) override;
+    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
+    void EvMouseButtonRelease(uint button, uint x, uint y, uint state) override;
+    void EvKeyPress(uint key, uint mask) override;
+    void EvKeyRelease(uint key, uint mask) override;
+    void EvOnShow(void) override;
+    void RefreshStatus(void) override;
+    void WritePreferences(void) override;
+    void ReadPreferences(char* name, char* value) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
 };
 
-#endif	/* BOARD_K16F_H */
-
+#endif /* BOARD_K16F_H */

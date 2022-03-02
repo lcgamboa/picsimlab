@@ -26,39 +26,38 @@
 #ifndef PART_VCD_Play_H
 #define PART_VCD_Play_H
 
-#include<lxrad.h>
-#include"part.h"
+#include <lxrad.h>
+#include "part.h"
 
 #define PART_VCD_Play_Name "VCD Play"
 
-typedef struct
-{
-unsigned long count;
-unsigned char data;
-}vcd_reg_t;
+typedef struct {
+    unsigned long count;
+    unsigned char data;
+} vcd_reg_t;
 
 class cpart_VCD_Play : public part {
 public:
-
-    lxString GetName(void) override { return lxT(PART_VCD_Play_Name);};
-    lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};          
+    lxString GetName(void) override { return lxT(PART_VCD_Play_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
     cpart_VCD_Play(unsigned x, unsigned y);
     ~cpart_VCD_Play(void);
     void Draw(void) override;
     void PreProcess(void) override;
     void Process(void) override;
     void PostProcess(void) override;
-    void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
-    void ConfigurePropertiesWindow(CPWindow * WProp) override;
+    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
+    void ConfigurePropertiesWindow(CPWindow* WProp) override;
     void filedialog_EvOnClose(int retId) override;
-    void ReadPropertiesWindow(CPWindow * WProp) override;
+    void ReadPropertiesWindow(CPWindow* WProp) override;
     lxString WritePreferences(void) override;
     void ReadPreferences(lxString value) override;
-    unsigned short get_in_id(char * name) override;
-    unsigned short get_out_id(char * name) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
     int LoadVCD(lxString fname);
+
 private:
-    void RegisterRemoteControl(void) override;   
+    void RegisterRemoteControl(void) override;
     unsigned char output_pins[8];
     char f_vcd_name[200];
     unsigned char play;
@@ -66,12 +65,12 @@ private:
     unsigned long vcd_count;
     float vcd_inc;
     float vcd_step;
-    vcd_reg_t *vcd_data;
+    vcd_reg_t* vcd_data;
     int vcd_data_count;
     int vcd_ptr;
     lxFont font;
     lxColor color1;
-    lxColor color2;    
+    lxColor color2;
 };
 
 #endif /* PART_VCD_Play_H */

@@ -23,329 +23,276 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include"../picsimlab1.h"
-#include"../picsimlab4.h"
-#include"../picsimlab5.h"
-#include"part_hcsr04.h"
+#include "part_hcsr04.h"
+#include "../picsimlab1.h"
+#include "../picsimlab4.h"
+#include "../picsimlab5.h"
 
 /* outputs */
-enum
-{
- O_P1, O_P2, O_F1, O_F2, O_PO1
-};
+enum { O_P1, O_P2, O_F1, O_F2, O_PO1 };
 
 /* inputs */
-enum
-{
- I_PO1
-};
+enum { I_PO1 };
 
-cpart_hcsr04::cpart_hcsr04(unsigned x, unsigned y) :
-font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
-font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
-{
- X = x;
- Y = y;
- aways_update = 1;
- ReadMaps ();
+cpart_hcsr04::cpart_hcsr04(unsigned x, unsigned y)
+    : font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
+      font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    X = x;
+    Y = y;
+    aways_update = 1;
+    ReadMaps();
 
- LoadImage();
+    LoadImage();
 
- input_pins[0] = 0;
+    input_pins[0] = 0;
 
- output_pins[0] = 0;
+    output_pins[0] = 0;
 
- value = 0;
- active = 0;
- old_value = 0;
- delay = 0;
- count = 0;
+    value = 0;
+    active = 0;
+    old_value = 0;
+    delay = 0;
+    count = 0;
 
- RegisterRemoteControl ();
+    RegisterRemoteControl();
 }
 
-void
-cpart_hcsr04::RegisterRemoteControl(void)
-{
- for (int i = 0; i < inputc; i++)
-  {
-   switch (input[i].id)
-    {
-    case I_PO1:
-     input[i].status = &value;
-     break;
+void cpart_hcsr04::RegisterRemoteControl(void) {
+    for (int i = 0; i < inputc; i++) {
+        switch (input[i].id) {
+            case I_PO1:
+                input[i].status = &value;
+                break;
+        }
     }
-  }
 }
 
-cpart_hcsr04::~cpart_hcsr04(void)
-{
- delete Bitmap;
- canvas.Destroy ();
+cpart_hcsr04::~cpart_hcsr04(void) {
+    delete Bitmap;
+    canvas.Destroy();
 }
 
-void
-cpart_hcsr04::Draw(void)
-{
+void cpart_hcsr04::Draw(void) {
+    int i;
+    char val[10];
 
- int i;
- char val[10];
+    Update = 0;
 
- Update = 0;
+    for (i = 0; i < outputc; i++) {
+        if (output[i].update)  // only if need update
+        {
+            output[i].update = 0;
 
- for (i = 0; i < outputc; i++)
-  {
-   if (output[i].update)//only if need update
-    {
-     output[i].update = 0;
+            if (!Update) {
+                canvas.Init(Scale, Scale, Orientation);
+                canvas.SetFont(font);
+            }
+            Update++;  // set to update buffer
 
-     if (!Update)
-      {
-       canvas.Init (Scale, Scale, Orientation);
-       canvas.SetFont (font);
-      }
-     Update++; //set to update buffer
-
-     switch (output[i].id)
-      {
-      case O_P1:
-       canvas.SetColor (49, 61, 99);
-       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-       canvas.SetFgColor (255, 255, 255);
-       if (input_pins[output[i].id - O_P1] == 0)
-        canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90);
-       else
-        canvas.RotatedText (Window5.GetPinName (input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2, 90);
-       break;
-      case O_P2:
-       canvas.SetColor (49, 61, 99);
-       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-       canvas.SetFgColor (255, 255, 255);
-       if (output_pins[output[i].id - O_P2] == 0)
-        canvas.RotatedText ("NC", output[i].x1, output[i].y2, 90);
-       else
-        canvas.RotatedText (Window5.GetPinName (output_pins[output[i].id - O_P2]), output[i].x1, output[i].y2, 90);
-       break;
-      case O_F1:
-       canvas.SetColor (49, 61, 99);
-       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-       canvas.SetFgColor (155, 155, 155);
-       canvas.RotatedText ("+5V", output[i].x1, output[i].y2, 90);
-       break;
-      case O_F2:
-       canvas.SetColor (49, 61, 99);
-       canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-       canvas.SetFgColor (155, 155, 155);
-       canvas.RotatedText ("GND", output[i].x1, output[i].y2, 90);
-       break;
-      case O_PO1:
-       snprintf (val, 10, " %3i", (int) (400.0 * (200 - value) / 200.0));
-       draw_slider (&output[i], value, val, font_p);
-       canvas.SetFont (font);
-       break;
-      }
-    }
-  }
-
- if (Update)
-  {
-   canvas.End ();
-  }
-}
-
-void
-cpart_hcsr04::Process(void)
-{
- const picpin * pins = Window5.GetPinsValues ();
-
-
- if ((input_pins[0])&&(output_pins[0]))
-  {
-
-   //output  
-   if (count)
-    {
-     count--;
-     if (!count)
-      {
-       Window5.SetPin (output_pins[0], 0);
-      }
+            switch (output[i].id) {
+                case O_P1:
+                    canvas.SetColor(49, 61, 99);
+                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                     output[i].y2 - output[i].y1);
+                    canvas.SetFgColor(255, 255, 255);
+                    if (input_pins[output[i].id - O_P1] == 0)
+                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90);
+                    else
+                        canvas.RotatedText(Window5.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
+                                           output[i].y2, 90);
+                    break;
+                case O_P2:
+                    canvas.SetColor(49, 61, 99);
+                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                     output[i].y2 - output[i].y1);
+                    canvas.SetFgColor(255, 255, 255);
+                    if (output_pins[output[i].id - O_P2] == 0)
+                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90);
+                    else
+                        canvas.RotatedText(Window5.GetPinName(output_pins[output[i].id - O_P2]), output[i].x1,
+                                           output[i].y2, 90);
+                    break;
+                case O_F1:
+                    canvas.SetColor(49, 61, 99);
+                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                     output[i].y2 - output[i].y1);
+                    canvas.SetFgColor(155, 155, 155);
+                    canvas.RotatedText("+5V", output[i].x1, output[i].y2, 90);
+                    break;
+                case O_F2:
+                    canvas.SetColor(49, 61, 99);
+                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                     output[i].y2 - output[i].y1);
+                    canvas.SetFgColor(155, 155, 155);
+                    canvas.RotatedText("GND", output[i].x1, output[i].y2, 90);
+                    break;
+                case O_PO1:
+                    snprintf(val, 10, " %3i", (int)(400.0 * (200 - value) / 200.0));
+                    draw_slider(&output[i], value, val, font_p);
+                    canvas.SetFont(font);
+                    break;
+            }
+        }
     }
 
-   //pulse 48 kHz
-   if (delay)
-    {
-     delay--;
-     if (!delay)
-      {
-       count = (200 - value) * 116.144018583e-6 * Window1.GetBoard ()->MGetInstClockFreq ();
-       Window5.SetPin (output_pins[0], 1);
-      }
+    if (Update) {
+        canvas.End();
+    }
+}
+
+void cpart_hcsr04::Process(void) {
+    const picpin* pins = Window5.GetPinsValues();
+
+    if ((input_pins[0]) && (output_pins[0])) {
+        // output
+        if (count) {
+            count--;
+            if (!count) {
+                Window5.SetPin(output_pins[0], 0);
+            }
+        }
+
+        // pulse 48 kHz
+        if (delay) {
+            delay--;
+            if (!delay) {
+                count = (200 - value) * 116.144018583e-6 * Window1.GetBoard()->MGetInstClockFreq();
+                Window5.SetPin(output_pins[0], 1);
+            }
+        }
+
+        // trigger
+        if ((!pins[input_pins[0] - 1].value) && (old_value)) {
+            // 200us  8 cycles of 40KHz
+            delay = 200e-6 * Window1.GetBoard()->MGetInstClockFreq();
+            count = 0;
+        }
+        old_value = pins[input_pins[0] - 1].value;
+    }
+}
+
+void cpart_hcsr04::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
+    int i;
+
+    for (i = 0; i < inputc; i++) {
+        if (PointInside(x, y, input[i])) {
+            RotateCoords(&x, &y);
+            switch (input[i].id) {
+                case I_PO1:
+                    value = (y - input[i].y1) * 1.66;
+                    if (value > 200)
+                        value = 200;
+                    active = 1;
+                    output_ids[O_PO1]->update = 1;
+                    break;
+            }
+        }
+    }
+}
+
+void cpart_hcsr04::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
+    int i;
+
+    for (i = 0; i < inputc; i++) {
+        if (PointInside(x, y, input[i])) {
+            switch (input[i].id) {
+                case I_PO1:
+                    active = 0;
+                    output_ids[O_PO1]->update = 1;
+                    break;
+            }
+        }
+    }
+}
+
+void cpart_hcsr04::EvMouseMove(uint button, uint x, uint y, uint state) {
+    int i;
+
+    for (i = 0; i < inputc; i++) {
+        if (PointInside(x, y, input[i])) {
+            RotateCoords(&x, &y);
+
+            if (active) {
+                value = (y - input[i].y1) * 1.66;
+                if (value > 200)
+                    value = 200;
+                output_ids[O_PO1]->update = 1;
+            }
+        } else {
+            active = 0;
+        }
+    }
+}
+
+unsigned short cpart_hcsr04::get_in_id(char* name) {
+    if (strcmp(name, "PO_1") == 0)
+        return I_PO1;
+
+    printf("Erro input '%s' don't have a valid id! \n", name);
+    return -1;
+}
+
+unsigned short cpart_hcsr04::get_out_id(char* name) {
+    if (strcmp(name, "PN_1") == 0)
+        return O_P1;
+    if (strcmp(name, "PN_2") == 0)
+        return O_P2;
+
+    if (strcmp(name, "PN_F1") == 0)
+        return O_F1;
+    if (strcmp(name, "PN_F2") == 0)
+        return O_F2;
+
+    if (strcmp(name, "PO_1") == 0)
+        return O_PO1;
+
+    printf("Erro output '%s' don't have a valid id! \n", name);
+    return 1;
+}
+
+lxString cpart_hcsr04::WritePreferences(void) {
+    char prefs[256];
+
+    sprintf(prefs, "%hhu,%hhu,%hhu", input_pins[0], output_pins[0], value);
+
+    return prefs;
+}
+
+void cpart_hcsr04::ReadPreferences(lxString value_) {
+    sscanf(value_.c_str(), "%hhu,%hhu,%hhu", &input_pins[0], &output_pins[0], &value);
+}
+
+void cpart_hcsr04::ConfigurePropertiesWindow(CPWindow* WProp) {
+    lxString Items = Window5.GetPinsNames();
+    lxString spin;
+
+    ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
+    if (input_pins[0] == 0)
+        ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
+    else {
+        spin = Window5.GetPinName(input_pins[0]);
+        ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(input_pins[0]) + "  " + spin);
     }
 
-   //trigger
-   if ((!pins[input_pins[0] - 1].value)&& (old_value))
-    {
-     //200us  8 cycles of 40KHz
-     delay = 200e-6 * Window1.GetBoard ()->MGetInstClockFreq ();
-     count = 0;
+    ((CCombo*)WProp->GetChildByName("combo2"))->SetItems(Items);
+    if (output_pins[0] == 0)
+        ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
+    else {
+        spin = Window5.GetPinName(output_pins[0]);
+        ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(output_pins[0]) + "  " + spin);
     }
-   old_value = pins[input_pins[0] - 1].value;
-  }
+
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
+        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
+
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
+        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
 }
 
-void
-cpart_hcsr04::EvMouseButtonPress(uint button, uint x, uint y, uint state)
-{
-
- int i;
-
- for (i = 0; i < inputc; i++)
-  {
-   if (PointInside (x, y, input[i]))
-    {
-     RotateCoords (&x, &y);
-     switch (input[i].id)
-      {
-      case I_PO1:
-       value = (y - input[i].y1)*1.66;
-       if (value > 200)value = 200;
-       active = 1;
-       output_ids[O_PO1]->update = 1;
-       break;
-      }
-    }
-  }
-
+void cpart_hcsr04::ReadPropertiesWindow(CPWindow* WProp) {
+    input_pins[0] = atoi(((CCombo*)WProp->GetChildByName("combo1"))->GetText());
+    output_pins[0] = atoi(((CCombo*)WProp->GetChildByName("combo2"))->GetText());
 }
-
-void
-cpart_hcsr04::EvMouseButtonRelease(uint button, uint x, uint y, uint state)
-{
- int i;
-
- for (i = 0; i < inputc; i++)
-  {
-   if (PointInside (x, y, input[i]))
-    {
-     switch (input[i].id)
-      {
-      case I_PO1:
-       active = 0;
-       output_ids[O_PO1]->update = 1;
-       break;
-      }
-    }
-  }
-}
-
-void
-cpart_hcsr04::EvMouseMove(uint button, uint x, uint y, uint state)
-{
-
- int i;
-
- for (i = 0; i < inputc; i++)
-  {
-   if (PointInside (x, y, input[i]))
-    {
-     RotateCoords (&x, &y);
-
-     if (active)
-      {
-       value = (y - input[i].y1)*1.66;
-       if (value > 200)value = 200;
-       output_ids[O_PO1]->update = 1;
-      }
-    }
-   else
-    {
-     active = 0;
-    }
-  }
-}
-
-unsigned short
-cpart_hcsr04::get_in_id(char * name)
-{
-
- if (strcmp (name, "PO_1") == 0)return I_PO1;
-
- printf ("Erro input '%s' don't have a valid id! \n", name);
- return -1;
-}
-
-unsigned short
-cpart_hcsr04::get_out_id(char * name)
-{
-
- if (strcmp (name, "PN_1") == 0)return O_P1;
- if (strcmp (name, "PN_2") == 0)return O_P2;
-
- if (strcmp (name, "PN_F1") == 0)return O_F1;
- if (strcmp (name, "PN_F2") == 0)return O_F2;
-
- if (strcmp (name, "PO_1") == 0)return O_PO1;
-
- printf ("Erro output '%s' don't have a valid id! \n", name);
- return 1;
-}
-
-lxString
-cpart_hcsr04::WritePreferences(void)
-{
- char prefs[256];
-
- sprintf (prefs, "%hhu,%hhu,%hhu", input_pins[0], output_pins[0], value);
-
- return prefs;
-}
-
-void
-cpart_hcsr04::ReadPreferences(lxString value_)
-{
- sscanf (value_.c_str (), "%hhu,%hhu,%hhu", &input_pins[0], &output_pins[0], &value);
-}
-
-void
-cpart_hcsr04::ConfigurePropertiesWindow(CPWindow * WProp)
-{
- lxString Items = Window5.GetPinsNames ();
- lxString spin;
-
- ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
- if (input_pins[0] == 0)
-  ((CCombo*) WProp->GetChildByName ("combo1"))->SetText ("0  NC");
- else
-  {
-   spin = Window5.GetPinName (input_pins[0]);
-   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (input_pins[0]) + "  " + spin);
-  }
-
- ((CCombo*) WProp->GetChildByName ("combo2"))->SetItems (Items);
- if (output_pins[0] == 0)
-  ((CCombo*) WProp->GetChildByName ("combo2"))->SetText ("0  NC");
- else
-  {
-   spin = Window5.GetPinName (output_pins[0]);
-   ((CCombo*) WProp->GetChildByName ("combo2"))->SetText (itoa (output_pins[0]) + "  " + spin);
-  }
-
-
- ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
- ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
-
- ((CButton*) WProp->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
-}
-
-void
-cpart_hcsr04::ReadPropertiesWindow(CPWindow * WProp)
-{
- input_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
- output_pins[0] = atoi (((CCombo*) WProp->GetChildByName ("combo2"))->GetText ());
-
-}
-
 
 part_init(PART_HCSR0404_Name, cpart_hcsr04, "Input");
-

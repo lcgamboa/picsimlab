@@ -23,30 +23,23 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-//Help window
+// Help window
 
-#include"picsimlab2.h"
-#include"picsimlab2_d.cc"
+#include "picsimlab2.h"
+#include "picsimlab2_d.cc"
 
 CPWindow2 Window2;
 
-
-//Implementation
+// Implementation
 #ifndef EXT_BROWSER
 
-void
-CPWindow2::_EvOnShow(CControl * control)
-{
-   html1.SetWidth(Window2.GetWidth()-30);
-   html1.SetHeight(Window2.GetHeight()-82);   
+void CPWindow2::_EvOnShow(CControl* control) {
+    html1.SetWidth(Window2.GetWidth() - 30);
+    html1.SetHeight(Window2.GetHeight() - 82);
 }
 
-void
-CPWindow2::button1_EvMouseButtonClick(CControl * control, uint button, uint x, uint y,uint state)
-{
-  html1.HistoryBack();
+void CPWindow2::button1_EvMouseButtonClick(CControl* control, uint button, uint x, uint y, uint state) {
+    html1.HistoryBack();
 }
 
 #endif
-
-

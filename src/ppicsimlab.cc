@@ -23,26 +23,24 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include"picsimlab1.h"
-#include"picsimlab2.h"
-#include"picsimlab3.h"
-#include"picsimlab4.h"
-#include"picsimlab5.h"
+#include "picsimlab1.h"
+#include "picsimlab2.h"
+#include "picsimlab3.h"
+#include "picsimlab4.h"
+#include "picsimlab5.h"
 
-//Program____________________________________________________________
+// Program____________________________________________________________
 
-Initialize
-{
-  Application->Start ();
-  Window4.SetVisible (0);
-  Window5.SetVisible (0);
-  Application->ACreateWindow (&Window1);
-  Application->ACreateWindow (&Window2);
-  Application->ACreateWindow (&Window3);
-  Application->ACreateWindow (&Window4);
-  Application->ACreateWindow (&Window5);
-  Application->Load ();
+Initialize {
+    Application->Start();
+    Window4.SetVisible(0);
+    Window5.SetVisible(0);
+    Application->ACreateWindow(&Window1);
+    Application->ACreateWindow(&Window2);
+    Application->ACreateWindow(&Window3);
+    Application->ACreateWindow(&Window4);
+    Application->ACreateWindow(&Window5);
+    Application->Load();
 
-  return 0;
+    return 0;
 }
-

@@ -24,49 +24,48 @@
    ######################################################################## */
 
 #ifndef PART_DTRANSFERF_H
-#define	PART_DTRANSFERF_H
+#define PART_DTRANSFERF_H
 
-#include<lxrad.h>
-#include"part.h"
+#include <lxrad.h>
+#include "part.h"
 
-#define	PART_DTRANSFERF_Name "D. Transfer Function"
+#define PART_DTRANSFERF_Name "D. Transfer Function"
 
-class cpart_dtfunc:public part
-{
-   public:
-      lxString GetName(void) override {return lxT(PART_DTRANSFERF_Name);};
-      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};            
-      cpart_dtfunc(unsigned x, unsigned y);
-      ~cpart_dtfunc(void);
-      void Draw(void) override;
-      void Process(void) override;
-      void Reset(void) override;
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
-      void EvMouseButtonRelease(uint button, uint x, uint y,uint state) override;
-      void EvKeyPress(uint key, uint mask) override;
-      void EvKeyRelease(uint key, uint mask) override;
-      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
-      void ReadPropertiesWindow(CPWindow * WProp) override;
-      lxString WritePreferences(void) override;
-      void ReadPreferences(lxString value) override;
-      unsigned short get_in_id(char * name) override;
-      unsigned short get_out_id(char * name) override;
-   private:
-      unsigned char input_pin;
-      unsigned char output_pin;
-      int ordern;
-      int orderd;
-      float num[4];
-      float den[4];
-      float v[4];
-      float sample;
-      float in_gain;
-      float in_off;
-      float out_gain;
-      float out_off;
-      long unsigned int nsamples;
-      lxFont font;
+class cpart_dtfunc : public part {
+public:
+    lxString GetName(void) override { return lxT(PART_DTRANSFERF_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    cpart_dtfunc(unsigned x, unsigned y);
+    ~cpart_dtfunc(void);
+    void Draw(void) override;
+    void Process(void) override;
+    void Reset(void) override;
+    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
+    void EvMouseButtonRelease(uint button, uint x, uint y, uint state) override;
+    void EvKeyPress(uint key, uint mask) override;
+    void EvKeyRelease(uint key, uint mask) override;
+    void ConfigurePropertiesWindow(CPWindow* WProp) override;
+    void ReadPropertiesWindow(CPWindow* WProp) override;
+    lxString WritePreferences(void) override;
+    void ReadPreferences(lxString value) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
+
+private:
+    unsigned char input_pin;
+    unsigned char output_pin;
+    int ordern;
+    int orderd;
+    float num[4];
+    float den[4];
+    float v[4];
+    float sample;
+    float in_gain;
+    float in_off;
+    float out_gain;
+    float out_off;
+    long unsigned int nsamples;
+    lxFont font;
 };
 
-#endif	/* PART_DTRANSFERF_H */
-
+#endif /* PART_DTRANSFERF_H */

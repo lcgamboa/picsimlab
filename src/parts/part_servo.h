@@ -24,56 +24,55 @@
    ######################################################################## */
 
 #ifndef PART_SERVO_H
-#define	PART_SERVO_H
+#define PART_SERVO_H
 
-#include<lxrad.h>
-#include"part.h"
+#include <lxrad.h>
+#include "part.h"
 
-#define	PART_SERVO_Name "Servo Motor"
+#define PART_SERVO_Name "Servo Motor"
+
+/**
+ * @brief servo motor part class
+ *
+ * class definition of servo motor class.
+ */
+class cpart_servo : public part {
+public:
+    lxString GetName(void) override { return lxT(PART_SERVO_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
 
     /**
-     * @brief servo motor part class
-     *
-     * class definition of servo motor class.
-     */
-class cpart_servo:public part
-{
-   public:
-      lxString GetName(void) override {return lxT(PART_SERVO_Name);};
-      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};      
-      
-     /**
      * @brief constructor called once on part creation
      *
      */
-      cpart_servo(unsigned x, unsigned y);
-     
-     /**
+    cpart_servo(unsigned x, unsigned y);
+
+    /**
      * @brief destructor called once on part destruction
      *
      */
-      ~cpart_servo(void);
-      
-      void Draw(void) override;
-      void Process(void) override;
-      void PostProcess(void) override;
-      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
-      void ReadPropertiesWindow(CPWindow * WProp) override;
-      lxString WritePreferences(void) override;
-      void ReadPreferences(lxString value) override;
-      void LoadImage(void) override;
-      unsigned short get_in_id(char * name) override;
-      unsigned short get_out_id(char * name) override;
-    private: 
-      void RegisterRemoteControl(void) override;          
-      unsigned char input_pin; ///< pulse input pin  
-      lxBitmap * BackGround;   ///< Background image
-      float angle;             ///< angle of shaft
-      float angle_;            ///< old angle of shaft
-      unsigned char in_[2];    ///< input pin memory
-      int time;                ///< pulse time
-      lxFont font;
+    ~cpart_servo(void);
+
+    void Draw(void) override;
+    void Process(void) override;
+    void PostProcess(void) override;
+    void ConfigurePropertiesWindow(CPWindow* WProp) override;
+    void ReadPropertiesWindow(CPWindow* WProp) override;
+    lxString WritePreferences(void) override;
+    void ReadPreferences(lxString value) override;
+    void LoadImage(void) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
+
+private:
+    void RegisterRemoteControl(void) override;
+    unsigned char input_pin;  ///< pulse input pin
+    lxBitmap* BackGround;     ///< Background image
+    float angle;              ///< angle of shaft
+    float angle_;             ///< old angle of shaft
+    unsigned char in_[2];     ///< input pin memory
+    int time;                 ///< pulse time
+    lxFont font;
 };
 
-#endif	/* PART_SERVO */
-
+#endif /* PART_SERVO */

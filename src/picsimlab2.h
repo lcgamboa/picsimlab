@@ -23,27 +23,25 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef CPWINDOW2 
+#ifndef CPWINDOW2
 #define CPWINDOW2
 
-#include<lxrad.h>
+#include <lxrad.h>
 
-class CPWindow2:public CPWindow
-{
-  public:
+class CPWindow2 : public CPWindow {
+public:
 #ifndef EXT_BROWSER
-  /*#Controls*/
-  CHtml html1;
-  CButton button1;
-  /*#Events*/
-  void _EvOnShow(CControl * control);
-  void button1_EvMouseButtonClick(CControl * control, const uint button, const uint x, const uint y, const uint state);
+    /*#Controls*/
+    CHtml html1;
+    CButton button1;
+    /*#Events*/
+    void _EvOnShow(CControl* control);
+    void button1_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y, const uint state);
 #endif
-  /*#Others*/
-  CPWindow2(void);
+    /*#Others*/
+    CPWindow2(void);
 };
 
-extern CPWindow2 Window2 ;
+extern CPWindow2 Window2;
 
 #endif /*#CPWINDOW2*/
-

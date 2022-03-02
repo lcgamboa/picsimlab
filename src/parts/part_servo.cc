@@ -23,242 +23,206 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include"../picsimlab1.h"
-#include"../picsimlab4.h"
-#include"../picsimlab5.h"
-#include"part_servo.h"
+#include "part_servo.h"
+#include "../picsimlab1.h"
+#include "../picsimlab4.h"
+#include "../picsimlab5.h"
 
 /* outputs */
-enum
-{
- O_P1, O_AXIS
-};
+enum { O_P1, O_AXIS };
 
 cpart_servo::cpart_servo(unsigned x, unsigned y)
-: font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
-{
- X = x;
- Y = y;
- aways_update = 1;
- input_pin = 0;
- angle = 0;
- angle_ = 0;
- in_[0] = 0;
- in_[1] = 0;
- time = 0;
+    : font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    X = x;
+    Y = y;
+    aways_update = 1;
+    input_pin = 0;
+    angle = 0;
+    angle_ = 0;
+    in_[0] = 0;
+    in_[1] = 0;
+    time = 0;
 
- ReadMaps ();
+    ReadMaps();
 
- BackGround = NULL;
+    BackGround = NULL;
 
- LoadImage();
-
+    LoadImage();
 }
 
-cpart_servo::~cpart_servo(void)
-{
- delete Bitmap;
- delete BackGround;
- canvas.Destroy ();
+cpart_servo::~cpart_servo(void) {
+    delete Bitmap;
+    delete BackGround;
+    canvas.Destroy();
 }
 
-void
-cpart_servo::Draw(void)
-{
+void cpart_servo::Draw(void) {
+    int i;
 
- int i;
+    Update = 0;
 
- Update = 0;
+    for (i = 0; i < outputc; i++) {
+        if (output[i].update)  // only if need update
+        {
+            output[i].update = 0;
 
- for (i = 0; i < outputc; i++)
-  {
-   if (output[i].update)//only if need update
-    {
-     output[i].update = 0;
+            if (!Update) {
+                canvas.SetBitmap(BackGround, 1.0, 1.0);  // FIXME draw servo error on scale or rotate
+                canvas.Init(Scale, Scale, Orientation);
+                canvas.SetFont(font);
+            }
+            Update++;  // set to update buffer
 
-     if (!Update)
-      {
-       canvas.SetBitmap (BackGround, 1.0, 1.0); //FIXME draw servo error on scale or rotate
-       canvas.Init (Scale, Scale, Orientation);
-       canvas.SetFont (font);
-      }
-     Update++; //set to update buffer
+            if (output[i].id == O_P1) {
+                canvas.SetFgColor(255, 255, 255);
+                if (input_pin == 0)
+                    canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
+                else
+                    canvas.RotatedText(Window5.GetPinName(input_pin), output[i].x1, output[i].y1, 0);
+            }
 
-     if (output[i].id == O_P1)
-      {
-       canvas.SetFgColor (255, 255, 255);
-       if (input_pin == 0)
-        canvas.RotatedText ("NC", output[i].x1, output[i].y1, 0);
-       else
-        canvas.RotatedText (Window5.GetPinName (input_pin), output[i].x1, output[i].y1, 0);
-      }
-
-     if (output[i].id == O_AXIS)
-      {
-       float x2 = output[i].x1 + output[i].r * sin (angle);
-       float y2 = output[i].y1 - output[i].r * cos (angle);
-       canvas.SetFgColor (0, 0, 0);
-       canvas.SetLineWidth (20);
-       canvas.Line (output[i].x1, output[i].y1, x2, y2);
-       canvas.SetFgColor (255, 255, 255);
-       canvas.SetLineWidth (18);
-       canvas.Line (output[i].x1, output[i].y1, x2, y2);
-      }
+            if (output[i].id == O_AXIS) {
+                float x2 = output[i].x1 + output[i].r * sin(angle);
+                float y2 = output[i].y1 - output[i].r * cos(angle);
+                canvas.SetFgColor(0, 0, 0);
+                canvas.SetLineWidth(20);
+                canvas.Line(output[i].x1, output[i].y1, x2, y2);
+                canvas.SetFgColor(255, 255, 255);
+                canvas.SetLineWidth(18);
+                canvas.Line(output[i].x1, output[i].y1, x2, y2);
+            }
+        }
     }
-  }
 
- if (Update)
-  {
-   canvas.End ();
-  }
+    if (Update) {
+        canvas.End();
+    }
 }
 
-void
-cpart_servo::Process(void)
-{
+void cpart_servo::Process(void) {
+    const picpin* ppins = Window5.GetPinsValues();
 
- const picpin * ppins = Window5.GetPinsValues ();
+    if (input_pin == 0)
+        return;
 
- if (input_pin == 0)return;
+    in_[1] = in_[0];
+    in_[0] = ppins[input_pin - 1].value;
 
- in_[1] = in_[0];
- in_[0] = ppins[input_pin - 1].value;
+    if ((in_[0] == 1) && (in_[1] == 0))  // rise
+    {
+        time = 0;
+    }
 
- if ((in_[0] == 1)&&(in_[1] == 0))//rise
-  {
-   time = 0;
-  }
+    if ((in_[0] == 0) && (in_[1] == 1))  // low
+    {
+        angle_ = ((time / Window1.GetBoard()->MGetInstClockFreq()) - 0.0015) * 3141.59265359;
 
- if ((in_[0] == 0)&&(in_[1] == 1))//low
-  {
-   angle_ = ((time / Window1.GetBoard ()->MGetInstClockFreq ()) - 0.0015)*3141.59265359;
+        if (angle_ > M_PI / 2.0)
+            angle_ = M_PI / 2.0;
+        if (angle_ < -M_PI / 2.0)
+            angle_ = -M_PI / 2.0;
+    }
 
-   if (angle_ > M_PI / 2.0)angle_ = M_PI / 2.0;
-   if (angle_ < -M_PI / 2.0)angle_ = -M_PI / 2.0;
-
-  }
-
- time++;
+    time++;
 }
 
-void
-cpart_servo::PostProcess(void)
-{
- if (angle > angle_)
-  {
-   angle -= 0.2;
-   if (angle < angle_) angle = angle_;
-  }
+void cpart_servo::PostProcess(void) {
+    if (angle > angle_) {
+        angle -= 0.2;
+        if (angle < angle_)
+            angle = angle_;
+    }
 
- if (angle < angle_)
-  {
-   angle += 0.2;
-   if (angle > angle_) angle = angle_;
-  }
+    if (angle < angle_) {
+        angle += 0.2;
+        if (angle > angle_)
+            angle = angle_;
+    }
 
-
- if (output_ids[O_AXIS]->value_f != angle)
-  {
-   output_ids[O_AXIS]->value_f = angle;
-   output_ids[O_AXIS]->update = 1;
-   output_ids[O_P1]->update = 1;
-  }
+    if (output_ids[O_AXIS]->value_f != angle) {
+        output_ids[O_AXIS]->value_f = angle;
+        output_ids[O_AXIS]->update = 1;
+        output_ids[O_P1]->update = 1;
+    }
 }
 
-unsigned short
-cpart_servo::get_in_id(char * name)
-{
- printf ("Erro input '%s' don't have a valid id! \n", name);
- return -1;
+unsigned short cpart_servo::get_in_id(char* name) {
+    printf("Erro input '%s' don't have a valid id! \n", name);
+    return -1;
 }
 
-unsigned short
-cpart_servo::get_out_id(char * name)
-{
+unsigned short cpart_servo::get_out_id(char* name) {
+    if (strcmp(name, "PN_1") == 0)
+        return O_P1;
+    if (strcmp(name, "DG_AXIS") == 0)
+        return O_AXIS;
 
- if (strcmp (name, "PN_1") == 0)return O_P1;
- if (strcmp (name, "DG_AXIS") == 0)return O_AXIS;
-
- printf ("Erro output '%s' don't have a valid id! \n", name);
- return 1;
+    printf("Erro output '%s' don't have a valid id! \n", name);
+    return 1;
 }
 
-lxString
-cpart_servo::WritePreferences(void)
-{
- char prefs[256];
+lxString cpart_servo::WritePreferences(void) {
+    char prefs[256];
 
- sprintf (prefs, "%hhu", input_pin);
+    sprintf(prefs, "%hhu", input_pin);
 
- return prefs;
+    return prefs;
 }
 
-void
-cpart_servo::ReadPreferences(lxString value)
-{
- sscanf (value.c_str (), "%hhu", &input_pin);
- RegisterRemoteControl ();
+void cpart_servo::ReadPreferences(lxString value) {
+    sscanf(value.c_str(), "%hhu", &input_pin);
+    RegisterRemoteControl();
 }
 
-void
-cpart_servo::RegisterRemoteControl(void)
-{
- output_ids[O_AXIS]->status = (void *) &angle;
+void cpart_servo::RegisterRemoteControl(void) {
+    output_ids[O_AXIS]->status = (void*)&angle;
 }
 
-void
-cpart_servo::ConfigurePropertiesWindow(CPWindow * WProp)
-{
- lxString Items = Window5.GetPinsNames ();
- lxString spin;
+void cpart_servo::ConfigurePropertiesWindow(CPWindow* WProp) {
+    lxString Items = Window5.GetPinsNames();
+    lxString spin;
 
- ((CCombo*) WProp->GetChildByName ("combo1"))->SetItems (Items);
- if (input_pin == 0)
-  ((CCombo*) WProp->GetChildByName ("combo1"))->SetText ("0  NC");
- else
-  {
-   spin = Window5.GetPinName (input_pin);
-   ((CCombo*) WProp->GetChildByName ("combo1"))->SetText (itoa (input_pin) + "  " + spin);
-  }
+    ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
+    if (input_pin == 0)
+        ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
+    else {
+        spin = Window5.GetPinName(input_pin);
+        ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(input_pin) + "  " + spin);
+    }
 
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
+        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
- ((CButton*) WProp->GetChildByName ("button1"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
- ((CButton*) WProp->GetChildByName ("button1"))->SetTag (1);
-
- ((CButton*) WProp->GetChildByName ("button2"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
+        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
 }
 
-void
-cpart_servo::ReadPropertiesWindow(CPWindow * WProp)
-{
- input_pin = atoi (((CCombo*) WProp->GetChildByName ("combo1"))->GetText ());
- RegisterRemoteControl ();
+void cpart_servo::ReadPropertiesWindow(CPWindow* WProp) {
+    input_pin = atoi(((CCombo*)WProp->GetChildByName("combo1"))->GetText());
+    RegisterRemoteControl();
 }
 
-void
-cpart_servo::LoadImage(void)
-{
+void cpart_servo::LoadImage(void) {
+    lxImage image(&Window5);
+    image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("parts/") + GetPictureFileName()), Orientation, Scale,
+                   Scale);
 
- lxImage image (&Window5);
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
+    Bitmap = new lxBitmap(&image, &Window5);
+    image.Destroy();
 
- Bitmap = new lxBitmap (&image, &Window5);
- image.Destroy ();
+    image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("parts/") + GetPictureFileName()), Orientation, Scale,
+                   Scale);
 
- image.LoadFile (lxGetLocalFile(Window1.GetSharePath () + lxT ("parts/") + GetPictureFileName ()), Orientation, Scale, Scale);
- 
- if(BackGround)
- {
-  delete BackGround;
- }
- BackGround = new lxBitmap (&image, &Window5);
- image.Destroy ();
+    if (BackGround) {
+        delete BackGround;
+    }
+    BackGround = new lxBitmap(&image, &Window5);
+    image.Destroy();
 
- canvas.Destroy ();
- canvas.Create (Window5.GetWWidget (), Bitmap);
- }
+    canvas.Destroy();
+    canvas.Create(Window5.GetWWidget(), Bitmap);
+}
 
-//Register the part in PICSimLab spare parts list
+// Register the part in PICSimLab spare parts list
 part_init(PART_SERVO_Name, cpart_servo, "Output");
-
-

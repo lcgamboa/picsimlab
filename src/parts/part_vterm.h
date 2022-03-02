@@ -24,54 +24,53 @@
    ######################################################################## */
 
 #ifndef PART_vterm_H
-#define	PART_vterm_H
+#define PART_vterm_H
 
-#include<lxrad.h>
-#include"part.h"
-#include"../devices/vterm.h"
+#include <lxrad.h>
+#include "../devices/vterm.h"
+#include "part.h"
 
-#define	PART_vterm_Name "IO Virtual Term"
+#define PART_vterm_Name "IO Virtual Term"
 
-class cpart_vterm:public part
-{
-   public:
-      lxString GetName(void) override {return lxT(PART_vterm_Name);};
-      lxString GetAboutInfo(void) override {return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>");};
-      cpart_vterm(unsigned x, unsigned y);
-      ~cpart_vterm(void);
-      void Draw(void) override;
-      void PreProcess (void) override;
-      void Process(void) override; 
-      void PostProcess (void) override;
-      void Reset(void) override;
-      void EvMouseButtonPress(uint button, uint x, uint y,uint state) override;
-      void ConfigurePropertiesWindow(CPWindow *  WProp) override;
-      void ReadPropertiesWindow(CPWindow * WProp) override;
-      void ButtonEvent(CControl * control, uint button, uint x, uint y, uint state) override;
-      void KeyEvent(CControl * control, uint keysym, uint ukeysym, uint state) override;
-      void Event(CControl * control) override;
-      lxString WritePreferences(void) override;
-      void ReadPreferences(lxString value) override;
-      unsigned short get_in_id(char * name) override;
-      unsigned short get_out_id(char * name) override;
-      void SetId(int _id) override;
-   private:
-      unsigned char input_pins[1];
-      unsigned char output_pins[1];
-      vterm_t vt;
-      int _ret; 
-      unsigned int vterm_speed;
-      CPWindow * wvterm;
-      CText * vttext;
-      CEdit * vtedit;
-      CButton * vtbtn_send;
-      CButton * vtbtn_clear;
-      CCombo * vtcmb_speed;
-      CCombo * vtcmb_ending;
-      char send_text;
-      unsigned char lending; 
-      lxFont font;
+class cpart_vterm : public part {
+public:
+    lxString GetName(void) override { return lxT(PART_vterm_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    cpart_vterm(unsigned x, unsigned y);
+    ~cpart_vterm(void);
+    void Draw(void) override;
+    void PreProcess(void) override;
+    void Process(void) override;
+    void PostProcess(void) override;
+    void Reset(void) override;
+    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
+    void ConfigurePropertiesWindow(CPWindow* WProp) override;
+    void ReadPropertiesWindow(CPWindow* WProp) override;
+    void ButtonEvent(CControl* control, uint button, uint x, uint y, uint state) override;
+    void KeyEvent(CControl* control, uint keysym, uint ukeysym, uint state) override;
+    void Event(CControl* control) override;
+    lxString WritePreferences(void) override;
+    void ReadPreferences(lxString value) override;
+    unsigned short get_in_id(char* name) override;
+    unsigned short get_out_id(char* name) override;
+    void SetId(int _id) override;
+
+private:
+    unsigned char input_pins[1];
+    unsigned char output_pins[1];
+    vterm_t vt;
+    int _ret;
+    unsigned int vterm_speed;
+    CPWindow* wvterm;
+    CText* vttext;
+    CEdit* vtedit;
+    CButton* vtbtn_send;
+    CButton* vtbtn_clear;
+    CCombo* vtcmb_speed;
+    CCombo* vtcmb_ending;
+    char send_text;
+    unsigned char lending;
+    lxFont font;
 };
 
-#endif	/* PART_vterm_H */
-
+#endif /* PART_vterm_H */

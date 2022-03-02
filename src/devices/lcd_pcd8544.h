@@ -23,12 +23,11 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-
 #ifndef LCD_PCD8544
 #define LCD_PCD8544
 
-#include<lxrad.h>
-#include"bitbang_spi.h"
+#include <lxrad.h>
+#include "bitbang_spi.h"
 
 /* pinout
   1 /RST
@@ -51,15 +50,13 @@ typedef struct {
     unsigned char update;
 } lcd_pcd8544_t;
 
+void lcd_pcd8544_rst(lcd_pcd8544_t* lcd);
+void lcd_pcd8544_init(lcd_pcd8544_t* lcd);
+void lcd_pcd8544_update(lcd_pcd8544_t* lcd);
 
-void lcd_pcd8544_rst(lcd_pcd8544_t *lcd);
-void lcd_pcd8544_init(lcd_pcd8544_t *lcd);
-void lcd_pcd8544_update(lcd_pcd8544_t *lcd);
+unsigned char lcd_pcd8544_io(lcd_pcd8544_t* lcd, unsigned char din, unsigned char clk, unsigned char ncs,
+                             unsigned char nrst, unsigned char dc);
 
-unsigned char lcd_pcd8544_io(lcd_pcd8544_t *lcd, unsigned char din, unsigned char clk, unsigned char ncs, unsigned char nrst, unsigned char dc);
+void lcd_pcd8544_draw(lcd_pcd8544_t* lcd, CCanvas* canvas, int x1, int y1, int w1, int h1, int picpwr);
 
-void lcd_pcd8544_draw(lcd_pcd8544_t *lcd, CCanvas * canvas, int x1, int y1, int w1, int h1, int picpwr);
-
-
-#endif //LCD_PCD8544
-
+#endif  // LCD_PCD8544
