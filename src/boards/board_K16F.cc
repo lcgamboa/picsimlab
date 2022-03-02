@@ -81,8 +81,6 @@ enum
 cboard_K16F::cboard_K16F(void) :
 font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
 {
- char fname[1024];
- FILE * fout;
 
  Proc = "PIC16F628A";
 
@@ -95,19 +93,6 @@ font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD)
  rtc_pfc8563_init (&rtc);
  ReadMaps ();
 
- strncpy (fname, (char*) lxGetUserDataDir (lxT ("picsimlab")).char_str (), 1023);
- strncat (fname, "/mdump_K16F_EEPROM.bin", 1023);
-
- fout = fopen (fname, "rb");
- if (fout)
-  {
-   fread (mi2c.data, mi2c.SIZE, 1, fout);
-   fclose (fout);
-  }
- else
-  {
-   printf ("Error loading from file: %s \n", fname);
-  }
 
  snprintf (mi2c_tmp_name, 200, "%s/picsimlab-XXXXXX", (const char *) lxGetTempDir ("PICSimLab").c_str ());
  close (mkstemp (mi2c_tmp_name));
@@ -123,13 +108,35 @@ cboard_K16F::~cboard_K16F(void)
  unlink (mi2c_tmp_name);
 }
 
+int 
+cboard_K16F::MInit(const char * processor, const char * fname, float freq)
+{
+ char fnamem[1024];
+ FILE * fout;
+
+ strncpy (fnamem, (const char *) dirname(fname).c_str(), 1023);
+ strncat (fnamem, "/mdump_K16F_EEPROM.bin", 1023);
+
+ fout = fopen (fnamem, "rb");
+ if (fout)
+  {
+   fread (mi2c.data, mi2c.SIZE, 1, fout);
+   fclose (fout);
+  }
+ else
+  {
+   printf ("Error loading from file: %s \n", fnamem);
+  }
+  return bsim_picsim::MInit(processor, fname, freq);
+}    
+
 void
 cboard_K16F::MDumpMemory(const char * mfname)
 {
  FILE * fout;
  char fname[1024];
 
- strncpy (fname, (char*) lxGetUserDataDir (lxT ("picsimlab")).char_str (), 1023);
+ strncpy (fname, (const char *) dirname(mfname).c_str(), 1023);
  strncat (fname, "/mdump_K16F_EEPROM.bin", 1023);
 
  fout = fopen (fname, "wb");
