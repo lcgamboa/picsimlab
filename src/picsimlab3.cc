@@ -41,77 +41,81 @@ extern char SERIALDEVICE[100];
 
 // Implementation
 
-void CPWindow3::_EvOnCreate(CControl* control) {
-    combo1.SetText(lxString::FromAscii(SERIALDEVICE));
+void CPWindow3::_EvOnCreate(CControl *control) {
+  combo1.SetText(lxString::FromAscii(SERIALDEVICE));
 #ifdef _USE_PICSTARTP_
-    combo2.SetText(lxString::FromAscii(PROGDEVICE));
-    combo2.SetVisible(true);
-    label2.SetVisible(true);
+  combo2.SetText(lxString::FromAscii(PROGDEVICE));
+  combo2.SetVisible(true);
+  label2.SetVisible(true);
 #else
-    combo2.SetVisible(false);
-    label2.SetVisible(false);
+  combo2.SetVisible(false);
+  label2.SetVisible(false);
 #endif
 }
 
-void CPWindow3::button1_EvMouseButtonClick(CControl* control, uint button, uint x, uint y, uint state) {
-    int osc_on = Window1.GetBoard()->GetUseOscilloscope();
-    int spare_on = Window1.GetBoard()->GetUseSpareParts();
+void CPWindow3::button1_EvMouseButtonClick(CControl *control, uint button,
+                                           uint x, uint y, uint state) {
+  int osc_on = Window1.GetBoard()->GetUseOscilloscope();
+  int spare_on = Window1.GetBoard()->GetUseSpareParts();
 
-    Window1.Set_debug_type(combo3.GetText().compare("GDB") == 0);
+  Window1.Set_debug_type(combo3.GetText().compare("GDB") == 0);
 
-    Window1.Set_debug_port(spin1.GetValue());
+  Window1.Set_debug_port(spin1.GetValue());
 
-    Window1.Set_remotec_port(spin2.GetValue());
+  Window1.Set_remotec_port(spin2.GetValue());
 
 #ifdef _USE_PICSTARTP_
-    if (combo1.GetText() == combo2.GetText()) {
-        Message_sz(lxT("Use diferent ports!"), , 400, 200);
-        return;
-    }
+  if (combo1.GetText() == combo2.GetText()) {
+    Message_sz(lxT("Use diferent ports!"), , 400, 200);
+    return;
+  }
 #endif
-    strcpy(SERIALDEVICE, (char*)combo1.GetText().char_str());
+  strcpy(SERIALDEVICE, (char *)combo1.GetText().char_str());
 #ifdef _USE_PICSTARTP_
-    strcpy(PROGDEVICE, (char*)combo2.GetText().char_str());
+  strcpy(PROGDEVICE, (char *)combo2.GetText().char_str());
 #endif
-    Window1.EndSimulation();
-    Window1.Configure(Window1.GetHOME());
+  Window1.EndSimulation();
+  Window1.Configure(Window1.GetHOME());
 
-    if (osc_on)
-        Window1.menu1_Modules_Oscilloscope_EvMenuActive(this);
-    if (spare_on)
-        Window1.menu1_Modules_Spareparts_EvMenuActive(this);
+  if (osc_on)
+    Window1.menu1_Modules_Oscilloscope_EvMenuActive(this);
+  if (spare_on)
+    Window1.menu1_Modules_Spareparts_EvMenuActive(this);
 
-    WDestroy();
+  Window1.GetBoard()->EvOnShow();
+
+  WDestroy();
 }
-void CPWindow3::button2_EvMouseButtonClick(CControl* control, uint button, uint x, uint y, uint state) {
-    WDestroy();
+void CPWindow3::button2_EvMouseButtonClick(CControl *control, uint button,
+                                           uint x, uint y, uint state) {
+  WDestroy();
 }
 
-void CPWindow3::_EvOnShow(CControl* control) {
-    char* resp = serial_port_list();
+void CPWindow3::_EvOnShow(CControl *control) {
+  char *resp = serial_port_list();
 
-    if (resp) {
-        lxString temp;
-        temp = combo1.GetText();
-        combo1.SetItems(resp);
-        combo1.SetText(temp);
+  if (resp) {
+    lxString temp;
+    temp = combo1.GetText();
+    combo1.SetItems(resp);
+    combo1.SetText(temp);
 
-        temp = combo2.GetText();
-        combo2.SetItems(resp);
-        combo2.SetText(temp);
+    temp = combo2.GetText();
+    combo2.SetItems(resp);
+    combo2.SetText(temp);
 
-        free(resp);
-    } else {
-        printf("No serial ports found!\n");
-    }
+    free(resp);
+  } else {
+    printf("No serial ports found!\n");
+  }
 
-    if (Window1.Get_debug_type()) {
-        combo3.SetText("GDB");
-    } else {
-        combo3.SetText("MDB");
-    }
+  if (Window1.Get_debug_type()) {
+    combo3.SetText("GDB");
+  } else {
+    combo3.SetText("MDB");
+  }
 
-    spin1.SetValue(Window1.Get_debug_port());
+  spin1.SetValue(Window1.Get_debug_port());
 
-    spin2.SetValue(Window1.Get_remotec_port());
+  spin2.SetValue(Window1.Get_remotec_port());
 }

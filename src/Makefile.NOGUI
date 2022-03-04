@@ -26,6 +26,7 @@ override CXXFLAGS += -DEXT_BROWSER -D_VERSION_=\"${VERSION}\" -Wall -g -O2  -D_S
 
 override CXXFLAGS+= -D_NOTHREAD
 #override CXXFLAGS+=-fsanitize=address
+#override CXXFLAGS+=-fsanitize=thread
 override CXXFLAGS+= -flto
 #override CXXFLAGS+=-fno-omit-frame-pointer
 
