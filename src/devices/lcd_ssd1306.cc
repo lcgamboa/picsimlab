@@ -385,7 +385,8 @@ void lcd_ssd1306_draw(lcd_ssd1306_t* lcd, CCanvas* canvas, int x1, int y1, int w
                     } else {
                         canvas->SetColor(back);
                     }
-                    // canvas->Rectangle (1, x1 + (x * 2), y1 + (y * 8 * 2)+(z * 2), 2, 2);
+                    // canvas->Rectangle (1, x1 + (x * 2), y1 + (y * 8 * 2)+(z * 2), 2,
+                    // 2);
                     canvas->Point(x1 + x, y1 + y * 8 + z);
                 }
             }

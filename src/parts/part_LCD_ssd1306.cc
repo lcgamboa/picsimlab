@@ -243,7 +243,7 @@ void cpart_LCD_ssd1306::ReadPropertiesWindow(CPWindow* WProp) {
 }
 
 void cpart_LCD_ssd1306::PreProcess(void) {
-    if (input_pins[1] > 0) {
+    if ((type_com) && (input_pins[1] > 0)) {
         Window5.Reset_i2c_bus(input_pins[1] - 1);
     }
 }
