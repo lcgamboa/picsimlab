@@ -1,6 +1,6 @@
 include Makefile.Common
 
-CXX = em++
+CXX = ccache em++
 
 prefix=/usr
 

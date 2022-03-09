@@ -1,6 +1,6 @@
 include Makefile.Common
 
-CXX = em++
+CXX = ccache em++
 
 prefix=/usr
 
@@ -16,7 +16,7 @@ execdir= ${prefix}/bin/
 
 #-Werror
 override CXXFLAGS+= -D_ARCH_=\"Javascript_MT\" -D_DATE_=\"${DATE}\"
-override CXXFLAGS+=  -DEXT_BROWSER -DNO_DEBUG -DNO_TOOLS  -O2  -flto\
+override CXXFLAGS+=  -DEXT_BROWSER -DNO_DEBUG -DNO_TOOLS  -O2 -flto\
         -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_GFX=2\
 	-s SDL2_IMAGE_FORMATS='["png","bmp"]' -s USE_SDL_TTF=2 --preload-file assets --preload-file home \
 	-D_VERSION_=\"${VERSION}\" -Wall -D_SHARE_=\"/assets/share/\" -I../../LXRAD_SDL2/include/ \

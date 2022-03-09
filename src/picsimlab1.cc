@@ -740,7 +740,11 @@ void CPWindow1::Configure(const char* home, int use_default_board, int create) {
 void CPWindow1::combo1_EvOnComboChange(CControl* control) {
     NSTEP = (int)(atof(combo1.GetText()) * NSTEPKT);
 
-    NSTEPJ = NSTEP / JUMPSTEPS;
+    if (JUMPSTEPS) {
+        NSTEPJ = NSTEP / JUMPSTEPS;
+    } else {
+        NSTEPJ = NSTEP;
+    }
 
     pboard->MSetFreq(NSTEP * NSTEPKF);
     Window4.SetBaseTimer();
