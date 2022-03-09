@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -36,6 +36,8 @@
 #define INCOMPLETE                                                      \
     printf("Incomplete: %s -> %s :%i\n", __func__, __FILE__, __LINE__); \
     exit(-1);
+
+enum { ARCH_P16, ARCH_P16E, ARCH_P18, ARCH_AVR8, ARCH_STM32, ARCH_STM8, ARCH_C51, ARCH_Z80, ARCH_UNKNOWN };
 
 /**
  * @brief input map struct
@@ -288,6 +290,11 @@ public:
      * @brief board microcontroller end
      */
     virtual void MEnd(void) = 0;
+
+    /**
+     * @brief Return board microcontroller architecture
+     */
+    virtual int MGetArchitecture(void) = 0;
 
     /**
      * @brief board servers shutdown

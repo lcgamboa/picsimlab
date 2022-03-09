@@ -27,208 +27,259 @@
 
 #include "../picsimlab1.h"
 
-bsim_picsim::bsim_picsim(void) { pic.PINCOUNT = 0; }
-
-void bsim_picsim::MSetSerial(const char *port) {
-  pic_set_serial(&pic, 0, port, 0, 0, 0);
-  pic_set_serial(&pic, 1, "", 0, 0, 0);
+bsim_picsim::bsim_picsim(void) {
+    pic.PINCOUNT = 0;
 }
 
-int bsim_picsim::MInit(const char *processor, const char *fname, float freq) {
-  lxString sproc = GetSupportedDevices();
-  int procn = 0;
+void bsim_picsim::MSetSerial(const char* port) {
+    pic_set_serial(&pic, 0, port, 0, 0, 0);
+    pic_set_serial(&pic, 1, "", 0, 0, 0);
+}
 
-  if (sproc.Contains(processor)) {
-    procn = getprocbyname(processor);
-  }
+int bsim_picsim::MInit(const char* processor, const char* fname, float freq) {
+    lxString sproc = GetSupportedDevices();
+    int procn = 0;
 
-  if (procn == 0) {
-    printf("PICSimLab: Unknown processor %s ! Loading Default\n", processor);
-    int i = sproc.find(lxT("PIC"));
-    sproc = sproc.substr(i, sproc.length());
-    i = sproc.find(lxT(","));
-    Proc = sproc.substr(0, i);
-    procn = getprocbyname(Proc.c_str());
-  }
+    if (sproc.Contains(processor)) {
+        procn = getprocbyname(processor);
+    }
 
-  int ret = pic_init(&pic, procn, fname, 1, freq);
+    if (procn == 0) {
+        printf("PICSimLab: Unknown processor %s ! Loading Default\n", processor);
+        int i = sproc.find(lxT("PIC"));
+        sproc = sproc.substr(i, sproc.length());
+        i = sproc.find(lxT(","));
+        Proc = sproc.substr(0, i);
+        procn = getprocbyname(Proc.c_str());
+    }
 
-  // disable DEBUG
+    int ret = pic_init(&pic, procn, fname, 1, freq);
 
-  if ((pic.processor == getprocbyname("PIC16F1619")) ||
-      (pic.processor == getprocbyname("PIC16F1788")) ||
-      (pic.processor == getprocbyname("PIC16F1789")) ||
-      (pic.processor == getprocbyname("PIC16F1939"))) {
-    pic.config[1] |= 0x0100;
-  } else if ((pic.processor == getprocbyname("PIC16F18324")) ||
-             (pic.processor == getprocbyname("PIC16F18855"))) {
-    pic.config[1] |= 0x0200;
-  } else if ((pic.processor == getprocbyname("PIC16F628A")) ||
-             (pic.processor == getprocbyname("PIC16F648A")) ||
-             (pic.processor == getprocbyname("PIC16F84A")) ||
-             (pic.processor == getprocbyname("PIC16F777")) ||
-             (pic.processor == getprocbyname("PIC16F877A"))) {
-    pic.config[0] |= 0x0800;
-  } else if (pic.processor == getprocbyname("PIC16F887")) {
-    pic.config[0] |= 0x2000;
-  } else if ((pic.processor == getprocbyname("PIC18F452")) ||
-             (pic.processor == getprocbyname("PIC18F4520")) ||
-             (pic.processor == getprocbyname("PIC18F4550")) ||
-             (pic.processor == getprocbyname("PIC18F45K50")) ||
-             (pic.processor == getprocbyname("PIC18F4620"))) {
-    pic.config[3] |= 0x0080;
-  } else if ((pic.processor == getprocbyname("PIC18F27K40")) ||
-             (pic.processor == getprocbyname("PIC18F47K40"))) {
-    pic.config[1] |= 0x2000;
-  } else if ((pic.processor == getprocbyname("PIC18F46J50")) ||
-             (pic.processor == getprocbyname("PIC18F67J94"))) {
-    pic.config[0] |= 0x0080;
-  } else {
-    printf("PICSimLab: PIC 0x%04X not supported in picsimlab!!\n",
-           pic.processor);
-    exit(-1);
-  }
+    // disable DEBUG
 
-  pic.pins = (picpin *)realloc(pic.pins, sizeof(picpin) * 256);
+    if ((pic.processor == getprocbyname("PIC16F1619")) || (pic.processor == getprocbyname("PIC16F1788")) ||
+        (pic.processor == getprocbyname("PIC16F1789")) || (pic.processor == getprocbyname("PIC16F1939"))) {
+        pic.config[1] |= 0x0100;
+    } else if ((pic.processor == getprocbyname("PIC16F18324")) || (pic.processor == getprocbyname("PIC16F18855"))) {
+        pic.config[1] |= 0x0200;
+    } else if ((pic.processor == getprocbyname("PIC16F628A")) || (pic.processor == getprocbyname("PIC16F648A")) ||
+               (pic.processor == getprocbyname("PIC16F84A")) || (pic.processor == getprocbyname("PIC16F777")) ||
+               (pic.processor == getprocbyname("PIC16F877A"))) {
+        pic.config[0] |= 0x0800;
+    } else if (pic.processor == getprocbyname("PIC16F887")) {
+        pic.config[0] |= 0x2000;
+    } else if ((pic.processor == getprocbyname("PIC18F452")) || (pic.processor == getprocbyname("PIC18F4520")) ||
+               (pic.processor == getprocbyname("PIC18F4550")) || (pic.processor == getprocbyname("PIC18F45K50")) ||
+               (pic.processor == getprocbyname("PIC18F4620"))) {
+        pic.config[3] |= 0x0080;
+    } else if ((pic.processor == getprocbyname("PIC18F27K40")) || (pic.processor == getprocbyname("PIC18F47K40"))) {
+        pic.config[1] |= 0x2000;
+    } else if ((pic.processor == getprocbyname("PIC18F46J50")) || (pic.processor == getprocbyname("PIC18F67J94"))) {
+        pic.config[0] |= 0x0080;
+    } else {
+        printf("PICSimLab: PIC 0x%04X not supported in picsimlab!!\n", pic.processor);
+        exit(-1);
+    }
 
-  return ret;
+    pic.pins = (picpin*)realloc(pic.pins, sizeof(picpin) * 256);
+
+    return ret;
 }
 
 void bsim_picsim::MEnd(void) {
-  pic_end(&pic);
-  // prog_end();
-  mplabxd_end();
+    pic_end(&pic);
+    // prog_end();
+    mplabxd_end();
 }
 
-void bsim_picsim::MEraseFlash(void) { pic_erase_flash(&pic); }
-
-void bsim_picsim::MSetFreq(float freq) { pic.freq = freq; }
-
-float bsim_picsim::MGetFreq(void) { return pic.freq; }
-
-void bsim_picsim::MSetVCC(float vcc) { pic.vcc = vcc; }
-
-float bsim_picsim::MGetVCC(void) { return pic.vcc; }
-
-float bsim_picsim::MGetInstClockFreq(void) { return pic.freq / 4.0; }
-
-int bsim_picsim::CpuInitialized(void) { return 1; }
-
-void bsim_picsim::MDumpMemory(const char *fname) {
-  switch (getfprocbyname((const char *)Proc.c_str())) {
-  case P16:
-    write_ihx(&pic, fname);
-    break;
-  case P16E:
-    write_ihx16e(&pic, fname);
-    break;
-  case P18:
-    write_ihx18(&pic, fname);
-    break;
-  }
+int bsim_picsim::MGetArchitecture(void) {
+    switch (getfprocbyname((const char*)Proc.c_str())) {
+        case P16:
+            return ARCH_P16;
+            break;
+        case P16E:
+            return ARCH_P16E;
+            break;
+        case P18:
+            return ARCH_P18;
+            break;
+    }
 }
 
-int bsim_picsim::DebugInit(
-    int dtyppe) // argument not used in pic, it only use mplabx
+void bsim_picsim::MEraseFlash(void) {
+    pic_erase_flash(&pic);
+}
+
+void bsim_picsim::MSetFreq(float freq) {
+    pic.freq = freq;
+}
+
+float bsim_picsim::MGetFreq(void) {
+    return pic.freq;
+}
+
+void bsim_picsim::MSetVCC(float vcc) {
+    pic.vcc = vcc;
+}
+
+float bsim_picsim::MGetVCC(void) {
+    return pic.vcc;
+}
+
+float bsim_picsim::MGetInstClockFreq(void) {
+    return pic.freq / 4.0;
+}
+
+int bsim_picsim::CpuInitialized(void) {
+    return 1;
+}
+
+void bsim_picsim::MDumpMemory(const char* fname) {
+    switch (getfprocbyname((const char*)Proc.c_str())) {
+        case P16:
+            write_ihx(&pic, fname);
+            break;
+        case P16E:
+            write_ihx16e(&pic, fname);
+            break;
+        case P18:
+            write_ihx18(&pic, fname);
+            break;
+    }
+}
+
+int bsim_picsim::DebugInit(int dtyppe)  // argument not used in pic, it only use mplabx
 {
-  int ret = !mplabxd_init(this, Window1.Get_debug_port()) - 1;
+    int ret = !mplabxd_init(this, Window1.Get_debug_port()) - 1;
 
-  if (ret < 0) {
-    Window1.RegisterError("Error starting MPLABX debugger support !");
-  }
+    if (ret < 0) {
+        Window1.RegisterError("Error starting MPLABX debugger support !");
+    }
 
-  return ret;
+    return ret;
 }
 
 void bsim_picsim::DebugLoop(void) {
-  if (Window1.Get_mcupwr()) {
-    // prog_loop(&pic);
-    mplabxd_loop();
-  }
+    if (Window1.Get_mcupwr()) {
+        // prog_loop(&pic);
+        mplabxd_loop();
+    }
 }
 
-int bsim_picsim::MGetPinCount(void) { return pic.PINCOUNT; }
+int bsim_picsim::MGetPinCount(void) {
+    return pic.PINCOUNT;
+}
 
 lxString bsim_picsim::MGetPinName(int pin) {
-  char cbuf[10];
-  lxString pinname;
+    char cbuf[10];
+    lxString pinname;
 
-  pinname = getPinName(&pic, pin, cbuf);
+    pinname = getPinName(&pic, pin, cbuf);
 
-  return pinname;
+    return pinname;
 }
 
 void bsim_picsim::MSetPin(int pin, unsigned char value) {
-  pic_set_pin(&pic, pin, value);
+    pic_set_pin(&pic, pin, value);
 }
 
 void bsim_picsim::MSetPinDOV(int pin, unsigned char ovalue) {
-  pic_set_pin_DOV(&pic, pin, ovalue);
+    pic_set_pin_DOV(&pic, pin, ovalue);
 }
 
 void bsim_picsim::MSetAPin(int pin, float value) {
-  pic_set_apin(&pic, pin, value);
+    pic_set_apin(&pic, pin, value);
 }
 
-unsigned char bsim_picsim::MGetPin(int pin) { return pic_get_pin(&pic, pin); }
+unsigned char bsim_picsim::MGetPin(int pin) {
+    return pic_get_pin(&pic, pin);
+}
 
-const picpin *bsim_picsim::MGetPinsValues(void) { return pic.pins; }
+const picpin* bsim_picsim::MGetPinsValues(void) {
+    return pic.pins;
+}
 
 void bsim_picsim::MStep(void) {
-  pic_step(&pic);
-  if (pic.s2 == 1)
     pic_step(&pic);
+    if (pic.s2 == 1)
+        pic_step(&pic);
 }
 
 void bsim_picsim::MStepResume(void) {
-  if (pic.s2 == 1)
-    pic_step(&pic);
+    if (pic.s2 == 1)
+        pic_step(&pic);
 }
 
-void bsim_picsim::MReset(int flags) { pic_reset(&pic, flags); }
-
-unsigned short *bsim_picsim::DBGGetProcID_p(void) {
-  return (unsigned short *)&pic.processor;
+void bsim_picsim::MReset(int flags) {
+    pic_reset(&pic, flags);
 }
 
-unsigned int bsim_picsim::DBGGetPC(void) { return pic.pc; }
-
-void bsim_picsim::DBGSetPC(unsigned int pc) { pic.pc = pc; }
-
-unsigned char *bsim_picsim::DBGGetRAM_p(void) { return pic.ram; }
-
-unsigned char *bsim_picsim::DBGGetROM_p(void) {
-  return (unsigned char *)pic.prog;
+unsigned short* bsim_picsim::DBGGetProcID_p(void) {
+    return (unsigned short*)&pic.processor;
 }
 
-unsigned char *bsim_picsim::DBGGetCONFIG_p(void) {
-  return (unsigned char *)pic.config;
+unsigned int bsim_picsim::DBGGetPC(void) {
+    return pic.pc;
 }
 
-unsigned char *bsim_picsim::DBGGetID_p(void) { return (unsigned char *)pic.id; }
+void bsim_picsim::DBGSetPC(unsigned int pc) {
+    pic.pc = pc;
+}
 
-unsigned char *bsim_picsim::DBGGetEEPROM_p(void) { return pic.eeprom; }
+unsigned char* bsim_picsim::DBGGetRAM_p(void) {
+    return pic.ram;
+}
 
-unsigned int bsim_picsim::DBGGetRAMSize(void) { return pic.RAMSIZE; }
+unsigned char* bsim_picsim::DBGGetROM_p(void) {
+    return (unsigned char*)pic.prog;
+}
+
+unsigned char* bsim_picsim::DBGGetCONFIG_p(void) {
+    return (unsigned char*)pic.config;
+}
+
+unsigned char* bsim_picsim::DBGGetID_p(void) {
+    return (unsigned char*)pic.id;
+}
+
+unsigned char* bsim_picsim::DBGGetEEPROM_p(void) {
+    return pic.eeprom;
+}
+
+unsigned int bsim_picsim::DBGGetRAMSize(void) {
+    return pic.RAMSIZE;
+}
 
 unsigned int bsim_picsim::DBGGetROMSize(void) {
-  if (pic.processor == getprocbyname("PIC18F46J50")) {
-    return (pic.ROMSIZE - 4) * 2; // anomalous size!!!
-  } else if (pic.processor == getprocbyname("PIC18F67J94")) {
-    return (pic.ROMSIZE - 8) * 2; // anomalous size!!!
-  } else {
-    return pic.ROMSIZE * 2;
-  }
+    if (pic.processor == getprocbyname("PIC18F46J50")) {
+        return (pic.ROMSIZE - 4) * 2;  // anomalous size!!!
+    } else if (pic.processor == getprocbyname("PIC18F67J94")) {
+        return (pic.ROMSIZE - 8) * 2;  // anomalous size!!!
+    } else {
+        return pic.ROMSIZE * 2;
+    }
 }
 
-unsigned int bsim_picsim::DBGGetCONFIGSize(void) { return pic.CONFIGSIZE * 2; }
+unsigned int bsim_picsim::DBGGetCONFIGSize(void) {
+    return pic.CONFIGSIZE * 2;
+}
 
-unsigned int bsim_picsim::DBGGetIDSize(void) { return pic.IDSIZE * 2; }
+unsigned int bsim_picsim::DBGGetIDSize(void) {
+    return pic.IDSIZE * 2;
+}
 
-unsigned int bsim_picsim::DBGGetEEPROM_Size(void) { return pic.EEPROMSIZE; }
+unsigned int bsim_picsim::DBGGetEEPROM_Size(void) {
+    return pic.EEPROMSIZE;
+}
 
-unsigned int bsim_picsim::DBGGetRAMLAWR(void) { return pic.lram; }
+unsigned int bsim_picsim::DBGGetRAMLAWR(void) {
+    return pic.lram;
+}
 
-unsigned int bsim_picsim::DBGGetRAMLARD(void) { return pic.rram; }
+unsigned int bsim_picsim::DBGGetRAMLARD(void) {
+    return pic.rram;
+}
 
-void bsim_picsim::EndServers(void) { mplabxd_server_end(); }
+void bsim_picsim::EndServers(void) {
+    mplabxd_server_end();
+}

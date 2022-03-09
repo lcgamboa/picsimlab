@@ -69,6 +69,10 @@ void bsim_gpsim::MSetSerial(const char* port) {
      bridge_gpsim_end();
  }
 
+ int bsim_gpsim::MGetArchitecture(void) {
+     return ARCH_UNKNOWN;
+ }
+
  void bsim_gpsim::MEraseFlash(void) {
      // erase_flash ();
  }

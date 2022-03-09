@@ -39,6 +39,7 @@ public:
     void MSetSerial(const char* port) override;
     int MInit(const char* processor, const char* fname, float freq) override;
     void MEnd(void) override;
+    int MGetArchitecture(void) override;
     void MDumpMemory(const char* fname) override;
     void MEraseFlash(void) override;
     void MSetFreq(float freq) override;

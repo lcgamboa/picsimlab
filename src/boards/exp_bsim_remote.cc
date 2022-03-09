@@ -213,6 +213,10 @@ void bsim_remote::MSetSerial(const char* port) {
      connected = 0;
  }
 
+ int bsim_remote::MGetArchitecture(void) {
+     return ARCH_UNKNOWN;
+ }
+
  void bsim_remote::EndServers(void) {
      if (listenfd >= 0)
          close(listenfd);

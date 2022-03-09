@@ -88,6 +88,21 @@ void bsim_ucsim::MSetSerial(const char* port) {
      ucsim_end();  // TODO
  }
 
+ int bsim_ucsim::MGetArchitecture(void) {
+     switch (procid) {
+         case PID_C51:
+             return ARCH_C51;
+             break;
+         case PID_STM8S103:
+             return ARCH_STM8;
+             break;
+         case PID_Z80:
+             return ARCH_Z80;
+             break;
+     }
+     return ARCH_UNKNOWN;
+ }
+
  void bsim_ucsim::MEraseFlash(void) {
      // erase_flash ();
  }

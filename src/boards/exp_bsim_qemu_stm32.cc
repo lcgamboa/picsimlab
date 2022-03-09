@@ -325,6 +325,10 @@ void bsim_qemu_stm32::MSetSerial(const char* port) {
      connected = 0;
  }
 
+ int bsim_qemu_stm32::MGetArchitecture(void) {
+     return ARCH_STM32;
+ }
+
  void bsim_qemu_stm32::EndServers(void) {
      if (listenfd >= 0)
          close(listenfd);
