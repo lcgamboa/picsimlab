@@ -81,8 +81,10 @@ modules:
             #url: https://github.com/lcgamboa/lxrad/archive/refs/tags/v0.8.9.tar.gz
             #sha256: 63c89cc3253823c20aaaf38543eb5682362b76b187cef86a725e23343ba8b77f
           - type: archive
-            url: https://github.com/sammycage/lunasvg/archive/refs/tags/v2.3.0.tar.gz  
-            sha256: c1a4faef9bc2f65f8c64a2770c7e10753178e7318b8f6e09b1a4f1a495524e7c
+            #url: https://github.com/sammycage/lunasvg/archive/refs/tags/v2.3.1.tar.gz  
+            #sha256: 6492bf0f51982f5382f83f1a42f247bb1bbcbaef4a15963bbd53073cd4944a25
+            url: https://github.com/sammycage/lunasvg/archive/refs/heads/master.zip
+            sha256: d498704dce904295cc5b088ddd113d4aebb4d5681f2248d4095a920ebb7d439d
             dest: lunasvg  
         modules:
           - name : wxgtk
