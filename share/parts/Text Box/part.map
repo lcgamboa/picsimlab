@@ -1,0 +1,10 @@
+<img src="[LED_matrix] (overwritten)" width="100" height="50" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:gamboa           -->
+<area shape="rect" coords="2,2,98,48" href="O_DI_TEXT" />
+</map>

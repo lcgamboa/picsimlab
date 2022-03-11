@@ -35,7 +35,7 @@ enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_S1, O_S2, O_S3, O_S4, O
 enum { I_S1, I_S2, I_S3, I_S4, I_S5, I_S6, I_S7, I_S8 };
 
 cpart_switches::cpart_switches(unsigned x, unsigned y)
-    : font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     X = x;
     Y = y;
     ReadMaps();
