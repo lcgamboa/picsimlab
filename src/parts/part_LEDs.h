@@ -50,6 +50,7 @@ private:
     void RegisterRemoteControl(void) override;
     unsigned char active;
     unsigned char input_pins[8];
+    unsigned char colors[8];
     lxFont font;
     lxColor color1;
     lxColor color2;

@@ -31,6 +31,16 @@
 /* outputs */
 enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_L1, O_L2, O_L3, O_L4, O_L5, O_L6, O_L7, O_L8 };
 
+enum { C_RED = 0, C_GREEN, C_BLUE, C_YELLOW, C_WHITE, C_END };
+
+static const char Colorname[C_END][7] = {"Red", "Green", "Blue", "Yellow", "White"};
+
+typedef struct {
+    unsigned char r, g, b;
+} colorval_t;
+
+static const colorval_t colortable[C_END] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}, {1, 1, 0}, {1, 1, 1}};
+
 cpart_leds::cpart_leds(unsigned x, unsigned y) : font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     X = x;
     Y = y;
@@ -48,6 +58,15 @@ cpart_leds::cpart_leds(unsigned x, unsigned y) : font(9, lxFONTFAMILY_TELETYPE, 
     input_pins[5] = 0;
     input_pins[6] = 0;
     input_pins[7] = 0;
+
+    colors[0] = 0;
+    colors[1] = 0;
+    colors[2] = 0;
+    colors[3] = 0;
+    colors[4] = 0;
+    colors[5] = 0;
+    colors[6] = 0;
+    colors[7] = 0;
 };
 
 cpart_leds::~cpart_leds(void) {
@@ -57,6 +76,7 @@ cpart_leds::~cpart_leds(void) {
 
 void cpart_leds::Draw(void) {
     int i;
+    colorval_t col;
 
     const picpin* ppins = Window5.GetPinsValues();
 
@@ -100,14 +120,19 @@ void cpart_leds::Draw(void) {
                 case O_L6:
                 case O_L7:
                 case O_L8:
+                    col = colortable[colors[output[i].id - O_L1]];
                     if (input_pins[output[i].id - O_L1] > 0) {
                         if (active) {
-                            canvas.SetBgColor(ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
+                            canvas.SetBgColor(col.r * ppins[input_pins[output[i].id - O_L1] - 1].oavalue,
+                                              col.g * ppins[input_pins[output[i].id - O_L1] - 1].oavalue,
+                                              col.b * ppins[input_pins[output[i].id - O_L1] - 1].oavalue);
                         } else {
-                            canvas.SetBgColor(310 - ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
+                            canvas.SetBgColor(col.r * (310 - ppins[input_pins[output[i].id - O_L1] - 1].oavalue),
+                                              col.g * (310 - ppins[input_pins[output[i].id - O_L1] - 1].oavalue),
+                                              col.b * (310 - ppins[input_pins[output[i].id - O_L1] - 1].oavalue));
                         }
                     } else {
-                        canvas.SetBgColor(55, 0, 0);
+                        canvas.SetBgColor(col.r * 55, col.g * 55, col.b * 55);
                     }
                     canvas.SetFgColor(0, 0, 0);
                     // draw a circle
@@ -194,15 +219,19 @@ unsigned short cpart_leds::get_out_id(char* name) {
 lxString cpart_leds::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2],
-            input_pins[3], input_pins[4], input_pins[5], input_pins[6], input_pins[7], active);
+    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
+            input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4], input_pins[5], input_pins[6],
+            input_pins[7], active, colors[0], colors[1], colors[2], colors[3], colors[4], colors[5], colors[6],
+            colors[7]);
 
     return prefs;
 }
 
 void cpart_leds::ReadPreferences(lxString value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1],
-           &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7], &active);
+    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
+           &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5],
+           &input_pins[6], &input_pins[7], &active, &colors[0], &colors[1], &colors[2], &colors[3], &colors[4],
+           &colors[5], &colors[6], &colors[7]);
 
     RegisterRemoteControl();
 }
@@ -258,6 +287,13 @@ void cpart_leds::RegisterRemoteControl(void) {
 void cpart_leds::ConfigurePropertiesWindow(CPWindow* WProp) {
     lxString Items = Window5.GetPinsNames();
     lxString spin;
+
+    lxString Colors = "";
+
+    for (int i = 0; i < C_END; i++) {
+        Colors += Colorname[i];
+        Colors += ",";
+    }
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (input_pins[0] == 0)
@@ -328,6 +364,23 @@ void cpart_leds::ConfigurePropertiesWindow(CPWindow* WProp) {
     else
         ((CCombo*)WProp->GetChildByName("combo9"))->SetText("LOW ");
 
+    ((CCombo*)WProp->GetChildByName("combo10"))->SetItems(Colors);
+    ((CCombo*)WProp->GetChildByName("combo10"))->SetText(Colorname[colors[0]]);
+    ((CCombo*)WProp->GetChildByName("combo11"))->SetItems(Colors);
+    ((CCombo*)WProp->GetChildByName("combo11"))->SetText(Colorname[colors[1]]);
+    ((CCombo*)WProp->GetChildByName("combo12"))->SetItems(Colors);
+    ((CCombo*)WProp->GetChildByName("combo12"))->SetText(Colorname[colors[2]]);
+    ((CCombo*)WProp->GetChildByName("combo13"))->SetItems(Colors);
+    ((CCombo*)WProp->GetChildByName("combo13"))->SetText(Colorname[colors[3]]);
+    ((CCombo*)WProp->GetChildByName("combo14"))->SetItems(Colors);
+    ((CCombo*)WProp->GetChildByName("combo14"))->SetText(Colorname[colors[4]]);
+    ((CCombo*)WProp->GetChildByName("combo15"))->SetItems(Colors);
+    ((CCombo*)WProp->GetChildByName("combo15"))->SetText(Colorname[colors[5]]);
+    ((CCombo*)WProp->GetChildByName("combo16"))->SetItems(Colors);
+    ((CCombo*)WProp->GetChildByName("combo16"))->SetText(Colorname[colors[6]]);
+    ((CCombo*)WProp->GetChildByName("combo17"))->SetItems(Colors);
+    ((CCombo*)WProp->GetChildByName("combo17"))->SetText(Colorname[colors[7]]);
+
     ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
         EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
@@ -347,6 +400,18 @@ void cpart_leds::ReadPropertiesWindow(CPWindow* WProp) {
     input_pins[7] = atoi(((CCombo*)WProp->GetChildByName("combo8"))->GetText());
 
     active = (((CCombo*)WProp->GetChildByName("combo9"))->GetText().compare("HIGH") == 0);
+
+    for (int i = 0; i < 8; i++) {
+        lxString cname;
+        cname.Printf("combo%i", 10 + i);
+        lxString val = ((CCombo*)WProp->GetChildByName(cname))->GetText();
+        for (int j = 0; j < C_END; j++) {
+            if (!val.compare(Colorname[j])) {
+                colors[i] = j;
+                break;
+            }
+        }
+    }
 
     RegisterRemoteControl();
 }
