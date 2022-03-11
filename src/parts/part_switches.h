@@ -56,6 +56,7 @@ private:
     unsigned char output_value[8];
     lxFont font;
     SWBounce_t bounce;
+    unsigned char active;
 };
 
 #endif /* SWITCHES */

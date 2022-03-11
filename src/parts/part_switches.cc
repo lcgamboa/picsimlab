@@ -42,6 +42,8 @@ cpart_switches::cpart_switches(unsigned x, unsigned y)
 
     LoadImage();
 
+    active = 1;
+
     output_pins[0] = 0;
     output_pins[1] = 0;
     output_pins[2] = 0;
@@ -182,14 +184,30 @@ void cpart_switches::Draw(void) {
                 case O_S6:
                 case O_S7:
                 case O_S8:
-
                     canvas.SetFgColor(0, 0, 0);
-                    canvas.SetBgColor(100, 100, 100);
+                    if (active) {
+                        canvas.SetBgColor(100, 60, 60);
+                    } else {
+                        canvas.SetBgColor(60, 100, 60);
+                    }
                     canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                      output[i].y2 - output[i].y1);
+
+                    if (active) {
+                        canvas.SetBgColor(60, 100, 60);
+                    } else {
+                        canvas.SetBgColor(100, 60, 60);
+                    }
+                    int w2 = (output[i].y2 - output[i].y1) / 4;
+
+                    canvas.Rectangle(1, output[i].x1,
+                                     output[i].y1 + w2 + w2 * (2 * (!output_value[output[i].id - O_S1])),
+                                     output[i].x2 - output[i].x1, w2 + w2 * (2 * (output_value[output[i].id - O_S1])));
+                    canvas.SetFgColor(0, 0, 0);
                     canvas.SetBgColor(26, 26, 26);
                     canvas.Rectangle(1, output[i].x1 + 2, output[i].y1 + 16 - 14 * output_value[output[i].id - O_S1],
                                      14, 14);
+
                     break;
             }
         }
@@ -207,7 +225,11 @@ void cpart_switches::PreProcess(void) {
 
     for (int i = 0; i < 8; i++) {
         if (output_pins[i]) {
-            if ((ppins[output_pins[i] - 1].dir == PD_IN) && (ppins[output_pins[i] - 1].value != output_value[i])) {
+            unsigned char out = output_value[i];
+            if (!active) {
+                out = !out;
+            }
+            if ((ppins[output_pins[i] - 1].dir == PD_IN) && (ppins[output_pins[i] - 1].value != out)) {
                 SWBounce_bounce(&bounce, i);
             }
         }
@@ -226,7 +248,11 @@ void cpart_switches::Process(void) {
                 if (ret == 1) {
                     Window5.SetPin(output_pins[i], !ppins[output_pins[i] - 1].value);
                 } else {
-                    Window5.SetPin(output_pins[i], output_value[i]);
+                    if (active) {
+                        Window5.SetPin(output_pins[i], output_value[i]);
+                    } else {
+                        Window5.SetPin(output_pins[i], !output_value[i]);
+                    }
                 }
             }
         }
@@ -340,19 +366,19 @@ unsigned short cpart_switches::get_out_id(char* name) {
 lxString cpart_switches::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", output_pins[0],
-            output_pins[1], output_pins[2], output_pins[3], output_pins[4], output_pins[5], output_pins[6],
-            output_pins[7], output_value[0], output_value[1], output_value[2], output_value[3], output_value[4],
-            output_value[5], output_value[6], output_value[7]);
+    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
+            output_pins[0], output_pins[1], output_pins[2], output_pins[3], output_pins[4], output_pins[5],
+            output_pins[6], output_pins[7], output_value[0], output_value[1], output_value[2], output_value[3],
+            output_value[4], output_value[5], output_value[6], output_value[7], active);
 
     return prefs;
 }
 
 void cpart_switches::ReadPreferences(lxString value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
+    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
            &output_pins[0], &output_pins[1], &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5],
            &output_pins[6], &output_pins[7], &output_value[0], &output_value[1], &output_value[2], &output_value[3],
-           &output_value[4], &output_value[5], &output_value[6], &output_value[7]);
+           &output_value[4], &output_value[5], &output_value[6], &output_value[7], &active);
 }
 
 void cpart_switches::ConfigurePropertiesWindow(CPWindow* WProp) {
@@ -423,6 +449,11 @@ void cpart_switches::ConfigurePropertiesWindow(CPWindow* WProp) {
         ((CCombo*)WProp->GetChildByName("combo8"))->SetText(itoa(output_pins[7]) + "  " + spin);
     }
 
+    if (active)
+        ((CCombo*)WProp->GetChildByName("combo9"))->SetText("Up");
+    else
+        ((CCombo*)WProp->GetChildByName("combo9"))->SetText("Down");
+
     ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
         EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
@@ -440,6 +471,8 @@ void cpart_switches::ReadPropertiesWindow(CPWindow* WProp) {
     output_pins[5] = atoi(((CCombo*)WProp->GetChildByName("combo6"))->GetText());
     output_pins[6] = atoi(((CCombo*)WProp->GetChildByName("combo7"))->GetText());
     output_pins[7] = atoi(((CCombo*)WProp->GetChildByName("combo8"))->GetText());
+
+    active = (((CCombo*)WProp->GetChildByName("combo9"))->GetText().compare("Up") == 0);
 }
 
 part_init(PART_SWITCHES_Name, cpart_switches, "Input");
