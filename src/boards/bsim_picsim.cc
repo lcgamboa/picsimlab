@@ -104,6 +104,7 @@ int bsim_picsim::MGetArchitecture(void) {
             return ARCH_P18;
             break;
     }
+    return ARCH_UNKNOWN;
 }
 
 void bsim_picsim::MEraseFlash(void) {

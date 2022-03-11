@@ -678,6 +678,7 @@ int cboard_Breadboard::MGetArchitecture(void) {
             return bsim_simavr::MGetArchitecture();
             break;
     }
+    return ARCH_UNKNOWN;
 }
 
 void cboard_Breadboard::MDumpMemory(const char* fname) {
