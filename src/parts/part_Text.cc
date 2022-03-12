@@ -255,7 +255,9 @@ void cpart_TEXT::ReadPropertiesWindow(CPWindow* WProp) {
     Lines.Clear();
     CText* Text = ((CText*)WProp->GetChildByName("text1"));
     for (unsigned int l = 0; l < Text->GetCountLines(); l++) {
-        Lines.AddLine(Text->GetLine(l));
+        if (Text->GetLine(l).length() > 0) {
+            Lines.AddLine(Text->GetLine(l));
+        }
     }
 
     Size = ((CSpin*)WProp->GetChildByName("spin1"))->GetValue();
