@@ -22,7 +22,7 @@
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
-  <Title type="lxString">Switchs</Title>
+  <Title type="lxString">Switches</Title>
   <OverrideRedirect type="bool">0</OverrideRedirect>
   <EvOnCreate type="Event">FALSE</EvOnCreate>
   <EvOnDestroy type="Event">FALSE</EvOnDestroy>
@@ -556,7 +556,7 @@
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList">Up,Down,</Items>
   <Text type="lxString">Up</Text>
-  <ReadOnly type="bool">0</ReadOnly>
+  <ReadOnly type="bool">1</ReadOnly>
   <EvOnComboChange type="Event">FALSE</EvOnComboChange>
 </combo9>
 <label9>

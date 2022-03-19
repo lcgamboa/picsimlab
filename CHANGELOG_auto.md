@@ -2,6 +2,12 @@
 
 ### New
 
+* New Text Box spare part. [lcgamboa]
+
+* Support to change On position in switches parts and color status indication. [lcgamboa]
+
+* Support to change color of LEDs part (Red, Green, Blue, Yellow and White) [lcgamboa]
+
 * Support to use +3V3 instead only +5V in some boards. [lcgamboa]
 
 * New RGB LED WS2812B part added. [lcgamboa]

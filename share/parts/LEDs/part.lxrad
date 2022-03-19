@@ -612,7 +612,7 @@
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString"></Text>
-  <ReadOnly type="bool">0</ReadOnly>
+  <ReadOnly type="bool">1</ReadOnly>
   <EvOnComboChange type="Event">FALSE</EvOnComboChange>
 </combo10>
 <combo11>
@@ -641,7 +641,7 @@
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString"></Text>
-  <ReadOnly type="bool">0</ReadOnly>
+  <ReadOnly type="bool">1</ReadOnly>
   <EvOnComboChange type="Event">FALSE</EvOnComboChange>
 </combo11>
 <combo12>
@@ -670,7 +670,7 @@
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString"></Text>
-  <ReadOnly type="bool">0</ReadOnly>
+  <ReadOnly type="bool">1</ReadOnly>
   <EvOnComboChange type="Event">FALSE</EvOnComboChange>
 </combo12>
 <combo13>
@@ -699,7 +699,7 @@
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString"></Text>
-  <ReadOnly type="bool">0</ReadOnly>
+  <ReadOnly type="bool">1</ReadOnly>
   <EvOnComboChange type="Event">FALSE</EvOnComboChange>
 </combo13>
 <combo14>
@@ -728,7 +728,7 @@
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString"></Text>
-  <ReadOnly type="bool">0</ReadOnly>
+  <ReadOnly type="bool">1</ReadOnly>
   <EvOnComboChange type="Event">FALSE</EvOnComboChange>
 </combo14>
 <combo15>
@@ -757,7 +757,7 @@
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString"></Text>
-  <ReadOnly type="bool">0</ReadOnly>
+  <ReadOnly type="bool">1</ReadOnly>
   <EvOnComboChange type="Event">FALSE</EvOnComboChange>
 </combo15>
 <combo16>
@@ -786,7 +786,7 @@
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString"></Text>
-  <ReadOnly type="bool">0</ReadOnly>
+  <ReadOnly type="bool">1</ReadOnly>
   <EvOnComboChange type="Event">FALSE</EvOnComboChange>
 </combo16>
 <combo17>
@@ -815,7 +815,7 @@
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString"></Text>
-  <ReadOnly type="bool">0</ReadOnly>
+  <ReadOnly type="bool">1</ReadOnly>
   <EvOnComboChange type="Event">FALSE</EvOnComboChange>
 </combo17>
 </window1>

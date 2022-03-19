@@ -3,12 +3,12 @@
 |:------|:------:|:------
 | [src/picsimlab1.cc](src/picsimlab1.cc#L485) | 485 | verify initialization errors
 | [src/picsimlab4.cc](src/picsimlab4.cc#L635) | 635 | select the better mode for channel trigguer
-| [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L98) | 98 | jumper support
+| [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L114) | 114 | jumper support
 | [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L193) | 193 | TEMP cooler must don't work with AQUE=0
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1016) | 1016 | default output value is not used yet (DOV)
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1328) | 1328 | avr ID pointer
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1350) | 1350 | avr ID size
-| [src/boards/exp_bsim_gpsim.cc](src/boards/exp_bsim_gpsim.cc#L142) | 142 | add VCC and GND pins
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1021) | 1021 | default output value is not used yet (DOV)
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1333) | 1333 | avr ID pointer
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1355) | 1355 | avr ID size
+| [src/boards/exp_bsim_gpsim.cc](src/boards/exp_bsim_gpsim.cc#L146) | 146 | add VCC and GND pins
 | [src/devices/eth_w5500.cc](src/devices/eth_w5500.cc#L471) | 471 | add support to buffer size different of 2k
 | [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L122) | 122 | ssd1306 Scrolling Command Table
 | [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L133) | 133 | ssd1306 Continuous Vertical and Horizontal Scroll Setup
@@ -34,7 +34,7 @@
 |:------|:------:|:------
 | [src/picsimlab1.cc](src/picsimlab1.cc#L712) | 712 | remote control disabled
 | [src/boards/board_uCboard.cc](src/boards/board_uCboard.cc#L297) | 297 | NSTEP must be multiplied for 4
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1345) | 1345 | avr CONFIG size
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1350) | 1350 | avr CONFIG size
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L134) | 134 | only for BANK=0;
 | [src/parts/part_dcmotor.cc](src/parts/part_dcmotor.cc#L244) | 244 | on slow speed output is not 90 degrees
 | [src/parts/part_encoder.cc](src/parts/part_encoder.cc#L190) | 190 | on slow speed output is not 90 degrees
