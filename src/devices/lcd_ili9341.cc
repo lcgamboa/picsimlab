@@ -91,7 +91,7 @@ static void lcd_ili9341_readdata(lcd_ili9341_t* lcd) {
 
             dcprint("data[%i][%i]:%#08lX  \n", lcd->x, lcd->y, lcd->color);
 
-            lcd->ram[lcd->x][lcd->y] = lcd->color;
+            lcd->ram[lcd->x % 240][lcd->y % 320] = lcd->color;
             lcd->update = 1;
 
             lcd->x++;
