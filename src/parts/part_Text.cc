@@ -31,16 +31,18 @@
 /* outputs */
 enum { O_TEXTB };
 
-enum { C_RED = 0, C_GREEN, C_BLUE, C_YELLOW, C_WHITE, C_BLACK, C_MINE, C_RHINO, C_END };
+enum { C_RED = 0, C_GREEN, C_BLUE, C_YELLOW, C_WHITE, C_BLACK, C_MINE, C_RHINO, C_GRANDIS, C_END };
 
-static const char Colorname[C_END][12] = {"Red", "Green", "Blue", "Yellow", "White", "Black", "Mine Shaft", "Rhino"};
+static const char Colorname[C_END][12] = {"Red",   "Green",      "Blue",  "Yellow", "White",
+                                          "Black", "Mine Shaft", "Rhino", "Grandis"};
 
 typedef struct {
     unsigned char r, g, b;
 } colorval_t;
 
-static const colorval_t colortable[C_END] = {{0xFF, 0, 0},       {0, 0xFF, 0}, {0, 0, 0xFF},       {0xFF, 0xFF, 0},
-                                             {0xFF, 0xFF, 0XFF}, {0, 0, 0},    {0x32, 0x32, 0x32}, {0x31, 0x3d, 0x63}};
+static const colorval_t colortable[C_END] = {{0xFF, 0, 0},       {0, 0xFF, 0},       {0, 0, 0xFF},
+                                             {0xFF, 0xFF, 0},    {0xFF, 0xFF, 0XFF}, {0, 0, 0},
+                                             {0x32, 0x32, 0x32}, {0x31, 0x3d, 0x63}, {0xff, 0xd3, 0x8c}};
 
 cpart_TEXT::cpart_TEXT(unsigned x, unsigned y) : font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     X = x;
