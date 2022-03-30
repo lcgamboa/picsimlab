@@ -34,7 +34,7 @@ wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/lin
 chmod a+x linuxdeploy-x86_64.AppImage
 mv linuxdeploy-x86_64.AppImage /tmp/
 if [[ -n "$1" ]]; then
-  cp build_all/qemu_stm32/arm-softmmu/qemu-stm32 AppDir/usr/bin
+  cp build_all/qemu_stm32/build/qemu-stm32 AppDir/usr/bin
   /tmp/linuxdeploy-x86_64.AppImage --appdir AppDir --executable=AppDir/usr/bin/qemu-stm32
 fi
 #/tmp/linuxdeploy-x86_64.AppImage --appdir AppDir --executable=AppDir/usr/bin/cutecom
@@ -81,7 +81,7 @@ find . -type f -name '*.png' -exec rm {} +
 find . -type f -name '*.xcf' -exec rm {} +
 cd -
 if [[ -n "$1" ]]; then
-  cp build_all/qemu_stm32/arm-softmmu/qemu-stm32 AppDir/usr/bin
+  cp build_all/qemu_stm32/build/qemu-stm32 AppDir/usr/bin
   /tmp/linuxdeploy-x86_64.AppImage --appdir AppDir --executable=AppDir/usr/bin/qemu-stm32
 fi
 /tmp/linuxdeploy-x86_64.AppImage --appdir AppDir --output appimage

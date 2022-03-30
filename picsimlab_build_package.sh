@@ -27,7 +27,7 @@ mv tools/PinViewer/Makefile.static tools/PinViewer/Makefile
 if [[ -n "$1" ]]; then
 PWD=`pwd`	
 echo -e "\noverride_dh_auto_build:\n\tmake -j$(nproc) $1\n\n" >> debian/rules
-echo -e "\noverride_dh_auto_install:\n\tdh_auto_install\n\tinstall -p -D -m 0755 ../qemu_stm32/arm-softmmu/qemu-stm32 ${PWD}/debian/picsimlab/usr/bin/qemu-stm32\n\n" >> debian/rules
+echo -e "\noverride_dh_auto_install:\n\tdh_auto_install\n\tinstall -p -D -m 0755 ../qemu_stm32/build/qemu-stm32 ${PWD}/debian/picsimlab/usr/bin/qemu-stm32\n\n" >> debian/rules
 sed -i 's/gtkwave/gtkwave,gpsim/g' debian/control
 fi
 cd ..
