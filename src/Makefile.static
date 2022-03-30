@@ -31,7 +31,7 @@ LIBS=  $(LIBPATH)/picsim/src/libpicsim.a $(LIBPATH)/lxrad/lib/liblxrad.a \
        $(LIBPATH)/simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a \
        $(LIBPATH)/lunasvg/build/liblunasvg.a \
        $(LIBPATH)/uCsim_picsimlab/picsimlab/libucsim.a \
-      -lopenal `wx-config --libs` `wx-config --libs stc` 
+      -lopenal `wx-config --libs` `wx-config --libs stc` -lqemu-stm32 
 
 exp: LIBS+= -lgpsim
 

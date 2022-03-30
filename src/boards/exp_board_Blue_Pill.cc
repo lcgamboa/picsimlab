@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2015-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -28,6 +28,15 @@
 #include "../picsimlab1.h"
 #include "../picsimlab4.h"  //Oscilloscope
 #include "../picsimlab5.h"  //Spare Parts
+
+extern "C" {
+#define Error char
+void qmp_stop(Error** errp);
+void qmp_cont(Error** errp);
+#define qemu_mutex_lock_iothread() qemu_mutex_lock_iothread_impl(__FILE__, __LINE__)
+void qemu_mutex_lock_iothread_impl(const char* file, int line);
+void qemu_mutex_unlock_iothread(void);
+}
 
 /* ids of inputs of input map*/
 enum {
@@ -278,6 +287,11 @@ void cboard_Blue_Pill::Run_CPU(void) {
 
     // j = JUMPSTEPS; //step counter
     pi = 0;
+    if (!Window1.Get_debug_status()) {
+        qemu_mutex_lock_iothread();
+        qmp_cont(NULL);
+        qemu_mutex_unlock_iothread();
+    }
     if (Window1.Get_mcupwr())        // if powered
         for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
@@ -294,8 +308,15 @@ void cboard_Blue_Pill::Run_CPU(void) {
             // Spare parts window process
             if (use_spare)
                 Window5.Process();
-
-            // increment mean value counter if pin is high
+            /*
+            if (ioupdated) {
+                io_mutex->Lock();
+                io_cond->Signal();
+                ioupdated = 0;
+                io_mutex->Unlock();
+            }
+            */
+            //  increment mean value counter if pin is high
             alm[pi] += pins[pi].value;
             pi++;
             if (pi == pinc)
@@ -309,8 +330,12 @@ void cboard_Blue_Pill::Run_CPU(void) {
                 j++; //counter increment
              */
         }
-
-    // calculate mean value
+    if (!Window1.Get_debug_status()) {
+        qemu_mutex_lock_iothread();
+        qmp_stop(NULL);
+        qemu_mutex_unlock_iothread();
+    }
+    //  calculate mean value
     for (pi = 0; pi < MGetPinCount(); pi++) {
         pins[pi].oavalue = (int)((alm[pi] * RNSTEP) + 55);
     }

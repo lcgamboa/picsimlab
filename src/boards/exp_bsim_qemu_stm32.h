@@ -57,11 +57,10 @@ public:
     void MStep(void) override;
     void MStepResume(void) override;
     void MReset(int flags) override;
-    void EndServers(void) override;
+    void EvThreadRun(CThread& thread) override;
 
 protected:
     void pins_reset(void);
-    int qemu_cmd(const char* cmd, int raw = 0);
 #ifdef _WIN_
     HANDLE serialfd[4];
 #else
@@ -72,12 +71,14 @@ protected:
     unsigned int serialbaud;
     float serialexbaud;
     float freq;
-    int sockfd;
-    int sockmon;
-    int connected;
-    char fname_[300];
-    char fname_bak[300];
+    char fname[1024];
+    char fname_[1024];
+    char fname_bak[1024];
     unsigned short ADCvalues[16];
+    lxMutex* mtx_qinit;
+    int qemu_started;
+    // lxMutex* io_mutex;
+    // lxCondition* io_cond;
 };
 
 #endif /* BOARD_STM32_H */

@@ -29,6 +29,15 @@
 #include "../picsimlab4.h"  //Oscilloscope
 #include "../picsimlab5.h"  //Spare Parts
 
+extern "C" {
+#define Error char
+void qmp_stop(Error** errp);
+void qmp_cont(Error** errp);
+#define qemu_mutex_lock_iothread() qemu_mutex_lock_iothread_impl(__FILE__, __LINE__)
+void qemu_mutex_lock_iothread_impl(const char* file, int line);
+void qemu_mutex_unlock_iothread(void);
+}
+
 /* ids of inputs of input map*/
 enum {
     I_ICSP,  // ICSP connector
@@ -314,6 +323,11 @@ void cboard_STM32_H103::Run_CPU(void) {
 
     j = JUMPSTEPS;  // step counter
     pi = 0;
+    if (!Window1.Get_debug_status()) {
+        qemu_mutex_lock_iothread();
+        qmp_cont(NULL);
+        qemu_mutex_unlock_iothread();
+    }
     if (Window1.Get_mcupwr())        // if powered
         for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
@@ -344,7 +358,11 @@ void cboard_STM32_H103::Run_CPU(void) {
 
             j++;  // counter increment
         }
-
+    if (!Window1.Get_debug_status()) {
+        qemu_mutex_lock_iothread();
+        qmp_stop(NULL);
+        qemu_mutex_unlock_iothread();
+    }
     // calculate mean value
     for (pi = 0; pi < MGetPinCount(); pi++) {
         pins[pi].oavalue = (int)((alm[pi] * RNSTEP) + 55);

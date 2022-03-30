@@ -39,10 +39,10 @@ LINK= -s DEMANGLE_SUPPORT=0 -s SAFE_HEAP=0 -s ASSERTIONS=0 -s TOTAL_MEMORY=128MB
 
 LIBS= ../../LXRAD_SDL2/lib/liblxrad_SDL2_js_mt.a ../../picsim/src/libpicsim_js_mt.a ../../simavr/simavr/obj-wasm32-unknown-emscripten_mt/libsimavr.a
 LIBS+= ../../LXRAD_SDL2/teste/zlib-master/contrib/minizip/minizip_mt.a
-LIBS+= ../../ucsim-0.6/picsimlab/libucsim.ajs
 LIBS+= ../teste/glib_js/target_mt/lib/libgpsim.a
 LIBS+= ../teste/glib_js/target_mt/lib/libglib-2.0.a
 LIBS+= ../../lunasvg/buildjsmt/liblunasvg.a
+LIBS+= ../../ucsim-0.6/picsimlab/libucsim.ajs
 
 #LIBS = `lxrad_SDL2-config --libs` -lpicsim -lsimavr -lelf
 
