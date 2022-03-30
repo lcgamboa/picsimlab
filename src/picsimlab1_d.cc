@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2018  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -525,6 +525,8 @@ CPWindow1::CPWindow1(void) {
     HOME = "";
 
     Workspacefn = "";
+
+    NeedReboot = 0;
 
 #ifndef _NOTHREAD
     cpu_mutex = NULL;

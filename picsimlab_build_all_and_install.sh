@@ -57,6 +57,7 @@ cl sudo make install-simavr
 cd ../
 echo -e "\033[1;32m ---------------------- build and install uCsim -------------------------- \033[0m"
 cd uCsim_picsimlab
+git pull --no-rebase
 cl ./config_linux.sh
 cl make clean;make -j$(nproc)
 cd picsimlab
@@ -73,9 +74,9 @@ else
 echo -e "\033[1;32m ---------------------- build and install qemu_stm32 --------------------- \033[0m"
 cd qemu_stm32
 cl git checkout picsimlab
-cl ./configure --target-list="arm-softmmu" --disable-werror --disable-sdl --disable-vnc --disable-docs --disable-blobs --static --disable-virtfs --disable-libusb --disable-libnfs --disable-vhost-net --disable-vde --disable-bluez --disable-curses --disable-gtk
-cl make clean;make -j$(nproc)
-cd arm-softmmu
+git pull --no-rebase
+cl ./build_libqemu-stm32.sh
+cd build
 cl cp qemu-system-arm qemu-stm32
 cl strip qemu-stm32
 cl sudo cp qemu-stm32 /usr/bin/
