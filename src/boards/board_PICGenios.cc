@@ -1024,10 +1024,10 @@ void cboard_PICGenios::Run_CPU(void) {
           pic_set_pin(&pic, 38, p_BT_[5]);
           pic_set_pin(&pic, 7, p_BT_[6]);
         }
+
+	/*
         pic_set_pin(&pic, 39, 1);
         pic_set_pin(&pic, 40, 1);
-
-        /*
         pic_set_pin(&pic, 19,1);
         pic_set_pin(&pic, 20,1);
         pic_set_pin(&pic, 21,1);
@@ -1332,6 +1332,10 @@ void cboard_PICGenios::Reset(void) {
   pic_set_pin(&pic, 37, p_BT[4]);
   pic_set_pin(&pic, 38, p_BT[5]);
   pic_set_pin(&pic, 7, p_BT[6]);
+
+  pic_set_pin_DOV(&pic, 39, 1);
+  pic_set_pin_DOV(&pic, 40, 1);
+
   p_KEY[0] = 0;
   p_KEY[1] = 0;
   p_KEY[2] = 0;
