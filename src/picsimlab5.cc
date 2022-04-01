@@ -162,20 +162,25 @@ void CPWindow5::draw1_EvMouseButtonRelease(CControl* control, uint button, uint 
 }
 
 void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
-    wprop.SetName("window1");  // must be the same as in xml
-    Application->ACreateWindow(&wprop);
-    wprop.DestroyChilds();
-    if (wprop.LoadXMLContextAndCreateChilds(Window1.GetSharePath() + lxT("parts/") +
-                                            parts[PartSelected]->GetPropertiesWindowFile())) {
-        // wprop.SetCanDestroy (false);
+    lxString fname = Window1.GetSharePath() + lxT("parts/") + parts[PartSelected]->GetPropertiesWindowFile();
 
-        parts[PartSelected]->ConfigurePropertiesWindow(&wprop);
+    if (lxFileExists(fname)) {
+        wprop.SetName("window1");  // must be the same as in xml
+        Application->ACreateWindow(&wprop);
+        wprop.DestroyChilds();
+        if (wprop.LoadXMLContextAndCreateChilds(fname)) {
+            // wprop.SetCanDestroy (false);
 
-        wprop.SetX(parts[PartSelected]->GetX() + GetX() - offsetx);
-        wprop.SetY(parts[PartSelected]->GetY() + GetY() - offsety);
+            parts[PartSelected]->ConfigurePropertiesWindow(&wprop);
 
-        wprop.Draw();
-        wprop.ShowExclusive();
+            wprop.SetX(parts[PartSelected]->GetX() + GetX() - offsetx);
+            wprop.SetY(parts[PartSelected]->GetY() + GetY() - offsety);
+
+            wprop.Draw();
+            wprop.ShowExclusive();
+        }
+    } else {
+        Window1.RegisterError("File " + fname + " not found!");
     }
 }
 

@@ -83,8 +83,8 @@ modules:
           - type: archive
             #url: https://github.com/sammycage/lunasvg/archive/refs/tags/v2.3.1.tar.gz  
             #sha256: 6492bf0f51982f5382f83f1a42f247bb1bbcbaef4a15963bbd53073cd4944a25
-            url: https://github.com/sammycage/lunasvg/archive/refs/heads/master.zip
-            sha256: d498704dce904295cc5b088ddd113d4aebb4d5681f2248d4095a920ebb7d439d
+            url: https://github.com/sammycage/lunasvg/archive/7f82e941270aad040922798c210ce0e2c1eb58aa.zip 
+            sha256: 48b4e3d6cf26bf4456b84e12e12f84b274c561f5ee64e77b66a3766fc68e4d61
             dest: lunasvg  
         modules:
           - name : wxgtk

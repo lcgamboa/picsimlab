@@ -23,7 +23,8 @@ git clone --depth=1 https://github.com/lcgamboa/tty0tty.git
 git clone --depth=1 https://github.com/lcgamboa/simavr.git
 git clone --depth=1 https://github.com/lcgamboa/uCsim_picsimlab.git
 if [[ -n "$BUILD_EXPERIMETAL" ]]; then
-cl sudo apt-get -y install bison++ python libglib2.0-dev libpixman-1-dev libfdt-dev gpsim-dev gpsim
+cl sudo apt-get -y install bison++ python libglib2.0-dev libpixman-1-dev libfdt-dev gpsim-dev gpsim \
+ninja-build meson
 git clone --depth=1 --no-single-branch https://github.com/lcgamboa/qemu_stm32.git
 fi	
 echo -e "\033[1;32m ---------------------- build and install picsim ------------------------- \033[0m"
