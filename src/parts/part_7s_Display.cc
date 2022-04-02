@@ -117,6 +117,9 @@ cpart_7s_display::cpart_7s_display(unsigned x, unsigned y)
     memset(alm2, 0, 8 * sizeof(unsigned int));
     memset(alm3, 0, 8 * sizeof(unsigned int));
     memset(alm4, 0, 8 * sizeof(unsigned int));
+
+    type = 1;  // to force type change
+    ChangeType(0);
 }
 
 cpart_7s_display::~cpart_7s_display(void) {
@@ -640,18 +643,19 @@ unsigned short cpart_7s_display::get_out_id(char* name) {
 lxString cpart_7s_display::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1],
-            input_pins[2], input_pins[3], input_pins[4], input_pins[5], input_pins[6], input_pins[7], input_pins[8],
-            input_pins[9], input_pins[10], input_pins[11], active);
+    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0],
+            input_pins[1], input_pins[2], input_pins[3], input_pins[4], input_pins[5], input_pins[6], input_pins[7],
+            input_pins[8], input_pins[9], input_pins[10], input_pins[11], active, type);
 
     return prefs;
 }
 
 void cpart_7s_display::ReadPreferences(lxString value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0],
+    unsigned char type_;
+    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0],
            &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6],
-           &input_pins[7], &input_pins[8], &input_pins[9], &input_pins[10], &input_pins[11], &active);
-
+           &input_pins[7], &input_pins[8], &input_pins[9], &input_pins[10], &input_pins[11], &active, &type_);
+    ChangeType(type_);
     RegisterRemoteControl();
 }
 
@@ -866,6 +870,26 @@ void cpart_7s_display::ConfigurePropertiesWindow(CPWindow* WProp) {
     else
         ((CCombo*)WProp->GetChildByName("combo13"))->SetText("LOW ");
 
+    if (type == 0)
+        ((CCombo*)WProp->GetChildByName("combo14"))->SetText("4 Mux.");
+    else {
+        ((CCombo*)WProp->GetChildByName("combo14"))->SetText("Single");
+    }
+
+    if (type == 0) {
+        ((CCombo*)WProp->GetChildByName("combo9"))->SetEnable(1);
+        ((CCombo*)WProp->GetChildByName("combo10"))->SetEnable(1);
+        ((CCombo*)WProp->GetChildByName("combo11"))->SetEnable(1);
+        ((CCombo*)WProp->GetChildByName("combo12"))->SetEnable(1);
+    } else {
+        ((CCombo*)WProp->GetChildByName("combo9"))->SetEnable(0);
+        ((CCombo*)WProp->GetChildByName("combo10"))->SetEnable(0);
+        ((CCombo*)WProp->GetChildByName("combo11"))->SetEnable(0);
+        ((CCombo*)WProp->GetChildByName("combo12"))->SetEnable(0);
+    }
+
+    ((CCombo*)WProp->GetChildByName("combo14"))->EvOnComboChange = EVONCOMBOCHANGE & CPWindow5::PropComboChange;
+
     ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
         EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
@@ -890,14 +914,21 @@ void cpart_7s_display::ReadPropertiesWindow(CPWindow* WProp) {
 
     active = (((CCombo*)WProp->GetChildByName("combo13"))->GetText().compare("HIGH") == 0);
 
+    unsigned char type_ = (((CCombo*)WProp->GetChildByName("combo14"))->GetText().Cmp("4 Mux.")) != 0;
+
+    ChangeType(type_);
+
     RegisterRemoteControl();
 }
 
 void cpart_7s_display::PreProcess(void) {
     memset(alm1, 0, 8 * sizeof(unsigned int));
-    memset(alm2, 0, 8 * sizeof(unsigned int));
-    memset(alm3, 0, 8 * sizeof(unsigned int));
-    memset(alm4, 0, 8 * sizeof(unsigned int));
+
+    if (!type) {
+        memset(alm2, 0, 8 * sizeof(unsigned int));
+        memset(alm3, 0, 8 * sizeof(unsigned int));
+        memset(alm4, 0, 8 * sizeof(unsigned int));
+    }
 
     JUMPSTEPS_ = Window1.GetJUMPSTEPS();
     mcount = JUMPSTEPS_;
@@ -913,14 +944,18 @@ void cpart_7s_display::Process(void) {
         for (i = 0; i < 8; i++) {
             if (input_pins[i]) {
                 if (ppins[input_pins[i] - 1].value) {
-                    if (ppins[input_pins[8] - 1].value)
+                    if (type) {
                         alm1[i]++;
-                    if (ppins[input_pins[9] - 1].value)
-                        alm2[i]++;
-                    if (ppins[input_pins[10] - 1].value)
-                        alm3[i]++;
-                    if (ppins[input_pins[11] - 1].value)
-                        alm4[i]++;
+                    } else {
+                        if (ppins[input_pins[8] - 1].value)
+                            alm1[i]++;
+                        if (ppins[input_pins[9] - 1].value)
+                            alm2[i]++;
+                        if (ppins[input_pins[10] - 1].value)
+                            alm3[i]++;
+                        if (ppins[input_pins[11] - 1].value)
+                            alm4[i]++;
+                    }
                 }
             }
         }
@@ -933,17 +968,19 @@ void cpart_7s_display::PostProcess(void) {
 
     for (int i = 0; i < 8; i++) {
         lm1[i] = (int)((lm1[i] + (((600.0 * alm1[i]) / NSTEPJ) + 30)) / 2.0);
-        lm2[i] = (int)((lm2[i] + (((600.0 * alm2[i]) / NSTEPJ) + 30)) / 2.0);
-        lm3[i] = (int)((lm3[i] + (((600.0 * alm3[i]) / NSTEPJ) + 30)) / 2.0);
-        lm4[i] = (int)((lm4[i] + (((600.0 * alm4[i]) / NSTEPJ) + 30)) / 2.0);
         if (lm1[i] > 255)
             lm1[i] = 255;
-        if (lm2[i] > 255)
-            lm2[i] = 255;
-        if (lm3[i] > 255)
-            lm3[i] = 255;
-        if (lm4[i] > 255)
-            lm4[i] = 255;
+        if (!type) {
+            lm2[i] = (int)((lm2[i] + (((600.0 * alm2[i]) / NSTEPJ) + 30)) / 2.0);
+            lm3[i] = (int)((lm3[i] + (((600.0 * alm3[i]) / NSTEPJ) + 30)) / 2.0);
+            lm4[i] = (int)((lm4[i] + (((600.0 * alm4[i]) / NSTEPJ) + 30)) / 2.0);
+            if (lm2[i] > 255)
+                lm2[i] = 255;
+            if (lm3[i] > 255)
+                lm3[i] = 255;
+            if (lm4[i] > 255)
+                lm4[i] = 255;
+        }
     }
 
     for (int i = 0; i < 8; i++) {
@@ -952,19 +989,69 @@ void cpart_7s_display::PostProcess(void) {
             output_ids[O_A1 + i]->value = lm1[i];
             output_ids[O_SS1]->update = 1;
         }
-        if (output_ids[O_A2 + i]->value != lm2[i]) {
-            output_ids[O_A2 + i]->value = lm2[i];
-            output_ids[O_SS2]->update = 1;
-        }
-        if (output_ids[O_A3 + i]->value != lm3[i]) {
-            output_ids[O_A3 + i]->value = lm3[i];
-            output_ids[O_SS3]->update = 1;
-        }
-        if (output_ids[O_A4 + i]->value != lm4[i]) {
-            output_ids[O_A4 + i]->value = lm4[i];
-            output_ids[O_SS4]->update = 1;
+        if (!type) {
+            if (output_ids[O_A2 + i]->value != lm2[i]) {
+                output_ids[O_A2 + i]->value = lm2[i];
+                output_ids[O_SS2]->update = 1;
+            }
+            if (output_ids[O_A3 + i]->value != lm3[i]) {
+                output_ids[O_A3 + i]->value = lm3[i];
+                output_ids[O_SS3]->update = 1;
+            }
+            if (output_ids[O_A4 + i]->value != lm4[i]) {
+                output_ids[O_A4 + i]->value = lm4[i];
+                output_ids[O_SS4]->update = 1;
+            }
         }
     }
+}
+
+void cpart_7s_display::ComboChange(CCombo* control, lxString value) {
+    unsigned char type_ = (value.Cmp("4 Mux.")) != 0;
+    ChangeType(type_);
+}
+
+lxString cpart_7s_display::GetPictureFileName(void) {
+    switch (type) {
+        case 0:
+            return lxT("7 Segments Display/part.svg");
+            break;
+        case 1:
+            return lxT("7 Segments Display/part1.svg");
+            break;
+    }
+
+    return lxT("7 Segments Display/part.svg");
+}
+
+lxString cpart_7s_display::GetMapFile(void) {
+    switch (type) {
+        case 0:
+            return lxT("7 Segments Display/part.map");
+            break;
+        case 1:
+            return lxT("7 Segments Display/part1.map");
+            break;
+    }
+
+    return lxT("7 Segments Display/part.map");
+}
+
+void cpart_7s_display::ChangeType(unsigned char tp) {
+    // if same
+    if (tp == type)
+        return;
+
+    if (Bitmap) {
+        delete Bitmap;
+        canvas.Destroy();
+    }
+
+    type = tp;
+
+    ReadMaps();
+
+    LoadImage();
 }
 
 part_init(PART_7S_DISPLAY_Name, cpart_7s_display, "Output");

@@ -41,15 +41,19 @@ public:
     void PreProcess(void) override;
     void Process(void) override;
     void PostProcess(void) override;
+    lxString GetPictureFileName(void) override;
+    lxString GetMapFile(void) override;
     void ConfigurePropertiesWindow(CPWindow* wprop) override;
     void ReadPropertiesWindow(CPWindow* WProp) override;
     lxString WritePreferences(void) override;
     void ReadPreferences(lxString value) override;
     unsigned short get_in_id(char* name) override;
     unsigned short get_out_id(char* name) override;
+    void ComboChange(CCombo* control, lxString value) override;
 
 private:
     void RegisterRemoteControl(void) override;
+    void ChangeType(unsigned char tp);
     unsigned char active;
     unsigned char input_pins[12];
     unsigned int lm1[8];  // luminosidade media display
@@ -64,6 +68,7 @@ private:
     long int mcount;
     int JUMPSTEPS_;
     lxFont font;
+    unsigned char type;
 };
 
 #endif /* PART_7S_DISPLAY */

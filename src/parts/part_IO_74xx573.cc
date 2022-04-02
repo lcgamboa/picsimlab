@@ -82,14 +82,14 @@ cpart_IO_74xx573::cpart_IO_74xx573(unsigned x, unsigned y)
     input_pins[7] = 0;
     input_pins[8] = 0;
 
-    output_pins[0] = Window5.RegisterIOpin(lxT("O0"));
-    output_pins[1] = Window5.RegisterIOpin(lxT("O1"));
-    output_pins[2] = Window5.RegisterIOpin(lxT("O2"));
-    output_pins[3] = Window5.RegisterIOpin(lxT("O3"));
-    output_pins[4] = Window5.RegisterIOpin(lxT("O4"));
-    output_pins[5] = Window5.RegisterIOpin(lxT("O5"));
-    output_pins[6] = Window5.RegisterIOpin(lxT("O6"));
-    output_pins[7] = Window5.RegisterIOpin(lxT("O7"));
+    output_pins[0] = Window5.RegisterIOpin(lxT("O7"));
+    output_pins[1] = Window5.RegisterIOpin(lxT("O6"));
+    output_pins[2] = Window5.RegisterIOpin(lxT("O5"));
+    output_pins[3] = Window5.RegisterIOpin(lxT("O4"));
+    output_pins[4] = Window5.RegisterIOpin(lxT("O3"));
+    output_pins[5] = Window5.RegisterIOpin(lxT("O2"));
+    output_pins[6] = Window5.RegisterIOpin(lxT("O1"));
+    output_pins[7] = Window5.RegisterIOpin(lxT("O0"));
 
     mcount = 0;
     memset(output_pins_alm, 0, 8 * sizeof(unsigned long));
@@ -236,14 +236,14 @@ void cpart_IO_74xx573::ReadPreferences(lxString value) {
         for (int i = 0; i < 8; i++)
             Window5.UnregisterIOpin(output_pins[i]);
 
-        output_pins[0] = Window5.RegisterIOpin(lxT("O0"), outp++);
-        output_pins[1] = Window5.RegisterIOpin(lxT("O1"), outp++);
-        output_pins[2] = Window5.RegisterIOpin(lxT("O2"), outp++);
-        output_pins[3] = Window5.RegisterIOpin(lxT("O3"), outp++);
-        output_pins[4] = Window5.RegisterIOpin(lxT("O4"), outp++);
-        output_pins[5] = Window5.RegisterIOpin(lxT("O5"), outp++);
-        output_pins[6] = Window5.RegisterIOpin(lxT("O6"), outp++);
-        output_pins[7] = Window5.RegisterIOpin(lxT("O7"), outp++);
+        output_pins[0] = Window5.RegisterIOpin(lxT("O7"), outp++);
+        output_pins[1] = Window5.RegisterIOpin(lxT("O6"), outp++);
+        output_pins[2] = Window5.RegisterIOpin(lxT("O5"), outp++);
+        output_pins[3] = Window5.RegisterIOpin(lxT("O4"), outp++);
+        output_pins[4] = Window5.RegisterIOpin(lxT("O3"), outp++);
+        output_pins[5] = Window5.RegisterIOpin(lxT("O2"), outp++);
+        output_pins[6] = Window5.RegisterIOpin(lxT("O1"), outp++);
+        output_pins[7] = Window5.RegisterIOpin(lxT("O0"), outp++);
     }
 
     Reset();
@@ -375,14 +375,14 @@ void cpart_IO_74xx573::Process(void) {
     unsigned short ret;
     unsigned char data = 0;
 
-    data |= ppins[input_pins[0] - 1].value;
-    data |= (ppins[input_pins[1] - 1].value << 1);
-    data |= (ppins[input_pins[2] - 1].value << 2);
-    data |= (ppins[input_pins[3] - 1].value << 3);
-    data |= (ppins[input_pins[4] - 1].value << 4);
-    data |= (ppins[input_pins[5] - 1].value << 5);
-    data |= (ppins[input_pins[6] - 1].value << 6);
-    data |= (ppins[input_pins[7] - 1].value << 7);
+    data |= ppins[input_pins[7] - 1].value;
+    data |= (ppins[input_pins[6] - 1].value << 1);
+    data |= (ppins[input_pins[5] - 1].value << 2);
+    data |= (ppins[input_pins[4] - 1].value << 3);
+    data |= (ppins[input_pins[3] - 1].value << 4);
+    data |= (ppins[input_pins[2] - 1].value << 5);
+    data |= (ppins[input_pins[1] - 1].value << 6);
+    data |= (ppins[input_pins[0] - 1].value << 7);
 
     ret = io_74xx573_io(&lt8, ppins[input_pins[8] - 1].value, data);
 

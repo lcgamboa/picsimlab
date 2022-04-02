@@ -2,10 +2,10 @@
   <Class type="lxString">CPWindow</Class>
   <Name type="lxString">window1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">616</X>
-  <Y type="int">115</Y>
+  <X type="int">521</X>
+  <Y type="int">66</Y>
   <Width type="uint">370</Width>
-  <Height type="uint">640</Height>
+  <Height type="uint">651</Height>
   <Hint type="lxString"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
@@ -21,6 +21,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Title type="lxString">7 Segments Display</Title>
   <OverrideRedirect type="bool">0</OverrideRedirect>
   <EvOnCreate type="Event">FALSE</EvOnCreate>
@@ -33,8 +34,8 @@
   <Class type="lxString">CButton</Class>
   <Name type="lxString">button1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">103</X>
-  <Y type="int">504</Y>
+  <X type="int">106</X>
+  <Y type="int">552</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="lxString"></Hint>
@@ -52,14 +53,15 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Ok</Text>
 </button1>
 <button2>
   <Class type="lxString">CButton</Class>
   <Name type="lxString">button2</Name>
   <Tag type="int">0</Tag>
-  <X type="int">188</X>
-  <Y type="int">504</Y>
+  <X type="int">186</X>
+  <Y type="int">552</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="lxString"></Hint>
@@ -77,6 +79,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Cancel</Text>
 </button2>
 <combo1>
@@ -102,6 +105,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString"></Text>
   <ReadOnly type="bool">1</ReadOnly>
@@ -130,6 +134,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString"></Text>
   <ReadOnly type="bool">1</ReadOnly>
@@ -158,6 +163,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString"></Text>
   <ReadOnly type="bool">1</ReadOnly>
@@ -186,6 +192,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString"></Text>
   <ReadOnly type="bool">1</ReadOnly>
@@ -214,6 +221,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Seg a</Text>
   <Align type="CAlign">1</Align>
 </label1>
@@ -240,6 +248,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Seg b</Text>
   <Align type="CAlign">1</Align>
 </label2>
@@ -266,6 +275,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Seg c</Text>
   <Align type="CAlign">1</Align>
 </label3>
@@ -292,6 +302,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Seg d</Text>
   <Align type="CAlign">1</Align>
 </label4>
@@ -318,6 +329,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString"></Text>
   <ReadOnly type="bool">1</ReadOnly>
@@ -346,6 +358,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString"></Text>
   <ReadOnly type="bool">1</ReadOnly>
@@ -374,6 +387,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString"></Text>
   <ReadOnly type="bool">1</ReadOnly>
@@ -402,6 +416,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString"></Text>
   <ReadOnly type="bool">1</ReadOnly>
@@ -430,6 +445,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString"></Text>
   <ReadOnly type="bool">1</ReadOnly>
@@ -458,6 +474,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString"></Text>
   <ReadOnly type="bool">1</ReadOnly>
@@ -486,6 +503,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString"></Text>
   <ReadOnly type="bool">1</ReadOnly>
@@ -514,6 +532,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList"></Items>
   <Text type="lxString"></Text>
   <ReadOnly type="bool">1</ReadOnly>
@@ -542,6 +561,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Items type="lxStringList">HIGH,LOW,</Items>
   <Text type="lxString"></Text>
   <ReadOnly type="bool">1</ReadOnly>
@@ -570,6 +590,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Seg e</Text>
   <Align type="CAlign">1</Align>
 </label5>
@@ -596,6 +617,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Seg f</Text>
   <Align type="CAlign">1</Align>
 </label6>
@@ -622,6 +644,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Seg g</Text>
   <Align type="CAlign">1</Align>
 </label7>
@@ -648,6 +671,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Point</Text>
   <Align type="CAlign">1</Align>
 </label8>
@@ -674,6 +698,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">D1</Text>
   <Align type="CAlign">1</Align>
 </label9>
@@ -700,6 +725,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">D2</Text>
   <Align type="CAlign">1</Align>
 </label10>
@@ -726,6 +752,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">D3</Text>
   <Align type="CAlign">1</Align>
 </label11>
@@ -752,6 +779,7 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">D4</Text>
   <Align type="CAlign">1</Align>
 </label12>
@@ -778,7 +806,64 @@
   <EvOnDraw type="Event">FALSE</EvOnDraw>
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <Text type="lxString">Active</Text>
   <Align type="CAlign">1</Align>
 </label13>
+<combo14>
+  <Class type="lxString">CCombo</Class>
+  <Name type="lxString">combo14</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">122</X>
+  <Y type="int">498</Y>
+  <Width type="uint">200</Width>
+  <Height type="uint">26</Height>
+  <Hint type="lxString"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="lxString">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
+  <Items type="lxStringList">4 Mux.,Single,</Items>
+  <Text type="lxString">4 Mux.</Text>
+  <ReadOnly type="bool">0</ReadOnly>
+  <EvOnComboChange type="Event">FALSE</EvOnComboChange>
+</combo14>
+<label14>
+  <Class type="lxString">CLabel</Class>
+  <Name type="lxString">label14</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">53</X>
+  <Y type="int">503</Y>
+  <Width type="uint">60</Width>
+  <Height type="uint">20</Height>
+  <Hint type="lxString"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="lxString">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
+  <Text type="lxString">Type</Text>
+  <Align type="CAlign">1</Align>
+</label14>
 </window1>

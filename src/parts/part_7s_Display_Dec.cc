@@ -908,7 +908,7 @@ lxString cpart_7s_display_dec::GetMapFile(void) {
             break;
     }
 
-    return lxT("7s_display_dec/7sdisplay_dec.map");
+    return lxT("7 Segments Display (Decoder)/7sdisplay_dec.map");
 }
 
 void cpart_7s_display_dec::ChangeType(unsigned char tp) {
