@@ -137,12 +137,14 @@ private:
     unsigned char pin_tx;
 };
 
+#define EIMSK 0x3D
 #define UCSR0A 0XC0
 #define UCSR0B 0XC1
 #define UCSR0C 0XC2
 #define UBRR0L 0xC4
 #define UBRR0H 0xC5
 
+#define GIMSK 0x3B
 #define USICR 0x2D
 #define USISR 0x2E
 #define USIDR 0x2F

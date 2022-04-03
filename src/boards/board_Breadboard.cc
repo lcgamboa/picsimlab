@@ -121,8 +121,7 @@ void cboard_Breadboard::Reset(void) {
                 Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
             break;
         case _AVR:
-            avr_reset(avr);
-            avr->data[UCSR0B] = 0x00;  // FIX the simavr reset TX enabled
+            MReset(0);
 
             // verify serial port state and refresh status bar
 #ifndef _WIN_

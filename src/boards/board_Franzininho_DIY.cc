@@ -120,7 +120,7 @@ cboard_Franzininho_DIY::~cboard_Franzininho_DIY(void) {}
 // Reset board status
 
 void cboard_Franzininho_DIY::Reset(void) {
-    avr_reset(avr);
+    MReset(0);
 
     Window1.statusbar1.SetField(2, "");
 

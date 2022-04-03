@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@
 #include "../picsimlab1.h"
 #include "bsim_simavr.h"
 #include "simavr/avr_eeprom.h"
+#include "simavr/avr_extint.h"
 
 #define dprintf \
     if (1) {    \
@@ -185,6 +186,23 @@ static void avr_usi_write(struct avr_t* avr, avr_io_addr_t addr, uint8_t v, void
     }
 }
 
+// enable external interrupt only when the interrupt enable flag is on
+static void avr_extintcfg(struct avr_t* avr, avr_io_addr_t addr, uint8_t v, void* param) {
+    avr_core_watch_write(avr, addr, v);
+    if (addr == EIMSK) {
+        avr_extint_set_strict_lvl_trig(avr, 0, (v & 0x01) > 0);
+        avr_extint_set_strict_lvl_trig(avr, 1, (v & 0x02) > 0);
+        avr_extint_set_strict_lvl_trig(avr, 2, (v & 0x04) > 0);
+        avr_extint_set_strict_lvl_trig(avr, 3, (v & 0x08) > 0);
+        avr_extint_set_strict_lvl_trig(avr, 4, (v & 0x10) > 0);
+        avr_extint_set_strict_lvl_trig(avr, 5, (v & 0x20) > 0);
+        avr_extint_set_strict_lvl_trig(avr, 6, (v & 0x40) > 0);
+        avr_extint_set_strict_lvl_trig(avr, 7, (v & 0x80) > 0);
+    } else {  // GIMSK
+        avr_extint_set_strict_lvl_trig(avr, 0, (v & 0x40) > 0);
+    }
+}
+
 void bsim_simavr::pins_reset(void) {
     for (int p = 0; p < MGetPinCount(); p++) {
         pins[p].avalue = 0;
@@ -243,6 +261,7 @@ static const unsigned char AVR_PORTS[12] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', '
 int bsim_simavr::MInit(const char* processor, const char* fname, float freq) {
     int ret;
     lxString sproc = GetSupportedDevices();
+    unsigned char extintreg;
     // avr_ioport_external_t p;
 
     avr = NULL;
@@ -280,20 +299,21 @@ int bsim_simavr::MInit(const char* processor, const char* fname, float freq) {
     if (lxString(avr->mmcu).compare(lxT("atmega2560")) == 0) {
         avr->reset_pc = 0x3E000;
         has_usart = 1;
+        extintreg = EIMSK;
     } else if (((lxString(avr->mmcu).compare(lxT("atmega328p")) == 0)) ||
                ((lxString(avr->mmcu).compare(lxT("atmega328")) == 0))) {
         avr->reset_pc = 0x07000;  // bootloader 0x3800
         has_usart = 1;
+        extintreg = EIMSK;
     } else  // attiny85
     {
         avr->reset_pc = 0x0000;
+        extintreg = GIMSK;
     }
     avr->vcc = 5000;
     avr->avcc = 5000;
 
     // avr->log= LOG_DEBUG;
-
-    avr_reset(avr);
 
     if (has_usart) {
         avr->data[UCSR0B] = 0x00;  // FIX the simavr reset TX enabled
@@ -391,6 +411,11 @@ int bsim_simavr::MInit(const char* processor, const char* fname, float freq) {
         avr_register_io_write(avr, USIBR, avr_usi_write, this);
         avr_register_io_write(avr, USIDR, avr_usi_write, this);
     }
+
+    // external interrupt
+    avr_register_io_write(avr, extintreg, avr_extintcfg, this);
+
+    MReset(0);
 
     return ret;
 }
@@ -1303,6 +1328,15 @@ void bsim_simavr::MReset(int flags) {
         avr->data[UCSR0B] = 0x00;  // FIX the simavr reset TX enabled
         bitbang_uart_rst(&bb_uart);
     }
+    // disable external interrupt
+    avr_extint_set_strict_lvl_trig(avr, 0, 0);
+    avr_extint_set_strict_lvl_trig(avr, 1, 0);
+    avr_extint_set_strict_lvl_trig(avr, 2, 0);
+    avr_extint_set_strict_lvl_trig(avr, 3, 0);
+    avr_extint_set_strict_lvl_trig(avr, 4, 0);
+    avr_extint_set_strict_lvl_trig(avr, 5, 0);
+    avr_extint_set_strict_lvl_trig(avr, 6, 0);
+    avr_extint_set_strict_lvl_trig(avr, 7, 0);
 }
 
 unsigned short* bsim_simavr::DBGGetProcID_p(void) {
