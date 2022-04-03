@@ -1,7 +1,7 @@
 ### TODOs
 | Filename | line # | TODO
 |:------|:------:|:------
-| [src/picsimlab1.cc](src/picsimlab1.cc#L485) | 485 | verify initialization errors
+| [src/picsimlab1.cc](src/picsimlab1.cc#L489) | 489 | verify initialization errors
 | [src/picsimlab4.cc](src/picsimlab4.cc#L635) | 635 | select the better mode for channel trigguer
 | [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L114) | 114 | jumper support
 | [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L193) | 193 | TEMP cooler must don't work with AQUE=0
@@ -32,7 +32,7 @@
 ### FIXMEs
 | Filename | line # | FIXME
 |:------|:------:|:------
-| [src/picsimlab1.cc](src/picsimlab1.cc#L712) | 712 | remote control disabled
+| [src/picsimlab1.cc](src/picsimlab1.cc#L721) | 721 | remote control disabled
 | [src/boards/board_uCboard.cc](src/boards/board_uCboard.cc#L297) | 297 | NSTEP must be multiplied for 4
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1350) | 1350 | avr CONFIG size
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L134) | 134 | only for BANK=0;

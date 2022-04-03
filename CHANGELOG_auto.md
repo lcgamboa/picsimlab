@@ -2,6 +2,10 @@
 
 ### New
 
+* Option to use single 7 Segment Display part. [lcgamboa]
+
+* New part IO 74xx573 octal latch. [lcgamboa]
+
 * New Text Box spare part. [lcgamboa]
 
 * Support to change On position in switches parts and color status indication. [lcgamboa]
