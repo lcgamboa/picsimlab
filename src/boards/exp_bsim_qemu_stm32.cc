@@ -76,8 +76,8 @@ void bsim_qemu_stm32::MSetSerial(const char* port) {
 
      char buff[200];
      int n;
-     char fname_[300];
-     char cmd[600];
+     char fname_[2048];
+     char cmd[4096];
 
      lxString sproc = GetSupportedDevices();
      if (!sproc.Contains(processor)) {
@@ -163,17 +163,24 @@ void bsim_qemu_stm32::MSetSerial(const char* port) {
      }
 
      // change .hex to .bin
-     strncpy(fname_, fname, 299);
+     strncpy(fname_, fname, 2047);
      fname_[strlen(fname_) - 3] = 0;
-     strncat(fname_, "bin", 299);
+     strncat(fname_, "bin", 2047);
 
      if (!lxFileExists(fname_)) {
          // create a empty memory
          FILE* fout;
          fout = fopen(fname_, "w");
          if (fout) {
-             unsigned int val[4] = {0, 0, 0, 0};
-             fwrite(&val, 4, sizeof(int), fout);
+             unsigned char sp[4] = {0x00, 0x08, 0x00, 0x20};
+             unsigned char handler[4] = {0x51, 0x01, 0x00, 0x00};
+             unsigned char loop[4] = {0xFE, 0xE7, 0x00, 0xBF};
+
+             fwrite(&sp, 4, sizeof(char), fout);
+             for (int r = 0; r < 83; r++) {
+                 fwrite(&handler, 4, sizeof(char), fout);
+             }
+             fwrite(&loop, 4, sizeof(char), fout);
              fclose(fout);
          } else {
              printf("picsimlab: qemu_stm32 Erro creating file %s \n", fname_);
@@ -198,34 +205,35 @@ void bsim_qemu_stm32::MSetSerial(const char* port) {
      if (!Proc.compare("stm32f103c8t6")) {
          // verify if serial port exists
          if (strstr(resp, SERIALDEVICE)) {
-             snprintf(
-                 cmd, 599,
-                 "qemu-stm32 -M stm32-f103c8-picsimlab -serial %s -qmp tcp:localhost:2500  -gdb tcp::%i -pflash \"%s\"",
-                 SERIALDEVICE, Window1.Get_debug_port(), fname_);
-
+             snprintf(cmd, 4095,
+                      "qemu-stm32 -M stm32-f103c8-picsimlab -serial %s -qmp tcp:localhost:2500  -gdb tcp::%i -drive "
+                      "file=\"%s\",if=pflash,format=raw",
+                      SERIALDEVICE, Window1.Get_debug_port(), fname_);
          } else {
-             snprintf(cmd, 599,
-                      "qemu-stm32 -M stm32-f103c8-picsimlab -qmp tcp:localhost:2500 -gdb tcp::%i -pflash \"%s\"",
+             snprintf(cmd, 4095,
+                      "qemu-stm32 -M stm32-f103c8-picsimlab -qmp tcp:localhost:2500 -gdb tcp::%i -drive "
+                      "file=\"%s\",if=pflash,format=raw",
                       Window1.Get_debug_port(), fname_);
          }
      } else {
          // verify if serial port exists
          if (strstr(resp, SERIALDEVICE)) {
-             snprintf(
-                 cmd, 599,
-                 "qemu-stm32 -M stm32-p103-picsimlab -serial %s -qmp tcp:localhost:2500  -gdb tcp::%i -pflash \"%s\"",
-                 SERIALDEVICE, Window1.Get_debug_port(), fname_);
+             snprintf(cmd, 4095,
+                      "qemu-stm32 -M stm32-p103-picsimlab -serial %s -qmp tcp:localhost:2500  -gdb tcp::%i -drive "
+                      "file=\"%s\",if=pflash,format=raw",
+                      SERIALDEVICE, Window1.Get_debug_port(), fname_);
 
          } else {
-             snprintf(cmd, 599,
-                      "qemu-stm32 -M stm32-p103-picsimlab -qmp tcp:localhost:2500 -gdb tcp::%i -pflash \"%s\"",
+             snprintf(cmd, 4095,
+                      "qemu-stm32 -M stm32-p103-picsimlab -qmp tcp:localhost:2500 -gdb tcp::%i -drive "
+                      "file=\"%s\",if=pflash,format=raw",
                       Window1.Get_debug_port(), fname_);
          }
      }
 
      free(resp);
 
-     printf("picsimlab: %s\n", (const char*)cmd);
+     printf("picsimlab: %s\n", cmd);
 
 #ifdef _WIN_
 #define wxMSW_CONV_LPCTSTR(s) static_cast<const wxChar*>((s).t_str())
@@ -252,6 +260,7 @@ void bsim_qemu_stm32::MSetSerial(const char* port) {
           &processInfo // process info
           );
       */
+     Sleep(500);
 #else
      lxExecute(dirname(lxGetExecutablePath()) + lxT("/") + cmd, lxEXEC_MAKE_GROUP_LEADER);
 #endif
@@ -979,6 +988,8 @@ void bsim_qemu_stm32::MSetSerial(const char* port) {
          return -1;
      connected_ = connected;
      connected = 0;
+
+     printf("picsimlab: cmd [%s]\n", cmd);
      /*
      //clear messages
       if ((n = recv (sockmon, buffout, 399, 0)) < 0)
