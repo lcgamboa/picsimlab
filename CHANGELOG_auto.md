@@ -74,6 +74,8 @@
 
 ### Fix
 
+* Remove simavr external interrupt aways enabled with slow down simulation. [lcgamboa]
+
 * Save external EEPROM from boards to workspace files. [lcgamboa]
 
 * Bitbang I2C ACK fixed for all I2C parts. [lcgamboa]
