@@ -1,3 +1,84 @@
+## v0.8.10 (2022-04-09)
+
+### New
+
+* Bluepill board updated to use qemu-stm32 version 6.2.50. [fariouche]
+
+* Option to use single 7 Segment Display part. [lcgamboa]
+
+* New part IO 74xx573 octal latch. [lcgamboa]
+
+* New Text Box spare part. [lcgamboa]
+
+* Support to change On position in switches parts and color status indication. [lcgamboa]
+
+* Support to change color of LEDs part (Red, Green, Blue, Yellow and White) [lcgamboa]
+
+* Support to use +3V3 instead only +5V in some boards. [lcgamboa]
+
+* New RGB LED WS2812B part added. [lcgamboa]
+
+* Bounce effect added to Switches part and boards McLab1, McLab2, X and PICGenios. [lcgamboa]
+
+* LCD HD44780 support to read in 4bits mode. [lcgamboa]
+
+* Support to RAM data write/read breakpoints for PIC16F/18F added. [lcgamboa]
+
+* Timer peripheral added to RIPES board. [lcgamboa]
+
+* Support to automatic save the last open workspace file (.pzw) [lcgamboa]
+
+* New spare part LDR. [lcgamboa]
+
+* Support to PIC16F887 added to boards Breadboard, McLab2 and PICGenios. [lcgamboa]
+
+* New board RemoteTCP with Ripes support added. [lcgamboa]
+
+* New part DS1621 I2C temperature sensor. [lcgamboa]
+
+* Support to add combined part LCD_hd44780 with PCF8574 I2C expander. [lcgamboa]
+
+* Support to ATTiny85 USI TWI master mode. [lcgamboa]
+
+* Push buttons bounce effect added. [lcgamboa]
+
+* Added oscilloscope support to show measures in screen. [lcgamboa]
+
+### Changes
+
+* Use system default application to open the serial terminal. [lcgamboa]
+
+* IO PCF8574 I2C expander support to read pins added. [lcgamboa]
+
+* Use default application to open VCD files in VCDDump part. [lcgamboa]
+
+* Move uCboard from experimental to stable version. [lcgamboa]
+
+* Speed optimization to only process parts when io is updated (only PICSim and simavr backend) [lcgamboa]
+
+### Fix
+
+* Remove simavr external interrupt aways enabled with slow down simulation. [lcgamboa]
+
+* Save external EEPROM from boards to workspace files. [lcgamboa]
+
+* Bitbang I2C ACK fixed for all I2C parts. [lcgamboa]
+
+* Issue with device 74xx595 serial ouptut fixed. [lcgamboa]
+
+* Fixes month writing issue in RTCs. [lcgamboa]
+
+* Fix power off statusbar messages. [lcgamboa]
+
+* Board McLab2 7 segments display bug removed. [lcgamboa]
+
+* IO Uart part slow simulation bug removed. [lcgamboa]
+
+* Signal Generator part frequency shift error removed. [lcgamboa]
+
+* Removed the bug when all pins of step motor part are zero. [lcgamboa]
+
+
 ## v0.8.9 (2021-07-25)
 
 ### New
