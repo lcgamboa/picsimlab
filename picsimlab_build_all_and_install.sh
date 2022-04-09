@@ -12,7 +12,7 @@ cl sudo apt-get update
 cl sudo apt-get -y upgrade
 cl sudo apt-get -y install git doxygen gcc g++ make libwxgtk3.0-gtk3-dev \
 libelf-dev freeglut3-dev cutecom gcc-avr avr-libc libopenal-dev libncurses-dev gtkwave \
-gedit cmake
+gedit cmake bison++
 cl sudo apt-get -y install linux-headers-`uname -r` dkms 
 cl mkdir build_all
 cd build_all
@@ -23,7 +23,7 @@ git clone --depth=1 https://github.com/lcgamboa/tty0tty.git
 git clone --depth=1 https://github.com/lcgamboa/simavr.git
 git clone --depth=1 https://github.com/lcgamboa/uCsim_picsimlab.git
 if [[ -n "$BUILD_EXPERIMETAL" ]]; then
-cl sudo apt-get -y install bison++ python libglib2.0-dev libpixman-1-dev libfdt-dev gpsim-dev gpsim \
+cl sudo apt-get -y install python libglib2.0-dev libpixman-1-dev libfdt-dev gpsim-dev gpsim \
 ninja-build meson
 git clone --depth=1 --no-single-branch https://github.com/lcgamboa/qemu_stm32.git
 fi	
