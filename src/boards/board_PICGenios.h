@@ -94,6 +94,9 @@ private:
     lxFont font;
     SWBounce_t bounce;
 
+    int heater_pwr;
+    int cooler_pwr;
+
 public:
     // Return the board name
     lxString GetName(void) override { return lxT(BOARD_PICGenios_Name); };
