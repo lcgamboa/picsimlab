@@ -156,7 +156,7 @@ void bsim_qemu_stm32::MSetSerial(const char* port) {
  void bsim_qemu_stm32::EvThreadRun(CThread& thread) {
      mtx_qinit->Lock();
      // change .hex to .bin
-     strncpy(fname_, fname, 2047);
+     strncpy(fname_, fname, 2048);
      fname_[strlen(fname_) - 3] = 0;
      strncat(fname_, "bin", 2047);
 
@@ -199,7 +199,7 @@ void bsim_qemu_stm32::MSetSerial(const char* port) {
      //-singlestep -d nochain
 
      if (!Proc.compare("stm32f103c8t6")) {
-         strcpy(argv[argc++], "stm32-f103c8-picsimlab");
+         strcpy(argv[argc++], "stm32-f103c8-picsimlab-new");
          // verify if serial port exists
          if (strstr(resp, SERIALDEVICE)) {
              strcpy(argv[argc++], "-serial");
@@ -210,7 +210,7 @@ void bsim_qemu_stm32::MSetSerial(const char* port) {
          strcpy(argv[argc++], "-drive");
          sprintf(argv[argc++], "file=%s,if=pflash,format=raw", fname_);
      } else {
-         strcpy(argv[argc++], "stm32-p103-picsimlab");
+         strcpy(argv[argc++], "stm32-p103-picsimlab-new");
          // verify if serial port exists
          if (strstr(resp, SERIALDEVICE)) {
              strcpy(argv[argc++], "-serial");

@@ -71,9 +71,9 @@ protected:
     unsigned int serialbaud;
     float serialexbaud;
     float freq;
-    char fname[1024];
-    char fname_[1024];
-    char fname_bak[1024];
+    char fname[2048];
+    char fname_[2048];
+    char fname_bak[2048];
     unsigned short ADCvalues[16];
     lxMutex* mtx_qinit;
     int qemu_started;
