@@ -192,35 +192,30 @@ void bsim_qemu_stm32::MSetSerial(const char* port) {
      }
 
      strcpy(argv[argc++], "qemu-stm32");
-     // strcpy(argv[argc++], "-singlestep");
+
      strcpy(argv[argc++], "-M");
-
-     //-icount shift=auto,align=off,sleep=off -rtc clock=vm;
-     //-singlestep -d nochain
-
      if (!Proc.compare("stm32f103c8t6")) {
          strcpy(argv[argc++], "stm32-f103c8-picsimlab-new");
-         // verify if serial port exists
-         if (strstr(resp, SERIALDEVICE)) {
-             strcpy(argv[argc++], "-serial");
-             strcpy(argv[argc++], SERIALDEVICE);
-         }
-         strcpy(argv[argc++], "-gdb");
-         sprintf(argv[argc++], "tcp::%i", Window1.Get_debug_port());
-         strcpy(argv[argc++], "-drive");
-         sprintf(argv[argc++], "file=%s,if=pflash,format=raw", fname_);
      } else {
          strcpy(argv[argc++], "stm32-p103-picsimlab-new");
-         // verify if serial port exists
-         if (strstr(resp, SERIALDEVICE)) {
-             strcpy(argv[argc++], "-serial");
-             strcpy(argv[argc++], SERIALDEVICE);
-         }
-         strcpy(argv[argc++], "-gdb");
-         sprintf(argv[argc++], "tcp::%i", Window1.Get_debug_port());
-         strcpy(argv[argc++], "-drive");
-         sprintf(argv[argc++], "file=%s,if=pflash,format=raw", fname_);
      }
+
+     // verify if serial port exists
+     if (strstr(resp, SERIALDEVICE)) {
+         strcpy(argv[argc++], "-serial");
+         strcpy(argv[argc++], SERIALDEVICE);
+     }
+     strcpy(argv[argc++], "-gdb");
+     sprintf(argv[argc++], "tcp::%i", Window1.Get_debug_port());
+     strcpy(argv[argc++], "-drive");
+     sprintf(argv[argc++], "file=%s,if=pflash,format=raw", fname_);
+
+     strcpy(argv[argc++], "-d");
+     strcpy(argv[argc++], "unimp");
+
+     // strcpy(argv[argc++], "-singlestep");
+     //-icount shift=auto,align=off,sleep=off -rtc clock=vm;
+     //-singlestep -d nochain
 
      free(resp);
 
