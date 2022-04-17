@@ -75,7 +75,6 @@ unsigned short io_MM74C922_io(io_MM74C922_t* kc, unsigned char Y) {
 
     } else {
         kc->da = 0;
-        kc->key = 0;
         kc->count++;
     }
 
