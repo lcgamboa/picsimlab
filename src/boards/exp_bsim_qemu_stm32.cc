@@ -61,6 +61,16 @@ void qemu_picsimlab_set_pin(int pin, int value);
 void qemu_picsimlab_set_apin(int chn, int value);
 typedef uint64_t hwaddr;
 int cpu_physical_memory_rw(hwaddr addr, void* buf, hwaddr len, bool is_write);
+bool main_loop_should_exit(void);
+void main_loop_wait(int64_t timeout);
+typedef enum {
+    QEMU_CLOCK_REALTIME = 0,
+    QEMU_CLOCK_VIRTUAL = 1,
+    QEMU_CLOCK_HOST = 2,
+    QEMU_CLOCK_VIRTUAL_RT = 3,
+    QEMU_CLOCK_MAX
+} QEMUClockType;
+int64_t qemu_clock_get_ns(QEMUClockType type);
 }
 
 static picpin* _pins;
@@ -92,6 +102,8 @@ bsim_qemu_stm32::bsim_qemu_stm32(void) {
 
     Window1.SetNeedReboot();
     mtx_qinit = new lxMutex();
+
+    runq = 0;
     /*
      io_mutex = new lxMutex();
      io_cond = new lxCondition(*io_mutex);
@@ -213,6 +225,10 @@ void bsim_qemu_stm32::MSetSerial(const char* port) {
      strcpy(argv[argc++], "-d");
      strcpy(argv[argc++], "unimp");
 
+     strcpy(argv[argc++], "-icount");
+     strcpy(argv[argc++], "shift=10,align=off,sleep=off");
+     strcpy(argv[argc++], "-rtc");
+     strcpy(argv[argc++], "clock=vm");
      // strcpy(argv[argc++], "-singlestep");
      //-icount shift=auto,align=off,sleep=off -rtc clock=vm;
      //-singlestep -d nochain
@@ -234,11 +250,24 @@ void bsim_qemu_stm32::MSetSerial(const char* port) {
           } while (!thread.TestDestroy());
      */
      mtx_qinit->Unlock();
-     qemu_main_loop();
+     usleep(100);
+     // qemu_main_loop();
+     // int64_t ns_ = 0;
+     while (!main_loop_should_exit()) {
+         if (runq) {
+             main_loop_wait(10);
+         } else {
+             usleep(1000);
+         }
+         //  int64_t ns = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+         //  printf("--------->ns:      %jd %jd\n", ns, ns - ns_);
+         //  ns_ = ns;
+     }
      qemu_cleanup();
  }
 
  void bsim_qemu_stm32::MEnd(void) {
+     runq = 1;
      qemu_mutex_lock_iothread();
      qmp_quit(NULL);
      qemu_mutex_unlock_iothread();
@@ -648,6 +677,7 @@ void bsim_qemu_stm32::MSetSerial(const char* port) {
      strncpy(fname_, fname, 299);
      fname_[strlen(fname) - 3] = 0;
      strncat(fname_, "bin", 299);
+     runq = 1;
      qemu_mutex_lock_iothread();
      qmp_stop(NULL);
      if (lxFileExists(fname_)) {
@@ -674,6 +704,7 @@ void bsim_qemu_stm32::MSetSerial(const char* port) {
 #endif
          qmp_pmemsave(0x8000000, 65536, fname_, NULL);
      }
+     runq = 1;
      qmp_cont(NULL);
      qemu_mutex_unlock_iothread();
  }
@@ -843,6 +874,7 @@ void bsim_qemu_stm32::MSetSerial(const char* port) {
  }
 
  void bsim_qemu_stm32::MReset(int flags) {
+     runq = 1;
      qemu_mutex_lock_iothread();
      qmp_cont(NULL);
      qmp_system_reset(NULL);

@@ -287,11 +287,13 @@ void cboard_Blue_Pill::Run_CPU(void) {
 
     // j = JUMPSTEPS; //step counter
     pi = 0;
+    /*
     if (!Window1.Get_debug_status()) {
         qemu_mutex_lock_iothread();
         qmp_cont(NULL);
         qemu_mutex_unlock_iothread();
-    }
+    }*/
+    runq = 1;
     if (Window1.Get_mcupwr())        // if powered
         for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
@@ -330,11 +332,15 @@ void cboard_Blue_Pill::Run_CPU(void) {
                 j++; //counter increment
              */
         }
-    if (!Window1.Get_debug_status()) {
-        qemu_mutex_lock_iothread();
-        qmp_stop(NULL);
-        qemu_mutex_unlock_iothread();
-    }
+    runq = 0;
+    /*
+if (!Window1.Get_debug_status()) {
+    qemu_mutex_lock_iothread();
+    qmp_stop(NULL);
+    qemu_mutex_unlock_iothread();
+}
+*/
+
     //  calculate mean value
     for (pi = 0; pi < MGetPinCount(); pi++) {
         pins[pi].oavalue = (int)((alm[pi] * RNSTEP) + 55);

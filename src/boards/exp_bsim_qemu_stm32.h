@@ -79,6 +79,7 @@ protected:
     int qemu_started;
     // lxMutex* io_mutex;
     // lxCondition* io_cond;
+    unsigned char runq;
 };
 
 #endif /* BOARD_STM32_H */
