@@ -27,6 +27,7 @@
 #define BOARD_STM32_H
 
 #include "board.h"
+#include "qemu_stm32.h"
 
 class bsim_qemu_stm32 : virtual public board {
 public:
@@ -58,8 +59,11 @@ public:
     void MStepResume(void) override;
     void MReset(int flags) override;
     void EvThreadRun(CThread& thread) override;
+    user_timer_t timer;
+    virtual void Run_CPU_ns(uint64_t time) = 0;
 
 protected:
+    unsigned int ns_count;
     void pins_reset(void);
 #ifdef _WIN_
     HANDLE serialfd[4];
@@ -77,9 +81,6 @@ protected:
     unsigned short ADCvalues[16];
     lxMutex* mtx_qinit;
     int qemu_started;
-    // lxMutex* io_mutex;
-    // lxCondition* io_cond;
-    unsigned char runq;
 };
 
 #endif /* BOARD_STM32_H */

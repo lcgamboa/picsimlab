@@ -303,36 +303,33 @@ void cboard_STM32_H103::Draw(CDraw* draw) {
     draw->Update();
 }
 
-void cboard_STM32_H103::Run_CPU(void) {
-    int i;
-    int j;
-    unsigned char pi;
-    unsigned int alm[64];
-    const int pinc = MGetPinCount();
+void cboard_STM32_H103::Run_CPU_ns(uint64_t time) {
+    static int j = 0;
+    static unsigned char pi = 0;
+    static unsigned int alm[64];
+    static const int pinc = MGetPinCount();
 
     const int JUMPSTEPS = 4.0 * Window1.GetJUMPSTEPS();  // number of steps skipped
     const long int NSTEP = 4.0 * Window1.GetNSTEP();     // number of steps in 100ms
-    const float RNSTEP = 200.0 * pinc / NSTEP;
 
-    // reset pins mean value
-    memset(alm, 0, 64 * sizeof(unsigned int));
+    const int inc = NSTEP / 1000;
 
-    // Spare parts window pre process
-    if (use_spare)
-        Window5.PreProcess();
+    const float RNSTEP = 200.0 * pinc * inc / 100000000;
 
-    j = JUMPSTEPS;  // step counter
-    pi = 0;
-    /*
-    if (!Window1.Get_debug_status()) {
-        qemu_mutex_lock_iothread();
-        qmp_cont(NULL);
-        qemu_mutex_unlock_iothread();
-    }
-    */
-    runq = 1;
-    if (Window1.Get_mcupwr())        // if powered
-        for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
+    for (uint64_t c = 0; c < time; c += inc) {
+        if (!ns_count) {
+            // reset pins mean value
+            memset(alm, 0, 64 * sizeof(unsigned int));
+
+            // Spare parts window pre process
+            if (use_spare)
+                Window5.PreProcess();
+
+            j = JUMPSTEPS;  // step counter
+            pi = 0;
+        }
+
+        if (Window1.Get_mcupwr())  // if powered
         {
             if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
             {
@@ -361,22 +358,19 @@ void cboard_STM32_H103::Run_CPU(void) {
 
             j++;  // counter increment
         }
-    runq = 0;
-    /*
-    if (!Window1.Get_debug_status()) {
-        qemu_mutex_lock_iothread();
-        qmp_stop(NULL);
-        qemu_mutex_unlock_iothread();
-    }
-    */
-    // calculate mean value
-    for (pi = 0; pi < MGetPinCount(); pi++) {
-        pins[pi].oavalue = (int)((alm[pi] * RNSTEP) + 55);
-    }
+        ns_count += inc;
+        if (ns_count > 100000000) {
+            ns_count = 0;
+            // calculate mean value
+            for (pi = 0; pi < MGetPinCount(); pi++) {
+                pins[pi].oavalue = (int)((alm[pi] * RNSTEP) + 55);
+            }
 
-    // Spare parts window pre post process
-    if (use_spare)
-        Window5.PostProcess();
+            // Spare parts window pre post process
+            if (use_spare)
+                Window5.PostProcess();
+        }
+    }
 }
 
 // Register the board in PICSimLab

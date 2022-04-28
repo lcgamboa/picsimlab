@@ -49,7 +49,8 @@ public:
     ~cboard_STM32_H103(void);
     // Called ever 100ms to draw board
     void Draw(CDraw* draw) override;
-    void Run_CPU(void) override;
+    void Run_CPU(void) override{};
+    void Run_CPU_ns(uint64_t time) override;
     // Return a list of board supported microcontrollers
     lxString GetSupportedDevices(void) override { return lxT("stm32f103rbt6,"); };
     // Return the filename of board picture
