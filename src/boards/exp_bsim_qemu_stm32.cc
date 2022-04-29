@@ -151,7 +151,7 @@ void bsim_qemu_stm32::EvThreadRun(CThread& thread) {
 
     char* resp = serial_port_list();
 
-#define ARGMAX 15
+#define ARGMAX 20
     char* argv[ARGMAX];
     int argc = 0;
 
@@ -185,6 +185,7 @@ void bsim_qemu_stm32::EvThreadRun(CThread& thread) {
     strcpy(argv[argc++], "shift=8,align=off,sleep=off");
     strcpy(argv[argc++], "-rtc");
     strcpy(argv[argc++], "clock=vm");
+    // strcpy(argv[argc++], "-S");  // wait for gdb
     // strcpy(argv[argc++], "-singlestep");
     //-icount shift=auto,align=off,sleep=off -rtc clock=vm;
     //-singlestep -d nochain
@@ -205,13 +206,13 @@ void bsim_qemu_stm32::EvThreadRun(CThread& thread) {
         free(argv[i]);
     }
 
-    mtx_qinit->Unlock();
-    usleep(100);
-
     timer.qtimer = (QEMUTimer*)malloc(sizeof(QEMUTimer));
     timer_init_full(timer.qtimer, NULL, QEMU_CLOCK_VIRTUAL, 1, 0, user_timeout_cb, this);
 
     timer_mod_ns(timer.qtimer, timer.last + timer.timeout);
+
+    mtx_qinit->Unlock();
+    usleep(100);
 
     qemu_main_loop();
     /*
