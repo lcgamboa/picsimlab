@@ -36,6 +36,8 @@
 class cboard_STM32_H103 : public bsim_qemu_stm32 {
 private:
     unsigned char p_BUT;
+    CLabel* label1;
+    CCombo* combo1;
 
     void RegisterRemoteControl(void) override;
 
@@ -75,6 +77,8 @@ public:
     unsigned short get_in_id(char* name) override;
     // return the output ids numbers of names used in output map
     unsigned short get_out_id(char* name) override;
+    // board combo events
+    void board_Event(CControl* control) override;
 };
 
 #endif /* BOARD_STM32_H103_H */

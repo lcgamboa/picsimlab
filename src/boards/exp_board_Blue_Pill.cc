@@ -82,13 +82,47 @@ unsigned short cboard_Blue_Pill::get_out_id(char* name) {
 // Constructor called once on board creation
 
 cboard_Blue_Pill::cboard_Blue_Pill(void) {
+    char buffer[1024];
+
     Proc = "stm32f103c8t6";  // default microcontroller if none defined in preferences
     ReadMaps();              // Read input and output board maps
+
+    // label1
+    label1 = new CLabel();
+    label1->SetFOwner(&Window1);
+    label1->SetName(lxT("label1_"));
+    label1->SetX(13);
+    label1->SetY(54 + 20);
+    label1->SetWidth(120);
+    label1->SetHeight(24);
+    label1->SetEnable(1);
+    label1->SetVisible(1);
+    label1->SetText(lxT("Qemu CPU MIPS"));
+    label1->SetAlign(1);
+    Window1.CreateChild(label1);
+    // combo1
+    combo1 = new CCombo();
+    combo1->SetFOwner(&Window1);
+    combo1->SetName(lxT("combo1_"));
+    combo1->SetX(13);
+    combo1->SetY(78 + 20);
+    combo1->SetWidth(130);
+    combo1->SetHeight(24);
+    combo1->SetEnable(1);
+    combo1->SetVisible(1);
+    combo1->SetText(IcountToMipsStr(5));
+    combo1->SetItems(IcountToMipsItens(buffer));
+    combo1->SetTag(3);
+    combo1->EvOnComboChange = EVONCOMBOCHANGE & CPWindow1::board_Event;
+    Window1.CreateChild(combo1);
 }
 
 // Destructor called once on board destruction
 
-cboard_Blue_Pill::~cboard_Blue_Pill(void) {}
+cboard_Blue_Pill::~cboard_Blue_Pill(void) {
+    Window1.DestroyChild(label1);
+    Window1.DestroyChild(combo1);
+}
 
 // Reset board status
 
@@ -126,6 +160,8 @@ void cboard_Blue_Pill::WritePreferences(void) {
     Window1.saveprefs(lxT("Blue_Pill_proc"), Proc);
     // write microcontroller clock to preferences
     Window1.saveprefs(lxT("Blue_Pill_clock"), lxString().Format("%2.1f", Window1.GetClock()));
+    // write microcontroller icount to preferences
+    Window1.saveprefs(lxT("Blue_Pill_icount"), itoa(icount));
 }
 
 // Called whe configuration file load  preferences
@@ -138,6 +174,11 @@ void cboard_Blue_Pill::ReadPreferences(char* name, char* value) {
     // read microcontroller clock
     if (!strcmp(name, "Blue_Pill_clock")) {
         Window1.SetClock(atof(value));
+    }
+    // read microcontroller icount
+    if (!strcmp(name, "Blue_Pill_icount")) {
+        icount = atoi(value);
+        combo1->SetText(IcountToMipsStr(icount));
     }
 }
 
@@ -274,7 +315,7 @@ void cboard_Blue_Pill::Run_CPU_ns(uint64_t time) {
 
     const long int NSTEP = 4.0 * Window1.GetNSTEP();  // number of steps in 100ms
 
-    const int inc = NSTEP / 1000;
+    const int inc = NSTEP / 1000;  // FIXME need to be fixed to correct behavior
 
     const float RNSTEP = 200.0 * pinc * inc / 100000000;
 
@@ -335,6 +376,11 @@ void cboard_Blue_Pill::Run_CPU_ns(uint64_t time) {
                 Window5.PostProcess();
         }
     }
+}
+
+void cboard_Blue_Pill::board_Event(CControl* control) {
+    icount = MipsStrToIcount(combo1->GetText().c_str());
+    Window1.EndSimulation();
 }
 
 // Register the board in PICSimLab

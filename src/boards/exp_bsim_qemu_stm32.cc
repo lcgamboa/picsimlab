@@ -66,6 +66,7 @@ bsim_qemu_stm32::bsim_qemu_stm32(void) {
     Window1.SetNeedReboot();
     mtx_qinit = new lxMutex();
     ns_count = 0;
+    icount = 5;
 }
 
 bsim_qemu_stm32::~bsim_qemu_stm32(void) {
@@ -181,8 +182,17 @@ void bsim_qemu_stm32::EvThreadRun(CThread& thread) {
     strcpy(argv[argc++], "-d");
     strcpy(argv[argc++], "unimp");
 
-    strcpy(argv[argc++], "-icount");
-    strcpy(argv[argc++], "shift=8,align=off,sleep=off");
+    // test icount limits
+    if (icount < -1) {
+        icount = -1;
+    }
+    if (icount > 10) {
+        icount = 10;
+    }
+    if (icount >= 0) {
+        strcpy(argv[argc++], "-icount");
+        sprintf(argv[argc++], "shift=%i,align=off,sleep=off", icount);
+    }
     strcpy(argv[argc++], "-rtc");
     strcpy(argv[argc++], "clock=vm");
     // strcpy(argv[argc++], "-S");  // wait for gdb
@@ -851,3 +861,34 @@ const picpin* bsim_qemu_stm32::MGetPinsValues(void) {
 void bsim_qemu_stm32::MStep(void) {}
 
 void bsim_qemu_stm32::MStepResume(void) {}
+
+static const char MipsStr[12][10] = {"No Limit", "1000",  "500",  "250",  "125",  "62.5",
+                                     "31.25",    "15.63", "7.81", "3.90", "1.95", "0.98"};
+
+int bsim_qemu_stm32::MipsStrToIcount(const char* mipstr) {
+    int index = -1;
+    for (int i = 1; i < 12; i++) {
+        if (!strcmp(MipsStr[i], mipstr)) {
+            index = i - 1;
+            break;
+        }
+    }
+    return index;
+}
+
+const char* bsim_qemu_stm32::IcountToMipsStr(int icount) {
+    if ((icount >= 0) && (icount < 11)) {
+        return MipsStr[icount + 1];
+    } else {
+        return MipsStr[0];
+    }
+}
+
+const char* bsim_qemu_stm32::IcountToMipsItens(char* buffer) {
+    buffer[0] = 0;
+    for (int i = 0; i < 12; i++) {
+        strcat(buffer, MipsStr[i]);
+        strcat(buffer, ",");
+    }
+    return buffer;
+}

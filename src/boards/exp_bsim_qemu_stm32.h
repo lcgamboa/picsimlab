@@ -63,8 +63,12 @@ public:
     virtual void Run_CPU_ns(uint64_t time) = 0;
 
 protected:
+    int MipsStrToIcount(const char* mipstr);
+    const char* IcountToMipsStr(int icount);
+    const char* IcountToMipsItens(char* buffer);
     unsigned int ns_count;
     void pins_reset(void);
+    int icount;
 #ifdef _WIN_
     HANDLE serialfd[4];
 #else
