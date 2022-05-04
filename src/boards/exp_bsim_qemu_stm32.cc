@@ -84,9 +84,6 @@ int bsim_qemu_stm32::MInit(const char* processor, const char* _fname, float freq
         printf("PICSimLab: Unknown processor %s, loading default !\n", processor);
     }
 
-    // gdb support start off
-    Window1.Set_debug_status(0);
-
     pins_reset();
 
     serialfd[0] = INVALID_HANDLE_VALUE;
@@ -174,8 +171,10 @@ void bsim_qemu_stm32::EvThreadRun(CThread& thread) {
         strcpy(argv[argc++], "-serial");
         strcpy(argv[argc++], SERIALDEVICE);
     }
-    strcpy(argv[argc++], "-gdb");
-    sprintf(argv[argc++], "tcp::%i", Window1.Get_debug_port());
+    if (Window1.Get_debug_status()) {
+        strcpy(argv[argc++], "-gdb");
+        sprintf(argv[argc++], "tcp::%i", Window1.Get_debug_port());
+    }
     strcpy(argv[argc++], "-drive");
     sprintf(argv[argc++], "file=%s,if=pflash,format=raw", fname_);
 

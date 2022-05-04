@@ -315,7 +315,7 @@ void cboard_Blue_Pill::Run_CPU_ns(uint64_t time) {
 
     const long int NSTEP = 4.0 * Window1.GetNSTEP();  // number of steps in 100ms
 
-    const int inc = NSTEP / 1000;  // FIXME need to be fixed to correct behavior
+    const int inc = 16000000L / NSTEP;
 
     const float RNSTEP = 200.0 * pinc * inc / 100000000;
 

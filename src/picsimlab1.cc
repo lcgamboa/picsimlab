@@ -848,9 +848,6 @@ void CPWindow1::EndSimulation(int saveold, const char* newpath) {
 
     saveprefs(lxT("picsimlab_version"), _VERSION_);
     saveprefs(lxT("picsimlab_lab"), boards_list[lab].name_);
-    if (NeedReboot) {
-        debug = 0;
-    }
     saveprefs(lxT("picsimlab_debug"), itoa(debug));
     saveprefs(lxT("picsimlab_debugt"), itoa(debug_type));
     saveprefs(lxT("picsimlab_debugp"), itoa(debug_port));
@@ -1220,33 +1217,19 @@ void CPWindow1::togglebutton1_EvOnToggleButton(CControl* control) {
 
     debug = togglebutton1.GetCheck();
 
-    if (NeedReboot) {
 #ifdef NO_DEBUG
-        statusbar1.SetField(1, lxT(" "));
+    statusbar1.SetField(1, lxT(" "));
 #else
-        lxString status;
+    EndSimulation();
+    Configure(HOME);
 
-        if (debug) {
-            int ret = pboard->DebugInit(debug_type);
-            if (ret < 0) {
-                statusbar1.SetField(1, status + lxT("Debug: Error"));
-            } else {
-                statusbar1.SetField(1, status + lxT("Debug: ") + pboard->GetDebugName() + ":" + itoa(debug_port));
-            }
-        } else {
-            statusbar1.SetField(1, status + lxT("Debug: Off"));
-        }
-#endif
-    } else {
-        EndSimulation();
-        Configure(HOME);
+    if (osc_on)
+        menu1_Modules_Oscilloscope_EvMenuActive(this);
+    if (spare_on)
+        menu1_Modules_Spareparts_EvMenuActive(this);
 
-        if (osc_on)
-            menu1_Modules_Oscilloscope_EvMenuActive(this);
-        if (spare_on)
-            menu1_Modules_Spareparts_EvMenuActive(this);
-    }
     need_resize = 1;
+#endif
 }
 
 void CPWindow1::menu1_File_SaveWorkspace_EvMenuActive(CControl* control) {
