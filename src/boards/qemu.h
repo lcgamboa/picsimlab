@@ -26,26 +26,10 @@
 #include <stdint.h>
 
 extern "C" {
-void qemu_init(int, char**, char**);
-void qemu_main_loop(void);
-void qemu_cleanup(void);
-void qemu_clear_opts(void);
 #define Error char
-void qmp_quit(Error** errp);
-void qmp_stop(Error** errp);
-void qmp_system_reset(Error** errp);
-void qmp_pmemsave(int64_t val, int64_t size, const char* filename, Error** errp);
-void qmp_cont(Error** errp);
 #define qemu_mutex_lock_iothread() qemu_mutex_lock_iothread_impl(__FILE__, __LINE__)
-void qemu_mutex_lock_iothread_impl(const char* file, int line);
-void qemu_mutex_unlock_iothread(void);
-void qemu_picsimlab_register(void (*picsimlab_write_pin)(int pin, int value));
-void qemu_picsimlab_set_pin(int pin, int value);
-void qemu_picsimlab_set_apin(int chn, int value);
+
 typedef uint64_t hwaddr;
-int cpu_physical_memory_rw(hwaddr addr, void* buf, hwaddr len, bool is_write);
-bool main_loop_should_exit(void);
-void main_loop_wait(int64_t timeout);
 typedef enum {
     QEMU_CLOCK_REALTIME = 0,
     QEMU_CLOCK_VIRTUAL = 1,
@@ -53,17 +37,11 @@ typedef enum {
     QEMU_CLOCK_VIRTUAL_RT = 3,
     QEMU_CLOCK_MAX
 } QEMUClockType;
-int64_t qemu_clock_get_ns(QEMUClockType type);
 
 typedef struct QEMUTimer QEMUTimer;
 typedef void QEMUTimerCB(void* opaque);
 typedef struct QEMUTimerList QEMUTimerList;
 typedef struct QEMUTimerListGroup QEMUTimerListGroup;
-
-void timer_init_full(QEMUTimer* ts, QEMUTimerListGroup* timer_list_group, QEMUClockType type, int scale, int attributes,
-                     QEMUTimerCB* cb, void* opaque);
-
-void timer_mod_ns(QEMUTimer* ts, int64_t expire_time);
 
 struct QEMUTimer {
     int64_t expire_time;  // in nanoseconds
@@ -80,4 +58,28 @@ typedef struct {
     int64_t timeout;
     int64_t last;
 } user_timer_t;
+
+extern void (*qemu_init)(int, char**, const char**);
+extern void (*qemu_main_loop)(void);
+extern void (*qemu_cleanup)(void);
+
+extern void (*qmp_quit)(Error** errp);
+extern void (*qmp_stop)(Error** errp);
+extern void (*qmp_system_reset)(Error** errp);
+extern void (*qmp_pmemsave)(int64_t val, int64_t size, const char* filename, Error** errp);
+extern void (*qmp_cont)(Error** errp);
+
+extern void (*qemu_mutex_lock_iothread_impl)(const char* file, int line);
+extern void (*qemu_mutex_unlock_iothread)(void);
+
+extern void (*qemu_picsimlab_register)(void (*picsimlab_write_pin)(int pin, int value));
+extern void (*qemu_picsimlab_set_pin)(int pin, int value);
+extern void (*qemu_picsimlab_set_apin)(int chn, int value);
+
+extern int64_t (*qemu_clock_get_ns)(QEMUClockType type);
+
+extern void (*timer_init_full)(QEMUTimer* ts, QEMUTimerListGroup* timer_list_group, QEMUClockType type, int scale,
+                               int attributes, QEMUTimerCB* cb, void* opaque);
+
+extern void (*timer_mod_ns)(QEMUTimer* ts, int64_t expire_time);
 }

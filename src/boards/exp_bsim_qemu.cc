@@ -24,27 +24,43 @@
    ######################################################################## */
 
 #ifndef _WIN_
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <sys/un.h>
-
-#define INVALID_HANDLE_VALUE -1;
-#else
-#include <winsock2.h>
-#include <ws2tcpip.h>
-#define _TCP_
-#define MSG_NOSIGNAL 0
+#define INVALID_HANDLE_VALUE -1
 #endif
 
+#include "exp_bsim_qemu.h"
+#include <dlfcn.h>
 #include "../picsimlab1.h"
 #include "../serial_port.h"
-#include "exp_bsim_qemu_stm32.h"
+
+// fuction pointers
+
+void (*qemu_init)(int, char**, const char**);
+void (*qemu_main_loop)(void);
+void (*qemu_cleanup)(void);
+
+void (*qmp_quit)(Error** errp);
+void (*qmp_stop)(Error** errp);
+void (*qmp_system_reset)(Error** errp);
+void (*qmp_pmemsave)(int64_t val, int64_t size, const char* filename, Error** errp);
+void (*qmp_cont)(Error** errp);
+
+void (*qemu_mutex_lock_iothread_impl)(const char* file, int line);
+void (*qemu_mutex_unlock_iothread)(void);
+
+void (*qemu_picsimlab_register)(void (*picsimlab_write_pin)(int pin, int value));
+void (*qemu_picsimlab_set_pin)(int pin, int value);
+void (*qemu_picsimlab_set_apin)(int chn, int value);
+
+int64_t (*qemu_clock_get_ns)(QEMUClockType type);
+
+void (*timer_init_full)(QEMUTimer* ts, QEMUTimerListGroup* timer_list_group, QEMUClockType type, int scale,
+                        int attributes, QEMUTimerCB* cb, void* opaque);
+
+void (*timer_mod_ns)(QEMUTimer* ts, int64_t expire_time);
 
 // global pointers to c callbacks
 static picpin* g_pins;
-static bsim_qemu_stm32* g_board = NULL;
+static bsim_qemu* g_board = NULL;
 
 void picsimlab_write_pin(int pin, int value) {
     int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
@@ -55,9 +71,45 @@ void picsimlab_write_pin(int pin, int value) {
     // printf("pin[%i]=%i\n", pin, value);
 }
 
-bsim_qemu_stm32::bsim_qemu_stm32(void) {
+int bsim_qemu::load_qemu_lib(const char* path) {
+    void* handle = dlopen(path, RTLD_NOW);
+    if (handle == nullptr) {
+        printf("%s\n", dlerror());
+        return 0;
+    }
+
+#define GET_SYMBOL_AND_CHECK(X)                   \
+    *((void**)(&X)) = dlsym(handle, #X);          \
+    if (nullptr == X) {                           \
+        printf("Qemu lib Lost symbol: " #X "\n"); \
+        return 0;                                 \
+    }
+    GET_SYMBOL_AND_CHECK(qemu_init);
+    GET_SYMBOL_AND_CHECK(qemu_main_loop);
+    GET_SYMBOL_AND_CHECK(qemu_cleanup);
+    GET_SYMBOL_AND_CHECK(qmp_quit);
+    GET_SYMBOL_AND_CHECK(qmp_stop);
+    GET_SYMBOL_AND_CHECK(qmp_system_reset);
+    GET_SYMBOL_AND_CHECK(qmp_pmemsave);
+    GET_SYMBOL_AND_CHECK(qmp_cont);
+    GET_SYMBOL_AND_CHECK(qemu_mutex_lock_iothread_impl);
+    GET_SYMBOL_AND_CHECK(qemu_mutex_unlock_iothread);
+    GET_SYMBOL_AND_CHECK(qemu_picsimlab_register);
+    GET_SYMBOL_AND_CHECK(qemu_picsimlab_set_pin);
+    GET_SYMBOL_AND_CHECK(qemu_picsimlab_set_apin);
+    GET_SYMBOL_AND_CHECK(qemu_clock_get_ns);
+    GET_SYMBOL_AND_CHECK(timer_init_full);
+    GET_SYMBOL_AND_CHECK(timer_mod_ns);
+#undef GET_SYMBOL_AND_CHECK
+
+    return 1;
+}
+
+bsim_qemu::bsim_qemu(void) {
     fname_bak[0] = 0;
     fname_[0] = 0;
+
+    SimType = QEMU_SIM_NONE;
 
     qemu_started = 0;
 
@@ -69,13 +121,13 @@ bsim_qemu_stm32::bsim_qemu_stm32(void) {
     icount = 5;
 }
 
-bsim_qemu_stm32::~bsim_qemu_stm32(void) {
+bsim_qemu::~bsim_qemu(void) {
     delete mtx_qinit;
 }
 
-void bsim_qemu_stm32::MSetSerial(const char* port) {}
+void bsim_qemu::MSetSerial(const char* port) {}
 
-int bsim_qemu_stm32::MInit(const char* processor, const char* _fname, float freq) {
+int bsim_qemu::MInit(const char* processor, const char* _fname, float freq) {
     strcpy(fname, _fname);
 
     lxString sproc = GetSupportedDevices();
@@ -104,14 +156,14 @@ int bsim_qemu_stm32::MInit(const char* processor, const char* _fname, float freq
 
         qemu_started = 1;
     } else {
-        printf("PICSimLab: qemu_stm32 already started !!!!!\n");
+        printf("PICSimLab: qemu already started !!!!!\n");
     }
 
     return 0;  // ret;
 }
 
 static void user_timeout_cb(void* opaque) {
-    bsim_qemu_stm32* board = (bsim_qemu_stm32*)opaque;
+    bsim_qemu* board = (bsim_qemu*)opaque;
     int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
     timer_mod_ns(board->timer.qtimer, now + board->timer.timeout);
     // printf("================> Timer <====================== %ji\n", now - board->timer.last);
@@ -119,100 +171,105 @@ static void user_timeout_cb(void* opaque) {
     board->timer.last = now;
 }
 
-void bsim_qemu_stm32::EvThreadRun(CThread& thread) {
+void bsim_qemu::EvThreadRun(CThread& thread) {
     mtx_qinit->Lock();
-    // change .hex to .bin
-    strncpy(fname_, fname, 2048);
-    fname_[strlen(fname_) - 3] = 0;
-    strncat(fname_, "bin", 2047);
 
-    if (!lxFileExists(fname_)) {
-        // create a empty memory
-        FILE* fout;
-        fout = fopen(fname_, "w");
-        if (fout) {
-            unsigned char sp[4] = {0x00, 0x08, 0x00, 0x20};
-            unsigned char handler[4] = {0x51, 0x01, 0x00, 0x00};
-            unsigned char loop[4] = {0xFE, 0xE7, 0x00, 0xBF};
+    if (SimType == QEMU_SIM_STM32) {
+        // FIXME use picsimlab lib folder
+        load_qemu_lib("/usr/local/lib/libqemu-stm32.so");
 
-            fwrite(&sp, 4, sizeof(char), fout);
-            for (int r = 0; r < 83; r++) {
-                fwrite(&handler, 4, sizeof(char), fout);
+        // change .hex to .bin
+        strncpy(fname_, fname, 2048);
+        fname_[strlen(fname_) - 3] = 0;
+        strncat(fname_, "bin", 2047);
+
+        if (!lxFileExists(fname_)) {
+            // create a empty memory
+            FILE* fout;
+            fout = fopen(fname_, "w");
+            if (fout) {
+                unsigned char sp[4] = {0x00, 0x08, 0x00, 0x20};
+                unsigned char handler[4] = {0x51, 0x01, 0x00, 0x00};
+                unsigned char loop[4] = {0xFE, 0xE7, 0x00, 0xBF};
+
+                fwrite(&sp, 4, sizeof(char), fout);
+                for (int r = 0; r < 83; r++) {
+                    fwrite(&handler, 4, sizeof(char), fout);
+                }
+                fwrite(&loop, 4, sizeof(char), fout);
+                fclose(fout);
+            } else {
+                printf("picsimlab: qemu Erro creating file %s \n", fname_);
+                exit(-1);
             }
-            fwrite(&loop, 4, sizeof(char), fout);
-            fclose(fout);
-        } else {
-            printf("picsimlab: qemu_stm32 Erro creating file %s \n", fname_);
-            exit(-1);
         }
-    }
 
-    char* resp = serial_port_list();
+        char* resp = serial_port_list();
 
 #define ARGMAX 20
-    char* argv[ARGMAX];
-    int argc = 0;
+        char* argv[ARGMAX];
+        int argc = 0;
 
-    for (int i = 0; i < ARGMAX; i++) {
-        argv[i] = (char*)malloc(1024);
-    }
+        for (int i = 0; i < ARGMAX; i++) {
+            argv[i] = (char*)malloc(1024);
+        }
 
-    strcpy(argv[argc++], "qemu-stm32");
+        strcpy(argv[argc++], "qemu-stm32");
 
-    strcpy(argv[argc++], "-M");
-    if (!Proc.compare("stm32f103c8t6")) {
-        strcpy(argv[argc++], "stm32-f103c8-picsimlab-new");
+        strcpy(argv[argc++], "-M");
+        if (!Proc.compare("stm32f103c8t6")) {
+            strcpy(argv[argc++], "stm32-f103c8-picsimlab-new");
+        } else {
+            strcpy(argv[argc++], "stm32-p103-picsimlab-new");
+        }
+
+        // verify if serial port exists
+        if (strstr(resp, SERIALDEVICE)) {
+            strcpy(argv[argc++], "-serial");
+            strcpy(argv[argc++], SERIALDEVICE);
+        }
+        if (Window1.Get_debug_status()) {
+            strcpy(argv[argc++], "-gdb");
+            sprintf(argv[argc++], "tcp::%i", Window1.Get_debug_port());
+        }
+        strcpy(argv[argc++], "-drive");
+        sprintf(argv[argc++], "file=%s,if=pflash,format=raw", fname_);
+
+        strcpy(argv[argc++], "-d");
+        strcpy(argv[argc++], "unimp");
+
+        // test icount limits
+        if (icount < -1) {
+            icount = -1;
+        }
+        if (icount > 10) {
+            icount = 10;
+        }
+        if (icount >= 0) {
+            strcpy(argv[argc++], "-icount");
+            sprintf(argv[argc++], "shift=%i,align=off,sleep=off", icount);
+        }
+        strcpy(argv[argc++], "-rtc");
+        strcpy(argv[argc++], "clock=vm");
+
+        free(resp);
+
+        // printf("picsimlab: %s\n", (const char*)cmd);
+        g_pins = pins;
+        qemu_picsimlab_register(picsimlab_write_pin);
+        g_board = this;
+        timer.last = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+        timer.timeout = 10000000L;
+
+        qemu_init(argc, argv, NULL);
+
+        // free argv
+        for (int i = 0; i < ARGMAX; i++) {
+            free(argv[i]);
+        }
     } else {
-        strcpy(argv[argc++], "stm32-p103-picsimlab-new");
-    }
-
-    // verify if serial port exists
-    if (strstr(resp, SERIALDEVICE)) {
-        strcpy(argv[argc++], "-serial");
-        strcpy(argv[argc++], SERIALDEVICE);
-    }
-    if (Window1.Get_debug_status()) {
-        strcpy(argv[argc++], "-gdb");
-        sprintf(argv[argc++], "tcp::%i", Window1.Get_debug_port());
-    }
-    strcpy(argv[argc++], "-drive");
-    sprintf(argv[argc++], "file=%s,if=pflash,format=raw", fname_);
-
-    strcpy(argv[argc++], "-d");
-    strcpy(argv[argc++], "unimp");
-
-    // test icount limits
-    if (icount < -1) {
-        icount = -1;
-    }
-    if (icount > 10) {
-        icount = 10;
-    }
-    if (icount >= 0) {
-        strcpy(argv[argc++], "-icount");
-        sprintf(argv[argc++], "shift=%i,align=off,sleep=off", icount);
-    }
-    strcpy(argv[argc++], "-rtc");
-    strcpy(argv[argc++], "clock=vm");
-    // strcpy(argv[argc++], "-S");  // wait for gdb
-    // strcpy(argv[argc++], "-singlestep");
-    //-icount shift=auto,align=off,sleep=off -rtc clock=vm;
-    //-singlestep -d nochain
-
-    free(resp);
-
-    // printf("picsimlab: %s\n", (const char*)cmd);
-    g_pins = pins;
-    qemu_picsimlab_register(picsimlab_write_pin);
-    g_board = this;
-    timer.last = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-    timer.timeout = 10000000L;
-
-    qemu_init(argc, argv, NULL);
-
-    // free argv
-    for (int i = 0; i < ARGMAX; i++) {
-        free(argv[i]);
+        printf("picsimlab qemu: simulator %i not supported!!!\n", SimType);
+        exit(-1);
     }
 
     timer.qtimer = (QEMUTimer*)malloc(sizeof(QEMUTimer));
@@ -240,7 +297,7 @@ void bsim_qemu_stm32::EvThreadRun(CThread& thread) {
     qemu_cleanup();
 }
 
-void bsim_qemu_stm32::MEnd(void) {
+void bsim_qemu::MEnd(void) {
     qemu_mutex_lock_iothread();
     qmp_quit(NULL);
     qemu_mutex_unlock_iothread();
@@ -261,41 +318,41 @@ void bsim_qemu_stm32::MEnd(void) {
     }
 }
 
-int bsim_qemu_stm32::MGetArchitecture(void) {
+int bsim_qemu::MGetArchitecture(void) {
     return ARCH_STM32;
 }
 
-void bsim_qemu_stm32::MEraseFlash(void) {
+void bsim_qemu::MEraseFlash(void) {
     // erase_flash ();
 }
 
-void bsim_qemu_stm32::MSetFreq(float freq_) {
+void bsim_qemu::MSetFreq(float freq_) {
     freq = freq_;
 }
 
-float bsim_qemu_stm32::MGetFreq(void) {
+float bsim_qemu::MGetFreq(void) {
     return freq;
 }
 
-void bsim_qemu_stm32::MSetVCC(float vcc) {
-    printf("qemu_stm32: Incomplete!!!!\n");
+void bsim_qemu::MSetVCC(float vcc) {
+    printf("qemu: Incomplete!!!!\n");
 }
 
-float bsim_qemu_stm32::MGetVCC(void) {
+float bsim_qemu::MGetVCC(void) {
     return 3.3;
 }
 
-float bsim_qemu_stm32::MGetInstClockFreq(void) {
+float bsim_qemu::MGetInstClockFreq(void) {
     return freq;
 }
 
-int bsim_qemu_stm32::CpuInitialized(void) {
+int bsim_qemu::CpuInitialized(void) {
     return 1;
 }
 
-void bsim_qemu_stm32::DebugLoop(void) {}
+void bsim_qemu::DebugLoop(void) {}
 
-lxString bsim_qemu_stm32::MGetPinName(int pin) {
+lxString bsim_qemu::MGetPinName(int pin) {
     lxString pinname = "error";
 
     if (!Proc.compare("stm32f103c8t6")) {
@@ -645,7 +702,7 @@ lxString bsim_qemu_stm32::MGetPinName(int pin) {
     return pinname;
 }
 
-void bsim_qemu_stm32::MDumpMemory(const char* fname) {
+void bsim_qemu::MDumpMemory(const char* fname) {
     // change .hex to .bin
     strncpy(fname_, fname, 299);
     fname_[strlen(fname) - 3] = 0;
@@ -680,12 +737,12 @@ void bsim_qemu_stm32::MDumpMemory(const char* fname) {
     qemu_mutex_unlock_iothread();
 }
 
-int bsim_qemu_stm32::DebugInit(int dtyppe)  // argument not used in picm only mplabx
+int bsim_qemu::DebugInit(int dtyppe)  // argument not used in picm only mplabx
 {
     return 0;  //! mplabxd_init (this, Window1.Get_debug_port ()) - 1;
 }
 
-int bsim_qemu_stm32::MGetPinCount(void) {
+int bsim_qemu::MGetPinCount(void) {
     if (!Proc.compare("stm32f103c8t6"))
         return 48;
     if (!Proc.compare("stm32f103rbt6"))
@@ -693,7 +750,7 @@ int bsim_qemu_stm32::MGetPinCount(void) {
     return 0;
 }
 
-void bsim_qemu_stm32::pins_reset(void) {
+void bsim_qemu::pins_reset(void) {
     for (int p = 0; p < MGetPinCount(); p++) {
         pins[p].avalue = 0;
         pins[p].lvalue = 0;
@@ -710,7 +767,7 @@ void bsim_qemu_stm32::pins_reset(void) {
     }
 }
 
-void bsim_qemu_stm32::MSetPin(int pin, unsigned char value) {
+void bsim_qemu::MSetPin(int pin, unsigned char value) {
     if (!pin)
         return;
 
@@ -721,11 +778,11 @@ void bsim_qemu_stm32::MSetPin(int pin, unsigned char value) {
     }
 }
 
-void bsim_qemu_stm32::MSetPinDOV(int pin, unsigned char ovalue) {
+void bsim_qemu::MSetPinDOV(int pin, unsigned char ovalue) {
     // set_pin_DOV (pin, ovalue);
 }
 
-void bsim_qemu_stm32::MSetAPin(int pin, float value) {
+void bsim_qemu::MSetAPin(int pin, float value) {
     if (!pin)
         return;
     if ((pins[pin - 1].avalue != value)) {
@@ -837,14 +894,14 @@ void bsim_qemu_stm32::MSetAPin(int pin, float value) {
     }
 }
 
-unsigned char bsim_qemu_stm32::MGetPin(int pin) {
+unsigned char bsim_qemu::MGetPin(int pin) {
     if ((pin) && (pin < MGetPinCount())) {
         return pins[pin - 1].value;
     }
     return 0;
 }
 
-void bsim_qemu_stm32::MReset(int flags) {
+void bsim_qemu::MReset(int flags) {
     mtx_qinit->Lock();  // only for wait qemu start
     mtx_qinit->Unlock();
     qemu_mutex_lock_iothread();
@@ -853,18 +910,18 @@ void bsim_qemu_stm32::MReset(int flags) {
     qemu_mutex_unlock_iothread();
 }
 
-const picpin* bsim_qemu_stm32::MGetPinsValues(void) {
+const picpin* bsim_qemu::MGetPinsValues(void) {
     return pins;
 }
 
-void bsim_qemu_stm32::MStep(void) {}
+void bsim_qemu::MStep(void) {}
 
-void bsim_qemu_stm32::MStepResume(void) {}
+void bsim_qemu::MStepResume(void) {}
 
 static const char MipsStr[12][10] = {"No Limit", "1000",  "500",  "250",  "125",  "62.5",
                                      "31.25",    "15.63", "7.81", "3.90", "1.95", "0.98"};
 
-int bsim_qemu_stm32::MipsStrToIcount(const char* mipstr) {
+int bsim_qemu::MipsStrToIcount(const char* mipstr) {
     int index = -1;
     for (int i = 1; i < 12; i++) {
         if (!strcmp(MipsStr[i], mipstr)) {
@@ -875,7 +932,7 @@ int bsim_qemu_stm32::MipsStrToIcount(const char* mipstr) {
     return index;
 }
 
-const char* bsim_qemu_stm32::IcountToMipsStr(int icount) {
+const char* bsim_qemu::IcountToMipsStr(int icount) {
     if ((icount >= 0) && (icount < 11)) {
         return MipsStr[icount + 1];
     } else {
@@ -883,7 +940,7 @@ const char* bsim_qemu_stm32::IcountToMipsStr(int icount) {
     }
 }
 
-const char* bsim_qemu_stm32::IcountToMipsItens(char* buffer) {
+const char* bsim_qemu::IcountToMipsItens(char* buffer) {
     buffer[0] = 0;
     for (int i = 0; i < 12; i++) {
         strcat(buffer, MipsStr[i]);

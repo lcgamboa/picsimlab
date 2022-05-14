@@ -23,16 +23,18 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_STM32_H
-#define BOARD_STM32_H
+#ifndef BOARD_QEMU_H
+#define BOARD_QEMU_H
 
 #include "board.h"
-#include "qemu_stm32.h"
+#include "qemu.h"
 
-class bsim_qemu_stm32 : virtual public board {
+typedef enum { QEMU_SIM_NONE = 0, QEMU_SIM_STM32, QEMU_SIM_ESP32 } QEMUSimType;
+
+class bsim_qemu : virtual public board {
 public:
-    bsim_qemu_stm32(void);
-    ~bsim_qemu_stm32(void);
+    bsim_qemu(void);
+    ~bsim_qemu(void);
     int DebugInit(int dtyppe) override;
     lxString GetDebugName(void) override { return "GDB"; };
     void DebugLoop(void) override;
@@ -85,6 +87,10 @@ protected:
     unsigned short ADCvalues[16];
     lxMutex* mtx_qinit;
     int qemu_started;
+    QEMUSimType SimType;
+
+private:
+    int load_qemu_lib(const char* path);
 };
 
-#endif /* BOARD_STM32_H */
+#endif /* BOARD_QEMU_H */

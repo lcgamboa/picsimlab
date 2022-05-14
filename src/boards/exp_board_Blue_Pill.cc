@@ -29,15 +29,6 @@
 #include "../picsimlab4.h"  //Oscilloscope
 #include "../picsimlab5.h"  //Spare Parts
 
-extern "C" {
-#define Error char
-void qmp_stop(Error** errp);
-void qmp_cont(Error** errp);
-#define qemu_mutex_lock_iothread() qemu_mutex_lock_iothread_impl(__FILE__, __LINE__)
-void qemu_mutex_lock_iothread_impl(const char* file, int line);
-void qemu_mutex_unlock_iothread(void);
-}
-
 /* ids of inputs of input map*/
 enum {
     I_ICSP,  // ICSP connector
@@ -83,6 +74,8 @@ unsigned short cboard_Blue_Pill::get_out_id(char* name) {
 
 cboard_Blue_Pill::cboard_Blue_Pill(void) {
     char buffer[1024];
+
+    SimType = QEMU_SIM_STM32;
 
     Proc = "stm32f103c8t6";  // default microcontroller if none defined in preferences
     ReadMaps();              // Read input and output board maps

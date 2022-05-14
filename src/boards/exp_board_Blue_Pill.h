@@ -28,12 +28,12 @@
 
 #include <lxrad.h>
 
-#include "exp_bsim_qemu_stm32.h"
+#include "exp_bsim_qemu.h"
 
 #define BOARD_Blue_Pill_Name "Blue Pill"
 
 // new board class must be derived from board class defined in board.h
-class cboard_Blue_Pill : public bsim_qemu_stm32 {
+class cboard_Blue_Pill : public bsim_qemu {
 private:
     CLabel* label1;
     CCombo* combo1;

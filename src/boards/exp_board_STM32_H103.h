@@ -28,12 +28,12 @@
 
 #include <lxrad.h>
 
-#include "exp_bsim_qemu_stm32.h"
+#include "exp_bsim_qemu.h"
 
 #define BOARD_STM32_H103_Name "STM32 H103"
 
 // new board class must be derived from board class defined in board.h
-class cboard_STM32_H103 : public bsim_qemu_stm32 {
+class cboard_STM32_H103 : public bsim_qemu {
 private:
     unsigned char p_BUT;
     CLabel* label1;
