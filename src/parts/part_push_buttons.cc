@@ -34,6 +34,8 @@ enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_B1, O_B2, O_B3, O_B4, O
 /* inputs */
 enum { I_B1, I_B2, I_B3, I_B4, I_B5, I_B6, I_B7, I_B8, I_J1 };
 
+enum { MODE_NORMAL, MODE_IDEAL };
+
 cpart_pbuttons::cpart_pbuttons(unsigned x, unsigned y)
     : font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     X = x;
@@ -61,6 +63,8 @@ cpart_pbuttons::cpart_pbuttons(unsigned x, unsigned y)
     output_value[5] = !active;
     output_value[6] = !active;
     output_value[7] = !active;
+
+    mode = MODE_NORMAL;
 
     SWBounce_init(&bounce, 8);
 
@@ -197,32 +201,41 @@ void cpart_pbuttons::Draw(void) {
 }
 
 void cpart_pbuttons::PreProcess(void) {
-    const picpin* ppins = Window5.GetPinsValues();
+    if (mode == MODE_NORMAL) {
+        const picpin* ppins = Window5.GetPinsValues();
+        SWBounce_prepare(&bounce, Window1.GetBoard()->MGetInstClockFreq());
 
-    SWBounce_prepare(&bounce, Window1.GetBoard()->MGetInstClockFreq());
-
-    for (int i = 0; i < 8; i++) {
-        if (output_pins[i]) {
-            if ((ppins[output_pins[i] - 1].dir == PD_IN) && (ppins[output_pins[i] - 1].value != output_value[i])) {
-                SWBounce_bounce(&bounce, i);
+        for (int i = 0; i < 8; i++) {
+            if (output_pins[i]) {
+                if ((ppins[output_pins[i] - 1].dir == PD_IN) && (ppins[output_pins[i] - 1].value != output_value[i])) {
+                    SWBounce_bounce(&bounce, i);
+                }
             }
         }
+        SetAwaysUpdate(bounce.do_bounce);
+    } else {
+        for (int i = 0; i < 8; i++) {
+            if (output_pins[i]) {
+                Window5.SetPin(output_pins[i], output_value[i]);
+            }
+        }
+        SetAwaysUpdate(0);
     }
-
-    SetAwaysUpdate(bounce.do_bounce);
 }
 
 void cpart_pbuttons::Process(void) {
-    const int ret = SWBounce_process(&bounce);
-    if (ret) {
-        const picpin* ppins = Window5.GetPinsValues();
+    if (mode == MODE_NORMAL) {
+        const int ret = SWBounce_process(&bounce);
+        if (ret) {
+            const picpin* ppins = Window5.GetPinsValues();
 
-        for (int i = 0; i < 8; i++) {
-            if (bounce.bounce[i]) {
-                if (ret == 1) {
-                    Window5.SetPin(output_pins[i], !ppins[output_pins[i] - 1].value);
-                } else {
-                    Window5.SetPin(output_pins[i], output_value[i]);
+            for (int i = 0; i < 8; i++) {
+                if (bounce.bounce[i]) {
+                    if (ret == 1) {
+                        Window5.SetPin(output_pins[i], !ppins[output_pins[i] - 1].value);
+                    } else {
+                        Window5.SetPin(output_pins[i], output_value[i]);
+                    }
                 }
             }
         }
@@ -385,16 +398,16 @@ unsigned short cpart_pbuttons::get_out_id(char* name) {
 lxString cpart_pbuttons::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", output_pins[0], output_pins[1], output_pins[2],
-            output_pins[3], output_pins[4], output_pins[5], output_pins[6], output_pins[7], active);
+    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", output_pins[0], output_pins[1], output_pins[2],
+            output_pins[3], output_pins[4], output_pins[5], output_pins[6], output_pins[7], active, mode);
 
     return prefs;
 }
 
 void cpart_pbuttons::ReadPreferences(lxString value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1],
+    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1],
            &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7],
-           &active);
+           &active, &mode);
     output_value[0] = !active;
     output_value[1] = !active;
     output_value[2] = !active;
@@ -478,6 +491,11 @@ void cpart_pbuttons::ConfigurePropertiesWindow(CPWindow* WProp) {
     else
         ((CCombo*)WProp->GetChildByName("combo9"))->SetText("LOW ");
 
+    if (mode)
+        ((CCombo*)WProp->GetChildByName("combo10"))->SetText("Ideal");
+    else
+        ((CCombo*)WProp->GetChildByName("combo10"))->SetText("Normal");
+
     ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
         EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
@@ -497,6 +515,8 @@ void cpart_pbuttons::ReadPropertiesWindow(CPWindow* WProp) {
     output_pins[7] = atoi(((CCombo*)WProp->GetChildByName("combo8"))->GetText());
 
     active = (((CCombo*)WProp->GetChildByName("combo9"))->GetText().compare("HIGH") == 0);
+
+    mode = (((CCombo*)WProp->GetChildByName("combo10"))->GetText().compare("Ideal") == 0);
 
     output_value[0] = !active;
     output_value[1] = !active;

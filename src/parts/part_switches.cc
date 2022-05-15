@@ -34,6 +34,8 @@ enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_S1, O_S2, O_S3, O_S4, O
 /* inputs */
 enum { I_S1, I_S2, I_S3, I_S4, I_S5, I_S6, I_S7, I_S8 };
 
+enum { MODE_NORMAL, MODE_IDEAL };
+
 cpart_switches::cpart_switches(unsigned x, unsigned y)
     : font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     X = x;
@@ -61,6 +63,8 @@ cpart_switches::cpart_switches(unsigned x, unsigned y)
     output_value[5] = 0;
     output_value[6] = 0;
     output_value[7] = 0;
+
+    mode = MODE_NORMAL;
 
     SWBounce_init(&bounce, 8);
 
@@ -219,39 +223,52 @@ void cpart_switches::Draw(void) {
 }
 
 void cpart_switches::PreProcess(void) {
-    const picpin* ppins = Window5.GetPinsValues();
+    if (mode == MODE_NORMAL) {
+        const picpin* ppins = Window5.GetPinsValues();
+        SWBounce_prepare(&bounce, Window1.GetBoard()->MGetInstClockFreq());
 
-    SWBounce_prepare(&bounce, Window1.GetBoard()->MGetInstClockFreq());
-
-    for (int i = 0; i < 8; i++) {
-        if (output_pins[i]) {
-            unsigned char out = output_value[i];
-            if (!active) {
-                out = !out;
-            }
-            if ((ppins[output_pins[i] - 1].dir == PD_IN) && (ppins[output_pins[i] - 1].value != out)) {
-                SWBounce_bounce(&bounce, i);
+        for (int i = 0; i < 8; i++) {
+            if (output_pins[i]) {
+                unsigned char out = output_value[i];
+                if (!active) {
+                    out = !out;
+                }
+                if ((ppins[output_pins[i] - 1].dir == PD_IN) && (ppins[output_pins[i] - 1].value != out)) {
+                    SWBounce_bounce(&bounce, i);
+                }
             }
         }
+        SetAwaysUpdate(bounce.do_bounce);
+    } else {
+        for (int i = 0; i < 8; i++) {
+            if (output_pins[i]) {
+                if (active) {
+                    Window5.SetPin(output_pins[i], output_value[i]);
+                } else {
+                    Window5.SetPin(output_pins[i], !output_value[i]);
+                }
+            }
+        }
+        SetAwaysUpdate(0);
     }
-
-    SetAwaysUpdate(bounce.do_bounce);
 }
 
 void cpart_switches::Process(void) {
-    const int ret = SWBounce_process(&bounce);
-    if (ret) {
-        const picpin* ppins = Window5.GetPinsValues();
+    if (mode == MODE_NORMAL) {
+        const int ret = SWBounce_process(&bounce);
+        if (ret) {
+            const picpin* ppins = Window5.GetPinsValues();
 
-        for (int i = 0; i < 8; i++) {
-            if (bounce.bounce[i]) {
-                if (ret == 1) {
-                    Window5.SetPin(output_pins[i], !ppins[output_pins[i] - 1].value);
-                } else {
-                    if (active) {
-                        Window5.SetPin(output_pins[i], output_value[i]);
+            for (int i = 0; i < 8; i++) {
+                if (bounce.bounce[i]) {
+                    if (ret == 1) {
+                        Window5.SetPin(output_pins[i], !ppins[output_pins[i] - 1].value);
                     } else {
-                        Window5.SetPin(output_pins[i], !output_value[i]);
+                        if (active) {
+                            Window5.SetPin(output_pins[i], output_value[i]);
+                        } else {
+                            Window5.SetPin(output_pins[i], !output_value[i]);
+                        }
                     }
                 }
             }
@@ -366,19 +383,19 @@ unsigned short cpart_switches::get_out_id(char* name) {
 lxString cpart_switches::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
+    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
             output_pins[0], output_pins[1], output_pins[2], output_pins[3], output_pins[4], output_pins[5],
             output_pins[6], output_pins[7], output_value[0], output_value[1], output_value[2], output_value[3],
-            output_value[4], output_value[5], output_value[6], output_value[7], active);
+            output_value[4], output_value[5], output_value[6], output_value[7], active, mode);
 
     return prefs;
 }
 
 void cpart_switches::ReadPreferences(lxString value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
+    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
            &output_pins[0], &output_pins[1], &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5],
            &output_pins[6], &output_pins[7], &output_value[0], &output_value[1], &output_value[2], &output_value[3],
-           &output_value[4], &output_value[5], &output_value[6], &output_value[7], &active);
+           &output_value[4], &output_value[5], &output_value[6], &output_value[7], &active, &mode);
 }
 
 void cpart_switches::ConfigurePropertiesWindow(CPWindow* WProp) {
@@ -454,6 +471,11 @@ void cpart_switches::ConfigurePropertiesWindow(CPWindow* WProp) {
     else
         ((CCombo*)WProp->GetChildByName("combo9"))->SetText("Down");
 
+    if (mode)
+        ((CCombo*)WProp->GetChildByName("combo10"))->SetText("Ideal");
+    else
+        ((CCombo*)WProp->GetChildByName("combo10"))->SetText("Normal");
+
     ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
         EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
@@ -473,6 +495,8 @@ void cpart_switches::ReadPropertiesWindow(CPWindow* WProp) {
     output_pins[7] = atoi(((CCombo*)WProp->GetChildByName("combo8"))->GetText());
 
     active = (((CCombo*)WProp->GetChildByName("combo9"))->GetText().compare("Up") == 0);
+
+    mode = (((CCombo*)WProp->GetChildByName("combo10"))->GetText().compare("Ideal") == 0);
 }
 
 part_init(PART_SWITCHES_Name, cpart_switches, "Input");

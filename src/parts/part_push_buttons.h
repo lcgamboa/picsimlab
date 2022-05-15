@@ -58,6 +58,7 @@ private:
     unsigned char output_pins[8];
     unsigned char output_value[8];
     SWBounce_t bounce;
+    unsigned char mode;
     lxFont font;
 };
 
