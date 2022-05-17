@@ -50,11 +50,8 @@ public:
     void MSetVCC(float vcc) override;
     float MGetVCC(void) override;
     float MGetInstClockFreq(void) override;
-    int MGetPinCount(void) override;
-    lxString MGetPinName(int pin) override;
     void MSetPin(int pin, unsigned char value) override;
     void MSetPinDOV(int pin, unsigned char ovalue) override;
-    void MSetAPin(int pin, float value) override;
     unsigned char MGetPin(int pin) override;
     const picpin* MGetPinsValues(void) override;
     void MStep(void) override;

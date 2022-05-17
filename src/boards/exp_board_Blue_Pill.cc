@@ -217,7 +217,7 @@ void cboard_Blue_Pill::EvMouseButtonPress(uint button, uint x, uint y, uint stat
                       Window1.Set_mcurst (1);
                      }
                      */
-                    MReset(-1);
+                    Reset();
                     p_RST = 0;
                     break;
             }
@@ -374,6 +374,223 @@ void cboard_Blue_Pill::Run_CPU_ns(uint64_t time) {
 void cboard_Blue_Pill::board_Event(CControl* control) {
     icount = MipsStrToIcount(combo1->GetText().c_str());
     Window1.EndSimulation();
+}
+
+lxString cboard_Blue_Pill::MGetPinName(int pin) {
+    lxString pinname = "error";
+
+    switch (pin) {
+        case 1:
+            pinname = "VBAT";
+            break;
+        case 2:
+            pinname = "PC13";
+            break;
+        case 3:
+            pinname = "PC14";
+            break;
+        case 4:
+            pinname = "PC15";
+            break;
+        case 5:
+            pinname = "PD0";
+            break;
+        case 6:
+            pinname = "PD1";
+            break;
+        case 7:
+            pinname = "NRST";
+            break;
+        case 8:
+            pinname = "VSSA";
+            break;
+        case 9:
+            pinname = "VDDA";
+            break;
+        case 10:
+            pinname = "PA0";
+            break;
+        case 11:
+            pinname = "PA1";
+            break;
+        case 12:
+            pinname = "PA2";
+            break;
+        case 13:
+            pinname = "PA3";
+            break;
+        case 14:
+            pinname = "PA4";
+            break;
+        case 15:
+            pinname = "PA5";
+            break;
+        case 16:
+            pinname = "PA6";
+            break;
+        case 17:
+            pinname = "PA7";
+            break;
+        case 18:
+            pinname = "PB0";
+            break;
+        case 19:
+            pinname = "PB1";
+            break;
+        case 20:
+            pinname = "PB2";
+            break;
+        case 21:
+            pinname = "PB10";
+            break;
+        case 22:
+            pinname = "PB11";
+            break;
+        case 23:
+            pinname = "VSS";
+            break;
+        case 24:
+            pinname = "VDD";
+            break;
+        case 25:
+            pinname = "PB12";
+            break;
+        case 26:
+            pinname = "PB13";
+            break;
+        case 27:
+            pinname = "PB14";
+            break;
+        case 28:
+            pinname = "PB15";
+            break;
+        case 29:
+            pinname = "PA8";
+            break;
+        case 30:
+            pinname = "PA9";
+            break;
+        case 31:
+            pinname = "PA10";
+            break;
+        case 32:
+            pinname = "PA11";
+            break;
+        case 33:
+            pinname = "PA12";
+            break;
+        case 34:
+            pinname = "PA13";
+            break;
+        case 35:
+            pinname = "VSS";
+            break;
+        case 36:
+            pinname = "VDD";
+            break;
+        case 37:
+            pinname = "PA14";
+            break;
+        case 38:
+            pinname = "PA15";
+            break;
+        case 39:
+            pinname = "PB3";
+            break;
+        case 40:
+            pinname = "PB4";
+            break;
+        case 41:
+            pinname = "PB5";
+            break;
+        case 42:
+            pinname = "PB6";
+            break;
+        case 43:
+            pinname = "PB7";
+            break;
+        case 44:
+            pinname = "BOOT0";
+            break;
+        case 45:
+            pinname = "PB8";
+            break;
+        case 46:
+            pinname = "PB9";
+            break;
+        case 47:
+            pinname = "VSS";
+            break;
+        case 48:
+            pinname = "VDD";
+            break;
+    }
+
+    return pinname;
+}
+
+int cboard_Blue_Pill::MGetPinCount(void) {
+    return 48;
+}
+
+void cboard_Blue_Pill::MSetAPin(int pin, float value) {
+    if (!pin)
+        return;
+    if ((pins[pin - 1].avalue != value)) {
+        unsigned char channel = 0xFF;
+
+        pins[pin - 1].avalue = value;
+
+        switch (pin) {
+            case 10:  // PA0
+                channel = 0;
+                break;
+            case 11:  // PA1
+                channel = 1;
+                break;
+            case 12:  // PA2
+                channel = 2;
+                break;
+            case 13:  // PA3
+                channel = 3;
+                break;
+            case 14:  // PA4
+                channel = 4;
+                break;
+            case 15:  // PA5
+                channel = 5;
+                break;
+            case 16:  // PA6
+                channel = 6;
+                break;
+            case 17:  // PA7
+                channel = 7;
+                break;
+            case 18:  // PB0
+                channel = 8;
+                break;
+            case 19:  // PB1
+                channel = 9;
+                break;
+        }
+
+        if (channel != 0xFF) {
+            if (value > 3.3)
+                value = 3.3;
+            if (value < 0)
+                value = 0;
+
+            unsigned short svalue = (unsigned short)(4096 * value / 3.3);
+
+            pins[pin - 1].ptype = PT_ANALOG;
+
+            if (ADCvalues[channel] != svalue) {
+                qemu_picsimlab_set_apin(channel, svalue);
+                ADCvalues[channel] = svalue;
+                // printf("Analog channel %02X = %i\n",channel,svalue);
+            }
+        }
+    }
 }
 
 // Register the board in PICSimLab

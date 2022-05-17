@@ -78,6 +78,9 @@ public:
     unsigned short get_out_id(char* name) override;
     // board combo events
     void board_Event(CControl* control) override;
+    void MSetAPin(int pin, float value) override;
+    lxString MGetPinName(int pin) override;
+    int MGetPinCount(void) override;
 };
 
 #endif /* BOARD_Blue_Pill_H */

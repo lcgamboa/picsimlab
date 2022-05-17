@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2021-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
    ######################################################################## */
 
 // include files
-#include "exp_board_STM32_H103.h"
+#include "exp_board_DevKitC.h"
 #include "../picsimlab1.h"
 #include "../picsimlab4.h"  //Oscilloscope
 #include "../picsimlab5.h"  //Spare Parts
@@ -34,27 +34,26 @@ enum {
     I_ICSP,  // ICSP connector
     I_PWR,   // Power button
     I_RST,   // Reset button
-    I_BUT,   // User button
+    I_BOOT   // Boot button
 };
 
 /* ids of outputs of output map*/
 enum {
-    O_LPWR,  // Power LED
-    O_LED,   // LED on PC13 output
-    O_BUT,   // User button
-    O_RST    // Reset button
+    O_LON,  // Power LED
+    O_RST,  // Reset button
+    O_BOOT  // Boot button
 };
 // return the input ids numbers of names used in input map
 
-unsigned short cboard_STM32_H103::get_in_id(char* name) {
+unsigned short cboard_DevKitC::get_in_id(char* name) {
     if (strcmp(name, "PG_ICSP") == 0)
         return I_ICSP;
     if (strcmp(name, "SW_PWR") == 0)
         return I_PWR;
     if (strcmp(name, "PB_RST") == 0)
         return I_RST;
-    if (strcmp(name, "PB_BUT") == 0)
-        return I_BUT;
+    if (strcmp(name, "PB_BOOT") == 0)
+        return I_BOOT;
 
     printf("Error input '%s' don't have a valid id! \n", name);
     return -1;
@@ -62,15 +61,13 @@ unsigned short cboard_STM32_H103::get_in_id(char* name) {
 
 // return the output ids numbers of names used in output map
 
-unsigned short cboard_STM32_H103::get_out_id(char* name) {
-    if (strcmp(name, "LD_LED") == 0)
-        return O_LED;
-    if (strcmp(name, "LD_LPWR") == 0)
-        return O_LPWR;
-    if (strcmp(name, "PB_BUT") == 0)
-        return O_BUT;
+unsigned short cboard_DevKitC::get_out_id(char* name) {
+    if (strcmp(name, "LD_ON") == 0)
+        return O_LON;
     if (strcmp(name, "PB_RST") == 0)
         return O_RST;
+    if (strcmp(name, "PB_BOOT") == 0)
+        return O_BOOT;
 
     printf("Error output '%s' don't have a valid id! \n", name);
     return 1;
@@ -78,14 +75,14 @@ unsigned short cboard_STM32_H103::get_out_id(char* name) {
 
 // Constructor called once on board creation
 
-cboard_STM32_H103::cboard_STM32_H103(void) {
+cboard_DevKitC::cboard_DevKitC(void) {
     char buffer[1024];
 
-    SimType = QEMU_SIM_STM32;
+    SimType = QEMU_SIM_ESP32;
+    p_BOOT = 1;
 
-    Proc = "stm32f103rbt6";  // default microcontroller if none defined in preferences
-    ReadMaps();              // Read input and output board maps
-    p_BUT = 0;
+    Proc = "ESP32";  // default microcontroller if none defined in preferences
+    ReadMaps();      // Read input and output board maps
 
     // label1
     label1 = new CLabel();
@@ -119,15 +116,21 @@ cboard_STM32_H103::cboard_STM32_H103(void) {
 
 // Destructor called once on board destruction
 
-cboard_STM32_H103::~cboard_STM32_H103(void) {
+cboard_DevKitC::~cboard_DevKitC(void) {
     Window1.DestroyChild(label1);
     Window1.DestroyChild(combo1);
 }
 
 // Reset board status
 
-void cboard_STM32_H103::Reset(void) {
-    p_BUT = 0;
+void cboard_DevKitC::Reset(void) {
+    uint32_t* strap_mode = qemu_picsimlab_get_strap();
+
+    if (p_BOOT) {
+        *strap_mode = 0x12;  // SPI_FAST_FLASH_BOOT
+    } else {
+        *strap_mode = 0x0f;  // UART_BOOT(UART0)
+    }
 
     MReset(1);
 
@@ -139,54 +142,47 @@ void cboard_STM32_H103::Reset(void) {
     RegisterRemoteControl();
 }
 
-void cboard_STM32_H103::RegisterRemoteControl(void) {
-    for (int i = 0; i < inputc; i++) {
-        switch (input[i].id) {
-            case I_BUT:
-                input[i].status = &p_BUT;
-                break;
-        }
-    }
-
+void cboard_DevKitC::RegisterRemoteControl(void) {
+    /*
     for (int i = 0; i < outputc; i++) {
         switch (output[i].id) {
             case O_LED:
-                output[i].status = &pins[52].oavalue;
+                output[i].status = &pins[1].oavalue;
                 break;
         }
-    }
+    }*/
 }
 
 // Called ever 1s to refresh status
 
-void cboard_STM32_H103::RefreshStatus(void) {
+void cboard_DevKitC::RefreshStatus(void) {
     Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
 }
 
 // Called to save board preferences in configuration file
 
-void cboard_STM32_H103::WritePreferences(void) {
+void cboard_DevKitC::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
-    Window1.saveprefs(lxT("STM32_H103_proc"), Proc);
+    Window1.saveprefs(lxT("DevKitC_proc"), Proc);
     // write microcontroller clock to preferences
-    Window1.saveprefs(lxT("STM32_H103_clock"), lxString().Format("%2.1f", Window1.GetClock()));
+    Window1.saveprefs(lxT("DevKitC_clock"), lxString().Format("%2.1f", Window1.GetClock()));
     // write microcontroller icount to preferences
-    Window1.saveprefs(lxT("STM32_H103_icount"), itoa(icount));
+    Window1.saveprefs(lxT("DevKitC_icount"), itoa(icount));
 }
 
 // Called whe configuration file load  preferences
 
-void cboard_STM32_H103::ReadPreferences(char* name, char* value) {
+void cboard_DevKitC::ReadPreferences(char* name, char* value) {
     // read microcontroller of preferences
-    if (!strcmp(name, "STM32_H103_proc")) {
+    if (!strcmp(name, "DevKitC_proc")) {
         Proc = value;
     }
     // read microcontroller clock
-    if (!strcmp(name, "STM32_H103_clock")) {
+    if (!strcmp(name, "DevKitC_clock")) {
         Window1.SetClock(atof(value));
     }
     // read microcontroller icount
-    if (!strcmp(name, "STM32_H103_icount")) {
+    if (!strcmp(name, "DevKitC_icount")) {
         icount = atoi(value);
         combo1->SetText(IcountToMipsStr(icount));
     }
@@ -194,15 +190,15 @@ void cboard_STM32_H103::ReadPreferences(char* name, char* value) {
 
 // Event on the board
 
-void cboard_STM32_H103::EvKeyPress(uint key, uint mask) {}
+void cboard_DevKitC::EvKeyPress(uint key, uint mask) {}
 
 // Event on the board
 
-void cboard_STM32_H103::EvKeyRelease(uint key, uint mask) {}
+void cboard_DevKitC::EvKeyRelease(uint key, uint mask) {}
 
 // Event on the board
 
-void cboard_STM32_H103::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
+void cboard_DevKitC::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
     int i;
 
     // search for the input area which owner the event
@@ -237,8 +233,8 @@ void cboard_STM32_H103::EvMouseButtonPress(uint button, uint x, uint y, uint sta
                     Reset();
                     p_RST = 0;
                     break;
-                case I_BUT:
-                    p_BUT = 1;
+                case I_BOOT:
+                    p_BOOT = 0;
                     break;
             }
         }
@@ -247,7 +243,7 @@ void cboard_STM32_H103::EvMouseButtonPress(uint button, uint x, uint y, uint sta
 
 // Event on the board
 
-void cboard_STM32_H103::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
+void cboard_DevKitC::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
     int i;
 
     // search for the input area which owner the event
@@ -269,8 +265,8 @@ void cboard_STM32_H103::EvMouseButtonRelease(uint button, uint x, uint y, uint s
                     }
                     p_RST = 1;
                     break;
-                case I_BUT:
-                    p_BUT = 0;
+                case I_BOOT:
+                    p_BOOT = 1;
                     break;
             }
         }
@@ -280,7 +276,7 @@ void cboard_STM32_H103::EvMouseButtonRelease(uint button, uint x, uint y, uint s
 // Called ever 100ms to draw board
 // This is the critical code for simulator running speed
 
-void cboard_STM32_H103::Draw(CDraw* draw) {
+void cboard_DevKitC::Draw(CDraw* draw) {
     int i;
 
     draw->Canvas.Init(Scale, Scale);  // initialize draw context
@@ -294,40 +290,32 @@ void cboard_STM32_H103::Draw(CDraw* draw) {
 
             switch (output[i].id)  // search for color of output
             {
-                case O_LED:  // White using pc12 mean value
-                    draw->Canvas.SetColor(0, pins[52].oavalue, 0);
-                    draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                           output[i].y2 - output[i].y1);
-
-                    break;
-                case O_LPWR:  // Blue using mcupwr value
+                case O_LON:  // Blue using mcupwr value
                     draw->Canvas.SetColor(200 * Window1.Get_mcupwr() + 55, 0, 0);
-                    draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                           output[i].y2 - output[i].y1);
-
-                    break;
-                case O_BUT:
-                    draw->Canvas.SetColor(100, 100, 100);
-                    draw->Canvas.Rectangle(1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1,
-                                           output[i].y2 - output[i].y1 - 1);
-                    if (p_BUT) {
-                        draw->Canvas.SetColor(55, 55, 55);
-                    } else {
-                        draw->Canvas.SetColor(15, 15, 15);
-                    }
-                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, 11);
                     break;
                 case O_RST:
+                case O_BOOT:
                     draw->Canvas.SetColor(100, 100, 100);
-                    draw->Canvas.Rectangle(1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1,
-                                           output[i].y2 - output[i].y1 - 1);
-                    if (p_RST) {
-                        draw->Canvas.SetColor(15, 15, 15);
-                    } else {
-                        draw->Canvas.SetColor(55, 55, 55);
-                    }
-                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, 11);
                     break;
+            }
+
+            draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                   output[i].y2 - output[i].y1);
+
+            if (output[i].id == O_RST) {
+                if (p_RST) {
+                    draw->Canvas.SetColor(15, 15, 15);
+                } else {
+                    draw->Canvas.SetColor(55, 55, 55);
+                }
+                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 11);
+            } else if (output[i].id == O_BOOT) {
+                if (p_BOOT) {
+                    draw->Canvas.SetColor(15, 15, 15);
+                } else {
+                    draw->Canvas.SetColor(55, 55, 55);
+                }
+                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 11);
             }
         }
     }
@@ -337,14 +325,12 @@ void cboard_STM32_H103::Draw(CDraw* draw) {
     draw->Update();
 }
 
-void cboard_STM32_H103::Run_CPU_ns(uint64_t time) {
-    static int j = 0;
+void cboard_DevKitC::Run_CPU_ns(uint64_t time) {
     static unsigned char pi = 0;
     static unsigned int alm[64];
     static const int pinc = MGetPinCount();
 
-    const int JUMPSTEPS = 4.0 * Window1.GetJUMPSTEPS();  // number of steps skipped
-    const long int NSTEP = 4.0 * Window1.GetNSTEP();     // number of steps in 100ms
+    const long int NSTEP = 4.0 * Window1.GetNSTEP();  // number of steps in 100ms
 
     const int inc = 16000000L / NSTEP;
 
@@ -359,17 +345,18 @@ void cboard_STM32_H103::Run_CPU_ns(uint64_t time) {
             if (use_spare)
                 Window5.PreProcess();
 
-            j = JUMPSTEPS;  // step counter
+            // j = JUMPSTEPS; //step counter
             pi = 0;
         }
 
         if (Window1.Get_mcupwr())  // if powered
+                                   // for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
-            if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
-            {
-                MSetPin(14, p_BUT);
-            }
-
+            /*
+            if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
+             {
+             }
+             */
             // verify if a breakpoint is reached if not run one instruction
             MStep();
             // Oscilloscope window process
@@ -379,27 +366,28 @@ void cboard_STM32_H103::Run_CPU_ns(uint64_t time) {
             if (use_spare)
                 Window5.Process();
 
-            // increment mean value counter if pin is high
+            //  increment mean value counter if pin is high
             alm[pi] += pins[pi].value;
             pi++;
             if (pi == pinc)
                 pi = 0;
+            /*
+                if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
+                 {
+                  j = -1; //reset counter
+                 }
 
-            if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
-            {
-                j = -1;  // reset counter
-            }
-
-            j++;  // counter increment
+                j++; //counter increment
+             */
         }
+
         ns_count += inc;
         if (ns_count > 100000000) {
             ns_count = 0;
-            // calculate mean value
+            //  calculate mean value
             for (pi = 0; pi < MGetPinCount(); pi++) {
                 pins[pi].oavalue = (int)((alm[pi] * RNSTEP) + 55);
             }
-
             // Spare parts window pre post process
             if (use_spare)
                 Window5.PostProcess();
@@ -407,216 +395,166 @@ void cboard_STM32_H103::Run_CPU_ns(uint64_t time) {
     }
 }
 
-void cboard_STM32_H103::board_Event(CControl* control) {
+void cboard_DevKitC::Run_CPU(void) {
+#define CHR_TIOCM_CTS 0x020
+#define CHR_TIOCM_CAR 0x040
+#define CHR_TIOCM_DSR 0x100
+#define CHR_TIOCM_RI 0x080
+#define CHR_TIOCM_DTR 0x002
+#define CHR_TIOCM_RTS 0x004
+
+    static unsigned int status_ = 0;
+    unsigned int status = qemu_picsimlab_get_TIOCM();
+
+    if (status_ != status) {
+        status_ = status;
+
+        if ((status & CHR_TIOCM_CTS) && !(status & CHR_TIOCM_DSR)) {
+            Reset();
+        }
+
+        if (!(status & CHR_TIOCM_CTS) && (status & CHR_TIOCM_DSR)) {
+            uint32_t* strap_mode = qemu_picsimlab_get_strap();
+            *strap_mode = 0x0f;  // UART_BOOT(UART0)
+            MReset(1);
+        }
+    }
+}
+
+void cboard_DevKitC::board_Event(CControl* control) {
     icount = MipsStrToIcount(combo1->GetText().c_str());
     Window1.EndSimulation();
 }
 
-lxString cboard_STM32_H103::MGetPinName(int pin) {
+lxString cboard_DevKitC::MGetPinName(int pin) {
     lxString pinname = "error";
+
     switch (pin) {
         case 1:
-            pinname = "VBAT";
+            pinname = "VDD";
             break;
         case 2:
-            pinname = "PC13";
+            pinname = "EN";
             break;
         case 3:
-            pinname = "PC14";
+            pinname = "IO36";
             break;
         case 4:
-            pinname = "PC15";
+            pinname = "IO39";
             break;
         case 5:
-            pinname = "PD0";
+            pinname = "IO34";
             break;
         case 6:
-            pinname = "PD1";
+            pinname = "IO35";
             break;
         case 7:
-            pinname = "NRST";
+            pinname = "IO32";
             break;
         case 8:
-            pinname = "PC0";
+            pinname = "IO33";
             break;
         case 9:
-            pinname = "PC1";
+            pinname = "IO25";
             break;
         case 10:
-            pinname = "PC2";
+            pinname = "IO26";
             break;
         case 11:
-            pinname = "PC3";
+            pinname = "IO27";
             break;
         case 12:
-            pinname = "VSSA";
+            pinname = "IO14";
             break;
         case 13:
-            pinname = "VDDA";
+            pinname = "IO12";
             break;
         case 14:
-            pinname = "PA0";
+            pinname = "GND";
             break;
         case 15:
-            pinname = "PA1";
+            pinname = "IO13";
             break;
         case 16:
-            pinname = "PA2";
+            pinname = "IO9";
             break;
         case 17:
-            pinname = "PA3";
+            pinname = "IO10";
             break;
         case 18:
-            pinname = "VSS";
+            pinname = "IO11";
             break;
         case 19:
-            pinname = "VDD";
+            pinname = "VIN";
             break;
         case 20:
-            pinname = "PA4";
+            pinname = "IO6";
             break;
         case 21:
-            pinname = "PA5";
+            pinname = "IO7";
             break;
         case 22:
-            pinname = "PA6";
+            pinname = "IO8";
             break;
         case 23:
-            pinname = "PA7";
+            pinname = "IO15";
             break;
         case 24:
-            pinname = "PC4";
+            pinname = "IO2";
             break;
         case 25:
-            pinname = "PC5";
+            pinname = "IO0";
             break;
         case 26:
-            pinname = "PB0";
+            pinname = "IO4";
             break;
         case 27:
-            pinname = "PB1";
+            pinname = "IO16";
             break;
         case 28:
-            pinname = "PB2";
+            pinname = "IO17";
             break;
         case 29:
-            pinname = "PB10";
+            pinname = "IO5";
             break;
         case 30:
-            pinname = "PB11";
+            pinname = "IO18";
             break;
         case 31:
-            pinname = "VSS";
+            pinname = "IO19";
             break;
         case 32:
-            pinname = "VDD";
+            pinname = "GND";
             break;
         case 33:
-            pinname = "PB12";
+            pinname = "IO21";
             break;
         case 34:
-            pinname = "PB13";
+            pinname = "IO3";
             break;
         case 35:
-            pinname = "PB14";
+            pinname = "IO1";
             break;
         case 36:
-            pinname = "PB15";
+            pinname = "IO22";
             break;
         case 37:
-            pinname = "PC6";
+            pinname = "IO23";
             break;
         case 38:
-            pinname = "PC7";
-            break;
-        case 39:
-            pinname = "PC8";
-            break;
-        case 40:
-            pinname = "PC9";
-            break;
-        case 41:
-            pinname = "PA8";
-            break;
-        case 42:
-            pinname = "PA9";
-            break;
-        case 43:
-            pinname = "PA10";
-            break;
-        case 44:
-            pinname = "PA11";
-            break;
-        case 45:
-            pinname = "PA12";
-            break;
-        case 46:
-            pinname = "PA13";
-            break;
-        case 47:
-            pinname = "VSS";
-            break;
-        case 48:
-            pinname = "VDD";
-            break;
-        case 49:
-            pinname = "PA14";
-            break;
-        case 50:
-            pinname = "PA15";
-            break;
-        case 51:
-            pinname = "PC10";
-            break;
-        case 52:
-            pinname = "PC11";
-            break;
-        case 53:
-            pinname = "PC12";
-            break;
-        case 54:
-            pinname = "PD2";
-            break;
-        case 55:
-            pinname = "PB3";
-            break;
-        case 56:
-            pinname = "PB4";
-            break;
-        case 57:
-            pinname = "PB5";
-            break;
-        case 58:
-            pinname = "PB6";
-            break;
-        case 59:
-            pinname = "PB7";
-            break;
-        case 60:
-            pinname = "BOOT0";
-            break;
-        case 61:
-            pinname = "PB8";
-            break;
-        case 62:
-            pinname = "PB9";
-            break;
-        case 63:
-            pinname = "VSS";
-            break;
-        case 64:
-            pinname = "VDD";
+            pinname = "GND";
             break;
     }
 
     return pinname;
 }
 
-int cboard_STM32_H103::MGetPinCount(void) {
-    return 64;
+int cboard_DevKitC::MGetPinCount(void) {
+    return 38;
 }
 
-void cboard_STM32_H103::MSetAPin(int pin, float value) {
+void cboard_DevKitC::MSetAPin(int pin, float value) {
+    /*
     if (!pin)
         return;
     if ((pins[pin - 1].avalue != value)) {
@@ -624,56 +562,38 @@ void cboard_STM32_H103::MSetAPin(int pin, float value) {
 
         pins[pin - 1].avalue = value;
 
-        switch (pin) {
-            case 8:  // PC0
-                channel = 10;
-                break;
-            case 9:  // PC1
-                channel = 11;
-                break;
-            case 10:  // PC2
-                channel = 12;
-                break;
-            case 11:  // PC3
-                channel = 13;
-                break;
-            case 14:  // PA0
-                channel = 0;
-                break;
-            case 15:  // PA1
-                channel = 1;
-                break;
-            case 16:  // PA2
-                channel = 2;
-                break;
-            case 17:  // PA3
-                channel = 3;
-                break;
-            case 20:  // PA4
-                channel = 4;
-                break;
-            case 21:  // PA5
-                channel = 5;
-                break;
-            case 22:  // PA6
-                channel = 6;
-                break;
-            case 23:  // PA7
-                channel = 7;
-                break;
-            case 24:  // PC4
-                channel = 14;
-                break;
-            case 25:  // PC5
-                channel = 15;
-                break;
-            case 26:  // PB0
-                channel = 8;
-                break;
-            case 27:  // PB1
-                channel = 9;
-                break;
-        }
+            switch (pin) {
+                case 10:  // PA0
+                    channel = 0;
+                    break;
+                case 11:  // PA1
+                    channel = 1;
+                    break;
+                case 12:  // PA2
+                    channel = 2;
+                    break;
+                case 13:  // PA3
+                    channel = 3;
+                    break;
+                case 14:  // PA4
+                    channel = 4;
+                    break;
+                case 15:  // PA5
+                    channel = 5;
+                    break;
+                case 16:  // PA6
+                    channel = 6;
+                    break;
+                case 17:  // PA7
+                    channel = 7;
+                    break;
+                case 18:  // PB0
+                    channel = 8;
+                    break;
+                case 19:  // PB1
+                    channel = 9;
+                    break;
+            }
 
         if (channel != 0xFF) {
             if (value > 3.3)
@@ -692,7 +612,8 @@ void cboard_STM32_H103::MSetAPin(int pin, float value) {
             }
         }
     }
+    */
 }
 
 // Register the board in PICSimLab
-board_init(BOARD_STM32_H103_Name, cboard_STM32_H103);
+board_init(BOARD_DevKitC_Name, cboard_DevKitC);
