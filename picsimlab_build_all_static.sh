@@ -66,9 +66,19 @@ cl git checkout picsimlab
 git pull --no-rebase
 cl ./build_libqemu-stm32.sh
 cd build
-cl cp qemu-system-arm qemu-stm32
-cl strip qemu-stm32
-cd ../../
+cl strip libqemu-stm32.so
+cl install -d ../../../lib/qemu/
+cl cp libqemu-stm32.so ../../../lib/qemu/
+cd ..
+cl git checkout picsimlab_esp32
+cl ./build_libqemu-esp32.sh
+cd build
+cl strip libqemu-xtensa.so
+cl cp libqemu-xtensa.so ../../../lib/qemu/
+cd ..
+cl install -d ../../lib/qemu/fw
+cl cp pc-bios/esp32-v3-rom*.bin ../../lib/qemu/fw/
+cd ..
 echo -e "\033[1;32m ---------------------- build picsimlab ---------------------- \033[0m"
 #git pull --no-rebase
 cd ../
@@ -81,6 +91,9 @@ echo -e "\033[1;32m logout your session and login to use serial \033[0m"
 if xhost > /dev/null 2>&1 ; then
 cd share
 ln -s ../share/ picsimlab
+cd ..
+cd lib
+ln -s ../lib/ picsimlab
 cd ..
 cd src
 ln -s ../tools/srtank/srtank srtank

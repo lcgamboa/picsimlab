@@ -12,6 +12,7 @@ MKDIR = mkdir -p
 
 appdir= ${prefix}/share/applications/
 sharedir= ${prefix}/share/picsimlab/
+libdir= ${prefix}/lib/picsimlab/
 execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
@@ -31,7 +32,7 @@ LIBS=  $(LIBPATH)/picsim/src/libpicsim.a $(LIBPATH)/lxrad/lib/liblxrad.a \
        $(LIBPATH)/simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a \
        $(LIBPATH)/lunasvg/build/liblunasvg.a \
        $(LIBPATH)/uCsim_picsimlab/picsimlab/libucsim.a \
-      -lopenal `wx-config --libs` `wx-config --libs stc` -lqemu-stm32 
+      -lopenal `wx-config --libs` `wx-config --libs stc` -ldl
 
 exp: LIBS+= -lgpsim
 
@@ -48,9 +49,10 @@ picsimlab: $(OBJS)
 	@$(CXX) -c $(CXXFLAGS) $< -o $@ 
 
 install: all
-	install -d $(execdir) $(sharedir) $(appdir) 
+	install -d $(execdir) $(sharedir) $(libdir) $(appdir) 
 	$(CP) -dvf  ../share/picsimlab.desktop ${appdir} 
 	$(CP) -drvf ../share/* ${sharedir} 
+	$(CP) -drvf ../lib/* ${libdir} 
 	$(CP) -dvf picsimlab ${execdir}
 	#xdg-icon-resource install --context mimetypes --size 48 ../share/application-x-picsimlab-workspace.png application-x-picsimlab-workspace
 	#xdg-mime install --mode system ../share/application-x-picsimlab-workspace.xml
@@ -59,10 +61,11 @@ install: all
 	#update-desktop-database ${appdir} &
 
 install_app: all
-	install -d $(execdir) $(sharedir) $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \
+	install -d $(execdir) $(sharedir) $(libdir) $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \
 	${sharedir}/../icons/hicolor/64x64/mimetypes/ ${sharedir}/../mime/application/
 	$(CP) -dvf  ../share/picsimlab.desktop ${appdir}/
 	$(CP) -drvf ../share/* ${sharedir} 
+	$(CP) -drvf ../lib/* ${libdir} 
 	$(CP) -dvf picsimlab ${execdir}
 	strip ${execdir}picsimlab
 	$(CP) -drvf ../share/picsimlab.png ${sharedir}/../icons/hicolor/64x64/apps/
@@ -75,6 +78,7 @@ install_docs:
 
 uninstall:
 	$(RM) -drvf ${sharedir} 
+	$(RM) -drvf ${libdir} 
 	$(RM) -dvf ${execdir}picsimlab
 	$(RM) -dvf ${appdir}picsimlab.desktop
 	#xdg-icon-resource uninstall  --context mimetypes --size 48 application-x-picsimlab-workspace

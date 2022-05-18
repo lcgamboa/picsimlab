@@ -392,6 +392,14 @@ void CPWindow1::_EvOnCreate(CControl* control) {
     } else {
         share = dirname(lxGetExecutablePath()) + lxT("/") + lxString(_SHARE_);
     }
+    fn.Assign(share);
+    fn.MakeAbsolute();
+    share = fn.GetFullPath() + "/";
+
+    libpath = share + "../../lib/picsimlab/";
+    fn.Assign(libpath);
+    fn.MakeAbsolute();
+    libpath = fn.GetFullPath() + "/";
 
     if (Application->Aargc == 2) {  // only .pzw file
         fn.Assign(Application->Aargv[1]);
@@ -921,14 +929,15 @@ void CPWindow1::EndSimulation(int saveold, const char* newpath) {
         pboard->EndServers();
         delete pboard;
         pboard = NULL;
+        lxString execmd = lxGetExecutablePath();
         if (newpath) {
             char cmd[1024];
-            strcpy(cmd, Application->Aargv[0]);
+            strcpy(cmd, execmd);
             strcat(cmd, " ");
             strcat(cmd, newpath);
             lxExecute(cmd);
         } else {
-            lxExecute(Application->Aargv[0]);
+            lxExecute(execmd);
         }
         exit(0);
     }

@@ -13,6 +13,7 @@ MKDIR = mkdir -p
 
 appdir= ${prefix}/share/applications/
 sharedir= ${prefix}/share/picsimlab/
+libdir= ${prefix}/lib/picsimlab/
 execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
@@ -43,10 +44,11 @@ picsimlab: $(OBJS)
 	@$(CXX) -c $(CXXFLAGS) $< -o $@ 
 
 install: all
-	install -d $(execdir) $(sharedir) $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \
+	install -d $(execdir) $(sharedir) ${libdir} $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \
 	${sharedir}/../icons/hicolor/64x64/mimetypes/ ${sharedir}/../mime/application/
 	$(CP) -dvf  ../share/picsimlab.desktop ${appdir} 
 	$(CP) -drvf ../share/* ${sharedir}
+	$(CP) -drvf ../lib/* ${libdir}
 	$(CP) -dvf picsimlab ${execdir}
 	strip ${execdir}picsimlab	
 	xdg-icon-resource install --size 64  --novendor ../share/picsimlab.png 
@@ -57,10 +59,11 @@ install: all
 	update-desktop-database ${appdir} &
 
 install_app: all
-	install -d $(execdir) $(sharedir) $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \
+	install -d $(execdir) $(sharedir) ${libdir} $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \
 	${sharedir}/../icons/hicolor/64x64/mimetypes/ ${sharedir}/../mime/application/
 	$(CP) -dvf  ../share/picsimlab.desktop ${appdir}/
 	$(CP) -drvf ../share/* ${sharedir} 
+	$(CP) -drvf ../lib/* ${libdir}
 	$(CP) -dvf picsimlab ${execdir}
 	$(CP) -drvf ../share/picsimlab.png ${sharedir}/../icons/hicolor/64x64/apps/
 	$(CP) -drvf ../share/application-x-picsimlab-workspace.png  ${sharedir}/../icons/hicolor/64x64/mimetypes/
@@ -72,6 +75,7 @@ install_docs:
 
 uninstall:
 	$(RM) -drvf ${sharedir} 
+	$(RM) -drvf ${libdir} 
 	$(RM) -dvf ${execdir}picsimlab
 	$(RM) -dvf ${appdir}picsimlab.desktop
 	xdg-icon-resource uninstall  --size 64 --novendor picsimlab

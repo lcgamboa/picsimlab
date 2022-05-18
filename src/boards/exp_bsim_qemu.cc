@@ -76,10 +76,12 @@ void picsimlab_write_pin(int pin, int value) {
 }
 
 int bsim_qemu::load_qemu_lib(const char* path) {
-    void* handle = dlopen(path, RTLD_NOW);
+    lxString fullpath = Window1.GetLibPath() + "qemu/" + path + ".so";
+
+    void* handle = dlopen((const char*)fullpath.c_str(), RTLD_NOW);
     if (handle == nullptr) {
-        printf("%s\n", dlerror());
-        return 0;
+        printf("picsimlab qemu: %s", dlerror());
+        exit(-1);
     }
 
 #define GET_SYMBOL_AND_CHECK(X)                   \
@@ -201,7 +203,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
     if (SimType == QEMU_SIM_STM32) {
         // FIXME use picsimlab lib folder
-        load_qemu_lib("/usr/local/lib/libqemu-stm32.so");
+        load_qemu_lib("libqemu-stm32");
 
         // change .hex to .bin
         strncpy(fname_, fname, 2048);
@@ -242,7 +244,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         sprintf(argv[argc++], "file=%s,if=pflash,format=raw", fname_);
     } else if (SimType == QEMU_SIM_ESP32) {
         // FIXME use picsimlab lib folder
-        load_qemu_lib("/usr/local/lib/libqemu-xtensa.so");
+        load_qemu_lib("libqemu-xtensa");
 
         // change .hex to .bin
         strncpy(fname_, fname, 2048);
@@ -275,6 +277,11 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         sprintf(argv[argc++], "file=%s,if=mtd,format=raw", fname_);
         strcpy(argv[argc++], "-nic");
         strcpy(argv[argc++], "user,model=esp32_wifi,net=192.168.4.0/24,hostfwd=tcp::16555-192.168.4.15:80");
+
+        lxString fullpath = Window1.GetLibPath() + "qemu/fw/";
+
+        strcpy(argv[argc++], "-L");
+        strcpy(argv[argc++], (const char*)fullpath.c_str());
 
         // strcpy(argv[argc++], "-global");
         // strcpy(argv[argc++], "driver=esp32.gpio,property=strap_mode,value=0x0f");
