@@ -23,7 +23,7 @@ git clone --depth=1 https://github.com/lcgamboa/simavr.git
 git clone --depth=1 https://github.com/lcgamboa/uCsim_picsimlab.git
 if [[ -n "$BUILD_EXPERIMETAL" ]]; then
 cl sudo apt-get -y install python libglib2.0-dev libpixman-1-dev libfdt-dev gpsim-dev gpsim \
-ninja-build meson
+ninja-build meson libgcrypt-dev
 git clone --depth=1 --no-single-branch https://github.com/lcgamboa/qemu_stm32.git
 fi	
 echo -e "\033[1;32m ---------------------- build picsim ------------------------- \033[0m"
@@ -92,9 +92,11 @@ if xhost > /dev/null 2>&1 ; then
 cd share
 ln -s ../share/ picsimlab
 cd ..
+if [[ -n "$BUILD_EXPERIMETAL" ]]; then
 cd lib
 ln -s ../lib/ picsimlab
 cd ..
+fi
 cd src
 ln -s ../tools/srtank/srtank srtank
 ln -s ../tools/espmsim/espmsim espmsim
