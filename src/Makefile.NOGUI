@@ -39,7 +39,7 @@ LIBS=  $(LIBPATH)/picsim/src/libpicsim.a $(LIBPATH)/lxrad_nogui/lib/liblxrad_NOG
        $(LIBPATH)/uCsim_picsimlab/picsimlab/libucsim.a \
       -lopenal -lminizip -pthread  
 
-exp: -lgpsim
+exp: -lgpsim -ldl
 
 #lxrad automatic generated block end, don't edit above!
 

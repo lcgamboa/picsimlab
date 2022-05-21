@@ -67,6 +67,7 @@ extern void (*qmp_quit)(Error** errp);
 extern void (*qmp_stop)(Error** errp);
 extern void (*qmp_system_reset)(Error** errp);
 extern void (*qmp_pmemsave)(int64_t val, int64_t size, const char* filename, Error** errp);
+extern void (*qmp_memsave)(int64_t val, int64_t size, const char* filename, Error** errp);
 extern void (*qmp_cont)(Error** errp);
 
 extern void (*qemu_mutex_lock_iothread_impl)(const char* file, int line);
@@ -75,6 +76,7 @@ extern void (*qemu_mutex_unlock_iothread)(void);
 extern void (*qemu_picsimlab_register)(void (*picsimlab_write_pin)(int pin, int value));
 extern void (*qemu_picsimlab_set_pin)(int pin, int value);
 extern void (*qemu_picsimlab_set_apin)(int chn, int value);
+extern int (*qemu_picsimlab_flash_dump)(int64_t offset, void* buf, int bytes);
 
 extern int64_t (*qemu_clock_get_ns)(QEMUClockType type);
 

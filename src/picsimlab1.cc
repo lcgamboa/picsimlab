@@ -387,6 +387,10 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 
     PATH = lxGetCwd();
 
+#ifndef _SHARE_
+#error Define the _SHARE_ path is necessary
+#endif
+
     if (lxString(_SHARE_).Contains("http")) {
         share = lxString(_SHARE_);
     } else {
@@ -396,7 +400,11 @@ void CPWindow1::_EvOnCreate(CControl* control) {
     fn.MakeAbsolute();
     share = fn.GetFullPath() + "/";
 
-    libpath = share + "../../lib/picsimlab/";
+#ifndef _LIB_
+#error Define the _LIB_ path is necessary
+#endif
+
+    libpath = dirname(lxGetExecutablePath()) + lxT("/") + lxString(_LIB_);
     fn.Assign(libpath);
     fn.MakeAbsolute();
     libpath = fn.GetFullPath() + "/";

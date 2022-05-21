@@ -25,12 +25,12 @@
 
 #ifndef _WIN_
 #define INVALID_HANDLE_VALUE -1
+#include <dlfcn.h>
 #endif
 
-#include "exp_bsim_qemu.h"
-#include <dlfcn.h>
 #include "../picsimlab1.h"
 #include "../serial_port.h"
+#include "exp_bsim_qemu.h"
 
 // function pointers
 
@@ -42,6 +42,7 @@ void (*qmp_quit)(Error** errp);
 void (*qmp_stop)(Error** errp);
 void (*qmp_system_reset)(Error** errp);
 void (*qmp_pmemsave)(int64_t val, int64_t size, const char* filename, Error** errp);
+void (*qmp_memsave)(int64_t val, int64_t size, const char* filename, Error** errp);
 void (*qmp_cont)(Error** errp);
 
 void (*qemu_mutex_lock_iothread_impl)(const char* file, int line);
@@ -50,6 +51,7 @@ void (*qemu_mutex_unlock_iothread)(void);
 void (*qemu_picsimlab_register)(void (*picsimlab_write_pin)(int pin, int value));
 void (*qemu_picsimlab_set_pin)(int pin, int value);
 void (*qemu_picsimlab_set_apin)(int chn, int value);
+int (*qemu_picsimlab_flash_dump)(int64_t offset, void* buf, int bytes);
 
 int64_t (*qemu_clock_get_ns)(QEMUClockType type);
 
@@ -76,11 +78,12 @@ void picsimlab_write_pin(int pin, int value) {
 }
 
 int bsim_qemu::load_qemu_lib(const char* path) {
+#ifndef _WIN_  // LINUX
     lxString fullpath = Window1.GetLibPath() + "qemu/" + path + ".so";
 
     void* handle = dlopen((const char*)fullpath.c_str(), RTLD_NOW);
     if (handle == nullptr) {
-        printf("picsimlab qemu: %s", dlerror());
+        printf("picsimlab qemu: %s\n", dlerror());
         exit(-1);
     }
 
@@ -90,6 +93,22 @@ int bsim_qemu::load_qemu_lib(const char* path) {
         printf("Qemu lib Lost symbol: " #X "\n"); \
         return 0;                                 \
     }
+#else  // WINDOWS
+    lxString fullpath = dirname(lxGetExecutablePath()) + "/lib/qemu/" + path + ".dll";
+
+    HMODULE handle = LoadLibraryA((const char*)fullpath.c_str());
+    if (handle == NULL) {
+        printf("picsimlab qemu: Error loading %s\n", (const char*)fullpath.c_str());
+        exit(-1);
+    }
+
+#define GET_SYMBOL_AND_CHECK(X)                          \
+    *((void**)(&X)) = (void*)GetProcAddress(handle, #X); \
+    if (nullptr == X) {                                  \
+        printf("Qemu lib Lost symbol: " #X "\n");        \
+        return 0;                                        \
+    }
+#endif
     GET_SYMBOL_AND_CHECK(qemu_init);
     GET_SYMBOL_AND_CHECK(qemu_main_loop);
     GET_SYMBOL_AND_CHECK(qemu_cleanup);
@@ -97,12 +116,14 @@ int bsim_qemu::load_qemu_lib(const char* path) {
     GET_SYMBOL_AND_CHECK(qmp_stop);
     GET_SYMBOL_AND_CHECK(qmp_system_reset);
     GET_SYMBOL_AND_CHECK(qmp_pmemsave);
+    GET_SYMBOL_AND_CHECK(qmp_memsave);
     GET_SYMBOL_AND_CHECK(qmp_cont);
     GET_SYMBOL_AND_CHECK(qemu_mutex_lock_iothread_impl);
     GET_SYMBOL_AND_CHECK(qemu_mutex_unlock_iothread);
     GET_SYMBOL_AND_CHECK(qemu_picsimlab_register);
     GET_SYMBOL_AND_CHECK(qemu_picsimlab_set_pin);
     GET_SYMBOL_AND_CHECK(qemu_picsimlab_set_apin);
+    GET_SYMBOL_AND_CHECK(qemu_picsimlab_flash_dump);
     GET_SYMBOL_AND_CHECK(qemu_clock_get_ns);
     GET_SYMBOL_AND_CHECK(timer_init_full);
     GET_SYMBOL_AND_CHECK(timer_mod_ns);
@@ -153,7 +174,11 @@ int bsim_qemu::MInit(const char* processor, const char* _fname, float freq) {
 
     if (!qemu_started) {
         StartThread();
+#ifndef _WIN_
         usleep(100);
+#else
+        Sleep(1);
+#endif
         mtx_qinit->Lock();  // only for wait qemu start
         mtx_qinit->Unlock();
 
@@ -278,8 +303,11 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         strcpy(argv[argc++], "-nic");
         strcpy(argv[argc++], "user,model=esp32_wifi,net=192.168.4.0/24,hostfwd=tcp::16555-192.168.4.15:80");
 
+#ifndef _WIN_
         lxString fullpath = Window1.GetLibPath() + "qemu/fw/";
-
+#else
+        lxString fullpath = dirname(lxGetExecutablePath()) + "/lib/qemu/fw/";
+#endif
         strcpy(argv[argc++], "-L");
         strcpy(argv[argc++], (const char*)fullpath.c_str());
 
@@ -337,7 +365,12 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
     timer_mod_ns(timer.qtimer, timer.last + timer.timeout);
 
     mtx_qinit->Unlock();
+
+#ifndef _WIN_
     usleep(100);
+#else
+    Sleep(1);
+#endif
 
     qemu_main_loop();
 
@@ -434,6 +467,51 @@ void bsim_qemu::MDumpMemory(const char* fname) {
             }
 #endif
             qmp_pmemsave(0x8000000, 65536, fname_, NULL);
+        }
+        qmp_cont(NULL);
+        qemu_mutex_unlock_iothread();
+    } else if (SimType == QEMU_SIM_ESP32) {
+        // change .hex to .bin
+        strncpy(fname_, fname, 299);
+        fname_[strlen(fname) - 3] = 0;
+        strncat(fname_, "bin", 299);
+        qemu_mutex_lock_iothread();
+        qmp_stop(NULL);
+        if (lxFileExists(fname_)) {
+            // save backup copy until end
+            strncpy(fname_bak, fname, 299);
+            fname_bak[strlen(fname) - 3] = 0;
+            strncat(fname_bak, "bak", 299);
+#ifdef _WIN_
+            for (unsigned int i = 0; i < strlen(fname); i++) {
+                if (fname_[i] == '\\')
+                    fname_[i] = '/';
+                if (fname_bak[i] == '\\')
+                    fname_bak[i] = '/';
+            }
+#endif
+            char buff[4194304];
+            qemu_picsimlab_flash_dump(0, buff, 4194304);
+            FILE* fout = fopen(fname_bak, "w");
+            if (fout) {
+                fwrite(buff, 4194304, 1, fout);
+                fclose(fout);
+            }
+        } else {
+            // save file direct
+#ifdef _WIN_
+            for (unsigned int i = 0; i < strlen(fname_); i++) {
+                if (fname_[i] == '\\')
+                    fname_[i] = '/';
+            }
+#endif
+            char buff[4194304];
+            qemu_picsimlab_flash_dump(0, buff, 4194304);
+            FILE* fout = fopen(fname_, "w");
+            if (fout) {
+                fwrite(buff, 4194304, 1, fout);
+                fclose(fout);
+            }
         }
         qmp_cont(NULL);
         qemu_mutex_unlock_iothread();
