@@ -174,20 +174,21 @@ int bsim_qemu::MInit(const char* processor, const char* _fname, float freq) {
 
     if (!qemu_started) {
         StartThread();
+        while (!qemu_started) {
 #ifndef _WIN_
-        usleep(100);
+            usleep(100);
 #else
-        Sleep(1);
+            Sleep(1);
 #endif
-        mtx_qinit->Lock();  // only for wait qemu start
-        mtx_qinit->Unlock();
+            mtx_qinit->Lock();  // only for wait qemu start
+            mtx_qinit->Unlock();
+        }
 
         Window1.menu1_File_LoadHex.SetText("Load Bin");
         Window1.menu1_File_SaveHex.SetEnable(0);
         Window1.filedialog1.SetFileName(lxT("untitled.bin"));
         Window1.filedialog1.SetFilter(lxT("Bin Files (*.bin)|*.bin;*.BIN"));
 
-        qemu_started = 1;
     } else {
         printf("PICSimLab: qemu already started !!!!!\n");
     }
@@ -199,8 +200,9 @@ static void user_timeout_cb(void* opaque) {
     bsim_qemu* board = (bsim_qemu*)opaque;
     int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
     timer_mod_ns(board->timer.qtimer, now + board->timer.timeout);
-    // printf("================> Timer <====================== %ji\n", now - board->timer.last);
-    board->Run_CPU_ns((now - board->timer.last) / 3);
+    if (Window1.GetSimulationRun()) {
+        board->Run_CPU_ns((now - board->timer.last) / 3);
+    }
     board->timer.last = now;
 }
 
@@ -224,6 +226,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
     for (int i = 0; i < ARGMAX; i++) {
         argv[i] = (char*)malloc(1024);
+        argv[i][0] = 0;
     }
 
     if (SimType == QEMU_SIM_STM32) {
@@ -251,7 +254,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
                 fwrite(&loop, 4, sizeof(char), fout);
                 fclose(fout);
             } else {
-                printf("picsimlab: qemu Erro creating file %s \n", fname_);
+                printf("PICSimLab: qemu Erro creating file %s \n", fname_);
                 exit(-1);
             }
         }
@@ -319,7 +322,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
             strcpy(argv[argc++], "driver=timer.esp32.timg,property=wdt_disable,value=true");
         }
     } else {
-        printf("picsimlab qemu: simulator %i not supported!!!\n", SimType);
+        printf("PICSimLab qemu: simulator %i not supported!!!\n", SimType);
         exit(-1);
     }
 
@@ -354,18 +357,22 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
     qemu_init(argc, argv, NULL);
 
+    printf("PICSimLab: ");
     // free argv
     for (int i = 0; i < ARGMAX; i++) {
+        if (argv[i])
+            printf(" %s", argv[i]);
         free(argv[i]);
     }
+    printf("\n");
 
     timer.qtimer = (QEMUTimer*)malloc(sizeof(QEMUTimer));
     timer_init_full(timer.qtimer, NULL, QEMU_CLOCK_VIRTUAL, 1, 0, user_timeout_cb, this);
 
     timer_mod_ns(timer.qtimer, timer.last + timer.timeout);
 
+    qemu_started = 1;
     mtx_qinit->Unlock();
-
 #ifndef _WIN_
     usleep(100);
 #else
@@ -490,13 +497,14 @@ void bsim_qemu::MDumpMemory(const char* fname) {
                     fname_bak[i] = '/';
             }
 #endif
-            char buff[4194304];
+            char* buff = new char[4194304];
             qemu_picsimlab_flash_dump(0, buff, 4194304);
             FILE* fout = fopen(fname_bak, "w");
             if (fout) {
                 fwrite(buff, 4194304, 1, fout);
                 fclose(fout);
             }
+            delete[] buff;
         } else {
             // save file direct
 #ifdef _WIN_
@@ -505,13 +513,14 @@ void bsim_qemu::MDumpMemory(const char* fname) {
                     fname_[i] = '/';
             }
 #endif
-            char buff[4194304];
+            char* buff = new char[4194304];
             qemu_picsimlab_flash_dump(0, buff, 4194304);
             FILE* fout = fopen(fname_, "w");
             if (fout) {
                 fwrite(buff, 4194304, 1, fout);
                 fclose(fout);
             }
+            delete[] buff;
         }
         qmp_cont(NULL);
         qemu_mutex_unlock_iothread();

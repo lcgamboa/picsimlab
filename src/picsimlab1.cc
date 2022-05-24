@@ -684,12 +684,19 @@ void CPWindow1::Configure(const char* home, int use_default_board, int create, c
     pboard->MSetSerial(SERIALDEVICE);
 
     if (lfile) {
-        strcpy(fname, lfile);
+        if (lxFileExists(lfile)) {
+            strcpy(fname, lfile);
+        } else {
+            printf("PICSimLab: File Not found \"%s\" loading default.\n", lfile);
+            RegisterError(lxString("File Not found \n\"") + lfile + "\"\n loading default.");
+            sprintf(fname, "%s/mdump_%s_%s.hex", home, boards_list[lab].name_,
+                    (const char*)pboard->GetProcessorName().c_str());
+        }
     } else {
         sprintf(fname, "%s/mdump_%s_%s.hex", home, boards_list[lab].name_,
                 (const char*)pboard->GetProcessorName().c_str());
     }
-
+    printf("PICSimLab: Openning \"%s\"\n", fname);
     switch (pboard->MInit(pboard->GetProcessorName(), fname, NSTEP * NSTEPKF)) {
         case HEX_NFOUND:
             printf("File not found!\n");
@@ -932,21 +939,19 @@ void CPWindow1::EndSimulation(int saveold, const char* newpath) {
 #endif
 
     if (NeedReboot) {
+        char cmd[1024];
         printf("PICSimLab: Reboot !!!\n");
         rcontrol_server_end();
         pboard->EndServers();
         delete pboard;
         pboard = NULL;
-        lxString execmd = lxGetExecutablePath();
+        strcpy(cmd, lxGetExecutablePath().c_str());
         if (newpath) {
-            char cmd[1024];
-            strcpy(cmd, execmd);
             strcat(cmd, " ");
             strcat(cmd, newpath);
-            lxExecute(cmd);
-        } else {
-            lxExecute(execmd);
         }
+        printf("PICSimLab: %s\n", cmd);
+        lxExecute(cmd);
         exit(0);
     }
 
@@ -1120,7 +1125,7 @@ int CPWindow1::LoadHexFile(lxString fname) {
 
     if (NeedReboot) {
         char cmd[4096];
-        sprintf(cmd, " %s %s %s", boards_list[lab].name_, (const char*)pboard->GetProcessorName().c_str(),
+        sprintf(cmd, " %s %s \"%s\"", boards_list[lab].name_, (const char*)pboard->GetProcessorName().c_str(),
                 (const char*)fname.char_str());
         EndSimulation(0, cmd);
     }
