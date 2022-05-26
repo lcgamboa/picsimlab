@@ -696,7 +696,7 @@ void CPWindow1::Configure(const char* home, int use_default_board, int create, c
         sprintf(fname, "%s/mdump_%s_%s.hex", home, boards_list[lab].name_,
                 (const char*)pboard->GetProcessorName().c_str());
     }
-    printf("PICSimLab: Openning \"%s\"\n", fname);
+    printf("PICSimLab: Opening \"%s\"\n", fname);
     switch (pboard->MInit(pboard->GetProcessorName(), fname, NSTEP * NSTEPKF)) {
         case HEX_NFOUND:
             printf("File not found!\n");
