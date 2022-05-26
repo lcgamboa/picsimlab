@@ -1,7 +1,7 @@
 ### TODOs
 | Filename | line # | TODO
 |:------|:------:|:------
-| [src/picsimlab1.cc](src/picsimlab1.cc#L489) | 489 | verify initialization errors
+| [src/picsimlab1.cc](src/picsimlab1.cc#L505) | 505 | verify initialization errors
 | [src/picsimlab4.cc](src/picsimlab4.cc#L635) | 635 | select the better mode for channel trigguer
 | [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L114) | 114 | jumper support
 | [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L193) | 193 | TEMP cooler must don't work with AQUE=0
@@ -32,9 +32,11 @@
 ### FIXMEs
 | Filename | line # | FIXME
 |:------|:------:|:------
-| [src/picsimlab1.cc](src/picsimlab1.cc#L721) | 721 | remote control disabled
+| [src/picsimlab1.cc](src/picsimlab1.cc#L744) | 744 | remote control disabled
 | [src/boards/board_uCboard.cc](src/boards/board_uCboard.cc#L297) | 297 | NSTEP must be multiplied for 4
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1384) | 1384 | avr CONFIG size
+| [src/boards/exp_bsim_qemu.cc](src/boards/exp_bsim_qemu.cc#L233) | 233 | use picsimlab lib folder
+| [src/boards/exp_bsim_qemu.cc](src/boards/exp_bsim_qemu.cc#L274) | 274 | use picsimlab lib folder
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L134) | 134 | only for BANK=0;
 | [src/parts/part_dcmotor.cc](src/parts/part_dcmotor.cc#L244) | 244 | on slow speed output is not 90 degrees
 | [src/parts/part_encoder.cc](src/parts/part_encoder.cc#L190) | 190 | on slow speed output is not 90 degrees

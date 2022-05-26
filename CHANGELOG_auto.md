@@ -2,6 +2,25 @@
 
 ### New
 
+* New board ESP32-DevKitC. [lcgamboa]
+
+* Support to disable bounce effect in switches and push buttons parts. [lcgamboa]
+
+* Part IO MM74C922 keyboard controller added. [lcgamboa]
+
+* Version 0.8.10. [lcgamboa]
+
+### Fix
+
+* Fix board PICGenios dip switches functions. [lcgamboa]
+
+
+## v0.8.10 (2022-04-09)
+
+### New
+
+* Version 0.8.10. [lcgamboa]
+
 * Option to use single 7 Segment Display part. [lcgamboa]
 
 * New part IO 74xx573 octal latch. [lcgamboa]
