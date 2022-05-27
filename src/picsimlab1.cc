@@ -387,11 +387,27 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 
     PATH = lxGetCwd();
 
+#ifndef _SHARE_
+#error Define the _SHARE_ path is necessary
+#endif
+
     if (lxString(_SHARE_).Contains("http")) {
         share = lxString(_SHARE_);
     } else {
         share = dirname(lxGetExecutablePath()) + lxT("/") + lxString(_SHARE_);
     }
+    fn.Assign(share);
+    fn.MakeAbsolute();
+    share = fn.GetFullPath() + "/";
+
+#ifndef _LIB_
+#error Define the _LIB_ path is necessary
+#endif
+
+    libpath = dirname(lxGetExecutablePath()) + lxT("/") + lxString(_LIB_);
+    fn.Assign(libpath);
+    fn.MakeAbsolute();
+    libpath = fn.GetFullPath() + "/";
 
     if (Application->Aargc == 2) {  // only .pzw file
         fn.Assign(Application->Aargv[1]);
@@ -668,12 +684,19 @@ void CPWindow1::Configure(const char* home, int use_default_board, int create, c
     pboard->MSetSerial(SERIALDEVICE);
 
     if (lfile) {
-        strcpy(fname, lfile);
+        if (lxFileExists(lfile)) {
+            strcpy(fname, lfile);
+        } else {
+            printf("PICSimLab: File Not found \"%s\" loading default.\n", lfile);
+            RegisterError(lxString("File Not found \n\"") + lfile + "\"\n loading default.");
+            sprintf(fname, "%s/mdump_%s_%s.hex", home, boards_list[lab].name_,
+                    (const char*)pboard->GetProcessorName().c_str());
+        }
     } else {
         sprintf(fname, "%s/mdump_%s_%s.hex", home, boards_list[lab].name_,
                 (const char*)pboard->GetProcessorName().c_str());
     }
-
+    printf("PICSimLab: Opening \"%s\"\n", fname);
     switch (pboard->MInit(pboard->GetProcessorName(), fname, NSTEP * NSTEPKF)) {
         case HEX_NFOUND:
             printf("File not found!\n");
@@ -848,9 +871,6 @@ void CPWindow1::EndSimulation(int saveold, const char* newpath) {
 
     saveprefs(lxT("picsimlab_version"), _VERSION_);
     saveprefs(lxT("picsimlab_lab"), boards_list[lab].name_);
-    if (NeedReboot) {
-        debug = 0;
-    }
     saveprefs(lxT("picsimlab_debug"), itoa(debug));
     saveprefs(lxT("picsimlab_debugt"), itoa(debug_type));
     saveprefs(lxT("picsimlab_debugp"), itoa(debug_port));
@@ -919,20 +939,19 @@ void CPWindow1::EndSimulation(int saveold, const char* newpath) {
 #endif
 
     if (NeedReboot) {
+        char cmd[1024];
         printf("PICSimLab: Reboot !!!\n");
         rcontrol_server_end();
         pboard->EndServers();
         delete pboard;
         pboard = NULL;
+        strcpy(cmd, lxGetExecutablePath().c_str());
         if (newpath) {
-            char cmd[1024];
-            strcpy(cmd, Application->Aargv[0]);
             strcat(cmd, " ");
             strcat(cmd, newpath);
-            lxExecute(cmd);
-        } else {
-            lxExecute(Application->Aargv[0]);
         }
+        printf("PICSimLab: %s\n", cmd);
+        lxExecute(cmd);
         exit(0);
     }
 
@@ -1106,7 +1125,7 @@ int CPWindow1::LoadHexFile(lxString fname) {
 
     if (NeedReboot) {
         char cmd[4096];
-        sprintf(cmd, " %s %s %s", boards_list[lab].name_, (const char*)pboard->GetProcessorName().c_str(),
+        sprintf(cmd, " %s %s \"%s\"", boards_list[lab].name_, (const char*)pboard->GetProcessorName().c_str(),
                 (const char*)fname.char_str());
         EndSimulation(0, cmd);
     }
@@ -1220,33 +1239,19 @@ void CPWindow1::togglebutton1_EvOnToggleButton(CControl* control) {
 
     debug = togglebutton1.GetCheck();
 
-    if (NeedReboot) {
 #ifdef NO_DEBUG
-        statusbar1.SetField(1, lxT(" "));
+    statusbar1.SetField(1, lxT(" "));
 #else
-        lxString status;
+    EndSimulation();
+    Configure(HOME);
 
-        if (debug) {
-            int ret = pboard->DebugInit(debug_type);
-            if (ret < 0) {
-                statusbar1.SetField(1, status + lxT("Debug: Error"));
-            } else {
-                statusbar1.SetField(1, status + lxT("Debug: ") + pboard->GetDebugName() + ":" + itoa(debug_port));
-            }
-        } else {
-            statusbar1.SetField(1, status + lxT("Debug: Off"));
-        }
-#endif
-    } else {
-        EndSimulation();
-        Configure(HOME);
+    if (osc_on)
+        menu1_Modules_Oscilloscope_EvMenuActive(this);
+    if (spare_on)
+        menu1_Modules_Spareparts_EvMenuActive(this);
 
-        if (osc_on)
-            menu1_Modules_Oscilloscope_EvMenuActive(this);
-        if (spare_on)
-            menu1_Modules_Spareparts_EvMenuActive(this);
-    }
     need_resize = 1;
+#endif
 }
 
 void CPWindow1::menu1_File_SaveWorkspace_EvMenuActive(CControl* control) {

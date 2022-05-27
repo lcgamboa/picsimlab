@@ -23,40 +23,37 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_STM32_H103_H
-#define BOARD_STM32_H103_H
+#ifndef BOARD_DevKitC_H
+#define BOARD_DevKitC_H
 
 #include <lxrad.h>
 
 #include "exp_bsim_qemu.h"
 
-#define BOARD_STM32_H103_Name "STM32 H103"
+#define BOARD_DevKitC_Name "ESP32-DevKitC"
 
 // new board class must be derived from board class defined in board.h
-class cboard_STM32_H103 : public bsim_qemu {
+class cboard_DevKitC : public bsim_qemu {
 private:
-    unsigned char p_BUT;
     CLabel* label1;
     CCombo* combo1;
-
+    unsigned char p_BOOT;
     void RegisterRemoteControl(void) override;
 
 public:
     // Return the board name
-    lxString GetName(void) override { return lxT(BOARD_STM32_H103_Name); };
+    lxString GetName(void) override { return lxT(BOARD_DevKitC_Name); };
     lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
     // Constructor called once on board creation
-    cboard_STM32_H103(void);
+    cboard_DevKitC(void);
     // Destructor called once on board destruction
-    ~cboard_STM32_H103(void);
+    ~cboard_DevKitC(void);
     // Called ever 100ms to draw board
     void Draw(CDraw* draw) override;
-    void Run_CPU(void) override{};
+    void Run_CPU(void) override;
     void Run_CPU_ns(uint64_t time) override;
     // Return a list of board supported microcontrollers
-    lxString GetSupportedDevices(void) override { return lxT("stm32f103rbt6,"); };
-    // Return the filename of board picture
-    lxString GetPictureFileName(void) override { return lxT("STM32 H103/board.png"); };
+    lxString GetSupportedDevices(void) override { return lxT("ESP32,"); };
     // Reset board status
     void Reset(void) override;
     // Event on the board
@@ -84,4 +81,4 @@ public:
     int MGetPinCount(void) override;
 };
 
-#endif /* BOARD_STM32_H103_H */
+#endif /* BOARD_DevKitC_H */

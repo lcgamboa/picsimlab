@@ -52,6 +52,10 @@ rm -Rf picsimlab_win64/libintl-8.dll
 rm -Rf picsimlab_win64/libssp-0.dll
 rm -Rf picsimlab_win64/libwinpthread-1.dll
 rm -Rf picsimlab_win64/zlib1.dll
+rm -Rf picsimlab_win64/libgcrypt-20.dll
+rm -Rf picsimlab_win64/libgpg-error6-0.dll
+rm -Rf picsimlab_win64/libpixman-1-0.dll
+rm -Rf picsimlab_win64/lib/
 #rm -Rf picsimlab_win64/ucsim.dll
 rm -Rf picsimlab_win64/libgpsim-0.dll
 rm -Rf picsimlab_win32/qemu-stm32.exe
@@ -62,13 +66,17 @@ rm -Rf picsimlab_win32/libintl-8.dll
 rm -Rf picsimlab_win32/libssp-0.dll
 rm -Rf picsimlab_win32/libwinpthread-1.dll
 rm -Rf picsimlab_win32/zlib1.dll
+rm -Rf picsimlab_win32/libgcrypt-20.dll
+rm -Rf picsimlab_win32/libgpg-error-0.dll
+rm -Rf picsimlab_win32/libpixman-1-0.dll
+rm -Rf picsimlab_win32/lib/
 #rm -Rf picsimlab_win32/ucsim.dll
 rm -Rf picsimlab_win32/libgpsim-0.dll
 else
-cp -d exp_w64/bin/* picsimlab_win64/ 
-cp -d exp_w64/lib/* picsimlab_win64/
-cp -d exp_w32/bin/* picsimlab_win32/ 
-cp -d exp_w32/lib/* picsimlab_win32/
+cp -dr exp_w64/bin/* picsimlab_win64/ 
+cp -dr exp_w64/lib/* picsimlab_win64/
+cp -dr exp_w32/bin/* picsimlab_win32/ 
+cp -dr exp_w32/lib/* picsimlab_win32/
 fi
 
 

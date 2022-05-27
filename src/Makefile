@@ -13,20 +13,23 @@ MKDIR = mkdir -p
 
 appdir= ${prefix}/share/applications/
 sharedir= ${prefix}/share/picsimlab/
+libdir= ${prefix}/lib/picsimlab/
 execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
 override CXXFLAGS+= -D_ARCH_=\"Linux64_WX\" -D_DATE_=\"${DATE}\"
-override CXXFLAGS+= -D_VERSION_=\"$(VERSION)\" -Wall -g -O2 -flto -D_SHARE_=\"../share/picsimlab/\"  `lxrad-config --cxxflags`
+override CXXFLAGS+= -D_VERSION_=\"$(VERSION)\" -Wall -g -O2 -flto -D_SHARE_=\"../share/picsimlab/\" \
+-D_LIB_=\"../lib/picsimlab/\" `lxrad-config --cxxflags`
 override CXXFLAGS+= -DEXT_BROWSER
 #override CXXFLAGS+=-fsanitize=address
 #override CXXFLAGS+=-fno-omit-frame-pointer
 
-LIBS =  `lxrad-config --libs` -lpicsim -lsimavr -lelf -lucsim $(ELIBS)
+LIBS =  `lxrad-config --libs` -lpicsim -lsimavr -lelf $(ELIBS) -lucsim
 #LIBS=  ../../picsim/src/libpicsim_dbg.a ../../LXRAD_WX/libteste/liblxrad.a  ../../lunasvg/build/liblunasvg.a \
      ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a  -lopenal `wx-config --libs` `wx-config --libs stc` $(ELIBS)
 
+exp: LIBS+= -ldl
 
 #lxrad automatic generated block end, don't edit above!
 
@@ -43,10 +46,11 @@ picsimlab: $(OBJS)
 	@$(CXX) -c $(CXXFLAGS) $< -o $@ 
 
 install: all
-	install -d $(execdir) $(sharedir) $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \
+	install -d $(execdir) $(sharedir) ${libdir} $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \
 	${sharedir}/../icons/hicolor/64x64/mimetypes/ ${sharedir}/../mime/application/
 	$(CP) -dvf  ../share/picsimlab.desktop ${appdir} 
 	$(CP) -drvf ../share/* ${sharedir}
+	$(CP) -drvf ../lib/* ${libdir}
 	$(CP) -dvf picsimlab ${execdir}
 	strip ${execdir}picsimlab	
 	xdg-icon-resource install --size 64  --novendor ../share/picsimlab.png 
@@ -57,10 +61,11 @@ install: all
 	update-desktop-database ${appdir} &
 
 install_app: all
-	install -d $(execdir) $(sharedir) $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \
+	install -d $(execdir) $(sharedir) ${libdir} $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \
 	${sharedir}/../icons/hicolor/64x64/mimetypes/ ${sharedir}/../mime/application/
 	$(CP) -dvf  ../share/picsimlab.desktop ${appdir}/
 	$(CP) -drvf ../share/* ${sharedir} 
+	$(CP) -drvf ../lib/* ${libdir}
 	$(CP) -dvf picsimlab ${execdir}
 	$(CP) -drvf ../share/picsimlab.png ${sharedir}/../icons/hicolor/64x64/apps/
 	$(CP) -drvf ../share/application-x-picsimlab-workspace.png  ${sharedir}/../icons/hicolor/64x64/mimetypes/
@@ -72,6 +77,7 @@ install_docs:
 
 uninstall:
 	$(RM) -drvf ${sharedir} 
+	$(RM) -drvf ${libdir} 
 	$(RM) -dvf ${execdir}picsimlab
 	$(RM) -dvf ${appdir}picsimlab.desktop
 	xdg-icon-resource uninstall  --size 64 --novendor picsimlab

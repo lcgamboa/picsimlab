@@ -23,15 +23,18 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_STM32_H
-#define BOARD_STM32_H
+#ifndef BOARD_QEMU_H
+#define BOARD_QEMU_H
 
 #include "board.h"
+#include "qemu.h"
 
-class bsim_qemu_stm32 : virtual public board {
+typedef enum { QEMU_SIM_NONE = 0, QEMU_SIM_STM32, QEMU_SIM_ESP32 } QEMUSimType;
+
+class bsim_qemu : virtual public board {
 public:
-    bsim_qemu_stm32(void);
-    ~bsim_qemu_stm32(void);
+    bsim_qemu(void);
+    ~bsim_qemu(void);
     int DebugInit(int dtyppe) override;
     lxString GetDebugName(void) override { return "GDB"; };
     void DebugLoop(void) override;
@@ -47,21 +50,24 @@ public:
     void MSetVCC(float vcc) override;
     float MGetVCC(void) override;
     float MGetInstClockFreq(void) override;
-    int MGetPinCount(void) override;
-    lxString MGetPinName(int pin) override;
     void MSetPin(int pin, unsigned char value) override;
     void MSetPinDOV(int pin, unsigned char ovalue) override;
-    void MSetAPin(int pin, float value) override;
     unsigned char MGetPin(int pin) override;
     const picpin* MGetPinsValues(void) override;
     void MStep(void) override;
     void MStepResume(void) override;
     void MReset(int flags) override;
-    void EndServers(void) override;
+    void EvThreadRun(CThread& thread) override;
+    user_timer_t timer;
+    virtual void Run_CPU_ns(uint64_t time) = 0;
 
 protected:
+    int MipsStrToIcount(const char* mipstr);
+    const char* IcountToMipsStr(int icount);
+    const char* IcountToMipsItens(char* buffer);
+    unsigned int ns_count;
     void pins_reset(void);
-    int qemu_cmd(const char* cmd, int raw = 0);
+    int icount;
 #ifdef _WIN_
     HANDLE serialfd[4];
 #else
@@ -72,12 +78,16 @@ protected:
     unsigned int serialbaud;
     float serialexbaud;
     float freq;
-    int sockfd;
-    int sockmon;
-    int connected;
-    char fname_[300];
-    char fname_bak[300];
+    char fname[2048];
+    char fname_[2048];
+    char fname_bak[2048];
     unsigned short ADCvalues[16];
+    lxMutex* mtx_qinit;
+    int qemu_started;
+    QEMUSimType SimType;
+
+private:
+    int load_qemu_lib(const char* path);
 };
 
-#endif /* BOARD_STM32_H */
+#endif /* BOARD_QEMU_H */

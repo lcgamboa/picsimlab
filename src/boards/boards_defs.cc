@@ -70,7 +70,7 @@ void board_register(const char* name, board_create_func bcreate) {
     strncpy(boards_list[in].name, name, 30);
 
     for (unsigned int i = 0; i <= strlen(name); i++) {
-        if (name[i] != ' ') {
+        if ((name[i] != ' ') && (name[i] != '-')) {
             boards_list[in].name_[i] = name[i];
         } else {
             boards_list[in].name_[i] = '_';

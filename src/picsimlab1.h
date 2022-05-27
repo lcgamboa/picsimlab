@@ -177,6 +177,8 @@ public:
      */
     lxString GetSharePath(void) { return share; };
 
+    lxString GetLibPath(void) { return libpath; };
+
     void SetplWidth(int pw) { plWidth = pw; };
 
     void SetplHeight(int ph) { plHeight = ph; };
@@ -301,6 +303,7 @@ public:
 #endif
 private:
     lxString share;
+    lxString libpath;
     int pa;
     int mcurun;
     int mcupwr;

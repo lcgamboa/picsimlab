@@ -24,7 +24,7 @@ git clone --depth=1 https://github.com/lcgamboa/simavr.git
 git clone --depth=1 https://github.com/lcgamboa/uCsim_picsimlab.git
 if [[ -n "$BUILD_EXPERIMETAL" ]]; then
 cl sudo apt-get -y install python libglib2.0-dev libpixman-1-dev libfdt-dev gpsim-dev gpsim \
-ninja-build meson
+ninja-build meson libgcrypt-dev
 git clone --depth=1 --no-single-branch https://github.com/lcgamboa/qemu_stm32.git
 fi	
 echo -e "\033[1;32m ---------------------- build and install picsim ------------------------- \033[0m"
@@ -78,10 +78,19 @@ cl git checkout picsimlab
 git pull --no-rebase
 cl ./build_libqemu-stm32.sh
 cd build
-cl cp qemu-system-arm qemu-stm32
-cl strip qemu-stm32
-cl sudo cp qemu-stm32 /usr/bin/
-cd ../../
+cl strip libqemu-stm32.so
+cl install -d ../../../lib/qemu/
+cl cp libqemu-stm32.so ../../../lib/qemu/
+cd ..
+cl git checkout picsimlab_esp32
+cl ./build_libqemu-esp32.sh
+cd build
+cl strip libqemu-xtensa.so
+cl cp libqemu-xtensa.so ../../../lib/qemu/
+cd ..
+cl install -d ../../lib/qemu/fw
+cl cp pc-bios/esp32-v3-rom*.bin ../../lib/qemu/fw/
+cd ..
 echo -e "\033[1;32m ---------------------- build and install picsimlab ---------------------- \033[0m"
 #git pull --no-rebase
 cd ../

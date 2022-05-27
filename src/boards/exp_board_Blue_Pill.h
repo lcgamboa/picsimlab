@@ -28,13 +28,16 @@
 
 #include <lxrad.h>
 
-#include "exp_bsim_qemu_stm32.h"
+#include "exp_bsim_qemu.h"
 
 #define BOARD_Blue_Pill_Name "Blue Pill"
 
 // new board class must be derived from board class defined in board.h
-class cboard_Blue_Pill : public bsim_qemu_stm32 {
+class cboard_Blue_Pill : public bsim_qemu {
 private:
+    CLabel* label1;
+    CCombo* combo1;
+
     void RegisterRemoteControl(void) override;
 
 public:
@@ -47,7 +50,8 @@ public:
     ~cboard_Blue_Pill(void);
     // Called ever 100ms to draw board
     void Draw(CDraw* draw) override;
-    void Run_CPU(void) override;
+    void Run_CPU(void) override{};
+    void Run_CPU_ns(uint64_t time) override;
     // Return a list of board supported microcontrollers
     lxString GetSupportedDevices(void) override { return lxT("stm32f103c8t6,"); };
     // Return the filename of board picture
@@ -72,6 +76,11 @@ public:
     unsigned short get_in_id(char* name) override;
     // return the output ids numbers of names used in output map
     unsigned short get_out_id(char* name) override;
+    // board combo events
+    void board_Event(CControl* control) override;
+    void MSetAPin(int pin, float value) override;
+    lxString MGetPinName(int pin) override;
+    int MGetPinCount(void) override;
 };
 
 #endif /* BOARD_Blue_Pill_H */
