@@ -17,7 +17,7 @@ shield w5500 for internet connection or the color graphic display ili9340 with t
 The the complete list of parts can be accessed in the [documentation](https://lcgamboa.github.io/picsimlab_docs/stable/SpareParts.html). 
 
 The [experimental version boards](https://lcgamboa.github.io/picsimlab_docs/stable/ExperimentalBoards.html) supports 
-[qemu-stm32](http://beckus.github.io/qemu_stm32/) and [gpsim](http://gpsim.sourceforge.net/) simulators
+[qemu-stm32](http://beckus.github.io/qemu_stm32/), [qemu-esp32](https://github.com/a159x36/qemu) and [gpsim](http://gpsim.sourceforge.net/) simulators
 in addition to the stable ones.
 
 
@@ -177,6 +177,10 @@ If the problem is not in either of the previous two options, the problem is prob
 - **qemu-stm32**      - STM32 simulator                  
   - original: https://github.com/beckus/qemu_stm32/
   - modified version used by PICSimLab: https://github.com/lcgamboa/qemu_stm32/tree/picsimlab
+
+- **qemu-esp32**      - ESP32 simulator                  
+  - original: https://github.com/a159x36/qemu
+  - modified version used by PICSimLab: https://github.com/lcgamboa/qemu_stm32/tree/picsimlab_esp32
 
 - **gpsim**           - PIC simulator                    
   - http://gpsim.sourceforge.net/
