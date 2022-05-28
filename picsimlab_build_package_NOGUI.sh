@@ -39,8 +39,9 @@ rm -rf share/*/*/*.png
 if [[ -n "$1" ]]; then
  PWD=`pwd`	
  echo -e "\noverride_dh_auto_build:\n\tmake -j$(nproc) $1\n\n" >> debian/rules
- echo -e "\noverride_dh_auto_install:\n\tdh_auto_install\n\tinstall -p -D -m 0755 ../qemu_stm32/build/qemu-stm32 ${PWD}/debian/picsimlab/usr/bin/qemu-stm32\n\n" >> debian/rules
- sed -i 's/Depends: gtkwave, cutecom, gedit,/Depends: gpsim, /g' debian/control
+ echo -e "\noverride_dh_auto_install:\n\tdh_auto_install\n\tinstall -d ${PWD}/debian/picsimlab/usr/lib/picsimlab/" >> debian/rules
+ echo -e "\tcp -Rv ../../lib/qemu  ${PWD}/debian/picsimlab/usr/lib/picsimlab/\n\n" >> debian/rules
+ sed -i 's/Depends: gtkwave, cutecom, gedit,/Depends: gpsim,libgcrypt20, /g' debian/control
 else
  sed -i 's/Depends: gtkwave, cutecom, gedit,/Depends: /g' debian/control
 fi

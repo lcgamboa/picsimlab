@@ -10,9 +10,19 @@
 
 * Version 0.8.10. [lcgamboa]
 
+### Changes
+
+* Readme updated. [lcgamboa]
+
+* Readme updated. [lcgamboa]
+
 ### Fix
 
 * Fix board PICGenios dip switches functions. [lcgamboa]
+
+### Other
+
+* Merge pull request #61 from lcgamboa/libqemu. [lcgamboa]
 
 
 ## v0.8.10 (2022-04-09)
