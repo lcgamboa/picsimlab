@@ -499,7 +499,7 @@ void bsim_qemu::MDumpMemory(const char* fname) {
 #endif
             char* buff = new char[4194304];
             qemu_picsimlab_flash_dump(0, buff, 4194304);
-            FILE* fout = fopen(fname_bak, "w");
+            FILE* fout = fopen(fname_bak, "wb");
             if (fout) {
                 fwrite(buff, 4194304, 1, fout);
                 fclose(fout);
@@ -515,7 +515,7 @@ void bsim_qemu::MDumpMemory(const char* fname) {
 #endif
             char* buff = new char[4194304];
             qemu_picsimlab_flash_dump(0, buff, 4194304);
-            FILE* fout = fopen(fname_, "w");
+            FILE* fout = fopen(fname_, "wb");
             if (fout) {
                 fwrite(buff, 4194304, 1, fout);
                 fclose(fout);

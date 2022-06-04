@@ -563,6 +563,7 @@ void CPWindow1::Configure(const char* home, int use_default_board, int create, c
                     } else {
                         pboard->SetScale(scale);
                     }
+                    SetJUMPSTEPS(DEFAULTJS);
                     SetClock(2.0);  // Default clock
                 }
 
