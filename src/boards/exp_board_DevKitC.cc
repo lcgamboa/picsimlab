@@ -84,6 +84,11 @@ cboard_DevKitC::cboard_DevKitC(void) {
     Proc = "ESP32";  // default microcontroller if none defined in preferences
     ReadMaps();      // Read input and output board maps
 
+    wconfig.SetCanDestroy(false);
+
+    ConfEnableWifi = 1;
+    ConfDisableWdt = 1;
+
     // label1
     label1 = new CLabel();
     label1->SetFOwner(&Window1);
@@ -112,6 +117,20 @@ cboard_DevKitC::cboard_DevKitC(void) {
     combo1->SetTag(3);
     combo1->EvOnComboChange = EVONCOMBOCHANGE & CPWindow1::board_Event;
     Window1.CreateChild(combo1);
+    // button1
+    button1 = new CButton();
+    button1->SetFOwner(&Window1);
+    button1->SetName(lxT("button1_"));
+    button1->SetX(13);
+    button1->SetY(78 + 60);
+    button1->SetWidth(130);
+    button1->SetHeight(24);
+    button1->SetEnable(1);
+    button1->SetVisible(1);
+    button1->SetText("Config Qemu");
+    button1->SetTag(4);
+    button1->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow1::board_ButtonEvent;
+    Window1.CreateChild(button1);
 }
 
 // Destructor called once on board destruction
@@ -163,28 +182,46 @@ void cboard_DevKitC::RefreshStatus(void) {
 
 void cboard_DevKitC::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
-    Window1.saveprefs(lxT("DevKitC_proc"), Proc);
+    Window1.saveprefs(lxT("ESP32_DevKitC_proc"), Proc);
     // write microcontroller clock to preferences
-    Window1.saveprefs(lxT("DevKitC_clock"), lxString().Format("%2.1f", Window1.GetClock()));
+    Window1.saveprefs(lxT("ESP32_DevKitC_clock"), lxString().Format("%2.1f", Window1.GetClock()));
     // write microcontroller icount to preferences
-    Window1.saveprefs(lxT("DevKitC_icount"), itoa(icount));
+    Window1.saveprefs(lxT("ESP32_DevKitC_icount"), itoa(icount));
+
+    Window1.saveprefs(lxT("ESP32_DevKitC_cfgewifi"), itoa(ConfEnableWifi));
+    Window1.saveprefs(lxT("ESP32_DevKitC_cfgdwdt"), itoa(ConfDisableWdt));
+    Window1.saveprefs(lxT("ESP32_DevKitC_cfguextra"), itoa(use_cmdline_extra));
+    Window1.saveprefs(lxT("ESP32_DevKitC_cmdextra"), cmdline_extra);
 }
 
 // Called whe configuration file load  preferences
 
 void cboard_DevKitC::ReadPreferences(char* name, char* value) {
     // read microcontroller of preferences
-    if (!strcmp(name, "DevKitC_proc")) {
+    if (!strcmp(name, "ESP32_DevKitC_proc")) {
         Proc = value;
     }
     // read microcontroller clock
-    if (!strcmp(name, "DevKitC_clock")) {
+    if (!strcmp(name, "ESP32_DevKitC_clock")) {
         Window1.SetClock(atof(value));
     }
     // read microcontroller icount
-    if (!strcmp(name, "DevKitC_icount")) {
+    if (!strcmp(name, "ESP32_DevKitC_icount")) {
         icount = atoi(value);
         combo1->SetText(IcountToMipsStr(icount));
+    }
+
+    if (!strcmp(name, "ESP32_DevKitC_cfgewifi")) {
+        ConfEnableWifi = atoi(value);
+    }
+    if (!strcmp(name, "ESP32_DevKitC_cfgdwdt")) {
+        ConfDisableWdt = atoi(value);
+    }
+    if (!strcmp(name, "ESP32_DevKitC_cfguextra")) {
+        use_cmdline_extra = atoi(value);
+    }
+    if (!strcmp(name, "ESP32_DevKitC_cmdextra")) {
+        cmdline_extra = value;
     }
 }
 
@@ -424,6 +461,128 @@ void cboard_DevKitC::Run_CPU(void) {
 void cboard_DevKitC::board_Event(CControl* control) {
     icount = MipsStrToIcount(combo1->GetText().c_str());
     Window1.EndSimulation();
+}
+
+void cboard_DevKitC::BoardOptions(int* argc, char** argv) {
+    if (ConfEnableWifi) {
+        strcpy(argv[(*argc)++], "-nic");
+        strcpy(argv[(*argc)++], "user,model=esp32_wifi,net=192.168.4.0/24,hostfwd=tcp::16555-192.168.4.15:80");
+    }
+    if (ConfDisableWdt) {
+        strcpy(argv[(*argc)++], "-global");
+        strcpy(argv[(*argc)++], "driver=timer.esp32.timg,property=wdt_disable,value=true");
+    }
+}
+
+void cboard_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x, uint y, uint state) {
+    switch (control->GetTag()) {
+        case 4: {
+            lxString fname = Window1.GetSharePath() + "boards/" BOARD_DevKitC_Name + "/config.lxrad";
+
+            if (lxFileExists(fname)) {
+                wconfig.SetName("window1");  // must be the same as in xml
+                Application->ACreateWindow(&wconfig);
+                wconfig.DestroyChilds();
+                if (wconfig.LoadXMLContextAndCreateChilds(fname)) {
+                    CText* Text1 = (CText*)wconfig.GetChildByName("text1");
+                    char buff[2048];
+                    char line[1024];
+                    strncpy(buff, (const char*)cmdline.c_str(), 2047);
+
+                    char* arg = strtok(buff, " \n");
+                    line[0] = 0;
+
+                    while (arg) {
+                        if (!line[0]) {
+                            strcpy(line, arg);
+                            if (line[0] != '-') {
+                                Text1->AddLine(line);
+                                line[0] = 0;
+                            }
+                        } else {
+                            if (arg[0] == '-') {
+                                Text1->AddLine(line);
+                                strcpy(line, arg);
+                            } else {
+                                strcat(line, " ");
+                                strcat(line, arg);
+                                Text1->AddLine(line);
+                                line[0] = 0;
+                            }
+                        }
+                        arg = strtok(NULL, " \n");
+                    }
+
+                    CText* Text2 = (CText*)wconfig.GetChildByName("text2");
+                    if (cmdline_extra.length()) {
+                        strncpy(buff, (const char*)cmdline_extra.c_str(), 2047);
+
+                        arg = strtok(buff, " \n");
+                        line[0] = 0;
+
+                        while (arg) {
+                            if (!line[0]) {
+                                strcpy(line, arg);
+                                if (line[0] != '-') {
+                                    Text2->AddLine(line);
+                                    line[0] = 0;
+                                }
+                            } else {
+                                if (arg[0] == '-') {
+                                    Text2->AddLine(line);
+                                    strcpy(line, arg);
+                                } else {
+                                    strcat(line, " ");
+                                    strcat(line, arg);
+                                    Text2->AddLine(line);
+                                    line[0] = 0;
+                                }
+                            }
+                            arg = strtok(NULL, " \n");
+                        }
+                    } else {
+                        Text2->Clear();
+                    }
+
+                    ((CCheckBox*)wconfig.GetChildByName("checkbox1"))->SetCheck(ConfEnableWifi);
+                    ((CCheckBox*)wconfig.GetChildByName("checkbox2"))->SetCheck(ConfDisableWdt);
+                    ((CCheckBox*)wconfig.GetChildByName("checkbox3"))->SetCheck(use_cmdline_extra);
+
+                    ((CButton*)wconfig.GetChildByName("button1"))->EvMouseButtonRelease =
+                        EVMOUSEBUTTONRELEASE & CPWindow1::board_ButtonEvent;
+
+                    ((CButton*)wconfig.GetChildByName("button2"))->EvMouseButtonRelease =
+                        EVMOUSEBUTTONRELEASE & CPWindow1::board_ButtonEvent;
+
+                    wconfig.SetX(Window1.GetX() + 50);
+                    wconfig.SetY(Window1.GetY() + 50);
+
+                    wconfig.Draw();
+                    wconfig.ShowExclusive();
+                }
+            } else {
+                Window1.RegisterError("File " + fname + " not found!");
+            }
+        } break;
+        case 5: {
+            ConfEnableWifi = ((CCheckBox*)wconfig.GetChildByName("checkbox1"))->GetCheck();
+            ConfDisableWdt = ((CCheckBox*)wconfig.GetChildByName("checkbox2"))->GetCheck();
+            use_cmdline_extra = ((CCheckBox*)wconfig.GetChildByName("checkbox3"))->GetCheck();
+            CText* Text2 = (CText*)wconfig.GetChildByName("text2");
+            cmdline_extra = "";
+            for (unsigned int i = 0; i < Text2->GetCountLines(); i++) {
+                cmdline_extra += Text2->GetLine(i);
+                cmdline_extra += " ";
+            }
+            wconfig.HideExclusive();
+            wconfig.WDestroy();
+            Window1.EndSimulation();
+        } break;
+        case 6:
+            wconfig.HideExclusive();
+            wconfig.WDestroy();
+            break;
+    }
 }
 
 lxString cboard_DevKitC::MGetPinName(int pin) {

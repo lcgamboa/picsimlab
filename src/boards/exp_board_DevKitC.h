@@ -37,8 +37,15 @@ class cboard_DevKitC : public bsim_qemu {
 private:
     CLabel* label1;
     CCombo* combo1;
+    CButton* button1;
     unsigned char p_BOOT;
     void RegisterRemoteControl(void) override;
+    CPWindow wconfig;
+    int ConfEnableWifi;
+    int ConfDisableWdt;
+
+protected:
+    void BoardOptions(int* argc, char** argv) override;
 
 public:
     // Return the board name
@@ -76,6 +83,7 @@ public:
     unsigned short get_out_id(char* name) override;
     // board combo events
     void board_Event(CControl* control) override;
+    void board_ButtonEvent(CControl* control, uint button, uint x, uint y, uint state) override;
     void MSetAPin(int pin, float value) override;
     lxString MGetPinName(int pin) override;
     int MGetPinCount(void) override;

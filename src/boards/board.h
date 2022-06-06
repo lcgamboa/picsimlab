@@ -187,6 +187,11 @@ public:
     virtual void board_Event(CControl* control){};
 
     /**
+     * @brief  Called when window side controls are activated
+     */
+    virtual void board_ButtonEvent(CControl* control, uint button, uint x, uint y, uint state){};
+
+    /**
      * @brief  Called once on board creation
      */
     board(void);

@@ -168,6 +168,7 @@ public:
 
     void Configure(const char* home, int use_default_board = 0, int create = 0, const char* lfile = NULL);
     void board_Event(CControl* control);
+    void board_ButtonEvent(CControl* control, uint button, uint x, uint y, uint state);
     void thread1_EvThreadRun(CControl* control);
     void thread2_EvThreadRun(CControl* control);
     void thread3_EvThreadRun(CControl* control);

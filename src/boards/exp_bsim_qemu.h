@@ -67,6 +67,7 @@ protected:
     const char* IcountToMipsItens(char* buffer);
     unsigned int ns_count;
     void pins_reset(void);
+    virtual void BoardOptions(int* argc, char** argv){};
     int icount;
 #ifdef _WIN_
     HANDLE serialfd[4];
@@ -85,6 +86,9 @@ protected:
     lxMutex* mtx_qinit;
     int qemu_started;
     QEMUSimType SimType;
+    lxString cmdline;
+    int use_cmdline_extra;
+    lxString cmdline_extra;
 
 private:
     int load_qemu_lib(const char* path);

@@ -515,6 +515,7 @@ void CPWindow1::Configure(const char* home, int use_default_board, int create, c
 
     prefs.Clear();
     if (lxFileExists(fname)) {
+        printf("PICSimLab: Load Config from file \"%s\"\n", fname);
         if (prefs.LoadFromFile(fname)) {
             for (lc = 0; lc < (int)prefs.GetLinesCount(); lc++) {
                 strncpy(line, prefs.GetLine(lc).c_str(), 1023);
@@ -1186,7 +1187,11 @@ void CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl* control) {
 }
 
 void CPWindow1::board_Event(CControl* control) {
-    pboard->board_Event(control);
+    Window1.pboard->board_Event(control);
+}
+
+void CPWindow1::board_ButtonEvent(CControl* control, uint button, uint x, uint y, uint state) {
+    Window1.pboard->board_ButtonEvent(control, button, x, y, state);
 }
 
 void CPWindow1::menu1_Modules_Oscilloscope_EvMenuActive(CControl* control) {

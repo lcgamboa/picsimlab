@@ -148,6 +148,7 @@ bsim_qemu::bsim_qemu(void) {
     mtx_qinit = new lxMutex();
     ns_count = 0;
     icount = 5;
+    use_cmdline_extra = 0;
 }
 
 bsim_qemu::~bsim_qemu(void) {
@@ -219,7 +220,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
     char* resp = serial_port_list();
 
-#define ARGMAX 20
+#define ARGMAX 100
 
     char* argv[ARGMAX];
     int argc = 0;
@@ -230,7 +231,6 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
     }
 
     if (SimType == QEMU_SIM_STM32) {
-        // FIXME use picsimlab lib folder
         load_qemu_lib("libqemu-stm32");
 
         // change .hex to .bin
@@ -270,8 +270,14 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
         strcpy(argv[argc++], "-drive");
         sprintf(argv[argc++], "file=%s,if=pflash,format=raw", fname_);
+
+        strcpy(argv[argc++], "-d");
+        strcpy(argv[argc++], "unimp");
+
+        strcpy(argv[argc++], "-rtc");
+        strcpy(argv[argc++], "clock=vm");
+
     } else if (SimType == QEMU_SIM_ESP32) {
-        // FIXME use picsimlab lib folder
         load_qemu_lib("libqemu-xtensa");
 
         // change .hex to .bin
@@ -301,11 +307,6 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         strcpy(argv[argc++], "-M");
         strcpy(argv[argc++], "esp32-picsimlab");
 
-        strcpy(argv[argc++], "-drive");
-        sprintf(argv[argc++], "file=%s,if=mtd,format=raw", fname_);
-        strcpy(argv[argc++], "-nic");
-        strcpy(argv[argc++], "user,model=esp32_wifi,net=192.168.4.0/24,hostfwd=tcp::16555-192.168.4.15:80");
-
 #ifndef _WIN_
         lxString fullpath = Window1.GetLibPath() + "qemu/fw/";
 #else
@@ -314,13 +315,9 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         strcpy(argv[argc++], "-L");
         strcpy(argv[argc++], (const char*)fullpath.c_str());
 
-        // strcpy(argv[argc++], "-global");
-        // strcpy(argv[argc++], "driver=esp32.gpio,property=strap_mode,value=0x0f");
+        strcpy(argv[argc++], "-drive");
+        sprintf(argv[argc++], "file=%s,if=mtd,format=raw", fname_);
 
-        if (icount < 0) {
-            strcpy(argv[argc++], "-global");
-            strcpy(argv[argc++], "driver=timer.esp32.timg,property=wdt_disable,value=true");
-        }
     } else {
         printf("PICSimLab qemu: simulator %i not supported!!!\n", SimType);
         exit(-1);
@@ -336,15 +333,42 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         sprintf(argv[argc++], "tcp::%i", Window1.Get_debug_port());
     }
 
-    // strcpy(argv[argc++], "-d");
-    // strcpy(argv[argc++], "unimp");
-
     if (icount >= 0) {
         strcpy(argv[argc++], "-icount");
         sprintf(argv[argc++], "shift=%i,align=off,sleep=off", icount);
     }
-    strcpy(argv[argc++], "-rtc");
-    strcpy(argv[argc++], "clock=vm");
+
+    BoardOptions(&argc, argv);
+
+    // disable extra in case of invalid qemu option finish the simulator
+
+    char ftest[2048];
+    strncpy(ftest, (char*)lxGetTempDir(lxT("picsimlab")).char_str(), 1023);
+    strncat(ftest, "/picsimlab_qemu_fail", 1023);
+
+    if (lxFileExists(ftest)) {
+        use_cmdline_extra = 0;
+        Window1.RegisterError("Invalid qemu extra option!");
+        lxRemoveFile(ftest);
+    }
+
+    if (use_cmdline_extra) {
+        FILE* ft = fopen(ftest, "w");
+        fprintf(ft, "fail\n");
+        fclose(ft);
+    }
+
+    if (use_cmdline_extra && cmdline_extra.length()) {
+        char buff[2048];
+        strncpy(buff, (const char*)cmdline_extra.c_str(), 2047);
+
+        char* arg = strtok(buff, " \n");
+
+        while (arg) {
+            strcpy(argv[argc++], arg);
+            arg = strtok(NULL, " \n");
+        }
+    }
 
     free(resp);
 
@@ -357,11 +381,20 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
     qemu_init(argc, argv, NULL);
 
+    if (use_cmdline_extra) {
+        // all options good, remove fail file
+        lxRemoveFile(ftest);
+    }
+
+    cmdline = "";
     printf("PICSimLab: ");
     // free argv
     for (int i = 0; i < ARGMAX; i++) {
-        if (argv[i])
-            printf(" %s", argv[i]);
+        if (argv[i]) {
+            printf("%s ", argv[i]);
+            cmdline += argv[i];
+            cmdline += " ";
+        }
         free(argv[i]);
     }
     printf("\n");
