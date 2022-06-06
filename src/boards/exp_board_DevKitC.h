@@ -40,7 +40,7 @@ private:
     CButton* button1;
     unsigned char p_BOOT;
     void RegisterRemoteControl(void) override;
-    CPWindow wconfig;
+    CPWindow* wconfig;
     int ConfEnableWifi;
     int ConfDisableWdt;
 

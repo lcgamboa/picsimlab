@@ -84,8 +84,6 @@ cboard_DevKitC::cboard_DevKitC(void) {
     Proc = "ESP32";  // default microcontroller if none defined in preferences
     ReadMaps();      // Read input and output board maps
 
-    wconfig.SetCanDestroy(false);
-
     ConfEnableWifi = 1;
     ConfDisableWdt = 1;
 
@@ -131,6 +129,12 @@ cboard_DevKitC::cboard_DevKitC(void) {
     button1->SetTag(4);
     button1->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow1::board_ButtonEvent;
     Window1.CreateChild(button1);
+
+    wconfig = new CPWindow();
+    wconfig->SetCanDestroy(false);
+    wconfig->SetVisible(false);
+    wconfig->SetName("window1");  // must be the same as in xml
+    Application->ACreateWindow(wconfig);
 }
 
 // Destructor called once on board destruction
@@ -138,6 +142,8 @@ cboard_DevKitC::cboard_DevKitC(void) {
 cboard_DevKitC::~cboard_DevKitC(void) {
     Window1.DestroyChild(label1);
     Window1.DestroyChild(combo1);
+    wconfig->SetCanDestroy(true);
+    wconfig->WDestroy();
 }
 
 // Reset board status
@@ -480,11 +486,9 @@ void cboard_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x, u
             lxString fname = Window1.GetSharePath() + "boards/" BOARD_DevKitC_Name + "/config.lxrad";
 
             if (lxFileExists(fname)) {
-                wconfig.SetName("window1");  // must be the same as in xml
-                Application->ACreateWindow(&wconfig);
-                wconfig.DestroyChilds();
-                if (wconfig.LoadXMLContextAndCreateChilds(fname)) {
-                    CText* Text1 = (CText*)wconfig.GetChildByName("text1");
+                wconfig->DestroyChilds();
+                if (wconfig->LoadXMLContextAndCreateChilds(fname)) {
+                    CText* Text1 = (CText*)wconfig->GetChildByName("text1");
                     char buff[2048];
                     char line[1024];
                     strncpy(buff, (const char*)cmdline.c_str(), 2047);
@@ -513,7 +517,7 @@ void cboard_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x, u
                         arg = strtok(NULL, " \n");
                     }
 
-                    CText* Text2 = (CText*)wconfig.GetChildByName("text2");
+                    CText* Text2 = (CText*)wconfig->GetChildByName("text2");
                     if (cmdline_extra.length()) {
                         strncpy(buff, (const char*)cmdline_extra.c_str(), 2047);
 
@@ -544,43 +548,41 @@ void cboard_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x, u
                         Text2->Clear();
                     }
 
-                    ((CCheckBox*)wconfig.GetChildByName("checkbox1"))->SetCheck(ConfEnableWifi);
-                    ((CCheckBox*)wconfig.GetChildByName("checkbox2"))->SetCheck(ConfDisableWdt);
-                    ((CCheckBox*)wconfig.GetChildByName("checkbox3"))->SetCheck(use_cmdline_extra);
+                    ((CCheckBox*)wconfig->GetChildByName("checkbox1"))->SetCheck(ConfEnableWifi);
+                    ((CCheckBox*)wconfig->GetChildByName("checkbox2"))->SetCheck(ConfDisableWdt);
+                    ((CCheckBox*)wconfig->GetChildByName("checkbox3"))->SetCheck(use_cmdline_extra);
 
-                    ((CButton*)wconfig.GetChildByName("button1"))->EvMouseButtonRelease =
+                    ((CButton*)wconfig->GetChildByName("button1"))->EvMouseButtonRelease =
                         EVMOUSEBUTTONRELEASE & CPWindow1::board_ButtonEvent;
 
-                    ((CButton*)wconfig.GetChildByName("button2"))->EvMouseButtonRelease =
+                    ((CButton*)wconfig->GetChildByName("button2"))->EvMouseButtonRelease =
                         EVMOUSEBUTTONRELEASE & CPWindow1::board_ButtonEvent;
 
-                    wconfig.SetX(Window1.GetX() + 50);
-                    wconfig.SetY(Window1.GetY() + 50);
+                    wconfig->SetX(Window1.GetX() + 50);
+                    wconfig->SetY(Window1.GetY() + 50);
 
-                    wconfig.Draw();
-                    wconfig.ShowExclusive();
+                    wconfig->Draw();
+                    wconfig->ShowExclusive();
                 }
             } else {
                 Window1.RegisterError("File " + fname + " not found!");
             }
         } break;
         case 5: {
-            ConfEnableWifi = ((CCheckBox*)wconfig.GetChildByName("checkbox1"))->GetCheck();
-            ConfDisableWdt = ((CCheckBox*)wconfig.GetChildByName("checkbox2"))->GetCheck();
-            use_cmdline_extra = ((CCheckBox*)wconfig.GetChildByName("checkbox3"))->GetCheck();
-            CText* Text2 = (CText*)wconfig.GetChildByName("text2");
+            ConfEnableWifi = ((CCheckBox*)wconfig->GetChildByName("checkbox1"))->GetCheck();
+            ConfDisableWdt = ((CCheckBox*)wconfig->GetChildByName("checkbox2"))->GetCheck();
+            use_cmdline_extra = ((CCheckBox*)wconfig->GetChildByName("checkbox3"))->GetCheck();
+            CText* Text2 = (CText*)wconfig->GetChildByName("text2");
             cmdline_extra = "";
             for (unsigned int i = 0; i < Text2->GetCountLines(); i++) {
                 cmdline_extra += Text2->GetLine(i);
                 cmdline_extra += " ";
             }
-            wconfig.HideExclusive();
-            wconfig.WDestroy();
+            wconfig->HideExclusive();
             Window1.EndSimulation();
         } break;
         case 6:
-            wconfig.HideExclusive();
-            wconfig.WDestroy();
+            wconfig->HideExclusive();
             break;
     }
 }
