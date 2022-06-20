@@ -39,9 +39,10 @@ enum {
 
 /* ids of outputs of output map*/
 enum {
-    O_LON,  // Power LED
-    O_RST,  // Reset button
-    O_BOOT  // Boot button
+    O_LON,   // Power LED
+    O_RST,   // Reset button
+    O_BOOT,  // Boot button
+    O_LED    // User LED
 };
 // return the input ids numbers of names used in input map
 
@@ -68,6 +69,8 @@ unsigned short cboard_DevKitC::get_out_id(char* name) {
         return O_RST;
     if (strcmp(name, "PB_BOOT") == 0)
         return O_BOOT;
+    if (strcmp(name, "LD_USER") == 0)
+        return O_LED;
 
     printf("Error output '%s' don't have a valid id! \n", name);
     return 1;
@@ -336,6 +339,9 @@ void cboard_DevKitC::Draw(CDraw* draw) {
                 case O_LON:  // Blue using mcupwr value
                     draw->Canvas.SetColor(200 * Window1.Get_mcupwr() + 55, 0, 0);
                     break;
+                case O_LED:  // Blue using mcupwr value
+                    draw->Canvas.SetColor(0, 0, pins[23].oavalue);
+                    break;
                 case O_RST:
                 case O_BOOT:
                     draw->Canvas.SetColor(100, 100, 100);
@@ -373,11 +379,9 @@ void cboard_DevKitC::Run_CPU_ns(uint64_t time) {
     static unsigned int alm[64];
     static const int pinc = MGetPinCount();
 
-    const long int NSTEP = 4.0 * Window1.GetNSTEP();  // number of steps in 100ms
+    const int inc = 1000000000L / MGetInstClockFreq();
 
-    const int inc = 16000000L / NSTEP;
-
-    const float RNSTEP = 200.0 * pinc * inc / 100000000;
+    const float RNSTEP = 200.0 * pinc * inc / 100000000L;
 
     for (uint64_t c = 0; c < time; c += inc) {
         if (!ns_count) {
@@ -402,6 +406,7 @@ void cboard_DevKitC::Run_CPU_ns(uint64_t time) {
              */
             // verify if a breakpoint is reached if not run one instruction
             MStep();
+            InstCounterInc();
             // Oscilloscope window process
             if (use_oscope)
                 Window4.SetSample();
@@ -425,7 +430,7 @@ void cboard_DevKitC::Run_CPU_ns(uint64_t time) {
         }
 
         ns_count += inc;
-        if (ns_count > 100000000) {
+        if (ns_count > 100000000L) {  // every 100ms
             ns_count = 0;
             //  calculate mean value
             for (pi = 0; pi < MGetPinCount(); pi++) {

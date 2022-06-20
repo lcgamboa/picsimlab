@@ -419,7 +419,7 @@ void cboard_Franzininho_DIY::Run_CPU(void) {
                     }
                 }
             }
-
+            InstCounterInc();
             UpdateHardware();
 
             if (use_oscope)

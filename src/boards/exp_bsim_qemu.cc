@@ -48,7 +48,8 @@ void (*qmp_cont)(Error** errp);
 void (*qemu_mutex_lock_iothread_impl)(const char* file, int line);
 void (*qemu_mutex_unlock_iothread)(void);
 
-void (*qemu_picsimlab_register)(void (*picsimlab_write_pin)(int pin, int value));
+void (*qemu_picsimlab_register)(void (*picsimlab_write_pin)(int pin, int value),
+                                void (*picsimlab_dir_pin)(int pin, int value));
 void (*qemu_picsimlab_set_pin)(int pin, int value);
 void (*qemu_picsimlab_set_apin)(int chn, int value);
 int (*qemu_picsimlab_flash_dump)(int64_t offset, void* buf, int bytes);
@@ -71,10 +72,21 @@ static bsim_qemu* g_board = NULL;
 void picsimlab_write_pin(int pin, int value) {
     int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
     // printf("================> IO    <====================== %ji\n", now - g_board->timer.last);
-    g_board->Run_CPU_ns((now - g_board->timer.last) / 3);
+    g_board->Run_CPU_ns(now - g_board->timer.last);
     g_board->timer.last = now;
     g_pins[pin - 1].value = value;
     // printf("pin[%i]=%i\n", pin, value);
+}
+
+void picsimlab_dir_pins(int pin, int dir) {
+    int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+    // printf("================> IO    <====================== %ji\n", now - g_board->timer.last);
+    g_board->Run_CPU_ns(now - g_board->timer.last);
+    if (pin > 0) {
+        g_pins[pin - 1].dir = !dir;
+    }
+    g_board->timer.last = now;
+    // printf("pin[%i]=%s\n", pin, (!dir == PD_IN) ? "PD_IN" : "PD_OUT");
 }
 
 int bsim_qemu::load_qemu_lib(const char* path) {
@@ -202,7 +214,7 @@ static void user_timeout_cb(void* opaque) {
     int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
     timer_mod_ns(board->timer.qtimer, now + board->timer.timeout);
     if (Window1.GetSimulationRun()) {
-        board->Run_CPU_ns((now - board->timer.last) / 3);
+        board->Run_CPU_ns(now - board->timer.last);
     }
     board->timer.last = now;
 }
@@ -374,10 +386,10 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
     // printf("picsimlab: %s\n", (const char*)cmd);
     g_pins = pins;
-    qemu_picsimlab_register(picsimlab_write_pin);
+    qemu_picsimlab_register(picsimlab_write_pin, picsimlab_dir_pins);
     g_board = this;
     timer.last = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-    timer.timeout = 10000000L;
+    timer.timeout = TTIMEOUT;
 
     qemu_init(argc, argv, NULL);
 

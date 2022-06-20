@@ -459,6 +459,7 @@ void cboard_Breadboard::Run_CPU(void) {
                     if (!mplabxd_testbp())
                         pic_step(&pic);
                     ioupdated = pic.ioupdated;
+                    InstCounterInc();
 
                     if (use_oscope)
                         Window4.SetSample();
@@ -524,6 +525,7 @@ void cboard_Breadboard::Run_CPU(void) {
                             }
                         }
                     }
+                    InstCounterInc();
                     bsim_simavr::UpdateHardware();
 
                     // avr->sleep_usec=0;

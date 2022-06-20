@@ -137,9 +137,9 @@ public:
     void PropButtonRelease(CControl* control, uint button, uint x, uint y, uint state);
     void PropComboChange(CCombo* control);
     void PropClose(int tag);
-    void Reset_i2c_bus(unsigned char pin);
-    void Set_i2c_bus(unsigned char pin, unsigned char value);
-    unsigned char Get_i2c_bus(unsigned char pin);
+    void Reset_pullup_bus(unsigned char pin);
+    void Set_pullup_bus(unsigned char pin, unsigned char value);
+    unsigned char Get_pullup_bus(unsigned char pin);
     void PartButtonEvent(CControl* control, uint button, uint x, uint y, uint state);
     void PartKeyEvent(CControl* control, uint keysm, uint ukeysym, uint state);
     void PartEvent(CControl* control);
@@ -189,9 +189,9 @@ private:
     int mdx, mdy;
     float scale;
     lxString LoadConfigFile;
-    unsigned char i2c_bus[IOINIT];
-    int i2c_bus_count;
-    unsigned char i2c_bus_ptr[IOINIT];
+    unsigned char pullup_bus[IOINIT];
+    int pullup_bus_count;
+    unsigned char pullup_bus_ptr[IOINIT];
     CPWindow wprop;
     int fdtype;
     lxString oldfname;

@@ -84,6 +84,20 @@ typedef struct {
     };
 } output_t;
 
+#define MAX_TIMERS 256
+
+/**
+ * @brief internal timer struct
+ *
+ */
+typedef struct {
+    uint32_t Timer;
+    uint32_t Reload;
+    void* Arg;
+    void (*Callback)(void* arg);
+    int Enabled;
+} Timers_t;
+
 /**
  * @brief Board class
  *
@@ -523,11 +537,61 @@ public:
      */
     double GetScale(void);
 
+    /**
+     * @brief Get instruction counter
+     */
+    uint32_t InstCounterGet(void) { return InstCounter; };
+
+    /**
+     * @brief Get elapsed time from instruction counter in us
+     */
+    uint32_t InstCounterGet_us(const uint32_t start);
+
+    /**
+     * @brief Get elapsed time from instruction counter in us
+     */
+    uint32_t InstCounterGet_ms(const uint32_t start);
+
+    /**
+     * @brief Register a new timer with time in us (default enabled)
+     */
+    int TimerRegister_us(const uint32_t micros, void (*Callback)(void* arg), void* arg);
+
+    /**
+     * @brief Register a new timer with time in ms (default enabled)
+     */
+    int TimerRegister_ms(const uint32_t miles, void (*Callback)(void* arg), void* arg);
+
+    /**
+     * @brief Unregister timer
+     */
+    int TimerUnregister(const int timer);
+
+    /**
+     * @brief Modify timer value with us
+     */
+    int TimerChange_us(const int timer, const uint32_t micros);
+
+    /**
+     * @brief Modify timer value with us
+     */
+    int TimerChange_ms(const int timer, const uint32_t miles);
+
+    /**
+     * @brief Enable or disable timer
+     */
+    int TimerSetState(const int timer, const int enabled);
+
 protected:
     /**
      * @brief Register remote control variables
      */
     virtual void RegisterRemoteControl(void){};
+
+    /**
+     * @brief Increment the Intructions Counter
+     */
+    void InstCounterInc(void);
 
     lxString Proc;              ///< Name of processor in use
     input_t input[120];         ///< input map elements
@@ -552,6 +616,10 @@ protected:
     void StartThread(void);
 
 private:
+    uint32_t InstCounter;
+    int TimersCount;
+    Timers_t Timers[MAX_TIMERS];
+
     /**
      * @brief Read the Input Map
      */

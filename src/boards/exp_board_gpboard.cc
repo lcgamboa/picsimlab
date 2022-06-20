@@ -302,6 +302,7 @@ void cboard_gpboard::Run_CPU(void) {
              */
             // verify if a breakpoint is reached if not run one instruction
             MStep();
+            InstCounterInc();
             // Oscilloscope window process
             if (use_oscope)
                 Window4.SetSample();

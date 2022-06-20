@@ -570,6 +570,7 @@ void cboard_Arduino_Uno::Run_CPU(void) {
                 }
             }
 
+            InstCounterInc();
             UpdateHardware();
 
             // avr->sleep_usec=0;

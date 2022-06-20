@@ -707,7 +707,7 @@ void CPWindow5::menu1_Edit_Zoomout_EvMenuActive(CControl* control) {
 void CPWindow5::PreProcess(void) {
     int i;
 
-    memset(i2c_bus, 0, PinsCount);
+    memset(pullup_bus, 0, PinsCount);
 
     partsc_aup = 0;
     for (i = 0; i < partsc; i++) {
@@ -718,14 +718,14 @@ void CPWindow5::PreProcess(void) {
         }
     }
 
-    i2c_bus_count = 0;
+    pullup_bus_count = 0;
     for (i = 0; i < PinsCount; i++) {
-        if (i2c_bus[i] > 0)  // need register bus
+        if (pullup_bus[i] > 0)  // need register bus
         {
-            i2c_bus_ptr[i2c_bus_count] = i;
-            i2c_bus_count++;
+            pullup_bus_ptr[pullup_bus_count] = i;
+            pullup_bus_count++;
         }
-        i2c_bus[i] = 0;
+        pullup_bus[i] = 0;
     }
 }
 
@@ -733,14 +733,14 @@ void CPWindow5::Process(void) {
     int i;
 
     if (ioupdated) {
-        for (i = 0; i < i2c_bus_count; i++) {
-            i2c_bus[i2c_bus_ptr[i]] = 1;
+        for (i = 0; i < pullup_bus_count; i++) {
+            pullup_bus[pullup_bus_ptr[i]] = 1;
         }
         for (i = 0; i < partsc; i++) {
             parts[i]->Process();
         }
-        for (i = 0; i < i2c_bus_count; i++) {
-            Window5.SetPin(i2c_bus_ptr[i] + 1, i2c_bus[i2c_bus_ptr[i]]);
+        for (i = 0; i < pullup_bus_count; i++) {
+            Window5.SetPin(pullup_bus_ptr[i] + 1, pullup_bus[pullup_bus_ptr[i]]);
         }
     } else {
         for (i = 0; i < partsc_aup; i++) {
@@ -939,21 +939,21 @@ void CPWindow5::filedialog1_EvOnClose(int retId) {
     }
 }
 
-void CPWindow5::Reset_i2c_bus(unsigned char pin) {
+void CPWindow5::Reset_pullup_bus(unsigned char pin) {
     if (pin < IOINIT) {
-        i2c_bus[pin]++;  // count i2c devices in bus
+        pullup_bus[pin]++;  // count i2c devices in bus
     }
 }
 
-void CPWindow5::Set_i2c_bus(unsigned char pin, unsigned char value) {
+void CPWindow5::Set_pullup_bus(unsigned char pin, unsigned char value) {
     if (pin < IOINIT) {
-        i2c_bus[pin] &= value;
+        pullup_bus[pin] &= value;
     }
 }
 
-unsigned char CPWindow5::Get_i2c_bus(unsigned char pin) {
+unsigned char CPWindow5::Get_pullup_bus(unsigned char pin) {
     if (pin < IOINIT)
-        return i2c_bus[pin];
+        return pullup_bus[pin];
     else
         return 0;
 }

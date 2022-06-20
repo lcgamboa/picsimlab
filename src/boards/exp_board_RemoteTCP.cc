@@ -419,7 +419,7 @@ void cboard_RemoteTCP::Run_CPU(void) {
                     }
                 }
             }
-
+            InstCounterInc();
             // Oscilloscope window process
             if (use_oscope)
                 Window4.SetSample();

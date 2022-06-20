@@ -1110,6 +1110,7 @@ void cboard_PICGenios::Run_CPU(void) {
             if (!mplabxd_testbp())
                 pic_step(&pic);
             ioupdated = pic.ioupdated;
+            InstCounterInc();
             if (use_oscope)
                 Window4.SetSample();
             if (use_spare)

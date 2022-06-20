@@ -305,7 +305,7 @@ void cpart_MI2C_24CXXX::PreProcess(void) {
     mi2c_set_addr(&mi2c, addr);
 
     if (input_pins[3] > 0) {
-        Window5.Reset_i2c_bus(input_pins[3] - 1);
+        Window5.Reset_pullup_bus(input_pins[3] - 1);
     }
 }
 
@@ -313,8 +313,8 @@ void cpart_MI2C_24CXXX::Process(void) {
     const picpin* ppins = Window5.GetPinsValues();
 
     if ((input_pins[3] > 0) && (input_pins[4] > 0))
-        Window5.Set_i2c_bus(input_pins[3] - 1,
-                            mi2c_io(&mi2c, ppins[input_pins[4] - 1].value, ppins[input_pins[3] - 1].value));
+        Window5.Set_pullup_bus(input_pins[3] - 1,
+                               mi2c_io(&mi2c, ppins[input_pins[4] - 1].value, ppins[input_pins[3] - 1].value));
 }
 
 void cpart_MI2C_24CXXX::EvMouseButtonPress(uint button, uint x, uint y, uint state) {

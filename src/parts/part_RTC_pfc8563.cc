@@ -211,7 +211,7 @@ void cpart_RTC_pfc8563::ReadPropertiesWindow(CPWindow* WProp) {
 
 void cpart_RTC_pfc8563::PreProcess(void) {
     if (input_pins[1] > 0) {
-        Window5.Reset_i2c_bus(input_pins[1] - 1);
+        Window5.Reset_pullup_bus(input_pins[1] - 1);
     }
 }
 
@@ -219,8 +219,8 @@ void cpart_RTC_pfc8563::Process(void) {
     const picpin* ppins = Window5.GetPinsValues();
 
     if ((input_pins[1] > 0) && (input_pins[2] > 0))
-        Window5.Set_i2c_bus(input_pins[1] - 1,
-                            rtc_pfc8563_I2C_io(&rtc, ppins[input_pins[2] - 1].value, ppins[input_pins[1] - 1].value));
+        Window5.Set_pullup_bus(input_pins[1] - 1, rtc_pfc8563_I2C_io(&rtc, ppins[input_pins[2] - 1].value,
+                                                                     ppins[input_pins[1] - 1].value));
 }
 
 part_init(PART_RTC_PFC8563_Name, cpart_RTC_pfc8563, "Other");

@@ -73,7 +73,8 @@ extern void (*qmp_cont)(Error** errp);
 extern void (*qemu_mutex_lock_iothread_impl)(const char* file, int line);
 extern void (*qemu_mutex_unlock_iothread)(void);
 
-extern void (*qemu_picsimlab_register)(void (*picsimlab_write_pin)(int pin, int value));
+extern void (*qemu_picsimlab_register)(void (*picsimlab_write_pin)(int pin, int value),
+                                       void (*picsimlab_dir_pin)(int pin, int value));
 extern void (*qemu_picsimlab_set_pin)(int pin, int value);
 extern void (*qemu_picsimlab_set_apin)(int chn, int value);
 extern int (*qemu_picsimlab_flash_dump)(int64_t offset, void* buf, int bytes);

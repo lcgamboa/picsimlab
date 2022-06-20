@@ -31,6 +31,8 @@
 
 typedef enum { QEMU_SIM_NONE = 0, QEMU_SIM_STM32, QEMU_SIM_ESP32 } QEMUSimType;
 
+#define TTIMEOUT 10000000L
+
 class bsim_qemu : virtual public board {
 public:
     bsim_qemu(void);

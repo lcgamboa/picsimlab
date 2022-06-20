@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -37,6 +37,8 @@ board::board(void) {
     Proc = "";
     p_RST = 1;
     Scale = Window1.GetScale();
+    InstCounter = 0;
+    TimersCount = 0;
 }
 
 board::~board(void) {}
@@ -345,4 +347,87 @@ void board::StartThread(void) {
         Window1.thread3.Run();
     }
 #endif
+}
+
+void board::InstCounterInc(void) {
+    InstCounter++;
+    for (int t = 0; t < TimersCount; t++) {
+        if (Timers[t].Enabled) {
+            Timers[t].Timer--;
+            if (!Timers[t].Timer) {
+                (*Timers[t].Callback)(Timers[t].Arg);
+                Timers[t].Timer = Timers[t].Reload;
+            }
+        }
+    }
+}
+
+int board::TimerRegister_us(const uint32_t micros, void (*Callback)(void* arg), void* arg) {
+    if (TimersCount < MAX_TIMERS) {
+        TimersCount++;
+        TimerChange_us(TimersCount, micros);
+        Timers[TimersCount - 1].Callback = Callback;
+        Timers[TimersCount - 1].Arg = arg;
+        Timers[TimersCount - 1].Enabled = 1;
+        return TimersCount;
+    }
+    return -1;
+}
+
+int board::TimerRegister_ms(const uint32_t miles, void (*Callback)(void* arg), void* arg) {
+    if (TimersCount < MAX_TIMERS) {
+        TimersCount++;
+        TimerChange_us(TimersCount, miles);
+        Timers[TimersCount - 1].Callback = Callback;
+        Timers[TimersCount - 1].Arg = arg;
+        Timers[TimersCount - 1].Enabled = 1;
+        return TimersCount;
+    }
+    return -1;
+}
+
+int board::TimerUnregister(const int timer) {
+    if (timer <= TimersCount) {
+        for (int t = timer - 1; t < (TimersCount - 1); t++) {
+            Timers[t] = Timers[t + 1];
+        }
+        TimersCount--;
+        return 0;
+    }
+    return -1;
+}
+
+int board::TimerChange_us(const int timer, const uint32_t micros) {
+    if (timer <= TimersCount) {
+        Timers[timer - 1].Reload = micros * 1e-6 * MGetInstClockFreq();
+        Timers[timer - 1].Timer = Timers[timer - 1].Reload;
+        return 0;
+    }
+    return -1;
+}
+
+int board::TimerChange_ms(const int timer, const uint32_t miles) {
+    if (timer <= TimersCount) {
+        Timers[timer - 1].Reload = miles * 1e-3 * MGetInstClockFreq();
+        Timers[timer - 1].Timer = Timers[timer - 1].Reload;
+        return 0;
+    }
+    return -1;
+}
+int board::TimerSetState(const int timer, const int enabled) {
+    if (timer <= TimersCount) {
+        Timers[timer - 1].Enabled = enabled;
+        if (enabled) {
+            Timers[timer - 1].Timer = Timers[timer - 1].Reload;
+        }
+        return 0;
+    }
+    return -1;
+}
+
+uint32_t board::InstCounterGet_us(const uint32_t start) {
+    return ((InstCounter - start) * 1e6) / MGetInstClockFreq();
+}
+uint32_t board::InstCounterGet_ms(const uint32_t start) {
+    return ((InstCounter - start) * 1e3) / MGetInstClockFreq();
 }

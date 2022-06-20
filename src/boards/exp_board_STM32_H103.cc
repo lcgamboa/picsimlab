@@ -344,11 +344,10 @@ void cboard_STM32_H103::Run_CPU_ns(uint64_t time) {
     static const int pinc = MGetPinCount();
 
     const int JUMPSTEPS = 4.0 * Window1.GetJUMPSTEPS();  // number of steps skipped
-    const long int NSTEP = 4.0 * Window1.GetNSTEP();     // number of steps in 100ms
 
-    const int inc = 16000000L / NSTEP;
+    const int inc = 1000000000L / MGetInstClockFreq();
 
-    const float RNSTEP = 200.0 * pinc * inc / 100000000;
+    const float RNSTEP = 200.0 * pinc * inc / 100000000L;
 
     for (uint64_t c = 0; c < time; c += inc) {
         if (!ns_count) {
@@ -372,6 +371,7 @@ void cboard_STM32_H103::Run_CPU_ns(uint64_t time) {
 
             // verify if a breakpoint is reached if not run one instruction
             MStep();
+            InstCounterInc();
             // Oscilloscope window process
             if (use_oscope)
                 Window4.SetSample();

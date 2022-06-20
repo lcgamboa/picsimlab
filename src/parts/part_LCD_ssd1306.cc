@@ -244,7 +244,7 @@ void cpart_LCD_ssd1306::ReadPropertiesWindow(CPWindow* WProp) {
 
 void cpart_LCD_ssd1306::PreProcess(void) {
     if ((type_com) && (input_pins[1] > 0)) {
-        Window5.Reset_i2c_bus(input_pins[1] - 1);
+        Window5.Reset_pullup_bus(input_pins[1] - 1);
     }
 }
 
@@ -253,11 +253,11 @@ void cpart_LCD_ssd1306::Process(void) {
 
     if (type_com) {
         if ((input_pins[0] > 0) && (input_pins[1] > 0))
-            Window5.Set_i2c_bus(input_pins[1] - 1, lcd_ssd1306_I2C_io(&lcd, ppins[input_pins[1] - 1].value,
-                                                                      ppins[input_pins[0] - 1].value));
+            Window5.Set_pullup_bus(input_pins[1] - 1, lcd_ssd1306_I2C_io(&lcd, ppins[input_pins[1] - 1].value,
+                                                                         ppins[input_pins[0] - 1].value));
 
         if (input_pins[1] > 0)
-            Window5.SetPin(input_pins[1], Window5.Get_i2c_bus(input_pins[1] - 1));
+            Window5.SetPin(input_pins[1], Window5.Get_pullup_bus(input_pins[1] - 1));
     } else {
         if ((input_pins[0] > 0) && (input_pins[1] > 0) && (input_pins[2] > 0) && (input_pins[3] > 0) &&
             (input_pins[4] > 0)) {

@@ -324,7 +324,7 @@ void cpart_IO_PCF8574::PreProcess(void) {
     io_PCF8574_set_addr(&ioe8, addr);
 
     if (input_pins[1] > 0) {
-        Window5.Reset_i2c_bus(input_pins[1] - 1);
+        Window5.Reset_pullup_bus(input_pins[1] - 1);
     }
 }
 
@@ -344,8 +344,8 @@ void cpart_IO_PCF8574::Process(void) {
         ioe8.dataOut &= ioe8.dataIn;  // mask with input
 
         if ((input_pins[0] > 0) && (input_pins[1] > 0))
-            Window5.Set_i2c_bus(input_pins[1] - 1, io_PCF8574_I2C_io(&ioe8, ppins[input_pins[0] - 1].value,
-                                                                     ppins[input_pins[1] - 1].value));
+            Window5.Set_pullup_bus(input_pins[1] - 1, io_PCF8574_I2C_io(&ioe8, ppins[input_pins[0] - 1].value,
+                                                                        ppins[input_pins[1] - 1].value));
 
         if (_ret != ioe8.dataIn) {
             Window5.WritePin(output_pins[0], (ioe8.dataIn & 0x01) != 0);
