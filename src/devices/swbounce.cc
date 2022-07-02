@@ -26,11 +26,13 @@
 #include "swbounce.h"
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 void SWBounce_init(SWBounce_t* swb, const int swcount) {
     swb->swcount = swcount;
     swb->bounce = (unsigned char*)malloc(swcount);
     swb->do_bounce = 0;
+    srand(time(NULL));
 }
 
 void SWBounce_end(SWBounce_t* swb) {

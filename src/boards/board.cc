@@ -39,6 +39,11 @@ board::board(void) {
     Scale = Window1.GetScale();
     InstCounter = 0;
     TimersCount = 0;
+    for (int i = 0; i < MAX_TIMERS; i++) {
+        Timers[i].Arg = NULL;
+        Timers[i].Callback = NULL;
+        Timers[i].Enabled = 0;
+    }
 }
 
 board::~board(void) {}
@@ -352,11 +357,11 @@ void board::StartThread(void) {
 void board::InstCounterInc(void) {
     InstCounter++;
     for (int t = 0; t < TimersCount; t++) {
-        if (Timers[t].Enabled) {
-            Timers[t].Timer--;
-            if (!Timers[t].Timer) {
-                (*Timers[t].Callback)(Timers[t].Arg);
-                Timers[t].Timer = Timers[t].Reload;
+        if (TimersList[t]->Enabled) {
+            TimersList[t]->Timer--;
+            if (!TimersList[t]->Timer) {
+                (*TimersList[t]->Callback)(TimersList[t]->Arg);
+                TimersList[t]->Timer = TimersList[t]->Reload;
             }
         }
     }
@@ -364,41 +369,59 @@ void board::InstCounterInc(void) {
 
 int board::TimerRegister_us(const uint32_t micros, void (*Callback)(void* arg), void* arg) {
     if (TimersCount < MAX_TIMERS) {
+        int timern = 0;
+        for (int i = 0; i < MAX_TIMERS; i++) {
+            if (Timers[i].Callback == NULL) {
+                timern = i + 1;
+                break;
+            }
+        }
+        TimerChange_us(timern, micros);
+        Timers[timern - 1].Callback = Callback;
+        Timers[timern - 1].Arg = arg;
+        Timers[timern - 1].Enabled = 1;
+        TimersList[TimersCount] = &Timers[timern - 1];
         TimersCount++;
-        TimerChange_us(TimersCount, micros);
-        Timers[TimersCount - 1].Callback = Callback;
-        Timers[TimersCount - 1].Arg = arg;
-        Timers[TimersCount - 1].Enabled = 1;
-        return TimersCount;
+        return timern;
     }
     return -1;
 }
 
 int board::TimerRegister_ms(const uint32_t miles, void (*Callback)(void* arg), void* arg) {
     if (TimersCount < MAX_TIMERS) {
+        int timern = 0;
+        for (int i = 0; i < MAX_TIMERS; i++) {
+            if (Timers[i].Callback == NULL) {
+                timern = i + 1;
+                break;
+            }
+        }
+        TimerChange_us(timern, miles);
+        Timers[timern - 1].Callback = Callback;
+        Timers[timern - 1].Arg = arg;
+        Timers[timern - 1].Enabled = 1;
+        TimersList[TimersCount] = &Timers[timern - 1];
         TimersCount++;
-        TimerChange_us(TimersCount, miles);
-        Timers[TimersCount - 1].Callback = Callback;
-        Timers[TimersCount - 1].Arg = arg;
-        Timers[TimersCount - 1].Enabled = 1;
-        return TimersCount;
+        return timern;
     }
     return -1;
 }
 
 int board::TimerUnregister(const int timer) {
-    if (timer <= TimersCount) {
+    if (timer <= MAX_TIMERS) {
+        Timers[timer - 1].Callback = NULL;  // free timer
         for (int t = timer - 1; t < (TimersCount - 1); t++) {
-            Timers[t] = Timers[t + 1];
+            TimersList[t] = TimersList[t + 1];
         }
         TimersCount--;
+        TimersList[TimersCount] = NULL;
         return 0;
     }
     return -1;
 }
 
 int board::TimerChange_us(const int timer, const uint32_t micros) {
-    if (timer <= TimersCount) {
+    if (timer <= MAX_TIMERS) {
         Timers[timer - 1].Reload = micros * 1e-6 * MGetInstClockFreq();
         Timers[timer - 1].Timer = Timers[timer - 1].Reload;
         return 0;
@@ -407,7 +430,7 @@ int board::TimerChange_us(const int timer, const uint32_t micros) {
 }
 
 int board::TimerChange_ms(const int timer, const uint32_t miles) {
-    if (timer <= TimersCount) {
+    if (timer <= MAX_TIMERS) {
         Timers[timer - 1].Reload = miles * 1e-3 * MGetInstClockFreq();
         Timers[timer - 1].Timer = Timers[timer - 1].Reload;
         return 0;
@@ -415,7 +438,7 @@ int board::TimerChange_ms(const int timer, const uint32_t miles) {
     return -1;
 }
 int board::TimerSetState(const int timer, const int enabled) {
-    if (timer <= TimersCount) {
+    if (timer <= MAX_TIMERS) {
         Timers[timer - 1].Enabled = enabled;
         if (enabled) {
             Timers[timer - 1].Timer = Timers[timer - 1].Reload;

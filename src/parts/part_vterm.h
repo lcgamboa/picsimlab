@@ -71,6 +71,7 @@ private:
     char send_text;
     unsigned char lending;
     lxFont font;
+    lxString text_to_send;
 };
 
 #endif /* PART_vterm_H */

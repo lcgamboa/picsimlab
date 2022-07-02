@@ -43,16 +43,25 @@ void vterm_rst(vterm_t* vt) {
     dprintf("rst uart\n");
 }
 
-void vterm_init(vterm_t* vt) {
-    bitbang_uart_init(&vt->bb_uart);
+static void vterm_uart_rx_callback(void* arg) {
+    vterm_t* vt = (vterm_t*)arg;
+
+    vt->inMutex->Lock();
+    vt->buff_in[vt->count_in++] = bitbang_uart_recv(&vt->bb_uart);
+    vt->inMutex->Unlock();
+    if (vt->count_in >= SBUFFMAX)
+        vt->count_in = 0;
+}
+
+void vterm_init(vterm_t* vt, board* pboard) {
+    bitbang_uart_init(&vt->bb_uart, pboard, vterm_uart_rx_callback, vt);
     vterm_rst(vt);
+    vt->inMutex = new lxMutex();
     dprintf("init uart\n");
 }
 
-void vterm_end(vterm_t* vt) {}
-
-void vterm_set_clk_freq(vterm_t* vt, const unsigned long freq) {
-    bitbang_uart_set_clk_freq(&vt->bb_uart, freq);
+void vterm_end(vterm_t* vt) {
+    delete vt->inMutex;
 }
 
 unsigned char vterm_io(vterm_t* vt, const unsigned char rx) {
@@ -69,12 +78,6 @@ unsigned char vterm_io(vterm_t* vt, const unsigned char rx) {
     }
 
     ret = bitbang_uart_io(&vt->bb_uart, rx);
-
-    if (bitbang_uart_data_available(&vt->bb_uart)) {
-        vt->buff_in[vt->count_in++] = bitbang_uart_recv(&vt->bb_uart);
-        if (vt->count_in >= SBUFFMAX)
-            vt->count_in = 0;
-    }
 
     return ret;
 }

@@ -34,14 +34,11 @@ typedef struct {
     unsigned char connected;
     serialfd_t serialfd;
     bitbang_uart_t bb_uart;
-    unsigned int rxcount;
-    unsigned int rxmax;
 } uart_t;
 
 void uart_rst(uart_t* sr);
-void uart_init(uart_t* sr);
+void uart_init(uart_t* sr, board* pboard);
 void uart_end(uart_t* sr);
-void uart_set_clk_freq(uart_t* sr, const unsigned long freq);
 void uart_set_port(uart_t* sr, const char* port, const unsigned int speed);
 
 unsigned char uart_io(uart_t* sr, const unsigned char rx);

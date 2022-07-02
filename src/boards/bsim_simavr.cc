@@ -381,10 +381,9 @@ int bsim_simavr::MInit(const char* processor, const char* fname, float freq) {
     serialbaud = serial_port_cfg(serialfd, serialexbaud);
 
     if (has_usart) {
-        bitbang_uart_init(&bb_uart);
+        bitbang_uart_init(&bb_uart, this, NULL, NULL);
 
         bitbang_uart_set_speed(&bb_uart, serialexbaud);
-        bitbang_uart_set_clk_freq(&bb_uart, freq);
 
         pin_rx = 2;  // PD0
         pin_tx = 3;  // PD1
@@ -478,9 +477,6 @@ void bsim_simavr::MEraseFlash(void) {
 void bsim_simavr::MSetFreq(float freq) {
     if (avr) {
         avr->frequency = freq;
-        if (has_usart) {
-            bitbang_uart_set_clk_freq(&bb_uart, freq);
-        }
     }
 }
 
@@ -1251,10 +1247,7 @@ void bsim_simavr::UpdateHardware(void) {
 
                 // printf ("baud=%i %f\n", serialbaud, serialexbaud);
 
-                bitbang_uart_init(&bb_uart);
-
                 bitbang_uart_set_speed(&bb_uart, serialexbaud);
-                bitbang_uart_set_clk_freq(&bb_uart, avr->frequency);
 
                 pins[pin_rx - 1].dir = PD_IN;
                 pins[pin_tx - 1].dir = PD_OUT;

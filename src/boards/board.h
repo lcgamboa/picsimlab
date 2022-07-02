@@ -619,6 +619,7 @@ private:
     uint32_t InstCounter;
     int TimersCount;
     Timers_t Timers[MAX_TIMERS];
+    Timers_t* TimersList[MAX_TIMERS];
 
     /**
      * @brief Read the Input Map

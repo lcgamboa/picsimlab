@@ -38,12 +38,18 @@
 void uart_rst(uart_t* sr) {
     bitbang_uart_rst(&sr->bb_uart);
     dprintf("rst uart\n");
-    sr->rxcount = 0;
-    sr->rxmax = 0;
 }
 
-void uart_init(uart_t* sr) {
-    bitbang_uart_init(&sr->bb_uart);
+static void uart_rx_callback(void* arg) {
+    uart_t* sr = (uart_t*)arg;
+    unsigned char data = bitbang_uart_recv(&sr->bb_uart);
+    if (sr->connected) {
+        serial_port_send(sr->serialfd, data);
+    }
+}
+
+void uart_init(uart_t* sr, board* pboard) {
+    bitbang_uart_init(&sr->bb_uart, pboard, uart_rx_callback, sr);
     sr->connected = 0;
     uart_rst(sr);
     sr->serialfd = 0;
@@ -58,39 +64,18 @@ void uart_end(uart_t* sr) {
     bitbang_uart_end(&sr->bb_uart);
 }
 
-void uart_set_clk_freq(uart_t* sr, const unsigned long freq) {
-    bitbang_uart_set_clk_freq(&sr->bb_uart, freq);
-    sr->rxmax = sr->bb_uart.cycle_count * 16;
-    sr->rxcount = sr->rxmax + 1;
-}
-
 unsigned char uart_io(uart_t* sr, const unsigned char rx) {
-    unsigned char ret;
-
     if (!sr->connected) {
         return 1;
     }
 
-    if (sr->rxcount > sr->rxmax)  // wait to read one byte
-    {
-        if (!bitbang_uart_transmitting(&sr->bb_uart)) {
-            unsigned char data;
-            if (serial_port_rec(sr->serialfd, &data)) {
-                bitbang_uart_send(&sr->bb_uart, data);
-            }
-            sr->rxcount = 1;
+    if (!bitbang_uart_transmitting(&sr->bb_uart)) {
+        unsigned char data;
+        if (serial_port_rec(sr->serialfd, &data)) {
+            bitbang_uart_send(&sr->bb_uart, data);
         }
-    } else {
-        sr->rxcount++;
     }
-
-    ret = bitbang_uart_io(&sr->bb_uart, rx);
-
-    if (bitbang_uart_data_available(&sr->bb_uart)) {
-        serial_port_send(sr->serialfd, bitbang_uart_recv(&sr->bb_uart));
-    }
-
-    return ret;
+    return bitbang_uart_io(&sr->bb_uart, rx);
 }
 
 void uart_set_port(uart_t* sr, const char* port, const unsigned int speed) {

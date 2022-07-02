@@ -57,13 +57,12 @@ const char pin_values[10][10] = {
 cpart_UART::cpart_UART(unsigned x, unsigned y) : font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     X = x;
     Y = y;
-    aways_update = 1;
     ReadMaps();
     Bitmap = NULL;
 
     LoadImage();
 
-    uart_init(&sr);
+    uart_init(&sr, Window1.GetBoard());
     uart_rst(&sr);
 
     input_pins[0] = 0;
@@ -260,7 +259,7 @@ void cpart_UART::ReadPropertiesWindow(CPWindow* WProp) {
 }
 
 void cpart_UART::PreProcess(void) {
-    uart_set_clk_freq(&sr, Window1.GetBoard()->MGetInstClockFreq());
+    Process();  // check for input updates
 }
 
 void cpart_UART::Process(void) {

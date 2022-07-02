@@ -38,12 +38,12 @@ typedef struct {
     unsigned char buff_out[SBUFFMAX];
     unsigned char count_out;
     unsigned char out_ptr;
+    lxMutex* inMutex;
 } vterm_t;
 
 void vterm_rst(vterm_t* vt);
-void vterm_init(vterm_t* vt);
+void vterm_init(vterm_t* vt, board* pboard);
 void vterm_end(vterm_t* vt);
-void vterm_set_clk_freq(vterm_t* vt, const unsigned long freq);
 void vterm_set_speed(vterm_t* vt, const unsigned int speed);
 
 unsigned char vterm_io(vterm_t* vt, const unsigned char rx);

@@ -59,7 +59,6 @@ const char pin_values[10][10] = {
 
 cpart_vterm::cpart_vterm(unsigned x, unsigned y)
     : font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
-    aways_update = 1;
     X = x;
     Y = y;
     ReadMaps();
@@ -67,7 +66,7 @@ cpart_vterm::cpart_vterm(unsigned x, unsigned y)
 
     LoadImage();
 
-    vterm_init(&vt);
+    vterm_init(&vt, Window1.GetBoard());
     vterm_rst(&vt);
 
     input_pins[0] = 0;
@@ -133,6 +132,8 @@ void cpart_vterm::SetId(int _id) {
 
 void cpart_vterm::ButtonEvent(CControl* control, uint button, uint x, uint y, uint state) {
     if (control == vtbtn_send) {
+        text_to_send = vtedit->GetText();
+        vtedit->SetText("");
         send_text = 1;
     } else if (control == vtbtn_clear) {
         vttext->Clear();
@@ -142,6 +143,8 @@ void cpart_vterm::ButtonEvent(CControl* control, uint button, uint x, uint y, ui
 void cpart_vterm::KeyEvent(CControl* control, uint keysym, uint ukeysym, uint state) {
     if (control == vtedit) {
         if (ukeysym == 13) {
+            text_to_send = vtedit->GetText();
+            vtedit->SetText("");
             send_text = 1;
         }
     }
@@ -266,10 +269,12 @@ void cpart_vterm::Draw(void) {
 
     if (vt.count_in) {
         char str[200];
+        vt.inMutex->Lock();
         strncpy(str, (char*)vt.buff_in, vt.count_in);
         str[vt.count_in] = 0;
-        vttext->Append(str);
         vt.count_in = 0;
+        vt.inMutex->Unlock();
+        vttext->Append(str);
 
         while (vttext->GetCountLines() > 1000) {
             vttext->SetCursorPos(0);
@@ -354,16 +359,13 @@ void cpart_vterm::ReadPropertiesWindow(CPWindow* WProp) {
 }
 
 void cpart_vterm::PreProcess(void) {
-    vterm_set_clk_freq(&vt, Window1.GetBoard()->MGetInstClockFreq());
-
     if (send_text) {
         if (!vt.count_out) {
             send_text = 0;
-            vt.count_out = vtedit->GetText().size();
+            vt.count_out = text_to_send.size();
             for (int i = 0; i < vt.count_out; i++) {
-                vt.buff_out[i] = vtedit->GetText()[i];
+                vt.buff_out[i] = text_to_send[i];
             }
-            vtedit->SetText("");
             switch (lending) {
                 case LE_NL:
                     vt.buff_out[vt.count_out++] = '\n';
@@ -378,6 +380,7 @@ void cpart_vterm::PreProcess(void) {
             }
         }
     }
+    Process();  // check for input updates
 }
 
 void cpart_vterm::Process(void) {
