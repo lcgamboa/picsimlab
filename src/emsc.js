@@ -149,7 +149,7 @@ function load_file(files) {
         console.log('  size: ' + file.size);
         
         // load the file content (ignore big files)
-        if (file.size < 256000) {
+        if (file.size < 1048576) {
             var reader = new FileReader();
             reader.onload = function(loadEvent) {
                 console.log('file loaded!')

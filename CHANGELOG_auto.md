@@ -2,6 +2,16 @@
 
 ### New
 
+* New part BMP280 I2C pressure and temperature sensor. [lcgamboa]
+
+* New part BMP180 I2C pressure and temperature sensor. [lcgamboa]
+
+* New part DS18B20 1-wire temperature sensor. [lcgamboa]
+
+* New part DHT11 humidity and temperature sensor. [lcgamboa]
+
+* New part DHT22 humidity and temperature sensor. [lcgamboa]
+
 * New board ESP32-DevKitC. [lcgamboa]
 
 * Support to disable bounce effect in switches and push buttons parts. [lcgamboa]
@@ -12,11 +22,17 @@
 
 ### Changes
 
+* Scripts updated. [lcgamboa]
+
 * Readme updated. [lcgamboa]
 
 * Readme updated. [lcgamboa]
 
 ### Fix
+
+* Fix qemu configuration window of board ESP32 DEvKitC. [lcgamboa]
+
+* Fix ESP32 DevKitC to work on windows. [lcgamboa]
 
 * Fix board PICGenios dip switches functions. [lcgamboa]
 

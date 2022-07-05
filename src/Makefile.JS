@@ -21,6 +21,7 @@ override CXXFLAGS+=  -DEXT_BROWSER -DNO_DEBUG -DNO_TOOLS \
         -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_GFX=2\
 	-s SDL2_IMAGE_FORMATS='["png","bmp"]' -s USE_SDL_TTF=2 --preload-file assets --preload-file home \
 	-D_VERSION_=\"${VERSION}\" -Wall -D_SHARE_=\"/assets/share/\" -I../../LXRAD_SDL2/include/ \
+	-D_LIB_=\"../lib/picsimlab/\" \
 	-I../../picsim/include/  -I../../ucsim-0.6/picsimlab/\
 	-I../../simavr/simavr/ -DEXT_BROWSER_EXAMPLES  \
 	-I../teste/glib_js/target/include  -I../teste/glib_js/target/include/glib-2.0 \
