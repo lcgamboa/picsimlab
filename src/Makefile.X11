@@ -19,7 +19,7 @@ execdir= ${prefix}/bin/
 #lxrad automatic generated block start, don't edit below!
 
 override CXXFLAGS += -DEXT_BROWSER -D_VERSION_=\"${VERSION}\" -Wall -g -O2  -D_SHARE_=\"../share/picsimlab/\"  \
-                     -I/usr/include/lxrad_X11 -Wall  -D_REENTRANT
+                     -I/usr/include/lxrad_X11 -Wall  -D_REENTRANT -D_LIB_=\"../lib/picsimlab/\" 
 
 #override CXXFLAGS+= -D_NOTHREAD
 #override CXXFLAGS+=-fsanitize=address
@@ -32,6 +32,8 @@ LIBS =  ../../LXRAD_X11/lib/liblxrad_X11_mt.a
 LIBS+= -lopenal -lminizip -lXpm -lImlib2 -lX11 -lpthread \
  ../../picsim/src/libpicsim_dbg.a  ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a -lelf -lminizip $(ELIBS) \
  ../../lunasvg/build/liblunasvg.a -lucsim
+
+exp: LIBS+= -ldl
 
 #lxrad automatic generated block end, don't edit above!
 

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -126,9 +126,9 @@
 #define AN1_PIN RA1
 #define AN0_PIN RA0
 
-#define LM_PIN AN2_PIN
+#define LM_PIN AN0_PIN
 #define LDR_PIN AN1_PIN
-#define POT_PIN AN0_PIN
+#define POT_PIN AN2_PIN
 
 class cboard_PQDB : public bsim_picsim {
 private:
@@ -172,6 +172,19 @@ private:
     lxaudio buzzer;
 
     void RegisterRemoteControl(void) override;
+
+    unsigned char scroll1_old;
+    unsigned char scroll2_old;
+
+    lxColor color1;
+    lxColor color2;
+    lxFont font;
+
+    CScroll* scroll1;
+    CScroll* scroll2;
+
+    CLabel* label1;
+    CLabel* label2;
 
 public:
     // Return the board name

@@ -347,7 +347,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
     if (icount >= 0) {
         strcpy(argv[argc++], "-icount");
-        sprintf(argv[argc++], "shift=%i,align=off,sleep=off", icount);
+        sprintf(argv[argc++], "shift=%i,align=off,sleep=on", icount);
     }
 
     BoardOptions(&argc, argv);

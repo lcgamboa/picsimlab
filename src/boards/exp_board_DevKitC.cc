@@ -348,10 +348,8 @@ void cboard_DevKitC::Draw(CDraw* draw) {
                     break;
             }
 
-            draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                   output[i].y2 - output[i].y1);
-
             if (output[i].id == O_RST) {
+                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 13);
                 if (p_RST) {
                     draw->Canvas.SetColor(15, 15, 15);
                 } else {
@@ -359,12 +357,16 @@ void cboard_DevKitC::Draw(CDraw* draw) {
                 }
                 draw->Canvas.Circle(1, output[i].cx, output[i].cy, 11);
             } else if (output[i].id == O_BOOT) {
+                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 13);
                 if (p_BOOT) {
                     draw->Canvas.SetColor(15, 15, 15);
                 } else {
                     draw->Canvas.SetColor(55, 55, 55);
                 }
                 draw->Canvas.Circle(1, output[i].cx, output[i].cy, 11);
+            } else {
+                draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                       output[i].y2 - output[i].y1);
             }
         }
     }

@@ -20,7 +20,8 @@ override CXXFLAGS+= -D_ARCH_=\"Linux64_SDL2\" -D_DATE_=\"${DATE}\"
 
 override CXXFLAGS += -DEXT_BROWSER  -D_VERSION_=\"${VERSION}\" -Wall -ggdb -O2 \
                      -D_SHARE_=\"../share/picsimlab/\"  `sdl2-config --cflags` \
-                     -I/usr/include/lxrad_SDL2 -Wall  -D_REENTRANT -D_LX_SDL2
+                     -I/usr/include/lxrad_SDL2 -Wall  -D_REENTRANT -D_LX_SDL2 \
+		     -D_LIB_=\"../lib/picsimlab/\" 
 
 override CXXFLAGS+=-fsanitize=address
 #override CXXFLAGS+= -D_NOTHREAD
@@ -29,6 +30,8 @@ override CXXFLAGS+=-fsanitize=address
 LIBS =  ../../LXRAD_SDL2/lib/liblxrad_SDL2_mt.a -lpthread -lSDL2_gfx -lSDL2_ttf -lSDL2_image -lSDL2 -lopenal \
   ../../picsim/src/libpicsim_dbg.a  ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a -lelf -lminizip $(ELIBS) \
   ../../lunasvg/build/liblunasvg.a -lucsim 
+
+exp: LIBS+= -ldl
 
 #lxrad automatic generated block end, don't edit above!
 
