@@ -2494,7 +2494,7 @@ unsigned short cboard_PICGenios::get_out_id(char* name) {
 }
 
 void cboard_PICGenios::RefreshStatus(void) {
-    label5->SetText(lxT("Temp: ") + lxString().Format("%5.2f", temp[0]) + lxT("°C"));
+    label5->SetText(lxT("Temp: ") + lxString().Format("%5.2f", temp[0]) + lxT("C"));
 
 #ifndef _WIN_
     if (pic.serial[0].serialfd > 0)
