@@ -23,18 +23,19 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_Blue_Pill_H
-#define BOARD_Blue_Pill_H
+#ifndef BOARD_STM32_H103_H
+#define BOARD_STM32_H103_H
 
 #include <lxrad.h>
 
-#include "exp_bsim_qemu.h"
+#include "bsim_qemu.h"
 
-#define BOARD_Blue_Pill_Name "Blue Pill"
+#define BOARD_STM32_H103_Name "STM32 H103"
 
 // new board class must be derived from board class defined in board.h
-class cboard_Blue_Pill : public bsim_qemu {
+class cboard_STM32_H103 : public bsim_qemu {
 private:
+    unsigned char p_BUT;
     CLabel* label1;
     CCombo* combo1;
 
@@ -42,18 +43,18 @@ private:
 
 public:
     // Return the board name
-    lxString GetName(void) override { return lxT(BOARD_Blue_Pill_Name); };
+    lxString GetName(void) override { return lxT(BOARD_STM32_H103_Name); };
     lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
     // Constructor called once on board creation
-    cboard_Blue_Pill(void);
+    cboard_STM32_H103(void);
     // Destructor called once on board destruction
-    ~cboard_Blue_Pill(void);
+    ~cboard_STM32_H103(void);
     // Called ever 100ms to draw board
     void Draw(CDraw* draw) override;
     void Run_CPU(void) override{};
     void Run_CPU_ns(uint64_t time) override;
     // Return a list of board supported microcontrollers
-    lxString GetSupportedDevices(void) override { return lxT("stm32f103c8t6,"); };
+    lxString GetSupportedDevices(void) override { return lxT("stm32f103rbt6,"); };
     // Reset board status
     void Reset(void) override;
     // Event on the board
@@ -81,4 +82,4 @@ public:
     int MGetPinCount(void) override;
 };
 
-#endif /* BOARD_Blue_Pill_H */
+#endif /* BOARD_STM32_H103_H */

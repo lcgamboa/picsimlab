@@ -30,7 +30,7 @@
 
 #include "../picsimlab1.h"
 #include "../serial_port.h"
-#include "exp_bsim_qemu.h"
+#include "bsim_qemu.h"
 
 // function pointers
 

@@ -38,9 +38,7 @@ LIBS=  $(LIBPATH)/picsim/src/libpicsim.a $(LIBPATH)/lxrad_nogui/lib/liblxrad_NOG
        $(LIBPATH)/simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a \
        $(LIBPATH)/lunasvg/build/liblunasvg.a \
        $(LIBPATH)/uCsim_picsimlab/picsimlab/libucsim.a \
-      -lopenal -lminizip -pthread  
-
-exp: -lgpsim -ldl
+      -lopenal -lminizip -pthread -ldl -lgpsim 
 
 #lxrad automatic generated block end, don't edit above!
 

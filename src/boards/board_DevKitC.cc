@@ -24,7 +24,7 @@
    ######################################################################## */
 
 // include files
-#include "exp_board_DevKitC.h"
+#include "board_DevKitC.h"
 #include "../picsimlab1.h"
 #include "../picsimlab4.h"  //Oscilloscope
 #include "../picsimlab5.h"  //Spare Parts

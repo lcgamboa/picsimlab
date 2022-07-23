@@ -29,9 +29,8 @@ override CXXFLAGS+=-fsanitize=address
 #LIBS = `lxrad_SDL2-config --libs` -lpicsim -lsimavr -lelf -lminizip $(ELIBS) -lucsim
 LIBS =  ../../LXRAD_SDL2/lib/liblxrad_SDL2_mt.a -lpthread -lSDL2_gfx -lSDL2_ttf -lSDL2_image -lSDL2 -lopenal \
   ../../picsim/src/libpicsim_dbg.a  ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a -lelf -lminizip $(ELIBS) \
-  ../../lunasvg/build/liblunasvg.a -lucsim 
+  ../../lunasvg/build/liblunasvg.a -lucsim -ldl -lgpsim
 
-exp: LIBS+= -ldl
 
 #lxrad automatic generated block end, don't edit above!
 

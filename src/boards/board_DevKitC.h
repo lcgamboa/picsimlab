@@ -28,7 +28,7 @@
 
 #include <lxrad.h>
 
-#include "exp_bsim_qemu.h"
+#include "bsim_qemu.h"
 
 #define BOARD_DevKitC_Name "ESP32-DevKitC"
 

@@ -24,7 +24,7 @@
    ######################################################################## */
 
 // include files
-#include "exp_board_STM32_H103.h"
+#include "board_STM32_H103.h"
 #include "../picsimlab1.h"
 #include "../picsimlab4.h"  //Oscilloscope
 #include "../picsimlab5.h"  //Spare Parts

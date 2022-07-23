@@ -18,7 +18,6 @@ OBJS_EXP+= $(patsubst parts/%.cc,parts/%.o,$(wildcard parts/exp_*.cc))
 
 exp: OBJS+=$(OBJS_EXP)  
 exp: EFLAGS=-D_EXPERIMENTAL_ 
-exp: ELIBS= -lgpsim
 #exp: rebuild
 exp: $(OBJS_EXP)  all
 
