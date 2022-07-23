@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2015-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -55,8 +55,6 @@ public:
     void Run_CPU_ns(uint64_t time) override;
     // Return a list of board supported microcontrollers
     lxString GetSupportedDevices(void) override { return lxT("stm32f103rbt6,"); };
-    // Return the filename of board picture
-    lxString GetPictureFileName(void) override { return lxT("STM32 H103/board.png"); };
     // Reset board status
     void Reset(void) override;
     // Event on the board

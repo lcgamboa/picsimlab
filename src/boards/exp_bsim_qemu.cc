@@ -161,6 +161,7 @@ bsim_qemu::bsim_qemu(void) {
     ns_count = 0;
     icount = 5;
     use_cmdline_extra = 0;
+    serial_open = 0;
 }
 
 bsim_qemu::~bsim_qemu(void) {
@@ -337,8 +338,16 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
     // verify if serial port exists
     if (strstr(resp, SERIALDEVICE)) {
-        strcpy(argv[argc++], "-serial");
-        strcpy(argv[argc++], SERIALDEVICE);
+        // try open
+        serialfd_t serialfd;
+        if (serial_port_open(&serialfd, SERIALDEVICE)) {
+            serial_port_close(serialfd);
+            strcpy(argv[argc++], "-serial");
+            strcpy(argv[argc++], SERIALDEVICE);
+            serial_open = 1;
+        } else {
+            serial_open = 0;
+        }
     }
     if (Window1.Get_debug_status()) {
         strcpy(argv[argc++], "-gdb");

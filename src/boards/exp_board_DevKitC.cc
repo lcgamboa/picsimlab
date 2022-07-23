@@ -184,7 +184,11 @@ void cboard_DevKitC::RegisterRemoteControl(void) {
 // Called ever 1s to refresh status
 
 void cboard_DevKitC::RefreshStatus(void) {
-    Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    if (serial_open) {
+        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    } else {
+        Window1.statusbar1.SetField(2, lxT("Serial: Error"));
+    }
 }
 
 // Called to save board preferences in configuration file

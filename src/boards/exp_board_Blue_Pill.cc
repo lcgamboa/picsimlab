@@ -143,7 +143,11 @@ void cboard_Blue_Pill::RegisterRemoteControl(void) {
 // Called ever 1s to refresh status
 
 void cboard_Blue_Pill::RefreshStatus(void) {
-    Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    if (serial_open) {
+        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    } else {
+        Window1.statusbar1.SetField(2, lxT("Serial: Error"));
+    }
 }
 
 // Called to save board preferences in configuration file
@@ -282,16 +286,17 @@ void cboard_Blue_Pill::Draw(CDraw* draw) {
                     break;
             }
 
-            draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                   output[i].y2 - output[i].y1);
-
             if (output[i].id == O_RST) {
+                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 15);
                 if (p_RST) {
                     draw->Canvas.SetColor(15, 15, 15);
                 } else {
                     draw->Canvas.SetColor(55, 55, 55);
                 }
-                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 11);
+                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 13);
+            } else {
+                draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                       output[i].y2 - output[i].y1);
             }
         }
     }

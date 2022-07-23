@@ -160,7 +160,11 @@ void cboard_STM32_H103::RegisterRemoteControl(void) {
 // Called ever 1s to refresh status
 
 void cboard_STM32_H103::RefreshStatus(void) {
-    Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    if (serial_open) {
+        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    } else {
+        Window1.statusbar1.SetField(2, lxT("Serial: Error"));
+    }
 }
 
 // Called to save board preferences in configuration file
@@ -308,8 +312,7 @@ void cboard_STM32_H103::Draw(CDraw* draw) {
                     break;
                 case O_BUT:
                     draw->Canvas.SetColor(100, 100, 100);
-                    draw->Canvas.Rectangle(1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1,
-                                           output[i].y2 - output[i].y1 - 1);
+                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, 13);
                     if (p_BUT) {
                         draw->Canvas.SetColor(55, 55, 55);
                     } else {
@@ -319,8 +322,7 @@ void cboard_STM32_H103::Draw(CDraw* draw) {
                     break;
                 case O_RST:
                     draw->Canvas.SetColor(100, 100, 100);
-                    draw->Canvas.Rectangle(1, output[i].x1 + 1, output[i].y1 + 1, output[i].x2 - output[i].x1 - 1,
-                                           output[i].y2 - output[i].y1 - 1);
+                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, 13);
                     if (p_RST) {
                         draw->Canvas.SetColor(15, 15, 15);
                     } else {
