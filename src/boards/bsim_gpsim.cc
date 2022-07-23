@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,16 +23,17 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include "exp_bridge_gpsim.h"
+#include "bridge_gpsim.h"
 
 #include "../picsimlab1.h"
-#include "exp_bsim_gpsim.h"
+#include "bsim_gpsim.h"
 
 static const unsigned char GPSIM_PORTS[5] = {0, 1, 2, 3, 0xFF};
 
 bsim_gpsim::bsim_gpsim(void) {
     char list[2000];
     supported_devices = bridge_gpsim_get_processor_list(list, 1999);
+    Window1.SetNeedReboot();
 }
 
 void bsim_gpsim::MSetSerial(const char* port) {

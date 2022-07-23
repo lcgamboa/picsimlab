@@ -3,14 +3,14 @@ include ../VERSION
 OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimlab5.o serial_port.o
 
 OBJS+= $(patsubst boards/%.cc,boards/%.o,$(wildcard boards/bsim*.cc)) 
-OBJS+= $(patsubst boards/%.cc,boards/%.o,$(filter-out boards/board_x.cc,$(wildcard boards/board*.cc))) 
+OBJS+= $(patsubst boards/%.cc,boards/%.o,$(wildcard boards/board*.cc)) 
+OBJS+= boards/bridge_gpsim.o
 OBJS+= $(patsubst devices/%.cc,devices/%.o,$(filter-out devices/prog_psp.cc,$(wildcard devices/*.cc)))
 OBJS+= $(patsubst parts/%.cc,parts/%.o,$(wildcard parts/part*.cc))
 
  
 OBJS_EXP= $(patsubst boards/%.cc,boards/%.o,$(wildcard boards/exp_*.cc)) 
 OBJS_EXP+= $(patsubst parts/%.cc,parts/%.o,$(wildcard parts/exp_*.cc)) 
-OBJS_EXP+=boards/board_x.o
 
 .DEFAULT_GOAL := all
 
@@ -28,6 +28,6 @@ rebuild:
 override CXXFLAGS+= $(EFLAGS) -DEXT_BROWSER_EXAMPLES -DLEGACY081 
 
 
-boards/exp_bridge_gpsim.o: boards/exp_bridge_gpsim.cc
+boards/bridge_gpsim.o: boards/bridge_gpsim.cc
 	@echo "Compiling $<"
-	@$(CXX) $(CXXFLAGS)  $(PKG_CONFIG)  boards/exp_bridge_gpsim.cc  -c -o boards/exp_bridge_gpsim.o 
+	@$(CXX) $(CXXFLAGS)  $(PKG_CONFIG)  boards/bridge_gpsim.cc  -c -o boards/bridge_gpsim.o 

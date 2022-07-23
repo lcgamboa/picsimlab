@@ -28,7 +28,7 @@
 
 #include <lxrad.h>
 
-#include "exp_bsim_gpsim.h"
+#include "bsim_gpsim.h"
 
 #define BOARD_gpboard_Name "gpboard"
 

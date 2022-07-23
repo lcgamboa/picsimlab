@@ -24,7 +24,7 @@
    ######################################################################## */
 
 // include files
-#include "exp_board_gpboard.h"
+#include "board_gpboard.h"
 #include "../picsimlab1.h"
 #include "../picsimlab4.h"  //Oscilloscope
 #include "../picsimlab5.h"  //Spare Parts
