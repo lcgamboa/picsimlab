@@ -33,10 +33,9 @@ cp -rv /usr/share/tcltk/tcl8.6/*  AppDir/usr/lib/tcl8.6/
 wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
 chmod a+x linuxdeploy-x86_64.AppImage
 mv linuxdeploy-x86_64.AppImage /tmp/
-if [[ -n "$1" ]]; then
-  install -d AppDir/usr/lib/picsimlab/
-  cp -Rv lib/qemu AppDir/usr/lib/picsimlab/
-fi
+install -d AppDir/usr/lib/picsimlab/
+cp -Rv lib/qemu AppDir/usr/lib/picsimlab/
+
 #/tmp/linuxdeploy-x86_64.AppImage --appdir AppDir --executable=AppDir/usr/bin/cutecom
 /tmp/linuxdeploy-x86_64.AppImage --appdir AppDir --executable=AppDir/usr/bin/gtkwave
 rm -rf /tmp/AppRun
@@ -80,10 +79,9 @@ cd AppDir/usr/share/picsimlab
 find . -type f -name '*.png' -exec rm {} +
 find . -type f -name '*.xcf' -exec rm {} +
 cd -
-if [[ -n "$1" ]]; then
-  install -d AppDir/usr/lib/picsimlab/
-  cp -Rv lib/qemu AppDir/usr/lib/picsimlab/
-fi
+install -d AppDir/usr/lib/picsimlab/
+cp -Rv lib/qemu AppDir/usr/lib/picsimlab/
+
 /tmp/linuxdeploy-x86_64.AppImage --appdir AppDir --output appimage
 if [[ -n "$1" ]]; then
   mv -f PICSimLab_NOGUI-${VERSION}-x86_64.AppImage ../release_${VERSION}/PICSimLab_NOGUI-${VERSION}_Linux_experimental_x86_64.AppImage 

@@ -8,10 +8,10 @@ VERSION="${VERSION}_${DATE}"
 DIR=`pwd`
 
 if [ "$#" -ne 0 ]; then
-BUILD_EXPERIMETAL=1
+BUILD_EXPERIMENTAL=1
 fi
 
-if [[ -z "$BUILD_EXPERIMETAL" ]]; then
+if [[ -z "$BUILD_EXPERIMENTAL" ]]; then
   TARGET=all
 else
   TARGET=exp
@@ -43,35 +43,9 @@ cp -Rv docs/  ${DIR}/picsimlab_win64/share/
 cd ${DIR}
 rm -Rf picsimlab_win32/share/docs
 rm -Rf picsimlab_win64/share/docs 
-if [[ -z "$BUILD_EXPERIMETAL" ]]; then
+if [[ -z "$BUILD_EXPERIMENTAL" ]]; then
 rm -Rf picsimlab_win64/qemu-stm32.exe
-rm -Rf picsimlab_win64/libglib-2.0-0.dll
-rm -Rf picsimlab_win64/libgthread-2.0-0.dll
-rm -Rf picsimlab_win64/libiconv-2.dll
-rm -Rf picsimlab_win64/libintl-8.dll
-rm -Rf picsimlab_win64/libssp-0.dll
-rm -Rf picsimlab_win64/libwinpthread-1.dll
-rm -Rf picsimlab_win64/zlib1.dll
-rm -Rf picsimlab_win64/libgcrypt-20.dll
-rm -Rf picsimlab_win64/libgpg-error6-0.dll
-rm -Rf picsimlab_win64/libpixman-1-0.dll
-rm -Rf picsimlab_win64/lib/
-#rm -Rf picsimlab_win64/ucsim.dll
-rm -Rf picsimlab_win64/libgpsim-0.dll
 rm -Rf picsimlab_win32/qemu-stm32.exe
-rm -Rf picsimlab_win32/libglib-2.0-0.dll
-rm -Rf picsimlab_win32/libgthread-2.0-0.dll
-rm -Rf picsimlab_win32/libiconv-2.dll
-rm -Rf picsimlab_win32/libintl-8.dll
-rm -Rf picsimlab_win32/libssp-0.dll
-rm -Rf picsimlab_win32/libwinpthread-1.dll
-rm -Rf picsimlab_win32/zlib1.dll
-rm -Rf picsimlab_win32/libgcrypt-20.dll
-rm -Rf picsimlab_win32/libgpg-error-0.dll
-rm -Rf picsimlab_win32/libpixman-1-0.dll
-rm -Rf picsimlab_win32/lib/
-#rm -Rf picsimlab_win32/ucsim.dll
-rm -Rf picsimlab_win32/libgpsim-0.dll
 else
 cp -dr exp_w64/bin/* picsimlab_win64/ 
 cp -dr exp_w64/lib/* picsimlab_win64/
@@ -80,7 +54,7 @@ cp -dr exp_w32/lib/* picsimlab_win32/
 fi
 
 
-if [[ -n "$BUILD_EXPERIMETAL" ]]; then
+if [[ -n "$BUILD_EXPERIMENTAL" ]]; then
   zip -r picsimlab_${VERSION}_win64_experimental.zip picsimlab_win64/ 
   zip -r picsimlab_${VERSION}_win32_experimental.zip picsimlab_win32/ 
 else

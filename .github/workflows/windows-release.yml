@@ -25,13 +25,13 @@ jobs:
     
     - name: build_all_static
       run: |
-        ./picsimlab_build_w64.sh
-        ./picsimlab_build_w32.sh
+        bscripts/build_w64.sh
+        bscripts/build_w32.sh
 
     - name: package artifacts
       run: |
-        ./picsimlab_build_windows_zip.sh
-        ./picsimlab_build_windows_zip.sh exp
+        bscripts/build_windows_zip.sh
+        bscripts/build_windows_zip.sh exp
 
     - uses: actions/upload-artifact@v2
       with:

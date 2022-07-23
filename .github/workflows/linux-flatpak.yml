@@ -24,7 +24,7 @@ jobs:
         #run:  apt update && apt install sudo
     
     - name: build_all_static
-      run: ./picsimlab_build_flatpak.sh
+      run: bscripts/build_flatpak.sh
 
     - uses: actions/upload-artifact@v2
       with:

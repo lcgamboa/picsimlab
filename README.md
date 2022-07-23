@@ -77,7 +77,7 @@ In first time build:
 ```
 git clone --depth=1 https://github.com/lcgamboa/picsimlab.git
 cd picsimlab
-./picsimlab_build_all_and_install.sh
+bscripts/build_all_and_install.sh
 ```
 
 To recompile use:
@@ -92,7 +92,7 @@ In first time build in Debian Linux and derivatives target Windows 64 bits:
 ```
 git clone https://github.com/lcgamboa/picsimlab.git
 cd picsimlab
-./picsimlab_build_w64.sh
+bscripts/build_w64.sh
 ```
 To recompile use:
 ```
@@ -104,7 +104,7 @@ For target Windows 32 bits:
 ```
 git clone https://github.com/lcgamboa/picsimlab.git
 cd picsimlab
-./picsimlab_build_w32.sh
+bscripts/build_w32.sh
 ```
 To recompile use:
 ```
@@ -115,9 +115,9 @@ make FILE=Makefile.cross_32 -j$(nproc)
 
 Experimental version can be built using the parameter "exp" on scripts:
 ```
-./picsimlab_build_all_and_install.sh exp
-./picsimlab_build_w64.sh exp
-./picsimlab_build_w32.sh exp
+bscripts/build_all_and_install.sh exp
+bscripts/build_w64.sh exp
+bscripts/build_w32.sh exp
 ```
 And recompiled using the parameter "exp" on Makefiles:
 ```

@@ -24,14 +24,14 @@ jobs:
         #run:  apt update && apt install sudo
     
     - name: build_all_static
-      run: ./picsimlab_build_all_static.sh exp
+      run: bscripts/build_all_static.sh exp
 
     - name: package artifacts
       run: |
-        ./picsimlab_build_package.sh
-        ./picsimlab_build_package.sh exp
-        ./picsimlab_build_appimage.sh
-        ./picsimlab_build_appimage.sh exp
+        bscripts/build_package.sh
+        bscripts/build_package.sh exp
+        bscripts/build_appimage.sh
+        bscripts/build_appimage.sh exp
 
     - uses: actions/upload-artifact@v2
       with:
