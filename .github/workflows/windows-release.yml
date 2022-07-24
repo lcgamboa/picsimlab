@@ -31,7 +31,6 @@ jobs:
     - name: package artifacts
       run: |
         bscripts/build_windows_zip.sh
-        bscripts/build_windows_zip.sh exp
 
     - uses: actions/upload-artifact@v2
       with:

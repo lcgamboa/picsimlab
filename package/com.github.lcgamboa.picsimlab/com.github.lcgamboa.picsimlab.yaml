@@ -66,6 +66,53 @@ modules:
           - type: git
             url: https://github.com/lcgamboa/uCsim_picsimlab.git
             branch: picsimlab 
+      - name: gpsim
+        buildsystem: simple
+        build-commands:
+          - ./configure  CFLAGS=-fPIC CXXFLAGS=-fPIC --disable-gui --prefix=/app
+          - make -j$(nproc)
+          - make install 
+          - sed -i "25s/.*//" /app/include/gpsim/breakpoints.h 
+        sources:
+          - type: archive
+            url : https://sourceforge.net/projects/gpsim/files/gpsim/0.31.0/gpsim-0.31.0.tar.gz
+            sha256: 110ee6be3a5d02b32803a91e480cbfc9d423ef72e0830703fc0bc97b9569923f
+        modules:
+          - name: libpopt
+            buildsystem: simple
+            build-commands:
+              - ./autogen.sh
+              - ./configure CFLAGS=-fPIC CXXFLAGS=-fPIC --prefix=/app
+              - make -j$(nproc)
+              - make install
+            sources:
+              - type: archive
+                url: https://github.com/rpm-software-management/popt/archive/refs/tags/popt-1.18-release.zip
+                sha256: 034c935101e706f0fc9fbbf0d0069a795a18c3a8c9fb4f4486306801164a65af 
+      - name: qemu-stm32
+        buildsystem: simple
+        build-commands:
+          - ./build_libqemu-stm32.sh
+          - strip build/libqemu-stm32.so
+          - install -d /app/lib/picismlab/qemu/
+          - cp build/libqemu-stm32.so /app/lib/picismlab/qemu/
+        sources:
+          - type: git
+            url: https://github.com/lcgamboa/qemu_stm32.git
+            branch: picsimlab 
+      - name: qemu-esp32
+        buildsystem: simple
+        build-commands:
+          - ./build_libqemu-esp32.sh
+          - strip build/libqemu-xtensa.so
+          - install -d /app/lib/picismlab/qemu/
+          - cp build/libqemu-xtensa.so /app/lib/picismlab/qemu/
+          - install -d /app/lib/picismlab/qemu/fw
+          - cp pc-bios/esp32-v3-rom*.bin /app/lib/picismlab/qemu/fw/
+        sources:
+          - type: git
+            url: https://github.com/lcgamboa/qemu_stm32.git
+            branch: picsimlab_esp32
       - name: lxrad
         buildsystem: simple
         build-commands:

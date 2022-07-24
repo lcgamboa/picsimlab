@@ -36,7 +36,10 @@ void bridge_gpsim_reset(void) {
 }
 
 unsigned char bridge_gpsim_get_pin_count(void) {
-    return gpic->get_pin_count();
+    if (gpic) {
+        return gpic->get_pin_count();
+    }
+    return 8;
 }
 
 const char* bridge_gpsim_get_pin_name(int pin) {

@@ -24,14 +24,12 @@ jobs:
         #run:  apt update && apt install sudo
     
     - name: build_all_static
-      run: bscripts/build_all_static.sh exp
+      run: bscripts/build_all_static.sh
 
     - name: package artifacts
       run: |
         bscripts/build_package.sh
-        bscripts/build_package.sh exp
         bscripts/build_appimage.sh
-        bscripts/build_appimage.sh exp
 
     - uses: actions/upload-artifact@v2
       with:
