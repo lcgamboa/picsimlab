@@ -152,6 +152,9 @@ cboard_DevKitC::~cboard_DevKitC(void) {
 // Reset board status
 
 void cboard_DevKitC::Reset(void) {
+    if (qemu_started != 1) {
+        return;
+    }
     uint32_t* strap_mode = qemu_picsimlab_get_strap();
 
     if (p_BOOT) {
@@ -456,6 +459,10 @@ void cboard_DevKitC::Run_CPU(void) {
 #define CHR_TIOCM_RI 0x080
 #define CHR_TIOCM_DTR 0x002
 #define CHR_TIOCM_RTS 0x004
+
+    if (qemu_started != 1) {
+        return;
+    }
 
     static unsigned int status_ = 0;
     unsigned int status = qemu_picsimlab_get_TIOCM();

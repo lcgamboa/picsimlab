@@ -107,9 +107,14 @@ void bsim_gpsim::MSetSerial(const char* port) {
  lxString bsim_gpsim::MGetPinName(int pin) {
      lxString pinname = "error";
 
-     if ((pin) && (pin <= MGetPinCount()))
+     if ((pin) && (pin <= MGetPinCount())) {
          pinname = bridge_gpsim_get_pin_name(pin);
 
+         if (pinname.Contains("port")) {
+             pinname = "R" + pinname.substr(4, 2);
+             pinname = uppercase(pinname);
+         }
+     }
      return pinname;
  }
 

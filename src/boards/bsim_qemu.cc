@@ -96,7 +96,7 @@ int bsim_qemu::load_qemu_lib(const char* path) {
     void* handle = dlopen((const char*)fullpath.c_str(), RTLD_NOW);
     if (handle == nullptr) {
         printf("picsimlab qemu: %s\n", dlerror());
-        exit(-1);
+        return 0;
     }
 
 #define GET_SYMBOL_AND_CHECK(X)                   \
@@ -111,7 +111,7 @@ int bsim_qemu::load_qemu_lib(const char* path) {
     HMODULE handle = LoadLibraryA((const char*)fullpath.c_str());
     if (handle == NULL) {
         printf("picsimlab qemu: Error loading %s\n", (const char*)fullpath.c_str());
-        exit(-1);
+        return 0;
     }
 
 #define GET_SYMBOL_AND_CHECK(X)                          \
@@ -244,7 +244,12 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
     }
 
     if (SimType == QEMU_SIM_STM32) {
-        load_qemu_lib("libqemu-stm32");
+        if (!load_qemu_lib("libqemu-stm32")) {
+            Window1.RegisterError("Erro loading libqemu-stm32");
+            qemu_started = -1;
+            mtx_qinit->Unlock();
+            return;
+        }
 
         // change .hex to .bin
         strncpy(fname_, fname, 2048);
@@ -291,7 +296,12 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         strcpy(argv[argc++], "clock=vm");
 
     } else if (SimType == QEMU_SIM_ESP32) {
-        load_qemu_lib("libqemu-xtensa");
+        if (!load_qemu_lib("libqemu-xtensa")) {
+            Window1.RegisterError("Erro loading libqemu-xtensa");
+            qemu_started = -1;
+            mtx_qinit->Unlock();
+            return;
+        }
 
         // change .hex to .bin
         strncpy(fname_, fname, 2048);
@@ -325,6 +335,14 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 #else
         lxString fullpath = dirname(lxGetExecutablePath()) + "/lib/qemu/fw/";
 #endif
+
+        if ((!lxFileExists(fullpath + "esp32-v3-rom.bin")) || (!lxFileExists(fullpath + "esp32-v3-rom-app.bin"))) {
+            Window1.RegisterError("Erro loading esp32-v3-rom.bin or esp32-v3-rom-app.bin");
+            qemu_started = -1;
+            mtx_qinit->Unlock();
+            return;
+        }
+
         strcpy(argv[argc++], "-L");
         strcpy(argv[argc++], (const char*)fullpath.c_str());
 
@@ -439,6 +457,9 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 }
 
 void bsim_qemu::MEnd(void) {
+    if (qemu_started != 1) {
+        return;
+    }
     qemu_mutex_lock_iothread();
     qmp_quit(NULL);
     qemu_mutex_unlock_iothread();
@@ -498,6 +519,10 @@ int bsim_qemu::CpuInitialized(void) {
 void bsim_qemu::DebugLoop(void) {}
 
 void bsim_qemu::MDumpMemory(const char* fname) {
+    if (qemu_started != 1) {
+        return;
+    }
+
     if (SimType == QEMU_SIM_STM32) {
         // change .hex to .bin
         strncpy(fname_, fname, 299);
@@ -626,6 +651,9 @@ unsigned char bsim_qemu::MGetPin(int pin) {
 }
 
 void bsim_qemu::MReset(int flags) {
+    if (qemu_started != 1) {
+        return;
+    }
     mtx_qinit->Lock();  // only for wait qemu start
     mtx_qinit->Unlock();
     if (flags >= 0) {
