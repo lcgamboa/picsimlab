@@ -43,23 +43,13 @@ cp -Rv docs/  ${DIR}/picsimlab_win64/share/
 cd ${DIR}
 rm -Rf picsimlab_win32/share/docs
 rm -Rf picsimlab_win64/share/docs 
-if [[ -z "$BUILD_EXPERIMENTAL" ]]; then
-rm -Rf picsimlab_win64/qemu-stm32.exe
-rm -Rf picsimlab_win32/qemu-stm32.exe
-else
-cp -dr exp_w64/bin/* picsimlab_win64/ 
-cp -dr exp_w64/lib/* picsimlab_win64/
-cp -dr exp_w32/bin/* picsimlab_win32/ 
-cp -dr exp_w32/lib/* picsimlab_win32/
-fi
-
 
 if [[ -n "$BUILD_EXPERIMENTAL" ]]; then
-  zip -r picsimlab_${VERSION}_win64_experimental.zip picsimlab_win64/ 
-  zip -r picsimlab_${VERSION}_win32_experimental.zip picsimlab_win32/ 
+  zip -r PICSimLab_${VERSION}_win64_experimental.zip picsimlab_win64/ 
+  zip -r PICSimLab_${VERSION}_win32_experimental.zip picsimlab_win32/ 
 else
-  zip -r picsimlab_${VERSION}_win64.zip picsimlab_win64/ 
-  zip -r picsimlab_${VERSION}_win32.zip picsimlab_win32/ 
+  zip -r PICSimLab_${VERSION}_win64.zip picsimlab_win64/ 
+  zip -r PICSimLab_${VERSION}_win32.zip picsimlab_win32/ 
 fi
 
 mkdir release_${VERSION}

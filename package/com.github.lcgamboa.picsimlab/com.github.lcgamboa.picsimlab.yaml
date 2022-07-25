@@ -94,8 +94,8 @@ modules:
         build-commands:
           - ./build_libqemu-stm32.sh
           - strip build/libqemu-stm32.so
-          - install -d /app/lib/picismlab/qemu/
-          - cp build/libqemu-stm32.so /app/lib/picismlab/qemu/
+          - install -d /app/lib/picsimlab/qemu/
+          - cp build/libqemu-stm32.so /app/lib/picsimlab/qemu/
         sources:
           - type: git
             url: https://github.com/lcgamboa/qemu_stm32.git
@@ -105,10 +105,10 @@ modules:
         build-commands:
           - ./build_libqemu-esp32.sh
           - strip build/libqemu-xtensa.so
-          - install -d /app/lib/picismlab/qemu/
-          - cp build/libqemu-xtensa.so /app/lib/picismlab/qemu/
-          - install -d /app/lib/picismlab/qemu/fw
-          - cp pc-bios/esp32-v3-rom*.bin /app/lib/picismlab/qemu/fw/
+          - install -d /app/lib/picsimlab/qemu/
+          - cp build/libqemu-xtensa.so /app/lib/picsimlab/qemu/
+          - install -d /app/lib/picsimlab/qemu/fw
+          - cp pc-bios/esp32-v3-rom*.bin /app/lib/picsimlab/qemu/fw/
         sources:
           - type: git
             url: https://github.com/lcgamboa/qemu_stm32.git
