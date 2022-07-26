@@ -328,7 +328,11 @@ void CPWindow1::timer2_EvOnTime(CControl* control) {
     label2.SetText(lxString().Format("Spd: %3.2fx", 100.0 / timer1.GetTime()));
 
     if (Errors.GetLinesCount()) {
+#ifndef __EMSCRIPTEN__
         Message_sz(Errors.GetLine(0), 450, 200);
+#else
+        printf("Error: %s\n", Errors.GetLine(0).c_str());
+#endif
         Errors.DelLine(0);
     }
 
@@ -962,7 +966,9 @@ void CPWindow1::EndSimulation(int saveold, const char* newpath) {
 }
 
 void CPWindow1::SetNeedReboot(void) {
+#ifndef __EMSCRIPTEN__
     NeedReboot = 1;
+#endif    
 }
 
 void CPWindow1::menu1_File_LoadHex_EvMenuActive(CControl* control) {
@@ -1240,14 +1246,14 @@ void CPWindow1::menu1_EvMicrocontroller(CControl* control) {
 }
 
 void CPWindow1::togglebutton1_EvOnToggleButton(CControl* control) {
+#ifdef NO_DEBUG
+    statusbar1.SetField(1, lxT(" "));
+#else
     int osc_on = pboard->GetUseOscilloscope();
     int spare_on = pboard->GetUseSpareParts();
 
     debug = togglebutton1.GetCheck();
 
-#ifdef NO_DEBUG
-    statusbar1.SetField(1, lxT(" "));
-#else
     EndSimulation();
     Configure(HOME);
 

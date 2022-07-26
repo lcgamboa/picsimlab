@@ -186,6 +186,7 @@ int bsim_qemu::MInit(const char* processor, const char* _fname, float freq) {
     serialfd[2] = INVALID_HANDLE_VALUE;
     serialfd[3] = INVALID_HANDLE_VALUE;
 
+#ifndef __EMSCRIPTEN__
     if (!qemu_started) {
         StartThread();
         while (!qemu_started) {
@@ -197,15 +198,19 @@ int bsim_qemu::MInit(const char* processor, const char* _fname, float freq) {
             mtx_qinit->Lock();  // only for wait qemu start
             mtx_qinit->Unlock();
         }
-
+#else   //qemu is not supported in emscripten version yet
+	qemu_started = -1;
+#endif
         Window1.menu1_File_LoadHex.SetText("Load Bin");
         Window1.menu1_File_SaveHex.SetEnable(0);
         Window1.filedialog1.SetFileName(lxT("untitled.bin"));
         Window1.filedialog1.SetFilter(lxT("Bin Files (*.bin)|*.bin;*.BIN"));
 
+#ifndef __EMSCRIPTEN__
     } else {
         printf("PICSimLab: qemu already started !!!!!\n");
     }
+#endif
 
     return 0;  // ret;
 }
