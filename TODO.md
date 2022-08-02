@@ -1,14 +1,14 @@
 ### TODOs
 | Filename | line # | TODO
 |:------|:------:|:------
-| [src/picsimlab1.cc](src/picsimlab1.cc#L505) | 505 | verify initialization errors
+| [src/picsimlab1.cc](src/picsimlab1.cc#L509) | 509 | verify initialization errors
 | [src/picsimlab4.cc](src/picsimlab4.cc#L635) | 635 | select the better mode for channel trigguer
 | [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L98) | 98 | jumper support
 | [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L193) | 193 | TEMP cooler must don't work with AQUE=0
+| [src/boards/bsim_gpsim.cc](src/boards/bsim_gpsim.cc#L152) | 152 | add VCC and GND pins
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1042) | 1042 | default output value is not used yet (DOV)
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1360) | 1360 | avr ID pointer
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1382) | 1382 | avr ID size
-| [src/boards/exp_bsim_gpsim.cc](src/boards/exp_bsim_gpsim.cc#L146) | 146 | add VCC and GND pins
 | [src/devices/eth_w5500.cc](src/devices/eth_w5500.cc#L471) | 471 | add support to buffer size different of 2k
 | [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L122) | 122 | ssd1306 Scrolling Command Table
 | [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L133) | 133 | ssd1306 Continuous Vertical and Horizontal Scroll Setup
@@ -32,7 +32,7 @@
 ### FIXMEs
 | Filename | line # | FIXME
 |:------|:------:|:------
-| [src/picsimlab1.cc](src/picsimlab1.cc#L746) | 746 | remote control disabled
+| [src/picsimlab1.cc](src/picsimlab1.cc#L750) | 750 | remote control disabled
 | [src/boards/board_uCboard.cc](src/boards/board_uCboard.cc#L297) | 297 | NSTEP must be multiplied for 4
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1377) | 1377 | avr CONFIG size
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L134) | 134 | only for BANK=0;

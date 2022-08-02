@@ -145,6 +145,7 @@ cboard_DevKitC::cboard_DevKitC(void) {
 cboard_DevKitC::~cboard_DevKitC(void) {
     Window1.DestroyChild(label1);
     Window1.DestroyChild(combo1);
+    Window1.DestroyChild(button1);
     wconfig->SetCanDestroy(true);
     wconfig->WDestroy();
 }

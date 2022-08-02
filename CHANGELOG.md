@@ -1,3 +1,34 @@
+## v0.8.11 (2022-08-02)
+
+### New
+
+* New parts BMP180 and BMP280 I2C pressure and temperature sensors. [lcgamboa]
+
+* New part DS18B20 1-wire temperature sensor. [lcgamboa]
+
+* New parts DHT22 and DHT11 humidity and temperature sensors. [lcgamboa]
+
+* New board ESP32-DevKitC. [lcgamboa]
+
+* Support to disable bounce effect in switches and push buttons parts. [lcgamboa]
+
+* Part IO MM74C922 keyboard controller added. [lcgamboa]
+
+### Changes
+
+* Boards Blue Pill, DevKitC, gpboard and STM32 H103 moved from experimental to stable version. [lcgamboa]
+
+* PQDB, ESP32-DevKitC, Blue Pill and STM32 H103 boards picture updated. [lcgamboa]
+
+### Fix
+
+* Fix qemu configuration window of board ESP32 DEvKitC. [lcgamboa]
+
+* Fix ESP32 DevKitC to work on windows. [lcgamboa]
+
+* Fix board PICGenios dip switches functions. [lcgamboa]
+
+
 ## v0.8.10 (2022-04-09)
 
 ### New

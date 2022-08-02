@@ -1,4 +1,4 @@
-## (unreleased)
+## v0.8.11 (2022-08-02)
 
 ### New
 
@@ -21,6 +21,14 @@
 * Version 0.8.10. [lcgamboa]
 
 ### Changes
+
+* Move boards Blue Pill, DevKitC and STM32 H103 from experimental to stable version. [lcgamboa]
+
+* Move gpboard from experimental to stable version. [lcgamboa]
+
+* Blue Pill and STM32 H103 boards picture updated. [lcgamboa]
+
+* PQDB and ESP32-DevKitC boards pictures updated. [lcgamboa]
 
 * Scripts updated. [lcgamboa]
 
