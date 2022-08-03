@@ -9,7 +9,7 @@ MPLABX/avr-gdb debugger.
 PICSimLab supports microcontrollers from [picsim](https://github.com/lcgamboa/picsim), [simavr](https://github.com/buserror/simavr), [uCsim](http://mazsola.iit.uni-miskolc.hu/~drdani/embedded/ucsim/), [qemu-stm32](http://beckus.github.io/qemu_stm32/), [qemu-esp32](https://github.com/a159x36/qemu) and [gpsim](http://gpsim.sourceforge.net/).
 PICSimLab have integration with MPLABX/Arduino IDE for programming the boards microcontrollers.
 As the purpose of PICSimLab is to emulate real hardware it does not have any source code editing support.
-For code editing and debugging the same tools used for a real board should be used with PICSimLab, such as MPLABX, Arduino IDE and VSCode with PlatformIO.
+For code editing and debugging the same tools used for a real board should be used with PICSimLab, such as MPLABX, Arduino IDE or VSCode with PlatformIO.
 
 PICSimLab supports several devices (spare parts) that can be connected to the boards for simulation. 
 As for example LEDs and push buttons for simple outputs and inputs and some more complex ones like the ethernet 
