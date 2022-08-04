@@ -23,21 +23,12 @@ make clean
 make -j$(nproc) LIBPATH="../build_all/" FILE=Makefile.static $1
 make LIBPATH="../build_all/" FILE=Makefile.static DESTDIR=`pwd`/AppDir install_app
 rm -rf AppDir/usr/share/picsimlab/docs/
-#cp /usr/bin/cutecom AppDir/usr/bin
-cp /usr/bin/gtkwave AppDir/usr/bin
-install -d  "AppDir/usr/share/glib-2.0/schemas"
-cp /usr/share/glib-2.0/schemas/com.geda.gtkwave.gschema.xml AppDir/usr/share/glib-2.0/schemas
-glib-compile-schemas AppDir/usr/share/glib-2.0/schemas/ || echo "No AppDir/usr/share/glib-2.0/schemas/"
-install -d AppDir/usr/lib/tcl8.6
-cp -rv /usr/share/tcltk/tcl8.6/*  AppDir/usr/lib/tcl8.6/
 wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
 chmod a+x linuxdeploy-x86_64.AppImage
 mv linuxdeploy-x86_64.AppImage /tmp/
 install -d AppDir/usr/lib/picsimlab/
 cp -Rv lib/qemu AppDir/usr/lib/picsimlab/
 
-#/tmp/linuxdeploy-x86_64.AppImage --appdir AppDir --executable=AppDir/usr/bin/cutecom
-/tmp/linuxdeploy-x86_64.AppImage --appdir AppDir --executable=AppDir/usr/bin/gtkwave
 rm -rf /tmp/AppRun
 echo "#!/usr/bin/bash" >> /tmp/AppRun
 echo "" >> /tmp/AppRun
@@ -51,16 +42,16 @@ chmod a+x /tmp/AppRun
 /tmp/linuxdeploy-x86_64.AppImage --custom-apprun=/tmp/AppRun --appdir AppDir --output appimage
 install -d "release_${VERSION}"
 #remove libgmodule
-wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
-chmod +x appimagetool-x86_64.AppImage
-mv appimagetool-x86_64.AppImage /tmp/
-./PICSimLab-${VERSION}-x86_64.AppImage --appimage-extract
-rm -rf squashfs-root/usr/lib/libgmodule*
-rm -rf squashfs-root/usr/lib/libgdk_pixbuf*
-/tmp/appimagetool-x86_64.AppImage -v squashfs-root
-rm -rf squashfs-root/
+#wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+#chmod +x appimagetool-x86_64.AppImage
+#mv appimagetool-x86_64.AppImage /tmp/
+#./PICSimLab-${VERSION}-x86_64.AppImage --appimage-extract
+#rm -rf squashfs-root/usr/lib/libgmodule*
+#rm -rf squashfs-root/usr/lib/libgdk_pixbuf*
+#/tmp/appimagetool-x86_64.AppImage -v squashfs-root
+#rm -rf squashfs-root/
 #rename package
-mv PICSimLab-x86_64.AppImage PICSimLab-${VERSION}-x86_64.AppImage 
+#mv PICSimLab-x86_64.AppImage PICSimLab-${VERSION}-x86_64.AppImage 
 if [[ -n "$1" ]]; then
   mv -f PICSimLab-${VERSION}-x86_64.AppImage release_${VERSION}/PICSimLab-${VERSION}_Linux_experimetal_x86_64.AppImage 
 else

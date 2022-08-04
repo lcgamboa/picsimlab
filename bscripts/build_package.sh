@@ -42,5 +42,5 @@ lversion=`lsb_release -d | cut -f2 | sed -e 's/ /_/g' | sed -e 's/\//_/g'`
 if [[ -n "$1" ]]; then
 	mv picsimlab_${VERSION}-1_amd64.deb  ../${DESTDIR}/PICSimLab_${VERSION_}_${lversion}_experimental_amd64.deb
 else
-	mv picsimlab_${VERSION}-1_amd64.deb  ../${DESTDIR}/PICSsimLab_${VERSION_}_${lversion}_amd64.deb
+	mv picsimlab_${VERSION}-1_amd64.deb  ../${DESTDIR}/PICSimLab_${VERSION_}_${lversion}_amd64.deb
 fi
