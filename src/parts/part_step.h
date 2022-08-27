@@ -38,6 +38,7 @@ public:
     cpart_step(unsigned x, unsigned y);
     ~cpart_step(void);
     void Draw(void) override;
+    void PreProcess(void) override;
     void Process(void) override;
     void PostProcess(void) override;
     void ConfigurePropertiesWindow(CPWindow* WProp) override;
@@ -50,9 +51,11 @@ public:
 private:
     void RegisterRemoteControl(void) override;
     unsigned char input_pins[4];
+    unsigned char output_pins[1];
+    float steps;
     float angle;
-    int b1[2];
-    int b2[2];
+    int input[2];
+    int turns;
     lxColor color1;
     lxColor color2;
     lxFont font;

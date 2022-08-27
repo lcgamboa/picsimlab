@@ -29,7 +29,7 @@
 #include "../picsimlab5.h"
 
 /* outputs */
-enum { O_P1, O_P2, O_P3, O_P4, O_L1, O_L2, O_L3, O_L4, O_ROT };
+enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_L1, O_L2, O_L3, O_L4, O_ROT, O_STEPS };
 
 cpart_step::cpart_step(unsigned x, unsigned y) : font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     X = x;
@@ -40,15 +40,19 @@ cpart_step::cpart_step(unsigned x, unsigned y) : font(9, lxFONTFAMILY_TELETYPE, 
 
     angle = 0;
 
+    steps = 0;
+
     input_pins[0] = 0;
     input_pins[1] = 0;
     input_pins[2] = 0;
     input_pins[3] = 0;
 
-    b1[0] = 0;
-    b1[1] = 0;
-    b2[0] = 0;
-    b2[1] = 0;
+    output_pins[0] = 0;
+
+    input[0] = 0;
+    input[1] = 0;
+
+    turns = 0;
 }
 
 cpart_step::~cpart_step(void) {
@@ -89,6 +93,28 @@ void cpart_step::Draw(void) {
                         canvas.RotatedText(Window5.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
                                            output[i].y1, 0);
                     break;
+                case O_P5:
+                    canvas.SetColor(49, 61, 99);
+                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                     output[i].y2 - output[i].y1);
+                    canvas.SetFgColor(255, 255, 255);
+                    if (output_pins[output[i].id - O_P5] == 0)
+                        canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
+                    else
+                        canvas.RotatedText(Window5.GetPinName(output_pins[output[i].id - O_P5]), output[i].x1,
+                                           output[i].y1, 0);
+                    break;
+                case O_STEPS: {
+                    canvas.SetColor(49, 61, 99);
+                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                     output[i].y2 - output[i].y1);
+                    canvas.SetFgColor(255, 255, 255);
+                    lxString text;
+                    text.Printf("S=%5.1f", steps);
+                    canvas.RotatedText(text, output[i].x1, output[i].y1, 0);
+                    text.Printf("T=%3i", turns);
+                    canvas.RotatedText(text, output[i].x1, output[i].y1 + 12, 0);
+                } break;
                 case O_ROT:
                     canvas.SetColor(77, 77, 77);
                     canvas.Circle(1, output[i].x1, output[i].y1, output[i].r + 10);
@@ -142,138 +168,193 @@ void cpart_step::Draw(void) {
     }
 }
 
+void cpart_step::PreProcess(void) {
+    if (output_pins[0] > 0) {
+        if ((steps == 0) && (turns == 0)) {
+            Window5.SetPin(output_pins[0], 0);
+        } else {
+            Window5.SetPin(output_pins[0], 1);
+        }
+    }
+}
+
 #define STEP (1.8 * M_PI / 180.0)
 #define HSTEP (STEP / 2.0)
+
+#define NSTEP 200  // 360/1.8
+
+#define S1 1
+#define S12 3
+#define S2 2
+#define S23 6
+#define S3 4
+#define S34 12
+#define S4 8
+#define S41 9
 
 void cpart_step::Process(void) {
     const picpin* ppins = Window5.GetPinsValues();
 
     if ((input_pins[0] > 0) && (input_pins[1] > 0) && (input_pins[2] > 0) && (input_pins[3] > 0)) {
-        // case all pins are zero, return
-        if ((!ppins[input_pins[0] - 1].value) && (!ppins[input_pins[1] - 1].value) &&
-            (!ppins[input_pins[2] - 1].value) && (!ppins[input_pins[3] - 1].value)) {
-            return;
-        }
+        input[1] = input[0];
+        input[0] = (ppins[input_pins[0] - 1].value << 3) | (ppins[input_pins[1] - 1].value << 2) |
+                   (ppins[input_pins[2] - 1].value << 1) | ppins[input_pins[3] - 1].value;
 
-        b1[1] = b1[0];
-        b1[0] = ppins[input_pins[0] - 1].value - ppins[input_pins[2] - 1].value;
-        b2[1] = b2[0];
-        b2[0] = ppins[input_pins[1] - 1].value - ppins[input_pins[3] - 1].value;
+        if (input[0] ^ input[1]) {
+            switch (input[0]) {
+                case S1:
+                    switch (input[1]) {
+                        case S4:  // foward full step
+                            steps += 1;
+                            break;
+                        case S2:  // backward full step
+                            steps -= 1;
+                            break;
+                        case S41:  // foward half step
+                            steps += 0.5;
+                            break;
+                        case S12:  // backward half step
+                            steps -= 0.5;
+                            break;
+                    }
+                    break;
+                case S2:
+                    switch (input[1]) {
+                        case S1:  // foward full step
+                            steps += 1;
+                            break;
+                        case S3:  // backward full step
+                            steps -= 1;
+                            break;
+                        case S12:  // foward half step
+                            steps += 0.5;
+                            break;
+                        case S23:  // backward half step
+                            steps -= 0.5;
+                            break;
+                    }
+                    break;
+                case S3:
+                    switch (input[1]) {
+                        case S2:  // foward full step
+                            steps += 1;
+                            break;
+                        case S4:  // backward full step
+                            steps -= 1;
+                            break;
+                        case S23:  // foward half step
+                            steps += 0.5;
+                            break;
+                        case S34:  // backward half step
+                            steps -= 0.5;
+                            break;
+                    }
+                    break;
+                case S4:
+                    switch (input[1]) {
+                        case S3:  // foward full step
+                            steps += 1;
+                            break;
+                        case S1:  // backward full step
+                            steps -= 1;
+                            break;
+                        case S34:  // foward half step
+                            steps += 0.5;
+                            break;
+                        case S41:  // backward half step
+                            steps -= 0.5;
+                            break;
+                    }
+                    break;
+                case S12:
+                    switch (input[1]) {
+                        case S41:  // foward full step double phase
+                            steps += 1;
+                            break;
+                        case S23:  // backward full step double phase
+                            steps -= 1;
+                            break;
+                        case S1:  // foward half step
+                            steps += 0.5;
+                            break;
+                        case S2:  // backward half step
+                            steps -= 0.5;
+                            break;
+                    }
+                    break;
+                case S23:
+                    switch (input[1]) {
+                        case S12:  // foward full step double phase
+                            steps += 1;
+                            break;
+                        case S34:  // backward full step double phase
+                            steps -= 1;
+                            break;
+                        case S2:  // foward half step
+                            steps += 0.5;
+                            break;
+                        case S3:  // backward half step
+                            steps -= 0.5;
+                            break;
+                    }
+                    break;
+                case S34:
+                    switch (input[1]) {
+                        case S23:  // foward full step double phase
+                            steps += 1;
+                            break;
+                        case S41:  // backward full step double phase
+                            steps -= 1;
+                            break;
+                        case S3:  // foward half step
+                            steps += 0.5;
+                            break;
+                        case S4:  // backward half step
+                            steps -= 0.5;
+                            break;
+                    }
+                    break;
+                case S41:
+                    switch (input[1]) {
+                        case S34:  // foward full step double phase
+                            steps += 1;
+                            break;
+                        case S12:  // backward full step double phase
+                            steps -= 1;
+                            break;
+                        case S4:  // foward half step
+                            steps += 0.5;
+                            break;
+                        case S1:  // backward half step
+                            steps -= 0.5;
+                            break;
+                    }
+                    break;
+                default:  // invalid
+                    input[0] = input[1];
+                    return;
+                    break;
+            }
 
-        if ((b1[1] != b1[0]) || (b2[1] != b2[0])) {
-            /*
-            unsigned char code = ppins[input_pins[0] - 1].value | (ppins[input_pins[1] - 1].value << 1) |
-            (ppins[input_pins[2] - 1].value << 2) | (ppins[input_pins[3] - 1].value << 3); printf ("%3i %3i %3i %3i
-            angle=%f  0x%02X\n", b1[0], b2[0], b1[1], b2[1], angle, code);
-             */
+            if (steps >= NSTEP) {
+                steps -= NSTEP;
+                turns++;
+            }
 
-            // foward full step
-            if ((b1[0] == 1) && (b2[0] == 0) && (b1[1] == 0) && (b2[1] == -1))  // 0001
-                angle += STEP;
+            if (steps < 0) {
+                steps += NSTEP;
+                turns--;
+            }
 
-            if ((b1[0] == 0) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == 0))  // 0010
-                angle += STEP;
+            angle = STEP * steps;
 
-            if ((b1[0] == -1) && (b2[0] == 0) && (b1[1] == 0) && (b2[1] == 1))  // 0100
-                angle += STEP;
-
-            if ((b1[0] == 0) && (b2[0] == -1) && (b1[1] == -1) && (b2[1] == 0))  // 1000
-                angle += STEP;
-
-            // foward full step double phase
-            if ((b1[0] == 1) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == -1))  // 0011
-                angle += STEP;
-
-            if ((b1[0] == -1) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == 1))  // 0110
-                angle += STEP;
-
-            if ((b1[0] == -1) && (b2[0] == -1) && (b1[1] == -1) && (b2[1] == 1))  // 1100
-                angle += STEP;
-
-            if ((b1[0] == 1) && (b2[0] == -1) && (b1[1] == -1) && (b2[1] == -1))  // 1001
-                angle += STEP;
-
-            // foward half step
-            if ((b1[0] == 1) && (b2[0] == 0) && (b1[1] == 1) && (b2[1] == -1))
-                angle += HSTEP;
-
-            if ((b1[0] == 1) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == 0))
-                angle += HSTEP;
-
-            if ((b1[0] == 0) && (b2[0] == 1) && (b1[1] == 1) && (b2[1] == 1))
-                angle += HSTEP;
-
-            if ((b1[0] == -1) && (b2[0] == 1) && (b1[1] == 0) && (b2[1] == 1))
-                angle += HSTEP;
-
-            if ((b1[0] == -1) && (b2[0] == 0) && (b1[1] == -1) && (b2[1] == 1))
-                angle += HSTEP;
-
-            if ((b1[0] == -1) && (b2[0] == -1) && (b1[1] == -1) && (b2[1] == 0))
-                angle += HSTEP;
-
-            if ((b1[0] == 0) && (b2[0] == -1) && (b1[1] == -1) && (b2[1] = -1))
-                angle += HSTEP;
-
-            if ((b1[0] == 1) && (b2[0] == -1) && (b1[1] == 0) && (b2[1] == -1))
-                angle += HSTEP;
-
-            // backward full step
-            if ((b1[0] == 0) && (b2[0] == -1) && (b1[1] == 1) && (b2[1] == 0))  // 1000
-                angle -= STEP;
-
-            if ((b1[0] == 1) && (b2[0] == 0) && (b1[1] == 0) && (b2[1] == 1))  // 0001
-                angle -= STEP;
-
-            if ((b1[0] == 0) && (b2[0] == 1) && (b1[1] == -1) && (b2[1] == 0))  // 0010
-                angle -= STEP;
-
-            if ((b1[0] == -1) && (b2[0] == 0) && (b1[1] == 0) && (b2[1] == -1))  // 0100
-                angle -= STEP;
-
-            // backward full step double phase
-            if ((b1[0] == -1) && (b2[0] == -1) && (b1[1] == 1) && (b2[1] == -1))  // 0011
-                angle -= STEP;
-
-            if ((b1[0] == -1) && (b2[0] == 1) && (b1[1] == -1) && (b2[1] == -1))  // 0110
-                angle -= STEP;
-
-            if ((b1[0] == 1) && (b2[0] == 1) && (b1[1] == -1) && (b2[1] == 1))  // 1100
-                angle -= STEP;
-
-            if ((b1[0] == 1) && (b2[0] == -1) && (b1[1] == 1) && (b2[1] == 1))  // 1001
-                angle -= STEP;
-
-            // backward half step
-            if ((b1[1] == 1) && (b2[1] == 0) && (b1[0] == 1) && (b2[0] == -1))
-                angle -= HSTEP;
-
-            if ((b1[1] == 1) && (b2[1] == 1) && (b1[0] == 1) && (b2[0] == 0))
-                angle -= HSTEP;
-
-            if ((b1[1] == 0) && (b2[1] == 1) && (b1[0] == 1) && (b2[0] == 1))
-                angle -= HSTEP;
-
-            if ((b1[1] == -1) && (b2[1] == 1) && (b1[0] == 0) && (b2[0] == 1))
-                angle -= HSTEP;
-
-            if ((b1[1] == -1) && (b2[1] == 0) && (b1[0] == -1) && (b2[0] == 1))
-                angle -= HSTEP;
-
-            if ((b1[1] == -1) && (b2[1] == -1) && (b1[0] == -1) && (b2[0] == 0))
-                angle -= HSTEP;
-
-            if ((b1[1] == 0) && (b2[1] == -1) && (b1[0] == -1) && (b2[0] = -1))
-                angle -= HSTEP;
-
-            if ((b1[1] == 1) && (b2[1] == -1) && (b1[0] == 0) && (b2[0] == -1))
-                angle -= HSTEP;
-
-            if (angle >= 2 * M_PI)
-                angle -= 2 * M_PI;
-
-            if (angle <= -2 * M_PI)
-                angle += 2 * M_PI;
+            if (output_pins[0] > 0) {
+                if ((steps == 0) && (turns == 0)) {
+                    Window5.SetPin(output_pins[0], 0);
+                } else {
+                    Window5.SetPin(output_pins[0], 1);
+                }
+            }
         }
     }
 }
@@ -291,6 +372,7 @@ void cpart_step::PostProcess(void) {
     if (output_ids[O_ROT]->value_f != angle) {
         output_ids[O_ROT]->value_f = angle;
         output_ids[O_ROT]->update = 1;
+        output_ids[O_STEPS]->update = 1;
     }
 }
 
@@ -308,6 +390,8 @@ unsigned short cpart_step::get_out_id(char* name) {
         return O_P3;
     if (strcmp(name, "PN_4") == 0)
         return O_P4;
+    if (strcmp(name, "PN_5") == 0)
+        return O_P5;
     if (strcmp(name, "LD_1") == 0)
         return O_L1;
     if (strcmp(name, "LD_2") == 0)
@@ -318,6 +402,8 @@ unsigned short cpart_step::get_out_id(char* name) {
         return O_L4;
     if (strcmp(name, "DG_ROT") == 0)
         return O_ROT;
+    if (strcmp(name, "DI_STEPS") == 0)
+        return O_STEPS;
 
     printf("Erro output '%s' don't have a valid id! \n", name);
     return 1;
@@ -326,13 +412,15 @@ unsigned short cpart_step::get_out_id(char* name) {
 lxString cpart_step::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3]);
+    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3],
+            output_pins[0]);
 
     return prefs;
 }
 
 void cpart_step::ReadPreferences(lxString value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3]);
+    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3],
+           &output_pins[0]);
     RegisterRemoteControl();
 }
 
@@ -382,6 +470,14 @@ void cpart_step::ConfigurePropertiesWindow(CPWindow* WProp) {
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText(itoa(input_pins[3]) + "  " + spin);
     }
 
+    ((CCombo*)WProp->GetChildByName("combo5"))->SetItems(Items);
+    if (output_pins[0] == 0)
+        ((CCombo*)WProp->GetChildByName("combo5"))->SetText("0  NC");
+    else {
+        spin = Window5.GetPinName(output_pins[0]);
+        ((CCombo*)WProp->GetChildByName("combo5"))->SetText(itoa(output_pins[0]) + "  " + spin);
+    }
+
     ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
         EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
@@ -395,6 +491,7 @@ void cpart_step::ReadPropertiesWindow(CPWindow* WProp) {
     input_pins[1] = atoi(((CCombo*)WProp->GetChildByName("combo2"))->GetText());
     input_pins[2] = atoi(((CCombo*)WProp->GetChildByName("combo3"))->GetText());
     input_pins[3] = atoi(((CCombo*)WProp->GetChildByName("combo4"))->GetText());
+    output_pins[0] = atoi(((CCombo*)WProp->GetChildByName("combo5"))->GetText());
     RegisterRemoteControl();
 }
 
