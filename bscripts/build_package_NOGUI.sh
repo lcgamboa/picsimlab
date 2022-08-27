@@ -37,7 +37,7 @@ mv tools/espmsim/Makefile.static tools/espmsim/Makefile
 mv tools/PinViewer/Makefile.static tools/PinViewer/Makefile
 rm -rf share/*/*/*.png
 PWD=`pwd`	
-echo -e "\noverride_dh_auto_build:\n\tmake -j$(nproc) $1\n\n" >> debian/rules
+echo -e "\noverride_dh_auto_build:\n\tmake -j$(nproc) PKG=\"DEB\" $1\n\n" >> debian/rules
 echo -e "\noverride_dh_auto_install:\n\tdh_auto_install\n\tinstall -d ${PWD}/debian/picsimlab/usr/lib/picsimlab/" >> debian/rules
 echo -e "\tcp -Rv ../../lib/qemu  ${PWD}/debian/picsimlab/usr/lib/picsimlab/\n\n" >> debian/rules
 sed -i 's/Depends: gtkwave, cutecom, gedit,/Depends: gpsim,libgcrypt20, /g' debian/control

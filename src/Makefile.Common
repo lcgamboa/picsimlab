@@ -1,5 +1,7 @@
 include ../VERSION
 
+PKG ?= "native"
+
 OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimlab5.o serial_port.o
 
 OBJS+= $(patsubst boards/%.cc,boards/%.o,$(wildcard boards/bsim*.cc)) 
@@ -24,9 +26,10 @@ exp: $(OBJS_EXP)  all
 rebuild:
 	rm -rf picsimlab
 
-override CXXFLAGS+= $(EFLAGS) -DEXT_BROWSER_EXAMPLES -DLEGACY081 
+override CXXFLAGS+= $(EFLAGS) -DEXT_BROWSER_EXAMPLES -DLEGACY081 -D_PKG_=\"${PKG}\"
 
 
 boards/bridge_gpsim.o: boards/bridge_gpsim.cc
 	@echo "Compiling $<"
 	@$(CXX) $(CXXFLAGS)  $(PKG_CONFIG)  boards/bridge_gpsim.cc  -c -o boards/bridge_gpsim.o 
+

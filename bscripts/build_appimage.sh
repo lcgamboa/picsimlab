@@ -20,7 +20,7 @@ cd ..
 rm -rf AppDir
 echo -e "\033[1;32m ---------------------- build picsimlab -------------------------- \033[0m"
 make clean
-make -j$(nproc) LIBPATH="../build_all/" FILE=Makefile.static $1
+make -j$(nproc) LIBPATH="../build_all/" FILE=Makefile.static PKG=\"Appimage\" $1
 make LIBPATH="../build_all/" FILE=Makefile.static DESTDIR=`pwd`/AppDir install_app
 rm -rf AppDir/usr/share/picsimlab/docs/
 wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
@@ -63,7 +63,7 @@ cd src
 rm -rf AppDir
 echo -e "\033[1;32m ---------------------- build picsimlab nogui -------------------------- \033[0m"
 make clean
-make -j$(nproc) LIBPATH="../build_all/" -f Makefile.NOGUI $1
+make -j$(nproc) LIBPATH="../build_all/" -f Makefile.NOGUI PKG=\"Appimage\" $1
 make LIBPATH="../build_all/" -f Makefile.NOGUI DESTDIR=AppDir install
 rm -rf AppDir/usr/share/picsimlab/docs/
 cd AppDir/usr/share/picsimlab 

@@ -30,7 +30,7 @@ modules:
     builddir: true
     buildsystem: simple
     build-commands:
-     - make -j$(nproc) CXXFLAGS=-DFLATPAK_TARGET
+     - make -j$(nproc) PKG=\"FLATPAK\" CXXFLAGS=-DFLATPAK_TARGET
      - make install_app DESTDIR=/app 
     sources:
       - type: git

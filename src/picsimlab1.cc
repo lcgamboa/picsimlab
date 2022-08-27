@@ -408,10 +408,28 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 #error Define the _LIB_ path is necessary
 #endif
 
+#ifndef _VERSION_
+#error Define the _VERSION_ path is necessary
+#endif
+
+#ifndef _DATE_
+#error Define the _DATE_ path is necessary
+#endif
+
+#ifndef _ARCH_
+#error Define the _ARCH_ path is necessary
+#endif
+
+#ifndef _PKG_
+#error Define the _PKG_ path is necessary
+#endif
+
     libpath = dirname(lxGetExecutablePath()) + lxT("/") + lxString(_LIB_);
     fn.Assign(libpath);
     fn.MakeAbsolute();
     libpath = fn.GetFullPath() + "/";
+
+    printf("PICSimLab: Version: \"%s %s %s %s\"\n", _VERSION_, _DATE_, _ARCH_, _PKG_);
 
     if (Application->Aargc == 2) {  // only .pzw file
         fn.Assign(Application->Aargv[1]);
@@ -968,7 +986,7 @@ void CPWindow1::EndSimulation(int saveold, const char* newpath) {
 void CPWindow1::SetNeedReboot(void) {
 #ifndef __EMSCRIPTEN__
     NeedReboot = 1;
-#endif    
+#endif
 }
 
 void CPWindow1::menu1_File_LoadHex_EvMenuActive(CControl* control) {
@@ -1074,8 +1092,8 @@ void CPWindow1::menu1_Help_About_Board_EvMenuActive(CControl* control) {
 
 void CPWindow1::menu1_Help_About_PICSimLab_EvMenuActive(CControl* control) {
     lxString stemp;
-    stemp.Printf(lxT("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: %s %s %s"), lxT(_VERSION_),
-                 lxT(_DATE_), lxT(_ARCH_));
+    stemp.Printf(lxT("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: %s %s %s %s"), lxT(_VERSION_),
+                 lxT(_DATE_), lxT(_ARCH_), lxT(_PKG_));
     Message_sz(stemp, 400, 200);
 }
 
