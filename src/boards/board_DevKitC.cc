@@ -734,7 +734,6 @@ int cboard_DevKitC::MGetPinCount(void) {
 }
 
 void cboard_DevKitC::MSetAPin(int pin, float value) {
-    /*
     if (!pin)
         return;
     if ((pins[pin - 1].avalue != value)) {
@@ -742,38 +741,65 @@ void cboard_DevKitC::MSetAPin(int pin, float value) {
 
         pins[pin - 1].avalue = value;
 
-            switch (pin) {
-                case 10:  // PA0
-                    channel = 0;
-                    break;
-                case 11:  // PA1
-                    channel = 1;
-                    break;
-                case 12:  // PA2
-                    channel = 2;
-                    break;
-                case 13:  // PA3
-                    channel = 3;
-                    break;
-                case 14:  // PA4
-                    channel = 4;
-                    break;
-                case 15:  // PA5
-                    channel = 5;
-                    break;
-                case 16:  // PA6
-                    channel = 6;
-                    break;
-                case 17:  // PA7
-                    channel = 7;
-                    break;
-                case 18:  // PB0
-                    channel = 8;
-                    break;
-                case 19:  // PB1
-                    channel = 9;
-                    break;
-            }
+        switch (pin) {
+            case 3:  // GPIO36
+                channel = 0;
+                break;
+                /*
+                //GPIO37 and GPIO38 are not exposed in devkitc
+                            case x:  // GPIO37
+                                channel = 1;
+                                break;
+                            case x:  // GPIO38
+                                channel = 2;
+                                break;
+                */
+            case 4:  // GPIO39
+                channel = 3;
+                break;
+            case 7:  // GPIO32
+                channel = 4;
+                break;
+            case 8:  // GPIO33
+                channel = 5;
+                break;
+            case 5:  // GPIO34
+                channel = 6;
+                break;
+            case 6:  // GPIO35
+                channel = 7;
+                break;
+            case 26:  // GPIO4
+                channel = 0x8 + 0;
+                break;
+            case 25:  // GPIO0
+                channel = 0x8 + 1;
+                break;
+            case 24:  // GPIO2
+                channel = 0x8 + 2;
+                break;
+            case 23:  // GPIO15
+                channel = 0x8 + 3;
+                break;
+            case 15:  // GPIO13
+                channel = 0x8 + 4;
+                break;
+            case 13:  // GPIO12
+                channel = 0x8 + 5;
+                break;
+            case 12:  // GPIO14
+                channel = 0x8 + 6;
+                break;
+            case 11:  // GPIO27
+                channel = 0x8 + 7;
+                break;
+            case 9:  // GPIO25
+                channel = 0x8 + 8;
+                break;
+            case 10:  // GPIO26
+                channel = 0x8 + 9;
+                break;
+        }
 
         if (channel != 0xFF) {
             if (value > 3.3)
@@ -788,11 +814,10 @@ void cboard_DevKitC::MSetAPin(int pin, float value) {
             if (ADCvalues[channel] != svalue) {
                 qemu_picsimlab_set_apin(channel, svalue);
                 ADCvalues[channel] = svalue;
-                // printf("Analog channel %02X = %i\n",channel,svalue);
+                // printf("Analog channel %02X = %i\n", channel, svalue);
             }
         }
     }
-    */
 }
 
 // Register the board in PICSimLab
