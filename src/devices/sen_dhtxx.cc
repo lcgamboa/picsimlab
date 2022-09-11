@@ -24,6 +24,7 @@
    ######################################################################## */
 
 #include "sen_dhtxx.h"
+#include "../boards/board.h"
 
 #include <stdio.h>
 #include <stdlib.h>

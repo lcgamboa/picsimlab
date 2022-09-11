@@ -48,8 +48,7 @@ void (*qmp_cont)(Error** errp);
 void (*qemu_mutex_lock_iothread_impl)(const char* file, int line);
 void (*qemu_mutex_unlock_iothread)(void);
 
-void (*qemu_picsimlab_register)(void (*picsimlab_write_pin)(int pin, int value),
-                                void (*picsimlab_dir_pin)(int pin, int value));
+void (*qemu_picsimlab_register_callbacks)(void* arg);
 void (*qemu_picsimlab_set_pin)(int pin, int value);
 void (*qemu_picsimlab_set_apin)(int chn, int value);
 int (*qemu_picsimlab_flash_dump)(int64_t offset, void* buf, int bytes);
@@ -69,25 +68,111 @@ uint32_t (*qemu_picsimlab_get_TIOCM)(void);
 static picpin* g_pins;
 static bsim_qemu* g_board = NULL;
 
-void picsimlab_write_pin(int pin, int value) {
+static int64_t GotoNow(void) {
     int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+    int64_t delta;
+
+    if (now >= g_board->timer.last) {
+        delta = now - g_board->timer.last;
+        g_board->timer.last = now;
+    } else {
+        delta = 1000;
+        g_board->timer.last += 1000;
+    }
+
+    return delta;
+}
+
+static void picsimlab_write_pin(int pin, int value) {
     // printf("================> IO    <====================== %ji\n", now - g_board->timer.last);
-    g_board->Run_CPU_ns(now - g_board->timer.last);
-    g_board->timer.last = now;
+    ioupdated = 1;
+    g_board->Run_CPU_ns(GotoNow());
+
     g_pins[pin - 1].value = value;
     // printf("pin[%i]=%i\n", pin, value);
 }
 
-void picsimlab_dir_pins(int pin, int dir) {
-    int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+static void picsimlab_dir_pins(int pin, int dir) {
     // printf("================> IO    <====================== %ji\n", now - g_board->timer.last);
-    g_board->Run_CPU_ns(now - g_board->timer.last);
+    ioupdated = 1;
+    g_board->Run_CPU_ns(GotoNow());
     if (pin > 0) {
         g_pins[pin - 1].dir = !dir;
     }
-    g_board->timer.last = now;
     // printf("pin[%i]=%s\n", pin, (!dir == PD_IN) ? "PD_IN" : "PD_OUT");
 }
+
+static int picsimlab_i2c_event(const uint8_t id, const uint8_t addr, const uint16_t event) {
+    g_board->Run_CPU_ns(GotoNow());
+
+    switch (event & 0xFF) {
+        case I2C_START_RECV:
+        case I2C_START_SEND:
+            // FIXME only for tests
+            g_board->master_i2c[id].ctrl_on = 1;  // read from DPORT ?
+
+            bitbang_i2c_ctrl_start(&g_board->master_i2c[id]);
+            g_board->timer.last += 8000;
+            g_board->Run_CPU_ns(8000);
+
+            if (event == I2C_START_RECV) {
+                bitbang_i2c_ctrl_write(&g_board->master_i2c[id], (addr << 1) | 0x01);
+            } else {
+                bitbang_i2c_ctrl_write(&g_board->master_i2c[id], addr << 1);
+            }
+            g_board->timer.last += 72000;
+            g_board->Run_CPU_ns(72000);
+            break;
+        case I2C_FINISH:
+            bitbang_i2c_ctrl_stop(&g_board->master_i2c[id]);
+            g_board->timer.last += 8000;
+            g_board->Run_CPU_ns(8000);
+            break;
+        case I2C_NACK:
+            break;
+        case I2C_WRITE:
+            bitbang_i2c_ctrl_write(&g_board->master_i2c[id], event >> 8);  // TODO verify ACK
+            g_board->timer.last += 72000;
+            g_board->Run_CPU_ns(72000);
+            // printf("send addr=0x%02x value=0x%02x\n", addr, event >> 8);
+            return 1;
+            break;
+        case I2C_READ:
+            bitbang_i2c_ctrl_read(&g_board->master_i2c[id]);  // TODO verify ACK
+            g_board->timer.last += 72000;
+            g_board->Run_CPU_ns(72000);
+            // printf("recv addr=0x%02x value=0x%02x\n", addr, (g_board->master_i2c.datar >> 1) & 0x00FF);
+            return (g_board->master_i2c[id].datar >> 1) & 0x00FF;
+            break;
+    }
+    return 0;
+}
+
+uint8_t picsimlab_spi_event(const uint8_t id, const uint16_t event) {
+    g_board->Run_CPU_ns(GotoNow());
+
+    // FIXME only for tests
+    g_board->master_spi[id].ctrl_on = 1;  // read from DPORT ?
+
+    switch (event & 0xFF) {
+        case 0:  // tranfer
+            bitbang_spi_ctrl_write(&g_board->master_spi[id], event >> 8);
+            g_board->timer.last += 72000;
+            g_board->Run_CPU_ns(72000);
+            return g_board->master_spi[id].insr;
+            break;
+        case 1:  // CS
+            ioupdated = 1;
+            g_board->master_spi[id].cs_value = event >> 8;
+            g_board->timer.last += 8000;
+            g_board->Run_CPU_ns(8000);
+            break;
+    }
+    return 0;
+}
+
+const static callbacks_t callbacks = {picsimlab_write_pin, picsimlab_dir_pins, picsimlab_i2c_event,
+                                      picsimlab_spi_event};
 
 int bsim_qemu::load_qemu_lib(const char* path) {
 #ifndef _WIN_  // LINUX
@@ -132,7 +217,7 @@ int bsim_qemu::load_qemu_lib(const char* path) {
     GET_SYMBOL_AND_CHECK(qmp_cont);
     GET_SYMBOL_AND_CHECK(qemu_mutex_lock_iothread_impl);
     GET_SYMBOL_AND_CHECK(qemu_mutex_unlock_iothread);
-    GET_SYMBOL_AND_CHECK(qemu_picsimlab_register);
+    GET_SYMBOL_AND_CHECK(qemu_picsimlab_register_callbacks);
     GET_SYMBOL_AND_CHECK(qemu_picsimlab_set_pin);
     GET_SYMBOL_AND_CHECK(qemu_picsimlab_set_apin);
     GET_SYMBOL_AND_CHECK(qemu_picsimlab_flash_dump);
@@ -162,9 +247,18 @@ bsim_qemu::bsim_qemu(void) {
     icount = 5;
     use_cmdline_extra = 0;
     serial_open = 0;
+
+    bitbang_i2c_ctrl_init(&master_i2c[0], this);
+    bitbang_i2c_ctrl_init(&master_i2c[1], this);
+    bitbang_spi_ctrl_init(&master_spi[0], this);
+    bitbang_spi_ctrl_init(&master_spi[1], this);
 }
 
 bsim_qemu::~bsim_qemu(void) {
+    bitbang_i2c_ctrl_end(&master_i2c[0]);
+    bitbang_i2c_ctrl_end(&master_i2c[1]);
+    bitbang_spi_ctrl_end(&master_spi[0]);
+    bitbang_spi_ctrl_end(&master_spi[1]);
     delete mtx_qinit;
 }
 
@@ -198,8 +292,8 @@ int bsim_qemu::MInit(const char* processor, const char* _fname, float freq) {
             mtx_qinit->Lock();  // only for wait qemu start
             mtx_qinit->Unlock();
         }
-#else   //qemu is not supported in emscripten version yet
-	qemu_started = -1;
+#else  // qemu is not supported in emscripten version yet
+    qemu_started = -1;
 #endif
         Window1.menu1_File_LoadHex.SetText("Load Bin");
         Window1.menu1_File_SaveHex.SetEnable(0);
@@ -220,7 +314,8 @@ static void user_timeout_cb(void* opaque) {
     int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
     timer_mod_ns(board->timer.qtimer, now + board->timer.timeout);
     if (Window1.GetSimulationRun()) {
-        board->Run_CPU_ns(now - board->timer.last);
+        ioupdated = 0;
+        board->Run_CPU_ns(GotoNow());
     }
     board->timer.last = now;
 }
@@ -416,10 +511,10 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
     free(resp);
 
+    g_board = this;
     // printf("picsimlab: %s\n", (const char*)cmd);
     g_pins = pins;
-    qemu_picsimlab_register(picsimlab_write_pin, picsimlab_dir_pins);
-    g_board = this;
+    qemu_picsimlab_register_callbacks((void*)&callbacks);
     timer.last = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
     timer.timeout = TTIMEOUT;
 
@@ -669,13 +764,47 @@ void bsim_qemu::MReset(int flags) {
     if (flags >= 0) {
         qemu_mutex_unlock_iothread();
     }
+    bitbang_i2c_rst(&master_i2c[0]);
+    bitbang_i2c_rst(&master_i2c[1]);
+    bitbang_spi_rst(&master_spi[0]);
+    bitbang_spi_rst(&master_spi[1]);
 }
 
 const picpin* bsim_qemu::MGetPinsValues(void) {
     return pins;
 }
 
-void bsim_qemu::MStep(void) {}
+void bsim_qemu::MStep(void) {
+    if (ioupdated) {
+        for (int id = 0; id < 2; id++) {
+            if (master_i2c[id].ctrl_on) {
+                pins[master_i2c[id].scl_pin - 1].dir = PD_OUT;
+                pins[master_i2c[id].scl_pin - 1].value = master_i2c[id].scl_value;
+
+                if (master_i2c[id].sda_dir == PD_OUT) {
+                    pins[master_i2c[id].sda_pin - 1].dir = PD_OUT;
+                    pins[master_i2c[id].sda_pin - 1].value = master_i2c[id].sda_value;
+                } else {
+                    pins[master_i2c[id].sda_pin - 1].dir = PD_IN;
+                    master_i2c[id].sda_value = pins[master_i2c[id].sda_pin - 1].value;
+                }
+            }
+            if (master_spi[id].ctrl_on) {
+                pins[master_spi[id].sck_pin - 1].dir = PD_OUT;
+                pins[master_spi[id].sck_pin - 1].value = master_spi[id].sck_value;
+
+                pins[master_spi[id].copi_pin - 1].dir = PD_OUT;
+                pins[master_spi[id].copi_pin - 1].value = master_spi[id].copi_value;
+
+                pins[master_spi[id].cipo_pin - 1].dir = PD_IN;
+                master_spi[id].cipo_value = pins[master_spi[id].cipo_pin - 1].value;
+
+                pins[master_spi[id].cs_pin - 1].dir = PD_OUT;
+                pins[master_spi[id].cs_pin - 1].value = master_spi[id].cs_value;
+            }
+        }
+    }
+}
 
 void bsim_qemu::MStepResume(void) {}
 

@@ -23,7 +23,8 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include "../boards/board.h"
+#include <inttypes.h>
+class board;
 
 typedef struct {
     board* pboard;

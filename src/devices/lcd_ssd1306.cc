@@ -52,6 +52,7 @@ void lcd_ssd1306_rst(lcd_ssd1306_t* lcd) {
     lcd->on = 0;
     lcd->cmd_argc = 0;
     lcd->dc = 0;
+    lcd->co = 0;
 
     lcd->col_start = 0;
     lcd->col_end = 127;
@@ -206,6 +207,15 @@ static void lcd_ssd1306_process(lcd_ssd1306_t* lcd) {
                     lcd->cmd_argc--;
                 }
                 break;
+            case 0x8D:
+                dprint("Set Charge Pump\n");
+                if (!lcd->cmd_argc) {
+                    lcd->last_cmd = lcd->dat;
+                    lcd->cmd_argc = 1;
+                } else {
+                    lcd->cmd_argc = 0;
+                }
+                break;
             case 0xB0 ... 0xB7:
                 dprint("Set Page Start Address for Page Addressing Mode\n");
                 lcd->y = lcd->dat & 0x07;
@@ -350,8 +360,13 @@ unsigned char lcd_ssd1306_I2C_io(lcd_ssd1306_t* lcd, unsigned char sda, unsigned
 
     switch (bitbang_i2c_get_status(&lcd->bb_i2c)) {
         case I2C_DATAW:
+            if ((lcd->bb_i2c.byte > 3) && lcd->co && !lcd->cmd_argc) {
+                lcd->bb_i2c.byte = 2;
+            }
+
             if (lcd->bb_i2c.byte == 2) {
                 lcd->dc = (lcd->bb_i2c.datar & 0x40) > 0;
+                lcd->co = (lcd->bb_i2c.datar & 0x80) > 0;
                 dcprint("lcd ctrl = %02X\n", lcd->bb_i2c.datar);
             } else {
                 lcd->dat = lcd->bb_i2c.datar;

@@ -24,6 +24,7 @@
    ######################################################################## */
 
 #include "sen_ds18b20.h"
+#include "../boards/board.h"
 
 #include <stdio.h>
 #include <stdlib.h>

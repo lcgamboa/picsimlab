@@ -23,7 +23,6 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include <time.h>
 #include "bitbang_i2c.h"
 
 typedef struct {

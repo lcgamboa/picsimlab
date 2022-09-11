@@ -90,6 +90,23 @@ cboard_DevKitC::cboard_DevKitC(void) {
     ConfEnableWifi = 1;
     ConfDisableWdt = 1;
 
+    // FIXME spi fixed pins, no iomux implemented yet for esp32
+    master_i2c[0].scl_pin = 36;  // IO22
+    master_i2c[0].sda_pin = 33;  // IO21
+    master_i2c[1].scl_pin = 7;   // IO32
+    master_i2c[1].sda_pin = 8;   // IO33
+
+    // FIXME spi fixed pins, no iomux implemented yet for esp32
+    master_spi[0].sck_pin = 30;   // IO18
+    master_spi[0].copi_pin = 37;  // IO23
+    master_spi[0].cipo_pin = 31;  // IO19
+    master_spi[0].cs_pin = 29;    // IO5
+
+    master_spi[1].sck_pin = 12;   // IO14
+    master_spi[1].copi_pin = 15;  // IO13
+    master_spi[1].cipo_pin = 13;  // IO12
+    master_spi[1].cs_pin = 23;    // IO15
+
     // label1
     label1 = new CLabel();
     label1->SetFOwner(&Window1);

@@ -24,7 +24,7 @@
    ######################################################################## */
 
 #include <inttypes.h>
-#include "../boards/board.h"
+class board;
 
 typedef struct {
     board* pboard;

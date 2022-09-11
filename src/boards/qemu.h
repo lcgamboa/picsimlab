@@ -73,8 +73,7 @@ extern void (*qmp_cont)(Error** errp);
 extern void (*qemu_mutex_lock_iothread_impl)(const char* file, int line);
 extern void (*qemu_mutex_unlock_iothread)(void);
 
-extern void (*qemu_picsimlab_register)(void (*picsimlab_write_pin)(int pin, int value),
-                                       void (*picsimlab_dir_pin)(int pin, int value));
+extern void (*qemu_picsimlab_register_callbacks)(void* arg);
 extern void (*qemu_picsimlab_set_pin)(int pin, int value);
 extern void (*qemu_picsimlab_set_apin)(int chn, int value);
 extern int (*qemu_picsimlab_flash_dump)(int64_t offset, void* buf, int bytes);
@@ -89,4 +88,20 @@ extern void (*timer_mod_ns)(QEMUTimer* ts, int64_t expire_time);
 extern uint32_t* (*qemu_picsimlab_get_strap)(void);
 
 extern uint32_t (*qemu_picsimlab_get_TIOCM)(void);
+
+typedef struct {
+    void (*picsimlab_write_pin)(int pin, int value);
+    void (*picsimlab_dir_pin)(int pin, int value);
+    int (*picsimlab_i2c_event)(const uint8_t id, const uint8_t addr, const uint16_t event);
+    uint8_t (*picsimlab_spi_event)(const uint8_t id, const uint16_t event);
+} callbacks_t;
+
+enum i2c_event {
+    I2C_START_RECV,
+    I2C_START_SEND,
+    I2C_FINISH,
+    I2C_NACK, /* Masker NACKed a receive byte.  */
+    I2C_WRITE,
+    I2C_READ
+};
 }

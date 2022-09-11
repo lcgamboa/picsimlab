@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
    ######################################################################## */
 
 #include "bitbang_spi.h"
+#include "../boards/board.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -144,4 +145,67 @@ void bitbang_spi_send(bitbang_spi_t* spi, const unsigned int data) {
     spi->outsr = data;
     spi->ret = ((spi->outsr & spi->outbitmask) > 0);
     dprintf("bitbang_spi data to send 0x%02x \n", data);
+}
+
+// Controller
+
+static void bitbang_spi_ctrl_callback(void* arg) {
+    bitbang_spi_t* spi = (bitbang_spi_t*)arg;
+
+    switch (spi->clkpc) {
+        case 0:
+            ioupdated = 1;
+            spi->sck_value = 0;
+            if (spi->bit > 7) {
+                // spi->cs_value = 1;
+                spi->pboard->TimerSetState(spi->TimerID, 0);
+            }
+            break;
+        case 1:
+            spi->sck_value = 0;
+            spi->copi_value = (spi->outsr & (0x01 << (7 - spi->bit))) > 0;
+            break;
+        case 2:
+            ioupdated = 1;
+            spi->sck_value = 1;
+            break;
+        case 3:
+            spi->insr |= (spi->cipo_value << (7 - spi->bit));
+            spi->sck_value = 1;
+            spi->clkpc = -1;
+            spi->bit++;
+            break;
+    }
+    spi->clkpc++;
+}
+
+void bitbang_spi_ctrl_init(bitbang_spi_t* spi, board* pboard, const unsigned char lenght) {
+    bitbang_spi_init(spi, lenght);
+    spi->pboard = pboard;
+    spi->TimerID = spi->pboard->TimerRegister_us(2, bitbang_spi_ctrl_callback, spi);
+    spi->pboard->TimerSetState(spi->TimerID, 0);
+    spi->ctrl_on = 0;
+    spi->cs_value = 1;
+    spi->sck_value = 0;
+    spi->copi_value = 0;
+}
+
+void bitbang_spi_ctrl_end(bitbang_spi_t* spi) {
+    spi->pboard->TimerUnregister(spi->TimerID);
+}
+
+void bitbang_spi_ctrl_write(bitbang_spi_t* spi, const unsigned char data) {
+    ioupdated = 1;
+    spi->insr = 0;
+    spi->outsr = 0;
+    spi->bit = 0;
+    spi->byte = 0;
+    spi->outsr = data;
+    spi->insr = 0;
+    spi->clkpc = 1;
+    spi->sck_value = 0;
+    // spi->cs_value = 0;
+    spi->copi_value = spi->outsr & 0x0001;
+    spi->pboard->TimerChange_us(spi->TimerID, 2);  // FIXME only 100kHzfrequency
+    spi->pboard->TimerSetState(spi->TimerID, 1);
 }

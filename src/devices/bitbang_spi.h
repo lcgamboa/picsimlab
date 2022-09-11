@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -26,6 +26,8 @@
 #ifndef BITBANG_SPI
 #define BITBANG_SPI
 
+class board;
+
 // operation status
 #define SPI_DATA 0x01
 #define SPI_BIT 0x02
@@ -41,6 +43,19 @@ typedef struct {
     unsigned char ret;
     unsigned char lenght;
     unsigned int outbitmask;
+    // Controller
+    board* pboard;
+    int TimerID;
+    unsigned char ctrl_on;
+    unsigned char sck_pin;
+    unsigned char sck_value;
+    unsigned char copi_pin;
+    unsigned char copi_value;
+    unsigned char cipo_pin;
+    unsigned char cipo_value;
+    unsigned char cs_pin;
+    unsigned char cs_value;
+    unsigned char clkpc;  // clock phase counter
 } bitbang_spi_t;
 
 void bitbang_spi_init(bitbang_spi_t* spi, const unsigned char lenght = 8);
@@ -48,9 +63,15 @@ void bitbang_spi_rst(bitbang_spi_t* spi);
 unsigned char bitbang_spi_get_status(bitbang_spi_t* spi);
 void bitbang_spi_send(bitbang_spi_t* spi, const unsigned int data);
 
-// periferic
+// peripheral
 unsigned char bitbang_spi_io(bitbang_spi_t* spi, const unsigned char clk, const unsigned char din,
                              const unsigned char cs);
 unsigned char bitbang_spi_io_(bitbang_spi_t* spi, const unsigned char** pins_value);
+
+// controller
+void bitbang_spi_ctrl_init(bitbang_spi_t* spi, board* pboard, const unsigned char lenght = 8);
+void bitbang_spi_ctrl_end(bitbang_spi_t* spi);
+
+void bitbang_spi_ctrl_write(bitbang_spi_t* spi, const unsigned char data);
 
 #endif  // BITBANG_SPI

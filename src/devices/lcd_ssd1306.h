@@ -54,6 +54,7 @@ typedef struct {
     unsigned char cmd_argc;
     unsigned char cmd_val;
     unsigned char dc;
+    unsigned char co;
 
     unsigned char col_start;
     unsigned char col_end;
