@@ -85,7 +85,7 @@ extern void (*timer_init_full)(QEMUTimer* ts, QEMUTimerListGroup* timer_list_gro
 
 extern void (*timer_mod_ns)(QEMUTimer* ts, int64_t expire_time);
 
-extern uint32_t* (*qemu_picsimlab_get_strap)(void);
+extern uint32_t* (*qemu_picsimlab_get_internals)(int cfg);
 
 extern uint32_t (*qemu_picsimlab_get_TIOCM)(void);
 

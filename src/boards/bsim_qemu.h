@@ -62,6 +62,7 @@ public:
     void MStepResume(void) override;
     void MReset(int flags) override;
     void EvThreadRun(CThread& thread) override;
+    virtual void PinsExtraConfig(int cfg){};
     user_timer_t timer;
     virtual void Run_CPU_ns(uint64_t time) = 0;
     bitbang_i2c_t master_i2c[2];

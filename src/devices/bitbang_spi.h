@@ -53,8 +53,8 @@ typedef struct {
     unsigned char copi_value;
     unsigned char cipo_pin;
     unsigned char cipo_value;
-    unsigned char cs_pin;
-    unsigned char cs_value;
+    unsigned char cs_pin[3];
+    unsigned char cs_value[3];
     unsigned char clkpc;  // clock phase counter
 } bitbang_spi_t;
 

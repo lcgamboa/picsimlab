@@ -423,6 +423,9 @@ int board::TimerUnregister(const int timer) {
 int board::TimerChange_us(const int timer, const uint32_t micros) {
     if (timer <= MAX_TIMERS) {
         Timers[timer - 1].Reload = micros * 1e-6 * MGetInstClockFreq();
+        if (Timers[timer - 1].Reload <= 0) {
+            Timers[timer - 1].Reload = 1;
+        }
         Timers[timer - 1].Timer = Timers[timer - 1].Reload;
         return 0;
     }
@@ -432,6 +435,9 @@ int board::TimerChange_us(const int timer, const uint32_t micros) {
 int board::TimerChange_ms(const int timer, const uint32_t miles) {
     if (timer <= MAX_TIMERS) {
         Timers[timer - 1].Reload = miles * 1e-3 * MGetInstClockFreq();
+        if (Timers[timer - 1].Reload <= 0) {
+            Timers[timer - 1].Reload = 1;
+        }
         Timers[timer - 1].Timer = Timers[timer - 1].Reload;
         return 0;
     }
@@ -444,6 +450,13 @@ int board::TimerSetState(const int timer, const int enabled) {
             Timers[timer - 1].Timer = Timers[timer - 1].Reload;
         }
         return 0;
+    }
+    return -1;
+}
+
+uint64_t board::TimerGet_ns(const int timer) {
+    if (timer <= MAX_TIMERS) {
+        return (Timers[timer - 1].Reload * 1e9) / MGetInstClockFreq();
     }
     return -1;
 }

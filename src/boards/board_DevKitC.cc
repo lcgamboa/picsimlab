@@ -46,6 +46,148 @@ enum {
 };
 // return the input ids numbers of names used in input map
 
+enum {
+    VDD = 1,
+    EN,
+    IO36,
+    IO39,
+    IO34,
+    IO35,
+    IO32,
+    IO33,
+    IO25,
+    IO26,
+    IO27,
+    IO14,
+    IO12,
+    GND,
+    IO13,
+    IO9,
+    IO10,
+    IO11,
+    VIN,
+    IO6,
+    IO7,
+    IO8,
+    IO15,
+    IO2,
+    IO0,
+    IO4,
+    IO16,
+    IO17,
+    IO5,
+    IO18,
+    IO19,
+    GND2,
+    IO21,
+    IO3,
+    IO1,
+    IO22,
+    IO23
+};
+
+static int io2pin(int io) {
+    switch (io) {
+        case 0:
+            return IO0;
+            break;
+        case 1:
+            return IO1;
+            break;
+        case 2:
+            return IO2;
+            break;
+        case 3:
+            return IO3;
+            break;
+        case 4:
+            return IO4;
+            break;
+        case 5:
+            return IO5;
+            break;
+        case 6:
+            return IO6;
+            break;
+        case 7:
+            return IO7;
+            break;
+        case 8:
+            return IO8;
+            break;
+        case 9:
+            return IO9;
+            break;
+        case 10:
+            return IO10;
+            break;
+        case 11:
+            return IO11;
+            break;
+        case 12:
+            return IO12;
+            break;
+        case 13:
+            return IO13;
+            break;
+        case 14:
+            return IO14;
+            break;
+        case 15:
+            return IO15;
+            break;
+        case 16:
+            return IO16;
+            break;
+        case 17:
+            return IO17;
+            break;
+        case 18:
+            return IO18;
+            break;
+        case 19:
+            return IO19;
+            break;
+        case 21:
+            return IO21;
+            break;
+        case 22:
+            return IO22;
+            break;
+        case 23:
+            return IO23;
+            break;
+        case 25:
+            return IO25;
+            break;
+        case 26:
+            return IO26;
+            break;
+        case 27:
+            return IO27;
+            break;
+        case 32:
+            return IO32;
+            break;
+        case 33:
+            return IO33;
+            break;
+        case 34:
+            return IO34;
+            break;
+        case 35:
+            return IO35;
+            break;
+        case 36:
+            return IO36;
+            break;
+        case 39:
+            return IO39;
+            break;
+    }
+    return 0;
+}
+
 unsigned short cboard_DevKitC::get_in_id(char* name) {
     if (strcmp(name, "PG_ICSP") == 0)
         return I_ICSP;
@@ -90,22 +232,26 @@ cboard_DevKitC::cboard_DevKitC(void) {
     ConfEnableWifi = 1;
     ConfDisableWdt = 1;
 
-    // FIXME spi fixed pins, no iomux implemented yet for esp32
-    master_i2c[0].scl_pin = 36;  // IO22
-    master_i2c[0].sda_pin = 33;  // IO21
-    master_i2c[1].scl_pin = 7;   // IO32
-    master_i2c[1].sda_pin = 8;   // IO33
+    master_i2c[0].scl_pin = 0;
+    master_i2c[0].sda_pin = 0;
+    master_i2c[1].scl_pin = 0;
+    master_i2c[1].sda_pin = 0;
 
-    // FIXME spi fixed pins, no iomux implemented yet for esp32
-    master_spi[0].sck_pin = 30;   // IO18
-    master_spi[0].copi_pin = 37;  // IO23
-    master_spi[0].cipo_pin = 31;  // IO19
-    master_spi[0].cs_pin = 29;    // IO5
+    // HSPI
+    master_spi[0].sck_pin = 0;
+    master_spi[0].copi_pin = 0;
+    master_spi[0].cipo_pin = 0;
+    master_spi[0].cs_pin[0] = 0;
+    master_spi[0].cs_pin[1] = 0;
+    master_spi[0].cs_pin[2] = 0;
 
-    master_spi[1].sck_pin = 12;   // IO14
-    master_spi[1].copi_pin = 15;  // IO13
-    master_spi[1].cipo_pin = 13;  // IO12
-    master_spi[1].cs_pin = 23;    // IO15
+    // VSPI
+    master_spi[1].sck_pin = 0;
+    master_spi[1].copi_pin = 0;
+    master_spi[1].cipo_pin = 0;
+    master_spi[1].cs_pin[0] = 0;
+    master_spi[1].cs_pin[1] = 0;
+    master_spi[1].cs_pin[2] = 0;
 
     // label1
     label1 = new CLabel();
@@ -173,7 +319,7 @@ void cboard_DevKitC::Reset(void) {
     if (qemu_started != 1) {
         return;
     }
-    uint32_t* strap_mode = qemu_picsimlab_get_strap();
+    uint32_t* strap_mode = qemu_picsimlab_get_internals(0);
 
     if (p_BOOT) {
         *strap_mode = 0x12;  // SPI_FAST_FLASH_BOOT
@@ -493,7 +639,7 @@ void cboard_DevKitC::Run_CPU(void) {
         }
 
         if (!(status & CHR_TIOCM_CTS) && (status & CHR_TIOCM_DSR)) {
-            uint32_t* strap_mode = qemu_picsimlab_get_strap();
+            uint32_t* strap_mode = qemu_picsimlab_get_internals(0);
             *strap_mode = 0x0f;  // UART_BOOT(UART0)
             MReset(1);
         }
@@ -620,6 +766,155 @@ void cboard_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x, u
         case 6:
             wconfig->HideExclusive();
             break;
+    }
+}
+
+void cboard_DevKitC::PinsExtraConfig(int cfg) {
+    switch ((cfg & 0xf000) >> 12) {
+        case 1: {
+            uint32_t* gpio_in_sel = qemu_picsimlab_get_internals(1);
+            int function = cfg & 0x1ff;
+            int gpio = gpio_in_sel[cfg & 0x1ff] & 0x3F;
+            // printf("sel in    %3i = %3i\n", gpio, function);
+
+            switch (function) {
+                case 9:  // HSPIQ
+                    master_spi[0].cipo_pin = io2pin(gpio);
+                    break;
+
+                case 29:  // I2CEXT0_SCL
+                    master_i2c[0].scl_pin = io2pin(gpio);
+                    break;
+                case 30:  // I2CEXT0_SDA
+                    master_i2c[0].sda_pin = io2pin(gpio);
+                    break;
+
+                case 64:  // VSPIQ
+                    master_spi[1].cipo_pin = io2pin(gpio);
+                    break;
+
+                case 95:  // I2CEXT1_SCL
+                    master_i2c[1].scl_pin = io2pin(gpio);
+                    break;
+                case 96:  // I2CEXT1_SDA
+                    master_i2c[1].sda_pin = io2pin(gpio);
+                    break;
+            }
+
+        } break;
+        case 2: {
+            uint32_t* gpio_out_sel = qemu_picsimlab_get_internals(2);
+            // uint32_t* muxgpios = qemu_picsimlab_get_internals(3);
+
+            int function = gpio_out_sel[cfg & 0xff] & 0x1FF;
+            int gpio = cfg & 0xff;
+            // printf("sel out   %3i = %3i\n", gpio, function);
+
+            switch (function) {
+                case 8:  // HSPICLK
+                    master_spi[0].sck_pin = io2pin(gpio);
+                    break;
+                case 9:  // HSPIQ
+                    master_spi[0].cipo_pin = io2pin(gpio);
+                    break;
+                case 10:  // HSPID
+                    master_spi[0].copi_pin = io2pin(gpio);
+                    break;
+                case 11:  // HSPICS0
+                    master_spi[0].cs_pin[0] = io2pin(gpio);
+                    break;
+
+                case 29:  // I2CEXT0_SCL
+                    master_i2c[0].scl_pin = io2pin(gpio);
+                    break;
+                case 30:  // I2CEXT0_SDA
+                    master_i2c[0].sda_pin = io2pin(gpio);
+                    break;
+
+                case 61:  // HSPICS1
+                    master_spi[0].cs_pin[1] = io2pin(gpio);
+                    break;
+                case 62:  // HSPICS2
+                    master_spi[0].cs_pin[2] = io2pin(gpio);
+                    break;
+
+                case 63:  // VSPICLK
+                    master_spi[1].sck_pin = io2pin(gpio);
+                    break;
+                case 64:  // VSPIQ
+                    master_spi[1].cipo_pin = io2pin(gpio);
+                    break;
+                case 65:  // VSPID
+                    master_spi[1].copi_pin = io2pin(gpio);
+                    break;
+                case 68:  // VSPICS0
+                    master_spi[1].cs_pin[0] = io2pin(gpio);
+                    break;
+                case 69:  // VSPICS1
+                    master_spi[1].cs_pin[1] = io2pin(gpio);
+                    break;
+                case 70:  // VSPICS2
+                    master_spi[1].cs_pin[2] = io2pin(gpio);
+                    break;
+
+                case 95:  // I2CEXT1_SCL
+                    master_i2c[1].scl_pin = io2pin(gpio);
+                    break;
+                case 96:  // I2CEXT1_SDA
+                    master_i2c[1].sda_pin = io2pin(gpio);
+                    break;
+            }
+
+        } break;
+        case 4: {
+            uint32_t* muxgpios = qemu_picsimlab_get_internals(3);
+
+            int function = (muxgpios[cfg & 0xff] & 0x7000) >> 12;
+            int gpio = cfg & 0xff;
+            // printf("iomux fun 0x%02x = 0x%08x\n", gpio, function);
+
+            switch (function) {
+                case 0:
+                    break;
+                case 1:
+                    switch (gpio) {
+                        case 12:
+                            master_spi[0].cipo_pin = IO12;
+                            break;
+                        case 13:
+                            master_spi[0].copi_pin = IO13;
+                            break;
+                        case 14:
+                            master_spi[0].sck_pin = IO14;
+                            break;
+                        case 15:
+                            master_spi[0].cs_pin[0] = IO15;
+                            break;
+                        case 18:
+                            master_spi[1].sck_pin = IO18;
+                            break;
+                        case 19:
+                            master_spi[1].cipo_pin = IO19;
+                            break;
+                        case 23:
+                            master_spi[1].copi_pin = IO23;
+                            break;
+                        case 5:
+                            master_spi[1].cs_pin[0] = IO5;
+                            break;
+                    }
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+            }
+
+        } break;
     }
 }
 
@@ -759,7 +1054,7 @@ void cboard_DevKitC::MSetAPin(int pin, float value) {
         pins[pin - 1].avalue = value;
 
         switch (pin) {
-            case 3:  // GPIO36
+            case IO36:
                 channel = 0;
                 break;
                 /*
@@ -771,49 +1066,49 @@ void cboard_DevKitC::MSetAPin(int pin, float value) {
                                 channel = 2;
                                 break;
                 */
-            case 4:  // GPIO39
+            case IO39:
                 channel = 3;
                 break;
-            case 7:  // GPIO32
+            case IO32:
                 channel = 4;
                 break;
-            case 8:  // GPIO33
+            case IO33:
                 channel = 5;
                 break;
-            case 5:  // GPIO34
+            case IO34:
                 channel = 6;
                 break;
-            case 6:  // GPIO35
+            case IO35:
                 channel = 7;
                 break;
-            case 26:  // GPIO4
+            case IO4:
                 channel = 0x8 + 0;
                 break;
-            case 25:  // GPIO0
+            case IO0:
                 channel = 0x8 + 1;
                 break;
-            case 24:  // GPIO2
+            case IO2:
                 channel = 0x8 + 2;
                 break;
-            case 23:  // GPIO15
+            case IO15:
                 channel = 0x8 + 3;
                 break;
-            case 15:  // GPIO13
+            case IO13:
                 channel = 0x8 + 4;
                 break;
-            case 13:  // GPIO12
+            case IO12:
                 channel = 0x8 + 5;
                 break;
-            case 12:  // GPIO14
+            case IO14:
                 channel = 0x8 + 6;
                 break;
-            case 11:  // GPIO27
+            case IO27:
                 channel = 0x8 + 7;
                 break;
-            case 9:  // GPIO25
+            case IO25:
                 channel = 0x8 + 8;
                 break;
-            case 10:  // GPIO26
+            case IO26:
                 channel = 0x8 + 9;
                 break;
         }

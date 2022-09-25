@@ -104,15 +104,19 @@ unsigned char tsc_XPT2046_SPI_io(tsc_XPT2046_t* tsc_, const unsigned char** pins
                         switch ((tsc_->cmd & 0x70) >> 4) {
                             case 1:  // Y -Position
                                 tsc_->bb_spi.outsr = (tsc_->x * 4095) / tsc_->height;
+                                dprintf("tsc_ Ypos 0x%04X OK\n", ((tsc_->x * 4095) / tsc_->height) << 3);
                                 break;
                             case 3:  // Z1
                                 tsc_->bb_spi.outsr = tsc_->press;
+                                dprintf("tsc_ Z1 0x%04X OK\n", tsc_->press);
                                 break;
                             case 4:  // Z2
                                 tsc_->bb_spi.outsr = 4095;
+                                dprintf("tsc_ Z2 0x%04X OK\n", 4095);
                                 break;
                             case 5:  // X -Position
                                 tsc_->bb_spi.outsr = (tsc_->y * 4095) / tsc_->width;
+                                dprintf("tsc_ Xpos 0x%04X OK\n", ((tsc_->y * 4095) / tsc_->width) << 3);
                                 break;
                             default:
                                 tsc_->bb_spi.outsr = 0;

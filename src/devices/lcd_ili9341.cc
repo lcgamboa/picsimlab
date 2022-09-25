@@ -244,6 +244,7 @@ static void lcd_ili9341_process(lcd_ili9341_t* lcd) {
                             break;
                         case 1:
                             lcd->col_end |= lcd->cmd_val;
+                            dprint("Column Address Set start=%i end=%i\n", lcd->col_start, lcd->col_end);
                             break;
                     }
                     lcd->cmd_argc--;
@@ -267,6 +268,7 @@ static void lcd_ili9341_process(lcd_ili9341_t* lcd) {
                             break;
                         case 1:
                             lcd->pag_end |= lcd->cmd_val;
+                            dprint("Page Address Set start=%i end=%i\n", lcd->pag_start, lcd->pag_end);
                             break;
                     }
                     lcd->cmd_argc--;

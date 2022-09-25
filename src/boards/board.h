@@ -583,6 +583,11 @@ public:
      */
     int TimerSetState(const int timer, const int enabled);
 
+    /**
+     * @brief Get elapsed time from instruction counter in us
+     */
+    uint64_t TimerGet_ns(const int timer);
+
 protected:
     /**
      * @brief Register remote control variables

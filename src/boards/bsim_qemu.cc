@@ -60,7 +60,7 @@ void (*timer_init_full)(QEMUTimer* ts, QEMUTimerListGroup* timer_list_group, QEM
 
 void (*timer_mod_ns)(QEMUTimer* ts, int64_t expire_time);
 
-uint32_t* (*qemu_picsimlab_get_strap)(void);
+uint32_t* (*qemu_picsimlab_get_internals)(int cfg);
 
 uint32_t (*qemu_picsimlab_get_TIOCM)(void);
 
@@ -94,10 +94,16 @@ static void picsimlab_write_pin(int pin, int value) {
 
 static void picsimlab_dir_pins(int pin, int dir) {
     // printf("================> IO    <====================== %ji\n", now - g_board->timer.last);
-    ioupdated = 1;
-    g_board->Run_CPU_ns(GotoNow());
-    if (pin > 0) {
+
+    if (pin > 0) {  // normal io
+        ioupdated = 1;
+        g_board->Run_CPU_ns(GotoNow());
         g_pins[pin - 1].dir = !dir;
+    } else if (dir == -1) {  // sync input
+        ioupdated = 1;
+        g_board->Run_CPU_ns(GotoNow());
+    } else {  // especial pin cfg
+        g_board->PinsExtraConfig(-dir);
     }
     // printf("pin[%i]=%s\n", pin, (!dir == PD_IN) ? "PD_IN" : "PD_OUT");
 }
@@ -150,22 +156,34 @@ static int picsimlab_i2c_event(const uint8_t id, const uint8_t addr, const uint1
 
 uint8_t picsimlab_spi_event(const uint8_t id, const uint16_t event) {
     g_board->Run_CPU_ns(GotoNow());
-
+    uint64_t cycle_ns = g_board->TimerGet_ns(g_board->master_spi[id].TimerID);
     // FIXME only for tests
     g_board->master_spi[id].ctrl_on = 1;  // read from DPORT ?
 
     switch (event & 0xFF) {
         case 0:  // tranfer
+            // printf("SPI MASTER SEND 0x%02X\n", event >> 8);
             bitbang_spi_ctrl_write(&g_board->master_spi[id], event >> 8);
-            g_board->timer.last += 72000;
-            g_board->Run_CPU_ns(72000);
-            return g_board->master_spi[id].insr;
+            g_board->timer.last += cycle_ns * 36;
+            g_board->Run_CPU_ns(cycle_ns * 36);
+            return g_board->master_spi[id].data8;
             break;
         case 1:  // CS
             ioupdated = 1;
-            g_board->master_spi[id].cs_value = event >> 8;
-            g_board->timer.last += 8000;
-            g_board->Run_CPU_ns(8000);
+            // printf("SPI MASTER CS 0x%02X\n", event >> 8);
+            switch (event >> 9) {
+                case 0:
+                    g_board->master_spi[id].cs_value[0] = (event >> 8) & 1;
+                    break;
+                case 1:
+                    g_board->master_spi[id].cs_value[1] = (event >> 8) & 1;
+                    break;
+                case 2:
+                    g_board->master_spi[id].cs_value[2] = (event >> 8) & 1;
+                    break;
+            }
+            g_board->timer.last += cycle_ns * 2;
+            g_board->Run_CPU_ns(cycle_ns * 2);
             break;
     }
     return 0;
@@ -224,7 +242,7 @@ int bsim_qemu::load_qemu_lib(const char* path) {
     GET_SYMBOL_AND_CHECK(qemu_clock_get_ns);
     GET_SYMBOL_AND_CHECK(timer_init_full);
     GET_SYMBOL_AND_CHECK(timer_mod_ns);
-    GET_SYMBOL_AND_CHECK(qemu_picsimlab_get_strap);
+    GET_SYMBOL_AND_CHECK(qemu_picsimlab_get_internals);
     GET_SYMBOL_AND_CHECK(qemu_picsimlab_get_TIOCM);
 #undef GET_SYMBOL_AND_CHECK
 
@@ -778,29 +796,45 @@ void bsim_qemu::MStep(void) {
     if (ioupdated) {
         for (int id = 0; id < 2; id++) {
             if (master_i2c[id].ctrl_on) {
-                pins[master_i2c[id].scl_pin - 1].dir = PD_OUT;
-                pins[master_i2c[id].scl_pin - 1].value = master_i2c[id].scl_value;
-
-                if (master_i2c[id].sda_dir == PD_OUT) {
-                    pins[master_i2c[id].sda_pin - 1].dir = PD_OUT;
-                    pins[master_i2c[id].sda_pin - 1].value = master_i2c[id].sda_value;
-                } else {
-                    pins[master_i2c[id].sda_pin - 1].dir = PD_IN;
-                    master_i2c[id].sda_value = pins[master_i2c[id].sda_pin - 1].value;
+                if (master_i2c[id].scl_pin) {
+                    pins[master_i2c[id].scl_pin - 1].dir = PD_OUT;
+                    pins[master_i2c[id].scl_pin - 1].value = master_i2c[id].scl_value;
+                }
+                if (master_i2c[id].sda_pin) {
+                    if (master_i2c[id].sda_dir == PD_OUT) {
+                        pins[master_i2c[id].sda_pin - 1].dir = PD_OUT;
+                        pins[master_i2c[id].sda_pin - 1].value = master_i2c[id].sda_value;
+                    } else {
+                        pins[master_i2c[id].sda_pin - 1].dir = PD_IN;
+                        master_i2c[id].sda_value = pins[master_i2c[id].sda_pin - 1].value;
+                    }
                 }
             }
             if (master_spi[id].ctrl_on) {
-                pins[master_spi[id].sck_pin - 1].dir = PD_OUT;
-                pins[master_spi[id].sck_pin - 1].value = master_spi[id].sck_value;
-
-                pins[master_spi[id].copi_pin - 1].dir = PD_OUT;
-                pins[master_spi[id].copi_pin - 1].value = master_spi[id].copi_value;
-
-                pins[master_spi[id].cipo_pin - 1].dir = PD_IN;
-                master_spi[id].cipo_value = pins[master_spi[id].cipo_pin - 1].value;
-
-                pins[master_spi[id].cs_pin - 1].dir = PD_OUT;
-                pins[master_spi[id].cs_pin - 1].value = master_spi[id].cs_value;
+                if (master_spi[id].sck_pin) {
+                    pins[master_spi[id].sck_pin - 1].dir = PD_OUT;
+                    pins[master_spi[id].sck_pin - 1].value = master_spi[id].sck_value;
+                }
+                if (master_spi[id].copi_pin) {
+                    pins[master_spi[id].copi_pin - 1].dir = PD_OUT;
+                    pins[master_spi[id].copi_pin - 1].value = master_spi[id].copi_value;
+                }
+                if (master_spi[id].cipo_pin) {
+                    pins[master_spi[id].cipo_pin - 1].dir = PD_IN;
+                    master_spi[id].cipo_value = pins[master_spi[id].cipo_pin - 1].value;
+                }
+                if (master_spi[id].cs_pin[0]) {
+                    pins[master_spi[id].cs_pin[0] - 1].dir = PD_OUT;
+                    pins[master_spi[id].cs_pin[0] - 1].value = master_spi[id].cs_value[0];
+                }
+                if (master_spi[id].cs_pin[1]) {
+                    pins[master_spi[id].cs_pin[1] - 1].dir = PD_OUT;
+                    pins[master_spi[id].cs_pin[1] - 1].value = master_spi[id].cs_value[1];
+                }
+                if (master_spi[id].cs_pin[2]) {
+                    pins[master_spi[id].cs_pin[2] - 1].dir = PD_OUT;
+                    pins[master_spi[id].cs_pin[2] - 1].value = master_spi[id].cs_value[2];
+                }
             }
         }
     }

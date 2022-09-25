@@ -82,6 +82,7 @@ unsigned char bitbang_spi_io(bitbang_spi_t* spi, const unsigned char clk, const 
             spi->data8 = spi->insr & 0xFF;
             spi->bit = 0;
             spi->byte++;
+            dprintf("bitbang_spi data recv 0x%02x \n", spi->data8);
         } else {
             spi->status = SPI_BIT;
         }
@@ -124,6 +125,7 @@ unsigned char bitbang_spi_io_(bitbang_spi_t* spi, const unsigned char** pins_val
             spi->data8 = spi->insr & 0xFF;
             spi->bit = 0;
             spi->byte++;
+            dprintf("bitbang_spi data recv 0x%02x \n", spi->data8);
         } else {
             spi->status = SPI_BIT;
         }
@@ -158,6 +160,8 @@ static void bitbang_spi_ctrl_callback(void* arg) {
             spi->sck_value = 0;
             if (spi->bit > 7) {
                 // spi->cs_value = 1;
+                spi->data8 = spi->insr & 0xFF;
+                dprintf("bitbang_spi ctrl data recv 0x%02x \n", spi->data8);
                 spi->pboard->TimerSetState(spi->TimerID, 0);
             }
             break;
@@ -170,7 +174,11 @@ static void bitbang_spi_ctrl_callback(void* arg) {
             spi->sck_value = 1;
             break;
         case 3:
-            spi->insr |= (spi->cipo_value << (7 - spi->bit));
+            if (spi->cipo_value) {
+                spi->insr = (spi->insr << 1) | 1;
+            } else {
+                spi->insr = (spi->insr << 1) & 0xFFFFFFFE;
+            }
             spi->sck_value = 1;
             spi->clkpc = -1;
             spi->bit++;
@@ -185,7 +193,9 @@ void bitbang_spi_ctrl_init(bitbang_spi_t* spi, board* pboard, const unsigned cha
     spi->TimerID = spi->pboard->TimerRegister_us(2, bitbang_spi_ctrl_callback, spi);
     spi->pboard->TimerSetState(spi->TimerID, 0);
     spi->ctrl_on = 0;
-    spi->cs_value = 1;
+    spi->cs_value[0] = 1;
+    spi->cs_value[1] = 1;
+    spi->cs_value[2] = 1;
     spi->sck_value = 0;
     spi->copi_value = 0;
 }
@@ -195,17 +205,17 @@ void bitbang_spi_ctrl_end(bitbang_spi_t* spi) {
 }
 
 void bitbang_spi_ctrl_write(bitbang_spi_t* spi, const unsigned char data) {
+    dprintf("bitbang_spi ctrl data to send 0x%02x \n", data);
     ioupdated = 1;
     spi->insr = 0;
     spi->outsr = 0;
     spi->bit = 0;
     spi->byte = 0;
     spi->outsr = data;
-    spi->insr = 0;
     spi->clkpc = 1;
     spi->sck_value = 0;
     // spi->cs_value = 0;
     spi->copi_value = spi->outsr & 0x0001;
-    spi->pboard->TimerChange_us(spi->TimerID, 2);  // FIXME only 100kHzfrequency
+    spi->pboard->TimerChange_us(spi->TimerID, 0);  // FIXME only 100kHzfrequency
     spi->pboard->TimerSetState(spi->TimerID, 1);
 }
