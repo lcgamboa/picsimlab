@@ -4,15 +4,14 @@
 
 # PICSimLab - Programmable IC Simulator Laboratory
 
-PICSimLab is a realtime emulator of [development boards](https://lcgamboa.github.io/picsimlab_docs/stable/Boards.html) with integrated 
-MPLABX/avr-gdb debugger. 
-PICSimLab supports microcontrollers from [picsim](https://github.com/lcgamboa/picsim), [simavr](https://github.com/buserror/simavr), [uCsim](http://mazsola.iit.uni-miskolc.hu/~drdani/embedded/ucsim/), [qemu-stm32](http://beckus.github.io/qemu_stm32/), [qemu-esp32](https://github.com/a159x36/qemu) and [gpsim](http://gpsim.sourceforge.net/).
-PICSimLab have integration with MPLABX/Arduino IDE for programming the boards microcontrollers.
+PICSimLab is a realtime emulator of [development boards](https://lcgamboa.github.io/picsimlab_docs/stable/Boards.html) with MPLABX/avr-gdb debugger integration. 
+PICSimLab supports microcontrollers from [picsim](https://github.com/lcgamboa/picsim), [simavr](https://github.com/buserror/simavr), [uCsim](http://mazsola.iit.uni-miskolc.hu/~drdani/embedded/ucsim/), [qemu-stm32](http://beckus.github.io/qemu_stm32/), [qemu-esp32](https://github.com/a159x36/qemu), and [gpsim](http://gpsim.sourceforge.net/).
+PICSimLab has integration with MPLABX/Arduino IDE for programming the microcontroller's boards.
 As the purpose of PICSimLab is to emulate real hardware it does not have any source code editing support.
-For code editing and debugging the same tools used for a real board should be used with PICSimLab, such as MPLABX, Arduino IDE or VSCode with PlatformIO.
+For code editing and debugging the same tools used for a real board should be used with PICSimLab, such as MPLABX, Arduino IDE, or VSCode with PlatformIO.
 
 PICSimLab supports several devices (spare parts) that can be connected to the boards for simulation. 
-As for example LEDs and push buttons for simple outputs and inputs and some more complex ones like the ethernet 
+Such as example LEDs and push buttons for simple outputs and inputs and some more complex ones like the ethernet 
 shield w5500 for internet connection or the color graphic display ili9340 with touchscreen. 
 The the complete list of parts can be accessed in the [documentation](https://lcgamboa.github.io/picsimlab_docs/stable/SpareParts.html). 
  
