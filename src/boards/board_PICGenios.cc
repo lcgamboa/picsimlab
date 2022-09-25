@@ -974,7 +974,26 @@ void cboard_PICGenios::Run_CPU(void) {
     SWBounce_prepare(&bounce, Window1.GetBoard()->MGetInstClockFreq());
     for (int pl = 0; pl < 6; pl++) {
         if ((pins[33 + pl - 1].dir == PD_IN) && (pins[33 + pl - 1].value != p_BT_[pl])) {
-            SWBounce_bounce(&bounce, pl);
+            switch (pl) {
+                case 0:
+                    if (!(p_KEY[0] | p_KEY[3] | p_KEY[6] | p_KEY[9])) {
+                        SWBounce_bounce(&bounce, pl);
+                    }
+                    break;
+                case 1:
+                    if (!(p_KEY[1] | p_KEY[4] | p_KEY[7] | p_KEY[10])) {
+                        SWBounce_bounce(&bounce, pl);
+                    }
+                    break;
+                case 2:
+                    if (!(p_KEY[2] | p_KEY[5] | p_KEY[8] | p_KEY[11])) {
+                        SWBounce_bounce(&bounce, pl);
+                    }
+                    break;
+                default:
+                    SWBounce_bounce(&bounce, pl);
+                    break;
+            }
         }
     }
     if ((pins[7 - 1].dir == PD_IN) && (pins[7 - 1].value != p_BT_[6])) {
