@@ -382,6 +382,9 @@ void CPWindow1::_EvOnCreate(CControl* control) {
     char home[1024];
     lxFileName fn;
     lxFileName fn_spare;
+    char fname[1200];
+    char fname_error[1200];
+    int close_error = 0;
 
     Workspacefn = "";
 
@@ -429,9 +432,59 @@ void CPWindow1::_EvOnCreate(CControl* control) {
     fn.MakeAbsolute();
     libpath = fn.GetFullPath() + "/";
 
-    printf("PICSimLab: Version: \"%s %s %s %s\"\n", _VERSION_, _DATE_, _ARCH_, _PKG_);
+    // check for other instances
+    StartRControl();
 
-    if (Application->Aargc == 2) {  // only .pzw file
+#if !defined(__EMSCRIPTEN__) && !defined(_CONSOLE_LOG_)
+    snprintf(fname, 1199, "%s/picsimlab_log%i.txt", home, Instance);
+    if (lxFileExists(fname)) {
+        FILE* flog = fopen(fname, "r");
+        if (flog) {
+            char line[25];
+            fseek(flog, 0L, SEEK_END);
+            unsigned int size = ftell(flog);
+#ifdef _WIN_
+            fseek(flog, size - 22, SEEK_SET);
+#else
+            fseek(flog, size - 21, SEEK_SET);
+#endif
+            fread(line, 20, 1, flog);
+            fclose(flog);
+            line[21] = 0;
+            if (strncmp(line, "PICSimLab: Finish Ok", 20)) {
+                close_error = 1;
+                snprintf(fname_error, 1199, "%s/picsimlab_error%i.txt", home, Instance);
+                lxRenameFile(fname, fname_error);
+                lxLaunchDefaultApplication(fname_error);
+            }
+        }
+    }
+
+#ifdef _WIN_
+    if (AllocConsole()) {
+        freopen("CONOUT$", "w", stdout);
+        freopen("CONOUT$", "w", stderr);
+        ShowWindow(FindWindowA("ConsoleWindowClass", NULL), false);
+    }
+#endif
+
+    freopen(fname, "w", stdout);
+
+    if (dup2(fileno(stdout), fileno(stderr)) == -1) {
+        printf("PICSimLab: stderr redirect error [%i] %s \n", errno, strerror(errno));
+    }
+
+#endif
+
+    printf("PICSimLab: Version \"%s %s %s %s\"\n", _VERSION_, _DATE_, _ARCH_, _PKG_);
+    fflush(stdout);
+
+    if (close_error) {
+        printf("PICSimLab: Error closing PICSimLab last time! Using default mode.\n Erro log file: %s\n", fname_error);
+        Configure(home, 1, 1);
+        RegisterError("Error closing PICSimLab last time! Using default mode.\n Error log file: " +
+                      lxString(fname_error));
+    } else if (Application->Aargc == 2) {  // only .pzw file
         fn.Assign(Application->Aargv[1]);
         fn.MakeAbsolute();
         // load options
@@ -439,7 +492,6 @@ void CPWindow1::_EvOnCreate(CControl* control) {
         LoadWorkspace(fn.GetFullPath());
     } else if ((Application->Aargc >= 3) && (Application->Aargc <= 5)) {
         // arguments: Board Processor File.hex(.bin) file.pcf
-        char fname[1200];
 
         if (Application->Aargc >= 4) {
             fn.Assign(Application->Aargv[3]);
@@ -524,7 +576,6 @@ void CPWindow1::Configure(const char* home, int use_default_board, int create, c
     }
 #endif
 
-    // TODO: verify initialization errors
     snprintf(fname, 1023, "%s/picsimlab.ini", home);
 
     SERIALDEVICE[0] = ' ';
@@ -579,7 +630,7 @@ void CPWindow1::Configure(const char* home, int use_default_board, int create, c
                             RegisterError(lxString("Invalid board ") + value + "!\n Using default board!");
                         }
                     }
-
+                    printf("PICSimLab: Open board %s\n", boards_list[lab].name);
                     pboard = create_board(&lab, &lab_);
                     if (pboard->GetScale() < scale) {
                         scale = pboard->GetScale();
@@ -597,6 +648,7 @@ void CPWindow1::Configure(const char* home, int use_default_board, int create, c
                     sscanf(value, "%i", &debug);
                     togglebutton1.SetCheck(debug);
 #endif
+                    printf("PICSimLab: Debug On = %i\n", debug);
                 }
 
                 if (!strcmp(name, "picsimlab_debugt")) {
@@ -623,6 +675,7 @@ void CPWindow1::Configure(const char* home, int use_default_board, int create, c
                     sscanf(value, "%i,%i", &i, &j);
                     SetX(i);
                     SetY(j);
+                    printf("PICSimLab: Window position x=%i y=%i\n", i, j);
                 }
 
                 if (!strcmp(name, "picsimlab_scale")) {
@@ -633,6 +686,7 @@ void CPWindow1::Configure(const char* home, int use_default_board, int create, c
                         draw1.SetHeight(plHeight * scale);
                         SetHeight(90 + plHeight * scale);
                         pboard->SetScale(scale);
+                        printf("PICSimLab: Window scale %5.2f \n", scale);
                     }
                 }
 
@@ -658,7 +712,7 @@ void CPWindow1::Configure(const char* home, int use_default_board, int create, c
     }
 
     if (pboard == NULL) {
-        printf("Error open config file \"%s\"!\n", fname);
+        printf("PICSimLab: Error open config file \"%s\"!\n", fname);
 
         lab = 0;   // default
         lab_ = 0;  // default
@@ -835,11 +889,35 @@ void CPWindow1::saveprefs(lxString name, lxString value) {
     prefs.AddLine(name + lxT("\t= \"") + value + lxT("\""));
 }
 
+#ifdef _WIN_
+#define NULLFILE "\\\\.\\NUL"
+#else
+#define NULLFILE "/dev/null"
+#endif
+
 void CPWindow1::_EvOnDestroy(CControl* control) {
     rcontrol_server_end();
     pboard->EndServers();
     NeedReboot = 0;
     EndSimulation();
+
+#if !defined(__EMSCRIPTEN__) && !defined(_CONSOLE_LOG_)
+    fflush(stdout);
+    freopen(NULLFILE, "w", stdout);
+    fflush(stderr);
+    freopen(NULLFILE, "w", stderr);
+    char fname[1200];
+    snprintf(fname, 1199, "%s/picsimlab_log%i.txt", (const char*)GetHOME().c_str(), Instance);
+    FILE* flog;
+    flog = fopen(fname, "a");
+    if (flog) {
+        fprintf(flog, "PICSimLab: Finish Ok\n");
+        fclose(flog);
+    }
+#else
+    printf("PICSimLab: Finish Ok\n");
+    fflush(stdout);
+#endif
 }
 
 void CPWindow1::EndSimulation(int saveold, const char* newpath) {
@@ -975,8 +1053,29 @@ void CPWindow1::EndSimulation(int saveold, const char* newpath) {
             strcat(cmd, newpath);
         }
         printf("PICSimLab: %s\n", cmd);
+
+        printf("PICSimLab: End Board Simulation.\n");
+#if !defined(__EMSCRIPTEN__) && !defined(_CONSOLE_LOG_)
+        fflush(stdout);
+        freopen(NULLFILE, "w", stdout);
+        fflush(stderr);
+        freopen(NULLFILE, "w", stderr);
+        char fname[1200];
+        snprintf(fname, 1199, "%s/picsimlab_log%i.txt", (const char*)GetHOME().c_str(), Instance);
+        FILE* flog;
+        flog = fopen(fname, "a");
+        if (flog) {
+            fprintf(flog, "PICSimLab: Finish Ok\n");
+            fclose(flog);
+        }
+#else
+        printf("PICSimLab: Finish Ok\n");
+        fflush(stdout);
+#endif
         lxExecute(cmd);
         exit(0);
+    } else {
+        printf("PICSimLab: End Board Simulation.\n");
     }
 
     delete pboard;

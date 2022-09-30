@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -43,11 +43,13 @@ public:
     CSpin spin2;
     CLabel label5;
     CButton button2;
+    CButton button3;
     /*#Events*/
     void _EvOnCreate(CControl* control);
     void _EvOnShow(CControl* control);
     void button1_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y, const uint state);
     void button2_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y, const uint state);
+    void button3_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y, const uint state);
     /*#Others*/
     CPWindow3(void);
 };
