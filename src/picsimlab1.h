@@ -194,7 +194,7 @@ public:
     /**
      * @brief  Return the selected debugger port
      */
-    unsigned short Get_debug_port(void) { return debug_port; };
+    unsigned short Get_debug_port(void) { return debug_port + Instance; };
 
     /**
      * @brief  Return the selected remote control port
@@ -303,6 +303,7 @@ public:
     lxMutex* cpu_mutex;
 #endif
 private:
+    void StartRControl(void);
     lxString share;
     lxString libpath;
     int pa;
@@ -360,6 +361,8 @@ private:
 
     lxString Workspacefn;
     int NeedReboot;
+
+    int Instance;
 };
 
 extern CPWindow1 Window1;

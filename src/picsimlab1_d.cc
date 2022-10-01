@@ -528,6 +528,8 @@ CPWindow1::CPWindow1(void) {
 
     NeedReboot = 0;
 
+    Instance = 0;
+
 #ifndef _NOTHREAD
     cpu_mutex = NULL;
     cpu_cond = NULL;

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 #define RCONTROL_H
 
 // PICSimLab remote control
-int rcontrol_init(unsigned short tcpport);
+int rcontrol_init(const unsigned short tcpport, const int reporterror = 0);
 int rcontrol_loop(void);
 void rcontrol_end(void);
 void rcontrol_server_end(void);

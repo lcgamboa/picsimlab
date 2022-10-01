@@ -551,6 +551,58 @@ void CPWindow1::_EvOnCreate(CControl* control) {
         MBoard[i].EvMenuActive = EVMENUACTIVE & CPWindow1::menu1_EvBoard;
         menu1_Board.CreateChild(&MBoard[i]);
     }
+
+    if (Instance) {
+        menu1_File_Configure.SetEnable(0);
+    }
+}
+
+void CPWindow1::StartRControl(void) {
+    char line[1024];
+    char fname[1024];
+
+    char* name;
+    char* value;
+
+    int lc;
+
+    lxString status;
+
+    mcurun = 1;
+    mcupwr = 1;
+    mcurst = 0;
+
+    snprintf(fname, 1023, "%s/picsimlab.ini", (const char*)HOME.c_str());
+
+    prefs.Clear();
+    if (lxFileExists(fname)) {
+        if (prefs.LoadFromFile(fname)) {
+            for (lc = 0; lc < (int)prefs.GetLinesCount(); lc++) {
+                strncpy(line, prefs.GetLine(lc).c_str(), 1023);
+
+                name = strtok(line, "\t= ");
+                strtok(NULL, " ");
+                value = strtok(NULL, "\"");
+                if ((name == NULL) || (value == NULL))
+                    continue;
+
+                if (!strcmp(name, "picsimlab_remotecp")) {
+                    sscanf(value, "%hu", &remotec_port);
+                }
+            }
+        }
+    }
+
+#ifndef __EMSCRIPTEN__
+
+    while (rcontrol_init(remotec_port + Instance)) {
+        Instance++;
+        if (Instance > 100) {
+            printf("PICSimLab: Instance error\n");
+            exit(-1);
+        }
+    }
+#endif
 }
 
 void CPWindow1::Configure(const char* home, int use_default_board, int create, const char* lfile) {
@@ -767,12 +819,22 @@ void CPWindow1::Configure(const char* home, int use_default_board, int create, c
         } else {
             printf("PICSimLab: File Not found \"%s\" loading default.\n", lfile);
             RegisterError(lxString("File Not found \n\"") + lfile + "\"\n loading default.");
+            if (Instance && !HOME.compare(home)) {
+                sprintf(fname, "%s/mdump_%s_%s_%i.hex", home, boards_list[lab].name_,
+                        (const char*)pboard->GetProcessorName().c_str(), Instance);
+            } else {
+                sprintf(fname, "%s/mdump_%s_%s.hex", home, boards_list[lab].name_,
+                        (const char*)pboard->GetProcessorName().c_str());
+            }
+        }
+    } else {
+        if (Instance && !HOME.compare(home)) {
+            sprintf(fname, "%s/mdump_%s_%s_%i.hex", home, boards_list[lab].name_,
+                    (const char*)pboard->GetProcessorName().c_str(), Instance);
+        } else {
             sprintf(fname, "%s/mdump_%s_%s.hex", home, boards_list[lab].name_,
                     (const char*)pboard->GetProcessorName().c_str());
         }
-    } else {
-        sprintf(fname, "%s/mdump_%s_%s.hex", home, boards_list[lab].name_,
-                (const char*)pboard->GetProcessorName().c_str());
     }
     printf("PICSimLab: Opening \"%s\"\n", fname);
     switch (pboard->MInit(pboard->GetProcessorName(), fname, NSTEP * NSTEPKF)) {
@@ -789,7 +851,8 @@ void CPWindow1::Configure(const char* home, int use_default_board, int create, c
 
     proc_ = pboard->GetProcessorName();
 
-    SetTitle(lxT("PICSimLab - ") + lxString(boards_list[lab].name) + lxT(" - ") + pboard->GetProcessorName());
+    SetTitle(((Instance > 0) ? (lxT("PICSimLab[") + itoa(Instance) + lxT("] - ")) : (lxT("PICSimLab - "))) +
+             lxString(boards_list[lab].name) + lxT(" - ") + pboard->GetProcessorName());
 
 #ifdef _USE_PICSTARTP_
     if (prog_init() >= 0)
@@ -808,7 +871,8 @@ void CPWindow1::Configure(const char* home, int use_default_board, int create, c
         if (ret < 0) {
             statusbar1.SetField(1, status + lxT("Debug: Error"));
         } else {
-            statusbar1.SetField(1, status + lxT("Debug: ") + pboard->GetDebugName() + ":" + itoa(debug_port));
+            statusbar1.SetField(1,
+                                status + lxT("Debug: ") + pboard->GetDebugName() + ":" + itoa(debug_port + Instance));
         }
     } else {
         statusbar1.SetField(1, status + lxT("Debug: Off"));
@@ -829,9 +893,17 @@ void CPWindow1::Configure(const char* home, int use_default_board, int create, c
 
     Window4.SetBaseTimer();
 
-    sprintf(fname, "%s/parts_%s.pcf", home, boards_list[lab].name_);
+    if (Instance && !HOME.compare(home)) {
+        sprintf(fname, "%s/parts_%s_%i.pcf", home, boards_list[lab].name_, Instance);
+    } else {
+        sprintf(fname, "%s/parts_%s.pcf", home, boards_list[lab].name_);
+    }
     Window5.LoadConfig(fname);
-    sprintf(fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
+    if (Instance && !HOME.compare(home)) {
+        sprintf(fname, "%s/palias_%s_%i.ppa", home, boards_list[lab_].name_, Instance);
+    } else {
+        sprintf(fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
+    }
     Window5.LoadPinAlias(fname);
 
     if ((!pboard->GetProcessorName().Cmp("atmega328p")) || (!pboard->GetProcessorName().Cmp("atmega2560"))) {
@@ -841,7 +913,7 @@ void CPWindow1::Configure(const char* home, int use_default_board, int create, c
     }
 
 #ifndef __EMSCRIPTEN__
-    rcontrol_init(remotec_port);
+    rcontrol_init(remotec_port + Instance);
 #endif
 }
 
@@ -1008,9 +1080,12 @@ void CPWindow1::EndSimulation(int saveold, const char* newpath) {
     prefs.SaveToFile(fname);
 
     // write memory
-
-    sprintf(fname, "%s/mdump_%s_%s.hex", home, boards_list[lab_].name_, (const char*)proc_.c_str());
-
+    if (Instance) {
+        sprintf(fname, "%s/mdump_%s_%s_%i.hex", home, boards_list[lab_].name_, (const char*)proc_.c_str(), Instance);
+    } else {
+        sprintf(fname, "%s/mdump_%s_%s.hex", home, boards_list[lab_].name_, (const char*)proc_.c_str());
+    }
+    printf("PICSimLab: Saving \"%s\"\n", fname);
     pboard->MDumpMemory(fname);
 
     pboard->MEnd();
@@ -1021,10 +1096,18 @@ void CPWindow1::EndSimulation(int saveold, const char* newpath) {
     }
 #endif
 
-    sprintf(fname, "%s/parts_%s.pcf", home, boards_list[lab_].name_);
+    if (Instance) {
+        sprintf(fname, "%s/parts_%s_%i.pcf", home, boards_list[lab_].name_, Instance);
+    } else {
+        sprintf(fname, "%s/parts_%s.pcf", home, boards_list[lab_].name_);
+    }
     Window5.SaveConfig(fname);
     Window5.DeleteParts();
-    sprintf(fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
+    if (Instance) {
+        sprintf(fname, "%s/palias_%s_%i.ppa", home, boards_list[lab_].name_, Instance);
+    } else {
+        sprintf(fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
+    }
     Window5.SavePinAlias(fname);
 
     // refresh window position to window reopen in same position
@@ -1202,7 +1285,7 @@ void CPWindow1::menu1_Help_Examples_EvMenuActive(CControl* control) {
     lxLaunchDefaultBrowser(lxT("https://lcgamboa.github.io/picsimlab_examples/board_" +
                                lxString(boards_list[lab].name_) + ".html#board_" + lxString(boards_list[lab].name_) +
                                lxT("_") + pboard->GetProcessorName()));
-    SetToDestroy();
+    // SetToDestroy();
 #else
     OldPath = filedialog2.GetDir();
 
@@ -1276,10 +1359,12 @@ int CPWindow1::LoadHexFile(lxString fname) {
     pboard->Reset();
 
     if (mcurun)
-        SetTitle(lxT("PICSimLab - ") + lxString(boards_list[lab].name) + lxT(" - ") + pboard->GetProcessorName() +
-                 lxT(" - ") + basename(filedialog1.GetFileName()));
+        SetTitle(((Instance > 0) ? (lxT("PICSimLab[") + itoa(Instance) + lxT("] - ")) : (lxT("PICSimLab - "))) +
+                 lxString(boards_list[lab].name) + lxT(" - ") + pboard->GetProcessorName() + lxT(" - ") +
+                 basename(filedialog1.GetFileName()));
     else
-        SetTitle(lxT("PICSimLab - ") + lxString(boards_list[lab].name) + lxT(" - ") + pboard->GetProcessorName());
+        SetTitle(((Instance > 0) ? (lxT("PICSimLab[") + itoa(Instance) + lxT("] - ")) : (lxT("PICSimLab - "))) +
+                 lxString(boards_list[lab].name) + lxT(" - ") + pboard->GetProcessorName());
 
     ret = !mcurun;
 
@@ -1295,7 +1380,7 @@ int CPWindow1::LoadHexFile(lxString fname) {
         if (ret < 0) {
             statusbar1.SetField(1, lxT("Debug: Error"));
         } else {
-            statusbar1.SetField(1, lxT("Debug: ") + pboard->GetDebugName() + ":" + itoa(debug_port));
+            statusbar1.SetField(1, lxT("Debug: ") + pboard->GetDebugName() + ":" + itoa(debug_port + Instance));
         }
     } else {
         statusbar1.SetField(1, lxT("Debug: Off"));
@@ -1354,7 +1439,8 @@ void CPWindow1::menu1_EvMicrocontroller(CControl* control) {
     proc_ = pboard->GetProcessorName();
     pboard->SetProcessorName(((CItemMenu*)control)->GetText());
 
-    SetTitle(lxT("PICSimLab - ") + lxString(boards_list[lab].name) + lxT(" - ") + pboard->GetProcessorName());
+    SetTitle(((Instance > 0) ? (lxT("PICSimLab[") + itoa(Instance) + lxT("] - ")) : (lxT("PICSimLab - "))) +
+             lxString(boards_list[lab].name) + lxT(" - ") + pboard->GetProcessorName());
 
     FNAME = lxT(" ");
     EndSimulation();
@@ -1675,14 +1761,27 @@ void CPWindow1::SaveWorkspace(lxString fnpzw) {
     prefs.SaveToFile(fname);
 
     // write memory
-    snprintf(fname, 1279, "%s/mdump_%s_%s.hex", home, boards_list[lab_].name_, (const char*)proc_.c_str());
-
+    if (Instance) {
+        snprintf(fname, 1279, "%s/mdump_%s_%s_%i.hex", home, boards_list[lab_].name_, (const char*)proc_.c_str(),
+                 Instance);
+    } else {
+        snprintf(fname, 1279, "%s/mdump_%s_%s.hex", home, boards_list[lab_].name_, (const char*)proc_.c_str());
+    }
+    printf("PICSimLab: Saving \"%s\"\n", fname);
     pboard->MDumpMemory(fname);
 
     // write spare part config
-    snprintf(fname, 1279, "%s/parts_%s.pcf", home, boards_list[lab_].name_);
+    if (Instance) {
+        snprintf(fname, 1279, "%s/parts_%s_%i.pcf", home, boards_list[lab_].name_, Instance);
+    } else {
+        snprintf(fname, 1279, "%s/parts_%s.pcf", home, boards_list[lab_].name_);
+    }
     Window5.SaveConfig(fname);
-    sprintf(fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
+    if (Instance) {
+        sprintf(fname, "%s/palias_%s_%i.ppa", home, boards_list[lab_].name_, Instance);
+    } else {
+        sprintf(fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
+    }
     Window5.SavePinAlias(fname);
 
     lxZipDir(home, fnpzw);
@@ -1791,9 +1890,9 @@ void CPWindow1::menu1_Tools_MPLABXDebuggerPlugin_EvMenuActive(CControl* control)
 
 void CPWindow1::menu1_Tools_PinViewer_EvMenuActive(CControl* control) {
 #ifdef _WIN_
-    lxExecute(share + lxT("/../PinViewer.exe " + itoa(remotec_port)));
+    lxExecute(share + lxT("/../PinViewer.exe " + itoa(remotec_port + Instance)));
 #else
-    lxExecute(dirname(lxGetExecutablePath()) + "/PinViewer " + itoa(remotec_port));
+    lxExecute(dirname(lxGetExecutablePath()) + "/PinViewer " + itoa(remotec_port + Instance));
 #endif
 }
 
