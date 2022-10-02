@@ -1761,27 +1761,16 @@ void CPWindow1::SaveWorkspace(lxString fnpzw) {
     prefs.SaveToFile(fname);
 
     // write memory
-    if (Instance) {
-        snprintf(fname, 1279, "%s/mdump_%s_%s_%i.hex", home, boards_list[lab_].name_, (const char*)proc_.c_str(),
-                 Instance);
-    } else {
-        snprintf(fname, 1279, "%s/mdump_%s_%s.hex", home, boards_list[lab_].name_, (const char*)proc_.c_str());
-    }
+
+    snprintf(fname, 1279, "%s/mdump_%s_%s.hex", home, boards_list[lab_].name_, (const char*)proc_.c_str());
+
     printf("PICSimLab: Saving \"%s\"\n", fname);
     pboard->MDumpMemory(fname);
 
     // write spare part config
-    if (Instance) {
-        snprintf(fname, 1279, "%s/parts_%s_%i.pcf", home, boards_list[lab_].name_, Instance);
-    } else {
-        snprintf(fname, 1279, "%s/parts_%s.pcf", home, boards_list[lab_].name_);
-    }
+    snprintf(fname, 1279, "%s/parts_%s.pcf", home, boards_list[lab_].name_);
     Window5.SaveConfig(fname);
-    if (Instance) {
-        sprintf(fname, "%s/palias_%s_%i.ppa", home, boards_list[lab_].name_, Instance);
-    } else {
-        sprintf(fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
-    }
+    sprintf(fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
     Window5.SavePinAlias(fname);
 
     lxZipDir(home, fnpzw);
