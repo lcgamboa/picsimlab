@@ -985,8 +985,8 @@ int rcontrol_loop(void) {
                         // Command version
                         // =====================================================
                         stemp.Printf(lxT("Developed by L.C. Gamboa\r\n "
-                                         "<lcgamboa@yahoo.com>\r\n Version: %s %s %s\r\n"),
-                                     lxT(_VERSION_), lxT(_DATE_), lxT(_ARCH_));
+                                         "<lcgamboa@yahoo.com>\r\n Version: %s %s %s %s\r\n"),
+                                     lxT(_VERSION_), lxT(_DATE_), lxT(_ARCH_), lxT(_PKG_));
                         ret += sendtext((const char*)stemp.c_str());
                         ret += sendtext("Ok\r\n>");
                     } else {
