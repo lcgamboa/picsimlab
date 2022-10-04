@@ -124,7 +124,7 @@ void CPWindow1::timer1_EvOnTime(CControl* control) {
 #endif
     {
         if (crt) {
-            label2.SetColor(0, 0, 0);
+            label2.SetColor(SystemColor(lxCOLOR_WINDOWTEXT));
             label2.Draw();
         }
         crt = 0;
