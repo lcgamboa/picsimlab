@@ -551,10 +551,6 @@ void CPWindow1::_EvOnCreate(CControl* control) {
         MBoard[i].EvMenuActive = EVMENUACTIVE & CPWindow1::menu1_EvBoard;
         menu1_Board.CreateChild(&MBoard[i]);
     }
-
-    if (Instance) {
-        menu1_File_Configure.SetEnable(0);
-    }
 }
 
 void CPWindow1::StartRControl(void) {
@@ -588,6 +584,10 @@ void CPWindow1::StartRControl(void) {
 
                 if (!strcmp(name, "picsimlab_remotecp")) {
                     sscanf(value, "%hu", &remotec_port);
+                }
+
+                if (!strcmp(name, "picsimlab_debugp")) {
+                    sscanf(value, "%hu", &debug_port);
                 }
             }
         }
@@ -628,8 +628,11 @@ void CPWindow1::Configure(const char* home, int use_default_board, int create, c
     }
 #endif
 
-    snprintf(fname, 1023, "%s/picsimlab.ini", home);
-
+    if (Instance && !HOME.compare(home)) {
+        snprintf(fname, 1023, "%s/picsimlab_%i.ini", home, Instance);
+    } else {
+        snprintf(fname, 1023, "%s/picsimlab.ini", home);
+    }
     SERIALDEVICE[0] = ' ';
     SERIALDEVICE[1] = 0;
 #ifdef _USE_PICSTARTP_
@@ -705,14 +708,6 @@ void CPWindow1::Configure(const char* home, int use_default_board, int create, c
 
                 if (!strcmp(name, "picsimlab_debugt")) {
                     sscanf(value, "%i", &debug_type);
-                }
-
-                if (!strcmp(name, "picsimlab_remotecp")) {
-                    sscanf(value, "%hu", &remotec_port);
-                }
-
-                if (!strcmp(name, "picsimlab_debugp")) {
-                    sscanf(value, "%hu", &debug_port);
                 }
 
                 if (!strcmp(name, "osc_on")) {
@@ -1041,7 +1036,11 @@ void CPWindow1::EndSimulation(int saveold, const char* newpath) {
 
     lxCreateDir(home);
 
-    sprintf(fname, "%s/picsimlab.ini", home);
+    if (Instance) {
+        sprintf(fname, "%s/picsimlab_%i.ini", home, Instance);
+    } else {
+        sprintf(fname, "%s/picsimlab.ini", home);
+    }
 
     saveprefs(lxT("picsimlab_version"), _VERSION_);
     saveprefs(lxT("picsimlab_lab"), boards_list[lab].name_);

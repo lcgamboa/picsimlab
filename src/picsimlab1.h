@@ -199,7 +199,7 @@ public:
     /**
      * @brief  Return the selected remote control port
      */
-    unsigned short Get_remotec_port(void) { return remotec_port; };
+    unsigned short Get_remotec_port(void) { return remotec_port + Instance; };
 
     /**
      * @brief  Return actual power status of microcontroller ON/OFF
@@ -279,6 +279,11 @@ public:
      * @brief  Return a pointer to board object
      */
     board* GetBoard(void);
+
+    /**
+     * @brief  Return the program instance number
+     */
+    unsigned short Get_Instance(void) { return Instance; };
 
     void SetNeedReboot(void);
     void SetCpuState(const unsigned char cs);

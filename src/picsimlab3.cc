@@ -127,4 +127,9 @@ void CPWindow3::_EvOnShow(CControl* control) {
     spin1.SetValue(Window1.Get_debug_port());
 
     spin2.SetValue(Window1.Get_remotec_port());
+
+    if (Window1.Get_Instance()) {
+        spin1.SetEnable(0);
+        spin2.SetEnable(0);
+    }
 }
