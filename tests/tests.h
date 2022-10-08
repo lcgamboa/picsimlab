@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2021  Luis Claudio Gamboa Lopes
+   Copyright (c) : 2020-2022  Luis Claudio Gamboa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -28,31 +28,32 @@
 
 #define MAX_TESTS 20
 
-//extern int NUM_TESTS;
+// extern int NUM_TESTS;
 
-#define register_test(description,function, arg)  \
-    static void __attribute__((constructor)) function## _register(void);\
-    static void function## _register(void){\
-    test_register(description , function , arg);}
+#define register_test(description, function, arg)                              \
+  static void __attribute__((constructor)) function##_register(void);          \
+  static void function##_register(void) {                                      \
+    test_register(description, function, arg);                                 \
+  }
 
+typedef int (*test_run_func)(void *arg);
 
-typedef int (* test_run_func)(void * arg);
+void test_register(const char *name, test_run_func trun, void *arg);
 
-void test_register(const char * name, test_run_func trun, void* arg);
-
-//control
-int test_load(const char * fname);
-int test_send_rcmd(const char * message);
-char * test_get_cmd_resp(void);
+// control
+int test_load(const char *fname);
+int test_send_rcmd(const char *message);
+char *test_get_cmd_resp(void);
 int test_end();
 
-//serial
+// serial
 int test_serial_send(const char data);
 int test_serial_recv(char *data);
-int test_serial_recv_wait(char * data, const int timeout);
-int test_serial_recv_str(char * data, const int size, const int timeout=0);
+int test_serial_recv_wait(char *data, const int timeout);
+int test_serial_recv_str(char *data, const int size, const int timeout = 0);
 
-int test_file_exist(const char * fname);
+int test_file_exist(const char *fname);
+
+int testPressButton(const int key, const int down = 0, const int tout = 200);
 
 #endif /* TESTS_H */
-

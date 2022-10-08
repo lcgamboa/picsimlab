@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2021  Luis Claudio Gamboa Lopes
+   Copyright (c) : 2020-2022  Luis Claudio Gamboa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -28,12 +28,12 @@
 
 #include "tests.h"
 
-static int test_serial(void *arg) {
-  char data = '!';
-  char ret;
-  printf("test serial \n");
+static int test_STM32_H103(void *arg) {
+  int state;
 
-  if (!test_load("serial/serial_uno.pzw")) {
+  printf("test STM32_H103 \n");
+
+  if (!test_load("STM32_H103/STM32_H103.pzw")) {
     return 0;
   }
 
@@ -42,30 +42,49 @@ static int test_serial(void *arg) {
   while (test_serial_recv_str(buff, 256, 1000)) {
   };
 
-  for (int i = 0; i < 94; i++) {
-    if (!test_serial_send(data)) {
-      printf("Error on send\n");
+  for (int i = 0; i < 5; i++) {
+    if (!test_send_rcmd("set board.in[02] 1")) {
+      printf("Error send rcmd \n");
+      test_end();
+      return 0;
+    }
+    usleep(500000);
+
+    if (!test_send_rcmd("get board.out[03]")) {
+      printf("Error send rcmd \n");
+      test_end();
+      return 0;
+    }
+    sscanf(test_get_cmd_resp() + 22, "%i", &state);
+
+    if (state < 50) {
+      printf("Failed in Button Test \n");
       test_end();
       return 0;
     }
 
-    if (!test_serial_recv_wait(&ret, 500)) {
-      printf("Error on recv\n");
+    if (!test_send_rcmd("set board.in[02] 0")) {
+      printf("Error send rcmd \n");
       test_end();
       return 0;
     }
-    // printf ("send %c -> %c \n", data, ret);
+    usleep(500000);
 
-    if (data != ret) {
-      printf("Error on data value \n");
+    if (!test_send_rcmd("get board.out[03]")) {
+      printf("Error send rcmd \n");
       test_end();
       return 0;
     }
+    sscanf(test_get_cmd_resp() + 22, "%i", &state);
 
-    data++;
+    if (state > 150) {
+      printf("Failed in Button Test \n");
+      test_end();
+      return 0;
+    }
   }
 
   return test_end();
 }
 
-register_test("Uno Serial", test_serial, NULL);
+register_test("STM32_H103", test_STM32_H103, NULL);

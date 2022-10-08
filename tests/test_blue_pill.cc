@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2021  Luis Claudio Gamboa Lopes
+   Copyright (c) : 2020-2022  Luis Claudio Gamboa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -28,44 +28,58 @@
 
 #include "tests.h"
 
-static int test_serial(void *arg) {
-  char data = '!';
-  char ret;
-  printf("test serial \n");
+static int test_Blue_Pill(void *arg) {
+  int state;
+  int cont = 0;
 
-  if (!test_load("serial/serial_uno.pzw")) {
+  printf("test Blue_Pill \n");
+
+  if (!test_load("Blue_Pill/Blue_Pill.pzw")) {
     return 0;
   }
 
   char buff[256];
   // clear serial console
   while (test_serial_recv_str(buff, 256, 1000)) {
-  };
+  }
 
-  for (int i = 0; i < 94; i++) {
-    if (!test_serial_send(data)) {
-      printf("Error on send\n");
+  cont = 0;
+  do {
+    usleep(1000);
+    if (!test_send_rcmd("get board.out[02]")) {
+      printf("Error send rcmd \n");
       test_end();
       return 0;
     }
+    sscanf(test_get_cmd_resp() + 22, "%i", &state);
+    cont++;
+  } while (state && (cont < 1000));
 
-    if (!test_serial_recv_wait(&ret, 500)) {
-      printf("Error on recv\n");
+  if (cont >= 1000) {
+    printf("Failed in LED Test \n");
+    test_end();
+    return 0;
+  }
+
+  cont = 0;
+  do {
+    usleep(1000);
+    if (!test_send_rcmd("get board.out[02]")) {
+      printf("Error send rcmd \n");
       test_end();
       return 0;
     }
-    // printf ("send %c -> %c \n", data, ret);
+    sscanf(test_get_cmd_resp() + 22, "%i", &state);
+    cont++;
+  } while (!state && (cont < 1000));
 
-    if (data != ret) {
-      printf("Error on data value \n");
-      test_end();
-      return 0;
-    }
-
-    data++;
+  if (cont >= 1000) {
+    printf("Failed in LED Test \n");
+    test_end();
+    return 0;
   }
 
   return test_end();
 }
 
-register_test("Uno Serial", test_serial, NULL);
+register_test("Blue_Pill", test_Blue_Pill, NULL);

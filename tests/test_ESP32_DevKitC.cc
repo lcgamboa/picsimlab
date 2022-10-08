@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2021  Luis Claudio Gamboa Lopes
+   Copyright (c) : 2020-2022  Luis Claudio Gamboa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -24,48 +24,33 @@
    ######################################################################## */
 
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 
 #include "tests.h"
 
-static int test_serial(void *arg) {
-  char data = '!';
-  char ret;
-  printf("test serial \n");
+static int test_ESP32_DevKitC(void *arg) {
 
-  if (!test_load("serial/serial_uno.pzw")) {
+  printf("test ESP32_DevKitC \n");
+
+  if (!test_load("ESP32_DevKitC/ESP32_DevKitC.pzw")) {
     return 0;
   }
 
   char buff[256];
-  // clear serial console
+  // read serial console
   while (test_serial_recv_str(buff, 256, 1000)) {
-  };
+    // printf("%s\n", buff);
+  }
 
-  for (int i = 0; i < 94; i++) {
-    if (!test_serial_send(data)) {
-      printf("Error on send\n");
-      test_end();
-      return 0;
-    }
-
-    if (!test_serial_recv_wait(&ret, 500)) {
-      printf("Error on recv\n");
-      test_end();
-      return 0;
-    }
-    // printf ("send %c -> %c \n", data, ret);
-
-    if (data != ret) {
-      printf("Error on data value \n");
-      test_end();
-      return 0;
-    }
-
-    data++;
+  // check the last line
+  if (strcmp(buff, "Hello World! esp32\r")) {
+    printf("Failed in ESP32_DeviktC serial\n");
+    test_end();
+    return 0;
   }
 
   return test_end();
 }
 
-register_test("Uno Serial", test_serial, NULL);
+register_test("ESP32_DevKitC", test_ESP32_DevKitC, NULL);

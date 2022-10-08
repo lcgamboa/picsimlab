@@ -23,49 +23,38 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include<stdio.h>
-#include<unistd.h>
-#include<string.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
 
-#include"tests.h"
+#include "tests.h"
 
-static int
-test_ext_eeprom(void * arg)
-{
- char ret[256];
+static int test_ext_eeprom(void *arg) {
+  char ret[256];
 
- printf ("test external eeprom i2c \n");
+  printf("test external eeprom i2c \n");
 
- if (!test_load ("ext_eeprom/extee_uno.pzw"))
-  {
-   return 0;
+  if (!test_load("ext_eeprom/extee_uno.pzw")) {
+    return 0;
   }
 
+  do {
 
- do
-  {
-
-   if (!test_serial_recv_str (ret, 256, 1000))
-    {
-     printf ("Error on recv\n");
-     test_end ();
-     return 0;
+    if (!test_serial_recv_str(ret, 256, 1000)) {
+      printf("Error on recv\n");
+      test_end();
+      return 0;
     }
-   printf ("%s\n", ret);
+    // printf ("%s\n", ret);
 
-  }
- while (!strstr (ret, "Errors: "));
+  } while (!strstr(ret, "Errors: "));
 
- if (strncmp (ret, "Errors: 0", 9))
-  {
-   test_end ();
-   return 0;
+  if (strncmp(ret, "Errors: 0", 9)) {
+    test_end();
+    return 0;
   }
 
- return test_end ();
+  return test_end();
 }
 
-
 register_test("Uno ext. eeprom 24C04", test_ext_eeprom, NULL);
-
-
