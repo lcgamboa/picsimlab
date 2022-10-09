@@ -168,13 +168,7 @@ void cpart_rgb_led::ReadPreferences(lxString value) {
 }
 
 void cpart_rgb_led::RegisterRemoteControl(void) {
-    for (int i = 0; i < outputc; i++) {
-        switch (output[i].id) {
-            case O_L1:
-                output[i].status = (void*)color;
-                break;
-        }
-    }
+    output_ids[O_L1]->status = (void*)color;
 }
 
 void cpart_rgb_led::ConfigurePropertiesWindow(CPWindow* WProp) {

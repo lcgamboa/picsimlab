@@ -235,13 +235,7 @@ void cpart_LCD_hd44780::ReadPreferences(lxString value) {
 }
 
 void cpart_LCD_hd44780::RegisterRemoteControl(void) {
-    for (int i = 0; i < outputc; i++) {
-        switch (output[i].id) {
-            case O_LCD:
-                output[i].status = (void*)&lcd;
-                break;
-        }
-    }
+    output_ids[O_LCD]->status = (void*)&lcd;
 }
 
 void cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow* WProp) {

@@ -63,34 +63,22 @@ cpart_pbuttons_an::cpart_pbuttons_an(unsigned x, unsigned y)
 }
 
 void cpart_pbuttons_an::RegisterRemoteControl(void) {
-    for (int i = 0; i < inputc; i++) {
-        switch (input[i].id) {
-            case I_B1:
-                input[i].status = &output_value_[0];
-                break;
-            case I_B2:
-                input[i].status = &output_value_[1];
-                break;
-            case I_B3:
-                input[i].status = &output_value_[2];
-                break;
-            case I_B4:
-                input[i].status = &output_value_[3];
-                break;
-            case I_B5:
-                input[i].status = &output_value_[4];
-                break;
-            case I_B6:
-                input[i].status = &output_value_[5];
-                break;
-            case I_B7:
-                input[i].status = &output_value_[6];
-                break;
-            case I_B8:
-                input[i].status = &output_value_[7];
-                break;
-        }
-    }
+    input_ids[I_B1]->status = &output_value_[0];
+    input_ids[I_B1]->update = &output_ids[O_B1]->update;
+    input_ids[I_B2]->status = &output_value_[1];
+    input_ids[I_B2]->update = &output_ids[O_B2]->update;
+    input_ids[I_B3]->status = &output_value_[2];
+    input_ids[I_B3]->update = &output_ids[O_B3]->update;
+    input_ids[I_B4]->status = &output_value_[3];
+    input_ids[I_B4]->update = &output_ids[O_B4]->update;
+    input_ids[I_B5]->status = &output_value_[4];
+    input_ids[I_B5]->update = &output_ids[O_B5]->update;
+    input_ids[I_B6]->status = &output_value_[5];
+    input_ids[I_B6]->update = &output_ids[O_B6]->update;
+    input_ids[I_B7]->status = &output_value_[6];
+    input_ids[I_B7]->update = &output_ids[O_B7]->update;
+    input_ids[I_B8]->status = &output_value_[7];
+    input_ids[I_B8]->update = &output_ids[O_B8]->update;
 }
 
 void cpart_pbuttons_an::Reset(void) {

@@ -177,13 +177,7 @@ void cpart_led_matrix::ReadPreferences(lxString value) {
 }
 
 void cpart_led_matrix::RegisterRemoteControl(void) {
-    for (int i = 0; i < outputc; i++) {
-        switch (output[i].id) {
-            case O_LED:
-                output[i].status = (void*)&ldd;
-                break;
-        }
-    }
+    output_ids[O_LED]->status = (void*)&ldd;
 }
 
 void cpart_led_matrix::ConfigurePropertiesWindow(CPWindow* WProp) {

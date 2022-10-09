@@ -67,16 +67,10 @@ cpart_encoder::cpart_encoder(unsigned x, unsigned y)
 }
 
 void cpart_encoder::RegisterRemoteControl(void) {
-    for (int i = 0; i < inputc; i++) {
-        switch (input[i].id) {
-            case I_RT1:
-                input[i].status = &value;
-                break;
-            case I_BTN:
-                input[i].status = &p_BTN;
-                break;
-        }
-    }
+    input_ids[I_RT1]->status = &value;
+    input_ids[I_RT1]->update = &output_ids[O_RT1]->update;
+    input_ids[I_BTN]->status = &p_BTN;
+    input_ids[I_BTN]->update = &output_ids[O_BTN]->update;
 }
 
 cpart_encoder::~cpart_encoder(void) {

@@ -425,13 +425,7 @@ void cpart_step::ReadPreferences(lxString value) {
 }
 
 void cpart_step::RegisterRemoteControl(void) {
-    for (int i = 0; i < outputc; i++) {
-        switch (output[i].id) {
-            case O_ROT:
-                output[i].status = (void*)&angle;
-                break;
-        }
-    }
+    output_ids[O_ROT]->status = (void*)&angle;
 }
 
 void cpart_step::ConfigurePropertiesWindow(CPWindow* WProp) {

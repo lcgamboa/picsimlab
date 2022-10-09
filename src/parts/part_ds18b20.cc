@@ -32,7 +32,7 @@
 enum { O_P1, O_F1, O_F2, O_PO1 };
 
 /* inputs */
-enum { I_PO1, I_PO2 };
+enum { I_PO1 };
 
 cpart_ds18b20::cpart_ds18b20(unsigned x, unsigned y)
     : font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
@@ -55,16 +55,8 @@ cpart_ds18b20::cpart_ds18b20(unsigned x, unsigned y)
 }
 
 void cpart_ds18b20::RegisterRemoteControl(void) {
-    for (int i = 0; i < inputc; i++) {
-        switch (input[i].id) {
-            case I_PO1:
-                input[i].status = &values[0];
-                break;
-            case I_PO2:
-                input[i].status = &values[1];
-                break;
-        }
-    }
+    input_ids[I_PO1]->status = &values[0];
+    input_ids[I_PO1]->update = &output_ids[O_PO1]->update;
 }
 
 cpart_ds18b20::~cpart_ds18b20(void) {
@@ -211,8 +203,6 @@ void cpart_ds18b20::EvMouseMove(uint button, uint x, uint y, uint state) {
 unsigned short cpart_ds18b20::get_in_id(char* name) {
     if (strcmp(name, "PO_1") == 0)
         return I_PO1;
-    if (strcmp(name, "PO_2") == 0)
-        return I_PO2;
 
     printf("Erro input '%s' don't have a valid id! \n", name);
     return -1;

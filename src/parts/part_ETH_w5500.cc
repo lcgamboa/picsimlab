@@ -332,13 +332,7 @@ void cpart_ETH_w5500::ReadPreferences(lxString value) {
 }
 
 void cpart_ETH_w5500::RegisterRemoteControl(void) {
-    for (int i = 0; i < outputc; i++) {
-        switch (output[i].id) {
-            case O_STAT:
-                output[i].status = (void*)&ethw;
-                break;
-        }
-    }
+    output_ids[O_STAT]->status = (void*)&ethw;
 }
 
 void cpart_ETH_w5500::ConfigurePropertiesWindow(CPWindow* WProp) {

@@ -238,48 +238,10 @@ void cpart_leds::ReadPreferences(lxString value) {
 
 void cpart_leds::RegisterRemoteControl(void) {
     const picpin* ppins = Window5.GetPinsValues();
-    for (int i = 0; i < outputc; i++) {
-        switch (output[i].id) {
-            case O_L1:
-                if (input_pins[0]) {
-                    output[i].status = (void*)&ppins[input_pins[0] - 1].oavalue;
-                }
-                break;
-            case O_L2:
-                if (input_pins[1]) {
-                    output[i].status = (void*)&ppins[input_pins[1] - 1].oavalue;
-                }
-                break;
-            case O_L3:
-                if (input_pins[2]) {
-                    output[i].status = (void*)&ppins[input_pins[2] - 1].oavalue;
-                }
-                break;
-            case O_L4:
-                if (input_pins[3]) {
-                    output[i].status = (void*)&ppins[input_pins[3] - 1].oavalue;
-                }
-                break;
-            case O_L5:
-                if (input_pins[4]) {
-                    output[i].status = (void*)&ppins[input_pins[4] - 1].oavalue;
-                }
-                break;
-            case O_L6:
-                if (input_pins[5]) {
-                    output[i].status = (void*)&ppins[input_pins[5] - 1].oavalue;
-                }
-                break;
-            case O_L7:
-                if (input_pins[6]) {
-                    output[i].status = (void*)&ppins[input_pins[6] - 1].oavalue;
-                }
-                break;
-            case O_L8:
-                if (input_pins[7]) {
-                    output[i].status = (void*)&ppins[input_pins[7] - 1].oavalue;
-                }
-                break;
+
+    for (int i = 0; i > 8; i++) {
+        if (input_pins[i]) {
+            output_ids[O_L1 + i]->status = (void*)&ppins[input_pins[i] - 1].oavalue;
         }
     }
 }

@@ -52,13 +52,8 @@ cpart_fm50::cpart_fm50(unsigned x, unsigned y)
 }
 
 void cpart_fm50::RegisterRemoteControl(void) {
-    for (int i = 0; i < inputc; i++) {
-        switch (input[i].id) {
-            case I_PO1:
-                input[i].status = &value;
-                break;
-        }
-    }
+    input_ids[I_PO1]->status = &value;
+    input_ids[I_PO1]->update = &output_ids[O_PO1]->update;
 }
 
 cpart_fm50::~cpart_fm50(void) {

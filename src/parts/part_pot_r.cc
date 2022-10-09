@@ -64,22 +64,14 @@ cpart_pot_r::cpart_pot_r(unsigned x, unsigned y)
 }
 
 void cpart_pot_r::RegisterRemoteControl(void) {
-    for (int i = 0; i < inputc; i++) {
-        switch (input[i].id) {
-            case I_PO1:
-                input[i].status = &values[0];
-                break;
-            case I_PO2:
-                input[i].status = &values[1];
-                break;
-            case I_PO3:
-                input[i].status = &values[2];
-                break;
-            case I_PO4:
-                input[i].status = &values[3];
-                break;
-        }
-    }
+    input_ids[I_PO1]->status = &values[0];
+    input_ids[I_PO1]->update = &output_ids[O_PO1]->update;
+    input_ids[I_PO2]->status = &values[1];
+    input_ids[I_PO2]->update = &output_ids[O_PO2]->update;
+    input_ids[I_PO3]->status = &values[2];
+    input_ids[I_PO3]->update = &output_ids[O_PO3]->update;
+    input_ids[I_PO4]->status = &values[3];
+    input_ids[I_PO4]->update = &output_ids[O_PO4]->update;
 }
 
 cpart_pot_r::~cpart_pot_r(void) {

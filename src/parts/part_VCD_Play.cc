@@ -72,14 +72,8 @@ cpart_VCD_Play::cpart_VCD_Play(unsigned x, unsigned y)
 }
 
 void cpart_VCD_Play::RegisterRemoteControl(void) {
-    for (int i = 0; i < inputc; i++) {
-        switch (input[i].id) {
-            case I_PLAY:
-                // TODO add support to remote control
-                // input[i].status = &play;
-                break;
-        }
-    }
+    input_ids[I_PLAY]->status = &play;
+    input_ids[I_PLAY]->update = &output_ids[O_PLAY]->update;
 }
 
 cpart_VCD_Play::~cpart_VCD_Play(void) {

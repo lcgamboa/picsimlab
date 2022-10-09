@@ -517,109 +517,38 @@ void cpart_7s_display_dec::ReadPreferences(lxString value) {
 }
 
 void cpart_7s_display_dec::RegisterRemoteControl(void) {
-    for (int i = 0; i < outputc; i++) {
-        switch (output[i].id) {
-            case O_A1:
-                output[i].status = (void*)&lm1[0];
-                break;
-            case O_B1:
-                output[i].status = (void*)&lm1[1];
-                break;
-            case O_C1:
-                output[i].status = (void*)&lm1[2];
-                break;
-            case O_D1:
-                output[i].status = (void*)&lm1[3];
-                break;
-            case O_E1:
-                output[i].status = (void*)&lm1[4];
-                break;
-            case O_F1:
-                output[i].status = (void*)&lm1[5];
-                break;
-            case O_G1:
-                output[i].status = (void*)&lm1[6];
-                break;
-            case O_P1:
-                output[i].status = (void*)&lm1[7];
-                break;
-
-            case O_A2:
-                output[i].status = (void*)&lm2[0];
-                break;
-            case O_B2:
-                output[i].status = (void*)&lm2[1];
-                break;
-            case O_C2:
-                output[i].status = (void*)&lm2[2];
-                break;
-            case O_D2:
-                output[i].status = (void*)&lm2[3];
-                break;
-            case O_E2:
-                output[i].status = (void*)&lm2[4];
-                break;
-            case O_F2:
-                output[i].status = (void*)&lm2[5];
-                break;
-            case O_G2:
-                output[i].status = (void*)&lm2[6];
-                break;
-            case O_P2:
-                output[i].status = (void*)&lm2[7];
-                break;
-
-            case O_A3:
-                output[i].status = (void*)&lm3[0];
-                break;
-            case O_B3:
-                output[i].status = (void*)&lm3[1];
-                break;
-            case O_C3:
-                output[i].status = (void*)&lm3[2];
-                break;
-            case O_D3:
-                output[i].status = (void*)&lm3[3];
-                break;
-            case O_E3:
-                output[i].status = (void*)&lm3[4];
-                break;
-            case O_F3:
-                output[i].status = (void*)&lm3[5];
-                break;
-            case O_G3:
-                output[i].status = (void*)&lm3[6];
-                break;
-            case O_P3:
-                output[i].status = (void*)&lm3[7];
-                break;
-
-            case O_A4:
-                output[i].status = (void*)&lm4[0];
-                break;
-            case O_B4:
-                output[i].status = (void*)&lm4[1];
-                break;
-            case O_C4:
-                output[i].status = (void*)&lm4[2];
-                break;
-            case O_D4:
-                output[i].status = (void*)&lm4[3];
-                break;
-            case O_E4:
-                output[i].status = (void*)&lm4[4];
-                break;
-            case O_F4:
-                output[i].status = (void*)&lm4[5];
-                break;
-            case O_G4:
-                output[i].status = (void*)&lm4[6];
-                break;
-            case O_P4:
-                output[i].status = (void*)&lm4[7];
-                break;
-        }
-    }
+    output_ids[O_A1]->status = (void*)&lm1[0];
+    output_ids[O_B1]->status = (void*)&lm1[1];
+    output_ids[O_C1]->status = (void*)&lm1[2];
+    output_ids[O_D1]->status = (void*)&lm1[3];
+    output_ids[O_E1]->status = (void*)&lm1[4];
+    output_ids[O_F1]->status = (void*)&lm1[5];
+    output_ids[O_G1]->status = (void*)&lm1[6];
+    output_ids[O_P1]->status = (void*)&lm1[7];
+    output_ids[O_A2]->status = (void*)&lm2[0];
+    output_ids[O_B2]->status = (void*)&lm2[1];
+    output_ids[O_C2]->status = (void*)&lm2[2];
+    output_ids[O_D2]->status = (void*)&lm2[3];
+    output_ids[O_E2]->status = (void*)&lm2[4];
+    output_ids[O_F2]->status = (void*)&lm2[5];
+    output_ids[O_G2]->status = (void*)&lm2[6];
+    output_ids[O_P2]->status = (void*)&lm2[7];
+    output_ids[O_A3]->status = (void*)&lm3[0];
+    output_ids[O_B3]->status = (void*)&lm3[1];
+    output_ids[O_C3]->status = (void*)&lm3[2];
+    output_ids[O_D3]->status = (void*)&lm3[3];
+    output_ids[O_E3]->status = (void*)&lm3[4];
+    output_ids[O_F3]->status = (void*)&lm3[5];
+    output_ids[O_G3]->status = (void*)&lm3[6];
+    output_ids[O_P3]->status = (void*)&lm3[7];
+    output_ids[O_A4]->status = (void*)&lm4[0];
+    output_ids[O_B4]->status = (void*)&lm4[1];
+    output_ids[O_C4]->status = (void*)&lm4[2];
+    output_ids[O_D4]->status = (void*)&lm4[3];
+    output_ids[O_E4]->status = (void*)&lm4[4];
+    output_ids[O_F4]->status = (void*)&lm4[5];
+    output_ids[O_G4]->status = (void*)&lm4[6];
+    output_ids[O_P4]->status = (void*)&lm4[7];
 }
 
 void cpart_7s_display_dec::ConfigurePropertiesWindow(CPWindow* WProp) {

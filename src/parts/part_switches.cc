@@ -72,34 +72,22 @@ cpart_switches::cpart_switches(unsigned x, unsigned y)
 }
 
 void cpart_switches::RegisterRemoteControl(void) {
-    for (int i = 0; i < inputc; i++) {
-        switch (input[i].id) {
-            case I_S1:
-                input[i].status = &output_value[0];
-                break;
-            case I_S2:
-                input[i].status = &output_value[1];
-                break;
-            case I_S3:
-                input[i].status = &output_value[2];
-                break;
-            case I_S4:
-                input[i].status = &output_value[3];
-                break;
-            case I_S5:
-                input[i].status = &output_value[4];
-                break;
-            case I_S6:
-                input[i].status = &output_value[5];
-                break;
-            case I_S7:
-                input[i].status = &output_value[6];
-                break;
-            case I_S8:
-                input[i].status = &output_value[7];
-                break;
-        }
-    }
+    input_ids[I_S1]->status = &output_value[0];
+    input_ids[I_S1]->update = &output_ids[O_S1]->update;
+    input_ids[I_S2]->status = &output_value[1];
+    input_ids[I_S2]->update = &output_ids[O_S2]->update;
+    input_ids[I_S3]->status = &output_value[2];
+    input_ids[I_S3]->update = &output_ids[O_S3]->update;
+    input_ids[I_S4]->status = &output_value[3];
+    input_ids[I_S4]->update = &output_ids[O_S4]->update;
+    input_ids[I_S5]->status = &output_value[4];
+    input_ids[I_S5]->update = &output_ids[O_S5]->update;
+    input_ids[I_S6]->status = &output_value[5];
+    input_ids[I_S6]->update = &output_ids[O_S6]->update;
+    input_ids[I_S7]->status = &output_value[6];
+    input_ids[I_S7]->update = &output_ids[O_S7]->update;
+    input_ids[I_S8]->status = &output_value[7];
+    input_ids[I_S8]->update = &output_ids[O_S8]->update;
 }
 
 void cpart_switches::Reset(void) {

@@ -31,9 +31,6 @@
 /* outputs */
 enum { O_P1, O_F1, O_F2, O_VOLT };
 
-/* inputs */
-enum { I_PO1 };
-
 cpart_fixedv::cpart_fixedv(unsigned x, unsigned y)
     : font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
       font_b(12, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -51,15 +48,7 @@ cpart_fixedv::cpart_fixedv(unsigned x, unsigned y)
     RegisterRemoteControl();
 }
 
-void cpart_fixedv::RegisterRemoteControl(void) {
-    for (int i = 0; i < inputc; i++) {
-        switch (input[i].id) {
-            case I_PO1:
-                input[i].status = &value;
-                break;
-        }
-    }
-}
+void cpart_fixedv::RegisterRemoteControl(void) {}
 
 cpart_fixedv::~cpart_fixedv(void) {
     delete Bitmap;
@@ -135,9 +124,6 @@ void cpart_fixedv::PostProcess(void) {
 }
 
 unsigned short cpart_fixedv::get_in_id(char* name) {
-    if (strcmp(name, "PO_1") == 0)
-        return I_PO1;
-
     printf("Erro input '%s' don't have a valid id! \n", name);
     return -1;
 }

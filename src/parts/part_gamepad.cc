@@ -76,31 +76,20 @@ cpart_gamepad::cpart_gamepad(unsigned x, unsigned y)
 }
 
 void cpart_gamepad::RegisterRemoteControl(void) {
-    for (int i = 0; i < inputc; i++) {
-        switch (input[i].id) {
-            case I_B1:
-                input[i].status = &output_value[0];
-                break;
-            case I_B2:
-                input[i].status = &output_value[1];
-                break;
-            case I_B3:
-                input[i].status = &output_value[2];
-                break;
-            case I_B4:
-                input[i].status = &output_value[3];
-                break;
-            case I_B5:
-                input[i].status = &output_value[4];
-                break;
-            case I_B6:
-                input[i].status = &output_value[5];
-                break;
-            case I_J1:
-                input[i].status = value;
-                break;
-        }
-    }
+    input_ids[I_B1]->status = &output_value[0];
+    input_ids[I_B1]->update = &output_ids[O_B1]->update;
+    input_ids[I_B2]->status = &output_value[1];
+    input_ids[I_B2]->update = &output_ids[O_B2]->update;
+    input_ids[I_B3]->status = &output_value[2];
+    input_ids[I_B3]->update = &output_ids[O_B3]->update;
+    input_ids[I_B4]->status = &output_value[3];
+    input_ids[I_B4]->update = &output_ids[O_B4]->update;
+    input_ids[I_B5]->status = &output_value[4];
+    input_ids[I_B5]->update = &output_ids[O_B5]->update;
+    input_ids[I_B6]->status = &output_value[5];
+    input_ids[I_B6]->update = &output_ids[O_B6]->update;
+    input_ids[I_J1]->status = value;
+    input_ids[I_J1]->update = &output_ids[O_J1]->update;
 }
 
 cpart_gamepad::~cpart_gamepad(void) {

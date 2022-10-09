@@ -84,14 +84,8 @@ cpart_VCD_Dump_an::cpart_VCD_Dump_an(unsigned x, unsigned y)
 }
 
 void cpart_VCD_Dump_an::RegisterRemoteControl(void) {
-    for (int i = 0; i < inputc; i++) {
-        switch (input[i].id) {
-            case I_START:
-                // TODO add support to remote control
-                input[i].status = &rec;
-                break;
-        }
-    }
+    input_ids[I_START]->status = &rec;
+    // input_ids[I_START]->update = &output_ids[O_START]->update;
 }
 
 cpart_VCD_Dump_an::~cpart_VCD_Dump_an(void) {
@@ -372,7 +366,7 @@ void cpart_VCD_Dump_an::ConfigurePropertiesWindow(CPWindow* WProp) {
         EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
 
     //((CButton*) WProp->GetChildByName ("button3"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE &
-    //CPWindow5::PropButtonRelease;
+    // CPWindow5::PropButtonRelease;
     //((CButton*) WProp->GetChildByName ("button3"))->SetTag (2 + id);
 
     // Window5.filedialog1.SetFileName (viewer);

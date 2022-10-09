@@ -57,16 +57,10 @@ cpart_dht22::cpart_dht22(unsigned x, unsigned y)
 }
 
 void cpart_dht22::RegisterRemoteControl(void) {
-    for (int i = 0; i < inputc; i++) {
-        switch (input[i].id) {
-            case I_PO1:
-                input[i].status = &values[0];
-                break;
-            case I_PO2:
-                input[i].status = &values[1];
-                break;
-        }
-    }
+    input_ids[I_PO1]->status = &values[0];
+    input_ids[I_PO1]->update = &output_ids[O_PO1]->update;
+    input_ids[I_PO2]->status = &values[1];
+    input_ids[I_PO2]->update = &output_ids[O_PO2]->update;
 }
 
 cpart_dht22::~cpart_dht22(void) {

@@ -427,19 +427,9 @@ void cpart_SignalGenerator::ReadPreferences(lxString value) {
 }
 
 void cpart_SignalGenerator::RegisterRemoteControl(void) {
-    for (int i = 0; i < outputc; i++) {
-        switch (output[i].id) {
-            case O_AMPL:
-                output[i].status = (void*)&ampl;
-                break;
-            case O_FREQ:
-                output[i].status = (void*)&freq;
-                break;
-            case O_OFFS:
-                output[i].status = (void*)&offs;
-                break;
-        }
-    }
+    output_ids[O_AMPL]->status = (void*)&ampl;
+    output_ids[O_FREQ]->status = (void*)&freq;
+    output_ids[O_OFFS]->status = (void*)&offs;
 }
 
 void cpart_SignalGenerator::ConfigurePropertiesWindow(CPWindow* WProp) {

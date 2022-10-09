@@ -272,13 +272,7 @@ void cpart_led_ws2812b::ChangeType(const unsigned int rows, const unsigned int c
 }
 
 void cpart_led_ws2812b::RegisterRemoteControl(void) {
-    for (int i = 0; i < outputc; i++) {
-        switch (output[i].id) {
-            case O_LED:
-                output[i].status = (void*)&led;
-                break;
-        }
-    }
+    output_ids[O_LED]->status = (void*)&led;
 }
 
 void cpart_led_ws2812b::ConfigurePropertiesWindow(CPWindow* WProp) {

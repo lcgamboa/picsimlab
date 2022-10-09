@@ -124,94 +124,59 @@ cpart_keypad::cpart_keypad(unsigned x, unsigned y)
 
 void cpart_keypad::RegisterRemoteControl(void) {
     if ((type == KT4x3) || (type == KT4x4)) {
-        for (int i = 0; i < inputc; i++) {
-            switch (input[i].id) {
-                case I_K1:
-                    input[i].status = &keys[0][0];
-                    break;
-                case I_K2:
-                    input[i].status = &keys[0][1];
-                    break;
-                case I_K3:
-                    input[i].status = &keys[0][2];
-                    break;
-                case I_K4:
-                    input[i].status = &keys[1][0];
-                    break;
-                case I_K5:
-                    input[i].status = &keys[1][1];
-                    break;
-                case I_K6:
-                    input[i].status = &keys[1][2];
-                    break;
-                case I_K7:
-                    input[i].status = &keys[2][0];
-                    break;
-                case I_K8:
-                    input[i].status = &keys[2][1];
-                    break;
-                case I_K9:
-                    input[i].status = &keys[2][2];
-                    break;
-                case I_Ka:
-                    input[i].status = &keys[3][0];
-                    break;
-                case I_K0:
-                    input[i].status = &keys[3][1];
-                    break;
-                case I_KT:
-                    input[i].status = &keys[3][2];
-                    break;
-                    // 4x4
-                case I_KA:
-                    input[i].status = &keys[0][3];
-                    break;
-                case I_KB:
-                    input[i].status = &keys[1][3];
-                    break;
-                case I_KC:
-                    input[i].status = &keys[2][3];
-                    break;
-                case I_KD:
-                    input[i].status = &keys[3][3];
-                    break;
-            }
-        }
+        input_ids[I_K1]->status = &keys[0][0];
+        input_ids[I_K1]->update = &output_ids[O_K1]->update;
+        input_ids[I_K2]->status = &keys[0][1];
+        input_ids[I_K2]->update = &output_ids[O_K2]->update;
+        input_ids[I_K3]->status = &keys[0][2];
+        input_ids[I_K3]->update = &output_ids[O_K3]->update;
+        input_ids[I_K4]->status = &keys[1][0];
+        input_ids[I_K4]->update = &output_ids[O_K4]->update;
+        input_ids[I_K5]->status = &keys[1][1];
+        input_ids[I_K5]->update = &output_ids[O_K5]->update;
+        input_ids[I_K6]->status = &keys[1][2];
+        input_ids[I_K6]->update = &output_ids[O_K6]->update;
+        input_ids[I_K7]->status = &keys[2][0];
+        input_ids[I_K7]->update = &output_ids[O_K7]->update;
+        input_ids[I_K8]->status = &keys[2][1];
+        input_ids[I_K8]->update = &output_ids[O_K8]->update;
+        input_ids[I_K9]->status = &keys[2][2];
+        input_ids[I_K9]->update = &output_ids[O_K9]->update;
+        input_ids[I_Ka]->status = &keys[3][0];
+        input_ids[I_Ka]->update = &output_ids[O_Ka]->update;
+        input_ids[I_K0]->status = &keys[3][1];
+        input_ids[I_K0]->update = &output_ids[O_K0]->update;
+        input_ids[I_KT]->status = &keys[3][2];
+        input_ids[I_KT]->update = &output_ids[O_KT]->update;
+        input_ids[I_KA]->status = &keys[0][3];
+        input_ids[I_KA]->update = &output_ids[O_KA]->update;
+        input_ids[I_KB]->status = &keys[1][3];
+        input_ids[I_KB]->update = &output_ids[O_KB]->update;
+        input_ids[I_KC]->status = &keys[2][3];
+        input_ids[I_KC]->update = &output_ids[O_KC]->update;
+        input_ids[I_KD]->status = &keys[3][3];
+        input_ids[I_KD]->update = &output_ids[O_KD]->update;
     } else if (type == KT2x5) {
-        for (int i = 0; i < inputc; i++) {
-            switch (input[i].id) {
-                case I_K1:
-                    input[i].status = &keys2[0][0];
-                    break;
-                case I_K2:
-                    input[i].status = &keys2[0][1];
-                    break;
-                case I_K3:
-                    input[i].status = &keys2[0][2];
-                    break;
-                case I_K4:
-                    input[i].status = &keys2[0][3];
-                    break;
-                case I_K5:
-                    input[i].status = &keys2[0][4];
-                    break;
-                case I_K6:
-                    input[i].status = &keys2[1][0];
-                    break;
-                case I_K7:
-                    input[i].status = &keys2[1][1];
-                    break;
-                case I_K8:
-                    input[i].status = &keys2[1][2];
-                    break;
-                case I_K9:
-                    input[i].status = &keys2[1][3];
-                    break;
-                case I_K0:
-                    input[i].status = &keys2[1][4];
-                    break;
-            }
-        }
+        input_ids[I_K1]->status = &keys2[0][0];
+        input_ids[I_K1]->update = &output_ids[O_K1]->update;
+        input_ids[I_K2]->status = &keys2[0][1];
+        input_ids[I_K2]->update = &output_ids[O_K2]->update;
+        input_ids[I_K3]->status = &keys2[0][2];
+        input_ids[I_K3]->update = &output_ids[O_K3]->update;
+        input_ids[I_K4]->status = &keys2[0][3];
+        input_ids[I_K4]->update = &output_ids[O_K4]->update;
+        input_ids[I_K5]->status = &keys2[0][4];
+        input_ids[I_K5]->update = &output_ids[O_K5]->update;
+        input_ids[I_K6]->status = &keys2[1][0];
+        input_ids[I_K6]->update = &output_ids[O_K6]->update;
+        input_ids[I_K7]->status = &keys2[1][1];
+        input_ids[I_K7]->update = &output_ids[O_K7]->update;
+        input_ids[I_K8]->status = &keys2[1][2];
+        input_ids[I_K8]->update = &output_ids[O_K8]->update;
+        input_ids[I_K9]->status = &keys2[1][3];
+        input_ids[I_K9]->update = &output_ids[O_K9]->update;
+        input_ids[I_K0]->status = &keys2[1][4];
+        input_ids[I_K0]->update = &output_ids[O_K0]->update;
     }
 }
 

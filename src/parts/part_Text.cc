@@ -212,17 +212,7 @@ void cpart_TEXT::ChangeText(int size, int textcolor, int bgcolor) {
     output_ids[O_TEXTB]->update = 1;
 }
 
-void cpart_TEXT::RegisterRemoteControl(void) {
-    /*
-    for (int i = 0; i < outputc; i++) {
-        switch (output[i].id) {
-            case O_TEXTB:
-                output[i].status = (void*)&led;
-                break;
-        }
-    }
-    */
-}
+void cpart_TEXT::RegisterRemoteControl(void) {}
 
 void cpart_TEXT::ConfigurePropertiesWindow(CPWindow* WProp) {
     lxString Colors = "";
