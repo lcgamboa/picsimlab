@@ -131,13 +131,7 @@ void cboard_Blue_Pill::Reset(void) {
 }
 
 void cboard_Blue_Pill::RegisterRemoteControl(void) {
-    for (int i = 0; i < outputc; i++) {
-        switch (output[i].id) {
-            case O_LED:
-                output[i].status = &pins[1].oavalue;
-                break;
-        }
-    }
+    output_ids[O_LED]->status = &pins[1].oavalue;
 }
 
 // Called ever 1s to refresh status

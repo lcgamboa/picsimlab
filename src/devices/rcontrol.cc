@@ -250,13 +250,20 @@ static void ProcessOutput(const char* msg, output_t* Output, int* ret) {
         *ret += sendtext((const char*)stemp.c_str());
     } else if ((Output->name[0] == 'D') && (Output->name[1] == 'S')) {
         lcd_t* lcd = (lcd_t*)Output->status;
-        snprintf(lstemp, 199, "%s %s= |%.16s\r\n", msg, Output->name, &lcd->ddram_char[0]);
+        char lbuff[81];
+        memcpy(lbuff, lcd->ddram_char, 80);
+        lbuff[80] = 0;
+        for (int i = 0; i < 80; i++) {
+            if (lbuff[i] < 16)
+                lbuff[i] = '*';
+        }
+        snprintf(lstemp, 199, "%s %s= |%.16s\r\n", msg, Output->name, &lbuff[0]);
 
         int size = strlen(lstemp) - 19;
         for (int x = 0; x < size; x++) {
             lstemp[x + size + 19] = ' ';
         }
-        snprintf(lstemp + (2 * size + 19), 199, "|%.16s\r\n", &lcd->ddram_char[40]);
+        snprintf(lstemp + (2 * size + 19), 199, "|%.16s\r\n", &lbuff[40]);
         *ret += sendtext(lstemp);
     } else if ((Output->name[0] == 'M') && (Output->name[1] == 'T')) {
         unsigned char** status = (unsigned char**)Output->status;

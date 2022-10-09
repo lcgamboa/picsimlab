@@ -32,18 +32,7 @@
 
 class cboard_K16F : public bsim_picsim {
 private:
-    unsigned char p_KEY1;
-    unsigned char p_KEY2;
-    unsigned char p_KEY3;
-    unsigned char p_KEY4;
-    unsigned char p_KEY5;
-    unsigned char p_KEY6;
-    unsigned char p_KEY7;
-    unsigned char p_KEY8;
-    unsigned char p_KEY9;
-    unsigned char p_KEY10;
-    unsigned char p_KEY11;
-    unsigned char p_KEY12;
+    unsigned char p_KEY[12];
 
     lcd_t lcd;
 

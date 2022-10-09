@@ -140,21 +140,10 @@ void cboard_STM32_H103::Reset(void) {
 }
 
 void cboard_STM32_H103::RegisterRemoteControl(void) {
-    for (int i = 0; i < inputc; i++) {
-        switch (input[i].id) {
-            case I_BUT:
-                input[i].status = &p_BUT;
-                break;
-        }
-    }
+    input_ids[I_BUT]->status = &p_BUT;
+    input_ids[I_BUT]->update = &output_ids[O_BUT]->update;
 
-    for (int i = 0; i < outputc; i++) {
-        switch (output[i].id) {
-            case O_LED:
-                output[i].status = &pins[52].oavalue;
-                break;
-        }
-    }
+    output_ids[O_LED]->status = &pins[52].oavalue;
 }
 
 // Called ever 1s to refresh status

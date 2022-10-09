@@ -573,25 +573,16 @@ void cboard_McLab1::Reset(void) {
 }
 
 void cboard_McLab1::RegisterRemoteControl(void) {
-    for (int i = 0; i < inputc; i++) {
-        switch (input[i].id) {
-            case I_RA1:
-                input[i].status = &p_BT[0];
-                break;
-            case I_RA2:
-                input[i].status = &p_BT[1];
-                break;
-            case I_RA3:
-                input[i].status = &p_BT[2];
-                break;
-            case I_RA4:
-                input[i].status = &p_BT[3];
-                break;
-            case I_JP1:
-                input[i].status = &jmp[0];
-                break;
-        }
-    }
+    input_ids[I_RA1]->status = &p_BT[0];
+    input_ids[I_RA1]->update = &output_ids[O_BRA1]->update;
+    input_ids[I_RA2]->status = &p_BT[1];
+    input_ids[I_RA2]->update = &output_ids[O_BRA2]->update;
+    input_ids[I_RA3]->status = &p_BT[2];
+    input_ids[I_RA3]->update = &output_ids[O_BRA3]->update;
+    input_ids[I_RA4]->status = &p_BT[3];
+    input_ids[I_RA4]->update = &output_ids[O_BRA4]->update;
+    input_ids[I_JP1]->status = &jmp[0];
+    input_ids[I_JP1]->update = &output_ids[O_JP1]->update;
 
     for (int i = 0; i < outputc; i++) {
         switch (output[i].id) {

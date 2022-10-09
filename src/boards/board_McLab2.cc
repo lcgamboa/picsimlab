@@ -933,143 +933,54 @@ void cboard_McLab2::Reset(void) {
 }
 
 void cboard_McLab2::RegisterRemoteControl(void) {
-    for (int i = 0; i < inputc; i++) {
-        switch (input[i].id) {
-            case I_RB0:
-                input[i].status = &p_BT[0];
-                break;
-            case I_RB1:
-                input[i].status = &p_BT[1];
-                break;
-            case I_RB2:
-                input[i].status = &p_BT[2];
-                break;
-            case I_RB3:
-                input[i].status = &p_BT[3];
-                break;
-            case I_POT1:
-                input[i].status = &pot1;
-                break;
-        }
-    }
+    input_ids[I_RB0]->status = &p_BT[0];
+    input_ids[I_RB0]->update = &output_ids[O_BRB0]->update;
+    input_ids[I_RB1]->status = &p_BT[1];
+    input_ids[I_RB1]->update = &output_ids[O_BRB1]->update;
+    input_ids[I_RB2]->status = &p_BT[2];
+    input_ids[I_RB2]->update = &output_ids[O_BRB2]->update;
+    input_ids[I_RB3]->status = &p_BT[3];
+    input_ids[I_RB3]->update = &output_ids[O_BRB3]->update;
+    input_ids[I_POT1]->status = &pot1;
+    input_ids[I_POT1]->update = &output_ids[O_POT1]->update;
 
-    for (int i = 0; i < outputc; i++) {
-        switch (output[i].id) {
-            case O_RB0:
-                output[i].status = &pic.pins[32].oavalue;
-                break;
-            case O_RB1:
-                output[i].status = &pic.pins[33].oavalue;
-                break;
-            case O_RB2:
-                output[i].status = &pic.pins[34].oavalue;
-                break;
-            case O_RB3:
-                output[i].status = &pic.pins[35].oavalue;
-                break;
-            case O_LCD:
-                output[i].status = &lcd;
-                break;
-            case O_A1:
-                output[i].status = &lm1[18];
-                break;
-                output[i].status = &lm1[19];
-                break;
-            case O_C1:
-                output[i].status = &lm1[20];
-                break;
-            case O_D1:
-                output[i].status = &lm1[21];
-                break;
-            case O_E1:
-                output[i].status = &lm1[26];
-                break;
-            case O_F1:
-                output[i].status = &lm1[27];
-                break;
-            case O_G1:
-                output[i].status = &lm1[28];
-                break;
-            case O_P1:
-                output[i].status = &lm1[29];
-                break;
-
-            case O_A2:
-                output[i].status = &lm2[18];
-                break;
-            case O_B2:
-                output[i].status = &lm2[19];
-                break;
-            case O_C2:
-                output[i].status = &lm2[20];
-                break;
-            case O_D2:
-                output[i].status = &lm2[21];
-                break;
-            case O_E2:
-                output[i].status = &lm2[26];
-                break;
-            case O_F2:
-                output[i].status = &lm2[27];
-                break;
-            case O_G2:
-                output[i].status = &lm2[28];
-                break;
-            case O_P2:
-                output[i].status = &lm2[29];
-                break;
-
-            case O_A3:
-                output[i].status = &lm3[18];
-                break;
-            case O_B3:
-                output[i].status = &lm3[19];
-                break;
-            case O_C3:
-                output[i].status = &lm3[20];
-                break;
-            case O_D3:
-                output[i].status = &lm3[21];
-                break;
-            case O_E3:
-                output[i].status = &lm3[26];
-                break;
-            case O_F3:
-                output[i].status = &lm3[27];
-                break;
-            case O_G3:
-                output[i].status = &lm3[28];
-                break;
-            case O_P3:
-                output[i].status = &lm3[29];
-                break;
-
-            case O_A4:
-                output[i].status = &lm4[18];
-                break;
-            case O_B4:
-                output[i].status = &lm4[19];
-                break;
-            case O_C4:
-                output[i].status = &lm4[20];
-                break;
-            case O_D4:
-                output[i].status = &lm4[21];
-                break;
-            case O_E4:
-                output[i].status = &lm4[26];
-                break;
-            case O_F4:
-                output[i].status = &lm4[27];
-                break;
-            case O_G4:
-                output[i].status = &lm4[28];
-                break;
-            case O_P4:
-                output[i].status = &lm4[29];
-                break;
-        }
-    }
+    output_ids[O_RB0]->status = &pic.pins[32].oavalue;
+    output_ids[O_RB1]->status = &pic.pins[33].oavalue;
+    output_ids[O_RB2]->status = &pic.pins[34].oavalue;
+    output_ids[O_RB3]->status = &pic.pins[35].oavalue;
+    output_ids[O_LCD]->status = &lcd;
+    output_ids[O_A1]->status = &lm1[18];
+    output_ids[O_B1]->status = &lm1[19];
+    output_ids[O_C1]->status = &lm1[20];
+    output_ids[O_D1]->status = &lm1[21];
+    output_ids[O_E1]->status = &lm1[26];
+    output_ids[O_F1]->status = &lm1[27];
+    output_ids[O_G1]->status = &lm1[28];
+    output_ids[O_P1]->status = &lm1[29];
+    output_ids[O_A2]->status = &lm2[18];
+    output_ids[O_B2]->status = &lm2[19];
+    output_ids[O_C2]->status = &lm2[20];
+    output_ids[O_D2]->status = &lm2[21];
+    output_ids[O_E2]->status = &lm2[26];
+    output_ids[O_F2]->status = &lm2[27];
+    output_ids[O_G2]->status = &lm2[28];
+    output_ids[O_P2]->status = &lm2[29];
+    output_ids[O_A3]->status = &lm3[18];
+    output_ids[O_B3]->status = &lm3[19];
+    output_ids[O_C3]->status = &lm3[20];
+    output_ids[O_D3]->status = &lm3[21];
+    output_ids[O_E3]->status = &lm3[26];
+    output_ids[O_F3]->status = &lm3[27];
+    output_ids[O_G3]->status = &lm3[28];
+    output_ids[O_P3]->status = &lm3[29];
+    output_ids[O_A4]->status = &lm4[18];
+    output_ids[O_B4]->status = &lm4[19];
+    output_ids[O_C4]->status = &lm4[20];
+    output_ids[O_D4]->status = &lm4[21];
+    output_ids[O_E4]->status = &lm4[26];
+    output_ids[O_F4]->status = &lm4[27];
+    output_ids[O_G4]->status = &lm4[28];
+    output_ids[O_P4]->status = &lm4[29];
 }
 
 void cboard_McLab2::EvMouseButtonPress(uint button, uint x, uint y, uint state) {

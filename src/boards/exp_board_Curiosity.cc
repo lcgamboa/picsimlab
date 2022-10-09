@@ -277,33 +277,15 @@ void cboard_Curiosity::Reset(void) {
 }
 
 void cboard_Curiosity::RegisterRemoteControl(void) {
-    for (int i = 0; i < inputc; i++) {
-        switch (input[i].id) {
-            case I_S1:
-                input[i].status = &p_BT1;
-                break;
-            case I_POT1:
-                input[i].status = &pot1;
-                break;
-        }
-    }
+    input_ids[I_S1]->status = &p_BT1;
+    input_ids[I_S1]->update = &output_ids[O_S1]->update;
+    input_ids[I_POT1]->status = &pot1;
+    input_ids[I_POT1]->update = &output_ids[O_POT1]->update;
 
-    for (int i = 0; i < outputc; i++) {
-        switch (output[i].id) {
-            case O_D4:
-                output[i].status = &pic.pins[1].oavalue;
-                break;
-            case O_D5:
-                output[i].status = &pic.pins[17].oavalue;
-                break;
-            case O_D6:
-                output[i].status = &pic.pins[16].oavalue;
-                break;
-            case O_D7:
-                output[i].status = &pic.pins[4].oavalue;
-                break;
-        }
-    }
+    output_ids[O_D4]->status = &pic.pins[1].oavalue;
+    output_ids[O_D5]->status = &pic.pins[17].oavalue;
+    output_ids[O_D6]->status = &pic.pins[16].oavalue;
+    output_ids[O_D7]->status = &pic.pins[4].oavalue;
 }
 
 // Called ever 1s to refresh status

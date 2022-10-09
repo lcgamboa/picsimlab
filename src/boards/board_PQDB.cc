@@ -897,85 +897,62 @@ void cboard_PQDB::Reset(void) {
 }
 
 void cboard_PQDB::RegisterRemoteControl(void) {
-    for (int i = 0; i < inputc; i++) {
-        switch (input[i].id) {
-            case I_TC1:
-                input[i].status = &p_KEY[0];
-                break;
-            case I_TC2:
-                input[i].status = &p_KEY[1];
-                break;
-            case I_TC3:
-                input[i].status = &p_KEY[2];
-                break;
-            case I_TC4:
-                input[i].status = &p_KEY[3];
-                break;
-            case I_TC5:
-                input[i].status = &p_KEY[4];
-                break;
-            case I_TC6:
-                input[i].status = &p_KEY[5];
-                break;
-            case I_TC7:
-                input[i].status = &p_KEY[6];
-                break;
-            case I_TC8:
-                input[i].status = &p_KEY[7];
-                break;
-            case I_TC9:
-                input[i].status = &p_KEY[8];
-                break;
-            case I_TC0:
-                input[i].status = &p_KEY[9];
-                break;
-            case I_POT:
-                input[i].status = &pot;
-                break;
-        }
-    }
+    input_ids[I_TC1]->status = &p_KEY[0];
+    input_ids[I_TC1]->update = &output_ids[O_TC1]->update;
+    input_ids[I_TC2]->status = &p_KEY[1];
+    input_ids[I_TC2]->update = &output_ids[O_TC2]->update;
+    input_ids[I_TC3]->status = &p_KEY[2];
+    input_ids[I_TC3]->update = &output_ids[O_TC3]->update;
+    input_ids[I_TC4]->status = &p_KEY[3];
+    input_ids[I_TC4]->update = &output_ids[O_TC4]->update;
+    input_ids[I_TC5]->status = &p_KEY[4];
+    input_ids[I_TC5]->update = &output_ids[O_TC5]->update;
+    input_ids[I_TC6]->status = &p_KEY[5];
+    input_ids[I_TC6]->update = &output_ids[O_TC6]->update;
+    input_ids[I_TC7]->status = &p_KEY[6];
+    input_ids[I_TC7]->update = &output_ids[O_TC7]->update;
+    input_ids[I_TC8]->status = &p_KEY[7];
+    input_ids[I_TC8]->update = &output_ids[O_TC8]->update;
+    input_ids[I_TC9]->status = &p_KEY[8];
+    input_ids[I_TC9]->update = &output_ids[O_TC9]->update;
+    input_ids[I_TC0]->status = &p_KEY[9];
+    input_ids[I_TC0]->update = &output_ids[O_TC0]->update;
+    input_ids[I_POT]->status = &pot;
+    input_ids[I_POT]->update = &output_ids[O_POT]->update;
 
-    for (int i = 0; i < outputc; i++) {
-        switch (output[i].id) {
-            case O_LCD:
-                output[i].status = &lcd;
-                break;
-            case O_A1:
-            case O_B1:
-            case O_C1:
-            case O_D1:
-            case O_E1:
-            case O_F1:
-            case O_G1:
-            case O_P1:
-            case O_A2:
-            case O_B2:
-            case O_C2:
-            case O_D2:
-            case O_E2:
-            case O_F2:
-            case O_G2:
-            case O_P2:
-            case O_A3:
-            case O_B3:
-            case O_C3:
-            case O_D3:
-            case O_E3:
-            case O_F3:
-            case O_G3:
-            case O_P3:
-            case O_A4:
-            case O_B4:
-            case O_C4:
-            case O_D4:
-            case O_E4:
-            case O_F4:
-            case O_G4:
-            case O_P4:
-                output[i].status = &lm7seg[output[i].id];
-                break;
-        }
-    }
+    output_ids[O_LCD]->status = &lcd;
+    output_ids[O_A1]->status = &lm7seg[0];
+    output_ids[O_B1]->status = &lm7seg[1];
+    output_ids[O_C1]->status = &lm7seg[2];
+    output_ids[O_D1]->status = &lm7seg[3];
+    output_ids[O_E1]->status = &lm7seg[4];
+    output_ids[O_F1]->status = &lm7seg[5];
+    output_ids[O_G1]->status = &lm7seg[6];
+    output_ids[O_P1]->status = &lm7seg[7];
+    output_ids[O_A2]->status = &lm7seg[8];
+    output_ids[O_B2]->status = &lm7seg[9];
+    output_ids[O_C2]->status = &lm7seg[10];
+    output_ids[O_D2]->status = &lm7seg[11];
+    output_ids[O_E2]->status = &lm7seg[12];
+    output_ids[O_F2]->status = &lm7seg[13];
+    output_ids[O_G2]->status = &lm7seg[14];
+    output_ids[O_P2]->status = &lm7seg[15];
+    output_ids[O_A3]->status = &lm7seg[16];
+    output_ids[O_B3]->status = &lm7seg[17];
+    output_ids[O_C3]->status = &lm7seg[18];
+    output_ids[O_D3]->status = &lm7seg[19];
+    output_ids[O_E3]->status = &lm7seg[20];
+    output_ids[O_F3]->status = &lm7seg[21];
+    output_ids[O_G3]->status = &lm7seg[22];
+    output_ids[O_P3]->status = &lm7seg[23];
+    output_ids[O_A4]->status = &lm7seg[24];
+    output_ids[O_B4]->status = &lm7seg[25];
+    output_ids[O_C4]->status = &lm7seg[26];
+    output_ids[O_D4]->status = &lm7seg[27];
+    output_ids[O_E4]->status = &lm7seg[28];
+    output_ids[O_F4]->status = &lm7seg[29];
+    output_ids[O_G4]->status = &lm7seg[30];
+    output_ids[O_P4]->status = &lm7seg[31];
 }
 
 void cboard_PQDB::EvMouseMove(uint button, uint x, uint y, uint state) {

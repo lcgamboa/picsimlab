@@ -263,33 +263,15 @@ void cboard_Xpress::Reset(void) {
 }
 
 void cboard_Xpress::RegisterRemoteControl(void) {
-    for (int i = 0; i < inputc; i++) {
-        switch (input[i].id) {
-            case I_S1:
-                input[i].status = &p_BT1;
-                break;
-            case I_POT1:
-                input[i].status = &pot1;
-                break;
-        }
-    }
+    input_ids[I_S1]->status = &p_BT1;
+    input_ids[I_S1]->update = &output_ids[O_S1]->update;
+    input_ids[I_POT1]->status = &pot1;
+    input_ids[I_POT1]->update = &output_ids[O_POT1]->update;
 
-    for (int i = 0; i < outputc; i++) {
-        switch (output[i].id) {
-            case O_D2:
-                output[i].status = &pic.pins[26].oavalue;
-                break;
-            case O_D3:
-                output[i].status = &pic.pins[27].oavalue;
-                break;
-            case O_D4:
-                output[i].status = &pic.pins[0].oavalue;
-                break;
-            case O_D5:
-                output[i].status = &pic.pins[1].oavalue;
-                break;
-        }
-    }
+    output_ids[O_D2]->status = &pic.pins[26].oavalue;
+    output_ids[O_D3]->status = &pic.pins[27].oavalue;
+    output_ids[O_D4]->status = &pic.pins[0].oavalue;
+    output_ids[O_D5]->status = &pic.pins[1].oavalue;
 }
 
 // Called ever 1s to refresh status

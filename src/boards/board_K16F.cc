@@ -192,7 +192,7 @@ void cboard_K16F::Draw(CDraw* draw) {
                     draw->Canvas.SetColor(230, 230, 230);
                     draw->Canvas.RotatedText(Proc, output[i].x2, output[i].y1 + 5, -90);
                 } else if (output[i].id <= O_TCT) {
-                    if (output[i].value) {
+                    if (p_KEY[output[i].id - O_TC1]) {
                         draw->Canvas.SetLineWidth(4);
                         draw->Canvas.SetColor(255, 0, 0);
                     } else {
@@ -294,62 +294,62 @@ void cboard_K16F::Run_CPU(void) {
 
             // keyboard
 
-            if (p_KEY1) {
+            if (p_KEY[0]) {
                 pic_set_pin(&pic, 18, pic_get_pin(&pic, 13));
                 pic_set_pin(&pic, 13, pic_get_pin(&pic, 18));
             }
 
-            if (p_KEY2) {
+            if (p_KEY[1]) {
                 pic_set_pin(&pic, 18, pic_get_pin(&pic, 12));
                 pic_set_pin(&pic, 12, pic_get_pin(&pic, 18));
             }
 
-            if (p_KEY3) {
+            if (p_KEY[2]) {
                 pic_set_pin(&pic, 18, pic_get_pin(&pic, 11));
                 pic_set_pin(&pic, 11, pic_get_pin(&pic, 18));
             }
 
-            if (p_KEY4) {
+            if (p_KEY[3]) {
                 pic_set_pin(&pic, 1, pic_get_pin(&pic, 13));
                 pic_set_pin(&pic, 13, pic_get_pin(&pic, 1));
             }
 
-            if (p_KEY5) {
+            if (p_KEY[4]) {
                 pic_set_pin(&pic, 1, pic_get_pin(&pic, 12));
                 pic_set_pin(&pic, 12, pic_get_pin(&pic, 1));
             }
 
-            if (p_KEY6) {
+            if (p_KEY[5]) {
                 pic_set_pin(&pic, 1, pic_get_pin(&pic, 11));
                 pic_set_pin(&pic, 11, pic_get_pin(&pic, 1));
             }
 
-            if (p_KEY7) {
+            if (p_KEY[6]) {
                 pic_set_pin(&pic, 15, pic_get_pin(&pic, 13));
                 pic_set_pin(&pic, 13, pic_get_pin(&pic, 15));
             }
 
-            if (p_KEY8) {
+            if (p_KEY[7]) {
                 pic_set_pin(&pic, 15, pic_get_pin(&pic, 12));
                 pic_set_pin(&pic, 12, pic_get_pin(&pic, 15));
             }
 
-            if (p_KEY9) {
+            if (p_KEY[8]) {
                 pic_set_pin(&pic, 15, pic_get_pin(&pic, 11));
                 pic_set_pin(&pic, 11, pic_get_pin(&pic, 15));
             }
 
-            if (p_KEY10) {
+            if (p_KEY[9]) {
                 pic_set_pin(&pic, 16, pic_get_pin(&pic, 13));
                 pic_set_pin(&pic, 13, pic_get_pin(&pic, 16));
             }
 
-            if (p_KEY11) {
+            if (p_KEY[10]) {
                 pic_set_pin(&pic, 16, pic_get_pin(&pic, 12));
                 pic_set_pin(&pic, 12, pic_get_pin(&pic, 16));
             }
 
-            if (p_KEY12) {
+            if (p_KEY[11]) {
                 pic_set_pin(&pic, 16, pic_get_pin(&pic, 11));
                 pic_set_pin(&pic, 11, pic_get_pin(&pic, 16));
             }
@@ -454,18 +454,18 @@ void cboard_K16F::Reset(void) {
     pic_set_pin_DOV(&pic, 15, 0);
     pic_set_pin_DOV(&pic, 16, 0);
 
-    p_KEY1 = 0;
-    p_KEY2 = 0;
-    p_KEY3 = 0;
-    p_KEY4 = 0;
-    p_KEY5 = 0;
-    p_KEY6 = 0;
-    p_KEY7 = 0;
-    p_KEY8 = 0;
-    p_KEY9 = 0;
-    p_KEY10 = 0;
-    p_KEY11 = 0;
-    p_KEY12 = 0;
+    p_KEY[0] = 0;
+    p_KEY[1] = 0;
+    p_KEY[2] = 0;
+    p_KEY[3] = 0;
+    p_KEY[4] = 0;
+    p_KEY[5] = 0;
+    p_KEY[6] = 0;
+    p_KEY[7] = 0;
+    p_KEY[8] = 0;
+    p_KEY[9] = 0;
+    p_KEY[10] = 0;
+    p_KEY[11] = 0;
 
     pic_set_pin(&pic, 13, 0);
     pic_set_pin(&pic, 12, 0);
@@ -496,66 +496,36 @@ void cboard_K16F::Reset(void) {
 }
 
 void cboard_K16F::RegisterRemoteControl(void) {
-    for (int i = 0; i < inputc; i++) {
-        switch (input[i].id) {
-            case I_TC1:
-                input[i].status = &p_KEY1;
-                break;
-            case I_TC2:
-                input[i].status = &p_KEY2;
-                break;
-            case I_TC3:
-                input[i].status = &p_KEY3;
-                break;
-            case I_TC4:
-                input[i].status = &p_KEY4;
-                break;
-            case I_TC5:
-                input[i].status = &p_KEY5;
-                break;
-            case I_TC6:
-                input[i].status = &p_KEY6;
-                break;
-            case I_TC7:
-                input[i].status = &p_KEY7;
-                break;
-            case I_TC8:
-                input[i].status = &p_KEY8;
-                break;
-            case I_TC9:
-                input[i].status = &p_KEY9;
-                break;
-            case I_TCA:
-                input[i].status = &p_KEY10;
-                break;
-            case I_TC0:
-                input[i].status = &p_KEY11;
-                break;
-            case I_TCT:
-                input[i].status = &p_KEY12;
-                break;
-        }
-    }
+    input_ids[I_TC1]->status = &p_KEY[0];
+    input_ids[I_TC1]->update = &output_ids[O_TC1]->update;
+    input_ids[I_TC2]->status = &p_KEY[1];
+    input_ids[I_TC2]->update = &output_ids[O_TC2]->update;
+    input_ids[I_TC3]->status = &p_KEY[2];
+    input_ids[I_TC3]->update = &output_ids[O_TC3]->update;
+    input_ids[I_TC4]->status = &p_KEY[3];
+    input_ids[I_TC4]->update = &output_ids[O_TC4]->update;
+    input_ids[I_TC5]->status = &p_KEY[4];
+    input_ids[I_TC5]->update = &output_ids[O_TC5]->update;
+    input_ids[I_TC6]->status = &p_KEY[5];
+    input_ids[I_TC6]->update = &output_ids[O_TC6]->update;
+    input_ids[I_TC7]->status = &p_KEY[6];
+    input_ids[I_TC7]->update = &output_ids[O_TC7]->update;
+    input_ids[I_TC8]->status = &p_KEY[7];
+    input_ids[I_TC8]->update = &output_ids[O_TC8]->update;
+    input_ids[I_TC9]->status = &p_KEY[8];
+    input_ids[I_TC9]->update = &output_ids[O_TC9]->update;
+    input_ids[I_TCA]->status = &p_KEY[9];
+    input_ids[I_TCA]->update = &output_ids[O_TCA]->update;
+    input_ids[I_TC0]->status = &p_KEY[10];
+    input_ids[I_TC0]->update = &output_ids[O_TC0]->update;
+    input_ids[I_TCT]->status = &p_KEY[11];
+    input_ids[I_TCT]->update = &output_ids[O_TCT]->update;
 
-    for (int i = 0; i < outputc; i++) {
-        switch (output[i].id) {
-            case O_RA1:
-                output[i].status = &pic.pins[17].oavalue;
-                break;
-            case O_RA2:
-                output[i].status = &pic.pins[0].oavalue;
-                break;
-            case O_RA6:
-                output[i].status = &pic.pins[14].oavalue;
-                break;
-            case O_RA7:
-                output[i].status = &pic.pins[15].oavalue;
-                break;
-            case O_LCD:
-                output[i].status = &lcd;
-                break;
-        }
-    }
+    output_ids[O_RA1]->status = &pic.pins[17].oavalue;
+    output_ids[O_RA2]->status = &pic.pins[0].oavalue;
+    output_ids[O_RA6]->status = &pic.pins[14].oavalue;
+    output_ids[O_RA7]->status = &pic.pins[15].oavalue;
+    output_ids[O_LCD]->status = &lcd;
 }
 
 void cboard_K16F::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
@@ -588,66 +558,54 @@ void cboard_K16F::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
                     output_ids[O_RST]->update = 1;
                 } break;
                 case I_TC1: {
-                    p_KEY1 = 1;
-                    output_ids[O_TC1]->value = 1;
+                    p_KEY[0] = 1;
                     output_ids[O_TC1]->update = 1;
                 } break;
                 case I_TC2: {
-                    p_KEY2 = 1;
-                    output_ids[O_TC2]->value = 1;
+                    p_KEY[1] = 1;
                     output_ids[O_TC2]->update = 1;
                 } break;
                 case I_TC3: {
-                    p_KEY3 = 1;
-                    output_ids[O_TC3]->value = 1;
+                    p_KEY[2] = 1;
                     output_ids[O_TC3]->update = 1;
                 } break;
 
                 case I_TC4: {
-                    p_KEY4 = 1;
-                    output_ids[O_TC4]->value = 1;
+                    p_KEY[3] = 1;
                     output_ids[O_TC4]->update = 1;
                 } break;
                 case I_TC5: {
-                    p_KEY5 = 1;
-                    output_ids[O_TC5]->value = 1;
+                    p_KEY[4] = 1;
                     output_ids[O_TC5]->update = 1;
                 } break;
                 case I_TC6: {
-                    p_KEY6 = 1;
-                    output_ids[O_TC6]->value = 1;
+                    p_KEY[5] = 1;
                     output_ids[O_TC6]->update = 1;
                 } break;
 
                 case I_TC7: {
-                    p_KEY7 = 1;
-                    output_ids[O_TC7]->value = 1;
+                    p_KEY[6] = 1;
                     output_ids[O_TC7]->update = 1;
                 } break;
                 case I_TC8: {
-                    p_KEY8 = 1;
-                    output_ids[O_TC8]->value = 1;
+                    p_KEY[7] = 1;
                     output_ids[O_TC8]->update = 1;
                 } break;
                 case I_TC9: {
-                    p_KEY9 = 1;
-                    output_ids[O_TC9]->value = 1;
+                    p_KEY[8] = 1;
                     output_ids[O_TC9]->update = 1;
                 } break;
 
                 case I_TCA: {
-                    p_KEY10 = 1;
-                    output_ids[O_TCA]->value = 1;
+                    p_KEY[9] = 1;
                     output_ids[O_TCA]->update = 1;
                 } break;
                 case I_TC0: {
-                    p_KEY11 = 1;
-                    output_ids[O_TC0]->value = 1;
+                    p_KEY[10] = 1;
                     output_ids[O_TC0]->update = 1;
                 } break;
                 case I_TCT: {
-                    p_KEY12 = 1;
-                    output_ids[O_TCT]->value = 1;
+                    p_KEY[11] = 1;
                     output_ids[O_TCT]->update = 1;
                 } break;
                 case I_VIEW:
@@ -715,68 +673,51 @@ void cboard_K16F::EvMouseButtonRelease(uint button, uint x, uint y, uint state) 
                 } break;
 
                 case I_TC1: {
-                    p_KEY1 = 0;
-                    output_ids[O_TC1]->value = 0;
+                    p_KEY[0] = 0;
                     output_ids[O_TC1]->update = 1;
                 } break;
                 case I_TC4: {
-                    p_KEY4 = 0;
-                    output_ids[O_TC4]->value = 0;
+                    p_KEY[3] = 0;
                     output_ids[O_TC4]->update = 1;
                 } break;
                 case I_TC7: {
-                    p_KEY7 = 0;
-                    output_ids[O_TC7]->value = 0;
+                    p_KEY[6] = 0;
                     output_ids[O_TC7]->update = 1;
                 } break;
                 case I_TCA: {
-                    p_KEY10 = 0;
-                    output_ids[O_TCA]->value = 0;
+                    p_KEY[9] = 0;
                     output_ids[O_TCA]->update = 1;
                 } break;
-
                 case I_TC2: {
-                    p_KEY2 = 0;
-                    output_ids[O_TC2]->value = 0;
+                    p_KEY[1] = 0;
                     output_ids[O_TC2]->update = 1;
                 } break;
-
                 case I_TC5: {
-                    p_KEY5 = 0;
-                    output_ids[O_TC5]->value = 0;
+                    p_KEY[4] = 0;
                     output_ids[O_TC5]->update = 1;
                 } break;
-
                 case I_TC8: {
-                    p_KEY8 = 0;
-                    output_ids[O_TC8]->value = 0;
+                    p_KEY[7] = 0;
                     output_ids[O_TC8]->update = 1;
                 } break;
-
                 case I_TC0: {
-                    p_KEY11 = 0;
-                    output_ids[O_TC0]->value = 0;
+                    p_KEY[10] = 0;
                     output_ids[O_TC0]->update = 1;
                 } break;
-
                 case I_TC3: {
-                    p_KEY3 = 0;
-                    output_ids[O_TC3]->value = 0;
+                    p_KEY[2] = 0;
                     output_ids[O_TC3]->update = 1;
                 } break;
                 case I_TC6: {
-                    p_KEY6 = 0;
-                    output_ids[O_TC6]->value = 0;
+                    p_KEY[5] = 0;
                     output_ids[O_TC6]->update = 1;
                 }
                 case I_TC9: {
-                    p_KEY9 = 0;
-                    output_ids[O_TC9]->value = 0;
+                    p_KEY[8] = 0;
                     output_ids[O_TC9]->update = 1;
                 }
                 case I_TCT: {
-                    p_KEY12 = 0;
-                    output_ids[O_TCT]->value = 0;
+                    p_KEY[11] = 0;
                     output_ids[O_TCT]->update = 1;
                 } break;
             }
@@ -786,85 +727,104 @@ void cboard_K16F::EvMouseButtonRelease(uint button, uint x, uint y, uint state) 
 
 void cboard_K16F::EvKeyPress(uint key, uint mask) {
     if (key == '1') {
-        p_KEY1 = 1;
+        p_KEY[0] = 1;
+        output_ids[O_TC1]->update = 1;
     }
     if (key == '2') {
-        p_KEY2 = 1;
+        p_KEY[1] = 1;
+        output_ids[O_TC2]->update = 1;
     }
     if (key == '3') {
-        p_KEY3 = 1;
+        p_KEY[2] = 1;
+        output_ids[O_TC3]->update = 1;
     }
 
     if (key == '4') {
-        p_KEY4 = 1;
+        p_KEY[3] = 1;
+        output_ids[O_TC4]->update = 1;
     }
     if (key == '5') {
-        p_KEY5 = 1;
+        p_KEY[4] = 1;
+        output_ids[O_TC5]->update = 1;
     }
     if (key == '6') {
-        p_KEY6 = 1;
+        p_KEY[5] = 1;
+        output_ids[O_TC6]->update = 1;
     }
-
     if (key == '7') {
-        p_KEY7 = 1;
+        p_KEY[6] = 1;
+        output_ids[O_TC7]->update = 1;
     }
     if (key == '8') {
-        p_KEY8 = 1;
+        p_KEY[7] = 1;
+        output_ids[O_TC8]->update = 1;
     }
     if (key == '9') {
-        p_KEY9 = 1;
+        p_KEY[8] = 1;
+        output_ids[O_TC9]->update = 1;
     }
-
     if (key == '*') {
-        p_KEY10 = 1;
+        p_KEY[9] = 1;
+        output_ids[O_TCA]->update = 1;
     }
     if (key == '0') {
-        p_KEY11 = 1;
+        p_KEY[10] = 1;
+        output_ids[O_TC0]->update = 1;
     }
     if (key == '#') {
-        p_KEY12 = 1;
+        p_KEY[11] = 1;
+        output_ids[O_TCT]->update = 1;
     }
 }
 
 void cboard_K16F::EvKeyRelease(uint key, uint mask) {
     if (key == '1') {
-        p_KEY1 = 0;
+        p_KEY[0] = 0;
+        output_ids[O_TC1]->update = 1;
     }
     if (key == '2') {
-        p_KEY2 = 0;
+        p_KEY[1] = 0;
+        output_ids[O_TC2]->update = 1;
     }
     if (key == '3') {
-        p_KEY3 = 0;
+        p_KEY[2] = 0;
+        output_ids[O_TC3]->update = 1;
     }
-
     if (key == '4') {
-        p_KEY4 = 0;
+        p_KEY[3] = 0;
+        output_ids[O_TC4]->update = 1;
     }
     if (key == '5') {
-        p_KEY5 = 0;
+        p_KEY[4] = 0;
+        output_ids[O_TC5]->update = 1;
     }
     if (key == '6') {
-        p_KEY6 = 0;
+        p_KEY[5] = 0;
+        output_ids[O_TC6]->update = 1;
     }
-
     if (key == '7') {
-        p_KEY7 = 0;
+        p_KEY[6] = 0;
+        output_ids[O_TC7]->update = 1;
     }
     if (key == '8') {
-        p_KEY8 = 0;
+        p_KEY[7] = 0;
+        output_ids[O_TC8]->update = 1;
     }
     if (key == '9') {
-        p_KEY9 = 0;
+        p_KEY[8] = 0;
+        output_ids[O_TC9]->update = 1;
     }
-
     if (key == '*') {
-        p_KEY10 = 0;
+        p_KEY[9] = 0;
+        output_ids[O_TCA]->update = 1;
     }
     if (key == '0') {
-        p_KEY11 = 0;
+        p_KEY[10] = 0;
+        output_ids[O_TC0]->update = 1;
     }
     if (key == '#') {
-        p_KEY12 = 0;
+        p_KEY[11] = 0;
+        output_ids[O_TCT]->update = 1;
     }
 }
 

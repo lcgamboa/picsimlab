@@ -334,39 +334,19 @@ void cboard_Curiosity_HPC::Reset(void) {
 }
 
 void cboard_Curiosity_HPC::RegisterRemoteControl(void) {
-    for (int i = 0; i < inputc; i++) {
-        switch (input[i].id) {
-            case I_S1:
-                input[i].status = &p_BT[0];
-                break;
-            case I_S2:
-                input[i].status = &p_BT[1];
-                break;
-            case I_JMP:
-                input[i].status = &jmp[0];
-                break;
-            case I_POT1:
-                input[i].status = &pot1;
-                break;
-        }
-    }
+    input_ids[I_S1]->status = &p_BT[0];
+    input_ids[I_S1]->update = &output_ids[O_S1]->update;
+    input_ids[I_S2]->status = &p_BT[1];
+    input_ids[I_S2]->update = &output_ids[O_S2]->update;
+    input_ids[I_JMP]->status = &jmp[0];
+    input_ids[I_JMP]->update = &output_ids[O_JMP]->update;
+    input_ids[I_POT1]->status = &pot1;
+    input_ids[I_POT1]->update = &output_ids[O_POT1]->update;
 
-    for (int i = 0; i < outputc; i++) {
-        switch (output[i].id) {
-            case O_D2:
-                output[i].status = &pic.pins[5].oavalue;
-                break;
-            case O_D3:
-                output[i].status = &pic.pins[6].oavalue;
-                break;
-            case O_D4:
-                output[i].status = &pic.pins[9].oavalue;
-                break;
-            case O_D5:
-                output[i].status = &pic.pins[8].oavalue;
-                break;
-        }
-    }
+    output_ids[O_D2]->status = &pic.pins[5].oavalue;
+    output_ids[O_D3]->status = &pic.pins[6].oavalue;
+    output_ids[O_D4]->status = &pic.pins[9].oavalue;
+    output_ids[O_D5]->status = &pic.pins[8].oavalue;
 }
 
 // Called ever 1s to refresh status
