@@ -485,7 +485,7 @@ void CSpareParts::Process(void) {
         }
     } else {
         for (i = 0; i < partsc_aup; i++) {
-            parts[i]->Process();
+            parts_aup[i]->Process();
         }
     }
 }
