@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "part_TempSys.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum { O_HT, O_CO, O_TE, O_TA, O_F1, O_F2, O_OTA, O_OTE, O_VT };
@@ -46,15 +46,15 @@ cpart_tempsys::cpart_tempsys(unsigned x, unsigned y)
     vtc = 0;
     vt = 0;
 
-    lxImage image(&Window5);
-    image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("boards/Common/VT1.svg")), Orientation, Scale * 0.867,
+    lxImage image(SpareParts.GetWindow());
+    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/VT1.svg")), Orientation, Scale * 0.867,
                    Scale * 0.867);
-    vent[0] = new lxBitmap(&image, &Window1);
+    vent[0] = new lxBitmap(&image, SpareParts.GetWindow());
     image.Destroy();
 
-    image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("boards/Common/VT2.svg")), Orientation, Scale * 0.867,
+    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/VT2.svg")), Orientation, Scale * 0.867,
                    Scale * 0.867);
-    vent[1] = new lxBitmap(&image, &Window1);
+    vent[1] = new lxBitmap(&image, SpareParts.GetWindow());
     image.Destroy();
 
     input_pins[0] = 0;
@@ -86,7 +86,7 @@ void cpart_tempsys::Draw(void) {
     int i;
     lxString str;
 
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     Update = 0;
 
@@ -113,7 +113,7 @@ void cpart_tempsys::Draw(void) {
                     if (input_pins[output[i].id - O_HT] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
                     else
-                        canvas.RotatedText(Window5.GetPinName(input_pins[output[i].id - O_HT]), output[i].x1,
+                        canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_HT]), output[i].x1,
                                            output[i].y1, 0);
                     break;
                 case O_F1:
@@ -158,7 +158,7 @@ void cpart_tempsys::Draw(void) {
 
     // sensor ventilador
     if (input_pins[1] > 0) {
-        rpmstp = ((float)Window1.GetNSTEPJ()) / (0.7196 * (ppins[input_pins[1] - 1].oavalue - 54));
+        rpmstp = ((float)PICSimLab.GetNSTEPJ()) / (0.7196 * (ppins[input_pins[1] - 1].oavalue - 54));
 
         if (ppins[input_pins[1] - 1].oavalue > 55)
             vtc++;
@@ -181,24 +181,24 @@ void cpart_tempsys::Draw(void) {
     if (temp[0] < 27.5)
         temp[0] = 27.5;
 
-    Window5.SetAPin(input_pins[2], temp[0] / 100.0);
+    SpareParts.SetAPin(input_pins[2], temp[0] / 100.0);
 }
 
 void cpart_tempsys::Process(void) {
     if (!refresh) {
-        refresh = Window1.GetJUMPSTEPS();
+        refresh = PICSimLab.GetJUMPSTEPS();
 
-        const picpin* ppins = Window5.GetPinsValues();
+        const picpin* ppins = SpareParts.GetPinsValues();
 
         if ((input_pins[1] > 0) && (input_pins[3] > 0)) {
             if (ppins[input_pins[1] - 1].oavalue > 55) {
                 rpmc++;
                 if (rpmc > rpmstp) {
                     rpmc = 0;
-                    Window5.SetPin(input_pins[3], !ppins[input_pins[3] - 1].value);
+                    SpareParts.SetPin(input_pins[3], !ppins[input_pins[3] - 1].value);
                 }
             } else
-                Window5.SetPin(input_pins[3], 0);
+                SpareParts.SetPin(input_pins[3], 0);
         }
     }
     refresh--;
@@ -264,14 +264,14 @@ void cpart_tempsys::ReadPreferences(lxString value) {
 }
 
 void cpart_tempsys::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (input_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[0]);
+        spin = SpareParts.GetPinName(input_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(input_pins[0]) + "  " + spin);
     }
 
@@ -279,7 +279,7 @@ void cpart_tempsys::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[1] == 0)
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[1]);
+        spin = SpareParts.GetPinName(input_pins[1]);
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(input_pins[1]) + "  " + spin);
     }
 
@@ -287,7 +287,7 @@ void cpart_tempsys::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[2] == 0)
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[2]);
+        spin = SpareParts.GetPinName(input_pins[2]);
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText(itoa(input_pins[2]) + "  " + spin);
     }
 
@@ -295,16 +295,14 @@ void cpart_tempsys::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[3] == 0)
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[3]);
+        spin = SpareParts.GetPinName(input_pins[3]);
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText(itoa(input_pins[3]) + "  " + spin);
     }
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_tempsys::ReadPropertiesWindow(CPWindow* WProp) {

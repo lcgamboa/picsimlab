@@ -1,0 +1,66 @@
+<window1>
+  <Class type="String">CPWindow</Class>
+  <Name type="String">window1</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">297</X>
+  <Y type="int">125</Y>
+  <Width type="uint">629</Width>
+  <Height type="uint">561</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Title type="String">sin</Title>
+  <OverrideRedirect type="bool">0</OverrideRedirect>
+  <EvOnCreate type="Event">FALSE</EvOnCreate>
+  <EvOnDestroy type="Event">FALSE</EvOnDestroy>
+  <EvOnShow type="Event">FALSE</EvOnShow>
+  <EvOnHide type="Event">FALSE</EvOnHide>
+  <EvOnEnter type="Event">FALSE</EvOnEnter>
+  <EvOnLeave type="Event">FALSE</EvOnLeave>
+<draw1>
+  <Class type="String">CDraw</Class>
+  <Name type="String">draw1</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">16</X>
+  <Y type="int">14</Y>
+  <Width type="uint">600</Width>
+  <Height type="uint">480</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">TRUE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Transparent type="bool">0</Transparent>
+  <ImgFileName type="File"></ImgFileName>
+</draw1>
+<timer1>
+  <Class type="String">CTimer</Class>
+  <Name type="String">timer1</Name>
+  <Tag type="int">0</Tag>
+  <Time type="int">500</Time>
+  <RunState type="int">1</RunState>
+  <EvOnTime type="Event">TRUE</EvOnTime>
+</timer1>
+</window1>

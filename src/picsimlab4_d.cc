@@ -14,6 +14,7 @@ CPWindow4::CPWindow4(void) {
     SetPopupMenu(NULL);
     SetTitle(lxT("PICSimLab - Oscilloscope"));
     SetOverrideRedirect(0);
+    EvOnCreate = EVONCREATE & CPWindow4::_EvOnCreate;
     EvOnDestroy = EVONDESTROY & CPWindow4::_EvOnDestroy;
     EvOnShow = EVONSHOW & CPWindow4::_EvOnShow;
     EvOnHide = EVONHIDE & CPWindow4::_EvOnHide;
@@ -694,28 +695,5 @@ CPWindow4::CPWindow4(void) {
     button1.SetColor(255, 0, 0);
     button2.SetColor(0, 255, 0);
 
-    Dt = 0;
-    Rt = 0;
-    usetrigger = 1;
-    triggerlv = 2.5;
-    chpin[0] = 0;
-    chpin[1] = 1;
-    toffset = 250;
-    run = 1;
-
-    fp = 0;
-    tch = 0;
-    is = 0;
-    t = 0;
-    tr = 0;
-    update = 0;
     font = NULL;
-
-    measures[0] = 1;
-    measures[1] = 2;
-    measures[2] = 0;
-    measures[3] = 0;
-    measures[4] = 0;
-
-    vmax = 5.0;
-};
+}

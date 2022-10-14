@@ -1,0 +1,191 @@
+
+#include"editor1.h"
+#include"editor1_d.cc"
+
+CWindow1 Window1;
+
+//Implementation
+
+/* XPM */
+static const char * blue_xpm[] = {
+"24 24 2 1",
+" 	c None",
+".	c #1500FF",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................"};
+
+/* XPM */
+static const char * red_xpm[] = {
+"24 24 2 1",
+" 	c None",
+".	c #FF0000",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................",
+"........................"};
+
+
+bool fig[100];
+
+
+void
+CWindow1::toolbuttonMouseButtonPress(CControl* control,uint button,uint x,uint y,uint mask)
+{
+  if(button == 1)
+  {
+    CToolButton* tbutton;
+    tbutton=dynamic_cast<CToolButton*>(control);
+    if(fig[tbutton->GetTag()])
+    {	  
+      tbutton->SetImgData(red_xpm);
+      fig[tbutton->GetTag()]=false;
+    }  
+    else 
+    {	    
+      tbutton->SetImgData(blue_xpm);
+      fig[tbutton->GetTag()]=true;
+    };
+  };
+};
+
+
+void
+CWindow1::_EvOnCreate(CControl * control)
+{
+  printf("Create\n");
+	
+  CToolButton* tbutton;
+  for(int i=1;i<=100;i++)
+  {
+    tbutton=dynamic_cast<CToolButton*>(Window1.GetChild(i));
+    tbutton->SetImgData(red_xpm);
+    tbutton->SetBorder(0);
+    fig[tbutton->GetTag()]=false;
+    tbutton->Draw();
+  };
+};
+
+void
+CWindow1::menu1_Limpar_MouseButtonPress(CControl * control, uint button, uint x, uint y,uint state)
+{
+  CToolButton* tbutton;
+  for(int i=1;i<=100;i++)
+  {
+    tbutton=dynamic_cast<CToolButton*>(Window1.GetChild(i));
+    tbutton->SetImgData(red_xpm);
+    fig[tbutton->GetTag()]=false;
+    tbutton->Draw();
+  };
+};
+
+void
+CWindow1::menu1_Sobre_MouseButtonPress(CControl * control, uint button, uint x, uint y,uint state)
+{
+  Message("Desenvolvido por LCGambôa");	
+};
+
+void
+CWindow1::pmenu1_Abrir_MouseButtonPress(CControl * control, uint button, uint x, uint y,uint state)
+{
+  char ch;
+  FILE* file;
+  int c,d,g;
+  CToolButton* tbutton;
+  if(Window1.abrirdialog.Run())
+    {	
+    Window1.salvardialog.SetFileName(Window1.abrirdialog.GetFileName());	    
+    file=fopen(Window1.abrirdialog.GetFileName().c_str(),"r");
+      for(c=0;c<=9;c++)
+        {      
+        for(d=0;d<=9;d++)
+	  {	
+          g=(c*10)+d;
+          ch=fgetc(file);
+          tbutton=dynamic_cast<CToolButton*>(Window1.GetChild(g+1));
+          if(ch == '-')
+	    {	  
+            tbutton->SetImgData(blue_xpm);
+            tbutton->Draw();
+            fig[g]=true;
+	    }
+          else 
+	    {	  
+            tbutton->SetImgData(red_xpm);
+            tbutton->Draw();
+            fig[g]=false;
+	    };
+          ch=fgetc(file);
+	  };
+       ch=fgetc(file);
+       ch=fgetc(file);
+       };
+    fclose(file);
+  };
+};
+
+void
+CWindow1::pmenu1_Salvar_MouseButtonPress(CControl * control, uint button, uint x, uint y,uint state)
+{
+  int c,d,g;
+  FILE* file;
+  if(Window1.salvardialog.Run())
+    {	  
+    file = fopen(Window1.salvardialog.GetFileName().c_str(),"w");
+      for(c=0;c<= 9;c++)
+        {
+        for(d=0;d<=9;d++)
+	  {	
+          g=(c*10)+d;
+          if(fig[g])
+            fprintf(file,"-1");
+          else
+            fprintf(file," 1");
+	  };
+          fprintf(file," \n");
+        };
+    fclose(file);
+  };
+};
+

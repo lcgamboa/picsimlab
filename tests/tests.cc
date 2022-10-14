@@ -237,6 +237,7 @@ int test_send_rcmd(const char *message) {
 
   int bp = 0;
   buff[0] = 0;
+  int timeout = 0;
   do {
 
     if ((n = recv(sockfd, buff + bp, 1, 0)) > 0) {
@@ -255,13 +256,17 @@ int test_send_rcmd(const char *message) {
           close(sockfd);
           exit(-1);
         }
+      } else if (n == 0) {
+        timeout++;
+        usleep(100);
       }
     }
 
   }
 
   while (((bp < 5) || (strcmp(&buff[bp - 5], "Ok\r\n>"))) &&
-         ((bp < 8) || strcmp(&buff[bp - 8], "ERROR\r\n>")));
+         ((bp < 8) || strcmp(&buff[bp - 8], "ERROR\r\n>")) &&
+         (timeout < 20000));
 
   return bp;
 }

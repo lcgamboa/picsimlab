@@ -26,7 +26,7 @@
 #include "part_MI2C_24CXXX.h"
 #include "../picsimlab1.h"
 #include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../spareparts.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -121,7 +121,7 @@ void cpart_MI2C_24CXXX::Draw(void) {
                         if (input_pins[pinv] == 0)
                             canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
                         else
-                            canvas.RotatedText(Window5.GetPinName(input_pins[pinv]), output[i].x1, output[i].y2 - 30,
+                            canvas.RotatedText(SpareParts.GetPinName(input_pins[pinv]), output[i].x1, output[i].y2 - 30,
                                                90.0);
                     }
                     break;
@@ -213,14 +213,14 @@ void cpart_MI2C_24CXXX::ReadPreferences(lxString value) {
 }
 
 void cpart_MI2C_24CXXX::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (input_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[0]);
+        spin = SpareParts.GetPinName(input_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(input_pins[0]) + "  " + spin);
     }
 
@@ -228,7 +228,7 @@ void cpart_MI2C_24CXXX::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[1] == 0)
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[1]);
+        spin = SpareParts.GetPinName(input_pins[1]);
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(input_pins[1]) + "  " + spin);
     }
 
@@ -236,7 +236,7 @@ void cpart_MI2C_24CXXX::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[2] == 0)
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[2]);
+        spin = SpareParts.GetPinName(input_pins[2]);
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText(itoa(input_pins[2]) + "  " + spin);
     }
 
@@ -244,7 +244,7 @@ void cpart_MI2C_24CXXX::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[3] == 0)
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[3]);
+        spin = SpareParts.GetPinName(input_pins[3]);
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText(itoa(input_pins[3]) + "  " + spin);
     }
 
@@ -252,18 +252,16 @@ void cpart_MI2C_24CXXX::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[4] == 0)
         ((CCombo*)WProp->GetChildByName("combo6"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[4]);
+        spin = SpareParts.GetPinName(input_pins[4]);
         ((CCombo*)WProp->GetChildByName("combo6"))->SetText(itoa(input_pins[4]) + "  " + spin);
     }
 
     ((CCombo*)WProp->GetChildByName("combo9"))->SetText(itoa(kbits));
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_MI2C_24CXXX::ReadPropertiesWindow(CPWindow* WProp) {
@@ -286,7 +284,7 @@ void cpart_MI2C_24CXXX::ReadPropertiesWindow(CPWindow* WProp) {
 }
 
 void cpart_MI2C_24CXXX::PreProcess(void) {
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
     unsigned char addr = 0x50;
 
     if (input_pins[0]) {
@@ -305,16 +303,16 @@ void cpart_MI2C_24CXXX::PreProcess(void) {
     mi2c_set_addr(&mi2c, addr);
 
     if (input_pins[3] > 0) {
-        Window5.Reset_pullup_bus(input_pins[3] - 1);
+        SpareParts.Reset_pullup_bus(input_pins[3] - 1);
     }
 }
 
 void cpart_MI2C_24CXXX::Process(void) {
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     if ((input_pins[3] > 0) && (input_pins[4] > 0))
-        Window5.Set_pullup_bus(input_pins[3] - 1,
-                               mi2c_io(&mi2c, ppins[input_pins[4] - 1].value, ppins[input_pins[3] - 1].value));
+        SpareParts.Set_pullup_bus(input_pins[3] - 1,
+                                  mi2c_io(&mi2c, ppins[input_pins[4] - 1].value, ppins[input_pins[3] - 1].value));
 }
 
 void cpart_MI2C_24CXXX::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
@@ -324,18 +322,18 @@ void cpart_MI2C_24CXXX::EvMouseButtonPress(uint button, uint x, uint y, uint sta
         if (PointInside(x, y, input[i])) {
             switch (input[i].id) {
                 case I_LOAD:
-                    Window5.filedialog1.SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
-                    Window5.filedialog1.SetFilter(lxT("PICSimLab Binary File (*.bin)|*.bin"));
-                    Window5.filedialog1.SetFileName(lxT("untitled.bin"));
-                    Window5.Setfdtype(id);
-                    Window5.filedialog1.Run();
+                    SpareParts.GetFileDialog()->SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
+                    SpareParts.GetFileDialog()->SetFilter(lxT("PICSimLab Binary File (*.bin)|*.bin"));
+                    SpareParts.GetFileDialog()->SetFileName(lxT("untitled.bin"));
+                    SpareParts.Setfdtype(id);
+                    SpareParts.GetFileDialog()->Run();
                     break;
                 case I_SAVE:
-                    Window5.filedialog1.SetType(lxFD_SAVE | lxFD_CHANGE_DIR);
-                    Window5.filedialog1.SetFilter(lxT("PICSimLab Binary File (*.bin)|*.bin"));
-                    Window5.filedialog1.SetFileName(lxT("untitled.bin"));
-                    Window5.Setfdtype(id);
-                    Window5.filedialog1.Run();
+                    SpareParts.GetFileDialog()->SetType(lxFD_SAVE | lxFD_CHANGE_DIR);
+                    SpareParts.GetFileDialog()->SetFilter(lxT("PICSimLab Binary File (*.bin)|*.bin"));
+                    SpareParts.GetFileDialog()->SetFileName(lxT("untitled.bin"));
+                    SpareParts.Setfdtype(id);
+                    SpareParts.GetFileDialog()->Run();
                     break;
                 case I_VIEW:
                     FILE* fout;
@@ -384,32 +382,34 @@ void cpart_MI2C_24CXXX::EvMouseButtonPress(uint button, uint x, uint y, uint sta
 
 void cpart_MI2C_24CXXX::filedialog_EvOnClose(int retId) {
     if (retId) {
-        if ((Window5.filedialog1.GetType() == (lxFD_SAVE | lxFD_CHANGE_DIR))) {
-            if (lxFileExists(Window5.filedialog1.GetFileName())) {
-                if (!Dialog_sz(lxString("Overwriting file: ") + basename(Window5.filedialog1.GetFileName()) + "?", 400,
-                               200))
+        if ((SpareParts.GetFileDialog()->GetType() == (lxFD_SAVE | lxFD_CHANGE_DIR))) {
+            if (lxFileExists(SpareParts.GetFileDialog()->GetFileName())) {
+                if (!Dialog_sz(
+                        lxString("Overwriting file: ") + basename(SpareParts.GetFileDialog()->GetFileName()) + "?", 400,
+                        200))
                     return;
             }
 
             FILE* fout;
-            fout = fopen(Window5.filedialog1.GetFileName(), "wb");
+            fout = fopen(SpareParts.GetFileDialog()->GetFileName(), "wb");
             if (fout) {
                 fwrite(mi2c.data, mi2c.SIZE, 1, fout);
                 fclose(fout);
-                strncpy(f_mi2c_name, Window5.filedialog1.GetFileName(), 199);
+                strncpy(f_mi2c_name, SpareParts.GetFileDialog()->GetFileName(), 199);
             } else {
-                printf("Error saving to file: %s \n", (const char*)Window5.filedialog1.GetFileName().c_str());
+                printf("Error saving to file: %s \n", (const char*)SpareParts.GetFileDialog()->GetFileName().c_str());
             }
         }
 
-        if ((Window5.filedialog1.GetType() == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
+        if ((SpareParts.GetFileDialog()->GetType() == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
             FILE* fout;
-            fout = fopen(Window5.filedialog1.GetFileName(), "rb");
+            fout = fopen(SpareParts.GetFileDialog()->GetFileName(), "rb");
             if (fout) {
                 fread(mi2c.data, mi2c.SIZE, 1, fout);
                 fclose(fout);
             } else {
-                printf("Error loading from file: %s \n", (const char*)Window5.filedialog1.GetFileName().c_str());
+                printf("Error loading from file: %s \n",
+                       (const char*)SpareParts.GetFileDialog()->GetFileName().c_str());
             }
         }
     }

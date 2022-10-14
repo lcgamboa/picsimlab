@@ -28,6 +28,7 @@
 #include "picsimlab3.h"
 #include "picsimlab3_d.cc"
 
+#include "picsimlab.h"
 #include "picsimlab1.h"
 #include "serial_port.h"
 
@@ -54,14 +55,14 @@ void CPWindow3::_EvOnCreate(CControl* control) {
 }
 
 void CPWindow3::button1_EvMouseButtonClick(CControl* control, uint button, uint x, uint y, uint state) {
-    int osc_on = Window1.GetBoard()->GetUseOscilloscope();
-    int spare_on = Window1.GetBoard()->GetUseSpareParts();
+    int osc_on = PICSimLab.GetBoard()->GetUseOscilloscope();
+    int spare_on = PICSimLab.GetBoard()->GetUseSpareParts();
 
-    Window1.Set_debug_type(combo3.GetText().compare("GDB") == 0);
+    PICSimLab.Set_debug_type(combo3.GetText().compare("GDB") == 0);
 
-    Window1.Set_debug_port(spin1.GetValue());
+    PICSimLab.Set_debug_port(spin1.GetValue());
 
-    Window1.Set_remotec_port(spin2.GetValue());
+    PICSimLab.Set_remotec_port(spin2.GetValue());
 
 #ifdef _USE_PICSTARTP_
     if (combo1.GetText() == combo2.GetText()) {
@@ -73,15 +74,15 @@ void CPWindow3::button1_EvMouseButtonClick(CControl* control, uint button, uint 
 #ifdef _USE_PICSTARTP_
     strcpy(PROGDEVICE, (char*)combo2.GetText().char_str());
 #endif
-    Window1.EndSimulation();
-    Window1.Configure(Window1.GetHOME());
+    PICSimLab.EndSimulation();
+    PICSimLab.Configure(PICSimLab.GetHomePath());
 
     if (osc_on)
         Window1.menu1_Modules_Oscilloscope_EvMenuActive(this);
     if (spare_on)
         Window1.menu1_Modules_Spareparts_EvMenuActive(this);
 
-    Window1.GetBoard()->EvOnShow();
+    PICSimLab.GetBoard()->EvOnShow();
 
     WDestroy();
 }
@@ -96,7 +97,7 @@ void CPWindow3::button3_EvMouseButtonClick(CControl* control, uint button, uint 
 #else
     lxString cmd = "xdg-open ";
 #endif
-    cmd += Window1.GetHOME();
+    cmd += PICSimLab.GetHomePath();
     lxExecute(cmd);
 }
 
@@ -118,17 +119,17 @@ void CPWindow3::_EvOnShow(CControl* control) {
         printf("No serial ports found!\n");
     }
 
-    if (Window1.Get_debug_type()) {
+    if (PICSimLab.Get_debug_type()) {
         combo3.SetText("GDB");
     } else {
         combo3.SetText("MDB");
     }
 
-    spin1.SetValue(Window1.Get_debug_port());
+    spin1.SetValue(PICSimLab.Get_debug_port());
 
-    spin2.SetValue(Window1.Get_remotec_port());
+    spin2.SetValue(PICSimLab.Get_remotec_port());
 
-    if (Window1.Get_Instance()) {
+    if (PICSimLab.GetInstanceNumber()) {
         spin1.SetEnable(0);
         spin2.SetEnable(0);
     }

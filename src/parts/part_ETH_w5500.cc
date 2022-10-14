@@ -26,7 +26,7 @@
 #include "part_ETH_w5500.h"
 #include "../picsimlab1.h"
 #include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum { O_P3, O_P5, O_P6, O_P7, O_P8, O_P9, O_LPWR, O_LLINK, O_LACT, O_STAT };
@@ -253,7 +253,7 @@ void cpart_ETH_w5500::Draw(void) {
                             if (output_pins[pin] == 0)
                                 canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
                             else
-                                canvas.RotatedText(Window5.GetPinName(output_pins[pin]), output[i].x1, output[i].y2,
+                                canvas.RotatedText(SpareParts.GetPinName(output_pins[pin]), output[i].x1, output[i].y2,
                                                    90.0);
                             break;
                         case 1:
@@ -265,7 +265,7 @@ void cpart_ETH_w5500::Draw(void) {
                             if (input_pins[pin] == 0)
                                 canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
                             else
-                                canvas.RotatedText(Window5.GetPinName(input_pins[pin]), output[i].x1, output[i].y2,
+                                canvas.RotatedText(SpareParts.GetPinName(input_pins[pin]), output[i].x1, output[i].y2,
                                                    90.0);
                     }
                     break;
@@ -336,14 +336,14 @@ void cpart_ETH_w5500::RegisterRemoteControl(void) {
 }
 
 void cpart_ETH_w5500::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (output_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[0]);
+        spin = SpareParts.GetPinName(output_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(output_pins[0]) + "  " + spin);
     }
 
@@ -351,7 +351,7 @@ void cpart_ETH_w5500::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[0]);
+        spin = SpareParts.GetPinName(input_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(input_pins[0]) + "  " + spin);
     }
 
@@ -359,7 +359,7 @@ void cpart_ETH_w5500::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[1] == 0)
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[1]);
+        spin = SpareParts.GetPinName(input_pins[1]);
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText(itoa(input_pins[1]) + "  " + spin);
     }
 
@@ -367,7 +367,7 @@ void cpart_ETH_w5500::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[2] == 0)
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[2]);
+        spin = SpareParts.GetPinName(input_pins[2]);
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText(itoa(input_pins[2]) + "  " + spin);
     }
 
@@ -375,7 +375,7 @@ void cpart_ETH_w5500::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[1] == 0)
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[1]);
+        spin = SpareParts.GetPinName(output_pins[1]);
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText(itoa(output_pins[1]) + "  " + spin);
     }
 
@@ -383,16 +383,14 @@ void cpart_ETH_w5500::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[3] == 0)
         ((CCombo*)WProp->GetChildByName("combo6"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[3]);
+        spin = SpareParts.GetPinName(input_pins[3]);
         ((CCombo*)WProp->GetChildByName("combo6"))->SetText(itoa(input_pins[3]) + "  " + spin);
     }
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_ETH_w5500::ReadPropertiesWindow(CPWindow* WProp) {
@@ -411,7 +409,7 @@ void cpart_ETH_w5500::PreProcess(void) {
 }
 
 void cpart_ETH_w5500::Process(void) {
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     unsigned short ret = 0;
 
@@ -421,8 +419,8 @@ void cpart_ETH_w5500::Process(void) {
     if (!ppins[input_pins[2] - 1].value)  // if CS is active, update output
     {
         if (_ret != ret) {
-            Window5.SetPin(output_pins[0], (ret & 0x01) > 0);
-            Window5.SetPin(output_pins[1], (ret & 0x02) > 0);
+            SpareParts.SetPin(output_pins[0], (ret & 0x01) > 0);
+            SpareParts.SetPin(output_pins[1], (ret & 0x02) > 0);
         }
         _ret = ret;
     } else {

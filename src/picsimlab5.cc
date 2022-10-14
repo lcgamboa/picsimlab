@@ -31,6 +31,10 @@
 #include "picsimlab4.h"
 #include "picsimlab5_d.cc"
 
+#include "oscilloscope.h"
+#include "picsimlab.h"
+#include "spareparts.h"
+
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
@@ -39,16 +43,13 @@ CPWindow5 Window5;
 
 // Implementation
 
+static void Setfdtype(int value) {}
+
 void CPWindow5::_EvOnShow(CControl* control) {
     if (Visible) {
         need_resize = 0;
         timer1.SetRunState(1);
-        for (int i = 0; i < partsc; i++) {
-            parts[i]->SetUpdate(1);
-#if defined(_LX_SDL2) || defined(__EMSCRIPTEN__)
-            parts[i]->SetScale(parts[i]->GetScale() + 1e-3);
-#endif
-        }
+        SpareParts.UpdateAll(1);
     }
 }
 
@@ -58,8 +59,8 @@ void CPWindow5::menu1_EvMenuActive(CControl* control) {
 }
 
 void CPWindow5::_EvOnCreate(CControl* control) {
-    if (LoadConfigFile.length() > 0)
-        LoadConfig(LoadConfigFile);
+    if (SpareParts.GetLoadConfigFile().length() > 0)
+        SpareParts.LoadConfig(SpareParts.GetLoadConfigFile());
 
     for (int i = 0; i < NUM_PARTS; i++) {
         MParts[i].SetFOwner(this);
@@ -80,17 +81,17 @@ void CPWindow5::_EvOnCreate(CControl* control) {
 }
 
 void CPWindow5::draw1_EvMouseButtonPress(CControl* control, uint button, uint x, uint y, uint state) {
-    x = x / scale;
-    y = y / scale;
+    x = x / SpareParts.GetScale();
+    y = y / SpareParts.GetScale();
 
-    for (int i = 0; i < partsc; i++) {
-        if (parts[i]->PointInside((int)(x - offsetx), (int)(y - offsety))) {
-            parts[i]->EvMouseButtonPress(button, (x - offsetx) - parts[i]->GetX(), (y - offsety) - parts[i]->GetY(),
-                                         state);
+    for (int i = 0; i < SpareParts.GetCount(); i++) {
+        if (SpareParts.GetPart(i)->PointInside((int)(x - offsetx), (int)(y - offsety))) {
+            SpareParts.GetPart(i)->EvMouseButtonPress(button, (x - offsetx) - SpareParts.GetPart(i)->GetX(),
+                                                      (y - offsety) - SpareParts.GetPart(i)->GetY(), state);
             if (button == 3) {
                 PartSelected = i;
-                pmenu2.SetX(x * scale);
-                pmenu2.SetY(y * scale);
+                pmenu2.SetX(x * SpareParts.GetScale());
+                pmenu2.SetY(y * SpareParts.GetScale());
 #if defined(__WXGTK__) || defined(__WXMSW__)
                 SetPopupMenu(&pmenu2);
 #else
@@ -102,10 +103,10 @@ void CPWindow5::draw1_EvMouseButtonPress(CControl* control, uint button, uint x,
     }
 
     // clique fora
-    if ((button == 1) && (PartToCreate.size() > 0) && (partsc < MAX_PARTS)) {
+    if ((button == 1) && (PartToCreate.size() > 0) && (SpareParts.GetCount() < MAX_PARTS)) {
         // timer1.SetRunState (0);
         lxSetCursor(lxCursor(lxCURSOR_ARROW));
-        AddPart((char*)PartToCreate.char_str(), x - offsetx, y - offsety);
+        SpareParts.AddPart((char*)PartToCreate.char_str(), x - offsetx, y - offsety, SpareParts.GetScale());
         PartToCreate = "";
         _EvOnShow(control);
         return;
@@ -123,26 +124,9 @@ void CPWindow5::draw1_EvMouseButtonPress(CControl* control, uint button, uint x,
     }
 }
 
-part* CPWindow5::AddPart(const char* partname, const int x, const int y) {
-    part* newpart = create_part(partname, x, y);
-
-    parts[partsc] = newpart;
-
-    if (parts[partsc] == NULL) {
-        Message_sz(lxT("Erro creating part: ") + lxString(partname), 400, 200);
-    } else {
-        parts[partsc]->SetId(partsc);
-        parts[partsc]->SetScale(scale);
-        parts[partsc]->Reset();
-        partsc++;
-    }
-
-    return newpart;
-}
-
 void CPWindow5::draw1_EvMouseButtonRelease(CControl* control, uint button, uint x, uint y, uint state) {
-    x = x / scale;
-    y = y / scale;
+    x = x / SpareParts.GetScale();
+    y = y / SpareParts.GetScale();
 
     PartToMove = -1;
 
@@ -152,17 +136,18 @@ void CPWindow5::draw1_EvMouseButtonRelease(CControl* control, uint button, uint 
     mdx = 0;
     mdy = 0;
 
-    for (int i = 0; i < partsc; i++) {
-        if (parts[i]->PointInside(x - offsetx, y - offsety)) {
-            parts[i]->EvMouseButtonRelease(button, (x - offsetx) - parts[i]->GetX(), (y - offsety) - parts[i]->GetY(),
-                                           state);
+    for (int i = 0; i < SpareParts.GetCount(); i++) {
+        if (SpareParts.GetPart(i)->PointInside(x - offsetx, y - offsety)) {
+            SpareParts.GetPart(i)->EvMouseButtonRelease(button, (x - offsetx) - SpareParts.GetPart(i)->GetX(),
+                                                        (y - offsety) - SpareParts.GetPart(i)->GetY(), state);
             return;
         }
     }
 }
 
 void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
-    lxString fname = Window1.GetSharePath() + lxT("parts/") + parts[PartSelected]->GetPropertiesWindowFile();
+    lxString fname =
+        PICSimLab.GetSharePath() + lxT("parts/") + SpareParts.GetPart(PartSelected)->GetPropertiesWindowFile();
 
     if (lxFileExists(fname)) {
         wprop.SetName("window1");  // must be the same as in xml
@@ -171,22 +156,22 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
         if (wprop.LoadXMLContextAndCreateChilds(fname)) {
             // wprop.SetCanDestroy (false);
 
-            parts[PartSelected]->ConfigurePropertiesWindow(&wprop);
+            SpareParts.GetPart(PartSelected)->ConfigurePropertiesWindow(&wprop);
 
-            wprop.SetX(parts[PartSelected]->GetX() + GetX() - offsetx);
-            wprop.SetY(parts[PartSelected]->GetY() + GetY() - offsety);
+            wprop.SetX(SpareParts.GetPart(PartSelected)->GetX() + GetX() - offsetx);
+            wprop.SetY(SpareParts.GetPart(PartSelected)->GetY() + GetY() - offsety);
 
             wprop.Draw();
             wprop.ShowExclusive();
         }
     } else {
-        Window1.RegisterError("File " + fname + " not found!");
+        PICSimLab.RegisterError("File " + fname + " not found!");
     }
 }
 
 void CPWindow5::PropClose(int tag) {
     if (tag) {
-        parts[PartSelected]->ReadPropertiesWindow(&wprop);
+        SpareParts.GetPart(PartSelected)->ReadPropertiesWindow(&wprop);
     }
     wprop.HideExclusive();
     // wprop.SetCanDestroy (true);
@@ -203,7 +188,7 @@ void CPWindow5::PropButtonRelease(CControl* control, uint button, uint x, uint y
         default:  // browse filedialog
             Window5.filedialog1.SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
             Window5.filedialog1.SetFilter(lxT("All Files (*.*)|*.*"));
-            Window5.Setfdtype(control->GetTag() - 2);
+            Setfdtype(control->GetTag() - 2);
             Window5.filedialog1.Run();
             break;
     }
@@ -214,26 +199,26 @@ void CPWindow5::PropComboChange(CCombo* control) {
     // Window5.wprop.SetCanDestroy (true);
     Window5.wprop.WDestroy();
 
-    Window5.parts[Window5.PartSelected]->ComboChange(control, control->GetText());
+    SpareParts.GetPart(Window5.PartSelected)->ComboChange(control, control->GetText());
 
     Window5.pmenu2_Properties_EvMenuActive(this);
 }
 
 void CPWindow5::PartButtonEvent(CControl* control, uint button, uint x, uint y, uint state) {
-    if (control->GetTag() < (unsigned int)Window5.partsc) {
-        Window5.parts[control->GetTag()]->ButtonEvent(control, button, x, y, state);
+    if (control->GetTag() < (unsigned int)SpareParts.GetCount()) {
+        SpareParts.GetPart(control->GetTag())->ButtonEvent(control, button, x, y, state);
     }
 }
 
 void CPWindow5::PartKeyEvent(CControl* control, uint keysym, uint ukeysym, uint state) {
-    if (control->GetTag() < (unsigned int)Window5.partsc) {
-        Window5.parts[control->GetTag()]->KeyEvent(control, keysym, ukeysym, state);
+    if (control->GetTag() < (unsigned int)SpareParts.GetCount()) {
+        SpareParts.GetPart(control->GetTag())->KeyEvent(control, keysym, ukeysym, state);
     }
 }
 
 void CPWindow5::PartEvent(CControl* control) {
-    if (control->GetTag() < (unsigned int)Window5.partsc) {
-        Window5.parts[control->GetTag()]->Event(control);
+    if (control->GetTag() < (unsigned int)SpareParts.GetCount()) {
+        SpareParts.GetPart(control->GetTag())->Event(control);
     }
 }
 
@@ -249,23 +234,21 @@ void CPWindow5::timer1_EvOnTime(CControl* control) {
 #else
         draw1.SetHeight(Height - 90);
 #endif
-        Window4.SetBaseTimer();
+        Oscilloscope.SetBaseTimer();
 
         update_all = 1;
     }
 
     need_resize++;
 
-    for (int i = 0; i < partsc; i++) {
-        parts[i]->Draw();
-        if (parts[i]->GetUpdate())
+    for (int i = 0; i < SpareParts.GetCount(); i++) {
+        SpareParts.GetPart(i)->Draw();
+        if (SpareParts.GetPart(i)->GetUpdate())
             update++;
     }
 
     if (update_all) {
-        for (int i = 0; i < partsc; i++) {
-            parts[i]->SetUpdate(1);
-        }
+        SpareParts.UpdateAll();
         update = 1;
     }
 
@@ -281,10 +264,11 @@ void CPWindow5::timer1_EvOnTime(CControl* control) {
             update_all = 0;
         }
 
-        for (int i = 0; i < partsc; i++) {
-            if (parts[i]->GetUpdate()) {
-                draw1.Canvas.PutBitmap(parts[i]->GetBitmap(), (parts[i]->GetX() + offsetx) * scale,
-                                       (parts[i]->GetY() + offsety) * scale);
+        for (int i = 0; i < SpareParts.GetCount(); i++) {
+            if (SpareParts.GetPart(i)->GetUpdate()) {
+                draw1.Canvas.PutBitmap(SpareParts.GetPart(i)->GetBitmap(),
+                                       (SpareParts.GetPart(i)->GetX() + offsetx) * SpareParts.GetScale(),
+                                       (SpareParts.GetPart(i)->GetY() + offsety) * SpareParts.GetScale());
             }
         }
 
@@ -297,10 +281,10 @@ void CPWindow5::timer1_EvOnTime(CControl* control) {
     if (tc > 3) {
         tc = 0;
         lxString field;
-        field.Printf("Use Alias: %s", (useAlias == 1) ? "On" : "Off");
+        field.Printf("Use Alias: %s", (SpareParts.GetUseAlias() == 1) ? "On" : "Off");
         statusbar1.SetField(0, field);
 
-        field.Printf("Scale: %3.1f", scale);
+        field.Printf("Scale: %3.1f", SpareParts.GetScale());
         statusbar1.SetField(1, field);
 
         field.Printf("Offset: %3i %3i", offsetx, offsety);
@@ -317,8 +301,8 @@ void CPWindow5::draw1_EvMouseWheel(CControl* control, const int rotation) {
 }
 
 void CPWindow5::draw1_EvMouseMove(CControl* control, uint button, uint x, uint y, uint state) {
-    x = x / scale;
-    y = y / scale;
+    x = x / SpareParts.GetScale();
+    y = y / SpareParts.GetScale();
 
     if (mouse_scroll) {
         offsetx -= mdx - x;
@@ -328,18 +312,18 @@ void CPWindow5::draw1_EvMouseMove(CControl* control, uint button, uint x, uint y
         update_all = 1;
     } else if (PartToMove >= 0) {
         if ((mdx == 0) && (mdy == 0)) {
-            mdx = parts[PartToMove]->GetX() - x;
-            mdy = parts[PartToMove]->GetY() - y;
+            mdx = SpareParts.GetPart(PartToMove)->GetX() - x;
+            mdy = SpareParts.GetPart(PartToMove)->GetY() - y;
         }
 
-        parts[PartToMove]->SetX(x + mdx);
-        parts[PartToMove]->SetY(y + mdy);
+        SpareParts.GetPart(PartToMove)->SetX(x + mdx);
+        SpareParts.GetPart(PartToMove)->SetY(y + mdy);
         update_all = 1;
     } else {
-        for (int i = 0; i < partsc; i++) {
-            if (parts[i]->PointInside(x - offsetx, y - offsety)) {
-                parts[i]->EvMouseMove(button, (x - offsetx) - parts[i]->GetX(), (y - offsety) - parts[i]->GetY(),
-                                      state);
+        for (int i = 0; i < SpareParts.GetCount(); i++) {
+            if (SpareParts.GetPart(i)->PointInside(x - offsetx, y - offsety)) {
+                SpareParts.GetPart(i)->EvMouseMove(button, (x - offsetx) - SpareParts.GetPart(i)->GetX(),
+                                                   (y - offsety) - SpareParts.GetPart(i)->GetY(), state);
                 return;
             }
         }
@@ -350,9 +334,9 @@ void CPWindow5::draw1_EvKeyboardPress(CControl* control, const uint key, const u
     switch (key) {
         case 'P':
         case 'p':
-            useAlias = !useAlias;
+            SpareParts.SetUseAlias(!SpareParts.GetUseAlias());
             update_all = 1;
-            Window4.SetBaseTimer();
+            Oscilloscope.SetBaseTimer();
             break;
         case '=':  //+
             menu1_Edit_Zoomin_EvMenuActive(this);
@@ -377,212 +361,30 @@ void CPWindow5::draw1_EvKeyboardPress(CControl* control, const uint key, const u
             update_all = 1;
             break;
         default:
-            for (int i = 0; i < partsc; i++) {
-                parts[i]->EvKeyPress(key, mask);
+            for (int i = 0; i < SpareParts.GetCount(); i++) {
+                SpareParts.GetPart(i)->EvKeyPress(key, mask);
             }
             break;
     }
 }
 
 void CPWindow5::draw1_EvKeyboardRelease(CControl* control, const uint key, const uint hkey, const uint mask) {
-    for (int i = 0; i < partsc; i++) {
-        parts[i]->EvKeyRelease(key, mask);
-    }
-}
-
-bool CPWindow5::SaveConfig(lxString fname) {
-    lxString temp;
-
-    lxStringList prefs;
-
-    if (GetWin() == NULL)
-        return 0;
-
-    prefs.Clear();
-
-    temp.Printf("version,0,0,0:%s", _VERSION_);
-    prefs.AddLine(temp);
-    temp.Printf("scale,0,0,0:%f", scale);
-    prefs.AddLine(temp);
-    temp.Printf("useAlias,0,0,0:%i", useAlias);
-    prefs.AddLine(temp);
-
-    for (int i = 0; i < partsc; i++) {
-        temp.Printf("%s,%i,%i,%i:%s", parts[i]->GetName().c_str(), parts[i]->GetX(), parts[i]->GetY(),
-                    parts[i]->GetOrientation(), parts[i]->WritePreferences().c_str());
-        prefs.AddLine(temp);
-    }
-
-    return prefs.SaveToFile(fname);
-}
-
-bool CPWindow5::LoadConfig(lxString fname) {
-    char name[256];
-    char temp[256];
-    unsigned int x, y;
-    int orient;
-    lxStringList prefs;
-    int newformat = 0;
-
-    pboard = Window1.GetBoard();
-
-    for (int i = 0; i < 256; i++) {
-        if ((i > 0) && (i <= pboard->MGetPinCount())) {
-            PinNames[i] = pboard->MGetPinName(i);
-        } else {
-            PinNames[i] = "";
-        }
-    }
-
-    PinsCount = pboard->MGetPinCount();
-    Pins = (picpin*)pboard->MGetPinsValues();
-
-    memset(&Pins[PinsCount], 0, sizeof(picpin) * (256 - PinsCount));
-
-    if (GetWin() == NULL) {
-        LoadConfigFile = fname;
-        menu1_Edit_Clearpinalias_EvMenuActive(this);
-        return 0;
-    } else {
-        LoadConfigFile = "";
-    }
-
-    bool ret = lxFileExists(fname);
-
-    if (ret) {
-        int partsc_;
-        int partsc_aup_;
-        prefs.LoadFromFile(fname);
-
-        DeleteParts();
-        partsc_ = 0;
-        partsc_aup_ = 0;
-
-        if (prefs.GetLine(0).Contains("version")) {
-            newformat = 1;
-        }
-
-        for (unsigned int i = 0; i < prefs.GetLinesCount(); i++) {
-            if (newformat) {
-                sscanf(prefs.GetLine(i).c_str(), "%255[^,],%i,%i,%i:%255[^\n]", name, &x, &y, &orient, temp);
-            } else {
-                sscanf(prefs.GetLine(i).c_str(), "%255[^,],%i,%i:%255[^\n]", name, &x, &y, temp);
-            }
-
-            // typo fix
-            if (!strcmp(name, "Switchs")) {
-                strcpy(name, "Switches");
-            } else if (!strcmp(name, "IO Virtual term")) {
-                strcpy(name, "IO Virtual Term");
-            } else if (!strcmp(name, "Push buttons")) {
-                strcpy(name, "Push Buttons");
-            } else if (!strcmp(name, "Push buttons (Analogic)")) {
-                strcpy(name, "Push Buttons (Analogic)");
-            }
-
-            if (!strcmp(name, "scale")) {
-                sscanf(temp, "%f", &scale);
-            } else if (!strcmp(name, "useAlias")) {
-                sscanf(temp, "%hhu", &useAlias);
-                Window4.SetBaseTimer();
-            } else if (!strcmp(name, "version")) {
-                // use planed in future
-            } else if ((parts[partsc_] = create_part(name, x, y))) {
-                parts[partsc_]->ReadPreferences(temp);
-                parts[partsc_]->SetId(partsc_);
-                if (newformat) {
-                    parts[partsc_]->SetOrientation(orient);
-                    parts[partsc_]->SetScale(scale);
-                }
-                partsc_++;
-            } else {
-                printf("Erro loading part: %s \n", name);
-                lxString temp;
-                temp.Printf("Spare parts:\nErro loading part: %s \n", name);
-                Window1.RegisterError(temp);
-            }
-        }
-        partsc = partsc_;
-        partsc_aup = partsc_aup_;
-    }
-
-    update_all = 1;
-
-    return ret;
-}
-
-bool CPWindow5::SavePinAlias(lxString fname) {
-    lxString temp;
-    lxString pin;
-    lxString alias;
-    lxStringList lalias;
-    lalias.Clear();
-    lalias.AddLine(
-        "//N-PinName -ALias   --The pin name alias must start in column fourteen and have size less than seven chars ");
-    for (int i = 1; i < 256; i++) {
-        pin = PinNames[i].substr(0, 7);
-        if (!pin.size())
-            pin = " ";
-        alias = PinAlias[i].substr(0, 7);
-        if (!alias.size())
-            alias = " ";
-        temp.Printf("%03i-%-7s -%-7s", i, pin.c_str(), alias.c_str());
-        lalias.AddLine(temp);
-    }
-    return lalias.SaveToFile(fname);
-}
-
-bool CPWindow5::LoadPinAlias(lxString fname, unsigned char show_error_msg) {
-    if (!show_error_msg) {
-        if (!lxFileExists(fname)) {
-            return 0;
-        }
-    }
-    lxStringList alias;
-    lxString line;
-    alias.Clear();
-    if (alias.LoadFromFile(fname)) {
-        alias_fname = fname;
-
-        for (int i = 0; i < 256; i++) {
-            line = alias.GetLine(i);
-            if (line.size() > 13) {
-                PinAlias[i] = line.substr(13, 7);
-            } else {
-                PinAlias[i] = "";
-            }
-        }
-        PinAlias[0] = "NC";
-        if (show_error_msg) {
-            useAlias = 1;
-            update_all = 1;
-            Window4.SetBaseTimer();
-        }
-        return 1;
-    } else {
-        return 0;
+    for (int i = 0; i < SpareParts.GetCount(); i++) {
+        SpareParts.GetPart(i)->EvKeyRelease(key, mask);
     }
 }
 
 void CPWindow5::DeleteParts(void) {
-    int partsc_ = partsc;
-    partsc = 0;  // for disable process
-    partsc_aup = 0;
-
-    scale = 1.0;
-    useAlias = 0;
+    SpareParts.SetScale(1.0);
     if (Window4.GetVisible()) {
-        Window4.SetBaseTimer();
+        Oscilloscope.SetBaseTimer();
     }
     // delete previous parts
-
-    for (int i = 0; i < partsc_; i++) {
-        delete parts[i];
-    }
+    SpareParts.DeleteParts();
 }
 
 void CPWindow5::menu1_File_Newconfiguration_EvMenuActive(CControl* control) {
-    if (partsc > 0) {
+    if (SpareParts.GetCount() > 0) {
 #ifndef __EMSCRIPTEN__
         if (Dialog_sz("Save current configuration?", 400, 200)) {
             menu1_File_Saveconfiguration_EvMenuActive(control);
@@ -595,14 +397,14 @@ void CPWindow5::menu1_File_Newconfiguration_EvMenuActive(CControl* control) {
 
 void CPWindow5::menu1_File_Saveconfiguration_EvMenuActive(CControl* control) {
     filedialog1.SetType(lxFD_SAVE | lxFD_CHANGE_DIR);
-    fdtype = -1;
+    SpareParts.Setfdtype(-1);
 #ifdef __EMSCRIPTEN__
     filedialog1.SetDir("/tmp/");
     filedialog1.SetFileName("untitled.pcf");
     filedialog1_EvOnClose(1);
 #else
-    fdtype = -1;
-    filedialog1.SetFileName(oldfname);
+    SpareParts.Setfdtype(-1);
+    filedialog1.SetFileName(SpareParts.GetOldFilename());
     filedialog1.SetFilter(lxT("PICSimLab Config. (*.pcf)|*.pcf"));
     filedialog1.Run();
 #endif
@@ -613,8 +415,8 @@ void CPWindow5::menu1_File_Loadconfiguration_EvMenuActive(CControl* control) {
     EM_ASM_({ toggle_load_panel(); });
 #else
     filedialog1.SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
-    fdtype = -1;
-    filedialog1.SetFileName(oldfname);
+    SpareParts.Setfdtype(-1);
+    filedialog1.SetFileName(SpareParts.GetOldFilename());
     filedialog1.SetFilter(lxT("PICSimLab Config. (*.pcf)|*.pcf"));
     filedialog1.Run();
 #endif
@@ -622,14 +424,14 @@ void CPWindow5::menu1_File_Loadconfiguration_EvMenuActive(CControl* control) {
 
 void CPWindow5::menu1_File_Savepinalias_EvMenuActive(CControl* control) {
     filedialog1.SetType(lxFD_SAVE | lxFD_CHANGE_DIR);
-    fdtype = -1;
+    SpareParts.Setfdtype(-1);
 #ifdef __EMSCRIPTEN__
     filedialog1.SetDir("/tmp/");
     filedialog1.SetFileName("untitled.ppa");
     filedialog1_EvOnClose(1);
 #else
-    fdtype = -2;
-    filedialog1.SetFileName(oldfname);
+    SpareParts.Setfdtype(-2);
+    filedialog1.SetFileName(SpareParts.GetOldFilename());
     filedialog1.SetFilter(lxT("PICSimLab Pin Alias. (*.ppa)|*.ppa"));
     filedialog1.Run();
 #endif
@@ -640,29 +442,28 @@ void CPWindow5::menu1_File_Loadpinalias_EvMenuActive(CControl* control) {
     EM_ASM_({ toggle_load_panel(); });
 #else
     filedialog1.SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
-    fdtype = -2;
-    filedialog1.SetFileName(oldfname);
+    SpareParts.Setfdtype(-2);
+    filedialog1.SetFileName(SpareParts.GetOldFilename());
     filedialog1.SetFilter(lxT("PICSimLab Pin Alias. (*.ppa)|*.ppa"));
     filedialog1.Run();
 #endif
 }
 
 void CPWindow5::menu1_Edit_Clearpinalias_EvMenuActive(CControl* control) {
-    for (int i = 0; i < 256; i++) {
-        PinAlias[i] = PinNames[i];
-    }
+    SpareParts.ClearPinAlias();
     update_all = 1;
 }
 
 void CPWindow5::menu1_Edit_Togglepinalias_EvMenuActive(CControl* control) {
-    useAlias = !useAlias;
+    SpareParts.SetUseAlias(!SpareParts.GetUseAlias());
     update_all = 1;
-    Window4.SetBaseTimer();
+    Oscilloscope.SetBaseTimer();
 }
 
 void CPWindow5::menu1_Edit_Editpinalias_EvMenuActive(CControl* control) {
+    lxString alias_fname = SpareParts.GetAliasFname();
     if (lxFileExists(alias_fname)) {
-        SavePinAlias(alias_fname);
+        SpareParts.SavePinAlias(alias_fname);
 #ifdef _WIN_
         lxExecute(lxT("notepad.exe ") + alias_fname);
 #else
@@ -674,105 +475,47 @@ void CPWindow5::menu1_Edit_Editpinalias_EvMenuActive(CControl* control) {
 }
 
 void CPWindow5::menu1_Edit_Reloadpinalias_EvMenuActive(CControl* control) {
-    LoadPinAlias(alias_fname);
+    SpareParts.LoadPinAlias(SpareParts.GetAliasFname());
     update_all = 1;
 }
 
 void CPWindow5::menu1_Edit_Zoomin_EvMenuActive(CControl* control) {
-    scale += 0.1;
-    if (scale > 2)
-        scale = 2;
+    SpareParts.SetScale(SpareParts.GetScale() + 0.1);
+    if (SpareParts.GetScale() > 2)
+        SpareParts.SetScale(2);
 
-    scale = trunc(scale * 10) / 10.0;
+    SpareParts.SetScale(trunc(SpareParts.GetScale() * 10) / 10.0);
 
-    for (int i = 0; i < partsc; i++) {
-        parts[i]->SetScale(scale);
+    for (int i = 0; i < SpareParts.GetCount(); i++) {
+        SpareParts.GetPart(i)->SetScale(SpareParts.GetScale());
     }
     update_all = 1;
 }
 
 void CPWindow5::menu1_Edit_Zoomout_EvMenuActive(CControl* control) {
-    scale -= 0.1;
-    if (scale < 0.1)
-        scale = 0.1;
+    SpareParts.SetScale(SpareParts.GetScale() - 0.1);
+    if (SpareParts.GetScale() < 0.1)
+        SpareParts.SetScale(0.1);
 
-    scale = trunc(scale * 10) / 10.0;
+    SpareParts.SetScale(trunc(SpareParts.GetScale() * 10) / 10.0);
 
-    for (int i = 0; i < partsc; i++) {
-        parts[i]->SetScale(scale);
-    }
-    update_all = 1;
-}
-
-void CPWindow5::PreProcess(void) {
-    int i;
-
-    memset(pullup_bus, 0, PinsCount);
-
-    partsc_aup = 0;
-    for (i = 0; i < partsc; i++) {
-        parts[i]->PreProcess();
-        if (parts[i]->GetAwaysUpdate()) {
-            parts_aup[partsc_aup] = parts[i];
-            partsc_aup++;
-        }
-    }
-
-    pullup_bus_count = 0;
-    for (i = 0; i < PinsCount; i++) {
-        if (pullup_bus[i] > 0)  // need register bus
-        {
-            pullup_bus_ptr[pullup_bus_count] = i;
-            pullup_bus_count++;
-        }
-        pullup_bus[i] = 0;
-    }
-}
-
-void CPWindow5::Process(void) {
-    int i;
-
-    if (ioupdated) {
-        for (i = 0; i < pullup_bus_count; i++) {
-            pullup_bus[pullup_bus_ptr[i]] = 1;
-        }
-        for (i = 0; i < partsc; i++) {
-            parts[i]->Process();
-        }
-        for (i = 0; i < pullup_bus_count; i++) {
-            Window5.SetPin(pullup_bus_ptr[i] + 1, pullup_bus[pullup_bus_ptr[i]]);
-        }
-    } else {
-        for (i = 0; i < partsc_aup; i++) {
-            parts_aup[i]->Process();
-        }
-    }
-}
-
-void CPWindow5::PostProcess(void) {
-    for (int i = 0; i < partsc; i++) {
-        parts[i]->PostProcess();
-    }
-}
-
-void CPWindow5::Reset(void) {
-    for (int i = 0; i < partsc; i++) {
-        parts[i]->Reset();
+    for (int i = 0; i < SpareParts.GetCount(); i++) {
+        SpareParts.GetPart(i)->SetScale(SpareParts.GetScale());
     }
     update_all = 1;
 }
 
 void CPWindow5::_EvOnHide(CControl* control) {
     timer1.SetRunState(0);
-    pboard = Window1.GetBoard();
+    board* pboard = PICSimLab.GetBoard();
     if (pboard) {
         pboard->SetUseSpareParts(0);
     }
     if (Window4.GetVisible()) {
-        Window4.SetBaseTimer();
+        Oscilloscope.SetBaseTimer();
     }
-    for (int i = 0; i < partsc; i++) {
-        parts[i]->Stop();
+    for (int i = 0; i < SpareParts.GetCount(); i++) {
+        SpareParts.GetPart(i)->Stop();
     }
 }
 
@@ -782,45 +525,33 @@ void CPWindow5::pmenu2_Move_EvMenuActive(CControl* control) {
 }
 
 void CPWindow5::pmenu2_Rotate_EvMenuActive(CControl* control) {
-    int orientation = parts[PartSelected]->GetOrientation();
+    int orientation = SpareParts.GetPart(PartSelected)->GetOrientation();
 
     orientation++;
     if (orientation > 3)
         orientation = 0;
 
-    parts[PartSelected]->SetOrientation(orientation);
+    SpareParts.GetPart(PartSelected)->SetOrientation(orientation);
 
     update_all = 1;
 }
 
 void CPWindow5::pmenu2_Delete_EvMenuActive(CControl* control) {
-    int partsc_ = partsc;
-    partsc = 0;  // disable process
-    partsc_aup = 0;
-
-    delete parts[PartSelected];
-
-    for (int i = PartSelected; i < partsc_ - 1; i++) {
-        parts[i] = parts[i + 1];
-    }
-    partsc_--;
-
-    partsc = partsc_;
-
+    SpareParts.DeletePart(PartSelected);
     update_all = 1;
 }
 
 void CPWindow5::pmenu2_Help_EvMenuActive(CControl* control) {
     lxString stemp;
     stemp.Printf(lxT("https://lcgamboa.github.io/picsimlab_docs/%s/%s"), lxT(_VERSION_),
-                 (const char*)parts[PartSelected]->GetHelpURL().c_str());
+                 (const char*)SpareParts.GetPart(PartSelected)->GetHelpURL().c_str());
     lxLaunchDefaultBrowser(stemp);
 }
 
 void CPWindow5::pmenu2_About_EvMenuActive(CControl* control) {
-    Message_sz(
-        lxT("Part ") + parts[PartSelected]->GetName() + lxT("\nDeveloped by ") + parts[PartSelected]->GetAboutInfo(),
-        400, 200);
+    Message_sz(lxT("Part ") + SpareParts.GetPart(PartSelected)->GetName() + lxT("\nDeveloped by ") +
+                   SpareParts.GetPart(PartSelected)->GetAboutInfo(),
+               400, 200);
 }
 
 void CPWindow5::menu1_Help_Contents_EvMenuActive(CControl* control) {
@@ -830,7 +561,7 @@ void CPWindow5::menu1_Help_Contents_EvMenuActive(CControl* control) {
     stemp.Printf(lxT("https://lcgamboa.github.io/picsimlab_docs/%s/SpareParts.html"), lxT(_VERSION_));
     lxLaunchDefaultBrowser(stemp);
 #else
-    Window2.html1.SetLoadFile(Window1.GetSharePath() + lxT("docs/picsimlab.html"));
+    Window2.html1.SetLoadFile(PICSimLab.GetSharePath() + lxT("docs/picsimlab.html"));
     Window2.Show();
 #endif
 }
@@ -842,36 +573,14 @@ void CPWindow5::menu1_Help_About_EvMenuActive(CControl* control) {
     Message_sz(stemp, 400, 200);
 }
 
-void CPWindow5::WritePreferences(void) {
-    Window1.saveprefs(lxT("spare_position"), itoa(GetX()) + lxT(",") + itoa(GetY()) + lxT(",") + itoa(GetWidth()) +
-                                                 lxT(",") + itoa(GetHeight()));
-}
-
-void CPWindow5::ReadPreferences(char* name, char* value) {
-    if (!strcmp(name, "spare_position")) {
-        int x, y, w, h;
-        sscanf(value, "%i,%i,%i,%i", &x, &y, &w, &h);
-        SetX(x);
-        SetY(y);
-        if (w > 5000)
-            w = 5000;
-        if (h > 5000)
-            h = 5000;
-        SetWidth(w);
-        SetHeight(h);
-        draw1.SetWidth(w - 15);
-        draw1.SetHeight(h - 40);
-    }
-}
-
 void CPWindow5::filedialog1_EvOnClose(int retId) {
-    if (retId && (fdtype == -1)) {
+    if (retId && (SpareParts.Getfdtype() == -1)) {
         if ((filedialog1.GetType() == (lxFD_SAVE | lxFD_CHANGE_DIR))) {
             if (lxFileExists(filedialog1.GetFileName())) {
                 if (!Dialog_sz(lxString("Overwriting file: ") + basename(filedialog1.GetFileName()) + "?", 400, 200))
                     return;
             }
-            SaveConfig(filedialog1.GetFileName());
+            SpareParts.SaveConfig(filedialog1.GetFileName());
 #ifdef __EMSCRIPTEN__
             EM_ASM_(
                 {
@@ -897,15 +606,15 @@ void CPWindow5::filedialog1_EvOnClose(int retId) {
         }
 
         if ((filedialog1.GetType() == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
-            LoadConfig(filedialog1.GetFileName());
+            SpareParts.LoadConfig(filedialog1.GetFileName());
         }
-    } else if (retId && (fdtype == -2)) {
+    } else if (retId && (SpareParts.Getfdtype() == -2)) {
         if ((filedialog1.GetType() == (lxFD_SAVE | lxFD_CHANGE_DIR))) {
             if (lxFileExists(filedialog1.GetFileName())) {
                 if (!Dialog_sz(lxString("Overwriting file: ") + basename(filedialog1.GetFileName()) + "?", 400, 200))
                     return;
             }
-            SavePinAlias(filedialog1.GetFileName());
+            SpareParts.SavePinAlias(filedialog1.GetFileName());
 #ifdef __EMSCRIPTEN__
             EM_ASM_(
                 {
@@ -931,202 +640,10 @@ void CPWindow5::filedialog1_EvOnClose(int retId) {
         }
 
         if ((filedialog1.GetType() == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
-            LoadPinAlias(filedialog1.GetFileName(), 1);
+            SpareParts.LoadPinAlias(filedialog1.GetFileName(), 1);
         }
-    } else if (fdtype >= 0) {
-        parts[fdtype]->filedialog_EvOnClose(retId);
-        fdtype = -1;
+    } else if (SpareParts.Getfdtype() >= 0) {
+        SpareParts.GetPart(SpareParts.Getfdtype())->filedialog_EvOnClose(retId);
+        SpareParts.Setfdtype(-1);
     }
-}
-
-void CPWindow5::Reset_pullup_bus(unsigned char pin) {
-    if (pin < IOINIT) {
-        pullup_bus[pin]++;  // count i2c devices in bus
-    }
-}
-
-void CPWindow5::Set_pullup_bus(unsigned char pin, unsigned char value) {
-    if (pin < IOINIT) {
-        pullup_bus[pin] &= value;
-    }
-}
-
-unsigned char CPWindow5::Get_pullup_bus(unsigned char pin) {
-    if (pin < IOINIT)
-        return pullup_bus[pin];
-    else
-        return 0;
-}
-
-lxString CPWindow5::GetPinsNames(void) {
-    lxString Items = "0  NC,";
-    lxString spin;
-
-    for (int i = 1; i <= pboard->MGetPinCount(); i++) {
-        if (useAlias) {
-            spin = PinAlias[i];
-        } else {
-            spin = PinNames[i];
-        }
-        if (PinNames[i].Cmp(lxT("error"))) {
-            Items = Items + itoa(i) + "  " + spin + ",";
-        }
-    }
-    for (int i = IOINIT; i < 256; i++) {
-        if (useAlias) {
-            spin = PinAlias[i];
-        } else {
-            spin = PinNames[i];
-        }
-        if (PinNames[i].length() > 0) {
-            Items = Items + itoa(i) + "  " + spin + ",";
-        }
-    }
-    return Items;
-}
-
-lxString CPWindow5::GetPinName(unsigned char pin) {
-    if (!pin)
-        return "NC";
-    if (!pboard)
-        return "NC";
-
-    if (pin <= pboard->MGetPinCount()) {
-        if (useAlias) {
-            return PinAlias[pin];
-        } else {
-            return PinNames[pin];
-        }
-    } else {
-        if (useAlias) {
-            return PinAlias[pin];
-        } else {
-            return PinNames[pin] + "-" + itoa(pin);
-        }
-    }
-}
-
-const picpin* CPWindow5::GetPinsValues(void) {
-    return Pins;
-}
-
-void CPWindow5::SetPin(unsigned char pin, unsigned char value) {
-    if (pin) {
-        if ((pin > PinsCount)) {
-            Pins[pin - 1].lsvalue = value;  // for open collector simulation
-        }
-
-        if ((Pins[pin - 1].dir) && ((Pins[pin - 1].value != value))) {
-            if ((pin > PinsCount)) {
-                Pins[pin - 1].value = value;
-            } else {
-                pboard->MSetPin(pin, value);
-            }
-        }
-    }
-}
-
-void CPWindow5::SetPinDOV(unsigned char pin, unsigned char ovalue) {
-    if (pin) {
-        if (Pins[pin - 1].ovalue != ovalue) {
-            if ((pin > PinsCount)) {
-                Pins[pin - 1].ovalue = ovalue;
-            } else {
-                pboard->MSetPinDOV(pin, ovalue);
-            }
-        }
-    }
-}
-
-void CPWindow5::SetPinDir(unsigned char pin, unsigned char dir) {
-    if (pin) {
-        if (Pins[pin - 1].dir != dir) {
-            if ((pin > PinsCount)) {
-                Pins[pin - 1].dir = dir;
-            }
-        }
-    }
-}
-
-void CPWindow5::WritePin(unsigned char pin, unsigned char value) {
-    if (pin > PinsCount) {
-        Pins[pin - 1].lsvalue = value;  // for open collector simulation
-        Pins[pin - 1].value = value;
-    }
-}
-
-void CPWindow5::WritePinA(unsigned char pin, unsigned char avalue) {
-    if (pin > PinsCount) {
-        Pins[pin - 1].avalue = avalue;
-    }
-}
-
-void CPWindow5::WritePinOA(unsigned char pin, unsigned short oavalue) {
-    if (pin > PinsCount) {
-        if (oavalue > 255)
-            oavalue = 255;
-        Pins[pin - 1].oavalue = oavalue;
-    }
-}
-
-void CPWindow5::SetAPin(unsigned char pin, float value) {
-    pboard->MSetAPin(pin, value);
-    if (pin > PinsCount) {
-        Pins[pin - 1].avalue = value;
-    }
-}
-
-unsigned char CPWindow5::RegisterIOpin(lxString pname, unsigned char pin, unsigned char dir) {
-    unsigned char ppin = IOINIT;
-
-    if (pin >= IOINIT) {
-        ppin = pin;
-    }
-#ifdef LEGACY081
-    else if (pin >= 70)  // legacy
-    {
-        ppin = pin;
-    }
-#endif
-
-    while ((PinNames[ppin].length() > 0) && (ppin)) {
-        ppin++;
-    }
-
-    if (ppin) {
-        PinNames[ppin] = pname;
-        if (PinAlias[ppin][0] == ' ') {
-            PinAlias[ppin] = pname;
-        }
-        SetPinDir(ppin, dir);
-    }
-
-    return ppin;
-}
-
-unsigned char CPWindow5::UnregisterIOpin(unsigned char pin) {
-    if (PinNames[pin].length() > 0) {
-        if (!strncmp(PinNames[pin], PinAlias[pin], strlen(PinNames[pin]))) {
-            PinAlias[pin] = " ";
-        }
-        PinNames[pin] = "";
-        return 1;
-    }
-    return 0;
-}
-
-void CPWindow5::Setfdtype(int value) {
-    fdtype = value;
-    oldfname = filedialog1.GetFileName();
-}
-
-part* CPWindow5::GetPart(int pn) {
-    if (pn < partsc) {
-        return parts[pn];
-    }
-    return NULL;
-}
-
-int CPWindow5::GetPartsCount(void) {
-    return partsc;
 }

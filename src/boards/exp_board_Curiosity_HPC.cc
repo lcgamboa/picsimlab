@@ -29,8 +29,8 @@
 #include "exp_board_Curiosity_HPC.h"
 #include "../picsimlab1.h"
 #include "../picsimlab4.h"  //Oscilloscope
-#include "../picsimlab5.h"  //Spare Parts
 #include "../serial_port.h"
+#include "../spareparts.h"  //Spare Parts
 
 /* ids of inputs of input map*/
 enum {
@@ -310,14 +310,14 @@ void cboard_Curiosity_HPC::Reset(void) {
 #else
     if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
-                                           itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                           lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                            100.0 * pic.serial[0].serialbaud) /
-                                                                           pic.serial[0].serialexbaud)) +
-                                           lxT("%)"));
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+                                                  itoa(pic.serial[0].serialbaud) + lxT("(") +
+                                                  lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                                                                   100.0 * pic.serial[0].serialbaud) /
+                                                                                  pic.serial[0].serialexbaud)) +
+                                                  lxT("%)"));
     else
-        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
 
     if (jmp[0]) {
         pic.vcc = 3.3;
@@ -326,7 +326,7 @@ void cboard_Curiosity_HPC::Reset(void) {
     }
 
     if (use_spare)
-        Window5.Reset();
+        SpareParts.Reset();
     if (use_oscope)
         Window4.Reset();
 
@@ -358,25 +358,25 @@ void cboard_Curiosity_HPC::RefreshStatus(void) {
 #else
     if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
-                                           itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                           lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                            100.0 * pic.serial[0].serialbaud) /
-                                                                           pic.serial[0].serialexbaud)) +
-                                           lxT("%)"));
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+                                                  itoa(pic.serial[0].serialbaud) + lxT("(") +
+                                                  lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                                                                   100.0 * pic.serial[0].serialbaud) /
+                                                                                  pic.serial[0].serialexbaud)) +
+                                                  lxT("%)"));
     else
-        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
 }
 
 // Called to save board preferences in configuration file
 
 void cboard_Curiosity_HPC::WritePreferences(void) {
     // write selected microcontroller of board_Curiosity_HPC to preferences
-    Window1.saveprefs(lxT("Curiosity_HPC_proc"), Proc);
-    Window1.saveprefs(lxT("Curiosity_HPC_jmp"), lxString().Format("%i", jmp[0]));
-    Window1.saveprefs(lxT("Curiosity_HPC_clock"), lxString().Format("%2.1f", Window1.GetClock()));
-    Window1.saveprefs(lxT("Curiosity_HPC_serial2"), combo1->GetText());
-    Window1.saveprefs(lxT("Curiosity_HPC_pot1"), lxString().Format("%i", pot1));
+    PICSimLab.saveprefs(lxT("Curiosity_HPC_proc"), Proc);
+    PICSimLab.saveprefs(lxT("Curiosity_HPC_jmp"), lxString().Format("%i", jmp[0]));
+    PICSimLab.saveprefs(lxT("Curiosity_HPC_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.saveprefs(lxT("Curiosity_HPC_serial2"), combo1->GetText());
+    PICSimLab.saveprefs(lxT("Curiosity_HPC_pot1"), lxString().Format("%i", pot1));
 }
 
 // Called whe configuration file load  preferences
@@ -397,7 +397,7 @@ void cboard_Curiosity_HPC::ReadPreferences(char* name, char* value) {
         }
     }
     if (!strcmp(name, "Curiosity_HPC_clock")) {
-        Window1.SetClock(atof(value));
+        PICSimLab.SetClock(atof(value));
     }
     if (!strcmp(name, "Curiosity_HPC_serial2")) {
         combo1->SetText(value);
@@ -444,28 +444,29 @@ void cboard_Curiosity_HPC::EvMouseButtonPress(uint button, uint x, uint y, uint 
             switch (input[i].id) {
                     // if event is over I_ISCP area then load hex file
                 case I_ICSP:
-                    Window1.menu1_File_LoadHex_EvMenuActive(NULL);
+                    PICSimLab.OpenLoadHexFileDialog();
+                    ;
                     break;
                     // if event is over I_PWR area then toggle board on/off
                 case I_PWR:
-                    if (Window1.Get_mcupwr())  // if on turn off
+                    if (PICSimLab.Get_mcupwr())  // if on turn off
                     {
-                        Window1.Set_mcupwr(0);
+                        PICSimLab.Set_mcupwr(0);
                         Reset();
                         p_BT[0] = 1;
                         p_BT[1] = 1;
                     } else  // if off turn on
                     {
-                        Window1.Set_mcupwr(1);
+                        PICSimLab.Set_mcupwr(1);
                         Reset();
                     }
                     break;
                     // if event is over I_RST area then turn off and reset
                 case I_RST:
-                    if (Window1.Get_mcupwr() && pic_reset(&pic, -1))  // if powered
+                    if (PICSimLab.Get_mcupwr() && pic_reset(&pic, -1))  // if powered
                     {
-                        Window1.Set_mcupwr(0);
-                        Window1.Set_mcurst(1);
+                        PICSimLab.Set_mcupwr(0);
+                        PICSimLab.Set_mcurst(1);
                     }
                     p_RST = 0;
                     break;
@@ -519,10 +520,10 @@ void cboard_Curiosity_HPC::EvMouseButtonRelease(uint button, uint x, uint y, uin
             switch (input[i].id) {
                     // if event is over I_RST area then turn on
                 case I_RST:
-                    if (Window1.Get_mcurst())  // if powered
+                    if (PICSimLab.Get_mcurst())  // if powered
                     {
-                        Window1.Set_mcupwr(1);
-                        Window1.Set_mcurst(0);
+                        PICSimLab.Set_mcupwr(1);
+                        PICSimLab.Set_mcurst(0);
 
                         if (pic_reset(&pic, -1)) {
                             Reset();
@@ -564,7 +565,7 @@ void cboard_Curiosity_HPC::Draw(CDraw* draw) {
             switch (output[i].id)  // search for color of output
             {
                 case O_D6:  // green using picpwr value
-                    draw->Canvas.SetColor(0, 200 * Window1.Get_mcupwr() + 55, 0);
+                    draw->Canvas.SetColor(0, 200 * PICSimLab.Get_mcupwr() + 55, 0);
                     break;
                 case O_D2:  // Red using pin 6 mean  value (RA4)
                     draw->Canvas.SetColor(pic.pins[5].oavalue, 0, 0);
@@ -663,8 +664,8 @@ void cboard_Curiosity_HPC::Run_CPU(void) {
     const picpin* pins;
     unsigned int alm[28];
 
-    const int JUMPSTEPS = Window1.GetJUMPSTEPS();  // number of steps skipped
-    const long int NSTEP = Window1.GetNSTEP();     // number of steps in 100ms
+    const int JUMPSTEPS = PICSimLab.GetJUMPSTEPS();  // number of steps skipped
+    const long int NSTEP = PICSimLab.GetNSTEP();     // number of steps in 100ms
     const float RNSTEP = 200.0 * pic.PINCOUNT / NSTEP;
 
     // reset mean value
@@ -678,7 +679,7 @@ void cboard_Curiosity_HPC::Run_CPU(void) {
 
     j = JUMPSTEPS;  // step counter
     pi = 0;
-    if (Window1.Get_mcupwr())        // if powered
+    if (PICSimLab.Get_mcupwr())      // if powered
         for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
             if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
@@ -694,7 +695,7 @@ void cboard_Curiosity_HPC::Run_CPU(void) {
             ioupdated = pic.ioupdated;
             InstCounterInc();
             if (use_oscope)
-                Window4.SetSample();
+                Oscilloscope.SetSample();
             if (use_spare)
                 Window5.Process();
 

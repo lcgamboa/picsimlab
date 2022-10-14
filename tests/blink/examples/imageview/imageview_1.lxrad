@@ -1,0 +1,121 @@
+<window1>
+  <Class type="String">CPWindow</Class>
+  <Name type="String">window1</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">259</X>
+  <Y type="int">138</Y>
+  <Width type="uint">954</Width>
+  <Height type="uint">629</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Title type="String">imageview</Title>
+  <OverrideRedirect type="bool">0</OverrideRedirect>
+  <EvOnCreate type="Event">FALSE</EvOnCreate>
+  <EvOnDestroy type="Event">FALSE</EvOnDestroy>
+  <EvOnShow type="Event">FALSE</EvOnShow>
+  <EvOnHide type="Event">FALSE</EvOnHide>
+  <EvOnEnter type="Event">FALSE</EvOnEnter>
+  <EvOnLeave type="Event">FALSE</EvOnLeave>
+<draw1>
+  <Class type="String">CImage</Class>
+  <Name type="String">draw1</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">292</X>
+  <Y type="int">25</Y>
+  <Width type="uint">645</Width>
+  <Height type="uint">510</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Transparent type="bool">1</Transparent>
+  <ImgFileName type="File"></ImgFileName>
+</draw1>
+<filelist1>
+  <Class type="String">CFileList</Class>
+  <Name type="String">filelist1</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">25</X>
+  <Y type="int">24</Y>
+  <Width type="uint">250</Width>
+  <Height type="uint">516</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Dir type="StringList"></Dir>
+  <EvFileListSelectDir type="Event">FALSE</EvFileListSelectDir>
+  <EvFileListSelectFile type="Event">TRUE</EvFileListSelectFile>
+</filelist1>
+<menu1>
+  <Class type="String">CMenu</Class>
+  <Name type="String">menu1</Name>
+  <Tag type="int">0</Tag>
+  <MenuItems type="MenuItems">File,Help,</MenuItems>
+</menu1>
+<menu1_File>
+  <Class type="String">CPMenu</Class>
+  <Name type="String">menu1_File</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">File</Text>
+  <MenuItems type="MenuItems">Exit,</MenuItems>
+</menu1_File>
+<menu1_Help>
+  <Class type="String">CPMenu</Class>
+  <Name type="String">menu1_Help</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Help</Text>
+  <MenuItems type="MenuItems">About,</MenuItems>
+</menu1_Help>
+<menu1_File_Exit>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_File_Exit</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Exit</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_File_Exit>
+<menu1_Help_About>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Help_About</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">About</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Help_About>
+</window1>

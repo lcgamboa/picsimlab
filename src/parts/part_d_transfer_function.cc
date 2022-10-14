@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "part_d_transfer_function.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum { O_P1, O_P2, O_IG, O_IO, O_OG, O_OO, O_NUM, O_DEN, O_TS };
@@ -53,7 +53,7 @@ cpart_dtfunc::cpart_dtfunc(unsigned x, unsigned y)
     out_gain = 0.01;
     out_off = 0.27;
 
-    nsamples = sample * Window1.GetBoard()->MGetInstClockFreq();
+    nsamples = sample * PICSimLab.GetBoard()->MGetInstClockFreq();
 
     refresh = 0;
 }
@@ -92,13 +92,13 @@ void cpart_dtfunc::Draw(void) {
                         if (input_pin == 0)
                             canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
                         else
-                            canvas.RotatedText(Window5.GetPinName(input_pin), output[i].x1, output[i].y1, 0);
+                            canvas.RotatedText(SpareParts.GetPinName(input_pin), output[i].x1, output[i].y1, 0);
                     }
                     if (output[i].id == O_P2) {
                         if (output_pin == 0)
                             canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
                         else
-                            canvas.RotatedText(Window5.GetPinName(output_pin), output[i].x1, output[i].y1, 0);
+                            canvas.RotatedText(SpareParts.GetPinName(output_pin), output[i].x1, output[i].y1, 0);
                     }
                     break;
                 case O_IG:
@@ -158,14 +158,14 @@ void cpart_dtfunc::Draw(void) {
         canvas.End();
     }
 
-    nsamples = sample * Window1.GetBoard()->MGetInstClockFreq();
+    nsamples = sample * PICSimLab.GetBoard()->MGetInstClockFreq();
 }
 
 void cpart_dtfunc::Process(void) {
     if (refresh > nsamples) {
         refresh = 0;
 
-        const picpin* ppins = Window5.GetPinsValues();
+        const picpin* ppins = SpareParts.GetPinsValues();
 
         float in, out, pinv;
 
@@ -189,7 +189,7 @@ void cpart_dtfunc::Process(void) {
         if (out > 5.0)
             out = 5.0;
 
-        Window5.SetAPin(output_pin, out);
+        SpareParts.SetAPin(output_pin, out);
     }
     refresh++;
 }
@@ -328,7 +328,7 @@ void cpart_dtfunc::ReadPreferences(lxString value) {
 }
 
 void cpart_dtfunc::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
     char buff[20];
     char eq[200];
@@ -337,7 +337,7 @@ void cpart_dtfunc::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pin == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pin);
+        spin = SpareParts.GetPinName(input_pin);
         ;
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(input_pin) + "  " + spin);
     }
@@ -346,17 +346,15 @@ void cpart_dtfunc::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pin == 0)
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pin);
+        spin = SpareParts.GetPinName(output_pin);
         ;
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(output_pin) + "  " + spin);
     }
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 
     eq[0] = 0;
     for (int i = 0; i < ordern; i++) {

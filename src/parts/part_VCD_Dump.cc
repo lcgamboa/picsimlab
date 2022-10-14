@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "part_VCD_Dump.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -104,7 +104,7 @@ void cpart_VCD_Dump::Draw(void) {
     int to;
     int r, g, b;
 
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     Update = 0;
 
@@ -135,7 +135,7 @@ void cpart_VCD_Dump::Draw(void) {
                     if (input_pins[output[i].id - O_P1] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
                     else
-                        canvas.RotatedText(Window5.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
+                        canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
                                            output[i].y1, 0);
                     break;
                 case O_NAME:
@@ -285,14 +285,14 @@ void cpart_VCD_Dump::ReadPreferences(lxString value) {
 }
 
 void cpart_VCD_Dump::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (input_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[0]);
+        spin = SpareParts.GetPinName(input_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(input_pins[0]) + "  " + spin);
     }
 
@@ -300,7 +300,7 @@ void cpart_VCD_Dump::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[1] == 0)
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[1]);
+        spin = SpareParts.GetPinName(input_pins[1]);
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(input_pins[1]) + "  " + spin);
     }
 
@@ -308,7 +308,7 @@ void cpart_VCD_Dump::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[2] == 0)
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[2]);
+        spin = SpareParts.GetPinName(input_pins[2]);
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText(itoa(input_pins[2]) + "  " + spin);
     }
 
@@ -316,7 +316,7 @@ void cpart_VCD_Dump::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[3] == 0)
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[3]);
+        spin = SpareParts.GetPinName(input_pins[3]);
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText(itoa(input_pins[3]) + "  " + spin);
     }
 
@@ -324,7 +324,7 @@ void cpart_VCD_Dump::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[4] == 0)
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[4]);
+        spin = SpareParts.GetPinName(input_pins[4]);
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText(itoa(input_pins[4]) + "  " + spin);
     }
 
@@ -332,7 +332,7 @@ void cpart_VCD_Dump::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[5] == 0)
         ((CCombo*)WProp->GetChildByName("combo6"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[5]);
+        spin = SpareParts.GetPinName(input_pins[5]);
         ((CCombo*)WProp->GetChildByName("combo6"))->SetText(itoa(input_pins[5]) + "  " + spin);
     }
 
@@ -340,7 +340,7 @@ void cpart_VCD_Dump::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[6] == 0)
         ((CCombo*)WProp->GetChildByName("combo7"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[6]);
+        spin = SpareParts.GetPinName(input_pins[6]);
         ((CCombo*)WProp->GetChildByName("combo7"))->SetText(itoa(input_pins[6]) + "  " + spin);
     }
 
@@ -348,18 +348,16 @@ void cpart_VCD_Dump::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[7] == 0)
         ((CCombo*)WProp->GetChildByName("combo8"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[7]);
+        spin = SpareParts.GetPinName(input_pins[7]);
         ((CCombo*)WProp->GetChildByName("combo8"))->SetText(itoa(input_pins[7]) + "  " + spin);
     }
 
     //((CEdit*) WProp->GetChildByName ("edit1"))->SetText (viewer);
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 
     //((CButton*) WProp->GetChildByName ("button3"))->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE &
     // CPWindow5::PropButtonRelease;
@@ -383,7 +381,7 @@ void cpart_VCD_Dump::ReadPropertiesWindow(CPWindow* WProp) {
 
 void cpart_VCD_Dump::Process(void) {
     if (rec) {
-        const picpin* ppins = Window5.GetPinsValues();
+        const picpin* ppins = SpareParts.GetPinsValues();
 
         vcd_count++;
         int tprint = 0;
@@ -405,7 +403,7 @@ void cpart_VCD_Dump::Process(void) {
 }
 
 void cpart_VCD_Dump::PostProcess(void) {
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     for (int i = 0; i < 8; i++) {
         if (input_pins[i] && (output_ids[O_L1 + i]->value != ppins[input_pins[i] - 1].oavalue)) {
@@ -423,7 +421,7 @@ void cpart_VCD_Dump::EvMouseButtonPress(uint button, uint x, uint y, uint state)
             switch (input[i].id) {
                 case I_START:
                     if (!rec) {
-                        float tscale = 1.0e12 / Window1.GetBoard()->MGetInstClockFreq();  // ps step
+                        float tscale = 1.0e12 / PICSimLab.GetBoard()->MGetInstClockFreq();  // ps step
 
                         f_vcd = fopen(f_vcd_name, "w");
                         vcd_count = 0;
@@ -452,14 +450,14 @@ void cpart_VCD_Dump::EvMouseButtonPress(uint button, uint x, uint y, uint state)
                                 "x)\n"
                                 "x[\n"
                                 "$end\n",
-                                (int)tscale, (const char*)Window5.GetPinName(input_pins[0]).c_str(),
-                                (const char*)Window5.GetPinName(input_pins[1]).c_str(),
-                                (const char*)Window5.GetPinName(input_pins[2]).c_str(),
-                                (const char*)Window5.GetPinName(input_pins[3]).c_str(),
-                                (const char*)Window5.GetPinName(input_pins[4]).c_str(),
-                                (const char*)Window5.GetPinName(input_pins[5]).c_str(),
-                                (const char*)Window5.GetPinName(input_pins[6]).c_str(),
-                                (const char*)Window5.GetPinName(input_pins[7]).c_str());
+                                (int)tscale, (const char*)SpareParts.GetPinName(input_pins[0]).c_str(),
+                                (const char*)SpareParts.GetPinName(input_pins[1]).c_str(),
+                                (const char*)SpareParts.GetPinName(input_pins[2]).c_str(),
+                                (const char*)SpareParts.GetPinName(input_pins[3]).c_str(),
+                                (const char*)SpareParts.GetPinName(input_pins[4]).c_str(),
+                                (const char*)SpareParts.GetPinName(input_pins[5]).c_str(),
+                                (const char*)SpareParts.GetPinName(input_pins[6]).c_str(),
+                                (const char*)SpareParts.GetPinName(input_pins[7]).c_str());
                         rec = 1;
                     } else {
                         rec = 0;

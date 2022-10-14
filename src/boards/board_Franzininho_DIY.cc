@@ -25,9 +25,9 @@
 
 // include files
 #include "board_Franzininho_DIY.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"  //Oscilloscope
-#include "../picsimlab5.h"  //Spare Parts
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 /* ids of inputs of input map*/
 enum {
@@ -122,10 +122,10 @@ cboard_Franzininho_DIY::~cboard_Franzininho_DIY(void) {}
 void cboard_Franzininho_DIY::Reset(void) {
     MReset(0);
 
-    Window1.statusbar1.SetField(2, "");
+    PICSimLab.GetStatusBar()->SetField(2, "");
 
     if (use_spare)
-        Window5.Reset();
+        SpareParts.Reset();
 
     RegisterRemoteControl();
 }
@@ -140,28 +140,28 @@ void cboard_Franzininho_DIY::RefreshStatus(void) {
     if (avr) {
         switch (avr->state) {
             case cpu_Limbo:
-                Window1.SetCpuState(CPU_ERROR);
+                PICSimLab.SetCpuState(CPU_ERROR);
                 break;
             case cpu_Stopped:
-                Window1.SetCpuState(CPU_HALTED);
+                PICSimLab.SetCpuState(CPU_HALTED);
                 break;
             case cpu_Running:
-                Window1.SetCpuState(CPU_RUNNING);
+                PICSimLab.SetCpuState(CPU_RUNNING);
                 break;
             case cpu_Sleeping:
-                Window1.SetCpuState(CPU_HALTED);
+                PICSimLab.SetCpuState(CPU_HALTED);
                 break;
             case cpu_Step:
-                Window1.SetCpuState(CPU_STEPPING);
+                PICSimLab.SetCpuState(CPU_STEPPING);
                 break;
             case cpu_StepDone:
-                Window1.SetCpuState(CPU_STEPPING);
+                PICSimLab.SetCpuState(CPU_STEPPING);
                 break;
             case cpu_Done:
-                Window1.SetCpuState(CPU_HALTED);
+                PICSimLab.SetCpuState(CPU_HALTED);
                 break;
             case cpu_Crashed:
-                Window1.SetCpuState(CPU_ERROR);
+                PICSimLab.SetCpuState(CPU_ERROR);
                 break;
         }
     }
@@ -171,8 +171,8 @@ void cboard_Franzininho_DIY::RefreshStatus(void) {
 
 void cboard_Franzininho_DIY::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
-    Window1.saveprefs(lxT("Franzininho_DIY_proc"), Proc);
-    Window1.saveprefs(lxT("Franzininho_DIY_clock"), lxString().Format("%2.1f", Window1.GetClock()));
+    PICSimLab.saveprefs(lxT("Franzininho_DIY_proc"), Proc);
+    PICSimLab.saveprefs(lxT("Franzininho_DIY_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
 }
 
 // Called whe configuration file load  preferences
@@ -184,7 +184,7 @@ void cboard_Franzininho_DIY::ReadPreferences(char* name, char* value) {
     }
 
     if (!strcmp(name, "Franzininho_DIY_clock")) {
-        Window1.SetClock(atof(value));
+        PICSimLab.SetClock(atof(value));
     }
 }
 
@@ -207,27 +207,27 @@ void cboard_Franzininho_DIY::EvMouseButtonPress(uint button, uint x, uint y, uin
             switch (input[i].id) {
                     // if event is over I_ISCP area then load hex file
                 case I_ICSP:
-                    Window1.menu1_File_LoadHex_EvMenuActive(NULL);
+                    PICSimLab.OpenLoadHexFileDialog();
                     break;
                     // if event is over I_PWR area then toggle board on/off
                 case I_PWR:
-                    if (Window1.Get_mcupwr())  // if on turn off
+                    if (PICSimLab.Get_mcupwr())  // if on turn off
                     {
-                        Window1.Set_mcupwr(0);
+                        PICSimLab.Set_mcupwr(0);
                         Reset();
                     } else  // if off turn on
                     {
-                        Window1.Set_mcupwr(1);
+                        PICSimLab.Set_mcupwr(1);
                         Reset();
                     }
                     output_ids[O_ON]->update = 1;
                     break;
                     // if event is over I_RST area then turn off and reset
                 case I_RST:
-                    if (Window1.Get_mcupwr())  // if powered
+                    if (PICSimLab.Get_mcupwr())  // if powered
                     {
-                        Window1.Set_mcupwr(0);
-                        Window1.Set_mcurst(1);
+                        PICSimLab.Set_mcupwr(0);
+                        PICSimLab.Set_mcurst(1);
                     }
                     p_RST = 0;
                     output_ids[O_RST]->update = 1;
@@ -248,10 +248,10 @@ void cboard_Franzininho_DIY::EvMouseButtonRelease(uint button, uint x, uint y, u
             switch (input[i].id) {
                     // if event is over I_RST area then turn on
                 case I_RST:
-                    if (Window1.Get_mcurst())  // if powered
+                    if (PICSimLab.Get_mcurst())  // if powered
                     {
-                        Window1.Set_mcupwr(1);
-                        Window1.Set_mcurst(0);
+                        PICSimLab.Set_mcupwr(1);
+                        PICSimLab.Set_mcurst(0);
 
                         Reset();
                     }
@@ -336,7 +336,7 @@ void cboard_Franzininho_DIY::Draw(CDraw* draw) {
                 draw->Canvas.SetFgColor(0, 0, 0);
                 switch (output[i].id) {
                     case O_ON:
-                        draw->Canvas.SetBgColor(0, 200 * Window1.Get_mcupwr() + 55, 0);
+                        draw->Canvas.SetBgColor(0, 200 * PICSimLab.Get_mcupwr() + 55, 0);
                         break;
                     case O_L:
                         draw->Canvas.SetBgColor(pins[5].oavalue, pins[5].oavalue, 0);
@@ -380,7 +380,7 @@ void cboard_Franzininho_DIY::Run_CPU(void) {
     unsigned int alm[40];
 
     const int pinc = MGetPinCount();
-    const long int NSTEP = 4.0 * Window1.GetNSTEP();  // number of steps in 100ms
+    const long int NSTEP = 4.0 * PICSimLab.GetNSTEP();  // number of steps in 100ms
     const float RNSTEP = 200.0 * pinc / NSTEP;
 
     long long unsigned int cycle_start;
@@ -395,10 +395,10 @@ void cboard_Franzininho_DIY::Run_CPU(void) {
     pins = MGetPinsValues();
 
     if (use_spare)
-        Window5.PreProcess();
+        SpareParts.PreProcess();
 
     pi = 0;
-    if (Window1.Get_mcupwr())        // if powered
+    if (PICSimLab.Get_mcupwr())      // if powered
         for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
             // verify if a breakpoint is reached if not run one instruction
@@ -423,9 +423,9 @@ void cboard_Franzininho_DIY::Run_CPU(void) {
             UpdateHardware();
 
             if (use_oscope)
-                Window4.SetSample();
+                Oscilloscope.SetSample();
             if (use_spare)
-                Window5.Process();
+                SpareParts.Process();
             ioupdated = 0;
 
             // increment mean value counter if pin is high
@@ -441,7 +441,7 @@ void cboard_Franzininho_DIY::Run_CPU(void) {
     }
 
     if (use_spare)
-        Window5.PostProcess();
+        SpareParts.PostProcess();
 
     // verifiy if LEDS need update
     if (output_ids[O_PB0]->value != pins[4].oavalue) {

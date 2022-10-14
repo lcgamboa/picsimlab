@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "part_IO_MM74C922.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum {
@@ -72,25 +72,25 @@ cpart_IO_MM74C922::cpart_IO_MM74C922(unsigned x, unsigned y)
     io_MM74C922_init(&kc);
     io_MM74C922_rst(&kc);
 
-    input_pins[0] = Window5.RegisterIOpin(lxT("RY1"));
-    input_pins[1] = Window5.RegisterIOpin(lxT("RY2"));
-    input_pins[2] = Window5.RegisterIOpin(lxT("RY3"));
-    input_pins[3] = Window5.RegisterIOpin(lxT("RY4"));
+    input_pins[0] = SpareParts.RegisterIOpin(lxT("RY1"));
+    input_pins[1] = SpareParts.RegisterIOpin(lxT("RY2"));
+    input_pins[2] = SpareParts.RegisterIOpin(lxT("RY3"));
+    input_pins[3] = SpareParts.RegisterIOpin(lxT("RY4"));
 
-    output_pins[0] = Window5.RegisterIOpin(lxT("CX4"));
-    output_pins[1] = Window5.RegisterIOpin(lxT("CX3"));
-    output_pins[2] = Window5.RegisterIOpin(lxT("CX2"));
-    output_pins[3] = Window5.RegisterIOpin(lxT("CX1"));
+    output_pins[0] = SpareParts.RegisterIOpin(lxT("CX4"));
+    output_pins[1] = SpareParts.RegisterIOpin(lxT("CX3"));
+    output_pins[2] = SpareParts.RegisterIOpin(lxT("CX2"));
+    output_pins[3] = SpareParts.RegisterIOpin(lxT("CX1"));
     output_pins[4] = 0;
     output_pins[5] = 0;
     output_pins[6] = 0;
     output_pins[7] = 0;
     output_pins[8] = 0;
 
-    Window5.SetPinDir(input_pins[0], PD_IN);
-    Window5.SetPinDir(input_pins[1], PD_IN);
-    Window5.SetPinDir(input_pins[2], PD_IN);
-    Window5.SetPinDir(input_pins[3], PD_IN);
+    SpareParts.SetPinDir(input_pins[0], PD_IN);
+    SpareParts.SetPinDir(input_pins[1], PD_IN);
+    SpareParts.SetPinDir(input_pins[2], PD_IN);
+    SpareParts.SetPinDir(input_pins[3], PD_IN);
 
     mcount = 0;
     memset(pins_alm, 0, 8 * sizeof(unsigned long));
@@ -99,7 +99,7 @@ cpart_IO_MM74C922::cpart_IO_MM74C922(unsigned x, unsigned y)
 
 cpart_IO_MM74C922::~cpart_IO_MM74C922(void) {
     for (int i = 0; i < 8; i++)
-        Window5.UnregisterIOpin(output_pins[i]);
+        SpareParts.UnregisterIOpin(output_pins[i]);
     delete Bitmap;
     canvas.Destroy();
 }
@@ -144,19 +144,19 @@ void cpart_IO_MM74C922::Draw(void) {
                         if (input_pins[pinv] == 0)
                             canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
                         else
-                            canvas.RotatedText(itoa(input_pins[pinv]) /*Window5.GetPinName(input_pins[pinv])*/,
+                            canvas.RotatedText(itoa(input_pins[pinv]) /*SpareParts.GetPinName(input_pins[pinv])*/,
                                                output[i].x1, output[i].y2 - 30, 90.0);
                     } else if (pinv < 8) {
                         if (output_pins[pinv - 4] == 0)
                             canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
                         else
-                            canvas.RotatedText(itoa(output_pins[pinv - 4]) /*Window5.GetPinName(input_pins[pinv])*/,
+                            canvas.RotatedText(itoa(output_pins[pinv - 4]) /*SpareParts.GetPinName(input_pins[pinv])*/,
                                                output[i].x1, output[i].y2 - 30, 90.0);
                     } else {
                         if (output_pins[pinv - 4] == 0)
                             canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
                         else
-                            canvas.RotatedText(Window5.GetPinName(output_pins[pinv - 4]), output[i].x1,
+                            canvas.RotatedText(SpareParts.GetPinName(output_pins[pinv - 4]), output[i].x1,
                                                output[i].y2 - 30, 90.0);
                     }
                     break;
@@ -238,30 +238,30 @@ void cpart_IO_MM74C922::ReadPreferences(lxString value) {
 
     if (input_pins[0] != inp) {
         for (int i = 0; i < 4; i++) {
-            Window5.UnregisterIOpin(input_pins[i]);
-            Window5.UnregisterIOpin(output_pins[i]);
+            SpareParts.UnregisterIOpin(input_pins[i]);
+            SpareParts.UnregisterIOpin(output_pins[i]);
         }
-        input_pins[0] = Window5.RegisterIOpin(lxT("RY1"), inp++);
-        input_pins[1] = Window5.RegisterIOpin(lxT("RY2"), inp++);
-        input_pins[2] = Window5.RegisterIOpin(lxT("RY3"), inp++);
-        input_pins[3] = Window5.RegisterIOpin(lxT("RY4"), inp++);
+        input_pins[0] = SpareParts.RegisterIOpin(lxT("RY1"), inp++);
+        input_pins[1] = SpareParts.RegisterIOpin(lxT("RY2"), inp++);
+        input_pins[2] = SpareParts.RegisterIOpin(lxT("RY3"), inp++);
+        input_pins[3] = SpareParts.RegisterIOpin(lxT("RY4"), inp++);
 
-        output_pins[0] = Window5.RegisterIOpin(lxT("CX4"), inp++);
-        output_pins[1] = Window5.RegisterIOpin(lxT("CX3"), inp++);
-        output_pins[2] = Window5.RegisterIOpin(lxT("CX2"), inp++);
-        output_pins[3] = Window5.RegisterIOpin(lxT("CX1"), inp++);
+        output_pins[0] = SpareParts.RegisterIOpin(lxT("CX4"), inp++);
+        output_pins[1] = SpareParts.RegisterIOpin(lxT("CX3"), inp++);
+        output_pins[2] = SpareParts.RegisterIOpin(lxT("CX2"), inp++);
+        output_pins[3] = SpareParts.RegisterIOpin(lxT("CX1"), inp++);
 
-        Window5.SetPinDir(input_pins[0], PD_IN);
-        Window5.SetPinDir(input_pins[1], PD_IN);
-        Window5.SetPinDir(input_pins[2], PD_IN);
-        Window5.SetPinDir(input_pins[3], PD_IN);
+        SpareParts.SetPinDir(input_pins[0], PD_IN);
+        SpareParts.SetPinDir(input_pins[1], PD_IN);
+        SpareParts.SetPinDir(input_pins[2], PD_IN);
+        SpareParts.SetPinDir(input_pins[3], PD_IN);
     }
 
     Reset();
 }
 
 void cpart_IO_MM74C922::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     for (int i = 0; i < 18; i++) {
@@ -275,13 +275,13 @@ void cpart_IO_MM74C922::ConfigurePropertiesWindow(CPWindow* WProp) {
                 value = "          NC";
             else
                 value = lxT("          ") +
-                        itoa(input_pins[pinv]);  // + lxT (" ") + Window5.GetPinName (output_pins[pinv - 4]);
+                        itoa(input_pins[pinv]);  // + lxT (" ") + SpareParts.GetPinName (output_pins[pinv - 4]);
         } else if (pinv < 8) {
             if (output_pins[pinv - 4] == 0)
                 value = "          NC";
             else
                 value = lxT("          ") +
-                        itoa(output_pins[pinv - 4]);  // + lxT (" ") + Window5.GetPinName (output_pins[pinv - 4]);
+                        itoa(output_pins[pinv - 4]);  // + lxT (" ") + SpareParts.GetPinName (output_pins[pinv - 4]);
         }
 
         ((CLabel*)WProp->GetChildByName("label" + itoa(i + 1)))->SetText(itoa(i + 1) + lxT("-") + pin_names[i] + value);
@@ -291,7 +291,7 @@ void cpart_IO_MM74C922::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[5] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[5]);
+        spin = SpareParts.GetPinName(output_pins[5]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(output_pins[5]) + "  " + spin);
     }
 
@@ -299,7 +299,7 @@ void cpart_IO_MM74C922::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[6] == 0)
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[6]);
+        spin = SpareParts.GetPinName(output_pins[6]);
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(output_pins[6]) + "  " + spin);
     }
 
@@ -307,7 +307,7 @@ void cpart_IO_MM74C922::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[7] == 0)
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[7]);
+        spin = SpareParts.GetPinName(output_pins[7]);
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText(itoa(output_pins[7]) + "  " + spin);
     }
 
@@ -315,7 +315,7 @@ void cpart_IO_MM74C922::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[8] == 0)
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[8]);
+        spin = SpareParts.GetPinName(output_pins[8]);
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText(itoa(output_pins[8]) + "  " + spin);
     }
 
@@ -323,16 +323,14 @@ void cpart_IO_MM74C922::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[4] == 0)
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[4]);
+        spin = SpareParts.GetPinName(output_pins[4]);
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText(itoa(output_pins[4]) + "  " + spin);
     }
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_IO_MM74C922::ReadPropertiesWindow(CPWindow* WProp) {
@@ -346,14 +344,14 @@ void cpart_IO_MM74C922::ReadPropertiesWindow(CPWindow* WProp) {
 void cpart_IO_MM74C922::PreProcess(void) {
     memset(pins_alm, 0, 8 * sizeof(unsigned long));
 
-    JUMPSTEPS_ = Window1.GetJUMPSTEPS();
+    JUMPSTEPS_ = PICSimLab.GetJUMPSTEPS();
     mcount = JUMPSTEPS_;
 
-    io_MM74C922_set_clk_freq(&kc, Window1.GetBoard()->MGetInstClockFreq());
+    io_MM74C922_set_clk_freq(&kc, PICSimLab.GetBoard()->MGetInstClockFreq());
 }
 
 void cpart_IO_MM74C922::Process(void) {
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     unsigned short ret;
     unsigned char data = 0;
@@ -366,15 +364,15 @@ void cpart_IO_MM74C922::Process(void) {
     ret = io_MM74C922_io(&kc, data);
 
     if (_ret != ret) {
-        Window5.WritePin(output_pins[3], (ret & 0x001) != 0);
-        Window5.WritePin(output_pins[2], (ret & 0x002) != 0);
-        Window5.WritePin(output_pins[1], (ret & 0x004) != 0);
-        Window5.WritePin(output_pins[0], (ret & 0x008) != 0);
-        Window5.SetPin(output_pins[4], (ret & 0x010) != 0);
-        Window5.SetPin(output_pins[8], (ret & 0x020) != 0);
-        Window5.SetPin(output_pins[7], (ret & 0x040) != 0);
-        Window5.SetPin(output_pins[6], (ret & 0x080) != 0);
-        Window5.SetPin(output_pins[5], (ret & 0x100) != 0);
+        SpareParts.WritePin(output_pins[3], (ret & 0x001) != 0);
+        SpareParts.WritePin(output_pins[2], (ret & 0x002) != 0);
+        SpareParts.WritePin(output_pins[1], (ret & 0x004) != 0);
+        SpareParts.WritePin(output_pins[0], (ret & 0x008) != 0);
+        SpareParts.SetPin(output_pins[4], (ret & 0x010) != 0);
+        SpareParts.SetPin(output_pins[8], (ret & 0x020) != 0);
+        SpareParts.SetPin(output_pins[7], (ret & 0x040) != 0);
+        SpareParts.SetPin(output_pins[6], (ret & 0x080) != 0);
+        SpareParts.SetPin(output_pins[5], (ret & 0x100) != 0);
     }
     _ret = ret;
 
@@ -401,17 +399,25 @@ void cpart_IO_MM74C922::Process(void) {
 }
 
 void cpart_IO_MM74C922::PostProcess(void) {
-    long int NSTEPJ = Window1.GetNSTEPJ();
-    const picpin* ppins = Window5.GetPinsValues();
+    long int NSTEPJ = PICSimLab.GetNSTEPJ();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
-    Window5.WritePinOA(output_pins[0], (ppins[output_pins[0] - 1].oavalue + ((pins_alm[0] * 200.0) / NSTEPJ) + 55) / 2);
-    Window5.WritePinOA(output_pins[1], (ppins[output_pins[1] - 1].oavalue + ((pins_alm[1] * 200.0) / NSTEPJ) + 55) / 2);
-    Window5.WritePinOA(output_pins[2], (ppins[output_pins[2] - 1].oavalue + ((pins_alm[2] * 200.0) / NSTEPJ) + 55) / 2);
-    Window5.WritePinOA(output_pins[3], (ppins[output_pins[3] - 1].oavalue + ((pins_alm[3] * 200.0) / NSTEPJ) + 55) / 2);
-    Window5.WritePinOA(input_pins[0], (ppins[input_pins[0] - 1].oavalue + ((pins_alm[4] * 200.0) / NSTEPJ) + 55) / 2);
-    Window5.WritePinOA(input_pins[1], (ppins[input_pins[1] - 1].oavalue + ((pins_alm[5] * 200.0) / NSTEPJ) + 55) / 2);
-    Window5.WritePinOA(input_pins[2], (ppins[input_pins[2] - 1].oavalue + ((pins_alm[6] * 200.0) / NSTEPJ) + 55) / 2);
-    Window5.WritePinOA(input_pins[3], (ppins[input_pins[3] - 1].oavalue + ((pins_alm[7] * 200.0) / NSTEPJ) + 55) / 2);
+    SpareParts.WritePinOA(output_pins[0],
+                          (ppins[output_pins[0] - 1].oavalue + ((pins_alm[0] * 200.0) / NSTEPJ) + 55) / 2);
+    SpareParts.WritePinOA(output_pins[1],
+                          (ppins[output_pins[1] - 1].oavalue + ((pins_alm[1] * 200.0) / NSTEPJ) + 55) / 2);
+    SpareParts.WritePinOA(output_pins[2],
+                          (ppins[output_pins[2] - 1].oavalue + ((pins_alm[2] * 200.0) / NSTEPJ) + 55) / 2);
+    SpareParts.WritePinOA(output_pins[3],
+                          (ppins[output_pins[3] - 1].oavalue + ((pins_alm[3] * 200.0) / NSTEPJ) + 55) / 2);
+    SpareParts.WritePinOA(input_pins[0],
+                          (ppins[input_pins[0] - 1].oavalue + ((pins_alm[4] * 200.0) / NSTEPJ) + 55) / 2);
+    SpareParts.WritePinOA(input_pins[1],
+                          (ppins[input_pins[1] - 1].oavalue + ((pins_alm[5] * 200.0) / NSTEPJ) + 55) / 2);
+    SpareParts.WritePinOA(input_pins[2],
+                          (ppins[input_pins[2] - 1].oavalue + ((pins_alm[6] * 200.0) / NSTEPJ) + 55) / 2);
+    SpareParts.WritePinOA(input_pins[3],
+                          (ppins[input_pins[3] - 1].oavalue + ((pins_alm[7] * 200.0) / NSTEPJ) + 55) / 2);
 }
 
 part_init(PART_IO_MM74C922_Name, cpart_IO_MM74C922, "Other");

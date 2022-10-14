@@ -26,7 +26,7 @@
 #include "part_LCD_ssd1306.h"
 #include "../picsimlab1.h"
 #include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_F1, O_F2, O_LCD };
@@ -86,7 +86,7 @@ void cpart_LCD_ssd1306::Draw(void) {
                     if (input_pins[output[i].id - O_P1] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
                     else
-                        canvas.RotatedText(Window5.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
+                        canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
                                            output[i].y2, 90.0);
                     break;
                 case O_F2:
@@ -171,14 +171,14 @@ void cpart_LCD_ssd1306::ReadPreferences(lxString value) {
 }
 
 void cpart_LCD_ssd1306::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (input_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[0]);
+        spin = SpareParts.GetPinName(input_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(input_pins[0]) + "  " + spin);
     }
 
@@ -186,7 +186,7 @@ void cpart_LCD_ssd1306::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[1] == 0)
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[1]);
+        spin = SpareParts.GetPinName(input_pins[1]);
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(input_pins[1]) + "  " + spin);
     }
 
@@ -194,7 +194,7 @@ void cpart_LCD_ssd1306::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[2] == 0)
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[2]);
+        spin = SpareParts.GetPinName(input_pins[2]);
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText(itoa(input_pins[2]) + "  " + spin);
     }
 
@@ -202,7 +202,7 @@ void cpart_LCD_ssd1306::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[3] == 0)
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[3]);
+        spin = SpareParts.GetPinName(input_pins[3]);
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText(itoa(input_pins[3]) + "  " + spin);
     }
 
@@ -210,7 +210,7 @@ void cpart_LCD_ssd1306::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[4] == 0)
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[4]);
+        spin = SpareParts.GetPinName(input_pins[4]);
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText(itoa(input_pins[4]) + "  " + spin);
     }
 
@@ -220,12 +220,10 @@ void cpart_LCD_ssd1306::ConfigurePropertiesWindow(CPWindow* WProp) {
         ((CCombo*)WProp->GetChildByName("combo6"))->SetText("I2C");
     }
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_LCD_ssd1306::ReadPropertiesWindow(CPWindow* WProp) {
@@ -244,20 +242,20 @@ void cpart_LCD_ssd1306::ReadPropertiesWindow(CPWindow* WProp) {
 
 void cpart_LCD_ssd1306::PreProcess(void) {
     if ((type_com) && (input_pins[1] > 0)) {
-        Window5.Reset_pullup_bus(input_pins[1] - 1);
+        SpareParts.Reset_pullup_bus(input_pins[1] - 1);
     }
 }
 
 void cpart_LCD_ssd1306::Process(void) {
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     if (type_com) {
         if ((input_pins[0] > 0) && (input_pins[1] > 0))
-            Window5.Set_pullup_bus(input_pins[1] - 1, lcd_ssd1306_I2C_io(&lcd, ppins[input_pins[1] - 1].value,
-                                                                         ppins[input_pins[0] - 1].value));
+            SpareParts.Set_pullup_bus(input_pins[1] - 1, lcd_ssd1306_I2C_io(&lcd, ppins[input_pins[1] - 1].value,
+                                                                            ppins[input_pins[0] - 1].value));
 
         if (input_pins[1] > 0)
-            Window5.SetPin(input_pins[1], Window5.Get_pullup_bus(input_pins[1] - 1));
+            SpareParts.SetPin(input_pins[1], SpareParts.Get_pullup_bus(input_pins[1] - 1));
     } else {
         if ((input_pins[0] > 0) && (input_pins[1] > 0) && (input_pins[2] > 0) && (input_pins[3] > 0) &&
             (input_pins[4] > 0)) {

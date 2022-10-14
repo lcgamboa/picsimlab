@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "part_gamepad_an.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum { O_P1, O_B1, O_B2, O_B3, O_B4, O_B5 };
@@ -72,7 +72,7 @@ void cpart_gamepad_an::RegisterRemoteControl(void) {
 
 void cpart_gamepad_an::Reset(void) {
     // release all
-    vmax = Window1.GetBoard()->MGetVCC();
+    vmax = PICSimLab.GetBoard()->MGetVCC();
 
     output_value_an = active * vmax;
 
@@ -82,7 +82,7 @@ void cpart_gamepad_an::Reset(void) {
     output_value[3] = 1;
     output_value[4] = 1;
 
-    Window5.SetAPin(output_pins[0], output_value_an);
+    SpareParts.SetAPin(output_pins[0], output_value_an);
 }
 
 cpart_gamepad_an::~cpart_gamepad_an(void) {
@@ -120,7 +120,7 @@ void cpart_gamepad_an::Draw(void) {
                     if (output_pins[0] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
                     else
-                        canvas.RotatedText(Window5.GetPinName(output_pins[0]), output[i].x1, output[i].y1, 0);
+                        canvas.RotatedText(SpareParts.GetPinName(output_pins[0]), output[i].x1, output[i].y1, 0);
                     break;
                 case O_B5:
                     canvas.SetColor(102, 102, 102);
@@ -174,7 +174,7 @@ void cpart_gamepad_an::PreProcess(void) {
         output_value_an = (active * 3.621) + ((!active) * 1.379);
     }
 
-    Window5.SetAPin(output_pins[0], output_value_an);
+    SpareParts.SetAPin(output_pins[0], output_value_an);
 
     if (output_value_an != output_value_an_) {
         output_ids[O_P1]->update = 1;
@@ -353,14 +353,14 @@ void cpart_gamepad_an::ReadPreferences(lxString value) {
 }
 
 void cpart_gamepad_an::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (output_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[0]);
+        spin = SpareParts.GetPinName(output_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(output_pins[0]) + "  " + spin);
     }
 
@@ -369,12 +369,10 @@ void cpart_gamepad_an::ConfigurePropertiesWindow(CPWindow* WProp) {
     else
         ((CCombo*)WProp->GetChildByName("combo9"))->SetText("LOW ");
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_gamepad_an::ReadPropertiesWindow(CPWindow* WProp) {

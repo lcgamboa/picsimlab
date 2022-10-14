@@ -29,24 +29,6 @@
 #include <lxrad.h>
 #include <picsim/picsim.h>
 
-#define WMAX 350
-#define HMAX 250
-
-#define NPOINTS (2 * WMAX)
-
-#define MAX_MEASURES 10
-
-typedef struct {
-    double Vrms;
-    double Vavr;
-    double Vmax;
-    double Vmin;
-    double Freq;
-    double FCycle_ms;
-    double PCycle_ms;
-    double Duty;
-} ch_status_t;
-
 /**
  * @brief CPWindow4 class
  *
@@ -98,6 +80,7 @@ public:
     CButton button8;
     CButton button9;
     /*#Events*/
+    void _EvOnCreate(CControl* control);
     void _EvOnDestroy(CControl* control);
     void _EvOnShow(CControl* control);
     void _EvOnHide(CControl* control);
@@ -125,44 +108,12 @@ public:
     /*#Others*/
     // lxrad automatic generated block end, don't edit above!
     CPWindow4(void);
-
-    void WritePreferences(void);
-    void ReadPreferences(char* name, char* value);
-    void SetBaseTimer(void);
-    void Reset(void);
-
-    /**
-     * @brief  Sample and update oscilloscope data aquisition
-     */
-    void SetSample(void);
-
     void DrawScreen(void);
-
-    void CalculateStats(int channel);
 
 private:
     CButton* ctrl;
-    double Dt;  // Delta T
-    double Rt;  // Relative delta T
-    double xz;
-    int usetrigger;
-    double triggerlv;
-    int tch;  // trigger channel
-    int toffset;
-    int chpin[2];
-    int run;
-    double databuffer[2][2][NPOINTS];  // flip buffers + 2 channels + 700 points
-    int fp;                            // actual flip buffer
-    double* ch[2];                     // actual channel data (pointer to databuffer)
-    ch_status_t ch_status[2];          // channel measurament status
-    double pins_[2];                   // last value of input pins
-    int is;                            // input samples
-    double t;                          // time
-    int tr;                            // trigger
-    int update;
     lxFont* font;
-    int measures[5];
-    float vmax;
+    double xz;
 };
 
 extern CPWindow4 Window4;

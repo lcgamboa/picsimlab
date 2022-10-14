@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "part_uart.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum { O_RX, O_TX, O_FILE, O_LCON, O_LTX, O_LRX };
@@ -62,7 +62,7 @@ cpart_UART::cpart_UART(unsigned x, unsigned y) : font(8, lxFONTFAMILY_TELETYPE, 
 
     LoadImage();
 
-    uart_init(&sr, Window1.GetBoard());
+    uart_init(&sr, PICSimLab.GetBoard());
     uart_rst(&sr);
 
     input_pins[0] = 0;
@@ -143,14 +143,14 @@ void cpart_UART::Draw(void) {
                             if (input_pins[pin] == 0)
                                 canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
                             else
-                                canvas.RotatedText(Window5.GetPinName(input_pins[pin]), output[i].x1, output[i].y2,
+                                canvas.RotatedText(SpareParts.GetPinName(input_pins[pin]), output[i].x1, output[i].y2,
                                                    90.0);
                         case 1:
                             pin = pinv - 1;
                             if (output_pins[pin] == 0)
                                 canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
                             else
-                                canvas.RotatedText(Window5.GetPinName(output_pins[pin]), output[i].x1, output[i].y2,
+                                canvas.RotatedText(SpareParts.GetPinName(output_pins[pin]), output[i].x1, output[i].y2,
                                                    90.0);
                             break;
                     }
@@ -208,14 +208,14 @@ void cpart_UART::ReadPreferences(lxString value) {
 }
 
 void cpart_UART::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (input_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[0]);
+        spin = SpareParts.GetPinName(input_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(input_pins[0]) + "  " + spin);
     }
 
@@ -223,7 +223,7 @@ void cpart_UART::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[0]);
+        spin = SpareParts.GetPinName(output_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(output_pins[0]) + "  " + spin);
     }
 
@@ -241,12 +241,10 @@ void cpart_UART::ConfigurePropertiesWindow(CPWindow* WProp) {
     ((CCombo*)WProp->GetChildByName("combo4"))->SetItems("1200,2400,4800,9600,19200,38400,57600,115200,");
     ((CCombo*)WProp->GetChildByName("combo4"))->SetText(itoa(uart_speed));
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_UART::ReadPropertiesWindow(CPWindow* WProp) {
@@ -263,7 +261,7 @@ void cpart_UART::PreProcess(void) {
 }
 
 void cpart_UART::Process(void) {
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     unsigned short ret = 0;
 
@@ -277,7 +275,7 @@ void cpart_UART::Process(void) {
     ret = uart_io(&sr, val);
 
     if (_ret != ret) {
-        Window5.SetPin(output_pins[0], ret);
+        SpareParts.SetPin(output_pins[0], ret);
     }
     _ret = ret;
 }

@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "part_vterm.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum { O_RX, O_TX, O_LTX, O_LRX };
@@ -66,7 +66,7 @@ cpart_vterm::cpart_vterm(unsigned x, unsigned y)
 
     LoadImage();
 
-    vterm_init(&vt, Window1.GetBoard());
+    vterm_init(&vt, PICSimLab.GetBoard());
     vterm_rst(&vt);
 
     input_pins[0] = 0;
@@ -85,12 +85,12 @@ cpart_vterm::cpart_vterm(unsigned x, unsigned y)
     wvterm->SetName("window1");  // must be the same as in xml
     wvterm->SetVisible(0);
     Application->ACreateWindow(wvterm);
-    wvterm->LoadXMLContextAndCreateChilds(Window1.GetSharePath() + lxT("parts/IO Virtual Term/terminal_1.lxrad"));
+    wvterm->LoadXMLContextAndCreateChilds(PICSimLab.GetSharePath() + lxT("parts/IO Virtual Term/terminal_1.lxrad"));
     wvterm->SetVisible(0);
     wvterm->Hide();
     wvterm->SetCanDestroy(false);
 
-    wvterm->EvOnShow = EVONSHOW & CPWindow5::PartEvent;
+    wvterm->EvOnShow = SpareParts.PartEvent;
 
     // wvterm.Draw ();
     // wvterm.Show ();
@@ -103,11 +103,11 @@ cpart_vterm::cpart_vterm(unsigned x, unsigned y)
     vtcmb_ending = ((CCombo*)wvterm->GetChildByName("combo1"));
     vtcmb_speed = ((CCombo*)wvterm->GetChildByName("combo2"));
 
-    vtbtn_send->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PartButtonEvent;
-    vtbtn_clear->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PartButtonEvent;
-    vtcmb_speed->EvOnComboChange = EVONCOMBOCHANGE & CPWindow5::PartEvent;
-    vtcmb_ending->EvOnComboChange = EVONCOMBOCHANGE & CPWindow5::PartEvent;
-    vtedit->EvKeyboardPress = EVKEYBOARDPRESS & CPWindow5::PartKeyEvent;
+    vtbtn_send->EvMouseButtonRelease = SpareParts.PartButtonEvent;
+    vtbtn_clear->EvMouseButtonRelease = SpareParts.PartButtonEvent;
+    vtcmb_speed->EvOnComboChange = SpareParts.PartEvent;
+    vtcmb_ending->EvOnComboChange = SpareParts.PartEvent;
+    vtedit->EvKeyboardPress = SpareParts.PartKeyEvent;
 }
 
 cpart_vterm::~cpart_vterm(void) {
@@ -247,14 +247,14 @@ void cpart_vterm::Draw(void) {
                             if (input_pins[pin] == 0)
                                 canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
                             else
-                                canvas.RotatedText(Window5.GetPinName(input_pins[pin]), output[i].x1, output[i].y2,
+                                canvas.RotatedText(SpareParts.GetPinName(input_pins[pin]), output[i].x1, output[i].y2,
                                                    90.0);
                         case 1:
                             pin = pinv - 1;
                             if (output_pins[pin] == 0)
                                 canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
                             else
-                                canvas.RotatedText(Window5.GetPinName(output_pins[pin]), output[i].x1, output[i].y2,
+                                canvas.RotatedText(SpareParts.GetPinName(output_pins[pin]), output[i].x1, output[i].y2,
                                                    90.0);
                             break;
                     }
@@ -320,14 +320,14 @@ void cpart_vterm::ReadPreferences(lxString value) {
 }
 
 void cpart_vterm::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (input_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[0]);
+        spin = SpareParts.GetPinName(input_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(input_pins[0]) + "  " + spin);
     }
 
@@ -335,19 +335,17 @@ void cpart_vterm::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[0]);
+        spin = SpareParts.GetPinName(output_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(output_pins[0]) + "  " + spin);
     }
 
     ((CCombo*)WProp->GetChildByName("combo3"))->SetItems("1200,2400,4800,9600,19200,38400,57600,115200,");
     ((CCombo*)WProp->GetChildByName("combo3"))->SetText(itoa(vterm_speed));
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_vterm::ReadPropertiesWindow(CPWindow* WProp) {
@@ -388,7 +386,7 @@ void cpart_vterm::Process(void) {
 
     unsigned char val = 1;
 
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     if (input_pins[0]) {
         val = ppins[input_pins[0] - 1].value;
@@ -397,7 +395,7 @@ void cpart_vterm::Process(void) {
     ret = vterm_io(&vt, val);
 
     if (_ret != ret) {
-        Window5.SetPin(output_pins[0], ret);
+        SpareParts.SetPin(output_pins[0], ret);
     }
     _ret = ret;
 }

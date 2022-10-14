@@ -26,7 +26,7 @@
 #include "part_bmp180.h"
 #include "../picsimlab1.h"
 #include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum { O_P1, O_P2, O_PF1, O_PF2, O_PO1, O_PO2 };
@@ -109,7 +109,7 @@ void cpart_bmp180::Draw(void) {
                         if (input_pins[pinv] == 0)
                             canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
                         else
-                            canvas.RotatedText(Window5.GetPinName(input_pins[pinv]), output[i].x1, output[i].y2 - 30,
+                            canvas.RotatedText(SpareParts.GetPinName(input_pins[pinv]), output[i].x1, output[i].y2 - 30,
                                                90.0);
                     }
                     break;
@@ -165,14 +165,14 @@ void cpart_bmp180::ReadPreferences(lxString value_) {
 }
 
 void cpart_bmp180::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (input_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[0]);
+        spin = SpareParts.GetPinName(input_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(input_pins[0]) + "  " + spin);
     }
 
@@ -180,16 +180,14 @@ void cpart_bmp180::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[1] == 0)
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[1]);
+        spin = SpareParts.GetPinName(input_pins[1]);
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(input_pins[1]) + "  " + spin);
     }
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_bmp180::ReadPropertiesWindow(CPWindow* WProp) {
@@ -200,16 +198,16 @@ void cpart_bmp180::ReadPropertiesWindow(CPWindow* WProp) {
 void cpart_bmp180::PreProcess(void) {
     if ((input_pins[0] > 0) && (input_pins[1] > 0)) {
         sen_bmp180_setPressTemp(&bmp180, (4.0 * (200 - values[0]) + 300), (0.625 * (200 - values[1]) - 40));
-        Window5.Reset_pullup_bus(input_pins[1] - 1);
+        SpareParts.Reset_pullup_bus(input_pins[1] - 1);
     }
 }
 
 void cpart_bmp180::Process(void) {
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     if ((input_pins[0] > 0) && (input_pins[1] > 0))
-        Window5.Set_pullup_bus(input_pins[1] - 1, sen_bmp180_I2C_io(&bmp180, ppins[input_pins[0] - 1].value,
-                                                                    ppins[input_pins[1] - 1].value));
+        SpareParts.Set_pullup_bus(input_pins[1] - 1, sen_bmp180_I2C_io(&bmp180, ppins[input_pins[0] - 1].value,
+                                                                       ppins[input_pins[1] - 1].value));
 }
 
 void cpart_bmp180::EvMouseButtonPress(uint button, uint x, uint y, uint state) {

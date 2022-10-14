@@ -25,7 +25,7 @@
 
 #include <ucsim/ucsimlib.h>
 
-#include "../picsimlab1.h"
+#include "../picsimlab.h"
 #include "bsim_ucsim.h"
 
 #define PID_C51 0
@@ -78,7 +78,7 @@ void bsim_ucsim::MSetSerial(const char* port) {
 
          sprintf(fbuff, "%i", (int)freq);
 
-         ret = ucsim_init(processor, fbuff, fname, SERIALDEVICE, Window1.Get_debug_port());
+         ret = ucsim_init(processor, fbuff, fname, SERIALDEVICE, PICSimLab.Get_debug_port());
      }
 
      return ret;

@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "part_Buzzer.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum { O_P1, O_P2, O_L1 };
@@ -68,6 +68,8 @@ cpart_Buzzer::cpart_Buzzer(unsigned x, unsigned y)
     out[0] = 0;
     out[1] = 0;
     out[2] = 0;
+
+    timer = (CTimer*)PICSimLab.GetWindow()->GetChildByName("timer1");
 }
 
 cpart_Buzzer::~cpart_Buzzer(void) {
@@ -82,7 +84,7 @@ cpart_Buzzer::~cpart_Buzzer(void) {
 void cpart_Buzzer::Draw(void) {
     int i;
 
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     Update = 0;
 
@@ -108,7 +110,7 @@ void cpart_Buzzer::Draw(void) {
                     if (input_pins[output[i].id - O_P1] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
                     else
-                        canvas.RotatedText(Window5.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
+                        canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
                                            output[i].y1, 0);
                     break;
                 case O_P2:
@@ -187,20 +189,20 @@ void cpart_Buzzer::ReadPreferences(lxString value) {
 }
 
 void cpart_Buzzer::RegisterRemoteControl(void) {
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     output_ids[O_L1]->status = (void*)&ppins[input_pins[0] - 1].oavalue;
 }
 
 void cpart_Buzzer::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (input_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[0]);
+        spin = SpareParts.GetPinName(input_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(input_pins[0]) + "  " + spin);
     }
 
@@ -218,12 +220,10 @@ void cpart_Buzzer::ConfigurePropertiesWindow(CPWindow* WProp) {
     else
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText("LOW ");
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_Buzzer::ReadPropertiesWindow(CPWindow* WProp) {
@@ -249,11 +249,11 @@ void cpart_Buzzer::ReadPropertiesWindow(CPWindow* WProp) {
 
 void cpart_Buzzer::PreProcess(void) {
     if (type == PASSIVE) {
-        JUMPSTEPS_ = (Window1.GetBoard()->MGetInstClockFreq() / samplerate);
-        JUMPSTEPS_ *= 100.0 / Window1.timer1.GetTime();  // Adjust to sample at the same time to the timer
+        JUMPSTEPS_ = (PICSimLab.GetBoard()->MGetInstClockFreq() / samplerate);
+        JUMPSTEPS_ *= 100.0 / timer->GetTime();  // Adjust to sample at the same time to the timer
         mcount = JUMPSTEPS_;
     } else if (type == TONE) {
-        JUMPSTEPS_ = (Window1.GetBoard()->MGetInstClockFreq() / samplerate);
+        JUMPSTEPS_ = (PICSimLab.GetBoard()->MGetInstClockFreq() / samplerate);
         mcount = JUMPSTEPS_;
         ctone = 0;
         optone = 0;
@@ -272,7 +272,7 @@ void cpart_Buzzer::Process(void) {
         mcount++;
         if (mcount > JUMPSTEPS_) {
             if ((input_pins[0]) && (buffercount < buffersize)) {
-                const picpin* ppins = Window5.GetPinsValues();
+                const picpin* ppins = SpareParts.GetPinsValues();
 
                 /*
                    0.7837 z-1 - 0.7837 z-2
@@ -299,7 +299,7 @@ void cpart_Buzzer::Process(void) {
         mcount++;
         if (mcount > JUMPSTEPS_) {
             if (input_pins[0]) {
-                const picpin* ppins = Window5.GetPinsValues();
+                const picpin* ppins = SpareParts.GetPinsValues();
 
                 if ((!optone) && (ppins[input_pins[0] - 1].value)) {
                     ftone = (ftone + ctone) / 2.0;
@@ -314,7 +314,7 @@ void cpart_Buzzer::Process(void) {
 }
 
 void cpart_Buzzer::PostProcess(void) {
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     if (type == ACTIVE) {
         if (active) {

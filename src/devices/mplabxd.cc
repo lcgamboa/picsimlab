@@ -24,7 +24,6 @@
    ######################################################################## */
 
 #include "mplabxd.h"
-#include "../picsimlab1.h"
 
 //#define _DEBUG_
 #define dprint \
@@ -61,6 +60,8 @@ static WSADATA wsaData;
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
+#include "../picsimlab.h"
 
 typedef struct sockaddr sockaddr;
 
@@ -181,7 +182,7 @@ int mplabxd_init(board* mboard, unsigned short tcpport) {
 
         if (bind(listenfd, (sockaddr*)&serv, sizeof(serv))) {
             printf("mplabxd: bind error : %s \n", strerror(errno));
-            Window1.RegisterError(lxString().Format(
+            PICSimLab.RegisterError(lxString().Format(
                 "Can't open mplabxd TCP port %i\n It is already in use by another application!", tcpport));
             return 1;
         }
@@ -265,33 +266,33 @@ static unsigned short dbuff[2];
 
 int mplabxd_testbp(void) {
     int i;
-    if (!Window1.Get_mcudbg()) {
+    if (!PICSimLab.Get_mcudbg()) {
         for (i = 0; i < bpc; i++) {
             if (dbg_board->DBGGetPC() == bp[i]) {
                 dprint("breakpoint 0x%04X!!!!!=========================\n", bp[i]);
-                Window1.SetCpuState(CPU_BREAKPOINT);
-                Window1.Set_mcudbg(1);
-                return Window1.Get_mcudbg();
+                PICSimLab.SetCpuState(CPU_BREAKPOINT);
+                PICSimLab.Set_mcudbg(1);
+                return PICSimLab.Get_mcudbg();
             }
         }
         for (i = 0; i < bpdwc; i++) {
             if (dbg_board->DBGGetRAMLAWR() == bpdw[i]) {
                 dprint("breakpoint data wr 0x%04X!!!!!=========================\n", bpdw[i]);
-                Window1.SetCpuState(CPU_BREAKPOINT);
-                Window1.Set_mcudbg(1);
-                return Window1.Get_mcudbg();
+                PICSimLab.SetCpuState(CPU_BREAKPOINT);
+                PICSimLab.Set_mcudbg(1);
+                return PICSimLab.Get_mcudbg();
             }
         }
         for (i = 0; i < bpdrc; i++) {
             if (dbg_board->DBGGetRAMLARD() == bpdr[i]) {
                 dprint("breakpoint data rd 0x%04X!!!!!=========================\n", bpdr[i]);
-                Window1.SetCpuState(CPU_BREAKPOINT);
-                Window1.Set_mcudbg(1);
-                return Window1.Get_mcudbg();
+                PICSimLab.SetCpuState(CPU_BREAKPOINT);
+                PICSimLab.Set_mcudbg(1);
+                return PICSimLab.Get_mcudbg();
             }
         }
     }
-    return Window1.Get_mcudbg();
+    return PICSimLab.Get_mcudbg();
 }
 
 int mplabxd_loop(void) {
@@ -326,13 +327,13 @@ int mplabxd_loop(void) {
         switch (cmd) {
             case STARTD:
                 dprint("STARTD cmd ----------------------\n");
-                Window1.Set_mcudbg(1);
+                PICSimLab.Set_mcudbg(1);
                 break;
             case STOPD:
                 dprint("STOPD cmd -----------------------\n");
                 ret = 1;
-                Window1.Set_mcudbg(0);
-                Window1.SetCpuState(CPU_RUNNING);
+                PICSimLab.Set_mcudbg(0);
+                PICSimLab.SetCpuState(CPU_RUNNING);
                 bpc = 0;
                 bpdwc = 0;
                 bpdrc = 0;
@@ -340,26 +341,26 @@ int mplabxd_loop(void) {
             case STEP:
                 dprint("STEP cmd\n");
                 dbg_board->MStep();
-                Window1.SetCpuState(CPU_STEPPING);
+                PICSimLab.SetCpuState(CPU_STEPPING);
                 break;
             case RESET:
-                Window1.Set_mcudbg(1);
+                PICSimLab.Set_mcudbg(1);
                 dprint("RESET cmd\n");
                 dbg_board->MStepResume();
                 dbg_board->MReset(1);
                 dbg_board->MStep();
                 break;
             case RUN:
-                Window1.Set_mcudbg(0);
+                PICSimLab.Set_mcudbg(0);
                 dprint("RUN cmd\n");
                 dbg_board->MStep();  // to go out break point
-                Window1.SetCpuState(CPU_RUNNING);
+                PICSimLab.SetCpuState(CPU_RUNNING);
                 break;
             case HALT:
-                Window1.Set_mcudbg(1);
+                PICSimLab.Set_mcudbg(1);
                 dbg_board->MStepResume();
                 dprint("HALT cmd\n");
-                Window1.SetCpuState(CPU_HALTED);
+                PICSimLab.SetCpuState(CPU_HALTED);
                 break;
             case GETPC:
                 pc = dbg_board->DBGGetPC();
@@ -402,13 +403,13 @@ int mplabxd_loop(void) {
                 dprint("SETBK cmd\n");
                 break;
             case STRUN:
-                i = Window1.Get_mcudbg();
+                i = PICSimLab.Get_mcudbg();
                 if (send(sockfd, (char*)&i, 1, MSG_NOSIGNAL) != 1) {
                     printf("mplabxd: send error : %s \n", strerror(errno));
                     ret = 1;
                     reply = 0x01;
                 }
-                dprint("STRUN cmd =%i\n", Window1.Get_mcudbg());
+                dprint("STRUN cmd =%i\n", PICSimLab.Get_mcudbg());
                 break;
             case SDWBK:
                 if ((n = recv(sockfd, (char*)&bpdwc, 2, MSG_WAITALL)) != 2) {

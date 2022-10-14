@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "board_McLab2.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -135,17 +135,17 @@ cboard_McLab2::cboard_McLab2(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE
 
     active = 0;
 
-    lxImage image(&Window1);
-    image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("boards/Common/VT1.svg")));
-    vent[0] = new lxBitmap(&image, &Window1);
-    image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("boards/Common/VT2.svg")));
-    vent[1] = new lxBitmap(&image, &Window1);
+    lxImage image(PICSimLab.GetWindow());
+    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/VT1.svg")));
+    vent[0] = new lxBitmap(&image, PICSimLab.GetWindow());
+    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/VT2.svg")));
+    vent[1] = new lxBitmap(&image, PICSimLab.GetWindow());
 
     image.Destroy();
 
     // gauge1
     gauge1 = new CGauge();
-    gauge1->SetFOwner(&Window1);
+    gauge1->SetFOwner(PICSimLab.GetWindow());
     gauge1->SetName(lxT("gauge1_p3"));
     gauge1->SetX(13);
     gauge1->SetY(242);
@@ -156,10 +156,10 @@ cboard_McLab2::cboard_McLab2(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE
     gauge1->SetRange(100);
     gauge1->SetValue(0);
     gauge1->SetType(4);
-    Window1.CreateChild(gauge1);
+    PICSimLab.GetWindow()->CreateChild(gauge1);
     // gauge2
     gauge2 = new CGauge();
-    gauge2->SetFOwner(&Window1);
+    gauge2->SetFOwner(PICSimLab.GetWindow());
     gauge2->SetName(lxT("gauge2_p3"));
     gauge2->SetX(12);
     gauge2->SetY(190);
@@ -170,10 +170,10 @@ cboard_McLab2::cboard_McLab2(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE
     gauge2->SetRange(100);
     gauge2->SetValue(0);
     gauge2->SetType(4);
-    Window1.CreateChild(gauge2);
+    PICSimLab.GetWindow()->CreateChild(gauge2);
     // label2
     label2 = new CLabel();
-    label2->SetFOwner(&Window1);
+    label2->SetFOwner(PICSimLab.GetWindow());
     label2->SetName(lxT("label2_p3"));
     label2->SetX(12);
     label2->SetY(166);
@@ -183,10 +183,10 @@ cboard_McLab2::cboard_McLab2(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE
     label2->SetVisible(1);
     label2->SetText(lxT("Heater"));
     label2->SetAlign(1);
-    Window1.CreateChild(label2);
+    PICSimLab.GetWindow()->CreateChild(label2);
     // label3
     label3 = new CLabel();
-    label3->SetFOwner(&Window1);
+    label3->SetFOwner(PICSimLab.GetWindow());
     label3->SetName(lxT("label3_p3"));
     label3->SetX(13);
     label3->SetY(217);
@@ -196,10 +196,10 @@ cboard_McLab2::cboard_McLab2(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE
     label3->SetVisible(1);
     label3->SetText(lxT("Cooler"));
     label3->SetAlign(1);
-    Window1.CreateChild(label3);
+    PICSimLab.GetWindow()->CreateChild(label3);
     // label4
     label4 = new CLabel();
-    label4->SetFOwner(&Window1);
+    label4->SetFOwner(PICSimLab.GetWindow());
     label4->SetName(lxT("label4_p3"));
     label4->SetX(13);
     label4->SetY(272);
@@ -209,7 +209,7 @@ cboard_McLab2::cboard_McLab2(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE
     label4->SetVisible(1);
     label4->SetText(lxT("Temp: 00.0°C"));
     label4->SetAlign(1);
-    Window1.CreateChild(label4);
+    PICSimLab.GetWindow()->CreateChild(label4);
 
     snprintf(mi2c_tmp_name, 200, "%s/picsimlab-XXXXXX", (const char*)lxGetTempDir("PICSimLab").c_str());
     close(mkstemp(mi2c_tmp_name));
@@ -228,11 +228,11 @@ cboard_McLab2::~cboard_McLab2(void) {
     vent[0] = NULL;
     vent[1] = NULL;
 
-    Window1.DestroyChild(gauge1);
-    Window1.DestroyChild(gauge2);
-    Window1.DestroyChild(label2);
-    Window1.DestroyChild(label3);
-    Window1.DestroyChild(label4);
+    PICSimLab.GetWindow()->DestroyChild(gauge1);
+    PICSimLab.GetWindow()->DestroyChild(gauge2);
+    PICSimLab.GetWindow()->DestroyChild(label2);
+    PICSimLab.GetWindow()->DestroyChild(label3);
+    PICSimLab.GetWindow()->DestroyChild(label4);
 
     unlink(mi2c_tmp_name);
 
@@ -262,11 +262,11 @@ void cboard_McLab2::SetScale(double scale) {
         if (vent[0]) {
             delete vent[0];
             delete vent[1];
-            lxImage image(&Window1);
-            image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("boards/Common/VT1.svg")), 0, Scale, Scale);
-            vent[0] = new lxBitmap(&image, &Window1);
-            image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("boards/Common/VT2.svg")), 0, Scale, Scale);
-            vent[1] = new lxBitmap(&image, &Window1);
+            lxImage image(PICSimLab.GetWindow());
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/VT1.svg")), 0, Scale, Scale);
+            vent[0] = new lxBitmap(&image, PICSimLab.GetWindow());
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/VT2.svg")), 0, Scale, Scale);
+            vent[1] = new lxBitmap(&image, PICSimLab.GetWindow());
             image.Destroy();
         }
     }
@@ -401,7 +401,7 @@ void cboard_McLab2::Draw(CDraw* draw) {
                         break;
 
                     case O_LCD:
-                        draw->Canvas.SetColor(0, 90 * Window1.Get_mcupwr() + 40, 0);
+                        draw->Canvas.SetColor(0, 90 * PICSimLab.Get_mcupwr() + 40, 0);
                         break;
 
                     case O_BRB0:
@@ -514,7 +514,7 @@ void cboard_McLab2::Draw(CDraw* draw) {
                         draw->Canvas.Rectangle(1, output[i].x1 - 1, output[i].y1 - 1, output[i].x2 - output[i].x1 + 2,
                                                output[i].y2 - output[i].y1 + 3);
                         lcd_draw(&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                 output[i].y2 - output[i].y1, Window1.Get_mcupwr());
+                                 output[i].y2 - output[i].y1, PICSimLab.Get_mcupwr());
                     }
                 } else if ((output[i].name[0] == 'J') && (output[i].name[1] == 'P')) {
                     if (!jmp[output[i].name[3] - 0x31]) {
@@ -558,7 +558,7 @@ void cboard_McLab2::Draw(CDraw* draw) {
                         draw->Canvas.SetBgColor(pic.pins[35].oavalue, 0, 0);
                         break;
                     case O_LPWR:
-                        draw->Canvas.SetBgColor(0, 200 * Window1.Get_mcupwr() + 55, 0);
+                        draw->Canvas.SetBgColor(0, 200 * PICSimLab.Get_mcupwr() + 55, 0);
                         break;
                     case O_P1:
                         led = 0;
@@ -608,7 +608,7 @@ void cboard_McLab2::Draw(CDraw* draw) {
         draw->Update();
     }
 
-    if ((((pic.pins[6].oavalue - 55) / 2) > 40) && Window1.Get_mcupwr()) {
+    if ((((pic.pins[6].oavalue - 55) / 2) > 40) && PICSimLab.Get_mcupwr()) {
         if (!sound_on) {
             buzzer.BeepStart();
             sound_on = 1;
@@ -632,7 +632,7 @@ void cboard_McLab2::Draw(CDraw* draw) {
     gauge2->SetValue((pic.pins[16].oavalue - 55) / 2);
 
     // thacometer
-    rpmstp = ((float)Window1.GetNSTEPJ()) / (0.7196 * (pic.pins[15].oavalue - 54));
+    rpmstp = ((float)PICSimLab.GetNSTEPJ()) / (0.7196 * (pic.pins[15].oavalue - 54));
 
     // potentiometer
     vp2in = (5.0 * pot1 / 199);
@@ -666,9 +666,9 @@ void cboard_McLab2::Run_CPU(void) {
     unsigned int alm3[40];  // luminosidade media display
     unsigned int alm4[40];  // luminosidade media display
 
-    const int JUMPSTEPS = Window1.GetJUMPSTEPS();
-    const long int NSTEPJ = Window1.GetNSTEPJ();
-    const long int NSTEP = Window1.GetNSTEP();
+    const int JUMPSTEPS = PICSimLab.GetJUMPSTEPS();
+    const long int NSTEPJ = PICSimLab.GetNSTEPJ();
+    const long int NSTEP = PICSimLab.GetNSTEP();
     const float RNSTEP = 200.0 * pic.PINCOUNT / NSTEP;
 
     memset(alm, 0, 40 * sizeof(unsigned int));
@@ -680,12 +680,12 @@ void cboard_McLab2::Run_CPU(void) {
     pins = pic.pins;
 
     if (use_spare)
-        Window5.PreProcess();
+        SpareParts.PreProcess();
 
     unsigned char p_BT_[4];
     memcpy(p_BT_, p_BT, 4);
 
-    SWBounce_prepare(&bounce, Window1.GetBoard()->MGetInstClockFreq());
+    SWBounce_prepare(&bounce, PICSimLab.GetBoard()->MGetInstClockFreq());
     for (int pl = 0; pl < 4; pl++) {
         if ((pins[33 + pl - 1].dir == PD_IN) && (pins[33 + pl - 1].value != p_BT_[pl])) {
             SWBounce_bounce(&bounce, pl);
@@ -694,7 +694,7 @@ void cboard_McLab2::Run_CPU(void) {
 
     j = JUMPSTEPS;
     pi = 0;
-    if (Window1.Get_mcupwr())
+    if (PICSimLab.Get_mcupwr())
         for (i = 0; i < NSTEP; i++) {
             if (j >= JUMPSTEPS) {
                 pic_set_pin(&pic, pic.mclr, p_RST);
@@ -733,9 +733,9 @@ void cboard_McLab2::Run_CPU(void) {
             ioupdated = pic.ioupdated;
             InstCounterInc();
             if (use_oscope)
-                Window4.SetSample();
+                Oscilloscope.SetSample();
             if (use_spare)
-                Window5.Process();
+                SpareParts.Process();
 
             // increment mean value counter if pin is high
             alm[pi] += pins[pi].value;
@@ -851,7 +851,7 @@ void cboard_McLab2::Run_CPU(void) {
     }
 
     if (use_spare)
-        Window5.PostProcess();
+        SpareParts.PostProcess();
 
     if (lcd.update)
         output_ids[O_LCD]->update = 1;
@@ -911,14 +911,14 @@ void cboard_McLab2::Reset(void) {
 #else
     if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
-                                           itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                           lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                            100.0 * pic.serial[0].serialbaud) /
-                                                                           pic.serial[0].serialexbaud)) +
-                                           lxT("%)"));
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+                                                  itoa(pic.serial[0].serialbaud) + lxT("(") +
+                                                  lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                                                                   100.0 * pic.serial[0].serialbaud) /
+                                                                                  pic.serial[0].serialexbaud)) +
+                                                  lxT("%)"));
     else
-        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
 
     for (int pi = 0; pi < pic.PINCOUNT; pi++) {
         lm1[pi] = 0;
@@ -927,7 +927,7 @@ void cboard_McLab2::Reset(void) {
         lm4[pi] = 0;
     }
     if (use_spare)
-        Window5.Reset();
+        SpareParts.Reset();
 
     RegisterRemoteControl();
 }
@@ -990,7 +990,8 @@ void cboard_McLab2::EvMouseButtonPress(uint button, uint x, uint y, uint state) 
         if (((input[i].x1 <= x) && (input[i].x2 >= x)) && ((input[i].y1 <= y) && (input[i].y2 >= y))) {
             switch (input[i].id) {
                 case I_ICSP: {
-                    Window1.menu1_File_LoadHex_EvMenuActive(NULL);
+                    PICSimLab.OpenLoadHexFileDialog();
+                    ;
                 } break;
 
                 case I_JP1: {
@@ -1019,24 +1020,24 @@ void cboard_McLab2::EvMouseButtonPress(uint button, uint x, uint y, uint state) 
                 } break;
 
                 case I_PWR: {
-                    if (Window1.Get_mcupwr()) {
-                        Window1.Set_mcupwr(0);
+                    if (PICSimLab.Get_mcupwr()) {
+                        PICSimLab.Set_mcupwr(0);
                         Reset();
                         p_BT[0] = 0;
                         p_BT[1] = 0;
                         p_BT[2] = 0;
                         p_BT[3] = 0;
                     } else {
-                        Window1.Set_mcupwr(1);
+                        PICSimLab.Set_mcupwr(1);
                         Reset();
                     }
                 }
                     output_ids[O_LPWR]->update = 1;
                     break;
                 case I_RST: {
-                    if (Window1.Get_mcupwr() && pic_reset(&pic, -1)) {
-                        Window1.Set_mcupwr(0);
-                        Window1.Set_mcurst(1);
+                    if (PICSimLab.Get_mcupwr() && pic_reset(&pic, -1)) {
+                        PICSimLab.Set_mcupwr(0);
+                        PICSimLab.Set_mcurst(1);
                     }
                     p_RST = 0;
                     output_ids[O_RST]->update = 1;
@@ -1134,9 +1135,9 @@ void cboard_McLab2::EvMouseButtonRelease(uint button, uint x, uint y, uint state
         if (((input[i].x1 <= x) && (input[i].x2 >= x)) && ((input[i].y1 <= y) && (input[i].y2 >= y))) {
             switch (input[i].id) {
                 case I_RST: {
-                    if (Window1.Get_mcurst()) {
-                        Window1.Set_mcupwr(1);
-                        Window1.Set_mcurst(0);
+                    if (PICSimLab.Get_mcurst()) {
+                        PICSimLab.Set_mcupwr(1);
+                        PICSimLab.Set_mcurst(0);
 
                         if (pic_reset(&pic, -1)) {
                             Reset();
@@ -1396,27 +1397,27 @@ void cboard_McLab2::RefreshStatus(void) {
 #else
     if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
-                                           itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                           lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                            100.0 * pic.serial[0].serialbaud) /
-                                                                           pic.serial[0].serialexbaud)) +
-                                           lxT("%)"));
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+                                                  itoa(pic.serial[0].serialbaud) + lxT("(") +
+                                                  lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                                                                   100.0 * pic.serial[0].serialbaud) /
+                                                                                  pic.serial[0].serialexbaud)) +
+                                                  lxT("%)"));
     else
-        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
 }
 
 void cboard_McLab2::WritePreferences(void) {
     char line[100];
-    Window1.saveprefs(lxT("McLab2_proc"), Proc);
+    PICSimLab.saveprefs(lxT("McLab2_proc"), Proc);
 
     line[0] = 0;
     for (int i = 0; i < 6; i++)
         sprintf(line + i, "%i", jmp[i]);
 
-    Window1.saveprefs(lxT("McLab2_jmp"), line);
-    Window1.saveprefs(lxT("McLab2_clock"), lxString().Format("%2.1f", Window1.GetClock()));
-    Window1.saveprefs(lxT("McLab2_pot1"), lxString().Format("%i", pot1));
+    PICSimLab.saveprefs(lxT("McLab2_jmp"), line);
+    PICSimLab.saveprefs(lxT("McLab2_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.saveprefs(lxT("McLab2_pot1"), lxString().Format("%i", pot1));
 }
 
 void cboard_McLab2::ReadPreferences(char* name, char* value) {
@@ -1435,7 +1436,7 @@ void cboard_McLab2::ReadPreferences(char* name, char* value) {
     }
 
     if (!strcmp(name, "McLab2_clock")) {
-        Window1.SetClock(atof(value));
+        PICSimLab.SetClock(atof(value));
     }
 
     if (!strcmp(name, "McLab2_pot1")) {

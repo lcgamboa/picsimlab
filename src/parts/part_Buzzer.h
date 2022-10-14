@@ -73,6 +73,7 @@ private:
     lxFont font;
     lxColor color1;
     lxColor color2;
+    CTimer* timer;
 };
 
 #endif /* PART_BUZZER */

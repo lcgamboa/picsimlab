@@ -26,7 +26,7 @@
 #include "part_sdcard.h"
 #include "../picsimlab1.h"
 #include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum { O_P3, O_P4, O_P5, O_P6, O_FILE };
@@ -135,7 +135,7 @@ void cpart_SDCard::Draw(void) {
                             if (output_pins[pin] == 0)
                                 canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
                             else
-                                canvas.RotatedText(Window5.GetPinName(output_pins[pin]), output[i].x1, output[i].y2,
+                                canvas.RotatedText(SpareParts.GetPinName(output_pins[pin]), output[i].x1, output[i].y2,
                                                    90.0);
                             break;
                         case 1:
@@ -147,7 +147,7 @@ void cpart_SDCard::Draw(void) {
                             if (input_pins[pin] == 0)
                                 canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
                             else
-                                canvas.RotatedText(Window5.GetPinName(input_pins[pin]), output[i].x1, output[i].y2,
+                                canvas.RotatedText(SpareParts.GetPinName(input_pins[pin]), output[i].x1, output[i].y2,
                                                    90.0);
                     }
                     break;
@@ -214,14 +214,14 @@ void cpart_SDCard::ReadPreferences(lxString value) {
 }
 
 void cpart_SDCard::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (output_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[0]);
+        spin = SpareParts.GetPinName(output_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(output_pins[0]) + "  " + spin);
     }
 
@@ -229,7 +229,7 @@ void cpart_SDCard::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[0]);
+        spin = SpareParts.GetPinName(input_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(input_pins[0]) + "  " + spin);
     }
 
@@ -237,7 +237,7 @@ void cpart_SDCard::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[1] == 0)
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[1]);
+        spin = SpareParts.GetPinName(input_pins[1]);
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText(itoa(input_pins[1]) + "  " + spin);
     }
 
@@ -245,16 +245,14 @@ void cpart_SDCard::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[2] == 0)
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[2]);
+        spin = SpareParts.GetPinName(input_pins[2]);
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText(itoa(input_pins[2]) + "  " + spin);
     }
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_SDCard::ReadPropertiesWindow(CPWindow* WProp) {
@@ -267,7 +265,7 @@ void cpart_SDCard::ReadPropertiesWindow(CPWindow* WProp) {
 void cpart_SDCard::PreProcess(void) {}
 
 void cpart_SDCard::Process(void) {
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     unsigned short ret = 0;
 
@@ -277,7 +275,7 @@ void cpart_SDCard::Process(void) {
     if (!ppins[input_pins[2] - 1].value)  // if SS is active, update output
     {
         if (_ret != ret) {
-            Window5.SetPin(output_pins[0], ret);
+            SpareParts.SetPin(output_pins[0], ret);
         }
         _ret = ret;
     } else {
@@ -292,15 +290,15 @@ void cpart_SDCard::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
         if (PointInside(x, y, input[i])) {
             switch (input[i].id) {
                 case I_CONN:
-                    Window5.filedialog1.SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
-                    Window5.filedialog1.SetFilter(lxT("SD Card image (*.img)|*.img"));
+                    SpareParts.GetFileDialog()->SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
+                    SpareParts.GetFileDialog()->SetFilter(lxT("SD Card image (*.img)|*.img"));
                     if (sdcard_fname[0] == '*') {
-                        Window5.filedialog1.SetFileName(lxT("untitled.img"));
+                        SpareParts.GetFileDialog()->SetFileName(lxT("untitled.img"));
                     } else {
-                        Window5.filedialog1.SetFileName(sdcard_fname);
+                        SpareParts.GetFileDialog()->SetFileName(sdcard_fname);
                     }
-                    Window5.Setfdtype(id);
-                    Window5.filedialog1.Run();
+                    SpareParts.Setfdtype(id);
+                    SpareParts.GetFileDialog()->Run();
                     break;
             }
         }
@@ -309,9 +307,9 @@ void cpart_SDCard::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
 
 void cpart_SDCard::filedialog_EvOnClose(int retId) {
     if (retId) {
-        if ((Window5.filedialog1.GetType() == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
-            if (lxFileExists(Window5.filedialog1.GetFileName())) {
-                strncpy(sdcard_fname, Window5.filedialog1.GetFileName().c_str(), 199);
+        if ((SpareParts.GetFileDialog()->GetType() == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
+            if (lxFileExists(SpareParts.GetFileDialog()->GetFileName())) {
+                strncpy(sdcard_fname, SpareParts.GetFileDialog()->GetFileName().c_str(), 199);
                 sdcard_set_filename(&sd, sdcard_fname);
                 sdcard_set_card_present(&sd, 1);
             } else {

@@ -475,65 +475,13 @@ CPWindow1::CPWindow1(void) {
     thread3.EvThreadRun = EVTHREADRUN & CPWindow1::thread3_EvThreadRun;
     CreateChild(&thread3);
 
-    JUMPSTEPS = DEFAULTJS;
-
-    NSTEP = NSTEPKT;
-
-    NSTEPJ = NSTEP / JUMPSTEPS;
-
-    mcurun = 1;
-    mcupwr = 1;
-    mcurst = 0;
-    mcudbg = 0;
-    debug = 0;
-    debug_type = 0;
-    debug_port = 1234;
-    remotec_port = 5000;
-    osc_on = 0;
-    spare_on = 0;
-    status.status = 0;
-    lab = 1;
-    lab_ = 1;
-
     over = 0;
-
-    plWidth = 10;
-    plHeight = 10;
-    scale = 1.0;
-
-    FNAME = lxT(" ");
-    OldPath = lxT("");
-
     crt = 1;
     zerocount = 0;
-
-    pboard = NULL;
-
-    cpustate = CPU_RUNNING;
-
-    tgo = 0;
-
-    Errors.Clear();
-
-    need_resize = 0;
 
     settodestroy = 0;
 
     sync = 0;
-
-    PATH = "";
-    HOME = "";
-
-    Workspacefn = "";
-
-    NeedReboot = 0;
-
-    Instance = 0;
-
-#ifndef _NOTHREAD
-    cpu_mutex = NULL;
-    cpu_cond = NULL;
-#endif
 
 #ifdef NO_TOOLS
     menu1.DestroyChild(&menu1_Tools);

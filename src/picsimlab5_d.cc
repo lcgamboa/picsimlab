@@ -315,20 +315,11 @@ CPWindow5::CPWindow5(void) {
     /*#Others*/
     // lxrad automatic generated block end, don't edit above!
 
-    pboard = NULL;
-
-    partsc = 0;
-    partsc_aup = 0;
     PartToCreate = "";
     PartToMove = -1;
     PartSelected = -1;
     mdx = 0;
     mdy = 0;
-    scale = 1.0;
-    LoadConfigFile = "";
-    fdtype = -1;
-    useAlias = 0;
-    alias_fname = "";
     offsetx = 0;
     offsety = 0;
     mouse_scroll = 0;

@@ -26,7 +26,7 @@
 #include "part_LED_matrix.h"
 #include "../picsimlab1.h"
 #include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum { O_P1, O_P2, O_P3, O_P4, O_F1, O_F2, O_LED };
@@ -48,11 +48,11 @@ cpart_led_matrix::cpart_led_matrix(unsigned x, unsigned y)
     input_pins[1] = 0;
     input_pins[2] = 0;
 
-    output_pins[0] = Window5.RegisterIOpin(lxT("DOUT"));
+    output_pins[0] = SpareParts.RegisterIOpin(lxT("DOUT"));
 }
 
 cpart_led_matrix::~cpart_led_matrix(void) {
-    Window5.UnregisterIOpin(output_pins[0]);
+    SpareParts.UnregisterIOpin(output_pins[0]);
     delete Bitmap;
     canvas.Destroy();
 }
@@ -84,7 +84,7 @@ void cpart_led_matrix::Draw(void) {
                     if (input_pins[output[i].id - O_P1] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
                     else
-                        canvas.RotatedText(Window5.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
+                        canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
                                            output[i].y2, 90.0);
                     break;
                 case O_P4:
@@ -168,8 +168,8 @@ void cpart_led_matrix::ReadPreferences(lxString value) {
     unsigned char outp;
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%i", &input_pins[0], &input_pins[1], &input_pins[2], &outp, &angle);
 
-    Window5.UnregisterIOpin(output_pins[0]);
-    output_pins[0] = Window5.RegisterIOpin(lxT("DOUT"), outp);
+    SpareParts.UnregisterIOpin(output_pins[0]);
+    output_pins[0] = SpareParts.RegisterIOpin(lxT("DOUT"), outp);
 
     Reset();
 
@@ -181,14 +181,14 @@ void cpart_led_matrix::RegisterRemoteControl(void) {
 }
 
 void cpart_led_matrix::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (input_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[0]);
+        spin = SpareParts.GetPinName(input_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(input_pins[0]) + "  " + spin);
     }
 
@@ -196,7 +196,7 @@ void cpart_led_matrix::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[1] == 0)
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[1]);
+        spin = SpareParts.GetPinName(input_pins[1]);
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(input_pins[1]) + "  " + spin);
     }
 
@@ -204,7 +204,7 @@ void cpart_led_matrix::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[2] == 0)
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[2]);
+        spin = SpareParts.GetPinName(input_pins[2]);
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText(itoa(input_pins[2]) + "  " + spin);
     }
 
@@ -212,12 +212,10 @@ void cpart_led_matrix::ConfigurePropertiesWindow(CPWindow* WProp) {
 
     ((CCombo*)WProp->GetChildByName("combo4"))->SetText(itoa(angle));
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_led_matrix::ReadPropertiesWindow(CPWindow* WProp) {
@@ -230,7 +228,7 @@ void cpart_led_matrix::ReadPropertiesWindow(CPWindow* WProp) {
 }
 
 void cpart_led_matrix::Process(void) {
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     if ((input_pins[0] > 0) && (input_pins[1] > 0) && (input_pins[2] > 0)) {
         unsigned char out;
@@ -238,7 +236,7 @@ void cpart_led_matrix::Process(void) {
                              ppins[input_pins[1] - 1].value);
 
         if (out != ppins[output_pins[0] - 1].value) {
-            Window5.WritePin(output_pins[0], out);
+            SpareParts.WritePin(output_pins[0], out);
         }
     }
 }

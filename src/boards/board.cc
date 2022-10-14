@@ -24,7 +24,7 @@
    ######################################################################## */
 
 #include "board.h"
-#include "../picsimlab1.h"
+#include "../picsimlab.h"
 
 int ioupdated = 0;
 
@@ -36,7 +36,7 @@ board::board(void) {
     use_spare = 0;
     Proc = "";
     p_RST = 1;
-    Scale = Window1.GetScale();
+    Scale = PICSimLab.GetScale();
     InstCounter = 0;
     TimersCount = 0;
     for (int i = 0; i < MAX_TIMERS; i++) {
@@ -51,8 +51,8 @@ board::~board(void) {}
 void board::ReadMaps(void) {
     inputc = 0;
     outputc = 0;
-    ReadInputMap(lxGetLocalFile(Window1.GetSharePath() + lxT("boards/") + GetMapFile()));
-    ReadOutputMap(lxGetLocalFile(Window1.GetSharePath() + lxT("boards/") + GetMapFile()));
+    ReadInputMap(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/") + GetMapFile()));
+    ReadOutputMap(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/") + GetMapFile()));
 
     for (int i = 0; i < inputc; i++) {
         input_ids[get_in_id(input[i].name)] = &input[i];
@@ -91,40 +91,42 @@ void board::ReadInputMap(lxString fname) {
 
                     if (!strcmp("width", name)) {
                         sscanf(value, "%i", &board_w);
-                        Window1.SetplWidth(board_w);
+                        PICSimLab.SetplWidth(board_w);
 
-                        unsigned int ww = 185 + board_w * Window1.GetScale();
+                        unsigned int ww = 185 + board_w * PICSimLab.GetScale();
                         if (ww > lxGetDisplayWidth(0)) {
                             float scalex = ((lxGetDisplayWidth(0) - 185) * 1.0) / board_w;
-                            Window1.draw1.SetWidth(board_w * scalex);
-                            Window1.SetWidth(lxGetDisplayWidth(0));
+                            ((CDraw*)PICSimLab.GetWindow()->GetChildByName("draw1"))->SetWidth(board_w * scalex);
+                            PICSimLab.GetWindow()->SetWidth(lxGetDisplayWidth(0));
                             if (scalex < Scale) {
                                 Scale = scalex;
                             }
                         } else {
-                            Window1.draw1.SetWidth(board_w * Window1.GetScale());
-                            Window1.SetWidth(ww);
+                            ((CDraw*)PICSimLab.GetWindow()->GetChildByName("draw1"))
+                                ->SetWidth(board_w * PICSimLab.GetScale());
+                            PICSimLab.GetWindow()->SetWidth(ww);
                         }
                     }
 
                     if (!strcmp("height", name)) {
                         sscanf(value, "%i", &board_h);
-                        Window1.SetplHeight(board_h);
+                        PICSimLab.SetplHeight(board_h);
 
-                        unsigned int wh = 90 + board_h * Window1.GetScale();
+                        unsigned int wh = 90 + board_h * PICSimLab.GetScale();
 
                         if (wh > lxGetDisplayHeight(0)) {
                             float scaley = ((lxGetDisplayHeight(0) - 90) * 1.0) / board_h;
 
-                            Window1.draw1.SetHeight(board_h * scaley);
-                            Window1.SetHeight(lxGetDisplayHeight(0));
-                            Window1.SetWidth(185 + board_w * scaley);
+                            ((CDraw*)PICSimLab.GetWindow()->GetChildByName("draw1"))->SetHeight(board_h * scaley);
+                            PICSimLab.GetWindow()->SetHeight(lxGetDisplayHeight(0));
+                            PICSimLab.GetWindow()->SetWidth(185 + board_w * scaley);
                             if (scaley < Scale) {
                                 Scale = scaley;
                             }
                         } else {
-                            Window1.draw1.SetHeight(board_h * Window1.GetScale());
-                            Window1.SetHeight(wh);
+                            ((CDraw*)PICSimLab.GetWindow()->GetChildByName("draw1"))
+                                ->SetHeight(board_h * PICSimLab.GetScale());
+                            PICSimLab.GetWindow()->SetHeight(wh);
                         }
                     }
 
@@ -252,7 +254,7 @@ void board::ReadOutputMap(lxString fname) {
 }
 
 void board::RefreshStatus(void) {
-    Window1.statusbar1.SetField(2, lxT(""));
+    PICSimLab.GetStatusBar()->SetField(2, lxT(""));
 }
 
 void board::SetUseOscilloscope(int uo) {
@@ -348,8 +350,9 @@ lxString board::GetMapFile(void) {
 
 void board::StartThread(void) {
 #ifndef __EMSCRIPTEN__
-    if (!Window1.thread3.GetRunState()) {
-        Window1.thread3.Run();
+    CThread* thread3 = ((CThread*)PICSimLab.GetWindow()->GetChildByName("thread3"));
+    if (!thread3->GetRunState()) {
+        thread3->Run();
     }
 #endif
 }

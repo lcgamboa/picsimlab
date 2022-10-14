@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "board_K16F.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -158,7 +158,7 @@ void cboard_K16F::Draw(CDraw* draw) {
 
                 switch (output[i].id) {
                     case O_LCD:
-                        draw->Canvas.SetColor(0, 90 * Window1.Get_mcupwr() + 40, 0);
+                        draw->Canvas.SetColor(0, 90 * PICSimLab.Get_mcupwr() + 40, 0);
                         break;
                     case O_RST:
                         draw->Canvas.SetColor(100, 100, 100);
@@ -175,7 +175,7 @@ void cboard_K16F::Draw(CDraw* draw) {
                         draw->Canvas.Rectangle(1, output[i].x1 - 1, output[i].y1 - 1, output[i].x2 - output[i].x1 + 2,
                                                output[i].y2 - output[i].y1 + 3);
                         lcd_draw(&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                 output[i].y2 - output[i].y1, Window1.Get_mcupwr());
+                                 output[i].y2 - output[i].y1, PICSimLab.Get_mcupwr());
                     }
                 } else if (output[i].id == O_RST) {
                     draw->Canvas.Circle(1, output[i].cx, output[i].cy, 11);
@@ -225,7 +225,7 @@ void cboard_K16F::Draw(CDraw* draw) {
                         draw->Canvas.SetBgColor(pic.pins[15].oavalue, 0, 0);
                         break;
                     case O_LPWR:
-                        draw->Canvas.SetBgColor(0, 200 * Window1.Get_mcupwr() + 55, 0);
+                        draw->Canvas.SetBgColor(0, 200 * PICSimLab.Get_mcupwr() + 55, 0);
                         break;
                 }
 
@@ -265,8 +265,8 @@ void cboard_K16F::Run_CPU(void) {
     const picpin* pins;
     unsigned int alm[18];  // luminosidade media
 
-    const int JUMPSTEPS = Window1.GetJUMPSTEPS();
-    const long int NSTEP = Window1.GetNSTEP();
+    const int JUMPSTEPS = PICSimLab.GetJUMPSTEPS();
+    const long int NSTEP = PICSimLab.GetNSTEP();
     const float RNSTEP = 200.0 * pic.PINCOUNT / NSTEP;
 
     pins = pic.pins;
@@ -274,11 +274,11 @@ void cboard_K16F::Run_CPU(void) {
     memset(alm, 0, 18 * sizeof(unsigned int));
 
     if (use_spare)
-        Window5.PreProcess();
+        SpareParts.PreProcess();
 
     j = JUMPSTEPS;
     pi = 0;
-    if (Window1.Get_mcupwr())
+    if (PICSimLab.Get_mcupwr())
         for (i = 0; i < NSTEP; i++) {
             if (j >= JUMPSTEPS) {
                 pic_set_pin(&pic, pic.mclr, p_RST);
@@ -359,9 +359,9 @@ void cboard_K16F::Run_CPU(void) {
             ioupdated = pic.ioupdated;
             InstCounterInc();
             if (use_oscope)
-                Window4.SetSample();
+                Oscilloscope.SetSample();
             if (use_spare)
-                Window5.Process();
+                SpareParts.Process();
 
             // increment mean value counter if pin is high
             alm[pi] += pins[pi].value;
@@ -419,7 +419,7 @@ void cboard_K16F::Run_CPU(void) {
     }
 
     if (use_spare)
-        Window5.PostProcess();
+        SpareParts.PostProcess();
 
     if (lcd.update)
         output_ids[O_LCD]->update = 1;
@@ -476,21 +476,21 @@ void cboard_K16F::Reset(void) {
 #else
     if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
-                                           itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                           lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                            100.0 * pic.serial[0].serialbaud) /
-                                                                           pic.serial[0].serialexbaud)) +
-                                           lxT("%)"));
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+                                                  itoa(pic.serial[0].serialbaud) + lxT("(") +
+                                                  lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                                                                   100.0 * pic.serial[0].serialbaud) /
+                                                                                  pic.serial[0].serialexbaud)) +
+                                                  lxT("%)"));
     else
-        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
 
     for (int pi = 0; pi < pic.PINCOUNT; pi++) {
         pic.pins[pi].oavalue = 0;
     }
 
     if (use_spare)
-        Window5.Reset();
+        SpareParts.Reset();
 
     RegisterRemoteControl();
 }
@@ -535,24 +535,25 @@ void cboard_K16F::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
         if (((input[i].x1 <= x) && (input[i].x2 >= x)) && ((input[i].y1 <= y) && (input[i].y2 >= y))) {
             switch (input[i].id) {
                 case I_ICSP: {
-                    Window1.menu1_File_LoadHex_EvMenuActive(NULL);
+                    PICSimLab.OpenLoadHexFileDialog();
+                    ;
                 } break;
 
                 case I_PWR: {
-                    if (Window1.Get_mcupwr()) {
-                        Window1.Set_mcupwr(0);
+                    if (PICSimLab.Get_mcupwr()) {
+                        PICSimLab.Set_mcupwr(0);
                         Reset();
                     } else {
-                        Window1.Set_mcupwr(1);
+                        PICSimLab.Set_mcupwr(1);
                         Reset();
                     }
                 }
                     output_ids[O_LPWR]->update = 1;
                     break;
                 case I_RST: {
-                    if (Window1.Get_mcupwr() && pic_reset(&pic, -1)) {
-                        Window1.Set_mcupwr(0);
-                        Window1.Set_mcurst(1);
+                    if (PICSimLab.Get_mcupwr() && pic_reset(&pic, -1)) {
+                        PICSimLab.Set_mcupwr(0);
+                        PICSimLab.Set_mcurst(1);
                     }
                     p_RST = 0;
                     output_ids[O_RST]->update = 1;
@@ -660,9 +661,9 @@ void cboard_K16F::EvMouseButtonRelease(uint button, uint x, uint y, uint state) 
         if (((input[i].x1 <= x) && (input[i].x2 >= x)) && ((input[i].y1 <= y) && (input[i].y2 >= y))) {
             switch (input[i].id) {
                 case I_RST: {
-                    if (Window1.Get_mcurst()) {
-                        Window1.Set_mcupwr(1);
-                        Window1.Set_mcurst(0);
+                    if (PICSimLab.Get_mcurst()) {
+                        PICSimLab.Set_mcupwr(1);
+                        PICSimLab.Set_mcurst(0);
 
                         if (pic_reset(&pic, -1)) {
                             Reset();
@@ -921,8 +922,8 @@ unsigned short cboard_K16F::get_out_id(char* name) {
 }
 
 void cboard_K16F::WritePreferences(void) {
-    Window1.saveprefs(lxT("K16F_proc"), Proc);
-    Window1.saveprefs(lxT("K16F_clock"), lxString().Format("%2.1f", Window1.GetClock()));
+    PICSimLab.saveprefs(lxT("K16F_proc"), Proc);
+    PICSimLab.saveprefs(lxT("K16F_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
 }
 
 void cboard_K16F::ReadPreferences(char* name, char* value) {
@@ -931,7 +932,7 @@ void cboard_K16F::ReadPreferences(char* name, char* value) {
     }
 
     if (!strcmp(name, "K16F_clock")) {
-        Window1.SetClock(atof(value));
+        PICSimLab.SetClock(atof(value));
     }
 }
 
@@ -941,14 +942,14 @@ void cboard_K16F::RefreshStatus(void) {
 #else
     if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
-                                           itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                           lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                            100.0 * pic.serial[0].serialbaud) /
-                                                                           pic.serial[0].serialexbaud)) +
-                                           lxT("%)"));
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+                                                  itoa(pic.serial[0].serialbaud) + lxT("(") +
+                                                  lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                                                                   100.0 * pic.serial[0].serialbaud) /
+                                                                                  pic.serial[0].serialexbaud)) +
+                                                  lxT("%)"));
     else
-        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
 }
 
 board_init(BOARD_K16F_Name, cboard_K16F);

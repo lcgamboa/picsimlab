@@ -28,7 +28,7 @@
 #include <dlfcn.h>
 #endif
 
-#include "../picsimlab1.h"
+#include "../picsimlab.h"
 #include "../serial_port.h"
 #include "bsim_qemu.h"
 
@@ -194,7 +194,7 @@ const static callbacks_t callbacks = {picsimlab_write_pin, picsimlab_dir_pins, p
 
 int bsim_qemu::load_qemu_lib(const char* path) {
 #ifndef _WIN_  // LINUX
-    lxString fullpath = Window1.GetLibPath() + "qemu/" + path + ".so";
+    lxString fullpath = PICSimLab.GetLibPath() + "qemu/" + path + ".so";
 
     void* handle = dlopen((const char*)fullpath.c_str(), RTLD_NOW);
     if (handle == nullptr) {
@@ -259,7 +259,7 @@ bsim_qemu::bsim_qemu(void) {
 
     memset(&ADCvalues, 0xFF, 32);
 
-    Window1.SetNeedReboot();
+    PICSimLab.SetNeedReboot();
     mtx_qinit = new lxMutex();
     ns_count = 0;
     icount = 5;
@@ -313,10 +313,19 @@ int bsim_qemu::MInit(const char* processor, const char* _fname, float freq) {
 #else  // qemu is not supported in emscripten version yet
     qemu_started = -1;
 #endif
-        Window1.menu1_File_LoadHex.SetText("Load Bin");
-        Window1.menu1_File_SaveHex.SetEnable(0);
-        Window1.filedialog1.SetFileName(lxT("untitled.bin"));
-        Window1.filedialog1.SetFilter(lxT("Bin Files (*.bin)|*.bin;*.BIN"));
+        ((CItemMenu*)PICSimLab.GetWindow()
+             ->GetChildByName("menu1")
+             ->GetChildByName("menu1_File")
+             ->GetChildByName("menu1_File_LoadHex"))
+            ->SetText("Load Bin");
+        ((CItemMenu*)PICSimLab.GetWindow()
+             ->GetChildByName("menu1")
+             ->GetChildByName("menu1_File")
+             ->GetChildByName("menu1_File_SaveHex"))
+            ->SetEnable(0);
+        ((CFileDialog*)PICSimLab.GetWindow()->GetChildByName("filedialog1"))->SetFileName(lxT("untitled.bin"));
+        ((CFileDialog*)PICSimLab.GetWindow()->GetChildByName("filedialog1"))
+            ->SetFilter(lxT("Bin Files (*.bin)|*.bin;*.BIN"));
 
 #ifndef __EMSCRIPTEN__
     } else {
@@ -331,7 +340,7 @@ static void user_timeout_cb(void* opaque) {
     bsim_qemu* board = (bsim_qemu*)opaque;
     int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
     timer_mod_ns(board->timer.qtimer, now + board->timer.timeout);
-    if (Window1.GetSimulationRun()) {
+    if (PICSimLab.GetSimulationRun()) {
         ioupdated = 0;
         board->Run_CPU_ns(GotoNow());
     }
@@ -363,7 +372,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
     if (SimType == QEMU_SIM_STM32) {
         if (!load_qemu_lib("libqemu-stm32")) {
-            Window1.RegisterError("Erro loading libqemu-stm32");
+            PICSimLab.RegisterError("Erro loading libqemu-stm32");
             qemu_started = -1;
             mtx_qinit->Unlock();
             return;
@@ -415,7 +424,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
     } else if (SimType == QEMU_SIM_ESP32) {
         if (!load_qemu_lib("libqemu-xtensa")) {
-            Window1.RegisterError("Erro loading libqemu-xtensa");
+            PICSimLab.RegisterError("Erro loading libqemu-xtensa");
             qemu_started = -1;
             mtx_qinit->Unlock();
             return;
@@ -449,13 +458,13 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         strcpy(argv[argc++], "esp32-picsimlab");
 
 #ifndef _WIN_
-        lxString fullpath = Window1.GetLibPath() + "qemu/fw/";
+        lxString fullpath = PICSimLab.GetLibPath() + "qemu/fw/";
 #else
         lxString fullpath = dirname(lxGetExecutablePath()) + "/lib/qemu/fw/";
 #endif
 
         if ((!lxFileExists(fullpath + "esp32-v3-rom.bin")) || (!lxFileExists(fullpath + "esp32-v3-rom-app.bin"))) {
-            Window1.RegisterError("Erro loading esp32-v3-rom.bin or esp32-v3-rom-app.bin");
+            PICSimLab.RegisterError("Erro loading esp32-v3-rom.bin or esp32-v3-rom-app.bin");
             qemu_started = -1;
             mtx_qinit->Unlock();
             return;
@@ -485,9 +494,9 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
             serial_open = 0;
         }
     }
-    if (Window1.Get_debug_status()) {
+    if (PICSimLab.Get_debug_status()) {
         strcpy(argv[argc++], "-gdb");
-        sprintf(argv[argc++], "tcp::%i", Window1.Get_debug_port());
+        sprintf(argv[argc++], "tcp::%i", PICSimLab.Get_debug_port());
     }
 
     if (icount >= 0) {
@@ -505,7 +514,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
     if (lxFileExists(ftest)) {
         use_cmdline_extra = 0;
-        Window1.RegisterError("Invalid qemu extra option!");
+        PICSimLab.RegisterError("Invalid qemu extra option!");
         lxRemoveFile(ftest);
     }
 
@@ -582,10 +591,19 @@ void bsim_qemu::MEnd(void) {
     qmp_quit(NULL);
     qemu_mutex_unlock_iothread();
 
-    Window1.menu1_File_LoadHex.SetText("Load Hex");
-    Window1.menu1_File_SaveHex.SetEnable(1);
-    Window1.filedialog1.SetFileName(lxT("untitled.hex"));
-    Window1.filedialog1.SetFilter(lxT("Hex Files (*.hex)|*.hex;*.HEX"));
+    ((CItemMenu*)PICSimLab.GetWindow()
+         ->GetChildByName("menu1")
+         ->GetChildByName("menu1_File")
+         ->GetChildByName("menu1_File_LoadHex"))
+        ->SetText("Load Hex");
+    ((CItemMenu*)PICSimLab.GetWindow()
+         ->GetChildByName("menu1")
+         ->GetChildByName("menu1_File")
+         ->GetChildByName("menu1_File_SaveHex"))
+        ->SetEnable(1);
+    ((CFileDialog*)PICSimLab.GetWindow()->GetChildByName("filedialog1"))->SetFileName(lxT("untitled.hex"));
+    ((CFileDialog*)PICSimLab.GetWindow()->GetChildByName("filedialog1"))
+        ->SetFilter(lxT("Hex Files (*.hex)|*.hex;*.HEX"));
 
 #ifdef _WIN_
     Sleep(200);

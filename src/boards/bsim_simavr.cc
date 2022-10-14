@@ -27,7 +27,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../picsimlab1.h"
+#include "../picsimlab.h"
 #include "bsim_simavr.h"
 #include "simavr/avr_eeprom.h"
 #include "simavr/avr_extint.h"
@@ -535,9 +535,9 @@ int bsim_simavr::DebugInit(int dtyppe) {
     avr_debug_type = dtyppe;
 
     if (avr_debug_type) {
-        avr->gdb_port = Window1.Get_debug_port();
+        avr->gdb_port = PICSimLab.Get_debug_port();
         if (avr_gdb_init(avr)) {
-            Window1.RegisterError("Error starting GDB debugger support !");
+            PICSimLab.RegisterError("Error starting GDB debugger support !");
             return -1;
         } else {
             avr->run = avr_callback_run_gdb_;
@@ -545,10 +545,10 @@ int bsim_simavr::DebugInit(int dtyppe) {
             return 1;
         }
     } else {
-        int ret = !mplabxd_init(this, Window1.Get_debug_port()) - 1;
+        int ret = !mplabxd_init(this, PICSimLab.Get_debug_port()) - 1;
 
         if (ret < 0) {
-            Window1.RegisterError("Error starting MPLABX debugger support !");
+            PICSimLab.RegisterError("Error starting MPLABX debugger support !");
         }
         return ret;
     }
@@ -563,7 +563,7 @@ lxString bsim_simavr::GetDebugName(void) {
 }
 
 void bsim_simavr::DebugLoop(void) {
-    if (Window1.Get_mcupwr()) {
+    if (PICSimLab.Get_mcupwr()) {
         if ((avr_debug_type) && (avr->gdb)) {
             // this also sleeps for a bit
             gdb_network_handler(avr->gdb, 0);

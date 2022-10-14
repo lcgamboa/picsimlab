@@ -1,0 +1,29 @@
+liblxrad Classes tree:
+
+String
+CStringList
+CObject --+
+          |-- CApplication  
+          |-- CControl -----+
+          |-- CPaint        |-- CButton ----+
+          `-- CPen          |-- CCBox       |-- CToolButton
+                            |-- CCheckBox   `-- CXpmButton
+        		    |-- CComboDialog
+			    |-- CCombo
+                            |-- CCursor
+                            |-- CDraw
+                            |-- CEdit ------+
+                            |          	    `-- CText(Unusable)
+                            |-- CList ------+
+                            |-- CMenu       `--CFileList
+                            |--	CPMenu 
+                            |-- CScroll
+                            |--	CString ----+ 
+                            |-- CTimer      `-- CItemMenu
+                            `-- CWindow ----+      
+			                    |-- CHint
+                                            |-- CDialog
+                                            |-- CFileDialog
+                                            |-- CInput
+                                            |-- CComboDialog
+				            `-- CMessage

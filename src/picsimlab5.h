@@ -27,13 +27,10 @@
 #define CPWINDOW5
 
 #include <lxrad.h>
-#include "parts/part.h"
 #include "parts/parts_defs.h"
 
-#define IOINIT 110
-
 /**
- * @brief CPWindow4 class
+ * @brief CPWindow5 class
  *
  * class definition of PICSimLab spare parts window.
  */
@@ -110,92 +107,21 @@ public:
     // lxrad automatic generated block end, don't edit above!
     void menu1_EvMenuActive(CControl* control);
 
-    /**
-     * @brief  Execute the process code of spare parts N times (where N is the number of steps in 100ms)
-     */
-    void Process(void);
-
-    /**
-     * @brief  Execute the pre process code of spare parts one time per 100ms
-     */
-    void PreProcess(void);
-
-    /**
-     * @brief  Execute the post process code of spare parts one time per 100ms
-     */
-    void PostProcess(void);
-
-    /**
-     * @brief  Reset all spare parts
-     */
-    void Reset(void);
-    bool SaveConfig(lxString fname);
-    bool LoadConfig(lxString fname);
-    void DeleteParts(void);
-    void WritePreferences(void);
-    void ReadPreferences(char* name, char* value);
     void PropButtonRelease(CControl* control, uint button, uint x, uint y, uint state);
     void PropComboChange(CCombo* control);
     void PropClose(int tag);
-    void Reset_pullup_bus(unsigned char pin);
-    void Set_pullup_bus(unsigned char pin, unsigned char value);
-    unsigned char Get_pullup_bus(unsigned char pin);
     void PartButtonEvent(CControl* control, uint button, uint x, uint y, uint state);
     void PartKeyEvent(CControl* control, uint keysm, uint ukeysym, uint state);
     void PartEvent(CControl* control);
-
-    /**
-     * @brief  Return the name of all pins
-     */
-    lxString GetPinsNames(void);
-
-    /**
-     * @brief  Return the name of one pin
-     */
-    lxString GetPinName(unsigned char pin);
-
-    const picpin* GetPinsValues(void);
-    void SetPin(unsigned char pin, unsigned char value);
-    void SetAPin(unsigned char pin, float value);
-    void SetPinDOV(unsigned char pin, unsigned char ovalue);
-    void SetPinDir(unsigned char pin, unsigned char dir);
-    void WritePin(unsigned char pin, unsigned char value);
-    void WritePinA(unsigned char pin, unsigned char avalue);
-    void WritePinOA(unsigned char pin, unsigned short oavalue);
-    unsigned char RegisterIOpin(lxString pname, unsigned char pin = 0, unsigned char dir = PD_OUT);
-    unsigned char UnregisterIOpin(unsigned char pin);
-    void Setfdtype(int value);
-    bool SavePinAlias(lxString fname);
-    bool LoadPinAlias(lxString fname, unsigned char show_error_msg = 0);
-    part* GetPart(int pn);
-    int GetPartsCount(void);
-    part* AddPart(const char* partname, const int x, const int y);
+    void DeleteParts(void);
 
 private:
-    board* pboard;
-    lxString PinNames[256];
-    lxString PinAlias[256];
-    picpin* Pins;
-    unsigned char PinsCount;
-    unsigned char useAlias;
-    int partsc;
-    part* parts[MAX_PARTS];
-    int partsc_aup;              // aways update list
-    part* parts_aup[MAX_PARTS];  // aways update list
     CItemMenu MParts[MAX_PARTS];
     lxString PartToCreate;
     int PartSelected;
     int PartToMove;
     int mdx, mdy;
-    float scale;
-    lxString LoadConfigFile;
-    unsigned char pullup_bus[IOINIT];
-    int pullup_bus_count;
-    unsigned char pullup_bus_ptr[IOINIT];
     CPWindow wprop;
-    int fdtype;
-    lxString oldfname;
-    lxString alias_fname;
     int offsetx;
     int offsety;
     int mouse_scroll;

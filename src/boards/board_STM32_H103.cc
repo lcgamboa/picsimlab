@@ -25,9 +25,9 @@
 
 // include files
 #include "board_STM32_H103.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"  //Oscilloscope
-#include "../picsimlab5.h"  //Spare Parts
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 /* ids of inputs of input map*/
 enum {
@@ -89,7 +89,7 @@ cboard_STM32_H103::cboard_STM32_H103(void) {
 
     // label1
     label1 = new CLabel();
-    label1->SetFOwner(&Window1);
+    label1->SetFOwner(PICSimLab.GetWindow());
     label1->SetName(lxT("label1_"));
     label1->SetX(13);
     label1->SetY(54 + 20);
@@ -99,10 +99,10 @@ cboard_STM32_H103::cboard_STM32_H103(void) {
     label1->SetVisible(1);
     label1->SetText(lxT("Qemu CPU MIPS"));
     label1->SetAlign(1);
-    Window1.CreateChild(label1);
+    PICSimLab.GetWindow()->CreateChild(label1);
     // combo1
     combo1 = new CCombo();
-    combo1->SetFOwner(&Window1);
+    combo1->SetFOwner(PICSimLab.GetWindow());
     combo1->SetName(lxT("combo1_"));
     combo1->SetX(13);
     combo1->SetY(78 + 20);
@@ -113,15 +113,15 @@ cboard_STM32_H103::cboard_STM32_H103(void) {
     combo1->SetText(IcountToMipsStr(5));
     combo1->SetItems(IcountToMipsItens(buffer));
     combo1->SetTag(3);
-    combo1->EvOnComboChange = EVONCOMBOCHANGE & CPWindow1::board_Event;
-    Window1.CreateChild(combo1);
+    combo1->EvOnComboChange = PICSimLab.board_Event;
+    PICSimLab.GetWindow()->CreateChild(combo1);
 }
 
 // Destructor called once on board destruction
 
 cboard_STM32_H103::~cboard_STM32_H103(void) {
-    Window1.DestroyChild(label1);
-    Window1.DestroyChild(combo1);
+    PICSimLab.GetWindow()->DestroyChild(label1);
+    PICSimLab.GetWindow()->DestroyChild(combo1);
 }
 
 // Reset board status
@@ -131,10 +131,10 @@ void cboard_STM32_H103::Reset(void) {
 
     MReset(1);
 
-    Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
 
     if (use_spare)
-        Window5.Reset();
+        SpareParts.Reset();
 
     RegisterRemoteControl();
 }
@@ -150,9 +150,9 @@ void cboard_STM32_H103::RegisterRemoteControl(void) {
 
 void cboard_STM32_H103::RefreshStatus(void) {
     if (serial_open) {
-        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
     } else {
-        Window1.statusbar1.SetField(2, lxT("Serial: Error"));
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: Error"));
     }
 }
 
@@ -160,11 +160,11 @@ void cboard_STM32_H103::RefreshStatus(void) {
 
 void cboard_STM32_H103::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
-    Window1.saveprefs(lxT("STM32_H103_proc"), Proc);
+    PICSimLab.saveprefs(lxT("STM32_H103_proc"), Proc);
     // write microcontroller clock to preferences
-    Window1.saveprefs(lxT("STM32_H103_clock"), lxString().Format("%2.1f", Window1.GetClock()));
+    PICSimLab.saveprefs(lxT("STM32_H103_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
     // write microcontroller icount to preferences
-    Window1.saveprefs(lxT("STM32_H103_icount"), itoa(icount));
+    PICSimLab.saveprefs(lxT("STM32_H103_icount"), itoa(icount));
 }
 
 // Called whe configuration file load  preferences
@@ -176,7 +176,7 @@ void cboard_STM32_H103::ReadPreferences(char* name, char* value) {
     }
     // read microcontroller clock
     if (!strcmp(name, "STM32_H103_clock")) {
-        Window1.SetClock(atof(value));
+        PICSimLab.SetClock(atof(value));
     }
     // read microcontroller icount
     if (!strcmp(name, "STM32_H103_icount")) {
@@ -204,27 +204,28 @@ void cboard_STM32_H103::EvMouseButtonPress(uint button, uint x, uint y, uint sta
             switch (input[i].id) {
                     // if event is over I_ISCP area then load hex file
                 case I_ICSP:
-                    Window1.menu1_File_LoadHex_EvMenuActive(NULL);
+                    PICSimLab.OpenLoadHexFileDialog();
+                    ;
                     break;
                     // if event is over I_PWR area then toggle board on/off
                 case I_PWR:
-                    if (Window1.Get_mcupwr())  // if on turn off
+                    if (PICSimLab.Get_mcupwr())  // if on turn off
                     {
-                        Window1.Set_mcupwr(0);
+                        PICSimLab.Set_mcupwr(0);
                         Reset();
                     } else  // if off turn on
                     {
-                        Window1.Set_mcupwr(1);
+                        PICSimLab.Set_mcupwr(1);
                         Reset();
                     }
                     break;
                     // if event is over I_RST area then turn off and reset
                 case I_RST:
                     /*
-                    if (Window1.Get_mcupwr () && reset (-1))//if powered
+                    if (PICSimLab.GetWindow()->Get_mcupwr () && reset (-1))//if powered
                      {
-                      Window1.Set_mcupwr (0);
-                      Window1.Set_mcurst (1);
+                      PICSimLab.Set_mcupwr (0);
+                      PICSimLab.Set_mcurst (1);
                      }
                      */
                     Reset();
@@ -249,10 +250,10 @@ void cboard_STM32_H103::EvMouseButtonRelease(uint button, uint x, uint y, uint s
             switch (input[i].id) {
                     // if event is over I_RST area then turn on
                 case I_RST:
-                    if (Window1.Get_mcurst())  // if powered
+                    if (PICSimLab.Get_mcurst())  // if powered
                     {
-                        Window1.Set_mcupwr(1);
-                        Window1.Set_mcurst(0);
+                        PICSimLab.Set_mcupwr(1);
+                        PICSimLab.Set_mcurst(0);
                         /*
                                  if (reset (-1))
                                   {
@@ -294,7 +295,7 @@ void cboard_STM32_H103::Draw(CDraw* draw) {
 
                     break;
                 case O_LPWR:  // Blue using mcupwr value
-                    draw->Canvas.SetColor(200 * Window1.Get_mcupwr() + 55, 0, 0);
+                    draw->Canvas.SetColor(200 * PICSimLab.Get_mcupwr() + 55, 0, 0);
                     draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                            output[i].y2 - output[i].y1);
 
@@ -334,7 +335,7 @@ void cboard_STM32_H103::Run_CPU_ns(uint64_t time) {
     static unsigned int alm[64];
     static const int pinc = MGetPinCount();
 
-    const int JUMPSTEPS = 4.0 * Window1.GetJUMPSTEPS();  // number of steps skipped
+    const int JUMPSTEPS = 4.0 * PICSimLab.GetJUMPSTEPS();  // number of steps skipped
 
     const int inc = 1000000000L / MGetInstClockFreq();
 
@@ -347,13 +348,13 @@ void cboard_STM32_H103::Run_CPU_ns(uint64_t time) {
 
             // Spare parts window pre process
             if (use_spare)
-                Window5.PreProcess();
+                SpareParts.PreProcess();
 
             j = JUMPSTEPS;  // step counter
             pi = 0;
         }
 
-        if (Window1.Get_mcupwr())  // if powered
+        if (PICSimLab.Get_mcupwr())  // if powered
         {
             if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
             {
@@ -365,10 +366,10 @@ void cboard_STM32_H103::Run_CPU_ns(uint64_t time) {
             InstCounterInc();
             // Oscilloscope window process
             if (use_oscope)
-                Window4.SetSample();
+                Oscilloscope.SetSample();
             // Spare parts window process
             if (use_spare)
-                Window5.Process();
+                SpareParts.Process();
 
             // increment mean value counter if pin is high
             alm[pi] += pins[pi].value;
@@ -393,14 +394,14 @@ void cboard_STM32_H103::Run_CPU_ns(uint64_t time) {
 
             // Spare parts window pre post process
             if (use_spare)
-                Window5.PostProcess();
+                SpareParts.PostProcess();
         }
     }
 }
 
 void cboard_STM32_H103::board_Event(CControl* control) {
     icount = MipsStrToIcount(combo1->GetText().c_str());
-    Window1.EndSimulation();
+    PICSimLab.EndSimulation();
 }
 
 lxString cboard_STM32_H103::MGetPinName(int pin) {

@@ -26,7 +26,7 @@
 #include "part_Text.h"
 #include "../picsimlab1.h"
 #include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum { O_TEXTB };
@@ -91,14 +91,14 @@ void cpart_TEXT::LoadImage(void) {
         printf("PICSimLab: Erro open file %s\n", (const char*)ifname.c_str());
     }
 
-    lxImage image(&Window5);
+    lxImage image(SpareParts.GetWindow());
 
     image.LoadFile(lxGetLocalFile(ifname), Orientation, Scale, Scale);
-    Bitmap = new lxBitmap(&image, &Window5);
+    Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
     image.Destroy();
 
     canvas.Destroy();
-    canvas.Create(Window5.GetWWidget(), Bitmap);
+    canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
 
     lxRemoveFile(ifname);
 }
@@ -235,12 +235,10 @@ void cpart_TEXT::ConfigurePropertiesWindow(CPWindow* WProp) {
     ((CCombo*)WProp->GetChildByName("combo2"))->SetItems(Colors);
     ((CCombo*)WProp->GetChildByName("combo2"))->SetText(Colorname[Bgcolor]);
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_TEXT::ReadPropertiesWindow(CPWindow* WProp) {

@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "part_servo.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum { O_P1, O_AXIS };
@@ -78,7 +78,7 @@ void cpart_servo::Draw(void) {
                 if (input_pin == 0)
                     canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
                 else
-                    canvas.RotatedText(Window5.GetPinName(input_pin), output[i].x1, output[i].y1, 0);
+                    canvas.RotatedText(SpareParts.GetPinName(input_pin), output[i].x1, output[i].y1, 0);
             }
 
             if (output[i].id == O_AXIS) {
@@ -100,7 +100,7 @@ void cpart_servo::Draw(void) {
 }
 
 void cpart_servo::Process(void) {
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     if (input_pin == 0)
         return;
@@ -115,7 +115,7 @@ void cpart_servo::Process(void) {
 
     if ((in_[0] == 0) && (in_[1] == 1))  // low
     {
-        angle_ = ((time / Window1.GetBoard()->MGetInstClockFreq()) - 0.0015) * 3141.59265359;
+        angle_ = ((time / PICSimLab.GetBoard()->MGetInstClockFreq()) - 0.0015) * 3141.59265359;
 
         if (angle_ > M_PI / 2.0)
             angle_ = M_PI / 2.0;
@@ -179,23 +179,21 @@ void cpart_servo::RegisterRemoteControl(void) {
 }
 
 void cpart_servo::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (input_pin == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pin);
+        spin = SpareParts.GetPinName(input_pin);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(input_pin) + "  " + spin);
     }
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_servo::ReadPropertiesWindow(CPWindow* WProp) {
@@ -204,24 +202,24 @@ void cpart_servo::ReadPropertiesWindow(CPWindow* WProp) {
 }
 
 void cpart_servo::LoadImage(void) {
-    lxImage image(&Window5);
-    image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("parts/") + GetPictureFileName()), Orientation, Scale,
+    lxImage image(SpareParts.GetWindow());
+    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + GetPictureFileName()), Orientation, Scale,
                    Scale);
 
-    Bitmap = new lxBitmap(&image, &Window5);
+    Bitmap = new lxBitmap(&image, (SpareParts.GetWindow()));
     image.Destroy();
 
-    image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("parts/") + GetPictureFileName()), Orientation, Scale,
+    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + GetPictureFileName()), Orientation, Scale,
                    Scale);
 
     if (BackGround) {
         delete BackGround;
     }
-    BackGround = new lxBitmap(&image, &Window5);
+    BackGround = new lxBitmap(&image, (SpareParts.GetWindow()));
     image.Destroy();
 
     canvas.Destroy();
-    canvas.Create(Window5.GetWWidget(), Bitmap);
+    canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
 }
 
 // Register the part in PICSimLab spare parts list

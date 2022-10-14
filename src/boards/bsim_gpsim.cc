@@ -25,7 +25,7 @@
 
 #include "bridge_gpsim.h"
 
-#include "../picsimlab1.h"
+#include "../picsimlab.h"
 #include "bsim_gpsim.h"
 
 static const unsigned char GPSIM_PORTS[5] = {0, 1, 2, 3, 0xFF};
@@ -33,7 +33,7 @@ static const unsigned char GPSIM_PORTS[5] = {0, 1, 2, 3, 0xFF};
 bsim_gpsim::bsim_gpsim(void) {
     char list[2000];
     supported_devices = bridge_gpsim_get_processor_list(list, 1999);
-    Window1.SetNeedReboot();
+    PICSimLab.SetNeedReboot();
 }
 
 void bsim_gpsim::MSetSerial(const char* port) {

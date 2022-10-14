@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "part_LCD_hd44780.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 #include "part_IO_PCF8574.h"
 
 /* outputs */
@@ -125,7 +125,7 @@ void cpart_LCD_hd44780::Draw(void) {
                     if (input_pins[output[i].id - O_P1] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y2 + yoff, 90.0);
                     else
-                        canvas.RotatedText(Window5.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
+                        canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
                                            output[i].y2 + yoff, 90.0);
                     break;
                 case O_F1:
@@ -239,14 +239,14 @@ void cpart_LCD_hd44780::RegisterRemoteControl(void) {
 }
 
 void cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (input_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[0]);
+        spin = SpareParts.GetPinName(input_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(input_pins[0]) + "  " + spin);
     }
 
@@ -254,7 +254,7 @@ void cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[1] == 0)
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[1]);
+        spin = SpareParts.GetPinName(input_pins[1]);
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(input_pins[1]) + "  " + spin);
     }
 
@@ -262,7 +262,7 @@ void cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[2] == 0)
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[2]);
+        spin = SpareParts.GetPinName(input_pins[2]);
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText(itoa(input_pins[2]) + "  " + spin);
     }
 
@@ -270,7 +270,7 @@ void cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[3] == 0)
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[3]);
+        spin = SpareParts.GetPinName(input_pins[3]);
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText(itoa(input_pins[3]) + "  " + spin);
     }
 
@@ -278,7 +278,7 @@ void cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[4] == 0)
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[4]);
+        spin = SpareParts.GetPinName(input_pins[4]);
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText(itoa(input_pins[4]) + "  " + spin);
     }
 
@@ -286,7 +286,7 @@ void cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[5] == 0)
         ((CCombo*)WProp->GetChildByName("combo6"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[5]);
+        spin = SpareParts.GetPinName(input_pins[5]);
         ((CCombo*)WProp->GetChildByName("combo6"))->SetText(itoa(input_pins[5]) + "  " + spin);
     }
 
@@ -294,7 +294,7 @@ void cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[6] == 0)
         ((CCombo*)WProp->GetChildByName("combo7"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[6]);
+        spin = SpareParts.GetPinName(input_pins[6]);
         ((CCombo*)WProp->GetChildByName("combo7"))->SetText(itoa(input_pins[6]) + "  " + spin);
     }
 
@@ -302,7 +302,7 @@ void cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[7] == 0)
         ((CCombo*)WProp->GetChildByName("combo8"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[7]);
+        spin = SpareParts.GetPinName(input_pins[7]);
         ((CCombo*)WProp->GetChildByName("combo8"))->SetText(itoa(input_pins[7]) + "  " + spin);
     }
 
@@ -310,7 +310,7 @@ void cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[8] == 0)
         ((CCombo*)WProp->GetChildByName("combo9"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[8]);
+        spin = SpareParts.GetPinName(input_pins[8]);
         ((CCombo*)WProp->GetChildByName("combo9"))->SetText(itoa(input_pins[8]) + "  " + spin);
     }
 
@@ -318,7 +318,7 @@ void cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[9] == 0)
         ((CCombo*)WProp->GetChildByName("combo10"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[9]);
+        spin = SpareParts.GetPinName(input_pins[9]);
         ((CCombo*)WProp->GetChildByName("combo10"))->SetText(itoa(input_pins[9]) + "  " + spin);
     }
 
@@ -326,7 +326,7 @@ void cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[10] == 0)
         ((CCombo*)WProp->GetChildByName("combo12"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[10]);
+        spin = SpareParts.GetPinName(input_pins[10]);
         ((CCombo*)WProp->GetChildByName("combo12"))->SetText(itoa(input_pins[10]) + "  " + spin);
     }
 
@@ -345,12 +345,10 @@ void cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow* WProp) {
             break;
     }
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_LCD_hd44780::ReadPropertiesWindow(CPWindow* WProp) {
@@ -380,7 +378,7 @@ void cpart_LCD_hd44780::ReadPropertiesWindow(CPWindow* WProp) {
 }
 
 void cpart_LCD_hd44780::Process(void) {
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     if (input_pins[1] > 0)  // EN
     {
@@ -426,21 +424,21 @@ void cpart_LCD_hd44780::Process(void) {
                     }
 
                     if (input_pins[9] > 0)
-                        Window5.SetPin(input_pins[9], (val & 0x80) > 0);
+                        SpareParts.SetPin(input_pins[9], (val & 0x80) > 0);
                     if (input_pins[8] > 0)
-                        Window5.SetPin(input_pins[8], (val & 0x40) > 0);
+                        SpareParts.SetPin(input_pins[8], (val & 0x40) > 0);
                     if (input_pins[7] > 0)
-                        Window5.SetPin(input_pins[7], (val & 0x20) > 0);
+                        SpareParts.SetPin(input_pins[7], (val & 0x20) > 0);
                     if (input_pins[6] > 0)
-                        Window5.SetPin(input_pins[6], (val & 0x10) > 0);
+                        SpareParts.SetPin(input_pins[6], (val & 0x10) > 0);
                     if (input_pins[5] > 0)
-                        Window5.SetPin(input_pins[5], (val & 0x08) > 0);
+                        SpareParts.SetPin(input_pins[5], (val & 0x08) > 0);
                     if (input_pins[4] > 0)
-                        Window5.SetPin(input_pins[4], (val & 0x04) > 0);
+                        SpareParts.SetPin(input_pins[4], (val & 0x04) > 0);
                     if (input_pins[3] > 0)
-                        Window5.SetPin(input_pins[3], (val & 0x02) > 0);
+                        SpareParts.SetPin(input_pins[3], (val & 0x02) > 0);
                     if (input_pins[2] > 0)
-                        Window5.SetPin(input_pins[2], (val & 0x01) > 0);
+                        SpareParts.SetPin(input_pins[2], (val & 0x01) > 0);
                 }
             }
         }
@@ -456,30 +454,30 @@ void cpart_LCD_hd44780::PostProcess(void) {
 }
 
 void cpart_LCD_hd44780::LoadImage(void) {
-    lxImage image(&Window5);
+    lxImage image(SpareParts.GetWindow());
 
     switch (model) {
         case LCD16x2:
-            image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("parts/") + GetPictureFileName()), Orientation,
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + GetPictureFileName()), Orientation,
                            Scale, Scale);
             break;
         case LCD16x4:
-            image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("parts/") + GetPictureFileName_()), Orientation,
-                           Scale, Scale);
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + GetPictureFileName_()),
+                           Orientation, Scale, Scale);
             break;
         case LCD20x2:
-            image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("parts/") + GetPictureFileName__()), Orientation,
-                           Scale, Scale);
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + GetPictureFileName__()),
+                           Orientation, Scale, Scale);
             break;
         case LCD20x4:
-            image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("parts/") + GetPictureFileName___()),
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + GetPictureFileName___()),
                            Orientation, Scale, Scale);
             break;
     }
 
-    Bitmap = new lxBitmap(&image, &Window5);
+    Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
     canvas.Destroy();
-    canvas.Create(Window5.GetWWidget(), Bitmap);
+    canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
     image.Destroy();
 
     for (int i = 0; i < outputc; i++) {
@@ -494,7 +492,7 @@ part_init(PART_LCD_HD44780_Name, cpart_LCD_hd44780, "Output");
 // Combined hd44780 + IO PCF8574
 
 static part* cpart_LCD_hd44780_i2c_create(unsigned int x, unsigned int y) {
-    cpart_IO_PCF8574* pcf = (cpart_IO_PCF8574*)Window5.AddPart("IO PCF8574", x, y + 365);
+    cpart_IO_PCF8574* pcf = (cpart_IO_PCF8574*)SpareParts.AddPart("IO PCF8574", x, y + 365, SpareParts.GetScale());
 
     const unsigned char* pcf_pins = pcf->get_output_pins();
 
@@ -511,7 +509,7 @@ static part* cpart_LCD_hd44780_i2c_create(unsigned int x, unsigned int y) {
 
     // find GND
     for (int i = 0; i < 255; i++) {
-        if (!Window5.GetPinName(i).Cmp("GND")) {
+        if (!SpareParts.GetPinName(i).Cmp("GND")) {
             lcd->input_pins[2] = i;
             lcd->input_pins[3] = i;
             lcd->input_pins[4] = i;

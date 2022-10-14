@@ -26,7 +26,7 @@
 #include "part_MPU6050.h"
 #include "../picsimlab1.h"
 #include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../spareparts.h"
 
 /* inputs */
 enum { I_VS1, I_VS2, I_VS3, I_VS4, I_VS5, I_VS6 };
@@ -171,7 +171,7 @@ void cpart_MPU6050::Draw(void) {
                         if (mpu_pins[pinv] == 0)
                             canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
                         else
-                            canvas.RotatedText(Window5.GetPinName(mpu_pins[pinv]), output[i].x1, output[i].y2 - 30,
+                            canvas.RotatedText(SpareParts.GetPinName(mpu_pins[pinv]), output[i].x1, output[i].y2 - 30,
                                                90.0);
                     }
                     break;
@@ -254,7 +254,7 @@ void cpart_MPU6050::ReadPreferences(lxString value) {
 }
 
 void cpart_MPU6050::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetText("+5V");
@@ -265,7 +265,7 @@ void cpart_MPU6050::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (mpu_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(mpu_pins[0]);
+        spin = SpareParts.GetPinName(mpu_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText(itoa(mpu_pins[0]) + "  " + spin);
     }
 
@@ -273,7 +273,7 @@ void cpart_MPU6050::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (mpu_pins[1] == 0)
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(mpu_pins[1]);
+        spin = SpareParts.GetPinName(mpu_pins[1]);
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText(itoa(mpu_pins[1]) + "  " + spin);
     }
 
@@ -281,7 +281,7 @@ void cpart_MPU6050::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (mpu_pins[2] == 0)
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(mpu_pins[2]);
+        spin = SpareParts.GetPinName(mpu_pins[2]);
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText(itoa(mpu_pins[2]) + "  " + spin);
     }
 
@@ -289,7 +289,7 @@ void cpart_MPU6050::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (mpu_pins[3] == 0)
         ((CCombo*)WProp->GetChildByName("combo6"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(mpu_pins[3]);
+        spin = SpareParts.GetPinName(mpu_pins[3]);
         ((CCombo*)WProp->GetChildByName("combo6"))->SetText(itoa(mpu_pins[3]) + "  " + spin);
     }
 
@@ -297,7 +297,7 @@ void cpart_MPU6050::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (mpu_pins[4] == 0)
         ((CCombo*)WProp->GetChildByName("combo7"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(mpu_pins[4]);
+        spin = SpareParts.GetPinName(mpu_pins[4]);
         ((CCombo*)WProp->GetChildByName("combo7"))->SetText(itoa(mpu_pins[4]) + "  " + spin);
     }
 
@@ -305,16 +305,14 @@ void cpart_MPU6050::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (mpu_pins[5] == 0)
         ((CCombo*)WProp->GetChildByName("combo8"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(mpu_pins[5]);
+        spin = SpareParts.GetPinName(mpu_pins[5]);
         ((CCombo*)WProp->GetChildByName("combo8"))->SetText(itoa(mpu_pins[5]) + "  " + spin);
     }
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_MPU6050::ReadPropertiesWindow(CPWindow* WProp) {
@@ -327,7 +325,7 @@ void cpart_MPU6050::ReadPropertiesWindow(CPWindow* WProp) {
 }
 
 void cpart_MPU6050::PreProcess(void) {
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
     unsigned char addr = 0x68;
 
     if (mpu_pins[4]) {
@@ -349,16 +347,16 @@ void cpart_MPU6050::PreProcess(void) {
      */
 
     if (mpu_pins[1] > 0) {
-        Window5.Reset_pullup_bus(mpu_pins[1] - 1);
+        SpareParts.Reset_pullup_bus(mpu_pins[1] - 1);
     }
 }
 
 void cpart_MPU6050::Process(void) {
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     if ((mpu_pins[0] > 0) && (mpu_pins[1] > 0))
-        Window5.Set_pullup_bus(mpu_pins[1] - 1,
-                               mpu6050_io_I2C(&mpu, ppins[mpu_pins[0] - 1].value, ppins[mpu_pins[1] - 1].value));
+        SpareParts.Set_pullup_bus(mpu_pins[1] - 1,
+                                  mpu6050_io_I2C(&mpu, ppins[mpu_pins[0] - 1].value, ppins[mpu_pins[1] - 1].value));
 }
 
 void cpart_MPU6050::PostProcess(void) {

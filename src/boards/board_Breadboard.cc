@@ -25,9 +25,9 @@
 
 // include files
 #include "board_Breadboard.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"  //Oscilloscope
-#include "../picsimlab5.h"  //Spare Parts
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 /* ids of inputs of input map*/
 enum {
@@ -85,9 +85,9 @@ cboard_Breadboard::cboard_Breadboard(void) : font(10, lxFONTFAMILY_TELETYPE, lxF
     Proc = "PIC18F4550";  // default microcontroller if none defined in preferences
     ReadMaps();           // Read input and output board maps
 
-    lxImage image(&Window1);
-    image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("boards/Common/ic40.svg")), 0, Scale, Scale, 1);
-    micbmp = new lxBitmap(&image, &Window1);
+    lxImage image(PICSimLab.GetWindow());
+    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic40.svg")), 0, Scale, Scale, 1);
+    micbmp = new lxBitmap(&image, PICSimLab.GetWindow());
 }
 
 // Destructor called once on board destruction
@@ -111,14 +111,16 @@ void cboard_Breadboard::Reset(void) {
 #else
             if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-                Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
-                                                   itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                                   lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                                    100.0 * pic.serial[0].serialbaud) /
-                                                                                   pic.serial[0].serialexbaud)) +
-                                                   lxT("%)"));
+                PICSimLab.GetStatusBar()->SetField(
+                    2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) +
+                           lxT("(") +
+                           lxString().Format(
+                               "%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
+                                             pic.serial[0].serialexbaud)) +
+                           lxT("%)"));
             else
-                Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+                PICSimLab.GetStatusBar()->SetField(
+                    2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
             break;
         case _AVR:
             MReset(0);
@@ -129,13 +131,14 @@ void cboard_Breadboard::Reset(void) {
 #else
             if (serialfd != INVALID_HANDLE_VALUE)
 #endif
-                Window1.statusbar1.SetField(
+                PICSimLab.GetStatusBar()->SetField(
                     2,
                     lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(serialbaud) + lxT("(") +
                         lxString().Format("%4.1f", fabs((100.0 * serialexbaud - 100.0 * serialbaud) / serialexbaud)) +
                         lxT("%)"));
             else
-                Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+                PICSimLab.GetStatusBar()->SetField(
+                    2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
             break;
     }
 
@@ -146,9 +149,9 @@ void cboard_Breadboard::Reset(void) {
     }
 
     if (use_spare)
-        Window5.Reset();
+        SpareParts.Reset();
     if (use_oscope)
-        Window4.Reset();
+        Oscilloscope.Reset();
 }
 
 // Called ever 1s to refresh status
@@ -162,14 +165,16 @@ void cboard_Breadboard::RefreshStatus(void) {
 #else
             if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-                Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
-                                                   itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                                   lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                                    100.0 * pic.serial[0].serialbaud) /
-                                                                                   pic.serial[0].serialexbaud)) +
-                                                   lxT("%)"));
+                PICSimLab.GetStatusBar()->SetField(
+                    2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) +
+                           lxT("(") +
+                           lxString().Format(
+                               "%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
+                                             pic.serial[0].serialexbaud)) +
+                           lxT("%)"));
             else
-                Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+                PICSimLab.GetStatusBar()->SetField(
+                    2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
             break;
         case _AVR:
             // verify serial port state and refresh status bar
@@ -178,48 +183,49 @@ void cboard_Breadboard::RefreshStatus(void) {
 #else
             if (serialfd != INVALID_HANDLE_VALUE)
 #endif
-                Window1.statusbar1.SetField(
+                PICSimLab.GetStatusBar()->SetField(
                     2,
                     lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(serialbaud) + lxT("(") +
                         lxString().Format("%4.1f", fabs((100.0 * serialexbaud - 100.0 * serialbaud) / serialexbaud)) +
                         lxT("%)"));
             else
-                Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+                PICSimLab.GetStatusBar()->SetField(
+                    2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
 
-            if (Window1.Get_mcupwr()) {
+            if (PICSimLab.Get_mcupwr()) {
                 if (avr) {
                     switch (avr->state) {
                         case cpu_Limbo:
-                            Window1.SetCpuState(CPU_ERROR);
+                            PICSimLab.SetCpuState(CPU_ERROR);
                             break;
                         case cpu_Stopped:
-                            Window1.SetCpuState(CPU_HALTED);
+                            PICSimLab.SetCpuState(CPU_HALTED);
                             break;
                         case cpu_Running:
-                            Window1.SetCpuState(CPU_RUNNING);
+                            PICSimLab.SetCpuState(CPU_RUNNING);
                             break;
                         case cpu_Sleeping:
-                            Window1.SetCpuState(CPU_HALTED);
+                            PICSimLab.SetCpuState(CPU_HALTED);
                             break;
                         case cpu_Step:
-                            Window1.SetCpuState(CPU_STEPPING);
+                            PICSimLab.SetCpuState(CPU_STEPPING);
                             break;
                         case cpu_StepDone:
-                            Window1.SetCpuState(CPU_STEPPING);
+                            PICSimLab.SetCpuState(CPU_STEPPING);
                             break;
                         case cpu_Done:
-                            Window1.SetCpuState(CPU_HALTED);
+                            PICSimLab.SetCpuState(CPU_HALTED);
                             break;
                         case cpu_Crashed:
-                            Window1.SetCpuState(CPU_ERROR);
+                            PICSimLab.SetCpuState(CPU_ERROR);
                             break;
                     }
                     break;
                 } else {
-                    Window1.SetCpuState(CPU_ERROR);
+                    PICSimLab.SetCpuState(CPU_ERROR);
                 }
             } else {
-                Window1.SetCpuState(CPU_POWER_OFF);
+                PICSimLab.SetCpuState(CPU_POWER_OFF);
             }
     }
 }
@@ -228,9 +234,9 @@ void cboard_Breadboard::RefreshStatus(void) {
 
 void cboard_Breadboard::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
-    Window1.saveprefs(lxT("Breadboard_proc"), Proc);
-    Window1.saveprefs(lxT("Breadboard_clock"), lxString().Format("%2.1f", Window1.GetClock()));
-    Window1.saveprefs(lxT("Breadboard_jmp"), lxString().Format("%i", jmp[0]));
+    PICSimLab.saveprefs(lxT("Breadboard_proc"), Proc);
+    PICSimLab.saveprefs(lxT("Breadboard_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.saveprefs(lxT("Breadboard_jmp"), lxString().Format("%i", jmp[0]));
 }
 
 // Called whe configuration file load  preferences
@@ -241,7 +247,7 @@ void cboard_Breadboard::ReadPreferences(char* name, char* value) {
         Proc = value;
     }
     if (!strcmp(name, "Breadboard_clock")) {
-        Window1.SetClock(atof(value));
+        PICSimLab.SetClock(atof(value));
     }
     if (!strcmp(name, "Breadboard_jmp")) {
         int i;
@@ -273,27 +279,27 @@ void cboard_Breadboard::EvMouseButtonPress(uint button, uint x, uint y, uint sta
             switch (input[i].id) {
                     // if event is over I_ISCP area then load hex file
                 case I_ICSP:
-                    Window1.menu1_File_LoadHex_EvMenuActive(NULL);
+                    PICSimLab.OpenLoadHexFileDialog();
                     break;
                     // if event is over I_PWR area then toggle board on/off
                 case I_PWR:
-                    if (Window1.Get_mcupwr())  // if on turn off
+                    if (PICSimLab.Get_mcupwr())  // if on turn off
                     {
-                        Window1.Set_mcupwr(0);
+                        PICSimLab.Set_mcupwr(0);
                         Reset();
                     } else  // if off turn on
                     {
-                        Window1.Set_mcupwr(1);
+                        PICSimLab.Set_mcupwr(1);
                         Reset();
                     }
                     output_ids[O_LPWR]->update = 1;
                     break;
                     // if event is over I_RST area then turn off and reset
                 case I_RST:
-                    if (Window1.Get_mcupwr())  // if powered
+                    if (PICSimLab.Get_mcupwr())  // if powered
                     {
-                        Window1.Set_mcupwr(0);
-                        Window1.Set_mcurst(1);
+                        PICSimLab.Set_mcupwr(0);
+                        PICSimLab.Set_mcurst(1);
                     }
                     p_RST = 0;
                     output_ids[O_RST]->update = 1;
@@ -319,10 +325,10 @@ void cboard_Breadboard::EvMouseButtonRelease(uint button, uint x, uint y, uint s
             switch (input[i].id) {
                     // if event is over I_RST area then turn on
                 case I_RST:
-                    if (Window1.Get_mcurst())  // if powered
+                    if (PICSimLab.Get_mcurst())  // if powered
                     {
-                        Window1.Set_mcupwr(1);
-                        Window1.Set_mcurst(0);
+                        PICSimLab.Set_mcupwr(1);
+                        PICSimLab.Set_mcurst(0);
 
                         Reset();
                     }
@@ -360,7 +366,7 @@ void cboard_Breadboard::Draw(CDraw* draw) {
             switch (output[i].id)  // search for color of output
             {
                 case O_LPWR:  // Blue using mcupwr value
-                    draw->Canvas.SetColor(0, 0, 200 * Window1.Get_mcupwr() + 55);
+                    draw->Canvas.SetColor(0, 0, 200 * PICSimLab.Get_mcupwr() + 55);
                     draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                            output[i].y2 - output[i].y1);
                     break;
@@ -433,8 +439,8 @@ void cboard_Breadboard::Run_CPU(void) {
 
     switch (ptype) {
         case _PIC: {
-            const int JUMPSTEPS = Window1.GetJUMPSTEPS();  // number of steps skipped
-            const long int NSTEP = Window1.GetNSTEP();     // number of steps in 100ms
+            const int JUMPSTEPS = PICSimLab.GetJUMPSTEPS();  // number of steps skipped
+            const long int NSTEP = PICSimLab.GetNSTEP();     // number of steps in 100ms
             const float RNSTEP = 200.0 * pic.PINCOUNT / NSTEP;
 
             // reset mean value
@@ -443,11 +449,11 @@ void cboard_Breadboard::Run_CPU(void) {
             // read pic.pins to a local variable to speed up
             pins = MGetPinsValues();
             if (use_spare)
-                Window5.PreProcess();
+                SpareParts.PreProcess();
 
             j = JUMPSTEPS;  // step counter
             pi = 0;
-            if (Window1.Get_mcupwr())        // if powered
+            if (PICSimLab.Get_mcupwr())      // if powered
                 for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
                 {
                     if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
@@ -462,9 +468,9 @@ void cboard_Breadboard::Run_CPU(void) {
                     InstCounterInc();
 
                     if (use_oscope)
-                        Window4.SetSample();
+                        Oscilloscope.SetSample();
                     if (use_spare)
-                        Window5.Process();
+                        SpareParts.Process();
 
                     // increment mean value counter if pin is high
                     alm[pi] += pins[pi].value;
@@ -484,14 +490,14 @@ void cboard_Breadboard::Run_CPU(void) {
                 bsim_picsim::pic.pins[pi].oavalue = (int)((alm[pi] * RNSTEP) + 55);
             }
             if (use_spare)
-                Window5.PostProcess();
+                SpareParts.PostProcess();
             break;
         }
         case _AVR: {
             const int pinc = bsim_simavr::MGetPinCount();
             // const int JUMPSTEPS = Window1.GetJUMPSTEPS ()*4.0; //number of steps
             // skipped
-            const long int NSTEP = 4.0 * Window1.GetNSTEP();  // number of steps in 100ms
+            const long int NSTEP = 4.0 * PICSimLab.GetNSTEP();  // number of steps in 100ms
             const float RNSTEP = 200.0 * pinc / NSTEP;
 
             long long unsigned int cycle_start;
@@ -506,11 +512,11 @@ void cboard_Breadboard::Run_CPU(void) {
             pins = bsim_simavr::MGetPinsValues();
 
             if (use_spare)
-                Window5.PreProcess();
+                SpareParts.PreProcess();
 
             // j = JUMPSTEPS; //step counter
             pi = 0;
-            if (Window1.Get_mcupwr())        // if powered
+            if (PICSimLab.Get_mcupwr())      // if powered
                 for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
                 {
                     // verify if a breakpoint is reached if not run one instruction
@@ -530,9 +536,9 @@ void cboard_Breadboard::Run_CPU(void) {
 
                     // avr->sleep_usec=0;
                     if (use_oscope)
-                        Window4.SetSample();
+                        Oscilloscope.SetSample();
                     if (use_spare)
-                        Window5.Process();
+                        SpareParts.Process();
                     ioupdated = 0;
 
                     // increment mean value counter if pin is high
@@ -557,7 +563,7 @@ void cboard_Breadboard::Run_CPU(void) {
                 bsim_simavr::pins[pi].oavalue = (int)((alm[pi] * RNSTEP) + 55);
             }
             if (use_spare)
-                Window5.PostProcess();
+                SpareParts.PostProcess();
             break;
         }
     }
@@ -640,21 +646,21 @@ int cboard_Breadboard::MInit(const char* processor, const char* fname, float fre
             break;
     }
 
-    lxImage image(&Window1);
+    lxImage image(PICSimLab.GetWindow());
 
     if (!image.LoadFile(
-            lxGetLocalFile(Window1.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg")), 0,
+            lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg")), 0,
             Scale, Scale, 1)) {
-        image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("boards/Common/ic6.svg")), 0, Scale, Scale, 1);
+        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic6.svg")), 0, Scale, Scale, 1);
         printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
         printf("picsimlab: %s not found!\n",
-               (const char*)(Window1.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg"))
+               (const char*)(PICSimLab.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg"))
                    .c_str());
     }
 
     if (micbmp)
         delete micbmp;
-    micbmp = new lxBitmap(&image, &Window1);
+    micbmp = new lxBitmap(&image, PICSimLab.GetWindow());
 
     return ret;
 }
@@ -1040,24 +1046,24 @@ void cboard_Breadboard::SetScale(double scale) {
 
     Scale = scale;
 
-    lxImage image(&Window1);
+    lxImage image(PICSimLab.GetWindow());
 
     if (MGetPinCount()) {
         if (!image.LoadFile(
-                lxGetLocalFile(Window1.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg")),
+                lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg")),
                 0, Scale, Scale, 1)) {
-            image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("boards/Common/ic6.svg")), 0, Scale, Scale, 1);
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic6.svg")), 0, Scale, Scale, 1);
             printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
-            printf("picsimlab: %s not found!\n",
-                   (const char*)(Window1.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg"))
-                       .c_str());
+            printf("picsimlab: %s not found!\n", (const char*)(PICSimLab.GetSharePath() + lxT("boards/Common/ic") +
+                                                               itoa(MGetPinCount()) + lxT(".svg"))
+                                                     .c_str());
         }
     } else {
-        image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("boards/Common/ic40.svg")), 0, Scale, Scale, 1);
+        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic40.svg")), 0, Scale, Scale, 1);
     }
     if (micbmp)
         delete micbmp;
-    micbmp = new lxBitmap(&image, &Window1);
+    micbmp = new lxBitmap(&image, PICSimLab.GetWindow());
 }
 
 void cboard_Breadboard::EndServers(void) {

@@ -1,0 +1,8 @@
+<LXRAD_Project>
+  <Version type="String">0.8</Version>
+  <PName type="String">motor</PName>
+  <POptions type="String">-Wall -O5</POptions>
+  <PLibs type="String"> </PLibs>
+  <PIncludeFile type="String"> </PIncludeFile>
+  <PNW type="String">1</PNW>
+</LXRAD_Project>

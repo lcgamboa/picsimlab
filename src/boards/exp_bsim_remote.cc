@@ -200,7 +200,7 @@ void bsim_remote::MSetSerial(const char* port) {
              close(sockfd);
          sockfd = -1;
          connected = 0;
-         Window1.Set_mcupwr(0);
+         PICSimLab.Set_mcupwr(0);
      }
  }
 

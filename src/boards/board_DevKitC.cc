@@ -25,9 +25,9 @@
 
 // include files
 #include "board_DevKitC.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"  //Oscilloscope
-#include "../picsimlab5.h"  //Spare Parts
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 /* ids of inputs of input map*/
 enum {
@@ -255,7 +255,7 @@ cboard_DevKitC::cboard_DevKitC(void) {
 
     // label1
     label1 = new CLabel();
-    label1->SetFOwner(&Window1);
+    label1->SetFOwner(PICSimLab.GetWindow());
     label1->SetName(lxT("label1_"));
     label1->SetX(13);
     label1->SetY(54 + 20);
@@ -265,10 +265,10 @@ cboard_DevKitC::cboard_DevKitC(void) {
     label1->SetVisible(1);
     label1->SetText(lxT("Qemu CPU MIPS"));
     label1->SetAlign(1);
-    Window1.CreateChild(label1);
+    PICSimLab.GetWindow()->CreateChild(label1);
     // combo1
     combo1 = new CCombo();
-    combo1->SetFOwner(&Window1);
+    combo1->SetFOwner(PICSimLab.GetWindow());
     combo1->SetName(lxT("combo1_"));
     combo1->SetX(13);
     combo1->SetY(78 + 20);
@@ -279,11 +279,11 @@ cboard_DevKitC::cboard_DevKitC(void) {
     combo1->SetText(IcountToMipsStr(5));
     combo1->SetItems(IcountToMipsItens(buffer));
     combo1->SetTag(3);
-    combo1->EvOnComboChange = EVONCOMBOCHANGE & CPWindow1::board_Event;
-    Window1.CreateChild(combo1);
+    combo1->EvOnComboChange = PICSimLab.board_Event;
+    PICSimLab.GetWindow()->CreateChild(combo1);
     // button1
     button1 = new CButton();
-    button1->SetFOwner(&Window1);
+    button1->SetFOwner(PICSimLab.GetWindow());
     button1->SetName(lxT("button1_"));
     button1->SetX(13);
     button1->SetY(78 + 60);
@@ -293,8 +293,8 @@ cboard_DevKitC::cboard_DevKitC(void) {
     button1->SetVisible(1);
     button1->SetText("Config Qemu");
     button1->SetTag(4);
-    button1->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow1::board_ButtonEvent;
-    Window1.CreateChild(button1);
+    button1->EvMouseButtonRelease = PICSimLab.board_ButtonEvent;
+    PICSimLab.GetWindow()->CreateChild(button1);
 
     wconfig = new CPWindow();
     wconfig->SetCanDestroy(false);
@@ -306,9 +306,9 @@ cboard_DevKitC::cboard_DevKitC(void) {
 // Destructor called once on board destruction
 
 cboard_DevKitC::~cboard_DevKitC(void) {
-    Window1.DestroyChild(label1);
-    Window1.DestroyChild(combo1);
-    Window1.DestroyChild(button1);
+    PICSimLab.GetWindow()->DestroyChild(label1);
+    PICSimLab.GetWindow()->DestroyChild(combo1);
+    PICSimLab.GetWindow()->DestroyChild(button1);
     wconfig->SetCanDestroy(true);
     wconfig->WDestroy();
 }
@@ -329,10 +329,10 @@ void cboard_DevKitC::Reset(void) {
 
     MReset(1);
 
-    Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
 
     if (use_spare)
-        Window5.Reset();
+        SpareParts.Reset();
 
     RegisterRemoteControl();
 }
@@ -345,9 +345,9 @@ void cboard_DevKitC::RegisterRemoteControl(void) {
 
 void cboard_DevKitC::RefreshStatus(void) {
     if (serial_open) {
-        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
     } else {
-        Window1.statusbar1.SetField(2, lxT("Serial: Error"));
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: Error"));
     }
 }
 
@@ -355,16 +355,16 @@ void cboard_DevKitC::RefreshStatus(void) {
 
 void cboard_DevKitC::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
-    Window1.saveprefs(lxT("ESP32_DevKitC_proc"), Proc);
+    PICSimLab.saveprefs(lxT("ESP32_DevKitC_proc"), Proc);
     // write microcontroller clock to preferences
-    Window1.saveprefs(lxT("ESP32_DevKitC_clock"), lxString().Format("%2.1f", Window1.GetClock()));
+    PICSimLab.saveprefs(lxT("ESP32_DevKitC_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
     // write microcontroller icount to preferences
-    Window1.saveprefs(lxT("ESP32_DevKitC_icount"), itoa(icount));
+    PICSimLab.saveprefs(lxT("ESP32_DevKitC_icount"), itoa(icount));
 
-    Window1.saveprefs(lxT("ESP32_DevKitC_cfgewifi"), itoa(ConfEnableWifi));
-    Window1.saveprefs(lxT("ESP32_DevKitC_cfgdwdt"), itoa(ConfDisableWdt));
-    Window1.saveprefs(lxT("ESP32_DevKitC_cfguextra"), itoa(use_cmdline_extra));
-    Window1.saveprefs(lxT("ESP32_DevKitC_cmdextra"), cmdline_extra);
+    PICSimLab.saveprefs(lxT("ESP32_DevKitC_cfgewifi"), itoa(ConfEnableWifi));
+    PICSimLab.saveprefs(lxT("ESP32_DevKitC_cfgdwdt"), itoa(ConfDisableWdt));
+    PICSimLab.saveprefs(lxT("ESP32_DevKitC_cfguextra"), itoa(use_cmdline_extra));
+    PICSimLab.saveprefs(lxT("ESP32_DevKitC_cmdextra"), cmdline_extra);
 }
 
 // Called whe configuration file load  preferences
@@ -376,7 +376,7 @@ void cboard_DevKitC::ReadPreferences(char* name, char* value) {
     }
     // read microcontroller clock
     if (!strcmp(name, "ESP32_DevKitC_clock")) {
-        Window1.SetClock(atof(value));
+        PICSimLab.SetClock(atof(value));
     }
     // read microcontroller icount
     if (!strcmp(name, "ESP32_DevKitC_icount")) {
@@ -417,27 +417,27 @@ void cboard_DevKitC::EvMouseButtonPress(uint button, uint x, uint y, uint state)
             switch (input[i].id) {
                     // if event is over I_ISCP area then load hex file
                 case I_ICSP:
-                    Window1.menu1_File_LoadHex_EvMenuActive(NULL);
+                    PICSimLab.OpenLoadHexFileDialog();
                     break;
                     // if event is over I_PWR area then toggle board on/off
                 case I_PWR:
-                    if (Window1.Get_mcupwr())  // if on turn off
+                    if (PICSimLab.Get_mcupwr())  // if on turn off
                     {
-                        Window1.Set_mcupwr(0);
+                        PICSimLab.Set_mcupwr(0);
                         Reset();
                     } else  // if off turn on
                     {
-                        Window1.Set_mcupwr(1);
+                        PICSimLab.Set_mcupwr(1);
                         Reset();
                     }
                     break;
                     // if event is over I_RST area then turn off and reset
                 case I_RST:
                     /*
-                    if (Window1.Get_mcupwr () && reset (-1))//if powered
+                    if (PICSimLab.GetWindow()->Get_mcupwr () && reset (-1))//if powered
                      {
-                      Window1.Set_mcupwr (0);
-                      Window1.Set_mcurst (1);
+                      PICSimLab.Set_mcupwr (0);
+                      PICSimLab.Set_mcurst (1);
                      }
                      */
                     Reset();
@@ -462,10 +462,10 @@ void cboard_DevKitC::EvMouseButtonRelease(uint button, uint x, uint y, uint stat
             switch (input[i].id) {
                     // if event is over I_RST area then turn on
                 case I_RST:
-                    if (Window1.Get_mcurst())  // if powered
+                    if (PICSimLab.Get_mcurst())  // if powered
                     {
-                        Window1.Set_mcupwr(1);
-                        Window1.Set_mcurst(0);
+                        PICSimLab.Set_mcupwr(1);
+                        PICSimLab.Set_mcurst(0);
                         /*
                                  if (reset (-1))
                                   {
@@ -501,7 +501,7 @@ void cboard_DevKitC::Draw(CDraw* draw) {
             switch (output[i].id)  // search for color of output
             {
                 case O_LON:  // Blue using mcupwr value
-                    draw->Canvas.SetColor(200 * Window1.Get_mcupwr() + 55, 0, 0);
+                    draw->Canvas.SetColor(200 * PICSimLab.Get_mcupwr() + 55, 0, 0);
                     break;
                 case O_LED:  // Blue using mcupwr value
                     draw->Canvas.SetColor(0, 0, pins[23].oavalue);
@@ -556,14 +556,14 @@ void cboard_DevKitC::Run_CPU_ns(uint64_t time) {
 
             // Spare parts window pre process
             if (use_spare)
-                Window5.PreProcess();
+                SpareParts.PreProcess();
 
             // j = JUMPSTEPS; //step counter
             pi = 0;
         }
 
-        if (Window1.Get_mcupwr())  // if powered
-                                   // for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
+        if (PICSimLab.Get_mcupwr())  // if powered
+                                     // for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
             /*
             if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
@@ -575,10 +575,10 @@ void cboard_DevKitC::Run_CPU_ns(uint64_t time) {
             InstCounterInc();
             // Oscilloscope window process
             if (use_oscope)
-                Window4.SetSample();
+                Oscilloscope.SetSample();
             // Spare parts window process
             if (use_spare)
-                Window5.Process();
+                SpareParts.Process();
 
             //  increment mean value counter if pin is high
             alm[pi] += pins[pi].value;
@@ -604,7 +604,7 @@ void cboard_DevKitC::Run_CPU_ns(uint64_t time) {
             }
             // Spare parts window pre post process
             if (use_spare)
-                Window5.PostProcess();
+                SpareParts.PostProcess();
         }
     }
 }
@@ -641,7 +641,7 @@ void cboard_DevKitC::Run_CPU(void) {
 
 void cboard_DevKitC::board_Event(CControl* control) {
     icount = MipsStrToIcount(combo1->GetText().c_str());
-    Window1.EndSimulation();
+    PICSimLab.EndSimulation();
 }
 
 void cboard_DevKitC::BoardOptions(int* argc, char** argv) {
@@ -658,7 +658,7 @@ void cboard_DevKitC::BoardOptions(int* argc, char** argv) {
 void cboard_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x, uint y, uint state) {
     switch (control->GetTag()) {
         case 4: {
-            lxString fname = Window1.GetSharePath() + "boards/" BOARD_DevKitC_Name + "/config.lxrad";
+            lxString fname = PICSimLab.GetSharePath() + "boards/" BOARD_DevKitC_Name + "/config.lxrad";
 
             if (lxFileExists(fname)) {
                 wconfig->DestroyChilds();
@@ -727,20 +727,18 @@ void cboard_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x, u
                     ((CCheckBox*)wconfig->GetChildByName("checkbox2"))->SetCheck(ConfDisableWdt);
                     ((CCheckBox*)wconfig->GetChildByName("checkbox3"))->SetCheck(use_cmdline_extra);
 
-                    ((CButton*)wconfig->GetChildByName("button1"))->EvMouseButtonRelease =
-                        EVMOUSEBUTTONRELEASE & CPWindow1::board_ButtonEvent;
+                    ((CButton*)wconfig->GetChildByName("button1"))->EvMouseButtonRelease = PICSimLab.board_ButtonEvent;
 
-                    ((CButton*)wconfig->GetChildByName("button2"))->EvMouseButtonRelease =
-                        EVMOUSEBUTTONRELEASE & CPWindow1::board_ButtonEvent;
+                    ((CButton*)wconfig->GetChildByName("button2"))->EvMouseButtonRelease = PICSimLab.board_ButtonEvent;
 
-                    wconfig->SetX(Window1.GetX() + 50);
-                    wconfig->SetY(Window1.GetY() + 50);
+                    wconfig->SetX(PICSimLab.GetWindow()->GetX() + 50);
+                    wconfig->SetY(PICSimLab.GetWindow()->GetY() + 50);
 
                     wconfig->Draw();
                     wconfig->ShowExclusive();
                 }
             } else {
-                Window1.RegisterError("File " + fname + " not found!");
+                PICSimLab.RegisterError("File " + fname + " not found!");
             }
         } break;
         case 5: {
@@ -754,7 +752,7 @@ void cboard_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x, u
                 cmdline_extra += " ";
             }
             wconfig->HideExclusive();
-            Window1.EndSimulation();
+            PICSimLab.EndSimulation();
         } break;
         case 6:
             wconfig->HideExclusive();

@@ -27,7 +27,7 @@
 #include "exp_board_RemoteTCP.h"
 #include "../picsimlab1.h"
 #include "../picsimlab4.h"  //Oscilloscope
-#include "../picsimlab5.h"  //Spare Parts
+#include "../spareparts.h"  //Spare Parts
 
 #ifndef _WIN_
 #include <netinet/in.h>
@@ -119,7 +119,7 @@ cboard_RemoteTCP::cboard_RemoteTCP(void) : font(10, lxFONTFAMILY_TELETYPE, lxFON
     Proc = "Ripes";  // default microcontroller if none defined in preferences
     ReadMaps();      // Read input and output board maps
     lxImage image(&Window1);
-    image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("boards/Common/ic48.svg")), 0, Scale, Scale, 1);
+    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic48.svg")), 0, Scale, Scale, 1);
     micbmp = new lxBitmap(&image, &Window1);
 }
 
@@ -135,10 +135,10 @@ cboard_RemoteTCP::~cboard_RemoteTCP(void) {
 void cboard_RemoteTCP::Reset(void) {
     MReset(1);
 
-    Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
 
     if (use_spare)
-        Window5.Reset();
+        SpareParts.Reset();
 
     RegisterRemoteControl();
 }
@@ -151,12 +151,12 @@ int cboard_RemoteTCP::MInit(const char* processor, const char* fname, float freq
     lxImage image(&Window1);
 
     if (!image.LoadFile(
-            lxGetLocalFile(Window1.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg")), 0,
+            lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg")), 0,
             Scale, Scale, 1)) {
-        image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("boards/Common/ic6.svg")), 0, Scale, Scale, 1);
+        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic6.svg")), 0, Scale, Scale, 1);
         printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
         printf("picsimlab: %s not found!\n",
-               (const char*)(Window1.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg"))
+               (const char*)(PICSimLab.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg"))
                    .c_str());
     }
 
@@ -164,7 +164,7 @@ int cboard_RemoteTCP::MInit(const char* processor, const char* fname, float freq
         delete micbmp;
     micbmp = new lxBitmap(&image, &Window1);
 
-    Window1.Set_mcupwr(0);
+    PICSimLab.Set_mcupwr(0);
 
     return ret;
 }
@@ -175,16 +175,16 @@ void cboard_RemoteTCP::RegisterRemoteControl(void) {}
 
 void cboard_RemoteTCP::RefreshStatus(void) {
     output_ids[O_LPWR]->update = 1;
-    Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
 }
 
 // Called to save board preferences in configuration file
 
 void cboard_RemoteTCP::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
-    Window1.saveprefs(lxT("RemoteTCP_proc"), Proc);
+    PICSimLab.saveprefs(lxT("RemoteTCP_proc"), Proc);
     // write microcontroller clock to preferences
-    Window1.saveprefs(lxT("RemoteTCP_clock"), lxString().Format("%2.1f", Window1.GetClock()));
+    PICSimLab.saveprefs(lxT("RemoteTCP_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
 }
 
 // Called whe configuration file load  preferences
@@ -196,7 +196,7 @@ void cboard_RemoteTCP::ReadPreferences(char* name, char* value) {
     }
     // read microcontroller clock
     if (!strcmp(name, "RemoteTCP_clock")) {
-        Window1.SetClock(atof(value));
+        PICSimLab.SetClock(atof(value));
     }
 }
 
@@ -219,19 +219,20 @@ void cboard_RemoteTCP::EvMouseButtonPress(uint button, uint x, uint y, uint stat
             switch (input[i].id) {
                     // if event is over I_ISCP area then load hex file
                 case I_ICSP:
-                    Window1.menu1_File_LoadHex_EvMenuActive(NULL);
+                    PICSimLab.OpenLoadHexFileDialog();
+                    ;
                     break;
                     // if event is over I_PWR area then toggle board on/off
                     /*
                     case I_PWR:
                      if (Window1.Get_mcupwr ()) //if on turn off
                       {
-                       Window1.Set_mcupwr (0);
+                       PICSimLab.Set_mcupwr (0);
                        Reset ();
                       }
                      else //if off turn on
                       {
-                       Window1.Set_mcupwr (1);
+                       PICSimLab.Set_mcupwr (1);
                        Reset ();
                       }
                      output_ids[O_LPWR]->update = 1;
@@ -242,8 +243,8 @@ void cboard_RemoteTCP::EvMouseButtonPress(uint button, uint x, uint y, uint stat
                     /*
                     if (Window1.Get_mcupwr () && reset (-1))//if powered
                      {
-                      Window1.Set_mcupwr (0);
-                      Window1.Set_mcurst (1);
+                      PICSimLab.Set_mcupwr (0);
+                      PICSimLab.Set_mcurst (1);
                      }
                      */
                     MReset(-1);
@@ -266,10 +267,10 @@ void cboard_RemoteTCP::EvMouseButtonRelease(uint button, uint x, uint y, uint st
             switch (input[i].id) {
                     // if event is over I_RST area then turn on
                 case I_RST:
-                    if (Window1.Get_mcurst())  // if powered
+                    if (PICSimLab.Get_mcurst())  // if powered
                     {
-                        Window1.Set_mcupwr(1);
-                        Window1.Set_mcurst(0);
+                        PICSimLab.Set_mcupwr(1);
+                        PICSimLab.Set_mcurst(0);
                         /*
                                  if (reset (-1))
                                   {
@@ -311,7 +312,7 @@ void cboard_RemoteTCP::Draw(CDraw* draw) {
             switch (output[i].id)  // search for color of output
             {
                 case O_LPWR:  // Blue using mcupwr value
-                    draw->Canvas.SetColor(0, 0, 200 * Window1.Get_mcupwr() + 55);
+                    draw->Canvas.SetColor(0, 0, 200 * PICSimLab.Get_mcupwr() + 55);
                     draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                            output[i].y2 - output[i].y1);
                     break;
@@ -361,7 +362,7 @@ void cboard_RemoteTCP::Run_CPU(void) {
     const int pinc = MGetPinCount();
 
     // const int JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
-    const long int NSTEP = 4.0 * Window1.GetNSTEP();  // number of steps in 100ms
+    const long int NSTEP = 4.0 * PICSimLab.GetNSTEP();  // number of steps in 100ms
     const float RNSTEP = 200.0 * pinc / NSTEP;
 
     // reset pins mean value
@@ -370,7 +371,7 @@ void cboard_RemoteTCP::Run_CPU(void) {
     if (!TestConnection())
         return;
 
-    Window1.Set_mcupwr(1);
+    PICSimLab.Set_mcupwr(1);
 
     // Spare parts window pre process
     if (use_spare)
@@ -385,7 +386,7 @@ void cboard_RemoteTCP::Run_CPU(void) {
 
     // j = JUMPSTEPS; //step counter
     pi = 0;
-    if (Window1.Get_mcupwr())        // if powered
+    if (PICSimLab.Get_mcupwr())      // if powered
         for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
             /*
@@ -422,7 +423,7 @@ void cboard_RemoteTCP::Run_CPU(void) {
             InstCounterInc();
             // Oscilloscope window process
             if (use_oscope)
-                Window4.SetSample();
+                Oscilloscope.SetSample();
             // Spare parts window process
             if (use_spare)
                 Window5.Process();

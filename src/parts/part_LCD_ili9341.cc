@@ -26,7 +26,7 @@
 #include "part_LCD_ili9341.h"
 #include "../picsimlab1.h"
 #include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum {
@@ -182,7 +182,7 @@ void cpart_LCD_ili9341::Draw(void) {
                     if (input_pins[output[i].id - O_P1] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
                     else
-                        canvas.RotatedText(Window5.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
+                        canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
                                            output[i].y2, 90.0);
                     break;
                 case O_T1:
@@ -197,7 +197,7 @@ void cpart_LCD_ili9341::Draw(void) {
                     if (touch_pins[output[i].id - O_T1] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
                     else
-                        canvas.RotatedText(Window5.GetPinName(touch_pins[output[i].id - O_T1]), output[i].x1,
+                        canvas.RotatedText(SpareParts.GetPinName(touch_pins[output[i].id - O_T1]), output[i].x1,
                                            output[i].y2, 90.0);
                     break;
                 case O_F2:
@@ -323,7 +323,7 @@ void cpart_LCD_ili9341::ReadPreferences(lxString value) {
 }
 
 void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
     lxString name;
 
@@ -331,7 +331,7 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[0]);
+        spin = SpareParts.GetPinName(input_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(input_pins[0]) + "  " + spin);
     }
 
@@ -339,7 +339,7 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[1] == 0)
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[1]);
+        spin = SpareParts.GetPinName(input_pins[1]);
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(input_pins[1]) + "  " + spin);
     }
 
@@ -347,7 +347,7 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[2] == 0)
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[2]);
+        spin = SpareParts.GetPinName(input_pins[2]);
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText(itoa(input_pins[2]) + "  " + spin);
     }
 
@@ -355,7 +355,7 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[3] == 0)
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[3]);
+        spin = SpareParts.GetPinName(input_pins[3]);
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText(itoa(input_pins[3]) + "  " + spin);
     }
 
@@ -363,7 +363,7 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[4] == 0)
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[4]);
+        spin = SpareParts.GetPinName(input_pins[4]);
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText(itoa(input_pins[4]) + "  " + spin);
     }
 
@@ -463,7 +463,7 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
                 if (input_pins[5 + i] == 0)
                     ((CCombo*)WProp->GetChildByName(name))->SetText("0  NC");
                 else {
-                    spin = Window5.GetPinName(input_pins[5 + i]);
+                    spin = SpareParts.GetPinName(input_pins[5 + i]);
                     ((CCombo*)WProp->GetChildByName(name))->SetText(itoa(input_pins[5 + i]) + "  " + spin);
                 }
             }
@@ -518,7 +518,7 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
                 if (touch_pins[i] == 0)
                     ((CCombo*)WProp->GetChildByName(name))->SetText("0  NC");
                 else {
-                    spin = Window5.GetPinName(touch_pins[i]);
+                    spin = SpareParts.GetPinName(touch_pins[i]);
                     ((CCombo*)WProp->GetChildByName(name))->SetText(itoa(touch_pins[i]) + "  " + spin);
                 }
             }
@@ -575,7 +575,7 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
                 if (input_pins[5 + i] == 0)
                     ((CCombo*)WProp->GetChildByName(name))->SetText("0  NC");
                 else {
-                    spin = Window5.GetPinName(input_pins[5 + i]);
+                    spin = SpareParts.GetPinName(input_pins[5 + i]);
                     ((CCombo*)WProp->GetChildByName(name))->SetText(itoa(input_pins[5 + i]) + "  " + spin);
                 }
             }
@@ -586,21 +586,19 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
                 if (touch_pins[i] == 0)
                     ((CCombo*)WProp->GetChildByName(name))->SetText("0  NC");
                 else {
-                    spin = Window5.GetPinName(touch_pins[i]);
+                    spin = SpareParts.GetPinName(touch_pins[i]);
                     ((CCombo*)WProp->GetChildByName(name))->SetText(itoa(touch_pins[i]) + "  " + spin);
                 }
             }
             break;
     }
 
-    ((CCombo*)WProp->GetChildByName("combo6"))->EvOnComboChange = EVONCOMBOCHANGE & CPWindow5::PropComboChange;
+    ((CCombo*)WProp->GetChildByName("combo6"))->EvOnComboChange = SpareParts.PropComboChange;
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_LCD_ili9341::ReadPropertiesWindow(CPWindow* WProp) {
@@ -631,7 +629,7 @@ void cpart_LCD_ili9341::ReadPropertiesWindow(CPWindow* WProp) {
 }
 
 void cpart_LCD_ili9341::PreProcess(void) {
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     valid_lcd_pins = 0;
     valid_touch_pins = 0;
@@ -698,14 +696,14 @@ void cpart_LCD_ili9341::Process(void) {
             if (valid_lcd_pins) {
                 ret = lcd_ili9341_8_io(&lcd, pins_value);
                 if ((ret != lret) && (ret & 0x0100)) {
-                    Window5.SetPin(input_pins[5], (ret & 0x01));
-                    Window5.SetPin(input_pins[6], (ret & 0x02) >> 1);
-                    Window5.SetPin(input_pins[7], (ret & 0x04) >> 2);
-                    Window5.SetPin(input_pins[8], (ret & 0x08) >> 3);
-                    Window5.SetPin(input_pins[9], (ret & 0x10) >> 4);
-                    Window5.SetPin(input_pins[10], (ret & 0x20) >> 5);
-                    Window5.SetPin(input_pins[11], (ret & 0x40) >> 6);
-                    Window5.SetPin(input_pins[12], (ret & 0x80) >> 7);
+                    SpareParts.SetPin(input_pins[5], (ret & 0x01));
+                    SpareParts.SetPin(input_pins[6], (ret & 0x02) >> 1);
+                    SpareParts.SetPin(input_pins[7], (ret & 0x04) >> 2);
+                    SpareParts.SetPin(input_pins[8], (ret & 0x08) >> 3);
+                    SpareParts.SetPin(input_pins[9], (ret & 0x10) >> 4);
+                    SpareParts.SetPin(input_pins[10], (ret & 0x20) >> 5);
+                    SpareParts.SetPin(input_pins[11], (ret & 0x40) >> 6);
+                    SpareParts.SetPin(input_pins[12], (ret & 0x80) >> 7);
                     lret = ret;
                 }
             }
@@ -717,13 +715,13 @@ void cpart_LCD_ili9341::Process(void) {
         ret = tsc_XPT2046_SPI_io(&touch, tpins_value);
 
         if (ret != tret) {
-            Window5.SetPin(touch_pins[3], (ret & 0x01));
+            SpareParts.SetPin(touch_pins[3], (ret & 0x01));
             tret = ret;
         }
         if (tpins_int_value) {
             const unsigned char value = (ret & 0x02) >> 1;
             if (*tpins_int_value != value) {
-                Window5.SetPin(touch_pins[4], value);
+                SpareParts.SetPin(touch_pins[4], value);
             }
         }
     }

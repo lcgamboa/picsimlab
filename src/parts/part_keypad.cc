@@ -26,7 +26,7 @@
 #include "part_keypad.h"
 #include "../picsimlab1.h"
 #include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum {
@@ -245,7 +245,7 @@ void cpart_keypad::Draw(void) {
                     if (output_pins[id] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
                     else
-                        canvas.RotatedText(Window5.GetPinName(output_pins[id]), output[i].x1, output[i].y2, 90.0);
+                        canvas.RotatedText(SpareParts.GetPinName(output_pins[id]), output[i].x1, output[i].y2, 90.0);
                 } break;
                 case O_K1 ... O_KD:
                     if (output[i].value) {
@@ -275,19 +275,19 @@ void cpart_keypad::Draw(void) {
 
 void cpart_keypad::Process(void) {
     if (refresh > 10) {
-        const picpin* ppins = Window5.GetPinsValues();
+        const picpin* ppins = SpareParts.GetPinsValues();
         refresh = 0;
 
         for (int i = 0; i < 8; i++)
-            Window5.SetPin(output_pins[i], !pull);
+            SpareParts.SetPin(output_pins[i], !pull);
 
         switch (type) {
             case KT4x4:
                 for (int c = 0; c < 4; c++) {
                     for (int l = 0; l < 4; l++) {
                         if (keys[l][c]) {
-                            Window5.SetPin(output_pins[l], ppins[output_pins[4 + c] - 1].value);
-                            Window5.SetPin(output_pins[4 + c], ppins[output_pins[l] - 1].value);
+                            SpareParts.SetPin(output_pins[l], ppins[output_pins[4 + c] - 1].value);
+                            SpareParts.SetPin(output_pins[4 + c], ppins[output_pins[l] - 1].value);
                         }
                     }
                 }
@@ -296,8 +296,8 @@ void cpart_keypad::Process(void) {
                 for (int c = 0; c < 3; c++) {
                     for (int l = 0; l < 4; l++) {
                         if (keys[l][c]) {
-                            Window5.SetPin(output_pins[l], ppins[output_pins[4 + c] - 1].value);
-                            Window5.SetPin(output_pins[4 + c], ppins[output_pins[l] - 1].value);
+                            SpareParts.SetPin(output_pins[l], ppins[output_pins[4 + c] - 1].value);
+                            SpareParts.SetPin(output_pins[4 + c], ppins[output_pins[l] - 1].value);
                         }
                     }
                 }
@@ -306,8 +306,8 @@ void cpart_keypad::Process(void) {
                 for (int c = 0; c < 5; c++) {
                     for (int l = 0; l < 2; l++) {
                         if (keys2[l][c]) {
-                            Window5.SetPin(output_pins[l], ppins[output_pins[2 + c] - 1].value);
-                            Window5.SetPin(output_pins[2 + c], ppins[output_pins[l] - 1].value);
+                            SpareParts.SetPin(output_pins[l], ppins[output_pins[2 + c] - 1].value);
+                            SpareParts.SetPin(output_pins[2 + c], ppins[output_pins[l] - 1].value);
                         }
                     }
                 }
@@ -641,14 +641,14 @@ void cpart_keypad::ReadPreferences(lxString value) {
 }
 
 void cpart_keypad::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (output_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[0]);
+        spin = SpareParts.GetPinName(output_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(output_pins[0]) + "  " + spin);
     }
 
@@ -656,7 +656,7 @@ void cpart_keypad::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[1] == 0)
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[1]);
+        spin = SpareParts.GetPinName(output_pins[1]);
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(output_pins[1]) + "  " + spin);
     }
 
@@ -664,7 +664,7 @@ void cpart_keypad::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[2] == 0)
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[2]);
+        spin = SpareParts.GetPinName(output_pins[2]);
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText(itoa(output_pins[2]) + "  " + spin);
     }
 
@@ -672,7 +672,7 @@ void cpart_keypad::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[3] == 0)
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[3]);
+        spin = SpareParts.GetPinName(output_pins[3]);
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText(itoa(output_pins[3]) + "  " + spin);
     }
 
@@ -680,7 +680,7 @@ void cpart_keypad::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[4] == 0)
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[4]);
+        spin = SpareParts.GetPinName(output_pins[4]);
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText(itoa(output_pins[4]) + "  " + spin);
     }
 
@@ -688,7 +688,7 @@ void cpart_keypad::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[5] == 0)
         ((CCombo*)WProp->GetChildByName("combo6"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[5]);
+        spin = SpareParts.GetPinName(output_pins[5]);
         ((CCombo*)WProp->GetChildByName("combo6"))->SetText(itoa(output_pins[5]) + "  " + spin);
     }
 
@@ -696,7 +696,7 @@ void cpart_keypad::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[6] == 0)
         ((CCombo*)WProp->GetChildByName("combo7"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[6]);
+        spin = SpareParts.GetPinName(output_pins[6]);
         ((CCombo*)WProp->GetChildByName("combo7"))->SetText(itoa(output_pins[6]) + "  " + spin);
     }
 
@@ -704,7 +704,7 @@ void cpart_keypad::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[7] == 0)
         ((CCombo*)WProp->GetChildByName("combo8"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[7]);
+        spin = SpareParts.GetPinName(output_pins[7]);
         ((CCombo*)WProp->GetChildByName("combo8"))->SetText(itoa(output_pins[7]) + "  " + spin);
     }
 
@@ -752,14 +752,12 @@ void cpart_keypad::ConfigurePropertiesWindow(CPWindow* WProp) {
             break;
     }
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 
-    ((CCombo*)WProp->GetChildByName("combo10"))->EvOnComboChange = EVONCOMBOCHANGE & CPWindow5::PropComboChange;
+    ((CCombo*)WProp->GetChildByName("combo10"))->EvOnComboChange = SpareParts.PropComboChange;
 }
 
 void cpart_keypad::ReadPropertiesWindow(CPWindow* WProp) {

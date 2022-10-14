@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "part_LED_WS2812B.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum { O_P1, O_P2, O_F1, O_F2, O_LED };
@@ -51,11 +51,11 @@ cpart_led_ws2812b::cpart_led_ws2812b(unsigned x, unsigned y)
 
     input_pins[0] = 0;
 
-    output_pins[0] = Window5.RegisterIOpin(lxT("DOUT"));
+    output_pins[0] = SpareParts.RegisterIOpin(lxT("DOUT"));
 }
 
 cpart_led_ws2812b::~cpart_led_ws2812b(void) {
-    Window5.UnregisterIOpin(output_pins[0]);
+    SpareParts.UnregisterIOpin(output_pins[0]);
     delete Bitmap;
     canvas.Destroy();
     led_ws2812b_end(&led);
@@ -86,23 +86,23 @@ void cpart_led_ws2812b::LoadImage(void) {
             printf("PICSimLab: Erro open file %s\n", (const char*)ifname.c_str());
         }
 
-        lxImage image(&Window5);
+        lxImage image(SpareParts.GetWindow());
 
         image.LoadFile(lxGetLocalFile(ifname), Orientation, Scale, Scale);
-        Bitmap = new lxBitmap(&image, &Window5);
+        Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
         image.Destroy();
 
         canvas.Destroy();
-        canvas.Create(Window5.GetWWidget(), Bitmap);
+        canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
 
-        image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("parts/") + GetPictureFileName()), Orientation,
+        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + GetPictureFileName()), Orientation,
                        Scale, Scale);
-        lxBitmap* BackBitmap = new lxBitmap(&image, &Window5);
+        lxBitmap* BackBitmap = new lxBitmap(&image, SpareParts.GetWindow());
         image.Destroy();
 
-        image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("parts/") + GetName() + lxT("/LED.svg")),
+        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + GetName() + lxT("/LED.svg")),
                        Orientation, Scale * 1.3, Scale * 1.3);
-        lxBitmap* LEDBitmap = new lxBitmap(&image, &Window5);
+        lxBitmap* LEDBitmap = new lxBitmap(&image, SpareParts.GetWindow());
         image.Destroy();
 
         canvas.Init(Scale, Scale, Orientation);
@@ -159,7 +159,7 @@ void cpart_led_ws2812b::Draw(void) {
                     if (input_pins[output[i].id - O_P1] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y2 + yoff, 90.0);
                     else
-                        canvas.RotatedText(Window5.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
+                        canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
                                            output[i].y2 + yoff, 90.0);
                     break;
                 case O_P2:
@@ -242,8 +242,8 @@ void cpart_led_ws2812b::ReadPreferences(lxString value) {
     unsigned char diffuser;
     sscanf(value.c_str(), "%hhu,%hhu,%u,%u,%hhu", &input_pins[0], &outp, &rows, &cols, &diffuser);
 
-    Window5.UnregisterIOpin(output_pins[0]);
-    output_pins[0] = Window5.RegisterIOpin(lxT("DOUT"), outp);
+    SpareParts.UnregisterIOpin(output_pins[0]);
+    output_pins[0] = SpareParts.RegisterIOpin(lxT("DOUT"), outp);
 
     ChangeType(rows, cols, diffuser);
 
@@ -276,14 +276,14 @@ void cpart_led_ws2812b::RegisterRemoteControl(void) {
 }
 
 void cpart_led_ws2812b::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (input_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[0]);
+        spin = SpareParts.GetPinName(input_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(input_pins[0]) + "  " + spin);
     }
 
@@ -301,12 +301,10 @@ void cpart_led_ws2812b::ConfigurePropertiesWindow(CPWindow* WProp) {
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText("Off");
     }
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_led_ws2812b::ReadPropertiesWindow(CPWindow* WProp) {
@@ -330,18 +328,18 @@ void cpart_led_ws2812b::ReadPropertiesWindow(CPWindow* WProp) {
 }
 
 void cpart_led_ws2812b::PreProcess(void) {
-    led_ws2812b_prepare(&led, Window1.GetBoard()->MGetInstClockFreq());
+    led_ws2812b_prepare(&led, PICSimLab.GetBoard()->MGetInstClockFreq());
 }
 
 void cpart_led_ws2812b::Process(void) {
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     if (input_pins[0] > 0) {
         unsigned char out;
         out = led_ws2812b_io(&led, ppins[input_pins[0] - 1].value);
 
         if (out != ppins[output_pins[0] - 1].value) {
-            Window5.WritePin(output_pins[0], out);
+            SpareParts.WritePin(output_pins[0], out);
         }
     }
 }

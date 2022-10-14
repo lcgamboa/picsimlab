@@ -24,8 +24,8 @@
    ######################################################################## */
 
 #include "part.h"
-#include "../picsimlab1.h"
-#include "../picsimlab5.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 part::part() {
     aways_update = 0;
@@ -39,8 +39,8 @@ part::part() {
 void part::ReadMaps(void) {
     inputc = 0;
     outputc = 0;
-    ReadInputMap(lxGetLocalFile(Window1.GetSharePath() + lxT("parts/") + GetMapFile()));
-    ReadOutputMap(lxGetLocalFile(Window1.GetSharePath() + lxT("parts/") + GetMapFile()));
+    ReadInputMap(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + GetMapFile()));
+    ReadOutputMap(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + GetMapFile()));
 
     for (int i = 0; i < inputc; i++) {
         input_ids[get_in_id(input[i].name)] = &input[i];
@@ -295,15 +295,15 @@ int part::PointInside(int x, int y, input_t input) {
 }
 
 void part::LoadImage(void) {
-    lxImage image(&Window5);
+    lxImage image(SpareParts.GetWindow());
 
-    image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("parts/") + GetPictureFileName()), Orientation, Scale,
+    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + GetPictureFileName()), Orientation, Scale,
                    Scale);
 
-    Bitmap = new lxBitmap(&image, &Window5);
+    Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
     image.Destroy();
     canvas.Destroy();
-    canvas.Create(Window5.GetWWidget(), Bitmap);
+    canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
 }
 
 int part::GetOrientation(void) {

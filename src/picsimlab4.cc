@@ -26,8 +26,9 @@
 // Oscilloscope
 
 #include "picsimlab4.h"
-#include "picsimlab1.h"
-#include "picsimlab5.h"
+#include "oscilloscope.h"
+#include "picsimlab.h"
+#include "spareparts.h"
 
 #include "picsimlab4_d.cc"
 
@@ -80,8 +81,10 @@ void CPWindow4::DrawScreen(void) {
 
         draw1.Canvas.SetLineWidth(2);
         for (int t = 0; t < (NPOINTS / 2) - 1; t++) {
-            draw1.Canvas.Line((t * xz + xz) - ((NPOINTS * (xz - 1.0)) / 4.0), gain[0] * ch[0][t] + nivel[0],
-                              ((t + 1) * xz + xz) - ((NPOINTS * (xz - 1.0)) / 4.0), gain[0] * ch[0][t + 1] + nivel[0]);
+            draw1.Canvas.Line((t * xz + xz) - ((NPOINTS * (xz - 1.0)) / 4.0),
+                              gain[0] * Oscilloscope.GetChannel(0)[t] + nivel[0],
+                              ((t + 1) * xz + xz) - ((NPOINTS * (xz - 1.0)) / 4.0),
+                              gain[0] * Oscilloscope.GetChannel(0)[t + 1] + nivel[0]);
         }
     }
     draw1.Canvas.SetLineWidth(1);
@@ -104,21 +107,24 @@ void CPWindow4::DrawScreen(void) {
 
         draw1.Canvas.SetLineWidth(2);
         for (int t = 0; t < (NPOINTS / 2) - 1; t++) {
-            draw1.Canvas.Line((t * xz + xz) - ((NPOINTS * (xz - 1.0)) / 4.0), gain[1] * ch[1][t] + nivel[1],
-                              ((t + 1) * xz + xz) - ((NPOINTS * (xz - 1.0)) / 4.0), gain[1] * ch[1][t + 1] + nivel[1]);
+            draw1.Canvas.Line((t * xz + xz) - ((NPOINTS * (xz - 1.0)) / 4.0),
+                              gain[1] * Oscilloscope.GetChannel(1)[t] + nivel[1],
+                              ((t + 1) * xz + xz) - ((NPOINTS * (xz - 1.0)) / 4.0),
+                              gain[1] * Oscilloscope.GetChannel(1)[t + 1] + nivel[1]);
         }
     }
     draw1.Canvas.SetLineWidth(1);
 
     // draw trigger level
-    if (usetrigger) {
+    if (Oscilloscope.GetUseTrigger()) {
         if (combo1.GetText().compare(lxT("1")) == 0)
-            tch = 0;
+            Oscilloscope.SetTriggerChannel(0);
         else
-            tch = 1;
+            Oscilloscope.SetTriggerChannel(1);
 
         draw1.Canvas.SetFgColor(255, 255, 0);
-        nivel[2] = (gain[tch] * -spind7.GetValue()) + nivel[tch];
+        nivel[2] =
+            (gain[Oscilloscope.GetTriggerChannel()] * -spind7.GetValue()) + nivel[Oscilloscope.GetTriggerChannel()];
         pts[0].x = 0;
         pts[0].y = nivel[2] - 3;
         pts[1].x = 3;
@@ -131,7 +137,7 @@ void CPWindow4::DrawScreen(void) {
     // draw toffset level
 
     draw1.Canvas.SetFgColor(255, 255, 0);
-    nivel[2] = ((WMAX - toffset) * xz + xz) - ((NPOINTS * (xz - 1.0)) / 4.0);
+    nivel[2] = ((WMAX - Oscilloscope.GetTimeOffset()) * xz + xz) - ((NPOINTS * (xz - 1.0)) / 4.0);
     pts[0].y = 1;
     pts[0].x = nivel[2] - 3;
     pts[1].y = 1 + 3;
@@ -189,51 +195,53 @@ void CPWindow4::DrawScreen(void) {
         draw1.Canvas.SetBgColor(0, 0, 0);
         draw1.Canvas.Rectangle(1, x, y, 77, 55);
 
-        switch (measures[i]) {
+        switch (Oscilloscope.GetMeasures(i)) {
             case 1:
                 text = "Vmax";
-                text1.Printf("%7.3f V", ch_status[0].Vmax);
-                text2.Printf("%7.3f V", ch_status[1].Vmax);
+                text1.Printf("%7.3f V", Oscilloscope.GetChannelStatus(0).Vmax);
+                text2.Printf("%7.3f V", Oscilloscope.GetChannelStatus(1).Vmax);
                 break;
             case 2:
                 text = "Vmin";
-                text1.Printf("%7.3f V", ch_status[0].Vmin);
-                text2.Printf("%7.3f V", ch_status[1].Vmin);
+                text1.Printf("%7.3f V", Oscilloscope.GetChannelStatus(0).Vmin);
+                text2.Printf("%7.3f V", Oscilloscope.GetChannelStatus(1).Vmin);
                 break;
             case 3:
                 text = "Vavg";
-                text1.Printf("%7.3f V", ch_status[0].Vavr);
-                text2.Printf("%7.3f V", ch_status[1].Vavr);
+                text1.Printf("%7.3f V", Oscilloscope.GetChannelStatus(0).Vavr);
+                text2.Printf("%7.3f V", Oscilloscope.GetChannelStatus(1).Vavr);
                 break;
             case 4:
                 text = "Vrms";
-                text1.Printf("%7.3f V", ch_status[0].Vrms);
-                text2.Printf("%7.3f V", ch_status[1].Vrms);
+                text1.Printf("%7.3f V", Oscilloscope.GetChannelStatus(0).Vrms);
+                text2.Printf("%7.3f V", Oscilloscope.GetChannelStatus(1).Vrms);
                 break;
             case 5:
                 text = "Frequency";
-                text1.Printf("%7.0f Hz", ch_status[0].Freq);
-                text2.Printf("%7.0f Hz", ch_status[1].Freq);
+                text1.Printf("%7.0f Hz", Oscilloscope.GetChannelStatus(0).Freq);
+                text2.Printf("%7.0f Hz", Oscilloscope.GetChannelStatus(1).Freq);
                 break;
             case 6:
                 text = "Duty cycle";
-                text1.Printf("%7.0f %%", ch_status[0].Duty);
-                text2.Printf("%7.0f %%", ch_status[1].Duty);
+                text1.Printf("%7.0f %%", Oscilloscope.GetChannelStatus(0).Duty);
+                text2.Printf("%7.0f %%", Oscilloscope.GetChannelStatus(1).Duty);
                 break;
             case 7:
                 text = "Pos. cycle";
-                text1.Printf("%7.3f ms", ch_status[0].PCycle_ms);
-                text2.Printf("%7.3f ms", ch_status[1].PCycle_ms);
+                text1.Printf("%7.3f ms", Oscilloscope.GetChannelStatus(0).PCycle_ms);
+                text2.Printf("%7.3f ms", Oscilloscope.GetChannelStatus(1).PCycle_ms);
                 break;
             case 8:
                 text = "Neg. cycle";
-                text1.Printf("%7.3f ms", ch_status[0].FCycle_ms - ch_status[0].PCycle_ms);
-                text2.Printf("%7.3f ms", ch_status[1].FCycle_ms - ch_status[1].PCycle_ms);
+                text1.Printf("%7.3f ms",
+                             Oscilloscope.GetChannelStatus(0).FCycle_ms - Oscilloscope.GetChannelStatus(0).PCycle_ms);
+                text2.Printf("%7.3f ms",
+                             Oscilloscope.GetChannelStatus(1).FCycle_ms - Oscilloscope.GetChannelStatus(1).PCycle_ms);
                 break;
             case 9:
                 text = "Full cycle";
-                text1.Printf("%7.3f ms", ch_status[0].FCycle_ms);
-                text2.Printf("%7.3f ms", ch_status[1].FCycle_ms);
+                text1.Printf("%7.3f ms", Oscilloscope.GetChannelStatus(0).FCycle_ms);
+                text2.Printf("%7.3f ms", Oscilloscope.GetChannelStatus(1).FCycle_ms);
                 break;
             default:
                 text = "";
@@ -275,134 +283,13 @@ void CPWindow4::draw1_EvMouseButtonClick(CControl* control, uint button, uint x,
     mprint(lxT("draw1_EvMouseButtonClick\n"));
 }
 
-void CPWindow4::SetBaseTimer(void) {
-    board* pboard = Window1.GetBoard();
-
-    if (!pboard)
-        return;
-
-    int PinCount = pboard->MGetPinCount();
-
-    if (pboard->CpuInitialized() == 0)
-        return;
-
-    Dt = 1.0 / pboard->MGetInstClockFreq();
-
-    int chp[2];
-
-    // printf("Dt=%e  Rt=%e  Rt/Dt=%f\n",Dt,Rt,Rt/Dt);
-
-    chp[0] = atoi(combo2.GetText());
-    chp[1] = atoi(combo3.GetText());
-
-    combo2.DeleteItems();
-    combo3.DeleteItems();
-    for (int i = 1; i <= PinCount; i++) {
-        lxString spin;
-        if (pboard->GetUseSpareParts()) {
-            spin = Window5.GetPinName(i);
-        } else {
-            spin = pboard->MGetPinName(i);
-        }
-        if (spin.Cmp(lxT("error"))) {
-            combo2.AddItem(itoa(i) + "  " + spin);
-            combo3.AddItem(itoa(i) + "  " + spin);
-        }
-    }
-
-    if (chp[0] <= PinCount) {
-        lxString spin;
-        if (pboard->GetUseSpareParts()) {
-            spin = Window5.GetPinName(chp[0]);
-        } else {
-            spin = pboard->MGetPinName(chp[0]);
-        }
-        combo2.SetText(itoa(chp[0]) + "  " + spin);
-    } else
-        combo2.SetText("1");
-
-    if (chp[1] <= PinCount) {
-        lxString spin;
-        if (pboard->GetUseSpareParts()) {
-            spin = Window5.GetPinName(chp[1]);
-        } else {
-            spin = pboard->MGetPinName(chp[1]);
-        }
-        combo3.SetText(itoa(chp[1]) + "  " + spin);
-    } else
-        combo3.SetText("2");
-
-    spind5_EvOnChangeSpinDouble(this);
-}
-
-void CPWindow4::SetSample(void) {
-    double pins[2];
-
-    const picpin* ppins = Window1.GetBoard()->MGetPinsValues();
-
-    if (!run)
-        return;
-
-    if ((ppins[chpin[0]].ptype == PT_ANALOG) && (ppins[chpin[0]].dir == PD_IN))
-        pins[0] = ppins[chpin[0]].avalue;
-    else
-        pins[0] = ppins[chpin[0]].value * vmax;
-
-    if ((ppins[chpin[1]].ptype == PT_ANALOG) && (ppins[chpin[1]].dir == PD_IN))
-        pins[1] = ppins[chpin[1]].avalue;
-    else
-        pins[1] = ppins[chpin[1]].value * vmax;
-
-    // sampling
-    if (t > Rt) {
-        t -= Rt;
-        databuffer[fp][0][is] = -pins[0] + ((1.0 * rand() / RAND_MAX) - 0.5) * 0.1;
-        databuffer[fp][1][is] = -pins[1] + ((1.0 * rand() / RAND_MAX) - 0.5) * 0.1;
-        is++;
-        if (is >= NPOINTS)  // buffer full
-        {
-            if (tr && togglebutton7.GetCheck()) {
-                togglebutton6.SetCheck(1);
-            }
-            is = 0;
-            tr = 0;
-            t = 0;
-            ch[0] = &databuffer[fp][0][toffset];
-            ch[1] = &databuffer[fp][1][toffset];
-            fp = !fp;    // togle fp
-            update = 1;  // Request redraw screen
-        }
-    }
-    t += Dt;
-
-    // trigger
-    if (usetrigger) {
-        if ((!tr) && (is >= NPOINTS / 2)) {
-            if ((pins_[tch] < triggerlv) && (pins[tch] >= triggerlv)) {
-                tr = 1;
-
-                is = is - (NPOINTS / 2);
-
-                for (int i = 0; i < NPOINTS / 2; i++) {
-                    databuffer[fp][0][i] = databuffer[fp][0][i + is];
-                    databuffer[fp][1][i] = databuffer[fp][1][i + is];
-                }
-                is = (NPOINTS / 2);
-            }
-        }
-    }
-
-    pins_[0] = pins[0];
-    pins_[1] = pins[1];
-}
-
 void CPWindow4::spind5_EvOnChangeSpinDouble(CControl* control) {
     // spind5.SetMin ((Dt*WMAX)/10e-3);
 
-    Rt = ((spind5.GetValue() * 1e-3 * 10) / WMAX);
+    Oscilloscope.SetRT((spind5.GetValue() * 1e-3 * 10) / WMAX);
 
-    if ((Rt / Dt) < 1.0) {
-        xz = Dt / Rt;
+    if ((Oscilloscope.GetRT() / Oscilloscope.GetDT()) < 1.0) {
+        xz = Oscilloscope.GetDT() / Oscilloscope.GetRT();
     } else
         xz = 1.0;
 
@@ -414,32 +301,32 @@ void CPWindow4::spind5_EvOnChangeSpinDouble(CControl* control) {
 }
 
 void CPWindow4::togglebutton5_EvOnToggleButton(CControl* control) {
-    usetrigger = togglebutton5.GetCheck();
+    Oscilloscope.SetUseTrigger(togglebutton5.GetCheck());
 }
 
 void CPWindow4::spind7_EvOnChangeSpinDouble(CControl* control) {
-    triggerlv = spind7.GetValue();
+    Oscilloscope.SetTriggerLevel(spind7.GetValue());
 }
 
 void CPWindow4::timer1_EvOnTime(CControl* control) {
     static int count = 0;
 
-    if (update) {
-        update = 0;
+    if (Oscilloscope.GetUpdate()) {
+        Oscilloscope.SetUpdate(0);
 
         count++;
         if (count >= 5)  // Update at 2Hz
         {
             count = 0;
             if (togglebutton1.GetCheck()) {
-                CalculateStats(0);
+                Oscilloscope.CalculateStats(0);
             } else {
-                memset(&ch_status[0], 0, sizeof(ch_status_t));
+                Oscilloscope.ClearStats(0);
             }
             if (togglebutton2.GetCheck()) {
-                CalculateStats(1);
+                Oscilloscope.CalculateStats(1);
             } else {
-                memset(&ch_status[1], 0, sizeof(ch_status_t));
+                Oscilloscope.ClearStats(1);
             }
         }
         DrawScreen();
@@ -449,122 +336,11 @@ void CPWindow4::timer1_EvOnTime(CControl* control) {
 }
 
 void CPWindow4::combo2_EvOnComboChange(CControl* control) {
-    chpin[0] = atoi(combo2.GetText()) - 1;
+    Oscilloscope.SetChannelPin(0, atoi(combo2.GetText()) - 1);
 }
 
 void CPWindow4::combo3_EvOnComboChange(CControl* control) {
-    chpin[1] = atoi(combo3.GetText()) - 1;
-}
-
-void CPWindow4::WritePreferences(void) {
-    Window1.saveprefs(lxT("osc_scale1"), ftoa(spind1.GetValue()));
-    Window1.saveprefs(lxT("osc_offset1"), ftoa(spind2.GetValue()));
-    Window1.saveprefs(lxT("osc_on1"), itoa(togglebutton1.GetCheck()));
-    Window1.saveprefs(lxT("osc_color1"), button1.GetColor().GetAsString(lxC2S_HTML_SYNTAX));
-    Window1.saveprefs(lxT("osc_inv"), itoa(togglebutton3.GetCheck()));
-    Window1.saveprefs(lxT("osc_ch1"), combo2.GetText());
-
-    Window1.saveprefs(lxT("osc_scale2"), ftoa(spind3.GetValue()));
-    Window1.saveprefs(lxT("osc_offset2"), ftoa(spind4.GetValue()));
-    Window1.saveprefs(lxT("osc_on2"), itoa(togglebutton2.GetCheck()));
-    Window1.saveprefs(lxT("osc_color2"), button2.GetColor().GetAsString(lxC2S_HTML_SYNTAX));
-    Window1.saveprefs(lxT("osc_inv2"), itoa(togglebutton4.GetCheck()));
-    Window1.saveprefs(lxT("osc_ch2"), combo3.GetText());
-
-    Window1.saveprefs(lxT("osc_tscale"), ftoa(spind5.GetValue()));
-    Window1.saveprefs(lxT("osc_toffset"), ftoa(spind6.GetValue()));
-    Window1.saveprefs(lxT("osc_usetrigger"), itoa(togglebutton5.GetCheck()));
-    Window1.saveprefs(lxT("osc_tch"), combo1.GetText());
-    Window1.saveprefs(lxT("osc_tlevel"), ftoa(spind7.GetValue()));
-    Window1.saveprefs(lxT("osc_position"), itoa(GetX()) + lxT(",") + itoa(GetY()));
-
-    Window1.saveprefs(lxT("osc_measures"), itoa(measures[0]) + lxT(",") + itoa(measures[1]) + lxT(",") +
-                                               itoa(measures[2]) + lxT(",") + itoa(measures[3]) + lxT(",") +
-                                               itoa(measures[4]));
-}
-
-void CPWindow4::ReadPreferences(char* name, char* value) {
-    if (!strcmp(name, "osc_scale1")) {
-        spind1.SetValue(atof(value));
-    }
-
-    if (!strcmp(name, "osc_offset1")) {
-        spind2.SetValue(atof(value));
-    }
-
-    if (!strcmp(name, "osc_on1")) {
-        togglebutton1.SetCheck(atoi(value));
-    }
-
-    if (!strcmp(name, "osc_color1")) {
-        button1.SetColor(lxColor(value));
-    }
-
-    if (!strcmp(name, "osc_inv1")) {
-        togglebutton3.SetCheck(atoi(value));
-    }
-
-    if (!strcmp(name, "osc_ch1")) {
-        combo2.SetText(value);
-        chpin[0] = atoi(combo2.GetText()) - 1;
-    }
-
-    if (!strcmp(name, "osc_scale2")) {
-        spind3.SetValue(atof(value));
-    }
-
-    if (!strcmp(name, "osc_offset2")) {
-        spind4.SetValue(atof(value));
-    }
-
-    if (!strcmp(name, "osc_on2")) {
-        togglebutton2.SetCheck(atoi(value));
-    }
-
-    if (!strcmp(name, "osc_color2")) {
-        button2.SetColor(lxColor(value));
-    }
-
-    if (!strcmp(name, "osc_inv2")) {
-        togglebutton4.SetCheck(atoi(value));
-    }
-
-    if (!strcmp(name, "osc_ch2")) {
-        combo3.SetText(value);
-        chpin[1] = atoi(combo3.GetText()) - 1;
-    }
-
-    if (!strcmp(name, "osc_tscale")) {
-        spind5.SetValue(atof(value));
-    }
-
-    if (!strcmp(name, "osc_toffset")) {
-        spind6.SetValue(atof(value));
-    }
-
-    if (!strcmp(name, "osc_usetrigger")) {
-        togglebutton5.SetCheck(atoi(value));
-        usetrigger = atoi(value);
-    }
-
-    if (!strcmp(name, "osc_tch")) {
-        combo1.SetText(value);
-    }
-
-    if (!strcmp(name, "osc_tlevel")) {
-        spind7.SetValue(atof(value));
-    }
-
-    if (!strcmp(name, "osc_position")) {
-        int i, j;
-        sscanf(value, "%i,%i", &i, &j);
-        SetX(i);
-        SetY(j);
-    }
-
-    if (!strcmp(name, "osc_measures")) {
-        sscanf(value, "%i,%i,%i,%i,%i", &measures[0], &measures[1], &measures[2], &measures[3], &measures[4]);
-    }
+    Oscilloscope.SetChannelPin(1, atoi(combo3.GetText()) - 1);
 }
 
 void CPWindow4::_EvOnDestroy(CControl* control) {
@@ -574,30 +350,25 @@ void CPWindow4::_EvOnDestroy(CControl* control) {
     }
 }
 
-void CPWindow4::_EvOnShow(CControl* control) {
-    if (!font) {
-        font = new lxFont(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
-    }
-
-    Reset();
-
-    timer1.SetRunState(1);
+void CPWindow4::_EvOnCreate(CControl* control) {
+    font = new lxFont(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
 }
 
-void CPWindow4::Reset(void) {
-    vmax = Window1.GetBoard()->MGetVCC();
+void CPWindow4::_EvOnShow(CControl* control) {
+    Oscilloscope.Reset();
+    timer1.SetRunState(1);
 }
 
 void CPWindow4::_EvOnHide(CControl* control) {
     timer1.SetRunState(0);
-    board* pboard = Window1.GetBoard();
+    board* pboard = PICSimLab.GetBoard();
     if (pboard) {
         pboard->SetUseOscilloscope(0);
     }
 }
 
 void CPWindow4::spind6_EvOnChangeSpinDouble(CControl* control) {
-    toffset = (WMAX / 2) - (((WMAX / 2) * spind6.GetValue()) / (5 * spind5.GetValue()));
+    Oscilloscope.SetTimeOffset((WMAX / 2) - (((WMAX / 2) * spind6.GetValue()) / (5 * spind5.GetValue())));
 }
 
 // autoset
@@ -641,25 +412,25 @@ void CPWindow4::button3_EvMouseButtonClick(CControl* control, uint button, uint 
 // stop
 
 void CPWindow4::togglebutton6_EvOnToggleButton(CControl* control) {
-    run = !togglebutton6.GetCheck();
-    spind1.SetEnable(run);
-    spind2.SetEnable(run);
-    spind3.SetEnable(run);
-    spind4.SetEnable(run);
-    spind5.SetEnable(run);
-    spind6.SetEnable(run);
-    spind7.SetEnable(run);
-    button1.SetEnable(run);
-    button2.SetEnable(run);
-    button3.SetEnable(run);
-    togglebutton1.SetEnable(run);
-    togglebutton2.SetEnable(run);
-    togglebutton3.SetEnable(run);
-    togglebutton4.SetEnable(run);
-    togglebutton5.SetEnable(run);
-    combo1.SetEnable(run);
-    combo2.SetEnable(run);
-    combo3.SetEnable(run);
+    Oscilloscope.SetRun(!togglebutton6.GetCheck());
+    spind1.SetEnable(Oscilloscope.GetRun());
+    spind2.SetEnable(Oscilloscope.GetRun());
+    spind3.SetEnable(Oscilloscope.GetRun());
+    spind4.SetEnable(Oscilloscope.GetRun());
+    spind5.SetEnable(Oscilloscope.GetRun());
+    spind6.SetEnable(Oscilloscope.GetRun());
+    spind7.SetEnable(Oscilloscope.GetRun());
+    button1.SetEnable(Oscilloscope.GetRun());
+    button2.SetEnable(Oscilloscope.GetRun());
+    button3.SetEnable(Oscilloscope.GetRun());
+    togglebutton1.SetEnable(Oscilloscope.GetRun());
+    togglebutton2.SetEnable(Oscilloscope.GetRun());
+    togglebutton3.SetEnable(Oscilloscope.GetRun());
+    togglebutton4.SetEnable(Oscilloscope.GetRun());
+    togglebutton5.SetEnable(Oscilloscope.GetRun());
+    combo1.SetEnable(Oscilloscope.GetRun());
+    combo2.SetEnable(Oscilloscope.GetRun());
+    combo3.SetEnable(Oscilloscope.GetRun());
 }
 
 // save PNG
@@ -681,121 +452,27 @@ void CPWindow4::colordialog1_EvOnClose(int retId) {
     }
 }
 
-void CPWindow4::CalculateStats(int channel) {
-    ch_status[channel].Vmax = -1000;
-    ch_status[channel].Vmin = 1000;
-    double sumSamples = 0;
-    double sumSquares = 0;
-    double val = -ch[channel][0];
-    int i = 1;
-    bool ltr_down = (val < ch_status[channel].Vavr);  // last transition down
-    bool firstUp = true;
-    unsigned short ltrsHigh = 0;    // last transition sample high number
-    unsigned short sumFCW = 0;      // Full cycle width sum
-    unsigned short sumPCW = 0;      // Positive semi-cycle width sum
-    unsigned short numFCycles = 0;  // Number of full cycles
-    unsigned short numPCycles = 0;  // Number of positive semi-cycles
-
-    for (i = 1; i < (NPOINTS / 2) - 1; i++) {
-        val = -ch[channel][i];
-
-        if (ch_status[channel].Vmax < val)
-            ch_status[channel].Vmax = val;
-        if (ch_status[channel].Vmin > val)
-            ch_status[channel].Vmin = val;
-        sumSamples += val;
-        sumSquares += (val * val);
-
-        // find out frequency (using previous Vavr)
-        if (ltr_down && (val > ch_status[channel].Vavr))  // transition UP
-        {
-            if (!firstUp) {
-                sumFCW += (i - 1 - ltrsHigh);
-                numFCycles++;
-            } else {
-                firstUp = false;
-            }
-            ltr_down = false;
-            ltrsHigh = i - 1;
-        } else if (!ltr_down && (val < ch_status[channel].Vavr))  // transition Down
-        {
-            if (!firstUp) {
-                sumPCW += (i - 1 - ltrsHigh);
-                numPCycles++;
-            }
-            ltr_down = true;
-        }
-    }
-
-    ch_status[channel].Vavr = sumSamples / (NPOINTS / 2);  // Voltage average
-    ch_status[channel].Vrms = sqrt(sumSquares / (NPOINTS / 2));
-
-    double avgFCycleWidth = sumFCW * Rt / numFCycles;
-    double avgPCycleWidth = sumPCW * Rt / numPCycles;
-
-    int pulseValid = (numFCycles > 0) && (avgFCycleWidth != 0) && (avgPCycleWidth != 0) &&
-                     ((ch_status[channel].Vmax - ch_status[channel].Vmin) > 0.2);
-
-    if (pulseValid) {
-        ch_status[channel].PCycle_ms = avgPCycleWidth * 1000;
-        ch_status[channel].FCycle_ms = avgFCycleWidth * 1000;
-        ch_status[channel].Freq = 1.0 / avgFCycleWidth;
-        ch_status[channel].Duty = avgPCycleWidth * 100 / avgFCycleWidth;
-    } else {
-        ch_status[channel].PCycle_ms = -1;
-        ch_status[channel].FCycle_ms = -1;
-        ch_status[channel].Freq = -1;
-        ch_status[channel].Duty = -1;
-    }
-    /*
-    printf ("================\n");
-    printf ("avgPW %lf ms\n", ch_status[channel].PCycle_ms);
-    printf ("duty %lf %%\n", ch_status[channel].Duty);
-    printf ("freq %lf Hz\n", ch_status[channel].Freq);
-    printf ("cycle %lf ms\n", ch_status[channel].FCycle_ms);
-    printf ("Vrms %lf V\n", ch_status[channel].Vrms);
-    printf ("Vavr %lf V\n", ch_status[channel].Vavr);
-    printf ("Vmax %lf V\n", ch_status[channel].Vmax);
-    printf ("Vmin %lf V\n", ch_status[channel].Vmax);
-     */
-}
-
 void CPWindow4::button5_EvMouseButtonPress(CControl* control, const uint button, const uint x, const uint y,
                                            const uint state) {
-    measures[0]++;
-    if (measures[0] >= MAX_MEASURES) {
-        measures[0] = 0;
-    }
+    Oscilloscope.NextMeasure(0);
 }
 
 void CPWindow4::button6_EvMouseButtonPress(CControl* control, const uint button, const uint x, const uint y,
                                            const uint state) {
-    measures[1]++;
-    if (measures[1] >= MAX_MEASURES) {
-        measures[1] = 0;
-    }
+    Oscilloscope.NextMeasure(1);
 }
 
 void CPWindow4::button7_EvMouseButtonPress(CControl* control, const uint button, const uint x, const uint y,
                                            const uint state) {
-    measures[2]++;
-    if (measures[2] >= MAX_MEASURES) {
-        measures[2] = 0;
-    }
+    Oscilloscope.NextMeasure(2);
 }
 
 void CPWindow4::button8_EvMouseButtonPress(CControl* control, const uint button, const uint x, const uint y,
                                            const uint state) {
-    measures[3]++;
-    if (measures[3] >= MAX_MEASURES) {
-        measures[3] = 0;
-    }
+    Oscilloscope.NextMeasure(3);
 }
 
 void CPWindow4::button9_EvMouseButtonPress(CControl* control, const uint button, const uint x, const uint y,
                                            const uint state) {
-    measures[4]++;
-    if (measures[4] >= MAX_MEASURES) {
-        measures[4] = 0;
-    }
+    Oscilloscope.NextMeasure(4);
 }

@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "part_ds18b20.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum { O_P1, O_F1, O_F2, O_PO1 };
@@ -51,7 +51,7 @@ cpart_ds18b20::cpart_ds18b20(unsigned x, unsigned y)
 
     RegisterRemoteControl();
 
-    sen_ds18b20_init(&ds18b20, Window1.GetBoard());
+    sen_ds18b20_init(&ds18b20, PICSimLab.GetBoard());
 }
 
 void cpart_ds18b20::RegisterRemoteControl(void) {
@@ -91,7 +91,7 @@ void cpart_ds18b20::Draw(void) {
                     if (output_pins[output[i].id - O_P1] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y2, 90);
                     else
-                        canvas.RotatedText(Window5.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1,
+                        canvas.RotatedText(SpareParts.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1,
                                            output[i].y2, 90);
                     break;
                 case O_F1:
@@ -124,26 +124,26 @@ void cpart_ds18b20::Draw(void) {
 void cpart_ds18b20::Reset(void) {
     sen_ds18b20_rst(&ds18b20);
     if (output_pins[0]) {
-        Window5.SetPin(output_pins[0], 0);
+        SpareParts.SetPin(output_pins[0], 0);
     }
 }
 
 void cpart_ds18b20::PreProcess(void) {
     if (output_pins[0]) {
         sen_ds18b20_setTemp(&ds18b20, (0.6 * (200 - values[0]) - 40));
-        Window5.Reset_pullup_bus(output_pins[0] - 1);
+        SpareParts.Reset_pullup_bus(output_pins[0] - 1);
     }
 }
 
 void cpart_ds18b20::Process(void) {
     if (output_pins[0]) {
-        const picpin* ppins = Window5.GetPinsValues();
+        const picpin* ppins = SpareParts.GetPinsValues();
 
         if ((ppins[output_pins[0] - 1].dir) && (ppins[output_pins[0] - 1].value != ds18b20.out)) {
-            Window5.SetPin(output_pins[0], ds18b20.out);
+            SpareParts.SetPin(output_pins[0], ds18b20.out);
         }
 
-        Window5.Set_pullup_bus(output_pins[0] - 1, sen_ds18b20_io(&ds18b20, ppins[output_pins[0] - 1].value));
+        SpareParts.Set_pullup_bus(output_pins[0] - 1, sen_ds18b20_io(&ds18b20, ppins[output_pins[0] - 1].value));
     }
 }
 
@@ -239,23 +239,21 @@ void cpart_ds18b20::ReadPreferences(lxString value_) {
 }
 
 void cpart_ds18b20::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (output_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[0]);
+        spin = SpareParts.GetPinName(output_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(output_pins[0]) + "  " + spin);
     }
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_ds18b20::ReadPropertiesWindow(CPWindow* WProp) {

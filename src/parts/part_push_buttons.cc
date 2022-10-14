@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "part_push_buttons.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_B1, O_B2, O_B3, O_B4, O_B5, O_B6, O_B7, O_B8, O_J1 };
@@ -102,23 +102,23 @@ void cpart_pbuttons::Reset(void) {
     output_value[7] = !active;
 
     // force pin update
-    Window5.SetPin(output_pins[0], !output_value[0]);
-    Window5.SetPin(output_pins[1], !output_value[1]);
-    Window5.SetPin(output_pins[2], !output_value[2]);
-    Window5.SetPin(output_pins[3], !output_value[3]);
-    Window5.SetPin(output_pins[4], !output_value[4]);
-    Window5.SetPin(output_pins[5], !output_value[5]);
-    Window5.SetPin(output_pins[6], !output_value[6]);
-    Window5.SetPin(output_pins[7], !output_value[7]);
+    SpareParts.SetPin(output_pins[0], !output_value[0]);
+    SpareParts.SetPin(output_pins[1], !output_value[1]);
+    SpareParts.SetPin(output_pins[2], !output_value[2]);
+    SpareParts.SetPin(output_pins[3], !output_value[3]);
+    SpareParts.SetPin(output_pins[4], !output_value[4]);
+    SpareParts.SetPin(output_pins[5], !output_value[5]);
+    SpareParts.SetPin(output_pins[6], !output_value[6]);
+    SpareParts.SetPin(output_pins[7], !output_value[7]);
 
-    Window5.SetPin(output_pins[0], output_value[0]);
-    Window5.SetPin(output_pins[1], output_value[1]);
-    Window5.SetPin(output_pins[2], output_value[2]);
-    Window5.SetPin(output_pins[3], output_value[3]);
-    Window5.SetPin(output_pins[4], output_value[4]);
-    Window5.SetPin(output_pins[5], output_value[5]);
-    Window5.SetPin(output_pins[6], output_value[6]);
-    Window5.SetPin(output_pins[7], output_value[7]);
+    SpareParts.SetPin(output_pins[0], output_value[0]);
+    SpareParts.SetPin(output_pins[1], output_value[1]);
+    SpareParts.SetPin(output_pins[2], output_value[2]);
+    SpareParts.SetPin(output_pins[3], output_value[3]);
+    SpareParts.SetPin(output_pins[4], output_value[4]);
+    SpareParts.SetPin(output_pins[5], output_value[5]);
+    SpareParts.SetPin(output_pins[6], output_value[6]);
+    SpareParts.SetPin(output_pins[7], output_value[7]);
 }
 
 cpart_pbuttons::~cpart_pbuttons(void) {
@@ -159,7 +159,7 @@ void cpart_pbuttons::Draw(void) {
                     if (output_pins[output[i].id - O_P1] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
                     else
-                        canvas.RotatedText(Window5.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1,
+                        canvas.RotatedText(SpareParts.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1,
                                            output[i].y1, 0);
                     break;
                 case O_B1:
@@ -190,8 +190,8 @@ void cpart_pbuttons::Draw(void) {
 
 void cpart_pbuttons::PreProcess(void) {
     if (mode == MODE_NORMAL) {
-        const picpin* ppins = Window5.GetPinsValues();
-        SWBounce_prepare(&bounce, Window1.GetBoard()->MGetInstClockFreq());
+        const picpin* ppins = SpareParts.GetPinsValues();
+        SWBounce_prepare(&bounce, PICSimLab.GetBoard()->MGetInstClockFreq());
 
         for (int i = 0; i < 8; i++) {
             if (output_pins[i]) {
@@ -204,7 +204,7 @@ void cpart_pbuttons::PreProcess(void) {
     } else {
         for (int i = 0; i < 8; i++) {
             if (output_pins[i]) {
-                Window5.SetPin(output_pins[i], output_value[i]);
+                SpareParts.SetPin(output_pins[i], output_value[i]);
             }
         }
         SetAwaysUpdate(0);
@@ -215,14 +215,14 @@ void cpart_pbuttons::Process(void) {
     if (mode == MODE_NORMAL) {
         const int ret = SWBounce_process(&bounce);
         if (ret) {
-            const picpin* ppins = Window5.GetPinsValues();
+            const picpin* ppins = SpareParts.GetPinsValues();
 
             for (int i = 0; i < 8; i++) {
                 if (bounce.bounce[i]) {
                     if (ret == 1) {
-                        Window5.SetPin(output_pins[i], !ppins[output_pins[i] - 1].value);
+                        SpareParts.SetPin(output_pins[i], !ppins[output_pins[i] - 1].value);
                     } else {
-                        Window5.SetPin(output_pins[i], output_value[i]);
+                        SpareParts.SetPin(output_pins[i], output_value[i]);
                     }
                 }
             }
@@ -407,14 +407,14 @@ void cpart_pbuttons::ReadPreferences(lxString value) {
 }
 
 void cpart_pbuttons::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (output_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[0]);
+        spin = SpareParts.GetPinName(output_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(output_pins[0]) + "  " + spin);
     }
 
@@ -422,7 +422,7 @@ void cpart_pbuttons::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[1] == 0)
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[1]);
+        spin = SpareParts.GetPinName(output_pins[1]);
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(output_pins[1]) + "  " + spin);
     }
 
@@ -430,7 +430,7 @@ void cpart_pbuttons::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[2] == 0)
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[2]);
+        spin = SpareParts.GetPinName(output_pins[2]);
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText(itoa(output_pins[2]) + "  " + spin);
     }
 
@@ -438,7 +438,7 @@ void cpart_pbuttons::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[3] == 0)
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[3]);
+        spin = SpareParts.GetPinName(output_pins[3]);
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText(itoa(output_pins[3]) + "  " + spin);
     }
 
@@ -446,7 +446,7 @@ void cpart_pbuttons::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[4] == 0)
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[4]);
+        spin = SpareParts.GetPinName(output_pins[4]);
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText(itoa(output_pins[4]) + "  " + spin);
     }
 
@@ -454,7 +454,7 @@ void cpart_pbuttons::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[5] == 0)
         ((CCombo*)WProp->GetChildByName("combo6"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[5]);
+        spin = SpareParts.GetPinName(output_pins[5]);
         ((CCombo*)WProp->GetChildByName("combo6"))->SetText(itoa(output_pins[5]) + "  " + spin);
     }
 
@@ -462,7 +462,7 @@ void cpart_pbuttons::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[6] == 0)
         ((CCombo*)WProp->GetChildByName("combo7"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[6]);
+        spin = SpareParts.GetPinName(output_pins[6]);
         ((CCombo*)WProp->GetChildByName("combo7"))->SetText(itoa(output_pins[6]) + "  " + spin);
     }
 
@@ -470,7 +470,7 @@ void cpart_pbuttons::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[7] == 0)
         ((CCombo*)WProp->GetChildByName("combo8"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[7]);
+        spin = SpareParts.GetPinName(output_pins[7]);
         ((CCombo*)WProp->GetChildByName("combo8"))->SetText(itoa(output_pins[7]) + "  " + spin);
     }
 
@@ -484,12 +484,10 @@ void cpart_pbuttons::ConfigurePropertiesWindow(CPWindow* WProp) {
     else
         ((CCombo*)WProp->GetChildByName("combo10"))->SetText("Normal");
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_pbuttons::ReadPropertiesWindow(CPWindow* WProp) {

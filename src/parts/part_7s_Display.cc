@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "part_7s_Display.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum {
@@ -165,7 +165,7 @@ void cpart_7s_display::Draw(void) {
                     if (input_pins[output[i].id - O_SA] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
                     else
-                        canvas.RotatedText(Window5.GetPinName(input_pins[output[i].id - O_SA]), output[i].x1,
+                        canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_SA]), output[i].x1,
                                            output[i].y2, 90.0);
                     break;
                 case O_FX1:
@@ -695,14 +695,14 @@ void cpart_7s_display::RegisterRemoteControl(void) {
 }
 
 void cpart_7s_display::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (input_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[0]);
+        spin = SpareParts.GetPinName(input_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(input_pins[0]) + "  " + spin);
     }
 
@@ -710,7 +710,7 @@ void cpart_7s_display::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[1] == 0)
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[1]);
+        spin = SpareParts.GetPinName(input_pins[1]);
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(input_pins[1]) + "  " + spin);
     }
 
@@ -718,7 +718,7 @@ void cpart_7s_display::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[2] == 0)
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[2]);
+        spin = SpareParts.GetPinName(input_pins[2]);
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText(itoa(input_pins[2]) + "  " + spin);
     }
 
@@ -726,7 +726,7 @@ void cpart_7s_display::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[3] == 0)
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[3]);
+        spin = SpareParts.GetPinName(input_pins[3]);
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText(itoa(input_pins[3]) + "  " + spin);
     }
 
@@ -734,7 +734,7 @@ void cpart_7s_display::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[4] == 0)
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[4]);
+        spin = SpareParts.GetPinName(input_pins[4]);
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText(itoa(input_pins[4]) + "  " + spin);
     }
 
@@ -742,7 +742,7 @@ void cpart_7s_display::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[5] == 0)
         ((CCombo*)WProp->GetChildByName("combo6"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[5]);
+        spin = SpareParts.GetPinName(input_pins[5]);
         ((CCombo*)WProp->GetChildByName("combo6"))->SetText(itoa(input_pins[5]) + "  " + spin);
     }
 
@@ -750,7 +750,7 @@ void cpart_7s_display::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[6] == 0)
         ((CCombo*)WProp->GetChildByName("combo7"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[6]);
+        spin = SpareParts.GetPinName(input_pins[6]);
         ((CCombo*)WProp->GetChildByName("combo7"))->SetText(itoa(input_pins[6]) + "  " + spin);
     }
 
@@ -758,7 +758,7 @@ void cpart_7s_display::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[7] == 0)
         ((CCombo*)WProp->GetChildByName("combo8"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[7]);
+        spin = SpareParts.GetPinName(input_pins[7]);
         ((CCombo*)WProp->GetChildByName("combo8"))->SetText(itoa(input_pins[7]) + "  " + spin);
     }
 
@@ -766,7 +766,7 @@ void cpart_7s_display::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[8] == 0)
         ((CCombo*)WProp->GetChildByName("combo9"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[8]);
+        spin = SpareParts.GetPinName(input_pins[8]);
         ((CCombo*)WProp->GetChildByName("combo9"))->SetText(itoa(input_pins[8]) + "  " + spin);
     }
 
@@ -774,7 +774,7 @@ void cpart_7s_display::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[9] == 0)
         ((CCombo*)WProp->GetChildByName("combo10"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[9]);
+        spin = SpareParts.GetPinName(input_pins[9]);
         ((CCombo*)WProp->GetChildByName("combo10"))->SetText(itoa(input_pins[9]) + "  " + spin);
     }
 
@@ -782,7 +782,7 @@ void cpart_7s_display::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[10] == 0)
         ((CCombo*)WProp->GetChildByName("combo11"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[10]);
+        spin = SpareParts.GetPinName(input_pins[10]);
         ((CCombo*)WProp->GetChildByName("combo11"))->SetText(itoa(input_pins[10]) + "  " + spin);
     }
 
@@ -790,7 +790,7 @@ void cpart_7s_display::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (input_pins[11] == 0)
         ((CCombo*)WProp->GetChildByName("combo12"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[11]);
+        spin = SpareParts.GetPinName(input_pins[11]);
         ((CCombo*)WProp->GetChildByName("combo12"))->SetText(itoa(input_pins[11]) + "  " + spin);
     }
 
@@ -817,14 +817,12 @@ void cpart_7s_display::ConfigurePropertiesWindow(CPWindow* WProp) {
         ((CCombo*)WProp->GetChildByName("combo12"))->SetEnable(0);
     }
 
-    ((CCombo*)WProp->GetChildByName("combo14"))->EvOnComboChange = EVONCOMBOCHANGE & CPWindow5::PropComboChange;
+    ((CCombo*)WProp->GetChildByName("combo14"))->EvOnComboChange = SpareParts.PropComboChange;
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_7s_display::ReadPropertiesWindow(CPWindow* WProp) {
@@ -859,13 +857,13 @@ void cpart_7s_display::PreProcess(void) {
         memset(alm4, 0, 8 * sizeof(unsigned int));
     }
 
-    JUMPSTEPS_ = Window1.GetJUMPSTEPS();
+    JUMPSTEPS_ = PICSimLab.GetJUMPSTEPS();
     mcount = JUMPSTEPS_;
 }
 
 void cpart_7s_display::Process(void) {
     int i;
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     mcount++;
 
@@ -893,7 +891,7 @@ void cpart_7s_display::Process(void) {
 }
 
 void cpart_7s_display::PostProcess(void) {
-    long int NSTEPJ = Window1.GetNSTEPJ();
+    long int NSTEPJ = PICSimLab.GetNSTEPJ();
 
     for (int i = 0; i < 8; i++) {
         lm1[i] = (int)((lm1[i] + (((600.0 * alm1[i]) / NSTEPJ) + 30)) / 2.0);

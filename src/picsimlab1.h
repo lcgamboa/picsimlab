@@ -49,21 +49,7 @@
 #ifndef CPWINDOW1
 #define CPWINDOW1
 
-#define TIMER 0.1        // timer period in s
-#define CPUTUSEMAX 0.1   // max period cpu use in s
-#define NSTEPKT 25000.0  // TIMER constant 1MHz/(4.0*timer_freq)
-#define NSTEPKF 40.0     // Freq constant 4.0*timer_freq
-#define DEFAULTJS 100    // IO refresh rate
-
-#define MAX_MIC 140
-extern char SERIALDEVICE[100];
-
 #include <lxrad.h>
-
-#include "boards/board.h"
-#include "boards/boards_defs.h"
-
-enum { CPU_RUNNING, CPU_STEPPING, CPU_HALTED, CPU_BREAKPOINT, CPU_ERROR, CPU_POWER_OFF };
 
 /**
  * @brief CPWindow1 class
@@ -154,227 +140,39 @@ public:
     CThread thread1;  // main simulation
     CThread thread2;  // rcontrol
     CThread thread3;  // boards
-    int tgo;
 
     int settodestroy;
     void SetToDestroy(void);
 
     CPWindow1(void);
 
-    /**
-     * @brief  Save the preferences
-     */
-    void saveprefs(lxString name, lxString value);
-
-    void Configure(const char* home, int use_default_board = 0, int create = 0, const char* lfile = NULL);
     void board_Event(CControl* control);
     void board_ButtonEvent(CControl* control, uint button, uint x, uint y, uint state);
     void thread1_EvThreadRun(CControl* control);
     void thread2_EvThreadRun(CControl* control);
     void thread3_EvThreadRun(CControl* control);
 
-    /**
-     * @brief  Get the file path of resources
-     */
-    lxString GetSharePath(void) { return share; };
-
-    lxString GetLibPath(void) { return libpath; };
-
-    void SetplWidth(int pw) { plWidth = pw; };
-
-    void SetplHeight(int ph) { plHeight = ph; };
-
-    double GetScale(void) { return scale; };
-
-    /**
-     * @brief  Return the selected debugger type
-     */
-    int Get_debug_type(void) { return debug_type; };
-
-    /**
-     * @brief  Return the selected debugger port
-     */
-    unsigned short Get_debug_port(void) { return debug_port + Instance; };
-
-    /**
-     * @brief  Return the selected remote control port
-     */
-    unsigned short Get_remotec_port(void) { return remotec_port + Instance; };
-
-    /**
-     * @brief  Return actual power status of microcontroller ON/OFF
-     */
-    int Get_mcupwr(void) { return mcupwr; };
-
-    /**
-     * @brief  Retunr if microcontroller reset pin is enabled
-     */
-    int Get_mcurst(void) { return mcurst; };
-
-    int Get_mcudbg(void) { return mcudbg; };
-
-    /**
-     * @brief  Set the power status of microcontroller ON/OFF
-     */
-    void Set_mcupwr(int pp) {
-        mcupwr = pp;
-        if (mcupwr)
-            SetCpuState(CPU_RUNNING);
-        else
-            SetCpuState(CPU_POWER_OFF);
-    };
-
-    /**
-     * @brief  Set mcu rst flag (inform simulator about mcu reset state)
-     */
-    void Set_mcurst(int pr) { mcurst = pr; };
-
-    /**
-     * @brief  Set debug type (MDB or GDB)
-     */
-    void Set_debug_type(int dt) { debug_type = dt; };
-
-    /**
-     * @brief  Set debug TCP port
-     */
-    void Set_debug_port(unsigned short dp);
-
-    /**
-     * @brief  Get debug status (On/Off)
-     */
-    int Get_debug_status(void);
-
-    /**
-     * @brief  Set debug status flag
-     */
-    void Set_debug_status(int dbs);
-
-    /**
-     * @brief  Set remote control TCP port
-     */
-    void Set_remotec_port(unsigned short rcp);
-
-    void Set_mcudbg(int pd);
-
-    void SetPATH(lxString path) { PATH = path; };
-
-    lxString GetHOME(void) { return HOME; };
-
-    void SetFNAME(lxString fname) { FNAME = fname; };
-
-    long int GetNSTEP(void) { return NSTEP; };
-
-    /**
-     * @brief  Get the number of steps in 100ms of simulation
-     */
-    long int GetNSTEPJ(void) { return NSTEPJ; };
-
-    /**
-     * @brief  Get the number of steps to be skipped in board update
-     */
-    int GetJUMPSTEPS(void) { return JUMPSTEPS; };
-    void SetJUMPSTEPS(int js);
-
-    /**
-     * @brief  Return a pointer to board object
-     */
-    board* GetBoard(void);
-
-    /**
-     * @brief  Return the program instance number
-     */
-    unsigned short Get_Instance(void) { return Instance; };
-
-    void SetNeedReboot(void);
-    void SetCpuState(const unsigned char cs);
     void menu1_EvBoard(CControl* control);
     void menu1_EvMicrocontroller(CControl* control);
-    void LoadWorkspace(lxString fnpzw);
-    void SaveWorkspace(lxString fnpzw);
     int LoadHexFile(lxString fname);
-    void SetClock(float clk);
-    float GetClock(void);
-    void EndSimulation(int saveold = 0, const char* newpath = NULL);
-    void RegisterError(const lxString error);
     void SetSync(unsigned char s) { sync = s; };
     unsigned char GetSync(void) { return sync; };
-    void SetSimulationRun(int run);
-    int GetSimulationRun(void);
     void DrawBoard(void);
     double GetIdleMs(void);
-    void SetWorkspaceFileName(const lxString fname) { Workspacefn = fname; };
-#ifndef _NOTHREAD
-    lxCondition* cpu_cond;
-    lxMutex* cpu_mutex;
-#endif
+
 private:
-    void StartRControl(void);
-    lxString share;
-    lxString libpath;
     int pa;
-    int mcurun;
-    int mcupwr;
-    int mcurst;
-    int mcudbg;
-    int debug;
-    int debug_type;
-    unsigned short debug_port;
-    unsigned short remotec_port;
-    int osc_on;
-    int spare_on;
-    union {
-        char st[2];
-        unsigned short int status;
-    } status;
-    int plWidth;
-    int plHeight;
-    double scale;
-    long int NSTEP;
-    long int NSTEPJ;
-    int JUMPSTEPS;
-    lxString PATH;
-    lxString HOME;
-    lxString FNAME;
-    lxString OldPath;
-    char cpustate;
-
-    lxStringList prefs;
-
-    int lab;
-    int lab_;
-
-    lxString proc_;
-
-    board* pboard;
 
     float over;
 
     int crt;
     int zerocount;
 
-    int need_resize;
-
     double idle_ms;
 
-    lxStringList Errors;
-    lxString pzw_ver;
-
     unsigned char sync;
-
-    CItemMenu MBoard[BOARDS_MAX];
-    CItemMenu MMicro[MAX_MIC];
-
-    lxString Workspacefn;
-    int NeedReboot;
-
-    int Instance;
 };
 
 extern CPWindow1 Window1;
-
-#define ST_T1 0x01
-#define ST_T2 0x02
-#define ST_TH 0x04
-#define ST_DI 0x80  // DISABLE
 
 #endif /*#CPWINDOW1*/

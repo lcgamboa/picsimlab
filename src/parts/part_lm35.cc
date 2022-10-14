@@ -26,7 +26,7 @@
 #include "part_lm35.h"
 #include "../picsimlab1.h"
 #include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum { O_P1, O_F1, O_F2, O_PO1 };
@@ -87,7 +87,7 @@ void cpart_lm35::Draw(void) {
                     if (output_pins[output[i].id - O_P1] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y2, 90);
                     else
-                        canvas.RotatedText(Window5.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1,
+                        canvas.RotatedText(SpareParts.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1,
                                            output[i].y2, 90);
                     break;
                 case O_F1:
@@ -120,7 +120,7 @@ void cpart_lm35::Draw(void) {
 
 void cpart_lm35::PostProcess(void) {
     if (output_pins[0]) {
-        Window5.SetAPin(output_pins[0], (0.0074 * (200 - value) + 0.02));
+        SpareParts.SetAPin(output_pins[0], (0.0074 * (200 - value) + 0.02));
     }
 }
 
@@ -214,23 +214,21 @@ void cpart_lm35::ReadPreferences(lxString value_) {
 }
 
 void cpart_lm35::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (output_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[0]);
+        spin = SpareParts.GetPinName(output_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(output_pins[0]) + "  " + spin);
     }
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_lm35::ReadPropertiesWindow(CPWindow* WProp) {

@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "part_hcsr04.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 /* outputs */
 enum { O_P1, O_P2, O_F1, O_F2, O_PO1 };
@@ -93,7 +93,7 @@ void cpart_hcsr04::Draw(void) {
                     if (input_pins[output[i].id - O_P1] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y2, 90);
                     else
-                        canvas.RotatedText(Window5.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
+                        canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
                                            output[i].y2, 90);
                     break;
                 case O_P2:
@@ -104,7 +104,7 @@ void cpart_hcsr04::Draw(void) {
                     if (output_pins[output[i].id - O_P2] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y2, 90);
                     else
-                        canvas.RotatedText(Window5.GetPinName(output_pins[output[i].id - O_P2]), output[i].x1,
+                        canvas.RotatedText(SpareParts.GetPinName(output_pins[output[i].id - O_P2]), output[i].x1,
                                            output[i].y2, 90);
                     break;
                 case O_F1:
@@ -136,14 +136,14 @@ void cpart_hcsr04::Draw(void) {
 }
 
 void cpart_hcsr04::Process(void) {
-    const picpin* pins = Window5.GetPinsValues();
+    const picpin* pins = SpareParts.GetPinsValues();
 
     if ((input_pins[0]) && (output_pins[0])) {
         // output
         if (count) {
             count--;
             if (!count) {
-                Window5.SetPin(output_pins[0], 0);
+                SpareParts.SetPin(output_pins[0], 0);
             }
         }
 
@@ -151,15 +151,15 @@ void cpart_hcsr04::Process(void) {
         if (delay) {
             delay--;
             if (!delay) {
-                count = (200 - value) * 116.144018583e-6 * Window1.GetBoard()->MGetInstClockFreq();
-                Window5.SetPin(output_pins[0], 1);
+                count = (200 - value) * 116.144018583e-6 * PICSimLab.GetBoard()->MGetInstClockFreq();
+                SpareParts.SetPin(output_pins[0], 1);
             }
         }
 
         // trigger
         if ((!pins[input_pins[0] - 1].value) && (old_value)) {
             // 200us  8 cycles of 40KHz
-            delay = 200e-6 * Window1.GetBoard()->MGetInstClockFreq();
+            delay = 200e-6 * PICSimLab.GetBoard()->MGetInstClockFreq();
             count = 0;
         }
         old_value = pins[input_pins[0] - 1].value;
@@ -258,14 +258,14 @@ void cpart_hcsr04::ReadPreferences(lxString value_) {
 }
 
 void cpart_hcsr04::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (input_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(input_pins[0]);
+        spin = SpareParts.GetPinName(input_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(input_pins[0]) + "  " + spin);
     }
 
@@ -273,16 +273,14 @@ void cpart_hcsr04::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[0]);
+        spin = SpareParts.GetPinName(output_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(output_pins[0]) + "  " + spin);
     }
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_hcsr04::ReadPropertiesWindow(CPWindow* WProp) {

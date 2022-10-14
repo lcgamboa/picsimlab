@@ -23,11 +23,9 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include "../picsimlab1.h"
-
-#include "../picsimlab4.h"
-
-#include "../picsimlab5.h"
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 #include "board_PQDB.h"
 
@@ -193,7 +191,7 @@ cboard_PQDB::cboard_PQDB(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NOR
 
     // scroll1
     scroll1 = new CScroll();
-    scroll1->SetFOwner(&Window1);
+    scroll1->SetFOwner(PICSimLab.GetWindow());
     scroll1->SetName(lxT("scroll1"));
     scroll1->SetX(12);
     scroll1->SetY(100);
@@ -204,11 +202,11 @@ cboard_PQDB::cboard_PQDB(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NOR
     scroll1->SetRange(200);
     scroll1->SetPosition(0);
     scroll1->SetType(4);
-    Window1.CreateChild(scroll1);
+    PICSimLab.GetWindow()->CreateChild(scroll1);
 
     // scroll2
     scroll2 = new CScroll();
-    scroll2->SetFOwner(&Window1);
+    scroll2->SetFOwner(PICSimLab.GetWindow());
     scroll2->SetName(lxT("scroll2"));
     scroll2->SetX(12);
     scroll2->SetY(155);
@@ -219,11 +217,11 @@ cboard_PQDB::cboard_PQDB(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NOR
     scroll2->SetRange(200);
     scroll2->SetPosition(0);
     scroll2->SetType(4);
-    Window1.CreateChild(scroll2);
+    PICSimLab.GetWindow()->CreateChild(scroll2);
 
     // label1
     label1 = new CLabel();
-    label1->SetFOwner(&Window1);
+    label1->SetFOwner(PICSimLab.GetWindow());
     label1->SetName(lxT("label1"));
     label1->SetX(12);
     label1->SetY(75);
@@ -233,10 +231,10 @@ cboard_PQDB::cboard_PQDB(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NOR
     label1->SetVisible(1);
     label1->SetText(lxT("Temp:"));
     label1->SetAlign(1);
-    Window1.CreateChild(label1);
+    PICSimLab.GetWindow()->CreateChild(label1);
     // label2
     label2 = new CLabel();
-    label2->SetFOwner(&Window1);
+    label2->SetFOwner(PICSimLab.GetWindow());
     label2->SetName(lxT("label2"));
     label2->SetX(12);
     label2->SetY(130);
@@ -246,17 +244,17 @@ cboard_PQDB::cboard_PQDB(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NOR
     label2->SetVisible(1);
     label2->SetText(lxT("Light:"));
     label2->SetAlign(1);
-    Window1.CreateChild(label2);
+    PICSimLab.GetWindow()->CreateChild(label2);
 }
 
 cboard_PQDB::~cboard_PQDB(void) {
     buzzer.BeepStop();
     buzzer.End();
 
-    Window1.DestroyChild(scroll1);
-    Window1.DestroyChild(scroll2);
-    Window1.DestroyChild(label1);
-    Window1.DestroyChild(label2);
+    PICSimLab.GetWindow()->DestroyChild(scroll1);
+    PICSimLab.GetWindow()->DestroyChild(scroll2);
+    PICSimLab.GetWindow()->DestroyChild(label1);
+    PICSimLab.GetWindow()->DestroyChild(label2);
 
     rtc_ds1307_end(&rtc2);
 }
@@ -365,7 +363,7 @@ void cboard_PQDB::Draw(CDraw* draw) {
                         draw->Canvas.SetColor(10, 10, 10);
                         break;
                     case O_LCD:
-                        draw->Canvas.SetColor(0, 90 * Window1.Get_mcupwr() + 40, 0);
+                        draw->Canvas.SetColor(0, 90 * PICSimLab.Get_mcupwr() + 40, 0);
                         break;
                     case O_RST:
                         draw->Canvas.SetColor(100, 100, 100);
@@ -377,7 +375,7 @@ void cboard_PQDB::Draw(CDraw* draw) {
                         }
                         break;
                     case O_LPWR:
-                        draw->Canvas.SetColor(0, 255 * Window1.Get_mcupwr(), 0);
+                        draw->Canvas.SetColor(0, 255 * PICSimLab.Get_mcupwr(), 0);
                         break;
                     case O_LED:
                         draw->Canvas.SetColor(0, pic.pins[37].oavalue, 0);
@@ -484,7 +482,7 @@ void cboard_PQDB::Draw(CDraw* draw) {
                     draw->Canvas.Rectangle(1, output[i].x1 - 15, output[i].y1 - 5, output[i].x2 - output[i].x1 + 32,
                                            output[i].y2 - output[i].y1 + 13);
                     lcd_draw(&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                             output[i].y2 - output[i].y1, Window1.Get_mcupwr());
+                             output[i].y2 - output[i].y1, PICSimLab.Get_mcupwr());
                 } else if (output[i].id == O_MP) {
                     draw->Canvas.SetFont(font);
                     draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
@@ -533,7 +531,7 @@ void cboard_PQDB::Draw(CDraw* draw) {
 
     rtc_ds1307_update(&rtc2);
 
-    if (((0.5 * (pic.pins[PWM_PIN].oavalue - 55)) > 10) && (Window1.Get_mcupwr())) {
+    if (((0.5 * (pic.pins[PWM_PIN].oavalue - 55)) > 10) && (PICSimLab.Get_mcupwr())) {
         if (!sound_on) {
             buzzer.BeepStart();
             sound_on = 1;
@@ -577,12 +575,12 @@ void cboard_PQDB::Run_CPU(void) {
 
     float alm7seg[32];  // luminosidade media display 7 seg
 
-    const int JUMPSTEPS = Window1.GetJUMPSTEPS();
-    const long int NSTEP = Window1.GetNSTEP();
+    const int JUMPSTEPS = PICSimLab.GetJUMPSTEPS();
+    const long int NSTEP = PICSimLab.GetNSTEP();
     const float RNSTEP = 200.0 * pic.PINCOUNT / NSTEP;
 
     if (use_spare)
-        Window5.PreProcess();
+        SpareParts.PreProcess();
 
     memset(alm7seg, 0, 32 * sizeof(unsigned int));
 
@@ -594,7 +592,7 @@ void cboard_PQDB::Run_CPU(void) {
 
     j = JUMPSTEPS;
     pi = 0;
-    if (Window1.Get_mcupwr()) {
+    if (PICSimLab.Get_mcupwr()) {
         for (i = 0; i < NSTEP; i++) {
             if (j >= JUMPSTEPS) {
                 pic_set_pin(&pic, pic.mclr, p_RST);
@@ -627,9 +625,9 @@ void cboard_PQDB::Run_CPU(void) {
             ioupdated = pic.ioupdated;
             InstCounterInc();
             if (use_oscope)
-                Window4.SetSample();
+                Oscilloscope.SetSample();
             if (use_spare)
-                Window5.Process();
+                SpareParts.Process();
 
             // increment mean value counter if pin is high
             alm[pi] += pins[pi].value;
@@ -749,7 +747,7 @@ void cboard_PQDB::Run_CPU(void) {
         }
     }
 
-    const long int NSTEPJ = Window1.GetNSTEPJ();
+    const long int NSTEPJ = PICSimLab.GetNSTEPJ();
 
     for (i = 0; i < 32; i++) {
         lm7seg[i] = (int)(((3000.0 * alm7seg[i]) / NSTEPJ) + 30);
@@ -767,7 +765,7 @@ void cboard_PQDB::Run_CPU(void) {
     pic.pins[PSRD6].oavalue = (pic.pins[PSRD6].oavalue + ((shiftReg_alm[6] * 200.0) / NSTEPJ) + 55) / 2;
     pic.pins[PSRD7].oavalue = (pic.pins[PSRD7].oavalue + ((shiftReg_alm[7] * 200.0) / NSTEPJ) + 55) / 2;
     if (use_spare)
-        Window5.PostProcess();
+        SpareParts.PostProcess();
 
     if (lcd.update)
         output_ids[O_LCD]->update = 1;
@@ -876,17 +874,17 @@ void cboard_PQDB::Reset(void) {
 #else
     if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
-                                           itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                           lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                            100.0 * pic.serial[0].serialbaud) /
-                                                                           pic.serial[0].serialexbaud)) +
-                                           lxT("%)"));
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+                                                  itoa(pic.serial[0].serialbaud) + lxT("(") +
+                                                  lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                                                                   100.0 * pic.serial[0].serialbaud) /
+                                                                                  pic.serial[0].serialexbaud)) +
+                                                  lxT("%)"));
     else
-        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
 
     if (use_spare)
-        Window5.Reset();
+        SpareParts.Reset();
 
     for (int i = 0; i < 8; i++) {
         pic.pins[PSRD0 + i].ptype = PT_DIGITAL;
@@ -981,11 +979,11 @@ void cboard_PQDB::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
         if ((input[i].x1 <= x) && (input[i].x2 >= x) && (input[i].y1 <= y) && (input[i].y2 >= y)) {
             switch (input[i].id) {
                 case I_PWR: {
-                    if (Window1.Get_mcupwr()) {
-                        Window1.Set_mcupwr(0);
+                    if (PICSimLab.Get_mcupwr()) {
+                        PICSimLab.Set_mcupwr(0);
                         Reset();
                     } else {
-                        Window1.Set_mcupwr(1);
+                        PICSimLab.Set_mcupwr(1);
                         Reset();
                     }
                 }
@@ -993,9 +991,9 @@ void cboard_PQDB::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
                     break;
 
                 case I_RST: {
-                    if (Window1.Get_mcupwr() && pic_reset(&pic, -1)) {
-                        Window1.Set_mcupwr(0);
-                        Window1.Set_mcurst(1);
+                    if (PICSimLab.Get_mcupwr() && pic_reset(&pic, -1)) {
+                        PICSimLab.Set_mcupwr(0);
+                        PICSimLab.Set_mcurst(1);
                     }
                     p_RST = 0;
                     output_ids[O_RST]->update = 1;
@@ -1061,9 +1059,9 @@ void cboard_PQDB::EvMouseButtonRelease(uint button, uint x, uint y, uint state) 
         if (((input[i].x1 <= x) && (input[i].x2 >= x)) && ((input[i].y1 <= y) && (input[i].y2 >= y))) {
             switch (input[i].id) {
                 case I_RST: {
-                    if (Window1.Get_mcurst()) {
-                        Window1.Set_mcupwr(1);
-                        Window1.Set_mcurst(0);
+                    if (PICSimLab.Get_mcurst()) {
+                        PICSimLab.Set_mcupwr(1);
+                        PICSimLab.Set_mcurst(0);
 
                         if (pic_reset(&pic, -1)) {
                             Reset();
@@ -1434,22 +1432,22 @@ void cboard_PQDB::RefreshStatus(void) {
 #else
     if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
-                                           itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                           lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                            100.0 * pic.serial[0].serialbaud) /
-                                                                           pic.serial[0].serialexbaud)) +
-                                           lxT("%)"));
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+                                                  itoa(pic.serial[0].serialbaud) + lxT("(") +
+                                                  lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                                                                   100.0 * pic.serial[0].serialbaud) /
+                                                                                  pic.serial[0].serialexbaud)) +
+                                                  lxT("%)"));
     else
-        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
 }
 
 void cboard_PQDB::WritePreferences(void) {
-    Window1.saveprefs(lxT("PQDB_proc"), Proc);
-    Window1.saveprefs(lxT("PQDB_clock"), lxString().Format("%2.1f", Window1.GetClock()));
-    Window1.saveprefs(lxT("PQDB_pot"), lxString().Format("%i", pot));
-    Window1.saveprefs(lxT("PQDB_light"), lxString().Format("%i", scroll2->GetPosition()));
-    Window1.saveprefs(lxT("PQDB_temp"), lxString().Format("%i", scroll1->GetPosition()));
+    PICSimLab.saveprefs(lxT("PQDB_proc"), Proc);
+    PICSimLab.saveprefs(lxT("PQDB_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.saveprefs(lxT("PQDB_pot"), lxString().Format("%i", pot));
+    PICSimLab.saveprefs(lxT("PQDB_light"), lxString().Format("%i", scroll2->GetPosition()));
+    PICSimLab.saveprefs(lxT("PQDB_temp"), lxString().Format("%i", scroll1->GetPosition()));
 }
 
 void cboard_PQDB::ReadPreferences(char* name, char* value) {
@@ -1458,7 +1456,7 @@ void cboard_PQDB::ReadPreferences(char* name, char* value) {
     }
 
     if (!strcmp(name, "PQDB_clock")) {
-        Window1.SetClock(atof(value));
+        PICSimLab.SetClock(atof(value));
     }
 
     if (!strcmp(name, "PQDB_pot")) {

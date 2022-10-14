@@ -1,0 +1,176 @@
+<window1>
+  <Class type="String">CPWindow</Class>
+  <Name type="String">window1</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">486</X>
+  <Y type="int">274</Y>
+  <Width type="uint">375</Width>
+  <Height type="uint">404</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Title type="String">Editor</Title>
+  <OverrideRedirect type="bool">0</OverrideRedirect>
+  <EvOnCreate type="Event">TRUE</EvOnCreate>
+  <EvOnDestroy type="Event">FALSE</EvOnDestroy>
+  <EvOnShow type="Event">FALSE</EvOnShow>
+  <EvOnHide type="Event">FALSE</EvOnHide>
+  <EvOnEnter type="Event">FALSE</EvOnEnter>
+  <EvOnLeave type="Event">FALSE</EvOnLeave>
+<menu1>
+  <Class type="String">CMenu</Class>
+  <Name type="String">menu1</Name>
+  <Tag type="int">0</Tag>
+  <MenuItems type="MenuItems">Arquivo,Editar,Ajuda,</MenuItems>
+</menu1>
+<filedialog1>
+  <Class type="String">CFileDialog</Class>
+  <Name type="String">filedialog1</Name>
+  <Tag type="int">0</Tag>
+  <FileName type="String">untitled.txt</FileName>
+  <Filter type="String">All Files (*.*)|*.*</Filter>
+  <Type type="int">129</Type>
+</filedialog1>
+<filedialog2>
+  <Class type="String">CFileDialog</Class>
+  <Name type="String">filedialog2</Name>
+  <Tag type="int">0</Tag>
+  <FileName type="String">untitled.txt</FileName>
+  <Filter type="String">All Files (*.*)|*.*</Filter>
+  <Type type="int">130</Type>
+</filedialog2>
+<menu1_Arquivo>
+  <Class type="String">CPMenu</Class>
+  <Name type="String">menu1_Arquivo</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Arquivo</Text>
+  <MenuItems type="MenuItems">Abrir,Salvar,Sair,</MenuItems>
+</menu1_Arquivo>
+<menu1_Arquivo_Abrir>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Arquivo_Abrir</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Abrir</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Arquivo_Abrir>
+<menu1_Arquivo_Salvar>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Arquivo_Salvar</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Salvar</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Arquivo_Salvar>
+<menu1_Arquivo_Sair>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Arquivo_Sair</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Sair</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Arquivo_Sair>
+<grid1>
+  <Class type="String">CGrid</Class>
+  <Name type="String">grid1</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">38</X>
+  <Y type="int">45</Y>
+  <Width type="uint">300</Width>
+  <Height type="uint">300</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <RowsCount type="Int">10</RowsCount>
+  <ColsCount type="Int">10</ColsCount>
+  <ReadOnly type="Int">0</ReadOnly>
+  <EnableDragGridSize type="Int">0</EnableDragGridSize>
+  <DefaultRowSize type="Int">30</DefaultRowSize>
+  <DefaultColSize type="Int">30</DefaultColSize>
+  <RowLabelSize type="Int">0</RowLabelSize>
+  <ColLabelSize type="Int">0</ColLabelSize>
+  <EvOnGridCellLeftClick type="Event">TRUE</EvOnGridCellLeftClick>
+  <EvOnGridCellRightClick type="Event">FALSE</EvOnGridCellRightClick>
+  <EvOnGridSelectCell type="Event">FALSE</EvOnGridSelectCell>
+</grid1>
+<menu1_Editar>
+  <Class type="String">CPMenu</Class>
+  <Name type="String">menu1_Editar</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Editar</Text>
+  <MenuItems type="MenuItems">Limpar,</MenuItems>
+</menu1_Editar>
+<menu1_Ajuda>
+  <Class type="String">CPMenu</Class>
+  <Name type="String">menu1_Ajuda</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Ajuda</Text>
+  <MenuItems type="MenuItems">Sobre,</MenuItems>
+</menu1_Ajuda>
+<menu1_Editar_Limpar>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Editar_Limpar</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Limpar</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Editar_Limpar>
+<menu1_Ajuda_Sobre>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Ajuda_Sobre</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Sobre</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Ajuda_Sobre>
+<label1>
+  <Class type="String">CLabel</Class>
+  <Name type="String">label1</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">161</X>
+  <Y type="int">22</Y>
+  <Width type="uint">60</Width>
+  <Height type="uint">20</Height>
+  <Hint type="String"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvKeyboardKey type="Event">FALSE</EvKeyboardKey>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <Text type="String">Editor</Text>
+  <Align type="CAlign">1</Align>
+</label1>
+</window1>

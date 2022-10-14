@@ -25,9 +25,9 @@
 
 // include files
 #include "board_Arduino_Uno.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"  //Oscilloscope
-#include "../picsimlab5.h"  //Spare Parts
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 /* ids of inputs of input map*/
 enum {
@@ -86,7 +86,7 @@ cboard_Arduino_Uno::cboard_Arduino_Uno(void) {
 
     // gauge1
     gauge1 = new CGauge();
-    gauge1->SetFOwner(&Window1);
+    gauge1->SetFOwner(PICSimLab.GetWindow());
     gauge1->SetName(lxT("gauge1_p5"));
     gauge1->SetX(35);
     gauge1->SetY(74);
@@ -97,10 +97,10 @@ cboard_Arduino_Uno::cboard_Arduino_Uno(void) {
     gauge1->SetRange(100);
     gauge1->SetValue(0);
     gauge1->SetType(4);
-    Window1.CreateChild(gauge1);
+    PICSimLab.GetWindow()->CreateChild(gauge1);
     // gauge2
     gauge2 = new CGauge();
-    gauge2->SetFOwner(&Window1);
+    gauge2->SetFOwner(PICSimLab.GetWindow());
     gauge2->SetName(lxT("gauge2_p5"));
     gauge2->SetX(35);
     gauge2->SetY(100);
@@ -111,10 +111,10 @@ cboard_Arduino_Uno::cboard_Arduino_Uno(void) {
     gauge2->SetRange(100);
     gauge2->SetValue(0);
     gauge2->SetType(4);
-    Window1.CreateChild(gauge2);
+    PICSimLab.GetWindow()->CreateChild(gauge2);
     // gauge3
     gauge3 = new CGauge();
-    gauge3->SetFOwner(&Window1);
+    gauge3->SetFOwner(PICSimLab.GetWindow());
     gauge3->SetName(lxT("gauge3_p5"));
     gauge3->SetX(35);
     gauge3->SetY(125);
@@ -125,10 +125,10 @@ cboard_Arduino_Uno::cboard_Arduino_Uno(void) {
     gauge3->SetRange(100);
     gauge3->SetValue(0);
     gauge3->SetType(4);
-    Window1.CreateChild(gauge3);
+    PICSimLab.GetWindow()->CreateChild(gauge3);
     // gauge4
     gauge4 = new CGauge();
-    gauge4->SetFOwner(&Window1);
+    gauge4->SetFOwner(PICSimLab.GetWindow());
     gauge4->SetName(lxT("gauge4_p5"));
     gauge4->SetX(35);
     gauge4->SetY(150);
@@ -139,10 +139,10 @@ cboard_Arduino_Uno::cboard_Arduino_Uno(void) {
     gauge4->SetRange(100);
     gauge4->SetValue(0);
     gauge4->SetType(4);
-    Window1.CreateChild(gauge4);
+    PICSimLab.GetWindow()->CreateChild(gauge4);
     // gauge5
     gauge5 = new CGauge();
-    gauge5->SetFOwner(&Window1);
+    gauge5->SetFOwner(PICSimLab.GetWindow());
     gauge5->SetName(lxT("gauge5_p5"));
     gauge5->SetX(35);
     gauge5->SetY(175);
@@ -153,10 +153,10 @@ cboard_Arduino_Uno::cboard_Arduino_Uno(void) {
     gauge5->SetRange(100);
     gauge5->SetValue(0);
     gauge5->SetType(4);
-    Window1.CreateChild(gauge5);
+    PICSimLab.GetWindow()->CreateChild(gauge5);
     // gauge6
     gauge6 = new CGauge();
-    gauge6->SetFOwner(&Window1);
+    gauge6->SetFOwner(PICSimLab.GetWindow());
     gauge6->SetName(lxT("gauge6_p5"));
     gauge6->SetX(35);
     gauge6->SetY(200);
@@ -167,11 +167,11 @@ cboard_Arduino_Uno::cboard_Arduino_Uno(void) {
     gauge6->SetRange(100);
     gauge6->SetValue(0);
     gauge6->SetType(4);
-    Window1.CreateChild(gauge6);
+    PICSimLab.GetWindow()->CreateChild(gauge6);
 
     // label1
     label1 = new CLabel();
-    label1->SetFOwner(&Window1);
+    label1->SetFOwner(PICSimLab.GetWindow());
     label1->SetName(lxT("label1_p5"));
     label1->SetX(12);
     label1->SetY(75);
@@ -181,10 +181,10 @@ cboard_Arduino_Uno::cboard_Arduino_Uno(void) {
     label1->SetVisible(1);
     label1->SetText(lxT("3"));
     label1->SetAlign(1);
-    Window1.CreateChild(label1);
+    PICSimLab.GetWindow()->CreateChild(label1);
     // label2
     label2 = new CLabel();
-    label2->SetFOwner(&Window1);
+    label2->SetFOwner(PICSimLab.GetWindow());
     label2->SetName(lxT("label2_p5"));
     label2->SetX(12);
     label2->SetY(100);
@@ -194,10 +194,10 @@ cboard_Arduino_Uno::cboard_Arduino_Uno(void) {
     label2->SetVisible(1);
     label2->SetText(lxT("5"));
     label2->SetAlign(1);
-    Window1.CreateChild(label2);
+    PICSimLab.GetWindow()->CreateChild(label2);
     // label3
     label3 = new CLabel();
-    label3->SetFOwner(&Window1);
+    label3->SetFOwner(PICSimLab.GetWindow());
     label3->SetName(lxT("label3_p5"));
     label3->SetX(13);
     label3->SetY(125);
@@ -207,10 +207,10 @@ cboard_Arduino_Uno::cboard_Arduino_Uno(void) {
     label3->SetVisible(1);
     label3->SetText(lxT("6"));
     label3->SetAlign(1);
-    Window1.CreateChild(label3);
+    PICSimLab.GetWindow()->CreateChild(label3);
     // label4
     label4 = new CLabel();
-    label4->SetFOwner(&Window1);
+    label4->SetFOwner(PICSimLab.GetWindow());
     label4->SetName(lxT("label4_p5"));
     label4->SetX(13);
     label4->SetY(150);
@@ -220,10 +220,10 @@ cboard_Arduino_Uno::cboard_Arduino_Uno(void) {
     label4->SetVisible(1);
     label4->SetText(lxT("9"));
     label4->SetAlign(1);
-    Window1.CreateChild(label4);
+    PICSimLab.GetWindow()->CreateChild(label4);
     // label5
     label5 = new CLabel();
-    label5->SetFOwner(&Window1);
+    label5->SetFOwner(PICSimLab.GetWindow());
     label5->SetName(lxT("label5_p5"));
     label5->SetX(13);
     label5->SetY(175);
@@ -233,10 +233,10 @@ cboard_Arduino_Uno::cboard_Arduino_Uno(void) {
     label5->SetVisible(1);
     label5->SetText(lxT("10"));
     label5->SetAlign(1);
-    Window1.CreateChild(label5);
+    PICSimLab.GetWindow()->CreateChild(label5);
     // label6
     label6 = new CLabel();
-    label6->SetFOwner(&Window1);
+    label6->SetFOwner(PICSimLab.GetWindow());
     label6->SetName(lxT("label6_p5"));
     label6->SetX(13);
     label6->SetY(200);
@@ -246,26 +246,26 @@ cboard_Arduino_Uno::cboard_Arduino_Uno(void) {
     label6->SetVisible(1);
     label6->SetText(lxT("11"));
     label6->SetAlign(1);
-    Window1.CreateChild(label6);
+    PICSimLab.GetWindow()->CreateChild(label6);
 }
 
 // Destructor called once on board destruction
 
 cboard_Arduino_Uno::~cboard_Arduino_Uno(void) {
     // controls destruction
-    Window1.DestroyChild(gauge1);
-    Window1.DestroyChild(gauge2);
-    Window1.DestroyChild(gauge3);
-    Window1.DestroyChild(gauge4);
-    Window1.DestroyChild(gauge5);
-    Window1.DestroyChild(gauge6);
+    PICSimLab.GetWindow()->DestroyChild(gauge1);
+    PICSimLab.GetWindow()->DestroyChild(gauge2);
+    PICSimLab.GetWindow()->DestroyChild(gauge3);
+    PICSimLab.GetWindow()->DestroyChild(gauge4);
+    PICSimLab.GetWindow()->DestroyChild(gauge5);
+    PICSimLab.GetWindow()->DestroyChild(gauge6);
 
-    Window1.DestroyChild(label1);
-    Window1.DestroyChild(label2);
-    Window1.DestroyChild(label3);
-    Window1.DestroyChild(label4);
-    Window1.DestroyChild(label5);
-    Window1.DestroyChild(label6);
+    PICSimLab.GetWindow()->DestroyChild(label1);
+    PICSimLab.GetWindow()->DestroyChild(label2);
+    PICSimLab.GetWindow()->DestroyChild(label3);
+    PICSimLab.GetWindow()->DestroyChild(label4);
+    PICSimLab.GetWindow()->DestroyChild(label5);
+    PICSimLab.GetWindow()->DestroyChild(label6);
 }
 
 // Reset board status
@@ -283,12 +283,12 @@ void cboard_Arduino_Uno::Reset(void) {
 #else
     if (serialfd != INVALID_HANDLE_VALUE)
 #endif
-        Window1.statusbar1.SetField(
+        PICSimLab.GetStatusBar()->SetField(
             2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(serialbaud) + lxT("(") +
                    lxString().Format("%4.1f", fabs((100.0 * serialexbaud - 100.0 * serialbaud) / serialexbaud)) +
                    lxT("%)"));
     else
-        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
 
     /*
       //reset mean value
@@ -298,7 +298,7 @@ void cboard_Arduino_Uno::Reset(void) {
       }
      */
     if (use_spare)
-        Window5.Reset();
+        SpareParts.Reset();
 
     RegisterRemoteControl();
 }
@@ -316,45 +316,45 @@ void cboard_Arduino_Uno::RefreshStatus(void) {
 #else
     if (serialfd != INVALID_HANDLE_VALUE)
 #endif
-        Window1.statusbar1.SetField(
+        PICSimLab.GetStatusBar()->SetField(
             2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(serialbaud) + lxT("(") +
                    lxString().Format("%4.1f", fabs((100.0 * serialexbaud - 100.0 * serialbaud) / serialexbaud)) +
                    lxT("%)"));
     else
-        Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
-    if (Window1.Get_mcupwr()) {
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+    if (PICSimLab.Get_mcupwr()) {
         if (avr) {
             switch (avr->state) {
                 case cpu_Limbo:
-                    Window1.SetCpuState(CPU_ERROR);
+                    PICSimLab.SetCpuState(CPU_ERROR);
                     break;
                 case cpu_Stopped:
-                    Window1.SetCpuState(CPU_HALTED);
+                    PICSimLab.SetCpuState(CPU_HALTED);
                     break;
                 case cpu_Running:
-                    Window1.SetCpuState(CPU_RUNNING);
+                    PICSimLab.SetCpuState(CPU_RUNNING);
                     break;
                 case cpu_Sleeping:
-                    Window1.SetCpuState(CPU_HALTED);
+                    PICSimLab.SetCpuState(CPU_HALTED);
                     break;
                 case cpu_Step:
-                    Window1.SetCpuState(CPU_STEPPING);
+                    PICSimLab.SetCpuState(CPU_STEPPING);
                     break;
                 case cpu_StepDone:
-                    Window1.SetCpuState(CPU_STEPPING);
+                    PICSimLab.SetCpuState(CPU_STEPPING);
                     break;
                 case cpu_Done:
-                    Window1.SetCpuState(CPU_HALTED);
+                    PICSimLab.SetCpuState(CPU_HALTED);
                     break;
                 case cpu_Crashed:
-                    Window1.SetCpuState(CPU_ERROR);
+                    PICSimLab.SetCpuState(CPU_ERROR);
                     break;
             }
         } else {
-            Window1.SetCpuState(CPU_ERROR);
+            PICSimLab.SetCpuState(CPU_ERROR);
         }
     } else {
-        Window1.SetCpuState(CPU_POWER_OFF);
+        PICSimLab.SetCpuState(CPU_POWER_OFF);
     }
 }
 
@@ -362,8 +362,8 @@ void cboard_Arduino_Uno::RefreshStatus(void) {
 
 void cboard_Arduino_Uno::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
-    Window1.saveprefs(lxT("Arduino_Uno_proc"), Proc);
-    Window1.saveprefs(lxT("Arduino_Uno_clock"), lxString().Format("%2.1f", Window1.GetClock()));
+    PICSimLab.saveprefs(lxT("Arduino_Uno_proc"), Proc);
+    PICSimLab.saveprefs(lxT("Arduino_Uno_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
 }
 
 // Called whe configuration file load  preferences
@@ -375,7 +375,7 @@ void cboard_Arduino_Uno::ReadPreferences(char* name, char* value) {
     }
 
     if (!strcmp(name, "Arduino_Uno_clock")) {
-        Window1.SetClock(atof(value));
+        PICSimLab.SetClock(atof(value));
     }
 }
 
@@ -398,27 +398,27 @@ void cboard_Arduino_Uno::EvMouseButtonPress(uint button, uint x, uint y, uint st
             switch (input[i].id) {
                     // if event is over I_ISCP area then load hex file
                 case I_ICSP:
-                    Window1.menu1_File_LoadHex_EvMenuActive(NULL);
+                    PICSimLab.OpenLoadHexFileDialog();
                     break;
                     // if event is over I_PWR area then toggle board on/off
                 case I_PWR:
-                    if (Window1.Get_mcupwr())  // if on turn off
+                    if (PICSimLab.Get_mcupwr())  // if on turn off
                     {
-                        Window1.Set_mcupwr(0);
+                        PICSimLab.Set_mcupwr(0);
                         Reset();
                     } else  // if off turn on
                     {
-                        Window1.Set_mcupwr(1);
+                        PICSimLab.Set_mcupwr(1);
                         Reset();
                     }
                     output_ids[O_ON]->update = 1;
                     break;
                     // if event is over I_RST area then turn off and reset
                 case I_RST:
-                    if (Window1.Get_mcupwr())  // if powered
+                    if (PICSimLab.Get_mcupwr())  // if powered
                     {
-                        Window1.Set_mcupwr(0);
-                        Window1.Set_mcurst(1);
+                        PICSimLab.Set_mcupwr(0);
+                        PICSimLab.Set_mcurst(1);
                     }
                     p_RST = 0;
                     output_ids[O_RST]->update = 1;
@@ -439,10 +439,10 @@ void cboard_Arduino_Uno::EvMouseButtonRelease(uint button, uint x, uint y, uint 
             switch (input[i].id) {
                     // if event is over I_RST area then turn on
                 case I_RST:
-                    if (Window1.Get_mcurst())  // if powered
+                    if (PICSimLab.Get_mcurst())  // if powered
                     {
-                        Window1.Set_mcupwr(1);
-                        Window1.Set_mcurst(0);
+                        PICSimLab.Set_mcupwr(1);
+                        PICSimLab.Set_mcurst(0);
 
                         Reset();
                     }
@@ -476,13 +476,13 @@ void cboard_Arduino_Uno::Draw(CDraw* draw) {
             {
                 switch (output[i].id) {
                     case O_ON:
-                        draw->Canvas.SetColor(0, 200 * Window1.Get_mcupwr() + 55, 0);
+                        draw->Canvas.SetColor(0, 200 * PICSimLab.Get_mcupwr() + 55, 0);
                         break;
                     case O_RX:
-                        draw->Canvas.SetColor(0, (255 - pins[1].oavalue) * Window1.Get_mcupwr(), 0);
+                        draw->Canvas.SetColor(0, (255 - pins[1].oavalue) * PICSimLab.Get_mcupwr(), 0);
                         break;
                     case O_TX:
-                        draw->Canvas.SetColor(0, (255 - ((unsigned char)pins[2].oavalue * 10)) * Window1.Get_mcupwr(),
+                        draw->Canvas.SetColor(0, (255 - ((unsigned char)pins[2].oavalue * 10)) * PICSimLab.Get_mcupwr(),
                                               0);
                         break;
                     case O_L:
@@ -535,7 +535,7 @@ void cboard_Arduino_Uno::Run_CPU(void) {
 
     // int JUMPSTEPS = Window1.GetJUMPSTEPS ()*4.0; //number of steps skipped
     const int pinc = MGetPinCount();
-    const long int NSTEP = 4.0 * Window1.GetNSTEP();  // number of steps in 100ms
+    const long int NSTEP = 4.0 * PICSimLab.GetNSTEP();  // number of steps in 100ms
     const float RNSTEP = 200.0 * pinc / NSTEP;
 
     long long unsigned int cycle_start;
@@ -550,11 +550,11 @@ void cboard_Arduino_Uno::Run_CPU(void) {
     pins = MGetPinsValues();
 
     if (use_spare)
-        Window5.PreProcess();
+        SpareParts.PreProcess();
 
     // j = JUMPSTEPS; //step counter
     pi = 0;
-    if (Window1.Get_mcupwr())        // if powered
+    if (PICSimLab.Get_mcupwr())      // if powered
         for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
             // verify if a breakpoint is reached if not run one instruction
@@ -575,9 +575,9 @@ void cboard_Arduino_Uno::Run_CPU(void) {
 
             // avr->sleep_usec=0;
             if (use_oscope)
-                Window4.SetSample();
+                Oscilloscope.SetSample();
             if (use_spare)
-                Window5.Process();
+                SpareParts.Process();
             ioupdated = 0;
 
             // increment mean value counter if pin is high
@@ -604,7 +604,7 @@ void cboard_Arduino_Uno::Run_CPU(void) {
     }
 
     if (use_spare)
-        Window5.PostProcess();
+        SpareParts.PostProcess();
 
     // verifiy if LEDS need update
     if (output_ids[O_RX]->value != pins[1].oavalue) {

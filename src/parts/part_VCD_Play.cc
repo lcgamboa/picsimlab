@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "part_VCD_Play.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../picsimlab5.h"
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -90,7 +90,7 @@ void cpart_VCD_Play::Draw(void) {
     int to;
     int r, g, b;
 
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     Update = 0;
 
@@ -121,7 +121,7 @@ void cpart_VCD_Play::Draw(void) {
                     if (output_pins[output[i].id - O_P1] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
                     else
-                        canvas.RotatedText(Window5.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1,
+                        canvas.RotatedText(SpareParts.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1,
                                            output[i].y1, 0);
                     break;
                 case O_NAME:
@@ -291,14 +291,14 @@ void cpart_VCD_Play::ReadPreferences(lxString value) {
 }
 
 void cpart_VCD_Play::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = Window5.GetPinsNames();
+    lxString Items = SpareParts.GetPinsNames();
     lxString spin;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (output_pins[0] == 0)
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[0]);
+        spin = SpareParts.GetPinName(output_pins[0]);
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(output_pins[0]) + "  " + spin);
     }
 
@@ -306,7 +306,7 @@ void cpart_VCD_Play::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[1] == 0)
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[1]);
+        spin = SpareParts.GetPinName(output_pins[1]);
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(output_pins[1]) + "  " + spin);
     }
 
@@ -314,7 +314,7 @@ void cpart_VCD_Play::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[2] == 0)
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[2]);
+        spin = SpareParts.GetPinName(output_pins[2]);
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText(itoa(output_pins[2]) + "  " + spin);
     }
 
@@ -322,7 +322,7 @@ void cpart_VCD_Play::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[3] == 0)
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[3]);
+        spin = SpareParts.GetPinName(output_pins[3]);
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText(itoa(output_pins[3]) + "  " + spin);
     }
 
@@ -330,7 +330,7 @@ void cpart_VCD_Play::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[4] == 0)
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[4]);
+        spin = SpareParts.GetPinName(output_pins[4]);
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText(itoa(output_pins[4]) + "  " + spin);
     }
 
@@ -338,7 +338,7 @@ void cpart_VCD_Play::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[5] == 0)
         ((CCombo*)WProp->GetChildByName("combo6"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[5]);
+        spin = SpareParts.GetPinName(output_pins[5]);
         ((CCombo*)WProp->GetChildByName("combo6"))->SetText(itoa(output_pins[5]) + "  " + spin);
     }
 
@@ -346,7 +346,7 @@ void cpart_VCD_Play::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[6] == 0)
         ((CCombo*)WProp->GetChildByName("combo7"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[6]);
+        spin = SpareParts.GetPinName(output_pins[6]);
         ((CCombo*)WProp->GetChildByName("combo7"))->SetText(itoa(output_pins[6]) + "  " + spin);
     }
 
@@ -354,16 +354,14 @@ void cpart_VCD_Play::ConfigurePropertiesWindow(CPWindow* WProp) {
     if (output_pins[7] == 0)
         ((CCombo*)WProp->GetChildByName("combo8"))->SetText("0  NC");
     else {
-        spin = Window5.GetPinName(output_pins[7]);
+        spin = SpareParts.GetPinName(output_pins[7]);
         ((CCombo*)WProp->GetChildByName("combo8"))->SetText(itoa(output_pins[7]) + "  " + spin);
     }
 
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
     ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
 
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease =
-        EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
 void cpart_VCD_Play::ReadPropertiesWindow(CPWindow* WProp) {
@@ -378,20 +376,20 @@ void cpart_VCD_Play::ReadPropertiesWindow(CPWindow* WProp) {
 }
 
 void cpart_VCD_Play::PreProcess(void) {
-    vcd_inc = 1.0 / ((timescale * 1e-12) * Window1.GetBoard()->MGetInstClockFreq());
+    vcd_inc = 1.0 / ((timescale * 1e-12) * PICSimLab.GetBoard()->MGetInstClockFreq());
 }
 
 void cpart_VCD_Play::Process(void) {
     if (play) {
         if (vcd_data[vcd_ptr].count <= vcd_count) {
-            Window5.SetPin(output_pins[0], (vcd_data[vcd_ptr].data & 0x01) > 0);
-            Window5.SetPin(output_pins[1], (vcd_data[vcd_ptr].data & 0x02) > 0);
-            Window5.SetPin(output_pins[2], (vcd_data[vcd_ptr].data & 0x04) > 0);
-            Window5.SetPin(output_pins[3], (vcd_data[vcd_ptr].data & 0x08) > 0);
-            Window5.SetPin(output_pins[4], (vcd_data[vcd_ptr].data & 0x10) > 0);
-            Window5.SetPin(output_pins[5], (vcd_data[vcd_ptr].data & 0x20) > 0);
-            Window5.SetPin(output_pins[6], (vcd_data[vcd_ptr].data & 0x40) > 0);
-            Window5.SetPin(output_pins[7], (vcd_data[vcd_ptr].data & 0x80) > 0);
+            SpareParts.SetPin(output_pins[0], (vcd_data[vcd_ptr].data & 0x01) > 0);
+            SpareParts.SetPin(output_pins[1], (vcd_data[vcd_ptr].data & 0x02) > 0);
+            SpareParts.SetPin(output_pins[2], (vcd_data[vcd_ptr].data & 0x04) > 0);
+            SpareParts.SetPin(output_pins[3], (vcd_data[vcd_ptr].data & 0x08) > 0);
+            SpareParts.SetPin(output_pins[4], (vcd_data[vcd_ptr].data & 0x10) > 0);
+            SpareParts.SetPin(output_pins[5], (vcd_data[vcd_ptr].data & 0x20) > 0);
+            SpareParts.SetPin(output_pins[6], (vcd_data[vcd_ptr].data & 0x40) > 0);
+            SpareParts.SetPin(output_pins[7], (vcd_data[vcd_ptr].data & 0x80) > 0);
             vcd_ptr++;
             if (vcd_ptr >= vcd_data_count) {
                 vcd_ptr = 0;
@@ -406,14 +404,14 @@ void cpart_VCD_Play::Process(void) {
         }
     } else {
         if (vcd_count) {
-            Window5.SetPin(output_pins[0], 0);
-            Window5.SetPin(output_pins[1], 0);
-            Window5.SetPin(output_pins[2], 0);
-            Window5.SetPin(output_pins[3], 0);
-            Window5.SetPin(output_pins[4], 0);
-            Window5.SetPin(output_pins[5], 0);
-            Window5.SetPin(output_pins[6], 0);
-            Window5.SetPin(output_pins[7], 0);
+            SpareParts.SetPin(output_pins[0], 0);
+            SpareParts.SetPin(output_pins[1], 0);
+            SpareParts.SetPin(output_pins[2], 0);
+            SpareParts.SetPin(output_pins[3], 0);
+            SpareParts.SetPin(output_pins[4], 0);
+            SpareParts.SetPin(output_pins[5], 0);
+            SpareParts.SetPin(output_pins[6], 0);
+            SpareParts.SetPin(output_pins[7], 0);
         }
 
         vcd_count = 0;
@@ -423,7 +421,7 @@ void cpart_VCD_Play::Process(void) {
 }
 
 void cpart_VCD_Play::PostProcess(void) {
-    const picpin* ppins = Window5.GetPinsValues();
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     for (int i = 0; i < 8; i++) {
         if (output_pins[i] && (output_ids[O_L1 + i]->value != ppins[output_pins[i] - 1].oavalue)) {
@@ -440,15 +438,15 @@ void cpart_VCD_Play::EvMouseButtonPress(uint button, uint x, uint y, uint state)
         if (PointInside(x, y, input[i])) {
             switch (input[i].id) {
                 case I_LOAD:
-                    Window5.filedialog1.SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
-                    Window5.filedialog1.SetFilter(lxT("Value change dump (*.vcd)|*.vcd"));
+                    SpareParts.GetFileDialog()->SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
+                    SpareParts.GetFileDialog()->SetFilter(lxT("Value change dump (*.vcd)|*.vcd"));
                     if (f_vcd_name[0] == '*') {
-                        Window5.filedialog1.SetFileName(lxT("untitled.vcd"));
+                        SpareParts.GetFileDialog()->SetFileName(lxT("untitled.vcd"));
                     } else {
-                        Window5.filedialog1.SetFileName(f_vcd_name);
+                        SpareParts.GetFileDialog()->SetFileName(f_vcd_name);
                     }
-                    Window5.Setfdtype(id);
-                    Window5.filedialog1.Run();
+                    SpareParts.Setfdtype(id);
+                    SpareParts.GetFileDialog()->Run();
                     break;
                 case I_PLAY:
                     if (f_vcd_name[0] != '*') {
@@ -491,8 +489,8 @@ void cpart_VCD_Play::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
 void cpart_VCD_Play::filedialog_EvOnClose(int retId) {
     if (retId) {
-        if ((Window5.filedialog1.GetType() == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
-            strncpy(f_vcd_name, Window5.filedialog1.GetFileName().c_str(), 199);
+        if ((SpareParts.GetFileDialog()->GetType() == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
+            strncpy(f_vcd_name, SpareParts.GetFileDialog()->GetFileName().c_str(), 199);
             LoadVCD(f_vcd_name);
         }
         output_ids[O_NAME]->update = 1;

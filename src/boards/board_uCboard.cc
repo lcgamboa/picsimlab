@@ -26,9 +26,9 @@
 // include files
 
 #include "board_uCboard.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"  //Oscilloscope
-#include "../picsimlab5.h"  //Spare Parts
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 #ifndef _WIN_
 #define INVALID_HANDLE_VALUE -1;
@@ -81,9 +81,9 @@ unsigned short cboard_uCboard::get_out_id(char* name) {
 cboard_uCboard::cboard_uCboard(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     Proc = "C51";  // default microcontroller if none defined in preferences
     ReadMaps();    // Read input and output board maps
-    lxImage image(&Window1);
-    image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("boards/Common/ic40.svg")), 0, Scale, Scale, 1);
-    micbmp = new lxBitmap(&image, &Window1);
+    lxImage image(PICSimLab.GetWindow());
+    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic40.svg")), 0, Scale, Scale, 1);
+    micbmp = new lxBitmap(&image, PICSimLab.GetWindow());
 #
     serialfd = INVALID_HANDLE_VALUE;
 }
@@ -100,25 +100,25 @@ cboard_uCboard::~cboard_uCboard(void) {
 void cboard_uCboard::Reset(void) {
     MReset(1);
 
-    Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
 
     if (use_spare)
-        Window5.Reset();
+        SpareParts.Reset();
 }
 
 // Called ever 1s to refresh status
 
 void cboard_uCboard::RefreshStatus(void) {
-    Window1.statusbar1.SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
 }
 
 // Called to save board preferences in configuration file
 
 void cboard_uCboard::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
-    Window1.saveprefs(lxT("uCboard_proc"), Proc);
+    PICSimLab.saveprefs(lxT("uCboard_proc"), Proc);
     // write microcontroller clock to preferences
-    Window1.saveprefs(lxT("uCboard_clock"), lxString().Format("%2.1f", Window1.GetClock()));
+    PICSimLab.saveprefs(lxT("uCboard_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
 }
 
 // Called whe configuration file load  preferences
@@ -130,7 +130,7 @@ void cboard_uCboard::ReadPreferences(char* name, char* value) {
     }
     // read microcontroller clock
     if (!strcmp(name, "uCboard_clock")) {
-        Window1.SetClock(atof(value));
+        PICSimLab.SetClock(atof(value));
     }
 }
 
@@ -153,17 +153,18 @@ void cboard_uCboard::EvMouseButtonPress(uint button, uint x, uint y, uint state)
             switch (input[i].id) {
                     // if event is over I_ISCP area then load hex file
                 case I_ICSP:
-                    Window1.menu1_File_LoadHex_EvMenuActive(NULL);
+                    PICSimLab.OpenLoadHexFileDialog();
+                    ;
                     break;
                     // if event is over I_PWR area then toggle board on/off
                 case I_PWR:
-                    if (Window1.Get_mcupwr())  // if on turn off
+                    if (PICSimLab.Get_mcupwr())  // if on turn off
                     {
-                        Window1.Set_mcupwr(0);
+                        PICSimLab.Set_mcupwr(0);
                         Reset();
                     } else  // if off turn on
                     {
-                        Window1.Set_mcupwr(1);
+                        PICSimLab.Set_mcupwr(1);
                         Reset();
                     }
                     output_ids[O_LPWR]->update = 1;
@@ -173,8 +174,8 @@ void cboard_uCboard::EvMouseButtonPress(uint button, uint x, uint y, uint state)
                     /*
                     if (Window1.Get_mcupwr () && reset (-1))//if powered
                      {
-                      Window1.Set_mcupwr (0);
-                      Window1.Set_mcurst (1);
+                      PICSimLab.Set_mcupwr (0);
+                      PICSimLab.Set_mcurst (1);
                      }
                      */
                     MReset(-1);
@@ -197,10 +198,10 @@ void cboard_uCboard::EvMouseButtonRelease(uint button, uint x, uint y, uint stat
             switch (input[i].id) {
                     // if event is over I_RST area then turn on
                 case I_RST:
-                    if (Window1.Get_mcurst())  // if powered
+                    if (PICSimLab.Get_mcurst())  // if powered
                     {
-                        Window1.Set_mcupwr(1);
-                        Window1.Set_mcurst(0);
+                        PICSimLab.Set_mcupwr(1);
+                        PICSimLab.Set_mcurst(0);
                         /*
                                  if (reset (-1))
                                   {
@@ -244,7 +245,7 @@ void cboard_uCboard::Draw(CDraw* draw) {
                 switch (output[i].id)  // search for color of output
                 {
                     case O_LPWR:  // Blue using mcupwr value
-                        draw->Canvas.SetColor(200 * Window1.Get_mcupwr() + 55, 0, 0);
+                        draw->Canvas.SetColor(200 * PICSimLab.Get_mcupwr() + 55, 0, 0);
                         draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                                output[i].y2 - output[i].y1);
                         break;
@@ -295,7 +296,7 @@ void cboard_uCboard::Run_CPU(void) {
 
     // const int JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
     // FIXME NSTEP must be multiplied for 4
-    const long int NSTEP = Window1.GetNSTEP();  // number of steps in 100ms
+    const long int NSTEP = PICSimLab.GetNSTEP();  // number of steps in 100ms
     const float RNSTEP = 200.0 * pinc / NSTEP;
 
     // reset pins mean value
@@ -303,11 +304,11 @@ void cboard_uCboard::Run_CPU(void) {
 
     // Spare parts window pre process
     if (use_spare)
-        Window5.PreProcess();
+        SpareParts.PreProcess();
 
     // j = JUMPSTEPS; //step counter
     pi = 0;
-    if (Window1.Get_mcupwr())        // if powered
+    if (PICSimLab.Get_mcupwr())      // if powered
         for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
             /*
@@ -320,10 +321,10 @@ void cboard_uCboard::Run_CPU(void) {
             InstCounterInc();
             // Oscilloscope window process
             if (use_oscope)
-                Window4.SetSample();
+                Oscilloscope.SetSample();
             // Spare parts window process
             if (use_spare)
-                Window5.Process();
+                SpareParts.Process();
 
             // increment mean value counter if pin is high
             alm[pi] += pins[pi].value;
@@ -347,7 +348,7 @@ void cboard_uCboard::Run_CPU(void) {
 
     // Spare parts window pre post process
     if (use_spare)
-        Window5.PostProcess();
+        SpareParts.PostProcess();
 }
 
 int cboard_uCboard::MInit(const char* processor, const char* fname, float freq) {
@@ -359,21 +360,21 @@ int cboard_uCboard::MInit(const char* processor, const char* fname, float freq) 
         Proc = "C51";
     }
 
-    lxImage image(&Window1);
+    lxImage image(PICSimLab.GetWindow());
 
     if (!image.LoadFile(
-            lxGetLocalFile(Window1.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg")), 0,
+            lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg")), 0,
             Scale, Scale, 1)) {
-        image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("boards/Common/ic6.svg")), 0, Scale, Scale, 1);
+        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic6.svg")), 0, Scale, Scale, 1);
         printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
         printf("picsimlab: %s not found!\n",
-               (const char*)(Window1.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg"))
+               (const char*)(PICSimLab.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg"))
                    .c_str());
     }
 
     if (micbmp)
         delete micbmp;
-    micbmp = new lxBitmap(&image, &Window1);
+    micbmp = new lxBitmap(&image, PICSimLab.GetWindow());
 
     return ret;
 }
@@ -384,21 +385,21 @@ void cboard_uCboard::SetScale(double scale) {
 
     Scale = scale;
 
-    lxImage image(&Window1);
+    lxImage image(PICSimLab.GetWindow());
 
     if (!image.LoadFile(
-            lxGetLocalFile(Window1.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg")), 0,
+            lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg")), 0,
             Scale, Scale, 1)) {
-        image.LoadFile(lxGetLocalFile(Window1.GetSharePath() + lxT("boards/Common/ic6.svg")), 0, Scale, Scale, 1);
+        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic6.svg")), 0, Scale, Scale, 1);
         printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
         printf("picsimlab: %s not found!\n",
-               (const char*)(Window1.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg"))
+               (const char*)(PICSimLab.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg"))
                    .c_str());
     }
 
     if (micbmp)
         delete micbmp;
-    micbmp = new lxBitmap(&image, &Window1);
+    micbmp = new lxBitmap(&image, PICSimLab.GetWindow());
 }
 
 // Register the board in PICSimLab

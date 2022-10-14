@@ -25,7 +25,7 @@
 
 #include "rcontrol.h"
 #include "../picsimlab1.h"
-#include "../picsimlab5.h"
+#include "../spareparts.h"
 #include "lcd_hd44780.h"
 
 #define dprint \
@@ -59,6 +59,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
+#include "../picsimlab.h"
 
 void setnblock(int sock_descriptor);
 
@@ -97,7 +99,7 @@ int rcontrol_init(const unsigned short tcpport, const int reporterror) {
         if (bind(listenfd, (sockaddr*)&serv, sizeof(serv))) {
             if (reporterror) {
                 printf("rcontrol: bind error : %s \n", strerror(errno));
-                Window1.RegisterError(
+                PICSimLab.RegisterError(
                     lxString().Format("Can't open rcontrol TCP port %i\n It is already "
                                       "in use by another application!",
                                       tcpport));
@@ -391,11 +393,29 @@ int rcontrol_loop(void) {
             dprint("cmd[%s]\n", cmd);
 
             switch (cmd[0]) {
+                case 'c':
+                    if (!strncmp(cmd, "clk", 3)) {
+                        // Command clk =====================================================
+
+                        if (strlen(cmd) < 4) {
+                            snprintf(lstemp, 100, "%2.1f MHz\r\nOk\r\n>", PICSimLab.GetClock());
+                            ret = sendtext(lstemp);
+                        } else {
+                            float clk;
+                            sscanf(cmd + 3, "%f", &clk);
+
+                            PICSimLab.SetClock(clk, 0);
+
+                            snprintf(lstemp, 100, "Set to %2.1f MHz\r\nOk\r\n>", PICSimLab.GetClock());
+                            ret = sendtext(lstemp);
+                        }
+                    }
+                    break;
                 case 'd':
                     if (strstr(cmd, "dumpr")) {
                         // Command dumpr
                         // ========================================================
-                        Board = Window1.GetBoard();
+                        Board = PICSimLab.GetBoard();
                         unsigned int addr;
                         unsigned int size;
                         int ret = sscanf(cmd + 5, "%x %u \n", &addr, &size);
@@ -443,7 +463,7 @@ int rcontrol_loop(void) {
                     } else if (strstr(cmd, "dumpe")) {
                         // Command dumpe
                         // ========================================================
-                        Board = Window1.GetBoard();
+                        Board = PICSimLab.GetBoard();
                         unsigned int addr;
                         unsigned int size;
                         int ret = sscanf(cmd + 5, "%x %u \n", &addr, &size);
@@ -492,7 +512,7 @@ int rcontrol_loop(void) {
                     } else if (strstr(cmd, "dumpf")) {
                         // Command dumpf
                         // ========================================================
-                        Board = Window1.GetBoard();
+                        Board = PICSimLab.GetBoard();
                         unsigned int addr;
                         unsigned int size;
                         int ret = sscanf(cmd + 5, "%x %u \n", &addr, &size);
@@ -546,7 +566,7 @@ int rcontrol_loop(void) {
                         // Command exit
                         // ========================================================
                         sendtext("Ok\r\n>");
-                        Window1.SetWorkspaceFileName("");
+                        PICSimLab.SetWorkspaceFileName("");
                         Window1.SetToDestroy();
                         return 0;
                     } else {
@@ -559,7 +579,7 @@ int rcontrol_loop(void) {
                         // get==========================================================
                         char* ptr;
                         char* ptr2;
-                        Board = Window1.GetBoard();
+                        Board = PICSimLab.GetBoard();
 
                         if ((ptr = strstr(cmd, " board.in["))) {
                             int in = (ptr[10] - '0') * 10 + (ptr[11] - '0');
@@ -596,9 +616,9 @@ int rcontrol_loop(void) {
                         } else if ((ptr = strstr(cmd, " apin["))) {
                             int pin = (ptr[6] - '0') * 10 + (ptr[7] - '0');
                             if (Board->GetUseSpareParts()) {
-                                pins = Window5.GetPinsValues();
+                                pins = SpareParts.GetPinsValues();
                             } else {
-                                Board = Window1.GetBoard();
+                                Board = PICSimLab.GetBoard();
                                 pins = Board->MGetPinsValues();
                             }
                             snprintf(lstemp, 100, "apin[%02i]= %5.3f \r\nOk\r\n>", pin, pins[pin - 1].avalue);
@@ -606,9 +626,9 @@ int rcontrol_loop(void) {
                         } else if ((ptr = strstr(cmd, " pin["))) {
                             int pin = (ptr[5] - '0') * 10 + (ptr[6] - '0');
                             if (Board->GetUseSpareParts()) {
-                                pins = Window5.GetPinsValues();
+                                pins = SpareParts.GetPinsValues();
                             } else {
-                                Board = Window1.GetBoard();
+                                Board = PICSimLab.GetBoard();
                                 pins = Board->MGetPinsValues();
                             }
                             snprintf(lstemp, 100, "pin[%02i]= %i \r\nOk\r\n>", pin, pins[pin - 1].value);
@@ -616,9 +636,9 @@ int rcontrol_loop(void) {
                         } else if ((ptr = strstr(cmd, " pinl["))) {
                             int pin = (ptr[6] - '0') * 10 + (ptr[7] - '0');
                             if (Board->GetUseSpareParts()) {
-                                pins = Window5.GetPinsValues();
+                                pins = SpareParts.GetPinsValues();
                             } else {
-                                Board = Window1.GetBoard();
+                                Board = PICSimLab.GetBoard();
                                 pins = Board->MGetPinsValues();
                             }
                             snprintf(lstemp, 100, "pin[%02i] %c %c %i %03i %5.3f \"%-8s\" \r\nOk\r\n>", pin,
@@ -629,9 +649,9 @@ int rcontrol_loop(void) {
                         } else if ((ptr = strstr(cmd, " pinm["))) {
                             int pin = (ptr[6] - '0') * 10 + (ptr[7] - '0');
                             if (Board->GetUseSpareParts()) {
-                                pins = Window5.GetPinsValues();
+                                pins = SpareParts.GetPinsValues();
                             } else {
-                                Board = Window1.GetBoard();
+                                Board = PICSimLab.GetBoard();
                                 pins = Board->MGetPinsValues();
                             }
                             snprintf(lstemp, 100, "pin[%02i] %03i\r\nOk\r\n>", pin, (int)(pins[pin - 1].oavalue - 55));
@@ -641,8 +661,8 @@ int rcontrol_loop(void) {
                                 int pn = (ptr[5] - '0') * 10 + (ptr[6] - '0');
                                 int in = (ptr2[5] - '0') * 10 + (ptr2[6] - '0');
 
-                                if (pn < Window5.GetPartsCount()) {
-                                    Part = Window5.GetPart(pn);
+                                if (pn < SpareParts.GetCount()) {
+                                    Part = SpareParts.GetPart(pn);
                                     if (in < Part->GetInputCount()) {
                                         Input = Part->GetInput(in);
 
@@ -663,8 +683,8 @@ int rcontrol_loop(void) {
                                 int pn = (ptr[5] - '0') * 10 + (ptr[6] - '0');
                                 int out = (ptr2[6] - '0') * 10 + (ptr2[7] - '0');
 
-                                if (pn < Window5.GetPartsCount()) {
-                                    Part = Window5.GetPart(pn);
+                                if (pn < SpareParts.GetCount()) {
+                                    Part = SpareParts.GetPart(pn);
                                     if (out < Part->GetOutputCount()) {
                                         Output = Part->GetOutput(out);
 
@@ -697,6 +717,7 @@ int rcontrol_loop(void) {
                         // Command help
                         // ========================================================
                         ret += sendtext("List of supported commands:\r\n");
+                        ret += sendtext("  clk [val MHz]- show or set simulation clock\r\n");
                         ret += sendtext("  dumpe [a] [s]- dump internal EEPROM memory\r\n");
                         ret += sendtext("  dumpf [a] [s]- dump Flash memory\r\n");
                         ret += sendtext("  dumpr [a] [s]- dump RAM memory\r\n");
@@ -725,7 +746,7 @@ int rcontrol_loop(void) {
                     if (!strcmp(cmd, "info")) {
                         // Command info
                         // ========================================================
-                        Board = Window1.GetBoard();
+                        Board = PICSimLab.GetBoard();
                         stemp.Printf("Board:     %s\r\n", Board->GetName().c_str());
                         ret += sendtext((const char*)stemp.c_str());
                         stemp.Printf("Processor: %s\r\n", Board->GetProcessorName().c_str());
@@ -752,8 +773,8 @@ int rcontrol_loop(void) {
                         }
 
                         if (Board->GetUseSpareParts()) {
-                            for (i = 0; i < Window5.GetPartsCount(); i++) {
-                                Part = Window5.GetPart(i);
+                            for (i = 0; i < SpareParts.GetCount(); i++) {
+                                Part = SpareParts.GetPart(i);
                                 stemp.Printf("  part[%02i]: %s\r\n", i, (const char*)Part->GetName());
                                 ret += sendtext((const char*)stemp.c_str());
 
@@ -802,7 +823,7 @@ int rcontrol_loop(void) {
                     if (!strcmp(cmd, "pins")) {
                         // Command pins
                         // ========================================================
-                        Board = Window1.GetBoard();
+                        Board = PICSimLab.GetBoard();
                         pins = Board->MGetPinsValues();
                         int p2 = Board->MGetPinCount() / 2;
                         for (i = 0; i < p2; i++) {
@@ -819,7 +840,7 @@ int rcontrol_loop(void) {
                     } else if (!strcmp(cmd, "pinsl")) {
                         // Command pinsl
                         // ========================================================
-                        Board = Window1.GetBoard();
+                        Board = PICSimLab.GetBoard();
                         pins = Board->MGetPinsValues();
                         snprintf(lstemp, 100, "%i pins [%s]:\r\n", Board->MGetPinCount(),
                                  (const char*)Board->GetProcessorName().c_str());
@@ -850,7 +871,7 @@ int rcontrol_loop(void) {
                     if (!strcmp(cmd, "reset")) {
                         // Command reset
                         // =======================================================
-                        Window1.GetBoard()->MReset(0);
+                        PICSimLab.GetBoard()->MReset(0);
                         ret = sendtext("Ok\r\n>");
                     } else {
                         ret = sendtext("ERROR\r\n>");
@@ -862,7 +883,7 @@ int rcontrol_loop(void) {
                         // =========================================================
                         char* ptr;
                         char* ptr2;
-                        Board = Window1.GetBoard();
+                        Board = PICSimLab.GetBoard();
 
                         if ((ptr = strstr(cmd, " board.in["))) {
                             int in = (ptr[10] - '0') * 10 + (ptr[11] - '0');
@@ -896,9 +917,9 @@ int rcontrol_loop(void) {
                             dprint("apin[%02i] = %f \r\n", pin, value);
 
                             if (Board->GetUseSpareParts()) {
-                                Window5.SetAPin(pin, value);
+                                SpareParts.SetAPin(pin, value);
                             } else {
-                                Board = Window1.GetBoard();
+                                Board = PICSimLab.GetBoard();
                                 Board->MSetAPin(pin, value);
                             }
                             sendtext("Ok\r\n>");
@@ -911,9 +932,9 @@ int rcontrol_loop(void) {
                             dprint("pin[%02i] = %i \r\n", pin, value);
 
                             if (Board->GetUseSpareParts()) {
-                                Window5.SetPin(pin, value);
+                                SpareParts.SetPin(pin, value);
                             } else {
-                                Board = Window1.GetBoard();
+                                Board = PICSimLab.GetBoard();
                                 Board->MSetPin(pin, value);
                             }
                             sendtext("Ok\r\n>");
@@ -927,8 +948,8 @@ int rcontrol_loop(void) {
 
                             dprint("part[%02i].in[%02i] = %i \r\n", pn, in, value);
 
-                            if (pn < Window5.GetPartsCount()) {
-                                Part = Window5.GetPart(pn);
+                            if (pn < SpareParts.GetCount()) {
+                                Part = SpareParts.GetPart(pn);
 
                                 if (in < Part->GetInputCount()) {
                                     Input = Part->GetInput(in);
@@ -962,13 +983,13 @@ int rcontrol_loop(void) {
                         Window1.SetSync(0);
 
                         if (strstr(cmd + 3, "stop")) {
-                            Window1.SetSimulationRun(0);
+                            PICSimLab.SetSimulationRun(0);
                             ret = sendtext("Ok\r\n>");
                         } else if (strstr(cmd + 3, "start")) {
-                            Window1.SetSimulationRun(1);
+                            PICSimLab.SetSimulationRun(1);
                             ret = sendtext("Ok\r\n>");
                         } else {
-                            if (Window1.GetSimulationRun()) {
+                            if (PICSimLab.GetSimulationRun()) {
                                 ret = sendtext(lxString().Format("Simulation running %5.2fx\r\nOk\r\n>",
                                                                  100.0 / Window1.timer1.GetTime()));
                             } else {
