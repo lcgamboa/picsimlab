@@ -25,9 +25,9 @@
 
 // include files
 #include "exp_board_RemoteTCP.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"  //Oscilloscope
-#include "../spareparts.h"  //Spare Parts
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
+#include "../spareparts.h"
 
 #ifndef _WIN_
 #include <netinet/in.h>
@@ -118,9 +118,9 @@ unsigned short cboard_RemoteTCP::get_out_id(char* name) {
 cboard_RemoteTCP::cboard_RemoteTCP(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     Proc = "Ripes";  // default microcontroller if none defined in preferences
     ReadMaps();      // Read input and output board maps
-    lxImage image(&Window1);
+    lxImage image(PICSimLab.GetWindow());
     image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic48.svg")), 0, Scale, Scale, 1);
-    micbmp = new lxBitmap(&image, &Window1);
+    micbmp = new lxBitmap(&image, PICSimLab.GetWindow());
 }
 
 // Destructor called once on board destruction
@@ -148,7 +148,7 @@ int cboard_RemoteTCP::MInit(const char* processor, const char* fname, float freq
 
     ret = bsim_remote::MInit(processor, fname, freq);
 
-    lxImage image(&Window1);
+    lxImage image(PICSimLab.GetWindow());
 
     if (!image.LoadFile(
             lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg")), 0,
@@ -162,7 +162,7 @@ int cboard_RemoteTCP::MInit(const char* processor, const char* fname, float freq
 
     if (micbmp)
         delete micbmp;
-    micbmp = new lxBitmap(&image, &Window1);
+    micbmp = new lxBitmap(&image, PICSimLab.GetWindow());
 
     PICSimLab.Set_mcupwr(0);
 
@@ -375,9 +375,9 @@ void cboard_RemoteTCP::Run_CPU(void) {
 
     // Spare parts window pre process
     if (use_spare)
-        Window5.PreProcess();
+        SpareParts.PreProcess();
 
-    double delay = (Window1.GetIdleMs() * 1000) / NSTEP;
+    double delay = (PICSimLab.GetIdleMs() * 1000) / NSTEP;
 
     unsigned int countM = 1100 / delay;  // added 100us of overhead
     unsigned int count = countM;
@@ -426,7 +426,7 @@ void cboard_RemoteTCP::Run_CPU(void) {
                 Oscilloscope.SetSample();
             // Spare parts window process
             if (use_spare)
-                Window5.Process();
+                SpareParts.Process();
 
             // increment mean value counter if pin is high
             alm[pi] += pins[pi].value;
@@ -450,7 +450,7 @@ void cboard_RemoteTCP::Run_CPU(void) {
 
     // Spare parts window pre post process
     if (use_spare)
-        Window5.PostProcess();
+        SpareParts.PostProcess();
 }
 
 void cboard_RemoteTCP::MStep(void) {

@@ -251,14 +251,14 @@ void CPWindow1::thread1_EvThreadRun(CControl*) {
             tgo = 0;
 #endif
             etime = t1 - t0;
-            idle_ms = (idle_ms * 0.9) + ((Window1.timer1.GetTime() - etime * 1000) * 0.1);
+            PICSimLab.SetIdleMs((PICSimLab.GetIdleMs() * 0.9) + ((Window1.timer1.GetTime() - etime * 1000) * 0.1));
 #ifdef TDEBUG
             float ld = (etime) / (Window1.timer1.GetTime() * 1e-5);
             printf("PTime= %lf  tgo= %2i  zeroc= %2i  Timer= %3u Perc.= %5.1lf Idle= %5.1lf\n", etime, tgo, zerocount,
-                   Window1.timer1.GetTime(), ld, idle_ms);
+                   Window1.timer1.GetTime(), ld, PICSimLab.GetIdleMs());
 #endif
-            if (idle_ms < 0)
-                idle_ms = 0;
+            if (PICSimLab.GetIdleMs() < 0)
+                PICSimLab.SetIdleMs(0);
         } else {
 #ifndef _NOTHREAD
             PICSimLab.cpu_mutex->Lock();
@@ -986,10 +986,6 @@ void CPWindow1::menu1_Tools_PinViewer_EvMenuActive(CControl* control) {
 
 void CPWindow1::SetToDestroy(void) {
     settodestroy = 1;
-}
-
-double CPWindow1::GetIdleMs(void) {
-    return idle_ms;
 }
 
 // emscripten interface

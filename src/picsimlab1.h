@@ -158,7 +158,6 @@ public:
     void SetSync(unsigned char s) { sync = s; };
     unsigned char GetSync(void) { return sync; };
     void DrawBoard(void);
-    double GetIdleMs(void);
 
 private:
     int pa;
@@ -167,8 +166,6 @@ private:
 
     int crt;
     int zerocount;
-
-    double idle_ms;
 
     unsigned char sync;
 };

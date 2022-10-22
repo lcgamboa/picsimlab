@@ -38,7 +38,7 @@
 #define MSG_NOSIGNAL 0
 #endif
 
-#include "../picsimlab1.h"
+#include "../picsimlab.h"
 #include "../serial_port.h"
 #include "exp_bsim_remote.h"
 
@@ -126,8 +126,17 @@ void bsim_remote::MSetSerial(const char* port) {
          }
      }
 
-     Window1.menu1_File_LoadHex.SetEnable(0);
-     Window1.menu1_File_SaveHex.SetEnable(0);
+     PICSimLab.GetWindow()
+         ->GetChildByName("menu1")
+         ->GetChildByName("menu1_File")
+         ->GetChildByName("menu1_File_LoadHex")
+         ->SetEnable(0);
+
+     PICSimLab.GetWindow()
+         ->GetChildByName("menu1")
+         ->GetChildByName("menu1_File")
+         ->GetChildByName("menu1_File_SaveHex")
+         ->SetEnable(0);
 
      setnblock(listenfd);
 
@@ -207,8 +216,17 @@ void bsim_remote::MSetSerial(const char* port) {
  void bsim_remote::MEnd(void) {
      Disconnect();
 
-     Window1.menu1_File_LoadHex.SetEnable(1);
-     Window1.menu1_File_SaveHex.SetEnable(1);
+     PICSimLab.GetWindow()
+         ->GetChildByName("menu1")
+         ->GetChildByName("menu1_File")
+         ->GetChildByName("menu1_File_LoadHex")
+         ->SetEnable(1);
+
+     PICSimLab.GetWindow()
+         ->GetChildByName("menu1")
+         ->GetChildByName("menu1_File")
+         ->GetChildByName("menu1_File_SaveHex")
+         ->SetEnable(1);
 
      connected = 0;
  }

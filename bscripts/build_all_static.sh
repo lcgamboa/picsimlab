@@ -72,7 +72,7 @@ cd ..
 echo -e "\033[1;32m ---------------------- build picsimlab ---------------------- \033[0m"
 #git pull --no-rebase
 cd ../
-cl make clean;make CXX="ccache g++" -j$(nproc) exp LIBPATH="../build_all/" FILE=Makefile.static
+cl make clean;make CXX="ccache g++" -j$(nproc) LIBPATH="../build_all/" FILE=Makefile.static
 user=`whoami`
 cl sudo usermod -a -G dialout $user
 echo -e "\033[1;32m ---------------------- done! -------------------------------------------- \033[0m"

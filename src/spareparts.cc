@@ -258,7 +258,7 @@ unsigned char CSpareParts::RegisterIOpin(lxString pname, unsigned char pin, unsi
 
     if (ppin) {
         PinNames[ppin] = pname;
-        if (PinAlias[ppin][0] == ' ') {
+        if ((PinAlias[ppin].length() == 0) || (PinAlias[ppin][0] == ' ')) {
             PinAlias[ppin] = pname;
         }
         SetPinDir(ppin, dir);

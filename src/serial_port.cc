@@ -62,7 +62,7 @@ int serial_port_open(serialfd_t* serialfd, const char* SERIALDEVICE) {
                            NULL);  // null template
     if (*serialfd == INVALID_HANDLE_VALUE) {
         *serialfd = 0;
-        //     printf("Erro on Port Open:%s!\n",SERIALDEVICE);
+        printf("PICSimLab: Erro on Port Open %s: 0x%lX !\n", wserial, GetLastError());
         return 0;
     }
 #else
@@ -70,8 +70,9 @@ int serial_port_open(serialfd_t* serialfd, const char* SERIALDEVICE) {
 
     if (*serialfd < 0) {
         *serialfd = 0;
+        printf("PICSimLab: Erro on Port Open %s! ", SERIALDEVICE);
+        fflush(stdout);
         perror(SERIALDEVICE);
-        //    printf("Erro on Port Open:%s!\n",SERIALDEVICE);
         return 0;
     }
     //  printf("Port Open:%s!\n",SERIALDEVICE);

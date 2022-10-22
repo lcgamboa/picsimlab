@@ -482,16 +482,18 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
     }
 
     // verify if serial port exists
-    if (strstr(resp, SERIALDEVICE)) {
-        // try open
-        serialfd_t serialfd;
-        if (serial_port_open(&serialfd, SERIALDEVICE)) {
-            serial_port_close(serialfd);
-            strcpy(argv[argc++], "-serial");
-            strcpy(argv[argc++], SERIALDEVICE);
-            serial_open = 1;
-        } else {
-            serial_open = 0;
+    if (resp) {
+        if (strstr(resp, SERIALDEVICE)) {
+            // try open
+            serialfd_t serialfd;
+            if (serial_port_open(&serialfd, SERIALDEVICE)) {
+                serial_port_close(serialfd);
+                strcpy(argv[argc++], "-serial");
+                strcpy(argv[argc++], SERIALDEVICE);
+                serial_open = 1;
+            } else {
+                serial_open = 0;
+            }
         }
     }
     if (PICSimLab.Get_debug_status()) {
@@ -536,7 +538,9 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         }
     }
 
-    free(resp);
+    if (resp) {
+        free(resp);
+    }
 
     g_board = this;
     // printf("picsimlab: %s\n", (const char*)cmd);

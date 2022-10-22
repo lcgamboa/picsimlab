@@ -81,7 +81,7 @@ cd ..
 echo -e "\033[1;32m ---------------------- build and install picsimlab ---------------------- \033[0m"
 #git pull --no-rebase
 cd ../
-cl make clean;make -j$(nproc) exp
+cl make clean;make -j$(nproc) 
 cl sudo make install
 user=`whoami`
 cl sudo usermod -a -G dialout $user

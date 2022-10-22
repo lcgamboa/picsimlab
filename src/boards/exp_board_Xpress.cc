@@ -25,8 +25,8 @@
 
 // include files
 #include "exp_board_Xpress.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
 #include "../spareparts.h"
 
 /* ids of inputs of input map*/
@@ -106,7 +106,7 @@ cboard_Xpress::cboard_Xpress(void) {
     // controls properties and creation
     // gauge1
     gauge1 = new CGauge();
-    gauge1->SetFOwner(&Window1);
+    gauge1->SetFOwner(PICSimLab.GetWindow());
     gauge1->SetName(lxT("gauge1_p6"));
     gauge1->SetX(48);
     gauge1->SetY(230 - 110);
@@ -117,10 +117,10 @@ cboard_Xpress::cboard_Xpress(void) {
     gauge1->SetRange(100);
     gauge1->SetValue(0);
     gauge1->SetType(4);
-    Window1.CreateChild(gauge1);
+    PICSimLab.GetWindow()->CreateChild(gauge1);
     // gauge2
     gauge2 = new CGauge();
-    gauge2->SetFOwner(&Window1);
+    gauge2->SetFOwner(PICSimLab.GetWindow());
     gauge2->SetName(lxT("gauge2_p6"));
     gauge2->SetX(48);
     gauge2->SetY(255 - 110);
@@ -131,10 +131,10 @@ cboard_Xpress::cboard_Xpress(void) {
     gauge2->SetRange(100);
     gauge2->SetValue(0);
     gauge2->SetType(4);
-    Window1.CreateChild(gauge2);
+    PICSimLab.GetWindow()->CreateChild(gauge2);
     // gauge3
     gauge3 = new CGauge();
-    gauge3->SetFOwner(&Window1);
+    gauge3->SetFOwner(PICSimLab.GetWindow());
     gauge3->SetName(lxT("gauge3_p6"));
     gauge3->SetX(48);
     gauge3->SetY(280 - 110);
@@ -145,10 +145,10 @@ cboard_Xpress::cboard_Xpress(void) {
     gauge3->SetRange(100);
     gauge3->SetValue(0);
     gauge3->SetType(4);
-    Window1.CreateChild(gauge3);
+    PICSimLab.GetWindow()->CreateChild(gauge3);
     // gauge4
     gauge4 = new CGauge();
-    gauge4->SetFOwner(&Window1);
+    gauge4->SetFOwner(PICSimLab.GetWindow());
     gauge4->SetName(lxT("gauge4_p6"));
     gauge4->SetX(48);
     gauge4->SetY(305 - 110);
@@ -159,10 +159,10 @@ cboard_Xpress::cboard_Xpress(void) {
     gauge4->SetRange(100);
     gauge4->SetValue(0);
     gauge4->SetType(4);
-    Window1.CreateChild(gauge4);
+    PICSimLab.GetWindow()->CreateChild(gauge4);
     // label2
     label2 = new CLabel();
-    label2->SetFOwner(&Window1);
+    label2->SetFOwner(PICSimLab.GetWindow());
     label2->SetName(lxT("label2_p6"));
     label2->SetX(12);
     label2->SetY(230 - 110);
@@ -172,10 +172,10 @@ cboard_Xpress::cboard_Xpress(void) {
     label2->SetVisible(1);
     label2->SetText(lxT("RA0"));
     label2->SetAlign(1);
-    Window1.CreateChild(label2);
+    PICSimLab.GetWindow()->CreateChild(label2);
     // label3
     label3 = new CLabel();
-    label3->SetFOwner(&Window1);
+    label3->SetFOwner(PICSimLab.GetWindow());
     label3->SetName(lxT("label3_p6"));
     label3->SetX(13);
     label3->SetY(255 - 110);
@@ -185,10 +185,10 @@ cboard_Xpress::cboard_Xpress(void) {
     label3->SetVisible(1);
     label3->SetText(lxT("RA1"));
     label3->SetAlign(1);
-    Window1.CreateChild(label3);
+    PICSimLab.GetWindow()->CreateChild(label3);
     // label4
     label4 = new CLabel();
-    label4->SetFOwner(&Window1);
+    label4->SetFOwner(PICSimLab.GetWindow());
     label4->SetName(lxT("label4_p6"));
     label4->SetX(13);
     label4->SetY(280 - 110);
@@ -198,10 +198,10 @@ cboard_Xpress::cboard_Xpress(void) {
     label4->SetVisible(1);
     label4->SetText(lxT("RA2"));
     label4->SetAlign(1);
-    Window1.CreateChild(label4);
+    PICSimLab.GetWindow()->CreateChild(label4);
     // label5
     label5 = new CLabel();
-    label5->SetFOwner(&Window1);
+    label5->SetFOwner(PICSimLab.GetWindow());
     label5->SetName(lxT("label5_p6"));
     label5->SetX(13);
     label5->SetY(305 - 110);
@@ -211,21 +211,21 @@ cboard_Xpress::cboard_Xpress(void) {
     label5->SetVisible(1);
     label5->SetText(lxT("RA3"));
     label5->SetAlign(1);
-    Window1.CreateChild(label5);
+    PICSimLab.GetWindow()->CreateChild(label5);
 }
 
 // Destructor called once on board destruction
 
 cboard_Xpress::~cboard_Xpress(void) {
     // controls destruction
-    Window1.DestroyChild(gauge1);
-    Window1.DestroyChild(gauge2);
-    Window1.DestroyChild(gauge3);
-    Window1.DestroyChild(gauge4);
-    Window1.DestroyChild(label2);
-    Window1.DestroyChild(label3);
-    Window1.DestroyChild(label4);
-    Window1.DestroyChild(label5);
+    PICSimLab.GetWindow()->DestroyChild(gauge1);
+    PICSimLab.GetWindow()->DestroyChild(gauge2);
+    PICSimLab.GetWindow()->DestroyChild(gauge3);
+    PICSimLab.GetWindow()->DestroyChild(gauge4);
+    PICSimLab.GetWindow()->DestroyChild(label2);
+    PICSimLab.GetWindow()->DestroyChild(label3);
+    PICSimLab.GetWindow()->DestroyChild(label4);
+    PICSimLab.GetWindow()->DestroyChild(label5);
 }
 
 // Reset board status
@@ -539,7 +539,7 @@ void cboard_Xpress::Run_CPU(void) {
     pins = pic.pins;
 
     if (use_spare)
-        Window5.PreProcess();
+        SpareParts.PreProcess();
 
     j = JUMPSTEPS;  // step counter
     pi = 0;
@@ -560,7 +560,7 @@ void cboard_Xpress::Run_CPU(void) {
             if (use_oscope)
                 Oscilloscope.SetSample();
             if (use_spare)
-                Window5.Process();
+                SpareParts.Process();
 
             // increment mean value counter if pin is high
             alm[pi] += pins[pi].value;
@@ -586,7 +586,7 @@ void cboard_Xpress::Run_CPU(void) {
     }
 
     if (use_spare)
-        Window5.PostProcess();
+        SpareParts.PostProcess();
 }
 
 board_init(BOARD_Xpress_Name, cboard_Xpress);

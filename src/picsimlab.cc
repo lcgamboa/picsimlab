@@ -474,10 +474,12 @@ void CPICSimLab::LoadWorkspace(lxString fnpzw) {
 
     if (!lxFileExists(fnpzw)) {
         printf("PICSimLab: file %s not found!\n", (const char*)fnpzw.c_str());
+        PICSimLab.RegisterError("PICSimLab: file " + fnpzw + " not found!");
         return;
     }
     if (!fnpzw.Contains(".pzw")) {
         printf("PICSimLab: file %s is not a .pzw file!\n", (const char*)fnpzw.c_str());
+        PICSimLab.RegisterError("PICSimLab: file " + fnpzw + " is not a .pzw file!");
         return;
     }
     // write options
@@ -1134,4 +1136,12 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 #ifndef __EMSCRIPTEN__
     rcontrol_init(PICSimLab.Get_remotec_port() + PICSimLab.GetInstanceNumber());
 #endif
+}
+
+double CPICSimLab::GetIdleMs(void) {
+    return idle_ms;
+}
+
+void CPICSimLab::SetIdleMs(double im) {
+    idle_ms = im;
 }

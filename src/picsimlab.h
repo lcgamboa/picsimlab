@@ -238,6 +238,9 @@ public:
 
     void SetplHeight(int ph) { plHeight = ph; };
 
+    double GetIdleMs(void);
+    void SetIdleMs(double im);
+
 #ifndef _NOTHREAD
     lxCondition* cpu_cond;
     lxMutex* cpu_mutex;
@@ -298,6 +301,7 @@ private:
     lxStringList Errors;
     lxString Workspacefn;
     double scale;
+    double idle_ms;
 };
 
 extern CPICSimLab PICSimLab;

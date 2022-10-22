@@ -27,10 +27,10 @@
 
 // include files
 #include "exp_board_Curiosity_HPC.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"  //Oscilloscope
+#include "../oscilloscope.h"
+#include "../picsimlab.h"
 #include "../serial_port.h"
-#include "../spareparts.h"  //Spare Parts
+#include "../spareparts.h"
 
 /* ids of inputs of input map*/
 enum {
@@ -127,7 +127,7 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void) {
     // controls properties and creation
     // gauge1
     gauge1 = new CGauge();
-    gauge1->SetFOwner(&Window1);
+    gauge1->SetFOwner(PICSimLab.GetWindow());
     gauge1->SetName(lxT("gauge1_p8"));
     gauge1->SetX(48);
     gauge1->SetY(230 - 120);
@@ -138,10 +138,10 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void) {
     gauge1->SetRange(100);
     gauge1->SetValue(0);
     gauge1->SetType(4);
-    Window1.CreateChild(gauge1);
+    PICSimLab.GetWindow()->CreateChild(gauge1);
     // gauge2
     gauge2 = new CGauge();
-    gauge2->SetFOwner(&Window1);
+    gauge2->SetFOwner(PICSimLab.GetWindow());
     gauge2->SetName(lxT("gauge2_p8"));
     gauge2->SetX(48);
     gauge2->SetY(255 - 120);
@@ -152,10 +152,10 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void) {
     gauge2->SetRange(100);
     gauge2->SetValue(0);
     gauge2->SetType(4);
-    Window1.CreateChild(gauge2);
+    PICSimLab.GetWindow()->CreateChild(gauge2);
     // gauge3
     gauge3 = new CGauge();
-    gauge3->SetFOwner(&Window1);
+    gauge3->SetFOwner(PICSimLab.GetWindow());
     gauge3->SetName(lxT("gauge3_p8"));
     gauge3->SetX(48);
     gauge3->SetY(280 - 120);
@@ -166,10 +166,10 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void) {
     gauge3->SetRange(100);
     gauge3->SetValue(0);
     gauge3->SetType(4);
-    Window1.CreateChild(gauge3);
+    PICSimLab.GetWindow()->CreateChild(gauge3);
     // gauge4
     gauge4 = new CGauge();
-    gauge4->SetFOwner(&Window1);
+    gauge4->SetFOwner(PICSimLab.GetWindow());
     gauge4->SetName(lxT("gauge4_p8"));
     gauge4->SetX(48);
     gauge4->SetY(305 - 120);
@@ -180,10 +180,10 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void) {
     gauge4->SetRange(100);
     gauge4->SetValue(0);
     gauge4->SetType(4);
-    Window1.CreateChild(gauge4);
+    PICSimLab.GetWindow()->CreateChild(gauge4);
     // label2
     label2 = new CLabel();
-    label2->SetFOwner(&Window1);
+    label2->SetFOwner(PICSimLab.GetWindow());
     label2->SetName(lxT("label2_p8"));
     label2->SetX(12);
     label2->SetY(230 - 120);
@@ -193,10 +193,10 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void) {
     label2->SetVisible(1);
     label2->SetText(lxT("RA4"));
     label2->SetAlign(1);
-    Window1.CreateChild(label2);
+    PICSimLab.GetWindow()->CreateChild(label2);
     // label3
     label3 = new CLabel();
-    label3->SetFOwner(&Window1);
+    label3->SetFOwner(PICSimLab.GetWindow());
     label3->SetName(lxT("label3_p8"));
     label3->SetX(13);
     label3->SetY(255 - 120);
@@ -206,10 +206,10 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void) {
     label3->SetVisible(1);
     label3->SetText(lxT("RA5"));
     label3->SetAlign(1);
-    Window1.CreateChild(label3);
+    PICSimLab.GetWindow()->CreateChild(label3);
     // label4
     label4 = new CLabel();
-    label4->SetFOwner(&Window1);
+    label4->SetFOwner(PICSimLab.GetWindow());
     label4->SetName(lxT("label4_p8"));
     label4->SetX(13);
     label4->SetY(280 - 120);
@@ -219,10 +219,10 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void) {
     label4->SetVisible(1);
     label4->SetText(lxT("RA6"));
     label4->SetAlign(1);
-    Window1.CreateChild(label4);
+    PICSimLab.GetWindow()->CreateChild(label4);
     // label5
     label5 = new CLabel();
-    label5->SetFOwner(&Window1);
+    label5->SetFOwner(PICSimLab.GetWindow());
     label5->SetName(lxT("label5_p8"));
     label5->SetX(13);
     label5->SetY(305 - 120);
@@ -232,10 +232,10 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void) {
     label5->SetVisible(1);
     label5->SetText(lxT("RA7"));
     label5->SetAlign(1);
-    Window1.CreateChild(label5);
+    PICSimLab.GetWindow()->CreateChild(label5);
     // label6
     label6 = new CLabel();
-    label6->SetFOwner(&Window1);
+    label6->SetFOwner(PICSimLab.GetWindow());
     label6->SetName(lxT("label6_p8"));
     label6->SetX(13);
     label6->SetY(305 + 30 - 120);
@@ -245,10 +245,10 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void) {
     label6->SetVisible(1);
     label6->SetText(lxT("Second serial port:"));
     label6->SetAlign(1);
-    Window1.CreateChild(label6);
+    PICSimLab.GetWindow()->CreateChild(label6);
     // combo1
     combo1 = new CCombo();
-    combo1->SetFOwner(&Window1);
+    combo1->SetFOwner(PICSimLab.GetWindow());
     combo1->SetName(lxT("combo1_p8"));
     combo1->SetX(13);
     combo1->SetY(305 + 55 - 120);
@@ -267,23 +267,23 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void) {
         free(resp);
     }
 
-    Window1.CreateChild(combo1);
+    PICSimLab.GetWindow()->CreateChild(combo1);
 }
 
 // Destructor called once on board destruction
 
 cboard_Curiosity_HPC::~cboard_Curiosity_HPC(void) {
     // controls destruction
-    Window1.DestroyChild(gauge1);
-    Window1.DestroyChild(gauge2);
-    Window1.DestroyChild(gauge3);
-    Window1.DestroyChild(gauge4);
-    Window1.DestroyChild(label2);
-    Window1.DestroyChild(label3);
-    Window1.DestroyChild(label4);
-    Window1.DestroyChild(label5);
-    Window1.DestroyChild(label6);
-    Window1.DestroyChild(combo1);
+    PICSimLab.GetWindow()->DestroyChild(gauge1);
+    PICSimLab.GetWindow()->DestroyChild(gauge2);
+    PICSimLab.GetWindow()->DestroyChild(gauge3);
+    PICSimLab.GetWindow()->DestroyChild(gauge4);
+    PICSimLab.GetWindow()->DestroyChild(label2);
+    PICSimLab.GetWindow()->DestroyChild(label3);
+    PICSimLab.GetWindow()->DestroyChild(label4);
+    PICSimLab.GetWindow()->DestroyChild(label5);
+    PICSimLab.GetWindow()->DestroyChild(label6);
+    PICSimLab.GetWindow()->DestroyChild(combo1);
 }
 
 void cboard_Curiosity_HPC::MSetSerial(const char* port) {
@@ -328,7 +328,7 @@ void cboard_Curiosity_HPC::Reset(void) {
     if (use_spare)
         SpareParts.Reset();
     if (use_oscope)
-        Window4.Reset();
+        Oscilloscope.Reset();
 
     RegisterRemoteControl();
 }
@@ -675,7 +675,7 @@ void cboard_Curiosity_HPC::Run_CPU(void) {
     pins = pic.pins;
 
     if (use_spare)
-        Window5.PreProcess();
+        SpareParts.PreProcess();
 
     j = JUMPSTEPS;  // step counter
     pi = 0;
@@ -697,7 +697,7 @@ void cboard_Curiosity_HPC::Run_CPU(void) {
             if (use_oscope)
                 Oscilloscope.SetSample();
             if (use_spare)
-                Window5.Process();
+                SpareParts.Process();
 
             // increment mean value counter if pin is high
             alm[pi] += pins[pi].value;
@@ -721,7 +721,7 @@ void cboard_Curiosity_HPC::Run_CPU(void) {
         pic.pins[pi].oavalue = (int)((alm[pi] * RNSTEP) + 55);
     }
     if (use_spare)
-        Window5.PostProcess();
+        SpareParts.PostProcess();
 }
 
 board_init(BOARD_Curiosity_HPC_Name, cboard_Curiosity_HPC);
