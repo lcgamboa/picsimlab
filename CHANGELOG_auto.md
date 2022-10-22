@@ -1,3 +1,30 @@
+## (unreleased)
+
+### New
+
+* Support to run multiple instances of PICSimLab. [lcgamboa]
+
+* Support for logging and recovering from errors. [lcgamboa]
+
+* Support to ESP32 Iomux on board DevKitC. [lcgamboa]
+
+* Added support to I2C and SPI to ESP32 DevKitC board. [lcgamboa]
+
+* Esp32 DevKitC board support to ADC added. [lcgamboa]
+
+### Changes
+
+* Step motor part now show steps and turns. [lcgamboa]
+
+* Scripts updated. [lcgamboa]
+
+* README updated. [lcgamboa]
+
+### Fix
+
+* PICGenious board interference of keys bounce on keyboard activation removed. [lcgamboa]
+
+
 ## v0.8.11 (2022-08-02)
 
 ### New
