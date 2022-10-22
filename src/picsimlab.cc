@@ -27,6 +27,10 @@
 #include "oscilloscope.h"
 #include "spareparts.h"
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 #include "devices/rcontrol.h"
 
 CPICSimLab PICSimLab;
@@ -1075,7 +1079,7 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 #endif
 
 #ifdef NO_DEBUG
-    statusbar1.SetField(1, lxT(" "));
+    statusbar->SetField(1, lxT(" "));
 #else
     if (PICSimLab.Get_debug_status()) {
         int ret = PICSimLab.GetBoard()->DebugInit(PICSimLab.Get_debug_type());

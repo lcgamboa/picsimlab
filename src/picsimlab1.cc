@@ -248,7 +248,7 @@ void CPWindow1::thread1_EvThreadRun(CControl*) {
               tgo = 0;
              }
              */
-            tgo = 0;
+            PICSimLab.tgo = 0;
 #endif
             etime = t1 - t0;
             PICSimLab.SetIdleMs((PICSimLab.GetIdleMs() * 0.9) + ((Window1.timer1.GetTime() - etime * 1000) * 0.1));
@@ -1032,7 +1032,7 @@ void file_ready(const char* fname, const char* dir) {
 #ifdef __EMSCRIPTEN__
 
 void SimRun(int run) {
-    Window1.SetSimulationRun(run);
+    PICSimLab.SetSimulationRun(run);
 }
 
 int SimStat(void) {
