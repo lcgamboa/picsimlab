@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2015-2022  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -497,13 +497,13 @@ void cboard_Arduino_Uno::Draw(CDraw* draw) {
                 }
 
                 if (output[i].id == O_RST) {
-                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, 11);
+                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, ((output[i].x2 - output[i].x1) / 2) - 5);
                     if (p_RST) {
                         draw->Canvas.SetColor(15, 15, 15);
                     } else {
                         draw->Canvas.SetColor(55, 55, 55);
                     }
-                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, 9);
+                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, ((output[i].x2 - output[i].x1) / 2) - 7);
                 } else {
                     draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                            output[i].y2 - output[i].y1);
