@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <svg width="448" height="491" version="1.1" viewBox="0 0 31134 34148" xmlns="http://www.w3.org/2000/svg">
- <rect x="-5%" y="-5%" width="110%" height="110%" fill="#f0f0f0"/>
  <g transform="translate(-20426 -13369)" clip-path="url(#a)" mask="url(#b)">
   <defs>
    <clipPath id="a">
@@ -13,105 +11,8 @@
     <path d="m51500 13500v34000h-31000v-34000m500 0h-500m500 0h30500"/>
    </g>
   </g>
-  <g fill="#9c6b28" stroke-linecap="round" stroke-linejoin="round" stroke-width="0">
-   <circle cx="26000" cy="17500" r="354.33"/>
-   <circle cx="28000" cy="16500" r="354.33"/>
-   <circle cx="31000" cy="17500" r="354.33"/>
-   <circle cx="3e4" cy="39000" r="314.96"/>
-   <path d="m30315 42315h-630v-630h630z" fill-rule="evenodd"/>
-   <circle cx="42000" cy="29500" r="314.96"/>
-   <circle cx="47000" cy="29500" r="314.96"/>
-   <circle cx="28000" cy="24441" r="393.7"/>
-   <circle cx="29772" cy="24441" r="393.7"/>
-   <circle cx="28000" cy="27000" r="393.7"/>
-   <circle cx="29772" cy="27000" r="393.7"/>
-   <circle cx="25000" cy="38559" r="393.7"/>
-   <circle cx="23228" cy="38559" r="393.7"/>
-   <circle cx="25000" cy="36000" r="393.7"/>
-   <circle cx="23228" cy="36000" r="393.7"/>
-   <circle cx="4e4" cy="23000" r="314.96"/>
-   <circle cx="34000" cy="42000" r="314.96"/>
-   <circle cx="4e4" cy="24000" r="314.96"/>
-   <circle cx="34000" cy="41000" r="314.96"/>
-   <circle cx="4e4" cy="25000" r="314.96"/>
-   <circle cx="34000" cy="4e4" r="314.96"/>
-   <circle cx="4e4" cy="26000" r="314.96"/>
-   <circle cx="34000" cy="39000" r="314.96"/>
-   <circle cx="4e4" cy="27000" r="314.96"/>
-   <circle cx="34000" cy="38000" r="314.96"/>
-   <circle cx="4e4" cy="28000" r="314.96"/>
-   <circle cx="34000" cy="37000" r="314.96"/>
-   <circle cx="4e4" cy="29000" r="314.96"/>
-   <circle cx="34000" cy="36000" r="314.96"/>
-   <circle cx="4e4" cy="3e4" r="314.96"/>
-   <circle cx="34000" cy="35000" r="314.96"/>
-   <circle cx="4e4" cy="31000" r="314.96"/>
-   <circle cx="34000" cy="34000" r="314.96"/>
-   <circle cx="4e4" cy="32000" r="314.96"/>
-   <circle cx="34000" cy="33000" r="314.96"/>
-   <circle cx="4e4" cy="33000" r="314.96"/>
-   <circle cx="34000" cy="32000" r="314.96"/>
-   <circle cx="4e4" cy="34000" r="314.96"/>
-   <circle cx="34000" cy="31000" r="314.96"/>
-   <circle cx="4e4" cy="35000" r="314.96"/>
-   <circle cx="34000" cy="3e4" r="314.96"/>
-   <circle cx="4e4" cy="36000" r="314.96"/>
-   <circle cx="34000" cy="29000" r="314.96"/>
-   <circle cx="4e4" cy="37000" r="314.96"/>
-   <circle cx="34000" cy="28000" r="314.96"/>
-   <circle cx="4e4" cy="38000" r="314.96"/>
-   <circle cx="34000" cy="27000" r="314.96"/>
-   <circle cx="4e4" cy="39000" r="314.96"/>
-   <circle cx="34000" cy="26000" r="314.96"/>
-   <circle cx="4e4" cy="4e4" r="314.96"/>
-   <circle cx="34000" cy="25000" r="314.96"/>
-   <circle cx="4e4" cy="41000" r="314.96"/>
-   <circle cx="34000" cy="24000" r="314.96"/>
-   <circle cx="4e4" cy="42000" r="314.96"/>
-   <path d="m33685 23315v-630h630v630z" fill-rule="evenodd"/>
-   <circle cx="30500" cy="34571" r="295.28"/>
-   <circle cx="30500" cy="36500" r="295.28"/>
-   <circle cx="3e4" cy="44500" r="354.33"/>
-   <path d="m30354 45854h-708.6v-708.6h708.6z" fill-rule="evenodd"/>
-   <circle cx="42000" cy="26500" r="314.96"/>
-   <circle cx="47000" cy="26500" r="314.96"/>
-   <circle cx="45000" cy="17500" r="314.96"/>
-   <circle cx="45000" cy="22500" r="314.96"/>
-   <circle cx="31000" cy="32000" r="314.96"/>
-   <circle cx="26000" cy="32000" r="314.96"/>
-   <circle cx="33000" cy="21000" r="314.96"/>
-   <circle cx="38000" cy="21000" r="314.96"/>
-   <circle cx="34000" cy="44500" r="314.96"/>
-   <circle cx="39000" cy="44500" r="314.96"/>
-   <circle cx="27516" cy="36500" r="314.96"/>
-   <circle cx="28500" cy="36500" r="314.96"/>
-   <circle cx="49000" cy="29500" r="354.33"/>
-   <path d="M50354 29146v708.6h-708.6V29146z" fill-rule="evenodd"/>
-   <circle cx="49000" cy="20500" r="354.33"/>
-   <path d="M50354 20146v708.6h-708.6V20146z" fill-rule="evenodd"/>
-   <circle cx="39500" cy="17000" r="334.65"/>
-   <circle cx="38500" cy="17000" r="334.65"/>
-   <circle cx="37500" cy="17000" r="334.65"/>
-   <circle cx="36500" cy="17000" r="334.65"/>
-   <circle cx="35500" cy="17000" r="334.65"/>
-   <path d="m34835 17335h-669.2v-669.2h669.2z" fill-rule="evenodd"/>
-   <circle cx="43000" cy="31984" r="314.96"/>
-   <circle cx="43000" cy="31000" r="314.96"/>
-   <circle cx="24500" cy="44500" r="354.33"/>
-   <path d="m24854 45854h-708.6v-708.6h708.6z" fill-rule="evenodd"/>
-   <circle cx="27516" cy="34500" r="314.96"/>
-   <circle cx="28500" cy="34500" r="314.96"/>
-   <circle cx="44000" cy="36000" r="334.65"/>
-   <circle cx="44000" cy="37000" r="334.65"/>
-   <circle cx="44000" cy="38000" r="334.65"/>
-   <path d="M44335 38665v669.2h-669.2V38665z" fill-rule="evenodd"/>
-   <circle cx="49000" cy="26500" r="354.33"/>
-   <path d="M50354 26146v708.6h-708.6V26146z" fill-rule="evenodd"/>
-   <circle cx="50500" cy="16000" r="334.65"/>
-   <path d="m49835 16335h-669.2v-669.2h669.2z" fill-rule="evenodd"/>
-  </g>
-  <g fill="#212d53" stroke="#212d53" stroke-linecap="round" stroke-linejoin="round">
-   <g stroke="none" stroke-width="0">
+  <g stroke-linecap="round" stroke-linejoin="round">
+   <g fill="#9c6b28" stroke-width="0">
     <circle cx="26000" cy="17500" r="354.33"/>
     <circle cx="28000" cy="16500" r="354.33"/>
     <circle cx="31000" cy="17500" r="354.33"/>
@@ -170,9 +71,7 @@
     <circle cx="30500" cy="34571" r="295.28"/>
     <circle cx="30500" cy="36500" r="295.28"/>
     <circle cx="3e4" cy="44500" r="354.33"/>
-   </g>
-   <path d="m30354 45854h-708.6v-708.6h708.6z" fill-rule="evenodd" stroke="none" stroke-width="0"/>
-   <g stroke="none" stroke-width="0">
+    <path d="m30354 45854h-708.6v-708.6h708.6z" fill-rule="evenodd"/>
     <circle cx="42000" cy="26500" r="314.96"/>
     <circle cx="47000" cy="26500" r="314.96"/>
     <circle cx="45000" cy="17500" r="314.96"/>
@@ -186,11 +85,9 @@
     <circle cx="27516" cy="36500" r="314.96"/>
     <circle cx="28500" cy="36500" r="314.96"/>
     <circle cx="49000" cy="29500" r="354.33"/>
-   </g>
-   <path d="M50354 29146v708.6h-708.6V29146z" fill-rule="evenodd" stroke="none" stroke-width="0"/>
-   <circle cx="49000" cy="20500" r="354.33" stroke="none" stroke-width="0"/>
-   <path d="M50354 20146v708.6h-708.6V20146z" fill-rule="evenodd" stroke="none" stroke-width="0"/>
-   <g stroke="none" stroke-width="0">
+    <path d="M50354 29146v708.6h-708.6V29146z" fill-rule="evenodd"/>
+    <circle cx="49000" cy="20500" r="354.33"/>
+    <path d="M50354 20146v708.6h-708.6V20146z" fill-rule="evenodd"/>
     <circle cx="39500" cy="17000" r="334.65"/>
     <circle cx="38500" cy="17000" r="334.65"/>
     <circle cx="37500" cy="17000" r="334.65"/>
@@ -200,9 +97,7 @@
     <circle cx="43000" cy="31984" r="314.96"/>
     <circle cx="43000" cy="31000" r="314.96"/>
     <circle cx="24500" cy="44500" r="354.33"/>
-   </g>
-   <path d="m24854 45854h-708.6v-708.6h708.6z" fill-rule="evenodd" stroke="none" stroke-width="0"/>
-   <g stroke="none" stroke-width="0">
+    <path d="m24854 45854h-708.6v-708.6h708.6z" fill-rule="evenodd"/>
     <circle cx="27516" cy="34500" r="314.96"/>
     <circle cx="28500" cy="34500" r="314.96"/>
     <circle cx="44000" cy="36000" r="334.65"/>
@@ -210,322 +105,411 @@
     <circle cx="44000" cy="38000" r="334.65"/>
     <path d="M44335 38665v669.2h-669.2V38665z" fill-rule="evenodd"/>
     <circle cx="49000" cy="26500" r="354.33"/>
-   </g>
-   <path d="M50354 26146v708.6h-708.6V26146z" fill-rule="evenodd" stroke="none" stroke-width="0"/>
-   <g stroke="none" stroke-width="0">
+    <path d="M50354 26146v708.6h-708.6V26146z" fill-rule="evenodd"/>
     <circle cx="50500" cy="16000" r="334.65"/>
     <path d="m49835 16335h-669.2v-669.2h669.2z" fill-rule="evenodd"/>
-    <circle cx="46500" cy="33500" r="118.11"/>
-    <circle cx="46500" cy="31000" r="118.11"/>
    </g>
-   <path d="m46500 33500v-2500" fill="none" fill-opacity="0" stroke-width="393.7"/>
-   <g stroke="none" stroke-width="0">
-    <circle cx="46500" cy="33500" r="68.898"/>
-    <circle cx="46500" cy="31000" r="68.898"/>
-    <circle cx="26000" cy="17500" r="68.898"/>
-    <circle cx="28000" cy="16500" r="68.898"/>
-    <circle cx="31000" cy="17500" r="68.898"/>
-    <circle cx="3e4" cy="39000" r="68.898"/>
-    <circle cx="3e4" cy="42000" r="68.898"/>
-    <circle cx="42000" cy="29500" r="68.898"/>
-    <circle cx="47000" cy="29500" r="68.898"/>
-    <circle cx="28000" cy="24441" r="68.898"/>
-    <circle cx="29772" cy="24441" r="68.898"/>
-    <circle cx="28000" cy="27000" r="68.898"/>
-    <circle cx="29772" cy="27000" r="68.898"/>
-    <circle cx="25000" cy="38559" r="68.898"/>
-    <circle cx="23228" cy="38559" r="68.898"/>
-    <circle cx="25000" cy="36000" r="68.898"/>
-    <circle cx="23228" cy="36000" r="68.898"/>
-    <circle cx="4e4" cy="23000" r="68.898"/>
-    <circle cx="34000" cy="42000" r="68.898"/>
-    <circle cx="4e4" cy="24000" r="68.898"/>
-    <circle cx="34000" cy="41000" r="68.898"/>
-    <circle cx="4e4" cy="25000" r="68.898"/>
-    <circle cx="34000" cy="4e4" r="68.898"/>
-    <circle cx="4e4" cy="26000" r="68.898"/>
-    <circle cx="34000" cy="39000" r="68.898"/>
-    <circle cx="4e4" cy="27000" r="68.898"/>
-    <circle cx="34000" cy="38000" r="68.898"/>
-    <circle cx="4e4" cy="28000" r="68.898"/>
-    <circle cx="34000" cy="37000" r="68.898"/>
-    <circle cx="4e4" cy="29000" r="68.898"/>
-    <circle cx="34000" cy="36000" r="68.898"/>
-    <circle cx="4e4" cy="3e4" r="68.898"/>
-    <circle cx="34000" cy="35000" r="68.898"/>
-    <circle cx="4e4" cy="31000" r="68.898"/>
-    <circle cx="34000" cy="34000" r="68.898"/>
-    <circle cx="4e4" cy="32000" r="68.898"/>
-    <circle cx="34000" cy="33000" r="68.898"/>
-    <circle cx="4e4" cy="33000" r="68.898"/>
-    <circle cx="34000" cy="32000" r="68.898"/>
-    <circle cx="4e4" cy="34000" r="68.898"/>
-    <circle cx="34000" cy="31000" r="68.898"/>
-    <circle cx="4e4" cy="35000" r="68.898"/>
-    <circle cx="34000" cy="3e4" r="68.898"/>
-    <circle cx="4e4" cy="36000" r="68.898"/>
-    <circle cx="34000" cy="29000" r="68.898"/>
-    <circle cx="4e4" cy="37000" r="68.898"/>
-    <circle cx="34000" cy="28000" r="68.898"/>
-    <circle cx="4e4" cy="38000" r="68.898"/>
-    <circle cx="34000" cy="27000" r="68.898"/>
-    <circle cx="4e4" cy="39000" r="68.898"/>
-    <circle cx="34000" cy="26000" r="68.898"/>
-    <circle cx="4e4" cy="4e4" r="68.898"/>
-    <circle cx="34000" cy="25000" r="68.898"/>
-    <circle cx="4e4" cy="41000" r="68.898"/>
-    <circle cx="34000" cy="24000" r="68.898"/>
-    <circle cx="4e4" cy="42000" r="68.898"/>
-    <circle cx="34000" cy="23000" r="68.898"/>
-    <circle cx="30500" cy="34571" r="68.898"/>
-    <circle cx="30500" cy="36500" r="68.898"/>
-    <circle cx="3e4" cy="44500" r="68.898"/>
-    <circle cx="3e4" cy="45500" r="68.898"/>
-    <circle cx="42000" cy="26500" r="68.898"/>
-    <circle cx="47000" cy="26500" r="68.898"/>
-    <circle cx="45000" cy="17500" r="68.898"/>
-    <circle cx="45000" cy="22500" r="68.898"/>
-    <circle cx="31000" cy="32000" r="68.898"/>
-    <circle cx="26000" cy="32000" r="68.898"/>
-    <circle cx="33000" cy="21000" r="68.898"/>
-    <circle cx="38000" cy="21000" r="68.898"/>
-    <circle cx="34000" cy="44500" r="68.898"/>
-    <circle cx="39000" cy="44500" r="68.898"/>
-    <circle cx="27516" cy="36500" r="68.898"/>
-    <circle cx="28500" cy="36500" r="68.898"/>
-    <circle cx="49000" cy="29500" r="68.898"/>
-    <circle cx="5e4" cy="29500" r="68.898"/>
-    <circle cx="49000" cy="20500" r="68.898"/>
-    <circle cx="5e4" cy="20500" r="68.898"/>
-    <circle cx="39500" cy="17000" r="68.898"/>
-    <circle cx="38500" cy="17000" r="68.898"/>
-    <circle cx="37500" cy="17000" r="68.898"/>
-    <circle cx="36500" cy="17000" r="68.898"/>
-    <circle cx="35500" cy="17000" r="68.898"/>
-    <circle cx="34500" cy="17000" r="68.898"/>
-    <circle cx="43000" cy="31984" r="68.898"/>
-    <circle cx="43000" cy="31000" r="68.898"/>
-    <circle cx="24500" cy="44500" r="68.898"/>
-    <circle cx="24500" cy="45500" r="68.898"/>
-    <circle cx="27516" cy="34500" r="68.898"/>
-    <circle cx="28500" cy="34500" r="68.898"/>
-    <circle cx="44000" cy="36000" r="68.898"/>
-    <circle cx="44000" cy="37000" r="68.898"/>
-    <circle cx="44000" cy="38000" r="68.898"/>
-    <circle cx="44000" cy="39000" r="68.898"/>
-    <circle cx="49000" cy="26500" r="68.898"/>
-    <circle cx="5e4" cy="26500" r="68.898"/>
-    <circle cx="50500" cy="16000" r="68.898"/>
-    <circle cx="49500" cy="16000" r="68.898"/>
+   <g fill="#212d53" stroke="#212d53">
+    <g stroke="none" stroke-width="0">
+     <circle cx="26000" cy="17500" r="354.33"/>
+     <circle cx="28000" cy="16500" r="354.33"/>
+     <circle cx="31000" cy="17500" r="354.33"/>
+     <circle cx="3e4" cy="39000" r="314.96"/>
+     <path d="m30315 42315h-630v-630h630z" fill-rule="evenodd"/>
+     <circle cx="42000" cy="29500" r="314.96"/>
+     <circle cx="47000" cy="29500" r="314.96"/>
+     <circle cx="28000" cy="24441" r="393.7"/>
+     <circle cx="29772" cy="24441" r="393.7"/>
+     <circle cx="28000" cy="27000" r="393.7"/>
+     <circle cx="29772" cy="27000" r="393.7"/>
+     <circle cx="25000" cy="38559" r="393.7"/>
+     <circle cx="23228" cy="38559" r="393.7"/>
+     <circle cx="25000" cy="36000" r="393.7"/>
+     <circle cx="23228" cy="36000" r="393.7"/>
+     <circle cx="4e4" cy="23000" r="314.96"/>
+     <circle cx="34000" cy="42000" r="314.96"/>
+     <circle cx="4e4" cy="24000" r="314.96"/>
+     <circle cx="34000" cy="41000" r="314.96"/>
+     <circle cx="4e4" cy="25000" r="314.96"/>
+     <circle cx="34000" cy="4e4" r="314.96"/>
+     <circle cx="4e4" cy="26000" r="314.96"/>
+     <circle cx="34000" cy="39000" r="314.96"/>
+     <circle cx="4e4" cy="27000" r="314.96"/>
+     <circle cx="34000" cy="38000" r="314.96"/>
+     <circle cx="4e4" cy="28000" r="314.96"/>
+     <circle cx="34000" cy="37000" r="314.96"/>
+     <circle cx="4e4" cy="29000" r="314.96"/>
+     <circle cx="34000" cy="36000" r="314.96"/>
+     <circle cx="4e4" cy="3e4" r="314.96"/>
+     <circle cx="34000" cy="35000" r="314.96"/>
+     <circle cx="4e4" cy="31000" r="314.96"/>
+     <circle cx="34000" cy="34000" r="314.96"/>
+     <circle cx="4e4" cy="32000" r="314.96"/>
+     <circle cx="34000" cy="33000" r="314.96"/>
+     <circle cx="4e4" cy="33000" r="314.96"/>
+     <circle cx="34000" cy="32000" r="314.96"/>
+     <circle cx="4e4" cy="34000" r="314.96"/>
+     <circle cx="34000" cy="31000" r="314.96"/>
+     <circle cx="4e4" cy="35000" r="314.96"/>
+     <circle cx="34000" cy="3e4" r="314.96"/>
+     <circle cx="4e4" cy="36000" r="314.96"/>
+     <circle cx="34000" cy="29000" r="314.96"/>
+     <circle cx="4e4" cy="37000" r="314.96"/>
+     <circle cx="34000" cy="28000" r="314.96"/>
+     <circle cx="4e4" cy="38000" r="314.96"/>
+     <circle cx="34000" cy="27000" r="314.96"/>
+     <circle cx="4e4" cy="39000" r="314.96"/>
+     <circle cx="34000" cy="26000" r="314.96"/>
+     <circle cx="4e4" cy="4e4" r="314.96"/>
+     <circle cx="34000" cy="25000" r="314.96"/>
+     <circle cx="4e4" cy="41000" r="314.96"/>
+     <circle cx="34000" cy="24000" r="314.96"/>
+     <circle cx="4e4" cy="42000" r="314.96"/>
+     <path d="m33685 23315v-630h630v630z" fill-rule="evenodd"/>
+     <circle cx="30500" cy="34571" r="295.28"/>
+     <circle cx="30500" cy="36500" r="295.28"/>
+     <circle cx="3e4" cy="44500" r="354.33"/>
+     <path d="m30354 45854h-708.6v-708.6h708.6z" fill-rule="evenodd"/>
+     <circle cx="42000" cy="26500" r="314.96"/>
+     <circle cx="47000" cy="26500" r="314.96"/>
+     <circle cx="45000" cy="17500" r="314.96"/>
+     <circle cx="45000" cy="22500" r="314.96"/>
+     <circle cx="31000" cy="32000" r="314.96"/>
+     <circle cx="26000" cy="32000" r="314.96"/>
+     <circle cx="33000" cy="21000" r="314.96"/>
+     <circle cx="38000" cy="21000" r="314.96"/>
+     <circle cx="34000" cy="44500" r="314.96"/>
+     <circle cx="39000" cy="44500" r="314.96"/>
+     <circle cx="27516" cy="36500" r="314.96"/>
+     <circle cx="28500" cy="36500" r="314.96"/>
+     <circle cx="49000" cy="29500" r="354.33"/>
+     <path d="M50354 29146v708.6h-708.6V29146z" fill-rule="evenodd"/>
+     <circle cx="49000" cy="20500" r="354.33"/>
+     <path d="M50354 20146v708.6h-708.6V20146z" fill-rule="evenodd"/>
+     <circle cx="39500" cy="17000" r="334.65"/>
+     <circle cx="38500" cy="17000" r="334.65"/>
+     <circle cx="37500" cy="17000" r="334.65"/>
+     <circle cx="36500" cy="17000" r="334.65"/>
+     <circle cx="35500" cy="17000" r="334.65"/>
+     <path d="m34835 17335h-669.2v-669.2h669.2z" fill-rule="evenodd"/>
+     <circle cx="43000" cy="31984" r="314.96"/>
+     <circle cx="43000" cy="31000" r="314.96"/>
+     <circle cx="24500" cy="44500" r="354.33"/>
+     <path d="m24854 45854h-708.6v-708.6h708.6z" fill-rule="evenodd"/>
+     <circle cx="27516" cy="34500" r="314.96"/>
+     <circle cx="28500" cy="34500" r="314.96"/>
+     <circle cx="44000" cy="36000" r="334.65"/>
+     <circle cx="44000" cy="37000" r="334.65"/>
+     <circle cx="44000" cy="38000" r="334.65"/>
+     <path d="M44335 38665v669.2h-669.2V38665z" fill-rule="evenodd"/>
+     <circle cx="49000" cy="26500" r="354.33"/>
+     <path d="M50354 26146v708.6h-708.6V26146z" fill-rule="evenodd"/>
+     <circle cx="50500" cy="16000" r="334.65"/>
+     <path d="m49835 16335h-669.2v-669.2h669.2z" fill-rule="evenodd"/>
+     <circle cx="46500" cy="33500" r="118.11"/>
+     <circle cx="46500" cy="31000" r="118.11"/>
+    </g>
+    <path d="m46500 33500v-2500" fill="none" fill-opacity="0" stroke-width="393.7"/>
+    <g stroke="none" stroke-width="0">
+     <circle cx="46500" cy="33500" r="68.898"/>
+     <circle cx="46500" cy="31000" r="68.898"/>
+     <circle cx="26000" cy="17500" r="68.898"/>
+     <circle cx="28000" cy="16500" r="68.898"/>
+     <circle cx="31000" cy="17500" r="68.898"/>
+     <circle cx="3e4" cy="39000" r="68.898"/>
+     <circle cx="3e4" cy="42000" r="68.898"/>
+     <circle cx="42000" cy="29500" r="68.898"/>
+     <circle cx="47000" cy="29500" r="68.898"/>
+     <circle cx="28000" cy="24441" r="68.898"/>
+     <circle cx="29772" cy="24441" r="68.898"/>
+     <circle cx="28000" cy="27000" r="68.898"/>
+     <circle cx="29772" cy="27000" r="68.898"/>
+     <circle cx="25000" cy="38559" r="68.898"/>
+     <circle cx="23228" cy="38559" r="68.898"/>
+     <circle cx="25000" cy="36000" r="68.898"/>
+     <circle cx="23228" cy="36000" r="68.898"/>
+     <circle cx="4e4" cy="23000" r="68.898"/>
+     <circle cx="34000" cy="42000" r="68.898"/>
+     <circle cx="4e4" cy="24000" r="68.898"/>
+     <circle cx="34000" cy="41000" r="68.898"/>
+     <circle cx="4e4" cy="25000" r="68.898"/>
+     <circle cx="34000" cy="4e4" r="68.898"/>
+     <circle cx="4e4" cy="26000" r="68.898"/>
+     <circle cx="34000" cy="39000" r="68.898"/>
+     <circle cx="4e4" cy="27000" r="68.898"/>
+     <circle cx="34000" cy="38000" r="68.898"/>
+     <circle cx="4e4" cy="28000" r="68.898"/>
+     <circle cx="34000" cy="37000" r="68.898"/>
+     <circle cx="4e4" cy="29000" r="68.898"/>
+     <circle cx="34000" cy="36000" r="68.898"/>
+     <circle cx="4e4" cy="3e4" r="68.898"/>
+     <circle cx="34000" cy="35000" r="68.898"/>
+     <circle cx="4e4" cy="31000" r="68.898"/>
+     <circle cx="34000" cy="34000" r="68.898"/>
+     <circle cx="4e4" cy="32000" r="68.898"/>
+     <circle cx="34000" cy="33000" r="68.898"/>
+     <circle cx="4e4" cy="33000" r="68.898"/>
+     <circle cx="34000" cy="32000" r="68.898"/>
+     <circle cx="4e4" cy="34000" r="68.898"/>
+     <circle cx="34000" cy="31000" r="68.898"/>
+     <circle cx="4e4" cy="35000" r="68.898"/>
+     <circle cx="34000" cy="3e4" r="68.898"/>
+     <circle cx="4e4" cy="36000" r="68.898"/>
+     <circle cx="34000" cy="29000" r="68.898"/>
+     <circle cx="4e4" cy="37000" r="68.898"/>
+     <circle cx="34000" cy="28000" r="68.898"/>
+     <circle cx="4e4" cy="38000" r="68.898"/>
+     <circle cx="34000" cy="27000" r="68.898"/>
+     <circle cx="4e4" cy="39000" r="68.898"/>
+     <circle cx="34000" cy="26000" r="68.898"/>
+     <circle cx="4e4" cy="4e4" r="68.898"/>
+     <circle cx="34000" cy="25000" r="68.898"/>
+     <circle cx="4e4" cy="41000" r="68.898"/>
+     <circle cx="34000" cy="24000" r="68.898"/>
+     <circle cx="4e4" cy="42000" r="68.898"/>
+     <circle cx="34000" cy="23000" r="68.898"/>
+     <circle cx="30500" cy="34571" r="68.898"/>
+     <circle cx="30500" cy="36500" r="68.898"/>
+     <circle cx="3e4" cy="44500" r="68.898"/>
+     <circle cx="3e4" cy="45500" r="68.898"/>
+     <circle cx="42000" cy="26500" r="68.898"/>
+     <circle cx="47000" cy="26500" r="68.898"/>
+     <circle cx="45000" cy="17500" r="68.898"/>
+     <circle cx="45000" cy="22500" r="68.898"/>
+     <circle cx="31000" cy="32000" r="68.898"/>
+     <circle cx="26000" cy="32000" r="68.898"/>
+     <circle cx="33000" cy="21000" r="68.898"/>
+     <circle cx="38000" cy="21000" r="68.898"/>
+     <circle cx="34000" cy="44500" r="68.898"/>
+     <circle cx="39000" cy="44500" r="68.898"/>
+     <circle cx="27516" cy="36500" r="68.898"/>
+     <circle cx="28500" cy="36500" r="68.898"/>
+     <circle cx="49000" cy="29500" r="68.898"/>
+     <circle cx="5e4" cy="29500" r="68.898"/>
+     <circle cx="49000" cy="20500" r="68.898"/>
+     <circle cx="5e4" cy="20500" r="68.898"/>
+     <circle cx="39500" cy="17000" r="68.898"/>
+     <circle cx="38500" cy="17000" r="68.898"/>
+     <circle cx="37500" cy="17000" r="68.898"/>
+     <circle cx="36500" cy="17000" r="68.898"/>
+     <circle cx="35500" cy="17000" r="68.898"/>
+     <circle cx="34500" cy="17000" r="68.898"/>
+     <circle cx="43000" cy="31984" r="68.898"/>
+     <circle cx="43000" cy="31000" r="68.898"/>
+     <circle cx="24500" cy="44500" r="68.898"/>
+     <circle cx="24500" cy="45500" r="68.898"/>
+     <circle cx="27516" cy="34500" r="68.898"/>
+     <circle cx="28500" cy="34500" r="68.898"/>
+     <circle cx="44000" cy="36000" r="68.898"/>
+     <circle cx="44000" cy="37000" r="68.898"/>
+     <circle cx="44000" cy="38000" r="68.898"/>
+     <circle cx="44000" cy="39000" r="68.898"/>
+     <circle cx="49000" cy="26500" r="68.898"/>
+     <circle cx="5e4" cy="26500" r="68.898"/>
+     <circle cx="50500" cy="16000" r="68.898"/>
+     <circle cx="49500" cy="16000" r="68.898"/>
+    </g>
    </g>
-  </g>
-  <g fill="#b5ae30" mask="url(#c)" stroke="#b5ae30" stroke-linecap="round" stroke-linejoin="round">
-   <g stroke="none" stroke-width="0">
-    <circle cx="26000" cy="17500" r="354.33"/>
-    <circle cx="28000" cy="16500" r="354.33"/>
-    <circle cx="31000" cy="17500" r="354.33"/>
-    <circle cx="3e4" cy="39000" r="314.96"/>
-    <path d="m30315 42315h-630v-630h630z" fill-rule="evenodd"/>
-    <circle cx="42000" cy="29500" r="314.96"/>
-    <circle cx="47000" cy="29500" r="314.96"/>
-    <circle cx="28000" cy="24441" r="393.7"/>
-    <circle cx="29772" cy="24441" r="393.7"/>
-    <circle cx="28000" cy="27000" r="393.7"/>
-    <circle cx="29772" cy="27000" r="393.7"/>
-    <circle cx="25000" cy="38559" r="393.7"/>
-    <circle cx="23228" cy="38559" r="393.7"/>
-    <circle cx="25000" cy="36000" r="393.7"/>
-    <circle cx="23228" cy="36000" r="393.7"/>
-    <circle cx="4e4" cy="23000" r="314.96"/>
-    <circle cx="34000" cy="42000" r="314.96"/>
-    <circle cx="4e4" cy="24000" r="314.96"/>
-    <circle cx="34000" cy="41000" r="314.96"/>
-    <circle cx="4e4" cy="25000" r="314.96"/>
-    <circle cx="34000" cy="4e4" r="314.96"/>
-    <circle cx="4e4" cy="26000" r="314.96"/>
-    <circle cx="34000" cy="39000" r="314.96"/>
-    <circle cx="4e4" cy="27000" r="314.96"/>
-    <circle cx="34000" cy="38000" r="314.96"/>
-    <circle cx="4e4" cy="28000" r="314.96"/>
-    <circle cx="34000" cy="37000" r="314.96"/>
-    <circle cx="4e4" cy="29000" r="314.96"/>
-    <circle cx="34000" cy="36000" r="314.96"/>
-    <circle cx="4e4" cy="3e4" r="314.96"/>
-    <circle cx="34000" cy="35000" r="314.96"/>
-    <circle cx="4e4" cy="31000" r="314.96"/>
-    <circle cx="34000" cy="34000" r="314.96"/>
-    <circle cx="4e4" cy="32000" r="314.96"/>
-    <circle cx="34000" cy="33000" r="314.96"/>
-    <circle cx="4e4" cy="33000" r="314.96"/>
-    <circle cx="34000" cy="32000" r="314.96"/>
-    <circle cx="4e4" cy="34000" r="314.96"/>
-    <circle cx="34000" cy="31000" r="314.96"/>
-    <circle cx="4e4" cy="35000" r="314.96"/>
-    <circle cx="34000" cy="3e4" r="314.96"/>
-    <circle cx="4e4" cy="36000" r="314.96"/>
-    <circle cx="34000" cy="29000" r="314.96"/>
-    <circle cx="4e4" cy="37000" r="314.96"/>
-    <circle cx="34000" cy="28000" r="314.96"/>
-    <circle cx="4e4" cy="38000" r="314.96"/>
-    <circle cx="34000" cy="27000" r="314.96"/>
-    <circle cx="4e4" cy="39000" r="314.96"/>
-    <circle cx="34000" cy="26000" r="314.96"/>
-    <circle cx="4e4" cy="4e4" r="314.96"/>
-    <circle cx="34000" cy="25000" r="314.96"/>
-    <circle cx="4e4" cy="41000" r="314.96"/>
-    <circle cx="34000" cy="24000" r="314.96"/>
-    <circle cx="4e4" cy="42000" r="314.96"/>
-    <path d="m33685 23315v-630h630v630z" fill-rule="evenodd"/>
-    <circle cx="30500" cy="34571" r="295.28"/>
-    <circle cx="30500" cy="36500" r="295.28"/>
-    <circle cx="3e4" cy="44500" r="354.33"/>
-   </g>
-   <path d="m30354 45854h-708.6v-708.6h708.6z" fill-rule="evenodd" stroke="none" stroke-width="0"/>
-   <g stroke="none" stroke-width="0">
-    <circle cx="42000" cy="26500" r="314.96"/>
-    <circle cx="47000" cy="26500" r="314.96"/>
-    <circle cx="45000" cy="17500" r="314.96"/>
-    <circle cx="45000" cy="22500" r="314.96"/>
-    <circle cx="31000" cy="32000" r="314.96"/>
-    <circle cx="26000" cy="32000" r="314.96"/>
-    <circle cx="33000" cy="21000" r="314.96"/>
-    <circle cx="38000" cy="21000" r="314.96"/>
-    <circle cx="34000" cy="44500" r="314.96"/>
-    <circle cx="39000" cy="44500" r="314.96"/>
-    <circle cx="27516" cy="36500" r="314.96"/>
-    <circle cx="28500" cy="36500" r="314.96"/>
-    <circle cx="49000" cy="29500" r="354.33"/>
-   </g>
-   <path d="M50354 29146v708.6h-708.6V29146z" fill-rule="evenodd" stroke="none" stroke-width="0"/>
-   <circle cx="49000" cy="20500" r="354.33" stroke="none" stroke-width="0"/>
-   <path d="M50354 20146v708.6h-708.6V20146z" fill-rule="evenodd" stroke="none" stroke-width="0"/>
-   <g stroke="none" stroke-width="0">
-    <circle cx="39500" cy="17000" r="334.65"/>
-    <circle cx="38500" cy="17000" r="334.65"/>
-    <circle cx="37500" cy="17000" r="334.65"/>
-    <circle cx="36500" cy="17000" r="334.65"/>
-    <circle cx="35500" cy="17000" r="334.65"/>
-    <path d="m34835 17335h-669.2v-669.2h669.2z" fill-rule="evenodd"/>
-    <circle cx="43000" cy="31984" r="314.96"/>
-    <circle cx="43000" cy="31000" r="314.96"/>
-    <circle cx="24500" cy="44500" r="354.33"/>
-   </g>
-   <path d="m24854 45854h-708.6v-708.6h708.6z" fill-rule="evenodd" stroke="none" stroke-width="0"/>
-   <g stroke="none" stroke-width="0">
-    <circle cx="27516" cy="34500" r="314.96"/>
-    <circle cx="28500" cy="34500" r="314.96"/>
-    <circle cx="44000" cy="36000" r="334.65"/>
-    <circle cx="44000" cy="37000" r="334.65"/>
-    <circle cx="44000" cy="38000" r="334.65"/>
-    <path d="M44335 38665v669.2h-669.2V38665z" fill-rule="evenodd"/>
-    <circle cx="49000" cy="26500" r="354.33"/>
-   </g>
-   <path d="M50354 26146v708.6h-708.6V26146z" fill-rule="evenodd" stroke="none" stroke-width="0"/>
-   <g stroke="none" stroke-width="0">
-    <circle cx="50500" cy="16000" r="334.65"/>
-    <path d="m49835 16335h-669.2v-669.2h669.2z" fill-rule="evenodd"/>
-    <circle cx="46500" cy="33500" r="118.11"/>
-    <circle cx="46500" cy="31000" r="118.11"/>
-   </g>
-   <path d="m46500 33500v-2500" fill="none" fill-opacity="0" stroke-width="393.7"/>
-   <g stroke="none" stroke-width="0">
-    <circle cx="46500" cy="33500" r="68.898"/>
-    <circle cx="46500" cy="31000" r="68.898"/>
-    <circle cx="26000" cy="17500" r="68.898"/>
-    <circle cx="28000" cy="16500" r="68.898"/>
-    <circle cx="31000" cy="17500" r="68.898"/>
-    <circle cx="3e4" cy="39000" r="68.898"/>
-    <circle cx="3e4" cy="42000" r="68.898"/>
-    <circle cx="42000" cy="29500" r="68.898"/>
-    <circle cx="47000" cy="29500" r="68.898"/>
-    <circle cx="28000" cy="24441" r="68.898"/>
-    <circle cx="29772" cy="24441" r="68.898"/>
-    <circle cx="28000" cy="27000" r="68.898"/>
-    <circle cx="29772" cy="27000" r="68.898"/>
-    <circle cx="25000" cy="38559" r="68.898"/>
-    <circle cx="23228" cy="38559" r="68.898"/>
-    <circle cx="25000" cy="36000" r="68.898"/>
-    <circle cx="23228" cy="36000" r="68.898"/>
-    <circle cx="4e4" cy="23000" r="68.898"/>
-    <circle cx="34000" cy="42000" r="68.898"/>
-    <circle cx="4e4" cy="24000" r="68.898"/>
-    <circle cx="34000" cy="41000" r="68.898"/>
-    <circle cx="4e4" cy="25000" r="68.898"/>
-    <circle cx="34000" cy="4e4" r="68.898"/>
-    <circle cx="4e4" cy="26000" r="68.898"/>
-    <circle cx="34000" cy="39000" r="68.898"/>
-    <circle cx="4e4" cy="27000" r="68.898"/>
-    <circle cx="34000" cy="38000" r="68.898"/>
-    <circle cx="4e4" cy="28000" r="68.898"/>
-    <circle cx="34000" cy="37000" r="68.898"/>
-    <circle cx="4e4" cy="29000" r="68.898"/>
-    <circle cx="34000" cy="36000" r="68.898"/>
-    <circle cx="4e4" cy="3e4" r="68.898"/>
-    <circle cx="34000" cy="35000" r="68.898"/>
-    <circle cx="4e4" cy="31000" r="68.898"/>
-    <circle cx="34000" cy="34000" r="68.898"/>
-    <circle cx="4e4" cy="32000" r="68.898"/>
-    <circle cx="34000" cy="33000" r="68.898"/>
-    <circle cx="4e4" cy="33000" r="68.898"/>
-    <circle cx="34000" cy="32000" r="68.898"/>
-    <circle cx="4e4" cy="34000" r="68.898"/>
-    <circle cx="34000" cy="31000" r="68.898"/>
-    <circle cx="4e4" cy="35000" r="68.898"/>
-    <circle cx="34000" cy="3e4" r="68.898"/>
-    <circle cx="4e4" cy="36000" r="68.898"/>
-    <circle cx="34000" cy="29000" r="68.898"/>
-    <circle cx="4e4" cy="37000" r="68.898"/>
-    <circle cx="34000" cy="28000" r="68.898"/>
-    <circle cx="4e4" cy="38000" r="68.898"/>
-    <circle cx="34000" cy="27000" r="68.898"/>
-    <circle cx="4e4" cy="39000" r="68.898"/>
-    <circle cx="34000" cy="26000" r="68.898"/>
-    <circle cx="4e4" cy="4e4" r="68.898"/>
-    <circle cx="34000" cy="25000" r="68.898"/>
-    <circle cx="4e4" cy="41000" r="68.898"/>
-    <circle cx="34000" cy="24000" r="68.898"/>
-    <circle cx="4e4" cy="42000" r="68.898"/>
-    <circle cx="34000" cy="23000" r="68.898"/>
-    <circle cx="30500" cy="34571" r="68.898"/>
-    <circle cx="30500" cy="36500" r="68.898"/>
-    <circle cx="3e4" cy="44500" r="68.898"/>
-    <circle cx="3e4" cy="45500" r="68.898"/>
-    <circle cx="42000" cy="26500" r="68.898"/>
-    <circle cx="47000" cy="26500" r="68.898"/>
-    <circle cx="45000" cy="17500" r="68.898"/>
-    <circle cx="45000" cy="22500" r="68.898"/>
-    <circle cx="31000" cy="32000" r="68.898"/>
-    <circle cx="26000" cy="32000" r="68.898"/>
-    <circle cx="33000" cy="21000" r="68.898"/>
-    <circle cx="38000" cy="21000" r="68.898"/>
-    <circle cx="34000" cy="44500" r="68.898"/>
-    <circle cx="39000" cy="44500" r="68.898"/>
-    <circle cx="27516" cy="36500" r="68.898"/>
-    <circle cx="28500" cy="36500" r="68.898"/>
-    <circle cx="49000" cy="29500" r="68.898"/>
-    <circle cx="5e4" cy="29500" r="68.898"/>
-    <circle cx="49000" cy="20500" r="68.898"/>
-    <circle cx="5e4" cy="20500" r="68.898"/>
-    <circle cx="39500" cy="17000" r="68.898"/>
-    <circle cx="38500" cy="17000" r="68.898"/>
-    <circle cx="37500" cy="17000" r="68.898"/>
-    <circle cx="36500" cy="17000" r="68.898"/>
-    <circle cx="35500" cy="17000" r="68.898"/>
-    <circle cx="34500" cy="17000" r="68.898"/>
-    <circle cx="43000" cy="31984" r="68.898"/>
-    <circle cx="43000" cy="31000" r="68.898"/>
-    <circle cx="24500" cy="44500" r="68.898"/>
-    <circle cx="24500" cy="45500" r="68.898"/>
-    <circle cx="27516" cy="34500" r="68.898"/>
-    <circle cx="28500" cy="34500" r="68.898"/>
-    <circle cx="44000" cy="36000" r="68.898"/>
-    <circle cx="44000" cy="37000" r="68.898"/>
-    <circle cx="44000" cy="38000" r="68.898"/>
-    <circle cx="44000" cy="39000" r="68.898"/>
-    <circle cx="49000" cy="26500" r="68.898"/>
-    <circle cx="5e4" cy="26500" r="68.898"/>
-    <circle cx="50500" cy="16000" r="68.898"/>
-    <circle cx="49500" cy="16000" r="68.898"/>
+   <g fill="#b5ae30" mask="url(#c)" stroke="#b5ae30">
+    <g stroke="none" stroke-width="0">
+     <circle cx="26000" cy="17500" r="354.33"/>
+     <circle cx="28000" cy="16500" r="354.33"/>
+     <circle cx="31000" cy="17500" r="354.33"/>
+     <circle cx="3e4" cy="39000" r="314.96"/>
+     <path d="m30315 42315h-630v-630h630z" fill-rule="evenodd"/>
+     <circle cx="42000" cy="29500" r="314.96"/>
+     <circle cx="47000" cy="29500" r="314.96"/>
+     <circle cx="28000" cy="24441" r="393.7"/>
+     <circle cx="29772" cy="24441" r="393.7"/>
+     <circle cx="28000" cy="27000" r="393.7"/>
+     <circle cx="29772" cy="27000" r="393.7"/>
+     <circle cx="25000" cy="38559" r="393.7"/>
+     <circle cx="23228" cy="38559" r="393.7"/>
+     <circle cx="25000" cy="36000" r="393.7"/>
+     <circle cx="23228" cy="36000" r="393.7"/>
+     <circle cx="4e4" cy="23000" r="314.96"/>
+     <circle cx="34000" cy="42000" r="314.96"/>
+     <circle cx="4e4" cy="24000" r="314.96"/>
+     <circle cx="34000" cy="41000" r="314.96"/>
+     <circle cx="4e4" cy="25000" r="314.96"/>
+     <circle cx="34000" cy="4e4" r="314.96"/>
+     <circle cx="4e4" cy="26000" r="314.96"/>
+     <circle cx="34000" cy="39000" r="314.96"/>
+     <circle cx="4e4" cy="27000" r="314.96"/>
+     <circle cx="34000" cy="38000" r="314.96"/>
+     <circle cx="4e4" cy="28000" r="314.96"/>
+     <circle cx="34000" cy="37000" r="314.96"/>
+     <circle cx="4e4" cy="29000" r="314.96"/>
+     <circle cx="34000" cy="36000" r="314.96"/>
+     <circle cx="4e4" cy="3e4" r="314.96"/>
+     <circle cx="34000" cy="35000" r="314.96"/>
+     <circle cx="4e4" cy="31000" r="314.96"/>
+     <circle cx="34000" cy="34000" r="314.96"/>
+     <circle cx="4e4" cy="32000" r="314.96"/>
+     <circle cx="34000" cy="33000" r="314.96"/>
+     <circle cx="4e4" cy="33000" r="314.96"/>
+     <circle cx="34000" cy="32000" r="314.96"/>
+     <circle cx="4e4" cy="34000" r="314.96"/>
+     <circle cx="34000" cy="31000" r="314.96"/>
+     <circle cx="4e4" cy="35000" r="314.96"/>
+     <circle cx="34000" cy="3e4" r="314.96"/>
+     <circle cx="4e4" cy="36000" r="314.96"/>
+     <circle cx="34000" cy="29000" r="314.96"/>
+     <circle cx="4e4" cy="37000" r="314.96"/>
+     <circle cx="34000" cy="28000" r="314.96"/>
+     <circle cx="4e4" cy="38000" r="314.96"/>
+     <circle cx="34000" cy="27000" r="314.96"/>
+     <circle cx="4e4" cy="39000" r="314.96"/>
+     <circle cx="34000" cy="26000" r="314.96"/>
+     <circle cx="4e4" cy="4e4" r="314.96"/>
+     <circle cx="34000" cy="25000" r="314.96"/>
+     <circle cx="4e4" cy="41000" r="314.96"/>
+     <circle cx="34000" cy="24000" r="314.96"/>
+     <circle cx="4e4" cy="42000" r="314.96"/>
+     <path d="m33685 23315v-630h630v630z" fill-rule="evenodd"/>
+     <circle cx="30500" cy="34571" r="295.28"/>
+     <circle cx="30500" cy="36500" r="295.28"/>
+     <circle cx="3e4" cy="44500" r="354.33"/>
+     <path d="m30354 45854h-708.6v-708.6h708.6z" fill-rule="evenodd"/>
+     <circle cx="42000" cy="26500" r="314.96"/>
+     <circle cx="47000" cy="26500" r="314.96"/>
+     <circle cx="45000" cy="17500" r="314.96"/>
+     <circle cx="45000" cy="22500" r="314.96"/>
+     <circle cx="31000" cy="32000" r="314.96"/>
+     <circle cx="26000" cy="32000" r="314.96"/>
+     <circle cx="33000" cy="21000" r="314.96"/>
+     <circle cx="38000" cy="21000" r="314.96"/>
+     <circle cx="34000" cy="44500" r="314.96"/>
+     <circle cx="39000" cy="44500" r="314.96"/>
+     <circle cx="27516" cy="36500" r="314.96"/>
+     <circle cx="28500" cy="36500" r="314.96"/>
+     <circle cx="49000" cy="29500" r="354.33"/>
+     <path d="M50354 29146v708.6h-708.6V29146z" fill-rule="evenodd"/>
+     <circle cx="49000" cy="20500" r="354.33"/>
+     <path d="M50354 20146v708.6h-708.6V20146z" fill-rule="evenodd"/>
+     <circle cx="39500" cy="17000" r="334.65"/>
+     <circle cx="38500" cy="17000" r="334.65"/>
+     <circle cx="37500" cy="17000" r="334.65"/>
+     <circle cx="36500" cy="17000" r="334.65"/>
+     <circle cx="35500" cy="17000" r="334.65"/>
+     <path d="m34835 17335h-669.2v-669.2h669.2z" fill-rule="evenodd"/>
+     <circle cx="43000" cy="31984" r="314.96"/>
+     <circle cx="43000" cy="31000" r="314.96"/>
+     <circle cx="24500" cy="44500" r="354.33"/>
+     <path d="m24854 45854h-708.6v-708.6h708.6z" fill-rule="evenodd"/>
+     <circle cx="27516" cy="34500" r="314.96"/>
+     <circle cx="28500" cy="34500" r="314.96"/>
+     <circle cx="44000" cy="36000" r="334.65"/>
+     <circle cx="44000" cy="37000" r="334.65"/>
+     <circle cx="44000" cy="38000" r="334.65"/>
+     <path d="M44335 38665v669.2h-669.2V38665z" fill-rule="evenodd"/>
+     <circle cx="49000" cy="26500" r="354.33"/>
+     <path d="M50354 26146v708.6h-708.6V26146z" fill-rule="evenodd"/>
+     <circle cx="50500" cy="16000" r="334.65"/>
+     <path d="m49835 16335h-669.2v-669.2h669.2z" fill-rule="evenodd"/>
+     <circle cx="46500" cy="33500" r="118.11"/>
+     <circle cx="46500" cy="31000" r="118.11"/>
+    </g>
+    <path d="m46500 33500v-2500" fill="none" fill-opacity="0" stroke-width="393.7"/>
+    <g stroke="none" stroke-width="0">
+     <circle cx="46500" cy="33500" r="68.898"/>
+     <circle cx="46500" cy="31000" r="68.898"/>
+     <circle cx="26000" cy="17500" r="68.898"/>
+     <circle cx="28000" cy="16500" r="68.898"/>
+     <circle cx="31000" cy="17500" r="68.898"/>
+     <circle cx="3e4" cy="39000" r="68.898"/>
+     <circle cx="3e4" cy="42000" r="68.898"/>
+     <circle cx="42000" cy="29500" r="68.898"/>
+     <circle cx="47000" cy="29500" r="68.898"/>
+     <circle cx="28000" cy="24441" r="68.898"/>
+     <circle cx="29772" cy="24441" r="68.898"/>
+     <circle cx="28000" cy="27000" r="68.898"/>
+     <circle cx="29772" cy="27000" r="68.898"/>
+     <circle cx="25000" cy="38559" r="68.898"/>
+     <circle cx="23228" cy="38559" r="68.898"/>
+     <circle cx="25000" cy="36000" r="68.898"/>
+     <circle cx="23228" cy="36000" r="68.898"/>
+     <circle cx="4e4" cy="23000" r="68.898"/>
+     <circle cx="34000" cy="42000" r="68.898"/>
+     <circle cx="4e4" cy="24000" r="68.898"/>
+     <circle cx="34000" cy="41000" r="68.898"/>
+     <circle cx="4e4" cy="25000" r="68.898"/>
+     <circle cx="34000" cy="4e4" r="68.898"/>
+     <circle cx="4e4" cy="26000" r="68.898"/>
+     <circle cx="34000" cy="39000" r="68.898"/>
+     <circle cx="4e4" cy="27000" r="68.898"/>
+     <circle cx="34000" cy="38000" r="68.898"/>
+     <circle cx="4e4" cy="28000" r="68.898"/>
+     <circle cx="34000" cy="37000" r="68.898"/>
+     <circle cx="4e4" cy="29000" r="68.898"/>
+     <circle cx="34000" cy="36000" r="68.898"/>
+     <circle cx="4e4" cy="3e4" r="68.898"/>
+     <circle cx="34000" cy="35000" r="68.898"/>
+     <circle cx="4e4" cy="31000" r="68.898"/>
+     <circle cx="34000" cy="34000" r="68.898"/>
+     <circle cx="4e4" cy="32000" r="68.898"/>
+     <circle cx="34000" cy="33000" r="68.898"/>
+     <circle cx="4e4" cy="33000" r="68.898"/>
+     <circle cx="34000" cy="32000" r="68.898"/>
+     <circle cx="4e4" cy="34000" r="68.898"/>
+     <circle cx="34000" cy="31000" r="68.898"/>
+     <circle cx="4e4" cy="35000" r="68.898"/>
+     <circle cx="34000" cy="3e4" r="68.898"/>
+     <circle cx="4e4" cy="36000" r="68.898"/>
+     <circle cx="34000" cy="29000" r="68.898"/>
+     <circle cx="4e4" cy="37000" r="68.898"/>
+     <circle cx="34000" cy="28000" r="68.898"/>
+     <circle cx="4e4" cy="38000" r="68.898"/>
+     <circle cx="34000" cy="27000" r="68.898"/>
+     <circle cx="4e4" cy="39000" r="68.898"/>
+     <circle cx="34000" cy="26000" r="68.898"/>
+     <circle cx="4e4" cy="4e4" r="68.898"/>
+     <circle cx="34000" cy="25000" r="68.898"/>
+     <circle cx="4e4" cy="41000" r="68.898"/>
+     <circle cx="34000" cy="24000" r="68.898"/>
+     <circle cx="4e4" cy="42000" r="68.898"/>
+     <circle cx="34000" cy="23000" r="68.898"/>
+     <circle cx="30500" cy="34571" r="68.898"/>
+     <circle cx="30500" cy="36500" r="68.898"/>
+     <circle cx="3e4" cy="44500" r="68.898"/>
+     <circle cx="3e4" cy="45500" r="68.898"/>
+     <circle cx="42000" cy="26500" r="68.898"/>
+     <circle cx="47000" cy="26500" r="68.898"/>
+     <circle cx="45000" cy="17500" r="68.898"/>
+     <circle cx="45000" cy="22500" r="68.898"/>
+     <circle cx="31000" cy="32000" r="68.898"/>
+     <circle cx="26000" cy="32000" r="68.898"/>
+     <circle cx="33000" cy="21000" r="68.898"/>
+     <circle cx="38000" cy="21000" r="68.898"/>
+     <circle cx="34000" cy="44500" r="68.898"/>
+     <circle cx="39000" cy="44500" r="68.898"/>
+     <circle cx="27516" cy="36500" r="68.898"/>
+     <circle cx="28500" cy="36500" r="68.898"/>
+     <circle cx="49000" cy="29500" r="68.898"/>
+     <circle cx="5e4" cy="29500" r="68.898"/>
+     <circle cx="49000" cy="20500" r="68.898"/>
+     <circle cx="5e4" cy="20500" r="68.898"/>
+     <circle cx="39500" cy="17000" r="68.898"/>
+     <circle cx="38500" cy="17000" r="68.898"/>
+     <circle cx="37500" cy="17000" r="68.898"/>
+     <circle cx="36500" cy="17000" r="68.898"/>
+     <circle cx="35500" cy="17000" r="68.898"/>
+     <circle cx="34500" cy="17000" r="68.898"/>
+     <circle cx="43000" cy="31984" r="68.898"/>
+     <circle cx="43000" cy="31000" r="68.898"/>
+     <circle cx="24500" cy="44500" r="68.898"/>
+     <circle cx="24500" cy="45500" r="68.898"/>
+     <circle cx="27516" cy="34500" r="68.898"/>
+     <circle cx="28500" cy="34500" r="68.898"/>
+     <circle cx="44000" cy="36000" r="68.898"/>
+     <circle cx="44000" cy="37000" r="68.898"/>
+     <circle cx="44000" cy="38000" r="68.898"/>
+     <circle cx="44000" cy="39000" r="68.898"/>
+     <circle cx="49000" cy="26500" r="68.898"/>
+     <circle cx="5e4" cy="26500" r="68.898"/>
+     <circle cx="50500" cy="16000" r="68.898"/>
+     <circle cx="49500" cy="16000" r="68.898"/>
+    </g>
    </g>
   </g>
   <defs>
@@ -790,57 +774,65 @@
    <path d="M-17.216.09H-16v2.36h-1.216c-.183-.016-.284-.118-.304-.304v-.64h.79v-.472h-.79v-.64c.02-.186.121-.288.304-.304z" fill="#c88010" fill-rule="evenodd"/>
    <path d="m-17.52 1.506v0.64m20.42 1.389h-18.75v-4.53h18.751m-1e-3 0v4.68m-18.75-0.15v0.15m18.75-4.68h0.15m-0.15 4.53h0.15m-18.9 0h-0.15m0.15-4.53h-0.15m0.15 0v-0.15m18.75 0.15v-0.15m-20.116 1.235v0.944m0 0.472v0.944m1.216-1.18h-0.73" fill="none"/>
   </g>
- </g>
- <g transform="translate(8611 25164) scale(393.7)" stroke="#000" stroke-width=".093">
-  <path d="M4.767 9.947v-9.9H.047v9.9z" fill="#0bf" fill-rule="evenodd"/>
-  <path d="m3.107 4.787v-1.6h-1.4v3.62h1.4z" fill="gray" fill-rule="evenodd"/>
-  <path d="M1.607 8.547l.8.8.8-.8h-.533v-.533H2.14v.533z" fill="#fff" fill-rule="evenodd"/>
-  <rect x="1.707" y="3.187" width="1.4" height="1.662" ry="0" fill="#fff"/>
- </g>
- <g stroke="#000" stroke-width=".093">
-  <g transform="matrix(-393.7 0 0 393.7 26574 16131)">
-   <path d="M11.65.35h-.8v-.7h1.85c.467 0 .467.7 0 .7h-.588z" fill="#ccc" fill-rule="evenodd"/>
-   <path d="M2.65 1.6H4.1v-3.2H2.65c-.486.047-.753.314-.8.8V.8a.8.8 0 0 0 .8.8" fill="#fca" fill-rule="evenodd"/>
-   <path d="M0 .35c-.467 0-.467-.7 0-.7h1.85v.7H.387z" fill="#ccc" fill-rule="evenodd"/>
-   <path d="m2.65 1.6v-3.2m-1.6 1.25v0.7m9 1.25v-3.2m1.6 1.95v-0.7" fill="none"/>
-   <path d="M8.6 1.44H4.1v-2.88h4.5zM10.05 1.6a.8.8 0 0 0 .8-.8V-.8c-.047-.486-.314-.753-.8-.8H8.6v3.2z" fill="#fca" fill-rule="evenodd"/>
+  <g transform="translate(8611 25164) scale(393.7)" stroke="#000">
+   <g fill-rule="evenodd">
+    <path d="M4.767 9.947v-9.9H.047v9.9z" fill="#0bf"/>
+    <path d="m3.107 4.787v-1.6h-1.4v3.62h1.4z" fill="gray"/>
+    <path d="M1.607 8.547l.8.8.8-.8h-.533v-.533H2.14v.533z" fill="#fff"/>
+   </g>
+   <rect x="1.707" y="3.187" width="1.4" height="1.662" ry="0" fill="#fff"/>
   </g>
-  <path d="m24768 16697h-173.23v-1131.1h173.23z" fill="maroon" opacity=".991" stroke-width="36.614"/>
-  <path d="m24406 16698h-173.23v-1131.5h173.23z" opacity=".991" stroke-width="36.614"/>
-  <path d="m24058 16697h-173.23v-1132.7h173.23z" fill="red" opacity=".991" stroke-width="36.614"/>
-  <path d="m23510 16697h-173.23v-1132.3h173.23z" fill="olive" opacity=".991" stroke-width="36.614"/>
- </g>
- <g transform="translate(1772.2 -36.369)" stroke-width=".093">
-  <g transform="matrix(0 -393.7 393.7 0 7574 13631)" stroke="#191919">
-   <path d="m0.45 0.75h5.4a0.3 0.3 0 0 0 0.3-0.3v-5.4a0.3 0.3 0 0 0-0.3-0.3h-5.4a0.3 0.3 0 0 0-0.3 0.3v5.4a0.3 0.3 0 0 0 0.3 0.3z" fill="#666666" fill-rule="evenodd"/>
-   <circle cx="1.15" cy="-4.25" r=".5" fill="#1a1a1a"/>
-   <circle cx="5.15" cy="-4.25" r=".5" fill="#1a1a1a"/>
-   <circle cx="1.15" cy="-.25" r=".5" fill="#1a1a1a"/>
-   <circle cx="5.15" cy="-.25" r=".5" fill="#1a1a1a"/>
-   <circle cx="3.15" cy="-2.25" r="1.75" fill="none"/>
-   <path d="m-0.425 0.35h-0.012m0.577 0h0.01m-0.312 0h0.012m0.29-0.7h0.01" fill="none"/>
-   <path d="m-0.162-0.35h-0.275v0.7h0.275z" fill="#cccccc" fill-rule="evenodd"/>
-   <path d="m-0.425-0.35h-0.012" fill="none"/>
-   <path d="m-0.15-0.35h0.29v0.7h-0.29" fill="#cccccc" fill-rule="evenodd"/>
-   <path d="m-0.162-0.35h0.012m-0.275-4.5h-0.012m0.577 0h0.01m-0.312 0h0.012m-0.275 0.7h-0.012m0.577 0h0.01m-0.312 0h0.012m6.875-0.7h0.012m-0.577 0h-0.01" fill="none"/>
-   <path d="m6.45-4.85h-0.29v0.7h0.577v-0.7h-0.275z" fill="#cccccc" fill-rule="evenodd"/>
-   <path d="m6.462-4.85h-0.012m-0.29 0.7h-0.01m0.575 0h0.012m-0.275 0h-0.012m0.275 4.5h0.012m-0.577 0h-0.01" fill="none"/>
-   <path d="m6.45 0.35h-0.29v-0.7h0.577v0.7h-0.275z" fill="#cccccc" fill-rule="evenodd"/>
-   <path d="m6.462 0.35h-0.012m0.275-0.7h0.012m-0.577 0h-0.01m0.312 0h-0.012m-6.6 0v0.7m0-5.2v0.7m6.6-0.7v0.7m0 3.8v0.7" fill="none"/>
-   <circle cx="3.15" cy="-2.25" r="1.75" fill="none"/>
-   <circle cx="3.15" cy="-2.25" r="1.65" fill="#1a1a1a"/>
-   <path d="m-0.425-0.35v0.7m0-5.2v0.7m6.887-0.7v0.7m0.263-0.7v0.7m-0.263 3.8v0.7m0.263-0.7v0.7m-1.925-2.6h0.1" fill="none"/>
-   <path d="m-0.437-4.85v0.7h0.577v-0.7h-0.565z" fill="#cccccc" fill-rule="evenodd"/>
-   <path d="m-0.162-4.85v0.7" fill="none"/>
+  <g stroke="#000">
+   <g transform="matrix(-393.7 0 0 393.7 26574 16131)">
+    <g fill-rule="evenodd">
+     <path d="M11.65.35h-.8v-.7h1.85c.467 0 .467.7 0 .7h-.588z" fill="#ccc"/>
+     <path d="M2.65 1.6H4.1v-3.2H2.65c-.486.047-.753.314-.8.8V.8a.8.8 0 0 0 .8.8" fill="#fca"/>
+     <path d="M0 .35c-.467 0-.467-.7 0-.7h1.85v.7H.387z" fill="#ccc"/>
+    </g>
+    <path d="m2.65 1.6v-3.2m-1.6 1.25v0.7m9 1.25v-3.2m1.6 1.95v-0.7" fill="none"/>
+    <path d="M8.6 1.44H4.1v-2.88h4.5zM10.05 1.6a.8.8 0 0 0 .8-.8V-.8c-.047-.486-.314-.753-.8-.8H8.6v3.2z" fill="#fca" fill-rule="evenodd"/>
+   </g>
+   <g stroke-width="36.614">
+    <path d="m24768 16697h-173.23v-1131.1h173.23z" fill="maroon" opacity=".991"/>
+    <path d="m24406 16698h-173.23v-1131.5h173.23z" opacity=".991"/>
+    <path d="m24058 16697h-173.23v-1132.7h173.23z" fill="red" opacity=".991"/>
+    <path d="m23510 16697h-173.23v-1132.3h173.23z" fill="olive" opacity=".991"/>
+   </g>
   </g>
- </g>
- <g stroke-width=".093">
+  <g transform="translate(1772.2 -36.369)">
+   <g transform="matrix(0 -393.7 393.7 0 7574 13631)" stroke="#191919">
+    <path d="m0.45 0.75h5.4a0.3 0.3 0 0 0 0.3-0.3v-5.4a0.3 0.3 0 0 0-0.3-0.3h-5.4a0.3 0.3 0 0 0-0.3 0.3v5.4a0.3 0.3 0 0 0 0.3 0.3z" fill="#666" fill-rule="evenodd"/>
+    <g fill="#1a1a1a">
+     <circle cx="1.15" cy="-4.25" r=".5"/>
+     <circle cx="5.15" cy="-4.25" r=".5"/>
+     <circle cx="1.15" cy="-.25" r=".5"/>
+     <circle cx="5.15" cy="-.25" r=".5"/>
+    </g>
+    <circle cx="3.15" cy="-2.25" r="1.75" fill="none"/>
+    <path d="m-0.425 0.35h-0.012m0.577 0h0.01m-0.312 0h0.012m0.29-0.7h0.01" fill="none"/>
+    <path d="m-0.162-0.35h-0.275v0.7h0.275z" fill="#ccc" fill-rule="evenodd"/>
+    <path d="m-0.425-0.35h-0.012" fill="none"/>
+    <path d="m-0.15-0.35h0.29v0.7h-0.29" fill="#ccc" fill-rule="evenodd"/>
+    <path d="m-0.162-0.35h0.012m-0.275-4.5h-0.012m0.577 0h0.01m-0.312 0h0.012m-0.275 0.7h-0.012m0.577 0h0.01m-0.312 0h0.012m6.875-0.7h0.012m-0.577 0h-0.01" fill="none"/>
+    <path d="m6.45-4.85h-0.29v0.7h0.577v-0.7h-0.275z" fill="#ccc" fill-rule="evenodd"/>
+    <path d="m6.462-4.85h-0.012m-0.29 0.7h-0.01m0.575 0h0.012m-0.275 0h-0.012m0.275 4.5h0.012m-0.577 0h-0.01" fill="none"/>
+    <path d="m6.45 0.35h-0.29v-0.7h0.577v0.7h-0.275z" fill="#ccc" fill-rule="evenodd"/>
+    <path d="m6.462 0.35h-0.012m0.275-0.7h0.012m-0.577 0h-0.01m0.312 0h-0.012m-6.6 0v0.7m0-5.2v0.7m6.6-0.7v0.7m0 3.8v0.7" fill="none"/>
+    <circle cx="3.15" cy="-2.25" r="1.75" fill="none"/>
+    <circle cx="3.15" cy="-2.25" r="1.65" fill="#1a1a1a"/>
+    <path d="m-0.425-0.35v0.7m0-5.2v0.7m6.887-0.7v0.7m0.263-0.7v0.7m-0.263 3.8v0.7m0.263-0.7v0.7m-1.925-2.6h0.1" fill="none"/>
+    <path d="m-0.437-4.85v0.7h0.577v-0.7h-0.565z" fill="#ccc" fill-rule="evenodd"/>
+    <path d="m-0.162-4.85v0.7" fill="none"/>
+   </g>
+  </g>
   <g transform="matrix(0 393.7 393.7 0 4574.1 22631)" stroke="#191919">
    <path d="M.45.75h5.4a.3.3 0 0 0 .3-.3v-5.4a.3.3 0 0 0-.3-.3H.45a.3.3 0 0 0-.3.3v5.4a.3.3 0 0 0 .3.3z" fill="#666" fill-rule="evenodd"/>
-   <circle cx="1.15" cy="-4.25" r=".5" fill="#1a1a1a"/>
-   <circle cx="5.15" cy="-4.25" r=".5" fill="#1a1a1a"/>
-   <circle cx="1.15" cy="-.25" r=".5" fill="#1a1a1a"/>
-   <circle cx="5.15" cy="-.25" r=".5" fill="#1a1a1a"/>
+   <g fill="#1a1a1a">
+    <circle cx="1.15" cy="-4.25" r=".5"/>
+    <circle cx="5.15" cy="-4.25" r=".5"/>
+    <circle cx="1.15" cy="-.25" r=".5"/>
+    <circle cx="5.15" cy="-.25" r=".5"/>
+   </g>
    <circle cx="3.15" cy="-2.25" r="1.75" fill="none"/>
    <path d="M-.425.35h-.012M.14.35h.01M-.162.35h.012M.14-.35h.01" fill="none"/>
    <path d="M-.162-.35h-.275v.7h.275z" fill="#ccc" fill-rule="evenodd"/>
@@ -859,217 +851,237 @@
   </g>
  </g>
  <path d="m13926 9167h5300v2e4h-5300z" fill="#333" opacity=".991"/>
- <path d="m19226 29167v-229.69m0-19360v-410.04m0 19200v-400m0-17600v-400m0 17400v-400m0-15600v-400m0 15400v-400m0-13600v-400m0 13400v-400m0-11600v-400m0 11400v-400m0-9600v-400m0 9400v-400m0-7600v-400m0 7400v-400m0-5600v-400m0 5400v-400m0-3600v-400m0 3400v-400m0-1600v-400m0 1400v-400m0-9800h-5300m-0.039 0v410.04m0 19364v226.41m0-19200v400m0 17600v400m0-17400v400m0 15600v400m0-15400v400m0 13600v400m0-13400v400m0 11600v400m0-11400v400m0 9600v400m0-9400v400m0 7600v400m0-7400v400m0 5600v400m0-5400v400m0 3600v400m0-3400v400m0 1600v400m0-1400v400m0 9800h5300m0.039 0-29.527-29.527v-380.51m29.527-19590-29.527 29.527m0 380.5v-380.51m0 19170v-400m0-17600v-400m0 17400v-400m0-15600v-400m0 15400v-400m0-13600v-400m0 13400v-400m0-11600v-400m0 11400v-400m0-9600v-400m0 9400v-400m0-7600v-400m0 7400v-400m0-5600v-400m0 5400v-400m0-3600v-400m0 3400v-400m0-1600v-400m0 1400v-400m-5270.5-9800 29.528 29.527m5241 0h-5240.9m-0.04 0v380.51m-29.527 19590 29.528-29.527m-1e-3 -197.24v197.23m0-19170v400m0 17600v400m0-17400v400m0 15600v400m0-15400v400m0 13600v400m0-13400v400m0 11600v400m0-11400v400m0 9600v400m0-9400v400m0 7600v400m0-7400v400m0 5600v400m0-5400v400m0 3600v400m0-3400v400m0 1600v400m0-1400v400m0 9770.5h5240.9m0.04-380.71v-389.96m0-19170-127.45 127.45m127.45 19813-127.45-127.45m-5113.5-19813 127.45 127.45m2198-41.839 1.224 41.843m-1.224-41.843h590.04l-1.225 41.843m-2914.3 19813 127.45-127.45" fill="none" stroke="#000" stroke-width="36.614"/>
- <path d="m16282 9324h-2199.2v19686h4986.2v-19686h-2199.2c-15.164 150.88-142.15 265.75-293.79 265.75-151.64 0-278.63-114.87-293.8-265.75z" fill="#1a1a1a" fill-rule="evenodd" stroke="#000" stroke-width="36.614"/>
- <path d="m16281 9290.2a295.28 295.28 0 0 1 0.226-8.11m590.05-1e-3a295.28 295.28 0 0 1 0.225 8.11" fill="none" stroke="#000" stroke-width="36.614"/>
- <g stroke="#000" stroke-width="36.614">
-  <path d="m19476 27367h150.02-0.02v600h0.02-429.53v-600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m19476 27367v600" fill="none"/>
-  <path d="m13676 27967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m13676 27967v-600" fill="none"/>
- </g>
- <path d="m19196 9577h29.527m-29.527 18790h29.527m-29.527-18000h29.527m0-400h-29.527m29.527 17000h-29.527m0-15600h29.527m0-400h-29.527m0 15400h29.527m0-400h-29.527m0-13600h29.527m0-400h-29.527m0 13400h29.527m0-400h-29.527m0-11600h29.527m0-400.04h-29.527m0 11400h29.527m0-400h-29.527m0-9600h29.527m0-400h-29.527m0 9400h29.527m0-400h-29.527m0-7600h29.527m0-400h-29.527m0 7400h29.527m0-400h-29.527m0-5600h29.527m0-400h-29.527m0 5400h29.527m0-400h-29.527m0-3600h29.527m0-400h-29.527m0 3400h29.527m0-400h-29.527m0-1600h29.527m0-400h-29.527m0 1400h29.527m0-400h-29.527m-5270.5-9390h29.528m-1e-3 389.96h-29.527m0 400h29.528m-29.528 18000h29.528m-1e-3 -17400h-29.527m0 400h29.528m-1e-3 15600h-29.527m29.527-15000h-29.527m0 400h29.528m-1e-3 13600h-29.527m0 400h29.528m-1e-3 -13400h-29.527m0 400.04h29.528m-1e-3 11600h-29.527m0 400h29.528m-1e-3 -11400h-29.527m0 400h29.528m-1e-3 9600h-29.527m0 400h29.528m-1e-3 -9400h-29.527m0 400h29.528m-1e-3 7600h-29.527m0 400h29.528m-1e-3 -7400h-29.527m0 400h29.528m-1e-3 5600h-29.527m0 400h29.528m-1e-3 -5400h-29.527m0 400h29.528m-1e-3 3600h-29.527m0 400h29.528m-1e-3 -3400h-29.527m0 400h29.528m-1e-3 1600h-29.527m0 400h29.528m-1e-3 -1400h-29.527m0 400h29.528" fill="none" stroke="#000" stroke-width="36.614"/>
- <g stroke="#000" stroke-width="36.614">
-  <path d="m19476 28367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m19476 28367v600" fill="none"/>
-  <path d="m19476 26367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m19476 26367v600" fill="none"/>
-  <path d="m19476 25367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m19476 25367v600" fill="none"/>
-  <path d="m19476 24367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m19476 24367v600" fill="none"/>
-  <path d="m19476 23367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m19476 23367v600" fill="none"/>
-  <path d="m19476 22367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m19476 22367v600" fill="none"/>
-  <path d="m19476 21367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m19476 21367v600" fill="none"/>
-  <path d="m19476 20367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m19476 20367v600" fill="none"/>
-  <path d="m19476 19367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m19476 19367v600" fill="none"/>
-  <path d="m19476 18367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m19476 18367v600" fill="none"/>
-  <path d="m19476 17367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m19476 17367v600" fill="none"/>
-  <path d="m19476 16367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m19476 16367v600" fill="none"/>
-  <path d="m19476 15367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m19476 15367v600" fill="none"/>
-  <path d="m19476 14367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m19476 14367v600" fill="none"/>
-  <path d="m19476 13367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m19476 13367v600" fill="none"/>
-  <path d="m19476 12367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m19476 12367v600" fill="none"/>
-  <path d="m19476 11367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m19476 11367v600" fill="none"/>
-  <path d="m19476 10367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m19476 10367v600" fill="none"/>
-  <path d="m19476 9367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m19476 9367v600" fill="none"/>
-  <path d="m13676 28967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m13676 28967v-600" fill="none"/>
-  <path d="m13676 26967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m13676 26967v-600" fill="none"/>
-  <path d="m13676 25967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m13676 25967v-600" fill="none"/>
-  <path d="m13676 24967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m13676 24967v-600" fill="none"/>
-  <path d="m13676 23967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m13676 23967v-600" fill="none"/>
-  <path d="m13676 22967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m13676 22967v-600" fill="none"/>
-  <path d="m13676 21967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m13676 21967v-600" fill="none"/>
-  <path d="m13676 20967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m13676 20967v-600" fill="none"/>
-  <path d="m13676 19967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m13676 19967v-600" fill="none"/>
-  <path d="m13676 18967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m13676 18967v-600" fill="none"/>
-  <path d="m13676 17967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m13676 17967v-600" fill="none"/>
-  <path d="m13676 16967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m13676 16967v-600" fill="none"/>
-  <path d="m13676 15967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m13676 15967v-600" fill="none"/>
-  <path d="m13676 14967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m13676 14967v-600" fill="none"/>
-  <path d="m13676 13967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m13676 13967v-600" fill="none"/>
-  <path d="m13676 12967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m13676 12967v-600" fill="none"/>
-  <path d="m13676 11967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m13676 11967v-600" fill="none"/>
-  <path d="m13676 10967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m13676 10967v-600" fill="none"/>
-  <path d="m13676 9967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
-  <path d="m13676 9967v-600" fill="none"/>
- </g>
- <g stroke="#000" stroke-width=".093">
-  <g transform="scale(393.7) rotate(-90 42.17 16.582)">
-   <path d="M-.675 2.325a2.325 2.325 0 1 1 0-4.65h6.25a2.325 2.325 0 1 1 0 4.65h-6.25" fill="#ccc" fill-rule="evenodd"/>
-   <path d="m5.45-2h-6m0 4h6m2-2a2 2 0 0 0-2-2m0 4a2 2 0 0 0 2-2m-10 0a2 2 0 0 0 2 2m0-4a2 2 0 0 0-2 2m8-2v0.2h-6m0-0.2v0.2" fill="none"/>
-   <path d="m7.25 0a1.8 1.8 0 0 0-1.8-1.8m0 3.6a1.8 1.8 0 0 0 1.8-1.8m-1.8 2v-0.2m-6 0.2v-0.2h6m-7.8-1.8a1.8 1.8 0 0 0 1.8 1.8m0-3.6a1.8 1.8 0 0 0-1.8 1.8m9.8 0h-0.2m-9.8 0h0.2" fill="none"/>
+ <g stroke="#000">
+  <g stroke-width="36.614">
+   <path d="m19226 29167v-229.69m0-19360v-410.04m0 19200v-400m0-17600v-400m0 17400v-400m0-15600v-400m0 15400v-400m0-13600v-400m0 13400v-400m0-11600v-400m0 11400v-400m0-9600v-400m0 9400v-400m0-7600v-400m0 7400v-400m0-5600v-400m0 5400v-400m0-3600v-400m0 3400v-400m0-1600v-400m0 1400v-400m0-9800h-5300m-0.039 0v410.04m0 19364v226.41m0-19200v400m0 17600v400m0-17400v400m0 15600v400m0-15400v400m0 13600v400m0-13400v400m0 11600v400m0-11400v400m0 9600v400m0-9400v400m0 7600v400m0-7400v400m0 5600v400m0-5400v400m0 3600v400m0-3400v400m0 1600v400m0-1400v400m0 9800h5300m0.039 0-29.527-29.527v-380.51m29.527-19590-29.527 29.527m0 380.5v-380.51m0 19170v-400m0-17600v-400m0 17400v-400m0-15600v-400m0 15400v-400m0-13600v-400m0 13400v-400m0-11600v-400m0 11400v-400m0-9600v-400m0 9400v-400m0-7600v-400m0 7400v-400m0-5600v-400m0 5400v-400m0-3600v-400m0 3400v-400m0-1600v-400m0 1400v-400m-5270.5-9800 29.528 29.527m5241 0h-5240.9m-0.04 0v380.51m-29.527 19590 29.528-29.527m-1e-3 -197.24v197.23m0-19170v400m0 17600v400m0-17400v400m0 15600v400m0-15400v400m0 13600v400m0-13400v400m0 11600v400m0-11400v400m0 9600v400m0-9400v400m0 7600v400m0-7400v400m0 5600v400m0-5400v400m0 3600v400m0-3400v400m0 1600v400m0-1400v400m0 9770.5h5240.9m0.04-380.71v-389.96m0-19170-127.45 127.45m127.45 19813-127.45-127.45m-5113.5-19813 127.45 127.45m2198-41.839 1.224 41.843m-1.224-41.843h590.04l-1.225 41.843m-2914.3 19813 127.45-127.45" fill="none"/>
+   <path d="m16282 9324h-2199.2v19686h4986.2v-19686h-2199.2c-15.164 150.88-142.15 265.75-293.79 265.75s-278.63-114.87-293.8-265.75z" fill="#1a1a1a" fill-rule="evenodd"/>
+   <path d="m16281 9290.2a295.28 295.28 0 0 1 0.226-8.11m590.05-1e-3a295.28 295.28 0 0 1 0.225 8.11" fill="none"/>
+   <path d="m19476 27367h150.02-0.02v600h0.02-429.53v-600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m19476 27367v600" fill="none"/>
+   <path d="m13676 27967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m13676 27967v-600" fill="none"/>
+   <path d="m19196 9577h29.527m-29.527 18790h29.527m-29.527-18000h29.527m0-400h-29.527m29.527 17000h-29.527m0-15600h29.527m0-400h-29.527m0 15400h29.527m0-400h-29.527m0-13600h29.527m0-400h-29.527m0 13400h29.527m0-400h-29.527m0-11600h29.527m0-400.04h-29.527m0 11400h29.527m0-400h-29.527m0-9600h29.527m0-400h-29.527m0 9400h29.527m0-400h-29.527m0-7600h29.527m0-400h-29.527m0 7400h29.527m0-400h-29.527m0-5600h29.527m0-400h-29.527m0 5400h29.527m0-400h-29.527m0-3600h29.527m0-400h-29.527m0 3400h29.527m0-400h-29.527m0-1600h29.527m0-400h-29.527m0 1400h29.527m0-400h-29.527m-5270.5-9390h29.528m-1e-3 389.96h-29.527m0 400h29.528m-29.528 18000h29.528m-1e-3 -17400h-29.527m0 400h29.528m-1e-3 15600h-29.527m29.527-15000h-29.527m0 400h29.528m-1e-3 13600h-29.527m0 400h29.528m-1e-3 -13400h-29.527m0 400.04h29.528m-1e-3 11600h-29.527m0 400h29.528m-1e-3 -11400h-29.527m0 400h29.528m-1e-3 9600h-29.527m0 400h29.528m-1e-3 -9400h-29.527m0 400h29.528m-1e-3 7600h-29.527m0 400h29.528m-1e-3 -7400h-29.527m0 400h29.528m-1e-3 5600h-29.527m0 400h29.528m-1e-3 -5400h-29.527m0 400h29.528m-1e-3 3600h-29.527m0 400h29.528m-1e-3 -3400h-29.527m0 400h29.528m-1e-3 1600h-29.527m0 400h29.528m-1e-3 -1400h-29.527m0 400h29.528" fill="none"/>
+   <path d="m19476 28367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m19476 28367v600" fill="none"/>
+   <path d="m19476 26367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m19476 26367v600" fill="none"/>
+   <path d="m19476 25367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m19476 25367v600" fill="none"/>
+   <path d="m19476 24367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m19476 24367v600" fill="none"/>
+   <path d="m19476 23367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m19476 23367v600" fill="none"/>
+   <path d="m19476 22367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m19476 22367v600" fill="none"/>
+   <path d="m19476 21367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m19476 21367v600" fill="none"/>
+   <path d="m19476 20367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m19476 20367v600" fill="none"/>
+   <path d="m19476 19367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m19476 19367v600" fill="none"/>
+   <path d="m19476 18367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m19476 18367v600" fill="none"/>
+   <path d="m19476 17367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m19476 17367v600" fill="none"/>
+   <path d="m19476 16367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m19476 16367v600" fill="none"/>
+   <path d="m19476 15367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m19476 15367v600" fill="none"/>
+   <path d="m19476 14367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m19476 14367v600" fill="none"/>
+   <path d="m19476 13367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m19476 13367v600" fill="none"/>
+   <path d="m19476 12367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m19476 12367v600" fill="none"/>
+   <path d="m19476 11367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m19476 11367v600" fill="none"/>
+   <path d="m19476 10367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m19476 10367v600" fill="none"/>
+   <path d="m19476 9367h150.04-0.04v600h0.04-429.57v-600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m19476 9367v600" fill="none"/>
+   <path d="m13676 28967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m13676 28967v-600" fill="none"/>
+   <path d="m13676 26967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m13676 26967v-600" fill="none"/>
+   <path d="m13676 25967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m13676 25967v-600" fill="none"/>
+   <path d="m13676 24967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m13676 24967v-600" fill="none"/>
+   <path d="m13676 23967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m13676 23967v-600" fill="none"/>
+   <path d="m13676 22967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m13676 22967v-600" fill="none"/>
+   <path d="m13676 21967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m13676 21967v-600" fill="none"/>
+   <path d="m13676 20967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m13676 20967v-600" fill="none"/>
+   <path d="m13676 19967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m13676 19967v-600" fill="none"/>
+   <path d="m13676 18967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m13676 18967v-600" fill="none"/>
+   <path d="m13676 17967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m13676 17967v-600" fill="none"/>
+   <path d="m13676 16967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m13676 16967v-600" fill="none"/>
+   <path d="m13676 15967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m13676 15967v-600" fill="none"/>
+   <path d="m13676 14967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m13676 14967v-600" fill="none"/>
+   <path d="m13676 13967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m13676 13967v-600" fill="none"/>
+   <path d="m13676 12967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m13676 12967v-600" fill="none"/>
+   <path d="m13676 11967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m13676 11967v-600" fill="none"/>
+   <path d="m13676 10967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m13676 10967v-600" fill="none"/>
+   <path d="m13676 9967h-150v-600h429.53v600z" fill="#ccc" fill-rule="evenodd"/>
+   <path d="m13676 9967v-600" fill="none"/>
   </g>
-  <g transform="scale(393.7) rotate(-90 52.965 28.646)">
-   <path d="M4.17 0c0 2.954-3.902 4.018-5.4 1.47v-2.94C.268-4.018 4.17-2.954 4.17 0z" fill="maroon" fill-rule="evenodd"/>
-   <circle cx="1.27" r="2.45" fill="red"/>
-  </g>
- </g>
- <g stroke="#000" stroke-width=".093">
-  <g transform="matrix(-393.7 0 0 393.7 26574 13131)">
-   <path d="M11.65.35h-.8v-.7h1.85c.467 0 .467.7 0 .7h-.588z" fill="#ccc" fill-rule="evenodd"/>
-   <path d="M2.65 1.6H4.1v-3.2H2.65c-.486.047-.753.314-.8.8V.8a.8.8 0 0 0 .8.8" fill="#fca" fill-rule="evenodd"/>
-   <path d="M0 .35c-.467 0-.467-.7 0-.7h1.85v.7H.387z" fill="#ccc" fill-rule="evenodd"/>
-   <path d="m2.65 1.6v-3.2m-1.6 1.25v0.7m9 1.25v-3.2m1.6 1.95v-0.7" fill="none"/>
-   <path d="M8.6 1.44H4.1v-2.88h4.5zM10.05 1.6a.8.8 0 0 0 .8-.8V-.8c-.047-.486-.314-.753-.8-.8H8.6v3.2z" fill="#fca" fill-rule="evenodd"/>
-  </g>
-  <path d="m24768 13697h-173.23v-1131.1h173.23z" fill="maroon" opacity=".991" stroke-width="36.614"/>
-  <path d="m24406 13698h-173.23v-1131.5h173.23z" opacity=".991" stroke-width="36.614"/>
-  <path d="m24058 13697h-173.23v-1132.7h173.23z" fill="red" opacity=".991" stroke-width="36.614"/>
-  <path d="m23510 13697h-173.23v-1132.3h173.23z" fill="olive" opacity=".991" stroke-width="36.614"/>
-  <g transform="matrix(0 -393.7 -393.7 0 24574 9131.5)">
-   <path d="M11.65.35h-.8v-.7h1.85c.467 0 .467.7 0 .7h-.588z" fill="#ccc" fill-rule="evenodd"/>
-   <path d="M2.65 1.6H4.1v-3.2H2.65c-.486.047-.753.314-.8.8V.8a.8.8 0 0 0 .8.8" fill="#fca" fill-rule="evenodd"/>
-   <path d="M0 .35c-.467 0-.467-.7 0-.7h1.85v.7H.387z" fill="#ccc" fill-rule="evenodd"/>
-   <path d="m2.65 1.6v-3.2m-1.6 1.25v0.7m9 1.25v-3.2m1.6 1.95v-0.7" fill="none"/>
-   <path d="M8.6 1.44H4.1v-2.88h4.5zM10.05 1.6a.8.8 0 0 0 .8-.8V-.8c-.047-.486-.314-.753-.8-.8H8.6v3.2z" fill="#fca" fill-rule="evenodd"/>
-  </g>
-  <path d="m24008 7325.3v-173.23h1131.1v173.23z" fill="maroon" opacity=".991" stroke-width="36.614"/>
-  <path d="m24007 6962.7v-173.23h1131.5v173.23z" opacity=".991" stroke-width="36.614"/>
-  <path d="m24008 6615.1v-173.23h1132.7v173.23z" fill="red" opacity=".991" stroke-width="36.614"/>
-  <path d="m24008 6067.5v-173.23h1132.3v173.23z" fill="olive" opacity=".991" stroke-width="36.614"/>
-  <g transform="matrix(393.7 0 0 -393.7 5573.5 18631)">
-   <path d="M11.65.35h-.8v-.7h1.85c.467 0 .467.7 0 .7h-.588z" fill="#ccc" fill-rule="evenodd"/>
-   <path d="M2.65 1.6H4.1v-3.2H2.65c-.486.047-.753.314-.8.8V.8a.8.8 0 0 0 .8.8" fill="#fca" fill-rule="evenodd"/>
-   <path d="M0 .35c-.467 0-.467-.7 0-.7h1.85v.7H.387z" fill="#ccc" fill-rule="evenodd"/>
-   <path d="m2.65 1.6v-3.2m-1.6 1.25v0.7m9 1.25v-3.2m1.6 1.95v-0.7" fill="none"/>
-   <path d="M8.6 1.44H4.1v-2.88h4.5zM10.05 1.6a.8.8 0 0 0 .8-.8V-.8c-.047-.486-.314-.753-.8-.8H8.6v3.2z" fill="#fca" fill-rule="evenodd"/>
-  </g>
-  <path d="m7379.7 18065h173.23v1131.1h-173.23z" fill="maroon" opacity=".991" stroke-width="36.614"/>
-  <path d="m7742.3 18064h173.23v1131.5h-173.23z" opacity=".991" stroke-width="36.614"/>
-  <path d="m8089.9 18065h173.23v1132.7h-173.23z" fill="red" opacity=".991" stroke-width="36.614"/>
-  <path d="m8637.5 18065h173.23v1132.3h-173.23z" fill="olive" opacity=".991" stroke-width="36.614"/>
-  <g transform="matrix(-393.7 0 0 393.7 17574 7631.4)">
-   <path d="M11.65.35h-.8v-.7h1.85c.467 0 .467.7 0 .7h-.588z" fill="#ccc" fill-rule="evenodd"/>
-   <path d="M2.65 1.6H4.1v-3.2H2.65c-.486.047-.753.314-.8.8V.8a.8.8 0 0 0 .8.8" fill="#fca" fill-rule="evenodd"/>
-   <path d="M0 .35c-.467 0-.467-.7 0-.7h1.85v.7H.387z" fill="#ccc" fill-rule="evenodd"/>
-   <path d="m2.65 1.6v-3.2m-1.6 1.25v0.7m9 1.25v-3.2m1.6 1.95v-0.7" fill="none"/>
-   <path d="M8.6 1.44H4.1v-2.88h4.5zM10.05 1.6a.8.8 0 0 0 .8-.8V-.8c-.047-.486-.314-.753-.8-.8H8.6v3.2z" fill="#fca" fill-rule="evenodd"/>
-  </g>
-  <path d="m15768 8196.7h-173.23v-1131.1h173.23z" fill="maroon" opacity=".991" stroke-width="36.614"/>
-  <path d="m15406 8198.3h-173.23v-1131.5h173.23z" opacity=".991" stroke-width="36.614"/>
-  <path d="m15058 8197.5h-173.23v-1132.7h173.23z" fill="red" opacity=".991" stroke-width="36.614"/>
-  <path d="m14510 8197.1h-173.23v-1132.3h173.23z" fill="olive" opacity=".991" stroke-width="36.614"/>
-  <g transform="matrix(-393.7 0 0 393.7 18574 31131)">
-   <path d="M11.65.35h-.8v-.7h1.85c.467 0 .467.7 0 .7h-.588z" fill="#ccc" fill-rule="evenodd"/>
-   <path d="M2.65 1.6H4.1v-3.2H2.65c-.486.047-.753.314-.8.8V.8a.8.8 0 0 0 .8.8" fill="#fca" fill-rule="evenodd"/>
-   <path d="M0 .35c-.467 0-.467-.7 0-.7h1.85v.7H.387z" fill="#ccc" fill-rule="evenodd"/>
-   <path d="m2.65 1.6v-3.2m-1.6 1.25v0.7m9 1.25v-3.2m1.6 1.95v-0.7" fill="none"/>
-   <path d="M8.6 1.44H4.1v-2.88h4.5zM10.05 1.6a.8.8 0 0 0 .8-.8V-.8c-.047-.486-.314-.753-.8-.8H8.6v3.2z" fill="#fca" fill-rule="evenodd"/>
-  </g>
-  <path d="m16768 31697h-173.23v-1131.1h173.23z" fill="maroon" opacity=".991" stroke-width="36.614"/>
-  <path d="m16406 31698h-173.23v-1131.5h173.23z" opacity=".991" stroke-width="36.614"/>
-  <path d="m16058 31697h-173.23v-1132.7h173.23z" fill="red" opacity=".991" stroke-width="36.614"/>
-  <path d="m15510 31697h-173.23v-1132.3h173.23z" fill="olive" opacity=".991" stroke-width="36.614"/>
- </g>
- <g stroke="#000" stroke-width=".093">
-  <g transform="matrix(-393.7 0 0 393.7 8073.8 23210)" fill="#f60" fill-rule="evenodd">
-   <path d="m2.75 0a1.806 1.806 0 0 1-3 0 1.806 1.806 0 0 1 3 0z"/>
-   <path d="M-.053.244c-.263-.057-.263-.43 0-.488M2.553-.244c.263.057.263.43 0 .488M2.75 0h-3"/>
-  </g>
-  <g transform="matrix(-393.7 0 0 393.7 29574 16131)">
-   <path d="M4.17 0c0 2.954-3.902 4.018-5.4 1.47v-2.94C.268-4.018 4.17-2.954 4.17 0z" fill="maroon" fill-rule="evenodd"/>
-   <circle cx="1.27" r="2.45" fill="red"/>
-  </g>
-  <g transform="matrix(-393.7 0 0 393.7 29574 7130.7)">
-   <path d="M4.17 0c0 2.954-3.902 4.018-5.4 1.47v-2.94C.268-4.018 4.17-2.954 4.17 0z" fill="maroon" fill-rule="evenodd"/>
-   <circle cx="1.27" r="2.45" fill="red"/>
-  </g>
-  <g transform="matrix(0 -393.7 -393.7 0 14074 3631)">
-   <path d="M1.27-13.97V1.27h-2.54v-15.24z" fill="#1a1a1a" fill-rule="evenodd"/>
-   <path d="M-.6.6V-.6H.6V.6z" fill="gray" fill-rule="evenodd"/>
-   <path d="M.6-3.14v1.2H-.6v-1.2zM.6-5.68v1.2H-.6v-1.2zM-.6-13.3H.6v1.2H-.6zM-.6-10.76H.6v1.2H-.6zM-.6-8.22H.6v1.2H-.6z" fill="#666" fill-rule="evenodd"/>
-   <path d="M-.6.6l.299-.299M-.6-.6l.299.299M-.301.301v-.602M.6.6L.301.301M.301.301h-.602M.6-.6l-.299.299M.301-.301v.602M-.301-.301h.602M-.6-3.14l.299.299M.6-3.14l-.299.299M-.301-2.841h.602M-.6-1.94l.299-.299M-.301-2.239v-.602M.6-1.94l-.299-.299M.301-2.239h-.602M.301-2.841v.602M.6-5.68l-.299.299M.6-4.48l-.299-.299M.301-5.381v.602M-.6-5.68l.299.299M-.301-5.381h.602M-.6-4.48l.299-.299M-.301-4.779v-.602M.301-4.779h-.602M-.6-12.1l.299-.299M-.6-13.3l.299.299M-.301-12.399v-.602M.6-12.1l-.299-.299M.301-12.399h-.602M.6-13.3l-.299.299M.301-13.001v.602M-.301-13.001h.602M-.6-10.76l.299.299M.6-10.76l-.299.299M-.301-10.461h.602M-.6-9.56l.299-.299M-.301-9.859v-.602M.6-9.56l-.299-.299M.301-9.859h-.602M.301-10.461v.602M.6-8.22l-.299.299M.6-7.02l-.299-.299M.301-7.921v.602M-.6-8.22l.299.299M-.301-7.921h.602M-.6-7.02l.299-.299M-.301-7.319v-.602M.301-7.319h-.602" fill="none"/>
-   <path d="M.3-.3v.6h-.6v-.6zM-.3-2.84h.6v.6h-.6zM.3-5.38v.6h-.6v-.6zM.3-13v.6h-.6v-.6zM-.3-10.46h.6v.6h-.6zM.3-7.92v.6h-.6v-.6z" fill="olive" fill-rule="evenodd"/>
-   <path d="m-0.1 0.25v0.05m0-0.55v0.5m0-0.55v0.05m0.2-0.05v0.05m-0.2 0h0.2v0.55m-0.2-0.05h0.2m-0.2-2.54v0.05m0-0.55v0.5m0-0.55v0.05" fill="none"/>
-   <path d="M.1-2.84v.05" fill="olive" fill-rule="evenodd"/>
-   <path d="m-0.1-2.79h0.2v0.55m-0.2-0.05h0.2m-0.2-2.54v0.05m0-0.55v0.5m0-0.55v0.05m0.2-0.05v0.05m-0.2 0h0.2v0.55m-0.2-0.05h0.2m-0.2-7.62v0.05m0-0.55v0.5m0-0.55v0.05m0.2-0.05v0.05m-0.2 0h0.2v0.55m-0.2-0.05h0.2m-0.2 2.54v0.05m0-0.55v0.5m0-0.55v0.05m0.2-0.05v0.05m-0.2 0h0.2v0.55m-0.2-0.05h0.2m-0.2 2.54v0.05m0-0.55v0.5m0-0.55v0.05m0.2-0.05v0.05m-0.2 0h0.2v0.55m-0.2-0.05h0.2" fill="none"/>
-  </g>
-  <g transform="scale(393.7) rotate(90 6.378 51.161)" fill="#f60" fill-rule="evenodd">
-   <path d="m2.75 0a1.806 1.806 0 0 1-3 0 1.806 1.806 0 0 1 3 0z"/>
-   <path d="M-.053.244c-.263-.057-.263-.43 0-.488M2.553-.244c.263.057.263.43 0 .488M2.75 0h-3"/>
-  </g>
-  <g transform="scale(393.7) rotate(-90 45.98 35.631)">
-   <path d="M4.17 0c0 2.954-3.902 4.018-5.4 1.47v-2.94C.268-4.018 4.17-2.954 4.17 0z" fill="maroon" fill-rule="evenodd"/>
-   <circle cx="1.27" r="2.45" fill="red"/>
-  </g>
-  <g transform="matrix(-393.7 0 0 393.7 8073.8 21210)" fill="#f60" fill-rule="evenodd">
-   <path d="m2.75 0a1.806 1.806 0 0 1-3 0 1.806 1.806 0 0 1 3 0z"/>
-   <path d="M-.053.244c-.263-.057-.263-.43 0-.488M2.553-.244c.263.057.263.43 0 .488M2.75 0h-3"/>
-  </g>
-  <g transform="matrix(-393.7 0 0 393.7 23574 25631)">
-   <path d="M-1.27-8.89h2.54V1.27h-2.54z" fill="#1a1a1a" fill-rule="evenodd"/>
-   <path d="M-.6-1.94v-1.2H.6v1.2z" fill="#333" fill-rule="evenodd"/>
-   <path d="M-.6-5.68H.6v1.2H-.6zM-.6-.6H.6V.6H-.6zM.6-7.02H-.6v-1.2H.6z" fill="#4d4d4d" fill-rule="evenodd"/>
-   <path d="M-.6-1.94l.299-.299M-.6-3.14l.299.299M-.301-2.239v-.602M.6-1.94l-.299-.299M.301-2.239h-.602M.6-3.14l-.299.299M.301-2.841v.602M-.301-2.841h.602M.6-4.48l-.299-.299M-.6-4.48l.299-.299M.301-4.779h-.602M.6-5.68l-.299.299M.301-5.381v.602M-.6-5.68l.299.299M-.301-5.381h.602M-.301-4.779v-.602M-.6-.6l.299.299M.6-.6l-.299.299M-.301-.301h.602M-.6.6l.299-.299M-.301.301v-.602M.6.6L.301.301M.301.301h-.602M.301-.301v.602M-.6-8.22l.299.299M.6-8.22l-.299.299M-.301-7.921h.602M-.6-7.02l.299-.299M-.301-7.319v-.602M.6-7.02l-.299-.299M.301-7.319h-.602M.301-7.921v.602" fill="none"/>
-   <path d="M-.3-2.84h.6v.6h-.6zM.3-5.38v.6h-.6v-.6zM.3-.3v.6h-.6v-.6zM.3-7.92v.6h-.6v-.6z" fill="olive" fill-rule="evenodd"/>
-   <path d="m-0.1-2.29v0.05m0-0.55v0.5m0-0.55v0.05m0.2-0.05v0.05m-0.2 0h0.2v0.55m-0.2-0.05h0.2m-0.2-2.54v0.05m0-0.55v0.5m0-0.55v0.05m0.2-0.05v0.05m-0.2 0h0.2v0.55m-0.2-0.05h0.2m-0.2 5.08v0.05m0-0.55v0.5m0-0.55v0.05m0.2-0.05v0.05m-0.2 0h0.2v0.55m-0.2-0.05h0.2m-0.2-7.62v0.05m0-0.55v0.5m0-0.55v0.05m0.2-0.05v0.05m-0.2 0h0.2v0.55m-0.2-0.05h0.2" fill="none"/>
-  </g>
-  <g transform="matrix(-393.7 0 0 393.7 29574 13131)">
-   <path d="M4.17 0c0 2.954-3.902 4.018-5.4 1.47v-2.94C.268-4.018 4.17-2.954 4.17 0z" fill="maroon" fill-rule="evenodd"/>
-   <circle cx="1.27" r="2.45" fill="red"/>
-  </g>
-  <g transform="matrix(0 -393.7 -393.7 0 29074 2631)">
-   <path d="m-1.27-3.81h2.54v5.08h-2.54z" fill="#1a1a1a" fill-rule="evenodd"/>
-   <path d="M-.6-3.14H.6v1.2H-.6zM-.6.6V-.6H.6V.6z" fill="#333" fill-rule="evenodd"/>
-   <path d="M-.6-3.14l.299.299M.6-3.14l-.299.299M-.301-2.841h.602M-.6-1.94l.299-.299M-.301-2.239v-.602M.6-1.94l-.299-.299M.301-2.239h-.602M.301-2.841v.602M.6-.6l-.299.299M.6.6L.301.301M.301-.301v.602M-.6-.6l.299.299M-.301-.301h.602M-.6.6l.299-.299M-.301.301v-.602M.301.301h-.602" fill="none"/>
-   <path d="M-.3-2.84h.6v.6h-.6zM-.3-.3h.6v.6h-.6z" fill="olive" fill-rule="evenodd"/>
-   <path d="m-0.1-2.29v0.05m0-0.55v0.5m0-0.55v0.05" fill="none"/>
-   <path d="M.1-2.84v.05" fill="olive" fill-rule="evenodd"/>
-   <path d="m-0.1-2.79h0.2v0.55m-0.2-0.05h0.2m-0.2 2.54v0.05m0-0.55v0.5m0-0.55v0.05m0.2-0.05v0.05m-0.2 0h0.2v0.55m-0.2-0.05h0.2" fill="none"/>
+  <g stroke-width=".093">
+   <g transform="scale(393.7) rotate(-90 42.17 16.582)">
+    <path d="M-.675 2.325a2.325 2.325 0 1 1 0-4.65h6.25a2.325 2.325 0 1 1 0 4.65h-6.25" fill="#ccc" fill-rule="evenodd"/>
+    <path d="m5.45-2h-6m0 4h6m2-2a2 2 0 0 0-2-2m0 4a2 2 0 0 0 2-2m-10 0a2 2 0 0 0 2 2m0-4a2 2 0 0 0-2 2m8-2v0.2h-6m0-0.2v0.2" fill="none"/>
+    <path d="m7.25 0a1.8 1.8 0 0 0-1.8-1.8m0 3.6a1.8 1.8 0 0 0 1.8-1.8m-1.8 2v-0.2m-6 0.2v-0.2h6m-7.8-1.8a1.8 1.8 0 0 0 1.8 1.8m0-3.6a1.8 1.8 0 0 0-1.8 1.8m9.8 0h-0.2m-9.8 0h0.2" fill="none"/>
+   </g>
+   <g transform="scale(393.7) rotate(-90 52.965 28.646)">
+    <path d="M4.17 0c0 2.954-3.902 4.018-5.4 1.47v-2.94C.268-4.018 4.17-2.954 4.17 0z" fill="maroon" fill-rule="evenodd"/>
+    <circle cx="1.27" r="2.45" fill="red"/>
+   </g>
+   <g transform="matrix(-393.7 0 0 393.7 26574 13131)">
+    <g fill-rule="evenodd">
+     <path d="M11.65.35h-.8v-.7h1.85c.467 0 .467.7 0 .7h-.588z" fill="#ccc"/>
+     <path d="M2.65 1.6H4.1v-3.2H2.65c-.486.047-.753.314-.8.8V.8a.8.8 0 0 0 .8.8" fill="#fca"/>
+     <path d="M0 .35c-.467 0-.467-.7 0-.7h1.85v.7H.387z" fill="#ccc"/>
+    </g>
+    <path d="m2.65 1.6v-3.2m-1.6 1.25v0.7m9 1.25v-3.2m1.6 1.95v-0.7" fill="none"/>
+    <path d="M8.6 1.44H4.1v-2.88h4.5zM10.05 1.6a.8.8 0 0 0 .8-.8V-.8c-.047-.486-.314-.753-.8-.8H8.6v3.2z" fill="#fca" fill-rule="evenodd"/>
+   </g>
+   <g stroke-width="36.614">
+    <path d="m24768 13697h-173.23v-1131.1h173.23z" fill="maroon" opacity=".991"/>
+    <path d="m24406 13698h-173.23v-1131.5h173.23z" opacity=".991"/>
+    <path d="m24058 13697h-173.23v-1132.7h173.23z" fill="red" opacity=".991"/>
+    <path d="m23510 13697h-173.23v-1132.3h173.23z" fill="olive" opacity=".991"/>
+   </g>
+   <g transform="matrix(0 -393.7 -393.7 0 24574 9131.5)">
+    <g fill-rule="evenodd">
+     <path d="M11.65.35h-.8v-.7h1.85c.467 0 .467.7 0 .7h-.588z" fill="#ccc"/>
+     <path d="M2.65 1.6H4.1v-3.2H2.65c-.486.047-.753.314-.8.8V.8a.8.8 0 0 0 .8.8" fill="#fca"/>
+     <path d="M0 .35c-.467 0-.467-.7 0-.7h1.85v.7H.387z" fill="#ccc"/>
+    </g>
+    <path d="m2.65 1.6v-3.2m-1.6 1.25v0.7m9 1.25v-3.2m1.6 1.95v-0.7" fill="none"/>
+    <path d="M8.6 1.44H4.1v-2.88h4.5zM10.05 1.6a.8.8 0 0 0 .8-.8V-.8c-.047-.486-.314-.753-.8-.8H8.6v3.2z" fill="#fca" fill-rule="evenodd"/>
+   </g>
+   <g stroke-width="36.614">
+    <path d="m24008 7325.3v-173.23h1131.1v173.23z" fill="maroon" opacity=".991"/>
+    <path d="m24007 6962.7v-173.23h1131.5v173.23z" opacity=".991"/>
+    <path d="m24008 6615.1v-173.23h1132.7v173.23z" fill="red" opacity=".991"/>
+    <path d="m24008 6067.5v-173.23h1132.3v173.23z" fill="olive" opacity=".991"/>
+   </g>
+   <g transform="matrix(393.7 0 0 -393.7 5573.5 18631)">
+    <g fill-rule="evenodd">
+     <path d="M11.65.35h-.8v-.7h1.85c.467 0 .467.7 0 .7h-.588z" fill="#ccc"/>
+     <path d="M2.65 1.6H4.1v-3.2H2.65c-.486.047-.753.314-.8.8V.8a.8.8 0 0 0 .8.8" fill="#fca"/>
+     <path d="M0 .35c-.467 0-.467-.7 0-.7h1.85v.7H.387z" fill="#ccc"/>
+    </g>
+    <path d="m2.65 1.6v-3.2m-1.6 1.25v0.7m9 1.25v-3.2m1.6 1.95v-0.7" fill="none"/>
+    <path d="M8.6 1.44H4.1v-2.88h4.5zM10.05 1.6a.8.8 0 0 0 .8-.8V-.8c-.047-.486-.314-.753-.8-.8H8.6v3.2z" fill="#fca" fill-rule="evenodd"/>
+   </g>
+   <g stroke-width="36.614">
+    <path d="m7379.7 18065h173.23v1131.1h-173.23z" fill="maroon" opacity=".991"/>
+    <path d="m7742.3 18064h173.23v1131.5h-173.23z" opacity=".991"/>
+    <path d="m8089.9 18065h173.23v1132.7h-173.23z" fill="red" opacity=".991"/>
+    <path d="m8637.5 18065h173.23v1132.3h-173.23z" fill="olive" opacity=".991"/>
+   </g>
+   <g transform="matrix(-393.7 0 0 393.7 17574 7631.4)">
+    <g fill-rule="evenodd">
+     <path d="M11.65.35h-.8v-.7h1.85c.467 0 .467.7 0 .7h-.588z" fill="#ccc"/>
+     <path d="M2.65 1.6H4.1v-3.2H2.65c-.486.047-.753.314-.8.8V.8a.8.8 0 0 0 .8.8" fill="#fca"/>
+     <path d="M0 .35c-.467 0-.467-.7 0-.7h1.85v.7H.387z" fill="#ccc"/>
+    </g>
+    <path d="m2.65 1.6v-3.2m-1.6 1.25v0.7m9 1.25v-3.2m1.6 1.95v-0.7" fill="none"/>
+    <path d="M8.6 1.44H4.1v-2.88h4.5zM10.05 1.6a.8.8 0 0 0 .8-.8V-.8c-.047-.486-.314-.753-.8-.8H8.6v3.2z" fill="#fca" fill-rule="evenodd"/>
+   </g>
+   <g stroke-width="36.614">
+    <path d="m15768 8196.7h-173.23v-1131.1h173.23z" fill="maroon" opacity=".991"/>
+    <path d="m15406 8198.3h-173.23v-1131.5h173.23z" opacity=".991"/>
+    <path d="m15058 8197.5h-173.23v-1132.7h173.23z" fill="red" opacity=".991"/>
+    <path d="m14510 8197.1h-173.23v-1132.3h173.23z" fill="olive" opacity=".991"/>
+   </g>
+   <g transform="matrix(-393.7 0 0 393.7 18574 31131)">
+    <g fill-rule="evenodd">
+     <path d="M11.65.35h-.8v-.7h1.85c.467 0 .467.7 0 .7h-.588z" fill="#ccc"/>
+     <path d="M2.65 1.6H4.1v-3.2H2.65c-.486.047-.753.314-.8.8V.8a.8.8 0 0 0 .8.8" fill="#fca"/>
+     <path d="M0 .35c-.467 0-.467-.7 0-.7h1.85v.7H.387z" fill="#ccc"/>
+    </g>
+    <path d="m2.65 1.6v-3.2m-1.6 1.25v0.7m9 1.25v-3.2m1.6 1.95v-0.7" fill="none"/>
+    <path d="M8.6 1.44H4.1v-2.88h4.5zM10.05 1.6a.8.8 0 0 0 .8-.8V-.8c-.047-.486-.314-.753-.8-.8H8.6v3.2z" fill="#fca" fill-rule="evenodd"/>
+   </g>
+   <g stroke-width="36.614">
+    <path d="m16768 31697h-173.23v-1131.1h173.23z" fill="maroon" opacity=".991"/>
+    <path d="m16406 31698h-173.23v-1131.5h173.23z" opacity=".991"/>
+    <path d="m16058 31697h-173.23v-1132.7h173.23z" fill="red" opacity=".991"/>
+    <path d="m15510 31697h-173.23v-1132.3h173.23z" fill="olive" opacity=".991"/>
+   </g>
+   <g transform="matrix(-393.7 0 0 393.7 8073.8 23210)" fill="#f60" fill-rule="evenodd">
+    <path d="m2.75 0a1.806 1.806 0 0 1-3 0 1.806 1.806 0 0 1 3 0z"/>
+    <path d="M-.053.244c-.263-.057-.263-.43 0-.488M2.553-.244c.263.057.263.43 0 .488M2.75 0h-3"/>
+   </g>
+   <g transform="matrix(-393.7 0 0 393.7 29574 16131)">
+    <path d="M4.17 0c0 2.954-3.902 4.018-5.4 1.47v-2.94C.268-4.018 4.17-2.954 4.17 0z" fill="maroon" fill-rule="evenodd"/>
+    <circle cx="1.27" r="2.45" fill="red"/>
+   </g>
+   <g transform="matrix(-393.7 0 0 393.7 29574 7130.7)">
+    <path d="M4.17 0c0 2.954-3.902 4.018-5.4 1.47v-2.94C.268-4.018 4.17-2.954 4.17 0z" fill="maroon" fill-rule="evenodd"/>
+    <circle cx="1.27" r="2.45" fill="red"/>
+   </g>
+   <g transform="matrix(0 -393.7 -393.7 0 14074 3631)">
+    <g fill-rule="evenodd">
+     <path d="M1.27-13.97V1.27h-2.54v-15.24z" fill="#1a1a1a"/>
+     <path d="M-.6.6V-.6H.6V.6z" fill="gray"/>
+     <path d="M.6-3.14v1.2H-.6v-1.2zM.6-5.68v1.2H-.6v-1.2zM-.6-13.3H.6v1.2H-.6zM-.6-10.76H.6v1.2H-.6zM-.6-8.22H.6v1.2H-.6z" fill="#666"/>
+    </g>
+    <path d="M-.6.6l.299-.299M-.6-.6l.299.299M-.301.301v-.602M.6.6L.301.301M.301.301h-.602M.6-.6l-.299.299M.301-.301v.602M-.301-.301h.602M-.6-3.14l.299.299M.6-3.14l-.299.299M-.301-2.841h.602M-.6-1.94l.299-.299M-.301-2.239v-.602M.6-1.94l-.299-.299M.301-2.239h-.602M.301-2.841v.602M.6-5.68l-.299.299M.6-4.48l-.299-.299M.301-5.381v.602M-.6-5.68l.299.299M-.301-5.381h.602M-.6-4.48l.299-.299M-.301-4.779v-.602M.301-4.779h-.602M-.6-12.1l.299-.299M-.6-13.3l.299.299M-.301-12.399v-.602M.6-12.1l-.299-.299M.301-12.399h-.602M.6-13.3l-.299.299M.301-13.001v.602M-.301-13.001h.602M-.6-10.76l.299.299M.6-10.76l-.299.299M-.301-10.461h.602M-.6-9.56l.299-.299M-.301-9.859v-.602M.6-9.56l-.299-.299M.301-9.859h-.602M.301-10.461v.602M.6-8.22l-.299.299M.6-7.02l-.299-.299M.301-7.921v.602M-.6-8.22l.299.299M-.301-7.921h.602M-.6-7.02l.299-.299M-.301-7.319v-.602M.301-7.319h-.602" fill="none"/>
+    <path d="M.3-.3v.6h-.6v-.6zM-.3-2.84h.6v.6h-.6zM.3-5.38v.6h-.6v-.6zM.3-13v.6h-.6v-.6zM-.3-10.46h.6v.6h-.6zM.3-7.92v.6h-.6v-.6z" fill="olive" fill-rule="evenodd"/>
+    <path d="m-0.1 0.25v0.05m0-0.55v0.5m0-0.55v0.05m0.2-0.05v0.05m-0.2 0h0.2v0.55m-0.2-0.05h0.2m-0.2-2.54v0.05m0-0.55v0.5m0-0.55v0.05" fill="none"/>
+    <path d="M.1-2.84v.05" fill="olive" fill-rule="evenodd"/>
+    <path d="m-0.1-2.79h0.2v0.55m-0.2-0.05h0.2m-0.2-2.54v0.05m0-0.55v0.5m0-0.55v0.05m0.2-0.05v0.05m-0.2 0h0.2v0.55m-0.2-0.05h0.2m-0.2-7.62v0.05m0-0.55v0.5m0-0.55v0.05m0.2-0.05v0.05m-0.2 0h0.2v0.55m-0.2-0.05h0.2m-0.2 2.54v0.05m0-0.55v0.5m0-0.55v0.05m0.2-0.05v0.05m-0.2 0h0.2v0.55m-0.2-0.05h0.2m-0.2 2.54v0.05m0-0.55v0.5m0-0.55v0.05m0.2-0.05v0.05m-0.2 0h0.2v0.55m-0.2-0.05h0.2" fill="none"/>
+   </g>
+   <g transform="scale(393.7) rotate(90 6.378 51.161)" fill="#f60" fill-rule="evenodd">
+    <path d="m2.75 0a1.806 1.806 0 0 1-3 0 1.806 1.806 0 0 1 3 0z"/>
+    <path d="M-.053.244c-.263-.057-.263-.43 0-.488M2.553-.244c.263.057.263.43 0 .488M2.75 0h-3"/>
+   </g>
+   <g transform="scale(393.7) rotate(-90 45.98 35.631)">
+    <path d="M4.17 0c0 2.954-3.902 4.018-5.4 1.47v-2.94C.268-4.018 4.17-2.954 4.17 0z" fill="maroon" fill-rule="evenodd"/>
+    <circle cx="1.27" r="2.45" fill="red"/>
+   </g>
+   <g transform="matrix(-393.7 0 0 393.7 8073.8 21210)" fill="#f60" fill-rule="evenodd">
+    <path d="m2.75 0a1.806 1.806 0 0 1-3 0 1.806 1.806 0 0 1 3 0z"/>
+    <path d="M-.053.244c-.263-.057-.263-.43 0-.488M2.553-.244c.263.057.263.43 0 .488M2.75 0h-3"/>
+   </g>
+   <g transform="matrix(-393.7 0 0 393.7 23574 25631)">
+    <g fill-rule="evenodd">
+     <path d="M-1.27-8.89h2.54V1.27h-2.54z" fill="#1a1a1a"/>
+     <path d="M-.6-1.94v-1.2H.6v1.2z" fill="#333"/>
+     <path d="M-.6-5.68H.6v1.2H-.6zM-.6-.6H.6V.6H-.6zM.6-7.02H-.6v-1.2H.6z" fill="#4d4d4d"/>
+    </g>
+    <path d="M-.6-1.94l.299-.299M-.6-3.14l.299.299M-.301-2.239v-.602M.6-1.94l-.299-.299M.301-2.239h-.602M.6-3.14l-.299.299M.301-2.841v.602M-.301-2.841h.602M.6-4.48l-.299-.299M-.6-4.48l.299-.299M.301-4.779h-.602M.6-5.68l-.299.299M.301-5.381v.602M-.6-5.68l.299.299M-.301-5.381h.602M-.301-4.779v-.602M-.6-.6l.299.299M.6-.6l-.299.299M-.301-.301h.602M-.6.6l.299-.299M-.301.301v-.602M.6.6L.301.301M.301.301h-.602M.301-.301v.602M-.6-8.22l.299.299M.6-8.22l-.299.299M-.301-7.921h.602M-.6-7.02l.299-.299M-.301-7.319v-.602M.6-7.02l-.299-.299M.301-7.319h-.602M.301-7.921v.602" fill="none"/>
+    <path d="M-.3-2.84h.6v.6h-.6zM.3-5.38v.6h-.6v-.6zM.3-.3v.6h-.6v-.6zM.3-7.92v.6h-.6v-.6z" fill="olive" fill-rule="evenodd"/>
+    <path d="m-0.1-2.29v0.05m0-0.55v0.5m0-0.55v0.05m0.2-0.05v0.05m-0.2 0h0.2v0.55m-0.2-0.05h0.2m-0.2-2.54v0.05m0-0.55v0.5m0-0.55v0.05m0.2-0.05v0.05m-0.2 0h0.2v0.55m-0.2-0.05h0.2m-0.2 5.08v0.05m0-0.55v0.5m0-0.55v0.05m0.2-0.05v0.05m-0.2 0h0.2v0.55m-0.2-0.05h0.2m-0.2-7.62v0.05m0-0.55v0.5m0-0.55v0.05m0.2-0.05v0.05m-0.2 0h0.2v0.55m-0.2-0.05h0.2" fill="none"/>
+   </g>
+   <g transform="matrix(-393.7 0 0 393.7 29574 13131)">
+    <path d="M4.17 0c0 2.954-3.902 4.018-5.4 1.47v-2.94C.268-4.018 4.17-2.954 4.17 0z" fill="maroon" fill-rule="evenodd"/>
+    <circle cx="1.27" r="2.45" fill="red"/>
+   </g>
+   <g transform="matrix(0 -393.7 -393.7 0 29074 2631)">
+    <path d="m-1.27-3.81h2.54v5.08h-2.54z" fill="#1a1a1a" fill-rule="evenodd"/>
+    <path d="M-.6-3.14H.6v1.2H-.6zM-.6.6V-.6H.6V.6z" fill="#333" fill-rule="evenodd"/>
+    <path d="M-.6-3.14l.299.299M.6-3.14l-.299.299M-.301-2.841h.602M-.6-1.94l.299-.299M-.301-2.239v-.602M.6-1.94l-.299-.299M.301-2.239h-.602M.301-2.841v.602M.6-.6l-.299.299M.6.6L.301.301M.301-.301v.602M-.6-.6l.299.299M-.301-.301h.602M-.6.6l.299-.299M-.301.301v-.602M.301.301h-.602" fill="none"/>
+    <path d="M-.3-2.84h.6v.6h-.6zM-.3-.3h.6v.6h-.6z" fill="olive" fill-rule="evenodd"/>
+    <path d="m-0.1-2.29v0.05m0-0.55v0.5m0-0.55v0.05" fill="none"/>
+    <path d="M.1-2.84v.05" fill="olive" fill-rule="evenodd"/>
+    <path d="m-0.1-2.79h0.2v0.55m-0.2-0.05h0.2m-0.2 2.54v0.05m0-0.55v0.5m0-0.55v0.05m0.2-0.05v0.05m-0.2 0h0.2v0.55m-0.2-0.05h0.2" fill="none"/>
+   </g>
   </g>
  </g>
 </svg>

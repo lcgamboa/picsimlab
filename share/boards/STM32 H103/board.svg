@@ -1,5 +1,4 @@
 <svg width="472" height="250" version="1.1" viewBox="1.1434e8 73442500 68712500 3.462e7" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
- <rect x="1.0814e8" y="68364624" width="118.82%" height="130.94%" fill="#f0f0f0"/>
  <defs>
   <mask id="c">
    <g fill="#fff" stroke="#fff" stroke-linecap="round" stroke-linejoin="round">
@@ -219,6 +218,7 @@
    <path d="m1.1672e8 1.0852e8 66275000-25000v-3.5e7h-6.625e7l-25000 34975000" fill-rule="evenodd"/>
   </clipPath>
  </defs>
+ <rect x="1.3174e8" y="73627416" width="40423168" height="34406260" fill="#1a1a1a" stroke="#000" stroke-width="47978"/>
  <g transform="matrix(1.0368,0,0,1.0391,-6680481,-3818116)" clip-path="url(#a)" mask="url(#b)">
   <g fill="#313d63" stroke="#313d63">
    <path d="m1.1672e8 1.0852e8 66275000-25000v-3.5e7h-6.625e7l-25000 34975000" fill-rule="evenodd"/>
