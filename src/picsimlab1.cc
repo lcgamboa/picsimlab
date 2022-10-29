@@ -25,10 +25,10 @@
 
 // main window
 
-//#define CONVERTER_MODE
+// #define CONVERTER_MODE
 
 // print timer debug info
-//#define TDEBUG
+// #define TDEBUG
 
 #include "picsimlab.h"
 
@@ -318,7 +318,7 @@ void CPWindow1::timer2_EvOnTime(CControl* control) {
 
     if (PICSimLab.GetErrorCount()) {
 #ifndef __EMSCRIPTEN__
-        Message_sz(PICSimLab.GetError(0), 450, 200);
+        Message_sz(PICSimLab.GetError(0), 600, 240);
 #else
         printf("Error: %s\n", PICSimLab.GetError(0).c_str());
 #endif
@@ -444,18 +444,16 @@ void CPWindow1::_EvOnCreate(CControl* control) {
     if (lxFileExists(fname)) {
         FILE* flog = fopen(fname, "r");
         if (flog) {
-            char line[25];
-            fseek(flog, 0L, SEEK_END);
-            unsigned int size = ftell(flog);
-#ifdef _WIN_
-            fseek(flog, size - 22, SEEK_SET);
-#else
-            fseek(flog, size - 21, SEEK_SET);
-#endif
-            fread(line, 20, 1, flog);
+            char line[1024];
+            int finishok = 0;
+            while (fgets(line, 1023, flog)) {
+                line[1023] = 0;
+                if (!strncmp(line, "PICSimLab: Finish Ok", 20)) {
+                    finishok++;
+                }
+            }
             fclose(flog);
-            line[21] = 0;
-            if (strncmp(line, "PICSimLab: Finish Ok", 20)) {
+            if (finishok != 1) {
                 close_error = 1;
                 snprintf(fname_error, 1199, "%s/picsimlab_error%i.txt", home, PICSimLab.GetInstanceNumber());
                 lxRenameFile(fname, fname_error);
@@ -484,10 +482,14 @@ void CPWindow1::_EvOnCreate(CControl* control) {
     fflush(stdout);
 
     if (close_error) {
-        printf("PICSimLab: Error closing PICSimLab last time! Using default mode.\n Erro log file: %s\n", fname_error);
+        printf(
+            "PICSimLab: Error closing PICSimLab in last time! \nUsing default mode.\n Erro log file: %s\n If the "
+            "problem persists, please consider opening an issue on github..",
+            fname_error);
         PICSimLab.Configure(home, 1, 1);
-        PICSimLab.RegisterError("Error closing PICSimLab last time! Using default mode.\n Error log file: " +
-                                lxString(fname_error));
+        PICSimLab.RegisterError(
+            "Error closing PICSimLab in last time!\n Using default mode.\n Error log file: " + lxString(fname_error) +
+            "\n If the problem persists, please consider opening an issue on github.\n ");
     } else if (Application->Aargc == 2) {  // only .pzw file
         fn.Assign(Application->Aargv[1]);
         fn.MakeAbsolute();
