@@ -18,7 +18,7 @@ LIBPATH  ?= ../../
 
 FLAGS= -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"${sharedir}\" -Wall -O2 -DLINUX `wx-config --cxxflags`
 FLAGS+= -DEXT_BROWSER
-FLAGS+= -I../$(LIBPATH)/lxrad/include/  -flto
+FLAGS+= -I../$(LIBPATH)/lxrad/include/  -flto=auto
 
 LIBS=  ../$(LIBPATH)/lxrad/lib/liblxrad.a \
        ../$(LIBPATH)/lunasvg/build/liblunasvg.a \

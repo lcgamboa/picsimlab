@@ -71,6 +71,7 @@ bsim_simavr::bsim_simavr(void) {
     avr_debug_type = 0;
     eeprom = NULL;
     has_usart = 0;
+    pkg = PDIP;
 }
 
 // uart stuff
@@ -580,10 +581,20 @@ int bsim_simavr::CpuInitialized(void) {
 int bsim_simavr::MGetPinCount(void) {
     if (avr == NULL)
         return 0;
-    if (lxString(avr->mmcu).compare(lxT("atmega328")) == 0)
-        return 28;
-    if (lxString(avr->mmcu).compare(lxT("atmega328p")) == 0)
-        return 28;
+    if (lxString(avr->mmcu).compare(lxT("atmega328")) == 0) {
+        if (pkg == PDIP) {
+            return 28;
+        } else {  // QFN
+            return 32;
+        }
+    }
+    if (lxString(avr->mmcu).compare(lxT("atmega328p")) == 0) {
+        if (pkg == PDIP) {
+            return 28;
+        } else {  // QFN
+            return 32;
+        }
+    }
     if (lxString(avr->mmcu).compare(lxT("atmega2560")) == 0)
         return 100;
     if (lxString(avr->mmcu).compare(lxT("attiny85")) == 0)
@@ -925,92 +936,193 @@ lxString bsim_simavr::MGetPinName(int pin) {
                 return "+5V";
                 break;
         }
-    } else {
-        switch (pin) {
-            case 1:
-                return "PC6/RST";
-                break;
-            case 2:
-                return "PD0/0";
-                break;
-            case 3:
-                return "PD1/1";
-                break;
-            case 4:
-                return "PD2/2";
-                break;
-            case 5:
-                return "PD3/~3";
-                break;
-            case 6:
-                return "PD4/4";
-                break;
-            case 7:
-                return "+5V";
-                break;
-            case 8:
-                return "GND";
-                break;
-            case 9:
-                return "PB6/X1";
-                break;
-            case 10:
-                return "PB7/X2";
-                break;
-            case 11:
-                return "PD5/~5";
-                break;
-            case 12:
-                return "PD6/~6";
-                break;
-            case 13:
-                return "PD7/7";
-                break;
-            case 14:
-                return "PB0/8";
-                break;
-            case 15:
-                return "PB1/~9";
-                break;
-            case 16:
-                return "PB2/~10";
-                break;
-            case 17:
-                return "PB3/~11";
-                break;
-            case 18:
-                return "PB4/12";
-                break;
-            case 19:
-                return "PB5/13";
-                break;
-            case 20:
-                return "+5V";
-                break;
-            case 21:
-                return "AREF";
-                break;
-            case 22:
-                return "GND";
-                break;
-            case 23:
-                return "PC0/A0";
-                break;
-            case 24:
-                return "PC1/A1";
-                break;
-            case 25:
-                return "PC2/A2";
-                break;
-            case 26:
-                return "PC3/A3";
-                break;
-            case 27:
-                return "PC4/A4";
-                break;
-            case 28:
-                return "PC5/A5";
-                break;
+    } else {  // atmega328p DIP
+        if (pkg == PDIP) {
+            switch (pin) {
+                case 1:
+                    return "PC6/RST";
+                    break;
+                case 2:
+                    return "PD0/0";
+                    break;
+                case 3:
+                    return "PD1/1";
+                    break;
+                case 4:
+                    return "PD2/2";
+                    break;
+                case 5:
+                    return "PD3/~3";
+                    break;
+                case 6:
+                    return "PD4/4";
+                    break;
+                case 7:
+                    return "+5V";
+                    break;
+                case 8:
+                    return "GND";
+                    break;
+                case 9:
+                    return "PB6/X1";
+                    break;
+                case 10:
+                    return "PB7/X2";
+                    break;
+                case 11:
+                    return "PD5/~5";
+                    break;
+                case 12:
+                    return "PD6/~6";
+                    break;
+                case 13:
+                    return "PD7/7";
+                    break;
+                case 14:
+                    return "PB0/8";
+                    break;
+                case 15:
+                    return "PB1/~9";
+                    break;
+                case 16:
+                    return "PB2/~10";
+                    break;
+                case 17:
+                    return "PB3/~11";
+                    break;
+                case 18:
+                    return "PB4/12";
+                    break;
+                case 19:
+                    return "PB5/13";
+                    break;
+                case 20:
+                    return "+5V";
+                    break;
+                case 21:
+                    return "AREF";
+                    break;
+                case 22:
+                    return "GND";
+                    break;
+                case 23:
+                    return "PC0/A0";
+                    break;
+                case 24:
+                    return "PC1/A1";
+                    break;
+                case 25:
+                    return "PC2/A2";
+                    break;
+                case 26:
+                    return "PC3/A3";
+                    break;
+                case 27:
+                    return "PC4/A4";
+                    break;
+                case 28:
+                    return "PC5/A5";
+                    break;
+            }
+        } else {  // QFN
+            switch (pin) {
+                case 1:
+                    return "PD3/~3";
+                    break;
+                case 2:
+                    return "PD4/4";
+                    break;
+                case 3:
+                    return "GND";
+                    break;
+                case 4:
+                    return "+5V";
+                    break;
+                case 5:
+                    return "GND";
+                    break;
+                case 6:
+                    return "+5V";
+                    break;
+                case 7:
+                    return "PB6/X1";
+                    break;
+                case 8:
+                    return "PB7/X2";
+                    break;
+                case 9:
+                    return "PD5/~5";
+                    break;
+                case 10:
+                    return "PD6/~6";
+                    break;
+                case 11:
+                    return "PD7/7";
+                    break;
+                case 12:
+                    return "PB0/8";
+                    break;
+                case 13:
+                    return "PB1/~9";
+                    break;
+                case 14:
+                    return "PB2/~10";
+                    break;
+                case 15:
+                    return "PB3/~11";
+                    break;
+                case 16:
+                    return "PB4/12";
+                    break;
+                case 17:
+                    return "PB5/13";
+                    break;
+                case 18:
+                    return "+5V";
+                    break;
+                case 19:
+                    return "ADC6";
+                    break;
+                case 20:
+                    return "AREF";
+                    break;
+                case 21:
+                    return "GND";
+                    break;
+                case 22:
+                    return "ADC7";
+                    break;
+                case 23:
+                    return "PC0/A0";
+                    break;
+                case 24:
+                    return "PC1/A1";
+                    break;
+                case 25:
+                    return "PC2/A2";
+                    break;
+                case 26:
+                    return "PC3/A3";
+                    break;
+                case 27:
+                    return "PC4/A4";
+                    break;
+                case 28:
+                    return "PC5/A5";
+                    break;
+                case 29:
+                    return "PC6/RST";
+                    break;
+                case 30:
+                    return "PD0/0";
+                    break;
+                case 31:
+                    return "PD1/1";
+                    break;
+                case 32:
+                    return "PD2/2";
+                    break;
+            }
         }
     }
     return "error";
@@ -1143,31 +1255,68 @@ void bsim_simavr::MSetAPin(int pin, float value) {
         }
     } else  // atmega328
     {
-        switch (pin) {
-            case 23:
-                pins[pin - 1].ptype = PT_ANALOG;
-                avr_raise_irq(avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, 0), (int)(value * 1000));
-                break;
-            case 24:
-                pins[pin - 1].ptype = PT_ANALOG;
-                avr_raise_irq(avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, 1), (int)(value * 1000));
-                break;
-            case 25:
-                pins[pin - 1].ptype = PT_ANALOG;
-                avr_raise_irq(avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, 2), (int)(value * 1000));
-                break;
-            case 26:
-                pins[pin - 1].ptype = PT_ANALOG;
-                avr_raise_irq(avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, 3), (int)(value * 1000));
-                break;
-            case 27:
-                pins[pin - 1].ptype = PT_ANALOG;
-                avr_raise_irq(avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, 4), (int)(value * 1000));
-                break;
-            case 28:
-                pins[pin - 1].ptype = PT_ANALOG;
-                avr_raise_irq(avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, 5), (int)(value * 1000));
-                break;
+        if (pkg == PDIP) {
+            switch (pin) {
+                case 23:
+                    pins[pin - 1].ptype = PT_ANALOG;
+                    avr_raise_irq(avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, 0), (int)(value * 1000));
+                    break;
+                case 24:
+                    pins[pin - 1].ptype = PT_ANALOG;
+                    avr_raise_irq(avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, 1), (int)(value * 1000));
+                    break;
+                case 25:
+                    pins[pin - 1].ptype = PT_ANALOG;
+                    avr_raise_irq(avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, 2), (int)(value * 1000));
+                    break;
+                case 26:
+                    pins[pin - 1].ptype = PT_ANALOG;
+                    avr_raise_irq(avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, 3), (int)(value * 1000));
+                    break;
+                case 27:
+                    pins[pin - 1].ptype = PT_ANALOG;
+                    avr_raise_irq(avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, 4), (int)(value * 1000));
+                    break;
+                case 28:
+                    pins[pin - 1].ptype = PT_ANALOG;
+                    avr_raise_irq(avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, 5), (int)(value * 1000));
+                    break;
+            }
+        } else {  // QFN
+            switch (pin) {
+                case 23:
+                    pins[pin - 1].ptype = PT_ANALOG;
+                    avr_raise_irq(avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, 0), (int)(value * 1000));
+                    break;
+                case 24:
+                    pins[pin - 1].ptype = PT_ANALOG;
+                    avr_raise_irq(avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, 1), (int)(value * 1000));
+                    break;
+                case 25:
+                    pins[pin - 1].ptype = PT_ANALOG;
+                    avr_raise_irq(avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, 2), (int)(value * 1000));
+                    break;
+                case 26:
+                    pins[pin - 1].ptype = PT_ANALOG;
+                    avr_raise_irq(avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, 3), (int)(value * 1000));
+                    break;
+                case 27:
+                    pins[pin - 1].ptype = PT_ANALOG;
+                    avr_raise_irq(avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, 4), (int)(value * 1000));
+                    break;
+                case 28:
+                    pins[pin - 1].ptype = PT_ANALOG;
+                    avr_raise_irq(avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, 5), (int)(value * 1000));
+                    break;
+                case 19:
+                    pins[pin - 1].ptype = PT_ANALOG;
+                    avr_raise_irq(avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, 6), (int)(value * 1000));
+                    break;
+                case 22:
+                    pins[pin - 1].ptype = PT_ANALOG;
+                    avr_raise_irq(avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, 7), (int)(value * 1000));
+                    break;
+            }
         }
     }
 }

@@ -25,7 +25,7 @@ override CXXFLAGS+=  -I$(LIBPATH)/picsim/include/ -I$(LIBPATH)/lxrad/include/ \
 override CXXFLAGS+= -D_ARCH_=\"Linux64_WX\" -D_DATE_=\"${DATE}\"
 override CXXFLAGS+= -D_VERSION_=\"$(VERSION)\" -Wall -O2 -D_SHARE_=\"../share/picsimlab/\" \
 -D_LIB_=\"../lib/picsimlab/\" `wx-config --cxxflags`
-override CXXFLAGS+= -DEXT_BROWSER -flto 
+override CXXFLAGS+= -DEXT_BROWSER -flto=auto 
 #override CXXFLAGS+=-fsanitize=address
 
 

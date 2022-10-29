@@ -135,6 +135,9 @@ private:
 
     unsigned char pin_rx;
     unsigned char pin_tx;
+
+protected:
+    int pkg;
 };
 
 #define EIMSK 0x3D

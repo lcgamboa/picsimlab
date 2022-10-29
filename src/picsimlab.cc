@@ -877,7 +877,7 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 
                 if (!strcmp(name, "picsimlab_lab")) {
                     if (use_default_board) {
-                        PICSimLab.SetLabs(0, 0);
+                        PICSimLab.SetLabs(DEFAULT_BOARD, DEFAULT_BOARD);
                     } else {
                         for (i = 0; i < BOARDS_LAST; i++) {
                             if (!strcmp(boards_list[i].name_, value)) {
@@ -978,7 +978,7 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
     if (PICSimLab.GetBoard() == NULL) {
         printf("PICSimLab: Error open config file \"%s\"!\n", fname);
 
-        PICSimLab.SetLabs(0, 0);  // default
+        PICSimLab.SetLabs(DEFAULT_BOARD, DEFAULT_BOARD);  // default
         PICSimLab.SetBoard(boards_list[0].bcreate());
 
 #ifndef _WIN_

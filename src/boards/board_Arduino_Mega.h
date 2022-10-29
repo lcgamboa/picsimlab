@@ -23,26 +23,27 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_Arduino_Nano_H
-#define BOARD_Arduino_Nano_H
+#ifndef BOARD_Arduino_Mega_H
+#define BOARD_Arduino_Mega_H
 
 #include <lxrad.h>
 
 #include "board_Arduino_Uno.h"
 
-#define BOARD_Arduino_Nano_Name "Arduino Nano"
+#define BOARD_Arduino_Mega_Name "Arduino Mega"
 
 // new board class must be derived from board class defined in board.h
-class cboard_Arduino_Nano : public cboard_Arduino_Uno {
+class cboard_Arduino_Mega : public cboard_Arduino_Uno {
 public:
-    lxString GetName(void) override { return lxT(BOARD_Arduino_Nano_Name); };
+    lxString GetName(void) override { return lxT(BOARD_Arduino_Mega_Name); };
     lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
     // Constructor called once on board creation
-    cboard_Arduino_Nano(void);
+    cboard_Arduino_Mega(void);
+    lxString GetSupportedDevices(void) override { return lxT("atmega2560,"); };
     // Called to save board preferences in configuration file
     void WritePreferences(void) override;
     // Called whe configuration file load  preferences
     void ReadPreferences(char* name, char* value) override;
 };
 
-#endif /* BOARD_Arduino_Nano_H */
+#endif /* BOARD_Arduino_Mega_H */

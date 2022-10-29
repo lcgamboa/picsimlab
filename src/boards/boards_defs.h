@@ -28,10 +28,14 @@
 
 #include "board.h"
 
-#define board_init(name, function)                                    \
-    static board* function##_create(void) { return new function(); }; \
-    static void __attribute__((constructor)) function##_init(void);   \
-    static void function##_init(void) { board_register(name, function##_create); }
+#define board_init(name, function)                                  \
+    static board* function##_create(void) {                         \
+        return new function();                                      \
+    };                                                              \
+    static void __attribute__((constructor)) function##_init(void); \
+    static void function##_init(void) {                             \
+        board_register(name, function##_create);                    \
+    }
 
 typedef board* (*board_create_func)(void);
 
@@ -51,5 +55,8 @@ typedef struct {
 } board_desc;
 
 extern board_desc boards_list[BOARDS_MAX];
+
+// Arduino Uno is the dafault board
+#define DEFAULT_BOARD 2
 
 #endif /* BOARDS_DEFS_H */

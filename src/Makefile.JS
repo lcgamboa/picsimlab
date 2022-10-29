@@ -15,7 +15,7 @@ execdir= ${prefix}/bin/
 #lxrad automatic generated block start, don't edit below!
 
 override CXXFLAGS+= -D_ARCH_=\"Javascript\" -D_DATE_=\"${DATE}\"
-override CXXFLAGS+= -O2 -flto
+override CXXFLAGS+= -O2 -flto=auto
 #override CXXFLAGS+= -g4 --source-map-base -Werror
 override CXXFLAGS+=  -DEXT_BROWSER -DNO_DEBUG -DNO_TOOLS \
         -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_GFX=2\

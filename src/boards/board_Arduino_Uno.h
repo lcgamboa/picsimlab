@@ -52,6 +52,10 @@ private:
 
     void RegisterRemoteControl(void) override;
 
+protected:
+    int LED_pin;
+    int PWM_pins[6];
+
 public:
     lxString GetName(void) override { return lxT(BOARD_Arduino_Uno_Name); };
     lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };

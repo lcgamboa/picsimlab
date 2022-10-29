@@ -82,6 +82,15 @@ cboard_Arduino_Uno::cboard_Arduino_Uno(void) {
     Proc = "atmega328p";  // default microcontroller if none defined in preferences
     ReadMaps();           // Read input and output board maps
 
+    LED_pin = 18;
+
+    PWM_pins[0] = 4;
+    PWM_pins[1] = 10;
+    PWM_pins[2] = 11;
+    PWM_pins[3] = 14;
+    PWM_pins[4] = 15;
+    PWM_pins[5] = 16;
+
     // controls properties and creation
 
     // gauge1
@@ -304,7 +313,7 @@ void cboard_Arduino_Uno::Reset(void) {
 }
 
 void cboard_Arduino_Uno::RegisterRemoteControl(void) {
-    output_ids[O_L]->status = &pins[18].oavalue;
+    output_ids[O_L]->status = &pins[LED_pin].oavalue;
 }
 
 // Called ever 1s to refresh status
@@ -486,7 +495,7 @@ void cboard_Arduino_Uno::Draw(CDraw* draw) {
                                               0);
                         break;
                     case O_L:
-                        draw->Canvas.SetColor(0, pins[18].oavalue, 0);
+                        draw->Canvas.SetColor(0, pins[LED_pin].oavalue, 0);
                         break;
                     case O_RST:
                         draw->Canvas.SetColor(100, 100, 100);
@@ -518,12 +527,12 @@ void cboard_Arduino_Uno::Draw(CDraw* draw) {
         draw->Update();
     }
 
-    gauge1->SetValue((pins[4].oavalue - 55) / 2);
-    gauge2->SetValue((pins[10].oavalue - 55) / 2);
-    gauge3->SetValue((pins[11].oavalue - 55) / 2);
-    gauge4->SetValue((pins[14].oavalue - 55) / 2);
-    gauge5->SetValue((pins[15].oavalue - 55) / 2);
-    gauge6->SetValue((pins[16].oavalue - 55) / 2);
+    gauge1->SetValue((pins[PWM_pins[0]].oavalue - 55) / 2);
+    gauge2->SetValue((pins[PWM_pins[1]].oavalue - 55) / 2);
+    gauge3->SetValue((pins[PWM_pins[2]].oavalue - 55) / 2);
+    gauge4->SetValue((pins[PWM_pins[3]].oavalue - 55) / 2);
+    gauge5->SetValue((pins[PWM_pins[4]].oavalue - 55) / 2);
+    gauge6->SetValue((pins[PWM_pins[5]].oavalue - 55) / 2);
 }
 
 void cboard_Arduino_Uno::Run_CPU(void) {
@@ -531,7 +540,7 @@ void cboard_Arduino_Uno::Run_CPU(void) {
     // int j;
     unsigned char pi;
     const picpin* pins;
-    unsigned int alm[40];
+    unsigned int alm[100];
 
     // int JUMPSTEPS = Window1.GetJUMPSTEPS ()*4.0; //number of steps skipped
     const int pinc = MGetPinCount();
@@ -615,8 +624,8 @@ void cboard_Arduino_Uno::Run_CPU(void) {
         output_ids[O_TX]->value = pins[2].oavalue;
         output_ids[O_TX]->update = 1;
     }
-    if (output_ids[O_L]->value != pins[18].oavalue) {
-        output_ids[O_L]->value = pins[18].oavalue;
+    if (output_ids[O_L]->value != pins[LED_pin].oavalue) {
+        output_ids[O_L]->value = pins[LED_pin].oavalue;
         output_ids[O_L]->update = 1;
     }
 }

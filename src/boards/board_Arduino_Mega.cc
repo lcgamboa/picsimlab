@@ -24,48 +24,47 @@
    ######################################################################## */
 
 // include files
-#include "board_Arduino_Nano.h"
+#include "board_Arduino_Mega.h"
 
 #include "../picsimlab.h"
 
 // Constructor called once on board creation
 
-cboard_Arduino_Nano::cboard_Arduino_Nano(void) {
-    pkg = QFN;
+cboard_Arduino_Mega::cboard_Arduino_Mega(void) {
+    Proc = "atmega2560";
+    LED_pin = 25;
 
-    LED_pin = 16;
-
-    PWM_pins[0] = 0;
-    PWM_pins[1] = 8;
-    PWM_pins[2] = 9;
-    PWM_pins[3] = 12;
-    PWM_pins[4] = 13;
-    PWM_pins[5] = 14;
+    PWM_pins[0] = 6;
+    PWM_pins[1] = 4;
+    PWM_pins[2] = 14;
+    PWM_pins[3] = 17;
+    PWM_pins[4] = 22;
+    PWM_pins[5] = 23;
 
     ReadMaps();
 }
 
 // Called to save board preferences in configuration file
 
-void cboard_Arduino_Nano::WritePreferences(void) {
+void cboard_Arduino_Mega::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
-    PICSimLab.saveprefs(lxT("Arduino_Nano_proc"), Proc);
-    PICSimLab.saveprefs(lxT("Arduino_Nano_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.saveprefs(lxT("Arduino_Mega_proc"), Proc);
+    PICSimLab.saveprefs(lxT("Arduino_Mega_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
 }
 
 // Called whe configuration file load  preferences
 
-void cboard_Arduino_Nano::ReadPreferences(char* name, char* value) {
+void cboard_Arduino_Mega::ReadPreferences(char* name, char* value) {
     // read microcontroller of preferences
-    if (!strcmp(name, "Arduino_Nano_proc")) {
+    if (!strcmp(name, "Arduino_Mega_proc")) {
         Proc = value;
     }
 
-    if (!strcmp(name, "Arduino_Nano_clock")) {
+    if (!strcmp(name, "Arduino_Mega_clock")) {
         PICSimLab.SetClock(atof(value));
     }
 }
 
-// TODO cboard_Arduino_Nano: add suport to anaolog inputs A6 and A7
+// TODO cboard_Arduino_Mega: add suport to anaolog inputs A6 and A7
 
-board_init(BOARD_Arduino_Nano_Name, cboard_Arduino_Nano);
+board_init(BOARD_Arduino_Mega_Name, cboard_Arduino_Mega);

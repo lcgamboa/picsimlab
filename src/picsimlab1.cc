@@ -976,11 +976,9 @@ void CPWindow1::menu1_Tools_MPLABXDebuggerPlugin_EvMenuActive(CControl* control)
 
 void CPWindow1::menu1_Tools_PinViewer_EvMenuActive(CControl* control) {
 #ifdef _WIN_
-    lxExecute(PICSimLab.GetSharePath() +
-              lxT("/../PinViewer.exe " + itoa(PICSimLab.Get_remotec_port() + PICSimLab.GetInstanceNumber())));
+    lxExecute(PICSimLab.GetSharePath() + lxT("/../PinViewer.exe " + itoa(PICSimLab.Get_remotec_port())));
 #else
-    lxExecute(dirname(lxGetExecutablePath()) + "/PinViewer " +
-              itoa(PICSimLab.Get_remotec_port() + PICSimLab.GetInstanceNumber()));
+    lxExecute(dirname(lxGetExecutablePath()) + "/PinViewer " + itoa(PICSimLab.Get_remotec_port()));
 #endif
 }
 
