@@ -137,6 +137,10 @@ int rcontrol_start(void) {
 #endif
     clilen = sizeof(cli);
 
+    if (!server_started) {
+        return 1;
+    }
+
     if ((sockfd = accept(listenfd, (sockaddr*)&cli, &clilen)) < 0) {
         return 1;
     }
@@ -168,12 +172,12 @@ void rcontrol_end(void) {
 
 void rcontrol_server_end(void) {
     if (server_started) {
+        server_started = 0;
         dprint("rcontrol: server end\n");
         shutdown(listenfd, SHUT_RDWR);
         close(listenfd);
+        listenfd = -1;
     }
-    listenfd = -1;
-    server_started = 0;
 }
 
 static char decodess(unsigned char v) {

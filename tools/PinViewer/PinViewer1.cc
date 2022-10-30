@@ -235,7 +235,7 @@ void CPWindow1::timer1_EvOnTime(CControl *control) {
 
   if (!connected) {
     if ((sockfd = socket(PF_INET, SOCK_STREAM, 0)) < 0) {
-      printf("socket error : %s \n", strerror(errno));
+      printf("PinViewer: socket error : %s \n", strerror(errno));
       exit(1);
     }
     memset(&servaddr, 0, sizeof(servaddr));
@@ -246,9 +246,9 @@ void CPWindow1::timer1_EvOnTime(CControl *control) {
     // setnblock (sockfd);
     if (connect(sockfd, (sockaddr *)&servaddr, sizeof(servaddr)) < 0) {
 #ifdef _WIN_
-      printf("connect error number: %i \n", WSAGetLastError());
+      printf("PinViewer: connect error number: %i \n", WSAGetLastError());
 #else
-      printf("connect error : %s \n", strerror(errno));
+      printf("PinViewer: connect error : %s \n", strerror(errno));
 #endif
       close(sockfd);
     } else {
@@ -463,14 +463,14 @@ int CPWindow1::send_cmd(const char *message) {
   // printf ("sending '%s'\n", message);
   int n = strlen(message);
   if (send(sockfd, message, n, MSG_NOSIGNAL) != n) {
-    printf("send error : %s \n", strerror(errno));
+    printf("PinViewer: send error : %s \n", strerror(errno));
     connected = 0;
     close(sockfd);
     return -1;
   }
   n = 2;
   if (send(sockfd, "\r\n", n, MSG_NOSIGNAL) != n) {
-    printf("send error : %s \n", strerror(errno));
+    printf("PinViewer: send error : %s \n", strerror(errno));
     connected = 0;
     close(sockfd);
     return -1;
@@ -485,7 +485,7 @@ int CPWindow1::send_cmd(const char *message) {
       buff[bp] = 0;
       // printf ("%c", buff[bp-1]);
     } else {
-      printf("recv error : %s \n", strerror(errno));
+      printf("PinViewer: recv error : %s \n", strerror(errno));
       connected = 0;
       close(sockfd);
       return -1;

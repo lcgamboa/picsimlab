@@ -586,11 +586,33 @@ void CPWindow1::_EvOnDestroy(CControl* control) {
     char fname[1200];
     snprintf(fname, 1199, "%s/picsimlab_log%i.txt", (const char*)PICSimLab.GetHomePath().c_str(),
              PICSimLab.GetInstanceNumber());
+
+    // redirect
+    char tmpname[1200];
+    snprintf(tmpname, 1200, "%s/picsimlab_log%i-XXXXXX", (const char*)lxGetTempDir("PICSimLab").c_str(),
+             PICSimLab.GetInstanceNumber());
+    close(mkstemp(tmpname));
+    unlink(tmpname);
+    strncat(tmpname, ".txt", 1199);
+    lxRenameFile(fname, tmpname);
+
     FILE* flog;
-    flog = fopen(fname, "a");
+    FILE* ftmp;
+    flog = fopen(fname, "w");
     if (flog) {
-        fprintf(flog, "PICSimLab: Finish Ok\n");
+        // copy
+        ftmp = fopen(tmpname, "r");
+        if (ftmp) {
+            char buff[4096];
+            int nr;
+            while ((nr = fread(buff, 1, 4096, ftmp)) > 0) {
+                fwrite(buff, nr, 1, flog);
+            }
+            fclose(ftmp);
+            fprintf(flog, "\nPICSimLab: Finish Ok\n");
+        }
         fclose(flog);
+        unlink(tmpname);
     }
 #else
     printf("PICSimLab: Finish Ok\n");
