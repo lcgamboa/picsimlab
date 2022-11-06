@@ -227,8 +227,10 @@ void CPWindow5::timer1_EvOnTime(CControl* control) {
     int update = 0;
 
     if (need_resize == 1) {
-        draw1.SetWidth(GetClientWidth() - 10);
-        draw1.SetHeight(GetClientHeight() - 10);
+	    int w = GetClientWidth() - 10;
+	    int h = GetClientHeight() - 10;
+        draw1.SetWidth((w > 0) ? w : 1);
+        draw1.SetHeight((h > 0) ? h : 1);
         Oscilloscope.SetBaseTimer();
         update_all = 1;
     }

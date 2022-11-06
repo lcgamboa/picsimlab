@@ -222,13 +222,11 @@ void CPWindow1::menu1_Help_About_EvMenuActive(CControl *control) {
 
 void CPWindow1::timer1_EvOnTime(CControl *control) {
   if (need_resize == 1) {
-    draw1.SetWidth(Width - 15);
-    // draw1.SetHeight (Height - 40);
-#ifdef _WIN_
-    draw1.SetHeight(Height - 75);
-#else
-    draw1.SetHeight(Height - 90);
-#endif
+	int w = GetClientWidth() - 10;
+	int h = GetClientHeight() - 10;
+    draw1.SetWidth((w > 0) ? w : 1);
+    draw1.SetHeight((h > 0) ? h : 1);
+    statusbar1.Draw();
   }
 
   need_resize++;
@@ -427,6 +425,10 @@ void CPWindow1::timer1_EvOnTime(CControl *control) {
 
   draw1.Canvas.End();
   draw1.Update();
+  
+#ifndef _WIN_
+  Draw();
+#endif  
 
   if (connected) {
     statusbar1.SetField(0, "Connected on port: " + itoa(port));
