@@ -160,12 +160,8 @@ void CPWindow1::DrawBoard(void) {
     if (PICSimLab.GetNeedResize()) {
         double scalex, scaley, scale_temp;
 
-#ifndef _WIN_
-        scalex = ((Window1.GetWidth() - 185) * 1.0) / PICSimLab.plWidth;
-#else
-        scalex = ((Window1.GetWidth() - 190) * 1.0) / PICSimLab.plWidth;
-#endif
-        scaley = ((Window1.GetHeight() - 90) * 1.0) / PICSimLab.plHeight;
+        scalex = ((Window1.GetClientWidth() - 175) * 1.0) / PICSimLab.plWidth;
+        scaley = ((Window1.GetClientHeight() - 10) * 1.0) / PICSimLab.plHeight;
 
         if (scalex < 0.1)
             scalex = 0.1;
@@ -215,11 +211,15 @@ void CPWindow1::DrawBoard(void) {
             PICSimLab.spare_on = 0;
         }
         PICSimLab.SetNeedResize(0);
+        statusbar1.Draw();
     }
 
     if (PICSimLab.GetBoard()) {
         PICSimLab.GetBoard()->Draw(&draw1);
     }
+#ifndef _WIN_
+    Draw();
+#endif
 }
 
 void CPWindow1::thread1_EvThreadRun(CControl*) {

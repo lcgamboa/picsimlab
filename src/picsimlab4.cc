@@ -330,6 +330,9 @@ void CPWindow4::timer1_EvOnTime(CControl* control) {
             }
         }
         DrawScreen();
+#ifndef _WIN_
+        Draw();
+#endif
         if (togglebutton6.GetCheck() && spind1.GetEnable())
             togglebutton6_EvOnToggleButton(this);
     }

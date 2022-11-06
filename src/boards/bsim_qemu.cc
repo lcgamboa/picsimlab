@@ -416,8 +416,8 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         strcpy(argv[argc++], "-drive");
         sprintf(argv[argc++], "file=%s,if=pflash,format=raw", fname_);
 
-        strcpy(argv[argc++], "-d");
-        strcpy(argv[argc++], "unimp");
+        //strcpy(argv[argc++], "-d");
+        //strcpy(argv[argc++], "unimp");
 
         strcpy(argv[argc++], "-rtc");
         strcpy(argv[argc++], "clock=vm");

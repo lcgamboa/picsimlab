@@ -227,15 +227,9 @@ void CPWindow5::timer1_EvOnTime(CControl* control) {
     int update = 0;
 
     if (need_resize == 1) {
-        draw1.SetWidth(Width - 15);
-        // draw1.SetHeight (Height - 40);
-#ifdef _WIN_
-        draw1.SetHeight(Height - 75);
-#else
-        draw1.SetHeight(Height - 90);
-#endif
+        draw1.SetWidth(GetClientWidth() - 10);
+        draw1.SetHeight(GetClientHeight() - 10);
         Oscilloscope.SetBaseTimer();
-
         update_all = 1;
     }
 
@@ -274,8 +268,11 @@ void CPWindow5::timer1_EvOnTime(CControl* control) {
 
         draw1.Canvas.End();
         draw1.Update();
+        statusbar1.Draw();
     }
-
+#ifndef _WIN_
+    Draw();
+#endif
     tc++;
 
     if (tc > 3) {
