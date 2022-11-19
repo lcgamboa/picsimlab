@@ -403,7 +403,7 @@ bool CSpareParts::LoadConfig(lxString fname) {
             } else if (!strcmp(name, "useAlias")) {
                 unsigned char useAlias;
                 sscanf(temp, "%hhu", &useAlias);
-                SpareParts.SetUseAlias(useAlias);
+                SetUseAlias(useAlias);
                 Oscilloscope.SetBaseTimer();
             } else if (!strcmp(name, "version")) {
                 // use planed in future
@@ -497,7 +497,7 @@ void CSpareParts::PostProcess(void) {
 }
 
 void CSpareParts::Reset(void) {
-    for (int i = 0; i < SpareParts.GetCount(); i++) {
+    for (int i = 0; i < GetCount(); i++) {
         parts[i]->Reset();
         parts[i]->SetUpdate(1);
     }
@@ -539,13 +539,12 @@ bool CSpareParts::SaveConfig(lxString fname) {
     prefs.AddLine(temp);
     temp.Printf("scale,0,0,0:%f", scale);
     prefs.AddLine(temp);
-    temp.Printf("useAlias,0,0,0:%i", SpareParts.GetUseAlias());
+    temp.Printf("useAlias,0,0,0:%i", GetUseAlias());
     prefs.AddLine(temp);
 
-    for (int i = 0; i < SpareParts.GetCount(); i++) {
-        temp.Printf("%s,%i,%i,%i:%s", SpareParts.GetPart(i)->GetName().c_str(), SpareParts.GetPart(i)->GetX(),
-                    SpareParts.GetPart(i)->GetY(), SpareParts.GetPart(i)->GetOrientation(),
-                    SpareParts.GetPart(i)->WritePreferences().c_str());
+    for (int i = 0; i < GetCount(); i++) {
+        temp.Printf("%s,%i,%i,%i:%s", GetPart(i)->GetName().c_str(), GetPart(i)->GetX(), GetPart(i)->GetY(),
+                    GetPart(i)->GetOrientation(), GetPart(i)->WritePreferences().c_str());
         prefs.AddLine(temp);
     }
 

@@ -340,60 +340,58 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
 
     lxCreateDir(home);
 
-    if (PICSimLab.GetInstanceNumber()) {
-        sprintf(fname, "%s/picsimlab_%i.ini", home, PICSimLab.GetInstanceNumber());
+    if (Instance) {
+        sprintf(fname, "%s/picsimlab_%i.ini", home, Instance);
     } else {
         sprintf(fname, "%s/picsimlab.ini", home);
     }
 
-    PICSimLab.saveprefs(lxT("picsimlab_version"), _VERSION_);
-    PICSimLab.saveprefs(lxT("picsimlab_lab"), boards_list[lab].name_);
-    PICSimLab.saveprefs(lxT("picsimlab_debug"), itoa(PICSimLab.Get_debug_status()));
-    PICSimLab.saveprefs(lxT("picsimlab_debugt"), itoa(PICSimLab.Get_debug_type()));
-    PICSimLab.saveprefs(lxT("picsimlab_debugp"), itoa(PICSimLab.Get_debug_port()));
-    PICSimLab.saveprefs(lxT("picsimlab_remotecp"), itoa(PICSimLab.Get_remotec_port()));
-    PICSimLab.saveprefs(lxT("picsimlab_position"),
-                        itoa(PICSimLab.GetWindow()->GetX()) + lxT(",") + itoa(PICSimLab.GetWindow()->GetY()));
-    PICSimLab.saveprefs(lxT("picsimlab_scale"), ftoa(scale));
-    PICSimLab.saveprefs(lxT("osc_on"), itoa(PICSimLab.GetBoard()->GetUseOscilloscope()));
-    PICSimLab.saveprefs(lxT("spare_on"), itoa(PICSimLab.GetBoard()->GetUseSpareParts()));
+    saveprefs(lxT("picsimlab_version"), _VERSION_);
+    saveprefs(lxT("picsimlab_lab"), boards_list[lab].name_);
+    saveprefs(lxT("picsimlab_debug"), itoa(Get_debug_status()));
+    saveprefs(lxT("picsimlab_debugt"), itoa(Get_debug_type()));
+    saveprefs(lxT("picsimlab_debugp"), itoa(Get_debug_port()));
+    saveprefs(lxT("picsimlab_remotecp"), itoa(Get_remotec_port()));
+    saveprefs(lxT("picsimlab_position"), itoa(Window->GetX()) + lxT(",") + itoa(Window->GetY()));
+    saveprefs(lxT("picsimlab_scale"), ftoa(scale));
+    saveprefs(lxT("osc_on"), itoa(pboard->GetUseOscilloscope()));
+    saveprefs(lxT("spare_on"), itoa(pboard->GetUseSpareParts()));
 #ifndef _WIN_
-    PICSimLab.saveprefs(lxT("picsimlab_lser"), SERIALDEVICE);
+    saveprefs(lxT("picsimlab_lser"), SERIALDEVICE);
 #ifdef _USE_PICSTARTP_
-    PICSimLab.saveprefs(lxT("picsimlab_lprog"), PROGDEVICE);
+    saveprefs(lxT("picsimlab_lprog"), PROGDEVICE);
 #endif
 #else
-    PICSimLab.saveprefs("picsimlab_wser", SERIALDEVICE);
+    saveprefs("picsimlab_wser", SERIALDEVICE);
 #ifdef _USE_PICSTARTP_
-    PICSimLab.saveprefs("picsimlab_wprog", PROGDEVICE);
+    saveprefs("picsimlab_wprog", PROGDEVICE);
 #endif
 #endif
 
     if (PATH.size() > 0) {
-        PICSimLab.saveprefs(lxT("picsimlab_lpath"), PATH);
+        saveprefs(lxT("picsimlab_lpath"), PATH);
     } else {
-        PICSimLab.saveprefs(lxT("picsimlab_lpath"), " ");
+        saveprefs(lxT("picsimlab_lpath"), " ");
     }
-    PICSimLab.saveprefs(lxT("picsimlab_lfile"), FNAME);
+    saveprefs(lxT("picsimlab_lfile"), FNAME);
 
-    PICSimLab.GetBoard()->WritePreferences();
+    pboard->WritePreferences();
 
     Oscilloscope.WritePreferences();
     SpareParts.WritePreferences();
 
-    PICSimLab.PrefsSaveToFile(fname);
+    PrefsSaveToFile(fname);
 
     // write memory
-    if (PICSimLab.GetInstanceNumber()) {
-        sprintf(fname, "%s/mdump_%s_%s_%i.hex", home, boards_list[lab_].name_, (const char*)proc_.c_str(),
-                PICSimLab.GetInstanceNumber());
+    if (Instance) {
+        sprintf(fname, "%s/mdump_%s_%s_%i.hex", home, boards_list[lab_].name_, (const char*)proc_.c_str(), Instance);
     } else {
         sprintf(fname, "%s/mdump_%s_%s.hex", home, boards_list[lab_].name_, (const char*)proc_.c_str());
     }
     printf("PICSimLab: Saving \"%s\"\n", fname);
-    PICSimLab.GetBoard()->MDumpMemory(fname);
+    pboard->MDumpMemory(fname);
 
-    PICSimLab.GetBoard()->MEnd();
+    pboard->MEnd();
 
 #ifndef __EMSCRIPTEN__
     if (((CThread*)Window->GetChildByName("thread3"))->GetRunState()) {
@@ -401,15 +399,15 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
     }
 #endif
 
-    if (PICSimLab.GetInstanceNumber()) {
-        sprintf(fname, "%s/parts_%s_%i.pcf", home, boards_list[lab_].name_, PICSimLab.GetInstanceNumber());
+    if (Instance) {
+        sprintf(fname, "%s/parts_%s_%i.pcf", home, boards_list[lab_].name_, Instance);
     } else {
         sprintf(fname, "%s/parts_%s.pcf", home, boards_list[lab_].name_);
     }
     SpareParts.SaveConfig(fname);
     SpareParts.DeleteParts();
-    if (PICSimLab.GetInstanceNumber()) {
-        sprintf(fname, "%s/palias_%s_%i.ppa", home, boards_list[lab_].name_, PICSimLab.GetInstanceNumber());
+    if (Instance) {
+        sprintf(fname, "%s/palias_%s_%i.ppa", home, boards_list[lab_].name_, Instance);
     } else {
         sprintf(fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
     }
@@ -428,12 +426,12 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
     cpu_mutex = NULL;
 #endif
 
-    if (PICSimLab.GetNeedReboot()) {
+    if (GetNeedReboot()) {
         char cmd[1024];
         printf("PICSimLab: Reboot !!!\n");
         rcontrol_server_end();
-        PICSimLab.GetBoard()->EndServers();
-        PICSimLab.DeleteBoard();
+        pboard->EndServers();
+        DeleteBoard();
         strcpy(cmd, lxGetExecutablePath().c_str());
         if (newpath) {
             strcat(cmd, " ");
@@ -448,8 +446,7 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
         fflush(stderr);
         freopen(NULLFILE, "w", stderr);
         char fname[1200];
-        snprintf(fname, 1199, "%s/picsimlab_log%i.txt", (const char*)PICSimLab.GetHomePath().c_str(),
-                 PICSimLab.GetInstanceNumber());
+        snprintf(fname, 1199, "%s/picsimlab_log%i.txt", (const char*)HOME.c_str(), Instance);
         FILE* flog;
         flog = fopen(fname, "a");
         if (flog) {
@@ -466,7 +463,7 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
         printf("PICSimLab: End Board Simulation.\n");
     }
 
-    PICSimLab.DeleteBoard();
+    DeleteBoard();
 }
 
 // legacy format support before 0.8.2
@@ -478,12 +475,12 @@ void CPICSimLab::LoadWorkspace(lxString fnpzw) {
 
     if (!lxFileExists(fnpzw)) {
         printf("PICSimLab: file %s not found!\n", (const char*)fnpzw.c_str());
-        PICSimLab.RegisterError("PICSimLab: file " + fnpzw + " not found!");
+        RegisterError("PICSimLab: file " + fnpzw + " not found!");
         return;
     }
     if (!fnpzw.Contains(".pzw")) {
         printf("PICSimLab: file %s is not a .pzw file!\n", (const char*)fnpzw.c_str());
-        PICSimLab.RegisterError("PICSimLab: file " + fnpzw + " is not a .pzw file!");
+        RegisterError("PICSimLab: file " + fnpzw + " is not a .pzw file!");
         return;
     }
     // write options
@@ -497,9 +494,9 @@ void CPICSimLab::LoadWorkspace(lxString fnpzw) {
 
     lxUnzipDir(fnpzw, fzip);
 
-    PICSimLab.EndSimulation(0, fnpzw.c_str());
+    EndSimulation(0, fnpzw.c_str());
 
-    PICSimLab.SetWorkspaceFileName(fnpzw);
+    SetWorkspaceFileName(fnpzw);
 
     snprintf(fzip, 1279, "%s/picsimlab.ini", home);
     lxStringList prefsw;
@@ -537,8 +534,8 @@ void CPICSimLab::LoadWorkspace(lxString fnpzw) {
 
                 if (ser_ > ser) {
                     printf("PICSimLab: .pzw file version %i newer than PICSimLab %i!\n", ser_, ser);
-                    PICSimLab.RegisterError("The loaded workspace was made with a newer version " + pzw_ver +
-                                            ".\n Please update your PICSimLab " _VERSION_ " .");
+                    RegisterError("The loaded workspace was made with a newer version " + pzw_ver +
+                                  ".\n Please update your PICSimLab " _VERSION_ " .");
                 }
 
                 continue;
@@ -653,11 +650,11 @@ void CPICSimLab::LoadWorkspace(lxString fnpzw) {
                 sprintf(name_, "%s_%s", old_board_names[5], ptr + 3);
             }
 
-            PICSimLab.saveprefs(name_, value_);
+            saveprefs(name_, value_);
 #endif
         }
     }
-    PICSimLab.PrefsSaveToFile(fzip);
+    PrefsSaveToFile(fzip);
 
     Configure(home);
 
@@ -669,24 +666,24 @@ void CPICSimLab::LoadWorkspace(lxString fnpzw) {
 #else
     snprintf(fzip, 1279, "%s/Readme.html", home);
     if (lxFileExists(fzip)) {
-#ifdef EXT_BROWSER
 #ifndef __EMSCRIPTEN__
+#ifdef EXT_BROWSER
         lxLaunchDefaultBrowser(lxT("file://") + lxString(fzip));
-#endif
 #else
         Window2.html1.SetLoadFile(fzip);
         Window2.Show();
 #endif
+#endif
     } else {
         snprintf(fzip, 1279, "%s/Readme.txt", home);
         if (lxFileExists(fzip)) {
-#ifdef EXT_BROWSER
 #ifndef __EMSCRIPTEN__
+#ifdef EXT_BROWSER
             lxLaunchDefaultBrowser(lxT("file://") + lxString(fzip));
-#endif
 #else
             Window2.html1.SetLoadFile(fzip);
             Window2.Show();
+#endif
 #endif
         }
     }
@@ -704,13 +701,13 @@ void CPICSimLab::SaveWorkspace(lxString fnpzw) {
     }
 #endif
 
-    PICSimLab.SetWorkspaceFileName(fnpzw);
+    SetWorkspaceFileName(fnpzw);
 
     // write options
 
     strncpy(home, (char*)lxGetUserDataDir(lxT("picsimlab")).char_str(), 1023);
     snprintf(fname, 1279, "%s/picsimlab.ini", home);
-    PICSimLab.PrefsSaveToFile(fname);
+    PrefsSaveToFile(fname);
 
     strncpy(home, (char*)lxGetTempDir(lxT("picsimlab")).char_str(), 1023);
     strncat(home, "/picsimlab_workspace/", 1023);
@@ -728,42 +725,40 @@ void CPICSimLab::SaveWorkspace(lxString fnpzw) {
 #endif
 
     snprintf(fname, 1279, "%s/picsimlab.ini", home);
-    PICSimLab.PrefsClear();
-    PICSimLab.saveprefs(lxT("picsimlab_version"), _VERSION_);
-    PICSimLab.saveprefs(lxT("picsimlab_lab"), boards_list[PICSimLab.GetLab()].name_);
-    PICSimLab.saveprefs(lxT("picsimlab_debug"), itoa(PICSimLab.Get_debug_status()));
-    PICSimLab.saveprefs(lxT("picsimlab_debugt"), itoa(PICSimLab.Get_debug_type()));
-    PICSimLab.saveprefs(lxT("picsimlab_debugp"), itoa(PICSimLab.Get_debug_port()));
-    PICSimLab.saveprefs(lxT("picsimlab_position"),
-                        itoa(PICSimLab.GetWindow()->GetX()) + lxT(",") + itoa(PICSimLab.GetWindow()->GetY()));
-    PICSimLab.saveprefs(lxT("picsimlab_scale"), ftoa(scale));
-    PICSimLab.saveprefs(lxT("osc_on"), itoa(PICSimLab.GetBoard()->GetUseOscilloscope()));
-    PICSimLab.saveprefs(lxT("spare_on"), itoa(PICSimLab.GetBoard()->GetUseSpareParts()));
-    PICSimLab.saveprefs(lxT("picsimlab_lfile"), lxT(" "));
+    PrefsClear();
+    saveprefs(lxT("picsimlab_version"), _VERSION_);
+    saveprefs(lxT("picsimlab_lab"), boards_list[lab].name_);
+    saveprefs(lxT("picsimlab_debug"), itoa(Get_debug_status()));
+    saveprefs(lxT("picsimlab_debugt"), itoa(Get_debug_type()));
+    saveprefs(lxT("picsimlab_debugp"), itoa(Get_debug_port()));
+    saveprefs(lxT("picsimlab_position"), itoa(Window->GetX()) + lxT(",") + itoa(Window->GetY()));
+    saveprefs(lxT("picsimlab_scale"), ftoa(scale));
+    saveprefs(lxT("osc_on"), itoa(pboard->GetUseOscilloscope()));
+    saveprefs(lxT("spare_on"), itoa(pboard->GetUseSpareParts()));
+    saveprefs(lxT("picsimlab_lfile"), lxT(" "));
 
-    PICSimLab.GetBoard()->WritePreferences();
+    pboard->WritePreferences();
 
-    if (PICSimLab.GetBoard()->GetUseOscilloscope())
+    if (pboard->GetUseOscilloscope())
         Oscilloscope.WritePreferences();
 
-    if (PICSimLab.GetBoard()->GetUseSpareParts()) {
+    if (pboard->GetUseSpareParts()) {
         SpareParts.WritePreferences();
     }
 
-    PICSimLab.PrefsSaveToFile(fname);
+    PrefsSaveToFile(fname);
 
     // write memory
 
-    snprintf(fname, 1279, "%s/mdump_%s_%s.hex", home, boards_list[PICSimLab.GetLab_()].name_,
-             (const char*)proc_.c_str());
+    snprintf(fname, 1279, "%s/mdump_%s_%s.hex", home, boards_list[lab_].name_, (const char*)proc_.c_str());
 
     printf("PICSimLab: Saving \"%s\"\n", fname);
-    PICSimLab.GetBoard()->MDumpMemory(fname);
+    pboard->MDumpMemory(fname);
 
     // write spare part config
-    snprintf(fname, 1279, "%s/parts_%s.pcf", home, boards_list[PICSimLab.GetLab_()].name_);
+    snprintf(fname, 1279, "%s/parts_%s.pcf", home, boards_list[lab_].name_);
     SpareParts.SaveConfig(fname);
-    sprintf(fname, "%s/palias_%s.ppa", home, boards_list[PICSimLab.GetLab_()].name_);
+    sprintf(fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
     SpareParts.SavePinAlias(fname);
 
     lxZipDir(home, fnpzw);
@@ -772,8 +767,8 @@ void CPICSimLab::SaveWorkspace(lxString fnpzw) {
 
     strncpy(home, (char*)lxGetUserDataDir(lxT("picsimlab")).char_str(), 1023);
     snprintf(fname, 1279, "%s/picsimlab.ini", home);
-    PICSimLab.PrefsClear();
-    PICSimLab.PrefsLoadFromFile(fname);
+    PrefsClear();
+    PrefsLoadFromFile(fname);
 
 #ifdef __EMSCRIPTEN__
     EM_ASM_(
@@ -805,14 +800,14 @@ void CPICSimLab::SaveWorkspace(lxString fnpzw) {
 
 void CPICSimLab::SetSimulationRun(int run) {
     if (run) {
-        PICSimLab.status.st[0] &= ~ST_DI;
+        status.st[0] &= ~ST_DI;
     } else {
-        PICSimLab.status.st[0] |= ST_DI;
+        status.st[0] |= ST_DI;
     }
 }
 
 int CPICSimLab::GetSimulationRun(void) {
-    return (PICSimLab.status.st[0] & ST_DI) == 0;
+    return (status.st[0] & ST_DI) == 0;
 }
 
 void CPICSimLab::Configure(const char* home, int use_default_board, int create, const char* lfile) {
@@ -828,14 +823,14 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
     lxString status;
 
 #ifndef _NOTHREAD
-    if (PICSimLab.cpu_mutex == NULL) {
-        PICSimLab.cpu_mutex = new lxMutex();
-        PICSimLab.cpu_cond = new lxCondition(*PICSimLab.cpu_mutex);
+    if (cpu_mutex == NULL) {
+        cpu_mutex = new lxMutex();
+        cpu_cond = new lxCondition(*cpu_mutex);
     }
 #endif
 
-    if (PICSimLab.GetInstanceNumber() && !PICSimLab.GetHomePath().compare(home)) {
-        snprintf(fname, 1023, "%s/picsimlab_%i.ini", home, PICSimLab.GetInstanceNumber());
+    if (Instance && !HOME.compare(home)) {
+        snprintf(fname, 1023, "%s/picsimlab_%i.ini", home, Instance);
     } else {
         snprintf(fname, 1023, "%s/picsimlab.ini", home);
     }
@@ -845,14 +840,14 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
     PROGDEVICE[0] = ' ';
     PROGDEVICE[1] = 0;
 #endif
-    PICSimLab.DeleteBoard();
+    DeleteBoard();
 
-    PICSimLab.PrefsClear();
+    PrefsClear();
     if (lxFileExists(fname)) {
         printf("PICSimLab: Load Config from file \"%s\"\n", fname);
-        if (PICSimLab.PrefsLoadFromFile(fname)) {
-            for (lc = 0; lc < (int)PICSimLab.PrefsGetLinesCount(); lc++) {
-                strncpy(line, PICSimLab.PrefsGetLine(lc).c_str(), 1023);
+        if (PrefsLoadFromFile(fname)) {
+            for (lc = 0; lc < (int)PrefsGetLinesCount(); lc++) {
+                strncpy(line, PrefsGetLine(lc).c_str(), 1023);
 
                 name = strtok(line, "\t= ");
                 strtok(NULL, " ");
@@ -877,30 +872,27 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 
                 if (!strcmp(name, "picsimlab_lab")) {
                     if (use_default_board) {
-                        PICSimLab.SetLabs(DEFAULT_BOARD, DEFAULT_BOARD);
+                        SetLabs(DEFAULT_BOARD, DEFAULT_BOARD);
                     } else {
                         for (i = 0; i < BOARDS_LAST; i++) {
                             if (!strcmp(boards_list[i].name_, value)) {
                                 break;
                             }
                         }
-                        PICSimLab.SetLabs(i, i);
-                        if (PICSimLab.GetLab() == BOARDS_LAST) {
-                            PICSimLab.RegisterError(lxString("Invalid board ") + value + "!\n Using default board!");
+                        SetLabs(i, i);
+                        if (lab == BOARDS_LAST) {
+                            RegisterError(lxString("Invalid board ") + value + "!\n Using default board!");
                         }
                     }
-                    printf("PICSimLab: Open board %s\n", boards_list[PICSimLab.GetLab()].name);
-                    int lab = PICSimLab.GetLab();
-                    int lab_ = PICSimLab.GetLab_();
-                    PICSimLab.SetBoard(create_board(&lab, &lab_));
-                    PICSimLab.SetLabs(lab, lab_);
-                    if (PICSimLab.GetBoard()->GetScale() < PICSimLab.GetScale()) {
-                        PICSimLab.SetScale(PICSimLab.GetBoard()->GetScale());
+                    printf("PICSimLab: Open board %s\n", boards_list[lab].name);
+                    SetBoard(create_board(&lab, &lab_));
+                    if (pboard->GetScale() < GetScale()) {
+                        SetScale(pboard->GetScale());
                     } else {
-                        PICSimLab.GetBoard()->SetScale(PICSimLab.GetScale());
+                        pboard->SetScale(GetScale());
                     }
-                    PICSimLab.SetJUMPSTEPS(DEFAULTJS);
-                    PICSimLab.SetClock(2.0);  // Default clock
+                    SetJUMPSTEPS(DEFAULTJS);
+                    SetClock(2.0);  // Default clock
                 }
 
                 if (!strcmp(name, "picsimlab_debug")) {
@@ -910,13 +902,13 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
                     ((CToggleButton*)Window->GetChildByName("togglebutton1"))->SetCheck(debug);
 #endif
                     printf("PICSimLab: Debug On = %i\n", debug);
-                    PICSimLab.Set_debug_status(debug, 0);
+                    Set_debug_status(debug, 0);
                 }
 
                 if (!strcmp(name, "picsimlab_debugt")) {
                     int debug_type;
                     sscanf(value, "%i", &debug_type);
-                    PICSimLab.Set_debug_type(debug_type);
+                    Set_debug_type(debug_type);
                 }
 
                 if (!strcmp(name, "osc_on")) {
@@ -938,23 +930,23 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
                     if (create) {
                         double s;
                         sscanf(value, "%lf", &s);
-                        PICSimLab.SetScale(s);
-                        ((CDraw*)Window->GetChildByName("draw1"))->SetWidth(plWidth * PICSimLab.GetScale());
-                        Window->SetWidth(185 + plWidth * PICSimLab.GetScale());
-                        ((CDraw*)Window->GetChildByName("draw1"))->SetHeight(plHeight * PICSimLab.GetScale());
-                        Window->SetHeight(90 + plHeight * PICSimLab.GetScale());
-                        PICSimLab.GetBoard()->SetScale(PICSimLab.GetScale());
-                        printf("PICSimLab: Window scale %5.2f \n", PICSimLab.GetScale());
+                        SetScale(s);
+                        ((CDraw*)Window->GetChildByName("draw1"))->SetWidth(plWidth * GetScale());
+                        Window->SetWidth(185 + plWidth * GetScale());
+                        ((CDraw*)Window->GetChildByName("draw1"))->SetHeight(plHeight * GetScale());
+                        Window->SetHeight(90 + plHeight * GetScale());
+                        pboard->SetScale(GetScale());
+                        printf("PICSimLab: Window scale %5.2f \n", GetScale());
                     }
                 }
 
                 if (!strcmp(name, "picsimlab_lpath")) {
-                    PICSimLab.SetPath(lxString(value, lxConvUTF8));
+                    SetPath(lxString(value, lxConvUTF8));
                 }
 
                 if (!strcmp(name, "picsimlab_lfile")) {
-                    PICSimLab.SetFNAME(lxString(value, lxConvUTF8));
-                    if (PICSimLab.GetFNAME().length() > 1)
+                    SetFNAME(lxString(value, lxConvUTF8));
+                    if (GetFNAME().length() > 1)
                         Window->GetChildByName("menu1")
                             ->GetChildByName("menu1_File")
                             ->GetChildByName("menu1_File_ReloadLast")
@@ -966,8 +958,8 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
                             ->SetEnable(0);
                 }
 
-                if (PICSimLab.GetBoard() != NULL)
-                    PICSimLab.GetBoard()->ReadPreferences(name, value);
+                if (pboard != NULL)
+                    pboard->ReadPreferences(name, value);
 
                 Oscilloscope.ReadPreferences(name, value);
                 SpareParts.ReadPreferences(name, value);
@@ -975,11 +967,11 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
         }
     }
 
-    if (PICSimLab.GetBoard() == NULL) {
+    if (pboard == NULL) {
         printf("PICSimLab: Error open config file \"%s\"!\n", fname);
 
-        PICSimLab.SetLabs(DEFAULT_BOARD, DEFAULT_BOARD);  // default
-        PICSimLab.SetBoard(boards_list[0].bcreate());
+        SetLabs(DEFAULT_BOARD, DEFAULT_BOARD);  // default
+        SetBoard(boards_list[0].bcreate());
 
 #ifndef _WIN_
         strcpy(SERIALDEVICE, "/dev/tnt2");
@@ -994,7 +986,7 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 #endif
     }
     ((CPMenu*)Window->GetChildByName("menu1")->GetChildByName("menu1_Microcontroller"))->DestroyChilds();
-    lxString sdev = PICSimLab.GetBoard()->GetSupportedDevices();
+    lxString sdev = pboard->GetSupportedDevices();
     int f;
     int dc = 0;
     while (sdev.size() > 0) {
@@ -1016,58 +1008,54 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
         }
     }
 
-    ((CFileDialog*)Window->GetChildByName("filedialog1"))->SetDir(PICSimLab.GetPath());
+    ((CFileDialog*)Window->GetChildByName("filedialog1"))->SetDir(GetPath());
 
     ((CDraw*)Window->GetChildByName("draw1"))
-        ->SetImgFileName(
-            lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/") + PICSimLab.GetBoard()->GetPictureFileName()),
-            PICSimLab.GetScale(), PICSimLab.GetScale());
+        ->SetImgFileName(lxGetLocalFile(GetSharePath() + lxT("boards/") + pboard->GetPictureFileName()), GetScale(),
+                         GetScale());
 
-    PICSimLab.GetBoard()->MSetSerial(SERIALDEVICE);
+    pboard->MSetSerial(SERIALDEVICE);
 
     if (lfile) {
         if (lxFileExists(lfile)) {
             strcpy(fname, lfile);
         } else {
             printf("PICSimLab: File Not found \"%s\" loading default.\n", lfile);
-            PICSimLab.RegisterError(lxString("File Not found \n\"") + lfile + "\"\n loading default.");
-            if (PICSimLab.GetInstanceNumber() && !PICSimLab.GetHomePath().compare(home)) {
-                sprintf(fname, "%s/mdump_%s_%s_%i.hex", home, boards_list[PICSimLab.GetLab()].name_,
-                        (const char*)PICSimLab.GetBoard()->GetProcessorName().c_str(), PICSimLab.GetInstanceNumber());
+            RegisterError(lxString("File Not found \n\"") + lfile + "\"\n loading default.");
+            if (Instance && !HOME.compare(home)) {
+                sprintf(fname, "%s/mdump_%s_%s_%i.hex", home, boards_list[lab].name_,
+                        (const char*)pboard->GetProcessorName().c_str(), Instance);
             } else {
-                sprintf(fname, "%s/mdump_%s_%s.hex", home, boards_list[PICSimLab.GetLab()].name_,
-                        (const char*)PICSimLab.GetBoard()->GetProcessorName().c_str());
+                sprintf(fname, "%s/mdump_%s_%s.hex", home, boards_list[lab].name_,
+                        (const char*)pboard->GetProcessorName().c_str());
             }
         }
     } else {
-        if (PICSimLab.GetInstanceNumber() && !PICSimLab.GetHomePath().compare(home)) {
-            sprintf(fname, "%s/mdump_%s_%s_%i.hex", home, boards_list[PICSimLab.GetLab()].name_,
-                    (const char*)PICSimLab.GetBoard()->GetProcessorName().c_str(), PICSimLab.GetInstanceNumber());
+        if (Instance && !HOME.compare(home)) {
+            sprintf(fname, "%s/mdump_%s_%s_%i.hex", home, boards_list[lab].name_,
+                    (const char*)pboard->GetProcessorName().c_str(), Instance);
         } else {
-            sprintf(fname, "%s/mdump_%s_%s.hex", home, boards_list[PICSimLab.GetLab()].name_,
-                    (const char*)PICSimLab.GetBoard()->GetProcessorName().c_str());
+            sprintf(fname, "%s/mdump_%s_%s.hex", home, boards_list[lab].name_,
+                    (const char*)pboard->GetProcessorName().c_str());
         }
     }
     printf("PICSimLab: Opening \"%s\"\n", fname);
-    switch (
-        PICSimLab.GetBoard()->MInit(PICSimLab.GetBoard()->GetProcessorName(), fname, PICSimLab.GetNSTEP() * NSTEPKF)) {
+    switch (pboard->MInit(pboard->GetProcessorName(), fname, GetNSTEP() * NSTEPKF)) {
         case HEX_NFOUND:
             printf("File not found!\n");
             break;
         case HEX_CHKSUM:
             printf("File checksum error!\n");
-            PICSimLab.GetBoard()->MEraseFlash();
+            pboard->MEraseFlash();
             break;
     }
 
-    PICSimLab.GetBoard()->Reset();
+    pboard->Reset();
 
-    PICSimLab.SetProcessorName(PICSimLab.GetBoard()->GetProcessorName());
+    SetProcessorName(pboard->GetProcessorName());
 
-    Window->SetTitle(
-        ((PICSimLab.GetInstanceNumber() > 0) ? (lxT("PICSimLab[") + itoa(PICSimLab.GetInstanceNumber()) + lxT("] - "))
-                                             : (lxT("PICSimLab - "))) +
-        lxString(boards_list[PICSimLab.GetLab()].name) + lxT(" - ") + PICSimLab.GetBoard()->GetProcessorName());
+    Window->SetTitle(((Instance > 0) ? (lxT("PICSimLab[") + itoa(Instance) + lxT("] - ")) : (lxT("PICSimLab - "))) +
+                     lxString(boards_list[lab].name) + lxT(" - ") + pboard->GetProcessorName());
 
 #ifdef _USE_PICSTARTP_
     if (prog_init() >= 0)
@@ -1081,13 +1069,13 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 #ifdef NO_DEBUG
     statusbar->SetField(1, lxT(" "));
 #else
-    if (PICSimLab.Get_debug_status()) {
-        int ret = PICSimLab.GetBoard()->DebugInit(PICSimLab.Get_debug_type());
+    if (Get_debug_status()) {
+        int ret = pboard->DebugInit(Get_debug_type());
         if (ret < 0) {
             statusbar->SetField(1, status + lxT("Debug: Error"));
         } else {
-            statusbar->SetField(1, status + lxT("Debug: ") + PICSimLab.GetBoard()->GetDebugName() + ":" +
-                                       itoa(PICSimLab.Get_debug_port() + PICSimLab.GetInstanceNumber()));
+            statusbar->SetField(
+                1, status + lxT("Debug: ") + pboard->GetDebugName() + ":" + itoa(Get_debug_port() + Instance));
         }
     } else {
         statusbar->SetField(1, status + lxT("Debug: Off"));
@@ -1106,26 +1094,24 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 
     Application->ProcessEvents();
 
-    Oscilloscope.SetBoard(PICSimLab.GetBoard());
+    Oscilloscope.SetBoard(pboard);
     Oscilloscope.SetBaseTimer();
 
-    if (PICSimLab.GetInstanceNumber() && !PICSimLab.GetHomePath().compare(home)) {
-        sprintf(fname, "%s/parts_%s_%i.pcf", home, boards_list[PICSimLab.GetLab()].name_,
-                PICSimLab.GetInstanceNumber());
+    if (Instance && !HOME.compare(home)) {
+        sprintf(fname, "%s/parts_%s_%i.pcf", home, boards_list[lab].name_, Instance);
     } else {
-        sprintf(fname, "%s/parts_%s.pcf", home, boards_list[PICSimLab.GetLab()].name_);
+        sprintf(fname, "%s/parts_%s.pcf", home, boards_list[lab].name_);
     }
     SpareParts.LoadConfig(fname);
-    if (PICSimLab.GetInstanceNumber() && !PICSimLab.GetHomePath().compare(home)) {
-        sprintf(fname, "%s/palias_%s_%i.ppa", home, boards_list[PICSimLab.GetLab_()].name_,
-                PICSimLab.GetInstanceNumber());
+    if (Instance && !HOME.compare(home)) {
+        sprintf(fname, "%s/palias_%s_%i.ppa", home, boards_list[lab_].name_, Instance);
     } else {
-        sprintf(fname, "%s/palias_%s.ppa", home, boards_list[PICSimLab.GetLab_()].name_);
+        sprintf(fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
     }
     SpareParts.LoadPinAlias(fname);
 
-    if ((!PICSimLab.GetBoard()->GetProcessorName().Cmp("atmega328p")) ||
-        (!PICSimLab.GetBoard()->GetProcessorName().Cmp("atmega2560"))) {
+#ifndef NO_TOOLS
+    if ((!pboard->GetProcessorName().Cmp("atmega328p")) || (!pboard->GetProcessorName().Cmp("atmega2560"))) {
         Window->GetChildByName("menu1")
             ->GetChildByName("menu1_Tools")
             ->GetChildByName("menu1_Tools_ArduinoBootloader")
@@ -1136,9 +1122,10 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
             ->GetChildByName("menu1_Tools_ArduinoBootloader")
             ->SetEnable(false);
     }
+#endif
 
 #ifndef __EMSCRIPTEN__
-    rcontrol_init(PICSimLab.Get_remotec_port() + PICSimLab.GetInstanceNumber());
+    rcontrol_init(Get_remotec_port() + Instance);
 #endif
 }
 

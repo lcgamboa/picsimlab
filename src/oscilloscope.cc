@@ -254,10 +254,9 @@ void COscilloscope::WritePreferences(void) {
     PICSimLab.saveprefs(lxT("osc_tlevel"), ftoa(((CSpind*)Window->GetChildByName("spind7"))->GetValue()));
     PICSimLab.saveprefs(lxT("osc_position"), itoa(Window->GetX()) + lxT(",") + itoa(Window->GetY()));
 
-    PICSimLab.saveprefs(lxT("osc_measures"),
-                        itoa(Oscilloscope.GetMeasures(0)) + lxT(",") + itoa(Oscilloscope.GetMeasures(1)) + lxT(",") +
-                            itoa(Oscilloscope.GetMeasures(2)) + lxT(",") + itoa(Oscilloscope.GetMeasures(3)) +
-                            lxT(",") + itoa(Oscilloscope.GetMeasures(4)));
+    PICSimLab.saveprefs(lxT("osc_measures"), itoa(GetMeasures(0)) + lxT(",") + itoa(GetMeasures(1)) + lxT(",") +
+                                                 itoa(GetMeasures(2)) + lxT(",") + itoa(GetMeasures(3)) + lxT(",") +
+                                                 itoa(GetMeasures(4)));
 }
 
 void COscilloscope::ReadPreferences(char* name, char* value) {
@@ -283,7 +282,7 @@ void COscilloscope::ReadPreferences(char* name, char* value) {
 
     if (!strcmp(name, "osc_ch1")) {
         ((CCombo*)Window->GetChildByName("combo2"))->SetText(value);
-        Oscilloscope.SetChannelPin(0, atoi(((CCombo*)Window->GetChildByName("combo2"))->GetText()) - 1);
+        SetChannelPin(0, atoi(((CCombo*)Window->GetChildByName("combo2"))->GetText()) - 1);
     }
 
     if (!strcmp(name, "osc_scale2")) {
@@ -308,7 +307,7 @@ void COscilloscope::ReadPreferences(char* name, char* value) {
 
     if (!strcmp(name, "osc_ch2")) {
         ((CCombo*)Window->GetChildByName("combo3"))->SetText(value);
-        Oscilloscope.SetChannelPin(1, atoi(((CCombo*)Window->GetChildByName("combo3"))->GetText()) - 1);
+        SetChannelPin(1, atoi(((CCombo*)Window->GetChildByName("combo3"))->GetText()) - 1);
     }
 
     if (!strcmp(name, "osc_tscale")) {
@@ -321,7 +320,7 @@ void COscilloscope::ReadPreferences(char* name, char* value) {
 
     if (!strcmp(name, "osc_usetrigger")) {
         ((CToggleButton*)Window->GetChildByName("togglebutton5"))->SetCheck(atoi(value));
-        Oscilloscope.SetUseTrigger(atoi(value));
+        SetUseTrigger(atoi(value));
     }
 
     if (!strcmp(name, "osc_tch")) {
@@ -343,7 +342,7 @@ void COscilloscope::ReadPreferences(char* name, char* value) {
         int measures[5];
         sscanf(value, "%i,%i,%i,%i,%i", &measures[0], &measures[1], &measures[2], &measures[3], &measures[4]);
         for (int i = 0; i < 5; i++) {
-            Oscilloscope.SetMeasure(i, measures[i]);
+            SetMeasure(i, measures[i]);
         }
     }
 }
@@ -359,7 +358,7 @@ void COscilloscope::SetBaseTimer(void) {
     if (pboard->CpuInitialized() == 0)
         return;
 
-    Oscilloscope.SetDT(1.0 / pboard->MGetInstClockFreq());
+    SetDT(1.0 / pboard->MGetInstClockFreq());
 
     int chp[2];
 
