@@ -370,7 +370,7 @@ void board::InstCounterInc(void) {
     }
 }
 
-int board::TimerRegister_us(const uint32_t micros, void (*Callback)(void* arg), void* arg) {
+int board::TimerRegister_us(const double micros, void (*Callback)(void* arg), void* arg) {
     if (TimersCount < MAX_TIMERS) {
         int timern = 0;
         for (int i = 0; i < MAX_TIMERS; i++) {
@@ -390,7 +390,7 @@ int board::TimerRegister_us(const uint32_t micros, void (*Callback)(void* arg), 
     return -1;
 }
 
-int board::TimerRegister_ms(const uint32_t miles, void (*Callback)(void* arg), void* arg) {
+int board::TimerRegister_ms(const double miles, void (*Callback)(void* arg), void* arg) {
     if (TimersCount < MAX_TIMERS) {
         int timern = 0;
         for (int i = 0; i < MAX_TIMERS; i++) {
@@ -423,7 +423,7 @@ int board::TimerUnregister(const int timer) {
     return -1;
 }
 
-int board::TimerChange_us(const int timer, const uint32_t micros) {
+int board::TimerChange_us(const int timer, const double micros) {
     if (timer <= MAX_TIMERS) {
         Timers[timer - 1].Reload = micros * 1e-6 * MGetInstClockFreq();
         if (Timers[timer - 1].Reload <= 0) {
@@ -435,7 +435,7 @@ int board::TimerChange_us(const int timer, const uint32_t micros) {
     return -1;
 }
 
-int board::TimerChange_ms(const int timer, const uint32_t miles) {
+int board::TimerChange_ms(const int timer, const double miles) {
     if (timer <= MAX_TIMERS) {
         Timers[timer - 1].Reload = miles * 1e-3 * MGetInstClockFreq();
         if (Timers[timer - 1].Reload <= 0) {

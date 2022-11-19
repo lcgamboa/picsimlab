@@ -40,24 +40,37 @@ void vterm_rst(vterm_t* vt) {
     vt->count_in = 0;
     vt->count_out = 0;
     vt->out_ptr = 0;
-    dprintf("rst uart\n");
+    dprintf("vterm_ uart\n");
 }
 
 static void vterm_uart_rx_callback(void* arg) {
     vterm_t* vt = (vterm_t*)arg;
-
+    unsigned char data;
     vt->inMutex->Lock();
-    vt->buff_in[vt->count_in++] = bitbang_uart_recv(&vt->bb_uart);
+    data = bitbang_uart_recv(&vt->bb_uart);
     vt->inMutex->Unlock();
-    if (vt->count_in >= SBUFFMAX)
+
+    if (((data > 0x19) && (data < 0x7F)) || (data == '\r') || (data == '\n')) {
+        vt->buff_in[vt->count_in] = data;
+        dprintf("vterm buff_in[%i] = %c\n", vt->count_in, vt->buff_in[vt->count_in]);
+
+    } else {
+        vt->buff_in[vt->count_in] = '.';
+        dprintf("vterm buff_in[%i] = 0x%02X (invalid)\n", vt->count_in, vt->buff_in[vt->count_in]);
+    }
+
+    vt->count_in++;
+    if (vt->count_in >= SBUFFMAX) {
         vt->count_in = 0;
+        dprintf("vterm buffer overflow!\n");
+    }
 }
 
 void vterm_init(vterm_t* vt, board* pboard) {
     bitbang_uart_init(&vt->bb_uart, pboard, vterm_uart_rx_callback, vt);
     vterm_rst(vt);
     vt->inMutex = new lxMutex();
-    dprintf("init uart\n");
+    dprintf("init vterm\n");
 }
 
 void vterm_end(vterm_t* vt) {

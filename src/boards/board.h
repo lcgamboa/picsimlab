@@ -556,12 +556,12 @@ public:
     /**
      * @brief Register a new timer with time in us (default enabled)
      */
-    int TimerRegister_us(const uint32_t micros, void (*Callback)(void* arg), void* arg);
+    int TimerRegister_us(const double micros, void (*Callback)(void* arg), void* arg);
 
     /**
      * @brief Register a new timer with time in ms (default enabled)
      */
-    int TimerRegister_ms(const uint32_t miles, void (*Callback)(void* arg), void* arg);
+    int TimerRegister_ms(const double miles, void (*Callback)(void* arg), void* arg);
 
     /**
      * @brief Unregister timer
@@ -571,12 +571,12 @@ public:
     /**
      * @brief Modify timer value with us
      */
-    int TimerChange_us(const int timer, const uint32_t micros);
+    int TimerChange_us(const int timer, const double micros);
 
     /**
      * @brief Modify timer value with us
      */
-    int TimerChange_ms(const int timer, const uint32_t miles);
+    int TimerChange_ms(const int timer, const double miles);
 
     /**
      * @brief Enable or disable timer
@@ -584,7 +584,7 @@ public:
     int TimerSetState(const int timer, const int enabled);
 
     /**
-     * @brief Get elapsed time from instruction counter in us
+     * @brief Get elapsed time from instruction counter in ns
      */
     uint64_t TimerGet_ns(const int timer);
 

@@ -37,33 +37,12 @@ enum { I_TERM };
 /* line ending*/
 enum { LE_NONE, LE_NL, LE_CR, LE_NL_CR };
 
-/*
-const char pin_names[10][10] = {
- "GND",
- "VCC",
- "MISO",
- "MOSI",
- "SCK",
- "CS"
-};
-
-const char pin_values[10][10] = {
- "GND",
- "+5V",
- {0},
- {1},
- {2},
- {3}
-};
- */
-
 cpart_vterm::cpart_vterm(unsigned x, unsigned y)
     : font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     X = x;
     Y = y;
     ReadMaps();
     Bitmap = NULL;
-
     LoadImage();
 
     vterm_init(&vt, PICSimLab.GetBoard());
@@ -268,11 +247,12 @@ void cpart_vterm::Draw(void) {
     }
 
     if (vt.count_in) {
-        char str[200];
+        char str[SBUFFMAX];
         vt.inMutex->Lock();
         strncpy(str, (char*)vt.buff_in, vt.count_in);
         str[vt.count_in] = 0;
         vt.count_in = 0;
+        // printf("Data recv: \n[\n%s]\n", str);
         vt.inMutex->Unlock();
         vttext->Append(str);
 
@@ -361,7 +341,7 @@ void cpart_vterm::PreProcess(void) {
         if (!vt.count_out) {
             send_text = 0;
             vt.count_out = text_to_send.size();
-            for (int i = 0; i < vt.count_out; i++) {
+            for (unsigned int i = 0; i < vt.count_out; i++) {
                 vt.buff_out[i] = text_to_send[i];
             }
             switch (lending) {

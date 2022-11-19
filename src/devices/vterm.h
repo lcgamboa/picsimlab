@@ -29,14 +29,14 @@
 #include <stdio.h>
 #include "bitbang_uart.h"
 
-#define SBUFFMAX 128
+#define SBUFFMAX 512
 
 typedef struct {
     bitbang_uart_t bb_uart;
     unsigned char buff_in[SBUFFMAX];
-    unsigned char count_in;
+    unsigned int count_in;
     unsigned char buff_out[SBUFFMAX];
-    unsigned char count_out;
+    unsigned int count_out;
     unsigned char out_ptr;
     lxMutex* inMutex;
 } vterm_t;
