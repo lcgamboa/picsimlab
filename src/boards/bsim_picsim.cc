@@ -70,7 +70,7 @@ int bsim_picsim::MInit(const char* processor, const char* fname, float freq) {
         pic.config[0] |= 0x2000;
     } else if ((pic.processor == getprocbyname("PIC18F452")) || (pic.processor == getprocbyname("PIC18F4520")) ||
                (pic.processor == getprocbyname("PIC18F4550")) || (pic.processor == getprocbyname("PIC18F45K50")) ||
-               (pic.processor == getprocbyname("PIC18F4620"))) {
+               (pic.processor == getprocbyname("PIC18F4620")) || (pic.processor == getprocbyname("PIC18F4580"))) {
         pic.config[3] |= 0x0080;
     } else if ((pic.processor == getprocbyname("PIC18F27K40")) || (pic.processor == getprocbyname("PIC18F47K40"))) {
         pic.config[1] |= 0x2000;
