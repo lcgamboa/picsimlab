@@ -283,7 +283,7 @@ static void bitbang_i2c_ctrl_callback(void* arg) {
                         i2c->scl_value = 1;
                         break;
                     case 3:
-                        i2c->datar |= (i2c->sda_value << (8 - i2c->bit));
+                        i2c->datar |= (i2c->sda_value << (7 - i2c->bit));
                         i2c->scl_value = 1;
                         i2c->clkpc = -1;
                         i2c->bit++;

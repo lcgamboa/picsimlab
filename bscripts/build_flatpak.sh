@@ -13,6 +13,7 @@ flatpak --user install  flathub org.freedesktop.Platform//21.08 org.freedesktop.
 
 #VERSION="${VERSION_STABLE}"
 VERSION="${VERSION}_${DATE}"
+git config --global --add protocol.file.allow always
 
 flatpak-builder --disable-cache --disable-rofiles-fuse --repo=repo --force-clean build-dir package/com.github.lcgamboa.picsimlab/com.github.lcgamboa.picsimlab.yaml
 mkdir release_${VERSION}

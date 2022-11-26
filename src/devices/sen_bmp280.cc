@@ -92,9 +92,9 @@ unsigned char sen_bmp280_I2C_io(sen_bmp280_t* bmp280, const unsigned char scl, c
 
     switch (bitbang_i2c_get_status(&bmp280->bb_i2c)) {
         case I2C_DATAW:
-            dprintf("data %02X  byte=%i\n", bmp280->bb_i2c.datar, bmp280->bb_i2c.byte);
+            dprintf("bmp280 data %02X  byte=%i\n", bmp280->bb_i2c.datar, bmp280->bb_i2c.byte);
             if (bmp280->bb_i2c.byte == 2) {
-                dprintf("==>addr %02X\n", bmp280->bb_i2c.datar);
+                dprintf("bmp280 ==>addr %02X\n", bmp280->bb_i2c.datar);
                 bmp280->addr = bmp280->bb_i2c.datar;
             } else {
                 switch (bmp280->addr) {
@@ -112,39 +112,49 @@ unsigned char sen_bmp280_I2C_io(sen_bmp280_t* bmp280, const unsigned char scl, c
             }
             break;
         case I2C_DATAR:
-            dprintf("read addr %02X   byte=%i\n", bmp280->addr, bmp280->bb_i2c.byte);
+            dprintf("bmp280 read addr %02X   byte=%i\n", bmp280->addr, bmp280->bb_i2c.byte);
             switch (bmp280->addr) {
                 case A_id:
                     bitbang_i2c_send(&bmp280->bb_i2c, 0x58);
+                    dprintf("bmp280 read id 0x58\n");
                     break;
                 case A_temp_xlsb:
                     bitbang_i2c_send(&bmp280->bb_i2c, bmp280->temp & 0x000000FF);
+                    dprintf("bmp280 read temp xlsb 0x%02X\n", bmp280->temp & 0x000000FF);
                     break;
                 case A_temp_lsb:
                     bitbang_i2c_send(&bmp280->bb_i2c, (bmp280->temp & 0x0000FF00) >> 8);
+                    dprintf("bmp280 read temp lsb  0x%02X\n", (bmp280->temp & 0x0000FF00) >> 8);
                     break;
                 case A_temp_msb:
                     bitbang_i2c_send(&bmp280->bb_i2c, (bmp280->temp & 0x00FF0000) >> 16);
+                    dprintf("bmp280 read temp msb  0x%02X\n", (bmp280->temp & 0x00FF0000) >> 16);
                     break;
                 case A_press_xlsb:
                     bitbang_i2c_send(&bmp280->bb_i2c, bmp280->pressure & 0x000000FF);
+                    dprintf("bmp280 read press xlsb 0x%02X\n", bmp280->pressure & 0x000000FF);
                     break;
                 case A_press_lsb:
                     bitbang_i2c_send(&bmp280->bb_i2c, (bmp280->pressure & 0x0000FF00) >> 8);
+                    dprintf("bmp280 read press  lsb 0x%02X\n", (bmp280->pressure & 0x0000FF00) >> 8);
                     break;
                 case A_press_msb:
                     bitbang_i2c_send(&bmp280->bb_i2c, (bmp280->pressure & 0x00FF0000) >> 16);
+                    dprintf("bmp280 read press  msb 0x%02X\n", (bmp280->pressure & 0x00FF0000) >> 16);
                     break;
                 case A_calib0 ... A_calib23:
                     temp = bmp280->addr - A_calib0;
                     if (temp & 0x01) {  // MSB
                         bitbang_i2c_send(&bmp280->bb_i2c, (pcoefficients[temp >> 1] & 0xFF00) >> 8);
+                        dprintf("bmp280 read calib msb 0x%02X\n", (pcoefficients[temp >> 1] & 0xFF00) >> 8);
                     } else {  // LSB
                         bitbang_i2c_send(&bmp280->bb_i2c, pcoefficients[temp >> 1] & 0x00FF);
+                        dprintf("bmp280 read calib lsb 0x%02X\n", (pcoefficients[temp >> 1] & 0x00FF));
                     }
                     break;
                 default:
                     bitbang_i2c_send(&bmp280->bb_i2c, 0xFF);
+                    dprintf("bmp280 read invalid !!! 0xFF\n");
                     break;
             }
             bmp280->addr++;

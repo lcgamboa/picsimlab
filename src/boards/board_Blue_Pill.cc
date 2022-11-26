@@ -80,6 +80,12 @@ cboard_Blue_Pill::cboard_Blue_Pill(void) {
     Proc = "stm32f103c8t6";  // default microcontroller if none defined in preferences
     ReadMaps();              // Read input and output board maps
 
+    // TODO read pin configuration from registers instead use fixed pins
+    master_i2c[0].scl_pin = 42;  // pb6 or pb8
+    master_i2c[0].sda_pin = 43;  // pb7 or pb9
+    master_i2c[1].scl_pin = 21;  // pb10
+    master_i2c[1].sda_pin = 22;  // pb11
+
     // label1
     label1 = new CLabel();
     label1->SetFOwner(PICSimLab.GetWindow());

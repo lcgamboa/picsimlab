@@ -32,6 +32,11 @@
 #include "../serial_port.h"
 #include "bsim_qemu.h"
 
+#define dprintf \
+    if (1) {    \
+    } else      \
+        printf
+
 // function pointers
 
 void (*qemu_init)(int, char**, const char**);
@@ -123,8 +128,10 @@ static int picsimlab_i2c_event(const uint8_t id, const uint8_t addr, const uint1
 
             if (event == I2C_START_RECV) {
                 bitbang_i2c_ctrl_write(&g_board->master_i2c[id], (addr << 1) | 0x01);
+                dprintf(">>> start recv =0x%02x\n", addr);
             } else {
                 bitbang_i2c_ctrl_write(&g_board->master_i2c[id], addr << 1);
+                dprintf(">>> start send =0x%02x\n", addr);
             }
             g_board->timer.last += 72000;
             g_board->Run_CPU_ns(72000);
@@ -133,22 +140,23 @@ static int picsimlab_i2c_event(const uint8_t id, const uint8_t addr, const uint1
             bitbang_i2c_ctrl_stop(&g_board->master_i2c[id]);
             g_board->timer.last += 8000;
             g_board->Run_CPU_ns(8000);
+            dprintf("<<< stop =0x%02x\n", addr);
             break;
         case I2C_NACK:
             break;
         case I2C_WRITE:
+            dprintf("==> send addr=0x%02x value=0x%02x\n", addr, event >> 8);
             bitbang_i2c_ctrl_write(&g_board->master_i2c[id], event >> 8);  // TODO verify ACK
             g_board->timer.last += 72000;
             g_board->Run_CPU_ns(72000);
-            // printf("send addr=0x%02x value=0x%02x\n", addr, event >> 8);
             return 1;
             break;
         case I2C_READ:
             bitbang_i2c_ctrl_read(&g_board->master_i2c[id]);  // TODO verify ACK
             g_board->timer.last += 72000;
             g_board->Run_CPU_ns(72000);
-            // printf("recv addr=0x%02x value=0x%02x\n", addr, (g_board->master_i2c.datar >> 1) & 0x00FF);
-            return (g_board->master_i2c[id].datar >> 1) & 0x00FF;
+            dprintf("<== recv addr=0x%02x value=0x%02x\n", addr, g_board->master_i2c[id].datar);
+            return g_board->master_i2c[id].datar;
             break;
     }
     return 0;
@@ -416,8 +424,8 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         strcpy(argv[argc++], "-drive");
         sprintf(argv[argc++], "file=%s,if=pflash,format=raw", fname_);
 
-        //strcpy(argv[argc++], "-d");
-        //strcpy(argv[argc++], "unimp");
+        // strcpy(argv[argc++], "-d");
+        // strcpy(argv[argc++], "unimp");
 
         strcpy(argv[argc++], "-rtc");
         strcpy(argv[argc++], "clock=vm");

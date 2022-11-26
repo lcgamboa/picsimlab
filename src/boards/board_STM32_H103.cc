@@ -87,6 +87,12 @@ cboard_STM32_H103::cboard_STM32_H103(void) {
     ReadMaps();              // Read input and output board maps
     p_BUT = 0;
 
+    // TODO read pin configuration from registers instead use fixed pins
+    master_i2c[0].scl_pin = 58;  // pb6 or pb8
+    master_i2c[0].sda_pin = 59;  // pb7 or pb9
+    master_i2c[1].scl_pin = 29;  // pb10
+    master_i2c[1].sda_pin = 30;  // pb11
+
     // label1
     label1 = new CLabel();
     label1->SetFOwner(PICSimLab.GetWindow());
