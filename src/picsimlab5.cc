@@ -78,6 +78,11 @@ void CPWindow5::_EvOnCreate(CControl* control) {
             menu1_Others.CreateChild(&MParts[i]);
         }
     }
+
+    SetTitle(((PICSimLab.GetInstanceNumber() > 0)
+                  ? (lxT("PICSimLab[") + itoa(PICSimLab.GetInstanceNumber()) + lxT("] - "))
+                  : (lxT("PICSimLab - "))) +
+             "Spare parts");
 }
 
 void CPWindow5::draw1_EvMouseButtonPress(CControl* control, uint button, uint x, uint y, uint state) {
@@ -227,8 +232,8 @@ void CPWindow5::timer1_EvOnTime(CControl* control) {
     int update = 0;
 
     if (need_resize == 1) {
-	    int w = GetClientWidth() - 10;
-	    int h = GetClientHeight() - 10;
+        int w = GetClientWidth() - 10;
+        int h = GetClientHeight() - 10;
         draw1.SetWidth((w > 0) ? w : 1);
         draw1.SetHeight((h > 0) ? h : 1);
         Oscilloscope.SetBaseTimer();

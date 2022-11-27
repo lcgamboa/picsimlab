@@ -117,7 +117,8 @@ modules:
         buildsystem: simple
         build-commands:
           - cd lunasvg; mkdir build
-          - cd lunasvg/build;export CXXFLAGS="-fPIC -flto"; export CFLAGS="-fPIC -flto"; cmake ..; make  
+          - cd lunasvg/build;export CXXFLAGS="-fPIC"; export CFLAGS="-fPIC"; cmake ..; make 
+          - sed -i 's/\"..\/..\/lunasvg\/include\/lunasvg.h\"/\"..\/lunasvg\/include\/lunasvg.h\"/g' lib/lxutils.cc 
           - ./configure --prefix=/app 
           - make -j$(nproc) noadv=1
           - make install DESTDIR=/app noadv=1 

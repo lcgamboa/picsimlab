@@ -355,6 +355,10 @@ void CPWindow4::_EvOnDestroy(CControl* control) {
 
 void CPWindow4::_EvOnCreate(CControl* control) {
     font = new lxFont(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
+    SetTitle(((PICSimLab.GetInstanceNumber() > 0)
+                  ? (lxT("PICSimLab[") + itoa(PICSimLab.GetInstanceNumber()) + lxT("] - "))
+                  : (lxT("PICSimLab - "))) +
+             "Oscilloscope");
 }
 
 void CPWindow4::_EvOnShow(CControl* control) {
