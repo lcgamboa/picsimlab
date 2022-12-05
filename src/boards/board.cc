@@ -55,11 +55,11 @@ void board::ReadMaps(void) {
     ReadOutputMap(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/") + GetMapFile()));
 
     for (int i = 0; i < inputc; i++) {
-        input_ids[get_in_id(input[i].name)] = &input[i];
+        input_ids[GetInputId(input[i].name)] = &input[i];
     }
 
     for (int i = 0; i < outputc; i++) {
-        output_ids[get_out_id(output[i].name)] = &output[i];
+        output_ids[GetOutputId(output[i].name)] = &output[i];
     }
 }
 
@@ -161,7 +161,7 @@ void board::ReadInputMap(lxString fname) {
                         input[inputc].y2 = y1 + r;
                     }
                     strcpy(input[inputc].name, name + 2);
-                    input[inputc].id = get_in_id(input[inputc].name);
+                    input[inputc].id = GetInputId(input[inputc].name);
                     input[inputc].cx = ((input[inputc].x2 - input[inputc].x1) / 2.0) + input[inputc].x1;
                     input[inputc].cy = ((input[inputc].y2 - input[inputc].y1) / 2.0) + input[inputc].y1;
                     input[inputc].status = NULL;
@@ -175,8 +175,8 @@ void board::ReadInputMap(lxString fname) {
         }
         fclose(fin);
     } else {
-        // Message(lxT("Error open input.map")); Not use this in create!!
-        printf("Error open input.map \"%s\"!\n", (const char*)fname.c_str());
+        printf("PICSimLab: Error open input.map \"%s\"!\n", (const char*)fname.c_str());
+        PICSimLab.RegisterError("Error open input.map:\n" + fname);
     }
 }
 
@@ -216,7 +216,7 @@ void board::ReadOutputMap(lxString fname) {
                         output[outputc].y2 = y2;
                         output[outputc].r = 0;
                         strcpy(output[outputc].name, name + 2);
-                        output[outputc].id = get_out_id(output[outputc].name);
+                        output[outputc].id = GetOutputId(output[outputc].name);
                         output[outputc].cx = ((output[outputc].x2 - output[outputc].x1) / 2.0) + output[outputc].x1;
                         output[outputc].cy = ((output[outputc].y2 - output[outputc].y1) / 2.0) + output[outputc].y1;
                         output[outputc].status = NULL;
@@ -233,7 +233,7 @@ void board::ReadOutputMap(lxString fname) {
                         output[outputc].y2 = 0;
                         output[outputc].r = r;
                         strcpy(output[outputc].name, name + 2);
-                        output[outputc].id = get_out_id(output[outputc].name);
+                        output[outputc].id = GetOutputId(output[outputc].name);
                         output[outputc].cx = output[outputc].x1;
                         output[outputc].cy = output[outputc].y1;
                         output[outputc].status = NULL;
@@ -248,8 +248,8 @@ void board::ReadOutputMap(lxString fname) {
 
         fclose(fin);
     } else {
-        // Message(lxT("Error open output.map")); not use this in create!!!
-        printf("Error open output.map \"%s\"!\n", (const char*)fname.c_str());
+        printf("PICSimLab: Error open output.map \"%s\"!\n", (const char*)fname.c_str());
+        PICSimLab.RegisterError("Error open output.map:\n" + fname);
     }
 }
 

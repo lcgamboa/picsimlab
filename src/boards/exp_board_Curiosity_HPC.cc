@@ -60,7 +60,7 @@ enum {
 
 // return the input ids numbers of names used in input map
 
-unsigned short cboard_Curiosity_HPC::get_in_id(char* name) {
+unsigned short cboard_Curiosity_HPC::GetInputId(char* name) {
     if (strcmp(name, "PG_ICSP") == 0)
         return I_ICSP;
     if (strcmp(name, "SW_PWR") == 0)
@@ -82,7 +82,7 @@ unsigned short cboard_Curiosity_HPC::get_in_id(char* name) {
 
 // return the output ids numbers of names used in output map
 
-unsigned short cboard_Curiosity_HPC::get_out_id(char* name) {
+unsigned short cboard_Curiosity_HPC::GetOutputId(char* name) {
     if (strcmp(name, "JP_1") == 0)
         return O_JMP;
     if (strcmp(name, "LD_D2") == 0)

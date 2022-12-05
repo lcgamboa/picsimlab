@@ -417,9 +417,9 @@ bool CSpareParts::LoadConfig(lxString fname) {
                 }
                 partsc_++;
             } else {
-                printf("Erro loading part: %s \n", name);
+                printf("Error loading part: %s \n", name);
                 lxString temp;
-                temp.Printf("Spare parts:\nErro loading part: %s \n", name);
+                temp.Printf("Spare parts:\nError loading part: %s \n", name);
                 PICSimLab.RegisterError(temp);
             }
         }

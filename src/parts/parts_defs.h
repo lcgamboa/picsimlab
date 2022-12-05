@@ -32,9 +32,13 @@
 
 extern int NUM_PARTS;
 
-#define part_init(name, function, menu)                                                            \
-    static part* function##_create(unsigned int x, unsigned int y) { return new function(x, y); }; \
-    static void __attribute__((constructor)) function##_init(void);                                \
+#define part_init(name, function, menu)                              \
+    static part* function##_create(unsigned int x, unsigned int y) { \
+        part* p = new function(x, y, name, menu);                    \
+        p->Init();                                                   \
+        return p;                                                    \
+    };                                                               \
+    static void __attribute__((constructor)) function##_init(void);  \
     static void function##_init(void) { part_register(name, function##_create, menu); }
 
 typedef part* (*part_create_func)(unsigned int x, unsigned int y);

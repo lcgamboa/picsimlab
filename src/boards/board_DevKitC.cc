@@ -188,7 +188,7 @@ static int io2pin(int io) {
     return 0;
 }
 
-unsigned short cboard_DevKitC::get_in_id(char* name) {
+unsigned short cboard_DevKitC::GetInputId(char* name) {
     if (strcmp(name, "PG_ICSP") == 0)
         return I_ICSP;
     if (strcmp(name, "SW_PWR") == 0)
@@ -204,7 +204,7 @@ unsigned short cboard_DevKitC::get_in_id(char* name) {
 
 // return the output ids numbers of names used in output map
 
-unsigned short cboard_DevKitC::get_out_id(char* name) {
+unsigned short cboard_DevKitC::GetOutputId(char* name) {
     if (strcmp(name, "LD_ON") == 0)
         return O_LON;
     if (strcmp(name, "PB_RST") == 0)

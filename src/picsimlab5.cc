@@ -151,26 +151,275 @@ void CPWindow5::draw1_EvMouseButtonRelease(CControl* control, uint button, uint 
 }
 
 void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
-    lxString fname =
-        PICSimLab.GetSharePath() + lxT("parts/") + SpareParts.GetPart(PartSelected)->GetPropertiesWindowFile();
-
-    if (lxFileExists(fname)) {
+    int itemc = SpareParts.GetPart(PartSelected)->GetPCWCount();
+    if (itemc) {
+        const PCWProp* items = SpareParts.GetPart(PartSelected)->GetPCWProperties();
         wprop.SetName("window1");  // must be the same as in xml
         Application->ACreateWindow(&wprop);
         wprop.DestroyChilds();
-        if (wprop.LoadXMLContextAndCreateChilds(fname)) {
-            // wprop.SetCanDestroy (false);
+        wprop.SetTitle(SpareParts.GetPart(PartSelected)->GetName());
+        wprop.SetWidth(370);
 
-            SpareParts.GetPart(PartSelected)->ConfigurePropertiesWindow(&wprop);
+        CLabel* label;
+        CCombo* combo;
+        CSpind* spind;
+        CSpin* spin;
+        CText* text;
+        CEdit* edit;
 
-            wprop.SetX(SpareParts.GetPart(PartSelected)->GetX() + GetX() - offsetx);
-            wprop.SetY(SpareParts.GetPart(PartSelected)->GetY() + GetY() - offsety);
+        char name[20];
+        int y = 32;
+        int x = 54;
+        int dual = (itemc > 15) ? itemc / 2 : itemc * 2;
+        for (int i = 0; i < itemc; i++) {
+            switch (items[i].pcw_type) {
+                case PCW_COMBO:
+                    sprintf(name, "label%i", i + 1);
+                    label = new CLabel;
+                    label->SetName(name);
+                    label->SetFOwner(&wprop);
+                    label->SetText(items[i].label);
+                    label->SetWidth(60);
+                    label->SetHeight(20);
+                    label->SetX(x);
+                    label->SetY(y + 3);
+                    wprop.CreateChild(label);
 
-            wprop.Draw();
-            wprop.ShowExclusive();
+                    sprintf(name, "combo%i", i + 1);
+                    combo = new CCombo;
+                    combo->SetName(name);
+                    combo->SetFOwner(&wprop);
+                    combo->SetWidth(200);
+                    combo->SetHeight(26);
+                    combo->SetX(x + 68);
+                    combo->SetY(y);
+                    wprop.CreateChild(combo);
+                    break;
+                case PCW_LABEL: {
+                    char lb[20];
+                    strncpy(lb, items[i].label, 20);
+                    lb[19] = 0;
+                    char* lb1 = strtok(lb, ",\n");
+                    char* lb2 = strtok(NULL, ",\n");
+
+                    sprintf(name, "label%i", i + 1);
+                    label = new CLabel;
+                    label->SetName(name);
+                    label->SetFOwner(&wprop);
+                    label->SetText(lb1);
+                    label->SetWidth(60);
+                    label->SetHeight(20);
+                    label->SetX(x);
+                    label->SetY(y + 3);
+                    wprop.CreateChild(label);
+
+                    sprintf(name, "label_%i", i + 1);
+                    label = new CLabel;
+                    label->SetName(name);
+                    label->SetFOwner(&wprop);
+                    label->SetText(lb2);
+                    label->SetWidth(200);
+                    label->SetHeight(20);
+                    label->SetX(x + 76);
+                    label->SetY(y + 3);
+                    wprop.CreateChild(label);
+                } break;
+                case PCW_SPIND:
+                    sprintf(name, "label%i", i + 1);
+                    label = new CLabel;
+                    label->SetName(name);
+                    label->SetFOwner(&wprop);
+                    label->SetText(items[i].label);
+                    label->SetWidth(60);
+                    label->SetHeight(20);
+                    label->SetX(x);
+                    label->SetY(y + 3);
+                    wprop.CreateChild(label);
+
+                    sprintf(name, "spind%i", i + 1);
+                    spind = new CSpind;
+                    spind->SetName(name);
+                    spind->SetFOwner(&wprop);
+                    spind->SetWidth(200);
+                    spind->SetHeight(30);
+                    spind->SetX(x + 68);
+                    spind->SetY(y);
+                    wprop.CreateChild(spind);
+                    break;
+                case PCW_SPIN:
+                    sprintf(name, "label%i", i + 1);
+                    label = new CLabel;
+                    label->SetName(name);
+                    label->SetFOwner(&wprop);
+                    label->SetText(items[i].label);
+                    label->SetWidth(60);
+                    label->SetHeight(20);
+                    label->SetX(x);
+                    label->SetY(y + 3);
+                    wprop.CreateChild(label);
+
+                    sprintf(name, "spin%i", i + 1);
+                    spin = new CSpin;
+                    spin->SetName(name);
+                    spin->SetFOwner(&wprop);
+                    spin->SetWidth(200);
+                    spin->SetHeight(30);
+                    spin->SetX(x + 68);
+                    spin->SetY(y);
+                    wprop.CreateChild(spin);
+                    break;
+                case PCW_EDIT:
+                    sprintf(name, "label%i", i + 1);
+                    label = new CLabel;
+                    label->SetName(name);
+                    label->SetFOwner(&wprop);
+                    label->SetText(items[i].label);
+                    label->SetWidth(60);
+                    label->SetHeight(20);
+                    label->SetX(x);
+                    label->SetY(y + 3);
+                    wprop.CreateChild(label);
+
+                    sprintf(name, "edit%i", i + 1);
+                    edit = new CEdit;
+                    edit->SetName(name);
+                    edit->SetFOwner(&wprop);
+                    edit->SetWidth(200);
+                    edit->SetHeight(26);
+                    edit->SetX(x + 68);
+                    edit->SetY(y);
+                    wprop.CreateChild(edit);
+                    break;
+                case PCW_TEXT:
+                    sprintf(name, "text%i", i + 1);
+                    text = new CText;
+                    text->SetName(name);
+                    text->SetFOwner(&wprop);
+                    text->SetWidth(340);
+                    text->SetHeight(128);
+                    text->SetX(x - 44);
+                    text->SetY(y);
+                    wprop.CreateChild(text);
+                    y += 110;
+                    break;
+                case PCW_DCOMBO:
+                    sprintf(name, "label%i", i + 1);
+                    label = new CLabel;
+                    label->SetName(name);
+                    label->SetFOwner(&wprop);
+                    label->SetText(items[i].label);
+                    label->SetWidth(60);
+                    label->SetHeight(20);
+                    label->SetX(x);
+                    label->SetY(y + 3);
+                    wprop.CreateChild(label);
+
+                    sprintf(name, "combo%i", i + 1);
+                    combo = new CCombo;
+                    combo->SetName(name);
+                    combo->SetFOwner(&wprop);
+                    combo->SetWidth(200);
+                    combo->SetHeight(26);
+                    combo->SetX(x + 68);
+                    combo->SetY(y);
+                    wprop.CreateChild(combo);
+
+                    sprintf(name, "combo_%i", i + 1);
+                    combo = new CCombo;
+                    combo->SetName(name);
+                    combo->SetFOwner(&wprop);
+                    combo->SetWidth(150);
+                    combo->SetHeight(26);
+                    combo->SetX(x + 278);
+                    combo->SetY(y);
+                    wprop.CreateChild(combo);
+
+                    wprop.SetWidth(540);
+                    break;
+                default:
+                    printf("PICSimLab: Unknown PCW type number %i\n", items[i].pcw_type);
+                    exit(-1);
+                    break;
+            }
+            y += 32;
+
+            if (i + 1 >= dual) {
+                dual = 2 * itemc;
+                y = 32;
+                x = 54 + 370;
+                wprop.SetWidth(370 * 2);
+            }
         }
+
+        CButton* button;
+        button = new CButton;
+        button->SetName("button1");
+        button->SetFOwner(&wprop);
+        button->SetText("Ok");
+        button->SetWidth(65);
+        button->SetHeight(28);
+        button->SetX((wprop.GetWidth() / 2) - 75);
+        button->SetY(y + 32);
+        button->SetTag(1);
+        button->EvMouseButtonRelease = SpareParts.PropButtonRelease;
+        wprop.CreateChild(button);
+
+        button = new CButton;
+        button->SetName("button2");
+        button->SetFOwner(&wprop);
+        button->SetText("Cancel");
+        button->SetWidth(65);
+        button->SetHeight(28);
+        button->SetX((wprop.GetWidth() / 2) + 10);
+        button->SetY(y + 32);
+        button->EvMouseButtonRelease = SpareParts.PropButtonRelease;
+        wprop.CreateChild(button);
+
+        wprop.SetHeight(y + 130);
+
+        SpareParts.GetPart(PartSelected)->ConfigurePropertiesWindow(&wprop);
+
+        wprop.SetX(SpareParts.GetPart(PartSelected)->GetX() + GetX() - offsetx);
+        wprop.SetY(SpareParts.GetPart(PartSelected)->GetY() + GetY() - offsety);
+
+        wprop.Draw();
+        wprop.ShowExclusive();
     } else {
-        PICSimLab.RegisterError("File " + fname + " not found!");
+        lxString fname =
+            PICSimLab.GetSharePath() + lxT("parts/") + SpareParts.GetPart(PartSelected)->GetPropertiesWindowFile();
+
+        if (lxFileExists(fname)) {
+            CButton* button;
+            wprop.SetName("window1");  // must be the same as in xml
+            Application->ACreateWindow(&wprop);
+            wprop.DestroyChilds();
+            if (wprop.LoadXMLContextAndCreateChilds(fname)) {
+                // wprop.SetCanDestroy (false);
+
+                SpareParts.GetPart(PartSelected)->ConfigurePropertiesWindow(&wprop);
+
+                button = (CButton*)wprop.GetChildByName("button1");
+                if (button) {
+                    button->EvMouseButtonRelease = SpareParts.PropButtonRelease;
+                    button->SetTag(1);
+                }
+
+                button = (CButton*)wprop.GetChildByName("button2");
+                if (button) {
+                    button->EvMouseButtonRelease = SpareParts.PropButtonRelease;
+                }
+
+                wprop.SetX(SpareParts.GetPart(PartSelected)->GetX() + GetX() - offsetx);
+                wprop.SetY(SpareParts.GetPart(PartSelected)->GetY() + GetY() - offsety);
+
+                wprop.Draw();
+                wprop.ShowExclusive();
+            }
+        } else {
+            PICSimLab.RegisterError(SpareParts.GetPart(PartSelected)->GetName() + ": File not found! \n" + fname);
+            printf("PICSimLab: (%s) File not found! %s\n", (const char*)SpareParts.GetPart(PartSelected)->GetName(),
+                   (const char*)fname.c_str());
+        }
     }
 }
 

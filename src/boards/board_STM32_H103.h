@@ -72,9 +72,9 @@ public:
     // Called whe configuration file load  preferences
     void ReadPreferences(char* name, char* value) override;
     // return the input ids numbers of names used in input map
-    unsigned short get_in_id(char* name) override;
+    unsigned short GetInputId(char* name) override;
     // return the output ids numbers of names used in output map
-    unsigned short get_out_id(char* name) override;
+    unsigned short GetOutputId(char* name) override;
     // board combo events
     void board_Event(CControl* control) override;
     void MSetAPin(int pin, float value) override;

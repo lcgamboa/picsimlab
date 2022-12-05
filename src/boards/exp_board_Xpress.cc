@@ -52,7 +52,7 @@ enum {
 
 // return the input ids numbers of names used in input map
 
-unsigned short cboard_Xpress::get_in_id(char* name) {
+unsigned short cboard_Xpress::GetInputId(char* name) {
     if (strcmp(name, "PG_ICSP") == 0)
         return I_ICSP;
     if (strcmp(name, "SW_PWR") == 0)
@@ -70,7 +70,7 @@ unsigned short cboard_Xpress::get_in_id(char* name) {
 
 // return the output ids numbers of names used in output map
 
-unsigned short cboard_Xpress::get_out_id(char* name) {
+unsigned short cboard_Xpress::GetOutputId(char* name) {
     if (strcmp(name, "LD_D1") == 0)
         return O_D1;
     if (strcmp(name, "LD_D2") == 0)

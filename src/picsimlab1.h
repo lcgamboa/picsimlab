@@ -33,10 +33,10 @@
  * simulator with the creation of new boards (@ref board) and parts (@ref part).
  *
  * @section partex Part example
- * @subsection pinc part_servo.h
- * @include part_servo.h
- * @subsection pcode part_servo.cc
- * @include part_servo.cc
+ * @subsection pinc output_step.h
+ * @include output_step.h
+ * @subsection pcode output_step.cc
+ * @include output_step.cc
  *
  * @section boardex Board example
  * @subsection binc board_x.h

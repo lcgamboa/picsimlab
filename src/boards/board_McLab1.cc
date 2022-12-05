@@ -811,7 +811,7 @@ void cboard_McLab1::EvKeyRelease(uint key, uint mask) {
     }
 }
 
-unsigned short cboard_McLab1::get_in_id(char* name) {
+unsigned short cboard_McLab1::GetInputId(char* name) {
     if (strcmp(name, "PB_RST") == 0)
         return I_RST;
     if (strcmp(name, "PB_RA1") == 0)
@@ -833,7 +833,7 @@ unsigned short cboard_McLab1::get_in_id(char* name) {
     return -1;
 }
 
-unsigned short cboard_McLab1::get_out_id(char* name) {
+unsigned short cboard_McLab1::GetOutputId(char* name) {
     if (strcmp(name, "LD_RB0") == 0)
         return O_RB0;
     if (strcmp(name, "LD_RB1") == 0)

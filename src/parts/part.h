@@ -29,6 +29,19 @@
 #include "../boards/board.h"
 
 /**
+ * @brief PCWProp
+ *
+ * Part Configure Window proprierties
+ */
+
+enum { PCW_COMBO, PCW_LABEL, PCW_SPIND, PCW_EDIT, PCW_SPIN, PCW_TEXT, PCW_DCOMBO };
+
+typedef struct {
+    int pcw_type;
+    char label[20];
+} PCWProp;
+
+/**
  * @brief PART class
  *
  * class definition of parts used in picsimlab spare parts window.
@@ -38,7 +51,7 @@ public:
     /**
      * @brief  Return the name of part
      */
-    virtual lxString GetName(void) = 0;
+    lxString GetName(void);
 
     /**
      * @brief  Return the help url of part
@@ -153,12 +166,12 @@ public:
     /**
      * @brief  return the input ids numbers of names used in input map
      */
-    virtual unsigned short get_in_id(char* name) = 0;
+    virtual unsigned short GetInputId(char* name) = 0;
 
     /**
      * @brief  return the output ids numbers of names used in output map
      */
-    virtual unsigned short get_out_id(char* name) = 0;
+    virtual unsigned short GetOutputId(char* name) = 0;
 
     /**
      * @brief  Called to configure the properties window
@@ -198,7 +211,17 @@ public:
     /**
      * @brief  Called once on part creation
      */
-    part();
+    part(const unsigned x, const unsigned y, const char* name, const char* type);
+
+    /**
+     * @brief  Called once on part initialization
+     */
+    void Init(void);
+
+    /**
+     * @brief  Called once on part after initialization
+     */
+    virtual void PostInit(void){};
 
     /**
      * @brief  Called once on part destruction
@@ -300,6 +323,9 @@ public:
      */
     void SetAwaysUpdate(int sau);
 
+    const int GetPCWCount(void);
+    const PCWProp* GetPCWProperties(void);
+
 protected:
     /**
      * @brief Register remote control variables
@@ -324,6 +350,7 @@ protected:
     double Scale;               ///< scale to draw part
     unsigned int Update;        ///< part need draw Update
     int aways_update;           ///< part need to be update every clock cycle
+    lxString Type;
 
     /**
      * @brief  read maps
@@ -335,10 +362,17 @@ protected:
      */
     int PointInside(int x, int y, input_t input);
 
-    void draw_slider(const output_t* output, const unsigned char pos, const lxString val, const lxFont font);
-    void draw_potentiometer(const output_t* output, const unsigned char pos, const lxString val, const lxFont font);
+    void DrawSlider(const output_t* output, const unsigned char pos, const lxString val, const lxFont font);
+    void DrawPotentiometer(const output_t* output, const unsigned char pos, const lxString val, const lxFont font);
+    void SetPCWProperties(const PCWProp* pcwprop, const int pcwcount);
+    void SetPCWComboWithPinNames(CPWindow* WProp, const char* combo_name, const unsigned char pin);
+    unsigned char GetPWCComboSelectedPin(CPWindow* WProp, const char* combo_name);
 
 private:
+    const PCWProp* PCWProperties;
+    int PCWCount;
+    lxString Name;
+
     /**
      * @brief  Read the Input Map
      */

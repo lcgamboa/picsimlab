@@ -50,7 +50,7 @@ enum {
 
 // return the input ids numbers of names used in input map
 
-unsigned short cboard_uCboard::get_in_id(char* name) {
+unsigned short cboard_uCboard::GetInputId(char* name) {
     if (strcmp(name, "PG_ICSP") == 0)
         return I_ICSP;
     if (strcmp(name, "SW_PWR") == 0)
@@ -64,7 +64,7 @@ unsigned short cboard_uCboard::get_in_id(char* name) {
 
 // return the output ids numbers of names used in output map
 
-unsigned short cboard_uCboard::get_out_id(char* name) {
+unsigned short cboard_uCboard::GetOutputId(char* name) {
     if (strcmp(name, "IC_CPU") == 0)
         return O_MP;
     if (strcmp(name, "LD_LPWR") == 0)

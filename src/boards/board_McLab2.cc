@@ -1218,7 +1218,7 @@ void cboard_McLab2::EvOnShow(void) {
     board::EvOnShow();
 }
 
-unsigned short cboard_McLab2::get_in_id(char* name) {
+unsigned short cboard_McLab2::GetInputId(char* name) {
     if (strcmp(name, "PB_RST") == 0)
         return I_RST;
 
@@ -1259,7 +1259,7 @@ unsigned short cboard_McLab2::get_in_id(char* name) {
     return -1;
 }
 
-unsigned short cboard_McLab2::get_out_id(char* name) {
+unsigned short cboard_McLab2::GetOutputId(char* name) {
     if (strcmp(name, "LD_RB0") == 0)
         return O_RB0;
     if (strcmp(name, "LD_RB1") == 0)

@@ -27,27 +27,42 @@
 #include "../picsimlab.h"
 #include "../spareparts.h"
 
-part::part() {
+part::part(const unsigned x, const unsigned y, const char* name, const char* type) {
     aways_update = 0;
     inputc = 0;
     outputc = 0;
     Orientation = 0;
     Scale = 1.0;
     Update = 1;
+    PCWProperties = NULL;
+    PCWCount = 0;
+
+    Name = name;
+    Type = type;
+    X = x;
+    Y = y;
+    Bitmap = NULL;
+}
+
+void part::Init(void) {
+    ReadMaps();
+    LoadImage();
+    RegisterRemoteControl();
+    PostInit();
 }
 
 void part::ReadMaps(void) {
     inputc = 0;
     outputc = 0;
-    ReadInputMap(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + GetMapFile()));
-    ReadOutputMap(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + GetMapFile()));
+    ReadInputMap(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetMapFile()));
+    ReadOutputMap(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetMapFile()));
 
     for (int i = 0; i < inputc; i++) {
-        input_ids[get_in_id(input[i].name)] = &input[i];
+        input_ids[GetInputId(input[i].name)] = &input[i];
     }
 
     for (int i = 0; i < outputc; i++) {
-        output_ids[get_out_id(output[i].name)] = &output[i];
+        output_ids[GetOutputId(output[i].name)] = &output[i];
     }
 }
 
@@ -128,7 +143,7 @@ void part::ReadInputMap(lxString fname) {
                         input[inputc].y2 = y1 + r;
                     }
                     strcpy(input[inputc].name, name + 2);
-                    input[inputc].id = get_in_id(input[inputc].name);
+                    input[inputc].id = GetInputId(input[inputc].name);
                     input[inputc].cx = ((input[inputc].x2 - input[inputc].x1) / 2.0) + input[inputc].x1;
                     input[inputc].cy = ((input[inputc].y2 - input[inputc].y1) / 2.0) + input[inputc].y1;
                     input[inputc].status = NULL;
@@ -142,8 +157,8 @@ void part::ReadInputMap(lxString fname) {
         }
         fclose(fin);
     } else {
-        // Message(lxT("Error open input.map")); Not use this in create!!
-        printf("Error open input.map \"%s\"!\n", (const char*)fname.c_str());
+        printf("PICSimLab: (%s) Error open input.map \"%s\"!\n", (const char*)Name.c_str(), (const char*)fname.c_str());
+        PICSimLab.RegisterError(Name + ": Error open input.map:\n" + fname);
     }
 }
 
@@ -185,7 +200,7 @@ void part::ReadOutputMap(lxString fname) {
                         output[outputc].r = 0;
                         //          output[outputc].lval=-1;
                         strcpy(output[outputc].name, name + 2);
-                        output[outputc].id = get_out_id(output[outputc].name);
+                        output[outputc].id = GetOutputId(output[outputc].name);
                         output[outputc].cx = ((output[outputc].x2 - output[outputc].x1) / 2.0) + output[outputc].x1;
                         output[outputc].cy = ((output[outputc].y2 - output[outputc].y1) / 2.0) + output[outputc].y1;
                         output[outputc].status = NULL;
@@ -203,7 +218,7 @@ void part::ReadOutputMap(lxString fname) {
                         output[outputc].r = r;
                         //          output[outputc].lval=-1;
                         strcpy(output[outputc].name, name + 2);
-                        output[outputc].id = get_out_id(output[outputc].name);
+                        output[outputc].id = GetOutputId(output[outputc].name);
                         output[outputc].cx = output[outputc].x1;
                         output[outputc].cy = output[outputc].y1;
                         output[outputc].status = NULL;
@@ -218,8 +233,9 @@ void part::ReadOutputMap(lxString fname) {
 
         fclose(fin);
     } else {
-        // Message(lxT("Error open output.map")); not use this in create!!!
-        printf("Error open output.map \"%s\"!\n", (const char*)fname.c_str());
+        printf("PICSimLab: (%s) Error open output.map \"%s\"!\n", (const char*)Name.c_str(),
+               (const char*)fname.c_str());
+        PICSimLab.RegisterError(Name + ": Error open output.map:\n" + fname);
     }
 }
 
@@ -296,14 +312,25 @@ int part::PointInside(int x, int y, input_t input) {
 
 void part::LoadImage(void) {
     lxImage image(SpareParts.GetWindow());
+    lxString iname = lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetPictureFileName());
 
-    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + GetPictureFileName()), Orientation, Scale,
-                   Scale);
-
-    Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
-    image.Destroy();
-    canvas.Destroy();
-    canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
+    if (image.LoadFile(iname, Orientation, Scale, Scale)) {
+        Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
+        image.Destroy();
+        canvas.Destroy();
+        canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
+    } else if (image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/Common/notfound.svg")), Orientation,
+                              Scale, Scale)) {
+        Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
+        image.Destroy();
+        canvas.Destroy();
+        canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
+        printf("PICSimLab: (%s) Error loading image %s\n", (const char*)Name.c_str(), (const char*)iname.c_str());
+        PICSimLab.RegisterError("Error loading image:\n " + iname);
+    } else {
+        printf("PICSimLab: (%s) Error loading image %s\n", (const char*)Name.c_str(), (const char*)iname.c_str());
+        exit(-1);
+    }
 }
 
 int part::GetOrientation(void) {
@@ -413,7 +440,7 @@ lxString part::GetMapFile(void) {
 }
 
 lxString part::GetPropertiesWindowFile(void) {
-    return GetName() + lxT("/part.lxrad");
+    return Type + "/" + Name + lxT("/part.lxrad");
 }
 
 lxString part::GetHelpURL(void) {
@@ -450,7 +477,7 @@ lxString part::GetHelpURL(void) {
 
 // Draw Functions
 
-void part::draw_slider(const output_t* output, const unsigned char pos, const lxString val, const lxFont font) {
+void part::DrawSlider(const output_t* output, const unsigned char pos, const lxString val, const lxFont font) {
     float dy = pos / 1.66;
     canvas.SetFgColor(255, 255, 255);
     canvas.SetBgColor(89, 89, 89);
@@ -467,7 +494,7 @@ void part::draw_slider(const output_t* output, const unsigned char pos, const lx
     canvas.RotatedText(val, output->x1 + 1, output->y1 + 5 + pos / 1.66, 0);
 }
 
-void part::draw_potentiometer(const output_t* output, const unsigned char pos, const lxString val, const lxFont font) {
+void part::DrawPotentiometer(const output_t* output, const unsigned char pos, const lxString val, const lxFont font) {
     canvas.SetColor(179, 179, 179);
     canvas.Rectangle(1, output->x1, output->y1, output->x2 - output->x1, output->y2 - output->y1);
     canvas.SetFgColor(0, 0, 0);
@@ -486,4 +513,51 @@ int part::GetAwaysUpdate(void) {
 
 void part::SetAwaysUpdate(int sau) {
     aways_update = sau;
+}
+
+void part::SetPCWProperties(const PCWProp* pcwprop, const int pcwcount) {
+    PCWProperties = pcwprop;
+    PCWCount = pcwcount;
+}
+
+const int part::GetPCWCount(void) {
+    return PCWCount;
+}
+
+const PCWProp* part::GetPCWProperties(void) {
+    return PCWProperties;
+}
+
+void part::SetPCWComboWithPinNames(CPWindow* WProp, const char* combo_name, const unsigned char pin) {
+    lxString spin;
+
+    CCombo* combo = (CCombo*)WProp->GetChildByName(combo_name);
+
+    if (combo) {
+        combo->SetItems(SpareParts.GetPinsNames());
+        if (pin == 0)
+            combo->SetText("0  NC");
+        else {
+            spin = SpareParts.GetPinName(pin);
+            combo->SetText(itoa(pin) + "  " + spin);
+        }
+    } else {
+        printf("PICSimLab: Combo (%s) not found in Part Configuration Window!\n", combo_name);
+    }
+}
+
+unsigned char part::GetPWCComboSelectedPin(CPWindow* WProp, const char* combo_name) {
+    int selectedpin = 0;
+    CCombo* combo = (CCombo*)WProp->GetChildByName(combo_name);
+
+    if (combo) {
+        selectedpin = atoi(combo->GetText());
+    } else {
+        printf("PICSimLab: Combo (%s) not found in Part Configuration Window!\n", combo_name);
+    }
+    return selectedpin;
+}
+
+lxString part::GetName(void) {
+    return Name;
 }

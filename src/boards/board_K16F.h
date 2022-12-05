@@ -71,8 +71,8 @@ public:
     void RefreshStatus(void) override;
     void WritePreferences(void) override;
     void ReadPreferences(char* name, char* value) override;
-    unsigned short get_in_id(char* name) override;
-    unsigned short get_out_id(char* name) override;
+    unsigned short GetInputId(char* name) override;
+    unsigned short GetOutputId(char* name) override;
 };
 
 #endif /* BOARD_K16F_H */

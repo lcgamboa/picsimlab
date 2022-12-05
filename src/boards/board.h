@@ -189,12 +189,12 @@ public:
     /**
      * @brief  return the input ids numbers of names used in input map
      */
-    virtual unsigned short get_in_id(char* name) = 0;
+    virtual unsigned short GetInputId(char* name) = 0;
 
     /**
      * @brief  return the output ids numbers of names used in output map
      */
-    virtual unsigned short get_out_id(char* name) = 0;
+    virtual unsigned short GetOutputId(char* name) = 0;
 
     /**
      * @brief  Called when window side controls are activated

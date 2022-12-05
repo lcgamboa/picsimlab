@@ -207,8 +207,8 @@ public:
     void RefreshStatus(void) override;
     void WritePreferences(void) override;
     void ReadPreferences(char* name, char* value) override;
-    unsigned short get_in_id(char* name) override;
-    unsigned short get_out_id(char* name) override;
+    unsigned short GetInputId(char* name) override;
+    unsigned short GetOutputId(char* name) override;
     lxString MGetPinName(int pin) override;
     int MGetPinCount(void) override;
 };

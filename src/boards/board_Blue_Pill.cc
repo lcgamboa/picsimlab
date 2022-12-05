@@ -44,7 +44,7 @@ enum {
 };
 // return the input ids numbers of names used in input map
 
-unsigned short cboard_Blue_Pill::get_in_id(char* name) {
+unsigned short cboard_Blue_Pill::GetInputId(char* name) {
     if (strcmp(name, "PG_ICSP") == 0)
         return I_ICSP;
     if (strcmp(name, "SW_PWR") == 0)
@@ -58,7 +58,7 @@ unsigned short cboard_Blue_Pill::get_in_id(char* name) {
 
 // return the output ids numbers of names used in output map
 
-unsigned short cboard_Blue_Pill::get_out_id(char* name) {
+unsigned short cboard_Blue_Pill::GetOutputId(char* name) {
     if (strcmp(name, "LD_LED") == 0)
         return O_LED;
     if (strcmp(name, "LD_PWR") == 0)

@@ -380,7 +380,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
     if (SimType == QEMU_SIM_STM32) {
         if (!load_qemu_lib("libqemu-stm32")) {
-            PICSimLab.RegisterError("Erro loading libqemu-stm32");
+            PICSimLab.RegisterError("Error loading libqemu-stm32");
             qemu_started = -1;
             mtx_qinit->Unlock();
             return;
@@ -407,7 +407,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
                 fwrite(&loop, 4, sizeof(char), fout);
                 fclose(fout);
             } else {
-                printf("PICSimLab: qemu Erro creating file %s \n", fname_);
+                printf("PICSimLab: qemu Error creating file %s \n", fname_);
                 exit(-1);
             }
         }
@@ -432,7 +432,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
     } else if (SimType == QEMU_SIM_ESP32) {
         if (!load_qemu_lib("libqemu-xtensa")) {
-            PICSimLab.RegisterError("Erro loading libqemu-xtensa");
+            PICSimLab.RegisterError("Error loading libqemu-xtensa");
             qemu_started = -1;
             mtx_qinit->Unlock();
             return;
@@ -455,7 +455,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
                 }
                 fclose(fout);
             } else {
-                printf("picsimlab: qemu Erro creating file %s \n", fname_);
+                printf("picsimlab: qemu Error creating file %s \n", fname_);
                 exit(-1);
             }
         }
@@ -472,7 +472,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 #endif
 
         if ((!lxFileExists(fullpath + "esp32-v3-rom.bin")) || (!lxFileExists(fullpath + "esp32-v3-rom-app.bin"))) {
-            PICSimLab.RegisterError("Erro loading esp32-v3-rom.bin or esp32-v3-rom-app.bin");
+            PICSimLab.RegisterError("Error loading esp32-v3-rom.bin or esp32-v3-rom-app.bin");
             qemu_started = -1;
             mtx_qinit->Unlock();
             return;

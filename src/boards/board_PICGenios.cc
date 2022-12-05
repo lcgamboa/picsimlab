@@ -2052,7 +2052,7 @@ void cboard_PICGenios::EvOnShow(void) {
     board::EvOnShow();
 }
 
-unsigned short cboard_PICGenios::get_in_id(char* name) {
+unsigned short cboard_PICGenios::GetInputId(char* name) {
     if (strcmp(name, "PB_RST") == 0)
         return I_RST;
     if (strcmp(name, "SW_PWR") == 0)
@@ -2155,7 +2155,7 @@ unsigned short cboard_PICGenios::get_in_id(char* name) {
     return -1;
 }
 
-unsigned short cboard_PICGenios::get_out_id(char* name) {
+unsigned short cboard_PICGenios::GetOutputId(char* name) {
     if (strcmp(name, "PB_RST") == 0)
         return O_RST;
 

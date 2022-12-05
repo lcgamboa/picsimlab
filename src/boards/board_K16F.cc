@@ -834,7 +834,7 @@ void cboard_K16F::EvOnShow(void) {
     board::EvOnShow();
 }
 
-unsigned short cboard_K16F::get_in_id(char* name) {
+unsigned short cboard_K16F::GetInputId(char* name) {
     if (strcmp(name, "PB_RST") == 0)
         return I_RST;
     if (strcmp(name, "SW_PWR") == 0)
@@ -873,7 +873,7 @@ unsigned short cboard_K16F::get_in_id(char* name) {
     return -1;
 }
 
-unsigned short cboard_K16F::get_out_id(char* name) {
+unsigned short cboard_K16F::GetOutputId(char* name) {
     if (strcmp(name, "LD_RA1") == 0)
         return O_RA1;
     if (strcmp(name, "LD_RA2") == 0)

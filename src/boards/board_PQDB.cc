@@ -1214,7 +1214,7 @@ void cboard_PQDB::EvOnShow(void) {
     board::EvOnShow();
 }
 
-unsigned short cboard_PQDB::get_in_id(char* name) {
+unsigned short cboard_PQDB::GetInputId(char* name) {
     if (strcmp(name, "PB_RST") == 0)
         return I_RST;
     if (strcmp(name, "SW_PWR") == 0)
@@ -1248,7 +1248,7 @@ unsigned short cboard_PQDB::get_in_id(char* name) {
     return -1;
 }
 
-unsigned short cboard_PQDB::get_out_id(char* name) {
+unsigned short cboard_PQDB::GetOutputId(char* name) {
     if (strcmp(name, "PB_RST") == 0)
         return O_RST;
 

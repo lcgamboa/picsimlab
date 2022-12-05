@@ -46,7 +46,7 @@ enum {
 };
 // return the input ids numbers of names used in input map
 
-unsigned short cboard_Breadboard::get_in_id(char* name) {
+unsigned short cboard_Breadboard::GetInputId(char* name) {
     if (strcmp(name, "PG_ICSP") == 0)
         return I_ICSP;
     if (strcmp(name, "SW_PWR") == 0)
@@ -62,7 +62,7 @@ unsigned short cboard_Breadboard::get_in_id(char* name) {
 
 // return the output ids numbers of names used in output map
 
-unsigned short cboard_Breadboard::get_out_id(char* name) {
+unsigned short cboard_Breadboard::GetOutputId(char* name) {
     if (strcmp(name, "LD_LPWR") == 0)
         return O_LPWR;
     if (strcmp(name, "IC_CPU") == 0)
