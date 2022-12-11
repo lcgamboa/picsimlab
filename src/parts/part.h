@@ -66,7 +66,12 @@ public:
     /**
      * @brief  Called ever 100ms to draw part
      */
-    virtual void Draw(void) = 0;
+    void Draw(void);  // FIXME remove virtual
+
+    /**
+     * @brief  Called to draw every output
+     */
+    virtual void DrawOutput(const unsigned int index) = 0;
 
     /**
      * @brief  Called every start of CPU process
@@ -131,17 +136,32 @@ public:
     /**
      * @brief  Event handler on the part
      */
-    virtual void EvMouseButtonPress(uint button, uint x, uint y, uint state){};
+    void EvMouseButtonPress(uint button, uint x, uint y, uint state);
 
     /**
      * @brief  Event handler on the part
      */
-    virtual void EvMouseButtonRelease(uint button, uint x, uint y, uint state){};
+    virtual void OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state){};
 
     /**
      * @brief  Event handler on the part
      */
-    virtual void EvMouseMove(uint button, uint x, uint y, uint state){};
+    void EvMouseButtonRelease(uint button, uint x, uint y, uint state);
+
+    /**
+     * @brief  Event handler on the part
+     */
+    virtual void OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state){};
+
+    /**
+     * @brief  Event handler on the part
+     */
+    void EvMouseMove(uint button, uint x, uint y, uint state);
+
+    /**
+     * @brief  Event handler on the part
+     */
+    virtual void OnMouseMove(uint inputId, uint button, uint x, uint y, uint state){};
 
     /**
      * @brief  Event handler on the part
@@ -211,7 +231,7 @@ public:
     /**
      * @brief  Called once on part creation
      */
-    part(const unsigned x, const unsigned y, const char* name, const char* type);
+    part(const unsigned x, const unsigned y, const char* name, const char* type, const int fsize = 8);
 
     /**
      * @brief  Called once on part initialization
@@ -351,6 +371,7 @@ protected:
     unsigned int Update;        ///< part need draw Update
     int aways_update;           ///< part need to be update every clock cycle
     lxString Type;
+    lxFont font;
 
     /**
      * @brief  read maps

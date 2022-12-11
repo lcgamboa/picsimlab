@@ -68,76 +68,52 @@ cpart_sht3x::~cpart_sht3x(void) {
     canvas.Destroy();
 }
 
-void cpart_sht3x::Draw(void) {
-    int i;
+void cpart_sht3x::DrawOutput(const unsigned int i) {
     char val[10];
 
-    Update = 0;
-
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
-
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
-            }
-            Update++;  // set to update buffer
-
-            switch (output[i].id) {
-                case O_P1:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    if (output_pins[output[i].id - O_P1] == 0)
-                        canvas.RotatedText("2-T   NC", output[i].x1, output[i].y2, 90);
-                    else
-                        canvas.RotatedText("2-T   " + SpareParts.GetPinName(output_pins[output[i].id - O_P1]),
-                                           output[i].x1, output[i].y2, 90);
-                    break;
-                case O_P2:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    if (output_pins[output[i].id - O_P1] == 0)
-                        canvas.RotatedText("3-RH  NC", output[i].x1, output[i].y2, 90);
-                    else
-                        canvas.RotatedText("3-RH  " + SpareParts.GetPinName(output_pins[output[i].id - O_P1]),
-                                           output[i].x1, output[i].y2, 90);
-                    break;
-                case O_F1:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(155, 155, 155);
-                    canvas.RotatedText("1-VCC +5V", output[i].x1, output[i].y2, 90);
-                    break;
-                case O_F2:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(155, 155, 155);
-                    canvas.RotatedText("4-GND GND", output[i].x1, output[i].y2, 90);
-                    break;
-                case O_PO1:
-                    snprintf(val, 10, "%5.1f", (0.825 * (200 - values[0]) - 40));
-                    DrawSlider(&output[i], values[0], val, font_p);
-                    canvas.SetFont(font);
-                    break;
-                case O_PO2:
-                    snprintf(val, 10, " %3.0f%%", ((200 - values[1]) / 2.0));
-                    DrawSlider(&output[i], values[1], val, font_p);
-                    canvas.SetFont(font);
-                    break;
-            }
-        }
-    }
-
-    if (Update) {
-        canvas.End();
+    switch (output[i].id) {
+        case O_P1:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            if (output_pins[output[i].id - O_P1] == 0)
+                canvas.RotatedText("2-T   NC", output[i].x1, output[i].y2, 90);
+            else
+                canvas.RotatedText("2-T   " + SpareParts.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1,
+                                   output[i].y2, 90);
+            break;
+        case O_P2:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            if (output_pins[output[i].id - O_P1] == 0)
+                canvas.RotatedText("3-RH  NC", output[i].x1, output[i].y2, 90);
+            else
+                canvas.RotatedText("3-RH  " + SpareParts.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1,
+                                   output[i].y2, 90);
+            break;
+        case O_F1:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(155, 155, 155);
+            canvas.RotatedText("1-VCC +5V", output[i].x1, output[i].y2, 90);
+            break;
+        case O_F2:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(155, 155, 155);
+            canvas.RotatedText("4-GND GND", output[i].x1, output[i].y2, 90);
+            break;
+        case O_PO1:
+            snprintf(val, 10, "%5.1f", (0.825 * (200 - values[0]) - 40));
+            DrawSlider(&output[i], values[0], val, font_p);
+            canvas.SetFont(font);
+            break;
+        case O_PO2:
+            snprintf(val, 10, " %3.0f%%", ((200 - values[1]) / 2.0));
+            DrawSlider(&output[i], values[1], val, font_p);
+            canvas.SetFont(font);
+            break;
     }
 }
 
@@ -150,67 +126,51 @@ void cpart_sht3x::PostProcess(void) {
     }
 }
 
-void cpart_sht3x::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            RotateCoords(&x, &y);
-            switch (input[i].id) {
-                case I_PO1:
-                    values[0] = (y - input[i].y1) * 1.66;
-                    if (values[0] > 200)
-                        values[0] = 200;
-                    active[0] = 1;
-                    output_ids[O_PO1]->update = 1;
-                    break;
-                case I_PO2:
-                    values[1] = (y - input[i].y1) * 1.66;
-                    if (values[1] > 200)
-                        values[1] = 200;
-                    active[1] = 1;
-                    output_ids[O_PO2]->update = 1;
-                    break;
-            }
-        }
+void cpart_sht3x::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_PO1:
+            values[0] = (y - input_ids[I_PO1]->y1) * 1.66;
+            if (values[0] > 200)
+                values[0] = 200;
+            active[0] = 1;
+            output_ids[O_PO1]->update = 1;
+            break;
+        case I_PO2:
+            values[1] = (y - input_ids[I_PO2]->y1) * 1.66;
+            if (values[1] > 200)
+                values[1] = 200;
+            active[1] = 1;
+            output_ids[O_PO2]->update = 1;
+            break;
     }
 }
 
-void cpart_sht3x::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            switch (input[i].id) {
-                case I_PO1:
-                    active[0] = 0;
-                    output_ids[O_PO1]->update = 1;
-                    break;
-                case I_PO2:
-                    active[1] = 0;
-                    output_ids[O_PO2]->update = 1;
-                    break;
-            }
-        }
+void cpart_sht3x::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_PO1:
+            active[0] = 0;
+            output_ids[O_PO1]->update = 1;
+            break;
+        case I_PO2:
+            active[1] = 0;
+            output_ids[O_PO2]->update = 1;
+            break;
     }
 }
 
-void cpart_sht3x::EvMouseMove(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            RotateCoords(&x, &y);
-
-            if (active[input[i].id - I_PO1]) {
-                values[input[i].id - I_PO1] = ((y - input[i].y1) * 1.66);
-                if (values[input[i].id - I_PO1] > 200)
-                    values[input[i].id - I_PO1] = 200;
-                output_ids[O_PO1 + input[i].id - I_PO1]->update = 1;
+void cpart_sht3x::OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_PO1:
+            if (active[0]) {
+                values[0] = (y - input_ids[I_PO1]->y1) * 1.66;
+                if (values[0] > 200)
+                    values[0] = 200;
+                output_ids[O_PO1]->update = 1;
             }
-        } else {
-            active[input[i].id - I_PO1] = 0;
-        }
+            break;
+        default:
+            active[0] = 0;
+            break;
     }
 }
 

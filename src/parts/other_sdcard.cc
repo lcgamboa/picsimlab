@@ -86,75 +86,51 @@ void cpart_SDCard::Reset(void) {
     sdcard_rst(&sd);
 }
 
-void cpart_SDCard::Draw(void) {
-    int i;
+void cpart_SDCard::DrawOutput(const unsigned int i) {
     int to;
 
-    Update = 0;
-
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
-
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
+    switch (output[i].id) {
+        case O_FILE:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            to = strlen(sdcard_fname) + 4;
+            if (to < 38) {
+                to = 0;
+            } else {
+                to = to - 38;
             }
-            Update++;  // set to update buffer
+            canvas.RotatedText(lxT("Img:") + lxString(sdcard_fname + to), output[i].x1, output[i].y1, 0);
+            break;
+        default:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
-            switch (output[i].id) {
-                case O_FILE:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    to = strlen(sdcard_fname) + 4;
-                    if (to < 38) {
-                        to = 0;
-                    } else {
-                        to = to - 38;
-                    }
-                    canvas.RotatedText(lxT("Img:") + lxString(sdcard_fname + to), output[i].x1, output[i].y1, 0);
+            canvas.SetFgColor(155, 155, 155);
+
+            int pinv = output[i].id - O_P3;
+            int pin = 0;
+            switch (pinv) {
+                case 0:
+                case 4:
+                    pin = pinv > 1;
+                    if (output_pins[pin] == 0)
+                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+                    else
+                        canvas.RotatedText(SpareParts.GetPinName(output_pins[pin]), output[i].x1, output[i].y2, 90.0);
                     break;
-                default:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-
-                    canvas.SetFgColor(155, 155, 155);
-
-                    int pinv = output[i].id - O_P3;
-                    int pin = 0;
-                    switch (pinv) {
-                        case 0:
-                        case 4:
-                            pin = pinv > 1;
-                            if (output_pins[pin] == 0)
-                                canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
-                            else
-                                canvas.RotatedText(SpareParts.GetPinName(output_pins[pin]), output[i].x1, output[i].y2,
-                                                   90.0);
-                            break;
-                        case 1:
-                        case 2:
-                        case 3:
-                            pinv++;
-                        case 5:
-                            pin = pinv - 2;
-                            if (input_pins[pin] == 0)
-                                canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
-                            else
-                                canvas.RotatedText(SpareParts.GetPinName(input_pins[pin]), output[i].x1, output[i].y2,
-                                                   90.0);
-                    }
-                    break;
+                case 1:
+                case 2:
+                case 3:
+                    pinv++;
+                case 5:
+                    pin = pinv - 2;
+                    if (input_pins[pin] == 0)
+                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+                    else
+                        canvas.RotatedText(SpareParts.GetPinName(input_pins[pin]), output[i].x1, output[i].y2, 90.0);
             }
-        }
-    }
-
-    if (Update) {
-        canvas.End();
+            break;
     }
 }
 
@@ -246,25 +222,19 @@ void cpart_SDCard::Process(void) {
     }
 }
 
-void cpart_SDCard::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            switch (input[i].id) {
-                case I_CONN:
-                    SpareParts.GetFileDialog()->SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
-                    SpareParts.GetFileDialog()->SetFilter(lxT("SD Card image (*.img)|*.img"));
-                    if (sdcard_fname[0] == '*') {
-                        SpareParts.GetFileDialog()->SetFileName(lxT("untitled.img"));
-                    } else {
-                        SpareParts.GetFileDialog()->SetFileName(sdcard_fname);
-                    }
-                    SpareParts.Setfdtype(id);
-                    SpareParts.GetFileDialog()->Run();
-                    break;
+void cpart_SDCard::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_CONN:
+            SpareParts.GetFileDialog()->SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
+            SpareParts.GetFileDialog()->SetFilter(lxT("SD Card image (*.img)|*.img"));
+            if (sdcard_fname[0] == '*') {
+                SpareParts.GetFileDialog()->SetFileName(lxT("untitled.img"));
+            } else {
+                SpareParts.GetFileDialog()->SetFileName(sdcard_fname);
             }
-        }
+            SpareParts.Setfdtype(id);
+            SpareParts.GetFileDialog()->Run();
+            break;
     }
 }
 

@@ -41,7 +41,7 @@ public:
     lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
     cpart_LCD_hd44780(const unsigned x, const unsigned y, const char* name, const char* type);
     ~cpart_LCD_hd44780(void);
-    void Draw(void) override;
+    void DrawOutput(const unsigned int index) override;
     void Process(void) override;
     void PostProcess(void) override;
     lxString GetPictureFileName(void) override { return lxT("LCD hd44780/LCD_hd44780.svg"); };
@@ -64,7 +64,6 @@ private:
     lcd_t lcd;
     int lcde;
     unsigned char model;
-    lxFont font;
 };
 
 #endif /* PART_LCD_HD44780 */

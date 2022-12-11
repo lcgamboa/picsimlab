@@ -38,9 +38,7 @@ static PCWProp pcwprop[6] = {{PCW_LABEL, "1-VCC,+5V"}, {PCW_COMBO, "2-POT 1"}, {
                              {PCW_COMBO, "4-POT 3"},   {PCW_COMBO, "5-POT 4"}, {PCW_LABEL, "6-GND ,GND"}};
 
 cpart_pot::cpart_pot(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type),
-      font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
-      font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, 9), font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     output_pins[0] = 0;
     output_pins[1] = 0;
     output_pins[2] = 0;
@@ -81,52 +79,31 @@ void cpart_pot::Reset(void) {
     vmax = PICSimLab.GetBoard()->MGetVCC();
 }
 
-void cpart_pot::Draw(void) {
-    int i;
+void cpart_pot::DrawOutput(const unsigned int i) {
     char val[10];
 
-    Update = 0;
-
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
-
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
-            }
-            Update++;  // set to update buffer
-
-            switch (output[i].id) {
-                case O_P1:
-                case O_P2:
-                case O_P3:
-                case O_P4:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    if (output_pins[output[i].id - O_P1] == 0)
-                        canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
-                    else
-                        canvas.RotatedText(SpareParts.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1,
-                                           output[i].y1, 0);
-                    break;
-                case O_PO1:
-                case O_PO2:
-                case O_PO3:
-                case O_PO4:
-                    snprintf(val, 10, "%4.2f", vmax * (values[output[i].id - O_PO1]) / 200.0);
-                    DrawPotentiometer(&output[i], values[output[i].id - O_PO1], val, font_p);
-                    canvas.SetFont(font);
-                    break;
-            }
-        }
-    }
-
-    if (Update) {
-        canvas.End();
+    switch (output[i].id) {
+        case O_P1:
+        case O_P2:
+        case O_P3:
+        case O_P4:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            if (output_pins[output[i].id - O_P1] == 0)
+                canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
+            else
+                canvas.RotatedText(SpareParts.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1, output[i].y1,
+                                   0);
+            break;
+        case O_PO1:
+        case O_PO2:
+        case O_PO3:
+        case O_PO4:
+            snprintf(val, 10, "%4.2f", vmax * (values[output[i].id - O_PO1]) / 200.0);
+            DrawPotentiometer(&output[i], values[output[i].id - O_PO1], val, font_p);
+            canvas.SetFont(font);
+            break;
     }
 }
 
@@ -137,90 +114,79 @@ void cpart_pot::PreProcess(void) {
     SpareParts.SetAPin(output_pins[3], vmax * (values[3]) / 200.0);
 }
 
-void cpart_pot::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            RotateCoords(&x, &y);
-            switch (input[i].id) {
-                case I_PO1:
-                    values[0] = 200 - ((y - input[i].y1) * 1.66);
-                    if (values[0] > 200)
-                        values[0] = 0;
-                    active[0] = 1;
-                    output_ids[O_PO1]->update = 1;
-                    break;
-                case I_PO2:
-                    values[1] = 200 - ((y - input[i].y1) * 1.66);
-                    if (values[1] > 200)
-                        values[1] = 0;
-                    active[1] = 1;
-                    output_ids[O_PO2]->update = 1;
-                    break;
-                case I_PO3:
-                    values[2] = 200 - ((y - input[i].y1) * 1.66);
-                    if (values[2] > 200)
-                        values[2] = 0;
-                    active[2] = 1;
-                    output_ids[O_PO3]->update = 1;
-                    break;
-                case I_PO4:
-                    values[3] = 200 - ((y - input[i].y1) * 1.66);
-                    if (values[3] > 200)
-                        values[3] = 0;
-                    active[3] = 1;
-                    output_ids[O_PO4]->update = 1;
-                    break;
-            }
-        }
+void cpart_pot::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_PO1:
+            values[0] = 200 - ((y - input_ids[I_PO1]->y1) * 1.66);
+            if (values[0] > 200)
+                values[0] = 0;
+            active[0] = 1;
+            output_ids[O_PO1]->update = 1;
+            break;
+        case I_PO2:
+            values[1] = 200 - ((y - input_ids[I_PO2]->y1) * 1.66);
+            if (values[1] > 200)
+                values[1] = 0;
+            active[1] = 1;
+            output_ids[O_PO2]->update = 1;
+            break;
+        case I_PO3:
+            values[2] = 200 - ((y - input_ids[I_PO3]->y1) * 1.66);
+            if (values[2] > 200)
+                values[2] = 0;
+            active[2] = 1;
+            output_ids[O_PO3]->update = 1;
+            break;
+        case I_PO4:
+            values[3] = 200 - ((y - input_ids[I_PO4]->y1) * 1.66);
+            if (values[3] > 200)
+                values[3] = 0;
+            active[3] = 1;
+            output_ids[O_PO4]->update = 1;
+            break;
     }
 }
 
-void cpart_pot::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            switch (input[i].id) {
-                case I_PO1:
-                    active[0] = 0;
-                    output_ids[O_PO1]->update = 1;
-                    break;
-                case I_PO2:
-                    active[1] = 0;
-                    output_ids[O_PO2]->update = 1;
-                    break;
-                case I_PO3:
-                    active[2] = 0;
-                    output_ids[O_PO3]->update = 1;
-                    break;
-                case I_PO4:
-                    active[3] = 0;
-                    output_ids[O_PO4]->update = 1;
-                    break;
-            }
-        }
+void cpart_pot::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_PO1:
+            active[0] = 0;
+            output_ids[O_PO1]->update = 1;
+            break;
+        case I_PO2:
+            active[1] = 0;
+            output_ids[O_PO2]->update = 1;
+            break;
+        case I_PO3:
+            active[2] = 0;
+            output_ids[O_PO3]->update = 1;
+            break;
+        case I_PO4:
+            active[3] = 0;
+            output_ids[O_PO4]->update = 1;
+            break;
     }
 }
 
-void cpart_pot::EvMouseMove(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            RotateCoords(&x, &y);
-
-            if (active[input[i].id - I_PO1]) {
-                values[input[i].id - I_PO1] = 200 - ((y - input[i].y1) * 1.66);
-                if (values[input[i].id - I_PO1] > 200)
-                    values[input[i].id - I_PO1] = 0;
-
-                output_ids[O_PO1 + input[i].id - I_PO1]->update = 1;
+void cpart_pot::OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_PO1:
+        case I_PO2:
+        case I_PO3:
+        case I_PO4:
+            if (active[inputId - I_PO1]) {
+                values[inputId - I_PO1] = 200 - ((y - input_ids[inputId]->y1) * 1.66);
+                if (values[inputId - I_PO1] > 200)
+                    values[inputId - I_PO1] = 0;
+                output_ids[O_PO1 + inputId - I_PO1]->update = 1;
             }
-        } else {
-            active[input[i].id - I_PO1] = 0;
-        }
+            break;
+        default:
+            active[0] = 0;
+            active[1] = 0;
+            active[2] = 0;
+            active[3] = 0;
+            break;
     }
 }
 

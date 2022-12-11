@@ -36,7 +36,7 @@ public:
     lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
     cpart_RTC_pfc8563(const unsigned x, const unsigned y, const char* name, const char* type);
     ~cpart_RTC_pfc8563(void);
-    void Draw(void) override;
+    void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;
     void Process(void) override;
     lxString GetPictureFileName(void) override { return lxT("../Common/IC8.svg"); };
@@ -51,7 +51,6 @@ public:
 private:
     unsigned char input_pins[4];
     rtc_pfc8563_t rtc;
-    lxFont font;
     lxFont font_p;
 };
 

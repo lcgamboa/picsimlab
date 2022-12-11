@@ -37,7 +37,7 @@ public:
     cpart_TEXT(const unsigned x, const unsigned y, const char* name, const char* type);
     ~cpart_TEXT(void);
     void PostInit(void) override;
-    void Draw(void) override;
+    void DrawOutput(const unsigned int index) override;
     void ConfigurePropertiesWindow(CPWindow* WProp) override;
     void ReadPropertiesWindow(CPWindow* WProp) override;
     lxString WritePreferences(void) override;
@@ -49,7 +49,6 @@ public:
 private:
     void RegisterRemoteControl(void) override;
     void ChangeText(int size, int textcolor, int bgcolor);
-    lxFont font;
     lxStringList Lines;
     unsigned char Size;
     unsigned char Textcolor;

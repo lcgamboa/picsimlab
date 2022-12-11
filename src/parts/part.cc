@@ -27,7 +27,8 @@
 #include "../picsimlab.h"
 #include "../spareparts.h"
 
-part::part(const unsigned x, const unsigned y, const char* name, const char* type) {
+part::part(const unsigned x, const unsigned y, const char* name, const char* type, const int fsize)
+    : font(fsize, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     aways_update = 0;
     inputc = 0;
     outputc = 0;
@@ -560,4 +561,69 @@ unsigned char part::GetPWCComboSelectedPin(CPWindow* WProp, const char* combo_na
 
 lxString part::GetName(void) {
     return Name;
+}
+
+void part::Draw(void) {
+    Update = 0;
+
+    for (int i = 0; i < outputc; i++) {
+        if (output[i].update)  // only if need update
+        {
+            output[i].update = 0;
+
+            if (!Update) {
+                canvas.Init(Scale, Scale, Orientation);
+                canvas.SetFont(font);
+            }
+            Update++;  // set to update buffer
+
+            DrawOutput(i);
+        }
+    }
+
+    if (Update) {
+        canvas.End();
+    }
+}
+
+void part::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
+    for (int i = 0; i < inputc; i++) {
+        if (PointInside(x, y, input[i])) {
+            unsigned int xr = x;
+            unsigned int yr = y;
+            RotateCoords(&xr, &yr);
+            OnMouseButtonPress(input[i].id, button, xr, yr, state);
+        }
+    }
+}
+
+void part::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
+    for (int i = 0; i < inputc; i++) {
+        if (PointInside(x, y, input[i])) {
+            unsigned int xr = x;
+            unsigned int yr = y;
+            RotateCoords(&xr, &yr);
+            OnMouseButtonRelease(input[i].id, button, xr, yr, state);
+        }
+    }
+}
+
+void part::EvMouseMove(uint button, uint x, uint y, uint state) {
+    int none = 1;
+    for (int i = 0; i < inputc; i++) {
+        if (PointInside(x, y, input[i])) {
+            unsigned int xr = x;
+            unsigned int yr = y;
+            RotateCoords(&xr, &yr);
+            OnMouseMove(input[i].id, button, xr, yr, state);
+            none = 0;
+        }
+    }
+
+    if (none) {
+        unsigned int xr = x;
+        unsigned int yr = y;
+        RotateCoords(&xr, &yr);
+        OnMouseMove(0xFFFFFF, button, xr, yr, state);
+    }
 }

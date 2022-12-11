@@ -44,7 +44,7 @@ static PCWProp pcwprop[16] = {
     {PCW_LABEL, "13-/OE,GND"}, {PCW_COMBO, "14-SER"},  {PCW_LABEL, "15-QA,NC"}, {PCW_LABEL, "16-VCC,+5V"}};
 
 cpart_IO_74xx595::cpart_IO_74xx595(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, 8) {
     aways_update = 1;
 
     io_74xx595_init(&sr8);
@@ -79,64 +79,39 @@ cpart_IO_74xx595::~cpart_IO_74xx595(void) {
     canvas.Destroy();
 }
 
-void cpart_IO_74xx595::Draw(void) {
-    int i;
+void cpart_IO_74xx595::DrawOutput(const unsigned int i) {
+    switch (output[i].id) {
+        case O_IC:
+            canvas.SetColor(26, 26, 26);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            canvas.RotatedText("74XX595", output[i].x1 + 16, output[i].y2 - 15, 0.0);
+            break;
+        default:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
-    Update = 0;
+            canvas.SetFgColor(255, 255, 255);
+            canvas.RotatedText(pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0);
 
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
-
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
+            int pinv = pin_values[output[i].id - O_P1][0];
+            if (pinv > 12) {
+                canvas.SetFgColor(155, 155, 155);
+                canvas.RotatedText(pin_values[output[i].id - O_P1], output[i].x1, output[i].y2 - 30, 90.0);
+            } else if (pinv < 4) {
+                if (input_pins[pinv] == 0)
+                    canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
+                else
+                    canvas.RotatedText(SpareParts.GetPinName(input_pins[pinv]), output[i].x1, output[i].y2 - 30, 90.0);
+            } else {
+                if (output_pins[pinv - 4] == 0)
+                    canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
+                else
+                    canvas.RotatedText(
+                        itoa(output_pins[pinv - 4]) /* + lxT (" ") + SpareParts.GetPinName (output_pins[pinv - 4])*/,
+                        output[i].x1, output[i].y2 - 30, 90.0);
             }
-            Update++;  // set to update buffer
-
-            switch (output[i].id) {
-                case O_IC:
-                    canvas.SetColor(26, 26, 26);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    canvas.RotatedText("74XX595", output[i].x1 + 16, output[i].y2 - 15, 0.0);
-                    break;
-                default:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-
-                    canvas.SetFgColor(255, 255, 255);
-                    canvas.RotatedText(pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0);
-
-                    int pinv = pin_values[output[i].id - O_P1][0];
-                    if (pinv > 12) {
-                        canvas.SetFgColor(155, 155, 155);
-                        canvas.RotatedText(pin_values[output[i].id - O_P1], output[i].x1, output[i].y2 - 30, 90.0);
-                    } else if (pinv < 4) {
-                        if (input_pins[pinv] == 0)
-                            canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
-                        else
-                            canvas.RotatedText(SpareParts.GetPinName(input_pins[pinv]), output[i].x1, output[i].y2 - 30,
-                                               90.0);
-                    } else {
-                        if (output_pins[pinv - 4] == 0)
-                            canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
-                        else
-                            canvas.RotatedText(
-                                itoa(output_pins[pinv -
-                                                 4]) /* + lxT (" ") + SpareParts.GetPinName (output_pins[pinv - 4])*/,
-                                output[i].x1, output[i].y2 - 30, 90.0);
-                    }
-                    break;
-            }
-        }
-    }
-
-    if (Update) {
-        canvas.End();
+            break;
     }
 }
 

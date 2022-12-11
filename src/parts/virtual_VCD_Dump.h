@@ -36,10 +36,10 @@ public:
     lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
     cpart_VCD_Dump(const unsigned x, const unsigned y, const char* name, const char* type);
     ~cpart_VCD_Dump(void);
-    void Draw(void) override;
+    void DrawOutput(const unsigned int index) override;
     void Process(void) override;
     void PostProcess(void) override;
-    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
+    void OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) override;
     void ConfigurePropertiesWindow(CPWindow* WProp) override;
     void ReadPropertiesWindow(CPWindow* WProp) override;
     lxString WritePreferences(void) override;

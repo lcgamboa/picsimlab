@@ -81,68 +81,46 @@ void cpart_pot_r::Reset(void) {
     vmax = PICSimLab.GetBoard()->MGetVCC();
 }
 
-void cpart_pot_r::Draw(void) {
-    int i;
+void cpart_pot_r::DrawOutput(const unsigned int i) {
     char val[10];
 
-    Update = 0;
+    switch (output[i].id) {
+        case O_P1:
+        case O_P2:
+        case O_P3:
+        case O_P4:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            if (output_pins[output[i].id - O_P1] == 0)
+                canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
+            else
+                canvas.RotatedText(SpareParts.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1, output[i].y1,
+                                   0);
+            break;
+        case O_PO1:
+        case O_PO2:
+        case O_PO3:
+        case O_PO4:
+            canvas.SetFgColor(0, 0, 0);
+            canvas.SetBgColor(66, 109, 246);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
+            canvas.SetBgColor(250, 250, 250);
+            canvas.Circle(1, output[i].cx, output[i].cy, 17);
 
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
-            }
-            Update++;  // set to update buffer
+            canvas.SetBgColor(150, 150, 150);
+            int x = -13 * sin((5.585 * (values[output[i].id - O_PO1] / 200.0)) + 0.349);
+            int y = 13 * cos((5.585 * (values[output[i].id - O_PO1] / 200.0)) + 0.349);
+            canvas.Circle(1, output[i].cx + x, output[i].cy + y, 2);
 
-            switch (output[i].id) {
-                case O_P1:
-                case O_P2:
-                case O_P3:
-                case O_P4:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    if (output_pins[output[i].id - O_P1] == 0)
-                        canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
-                    else
-                        canvas.RotatedText(SpareParts.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1,
-                                           output[i].y1, 0);
-                    break;
-                case O_PO1:
-                case O_PO2:
-                case O_PO3:
-                case O_PO4:
-                    canvas.SetFgColor(0, 0, 0);
-                    canvas.SetBgColor(66, 109, 246);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-
-                    canvas.SetBgColor(250, 250, 250);
-                    canvas.Circle(1, output[i].cx, output[i].cy, 17);
-
-                    canvas.SetBgColor(150, 150, 150);
-                    int x = -13 * sin((5.585 * (values[output[i].id - O_PO1] / 200.0)) + 0.349);
-                    int y = 13 * cos((5.585 * (values[output[i].id - O_PO1] / 200.0)) + 0.349);
-                    canvas.Circle(1, output[i].cx + x, output[i].cy + y, 2);
-
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1 + 6, output[i].y2 + 6, 30, 15);
-                    snprintf(val, 10, "%4.2f", vmax * (values[output[i].id - O_PO1]) / 200.0);
-                    canvas.SetColor(250, 250, 250);
-                    canvas.SetFont(font_p);
-                    canvas.RotatedText(val, output[i].x1 + 6, output[i].y2 + 6, 0);
-                    break;
-            }
-        }
-    }
-
-    if (Update) {
-        canvas.End();
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1 + 6, output[i].y2 + 6, 30, 15);
+            snprintf(val, 10, "%4.2f", vmax * (values[output[i].id - O_PO1]) / 200.0);
+            canvas.SetColor(250, 250, 250);
+            canvas.SetFont(font_p);
+            canvas.RotatedText(val, output[i].x1 + 6, output[i].y2 + 6, 0);
+            break;
     }
 }
 
@@ -153,85 +131,72 @@ void cpart_pot_r::PreProcess(void) {
     SpareParts.SetAPin(output_pins[3], vmax * (values[3]) / 200.0);
 }
 
-void cpart_pot_r::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            RotateCoords(&x, &y);
-            switch (input[i].id) {
-                case I_PO1:
-                    values[0] = CalcAngle(i, x, y);
-                    active[0] = 1;
-                    output_ids[O_PO1]->update = 1;
-                    break;
-                case I_PO2:
-                    values[1] = CalcAngle(i, x, y);
-                    active[1] = 1;
-                    output_ids[O_PO2]->update = 1;
-                    break;
-                case I_PO3:
-                    values[2] = CalcAngle(i, x, y);
-                    active[2] = 1;
-                    output_ids[O_PO3]->update = 1;
-                    break;
-                case I_PO4:
-                    values[3] = CalcAngle(i, x, y);
-                    active[3] = 1;
-                    output_ids[O_PO4]->update = 1;
-                    break;
-            }
-        }
+void cpart_pot_r::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_PO1:
+            values[0] = CalcAngle(inputId, x, y);
+            active[0] = 1;
+            output_ids[O_PO1]->update = 1;
+            break;
+        case I_PO2:
+            values[1] = CalcAngle(inputId, x, y);
+            active[1] = 1;
+            output_ids[O_PO2]->update = 1;
+            break;
+        case I_PO3:
+            values[2] = CalcAngle(inputId, x, y);
+            active[2] = 1;
+            output_ids[O_PO3]->update = 1;
+            break;
+        case I_PO4:
+            values[3] = CalcAngle(inputId, x, y);
+            active[3] = 1;
+            output_ids[O_PO4]->update = 1;
+            break;
     }
 }
 
-void cpart_pot_r::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            switch (input[i].id) {
-                case I_PO1:
-                    active[0] = 0;
-                    output_ids[O_PO1]->update = 1;
-                    break;
-                case I_PO2:
-                    active[1] = 0;
-                    output_ids[O_PO2]->update = 1;
-                    break;
-                case I_PO3:
-                    active[2] = 0;
-                    output_ids[O_PO3]->update = 1;
-                    break;
-                case I_PO4:
-                    active[3] = 0;
-                    output_ids[O_PO4]->update = 1;
-                    break;
-            }
-        }
+void cpart_pot_r::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_PO1:
+            active[0] = 0;
+            output_ids[O_PO1]->update = 1;
+            break;
+        case I_PO2:
+            active[1] = 0;
+            output_ids[O_PO2]->update = 1;
+            break;
+        case I_PO3:
+            active[2] = 0;
+            output_ids[O_PO3]->update = 1;
+            break;
+        case I_PO4:
+            active[3] = 0;
+            output_ids[O_PO4]->update = 1;
+            break;
     }
 }
 
-void cpart_pot_r::EvMouseMove(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            RotateCoords(&x, &y);
-
-            if (active[input[i].id - I_PO1]) {
-                values[input[i].id - I_PO1] = CalcAngle(i, x, y);
-                output_ids[O_PO1 + input[i].id - I_PO1]->update = 1;
+void cpart_pot_r::OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_PO1 ... I_PO4:
+            if (active[inputId - I_PO1]) {
+                values[inputId - I_PO1] = CalcAngle(inputId, x, y);
+                output_ids[O_PO1 + inputId - I_PO1]->update = 1;
             }
-        } else {
-            active[input[i].id - I_PO1] = 0;
-        }
+            break;
+        default:
+            active[0] = 0;
+            active[1] = 0;
+            active[2] = 0;
+            active[3] = 0;
+            break;
     }
 }
 
-unsigned char cpart_pot_r::CalcAngle(int i, int x, int y) {
-    int dx = input[i].cx - x;
-    int dy = y - input[i].cy;
+unsigned char cpart_pot_r::CalcAngle(int inputId, int x, int y) {
+    int dx = input_ids[inputId]->cx - x;
+    int dy = y - input_ids[inputId]->cy;
     double angle = 0;
 
     if ((dx >= 0) && (dy >= 0)) {

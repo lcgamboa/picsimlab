@@ -6,7 +6,7 @@
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
 <!-- #$AUTHOR:lcganmboa@yahoo.com                             -->
-<area shape="rect" coords="80,22,193,115" href="I_PB_TERM" />
+<area shape="rect" coords="80,22,193,115" href="B_PB_TERM" />
 <area shape="rect" coords="29,50,47,120" href="O_PN_RX" />
 <area shape="rect" coords="59,50,77,120" href="O_PN_TX" />
 <area shape="rect" coords="35,15,47,24" href="O_LD_TX" />

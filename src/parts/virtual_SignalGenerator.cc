@@ -64,8 +64,8 @@ cpart_SignalGenerator::~cpart_SignalGenerator(void) {
     canvas.Destroy();
 }
 
-void cpart_SignalGenerator::Draw(void) {
-    int i, j;
+void cpart_SignalGenerator::DrawOutput(const unsigned int i) {
+    int j;
     lxString temp;
     float v[2];
     float tsi;
@@ -74,112 +74,88 @@ void cpart_SignalGenerator::Draw(void) {
 
     Update = 0;
 
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
+    switch (output[i].id) {
+        case O_P2:
+        case O_P3:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            if (input_pins[output[i].id - O_P2] == 0)
+                canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
+            else
+                canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P2]), output[i].x1, output[i].y1,
+                                   0);
+            break;
+        case O_P1:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            canvas.RotatedText("GND", output[i].x1, output[i].y1, 0);
+            break;
+        case O_PO1:
+        case O_PO2:
+        case O_PO3:
+            DrawPotentiometer(&output[i], 200 - values[output[i].id - O_PO1], "", font);
+            break;
+        case O_TP:
+            canvas.SetColor(255, 255, 255);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(0, 0, 0);
 
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
+            v[0] = 0;
+            tsi = 0;
+            sizex = output[i].x2 - output[i].x1;
+            sizey = output[i].y2 - output[i].y1;
+
+            for (j = 1; j < sizex; j++) {
+                v[1] = v[0];
+                switch (type) {
+                    case 0:
+                        v[0] = (sin(tsi));
+                        break;
+                    case 1:
+                        v[0] = ((sin(tsi) > 0) - 0.5) * 2;
+                        break;
+                    case 2:
+                        v[0] = ((acos(sin(tsi)) / 1.5708) - 1);
+                        break;
+                }
+                tsi += 3 * 6.28 / sizex;
+                if (j > 0) {
+                    canvas.Line(output[i].x1 + j - 1, output[i].y1 + ((v[1] + 2.0) * sizey / 4.0), output[i].x1 + j,
+                                output[i].y1 + ((v[0] + 2.0) * sizey / 4.0));
+                }
             }
-            Update++;  // set to update buffer
 
-            switch (output[i].id) {
-                case O_P2:
-                case O_P3:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    if (input_pins[output[i].id - O_P2] == 0)
-                        canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
-                    else
-                        canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P2]), output[i].x1,
-                                           output[i].y1, 0);
-                    break;
-                case O_P1:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    canvas.RotatedText("GND", output[i].x1, output[i].y1, 0);
-                    break;
-                case O_PO1:
-                case O_PO2:
-                case O_PO3:
-                    DrawPotentiometer(&output[i], 200 - values[output[i].id - O_PO1], "", font);
-                    break;
-                case O_TP:
-                    canvas.SetColor(255, 255, 255);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(0, 0, 0);
-
-                    v[0] = 0;
-                    tsi = 0;
-                    sizex = output[i].x2 - output[i].x1;
-                    sizey = output[i].y2 - output[i].y1;
-
-                    for (j = 1; j < sizex; j++) {
-                        v[1] = v[0];
-                        switch (type) {
-                            case 0:
-                                v[0] = (sin(tsi));
-                                break;
-                            case 1:
-                                v[0] = ((sin(tsi) > 0) - 0.5) * 2;
-                                break;
-                            case 2:
-                                v[0] = ((acos(sin(tsi)) / 1.5708) - 1);
-                                break;
-                        }
-                        tsi += 3 * 6.28 / sizex;
-                        if (j > 0) {
-                            canvas.Line(output[i].x1 + j - 1, output[i].y1 + ((v[1] + 2.0) * sizey / 4.0),
-                                        output[i].x1 + j, output[i].y1 + ((v[0] + 2.0) * sizey / 4.0));
-                        }
-                    }
-
-                    break;
-                case O_AMPL:
-                    temp.Printf("%5.2f", ampl);
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    canvas.RotatedText(temp, output[i].x1, output[i].y1, 0);
-                    break;
-                case O_OFFS:
-                    temp.Printf("%5.2f", offs);
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    canvas.RotatedText(temp, output[i].x1, output[i].y1, 0);
-                    break;
-                case O_FREQ:
-                    temp.Printf("%5.2f", freq);
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    canvas.RotatedText(temp, output[i].x1, output[i].y1, 0);
-                    break;
-                case O_MF:
-                    canvas.SetColor(255, 255, 255);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetColor(0, 0, 0);
-                    temp.Printf("F x %i", maxfreq);
-                    canvas.RotatedText(temp, output[i].x1, output[i].y1, 0);
-                    break;
-            }
-        }
-    }
-
-    if (Update) {
-        canvas.End();
+            break;
+        case O_AMPL:
+            temp.Printf("%5.2f", ampl);
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            canvas.RotatedText(temp, output[i].x1, output[i].y1, 0);
+            break;
+        case O_OFFS:
+            temp.Printf("%5.2f", offs);
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            canvas.RotatedText(temp, output[i].x1, output[i].y1, 0);
+            break;
+        case O_FREQ:
+            temp.Printf("%5.2f", freq);
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            canvas.RotatedText(temp, output[i].x1, output[i].y1, 0);
+            break;
+        case O_MF:
+            canvas.SetColor(255, 255, 255);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetColor(0, 0, 0);
+            temp.Printf("F x %i", maxfreq);
+            canvas.RotatedText(temp, output[i].x1, output[i].y1, 0);
+            break;
     }
 }
 
@@ -229,138 +205,101 @@ void cpart_SignalGenerator::Process(void) {
     }
 }
 
-void cpart_SignalGenerator::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            switch (Orientation) {
-                case 1:
-                    y = Height - x;
-                    break;
-                case 2:
-                    y = Height - y;
-                    break;
-                case 3:
-                    y = x;
-                    break;
-            }
-            switch (input[i].id) {
-                case I_PO1:
-                    values[0] = (y - input[i].y1) * 1.66;
-                    if (values[0] > 200)
-                        values[0] = 200;
-                    active[0] = 1;
-                    output_ids[O_PO1]->update = 1;
-                    output_ids[O_AMPL]->update = 1;
-                    break;
-                case I_PO2:
-                    values[1] = (y - input[i].y1) * 1.66;
-                    if (values[1] > 200)
-                        values[1] = 200;
-                    active[1] = 1;
-                    output_ids[O_PO2]->update = 1;
-                    output_ids[O_FREQ]->update = 1;
-                    break;
-                case I_PO3:
-                    values[2] = (y - input[i].y1) * 1.66;
-                    if (values[2] > 200)
-                        values[2] = 200;
-                    active[2] = 1;
-                    output_ids[O_PO3]->update = 1;
-                    output_ids[O_OFFS]->update = 1;
-                    break;
-                case I_TP:
-                    type++;
-                    if (type > 2)
-                        type = 0;
-                    output_ids[O_TP]->update = 1;
-                    break;
-                case I_MF:
-                    maxfreq *= 10;
-                    if (maxfreq > 10000)
-                        maxfreq = 1;
-                    output_ids[O_MF]->update = 1;
-                    break;
-            }
-        }
+void cpart_SignalGenerator::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_PO1:
+            values[0] = (y - input_ids[I_PO1]->y1) * 1.66;
+            if (values[0] > 200)
+                values[0] = 200;
+            active[0] = 1;
+            output_ids[O_PO1]->update = 1;
+            output_ids[O_AMPL]->update = 1;
+            break;
+        case I_PO2:
+            values[1] = (y - input_ids[I_PO2]->y1) * 1.66;
+            if (values[1] > 200)
+                values[1] = 200;
+            active[1] = 1;
+            output_ids[O_PO2]->update = 1;
+            output_ids[O_FREQ]->update = 1;
+            break;
+        case I_PO3:
+            values[2] = (y - input_ids[I_PO3]->y1) * 1.66;
+            if (values[2] > 200)
+                values[2] = 200;
+            active[2] = 1;
+            output_ids[O_PO3]->update = 1;
+            output_ids[O_OFFS]->update = 1;
+            break;
+        case I_TP:
+            type++;
+            if (type > 2)
+                type = 0;
+            output_ids[O_TP]->update = 1;
+            break;
+        case I_MF:
+            maxfreq *= 10;
+            if (maxfreq > 10000)
+                maxfreq = 1;
+            output_ids[O_MF]->update = 1;
+            break;
     }
 }
 
-void cpart_SignalGenerator::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            switch (input[i].id) {
-                case I_PO1:
-                    active[0] = 0;
-                    output_ids[O_PO1]->update = 1;
-                    output_ids[O_AMPL]->update = 1;
-                    break;
-                case I_PO2:
-                    active[1] = 0;
-                    output_ids[O_PO2]->update = 1;
-                    output_ids[O_FREQ]->update = 1;
-                    break;
-                case I_PO3:
-                    active[2] = 0;
-                    output_ids[O_PO3]->update = 1;
-                    output_ids[O_OFFS]->update = 1;
-                    break;
-            }
-        }
+void cpart_SignalGenerator::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_PO1:
+            active[0] = 0;
+            output_ids[O_PO1]->update = 1;
+            output_ids[O_AMPL]->update = 1;
+            break;
+        case I_PO2:
+            active[1] = 0;
+            output_ids[O_PO2]->update = 1;
+            output_ids[O_FREQ]->update = 1;
+            break;
+        case I_PO3:
+            active[2] = 0;
+            output_ids[O_PO3]->update = 1;
+            output_ids[O_OFFS]->update = 1;
+            break;
     }
 }
 
-void cpart_SignalGenerator::EvMouseMove(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            switch (Orientation) {
-                case 1:
-                    y = Height - x;
-                    break;
-                case 2:
-                    y = Height - y;
-                    break;
-                case 3:
-                    y = x;
-                    break;
+void cpart_SignalGenerator::OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_PO1:
+            if (active[0]) {
+                values[0] = (y - input_ids[I_PO1]->y1) * 1.66;
+                if (values[0] > 200)
+                    values[0] = 200;
+                output_ids[O_PO1]->update = 1;
+                output_ids[O_AMPL]->update = 1;
             }
-            switch (input[i].id) {
-                case I_PO1:
-                    if (active[0]) {
-                        values[0] = (y - input[i].y1) * 1.66;
-                        if (values[0] > 200)
-                            values[0] = 200;
-                        output_ids[O_PO1]->update = 1;
-                        output_ids[O_AMPL]->update = 1;
-                    }
-                    break;
-                case I_PO2:
-                    if (active[1]) {
-                        values[1] = (y - input[i].y1) * 1.66;
-                        if (values[1] > 200)
-                            values[1] = 200;
-                        output_ids[O_PO2]->update = 1;
-                        output_ids[O_FREQ]->update = 1;
-                    }
-                    break;
-                case I_PO3:
-                    if (active[2]) {
-                        values[2] = (y - input[i].y1) * 1.66;
-                        if (values[2] > 200)
-                            values[2] = 200;
-                        output_ids[O_PO3]->update = 1;
-                        output_ids[O_OFFS]->update = 1;
-                    }
-                    break;
+            break;
+        case I_PO2:
+            if (active[1]) {
+                values[1] = (y - input_ids[I_PO2]->y1) * 1.66;
+                if (values[1] > 200)
+                    values[1] = 200;
+                output_ids[O_PO2]->update = 1;
+                output_ids[O_FREQ]->update = 1;
             }
-        } else {
-            active[input[i].id - I_PO1] = 0;
-        }
+            break;
+        case I_PO3:
+            if (active[2]) {
+                values[2] = (y - input_ids[I_PO3]->y1) * 1.66;
+                if (values[2] > 200)
+                    values[2] = 200;
+                output_ids[O_PO3]->update = 1;
+                output_ids[O_OFFS]->update = 1;
+            }
+            break;
+        default:
+            active[0] = 0;
+            active[1] = 0;
+            active[2] = 0;
+            break;
     }
 }
 

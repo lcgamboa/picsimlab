@@ -37,7 +37,7 @@ public:
     lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
     cpart_LCD_ssd1306(const unsigned x, const unsigned y, const char* name, const char* type);
     ~cpart_LCD_ssd1306(void);
-    void Draw(void) override;
+    void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;
     void Process(void) override;
     void PostProcess(void) override;

@@ -85,81 +85,53 @@ void cpart_UART::Reset(void) {
     uart_rst(&sr);
 }
 
-void cpart_UART::Draw(void) {
-    int i;
+void cpart_UART::DrawOutput(const unsigned int i) {
+    switch (output[i].id) {
+        case O_LTX:
+            canvas.SetColor(0, (sr.bb_uart.leds & 0x02) * 125, 0);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            sr.bb_uart.leds &= ~0x02;
+            break;
+        case O_LRX:
+            canvas.SetColor(0, (sr.bb_uart.leds & 0x01) * 250, 0);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            sr.bb_uart.leds &= ~0x01;
+            break;
+        case O_LCON:
+            canvas.SetColor(255, 0, 0);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_FILE:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            canvas.RotatedText(lxT("port:") + lxString(uart_name) + lxT("   speed:") + itoa(uart_speed), output[i].x1,
+                               output[i].y1, 0);
+            break;
+        default:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
-    Update = 0;
+            canvas.SetFgColor(155, 155, 155);
 
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
-
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
-            }
-            Update++;  // set to update buffer
-
-            switch (output[i].id) {
-                case O_LTX:
-                    canvas.SetColor(0, (sr.bb_uart.leds & 0x02) * 125, 0);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    sr.bb_uart.leds &= ~0x02;
-                    break;
-                case O_LRX:
-                    canvas.SetColor(0, (sr.bb_uart.leds & 0x01) * 250, 0);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    sr.bb_uart.leds &= ~0x01;
-                    break;
-                case O_LCON:
-                    canvas.SetColor(255, 0, 0);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_FILE:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    canvas.RotatedText(lxT("port:") + lxString(uart_name) + lxT("   speed:") + itoa(uart_speed),
-                                       output[i].x1, output[i].y1, 0);
-                    break;
-                default:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-
-                    canvas.SetFgColor(155, 155, 155);
-
-                    int pinv = output[i].id - O_RX;
-                    int pin = 0;
-                    switch (pinv) {
-                        case 0:
-                            pin = pinv;
-                            if (input_pins[pin] == 0)
-                                canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
-                            else
-                                canvas.RotatedText(SpareParts.GetPinName(input_pins[pin]), output[i].x1, output[i].y2,
-                                                   90.0);
-                        case 1:
-                            pin = pinv - 1;
-                            if (output_pins[pin] == 0)
-                                canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
-                            else
-                                canvas.RotatedText(SpareParts.GetPinName(output_pins[pin]), output[i].x1, output[i].y2,
-                                                   90.0);
-                            break;
-                    }
+            int pinv = output[i].id - O_RX;
+            int pin = 0;
+            switch (pinv) {
+                case 0:
+                    pin = pinv;
+                    if (input_pins[pin] == 0)
+                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+                    else
+                        canvas.RotatedText(SpareParts.GetPinName(input_pins[pin]), output[i].x1, output[i].y2, 90.0);
+                case 1:
+                    pin = pinv - 1;
+                    if (output_pins[pin] == 0)
+                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+                    else
+                        canvas.RotatedText(SpareParts.GetPinName(output_pins[pin]), output[i].x1, output[i].y2, 90.0);
                     break;
             }
-        }
-    }
-
-    if (Update) {
-        canvas.End();
+            break;
     }
 }
 
@@ -256,20 +228,6 @@ void cpart_UART::Process(void) {
         SpareParts.SetPin(output_pins[0], ret);
     }
     _ret = ret;
-}
-
-void cpart_UART::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            switch (input[i].id) {
-                case I_CONN:
-
-                    break;
-            }
-        }
-    }
 }
 
 void cpart_UART::PostProcess(void) {

@@ -82,79 +82,76 @@ cpart_tempsys::~cpart_tempsys(void) {
     canvas.Destroy();
 }
 
-void cpart_tempsys::Draw(void) {
-    int i;
+void cpart_tempsys::DrawOutput(const unsigned int i) {
     lxString str;
 
-    const picpin* ppins = SpareParts.GetPinsValues();
+    switch (output[i].id) {
+        case O_HT:
+        case O_CO:
+        case O_TA:
+        case O_TE:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            if (input_pins[output[i].id - O_HT] == 0)
+                canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
+            else
+                canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_HT]), output[i].x1, output[i].y1,
+                                   0);
+            break;
+        case O_F1:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(155, 155, 155);
+            canvas.RotatedText("12V", output[i].x1, output[i].y1, 0);
+            break;
+        case O_F2:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(155, 155, 155);
+            canvas.RotatedText("GND", output[i].x1, output[i].y1, 0);
+            break;
+        case O_OTA:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            canvas.RotatedText("Ambient=27.5C", output[i].x1, output[i].y1, 0);
+            break;
+        case O_OTE:
+            str.Printf(lxT("Temp.=%5.2fC"), temp[0]);
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            canvas.RotatedText(str, output[i].x1, output[i].y1, 0);
+            break;
+        case O_VT:
+            canvas.PutBitmap(vent[vt], output[i].x1, output[i].y1);
+            break;
+    }
+}
 
-    Update = 0;
+void cpart_tempsys::Process(void) {
+    if (!refresh) {
+        refresh = PICSimLab.GetJUMPSTEPS();
 
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
+        const picpin* ppins = SpareParts.GetPinsValues();
 
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
-            }
-            Update++;  // set to update buffer
-
-            switch (output[i].id) {
-                case O_HT:
-                case O_CO:
-                case O_TA:
-                case O_TE:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    if (input_pins[output[i].id - O_HT] == 0)
-                        canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
-                    else
-                        canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_HT]), output[i].x1,
-                                           output[i].y1, 0);
-                    break;
-                case O_F1:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(155, 155, 155);
-                    canvas.RotatedText("12V", output[i].x1, output[i].y1, 0);
-                    break;
-                case O_F2:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(155, 155, 155);
-                    canvas.RotatedText("GND", output[i].x1, output[i].y1, 0);
-                    break;
-                case O_OTA:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    canvas.RotatedText("Ambient=27.5C", output[i].x1, output[i].y1, 0);
-                    break;
-                case O_OTE:
-                    str.Printf(lxT("Temp.=%5.2fC"), temp[0]);
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    canvas.RotatedText(str, output[i].x1, output[i].y1, 0);
-                    break;
-                case O_VT:
-                    canvas.PutBitmap(vent[vt], output[i].x1, output[i].y1);
-                    break;
-            }
+        if ((input_pins[1] > 0) && (input_pins[3] > 0)) {
+            if (ppins[input_pins[1] - 1].oavalue > 55) {
+                rpmc++;
+                if (rpmc > rpmstp) {
+                    rpmc = 0;
+                    SpareParts.SetPin(input_pins[3], !ppins[input_pins[3] - 1].value);
+                }
+            } else
+                SpareParts.SetPin(input_pins[3], 0);
         }
     }
+    refresh--;
+}
 
-    if (Update) {
-        canvas.End();
-    }
+void cpart_tempsys::PostProcess(void) {
+    const picpin* ppins = SpareParts.GetPinsValues();
 
     // sensor ventilador
     if (input_pins[1] > 0) {
@@ -182,29 +179,7 @@ void cpart_tempsys::Draw(void) {
         temp[0] = 27.5;
 
     SpareParts.SetAPin(input_pins[2], temp[0] / 100.0);
-}
 
-void cpart_tempsys::Process(void) {
-    if (!refresh) {
-        refresh = PICSimLab.GetJUMPSTEPS();
-
-        const picpin* ppins = SpareParts.GetPinsValues();
-
-        if ((input_pins[1] > 0) && (input_pins[3] > 0)) {
-            if (ppins[input_pins[1] - 1].oavalue > 55) {
-                rpmc++;
-                if (rpmc > rpmstp) {
-                    rpmc = 0;
-                    SpareParts.SetPin(input_pins[3], !ppins[input_pins[3] - 1].value);
-                }
-            } else
-                SpareParts.SetPin(input_pins[3], 0);
-        }
-    }
-    refresh--;
-}
-
-void cpart_tempsys::PostProcess(void) {
     if (output_ids[O_OTE]->value_f != temp[0]) {
         output_ids[O_OTE]->value_f = temp[0];
         output_ids[O_OTE]->update = 1;
@@ -215,12 +190,6 @@ void cpart_tempsys::PostProcess(void) {
         output_ids[O_VT]->update = 1;
     }
 }
-
-void cpart_tempsys::EvMouseButtonPress(uint button, uint x, uint y, uint state) {}
-
-void cpart_tempsys::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {}
-
-void cpart_tempsys::EvMouseMove(uint button, uint x, uint y, uint state) {}
 
 unsigned short cpart_tempsys::GetInputId(char* name) {
     printf("Erro input '%s' don't have a valid id! \n", name);

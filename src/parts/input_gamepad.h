@@ -37,11 +37,11 @@ public:
     cpart_gamepad(const unsigned x, const unsigned y, const char* name, const char* type);
     ~cpart_gamepad(void);
     void PostInit(void) override;
-    void Draw(void) override;
+    void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;
-    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
-    void EvMouseButtonRelease(uint button, uint x, uint y, uint state) override;
-    void EvMouseMove(uint button, uint x, uint y, uint state) override;
+    void OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) override;
+    void OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) override;
+    void OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) override;
     void EvKeyPress(uint key, uint mask) override;
     void EvKeyRelease(uint key, uint mask) override;
     void ConfigurePropertiesWindow(CPWindow* WProp) override;

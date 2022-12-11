@@ -97,119 +97,97 @@ cpart_VCD_Dump::~cpart_VCD_Dump(void) {
     unlink(f_vcd_name);
 }
 
-void cpart_VCD_Dump::Draw(void) {
-    int i;
+void cpart_VCD_Dump::DrawOutput(const unsigned int i) {
     int to;
     int r, g, b;
 
     const picpin* ppins = SpareParts.GetPinsValues();
 
-    Update = 0;
-
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
-
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
+    switch (output[i].id) {
+        case O_P1:
+        case O_P2:
+        case O_P3:
+        case O_P4:
+        case O_P5:
+        case O_P6:
+        case O_P7:
+        case O_P8:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            if (input_pins[output[i].id - O_P1] == 0)
+                canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
+            else
+                canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1,
+                                   0);
+            break;
+        case O_NAME:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            to = strlen(f_vcd_name);
+            if (to < 48) {
+                to = 0;
+            } else {
+                to = to - 48;
             }
-            Update++;  // set to update buffer
-
-            switch (output[i].id) {
-                case O_P1:
-                case O_P2:
-                case O_P3:
-                case O_P4:
-                case O_P5:
-                case O_P6:
-                case O_P7:
-                case O_P8:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    if (input_pins[output[i].id - O_P1] == 0)
-                        canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
-                    else
-                        canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
-                                           output[i].y1, 0);
-                    break;
-                case O_NAME:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    to = strlen(f_vcd_name);
-                    if (to < 48) {
-                        to = 0;
-                    } else {
-                        to = to - 48;
-                    }
-                    canvas.RotatedText(f_vcd_name + to, output[i].x1, output[i].y1, 0);
-                    break;
-                case O_L1:
-                case O_L2:
-                case O_L3:
-                case O_L4:
-                case O_L5:
-                case O_L6:
-                case O_L7:
-                case O_L8:
-                    if (input_pins[output[i].id - O_L1] > 0) {
-                        canvas.SetColor(ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
-                    } else {
-                        canvas.SetColor(30, 0, 0);
-                    }
-                    canvas.SetFgColor(0, 0, 0);
-                    // draw a circle
-                    color1 = canvas.GetBgColor();
-                    r = color1.Red() - 120;
-                    g = color1.Green() - 120;
-                    b = color1.Blue() - 120;
-                    if (r < 0)
-                        r = 0;
-                    if (g < 0)
-                        g = 0;
-                    if (b < 0)
-                        b = 0;
-                    color2.Set(r, g, b);
-                    canvas.SetBgColor(color2);
-                    canvas.Circle(1, output[i].x1, output[i].y1, output[i].r);
-                    canvas.SetBgColor(color1);
-                    canvas.Circle(1, output[i].x1, output[i].y1, output[i].r - 3);
-                    break;
-                case O_REC:
-                    if (rec > 0) {
-                        canvas.SetColor(0, 255, 0);
-                    } else {
-                        canvas.SetColor(255, 0, 0);
-                    }
-                    canvas.SetFgColor(0, 0, 0);
-                    // draw a circle
-                    color1 = canvas.GetBgColor();
-                    r = color1.Red() - 120;
-                    g = color1.Green() - 120;
-                    b = color1.Blue() - 120;
-                    if (r < 0)
-                        r = 0;
-                    if (g < 0)
-                        g = 0;
-                    if (b < 0)
-                        b = 0;
-                    color2.Set(r, g, b);
-                    canvas.SetBgColor(color2);
-                    canvas.Circle(1, output[i].x1, output[i].y1, output[i].r);
-                    canvas.SetBgColor(color1);
-                    canvas.Circle(1, output[i].x1, output[i].y1, output[i].r - 3);
-                    break;
+            canvas.RotatedText(f_vcd_name + to, output[i].x1, output[i].y1, 0);
+            break;
+        case O_L1:
+        case O_L2:
+        case O_L3:
+        case O_L4:
+        case O_L5:
+        case O_L6:
+        case O_L7:
+        case O_L8:
+            if (input_pins[output[i].id - O_L1] > 0) {
+                canvas.SetColor(ppins[input_pins[output[i].id - O_L1] - 1].oavalue, 0, 0);
+            } else {
+                canvas.SetColor(30, 0, 0);
             }
-        }
-    }
-
-    if (Update) {
-        canvas.End();
+            canvas.SetFgColor(0, 0, 0);
+            // draw a circle
+            color1 = canvas.GetBgColor();
+            r = color1.Red() - 120;
+            g = color1.Green() - 120;
+            b = color1.Blue() - 120;
+            if (r < 0)
+                r = 0;
+            if (g < 0)
+                g = 0;
+            if (b < 0)
+                b = 0;
+            color2.Set(r, g, b);
+            canvas.SetBgColor(color2);
+            canvas.Circle(1, output[i].x1, output[i].y1, output[i].r);
+            canvas.SetBgColor(color1);
+            canvas.Circle(1, output[i].x1, output[i].y1, output[i].r - 3);
+            break;
+        case O_REC:
+            if (rec > 0) {
+                canvas.SetColor(0, 255, 0);
+            } else {
+                canvas.SetColor(255, 0, 0);
+            }
+            canvas.SetFgColor(0, 0, 0);
+            // draw a circle
+            color1 = canvas.GetBgColor();
+            r = color1.Red() - 120;
+            g = color1.Green() - 120;
+            b = color1.Blue() - 120;
+            if (r < 0)
+                r = 0;
+            if (g < 0)
+                g = 0;
+            if (b < 0)
+                b = 0;
+            color2.Set(r, g, b);
+            canvas.SetBgColor(color2);
+            canvas.Circle(1, output[i].x1, output[i].y1, output[i].r);
+            canvas.SetBgColor(color1);
+            canvas.Circle(1, output[i].x1, output[i].y1, output[i].r - 3);
+            break;
     }
 }
 
@@ -338,89 +316,83 @@ void cpart_VCD_Dump::PostProcess(void) {
     }
 }
 
-void cpart_VCD_Dump::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
-    int i;
+void cpart_VCD_Dump::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_START:
+            if (!rec) {
+                float tscale = 1.0e12 / PICSimLab.GetBoard()->MGetInstClockFreq();  // ps step
 
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            switch (input[i].id) {
-                case I_START:
-                    if (!rec) {
-                        float tscale = 1.0e12 / PICSimLab.GetBoard()->MGetInstClockFreq();  // ps step
+                f_vcd = fopen(f_vcd_name, "w");
+                vcd_count = 0;
 
-                        f_vcd = fopen(f_vcd_name, "w");
-                        vcd_count = 0;
-
-                        fprintf(f_vcd,
-                                "$version Generated by PICSimLab $end\n"
-                                "$timescale %ips $end\n"
-                                "$scope module logic $end\n"
-                                "$var wire 1 !  1-%s $end\n"
-                                "$var wire 1 $  2-%s $end\n"
-                                "$var wire 1 %%  3-%s $end\n"
-                                "$var wire 1 &  4-%s $end\n"
-                                "$var wire 1 [  5-%s $end\n"
-                                "$var wire 1 (  6-%s $end\n"
-                                "$var wire 1 )  7-%s $end\n"
-                                "$var wire 1 ]  8-%s $end\n"
-                                "$upscope $end\n"
-                                "$enddefinitions $end\n"
-                                "$dumpvars\n"
-                                "x!\n"
-                                "x$\n"
-                                "x%%\n"
-                                "x&\n"
-                                "x[\n"
-                                "x(\n"
-                                "x)\n"
-                                "x[\n"
-                                "$end\n",
-                                (int)tscale, (const char*)SpareParts.GetPinName(input_pins[0]).c_str(),
-                                (const char*)SpareParts.GetPinName(input_pins[1]).c_str(),
-                                (const char*)SpareParts.GetPinName(input_pins[2]).c_str(),
-                                (const char*)SpareParts.GetPinName(input_pins[3]).c_str(),
-                                (const char*)SpareParts.GetPinName(input_pins[4]).c_str(),
-                                (const char*)SpareParts.GetPinName(input_pins[5]).c_str(),
-                                (const char*)SpareParts.GetPinName(input_pins[6]).c_str(),
-                                (const char*)SpareParts.GetPinName(input_pins[7]).c_str());
-                        rec = 1;
-                    } else {
-                        rec = 0;
-                        if (f_vcd) {
-                            fclose(f_vcd);
-                            f_vcd = NULL;
-                        }
-                    }
-                    output_ids[O_REC]->update = 1;
-                    break;
-                case I_VIEW:
-#ifdef __EMSCRIPTEN__
-                    EM_ASM_(
-                        {
-                            var filename = UTF8ToString($0);
-                            var buf = FS.readFile(filename);
-                            var blob = new Blob([buf], { "type" : "application/octet-stream" });
-                            var text = URL.createObjectURL(blob);
-
-                            var element = document.createElement('a');
-                            element.setAttribute('href', text);
-                            element.setAttribute('download', filename);
-
-                            element.style.display = 'none';
-                            document.body.appendChild(element);
-
-                            element.click();
-
-                            document.body.removeChild(element);
-                            URL.revokeObjectURL(text);
-                        },
-                        f_vcd_name);
-#else
-                    lxLaunchDefaultApplication(f_vcd_name);
-#endif
-                    break;
+                fprintf(f_vcd,
+                        "$version Generated by PICSimLab $end\n"
+                        "$timescale %ips $end\n"
+                        "$scope module logic $end\n"
+                        "$var wire 1 !  1-%s $end\n"
+                        "$var wire 1 $  2-%s $end\n"
+                        "$var wire 1 %%  3-%s $end\n"
+                        "$var wire 1 &  4-%s $end\n"
+                        "$var wire 1 [  5-%s $end\n"
+                        "$var wire 1 (  6-%s $end\n"
+                        "$var wire 1 )  7-%s $end\n"
+                        "$var wire 1 ]  8-%s $end\n"
+                        "$upscope $end\n"
+                        "$enddefinitions $end\n"
+                        "$dumpvars\n"
+                        "x!\n"
+                        "x$\n"
+                        "x%%\n"
+                        "x&\n"
+                        "x[\n"
+                        "x(\n"
+                        "x)\n"
+                        "x[\n"
+                        "$end\n",
+                        (int)tscale, (const char*)SpareParts.GetPinName(input_pins[0]).c_str(),
+                        (const char*)SpareParts.GetPinName(input_pins[1]).c_str(),
+                        (const char*)SpareParts.GetPinName(input_pins[2]).c_str(),
+                        (const char*)SpareParts.GetPinName(input_pins[3]).c_str(),
+                        (const char*)SpareParts.GetPinName(input_pins[4]).c_str(),
+                        (const char*)SpareParts.GetPinName(input_pins[5]).c_str(),
+                        (const char*)SpareParts.GetPinName(input_pins[6]).c_str(),
+                        (const char*)SpareParts.GetPinName(input_pins[7]).c_str());
+                rec = 1;
+            } else {
+                rec = 0;
+                if (f_vcd) {
+                    fclose(f_vcd);
+                    f_vcd = NULL;
+                }
             }
-        }
+            output_ids[O_REC]->update = 1;
+            break;
+        case I_VIEW:
+#ifdef __EMSCRIPTEN__
+            EM_ASM_(
+                {
+                    var filename = UTF8ToString($0);
+                    var buf = FS.readFile(filename);
+                    var blob = new Blob([buf], { "type" : "application/octet-stream" });
+                    var text = URL.createObjectURL(blob);
+
+                    var element = document.createElement('a');
+                    element.setAttribute('href', text);
+                    element.setAttribute('download', filename);
+
+                    element.style.display = 'none';
+                    document.body.appendChild(element);
+
+                    element.click();
+
+                    document.body.removeChild(element);
+                    URL.revokeObjectURL(text);
+                },
+                f_vcd_name);
+#else
+            lxLaunchDefaultApplication(f_vcd_name);
+#endif
+            break;
     }
 }
 

@@ -58,60 +58,34 @@ cpart_RTC_ds1307::~cpart_RTC_ds1307(void) {
     canvas.Destroy();
 }
 
-void cpart_RTC_ds1307::Draw(void) {
-    int i;
+void cpart_RTC_ds1307::DrawOutput(const unsigned int i) {
+    switch (output[i].id) {
+        case O_IC:
+            canvas.SetFont(font_p);
+            canvas.SetColor(26, 26, 26);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            canvas.RotatedText("DS1307", output[i].x1, output[i].y2 - 15, 0.0);
+            break;
+        default:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
-    Update = 0;
+            canvas.SetFgColor(255, 255, 255);
+            canvas.RotatedText(pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0);
 
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
-
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
+            int pinv = pin_values[output[i].id - O_P1][0];
+            if (pinv > 10) {
+                canvas.SetFgColor(155, 155, 155);
+                canvas.RotatedText(pin_values[output[i].id - O_P1], output[i].x1, output[i].y2 - 30, 90.0);
+            } else {
+                if (input_pins[pinv] == 0)
+                    canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
+                else
+                    canvas.RotatedText(SpareParts.GetPinName(input_pins[pinv]), output[i].x1, output[i].y2 - 30, 90.0);
             }
-            Update++;  // set to update buffer
-
-            switch (output[i].id) {
-                case O_IC:
-                    canvas.SetFont(font_p);
-                    canvas.SetColor(26, 26, 26);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    canvas.RotatedText("DS1307", output[i].x1, output[i].y2 - 15, 0.0);
-                    break;
-                default:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-
-                    canvas.SetFgColor(255, 255, 255);
-                    canvas.RotatedText(pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0);
-
-                    int pinv = pin_values[output[i].id - O_P1][0];
-                    if (pinv > 10) {
-                        canvas.SetFgColor(155, 155, 155);
-                        canvas.RotatedText(pin_values[output[i].id - O_P1], output[i].x1, output[i].y2 - 30, 90.0);
-                    } else {
-                        if (input_pins[pinv] == 0)
-                            canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
-                        else
-                            canvas.RotatedText(SpareParts.GetPinName(input_pins[pinv]), output[i].x1, output[i].y2 - 30,
-                                               90.0);
-                    }
-                    break;
-            }
-        }
+            break;
     }
-
-    if (Update) {
-        canvas.End();
-    }
-
-    rtc_ds1307_update(&rtc2);
 }
 
 unsigned short cpart_RTC_ds1307::GetInputId(char* name) {
@@ -173,6 +147,7 @@ void cpart_RTC_ds1307::PreProcess(void) {
     if (input_pins[0] > 0) {
         SpareParts.Reset_pullup_bus(input_pins[0] - 1);
     }
+    rtc_ds1307_update(&rtc2);
 }
 
 void cpart_RTC_ds1307::Process(void) {

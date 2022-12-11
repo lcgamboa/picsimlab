@@ -63,73 +63,49 @@ cpart_LCD_ssd1306::~cpart_LCD_ssd1306(void) {
     canvas.Destroy();
 }
 
-void cpart_LCD_ssd1306::Draw(void) {
-    int i;
-
-    Update = 0;
-
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
-
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
+void cpart_LCD_ssd1306::DrawOutput(const unsigned int i) {
+    switch (output[i].id) {
+        case O_P1:
+        case O_P2:
+        case O_P3:
+        case O_P4:
+        case O_P5:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            if (input_pins[output[i].id - O_P1] == 0)
+                canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+            else
+                canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2,
+                                   90.0);
+            break;
+        case O_F2:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(155, 155, 155);
+            canvas.RotatedText("3.3V", output[i].x1, output[i].y2, 90.0);
+            break;
+        case O_F1:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(155, 155, 155);
+            canvas.RotatedText("GND", output[i].x1, output[i].y2, 90.0);
+            break;
+        case O_LCD:
+            // draw lcd text
+            if (lcd.update) {
+                canvas.SetColor(0, 90 + 40, 0);
+                lcd_ssd1306_draw(&lcd, &canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                 output[i].y2 - output[i].y1, 1);
             }
-            Update++;  // set to update buffer
-
-            switch (output[i].id) {
-                case O_P1:
-                case O_P2:
-                case O_P3:
-                case O_P4:
-                case O_P5:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    if (input_pins[output[i].id - O_P1] == 0)
-                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
-                    else
-                        canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
-                                           output[i].y2, 90.0);
-                    break;
-                case O_F2:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(155, 155, 155);
-                    canvas.RotatedText("3.3V", output[i].x1, output[i].y2, 90.0);
-                    break;
-                case O_F1:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(155, 155, 155);
-                    canvas.RotatedText("GND", output[i].x1, output[i].y2, 90.0);
-                    break;
-                case O_LCD:
-                    // draw lcd text
-                    if (lcd.update) {
-                        canvas.SetColor(0, 90 + 40, 0);
-                        lcd_ssd1306_draw(&lcd, &canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                         output[i].y2 - output[i].y1, 1);
-                    }
-                    /*
-                    else
-                    {
-                       canvas.Rectangle (1, output[i].x1, output[i].y1,
-                    output[i].x2-output[i].x1,output[i].y2-output[i].y1 );
-                    }
-                     */
-                    break;
+            /*
+            else
+            {
+               canvas.Rectangle (1, output[i].x1, output[i].y1,
+            output[i].x2-output[i].x1,output[i].y2-output[i].y1 );
             }
-        }
-    }
-
-    if (Update) {
-        canvas.End();
+             */
+            break;
     }
 }
 

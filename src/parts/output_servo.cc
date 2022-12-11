@@ -52,46 +52,32 @@ cpart_servo::~cpart_servo(void) {
     canvas.Destroy();
 }
 
-void cpart_servo::Draw(void) {
-    int i;
-
-    Update = 0;
-
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
-
-            if (!Update) {
-                canvas.SetBitmap(BackGround, 1.0, 1.0);  // FIXME draw servo error on scale or rotate
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
-            }
-            Update++;  // set to update buffer
-
-            if (output[i].id == O_P1) {
-                canvas.SetFgColor(255, 255, 255);
-                if (input_pin == 0)
-                    canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
-                else
-                    canvas.RotatedText(SpareParts.GetPinName(input_pin), output[i].x1, output[i].y1, 0);
-            }
-
-            if (output[i].id == O_AXIS) {
-                float x2 = output[i].x1 + output[i].r * sin(angle);
-                float y2 = output[i].y1 - output[i].r * cos(angle);
-                canvas.SetFgColor(0, 0, 0);
-                canvas.SetLineWidth(20);
-                canvas.Line(output[i].x1, output[i].y1, x2, y2);
-                canvas.SetFgColor(255, 255, 255);
-                canvas.SetLineWidth(18);
-                canvas.Line(output[i].x1, output[i].y1, x2, y2);
-            }
-        }
+void cpart_servo::DrawOutput(const unsigned int i) {
+    if (Update == 1) {
+        canvas.End();
+        canvas.SetBitmap(BackGround, 1.0, 1.0);  // FIXME draw servo error on scale or rotate
+        canvas.Init(Scale, Scale, Orientation);
+        canvas.SetFont(font);
     }
 
-    if (Update) {
-        canvas.End();
+    switch (output[i].id) {
+        case O_P1:
+            canvas.SetFgColor(255, 255, 255);
+            if (input_pin == 0)
+                canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
+            else
+                canvas.RotatedText(SpareParts.GetPinName(input_pin), output[i].x1, output[i].y1, 0);
+            break;
+        case O_AXIS:
+            float x2 = output[i].x1 + output[i].r * sin(angle);
+            float y2 = output[i].y1 - output[i].r * cos(angle);
+            canvas.SetFgColor(0, 0, 0);
+            canvas.SetLineWidth(20);
+            canvas.Line(output[i].x1, output[i].y1, x2, y2);
+            canvas.SetFgColor(255, 255, 255);
+            canvas.SetLineWidth(18);
+            canvas.Line(output[i].x1, output[i].y1, x2, y2);
+            break;
     }
 }
 

@@ -36,7 +36,7 @@ public:
     lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
     cpart_RTC_ds1307(const unsigned x, const unsigned y, const char* name, const char* type);
     ~cpart_RTC_ds1307(void);
-    void Draw(void) override;
+    void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;
     void Process(void) override;
     lxString GetPictureFileName(void) override { return lxT("../Common/IC8.svg"); };

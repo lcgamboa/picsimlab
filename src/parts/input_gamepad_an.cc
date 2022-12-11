@@ -89,72 +89,52 @@ cpart_gamepad_an::~cpart_gamepad_an(void) {
     canvas.Destroy();
 }
 
-void cpart_gamepad_an::Draw(void) {
-    int i;
+void cpart_gamepad_an::DrawOutput(const unsigned int i) {
     lxString temp;
 
-    Update = 0;
+    switch (output[i].id) {
+        case O_P1:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1 + 10,
+                             output[i].y2 - output[i].y1 + 20);
+            canvas.SetFgColor(155, 155, 155);
 
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
-
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
+            temp = lxString().Format("%3.1f", output_value_an) + lxT("V");
+            canvas.RotatedText("Out " + temp, output[i].x1, output[i].y1 + 20, 0);
+            canvas.SetFgColor(255, 255, 255);
+            if (output_pins[0] == 0)
+                canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
+            else
+                canvas.RotatedText(SpareParts.GetPinName(output_pins[0]), output[i].x1, output[i].y1, 0);
+            break;
+        case O_B5:
+            canvas.SetColor(102, 102, 102);
+            canvas.Circle(1, output[i].cx, output[i].cy, 10);
+            if (output_value[output[i].id - O_B1]) {
+                canvas.SetColor(15, 15, 15);
+            } else {
+                canvas.SetColor(55, 55, 55);
             }
-            Update++;  // set to update buffer
-
-            switch (output[i].id) {
-                case O_P1:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1 + 10,
-                                     output[i].y2 - output[i].y1 + 20);
-                    canvas.SetFgColor(155, 155, 155);
-
-                    temp = lxString().Format("%3.1f", output_value_an) + lxT("V");
-                    canvas.RotatedText("Out " + temp, output[i].x1, output[i].y1 + 20, 0);
-                    canvas.SetFgColor(255, 255, 255);
-                    if (output_pins[0] == 0)
-                        canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
-                    else
-                        canvas.RotatedText(SpareParts.GetPinName(output_pins[0]), output[i].x1, output[i].y1, 0);
-                    break;
-                case O_B5:
-                    canvas.SetColor(102, 102, 102);
-                    canvas.Circle(1, output[i].cx, output[i].cy, 10);
-                    if (output_value[output[i].id - O_B1]) {
-                        canvas.SetColor(15, 15, 15);
-                    } else {
-                        canvas.SetColor(55, 55, 55);
-                    }
-                    canvas.Circle(1, output[i].cx, output[i].cy, 8);
-                    break;
-                case O_B2:
-                case O_B3:
-                    if (output_value[output[i].id - O_B1]) {
-                        canvas.SetColor(244, 244, 0);
-                    } else {
-                        canvas.SetColor(0x9c, 0x94, 0x47);
-                    }
-                    canvas.Circle(1, output[i].cx, output[i].cy, 20);
-                    break;
-                case O_B1:
-                case O_B4:
-                    if (output_value[output[i].id - O_B1]) {
-                        canvas.SetColor(0, 0, 214);
-                    } else {
-                        canvas.SetColor(64, 87, 106);
-                    }
-                    canvas.Circle(1, output[i].cx, output[i].cy, 20);
-                    break;
+            canvas.Circle(1, output[i].cx, output[i].cy, 8);
+            break;
+        case O_B2:
+        case O_B3:
+            if (output_value[output[i].id - O_B1]) {
+                canvas.SetColor(244, 244, 0);
+            } else {
+                canvas.SetColor(0x9c, 0x94, 0x47);
             }
-        }
-    }
-
-    if (Update) {
-        canvas.End();
+            canvas.Circle(1, output[i].cx, output[i].cy, 20);
+            break;
+        case O_B1:
+        case O_B4:
+            if (output_value[output[i].id - O_B1]) {
+                canvas.SetColor(0, 0, 214);
+            } else {
+                canvas.SetColor(64, 87, 106);
+            }
+            canvas.Circle(1, output[i].cx, output[i].cy, 20);
+            break;
     }
 }
 
@@ -181,65 +161,53 @@ void cpart_gamepad_an::PreProcess(void) {
     output_value_an_ = output_value_an;
 }
 
-void cpart_gamepad_an::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            switch (input[i].id) {
-                case I_B1:
-                    output_value[0] = 0;
-                    output_ids[O_B1]->update = 1;
-                    break;
-                case I_B2:
-                    output_value[1] = 0;
-                    output_ids[O_B2]->update = 1;
-                    break;
-                case I_B3:
-                    output_value[2] = 0;
-                    output_ids[O_B3]->update = 1;
-                    break;
-                case I_B4:
-                    output_value[3] = 0;
-                    output_ids[O_B4]->update = 1;
-                    break;
-                case I_B5:
-                    output_value[4] = 0;
-                    output_ids[O_B5]->update = 1;
-                    break;
-            }
-        }
+void cpart_gamepad_an::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_B1:
+            output_value[0] = 0;
+            output_ids[O_B1]->update = 1;
+            break;
+        case I_B2:
+            output_value[1] = 0;
+            output_ids[O_B2]->update = 1;
+            break;
+        case I_B3:
+            output_value[2] = 0;
+            output_ids[O_B3]->update = 1;
+            break;
+        case I_B4:
+            output_value[3] = 0;
+            output_ids[O_B4]->update = 1;
+            break;
+        case I_B5:
+            output_value[4] = 0;
+            output_ids[O_B5]->update = 1;
+            break;
     }
 }
 
-void cpart_gamepad_an::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            switch (input[i].id) {
-                case I_B1:
-                    output_value[0] = 1;
-                    output_ids[O_B1]->update = 1;
-                    break;
-                case I_B2:
-                    output_value[1] = 1;
-                    output_ids[O_B2]->update = 1;
-                    break;
-                case I_B3:
-                    output_value[2] = 1;
-                    output_ids[O_B3]->update = 1;
-                    break;
-                case I_B4:
-                    output_value[3] = 1;
-                    output_ids[O_B4]->update = 1;
-                    break;
-                case I_B5:
-                    output_value[4] = 1;
-                    output_ids[O_B5]->update = 1;
-                    break;
-            }
-        }
+void cpart_gamepad_an::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_B1:
+            output_value[0] = 1;
+            output_ids[O_B1]->update = 1;
+            break;
+        case I_B2:
+            output_value[1] = 1;
+            output_ids[O_B2]->update = 1;
+            break;
+        case I_B3:
+            output_value[2] = 1;
+            output_ids[O_B3]->update = 1;
+            break;
+        case I_B4:
+            output_value[3] = 1;
+            output_ids[O_B4]->update = 1;
+            break;
+        case I_B5:
+            output_value[4] = 1;
+            output_ids[O_B5]->update = 1;
+            break;
     }
 }
 

@@ -95,90 +95,68 @@ cpart_MPU6050::~cpart_MPU6050(void) {
     canvas.Destroy();
 }
 
-void cpart_MPU6050::Draw(void) {
-    int i;
+void cpart_MPU6050::DrawOutput(const unsigned int i) {
     char val[10];
 
-    Update = 0;
-
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
-
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
-            }
-            Update++;  // set to update buffer
-
-            switch (output[i].id) {
-                case O_VS1:
-                case O_VS2:
-                case O_VS3:
-                    switch ((mpu.regs[ACCEL_CONFIG] & 0x18) >> 3) {
-                        case 0:  // 2g
-                            snprintf(val, 10, "%4.2f", 2 * ((getValues(output[i].id - O_VS1)) - 100) / 100.0);
-                            break;
-                        case 1:  // 4g
-                            snprintf(val, 10, "%4.2f", 4 * ((getValues(output[i].id - O_VS1)) - 100) / 100.0);
-                            break;
-                        case 2:  // 8g
-                            snprintf(val, 10, "%4.2f", 8 * ((getValues(output[i].id - O_VS1)) - 100) / 100.0);
-                            break;
-                        case 3:  // 16g
-                            snprintf(val, 10, "%4.2f", 16 * ((getValues(output[i].id - O_VS1)) - 100) / 100.0);
-                            break;
-                    }
-                    DrawSlider(&output[i], 200 - getValues(output[i].id - O_VS1), val, font_p);
-                    canvas.SetFont(font);
+    switch (output[i].id) {
+        case O_VS1:
+        case O_VS2:
+        case O_VS3:
+            switch ((mpu.regs[ACCEL_CONFIG] & 0x18) >> 3) {
+                case 0:  // 2g
+                    snprintf(val, 10, "%4.2f", 2 * ((getValues(output[i].id - O_VS1)) - 100) / 100.0);
                     break;
-                case O_VS4:
-                case O_VS5:
-                case O_VS6:
-                    switch ((mpu.regs[GYRO_CONFIG] & 0x18) >> 3) {
-                        case 0:  // 250g/s
-                            snprintf(val, 10, "%4.0f", 250 * ((getValues(output[i].id - O_VS1)) - 100) / 100.0);
-                            break;
-                        case 1:  // 500g/s
-                            snprintf(val, 10, "%4.0f", 500 * ((getValues(output[i].id - O_VS1)) - 100) / 100.0);
-                            break;
-                        case 2:  // 1000g/s
-                            snprintf(val, 10, "%4.0f", 1000 * ((getValues(output[i].id - O_VS1)) - 100) / 100.0);
-                            break;
-                        case 3:  // 2000g/s
-                            snprintf(val, 10, "%4.0f", 2000 * ((getValues(output[i].id - O_VS1)) - 100) / 100.0);
-                            break;
-                    }
-                    DrawSlider(&output[i], 200 - getValues(output[i].id - O_VS1), val, font_p);
-                    canvas.SetFont(font);
+                case 1:  // 4g
+                    snprintf(val, 10, "%4.2f", 4 * ((getValues(output[i].id - O_VS1)) - 100) / 100.0);
                     break;
-                default:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-
-                    canvas.SetFgColor(255, 255, 255);
-                    canvas.RotatedText(pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0);
-
-                    int pinv = pin_values[output[i].id - O_P1][0];
-                    if (pinv > 10) {
-                        canvas.SetFgColor(155, 155, 155);
-                        canvas.RotatedText(pin_values[output[i].id - O_P1], output[i].x1, output[i].y2 - 30, 90.0);
-                    } else {
-                        if (mpu_pins[pinv] == 0)
-                            canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
-                        else
-                            canvas.RotatedText(SpareParts.GetPinName(mpu_pins[pinv]), output[i].x1, output[i].y2 - 30,
-                                               90.0);
-                    }
+                case 2:  // 8g
+                    snprintf(val, 10, "%4.2f", 8 * ((getValues(output[i].id - O_VS1)) - 100) / 100.0);
+                    break;
+                case 3:  // 16g
+                    snprintf(val, 10, "%4.2f", 16 * ((getValues(output[i].id - O_VS1)) - 100) / 100.0);
                     break;
             }
-        }
-    }
+            DrawSlider(&output[i], 200 - getValues(output[i].id - O_VS1), val, font_p);
+            canvas.SetFont(font);
+            break;
+        case O_VS4:
+        case O_VS5:
+        case O_VS6:
+            switch ((mpu.regs[GYRO_CONFIG] & 0x18) >> 3) {
+                case 0:  // 250g/s
+                    snprintf(val, 10, "%4.0f", 250 * ((getValues(output[i].id - O_VS1)) - 100) / 100.0);
+                    break;
+                case 1:  // 500g/s
+                    snprintf(val, 10, "%4.0f", 500 * ((getValues(output[i].id - O_VS1)) - 100) / 100.0);
+                    break;
+                case 2:  // 1000g/s
+                    snprintf(val, 10, "%4.0f", 1000 * ((getValues(output[i].id - O_VS1)) - 100) / 100.0);
+                    break;
+                case 3:  // 2000g/s
+                    snprintf(val, 10, "%4.0f", 2000 * ((getValues(output[i].id - O_VS1)) - 100) / 100.0);
+                    break;
+            }
+            DrawSlider(&output[i], 200 - getValues(output[i].id - O_VS1), val, font_p);
+            canvas.SetFont(font);
+            break;
+        default:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
-    if (Update) {
-        canvas.End();
+            canvas.SetFgColor(255, 255, 255);
+            canvas.RotatedText(pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0);
+
+            int pinv = pin_values[output[i].id - O_P1][0];
+            if (pinv > 10) {
+                canvas.SetFgColor(155, 155, 155);
+                canvas.RotatedText(pin_values[output[i].id - O_P1], output[i].x1, output[i].y2 - 30, 90.0);
+            } else {
+                if (mpu_pins[pinv] == 0)
+                    canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
+                else
+                    canvas.RotatedText(SpareParts.GetPinName(mpu_pins[pinv]), output[i].x1, output[i].y2 - 30, 90.0);
+            }
+            break;
     }
 }
 
@@ -414,121 +392,112 @@ unsigned char cpart_MPU6050::getValues(unsigned char addr) {
     return value;
 }
 
-void cpart_MPU6050::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
-    int i;
+void cpart_MPU6050::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
     unsigned char value;
 
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            RotateCoords(&x, &y);
-            switch (input[i].id) {
-                case I_VS1:
-                    value = 200 - ((y - input[i].y1) * 1.66);
-                    if (value > 200)
-                        value = 0;
-                    setMpuReg(0, value);
-                    active[0] = 1;
-                    output_ids[O_VS1]->update = 1;
-                    break;
-                case I_VS2:
-                    value = 200 - ((y - input[i].y1) * 1.66);
-                    if (value > 200)
-                        value = 0;
-                    setMpuReg(1, value);
-                    active[1] = 1;
-                    output_ids[O_VS2]->update = 1;
-                    break;
-                case I_VS3:
-                    value = 200 - ((y - input[i].y1) * 1.66);
-                    if (value > 200)
-                        value = 0;
-                    setMpuReg(2, value);
-                    active[2] = 1;
-                    output_ids[O_VS3]->update = 1;
-                    break;
-                case I_VS4:
-                    value = 200 - ((y - input[i].y1) * 1.66);
-                    if (value > 200)
-                        value = 0;
-                    setMpuReg(3, value);
-                    active[3] = 1;
-                    output_ids[O_VS4]->update = 1;
-                    break;
-                case I_VS5:
-                    value = 200 - ((y - input[i].y1) * 1.66);
-                    if (value > 200)
-                        value = 0;
-                    setMpuReg(4, value);
-                    active[4] = 1;
-                    output_ids[O_VS5]->update = 1;
-                    break;
-                case I_VS6:
-                    value = 200 - ((y - input[i].y1) * 1.66);
-                    if (value > 200)
-                        value = 0;
-                    setMpuReg(5, value);
-                    active[5] = 1;
-                    output_ids[O_VS6]->update = 1;
-                    break;
-            }
-        }
+    switch (inputId) {
+        case I_VS1:
+            value = 200 - ((y - input_ids[I_VS1]->y1) * 1.66);
+            if (value > 200)
+                value = 0;
+            setMpuReg(0, value);
+            active[0] = 1;
+            output_ids[O_VS1]->update = 1;
+            break;
+        case I_VS2:
+            value = 200 - ((y - input_ids[I_VS2]->y1) * 1.66);
+            if (value > 200)
+                value = 0;
+            setMpuReg(1, value);
+            active[1] = 1;
+            output_ids[O_VS2]->update = 1;
+            break;
+        case I_VS3:
+            value = 200 - ((y - input_ids[I_VS3]->y1) * 1.66);
+            if (value > 200)
+                value = 0;
+            setMpuReg(2, value);
+            active[2] = 1;
+            output_ids[O_VS3]->update = 1;
+            break;
+        case I_VS4:
+            value = 200 - ((y - input_ids[I_VS4]->y1) * 1.66);
+            if (value > 200)
+                value = 0;
+            setMpuReg(3, value);
+            active[3] = 1;
+            output_ids[O_VS4]->update = 1;
+            break;
+        case I_VS5:
+            value = 200 - ((y - input_ids[I_VS5]->y1) * 1.66);
+            if (value > 200)
+                value = 0;
+            setMpuReg(4, value);
+            active[4] = 1;
+            output_ids[O_VS5]->update = 1;
+            break;
+        case I_VS6:
+            value = 200 - ((y - input_ids[I_VS6]->y1) * 1.66);
+            if (value > 200)
+                value = 0;
+            setMpuReg(5, value);
+            active[5] = 1;
+            output_ids[O_VS6]->update = 1;
+            break;
     }
 }
 
-void cpart_MPU6050::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            switch (input[i].id) {
-                case I_VS1:
-                    active[0] = 0;
-                    output_ids[O_VS1]->update = 1;
-                    break;
-                case I_VS2:
-                    active[1] = 0;
-                    output_ids[O_VS2]->update = 1;
-                    break;
-                case I_VS3:
-                    active[2] = 0;
-                    output_ids[O_VS3]->update = 1;
-                    break;
-                case I_VS4:
-                    active[3] = 0;
-                    output_ids[O_VS4]->update = 1;
-                    break;
-                case I_VS5:
-                    active[4] = 0;
-                    output_ids[O_VS5]->update = 1;
-                    break;
-                case I_VS6:
-                    active[5] = 0;
-                    output_ids[O_VS6]->update = 1;
-                    break;
-            }
-        }
+void cpart_MPU6050::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_VS1:
+            active[0] = 0;
+            output_ids[O_VS1]->update = 1;
+            break;
+        case I_VS2:
+            active[1] = 0;
+            output_ids[O_VS2]->update = 1;
+            break;
+        case I_VS3:
+            active[2] = 0;
+            output_ids[O_VS3]->update = 1;
+            break;
+        case I_VS4:
+            active[3] = 0;
+            output_ids[O_VS4]->update = 1;
+            break;
+        case I_VS5:
+            active[4] = 0;
+            output_ids[O_VS5]->update = 1;
+            break;
+        case I_VS6:
+            active[5] = 0;
+            output_ids[O_VS6]->update = 1;
+            break;
     }
 }
 
-void cpart_MPU6050::EvMouseMove(uint button, uint x, uint y, uint state) {
-    int i;
+void cpart_MPU6050::OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) {
     unsigned char value;
 
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            RotateCoords(&x, &y);
-
-            if (active[input[i].id - I_VS1]) {
-                value = 200 - ((y - input[i].y1) * 1.66);
+    switch (inputId) {
+        case I_VS1 ... I_VS6:
+            if (active[inputId - I_VS1]) {
+                value = 200 - ((y - input_ids[inputId]->y1) * 1.66);
                 if (value > 200)
                     value = 0;
 
-                output_ids[O_VS1 + input[i].id - I_VS1]->update = 1;
-                setMpuReg(input[i].id - I_VS1, value);
+                output_ids[O_VS1 + inputId - I_VS1]->update = 1;
+                setMpuReg(inputId - I_VS1, value);
             }
-        } else {
-            active[input[i].id - I_VS1] = 0;
-        }
+            break;
+        default:
+            active[0] = 0;
+            active[1] = 0;
+            active[2] = 0;
+            active[3] = 0;
+            active[4] = 0;
+            active[5] = 0;
+            break;
     }
 }
 

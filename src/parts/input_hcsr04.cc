@@ -68,71 +68,47 @@ cpart_hcsr04::~cpart_hcsr04(void) {
     canvas.Destroy();
 }
 
-void cpart_hcsr04::Draw(void) {
-    int i;
+void cpart_hcsr04::DrawOutput(const unsigned int i) {
     char val[10];
 
-    Update = 0;
-
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
-
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
-            }
-            Update++;  // set to update buffer
-
-            switch (output[i].id) {
-                case O_P1:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    if (input_pins[output[i].id - O_P1] == 0)
-                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90);
-                    else
-                        canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
-                                           output[i].y2, 90);
-                    break;
-                case O_P2:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    if (output_pins[output[i].id - O_P2] == 0)
-                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90);
-                    else
-                        canvas.RotatedText(SpareParts.GetPinName(output_pins[output[i].id - O_P2]), output[i].x1,
-                                           output[i].y2, 90);
-                    break;
-                case O_F1:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(155, 155, 155);
-                    canvas.RotatedText("+5V", output[i].x1, output[i].y2, 90);
-                    break;
-                case O_F2:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(155, 155, 155);
-                    canvas.RotatedText("GND", output[i].x1, output[i].y2, 90);
-                    break;
-                case O_PO1:
-                    snprintf(val, 10, " %3i", (int)(400.0 * (200 - value) / 200.0));
-                    DrawSlider(&output[i], value, val, font_p);
-                    canvas.SetFont(font);
-                    break;
-            }
-        }
-    }
-
-    if (Update) {
-        canvas.End();
+    switch (output[i].id) {
+        case O_P1:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            if (input_pins[output[i].id - O_P1] == 0)
+                canvas.RotatedText("NC", output[i].x1, output[i].y2, 90);
+            else
+                canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2,
+                                   90);
+            break;
+        case O_P2:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            if (output_pins[output[i].id - O_P2] == 0)
+                canvas.RotatedText("NC", output[i].x1, output[i].y2, 90);
+            else
+                canvas.RotatedText(SpareParts.GetPinName(output_pins[output[i].id - O_P2]), output[i].x1, output[i].y2,
+                                   90);
+            break;
+        case O_F1:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(155, 155, 155);
+            canvas.RotatedText("+5V", output[i].x1, output[i].y2, 90);
+            break;
+        case O_F2:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(155, 155, 155);
+            canvas.RotatedText("GND", output[i].x1, output[i].y2, 90);
+            break;
+        case O_PO1:
+            snprintf(val, 10, " %3i", (int)(400.0 * (200 - value) / 200.0));
+            DrawSlider(&output[i], value, val, font_p);
+            canvas.SetFont(font);
+            break;
     }
 }
 
@@ -167,56 +143,40 @@ void cpart_hcsr04::Process(void) {
     }
 }
 
-void cpart_hcsr04::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            RotateCoords(&x, &y);
-            switch (input[i].id) {
-                case I_PO1:
-                    value = (y - input[i].y1) * 1.66;
-                    if (value > 200)
-                        value = 200;
-                    active = 1;
-                    output_ids[O_PO1]->update = 1;
-                    break;
-            }
-        }
+void cpart_hcsr04::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_PO1:
+            value = (y - input_ids[I_PO1]->y1) * 1.66;
+            if (value > 200)
+                value = 200;
+            active = 1;
+            output_ids[O_PO1]->update = 1;
+            break;
     }
 }
 
-void cpart_hcsr04::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            switch (input[i].id) {
-                case I_PO1:
-                    active = 0;
-                    output_ids[O_PO1]->update = 1;
-                    break;
-            }
-        }
+void cpart_hcsr04::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_PO1:
+            active = 0;
+            output_ids[O_PO1]->update = 1;
+            break;
     }
 }
 
-void cpart_hcsr04::EvMouseMove(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            RotateCoords(&x, &y);
-
+void cpart_hcsr04::OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_PO1:
             if (active) {
-                value = (y - input[i].y1) * 1.66;
+                value = (y - input_ids[I_PO1]->y1) * 1.66;
                 if (value > 200)
                     value = 200;
                 output_ids[O_PO1]->update = 1;
             }
-        } else {
+            break;
+        default:
             active = 0;
-        }
+            break;
     }
 }
 

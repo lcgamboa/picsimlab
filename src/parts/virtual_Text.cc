@@ -47,7 +47,7 @@ static const colorval_t colortable[C_END] = {{0xFF, 0, 0},       {0, 0xFF, 0},  
 static PCWProp pcwprop[4] = {{PCW_TEXT, "text"}, {PCW_SPIN, "Size"}, {PCW_COMBO, "Color"}, {PCW_COMBO, "Backgrd"}};
 
 cpart_TEXT::cpart_TEXT(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, 8) {
     Lines.AddLine("text");
 
     SetPCWProperties(pcwprop, 4);
@@ -104,52 +104,32 @@ void cpart_TEXT::LoadImage(void) {
     lxRemoveFile(ifname);
 }
 
-void cpart_TEXT::Draw(void) {
-    int i;
+void cpart_TEXT::DrawOutput(const unsigned int i) {
     unsigned int l;
     lxRect rec;
     lxString Text;
-    Update = 0;
 
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
+    switch (output[i].id) {
+        case O_TEXTB:
 
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
+            font.SetPointSize(Size);
+
+            canvas.SetColor(colortable[Bgcolor].r, colortable[Bgcolor].g, colortable[Bgcolor].b);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+
+            canvas.SetColor(colortable[Textcolor].r, colortable[Textcolor].g, colortable[Textcolor].b);
+            rec.x = output[i].x1;
+            rec.y = output[i].y1;
+            rec.width = output[i].x2 - output[i].x1;
+            rec.height = output[i].y2 - output[i].y1;
+
+            Text = Lines.GetLine(0);
+            for (l = 1; l < Lines.GetLinesCount(); l++) {
+                Text += "\n" + Lines.GetLine(l);
             }
-            Update++;  // set to update buffer
 
-            switch (output[i].id) {
-                case O_TEXTB:
-
-                    font.SetPointSize(Size);
-
-                    canvas.SetColor(colortable[Bgcolor].r, colortable[Bgcolor].g, colortable[Bgcolor].b);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-
-                    canvas.SetColor(colortable[Textcolor].r, colortable[Textcolor].g, colortable[Textcolor].b);
-                    rec.x = output[i].x1;
-                    rec.y = output[i].y1;
-                    rec.width = output[i].x2 - output[i].x1;
-                    rec.height = output[i].y2 - output[i].y1;
-
-                    Text = Lines.GetLine(0);
-                    for (l = 1; l < Lines.GetLinesCount(); l++) {
-                        Text += "\n" + Lines.GetLine(l);
-                    }
-
-                    canvas.TextOnRect(Text, rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
-                    break;
-            }
-        }
-    }
-
-    if (Update) {
-        canvas.End();
+            canvas.TextOnRect(Text, rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
+            break;
     }
 }
 

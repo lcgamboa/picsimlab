@@ -135,400 +135,345 @@ cpart_7s_display::~cpart_7s_display(void) {
     canvas.Destroy();
 }
 
-void cpart_7s_display::Draw(void) {
-    int i;
+void cpart_7s_display::DrawOutput(const unsigned int i) {
+    canvas.SetFgColor(30, 0, 0);
 
-    Update = 0;
-
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
-
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
+    switch (output[i].id) {
+        case O_SA:
+        case O_SB:
+        case O_SC:
+        case O_SD:
+        case O_SE:
+        case O_SF:
+        case O_SG:
+        case O_SP:
+        case O_DISP1:
+        case O_DISP2:
+        case O_DISP3:
+        case O_DISP4:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            if (input_pins[output[i].id - O_SA] == 0)
+                canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+            else
+                canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_SA]), output[i].x1, output[i].y2,
+                                   90.0);
+            break;
+        case O_FX1:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(155, 155, 155);
+            if (active) {
+                canvas.RotatedText("GND", output[i].x1, output[i].y2, 90.0);
+            } else {
+                canvas.RotatedText("+5V", output[i].x1, output[i].y2, 90.0);
             }
-            Update++;  // set to update buffer
-
-            canvas.SetFgColor(30, 0, 0);
-
-            switch (output[i].id) {
-                case O_SA:
-                case O_SB:
-                case O_SC:
-                case O_SD:
-                case O_SE:
-                case O_SF:
-                case O_SG:
-                case O_SP:
-                case O_DISP1:
-                case O_DISP2:
-                case O_DISP3:
-                case O_DISP4:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    if (input_pins[output[i].id - O_SA] == 0)
-                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
-                    else
-                        canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_SA]), output[i].x1,
-                                           output[i].y2, 90.0);
-                    break;
-                case O_FX1:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(155, 155, 155);
-                    if (active) {
-                        canvas.RotatedText("GND", output[i].x1, output[i].y2, 90.0);
-                    } else {
-                        canvas.RotatedText("+5V", output[i].x1, output[i].y2, 90.0);
-                    }
-                    break;
-                case O_A1:
-                    if (active) {
-                        canvas.SetColor(0, lm1[0], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm1[0], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_B1:
-                    if (active) {
-                        canvas.SetColor(0, lm1[1], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm1[1], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_C1:
-                    if (active) {
-                        canvas.SetColor(0, lm1[2], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm1[2], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_D1:
-                    if (active) {
-                        canvas.SetColor(0, lm1[3], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm1[3], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_E1:
-                    if (active) {
-                        canvas.SetColor(0, lm1[4], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm1[4], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_F1:
-                    if (active) {
-                        canvas.SetColor(0, lm1[5], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm1[5], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_G1:
-                    if (active) {
-                        canvas.SetColor(0, lm1[6], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm1[6], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_P1:
-                    if (active) {
-                        canvas.SetColor(0, lm1[7], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm1[7], 0);
-                    }
-                    canvas.Circle(1, output[i].x1, output[i].y1, output[i].r);
-                    break;
-
-                case O_A2:
-                    if (active) {
-                        canvas.SetColor(0, lm2[0], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm2[0], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_B2:
-                    if (active) {
-                        canvas.SetColor(0, lm2[1], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm2[1], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_C2:
-                    if (active) {
-                        canvas.SetColor(0, lm2[2], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm2[2], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_D2:
-                    if (active) {
-                        canvas.SetColor(0, lm2[3], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm2[3], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_E2:
-                    if (active) {
-                        canvas.SetColor(0, lm2[4], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm2[4], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_F2:
-                    if (active) {
-                        canvas.SetColor(0, lm2[5], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm2[5], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_G2:
-                    if (active) {
-                        canvas.SetColor(0, lm2[6], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm2[6], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_P2:
-                    if (active) {
-                        canvas.SetColor(0, lm2[7], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm2[7], 0);
-                    }
-                    canvas.Circle(1, output[i].x1, output[i].y1, output[i].r);
-                    break;
-
-                case O_A3:
-                    if (active) {
-                        canvas.SetColor(0, lm3[0], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm3[0], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_B3:
-                    if (active) {
-                        canvas.SetColor(0, lm3[1], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm3[1], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_C3:
-                    if (active) {
-                        canvas.SetColor(0, lm3[2], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm3[2], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_D3:
-                    if (active) {
-                        canvas.SetColor(0, lm3[3], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm3[3], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_E3:
-                    if (active) {
-                        canvas.SetColor(0, lm3[4], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm3[4], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_F3:
-                    if (active) {
-                        canvas.SetColor(0, lm3[5], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm3[5], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_G3:
-                    if (active) {
-                        canvas.SetColor(0, lm3[6], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm3[6], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_P3:
-                    if (active) {
-                        canvas.SetColor(0, lm3[7], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm3[7], 0);
-                    }
-                    canvas.Circle(1, output[i].x1, output[i].y1, output[i].r);
-                    break;
-                    break;
-                case O_A4:
-                    if (active) {
-                        canvas.SetColor(0, lm4[0], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm4[0], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_B4:
-                    if (active) {
-                        canvas.SetColor(0, lm4[1], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm4[1], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_C4:
-                    if (active) {
-                        canvas.SetColor(0, lm4[2], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm4[2], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_D4:
-                    if (active) {
-                        canvas.SetColor(0, lm4[3], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm4[3], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_E4:
-                    if (active) {
-                        canvas.SetColor(0, lm4[4], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm4[4], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_F4:
-                    if (active) {
-                        canvas.SetColor(0, lm4[5], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm4[5], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_G4:
-                    if (active) {
-                        canvas.SetColor(0, lm4[6], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm4[6], 0);
-                    }
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_P4:
-                    if (active) {
-                        canvas.SetColor(0, lm4[7], 0);
-                    } else {
-                        canvas.SetColor(0, 285 - lm4[7], 0);
-                    }
-                    canvas.Circle(1, output[i].x1, output[i].y1, output[i].r);
-                    break;
-                case O_SS1:
-                    output_ids[O_A1]->update = 1;
-                    output_ids[O_B1]->update = 1;
-                    output_ids[O_C1]->update = 1;
-                    output_ids[O_D1]->update = 1;
-                    output_ids[O_E1]->update = 1;
-                    output_ids[O_F1]->update = 1;
-                    output_ids[O_G1]->update = 1;
-                    output_ids[O_P1]->update = 1;
-                    canvas.SetColor(10, 10, 10);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                case O_SS2:
-                    output_ids[O_A2]->update = 1;
-                    output_ids[O_B2]->update = 1;
-                    output_ids[O_C2]->update = 1;
-                    output_ids[O_D2]->update = 1;
-                    output_ids[O_E2]->update = 1;
-                    output_ids[O_F2]->update = 1;
-                    output_ids[O_G2]->update = 1;
-                    output_ids[O_P2]->update = 1;
-                    canvas.SetColor(10, 10, 10);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                case O_SS3:
-                    output_ids[O_A3]->update = 1;
-                    output_ids[O_B3]->update = 1;
-                    output_ids[O_C3]->update = 1;
-                    output_ids[O_D3]->update = 1;
-                    output_ids[O_E3]->update = 1;
-                    output_ids[O_F3]->update = 1;
-                    output_ids[O_G3]->update = 1;
-                    output_ids[O_P3]->update = 1;
-                    canvas.SetColor(10, 10, 10);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                case O_SS4:
-                    output_ids[O_A4]->update = 1;
-                    output_ids[O_B4]->update = 1;
-                    output_ids[O_C4]->update = 1;
-                    output_ids[O_D4]->update = 1;
-                    output_ids[O_E4]->update = 1;
-                    output_ids[O_F4]->update = 1;
-                    output_ids[O_G4]->update = 1;
-                    output_ids[O_P4]->update = 1;
-                    canvas.SetColor(10, 10, 10);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
+            break;
+        case O_A1:
+            if (active) {
+                canvas.SetColor(0, lm1[0], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm1[0], 0);
             }
-        }
-    }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_B1:
+            if (active) {
+                canvas.SetColor(0, lm1[1], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm1[1], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_C1:
+            if (active) {
+                canvas.SetColor(0, lm1[2], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm1[2], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_D1:
+            if (active) {
+                canvas.SetColor(0, lm1[3], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm1[3], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_E1:
+            if (active) {
+                canvas.SetColor(0, lm1[4], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm1[4], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_F1:
+            if (active) {
+                canvas.SetColor(0, lm1[5], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm1[5], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_G1:
+            if (active) {
+                canvas.SetColor(0, lm1[6], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm1[6], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_P1:
+            if (active) {
+                canvas.SetColor(0, lm1[7], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm1[7], 0);
+            }
+            canvas.Circle(1, output[i].x1, output[i].y1, output[i].r);
+            break;
 
-    if (Update) {
-        canvas.End();
+        case O_A2:
+            if (active) {
+                canvas.SetColor(0, lm2[0], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm2[0], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_B2:
+            if (active) {
+                canvas.SetColor(0, lm2[1], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm2[1], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_C2:
+            if (active) {
+                canvas.SetColor(0, lm2[2], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm2[2], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_D2:
+            if (active) {
+                canvas.SetColor(0, lm2[3], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm2[3], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_E2:
+            if (active) {
+                canvas.SetColor(0, lm2[4], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm2[4], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_F2:
+            if (active) {
+                canvas.SetColor(0, lm2[5], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm2[5], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_G2:
+            if (active) {
+                canvas.SetColor(0, lm2[6], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm2[6], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_P2:
+            if (active) {
+                canvas.SetColor(0, lm2[7], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm2[7], 0);
+            }
+            canvas.Circle(1, output[i].x1, output[i].y1, output[i].r);
+            break;
+
+        case O_A3:
+            if (active) {
+                canvas.SetColor(0, lm3[0], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm3[0], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_B3:
+            if (active) {
+                canvas.SetColor(0, lm3[1], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm3[1], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_C3:
+            if (active) {
+                canvas.SetColor(0, lm3[2], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm3[2], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_D3:
+            if (active) {
+                canvas.SetColor(0, lm3[3], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm3[3], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_E3:
+            if (active) {
+                canvas.SetColor(0, lm3[4], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm3[4], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_F3:
+            if (active) {
+                canvas.SetColor(0, lm3[5], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm3[5], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_G3:
+            if (active) {
+                canvas.SetColor(0, lm3[6], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm3[6], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_P3:
+            if (active) {
+                canvas.SetColor(0, lm3[7], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm3[7], 0);
+            }
+            canvas.Circle(1, output[i].x1, output[i].y1, output[i].r);
+            break;
+            break;
+        case O_A4:
+            if (active) {
+                canvas.SetColor(0, lm4[0], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm4[0], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_B4:
+            if (active) {
+                canvas.SetColor(0, lm4[1], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm4[1], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_C4:
+            if (active) {
+                canvas.SetColor(0, lm4[2], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm4[2], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_D4:
+            if (active) {
+                canvas.SetColor(0, lm4[3], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm4[3], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_E4:
+            if (active) {
+                canvas.SetColor(0, lm4[4], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm4[4], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_F4:
+            if (active) {
+                canvas.SetColor(0, lm4[5], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm4[5], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_G4:
+            if (active) {
+                canvas.SetColor(0, lm4[6], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm4[6], 0);
+            }
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_P4:
+            if (active) {
+                canvas.SetColor(0, lm4[7], 0);
+            } else {
+                canvas.SetColor(0, 285 - lm4[7], 0);
+            }
+            canvas.Circle(1, output[i].x1, output[i].y1, output[i].r);
+            break;
+        case O_SS1:
+            output_ids[O_A1]->update = 1;
+            output_ids[O_B1]->update = 1;
+            output_ids[O_C1]->update = 1;
+            output_ids[O_D1]->update = 1;
+            output_ids[O_E1]->update = 1;
+            output_ids[O_F1]->update = 1;
+            output_ids[O_G1]->update = 1;
+            output_ids[O_P1]->update = 1;
+            canvas.SetColor(10, 10, 10);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+        case O_SS2:
+            output_ids[O_A2]->update = 1;
+            output_ids[O_B2]->update = 1;
+            output_ids[O_C2]->update = 1;
+            output_ids[O_D2]->update = 1;
+            output_ids[O_E2]->update = 1;
+            output_ids[O_F2]->update = 1;
+            output_ids[O_G2]->update = 1;
+            output_ids[O_P2]->update = 1;
+            canvas.SetColor(10, 10, 10);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+        case O_SS3:
+            output_ids[O_A3]->update = 1;
+            output_ids[O_B3]->update = 1;
+            output_ids[O_C3]->update = 1;
+            output_ids[O_D3]->update = 1;
+            output_ids[O_E3]->update = 1;
+            output_ids[O_F3]->update = 1;
+            output_ids[O_G3]->update = 1;
+            output_ids[O_P3]->update = 1;
+            canvas.SetColor(10, 10, 10);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+        case O_SS4:
+            output_ids[O_A4]->update = 1;
+            output_ids[O_B4]->update = 1;
+            output_ids[O_C4]->update = 1;
+            output_ids[O_D4]->update = 1;
+            output_ids[O_E4]->update = 1;
+            output_ids[O_F4]->update = 1;
+            output_ids[O_G4]->update = 1;
+            output_ids[O_P4]->update = 1;
+            canvas.SetColor(10, 10, 10);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
     }
 }
 

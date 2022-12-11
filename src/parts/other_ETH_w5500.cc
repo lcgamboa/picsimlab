@@ -102,184 +102,157 @@ void cpart_ETH_w5500::Reset(void) {
     eth_w5500_rst(&ethw);
 }
 
-void cpart_ETH_w5500::Draw(void) {
-    int i;
+void cpart_ETH_w5500::DrawOutput(const unsigned int i) {
     int c;
     int n;
     char status[10];
     char sport[10];
 
-    Update = 0;
+    switch (output[i].id) {
+        case O_LPWR:
+            canvas.SetColor(255, 0, 0);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_LACT:
+            c = 255 * ((eth_w5500_get_leds(&ethw) & 0x08) > 0);
+            canvas.SetColor(c, c, 0);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_LLINK:
+            canvas.SetColor(0, 255 * (eth_w5500_get_leds(&ethw) & 0x01), 0);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            break;
+        case O_STAT:
+            canvas.SetColor(9, 21, 59);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
+            for (n = 0; n < 8; n++) {
+                canvas.SetFgColor(155, 155, 155);
+                memset(status, 0, 10);
+                status[0] = '1' + n;
+                switch (ethw.Socket[n][Sn_MR] & 0x0F) {
+                    case Sn_MR_CLOSE:
+                        status[1] = 'C';
+                        break;
+                    case Sn_MR_TCP:
+                        status[1] = 'T';
+                        break;
+                    case Sn_MR_UDP:
+                        status[1] = 'U';
+                        break;
+                    case S0_MR_MACRAW:
+                        status[1] = 'M';
+                        canvas.SetFgColor(255, 0, 0);
+                        break;
+                }
 
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
+                switch (ethw.Socket[n][Sn_SR]) {
+                    case SOCK_CLOSED:
+                        status[2] = 'C';
+                        break;
+                    case SOCK_INIT:
+                        status[2] = 'I';
+                        canvas.SetFgColor(255, 255, 255);
+                        break;
+                    case SOCK_LISTEN:
+                        status[2] = 'L';
+                        canvas.SetFgColor(255, 255, 255);
+                        break;
+                    case SOCK_SYNSENT:
+                        status[2] = 'S';
+                        canvas.SetFgColor(255, 255, 255);
+                        break;
+                    case SOCK_ESTABLISHED:
+                        status[2] = 'E';
+                        canvas.SetFgColor(255, 255, 255);
+                        break;
+                    case SOCK_CLOSE_WAIT:
+                        status[2] = 'W';
+                        canvas.SetFgColor(255, 255, 255);
+                        break;
+                    case SOCK_UDP:
+                        status[2] = 'U';
+                        canvas.SetFgColor(0, 255, 0);
+                        break;
+                    case SOCK_MACRAW:
+                        status[2] = 'M';
+                        canvas.SetFgColor(255, 0, 0);
+                        break;
+                }
+
+                switch (ethw.status[n]) {
+                    case ER_BIND:
+                        status[3] = 'B';
+                        canvas.SetFgColor(255, 0, 0);
+                        break;
+                    case ER_SEND:
+                        status[3] = 'S';
+                        canvas.SetFgColor(255, 0, 0);
+                        break;
+                    case ER_RECV:
+                        status[3] = 'R';
+                        canvas.SetFgColor(255, 0, 0);
+                        break;
+                    case ER_LIST:
+                        status[3] = 'L';
+                        canvas.SetFgColor(255, 0, 0);
+                        break;
+                    case ER_REUSE:
+                        status[3] = 'U';
+                        canvas.SetFgColor(255, 0, 0);
+                        break;
+                    case ER_CONN:
+                        status[3] = 'C';
+                        canvas.SetFgColor(255, 0, 0);
+                        break;
+                    case ER_SHUT:
+                        status[3] = 'D';
+                        canvas.SetFgColor(255, 0, 0);
+                        break;
+                    default:
+                        status[3] = ' ';
+                        break;
+                }
+
+                sprintf(sport, "%i", ethw.bindp[n]);
+                if (n < 4) {
+                    canvas.RotatedText(status, output[i].x1 + (n * 30), output[i].y1, 0);
+                    canvas.RotatedText(sport, output[i].x1 + (n * 35), output[i].y1 + 30, 0);
+                } else {
+                    canvas.RotatedText(status, output[i].x1 + ((n - 4) * 30), output[i].y1 + 15, 0);
+                    canvas.RotatedText(sport, output[i].x1 + ((n - 4) * 35), output[i].y1 + 45, 0);
+                }
             }
-            Update++;  // set to update buffer
+            break;
+        default:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
-            switch (output[i].id) {
-                case O_LPWR:
-                    canvas.SetColor(255, 0, 0);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
+            canvas.SetFgColor(155, 155, 155);
+
+            int pinv = output[i].id - O_P3;
+            int pin = 0;
+            switch (pinv) {
+                case 0:
+                case 4:
+                    pin = pinv > 1;
+                    if (output_pins[pin] == 0)
+                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+                    else
+                        canvas.RotatedText(SpareParts.GetPinName(output_pins[pin]), output[i].x1, output[i].y2, 90.0);
                     break;
-                case O_LACT:
-                    c = 255 * ((eth_w5500_get_leds(&ethw) & 0x08) > 0);
-                    canvas.SetColor(c, c, 0);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_LLINK:
-                    canvas.SetColor(0, 255 * (eth_w5500_get_leds(&ethw) & 0x01), 0);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    break;
-                case O_STAT:
-                    canvas.SetColor(9, 21, 59);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-
-                    for (n = 0; n < 8; n++) {
-                        canvas.SetFgColor(155, 155, 155);
-                        memset(status, 0, 10);
-                        status[0] = '1' + n;
-                        switch (ethw.Socket[n][Sn_MR] & 0x0F) {
-                            case Sn_MR_CLOSE:
-                                status[1] = 'C';
-                                break;
-                            case Sn_MR_TCP:
-                                status[1] = 'T';
-                                break;
-                            case Sn_MR_UDP:
-                                status[1] = 'U';
-                                break;
-                            case S0_MR_MACRAW:
-                                status[1] = 'M';
-                                canvas.SetFgColor(255, 0, 0);
-                                break;
-                        }
-
-                        switch (ethw.Socket[n][Sn_SR]) {
-                            case SOCK_CLOSED:
-                                status[2] = 'C';
-                                break;
-                            case SOCK_INIT:
-                                status[2] = 'I';
-                                canvas.SetFgColor(255, 255, 255);
-                                break;
-                            case SOCK_LISTEN:
-                                status[2] = 'L';
-                                canvas.SetFgColor(255, 255, 255);
-                                break;
-                            case SOCK_SYNSENT:
-                                status[2] = 'S';
-                                canvas.SetFgColor(255, 255, 255);
-                                break;
-                            case SOCK_ESTABLISHED:
-                                status[2] = 'E';
-                                canvas.SetFgColor(255, 255, 255);
-                                break;
-                            case SOCK_CLOSE_WAIT:
-                                status[2] = 'W';
-                                canvas.SetFgColor(255, 255, 255);
-                                break;
-                            case SOCK_UDP:
-                                status[2] = 'U';
-                                canvas.SetFgColor(0, 255, 0);
-                                break;
-                            case SOCK_MACRAW:
-                                status[2] = 'M';
-                                canvas.SetFgColor(255, 0, 0);
-                                break;
-                        }
-
-                        switch (ethw.status[n]) {
-                            case ER_BIND:
-                                status[3] = 'B';
-                                canvas.SetFgColor(255, 0, 0);
-                                break;
-                            case ER_SEND:
-                                status[3] = 'S';
-                                canvas.SetFgColor(255, 0, 0);
-                                break;
-                            case ER_RECV:
-                                status[3] = 'R';
-                                canvas.SetFgColor(255, 0, 0);
-                                break;
-                            case ER_LIST:
-                                status[3] = 'L';
-                                canvas.SetFgColor(255, 0, 0);
-                                break;
-                            case ER_REUSE:
-                                status[3] = 'U';
-                                canvas.SetFgColor(255, 0, 0);
-                                break;
-                            case ER_CONN:
-                                status[3] = 'C';
-                                canvas.SetFgColor(255, 0, 0);
-                                break;
-                            case ER_SHUT:
-                                status[3] = 'D';
-                                canvas.SetFgColor(255, 0, 0);
-                                break;
-                            default:
-                                status[3] = ' ';
-                                break;
-                        }
-
-                        sprintf(sport, "%i", ethw.bindp[n]);
-                        if (n < 4) {
-                            canvas.RotatedText(status, output[i].x1 + (n * 30), output[i].y1, 0);
-                            canvas.RotatedText(sport, output[i].x1 + (n * 35), output[i].y1 + 30, 0);
-                        } else {
-                            canvas.RotatedText(status, output[i].x1 + ((n - 4) * 30), output[i].y1 + 15, 0);
-                            canvas.RotatedText(sport, output[i].x1 + ((n - 4) * 35), output[i].y1 + 45, 0);
-                        }
-                    }
-                    break;
-                default:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-
-                    canvas.SetFgColor(155, 155, 155);
-
-                    int pinv = output[i].id - O_P3;
-                    int pin = 0;
-                    switch (pinv) {
-                        case 0:
-                        case 4:
-                            pin = pinv > 1;
-                            if (output_pins[pin] == 0)
-                                canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
-                            else
-                                canvas.RotatedText(SpareParts.GetPinName(output_pins[pin]), output[i].x1, output[i].y2,
-                                                   90.0);
-                            break;
-                        case 1:
-                        case 2:
-                        case 3:
-                            pinv++;
-                        case 5:
-                            pin = pinv - 2;
-                            if (input_pins[pin] == 0)
-                                canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
-                            else
-                                canvas.RotatedText(SpareParts.GetPinName(input_pins[pin]), output[i].x1, output[i].y2,
-                                                   90.0);
-                    }
-                    break;
+                case 1:
+                case 2:
+                case 3:
+                    pinv++;
+                case 5:
+                    pin = pinv - 2;
+                    if (input_pins[pin] == 0)
+                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+                    else
+                        canvas.RotatedText(SpareParts.GetPinName(input_pins[pin]), output[i].x1, output[i].y2, 90.0);
             }
-        }
-    }
-
-    if (Update) {
-        canvas.End();
+            break;
     }
 }
 
@@ -381,18 +354,12 @@ void cpart_ETH_w5500::Process(void) {
     }
 }
 
-void cpart_ETH_w5500::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            switch (input[i].id) {
-                case I_CONN:
-                    link ^= 1;
-                    eth_w5500_set_link(&ethw, link);
-                    break;
-            }
-        }
+void cpart_ETH_w5500::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_CONN:
+            link ^= 1;
+            eth_w5500_set_link(&ethw, link);
+            break;
     }
 }
 

@@ -90,84 +90,62 @@ void cpart_gamepad::PostInit(void) {
     value[1] = jr;
 }
 
-void cpart_gamepad::Draw(void) {
-    int i;
-
-    Update = 0;
-
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
-
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
+void cpart_gamepad::DrawOutput(const unsigned int i) {
+    switch (output[i].id) {
+        case O_P1:
+        case O_P2:
+        case O_P3:
+        case O_P4:
+        case O_P5:
+        case O_P6:
+        case O_P7:
+        case O_P8:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            if (output_pins[output[i].id - O_P1] == 0)
+                canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
+            else
+                canvas.RotatedText(SpareParts.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1, output[i].y1,
+                                   0);
+            break;
+        case O_J1:
+            canvas.SetColor(26, 26, 26);
+            canvas.Circle(1, output[i].x1 + jr + 10, output[i].y1 + jr + 10, jr + 10);
+            canvas.SetColor(51, 51, 51);
+            canvas.Circle(1, output[i].x1 + jr + 10, output[i].y1 + jr + 10, jr - 4);
+            canvas.SetColor(250, 250, 250);
+            canvas.Circle(1, output[i].x1 + value[0] + 10, output[i].y1 + value[1] + 10, 8);
+            break;
+        case O_B5:
+        case O_B6:
+            canvas.SetColor(102, 102, 102);
+            canvas.Circle(1, output[i].cx, output[i].cy, 10);
+            if (output_value[output[i].id - O_B1]) {
+                canvas.SetColor(15, 15, 15);
+            } else {
+                canvas.SetColor(55, 55, 55);
             }
-            Update++;  // set to update buffer
-
-            switch (output[i].id) {
-                case O_P1:
-                case O_P2:
-                case O_P3:
-                case O_P4:
-                case O_P5:
-                case O_P6:
-                case O_P7:
-                case O_P8:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    if (output_pins[output[i].id - O_P1] == 0)
-                        canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
-                    else
-                        canvas.RotatedText(SpareParts.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1,
-                                           output[i].y1, 0);
-                    break;
-                case O_J1:
-                    canvas.SetColor(26, 26, 26);
-                    canvas.Circle(1, output[i].x1 + jr + 10, output[i].y1 + jr + 10, jr + 10);
-                    canvas.SetColor(51, 51, 51);
-                    canvas.Circle(1, output[i].x1 + jr + 10, output[i].y1 + jr + 10, jr - 4);
-                    canvas.SetColor(250, 250, 250);
-                    canvas.Circle(1, output[i].x1 + value[0] + 10, output[i].y1 + value[1] + 10, 8);
-                    break;
-                case O_B5:
-                case O_B6:
-                    canvas.SetColor(102, 102, 102);
-                    canvas.Circle(1, output[i].cx, output[i].cy, 10);
-                    if (output_value[output[i].id - O_B1]) {
-                        canvas.SetColor(15, 15, 15);
-                    } else {
-                        canvas.SetColor(55, 55, 55);
-                    }
-                    canvas.Circle(1, output[i].cx, output[i].cy, 8);
-                    break;
-                case O_B1:
-                case O_B3:
-                    if (output_value[output[i].id - O_B1]) {
-                        canvas.SetColor(244, 244, 0);
-                    } else {
-                        canvas.SetColor(0x9c, 0x94, 0x47);
-                    }
-                    canvas.Circle(1, output[i].cx, output[i].cy, 20);
-                    break;
-                case O_B2:
-                case O_B4:
-                    if (output_value[output[i].id - O_B1]) {
-                        canvas.SetColor(0, 0, 214);
-                    } else {
-                        canvas.SetColor(64, 87, 106);
-                    }
-                    canvas.Circle(1, output[i].cx, output[i].cy, 20);
-                    break;
+            canvas.Circle(1, output[i].cx, output[i].cy, 8);
+            break;
+        case O_B1:
+        case O_B3:
+            if (output_value[output[i].id - O_B1]) {
+                canvas.SetColor(244, 244, 0);
+            } else {
+                canvas.SetColor(0x9c, 0x94, 0x47);
             }
-        }
-    }
-
-    if (Update) {
-        canvas.End();
+            canvas.Circle(1, output[i].cx, output[i].cy, 20);
+            break;
+        case O_B2:
+        case O_B4:
+            if (output_value[output[i].id - O_B1]) {
+                canvas.SetColor(0, 0, 214);
+            } else {
+                canvas.SetColor(64, 87, 106);
+            }
+            canvas.Circle(1, output[i].cx, output[i].cy, 20);
+            break;
     }
 }
 
@@ -182,133 +160,109 @@ void cpart_gamepad::PreProcess(void) {
     SpareParts.SetAPin(output_pins[7], 2.5 * (value[1]) / jr);
 }
 
-void cpart_gamepad::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
-    int i;
+void cpart_gamepad::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_B1:
+            output_value[0] = 0;
+            output_ids[O_B1]->update = 1;
+            break;
+        case I_B2:
+            output_value[1] = 0;
+            output_ids[O_B2]->update = 1;
+            break;
+        case I_B3:
+            output_value[2] = 0;
+            output_ids[O_B3]->update = 1;
+            break;
+        case I_B4:
+            output_value[3] = 0;
+            output_ids[O_B4]->update = 1;
+            break;
+        case I_B5:
+            output_value[4] = 0;
+            output_ids[O_B5]->update = 1;
+            break;
+        case I_B6:
+            output_value[5] = 0;
+            output_ids[O_B6]->update = 1;
+            break;
+        case I_J1:
+            RotateCoords(&x, &y);
 
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            switch (input[i].id) {
-                case I_B1:
-                    output_value[0] = 0;
-                    output_ids[O_B1]->update = 1;
-                    break;
-                case I_B2:
-                    output_value[1] = 0;
-                    output_ids[O_B2]->update = 1;
-                    break;
-                case I_B3:
-                    output_value[2] = 0;
-                    output_ids[O_B3]->update = 1;
-                    break;
-                case I_B4:
-                    output_value[3] = 0;
-                    output_ids[O_B4]->update = 1;
-                    break;
-                case I_B5:
-                    output_value[4] = 0;
-                    output_ids[O_B5]->update = 1;
-                    break;
-                case I_B6:
-                    output_value[5] = 0;
-                    output_ids[O_B6]->update = 1;
-                    break;
-                case I_J1:
-                    RotateCoords(&x, &y);
+            float cx = ((float)fabs(x - input_ids[I_J1]->x1)) - jr;
+            float cy = ((float)fabs(y - input_ids[I_J1]->y1)) - jr;
 
-                    float cx = ((float)fabs(x - input[i].x1)) - jr;
-                    float cy = ((float)fabs(y - input[i].y1)) - jr;
+            float module = sqrt(cx * cx + cy * cy);
+            float angle = atan2((cy), (cx));
 
-                    float module = sqrt(cx * cx + cy * cy);
-                    float angle = atan2((cy), (cx));
+            if (module > jr)
+                module = jr;
+            value[0] = module * cos(angle) + jr;
+            value[1] = module * sin(angle) + jr;
 
-                    if (module > jr)
-                        module = jr;
-                    value[0] = module * cos(angle) + jr;
-                    value[1] = module * sin(angle) + jr;
-
-                    active = 1;
-                    output_ids[O_J1]->update = 1;
-                    break;
-            }
-        }
+            active = 1;
+            output_ids[O_J1]->update = 1;
+            break;
     }
 }
 
-void cpart_gamepad::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            switch (input[i].id) {
-                case I_B1:
-                    output_value[0] = 1;
-                    output_ids[O_B1]->update = 1;
-                    break;
-                case I_B2:
-                    output_value[1] = 1;
-                    output_ids[O_B2]->update = 1;
-                    break;
-                case I_B3:
-                    output_value[2] = 1;
-                    output_ids[O_B3]->update = 1;
-                    break;
-                case I_B4:
-                    output_value[3] = 1;
-                    output_ids[O_B4]->update = 1;
-                    break;
-                case I_B5:
-                    output_value[4] = 1;
-                    output_ids[O_B5]->update = 1;
-                    break;
-                case I_B6:
-                    output_value[5] = 1;
-                    output_ids[O_B6]->update = 1;
-                    break;
-                case I_J1:
-                    active = 0;
-                    value[0] = jr;
-                    value[1] = jr;
-                    output_ids[O_J1]->update = 1;
-                    break;
-            }
-        }
-    }
-}
-
-void cpart_gamepad::EvMouseMove(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            switch (input[i].id) {
-                case I_J1:
-                    if (active) {
-                        RotateCoords(&x, &y);
-
-                        float cx = ((float)fabs(x - input[i].x1)) - jr;
-                        float cy = ((float)fabs(y - input[i].y1)) - jr;
-
-                        float module = sqrt(cx * cx + cy * cy);
-                        float angle = atan2((cy), (cx));
-
-                        if (module > jr)
-                            module = jr;
-                        value[0] = module * cos(angle) + jr;
-                        value[1] = module * sin(angle) + jr;
-                        output_ids[O_J1]->update = 1;
-                    }
-                    break;
-            }
-        }
-        /*
-        else
-         {
-          if (input[i].id == I_J1)
-           {
+void cpart_gamepad::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_B1:
+            output_value[0] = 1;
+            output_ids[O_B1]->update = 1;
+            break;
+        case I_B2:
+            output_value[1] = 1;
+            output_ids[O_B2]->update = 1;
+            break;
+        case I_B3:
+            output_value[2] = 1;
+            output_ids[O_B3]->update = 1;
+            break;
+        case I_B4:
+            output_value[3] = 1;
+            output_ids[O_B4]->update = 1;
+            break;
+        case I_B5:
+            output_value[4] = 1;
+            output_ids[O_B5]->update = 1;
+            break;
+        case I_B6:
+            output_value[5] = 1;
+            output_ids[O_B6]->update = 1;
+            break;
+        case I_J1:
             active = 0;
-           }
-         }
-         */
+            value[0] = jr;
+            value[1] = jr;
+            output_ids[O_J1]->update = 1;
+            break;
+    }
+}
+
+void cpart_gamepad::OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_J1:
+            if (active) {
+                RotateCoords(&x, &y);
+
+                float cx = ((float)fabs(x - input_ids[I_J1]->x1)) - jr;
+                float cy = ((float)fabs(y - input_ids[I_J1]->y1)) - jr;
+
+                float module = sqrt(cx * cx + cy * cy);
+                float angle = atan2((cy), (cx));
+
+                if (module > jr)
+                    module = jr;
+                value[0] = module * cos(angle) + jr;
+                value[1] = module * sin(angle) + jr;
+                output_ids[O_J1]->update = 1;
+            }
+            break;
+        default:
+            active = 0;
+            break;
     }
 }
 

@@ -52,7 +52,7 @@ public:
      */
     ~cpart_step(void);
 
-    void Draw(void) override;
+    void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;
     void Process(void) override;
     void PostProcess(void) override;

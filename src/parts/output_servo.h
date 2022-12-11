@@ -52,7 +52,7 @@ public:
      */
     ~cpart_servo(void);
 
-    void Draw(void) override;
+    void DrawOutput(const unsigned int index) override;
     void Process(void) override;
     void PostProcess(void) override;
     void ConfigurePropertiesWindow(CPWindow* WProp) override;

@@ -46,7 +46,7 @@ static PCWProp pcwprop[9] = {{PCW_COMBO, "P1 - A0"},          {PCW_COMBO, "P2 - 
                              {PCW_LABEL, "P7 - WP      GND"}, {PCW_LABEL, "P8 - VCC,+5V"}, {PCW_COMBO, "kbits"}};
 
 cpart_MI2C_24CXXX::cpart_MI2C_24CXXX(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, 8) {
     kbits = 4;
 
     mi2c_init(&mi2c, kbits);
@@ -78,58 +78,34 @@ cpart_MI2C_24CXXX::~cpart_MI2C_24CXXX(void) {
     unlink(f_mi2c_tmp_name);
 }
 
-void cpart_MI2C_24CXXX::Draw(void) {
-    int i;
+void cpart_MI2C_24CXXX::DrawOutput(const unsigned int i) {
+    switch (output[i].id) {
+        case O_IC:
+            char buff[10];
+            snprintf(buff, 9, "24C%02i", kbits);
+            canvas.SetColor(26, 26, 26);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            canvas.RotatedText(buff, output[i].x1, output[i].y2 - 15, 0);
+            break;
+        default:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
-    Update = 0;
+            canvas.SetFgColor(255, 255, 255);
+            canvas.RotatedText(pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0);
 
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
-
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
+            int pinv = pin_values[output[i].id - O_P1][0];
+            if (pinv > 10) {
+                canvas.SetFgColor(155, 155, 155);
+                canvas.RotatedText(pin_values[output[i].id - O_P1], output[i].x1, output[i].y2 - 30, 90.0);
+            } else {
+                if (input_pins[pinv] == 0)
+                    canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
+                else
+                    canvas.RotatedText(SpareParts.GetPinName(input_pins[pinv]), output[i].x1, output[i].y2 - 30, 90.0);
             }
-            Update++;  // set to update buffer
-
-            switch (output[i].id) {
-                case O_IC:
-                    char buff[10];
-                    snprintf(buff, 9, "24C%02i", kbits);
-                    canvas.SetColor(26, 26, 26);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    canvas.RotatedText(buff, output[i].x1, output[i].y2 - 15, 0);
-                    break;
-                default:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-
-                    canvas.SetFgColor(255, 255, 255);
-                    canvas.RotatedText(pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0);
-
-                    int pinv = pin_values[output[i].id - O_P1][0];
-                    if (pinv > 10) {
-                        canvas.SetFgColor(155, 155, 155);
-                        canvas.RotatedText(pin_values[output[i].id - O_P1], output[i].x1, output[i].y2 - 30, 90.0);
-                    } else {
-                        if (input_pins[pinv] == 0)
-                            canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
-                        else
-                            canvas.RotatedText(SpareParts.GetPinName(input_pins[pinv]), output[i].x1, output[i].y2 - 30,
-                                               90.0);
-                    }
-                    break;
-            }
-        }
-    }
-
-    if (Update) {
-        canvas.End();
+            break;
     }
 }
 
@@ -274,68 +250,62 @@ void cpart_MI2C_24CXXX::Process(void) {
                                   mi2c_io(&mi2c, ppins[input_pins[4] - 1].value, ppins[input_pins[3] - 1].value));
 }
 
-void cpart_MI2C_24CXXX::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            switch (input[i].id) {
-                case I_LOAD:
-                    SpareParts.GetFileDialog()->SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
-                    SpareParts.GetFileDialog()->SetFilter(lxT("PICSimLab Binary File (*.bin)|*.bin"));
-                    SpareParts.GetFileDialog()->SetFileName(lxT("untitled.bin"));
-                    SpareParts.Setfdtype(id);
-                    SpareParts.GetFileDialog()->Run();
-                    break;
-                case I_SAVE:
-                    SpareParts.GetFileDialog()->SetType(lxFD_SAVE | lxFD_CHANGE_DIR);
-                    SpareParts.GetFileDialog()->SetFilter(lxT("PICSimLab Binary File (*.bin)|*.bin"));
-                    SpareParts.GetFileDialog()->SetFileName(lxT("untitled.bin"));
-                    SpareParts.Setfdtype(id);
-                    SpareParts.GetFileDialog()->Run();
-                    break;
-                case I_VIEW:
-                    FILE* fout;
-                    fout = fopen(f_mi2c_tmp_name, "w");
-                    if (fout) {
-                        for (unsigned int i = 0; i < mi2c.SIZE; i += 16) {
-                            fprintf(fout, "%04X: ", i);
-                            for (int j = 0; j < 16; j++) {
-                                fprintf(fout, "%02X ", mi2c.data[j + i]);
-                            }
-                            fprintf(fout, "\r\n");
-                        }
-                        fclose(fout);
-#ifdef __EMSCRIPTEN__
-                        EM_ASM_(
-                            {
-                                var filename = UTF8ToString($0);
-                                var buf = FS.readFile(filename);
-                                var blob = new Blob([buf], { "type" : "application/octet-stream" });
-                                var text = URL.createObjectURL(blob);
-
-                                var element = document.createElement('a');
-                                element.setAttribute('href', text);
-                                element.setAttribute('download', filename);
-
-                                element.style.display = 'none';
-                                document.body.appendChild(element);
-
-                                element.click();
-
-                                document.body.removeChild(element);
-                                URL.revokeObjectURL(text);
-                            },
-                            f_mi2c_tmp_name);
-#else
-                        lxLaunchDefaultApplication(f_mi2c_tmp_name);
-#endif
-                    } else {
-                        printf("Error saving to file: %s \n", f_mi2c_tmp_name);
+void cpart_MI2C_24CXXX::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_LOAD:
+            SpareParts.GetFileDialog()->SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
+            SpareParts.GetFileDialog()->SetFilter(lxT("PICSimLab Binary File (*.bin)|*.bin"));
+            SpareParts.GetFileDialog()->SetFileName(lxT("untitled.bin"));
+            SpareParts.Setfdtype(id);
+            SpareParts.GetFileDialog()->Run();
+            break;
+        case I_SAVE:
+            SpareParts.GetFileDialog()->SetType(lxFD_SAVE | lxFD_CHANGE_DIR);
+            SpareParts.GetFileDialog()->SetFilter(lxT("PICSimLab Binary File (*.bin)|*.bin"));
+            SpareParts.GetFileDialog()->SetFileName(lxT("untitled.bin"));
+            SpareParts.Setfdtype(id);
+            SpareParts.GetFileDialog()->Run();
+            break;
+        case I_VIEW:
+            FILE* fout;
+            fout = fopen(f_mi2c_tmp_name, "w");
+            if (fout) {
+                for (unsigned int i = 0; i < mi2c.SIZE; i += 16) {
+                    fprintf(fout, "%04X: ", i);
+                    for (int j = 0; j < 16; j++) {
+                        fprintf(fout, "%02X ", mi2c.data[j + i]);
                     }
-                    break;
+                    fprintf(fout, "\r\n");
+                }
+                fclose(fout);
+#ifdef __EMSCRIPTEN__
+                EM_ASM_(
+                    {
+                        var filename = UTF8ToString($0);
+                        var buf = FS.readFile(filename);
+                        var blob = new Blob([buf], { "type" : "application/octet-stream" });
+                        var text = URL.createObjectURL(blob);
+
+                        var element = document.createElement('a');
+                        element.setAttribute('href', text);
+                        element.setAttribute('download', filename);
+
+                        element.style.display = 'none';
+                        document.body.appendChild(element);
+
+                        element.click();
+
+                        document.body.removeChild(element);
+                        URL.revokeObjectURL(text);
+                    },
+                    f_mi2c_tmp_name);
+#else
+                lxLaunchDefaultApplication(f_mi2c_tmp_name);
+#endif
+            } else {
+                printf("Error saving to file: %s \n", f_mi2c_tmp_name);
             }
-        }
+            break;
     }
 }
 

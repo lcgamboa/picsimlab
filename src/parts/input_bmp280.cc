@@ -66,60 +66,38 @@ cpart_bmp280::~cpart_bmp280(void) {
     canvas.Destroy();
 }
 
-void cpart_bmp280::Draw(void) {
-    int i;
+void cpart_bmp280::DrawOutput(const unsigned int i) {
     char val[10];
 
-    Update = 0;
+    switch (output[i].id) {
+        case O_PO1:
+            snprintf(val, 10, "%6.0f", (4.0 * (200 - values[0]) + 300));
+            DrawSlider(&output[i], values[0], val, font_p);
+            canvas.SetFont(font);
+            break;
+        case O_PO2:
+            snprintf(val, 10, "%5.1f", (0.625 * (200 - values[1]) - 40));
+            DrawSlider(&output[i], values[1], val, font_p);
+            canvas.SetFont(font);
+            break;
+        default:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
+            canvas.SetFgColor(255, 255, 255);
+            canvas.RotatedText(pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0);
 
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
+            int pinv = pin_values[output[i].id - O_P1][0];
+            if (pinv > 10) {
+                canvas.SetFgColor(155, 155, 155);
+                canvas.RotatedText(pin_values[output[i].id - O_P1], output[i].x1, output[i].y2 - 30, 90.0);
+            } else {
+                if (input_pins[pinv] == 0)
+                    canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
+                else
+                    canvas.RotatedText(SpareParts.GetPinName(input_pins[pinv]), output[i].x1, output[i].y2 - 30, 90.0);
             }
-            Update++;  // set to update buffer
-
-            switch (output[i].id) {
-                case O_PO1:
-                    snprintf(val, 10, "%6.0f", (4.0 * (200 - values[0]) + 300));
-                    DrawSlider(&output[i], values[0], val, font_p);
-                    canvas.SetFont(font);
-                    break;
-                case O_PO2:
-                    snprintf(val, 10, "%5.1f", (0.625 * (200 - values[1]) - 40));
-                    DrawSlider(&output[i], values[1], val, font_p);
-                    canvas.SetFont(font);
-                    break;
-                default:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-
-                    canvas.SetFgColor(255, 255, 255);
-                    canvas.RotatedText(pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0);
-
-                    int pinv = pin_values[output[i].id - O_P1][0];
-                    if (pinv > 10) {
-                        canvas.SetFgColor(155, 155, 155);
-                        canvas.RotatedText(pin_values[output[i].id - O_P1], output[i].x1, output[i].y2 - 30, 90.0);
-                    } else {
-                        if (input_pins[pinv] == 0)
-                            canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
-                        else
-                            canvas.RotatedText(SpareParts.GetPinName(input_pins[pinv]), output[i].x1, output[i].y2 - 30,
-                                               90.0);
-                    }
-                    break;
-            }
-        }
-    }
-
-    if (Update) {
-        canvas.End();
+            break;
     }
 }
 
@@ -190,79 +168,60 @@ void cpart_bmp280::Process(void) {
                                                                        ppins[input_pins[1] - 1].value));
 }
 
-void cpart_bmp280::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            RotateCoords(&x, &y);
-            switch (input[i].id) {
-                case I_PO1:
-                    values[0] = (y - input[i].y1) * 1.66;
-                    if (values[0] > 200)
-                        values[0] = 200;
-                    active[0] = 1;
-                    output_ids[O_PO1]->update = 1;
-                    break;
-                case I_PO2:
-                    values[1] = (y - input[i].y1) * 1.66;
-                    if (values[1] > 200)
-                        values[1] = 200;
-                    active[1] = 1;
-                    output_ids[O_PO2]->update = 1;
-                    break;
-            }
-        }
+void cpart_bmp280::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_PO1:
+            values[0] = (y - input_ids[I_PO1]->y1) * 1.66;
+            if (values[0] > 200)
+                values[0] = 200;
+            active[0] = 1;
+            output_ids[O_PO1]->update = 1;
+            break;
+        case I_PO2:
+            values[1] = (y - input_ids[I_PO2]->y1) * 1.66;
+            if (values[1] > 200)
+                values[1] = 200;
+            active[1] = 1;
+            output_ids[O_PO2]->update = 1;
+            break;
     }
 }
 
-void cpart_bmp280::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            switch (input[i].id) {
-                case I_PO1:
-                    active[0] = 0;
-                    output_ids[O_PO1]->update = 1;
-                    break;
-                case I_PO2:
-                    active[1] = 0;
-                    output_ids[O_PO2]->update = 1;
-                    break;
-            }
-        }
+void cpart_bmp280::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_PO1:
+            active[0] = 0;
+            output_ids[O_PO1]->update = 1;
+            break;
+        case I_PO2:
+            active[1] = 0;
+            output_ids[O_PO2]->update = 1;
+            break;
     }
 }
 
-void cpart_bmp280::EvMouseMove(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            RotateCoords(&x, &y);
-
-            switch (input[i].id) {
-                case I_PO1:
-                    if (active[0]) {
-                        values[0] = (y - input[i].y1) * 1.66;
-                        if (values[0] > 200)
-                            values[0] = 200;
-                        output_ids[O_PO1]->update = 1;
-                    }
-                    break;
-                case I_PO2:
-                    if (active[1]) {
-                        values[1] = (y - input[i].y1) * 1.66;
-                        if (values[1] > 200)
-                            values[1] = 200;
-                        output_ids[O_PO2]->update = 1;
-                    }
-                    break;
+void cpart_bmp280::OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_PO1:
+            if (active[0]) {
+                values[0] = (y - input_ids[I_PO1]->y1) * 1.66;
+                if (values[0] > 200)
+                    values[0] = 200;
+                output_ids[O_PO1]->update = 1;
             }
-        } else {
-            active[i] = 0;
-        }
+            break;
+        case I_PO2:
+            if (active[1]) {
+                values[1] = (y - input_ids[I_PO2]->y1) * 1.66;
+                if (values[1] > 200)
+                    values[1] = 200;
+                output_ids[O_PO2]->update = 1;
+            }
+            break;
+        default:
+            active[0] = 0;
+            active[1] = 0;
+            break;
     }
 }
 

@@ -35,7 +35,7 @@ enum { O_RX, O_TX, O_LTX, O_LRX };
 enum { I_TERM };
 
 /* line ending*/
-enum { LE_NONE, LE_NL, LE_CR, LE_NL_CR };
+enum { LE_NONE, LE_NL, LE_CR, LE_NL_CR, O_TERM };
 
 static PCWProp pcwprop[5] = {{PCW_LABEL, "P1 - VCC,+5V"},
                              {PCW_COMBO, "P2 - RX"},
@@ -203,84 +203,57 @@ void cpart_vterm::Reset(void) {
     }
 }
 
-void cpart_vterm::Draw(void) {
-    int i;
+void cpart_vterm::DrawOutput(const unsigned int i) {
+    switch (output[i].id) {
+        case O_LTX:
+            canvas.SetColor(0, (vt.bb_uart.leds & 0x02) * 125, 0);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            vt.bb_uart.leds &= ~0x02;
+            break;
+        case O_LRX:
+            canvas.SetColor(0, (vt.bb_uart.leds & 0x01) * 250, 0);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            vt.bb_uart.leds &= ~0x01;
+            break;
+        case O_TERM:
+            char str[SBUFFMAX];
+            vt.inMutex->Lock();
+            strncpy(str, (char*)vt.buff_in, vt.count_in);
+            str[vt.count_in] = 0;
+            vt.count_in = 0;
+            // printf("Data recv: \n[\n%s]\n", str);
+            vt.inMutex->Unlock();
+            vttext->Append(str);
 
-    Update = 0;
-
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
-
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
+            while (vttext->GetCountLines() > 1000) {
+                vttext->SetCursorPos(0);
+                vttext->DelLine();
             }
-            Update++;  // set to update buffer
+            break;
+        default:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
-            switch (output[i].id) {
-                case O_LTX:
-                    canvas.SetColor(0, (vt.bb_uart.leds & 0x02) * 125, 0);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    vt.bb_uart.leds &= ~0x02;
-                    break;
-                case O_LRX:
-                    canvas.SetColor(0, (vt.bb_uart.leds & 0x01) * 250, 0);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    vt.bb_uart.leds &= ~0x01;
-                    break;
-                default:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
+            canvas.SetFgColor(155, 155, 155);
 
-                    canvas.SetFgColor(155, 155, 155);
-
-                    int pinv = output[i].id - O_RX;
-                    int pin = 0;
-                    switch (pinv) {
-                        case 0:
-                            pin = pinv;
-                            if (input_pins[pin] == 0)
-                                canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
-                            else
-                                canvas.RotatedText(SpareParts.GetPinName(input_pins[pin]), output[i].x1, output[i].y2,
-                                                   90.0);
-                        case 1:
-                            pin = pinv - 1;
-                            if (output_pins[pin] == 0)
-                                canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
-                            else
-                                canvas.RotatedText(SpareParts.GetPinName(output_pins[pin]), output[i].x1, output[i].y2,
-                                                   90.0);
-                            break;
-                    }
+            int pinv = output[i].id - O_RX;
+            int pin = 0;
+            switch (pinv) {
+                case 0:
+                    pin = pinv;
+                    if (input_pins[pin] == 0)
+                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+                    else
+                        canvas.RotatedText(SpareParts.GetPinName(input_pins[pin]), output[i].x1, output[i].y2, 90.0);
+                case 1:
+                    pin = pinv - 1;
+                    if (output_pins[pin] == 0)
+                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+                    else
+                        canvas.RotatedText(SpareParts.GetPinName(output_pins[pin]), output[i].x1, output[i].y2, 90.0);
                     break;
             }
-        }
-    }
-
-    if (Update) {
-        canvas.End();
-    }
-
-    if (vt.count_in) {
-        char str[SBUFFMAX];
-        vt.inMutex->Lock();
-        strncpy(str, (char*)vt.buff_in, vt.count_in);
-        str[vt.count_in] = 0;
-        vt.count_in = 0;
-        // printf("Data recv: \n[\n%s]\n", str);
-        vt.inMutex->Unlock();
-        vttext->Append(str);
-
-        while (vttext->GetCountLines() > 1000) {
-            vttext->SetCursorPos(0);
-            vttext->DelLine();
-        }
+            break;
     }
 }
 
@@ -301,6 +274,8 @@ unsigned short cpart_vterm::GetOutputId(char* name) {
         return O_LTX;
     if (strcmp(name, "LD_RX") == 0)
         return O_LRX;
+    if (strcmp(name, "PB_TERM") == 0)
+        return O_TERM;
 
     printf("Erro output '%s' don't have a valid id! \n", name);
     return 1;
@@ -379,19 +354,13 @@ void cpart_vterm::Process(void) {
     _ret = ret;
 }
 
-void cpart_vterm::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
-    int i;
-
-    for (i = 0; i < inputc; i++) {
-        if (PointInside(x, y, input[i])) {
-            switch (input[i].id) {
-                case I_TERM:
-                    if (button == 1) {
-                        wvterm->Show();
-                    }
-                    break;
+void cpart_vterm::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+    switch (inputId) {
+        case I_TERM:
+            if (button == 1) {
+                wvterm->Show();
             }
-        }
+            break;
     }
 }
 
@@ -404,6 +373,9 @@ void cpart_vterm::PostProcess(void) {
     if (output_ids[O_LRX]->value != (vt.bb_uart.leds & 0x01)) {
         output_ids[O_LRX]->value = (vt.bb_uart.leds & 0x01);
         output_ids[O_LRX]->update = 1;
+    }
+    if (vt.count_in) {
+        output_ids[O_TERM]->update = 1;
     }
 }
 

@@ -85,79 +85,56 @@ cpart_Buzzer::~cpart_Buzzer(void) {
     buzzer.End();
 }
 
-void cpart_Buzzer::Draw(void) {
-    int i;
-
+void cpart_Buzzer::DrawOutput(const unsigned int i) {
     const picpin* ppins = SpareParts.GetPinsValues();
 
-    Update = 0;
+    canvas.SetFgColor(30, 0, 0);
 
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
+    switch (output[i].id) {
+        case O_P1:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            if (input_pins[output[i].id - O_P1] == 0)
+                canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
+            else
+                canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1,
+                                   0);
+            break;
+        case O_P2:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            canvas.RotatedText("GND", output[i].x1, output[i].y1, 0);
+            break;
+        case O_L1:
+            canvas.SetFgColor(0, 0, 0);
+            color1.Set(55, 0, 0);
 
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
+            if (input_pins[0] > 0) {
+                if (active) {
+                    color1.Set(ppins[input_pins[0] - 1].oavalue, 0, 0);
+                } else {
+                    color1.Set(310 - ppins[input_pins[0] - 1].oavalue, 0, 0);
+                }
             }
-            Update++;  // set to update buffer
-
-            canvas.SetFgColor(30, 0, 0);
-
-            switch (output[i].id) {
-                case O_P1:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    if (input_pins[output[i].id - O_P1] == 0)
-                        canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
-                    else
-                        canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
-                                           output[i].y1, 0);
-                    break;
-                case O_P2:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    canvas.RotatedText("GND", output[i].x1, output[i].y1, 0);
-                    break;
-                case O_L1:
-                    canvas.SetFgColor(0, 0, 0);
-                    color1.Set(55, 0, 0);
-
-                    if (input_pins[0] > 0) {
-                        if (active) {
-                            color1.Set(ppins[input_pins[0] - 1].oavalue, 0, 0);
-                        } else {
-                            color1.Set(310 - ppins[input_pins[0] - 1].oavalue, 0, 0);
-                        }
-                    }
-                    // draw a LED
-                    canvas.SetBgColor(color1);
-                    int r = color1.Red() - 120;
-                    int g = color1.Green() - 120;
-                    int b = color1.Blue() - 120;
-                    if (r < 0)
-                        r = 0;
-                    if (g < 0)
-                        g = 0;
-                    if (b < 0)
-                        b = 0;
-                    color2.Set(r, g, b);
-                    canvas.SetBgColor(color2);
-                    canvas.Circle(1, output[i].x1, output[i].y1, output[i].r + 1);
-                    canvas.SetBgColor(color1);
-                    canvas.Circle(1, output[i].x1, output[i].y1, output[i].r - 2);
-                    break;
-            }
-        }
-    }
-
-    if (Update) {
-        canvas.End();
+            // draw a LED
+            canvas.SetBgColor(color1);
+            int r = color1.Red() - 120;
+            int g = color1.Green() - 120;
+            int b = color1.Blue() - 120;
+            if (r < 0)
+                r = 0;
+            if (g < 0)
+                g = 0;
+            if (b < 0)
+                b = 0;
+            color2.Set(r, g, b);
+            canvas.SetBgColor(color2);
+            canvas.Circle(1, output[i].x1, output[i].y1, output[i].r + 1);
+            canvas.SetBgColor(color1);
+            canvas.Circle(1, output[i].x1, output[i].y1, output[i].r - 2);
+            break;
     }
 }
 

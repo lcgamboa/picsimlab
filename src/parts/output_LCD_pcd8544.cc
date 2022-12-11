@@ -61,21 +61,7 @@ cpart_LCD_pcd8544::~cpart_LCD_pcd8544(void) {
     canvas.Destroy();
 }
 
-void cpart_LCD_pcd8544::Draw(void) {
-    int i;
-
-    Update = 0;
-
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
-
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
-            }
-            Update++;  // set to update buffer
+void cpart_LCD_pcd8544::DrawOutput(const unsigned int i) {
 
             switch (output[i].id) {
                 case O_P1:
@@ -130,12 +116,6 @@ void cpart_LCD_pcd8544::Draw(void) {
                      */
                     break;
             }
-        }
-    }
-
-    if (Update) {
-        canvas.End();
-    }
 }
 
 unsigned short cpart_LCD_pcd8544::GetInputId(char* name) {

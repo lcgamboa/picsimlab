@@ -37,7 +37,7 @@ public:
     lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
     cpart_IO_PCF8574(const unsigned x, const unsigned y, const char* name, const char* type);
     ~cpart_IO_PCF8574(void);
-    void Draw(void) override;
+    void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;
     void Process(void) override;
     void PostProcess(void) override;
@@ -49,7 +49,7 @@ public:
     void ReadPreferences(lxString value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
-    const unsigned char* get_output_pins(void);
+    const unsigned char* GetOutputPins(void);
 
 private:
     unsigned char input_pins[5];
@@ -59,7 +59,6 @@ private:
     int JUMPSTEPS_;
     io_PCF8574_t ioe8;
     unsigned short _ret;
-    lxFont font;
 };
 
 #endif /* PART_IO_PCF8574_H */

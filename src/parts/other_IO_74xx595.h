@@ -37,7 +37,7 @@ public:
     lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
     cpart_IO_74xx595(const unsigned x, const unsigned y, const char* name, const char* type);
     ~cpart_IO_74xx595(void);
-    void Draw(void) override;
+    void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;
     void Process(void) override;
     void PostProcess(void) override;
@@ -58,7 +58,6 @@ private:
     int JUMPSTEPS_;
     io_74xx595_t sr8;
     unsigned short _ret;
-    lxFont font;
 };
 
 #endif /* PART_IO_74XX595_H */

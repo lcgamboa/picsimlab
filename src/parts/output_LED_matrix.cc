@@ -63,75 +63,50 @@ cpart_led_matrix::~cpart_led_matrix(void) {
     canvas.Destroy();
 }
 
-void cpart_led_matrix::Draw(void) {
-    int i;
-
-    Update = 0;
-
-    for (i = 0; i < outputc; i++) {
-        if (output[i].update)  // only if need update
-        {
-            output[i].update = 0;
-
-            if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
+void cpart_led_matrix::DrawOutput(const unsigned int i) {
+    switch (output[i].id) {
+        case O_P1:
+        case O_P2:
+        case O_P3:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            if (input_pins[output[i].id - O_P1] == 0)
+                canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+            else
+                canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2,
+                                   90.0);
+            break;
+        case O_P4:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            if (output_pins[output[i].id - O_P4] == 0)
+                canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+            else
+                canvas.RotatedText(itoa(output_pins[output[i].id - O_P4]), output[i].x1, output[i].y2, 90.0);
+            break;
+            break;
+        case O_F1:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(155, 155, 155);
+            canvas.RotatedText("5V", output[i].x1, output[i].y2, 90.0);
+            break;
+        case O_F2:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(155, 155, 155);
+            canvas.RotatedText("GND", output[i].x1, output[i].y2, 90.0);
+            break;
+        case O_LED:
+            // draw ldd text
+            if (ldd.update) {
+                canvas.SetColor(0, 90 + 40, 0);
+                ldd_max72xx_draw(&ldd, &canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                 output[i].y2 - output[i].y1, 1, angle);
             }
-            Update++;  // set to update buffer
-
-            switch (output[i].id) {
-                case O_P1:
-                case O_P2:
-                case O_P3:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    if (input_pins[output[i].id - O_P1] == 0)
-                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
-                    else
-                        canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
-                                           output[i].y2, 90.0);
-                    break;
-                case O_P4:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    if (output_pins[output[i].id - O_P4] == 0)
-                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
-                    else
-                        canvas.RotatedText(itoa(output_pins[output[i].id - O_P4]), output[i].x1, output[i].y2, 90.0);
-                    break;
-                    break;
-                case O_F1:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(155, 155, 155);
-                    canvas.RotatedText("5V", output[i].x1, output[i].y2, 90.0);
-                    break;
-                case O_F2:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(155, 155, 155);
-                    canvas.RotatedText("GND", output[i].x1, output[i].y2, 90.0);
-                    break;
-                case O_LED:
-                    // draw ldd text
-                    if (ldd.update) {
-                        canvas.SetColor(0, 90 + 40, 0);
-                        ldd_max72xx_draw(&ldd, &canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                         output[i].y2 - output[i].y1, 1, angle);
-                    }
-                    break;
-            }
-        }
-    }
-
-    if (Update) {
-        canvas.End();
+            break;
     }
 }
 

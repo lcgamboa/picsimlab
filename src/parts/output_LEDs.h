@@ -36,7 +36,7 @@ public:
     lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
     cpart_leds(const unsigned x, const unsigned y, const char* name, const char* type);
     ~cpart_leds(void);
-    void Draw(void) override;
+    void DrawOutput(const unsigned int index) override;
     void PostProcess(void) override;
     void ConfigurePropertiesWindow(CPWindow* WProp) override;
     void ReadPropertiesWindow(CPWindow* WProp) override;
@@ -50,7 +50,6 @@ private:
     unsigned char active;
     unsigned char input_pins[8];
     unsigned char colors[8];
-    lxFont font;
     lxColor color1;
     lxColor color2;
 };
