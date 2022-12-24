@@ -4,7 +4,7 @@ CC = i686-w64-mingw32-g++
 WINDRES = i686-w64-mingw32-windres
 
 FLAGS = -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\" -Wall -O2 -D_WIN_ -I../../dev_w32/include
-FLAGS+= -DEXT_BROWSER
+FLAGS+= -DEXT_BROWSER -std=c++14
 FLAGS+= -I../../dev_w32/lib/wx/include/i686-w64-mingw32-msw-unicode-3.1 -I../../dev_w32/include/wx-3.1 -D_FILE_OFFSET_BITS=64 -DWXUSINGDLL -D__WXMSW__ -mthreads -I../../dev_w32/include/lxrad/
 #FLAGS +=`i686-w64-mingw32-msw-unicode-3.1  --cxxflags` 
 FLAGS+= -D_ARCH_=\"WIN_32\" -D_DATE_=\"${DATE}\"
