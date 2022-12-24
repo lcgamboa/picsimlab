@@ -170,7 +170,7 @@ unsigned long srec(unsigned char * c)
 #ifdef _WIN_
     unsigned long nbytes;
       
-  if(phCom >= 0)
+  if(phCom != INVALID_HANDLE_VALUE)    
     ReadFile(phCom, c, 1,&nbytes, NULL);
   else
     nbytes=0;
