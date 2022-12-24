@@ -95,8 +95,13 @@ int serial_port_cfg(serialfd_t serialfd, float serialexbaud) {
     unsigned int BAUDRATE;
     int serialbaud;
 
+#ifndef _WIN_        
     if (serialfd <= 0)
         return 0;
+#else
+    if (serialfd == INVALID_HANDLE_VALUE) 
+        return 0;
+#endif
 
     switch (((int)((serialexbaud / 300.0) + 0.5))) {
         case 0 ... 1:
