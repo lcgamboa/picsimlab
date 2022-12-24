@@ -24,18 +24,24 @@
    ######################################################################## */
 
 #include "bitbang_i2c.h"
+#include "bitbang_spi.h"
 
 typedef struct {
     bitbang_i2c_t bb_i2c;
+    bitbang_spi_t bb_spi;
     unsigned char addr;
     unsigned char ctrl;
     unsigned int temp;
     unsigned int pressure;
+    unsigned char data_wc;
+    int i2c_mode;
 } sen_bmp280_t;
 
 void sen_bmp280_rst(sen_bmp280_t* bmp280);
 void sen_bmp280_init(sen_bmp280_t* bmp280);
 void sen_bmp280_end(sen_bmp280_t* bmp280);
 void sen_bmp280_setPressTemp(sen_bmp280_t* bmp280, const float pressure, const float temp);
+void sen_bmp280_set_addr(sen_bmp280_t* bmp280, unsigned char addr);
 
 unsigned char sen_bmp280_I2C_io(sen_bmp280_t* bmp280, const unsigned char scl, const unsigned char sda);
+unsigned short sen_bmp280_io_SPI(sen_bmp280_t* bmp280, unsigned char mosi, unsigned char clk, unsigned char ss);

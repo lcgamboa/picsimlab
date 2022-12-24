@@ -51,12 +51,14 @@ public:
     unsigned short GetOutputId(char* name) override;
 
 private:
-    unsigned char input_pins[2];
+    unsigned char input_pins[3];
+    unsigned char output_pins[1];
     sen_bmp280_t bmp280;
     unsigned char values[2];
     unsigned char active[2];
     lxFont font;
     lxFont font_p;
+    unsigned char ret_;
 };
 
 #endif /* PART_v_H */

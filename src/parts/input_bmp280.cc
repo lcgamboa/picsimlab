@@ -29,18 +29,16 @@
 #include "../spareparts.h"
 
 /* outputs */
-enum { O_P1, O_P2, O_PF1, O_PF2, O_PO1, O_PO2 };
+enum { O_PF1, O_PF2, O_P1, O_P2, O_P3, O_P4, O_PO1, O_PO2 };
 
 /* inputs */
 enum { I_PO1, I_PO2 };
 
-const char pin_names[4][10] = {"SCL", "SDA", "VCC", "GND"};
-const char pin_values[4][10] = {{0}, {1}, "+5V", "GND"};
+const char pin_names[6][10] = {"VCC", "GND", "SCL", "SDA", "CSB", "SDO"};
+const char pin_values[6][10] = {"+5V", "GND", {0}, {1}, {2}, {3}};
 
-static PCWProp pcwprop[4] = {{PCW_COMBO, "1-SCL"},
-                             {PCW_COMBO, "2-SDA"},
-                             {PCW_LABEL, "3-VCC,+5V"},
-                             {PCW_LABEL, "4-GND,GND"}};
+static PCWProp pcwprop[6] = {{PCW_LABEL, "1-VCC,+5V"}, {PCW_LABEL, "2-GND,GND"}, {PCW_COMBO, "3-SCL"},
+                             {PCW_COMBO, "4-SDA"},     {PCW_COMBO, "5-CSB"},     {PCW_COMBO, "6-SDO"}};
 
 cpart_bmp280::cpart_bmp280(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type),
@@ -51,13 +49,16 @@ cpart_bmp280::cpart_bmp280(const unsigned x, const unsigned y, const char* name,
 
     input_pins[0] = 0;
     input_pins[1] = 0;
+    input_pins[2] = 0;
+
+    output_pins[0] = 0;
 
     values[0] = 0;
     values[1] = 0;
     active[0] = 0;
     active[0] = 0;
 
-    SetPCWProperties(pcwprop, 4);
+    SetPCWProperties(pcwprop, 6);
 }
 
 cpart_bmp280::~cpart_bmp280(void) {
@@ -85,17 +86,23 @@ void cpart_bmp280::DrawOutput(const unsigned int i) {
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
             canvas.SetFgColor(255, 255, 255);
-            canvas.RotatedText(pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0);
+            canvas.RotatedText(pin_names[output[i].id - O_PF1], output[i].x1, output[i].y2, 90.0);
 
-            int pinv = pin_values[output[i].id - O_P1][0];
+            int pinv = pin_values[output[i].id - O_PF1][0];
             if (pinv > 10) {
                 canvas.SetFgColor(155, 155, 155);
-                canvas.RotatedText(pin_values[output[i].id - O_P1], output[i].x1, output[i].y2 - 30, 90.0);
-            } else {
+                canvas.RotatedText(pin_values[output[i].id - O_PF1], output[i].x1, output[i].y2 - 30, 90.0);
+            } else if (pinv < 3) {
                 if (input_pins[pinv] == 0)
                     canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
                 else
                     canvas.RotatedText(SpareParts.GetPinName(input_pins[pinv]), output[i].x1, output[i].y2 - 30, 90.0);
+            } else {
+                if (output_pins[pinv - 3] == 0)
+                    canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
+                else
+                    canvas.RotatedText(SpareParts.GetPinName(output_pins[pinv - 3]), output[i].x1, output[i].y2 - 30,
+                                       90.0);
             }
             break;
     }
@@ -116,6 +123,10 @@ unsigned short cpart_bmp280::GetOutputId(char* name) {
         return O_P1;
     if (strcmp(name, "PN_2") == 0)
         return O_P2;
+    if (strcmp(name, "PN_3") == 0)
+        return O_P3;
+    if (strcmp(name, "PN_4") == 0)
+        return O_P4;
     if (strcmp(name, "PN_F1") == 0)
         return O_PF1;
     if (strcmp(name, "PN_F2") == 0)
@@ -133,39 +144,75 @@ unsigned short cpart_bmp280::GetOutputId(char* name) {
 lxString cpart_bmp280::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], values[0], values[1]);
+    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], output_pins[0],
+            values[0], values[1]);
 
     return prefs;
 }
 
 void cpart_bmp280::ReadPreferences(lxString value_) {
-    sscanf(value_.c_str(), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &values[0], &values[1]);
+    sscanf(value_.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2],
+           &output_pins[0], &values[0], &values[1]);
     Reset();
 }
 
 void cpart_bmp280::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo1", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo2", input_pins[1]);
+    SetPCWComboWithPinNames(WProp, "combo3", input_pins[0]);
+    SetPCWComboWithPinNames(WProp, "combo4", input_pins[1]);
+    SetPCWComboWithPinNames(WProp, "combo5", input_pins[2]);
+    SetPCWComboWithPinNames(WProp, "combo6", output_pins[0]);
 }
 
 void cpart_bmp280::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo1");
-    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo2");
+    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo3");
+    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo4");
+    input_pins[2] = GetPWCComboSelectedPin(WProp, "combo5");
+    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo6");
 }
 
 void cpart_bmp280::PreProcess(void) {
-    if ((input_pins[0] > 0) && (input_pins[1] > 0)) {
-        sen_bmp280_setPressTemp(&bmp280, (4.0 * (200 - values[0]) + 300), (0.625 * (200 - values[1]) - 40));
-        SpareParts.Reset_pullup_bus(input_pins[1] - 1);
+    const picpin* ppins = SpareParts.GetPinsValues();
+    sen_bmp280_setPressTemp(&bmp280, (4.0 * (200 - values[0]) + 300), (0.625 * (200 - values[1]) - 40));
+    if ((bmp280.i2c_mode) && (input_pins[2]) && (ppins[input_pins[2] - 1].value)) {
+        unsigned char addr = 0x76;
+
+        if (output_pins[0]) {
+            if (ppins[output_pins[0] - 1].value)
+                addr |= 0x01;
+        }
+
+        sen_bmp280_set_addr(&bmp280, addr);
+
+        if (input_pins[1]) {
+            SpareParts.Reset_pullup_bus(input_pins[1] - 1);
+        }
     }
 }
 
 void cpart_bmp280::Process(void) {
     const picpin* ppins = SpareParts.GetPinsValues();
 
-    if ((input_pins[0] > 0) && (input_pins[1] > 0))
-        SpareParts.Set_pullup_bus(input_pins[1] - 1, sen_bmp280_I2C_io(&bmp280, ppins[input_pins[0] - 1].value,
-                                                                       ppins[input_pins[1] - 1].value));
+    if (input_pins[0] && input_pins[1] && (input_pins[2])) {
+        if ((bmp280.i2c_mode) && (ppins[input_pins[2] - 1].value)) {  // I2C mode
+            SpareParts.Set_pullup_bus(input_pins[1] - 1, sen_bmp280_I2C_io(&bmp280, ppins[input_pins[0] - 1].value,
+                                                                           ppins[input_pins[1] - 1].value));
+        } else {  // SPI mode
+            unsigned char ret = sen_bmp280_io_SPI(&bmp280, ppins[input_pins[1] - 1].value,
+                                                  ppins[input_pins[0] - 1].value, ppins[input_pins[2] - 1].value);
+
+            if ((output_pins[0])) {
+                if (!ppins[input_pins[2] - 1].value)  // if SS is active, update output
+                {
+                    if (ret_ != ret) {
+                        SpareParts.SetPin(output_pins[0], ret);
+                    }
+                    ret_ = ret;
+                } else {
+                    ret_ = 0xFF;  // invalid value
+                }
+            }
+        }
+    }
 }
 
 void cpart_bmp280::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
