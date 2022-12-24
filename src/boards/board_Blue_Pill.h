@@ -79,6 +79,7 @@ public:
     void MSetAPin(int pin, float value) override;
     lxString MGetPinName(int pin) override;
     int MGetPinCount(void) override;
+    void PinsExtraConfig(int cfg) override;
 };
 
 #endif /* BOARD_Blue_Pill_H */

@@ -86,6 +86,21 @@ cboard_Blue_Pill::cboard_Blue_Pill(void) {
     master_i2c[1].scl_pin = 21;  // pb10
     master_i2c[1].sda_pin = 22;  // pb11
 
+    // TODO read pin configuration from registers instead use fixed pins
+    master_spi[0].sck_pin = 15;   // pa5
+    master_spi[0].copi_pin = 17;  // pa7
+    master_spi[0].cipo_pin = 16;  // pa6
+    master_spi[0].cs_pin[0] = 0;
+    master_spi[0].cs_pin[1] = 0;
+    master_spi[0].cs_pin[2] = 0;
+
+    master_spi[1].sck_pin = 0;
+    master_spi[1].copi_pin = 0;
+    master_spi[1].cipo_pin = 0;
+    master_spi[1].cs_pin[0] = 0;
+    master_spi[1].cs_pin[1] = 0;
+    master_spi[1].cs_pin[2] = 0;
+
     // label1
     label1 = new CLabel();
     label1->SetFOwner(PICSimLab.GetWindow());
@@ -597,6 +612,8 @@ void cboard_Blue_Pill::MSetAPin(int pin, float value) {
         }
     }
 }
+
+void cboard_Blue_Pill::PinsExtraConfig(int cfg) {}
 
 // Register the board in PICSimLab
 board_init(BOARD_Blue_Pill_Name, cboard_Blue_Pill);

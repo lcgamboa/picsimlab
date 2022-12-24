@@ -61,7 +61,8 @@ typedef struct {
 void bitbang_spi_init(bitbang_spi_t* spi, const unsigned char lenght = 8);
 void bitbang_spi_rst(bitbang_spi_t* spi);
 unsigned char bitbang_spi_get_status(bitbang_spi_t* spi);
-void bitbang_spi_send(bitbang_spi_t* spi, const unsigned int data);
+void bitbang_spi_send16(bitbang_spi_t* spi, const unsigned int data);
+void bitbang_spi_send8(bitbang_spi_t* spi, const unsigned char data);
 
 // peripheral
 unsigned char bitbang_spi_io(bitbang_spi_t* spi, const unsigned char clk, const unsigned char din,

@@ -143,8 +143,14 @@ unsigned char bitbang_spi_get_status(bitbang_spi_t* spi) {
     return status;
 }
 
-void bitbang_spi_send(bitbang_spi_t* spi, const unsigned int data) {
+void bitbang_spi_send16(bitbang_spi_t* spi, const unsigned int data) {
     spi->outsr = data;
+    spi->ret = ((spi->outsr & spi->outbitmask) > 0);
+    dprintf("bitbang_spi data to send 0x%02x \n", data);
+}
+
+void bitbang_spi_send8(bitbang_spi_t* spi, const unsigned char data) {
+    spi->outsr = (spi->outsr & 0xFF00) | data;
     spi->ret = ((spi->outsr & spi->outbitmask) > 0);
     dprintf("bitbang_spi data to send 0x%02x \n", data);
 }
@@ -161,7 +167,7 @@ static void bitbang_spi_ctrl_callback(void* arg) {
             if (spi->bit > 7) {
                 // spi->cs_value = 1;
                 spi->data8 = spi->insr & 0xFF;
-                dprintf("bitbang_spi ctrl data recv 0x%02x \n", spi->data8);
+                dprintf("ctrl bitbang_spi ctrl data recv 0x%02x \n", spi->data8);
                 spi->pboard->TimerSetState(spi->TimerID, 0);
             }
             break;
@@ -205,7 +211,7 @@ void bitbang_spi_ctrl_end(bitbang_spi_t* spi) {
 }
 
 void bitbang_spi_ctrl_write(bitbang_spi_t* spi, const unsigned char data) {
-    dprintf("bitbang_spi ctrl data to send 0x%02x \n", data);
+    dprintf("ctrl bitbang_spi ctrl data to send 0x%02x \n", data);
     ioupdated = 1;
     spi->insr = 0;
     spi->outsr = 0;

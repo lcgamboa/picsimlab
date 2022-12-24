@@ -93,6 +93,21 @@ cboard_STM32_H103::cboard_STM32_H103(void) {
     master_i2c[1].scl_pin = 29;  // pb10
     master_i2c[1].sda_pin = 30;  // pb11
 
+    // TODO read pin configuration from registers instead use fixed pins
+    master_spi[0].sck_pin = 21;   // pa5
+    master_spi[0].copi_pin = 23;  // pa7
+    master_spi[0].cipo_pin = 22;  // pa6
+    master_spi[0].cs_pin[0] = 0;
+    master_spi[0].cs_pin[1] = 0;
+    master_spi[0].cs_pin[2] = 0;
+
+    master_spi[1].sck_pin = 0;
+    master_spi[1].copi_pin = 0;
+    master_spi[1].cipo_pin = 0;
+    master_spi[1].cs_pin[0] = 0;
+    master_spi[1].cs_pin[1] = 0;
+    master_spi[1].cs_pin[2] = 0;
+
     // label1
     label1 = new CLabel();
     label1->SetFOwner(PICSimLab.GetWindow());
@@ -691,6 +706,8 @@ void cboard_STM32_H103::MSetAPin(int pin, float value) {
         }
     }
 }
+
+void cboard_STM32_H103::PinsExtraConfig(int cfg) {}
 
 // Register the board in PICSimLab
 board_init(BOARD_STM32_H103_Name, cboard_STM32_H103);
