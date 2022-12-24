@@ -29,7 +29,7 @@
 
 part::part(const unsigned x, const unsigned y, const char* name, const char* type, const int fsize)
     : font(fsize, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
-    aways_update = 0;
+    always_update = 0;
     inputc = 0;
     outputc = 0;
     Orientation = 0;
@@ -509,11 +509,11 @@ void part::DrawPotentiometer(const output_t* output, const unsigned char pos, co
 }
 
 int part::GetAwaysUpdate(void) {
-    return aways_update;
+    return always_update;
 }
 
 void part::SetAwaysUpdate(int sau) {
-    aways_update = sau;
+    always_update = sau;
 }
 
 void part::SetPCWProperties(const PCWProp* pcwprop, const int pcwcount) {

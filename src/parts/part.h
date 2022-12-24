@@ -369,7 +369,7 @@ protected:
     int Orientation;            ///< orientation to draw part
     double Scale;               ///< scale to draw part
     unsigned int Update;        ///< part need draw Update
-    int aways_update;           ///< part need to be update every clock cycle
+    int always_update;          ///< part need to be update every clock cycle
     lxString Type;
     lxFont font;
 

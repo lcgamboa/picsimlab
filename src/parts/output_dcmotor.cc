@@ -44,7 +44,7 @@ cpart_dcmotor::cpart_dcmotor(const unsigned x, const unsigned y, const char* nam
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     X = x;
     Y = y;
-    aways_update = 1;
+    always_update = 1;
     ReadMaps();
 
     LoadImage();

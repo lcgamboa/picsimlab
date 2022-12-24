@@ -45,7 +45,7 @@ static PCWProp pcwprop[8] = {{PCW_COMBO, "Pin 1"}, {PCW_COMBO, "Pin 2"}, {PCW_CO
 
 cpart_VCD_Dump_an::cpart_VCD_Dump_an(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
-    aways_update = 1;
+    always_update = 1;
 
     input_pins[0] = 0;
     input_pins[1] = 0;

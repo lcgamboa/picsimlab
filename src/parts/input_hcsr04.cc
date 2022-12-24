@@ -43,7 +43,7 @@ cpart_hcsr04::cpart_hcsr04(const unsigned x, const unsigned y, const char* name,
     : part(x, y, name, type),
       font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
       font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
-    aways_update = 1;
+    always_update = 1;
 
     input_pins[0] = 0;
 

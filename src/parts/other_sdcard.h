@@ -38,9 +38,7 @@ public:
     cpart_SDCard(const unsigned x, const unsigned y, const char* name, const char* type);
     ~cpart_SDCard(void);
     void DrawOutput(const unsigned int index) override;
-    void PreProcess(void) override;
     void Process(void) override;
-    void PostProcess(void) override;
     void Reset(void) override;
     void OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) override;
     void ConfigurePropertiesWindow(CPWindow* WProp) override;

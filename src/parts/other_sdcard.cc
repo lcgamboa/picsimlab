@@ -201,8 +201,6 @@ void cpart_SDCard::ReadPropertiesWindow(CPWindow* WProp) {
     input_pins[2] = GetPWCComboSelectedPin(WProp, "combo6");
 }
 
-void cpart_SDCard::PreProcess(void) {}
-
 void cpart_SDCard::Process(void) {
     const picpin* ppins = SpareParts.GetPinsValues();
 
@@ -252,7 +250,5 @@ void cpart_SDCard::filedialog_EvOnClose(int retId) {
     }
     output_ids[O_FILE]->update = 1;
 }
-
-void cpart_SDCard::PostProcess(void) {}
 
 part_init(PART_SDCARD_Name, cpart_SDCard, "Other");

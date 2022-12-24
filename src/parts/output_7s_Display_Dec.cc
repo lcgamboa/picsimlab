@@ -86,7 +86,7 @@ cpart_7s_display_dec::cpart_7s_display_dec(const unsigned x, const unsigned y, c
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     X = x;
     Y = y;
-    aways_update = 1;
+    always_update = 1;
 
     input_pins[0] = 0;
     input_pins[1] = 0;

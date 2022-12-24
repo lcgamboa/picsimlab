@@ -83,7 +83,7 @@ cpart_IO_MCP23S17::cpart_IO_MCP23S17(const unsigned x, const unsigned y, const c
     : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     X = x;
     Y = y;
-    aways_update = 1;
+    always_update = 1;
     ReadMaps();
     Bitmap = NULL;
 

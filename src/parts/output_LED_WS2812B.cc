@@ -45,7 +45,7 @@ cpart_led_ws2812b::cpart_led_ws2812b(const unsigned x, const unsigned y, const c
 
     Bitmap = NULL;
 
-    aways_update = 1;
+    always_update = 1;
 
     led_ws2812b_init(&led, 1, 1, 1);
 

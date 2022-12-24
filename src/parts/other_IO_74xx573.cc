@@ -70,7 +70,7 @@ cpart_IO_74xx573::cpart_IO_74xx573(const unsigned x, const unsigned y, const cha
     : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     X = x;
     Y = y;
-    aways_update = 1;
+    always_update = 1;
     ReadMaps();
     Bitmap = NULL;
 

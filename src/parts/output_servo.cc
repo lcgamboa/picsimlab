@@ -35,7 +35,7 @@ static PCWProp pcwprop[1] = {{PCW_COMBO, "Pin 1"}};
 
 cpart_servo::cpart_servo(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
-    aways_update = 1;
+    always_update = 1;
     input_pin = 0;
     angle = 0;
     angle_ = 0;

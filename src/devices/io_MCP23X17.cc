@@ -212,7 +212,7 @@ unsigned char io_MCP23X17_SPI_io(io_MCP23X17_t* mcp, unsigned char si, unsigned 
                 default:
                     if (mcp->op) {
                         dprintf("mcp data read [0x%02X] 0x%02X\n", mcp->reg_addr, mcp->bb_spi.data8);
-                        bitbang_spi_send(&mcp->bb_spi, read_reg(mcp));
+                        bitbang_spi_send8(&mcp->bb_spi, read_reg(mcp));
                     } else {
                         dprintf("mcp data write [0x%02X] 0x%02X\n", mcp->reg_addr, mcp->bb_spi.data8);
                         write_reg(mcp, mcp->bb_spi.data8);

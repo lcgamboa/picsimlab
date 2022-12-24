@@ -100,7 +100,7 @@ lxString cpart_keypad::GetMapFile(void) {
 
 cpart_keypad::cpart_keypad(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type, 9) {
-    aways_update = 1;
+    always_update = 1;
     pull = 0;
     type = 0;
 

@@ -47,7 +47,7 @@ cpart_IO_PCF8574::cpart_IO_PCF8574(const unsigned x, const unsigned y, const cha
     : part(x, y, name, type, 8) {
     X = x;
     Y = y;
-    aways_update = 1;
+    always_update = 1;
     ReadMaps();
     Bitmap = NULL;
 

@@ -40,7 +40,7 @@ cpart_Buzzer::cpart_Buzzer(const unsigned x, const unsigned y, const char* name,
     X = x;
     Y = y;
     active = 1;
-    aways_update = 1;
+    always_update = 1;
 
     ReadMaps();
 

@@ -101,7 +101,7 @@ unsigned char ldd_max72xx_io(ldd_max72xx_t* ldd, unsigned char din, unsigned cha
     switch (bitbang_spi_get_status(&ldd->bb_spi)) {
         case SPI_DATA:
             ldd->dat = ldd->bb_spi.insr;
-            bitbang_spi_send(&ldd->bb_spi, ldd->bb_spi.insr >> 1);
+            bitbang_spi_send16(&ldd->bb_spi, ldd->bb_spi.insr >> 1);
             break;
     }
 

@@ -39,7 +39,7 @@ static PCWProp pcwprop[6] = {{PCW_COMBO, "Heater"}, {PCW_COMBO, "Cooler"},   {PC
 
 cpart_tempsys::cpart_tempsys(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
-    aways_update = 1;
+    always_update = 1;
 
     vtc = 0;
     vt = 0;

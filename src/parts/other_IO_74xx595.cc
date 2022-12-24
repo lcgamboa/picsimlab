@@ -45,7 +45,7 @@ static PCWProp pcwprop[16] = {
 
 cpart_IO_74xx595::cpart_IO_74xx595(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type, 8) {
-    aways_update = 1;
+    always_update = 1;
 
     io_74xx595_init(&sr8);
     io_74xx595_rst(&sr8);

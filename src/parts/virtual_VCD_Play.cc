@@ -43,7 +43,7 @@ static PCWProp pcwprop[8] = {{PCW_COMBO, "Pin 1"}, {PCW_COMBO, "Pin 2"}, {PCW_CO
 
 cpart_VCD_Play::cpart_VCD_Play(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
-    aways_update = 1;
+    always_update = 1;
 
     output_pins[0] = 0;
     output_pins[1] = 0;
