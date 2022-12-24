@@ -60,7 +60,7 @@ private:
     long mcount;
     int JUMPSTEPS_;
     lxString jname;
-    unsigned char type;
+    unsigned char jtype;
     lxFont font;
 };
 

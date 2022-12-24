@@ -103,7 +103,7 @@ cpart_Jumpers::cpart_Jumpers(const unsigned x, const unsigned y, const char* nam
 
     X = x;
     Y = y;
-    aways_update = 1;
+    always_update = 1;
     ReadMaps();
     Bitmap = NULL;
 
@@ -148,7 +148,7 @@ cpart_Jumpers::cpart_Jumpers(const unsigned x, const unsigned y, const char* nam
     output_pins[14] = SpareParts.RegisterIOpin(jname + lxT("OE"));
     output_pins[15] = SpareParts.RegisterIOpin(jname + lxT("OF"));
 
-    type = JWT_MM;
+    jtype = JWT_MM;
 
     mcount = 0;
     memset(output_pins_alm, 0, 16 * sizeof(unsigned long));
@@ -317,7 +317,7 @@ lxString cpart_Jumpers::WritePreferences(void) {
             input_pins[7], input_pins[8], input_pins[9], input_pins[10], input_pins[11], input_pins[12], input_pins[13],
             input_pins[14], input_pins[15], output_pins[0], output_pins[1], output_pins[2], output_pins[3],
             output_pins[4], output_pins[5], output_pins[6], output_pins[7], output_pins[8], output_pins[9],
-            output_pins[10], output_pins[11], output_pins[12], output_pins[13], output_pins[14], output_pins[15], type,
+            output_pins[10], output_pins[11], output_pins[12], output_pins[13], output_pins[14], output_pins[15], jtype,
             c);
 
     return prefs;
@@ -444,13 +444,13 @@ void cpart_Jumpers::ConfigurePropertiesWindow(CPWindow* WProp) {
     ((CCombo*)WProp->GetChildByName("combo18"))->EvOnComboChange = SpareParts.PropComboChange;
 
     cc = ((CCombo*)WProp->GetChildByName("combo1"));
-    if (type & 0x02)
+    if (jtype & 0x02)
         cc->SetText("F");
     else
         cc->SetText("M");
 
     cc = ((CCombo*)WProp->GetChildByName("combo18"));
-    if (type & 0x01)
+    if (jtype & 0x01)
         cc->SetText("F");
     else
         cc->SetText("M");
@@ -463,7 +463,7 @@ void cpart_Jumpers::ConfigurePropertiesWindow(CPWindow* WProp) {
 
         cc = (CCombo*)WProp->GetChildByName(childname);
 
-        if (type & 0x02) {
+        if (jtype & 0x02) {
             cc->SetEnable(1);
         } else {
             cc->SetEnable(0);
@@ -476,7 +476,7 @@ void cpart_Jumpers::ConfigurePropertiesWindow(CPWindow* WProp) {
 
         cc = (CCombo*)WProp->GetChildByName(childname);
 
-        if (type & 0x01) {
+        if (jtype & 0x01) {
             cc->SetEnable(1);
         } else {
             cc->SetEnable(0);
@@ -490,24 +490,24 @@ void cpart_Jumpers::ReadPropertiesWindow(CPWindow* WProp) {
 
     cc = ((CCombo*)WProp->GetChildByName("combo1"));
     if (cc->GetText().Cmp("M"))
-        type |= 0x02;
+        jtype |= 0x02;
     else
-        type &= ~0x02;
+        jtype &= ~0x02;
 
     cc = ((CCombo*)WProp->GetChildByName("combo18"));
     if (cc->GetText().Cmp("M"))
-        type |= 0x01;
+        jtype |= 0x01;
     else
-        type &= ~0x01;
+        jtype &= ~0x01;
 
     for (int i = 0; i < 16; i++) {
         // input
-        if (type & 0x02) {
+        if (jtype & 0x02) {
             childname.Printf("combo%i", i + 2);
             input_pins[i] = GetPWCComboSelectedPin(WProp, childname);
         }
         // output
-        if (type & 0x01) {
+        if (jtype & 0x01) {
             childname.Printf("combo%i", i + 19);
             output_pins[i] = GetPWCComboSelectedPin(WProp, childname);
         }
@@ -527,7 +527,7 @@ void cpart_Jumpers::Process(void) {
 
     for (i = 0; i < 16; i++) {
         if (ppins[input_pins[i] - 1].value != ppins[output_pins[i] - 1].value) {
-            if (type & 0x01) {
+            if (jtype & 0x01) {
                 SpareParts.SetPin(output_pins[i], ppins[input_pins[i] - 1].value);
             } else {
                 SpareParts.WritePin(output_pins[i], ppins[input_pins[i] - 1].value);
@@ -569,16 +569,16 @@ void cpart_Jumpers::PostProcess(void) {
 void cpart_Jumpers::ChangeType(unsigned char ntype) {
     // if same
 
-    if (type == ntype)
+    if (jtype == ntype)
         return;
 
-    if (!(type & 0x02) && (ntype & 0x02)) {
+    if (!(jtype & 0x02) && (ntype & 0x02)) {
         for (int i = 0; i < 16; i++) {
             SpareParts.UnregisterIOpin(input_pins[i]);
             input_pins[i] = 0;
         }
     }
-    if ((type & 0x02) && !(ntype & 0x02)) {
+    if ((jtype & 0x02) && !(ntype & 0x02)) {
         input_pins[0] = SpareParts.RegisterIOpin(jname + lxT("I0"), 0, PD_IN);
         input_pins[1] = SpareParts.RegisterIOpin(jname + lxT("I1"), 0, PD_IN);
         input_pins[2] = SpareParts.RegisterIOpin(jname + lxT("I2"), 0, PD_IN);
@@ -597,14 +597,14 @@ void cpart_Jumpers::ChangeType(unsigned char ntype) {
         input_pins[15] = SpareParts.RegisterIOpin(jname + lxT("IF"), 0, PD_IN);
     }
 
-    if (!(type & 0x01) && (ntype & 0x01)) {
+    if (!(jtype & 0x01) && (ntype & 0x01)) {
         for (int i = 0; i < 16; i++) {
             SpareParts.UnregisterIOpin(output_pins[i]);
             output_pins[i] = 0;
         }
     }
 
-    if ((type & 0x01) && !(ntype & 0x01)) {
+    if ((jtype & 0x01) && !(ntype & 0x01)) {
         output_pins[0] = SpareParts.RegisterIOpin(jname + lxT("O0"));
         output_pins[1] = SpareParts.RegisterIOpin(jname + lxT("O1"));
         output_pins[2] = SpareParts.RegisterIOpin(jname + lxT("O2"));
@@ -623,11 +623,11 @@ void cpart_Jumpers::ChangeType(unsigned char ntype) {
         output_pins[15] = SpareParts.RegisterIOpin(jname + lxT("OF"));
     }
 
-    type = ntype;
+    jtype = ntype;
 }
 
 void cpart_Jumpers::ComboChange(CCombo* control, lxString value) {
-    unsigned char ntype = type;
+    unsigned char ntype = jtype;
 
     if (!control->GetName().Cmp("combo1")) {
         if (!value.compare(lxT("F"))) {

@@ -38,7 +38,7 @@ static PCWProp pcwprop[3] = {{PCW_LABEL, "P4 - GND,GND"}, {PCW_COMBO, "P2 - Out"
 
 cpart_SignalGenerator::cpart_SignalGenerator(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
-    aways_update = 1;
+    always_update = 1;
 
     input_pins[0] = 0;
     input_pins[1] = 0;
@@ -71,8 +71,6 @@ void cpart_SignalGenerator::DrawOutput(const unsigned int i) {
     float tsi;
     int sizex;
     int sizey;
-
-    Update = 0;
 
     switch (output[i].id) {
         case O_P2:

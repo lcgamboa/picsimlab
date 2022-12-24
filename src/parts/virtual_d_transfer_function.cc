@@ -37,6 +37,7 @@ static PCWProp pcwprop[9] = {{PCW_COMBO, "Input"},  {PCW_COMBO, "Output"},  {PCW
 
 cpart_dtfunc::cpart_dtfunc(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    always_update = 1;
     input_pin = 0;
     output_pin = 0;
 
