@@ -56,7 +56,8 @@ static char buff[2048];
 // static void setblock(int sock_descriptor);
 static void setnblock(int sock_descriptor);
 
-typedef struct {
+typedef struct
+{
   char name[30];
   test_run_func trun;
   void *arg;
@@ -71,19 +72,29 @@ static cserial serial;
 
 static char pexe[256];
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
 
-  if ((argc < 3) || ((argc > 4))) {
+  if ((argc < 3) || ((argc > 4)))
+  {
     printf("use: %s picsimlab_executable serial_port [test number]\n", argv[0]);
+
+    for (int i = 0; i < NUM_TESTS; i++)
+    {
+      printf("%02i: %-25s\n", i, tests_list[i].name);
+    }
+
     return -1;
   }
 
-  if (!test_file_exist(argv[1])) {
+  if (!test_file_exist(argv[1]))
+  {
     printf("Picsimlab executable \"%s\" not found! \n", argv[1]);
     return -1;
   }
 
-  if (!serial.Open(argv[2])) {
+  if (!serial.Open(argv[2]))
+  {
     printf("Serial port \"%s\" can't be open! \n", argv[2]);
     return -1;
   }
@@ -94,19 +105,22 @@ int main(int argc, char **argv) {
 
   int FIRSTTEST = 0;
 
-  if (argc == 4) {
+  if (argc == 4)
+  {
     sscanf(argv[3], "%d", &FIRSTTEST);
     NUM_TESTS = 1;
   }
 
-  for (int i = FIRSTTEST; i < (FIRSTTEST + NUM_TESTS); i++) {
+  for (int i = FIRSTTEST; i < (FIRSTTEST + NUM_TESTS); i++)
+  {
     printf("======== test[%02i]: %-25s ==============\n", i,
            tests_list[i].name);
     tests_list[i].result = tests_list[i].trun(tests_list[i].arg);
   }
 
   printf("\n\n======== Results ==============\n");
-  for (int i = FIRSTTEST; i < (FIRSTTEST + NUM_TESTS); i++) {
+  for (int i = FIRSTTEST; i < (FIRSTTEST + NUM_TESTS); i++)
+  {
     printf("test[%02i]: %-25s : %s\n", i, tests_list[i].name,
            (tests_list[i].result ? "\033[1;32m Success\033[0m"
                                  : "\033[1;31m Fail\033[0m"));
@@ -116,7 +130,8 @@ int main(int argc, char **argv) {
   return 0;
 }
 
-void test_register(const char *name, test_run_func trun, void *arg) {
+void test_register(const char *name, test_run_func trun, void *arg)
+{
 
   strncpy(tests_list[NUM_TESTS].name, name, 25);
   tests_list[NUM_TESTS].trun = trun;
@@ -126,26 +141,32 @@ void test_register(const char *name, test_run_func trun, void *arg) {
   NUM_TESTS++;
 }
 
-int test_load(const char *fname) {
+int test_load(const char *fname)
+{
   struct sockaddr_in servaddr;
   char cmd[512];
 
-  if (!test_file_exist(fname)) {
+  if (!test_file_exist(fname))
+  {
     printf("File not found %s\n", fname);
     return 0;
   }
 
-  if (strstr(pexe, ".exe")) {
+  if (strstr(pexe, ".exe"))
+  {
     sprintf(cmd, "wine %s %s &", pexe, fname);
     system(cmd);
     sleep(10); // wait
-  } else {
+  }
+  else
+  {
     sprintf(cmd, "%s %s &", pexe, fname);
     system(cmd);
     sleep(1); // wait
   }
 
-  if ((sockfd = socket(PF_INET, SOCK_STREAM, 0)) < 0) {
+  if ((sockfd = socket(PF_INET, SOCK_STREAM, 0)) < 0)
+  {
     printf("socket error : %s \n", strerror(errno));
     exit(1);
   }
@@ -154,7 +175,8 @@ int test_load(const char *fname) {
   servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
   servaddr.sin_port = htons(5000);
 
-  if (connect(sockfd, (struct sockaddr *)&servaddr, sizeof(servaddr)) < 0) {
+  if (connect(sockfd, (struct sockaddr *)&servaddr, sizeof(servaddr)) < 0)
+  {
 #ifdef _WIN_
     printf("connect error number: %i \n", WSAGetLastError());
 #else
@@ -162,7 +184,9 @@ int test_load(const char *fname) {
 #endif
     close(sockfd);
     exit(1);
-  } else {
+  }
+  else
+  {
     recv(sockfd, buff, 200, 0);
     // printf("%s", buff);
 
@@ -174,7 +198,8 @@ int test_load(const char *fname) {
   return 1;
 }
 
-int test_end() {
+int test_end()
+{
   test_send_rcmd("exit");
   close(sockfd);
   sleep(2);
@@ -183,14 +208,17 @@ int test_end() {
 
 int test_serial_send(const char data) { return serial.Send(data); }
 
-int test_serial_recv(char *data) {
+int test_serial_recv(char *data)
+{
   return serial.Receive((unsigned char *)data);
 }
 
-int test_serial_recv_wait(char *data, const int timeout) {
+int test_serial_recv_wait(char *data, const int timeout)
+{
   int ret = 0;
   int t = 0;
-  do {
+  do
+  {
     ret = serial.Receive((unsigned char *)data);
     usleep(1000);
     t++;
@@ -199,20 +227,24 @@ int test_serial_recv_wait(char *data, const int timeout) {
   return ret;
 }
 
-int test_serial_recv_str(char *data, const int size, const int timeout) {
+int test_serial_recv_str(char *data, const int size, const int timeout)
+{
   int i = 0;
 
   int ret = 0;
 
-  while ((ret = test_serial_recv_wait(&data[i], timeout))) {
+  while ((ret = test_serial_recv_wait(&data[i], timeout)))
+  {
 
-    if (data[i] == '\n') {
+    if (data[i] == '\n')
+    {
       data[i] = 0;
       break;
     }
 
     i++;
-    if (i >= size) {
+    if (i >= size)
+    {
 
       data[size - 1] = 0;
       break;
@@ -224,12 +256,14 @@ int test_serial_recv_str(char *data, const int size, const int timeout) {
 
 // rcontrol
 
-int test_send_rcmd(const char *message) {
+int test_send_rcmd(const char *message)
+{
   strcpy(buff, message);
   strcat(buff, "\r\n");
   // printf ("sending '%s'\n", message);
   int n = strlen(buff);
-  if (send(sockfd, buff, n, MSG_NOSIGNAL) != n) {
+  if (send(sockfd, buff, n, MSG_NOSIGNAL) != n)
+  {
     printf("send error : %s \n", strerror(errno));
     close(sockfd);
     exit(-1);
@@ -238,14 +272,19 @@ int test_send_rcmd(const char *message) {
   int bp = 0;
   buff[0] = 0;
   int timeout = 0;
-  do {
+  do
+  {
 
-    if ((n = recv(sockfd, buff + bp, 1, 0)) > 0) {
+    if ((n = recv(sockfd, buff + bp, 1, 0)) > 0)
+    {
       bp += n;
       buff[bp] = 0;
       // printf ("%c", buff[bp-1]);
-    } else {
-      if (n < 0) {
+    }
+    else
+    {
+      if (n < 0)
+      {
 #ifndef _WIN32
         if (errno != EAGAIN)
 #else
@@ -256,7 +295,9 @@ int test_send_rcmd(const char *message) {
           close(sockfd);
           exit(-1);
         }
-      } else if (n == 0) {
+      }
+      else if (n == 0)
+      {
         timeout++;
         usleep(100);
       }
@@ -277,9 +318,11 @@ char *test_get_cmd_resp(void) { return buff; }
 WORD wVersionRequested = 2;
 WSADATA wsaData;
 
-__attribute__((constructor)) static void initialize_socket(void) {
+__attribute__((constructor)) static void initialize_socket(void)
+{
   WSAStartup(wVersionRequested, &wsaData);
-  if (wsaData.wVersion != wVersionRequested) {
+  if (wsaData.wVersion != wVersionRequested)
+  {
 
     fprintf(stderr, "\n Wrong version\n");
     return;
@@ -289,17 +332,20 @@ __attribute__((constructor)) static void initialize_socket(void) {
 __attribute__((destructor)) static void finalize_socket(void) { WSACleanup(); }
 #endif
 
-void setnblock(int sock_descriptor) {
+void setnblock(int sock_descriptor)
+{
 #ifndef _WIN_
   int flags;
   // Set socket to non-blocking
 
-  if ((flags = fcntl(sock_descriptor, F_GETFL, 0)) < 0) {
+  if ((flags = fcntl(sock_descriptor, F_GETFL, 0)) < 0)
+  {
     // Handle error
     // printf("Error fcntl nblock !!!!!!!\n");
   }
 
-  if (fcntl(sock_descriptor, F_SETFL, flags | O_NONBLOCK) < 0) {
+  if (fcntl(sock_descriptor, F_SETFL, flags | O_NONBLOCK) < 0)
+  {
     // Handle error
     // printf("Error fcntl nblock !!!!!!!\n");
   }
@@ -337,7 +383,8 @@ ioctlsocket (sock_descriptor, FIONBIO, &iMode);
 }
  */
 
-int test_file_exist(const char *fname) {
+int test_file_exist(const char *fname)
+{
   struct stat sb;
 
   sb.st_mode = 0;
@@ -347,16 +394,19 @@ int test_file_exist(const char *fname) {
   return S_ISREG(sb.st_mode);
 }
 
-int testPressButton(const int key, const int down, const int tout) {
+int testPressButton(const int key, const int down, const int tout)
+{
   char cmd[256];
   sprintf(cmd, "set board.in[%02i] %i", key, down);
-  if (!test_send_rcmd(cmd)) {
+  if (!test_send_rcmd(cmd))
+  {
     printf("Error send rcmd \n");
     return 0;
   }
   usleep(tout * 1000);
   sprintf(cmd, "set board.in[%02i] %i", key, !down);
-  if (!test_send_rcmd(cmd)) {
+  if (!test_send_rcmd(cmd))
+  {
     printf("Error send rcmd \n");
     return 0;
   }
