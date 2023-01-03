@@ -224,16 +224,16 @@ void cpart_LCD_hd44780::RegisterRemoteControl(void) {
 
 void cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow* WProp) {
     SetPCWComboWithPinNames(WProp, "combo4", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo5", input_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo6", input_pins[2]);
-    SetPCWComboWithPinNames(WProp, "combo7", input_pins[3]);
-    SetPCWComboWithPinNames(WProp, "combo8", input_pins[4]);
-    SetPCWComboWithPinNames(WProp, "combo9", input_pins[5]);
-    SetPCWComboWithPinNames(WProp, "combo10", input_pins[6]);
-    SetPCWComboWithPinNames(WProp, "combo11", input_pins[7]);
-    SetPCWComboWithPinNames(WProp, "combo12", input_pins[8]);
-    SetPCWComboWithPinNames(WProp, "combo13", input_pins[9]);
-    SetPCWComboWithPinNames(WProp, "combo14", input_pins[10]);
+    SetPCWComboWithPinNames(WProp, "combo6", input_pins[1]);
+    SetPCWComboWithPinNames(WProp, "combo7", input_pins[2]);
+    SetPCWComboWithPinNames(WProp, "combo8", input_pins[3]);
+    SetPCWComboWithPinNames(WProp, "combo9", input_pins[4]);
+    SetPCWComboWithPinNames(WProp, "combo10", input_pins[5]);
+    SetPCWComboWithPinNames(WProp, "combo11", input_pins[6]);
+    SetPCWComboWithPinNames(WProp, "combo12", input_pins[7]);
+    SetPCWComboWithPinNames(WProp, "combo13", input_pins[8]);
+    SetPCWComboWithPinNames(WProp, "combo14", input_pins[9]);
+    SetPCWComboWithPinNames(WProp, "combo5", input_pins[10]);
 
     ((CCombo*)WProp->GetChildByName("combo15"))->SetItems("16x2,16x4,20x2,20x4,");
     switch (model) {
@@ -254,16 +254,16 @@ void cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow* WProp) {
 
 void cpart_LCD_hd44780::ReadPropertiesWindow(CPWindow* WProp) {
     input_pins[0] = GetPWCComboSelectedPin(WProp, "combo4");
-    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo5");
-    input_pins[2] = GetPWCComboSelectedPin(WProp, "combo6");
-    input_pins[3] = GetPWCComboSelectedPin(WProp, "combo7");
-    input_pins[4] = GetPWCComboSelectedPin(WProp, "combo8");
-    input_pins[5] = GetPWCComboSelectedPin(WProp, "combo9");
-    input_pins[6] = GetPWCComboSelectedPin(WProp, "combo10");
-    input_pins[7] = GetPWCComboSelectedPin(WProp, "combo11");
-    input_pins[8] = GetPWCComboSelectedPin(WProp, "combo12");
-    input_pins[9] = GetPWCComboSelectedPin(WProp, "combo13");
-    input_pins[10] = GetPWCComboSelectedPin(WProp, "combo14");
+    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo6");
+    input_pins[2] = GetPWCComboSelectedPin(WProp, "combo7");
+    input_pins[3] = GetPWCComboSelectedPin(WProp, "combo8");
+    input_pins[4] = GetPWCComboSelectedPin(WProp, "combo9");
+    input_pins[5] = GetPWCComboSelectedPin(WProp, "combo10");
+    input_pins[6] = GetPWCComboSelectedPin(WProp, "combo11");
+    input_pins[7] = GetPWCComboSelectedPin(WProp, "combo12");
+    input_pins[8] = GetPWCComboSelectedPin(WProp, "combo13");
+    input_pins[9] = GetPWCComboSelectedPin(WProp, "combo14");
+    input_pins[10] = GetPWCComboSelectedPin(WProp, "combo5");
 
     model = LCD16x2;
     if (!((((CCombo*)WProp->GetChildByName("combo15"))->GetText()).Cmp(lxT("16x4"))))
