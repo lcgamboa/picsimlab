@@ -65,16 +65,10 @@ unsigned char bitbang_spi_io(bitbang_spi_t* spi, const unsigned char clk, const 
         return 1;
     }
 
-    // transicao
-    if ((!spi->aclk) && (clk))  // rising edge
-    {
-        if (din) {
-            spi->insr = (spi->insr << 1) | 1;
-        } else {
-            spi->insr = (spi->insr << 1) & 0xFFFFFFFE;
-        }
-        spi->outsr = (spi->outsr << 1);
+    // edge detection
+    if ((spi->aclk) && (!clk)) {  // falling edge
 
+        spi->outsr = (spi->outsr << 1);
         spi->bit++;
 
         if (spi->bit == spi->lenght) {
@@ -88,6 +82,12 @@ unsigned char bitbang_spi_io(bitbang_spi_t* spi, const unsigned char clk, const 
         }
 
         spi->ret = ((spi->outsr & spi->outbitmask) > 0);
+    } else if ((!spi->aclk) && (clk)) {  // rising edge
+        if (din) {
+            spi->insr = (spi->insr << 1) | 1;
+        } else {
+            spi->insr = (spi->insr << 1) & 0xFFFFFFFE;
+        }
     }
     spi->aclk = clk;
 
@@ -108,14 +108,9 @@ unsigned char bitbang_spi_io_(bitbang_spi_t* spi, const unsigned char** pins_val
         return 1;
     }
 
-    // transicao
-    if ((!spi->aclk) && (*pins_value[ioSPI_clk]))  // rising edge
-    {
-        if (*pins_value[ioSPI_din]) {
-            spi->insr = (spi->insr << 1) | 1;
-        } else {
-            spi->insr = (spi->insr << 1) & 0xFFFFFFFE;
-        }
+    // edge detection
+    if ((spi->aclk) && !(*pins_value[ioSPI_clk])) {  // falling edge
+
         spi->outsr = (spi->outsr << 1);
 
         spi->bit++;
@@ -131,6 +126,12 @@ unsigned char bitbang_spi_io_(bitbang_spi_t* spi, const unsigned char** pins_val
         }
 
         spi->ret = ((spi->outsr & spi->outbitmask) > 0);
+    } else if ((spi->aclk) && !(*pins_value[ioSPI_clk])) {  // rising edge
+        if (*pins_value[ioSPI_din]) {
+            spi->insr = (spi->insr << 1) | 1;
+        } else {
+            spi->insr = (spi->insr << 1) & 0xFFFFFFFE;
+        }
     }
     spi->aclk = *pins_value[ioSPI_clk];
 
@@ -161,7 +162,7 @@ static void bitbang_spi_ctrl_callback(void* arg) {
     bitbang_spi_t* spi = (bitbang_spi_t*)arg;
 
     switch (spi->clkpc) {
-        case 0:
+        case 0:  // CLK HIGH -> LOW
             ioupdated = 1;
             spi->sck_value = 0;
             if (spi->bit > 7) {
@@ -171,15 +172,15 @@ static void bitbang_spi_ctrl_callback(void* arg) {
                 spi->pboard->TimerSetState(spi->TimerID, 0);
             }
             break;
-        case 1:
+        case 1:  // CLK MIDLE LOW
             spi->sck_value = 0;
             spi->copi_value = (spi->outsr & (0x01 << (7 - spi->bit))) > 0;
             break;
-        case 2:
+        case 2:  // CLK LOW -> HIGH
             ioupdated = 1;
             spi->sck_value = 1;
             break;
-        case 3:
+        case 3:  // CLK MIDLE HIGH
             if (spi->cipo_value) {
                 spi->insr = (spi->insr << 1) | 1;
             } else {
@@ -221,7 +222,7 @@ void bitbang_spi_ctrl_write(bitbang_spi_t* spi, const unsigned char data) {
     spi->clkpc = 1;
     spi->sck_value = 0;
     // spi->cs_value = 0;
-    spi->copi_value = spi->outsr & 0x0001;
+    spi->copi_value = (spi->outsr & (0x01 << (7 - spi->bit))) > 0;
     spi->pboard->TimerChange_us(spi->TimerID, 0);  // FIXME only 100kHzfrequency
     spi->pboard->TimerSetState(spi->TimerID, 1);
 }

@@ -94,6 +94,18 @@ register_test("SPI STM32", test_SPI_STM32, NULL);
 
 static int test_I2C_STM32(void *arg)
 {
-    return bmp280_test("I2C STM32", "i2c/esp32_bmp280_i2c.pzw", "T= 35.34 P= 774.83\r");
+    return bmp280_test("I2C STM32", "i2c/stm32_bmp280_i2c.pzw", "T= 35.00 P= 780.00\r");
 }
 register_test("I2C STM32", test_I2C_STM32, NULL);
+
+static int test_SPI_PIC18F(void *arg)
+{
+    return bmp280_test("SPI PIC18F", "spi/pic18f_bmp280_spi.pzw", "T=  35.00 P= 780.00");
+}
+register_test("SPI PIC18F", test_SPI_PIC18F, NULL);
+
+static int test_I2C_PIC18F(void *arg)
+{
+    return bmp280_test("I2C PIC18F", "i2c/pic18f_bmp280_i2c.pzw", "T=  35.00 P= 780.00");
+}
+register_test("I2C PIC18F", test_I2C_PIC18F, NULL);
