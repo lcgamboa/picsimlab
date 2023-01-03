@@ -1,0 +1,20 @@
+<img src="picsimlab2.png" width="293" height="288" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:lcganmboa@yahoo.com                  -->
+<area shape="rect" coords="22,41,54,181" href="B_VS_1" />
+<area shape="rect" coords="84,41,116,181" href="B_VS_2" />
+<area shape="rect" coords="143,41,175,181" href="B_VS_3" />
+<area shape="rect" coords="48,210,67,283" href="O_PN_1" />
+<area shape="rect" coords="73,210,91,283" href="O_PN_2" />
+<area shape="rect" coords="99,210,116,283" href="O_PN_3" />
+<area shape="rect" coords="124,210,141,283" href="O_PN_4" />
+<area shape="rect" coords="151,210,168,283" href="O_PN_5" />
+<area shape="rect" coords="176,210,194,283" href="O_PN_6" />
+<area shape="rect" coords="201,210,218,283" href="O_PN_7" />
+<area shape="rect" coords="227,210,243,283" href="O_PN_8" />
+</map>

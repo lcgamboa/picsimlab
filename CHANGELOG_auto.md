@@ -2,6 +2,18 @@
 
 ### New
 
+* Support to SPI in bmp280 sensor added. [lcgamboa]
+
+* Support to SPI in qemu-stm32 added. [lcgamboa]
+
+* Support to I2C in qemu-stm32 added. [lcgamboa]
+
+* Add support to PIC18F4580 on boards Breadboard, McLAb2 and  PICGenios. [lcgamboa]
+
+* New board Arduino Mega added. [lcgamboa]
+
+* New board Arduino Nano added. [lcgamboa]
+
 * Support to run multiple instances of PICSimLab. [lcgamboa]
 
 * Support for logging and recovering from errors. [lcgamboa]
@@ -14,6 +26,8 @@
 
 ### Changes
 
+* Add instance numbers to windows title bars. [lcgamboa]
+
 * Step motor part now show steps and turns. [lcgamboa]
 
 * Scripts updated. [lcgamboa]
@@ -21,6 +35,12 @@
 * README updated. [lcgamboa]
 
 ### Fix
+
+* Fix Virtual terminal and increase internal timers precision. [lcgamboa]
+
+* Fix window redraw when used in wayland (Linux) [lcgamboa]
+
+* Add support to windows serial ports greater than COM9 in qemu backend simulator. [lcgamboa]
 
 * PICGenious board interference of keys bounce on keyboard activation removed. [lcgamboa]
 
