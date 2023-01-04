@@ -36,7 +36,7 @@
         printf
 
 void bitbang_spi_rst(bitbang_spi_t* spi) {
-    spi->aclk = 1;
+    spi->aclk = 0;
     spi->insr = 0;
     spi->outsr = 0;
     spi->bit = 0;
@@ -66,9 +66,15 @@ unsigned char bitbang_spi_io(bitbang_spi_t* spi, const unsigned char clk, const 
     }
 
     // edge detection
-    if ((spi->aclk) && (!clk)) {  // falling edge
-
+    if ((!spi->aclk) && (clk))  // rising edge
+    {
+        if (din) {
+            spi->insr = (spi->insr << 1) | 1;
+        } else {
+            spi->insr = (spi->insr << 1) & 0xFFFFFFFE;
+        }
         spi->outsr = (spi->outsr << 1);
+
         spi->bit++;
 
         if (spi->bit == spi->lenght) {
@@ -82,12 +88,6 @@ unsigned char bitbang_spi_io(bitbang_spi_t* spi, const unsigned char clk, const 
         }
 
         spi->ret = ((spi->outsr & spi->outbitmask) > 0);
-    } else if ((!spi->aclk) && (clk)) {  // rising edge
-        if (din) {
-            spi->insr = (spi->insr << 1) | 1;
-        } else {
-            spi->insr = (spi->insr << 1) & 0xFFFFFFFE;
-        }
     }
     spi->aclk = clk;
 
@@ -109,8 +109,13 @@ unsigned char bitbang_spi_io_(bitbang_spi_t* spi, const unsigned char** pins_val
     }
 
     // edge detection
-    if ((spi->aclk) && !(*pins_value[ioSPI_clk])) {  // falling edge
-
+    if ((!spi->aclk) && (*pins_value[ioSPI_clk]))  // rising edge
+    {
+        if (*pins_value[ioSPI_din]) {
+            spi->insr = (spi->insr << 1) | 1;
+        } else {
+            spi->insr = (spi->insr << 1) & 0xFFFFFFFE;
+        }
         spi->outsr = (spi->outsr << 1);
 
         spi->bit++;
@@ -126,13 +131,8 @@ unsigned char bitbang_spi_io_(bitbang_spi_t* spi, const unsigned char** pins_val
         }
 
         spi->ret = ((spi->outsr & spi->outbitmask) > 0);
-    } else if ((spi->aclk) && !(*pins_value[ioSPI_clk])) {  // rising edge
-        if (*pins_value[ioSPI_din]) {
-            spi->insr = (spi->insr << 1) | 1;
-        } else {
-            spi->insr = (spi->insr << 1) & 0xFFFFFFFE;
-        }
     }
+    spi->aclk = *pins_value[ioSPI_clk];
     spi->aclk = *pins_value[ioSPI_clk];
 
     return spi->ret;
