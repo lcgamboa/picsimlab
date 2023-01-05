@@ -116,6 +116,9 @@ int main(int argc, char **argv)
     printf("======== test[%02i]: %-25s ==============\n", i,
            tests_list[i].name);
     tests_list[i].result = tests_list[i].trun(tests_list[i].arg);
+    printf("Result: %s\n",
+           (tests_list[i].result ? "\033[1;32m Success\033[0m"
+                                 : "\033[1;31m Fail\033[0m"));
   }
 
   printf("\n\n======== Results ==============\n");

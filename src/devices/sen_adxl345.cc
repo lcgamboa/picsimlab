@@ -30,7 +30,7 @@
 #include <string.h>
 
 #define dprintf \
-    if (0) {    \
+    if (1) {    \
     } else      \
         printf
 
@@ -169,7 +169,7 @@ unsigned short adxl345_io_SPI(adxl345_t* adxl, unsigned char mosi, unsigned char
                     break;
             }
     }
-    return (adxl->bb_spi.outsr & 0x80) > 0;
+    return adxl->bb_spi.ret;  // (adxl->bb_spi.outsr & 0x80) > 0;
 }
 
 void adxl345_set_accel(adxl345_t* adxl, double x, double y, double z) {

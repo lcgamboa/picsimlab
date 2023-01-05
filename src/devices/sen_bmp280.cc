@@ -207,7 +207,7 @@ unsigned short sen_bmp280_io_SPI(sen_bmp280_t* bmp280, unsigned char mosi, unsig
                     break;
             }
     }
-    return (bmp280->bb_spi.outsr & 0x80) > 0;
+    return bmp280->bb_spi.ret;
 }
 
 void sen_bmp280_setPressTemp(sen_bmp280_t* bmp280, const float pressureh, const float temp) {

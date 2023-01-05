@@ -96,16 +96,16 @@ unsigned char ldd_max72xx_io(ldd_max72xx_t* ldd, unsigned char din, unsigned cha
     }
     ldd->ancs = ncs;
 
-    unsigned char ret = bitbang_spi_io(&ldd->bb_spi, clk, din, ncs);
+    bitbang_spi_io(&ldd->bb_spi, clk, din, ncs);
 
     switch (bitbang_spi_get_status(&ldd->bb_spi)) {
         case SPI_DATA:
             ldd->dat = ldd->bb_spi.insr;
-            bitbang_spi_send16(&ldd->bb_spi, ldd->bb_spi.insr >> 1);
+            bitbang_spi_send16(&ldd->bb_spi, ldd->bb_spi.insr);
             break;
     }
 
-    return ret;
+    return ldd->bb_spi.ret;
 }
 
 void ldd_max72xx_draw(ldd_max72xx_t* ldd, CCanvas* canvas, int x1, int y1, int w1, int h1, int picpwr, int angle) {

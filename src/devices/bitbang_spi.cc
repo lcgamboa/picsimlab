@@ -66,8 +66,7 @@ unsigned char bitbang_spi_io(bitbang_spi_t* spi, const unsigned char clk, const 
     }
 
     // edge detection
-    if ((!spi->aclk) && (clk))  // rising edge
-    {
+    if ((!spi->aclk) && (clk)) {  // rising edge
         if (din) {
             spi->insr = (spi->insr << 1) | 1;
         } else {
@@ -86,7 +85,7 @@ unsigned char bitbang_spi_io(bitbang_spi_t* spi, const unsigned char clk, const 
         } else {
             spi->status = SPI_BIT;
         }
-
+    } else if ((spi->aclk) && (!clk)) {  // falling edge
         spi->ret = ((spi->outsr & spi->outbitmask) > 0);
     }
     spi->aclk = clk;
@@ -109,8 +108,7 @@ unsigned char bitbang_spi_io_(bitbang_spi_t* spi, const unsigned char** pins_val
     }
 
     // edge detection
-    if ((!spi->aclk) && (*pins_value[ioSPI_clk]))  // rising edge
-    {
+    if ((!spi->aclk) && (*pins_value[ioSPI_clk])) {  // rising edge
         if (*pins_value[ioSPI_din]) {
             spi->insr = (spi->insr << 1) | 1;
         } else {
@@ -129,10 +127,9 @@ unsigned char bitbang_spi_io_(bitbang_spi_t* spi, const unsigned char** pins_val
         } else {
             spi->status = SPI_BIT;
         }
-
+    } else if ((!spi->aclk) && (*pins_value[ioSPI_clk])) {  // falling  edge
         spi->ret = ((spi->outsr & spi->outbitmask) > 0);
     }
-    spi->aclk = *pins_value[ioSPI_clk];
     spi->aclk = *pins_value[ioSPI_clk];
 
     return spi->ret;
@@ -146,13 +143,13 @@ unsigned char bitbang_spi_get_status(bitbang_spi_t* spi) {
 
 void bitbang_spi_send16(bitbang_spi_t* spi, const unsigned int data) {
     spi->outsr = data;
-    spi->ret = ((spi->outsr & spi->outbitmask) > 0);
+    // spi->ret = ((spi->outsr & spi->outbitmask) > 0);
     dprintf("bitbang_spi data to send 0x%02x \n", data);
 }
 
 void bitbang_spi_send8(bitbang_spi_t* spi, const unsigned char data) {
     spi->outsr = (spi->outsr & 0xFF00) | data;
-    spi->ret = ((spi->outsr & spi->outbitmask) > 0);
+    // spi->ret = ((spi->outsr & spi->outbitmask) > 0);
     dprintf("bitbang_spi data to send 0x%02x \n", data);
 }
 
