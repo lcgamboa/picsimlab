@@ -55,6 +55,7 @@ public:
     void SetId(int _id) override;
 
 private:
+    void RegisterRemoteControl(void) override;
     unsigned char input_pins[1];
     unsigned char output_pins[1];
     vterm_t vt;
@@ -71,6 +72,7 @@ private:
     unsigned char lending;
     lxFont font;
     lxString text_to_send;
+    unsigned char show;
 };
 
 #endif /* PART_vterm_H */

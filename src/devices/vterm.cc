@@ -59,6 +59,10 @@ static void vterm_uart_rx_callback(void* arg) {
         dprintf("vterm buff_in[%i] = 0x%02X (invalid)\n", vt->count_in, vt->buff_in[vt->count_in]);
     }
 
+    if (vt->ReceiveCallback) {
+        vt->ReceiveCallback(data);
+    }
+
     vt->count_in++;
     if (vt->count_in >= SBUFFMAX) {
         vt->count_in = 0;
@@ -68,6 +72,7 @@ static void vterm_uart_rx_callback(void* arg) {
 
 void vterm_init(vterm_t* vt, board* pboard) {
     bitbang_uart_init(&vt->bb_uart, pboard, vterm_uart_rx_callback, vt);
+    vt->ReceiveCallback = NULL;
     vterm_rst(vt);
     vt->inMutex = new lxMutex();
     dprintf("init vterm\n");

@@ -26,6 +26,20 @@
 #ifndef RCONTROL_H
 #define RCONTROL_H
 
+/* Output defined types
+ LD - led
+ DS - Display LCD
+ MT - DC motor
+ DG - step and servo angles
+ SS - seven sgments
+ VT - virtual term
+ */
+
+/* Input defined types
+ VS - value short
+ PB - push button
+ */
+
 // PICSimLab remote control
 int rcontrol_init(const unsigned short tcpport, const int reporterror = 0);
 int rcontrol_loop(void);

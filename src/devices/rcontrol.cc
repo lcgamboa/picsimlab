@@ -27,6 +27,7 @@
 #include "../picsimlab1.h"
 #include "../spareparts.h"
 #include "lcd_hd44780.h"
+#include "vterm.h"
 
 #define dprint \
     if (1) {   \
@@ -222,39 +223,56 @@ static char decodess(unsigned char v) {
             return 'i';
     }
 }
+#define VTBUFFMAX 400
+static int Vtcount_in = 0;
+unsigned char Vtbuff_in[VTBUFFMAX + 1];
 
-/* Defined types
- VS - value short
- */
+void VtReceiveCallback(unsigned char data) {
+    if (Vtcount_in < (VTBUFFMAX - 1)) {
+        Vtbuff_in[Vtcount_in] = data;
+        Vtcount_in++;
+        Vtbuff_in[Vtcount_in] = 0;
+    } else {
+        printf("VtReceiveCallback buffer overflow !!!\n");
+    }
+}
+
+static int type_is_equal(const char* name, const char* type) {
+    return ((name[0] == type[0]) && (name[1] == type[1]));
+}
+
 static void ProcessInput(const char* msg, input_t* Input, int* ret) {
     lxString stemp;
-    if ((Input->name[0] == 'V') && (Input->name[1] == 'S')) {
+    if (type_is_equal(Input->name, "VS")) {
         short temp = ((*((unsigned char*)Input->status)) << 8) | (*(((unsigned char*)(Input->status)) + 1));
         stemp.Printf("%s %s= %i\r\n", msg, Input->name, temp);
         *ret += sendtext((const char*)stemp.c_str());
-    } else {
+    } else if (type_is_equal(Input->name, "PB") || type_is_equal(Input->name, "KB") ||
+               type_is_equal(Input->name, "PO") || type_is_equal(Input->name, "JP")) {
         stemp.Printf("%s %s= %i\r\n", msg, Input->name, *((unsigned char*)Input->status));
+        *ret += sendtext((const char*)stemp.c_str());
+    } else if (type_is_equal(Input->name, "VT")) {
+        vterm_t* vt = (vterm_t*)Input->status;
+        if (!vt->ReceiveCallback) {
+            vt->ReceiveCallback = VtReceiveCallback;
+        }
+        stemp.Printf("%s %s= %3i\r\n", msg, Input->name, vt->count_in);
+        *ret += sendtext((const char*)stemp.c_str());
+    } else {
+        stemp.Printf("%s %s= Unknow type!\r\n", msg, Input->name);
         *ret += sendtext((const char*)stemp.c_str());
     }
 }
 
-/* Defined types
- LD - led
- DS - Display LCD
- MT - DC motor
- DG - step and servo angles
- SS - seven sgments
- */
-
-static void ProcessOutput(const char* msg, output_t* Output, int* ret) {
+static void ProcessOutput(const char* msg, output_t* Output, int* ret, int full = 0) {
     lxString stemp;
     char lstemp[200];
     static unsigned char ss = 0;  // seven segment
 
-    if ((Output->name[0] == 'L') && (Output->name[1] == 'D')) {
+    if (type_is_equal(Output->name, "LD")) {
         stemp.Printf("%s %s= %3.0f\r\n", msg, Output->name, *((float*)Output->status) - 55);
         *ret += sendtext((const char*)stemp.c_str());
-    } else if ((Output->name[0] == 'D') && (Output->name[1] == 'S')) {
+    } else if (type_is_equal(Output->name, "DS")) {
         lcd_t* lcd = (lcd_t*)Output->status;
         char lbuff[81];
         memcpy(lbuff, lcd->ddram_char, 80);
@@ -271,15 +289,15 @@ static void ProcessOutput(const char* msg, output_t* Output, int* ret) {
         }
         snprintf(lstemp + (2 * size + 19), 199, "|%.16s\r\n", &lbuff[40]);
         *ret += sendtext(lstemp);
-    } else if ((Output->name[0] == 'M') && (Output->name[1] == 'T')) {
+    } else if (type_is_equal(Output->name, "MT")) {
         unsigned char** status = (unsigned char**)Output->status;
         snprintf(lstemp, 199, "%s %s-> dir= %i speed= %3i position= %3i\r\n", msg, Output->name, *status[0], *status[1],
                  *status[2]);
         *ret += sendtext(lstemp);
-    } else if ((Output->name[0] == 'D') && (Output->name[1] == 'G')) {
+    } else if (type_is_equal(Output->name, "DG")) {
         snprintf(lstemp, 199, "%s %s-> angle= %5.1f\r\n", msg, Output->name, *((float*)Output->status) * 180.0 / M_PI);
         *ret += sendtext(lstemp);
-    } else if ((Output->name[0] == 'S') && (Output->name[1] == 'S')) {
+    } else if (type_is_equal(Output->name, "SS")) {
         switch (Output->name[3]) {
             case 'A':
                 ss = 0x00;
@@ -317,6 +335,23 @@ static void ProcessOutput(const char* msg, output_t* Output, int* ret) {
                 *ret += sendtext((const char*)stemp.c_str());
                 break;
         }
+    } else if (type_is_equal(Output->name, "VT")) {
+        vterm_t* vt = (vterm_t*)Output->status;
+        if (!vt->ReceiveCallback) {
+            vt->ReceiveCallback = VtReceiveCallback;
+        }
+        if (full) {
+            stemp.Printf("%s %s= %3i\r\n%s\r\n", msg, Output->name, Vtcount_in, Vtbuff_in);
+            *ret += sendtext((const char*)stemp.c_str());
+            Vtbuff_in[0] = 0;
+            Vtcount_in = 0;
+        } else {
+            stemp.Printf("%s %s= %3i\r\n", msg, Output->name, Vtcount_in);
+            *ret += sendtext((const char*)stemp.c_str());
+        }
+    } else {
+        stemp.Printf("%s %s= unknow type !\r\n", msg, Output->name);
+        *ret += sendtext((const char*)stemp.c_str());
     }
 }
 
@@ -609,7 +644,7 @@ int rcontrol_loop(void) {
 
                                 if (Output->status != NULL) {
                                     snprintf(lstemp, 100, "board.out[%02i]", out);
-                                    ProcessOutput(lstemp, Output, &ret);
+                                    ProcessOutput(lstemp, Output, &ret, 1);
                                     sendtext("Ok\r\n>");
                                 } else {
                                     ret = sendtext("ERROR\r\n>");
@@ -694,7 +729,7 @@ int rcontrol_loop(void) {
 
                                         if (Output->status != NULL) {
                                             snprintf(lstemp, 100, "part[%02i].out[%02i]", pn, out);
-                                            ProcessOutput(lstemp, Output, &ret);
+                                            ProcessOutput(lstemp, Output, &ret, 1);
                                             sendtext("Ok\r\n>");
                                         } else {
                                             ret = sendtext("ERROR\r\n>");
@@ -959,11 +994,22 @@ int rcontrol_loop(void) {
                                     Input = Part->GetInput(in);
 
                                     if (Input->status != NULL) {
-                                        if ((Input->name[0] == 'V') && (Input->name[1] == 'S')) {
+                                        if (type_is_equal(Input->name, "VS")) {
                                             *((unsigned char*)Input->status) = (value & 0xFF00) >> 8;
                                             *(((unsigned char*)Input->status) + 1) = value & 0x00FF;
-                                        } else {
+                                        } else if (type_is_equal(Input->name, "PB") ||
+                                                   type_is_equal(Input->name, "KB") ||
+                                                   type_is_equal(Input->name, "PO") ||
+                                                   type_is_equal(Input->name, "JP")) {
                                             *((unsigned char*)Input->status) = value;
+                                        } else if (type_is_equal(Input->name, "VT")) {
+                                            vterm_t* vt = (vterm_t*)Input->status;
+                                            if (!vt->ReceiveCallback) {
+                                                vt->ReceiveCallback = VtReceiveCallback;
+                                            }
+                                            const char* sval = ptr2 + 9;
+                                            strcpy((char*)vt->buff_out, sval);
+                                            vt->count_out = strlen(sval);
                                         }
                                         if (Input->update) {
                                             *Input->update = 1;

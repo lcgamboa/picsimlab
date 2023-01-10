@@ -39,6 +39,7 @@ typedef struct {
     unsigned int count_out;
     unsigned char out_ptr;
     lxMutex* inMutex;
+    void (*ReceiveCallback)(unsigned char data);
 } vterm_t;
 
 void vterm_rst(vterm_t* vt);

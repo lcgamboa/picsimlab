@@ -29,10 +29,10 @@
 #include "../spareparts.h"
 
 /* outputs */
-enum { O_RX, O_TX, O_LTX, O_LRX };
+enum { O_RX, O_TX, O_LTX, O_LRX, O_VT };
 
 /* inputs */
-enum { I_TERM };
+enum { I_TERM, I_VT };
 
 /* line ending*/
 enum { LE_NONE, LE_NL, LE_CR, LE_NL_CR, O_TERM };
@@ -51,6 +51,8 @@ cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, c
     input_pins[0] = 0;
 
     output_pins[0] = 0;
+
+    show = 0;
 
     _ret = -1;
 
@@ -114,6 +116,13 @@ cpart_vterm::~cpart_vterm(void) {
     wvterm->DestroyChilds();
     wvterm->SetCanDestroy(true);
     wvterm->WDestroy();
+}
+
+void cpart_vterm::RegisterRemoteControl(void) {
+    input_ids[I_TERM]->status = &show;
+    input_ids[I_VT]->status = &vt;
+    input_ids[I_VT]->update = &output_ids[O_VT]->update;
+    output_ids[O_VT]->status = &vt;
 }
 
 void cpart_vterm::SetId(int _id) {
@@ -217,6 +226,16 @@ void cpart_vterm::DrawOutput(const unsigned int i) {
             break;
         case O_TERM:
             char str[SBUFFMAX];
+
+            if (show & 0x80) {
+                if (show & 0x01) {
+                    wvterm->Show();
+                } else {
+                    wvterm->Hide();
+                }
+                show &= ~0x80;
+            }
+
             vt.inMutex->Lock();
             strncpy(str, (char*)vt.buff_in, vt.count_in);
             str[vt.count_in] = 0;
@@ -260,6 +279,8 @@ void cpart_vterm::DrawOutput(const unsigned int i) {
 unsigned short cpart_vterm::GetInputId(char* name) {
     if (strcmp(name, "PB_TERM") == 0)
         return I_TERM;
+    if (strcmp(name, "VT_VTERM") == 0)
+        return I_VT;
 
     printf("Erro input '%s' don't have a valid id! \n", name);
     return -1;
@@ -276,6 +297,8 @@ unsigned short cpart_vterm::GetOutputId(char* name) {
         return O_LRX;
     if (strcmp(name, "PB_TERM") == 0)
         return O_TERM;
+    if (strcmp(name, "VT_VTERM") == 0)
+        return O_VT;
 
     printf("Erro output '%s' don't have a valid id! \n", name);
     return 1;
@@ -358,13 +381,18 @@ void cpart_vterm::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, 
     switch (inputId) {
         case I_TERM:
             if (button == 1) {
-                wvterm->Show();
+                show = (show & 0x01) ^ 1;
+                show |= 0x80;
             }
             break;
     }
 }
 
 void cpart_vterm::PostProcess(void) {
+    if (show & 0x80) {
+        output_ids[O_TERM]->update = 1;
+    }
+
     if (output_ids[O_LTX]->value != (vt.bb_uart.leds & 0x02)) {
         output_ids[O_LTX]->value = (vt.bb_uart.leds & 0x02);
         output_ids[O_LTX]->update = 1;

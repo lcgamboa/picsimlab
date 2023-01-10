@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2022  Luis Claudio Gamboa Lopes
+   Copyright (c) : 2020-2023  Luis Claudio Gamboa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -29,28 +29,27 @@
 
 #include "tests.h"
 
-static int test_ESP32_DevKitC(void *arg) {
+static int test_ESP32_DevKitC(void* arg) {
+    printf("test ESP32_DevKitC \n");
 
-  printf("test ESP32_DevKitC \n");
+    if (!test_load("ESP32_DevKitC/ESP32_DevKitC.pzw")) {
+        return 0;
+    }
 
-  if (!test_load("ESP32_DevKitC/ESP32_DevKitC.pzw")) {
-    return 0;
-  }
+    char buff[256];
+    // read serial console
+    while (test_serial_recv_str(buff, 256, 1000)) {
+        // printf("%s\n", buff);
+    }
 
-  char buff[256];
-  // read serial console
-  while (test_serial_recv_str(buff, 256, 1000)) {
-    // printf("%s\n", buff);
-  }
+    // check the last line
+    if (strcmp(buff, "Hello World! esp32\r")) {
+        printf("Failed in ESP32_DeviktC serial\n");
+        test_end();
+        return 0;
+    }
 
-  // check the last line
-  if (strcmp(buff, "Hello World! esp32\r")) {
-    printf("Failed in ESP32_DeviktC serial\n");
-    test_end();
-    return 0;
-  }
-
-  return test_end();
+    return test_end();
 }
 
 register_test("ESP32_DevKitC", test_ESP32_DevKitC, NULL);

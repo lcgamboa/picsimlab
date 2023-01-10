@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2021  Luis Claudio Gamboa Lopes
+   Copyright (c) : 2020-2023  Luis Claudio Gamboa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -29,32 +29,37 @@
 
 #include "tests.h"
 
-static int test_ext_eeprom(void *arg) {
-  char ret[256];
+static int test_ext_eeprom(void* arg) {
+    char ret[256];
 
-  printf("test external eeprom i2c \n");
+    printf("test external eeprom i2c \n");
 
-  if (!test_load("ext_eeprom/extee_uno.pzw")) {
-    return 0;
-  }
-
-  do {
-
-    if (!test_serial_recv_str(ret, 256, 1000)) {
-      printf("Error on recv\n");
-      test_end();
-      return 0;
+    if (!test_load("ext_eeprom/extee_uno.pzw")) {
+        return 0;
     }
-    // printf ("%s\n", ret);
 
-  } while (!strstr(ret, "Errors: "));
+    if (!test_serial_vt_init(1)) {
+        printf("Error init vt \n");
+        test_end();
+        return 0;
+    }
 
-  if (strncmp(ret, "Errors: 0", 9)) {
-    test_end();
-    return 0;
-  }
+    do {
+        if (!test_serial_recv_str(ret, 256, 1000)) {
+            printf("Error on recv\n");
+            test_end();
+            return 0;
+        }
+        // printf ("%s\n", ret);
 
-  return test_end();
+    } while (!strstr(ret, "Errors: "));
+
+    if (strncmp(ret, "Errors: 0", 9)) {
+        test_end();
+        return 0;
+    }
+
+    return test_end();
 }
 
 register_test("Uno ext. eeprom 24C04", test_ext_eeprom, NULL);

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2021  Luis Claudio Gamboa Lopes
+   Copyright (c) : 2020-2023  Luis Claudio Gamboa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -28,44 +28,50 @@
 
 #include "tests.h"
 
-static int test_serial(void *arg) {
-  char data = '!';
-  char ret;
-  printf("test serial \n");
+static int test_serial(void* arg) {
+    char data = '!';
+    char ret;
+    printf("test serial \n");
 
-  if (!test_load("serial/serial_uno.pzw")) {
-    return 0;
-  }
-
-  char buff[256];
-  // clear serial console
-  while (test_serial_recv_str(buff, 256, 1000)) {
-  };
-
-  for (int i = 0; i < 94; i++) {
-    if (!test_serial_send(data)) {
-      printf("Error on send\n");
-      test_end();
-      return 0;
+    if (!test_load("serial/serial_uno.pzw")) {
+        return 0;
     }
 
-    if (!test_serial_recv_wait(&ret, 500)) {
-      printf("Error on recv\n");
-      test_end();
-      return 0;
-    }
-    // printf ("send %c -> %c \n", data, ret);
-
-    if (data != ret) {
-      printf("Error on data value \n");
-      test_end();
-      return 0;
+    if (!test_serial_vt_init(0)) {
+        printf("Error init vt \n");
+        test_end();
+        return 0;
     }
 
-    data++;
-  }
+    char buff[256];
+    // clear serial console
+    while (test_serial_recv_str(buff, 256, 1000)) {
+    };
 
-  return test_end();
+    for (int i = 0; i < 94; i++) {
+        if (!test_serial_send(data)) {
+            printf("Error on send\n");
+            test_end();
+            return 0;
+        }
+
+        if (!test_serial_recv_wait(&ret, 500)) {
+            printf("Error on recv\n");
+            test_end();
+            return 0;
+        }
+        // printf ("send %c -> %c \n", data, ret);
+
+        if (data != ret) {
+            printf("Error on data value \n");
+            test_end();
+            return 0;
+        }
+
+        data++;
+    }
+
+    return test_end();
 }
 
 register_test("Uno Serial", test_serial, NULL);
