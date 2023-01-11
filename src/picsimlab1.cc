@@ -230,7 +230,7 @@ void CPWindow1::thread1_EvThreadRun(CControl*) {
 
             PICSimLab.status.st[1] |= ST_TH;
             PICSimLab.GetBoard()->Run_CPU();
-            if (PICSimLab.Get_debug_status())
+            if (PICSimLab.GetDebugStatus())
                 PICSimLab.GetBoard()->DebugLoop();
             PICSimLab.tgo--;
             PICSimLab.status.st[1] &= ~ST_TH;
@@ -336,7 +336,7 @@ void CPWindow1::timer2_EvOnTime(CControl* control) {
         WDestroy();
     }
 
-    if (PICSimLab.GetNeed_clkupdate()) {
+    if (PICSimLab.GetNeedClkUpdate()) {
         PICSimLab.SetClock(PICSimLab.GetClock());
     }
 }
@@ -521,11 +521,11 @@ void CPWindow1::_EvOnCreate(CControl* control) {
             PICSimLab.PrefsClear();
             if (lxFileExists(fname)) {
                 if (PICSimLab.PrefsLoadFromFile(fname)) {
-                    PICSimLab.saveprefs(lxT("picsimlab_lab"), boards_list[PICSimLab.GetLab()].name_);
-                    PICSimLab.saveprefs(lxString(boards_list[PICSimLab.GetLab()].name_) + lxT("_proc"),
+                    PICSimLab.SavePrefs(lxT("picsimlab_lab"), boards_list[PICSimLab.GetLab()].name_);
+                    PICSimLab.SavePrefs(lxString(boards_list[PICSimLab.GetLab()].name_) + lxT("_proc"),
                                         Application->Aargv[2]);
                     if (Application->Aargc == 5) {
-                        PICSimLab.saveprefs(lxT("spare_on"), lxT("1"));
+                        PICSimLab.SavePrefs(lxT("spare_on"), lxT("1"));
                     }
                     PICSimLab.PrefsSaveToFile(fname);
                 }
@@ -630,7 +630,7 @@ void CPWindow1::menu1_File_LoadHex_EvMenuActive(CControl* control) {
 }
 
 void CPWindow1::menu1_File_SaveHex_EvMenuActive(CControl* control) {
-    pa = PICSimLab.Get_mcupwr();
+    pa = PICSimLab.GetMcuPwr();
     filedialog1.SetType(lxFD_SAVE | lxFD_CHANGE_DIR);
 #ifdef __EMSCRIPTEN__
     filedialog1.SetDir("/tmp/");
@@ -642,8 +642,8 @@ void CPWindow1::menu1_File_SaveHex_EvMenuActive(CControl* control) {
 }
 
 void CPWindow1::filedialog1_EvOnClose(int retId) {
-    pa = PICSimLab.Get_mcupwr();
-    PICSimLab.Set_mcupwr(0);
+    pa = PICSimLab.GetMcuPwr();
+    PICSimLab.SetMcuPwr(0);
 
     while (PICSimLab.status.st[1] & ST_TH)
         usleep(100);  // wait thread
@@ -682,7 +682,7 @@ void CPWindow1::filedialog1_EvOnClose(int retId) {
 #endif
     }
 
-    PICSimLab.Set_mcupwr(pa);
+    PICSimLab.SetMcuPwr(pa);
 }
 
 void CPWindow1::menu1_File_Exit_EvMenuActive(CControl* control) {
@@ -769,8 +769,8 @@ int CPWindow1::LoadHexFile(lxString fname) {
     int pa;
     int ret = 0;
 
-    pa = PICSimLab.Get_mcupwr();
-    PICSimLab.Set_mcupwr(0);
+    pa = PICSimLab.GetMcuPwr();
+    PICSimLab.SetMcuPwr(0);
 
     // timer1.SetRunState (0);
     PICSimLab.status.st[0] |= ST_DI;
@@ -796,21 +796,21 @@ int CPWindow1::LoadHexFile(lxString fname) {
                                         PICSimLab.GetNSTEP() * NSTEPKF)) {
         case HEX_NFOUND:
             PICSimLab.RegisterError(lxT("Hex file not found!"));
-            PICSimLab.Set_mcurun(0);
+            PICSimLab.SetMcuRun(0);
             break;
         case HEX_CHKSUM:
             PICSimLab.RegisterError(lxT("Hex file checksum error!"));
             PICSimLab.GetBoard()->MEraseFlash();
-            PICSimLab.Set_mcurun(0);
+            PICSimLab.SetMcuRun(0);
             break;
         case 0:
-            PICSimLab.Set_mcurun(1);
+            PICSimLab.SetMcuRun(1);
             break;
     }
 
     PICSimLab.GetBoard()->Reset();
 
-    if (PICSimLab.Get_mcurun())
+    if (PICSimLab.GetMcuRun())
         SetTitle(((PICSimLab.GetInstanceNumber() > 0)
                       ? (lxT("PICSimLab[") + itoa(PICSimLab.GetInstanceNumber()) + lxT("] - "))
                       : (lxT("PICSimLab - "))) +
@@ -823,22 +823,22 @@ int CPWindow1::LoadHexFile(lxString fname) {
                  lxString(boards_list[PICSimLab.GetLab()].name) + lxT(" - ") +
                  PICSimLab.GetBoard()->GetProcessorName());
 
-    ret = !PICSimLab.Get_mcurun();
+    ret = !PICSimLab.GetMcuRun();
 
-    PICSimLab.Set_mcupwr(pa);
+    PICSimLab.SetMcuPwr(pa);
     // timer1.SetRunState (1);
     PICSimLab.status.st[0] &= ~ST_DI;
 
 #ifdef NO_DEBUG
     statusbar1.SetField(1, lxT(" "));
 #else
-    if (PICSimLab.Get_debug_status()) {
-        int ret = PICSimLab.GetBoard()->DebugInit(PICSimLab.Get_debug_type());
+    if (PICSimLab.GetDebugStatus()) {
+        int ret = PICSimLab.GetBoard()->DebugInit(PICSimLab.GetDebugType());
         if (ret < 0) {
             statusbar1.SetField(1, lxT("Debug: Error"));
         } else {
             statusbar1.SetField(1, lxT("Debug: ") + PICSimLab.GetBoard()->GetDebugName() + ":" +
-                                       itoa(PICSimLab.Get_debug_port() + PICSimLab.GetInstanceNumber()));
+                                       itoa(PICSimLab.GetDebugPort() + PICSimLab.GetInstanceNumber()));
         }
     } else {
         statusbar1.SetField(1, lxT("Debug: Off"));
@@ -906,7 +906,7 @@ void CPWindow1::togglebutton1_EvOnToggleButton(CControl* control) {
     int osc_on = PICSimLab.GetBoard()->GetUseOscilloscope();
     int spare_on = PICSimLab.GetBoard()->GetUseSpareParts();
 
-    PICSimLab.Set_debug_status(togglebutton1.GetCheck(), 0);
+    PICSimLab.SetDebugStatus(togglebutton1.GetCheck(), 0);
 
     PICSimLab.EndSimulation();
     PICSimLab.Configure(PICSimLab.GetHomePath());
@@ -1002,7 +1002,7 @@ void CPWindow1::menu1_Tools_PinViewer_EvMenuActive(CControl* control) {
 #ifdef _WIN_
     lxExecute(PICSimLab.GetSharePath() + lxT("/../PinViewer.exe " + itoa(PICSimLab.Get_remotec_port())));
 #else
-    lxExecute(dirname(lxGetExecutablePath()) + "/PinViewer " + itoa(PICSimLab.Get_remotec_port()));
+    lxExecute(dirname(lxGetExecutablePath()) + "/PinViewer " + itoa(PICSimLab.GetRemotecPort()));
 #endif
 }
 

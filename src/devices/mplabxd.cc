@@ -266,13 +266,13 @@ static unsigned short dbuff[2];
 
 int mplabxd_testbp(void) {
     int i;
-    if (!PICSimLab.Get_mcudbg()) {
+    if (!PICSimLab.GetMcuDbg()) {
         for (i = 0; i < bpc; i++) {
             if (dbg_board->DBGGetPC() == bp[i]) {
                 dprint("breakpoint 0x%04X!!!!!=========================\n", bp[i]);
                 PICSimLab.SetCpuState(CPU_BREAKPOINT);
                 PICSimLab.Set_mcudbg(1);
-                return PICSimLab.Get_mcudbg();
+                return PICSimLab.GetMcuDbg();
             }
         }
         for (i = 0; i < bpdwc; i++) {
@@ -280,7 +280,7 @@ int mplabxd_testbp(void) {
                 dprint("breakpoint data wr 0x%04X!!!!!=========================\n", bpdw[i]);
                 PICSimLab.SetCpuState(CPU_BREAKPOINT);
                 PICSimLab.Set_mcudbg(1);
-                return PICSimLab.Get_mcudbg();
+                return PICSimLab.GetMcuDbg();
             }
         }
         for (i = 0; i < bpdrc; i++) {
@@ -288,11 +288,11 @@ int mplabxd_testbp(void) {
                 dprint("breakpoint data rd 0x%04X!!!!!=========================\n", bpdr[i]);
                 PICSimLab.SetCpuState(CPU_BREAKPOINT);
                 PICSimLab.Set_mcudbg(1);
-                return PICSimLab.Get_mcudbg();
+                return PICSimLab.GetMcuDbg();
             }
         }
     }
-    return PICSimLab.Get_mcudbg();
+    return PICSimLab.GetMcuDbg();
 }
 
 int mplabxd_loop(void) {
@@ -403,13 +403,13 @@ int mplabxd_loop(void) {
                 dprint("SETBK cmd\n");
                 break;
             case STRUN:
-                i = PICSimLab.Get_mcudbg();
+                i = PICSimLab.GetMcuDbg();
                 if (send(sockfd, (char*)&i, 1, MSG_NOSIGNAL) != 1) {
                     printf("mplabxd: send error : %s \n", strerror(errno));
                     ret = 1;
                     reply = 0x01;
                 }
-                dprint("STRUN cmd =%i\n", PICSimLab.Get_mcudbg());
+                dprint("STRUN cmd =%i\n", PICSimLab.GetMcuDbg());
                 break;
             case SDWBK:
                 if ((n = recv(sockfd, (char*)&bpdwc, 2, MSG_WAITALL)) != 2) {

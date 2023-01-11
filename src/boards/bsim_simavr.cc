@@ -536,7 +536,7 @@ int bsim_simavr::DebugInit(int dtyppe) {
     avr_debug_type = dtyppe;
 
     if (avr_debug_type) {
-        avr->gdb_port = PICSimLab.Get_debug_port();
+        avr->gdb_port = PICSimLab.GetDebugPort();
         if (avr_gdb_init(avr)) {
             PICSimLab.RegisterError("Error starting GDB debugger support !");
             return -1;
@@ -546,7 +546,7 @@ int bsim_simavr::DebugInit(int dtyppe) {
             return 1;
         }
     } else {
-        int ret = !mplabxd_init(this, PICSimLab.Get_debug_port()) - 1;
+        int ret = !mplabxd_init(this, PICSimLab.GetDebugPort()) - 1;
 
         if (ret < 0) {
             PICSimLab.RegisterError("Error starting MPLABX debugger support !");
@@ -564,7 +564,7 @@ lxString bsim_simavr::GetDebugName(void) {
 }
 
 void bsim_simavr::DebugLoop(void) {
-    if (PICSimLab.Get_mcupwr()) {
+    if (PICSimLab.GetMcuPwr()) {
         if ((avr_debug_type) && (avr->gdb)) {
             // this also sleeps for a bit
             gdb_network_handler(avr->gdb, 0);

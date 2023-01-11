@@ -355,16 +355,16 @@ void cboard_DevKitC::RefreshStatus(void) {
 
 void cboard_DevKitC::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
-    PICSimLab.saveprefs(lxT("ESP32_DevKitC_proc"), Proc);
+    PICSimLab.SavePrefs(lxT("ESP32_DevKitC_proc"), Proc);
     // write microcontroller clock to preferences
-    PICSimLab.saveprefs(lxT("ESP32_DevKitC_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("ESP32_DevKitC_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
     // write microcontroller icount to preferences
-    PICSimLab.saveprefs(lxT("ESP32_DevKitC_icount"), itoa(icount));
+    PICSimLab.SavePrefs(lxT("ESP32_DevKitC_icount"), itoa(icount));
 
-    PICSimLab.saveprefs(lxT("ESP32_DevKitC_cfgewifi"), itoa(ConfEnableWifi));
-    PICSimLab.saveprefs(lxT("ESP32_DevKitC_cfgdwdt"), itoa(ConfDisableWdt));
-    PICSimLab.saveprefs(lxT("ESP32_DevKitC_cfguextra"), itoa(use_cmdline_extra));
-    PICSimLab.saveprefs(lxT("ESP32_DevKitC_cmdextra"), cmdline_extra);
+    PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cfgewifi"), itoa(ConfEnableWifi));
+    PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cfgdwdt"), itoa(ConfDisableWdt));
+    PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cfguextra"), itoa(use_cmdline_extra));
+    PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cmdextra"), cmdline_extra);
 }
 
 // Called whe configuration file load  preferences
@@ -421,13 +421,13 @@ void cboard_DevKitC::EvMouseButtonPress(uint button, uint x, uint y, uint state)
                     break;
                     // if event is over I_PWR area then toggle board on/off
                 case I_PWR:
-                    if (PICSimLab.Get_mcupwr())  // if on turn off
+                    if (PICSimLab.GetMcuPwr())  // if on turn off
                     {
-                        PICSimLab.Set_mcupwr(0);
+                        PICSimLab.SetMcuPwr(0);
                         Reset();
                     } else  // if off turn on
                     {
-                        PICSimLab.Set_mcupwr(1);
+                        PICSimLab.SetMcuPwr(1);
                         Reset();
                     }
                     break;
@@ -462,10 +462,10 @@ void cboard_DevKitC::EvMouseButtonRelease(uint button, uint x, uint y, uint stat
             switch (input[i].id) {
                     // if event is over I_RST area then turn on
                 case I_RST:
-                    if (PICSimLab.Get_mcurst())  // if powered
+                    if (PICSimLab.GetMcuRst())  // if powered
                     {
-                        PICSimLab.Set_mcupwr(1);
-                        PICSimLab.Set_mcurst(0);
+                        PICSimLab.SetMcuPwr(1);
+                        PICSimLab.SetMcuRst(0);
                         /*
                                  if (reset (-1))
                                   {
@@ -501,7 +501,7 @@ void cboard_DevKitC::Draw(CDraw* draw) {
             switch (output[i].id)  // search for color of output
             {
                 case O_LON:  // Blue using mcupwr value
-                    draw->Canvas.SetColor(200 * PICSimLab.Get_mcupwr() + 55, 0, 0);
+                    draw->Canvas.SetColor(200 * PICSimLab.GetMcuPwr() + 55, 0, 0);
                     break;
                 case O_LED:  // Blue using mcupwr value
                     draw->Canvas.SetColor(0, 0, pins[23].oavalue);
@@ -562,7 +562,7 @@ void cboard_DevKitC::Run_CPU_ns(uint64_t time) {
             pi = 0;
         }
 
-        if (PICSimLab.Get_mcupwr())  // if powered
+        if (PICSimLab.GetMcuPwr())  // if powered
                                      // for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
             /*

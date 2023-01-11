@@ -273,7 +273,7 @@ void cpart_MPU6050::PreProcess(void) {
      */
 
     if (mpu_pins[1] > 0) {
-        SpareParts.Reset_pullup_bus(mpu_pins[1] - 1);
+        SpareParts.ResetPullupBus(mpu_pins[1] - 1);
     }
 }
 
@@ -281,7 +281,7 @@ void cpart_MPU6050::Process(void) {
     const picpin* ppins = SpareParts.GetPinsValues();
 
     if ((mpu_pins[0] > 0) && (mpu_pins[1] > 0))
-        SpareParts.Set_pullup_bus(mpu_pins[1] - 1,
+        SpareParts.SetPullupBus(mpu_pins[1] - 1,
                                   mpu6050_io_I2C(&mpu, ppins[mpu_pins[0] - 1].value, ppins[mpu_pins[1] - 1].value));
 }
 

@@ -311,10 +311,10 @@ void cboard_Curiosity::RefreshStatus(void) {
 
 void cboard_Curiosity::WritePreferences(void) {
     // write selected microcontroller of board_5 to preferences
-    PICSimLab.saveprefs(lxT("Curiosity_proc"), Proc);
-    PICSimLab.saveprefs(lxT("Curiosity_jmp"), lxString().Format("%i", jmp[0]));
-    PICSimLab.saveprefs(lxT("Curiosity_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
-    PICSimLab.saveprefs(lxT("Curiosity_pot1"), lxString().Format("%i", pot1));
+    PICSimLab.SavePrefs(lxT("Curiosity_proc"), Proc);
+    PICSimLab.SavePrefs(lxT("Curiosity_jmp"), lxString().Format("%i", jmp[0]));
+    PICSimLab.SavePrefs(lxT("Curiosity_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("Curiosity_pot1"), lxString().Format("%i", pot1));
 }
 
 // Called whe configuration file load  preferences
@@ -378,23 +378,23 @@ void cboard_Curiosity::EvMouseButtonPress(uint button, uint x, uint y, uint stat
                     break;
                     // if event is over I_PWR area then toggle board on/off
                 case I_PWR:
-                    if (PICSimLab.Get_mcupwr())  // if on turn off
+                    if (PICSimLab.GetMcuPwr())  // if on turn off
                     {
-                        PICSimLab.Set_mcupwr(0);
+                        PICSimLab.SetMcuPwr(0);
                         Reset();
                         p_BT1 = 1;
                     } else  // if off turn on
                     {
-                        PICSimLab.Set_mcupwr(1);
+                        PICSimLab.SetMcuPwr(1);
                         Reset();
                     }
                     break;
                     // if event is over I_RST area then turn off and reset
                 case I_RST:
-                    if (PICSimLab.Get_mcupwr() && pic_reset(&pic, -1))  // if powered
+                    if (PICSimLab.GetMcuPwr() && pic_reset(&pic, -1))  // if powered
                     {
-                        PICSimLab.Set_mcupwr(0);
-                        PICSimLab.Set_mcurst(1);
+                        PICSimLab.SetMcuPwr(0);
+                        PICSimLab.SetMcuRst(1);
                     }
                     p_RST = 0;
                     break;
@@ -444,10 +444,10 @@ void cboard_Curiosity::EvMouseButtonRelease(uint button, uint x, uint y, uint st
             switch (input[i].id) {
                     // if event is over I_RST area then turn on
                 case I_RST:
-                    if (PICSimLab.Get_mcurst())  // if powered
+                    if (PICSimLab.GetMcuRst())  // if powered
                     {
-                        PICSimLab.Set_mcupwr(1);
-                        PICSimLab.Set_mcurst(0);
+                        PICSimLab.SetMcuPwr(1);
+                        PICSimLab.SetMcuRst(0);
 
                         if (pic_reset(&pic, -1)) {
                             Reset();
@@ -485,10 +485,10 @@ void cboard_Curiosity::Draw(CDraw* draw) {
             switch (output[i].id)  // search for color of output
             {
                 case O_D1:  // green using picpwr value
-                    draw->Canvas.SetColor(0, 200 * PICSimLab.Get_mcupwr() + 55, 0);
+                    draw->Canvas.SetColor(0, 200 * PICSimLab.GetMcuPwr() + 55, 0);
                     break;
                 case O_D2:  // green using picpwr value
-                    draw->Canvas.SetColor(0, 200 * PICSimLab.Get_mcupwr() + 55, 0);
+                    draw->Canvas.SetColor(0, 200 * PICSimLab.GetMcuPwr() + 55, 0);
                     break;
                 case O_D4:  // Red using pin 2 mean  value (RA5)
                     draw->Canvas.SetColor(pic.pins[1].oavalue, 0, 0);
@@ -602,7 +602,7 @@ void cboard_Curiosity::Run_CPU(void) {
 
     j = JUMPSTEPS;  // step counter
     pi = 0;
-    if (PICSimLab.Get_mcupwr())      // if powered
+    if (PICSimLab.GetMcuPwr())      // if powered
         for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
             if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip

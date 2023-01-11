@@ -145,7 +145,7 @@ void cpart_RTC_ds1307::ReadPropertiesWindow(CPWindow* WProp) {
 
 void cpart_RTC_ds1307::PreProcess(void) {
     if (input_pins[0] > 0) {
-        SpareParts.Reset_pullup_bus(input_pins[0] - 1);
+        SpareParts.ResetPullupBus(input_pins[0] - 1);
     }
     rtc_ds1307_update(&rtc2);
 }
@@ -154,7 +154,7 @@ void cpart_RTC_ds1307::Process(void) {
     const picpin* ppins = SpareParts.GetPinsValues();
 
     if ((input_pins[0] > 0) && (input_pins[1] > 0))
-        SpareParts.Set_pullup_bus(input_pins[0] - 1, rtc_ds1307_I2C_io(&rtc2, ppins[input_pins[1] - 1].value,
+        SpareParts.SetPullupBus(input_pins[0] - 1, rtc_ds1307_I2C_io(&rtc2, ppins[input_pins[1] - 1].value,
                                                                        ppins[input_pins[0] - 1].value));
 }
 

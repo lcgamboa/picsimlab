@@ -124,7 +124,7 @@ void cpart_dht22::Reset(void) {
 void cpart_dht22::PreProcess(void) {
     if (output_pins[0]) {
         sen_dhtxx_setTempHum(&dht22, (0.6 * (200 - values[0]) - 40), (200 - values[1]) / 2.0);
-        SpareParts.Reset_pullup_bus(output_pins[0] - 1);
+        SpareParts.ResetPullupBus(output_pins[0] - 1);
     }
 }
 
@@ -136,7 +136,7 @@ void cpart_dht22::Process(void) {
             SpareParts.SetPin(output_pins[0], dht22.out);
         }
 
-        SpareParts.Set_pullup_bus(output_pins[0] - 1, sen_dhtxx_io(&dht22, ppins[output_pins[0] - 1].value));
+        SpareParts.SetPullupBus(output_pins[0] - 1, sen_dhtxx_io(&dht22, ppins[output_pins[0] - 1].value));
     }
 }
 

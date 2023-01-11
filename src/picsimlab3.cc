@@ -58,11 +58,11 @@ void CPWindow3::button1_EvMouseButtonClick(CControl* control, uint button, uint 
     int osc_on = PICSimLab.GetBoard()->GetUseOscilloscope();
     int spare_on = PICSimLab.GetBoard()->GetUseSpareParts();
 
-    PICSimLab.Set_debug_type(combo3.GetText().compare("GDB") == 0);
+    PICSimLab.SetDebugType(combo3.GetText().compare("GDB") == 0);
 
-    PICSimLab.Set_debug_port(spin1.GetValue());
+    PICSimLab.SetDebugPort(spin1.GetValue());
 
-    PICSimLab.Set_remotec_port(spin2.GetValue());
+    PICSimLab.SetRemotecPort(spin2.GetValue());
 
 #ifdef _USE_PICSTARTP_
     if (combo1.GetText() == combo2.GetText()) {
@@ -119,15 +119,15 @@ void CPWindow3::_EvOnShow(CControl* control) {
         printf("No serial ports found!\n");
     }
 
-    if (PICSimLab.Get_debug_type()) {
+    if (PICSimLab.GetDebugType()) {
         combo3.SetText("GDB");
     } else {
         combo3.SetText("MDB");
     }
 
-    spin1.SetValue(PICSimLab.Get_debug_port());
+    spin1.SetValue(PICSimLab.GetDebugPort());
 
-    spin2.SetValue(PICSimLab.Get_remotec_port());
+    spin2.SetValue(PICSimLab.GetRemotecPort());
 
     if (PICSimLab.GetInstanceNumber()) {
         spin1.SetEnable(0);

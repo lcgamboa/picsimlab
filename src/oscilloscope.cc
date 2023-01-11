@@ -230,31 +230,31 @@ void COscilloscope::Init(CWindow* win) {
 }
 
 void COscilloscope::WritePreferences(void) {
-    PICSimLab.saveprefs(lxT("osc_scale1"), ftoa(((CSpind*)Window->GetChildByName("spind1"))->GetValue()));
-    PICSimLab.saveprefs(lxT("osc_offset1"), ftoa(((CSpind*)Window->GetChildByName("spind2"))->GetValue()));
-    PICSimLab.saveprefs(lxT("osc_on1"), itoa(((CToggleButton*)Window->GetChildByName("togglebutton1"))->GetCheck()));
-    PICSimLab.saveprefs(lxT("osc_color1"),
+    PICSimLab.SavePrefs(lxT("osc_scale1"), ftoa(((CSpind*)Window->GetChildByName("spind1"))->GetValue()));
+    PICSimLab.SavePrefs(lxT("osc_offset1"), ftoa(((CSpind*)Window->GetChildByName("spind2"))->GetValue()));
+    PICSimLab.SavePrefs(lxT("osc_on1"), itoa(((CToggleButton*)Window->GetChildByName("togglebutton1"))->GetCheck()));
+    PICSimLab.SavePrefs(lxT("osc_color1"),
                         ((CButton*)Window->GetChildByName("button1"))->GetColor().GetAsString(lxC2S_HTML_SYNTAX));
-    PICSimLab.saveprefs(lxT("osc_inv"), itoa(((CToggleButton*)Window->GetChildByName("togglebutton3"))->GetCheck()));
-    PICSimLab.saveprefs(lxT("osc_ch1"), ((CCombo*)Window->GetChildByName("combo2"))->GetText());
+    PICSimLab.SavePrefs(lxT("osc_inv"), itoa(((CToggleButton*)Window->GetChildByName("togglebutton3"))->GetCheck()));
+    PICSimLab.SavePrefs(lxT("osc_ch1"), ((CCombo*)Window->GetChildByName("combo2"))->GetText());
 
-    PICSimLab.saveprefs(lxT("osc_scale2"), ftoa(((CSpind*)Window->GetChildByName("spind3"))->GetValue()));
-    PICSimLab.saveprefs(lxT("osc_offset2"), ftoa(((CSpind*)Window->GetChildByName("spind4"))->GetValue()));
-    PICSimLab.saveprefs(lxT("osc_on2"), itoa(((CToggleButton*)Window->GetChildByName("togglebutton2"))->GetCheck()));
-    PICSimLab.saveprefs(lxT("osc_color2"),
+    PICSimLab.SavePrefs(lxT("osc_scale2"), ftoa(((CSpind*)Window->GetChildByName("spind3"))->GetValue()));
+    PICSimLab.SavePrefs(lxT("osc_offset2"), ftoa(((CSpind*)Window->GetChildByName("spind4"))->GetValue()));
+    PICSimLab.SavePrefs(lxT("osc_on2"), itoa(((CToggleButton*)Window->GetChildByName("togglebutton2"))->GetCheck()));
+    PICSimLab.SavePrefs(lxT("osc_color2"),
                         ((CButton*)Window->GetChildByName("button2"))->GetColor().GetAsString(lxC2S_HTML_SYNTAX));
-    PICSimLab.saveprefs(lxT("osc_inv2"), itoa(((CToggleButton*)Window->GetChildByName("togglebutton4"))->GetCheck()));
-    PICSimLab.saveprefs(lxT("osc_ch2"), ((CCombo*)Window->GetChildByName("combo3"))->GetText());
+    PICSimLab.SavePrefs(lxT("osc_inv2"), itoa(((CToggleButton*)Window->GetChildByName("togglebutton4"))->GetCheck()));
+    PICSimLab.SavePrefs(lxT("osc_ch2"), ((CCombo*)Window->GetChildByName("combo3"))->GetText());
 
-    PICSimLab.saveprefs(lxT("osc_tscale"), ftoa(((CSpind*)Window->GetChildByName("spind5"))->GetValue()));
-    PICSimLab.saveprefs(lxT("osc_toffset"), ftoa(((CSpind*)Window->GetChildByName("spind6"))->GetValue()));
-    PICSimLab.saveprefs(lxT("osc_usetrigger"),
+    PICSimLab.SavePrefs(lxT("osc_tscale"), ftoa(((CSpind*)Window->GetChildByName("spind5"))->GetValue()));
+    PICSimLab.SavePrefs(lxT("osc_toffset"), ftoa(((CSpind*)Window->GetChildByName("spind6"))->GetValue()));
+    PICSimLab.SavePrefs(lxT("osc_usetrigger"),
                         itoa(((CToggleButton*)Window->GetChildByName("togglebutton5"))->GetCheck()));
-    PICSimLab.saveprefs(lxT("osc_tch"), ((CCombo*)Window->GetChildByName("combo1"))->GetText());
-    PICSimLab.saveprefs(lxT("osc_tlevel"), ftoa(((CSpind*)Window->GetChildByName("spind7"))->GetValue()));
-    PICSimLab.saveprefs(lxT("osc_position"), itoa(Window->GetX()) + lxT(",") + itoa(Window->GetY()));
+    PICSimLab.SavePrefs(lxT("osc_tch"), ((CCombo*)Window->GetChildByName("combo1"))->GetText());
+    PICSimLab.SavePrefs(lxT("osc_tlevel"), ftoa(((CSpind*)Window->GetChildByName("spind7"))->GetValue()));
+    PICSimLab.SavePrefs(lxT("osc_position"), itoa(Window->GetX()) + lxT(",") + itoa(Window->GetY()));
 
-    PICSimLab.saveprefs(lxT("osc_measures"), itoa(GetMeasures(0)) + lxT(",") + itoa(GetMeasures(1)) + lxT(",") +
+    PICSimLab.SavePrefs(lxT("osc_measures"), itoa(GetMeasures(0)) + lxT(",") + itoa(GetMeasures(1)) + lxT(",") +
                                                  itoa(GetMeasures(2)) + lxT(",") + itoa(GetMeasures(3)) + lxT(",") +
                                                  itoa(GetMeasures(4)));
 }

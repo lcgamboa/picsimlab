@@ -222,7 +222,7 @@ void cpart_ADXL345::PreProcess(void) {
         adxl345_set_addr(&adxl, addr);
 
         if (adxl_pins[4]) {
-            SpareParts.Reset_pullup_bus(adxl_pins[4] - 1);
+            SpareParts.ResetPullupBus(adxl_pins[4] - 1);
         }
     }
 }
@@ -232,7 +232,7 @@ void cpart_ADXL345::Process(void) {
 
     if ((adxl_pins[5]) && (adxl_pins[4]) && (adxl_pins[0])) {
         if ((adxl.i2c_mode) && (ppins[adxl_pins[0] - 1].value)) {  // I2C mode
-            SpareParts.Set_pullup_bus(
+            SpareParts.SetPullupBus(
                 adxl_pins[4] - 1, adxl345_io_I2C(&adxl, ppins[adxl_pins[5] - 1].value, ppins[adxl_pins[4] - 1].value));
         } else {  // SPI mode
             unsigned char ret = adxl345_io_SPI(&adxl, ppins[adxl_pins[4] - 1].value, ppins[adxl_pins[5] - 1].value,

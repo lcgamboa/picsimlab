@@ -408,7 +408,7 @@ void cboard_McLab1::Run_CPU(void) {
 
     j = JUMPSTEPS;
     pi = 0;
-    if (PICSimLab.Get_mcupwr())
+    if (PICSimLab.GetMcuPwr())
         for (i = 0; i < NSTEP; i++) {
             if (j >= JUMPSTEPS) {
                 pic_set_pin(&pic, pic.mclr, p_RST);
@@ -689,22 +689,22 @@ void cboard_McLab1::EvMouseButtonPress(uint button, uint x, uint y, uint state) 
                     output_ids[O_RB7]->update = 1;
                     break;
                 case I_PWR: {
-                    if (PICSimLab.Get_mcupwr()) {
-                        PICSimLab.Set_mcupwr(0);
+                    if (PICSimLab.GetMcuPwr()) {
+                        PICSimLab.SetMcuPwr(0);
                         Reset();
                         p_BT[0] = 1;
                         p_BT[1] = 1;
                         p_BT[2] = 1;
                         p_BT[3] = 1;
                     } else {
-                        PICSimLab.Set_mcupwr(1);
+                        PICSimLab.SetMcuPwr(1);
                         Reset();
                     }
                 } break;
                 case I_RST:
-                    if (PICSimLab.Get_mcupwr() && pic_reset(&pic, -1)) {
-                        PICSimLab.Set_mcupwr(0);
-                        PICSimLab.Set_mcurst(1);
+                    if (PICSimLab.GetMcuPwr() && pic_reset(&pic, -1)) {
+                        PICSimLab.SetMcuPwr(0);
+                        PICSimLab.SetMcuRst(1);
                     }
                     p_RST = 0;
                     output_ids[O_RST]->update = 1;
@@ -737,9 +737,9 @@ void cboard_McLab1::EvMouseButtonRelease(uint button, uint x, uint y, uint state
         if (((input[i].x1 <= x) && (input[i].x2 >= x)) && ((input[i].y1 <= y) && (input[i].y2 >= y))) {
             switch (input[i].id) {
                 case I_RST: {
-                    if (PICSimLab.Get_mcurst()) {
-                        PICSimLab.Set_mcupwr(1);
-                        PICSimLab.Set_mcurst(0);
+                    if (PICSimLab.GetMcuRst()) {
+                        PICSimLab.SetMcuPwr(1);
+                        PICSimLab.SetMcuRst(0);
 
                         if (pic_reset(&pic, -1)) {
                             Reset();
@@ -925,9 +925,9 @@ unsigned short cboard_McLab1::GetOutputId(char* name) {
 }
 
 void cboard_McLab1::WritePreferences(void) {
-    PICSimLab.saveprefs(lxT("McLab1_proc"), Proc);
-    PICSimLab.saveprefs(lxT("McLab1_jmp"), lxString().Format("%i", jmp[0]));
-    PICSimLab.saveprefs(lxT("McLab1_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("McLab1_proc"), Proc);
+    PICSimLab.SavePrefs(lxT("McLab1_jmp"), lxString().Format("%i", jmp[0]));
+    PICSimLab.SavePrefs(lxT("McLab1_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
 }
 
 void cboard_McLab1::ReadPreferences(char* name, char* value) {

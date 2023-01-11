@@ -102,19 +102,19 @@ void CSpareParts::ClearPinAlias(void) {
     }
 }
 
-void CSpareParts::Reset_pullup_bus(unsigned char pin) {
+void CSpareParts::ResetPullupBus(unsigned char pin) {
     if (pin < IOINIT) {
         pullup_bus[pin]++;  // count i2c devices in bus
     }
 }
 
-void CSpareParts::Set_pullup_bus(unsigned char pin, unsigned char value) {
+void CSpareParts::SetPullupBus(unsigned char pin, unsigned char value) {
     if (pin < IOINIT) {
         pullup_bus[pin] &= value;
     }
 }
 
-unsigned char CSpareParts::Get_pullup_bus(unsigned char pin) {
+unsigned char CSpareParts::GetPullupBus(unsigned char pin) {
     if (pin < IOINIT)
         return pullup_bus[pin];
     else
@@ -521,7 +521,7 @@ void CSpareParts::ReadPreferences(char* name, char* value) {
 }
 
 void CSpareParts::WritePreferences(void) {
-    PICSimLab.saveprefs(lxT("spare_position"), itoa(Window->GetX()) + lxT(",") + itoa(Window->GetY()) + lxT(",") +
+    PICSimLab.SavePrefs(lxT("spare_position"), itoa(Window->GetX()) + lxT(",") + itoa(Window->GetY()) + lxT(",") +
                                                    itoa(Window->GetWidth()) + lxT(",") + itoa(Window->GetHeight()));
 }
 

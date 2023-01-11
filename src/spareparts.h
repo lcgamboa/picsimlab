@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -41,9 +41,9 @@ public:
     int GetCount(void) { return partsc; };
     part* GetPart(const int partn);
     void DeleteParts(void);
-    void Reset_pullup_bus(unsigned char pin);
-    void Set_pullup_bus(unsigned char pin, unsigned char value);
-    unsigned char Get_pullup_bus(unsigned char pin);
+    void ResetPullupBus(unsigned char pin);
+    void SetPullupBus(unsigned char pin, unsigned char value);
+    unsigned char GetPullupBus(unsigned char pin);
 
     /**
      * @brief  Execute the process code of spare parts N times (where N is the number of steps in 100ms)

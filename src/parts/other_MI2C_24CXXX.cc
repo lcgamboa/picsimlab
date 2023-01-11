@@ -238,7 +238,7 @@ void cpart_MI2C_24CXXX::PreProcess(void) {
     mi2c_set_addr(&mi2c, addr);
 
     if (input_pins[3] > 0) {
-        SpareParts.Reset_pullup_bus(input_pins[3] - 1);
+        SpareParts.ResetPullupBus(input_pins[3] - 1);
     }
 }
 
@@ -246,7 +246,7 @@ void cpart_MI2C_24CXXX::Process(void) {
     const picpin* ppins = SpareParts.GetPinsValues();
 
     if ((input_pins[3] > 0) && (input_pins[4] > 0))
-        SpareParts.Set_pullup_bus(input_pins[3] - 1,
+        SpareParts.SetPullupBus(input_pins[3] - 1,
                                   mi2c_io(&mi2c, ppins[input_pins[4] - 1].value, ppins[input_pins[3] - 1].value));
 }
 

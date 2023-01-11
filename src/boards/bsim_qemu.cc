@@ -504,9 +504,9 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
             }
         }
     }
-    if (PICSimLab.Get_debug_status()) {
+    if (PICSimLab.GetDebugStatus()) {
         strcpy(argv[argc++], "-gdb");
-        sprintf(argv[argc++], "tcp::%i", PICSimLab.Get_debug_port());
+        sprintf(argv[argc++], "tcp::%i", PICSimLab.GetDebugPort());
     }
 
     if (icount >= 0) {

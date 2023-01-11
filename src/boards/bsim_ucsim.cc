@@ -78,7 +78,7 @@ void bsim_ucsim::MSetSerial(const char* port) {
 
          sprintf(fbuff, "%i", (int)freq);
 
-         ret = ucsim_init(processor, fbuff, fname, SERIALDEVICE, PICSimLab.Get_debug_port());
+         ret = ucsim_init(processor, fbuff, fname, SERIALDEVICE, PICSimLab.GetDebugPort());
      }
 
      return ret;

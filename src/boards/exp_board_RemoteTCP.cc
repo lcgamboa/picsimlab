@@ -164,7 +164,7 @@ int cboard_RemoteTCP::MInit(const char* processor, const char* fname, float freq
         delete micbmp;
     micbmp = new lxBitmap(&image, PICSimLab.GetWindow());
 
-    PICSimLab.Set_mcupwr(0);
+    PICSimLab.SetMcuPwr(0);
 
     return ret;
 }
@@ -182,9 +182,9 @@ void cboard_RemoteTCP::RefreshStatus(void) {
 
 void cboard_RemoteTCP::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
-    PICSimLab.saveprefs(lxT("RemoteTCP_proc"), Proc);
+    PICSimLab.SavePrefs(lxT("RemoteTCP_proc"), Proc);
     // write microcontroller clock to preferences
-    PICSimLab.saveprefs(lxT("RemoteTCP_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("RemoteTCP_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
 }
 
 // Called whe configuration file load  preferences
@@ -267,10 +267,10 @@ void cboard_RemoteTCP::EvMouseButtonRelease(uint button, uint x, uint y, uint st
             switch (input[i].id) {
                     // if event is over I_RST area then turn on
                 case I_RST:
-                    if (PICSimLab.Get_mcurst())  // if powered
+                    if (PICSimLab.GetMcuRst())  // if powered
                     {
-                        PICSimLab.Set_mcupwr(1);
-                        PICSimLab.Set_mcurst(0);
+                        PICSimLab.SetMcuPwr(1);
+                        PICSimLab.SetMcuRst(0);
                         /*
                                  if (reset (-1))
                                   {
@@ -312,7 +312,7 @@ void cboard_RemoteTCP::Draw(CDraw* draw) {
             switch (output[i].id)  // search for color of output
             {
                 case O_LPWR:  // Blue using mcupwr value
-                    draw->Canvas.SetColor(0, 0, 200 * PICSimLab.Get_mcupwr() + 55);
+                    draw->Canvas.SetColor(0, 0, 200 * PICSimLab.GetMcuPwr() + 55);
                     draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                            output[i].y2 - output[i].y1);
                     break;
@@ -371,7 +371,7 @@ void cboard_RemoteTCP::Run_CPU(void) {
     if (!TestConnection())
         return;
 
-    PICSimLab.Set_mcupwr(1);
+    PICSimLab.SetMcuPwr(1);
 
     // Spare parts window pre process
     if (use_spare)
@@ -386,7 +386,7 @@ void cboard_RemoteTCP::Run_CPU(void) {
 
     // j = JUMPSTEPS; //step counter
     pi = 0;
-    if (PICSimLab.Get_mcupwr())      // if powered
+    if (PICSimLab.GetMcuPwr())      // if powered
         for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
             /*

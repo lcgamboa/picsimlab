@@ -363,7 +363,7 @@ void cboard_PQDB::Draw(CDraw* draw) {
                         draw->Canvas.SetColor(10, 10, 10);
                         break;
                     case O_LCD:
-                        draw->Canvas.SetColor(0, 90 * PICSimLab.Get_mcupwr() + 40, 0);
+                        draw->Canvas.SetColor(0, 90 * PICSimLab.GetMcuPwr() + 40, 0);
                         break;
                     case O_RST:
                         draw->Canvas.SetColor(100, 100, 100);
@@ -375,7 +375,7 @@ void cboard_PQDB::Draw(CDraw* draw) {
                         }
                         break;
                     case O_LPWR:
-                        draw->Canvas.SetColor(0, 255 * PICSimLab.Get_mcupwr(), 0);
+                        draw->Canvas.SetColor(0, 255 * PICSimLab.GetMcuPwr(), 0);
                         break;
                     case O_LED:
                         draw->Canvas.SetColor(0, pic.pins[37].oavalue, 0);
@@ -482,7 +482,7 @@ void cboard_PQDB::Draw(CDraw* draw) {
                     draw->Canvas.Rectangle(1, output[i].x1 - 15, output[i].y1 - 5, output[i].x2 - output[i].x1 + 32,
                                            output[i].y2 - output[i].y1 + 13);
                     lcd_draw(&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                             output[i].y2 - output[i].y1, PICSimLab.Get_mcupwr());
+                             output[i].y2 - output[i].y1, PICSimLab.GetMcuPwr());
                 } else if (output[i].id == O_MP) {
                     draw->Canvas.SetFont(font);
                     draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
@@ -531,7 +531,7 @@ void cboard_PQDB::Draw(CDraw* draw) {
 
     rtc_ds1307_update(&rtc2);
 
-    if (((0.5 * (pic.pins[PWM_PIN].oavalue - 55)) > 10) && (PICSimLab.Get_mcupwr())) {
+    if (((0.5 * (pic.pins[PWM_PIN].oavalue - 55)) > 10) && (PICSimLab.GetMcuPwr())) {
         if (!sound_on) {
             buzzer.BeepStart();
             sound_on = 1;
@@ -592,7 +592,7 @@ void cboard_PQDB::Run_CPU(void) {
 
     j = JUMPSTEPS;
     pi = 0;
-    if (PICSimLab.Get_mcupwr()) {
+    if (PICSimLab.GetMcuPwr()) {
         for (i = 0; i < NSTEP; i++) {
             if (j >= JUMPSTEPS) {
                 pic_set_pin(&pic, pic.mclr, p_RST);
@@ -979,11 +979,11 @@ void cboard_PQDB::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
         if ((input[i].x1 <= x) && (input[i].x2 >= x) && (input[i].y1 <= y) && (input[i].y2 >= y)) {
             switch (input[i].id) {
                 case I_PWR: {
-                    if (PICSimLab.Get_mcupwr()) {
-                        PICSimLab.Set_mcupwr(0);
+                    if (PICSimLab.GetMcuPwr()) {
+                        PICSimLab.SetMcuPwr(0);
                         Reset();
                     } else {
-                        PICSimLab.Set_mcupwr(1);
+                        PICSimLab.SetMcuPwr(1);
                         Reset();
                     }
                 }
@@ -991,9 +991,9 @@ void cboard_PQDB::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
                     break;
 
                 case I_RST: {
-                    if (PICSimLab.Get_mcupwr() && pic_reset(&pic, -1)) {
-                        PICSimLab.Set_mcupwr(0);
-                        PICSimLab.Set_mcurst(1);
+                    if (PICSimLab.GetMcuPwr() && pic_reset(&pic, -1)) {
+                        PICSimLab.SetMcuPwr(0);
+                        PICSimLab.SetMcuRst(1);
                     }
                     p_RST = 0;
                     output_ids[O_RST]->update = 1;
@@ -1059,9 +1059,9 @@ void cboard_PQDB::EvMouseButtonRelease(uint button, uint x, uint y, uint state) 
         if (((input[i].x1 <= x) && (input[i].x2 >= x)) && ((input[i].y1 <= y) && (input[i].y2 >= y))) {
             switch (input[i].id) {
                 case I_RST: {
-                    if (PICSimLab.Get_mcurst()) {
-                        PICSimLab.Set_mcupwr(1);
-                        PICSimLab.Set_mcurst(0);
+                    if (PICSimLab.GetMcuRst()) {
+                        PICSimLab.SetMcuPwr(1);
+                        PICSimLab.SetMcuRst(0);
 
                         if (pic_reset(&pic, -1)) {
                             Reset();
@@ -1443,11 +1443,11 @@ void cboard_PQDB::RefreshStatus(void) {
 }
 
 void cboard_PQDB::WritePreferences(void) {
-    PICSimLab.saveprefs(lxT("PQDB_proc"), Proc);
-    PICSimLab.saveprefs(lxT("PQDB_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
-    PICSimLab.saveprefs(lxT("PQDB_pot"), lxString().Format("%i", pot));
-    PICSimLab.saveprefs(lxT("PQDB_light"), lxString().Format("%i", scroll2->GetPosition()));
-    PICSimLab.saveprefs(lxT("PQDB_temp"), lxString().Format("%i", scroll1->GetPosition()));
+    PICSimLab.SavePrefs(lxT("PQDB_proc"), Proc);
+    PICSimLab.SavePrefs(lxT("PQDB_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("PQDB_pot"), lxString().Format("%i", pot));
+    PICSimLab.SavePrefs(lxT("PQDB_light"), lxString().Format("%i", scroll2->GetPosition()));
+    PICSimLab.SavePrefs(lxT("PQDB_temp"), lxString().Format("%i", scroll1->GetPosition()));
 }
 
 void cboard_PQDB::ReadPreferences(char* name, char* value) {

@@ -169,11 +169,11 @@ void cboard_Blue_Pill::RefreshStatus(void) {
 
 void cboard_Blue_Pill::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
-    PICSimLab.saveprefs(lxT("Blue_Pill_proc"), Proc);
+    PICSimLab.SavePrefs(lxT("Blue_Pill_proc"), Proc);
     // write microcontroller clock to preferences
-    PICSimLab.saveprefs(lxT("Blue_Pill_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("Blue_Pill_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
     // write microcontroller icount to preferences
-    PICSimLab.saveprefs(lxT("Blue_Pill_icount"), itoa(icount));
+    PICSimLab.SavePrefs(lxT("Blue_Pill_icount"), itoa(icount));
 }
 
 // Called whe configuration file load  preferences
@@ -217,13 +217,13 @@ void cboard_Blue_Pill::EvMouseButtonPress(uint button, uint x, uint y, uint stat
                     break;
                     // if event is over I_PWR area then toggle board on/off
                 case I_PWR:
-                    if (PICSimLab.Get_mcupwr())  // if on turn off
+                    if (PICSimLab.GetMcuPwr())  // if on turn off
                     {
-                        PICSimLab.Set_mcupwr(0);
+                        PICSimLab.SetMcuPwr(0);
                         Reset();
                     } else  // if off turn on
                     {
-                        PICSimLab.Set_mcupwr(1);
+                        PICSimLab.SetMcuPwr(1);
                         Reset();
                     }
                     break;
@@ -256,10 +256,10 @@ void cboard_Blue_Pill::EvMouseButtonRelease(uint button, uint x, uint y, uint st
             switch (input[i].id) {
                     // if event is over I_RST area then turn on
                 case I_RST:
-                    if (PICSimLab.Get_mcurst())  // if powered
+                    if (PICSimLab.GetMcuRst())  // if powered
                     {
-                        PICSimLab.Set_mcupwr(1);
-                        PICSimLab.Set_mcurst(0);
+                        PICSimLab.SetMcuPwr(1);
+                        PICSimLab.SetMcuRst(0);
                         /*
                                  if (reset (-1))
                                   {
@@ -295,7 +295,7 @@ void cboard_Blue_Pill::Draw(CDraw* draw) {
                     draw->Canvas.SetColor(pins[1].oavalue, 0, 0);
                     break;
                 case O_LPWR:  // Blue using mcupwr value
-                    draw->Canvas.SetColor(200 * PICSimLab.Get_mcupwr() + 55, 0, 0);
+                    draw->Canvas.SetColor(200 * PICSimLab.GetMcuPwr() + 55, 0, 0);
                     break;
                 case O_RST:
                     draw->Canvas.SetColor(100, 100, 100);
@@ -344,7 +344,7 @@ void cboard_Blue_Pill::Run_CPU_ns(uint64_t time) {
             pi = 0;
         }
 
-        if (PICSimLab.Get_mcupwr())  // if powered
+        if (PICSimLab.GetMcuPwr())  // if powered
                                      // for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
             /*

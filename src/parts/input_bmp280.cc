@@ -184,7 +184,7 @@ void cpart_bmp280::PreProcess(void) {
         sen_bmp280_set_addr(&bmp280, addr);
 
         if (input_pins[1]) {
-            SpareParts.Reset_pullup_bus(input_pins[1] - 1);
+            SpareParts.ResetPullupBus(input_pins[1] - 1);
         }
     }
 }
@@ -194,7 +194,7 @@ void cpart_bmp280::Process(void) {
 
     if (input_pins[0] && input_pins[1] && (input_pins[2])) {
         if ((bmp280.i2c_mode) && (ppins[input_pins[2] - 1].value)) {  // I2C mode
-            SpareParts.Set_pullup_bus(input_pins[1] - 1, sen_bmp280_I2C_io(&bmp280, ppins[input_pins[0] - 1].value,
+            SpareParts.SetPullupBus(input_pins[1] - 1, sen_bmp280_I2C_io(&bmp280, ppins[input_pins[0] - 1].value,
                                                                            ppins[input_pins[1] - 1].value));
         } else {  // SPI mode
             unsigned char ret = sen_bmp280_io_SPI(&bmp280, ppins[input_pins[1] - 1].value,

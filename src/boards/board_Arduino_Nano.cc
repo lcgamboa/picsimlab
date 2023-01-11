@@ -49,8 +49,8 @@ cboard_Arduino_Nano::cboard_Arduino_Nano(void) {
 
 void cboard_Arduino_Nano::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
-    PICSimLab.saveprefs(lxT("Arduino_Nano_proc"), Proc);
-    PICSimLab.saveprefs(lxT("Arduino_Nano_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("Arduino_Nano_proc"), Proc);
+    PICSimLab.SavePrefs(lxT("Arduino_Nano_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
 }
 
 // Called whe configuration file load  preferences

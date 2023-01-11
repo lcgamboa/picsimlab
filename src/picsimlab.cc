@@ -198,7 +198,7 @@ void CPICSimLab::Set_mcudbg(int pd) {
     }
 }
 
-void CPICSimLab::Set_debug_port(unsigned short dp) {
+void CPICSimLab::SetDebugPort(unsigned short dp) {
     debug_port = dp;
     if (debug) {
         CToggleButton* togglebutton = (CToggleButton*)Window->GetChildByName("togglebutton1");
@@ -207,7 +207,7 @@ void CPICSimLab::Set_debug_port(unsigned short dp) {
     }
 }
 
-void CPICSimLab::Set_remotec_port(unsigned short rcp) {
+void CPICSimLab::SetRemotecPort(unsigned short rcp) {
     remotec_port = rcp;
 #ifndef __EMSCRIPTEN__
     rcontrol_end();
@@ -215,11 +215,11 @@ void CPICSimLab::Set_remotec_port(unsigned short rcp) {
 #endif
 }
 
-int CPICSimLab::Get_debug_status(void) {
+int CPICSimLab::GetDebugStatus(void) {
     return debug;
 }
 
-void CPICSimLab::Set_debug_status(int dbs, int updatebtn) {
+void CPICSimLab::SetDebugStatus(int dbs, int updatebtn) {
     if (debug != dbs) {
         debug = dbs;
         if (updatebtn) {
@@ -252,7 +252,7 @@ float CPICSimLab::GetClock(void) {
     return pboard->MGetFreq() / 1000000.0;
 }
 
-void CPICSimLab::saveprefs(lxString name, lxString value) {
+void CPICSimLab::SavePrefs(lxString name, lxString value) {
     char line[1024];
     char* pname;
     char* pvalue;
@@ -346,18 +346,18 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
         sprintf(fname, "%s/picsimlab.ini", home);
     }
 
-    saveprefs(lxT("picsimlab_version"), _VERSION_);
-    saveprefs(lxT("picsimlab_lab"), boards_list[lab].name_);
-    saveprefs(lxT("picsimlab_debug"), itoa(Get_debug_status()));
-    saveprefs(lxT("picsimlab_debugt"), itoa(Get_debug_type()));
-    saveprefs(lxT("picsimlab_debugp"), itoa(Get_debug_port()));
-    saveprefs(lxT("picsimlab_remotecp"), itoa(Get_remotec_port()));
-    saveprefs(lxT("picsimlab_position"), itoa(Window->GetX()) + lxT(",") + itoa(Window->GetY()));
-    saveprefs(lxT("picsimlab_scale"), ftoa(scale));
-    saveprefs(lxT("osc_on"), itoa(pboard->GetUseOscilloscope()));
-    saveprefs(lxT("spare_on"), itoa(pboard->GetUseSpareParts()));
+    SavePrefs(lxT("picsimlab_version"), _VERSION_);
+    SavePrefs(lxT("picsimlab_lab"), boards_list[lab].name_);
+    SavePrefs(lxT("picsimlab_debug"), itoa(GetDebugStatus()));
+    SavePrefs(lxT("picsimlab_debugt"), itoa(GetDebugType()));
+    SavePrefs(lxT("picsimlab_debugp"), itoa(GetDebugPort()));
+    SavePrefs(lxT("picsimlab_remotecp"), itoa(GetRemotecPort()));
+    SavePrefs(lxT("picsimlab_position"), itoa(Window->GetX()) + lxT(",") + itoa(Window->GetY()));
+    SavePrefs(lxT("picsimlab_scale"), ftoa(scale));
+    SavePrefs(lxT("osc_on"), itoa(pboard->GetUseOscilloscope()));
+    SavePrefs(lxT("spare_on"), itoa(pboard->GetUseSpareParts()));
 #ifndef _WIN_
-    saveprefs(lxT("picsimlab_lser"), SERIALDEVICE);
+    SavePrefs(lxT("picsimlab_lser"), SERIALDEVICE);
 #ifdef _USE_PICSTARTP_
     saveprefs(lxT("picsimlab_lprog"), PROGDEVICE);
 #endif
@@ -369,11 +369,11 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
 #endif
 
     if (PATH.size() > 0) {
-        saveprefs(lxT("picsimlab_lpath"), PATH);
+        SavePrefs(lxT("picsimlab_lpath"), PATH);
     } else {
-        saveprefs(lxT("picsimlab_lpath"), " ");
+        SavePrefs(lxT("picsimlab_lpath"), " ");
     }
-    saveprefs(lxT("picsimlab_lfile"), FNAME);
+    SavePrefs(lxT("picsimlab_lfile"), FNAME);
 
     pboard->WritePreferences();
 
@@ -650,7 +650,7 @@ void CPICSimLab::LoadWorkspace(lxString fnpzw) {
                 sprintf(name_, "%s_%s", old_board_names[5], ptr + 3);
             }
 
-            saveprefs(name_, value_);
+            SavePrefs(name_, value_);
 #endif
         }
     }
@@ -726,16 +726,16 @@ void CPICSimLab::SaveWorkspace(lxString fnpzw) {
 
     snprintf(fname, 1279, "%s/picsimlab.ini", home);
     PrefsClear();
-    saveprefs(lxT("picsimlab_version"), _VERSION_);
-    saveprefs(lxT("picsimlab_lab"), boards_list[lab].name_);
-    saveprefs(lxT("picsimlab_debug"), itoa(Get_debug_status()));
-    saveprefs(lxT("picsimlab_debugt"), itoa(Get_debug_type()));
-    saveprefs(lxT("picsimlab_debugp"), itoa(Get_debug_port()));
-    saveprefs(lxT("picsimlab_position"), itoa(Window->GetX()) + lxT(",") + itoa(Window->GetY()));
-    saveprefs(lxT("picsimlab_scale"), ftoa(scale));
-    saveprefs(lxT("osc_on"), itoa(pboard->GetUseOscilloscope()));
-    saveprefs(lxT("spare_on"), itoa(pboard->GetUseSpareParts()));
-    saveprefs(lxT("picsimlab_lfile"), lxT(" "));
+    SavePrefs(lxT("picsimlab_version"), _VERSION_);
+    SavePrefs(lxT("picsimlab_lab"), boards_list[lab].name_);
+    SavePrefs(lxT("picsimlab_debug"), itoa(GetDebugStatus()));
+    SavePrefs(lxT("picsimlab_debugt"), itoa(GetDebugType()));
+    SavePrefs(lxT("picsimlab_debugp"), itoa(GetDebugPort()));
+    SavePrefs(lxT("picsimlab_position"), itoa(Window->GetX()) + lxT(",") + itoa(Window->GetY()));
+    SavePrefs(lxT("picsimlab_scale"), ftoa(scale));
+    SavePrefs(lxT("osc_on"), itoa(pboard->GetUseOscilloscope()));
+    SavePrefs(lxT("spare_on"), itoa(pboard->GetUseSpareParts()));
+    SavePrefs(lxT("picsimlab_lfile"), lxT(" "));
 
     pboard->WritePreferences();
 
@@ -901,14 +901,13 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
                     sscanf(value, "%i", &debug);
                     ((CToggleButton*)Window->GetChildByName("togglebutton1"))->SetCheck(debug);
 #endif
-                    printf("PICSimLab: Debug On = %i\n", debug);
-                    Set_debug_status(debug, 0);
+                    SetDebugStatus(debug, 0);
                 }
 
                 if (!strcmp(name, "picsimlab_debugt")) {
                     int debug_type;
                     sscanf(value, "%i", &debug_type);
-                    Set_debug_type(debug_type);
+                    SetDebugType(debug_type);
                 }
 
                 if (!strcmp(name, "osc_on")) {
@@ -1039,6 +1038,10 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
                     (const char*)pboard->GetProcessorName().c_str());
         }
     }
+
+    printf("PICSimLab: Instance number %i\n", Instance);
+    printf("PICSimLab: Debug On=%i  Type=%s Port=%i\n", debug, (debug_type) ? "GDB" : "MDB", GetDebugPort());
+    printf("PICSimLab: Remote Control Port %i\n", GetRemotecPort());
     printf("PICSimLab: Opening \"%s\"\n", fname);
     switch (pboard->MInit(pboard->GetProcessorName(), fname, GetNSTEP() * NSTEPKF)) {
         case HEX_NFOUND:
@@ -1069,13 +1072,12 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 #ifdef NO_DEBUG
     statusbar->SetField(1, lxT(" "));
 #else
-    if (Get_debug_status()) {
-        int ret = pboard->DebugInit(Get_debug_type());
+    if (GetDebugStatus()) {
+        int ret = pboard->DebugInit(GetDebugType());
         if (ret < 0) {
             statusbar->SetField(1, status + lxT("Debug: Error"));
         } else {
-            statusbar->SetField(
-                1, status + lxT("Debug: ") + pboard->GetDebugName() + ":" + itoa(Get_debug_port() + Instance));
+            statusbar->SetField(1, status + lxT("Debug: ") + pboard->GetDebugName() + ":" + itoa(GetDebugPort()));
         }
     } else {
         statusbar->SetField(1, status + lxT("Debug: Off"));
@@ -1125,7 +1127,7 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 #endif
 
 #ifndef __EMSCRIPTEN__
-    rcontrol_init(Get_remotec_port() + Instance);
+    rcontrol_init(GetRemotecPort() + Instance);
 #endif
 }
 

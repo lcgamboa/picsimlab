@@ -101,19 +101,19 @@ public:
     /**
      * @brief  Return actual power status of microcontroller ON/OFF
      */
-    int Get_mcupwr(void) { return mcupwr; };
+    int GetMcuPwr(void) { return mcupwr; };
 
     /**
      * @brief  Retunr if microcontroller reset pin is enabled
      */
-    int Get_mcurst(void) { return mcurst; };
+    int GetMcuRst(void) { return mcurst; };
 
-    int Get_mcudbg(void) { return mcudbg; };
+    int GetMcuDbg(void) { return mcudbg; };
 
     /**
      * @brief  Set the power status of microcontroller ON/OFF
      */
-    void Set_mcupwr(int pp) {
+    void SetMcuPwr(int pp) {
         mcupwr = pp;
         if (mcupwr)
             SetCpuState(CPU_RUNNING);
@@ -126,34 +126,34 @@ public:
     /**
      * @brief  Set mcu rst flag (inform simulator about mcu reset state)
      */
-    void Set_mcurst(int pr) { mcurst = pr; };
+    void SetMcuRst(int pr) { mcurst = pr; };
 
     char GetCpuState(void) { return cpustate; };
 
     void Set_mcudbg(int pd);
 
-    void Set_mcurun(int mr) { mcurun = mr; };
-    int Get_mcurun(void) { return mcurst; };
+    void SetMcuRun(int mr) { mcurun = mr; };
+    int GetMcuRun(void) { return mcurst; };
 
     /**
      * @brief  Return the selected debugger port
      */
-    unsigned short Get_debug_port(void) { return debug_port + Instance; };
+    unsigned short GetDebugPort(void) { return debug_port + Instance; };
 
     /**
      * @brief  Set debug TCP port
      */
-    void Set_debug_port(unsigned short dp);
+    void SetDebugPort(unsigned short dp);
 
     /**
      * @brief  Return the selected remote control port
      */
-    unsigned short Get_remotec_port(void) { return remotec_port + Instance; };
+    unsigned short GetRemotecPort(void) { return remotec_port + Instance; };
 
     /**
      * @brief  Set remote control TCP port
      */
-    void Set_remotec_port(unsigned short rcp);
+    void SetRemotecPort(unsigned short rcp);
 
     /**
      * @brief  Return the program instance number
@@ -163,32 +163,32 @@ public:
     /**
      * @brief  Return the selected debugger type
      */
-    int Get_debug_type(void) { return debug_type; };
+    int GetDebugType(void) { return debug_type; };
 
     /**
      * @brief  Set debug type (MDB or GDB)
      */
-    void Set_debug_type(int dt) { debug_type = dt; };
+    void SetDebugType(int dt) { debug_type = dt; };
 
     /**
      * @brief  Get debug status (On/Off)
      */
-    int Get_debug_status(void);
+    int GetDebugStatus(void);
 
     /**
      * @brief  Set debug status flag
      */
-    void Set_debug_status(int dbs, int updatebtn = 1);
+    void SetDebugStatus(int dbs, int updatebtn = 1);
 
     void SetClock(const float clk, const int update = 1);
     float GetClock(void);
 
-    int GetNeed_clkupdate(void) { return need_clkupdate; };
+    int GetNeedClkUpdate(void) { return need_clkupdate; };
 
     /**
      * @brief  Save the preferences
      */
-    void saveprefs(lxString name, lxString value);
+    void SavePrefs(lxString name, lxString value);
 
     void PrefsClear(void) { prefs.Clear(); };
     int PrefsSaveToFile(lxString fname) { return prefs.SaveToFile(fname); };

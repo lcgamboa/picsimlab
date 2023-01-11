@@ -195,7 +195,7 @@ void cpart_ds1621::PreProcess(void) {
     if (input_pins[0] > 0) {
         sen_ds1621_setTemp(&ds1621, (0.9 * (200 - value) - 55));
         // TODO set addr
-        SpareParts.Reset_pullup_bus(input_pins[0] - 1);
+        SpareParts.ResetPullupBus(input_pins[0] - 1);
     }
 }
 
@@ -203,7 +203,7 @@ void cpart_ds1621::Process(void) {
     const picpin* ppins = SpareParts.GetPinsValues();
 
     if ((input_pins[0] > 0) && (input_pins[1] > 0))
-        SpareParts.Set_pullup_bus(input_pins[0] - 1, sen_ds1621_I2C_io(&ds1621, ppins[input_pins[1] - 1].value,
+        SpareParts.SetPullupBus(input_pins[0] - 1, sen_ds1621_I2C_io(&ds1621, ppins[input_pins[1] - 1].value,
                                                                        ppins[input_pins[0] - 1].value));
 
     // TODO implement Tout output

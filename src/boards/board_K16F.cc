@@ -158,7 +158,7 @@ void cboard_K16F::Draw(CDraw* draw) {
 
                 switch (output[i].id) {
                     case O_LCD:
-                        draw->Canvas.SetColor(0, 90 * PICSimLab.Get_mcupwr() + 40, 0);
+                        draw->Canvas.SetColor(0, 90 * PICSimLab.GetMcuPwr() + 40, 0);
                         break;
                     case O_RST:
                         draw->Canvas.SetColor(100, 100, 100);
@@ -175,7 +175,7 @@ void cboard_K16F::Draw(CDraw* draw) {
                         draw->Canvas.Rectangle(1, output[i].x1 - 1, output[i].y1 - 1, output[i].x2 - output[i].x1 + 2,
                                                output[i].y2 - output[i].y1 + 3);
                         lcd_draw(&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                 output[i].y2 - output[i].y1, PICSimLab.Get_mcupwr());
+                                 output[i].y2 - output[i].y1, PICSimLab.GetMcuPwr());
                     }
                 } else if (output[i].id == O_RST) {
                     draw->Canvas.Circle(1, output[i].cx, output[i].cy, 11);
@@ -225,7 +225,7 @@ void cboard_K16F::Draw(CDraw* draw) {
                         draw->Canvas.SetBgColor(pic.pins[15].oavalue, 0, 0);
                         break;
                     case O_LPWR:
-                        draw->Canvas.SetBgColor(0, 200 * PICSimLab.Get_mcupwr() + 55, 0);
+                        draw->Canvas.SetBgColor(0, 200 * PICSimLab.GetMcuPwr() + 55, 0);
                         break;
                 }
 
@@ -278,7 +278,7 @@ void cboard_K16F::Run_CPU(void) {
 
     j = JUMPSTEPS;
     pi = 0;
-    if (PICSimLab.Get_mcupwr())
+    if (PICSimLab.GetMcuPwr())
         for (i = 0; i < NSTEP; i++) {
             if (j >= JUMPSTEPS) {
                 pic_set_pin(&pic, pic.mclr, p_RST);
@@ -540,20 +540,20 @@ void cboard_K16F::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
                 } break;
 
                 case I_PWR: {
-                    if (PICSimLab.Get_mcupwr()) {
-                        PICSimLab.Set_mcupwr(0);
+                    if (PICSimLab.GetMcuPwr()) {
+                        PICSimLab.SetMcuPwr(0);
                         Reset();
                     } else {
-                        PICSimLab.Set_mcupwr(1);
+                        PICSimLab.SetMcuPwr(1);
                         Reset();
                     }
                 }
                     output_ids[O_LPWR]->update = 1;
                     break;
                 case I_RST: {
-                    if (PICSimLab.Get_mcupwr() && pic_reset(&pic, -1)) {
-                        PICSimLab.Set_mcupwr(0);
-                        PICSimLab.Set_mcurst(1);
+                    if (PICSimLab.GetMcuPwr() && pic_reset(&pic, -1)) {
+                        PICSimLab.SetMcuPwr(0);
+                        PICSimLab.SetMcuRst(1);
                     }
                     p_RST = 0;
                     output_ids[O_RST]->update = 1;
@@ -661,9 +661,9 @@ void cboard_K16F::EvMouseButtonRelease(uint button, uint x, uint y, uint state) 
         if (((input[i].x1 <= x) && (input[i].x2 >= x)) && ((input[i].y1 <= y) && (input[i].y2 >= y))) {
             switch (input[i].id) {
                 case I_RST: {
-                    if (PICSimLab.Get_mcurst()) {
-                        PICSimLab.Set_mcupwr(1);
-                        PICSimLab.Set_mcurst(0);
+                    if (PICSimLab.GetMcuRst()) {
+                        PICSimLab.SetMcuPwr(1);
+                        PICSimLab.SetMcuRst(0);
 
                         if (pic_reset(&pic, -1)) {
                             Reset();
@@ -922,8 +922,8 @@ unsigned short cboard_K16F::GetOutputId(char* name) {
 }
 
 void cboard_K16F::WritePreferences(void) {
-    PICSimLab.saveprefs(lxT("K16F_proc"), Proc);
-    PICSimLab.saveprefs(lxT("K16F_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("K16F_proc"), Proc);
+    PICSimLab.SavePrefs(lxT("K16F_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
 }
 
 void cboard_K16F::ReadPreferences(char* name, char* value) {

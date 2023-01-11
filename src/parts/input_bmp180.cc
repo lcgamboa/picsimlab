@@ -156,7 +156,7 @@ void cpart_bmp180::ReadPropertiesWindow(CPWindow* WProp) {
 void cpart_bmp180::PreProcess(void) {
     if ((input_pins[0] > 0) && (input_pins[1] > 0)) {
         sen_bmp180_setPressTemp(&bmp180, (4.0 * (200 - values[0]) + 300), (0.625 * (200 - values[1]) - 40));
-        SpareParts.Reset_pullup_bus(input_pins[1] - 1);
+        SpareParts.ResetPullupBus(input_pins[1] - 1);
     }
 }
 
@@ -164,7 +164,7 @@ void cpart_bmp180::Process(void) {
     const picpin* ppins = SpareParts.GetPinsValues();
 
     if ((input_pins[0] > 0) && (input_pins[1] > 0))
-        SpareParts.Set_pullup_bus(input_pins[1] - 1, sen_bmp180_I2C_io(&bmp180, ppins[input_pins[0] - 1].value,
+        SpareParts.SetPullupBus(input_pins[1] - 1, sen_bmp180_I2C_io(&bmp180, ppins[input_pins[0] - 1].value,
                                                                        ppins[input_pins[1] - 1].value));
 }
 

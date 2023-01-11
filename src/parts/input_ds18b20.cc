@@ -110,7 +110,7 @@ void cpart_ds18b20::Reset(void) {
 void cpart_ds18b20::PreProcess(void) {
     if (output_pins[0]) {
         sen_ds18b20_setTemp(&ds18b20, (0.6 * (200 - values[0]) - 40));
-        SpareParts.Reset_pullup_bus(output_pins[0] - 1);
+        SpareParts.ResetPullupBus(output_pins[0] - 1);
     }
 }
 
@@ -122,7 +122,7 @@ void cpart_ds18b20::Process(void) {
             SpareParts.SetPin(output_pins[0], ds18b20.out);
         }
 
-        SpareParts.Set_pullup_bus(output_pins[0] - 1, sen_ds18b20_io(&ds18b20, ppins[output_pins[0] - 1].value));
+        SpareParts.SetPullupBus(output_pins[0] - 1, sen_ds18b20_io(&ds18b20, ppins[output_pins[0] - 1].value));
     }
 }
 

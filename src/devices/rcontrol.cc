@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -232,8 +232,6 @@ void VtReceiveCallback(unsigned char data) {
         Vtbuff_in[Vtcount_in] = data;
         Vtcount_in++;
         Vtbuff_in[Vtcount_in] = 0;
-    } else {
-        printf("VtReceiveCallback buffer overflow !!!\n");
     }
 }
 
@@ -242,36 +240,35 @@ static int type_is_equal(const char* name, const char* type) {
 }
 
 static void ProcessInput(const char* msg, input_t* Input, int* ret) {
-    lxString stemp;
+    char lstemp[200];
     if (type_is_equal(Input->name, "VS")) {
         short temp = ((*((unsigned char*)Input->status)) << 8) | (*(((unsigned char*)(Input->status)) + 1));
-        stemp.Printf("%s %s= %i\r\n", msg, Input->name, temp);
-        *ret += sendtext((const char*)stemp.c_str());
+        snprintf(lstemp, 199, "%s %s= %i\r\n", msg, Input->name, temp);
+        *ret += sendtext(lstemp);
     } else if (type_is_equal(Input->name, "PB") || type_is_equal(Input->name, "KB") ||
                type_is_equal(Input->name, "PO") || type_is_equal(Input->name, "JP")) {
-        stemp.Printf("%s %s= %i\r\n", msg, Input->name, *((unsigned char*)Input->status));
-        *ret += sendtext((const char*)stemp.c_str());
+        snprintf(lstemp, 199, "%s %s= %i\r\n", msg, Input->name, *((unsigned char*)Input->status));
+        *ret += sendtext(lstemp);
     } else if (type_is_equal(Input->name, "VT")) {
         vterm_t* vt = (vterm_t*)Input->status;
         if (!vt->ReceiveCallback) {
             vt->ReceiveCallback = VtReceiveCallback;
         }
-        stemp.Printf("%s %s= %3i\r\n", msg, Input->name, vt->count_in);
-        *ret += sendtext((const char*)stemp.c_str());
+        snprintf(lstemp, 199, "%s %s= %3i\r\n", msg, Input->name, vt->count_in);
+        *ret += sendtext(lstemp);
     } else {
-        stemp.Printf("%s %s= Unknow type!\r\n", msg, Input->name);
-        *ret += sendtext((const char*)stemp.c_str());
+        snprintf(lstemp, 199, "%s %s= Unknow type!\r\n", msg, Input->name);
+        *ret += sendtext(lstemp);
     }
 }
 
 static void ProcessOutput(const char* msg, output_t* Output, int* ret, int full = 0) {
-    lxString stemp;
-    char lstemp[200];
+    char lstemp[500];
     static unsigned char ss = 0;  // seven segment
 
     if (type_is_equal(Output->name, "LD")) {
-        stemp.Printf("%s %s= %3.0f\r\n", msg, Output->name, *((float*)Output->status) - 55);
-        *ret += sendtext((const char*)stemp.c_str());
+        snprintf(lstemp, 199, "%s %s= %3.0f\r\n", msg, Output->name, *((float*)Output->status) - 55);
+        *ret += sendtext(lstemp);
     } else if (type_is_equal(Output->name, "DS")) {
         lcd_t* lcd = (lcd_t*)Output->status;
         char lbuff[81];
@@ -331,8 +328,8 @@ static void ProcessOutput(const char* msg, output_t* Output, int* ret, int full 
             case 'P':
                 if (*((int*)Output->status) > 60)
                     ss |= 0x80;
-                stemp.Printf("%s SS_%c= %c\r\n", msg, Output->name[4], decodess(ss));
-                *ret += sendtext((const char*)stemp.c_str());
+                snprintf(lstemp, 199, "%s SS_%c= %c\r\n", msg, Output->name[4], decodess(ss));
+                *ret += sendtext(lstemp);
                 break;
         }
     } else if (type_is_equal(Output->name, "VT")) {
@@ -341,17 +338,17 @@ static void ProcessOutput(const char* msg, output_t* Output, int* ret, int full 
             vt->ReceiveCallback = VtReceiveCallback;
         }
         if (full) {
-            stemp.Printf("%s %s= %3i\r\n%s\r\n", msg, Output->name, Vtcount_in, Vtbuff_in);
-            *ret += sendtext((const char*)stemp.c_str());
+            snprintf(lstemp, 499, "%s %s= %3i\r\n%s\r\n", msg, Output->name, Vtcount_in, Vtbuff_in);
+            *ret += sendtext(lstemp);
             Vtbuff_in[0] = 0;
             Vtcount_in = 0;
         } else {
-            stemp.Printf("%s %s= %3i\r\n", msg, Output->name, Vtcount_in);
-            *ret += sendtext((const char*)stemp.c_str());
+            snprintf(lstemp, 499, "%s %s= %3i\r\n", msg, Output->name, Vtcount_in);
+            *ret += sendtext(lstemp);
         }
     } else {
-        stemp.Printf("%s %s= unknow type !\r\n", msg, Output->name);
-        *ret += sendtext((const char*)stemp.c_str());
+        snprintf(lstemp, 199, "%s %s= unknow type !\r\n", msg, Output->name);
+        *ret += sendtext(lstemp);
     }
 }
 

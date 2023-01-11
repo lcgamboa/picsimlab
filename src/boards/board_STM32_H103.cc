@@ -181,11 +181,11 @@ void cboard_STM32_H103::RefreshStatus(void) {
 
 void cboard_STM32_H103::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
-    PICSimLab.saveprefs(lxT("STM32_H103_proc"), Proc);
+    PICSimLab.SavePrefs(lxT("STM32_H103_proc"), Proc);
     // write microcontroller clock to preferences
-    PICSimLab.saveprefs(lxT("STM32_H103_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("STM32_H103_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
     // write microcontroller icount to preferences
-    PICSimLab.saveprefs(lxT("STM32_H103_icount"), itoa(icount));
+    PICSimLab.SavePrefs(lxT("STM32_H103_icount"), itoa(icount));
 }
 
 // Called whe configuration file load  preferences
@@ -230,13 +230,13 @@ void cboard_STM32_H103::EvMouseButtonPress(uint button, uint x, uint y, uint sta
                     break;
                     // if event is over I_PWR area then toggle board on/off
                 case I_PWR:
-                    if (PICSimLab.Get_mcupwr())  // if on turn off
+                    if (PICSimLab.GetMcuPwr())  // if on turn off
                     {
-                        PICSimLab.Set_mcupwr(0);
+                        PICSimLab.SetMcuPwr(0);
                         Reset();
                     } else  // if off turn on
                     {
-                        PICSimLab.Set_mcupwr(1);
+                        PICSimLab.SetMcuPwr(1);
                         Reset();
                     }
                     break;
@@ -271,10 +271,10 @@ void cboard_STM32_H103::EvMouseButtonRelease(uint button, uint x, uint y, uint s
             switch (input[i].id) {
                     // if event is over I_RST area then turn on
                 case I_RST:
-                    if (PICSimLab.Get_mcurst())  // if powered
+                    if (PICSimLab.GetMcuRst())  // if powered
                     {
-                        PICSimLab.Set_mcupwr(1);
-                        PICSimLab.Set_mcurst(0);
+                        PICSimLab.SetMcuPwr(1);
+                        PICSimLab.SetMcuRst(0);
                         /*
                                  if (reset (-1))
                                   {
@@ -316,7 +316,7 @@ void cboard_STM32_H103::Draw(CDraw* draw) {
 
                     break;
                 case O_LPWR:  // Blue using mcupwr value
-                    draw->Canvas.SetColor(200 * PICSimLab.Get_mcupwr() + 55, 0, 0);
+                    draw->Canvas.SetColor(200 * PICSimLab.GetMcuPwr() + 55, 0, 0);
                     draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                            output[i].y2 - output[i].y1);
 
@@ -375,7 +375,7 @@ void cboard_STM32_H103::Run_CPU_ns(uint64_t time) {
             pi = 0;
         }
 
-        if (PICSimLab.Get_mcupwr())  // if powered
+        if (PICSimLab.GetMcuPwr())  // if powered
         {
             if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
             {

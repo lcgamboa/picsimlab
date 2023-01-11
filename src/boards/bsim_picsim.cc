@@ -151,7 +151,7 @@ void bsim_picsim::MDumpMemory(const char* fname) {
 
 int bsim_picsim::DebugInit(int dtyppe)  // argument not used in pic, it only use mplabx
 {
-    int ret = !mplabxd_init(this, PICSimLab.Get_debug_port()) - 1;
+    int ret = !mplabxd_init(this, PICSimLab.GetDebugPort()) - 1;
 
     if (ret < 0) {
         PICSimLab.RegisterError("Error starting MPLABX debugger support !");
@@ -161,7 +161,7 @@ int bsim_picsim::DebugInit(int dtyppe)  // argument not used in pic, it only use
 }
 
 void bsim_picsim::DebugLoop(void) {
-    if (PICSimLab.Get_mcupwr()) {
+    if (PICSimLab.GetMcuPwr()) {
         // prog_loop(&pic);
         mplabxd_loop();
     }

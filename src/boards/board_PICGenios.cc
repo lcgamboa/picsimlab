@@ -562,7 +562,7 @@ void cboard_PICGenios::Draw(CDraw* draw) {
                         break;
 
                     case O_LCD:
-                        draw->Canvas.SetColor(0, 90 * PICSimLab.Get_mcupwr() + 40, 0);
+                        draw->Canvas.SetColor(0, 90 * PICSimLab.GetMcuPwr() + 40, 0);
                         break;
                     case O_BRB0:
                     case O_BRB1:
@@ -704,7 +704,7 @@ void cboard_PICGenios::Draw(CDraw* draw) {
                                                output[i].y2 - output[i].y1 + ((lcd.lnum == 2) ? 3 : 78));
                         if (dip[0]) {
                             lcd_draw(&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1, PICSimLab.Get_mcupwr());
+                                     output[i].y2 - output[i].y1, PICSimLab.GetMcuPwr());
                         }
                     }
                 } else if ((output[i].name[0] == 'D') && (output[i].name[1] == 'P')) {
@@ -844,7 +844,7 @@ void cboard_PICGenios::Draw(CDraw* draw) {
                     case O_RUN:
                     case O_LPWR:
                         draw->Canvas.SetFgColor(0, 55, 0);
-                        draw->Canvas.SetBgColor(0, 200 * PICSimLab.Get_mcupwr() + 55, 0);
+                        draw->Canvas.SetBgColor(0, 200 * PICSimLab.GetMcuPwr() + 55, 0);
                         break;
                 }
 
@@ -881,7 +881,7 @@ void cboard_PICGenios::Draw(CDraw* draw) {
     rtc_ds1307_update(&rtc2);
 
     // buzzer
-    if ((((pic.pins[15].oavalue - 55) / 2) > 10) && (PICSimLab.Get_mcupwr()) && jmp[0]) {
+    if ((((pic.pins[15].oavalue - 55) / 2) > 10) && (PICSimLab.GetMcuPwr()) && jmp[0]) {
         if (!sound_on) {
             buzzer.BeepStart();
             sound_on = 1;
@@ -1002,7 +1002,7 @@ void cboard_PICGenios::Run_CPU(void) {
 
     j = JUMPSTEPS;
     pi = 0;
-    if (PICSimLab.Get_mcupwr())
+    if (PICSimLab.GetMcuPwr())
         for (i = 0; i < NSTEP; i++) {
             if (j >= JUMPSTEPS) {
                 pic_set_pin(&pic, pic.mclr, p_RST);
@@ -1606,8 +1606,8 @@ void cboard_PICGenios::EvMouseButtonPress(uint button, uint x, uint y, uint stat
                 } break;
 
                 case I_PWR: {
-                    if (PICSimLab.Get_mcupwr()) {
-                        PICSimLab.Set_mcupwr(0);
+                    if (PICSimLab.GetMcuPwr()) {
+                        PICSimLab.SetMcuPwr(0);
                         Reset();
                         p_BT[0] = 0;
                         p_BT[1] = 0;
@@ -1617,7 +1617,7 @@ void cboard_PICGenios::EvMouseButtonPress(uint button, uint x, uint y, uint stat
                         p_BT[5] = 0;
                         p_BT[6] = 0;
                     } else {
-                        PICSimLab.Set_mcupwr(1);
+                        PICSimLab.SetMcuPwr(1);
                         Reset();
                     }
                     output_ids[O_LPWR]->update = 1;
@@ -1625,9 +1625,9 @@ void cboard_PICGenios::EvMouseButtonPress(uint button, uint x, uint y, uint stat
                 } break;
 
                 case I_RST: {
-                    if (PICSimLab.Get_mcupwr() && pic_reset(&pic, -1)) {
-                        PICSimLab.Set_mcupwr(0);
-                        PICSimLab.Set_mcurst(1);
+                    if (PICSimLab.GetMcuPwr() && pic_reset(&pic, -1)) {
+                        PICSimLab.SetMcuPwr(0);
+                        PICSimLab.SetMcuRst(1);
                     }
                     p_RST = 0;
                     output_ids[O_RST]->update = 1;
@@ -1778,9 +1778,9 @@ void cboard_PICGenios::EvMouseButtonRelease(uint button, uint x, uint y, uint st
         if (((input[i].x1 <= x) && (input[i].x2 >= x)) && ((input[i].y1 <= y) && (input[i].y2 >= y))) {
             switch (input[i].id) {
                 case I_RST: {
-                    if (PICSimLab.Get_mcurst()) {
-                        PICSimLab.Set_mcupwr(1);
-                        PICSimLab.Set_mcurst(0);
+                    if (PICSimLab.GetMcuRst()) {
+                        PICSimLab.SetMcuPwr(1);
+                        PICSimLab.SetMcuRst(0);
 
                         if (pic_reset(&pic, -1)) {
                             Reset();
@@ -2403,21 +2403,21 @@ void cboard_PICGenios::RefreshStatus(void) {
 
 void cboard_PICGenios::WritePreferences(void) {
     char line[100];
-    PICSimLab.saveprefs(lxT("PICGenios_proc"), Proc);
+    PICSimLab.SavePrefs(lxT("PICGenios_proc"), Proc);
 
-    PICSimLab.saveprefs(lxT("PICGenios_jmp"), lxString().Format("%i", jmp[0]));
+    PICSimLab.SavePrefs(lxT("PICGenios_jmp"), lxString().Format("%i", jmp[0]));
 
-    PICSimLab.saveprefs(lxT("PICGenios_lcd"), combo1->GetText());
+    PICSimLab.SavePrefs(lxT("PICGenios_lcd"), combo1->GetText());
 
     line[0] = 0;
     for (int i = 0; i < 20; i++)
         sprintf(line + i, "%i", dip[i]);
 
-    PICSimLab.saveprefs(lxT("PICGenios_dip"), line);
-    PICSimLab.saveprefs(lxT("PICGenios_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("PICGenios_dip"), line);
+    PICSimLab.SavePrefs(lxT("PICGenios_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
 
-    PICSimLab.saveprefs(lxT("PICGenios_pot1"), lxString().Format("%i", pot[0]));
-    PICSimLab.saveprefs(lxT("PICGenios_pot2"), lxString().Format("%i", pot[1]));
+    PICSimLab.SavePrefs(lxT("PICGenios_pot1"), lxString().Format("%i", pot[0]));
+    PICSimLab.SavePrefs(lxT("PICGenios_pot2"), lxString().Format("%i", pot[1]));
 }
 
 void cboard_PICGenios::ReadPreferences(char* name, char* value) {

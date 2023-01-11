@@ -27,6 +27,7 @@ override CXXFLAGS += -DEXT_BROWSER -D_VERSION_=\"${VERSION}\" -Wall -g -O2  \
    -D_SHARE_=\"../share/picsimlab/\"  -D_LIB_=\"../lib/picsimlab/\" -Wall  -D_REENTRANT
 
 override CXXFLAGS+= -D_NOTHREAD
+override CXXFLAGS+= -D_CONSOLE_LOG_
 #override CXXFLAGS+=-fsanitize=address
 #override CXXFLAGS+=-fsanitize=thread
 override CXXFLAGS+= -flto=auto
