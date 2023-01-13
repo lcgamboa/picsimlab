@@ -77,6 +77,7 @@ extern void (*qemu_picsimlab_register_callbacks)(void* arg);
 extern void (*qemu_picsimlab_set_pin)(int pin, int value);
 extern void (*qemu_picsimlab_set_apin)(int chn, int value);
 extern int (*qemu_picsimlab_flash_dump)(int64_t offset, void* buf, int bytes);
+extern void (*qemu_picsimlab_uart_receive)(const int id, const uint8_t* buf, int size);
 
 extern int64_t (*qemu_clock_get_ns)(QEMUClockType type);
 
@@ -94,6 +95,7 @@ typedef struct {
     void (*picsimlab_dir_pin)(int pin, int value);
     int (*picsimlab_i2c_event)(const uint8_t id, const uint8_t addr, const uint16_t event);
     uint8_t (*picsimlab_spi_event)(const uint8_t id, const uint16_t event);
+    void (*picsimlab_uart_tx_event)(const uint8_t id, const uint8_t value);
 } callbacks_t;
 
 enum i2c_event {

@@ -43,7 +43,7 @@ void vterm_rst(vterm_t* vt) {
     dprintf("vterm_ uart\n");
 }
 
-static void vterm_uart_rx_callback(void* arg) {
+static void vterm_uart_rx_callback(bitbang_uart_t* bu, void* arg) {
     vterm_t* vt = (vterm_t*)arg;
     unsigned char data;
     vt->inMutex->Lock();

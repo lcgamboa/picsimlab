@@ -57,6 +57,7 @@ void (*qemu_picsimlab_register_callbacks)(void* arg);
 void (*qemu_picsimlab_set_pin)(int pin, int value);
 void (*qemu_picsimlab_set_apin)(int chn, int value);
 int (*qemu_picsimlab_flash_dump)(int64_t offset, void* buf, int bytes);
+void (*qemu_picsimlab_uart_receive)(const int id, const uint8_t* buf, int size);
 
 int64_t (*qemu_clock_get_ns)(QEMUClockType type);
 
@@ -162,7 +163,7 @@ static int picsimlab_i2c_event(const uint8_t id, const uint8_t addr, const uint1
     return 0;
 }
 
-uint8_t picsimlab_spi_event(const uint8_t id, const uint16_t event) {
+static uint8_t picsimlab_spi_event(const uint8_t id, const uint16_t event) {
     g_board->Run_CPU_ns(GotoNow());
     uint64_t cycle_ns = g_board->TimerGet_ns(g_board->master_spi[id].TimerID);
     // FIXME only for tests
@@ -197,8 +198,30 @@ uint8_t picsimlab_spi_event(const uint8_t id, const uint16_t event) {
     return 0;
 }
 
-const static callbacks_t callbacks = {picsimlab_write_pin, picsimlab_dir_pins, picsimlab_i2c_event,
-                                      picsimlab_spi_event};
+static void picsimlab_uart_tx_event(const uint8_t id, const uint8_t value) {
+    // printf("Uart[%i] %c \n", id, value);
+
+    // FIXME only for tests
+    g_board->master_uart[id].ctrl_on = 1;  // read from DPORT ?
+
+    g_board->Run_CPU_ns(GotoNow());
+
+    bitbang_uart_send(&g_board->master_uart[id], value);
+    g_board->timer.last += 1041667;
+    g_board->Run_CPU_ns(1041667);  // TODO fixed 10 bits at 9600 bps
+}
+
+static void picsimlab_uart_rx_event(bitbang_uart_t* bu, void* arg) {
+    if (bu->ctrl_on) {
+        const int id = *((const int*)arg);
+        unsigned char data = bitbang_uart_recv(bu);
+        // printf("uart[%i] data recv [%c]\n", id, data);
+        qemu_picsimlab_uart_receive(id, &data, 1);
+    }
+}
+
+const static callbacks_t callbacks = {picsimlab_write_pin, picsimlab_dir_pins, picsimlab_i2c_event, picsimlab_spi_event,
+                                      picsimlab_uart_tx_event};
 
 int bsim_qemu::load_qemu_lib(const char* path) {
 #ifndef _WIN_  // LINUX
@@ -252,10 +275,13 @@ int bsim_qemu::load_qemu_lib(const char* path) {
     GET_SYMBOL_AND_CHECK(timer_mod_ns);
     GET_SYMBOL_AND_CHECK(qemu_picsimlab_get_internals);
     GET_SYMBOL_AND_CHECK(qemu_picsimlab_get_TIOCM);
+    GET_SYMBOL_AND_CHECK(qemu_picsimlab_uart_receive);
 #undef GET_SYMBOL_AND_CHECK
 
     return 1;
 }
+
+static const int id[3] = {0, 1, 2};
 
 bsim_qemu::bsim_qemu(void) {
     fname_bak[0] = 0;
@@ -278,6 +304,9 @@ bsim_qemu::bsim_qemu(void) {
     bitbang_i2c_ctrl_init(&master_i2c[1], this);
     bitbang_spi_ctrl_init(&master_spi[0], this);
     bitbang_spi_ctrl_init(&master_spi[1], this);
+    bitbang_uart_init(&master_uart[0], this, picsimlab_uart_rx_event, (void*)&id[0]);
+    bitbang_uart_init(&master_uart[1], this, picsimlab_uart_rx_event, (void*)&id[1]);
+    bitbang_uart_init(&master_uart[2], this, picsimlab_uart_rx_event, (void*)&id[2]);
 }
 
 bsim_qemu::~bsim_qemu(void) {
@@ -285,6 +314,9 @@ bsim_qemu::~bsim_qemu(void) {
     bitbang_i2c_ctrl_end(&master_i2c[1]);
     bitbang_spi_ctrl_end(&master_spi[0]);
     bitbang_spi_ctrl_end(&master_spi[1]);
+    bitbang_uart_end(&master_uart[0]);
+    bitbang_uart_end(&master_uart[1]);
+    bitbang_uart_end(&master_uart[2]);
     delete mtx_qinit;
 }
 
@@ -816,6 +848,9 @@ void bsim_qemu::MReset(int flags) {
     bitbang_i2c_rst(&master_i2c[1]);
     bitbang_spi_rst(&master_spi[0]);
     bitbang_spi_rst(&master_spi[1]);
+    bitbang_uart_rst(&master_uart[0]);
+    bitbang_uart_rst(&master_uart[1]);
+    bitbang_uart_rst(&master_uart[2]);
 }
 
 const picpin* bsim_qemu::MGetPinsValues(void) {
@@ -864,6 +899,17 @@ void bsim_qemu::MStep(void) {
                 if (master_spi[id].cs_pin[2]) {
                     pins[master_spi[id].cs_pin[2] - 1].dir = PD_OUT;
                     pins[master_spi[id].cs_pin[2] - 1].value = master_spi[id].cs_value[2];
+                }
+            }
+            if (master_uart[id].ctrl_on) {
+                if (master_uart[id].tx_pin) {
+                    pins[master_uart[id].tx_pin - 1].dir = PD_OUT;
+                    pins[master_uart[id].tx_pin - 1].value = master_uart[id].tx_value;
+                }
+                if (master_uart[id].rx_pin) {
+                    pins[master_uart[id].rx_pin - 1].dir = PD_IN;
+                    master_uart[id].rx_value = pins[master_uart[id].rx_pin - 1].value;
+                    bitbang_uart_io(&master_uart[id], master_uart[id].rx_value);
                 }
             }
         }

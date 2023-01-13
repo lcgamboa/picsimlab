@@ -44,6 +44,7 @@ void bitbang_uart_rst(bitbang_uart_t* bu) {
     bu->leds = 0;
     bu->data_recv = 0;
     bu->data_to_send = 0;
+    bu->tx_value = 1;
     dprintf("uart rst\n");
 }
 
@@ -69,14 +70,14 @@ static void bitbang_uart_rx_callback(void* arg) {
         }
         bu->datar = bu->insr >> 8;
         bu->data_recv = 1;
-        bu->bcr = 0;
-        bu->pboard->TimerSetState(bu->TimerRXID, 0);
         ioupdated = 1;  // to check for new bytes
         dprintf("uart rx 0x%02X (%c)\n", bu->datar, bu->datar);
 
         if (bu->CallbackRX) {
-            (*bu->CallbackRX)(bu->ArgRX);
+            (*bu->CallbackRX)(bu, bu->ArgRX);
         }
+        bu->bcr = 0;
+        bu->pboard->TimerSetState(bu->TimerRXID, 0);
     }
 }
 
@@ -86,13 +87,15 @@ static void bitbang_uart_tx_callback(void* arg) {
     bu->outsr = (bu->outsr >> 1);
     bu->bcw++;
     ioupdated = 1;
+    bu->tx_value = (bu->outsr & 0x01);
     if (bu->bcw > 10) {
         bu->bcw = 0;
         bu->pboard->TimerSetState(bu->TimerTXID, 0);
     }
 }
 
-void bitbang_uart_init(bitbang_uart_t* bu, board* pboard, void (*CallbackRX)(void* argRX), void* ArgRX) {
+void bitbang_uart_init(bitbang_uart_t* bu, board* pboard, void (*CallbackRX)(bitbang_uart_t* bu, void* argRX),
+                       void* ArgRX) {
     bitbang_uart_rst(bu);
     bu->speed = 9600;
     bu->pboard = pboard;
@@ -150,6 +153,8 @@ void bitbang_uart_send(bitbang_uart_t* bu, const unsigned char data) {
     ioupdated = 1;
     bu->bcw = 1;
     bu->leds |= 0x02;
+
+    bu->tx_value = (bu->outsr & 0x01);
 
     bu->pboard->TimerChange_us(bu->TimerTXID, 1e6 / bu->speed);
     bu->pboard->TimerSetState(bu->TimerTXID, 1);

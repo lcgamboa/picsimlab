@@ -28,7 +28,11 @@
 
 #include "../boards/board.h"
 
-typedef struct {
+class board;
+
+typedef struct bitbang_uart_t bitbang_uart_t;
+
+struct bitbang_uart_t {
     unsigned char prx;           // previous rx value
     unsigned short insr;         // input shift register
     unsigned short outsr;        // output shift register
@@ -43,12 +47,19 @@ typedef struct {
     int TimerRXID;
     int TimerTXID;
     board* pboard;
-    void (*CallbackRX)(void* arg);
+    void (*CallbackRX)(bitbang_uart_t* bu, void* arg);
     void* ArgRX;
-} bitbang_uart_t;
+    // Controller
+    unsigned char ctrl_on;
+    unsigned char tx_pin;
+    unsigned char tx_value;
+    unsigned char rx_pin;
+    unsigned char rx_value;
+};
 
 void bitbang_uart_rst(bitbang_uart_t* bu);
-void bitbang_uart_init(bitbang_uart_t* bu, board* pboard, void (*CallbackRX)(void* argRX), void* Arg);
+void bitbang_uart_init(bitbang_uart_t* bu, board* pboard, void (*CallbackRX)(bitbang_uart_t* bu, void* argRX),
+                       void* Arg);
 void bitbang_uart_end(bitbang_uart_t* bu);
 void bitbang_uart_set_speed(bitbang_uart_t* bu, const unsigned int speed);
 unsigned char bitbang_uart_transmitting(bitbang_uart_t* bu);

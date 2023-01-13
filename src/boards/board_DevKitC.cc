@@ -253,6 +253,13 @@ cboard_DevKitC::cboard_DevKitC(void) {
     master_spi[1].cs_pin[1] = 0;
     master_spi[1].cs_pin[2] = 0;
 
+    master_uart[0].tx_pin = 0;
+    master_uart[0].rx_pin = IO3;  // FIXME without this Micropython don´t work
+    master_uart[1].tx_pin = 0;
+    master_uart[1].rx_pin = 0;
+    master_uart[2].tx_pin = 0;
+    master_uart[2].rx_pin = 0;
+
     // label1
     label1 = new CLabel();
     label1->SetFOwner(PICSimLab.GetWindow());
@@ -563,7 +570,7 @@ void cboard_DevKitC::Run_CPU_ns(uint64_t time) {
         }
 
         if (PICSimLab.GetMcuPwr())  // if powered
-                                     // for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
+                                    // for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
             /*
             if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
@@ -773,6 +780,13 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
                     master_spi[0].cipo_pin = io2pin(gpio);
                     break;
 
+                case 14:  // U0RXD
+                    master_uart[0].rx_pin = io2pin(gpio);
+                    break;
+                case 17:  // U1RXD
+                    master_uart[1].rx_pin = io2pin(gpio);
+                    break;
+
                 case 29:  // I2CEXT0_SCL
                     master_i2c[0].scl_pin = io2pin(gpio);
                     break;
@@ -789,6 +803,10 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
                     break;
                 case 96:  // I2CEXT1_SDA
                     master_i2c[1].sda_pin = io2pin(gpio);
+                    break;
+
+                case 198:  // U2RXD
+                    master_uart[2].rx_pin = io2pin(gpio);
                     break;
             }
 
@@ -813,6 +831,13 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
                     break;
                 case 11:  // HSPICS0
                     master_spi[0].cs_pin[0] = io2pin(gpio);
+                    break;
+
+                case 14:  // U0TXD
+                    master_uart[0].tx_pin = io2pin(gpio);
+                    break;
+                case 17:  // U1TXD
+                    master_uart[1].tx_pin = io2pin(gpio);
                     break;
 
                 case 29:  // I2CEXT0_SCL
@@ -854,6 +879,10 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
                 case 96:  // I2CEXT1_SDA
                     master_i2c[1].sda_pin = io2pin(gpio);
                     break;
+
+                case 198:  // U2RTXD
+                    master_uart[2].tx_pin = io2pin(gpio);
+                    break;
             }
 
         } break;
@@ -866,6 +895,14 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
 
             switch (function) {
                 case 0:
+                    switch (gpio) {
+                        case 1:
+                            master_uart[0].tx_pin = IO1;
+                            break;
+                        case 3:
+                            master_uart[0].rx_pin = IO3;
+                            break;
+                    }
                     break;
                 case 1:
                     switch (gpio) {
@@ -900,6 +937,20 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
                 case 3:
                     break;
                 case 4:
+                    switch (gpio) {
+                        case 9:
+                            master_uart[1].rx_pin = IO9;
+                            break;
+                        case 10:
+                            master_uart[1].tx_pin = IO10;
+                            break;
+                        case 16:
+                            master_uart[2].rx_pin = IO16;
+                            break;
+                        case 17:
+                            master_uart[2].tx_pin = IO17;
+                            break;
+                    }
                     break;
                 case 5:
                     break;

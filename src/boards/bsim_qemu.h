@@ -28,6 +28,7 @@
 
 #include "../devices/bitbang_i2c.h"
 #include "../devices/bitbang_spi.h"
+#include "../devices/bitbang_uart.h"
 #include "board.h"
 #include "qemu.h"
 
@@ -67,6 +68,7 @@ public:
     virtual void Run_CPU_ns(uint64_t time) = 0;
     bitbang_i2c_t master_i2c[2];
     bitbang_spi_t master_spi[2];
+    bitbang_uart_t master_uart[3];
 
 protected:
     int MipsStrToIcount(const char* mipstr);

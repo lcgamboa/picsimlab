@@ -40,7 +40,7 @@ void uart_rst(uart_t* sr) {
     dprintf("rst uart\n");
 }
 
-static void uart_rx_callback(void* arg) {
+static void uart_rx_callback(bitbang_uart_t* bu, void* arg) {
     uart_t* sr = (uart_t*)arg;
     unsigned char data = bitbang_uart_recv(&sr->bb_uart);
     if (sr->connected) {

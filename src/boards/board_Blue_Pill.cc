@@ -101,6 +101,14 @@ cboard_Blue_Pill::cboard_Blue_Pill(void) {
     master_spi[1].cs_pin[1] = 0;
     master_spi[1].cs_pin[2] = 0;
 
+    // TODO read pin configuration from registers instead use fixed pins
+    master_uart[0].tx_pin = 30;  // pa9
+    master_uart[0].rx_pin = 31;  // pa10
+    master_uart[1].tx_pin = 12;  // pa2
+    master_uart[1].rx_pin = 13;  // pa3
+    master_uart[2].tx_pin = 21;  // pb10
+    master_uart[2].rx_pin = 22;  // pb11
+
     // label1
     label1 = new CLabel();
     label1->SetFOwner(PICSimLab.GetWindow());
@@ -345,7 +353,7 @@ void cboard_Blue_Pill::Run_CPU_ns(uint64_t time) {
         }
 
         if (PICSimLab.GetMcuPwr())  // if powered
-                                     // for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
+                                    // for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
             /*
             if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip

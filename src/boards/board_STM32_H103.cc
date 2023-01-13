@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2015-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -107,6 +107,14 @@ cboard_STM32_H103::cboard_STM32_H103(void) {
     master_spi[1].cs_pin[0] = 0;
     master_spi[1].cs_pin[1] = 0;
     master_spi[1].cs_pin[2] = 0;
+
+    // TODO read pin configuration from registers instead use fixed pins
+    master_uart[0].tx_pin = 42;  // pa9
+    master_uart[0].rx_pin = 43;  // pa10
+    master_uart[1].tx_pin = 16;  // pa2
+    master_uart[1].rx_pin = 17;  // pa3
+    master_uart[2].tx_pin = 29;  // pb10
+    master_uart[2].rx_pin = 30;  // pb11
 
     // label1
     label1 = new CLabel();

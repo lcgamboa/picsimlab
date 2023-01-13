@@ -54,8 +54,6 @@ cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, c
 
     show = 0;
 
-    _ret = -1;
-
     send_text = 0;
 
     vterm_speed = 9600;
@@ -307,14 +305,19 @@ unsigned short cpart_vterm::GetOutputId(char* name) {
 lxString cpart_vterm::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%hhu,%u", input_pins[0], output_pins[0], lending, vterm_speed);
+    sprintf(prefs, "%hhu,%hhu,%hhu,%u,%hhu,%i,%i", input_pins[0], output_pins[0], lending, vterm_speed, show,
+            wvterm->GetX(), wvterm->GetY());
 
     return prefs;
 }
 
 void cpart_vterm::ReadPreferences(lxString value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%u", &input_pins[0], &output_pins[0], &lending, &vterm_speed);
-
+    int x, y;
+    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%u,%hhu,%i,%i", &input_pins[0], &output_pins[0], &lending, &vterm_speed,
+           &show, &x, &y);
+    show |= 0x80;
+    wvterm->SetX(x);
+    wvterm->SetY(y);
     Reset();
 }
 
@@ -370,11 +373,7 @@ void cpart_vterm::Process(void) {
     }
 
     ret = vterm_io(&vt, val);
-
-    if (_ret != ret) {
-        SpareParts.SetPin(output_pins[0], ret);
-    }
-    _ret = ret;
+    SpareParts.SetPin(output_pins[0], ret);
 }
 
 void cpart_vterm::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
