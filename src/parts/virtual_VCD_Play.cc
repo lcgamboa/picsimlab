@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2019-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2019-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -234,15 +234,15 @@ unsigned short cpart_VCD_Play::GetOutputId(char* name) {
 
 lxString cpart_VCD_Play::WritePreferences(void) {
     char prefs[256];
-    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%s", output_pins[0], output_pins[1], output_pins[2],
-            output_pins[3], output_pins[4], output_pins[5], output_pins[6], output_pins[7], f_vcd_name);
+    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%s", output_pins[0], output_pins[1], output_pins[2],
+            output_pins[3], output_pins[4], output_pins[5], output_pins[6], output_pins[7], play, f_vcd_name);
 
     return prefs;
 }
 
 void cpart_VCD_Play::ReadPreferences(lxString value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%s", &output_pins[0], &output_pins[1],
-           &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7],
+    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%s", &output_pins[0], &output_pins[1],
+           &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7], &play,
            f_vcd_name);
 
     if (f_vcd_name[0] != '*') {
@@ -257,10 +257,14 @@ void cpart_VCD_Play::ReadPreferences(lxString value) {
         if (lxFileExists(f_vcd_name)) {
             LoadVCD(f_vcd_name);
         } else {
-            printf("Error loading from file: %s \n", f_vcd_name);
+            printf("PICSimLab: VCD_Play Error loading from file: %s \n", f_vcd_name);
+            PICSimLab.RegisterError(lxString("PICSimLab: VCD_Play Error loading from file: \n") + f_vcd_name);
             f_vcd_name[0] = '*';
             f_vcd_name[1] = 0;
+            play = 0;
         }
+    } else {
+        play = 0;
     }
     Reset();
 }

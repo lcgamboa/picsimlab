@@ -2,6 +2,10 @@
 
 ### New
 
+* Support to use Virtual Terminal part with rcontrol interface. [lcgamboa]
+
+* New part ADXL345 Accelerometer. [lcgamboa]
+
 * Support to SPI in bmp280 sensor added. [lcgamboa]
 
 * Support to SPI in qemu-stm32 added. [lcgamboa]
@@ -25,6 +29,8 @@
 * Esp32 DevKitC board support to ADC added. [lcgamboa]
 
 ### Changes
+
+* Change VCD Dump part to only show used channels in pulseview. [lcgamboa]
 
 * Add instance numbers to windows title bars. [lcgamboa]
 
