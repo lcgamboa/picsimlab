@@ -67,12 +67,12 @@ static int bmp280_test(const char* tname, const char* fname, const char* resp, i
 }
 
 static int test_SPI_ESP32(void* arg) {
-    return bmp280_test("SPI ESP32", "spi/esp32_bmp280_spi.pzw", "T= 35.00 P= 780.00\r");
+    return bmp280_test("SPI ESP32", "spi/esp32_bmp280_spi.pzw", "T= 35.00 P= 780.00\r", 1);
 }
 register_test("SPI ESP32", test_SPI_ESP32, NULL);
 
 static int test_I2C_ESP32(void* arg) {
-    return bmp280_test("I2C ESP32", "i2c/esp32_bmp280_i2c.pzw", "T= 35.34 P= 774.83\r");
+    return bmp280_test("I2C ESP32", "i2c/esp32_bmp280_i2c.pzw", "T= 35.34 P= 774.83\r", 1);
 }
 register_test("I2C ESP32", test_I2C_ESP32, NULL);
 
@@ -87,12 +87,12 @@ static int test_I2C_AVR(void* arg) {
 register_test("I2C AVR", test_I2C_AVR, NULL);
 
 static int test_SPI_STM32(void* arg) {
-    return bmp280_test("SPI STM32", "spi/stm32_bmp280_spi.pzw", "T= 35.00 P= 780.00\r");
+    return bmp280_test("SPI STM32", "spi/stm32_bmp280_spi.pzw", "T= 35.00 P= 780.00\r", 1);
 }
 register_test("SPI STM32", test_SPI_STM32, NULL);
 
 static int test_I2C_STM32(void* arg) {
-    return bmp280_test("I2C STM32", "i2c/stm32_bmp280_i2c.pzw", "T= 35.00 P= 780.00\r");
+    return bmp280_test("I2C STM32", "i2c/stm32_bmp280_i2c.pzw", "T= 35.00 P= 780.00\r", 1);
 }
 register_test("I2C STM32", test_I2C_STM32, NULL);
 

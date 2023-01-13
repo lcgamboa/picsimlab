@@ -266,7 +266,8 @@ int test_serial_recv_wait(char* data, const int timeout) {
     do {
         ret = test_serial_recv(data);
         if (vtnumber >= 0) {
-            t += 100;
+            t += 10;
+            usleep(1000);
         } else {
             usleep(1000);
             t++;
