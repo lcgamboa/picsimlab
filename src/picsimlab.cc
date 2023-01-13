@@ -359,12 +359,12 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
 #ifndef _WIN_
     SavePrefs(lxT("picsimlab_lser"), SERIALDEVICE);
 #ifdef _USE_PICSTARTP_
-    saveprefs(lxT("picsimlab_lprog"), PROGDEVICE);
+    SavePrefs(lxT("picsimlab_lprog"), PROGDEVICE);
 #endif
 #else
-    saveprefs("picsimlab_wser", SERIALDEVICE);
+    SavePrefs("picsimlab_wser", SERIALDEVICE);
 #ifdef _USE_PICSTARTP_
-    saveprefs("picsimlab_wprog", PROGDEVICE);
+    SavePrefs("picsimlab_wprog", PROGDEVICE);
 #endif
 #endif
 
@@ -541,7 +541,7 @@ void CPICSimLab::LoadWorkspace(lxString fnpzw) {
                 continue;
             }
 #ifndef LEGACY081
-            saveprefs(name, value);
+            SaveP Prefs(name, value);
 #else
             strncpy(name_, name, 99);
             strncpy(value_, value, 399);
