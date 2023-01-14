@@ -49,6 +49,8 @@
 #include "serial.h"
 #include "tests.h"
 
+// #define USE_SERIAL
+
 static int sockfd = -1;
 static char buff[2048];
 // static char cmd[256];
@@ -74,13 +76,17 @@ static char pexe[256];
 static int vtnumber = -1;
 
 int main(int argc, char** argv) {
+#ifdef USE_SERIAL
     if ((argc < 3) || ((argc > 4))) {
         printf("use: %s picsimlab_executable serial_port [test number]\n", argv[0]);
-
+#else
+    if ((argc < 2) || ((argc > 3))) {
+        printf("use: %s picsimlab_executable [test number]\n", argv[0]);
+        vtnumber = 0;
+#endif
         for (int i = 0; i < NUM_TESTS; i++) {
             printf("%02i: %-25s\n", i, tests_list[i].name);
         }
-
         return -1;
     }
 
@@ -88,20 +94,25 @@ int main(int argc, char** argv) {
         printf("Picsimlab executable \"%s\" not found! \n", argv[1]);
         return -1;
     }
+    strncpy(pexe, argv[1], 255);
 
+#ifdef USE_SERIAL
     if (!serial.Open(argv[2])) {
         printf("Serial port \"%s\" can't be open! \n", argv[2]);
         return -1;
     }
-
-    strncpy(pexe, argv[1], 255);
-
     serial.Config(9600);
+#endif
 
     int FIRSTTEST = 0;
 
+#ifdef USE_SERIAL
     if (argc == 4) {
         sscanf(argv[3], "%d", &FIRSTTEST);
+#else
+    if (argc == 3) {
+        sscanf(argv[2], "%d", &FIRSTTEST);
+#endif
         NUM_TESTS = 1;
     }
 
@@ -117,7 +128,9 @@ int main(int argc, char** argv) {
                (tests_list[i].result ? "\033[1;32m Success\033[0m" : "\033[1;31m Fail\033[0m"));
     }
 
+#ifdef USE_SERIAL
     serial.Close();
+#endif
     return 0;
 }
 
