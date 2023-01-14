@@ -48,7 +48,9 @@ part::part(const unsigned x, const unsigned y, const char* name, const char* typ
 void part::Init(void) {
     ReadMaps();
     LoadImage();
+#ifndef __EMSCRIPTEN__
     RegisterRemoteControl();
+#endif
     PostInit();
 }
 
