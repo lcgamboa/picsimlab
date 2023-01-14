@@ -196,7 +196,7 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
                     wprop.CreateChild(combo);
                     break;
                 case PCW_LABEL: {
-                    char lb[20];
+                    char lb[21];
                     strncpy(lb, items[i].label, 20);
                     lb[19] = 0;
                     char* lb1 = strtok(lb, ",\n");

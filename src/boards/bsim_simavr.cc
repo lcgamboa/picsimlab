@@ -1542,11 +1542,11 @@ void bsim_simavr::EndServers(void) {
 
 // hexfile support ============================================================
 
-int bsim_simavr::parse_hex(char* line, int bytes) {
+int bsim_simavr::parse_hex(const char* line, int bytes) {
     char snum[200];
     int num;
 
-    strncpy(snum, line, bytes);
+    memcpy(snum, line, bytes);
     snum[bytes] = '\0';
     sscanf(snum, "%X", &num);
 

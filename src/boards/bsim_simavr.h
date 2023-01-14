@@ -128,7 +128,7 @@ protected:
     unsigned char has_usart;
 
 private:
-    int parse_hex(char* line, int bytes);
+    int parse_hex(const char* line, int bytes);
     unsigned char checksum(char* str);
     int read_ihx_avr(const char* fname, int leeprom);
     int write_ihx_avr(const char* fname);
