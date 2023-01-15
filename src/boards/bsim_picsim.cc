@@ -66,11 +66,12 @@ int bsim_picsim::MInit(const char* processor, const char* fname, float freq) {
                (pic.processor == getprocbyname("PIC16F84A")) || (pic.processor == getprocbyname("PIC16F777")) ||
                (pic.processor == getprocbyname("PIC16F877A"))) {
         pic.config[0] |= 0x0800;
-    } else if (pic.processor == getprocbyname("PIC16F887")) {
+    } else if ((pic.processor == getprocbyname("PIC16F886")) || (pic.processor == getprocbyname("PIC16F887"))) {
         pic.config[0] |= 0x2000;
     } else if ((pic.processor == getprocbyname("PIC18F452")) || (pic.processor == getprocbyname("PIC18F4520")) ||
                (pic.processor == getprocbyname("PIC18F4550")) || (pic.processor == getprocbyname("PIC18F45K50")) ||
-               (pic.processor == getprocbyname("PIC18F4620")) || (pic.processor == getprocbyname("PIC18F4580"))) {
+               (pic.processor == getprocbyname("PIC18F4620")) || (pic.processor == getprocbyname("PIC18F4580")) ||
+               (pic.processor == getprocbyname("PIC18F26K80"))) {
         pic.config[3] |= 0x0080;
     } else if ((pic.processor == getprocbyname("PIC18F27K40")) || (pic.processor == getprocbyname("PIC18F47K40"))) {
         pic.config[1] |= 0x2000;

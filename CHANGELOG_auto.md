@@ -2,6 +2,8 @@
 
 ### New
 
+* Support to use UART pins with qemu ESP32 and STM32 added. [lcgamboa]
+
 * Support to use Virtual Terminal part with rcontrol interface. [lcgamboa]
 
 * New part ADXL345 Accelerometer. [lcgamboa]
