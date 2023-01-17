@@ -875,28 +875,33 @@ void CPWindow1::menu1_Modules_Spareparts_EvMenuActive(CControl* control) {
 // Change board
 
 void CPWindow1::menu1_EvBoard(CControl* control) {
-    PICSimLab.SetLabs(atoi(((CItemMenu*)control)->GetName()), PICSimLab.GetLab());
-    PICSimLab.SetFNAME(lxT(" "));
-    PICSimLab.EndSimulation(1);
-    PICSimLab.Configure(PICSimLab.GetHomePath());
-    PICSimLab.SetNeedResize(1);
+    if (!PICSimLab.GetErrorCount()) {
+        PICSimLab.SetLabs(atoi(((CItemMenu*)control)->GetName()), PICSimLab.GetLab());
+        PICSimLab.SetFNAME(lxT(" "));
+        PICSimLab.EndSimulation(1);
+        PICSimLab.Configure(PICSimLab.GetHomePath());
+        PICSimLab.SetNeedResize(1);
+    }
 }
 
 // change microcontroller
 
 void CPWindow1::menu1_EvMicrocontroller(CControl* control) {
-    PICSimLab.SetProcessorName(PICSimLab.GetBoard()->GetProcessorName());
-    PICSimLab.GetBoard()->SetProcessorName(((CItemMenu*)control)->GetText());
+    if (!PICSimLab.GetErrorCount()) {
+        PICSimLab.SetProcessorName(PICSimLab.GetBoard()->GetProcessorName());
+        PICSimLab.GetBoard()->SetProcessorName(((CItemMenu*)control)->GetText());
 
-    SetTitle(((PICSimLab.GetInstanceNumber() > 0)
-                  ? (lxT("PICSimLab[") + itoa(PICSimLab.GetInstanceNumber()) + lxT("] - "))
-                  : (lxT("PICSimLab - "))) +
-             lxString(boards_list[PICSimLab.GetLab()].name) + lxT(" - ") + PICSimLab.GetBoard()->GetProcessorName());
+        SetTitle(((PICSimLab.GetInstanceNumber() > 0)
+                      ? (lxT("PICSimLab[") + itoa(PICSimLab.GetInstanceNumber()) + lxT("] - "))
+                      : (lxT("PICSimLab - "))) +
+                 lxString(boards_list[PICSimLab.GetLab()].name) + lxT(" - ") +
+                 PICSimLab.GetBoard()->GetProcessorName());
 
-    PICSimLab.SetFNAME(lxT(" "));
-    PICSimLab.EndSimulation();
-    PICSimLab.Configure(PICSimLab.GetHomePath());
-    PICSimLab.SetNeedResize(1);
+        PICSimLab.SetFNAME(lxT(" "));
+        PICSimLab.EndSimulation();
+        PICSimLab.Configure(PICSimLab.GetHomePath());
+        PICSimLab.SetNeedResize(1);
+    }
 }
 
 void CPWindow1::togglebutton1_EvOnToggleButton(CControl* control) {
