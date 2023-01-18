@@ -408,6 +408,7 @@ bool CSpareParts::LoadConfig(lxString fname) {
             } else if (!strcmp(name, "version")) {
                 // use planed in future
             } else if ((parts[partsc_] = create_part(name, x, y))) {
+                printf("Spare parts: parts[%02i] (%s) created \n", partsc_, name);
                 parts[partsc_]->ReadPreferences(temp);
                 parts[partsc_]->SetId(partsc_);
                 if (newformat) {
@@ -417,7 +418,7 @@ bool CSpareParts::LoadConfig(lxString fname) {
                 }
                 partsc_++;
             } else {
-                printf("Error loading part: %s \n", name);
+                printf("Spare parts: Error loading part: %s \n", name);
                 lxString temp;
                 temp.Printf("Spare parts:\nError loading part: %s \n", name);
                 PICSimLab.RegisterError(temp);
