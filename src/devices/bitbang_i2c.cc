@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -52,6 +52,7 @@ void bitbang_i2c_rst(bitbang_i2c_t* i2c) {
     i2c->ret = 0;
     i2c->status = 0;
     i2c->data_reading = 0;
+    i2c->ctrl_on = 0;
     dprintf("bitbang_i2c %2x rst\n", i2c->addr >> 1);
 }
 
@@ -257,7 +258,7 @@ static void bitbang_i2c_ctrl_callback(void* arg) {
                     case 2:
                         ioupdated = 1;
                         i2c->scl_value = 1;
-                        i2c->ack = i2c->sda_value;  // FIXME
+                        i2c->ack = i2c->sda_value;  // FIXME verify ack
                         break;
                     case 3:
                         i2c->scl_value = 1;
@@ -304,7 +305,7 @@ static void bitbang_i2c_ctrl_callback(void* arg) {
                         break;
                     case 1:
                         i2c->scl_value = 0;
-                        i2c->sda_value = i2c->ack;  // FIXME
+                        i2c->sda_value = i2c->ack;  // FIXME verify ack
                         break;
                     case 2:
                         ioupdated = 1;
@@ -329,7 +330,6 @@ void bitbang_i2c_ctrl_init(bitbang_i2c_t* i2c, board* pboard) {
     // only 100KHz speed
     i2c->TimerID = i2c->pboard->TimerRegister_us(2, bitbang_i2c_ctrl_callback, i2c);
     i2c->pboard->TimerSetState(i2c->TimerID, 0);
-    i2c->ctrl_on = 0;
     bitbang_i2c_rst(i2c);
 }
 
@@ -344,7 +344,7 @@ void bitbang_i2c_ctrl_start(bitbang_i2c_t* i2c) {
     i2c->scl_value = 1;
     i2c->clkpc = 0;
     i2c->status = I2C_START;
-    i2c->pboard->TimerChange_us(i2c->TimerID, 2);  // FIXME only 100kHzfrequency
+    i2c->pboard->TimerChange_us(i2c->TimerID, 2);  // FIXME only 100kHz frequency
     i2c->pboard->TimerSetState(i2c->TimerID, 1);
 }
 

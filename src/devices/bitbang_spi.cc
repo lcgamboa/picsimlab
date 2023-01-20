@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@ void bitbang_spi_rst(bitbang_spi_t* spi) {
     spi->bit = 0;
     spi->byte = 0;
     spi->status = 0;
+    spi->ctrl_on = 0;
     dprintf("bitbang_spi rst\n");
 }
 
@@ -196,7 +197,6 @@ void bitbang_spi_ctrl_init(bitbang_spi_t* spi, board* pboard, const unsigned cha
     spi->pboard = pboard;
     spi->TimerID = spi->pboard->TimerRegister_us(2, bitbang_spi_ctrl_callback, spi);
     spi->pboard->TimerSetState(spi->TimerID, 0);
-    spi->ctrl_on = 0;
     spi->cs_value[0] = 1;
     spi->cs_value[1] = 1;
     spi->cs_value[2] = 1;

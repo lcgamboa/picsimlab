@@ -87,16 +87,14 @@ cboard_STM32_H103::cboard_STM32_H103(void) {
     ReadMaps();              // Read input and output board maps
     p_BUT = 0;
 
-    // TODO read pin configuration from registers instead use fixed pins
-    master_i2c[0].scl_pin = 58;  // pb6 or pb8
-    master_i2c[0].sda_pin = 59;  // pb7 or pb9
-    master_i2c[1].scl_pin = 29;  // pb10
-    master_i2c[1].sda_pin = 30;  // pb11
+    master_i2c[0].scl_pin = 0;
+    master_i2c[0].sda_pin = 0;
+    master_i2c[1].scl_pin = 0;
+    master_i2c[1].sda_pin = 0;
 
-    // TODO read pin configuration from registers instead use fixed pins
-    master_spi[0].sck_pin = 21;   // pa5
-    master_spi[0].copi_pin = 23;  // pa7
-    master_spi[0].cipo_pin = 22;  // pa6
+    master_spi[0].sck_pin = 0;
+    master_spi[0].copi_pin = 0;
+    master_spi[0].cipo_pin = 0;
     master_spi[0].cs_pin[0] = 0;
     master_spi[0].cs_pin[1] = 0;
     master_spi[0].cs_pin[2] = 0;
@@ -108,13 +106,12 @@ cboard_STM32_H103::cboard_STM32_H103(void) {
     master_spi[1].cs_pin[1] = 0;
     master_spi[1].cs_pin[2] = 0;
 
-    // TODO read pin configuration from registers instead use fixed pins
-    master_uart[0].tx_pin = 42;  // pa9
-    master_uart[0].rx_pin = 43;  // pa10
-    master_uart[1].tx_pin = 16;  // pa2
-    master_uart[1].rx_pin = 17;  // pa3
-    master_uart[2].tx_pin = 29;  // pb10
-    master_uart[2].rx_pin = 30;  // pb11
+    master_uart[0].tx_pin = 0;
+    master_uart[0].rx_pin = 0;
+    master_uart[1].tx_pin = 0;
+    master_uart[1].rx_pin = 0;
+    master_uart[2].tx_pin = 0;
+    master_uart[2].rx_pin = 0;
 
     // label1
     label1 = new CLabel();
@@ -715,7 +712,116 @@ void cboard_STM32_H103::MSetAPin(int pin, float value) {
     }
 }
 
-void cboard_STM32_H103::PinsExtraConfig(int cfg) {}
+void cboard_STM32_H103::PinsExtraConfig(int cfg) {
+    if ((cfg & 0x8008) == 0x8008) {  // Alternate function
+        int pin = (cfg & 0x7FF0) >> 4;
+        int port = cfg & 0x0003;
+        uint32_t* uart_afio;
+        // int cfg_ = (cfg & 0x000C) >> 2;
+        // printf("Extra CFG port(%i) pin[%02i]=0x%02X \n", port, pin, cfg_);
+
+        switch (port) {
+            case 0:  // GPIOA
+                switch (pin) {
+                    case 2:  // uart2
+                        uart_afio = qemu_picsimlab_get_internals(0x1000 | 15);
+                        if (!(*uart_afio)) {
+                            master_uart[1].ctrl_on = 1;
+                            master_uart[1].tx_pin = 16;  // pa2
+                            master_uart[1].rx_pin = 17;  // pa3
+                        }
+                        break;
+                    case 5:
+                    case 6:
+                    case 7:  // spi1
+                        uart_afio = qemu_picsimlab_get_internals(0x1000 | 53);
+                        if (!(*uart_afio)) {
+                            master_spi[0].ctrl_on = 1;
+                            master_spi[0].sck_pin = 21;   // pa5
+                            master_spi[0].copi_pin = 23;  // pa7
+                            master_spi[0].cipo_pin = 22;  // pa6
+                        }
+                        break;
+                    case 9:  // uart1
+                        uart_afio = qemu_picsimlab_get_internals(0x1000 | 14);
+                        if (!(*uart_afio)) {
+                            master_uart[0].ctrl_on = 1;
+                            master_uart[0].tx_pin = 42;  // pa9
+                            master_uart[0].rx_pin = 43;  // pa10
+                        }
+                        break;
+                }
+                break;
+            case 1:  // GPIOB
+                switch (pin) {
+                    case 3:
+                    case 4:
+                    case 5:  // spi1 (alt)
+                        uart_afio = qemu_picsimlab_get_internals(0x1000 | 53);
+                        if (!(*uart_afio)) {
+                            master_spi[0].ctrl_on = 1;
+                            master_spi[0].sck_pin = 55;   // pb3
+                            master_spi[0].copi_pin = 57;  // pb5
+                            master_spi[0].cipo_pin = 56;  // pb4
+                        }
+                        break;
+                    case 6:  // uart1 (alt) and i2c
+                        uart_afio = qemu_picsimlab_get_internals(0x1000 | 14);
+                        if ((*uart_afio)) {
+                            master_uart[0].ctrl_on = 1;
+                            master_uart[0].tx_pin = 58;  // pb6
+                            master_uart[0].rx_pin = 59;  // pb7
+                        }
+                        // break;
+                    case 7:  // i2c0
+                        uart_afio = qemu_picsimlab_get_internals(0x1000 | 42);
+                        if (!(*uart_afio)) {
+                            master_i2c[0].ctrl_on = 1;
+                            master_i2c[0].scl_pin = 58;  // pb6
+                            master_i2c[0].sda_pin = 59;  // pb7
+                        }
+                        break;
+                    case 8:
+                    case 9:  // i2c0 (alt)
+                        uart_afio = qemu_picsimlab_get_internals(0x1000 | 42);
+                        if ((*uart_afio)) {
+                            master_i2c[0].ctrl_on = 1;
+                            master_i2c[0].scl_pin = 61;  // pb8
+                            master_i2c[0].sda_pin = 62;  // pb9
+                        }
+                        break;
+                    case 10:  // uart3
+                    /*
+                        uart_afio = qemu_picsimlab_get_internals(0x1000 | 16);
+                        if (!(*uart_afio)) {
+                            master_uart[2].ctrl_on = 1;
+                            master_uart[2].tx_pin = 29;  // pb10
+                            master_uart[2].rx_pin = 30;  // pb11
+                        }
+                        */
+                    case 11:  // i2c1
+                        master_i2c[1].ctrl_on = 1;
+                        master_i2c[1].scl_pin = 29;  // pb10
+                        master_i2c[1].sda_pin = 30;  // pb11
+                        break;
+
+                    case 13:
+                    case 14:
+                    case 15:  // spi2
+                        master_spi[1].ctrl_on = 1;
+                        master_spi[1].sck_pin = 34;   // pb13
+                        master_spi[1].copi_pin = 36;  // pb15
+                        master_spi[1].cipo_pin = 35;  // pb14
+                        break;
+                }
+                break;
+            case 2:  // GPIOC
+                break;
+            case 3:  // GPIOD
+                break;
+        }
+    }
+}
 
 // Register the board in PICSimLab
 board_init(BOARD_STM32_H103_Name, cboard_STM32_H103);

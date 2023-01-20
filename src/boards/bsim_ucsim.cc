@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -85,7 +85,7 @@ void bsim_ucsim::MSetSerial(const char* port) {
  }
 
  void bsim_ucsim::MEnd(void) {
-     ucsim_end();  // TODO
+     ucsim_end();
  }
 
  int bsim_ucsim::MGetArchitecture(void) {

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -120,8 +120,6 @@ static int picsimlab_i2c_event(const uint8_t id, const uint8_t addr, const uint1
     switch (event & 0xFF) {
         case I2C_START_RECV:
         case I2C_START_SEND:
-            // FIXME only for tests
-            g_board->master_i2c[id].ctrl_on = 1;  // read from DPORT ?
 
             bitbang_i2c_ctrl_start(&g_board->master_i2c[id]);
             g_board->timer.last += 8000;
@@ -166,8 +164,6 @@ static int picsimlab_i2c_event(const uint8_t id, const uint8_t addr, const uint1
 static uint8_t picsimlab_spi_event(const uint8_t id, const uint16_t event) {
     g_board->Run_CPU_ns(GotoNow());
     uint64_t cycle_ns = g_board->TimerGet_ns(g_board->master_spi[id].TimerID);
-    // FIXME only for tests
-    g_board->master_spi[id].ctrl_on = 1;  // read from DPORT ?
 
     switch (event & 0xFF) {
         case 0:  // tranfer
@@ -200,9 +196,6 @@ static uint8_t picsimlab_spi_event(const uint8_t id, const uint16_t event) {
 
 static void picsimlab_uart_tx_event(const uint8_t id, const uint8_t value) {
     // printf("Uart[%i] %c \n", id, value);
-
-    // FIXME only for tests
-    g_board->master_uart[id].ctrl_on = 1;  // read from DPORT ?
 
     g_board->Run_CPU_ns(GotoNow());
 

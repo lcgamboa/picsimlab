@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2015-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -66,6 +66,6 @@ void cboard_Arduino_Nano::ReadPreferences(char* name, char* value) {
     }
 }
 
-// TODO cboard_Arduino_Nano: add suport to anaolog inputs A6 and A7
+// TODO cboard_Arduino_Nano: add suport to analog inputs A6 and A7
 
 board_init(BOARD_Arduino_Nano_Name, cboard_Arduino_Nano);

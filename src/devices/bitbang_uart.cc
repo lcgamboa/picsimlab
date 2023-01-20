@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -45,6 +45,7 @@ void bitbang_uart_rst(bitbang_uart_t* bu) {
     bu->data_recv = 0;
     bu->data_to_send = 0;
     bu->tx_value = 1;
+    bu->ctrl_on = 0;
     dprintf("uart rst\n");
 }
 
