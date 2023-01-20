@@ -1,3 +1,51 @@
+## v0.8.12 (2023-01-20)
+
+### New
+
+* Support to PIC16F886 and PIC18F28K80 added to Breadboard board. [lcgamboa]
+
+* Support to use UART pins with qemu ESP32 and STM32 added. [lcgamboa]
+
+* Support to use Virtual Terminal part with rcontrol interface. [lcgamboa]
+
+* New part ADXL345 Accelerometer. [lcgamboa]
+
+* Support to SPI in bmp280 sensor added. [lcgamboa]
+
+* Support to SPI and I2C in qemu-stm32 added. [lcgamboa]
+
+* Support to PIC18F4580 on boards Breadboard, McLab2 and PICGenios added. [lcgamboa]
+
+* New boards Arduino Mega and Arduino Nano added. [lcgamboa]
+
+* Support to run multiple instances of PICSimLab. [lcgamboa]
+
+* Support for logging and recovering from errors. [lcgamboa]
+
+* Support to ESP32 Iomux on board DevKitC. [lcgamboa]
+
+* Added support to I2C and SPI to ESP32 DevKitC board. [lcgamboa]
+
+* Esp32 DevKitC board support to ADC added. [lcgamboa]
+
+### Changes
+
+* Change VCD Dump part to only show used channels in pulseview/gtkwave. [lcgamboa]
+
+* Add instance numbers to windows title bars. [lcgamboa]
+
+* Step motor part now show steps and turns. [lcgamboa]
+
+### Fix
+
+* Fix Virtual terminal and increase internal timers precision. [lcgamboa]
+
+* Fix window redraw when used in Wayland (Linux) [lcgamboa]
+
+* Add support to Windows serial ports greater than COM9 in qemu backend simulator. [lcgamboa]
+
+* PICGenious board interference of keys bounce on keyboard activation removed. [lcgamboa]
+
 ## v0.8.11 (2022-08-02)
 
 ### New

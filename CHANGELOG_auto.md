@@ -1,6 +1,8 @@
-## (unreleased)
+## v0.8.12 (2023-01-20)
 
 ### New
+
+* Support to PIC16F886 and PIC18F28K80 added to Breadboard board. [lcgamboa]
 
 * Support to use UART pins with qemu ESP32 and STM32 added. [lcgamboa]
 
