@@ -40,6 +40,7 @@ typedef struct {
     unsigned char out_ptr;
     lxMutex* inMutex;
     void (*ReceiveCallback)(unsigned char data);
+    unsigned int vt100;
 } vterm_t;
 
 void vterm_rst(vterm_t* vt);

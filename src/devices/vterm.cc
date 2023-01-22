@@ -40,6 +40,7 @@ void vterm_rst(vterm_t* vt) {
     vt->count_in = 0;
     vt->count_out = 0;
     vt->out_ptr = 0;
+    vt->vt100 = 0;
     dprintf("vterm_ uart\n");
 }
 
@@ -50,7 +51,31 @@ static void vterm_uart_rx_callback(bitbang_uart_t* bu, void* arg) {
     data = bitbang_uart_recv(&vt->bb_uart);
     vt->inMutex->Unlock();
 
-    if (((data > 0x19) && (data < 0x7F)) || (data == '\r') || (data == '\n')) {
+    if (data == 27) {  // filter out VT100 codes
+        vt->vt100 = 1;
+        return;
+    }
+    if (vt->vt100) {
+        if (vt->vt100 == 1) {
+            if ((data == '[') || ((data == ']'))) {
+                vt->vt100++;
+                return;
+            } else {
+                vt->vt100 = 0;
+                return;
+            }
+        } else {
+            if ((data == ';') || (data >= '0' && data <= '9') || data == '?') {
+                vt->vt100++;
+                return;
+            } else {
+                vt->vt100 = 0;
+                return;
+            }
+        }
+    }
+
+    if (((data > 0x19) && (data < 0x7F)) || (data == '\r') || (data == '\n')) {  // filter out non printables characters
         vt->buff_in[vt->count_in] = data;
         dprintf("vterm buff_in[%i] = %c\n", vt->count_in, vt->buff_in[vt->count_in]);
 
@@ -64,6 +89,7 @@ static void vterm_uart_rx_callback(bitbang_uart_t* bu, void* arg) {
     }
 
     vt->count_in++;
+
     if (vt->count_in >= SBUFFMAX) {
         vt->count_in = 0;
         dprintf("vterm buffer overflow!\n");
