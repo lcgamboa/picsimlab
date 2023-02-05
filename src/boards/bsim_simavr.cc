@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -67,10 +67,12 @@ int gdb_watch_find(const avr_gdb_watchpoints_t* w, uint32_t addr);
 
 bsim_simavr::bsim_simavr(void) {
     avr = NULL;
-    serial_irq = NULL;
+    for (int i = 0; i < MAX_UART_COUNT; i++) {
+        serial_irq[i] = NULL;
+    }
     avr_debug_type = 0;
     eeprom = NULL;
-    has_usart = 0;
+    usart_count = 0;
     pkg = PDIP;
 }
 
@@ -299,12 +301,27 @@ int bsim_simavr::MInit(const char* processor, const char* fname, float freq) {
 
     if (lxString(avr->mmcu).compare(lxT("atmega2560")) == 0) {
         avr->reset_pc = 0x3E000;
-        has_usart = 1;
+        usart_count = 4;
+        UCSR_base[0] = UCSR0A;
+        bb_uart[0].rx_pin = 2;  // PE0
+        bb_uart[0].tx_pin = 3;  // PE1
+        UCSR_base[1] = UCSR1A;
+        bb_uart[1].rx_pin = 45;  // PD2
+        bb_uart[1].tx_pin = 46;  // PD3
+        UCSR_base[2] = UCSR2A;
+        bb_uart[2].rx_pin = 12;  // PHO
+        bb_uart[2].tx_pin = 13;  // PH1
+        UCSR_base[3] = UCSR3A;
+        bb_uart[3].rx_pin = 63;  // PJ0
+        bb_uart[3].tx_pin = 64;  // PJ1
         extintreg = EIMSK;
     } else if (((lxString(avr->mmcu).compare(lxT("atmega328p")) == 0)) ||
                ((lxString(avr->mmcu).compare(lxT("atmega328")) == 0))) {
         avr->reset_pc = 0x07000;  // bootloader 0x3800
-        has_usart = 1;
+        usart_count = 1;
+        UCSR_base[0] = UCSR0A;
+        bb_uart[0].rx_pin = 2;  // PD0
+        bb_uart[0].tx_pin = 3;  // PD1
         extintreg = EIMSK;
     } else  // attiny85
     {
@@ -316,8 +333,10 @@ int bsim_simavr::MInit(const char* processor, const char* fname, float freq) {
 
     // avr->log= LOG_DEBUG;
 
-    if (has_usart) {
-        avr->data[UCSR0B] = 0x00;  // FIX the simavr reset TX enabled
+    if (usart_count) {
+        for (int i = 0; i < usart_count; i++) {
+            avr->data[UCSR_base[i] + 1] = 0x00;  // FIX the simavr reset TX enabled
+        }
     }
     pins_reset();
 
@@ -357,7 +376,7 @@ int bsim_simavr::MInit(const char* processor, const char* fname, float freq) {
     }
 
     // UART
-    if (has_usart) {
+    if (usart_count) {
         // disable the uart stdio
         uint32_t f = 0;
         avr_ioctl(avr, AVR_IOCTL_UART_GET_FLAGS('0'), &f);
@@ -365,35 +384,39 @@ int bsim_simavr::MInit(const char* processor, const char* fname, float freq) {
         f &= ~AVR_UART_FLAG_POLL_SLEEP;
         avr_ioctl(avr, AVR_IOCTL_UART_SET_FLAGS('0'), &f);
 
-        serial_irq = avr_alloc_irq(&avr->irq_pool, 0, IRQ_UART_COUNT, irq_names_uart);
-        avr_irq_register_notify(serial_irq + IRQ_UART_BYTE_IN, uart_in_hook, this);
+        for (int i = 0; i < usart_count; i++) {
+            serial_irq[i] = avr_alloc_irq(&avr->irq_pool, 0, IRQ_UART_COUNT, irq_names_uart);
+            avr_irq_register_notify(serial_irq[i] + IRQ_UART_BYTE_IN, uart_in_hook, &bb_uart[i]);
 
-        avr_irq_t* src = avr_io_getirq(avr, AVR_IOCTL_UART_GETIRQ('0'), UART_IRQ_OUTPUT);
-        avr_irq_t* dst = avr_io_getirq(avr, AVR_IOCTL_UART_GETIRQ('0'), UART_IRQ_INPUT);
-        if (src && dst) {
-            avr_connect_irq(src, serial_irq + IRQ_UART_BYTE_IN);
-            avr_connect_irq(serial_irq + IRQ_UART_BYTE_OUT, dst);
+            avr_irq_t* src = avr_io_getirq(avr, AVR_IOCTL_UART_GETIRQ('0' + i), UART_IRQ_OUTPUT);
+            avr_irq_t* dst = avr_io_getirq(avr, AVR_IOCTL_UART_GETIRQ('0' + i), UART_IRQ_INPUT);
+            if (src && dst) {
+                avr_connect_irq(src, serial_irq[i] + IRQ_UART_BYTE_IN);
+                avr_connect_irq(serial_irq[i] + IRQ_UART_BYTE_OUT, dst);
+            }
         }
     }
 
     serial_port_open(&serialfd, SERIALDEVICE);
 
-    serialexbaud = 9600;
-    serialbaud = serial_port_cfg(serialfd, serialexbaud);
+    serialexbaud[0] = 9600;
+    serialbaud[0] = serial_port_cfg(serialfd, serialexbaud[0]);
 
-    if (has_usart) {
-        bitbang_uart_init(&bb_uart, this, NULL, NULL);
+    if (usart_count) {
+        for (int i = 0; i < usart_count; i++) {
+            if (i) {
+                serialexbaud[i] = 9600;
+                serialbaud[i] = 9600;
+            }
+            bitbang_uart_init(&bb_uart[i], this, NULL, NULL);
+            bitbang_uart_set_speed(&bb_uart[i], serialexbaud[i]);
 
-        bitbang_uart_set_speed(&bb_uart, serialexbaud);
-
-        pin_rx = 2;  // PD0
-        pin_tx = 3;  // PD1
+            uart_config[i] = 0;
+        }
     }
 
-    uart_config = 0;
-
     // USI
-    if (!has_usart) {
+    if (!usart_count) {
         USI.scl = 0;
         USI.sda = 0;
         // for attiny85
@@ -434,7 +457,11 @@ void bsim_simavr::MEnd(void) {
     for (int i = 0; i < MGetPinCount(); i++)
         avr_free_irq(Write_stat_irq[i], 1);
 
-    avr_free_irq(serial_irq, IRQ_UART_COUNT);
+    if (usart_count) {
+        for (int i = 0; i < usart_count; i++) {
+            avr_free_irq(serial_irq[i], IRQ_UART_COUNT);
+        }
+    }
 
     for (int i = 0; i < avr->irq_pool.count; i++) {
         if (avr->irq_pool.irq[i]) {
@@ -458,8 +485,10 @@ void bsim_simavr::MEnd(void) {
 
     free((void*)avr->irq_pool.irq);
 
-    if (has_usart) {
-        bitbang_uart_end(&bb_uart);
+    if (usart_count) {
+        for (int i = 0; i < usart_count; i++) {
+            bitbang_uart_end(&bb_uart[i]);
+        }
     }
 
     free(avr);
@@ -1332,10 +1361,12 @@ const picpin* bsim_simavr::MGetPinsValues(void) {
     return pins;
 }
 
-void bsim_simavr::SerialSend(unsigned char value) {
-    serial_port_send(serialfd, value);
-    if (has_usart) {
-        bitbang_uart_send(&bb_uart, value);
+void bsim_simavr::SerialSend(bitbang_uart_t* _bb_uart, const unsigned char value) {
+    if (_bb_uart == &bb_uart[0]) {  // send only serial 0
+        serial_port_send(serialfd, value);
+    }
+    if (usart_count) {
+        bitbang_uart_send(_bb_uart, value);
     }
 }
 
@@ -1343,12 +1374,13 @@ void bsim_simavr::SerialSend(unsigned char value) {
  * called when a byte is send via the uart on the AVR
  */
 static void uart_in_hook(struct avr_irq_t* irq, uint32_t value, void* param) {
-    ((bsim_simavr*)param)->SerialSend(value);
+    bitbang_uart_t* bb_uart = ((bitbang_uart_t*)param);
+    (dynamic_cast<bsim_simavr*>(bb_uart->pboard))->SerialSend(bb_uart, value);
     ioupdated = 1;
 }
 
 void bsim_simavr::UpdateHardware(void) {
-    if (has_usart) {
+    if (usart_count) {
         static int cont = 0;
         static int aux = 1;
         unsigned char c;
@@ -1366,46 +1398,54 @@ void bsim_simavr::UpdateHardware(void) {
                 aux = 1;
             }
 
-            if (avr->data[UCSR0B] & 0x10)  // RXEN
-            {
-                if (serial_port_rec(serialfd, &c)) {
-                    avr_raise_irq(serial_irq + IRQ_UART_BYTE_OUT, c);
-                }
+            for (int i = 0; i < usart_count; i++) {
+                if (avr->data[UCSR_base[i] + 1] & 0x10) {  // RXEN
 
-                if (bitbang_uart_data_available(&bb_uart)) {
-                    unsigned char data = bitbang_uart_recv(&bb_uart);
-                    // printf ("data recv:%02X  %c\n", data,data);
-                    avr_raise_irq(serial_irq + IRQ_UART_BYTE_OUT, data);
+                    if ((!i) && (serial_port_rec(serialfd, &c))) {
+                        avr_raise_irq(serial_irq[0] + IRQ_UART_BYTE_OUT, c);
+                    }
+
+                    if (bitbang_uart_data_available(&bb_uart[i])) {
+                        unsigned char data = bitbang_uart_recv(&bb_uart[i]);
+                        avr_raise_irq(serial_irq[i] + IRQ_UART_BYTE_OUT, data);
+                    }
                 }
             }
         }
 
-        if (avr->data[UCSR0B] & 0x18)  // RXEN TXEN
-        {
-            if (!uart_config) {
-                uart_config = 1;
+        for (int i = 0; i < usart_count; i++) {
+            if (avr->data[UCSR_base[i] + 1] & 0x18) {  // RXEN TXEN
+                if (!uart_config[i]) {
+                    uart_config[i] = 1;
 
-                if (avr->data[UCSR0A] & 0x02)  // U2Xn
-                {
-                    serialexbaud = avr->frequency / (8 * (((avr->data[UBRR0H] << 8) | avr->data[UBRR0L]) + 1));
-                } else {
-                    serialexbaud = avr->frequency / (16 * (((avr->data[UBRR0H] << 8) | avr->data[UBRR0L]) + 1));
+                    if (avr->data[UCSR_base[i]] & 0x02)  // U2Xn
+                    {
+                        serialexbaud[i] =
+                            avr->frequency /
+                            (8 * (((avr->data[UCSR_base[i] + 5] << 8) | avr->data[UCSR_base[i] + 4]) + 1));
+                    } else {
+                        serialexbaud[i] =
+                            avr->frequency /
+                            (16 * (((avr->data[UCSR_base[i] + 5] << 8) | avr->data[UCSR_base[i] + 4]) + 1));
+                    }
+
+                    if (!i) {
+                        serialbaud[i] = serial_port_cfg(serialfd, serialexbaud[i]);
+                    } else {
+                        serialbaud[i] = serialexbaud[i];
+                    }
+
+                    bitbang_uart_set_speed(&bb_uart[i], serialexbaud[i]);
+
+                    pins[bb_uart[i].rx_pin - 1].dir = PD_IN;
+                    pins[bb_uart[i].tx_pin - 1].dir = PD_OUT;
+                    pins[bb_uart[i].rx_pin - 1].value = 1;
                 }
 
-                serialbaud = serial_port_cfg(serialfd, serialexbaud);
-
-                // printf ("baud=%i %f\n", serialbaud, serialexbaud);
-
-                bitbang_uart_set_speed(&bb_uart, serialexbaud);
-
-                pins[pin_rx - 1].dir = PD_IN;
-                pins[pin_tx - 1].dir = PD_OUT;
-                pins[pin_rx - 1].value = 1;
+                pins[bb_uart[i].tx_pin - 1].value = bitbang_uart_io(&bb_uart[i], pins[bb_uart[i].rx_pin - 1].value);
+            } else {
+                uart_config[i] = 0;
             }
-
-            pins[pin_tx - 1].value = bitbang_uart_io(&bb_uart, pins[pin_rx - 1].value);
-        } else {
-            uart_config = 0;
         }
     } else  // USI
     {
@@ -1415,10 +1455,10 @@ void bsim_simavr::UpdateHardware(void) {
             // unsigned char c;
             // cont++;
 
-            if (!uart_config) {
-                uart_config = 1;
-                serialbaud = 115200;
-                serialbaud = serial_port_cfg(serialfd, serialexbaud);
+            if (!uart_config[0]) {
+                uart_config[0] = 1;
+                serialbaud[0] = 115200;
+                serialbaud[0] = serial_port_cfg(serialfd, serialexbaud[0]);
             }
             /*
              if (cont > 1000)
@@ -1433,7 +1473,7 @@ void bsim_simavr::UpdateHardware(void) {
               }
              */
         } else {
-            uart_config = 0;
+            uart_config[0] = 0;
         }
 
         // i2c start
@@ -1466,9 +1506,11 @@ void bsim_simavr::MStepResume(void) {}
 
 void bsim_simavr::MReset(int flags) {
     avr_reset(avr);
-    if (has_usart) {
-        avr->data[UCSR0B] = 0x00;  // FIX the simavr reset TX enabled
-        bitbang_uart_rst(&bb_uart);
+    if (usart_count) {
+        for (int i = 0; i < usart_count; i++) {
+            avr->data[UCSR_base[i] + 1] = 0x00;  // FIX the simavr reset TX enabled
+            bitbang_uart_rst(&bb_uart[i]);
+        }
     }
     // disable external interrupt
     avr_extint_set_strict_lvl_trig(avr, 0, 0);

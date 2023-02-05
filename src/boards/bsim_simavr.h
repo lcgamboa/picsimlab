@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -40,6 +40,8 @@
 #include <simavr/sim_elf.h>
 #include <simavr/sim_gdb.h>
 #include <simavr/sim_hex.h>
+
+#define MAX_UART_COUNT 4
 
 typedef struct {
     unsigned char sdao;
@@ -108,33 +110,31 @@ public:
         ioupdated = 1;
     }
 
-    void SerialSend(unsigned char value);
+    void SerialSend(bitbang_uart_t* _bb_uart, const unsigned char value);
 
     usi_t USI;
 
 protected:
     avr_t* avr;
-    avr_irq_t* serial_irq;
+    avr_irq_t* serial_irq[MAX_UART_COUNT];
     picpin pins[256];
     avr_irq_t* Write_stat_irq[100];
-    unsigned int serialbaud;
-    float serialexbaud;
+    unsigned int serialbaud[MAX_UART_COUNT];
+    float serialexbaud[MAX_UART_COUNT];
     void pins_reset(void);
     int avr_debug_type;
     serialfd_t serialfd;
-    bitbang_uart_t bb_uart;
+    bitbang_uart_t bb_uart[MAX_UART_COUNT];
     unsigned char* eeprom;
-    unsigned char uart_config;
-    unsigned char has_usart;
+    unsigned char uart_config[MAX_UART_COUNT];
+    unsigned char usart_count;
+    unsigned int UCSR_base[MAX_UART_COUNT];
 
 private:
     int parse_hex(const char* line, int bytes);
     unsigned char checksum(char* str);
     int read_ihx_avr(const char* fname, int leeprom);
     int write_ihx_avr(const char* fname);
-
-    unsigned char pin_rx;
-    unsigned char pin_tx;
 
 protected:
     int pkg;
@@ -146,6 +146,21 @@ protected:
 #define UCSR0C 0XC2
 #define UBRR0L 0xC4
 #define UBRR0H 0xC5
+
+#define UCSR1A 0xC8
+#define UCSR1B 0XC9
+#define UBRR1L 0xCC
+#define UBRR1H 0xCD
+
+#define UCSR2A 0xD0
+#define UCSR2B 0XD1
+#define UBRR2L 0xD4
+#define UBRR2H 0xD5
+
+#define UCSR3A 0x130
+#define UCSR3B 0X131
+#define UBRR3L 0x134
+#define UBRR3H 0x135
 
 #define GIMSK 0x3B
 #define USICR 0x2D

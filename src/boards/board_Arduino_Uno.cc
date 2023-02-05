@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2015-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -293,9 +293,10 @@ void cboard_Arduino_Uno::Reset(void) {
     if (serialfd != INVALID_HANDLE_VALUE)
 #endif
         PICSimLab.GetStatusBar()->SetField(
-            2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(serialbaud) + lxT("(") +
-                   lxString().Format("%4.1f", fabs((100.0 * serialexbaud - 100.0 * serialbaud) / serialexbaud)) +
-                   lxT("%)"));
+            2,
+            lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) + lxT("(") +
+                lxString().Format("%4.1f", fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) / serialexbaud[0])) +
+                lxT("%)"));
     else
         PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
 
@@ -326,9 +327,10 @@ void cboard_Arduino_Uno::RefreshStatus(void) {
     if (serialfd != INVALID_HANDLE_VALUE)
 #endif
         PICSimLab.GetStatusBar()->SetField(
-            2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(serialbaud) + lxT("(") +
-                   lxString().Format("%4.1f", fabs((100.0 * serialexbaud - 100.0 * serialbaud) / serialexbaud)) +
-                   lxT("%)"));
+            2,
+            lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) + lxT("(") +
+                lxString().Format("%4.1f", fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) / serialexbaud[0])) +
+                lxT("%)"));
     else
         PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
     if (PICSimLab.GetMcuPwr()) {
@@ -563,7 +565,7 @@ void cboard_Arduino_Uno::Run_CPU(void) {
 
     // j = JUMPSTEPS; //step counter
     pi = 0;
-    if (PICSimLab.GetMcuPwr())      // if powered
+    if (PICSimLab.GetMcuPwr())       // if powered
         for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
             // verify if a breakpoint is reached if not run one instruction
