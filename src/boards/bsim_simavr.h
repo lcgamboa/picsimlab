@@ -95,6 +95,7 @@ public:
     unsigned int DBGGetIDSize(void) override;
     unsigned int DBGGetEEPROM_Size(void) override;
     void EndServers(void) override;
+    int GetDefaultClock(void) override { return 16; };
 
     virtual void UpdateHardware(void);
 

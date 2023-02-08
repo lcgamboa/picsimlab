@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -56,6 +56,7 @@ public:
     void MStep(void) override;
     void MStepResume(void) override;
     void MReset(int flags) override;
+    int GetDefaultClock(void) override { return 8; };
 
 protected:
     void pins_reset(void);

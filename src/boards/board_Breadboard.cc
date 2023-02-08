@@ -1040,6 +1040,18 @@ unsigned int cboard_Breadboard::DBGGetEEPROM_Size(void) {
     return 0;
 }
 
+int cboard_Breadboard::GetDefaultClock(void) {
+    switch (ptype) {
+        case _PIC:
+            return bsim_picsim::GetDefaultClock();
+            break;
+        case _AVR:
+            return bsim_simavr::GetDefaultClock();
+            break;
+    }
+    return 0;
+}
+
 void cboard_Breadboard::SetScale(double scale) {
     if (Scale == scale)
         return;

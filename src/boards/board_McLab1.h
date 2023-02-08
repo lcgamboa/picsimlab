@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -65,6 +65,7 @@ public:
     void ReadPreferences(char* name, char* value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
+    int GetDefaultClock(void) override { return 4; };
 };
 
 #endif /* BOARD_McLab1_H */

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -63,6 +63,7 @@ public:
     void MStepResume(void) override;
     void MReset(int flags) override;
     void EvThreadRun(CThread& thread) override;
+    int GetDefaultClock(void) override { return 1; };
     virtual void PinsExtraConfig(int cfg){};
     user_timer_t timer;
     virtual void Run_CPU_ns(uint64_t time) = 0;

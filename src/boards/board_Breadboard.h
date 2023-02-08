@@ -124,6 +124,7 @@ public:
     // return the output ids numbers of names used in output map
     unsigned short GetOutputId(char* name) override;
     void EndServers(void) override;
+    int GetDefaultClock(void) override;
 };
 
 #endif /* BOARD_Breadboard_H */

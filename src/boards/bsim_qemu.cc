@@ -289,7 +289,7 @@ bsim_qemu::bsim_qemu(void) {
     PICSimLab.SetNeedReboot();
     mtx_qinit = new lxMutex();
     ns_count = 0;
-    icount = 5;
+    icount = -1;
     use_cmdline_extra = 0;
     serial_open = 0;
 

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2022  Luis Claudio Gamboa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gamboa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -479,6 +479,13 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 #endif
 
     printf("PICSimLab: Version \"%s %s %s %s\"\n", _VERSION_, _DATE_, _ARCH_, _PKG_);
+
+    printf("PICSimLab: Command Line: ");
+    for (int i = 0; i < Application->Aargc; i++) {
+        printf("%s ", Application->Aargv[i]);
+    }
+    printf("\n");
+
     fflush(stdout);
 
     if (close_error) {

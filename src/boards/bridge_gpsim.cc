@@ -2,15 +2,15 @@
 #include "bridge_gpsim.h"
 
 // GpSim includes
-//#include <gpsim/cod.h>
-//#include <gpsim/interface.h>
-//#include <gpsim/gpsim_classes.h>
+// #include <gpsim/cod.h>
+// #include <gpsim/interface.h>
+// #include <gpsim/gpsim_classes.h>
 #include <gpsim/pic-processor.h>
-//#include <gpsim/uart.h>
-//#include <gpsim/pir.h>
-//#include <gpsim/eeprom.h>
-//#include <gpsim/packages.h>
-//#include <gpsim/stimuli.h>
+// #include <gpsim/uart.h>
+// #include <gpsim/pir.h>
+// #include <gpsim/eeprom.h>
+// #include <gpsim/packages.h>
+// #include <gpsim/stimuli.h>
 #include <gpsim/sim_context.h>
 
 void simulation_cleanup(void);
@@ -248,7 +248,7 @@ static int write_hex(unsigned char* mem, unsigned int size, unsigned short* conf
         fclose(fout);
         return 0;  // no error
     } else {
-        printf("ERRO: File not found!(%s)\n", fname);
+        printf("ERROR: File not found!(%s)\n", fname);
         return -1;
     }
     return 0;  // no error

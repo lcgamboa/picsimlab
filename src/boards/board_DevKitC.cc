@@ -283,7 +283,7 @@ cboard_DevKitC::cboard_DevKitC(void) {
     combo1->SetHeight(24);
     combo1->SetEnable(1);
     combo1->SetVisible(1);
-    combo1->SetText(IcountToMipsStr(5));
+    combo1->SetText(IcountToMipsStr(icount));
     combo1->SetItems(IcountToMipsItens(buffer));
     combo1->SetTag(3);
     combo1->EvOnComboChange = PICSimLab.board_Event;

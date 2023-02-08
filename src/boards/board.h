@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -537,6 +537,12 @@ public:
      * @brief  Get board draw scale
      */
     double GetScale(void);
+
+    /**
+     * @brief  Get board default clock in MHz
+     */
+
+    virtual int GetDefaultClock(void) { return 2; };
 
     /**
      * @brief Get instruction counter

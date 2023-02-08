@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -57,8 +57,8 @@ CPICSimLab::CPICSimLab() {
     debug = 0;
     Errors.Clear();
     NeedReboot = 0;
-    lab = 1;
-    lab_ = 1;
+    lab = DEFAULT_BOARD;
+    lab_ = DEFAULT_BOARD;
     Workspacefn = "";
     status.status = 0;
     scale = 1.0;
@@ -884,7 +884,6 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
                             RegisterError(lxString("Invalid board ") + value + "!\n Using default board!");
                         }
                     }
-                    printf("PICSimLab: Open board %s\n", boards_list[lab].name);
                     SetBoard(create_board(&lab, &lab_));
                     if (pboard->GetScale() < GetScale()) {
                         SetScale(pboard->GetScale());
@@ -892,7 +891,7 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
                         pboard->SetScale(GetScale());
                     }
                     SetJUMPSTEPS(DEFAULTJS);
-                    SetClock(2.0);  // Default clock
+                    SetClock(pboard->GetDefaultClock());
                 }
 
                 if (!strcmp(name, "picsimlab_debug")) {
@@ -970,7 +969,9 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
         printf("PICSimLab: Error open config file \"%s\"!\n", fname);
 
         SetLabs(DEFAULT_BOARD, DEFAULT_BOARD);  // default
-        SetBoard(boards_list[0].bcreate());
+        SetBoard(boards_list[lab].bcreate());
+        SetJUMPSTEPS(DEFAULTJS);
+        SetClock(pboard->GetDefaultClock());
 
 #ifndef _WIN_
         strcpy(SERIALDEVICE, "/dev/tnt2");
@@ -1039,16 +1040,17 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
         }
     }
 
+    printf("PICSimLab: Using board \"%s\"\n", boards_list[lab].name);
     printf("PICSimLab: Instance number %i\n", Instance);
     printf("PICSimLab: Debug On=%i  Type=%s Port=%i\n", debug, (debug_type) ? "GDB" : "MDB", GetDebugPort());
     printf("PICSimLab: Remote Control Port %i\n", GetRemotecPort());
     printf("PICSimLab: Opening \"%s\"\n", fname);
     switch (pboard->MInit(pboard->GetProcessorName(), fname, GetNSTEP() * NSTEPKF)) {
         case HEX_NFOUND:
-            printf("File not found!\n");
+            printf("PICSimLab: File not found! Creating new empty file. \n");
             break;
         case HEX_CHKSUM:
-            printf("File checksum error!\n");
+            printf("PICSimLab: File checksum error!\n");
             pboard->MEraseFlash();
             break;
     }

@@ -1716,14 +1716,14 @@ int bsim_simavr::read_ihx_avr(const char* fname, int leeprom) {
                         break;
                 }
             } else {
-                printf("ERRO: Simavr->File bad checksum line %i!(%s)\n", lc, fname);
+                printf("ERROR: Simavr->File bad checksum line %i!(%s)\n", lc, fname);
                 fclose(fin);
                 return HEX_CHKSUM;
             }
         } while (!feof(fin));
         fclose(fin);
     } else {
-        printf("ERRO: Simavr->File not found!(%s)\n", fname);
+        // printf("ERROR: Simavr->File not found!(%s)\n", fname);
         return HEX_NFOUND;
     }
     return 0;  // no error
@@ -1908,7 +1908,7 @@ int bsim_simavr::write_ihx_avr(const char* fname) {
         fclose(fout);
         return 0;  // no error
     } else {
-        printf("ERRO: Simavr->File not found!(%s)\n", fname);
+        printf("ERROR: Simavr->File not found!(%s)\n", fname);
         return HEX_NWRITE;
     }
     return 0;  // no error
