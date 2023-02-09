@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -165,7 +165,7 @@ CPWindow1::CPWindow1(void) {
     menu1_File.SetName(lxT("menu1_File"));
     menu1_File.SetTag(0);
     menu1_File.SetText(lxT("File"));
-    menu1_File.SetMenuItems(lxT("Load Hex,Reload Last,Configure,Save Workspace,Load Workspace,Exit,"));
+    menu1_File.SetMenuItems(lxT("Load Hex,Reload Last,Configure,Save Workspace,Load Workspace,Load Board Demo,Exit,"));
     menu1.CreateChild(&menu1_File);
     // menu1_Board
     menu1_Board.SetFOwner(this);
@@ -269,6 +269,16 @@ CPWindow1::CPWindow1(void) {
     menu1_File_LoadWorkspace.SetSubMenu(NULL);
     menu1_File_LoadWorkspace.EvMenuActive = EVMENUACTIVE & CPWindow1::menu1_File_LoadWorkspace_EvMenuActive;
     menu1_File.CreateChild(&menu1_File_LoadWorkspace);
+    // menu1_File_LoadBoardDemo
+    menu1_File_LoadBoardDemo.SetFOwner(this);
+    menu1_File_LoadBoardDemo.SetClass(lxT("CItemMenu"));
+    menu1_File_LoadBoardDemo.SetName(lxT("menu1_File_LoadBoardDemo"));
+    menu1_File_LoadBoardDemo.SetTag(0);
+    menu1_File_LoadBoardDemo.SetText(lxT("Load Board Demo"));
+    menu1_File_LoadBoardDemo.SetEnable(1);
+    menu1_File_LoadBoardDemo.SetSubMenu(NULL);
+    menu1_File_LoadBoardDemo.EvMenuActive = EVMENUACTIVE & CPWindow1::menu1_File_LoadBoardDemo_EvMenuActive;
+    menu1_File.CreateChild(&menu1_File_LoadBoardDemo);
     // menu1_File_Exit
     menu1_File_Exit.SetFOwner(this);
     menu1_File_Exit.SetClass(lxT("CItemMenu"));

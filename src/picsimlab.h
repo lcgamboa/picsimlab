@@ -220,7 +220,7 @@ public:
     int GetLab(void) { return lab; };
     int GetLab_(void) { return lab_; };
 
-    void LoadWorkspace(lxString fnpzw);
+    void LoadWorkspace(lxString fnpzw, const int show_readme = 1);
     void SaveWorkspace(lxString fnpzw);
 
     void SetSimulationRun(int run);

@@ -434,10 +434,11 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
         DeleteBoard();
         strcpy(cmd, lxGetExecutablePath().c_str());
         if (newpath) {
-            strcat(cmd, " ");
+            strcat(cmd, " \"");
             strcat(cmd, newpath);
+            strcat(cmd, "\"");
         }
-        printf("PICSimLab: %s\n", cmd);
+        printf("PICSimLab: Run cmd: %s\n", cmd);
 
         printf("PICSimLab: End Board Simulation.\n");
 #if !defined(__EMSCRIPTEN__) && !defined(_CONSOLE_LOG_)
@@ -469,7 +470,7 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
 // legacy format support before 0.8.2
 static const char old_board_names[6][20] = {"Breadboard", "McLab1", "K16F", "McLab2", "PICGenios", "Arduino_Uno"};
 
-void CPICSimLab::LoadWorkspace(lxString fnpzw) {
+void CPICSimLab::LoadWorkspace(lxString fnpzw, const int show_readme) {
     char home[1024];
     char fzip[1280];
 
@@ -663,31 +664,33 @@ void CPICSimLab::LoadWorkspace(lxString fnpzw) {
 #ifdef CONVERTER_MODE
     fnpzw.replace(fnpzw.Length() - 4, 5, "_.pzw");
     cvt_fname = fnpzw;
-#else
-    snprintf(fzip, 1279, "%s/Readme.html", home);
-    if (lxFileExists(fzip)) {
-#ifndef __EMSCRIPTEN__
-#ifdef EXT_BROWSER
-        lxLaunchDefaultBrowser(lxT("file://") + lxString(fzip));
-#else
-        Window2.html1.SetLoadFile(fzip);
-        Window2.Show();
-#endif
-#endif
-    } else {
-        snprintf(fzip, 1279, "%s/Readme.txt", home);
+#else  // CONVERTER_MODE
+    if (show_readme) {
+        snprintf(fzip, 1279, "%s/Readme.html", home);
         if (lxFileExists(fzip)) {
 #ifndef __EMSCRIPTEN__
 #ifdef EXT_BROWSER
             lxLaunchDefaultBrowser(lxT("file://") + lxString(fzip));
-#else
+#else   // EXT_BROWSER
             Window2.html1.SetLoadFile(fzip);
             Window2.Show();
-#endif
-#endif
+#endif  // EXT_BROWSER
+#endif  //__EMSCRIPTEN__
+        } else {
+            snprintf(fzip, 1279, "%s/Readme.txt", home);
+            if (lxFileExists(fzip)) {
+#ifndef __EMSCRIPTEN__
+#ifdef EXT_BROWSER
+                lxLaunchDefaultBrowser(lxT("file://") + lxString(fzip));
+#else   // EXT_BROWSER
+                Window2.html1.SetLoadFile(fzip);
+                Window2.Show();
+#endif  // EXT_BROWSER
+#endif  //__EMSCRIPTEN__
+            }
         }
     }
-#endif
+#endif  // CONVERTER_MODE
 }
 
 void CPICSimLab::SaveWorkspace(lxString fnpzw) {
@@ -812,13 +815,15 @@ int CPICSimLab::GetSimulationRun(void) {
 
 void CPICSimLab::Configure(const char* home, int use_default_board, int create, const char* lfile) {
     char line[1024];
-    char fname[1024];
+    char fname[2048];
+    char fname_[2048];
 
     char* name;
     char* value;
 
     int i, j;
     int lc;
+    int load_demo = 0;
 
     lxString status;
 
@@ -985,6 +990,7 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 #endif
 #endif
     }
+
     ((CPMenu*)Window->GetChildByName("menu1")->GetChildByName("menu1_Microcontroller"))->DestroyChilds();
     lxString sdev = pboard->GetSupportedDevices();
     int f;
@@ -1045,10 +1051,22 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
     printf("PICSimLab: Debug On=%i  Type=%s Port=%i\n", debug, (debug_type) ? "GDB" : "MDB", GetDebugPort());
     printf("PICSimLab: Remote Control Port %i\n", GetRemotecPort());
     printf("PICSimLab: Opening \"%s\"\n", fname);
+
+    // change .hex to .bin
+    strncpy(fname_, fname, 2048);
+    fname_[strlen(fname_) - 3] = 0;
+    strncat(fname_, "bin", 2047);
+
+    if (!((lxFileExists(fname)) || (lxFileExists(fname_)))) {
+        printf("PICSimLab: File not found! Creating new empty file. \n");
+        if (!pboard->GetDefaultProcessor().compare(pboard->GetProcessorName())) {
+            load_demo = 1;
+        }
+    }
+
     switch (pboard->MInit(pboard->GetProcessorName(), fname, GetNSTEP() * NSTEPKF)) {
-        case HEX_NFOUND:
-            printf("PICSimLab: File not found! Creating new empty file. \n");
-            break;
+        // case HEX_NFOUND:
+        //     break;
         case HEX_CHKSUM:
             printf("PICSimLab: File checksum error!\n");
             pboard->MEraseFlash();
@@ -1131,6 +1149,17 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 #ifndef __EMSCRIPTEN__
     rcontrol_init(GetRemotecPort() + Instance);
 #endif
+
+    if (load_demo) {
+        lxString fdemo =
+            PICSimLab.GetSharePath() + "boards/" + lxString(boards_list[PICSimLab.GetLab()].name) + lxT("/demo.pzw");
+
+        if (lxFileExists(fdemo)) {
+            printf("PICSimLab: Loading board demonstration code.\n");
+            PICSimLab.LoadWorkspace(fdemo, 0);
+            PICSimLab.SetWorkspaceFileName("");
+        }
+    }
 }
 
 double CPICSimLab::GetIdleMs(void) {

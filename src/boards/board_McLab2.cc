@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -98,7 +98,7 @@ enum { I_POT1, I_RST, I_PWR, I_ICSP, I_JP1, I_JP2, I_JP3, I_JP4, I_JP5, I_JP6, I
 // TODO jumper support
 
 cboard_McLab2::cboard_McLab2(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
-    Proc = "PIC18F452";
+    Proc = "PIC16F877A";
 
     vp2in = 2.5;
     vp2[0] = 2.5;

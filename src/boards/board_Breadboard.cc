@@ -82,7 +82,7 @@ cboard_Breadboard::cboard_Breadboard(void) : font(10, lxFONTFAMILY_TELETYPE, lxF
     ptype = _PIC;
     jmp[0] = 0;
     pic.vcc = 5.0;
-    Proc = "PIC18F4550";  // default microcontroller if none defined in preferences
+    Proc = "PIC18F4620";  // default microcontroller if none defined in preferences
     ReadMaps();           // Read input and output board maps
 
     lxImage image(PICSimLab.GetWindow());

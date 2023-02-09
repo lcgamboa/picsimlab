@@ -545,6 +545,18 @@ public:
     virtual int GetDefaultClock(void) { return 2; };
 
     /**
+     * @brief  Get board default processor
+     */
+
+    lxString GetDefaultProcessor(void) { return DProc; };
+
+    /**
+     * @brief  Set board default processor
+     */
+
+    void SetDefaultProcessor(lxString dproc) { DProc = dproc; };
+
+    /**
      * @brief Get instruction counter
      */
     uint32_t InstCounterGet(void) { return InstCounter; };
@@ -606,6 +618,7 @@ protected:
     void InstCounterInc(void);
 
     lxString Proc;              ///< Name of processor in use
+    lxString DProc;             ///< Name of default board processor
     input_t input[120];         ///< input map elements
     input_t* input_ids[120];    ///< input map elements by id order
     output_t output[120];       ///< output map elements

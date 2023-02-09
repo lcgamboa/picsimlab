@@ -80,6 +80,7 @@ public:
     CItemMenu menu1_File_Configure;
     CItemMenu menu1_File_SaveWorkspace;
     CItemMenu menu1_File_LoadWorkspace;
+    CItemMenu menu1_File_LoadBoardDemo;
     CItemMenu menu1_File_Exit;
     CItemMenu menu1_Modules_Oscilloscope;
     CItemMenu menu1_Modules_Spareparts;
@@ -117,6 +118,7 @@ public:
     void menu1_File_Configure_EvMenuActive(CControl* control);
     void menu1_File_SaveWorkspace_EvMenuActive(CControl* control);
     void menu1_File_LoadWorkspace_EvMenuActive(CControl* control);
+    void menu1_File_LoadBoardDemo_EvMenuActive(CControl* control);
     void menu1_File_Exit_EvMenuActive(CControl* control);
     void menu1_Modules_Oscilloscope_EvMenuActive(CControl* control);
     void menu1_Modules_Spareparts_EvMenuActive(CControl* control);

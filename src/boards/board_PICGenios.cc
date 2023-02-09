@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -193,7 +193,7 @@ enum {
 // TODO TEMP cooler must don't work with AQUE=0
 
 cboard_PICGenios::cboard_PICGenios(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
-    Proc = "PIC18F452";
+    Proc = "PIC18F4520";
 
     vtc = 0;
     vt = 0;

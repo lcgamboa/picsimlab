@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -62,7 +62,7 @@ int serial_port_open(serialfd_t* serialfd, const char* SERIALDEVICE) {
                            NULL);  // null template
     if (*serialfd == INVALID_HANDLE_VALUE) {
         *serialfd = 0;
-        printf("PICSimLab: Erro on Port Open %s: 0x%lX !\n", wserial, GetLastError());
+        printf("PICSimLab: Error on Port Open %s: 0x%lX !\n", wserial, GetLastError());
         return 0;
     }
 #else
@@ -70,7 +70,7 @@ int serial_port_open(serialfd_t* serialfd, const char* SERIALDEVICE) {
 
     if (*serialfd < 0) {
         *serialfd = 0;
-        printf("PICSimLab: Erro on Port Open %s! ", SERIALDEVICE);
+        printf("PICSimLab: Error on Port Open %s! \n", SERIALDEVICE);
         fflush(stdout);
         perror(SERIALDEVICE);
         return 0;

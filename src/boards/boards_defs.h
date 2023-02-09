@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -30,12 +30,12 @@
 
 #define board_init(name, function)                                  \
     static board* function##_create(void) {                         \
-        return new function();                                      \
+        board* b = new function();                                  \
+        b->SetDefaultProcessor(b->GetProcessorName());              \
+        return b;                                                   \
     };                                                              \
     static void __attribute__((constructor)) function##_init(void); \
-    static void function##_init(void) {                             \
-        board_register(name, function##_create);                    \
-    }
+    static void function##_init(void) { board_register(name, function##_create); }
 
 typedef board* (*board_create_func)(void);
 

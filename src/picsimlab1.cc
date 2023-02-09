@@ -502,7 +502,22 @@ void CPWindow1::_EvOnCreate(CControl* control) {
         fn.MakeAbsolute();
         // load options
         PICSimLab.Configure(home, 1, 1);
-        PICSimLab.LoadWorkspace(fn.GetFullPath());
+
+        // check if it is a demonstration
+
+        lxString fns = fn.GetFullPath();
+
+        lxFileName fn_dir;
+        fn_dir.Assign(PICSimLab.GetSharePath() + "boards/");
+        fn_dir.MakeAbsolute();
+
+        if (fns.Contains(fn_dir.GetFullPath()) && fns.Contains("demo.pzw")) {
+            PICSimLab.LoadWorkspace(fn.GetFullPath(), 0);
+            PICSimLab.SetWorkspaceFileName("");
+        } else {
+            PICSimLab.LoadWorkspace(fn.GetFullPath());
+        }
+
     } else if ((Application->Aargc >= 3) && (Application->Aargc <= 5)) {
         // arguments: Board Processor File.hex(.bin) file.pcf
 
@@ -950,6 +965,20 @@ void CPWindow1::menu1_File_LoadWorkspace_EvMenuActive(CControl* control) {
     filedialog2.SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
     filedialog2.Run();
 #endif
+}
+
+void CPWindow1::menu1_File_LoadBoardDemo_EvMenuActive(CControl* control) {
+    lxString fdemo =
+        PICSimLab.GetSharePath() + "boards/" + lxString(boards_list[PICSimLab.GetLab()].name) + lxT("/demo.pzw");
+
+    if (lxFileExists(fdemo)) {
+        PICSimLab.LoadWorkspace(fdemo);
+        PICSimLab.SetWorkspaceFileName("");
+    } else {
+        PICSimLab.RegisterError("Demo for board " + lxString(boards_list[PICSimLab.GetLab()].name) + " not found!");
+        printf("PICSimLab: Demo for board  %s not found! (%s)\n", boards_list[PICSimLab.GetLab()].name,
+               (const char*)fdemo.c_str());
+    }
 }
 
 void CPWindow1::filedialog2_EvOnClose(int retId) {
