@@ -232,6 +232,8 @@ cboard_DevKitC::cboard_DevKitC(void) {
     ConfEnableWifi = 1;
     ConfDisableWdt = 1;
 
+    application_offset = 0x10000;
+
     master_i2c[0].scl_pin = 0;
     master_i2c[0].sda_pin = 0;
     master_i2c[1].scl_pin = 0;
@@ -372,6 +374,7 @@ void cboard_DevKitC::WritePreferences(void) {
     PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cfgdwdt"), itoa(ConfDisableWdt));
     PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cfguextra"), itoa(use_cmdline_extra));
     PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cmdextra"), cmdline_extra);
+    PICSimLab.SavePrefs(lxT("ESP32_DevKitC_app_off"), itoa(application_offset));
 }
 
 // Called whe configuration file load  preferences
@@ -402,6 +405,9 @@ void cboard_DevKitC::ReadPreferences(char* name, char* value) {
     }
     if (!strcmp(name, "ESP32_DevKitC_cmdextra")) {
         cmdline_extra = value;
+    }
+    if (!strcmp(name, "ESP32_DevKitC_app_off")) {
+        application_offset = atoi(value);
     }
 }
 

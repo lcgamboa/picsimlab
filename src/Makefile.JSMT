@@ -24,8 +24,7 @@ override CXXFLAGS+=  -DEXT_BROWSER -DNO_DEBUG -DNO_TOOLS  -O2 -flto=auto\
 	-I../../picsim/include/ -I../../ucsim-0.6/picsimlab/ \
 	-I../../simavr/simavr/ -DEXT_BROWSER_EXAMPLES \
 	-I../teste/glib_js/target/include  -I../teste/glib_js/target/include/glib-2.0 \
-	-I../teste/glib_js/target/lib/glib-2.0/include 
-	#--preload-file home \
+	-I../teste/glib_js/target/lib/glib-2.0/include # --preload-file home 
 
 override CXXFLAGS+= --pre-js load.js
 #	-s "BINARYEN_TRAP_MODE='clamp'" 

@@ -292,6 +292,7 @@ bsim_qemu::bsim_qemu(void) {
     icount = -1;
     use_cmdline_extra = 0;
     serial_open = 0;
+    application_offset = 0;
 
     bitbang_i2c_ctrl_init(&master_i2c[0], this);
     bitbang_i2c_ctrl_init(&master_i2c[1], this);
@@ -480,7 +481,51 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
                 }
                 fclose(fout);
             } else {
-                printf("picsimlab: qemu Error creating file %s \n", fname_);
+                printf("PICSimLab: qemu Error creating file %s \n", fname_);
+                exit(-1);
+            }
+        } else {
+            FILE* fin;
+            FILE* fout;
+            fin = fopen(fname_, "rb");
+            if (fin) {
+                fseek(fin, 0, SEEK_END);
+                long size = ftell(fin);
+                fseek(fin, 0, SEEK_SET);
+                printf("PICSimLab: qemu ESP32 image size is %li \n", size);
+
+                if (size != 4194304) {
+                    char dname[2048];
+
+                    printf("PICSimLab: Loading application to address 0x%X\n", application_offset);
+
+                    if (PICSimLab.GetInstanceNumber()) {
+                        sprintf(dname, "%s/mdump_%s_%s_%i.bin", (const char*)PICSimLab.GetHomePath().c_str(),
+                                boards_list[PICSimLab.GetLab()].name_, (const char*)GetProcessorName().c_str(),
+                                PICSimLab.GetInstanceNumber());
+                    } else {
+                        sprintf(dname, "%s/mdump_%s_%s.bin", (const char*)PICSimLab.GetHomePath().c_str(),
+                                boards_list[PICSimLab.GetLab()].name_, (const char*)GetProcessorName().c_str());
+                    }
+
+                    fout = fopen(dname, "r+b");
+                    if (fout) {
+                        int count;
+                        unsigned char buffer[1024];
+
+                        fseek(fout, application_offset, SEEK_SET);
+
+                        while (!feof(fin)) {
+                            count = fread(buffer, 1, 1024, fin);
+                            fwrite(buffer, 1, count, fout);
+                        }
+                        fclose(fout);
+                    }
+                    strncpy(fname_, dname, 2047);
+                }
+                fclose(fin);
+            } else {
+                printf("PICSimLab: qemu Error creating file %s \n", fname_);
                 exit(-1);
             }
         }

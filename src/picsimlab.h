@@ -36,7 +36,6 @@ extern char SERIALDEVICE[100];
 
 #define MAX_MIC 140
 
-#include <lxrad.h>
 #include "boards/board.h"
 #include "boards/boards_defs.h"
 

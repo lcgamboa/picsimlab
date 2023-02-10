@@ -100,6 +100,7 @@ protected:
     int use_cmdline_extra;
     lxString cmdline_extra;
     int serial_open;
+    unsigned int application_offset;
 
 private:
     int load_qemu_lib(const char* path);

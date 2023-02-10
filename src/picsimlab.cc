@@ -434,9 +434,14 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
         DeleteBoard();
         strcpy(cmd, lxGetExecutablePath().c_str());
         if (newpath) {
-            strcat(cmd, " \"");
-            strcat(cmd, newpath);
-            strcat(cmd, "\"");
+            if (strstr(newpath, ".pzw")) {
+                strcat(cmd, " \"");
+                strcat(cmd, newpath);
+                strcat(cmd, "\"");
+            } else {
+                strcat(cmd, " ");
+                strcat(cmd, newpath);
+            }
         }
         printf("PICSimLab: Run cmd: %s\n", cmd);
 
