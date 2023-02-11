@@ -407,6 +407,21 @@ bool CSpareParts::LoadConfig(lxString fname) {
                 Oscilloscope.SetBaseTimer();
             } else if (!strcmp(name, "version")) {
                 // use planed in future
+            } else if (!strcmp(name, "position")) {
+                int w, h;
+                w = orient;
+                sscanf(temp, "%i", &h);
+                Window->SetX(x);
+                Window->SetY(y);
+                if (w > 5000)
+                    w = 5000;
+                if (h > 5000)
+                    h = 5000;
+                Window->SetWidth(w);
+                Window->SetHeight(h);
+                Window->GetChildByName("draw1")->SetWidth(w - 15);
+                Window->GetChildByName("draw1")->SetHeight(h - 40);
+
             } else if ((parts[partsc_] = create_part(name, x, y))) {
                 printf("Spare parts: parts[%02i] (%s) created \n", partsc_, name);
                 parts[partsc_]->ReadPreferences(temp);
@@ -522,8 +537,8 @@ void CSpareParts::ReadPreferences(char* name, char* value) {
 }
 
 void CSpareParts::WritePreferences(void) {
-    PICSimLab.SavePrefs(lxT("spare_position"), itoa(Window->GetX()) + lxT(",") + itoa(Window->GetY()) + lxT(",") +
-                                                   itoa(Window->GetWidth()) + lxT(",") + itoa(Window->GetHeight()));
+    // PICSimLab.SavePrefs(lxT("spare_position"), itoa(Window->GetX()) + lxT(",") + itoa(Window->GetY()) + lxT(",") +
+    //                                               itoa(Window->GetWidth()) + lxT(",") + itoa(Window->GetHeight()));
 }
 
 bool CSpareParts::SaveConfig(lxString fname) {
@@ -539,6 +554,8 @@ bool CSpareParts::SaveConfig(lxString fname) {
     temp.Printf("version,0,0,0:%s", _VERSION_);
     prefs.AddLine(temp);
     temp.Printf("scale,0,0,0:%f", scale);
+    prefs.AddLine(temp);
+    temp.Printf("position,%i,%i,%i:%i", Window->GetX(), Window->GetY(), Window->GetWidth(), Window->GetHeight());
     prefs.AddLine(temp);
     temp.Printf("useAlias,0,0,0:%i", GetUseAlias());
     prefs.AddLine(temp);
