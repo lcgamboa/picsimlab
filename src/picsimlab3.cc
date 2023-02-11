@@ -74,6 +74,9 @@ void CPWindow3::button1_EvMouseButtonClick(CControl* control, uint button, uint 
 #ifdef _USE_PICSTARTP_
     strcpy(PROGDEVICE, (char*)combo2.GetText().char_str());
 #endif
+
+    PICSimLab.SetUseDSRReset(checkbox1.GetCheck());
+
     PICSimLab.EndSimulation();
     PICSimLab.Configure(PICSimLab.GetHomePath());
 
@@ -81,8 +84,6 @@ void CPWindow3::button1_EvMouseButtonClick(CControl* control, uint button, uint 
         Window1.menu1_Modules_Oscilloscope_EvMenuActive(this);
     if (spare_on)
         Window1.menu1_Modules_Spareparts_EvMenuActive(this);
-
-    PICSimLab.SetUseDSRReset(checkbox1.GetCheck());
 
     PICSimLab.GetBoard()->EvOnShow();
 
