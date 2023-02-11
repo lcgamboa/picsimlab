@@ -6,8 +6,8 @@ CPWindow3::CPWindow3(void) {
     SetTag(0);
     SetX(309);
     SetY(188);
-    SetWidth(382);
-    SetHeight(387);
+    SetWidth(552);
+    SetHeight(391);
     SetHint(lxT(""));
     SetEnable(1);
     SetVisible(0);
@@ -53,8 +53,8 @@ CPWindow3::CPWindow3(void) {
     button1.SetClass(lxT("CButton"));
     button1.SetName(lxT("button1"));
     button1.SetTag(0);
-    button1.SetX(83);
-    button1.SetY(292);
+    button1.SetX(159);
+    button1.SetY(299);
     button1.SetWidth(93);
     button1.SetHeight(28);
     button1.SetHint(lxT(""));
@@ -202,8 +202,8 @@ CPWindow3::CPWindow3(void) {
     button2.SetClass(lxT("CButton"));
     button2.SetName(lxT("button2"));
     button2.SetTag(0);
-    button2.SetX(193);
-    button2.SetY(292);
+    button2.SetX(281);
+    button2.SetY(299);
     button2.SetWidth(93);
     button2.SetHeight(28);
     button2.SetHint(lxT(""));
@@ -230,6 +230,22 @@ CPWindow3::CPWindow3(void) {
     button3.EvMouseButtonClick = EVMOUSEBUTTONCLICK & CPWindow3::button3_EvMouseButtonClick;
     button3.SetText(lxT("Open Configuration Dir"));
     CreateChild(&button3);
+    // checkbox1
+    checkbox1.SetFOwner(this);
+    checkbox1.SetClass(lxT("CCheckBox"));
+    checkbox1.SetName(lxT("checkbox1"));
+    checkbox1.SetTag(0);
+    checkbox1.SetX(355);
+    checkbox1.SetY(36);
+    checkbox1.SetWidth(128);
+    checkbox1.SetHeight(32);
+    checkbox1.SetHint(lxT(""));
+    checkbox1.SetEnable(1);
+    checkbox1.SetVisible(1);
+    checkbox1.SetPopupMenu(NULL);
+    checkbox1.SetText(lxT("DTR/RTS Reset"));
+    checkbox1.SetCheck(0);
+    CreateChild(&checkbox1);
     /*#Others*/
     // lxrad automatic generated block end, don't edit above!
 };

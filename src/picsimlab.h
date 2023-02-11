@@ -240,6 +240,9 @@ public:
     double GetIdleMs(void);
     void SetIdleMs(double im);
 
+    int GetUseDSRReset(void) { return use_dsr_reset; };
+    void SetUseDSRReset(int udsr) { use_dsr_reset = udsr; };
+
 #ifndef _NOTHREAD
     lxCondition* cpu_cond;
     lxMutex* cpu_mutex;
@@ -255,6 +258,7 @@ public:
     int spare_on;
     int plWidth;
     int plHeight;
+    int use_dsr_reset;
 
     CItemMenu MBoard[BOARDS_MAX];
     CItemMenu MMicro[MAX_MIC];

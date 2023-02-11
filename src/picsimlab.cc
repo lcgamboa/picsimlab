@@ -69,6 +69,7 @@ CPICSimLab::CPICSimLab() {
     plWidth = 10;
     plHeight = 10;
     need_clkupdate = 0;
+    use_dsr_reset = 1;
 
 #ifndef _NOTHREAD
     cpu_mutex = NULL;
@@ -354,6 +355,7 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
     SavePrefs(lxT("picsimlab_remotecp"), itoa(GetRemotecPort()));
     SavePrefs(lxT("picsimlab_position"), itoa(Window->GetX()) + lxT(",") + itoa(Window->GetY()));
     SavePrefs(lxT("picsimlab_scale"), ftoa(scale));
+    SavePrefs(lxT("picsimlab_dsr_reset"), itoa(GetUseDSRReset()));
     SavePrefs(lxT("osc_on"), itoa(pboard->GetUseOscilloscope()));
     SavePrefs(lxT("spare_on"), itoa(pboard->GetUseSpareParts()));
 #ifndef _WIN_
@@ -946,6 +948,10 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
                         pboard->SetScale(GetScale());
                         printf("PICSimLab: Window scale %5.2f \n", GetScale());
                     }
+                }
+
+                if (!strcmp(name, "picsimlab_dsr_reset")) {
+                    sscanf(value, "%i", &use_dsr_reset);
                 }
 
                 if (!strcmp(name, "picsimlab_lpath")) {

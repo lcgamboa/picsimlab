@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -82,6 +82,8 @@ void CPWindow3::button1_EvMouseButtonClick(CControl* control, uint button, uint 
     if (spare_on)
         Window1.menu1_Modules_Spareparts_EvMenuActive(this);
 
+    PICSimLab.SetUseDSRReset(checkbox1.GetCheck());
+
     PICSimLab.GetBoard()->EvOnShow();
 
     WDestroy();
@@ -128,6 +130,8 @@ void CPWindow3::_EvOnShow(CControl* control) {
     spin1.SetValue(PICSimLab.GetDebugPort());
 
     spin2.SetValue(PICSimLab.GetRemotecPort());
+
+    checkbox1.SetCheck(PICSimLab.GetUseDSRReset());
 
     if (PICSimLab.GetInstanceNumber()) {
         spin1.SetEnable(0);

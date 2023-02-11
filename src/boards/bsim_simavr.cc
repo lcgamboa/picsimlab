@@ -1389,7 +1389,7 @@ void bsim_simavr::UpdateHardware(void) {
         if (cont > 1000) {
             cont = 0;
 
-            if (serial_port_get_dsr(serialfd)) {
+            if (PICSimLab.GetUseDSRReset() && serial_port_get_dsr(serialfd)) {
                 if (aux) {
                     MReset(0);
                     aux = 0;

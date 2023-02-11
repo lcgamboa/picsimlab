@@ -634,20 +634,22 @@ void cboard_DevKitC::Run_CPU(void) {
         return;
     }
 
-    static unsigned int status_ = 0;
-    unsigned int status = qemu_picsimlab_get_TIOCM();
+    if (PICSimLab.GetUseDSRReset()) {
+        static unsigned int status_ = 0;
+        unsigned int status = qemu_picsimlab_get_TIOCM();
 
-    if (status_ != status) {
-        status_ = status;
+        if (status_ != status) {
+            status_ = status;
 
-        if ((status & CHR_TIOCM_CTS) && !(status & CHR_TIOCM_DSR)) {
-            Reset();
-        }
+            if ((status & CHR_TIOCM_CTS) && !(status & CHR_TIOCM_DSR)) {
+                Reset();
+            }
 
-        if (!(status & CHR_TIOCM_CTS) && (status & CHR_TIOCM_DSR)) {
-            uint32_t* strap_mode = qemu_picsimlab_get_internals(0);
-            *strap_mode = 0x0f;  // UART_BOOT(UART0)
-            MReset(1);
+            if (!(status & CHR_TIOCM_CTS) && (status & CHR_TIOCM_DSR)) {
+                uint32_t* strap_mode = qemu_picsimlab_get_internals(0);
+                *strap_mode = 0x0f;  // UART_BOOT(UART0)
+                MReset(1);
+            }
         }
     }
 }
