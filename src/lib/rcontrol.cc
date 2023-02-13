@@ -24,10 +24,10 @@
    ######################################################################## */
 
 #include "rcontrol.h"
-#include "../lib/spareparts.h"
-#include "../picsimlab1.h"
-#include "lcd_hd44780.h"
-#include "vterm.h"
+#include "../devices/lcd_hd44780.h"
+#include "../devices/vterm.h"
+#include "picsimlab.h"
+#include "spareparts.h"
 
 #define dprint \
     if (1) {   \
@@ -63,10 +63,6 @@
 
 #include "../lib/picsimlab.h"
 
-void setnblock(int sock_descriptor);
-
-void setblock(int sock_descriptor);
-
 // typedef struct sockaddr sockaddr;
 
 static int sockfd = -1;
@@ -76,6 +72,46 @@ static int server_started = 0;
 #define BSIZE 1024
 static char buffer[BSIZE];
 static int bp = 0;
+
+void setnblock(int sock_descriptor) {
+#ifndef _WIN_
+    int flags;
+    /* Set socket to non-blocking */
+
+    if ((flags = fcntl(sock_descriptor, F_GETFL, 0)) < 0) {
+        /* Handle error */
+        // printf("Error fcntl nblock !!!!!!!\n");
+    }
+
+    if (fcntl(sock_descriptor, F_SETFL, flags | O_NONBLOCK) < 0) {
+        /* Handle error */
+        // printf("Error fcntl nblock !!!!!!!\n");
+    }
+#else
+    unsigned long iMode = 1;
+    ioctlsocket(sock_descriptor, FIONBIO, &iMode);
+#endif
+}
+
+void setblock(int sock_descriptor) {
+#ifndef _WIN_
+    int flags;
+    /* Set socket to blocking */
+
+    if ((flags = fcntl(sock_descriptor, F_GETFL, 0)) < 0) {
+        /* Handle error */
+        // printf("Error fcntl block !!!!!!!\n");
+    }
+
+    if (fcntl(sock_descriptor, F_SETFL, flags & (~O_NONBLOCK)) < 0) {
+        /* Handle error */
+        // printf("Error fcntl block !!!!!!!\n");
+    }
+#else
+    unsigned long iMode = 0;
+    ioctlsocket(sock_descriptor, FIONBIO, &iMode);
+#endif
+}
 
 int rcontrol_init(const unsigned short tcpport, const int reporterror) {
     struct sockaddr_in serv;
@@ -603,7 +639,7 @@ int rcontrol_loop(void) {
                         // ========================================================
                         sendtext("Ok\r\n>");
                         PICSimLab.SetWorkspaceFileName("");
-                        Window1.SetToDestroy();
+                        PICSimLab.SetToDestroy();
                         return 0;
                     } else {
                         ret = sendtext("ERROR\r\n>");
@@ -846,7 +882,7 @@ int rcontrol_loop(void) {
                         if ((ptr = strchr(cmd, '\n'))) {
                             ptr[0] = 0;
                         }
-                        if (Window1.LoadHexFile(cmd + 8)) {
+                        if (PICSimLab.LoadHexFile(cmd + 8)) {
                             ret += sendtext("ERROR\r\n>");
                         } else {
                             ret += sendtext("Ok\r\n>");
@@ -1027,7 +1063,7 @@ int rcontrol_loop(void) {
                         return 0;
                     } else if (!strncmp(cmd, "sim", 3)) {
                         // Command sim =====================================================
-                        Window1.SetSync(0);
+                        PICSimLab.SetSync(0);
 
                         if (strstr(cmd + 3, "stop")) {
                             PICSimLab.SetSimulationRun(0);
@@ -1037,8 +1073,9 @@ int rcontrol_loop(void) {
                             ret = sendtext("Ok\r\n>");
                         } else {
                             if (PICSimLab.GetSimulationRun()) {
-                                ret = sendtext(lxString().Format("Simulation running %5.2fx\r\nOk\r\n>",
-                                                                 100.0 / Window1.timer1.GetTime()));
+                                ret = sendtext(lxString().Format(
+                                    "Simulation running %5.2fx\r\nOk\r\n>",
+                                    100.0 / ((CTimer*)PICSimLab.GetWindow()->GetChildByName("timer1"))->GetTime()));
                             } else {
                                 ret = sendtext("Simulation stopped\r\nOk\r\n>");
                             }
@@ -1046,8 +1083,8 @@ int rcontrol_loop(void) {
 
                     } else if (!strcmp(cmd, "sync")) {
                         // Command sync =====================================================
-                        Window1.SetSync(0);
-                        while (!Window1.GetSync()) {
+                        PICSimLab.SetSync(0);
+                        while (!PICSimLab.GetSync()) {
                             usleep(1);  // FIXME avoid use of usleep to reduce cpu usage
                         }
                         ret = sendtext("Ok\r\n>");

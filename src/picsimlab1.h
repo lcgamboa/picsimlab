@@ -143,9 +143,6 @@ public:
     CThread thread2;  // rcontrol
     CThread thread3;  // boards
 
-    int settodestroy;
-    void SetToDestroy(void);
-
     CPWindow1(void);
 
     void board_Event(CControl* control);
@@ -156,9 +153,6 @@ public:
 
     void menu1_EvBoard(CControl* control);
     void menu1_EvMicrocontroller(CControl* control);
-    int LoadHexFile(lxString fname);
-    void SetSync(unsigned char s) { sync = s; };
-    unsigned char GetSync(void) { return sync; };
     void DrawBoard(void);
 
 private:
@@ -168,8 +162,6 @@ private:
 
     int crt;
     int zerocount;
-
-    unsigned char sync;
 };
 
 extern CPWindow1 Window1;

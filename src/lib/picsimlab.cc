@@ -31,7 +31,12 @@
 #include <emscripten.h>
 #endif
 
-#include "../devices/rcontrol.h"
+#include "rcontrol.h"
+
+#ifdef _USE_PICSTARTP_
+extern char PROGDEVICE[100];
+#endif
+char SERIALDEVICE[100];
 
 CPICSimLab PICSimLab;
 
@@ -70,6 +75,8 @@ CPICSimLab::CPICSimLab() {
     plHeight = 10;
     need_clkupdate = 0;
     use_dsr_reset = 1;
+    settodestroy = 0;
+    sync = 0;
 
 #ifndef _NOTHREAD
     cpu_mutex = NULL;
@@ -1179,4 +1186,87 @@ double CPICSimLab::GetIdleMs(void) {
 
 void CPICSimLab::SetIdleMs(double im) {
     idle_ms = im;
+}
+
+void CPICSimLab::SetToDestroy(void) {
+    settodestroy = 1;
+}
+
+int CPICSimLab::LoadHexFile(lxString fname) {
+    int pa;
+    int ret = 0;
+
+    pa = GetMcuPwr();
+    SetMcuPwr(0);
+
+    // timer1.SetRunState (0);
+    status.st[0] |= ST_DI;
+    msleep(((CTimer*)Window->GetChildByName("timer1"))->GetTime());
+    if (tgo)
+        tgo = 1;
+    while (status.status & 0x0401) {
+        msleep(1);
+        Application->ProcessEvents();
+    }
+
+    if (GetNeedReboot()) {
+        char cmd[4096];
+        sprintf(cmd, " %s %s \"%s\"", boards_list[GetLab()].name_, (const char*)GetBoard()->GetProcessorName().c_str(),
+                (const char*)fname.char_str());
+        EndSimulation(0, cmd);
+    }
+
+    GetBoard()->MEnd();
+    GetBoard()->MSetSerial(SERIALDEVICE);
+
+    switch (GetBoard()->MInit(GetBoard()->GetProcessorName(), fname.char_str(), GetNSTEP() * NSTEPKF)) {
+        case HEX_NFOUND:
+            RegisterError(lxT("Hex file not found!"));
+            SetMcuRun(0);
+            break;
+        case HEX_CHKSUM:
+            RegisterError(lxT("Hex file checksum error!"));
+            GetBoard()->MEraseFlash();
+            SetMcuRun(0);
+            break;
+        case 0:
+            SetMcuRun(1);
+            break;
+    }
+
+    GetBoard()->Reset();
+
+    if (GetMcuRun())
+        Window->SetTitle(((GetInstanceNumber() > 0) ? (lxT("PICSimLab[") + itoa(GetInstanceNumber()) + lxT("] - "))
+                                                    : (lxT("PICSimLab - "))) +
+                         lxString(boards_list[GetLab()].name) + lxT(" - ") + GetBoard()->GetProcessorName() +
+                         lxT(" - ") + basename(((CFileDialog*)Window->GetChildByName("filedialog1"))->GetFileName()));
+    else
+        Window->SetTitle(((GetInstanceNumber() > 0) ? (lxT("PICSimLab[") + itoa(GetInstanceNumber()) + lxT("] - "))
+                                                    : (lxT("PICSimLab - "))) +
+                         lxString(boards_list[GetLab()].name) + lxT(" - ") + GetBoard()->GetProcessorName());
+
+    ret = !GetMcuRun();
+
+    SetMcuPwr(pa);
+    // timer1.SetRunState (1);
+    status.st[0] &= ~ST_DI;
+
+#ifdef NO_DEBUG
+    statusbar->SetField(1, lxT(" "));
+#else
+    if (GetDebugStatus()) {
+        int ret = GetBoard()->DebugInit(GetDebugType());
+        if (ret < 0) {
+            statusbar->SetField(1, lxT("Debug: Error"));
+        } else {
+            statusbar->SetField(
+                1, lxT("Debug: ") + GetBoard()->GetDebugName() + ":" + itoa(GetDebugPort() + GetInstanceNumber()));
+        }
+    } else {
+        statusbar->SetField(1, lxT("Debug: Off"));
+    }
+#endif
+
+    return ret;
 }

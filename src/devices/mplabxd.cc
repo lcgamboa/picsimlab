@@ -111,52 +111,14 @@ __attribute__((destructor)) static void finalize_socket(void) {
 
 static int sockfd = -1;
 static int listenfd = -1;
-
-void setnblock(int sock_descriptor) {
-#ifndef _WIN_
-    int flags;
-    /* Set socket to non-blocking */
-
-    if ((flags = fcntl(sock_descriptor, F_GETFL, 0)) < 0) {
-        /* Handle error */
-        // printf("Error fcntl nblock !!!!!!!\n");
-    }
-
-    if (fcntl(sock_descriptor, F_SETFL, flags | O_NONBLOCK) < 0) {
-        /* Handle error */
-        // printf("Error fcntl nblock !!!!!!!\n");
-    }
-#else
-    unsigned long iMode = 1;
-    ioctlsocket(sock_descriptor, FIONBIO, &iMode);
-#endif
-}
-
-void setblock(int sock_descriptor) {
-#ifndef _WIN_
-    int flags;
-    /* Set socket to blocking */
-
-    if ((flags = fcntl(sock_descriptor, F_GETFL, 0)) < 0) {
-        /* Handle error */
-        // printf("Error fcntl block !!!!!!!\n");
-    }
-
-    if (fcntl(sock_descriptor, F_SETFL, flags & (~O_NONBLOCK)) < 0) {
-        /* Handle error */
-        // printf("Error fcntl block !!!!!!!\n");
-    }
-#else
-    unsigned long iMode = 0;
-    ioctlsocket(sock_descriptor, FIONBIO, &iMode);
-#endif
-}
-
 static int server_started = 0;
 
 static board* dbg_board = NULL;
 static unsigned char* ramsend = NULL;
 static unsigned char* ramreceived = NULL;
+
+void setnblock(int sock_descriptor);
+void setblock(int sock_descriptor);
 
 int mplabxd_init(board* mboard, unsigned short tcpport) {
     struct sockaddr_in serv;

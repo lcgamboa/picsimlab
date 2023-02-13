@@ -218,6 +218,8 @@ public:
     int GetLab(void) { return lab; };
     int GetLab_(void) { return lab_; };
 
+    int LoadHexFile(lxString fname);
+
     void LoadWorkspace(lxString fnpzw, const int show_readme = 1);
     void SaveWorkspace(lxString fnpzw);
 
@@ -241,6 +243,12 @@ public:
 
     int GetUseDSRReset(void) { return use_dsr_reset; };
     void SetUseDSRReset(int udsr) { use_dsr_reset = udsr; };
+
+    void SetToDestroy(void);
+    int GetToDestroy(void) { return settodestroy; };
+
+    void SetSync(unsigned char s) { sync = s; };
+    unsigned char GetSync(void) { return sync; };
 
 #ifndef _NOTHREAD
     lxCondition* cpu_cond;
@@ -304,6 +312,8 @@ private:
     lxString Workspacefn;
     double scale;
     double idle_ms;
+    int settodestroy;
+    unsigned char sync;
 };
 
 extern CPICSimLab PICSimLab;

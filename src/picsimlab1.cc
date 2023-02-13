@@ -47,16 +47,11 @@ CPWindow1 Window1;
 #include "lib/oscilloscope.h"
 #include "lib/spareparts.h"
 
-#include "devices/rcontrol.h"
+#include "lib/rcontrol.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
-
-#ifdef _USE_PICSTARTP_
-extern char PROGDEVICE[100];
-#endif
-char SERIALDEVICE[100];
 
 #ifdef _USE_PICSTARTP_
 // picstart plus
@@ -100,7 +95,7 @@ void CPWindow1::timer1_EvOnTime(CControl* control) {
     if (PICSimLab.status.st[0] & (ST_T1 | ST_DI))
         return;
 
-    sync = 1;
+    PICSimLab.SetSync(1);
     PICSimLab.status.st[0] |= ST_T1;
 
 #ifdef _NOTHREAD
@@ -332,7 +327,7 @@ void CPWindow1::timer2_EvOnTime(CControl* control) {
     }
 #endif
 
-    if (settodestroy) {
+    if (PICSimLab.GetToDestroy()) {
         WDestroy();
     }
 
@@ -671,7 +666,7 @@ void CPWindow1::filedialog1_EvOnClose(int retId) {
         usleep(100);  // wait thread
 
     if (retId && (filedialog1.GetType() == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
-        LoadHexFile(filedialog1.GetFileName());
+        PICSimLab.LoadHexFile(filedialog1.GetFileName());
 
         PICSimLab.SetPath(filedialog1.GetDir());
         PICSimLab.SetFNAME(filedialog1.GetFileName());
@@ -787,91 +782,8 @@ void CPWindow1::menu1_File_Configure_EvMenuActive(CControl* control) {
     Window3.ShowExclusive();
 }
 
-int CPWindow1::LoadHexFile(lxString fname) {
-    int pa;
-    int ret = 0;
-
-    pa = PICSimLab.GetMcuPwr();
-    PICSimLab.SetMcuPwr(0);
-
-    // timer1.SetRunState (0);
-    PICSimLab.status.st[0] |= ST_DI;
-    msleep(timer1.GetTime());
-    if (PICSimLab.tgo)
-        PICSimLab.tgo = 1;
-    while (PICSimLab.status.status & 0x0401) {
-        msleep(1);
-        Application->ProcessEvents();
-    }
-
-    if (PICSimLab.GetNeedReboot()) {
-        char cmd[4096];
-        sprintf(cmd, " %s %s \"%s\"", boards_list[PICSimLab.GetLab()].name_,
-                (const char*)PICSimLab.GetBoard()->GetProcessorName().c_str(), (const char*)fname.char_str());
-        PICSimLab.EndSimulation(0, cmd);
-    }
-
-    PICSimLab.GetBoard()->MEnd();
-    PICSimLab.GetBoard()->MSetSerial(SERIALDEVICE);
-
-    switch (PICSimLab.GetBoard()->MInit(PICSimLab.GetBoard()->GetProcessorName(), fname.char_str(),
-                                        PICSimLab.GetNSTEP() * NSTEPKF)) {
-        case HEX_NFOUND:
-            PICSimLab.RegisterError(lxT("Hex file not found!"));
-            PICSimLab.SetMcuRun(0);
-            break;
-        case HEX_CHKSUM:
-            PICSimLab.RegisterError(lxT("Hex file checksum error!"));
-            PICSimLab.GetBoard()->MEraseFlash();
-            PICSimLab.SetMcuRun(0);
-            break;
-        case 0:
-            PICSimLab.SetMcuRun(1);
-            break;
-    }
-
-    PICSimLab.GetBoard()->Reset();
-
-    if (PICSimLab.GetMcuRun())
-        SetTitle(((PICSimLab.GetInstanceNumber() > 0)
-                      ? (lxT("PICSimLab[") + itoa(PICSimLab.GetInstanceNumber()) + lxT("] - "))
-                      : (lxT("PICSimLab - "))) +
-                 lxString(boards_list[PICSimLab.GetLab()].name) + lxT(" - ") +
-                 PICSimLab.GetBoard()->GetProcessorName() + lxT(" - ") + basename(filedialog1.GetFileName()));
-    else
-        SetTitle(((PICSimLab.GetInstanceNumber() > 0)
-                      ? (lxT("PICSimLab[") + itoa(PICSimLab.GetInstanceNumber()) + lxT("] - "))
-                      : (lxT("PICSimLab - "))) +
-                 lxString(boards_list[PICSimLab.GetLab()].name) + lxT(" - ") +
-                 PICSimLab.GetBoard()->GetProcessorName());
-
-    ret = !PICSimLab.GetMcuRun();
-
-    PICSimLab.SetMcuPwr(pa);
-    // timer1.SetRunState (1);
-    PICSimLab.status.st[0] &= ~ST_DI;
-
-#ifdef NO_DEBUG
-    statusbar1.SetField(1, lxT(" "));
-#else
-    if (PICSimLab.GetDebugStatus()) {
-        int ret = PICSimLab.GetBoard()->DebugInit(PICSimLab.GetDebugType());
-        if (ret < 0) {
-            statusbar1.SetField(1, lxT("Debug: Error"));
-        } else {
-            statusbar1.SetField(1, lxT("Debug: ") + PICSimLab.GetBoard()->GetDebugName() + ":" +
-                                       itoa(PICSimLab.GetDebugPort() + PICSimLab.GetInstanceNumber()));
-        }
-    } else {
-        statusbar1.SetField(1, lxT("Debug: Off"));
-    }
-#endif
-
-    return ret;
-}
-
 void CPWindow1::menu1_File_ReloadLast_EvMenuActive(CControl* control) {
-    LoadHexFile(PICSimLab.GetFNAME());
+    PICSimLab.LoadHexFile(PICSimLab.GetFNAME());
 }
 
 void CPWindow1::board_Event(CControl* control) {
@@ -1032,7 +944,8 @@ void CPWindow1::menu1_Tools_Esp8266ModemSimulator_EvMenuActive(CControl* control
 }
 
 void CPWindow1::menu1_Tools_ArduinoBootloader_EvMenuActive(CControl* control) {
-    LoadHexFile(PICSimLab.GetSharePath() + "bootloaders/arduino_" + PICSimLab.GetBoard()->GetProcessorName() + ".hex");
+    PICSimLab.LoadHexFile(PICSimLab.GetSharePath() + "bootloaders/arduino_" + PICSimLab.GetBoard()->GetProcessorName() +
+                          ".hex");
 }
 
 void CPWindow1::menu1_Tools_MPLABXDebuggerPlugin_EvMenuActive(CControl* control) {
@@ -1045,10 +958,6 @@ void CPWindow1::menu1_Tools_PinViewer_EvMenuActive(CControl* control) {
 #else
     lxExecute(dirname(lxGetExecutablePath()) + "/PinViewer " + itoa(PICSimLab.GetRemotecPort()));
 #endif
-}
-
-void CPWindow1::SetToDestroy(void) {
-    settodestroy = 1;
 }
 
 // emscripten interface
