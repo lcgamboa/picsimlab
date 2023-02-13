@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2019-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2019-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "other_IO_74xx595.h"
-#include "../oscilloscope.h"
-#include "../picsimlab.h"
-#include "../spareparts.h"
+#include "../lib/oscilloscope.h"
+#include "../lib/picsimlab.h"
+#include "../lib/spareparts.h"
 
 /* outputs */
 enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_P9, O_P10, O_P11, O_P12, O_P13, O_P14, O_P15, O_P16, O_IC };

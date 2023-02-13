@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../picsimlab.h"
+#include "../lib/picsimlab.h"
 #include "bsim_simavr.h"
 #include "simavr/avr_eeprom.h"
 #include "simavr/avr_extint.h"

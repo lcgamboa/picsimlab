@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2021-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2021-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -24,11 +24,12 @@
    ######################################################################## */
 
 #include "sen_ds18b20.h"
-#include "../boards/board.h"
+#include "../lib/board.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #define dprintf \
     if (1) {    \

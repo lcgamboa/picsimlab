@@ -2,9 +2,9 @@ include ../VERSION
 
 PKG ?= "native"
 
-OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimlab5.o \
-	serial_port.o spareparts.o picsimlab.o oscilloscope.o
+OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimlab5.o  
 
+OBJS+= $(patsubst lib/%.cc,lib/%.o,$(wildcard lib/*.cc)) 
 OBJS+= $(patsubst boards/%.cc,boards/%.o,$(wildcard boards/bsim*.cc)) 
 OBJS+= $(patsubst boards/%.cc,boards/%.o,$(wildcard boards/board*.cc)) 
 OBJS+= boards/bridge_gpsim.o

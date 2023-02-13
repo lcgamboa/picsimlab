@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2020-2023  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -24,8 +24,8 @@
    ######################################################################## */
 
 #include "rcontrol.h"
+#include "../lib/spareparts.h"
 #include "../picsimlab1.h"
-#include "../spareparts.h"
 #include "lcd_hd44780.h"
 #include "vterm.h"
 
@@ -61,7 +61,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "../picsimlab.h"
+#include "../lib/picsimlab.h"
 
 void setnblock(int sock_descriptor);
 

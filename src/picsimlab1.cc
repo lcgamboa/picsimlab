@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gamboa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
 // print timer debug info
 // #define TDEBUG
 
-#include "picsimlab.h"
+#include "lib/picsimlab.h"
 
 #include "picsimlab1.h"
 #include "picsimlab1_d.cc"
@@ -44,8 +44,8 @@ CPWindow1 Window1;
 #include "picsimlab4.h"
 #include "picsimlab5.h"
 
-#include "oscilloscope.h"
-#include "spareparts.h"
+#include "lib/oscilloscope.h"
+#include "lib/spareparts.h"
 
 #include "devices/rcontrol.h"
 

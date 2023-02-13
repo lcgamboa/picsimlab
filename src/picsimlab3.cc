@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -28,9 +28,9 @@
 #include "picsimlab3.h"
 #include "picsimlab3_d.cc"
 
-#include "picsimlab.h"
+#include "lib/picsimlab.h"
+#include "lib/serial_port.h"
 #include "picsimlab1.h"
-#include "serial_port.h"
 
 CPWindow3 Window3;
 

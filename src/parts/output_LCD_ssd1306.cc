@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2020-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "output_LCD_ssd1306.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../spareparts.h"
+#include "../lib/oscilloscope.h"
+#include "../lib/picsimlab.h"
+#include "../lib/spareparts.h"
 
 /* outputs */
 enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_F1, O_F2, O_LCD };
@@ -193,7 +193,7 @@ void cpart_LCD_ssd1306::Process(void) {
     if (type_com) {
         if ((input_pins[0] > 0) && (input_pins[1] > 0))
             SpareParts.SetPullupBus(input_pins[1] - 1, lcd_ssd1306_I2C_io(&lcd, ppins[input_pins[1] - 1].value,
-                                                                            ppins[input_pins[0] - 1].value));
+                                                                          ppins[input_pins[0] - 1].value));
 
         if (input_pins[1] > 0)
             SpareParts.SetPin(input_pins[1], SpareParts.GetPullupBus(input_pins[1] - 1));

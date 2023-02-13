@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2019-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2019-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@
 
 #include <lxrad.h>
 #include "../devices/io_PCF8574.h"
-#include "part.h"
+#include "../lib/part.h"
 
 #define PART_IO_PCF8574_Name "IO PCF8574"
 

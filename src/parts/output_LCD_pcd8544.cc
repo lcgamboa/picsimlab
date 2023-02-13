@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "output_LCD_pcd8544.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../spareparts.h"
+#include "../lib/oscilloscope.h"
+#include "../lib/picsimlab.h"
+#include "../lib/spareparts.h"
 
 /* outputs */
 enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_F1, O_F2, O_F3, O_LCD };
@@ -62,60 +62,55 @@ cpart_LCD_pcd8544::~cpart_LCD_pcd8544(void) {
 }
 
 void cpart_LCD_pcd8544::DrawOutput(const unsigned int i) {
-
-            switch (output[i].id) {
-                case O_P1:
-                case O_P2:
-                case O_P3:
-                case O_P4:
-                case O_P5:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(255, 255, 255);
-                    if (input_pins[output[i].id - O_P1] == 0)
-                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
-                    else
-                        canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
-                                           output[i].y2, 90.0);
-                    break;
-                case O_F1:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(155, 155, 155);
-                    canvas.RotatedText("3.3V", output[i].x1, output[i].y2, 90.0);
-                    break;
-                case O_F2:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(155, 155, 155);
-                    canvas.RotatedText("3.3V", output[i].x1, output[i].y2, 90.0);
-                    break;
-                case O_F3:
-                    canvas.SetColor(49, 61, 99);
-                    canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1);
-                    canvas.SetFgColor(155, 155, 155);
-                    canvas.RotatedText("GND", output[i].x1, output[i].y2, 90.0);
-                    break;
-                case O_LCD:
-                    // draw lcd text
-                    if (lcd.update) {
-                        canvas.SetColor(0, 90 + 40, 0);
-                        lcd_pcd8544_draw(&lcd, &canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                         output[i].y2 - output[i].y1, 1);
-                    }
-                    /*
-                    else
-                    {
-                       canvas.Rectangle (1, output[i].x1, output[i].y1,
-                    output[i].x2-output[i].x1,output[i].y2-output[i].y1 );
-                    }
-                     */
-                    break;
+    switch (output[i].id) {
+        case O_P1:
+        case O_P2:
+        case O_P3:
+        case O_P4:
+        case O_P5:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(255, 255, 255);
+            if (input_pins[output[i].id - O_P1] == 0)
+                canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+            else
+                canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2,
+                                   90.0);
+            break;
+        case O_F1:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(155, 155, 155);
+            canvas.RotatedText("3.3V", output[i].x1, output[i].y2, 90.0);
+            break;
+        case O_F2:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(155, 155, 155);
+            canvas.RotatedText("3.3V", output[i].x1, output[i].y2, 90.0);
+            break;
+        case O_F3:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            canvas.SetFgColor(155, 155, 155);
+            canvas.RotatedText("GND", output[i].x1, output[i].y2, 90.0);
+            break;
+        case O_LCD:
+            // draw lcd text
+            if (lcd.update) {
+                canvas.SetColor(0, 90 + 40, 0);
+                lcd_pcd8544_draw(&lcd, &canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                 output[i].y2 - output[i].y1, 1);
             }
+            /*
+            else
+            {
+               canvas.Rectangle (1, output[i].x1, output[i].y1,
+            output[i].x2-output[i].x1,output[i].y2-output[i].y1 );
+            }
+             */
+            break;
+    }
 }
 
 unsigned short cpart_LCD_pcd8544::GetInputId(char* name) {

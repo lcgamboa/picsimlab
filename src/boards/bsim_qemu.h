@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@
 #include "../devices/bitbang_i2c.h"
 #include "../devices/bitbang_spi.h"
 #include "../devices/bitbang_uart.h"
-#include "board.h"
+#include "../lib/board.h"
 #include "qemu.h"
 
 typedef enum { QEMU_SIM_NONE = 0, QEMU_SIM_STM32, QEMU_SIM_ESP32 } QEMUSimType;

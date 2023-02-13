@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2010-2015  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -31,9 +31,9 @@
 #include <unistd.h>
 
 #ifdef _WIN_
-//#include <conio.h>
-//#include <time.h>
-//#include <windows.h>
+// #include <conio.h>
+// #include <time.h>
+// #include <windows.h>
 #else
 #include <fcntl.h>
 #include <sys/ioctl.h>

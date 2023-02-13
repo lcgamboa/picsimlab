@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2020-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "input_bmp280.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../spareparts.h"
+#include "../lib/oscilloscope.h"
+#include "../lib/picsimlab.h"
+#include "../lib/spareparts.h"
 
 /* outputs */
 enum { O_PF1, O_PF2, O_P1, O_P2, O_P3, O_P4, O_PO1, O_PO2 };
@@ -195,7 +195,7 @@ void cpart_bmp280::Process(void) {
     if (input_pins[0] && input_pins[1] && (input_pins[2])) {
         if ((bmp280.i2c_mode) && (ppins[input_pins[2] - 1].value)) {  // I2C mode
             SpareParts.SetPullupBus(input_pins[1] - 1, sen_bmp280_I2C_io(&bmp280, ppins[input_pins[0] - 1].value,
-                                                                           ppins[input_pins[1] - 1].value));
+                                                                         ppins[input_pins[1] - 1].value));
         } else {  // SPI mode
             unsigned char ret = sen_bmp280_io_SPI(&bmp280, ppins[input_pins[1] - 1].value,
                                                   ppins[input_pins[0] - 1].value, ppins[input_pins[2] - 1].value);

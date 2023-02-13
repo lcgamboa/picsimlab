@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2020-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@
 #include <lxrad.h>
 #include "../devices/lcd_ili9341.h"
 #include "../devices/tsc_xpt2046.h"
-#include "part.h"
+#include "../lib/part.h"
 
 #define PART_LCD_iLI9341_Name "LCD ili9341"
 

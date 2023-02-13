@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 
 #include "bridge_gpsim.h"
 
-#include "../picsimlab.h"
+#include "../lib/picsimlab.h"
 #include "bsim_gpsim.h"
 
 static const unsigned char GPSIM_PORTS[5] = {0, 1, 2, 3, 0xFF};

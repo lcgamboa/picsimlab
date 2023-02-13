@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -26,11 +26,11 @@
 #ifndef BOARD_AVR_H
 #define BOARD_AVR_H
 
-#include "board.h"
+#include "../lib/board.h"
 
 #include "../devices/bitbang_uart.h"
 #include "../devices/mplabxd.h"
-#include "../serial_port.h"
+#include "../lib/serial_port.h"
 
 #include <simavr/avr_adc.h>
 #include <simavr/avr_ioport.h>

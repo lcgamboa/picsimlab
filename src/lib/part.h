@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
 #ifndef PART_H
 #define PART_H
 
-#include "../boards/board.h"
+#include "board.h"
 
 /**
  * @brief PCWProp
@@ -406,7 +406,6 @@ private:
 };
 
 #endif /* PART_H */
-
 
 #ifndef PARTS_DEFS_H
 #define PARTS_DEFS_H

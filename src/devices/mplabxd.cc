@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 
 #include "mplabxd.h"
 
-//#define _DEBUG_
+// #define _DEBUG_
 #define dprint \
     if (1) {   \
     } else     \
@@ -61,7 +61,7 @@ static WSADATA wsaData;
 #include <string.h>
 #include <unistd.h>
 
-#include "../picsimlab.h"
+#include "../lib/picsimlab.h"
 
 typedef struct sockaddr sockaddr;
 

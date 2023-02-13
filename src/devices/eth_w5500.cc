@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2010-2021  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -47,9 +47,9 @@ typedef unsigned int u_int32_t;
 #include <string.h>
 #include <unistd.h>
 
-//#define DEBUG
-//#define DUMP
-//#define TEXTDUMP
+// #define DEBUG
+// #define DUMP
+// #define TEXTDUMP
 
 #define dprintf \
     if (1) {    \

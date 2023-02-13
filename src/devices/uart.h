@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2020-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 #define UART
 
 #include <stdio.h>
-#include "../serial_port.h"
+#include "../lib/serial_port.h"
 #include "bitbang_uart.h"
 
 typedef struct {

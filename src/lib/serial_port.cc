@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -95,11 +95,11 @@ int serial_port_cfg(serialfd_t serialfd, float serialexbaud) {
     unsigned int BAUDRATE;
     int serialbaud;
 
-#ifndef _WIN_        
+#ifndef _WIN_
     if (serialfd <= 0)
         return 0;
 #else
-    if (serialfd == INVALID_HANDLE_VALUE) 
+    if (serialfd == INVALID_HANDLE_VALUE)
         return 0;
 #endif
 

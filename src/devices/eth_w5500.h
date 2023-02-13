@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2010-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -33,27 +33,27 @@
 #define B_SCK0RG 0x01  // 00001 Selects Socket 0 Register
 #define B_SCK0TX 0x02  // 00010 Selects Socket 0 TX Buffer
 #define B_SCK0RX 0x03  // 00011 Selects Socket 0 RX Buffer
-//#define B_RESERV 0x04 //00100 Reserved
+// #define B_RESERV 0x04 //00100 Reserved
 #define B_SCK1RG 0x05  // 00101 Selects Socket 1 Register
 #define B_SCK1TX 0x06  // 00110 Selects Socket 1 TX Buffer
 #define B_SCK1RX 0x07  // 00111 Selects Socket 1 RX Buffer
-//#define B_RESERV 0x08 //01000 Reserved
+// #define B_RESERV 0x08 //01000 Reserved
 #define B_SCK2RG 0x09  // 01001 Selects Socket 2 Register
 #define B_SCK2TX 0x0A  // 01010 Selects Socket 2 TX Buffer
 #define B_SCK2RX 0x0B  // 01011 Selects Socket 2 RX Buffer
-//#define B_RESERV 0x0C //01100 Reserved
+// #define B_RESERV 0x0C //01100 Reserved
 #define B_SCK3RG 0x0D  // 01101 Selects Socket 3 Register
 #define B_SCK3TX 0x0E  // 01110 Selects Socket 3 TX Buffer
 #define B_SCK3RX 0x0F  // 01111 Selects Socket 3 RX Buffer
-//#define B_RESERV 0x10 //10000 Reserved
+// #define B_RESERV 0x10 //10000 Reserved
 #define B_SCK4RG 0x11  // 10001 Selects Socket 4 Register
 #define B_SCK4TX 0x12  // 10010 Selects Socket 4 TX Buffer
 #define B_SCK4RX 0x13  // 10011 Selects Socket 4 RX Buffer
-//#define B_RESERV 0x14 //10100 Reserved
+// #define B_RESERV 0x14 //10100 Reserved
 #define B_SCK5RG 0x15  // 10101 Selects Socket 5 Register
 #define B_SCK5TX 0x16  // 10110 Selects Socket 5 TX Buffer
 #define B_SCK5RX 0x17  // 10111 Selects Socket 5 RX Buffer
-//#define B_RESERV 0x18 //11000 Reserved
+// #define B_RESERV 0x18 //11000 Reserved
 #define B_SCK6RG 0x19  // 11001 Selects Socket 6 Register
 #define B_SCK6TX 0x1A  // 11010 Selects Socket 6 TX Buffer
 #define B_SCK6RX 0x1B  // 11011 Selects Socket 6 RX Buffer

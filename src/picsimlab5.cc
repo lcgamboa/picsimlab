@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -31,9 +31,9 @@
 #include "picsimlab4.h"
 #include "picsimlab5_d.cc"
 
-#include "oscilloscope.h"
-#include "picsimlab.h"
-#include "spareparts.h"
+#include "lib/oscilloscope.h"
+#include "lib/picsimlab.h"
+#include "lib/spareparts.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>

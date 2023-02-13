@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2020-2020  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@
 #define CMD0 0X00
 // no spi #define CMD2 0X02 /** ALL_SEND_CID - Asks any card to send the CID. */
 // no spi #define CMD3 0X03 /** SEND_RELATIVE_ADDR - Ask the card to publish a new RCA. */
-//#define CMD6 0X06 /** SWITCH_FUNC - Switch Function Command */
+// #define CMD6 0X06 /** SWITCH_FUNC - Switch Function Command */
 // no spi #define CMD7  0X07 /** SELECT/DESELECT_CARD - toggles between the stand-by and transfer states. */
 #define CMD8 0X08
 #define CMD9 0X09
@@ -41,7 +41,7 @@
 #define CMD12 0X0C
 #define CMD13 0X0D
 #define CMD17 0X11
-//#define CMD18  0X12 /** READ_MULTIPLE_BLOCK - read a multiple data blocks from the card */
+// #define CMD18  0X12 /** READ_MULTIPLE_BLOCK - read a multiple data blocks from the card */
 #define CMD24 0X18
 #define CMD25 0X19
 #define CMD32 0X20
@@ -49,9 +49,9 @@
 #define CMD38 0X26
 #define CMD55 0X37
 #define CMD58 0X3A
-//#define CMD59 0X3B /** CRC_ON_OFF - enable or disable CRC checking */
-// no spi  #define ACMD6 0X06 /** SET_BUS_WIDTH - Defines the data bus width for data transfer. */
-//#define ACMD13 0X0D /** SD_STATUS - Send the SD Status. */
+// #define CMD59 0X3B /** CRC_ON_OFF - enable or disable CRC checking */
+//  no spi  #define ACMD6 0X06 /** SET_BUS_WIDTH - Defines the data bus width for data transfer. */
+// #define ACMD13 0X0D /** SD_STATUS - Send the SD Status. */
 #define ACMD23 0X17
 #define ACMD41 0X29
 

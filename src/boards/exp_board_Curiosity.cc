@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2015-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2015-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -25,9 +25,9 @@
 
 // include files
 #include "exp_board_Curiosity.h"
-#include "../oscilloscope.h"
-#include "../picsimlab.h"
-#include "../spareparts.h"
+#include "../lib/oscilloscope.h"
+#include "../lib/picsimlab.h"
+#include "../lib/spareparts.h"
 
 /* ids of inputs of input map*/
 enum {
@@ -602,7 +602,7 @@ void cboard_Curiosity::Run_CPU(void) {
 
     j = JUMPSTEPS;  // step counter
     pi = 0;
-    if (PICSimLab.GetMcuPwr())      // if powered
+    if (PICSimLab.GetMcuPwr())       // if powered
         for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
             if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip

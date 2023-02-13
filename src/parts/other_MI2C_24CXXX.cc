@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2019-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2019-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "other_MI2C_24CXXX.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../spareparts.h"
+#include "../lib/oscilloscope.h"
+#include "../lib/picsimlab.h"
+#include "../lib/spareparts.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -247,7 +247,7 @@ void cpart_MI2C_24CXXX::Process(void) {
 
     if ((input_pins[3] > 0) && (input_pins[4] > 0))
         SpareParts.SetPullupBus(input_pins[3] - 1,
-                                  mi2c_io(&mi2c, ppins[input_pins[4] - 1].value, ppins[input_pins[3] - 1].value));
+                                mi2c_io(&mi2c, ppins[input_pins[4] - 1].value, ppins[input_pins[3] - 1].value));
 }
 
 void cpart_MI2C_24CXXX::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {

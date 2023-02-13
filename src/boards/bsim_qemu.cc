@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -28,8 +28,8 @@
 #include <dlfcn.h>
 #endif
 
-#include "../picsimlab.h"
-#include "../serial_port.h"
+#include "../lib/picsimlab.h"
+#include "../lib/serial_port.h"
 #include "bsim_qemu.h"
 
 #define dprintf \
@@ -521,7 +521,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
                         }
                         fclose(fout);
                     }
-                    strncpy(fname_, dname, 2047);
+                    strncpy(fname_, dname, 2048);
                 }
                 fclose(fin);
             } else {

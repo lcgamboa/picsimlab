@@ -1,10 +1,10 @@
 /* ########################################################################
 
-   PICsimLab - PIC laboratory simulator
+   PICSimLab - Programmable IC Simulator Laboratory
 
    ########################################################################
 
-   Copyright (c) : 2020-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2020-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -24,9 +24,9 @@
    ######################################################################## */
 
 #include "input_MPU6050.h"
-#include "../picsimlab1.h"
-#include "../picsimlab4.h"
-#include "../spareparts.h"
+#include "../lib/oscilloscope.h"
+#include "../lib/picsimlab.h"
+#include "../lib/spareparts.h"
 
 /* inputs */
 enum { I_VS1, I_VS2, I_VS3, I_VS4, I_VS5, I_VS6 };
@@ -282,7 +282,7 @@ void cpart_MPU6050::Process(void) {
 
     if ((mpu_pins[0] > 0) && (mpu_pins[1] > 0))
         SpareParts.SetPullupBus(mpu_pins[1] - 1,
-                                  mpu6050_io_I2C(&mpu, ppins[mpu_pins[0] - 1].value, ppins[mpu_pins[1] - 1].value));
+                                mpu6050_io_I2C(&mpu, ppins[mpu_pins[0] - 1].value, ppins[mpu_pins[1] - 1].value));
 }
 
 void cpart_MPU6050::PostProcess(void) {
