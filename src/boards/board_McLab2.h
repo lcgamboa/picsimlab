@@ -26,6 +26,9 @@
 #ifndef BOARD_McLab2_H
 #define BOARD_McLab2_H
 
+#include "../devices/lcd_hd44780.h"
+#include "../devices/mi2c_24CXXX.h"
+#include "../devices/rtc_ds1307.h"
 #include "../devices/swbounce.h"
 #include "bsim_picsim.h"
 

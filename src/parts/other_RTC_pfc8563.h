@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2019-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2019-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 #define PART_RTC_PFC8563_H
 
 #include <lxrad.h>
+#include "../devices/rtc_pfc8563.h"
 #include "part.h"
 
 #define PART_RTC_PFC8563_Name "RTC pfc8563"

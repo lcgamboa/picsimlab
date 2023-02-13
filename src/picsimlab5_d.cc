@@ -1,6 +1,3 @@
-
-#include "parts/parts_defs.h"
-
 CPWindow5::CPWindow5(void) {
     // lxrad automatic generated block start, don't edit below!
     SetFOwner(this);

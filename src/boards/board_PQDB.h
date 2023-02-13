@@ -29,6 +29,8 @@
 #include "bsim_picsim.h"
 
 #include "../devices/io_74xx595.h"
+#include "../devices/lcd_hd44780.h"
+#include "../devices/rtc_ds1307.h"
 
 #define BOARD_PQDB_Name "PQDB"
 

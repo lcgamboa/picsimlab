@@ -28,6 +28,10 @@
 
 #include "bsim_picsim.h"
 
+#include "../devices/lcd_hd44780.h"
+#include "../devices/mi2c_24CXXX.h"
+#include "../devices/rtc_pfc8563.h"
+
 #define BOARD_K16F_Name "K16F"
 
 class cboard_K16F : public bsim_picsim {

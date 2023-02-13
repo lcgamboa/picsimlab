@@ -29,10 +29,6 @@
 #include <lxrad.h>
 #include <picsim/picsim.h>
 #include <stdint.h>
-#include "../devices/lcd_hd44780.h"
-#include "../devices/mi2c_24CXXX.h"
-#include "../devices/rtc_ds1307.h"
-#include "../devices/rtc_pfc8563.h"
 
 #define INCOMPLETE                                                      \
     printf("Incomplete: %s -> %s :%i\n", __func__, __FILE__, __LINE__); \
@@ -660,3 +656,39 @@ private:
 extern int ioupdated;
 
 #endif /* BOARD_H */
+
+#ifndef BOARDS_DEFS_H
+#define BOARDS_DEFS_H
+
+#define board_init(name, function)                                  \
+    static board* function##_create(void) {                         \
+        board* b = new function();                                  \
+        b->SetDefaultProcessor(b->GetProcessorName());              \
+        return b;                                                   \
+    };                                                              \
+    static void __attribute__((constructor)) function##_init(void); \
+    static void function##_init(void) { board_register(name, function##_create); }
+
+typedef board* (*board_create_func)(void);
+
+void board_register(const char* name, board_create_func bcreate);
+
+// boards object creation
+board* create_board(int* lab, int* lab_);
+
+#define BOARDS_MAX 20
+
+extern int BOARDS_LAST;
+
+typedef struct {
+    char name[30];   // name
+    char name_[30];  // name without spaces
+    board_create_func bcreate;
+} board_desc;
+
+extern board_desc boards_list[BOARDS_MAX];
+
+// Arduino Uno is the dafault board
+#define DEFAULT_BOARD 2
+
+#endif /* BOARDS_DEFS_H */

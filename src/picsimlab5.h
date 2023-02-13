@@ -27,7 +27,7 @@
 #define CPWINDOW5
 
 #include <lxrad.h>
-#include "parts/parts_defs.h"
+#include "spareparts.h"
 
 /**
  * @brief CPWindow5 class

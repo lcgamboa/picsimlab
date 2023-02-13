@@ -27,7 +27,6 @@
 #define SPAREPARTS
 
 #include "parts/part.h"
-#include "parts/parts_defs.h"
 
 #define IOINIT 110
 

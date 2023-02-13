@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2022  Luis Claudio Gambôa Lopes
+   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 #define PART_LCD_HD44780_H
 
 #include <lxrad.h>
+#include "../devices/lcd_hd44780.h"
 #include "part.h"
 
 #define PART_LCD_HD44780_Name "LCD hd44780"

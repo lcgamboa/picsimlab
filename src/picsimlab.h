@@ -37,7 +37,6 @@ extern char SERIALDEVICE[100];
 #define MAX_MIC 140
 
 #include "boards/board.h"
-#include "boards/boards_defs.h"
 
 enum { CPU_RUNNING, CPU_STEPPING, CPU_HALTED, CPU_BREAKPOINT, CPU_ERROR, CPU_POWER_OFF };
 

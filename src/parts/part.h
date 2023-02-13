@@ -406,3 +406,36 @@ private:
 };
 
 #endif /* PART_H */
+
+
+#ifndef PARTS_DEFS_H
+#define PARTS_DEFS_H
+
+#define MAX_PARTS 100
+
+extern int NUM_PARTS;
+
+#define part_init(name, function, menu)                              \
+    static part* function##_create(unsigned int x, unsigned int y) { \
+        part* p = new function(x, y, name, menu);                    \
+        p->Init();                                                   \
+        return p;                                                    \
+    };                                                               \
+    static void __attribute__((constructor)) function##_init(void);  \
+    static void function##_init(void) { part_register(name, function##_create, menu); }
+
+typedef part* (*part_create_func)(unsigned int x, unsigned int y);
+
+void part_register(const char* name, part_create_func pcreate, const char* menu);
+
+part* create_part(lxString name, unsigned int x, unsigned int y);
+
+typedef struct {
+    char name[30];
+    part_create_func pcreate;
+    char menu[30];
+} part_desc;
+
+extern part_desc parts_list[MAX_PARTS];
+
+#endif /* PARTS_DEFS_H */

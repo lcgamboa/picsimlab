@@ -29,6 +29,8 @@
 #include <lxrad.h>
 #include "part.h"
 
+#include "../devices/mi2c_24CXXX.h"
+
 #define PART_MI2C_24CXXX_Name "MEM 24CXXX"
 
 class cpart_MI2C_24CXXX : public part {
