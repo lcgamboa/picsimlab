@@ -7,12 +7,12 @@ WINDRES =  x86_64-w64-mingw32-windres
 
 FLAGS = -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\" -Wall -O2 -D_WIN_ -I../../dev_w64/include
 FLAGS+= -DEXT_BROWSER -std=c++14
-FLAGS+= -I../../dev_w64/lib/wx/include/x86_64-w64-mingw32-msw-unicode-3.1 -I../../dev_w64/include/wx-3.1 -D_FILE_OFFSET_BITS=64 -DWXUSINGDLL -D__WXMSW__ -I../../dev_w64/include/lxrad
-#FLAGS+=`x86_64-w64-mingw32-msw-unicode-3.1  --cxxflags ` 
+FLAGS+= -I../../dev_w64/lib/wx/include/x86_64-w64-mingw32-msw-unicode-3.2 -I../../dev_w64/include/wx-3.2 -D_FILE_OFFSET_BITS=64 -DWXUSINGDLL -D__WXMSW__ -I../../dev_w64/include/lxrad
+#FLAGS+=`x86_64-w64-mingw32-msw-unicode-3.2  --cxxflags ` 
 
 LIBS = -llxrad  -lws2_32  -L../../dev_w64/lib
-LIBS+= -Wl,--subsystem,windows -mwindows -lwx_mswu_core-3.1-x86_64-w64-mingw32 -lwx_baseu-3.1-x86_64-w64-mingw32 
-#LIBS+=`x86_64-w64-mingw32-msw-unicode-3.1 --libs` 
+LIBS+= -Wl,--subsystem,windows -mwindows -lwx_mswu_core-3.2-x86_64-w64-mingw32 -lwx_baseu-3.2-x86_64-w64-mingw32 
+#LIBS+=`x86_64-w64-mingw32-msw-unicode-3.2 --libs` 
 
 OBJS = pespmsim.o espmsim1.o espmsim2.o serial.o tcp.o 
 

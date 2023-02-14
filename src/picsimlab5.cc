@@ -763,6 +763,7 @@ void CPWindow5::_EvOnHide(CControl* control) {
     board* pboard = PICSimLab.GetBoard();
     if (pboard) {
         pboard->SetUseSpareParts(0);
+        PICSimLab.spare_on = 0;
     }
     if (Window4.GetVisible()) {
         Oscilloscope.SetBaseTimer();

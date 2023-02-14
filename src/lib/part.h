@@ -66,7 +66,7 @@ public:
     /**
      * @brief  Called ever 100ms to draw part
      */
-    void Draw(void);  // FIXME remove virtual
+    void Draw(void);
 
     /**
      * @brief  Called to draw every output

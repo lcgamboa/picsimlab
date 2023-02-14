@@ -50,8 +50,8 @@ static WORD wVersionRequested = 2;
 static WSADATA wsaData;
 #ifndef MSG_WAITALL
 #define MSG_WAITALL (1 << 3)
-#define MSG_NOSIGNAL 0
 #endif
+#define MSG_NOSIGNAL 0
 #endif
 // system headers independent
 #include <errno.h>

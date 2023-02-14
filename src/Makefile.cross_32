@@ -11,15 +11,15 @@ override CXXFLAGS+= -Wall -g -O2 -D_WIN_ -I../dev_w32/include -I../dev_w32/inclu
 -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\"  -D_LIB_=\"lib/\"
 override CXXFLAGS+= -DEXT_BROWSER  -DFAKESJLJ
 override CXXFLAGS+= -std=c++14
-override CXXFLAGS+= -I../dev_w32/lib/wx/include/i686-w64-mingw32-msw-unicode-3.1 -I../dev_w32/include/wx-3.1 -D_FILE_OFFSET_BITS=64 -DWXUSINGDLL -D__WXMSW__ -mthreads
+override CXXFLAGS+= -I../dev_w32/lib/wx/include/i686-w64-mingw32-msw-unicode-3.2 -I../dev_w32/include/wx-3.2 -D_FILE_OFFSET_BITS=64 -DWXUSINGDLL -D__WXMSW__ -mthreads
 
-#CXXFLAGS +=`i686-w64-mingw32-msw-unicode-3.1  --cxxflags` 
+#CXXFLAGS +=`i686-w64-mingw32-msw-unicode-3.2  --cxxflags` 
 
 LIBS= -llxrad -lOpenAL32 -lpicsim  -lsimavr -lws2_32 -L../dev_w32/lib -lgpsim -lucsim
 LIBS+= -Wl,--subsystem,windows -mwindows 
-LIBS+= -lwx_mswu_core-3.1-i686-w64-mingw32 -lwx_baseu-3.1-i686-w64-mingw32 
+LIBS+= -lwx_mswu_core-3.2-i686-w64-mingw32 -lwx_baseu-3.2-i686-w64-mingw32 
 
-#LIBS+=`i686-w64-mingw32-msw-unicode-3.1 --libs` 
+#LIBS+=`i686-w64-mingw32-msw-unicode-3.2 --libs` 
 
 all: $(OBJS)
 	@echo "Linking picsimlab"

@@ -27,7 +27,7 @@
 
 #include "spareparts.h"
 #include "oscilloscope.h"
-#include "picsimlab.h"  //TODO remove window1 and window4 references
+#include "picsimlab.h"
 
 // Global objects;
 CSpareParts SpareParts;

@@ -23,12 +23,6 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include "rcontrol.h"
-#include "../devices/lcd_hd44780.h"
-#include "../devices/vterm.h"
-#include "picsimlab.h"
-#include "spareparts.h"
-
 #define dprint \
     if (1) {   \
     } else     \
@@ -61,9 +55,11 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "../lib/picsimlab.h"
-
-// typedef struct sockaddr sockaddr;
+#include "../devices/lcd_hd44780.h"
+#include "../devices/vterm.h"
+#include "picsimlab.h"
+#include "rcontrol.h"
+#include "spareparts.h"
 
 static int sockfd = -1;
 static int listenfd = -1;
