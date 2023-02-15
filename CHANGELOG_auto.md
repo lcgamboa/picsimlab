@@ -2,6 +2,10 @@
 
 ### New
 
+* Support to save debug status per board. [lcgamboa]
+
+* Support to PIC16F1829 added to Breadboard board. [lcgamboa]
+
 * Support to save Board and Oscilloscope windows postions and options per board. [lcgamboa]
 
 * Support to save Spare Parts window postion per board. [lcgamboa]

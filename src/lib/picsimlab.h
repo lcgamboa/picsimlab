@@ -232,7 +232,8 @@ public:
     int GetNeedResize(void) { return need_resize; };
     void SetNeedResize(int nr) { need_resize = nr; };
 
-    void Configure(const char* home, int use_default_board = 0, int create = 0, const char* lfile = NULL);
+    void Configure(const char* home, int use_default_board = 0, int create = 0, const char* lfile = NULL,
+                   const int disable_debug = 0);
 
     void SetplWidth(int pw) { plWidth = pw; };
 

@@ -33,6 +33,6 @@
 | [src/boards/board_uCboard.cc](src/boards/board_uCboard.cc#L298) | 298 | NSTEP must be multiplied for 4 |
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1568) | 1568 | avr CONFIG size |
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L134) | 134 | only for BANK=0; |
-| [src/lib/picsimlab.cc](src/lib/picsimlab.cc#L1130) | 1130 | remote control disabled |
+| [src/lib/picsimlab.cc](src/lib/picsimlab.cc#L1117) | 1117 | remote control disabled |
 | [src/parts/input_encoder.cc](src/parts/input_encoder.cc#L163) | 163 | on slow speed output is not 90 degrees |
 | [src/parts/output_dcmotor.cc](src/parts/output_dcmotor.cc#L219) | 219 | on slow speed output is not 90 degrees |

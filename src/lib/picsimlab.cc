@@ -669,7 +669,7 @@ void CPICSimLab::LoadWorkspace(lxString fnpzw, const int show_readme) {
     }
     PrefsSaveToFile(fzip);
 
-    Configure(home);
+    Configure(home, 0, 0, NULL, 1);
 
     need_resize = 1;
 
@@ -825,7 +825,8 @@ int CPICSimLab::GetSimulationRun(void) {
     return (status.st[0] & ST_DI) == 0;
 }
 
-void CPICSimLab::Configure(const char* home, int use_default_board, int create, const char* lfile) {
+void CPICSimLab::Configure(const char* home, int use_default_board, int create, const char* lfile,
+                           const int disable_debug) {
     char line[1024];
     char fname[2048];
     char fname_[2048];
@@ -918,6 +919,9 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
                     int debug = 0;
 #ifndef NO_DEBUG
                     sscanf(value, "%i", &debug);
+                    if (disable_debug) {
+                        debug = 0;
+                    }
                     ((CToggleButton*)Window->GetChildByName("togglebutton1"))->SetCheck(debug);
 #endif
                     SetDebugStatus(debug, 0);
@@ -1067,8 +1071,6 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 
     printf("PICSimLab: Using board \"%s\"\n", boards_list[lab].name);
     printf("PICSimLab: Instance number %i\n", Instance);
-    printf("PICSimLab: Debug On=%i  Type=%s Port=%i\n", debug, (debug_type) ? "GDB" : "MDB", GetDebugPort());
-    printf("PICSimLab: Remote Control Port %i\n", GetRemotecPort());
     printf("PICSimLab: Opening \"%s\"\n", fname);
 
     // change .hex to .bin
@@ -1108,21 +1110,6 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
     status = lxT("");
 #endif
 
-#ifdef NO_DEBUG
-    statusbar->SetField(1, lxT(" "));
-#else
-    if (GetDebugStatus()) {
-        int ret = pboard->DebugInit(GetDebugType());
-        if (ret < 0) {
-            statusbar->SetField(1, status + lxT("Debug: Error"));
-        } else {
-            statusbar->SetField(1, status + lxT("Debug: ") + pboard->GetDebugName() + ":" + itoa(GetDebugPort()));
-        }
-    } else {
-        statusbar->SetField(1, status + lxT("Debug: Off"));
-    }
-#endif
-
     statusbar->SetField(0, lxT("Running..."));
 
     ((CThread*)Window->GetChildByName("thread1"))->Run();  // parallel thread
@@ -1146,13 +1133,31 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
     } else {
         sprintf(fname, "%s/parts_%s.pcf", home, boards_list[lab].name_);
     }
-    SpareParts.LoadConfig(fname);
+    SpareParts.LoadConfig(fname, disable_debug);
     if (Instance && !HOME.compare(home)) {
         sprintf(fname, "%s/palias_%s_%i.ppa", home, boards_list[lab_].name_, Instance);
     } else {
         sprintf(fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
     }
     SpareParts.LoadPinAlias(fname);
+
+    printf("PICSimLab: Debug On=%i  Type=%s Port=%i\n", debug, (debug_type) ? "GDB" : "MDB", GetDebugPort());
+    printf("PICSimLab: Remote Control Port %i\n", GetRemotecPort());
+
+#ifdef NO_DEBUG
+    statusbar->SetField(1, lxT(" "));
+#else
+    if (GetDebugStatus()) {
+        int ret = pboard->DebugInit(GetDebugType());
+        if (ret < 0) {
+            statusbar->SetField(1, status + lxT("Debug: Error"));
+        } else {
+            statusbar->SetField(1, status + lxT("Debug: ") + pboard->GetDebugName() + ":" + itoa(GetDebugPort()));
+        }
+    } else {
+        statusbar->SetField(1, status + lxT("Debug: Off"));
+    }
+#endif
 
 #ifndef NO_TOOLS
     if ((!pboard->GetProcessorName().Cmp("atmega328p")) || (!pboard->GetProcessorName().Cmp("atmega2560"))) {

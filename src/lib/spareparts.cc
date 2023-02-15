@@ -331,7 +331,7 @@ bool CSpareParts::LoadPinAlias(lxString fname, unsigned char show_error_msg) {
     }
 }
 
-bool CSpareParts::LoadConfig(lxString fname) {
+bool CSpareParts::LoadConfig(lxString fname, const int disable_debug) {
     char name[256];
     char temp[256];
     unsigned int x, y;
@@ -440,6 +440,15 @@ bool CSpareParts::LoadConfig(lxString fname) {
                 } else {
                     SpareParts.GetWindow()->Hide();
                 }
+            } else if (!strcmp(name, "debug")) {
+#ifndef NO_DEBUG
+                if (disable_debug) {
+                    x = 0;
+                }
+                ((CToggleButton*)PICSimLab.GetWindow()->GetChildByName("togglebutton1"))->SetCheck(x);
+#endif
+                PICSimLab.SetDebugStatus(x, 0);
+                PICSimLab.SetDebugType(y);
             } else if (!strcmp(name, "osc_on")) {
                 unsigned char osc_on;
                 sscanf(temp, "%hhu", &osc_on);
@@ -600,6 +609,8 @@ bool CSpareParts::SaveConfig(lxString fname) {
     temp.Printf("osc_on,0,0,0:%i", PICSimLab.GetBoard()->GetUseOscilloscope());
     prefs.AddLine(temp);
     temp.Printf("useAlias,0,0,0:%i", GetUseAlias());
+    prefs.AddLine(temp);
+    temp.Printf("debug,%i,%i,0:", PICSimLab.GetDebugStatus(), PICSimLab.GetDebugType());
     prefs.AddLine(temp);
 
     lxStringList osc_list = Oscilloscope.WritePreferencesList();

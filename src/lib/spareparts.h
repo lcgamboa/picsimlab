@@ -85,7 +85,7 @@ public:
     unsigned char GetUseAlias(void) { return useAlias; };
     bool SavePinAlias(lxString fname);
     bool LoadPinAlias(lxString fname, unsigned char show_error_msg = 0);
-    bool LoadConfig(lxString fname);
+    bool LoadConfig(lxString fname, const int disable_debug = 0);
     void ClearPinAlias(void);
     lxString GetAliasFname(void) { return alias_fname; };
     float GetScale(void) { return scale; };
