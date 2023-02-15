@@ -58,7 +58,8 @@ int bsim_picsim::MInit(const char* processor, const char* fname, float freq) {
     // disable DEBUG
 
     if ((pic.processor == getprocbyname("PIC16F1619")) || (pic.processor == getprocbyname("PIC16F1788")) ||
-        (pic.processor == getprocbyname("PIC16F1789")) || (pic.processor == getprocbyname("PIC16F1939"))) {
+        (pic.processor == getprocbyname("PIC16F1789")) || (pic.processor == getprocbyname("PIC16F1939")) ||
+        (pic.processor == getprocbyname("PIC16F1829"))) {
         pic.config[1] |= 0x0100;
     } else if ((pic.processor == getprocbyname("PIC16F18324")) || (pic.processor == getprocbyname("PIC16F18855"))) {
         pic.config[1] |= 0x0200;
