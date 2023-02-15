@@ -1,6 +1,37 @@
+## (unreleased)
+
+### New
+
+* Support to save Board and Oscilloscope windows postions and options per board. [lcgamboa]
+
+* Support to save Spare Parts window postion per board. [lcgamboa]
+
+* Support to enable/disable reset by DTR/RTS serial signals. [lcgamboa]
+
+### Changes
+
+* Support to load only app.bin in qemu-esp32 based boards. [lcgamboa]
+
+* Add the "Load Board Demo" menu option and automatic demo load on board first use. [lcgamboa]
+
+* Add support to remove VT100 codes in Virtual Term part. [lcgamboa]
+
+### Fix
+
+* Add support to use atmega2560 four UARTs. [lcgamboa]
+
+### Other
+
+* Merge pull request #70 from fathonix/master. [lcgamboa]
+
+* Add .gitignore to prevent accidentally committing the build folder. [Aldo Adirajasa Fathoni]
+
+
 ## v0.8.12 (2023-01-20)
 
 ### New
+
+* Version 0.8.12. [lcgamboa]
 
 * Support to PIC16F886 and PIC18F28K80 added to Breadboard board. [lcgamboa]
 

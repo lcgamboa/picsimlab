@@ -69,8 +69,6 @@ CPICSimLab::CPICSimLab() {
     scale = 1.0;
     need_resize = 0;
     tgo = 0;
-    osc_on = 0;
-    spare_on = 0;
     plWidth = 10;
     plHeight = 10;
     need_clkupdate = 0;
@@ -839,6 +837,9 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
     int lc;
     int load_demo = 0;
 
+    int osc_on = 0;
+    int spare_on = 0;
+
     lxString status;
 
 #ifndef _NOTHREAD
@@ -1136,6 +1137,9 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 
     Oscilloscope.SetBoard(pboard);
     Oscilloscope.SetBaseTimer();
+
+    pboard->SetUseOscilloscope(osc_on);
+    pboard->SetUseSpareParts(spare_on);
 
     if (Instance && !HOME.compare(home)) {
         sprintf(fname, "%s/parts_%s_%i.pcf", home, boards_list[lab].name_, Instance);

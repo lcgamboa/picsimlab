@@ -261,8 +261,6 @@ public:
 
     int tgo;
 
-    int osc_on;
-    int spare_on;
     int plWidth;
     int plHeight;
     int use_dsr_reset;

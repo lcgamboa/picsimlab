@@ -235,7 +235,7 @@ void COscilloscope::WritePreferences(void) {
     PICSimLab.SavePrefs(lxT("osc_on1"), itoa(((CToggleButton*)Window->GetChildByName("togglebutton1"))->GetCheck()));
     PICSimLab.SavePrefs(lxT("osc_color1"),
                         ((CButton*)Window->GetChildByName("button1"))->GetColor().GetAsString(lxC2S_HTML_SYNTAX));
-    PICSimLab.SavePrefs(lxT("osc_inv"), itoa(((CToggleButton*)Window->GetChildByName("togglebutton3"))->GetCheck()));
+    PICSimLab.SavePrefs(lxT("osc_inv1"), itoa(((CToggleButton*)Window->GetChildByName("togglebutton3"))->GetCheck()));
     PICSimLab.SavePrefs(lxT("osc_ch1"), ((CCombo*)Window->GetChildByName("combo2"))->GetText());
 
     PICSimLab.SavePrefs(lxT("osc_scale2"), ftoa(((CSpind*)Window->GetChildByName("spind3"))->GetValue()));
@@ -345,6 +345,155 @@ void COscilloscope::ReadPreferences(char* name, char* value) {
             SetMeasure(i, measures[i]);
         }
     }
+}
+
+lxStringList COscilloscope::WritePreferencesList(void) {
+    lxStringList list;
+    lxString line;
+
+    line = "osc_cfg," + itoa(Window->GetX()) + "," + itoa(Window->GetY()) + ",0:";
+    // osc_tscale
+    line += ftoa(((CSpind*)Window->GetChildByName("spind5"))->GetValue()) + ",";
+    // osc_toffset
+    line += ftoa(((CSpind*)Window->GetChildByName("spind6"))->GetValue()) + ",";
+    // osc_usetrigger
+    line += itoa(((CToggleButton*)Window->GetChildByName("togglebutton5"))->GetCheck()) + ",";
+    // osc_tch
+    line += ((CCombo*)Window->GetChildByName("combo1"))->GetText() + ",";
+    // osc_tlevel
+    line += ftoa(((CSpind*)Window->GetChildByName("spind7"))->GetValue()) + ",";
+    // osc_measures
+    line += itoa(GetMeasures(0)) + "," + itoa(GetMeasures(1)) + +"," + itoa(GetMeasures(2)) + +"," +
+            itoa(GetMeasures(3)) + +"," + itoa(GetMeasures(4));
+    list.AddLine(line);
+
+    line = "osc_ch1,0,0,0:";
+    // osc_scale1
+    line += ftoa(((CSpind*)Window->GetChildByName("spind1"))->GetValue()) + ",";
+    // osc_offset1
+    line += ftoa(((CSpind*)Window->GetChildByName("spind2"))->GetValue()) + ",";
+    // osc_on1
+    line += itoa(((CToggleButton*)Window->GetChildByName("togglebutton1"))->GetCheck()) + ",";
+    // osc_color1
+    line += ((CButton*)Window->GetChildByName("button1"))->GetColor().GetAsString(lxC2S_HTML_SYNTAX) + ",";
+    // osc_inv1
+    line += itoa(((CToggleButton*)Window->GetChildByName("togglebutton3"))->GetCheck()) + ",";
+    // osc_ch1
+    line += ((CCombo*)Window->GetChildByName("combo2"))->GetText();
+    list.AddLine(line);
+
+    line = "osc_ch2,0,0,0:";
+    // osc_scale2
+    line += ftoa(((CSpind*)Window->GetChildByName("spind3"))->GetValue()) + ",";
+    // osc_offset2
+    line += ftoa(((CSpind*)Window->GetChildByName("spind4"))->GetValue()) + ",";
+    // osc_on2
+    line += itoa(((CToggleButton*)Window->GetChildByName("togglebutton2"))->GetCheck()) + ",";
+    // osc_color2
+    line += ((CButton*)Window->GetChildByName("button2"))->GetColor().GetAsString(lxC2S_HTML_SYNTAX) + ",";
+    // osc_inv2
+    line += itoa(((CToggleButton*)Window->GetChildByName("togglebutton4"))->GetCheck()) + ",";
+    // osc_ch2
+    line += ((CCombo*)Window->GetChildByName("combo3"))->GetText();
+    list.AddLine(line);
+
+    return list;
+}
+
+void COscilloscope::ReadPreferencesList(lxStringList pl) {
+    char line[1024];
+    char* tokens[15];
+
+    strncpy(line, (const char*)pl.GetLine(0).c_str(), 1024);
+    tokens[0] = strtok(line, ",:\n");
+    for (int i = 1; i < 15; i++) {
+        tokens[i] = strtok(NULL, ",:\n");
+        if (tokens[i] == NULL) {
+            break;
+        }
+    }
+
+    // cfg
+    Window->SetX(atoi(tokens[1]));
+    Window->SetY(atoi(tokens[2]));
+
+    // osc_tscale
+    ((CSpind*)Window->GetChildByName("spind5"))->SetValue(atof(tokens[4]));
+
+    // osc_toffset
+    ((CSpind*)Window->GetChildByName("spind6"))->SetValue(atof(tokens[5]));
+
+    // osc_usetrigger
+    ((CToggleButton*)Window->GetChildByName("togglebutton5"))->SetCheck(atoi(tokens[6]));
+    SetUseTrigger(atoi(tokens[6]));
+
+    // osc_tch
+    ((CCombo*)Window->GetChildByName("combo1"))->SetText(tokens[7]);
+
+    // osc_tlevel
+    ((CSpind*)Window->GetChildByName("spind7"))->SetValue(atof(tokens[8]));
+
+    // osc_measures
+    for (int i = 0; i < 5; i++) {
+        SetMeasure(i, atoi(tokens[9 + i]));
+    }
+
+    strncpy(line, (const char*)pl.GetLine(1).c_str(), 1024);
+    tokens[0] = strtok(line, ",:\n");
+    for (int i = 1; i < 15; i++) {
+        tokens[i] = strtok(NULL, ",:\n");
+        if (tokens[i] == NULL) {
+            break;
+        }
+    }
+
+    // ch1
+    // osc_scale1
+    ((CSpind*)Window->GetChildByName("spind1"))->SetValue(atof(tokens[4]));
+
+    // osc_offset1
+    ((CSpind*)Window->GetChildByName("spind2"))->SetValue(atof(tokens[5]));
+
+    // osc_on1
+    ((CToggleButton*)Window->GetChildByName("togglebutton1"))->SetCheck(atoi(tokens[6]));
+
+    // osc_color1
+    ((CButton*)Window->GetChildByName("button1"))->SetColor(lxColor(tokens[7]));
+
+    // osc_inv1
+    ((CToggleButton*)Window->GetChildByName("togglebutton3"))->SetCheck(atoi(tokens[8]));
+
+    // osc_ch1
+    ((CCombo*)Window->GetChildByName("combo2"))->SetText(tokens[9]);
+    SetChannelPin(0, atoi(((CCombo*)Window->GetChildByName("combo2"))->GetText()) - 1);
+
+    strncpy(line, (const char*)pl.GetLine(2).c_str(), 1024);
+    tokens[0] = strtok(line, ",:\n");
+    for (int i = 1; i < 15; i++) {
+        tokens[i] = strtok(NULL, ",:\n");
+        if (tokens[i] == NULL) {
+            break;
+        }
+    }
+    // ch2
+    // osc_scale2
+    ((CSpind*)Window->GetChildByName("spind3"))->SetValue(atof(tokens[4]));
+
+    // osc_offset2
+    ((CSpind*)Window->GetChildByName("spind4"))->SetValue(atof(tokens[5]));
+
+    // osc_on2
+    ((CToggleButton*)Window->GetChildByName("togglebutton2"))->SetCheck(atoi(tokens[6]));
+
+    // osc_color2
+    ((CButton*)Window->GetChildByName("button2"))->SetColor(lxColor(tokens[7]));
+
+    // osc_inv2
+    ((CToggleButton*)Window->GetChildByName("togglebutton4"))->SetCheck(atoi(tokens[8]));
+
+    // osc_ch2
+    ((CCombo*)Window->GetChildByName("combo3"))->SetText(tokens[9]);
+    SetChannelPin(1, atoi(((CCombo*)Window->GetChildByName("combo3"))->GetText()) - 1);
 }
 
 void COscilloscope::SetBaseTimer(void) {

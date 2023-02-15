@@ -108,6 +108,9 @@ public:
     void WritePreferences(void);
     void ReadPreferences(char* name, char* value);
 
+    lxStringList WritePreferencesList(void);
+    void ReadPreferencesList(lxStringList pl);
+
 private:
     CWindow* Window;
     board* pboard;

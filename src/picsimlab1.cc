@@ -197,13 +197,11 @@ void CPWindow1::DrawBoard(void) {
             PICSimLab.GetBoard()->EvOnShow();
         }
 
-        if (PICSimLab.osc_on) {
+        if (PICSimLab.GetBoard()->GetUseOscilloscope()) {
             menu1_Modules_Oscilloscope_EvMenuActive(this);
-            PICSimLab.osc_on = 0;
         }
-        if (PICSimLab.spare_on) {
+        if (PICSimLab.GetBoard()->GetUseSpareParts()) {
             menu1_Modules_Spareparts_EvMenuActive(this);
-            PICSimLab.spare_on = 0;
         }
         PICSimLab.SetNeedResize(0);
         statusbar1.Draw();

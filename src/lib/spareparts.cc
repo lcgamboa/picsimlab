@@ -338,6 +338,7 @@ bool CSpareParts::LoadConfig(lxString fname) {
     int orient;
     lxStringList prefs;
     int newformat = 0;
+    lxStringList osc_list;
 
     pboard = PICSimLab.GetBoard();
 
@@ -421,7 +422,41 @@ bool CSpareParts::LoadConfig(lxString fname) {
                 Window->SetHeight(h);
                 Window->GetChildByName("draw1")->SetWidth(w - 15);
                 Window->GetChildByName("draw1")->SetHeight(h - 40);
-
+            } else if (!strcmp(name, "boardp")) {
+                int w, h;
+                w = orient;
+                sscanf(temp, "%i", &h);
+                PICSimLab.GetWindow()->SetX(x);
+                PICSimLab.GetWindow()->SetY(y);
+                PICSimLab.GetWindow()->SetWidth(w);
+                PICSimLab.GetWindow()->SetHeight(h);
+            } else if (!strcmp(name, "spare_on")) {
+                unsigned char spare_on;
+                sscanf(temp, "%hhu", &spare_on);
+                PICSimLab.GetBoard()->SetUseSpareParts(spare_on);
+                if (spare_on) {
+                    SpareParts.GetWindow()->Show();
+                    PICSimLab.GetBoard()->Reset();
+                } else {
+                    SpareParts.GetWindow()->Hide();
+                }
+            } else if (!strcmp(name, "osc_on")) {
+                unsigned char osc_on;
+                sscanf(temp, "%hhu", &osc_on);
+                PICSimLab.GetBoard()->SetUseOscilloscope(osc_on);
+                if (osc_on) {
+                    Oscilloscope.GetWindow()->Show();
+                } else {
+                    Oscilloscope.GetWindow()->Hide();
+                }
+            } else if (!strcmp(name, "osc_cfg")) {
+                osc_list.Clear();
+                osc_list.AddLine(prefs.GetLine(i));
+            } else if (!strcmp(name, "osc_ch1")) {
+                osc_list.AddLine(prefs.GetLine(i));
+            } else if (!strcmp(name, "osc_ch2")) {
+                osc_list.AddLine(prefs.GetLine(i));
+                Oscilloscope.ReadPreferencesList(osc_list);
             } else if ((parts[partsc_] = create_part(name, x, y))) {
                 printf("Spare parts: parts[%02i] (%s) created \n", partsc_, name);
                 parts[partsc_]->ReadPreferences(temp);
@@ -557,8 +592,20 @@ bool CSpareParts::SaveConfig(lxString fname) {
     prefs.AddLine(temp);
     temp.Printf("position,%i,%i,%i:%i", Window->GetX(), Window->GetY(), Window->GetWidth(), Window->GetHeight());
     prefs.AddLine(temp);
+    temp.Printf("boardp,%i,%i,%i:%i", PICSimLab.GetWindow()->GetX(), PICSimLab.GetWindow()->GetY(),
+                PICSimLab.GetWindow()->GetWidth(), PICSimLab.GetWindow()->GetHeight());
+    prefs.AddLine(temp);
+    temp.Printf("spare_on,0,0,0:%i", PICSimLab.GetBoard()->GetUseSpareParts());
+    prefs.AddLine(temp);
+    temp.Printf("osc_on,0,0,0:%i", PICSimLab.GetBoard()->GetUseOscilloscope());
+    prefs.AddLine(temp);
     temp.Printf("useAlias,0,0,0:%i", GetUseAlias());
     prefs.AddLine(temp);
+
+    lxStringList osc_list = Oscilloscope.WritePreferencesList();
+    for (unsigned int ol = 0; ol < osc_list.GetLinesCount(); ol++) {
+        prefs.AddLine(osc_list.GetLine(ol));
+    }
 
     for (int i = 0; i < GetCount(); i++) {
         temp.Printf("%s,%i,%i,%i:%s", GetPart(i)->GetName().c_str(), GetPart(i)->GetX(), GetPart(i)->GetY(),
