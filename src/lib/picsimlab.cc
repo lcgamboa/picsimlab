@@ -1142,7 +1142,6 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
     SpareParts.LoadPinAlias(fname);
 
     printf("PICSimLab: Debug On=%i  Type=%s Port=%i\n", debug, (debug_type) ? "GDB" : "MDB", GetDebugPort());
-    printf("PICSimLab: Remote Control Port %i\n", GetRemotecPort());
 
 #ifdef NO_DEBUG
     statusbar->SetField(1, lxT(" "));
@@ -1174,6 +1173,7 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 #endif
 
 #ifndef __EMSCRIPTEN__
+    printf("PICSimLab: Remote Control Port %i\n", GetRemotecPort());
     rcontrol_init(GetRemotecPort() + Instance);
 #endif
 

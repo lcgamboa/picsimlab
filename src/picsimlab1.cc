@@ -833,6 +833,7 @@ void CPWindow1::menu1_EvMicrocontroller(CControl* control) {
         PICSimLab.EndSimulation();
         PICSimLab.Configure(PICSimLab.GetHomePath());
         PICSimLab.SetNeedResize(1);
+        SpareParts.SetUseAlias(0);
     }
 }
 
