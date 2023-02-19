@@ -316,8 +316,7 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
 #endif
 
     SetSimulationRun(1);
-    Oscilloscope.GetWindow()->Hide();
-    SpareParts.GetWindow()->Hide();
+
 #ifndef __EMSCRIPTEN__
     rcontrol_end();
 #endif
@@ -476,6 +475,8 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
         printf("PICSimLab: End Board Simulation.\n");
     }
 
+    Oscilloscope.GetWindow()->Hide();
+    SpareParts.GetWindow()->Hide();
     DeleteBoard();
 }
 
