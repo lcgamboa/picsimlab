@@ -519,7 +519,10 @@ void bsim_simavr::MSetVCC(float vcc) {
 }
 
 float bsim_simavr::MGetVCC(void) {
-    return avr->vcc / 1000.0;
+    if (avr) {
+        return avr->vcc / 1000.0;
+    }
+    return 5.0;
 }
 
 float bsim_simavr::MGetInstClockFreq(void) {
