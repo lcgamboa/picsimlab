@@ -135,81 +135,83 @@ cboard_McLab2::cboard_McLab2(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE
 
     active = 0;
 
-    lxImage image(PICSimLab.GetWindow());
-    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/VT1.svg")));
-    vent[0] = new lxBitmap(&image, PICSimLab.GetWindow());
-    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/VT2.svg")));
-    vent[1] = new lxBitmap(&image, PICSimLab.GetWindow());
+    if (PICSimLab.GetWindow()) {
+        lxImage image(PICSimLab.GetWindow());
+        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/VT1.svg")));
+        vent[0] = new lxBitmap(&image, PICSimLab.GetWindow());
+        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/VT2.svg")));
+        vent[1] = new lxBitmap(&image, PICSimLab.GetWindow());
 
-    image.Destroy();
+        image.Destroy();
 
-    // gauge1
-    gauge1 = new CGauge();
-    gauge1->SetFOwner(PICSimLab.GetWindow());
-    gauge1->SetName(lxT("gauge1_p3"));
-    gauge1->SetX(13);
-    gauge1->SetY(242);
-    gauge1->SetWidth(140);
-    gauge1->SetHeight(20);
-    gauge1->SetEnable(1);
-    gauge1->SetVisible(1);
-    gauge1->SetRange(100);
-    gauge1->SetValue(0);
-    gauge1->SetType(4);
-    PICSimLab.GetWindow()->CreateChild(gauge1);
-    // gauge2
-    gauge2 = new CGauge();
-    gauge2->SetFOwner(PICSimLab.GetWindow());
-    gauge2->SetName(lxT("gauge2_p3"));
-    gauge2->SetX(12);
-    gauge2->SetY(190);
-    gauge2->SetWidth(140);
-    gauge2->SetHeight(20);
-    gauge2->SetEnable(1);
-    gauge2->SetVisible(1);
-    gauge2->SetRange(100);
-    gauge2->SetValue(0);
-    gauge2->SetType(4);
-    PICSimLab.GetWindow()->CreateChild(gauge2);
-    // label2
-    label2 = new CLabel();
-    label2->SetFOwner(PICSimLab.GetWindow());
-    label2->SetName(lxT("label2_p3"));
-    label2->SetX(12);
-    label2->SetY(166);
-    label2->SetWidth(60);
-    label2->SetHeight(20);
-    label2->SetEnable(1);
-    label2->SetVisible(1);
-    label2->SetText(lxT("Heater"));
-    label2->SetAlign(1);
-    PICSimLab.GetWindow()->CreateChild(label2);
-    // label3
-    label3 = new CLabel();
-    label3->SetFOwner(PICSimLab.GetWindow());
-    label3->SetName(lxT("label3_p3"));
-    label3->SetX(13);
-    label3->SetY(217);
-    label3->SetWidth(60);
-    label3->SetHeight(20);
-    label3->SetEnable(1);
-    label3->SetVisible(1);
-    label3->SetText(lxT("Cooler"));
-    label3->SetAlign(1);
-    PICSimLab.GetWindow()->CreateChild(label3);
-    // label4
-    label4 = new CLabel();
-    label4->SetFOwner(PICSimLab.GetWindow());
-    label4->SetName(lxT("label4_p3"));
-    label4->SetX(13);
-    label4->SetY(272);
-    label4->SetWidth(120);
-    label4->SetHeight(24);
-    label4->SetEnable(1);
-    label4->SetVisible(1);
-    label4->SetText(lxT("Temp: 00.0°C"));
-    label4->SetAlign(1);
-    PICSimLab.GetWindow()->CreateChild(label4);
+        // gauge1
+        gauge1 = new CGauge();
+        gauge1->SetFOwner(PICSimLab.GetWindow());
+        gauge1->SetName(lxT("gauge1_p3"));
+        gauge1->SetX(13);
+        gauge1->SetY(242);
+        gauge1->SetWidth(140);
+        gauge1->SetHeight(20);
+        gauge1->SetEnable(1);
+        gauge1->SetVisible(1);
+        gauge1->SetRange(100);
+        gauge1->SetValue(0);
+        gauge1->SetType(4);
+        PICSimLab.GetWindow()->CreateChild(gauge1);
+        // gauge2
+        gauge2 = new CGauge();
+        gauge2->SetFOwner(PICSimLab.GetWindow());
+        gauge2->SetName(lxT("gauge2_p3"));
+        gauge2->SetX(12);
+        gauge2->SetY(190);
+        gauge2->SetWidth(140);
+        gauge2->SetHeight(20);
+        gauge2->SetEnable(1);
+        gauge2->SetVisible(1);
+        gauge2->SetRange(100);
+        gauge2->SetValue(0);
+        gauge2->SetType(4);
+        PICSimLab.GetWindow()->CreateChild(gauge2);
+        // label2
+        label2 = new CLabel();
+        label2->SetFOwner(PICSimLab.GetWindow());
+        label2->SetName(lxT("label2_p3"));
+        label2->SetX(12);
+        label2->SetY(166);
+        label2->SetWidth(60);
+        label2->SetHeight(20);
+        label2->SetEnable(1);
+        label2->SetVisible(1);
+        label2->SetText(lxT("Heater"));
+        label2->SetAlign(1);
+        PICSimLab.GetWindow()->CreateChild(label2);
+        // label3
+        label3 = new CLabel();
+        label3->SetFOwner(PICSimLab.GetWindow());
+        label3->SetName(lxT("label3_p3"));
+        label3->SetX(13);
+        label3->SetY(217);
+        label3->SetWidth(60);
+        label3->SetHeight(20);
+        label3->SetEnable(1);
+        label3->SetVisible(1);
+        label3->SetText(lxT("Cooler"));
+        label3->SetAlign(1);
+        PICSimLab.GetWindow()->CreateChild(label3);
+        // label4
+        label4 = new CLabel();
+        label4->SetFOwner(PICSimLab.GetWindow());
+        label4->SetName(lxT("label4_p3"));
+        label4->SetX(13);
+        label4->SetY(272);
+        label4->SetWidth(120);
+        label4->SetHeight(24);
+        label4->SetEnable(1);
+        label4->SetVisible(1);
+        label4->SetText(lxT("Temp: 00.0°C"));
+        label4->SetAlign(1);
+        PICSimLab.GetWindow()->CreateChild(label4);
+    }
 
     snprintf(mi2c_tmp_name, 200, "%s/picsimlab-XXXXXX", (const char*)lxGetTempDir("PICSimLab").c_str());
     close(mkstemp(mi2c_tmp_name));
@@ -227,12 +229,13 @@ cboard_McLab2::~cboard_McLab2(void) {
     delete vent[1];
     vent[0] = NULL;
     vent[1] = NULL;
-
-    PICSimLab.GetWindow()->DestroyChild(gauge1);
-    PICSimLab.GetWindow()->DestroyChild(gauge2);
-    PICSimLab.GetWindow()->DestroyChild(label2);
-    PICSimLab.GetWindow()->DestroyChild(label3);
-    PICSimLab.GetWindow()->DestroyChild(label4);
+    if (PICSimLab.GetWindow()) {
+        PICSimLab.GetWindow()->DestroyChild(gauge1);
+        PICSimLab.GetWindow()->DestroyChild(gauge2);
+        PICSimLab.GetWindow()->DestroyChild(label2);
+        PICSimLab.GetWindow()->DestroyChild(label3);
+        PICSimLab.GetWindow()->DestroyChild(label4);
+    }
 
     unlink(mi2c_tmp_name);
 
@@ -906,19 +909,23 @@ void cboard_McLab2::Reset(void) {
     pic_set_pin(&pic, 35, p_BT[2]);
     pic_set_pin(&pic, 36, p_BT[3]);
 
+    if (PICSimLab.GetStatusBar()) {
 #ifndef _WIN_
-    if (pic.serial[0].serialfd > 0)
+        if (pic.serial[0].serialfd > 0)
 #else
-    if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
+        if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
-                                                  itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                                  lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                                   100.0 * pic.serial[0].serialbaud) /
-                                                                                  pic.serial[0].serialexbaud)) +
-                                                  lxT("%)"));
-    else
-        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+            PICSimLab.GetStatusBar()->SetField(
+                2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) +
+                       lxT("(") +
+                       lxString().Format("%4.1f",
+                                         fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
+                                              pic.serial[0].serialexbaud)) +
+                       lxT("%)"));
+        else
+            PICSimLab.GetStatusBar()->SetField(2,
+                                               lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+    }
 
     for (int pi = 0; pi < pic.PINCOUNT; pi++) {
         lm1[pi] = 0;

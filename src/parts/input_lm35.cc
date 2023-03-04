@@ -46,6 +46,9 @@ cpart_lm35::cpart_lm35(const unsigned x, const unsigned y, const char* name, con
     active = 0;
 
     SetPCWProperties(pcwprop, 3);
+
+    PinCount = 1;
+    Pins = output_pins;
 }
 
 void cpart_lm35::RegisterRemoteControl(void) {

@@ -66,6 +66,9 @@ cpart_VCD_Play::cpart_VCD_Play(const unsigned x, const unsigned y, const char* n
     vcd_step = 0;
 
     SetPCWProperties(pcwprop, 8);
+
+    PinCount = 8;
+    Pins = output_pins;
 }
 
 void cpart_VCD_Play::RegisterRemoteControl(void) {

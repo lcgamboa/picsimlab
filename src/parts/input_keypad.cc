@@ -121,6 +121,9 @@ cpart_keypad::cpart_keypad(const unsigned x, const unsigned y, const char* name,
     ChangeType(KT4x4);
 
     SetPCWProperties(pcwprop, 12);
+
+    PinCount = 8;
+    Pins = output_pins;
 }
 
 void cpart_keypad::RegisterRemoteControl(void) {

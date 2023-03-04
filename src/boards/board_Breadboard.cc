@@ -105,40 +105,44 @@ void cboard_Breadboard::Reset(void) {
 
             pic_reset(&pic, 1);
 
-            // verify serial port state and refresh status bar
+            if (PICSimLab.GetStatusBar()) {
+                // verify serial port state and refresh status bar
 #ifndef _WIN_
-            if (pic.serial[0].serialfd > 0)
+                if (pic.serial[0].serialfd > 0)
 #else
-            if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
+                if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-                PICSimLab.GetStatusBar()->SetField(
-                    2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) +
-                           lxT("(") +
-                           lxString().Format(
-                               "%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
-                                             pic.serial[0].serialexbaud)) +
-                           lxT("%)"));
-            else
-                PICSimLab.GetStatusBar()->SetField(
-                    2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+                    PICSimLab.GetStatusBar()->SetField(
+                        2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+                               itoa(pic.serial[0].serialbaud) + lxT("(") +
+                               lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                                                100.0 * pic.serial[0].serialbaud) /
+                                                               pic.serial[0].serialexbaud)) +
+                               lxT("%)"));
+                else
+                    PICSimLab.GetStatusBar()->SetField(
+                        2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+            }
             break;
         case _AVR:
             MReset(0);
-
-            // verify serial port state and refresh status bar
+            if (PICSimLab.GetStatusBar()) {
+                // verify serial port state and refresh status bar
 #ifndef _WIN_
-            if (serialfd > 0)
+                if (serialfd > 0)
 #else
-            if (serialfd != INVALID_HANDLE_VALUE)
+                if (serialfd != INVALID_HANDLE_VALUE)
 #endif
-                PICSimLab.GetStatusBar()->SetField(
-                    2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) + lxT("(") +
-                           lxString().Format(
-                               "%4.1f", fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) / serialexbaud[0])) +
-                           lxT("%)"));
-            else
-                PICSimLab.GetStatusBar()->SetField(
-                    2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+                    PICSimLab.GetStatusBar()->SetField(
+                        2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) +
+                               lxT("(") +
+                               lxString().Format(
+                                   "%4.1f", fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) / serialexbaud[0])) +
+                               lxT("%)"));
+                else
+                    PICSimLab.GetStatusBar()->SetField(
+                        2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+            }
             break;
     }
 

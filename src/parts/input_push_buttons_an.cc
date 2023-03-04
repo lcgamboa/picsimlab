@@ -61,6 +61,9 @@ cpart_pbuttons_an::cpart_pbuttons_an(const unsigned x, const unsigned y, const c
     output_value = active * vmax;
 
     SetPCWProperties(pcwprop, 4);
+
+    PinCount = 1;
+    Pins = output_pins;
 }
 
 void cpart_pbuttons_an::RegisterRemoteControl(void) {

@@ -50,8 +50,7 @@ public:
     unsigned short GetOutputId(char* name) override;
 
 private:
-    unsigned char input_pin;
-    unsigned char output_pin;
+    unsigned char pins[2];
     int ordern;
     int orderd;
     float num[4];

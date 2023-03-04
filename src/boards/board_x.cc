@@ -111,61 +111,63 @@ cboard_x::cboard_x(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, l
 
     active = 0;
 
-    // controls properties and creation
-    // gauge1
-    gauge1 = new CGauge();
-    gauge1->SetFOwner(PICSimLab.GetWindow());
-    gauge1->SetName(lxT("gauge1_px"));
-    gauge1->SetX(13);
-    gauge1->SetY(382 - 160);
-    gauge1->SetWidth(140);
-    gauge1->SetHeight(20);
-    gauge1->SetEnable(1);
-    gauge1->SetVisible(1);
-    gauge1->SetRange(100);
-    gauge1->SetValue(0);
-    gauge1->SetType(4);
-    PICSimLab.GetWindow()->CreateChild(gauge1);
-    // gauge2
-    gauge2 = new CGauge();
-    gauge2->SetFOwner(PICSimLab.GetWindow());
-    gauge2->SetName(lxT("gauge2_px"));
-    gauge2->SetX(12);
-    gauge2->SetY(330 - 160);
-    gauge2->SetWidth(140);
-    gauge2->SetHeight(20);
-    gauge2->SetEnable(1);
-    gauge2->SetVisible(1);
-    gauge2->SetRange(100);
-    gauge2->SetValue(0);
-    gauge2->SetType(4);
-    PICSimLab.GetWindow()->CreateChild(gauge2);
-    // label2
-    label2 = new CLabel();
-    label2->SetFOwner(PICSimLab.GetWindow());
-    label2->SetName(lxT("label2_px"));
-    label2->SetX(12);
-    label2->SetY(306 - 160);
-    label2->SetWidth(60);
-    label2->SetHeight(20);
-    label2->SetEnable(1);
-    label2->SetVisible(1);
-    label2->SetText(lxT("RB0"));
-    label2->SetAlign(1);
-    PICSimLab.GetWindow()->CreateChild(label2);
-    // label3
-    label3 = new CLabel();
-    label3->SetFOwner(PICSimLab.GetWindow());
-    label3->SetName(lxT("label3_px"));
-    label3->SetX(13);
-    label3->SetY(357 - 160);
-    label3->SetWidth(60);
-    label3->SetHeight(20);
-    label3->SetEnable(1);
-    label3->SetVisible(1);
-    label3->SetText(lxT("RB1"));
-    label3->SetAlign(1);
-    PICSimLab.GetWindow()->CreateChild(label3);
+    if (PICSimLab.GetWindow()) {
+        // controls properties and creation
+        // gauge1
+        gauge1 = new CGauge();
+        gauge1->SetFOwner(PICSimLab.GetWindow());
+        gauge1->SetName(lxT("gauge1_px"));
+        gauge1->SetX(13);
+        gauge1->SetY(382 - 160);
+        gauge1->SetWidth(140);
+        gauge1->SetHeight(20);
+        gauge1->SetEnable(1);
+        gauge1->SetVisible(1);
+        gauge1->SetRange(100);
+        gauge1->SetValue(0);
+        gauge1->SetType(4);
+        PICSimLab.GetWindow()->CreateChild(gauge1);
+        // gauge2
+        gauge2 = new CGauge();
+        gauge2->SetFOwner(PICSimLab.GetWindow());
+        gauge2->SetName(lxT("gauge2_px"));
+        gauge2->SetX(12);
+        gauge2->SetY(330 - 160);
+        gauge2->SetWidth(140);
+        gauge2->SetHeight(20);
+        gauge2->SetEnable(1);
+        gauge2->SetVisible(1);
+        gauge2->SetRange(100);
+        gauge2->SetValue(0);
+        gauge2->SetType(4);
+        PICSimLab.GetWindow()->CreateChild(gauge2);
+        // label2
+        label2 = new CLabel();
+        label2->SetFOwner(PICSimLab.GetWindow());
+        label2->SetName(lxT("label2_px"));
+        label2->SetX(12);
+        label2->SetY(306 - 160);
+        label2->SetWidth(60);
+        label2->SetHeight(20);
+        label2->SetEnable(1);
+        label2->SetVisible(1);
+        label2->SetText(lxT("RB0"));
+        label2->SetAlign(1);
+        PICSimLab.GetWindow()->CreateChild(label2);
+        // label3
+        label3 = new CLabel();
+        label3->SetFOwner(PICSimLab.GetWindow());
+        label3->SetName(lxT("label3_px"));
+        label3->SetX(13);
+        label3->SetY(357 - 160);
+        label3->SetWidth(60);
+        label3->SetHeight(20);
+        label3->SetEnable(1);
+        label3->SetVisible(1);
+        label3->SetText(lxT("RB1"));
+        label3->SetAlign(1);
+        PICSimLab.GetWindow()->CreateChild(label3);
+    }
 
     SWBounce_init(&bounce, 2);
 }
@@ -173,11 +175,13 @@ cboard_x::cboard_x(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, l
 // Destructor called once on board destruction
 
 cboard_x::~cboard_x(void) {
-    // controls destruction
-    PICSimLab.GetWindow()->DestroyChild(gauge1);
-    PICSimLab.GetWindow()->DestroyChild(gauge2);
-    PICSimLab.GetWindow()->DestroyChild(label2);
-    PICSimLab.GetWindow()->DestroyChild(label3);
+    if (PICSimLab.GetWindow()) {
+        // controls destruction
+        PICSimLab.GetWindow()->DestroyChild(gauge1);
+        PICSimLab.GetWindow()->DestroyChild(gauge2);
+        PICSimLab.GetWindow()->DestroyChild(label2);
+        PICSimLab.GetWindow()->DestroyChild(label3);
+    }
     SWBounce_end(&bounce);
 }
 
@@ -193,20 +197,24 @@ void cboard_x::Reset(void) {
     // write switch state to pic pin 20 (RD1)
     pic_set_pin(&pic, 20, p_BT2);
 
-    // verify serial port state and refresh status bar
+    if (PICSimLab.GetStatusBar()) {
+        // verify serial port state and refresh status bar
 #ifndef _WIN_
-    if (pic.serial[0].serialfd > 0)
+        if (pic.serial[0].serialfd > 0)
 #else
-    if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
+        if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
-                                                  itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                                  lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                                   100.0 * pic.serial[0].serialbaud) /
-                                                                                  pic.serial[0].serialexbaud)) +
-                                                  lxT("%)"));
-    else
-        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+            PICSimLab.GetStatusBar()->SetField(
+                2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) +
+                       lxT("(") +
+                       lxString().Format("%4.1f",
+                                         fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
+                                              pic.serial[0].serialexbaud)) +
+                       lxT("%)"));
+        else
+            PICSimLab.GetStatusBar()->SetField(2,
+                                               lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+    }
 
     if (use_spare)
         SpareParts.Reset();

@@ -57,6 +57,8 @@ cpart_pot::cpart_pot(const unsigned x, const unsigned y, const char* name, const
     vmax = 5.0;
 
     SetPCWProperties(pcwprop, 6);
+    PinCount = 4;
+    Pins = output_pins;
 }
 
 void cpart_pot::RegisterRemoteControl(void) {

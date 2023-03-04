@@ -69,6 +69,9 @@ cpart_MI2C_24CXXX::cpart_MI2C_24CXXX(const unsigned x, const unsigned y, const c
     strncat(f_mi2c_tmp_name, ".txt", 200);
 
     SetPCWProperties(pcwprop, 9);
+
+    PinCount = 5;
+    Pins = input_pins;
 }
 
 cpart_MI2C_24CXXX::~cpart_MI2C_24CXXX(void) {

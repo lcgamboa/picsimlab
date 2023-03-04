@@ -84,6 +84,9 @@ cpart_LCD_hd44780::cpart_LCD_hd44780(const unsigned x, const unsigned y, const c
     input_pins[10] = 0;
 
     lcde = 0;
+
+    PinCount = 11;
+    Pins = input_pins;
 }
 
 cpart_LCD_hd44780::~cpart_LCD_hd44780(void) {
@@ -375,11 +378,12 @@ void cpart_LCD_hd44780::LoadImage(void) {
             break;
     }
 
-    Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
-    canvas.Destroy();
-    canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
-    image.Destroy();
-
+    if (SpareParts.GetWindow()) {
+        Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
+        canvas.Destroy();
+        canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
+        image.Destroy();
+    }
     for (int i = 0; i < outputc; i++) {
         output[i].update = 1;
     }

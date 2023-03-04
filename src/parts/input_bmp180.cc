@@ -58,6 +58,9 @@ cpart_bmp180::cpart_bmp180(const unsigned x, const unsigned y, const char* name,
     active[0] = 0;
 
     SetPCWProperties(pcwprop, 4);
+
+    PinCount = 2;
+    Pins = input_pins;
 }
 
 cpart_bmp180::~cpart_bmp180(void) {

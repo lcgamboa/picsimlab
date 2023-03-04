@@ -64,6 +64,9 @@ cpart_ADXL345::cpart_ADXL345(const unsigned x, const unsigned y, const char* nam
     adxl345_set_accel(&adxl, 0, 0, 1.0);
 
     SetPCWProperties(pcwprop, 8);
+
+    PinCount = 6;
+    Pins = adxl_pins;
 }
 
 void cpart_ADXL345::RegisterRemoteControl(void) {

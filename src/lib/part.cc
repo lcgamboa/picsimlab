@@ -43,6 +43,8 @@ part::part(const unsigned x, const unsigned y, const char* name, const char* typ
     X = x;
     Y = y;
     Bitmap = NULL;
+    PinCount = 0;
+    Pins = NULL;
 }
 
 void part::Init(void) {
@@ -318,16 +320,21 @@ void part::LoadImage(void) {
     lxString iname = lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetPictureFileName());
 
     if (image.LoadFile(iname, Orientation, Scale, Scale)) {
-        Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
-        image.Destroy();
-        canvas.Destroy();
-        canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
+        if (SpareParts.GetWindow()) {
+            Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
+            image.Destroy();
+            canvas.Destroy();
+            canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
+        }
     } else if (image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/Common/notfound.svg")), Orientation,
                               Scale, Scale)) {
-        Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
-        image.Destroy();
-        canvas.Destroy();
-        canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
+        if (SpareParts.GetWindow()) {
+            Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
+
+            image.Destroy();
+            canvas.Destroy();
+            canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
+        }
         printf("PICSimLab: (%s) Error loading image %s\n", (const char*)Name.c_str(), (const char*)iname.c_str());
         PICSimLab.RegisterError("Error loading image:\n " + iname);
     } else {

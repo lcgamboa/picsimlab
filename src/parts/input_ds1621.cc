@@ -59,6 +59,9 @@ cpart_ds1621::cpart_ds1621(const unsigned x, const unsigned y, const char* name,
     active = 0;
 
     SetPCWProperties(pcwprop, 8);
+
+    PinCount = 6;
+    Pins = input_pins;
 }
 
 cpart_ds1621::~cpart_ds1621(void) {

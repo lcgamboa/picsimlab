@@ -79,6 +79,9 @@ cpart_VCD_Dump::cpart_VCD_Dump(const unsigned x, const unsigned y, const char* n
     vcd_count = 0;
 
     SetPCWProperties(pcwprop, 8);
+
+    PinCount = 8;
+    Pins = input_pins;
 }
 
 void cpart_VCD_Dump::RegisterRemoteControl(void) {

@@ -56,6 +56,9 @@ cpart_step::cpart_step(const unsigned x, const unsigned y, const char* name, con
     turns = 0;
 
     SetPCWProperties(pcwprop, 5);
+
+    PinCount = 4;
+    Pins = input_pins;
 }
 
 cpart_step::~cpart_step(void) {

@@ -50,7 +50,10 @@ cpart_RTC_ds1307::cpart_RTC_ds1307(const unsigned x, const unsigned y, const cha
     input_pins[2] = 0;
 
     SetPCWProperties(pcwprop, 8);
-};
+
+    PinCount = 3;
+    Pins = input_pins;
+}
 
 cpart_RTC_ds1307::~cpart_RTC_ds1307(void) {
     rtc_ds1307_end(&rtc2);

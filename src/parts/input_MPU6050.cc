@@ -70,6 +70,9 @@ cpart_MPU6050::cpart_MPU6050(const unsigned x, const unsigned y, const char* nam
     mpu6050_set_gyro(&mpu, 0, 0, 0);
 
     SetPCWProperties(pcwprop, 8);
+
+    PinCount = 6;
+    Pins = mpu_pins;
 }
 
 void cpart_MPU6050::RegisterRemoteControl(void) {

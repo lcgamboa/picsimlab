@@ -71,9 +71,13 @@ cpart_Buzzer::cpart_Buzzer(const unsigned x, const unsigned y, const char* name,
     out[1] = 0;
     out[2] = 0;
 
-    timer = (CTimer*)PICSimLab.GetWindow()->GetChildByName("timer1");
-
+    if (PICSimLab.GetWindow()) {
+        timer = (CTimer*)PICSimLab.GetWindow()->GetChildByName("timer1");
+    }
     SetPCWProperties(pcwprop, 4);
+
+    PinCount = 1;
+    Pins = input_pins;
 }
 
 cpart_Buzzer::~cpart_Buzzer(void) {

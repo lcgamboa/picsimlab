@@ -31,9 +31,9 @@
 /* outputs */
 enum { O_P1, O_P2, O_P3, O_P4, O_F1, O_F2, O_LED };
 
-static PCWProp pcwprop[7] = {{PCW_LABEL, "1-VCC,+5V"}, {PCW_LABEL, "2-GND,GND"}, {PCW_COMBO, "3-DIN"},
+static PCWProp pcwprop[8] = {{PCW_LABEL, "1-VCC,+5V"}, {PCW_LABEL, "2-GND,GND"}, {PCW_COMBO, "3-DIN"},
                              {PCW_COMBO, "4-CS"},      {PCW_COMBO, "5-CLK"},     {PCW_LABEL, "6-Dout,NC"},
-                             {PCW_COMBO, "Angle"}};
+                             {PCW_COMBO, "Angle"},     {PCW_COMBO, "Model"}};
 
 cpart_led_matrix::cpart_led_matrix(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -42,6 +42,7 @@ cpart_led_matrix::cpart_led_matrix(const unsigned x, const unsigned y, const cha
     ReadMaps();
     Bitmap = NULL;
     angle = 0;
+    lmode = 0;
 
     LoadImage();
 
@@ -54,7 +55,12 @@ cpart_led_matrix::cpart_led_matrix(const unsigned x, const unsigned y, const cha
 
     output_pins[0] = SpareParts.RegisterIOpin(lxT("DOUT"));
 
-    SetPCWProperties(pcwprop, 7);
+    SetPCWProperties(pcwprop, 8);
+
+    PinCount = 3;
+    Pins = input_pins;
+    PinCtrlCount = 1;
+    PinsCtrl = output_pins;
 }
 
 cpart_led_matrix::~cpart_led_matrix(void) {
@@ -104,7 +110,7 @@ void cpart_led_matrix::DrawOutput(const unsigned int i) {
             if (ldd.update) {
                 canvas.SetColor(0, 90 + 40, 0);
                 ldd_max72xx_draw(&ldd, &canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                 output[i].y2 - output[i].y1, 1, angle);
+                                 output[i].y2 - output[i].y1, 1, angle, lmode);
             }
             break;
     }
@@ -140,14 +146,16 @@ unsigned short cpart_led_matrix::GetOutputId(char* name) {
 lxString cpart_led_matrix::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%i", input_pins[0], input_pins[1], input_pins[2], output_pins[0], angle);
+    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%i,%i", input_pins[0], input_pins[1], input_pins[2], output_pins[0], angle,
+            lmode);
 
     return prefs;
 }
 
 void cpart_led_matrix::ReadPreferences(lxString value) {
     unsigned char outp;
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%i", &input_pins[0], &input_pins[1], &input_pins[2], &outp, &angle);
+    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%i,%i", &input_pins[0], &input_pins[1], &input_pins[2], &outp, &angle,
+           &lmode);
 
     SpareParts.UnregisterIOpin(output_pins[0]);
     output_pins[0] = SpareParts.RegisterIOpin(lxT("DOUT"), outp);
@@ -168,6 +176,9 @@ void cpart_led_matrix::ConfigurePropertiesWindow(CPWindow* WProp) {
 
     ((CCombo*)WProp->GetChildByName("combo7"))->SetItems("0,90,180,270,");
     ((CCombo*)WProp->GetChildByName("combo7"))->SetText(itoa(angle));
+
+    ((CCombo*)WProp->GetChildByName("combo8"))->SetItems("FC16,Parola,");
+    ((CCombo*)WProp->GetChildByName("combo8"))->SetText((!lmode ? "FC16" : "Parola"));
 }
 
 void cpart_led_matrix::ReadPropertiesWindow(CPWindow* WProp) {
@@ -175,6 +186,7 @@ void cpart_led_matrix::ReadPropertiesWindow(CPWindow* WProp) {
     input_pins[1] = GetPWCComboSelectedPin(WProp, "combo4");
     input_pins[2] = GetPWCComboSelectedPin(WProp, "combo5");
     angle = atoi(((CCombo*)WProp->GetChildByName("combo7"))->GetText());
+    lmode = !(((CCombo*)WProp->GetChildByName("combo8"))->GetText().Cmp("FC16") == 0);
 }
 
 void cpart_led_matrix::Process(void) {

@@ -53,6 +53,7 @@ private:
     unsigned char output_pins[1];
     ldd_max72xx_t ldd;
     int angle;
+    int lmode;
     lxFont font;
 };
 

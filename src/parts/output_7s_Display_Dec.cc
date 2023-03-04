@@ -119,6 +119,9 @@ cpart_7s_display_dec::cpart_7s_display_dec(const unsigned x, const unsigned y, c
     ChangeType(0);
 
     SetPCWProperties(pcwprop, 9);
+
+    PinCount = 8;
+    Pins = input_pins;
 }
 
 cpart_7s_display_dec::~cpart_7s_display_dec(void) {

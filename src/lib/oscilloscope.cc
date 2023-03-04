@@ -230,6 +230,10 @@ void COscilloscope::Init(CWindow* win) {
 }
 
 void COscilloscope::WritePreferences(void) {
+    if (!Window) {
+        return;
+    }
+
     PICSimLab.SavePrefs(lxT("osc_scale1"), ftoa(((CSpind*)Window->GetChildByName("spind1"))->GetValue()));
     PICSimLab.SavePrefs(lxT("osc_offset1"), ftoa(((CSpind*)Window->GetChildByName("spind2"))->GetValue()));
     PICSimLab.SavePrefs(lxT("osc_on1"), itoa(((CToggleButton*)Window->GetChildByName("togglebutton1"))->GetCheck()));
@@ -260,6 +264,10 @@ void COscilloscope::WritePreferences(void) {
 }
 
 void COscilloscope::ReadPreferences(char* name, char* value) {
+    if (!Window) {
+        return;
+    }
+
     if (!strcmp(name, "osc_scale1")) {
         ((CSpind*)Window->GetChildByName("spind1"))->SetValue(atof(value));
     }
@@ -351,6 +359,10 @@ lxStringList COscilloscope::WritePreferencesList(void) {
     lxStringList list;
     lxString line;
 
+    if (!Window) {
+        return list;
+    }
+
     line = "osc_cfg," + itoa(Window->GetX()) + "," + itoa(Window->GetY()) + ",0:";
     // osc_tscale
     line += ftoa(((CSpind*)Window->GetChildByName("spind5"))->GetValue()) + ",";
@@ -403,6 +415,10 @@ lxStringList COscilloscope::WritePreferencesList(void) {
 void COscilloscope::ReadPreferencesList(lxStringList pl) {
     char line[1024];
     char* tokens[15];
+
+    if (!Window) {
+        return;
+    }
 
     strncpy(line, (const char*)pl.GetLine(0).c_str(), 1024);
     tokens[0] = strtok(line, ",:\n");
@@ -498,6 +514,10 @@ void COscilloscope::ReadPreferencesList(lxStringList pl) {
 
 void COscilloscope::SetBaseTimer(void) {
     board* pboard = PICSimLab.GetBoard();
+
+    if (!Window) {
+        return;
+    }
 
     if (!pboard)
         return;

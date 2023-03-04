@@ -71,6 +71,7 @@ void ldd_max72xx_update(ldd_max72xx_t* ldd);
 
 unsigned char ldd_max72xx_io(ldd_max72xx_t* ldd, unsigned char din, unsigned char clk, unsigned char ncs);
 
-void ldd_max72xx_draw(ldd_max72xx_t* ldd, CCanvas* canvas, int x1, int y1, int w1, int h1, int picpwr, int angle);
+void ldd_max72xx_draw(ldd_max72xx_t* ldd, CCanvas* canvas, int x1, int y1, int w1, int h1, int picpwr, int angle,
+                      int mode);
 
 #endif  // LDD_MAX72XX

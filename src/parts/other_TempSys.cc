@@ -69,6 +69,9 @@ cpart_tempsys::cpart_tempsys(const unsigned x, const unsigned y, const char* nam
     refresh = 0;
 
     SetPCWProperties(pcwprop, 6);
+
+    PinCount = 4;
+    Pins = input_pins;
 }
 
 cpart_tempsys::~cpart_tempsys(void) {

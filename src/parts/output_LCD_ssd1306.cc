@@ -56,6 +56,9 @@ cpart_LCD_ssd1306::cpart_LCD_ssd1306(const unsigned x, const unsigned y, const c
     type_com = 0;  // SPI
 
     SetPCWProperties(pcwprop, 8);
+
+    PinCount = 5;
+    Pins = input_pins;
 };
 
 cpart_LCD_ssd1306::~cpart_LCD_ssd1306(void) {

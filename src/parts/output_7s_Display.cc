@@ -128,6 +128,9 @@ cpart_7s_display::cpart_7s_display(const unsigned x, const unsigned y, const cha
     ChangeType(0);
 
     SetPCWProperties(pcwprop, 14);
+
+    PinCount = 12;
+    Pins = input_pins;
 }
 
 cpart_7s_display::~cpart_7s_display(void) {

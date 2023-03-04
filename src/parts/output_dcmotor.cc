@@ -49,12 +49,12 @@ cpart_dcmotor::cpart_dcmotor(const unsigned x, const unsigned y, const char* nam
 
     LoadImage();
 
-    output_pins[0] = 0;
-    output_pins[1] = 0;
+    pins[0] = 0;
+    pins[1] = 0;
 
-    input_pins[0] = 0;
-    input_pins[1] = 0;
-    input_pins[2] = 0;
+    pins[2] = 0;
+    pins[3] = 0;
+    pins[4] = 0;
 
     value = 0;
     value_old = 0;
@@ -66,6 +66,9 @@ cpart_dcmotor::cpart_dcmotor(const unsigned x, const unsigned y, const char* nam
     speed = 0;
 
     SetPCWProperties(pcwprop, 7);
+
+    PinCount = 5;
+    Pins = pins;
 }
 
 void cpart_dcmotor::RegisterRemoteControl(void) {
@@ -86,26 +89,17 @@ void cpart_dcmotor::DrawOutput(const unsigned int i) {
     switch (output[i].id) {
         case O_P1:
         case O_P2:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(255, 255, 255);
-            if (output_pins[output[i].id - O_P1] == 0)
-                canvas.RotatedText("NC", output[i].x1 - 3, output[i].y2, 90);
-            else
-                canvas.RotatedText(SpareParts.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1 - 3,
-                                   output[i].y2, 90);
-            break;
         case O_P3:
         case O_P4:
         case O_P5:
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);
-            if (input_pins[output[i].id - O_P3] == 0)
+            if (pins[output[i].id - O_P1] == 0)
                 canvas.RotatedText("NC", output[i].x1 - 3, output[i].y2, 90);
             else
-                canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P3]), output[i].x1 - 3,
-                                   output[i].y2, 90);
+                canvas.RotatedText(SpareParts.GetPinName(pins[output[i].id - O_P1]), output[i].x1 - 3, output[i].y2,
+                                   90);
             break;
         case O_MT1:
             canvas.SetColor(153, 153, 153);
@@ -154,17 +148,17 @@ void cpart_dcmotor::PreProcess(void) {
     int ia = 0, ib = 0;
     float da;
 
-    if (input_pins[0]) {
-        ia = ppins[input_pins[0] - 1].value;
+    if (pins[2]) {
+        ia = ppins[pins[2] - 1].value;
     }
 
-    if (input_pins[1]) {
-        ib = ppins[input_pins[1] - 1].value;
+    if (pins[3]) {
+        ib = ppins[pins[3] - 1].value;
     }
 
-    if (input_pins[2]) {
+    if (pins[4]) {
         // TODO Add transfer funcion of dc motor
-        speed = (ppins[input_pins[2] - 1].oavalue - 55) / 2;
+        speed = (ppins[pins[4] - 1].oavalue - 55) / 2;
     }
 
     if (ia && !ib) {
@@ -197,20 +191,20 @@ void cpart_dcmotor::PreProcess(void) {
 
         switch (state) {
             case 0:
-                if (output_pins[0])
-                    SpareParts.SetPin(output_pins[0], 0);
+                if (pins[0])
+                    SpareParts.SetPin(pins[0], 0);
                 break;
             case 1:
-                if (output_pins[1])
-                    SpareParts.SetPin(output_pins[1], 1);
+                if (pins[1])
+                    SpareParts.SetPin(pins[1], 1);
                 break;
             case 2:
-                if (output_pins[0])
-                    SpareParts.SetPin(output_pins[0], 1);
+                if (pins[0])
+                    SpareParts.SetPin(pins[0], 1);
                 break;
             case 3:
-                if (output_pins[1])
-                    SpareParts.SetPin(output_pins[1], 0);
+                if (pins[1])
+                    SpareParts.SetPin(pins[1], 0);
                 break;
         }
         step = 0;
@@ -255,20 +249,20 @@ void cpart_dcmotor::Process(void) {
             dprintf("state=%i\n", state);
             switch (state) {
                 case 0:
-                    if (output_pins[0])
-                        SpareParts.SetPin(output_pins[0], 0);
+                    if (pins[0])
+                        SpareParts.SetPin(pins[0], 0);
                     break;
                 case 1:
-                    if (output_pins[1])
-                        SpareParts.SetPin(output_pins[1], 1);
+                    if (pins[1])
+                        SpareParts.SetPin(pins[1], 1);
                     break;
                 case 2:
-                    if (output_pins[0])
-                        SpareParts.SetPin(output_pins[0], 1);
+                    if (pins[0])
+                        SpareParts.SetPin(pins[0], 1);
                     break;
                 case 3:
-                    if (output_pins[1])
-                        SpareParts.SetPin(output_pins[1], 0);
+                    if (pins[1])
+                        SpareParts.SetPin(pins[1], 0);
                     break;
             }
         }
@@ -312,31 +306,29 @@ unsigned short cpart_dcmotor::GetOutputId(char* name) {
 lxString cpart_dcmotor::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu", output_pins[0], output_pins[1], input_pins[0], input_pins[1],
-            input_pins[2]);
+    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu", pins[0], pins[1], pins[2], pins[3], pins[4]);
 
     return prefs;
 }
 
 void cpart_dcmotor::ReadPreferences(lxString value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &input_pins[0], &input_pins[1],
-           &input_pins[2]);
+    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu", &pins[0], &pins[1], &pins[2], &pins[3], &pins[4]);
 }
 
 void cpart_dcmotor::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo1", output_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo2", output_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo3", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo4", input_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo5", input_pins[2]);
+    SetPCWComboWithPinNames(WProp, "combo1", pins[0]);
+    SetPCWComboWithPinNames(WProp, "combo2", pins[1]);
+    SetPCWComboWithPinNames(WProp, "combo3", pins[2]);
+    SetPCWComboWithPinNames(WProp, "combo4", pins[3]);
+    SetPCWComboWithPinNames(WProp, "combo5", pins[4]);
 }
 
 void cpart_dcmotor::ReadPropertiesWindow(CPWindow* WProp) {
-    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo1");
-    output_pins[1] = GetPWCComboSelectedPin(WProp, "combo2");
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo3");
-    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo4");
-    input_pins[2] = GetPWCComboSelectedPin(WProp, "combo5");
+    pins[0] = GetPWCComboSelectedPin(WProp, "combo1");
+    pins[1] = GetPWCComboSelectedPin(WProp, "combo2");
+    pins[2] = GetPWCComboSelectedPin(WProp, "combo3");
+    pins[3] = GetPWCComboSelectedPin(WProp, "combo4");
+    pins[4] = GetPWCComboSelectedPin(WProp, "combo5");
 }
 
 part_init(PART_DCMOTOR_Name, cpart_dcmotor, "Output");

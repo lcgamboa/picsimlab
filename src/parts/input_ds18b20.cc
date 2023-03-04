@@ -53,6 +53,9 @@ cpart_ds18b20::cpart_ds18b20(const unsigned x, const unsigned y, const char* nam
     sen_ds18b20_init(&ds18b20, PICSimLab.GetBoard());
 
     SetPCWProperties(pcwprop, 3);
+
+    PinCount = 1;
+    Pins = output_pins;
 }
 
 void cpart_ds18b20::RegisterRemoteControl(void) {

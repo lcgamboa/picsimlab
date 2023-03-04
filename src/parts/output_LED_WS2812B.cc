@@ -58,6 +58,9 @@ cpart_led_ws2812b::cpart_led_ws2812b(const unsigned x, const unsigned y, const c
     output_pins[0] = SpareParts.RegisterIOpin(lxT("DOUT"));
 
     SetPCWProperties(pcwprop, 7);
+
+    PinCount = 1;
+    Pins = input_pins;
 }
 
 cpart_led_ws2812b::~cpart_led_ws2812b(void) {
@@ -92,45 +95,48 @@ void cpart_led_ws2812b::LoadImage(void) {
             printf("PICSimLab: Erro open file %s\n", (const char*)ifname.c_str());
         }
 
-        lxImage image(SpareParts.GetWindow());
+        if (SpareParts.GetWindow()) {
+            lxImage image(SpareParts.GetWindow());
 
-        image.LoadFile(lxGetLocalFile(ifname), Orientation, Scale, Scale);
-        Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
-        image.Destroy();
+            image.LoadFile(lxGetLocalFile(ifname), Orientation, Scale, Scale);
+            Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
+            image.Destroy();
 
-        canvas.Destroy();
-        canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
+            canvas.Destroy();
+            canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
 
-        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/Output/") + GetPictureFileName()),
-                       Orientation, Scale, Scale);
-        lxBitmap* BackBitmap = new lxBitmap(&image, SpareParts.GetWindow());
-        image.Destroy();
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/Output/") + GetPictureFileName()),
+                           Orientation, Scale, Scale);
+            lxBitmap* BackBitmap = new lxBitmap(&image, SpareParts.GetWindow());
+            image.Destroy();
 
-        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/Output/") + GetName() + lxT("/LED.svg")),
-                       Orientation, Scale * 1.3, Scale * 1.3);
-        lxBitmap* LEDBitmap = new lxBitmap(&image, SpareParts.GetWindow());
-        image.Destroy();
+            image.LoadFile(
+                lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/Output/") + GetName() + lxT("/LED.svg")),
+                Orientation, Scale * 1.3, Scale * 1.3);
+            lxBitmap* LEDBitmap = new lxBitmap(&image, SpareParts.GetWindow());
+            image.Destroy();
 
-        canvas.Init(Scale, Scale, Orientation);
-        canvas.SetColor(0x31, 0x3d, 0x63);
-        canvas.Rectangle(1, 0, 0, Width, Height);
+            canvas.Init(Scale, Scale, Orientation);
+            canvas.SetColor(0x31, 0x3d, 0x63);
+            canvas.Rectangle(1, 0, 0, Width, Height);
 
-        canvas.ChangeScale(1.0, 1.0);
-        canvas.PutBitmap(BackBitmap, 0, yoff * Scale);
+            canvas.ChangeScale(1.0, 1.0);
+            canvas.PutBitmap(BackBitmap, 0, yoff * Scale);
 
-        if (!led.diffuser) {
-            for (unsigned int r = 0; r < led.nrows; r++)
-                for (unsigned int c = 0; c < led.ncols; c++) {
-                    canvas.PutBitmap(LEDBitmap, (output_ids[O_LED]->x1 + (40 * c)) * Scale,
-                                     (output_ids[O_LED]->y1 - (40 * r) + yoff) * Scale);
-                }
+            if (!led.diffuser) {
+                for (unsigned int r = 0; r < led.nrows; r++)
+                    for (unsigned int c = 0; c < led.ncols; c++) {
+                        canvas.PutBitmap(LEDBitmap, (output_ids[O_LED]->x1 + (40 * c)) * Scale,
+                                         (output_ids[O_LED]->y1 - (40 * r) + yoff) * Scale);
+                    }
+            }
+            canvas.ChangeScale(Scale, Scale);
+            canvas.End();
+
+            delete BackBitmap;
+            delete LEDBitmap;
+            lxRemoveFile(ifname);
         }
-        canvas.ChangeScale(Scale, Scale);
-        canvas.End();
-
-        delete BackBitmap;
-        delete LEDBitmap;
-        lxRemoveFile(ifname);
     } else {
         Width = OWidth;
         Height = OHeight;

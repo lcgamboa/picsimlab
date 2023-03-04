@@ -56,8 +56,7 @@ public:
 
 private:
     void RegisterRemoteControl(void) override;
-    unsigned char input_pins[1];
-    unsigned char output_pins[1];
+    unsigned char pins[2];
     vterm_t vt;
     unsigned int vterm_speed;
     CPWindow* wvterm;

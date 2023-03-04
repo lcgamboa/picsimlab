@@ -135,7 +135,9 @@ cboard_RemoteTCP::~cboard_RemoteTCP(void) {
 void cboard_RemoteTCP::Reset(void) {
     MReset(1);
 
-    PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    if (PICSimLab.GetStatusBar()) {
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    }
 
     if (use_spare)
         SpareParts.Reset();

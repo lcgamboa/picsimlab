@@ -50,8 +50,7 @@ public:
     unsigned short GetOutputId(char* name) override;
 
 private:
-    unsigned char input_pins[3];
-    unsigned char output_pins[1];
+    unsigned char pins[4];
     sdcard_t sd;
     unsigned short _ret;
     char sdcard_fname[200];

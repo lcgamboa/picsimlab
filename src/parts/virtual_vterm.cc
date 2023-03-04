@@ -48,9 +48,8 @@ cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, c
     vterm_init(&vt, PICSimLab.GetBoard());
     vterm_rst(&vt);
 
-    input_pins[0] = 0;
-
-    output_pins[0] = 0;
+    pins[0] = 0;
+    pins[1] = 0;
 
     show = 0;
 
@@ -67,53 +66,63 @@ cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, c
     vtcmb_ending = NULL;
     vtcmb_speed = NULL;
 
-    wvterm = new CPWindow();
-    wvterm->SetName("window1");  // must be the same as in xml
-    wvterm->SetVisible(0);
-    Application->ACreateWindow(wvterm);
-    lxString fname = lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/Virtual/IO Virtual Term/terminal_1.lxrad"));
-    if (wvterm->LoadXMLContextAndCreateChilds(fname)) {
+    if (PICSimLab.GetWindow()) {
+        wvterm = new CPWindow();
+        wvterm->SetName("window1");  // must be the same as in xml
         wvterm->SetVisible(0);
-        wvterm->Hide();
-        wvterm->SetCanDestroy(false);
+        Application->ACreateWindow(wvterm);
+        lxString fname =
+            lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/Virtual/IO Virtual Term/terminal_1.lxrad"));
+        if (wvterm->LoadXMLContextAndCreateChilds(fname)) {
+            wvterm->SetVisible(0);
+            wvterm->Hide();
+            wvterm->SetCanDestroy(false);
 
-        wvterm->EvOnShow = SpareParts.PartEvent;
+            wvterm->EvOnShow = SpareParts.PartEvent;
 
-        // wvterm.Draw ();
-        // wvterm.Show ();
+            // wvterm.Draw ();
+            // wvterm.Show ();
 
-        vttext = (CText*)wvterm->GetChildByName("text1");
-        vtedit = (CEdit*)wvterm->GetChildByName("edit1");
+            vttext = (CText*)wvterm->GetChildByName("text1");
+            vtedit = (CEdit*)wvterm->GetChildByName("edit1");
 
-        vtbtn_send = ((CButton*)wvterm->GetChildByName("button1"));
-        vtbtn_clear = ((CButton*)wvterm->GetChildByName("button2"));
-        vtcmb_ending = ((CCombo*)wvterm->GetChildByName("combo1"));
-        vtcmb_speed = ((CCombo*)wvterm->GetChildByName("combo2"));
+            vtbtn_send = ((CButton*)wvterm->GetChildByName("button1"));
+            vtbtn_clear = ((CButton*)wvterm->GetChildByName("button2"));
+            vtcmb_ending = ((CCombo*)wvterm->GetChildByName("combo1"));
+            vtcmb_speed = ((CCombo*)wvterm->GetChildByName("combo2"));
 
-        vtbtn_send->EvMouseButtonRelease = SpareParts.PartButtonEvent;
-        vtbtn_clear->EvMouseButtonRelease = SpareParts.PartButtonEvent;
-        vtcmb_speed->EvOnComboChange = SpareParts.PartEvent;
-        vtcmb_ending->EvOnComboChange = SpareParts.PartEvent;
-        vtedit->EvKeyboardPress = SpareParts.PartKeyEvent;
+            vtbtn_send->EvMouseButtonRelease = SpareParts.PartButtonEvent;
+            vtbtn_clear->EvMouseButtonRelease = SpareParts.PartButtonEvent;
+            vtcmb_speed->EvOnComboChange = SpareParts.PartEvent;
+            vtcmb_ending->EvOnComboChange = SpareParts.PartEvent;
+            vtedit->EvKeyboardPress = SpareParts.PartKeyEvent;
+        } else {
+            printf("PICSimLab: Vterm error loading file %s\n", (const char*)fname.c_str());
+            PICSimLab.RegisterError("Vterm error loading file:\n" + fname);
+            wvterm->SetVisible(0);
+            wvterm->Hide();
+            wvterm->SetCanDestroy(false);
+        }
     } else {
-        printf("PICSimLab: Vterm error loading file %s\n", (const char*)fname.c_str());
-        PICSimLab.RegisterError("Vterm error loading file:\n" + fname);
-        wvterm->SetVisible(0);
-        wvterm->Hide();
-        wvterm->SetCanDestroy(false);
+        wvterm = NULL;
     }
 
     SetPCWProperties(pcwprop, 5);
+
+    PinCount = 2;
+    Pins = pins;
 }
 
 cpart_vterm::~cpart_vterm(void) {
     delete Bitmap;
     canvas.Destroy();
     vterm_end(&vt);
-    wvterm->Hide();
-    wvterm->DestroyChilds();
-    wvterm->SetCanDestroy(true);
-    wvterm->WDestroy();
+    if (wvterm) {
+        wvterm->Hide();
+        wvterm->DestroyChilds();
+        wvterm->SetCanDestroy(true);
+        wvterm->WDestroy();
+    }
 }
 
 void cpart_vterm::RegisterRemoteControl(void) {
@@ -254,20 +263,17 @@ void cpart_vterm::DrawOutput(const unsigned int i) {
             canvas.SetFgColor(155, 155, 155);
 
             int pinv = output[i].id - O_RX;
-            int pin = 0;
             switch (pinv) {
                 case 0:
-                    pin = pinv;
-                    if (input_pins[pin] == 0)
+                    if (pins[pinv] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
                     else
-                        canvas.RotatedText(SpareParts.GetPinName(input_pins[pin]), output[i].x1, output[i].y2, 90.0);
+                        canvas.RotatedText(SpareParts.GetPinName(pins[pinv]), output[i].x1, output[i].y2, 90.0);
                 case 1:
-                    pin = pinv - 1;
-                    if (output_pins[pin] == 0)
+                    if (pins[pinv] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
                     else
-                        canvas.RotatedText(SpareParts.GetPinName(output_pins[pin]), output[i].x1, output[i].y2, 90.0);
+                        canvas.RotatedText(SpareParts.GetPinName(pins[pinv]), output[i].x1, output[i].y2, 90.0);
                     break;
             }
             break;
@@ -305,33 +311,38 @@ unsigned short cpart_vterm::GetOutputId(char* name) {
 lxString cpart_vterm::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%hhu,%u,%hhu,%i,%i", input_pins[0], output_pins[0], lending, vterm_speed, show,
-            wvterm->GetX(), wvterm->GetY());
+    if (wvterm) {
+        sprintf(prefs, "%hhu,%hhu,%hhu,%u,%hhu,%i,%i", pins[0], pins[1], lending, vterm_speed, show, wvterm->GetX(),
+                wvterm->GetY());
+    } else {
+        sprintf(prefs, "%hhu,%hhu,%hhu,%u,%hhu,%i,%i", pins[0], pins[1], lending, vterm_speed, show, 100, 100);
+    }
 
     return prefs;
 }
 
 void cpart_vterm::ReadPreferences(lxString value) {
     int x, y;
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%u,%hhu,%i,%i", &input_pins[0], &output_pins[0], &lending, &vterm_speed,
-           &show, &x, &y);
+    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%u,%hhu,%i,%i", &pins[0], &pins[1], &lending, &vterm_speed, &show, &x, &y);
     show |= 0x80;
-    wvterm->SetX(x);
-    wvterm->SetY(y);
+    if (wvterm) {
+        wvterm->SetX(x);
+        wvterm->SetY(y);
+    }
     Reset();
 }
 
 void cpart_vterm::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo2", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo3", output_pins[0]);
+    SetPCWComboWithPinNames(WProp, "combo2", pins[0]);
+    SetPCWComboWithPinNames(WProp, "combo3", pins[1]);
 
     ((CCombo*)WProp->GetChildByName("combo5"))->SetItems("1200,2400,4800,9600,19200,38400,57600,115200,");
     ((CCombo*)WProp->GetChildByName("combo5"))->SetText(itoa(vterm_speed));
 }
 
 void cpart_vterm::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
-    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo3");
+    pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
+    pins[1] = GetPWCComboSelectedPin(WProp, "combo3");
     vterm_speed = atoi(((CCombo*)WProp->GetChildByName("combo5"))->GetText());
     Reset();
 }
@@ -368,12 +379,12 @@ void cpart_vterm::Process(void) {
 
     const picpin* ppins = SpareParts.GetPinsValues();
 
-    if (input_pins[0]) {
-        val = ppins[input_pins[0] - 1].value;
+    if (pins[0]) {
+        val = ppins[pins[0] - 1].value;
     }
 
     ret = vterm_io(&vt, val);
-    SpareParts.SetPin(output_pins[0], ret);
+    SpareParts.SetPin(pins[1], ret);
 }
 
 void cpart_vterm::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {

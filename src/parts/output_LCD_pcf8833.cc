@@ -54,7 +54,10 @@ cpart_LCD_pcf8833::cpart_LCD_pcf8833(const unsigned x, const unsigned y, const c
     input_pins[3] = 0;
 
     SetPCWProperties(pcwprop, 10);
-};
+
+    PinCount = 4;
+    Pins = input_pins;
+}
 
 cpart_LCD_pcf8833::~cpart_LCD_pcf8833(void) {
     delete Bitmap;

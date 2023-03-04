@@ -54,7 +54,10 @@ cpart_LCD_pcd8544::cpart_LCD_pcd8544(const unsigned x, const unsigned y, const c
     input_pins[4] = 0;
 
     SetPCWProperties(pcwprop, 8);
-};
+
+    PinCount = 5;
+    Pins = input_pins;
+}
 
 cpart_LCD_pcd8544::~cpart_LCD_pcd8544(void) {
     delete Bitmap;

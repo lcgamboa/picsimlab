@@ -103,6 +103,9 @@ cpart_IO_74xx573::cpart_IO_74xx573(const unsigned x, const unsigned y, const cha
     _ret = 0;
 
     SetPCWProperties(pcwprop, 20);
+
+    PinCount = 9;
+    Pins = input_pins;
 }
 
 cpart_IO_74xx573::~cpart_IO_74xx573(void) {

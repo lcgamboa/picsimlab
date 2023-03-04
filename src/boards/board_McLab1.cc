@@ -77,40 +77,43 @@ cboard_McLab1::cboard_McLab1(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE
     Proc = "PIC16F628A";
     ReadMaps();
     jmp[0] = 0;
-
-    // gauge1
-    gauge1 = new CGauge();
-    gauge1->SetFOwner(PICSimLab.GetWindow());
-    gauge1->SetName(lxT("gauge1_p1"));
-    gauge1->SetX(13);
-    gauge1->SetY(102);
-    gauge1->SetWidth(140);
-    gauge1->SetHeight(20);
-    gauge1->SetEnable(1);
-    gauge1->SetVisible(1);
-    gauge1->SetRange(100);
-    gauge1->SetValue(0);
-    gauge1->SetType(4);
-    PICSimLab.GetWindow()->CreateChild(gauge1);
-    // label1
-    label1 = new CLabel();
-    label1->SetFOwner(PICSimLab.GetWindow());
-    label1->SetName(lxT("label1_p1"));
-    label1->SetX(12);
-    label1->SetY(80);
-    label1->SetWidth(60);
-    label1->SetHeight(20);
-    label1->SetEnable(1);
-    label1->SetVisible(1);
-    label1->SetText(lxT("LAMP"));
-    label1->SetAlign(1);
-    PICSimLab.GetWindow()->CreateChild(label1);
+    if (PICSimLab.GetWindow()) {
+        // gauge1
+        gauge1 = new CGauge();
+        gauge1->SetFOwner(PICSimLab.GetWindow());
+        gauge1->SetName(lxT("gauge1_p1"));
+        gauge1->SetX(13);
+        gauge1->SetY(102);
+        gauge1->SetWidth(140);
+        gauge1->SetHeight(20);
+        gauge1->SetEnable(1);
+        gauge1->SetVisible(1);
+        gauge1->SetRange(100);
+        gauge1->SetValue(0);
+        gauge1->SetType(4);
+        PICSimLab.GetWindow()->CreateChild(gauge1);
+        // label1
+        label1 = new CLabel();
+        label1->SetFOwner(PICSimLab.GetWindow());
+        label1->SetName(lxT("label1_p1"));
+        label1->SetX(12);
+        label1->SetY(80);
+        label1->SetWidth(60);
+        label1->SetHeight(20);
+        label1->SetEnable(1);
+        label1->SetVisible(1);
+        label1->SetText(lxT("LAMP"));
+        label1->SetAlign(1);
+        PICSimLab.GetWindow()->CreateChild(label1);
+    }
     SWBounce_init(&bounce, 4);
 }
 
 cboard_McLab1::~cboard_McLab1(void) {
-    PICSimLab.GetWindow()->DestroyChild(gauge1);
-    PICSimLab.GetWindow()->DestroyChild(label1);
+    if (PICSimLab.GetWindow()) {
+        PICSimLab.GetWindow()->DestroyChild(gauge1);
+        PICSimLab.GetWindow()->DestroyChild(label1);
+    }
     SWBounce_end(&bounce);
 }
 
@@ -560,7 +563,9 @@ void cboard_McLab1::Reset(void) {
     pic_set_pin(&pic, 2, p_BT[2]);
     pic_set_pin(&pic, 3, p_BT[3]);
 
-    PICSimLab.GetStatusBar()->SetField(2, lxT(""));
+    if (PICSimLab.GetStatusBar()) {
+        PICSimLab.GetStatusBar()->SetField(2, lxT(""));
+    }
 
     for (int i = 0; i < pic.PINCOUNT; i++) {
         lm1[i] = 0;

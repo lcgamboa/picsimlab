@@ -108,7 +108,8 @@ unsigned char ldd_max72xx_io(ldd_max72xx_t* ldd, unsigned char din, unsigned cha
     return ldd->bb_spi.ret;
 }
 
-void ldd_max72xx_draw(ldd_max72xx_t* ldd, CCanvas* canvas, int x1, int y1, int w1, int h1, int picpwr, int angle) {
+void ldd_max72xx_draw(ldd_max72xx_t* ldd, CCanvas* canvas, int x1, int y1, int w1, int h1, int picpwr, int angle,
+                      int mode) {
     int x, y, a, b;
 
     ldd->update = 0;
@@ -117,36 +118,43 @@ void ldd_max72xx_draw(ldd_max72xx_t* ldd, CCanvas* canvas, int x1, int y1, int w
         for (y = 0; y < 8; y++) {
             switch (angle) {
                 case 0:
-                    a = 7 - x;
-                    b = y;
-                    break;
-                case 90:
-                    a = y;
-                    b = x;
-                    break;
-                case 180:
-                    a = x;
-                    b = 7 - y;
-                    break;
-                case 270:
                     a = 7 - y;
                     b = 7 - x;
                     break;
-                default:
+                case 90:
+                    a = x;
+                    b = 7 - y;
+                    break;
+                case 180:
+                    a = y;
+                    b = x;
+                    break;
+                case 270:
                     a = 7 - x;
                     b = y;
+                    break;
+                default:
+                    a = 7 - y;
+                    b = 7 - x;
                     break;
             }
 
             if (ldd->ram[a] & (1 << (b))) {
-                canvas->SetFgColor(250, 0, 0);
-                canvas->SetColor(250, 0, 0);
+                canvas->SetFgColor(50, 50, 50);
+                canvas->SetBgColor(250, 0, 0);
             } else {
-                canvas->SetFgColor(100, 100, 100);
-                canvas->SetColor(100, 100, 100);
+                canvas->SetFgColor(50, 50, 50);
+                canvas->SetBgColor(70, 70, 70);
             }
 
-            canvas->Circle(1, x1 + (y * 20) + 10, y1 + (x * 20) + 10, 7);
+            switch (mode) {
+                case 1:
+                    canvas->Circle(1, x1 + ((7 - x) * 20) + 10, y1 + ((7 - y) * 20) + 10, 9);  // Parola
+                    break;
+                default:
+                    canvas->Circle(1, x1 + ((x)*20) + 10, y1 + ((7 - y) * 20) + 10, 9);  // FC16
+                    break;
+            }
         }
     }
 }

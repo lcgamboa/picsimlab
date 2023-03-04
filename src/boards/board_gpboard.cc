@@ -98,7 +98,9 @@ cboard_gpboard::~cboard_gpboard(void) {
 void cboard_gpboard::Reset(void) {
     MReset(1);
 
-    PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    if (PICSimLab.GetStatusBar()) {
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    }
 
     if (use_spare)
         SpareParts.Reset();
@@ -107,7 +109,9 @@ void cboard_gpboard::Reset(void) {
 // Called ever 1s to refresh status
 
 void cboard_gpboard::RefreshStatus(void) {
-    PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    if (PICSimLab.GetStatusBar()) {
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    }
 }
 
 // Called to save board preferences in configuration file

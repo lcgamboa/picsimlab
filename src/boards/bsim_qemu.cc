@@ -333,7 +333,7 @@ int bsim_qemu::MInit(const char* processor, const char* _fname, float freq) {
     serialfd[3] = INVALID_HANDLE_VALUE;
 
 #ifndef __EMSCRIPTEN__
-    if (!qemu_started) {
+    if ((!qemu_started) && (PICSimLab.GetWindow())) {
         StartThread();
         while (!qemu_started) {
 #ifndef _WIN_

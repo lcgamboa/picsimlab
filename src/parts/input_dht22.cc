@@ -54,6 +54,9 @@ cpart_dht22::cpart_dht22(const unsigned x, const unsigned y, const char* name, c
     sen_dhtxx_init(&dht22, PICSimLab.GetBoard(), DHT22);
 
     SetPCWProperties(pcwprop, 4);
+
+    PinCount = 1;
+    Pins = output_pins;
 }
 
 void cpart_dht22::RegisterRemoteControl(void) {

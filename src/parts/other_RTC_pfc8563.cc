@@ -49,7 +49,10 @@ cpart_RTC_pfc8563::cpart_RTC_pfc8563(const unsigned x, const unsigned y, const c
     input_pins[3] = 0;
 
     SetPCWProperties(pcwprop, 8);
-};
+
+    PinCount = 4;
+    Pins = input_pins;
+}
 
 cpart_RTC_pfc8563::~cpart_RTC_pfc8563(void) {
     rtc_pfc8563_end(&rtc);

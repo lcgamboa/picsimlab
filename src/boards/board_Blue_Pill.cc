@@ -106,41 +106,45 @@ cboard_Blue_Pill::cboard_Blue_Pill(void) {
     master_uart[2].tx_pin = 0;
     master_uart[2].rx_pin = 0;
 
-    // label1
-    label1 = new CLabel();
-    label1->SetFOwner(PICSimLab.GetWindow());
-    label1->SetName(lxT("label1_"));
-    label1->SetX(13);
-    label1->SetY(54 + 20);
-    label1->SetWidth(120);
-    label1->SetHeight(24);
-    label1->SetEnable(1);
-    label1->SetVisible(1);
-    label1->SetText(lxT("Qemu CPU MIPS"));
-    label1->SetAlign(1);
-    PICSimLab.GetWindow()->CreateChild(label1);
-    // combo1
-    combo1 = new CCombo();
-    combo1->SetFOwner(PICSimLab.GetWindow());
-    combo1->SetName(lxT("combo1_"));
-    combo1->SetX(13);
-    combo1->SetY(78 + 20);
-    combo1->SetWidth(130);
-    combo1->SetHeight(24);
-    combo1->SetEnable(1);
-    combo1->SetVisible(1);
-    combo1->SetText(IcountToMipsStr(icount));
-    combo1->SetItems(IcountToMipsItens(buffer));
-    combo1->SetTag(3);
-    combo1->EvOnComboChange = PICSimLab.board_Event;
-    PICSimLab.GetWindow()->CreateChild(combo1);
+    if (PICSimLab.GetWindow()) {
+        // label1
+        label1 = new CLabel();
+        label1->SetFOwner(PICSimLab.GetWindow());
+        label1->SetName(lxT("label1_"));
+        label1->SetX(13);
+        label1->SetY(54 + 20);
+        label1->SetWidth(120);
+        label1->SetHeight(24);
+        label1->SetEnable(1);
+        label1->SetVisible(1);
+        label1->SetText(lxT("Qemu CPU MIPS"));
+        label1->SetAlign(1);
+        PICSimLab.GetWindow()->CreateChild(label1);
+        // combo1
+        combo1 = new CCombo();
+        combo1->SetFOwner(PICSimLab.GetWindow());
+        combo1->SetName(lxT("combo1_"));
+        combo1->SetX(13);
+        combo1->SetY(78 + 20);
+        combo1->SetWidth(130);
+        combo1->SetHeight(24);
+        combo1->SetEnable(1);
+        combo1->SetVisible(1);
+        combo1->SetText(IcountToMipsStr(icount));
+        combo1->SetItems(IcountToMipsItens(buffer));
+        combo1->SetTag(3);
+        combo1->EvOnComboChange = PICSimLab.board_Event;
+        PICSimLab.GetWindow()->CreateChild(combo1);
+    }
 }
 
 // Destructor called once on board destruction
 
 cboard_Blue_Pill::~cboard_Blue_Pill(void) {
-    PICSimLab.GetWindow()->DestroyChild(label1);
-    PICSimLab.GetWindow()->DestroyChild(combo1);
+    if (PICSimLab.GetWindow()) {
+        PICSimLab.GetWindow()->DestroyChild(label1);
+        PICSimLab.GetWindow()->DestroyChild(combo1);
+    }
 }
 
 // Reset board status
@@ -148,7 +152,9 @@ cboard_Blue_Pill::~cboard_Blue_Pill(void) {
 void cboard_Blue_Pill::Reset(void) {
     MReset(1);
 
-    PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    if (PICSimLab.GetStatusBar()) {
+        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    }
 
     if (use_spare)
         SpareParts.Reset();
@@ -195,7 +201,9 @@ void cboard_Blue_Pill::ReadPreferences(char* name, char* value) {
     // read microcontroller icount
     if (!strcmp(name, "Blue_Pill_icount")) {
         icount = atoi(value);
-        combo1->SetText(IcountToMipsStr(icount));
+        if (combo1) {
+            combo1->SetText(IcountToMipsStr(icount));
+        }
     }
 }
 

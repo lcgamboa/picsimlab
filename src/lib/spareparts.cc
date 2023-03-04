@@ -51,7 +51,9 @@ CSpareParts::CSpareParts() {
 
 void CSpareParts::Init(CWindow* win) {
     Window = win;
-    filedialog = (CFileDialog*)win->GetChildByName("filedialog1");
+    if (Window) {
+        filedialog = (CFileDialog*)win->GetChildByName("filedialog1");
+    }
 }
 
 void CSpareParts::UpdateAll(const int force) {
@@ -342,7 +344,7 @@ bool CSpareParts::LoadConfig(lxString fname, const int disable_debug) {
 
     pboard = PICSimLab.GetBoard();
 
-    if (Window->GetWin() == NULL) {
+    if ((Window) && (Window->GetWin() == NULL)) {
         LoadConfigFile = fname;
         CItemMenu* imenu = (CItemMenu*)Window->GetChildByName("menu1")
                                ->GetChildByName("menu1_Edit")
@@ -412,40 +414,48 @@ bool CSpareParts::LoadConfig(lxString fname, const int disable_debug) {
                 int w, h;
                 w = orient;
                 sscanf(temp, "%i", &h);
-                Window->SetX(x);
-                Window->SetY(y);
-                if (w > 5000)
-                    w = 5000;
-                if (h > 5000)
-                    h = 5000;
-                Window->SetWidth(w);
-                Window->SetHeight(h);
-                Window->GetChildByName("draw1")->SetWidth(w - 15);
-                Window->GetChildByName("draw1")->SetHeight(h - 40);
+                if (Window) {
+                    Window->SetX(x);
+                    Window->SetY(y);
+                    if (w > 5000)
+                        w = 5000;
+                    if (h > 5000)
+                        h = 5000;
+                    Window->SetWidth(w);
+                    Window->SetHeight(h);
+                    Window->GetChildByName("draw1")->SetWidth(w - 15);
+                    Window->GetChildByName("draw1")->SetHeight(h - 40);
+                }
             } else if (!strcmp(name, "boardp")) {
                 int w, h;
                 w = orient;
                 sscanf(temp, "%i", &h);
-                PICSimLab.GetWindow()->SetX(x);
-                PICSimLab.GetWindow()->SetY(y);
-                PICSimLab.GetWindow()->SetWidth(w);
-                PICSimLab.GetWindow()->SetHeight(h);
+                if (PICSimLab.GetWindow()) {
+                    PICSimLab.GetWindow()->SetX(x);
+                    PICSimLab.GetWindow()->SetY(y);
+                    PICSimLab.GetWindow()->SetWidth(w);
+                    PICSimLab.GetWindow()->SetHeight(h);
+                }
             } else if (!strcmp(name, "spare_on")) {
                 unsigned char spare_on;
                 sscanf(temp, "%hhu", &spare_on);
                 PICSimLab.GetBoard()->SetUseSpareParts(spare_on);
-                if (spare_on) {
-                    SpareParts.GetWindow()->Show();
-                    PICSimLab.GetBoard()->Reset();
-                } else {
-                    SpareParts.GetWindow()->Hide();
+                if (Window) {
+                    if (spare_on) {
+                        Window->Show();
+                        PICSimLab.GetBoard()->Reset();
+                    } else {
+                        Window->Hide();
+                    }
                 }
             } else if (!strcmp(name, "debug")) {
 #ifndef NO_DEBUG
                 if (disable_debug) {
                     x = 0;
                 }
-                ((CToggleButton*)PICSimLab.GetWindow()->GetChildByName("togglebutton1"))->SetCheck(x);
+                if (PICSimLab.GetWindow()) {
+                    ((CToggleButton*)PICSimLab.GetWindow()->GetChildByName("togglebutton1"))->SetCheck(x);
+                }
 #endif
                 PICSimLab.SetDebugStatus(x, 0);
                 PICSimLab.SetDebugType(y);
@@ -453,10 +463,12 @@ bool CSpareParts::LoadConfig(lxString fname, const int disable_debug) {
                 unsigned char osc_on;
                 sscanf(temp, "%hhu", &osc_on);
                 PICSimLab.GetBoard()->SetUseOscilloscope(osc_on);
-                if (osc_on) {
-                    Oscilloscope.GetWindow()->Show();
-                } else {
-                    Oscilloscope.GetWindow()->Hide();
+                if (Oscilloscope.GetWindow()) {
+                    if (osc_on) {
+                        Oscilloscope.GetWindow()->Show();
+                    } else {
+                        Oscilloscope.GetWindow()->Hide();
+                    }
                 }
             } else if (!strcmp(name, "osc_cfg")) {
                 osc_list.Clear();
@@ -565,18 +577,20 @@ void CSpareParts::Reset(void) {
 
 void CSpareParts::ReadPreferences(char* name, char* value) {
     if (!strcmp(name, "spare_position")) {
-        int x, y, w, h;
-        sscanf(value, "%i,%i,%i,%i", &x, &y, &w, &h);
-        Window->SetX(x);
-        Window->SetY(y);
-        if (w > 5000)
-            w = 5000;
-        if (h > 5000)
-            h = 5000;
-        Window->SetWidth(w);
-        Window->SetHeight(h);
-        Window->GetChildByName("draw1")->SetWidth(w - 15);
-        Window->GetChildByName("draw1")->SetHeight(h - 40);
+        if (Window) {
+            int x, y, w, h;
+            sscanf(value, "%i,%i,%i,%i", &x, &y, &w, &h);
+            Window->SetX(x);
+            Window->SetY(y);
+            if (w > 5000)
+                w = 5000;
+            if (h > 5000)
+                h = 5000;
+            Window->SetWidth(w);
+            Window->SetHeight(h);
+            Window->GetChildByName("draw1")->SetWidth(w - 15);
+            Window->GetChildByName("draw1")->SetHeight(h - 40);
+        }
     }
 }
 
@@ -590,8 +604,8 @@ bool CSpareParts::SaveConfig(lxString fname) {
 
     lxStringList prefs;
 
-    if (Window->GetWin() == NULL)
-        return 0;
+    // if (Window->GetWin() == NULL)
+    //     return 0;
 
     prefs.Clear();
 
@@ -599,11 +613,15 @@ bool CSpareParts::SaveConfig(lxString fname) {
     prefs.AddLine(temp);
     temp.Printf("scale,0,0,0:%f", scale);
     prefs.AddLine(temp);
-    temp.Printf("position,%i,%i,%i:%i", Window->GetX(), Window->GetY(), Window->GetWidth(), Window->GetHeight());
-    prefs.AddLine(temp);
-    temp.Printf("boardp,%i,%i,%i:%i", PICSimLab.GetWindow()->GetX(), PICSimLab.GetWindow()->GetY(),
-                PICSimLab.GetWindow()->GetWidth(), PICSimLab.GetWindow()->GetHeight());
-    prefs.AddLine(temp);
+    if (Window) {
+        temp.Printf("position,%i,%i,%i:%i", Window->GetX(), Window->GetY(), Window->GetWidth(), Window->GetHeight());
+        prefs.AddLine(temp);
+    }
+    if (PICSimLab.GetWindow()) {
+        temp.Printf("boardp,%i,%i,%i:%i", PICSimLab.GetWindow()->GetX(), PICSimLab.GetWindow()->GetY(),
+                    PICSimLab.GetWindow()->GetWidth(), PICSimLab.GetWindow()->GetHeight());
+        prefs.AddLine(temp);
+    }
     temp.Printf("spare_on,0,0,0:%i", PICSimLab.GetBoard()->GetUseSpareParts());
     prefs.AddLine(temp);
     temp.Printf("osc_on,0,0,0:%i", PICSimLab.GetBoard()->GetUseOscilloscope());

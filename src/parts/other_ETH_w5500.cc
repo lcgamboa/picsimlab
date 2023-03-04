@@ -78,18 +78,20 @@ cpart_ETH_w5500::cpart_ETH_w5500(const unsigned x, const unsigned y, const char*
     eth_w5500_init(&ethw);
     eth_w5500_rst(&ethw);
 
-    input_pins[0] = 0;
-    input_pins[1] = 0;
-    input_pins[2] = 0;
-    input_pins[3] = 0;
-
-    output_pins[0] = 0;
-    output_pins[1] = 0;
+    pins[0] = 0;
+    pins[1] = 0;
+    pins[2] = 0;
+    pins[3] = 0;
+    pins[4] = 0;
+    pins[5] = 0;
 
     _ret = -1;
 
     link = 1;
     SetPCWProperties(pcwprop, 10);
+
+    PinCount = 6;
+    Pins = pins;
 }
 
 cpart_ETH_w5500::~cpart_ETH_w5500(void) {
@@ -235,11 +237,11 @@ void cpart_ETH_w5500::DrawOutput(const unsigned int i) {
             switch (pinv) {
                 case 0:
                 case 4:
-                    pin = pinv > 1;
-                    if (output_pins[pin] == 0)
+                    pin = (!pinv ? 4 : 5);
+                    if (pins[pin] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
                     else
-                        canvas.RotatedText(SpareParts.GetPinName(output_pins[pin]), output[i].x1, output[i].y2, 90.0);
+                        canvas.RotatedText(SpareParts.GetPinName(pins[pin]), output[i].x1, output[i].y2, 90.0);
                     break;
                 case 1:
                 case 2:
@@ -247,10 +249,10 @@ void cpart_ETH_w5500::DrawOutput(const unsigned int i) {
                     pinv++;
                 case 5:
                     pin = pinv - 2;
-                    if (input_pins[pin] == 0)
+                    if (pins[pin] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
                     else
-                        canvas.RotatedText(SpareParts.GetPinName(input_pins[pin]), output[i].x1, output[i].y2, 90.0);
+                        canvas.RotatedText(SpareParts.GetPinName(pins[pin]), output[i].x1, output[i].y2, 90.0);
             }
             break;
     }
@@ -295,15 +297,13 @@ unsigned short cpart_ETH_w5500::GetOutputId(char* name) {
 lxString cpart_ETH_w5500::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3],
-            output_pins[0], output_pins[1]);
+    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", pins[0], pins[1], pins[2], pins[3], pins[4], pins[5]);
 
     return prefs;
 }
 
 void cpart_ETH_w5500::ReadPreferences(lxString value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2],
-           &input_pins[3], &output_pins[0], &output_pins[1]);
+    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &pins[0], &pins[1], &pins[2], &pins[3], &pins[4], &pins[5]);
 
     Reset();
 }
@@ -313,21 +313,21 @@ void cpart_ETH_w5500::RegisterRemoteControl(void) {
 }
 
 void cpart_ETH_w5500::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo3", output_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo5", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo6", input_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo7", input_pins[2]);
-    SetPCWComboWithPinNames(WProp, "combo8", output_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo9", input_pins[3]);
+    SetPCWComboWithPinNames(WProp, "combo3", pins[4]);
+    SetPCWComboWithPinNames(WProp, "combo5", pins[0]);
+    SetPCWComboWithPinNames(WProp, "combo6", pins[1]);
+    SetPCWComboWithPinNames(WProp, "combo7", pins[2]);
+    SetPCWComboWithPinNames(WProp, "combo8", pins[5]);
+    SetPCWComboWithPinNames(WProp, "combo9", pins[3]);
 }
 
 void cpart_ETH_w5500::ReadPropertiesWindow(CPWindow* WProp) {
-    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo3");
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo5");
-    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo6");
-    input_pins[2] = GetPWCComboSelectedPin(WProp, "combo7");
-    output_pins[1] = GetPWCComboSelectedPin(WProp, "combo8");
-    input_pins[3] = GetPWCComboSelectedPin(WProp, "combo9");
+    pins[4] = GetPWCComboSelectedPin(WProp, "combo3");
+    pins[0] = GetPWCComboSelectedPin(WProp, "combo5");
+    pins[1] = GetPWCComboSelectedPin(WProp, "combo6");
+    pins[2] = GetPWCComboSelectedPin(WProp, "combo7");
+    pins[5] = GetPWCComboSelectedPin(WProp, "combo8");
+    pins[3] = GetPWCComboSelectedPin(WProp, "combo9");
 }
 
 void cpart_ETH_w5500::PreProcess(void) {
@@ -339,14 +339,14 @@ void cpart_ETH_w5500::Process(void) {
 
     unsigned short ret = 0;
 
-    ret = eth_w5500_io(&ethw, ppins[input_pins[0] - 1].value, ppins[input_pins[3] - 1].value,
-                       ppins[input_pins[2] - 1].value, ppins[input_pins[1] - 1].value);
+    ret = eth_w5500_io(&ethw, ppins[pins[0] - 1].value, ppins[pins[3] - 1].value, ppins[pins[2] - 1].value,
+                       ppins[pins[1] - 1].value);
 
-    if (!ppins[input_pins[2] - 1].value)  // if CS is active, update output
+    if (!ppins[pins[2] - 1].value)  // if CS is active, update output
     {
         if (_ret != ret) {
-            SpareParts.SetPin(output_pins[0], (ret & 0x01) > 0);
-            SpareParts.SetPin(output_pins[1], (ret & 0x02) > 0);
+            SpareParts.SetPin(pins[4], (ret & 0x01) > 0);
+            SpareParts.SetPin(pins[5], (ret & 0x02) > 0);
         }
         _ret = ret;
     } else {

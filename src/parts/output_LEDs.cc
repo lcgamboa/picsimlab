@@ -74,7 +74,10 @@ cpart_leds::cpart_leds(const unsigned x, const unsigned y, const char* name, con
     colors[7] = 0;
 
     SetPCWProperties(pcwprop, 9);
-};
+
+    PinCount = 8;
+    Pins = input_pins;
+}
 
 cpart_leds::~cpart_leds(void) {
     delete Bitmap;

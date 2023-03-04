@@ -45,9 +45,9 @@ cpart_hcsr04::cpart_hcsr04(const unsigned x, const unsigned y, const char* name,
       font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     always_update = 1;
 
-    input_pins[0] = 0;
+    pins[0] = 0;
 
-    output_pins[0] = 0;
+    pins[1] = 0;
 
     value = 0;
     active = 0;
@@ -56,6 +56,9 @@ cpart_hcsr04::cpart_hcsr04(const unsigned x, const unsigned y, const char* name,
     count = 0;
 
     SetPCWProperties(pcwprop, 4);
+
+    PinCount = 2;
+    Pins = pins;
 }
 
 void cpart_hcsr04::RegisterRemoteControl(void) {
@@ -73,24 +76,14 @@ void cpart_hcsr04::DrawOutput(const unsigned int i) {
 
     switch (output[i].id) {
         case O_P1:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(255, 255, 255);
-            if (input_pins[output[i].id - O_P1] == 0)
-                canvas.RotatedText("NC", output[i].x1, output[i].y2, 90);
-            else
-                canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2,
-                                   90);
-            break;
         case O_P2:
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);
-            if (output_pins[output[i].id - O_P2] == 0)
+            if (pins[output[i].id - O_P1] == 0)
                 canvas.RotatedText("NC", output[i].x1, output[i].y2, 90);
             else
-                canvas.RotatedText(SpareParts.GetPinName(output_pins[output[i].id - O_P2]), output[i].x1, output[i].y2,
-                                   90);
+                canvas.RotatedText(SpareParts.GetPinName(pins[output[i].id - O_P1]), output[i].x1, output[i].y2, 90);
             break;
         case O_F1:
             canvas.SetColor(49, 61, 99);
@@ -113,14 +106,14 @@ void cpart_hcsr04::DrawOutput(const unsigned int i) {
 }
 
 void cpart_hcsr04::Process(void) {
-    const picpin* pins = SpareParts.GetPinsValues();
+    const picpin* pins_ = SpareParts.GetPinsValues();
 
-    if ((input_pins[0]) && (output_pins[0])) {
+    if ((pins[0]) && (pins[1])) {
         // output
         if (count) {
             count--;
             if (!count) {
-                SpareParts.SetPin(output_pins[0], 0);
+                SpareParts.SetPin(pins[1], 0);
             }
         }
 
@@ -129,17 +122,17 @@ void cpart_hcsr04::Process(void) {
             delay--;
             if (!delay) {
                 count = (200 - value) * 116.144018583e-6 * PICSimLab.GetBoard()->MGetInstClockFreq();
-                SpareParts.SetPin(output_pins[0], 1);
+                SpareParts.SetPin(pins[1], 1);
             }
         }
 
         // trigger
-        if ((!pins[input_pins[0] - 1].value) && (old_value)) {
+        if ((!pins_[pins[0] - 1].value) && (old_value)) {
             // 200us  8 cycles of 40KHz
             delay = 200e-6 * PICSimLab.GetBoard()->MGetInstClockFreq();
             count = 0;
         }
-        old_value = pins[input_pins[0] - 1].value;
+        old_value = pins_[pins[0] - 1].value;
     }
 }
 
@@ -209,23 +202,23 @@ unsigned short cpart_hcsr04::GetOutputId(char* name) {
 lxString cpart_hcsr04::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%hhu", input_pins[0], output_pins[0], value);
+    sprintf(prefs, "%hhu,%hhu,%hhu", pins[0], pins[1], value);
 
     return prefs;
 }
 
 void cpart_hcsr04::ReadPreferences(lxString value_) {
-    sscanf(value_.c_str(), "%hhu,%hhu,%hhu", &input_pins[0], &output_pins[0], &value);
+    sscanf(value_.c_str(), "%hhu,%hhu,%hhu", &pins[0], &pins[1], &value);
 }
 
 void cpart_hcsr04::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo2", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo3", output_pins[0]);
+    SetPCWComboWithPinNames(WProp, "combo2", pins[0]);
+    SetPCWComboWithPinNames(WProp, "combo3", pins[1]);
 }
 
 void cpart_hcsr04::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
-    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo3");
+    pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
+    pins[1] = GetPWCComboSelectedPin(WProp, "combo3");
 }
 
 part_init(PART_HCSR0404_Name, cpart_hcsr04, "Input");

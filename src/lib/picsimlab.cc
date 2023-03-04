@@ -75,6 +75,7 @@ CPICSimLab::CPICSimLab() {
     use_dsr_reset = 1;
     settodestroy = 0;
     sync = 0;
+    SHARE = "";
 
 #ifndef _NOTHREAD
     cpu_mutex = NULL;
@@ -89,20 +90,20 @@ CPICSimLab::CPICSimLab() {
 
 void CPICSimLab::Init(CWindow* w) {
     Window = w;
-    statusbar = (CStatusbar*)Window->GetChildByName("statusbar1");
+    if (Window) {
+        statusbar = (CStatusbar*)Window->GetChildByName("statusbar1");
 
+        // board menu
+        for (int i = 0; i < BOARDS_LAST; i++) {
+            MBoard[i].SetFOwner(Window);
+            MBoard[i].SetName(itoa(i));
+            MBoard[i].SetText(boards_list[i].name);
+            MBoard[i].EvMenuActive = menu_EvBoard;
+            Window->GetChildByName("menu1")->GetChildByName("menu1_Board")->CreateChild(&MBoard[i]);
+        }
+    }
     // check for other instances
     StartRControl();
-
-    // board menu
-    for (int i = 0; i < BOARDS_LAST; i++) {
-        MBoard[i].SetFOwner(Window);
-        MBoard[i].SetName(itoa(i));
-        MBoard[i].SetText(boards_list[i].name);
-        MBoard[i].EvMenuActive = menu_EvBoard;
-        Window->GetChildByName("menu1")->GetChildByName("menu1_Board")->CreateChild(&MBoard[i]);
-        //((CPMenu*)Window->GetChildByName("menu1_Board"))->CreateChild(&MBoard[i]);
-    }
 }
 /*
 #ifdef _WIN_
@@ -236,19 +237,20 @@ void CPICSimLab::SetDebugStatus(int dbs, int updatebtn) {
 }
 
 void CPICSimLab::SetClock(const float clk, const int update) {
-    CCombo* combo = (CCombo*)Window->GetChildByName("combo1");
+    if (Window) {
+        CCombo* combo = (CCombo*)Window->GetChildByName("combo1");
 
-    if (update) {
-        if (clk < 1) {
-            combo->SetText(lxString().Format("%2.1f", clk));
+        if (update) {
+            if (clk < 1) {
+                combo->SetText(lxString().Format("%2.1f", clk));
+            } else {
+                combo->SetText(lxString().Format("%2.0f", clk));
+            }
+            need_clkupdate = 0;
         } else {
-            combo->SetText(lxString().Format("%2.0f", clk));
+            need_clkupdate = 1;
         }
-        need_clkupdate = 0;
-    } else {
-        need_clkupdate = 1;
     }
-
     NSTEP = (int)(clk * NSTEPKT);
     NSTEPJ = NSTEP / JUMPSTEPS;
     pboard->MSetFreq(NSTEP * NSTEPKF);
@@ -320,8 +322,10 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
 #ifndef __EMSCRIPTEN__
     rcontrol_end();
 #endif
-    ((CTimer*)Window->GetChildByName("timer1"))->SetRunState(0);
-    ((CTimer*)Window->GetChildByName("timer2"))->SetRunState(0);
+    if (Window) {
+        ((CTimer*)Window->GetChildByName("timer1"))->SetRunState(0);
+        ((CTimer*)Window->GetChildByName("timer2"))->SetRunState(0);
+    }
     msleep(100);
     while (status.status) {
         msleep(1);
@@ -333,12 +337,14 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
     cpu_cond->Signal();
     cpu_mutex->Unlock();
 #endif
-    ((CThread*)Window->GetChildByName("thread1"))->Destroy();
-    tgo = 0;
+    if (Window) {
+        ((CThread*)Window->GetChildByName("thread1"))->Destroy();
+        tgo = 0;
 
 #ifndef __EMSCRIPTEN__
-    ((CThread*)Window->GetChildByName("thread2"))->Destroy();
+        ((CThread*)Window->GetChildByName("thread2"))->Destroy();
 #endif
+    }
 
     // write options
     strcpy(home, (char*)lxGetUserDataDir(lxT("picsimlab")).char_str());
@@ -357,7 +363,9 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
     SavePrefs(lxT("picsimlab_debugt"), itoa(GetDebugType()));
     SavePrefs(lxT("picsimlab_debugp"), itoa(GetDebugPort()));
     SavePrefs(lxT("picsimlab_remotecp"), itoa(GetRemotecPort()));
-    SavePrefs(lxT("picsimlab_position"), itoa(Window->GetX()) + lxT(",") + itoa(Window->GetY()));
+    if (Window) {
+        SavePrefs(lxT("picsimlab_position"), itoa(Window->GetX()) + lxT(",") + itoa(Window->GetY()));
+    }
     SavePrefs(lxT("picsimlab_scale"), ftoa(scale));
     SavePrefs(lxT("picsimlab_dsr_reset"), itoa(GetUseDSRReset()));
     SavePrefs(lxT("osc_on"), itoa(pboard->GetUseOscilloscope()));
@@ -400,8 +408,10 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
     pboard->MEnd();
 
 #ifndef __EMSCRIPTEN__
-    if (((CThread*)Window->GetChildByName("thread3"))->GetRunState()) {
-        ((CThread*)Window->GetChildByName("thread3"))->Destroy();
+    if (Window) {
+        if (((CThread*)Window->GetChildByName("thread3"))->GetRunState()) {
+            ((CThread*)Window->GetChildByName("thread3"))->Destroy();
+        }
     }
 #endif
 
@@ -419,9 +429,11 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
     }
     SpareParts.SavePinAlias(fname);
 
-    // refresh window position to window reopen in same position
-    Window->GetX();
-    Window->GetY();
+    if (Window) {
+        // refresh window position to window reopen in same position
+        Window->GetX();
+        Window->GetY();
+    }
 
     scale = 1.0;
 
@@ -475,8 +487,12 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
         printf("PICSimLab: End Board Simulation.\n");
     }
 
-    Oscilloscope.GetWindow()->Hide();
-    SpareParts.GetWindow()->Hide();
+    if (Oscilloscope.GetWindow()) {
+        Oscilloscope.GetWindow()->Hide();
+    }
+    if (SpareParts.GetWindow()) {
+        SpareParts.GetWindow()->Hide();
+    }
     DeleteBoard();
 }
 
@@ -923,7 +939,9 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
                     if (disable_debug) {
                         debug = 0;
                     }
-                    ((CToggleButton*)Window->GetChildByName("togglebutton1"))->SetCheck(debug);
+                    if (Window) {
+                        ((CToggleButton*)Window->GetChildByName("togglebutton1"))->SetCheck(debug);
+                    }
 #endif
                     SetDebugStatus(debug, 0);
                 }
@@ -944,8 +962,10 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 
                 if (!strcmp(name, "picsimlab_position")) {
                     sscanf(value, "%i,%i", &i, &j);
-                    Window->SetX(i);
-                    Window->SetY(j);
+                    if (Window) {
+                        Window->SetX(i);
+                        Window->SetY(j);
+                    }
                     printf("PICSimLab: Window position x=%i y=%i\n", i, j);
                 }
 
@@ -954,10 +974,12 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
                         double s;
                         sscanf(value, "%lf", &s);
                         SetScale(s);
-                        ((CDraw*)Window->GetChildByName("draw1"))->SetWidth(plWidth * GetScale());
-                        Window->SetWidth(185 + plWidth * GetScale());
-                        ((CDraw*)Window->GetChildByName("draw1"))->SetHeight(plHeight * GetScale());
-                        Window->SetHeight(90 + plHeight * GetScale());
+                        if (Window) {
+                            ((CDraw*)Window->GetChildByName("draw1"))->SetWidth(plWidth * GetScale());
+                            Window->SetWidth(185 + plWidth * GetScale());
+                            ((CDraw*)Window->GetChildByName("draw1"))->SetHeight(plHeight * GetScale());
+                            Window->SetHeight(90 + plHeight * GetScale());
+                        }
                         pboard->SetScale(GetScale());
                         printf("PICSimLab: Window scale %5.2f \n", GetScale());
                     }
@@ -973,16 +995,18 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 
                 if (!strcmp(name, "picsimlab_lfile")) {
                     SetFNAME(lxString(value, lxConvUTF8));
-                    if (GetFNAME().length() > 1)
-                        Window->GetChildByName("menu1")
-                            ->GetChildByName("menu1_File")
-                            ->GetChildByName("menu1_File_ReloadLast")
-                            ->SetEnable(1);
-                    else
-                        Window->GetChildByName("menu1")
-                            ->GetChildByName("menu1_File")
-                            ->GetChildByName("menu1_File_ReloadLast")
-                            ->SetEnable(0);
+                    if (Window) {
+                        if (GetFNAME().length() > 1)
+                            Window->GetChildByName("menu1")
+                                ->GetChildByName("menu1_File")
+                                ->GetChildByName("menu1_File_ReloadLast")
+                                ->SetEnable(1);
+                        else
+                            Window->GetChildByName("menu1")
+                                ->GetChildByName("menu1_File")
+                                ->GetChildByName("menu1_File_ReloadLast")
+                                ->SetEnable(0);
+                    }
                 }
 
                 if (pboard != NULL)
@@ -1015,35 +1039,37 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 #endif
     }
 
-    ((CPMenu*)Window->GetChildByName("menu1")->GetChildByName("menu1_Microcontroller"))->DestroyChilds();
-    lxString sdev = pboard->GetSupportedDevices();
-    int f;
-    int dc = 0;
-    while (sdev.size() > 0) {
-        f = sdev.find(lxT(","));
-        if (f < 0)
-            break;
-        MMicro[dc].SetFOwner(Window);
-        MMicro[dc].SetName("Micro_" + itoa(dc + 1));
-        MMicro[dc].SetText(sdev.substr(0, f));
-        MMicro[dc].EvMenuActive = menu_EvMicrocontroller;
-        ((CPMenu*)Window->GetChildByName("menu1")->GetChildByName("menu1_Microcontroller"))->CreateChild(&MMicro[dc]);
-        MMicro[dc].SetVisible(true);
-        sdev = sdev.substr(f + 1, sdev.size() - f - 1);
-        dc++;
+    if (Window) {
+        ((CPMenu*)Window->GetChildByName("menu1")->GetChildByName("menu1_Microcontroller"))->DestroyChilds();
+        lxString sdev = pboard->GetSupportedDevices();
+        int f;
+        int dc = 0;
+        while (sdev.size() > 0) {
+            f = sdev.find(lxT(","));
+            if (f < 0)
+                break;
+            MMicro[dc].SetFOwner(Window);
+            MMicro[dc].SetName("Micro_" + itoa(dc + 1));
+            MMicro[dc].SetText(sdev.substr(0, f));
+            MMicro[dc].EvMenuActive = menu_EvMicrocontroller;
+            ((CPMenu*)Window->GetChildByName("menu1")->GetChildByName("menu1_Microcontroller"))
+                ->CreateChild(&MMicro[dc]);
+            MMicro[dc].SetVisible(true);
+            sdev = sdev.substr(f + 1, sdev.size() - f - 1);
+            dc++;
 
-        if (dc >= MAX_MIC) {
-            printf("PICSimLab: microcontroller menu only support %i entries!\n", MAX_MIC);
-            exit(-1);
+            if (dc >= MAX_MIC) {
+                printf("PICSimLab: microcontroller menu only support %i entries!\n", MAX_MIC);
+                exit(-1);
+            }
         }
+
+        ((CFileDialog*)Window->GetChildByName("filedialog1"))->SetDir(GetPath());
+
+        ((CDraw*)Window->GetChildByName("draw1"))
+            ->SetImgFileName(lxGetLocalFile(GetSharePath() + lxT("boards/") + pboard->GetPictureFileName()), GetScale(),
+                             GetScale());
     }
-
-    ((CFileDialog*)Window->GetChildByName("filedialog1"))->SetDir(GetPath());
-
-    ((CDraw*)Window->GetChildByName("draw1"))
-        ->SetImgFileName(lxGetLocalFile(GetSharePath() + lxT("boards/") + pboard->GetPictureFileName()), GetScale(),
-                         GetScale());
-
     pboard->MSetSerial(SERIALDEVICE);
 
     if (lfile) {
@@ -1098,30 +1124,33 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
     pboard->Reset();
 
     SetProcessorName(pboard->GetProcessorName());
-
-    Window->SetTitle(((Instance > 0) ? (lxT("PICSimLab[") + itoa(Instance) + lxT("] - ")) : (lxT("PICSimLab - "))) +
-                     lxString(boards_list[lab].name) + lxT(" - ") + pboard->GetProcessorName());
+    if (Window) {
+        Window->SetTitle(((Instance > 0) ? (lxT("PICSimLab[") + itoa(Instance) + lxT("] - ")) : (lxT("PICSimLab - "))) +
+                         lxString(boards_list[lab].name) + lxT(" - ") + pboard->GetProcessorName());
 
 #ifdef _USE_PICSTARTP_
-    if (prog_init() >= 0)
-        status = lxT("PStart:  Ok ");
-    else
-        status = lxT("PStart:Error");
+        if (prog_init() >= 0)
+            status = lxT("PStart:  Ok ");
+        else
+            status = lxT("PStart:Error");
 #else
-    status = lxT("");
+        status = lxT("");
 #endif
 
-    statusbar->SetField(0, lxT("Running..."));
+        if (statusbar) {
+            statusbar->SetField(0, lxT("Running..."));
+        }
 
-    ((CThread*)Window->GetChildByName("thread1"))->Run();  // parallel thread
+        ((CThread*)Window->GetChildByName("thread1"))->Run();  // parallel thread
 #ifndef __EMSCRIPTEN__
-    // FIXME remote control disabled
-    ((CThread*)Window->GetChildByName("thread2"))->Run();  // parallel thread
+        // FIXME remote control disabled
+        ((CThread*)Window->GetChildByName("thread2"))->Run();  // parallel thread
 #endif
-    ((CTimer*)Window->GetChildByName("timer1"))->SetRunState(1);
-    ((CTimer*)Window->GetChildByName("timer2"))->SetRunState(1);
+        ((CTimer*)Window->GetChildByName("timer1"))->SetRunState(1);
+        ((CTimer*)Window->GetChildByName("timer2"))->SetRunState(1);
 
-    Application->ProcessEvents();
+        Application->ProcessEvents();
+    }
 
     Oscilloscope.SetBoard(pboard);
     Oscilloscope.SetBaseTimer();
@@ -1144,32 +1173,36 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 
     printf("PICSimLab: Debug On=%i  Type=%s Port=%i\n", debug, (debug_type) ? "GDB" : "MDB", GetDebugPort());
 
+    if (statusbar) {
 #ifdef NO_DEBUG
-    statusbar->SetField(1, lxT(" "));
+        statusbar->SetField(1, lxT(" "));
 #else
-    if (GetDebugStatus()) {
-        int ret = pboard->DebugInit(GetDebugType());
-        if (ret < 0) {
-            statusbar->SetField(1, status + lxT("Debug: Error"));
+        if (GetDebugStatus()) {
+            int ret = pboard->DebugInit(GetDebugType());
+            if (ret < 0) {
+                statusbar->SetField(1, status + lxT("Debug: Error"));
+            } else {
+                statusbar->SetField(1, status + lxT("Debug: ") + pboard->GetDebugName() + ":" + itoa(GetDebugPort()));
+            }
         } else {
-            statusbar->SetField(1, status + lxT("Debug: ") + pboard->GetDebugName() + ":" + itoa(GetDebugPort()));
+            statusbar->SetField(1, status + lxT("Debug: Off"));
         }
-    } else {
-        statusbar->SetField(1, status + lxT("Debug: Off"));
-    }
 #endif
+    }
 
 #ifndef NO_TOOLS
-    if ((!pboard->GetProcessorName().Cmp("atmega328p")) || (!pboard->GetProcessorName().Cmp("atmega2560"))) {
-        Window->GetChildByName("menu1")
-            ->GetChildByName("menu1_Tools")
-            ->GetChildByName("menu1_Tools_ArduinoBootloader")
-            ->SetEnable(true);
-    } else {
-        Window->GetChildByName("menu1")
-            ->GetChildByName("menu1_Tools")
-            ->GetChildByName("menu1_Tools_ArduinoBootloader")
-            ->SetEnable(false);
+    if (Window) {
+        if ((!pboard->GetProcessorName().Cmp("atmega328p")) || (!pboard->GetProcessorName().Cmp("atmega2560"))) {
+            Window->GetChildByName("menu1")
+                ->GetChildByName("menu1_Tools")
+                ->GetChildByName("menu1_Tools_ArduinoBootloader")
+                ->SetEnable(true);
+        } else {
+            Window->GetChildByName("menu1")
+                ->GetChildByName("menu1_Tools")
+                ->GetChildByName("menu1_Tools_ArduinoBootloader")
+                ->SetEnable(false);
+        }
     }
 #endif
 

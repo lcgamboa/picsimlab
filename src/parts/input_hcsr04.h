@@ -50,8 +50,7 @@ public:
 
 private:
     void RegisterRemoteControl(void) override;
-    unsigned char input_pins[1];
-    unsigned char output_pins[1];
+    unsigned char pins[2];
     unsigned char value;
     unsigned char active;
     unsigned int count;

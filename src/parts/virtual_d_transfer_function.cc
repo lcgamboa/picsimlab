@@ -38,8 +38,8 @@ static PCWProp pcwprop[9] = {{PCW_COMBO, "Input"},  {PCW_COMBO, "Output"},  {PCW
 cpart_dtfunc::cpart_dtfunc(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     always_update = 1;
-    input_pin = 0;
-    output_pin = 0;
+    pins[0] = 0;
+    pins[1] = 0;
 
     num[0] = 0.1445;
     den[0] = 1.0;
@@ -57,6 +57,9 @@ cpart_dtfunc::cpart_dtfunc(const unsigned x, const unsigned y, const char* name,
     refresh = 0;
 
     SetPCWProperties(pcwprop, 9);
+
+    PinCount = 2;
+    Pins = pins;
 }
 
 cpart_dtfunc::~cpart_dtfunc(void) {
@@ -75,16 +78,16 @@ void cpart_dtfunc::DrawOutput(const unsigned int i) {
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(0, 0, 0);
             if (output[i].id == O_P1) {
-                if (input_pin == 0)
+                if (pins[0] == 0)
                     canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
                 else
-                    canvas.RotatedText(SpareParts.GetPinName(input_pin), output[i].x1, output[i].y1, 0);
+                    canvas.RotatedText(SpareParts.GetPinName(pins[0]), output[i].x1, output[i].y1, 0);
             }
             if (output[i].id == O_P2) {
-                if (output_pin == 0)
+                if (pins[1] == 0)
                     canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
                 else
-                    canvas.RotatedText(SpareParts.GetPinName(output_pin), output[i].x1, output[i].y1, 0);
+                    canvas.RotatedText(SpareParts.GetPinName(pins[1]), output[i].x1, output[i].y1, 0);
             }
             break;
         case O_IG:
@@ -148,10 +151,10 @@ void cpart_dtfunc::Process(void) {
 
         float in, out, pinv;
 
-        if (input_pin == 0)
+        if (pins[0] == 0)
             return;
-        pinv = (ppins[input_pin - 1].oavalue - 30) * 0.022502250225;
-        // pinv = (ppins[input_pin - 1].value) *5.0;
+        pinv = (ppins[pins[0] - 1].oavalue - 30) * 0.022502250225;
+        // pinv = (ppins[pins[0] - 1].value) *5.0;
 
         in = pinv * in_gain + in_off;
 
@@ -168,7 +171,7 @@ void cpart_dtfunc::Process(void) {
         if (out > 5.0)
             out = 5.0;
 
-        SpareParts.SetAPin(output_pin, out);
+        SpareParts.SetAPin(pins[1], out);
     }
     refresh++;
 }
@@ -255,15 +258,14 @@ unsigned short cpart_dtfunc::GetOutputId(char* name) {
 lxString cpart_dtfunc::WritePreferences(void) {
     char prefs[256];
 
-    snprintf(prefs, 255, "%hhu,%hhu,%f,%f,%f,%f,%f,%i,%i,%f,%f,%f,%f,%f,%f,%f,%f", input_pin, output_pin, sample,
-             in_gain, in_off, out_gain, out_off, ordern, orderd, num[0], num[1], num[2], num[3], den[0], den[1], den[2],
-             den[3]);
+    snprintf(prefs, 255, "%hhu,%hhu,%f,%f,%f,%f,%f,%i,%i,%f,%f,%f,%f,%f,%f,%f,%f", pins[0], pins[1], sample, in_gain,
+             in_off, out_gain, out_off, ordern, orderd, num[0], num[1], num[2], num[3], den[0], den[1], den[2], den[3]);
 
     return prefs;
 }
 
 void cpart_dtfunc::ReadPreferences(lxString value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%f,%f,%f,%f,%f,%i,%i,%f,%f,%f,%f,%f,%f,%f,%f", &input_pin, &output_pin, &sample,
+    sscanf(value.c_str(), "%hhu,%hhu,%f,%f,%f,%f,%f,%i,%i,%f,%f,%f,%f,%f,%f,%f,%f", &pins[0], &pins[1], &sample,
            &in_gain, &in_off, &out_gain, &out_off, &ordern, &orderd, &num[0], &num[1], &num[2], &num[3], &den[0],
            &den[1], &den[2], &den[3]);
 }
@@ -274,8 +276,8 @@ void cpart_dtfunc::ConfigurePropertiesWindow(CPWindow* WProp) {
     char buff[20];
     char eq[200];
 
-    SetPCWComboWithPinNames(WProp, "combo1", input_pin);
-    SetPCWComboWithPinNames(WProp, "combo2", output_pin);
+    SetPCWComboWithPinNames(WProp, "combo1", pins[0]);
+    SetPCWComboWithPinNames(WProp, "combo2", pins[1]);
 
     eq[0] = 0;
     for (int i = 0; i < ordern; i++) {
@@ -302,8 +304,8 @@ void cpart_dtfunc::ReadPropertiesWindow(CPWindow* WProp) {
     char line[256];
     char* T[4];
 
-    input_pin = GetPWCComboSelectedPin(WProp, "combo1");
-    output_pin = GetPWCComboSelectedPin(WProp, "combo2");
+    pins[0] = GetPWCComboSelectedPin(WProp, "combo1");
+    pins[1] = GetPWCComboSelectedPin(WProp, "combo2");
 
     strncpy(line, ((CEdit*)WProp->GetChildByName("edit3"))->GetText().c_str(), 255);
     T[0] = strtok(line, " ");

@@ -49,8 +49,7 @@ public:
 
 private:
     void RegisterRemoteControl(void) override;
-    unsigned char input_pins[3];
-    unsigned char output_pins[2];
+    unsigned char pins[5];
     unsigned char value;
     unsigned char value_old;
     int step;

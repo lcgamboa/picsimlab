@@ -96,15 +96,19 @@ void board::ReadInputMap(lxString fname) {
                         unsigned int ww = 185 + board_w * PICSimLab.GetScale();
                         if (ww > lxGetDisplayWidth(0)) {
                             float scalex = ((lxGetDisplayWidth(0) - 185) * 1.0) / board_w;
-                            ((CDraw*)PICSimLab.GetWindow()->GetChildByName("draw1"))->SetWidth(board_w * scalex);
-                            PICSimLab.GetWindow()->SetWidth(lxGetDisplayWidth(0));
+                            if (PICSimLab.GetWindow()) {
+                                ((CDraw*)PICSimLab.GetWindow()->GetChildByName("draw1"))->SetWidth(board_w * scalex);
+                                PICSimLab.GetWindow()->SetWidth(lxGetDisplayWidth(0));
+                            }
                             if (scalex < Scale) {
                                 Scale = scalex;
                             }
                         } else {
-                            ((CDraw*)PICSimLab.GetWindow()->GetChildByName("draw1"))
-                                ->SetWidth(board_w * PICSimLab.GetScale());
-                            PICSimLab.GetWindow()->SetWidth(ww);
+                            if (PICSimLab.GetWindow()) {
+                                ((CDraw*)PICSimLab.GetWindow()->GetChildByName("draw1"))
+                                    ->SetWidth(board_w * PICSimLab.GetScale());
+                                PICSimLab.GetWindow()->SetWidth(ww);
+                            }
                         }
                     }
 
@@ -117,16 +121,20 @@ void board::ReadInputMap(lxString fname) {
                         if (wh > lxGetDisplayHeight(0)) {
                             float scaley = ((lxGetDisplayHeight(0) - 90) * 1.0) / board_h;
 
-                            ((CDraw*)PICSimLab.GetWindow()->GetChildByName("draw1"))->SetHeight(board_h * scaley);
-                            PICSimLab.GetWindow()->SetHeight(lxGetDisplayHeight(0));
-                            PICSimLab.GetWindow()->SetWidth(185 + board_w * scaley);
+                            if (PICSimLab.GetWindow()) {
+                                ((CDraw*)PICSimLab.GetWindow()->GetChildByName("draw1"))->SetHeight(board_h * scaley);
+                                PICSimLab.GetWindow()->SetHeight(lxGetDisplayHeight(0));
+                                PICSimLab.GetWindow()->SetWidth(185 + board_w * scaley);
+                            }
                             if (scaley < Scale) {
                                 Scale = scaley;
                             }
                         } else {
-                            ((CDraw*)PICSimLab.GetWindow()->GetChildByName("draw1"))
-                                ->SetHeight(board_h * PICSimLab.GetScale());
-                            PICSimLab.GetWindow()->SetHeight(wh);
+                            if (PICSimLab.GetWindow()) {
+                                ((CDraw*)PICSimLab.GetWindow()->GetChildByName("draw1"))
+                                    ->SetHeight(board_h * PICSimLab.GetScale());
+                                PICSimLab.GetWindow()->SetHeight(wh);
+                            }
                         }
                     }
 

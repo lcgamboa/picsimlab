@@ -127,6 +127,9 @@ cpart_IO_MCP23S17::cpart_IO_MCP23S17(const unsigned x, const unsigned y, const c
     _PB = 0xFA;
 
     SetPCWProperties(pcwprop, 28);
+
+    PinCount = 10;
+    Pins = input_pins;
 }
 
 cpart_IO_MCP23S17::~cpart_IO_MCP23S17(void) {

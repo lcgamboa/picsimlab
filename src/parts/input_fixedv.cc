@@ -48,6 +48,9 @@ cpart_fixedv::cpart_fixedv(const unsigned x, const unsigned y, const char* name,
     active = 0;
 
     SetPCWProperties(pcwprop, 4);
+
+    PinCount = 1;
+    Pins = output_pins;
 }
 
 void cpart_fixedv::RegisterRemoteControl(void) {}

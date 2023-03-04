@@ -64,6 +64,9 @@ cpart_encoder::cpart_encoder(const unsigned x, const unsigned y, const char* nam
     state = 0;
 
     SetPCWProperties(pcwprop, 5);
+
+    PinCount = 3;
+    Pins = output_pins;
 }
 
 void cpart_encoder::RegisterRemoteControl(void) {

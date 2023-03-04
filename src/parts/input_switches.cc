@@ -68,6 +68,9 @@ cpart_switches::cpart_switches(const unsigned x, const unsigned y, const char* n
     SWBounce_init(&bounce, 8);
 
     SetPCWProperties(pcwprop, 12);
+
+    PinCount = 8;
+    Pins = output_pins;
 }
 
 void cpart_switches::RegisterRemoteControl(void) {

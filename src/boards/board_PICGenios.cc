@@ -248,101 +248,103 @@ cboard_PICGenios::cboard_PICGenios(void) : font(10, lxFONTFAMILY_TELETYPE, lxFON
 
     buzzer.Init();
 
-    // gauge1
-    gauge1 = new CGauge();
-    gauge1->SetFOwner(PICSimLab.GetWindow());
-    gauge1->SetName(lxT("gauge1_p4"));
-    gauge1->SetX(13);
-    gauge1->SetY(302 + 20);
-    gauge1->SetWidth(140);
-    gauge1->SetHeight(20);
-    gauge1->SetEnable(1);
-    gauge1->SetVisible(1);
-    gauge1->SetRange(100);
-    gauge1->SetValue(0);
-    gauge1->SetType(4);
-    PICSimLab.GetWindow()->CreateChild(gauge1);
-    // gauge2
-    gauge2 = new CGauge();
-    gauge2->SetFOwner(PICSimLab.GetWindow());
-    gauge2->SetName(lxT("gauge2_p4"));
-    gauge2->SetX(12);
-    gauge2->SetY(250 + 20);
-    gauge2->SetWidth(140);
-    gauge2->SetHeight(20);
-    gauge2->SetEnable(1);
-    gauge2->SetVisible(1);
-    gauge2->SetRange(100);
-    gauge2->SetValue(0);
-    gauge2->SetType(4);
-    PICSimLab.GetWindow()->CreateChild(gauge2);
-    // label3
-    label3 = new CLabel();
-    label3->SetFOwner(PICSimLab.GetWindow());
-    label3->SetName(lxT("label3_p4"));
-    label3->SetX(12);
-    label3->SetY(226 + 20);
-    label3->SetWidth(60);
-    label3->SetHeight(20);
-    label3->SetEnable(1);
-    label3->SetVisible(1);
-    label3->SetText(lxT("Heater"));
-    label3->SetAlign(1);
-    PICSimLab.GetWindow()->CreateChild(label3);
-    // label4
-    label4 = new CLabel();
-    label4->SetFOwner(PICSimLab.GetWindow());
-    label4->SetName(lxT("label4_p4"));
-    label4->SetX(13);
-    label4->SetY(277 + 20);
-    label4->SetWidth(60);
-    label4->SetHeight(20);
-    label4->SetEnable(1);
-    label4->SetVisible(1);
-    label4->SetText(lxT("Cooler"));
-    label4->SetAlign(1);
-    PICSimLab.GetWindow()->CreateChild(label4);
-    // label5
-    label5 = new CLabel();
-    label5->SetFOwner(PICSimLab.GetWindow());
-    label5->SetName(lxT("label5_p4"));
-    label5->SetX(13);
-    label5->SetY(332 + 20);
-    label5->SetWidth(120);
-    label5->SetHeight(24);
-    label5->SetEnable(1);
-    label5->SetVisible(1);
-    label5->SetText(lxT("Temp: 00.0°C"));
-    label5->SetAlign(1);
-    PICSimLab.GetWindow()->CreateChild(label5);
-    // label6
-    label6 = new CLabel();
-    label6->SetFOwner(PICSimLab.GetWindow());
-    label6->SetName(lxT("label6_p4"));
-    label6->SetX(13);
-    label6->SetY(54 + 20);
-    label6->SetWidth(120);
-    label6->SetHeight(24);
-    label6->SetEnable(1);
-    label6->SetVisible(1);
-    label6->SetText(lxT("LCD"));
-    label6->SetAlign(1);
-    PICSimLab.GetWindow()->CreateChild(label6);
-    // combo1
-    combo1 = new CCombo();
-    combo1->SetFOwner(PICSimLab.GetWindow());
-    combo1->SetName(lxT("combo1_p4"));
-    combo1->SetX(13);
-    combo1->SetY(78 + 20);
-    combo1->SetWidth(130);
-    combo1->SetHeight(24);
-    combo1->SetEnable(1);
-    combo1->SetVisible(1);
-    combo1->SetText(lxT("hd44780 16x2"));
-    combo1->SetItems(lxT("hd44780 16x2,hd44780 16x4,"));
-    combo1->SetTag(3);
-    combo1->EvOnComboChange = PICSimLab.board_Event;
-    PICSimLab.GetWindow()->CreateChild(combo1);
+    if (PICSimLab.GetWindow()) {
+        // gauge1
+        gauge1 = new CGauge();
+        gauge1->SetFOwner(PICSimLab.GetWindow());
+        gauge1->SetName(lxT("gauge1_p4"));
+        gauge1->SetX(13);
+        gauge1->SetY(302 + 20);
+        gauge1->SetWidth(140);
+        gauge1->SetHeight(20);
+        gauge1->SetEnable(1);
+        gauge1->SetVisible(1);
+        gauge1->SetRange(100);
+        gauge1->SetValue(0);
+        gauge1->SetType(4);
+        PICSimLab.GetWindow()->CreateChild(gauge1);
+        // gauge2
+        gauge2 = new CGauge();
+        gauge2->SetFOwner(PICSimLab.GetWindow());
+        gauge2->SetName(lxT("gauge2_p4"));
+        gauge2->SetX(12);
+        gauge2->SetY(250 + 20);
+        gauge2->SetWidth(140);
+        gauge2->SetHeight(20);
+        gauge2->SetEnable(1);
+        gauge2->SetVisible(1);
+        gauge2->SetRange(100);
+        gauge2->SetValue(0);
+        gauge2->SetType(4);
+        PICSimLab.GetWindow()->CreateChild(gauge2);
+        // label3
+        label3 = new CLabel();
+        label3->SetFOwner(PICSimLab.GetWindow());
+        label3->SetName(lxT("label3_p4"));
+        label3->SetX(12);
+        label3->SetY(226 + 20);
+        label3->SetWidth(60);
+        label3->SetHeight(20);
+        label3->SetEnable(1);
+        label3->SetVisible(1);
+        label3->SetText(lxT("Heater"));
+        label3->SetAlign(1);
+        PICSimLab.GetWindow()->CreateChild(label3);
+        // label4
+        label4 = new CLabel();
+        label4->SetFOwner(PICSimLab.GetWindow());
+        label4->SetName(lxT("label4_p4"));
+        label4->SetX(13);
+        label4->SetY(277 + 20);
+        label4->SetWidth(60);
+        label4->SetHeight(20);
+        label4->SetEnable(1);
+        label4->SetVisible(1);
+        label4->SetText(lxT("Cooler"));
+        label4->SetAlign(1);
+        PICSimLab.GetWindow()->CreateChild(label4);
+        // label5
+        label5 = new CLabel();
+        label5->SetFOwner(PICSimLab.GetWindow());
+        label5->SetName(lxT("label5_p4"));
+        label5->SetX(13);
+        label5->SetY(332 + 20);
+        label5->SetWidth(120);
+        label5->SetHeight(24);
+        label5->SetEnable(1);
+        label5->SetVisible(1);
+        label5->SetText(lxT("Temp: 00.0°C"));
+        label5->SetAlign(1);
+        PICSimLab.GetWindow()->CreateChild(label5);
+        // label6
+        label6 = new CLabel();
+        label6->SetFOwner(PICSimLab.GetWindow());
+        label6->SetName(lxT("label6_p4"));
+        label6->SetX(13);
+        label6->SetY(54 + 20);
+        label6->SetWidth(120);
+        label6->SetHeight(24);
+        label6->SetEnable(1);
+        label6->SetVisible(1);
+        label6->SetText(lxT("LCD"));
+        label6->SetAlign(1);
+        PICSimLab.GetWindow()->CreateChild(label6);
+        // combo1
+        combo1 = new CCombo();
+        combo1->SetFOwner(PICSimLab.GetWindow());
+        combo1->SetName(lxT("combo1_p4"));
+        combo1->SetX(13);
+        combo1->SetY(78 + 20);
+        combo1->SetWidth(130);
+        combo1->SetHeight(24);
+        combo1->SetEnable(1);
+        combo1->SetVisible(1);
+        combo1->SetText(lxT("hd44780 16x2"));
+        combo1->SetItems(lxT("hd44780 16x2,hd44780 16x4,"));
+        combo1->SetTag(3);
+        combo1->EvOnComboChange = PICSimLab.board_Event;
+        PICSimLab.GetWindow()->CreateChild(combo1);
+    }
 
     snprintf(mi2c_tmp_name, 200, "%s/picsimlab-XXXXXX", (const char*)lxGetTempDir("PICSimLab").c_str());
     close(mkstemp(mi2c_tmp_name));
@@ -368,14 +370,15 @@ cboard_PICGenios::~cboard_PICGenios(void) {
     mi2c_end(&mi2c);
     rtc_ds1307_end(&rtc2);
 
-    PICSimLab.GetWindow()->DestroyChild(gauge1);
-    PICSimLab.GetWindow()->DestroyChild(gauge2);
-    PICSimLab.GetWindow()->DestroyChild(label3);
-    PICSimLab.GetWindow()->DestroyChild(label4);
-    PICSimLab.GetWindow()->DestroyChild(label5);
-    PICSimLab.GetWindow()->DestroyChild(label6);
-    PICSimLab.GetWindow()->DestroyChild(combo1);
-
+    if (PICSimLab.GetWindow()) {
+        PICSimLab.GetWindow()->DestroyChild(gauge1);
+        PICSimLab.GetWindow()->DestroyChild(gauge2);
+        PICSimLab.GetWindow()->DestroyChild(label3);
+        PICSimLab.GetWindow()->DestroyChild(label4);
+        PICSimLab.GetWindow()->DestroyChild(label5);
+        PICSimLab.GetWindow()->DestroyChild(label6);
+        PICSimLab.GetWindow()->DestroyChild(combo1);
+    }
     unlink(mi2c_tmp_name);
 
     SWBounce_end(&bounce);
@@ -1346,19 +1349,23 @@ void cboard_PICGenios::Reset(void) {
     pic_set_pin(&pic, 22, 0);
     pic_set_pin(&pic, 23, 0);
 
+    if (PICSimLab.GetStatusBar()) {
 #ifndef _WIN_
-    if (pic.serial[0].serialfd > 0)
+        if (pic.serial[0].serialfd > 0)
 #else
-    if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
+        if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
-                                                  itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                                  lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                                   100.0 * pic.serial[0].serialbaud) /
-                                                                                  pic.serial[0].serialexbaud)) +
-                                                  lxT("%)"));
-    else
-        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+            PICSimLab.GetStatusBar()->SetField(
+                2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) +
+                       lxT("(") +
+                       lxString().Format("%4.1f",
+                                         fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
+                                              pic.serial[0].serialexbaud)) +
+                       lxT("%)"));
+        else
+            PICSimLab.GetStatusBar()->SetField(2,
+                                               lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+    }
 
     for (int i = 0; i < pic.PINCOUNT; i++) {
         lm1[i] = 0;
@@ -2407,7 +2414,9 @@ void cboard_PICGenios::WritePreferences(void) {
 
     PICSimLab.SavePrefs(lxT("PICGenios_jmp"), lxString().Format("%i", jmp[0]));
 
-    PICSimLab.SavePrefs(lxT("PICGenios_lcd"), combo1->GetText());
+    if (combo1) {
+        PICSimLab.SavePrefs(lxT("PICGenios_lcd"), combo1->GetText());
+    }
 
     line[0] = 0;
     for (int i = 0; i < 20; i++)
@@ -2446,8 +2455,10 @@ void cboard_PICGenios::ReadPreferences(char* name, char* value) {
     }
 
     if (!strcmp(name, "PICGenios_lcd")) {
-        combo1->SetText(value);
-        if (combo1->GetText().Cmp(lxT("hd44780 16x2")) == 0)
+        if (combo1) {
+            combo1->SetText(value);
+        }
+        if (!strcmp(value, "hd44780 16x2"))
             lcd_init(&lcd, 16, 2);
         else
             lcd_init(&lcd, 16, 4);

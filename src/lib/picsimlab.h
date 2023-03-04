@@ -51,8 +51,8 @@ public:
     /**
      * @brief  Get the file path of resources
      */
-    lxString GetSharePath(void) { return share; };
-    void SetSharePath(lxString spath) { share = spath; };
+    lxString GetSharePath(void) { return SHARE; };
+    void SetSharePath(lxString spath) { SHARE = spath; };
 
     lxString GetLibPath(void) { return libpath; };
     void SetLibPath(lxString lpath) { libpath = lpath; };
@@ -282,7 +282,7 @@ private:
     CStatusbar* statusbar;
     int lab;
     int lab_;
-    lxString share;
+    lxString SHARE;
     lxString libpath;
     long int NSTEP;
     long int NSTEPJ;

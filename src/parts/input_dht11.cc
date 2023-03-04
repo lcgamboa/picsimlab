@@ -54,6 +54,9 @@ cpart_dht11::cpart_dht11(const unsigned x, const unsigned y, const char* name, c
     sen_dhtxx_init(&dht11, PICSimLab.GetBoard(), DHT11);
 
     SetPCWProperties(pcwprop, 4);
+
+    PinCount = 1;
+    Pins = output_pins;
 }
 
 void cpart_dht11::RegisterRemoteControl(void) {

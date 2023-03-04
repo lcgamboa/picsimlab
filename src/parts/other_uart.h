@@ -50,8 +50,7 @@ public:
     unsigned short GetOutputId(char* name) override;
 
 private:
-    unsigned char input_pins[1];
-    unsigned char output_pins[1];
+    unsigned char pins[2];
     uart_t sr;
     unsigned short _ret;
     char uart_name[200];

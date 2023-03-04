@@ -54,6 +54,9 @@ cpart_gamepad_an::cpart_gamepad_an(const unsigned x, const unsigned y, const cha
     vmax = 5.0;
 
     SetPCWProperties(pcwprop, 4);
+
+    PinCount = 1;
+    Pins = output_pins;
 }
 
 void cpart_gamepad_an::RegisterRemoteControl(void) {

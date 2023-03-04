@@ -54,6 +54,9 @@ cpart_sht3x::cpart_sht3x(const unsigned x, const unsigned y, const char* name, c
     active[1] = 0;
 
     SetPCWProperties(pcwprop, 5);
+
+    PinCount = 2;
+    Pins = output_pins;
 }
 
 void cpart_sht3x::RegisterRemoteControl(void) {

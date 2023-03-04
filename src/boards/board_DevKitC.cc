@@ -262,64 +262,72 @@ cboard_DevKitC::cboard_DevKitC(void) {
     master_uart[2].tx_pin = 0;
     master_uart[2].rx_pin = 0;
 
-    // label1
-    label1 = new CLabel();
-    label1->SetFOwner(PICSimLab.GetWindow());
-    label1->SetName(lxT("label1_"));
-    label1->SetX(13);
-    label1->SetY(54 + 20);
-    label1->SetWidth(120);
-    label1->SetHeight(24);
-    label1->SetEnable(1);
-    label1->SetVisible(1);
-    label1->SetText(lxT("Qemu CPU MIPS"));
-    label1->SetAlign(1);
-    PICSimLab.GetWindow()->CreateChild(label1);
-    // combo1
-    combo1 = new CCombo();
-    combo1->SetFOwner(PICSimLab.GetWindow());
-    combo1->SetName(lxT("combo1_"));
-    combo1->SetX(13);
-    combo1->SetY(78 + 20);
-    combo1->SetWidth(130);
-    combo1->SetHeight(24);
-    combo1->SetEnable(1);
-    combo1->SetVisible(1);
-    combo1->SetText(IcountToMipsStr(icount));
-    combo1->SetItems(IcountToMipsItens(buffer));
-    combo1->SetTag(3);
-    combo1->EvOnComboChange = PICSimLab.board_Event;
-    PICSimLab.GetWindow()->CreateChild(combo1);
-    // button1
-    button1 = new CButton();
-    button1->SetFOwner(PICSimLab.GetWindow());
-    button1->SetName(lxT("button1_"));
-    button1->SetX(13);
-    button1->SetY(78 + 60);
-    button1->SetWidth(130);
-    button1->SetHeight(24);
-    button1->SetEnable(1);
-    button1->SetVisible(1);
-    button1->SetText("Config Qemu");
-    button1->SetTag(4);
-    button1->EvMouseButtonRelease = PICSimLab.board_ButtonEvent;
-    PICSimLab.GetWindow()->CreateChild(button1);
+    if (PICSimLab.GetWindow()) {
+        // label1
+        label1 = new CLabel();
+        label1->SetFOwner(PICSimLab.GetWindow());
+        label1->SetName(lxT("label1_"));
+        label1->SetX(13);
+        label1->SetY(54 + 20);
+        label1->SetWidth(120);
+        label1->SetHeight(24);
+        label1->SetEnable(1);
+        label1->SetVisible(1);
+        label1->SetText(lxT("Qemu CPU MIPS"));
+        label1->SetAlign(1);
+        PICSimLab.GetWindow()->CreateChild(label1);
+        // combo1
+        combo1 = new CCombo();
+        combo1->SetFOwner(PICSimLab.GetWindow());
+        combo1->SetName(lxT("combo1_"));
+        combo1->SetX(13);
+        combo1->SetY(78 + 20);
+        combo1->SetWidth(130);
+        combo1->SetHeight(24);
+        combo1->SetEnable(1);
+        combo1->SetVisible(1);
+        combo1->SetText(IcountToMipsStr(icount));
+        combo1->SetItems(IcountToMipsItens(buffer));
+        combo1->SetTag(3);
+        combo1->EvOnComboChange = PICSimLab.board_Event;
+        PICSimLab.GetWindow()->CreateChild(combo1);
+        // button1
+        button1 = new CButton();
+        button1->SetFOwner(PICSimLab.GetWindow());
+        button1->SetName(lxT("button1_"));
+        button1->SetX(13);
+        button1->SetY(78 + 60);
+        button1->SetWidth(130);
+        button1->SetHeight(24);
+        button1->SetEnable(1);
+        button1->SetVisible(1);
+        button1->SetText("Config Qemu");
+        button1->SetTag(4);
+        button1->EvMouseButtonRelease = PICSimLab.board_ButtonEvent;
+        PICSimLab.GetWindow()->CreateChild(button1);
 
-    wconfig = new CPWindow();
-    wconfig->SetCanDestroy(false);
-    wconfig->SetVisible(false);
-    wconfig->SetName("window1");  // must be the same as in xml
-    Application->ACreateWindow(wconfig);
+        wconfig = new CPWindow();
+        wconfig->SetCanDestroy(false);
+        wconfig->SetVisible(false);
+        wconfig->SetName("window1");  // must be the same as in xml
+        Application->ACreateWindow(wconfig);
+    } else {
+        label1 = NULL;
+        combo1 = NULL;
+        button1 = NULL;
+    }
 }
 
 // Destructor called once on board destruction
 
 cboard_DevKitC::~cboard_DevKitC(void) {
-    PICSimLab.GetWindow()->DestroyChild(label1);
-    PICSimLab.GetWindow()->DestroyChild(combo1);
-    PICSimLab.GetWindow()->DestroyChild(button1);
-    wconfig->SetCanDestroy(true);
-    wconfig->WDestroy();
+    if (PICSimLab.GetWindow()) {
+        PICSimLab.GetWindow()->DestroyChild(label1);
+        PICSimLab.GetWindow()->DestroyChild(combo1);
+        PICSimLab.GetWindow()->DestroyChild(button1);
+        wconfig->SetCanDestroy(true);
+        wconfig->WDestroy();
+    }
 }
 
 // Reset board status
@@ -391,7 +399,9 @@ void cboard_DevKitC::ReadPreferences(char* name, char* value) {
     // read microcontroller icount
     if (!strcmp(name, "ESP32_DevKitC_icount")) {
         icount = atoi(value);
-        combo1->SetText(IcountToMipsStr(icount));
+        if (combo1) {
+            combo1->SetText(IcountToMipsStr(icount));
+        }
     }
 
     if (!strcmp(name, "ESP32_DevKitC_cfgewifi")) {

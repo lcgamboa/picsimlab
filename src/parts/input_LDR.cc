@@ -52,6 +52,9 @@ cpart_LDR::cpart_LDR(const unsigned x, const unsigned y, const char* name, const
     active = 0;
 
     SetPCWProperties(pcwprop, 5);
+
+    PinCount = 2;
+    Pins = output_pins;
 }
 
 void cpart_LDR::RegisterRemoteControl(void) {

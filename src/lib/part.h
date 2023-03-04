@@ -324,6 +324,11 @@ public:
     virtual void SetId(int _id) { id = _id; };
 
     /**
+     * @brief  Get the part ID
+     */
+    int GetId(void) { return id; };
+
+    /**
      * @brief  Return if part need Draw update
      */
     unsigned char GetUpdate(void);
@@ -345,6 +350,11 @@ public:
 
     const int GetPCWCount(void);
     const PCWProp* GetPCWProperties(void);
+
+    const int GetPinCount(void) { return PinCount; };
+    unsigned char* GetPins(void) { return Pins; };
+    const int GetPinCtrlCount(void) { return PinCtrlCount; };
+    const unsigned char* GetPinsCtrl(void) { return PinsCtrl; };
 
 protected:
     /**
@@ -372,6 +382,10 @@ protected:
     int always_update;          ///< part need to be update every clock cycle
     lxString Type;
     lxFont font;
+    int PinCount;
+    int PinCtrlCount;
+    unsigned char* Pins;
+    unsigned char* PinsCtrl;
 
     /**
      * @brief  read maps

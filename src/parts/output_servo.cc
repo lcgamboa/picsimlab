@@ -44,6 +44,8 @@ cpart_servo::cpart_servo(const unsigned x, const unsigned y, const char* name, c
     time = 0;
     BackGround = NULL;
     SetPCWProperties(pcwprop, 1);
+    PinCount = 1;
+    Pins = &input_pin;
 }
 
 cpart_servo::~cpart_servo(void) {
@@ -168,24 +170,26 @@ void cpart_servo::ReadPropertiesWindow(CPWindow* WProp) {
 }
 
 void cpart_servo::LoadImage(void) {
-    lxImage image(SpareParts.GetWindow());
-    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetPictureFileName()),
-                   Orientation, Scale, Scale);
+    if (SpareParts.GetWindow()) {
+        lxImage image(SpareParts.GetWindow());
+        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetPictureFileName()),
+                       Orientation, Scale, Scale);
 
-    Bitmap = new lxBitmap(&image, (SpareParts.GetWindow()));
-    image.Destroy();
+        Bitmap = new lxBitmap(&image, (SpareParts.GetWindow()));
+        image.Destroy();
 
-    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetPictureFileName()),
-                   Orientation, Scale, Scale);
+        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetPictureFileName()),
+                       Orientation, Scale, Scale);
 
-    if (BackGround) {
-        delete BackGround;
+        if (BackGround) {
+            delete BackGround;
+        }
+        BackGround = new lxBitmap(&image, (SpareParts.GetWindow()));
+        image.Destroy();
+
+        canvas.Destroy();
+        canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
     }
-    BackGround = new lxBitmap(&image, (SpareParts.GetWindow()));
-    image.Destroy();
-
-    canvas.Destroy();
-    canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
 }
 
 // Register the part in PICSimLab spare parts list

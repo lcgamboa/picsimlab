@@ -189,72 +189,75 @@ cboard_PQDB::cboard_PQDB(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NOR
     scroll1_old = 255;  // force updated
     scroll2_old = 255;
 
-    // scroll1
-    scroll1 = new CScroll();
-    scroll1->SetFOwner(PICSimLab.GetWindow());
-    scroll1->SetName(lxT("scroll1"));
-    scroll1->SetX(12);
-    scroll1->SetY(100);
-    scroll1->SetWidth(145);
-    scroll1->SetHeight(20);
-    scroll1->SetEnable(1);
-    scroll1->SetVisible(1);
-    scroll1->SetRange(200);
-    scroll1->SetPosition(0);
-    scroll1->SetType(4);
-    PICSimLab.GetWindow()->CreateChild(scroll1);
+    if (PICSimLab.GetWindow()) {
+        // scroll1
+        scroll1 = new CScroll();
+        scroll1->SetFOwner(PICSimLab.GetWindow());
+        scroll1->SetName(lxT("scroll1"));
+        scroll1->SetX(12);
+        scroll1->SetY(100);
+        scroll1->SetWidth(145);
+        scroll1->SetHeight(20);
+        scroll1->SetEnable(1);
+        scroll1->SetVisible(1);
+        scroll1->SetRange(200);
+        scroll1->SetPosition(0);
+        scroll1->SetType(4);
+        PICSimLab.GetWindow()->CreateChild(scroll1);
 
-    // scroll2
-    scroll2 = new CScroll();
-    scroll2->SetFOwner(PICSimLab.GetWindow());
-    scroll2->SetName(lxT("scroll2"));
-    scroll2->SetX(12);
-    scroll2->SetY(155);
-    scroll2->SetWidth(145);
-    scroll2->SetHeight(20);
-    scroll2->SetEnable(1);
-    scroll2->SetVisible(1);
-    scroll2->SetRange(200);
-    scroll2->SetPosition(0);
-    scroll2->SetType(4);
-    PICSimLab.GetWindow()->CreateChild(scroll2);
+        // scroll2
+        scroll2 = new CScroll();
+        scroll2->SetFOwner(PICSimLab.GetWindow());
+        scroll2->SetName(lxT("scroll2"));
+        scroll2->SetX(12);
+        scroll2->SetY(155);
+        scroll2->SetWidth(145);
+        scroll2->SetHeight(20);
+        scroll2->SetEnable(1);
+        scroll2->SetVisible(1);
+        scroll2->SetRange(200);
+        scroll2->SetPosition(0);
+        scroll2->SetType(4);
+        PICSimLab.GetWindow()->CreateChild(scroll2);
 
-    // label1
-    label1 = new CLabel();
-    label1->SetFOwner(PICSimLab.GetWindow());
-    label1->SetName(lxT("label1"));
-    label1->SetX(12);
-    label1->SetY(75);
-    label1->SetWidth(145);
-    label1->SetHeight(20);
-    label1->SetEnable(1);
-    label1->SetVisible(1);
-    label1->SetText(lxT("Temp:"));
-    label1->SetAlign(1);
-    PICSimLab.GetWindow()->CreateChild(label1);
-    // label2
-    label2 = new CLabel();
-    label2->SetFOwner(PICSimLab.GetWindow());
-    label2->SetName(lxT("label2"));
-    label2->SetX(12);
-    label2->SetY(130);
-    label2->SetWidth(145);
-    label2->SetHeight(20);
-    label2->SetEnable(1);
-    label2->SetVisible(1);
-    label2->SetText(lxT("Light:"));
-    label2->SetAlign(1);
-    PICSimLab.GetWindow()->CreateChild(label2);
+        // label1
+        label1 = new CLabel();
+        label1->SetFOwner(PICSimLab.GetWindow());
+        label1->SetName(lxT("label1"));
+        label1->SetX(12);
+        label1->SetY(75);
+        label1->SetWidth(145);
+        label1->SetHeight(20);
+        label1->SetEnable(1);
+        label1->SetVisible(1);
+        label1->SetText(lxT("Temp:"));
+        label1->SetAlign(1);
+        PICSimLab.GetWindow()->CreateChild(label1);
+        // label2
+        label2 = new CLabel();
+        label2->SetFOwner(PICSimLab.GetWindow());
+        label2->SetName(lxT("label2"));
+        label2->SetX(12);
+        label2->SetY(130);
+        label2->SetWidth(145);
+        label2->SetHeight(20);
+        label2->SetEnable(1);
+        label2->SetVisible(1);
+        label2->SetText(lxT("Light:"));
+        label2->SetAlign(1);
+        PICSimLab.GetWindow()->CreateChild(label2);
+    }
 }
 
 cboard_PQDB::~cboard_PQDB(void) {
     buzzer.BeepStop();
     buzzer.End();
-
-    PICSimLab.GetWindow()->DestroyChild(scroll1);
-    PICSimLab.GetWindow()->DestroyChild(scroll2);
-    PICSimLab.GetWindow()->DestroyChild(label1);
-    PICSimLab.GetWindow()->DestroyChild(label2);
+    if (PICSimLab.GetWindow()) {
+        PICSimLab.GetWindow()->DestroyChild(scroll1);
+        PICSimLab.GetWindow()->DestroyChild(scroll2);
+        PICSimLab.GetWindow()->DestroyChild(label1);
+        PICSimLab.GetWindow()->DestroyChild(label2);
+    }
 
     rtc_ds1307_end(&rtc2);
 }
@@ -869,19 +872,23 @@ void cboard_PQDB::Reset(void) {
     p_KEY[8] = 0;
     p_KEY[9] = 0;
 
+    if (PICSimLab.GetStatusBar()) {
 #ifndef _WIN_
-    if (pic.serial[0].serialfd > 0)
+        if (pic.serial[0].serialfd > 0)
 #else
-    if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
+        if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
-                                                  itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                                  lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                                   100.0 * pic.serial[0].serialbaud) /
-                                                                                  pic.serial[0].serialexbaud)) +
-                                                  lxT("%)"));
-    else
-        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+            PICSimLab.GetStatusBar()->SetField(
+                2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) +
+                       lxT("(") +
+                       lxString().Format("%4.1f",
+                                         fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
+                                              pic.serial[0].serialexbaud)) +
+                       lxT("%)"));
+        else
+            PICSimLab.GetStatusBar()->SetField(2,
+                                               lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+    }
 
     if (use_spare)
         SpareParts.Reset();
@@ -1446,8 +1453,12 @@ void cboard_PQDB::WritePreferences(void) {
     PICSimLab.SavePrefs(lxT("PQDB_proc"), Proc);
     PICSimLab.SavePrefs(lxT("PQDB_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
     PICSimLab.SavePrefs(lxT("PQDB_pot"), lxString().Format("%i", pot));
-    PICSimLab.SavePrefs(lxT("PQDB_light"), lxString().Format("%i", scroll2->GetPosition()));
-    PICSimLab.SavePrefs(lxT("PQDB_temp"), lxString().Format("%i", scroll1->GetPosition()));
+    if (scroll2) {
+        PICSimLab.SavePrefs(lxT("PQDB_light"), lxString().Format("%i", scroll2->GetPosition()));
+    }
+    if (scroll1) {
+        PICSimLab.SavePrefs(lxT("PQDB_temp"), lxString().Format("%i", scroll1->GetPosition()));
+    }
 }
 
 void cboard_PQDB::ReadPreferences(char* name, char* value) {
@@ -1464,11 +1475,15 @@ void cboard_PQDB::ReadPreferences(char* name, char* value) {
     }
 
     if (!strcmp(name, "PQDB_light")) {
-        scroll2->SetPosition(atoi(value));
+        if (scroll2) {
+            scroll2->SetPosition(atoi(value));
+        }
     }
 
     if (!strcmp(name, "PQDB_temp")) {
-        scroll1->SetPosition(atoi(value));
+        if (scroll1) {
+            scroll1->SetPosition(atoi(value));
+        }
     }
 }
 

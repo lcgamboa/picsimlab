@@ -102,6 +102,9 @@ cpart_LCD_ili9341::cpart_LCD_ili9341(const unsigned x, const unsigned y, const c
 
     valid_lcd_pins = 0;
     valid_touch_pins = 0;
+
+    PinCount = 13;
+    Pins = input_pins;
 }
 
 lxString cpart_LCD_ili9341::GetPictureFileName(void) {

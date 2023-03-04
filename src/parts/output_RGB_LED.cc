@@ -56,6 +56,9 @@ cpart_rgb_led::cpart_rgb_led(const unsigned x, const unsigned y, const char* nam
     color[2] = 0;
 
     SetPCWProperties(pcwprop, 5);
+
+    PinCount = 3;
+    Pins = input_pins;
 }
 
 cpart_rgb_led::~cpart_rgb_led(void) {

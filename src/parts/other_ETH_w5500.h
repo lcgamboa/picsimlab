@@ -52,8 +52,7 @@ public:
 
 private:
     void RegisterRemoteControl(void) override;
-    unsigned char input_pins[4];
-    unsigned char output_pins[2];
+    unsigned char pins[6];
     eth_w5500_t ethw;
     unsigned char link;
     unsigned short _ret;

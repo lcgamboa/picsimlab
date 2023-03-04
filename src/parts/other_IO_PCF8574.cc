@@ -78,6 +78,9 @@ cpart_IO_PCF8574::cpart_IO_PCF8574(const unsigned x, const unsigned y, const cha
     _ret = 255;
 
     SetPCWProperties(pcwprop, 16);
+
+    PinCount = 5;
+    Pins = input_pins;
 }
 
 cpart_IO_PCF8574::~cpart_IO_PCF8574(void) {

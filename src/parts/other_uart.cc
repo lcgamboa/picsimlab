@@ -62,9 +62,8 @@ cpart_UART::cpart_UART(const unsigned x, const unsigned y, const char* name, con
     uart_init(&sr, PICSimLab.GetBoard());
     uart_rst(&sr);
 
-    input_pins[0] = 0;
-
-    output_pins[0] = 0;
+    pins[0] = 0;
+    pins[1] = 0;
 
     _ret = -1;
 
@@ -73,6 +72,9 @@ cpart_UART::cpart_UART(const unsigned x, const unsigned y, const char* name, con
     uart_speed = 9600;
 
     SetPCWProperties(pcwprop, 6);
+
+    PinCount = 2;
+    Pins = pins;
 }
 
 cpart_UART::~cpart_UART(void) {
@@ -118,18 +120,12 @@ void cpart_UART::DrawOutput(const unsigned int i) {
             int pin = 0;
             switch (pinv) {
                 case 0:
-                    pin = pinv;
-                    if (input_pins[pin] == 0)
-                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
-                    else
-                        canvas.RotatedText(SpareParts.GetPinName(input_pins[pin]), output[i].x1, output[i].y2, 90.0);
                 case 1:
-                    pin = pinv - 1;
-                    if (output_pins[pin] == 0)
+                    pin = pinv;
+                    if (pins[pin] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
                     else
-                        canvas.RotatedText(SpareParts.GetPinName(output_pins[pin]), output[i].x1, output[i].y2, 90.0);
-                    break;
+                        canvas.RotatedText(SpareParts.GetPinName(pins[pin]), output[i].x1, output[i].y2, 90.0);
             }
             break;
     }
@@ -164,13 +160,13 @@ unsigned short cpart_UART::GetOutputId(char* name) {
 lxString cpart_UART::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%u,%s", input_pins[0], output_pins[0], uart_speed, uart_name);
+    sprintf(prefs, "%hhu,%hhu,%u,%s", pins[0], pins[1], uart_speed, uart_name);
 
     return prefs;
 }
 
 void cpart_UART::ReadPreferences(lxString value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%u,%s", &input_pins[0], &output_pins[0], &uart_speed, uart_name);
+    sscanf(value.c_str(), "%hhu,%hhu,%u,%s", &pins[0], &pins[1], &uart_speed, uart_name);
 
     Reset();
     if (uart_name[0] != '*') {
@@ -179,8 +175,8 @@ void cpart_UART::ReadPreferences(lxString value) {
 }
 
 void cpart_UART::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo2", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo3", output_pins[0]);
+    SetPCWComboWithPinNames(WProp, "combo2", pins[0]);
+    SetPCWComboWithPinNames(WProp, "combo3", pins[1]);
 
     char* resp = serial_port_list();
     if (resp) {
@@ -198,8 +194,8 @@ void cpart_UART::ConfigurePropertiesWindow(CPWindow* WProp) {
 }
 
 void cpart_UART::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
-    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo3");
+    pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
+    pins[1] = GetPWCComboSelectedPin(WProp, "combo3");
     strncpy(uart_name, (((CCombo*)WProp->GetChildByName("combo5"))->GetText()).c_str(), 199);
     uart_speed = atoi(((CCombo*)WProp->GetChildByName("combo6"))->GetText());
 
@@ -217,15 +213,15 @@ void cpart_UART::Process(void) {
 
     unsigned char val;
 
-    if (input_pins[0]) {
-        val = ppins[input_pins[0] - 1].value;
+    if (pins[0]) {
+        val = ppins[pins[0] - 1].value;
     } else {
         val = 1;
     }
     ret = uart_io(&sr, val);
 
     if (_ret != ret) {
-        SpareParts.SetPin(output_pins[0], ret);
+        SpareParts.SetPin(pins[1], ret);
     }
     _ret = ret;
 }

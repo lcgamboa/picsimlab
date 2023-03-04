@@ -123,166 +123,170 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void) {
 
     active = 0;
 
-    // controls properties and creation
-    // gauge1
-    gauge1 = new CGauge();
-    gauge1->SetFOwner(PICSimLab.GetWindow());
-    gauge1->SetName(lxT("gauge1_p8"));
-    gauge1->SetX(48);
-    gauge1->SetY(230 - 120);
-    gauge1->SetWidth(110);
-    gauge1->SetHeight(20);
-    gauge1->SetEnable(1);
-    gauge1->SetVisible(1);
-    gauge1->SetRange(100);
-    gauge1->SetValue(0);
-    gauge1->SetType(4);
-    PICSimLab.GetWindow()->CreateChild(gauge1);
-    // gauge2
-    gauge2 = new CGauge();
-    gauge2->SetFOwner(PICSimLab.GetWindow());
-    gauge2->SetName(lxT("gauge2_p8"));
-    gauge2->SetX(48);
-    gauge2->SetY(255 - 120);
-    gauge2->SetWidth(110);
-    gauge2->SetHeight(20);
-    gauge2->SetEnable(1);
-    gauge2->SetVisible(1);
-    gauge2->SetRange(100);
-    gauge2->SetValue(0);
-    gauge2->SetType(4);
-    PICSimLab.GetWindow()->CreateChild(gauge2);
-    // gauge3
-    gauge3 = new CGauge();
-    gauge3->SetFOwner(PICSimLab.GetWindow());
-    gauge3->SetName(lxT("gauge3_p8"));
-    gauge3->SetX(48);
-    gauge3->SetY(280 - 120);
-    gauge3->SetWidth(110);
-    gauge3->SetHeight(20);
-    gauge3->SetEnable(1);
-    gauge3->SetVisible(1);
-    gauge3->SetRange(100);
-    gauge3->SetValue(0);
-    gauge3->SetType(4);
-    PICSimLab.GetWindow()->CreateChild(gauge3);
-    // gauge4
-    gauge4 = new CGauge();
-    gauge4->SetFOwner(PICSimLab.GetWindow());
-    gauge4->SetName(lxT("gauge4_p8"));
-    gauge4->SetX(48);
-    gauge4->SetY(305 - 120);
-    gauge4->SetWidth(110);
-    gauge4->SetHeight(20);
-    gauge4->SetEnable(1);
-    gauge4->SetVisible(1);
-    gauge4->SetRange(100);
-    gauge4->SetValue(0);
-    gauge4->SetType(4);
-    PICSimLab.GetWindow()->CreateChild(gauge4);
-    // label2
-    label2 = new CLabel();
-    label2->SetFOwner(PICSimLab.GetWindow());
-    label2->SetName(lxT("label2_p8"));
-    label2->SetX(12);
-    label2->SetY(230 - 120);
-    label2->SetWidth(60);
-    label2->SetHeight(20);
-    label2->SetEnable(1);
-    label2->SetVisible(1);
-    label2->SetText(lxT("RA4"));
-    label2->SetAlign(1);
-    PICSimLab.GetWindow()->CreateChild(label2);
-    // label3
-    label3 = new CLabel();
-    label3->SetFOwner(PICSimLab.GetWindow());
-    label3->SetName(lxT("label3_p8"));
-    label3->SetX(13);
-    label3->SetY(255 - 120);
-    label3->SetWidth(60);
-    label3->SetHeight(20);
-    label3->SetEnable(1);
-    label3->SetVisible(1);
-    label3->SetText(lxT("RA5"));
-    label3->SetAlign(1);
-    PICSimLab.GetWindow()->CreateChild(label3);
-    // label4
-    label4 = new CLabel();
-    label4->SetFOwner(PICSimLab.GetWindow());
-    label4->SetName(lxT("label4_p8"));
-    label4->SetX(13);
-    label4->SetY(280 - 120);
-    label4->SetWidth(60);
-    label4->SetHeight(20);
-    label4->SetEnable(1);
-    label4->SetVisible(1);
-    label4->SetText(lxT("RA6"));
-    label4->SetAlign(1);
-    PICSimLab.GetWindow()->CreateChild(label4);
-    // label5
-    label5 = new CLabel();
-    label5->SetFOwner(PICSimLab.GetWindow());
-    label5->SetName(lxT("label5_p8"));
-    label5->SetX(13);
-    label5->SetY(305 - 120);
-    label5->SetWidth(60);
-    label5->SetHeight(20);
-    label5->SetEnable(1);
-    label5->SetVisible(1);
-    label5->SetText(lxT("RA7"));
-    label5->SetAlign(1);
-    PICSimLab.GetWindow()->CreateChild(label5);
-    // label6
-    label6 = new CLabel();
-    label6->SetFOwner(PICSimLab.GetWindow());
-    label6->SetName(lxT("label6_p8"));
-    label6->SetX(13);
-    label6->SetY(305 + 30 - 120);
-    label6->SetWidth(150);
-    label6->SetHeight(20);
-    label6->SetEnable(1);
-    label6->SetVisible(1);
-    label6->SetText(lxT("Second serial port:"));
-    label6->SetAlign(1);
-    PICSimLab.GetWindow()->CreateChild(label6);
-    // combo1
-    combo1 = new CCombo();
-    combo1->SetFOwner(PICSimLab.GetWindow());
-    combo1->SetName(lxT("combo1_p8"));
-    combo1->SetX(13);
-    combo1->SetY(305 + 55 - 120);
-    combo1->SetWidth(150);
-    combo1->SetHeight(25);
-    combo1->SetEnable(1);
-    combo1->SetVisible(1);
+    if (PICSimLab.GetWindow()) {
+        // controls properties and creation
+        // gauge1
+        gauge1 = new CGauge();
+        gauge1->SetFOwner(PICSimLab.GetWindow());
+        gauge1->SetName(lxT("gauge1_p8"));
+        gauge1->SetX(48);
+        gauge1->SetY(230 - 120);
+        gauge1->SetWidth(110);
+        gauge1->SetHeight(20);
+        gauge1->SetEnable(1);
+        gauge1->SetVisible(1);
+        gauge1->SetRange(100);
+        gauge1->SetValue(0);
+        gauge1->SetType(4);
+        PICSimLab.GetWindow()->CreateChild(gauge1);
+        // gauge2
+        gauge2 = new CGauge();
+        gauge2->SetFOwner(PICSimLab.GetWindow());
+        gauge2->SetName(lxT("gauge2_p8"));
+        gauge2->SetX(48);
+        gauge2->SetY(255 - 120);
+        gauge2->SetWidth(110);
+        gauge2->SetHeight(20);
+        gauge2->SetEnable(1);
+        gauge2->SetVisible(1);
+        gauge2->SetRange(100);
+        gauge2->SetValue(0);
+        gauge2->SetType(4);
+        PICSimLab.GetWindow()->CreateChild(gauge2);
+        // gauge3
+        gauge3 = new CGauge();
+        gauge3->SetFOwner(PICSimLab.GetWindow());
+        gauge3->SetName(lxT("gauge3_p8"));
+        gauge3->SetX(48);
+        gauge3->SetY(280 - 120);
+        gauge3->SetWidth(110);
+        gauge3->SetHeight(20);
+        gauge3->SetEnable(1);
+        gauge3->SetVisible(1);
+        gauge3->SetRange(100);
+        gauge3->SetValue(0);
+        gauge3->SetType(4);
+        PICSimLab.GetWindow()->CreateChild(gauge3);
+        // gauge4
+        gauge4 = new CGauge();
+        gauge4->SetFOwner(PICSimLab.GetWindow());
+        gauge4->SetName(lxT("gauge4_p8"));
+        gauge4->SetX(48);
+        gauge4->SetY(305 - 120);
+        gauge4->SetWidth(110);
+        gauge4->SetHeight(20);
+        gauge4->SetEnable(1);
+        gauge4->SetVisible(1);
+        gauge4->SetRange(100);
+        gauge4->SetValue(0);
+        gauge4->SetType(4);
+        PICSimLab.GetWindow()->CreateChild(gauge4);
+        // label2
+        label2 = new CLabel();
+        label2->SetFOwner(PICSimLab.GetWindow());
+        label2->SetName(lxT("label2_p8"));
+        label2->SetX(12);
+        label2->SetY(230 - 120);
+        label2->SetWidth(60);
+        label2->SetHeight(20);
+        label2->SetEnable(1);
+        label2->SetVisible(1);
+        label2->SetText(lxT("RA4"));
+        label2->SetAlign(1);
+        PICSimLab.GetWindow()->CreateChild(label2);
+        // label3
+        label3 = new CLabel();
+        label3->SetFOwner(PICSimLab.GetWindow());
+        label3->SetName(lxT("label3_p8"));
+        label3->SetX(13);
+        label3->SetY(255 - 120);
+        label3->SetWidth(60);
+        label3->SetHeight(20);
+        label3->SetEnable(1);
+        label3->SetVisible(1);
+        label3->SetText(lxT("RA5"));
+        label3->SetAlign(1);
+        PICSimLab.GetWindow()->CreateChild(label3);
+        // label4
+        label4 = new CLabel();
+        label4->SetFOwner(PICSimLab.GetWindow());
+        label4->SetName(lxT("label4_p8"));
+        label4->SetX(13);
+        label4->SetY(280 - 120);
+        label4->SetWidth(60);
+        label4->SetHeight(20);
+        label4->SetEnable(1);
+        label4->SetVisible(1);
+        label4->SetText(lxT("RA6"));
+        label4->SetAlign(1);
+        PICSimLab.GetWindow()->CreateChild(label4);
+        // label5
+        label5 = new CLabel();
+        label5->SetFOwner(PICSimLab.GetWindow());
+        label5->SetName(lxT("label5_p8"));
+        label5->SetX(13);
+        label5->SetY(305 - 120);
+        label5->SetWidth(60);
+        label5->SetHeight(20);
+        label5->SetEnable(1);
+        label5->SetVisible(1);
+        label5->SetText(lxT("RA7"));
+        label5->SetAlign(1);
+        PICSimLab.GetWindow()->CreateChild(label5);
+        // label6
+        label6 = new CLabel();
+        label6->SetFOwner(PICSimLab.GetWindow());
+        label6->SetName(lxT("label6_p8"));
+        label6->SetX(13);
+        label6->SetY(305 + 30 - 120);
+        label6->SetWidth(150);
+        label6->SetHeight(20);
+        label6->SetEnable(1);
+        label6->SetVisible(1);
+        label6->SetText(lxT("Second serial port:"));
+        label6->SetAlign(1);
+        PICSimLab.GetWindow()->CreateChild(label6);
+        // combo1
+        combo1 = new CCombo();
+        combo1->SetFOwner(PICSimLab.GetWindow());
+        combo1->SetName(lxT("combo1_p8"));
+        combo1->SetX(13);
+        combo1->SetY(305 + 55 - 120);
+        combo1->SetWidth(150);
+        combo1->SetHeight(25);
+        combo1->SetEnable(1);
+        combo1->SetVisible(1);
 #ifndef _WIN_
-    combo1->SetText(lxT("/dev/tnt4"));
+        combo1->SetText(lxT("/dev/tnt4"));
 #else
-    combo1->SetText(lxT("COM2"));
+        combo1->SetText(lxT("COM2"));
 #endif
-    char* resp = serial_port_list();
-    if (resp) {
-        combo1->SetItems(resp);
-        free(resp);
-    }
+        char* resp = serial_port_list();
+        if (resp) {
+            combo1->SetItems(resp);
+            free(resp);
+        }
 
-    PICSimLab.GetWindow()->CreateChild(combo1);
+        PICSimLab.GetWindow()->CreateChild(combo1);
+    }
 }
 
 // Destructor called once on board destruction
 
 cboard_Curiosity_HPC::~cboard_Curiosity_HPC(void) {
-    // controls destruction
-    PICSimLab.GetWindow()->DestroyChild(gauge1);
-    PICSimLab.GetWindow()->DestroyChild(gauge2);
-    PICSimLab.GetWindow()->DestroyChild(gauge3);
-    PICSimLab.GetWindow()->DestroyChild(gauge4);
-    PICSimLab.GetWindow()->DestroyChild(label2);
-    PICSimLab.GetWindow()->DestroyChild(label3);
-    PICSimLab.GetWindow()->DestroyChild(label4);
-    PICSimLab.GetWindow()->DestroyChild(label5);
-    PICSimLab.GetWindow()->DestroyChild(label6);
-    PICSimLab.GetWindow()->DestroyChild(combo1);
+    if (PICSimLab.GetWindow()) {
+        // controls destruction
+        PICSimLab.GetWindow()->DestroyChild(gauge1);
+        PICSimLab.GetWindow()->DestroyChild(gauge2);
+        PICSimLab.GetWindow()->DestroyChild(gauge3);
+        PICSimLab.GetWindow()->DestroyChild(gauge4);
+        PICSimLab.GetWindow()->DestroyChild(label2);
+        PICSimLab.GetWindow()->DestroyChild(label3);
+        PICSimLab.GetWindow()->DestroyChild(label4);
+        PICSimLab.GetWindow()->DestroyChild(label5);
+        PICSimLab.GetWindow()->DestroyChild(label6);
+        PICSimLab.GetWindow()->DestroyChild(combo1);
+    }
 }
 
 void cboard_Curiosity_HPC::MSetSerial(const char* port) {
@@ -303,20 +307,24 @@ void cboard_Curiosity_HPC::Reset(void) {
     // write button state to pic pin 16 (RC5)
     pic_set_pin(&pic, 16, p_BT[1]);
 
-    // verify serial port state and refresh status bar
+    if (PICSimLab.GetStatusBar()) {
+        // verify serial port state and refresh status bar
 #ifndef _WIN_
-    if (pic.serial[0].serialfd > 0)
+        if (pic.serial[0].serialfd > 0)
 #else
-    if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
+        if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
 #endif
-        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
-                                                  itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                                  lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                                   100.0 * pic.serial[0].serialbaud) /
-                                                                                  pic.serial[0].serialexbaud)) +
-                                                  lxT("%)"));
-    else
-        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+            PICSimLab.GetStatusBar()->SetField(
+                2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) +
+                       lxT("(") +
+                       lxString().Format("%4.1f",
+                                         fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
+                                              pic.serial[0].serialexbaud)) +
+                       lxT("%)"));
+        else
+            PICSimLab.GetStatusBar()->SetField(2,
+                                               lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+    }
 
     if (jmp[0]) {
         pic.vcc = 3.3;

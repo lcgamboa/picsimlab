@@ -57,6 +57,9 @@ cpart_SignalGenerator::cpart_SignalGenerator(const unsigned x, const unsigned y,
     lastd = 2;
 
     SetPCWProperties(pcwprop, 3);
+
+    PinCount = 2;
+    Pins = input_pins;
 }
 
 cpart_SignalGenerator::~cpart_SignalGenerator(void) {

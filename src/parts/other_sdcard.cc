@@ -62,11 +62,10 @@ cpart_SDCard::cpart_SDCard(const unsigned x, const unsigned y, const char* name,
     sdcard_init(&sd);
     sdcard_rst(&sd);
 
-    input_pins[0] = 0;
-    input_pins[1] = 0;
-    input_pins[2] = 0;
-
-    output_pins[0] = 0;
+    pins[0] = 0;
+    pins[1] = 0;
+    pins[2] = 0;
+    pins[3] = 0;
 
     _ret = -1;
 
@@ -74,6 +73,9 @@ cpart_SDCard::cpart_SDCard(const unsigned x, const unsigned y, const char* name,
     sdcard_fname[1] = 0;
 
     SetPCWProperties(pcwprop, 6);
+
+    PinCount = 4;
+    Pins = pins;
 }
 
 cpart_SDCard::~cpart_SDCard(void) {
@@ -113,11 +115,11 @@ void cpart_SDCard::DrawOutput(const unsigned int i) {
             switch (pinv) {
                 case 0:
                 case 4:
-                    pin = pinv > 1;
-                    if (output_pins[pin] == 0)
+                    pin = 3;
+                    if (pins[pin] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
                     else
-                        canvas.RotatedText(SpareParts.GetPinName(output_pins[pin]), output[i].x1, output[i].y2, 90.0);
+                        canvas.RotatedText(SpareParts.GetPinName(pins[pin]), output[i].x1, output[i].y2, 90.0);
                     break;
                 case 1:
                 case 2:
@@ -125,10 +127,10 @@ void cpart_SDCard::DrawOutput(const unsigned int i) {
                     pinv++;
                 case 5:
                     pin = pinv - 2;
-                    if (input_pins[pin] == 0)
+                    if (pins[pin] == 0)
                         canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
                     else
-                        canvas.RotatedText(SpareParts.GetPinName(input_pins[pin]), output[i].x1, output[i].y2, 90.0);
+                        canvas.RotatedText(SpareParts.GetPinName(pins[pin]), output[i].x1, output[i].y2, 90.0);
             }
             break;
     }
@@ -161,14 +163,13 @@ unsigned short cpart_SDCard::GetOutputId(char* name) {
 lxString cpart_SDCard::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%s", input_pins[0], input_pins[1], input_pins[2], output_pins[0], sdcard_fname);
+    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%s", pins[0], pins[1], pins[2], pins[3], sdcard_fname);
 
     return prefs;
 }
 
 void cpart_SDCard::ReadPreferences(lxString value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%s", &input_pins[0], &input_pins[1], &input_pins[2], &output_pins[0],
-           sdcard_fname);
+    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%s", &pins[0], &pins[1], &pins[2], &pins[3], sdcard_fname);
 
     Reset();
     if (sdcard_fname[0] != '*') {
@@ -188,17 +189,17 @@ void cpart_SDCard::ReadPreferences(lxString value) {
 }
 
 void cpart_SDCard::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo3", output_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo4", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo5", input_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo6", input_pins[2]);
+    SetPCWComboWithPinNames(WProp, "combo3", pins[3]);
+    SetPCWComboWithPinNames(WProp, "combo4", pins[0]);
+    SetPCWComboWithPinNames(WProp, "combo5", pins[1]);
+    SetPCWComboWithPinNames(WProp, "combo6", pins[2]);
 }
 
 void cpart_SDCard::ReadPropertiesWindow(CPWindow* WProp) {
-    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo3");
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo4");
-    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo5");
-    input_pins[2] = GetPWCComboSelectedPin(WProp, "combo6");
+    pins[3] = GetPWCComboSelectedPin(WProp, "combo3");
+    pins[0] = GetPWCComboSelectedPin(WProp, "combo4");
+    pins[1] = GetPWCComboSelectedPin(WProp, "combo5");
+    pins[2] = GetPWCComboSelectedPin(WProp, "combo6");
 }
 
 void cpart_SDCard::Process(void) {
@@ -206,13 +207,12 @@ void cpart_SDCard::Process(void) {
 
     unsigned short ret = 0;
 
-    ret =
-        sdcard_io(&sd, ppins[input_pins[0] - 1].value, ppins[input_pins[1] - 1].value, ppins[input_pins[2] - 1].value);
+    ret = sdcard_io(&sd, ppins[pins[0] - 1].value, ppins[pins[1] - 1].value, ppins[pins[2] - 1].value);
 
-    if (!ppins[input_pins[2] - 1].value)  // if SS is active, update output
+    if (!ppins[pins[2] - 1].value)  // if SS is active, update output
     {
         if (_ret != ret) {
-            SpareParts.SetPin(output_pins[0], ret);
+            SpareParts.SetPin(pins[3], ret);
         }
         _ret = ret;
     } else {
