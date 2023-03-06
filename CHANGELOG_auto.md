@@ -2,6 +2,8 @@
 
 ### New
 
+* Support to PIC16F1516 and PIC1824Q10 added to Breadboard board. [lcgamboa]
+
 * Support to save debug status per board. [lcgamboa]
 
 * Support to PIC16F1829 added to Breadboard board. [lcgamboa]
