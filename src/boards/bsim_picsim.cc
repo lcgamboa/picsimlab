@@ -55,34 +55,7 @@ int bsim_picsim::MInit(const char* processor, const char* fname, float freq) {
 
     int ret = pic_init(&pic, procn, fname, 1, freq);
 
-    // disable DEBUG
-
-    if ((pic.processor == getprocbyname("PIC16F1619")) || (pic.processor == getprocbyname("PIC16F1788")) ||
-        (pic.processor == getprocbyname("PIC16F1789")) || (pic.processor == getprocbyname("PIC16F1939")) ||
-        (pic.processor == getprocbyname("PIC16F1829")) || (pic.processor == getprocbyname("PIC16F1516"))) {
-        pic.config[1] |= 0x0100;
-    } else if ((pic.processor == getprocbyname("PIC16F18324")) || (pic.processor == getprocbyname("PIC16F18855")) ||
-               (pic.processor == getprocbyname("PIC18F24Q10"))) {
-        pic.config[1] |= 0x0200;
-    } else if ((pic.processor == getprocbyname("PIC16F628A")) || (pic.processor == getprocbyname("PIC16F648A")) ||
-               (pic.processor == getprocbyname("PIC16F84A")) || (pic.processor == getprocbyname("PIC16F777")) ||
-               (pic.processor == getprocbyname("PIC16F877A"))) {
-        pic.config[0] |= 0x0800;
-    } else if ((pic.processor == getprocbyname("PIC16F886")) || (pic.processor == getprocbyname("PIC16F887"))) {
-        pic.config[0] |= 0x2000;
-    } else if ((pic.processor == getprocbyname("PIC18F452")) || (pic.processor == getprocbyname("PIC18F4520")) ||
-               (pic.processor == getprocbyname("PIC18F4550")) || (pic.processor == getprocbyname("PIC18F45K50")) ||
-               (pic.processor == getprocbyname("PIC18F4620")) || (pic.processor == getprocbyname("PIC18F4580")) ||
-               (pic.processor == getprocbyname("PIC18F26K80"))) {
-        pic.config[3] |= 0x0080;
-    } else if ((pic.processor == getprocbyname("PIC18F27K40")) || (pic.processor == getprocbyname("PIC18F47K40"))) {
-        pic.config[1] |= 0x2000;
-    } else if ((pic.processor == getprocbyname("PIC18F46J50")) || (pic.processor == getprocbyname("PIC18F67J94"))) {
-        pic.config[0] |= 0x0080;
-    } else {
-        printf("PICSimLab: PIC 0x%04X not supported in picsimlab!!\n", pic.processor);
-        exit(-1);
-    }
+    pic.disable_debug(&pic);
 
     pic.pins = (picpin*)realloc(pic.pins, sizeof(picpin) * 256);
 
