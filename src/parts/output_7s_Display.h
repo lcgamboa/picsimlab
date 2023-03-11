@@ -48,7 +48,7 @@ public:
     void ReadPreferences(lxString value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
-    void ComboChange(CCombo* control, lxString value) override;
+    void ComboChange(CPWindow* WProp, CCombo* control, lxString value) override;
 
 private:
     void RegisterRemoteControl(void) override;

@@ -2,6 +2,10 @@
 
 ### New
 
+* Option to set the number of elements in parts: Potentiometers, Push Buttons, Switches and LEDs. [lcgamboa]
+
+* Support to PIC16F1947 added to Breadboard board. [lcgamboa]
+
 * Support to PIC16F1516 and PIC1824Q10 added to Breadboard board. [lcgamboa]
 
 * Support to save debug status per board. [lcgamboa]

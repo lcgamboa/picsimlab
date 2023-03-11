@@ -381,6 +381,7 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 
     SpareParts.PropButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
     SpareParts.PropComboChange = EVONCOMBOCHANGE & CPWindow5::PropComboChange;
+    SpareParts.PropSpinChange = EVONCHANGESPIN & CPWindow5::PropSpinChange;
     SpareParts.PartEvent = EVONCOMBOCHANGE & CPWindow5::PartEvent;
     SpareParts.PartButtonEvent = EVMOUSEBUTTONRELEASE & CPWindow5::PartButtonEvent;
     SpareParts.PartKeyEvent = EVKEYBOARDPRESS & CPWindow5::PartKeyEvent;

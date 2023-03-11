@@ -97,6 +97,7 @@ public:
     void (CControl::*PropButtonRelease)(CControl* control, const uint button, const uint x, const uint y,
                                         const uint mask);
     void (CControl::*PropComboChange)(CControl* control);
+    void (CControl::*PropSpinChange)(CControl* control);
 
     void (CControl::*PartButtonEvent)(CControl* control, const uint button, const uint x, const uint y,
                                       const uint mask);

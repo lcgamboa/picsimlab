@@ -34,11 +34,21 @@ enum { O_P1, O_P2, O_P3, O_P4, O_PO1, O_PO2, O_PO3, O_PO4 };
 /* inputs */
 enum { I_PO1, I_PO2, I_PO3, I_PO4 };
 
-static PCWProp pcwprop[6] = {{PCW_LABEL, "1-VCC,+5V"}, {PCW_COMBO, "2-POT 1"}, {PCW_COMBO, "3-POT 2"},
-                             {PCW_COMBO, "4-POT 3"},   {PCW_COMBO, "5-POT 4"}, {PCW_LABEL, "6-GND ,GND"}};
+static PCWProp pcwprop[7] = {{PCW_LABEL, "1-VCC,+5V"}, {PCW_COMBO, "2-POT 1"}, {PCW_COMBO, "3-POT 2"},
+                             {PCW_COMBO, "4-POT 3"},   {PCW_COMBO, "5-POT 4"}, {PCW_LABEL, "6-GND ,GND"},
+                             {PCW_SPIN, "Size"}};
 
 cpart_pot::cpart_pot(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type, 9), font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    Size = 0;
+    Bitmap = NULL;
+
+    ReadMaps();
+    OWidth = Width;
+    OHeight = Height;
+
+    ChangeSize(4);
+
     output_pins[0] = 0;
     output_pins[1] = 0;
     output_pins[2] = 0;
@@ -56,7 +66,7 @@ cpart_pot::cpart_pot(const unsigned x, const unsigned y, const char* name, const
 
     vmax = 5.0;
 
-    SetPCWProperties(pcwprop, 6);
+    SetPCWProperties(pcwprop, 7);
     PinCount = 4;
     Pins = output_pins;
 }
@@ -110,10 +120,9 @@ void cpart_pot::DrawOutput(const unsigned int i) {
 }
 
 void cpart_pot::PreProcess(void) {
-    SpareParts.SetAPin(output_pins[0], vmax * (values[0]) / 200.0);
-    SpareParts.SetAPin(output_pins[1], vmax * (values[1]) / 200.0);
-    SpareParts.SetAPin(output_pins[2], vmax * (values[2]) / 200.0);
-    SpareParts.SetAPin(output_pins[3], vmax * (values[3]) / 200.0);
+    for (unsigned int i = 0; i < Size; i++) {
+        SpareParts.SetAPin(output_pins[i], vmax * (values[i]) / 200.0);
+    }
 }
 
 void cpart_pot::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
@@ -232,15 +241,17 @@ unsigned short cpart_pot::GetOutputId(char* name) {
 lxString cpart_pot::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", output_pins[0], output_pins[1], output_pins[2],
-            output_pins[3], values[0], values[1], values[2], values[3]);
+    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u", output_pins[0], output_pins[1], output_pins[2],
+            output_pins[3], values[0], values[1], values[2], values[3], Size);
 
     return prefs;
 }
 
 void cpart_pot::ReadPreferences(lxString value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &output_pins[2],
-           &output_pins[3], &values[0], &values[1], &values[2], &values[3]);
+    unsigned int sz;
+    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u", &output_pins[0], &output_pins[1],
+           &output_pins[2], &output_pins[3], &values[0], &values[1], &values[2], &values[3], &sz);
+    ChangeSize(sz);
 }
 
 void cpart_pot::ConfigurePropertiesWindow(CPWindow* WProp) {
@@ -248,6 +259,11 @@ void cpart_pot::ConfigurePropertiesWindow(CPWindow* WProp) {
     SetPCWComboWithPinNames(WProp, "combo3", output_pins[1]);
     SetPCWComboWithPinNames(WProp, "combo4", output_pins[2]);
     SetPCWComboWithPinNames(WProp, "combo5", output_pins[3]);
+    ((CSpin*)WProp->GetChildByName("spin7"))->SetMax(4);
+    ((CSpin*)WProp->GetChildByName("spin7"))->SetMin(1);
+    ((CSpin*)WProp->GetChildByName("spin7"))->SetValue(Size);
+    ((CSpin*)WProp->GetChildByName("spin7"))->EvOnChangeSpin = SpareParts.PropSpinChange;
+    SpinChange(WProp, NULL, Size);
 }
 
 void cpart_pot::ReadPropertiesWindow(CPWindow* WProp) {
@@ -255,6 +271,73 @@ void cpart_pot::ReadPropertiesWindow(CPWindow* WProp) {
     output_pins[1] = GetPWCComboSelectedPin(WProp, "combo3");
     output_pins[2] = GetPWCComboSelectedPin(WProp, "combo4");
     output_pins[3] = GetPWCComboSelectedPin(WProp, "combo5");
+
+    ChangeSize(((CSpin*)WProp->GetChildByName("spin7"))->GetValue());
+}
+
+void cpart_pot::SpinChange(CPWindow* WProp, CSpin* control, int value) {
+    for (int i = 0; i < 4; i++) {
+        char name[20];
+        sprintf(name, "combo%i", i + 2);
+        ((CCombo*)WProp->GetChildByName(name))->SetEnable(i < value);
+    }
+}
+
+void cpart_pot::ChangeSize(const unsigned int sz) {
+    if (Size != sz) {
+        if (Bitmap) {
+            delete Bitmap;
+        }
+        Size = sz;
+        if (Size > 4) {
+            Size = 4;
+        }
+        outputc = Size * 2;
+        inputc = Size;
+        LoadImage();
+    }
+}
+
+void cpart_pot::LoadImage(void) {
+    if (Size < 4) {
+        xoff = (4 - Size) * 62;
+
+        Width = OWidth - xoff;
+        Height = OHeight;
+
+        if (SpareParts.GetWindow()) {
+            lxImage image(SpareParts.GetWindow());
+            image.CreateBlank(Width, Height, Orientation, Scale, Scale);
+
+            Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
+            image.Destroy();
+
+            canvas.Destroy();
+            canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
+
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetPictureFileName()),
+                           Orientation, Scale, Scale);
+            lxBitmap* BackBitmap = new lxBitmap(&image, SpareParts.GetWindow());
+            image.Destroy();
+
+            canvas.Init(Scale, Scale, Orientation);
+            canvas.SetColor(0x31, 0x3d, 0x63);
+            canvas.Rectangle(1, 0, 0, Width, Height);
+
+            canvas.ChangeScale(1.0, 1.0);
+            canvas.PutBitmap(BackBitmap, -xoff * Scale, 0);
+
+            canvas.ChangeScale(Scale, Scale);
+            canvas.End();
+
+            delete BackBitmap;
+        }
+    } else {
+        Width = OWidth;
+        Height = OHeight;
+        xoff = 0;
+        part::LoadImage();
+    }
 }
 
 part_init(PART_POT_Name, cpart_pot, "Input");

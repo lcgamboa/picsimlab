@@ -36,14 +36,23 @@ enum { I_S1, I_S2, I_S3, I_S4, I_S5, I_S6, I_S7, I_S8 };
 
 enum { MODE_NORMAL, MODE_IDEAL };
 
-static PCWProp pcwprop[12] = {{PCW_LABEL, "1 -VCC,+5V"},  {PCW_COMBO, "2 -Out 1"}, {PCW_COMBO, "3 -Out 2"},
+static PCWProp pcwprop[13] = {{PCW_LABEL, "1 -VCC,+5V"},  {PCW_COMBO, "2 -Out 1"}, {PCW_COMBO, "3 -Out 2"},
                               {PCW_COMBO, "4 -Out 3"},    {PCW_COMBO, "5 -Out 4"}, {PCW_COMBO, "6 -Out 5"},
                               {PCW_COMBO, "7 -Out 6"},    {PCW_COMBO, "8 -Out 7"}, {PCW_COMBO, "9 -Out 8"},
-                              {PCW_LABEL, "10-GND ,GND"}, {PCW_COMBO, "Active"},   {PCW_COMBO, "Mode"}};
+                              {PCW_LABEL, "10-GND ,GND"}, {PCW_COMBO, "Active"},   {PCW_COMBO, "Mode"},
+                              {PCW_SPIN, "Size"}};
 
 cpart_switches::cpart_switches(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     active = 1;
+    Size = 0;
+    Bitmap = NULL;
+
+    ReadMaps();
+    OWidth = Width;
+    OHeight = Height;
+
+    ChangeSize(8);
 
     output_pins[0] = 0;
     output_pins[1] = 0;
@@ -67,7 +76,7 @@ cpart_switches::cpart_switches(const unsigned x, const unsigned y, const char* n
 
     SWBounce_init(&bounce, 8);
 
-    SetPCWProperties(pcwprop, 12);
+    SetPCWProperties(pcwprop, 13);
 
     PinCount = 8;
     Pins = output_pins;
@@ -192,7 +201,7 @@ void cpart_switches::PreProcess(void) {
         const picpin* ppins = SpareParts.GetPinsValues();
         SWBounce_prepare(&bounce, PICSimLab.GetBoard()->MGetInstClockFreq());
 
-        for (int i = 0; i < 8; i++) {
+        for (unsigned int i = 0; i < Size; i++) {
             if (output_pins[i]) {
                 unsigned char out = output_value[i];
                 if (!active) {
@@ -205,7 +214,7 @@ void cpart_switches::PreProcess(void) {
         }
         SetAwaysUpdate(bounce.do_bounce);
     } else {
-        for (int i = 0; i < 8; i++) {
+        for (unsigned int i = 0; i < Size; i++) {
             if (output_pins[i]) {
                 if (active) {
                     SpareParts.SetPin(output_pins[i], output_value[i]);
@@ -224,7 +233,7 @@ void cpart_switches::Process(void) {
         if (ret) {
             const picpin* ppins = SpareParts.GetPinsValues();
 
-            for (int i = 0; i < 8; i++) {
+            for (unsigned int i = 0; i < Size; i++) {
                 if (bounce.bounce[i]) {
                     if (ret == 1) {
                         SpareParts.SetPin(output_pins[i], !ppins[output_pins[i] - 1].value);
@@ -342,19 +351,22 @@ unsigned short cpart_switches::GetOutputId(char* name) {
 lxString cpart_switches::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
+    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u",
             output_pins[0], output_pins[1], output_pins[2], output_pins[3], output_pins[4], output_pins[5],
             output_pins[6], output_pins[7], output_value[0], output_value[1], output_value[2], output_value[3],
-            output_value[4], output_value[5], output_value[6], output_value[7], active, mode);
+            output_value[4], output_value[5], output_value[6], output_value[7], active, mode, Size);
 
     return prefs;
 }
 
 void cpart_switches::ReadPreferences(lxString value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
+    unsigned int sz;
+    sscanf(value.c_str(),
+           "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u",
            &output_pins[0], &output_pins[1], &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5],
            &output_pins[6], &output_pins[7], &output_value[0], &output_value[1], &output_value[2], &output_value[3],
-           &output_value[4], &output_value[5], &output_value[6], &output_value[7], &active, &mode);
+           &output_value[4], &output_value[5], &output_value[6], &output_value[7], &active, &mode, &sz);
+    ChangeSize(sz);
 }
 
 void cpart_switches::ConfigurePropertiesWindow(CPWindow* WProp) {
@@ -380,6 +392,12 @@ void cpart_switches::ConfigurePropertiesWindow(CPWindow* WProp) {
         combo->SetText("Ideal");
     else
         combo->SetText("Normal");
+
+    ((CSpin*)WProp->GetChildByName("spin13"))->SetMax(8);
+    ((CSpin*)WProp->GetChildByName("spin13"))->SetMin(1);
+    ((CSpin*)WProp->GetChildByName("spin13"))->SetValue(Size);
+    ((CSpin*)WProp->GetChildByName("spin13"))->EvOnChangeSpin = SpareParts.PropSpinChange;
+    SpinChange(WProp, NULL, Size);
 }
 
 void cpart_switches::ReadPropertiesWindow(CPWindow* WProp) {
@@ -395,6 +413,73 @@ void cpart_switches::ReadPropertiesWindow(CPWindow* WProp) {
     active = (((CCombo*)WProp->GetChildByName("combo11"))->GetText().compare("Up") == 0);
 
     mode = (((CCombo*)WProp->GetChildByName("combo12"))->GetText().compare("Ideal") == 0);
+
+    ChangeSize(((CSpin*)WProp->GetChildByName("spin13"))->GetValue());
+}
+
+void cpart_switches::SpinChange(CPWindow* WProp, CSpin* control, int value) {
+    for (int i = 0; i < 8; i++) {
+        char name[20];
+        sprintf(name, "combo%i", i + 2);
+        ((CCombo*)WProp->GetChildByName(name))->SetEnable(i < value);
+    }
+}
+
+void cpart_switches::ChangeSize(const unsigned int sz) {
+    if (Size != sz) {
+        if (Bitmap) {
+            delete Bitmap;
+        }
+        Size = sz;
+        if (Size > 8) {
+            Size = 8;
+        }
+        outputc = Size * 2;
+        inputc = Size;
+        LoadImage();
+    }
+}
+
+void cpart_switches::LoadImage(void) {
+    if (Size < 8) {
+        xoff = (8 - Size) * 49;
+
+        Width = OWidth - xoff;
+        Height = OHeight;
+
+        if (SpareParts.GetWindow()) {
+            lxImage image(SpareParts.GetWindow());
+            image.CreateBlank(Width, Height, Orientation, Scale, Scale);
+
+            Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
+            image.Destroy();
+
+            canvas.Destroy();
+            canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
+
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetPictureFileName()),
+                           Orientation, Scale, Scale);
+            lxBitmap* BackBitmap = new lxBitmap(&image, SpareParts.GetWindow());
+            image.Destroy();
+
+            canvas.Init(Scale, Scale, Orientation);
+            canvas.SetColor(0x31, 0x3d, 0x63);
+            canvas.Rectangle(1, 0, 0, Width, Height);
+
+            canvas.ChangeScale(1.0, 1.0);
+            canvas.PutBitmap(BackBitmap, -xoff * Scale, 0);
+
+            canvas.ChangeScale(Scale, Scale);
+            canvas.End();
+
+            delete BackBitmap;
+        }
+    } else {
+        Width = OWidth;
+        Height = OHeight;
+        xoff = 0;
+        part::LoadImage();
+    }
 }
 
 part_init(PART_SWITCHES_Name, cpart_switches, "Input");

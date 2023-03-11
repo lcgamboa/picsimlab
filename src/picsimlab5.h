@@ -109,6 +109,7 @@ public:
 
     void PropButtonRelease(CControl* control, uint button, uint x, uint y, uint state);
     void PropComboChange(CCombo* control);
+    void PropSpinChange(CSpin* control);
     void PropClose(int tag);
     void PartButtonEvent(CControl* control, uint button, uint x, uint y, uint state);
     void PartKeyEvent(CControl* control, uint keysm, uint ukeysym, uint state);

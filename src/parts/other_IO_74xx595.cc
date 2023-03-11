@@ -37,11 +37,23 @@ const char pin_names[16][10] = {"QB",   "QC",   "QD",   "QE",   "QF",  "QG",  "Q
 const char pin_values[16][10] = {{5},  {6}, {7}, {8}, {9},   {10}, {11}, "GND",
                                  {12}, {0}, {1}, {2}, "GND", {3},  {4},  "+5V"};
 
-static PCWProp pcwprop[16] = {
-    {PCW_LABEL, "1-QB,NC"},    {PCW_LABEL, "2-QC,NC"}, {PCW_LABEL, "3-QD,NC"},  {PCW_LABEL, "4-QE,NC"},
-    {PCW_LABEL, "5-QF,NC"},    {PCW_LABEL, "6-QG,NC"}, {PCW_LABEL, "7-QH,NC"},  {PCW_LABEL, "8-GND,GND"},
-    {PCW_LABEL, "9-SOUT,NC"},  {PCW_COMBO, "10-/RST"}, {PCW_COMBO, "11-SCLK"},  {PCW_COMBO, "12-LCLK"},
-    {PCW_LABEL, "13-/OE,GND"}, {PCW_COMBO, "14-SER"},  {PCW_LABEL, "15-QA,NC"}, {PCW_LABEL, "16-VCC,+5V"}};
+static PCWProp pcwprop[17] = {{PCW_LABEL, "1-QB,NC"},
+                              {PCW_LABEL, "2-QC,NC"},
+                              {PCW_LABEL, "3-QD,NC"},
+                              {PCW_LABEL, "4-QE,NC"},
+                              {PCW_LABEL, "5-QF,NC"},
+                              {PCW_LABEL, "6-QG,NC"},
+                              {PCW_LABEL, "7-QH,NC"},
+                              {PCW_LABEL, "8-GND,GND"},
+                              {PCW_LABEL, "9-SOUT,NC"},
+                              {PCW_COMBO, "10-/RST"},
+                              {PCW_COMBO, "11-SCLK"},
+                              {PCW_COMBO, "12-LCLK"},
+                              {PCW_LABEL, "13-/OE,GND"},
+                              {PCW_COMBO, "14-SER"},
+                              {PCW_LABEL, "15-QA,NC"},
+                              {PCW_LABEL, "16-VCC,+5V"},
+                              {PCW_END, ""}};
 
 cpart_IO_74xx595::cpart_IO_74xx595(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type, 8) {

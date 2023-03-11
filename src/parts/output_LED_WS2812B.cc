@@ -72,46 +72,28 @@ cpart_led_ws2812b::~cpart_led_ws2812b(void) {
 
 void cpart_led_ws2812b::LoadImage(void) {
     if (led.nleds > 1) {
-        lxString ifname;
-        FILE* fimg;
-
         xoff = (led.ncols - 1) * 40;
         yoff = (led.nrows - 1) * 40;
         Width = OWidth + xoff;
         Height = OHeight + yoff;
 
-        ifname = lxGetTempDir(lxT("picsimlab")) + lxT("/LEDRGB.svg");
-
-        fimg = fopen((const char*)ifname.c_str(), "w");
-
-        if (fimg) {
-            fprintf(fimg,
-                    "<svg width=\"%i\" height=\"%i\" version=\"1.1\" viewBox=\"0 0 100 "
-                    "100\" xmlns=\"http://www.w3.org/2000/svg\">"
-                    "\n <rect x =\"0\" y=\"0\" width=\"100\" height=\"100\"  />\n</svg>",
-                    Width, Height);
-            fclose(fimg);
-        } else {
-            printf("PICSimLab: Erro open file %s\n", (const char*)ifname.c_str());
-        }
-
         if (SpareParts.GetWindow()) {
             lxImage image(SpareParts.GetWindow());
+            image.CreateBlank(Width, Height, Orientation, Scale, Scale);
 
-            image.LoadFile(lxGetLocalFile(ifname), Orientation, Scale, Scale);
             Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
             image.Destroy();
 
             canvas.Destroy();
             canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
 
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/Output/") + GetPictureFileName()),
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetPictureFileName()),
                            Orientation, Scale, Scale);
             lxBitmap* BackBitmap = new lxBitmap(&image, SpareParts.GetWindow());
             image.Destroy();
 
             image.LoadFile(
-                lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/Output/") + GetName() + lxT("/LED.svg")),
+                lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetName() + lxT("/LED.svg")),
                 Orientation, Scale * 1.3, Scale * 1.3);
             lxBitmap* LEDBitmap = new lxBitmap(&image, SpareParts.GetWindow());
             image.Destroy();
@@ -135,7 +117,6 @@ void cpart_led_ws2812b::LoadImage(void) {
 
             delete BackBitmap;
             delete LEDBitmap;
-            lxRemoveFile(ifname);
         }
     } else {
         Width = OWidth;

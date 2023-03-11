@@ -684,13 +684,13 @@ void cpart_keypad::ReadPropertiesWindow(CPWindow* WProp) {
 
     lxString tps = ((CCombo*)WProp->GetChildByName("combo12"))->GetText();
 
-    ComboChange((CCombo*)WProp->GetChildByName("combo12"), tps);
+    ComboChange(WProp, (CCombo*)WProp->GetChildByName("combo12"), tps);
 
     memset(keys, 0, 16);
     memset(keys2, 0, 10);
 }
 
-void cpart_keypad::ComboChange(CCombo* control, lxString value) {
+void cpart_keypad::ComboChange(CPWindow* WProp, CCombo* control, lxString value) {
     if (!value.compare(lxT("4x3"))) {
         ChangeType(KT4x3);
     } else if (!value.compare(lxT("2x5"))) {

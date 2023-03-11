@@ -44,6 +44,7 @@ CSpareParts::CSpareParts() {
 
     PropButtonRelease = NULL;
     PropComboChange = NULL;
+    PropSpinChange = NULL;
     PartEvent = NULL;
     PartKeyEvent = NULL;
     PartButtonEvent = NULL;

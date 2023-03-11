@@ -626,7 +626,7 @@ void cpart_Jumpers::ChangeType(unsigned char ntype) {
     jtype = ntype;
 }
 
-void cpart_Jumpers::ComboChange(CCombo* control, lxString value) {
+void cpart_Jumpers::ComboChange(CPWindow* WProp, CCombo* control, lxString value) {
     unsigned char ntype = jtype;
 
     if (!control->GetName().Cmp("combo1")) {

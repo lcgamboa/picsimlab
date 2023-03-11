@@ -450,12 +450,15 @@ void CPWindow5::PropButtonRelease(CControl* control, uint button, uint x, uint y
 
 void CPWindow5::PropComboChange(CCombo* control) {
     Window5.wprop.HideExclusive();
-    // Window5.wprop.SetCanDestroy (true);
     Window5.wprop.WDestroy();
 
-    SpareParts.GetPart(Window5.PartSelected)->ComboChange(control, control->GetText());
+    SpareParts.GetPart(Window5.PartSelected)->ComboChange(&Window5.wprop, control, control->GetText());
 
     Window5.pmenu2_Properties_EvMenuActive(this);
+}
+
+void CPWindow5::PropSpinChange(CSpin* control) {
+    SpareParts.GetPart(Window5.PartSelected)->SpinChange(&Window5.wprop, control, control->GetValue());
 }
 
 void CPWindow5::PartButtonEvent(CControl* control, uint button, uint x, uint y, uint state) {

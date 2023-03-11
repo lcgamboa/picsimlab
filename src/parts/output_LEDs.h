@@ -42,16 +42,23 @@ public:
     void ReadPropertiesWindow(CPWindow* WProp) override;
     lxString WritePreferences(void) override;
     void ReadPreferences(lxString value) override;
+    void LoadImage(void) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
+    void SpinChange(CPWindow* WProp, CSpin* control, int value) override;
 
 private:
+    void ChangeSize(const unsigned int sz);
     void RegisterRemoteControl(void) override;
     unsigned char active;
     unsigned char input_pins[8];
     unsigned char colors[8];
     lxColor color1;
     lxColor color2;
+    int OWidth;
+    int OHeight;
+    int xoff;
+    unsigned int Size;
 };
 
 #endif /* PART_LEDS */

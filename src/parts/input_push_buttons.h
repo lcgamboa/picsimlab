@@ -45,19 +45,26 @@ public:
     void OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) override;
     void ConfigurePropertiesWindow(CPWindow* WProp) override;
     void ReadPropertiesWindow(CPWindow* WProp) override;
+    void LoadImage(void) override;
     lxString WritePreferences(void) override;
     void ReadPreferences(lxString value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
+    void SpinChange(CPWindow* WProp, CSpin* control, int value) override;
 
 private:
     void RegisterRemoteControl(void) override;
+    void ChangeSize(const unsigned int sz);
     unsigned char active;
     unsigned char output_pins[8];
     unsigned char output_value[8];
     SWBounce_t bounce;
     unsigned char mode;
     lxFont font;
+    int OWidth;
+    int OHeight;
+    int xoff;
+    unsigned int Size;
 };
 
 #endif /* PART_PUSH_BUTTONS_H */

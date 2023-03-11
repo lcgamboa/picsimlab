@@ -34,7 +34,7 @@
  * Part Configure Window proprierties
  */
 
-enum { PCW_COMBO, PCW_LABEL, PCW_SPIND, PCW_EDIT, PCW_SPIN, PCW_TEXT, PCW_DCOMBO };
+enum { PCW_END, PCW_COMBO, PCW_LABEL, PCW_SPIND, PCW_EDIT, PCW_SPIN, PCW_TEXT, PCW_DCOMBO };
 
 typedef struct {
     int pcw_type;
@@ -206,7 +206,12 @@ public:
     /**
      * @brief  Used by properties window combos
      */
-    virtual void ComboChange(CCombo* control, lxString value){};
+    virtual void ComboChange(CPWindow* WProp, CCombo* control, lxString value){};
+
+    /**
+     * @brief  Used by properties window spin
+     */
+    virtual void SpinChange(CPWindow* WProp, CSpin* control, int value){};
 
     /**
      * @brief  Used by windows of parts

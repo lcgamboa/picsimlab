@@ -711,7 +711,7 @@ void cpart_LCD_ili9341::PostProcess(void) {
         output_ids[O_LCD]->update = 1;
 }
 
-void cpart_LCD_ili9341::ComboChange(CCombo* control, lxString value) {
+void cpart_LCD_ili9341::ComboChange(CPWindow* WProp, CCombo* control, lxString value) {
     if (!value.Cmp("SPI")) {
         ChangeType(TC_SPI);
     } else if (!value.Cmp("8Bits")) {

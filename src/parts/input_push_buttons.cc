@@ -36,14 +36,23 @@ enum { I_B1, I_B2, I_B3, I_B4, I_B5, I_B6, I_B7, I_B8, I_J1 };
 
 enum { MODE_NORMAL, MODE_IDEAL };
 
-static PCWProp pcwprop[12] = {{PCW_LABEL, "1 -VCC,+5V"},  {PCW_COMBO, "2 -Out 1"}, {PCW_COMBO, "3 -Out 2"},
+static PCWProp pcwprop[13] = {{PCW_LABEL, "1 -VCC,+5V"},  {PCW_COMBO, "2 -Out 1"}, {PCW_COMBO, "3 -Out 2"},
                               {PCW_COMBO, "4 -Out 3"},    {PCW_COMBO, "5 -Out 4"}, {PCW_COMBO, "6 -Out 5"},
                               {PCW_COMBO, "7 -Out 6"},    {PCW_COMBO, "8 -Out 7"}, {PCW_COMBO, "9 -Out 8"},
-                              {PCW_LABEL, "10-GND ,GND"}, {PCW_COMBO, "Active"},   {PCW_COMBO, "Mode"}};
+                              {PCW_LABEL, "10-GND ,GND"}, {PCW_COMBO, "Active"},   {PCW_COMBO, "Mode"},
+                              {PCW_SPIN, "Size"}};
 
 cpart_pbuttons::cpart_pbuttons(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     active = 1;
+    Size = 0;
+    Bitmap = NULL;
+
+    ReadMaps();
+    OWidth = Width;
+    OHeight = Height;
+
+    ChangeSize(8);
 
     output_pins[0] = 0;
     output_pins[1] = 0;
@@ -67,7 +76,7 @@ cpart_pbuttons::cpart_pbuttons(const unsigned x, const unsigned y, const char* n
 
     SWBounce_init(&bounce, 8);
 
-    SetPCWProperties(pcwprop, 12);
+    SetPCWProperties(pcwprop, 13);
 
     PinCount = 8;
     Pins = output_pins;
@@ -173,7 +182,7 @@ void cpart_pbuttons::PreProcess(void) {
         const picpin* ppins = SpareParts.GetPinsValues();
         SWBounce_prepare(&bounce, PICSimLab.GetBoard()->MGetInstClockFreq());
 
-        for (int i = 0; i < 8; i++) {
+        for (unsigned int i = 0; i < Size; i++) {
             if (output_pins[i]) {
                 if ((ppins[output_pins[i] - 1].dir == PD_IN) && (ppins[output_pins[i] - 1].value != output_value[i])) {
                     SWBounce_bounce(&bounce, i);
@@ -182,7 +191,7 @@ void cpart_pbuttons::PreProcess(void) {
         }
         SetAwaysUpdate(bounce.do_bounce);
     } else {
-        for (int i = 0; i < 8; i++) {
+        for (unsigned int i = 0; i < Size; i++) {
             if (output_pins[i]) {
                 SpareParts.SetPin(output_pins[i], output_value[i]);
             }
@@ -197,7 +206,7 @@ void cpart_pbuttons::Process(void) {
         if (ret) {
             const picpin* ppins = SpareParts.GetPinsValues();
 
-            for (int i = 0; i < 8; i++) {
+            for (unsigned int i = 0; i < Size; i++) {
                 if (bounce.bounce[i]) {
                     if (ret == 1) {
                         SpareParts.SetPin(output_pins[i], !ppins[output_pins[i] - 1].value);
@@ -354,16 +363,18 @@ unsigned short cpart_pbuttons::GetOutputId(char* name) {
 lxString cpart_pbuttons::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", output_pins[0], output_pins[1], output_pins[2],
-            output_pins[3], output_pins[4], output_pins[5], output_pins[6], output_pins[7], active, mode);
+    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u", output_pins[0], output_pins[1],
+            output_pins[2], output_pins[3], output_pins[4], output_pins[5], output_pins[6], output_pins[7], active,
+            mode, Size);
 
     return prefs;
 }
 
 void cpart_pbuttons::ReadPreferences(lxString value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1],
+    unsigned int sz;
+    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u", &output_pins[0], &output_pins[1],
            &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7],
-           &active, &mode);
+           &active, &mode, &sz);
     output_value[0] = !active;
     output_value[1] = !active;
     output_value[2] = !active;
@@ -372,6 +383,7 @@ void cpart_pbuttons::ReadPreferences(lxString value) {
     output_value[5] = !active;
     output_value[6] = !active;
     output_value[7] = !active;
+    ChangeSize(sz);
 }
 
 void cpart_pbuttons::ConfigurePropertiesWindow(CPWindow* WProp) {
@@ -398,6 +410,12 @@ void cpart_pbuttons::ConfigurePropertiesWindow(CPWindow* WProp) {
         combo->SetText("Ideal");
     else
         combo->SetText("Normal");
+
+    ((CSpin*)WProp->GetChildByName("spin13"))->SetMax(8);
+    ((CSpin*)WProp->GetChildByName("spin13"))->SetMin(1);
+    ((CSpin*)WProp->GetChildByName("spin13"))->SetValue(Size);
+    ((CSpin*)WProp->GetChildByName("spin13"))->EvOnChangeSpin = SpareParts.PropSpinChange;
+    SpinChange(WProp, NULL, Size);
 }
 
 void cpart_pbuttons::ReadPropertiesWindow(CPWindow* WProp) {
@@ -414,6 +432,8 @@ void cpart_pbuttons::ReadPropertiesWindow(CPWindow* WProp) {
 
     mode = (((CCombo*)WProp->GetChildByName("combo12"))->GetText().compare("Ideal") == 0);
 
+    ChangeSize(((CSpin*)WProp->GetChildByName("spin13"))->GetValue());
+
     output_value[0] = !active;
     output_value[1] = !active;
     output_value[2] = !active;
@@ -422,6 +442,71 @@ void cpart_pbuttons::ReadPropertiesWindow(CPWindow* WProp) {
     output_value[5] = !active;
     output_value[6] = !active;
     output_value[7] = !active;
+}
+
+void cpart_pbuttons::SpinChange(CPWindow* WProp, CSpin* control, int value) {
+    for (int i = 0; i < 8; i++) {
+        char name[20];
+        sprintf(name, "combo%i", i + 2);
+        ((CCombo*)WProp->GetChildByName(name))->SetEnable(i < value);
+    }
+}
+
+void cpart_pbuttons::ChangeSize(const unsigned int sz) {
+    if (Size != sz) {
+        if (Bitmap) {
+            delete Bitmap;
+        }
+        Size = sz;
+        if (Size > 8) {
+            Size = 8;
+        }
+        outputc = Size * 2;
+        inputc = Size;
+        LoadImage();
+    }
+}
+
+void cpart_pbuttons::LoadImage(void) {
+    if (Size < 8) {
+        xoff = (8 - Size) * 62;
+
+        Width = OWidth - xoff;
+        Height = OHeight;
+
+        if (SpareParts.GetWindow()) {
+            lxImage image(SpareParts.GetWindow());
+            image.CreateBlank(Width, Height, Orientation, Scale, Scale);
+
+            Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
+            image.Destroy();
+
+            canvas.Destroy();
+            canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
+
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetPictureFileName()),
+                           Orientation, Scale, Scale);
+            lxBitmap* BackBitmap = new lxBitmap(&image, SpareParts.GetWindow());
+            image.Destroy();
+
+            canvas.Init(Scale, Scale, Orientation);
+            canvas.SetColor(0x31, 0x3d, 0x63);
+            canvas.Rectangle(1, 0, 0, Width, Height);
+
+            canvas.ChangeScale(1.0, 1.0);
+            canvas.PutBitmap(BackBitmap, -xoff * Scale, 0);
+
+            canvas.ChangeScale(Scale, Scale);
+            canvas.End();
+
+            delete BackBitmap;
+        }
+    } else {
+        Width = OWidth;
+        Height = OHeight;
+        xoff = 0;
+        part::LoadImage();
+    }
 }
 
 part_init(PART_PUSH_BUTTONS_Name, cpart_pbuttons, "Input");

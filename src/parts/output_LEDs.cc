@@ -41,19 +41,23 @@ typedef struct {
 
 static const colorval_t colortable[C_END] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}, {1, 1, 0}, {1, 1, 1}};
 
-static PCWProp pcwprop[9] = {{PCW_DCOMBO, "1-D1"}, {PCW_DCOMBO, "2-D2"}, {PCW_DCOMBO, "3-D3"},
-                             {PCW_DCOMBO, "4-D4"}, {PCW_DCOMBO, "5-D5"}, {PCW_DCOMBO, "6-D6"},
-                             {PCW_DCOMBO, "7-D7"}, {PCW_DCOMBO, "8-D8"}, {PCW_COMBO, "Active"}};
+static PCWProp pcwprop[10] = {{PCW_DCOMBO, "1-D1"},  {PCW_DCOMBO, "2-D2"}, {PCW_DCOMBO, "3-D3"}, {PCW_DCOMBO, "4-D4"},
+                              {PCW_DCOMBO, "5-D5"},  {PCW_DCOMBO, "6-D6"}, {PCW_DCOMBO, "7-D7"}, {PCW_DCOMBO, "8-D8"},
+                              {PCW_COMBO, "Active"}, {PCW_SPIN, "Size"}};
 
 cpart_leds::cpart_leds(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type, 9) {
     X = x;
     Y = y;
     active = 1;
+    Size = 0;
+    Bitmap = NULL;
 
     ReadMaps();
+    OWidth = Width;
+    OHeight = Height;
 
-    LoadImage();
+    ChangeSize(8);
 
     input_pins[0] = 0;
     input_pins[1] = 0;
@@ -73,7 +77,7 @@ cpart_leds::cpart_leds(const unsigned x, const unsigned y, const char* name, con
     colors[6] = 0;
     colors[7] = 0;
 
-    SetPCWProperties(pcwprop, 9);
+    SetPCWProperties(pcwprop, 10);
 
     PinCount = 8;
     Pins = input_pins;
@@ -115,6 +119,8 @@ void cpart_leds::DrawOutput(const unsigned int i) {
         case O_L6:
         case O_L7:
         case O_L8:
+            canvas.SetColor(49, 61, 99);
+            canvas.Rectangle(1, output[i].x1 - 20, output[i].y1 - 20, 40, 40);
             col = colortable[colors[output[i].id - O_L1]];
             if (input_pins[output[i].id - O_L1] > 0) {
                 if (active) {
@@ -153,7 +159,7 @@ void cpart_leds::DrawOutput(const unsigned int i) {
 void cpart_leds::PostProcess(void) {
     const picpin* ppins = SpareParts.GetPinsValues();
 
-    for (int i = 0; i < 8; i++) {
+    for (unsigned int i = 0; i < Size; i++) {
         if (input_pins[i] && (output_ids[O_L1 + i]->value != ppins[input_pins[i] - 1].oavalue)) {
             output_ids[O_L1 + i]->value = ppins[input_pins[i] - 1].oavalue;
             output_ids[O_L1 + i]->update = 1;
@@ -208,19 +214,22 @@ unsigned short cpart_leds::GetOutputId(char* name) {
 lxString cpart_leds::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
+    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u",
             input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4], input_pins[5], input_pins[6],
             input_pins[7], active, colors[0], colors[1], colors[2], colors[3], colors[4], colors[5], colors[6],
-            colors[7]);
+            colors[7], Size);
 
     return prefs;
 }
 
 void cpart_leds::ReadPreferences(lxString value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
+    unsigned int sz;
+    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u",
            &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5],
            &input_pins[6], &input_pins[7], &active, &colors[0], &colors[1], &colors[2], &colors[3], &colors[4],
-           &colors[5], &colors[6], &colors[7]);
+           &colors[5], &colors[6], &colors[7], &sz);
+
+    ChangeSize(sz);
 }
 
 void cpart_leds::RegisterRemoteControl(void) {
@@ -256,6 +265,11 @@ void cpart_leds::ConfigurePropertiesWindow(CPWindow* WProp) {
     else
         ((CCombo*)WProp->GetChildByName("combo9"))->SetText("LOW ");
 
+    ((CSpin*)WProp->GetChildByName("spin10"))->SetMax(8);
+    ((CSpin*)WProp->GetChildByName("spin10"))->SetMin(1);
+    ((CSpin*)WProp->GetChildByName("spin10"))->SetValue(Size);
+    ((CSpin*)WProp->GetChildByName("spin10"))->EvOnChangeSpin = SpareParts.PropSpinChange;
+
     ((CCombo*)WProp->GetChildByName("combo_1"))->SetItems(Colors);
     ((CCombo*)WProp->GetChildByName("combo_1"))->SetText(Colorname[colors[0]]);
     ((CCombo*)WProp->GetChildByName("combo_2"))->SetItems(Colors);
@@ -272,6 +286,8 @@ void cpart_leds::ConfigurePropertiesWindow(CPWindow* WProp) {
     ((CCombo*)WProp->GetChildByName("combo_7"))->SetText(Colorname[colors[6]]);
     ((CCombo*)WProp->GetChildByName("combo_8"))->SetItems(Colors);
     ((CCombo*)WProp->GetChildByName("combo_8"))->SetText(Colorname[colors[7]]);
+
+    SpinChange(WProp, NULL, Size);
 }
 
 void cpart_leds::ReadPropertiesWindow(CPWindow* WProp) {
@@ -296,6 +312,72 @@ void cpart_leds::ReadPropertiesWindow(CPWindow* WProp) {
                 break;
             }
         }
+    }
+
+    ChangeSize(((CSpin*)WProp->GetChildByName("spin10"))->GetValue());
+}
+
+void cpart_leds::SpinChange(CPWindow* WProp, CSpin* control, int value) {
+    for (int i = 0; i < 8; i++) {
+        char name[20];
+        sprintf(name, "combo%i", i + 1);
+        ((CCombo*)WProp->GetChildByName(name))->SetEnable(i < value);
+    }
+}
+
+void cpart_leds::ChangeSize(const unsigned int sz) {
+    if (Size != sz) {
+        if (Bitmap) {
+            delete Bitmap;
+        }
+        Size = sz;
+        if (Size > 8) {
+            Size = 8;
+        }
+        outputc = Size * 2;
+        LoadImage();
+    }
+}
+
+void cpart_leds::LoadImage(void) {
+    if (Size < 8) {
+        xoff = (8 - Size) * 62;
+
+        Width = OWidth - xoff;
+        Height = OHeight;
+
+        if (SpareParts.GetWindow()) {
+            lxImage image(SpareParts.GetWindow());
+            image.CreateBlank(Width, Height, Orientation, Scale, Scale);
+
+            Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
+            image.Destroy();
+
+            canvas.Destroy();
+            canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
+
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetPictureFileName()),
+                           Orientation, Scale, Scale);
+            lxBitmap* BackBitmap = new lxBitmap(&image, SpareParts.GetWindow());
+            image.Destroy();
+
+            canvas.Init(Scale, Scale, Orientation);
+            canvas.SetColor(0x31, 0x3d, 0x63);
+            canvas.Rectangle(1, 0, 0, Width, Height);
+
+            canvas.ChangeScale(1.0, 1.0);
+            canvas.PutBitmap(BackBitmap, -xoff * Scale, 0);
+
+            canvas.ChangeScale(Scale, Scale);
+            canvas.End();
+
+            delete BackBitmap;
+        }
+    } else {
+        Width = OWidth;
+        Height = OHeight;
+        xoff = 0;
+        part::LoadImage();
     }
 }
 
