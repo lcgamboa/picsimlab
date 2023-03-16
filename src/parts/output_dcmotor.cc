@@ -36,9 +36,9 @@
 /* outputs */
 enum { O_MT1, O_ST, O_P1, O_P2, O_P3, O_P4, O_P5 };
 
-static PCWProp pcwprop[7] = {{PCW_COMBO, "1-Out A"},  {PCW_COMBO, "2-Out B"},  {PCW_COMBO, "3-In A"},
-                             {PCW_COMBO, "4-In B"},   {PCW_COMBO, "5-In PWM"}, {PCW_LABEL, "6-VCC,+5V"},
-                             {PCW_LABEL, "7-GND,GND"}};
+static PCWProp pcwprop[8] = {
+    {PCW_COMBO, "1-Out A"},  {PCW_COMBO, "2-Out B"},   {PCW_COMBO, "3-In A"},    {PCW_COMBO, "4-In B"},
+    {PCW_COMBO, "5-In PWM"}, {PCW_LABEL, "6-VCC,+5V"}, {PCW_LABEL, "7-GND,GND"}, {PCW_END, ""}};
 
 cpart_dcmotor::cpart_dcmotor(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -65,7 +65,7 @@ cpart_dcmotor::cpart_dcmotor(const unsigned x, const unsigned y, const char* nam
     dir = 0;
     speed = 0;
 
-    SetPCWProperties(pcwprop, 7);
+    SetPCWProperties(pcwprop);
 
     PinCount = 5;
     Pins = pins;

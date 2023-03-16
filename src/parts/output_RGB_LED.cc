@@ -31,11 +31,8 @@
 /* outputs */
 enum { O_P1, O_P2, O_P3, O_L1 };
 
-static PCWProp pcwprop[5] = {{PCW_COMBO, "1-Red"},
-                             {PCW_COMBO, "2-Green"},
-                             {PCW_COMBO, "3-Blue"},
-                             {PCW_LABEL, "4-GND,GND"},
-                             {PCW_COMBO, "Active"}};
+static PCWProp pcwprop[6] = {{PCW_COMBO, "1-Red"},     {PCW_COMBO, "2-Green"}, {PCW_COMBO, "3-Blue"},
+                             {PCW_LABEL, "4-GND,GND"}, {PCW_COMBO, "Active"},  {PCW_END, ""}};
 
 cpart_rgb_led::cpart_rgb_led(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -55,7 +52,7 @@ cpart_rgb_led::cpart_rgb_led(const unsigned x, const unsigned y, const char* nam
     color[1] = 0;
     color[2] = 0;
 
-    SetPCWProperties(pcwprop, 5);
+    SetPCWProperties(pcwprop);
 
     PinCount = 3;
     Pins = input_pins;

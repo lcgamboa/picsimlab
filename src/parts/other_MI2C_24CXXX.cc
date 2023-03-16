@@ -41,9 +41,16 @@ enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_IC };
 const char pin_names[8][10] = {"A0", "A1", "A2", "VSS", "SDA", "SCL", "WP", "VCC"};
 const char pin_values[8][10] = {{0}, {1}, {2}, "GND", {3}, {4}, "GND", "+5V"};
 
-static PCWProp pcwprop[9] = {{PCW_COMBO, "P1 - A0"},          {PCW_COMBO, "P2 - A1"},      {PCW_COMBO, "P3 - A1"},
-                             {PCW_LABEL, "P4 - VSS,GND"},     {PCW_COMBO, "P5 - SDA"},     {PCW_COMBO, "P6 - SCL"},
-                             {PCW_LABEL, "P7 - WP      GND"}, {PCW_LABEL, "P8 - VCC,+5V"}, {PCW_COMBO, "kbits"}};
+static PCWProp pcwprop[10] = {{PCW_COMBO, "P1 - A0"},
+                              {PCW_COMBO, "P2 - A1"},
+                              {PCW_COMBO, "P3 - A1"},
+                              {PCW_LABEL, "P4 - VSS,GND"},
+                              {PCW_COMBO, "P5 - SDA"},
+                              {PCW_COMBO, "P6 - SCL"},
+                              {PCW_LABEL, "P7 - WP      GND"},
+                              {PCW_LABEL, "P8 - VCC,+5V"},
+                              {PCW_COMBO, "kbits"},
+                              {PCW_END, ""}};
 
 cpart_MI2C_24CXXX::cpart_MI2C_24CXXX(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type, 8) {
@@ -68,7 +75,7 @@ cpart_MI2C_24CXXX::cpart_MI2C_24CXXX(const unsigned x, const unsigned y, const c
 
     strncat(f_mi2c_tmp_name, ".txt", 200);
 
-    SetPCWProperties(pcwprop, 9);
+    SetPCWProperties(pcwprop);
 
     PinCount = 5;
     Pins = input_pins;

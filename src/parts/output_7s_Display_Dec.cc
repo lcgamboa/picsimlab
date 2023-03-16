@@ -78,9 +78,9 @@ enum {
     O_FX2
 };
 
-static PCWProp pcwprop[9] = {{PCW_COMBO, "A"},  {PCW_COMBO, "B"},  {PCW_COMBO, "C"},
-                             {PCW_COMBO, "D"},  {PCW_COMBO, "D1"}, {PCW_COMBO, "D2"},
-                             {PCW_COMBO, "D3"}, {PCW_COMBO, "D4"}, {PCW_COMBO, "Type"}};
+static PCWProp pcwprop[10] = {{PCW_COMBO, "A"},    {PCW_COMBO, "B"},  {PCW_COMBO, "C"},  {PCW_COMBO, "D"},
+                              {PCW_COMBO, "D1"},   {PCW_COMBO, "D2"}, {PCW_COMBO, "D3"}, {PCW_COMBO, "D4"},
+                              {PCW_COMBO, "Type"}, {PCW_END, ""}};
 
 cpart_7s_display_dec::cpart_7s_display_dec(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -118,7 +118,7 @@ cpart_7s_display_dec::cpart_7s_display_dec(const unsigned x, const unsigned y, c
     dtype = 1;  // to force type change
     ChangeType(0);
 
-    SetPCWProperties(pcwprop, 9);
+    SetPCWProperties(pcwprop);
 
     PinCount = 8;
     Pins = input_pins;

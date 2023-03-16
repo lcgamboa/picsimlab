@@ -37,11 +37,8 @@ enum { I_TERM, I_VT };
 /* line ending*/
 enum { LE_NONE, LE_NL, LE_CR, LE_NL_CR, O_TERM };
 
-static PCWProp pcwprop[5] = {{PCW_LABEL, "P1 - VCC,+5V"},
-                             {PCW_COMBO, "P2 - RX"},
-                             {PCW_COMBO, "P3 - TX"},
-                             {PCW_LABEL, "P4 - GND,GND"},
-                             {PCW_COMBO, "Speed"}};
+static PCWProp pcwprop[6] = {{PCW_LABEL, "P1 - VCC,+5V"}, {PCW_COMBO, "P2 - RX"}, {PCW_COMBO, "P3 - TX"},
+                             {PCW_LABEL, "P4 - GND,GND"}, {PCW_COMBO, "Speed"},   {PCW_END, ""}};
 
 cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -107,7 +104,7 @@ cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, c
         wvterm = NULL;
     }
 
-    SetPCWProperties(pcwprop, 5);
+    SetPCWProperties(pcwprop);
 
     PinCount = 2;
     Pins = pins;

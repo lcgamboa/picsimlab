@@ -31,12 +31,11 @@
 /* outputs */
 enum { O_P1, O_F1, O_F2, O_VOLT };
 
-static PCWProp pcwprop[4] = {
-    {PCW_LABEL, "1 - VCC,+5V"},
-    {PCW_COMBO, "2 - OUT"},
-    {PCW_LABEL, "3 - GND ,GND"},
-    {PCW_SPIND, "4 - Value"},
-};
+static PCWProp pcwprop[5] = {{PCW_LABEL, "1 - VCC,+5V"},
+                             {PCW_COMBO, "2 - OUT"},
+                             {PCW_LABEL, "3 - GND ,GND"},
+                             {PCW_SPIND, "4 - Value"},
+                             {PCW_END, ""}};
 
 cpart_fixedv::cpart_fixedv(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type),
@@ -47,7 +46,7 @@ cpart_fixedv::cpart_fixedv(const unsigned x, const unsigned y, const char* name,
     value = 0;
     active = 0;
 
-    SetPCWProperties(pcwprop, 4);
+    SetPCWProperties(pcwprop);
 
     PinCount = 1;
     Pins = output_pins;

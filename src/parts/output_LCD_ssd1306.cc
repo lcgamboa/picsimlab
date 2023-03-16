@@ -31,9 +31,9 @@
 /* outputs */
 enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_F1, O_F2, O_LCD };
 
-static PCWProp pcwprop[8] = {{PCW_LABEL, "1-GND,GND"}, {PCW_LABEL, "2-VCC,+3.3V"}, {PCW_COMBO, "3-CLK"},
+static PCWProp pcwprop[9] = {{PCW_LABEL, "1-GND,GND"}, {PCW_LABEL, "2-VCC,+3.3V"}, {PCW_COMBO, "3-CLK"},
                              {PCW_COMBO, "4-DIN"},     {PCW_COMBO, "5-/RST"},      {PCW_COMBO, "6-DC"},
-                             {PCW_COMBO, "7-/CE"},     {PCW_COMBO, "Type Com."}};
+                             {PCW_COMBO, "7-/CE"},     {PCW_COMBO, "Type Com."},   {PCW_END, ""}};
 
 cpart_LCD_ssd1306::cpart_LCD_ssd1306(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -55,7 +55,7 @@ cpart_LCD_ssd1306::cpart_LCD_ssd1306(const unsigned x, const unsigned y, const c
 
     type_com = 0;  // SPI
 
-    SetPCWProperties(pcwprop, 8);
+    SetPCWProperties(pcwprop);
 
     PinCount = 5;
     Pins = input_pins;

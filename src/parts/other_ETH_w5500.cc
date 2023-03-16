@@ -62,7 +62,7 @@ const char pin_values[10][10] = {
 };
  */
 
-static PCWProp pcwprop[10] = {{PCW_LABEL, "P1-V3.3       +3.3V"},
+static PCWProp pcwprop[11] = {{PCW_LABEL, "P1-V3.3       +3.3V"},
                               {PCW_LABEL, "P2-V5.0       +5V"},
                               {PCW_COMBO, "P3-MISO"},
                               {PCW_LABEL, "P4-GND ,GND"},
@@ -71,7 +71,8 @@ static PCWProp pcwprop[10] = {{PCW_LABEL, "P1-V3.3       +3.3V"},
                               {PCW_COMBO, "P7-SCS"},
                               {PCW_COMBO, "P8-INT"},
                               {PCW_COMBO, "P9-SCLK"},
-                              {PCW_LABEL, "P10-NC"}};
+                              {PCW_LABEL, "P10-NC"},
+                              {PCW_END, ""}};
 
 cpart_ETH_w5500::cpart_ETH_w5500(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -88,7 +89,7 @@ cpart_ETH_w5500::cpart_ETH_w5500(const unsigned x, const unsigned y, const char*
     _ret = -1;
 
     link = 1;
-    SetPCWProperties(pcwprop, 10);
+    SetPCWProperties(pcwprop);
 
     PinCount = 6;
     Pins = pins;

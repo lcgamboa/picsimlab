@@ -59,12 +59,13 @@ const char pin_names[20][10] = {"/OE", "D0", "D1", "D2", "D3", "D4", "D5", "D6",
 const char pin_values[20][10] = {"GND", {0}, {1},  {2},  {3},  {4},  {5},  {6},  {7},  "GND",
                                  {8},   {9}, {10}, {11}, {12}, {13}, {14}, {15}, {16}, "+5V"};
 
-static PCWProp pcwprop[20] = {
-    {PCW_LABEL, "1-/OE,GND"}, {PCW_COMBO, "2-D0"},       {PCW_COMBO, "3-D1"},     {PCW_COMBO, "4-D2"},
-    {PCW_COMBO, "5-D3"},      {PCW_COMBO, "6-D4"},       {PCW_COMBO, "7-D5"},     {PCW_COMBO, "8-D6"},
-    {PCW_COMBO, "9-D7"},      {PCW_LABEL, "10-GND,GND"}, {PCW_COMBO, "11-LE"},    {PCW_LABEL, "12-O7,NC"},
-    {PCW_LABEL, "13-O6,NC"},  {PCW_LABEL, "14-O5,NC"},   {PCW_LABEL, "15-O4,NC"}, {PCW_LABEL, "16-O3,NC"},
-    {PCW_LABEL, "17-O2,NC"},  {PCW_LABEL, "18-O1,NC"},   {PCW_LABEL, "19-O0,NC"}, {PCW_LABEL, "20-VCC,+5V"}};
+static PCWProp pcwprop[21] = {{PCW_LABEL, "1-/OE,GND"},  {PCW_COMBO, "2-D0"},       {PCW_COMBO, "3-D1"},
+                              {PCW_COMBO, "4-D2"},       {PCW_COMBO, "5-D3"},       {PCW_COMBO, "6-D4"},
+                              {PCW_COMBO, "7-D5"},       {PCW_COMBO, "8-D6"},       {PCW_COMBO, "9-D7"},
+                              {PCW_LABEL, "10-GND,GND"}, {PCW_COMBO, "11-LE"},      {PCW_LABEL, "12-O7,NC"},
+                              {PCW_LABEL, "13-O6,NC"},   {PCW_LABEL, "14-O5,NC"},   {PCW_LABEL, "15-O4,NC"},
+                              {PCW_LABEL, "16-O3,NC"},   {PCW_LABEL, "17-O2,NC"},   {PCW_LABEL, "18-O1,NC"},
+                              {PCW_LABEL, "19-O0,NC"},   {PCW_LABEL, "20-VCC,+5V"}, {PCW_END, ""}};
 
 cpart_IO_74xx573::cpart_IO_74xx573(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -102,7 +103,7 @@ cpart_IO_74xx573::cpart_IO_74xx573(const unsigned x, const unsigned y, const cha
     memset(output_pins_alm, 0, 8 * sizeof(unsigned long));
     _ret = 0;
 
-    SetPCWProperties(pcwprop, 20);
+    SetPCWProperties(pcwprop);
 
     PinCount = 9;
     Pins = input_pins;

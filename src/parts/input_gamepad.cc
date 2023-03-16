@@ -34,10 +34,17 @@ enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_B1, O_B2, O_B3, O_B4, O
 /* inputs */
 enum { I_B1, I_B2, I_B3, I_B4, I_B5, I_B6, I_J1 };
 
-static PCWProp pcwprop[10] = {{PCW_COMBO, "1 - BTN A"},    {PCW_COMBO, "2 - BTN B"},  {PCW_COMBO, "3 - BTN C"},
-                              {PCW_COMBO, "4 - BTN D"},    {PCW_COMBO, "5 - BTN E"},  {PCW_COMBO, "6 - BTN F"},
-                              {PCW_COMBO, "7 - Axis X"},   {PCW_COMBO, "8 - Axis Y"}, {PCW_LABEL, "9 - VCC,+5V"},
-                              {PCW_LABEL, "10 - GND ,GND"}};
+static PCWProp pcwprop[11] = {{PCW_COMBO, "1 - BTN A"},
+                              {PCW_COMBO, "2 - BTN B"},
+                              {PCW_COMBO, "3 - BTN C"},
+                              {PCW_COMBO, "4 - BTN D"},
+                              {PCW_COMBO, "5 - BTN E"},
+                              {PCW_COMBO, "6 - BTN F"},
+                              {PCW_COMBO, "7 - Axis X"},
+                              {PCW_COMBO, "8 - Axis Y"},
+                              {PCW_LABEL, "9 - VCC,+5V"},
+                              {PCW_LABEL, "10 - GND ,GND"},
+                              {PCW_END, ""}};
 
 cpart_gamepad::cpart_gamepad(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -59,7 +66,7 @@ cpart_gamepad::cpart_gamepad(const unsigned x, const unsigned y, const char* nam
 
     active = 0;
     jr = 10;
-    SetPCWProperties(pcwprop, 10);
+    SetPCWProperties(pcwprop);
 
     PinCount = 8;
     Pins = output_pins;

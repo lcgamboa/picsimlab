@@ -34,10 +34,11 @@ enum { O_P1, O_P2, O_F1, O_F2, O_PO1 };
 /* inputs */
 enum { I_PO1 };
 
-static PCWProp pcwprop[4] = {{PCW_LABEL, "1 - VCC,+5V"},
+static PCWProp pcwprop[5] = {{PCW_LABEL, "1 - VCC,+5V"},
                              {PCW_COMBO, "2 - TRIG"},
                              {PCW_COMBO, "3 - ECHO"},
-                             {PCW_LABEL, "4 - GND ,GND"}};
+                             {PCW_LABEL, "4 - GND ,GND"},
+                             {PCW_END, ""}};
 
 cpart_hcsr04::cpart_hcsr04(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type),
@@ -55,7 +56,7 @@ cpart_hcsr04::cpart_hcsr04(const unsigned x, const unsigned y, const char* name,
     delay = 0;
     count = 0;
 
-    SetPCWProperties(pcwprop, 4);
+    SetPCWProperties(pcwprop);
 
     PinCount = 2;
     Pins = pins;

@@ -36,11 +36,13 @@ enum { I_S1, I_S2, I_S3, I_S4, I_S5, I_S6, I_S7, I_S8 };
 
 enum { MODE_NORMAL, MODE_IDEAL };
 
-static PCWProp pcwprop[13] = {{PCW_LABEL, "1 -VCC,+5V"},  {PCW_COMBO, "2 -Out 1"}, {PCW_COMBO, "3 -Out 2"},
-                              {PCW_COMBO, "4 -Out 3"},    {PCW_COMBO, "5 -Out 4"}, {PCW_COMBO, "6 -Out 5"},
-                              {PCW_COMBO, "7 -Out 6"},    {PCW_COMBO, "8 -Out 7"}, {PCW_COMBO, "9 -Out 8"},
-                              {PCW_LABEL, "10-GND ,GND"}, {PCW_COMBO, "Active"},   {PCW_COMBO, "Mode"},
-                              {PCW_SPIN, "Size"}};
+static PCWProp pcwprop[14] = {{PCW_LABEL, "1 -VCC,+5V"}, {PCW_COMBO, "2 -Out 1"},
+                              {PCW_COMBO, "3 -Out 2"},   {PCW_COMBO, "4 -Out 3"},
+                              {PCW_COMBO, "5 -Out 4"},   {PCW_COMBO, "6 -Out 5"},
+                              {PCW_COMBO, "7 -Out 6"},   {PCW_COMBO, "8 -Out 7"},
+                              {PCW_COMBO, "9 -Out 8"},   {PCW_LABEL, "10-GND ,GND"},
+                              {PCW_COMBO, "Active"},     {PCW_COMBO, "Mode"},
+                              {PCW_SPIN, "Size"},        {PCW_END, ""}};
 
 cpart_switches::cpart_switches(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -76,7 +78,7 @@ cpart_switches::cpart_switches(const unsigned x, const unsigned y, const char* n
 
     SWBounce_init(&bounce, 8);
 
-    SetPCWProperties(pcwprop, 13);
+    SetPCWProperties(pcwprop);
 
     PinCount = 8;
     Pins = output_pins;

@@ -34,9 +34,9 @@ enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_IC };
 const char pin_names[8][10] = {"OSI", "OSO", "INT", "VSS", "SDA", "SCL", "CLK", "VCC"};
 const char pin_values[8][10] = {"OSC1", "OSC2", {0}, "GND", {1}, {2}, {3}, "+5V"};
 
-static PCWProp pcwprop[8] = {{PCW_LABEL, "P1 - OSI,OSC1"}, {PCW_LABEL, "P2 - OSO,OSC2"}, {PCW_COMBO, "P3 - INT"},
+static PCWProp pcwprop[9] = {{PCW_LABEL, "P1 - OSI,OSC1"}, {PCW_LABEL, "P2 - OSO,OSC2"}, {PCW_COMBO, "P3 - INT"},
                              {PCW_LABEL, "P4 - VSS,GND"},  {PCW_COMBO, "P5 - SDA"},      {PCW_COMBO, "P6 - SCL"},
-                             {PCW_COMBO, "P7 - CLK"},      {PCW_LABEL, "P8 - VCC,+5V"}};
+                             {PCW_COMBO, "P7 - CLK"},      {PCW_LABEL, "P8 - VCC,+5V"},  {PCW_END, ""}};
 
 cpart_RTC_pfc8563::cpart_RTC_pfc8563(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type, 8), font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -48,7 +48,7 @@ cpart_RTC_pfc8563::cpart_RTC_pfc8563(const unsigned x, const unsigned y, const c
     input_pins[2] = 0;
     input_pins[3] = 0;
 
-    SetPCWProperties(pcwprop, 8);
+    SetPCWProperties(pcwprop);
 
     PinCount = 4;
     Pins = input_pins;

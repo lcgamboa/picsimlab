@@ -37,9 +37,9 @@ enum { I_PO1 };
 const char pin_names[8][10] = {"SDA", "SCL", "Tout", "GND", "A2", "A1", "A0", "VCC"};
 const char pin_values[8][10] = {{0}, {1}, {2}, "GND", {3}, {4}, {5}, "+5V"};
 
-static PCWProp pcwprop[8] = {{PCW_COMBO, "P1 - SDA"},     {PCW_COMBO, "P2 - SCL"},    {PCW_COMBO, "P3 - Tout"},
-                             {PCW_LABEL, "P4 - GND,GND"}, {PCW_COMBO, "P5 - A2"},     {PCW_COMBO, "P6 - A1"},
-                             {PCW_COMBO, "P7 - A0"},      {PCW_LABEL, "P8 - VCC,+5V"}};
+static PCWProp pcwprop[9] = {{PCW_COMBO, "P1 - SDA"},     {PCW_COMBO, "P2 - SCL"},     {PCW_COMBO, "P3 - Tout"},
+                             {PCW_LABEL, "P4 - GND,GND"}, {PCW_COMBO, "P5 - A2"},      {PCW_COMBO, "P6 - A1"},
+                             {PCW_COMBO, "P7 - A0"},      {PCW_LABEL, "P8 - VCC,+5V"}, {PCW_END, ""}};
 
 cpart_ds1621::cpart_ds1621(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type),
@@ -58,7 +58,7 @@ cpart_ds1621::cpart_ds1621(const unsigned x, const unsigned y, const char* name,
     value = 0;
     active = 0;
 
-    SetPCWProperties(pcwprop, 8);
+    SetPCWProperties(pcwprop);
 
     PinCount = 6;
     Pins = input_pins;

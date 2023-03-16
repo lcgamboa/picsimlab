@@ -40,8 +40,9 @@ enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_L1, O_L2, O_L3, O_L4, O
 /*inputs*/
 enum { I_START, I_VIEW };
 
-static PCWProp pcwprop[8] = {{PCW_COMBO, "Pin 1"}, {PCW_COMBO, "Pin 2"}, {PCW_COMBO, "Pin 3"}, {PCW_COMBO, "Pin 4"},
-                             {PCW_COMBO, "Pin 5"}, {PCW_COMBO, "Pin 6"}, {PCW_COMBO, "Pin 7"}, {PCW_COMBO, "Pin 8"}};
+static PCWProp pcwprop[9] = {{PCW_COMBO, "Pin 1"}, {PCW_COMBO, "Pin 2"}, {PCW_COMBO, "Pin 3"},
+                             {PCW_COMBO, "Pin 4"}, {PCW_COMBO, "Pin 5"}, {PCW_COMBO, "Pin 6"},
+                             {PCW_COMBO, "Pin 7"}, {PCW_COMBO, "Pin 8"}, {PCW_END, ""}};
 
 cpart_VCD_Dump_an::cpart_VCD_Dump_an(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -78,7 +79,7 @@ cpart_VCD_Dump_an::cpart_VCD_Dump_an(const unsigned x, const unsigned y, const c
     rec = 0;
     vcd_count = 0;
 
-    SetPCWProperties(pcwprop, 8);
+    SetPCWProperties(pcwprop);
 
     PinCount = 8;
     Pins = input_pins;

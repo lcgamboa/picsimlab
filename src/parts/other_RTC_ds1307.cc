@@ -34,9 +34,9 @@ enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_IC };
 const char pin_names[8][10] = {"X1", "X2", "Vbat", "GND", "SDA", "SCL", "SQW", "VCC"};
 const char pin_values[8][10] = {"OSC1", "OSC2", "BAT", "GND", {0}, {1}, {2}, "+5V"};
 
-static PCWProp pcwprop[8] = {{PCW_LABEL, "P1 - X1,OSC1"}, {PCW_LABEL, "P2 - X2,OSC2"}, {PCW_LABEL, "P3 - Vbat,BAT"},
+static PCWProp pcwprop[9] = {{PCW_LABEL, "P1 - X1,OSC1"}, {PCW_LABEL, "P2 - X2,OSC2"}, {PCW_LABEL, "P3 - Vbat,BAT"},
                              {PCW_LABEL, "P4 - GND,GND"}, {PCW_COMBO, "P5 - SDA"},     {PCW_COMBO, "P6 - SCL"},
-                             {PCW_COMBO, "P7 - SQW"},     {PCW_LABEL, "P8 - VCC,+5V"}};
+                             {PCW_COMBO, "P7 - SQW"},     {PCW_LABEL, "P8 - VCC,+5V"}, {PCW_END, ""}};
 
 cpart_RTC_ds1307::cpart_RTC_ds1307(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type),
@@ -49,7 +49,7 @@ cpart_RTC_ds1307::cpart_RTC_ds1307(const unsigned x, const unsigned y, const cha
     input_pins[1] = 0;
     input_pins[2] = 0;
 
-    SetPCWProperties(pcwprop, 8);
+    SetPCWProperties(pcwprop);
 
     PinCount = 3;
     Pins = input_pins;

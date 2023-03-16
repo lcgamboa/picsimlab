@@ -34,12 +34,11 @@ enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_B1, O_B2, O_B3, O_B4, O
 /* inputs */
 enum { I_B1, I_B2, I_B3, I_B4, I_B5, I_B6, I_B7, I_B8, I_J1 };
 
-static PCWProp pcwprop[4] = {
-    {PCW_LABEL, "P1 - VCC,+5V"},
-    {PCW_COMBO, "P2 - OUT"},
-    {PCW_LABEL, "P3 - GND,GND"},
-    {PCW_COMBO, "Open"},
-};
+static PCWProp pcwprop[5] = {{PCW_LABEL, "P1 - VCC,+5V"},
+                             {PCW_COMBO, "P2 - OUT"},
+                             {PCW_LABEL, "P3 - GND,GND"},
+                             {PCW_COMBO, "Open"},
+                             {PCW_END, ""}};
 
 cpart_pbuttons_an::cpart_pbuttons_an(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -60,7 +59,7 @@ cpart_pbuttons_an::cpart_pbuttons_an(const unsigned x, const unsigned y, const c
 
     output_value = active * vmax;
 
-    SetPCWProperties(pcwprop, 4);
+    SetPCWProperties(pcwprop);
 
     PinCount = 1;
     Pins = output_pins;

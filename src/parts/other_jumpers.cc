@@ -82,7 +82,7 @@ enum {
     O_L16
 };
 
-static PCWProp pcwprop[34] = {
+static PCWProp pcwprop[35] = {
     {PCW_COMBO, "Input Type"}, {PCW_COMBO, "1-I0"},        {PCW_COMBO, "2-I1"},  {PCW_COMBO, "3-I2"},
     {PCW_COMBO, "4-I3"},       {PCW_COMBO, "5-I4"},        {PCW_COMBO, "6-I5"},  {PCW_COMBO, "7-I6"},
     {PCW_COMBO, "8-I7"},       {PCW_COMBO, "9-I8"},        {PCW_COMBO, "10-I9"}, {PCW_COMBO, "11-IA"},
@@ -91,7 +91,7 @@ static PCWProp pcwprop[34] = {
     {PCW_COMBO, "3-O2"},       {PCW_COMBO, "4-O3"},        {PCW_COMBO, "5-O4"},  {PCW_COMBO, "6-O5"},
     {PCW_COMBO, "7-O6"},       {PCW_COMBO, "8-O7"},        {PCW_COMBO, "9-O8"},  {PCW_COMBO, "10-O9"},
     {PCW_COMBO, "11-OA"},      {PCW_COMBO, "12-OB"},       {PCW_COMBO, "13-OC"}, {PCW_COMBO, "14-OD"},
-    {PCW_COMBO, "15-OE"},      {PCW_COMBO, "16-OF"}};
+    {PCW_COMBO, "15-OE"},      {PCW_COMBO, "16-OF"},       {PCW_END, ""}};
 
 int cpart_Jumpers::countID = 0;
 
@@ -153,7 +153,7 @@ cpart_Jumpers::cpart_Jumpers(const unsigned x, const unsigned y, const char* nam
     mcount = 0;
     memset(output_pins_alm, 0, 16 * sizeof(unsigned long));
 
-    SetPCWProperties(pcwprop, 34);
+    SetPCWProperties(pcwprop);
 }
 
 cpart_Jumpers::~cpart_Jumpers(void) {

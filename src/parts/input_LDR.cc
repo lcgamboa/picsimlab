@@ -34,11 +34,8 @@ enum { O_P1, O_P2, O_F1, O_F2, O_PO1, O_LED };
 /* inputs */
 enum { I_PO1 };
 
-static PCWProp pcwprop[5] = {{PCW_LABEL, "1 - VCC,+5V"},
-                             {PCW_COMBO, "2 - D0"},
-                             {PCW_COMBO, "3 - A0"},
-                             {PCW_LABEL, "4 - VSS,GND"},
-                             {PCW_SPIND, "Vth"}};
+static PCWProp pcwprop[6] = {{PCW_LABEL, "1 - VCC,+5V"}, {PCW_COMBO, "2 - D0"}, {PCW_COMBO, "3 - A0"},
+                             {PCW_LABEL, "4 - VSS,GND"}, {PCW_SPIND, "Vth"},    {PCW_END, ""}};
 
 cpart_LDR::cpart_LDR(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type),
@@ -51,7 +48,7 @@ cpart_LDR::cpart_LDR(const unsigned x, const unsigned y, const char* name, const
     value = 0;
     active = 0;
 
-    SetPCWProperties(pcwprop, 5);
+    SetPCWProperties(pcwprop);
 
     PinCount = 2;
     Pins = output_pins;

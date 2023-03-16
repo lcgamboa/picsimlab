@@ -70,14 +70,35 @@ const char pin_values[28][10] = {
     {4},  {5},  {6},  {7},  {8},  {9},  {10}, {11}, {12},  {13},  {14}, {15}, {16}, {17},
 };
 
-static PCWProp pcwprop[28] = {
-    {PCW_LABEL, "1-GPB0,NC"},  {PCW_LABEL, "2-GPB1,NC"},   {PCW_LABEL, "3-GPB2,NC"},  {PCW_LABEL, "4-GPB3,NC"},
-    {PCW_LABEL, "5-GPB4,NC"},  {PCW_LABEL, "6-GPB5,NC"},   {PCW_LABEL, "7-GPB6,NC"},  {PCW_LABEL, "8-GPB7,NC"},
-    {PCW_LABEL, "9- VCC,+5V"}, {PCW_LABEL, "10 -GND,GND"}, {PCW_COMBO, "11-/CS"},     {PCW_COMBO, "12-SCK"},
-    {PCW_COMBO, "13-SI"},      {PCW_COMBO, "14-SO"},       {PCW_COMBO, "15-AO"},      {PCW_COMBO, "16-A1"},
-    {PCW_COMBO, "17-A2"},      {PCW_COMBO, "18-/RST"},     {PCW_COMBO, "19-INTB"},    {PCW_COMBO, "20-INTA"},
-    {PCW_LABEL, "21-GPA0,NC"}, {PCW_LABEL, "22-GPA1,NC"},  {PCW_LABEL, "23-GPA2,NC"}, {PCW_LABEL, "24-GPA3,NC"},
-    {PCW_LABEL, "25-GPA4,NC"}, {PCW_LABEL, "26-GPA5,NC"},  {PCW_LABEL, "27-GPA6,NC"}, {PCW_LABEL, "28-GPA7,NC"}};
+static PCWProp pcwprop[29] = {{PCW_LABEL, "1-GPB0,NC"},
+                              {PCW_LABEL, "2-GPB1,NC"},
+                              {PCW_LABEL, "3-GPB2,NC"},
+                              {PCW_LABEL, "4-GPB3,NC"},
+                              {PCW_LABEL, "5-GPB4,NC"},
+                              {PCW_LABEL, "6-GPB5,NC"},
+                              {PCW_LABEL, "7-GPB6,NC"},
+                              {PCW_LABEL, "8-GPB7,NC"},
+                              {PCW_LABEL, "9- VCC,+5V"},
+                              {PCW_LABEL, "10 -GND,GND"},
+                              {PCW_COMBO, "11-/CS"},
+                              {PCW_COMBO, "12-SCK"},
+                              {PCW_COMBO, "13-SI"},
+                              {PCW_COMBO, "14-SO"},
+                              {PCW_COMBO, "15-AO"},
+                              {PCW_COMBO, "16-A1"},
+                              {PCW_COMBO, "17-A2"},
+                              {PCW_COMBO, "18-/RST"},
+                              {PCW_COMBO, "19-INTB"},
+                              {PCW_COMBO, "20-INTA"},
+                              {PCW_LABEL, "21-GPA0,NC"},
+                              {PCW_LABEL, "22-GPA1,NC"},
+                              {PCW_LABEL, "23-GPA2,NC"},
+                              {PCW_LABEL, "24-GPA3,NC"},
+                              {PCW_LABEL, "25-GPA4,NC"},
+                              {PCW_LABEL, "26-GPA5,NC"},
+                              {PCW_LABEL, "27-GPA6,NC"},
+                              {PCW_LABEL, "28-GPA7,NC"},
+                              {PCW_END, ""}};
 
 cpart_IO_MCP23S17::cpart_IO_MCP23S17(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -126,7 +147,7 @@ cpart_IO_MCP23S17::cpart_IO_MCP23S17(const unsigned x, const unsigned y, const c
     _PA = 0xFA;  // dummy value
     _PB = 0xFA;
 
-    SetPCWProperties(pcwprop, 28);
+    SetPCWProperties(pcwprop);
 
     PinCount = 10;
     Pins = input_pins;

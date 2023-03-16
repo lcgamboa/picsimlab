@@ -37,9 +37,9 @@ enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_VS1, O_VS2, O_VS3 };
 const char pin_names[8][10] = {"GND", "VCC", "CS", "INT1", "INT2", "SDO", "SDA", "SCL"};
 const char pin_values[8][10] = {"GND", "+5V", {0}, {1}, {2}, {3}, {4}, {5}};
 
-static PCWProp pcwprop[8] = {{PCW_LABEL, "1 - GND ,GND"}, {PCW_LABEL, "2 - VCC,+5V"}, {PCW_COMBO, "3 - CS"},
+static PCWProp pcwprop[9] = {{PCW_LABEL, "1 - GND ,GND"}, {PCW_LABEL, "2 - VCC,+5V"}, {PCW_COMBO, "3 - CS"},
                              {PCW_COMBO, "4 - INT1"},     {PCW_COMBO, "5 - INT2"},    {PCW_COMBO, "6 - SDO"},
-                             {PCW_COMBO, "7 - SDA"},      {PCW_COMBO, "8 - SCL"}};
+                             {PCW_COMBO, "7 - SDA"},      {PCW_COMBO, "8 - SCL"},     {PCW_END, ""}};
 
 cpart_ADXL345::cpart_ADXL345(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type),
@@ -63,7 +63,7 @@ cpart_ADXL345::cpart_ADXL345(const unsigned x, const unsigned y, const char* nam
 
     adxl345_set_accel(&adxl, 0, 0, 1.0);
 
-    SetPCWProperties(pcwprop, 8);
+    SetPCWProperties(pcwprop);
 
     PinCount = 6;
     Pins = adxl_pins;

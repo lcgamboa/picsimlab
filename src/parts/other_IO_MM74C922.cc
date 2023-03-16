@@ -59,13 +59,25 @@ const char pin_names[18][10] = {"RY1", "RY2", "RY3", "RY4", "OSC", "KBM", "CX4",
 const char pin_values[18][10] = {{0}, {1}, {2}, {3},   "1uF", "0.1uF", {4},  {5},  "GND",
                                  {6}, {7}, {8}, "GND", {9},   {10},    {11}, {12}, "+5V"};
 
-static PCWProp pcwprop[18] = {
-    {PCW_LABEL, "1-RY1,NC"},    {PCW_LABEL, "2-RY2,NC"},      {PCW_LABEL, "3-RY3,NC"},  {PCW_LABEL, "4-RY4,NC"},
-    {PCW_LABEL, "5-OSC,C=1uF"}, {PCW_LABEL, "6-KBM,C=0.1uF"}, {PCW_LABEL, "7-CX4,NC"},  {PCW_LABEL, "8-CX3,NC"},
-    {PCW_LABEL, "9-GND,GND"},   {PCW_LABEL, "10-CX2,NC"},     {PCW_LABEL, "11-CX1,NC"}, {PCW_COMBO, "12-DA"},
-    {PCW_LABEL, "13-/OE,GND"},  {PCW_COMBO, "14-D"},          {PCW_COMBO, "15-C"},      {PCW_COMBO, "16-B"},
-    {PCW_COMBO, "17-A"},        {PCW_LABEL, "18-VCC,+5V"},
-};
+static PCWProp pcwprop[19] = {{PCW_LABEL, "1-RY1,NC"},
+                              {PCW_LABEL, "2-RY2,NC"},
+                              {PCW_LABEL, "3-RY3,NC"},
+                              {PCW_LABEL, "4-RY4,NC"},
+                              {PCW_LABEL, "5-OSC,C=1uF"},
+                              {PCW_LABEL, "6-KBM,C=0.1uF"},
+                              {PCW_LABEL, "7-CX4,NC"},
+                              {PCW_LABEL, "8-CX3,NC"},
+                              {PCW_LABEL, "9-GND,GND"},
+                              {PCW_LABEL, "10-CX2,NC"},
+                              {PCW_LABEL, "11-CX1,NC"},
+                              {PCW_COMBO, "12-DA"},
+                              {PCW_LABEL, "13-/OE,GND"},
+                              {PCW_COMBO, "14-D"},
+                              {PCW_COMBO, "15-C"},
+                              {PCW_COMBO, "16-B"},
+                              {PCW_COMBO, "17-A"},
+                              {PCW_LABEL, "18-VCC,+5V"},
+                              {PCW_END, ""}};
 
 cpart_IO_MM74C922::cpart_IO_MM74C922(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -104,7 +116,7 @@ cpart_IO_MM74C922::cpart_IO_MM74C922(const unsigned x, const unsigned y, const c
     memset(pins_alm, 0, 8 * sizeof(unsigned long));
     _ret = 0;
 
-    SetPCWProperties(pcwprop, 18);
+    SetPCWProperties(pcwprop);
 }
 
 cpart_IO_MM74C922::~cpart_IO_MM74C922(void) {

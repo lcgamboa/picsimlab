@@ -31,9 +31,9 @@
 /* outputs */
 enum { O_P1, O_P2, O_P3, O_P4, O_F1, O_F2, O_LED };
 
-static PCWProp pcwprop[8] = {{PCW_LABEL, "1-VCC,+5V"}, {PCW_LABEL, "2-GND,GND"}, {PCW_COMBO, "3-DIN"},
+static PCWProp pcwprop[9] = {{PCW_LABEL, "1-VCC,+5V"}, {PCW_LABEL, "2-GND,GND"}, {PCW_COMBO, "3-DIN"},
                              {PCW_COMBO, "4-CS"},      {PCW_COMBO, "5-CLK"},     {PCW_LABEL, "6-Dout,NC"},
-                             {PCW_COMBO, "Angle"},     {PCW_COMBO, "Model"}};
+                             {PCW_COMBO, "Angle"},     {PCW_COMBO, "Model"},     {PCW_END, ""}};
 
 cpart_led_matrix::cpart_led_matrix(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -55,7 +55,7 @@ cpart_led_matrix::cpart_led_matrix(const unsigned x, const unsigned y, const cha
 
     output_pins[0] = SpareParts.RegisterIOpin(lxT("DOUT"));
 
-    SetPCWProperties(pcwprop, 8);
+    SetPCWProperties(pcwprop);
 
     PinCount = 3;
     Pins = input_pins;

@@ -41,9 +41,9 @@ typedef struct {
 
 static const colorval_t colortable[C_END] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}, {1, 1, 0}, {1, 1, 1}};
 
-static PCWProp pcwprop[10] = {{PCW_DCOMBO, "1-D1"},  {PCW_DCOMBO, "2-D2"}, {PCW_DCOMBO, "3-D3"}, {PCW_DCOMBO, "4-D4"},
+static PCWProp pcwprop[11] = {{PCW_DCOMBO, "1-D1"},  {PCW_DCOMBO, "2-D2"}, {PCW_DCOMBO, "3-D3"}, {PCW_DCOMBO, "4-D4"},
                               {PCW_DCOMBO, "5-D5"},  {PCW_DCOMBO, "6-D6"}, {PCW_DCOMBO, "7-D7"}, {PCW_DCOMBO, "8-D8"},
-                              {PCW_COMBO, "Active"}, {PCW_SPIN, "Size"}};
+                              {PCW_COMBO, "Active"}, {PCW_SPIN, "Size"},   {PCW_END, ""}};
 
 cpart_leds::cpart_leds(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type, 9) {
@@ -77,7 +77,7 @@ cpart_leds::cpart_leds(const unsigned x, const unsigned y, const char* name, con
     colors[6] = 0;
     colors[7] = 0;
 
-    SetPCWProperties(pcwprop, 10);
+    SetPCWProperties(pcwprop);
 
     PinCount = 8;
     Pins = input_pins;

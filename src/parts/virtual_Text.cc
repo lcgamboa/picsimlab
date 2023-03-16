@@ -44,13 +44,18 @@ static const colorval_t colortable[C_END] = {{0xFF, 0, 0},       {0, 0xFF, 0},  
                                              {0xFF, 0xFF, 0},    {0xFF, 0xFF, 0XFF}, {0, 0, 0},
                                              {0x32, 0x32, 0x32}, {0x31, 0x3d, 0x63}, {0xff, 0xd3, 0x8c}};
 
-static PCWProp pcwprop[4] = {{PCW_TEXT, "text"}, {PCW_SPIN, "Size"}, {PCW_COMBO, "Color"}, {PCW_COMBO, "Backgrd"}};
+static PCWProp pcwprop[5] = {{PCW_TEXT, "text"},
+                             {PCW_SPIN, "Size"},
+                             {PCW_COMBO, "Color"},
+                             {PCW_COMBO, "Backgrd"},
+                             {PCW_END, ""}};
 
 cpart_TEXT::cpart_TEXT(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type, 8) {
+    Bitmap = NULL;
     Lines.AddLine("text");
 
-    SetPCWProperties(pcwprop, 4);
+    SetPCWProperties(pcwprop);
 }
 
 cpart_TEXT::~cpart_TEXT(void) {
@@ -63,9 +68,6 @@ void cpart_TEXT::PostInit(void) {
 }
 
 void cpart_TEXT::LoadImage(void) {
-    lxString ifname;
-    FILE* fimg;
-
     unsigned int max = 0;
 
     for (unsigned int l = 0; l < Lines.GetLinesCount(); l++) {
@@ -77,31 +79,17 @@ void cpart_TEXT::LoadImage(void) {
     Width = max * Size * 0.9;
     Height = 2 * Size * Lines.GetLinesCount();
 
-    ifname = lxGetTempDir(lxT("picsimlab")) + lxT("/text.svg");
-
-    fimg = fopen((const char*)ifname.c_str(), "w");
-
-    if (fimg) {
-        fprintf(fimg,
-                "<svg width=\"%i\" height=\"%i\" version=\"1.1\" viewBox=\"0 0 100 "
-                "100\" xmlns=\"http://www.w3.org/2000/svg\">"
-                "\n <rect x =\"0\" y=\"0\" width=\"100\" height=\"100\"  />\n</svg>",
-                Width, Height);
-        fclose(fimg);
-    } else {
-        printf("PICSimLab: Erro open file %s\n", (const char*)ifname.c_str());
+    if (Bitmap) {
+        delete Bitmap;
     }
 
     lxImage image(SpareParts.GetWindow());
 
-    image.LoadFile(lxGetLocalFile(ifname), Orientation, Scale, Scale);
+    image.CreateBlank(Width, Height, Orientation, Scale, Scale);
     Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
     image.Destroy();
-
     canvas.Destroy();
     canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
-
-    lxRemoveFile(ifname);
 }
 
 void cpart_TEXT::DrawOutput(const unsigned int i) {
@@ -178,9 +166,7 @@ void cpart_TEXT::ChangeText(int size, int textcolor, int bgcolor) {
     Size = size;
     Textcolor = textcolor;
     Bgcolor = bgcolor;
-    if (Bitmap) {
-        delete Bitmap;
-    }
+
     LoadImage();
 
     output_ids[O_TEXTB]->x1 = 0;

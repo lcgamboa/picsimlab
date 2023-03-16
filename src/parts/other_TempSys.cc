@@ -34,8 +34,8 @@ enum { O_HT, O_CO, O_TE, O_TA, O_F1, O_F2, O_OTA, O_OTE, O_VT };
 /* inputs */
 enum { I_PO1, I_PO2, I_PO3, I_PO4 };
 
-static PCWProp pcwprop[6] = {{PCW_COMBO, "Heater"}, {PCW_COMBO, "Cooler"},   {PCW_COMBO, "Temp."},
-                             {PCW_COMBO, "Tach"},   {PCW_LABEL, "VCC,+12V"}, {PCW_LABEL, "GND,GND"}};
+static PCWProp pcwprop[7] = {{PCW_COMBO, "Heater"},   {PCW_COMBO, "Cooler"},  {PCW_COMBO, "Temp."}, {PCW_COMBO, "Tach"},
+                             {PCW_LABEL, "VCC,+12V"}, {PCW_LABEL, "GND,GND"}, {PCW_END, ""}};
 
 cpart_tempsys::cpart_tempsys(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -68,7 +68,7 @@ cpart_tempsys::cpart_tempsys(const unsigned x, const unsigned y, const char* nam
 
     refresh = 0;
 
-    SetPCWProperties(pcwprop, 6);
+    SetPCWProperties(pcwprop);
 
     PinCount = 4;
     Pins = input_pins;

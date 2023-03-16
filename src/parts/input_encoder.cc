@@ -39,11 +39,8 @@ enum { O_RT1, O_BTN, O_P1, O_P2, O_P3 };
 /* inputs */
 enum { I_RT1, I_BTN };
 
-static PCWProp pcwprop[5] = {{PCW_LABEL, "1 - VCC,+5V"},
-                             {PCW_LABEL, "2 - GND ,GND"},
-                             {PCW_COMBO, "3 - OA"},
-                             {PCW_COMBO, "4 - OB"},
-                             {PCW_COMBO, "5 - BTN"}};
+static PCWProp pcwprop[6] = {{PCW_LABEL, "1 - VCC,+5V"}, {PCW_LABEL, "2 - GND ,GND"}, {PCW_COMBO, "3 - OA"},
+                             {PCW_COMBO, "4 - OB"},      {PCW_COMBO, "5 - BTN"},      {PCW_END, ""}};
 
 cpart_encoder::cpart_encoder(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -63,7 +60,7 @@ cpart_encoder::cpart_encoder(const unsigned x, const unsigned y, const char* nam
     count = 0;
     state = 0;
 
-    SetPCWProperties(pcwprop, 5);
+    SetPCWProperties(pcwprop);
 
     PinCount = 3;
     Pins = output_pins;

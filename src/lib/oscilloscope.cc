@@ -420,7 +420,7 @@ void COscilloscope::ReadPreferencesList(lxStringList pl) {
         return;
     }
 
-    strncpy(line, (const char*)pl.GetLine(0).c_str(), 1024);
+    strncpy(line, (const char*)pl.GetLine(0).c_str(), 1023);
     tokens[0] = strtok(line, ",:\n");
     for (int i = 1; i < 15; i++) {
         tokens[i] = strtok(NULL, ",:\n");
@@ -454,7 +454,7 @@ void COscilloscope::ReadPreferencesList(lxStringList pl) {
         SetMeasure(i, atoi(tokens[9 + i]));
     }
 
-    strncpy(line, (const char*)pl.GetLine(1).c_str(), 1024);
+    strncpy(line, (const char*)pl.GetLine(1).c_str(), 1023);
     tokens[0] = strtok(line, ",:\n");
     for (int i = 1; i < 15; i++) {
         tokens[i] = strtok(NULL, ",:\n");
@@ -483,7 +483,7 @@ void COscilloscope::ReadPreferencesList(lxStringList pl) {
     ((CCombo*)Window->GetChildByName("combo2"))->SetText(tokens[9]);
     SetChannelPin(0, atoi(((CCombo*)Window->GetChildByName("combo2"))->GetText()) - 1);
 
-    strncpy(line, (const char*)pl.GetLine(2).c_str(), 1024);
+    strncpy(line, (const char*)pl.GetLine(2).c_str(), 1023);
     tokens[0] = strtok(line, ",:\n");
     for (int i = 1; i < 15; i++) {
         tokens[i] = strtok(NULL, ",:\n");

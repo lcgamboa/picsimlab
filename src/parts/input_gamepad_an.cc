@@ -34,10 +34,11 @@ enum { O_P1, O_B1, O_B2, O_B3, O_B4, O_B5 };
 /* inputs */
 enum { I_B1, I_B2, I_B3, I_B4, I_B5 };
 
-static PCWProp pcwprop[4] = {{PCW_COMBO, "Pin 1"},
+static PCWProp pcwprop[5] = {{PCW_COMBO, "Pin 1"},
                              {PCW_LABEL, "Pin2 - VCC,+5V"},
                              {PCW_LABEL, "Pin3 - GND,GND"},
-                             {PCW_COMBO, "Open"}};
+                             {PCW_COMBO, "Open"},
+                             {PCW_END, ""}};
 
 cpart_gamepad_an::cpart_gamepad_an(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -53,7 +54,7 @@ cpart_gamepad_an::cpart_gamepad_an(const unsigned x, const unsigned y, const cha
 
     vmax = 5.0;
 
-    SetPCWProperties(pcwprop, 4);
+    SetPCWProperties(pcwprop);
 
     PinCount = 1;
     Pins = output_pins;

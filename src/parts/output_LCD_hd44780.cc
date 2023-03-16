@@ -32,11 +32,11 @@
 /* outputs */
 enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_P9, O_P10, O_P11, O_F1, O_F2, O_F3, O_LCD };
 
-static PCWProp pcwprop[15] = {{PCW_LABEL, "1-Vss,GND"}, {PCW_LABEL, "2-Vcc,+5V"}, {PCW_LABEL, "3-Vee,POT"},
-                              {PCW_COMBO, "4-RS"},      {PCW_COMBO, "5-RW"},      {PCW_COMBO, "6-EN"},
-                              {PCW_COMBO, "7-D0"},      {PCW_COMBO, "8-D1"},      {PCW_COMBO, "9-D2"},
-                              {PCW_COMBO, "10-D3"},     {PCW_COMBO, "11-D4"},     {PCW_COMBO, "12-D5"},
-                              {PCW_COMBO, "13-D6"},     {PCW_COMBO, "14-D7"},     {PCW_COMBO, "Model"}};
+static PCWProp pcwprop[16] = {
+    {PCW_LABEL, "1-Vss,GND"}, {PCW_LABEL, "2-Vcc,+5V"}, {PCW_LABEL, "3-Vee,POT"}, {PCW_COMBO, "4-RS"},
+    {PCW_COMBO, "5-RW"},      {PCW_COMBO, "6-EN"},      {PCW_COMBO, "7-D0"},      {PCW_COMBO, "8-D1"},
+    {PCW_COMBO, "9-D2"},      {PCW_COMBO, "10-D3"},     {PCW_COMBO, "11-D4"},     {PCW_COMBO, "12-D5"},
+    {PCW_COMBO, "13-D6"},     {PCW_COMBO, "14-D7"},     {PCW_COMBO, "Model"},     {PCW_END, ""}};
 
 void cpart_LCD_hd44780::Reset(void) {
     LoadImage();
@@ -58,7 +58,7 @@ void cpart_LCD_hd44780::Reset(void) {
     lcd_rst(&lcd);
     lcde = 0;
 
-    SetPCWProperties(pcwprop, 15);
+    SetPCWProperties(pcwprop);
 }
 
 cpart_LCD_hd44780::cpart_LCD_hd44780(const unsigned x, const unsigned y, const char* name, const char* type)

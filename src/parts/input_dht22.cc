@@ -34,10 +34,11 @@ enum { O_P1, O_F3, O_F1, O_F2, O_PO1, O_PO2 };
 /* inputs */
 enum { I_PO1, I_PO2 };
 
-static PCWProp pcwprop[4] = {{PCW_LABEL, "P1 - VCC,+5V"},
+static PCWProp pcwprop[5] = {{PCW_LABEL, "P1 - VCC,+5V"},
                              {PCW_COMBO, "P2 - DAT"},
                              {PCW_LABEL, "P3 - NC,NC"},
-                             {PCW_LABEL, "P4 - GND,GND"}};
+                             {PCW_LABEL, "P4 - GND,GND"},
+                             {PCW_END, ""}};
 
 cpart_dht22::cpart_dht22(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type),
@@ -53,7 +54,7 @@ cpart_dht22::cpart_dht22(const unsigned x, const unsigned y, const char* name, c
 
     sen_dhtxx_init(&dht22, PICSimLab.GetBoard(), DHT22);
 
-    SetPCWProperties(pcwprop, 4);
+    SetPCWProperties(pcwprop);
 
     PinCount = 1;
     Pins = output_pins;

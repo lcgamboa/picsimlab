@@ -34,7 +34,10 @@ enum { O_P1, O_F1, O_F2, O_PO1 };
 /* inputs */
 enum { I_PO1 };
 
-static PCWProp pcwprop[3] = {{PCW_LABEL, "1 - VCC,+5V"}, {PCW_COMBO, "2 - OUT"}, {PCW_LABEL, "3 - GND ,GND"}};
+static PCWProp pcwprop[4] = {{PCW_LABEL, "1 - VCC,+5V"},
+                             {PCW_COMBO, "2 - OUT"},
+                             {PCW_LABEL, "3 - GND ,GND"},
+                             {PCW_END, ""}};
 
 cpart_lm35::cpart_lm35(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type),
@@ -45,7 +48,7 @@ cpart_lm35::cpart_lm35(const unsigned x, const unsigned y, const char* name, con
     value = 0;
     active = 0;
 
-    SetPCWProperties(pcwprop, 3);
+    SetPCWProperties(pcwprop);
 
     PinCount = 1;
     Pins = output_pins;

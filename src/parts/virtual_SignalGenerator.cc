@@ -34,7 +34,10 @@ enum { O_P1, O_P2, O_P3, O_PO1, O_PO2, O_PO3, O_TP, O_AMPL, O_OFFS, O_FREQ, O_MF
 /* inputs */
 enum { I_PO1, I_PO2, I_PO3, I_TP, I_MF };
 
-static PCWProp pcwprop[3] = {{PCW_LABEL, "P4 - GND,GND"}, {PCW_COMBO, "P2 - Out"}, {PCW_COMBO, "P3 - Out"}};
+static PCWProp pcwprop[4] = {{PCW_LABEL, "P4 - GND,GND"},
+                             {PCW_COMBO, "P2 - Out"},
+                             {PCW_COMBO, "P3 - Out"},
+                             {PCW_END, ""}};
 
 cpart_SignalGenerator::cpart_SignalGenerator(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -56,7 +59,7 @@ cpart_SignalGenerator::cpart_SignalGenerator(const unsigned x, const unsigned y,
     maxfreq = 1;
     lastd = 2;
 
-    SetPCWProperties(pcwprop, 3);
+    SetPCWProperties(pcwprop);
 
     PinCount = 2;
     Pins = input_pins;

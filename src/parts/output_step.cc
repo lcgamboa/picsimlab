@@ -31,11 +31,8 @@
 /* outputs */
 enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_L1, O_L2, O_L3, O_L4, O_ROT, O_STEPS };
 
-static PCWProp pcwprop[5] = {{PCW_COMBO, "Pin 1"},
-                             {PCW_COMBO, "Pin 2"},
-                             {PCW_COMBO, "Pin 3"},
-                             {PCW_COMBO, "Pin 4"},
-                             {PCW_COMBO, "Home"}};
+static PCWProp pcwprop[6] = {{PCW_COMBO, "Pin 1"}, {PCW_COMBO, "Pin 2"}, {PCW_COMBO, "Pin 3"},
+                             {PCW_COMBO, "Pin 4"}, {PCW_COMBO, "Home"},  {PCW_END, ""}};
 
 cpart_step::cpart_step(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -55,7 +52,7 @@ cpart_step::cpart_step(const unsigned x, const unsigned y, const char* name, con
 
     turns = 0;
 
-    SetPCWProperties(pcwprop, 5);
+    SetPCWProperties(pcwprop);
 
     PinCount = 4;
     Pins = input_pins;

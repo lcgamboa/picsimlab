@@ -357,6 +357,7 @@ void part::SetOrientation(int orientation) {
     Orientation = orientation;
 
     delete Bitmap;
+    Bitmap = NULL;
 
     LoadImage();
 
@@ -379,6 +380,7 @@ void part::SetScale(double scale) {
     Scale = scale;
 
     delete Bitmap;
+    Bitmap = NULL;
 
     LoadImage();
 
@@ -525,9 +527,13 @@ void part::SetAwaysUpdate(int sau) {
     always_update = sau;
 }
 
-void part::SetPCWProperties(const PCWProp* pcwprop, const int pcwcount) {
+void part::SetPCWProperties(const PCWProp* pcwprop) {
     PCWProperties = pcwprop;
-    PCWCount = pcwcount;
+    PCWCount = 0;
+
+    while (PCWProperties[PCWCount].pcw_type != PCW_END) {
+        PCWCount++;
+    }
 }
 
 const int part::GetPCWCount(void) {

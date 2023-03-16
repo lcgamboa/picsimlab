@@ -37,9 +37,9 @@ enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_VS1, O_VS2, O_VS3, O_VS
 const char pin_names[8][10] = {"VCC", "GND", "SCL", "SDA", "XDA", "XCL", "AD0", "INT"};
 const char pin_values[8][10] = {"+5V", "GND", {0}, {1}, {2}, {3}, {4}, {5}};
 
-static PCWProp pcwprop[8] = {{PCW_LABEL, "1 - VCC,+5V"}, {PCW_LABEL, "2 - GND ,GND"}, {PCW_COMBO, "3 - SCL"},
+static PCWProp pcwprop[9] = {{PCW_LABEL, "1 - VCC,+5V"}, {PCW_LABEL, "2 - GND ,GND"}, {PCW_COMBO, "3 - SCL"},
                              {PCW_COMBO, "4 - SDA"},     {PCW_COMBO, "5 - XDA"},      {PCW_COMBO, "6 - XCL"},
-                             {PCW_COMBO, "7 - AD0"},     {PCW_COMBO, "8 - INT"}};
+                             {PCW_COMBO, "7 - AD0"},     {PCW_COMBO, "8 - INT"},      {PCW_END, ""}};
 
 cpart_MPU6050::cpart_MPU6050(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type),
@@ -69,7 +69,7 @@ cpart_MPU6050::cpart_MPU6050(const unsigned x, const unsigned y, const char* nam
     mpu6050_set_accel(&mpu, 0, 0, 1.0);
     mpu6050_set_gyro(&mpu, 0, 0, 0);
 
-    SetPCWProperties(pcwprop, 8);
+    SetPCWProperties(pcwprop);
 
     PinCount = 6;
     Pins = mpu_pins;

@@ -31,9 +31,9 @@
 /* outputs */
 enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_F1, O_F2, O_F3, O_LCD };
 
-static PCWProp pcwprop[8] = {{PCW_COMBO, "1-/RST"},     {PCW_COMBO, "2-/CE"},    {PCW_COMBO, "3-/CE"},
-                             {PCW_COMBO, "4-DIN"},      {PCW_COMBO, "5-CLK"},    {PCW_LABEL, "6-VCC,+3.3V"},
-                             {PCW_LABEL, "7-BL,+3.3V"}, {PCW_LABEL, "8-GND,GND"}};
+static PCWProp pcwprop[9] = {{PCW_COMBO, "1-/RST"},     {PCW_COMBO, "2-/CE"},     {PCW_COMBO, "3-/CE"},
+                             {PCW_COMBO, "4-DIN"},      {PCW_COMBO, "5-CLK"},     {PCW_LABEL, "6-VCC,+3.3V"},
+                             {PCW_LABEL, "7-BL,+3.3V"}, {PCW_LABEL, "8-GND,GND"}, {PCW_END, ""}};
 
 cpart_LCD_pcd8544::cpart_LCD_pcd8544(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -53,7 +53,7 @@ cpart_LCD_pcd8544::cpart_LCD_pcd8544(const unsigned x, const unsigned y, const c
     input_pins[3] = 0;
     input_pins[4] = 0;
 
-    SetPCWProperties(pcwprop, 8);
+    SetPCWProperties(pcwprop);
 
     PinCount = 5;
     Pins = input_pins;

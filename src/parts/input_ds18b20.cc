@@ -34,11 +34,10 @@ enum { O_P1, O_F1, O_F2, O_PO1 };
 /* inputs */
 enum { I_PO1 };
 
-static PCWProp pcwprop[3] = {
-    {PCW_LABEL, "1 - GND,GND"},
-    {PCW_COMBO, "2 - DQ"},
-    {PCW_LABEL, "3 - VCC,+5V"},
-};
+static PCWProp pcwprop[4] = {{PCW_LABEL, "1 - GND,GND"},
+                             {PCW_COMBO, "2 - DQ"},
+                             {PCW_LABEL, "3 - VCC,+5V"},
+                             {PCW_END, ""}};
 
 cpart_ds18b20::cpart_ds18b20(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type),
@@ -52,7 +51,7 @@ cpart_ds18b20::cpart_ds18b20(const unsigned x, const unsigned y, const char* nam
 
     sen_ds18b20_init(&ds18b20, PICSimLab.GetBoard());
 
-    SetPCWProperties(pcwprop, 3);
+    SetPCWProperties(pcwprop);
 
     PinCount = 1;
     Pins = output_pins;

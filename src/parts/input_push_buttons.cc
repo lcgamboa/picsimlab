@@ -36,11 +36,13 @@ enum { I_B1, I_B2, I_B3, I_B4, I_B5, I_B6, I_B7, I_B8, I_J1 };
 
 enum { MODE_NORMAL, MODE_IDEAL };
 
-static PCWProp pcwprop[13] = {{PCW_LABEL, "1 -VCC,+5V"},  {PCW_COMBO, "2 -Out 1"}, {PCW_COMBO, "3 -Out 2"},
-                              {PCW_COMBO, "4 -Out 3"},    {PCW_COMBO, "5 -Out 4"}, {PCW_COMBO, "6 -Out 5"},
-                              {PCW_COMBO, "7 -Out 6"},    {PCW_COMBO, "8 -Out 7"}, {PCW_COMBO, "9 -Out 8"},
-                              {PCW_LABEL, "10-GND ,GND"}, {PCW_COMBO, "Active"},   {PCW_COMBO, "Mode"},
-                              {PCW_SPIN, "Size"}};
+static PCWProp pcwprop[14] = {{PCW_LABEL, "1 -VCC,+5V"}, {PCW_COMBO, "2 -Out 1"},
+                              {PCW_COMBO, "3 -Out 2"},   {PCW_COMBO, "4 -Out 3"},
+                              {PCW_COMBO, "5 -Out 4"},   {PCW_COMBO, "6 -Out 5"},
+                              {PCW_COMBO, "7 -Out 6"},   {PCW_COMBO, "8 -Out 7"},
+                              {PCW_COMBO, "9 -Out 8"},   {PCW_LABEL, "10-GND ,GND"},
+                              {PCW_COMBO, "Active"},     {PCW_COMBO, "Mode"},
+                              {PCW_SPIN, "Size"},        {PCW_END, ""}};
 
 cpart_pbuttons::cpart_pbuttons(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -76,7 +78,7 @@ cpart_pbuttons::cpart_pbuttons(const unsigned x, const unsigned y, const char* n
 
     SWBounce_init(&bounce, 8);
 
-    SetPCWProperties(pcwprop, 13);
+    SetPCWProperties(pcwprop);
 
     PinCount = 8;
     Pins = output_pins;

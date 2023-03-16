@@ -81,10 +81,10 @@ enum {
     O_FX1
 };
 
-static PCWProp pcwprop[15] = {{PCW_COMBO, "Seg a"},  {PCW_COMBO, "Seg b"}, {PCW_COMBO, "Seg c"}, {PCW_COMBO, "Seg d"},
+static PCWProp pcwprop[16] = {{PCW_COMBO, "Seg a"},  {PCW_COMBO, "Seg b"}, {PCW_COMBO, "Seg c"}, {PCW_COMBO, "Seg d"},
                               {PCW_COMBO, "Seg e"},  {PCW_COMBO, "Seg f"}, {PCW_COMBO, "Seg g"}, {PCW_COMBO, "Point"},
                               {PCW_COMBO, "D1"},     {PCW_COMBO, "D2"},    {PCW_COMBO, "D3"},    {PCW_COMBO, "D4"},
-                              {PCW_COMBO, "Active"}, {PCW_COMBO, "Type"},  {PCW_END, ""}};
+                              {PCW_COMBO, "Active"}, {PCW_COMBO, "Type"},  {PCW_END, ""},        {PCW_END, ""}};
 
 cpart_7s_display::cpart_7s_display(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -126,7 +126,7 @@ cpart_7s_display::cpart_7s_display(const unsigned x, const unsigned y, const cha
     dtype = 1;  // to force dtype change
     ChangeType(0);
 
-    SetPCWProperties(pcwprop, 14);
+    SetPCWProperties(pcwprop);
 
     PinCount = 12;
     Pins = input_pins;

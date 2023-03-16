@@ -31,9 +31,9 @@
 /* outputs */
 enum { O_P1, O_P2, O_IG, O_IO, O_OG, O_OO, O_NUM, O_DEN, O_TS };
 
-static PCWProp pcwprop[9] = {{PCW_COMBO, "Input"},  {PCW_COMBO, "Output"},  {PCW_EDIT, "Num."},
-                             {PCW_EDIT, "Den."},    {PCW_EDIT, "Sample"},   {PCW_EDIT, "In Gain"},
-                             {PCW_EDIT, "In Off."}, {PCW_EDIT, "Out Gain"}, {PCW_EDIT, "Out Off."}};
+static PCWProp pcwprop[10] = {
+    {PCW_COMBO, "Input"},  {PCW_COMBO, "Output"}, {PCW_EDIT, "Num."},     {PCW_EDIT, "Den."},     {PCW_EDIT, "Sample"},
+    {PCW_EDIT, "In Gain"}, {PCW_EDIT, "In Off."}, {PCW_EDIT, "Out Gain"}, {PCW_EDIT, "Out Off."}, {PCW_END, ""}};
 
 cpart_dtfunc::cpart_dtfunc(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -56,7 +56,7 @@ cpart_dtfunc::cpart_dtfunc(const unsigned x, const unsigned y, const char* name,
 
     refresh = 0;
 
-    SetPCWProperties(pcwprop, 9);
+    SetPCWProperties(pcwprop);
 
     PinCount = 2;
     Pins = pins;

@@ -33,7 +33,11 @@ enum { O_P1, O_P2, O_L1 };
 
 enum { ACTIVE = 0, PASSIVE, TONE };
 
-static PCWProp pcwprop[4] = {{PCW_COMBO, "Pin 1"}, {PCW_LABEL, "Pin2,GND"}, {PCW_COMBO, "Type"}, {PCW_COMBO, "Active"}};
+static PCWProp pcwprop[5] = {{PCW_COMBO, "Pin 1"},
+                             {PCW_LABEL, "Pin2,GND"},
+                             {PCW_COMBO, "Type"},
+                             {PCW_COMBO, "Active"},
+                             {PCW_END, ""}};
 
 cpart_Buzzer::cpart_Buzzer(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -74,7 +78,7 @@ cpart_Buzzer::cpart_Buzzer(const unsigned x, const unsigned y, const char* name,
     if (PICSimLab.GetWindow()) {
         timer = (CTimer*)PICSimLab.GetWindow()->GetChildByName("timer1");
     }
-    SetPCWProperties(pcwprop, 4);
+    SetPCWProperties(pcwprop);
 
     PinCount = 1;
     Pins = input_pins;

@@ -31,9 +31,9 @@
 /* outputs */
 enum { O_P1, O_P2, O_F1, O_F2, O_LED };
 
-static PCWProp pcwprop[7] = {{PCW_LABEL, "1-VDD,+5V"}, {PCW_LABEL, "2-DOUT,NC"}, {PCW_LABEL, "3-VSS,GND"},
-                             {PCW_COMBO, "4-DIN"},     {PCW_SPIN, "Rows"},       {PCW_SPIN, "Cols"},
-                             {PCW_COMBO, "Diffuser"}};
+static PCWProp pcwprop[8] = {
+    {PCW_LABEL, "1-VDD,+5V"}, {PCW_LABEL, "2-DOUT,NC"}, {PCW_LABEL, "3-VSS,GND"}, {PCW_COMBO, "4-DIN"},
+    {PCW_SPIN, "Rows"},       {PCW_SPIN, "Cols"},       {PCW_COMBO, "Diffuser"},  {PCW_END, ""}};
 
 cpart_led_ws2812b::cpart_led_ws2812b(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -57,7 +57,7 @@ cpart_led_ws2812b::cpart_led_ws2812b(const unsigned x, const unsigned y, const c
 
     output_pins[0] = SpareParts.RegisterIOpin(lxT("DOUT"));
 
-    SetPCWProperties(pcwprop, 7);
+    SetPCWProperties(pcwprop);
 
     PinCount = 1;
     Pins = input_pins;

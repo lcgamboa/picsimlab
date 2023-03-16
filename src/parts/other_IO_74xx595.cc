@@ -81,7 +81,7 @@ cpart_IO_74xx595::cpart_IO_74xx595(const unsigned x, const unsigned y, const cha
     memset(output_pins_alm, 0, 9 * sizeof(unsigned long));
     _ret = 0;
 
-    SetPCWProperties(pcwprop, 16);
+    SetPCWProperties(pcwprop);
 
     PinCount = 4;
     Pins = input_pins;

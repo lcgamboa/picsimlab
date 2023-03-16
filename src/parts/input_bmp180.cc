@@ -37,10 +37,11 @@ enum { I_PO1, I_PO2 };
 const char pin_names[4][10] = {"SCL", "SDA", "VCC", "GND"};
 const char pin_values[4][10] = {{0}, {1}, "+5V", "GND"};
 
-static PCWProp pcwprop[4] = {{PCW_COMBO, "P1 - SCL"},
+static PCWProp pcwprop[5] = {{PCW_COMBO, "P1 - SCL"},
                              {PCW_COMBO, "P2 - SDA"},
                              {PCW_LABEL, "P3 - VCC,+5V"},
-                             {PCW_LABEL, "P4 - GND,GND"}};
+                             {PCW_LABEL, "P4 - GND,GND"},
+                             {PCW_END, ""}};
 
 cpart_bmp180::cpart_bmp180(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type),
@@ -57,7 +58,7 @@ cpart_bmp180::cpart_bmp180(const unsigned x, const unsigned y, const char* name,
     active[0] = 0;
     active[0] = 0;
 
-    SetPCWProperties(pcwprop, 4);
+    SetPCWProperties(pcwprop);
 
     PinCount = 2;
     Pins = input_pins;

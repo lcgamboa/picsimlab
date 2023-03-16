@@ -34,11 +34,8 @@ enum { O_P1, O_P2, O_F1, O_F2, O_PO1, O_PO2 };
 /* inputs */
 enum { I_PO1, I_PO2 };
 
-static PCWProp pcwprop[5] = {{PCW_LABEL, "Pin 1        +5V"},
-                             {PCW_COMBO, "Pin 2"},
-                             {PCW_COMBO, "Pin 3"},
-                             {PCW_LABEL, "Pin 4         GND"},
-                             {PCW_COMBO, "Output"}};
+static PCWProp pcwprop[6] = {{PCW_LABEL, "Pin 1        +5V"},  {PCW_COMBO, "Pin 2"},  {PCW_COMBO, "Pin 3"},
+                             {PCW_LABEL, "Pin 4         GND"}, {PCW_COMBO, "Output"}, {PCW_END, ""}};
 
 cpart_sht3x::cpart_sht3x(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type),
@@ -53,7 +50,7 @@ cpart_sht3x::cpart_sht3x(const unsigned x, const unsigned y, const char* name, c
     active[0] = 0;
     active[1] = 0;
 
-    SetPCWProperties(pcwprop, 5);
+    SetPCWProperties(pcwprop);
 
     PinCount = 2;
     Pins = output_pins;

@@ -34,9 +34,9 @@ enum { O_P1, O_P2, O_P3, O_P4, O_PO1, O_PO2, O_PO3, O_PO4 };
 /* inputs */
 enum { I_PO1, I_PO2, I_PO3, I_PO4 };
 
-static PCWProp pcwprop[7] = {{PCW_LABEL, "1-VCC,+5V"}, {PCW_COMBO, "2-POT 1"}, {PCW_COMBO, "3-POT 2"},
+static PCWProp pcwprop[8] = {{PCW_LABEL, "1-VCC,+5V"}, {PCW_COMBO, "2-POT 1"}, {PCW_COMBO, "3-POT 2"},
                              {PCW_COMBO, "4-POT 3"},   {PCW_COMBO, "5-POT 4"}, {PCW_LABEL, "6-GND ,GND"},
-                             {PCW_SPIN, "Size"}};
+                             {PCW_SPIN, "Size"},       {PCW_END, ""}};
 
 cpart_pot::cpart_pot(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type, 9), font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -66,7 +66,7 @@ cpart_pot::cpart_pot(const unsigned x, const unsigned y, const char* name, const
 
     vmax = 5.0;
 
-    SetPCWProperties(pcwprop, 7);
+    SetPCWProperties(pcwprop);
     PinCount = 4;
     Pins = output_pins;
 }

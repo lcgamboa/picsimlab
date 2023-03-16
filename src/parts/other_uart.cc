@@ -54,8 +54,9 @@ const char pin_values[10][10] = {
 };
  */
 
-static PCWProp pcwprop[6] = {{PCW_LABEL, "P1 - GND,GND"}, {PCW_COMBO, "P2 - RX"}, {PCW_COMBO, "P3 - TX"},
-                             {PCW_LABEL, "P4 - VCC,+5V"}, {PCW_COMBO, "Port"},    {PCW_COMBO, "Speed"}};
+static PCWProp pcwprop[7] = {
+    {PCW_LABEL, "P1 - GND,GND"}, {PCW_COMBO, "P2 - RX"}, {PCW_COMBO, "P3 - TX"}, {PCW_LABEL, "P4 - VCC,+5V"},
+    {PCW_COMBO, "Port"},         {PCW_COMBO, "Speed"},   {PCW_END, ""}};
 
 cpart_UART::cpart_UART(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -71,7 +72,7 @@ cpart_UART::cpart_UART(const unsigned x, const unsigned y, const char* name, con
     uart_name[1] = 0;
     uart_speed = 9600;
 
-    SetPCWProperties(pcwprop, 6);
+    SetPCWProperties(pcwprop);
 
     PinCount = 2;
     Pins = pins;

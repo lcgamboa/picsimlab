@@ -37,11 +37,23 @@ const char pin_names[16][10] = {"A0", "A1", "A2", "P0", "P1",   "P2",  "P3",  "V
 const char pin_values[16][10] = {{2}, {3},  {4},  {5},  {6},  {7}, {8}, "GND",
                                  {9}, {10}, {11}, {12}, {13}, {0}, {1}, "+5V"};
 
-static PCWProp pcwprop[16] = {
-    {PCW_COMBO, "1-A0"},       {PCW_COMBO, "2-A1"},     {PCW_COMBO, "3-A2"},     {PCW_LABEL, "4-P0,NC"},
-    {PCW_LABEL, "5-P1,NC"},    {PCW_LABEL, "6-P2,NC"},  {PCW_LABEL, "7-P3,NC"},  {PCW_LABEL, "8-GND,GND"},
-    {PCW_LABEL, "9-P4,NC"},    {PCW_LABEL, "10-P5,NC"}, {PCW_LABEL, "11-P6,NC"}, {PCW_LABEL, "12-P7,NC"},
-    {PCW_LABEL, "13-/INT,NC"}, {PCW_COMBO, "14-SCL"},   {PCW_COMBO, "15-SDA"},   {PCW_LABEL, "16-VDD,+5V"}};
+static PCWProp pcwprop[17] = {{PCW_COMBO, "1-A0"},
+                              {PCW_COMBO, "2-A1"},
+                              {PCW_COMBO, "3-A2"},
+                              {PCW_LABEL, "4-P0,NC"},
+                              {PCW_LABEL, "5-P1,NC"},
+                              {PCW_LABEL, "6-P2,NC"},
+                              {PCW_LABEL, "7-P3,NC"},
+                              {PCW_LABEL, "8-GND,GND"},
+                              {PCW_LABEL, "9-P4,NC"},
+                              {PCW_LABEL, "10-P5,NC"},
+                              {PCW_LABEL, "11-P6,NC"},
+                              {PCW_LABEL, "12-P7,NC"},
+                              {PCW_LABEL, "13-/INT,NC"},
+                              {PCW_COMBO, "14-SCL"},
+                              {PCW_COMBO, "15-SDA"},
+                              {PCW_LABEL, "16-VDD,+5V"},
+                              {PCW_END, ""}};
 
 cpart_IO_PCF8574::cpart_IO_PCF8574(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type, 8) {
@@ -77,7 +89,7 @@ cpart_IO_PCF8574::cpart_IO_PCF8574(const unsigned x, const unsigned y, const cha
 
     _ret = 255;
 
-    SetPCWProperties(pcwprop, 16);
+    SetPCWProperties(pcwprop);
 
     PinCount = 5;
     Pins = input_pins;

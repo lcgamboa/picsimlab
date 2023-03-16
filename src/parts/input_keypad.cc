@@ -63,10 +63,19 @@ enum { I_K1, I_K2, I_K3, I_KA, I_K4, I_K5, I_K6, I_KB, I_K7, I_K8, I_K9, I_KC, I
 /* types */
 enum { KT4x4 = 1, KT4x3, KT2x5 };
 
-static PCWProp pcwprop[12] = {{PCW_COMBO, "P1 -L1"},      {PCW_COMBO, "P2 -L2"}, {PCW_COMBO, "P3 -L3"},
-                              {PCW_COMBO, "P4 -L4"},      {PCW_COMBO, "P5 -C1"}, {PCW_COMBO, "P6 -C2"},
-                              {PCW_COMBO, "P7 -C3"},      {PCW_COMBO, "P8 -C4"}, {PCW_LABEL, "P10-VCC,+5V"},
-                              {PCW_LABEL, "P11-GND,GND"}, {PCW_COMBO, "Pull"},   {PCW_COMBO, "Type"}};
+static PCWProp pcwprop[13] = {{PCW_COMBO, "P1 -L1"},
+                              {PCW_COMBO, "P2 -L2"},
+                              {PCW_COMBO, "P3 -L3"},
+                              {PCW_COMBO, "P4 -L4"},
+                              {PCW_COMBO, "P5 -C1"},
+                              {PCW_COMBO, "P6 -C2"},
+                              {PCW_COMBO, "P7 -C3"},
+                              {PCW_COMBO, "P8 -C4"},
+                              {PCW_LABEL, "P10-VCC,+5V"},
+                              {PCW_LABEL, "P11-GND,GND"},
+                              {PCW_COMBO, "Pull"},
+                              {PCW_COMBO, "Type"},
+                              {PCW_END, ""}};
 
 lxString cpart_keypad::GetPictureFileName(void) {
     switch (type) {
@@ -120,7 +129,7 @@ cpart_keypad::cpart_keypad(const unsigned x, const unsigned y, const char* name,
 
     ChangeType(KT4x4);
 
-    SetPCWProperties(pcwprop, 12);
+    SetPCWProperties(pcwprop);
 
     PinCount = 8;
     Pins = output_pins;

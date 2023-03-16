@@ -31,7 +31,7 @@
 /* outputs */
 enum { O_P1, O_AXIS };
 
-static PCWProp pcwprop[1] = {{PCW_COMBO, "Pin 1"}};
+static PCWProp pcwprop[2] = {{PCW_COMBO, "Pin 1"}, {PCW_END, ""}};
 
 cpart_servo::cpart_servo(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
@@ -43,7 +43,7 @@ cpart_servo::cpart_servo(const unsigned x, const unsigned y, const char* name, c
     in_[1] = 0;
     time = 0;
     BackGround = NULL;
-    SetPCWProperties(pcwprop, 1);
+    SetPCWProperties(pcwprop);
     PinCount = 1;
     Pins = &input_pin;
 }
