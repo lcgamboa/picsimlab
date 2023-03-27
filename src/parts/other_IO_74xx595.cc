@@ -85,6 +85,9 @@ cpart_IO_74xx595::cpart_IO_74xx595(const unsigned x, const unsigned y, const cha
 
     PinCount = 4;
     Pins = input_pins;
+
+    PinCtrlCount = 9;
+    PinsCtrl = output_pins;
 }
 
 cpart_IO_74xx595::~cpart_IO_74xx595(void) {

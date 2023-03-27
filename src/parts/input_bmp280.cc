@@ -57,7 +57,7 @@ cpart_bmp280::cpart_bmp280(const unsigned x, const unsigned y, const char* name,
     values[0] = 0;
     values[1] = 0;
     active[0] = 0;
-    active[0] = 0;
+    active[1] = 0;
 
     SetPCWProperties(pcwprop);
 

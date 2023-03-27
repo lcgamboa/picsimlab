@@ -351,10 +351,10 @@ void part::SetOrientation(int orientation) {
     if (Orientation == orientation)
         return;
 
+    Orientation = orientation;
+
     if (!Bitmap)
         return;
-
-    Orientation = orientation;
 
     delete Bitmap;
     Bitmap = NULL;
