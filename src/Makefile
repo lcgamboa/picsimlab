@@ -26,7 +26,7 @@ override CXXFLAGS+= -DEXT_BROWSER
 #override CXXFLAGS+=-fno-omit-frame-pointer
 
 LIBS =  `lxrad-config --libs` -lpicsim -lsimavr -lelf $(ELIBS) -lucsim -ldl -lgpsim
-#LIBS=  ../../picsim/src/libpicsim_dbg.a ../../LXRAD_WX/libteste/liblxrad.a  ../../lunasvg/build/liblunasvg.a \
+#LIBS=  ../../picsim/src/libpicsim_dbg.a ../../LXRAD_WX/libteste/liblxrad.a  ../../lunasvg/build/lib/liblunasvg.a \
      ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a  -lopenal `wx-config --libs` `wx-config --libs stc` \
      -ldl -lgpsim
 

@@ -31,7 +31,7 @@ override CXXFLAGS+= -D_ARCH_=\"Linux64_X11\" -D_DATE_=\"${DATE}\"
 LIBS =  ../../LXRAD_X11/lib/liblxrad_X11_mt.a 
 LIBS+= -lopenal -lminizip -lXpm -lImlib2 -lX11 -lpthread \
  ../../picsim/src/libpicsim_dbg.a  ../../simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a -lelf -lminizip $(ELIBS) \
- ../../lunasvg/build/liblunasvg.a -lucsim -ldl -lgpsim
+ ../../lunasvg/build/lib/liblunasvg.a -lucsim -ldl -lgpsim
 
 
 #lxrad automatic generated block end, don't edit above!

@@ -22,7 +22,7 @@ FLAGS+= -D_ARCH_=\"Linux64_WX\" -D_DATE_=\"${DATE}\"
 FLAGS+= -I../$(LIBPATH)/picsim/include/ -I../$(LIBPATH)/lxrad/include/ -flto=auto
 
 LIBS=  ../$(LIBPATH)/lxrad/lib/liblxrad.a \
-       ../$(LIBPATH)/lunasvg/build/liblunasvg.a \
+       ../$(LIBPATH)/lunasvg/build/lib/liblunasvg.a \
        `wx-config --libs` `wx-config --libs stc` 
 
 OBJS = pPinViewer.o PinViewer1.o
