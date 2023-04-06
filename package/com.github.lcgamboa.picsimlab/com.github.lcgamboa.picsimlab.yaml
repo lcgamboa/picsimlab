@@ -119,10 +119,11 @@ modules:
           - cd lunasvg; mkdir build
           - cd lunasvg/build;export CXXFLAGS="-fPIC"; export CFLAGS="-fPIC"; cmake ..; make 
           - sed -i 's/\"..\/..\/lunasvg\/include\/lunasvg.h\"/\"..\/lunasvg\/include\/lunasvg.h\"/g' lib/lxutils.cc 
+          - sed -i 's/..\/..\/lunasvg\/build\/include\//..\/lunasvg\/build\/include\//g' lib/Makefile.in
           - ./configure --prefix=/app 
           - make -j$(nproc) noadv=1
           - make install DESTDIR=/app noadv=1 
-        sources:
+        sources:  
           - type: git
             url: https://github.com/lcgamboa/lxrad.git 
             branch: master
