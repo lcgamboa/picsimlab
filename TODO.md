@@ -7,9 +7,9 @@
 | [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L98) | 98 | jumper support |
 | [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L193) | 193 | TEMP cooler must don't work with AQUE=0 |
 | [src/boards/bsim_gpsim.cc](src/boards/bsim_gpsim.cc#L152) | 152 | add VCC and GND pins |
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1186) | 1186 | default output value is not used yet (DOV) |
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1554) | 1554 | avr ID pointer |
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1576) | 1576 | avr ID size |
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1208) | 1208 | default output value is not used yet (DOV) |
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1576) | 1576 | avr ID pointer |
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1598) | 1598 | avr ID size |
 | [src/devices/eth_w5500.cc](src/devices/eth_w5500.cc#L471) | 471 | add support to buffer size different of 2k |
 | [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L123) | 123 | ssd1306 Scrolling Command Table |
 | [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L134) | 134 | ssd1306 Continuous Vertical and Horizontal Scroll Setup |
@@ -24,15 +24,15 @@
 | [src/devices/rtc_pfc8563.cc](src/devices/rtc_pfc8563.cc#L281) | 281 | int output and countdown timer |
 | [src/parts/input_ds1621.cc](src/parts/input_ds1621.cc#L200) | 200 | set addr |
 | [src/parts/input_ds1621.cc](src/parts/input_ds1621.cc#L212) | 212 | implement Tout output |
-| [src/parts/other_IO_MCP23S17.cc](src/parts/other_IO_MCP23S17.cc#L358) | 358 | only write support implemented |
+| [src/parts/other_IO_MCP23S17.cc](src/parts/other_IO_MCP23S17.cc#L379) | 379 | only write support implemented |
 | [src/parts/output_dcmotor.cc](src/parts/output_dcmotor.cc#L160) | 160 | Add transfer funcion of dc motor |
 
 ### FIXMEs
 | Filename | line # | FIXME |
 |:------|:------:|:------|
 | [src/boards/board_uCboard.cc](src/boards/board_uCboard.cc#L302) | 302 | NSTEP must be multiplied for 4 |
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1571) | 1571 | avr CONFIG size |
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1593) | 1593 | avr CONFIG size |
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L134) | 134 | only for BANK=0; |
 | [src/lib/picsimlab.cc](src/lib/picsimlab.cc#L1146) | 1146 | remote control disabled |
-| [src/parts/input_encoder.cc](src/parts/input_encoder.cc#L166) | 166 | on slow speed output is not 90 degrees |
+| [src/parts/input_encoder.cc](src/parts/input_encoder.cc#L163) | 163 | on slow speed output is not 90 degrees |
 | [src/parts/output_dcmotor.cc](src/parts/output_dcmotor.cc#L213) | 213 | on slow speed output is not 90 degrees |

@@ -2,6 +2,10 @@
 
 ### New
 
+* New part HX711 (Load Cell Amp) [lcgamboa]
+
+* Option to set the number of elements in parts: Potentiometers, Push Buttons, Switches and LEDs. [lcgamboa]
+
 * Option to set the number of elements in parts: Potentiometers, Push Buttons, Switches and LEDs. [lcgamboa]
 
 * Support to PIC16F1947 added to Breadboard board. [lcgamboa]
@@ -20,6 +24,10 @@
 
 ### Changes
 
+* Qemu-ESP32 updated to support https over Wifi. [lcgamboa]
+
+* Icons updated. [lcgamboa]
+
 * Support to load only app.bin in qemu-esp32 based boards. [lcgamboa]
 
 * Add the "Load Board Demo" menu option and automatic demo load on board first use. [lcgamboa]
@@ -27,6 +35,8 @@
 * Add support to remove VT100 codes in Virtual Term part. [lcgamboa]
 
 ### Fix
+
+* Fix Arduino Nano board power and uart pins. [lcgamboa]
 
 * Add support to use atmega2560 four UARTs. [lcgamboa]
 
