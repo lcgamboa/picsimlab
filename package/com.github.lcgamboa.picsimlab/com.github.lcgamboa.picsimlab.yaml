@@ -131,7 +131,7 @@ modules:
           - type: archive
             #url: https://github.com/sammycage/lunasvg/archive/refs/tags/v2.3.1.tar.gz  
             #sha256: 6492bf0f51982f5382f83f1a42f247bb1bbcbaef4a15963bbd53073cd4944a25
-            https://github.com/sammycage/lunasvg/archive/b66e22402526ae2fc58a0de508442401002b550b.zip 
+            url: https://github.com/sammycage/lunasvg/archive/b66e22402526ae2fc58a0de508442401002b550b.zip 
             sha256: 7bcbba63a0b22c6f92fbd2ca1fdc87ca1df03474703f5dbe57c64692a6609904
             dest: lunasvg  
         modules:
