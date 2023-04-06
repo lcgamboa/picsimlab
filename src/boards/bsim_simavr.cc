@@ -242,18 +242,35 @@ void bsim_simavr::pins_reset(void) {
         pins[7].ptype = PT_POWER;
         // GND
         pins[3].ptype = PT_POWER;
-    } else  // atmega328p
-    {
-        // VCC
-        pins[6].value = 1;
-        pins[6].ptype = PT_POWER;
-        pins[19].value = 1;
-        pins[19].ptype = PT_POWER;
-        // GND
-        pins[7].ptype = PT_POWER;
-        pins[21].ptype = PT_POWER;
-        // AREF
-        pins[20].ptype = PT_ANAREF;
+    } else {  // atmega328p
+
+        if (pkg == PDIP) {
+            // VCC
+            pins[6].value = 1;
+            pins[6].ptype = PT_POWER;
+            pins[19].value = 1;
+            pins[19].ptype = PT_POWER;
+            // GND
+            pins[7].ptype = PT_POWER;
+            pins[21].ptype = PT_POWER;
+            // AREF
+            pins[20].ptype = PT_ANAREF;
+        } else {  // QFN
+
+            // VCC
+            pins[3].value = 1;
+            pins[3].ptype = PT_POWER;
+            pins[5].value = 1;
+            pins[5].ptype = PT_POWER;
+            pins[17].value = 1;
+            pins[17].ptype = PT_POWER;
+            // GND
+            pins[2].ptype = PT_POWER;
+            pins[4].ptype = PT_POWER;
+            pins[20].ptype = PT_POWER;
+            // AREF
+            pins[19].ptype = PT_ANAREF;
+        }
     }
 }
 
@@ -320,8 +337,13 @@ int bsim_simavr::MInit(const char* processor, const char* fname, float freq) {
         avr->reset_pc = 0x07000;  // bootloader 0x3800
         usart_count = 1;
         UCSR_base[0] = UCSR0A;
-        bb_uart[0].rx_pin = 2;  // PD0
-        bb_uart[0].tx_pin = 3;  // PD1
+        if (pkg == PDIP) {
+            bb_uart[0].rx_pin = 2;   // PD0
+            bb_uart[0].tx_pin = 3;   // PD1
+        } else {                     // QFN
+            bb_uart[0].rx_pin = 30;  // PD0
+            bb_uart[0].tx_pin = 31;  // PD1
+        }
         extintreg = EIMSK;
     } else  // attiny85
     {
