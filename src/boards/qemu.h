@@ -101,6 +101,7 @@ typedef struct {
 enum i2c_event {
     I2C_START_RECV,
     I2C_START_SEND,
+    I2C_START_SEND_ASYNC,
     I2C_FINISH,
     I2C_NACK, /* Masker NACKed a receive byte.  */
     I2C_WRITE,
