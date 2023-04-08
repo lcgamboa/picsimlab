@@ -1,2 +1,9 @@
 # Build folder
 build_all/
+
+# Other files generated after compiling
+*.o
+src/picsimlab
+tools/PinViewer/PinViewer
+tools/espmsim/espmsim
+tools/srtank/srtank
