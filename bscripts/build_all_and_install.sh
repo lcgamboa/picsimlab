@@ -20,7 +20,7 @@ git clone --depth=1 https://github.com/lcgamboa/simavr.git
 git clone --depth=1 https://github.com/lcgamboa/uCsim_picsimlab.git
 cl sudo apt-get -y install python3 libglib2.0-dev libpixman-1-dev libfdt-dev gpsim-dev gpsim \
 ninja-build meson libgcrypt-dev
-git clone --depth=1 --no-single-branch https://github.com/lcgamboa/qemu_stm32.git	
+git clone --depth=1 --no-single-branch https://github.com/lcgamboa/qemu.git	
 echo -e "\033[1;32m ---------------------- build and install picsim ------------------------- \033[0m"
 cd picsim
 cl git pull --no-rebase
@@ -59,9 +59,9 @@ cd picsimlab
 cl make clean;make -j$(nproc)
 cl sudo make install
 cd ../../
-echo -e "\033[1;32m ---------------------- build qemu_stm32  ---------------------- \033[0m"
-cd qemu_stm32
-cl git checkout picsimlab
+echo -e "\033[1;32m ---------------------- build qemu  ---------------------- \033[0m"
+cd qemu
+cl git checkout picsimlab-stm32
 git pull --no-rebase
 cl ./build_libqemu-stm32.sh
 cd build
@@ -69,7 +69,7 @@ cl strip libqemu-stm32.so
 cl install -d ../../../lib/qemu/
 cl cp libqemu-stm32.so ../../../lib/qemu/
 cd ..
-cl git checkout picsimlab_esp32
+cl git checkout picsimlab-esp32
 cl ./build_libqemu-esp32.sh
 cd build
 cl strip libqemu-xtensa.so
