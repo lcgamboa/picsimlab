@@ -19,7 +19,7 @@ git clone --depth=1 https://github.com/lcgamboa/lxrad.git
 git clone --depth=1 https://github.com/lcgamboa/simavr.git
 git clone --depth=1 https://github.com/lcgamboa/uCsim_picsimlab.git
 cl sudo apt-get -y install python3 libglib2.0-dev libpixman-1-dev libfdt-dev gpsim-dev gpsim \
-ninja-build meson libgcrypt-dev
+ninja-build meson libgcrypt-dev libslirp-dev
 git clone --depth=1 --no-single-branch https://github.com/lcgamboa/qemu.git
 echo -e "\033[1;32m ---------------------- build picsim ------------------------- \033[0m"
 cd picsim
