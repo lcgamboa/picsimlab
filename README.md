@@ -172,11 +172,11 @@ If the problem is not in either of the previous two options, the problem is prob
 
 - **qemu-stm32**      - STM32 simulator                  
   - original: https://github.com/beckus/qemu_stm32/
-  - modified version used by PICSimLab: https://github.com/lcgamboa/qemu_stm32/tree/picsimlab
+  - modified version used by PICSimLab: https://github.com/lcgamboa/qemu/tree/picsimlab-stm32
 
 - **qemu-esp32**      - ESP32 simulator                  
   - original: https://github.com/a159x36/qemu
-  - modified version used by PICSimLab: https://github.com/lcgamboa/qemu_stm32/tree/picsimlab_esp32
+  - modified version used by PICSimLab: https://github.com/lcgamboa/qemu/tree/picsimlab-esp32
 
 - **gpsim**           - PIC simulator                    
   - http://gpsim.sourceforge.net/
