@@ -81,9 +81,13 @@ static int64_t GotoNow(void) {
     if (now >= g_board->timer.last) {
         delta = now - g_board->timer.last;
         g_board->timer.last = now;
+
+        if (delta > 11000000) {
+            delta = 11000000;
+        }
     } else {
-        delta = 1000;
-        g_board->timer.last += 1000;
+        delta = g_board->GetInc_ns();
+        g_board->timer.last += delta;
     }
 
     return delta;
@@ -316,8 +320,10 @@ bsim_qemu::~bsim_qemu(void) {
 
 void bsim_qemu::MSetSerial(const char* port) {}
 
-int bsim_qemu::MInit(const char* processor, const char* _fname, float freq) {
+int bsim_qemu::MInit(const char* processor, const char* _fname, float freq_) {
     strcpy(fname, _fname);
+
+    MSetFreq(freq_);
 
     lxString sproc = GetSupportedDevices();
     if (!sproc.Contains(processor)) {
@@ -712,6 +718,7 @@ void bsim_qemu::MEraseFlash(void) {
 
 void bsim_qemu::MSetFreq(float freq_) {
     freq = freq_;
+    inc_ns = 1000000000L / freq;
 }
 
 float bsim_qemu::MGetFreq(void) {
@@ -826,7 +833,7 @@ void bsim_qemu::MDumpMemory(const char* fname) {
 
 int bsim_qemu::DebugInit(int dtyppe)  // argument not used in picm only mplabx
 {
-    return 0;  //! mplabxd_init (this, Window1.Get_debug_port ()) - 1;
+    return 0;                         //! mplabxd_init (this, Window1.Get_debug_port ()) - 1;
 }
 
 void bsim_qemu::pins_reset(void) {

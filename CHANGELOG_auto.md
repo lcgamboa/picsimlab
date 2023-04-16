@@ -24,6 +24,8 @@
 
 ### Changes
 
+* Add option to enable ethernet support in ESP32 DevKitC board. [lcgamboa]
+
 * Qemu-ESP32 updated to support https over Wifi. [lcgamboa]
 
 * Icons updated. [lcgamboa]
@@ -36,11 +38,19 @@
 
 ### Fix
 
+* Fix qemu based boards to not freeze when clock is changed. [lcgamboa]
+
+* Fix TextBox init sporadic error messages. [lcgamboa]
+
 * Fix Arduino Nano board power and uart pins. [lcgamboa]
 
 * Add support to use atmega2560 four UARTs. [lcgamboa]
 
 ### Other
+
+* Merge pull request #76 from necrashter/update-gitignore. [lcgamboa]
+
+* Add *.o and other files generated after compiling to gitignore. [necrashter]
 
 * Merge pull request #70 from fathonix/master. [lcgamboa]
 

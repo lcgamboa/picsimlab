@@ -296,15 +296,15 @@ void cboard_Blue_Pill::Draw(CDraw* draw) {
     draw->Canvas.Init(Scale, Scale);  // initialize draw context
 
     // board_x draw
-    for (i = 0; i < outputc; i++)  // run over all outputs
+    for (i = 0; i < outputc; i++)              // run over all outputs
     {
-        if (!output[i].r)  // if output shape is a rectangle
+        if (!output[i].r)                      // if output shape is a rectangle
         {
             draw->Canvas.SetFgColor(0, 0, 0);  // black
 
-            switch (output[i].id)  // search for color of output
+            switch (output[i].id)              // search for color of output
             {
-                case O_LED:  // White using pc13 mean value
+                case O_LED:                    // White using pc13 mean value
                     draw->Canvas.SetColor(pins[1].oavalue, 0, 0);
                     break;
                 case O_LPWR:  // Blue using mcupwr value
@@ -340,12 +340,10 @@ void cboard_Blue_Pill::Run_CPU_ns(uint64_t time) {
     static unsigned int alm[64];
     static const int pinc = MGetPinCount();
 
-    const int inc = 1000000000L / MGetInstClockFreq();
+    const float RNSTEP = 200.0 * pinc * inc_ns / 100000000L;
 
-    const float RNSTEP = 200.0 * pinc * inc / 100000000L;
-
-    for (uint64_t c = 0; c < time; c += inc) {
-        if (!ns_count) {
+    for (uint64_t c = 0; c < time; c += inc_ns) {
+        if (ns_count < inc_ns) {
             // reset pins mean value
             memset(alm, 0, 64 * sizeof(unsigned int));
 
@@ -390,9 +388,9 @@ void cboard_Blue_Pill::Run_CPU_ns(uint64_t time) {
              */
         }
 
-        ns_count += inc;
-        if (ns_count > 100000000) {
-            ns_count = 0;
+        ns_count += inc_ns;
+        if (ns_count >= 100000000) {
+            ns_count -= 100000000;
             //  calculate mean value
             for (pi = 0; pi < MGetPinCount(); pi++) {
                 pins[pi].oavalue = (int)((alm[pi] * RNSTEP) + 55);
@@ -635,7 +633,7 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
         // printf("Extra CFG port(%i) pin[%02i]=0x%02X \n", port, pin, cfg_);
 
         switch (port) {
-            case 0:  // GPIOA
+            case 0:          // GPIOA
                 switch (pin) {
                     case 2:  // uart2
                         uart_afio = qemu_picsimlab_get_internals(0x1000 | 15);
@@ -713,7 +711,7 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                             master_uart[2].rx_pin = 22;  // pb11
                         }
                         */
-                    case 11:  // i2c1
+                    case 11:                         // i2c1
                         master_i2c[1].ctrl_on = 1;
                         master_i2c[1].scl_pin = 21;  // pb10
                         master_i2c[1].sda_pin = 22;  // pb11
@@ -721,7 +719,7 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
 
                     case 13:
                     case 14:
-                    case 15:  // spi2
+                    case 15:                          // spi2
                         master_spi[1].ctrl_on = 1;
                         master_spi[1].sck_pin = 26;   // pb13
                         master_spi[1].copi_pin = 28;  // pb15

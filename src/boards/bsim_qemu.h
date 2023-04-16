@@ -64,6 +64,7 @@ public:
     void MReset(int flags) override;
     void EvThreadRun(CThread& thread) override;
     int GetDefaultClock(void) override { return 1; };
+    int GetInc_ns(void) { return inc_ns; };
     virtual void PinsExtraConfig(int cfg){};
     user_timer_t timer;
     virtual void Run_CPU_ns(uint64_t time) = 0;
@@ -89,6 +90,7 @@ protected:
     unsigned int serialbaud;
     float serialexbaud;
     float freq;
+    unsigned int inc_ns;
     char fname[2048];
     char fname_[2048];
     char fname_bak[2048];
