@@ -53,6 +53,9 @@ static PCWProp pcwprop[5] = {{PCW_TEXT, "text"},
 cpart_TEXT::cpart_TEXT(const unsigned x, const unsigned y, const char* name, const char* type)
     : part(x, y, name, type, 8) {
     Bitmap = NULL;
+    Size = 12;
+    Textcolor = 4;
+    Bgcolor = 7;
     Lines.AddLine("text");
 
     SetPCWProperties(pcwprop);
@@ -64,7 +67,7 @@ cpart_TEXT::~cpart_TEXT(void) {
 }
 
 void cpart_TEXT::PostInit(void) {
-    ChangeText(10, 4, 7);
+    ChangeText(12, 4, 7);
 }
 
 void cpart_TEXT::LoadImage(void) {
@@ -78,6 +81,13 @@ void cpart_TEXT::LoadImage(void) {
 
     Width = max * Size * 0.9;
     Height = 2 * Size * Lines.GetLinesCount();
+
+    if (Width == 0) {
+        Width = 10;
+    }
+    if (Height == 0) {
+        Height = 10;
+    }
 
     if (Bitmap) {
         delete Bitmap;
@@ -193,6 +203,8 @@ void cpart_TEXT::ConfigurePropertiesWindow(CPWindow* WProp) {
     }
 
     ((CSpin*)WProp->GetChildByName("spin2"))->SetValue(Size);
+    ((CSpin*)WProp->GetChildByName("spin2"))->SetMin(6);
+    ((CSpin*)WProp->GetChildByName("spin2"))->SetMax(100);
 
     ((CCombo*)WProp->GetChildByName("combo3"))->SetItems(Colors);
     ((CCombo*)WProp->GetChildByName("combo3"))->SetText(Colorname[Textcolor]);
