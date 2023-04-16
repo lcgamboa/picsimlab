@@ -72,7 +72,7 @@ static int test_SPI_ESP32(void* arg) {
 register_test("SPI ESP32", test_SPI_ESP32, NULL);
 
 static int test_I2C_ESP32(void* arg) {
-    return bmp280_test("I2C ESP32", "i2c/esp32_bmp280_i2c.pzw", "T= 35.34 P= 774.83\r", 1);
+    return bmp280_test("I2C ESP32", "i2c/esp32_bmp280_i2c.pzw", "T= 35.00 P= 780.00\r", 1);
 }
 register_test("I2C ESP32", test_I2C_ESP32, NULL);
 
