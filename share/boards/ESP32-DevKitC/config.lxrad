@@ -2,10 +2,10 @@
   <Class type="lxString">CPWindow</Class>
   <Name type="lxString">window1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">253</X>
-  <Y type="int">58</Y>
+  <X type="int">1589</X>
+  <Y type="int">496</Y>
   <Width type="uint">1024</Width>
-  <Height type="uint">655</Height>
+  <Height type="uint">740</Height>
   <Hint type="lxString"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
@@ -22,6 +22,7 @@
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
+  <EvOnDropFile type="Event">FALSE</EvOnDropFile>
   <Title type="lxString">Config Qemu</Title>
   <OverrideRedirect type="bool">0</OverrideRedirect>
   <EvOnCreate type="Event">FALSE</EvOnCreate>
@@ -54,6 +55,7 @@
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
+  <EvOnDropFile type="Event">FALSE</EvOnDropFile>
   <Text type="lxString">Command Line:</Text>
   <Align type="CAlign">1</Align>
 </label1>
@@ -61,8 +63,8 @@
   <Class type="lxString">CText</Class>
   <Name type="lxString">text1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">19</X>
-  <Y type="int">41</Y>
+  <X type="int">20</X>
+  <Y type="int">42</Y>
   <Width type="uint">960</Width>
   <Height type="uint">230</Height>
   <Hint type="lxString"></Hint>
@@ -81,16 +83,17 @@
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
+  <EvOnDropFile type="Event">FALSE</EvOnDropFile>
   <ReadOnly type="int">1</ReadOnly>
 </text1>
 <text2>
   <Class type="lxString">CText</Class>
   <Name type="lxString">text2</Name>
   <Tag type="int">0</Tag>
-  <X type="int">18</X>
-  <Y type="int">398</Y>
+  <X type="int">20</X>
+  <Y type="int">426</Y>
   <Width type="uint">960</Width>
-  <Height type="uint">139</Height>
+  <Height type="uint">188</Height>
   <Hint type="lxString"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
@@ -107,14 +110,15 @@
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
+  <EvOnDropFile type="Event">FALSE</EvOnDropFile>
   <ReadOnly type="int">0</ReadOnly>
 </text2>
 <button1>
   <Class type="lxString">CButton</Class>
   <Name type="lxString">button1</Name>
   <Tag type="int">5</Tag>
-  <X type="int">423</X>
-  <Y type="int">555</Y>
+  <X type="int">428</X>
+  <Y type="int">636</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="lxString"></Hint>
@@ -133,14 +137,15 @@
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
+  <EvOnDropFile type="Event">FALSE</EvOnDropFile>
   <Text type="lxString">Ok</Text>
 </button1>
 <button2>
   <Class type="lxString">CButton</Class>
   <Name type="lxString">button2</Name>
   <Tag type="int">6</Tag>
-  <X type="int">515</X>
-  <Y type="int">555</Y>
+  <X type="int">509</X>
+  <Y type="int">636</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="lxString"></Hint>
@@ -159,6 +164,7 @@
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
+  <EvOnDropFile type="Event">FALSE</EvOnDropFile>
   <Text type="lxString">Cancel</Text>
 </button2>
 <checkbox1>
@@ -166,7 +172,7 @@
   <Name type="lxString">checkbox1</Name>
   <Tag type="int">0</Tag>
   <X type="int">20</X>
-  <Y type="int">284</Y>
+  <Y type="int">282</Y>
   <Width type="uint">791</Width>
   <Height type="uint">25</Height>
   <Hint type="lxString"></Hint>
@@ -185,7 +191,8 @@
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
-  <Text type="lxString">Enable Wifi (-nic user,model=esp32_wifi,net=192.168.4.0/24,hostfwd=tcp::16555-192.168.4.15:80)</Text>
+  <EvOnDropFile type="Event">FALSE</EvOnDropFile>
+  <Text type="lxString">Enable Wifi (-nic user,model=esp32_wifi,net=192.168.4.0/24)</Text>
   <Check type="Int">0</Check>
   <EvOnCheckBox type="Event">FALSE</EvOnCheckBox>
 </checkbox1>
@@ -194,7 +201,7 @@
   <Name type="lxString">checkbox2</Name>
   <Tag type="int">0</Tag>
   <X type="int">20</X>
-  <Y type="int">322</Y>
+  <Y type="int">319</Y>
   <Width type="uint">790</Width>
   <Height type="uint">25</Height>
   <Hint type="lxString"></Hint>
@@ -213,6 +220,7 @@
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
+  <EvOnDropFile type="Event">FALSE</EvOnDropFile>
   <Text type="lxString">Disable WatchDog (-global driver=timer.esp32.timg,property=wdt_disable,value=true)</Text>
   <Check type="Int">0</Check>
   <EvOnCheckBox type="Event">FALSE</EvOnCheckBox>
@@ -222,7 +230,7 @@
   <Name type="lxString">checkbox3</Name>
   <Tag type="int">0</Tag>
   <X type="int">20</X>
-  <Y type="int">367</Y>
+  <Y type="int">399</Y>
   <Width type="uint">177</Width>
   <Height type="uint">25</Height>
   <Hint type="lxString"></Hint>
@@ -241,8 +249,38 @@
   <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
+  <EvOnDropFile type="Event">FALSE</EvOnDropFile>
   <Text type="lxString">Use extra options:</Text>
   <Check type="Int">0</Check>
   <EvOnCheckBox type="Event">FALSE</EvOnCheckBox>
 </checkbox3>
+<checkbox4>
+  <Class type="lxString">CCheckBox</Class>
+  <Name type="lxString">checkbox4</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">20</X>
+  <Y type="int">356</Y>
+  <Width type="uint">788</Width>
+  <Height type="uint">25</Height>
+  <Hint type="lxString"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="lxString">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
+  <EvOnDropFile type="Event">FALSE</EvOnDropFile>
+  <Text type="lxString">Enable Ethernet (-nic user,model=open_eth,net=192.168.3.0/24)</Text>
+  <Check type="Int">0</Check>
+  <EvOnCheckBox type="Event">FALSE</EvOnCheckBox>
+</checkbox4>
 </window1>

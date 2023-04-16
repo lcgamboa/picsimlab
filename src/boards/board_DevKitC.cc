@@ -231,6 +231,7 @@ cboard_DevKitC::cboard_DevKitC(void) {
 
     ConfEnableWifi = 1;
     ConfDisableWdt = 1;
+    ConfEnableEthernet = 0;
 
     application_offset = 0x10000;
 
@@ -380,6 +381,7 @@ void cboard_DevKitC::WritePreferences(void) {
 
     PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cfgewifi"), itoa(ConfEnableWifi));
     PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cfgdwdt"), itoa(ConfDisableWdt));
+    PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cfgeeth"), itoa(ConfEnableEthernet));
     PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cfguextra"), itoa(use_cmdline_extra));
     PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cmdextra"), cmdline_extra);
     PICSimLab.SavePrefs(lxT("ESP32_DevKitC_app_off"), itoa(application_offset));
@@ -409,6 +411,9 @@ void cboard_DevKitC::ReadPreferences(char* name, char* value) {
     }
     if (!strcmp(name, "ESP32_DevKitC_cfgdwdt")) {
         ConfDisableWdt = atoi(value);
+    }
+    if (!strcmp(name, "ESP32_DevKitC_cfgeeth")) {
+        ConfEnableEthernet = atoi(value);
     }
     if (!strcmp(name, "ESP32_DevKitC_cfguextra")) {
         use_cmdline_extra = atoi(value);
@@ -515,15 +520,15 @@ void cboard_DevKitC::Draw(CDraw* draw) {
     draw->Canvas.Init(Scale, Scale);  // initialize draw context
 
     // board_x draw
-    for (i = 0; i < outputc; i++)  // run over all outputs
+    for (i = 0; i < outputc; i++)              // run over all outputs
     {
-        if (!output[i].r)  // if output shape is a rectangle
+        if (!output[i].r)                      // if output shape is a rectangle
         {
             draw->Canvas.SetFgColor(0, 0, 0);  // black
 
-            switch (output[i].id)  // search for color of output
+            switch (output[i].id)              // search for color of output
             {
-                case O_LON:  // Blue using mcupwr value
+                case O_LON:                    // Blue using mcupwr value
                     draw->Canvas.SetColor(200 * PICSimLab.GetMcuPwr() + 55, 0, 0);
                     break;
                 case O_LED:  // Blue using mcupwr value
@@ -568,12 +573,10 @@ void cboard_DevKitC::Run_CPU_ns(uint64_t time) {
     static unsigned int alm[64];
     static const int pinc = MGetPinCount();
 
-    const int inc = 1000000000L / MGetInstClockFreq();
+    const float RNSTEP = 200.0 * pinc * inc_ns / 100000000L;
 
-    const float RNSTEP = 200.0 * pinc * inc / 100000000L;
-
-    for (uint64_t c = 0; c < time; c += inc) {
-        if (!ns_count) {
+    for (uint64_t c = 0; c < time; c += inc_ns) {
+        if (ns_count < inc_ns) {
             // reset pins mean value
             memset(alm, 0, 64 * sizeof(unsigned int));
 
@@ -618,9 +621,9 @@ void cboard_DevKitC::Run_CPU_ns(uint64_t time) {
              */
         }
 
-        ns_count += inc;
-        if (ns_count > 100000000L) {  // every 100ms
-            ns_count = 0;
+        ns_count += inc_ns;
+        if (ns_count >= 100000000L) {  // every 100ms
+            ns_count -= 100000000L;
             //  calculate mean value
             for (pi = 0; pi < MGetPinCount(); pi++) {
                 pins[pi].oavalue = (int)((alm[pi] * RNSTEP) + 55);
@@ -672,11 +675,15 @@ void cboard_DevKitC::board_Event(CControl* control) {
 void cboard_DevKitC::BoardOptions(int* argc, char** argv) {
     if (ConfEnableWifi) {
         strcpy(argv[(*argc)++], "-nic");
-        strcpy(argv[(*argc)++], "user,model=esp32_wifi,net=192.168.4.0/24,hostfwd=tcp::16555-192.168.4.15:80");
+        strcpy(argv[(*argc)++], "user,model=esp32_wifi,net=192.168.4.0/24");
     }
     if (ConfDisableWdt) {
         strcpy(argv[(*argc)++], "-global");
         strcpy(argv[(*argc)++], "driver=timer.esp32.timg,property=wdt_disable,value=true");
+    }
+    if (ConfEnableEthernet) {
+        strcpy(argv[(*argc)++], "-nic");
+        strcpy(argv[(*argc)++], "user,model=open_eth,net=192.168.3.0/24");
     }
 }
 
@@ -750,6 +757,7 @@ void cboard_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x, u
 
                     ((CCheckBox*)wconfig->GetChildByName("checkbox1"))->SetCheck(ConfEnableWifi);
                     ((CCheckBox*)wconfig->GetChildByName("checkbox2"))->SetCheck(ConfDisableWdt);
+                    ((CCheckBox*)wconfig->GetChildByName("checkbox4"))->SetCheck(ConfEnableEthernet);
                     ((CCheckBox*)wconfig->GetChildByName("checkbox3"))->SetCheck(use_cmdline_extra);
 
                     ((CButton*)wconfig->GetChildByName("button1"))->EvMouseButtonRelease = PICSimLab.board_ButtonEvent;
@@ -769,6 +777,7 @@ void cboard_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x, u
         case 5: {
             ConfEnableWifi = ((CCheckBox*)wconfig->GetChildByName("checkbox1"))->GetCheck();
             ConfDisableWdt = ((CCheckBox*)wconfig->GetChildByName("checkbox2"))->GetCheck();
+            ConfEnableEthernet = ((CCheckBox*)wconfig->GetChildByName("checkbox4"))->GetCheck();
             use_cmdline_extra = ((CCheckBox*)wconfig->GetChildByName("checkbox3"))->GetCheck();
             CText* Text2 = (CText*)wconfig->GetChildByName("text2");
             cmdline_extra = "";
