@@ -394,8 +394,8 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
     if (icount < -1) {
         icount = -1;
     }
-    if (icount > 10) {
-        icount = 10;
+    if (icount > 11) {
+        icount = 11;
     }
 
     char* resp = serial_port_list();
@@ -585,9 +585,12 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         sprintf(argv[argc++], "tcp::%i", PICSimLab.GetDebugPort());
     }
 
-    if (icount >= 0) {
+    if ((icount >= 0) && (icount < 11)) {
         strcpy(argv[argc++], "-icount");
         sprintf(argv[argc++], "shift=%i,align=off,sleep=on", icount);
+    } else if (icount == 11) {
+        strcpy(argv[argc++], "-icount");
+        sprintf(argv[argc++], "shift=auto,align=off,sleep=off");
     }
 
     BoardOptions(&argc, argv);
@@ -963,12 +966,12 @@ void bsim_qemu::MStep(void) {
 
 void bsim_qemu::MStepResume(void) {}
 
-static const char MipsStr[12][10] = {"No Limit", "1000",  "500",  "250",  "125",  "62.5",
-                                     "31.25",    "15.63", "7.81", "3.90", "1.95", "0.98"};
+static const char MipsStr[13][10] = {"No Limit", "1000", "500",  "250",  "125",  "62.5", "31.25",
+                                     "15.63",    "7.81", "3.90", "1.95", "0.98", "Auto"};
 
 int bsim_qemu::MipsStrToIcount(const char* mipstr) {
     int index = -1;
-    for (int i = 1; i < 12; i++) {
+    for (int i = 1; i < 13; i++) {
         if (!strcmp(MipsStr[i], mipstr)) {
             index = i - 1;
             break;
@@ -978,7 +981,7 @@ int bsim_qemu::MipsStrToIcount(const char* mipstr) {
 }
 
 const char* bsim_qemu::IcountToMipsStr(int icount) {
-    if ((icount >= 0) && (icount < 11)) {
+    if ((icount >= 0) && (icount < 12)) {
         return MipsStr[icount + 1];
     } else {
         return MipsStr[0];
@@ -987,7 +990,7 @@ const char* bsim_qemu::IcountToMipsStr(int icount) {
 
 const char* bsim_qemu::IcountToMipsItens(char* buffer) {
     buffer[0] = 0;
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < 13; i++) {
         strcat(buffer, MipsStr[i]);
         strcat(buffer, ",");
     }
