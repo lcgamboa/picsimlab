@@ -27,7 +27,7 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
-part::part(const unsigned x, const unsigned y, const char* name, const char* type, const int fsize)
+part::part(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_, const int fsize)
     : font(fsize, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     always_update = 0;
     inputc = 0;
@@ -37,6 +37,7 @@ part::part(const unsigned x, const unsigned y, const char* name, const char* typ
     Update = 1;
     PCWProperties = NULL;
     PCWCount = 0;
+    pboard = pboard_;
 
     Name = name;
     Type = type;
@@ -519,11 +520,11 @@ void part::DrawPotentiometer(const output_t* output, const unsigned char pos, co
     canvas.RotatedText(val, output->x1 + 4, output->y1 + 5 + (200 - pos) / 1.66, 0);
 }
 
-int part::GetAwaysUpdate(void) {
+int part::GetAlwaysUpdate(void) {
     return always_update;
 }
 
-void part::SetAwaysUpdate(int sau) {
+void part::SetAlwaysUpdate(int sau) {
     always_update = sau;
 }
 
@@ -651,12 +652,12 @@ int NUM_PARTS = 0;
 
 // boards object creation
 
-part* create_part(lxString name, unsigned int x, unsigned int y) {
+part* create_part(lxString name, unsigned int x, unsigned int y, board* pboard_) {
     part* part_ = NULL;
 
     for (int i = 0; i < NUM_PARTS; i++) {
         if (name.compare(parts_list[i].name) == 0) {
-            part_ = parts_list[i].pcreate(x, y);
+            part_ = parts_list[i].pcreate(x, y, pboard_);
             break;
         }
     }

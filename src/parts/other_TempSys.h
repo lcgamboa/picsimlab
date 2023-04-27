@@ -34,17 +34,17 @@
 class cpart_tempsys : public part {
 public:
     lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
-    cpart_tempsys(const unsigned x, const unsigned y, const char* name, const char* type);
+    cpart_tempsys(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
     ~cpart_tempsys(void);
     void DrawOutput(const unsigned int index) override;
     void Process(void) override;
-    void PostProcess(void) override;
     void ConfigurePropertiesWindow(CPWindow* WProp) override;
     void ReadPropertiesWindow(CPWindow* WProp) override;
     lxString WritePreferences(void) override;
     void ReadPreferences(lxString value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
+    void OnTime(void);
 
 private:
     unsigned char input_pins[4];
@@ -56,6 +56,7 @@ private:
     int rpmstp;
     int rpmc;
     lxFont font;
+    int TimerID;
 };
 
 #endif /* PART_TEMPSYS */

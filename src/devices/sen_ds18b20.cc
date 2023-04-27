@@ -356,7 +356,7 @@ unsigned char sen_ds18b20_io(sen_ds18b20_t* ds18b20, const unsigned char data) {
         switch (ds18b20->state) {
             case OW_IDLE:
                 dprintf("ds18b20 reset\n");
-                ds18b20->start = ds18b20->pboard->InstCounterGet();
+                ds18b20->start = ds18b20->pboard->GetInstCounter();
                 ds18b20->state = OW_RESET;
                 ds18b20->out = 1;
                 break;
@@ -390,7 +390,7 @@ unsigned char sen_ds18b20_io(sen_ds18b20_t* ds18b20, const unsigned char data) {
     } else if (data && !ds18b20->ldata) {  // rising edge
         switch (ds18b20->state) {
             case OW_RESET: {
-                int pulse = ds18b20->pboard->InstCounterGet_us(ds18b20->start);
+                int pulse = ds18b20->pboard->GetInstCounter_us(ds18b20->start);
                 if ((pulse > 450) && (pulse < 10000)) {  // valid start
                     ds18b20->state = OW_PRESENCE;
                     ds18b20->statebit = 0;

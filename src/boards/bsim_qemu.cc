@@ -82,8 +82,8 @@ static int64_t GotoNow(void) {
         delta = now - g_board->timer.last;
         g_board->timer.last = now;
 
-        if (delta > 11000000) {
-            delta = 11000000;
+        if (delta > (TTIMEOUT * 1.1)) {
+            delta = (TTIMEOUT * 1.1);
         }
     } else {
         delta = g_board->GetInc_ns();
@@ -722,6 +722,7 @@ void bsim_qemu::MEraseFlash(void) {
 void bsim_qemu::MSetFreq(float freq_) {
     freq = freq_;
     inc_ns = 1000000000L / freq;
+    TimerUpdateFrequency(freq);
 }
 
 float bsim_qemu::MGetFreq(void) {

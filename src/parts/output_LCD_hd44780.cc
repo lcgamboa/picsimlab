@@ -43,16 +43,20 @@ void cpart_LCD_hd44780::Reset(void) {
 
     switch (model) {
         case LCD16x2:
-            lcd_init(&lcd, 16, 2);
+            lcd_end(&lcd);
+            lcd_init(&lcd, 16, 2, pboard);
             break;
         case LCD16x4:
-            lcd_init(&lcd, 16, 4);
+            lcd_end(&lcd);
+            lcd_init(&lcd, 16, 4, pboard);
             break;
         case LCD20x2:
-            lcd_init(&lcd, 20, 2);
+            lcd_end(&lcd);
+            lcd_init(&lcd, 20, 2, pboard);
             break;
         case LCD20x4:
-            lcd_init(&lcd, 20, 4);
+            lcd_end(&lcd);
+            lcd_init(&lcd, 20, 4, pboard);
             break;
     }
     lcd_rst(&lcd);
@@ -61,14 +65,18 @@ void cpart_LCD_hd44780::Reset(void) {
     SetPCWProperties(pcwprop);
 }
 
-cpart_LCD_hd44780::cpart_LCD_hd44780(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type, 8) {
+cpart_LCD_hd44780::cpart_LCD_hd44780(const unsigned x, const unsigned y, const char* name, const char* type,
+                                     board* pboard_)
+    : part(x, y, name, type, pboard_, 8) {
     X = x;
     Y = y;
     ReadMaps();
     Bitmap = NULL;
 
     model = LCD16x2;
+
+    lcd_init(&lcd, 16, 2, pboard);
+
     Reset();
 
     input_pins[0] = 0;
@@ -92,6 +100,7 @@ cpart_LCD_hd44780::cpart_LCD_hd44780(const unsigned x, const unsigned y, const c
 cpart_LCD_hd44780::~cpart_LCD_hd44780(void) {
     delete Bitmap;
     canvas.Destroy();
+    lcd_end(&lcd);
 }
 
 void cpart_LCD_hd44780::DrawOutput(const unsigned int i) {
@@ -282,7 +291,7 @@ void cpart_LCD_hd44780::ReadPropertiesWindow(CPWindow* WProp) {
 void cpart_LCD_hd44780::Process(void) {
     const picpin* ppins = SpareParts.GetPinsValues();
 
-    if (input_pins[1] > 0)  // EN
+    if (input_pins[1] > 0)       // EN
     {
         if (input_pins[10] > 0)  // R/W
         {
@@ -351,7 +360,6 @@ void cpart_LCD_hd44780::Process(void) {
 }
 
 void cpart_LCD_hd44780::PostProcess(void) {
-    lcd_blink(&lcd);
     if (lcd.update)
         output_ids[O_LCD]->update = 1;
 }
@@ -395,12 +403,13 @@ part_init(PART_LCD_HD44780_Name, cpart_LCD_hd44780, "Output");
 
 // Combined hd44780 + IO PCF8574
 
-static part* cpart_LCD_hd44780_i2c_create(unsigned int x, unsigned int y) {
-    cpart_IO_PCF8574* pcf = (cpart_IO_PCF8574*)SpareParts.AddPart("IO PCF8574", x, y + 365, SpareParts.GetScale());
+static part* cpart_LCD_hd44780_i2c_create(unsigned int x, unsigned int y, board* pboard_) {
+    cpart_IO_PCF8574* pcf =
+        (cpart_IO_PCF8574*)SpareParts.AddPart("IO PCF8574", x, y + 365, SpareParts.GetScale(), pboard_);
 
     const unsigned char* pcf_pins = pcf->GetOutputPins();
 
-    cpart_LCD_hd44780* lcd = new cpart_LCD_hd44780(x, y, PART_LCD_HD44780_Name, "Output");
+    cpart_LCD_hd44780* lcd = new cpart_LCD_hd44780(x, y, PART_LCD_HD44780_Name, "Output", pboard_);
 
     // connect lcd to pcf
     lcd->input_pins[0] = pcf_pins[0];

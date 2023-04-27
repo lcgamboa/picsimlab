@@ -35,7 +35,7 @@
 class cpart_dht22 : public part {
 public:
     lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
-    cpart_dht22(const unsigned x, const unsigned y, const char* name, const char* type);
+    cpart_dht22(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
     ~cpart_dht22(void);
     void DrawOutput(const unsigned int index) override;
     void Reset(void) override;

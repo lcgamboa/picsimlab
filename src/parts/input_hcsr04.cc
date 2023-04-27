@@ -40,8 +40,8 @@ static PCWProp pcwprop[5] = {{PCW_LABEL, "1 - VCC,+5V"},
                              {PCW_LABEL, "4 - GND ,GND"},
                              {PCW_END, ""}};
 
-cpart_hcsr04::cpart_hcsr04(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type),
+cpart_hcsr04::cpart_hcsr04(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_),
       font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
       font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     always_update = 1;
@@ -122,7 +122,7 @@ void cpart_hcsr04::Process(void) {
         if (delay) {
             delay--;
             if (!delay) {
-                count = (200 - value) * 116.144018583e-6 * PICSimLab.GetBoard()->MGetInstClockFreq();
+                count = (200 - value) * 116.144018583e-6 * pboard->MGetInstClockFreq();
                 SpareParts.SetPin(pins[1], 1);
             }
         }
@@ -130,7 +130,7 @@ void cpart_hcsr04::Process(void) {
         // trigger
         if ((!pins_[pins[0] - 1].value) && (old_value)) {
             // 200us  8 cycles of 40KHz
-            delay = 200e-6 * PICSimLab.GetBoard()->MGetInstClockFreq();
+            delay = 200e-6 * pboard->MGetInstClockFreq();
             count = 0;
         }
         old_value = pins_[pins[0] - 1].value;

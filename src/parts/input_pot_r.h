@@ -34,7 +34,7 @@
 class cpart_pot_r : public part {
 public:
     lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
-    cpart_pot_r(const unsigned x, const unsigned y, const char* name, const char* type);
+    cpart_pot_r(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
     ~cpart_pot_r(void);
     void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;

@@ -24,6 +24,7 @@
    ######################################################################## */
 
 #include "rtc_pfc8563.h"
+#include "../lib/board.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,14 +41,139 @@ void rtc_pfc8563_rst(rtc_pfc8563_t* rtc) {
 
     rtc->addr = 0;
     rtc->ucont = 0;
-    rtc->rtcc = 0;
     rtc->alarm = 0;
     dprintf("rtc rst\n");
 }
 
-void rtc_pfc8563_init(rtc_pfc8563_t* rtc) {
+static void rtc_pfc8563_callback(void* arg) {
+    rtc_pfc8563_t* rtc = (rtc_pfc8563_t*)arg;
+
+    if ((rtc->data[0] & 0x20) == 0) {
+        /*
+              rtc->dtime.tm_sec++;
+              if(rtc->dtime.tm_sec == 60)
+              {
+                rtc->dtime.tm_sec =0;
+                rtc->dtime.tm_min++;
+              }
+              if(rtc->dtime.tm_min == 60)
+              {
+                rtc->dtime.tm_min=0;
+                rtc->dtime.tm_hour++;
+              }
+              if(rtc->dtime.tm_hour == 24)
+              {
+                rtc->dtime.tm_hour=0;
+                rtc->dtime.tm_mday++;
+                rtc->dtime.tm_wday++;
+              }
+              if(rtc->dtime.tm_wday == 7)rtc->dtime.tm_wday=0;
+
+              if(rtc->dtime.tm_mday == 31)
+              {
+                rtc->dtime.tm_mday=0;
+                rtc->dtime.tm_mon++;
+              }
+              if(rtc->dtime.tm_mon == 13)
+              {
+                rtc->dtime.tm_mon=1;
+                rtc->dtime.tm_year++;
+              }
+         */
+        time_t utime = mktime(&rtc->dtime) + 1;
+#ifdef _WIN_
+        localtime_s(&rtc->dtime, &utime);
+#else
+        localtime_r(&utime, &rtc->dtime);
+#endif
+        rtc->data[2] = ((rtc->dtime.tm_sec / 10) << 4) | (rtc->dtime.tm_sec % 10);
+        rtc->data[3] = ((rtc->dtime.tm_min / 10) << 4) | (rtc->dtime.tm_min % 10);
+        rtc->data[4] = ((rtc->dtime.tm_hour / 10) << 4) | (rtc->dtime.tm_hour % 10);
+        rtc->data[5] = ((rtc->dtime.tm_mday / 10) << 4) | (rtc->dtime.tm_mday % 10);
+        rtc->data[6] = rtc->dtime.tm_wday;
+        rtc->data[7] = (((rtc->dtime.tm_mon + 1) / 10) << 4) | ((rtc->dtime.tm_mon + 1) % 10);
+        rtc->data[8] = (((rtc->dtime.tm_year % 100) / 10) << 4) | (rtc->dtime.tm_year % 10);
+    };
+
+    // alarm
+    rtc->alarm = 0;
+
+    // minute
+    if ((rtc->data[0x9] & 0x80) == 0) {
+        if ((rtc->data[0x9] & 0x7F) == (rtc->data[0x3] & 0x7F)) {
+            rtc->alarm = 1;
+        } else {
+            rtc->alarm = 0;
+        }
+    }
+
+    // hour
+    if ((rtc->data[0xA] & 0x80) == 0) {
+        if ((rtc->data[0xA] & 0x3F) == (rtc->data[0x4] & 0x3F)) {
+            rtc->alarm = 1;
+        } else {
+            rtc->alarm = 0;
+        }
+    }
+
+    // day
+    if ((rtc->data[0xB] & 0x80) == 0) {
+        if ((rtc->data[0xB] & 0x3F) == (rtc->data[0x5] & 0x3F)) {
+            rtc->alarm = 1;
+        } else {
+            rtc->alarm = 0;
+        }
+    }
+
+    // week day
+    if ((rtc->data[0xC] & 0x80) == 0) {
+        if ((rtc->data[0xC] & 0x07) == (rtc->data[0x6] & 0x07)) {
+            rtc->alarm = 1;
+        } else {
+            rtc->alarm = 0;
+        }
+    }
+
+    if (rtc->alarm) {
+        rtc->data[0x2] |= 0x08;  // AF
+        dprintf("RTC Alarm !\n");
+
+        // interrupt
+        if (rtc->data[0x2] & 0x02) {
+            dprintf("RTC Alarm Interrupt!\n");
+        }
+    }
+
+    rtc->ucont++;
+    if (rtc->ucont == 10) {
+#ifdef _DEBUG
+        printf("test sync...  ");
+#endif
+        time_t now = time(NULL);
+        int dsys = now - rtc->systime;
+        int drtc = rtc_pfc8563_getUtime(rtc) - rtc->rtctime;
+        int drift = dsys - drtc;
+#ifdef _DEBUG
+        printf("sys=%i rtc=%i drift=%i\n", dsys, drtc, dsys - drtc);
+#endif
+
+        if (drift > 0) {
+#ifdef _DEBUG
+            printf("resync ...\n");
+#endif
+            rtc_pfc8563_setUtime(rtc, rtc_pfc8563_getUtime(rtc) + drift);
+            rtc->systime = now;
+            rtc->rtctime = rtc_pfc8563_getUtime(rtc);
+        }
+
+        rtc->ucont = 0;
+    }
+}
+
+void rtc_pfc8563_init(rtc_pfc8563_t* rtc, board* pboard_) {
     time_t utime;
     dprintf("rtc init\n");
+    rtc->pboard = pboard_;
 
     bitbang_i2c_init(&rtc->bb_i2c, 0x51);
 
@@ -56,6 +182,8 @@ void rtc_pfc8563_init(rtc_pfc8563_t* rtc) {
 
     utime = time(NULL);
     rtc_pfc8563_setUtime(rtc, utime);
+
+    rtc->TimerID = rtc->pboard->TimerRegister_ms(1000, rtc_pfc8563_callback, rtc);
 }
 
 void rtc_pfc8563_setUtime(rtc_pfc8563_t* rtc, time_t utime) {
@@ -82,136 +210,9 @@ time_t rtc_pfc8563_getUtime(rtc_pfc8563_t* rtc) {
     return mktime(&rtc->dtime);
 }
 
-void rtc_pfc8563_update(rtc_pfc8563_t* rtc) {
-    rtc->rtcc++;
-
-    if (rtc->rtcc >= 10) {
-        rtc->rtcc = 0;
-        if ((rtc->data[0] & 0x20) == 0) {
-            /*
-                  rtc->dtime.tm_sec++;
-                  if(rtc->dtime.tm_sec == 60)
-                  {
-                    rtc->dtime.tm_sec =0;
-                    rtc->dtime.tm_min++;
-                  }
-                  if(rtc->dtime.tm_min == 60)
-                  {
-                    rtc->dtime.tm_min=0;
-                    rtc->dtime.tm_hour++;
-                  }
-                  if(rtc->dtime.tm_hour == 24)
-                  {
-                    rtc->dtime.tm_hour=0;
-                    rtc->dtime.tm_mday++;
-                    rtc->dtime.tm_wday++;
-                  }
-                  if(rtc->dtime.tm_wday == 7)rtc->dtime.tm_wday=0;
-
-                  if(rtc->dtime.tm_mday == 31)
-                  {
-                    rtc->dtime.tm_mday=0;
-                    rtc->dtime.tm_mon++;
-                  }
-                  if(rtc->dtime.tm_mon == 13)
-                  {
-                    rtc->dtime.tm_mon=1;
-                    rtc->dtime.tm_year++;
-                  }
-             */
-            time_t utime = mktime(&rtc->dtime) + 1;
-#ifdef _WIN_
-            localtime_s(&rtc->dtime, &utime);
-#else
-            localtime_r(&utime, &rtc->dtime);
-#endif
-            rtc->data[2] = ((rtc->dtime.tm_sec / 10) << 4) | (rtc->dtime.tm_sec % 10);
-            rtc->data[3] = ((rtc->dtime.tm_min / 10) << 4) | (rtc->dtime.tm_min % 10);
-            rtc->data[4] = ((rtc->dtime.tm_hour / 10) << 4) | (rtc->dtime.tm_hour % 10);
-            rtc->data[5] = ((rtc->dtime.tm_mday / 10) << 4) | (rtc->dtime.tm_mday % 10);
-            rtc->data[6] = rtc->dtime.tm_wday;
-            rtc->data[7] = (((rtc->dtime.tm_mon + 1) / 10) << 4) | ((rtc->dtime.tm_mon + 1) % 10);
-            rtc->data[8] = (((rtc->dtime.tm_year % 100) / 10) << 4) | (rtc->dtime.tm_year % 10);
-        };
-
-        // alarm
-        rtc->alarm = 0;
-
-        // minute
-        if ((rtc->data[0x9] & 0x80) == 0) {
-            if ((rtc->data[0x9] & 0x7F) == (rtc->data[0x3] & 0x7F)) {
-                rtc->alarm = 1;
-            } else {
-                rtc->alarm = 0;
-            }
-        }
-
-        // hour
-        if ((rtc->data[0xA] & 0x80) == 0) {
-            if ((rtc->data[0xA] & 0x3F) == (rtc->data[0x4] & 0x3F)) {
-                rtc->alarm = 1;
-            } else {
-                rtc->alarm = 0;
-            }
-        }
-
-        // day
-        if ((rtc->data[0xB] & 0x80) == 0) {
-            if ((rtc->data[0xB] & 0x3F) == (rtc->data[0x5] & 0x3F)) {
-                rtc->alarm = 1;
-            } else {
-                rtc->alarm = 0;
-            }
-        }
-
-        // week day
-        if ((rtc->data[0xC] & 0x80) == 0) {
-            if ((rtc->data[0xC] & 0x07) == (rtc->data[0x6] & 0x07)) {
-                rtc->alarm = 1;
-            } else {
-                rtc->alarm = 0;
-            }
-        }
-
-        if (rtc->alarm) {
-            rtc->data[0x2] |= 0x08;  // AF
-            dprintf("RTC Alarm !\n");
-
-            // interrupt
-            if (rtc->data[0x2] & 0x02) {
-                dprintf("RTC Alarm Interrupt!\n");
-            }
-        }
-
-        rtc->ucont++;
-        if (rtc->ucont == 10) {
-#ifdef _DEBUG
-            printf("test sync...  ");
-#endif
-            time_t now = time(NULL);
-            int dsys = now - rtc->systime;
-            int drtc = rtc_pfc8563_getUtime(rtc) - rtc->rtctime;
-            int drift = dsys - drtc;
-#ifdef _DEBUG
-            printf("sys=%i rtc=%i drift=%i\n", dsys, drtc, dsys - drtc);
-#endif
-
-            if (drift > 0) {
-#ifdef _DEBUG
-                printf("resync ...\n");
-#endif
-                rtc_pfc8563_setUtime(rtc, rtc_pfc8563_getUtime(rtc) + drift);
-                rtc->systime = now;
-                rtc->rtctime = rtc_pfc8563_getUtime(rtc);
-            }
-
-            rtc->ucont = 0;
-        }
-    }
-}
-
 void rtc_pfc8563_end(rtc_pfc8563_t* rtc) {
     dprintf("rtc end\n");
+    rtc->pboard->TimerUnregister(rtc->TimerID);
 }
 
 unsigned char rtc_pfc8563_I2C_io(rtc_pfc8563_t* rtc, unsigned char scl, unsigned char sda) {

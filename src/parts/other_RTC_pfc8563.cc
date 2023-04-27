@@ -38,9 +38,10 @@ static PCWProp pcwprop[9] = {{PCW_LABEL, "P1 - OSI,OSC1"}, {PCW_LABEL, "P2 - OSO
                              {PCW_LABEL, "P4 - VSS,GND"},  {PCW_COMBO, "P5 - SDA"},      {PCW_COMBO, "P6 - SCL"},
                              {PCW_COMBO, "P7 - CLK"},      {PCW_LABEL, "P8 - VCC,+5V"},  {PCW_END, ""}};
 
-cpart_RTC_pfc8563::cpart_RTC_pfc8563(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type, 8), font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
-    rtc_pfc8563_init(&rtc);
+cpart_RTC_pfc8563::cpart_RTC_pfc8563(const unsigned x, const unsigned y, const char* name, const char* type,
+                                     board* pboard_)
+    : part(x, y, name, type, pboard_, 8), font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    rtc_pfc8563_init(&rtc, pboard);
     rtc_pfc8563_rst(&rtc);
 
     input_pins[0] = 0;
@@ -151,7 +152,6 @@ void cpart_RTC_pfc8563::PreProcess(void) {
     if (input_pins[1] > 0) {
         SpareParts.ResetPullupBus(input_pins[1] - 1);
     }
-    rtc_pfc8563_update(&rtc);
 }
 
 void cpart_RTC_pfc8563::Process(void) {

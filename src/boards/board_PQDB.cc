@@ -177,8 +177,8 @@ cboard_PQDB::cboard_PQDB(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NOR
     srCLK = 0;
     srLAT = 0;
 
-    lcd_init(&lcd, 16, 2);
-    rtc_ds1307_init(&rtc2);
+    lcd_init(&lcd, 16, 2, this);
+    rtc_ds1307_init(&rtc2, this);
     io_74xx595_init(&shiftReg);
     _srret = 0;
 
@@ -260,13 +260,12 @@ cboard_PQDB::~cboard_PQDB(void) {
     }
 
     rtc_ds1307_end(&rtc2);
+    lcd_end(&lcd);
 }
 
 void cboard_PQDB::Draw(CDraw* draw) {
     int i;
     int update = 0;  // verifiy if updated is needed
-
-    lcd_blink(&lcd);
 
     // pqdb draw
     for (i = 0; i < outputc; i++) {
@@ -532,8 +531,6 @@ void cboard_PQDB::Draw(CDraw* draw) {
         draw->Update();
     }
 
-    rtc_ds1307_update(&rtc2);
-
     if (((0.5 * (pic.pins[PWM_PIN].oavalue - 55)) > 10) && (PICSimLab.GetMcuPwr())) {
         if (!sound_on) {
             buzzer.BeepStart();
@@ -576,7 +573,7 @@ void cboard_PQDB::Run_CPU(void) {
 
     unsigned int alm[40];  // valor médio dos pinos de IO
 
-    float alm7seg[32];  // luminosidade media display 7 seg
+    float alm7seg[32];     // luminosidade media display 7 seg
 
     const int JUMPSTEPS = PICSimLab.GetJUMPSTEPS();
     const long int NSTEP = PICSimLab.GetNSTEP();

@@ -41,8 +41,8 @@ static PCWProp pcwprop[7] = {
     {PCW_LABEL, "1-VCC,+5V"}, {PCW_LABEL, "2-GND,GND"}, {PCW_COMBO, "3-SCL"}, {PCW_COMBO, "4-SDA"},
     {PCW_COMBO, "5-CSB"},     {PCW_COMBO, "6-SDO"},     {PCW_END, ""}};
 
-cpart_bmp280::cpart_bmp280(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type),
+cpart_bmp280::cpart_bmp280(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_),
       font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
       font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     sen_bmp280_init(&bmp280);

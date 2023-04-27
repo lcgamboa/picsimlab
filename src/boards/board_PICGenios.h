@@ -100,6 +100,8 @@ private:
     int heater_pwr;
     int cooler_pwr;
 
+    int TimerID;
+
 public:
     // Return the board name
     lxString GetName(void) override { return lxT(BOARD_PICGenios_Name); };
@@ -129,6 +131,7 @@ public:
     unsigned short GetOutputId(char* name) override;
     void board_Event(CControl* control) override;
     void SetScale(double scale) override;
+    void OnTime(void);
 };
 
 #endif /* BOARD_4_H */

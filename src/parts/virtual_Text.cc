@@ -50,8 +50,8 @@ static PCWProp pcwprop[5] = {{PCW_TEXT, "text"},
                              {PCW_COMBO, "Backgrd"},
                              {PCW_END, ""}};
 
-cpart_TEXT::cpart_TEXT(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type, 8) {
+cpart_TEXT::cpart_TEXT(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_, 8) {
     Bitmap = NULL;
     Size = 12;
     Textcolor = 4;

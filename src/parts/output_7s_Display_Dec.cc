@@ -82,8 +82,8 @@ static PCWProp pcwprop[10] = {{PCW_COMBO, "A"},    {PCW_COMBO, "B"},  {PCW_COMBO
                               {PCW_COMBO, "D1"},   {PCW_COMBO, "D2"}, {PCW_COMBO, "D3"}, {PCW_COMBO, "D4"},
                               {PCW_COMBO, "Type"}, {PCW_END, ""}};
 
-cpart_7s_display_dec::cpart_7s_display_dec(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_7s_display_dec::cpart_7s_display_dec(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     X = x;
     Y = y;
     always_update = 1;

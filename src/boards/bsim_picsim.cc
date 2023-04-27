@@ -89,6 +89,7 @@ void bsim_picsim::MEraseFlash(void) {
 
 void bsim_picsim::MSetFreq(float freq) {
     pic.freq = freq;
+    TimerUpdateFrequency(freq / 4.0);
 }
 
 float bsim_picsim::MGetFreq(void) {

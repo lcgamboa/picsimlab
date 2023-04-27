@@ -130,7 +130,7 @@ void cboard_McLab1::Draw(CDraw* draw) {
             if (!update) {
                 draw->Canvas.Init(Scale, Scale);
             }
-            update++;  // set to update buffer
+            update++;          // set to update buffer
 
             if (!output[i].r)  // rectangle
             {
@@ -394,7 +394,7 @@ void cboard_McLab1::Run_CPU(void) {
     unsigned char p_BT_[4];
     memcpy(p_BT_, p_BT, 4);
 
-    SWBounce_prepare(&bounce, PICSimLab.GetBoard()->MGetInstClockFreq());
+    SWBounce_prepare(&bounce, MGetInstClockFreq());
 
     if ((pins[18 - 1].dir == PD_IN) && (pins[18 - 1].value != p_BT_[0])) {
         SWBounce_bounce(&bounce, 0);

@@ -251,6 +251,7 @@ void bsim_remote::MSetSerial(const char* port) {
 
  void bsim_remote::MSetFreq(float freq_) {
      freq = freq_;
+     TimerUpdateFrequency(freq);
  }
 
  float bsim_remote::MGetFreq(void) {
@@ -434,7 +435,7 @@ void bsim_remote::MSetSerial(const char* port) {
 
  int bsim_remote::DebugInit(int dtyppe)  // argument not used in picm only mplabx
  {
-     return 0;  //! mplabxd_init (this, Window1.Get_debug_port ()) - 1;
+     return 0;                           //! mplabxd_init (this, Window1.Get_debug_port ()) - 1;
  }
 
  int bsim_remote::MGetPinCount(void) {

@@ -39,8 +39,8 @@ static PCWProp pcwprop[4] = {{PCW_LABEL, "P4 - GND,GND"},
                              {PCW_COMBO, "P3 - Out"},
                              {PCW_END, ""}};
 
-cpart_SignalGenerator::cpart_SignalGenerator(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_SignalGenerator::cpart_SignalGenerator(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     always_update = 1;
 
     input_pins[0] = 0;
@@ -164,7 +164,7 @@ void cpart_SignalGenerator::DrawOutput(const unsigned int i) {
 }
 
 void cpart_SignalGenerator::PreProcess(void) {
-    JUMPSTEPS_ = (PICSimLab.GetBoard()->MGetInstClockFreq() / 250000);
+    JUMPSTEPS_ = (pboard->MGetInstClockFreq() / 250000);
     mcount = JUMPSTEPS_;
 
     freq = (maxfreq * values[1] / 200.0);

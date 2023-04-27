@@ -40,8 +40,8 @@ static PCWProp pcwprop[5] = {{PCW_LABEL, "P1 - VCC,+5V"},
                              {PCW_LABEL, "P4 - GND,GND"},
                              {PCW_END, ""}};
 
-cpart_dht11::cpart_dht11(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type),
+cpart_dht11::cpart_dht11(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_),
       font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
       font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     output_pins[0] = 0;
@@ -52,7 +52,7 @@ cpart_dht11::cpart_dht11(const unsigned x, const unsigned y, const char* name, c
     active[0] = 0;
     active[1] = 0;
 
-    sen_dhtxx_init(&dht11, PICSimLab.GetBoard(), DHT11);
+    sen_dhtxx_init(&dht11, pboard, DHT11);
 
     SetPCWProperties(pcwprop);
 

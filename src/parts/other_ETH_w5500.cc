@@ -74,8 +74,8 @@ static PCWProp pcwprop[11] = {{PCW_LABEL, "P1-V3.3       +3.3V"},
                               {PCW_LABEL, "P10-NC"},
                               {PCW_END, ""}};
 
-cpart_ETH_w5500::cpart_ETH_w5500(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_ETH_w5500::cpart_ETH_w5500(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     eth_w5500_init(&ethw);
     eth_w5500_rst(&ethw);
 

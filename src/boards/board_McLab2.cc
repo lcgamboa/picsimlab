@@ -97,6 +97,11 @@ enum { I_POT1, I_RST, I_PWR, I_ICSP, I_JP1, I_JP2, I_JP3, I_JP4, I_JP5, I_JP6, I
 
 // TODO jumper support
 
+static void cboard_McLab2_callback(void* arg) {
+    cboard_McLab2* McLab2 = (cboard_McLab2*)arg;
+    McLab2->OnTime();
+}
+
 cboard_McLab2::cboard_McLab2(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     Proc = "PIC16F877A";
 
@@ -117,7 +122,7 @@ cboard_McLab2::cboard_McLab2(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE
     lcde = 0;
     sound_on = 0;
 
-    lcd_init(&lcd, 16, 2);
+    lcd_init(&lcd, 16, 2, this);
     mi2c_init(&mi2c, 4);
 
     ReadMaps();
@@ -128,6 +133,9 @@ cboard_McLab2::cboard_McLab2(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE
     jmp[3] = 0;
     jmp[4] = 0;
     jmp[5] = 0;
+
+    heater_pwr = 0;
+    cooler_pwr = 0;
 
     buzzer.Init();
 
@@ -219,12 +227,15 @@ cboard_McLab2::cboard_McLab2(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE
     strncat(mi2c_tmp_name, ".txt", 200);
 
     SWBounce_init(&bounce, 4);
+
+    TimerID = TimerRegister_ms(100, cboard_McLab2_callback, this);
 }
 
 cboard_McLab2::~cboard_McLab2(void) {
     buzzer.BeepStop();
     buzzer.End();
     mi2c_end(&mi2c);
+    lcd_end(&lcd);
     delete vent[0];
     delete vent[1];
     vent[0] = NULL;
@@ -240,6 +251,7 @@ cboard_McLab2::~cboard_McLab2(void) {
     unlink(mi2c_tmp_name);
 
     SWBounce_end(&bounce);
+    TimerUnregister(TimerID);
 }
 
 int cboard_McLab2::MInit(const char* processor, const char* fname, float freq) {
@@ -297,8 +309,6 @@ void cboard_McLab2::Draw(CDraw* draw) {
     int i;
     int update = 0;  // verifiy if updated is needed
 
-    lcd_blink(&lcd);
-
     // lab3 draw
     for (i = 0; i < outputc; i++) {
         if (output[i].update)  // only if need update
@@ -308,7 +318,7 @@ void cboard_McLab2::Draw(CDraw* draw) {
             if (!update) {
                 draw->Canvas.Init(Scale, Scale);
             }
-            update++;  // set to update buffer
+            update++;          // set to update buffer
 
             if (!output[i].r)  // rectangle
             {
@@ -622,37 +632,44 @@ void cboard_McLab2::Draw(CDraw* draw) {
     }
 
     // Cooler
-    gauge1->SetValue((pic.pins[15].oavalue - 55) / 2);
-    if (gauge1->GetValue() > 20)
+    cooler_pwr = pic.pins[15].oavalue - 55;
+    gauge1->SetValue(cooler_pwr / 2);
+
+    // Heater
+    heater_pwr = pic.pins[16].oavalue - 55;
+    gauge2->SetValue(heater_pwr / 2);
+
+    // potentiometer
+    vp2in = (5.0 * pot1 / 199);
+
+    // referencia
+    pic_set_apin(&pic, 5, 2.5);
+}
+
+void cboard_McLab2::OnTime(void) {
+    if (cooler_pwr > 40) {
         vtc++;
-    if (vtc > (4 - 0.04 * gauge1->GetValue())) {
+    }
+    if (vtc > (4 - 0.04 * cooler_pwr)) {
         vtc = 0;
         vt ^= 1;
         output_ids[O_VT]->update = 1;
     }
 
-    // Heater
-    gauge2->SetValue((pic.pins[16].oavalue - 55) / 2);
-
     // thacometer
-    rpmstp = ((float)PICSimLab.GetNSTEPJ()) / (0.7196 * (pic.pins[15].oavalue - 54));
-
-    // potentiometer
-    vp2in = (5.0 * pot1 / 199);
+    rpmstp = 2000.0 / (0.7196 * (cooler_pwr + 1));
 
     // temp
-    ref = (0.25 * (pic.pins[16].oavalue - 55)) - (0.25 * (pic.pins[15].oavalue - 55));
-
-    if (ref < 0)
-        ref = 0;
+    ref = (0.25 * heater_pwr) - (0.25 * cooler_pwr);
 
     temp[1] = temp[0];
     temp[0] = ((27.5 + ref) * 0.003) + temp[1] * (0.997);
 
-    pic_set_apin(&pic, 2, (10.0 / 255.0) * (temp[0] + 15.0));
+    if (temp[0] < 27.5) {
+        temp[0] = 27.5;
+    }
 
-    // referencia
-    pic_set_apin(&pic, 5, 2.5);
+    pic_set_apin(&pic, 2, (10.0 / 255.0) * (temp[0] + 15.0));
 }
 
 void cboard_McLab2::Run_CPU(void) {

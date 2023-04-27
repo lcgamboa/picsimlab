@@ -38,8 +38,8 @@ static PCWProp pcwprop[8] = {{PCW_LABEL, "1-VCC,+5V"}, {PCW_COMBO, "2-POT 1"}, {
                              {PCW_COMBO, "4-POT 3"},   {PCW_COMBO, "5-POT 4"}, {PCW_LABEL, "6-GND ,GND"},
                              {PCW_SPIN, "Size"},       {PCW_END, ""}};
 
-cpart_pot::cpart_pot(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type, 9), font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_pot::cpart_pot(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_, 9), font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     Size = 0;
     Bitmap = NULL;
 
@@ -88,7 +88,7 @@ cpart_pot::~cpart_pot(void) {
 }
 
 void cpart_pot::Reset(void) {
-    vmax = PICSimLab.GetBoard()->MGetVCC();
+    vmax = pboard->MGetVCC();
 }
 
 void cpart_pot::DrawOutput(const unsigned int i) {

@@ -35,7 +35,7 @@
 class cpart_LCD_pcd8544 : public part {
 public:
     lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
-    cpart_LCD_pcd8544(const unsigned x, const unsigned y, const char* name, const char* type);
+    cpart_LCD_pcd8544(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
     ~cpart_LCD_pcd8544(void);
     void DrawOutput(const unsigned int index) override;
     void Process(void) override;

@@ -40,8 +40,9 @@ static PCWProp pcwprop[5] = {{PCW_LABEL, "P1 - VCC,+5V"},
                              {PCW_COMBO, "Open"},
                              {PCW_END, ""}};
 
-cpart_pbuttons_an::cpart_pbuttons_an(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_pbuttons_an::cpart_pbuttons_an(const unsigned x, const unsigned y, const char* name, const char* type,
+                                     board* pboard_)
+    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     active = 1;
 
     output_value_[0] = !active;
@@ -95,7 +96,7 @@ void cpart_pbuttons_an::Reset(void) {
     output_value_[6] = !active;
     output_value_[7] = !active;
 
-    vmax = PICSimLab.GetBoard()->MGetVCC();
+    vmax = pboard->MGetVCC();
 
     output_value = active * vmax;
 

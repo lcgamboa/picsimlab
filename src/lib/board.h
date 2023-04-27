@@ -41,16 +41,16 @@ enum { ARCH_P16, ARCH_P16E, ARCH_P18, ARCH_AVR8, ARCH_STM32, ARCH_STM8, ARCH_C51
  *
  */
 typedef struct {
-    unsigned int x1;        ///< x1 position
-    unsigned int x2;        ///< x2 position
-    unsigned int y1;        ///< y1 position
-    unsigned int y2;        ///< y2 position
-    unsigned int cx;        ///< center x position
-    unsigned int cy;        ///< center y position
-    char name[10];          ///< region name
-    unsigned short id;      ///< region ID
-    void* status;           ///< rcontrol status
-    unsigned char* update;  ///< output need draw update
+    unsigned int x1;          ///< x1 position
+    unsigned int x2;          ///< x2 position
+    unsigned int y1;          ///< y1 position
+    unsigned int y2;          ///< y2 position
+    unsigned int cx;          ///< center x position
+    unsigned int cy;          ///< center y position
+    char name[10];            ///< region name
+    unsigned short id;        ///< region ID
+    void* status;             ///< rcontrol status
+    unsigned char* update;    ///< output need draw update
     union {
         unsigned char value;  ///< updated value
         short value_s;        ///< updated value short
@@ -63,17 +63,17 @@ typedef struct {
  *
  */
 typedef struct {
-    unsigned int x1;  ///< x1 position
-    unsigned int x2;  ///< x2 position
-    unsigned int y1;  ///< y1 position
-    unsigned int y2;  ///< y2 position
-    unsigned int cx;  ///< center x position
-    unsigned int cy;  ///< center y position
+    unsigned int x1;          ///< x1 position
+    unsigned int x2;          ///< x2 position
+    unsigned int y1;          ///< y1 position
+    unsigned int y2;          ///< y2 position
+    unsigned int cx;          ///< center x position
+    unsigned int cy;          ///< center y position
     unsigned int r;
-    char name[10];         ///< region name
-    unsigned short id;     ///<  region ID
-    void* status;          ///< rcontrol status
-    unsigned char update;  ///< need draw update
+    char name[10];            ///< region name
+    unsigned short id;        ///<  region ID
+    void* status;             ///< rcontrol status
+    unsigned char update;     ///< need draw update
     union {
         unsigned char value;  ///< updated value
         short value_s;        ///< updated value short
@@ -93,6 +93,7 @@ typedef struct {
     void* Arg;
     void (*Callback)(void* arg);
     int Enabled;
+    double Tout;  // in us
 } Timers_t;
 
 /**
@@ -555,17 +556,17 @@ public:
     /**
      * @brief Get instruction counter
      */
-    uint32_t InstCounterGet(void) { return InstCounter; };
+    uint32_t GetInstCounter(void) { return InstCounter; };
 
     /**
      * @brief Get elapsed time from instruction counter in us
      */
-    uint32_t InstCounterGet_us(const uint32_t start);
+    uint32_t GetInstCounter_us(const uint32_t start);
 
     /**
      * @brief Get elapsed time from instruction counter in us
      */
-    uint32_t InstCounterGet_ms(const uint32_t start);
+    uint32_t GetInstCounter_ms(const uint32_t start);
 
     /**
      * @brief Register a new timer with time in us (default enabled)
@@ -601,6 +602,11 @@ public:
      * @brief Get elapsed time from instruction counter in ns
      */
     uint64_t TimerGet_ns(const int timer);
+
+    /**
+     * @brief Update Timer counters on frequency change
+     */
+    void TimerUpdateFrequency(float freq);
 
 protected:
     /**
@@ -667,7 +673,9 @@ extern int ioupdated;
         return b;                                                   \
     };                                                              \
     static void __attribute__((constructor)) function##_init(void); \
-    static void function##_init(void) { board_register(name, function##_create); }
+    static void function##_init(void) {                             \
+        board_register(name, function##_create);                    \
+    }
 
 typedef board* (*board_create_func)(void);
 

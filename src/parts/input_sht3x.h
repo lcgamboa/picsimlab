@@ -34,7 +34,7 @@
 class cpart_sht3x : public part {
 public:
     lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
-    cpart_sht3x(const unsigned x, const unsigned y, const char* name, const char* type);
+    cpart_sht3x(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
     ~cpart_sht3x(void);
     void DrawOutput(const unsigned int index) override;
     void PostProcess(void) override;

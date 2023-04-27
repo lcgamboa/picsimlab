@@ -57,7 +57,7 @@ void sen_hx711_end(sen_hx711_t* hx711) {
 
 unsigned short sen_hx711_io_SPI(sen_hx711_t* hx711, unsigned char clk) {
     if ((!hx711->aclk) && (clk)) {  // rising edge
-        hx711->tstart = hx711->pboard->InstCounterGet();
+        hx711->tstart = hx711->pboard->GetInstCounter();
     } else if ((hx711->aclk) && (!clk)) {  // falling edge
 
         if (!hx711->power) {
@@ -69,7 +69,7 @@ unsigned short sen_hx711_io_SPI(sen_hx711_t* hx711, unsigned char clk) {
     hx711->aclk = clk;
 
     if (clk) {
-        int pulse = hx711->pboard->InstCounterGet_us(hx711->tstart);
+        int pulse = hx711->pboard->GetInstCounter_us(hx711->tstart);
         if (pulse > 60) {
             if (hx711->power) {
                 dprintf("hx711 power down\n");

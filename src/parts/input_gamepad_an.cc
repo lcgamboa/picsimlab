@@ -40,8 +40,9 @@ static PCWProp pcwprop[5] = {{PCW_COMBO, "Pin 1"},
                              {PCW_COMBO, "Open"},
                              {PCW_END, ""}};
 
-cpart_gamepad_an::cpart_gamepad_an(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_gamepad_an::cpart_gamepad_an(const unsigned x, const unsigned y, const char* name, const char* type,
+                                   board* pboard_)
+    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     active = 1;
 
     output_value[0] = 1;
@@ -75,7 +76,7 @@ void cpart_gamepad_an::RegisterRemoteControl(void) {
 
 void cpart_gamepad_an::Reset(void) {
     // release all
-    vmax = PICSimLab.GetBoard()->MGetVCC();
+    vmax = pboard->MGetVCC();
 
     output_value_an = active * vmax;
 

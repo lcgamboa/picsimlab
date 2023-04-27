@@ -407,7 +407,7 @@ int board::TimerRegister_ms(const double miles, void (*Callback)(void* arg), voi
                 break;
             }
         }
-        TimerChange_us(timern, miles);
+        TimerChange_ms(timern, miles);
         Timers[timern - 1].Callback = Callback;
         Timers[timern - 1].Arg = arg;
         Timers[timern - 1].Enabled = 1;
@@ -421,7 +421,15 @@ int board::TimerRegister_ms(const double miles, void (*Callback)(void* arg), voi
 int board::TimerUnregister(const int timer) {
     if (timer <= MAX_TIMERS) {
         Timers[timer - 1].Callback = NULL;  // free timer
-        for (int t = timer - 1; t < (TimersCount - 1); t++) {
+
+        int tltimer = 0;
+        for (int t = 0; t < TimersCount; t++) {
+            if (TimersList[t] == &Timers[timer - 1]) {
+                tltimer = t;
+            }
+        }
+
+        for (int t = tltimer; t < (TimersCount - 1); t++) {
             TimersList[t] = TimersList[t + 1];
         }
         TimersCount--;
@@ -438,6 +446,7 @@ int board::TimerChange_us(const int timer, const double micros) {
             Timers[timer - 1].Reload = 1;
         }
         Timers[timer - 1].Timer = Timers[timer - 1].Reload;
+        Timers[timer - 1].Tout = micros;
         return 0;
     }
     return -1;
@@ -450,10 +459,12 @@ int board::TimerChange_ms(const int timer, const double miles) {
             Timers[timer - 1].Reload = 1;
         }
         Timers[timer - 1].Timer = Timers[timer - 1].Reload;
+        Timers[timer - 1].Tout = miles * 1e3;
         return 0;
     }
     return -1;
 }
+
 int board::TimerSetState(const int timer, const int enabled) {
     if (timer <= MAX_TIMERS) {
         Timers[timer - 1].Enabled = enabled;
@@ -472,11 +483,22 @@ uint64_t board::TimerGet_ns(const int timer) {
     return -1;
 }
 
-uint32_t board::InstCounterGet_us(const uint32_t start) {
+uint32_t board::GetInstCounter_us(const uint32_t start) {
     return ((InstCounter - start) * 1e6) / MGetInstClockFreq();
 }
-uint32_t board::InstCounterGet_ms(const uint32_t start) {
+
+uint32_t board::GetInstCounter_ms(const uint32_t start) {
     return ((InstCounter - start) * 1e3) / MGetInstClockFreq();
+}
+
+void board::TimerUpdateFrequency(float freq) {
+    for (int t = 0; t < TimersCount; t++) {
+        TimersList[t]->Reload = TimersList[t]->Tout * 1e-6 * MGetInstClockFreq();
+        if (TimersList[t]->Reload <= 0) {
+            TimersList[t]->Reload = 1;
+        }
+        TimersList[t]->Timer = TimersList[t]->Reload;
+    }
 }
 
 // BOARDS_DEFS

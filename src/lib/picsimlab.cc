@@ -326,7 +326,7 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
         ((CTimer*)Window->GetChildByName("timer1"))->SetRunState(0);
         ((CTimer*)Window->GetChildByName("timer2"))->SetRunState(0);
     }
-    msleep(100);
+    msleep(BASETIMER);
     while (status.status) {
         msleep(1);
         Application->ProcessEvents();
@@ -1244,7 +1244,7 @@ int CPICSimLab::LoadHexFile(lxString fname) {
 
     // timer1.SetRunState (0);
     status.st[0] |= ST_DI;
-    msleep(((CTimer*)Window->GetChildByName("timer1"))->GetTime());
+    msleep(BASETIMER);
     if (tgo)
         tgo = 1;
     while (status.status & 0x0401) {

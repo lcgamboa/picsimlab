@@ -55,8 +55,9 @@ static PCWProp pcwprop[17] = {{PCW_LABEL, "1-QB,NC"},
                               {PCW_LABEL, "16-VCC,+5V"},
                               {PCW_END, ""}};
 
-cpart_IO_74xx595::cpart_IO_74xx595(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type, 8) {
+cpart_IO_74xx595::cpart_IO_74xx595(const unsigned x, const unsigned y, const char* name, const char* type,
+                                   board* pboard_)
+    : part(x, y, name, type, pboard_, 8) {
     always_update = 1;
 
     io_74xx595_init(&sr8);

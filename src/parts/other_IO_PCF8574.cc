@@ -55,8 +55,9 @@ static PCWProp pcwprop[17] = {{PCW_COMBO, "1-A0"},
                               {PCW_LABEL, "16-VDD,+5V"},
                               {PCW_END, ""}};
 
-cpart_IO_PCF8574::cpart_IO_PCF8574(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type, 8) {
+cpart_IO_PCF8574::cpart_IO_PCF8574(const unsigned x, const unsigned y, const char* name, const char* type,
+                                   board* pboard_)
+    : part(x, y, name, type, pboard_, 8) {
     X = x;
     Y = y;
     always_update = 1;

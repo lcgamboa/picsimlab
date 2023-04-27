@@ -41,8 +41,8 @@ static PCWProp pcwprop[9] = {{PCW_LABEL, "1 - VCC,+5V"}, {PCW_LABEL, "2 - GND ,G
                              {PCW_COMBO, "4 - SDA"},     {PCW_COMBO, "5 - XDA"},      {PCW_COMBO, "6 - XCL"},
                              {PCW_COMBO, "7 - AD0"},     {PCW_COMBO, "8 - INT"},      {PCW_END, ""}};
 
-cpart_MPU6050::cpart_MPU6050(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type),
+cpart_MPU6050::cpart_MPU6050(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_),
       font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
       font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     mpu6050_init(&mpu);

@@ -34,7 +34,7 @@
 class cpart_gamepad : public part {
 public:
     lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
-    cpart_gamepad(const unsigned x, const unsigned y, const char* name, const char* type);
+    cpart_gamepad(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
     ~cpart_gamepad(void);
     void PostInit(void) override;
     void DrawOutput(const unsigned int index) override;

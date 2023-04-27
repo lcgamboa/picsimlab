@@ -52,8 +52,9 @@ static PCWProp pcwprop[10] = {{PCW_COMBO, "P1 - A0"},
                               {PCW_COMBO, "kbits"},
                               {PCW_END, ""}};
 
-cpart_MI2C_24CXXX::cpart_MI2C_24CXXX(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type, 8) {
+cpart_MI2C_24CXXX::cpart_MI2C_24CXXX(const unsigned x, const unsigned y, const char* name, const char* type,
+                                     board* pboard_)
+    : part(x, y, name, type, pboard_, 8) {
     kbits = 4;
 
     mi2c_init(&mi2c, kbits);

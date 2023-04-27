@@ -83,9 +83,9 @@ cboard_K16F::cboard_K16F(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NOR
     d = 0;
     lcde = 0;
 
-    lcd_init(&lcd, 16, 2);
+    lcd_init(&lcd, 16, 2, this);
     mi2c_init(&mi2c, 512);
-    rtc_pfc8563_init(&rtc);
+    rtc_pfc8563_init(&rtc, this);
     ReadMaps();
 
     snprintf(mi2c_tmp_name, 200, "%s/picsimlab-XXXXXX", (const char*)lxGetTempDir("PICSimLab").c_str());
@@ -96,6 +96,7 @@ cboard_K16F::cboard_K16F(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NOR
 
 cboard_K16F::~cboard_K16F(void) {
     mi2c_end(&mi2c);
+    lcd_end(&lcd);
     rtc_pfc8563_end(&rtc);
     unlink(mi2c_tmp_name);
 }
@@ -139,8 +140,6 @@ void cboard_K16F::Draw(CDraw* draw) {
     int i;
     int update = 0;  // verifiy if updated is needed
 
-    lcd_blink(&lcd);
-
     // lab2 draw
     for (i = 0; i < outputc; i++) {
         if (output[i].update)  // only if need update
@@ -150,7 +149,7 @@ void cboard_K16F::Draw(CDraw* draw) {
             if (!update) {
                 draw->Canvas.Init(Scale, Scale);
             }
-            update++;  // set to update buffer
+            update++;          // set to update buffer
 
             if (!output[i].r)  // rectangle
             {
@@ -254,8 +253,6 @@ void cboard_K16F::Draw(CDraw* draw) {
         draw->Canvas.End();
         draw->Update();
     }
-
-    rtc_pfc8563_update(&rtc);
 }
 
 void cboard_K16F::Run_CPU(void) {

@@ -37,8 +37,8 @@ static PCWProp pcwprop[5] = {{PCW_LABEL, "1 - VCC,+5V"},
                              {PCW_SPIND, "4 - Value"},
                              {PCW_END, ""}};
 
-cpart_fixedv::cpart_fixedv(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type),
+cpart_fixedv::cpart_fixedv(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_),
       font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
       font_b(12, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     output_pins[0] = 0;

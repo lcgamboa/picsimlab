@@ -44,8 +44,8 @@ static PCWProp pcwprop[9] = {{PCW_COMBO, "Pin 1"}, {PCW_COMBO, "Pin 2"}, {PCW_CO
                              {PCW_COMBO, "Pin 4"}, {PCW_COMBO, "Pin 5"}, {PCW_COMBO, "Pin 6"},
                              {PCW_COMBO, "Pin 7"}, {PCW_COMBO, "Pin 8"}, {PCW_END, ""}};
 
-cpart_VCD_Dump::cpart_VCD_Dump(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_VCD_Dump::cpart_VCD_Dump(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     always_update = 1;
 
     input_pins[0] = 0;
@@ -287,7 +287,7 @@ void cpart_VCD_Dump::ReadPropertiesWindow(CPWindow* WProp) {
 
 void cpart_VCD_Dump::PreProcess(void) {
     if (rec && (f_vcd == NULL)) {
-        float tscale = 1.0e12 / PICSimLab.GetBoard()->MGetInstClockFreq();  // ps step
+        float tscale = 1.0e12 / pboard->MGetInstClockFreq();  // ps step
 
         f_vcd = fopen(f_vcd_name, "w");
         vcd_count = 0;

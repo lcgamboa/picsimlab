@@ -25,6 +25,7 @@
 
 #include "lcd_hd44780.h"
 #include <stdio.h>
+#include "../lib/board.h"
 
 // #define _DEBUG
 
@@ -531,13 +532,25 @@ void lcd_rst(lcd_t* lcd) {
     lcd->bc = 0;
 
     lcd->blink = 0;
-    lcd->blinkc = 0;
     lcd->shift = 0;
     lcd->flags = L_DL | L_DID;
     return;
 }
 
-void lcd_init(lcd_t* lcd, unsigned char cnum, unsigned char lnum) {
+static void lcd_callback(void* arg) {
+    lcd_t* lcd = (lcd_t*)arg;
+
+    if ((lcd->flags & L_CON) && (lcd->flags & L_CBL)) {
+        lcd->update = 1;
+        lcd->blink ^= 1;
+    } else {
+        lcd->blink = 0;
+    }
+}
+
+void lcd_init(lcd_t* lcd, unsigned char cnum, unsigned char lnum, board* pboard_) {
+    lcd->pboard = pboard_;
+
     if ((cnum > 15) && (cnum <= 20))
         lcd->cnum = cnum;
     else
@@ -548,6 +561,14 @@ void lcd_init(lcd_t* lcd, unsigned char cnum, unsigned char lnum) {
     else
         lcd->lnum = 2;
     lcd->update = 1;
+
+    lcd_rst(lcd);
+
+    lcd->TimerID = lcd->pboard->TimerRegister_ms(400, lcd_callback, lcd);
+}
+
+void lcd_end(lcd_t* lcd) {
+    lcd->pboard->TimerUnregister(lcd->TimerID);
 }
 
 void lcd_on(lcd_t* lcd, int onoff) {
@@ -555,18 +576,6 @@ void lcd_on(lcd_t* lcd, int onoff) {
         lcd->flags = 0;
     };
     lcd_rst(lcd);
-}
-
-void lcd_blink(lcd_t* lcd) {
-    if ((lcd->flags & L_CON) && (lcd->flags & L_CBL)) {
-        lcd->blinkc++;
-        if (lcd->blinkc > 4) {
-            lcd->blinkc = 0;
-            lcd->update = 1;
-            lcd->blink ^= 1;
-        }
-    } else
-        lcd->blink = 0;
 }
 
 void lcd_draw(lcd_t* lcd, CCanvas* canvas, int x1, int y1, int w1, int h1, int picpwr) {

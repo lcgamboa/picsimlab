@@ -37,8 +37,8 @@ enum { I_PO1 };
 static PCWProp pcwprop[6] = {{PCW_LABEL, "1 - VCC,+5V"}, {PCW_COMBO, "2 - D0"}, {PCW_COMBO, "3 - A0"},
                              {PCW_LABEL, "4 - VSS,GND"}, {PCW_SPIND, "Vth"},    {PCW_END, ""}};
 
-cpart_LDR::cpart_LDR(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type),
+cpart_LDR::cpart_LDR(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_),
       font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
       font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     output_pins[0] = 0;
@@ -65,7 +65,7 @@ cpart_LDR::~cpart_LDR(void) {
 }
 
 void cpart_LDR::Reset(void) {
-    vmax = PICSimLab.GetBoard()->MGetVCC();
+    vmax = pboard->MGetVCC();
 }
 
 void cpart_LDR::DrawOutput(const unsigned int i) {

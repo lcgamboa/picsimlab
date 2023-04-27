@@ -37,8 +37,13 @@ enum { I_PO1, I_PO2, I_PO3, I_PO4 };
 static PCWProp pcwprop[7] = {{PCW_COMBO, "Heater"},   {PCW_COMBO, "Cooler"},  {PCW_COMBO, "Temp."}, {PCW_COMBO, "Tach"},
                              {PCW_LABEL, "VCC,+12V"}, {PCW_LABEL, "GND,GND"}, {PCW_END, ""}};
 
-cpart_tempsys::cpart_tempsys(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+static void cpart_tempsys_callback(void* arg) {
+    cpart_tempsys* tempsys = (cpart_tempsys*)arg;
+    tempsys->OnTime();
+}
+
+cpart_tempsys::cpart_tempsys(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     always_update = 1;
 
     vtc = 0;
@@ -72,6 +77,8 @@ cpart_tempsys::cpart_tempsys(const unsigned x, const unsigned y, const char* nam
 
     PinCount = 4;
     Pins = input_pins;
+
+    TimerID = pboard->TimerRegister_ms(100, cpart_tempsys_callback, this);
 }
 
 cpart_tempsys::~cpart_tempsys(void) {
@@ -83,6 +90,8 @@ cpart_tempsys::~cpart_tempsys(void) {
     vent[1] = NULL;
 
     canvas.Destroy();
+
+    pboard->TimerUnregister(TimerID);
 }
 
 void cpart_tempsys::DrawOutput(const unsigned int i) {
@@ -135,7 +144,7 @@ void cpart_tempsys::DrawOutput(const unsigned int i) {
 
 void cpart_tempsys::Process(void) {
     if (!refresh) {
-        refresh = PICSimLab.GetJUMPSTEPS();
+        refresh = PICSimLab.GetJUMPSTEPS() + 1;
 
         const picpin* ppins = SpareParts.GetPinsValues();
 
@@ -153,12 +162,12 @@ void cpart_tempsys::Process(void) {
     refresh--;
 }
 
-void cpart_tempsys::PostProcess(void) {
+void cpart_tempsys::OnTime(void) {
     const picpin* ppins = SpareParts.GetPinsValues();
 
     // sensor ventilador
     if (input_pins[1] > 0) {
-        rpmstp = ((float)PICSimLab.GetNSTEPJ()) / (0.7196 * (ppins[input_pins[1] - 1].oavalue - 54));
+        rpmstp = 2000.0 / (0.7196 * (ppins[input_pins[1] - 1].oavalue - 54));
 
         if (ppins[input_pins[1] - 1].oavalue > 55)
             vtc++;
@@ -197,7 +206,7 @@ void cpart_tempsys::PostProcess(void) {
 unsigned short cpart_tempsys::GetInputId(char* name) {
     printf("Erro input '%s' don't have a valid id! \n", name);
     return -1;
-};
+}
 
 unsigned short cpart_tempsys::GetOutputId(char* name) {
     if (strcmp(name, "MC_VT") == 0)
@@ -221,7 +230,7 @@ unsigned short cpart_tempsys::GetOutputId(char* name) {
 
     printf("Erro output '%s' don't have a valid id! \n", name);
     return 1;
-};
+}
 
 lxString cpart_tempsys::WritePreferences(void) {
     char prefs[256];

@@ -34,7 +34,7 @@
 class cpart_VCD_Dump_an : public part {
 public:
     lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
-    cpart_VCD_Dump_an(const unsigned x, const unsigned y, const char* name, const char* type);
+    cpart_VCD_Dump_an(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
     ~cpart_VCD_Dump_an(void);
     void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;

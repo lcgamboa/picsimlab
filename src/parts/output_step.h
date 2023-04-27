@@ -44,7 +44,7 @@ public:
      * @brief constructor called once on part creation
      *
      */
-    cpart_step(const unsigned x, const unsigned y, const char* name, const char* type);
+    cpart_step(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
 
     /**
      * @brief destructor called once on part destruction

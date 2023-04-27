@@ -79,8 +79,8 @@ static PCWProp pcwprop[19] = {{PCW_LABEL, "1-RY1,NC"},
                               {PCW_LABEL, "18-VCC,+5V"},
                               {PCW_END, ""}};
 
-cpart_IO_MM74C922::cpart_IO_MM74C922(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_IO_MM74C922::cpart_IO_MM74C922(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     X = x;
     Y = y;
     always_update = 1;
@@ -309,7 +309,7 @@ void cpart_IO_MM74C922::PreProcess(void) {
     JUMPSTEPS_ = PICSimLab.GetJUMPSTEPS();
     mcount = JUMPSTEPS_;
 
-    io_MM74C922_set_clk_freq(&kc, PICSimLab.GetBoard()->MGetInstClockFreq());
+    io_MM74C922_set_clk_freq(&kc, pboard->MGetInstClockFreq());
 }
 
 void cpart_IO_MM74C922::Process(void) {

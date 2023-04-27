@@ -40,8 +40,8 @@ static PCWProp pcwprop[8] = {
     {PCW_COMBO, "1-Out A"},  {PCW_COMBO, "2-Out B"},   {PCW_COMBO, "3-In A"},    {PCW_COMBO, "4-In B"},
     {PCW_COMBO, "5-In PWM"}, {PCW_LABEL, "6-VCC,+5V"}, {PCW_LABEL, "7-GND,GND"}, {PCW_END, ""}};
 
-cpart_dcmotor::cpart_dcmotor(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_dcmotor::cpart_dcmotor(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     X = x;
     Y = y;
     always_update = 1;
@@ -163,12 +163,12 @@ void cpart_dcmotor::PreProcess(void) {
 
     if (ia && !ib) {
         dir = 0;
-        value += speed / 3;
+        value += speed / (300 / BASETIMER);
         if (value > 199)
             value -= 200;
     } else if (!ia && ib) {
         dir = 1;
-        value -= speed / 3;
+        value -= speed / (300 / BASETIMER);
         if (value > 199)
             value -= 57;
     } else {
@@ -216,11 +216,11 @@ void cpart_dcmotor::PreProcess(void) {
         if (state != new_state)
          {
           printf ("need step \n");
-          //step = Window1.GetBoard ()->MGetInstClock () / ((da > 0) ? da * 10 : -da * 10);
+          //step = pboard->MGetInstClock () / ((da > 0) ? da * 10 : -da * 10);
          }
          */
     } else {
-        step = PICSimLab.GetBoard()->MGetInstClockFreq() / ((da > 0) ? da * 10 : -da * 10);
+        step = pboard->MGetInstClockFreq() / ((da > 0) ? da * 10 : -da * 10);
     }
 
     dprintf("state=%i da=%f  %3i  %3i  dir=%i  step=%i\n", state, da, value, value_old, dir, step);

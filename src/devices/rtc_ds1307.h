@@ -36,13 +36,13 @@ typedef struct {
     time_t systime;
     time_t rtctime;
     int ucont;
-    int rtcc;
     int alarm;
+    board* pboard;
+    int TimerID;
 } rtc_ds1307_t;
 
 void rtc_ds1307_rst(rtc_ds1307_t* rtc);
-void rtc_ds1307_init(rtc_ds1307_t* rtc);
-void rtc_ds1307_update(rtc_ds1307_t* rtc);
+void rtc_ds1307_init(rtc_ds1307_t* rtc, board* pboard_);
 void rtc_ds1307_end(rtc_ds1307_t* rtc);
 void rtc_ds1307_setUtime(rtc_ds1307_t* rtc, time_t utime);
 time_t rtc_ds1307_getUtime(rtc_ds1307_t* rtc);

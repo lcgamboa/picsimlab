@@ -80,6 +80,7 @@ void bsim_gpsim::MSetSerial(const char* port) {
 
  void bsim_gpsim::MSetFreq(float freq_) {
      freq = freq_;
+     TimerUpdateFrequency(freq);
  }
 
  float bsim_gpsim::MGetFreq(void) {
@@ -124,7 +125,7 @@ void bsim_gpsim::MSetSerial(const char* port) {
 
  int bsim_gpsim::DebugInit(int dtyppe)  // argument not used in picm only mplabx
  {
-     return 0;  //! mplabxd_init (this, Window1.Get_debug_port ()) - 1;
+     return 0;                          //! mplabxd_init (this, Window1.Get_debug_port ()) - 1;
  }
 
  int bsim_gpsim::MGetPinCount(void) {

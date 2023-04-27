@@ -33,8 +33,8 @@ enum { O_P1, O_AXIS };
 
 static PCWProp pcwprop[2] = {{PCW_COMBO, "Pin 1"}, {PCW_END, ""}};
 
-cpart_servo::cpart_servo(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_servo::cpart_servo(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     always_update = 1;
     input_pin = 0;
     angle = 0;
@@ -99,7 +99,7 @@ void cpart_servo::Process(void) {
 
     if ((in_[0] == 0) && (in_[1] == 1))  // low
     {
-        angle_ = ((time / PICSimLab.GetBoard()->MGetInstClockFreq()) - 0.0015) * 3141.59265359;
+        angle_ = ((time / pboard->MGetInstClockFreq()) - 0.0015) * 3141.59265359;
 
         if (angle_ > M_PI / 2.0)
             angle_ = M_PI / 2.0;

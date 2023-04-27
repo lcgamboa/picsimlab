@@ -35,8 +35,8 @@ static PCWProp pcwprop[10] = {
     {PCW_COMBO, "Input"},  {PCW_COMBO, "Output"}, {PCW_EDIT, "Num."},     {PCW_EDIT, "Den."},     {PCW_EDIT, "Sample"},
     {PCW_EDIT, "In Gain"}, {PCW_EDIT, "In Off."}, {PCW_EDIT, "Out Gain"}, {PCW_EDIT, "Out Off."}, {PCW_END, ""}};
 
-cpart_dtfunc::cpart_dtfunc(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_dtfunc::cpart_dtfunc(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_), font(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     always_update = 1;
     pins[0] = 0;
     pins[1] = 0;
@@ -52,7 +52,7 @@ cpart_dtfunc::cpart_dtfunc(const unsigned x, const unsigned y, const char* name,
     out_gain = 0.01;
     out_off = 0.27;
 
-    nsamples = sample * PICSimLab.GetBoard()->MGetInstClockFreq();
+    nsamples = sample * pboard->MGetInstClockFreq();
 
     refresh = 0;
 
@@ -140,7 +140,7 @@ void cpart_dtfunc::DrawOutput(const unsigned int i) {
 }
 
 void cpart_dtfunc::PreProcess(void) {
-    nsamples = sample * PICSimLab.GetBoard()->MGetInstClockFreq();
+    nsamples = sample * pboard->MGetInstClockFreq();
 }
 
 void cpart_dtfunc::Process(void) {

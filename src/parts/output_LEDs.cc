@@ -45,8 +45,8 @@ static PCWProp pcwprop[11] = {{PCW_DCOMBO, "1-D1"},  {PCW_DCOMBO, "2-D2"}, {PCW_
                               {PCW_DCOMBO, "5-D5"},  {PCW_DCOMBO, "6-D6"}, {PCW_DCOMBO, "7-D7"}, {PCW_DCOMBO, "8-D8"},
                               {PCW_COMBO, "Active"}, {PCW_SPIN, "Size"},   {PCW_END, ""}};
 
-cpart_leds::cpart_leds(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type, 9) {
+cpart_leds::cpart_leds(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_, 9) {
     X = x;
     Y = y;
     active = 1;

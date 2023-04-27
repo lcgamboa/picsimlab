@@ -39,8 +39,8 @@ static PCWProp pcwprop[4] = {{PCW_LABEL, "1 - VCC,+5V"},
                              {PCW_LABEL, "3 - GND ,GND"},
                              {PCW_END, ""}};
 
-cpart_lm35::cpart_lm35(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type),
+cpart_lm35::cpart_lm35(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_),
       font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
       font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     output_pins[0] = 0;

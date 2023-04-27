@@ -39,8 +39,8 @@ static PCWProp pcwprop[5] = {{PCW_COMBO, "Pin 1"},
                              {PCW_COMBO, "Active"},
                              {PCW_END, ""}};
 
-cpart_Buzzer::cpart_Buzzer(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_Buzzer::cpart_Buzzer(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     X = x;
     Y = y;
     active = 1;
@@ -223,11 +223,11 @@ void cpart_Buzzer::ReadPropertiesWindow(CPWindow* WProp) {
 
 void cpart_Buzzer::PreProcess(void) {
     if (btype == PASSIVE) {
-        JUMPSTEPS_ = (PICSimLab.GetBoard()->MGetInstClockFreq() / samplerate);
-        JUMPSTEPS_ *= 100.0 / timer->GetTime();  // Adjust to sample at the same time to the timer
+        JUMPSTEPS_ = (pboard->MGetInstClockFreq() / samplerate);
+        JUMPSTEPS_ *= ((float)BASETIMER) / timer->GetTime();  // Adjust to sample at the same time to the timer
         mcount = JUMPSTEPS_;
     } else if (btype == TONE) {
-        JUMPSTEPS_ = (PICSimLab.GetBoard()->MGetInstClockFreq() / samplerate);
+        JUMPSTEPS_ = (pboard->MGetInstClockFreq() / samplerate);
         mcount = JUMPSTEPS_;
         ctone = 0;
         optone = 0;
@@ -305,10 +305,10 @@ void cpart_Buzzer::PostProcess(void) {
             }
         }
     } else if (btype == PASSIVE) {
-        // int ret=
-        buzzer.SoundPlay(buffer, buffercount);
-        // printf("ret=%i buffercount=%i sample=%i time=%f
-        // timer=%i\n",ret,buffercount,samplerate,((float)(buffercount))/samplerate , Window1.timer1.GetTime ());
+        buffer[buffercount - 1] = 0;
+        int ret = buzzer.SoundPlay(buffer, buffercount);
+        printf("ret=%i buffercount=%i sample=%i time=%f timer=%i\n", ret, buffercount, samplerate,
+               ((float)(buffercount)) / samplerate, timer->GetTime());
         buffercount = 0;
     } else  // TONE
     {

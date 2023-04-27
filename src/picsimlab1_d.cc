@@ -52,7 +52,7 @@ CPWindow1::CPWindow1(void) {
     timer1.SetClass(lxT("CTimer"));
     timer1.SetName(lxT("timer1"));
     timer1.SetTag(0);
-    timer1.SetTime(100);
+    timer1.SetTime(BASETIMER);
     timer1.SetRunState(0);
     timer1.EvOnTime = EVONTIME & CPWindow1::timer1_EvOnTime;
     CreateChild(&timer1);
@@ -459,7 +459,7 @@ CPWindow1::CPWindow1(void) {
     /*#Others*/
     // lxrad automatic generated block end, don't edit above!
 
-    timer1.SetTime(TIMER * 1000.0);
+    timer1.SetTime(BASETIMER);
 
     // thread1
     thread1.SetFOwner(this);

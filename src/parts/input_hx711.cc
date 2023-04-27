@@ -43,11 +43,11 @@ static PCWProp pcwprop[5] = {{PCW_LABEL, "1-GND,GND"},
                              {PCW_LABEL, "4-VCC,+5V"},
                              {PCW_END, ""}};
 
-cpart_hx711::cpart_hx711(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type),
+cpart_hx711::cpart_hx711(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_),
       font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
       font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
-    sen_hx711_init(&hx711, PICSimLab.GetBoard());
+    sen_hx711_init(&hx711, pboard);
     sen_hx711_rst(&hx711);
 
     pins[0] = 0;

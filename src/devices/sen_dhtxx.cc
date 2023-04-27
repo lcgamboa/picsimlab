@@ -80,10 +80,10 @@ unsigned char sen_dhtxx_io(sen_dhtxx_t* dhtxx, const unsigned char data) {
     // dprintf("data = %i ldata =%i state = %i \n", data, dhtxx->ldata, dhtxx->state);
 
     if (!data && dhtxx->ldata && (dhtxx->state == -1)) {  // falling edge start
-        dhtxx->start = dhtxx->pboard->InstCounterGet();
+        dhtxx->start = dhtxx->pboard->GetInstCounter();
         dhtxx->state = 0;
     } else if (data && !dhtxx->ldata && !dhtxx->state) {
-        int pulse = dhtxx->pboard->InstCounterGet_us(dhtxx->start);
+        int pulse = dhtxx->pboard->GetInstCounter_us(dhtxx->start);
         int pmin, pmax;
         if (dhtxx->type == DHT11) {
             pmin = 18000;

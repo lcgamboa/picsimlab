@@ -39,8 +39,8 @@ static PCWProp pcwprop[4] = {{PCW_LABEL, "1 - GND,GND"},
                              {PCW_LABEL, "3 - VCC,+5V"},
                              {PCW_END, ""}};
 
-cpart_ds18b20::cpart_ds18b20(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type),
+cpart_ds18b20::cpart_ds18b20(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_),
       font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
       font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     output_pins[0] = 0;
@@ -49,7 +49,7 @@ cpart_ds18b20::cpart_ds18b20(const unsigned x, const unsigned y, const char* nam
 
     active[0] = 0;
 
-    sen_ds18b20_init(&ds18b20, PICSimLab.GetBoard());
+    sen_ds18b20_init(&ds18b20, pboard);
 
     SetPCWProperties(pcwprop);
 

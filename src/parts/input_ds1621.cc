@@ -41,8 +41,8 @@ static PCWProp pcwprop[9] = {{PCW_COMBO, "P1 - SDA"},     {PCW_COMBO, "P2 - SCL"
                              {PCW_LABEL, "P4 - GND,GND"}, {PCW_COMBO, "P5 - A2"},      {PCW_COMBO, "P6 - A1"},
                              {PCW_COMBO, "P7 - A0"},      {PCW_LABEL, "P8 - VCC,+5V"}, {PCW_END, ""}};
 
-cpart_ds1621::cpart_ds1621(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type),
+cpart_ds1621::cpart_ds1621(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_),
       font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
       font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     sen_ds1621_init(&ds1621);

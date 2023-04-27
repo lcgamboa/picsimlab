@@ -455,16 +455,16 @@ void cboard_x::Draw(CDraw* draw) {
     // board_x draw
     for (i = 0; i < outputc; i++)  // run over all outputs
     {
-        if (output[i].update)  // only if need update
+        if (output[i].update)      // only if need update
         {
             output[i].update = 0;
 
             if (!update) {
                 draw->Canvas.Init(Scale, Scale);
             }
-            update++;  // set to update buffer
+            update++;                       // set to update buffer
 
-            if (!output[i].r)  // if output shape is a rectangle
+            if (!output[i].r)               // if output shape is a rectangle
             {
                 if (output[i].id == O_SD1)  // if output is switch
                 {
@@ -526,13 +526,13 @@ void cboard_x::Draw(CDraw* draw) {
                     y = output[i].y1 + (h / 2) + (Proc.length());
                     draw->Canvas.RotatedText(Proc, x, y, 270);
                 }
-            } else  // if output shape is a circle
+            } else                                 // if output shape is a circle
             {
                 draw->Canvas.SetFgColor(0, 0, 0);  // black
 
-                switch (output[i].id)  // search for color of output
+                switch (output[i].id)              // search for color of output
                 {
-                    case O_LD0:  // White using pin 19 mean value (RD0)
+                    case O_LD0:                    // White using pin 19 mean value (RD0)
                         draw->Canvas.SetBgColor(pic.pins[18].oavalue, pic.pins[18].oavalue, pic.pins[18].oavalue);
                         break;
                     case O_LD1:  // Yelllow using pin 20 mean value (RD1)
@@ -615,12 +615,12 @@ void cboard_x::Run_CPU(void) {
         SWBounce_bounce(&bounce, 1);
     }
 
-    j = JUMPSTEPS;  // step counter
+    j = JUMPSTEPS;                   // step counter
     pi = 0;
     if (PICSimLab.GetMcuPwr())       // if powered
         for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
-            if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
+            if (j >= JUMPSTEPS)      // if number of step is bigger than steps to skip
             {
                 pic_set_pin(&pic, pic.mclr, p_RST);
                 if (!bounce.do_bounce) {
@@ -674,7 +674,7 @@ void cboard_x::Run_CPU(void) {
 
                 j = -1;  // reset counter
             }
-            j++;  // counter increment
+            j++;         // counter increment
             pic.ioupdated = 0;
         }
 

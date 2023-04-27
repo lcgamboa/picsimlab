@@ -109,6 +109,7 @@ void bsim_ucsim::MSetSerial(const char* port) {
 
  void bsim_ucsim::MSetFreq(float freq_) {
      freq = freq_;
+     TimerUpdateFrequency(freq);
  }
 
  float bsim_ucsim::MGetFreq(void) {
@@ -148,7 +149,7 @@ void bsim_ucsim::MSetSerial(const char* port) {
 
  int bsim_ucsim::DebugInit(int dtyppe)  // argument not used in picm only mplabx
  {
-     return 0;  //! mplabxd_init (this, Window1.Get_debug_port ()) - 1;
+     return 0;                          //! mplabxd_init (this, Window1.Get_debug_port ()) - 1;
  }
 
  int bsim_ucsim::MGetPinCount(void) {

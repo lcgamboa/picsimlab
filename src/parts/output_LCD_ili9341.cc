@@ -59,8 +59,8 @@ enum { I_LCD };
 /* types */
 enum { TC_SPI = 0, TC_8BITS, TC_SPI_TOUCH, TC_8BITS_TOUCH };
 
-cpart_LCD_ili9341::cpart_LCD_ili9341(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_LCD_ili9341::cpart_LCD_ili9341(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     X = x;
     Y = y;
 

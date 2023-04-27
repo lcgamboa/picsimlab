@@ -107,8 +107,8 @@ lxString cpart_keypad::GetMapFile(void) {
     return lxT("Keypad/keypad_4x4.map");
 }
 
-cpart_keypad::cpart_keypad(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type, 9) {
+cpart_keypad::cpart_keypad(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_, 9) {
     always_update = 1;
     pull = 0;
     type = 0;

@@ -43,8 +43,8 @@ static PCWProp pcwprop[5] = {{PCW_COMBO, "P1 - SCL"},
                              {PCW_LABEL, "P4 - GND,GND"},
                              {PCW_END, ""}};
 
-cpart_bmp180::cpart_bmp180(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type),
+cpart_bmp180::cpart_bmp180(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_),
       font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
       font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     sen_bmp180_init(&bmp180);

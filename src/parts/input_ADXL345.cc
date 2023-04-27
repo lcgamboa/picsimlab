@@ -41,8 +41,8 @@ static PCWProp pcwprop[9] = {{PCW_LABEL, "1 - GND ,GND"}, {PCW_LABEL, "2 - VCC,+
                              {PCW_COMBO, "4 - INT1"},     {PCW_COMBO, "5 - INT2"},    {PCW_COMBO, "6 - SDO"},
                              {PCW_COMBO, "7 - SDA"},      {PCW_COMBO, "8 - SCL"},     {PCW_END, ""}};
 
-cpart_ADXL345::cpart_ADXL345(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type),
+cpart_ADXL345::cpart_ADXL345(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_),
       font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
       font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     adxl345_init(&adxl);
@@ -260,7 +260,7 @@ void cpart_ADXL345::PostProcess(void) {
     if (adxl.update) {
         if (adxl.regs[DATA_FORMAT] & 0x8) {  // FULL_RES
             switch (adxl.regs[DATA_FORMAT] & 0x03) {
-                case 0:  // 2g
+                case 0:                      // 2g
                     asens = 256 / 50.0;
                     break;
                 case 1:  // 4g

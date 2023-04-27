@@ -44,8 +44,8 @@ static PCWProp pcwprop[14] = {{PCW_LABEL, "1 -VCC,+5V"}, {PCW_COMBO, "2 -Out 1"}
                               {PCW_COMBO, "Active"},     {PCW_COMBO, "Mode"},
                               {PCW_SPIN, "Size"},        {PCW_END, ""}};
 
-cpart_pbuttons::cpart_pbuttons(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_pbuttons::cpart_pbuttons(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     active = 1;
     Size = 0;
     Bitmap = NULL;
@@ -182,7 +182,7 @@ void cpart_pbuttons::DrawOutput(const unsigned int i) {
 void cpart_pbuttons::PreProcess(void) {
     if (mode == MODE_NORMAL) {
         const picpin* ppins = SpareParts.GetPinsValues();
-        SWBounce_prepare(&bounce, PICSimLab.GetBoard()->MGetInstClockFreq());
+        SWBounce_prepare(&bounce, pboard->MGetInstClockFreq());
 
         for (unsigned int i = 0; i < Size; i++) {
             if (output_pins[i]) {
@@ -191,14 +191,14 @@ void cpart_pbuttons::PreProcess(void) {
                 }
             }
         }
-        SetAwaysUpdate(bounce.do_bounce);
+        SetAlwaysUpdate(bounce.do_bounce);
     } else {
         for (unsigned int i = 0; i < Size; i++) {
             if (output_pins[i]) {
                 SpareParts.SetPin(output_pins[i], output_value[i]);
             }
         }
-        SetAwaysUpdate(0);
+        SetAlwaysUpdate(0);
     }
 }
 

@@ -67,8 +67,8 @@ static PCWProp pcwprop[21] = {{PCW_LABEL, "1-/OE,GND"},  {PCW_COMBO, "2-D0"},   
                               {PCW_LABEL, "16-O3,NC"},   {PCW_LABEL, "17-O2,NC"},   {PCW_LABEL, "18-O1,NC"},
                               {PCW_LABEL, "19-O0,NC"},   {PCW_LABEL, "20-VCC,+5V"}, {PCW_END, ""}};
 
-cpart_IO_74xx573::cpart_IO_74xx573(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_IO_74xx573::cpart_IO_74xx573(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     X = x;
     Y = y;
     always_update = 1;

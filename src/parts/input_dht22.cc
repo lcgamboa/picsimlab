@@ -40,8 +40,8 @@ static PCWProp pcwprop[5] = {{PCW_LABEL, "P1 - VCC,+5V"},
                              {PCW_LABEL, "P4 - GND,GND"},
                              {PCW_END, ""}};
 
-cpart_dht22::cpart_dht22(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type),
+cpart_dht22::cpart_dht22(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_),
       font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
       font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     output_pins[0] = 0;
@@ -52,7 +52,7 @@ cpart_dht22::cpart_dht22(const unsigned x, const unsigned y, const char* name, c
     active[0] = 0;
     active[1] = 0;
 
-    sen_dhtxx_init(&dht22, PICSimLab.GetBoard(), DHT22);
+    sen_dhtxx_init(&dht22, pboard, DHT22);
 
     SetPCWProperties(pcwprop);
 

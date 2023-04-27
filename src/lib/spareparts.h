@@ -79,7 +79,7 @@ public:
     void WritePinOA(unsigned char pin, unsigned short oavalue);
     unsigned char RegisterIOpin(lxString pname, unsigned char pin = 0, unsigned char dir = PD_OUT);
     unsigned char UnregisterIOpin(unsigned char pin);
-    part* AddPart(const char* partname, const int x, const int y, const float scale);
+    part* AddPart(const char* partname, const int x, const int y, const float scale, board* pboard_);
     void DeletePart(const int partn);
     void SetUseAlias(const int use) { useAlias = use; };
     unsigned char GetUseAlias(void) { return useAlias; };
@@ -134,8 +134,8 @@ private:
     unsigned char useAlias;
     int partsc;
     part* parts[MAX_PARTS];
-    int partsc_aup;              // aways update list
-    part* parts_aup[MAX_PARTS];  // aways update list
+    int partsc_aup;              // always update list
+    part* parts_aup[MAX_PARTS];  // always update list
     unsigned char pullup_bus[IOINIT];
     int pullup_bus_count;
     unsigned char pullup_bus_ptr[IOINIT];

@@ -95,8 +95,8 @@ static PCWProp pcwprop[35] = {
 
 int cpart_Jumpers::countID = 0;
 
-cpart_Jumpers::cpart_Jumpers(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_Jumpers::cpart_Jumpers(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_), font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     char buff[2];
 
     ID = countID++;

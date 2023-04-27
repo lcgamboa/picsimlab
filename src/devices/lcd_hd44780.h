@@ -27,16 +27,17 @@
 #define LCD_H
 
 #include <lxrad.h>
+class board;
 
 #define DDRMAX 80
 
 #define L_FNT 0x0200  // Sets character font
 #define L_NLI 0x0100  // Sets number of display line
 
-#define L_DL 0x0080  // Sets interface data length
+#define L_DL 0x0080   // Sets interface data length
 
-#define L_LR 0x0040  // Sets shift direction
-#define L_CD 0x0020  // Sets cursor-move or display-shift
+#define L_LR 0x0040   // Sets shift direction
+#define L_CD 0x0020   // Sets cursor-move or display-shift
 
 #define L_DID 0x0010  // Sets cursor move direction
 #define L_DSH 0x0008  // specifies to shift the display
@@ -67,7 +68,6 @@ typedef struct {
     unsigned char addr_counter;
     unsigned char addr_mode;
     unsigned char update;     // redraw
-    unsigned int blinkc;      // blink count timer
     unsigned char blink;      // cursor state
     char shift;               // display shift
     char ddram_char[DDRMAX];  // ddram
@@ -77,24 +77,18 @@ typedef struct {
     char buff;
     unsigned char cnum;  // number of columns 16 or 20
     unsigned char lnum;  // number of lines 1,2 or 4
+    board* pboard;
+    int TimerID;
 } lcd_t;
 
 void lcd_cmd(lcd_t* lcd, char cmd);
-
 void lcd_data(lcd_t* lcd, char data);
-
 unsigned char lcd_read_busyf_acounter(lcd_t* lcd);
-
 char lcd_read_data(lcd_t* lcd);
-
 void lcd_rst(lcd_t* lcd);
-
-void lcd_init(lcd_t* lcd, unsigned char cnum, unsigned char lnum);
-
+void lcd_init(lcd_t* lcd, unsigned char cnum, unsigned char lnum, board* pboard_);
+void lcd_end(lcd_t* lcd);
 void lcd_on(lcd_t* lcd, int onoff);
-
-void lcd_blink(lcd_t* lcd);
-
 void lcd_draw(lcd_t* lcd, CCanvas* canvas, int x1, int y1, int w1, int h1, int picpwr);
 
 #endif

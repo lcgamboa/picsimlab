@@ -58,8 +58,8 @@ static PCWProp pcwprop[7] = {
     {PCW_LABEL, "P1-GND ,GND"}, {PCW_LABEL, "P2-VCC,+5V"}, {PCW_COMBO, "P3-MISO"}, {PCW_COMBO, "P4-MOSI"},
     {PCW_COMBO, "P5-SCK"},      {PCW_COMBO, "P6-CS"},      {PCW_END, ""}};
 
-cpart_SDCard::cpart_SDCard(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_SDCard::cpart_SDCard(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     sdcard_init(&sd);
     sdcard_rst(&sd);
 

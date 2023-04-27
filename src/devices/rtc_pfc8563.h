@@ -36,13 +36,13 @@ typedef struct {
     time_t systime;
     time_t rtctime;
     int ucont;
-    int rtcc;
     int alarm;
+    board* pboard;
+    int TimerID;
 } rtc_pfc8563_t;
 
 void rtc_pfc8563_rst(rtc_pfc8563_t* rtc);
-void rtc_pfc8563_init(rtc_pfc8563_t* rtc);
-void rtc_pfc8563_update(rtc_pfc8563_t* rtc);
+void rtc_pfc8563_init(rtc_pfc8563_t* rtc, board* pboard_);
 void rtc_pfc8563_end(rtc_pfc8563_t* rtc);
 void rtc_pfc8563_setUtime(rtc_pfc8563_t* rtc, time_t utime);
 time_t rtc_pfc8563_getUtime(rtc_pfc8563_t* rtc);

@@ -236,7 +236,7 @@ public:
     /**
      * @brief  Called once on part creation
      */
-    part(const unsigned x, const unsigned y, const char* name, const char* type, const int fsize = 8);
+    part(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_, const int fsize = 8);
 
     /**
      * @brief  Called once on part initialization
@@ -346,12 +346,12 @@ public:
     /**
      * @brief  Return if part need to be update every clock cycle
      */
-    int GetAwaysUpdate(void);
+    int GetAlwaysUpdate(void);
 
     /**
      * @brief  Set if part need to be update every clock cycle
      */
-    void SetAwaysUpdate(int sau);
+    void SetAlwaysUpdate(int sau);
 
     const int GetPCWCount(void);
     const PCWProp* GetPCWProperties(void);
@@ -391,6 +391,7 @@ protected:
     int PinCtrlCount;
     unsigned char* Pins;
     unsigned char* PinsCtrl;
+    board* pboard;
 
     /**
      * @brief  read maps
@@ -433,20 +434,22 @@ private:
 
 extern int NUM_PARTS;
 
-#define part_init(name, function, menu)                              \
-    static part* function##_create(unsigned int x, unsigned int y) { \
-        part* p = new function(x, y, name, menu);                    \
-        p->Init();                                                   \
-        return p;                                                    \
-    };                                                               \
-    static void __attribute__((constructor)) function##_init(void);  \
-    static void function##_init(void) { part_register(name, function##_create, menu); }
+#define part_init(name, function, menu)                                              \
+    static part* function##_create(unsigned int x, unsigned int y, board* pboard_) { \
+        part* p = new function(x, y, name, menu, pboard_);                           \
+        p->Init();                                                                   \
+        return p;                                                                    \
+    };                                                                               \
+    static void __attribute__((constructor)) function##_init(void);                  \
+    static void function##_init(void) {                                              \
+        part_register(name, function##_create, menu);                                \
+    }
 
-typedef part* (*part_create_func)(unsigned int x, unsigned int y);
+typedef part* (*part_create_func)(unsigned int x, unsigned int y, board* pboard_);
 
 void part_register(const char* name, part_create_func pcreate, const char* menu);
 
-part* create_part(lxString name, unsigned int x, unsigned int y);
+part* create_part(lxString name, unsigned int x, unsigned int y, board* pboard_);
 
 typedef struct {
     char name[30];

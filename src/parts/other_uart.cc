@@ -58,9 +58,9 @@ static PCWProp pcwprop[7] = {
     {PCW_LABEL, "P1 - GND,GND"}, {PCW_COMBO, "P2 - RX"}, {PCW_COMBO, "P3 - TX"}, {PCW_LABEL, "P4 - VCC,+5V"},
     {PCW_COMBO, "Port"},         {PCW_COMBO, "Speed"},   {PCW_END, ""}};
 
-cpart_UART::cpart_UART(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
-    uart_init(&sr, PICSimLab.GetBoard());
+cpart_UART::cpart_UART(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    uart_init(&sr, pboard);
     uart_rst(&sr);
 
     pins[0] = 0;

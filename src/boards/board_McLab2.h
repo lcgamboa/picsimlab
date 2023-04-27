@@ -86,6 +86,9 @@ private:
     lxColor color2;
     lxFont font;
     SWBounce_t bounce;
+    int TimerID;
+    int heater_pwr;
+    int cooler_pwr;
 
 public:
     // Return the board name
@@ -115,6 +118,7 @@ public:
     void SetScale(double scale) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
+    void OnTime(void);
 };
 
 #endif /* BOARD_McLab2_H */

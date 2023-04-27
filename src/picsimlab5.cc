@@ -25,15 +25,15 @@
 
 // Spare parts
 
-#include "picsimlab5.h"
-#include "picsimlab1.h"
-#include "picsimlab2.h"
-#include "picsimlab4.h"
-#include "picsimlab5_d.cc"
-
 #include "lib/oscilloscope.h"
 #include "lib/picsimlab.h"
 #include "lib/spareparts.h"
+
+#include "picsimlab1.h"
+#include "picsimlab2.h"
+#include "picsimlab4.h"
+#include "picsimlab5.h"
+#include "picsimlab5_d.cc"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -111,7 +111,8 @@ void CPWindow5::draw1_EvMouseButtonPress(CControl* control, uint button, uint x,
     if ((button == 1) && (PartToCreate.size() > 0) && (SpareParts.GetCount() < MAX_PARTS)) {
         // timer1.SetRunState (0);
         lxSetCursor(lxCursor(lxCURSOR_ARROW));
-        SpareParts.AddPart((char*)PartToCreate.char_str(), x - offsetx, y - offsety, SpareParts.GetScale());
+        SpareParts.AddPart((char*)PartToCreate.char_str(), x - offsetx, y - offsety, SpareParts.GetScale(),
+                           PICSimLab.GetBoard());
         PartToCreate = "";
         _EvOnShow(control);
         return;

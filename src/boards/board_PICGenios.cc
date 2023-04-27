@@ -192,6 +192,11 @@ enum {
 
 // TODO TEMP cooler must don't work with AQUE=0
 
+static void cboard_PICGenios_callback(void* arg) {
+    cboard_PICGenios* PICGenios = (cboard_PICGenios*)arg;
+    PICGenios->OnTime();
+}
+
 cboard_PICGenios::cboard_PICGenios(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     Proc = "PIC18F4520";
 
@@ -235,9 +240,9 @@ cboard_PICGenios::cboard_PICGenios(void) : font(10, lxFONTFAMILY_TELETYPE, lxFON
 
     image.Destroy();
 
-    lcd_init(&lcd, 16, 2);
+    lcd_init(&lcd, 16, 2, this);
     mi2c_init(&mi2c, 4);
-    rtc_ds1307_init(&rtc2);
+    rtc_ds1307_init(&rtc2, this);
 
     ReadMaps();
 
@@ -352,6 +357,8 @@ cboard_PICGenios::cboard_PICGenios(void) : font(10, lxFONTFAMILY_TELETYPE, lxFON
     strncat(mi2c_tmp_name, ".txt", 200);
 
     SWBounce_init(&bounce, 7);
+
+    TimerID = TimerRegister_ms(100, cboard_PICGenios_callback, this);
 }
 
 cboard_PICGenios::~cboard_PICGenios(void) {
@@ -369,6 +376,7 @@ cboard_PICGenios::~cboard_PICGenios(void) {
 
     mi2c_end(&mi2c);
     rtc_ds1307_end(&rtc2);
+    lcd_end(&lcd);
 
     if (PICSimLab.GetWindow()) {
         PICSimLab.GetWindow()->DestroyChild(gauge1);
@@ -382,6 +390,7 @@ cboard_PICGenios::~cboard_PICGenios(void) {
     unlink(mi2c_tmp_name);
 
     SWBounce_end(&bounce);
+    TimerUnregister(TimerID);
 }
 
 int cboard_PICGenios::MInit(const char* processor, const char* fname, float freq) {
@@ -458,8 +467,6 @@ void cboard_PICGenios::Draw(CDraw* draw) {
     pic_set_pin(&pic, 28, 1);
     pic_set_pin(&pic, 29, 1);
     pic_set_pin(&pic, 30, 1);
-
-    lcd_blink(&lcd);
 
     // lab4 draw
     for (i = 0; i < outputc; i++) {
@@ -881,8 +888,6 @@ void cboard_PICGenios::Draw(CDraw* draw) {
         draw->Update();
     }
 
-    rtc_ds1307_update(&rtc2);
-
     // buzzer
     if ((((pic.pins[15].oavalue - 55) / 2) > 10) && (PICSimLab.GetMcuPwr()) && jmp[0]) {
         if (!sound_on) {
@@ -901,14 +906,6 @@ void cboard_PICGenios::Draw(CDraw* draw) {
         cooler_pwr = 0;
     }
     gauge1->SetValue(cooler_pwr / 2);
-    if (cooler_pwr > 40) {
-        vtc++;
-    }
-    if (vtc > (4 - 0.02 * cooler_pwr)) {
-        vtc = 0;
-        vt ^= 1;
-        output_ids[O_VT]->update = 1;
-    }
 
     // Heater
     if (dip[15]) {
@@ -918,12 +915,26 @@ void cboard_PICGenios::Draw(CDraw* draw) {
     }
     gauge2->SetValue(heater_pwr / 2);
 
-    // thacometer
-    rpmstp = ((float)PICSimLab.GetNSTEPJ()) / (0.7196 * (cooler_pwr + 1));
-
     // potentiometers
     vp2in = (5.0 * pot[0] / 199);
     vp1in = (5.0 * pot[1] / 199);
+
+    // ref
+    // pic_set_apin(pic,5,2.5);
+}
+
+void cboard_PICGenios::OnTime(void) {
+    if (cooler_pwr > 40) {
+        vtc++;
+    }
+    if (vtc > (4 - 0.02 * cooler_pwr)) {
+        vtc = 0;
+        vt ^= 1;
+        output_ids[O_VT]->update = 1;
+    }
+
+    // thacometer
+    rpmstp = 2000.0 / (0.7196 * (cooler_pwr + 1));
 
     // temp
     ref = ((0.25 * (heater_pwr))) - (0.25 * (cooler_pwr));
@@ -936,9 +947,6 @@ void cboard_PICGenios::Draw(CDraw* draw) {
 
     if (dip[16])
         pic_set_apin(&pic, 4, temp[0] / 100.0);
-
-    // ref
-    // pic_set_apin(pic,5,2.5);
 }
 
 void cboard_PICGenios::Run_CPU(void) {
@@ -2458,10 +2466,13 @@ void cboard_PICGenios::ReadPreferences(char* name, char* value) {
         if (combo1) {
             combo1->SetText(value);
         }
-        if (!strcmp(value, "hd44780 16x2"))
-            lcd_init(&lcd, 16, 2);
-        else
-            lcd_init(&lcd, 16, 4);
+        if (!strcmp(value, "hd44780 16x2")) {
+            lcd_end(&lcd);
+            lcd_init(&lcd, 16, 2, this);
+        } else {
+            lcd_end(&lcd);
+            lcd_init(&lcd, 16, 4, this);
+        }
     }
 
     if (!strcmp(name, "PICGenios_clock")) {
@@ -2480,14 +2491,19 @@ void cboard_PICGenios::ReadPreferences(char* name, char* value) {
 // Change lcd
 
 void cboard_PICGenios::board_Event(CControl* control) {
-    if (combo1->GetText().Cmp(lxT("hd44780 16x2")) == 0)
-        lcd_init(&lcd, 16, 2);
-    else if (combo1->GetText().Cmp(lxT("hd44780 16x4")) == 0)
-        lcd_init(&lcd, 16, 4);
-    else if (combo1->GetText().Cmp(lxT("hd44780 20x2")) == 0)
-        lcd_init(&lcd, 20, 2);
-    else if (combo1->GetText().Cmp(lxT("hd44780 20x4")) == 0)
-        lcd_init(&lcd, 20, 4);
+    if (combo1->GetText().Cmp(lxT("hd44780 16x2")) == 0) {
+        lcd_end(&lcd);
+        lcd_init(&lcd, 16, 2, this);
+    } else if (combo1->GetText().Cmp(lxT("hd44780 16x4")) == 0) {
+        lcd_end(&lcd);
+        lcd_init(&lcd, 16, 4, this);
+    } else if (combo1->GetText().Cmp(lxT("hd44780 20x2")) == 0) {
+        lcd_end(&lcd);
+        lcd_init(&lcd, 20, 2, this);
+    } else if (combo1->GetText().Cmp(lxT("hd44780 20x4")) == 0) {
+        lcd_end(&lcd);
+        lcd_init(&lcd, 20, 4, this);
+    }
 }
 
 board_init(BOARD_PICGenios_Name, cboard_PICGenios);

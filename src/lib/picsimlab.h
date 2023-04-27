@@ -26,11 +26,10 @@
 #ifndef PICSIMLAB
 #define PICSIMLAB
 
-#define TIMER 0.1        // timer period in s
-#define CPUTUSEMAX 0.1   // max period cpu use in s
-#define NSTEPKT 25000.0  // TIMER constant 1MHz/(4.0*timer_freq)
-#define NSTEPKF 40.0     // Freq constant 4.0*timer_freq
-#define DEFAULTJS 100    // IO refresh rate
+#define BASETIMER 100                 // timer period in ms
+#define NSTEPKF (4000.0 / BASETIMER)  // Freq constant 4.0*timer_freq
+#define NSTEPKT (1e6 / NSTEPKF)       // TIMER constant 1MHz/(4.0*timer_freq)
+#define DEFAULTJS 100                 // IO refresh rate
 
 extern char SERIALDEVICE[100];
 

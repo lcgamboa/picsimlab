@@ -100,9 +100,9 @@ void CPWindow1::timer1_EvOnTime(CControl* control) {
 
 #ifdef _NOTHREAD
     // printf ("overtimer = %i \n", timer1.GetOverTime ());
-    if (timer1.GetOverTime() < 100)
+    if (timer1.GetOverTime() < BASETIMER)
 #else
-    if ((!PICSimLab.tgo) && (timer1.GetTime() == 100))
+    if ((!PICSimLab.tgo) && (timer1.GetTime() == BASETIMER))
 #endif
     {
         if (crt) {
@@ -124,7 +124,7 @@ void CPWindow1::timer1_EvOnTime(CControl* control) {
         if (zerocount > 3) {
             zerocount = 0;
 
-            if (timer1.GetTime() > 100) {
+            if (timer1.GetTime() > BASETIMER) {
                 timer1.SetTime(timer1.GetTime() - 5);
             }
         }
@@ -196,6 +196,9 @@ void CPWindow1::DrawBoard(void) {
             PICSimLab.GetBoard()->SetScale(PICSimLab.GetScale());
             PICSimLab.GetBoard()->EvOnShow();
         }
+        if (PICSimLab.GetBoard()) {
+            PICSimLab.GetBoard()->Draw(&draw1);
+        }
 
         if (PICSimLab.GetBoard()->GetUseOscilloscope()) {
             menu1_Modules_Oscilloscope_EvMenuActive(this);
@@ -205,9 +208,7 @@ void CPWindow1::DrawBoard(void) {
         }
         PICSimLab.SetNeedResize(0);
         statusbar1.Draw();
-    }
-
-    if (PICSimLab.GetBoard()) {
+    } else if (PICSimLab.GetBoard()) {
         PICSimLab.GetBoard()->Draw(&draw1);
     }
 #ifndef _WIN_
@@ -307,7 +308,7 @@ void CPWindow1::timer2_EvOnTime(CControl* control) {
         }
     }
 
-    label2.SetText(lxString().Format("Spd: %3.2fx", 100.0 / timer1.GetTime()));
+    label2.SetText(lxString().Format("Spd: %3.2fx", ((float)BASETIMER) / timer1.GetTime()));
 
     if (PICSimLab.GetErrorCount()) {
 #ifndef __EMSCRIPTEN__
@@ -585,7 +586,7 @@ void CPWindow1::combo1_EvOnComboChange(CControl* control) {
     Application->ProcessEvents();
 
     PICSimLab.tgo = 1;
-    timer1.SetTime(100);
+    timer1.SetTime(BASETIMER);
 }
 
 void CPWindow1::_EvOnDestroy(CControl* control) {

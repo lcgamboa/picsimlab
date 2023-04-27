@@ -35,7 +35,7 @@
 class cpart_RTC_pfc8563 : public part {
 public:
     lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
-    cpart_RTC_pfc8563(const unsigned x, const unsigned y, const char* name, const char* type);
+    cpart_RTC_pfc8563(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
     ~cpart_RTC_pfc8563(void);
     void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;

@@ -37,8 +37,8 @@ enum { I_PO1, I_PO2 };
 static PCWProp pcwprop[6] = {{PCW_LABEL, "Pin 1        +5V"},  {PCW_COMBO, "Pin 2"},  {PCW_COMBO, "Pin 3"},
                              {PCW_LABEL, "Pin 4         GND"}, {PCW_COMBO, "Output"}, {PCW_END, ""}};
 
-cpart_sht3x::cpart_sht3x(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type),
+cpart_sht3x::cpart_sht3x(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_),
       font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
       font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     output_pins[0] = 0;

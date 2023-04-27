@@ -73,8 +73,8 @@ part* CSpareParts::GetPart(const int partn) {
     return NULL;
 }
 
-part* CSpareParts::AddPart(const char* partname, const int x, const int y, const float scale) {
-    part* newpart = create_part(partname, x, y);
+part* CSpareParts::AddPart(const char* partname, const int x, const int y, const float scale, board* pboard_) {
+    part* newpart = create_part(partname, x, y, pboard_);
     parts[partsc] = newpart;
     if (parts[partsc] == NULL) {
         Message_sz(lxT("Erro creating part: ") + lxString(partname), 400, 200);
@@ -479,7 +479,7 @@ bool CSpareParts::LoadConfig(lxString fname, const int disable_debug) {
             } else if (!strcmp(name, "osc_ch2")) {
                 osc_list.AddLine(prefs.GetLine(i));
                 Oscilloscope.ReadPreferencesList(osc_list);
-            } else if ((parts[partsc_] = create_part(name, x, y))) {
+            } else if ((parts[partsc_] = create_part(name, x, y, PICSimLab.GetBoard()))) {
                 printf("Spare parts: parts[%02i] (%s) created \n", partsc_, name);
                 parts[partsc_]->ReadPreferences(temp);
                 parts[partsc_]->SetId(partsc_);
@@ -526,7 +526,7 @@ void CSpareParts::PreProcess(void) {
     partsc_aup = 0;
     for (i = 0; i < partsc; i++) {
         parts[i]->PreProcess();
-        if (parts[i]->GetAwaysUpdate()) {
+        if (parts[i]->GetAlwaysUpdate()) {
             parts_aup[partsc_aup] = parts[i];
             partsc_aup++;
         }

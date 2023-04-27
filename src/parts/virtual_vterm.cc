@@ -40,9 +40,9 @@ enum { LE_NONE, LE_NL, LE_CR, LE_NL_CR, O_TERM };
 static PCWProp pcwprop[6] = {{PCW_LABEL, "P1 - VCC,+5V"}, {PCW_COMBO, "P2 - RX"}, {PCW_COMBO, "P3 - TX"},
                              {PCW_LABEL, "P4 - GND,GND"}, {PCW_COMBO, "Speed"},   {PCW_END, ""}};
 
-cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
-    vterm_init(&vt, PICSimLab.GetBoard());
+cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    vterm_init(&vt, pboard);
     vterm_rst(&vt);
 
     pins[0] = 0;

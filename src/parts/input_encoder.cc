@@ -42,8 +42,8 @@ enum { I_RT1, I_BTN };
 static PCWProp pcwprop[6] = {{PCW_LABEL, "1 - VCC,+5V"}, {PCW_LABEL, "2 - GND ,GND"}, {PCW_COMBO, "3 - OA"},
                              {PCW_COMBO, "4 - OB"},      {PCW_COMBO, "5 - BTN"},      {PCW_END, ""}};
 
-cpart_encoder::cpart_encoder(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_encoder::cpart_encoder(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     always_update = 1;
 
     p_BTN = 1;
@@ -162,7 +162,7 @@ void cpart_encoder::PreProcess(void) {
             step = 0;
             // FIXME on slow speed output is not 90 degrees
         } else {
-            step = PICSimLab.GetBoard()->MGetInstClockFreq() / ((da > 0) ? da * 10 : -da * 10);
+            step = pboard->MGetInstClockFreq() / ((da > 0) ? da * 10 : -da * 10);
         }
 
         dprintf("state=%i da=%f  %3i  %3i  dir=%i step=%i\n", state, da, value_, value_old, dir, step);

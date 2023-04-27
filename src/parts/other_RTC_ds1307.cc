@@ -38,13 +38,13 @@ static PCWProp pcwprop[9] = {{PCW_LABEL, "P1 - X1,OSC1"}, {PCW_LABEL, "P2 - X2,O
                              {PCW_LABEL, "P4 - GND,GND"}, {PCW_COMBO, "P5 - SDA"},     {PCW_COMBO, "P6 - SCL"},
                              {PCW_COMBO, "P7 - SQW"},     {PCW_LABEL, "P8 - VCC,+5V"}, {PCW_END, ""}};
 
-cpart_RTC_ds1307::cpart_RTC_ds1307(const unsigned x, const unsigned y, const char* name, const char* type)
-    : part(x, y, name, type),
+cpart_RTC_ds1307::cpart_RTC_ds1307(const unsigned x, const unsigned y, const char* name, const char* type,
+                                   board* pboard_)
+    : part(x, y, name, type, pboard_),
       font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
       font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
-    rtc_ds1307_init(&rtc2);
+    rtc_ds1307_init(&rtc2, pboard);
     rtc_ds1307_rst(&rtc2);
-
     input_pins[0] = 0;
     input_pins[1] = 0;
     input_pins[2] = 0;
@@ -150,7 +150,6 @@ void cpart_RTC_ds1307::PreProcess(void) {
     if (input_pins[0] > 0) {
         SpareParts.ResetPullupBus(input_pins[0] - 1);
     }
-    rtc_ds1307_update(&rtc2);
 }
 
 void cpart_RTC_ds1307::Process(void) {
