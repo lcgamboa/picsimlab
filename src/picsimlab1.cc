@@ -187,6 +187,7 @@ void CPWindow1::DrawBoard(void) {
             draw1.SetWidth(nw);
             draw1.SetHeight(nh);
 
+            draw1.SetVisible(0);
             draw1.SetImgFileName(
                 lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/") + PICSimLab.GetBoard()->GetPictureFileName()),
                 PICSimLab.GetScale(), PICSimLab.GetScale());
@@ -195,10 +196,9 @@ void CPWindow1::DrawBoard(void) {
         if (PICSimLab.GetBoard()) {
             PICSimLab.GetBoard()->SetScale(PICSimLab.GetScale());
             PICSimLab.GetBoard()->EvOnShow();
-        }
-        if (PICSimLab.GetBoard()) {
             PICSimLab.GetBoard()->Draw(&draw1);
         }
+        draw1.SetVisible(1);
 
         if (PICSimLab.GetBoard()->GetUseOscilloscope()) {
             menu1_Modules_Oscilloscope_EvMenuActive(this);

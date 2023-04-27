@@ -182,7 +182,7 @@ void cboard_McLab1::Draw(CDraw* draw) {
                             break;
                     }
                 } else {
-                    draw->Canvas.SetBgColor(55, 0, 0);
+                    draw->Canvas.SetBgColor(30, 0, 0);
                 }
 
                 if (output[i].id == O_JP1)
@@ -568,8 +568,8 @@ void cboard_McLab1::Reset(void) {
     }
 
     for (int i = 0; i < pic.PINCOUNT; i++) {
-        lm1[i] = 0;
-        lm2[i] = 0;
+        lm1[i] = 30;
+        lm2[i] = 30;
     }
     if (use_spare)
         SpareParts.Reset();

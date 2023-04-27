@@ -848,7 +848,7 @@ void bsim_qemu::pins_reset(void) {
         pins[p].ptype = PT_DIGITAL;
         pins[p].dir = PD_IN;
         pins[p].ovalue = 0;
-        pins[p].oavalue = 0;
+        pins[p].oavalue = 55;
 
         if (MGetPinName(p + 1).Contains("VDD")) {
             pins[p].value = 1;

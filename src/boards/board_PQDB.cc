@@ -314,7 +314,7 @@ void cboard_PQDB::Draw(CDraw* draw) {
                     case O_F4:
                     case O_G4:
                     case O_P4:
-                        draw->Canvas.SetBgColor(lm7seg[output[i].id - O_A1], 55, 55);
+                        draw->Canvas.SetBgColor(lm7seg[output[i].id - O_A1], 30, 30);
                         draw->Canvas.SetFgColor(10, 10, 10);
                         break;
                     case O_MP:
@@ -571,9 +571,9 @@ void cboard_PQDB::Run_CPU(void) {
     int pi;
     const picpin* pins;
 
-    unsigned int alm[40];  // valor médio dos pinos de IO
+    unsigned int alm[40];      // valor médio dos pinos de IO
 
-    float alm7seg[32];     // luminosidade media display 7 seg
+    unsigned int alm7seg[32];  // luminosidade media display 7 seg
 
     const int JUMPSTEPS = PICSimLab.GetJUMPSTEPS();
     const long int NSTEP = PICSimLab.GetNSTEP();
@@ -895,6 +895,9 @@ void cboard_PQDB::Reset(void) {
         pic.pins[PSRD0 + i].dir = PD_OUT;
     }
 
+    for (int i = 0; i < 32; i++) {
+        lm7seg[i] = 30;
+    }
     RegisterRemoteControl();
 }
 

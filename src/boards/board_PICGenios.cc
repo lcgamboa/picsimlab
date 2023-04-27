@@ -1243,10 +1243,10 @@ void cboard_PICGenios::Run_CPU(void) {
         else
             pic.pins[i].oavalue = (int)((alm[i] * RNSTEP) + 55);
 
-        lm1[i] = (int)(((600.0 * alm1[i]) / NSTEPJ) + 55);
-        lm2[i] = (int)(((600.0 * alm2[i]) / NSTEPJ) + 55);
-        lm3[i] = (int)(((600.0 * alm3[i]) / NSTEPJ) + 55);
-        lm4[i] = (int)(((600.0 * alm4[i]) / NSTEPJ) + 55);
+        lm1[i] = (int)(((600.0 * alm1[i]) / NSTEPJ) + 30);
+        lm2[i] = (int)(((600.0 * alm2[i]) / NSTEPJ) + 30);
+        lm3[i] = (int)(((600.0 * alm3[i]) / NSTEPJ) + 30);
+        lm4[i] = (int)(((600.0 * alm4[i]) / NSTEPJ) + 30);
         if (lm1[i] > 255)
             lm1[i] = 255;
         if (lm2[i] > 255)
@@ -1376,10 +1376,10 @@ void cboard_PICGenios::Reset(void) {
     }
 
     for (int i = 0; i < pic.PINCOUNT; i++) {
-        lm1[i] = 0;
-        lm2[i] = 0;
-        lm3[i] = 0;
-        lm4[i] = 0;
+        lm1[i] = 30;
+        lm2[i] = 30;
+        lm3[i] = 30;
+        lm4[i] = 30;
     }
 
     if (use_spare)

@@ -369,6 +369,18 @@ bool CSpareParts::LoadConfig(lxString fname, const int disable_debug) {
 
     memset(&Pins[PinsCount], 0, sizeof(picpin) * (256 - PinsCount));
 
+    for (int i = PinsCount; i < (256 - PinsCount); i++) {
+        Pins[i].avalue = 0;
+        Pins[i].lvalue = 0;
+        Pins[i].pord = 0;
+        Pins[i].port = 0;
+        Pins[i].value = 0;
+        Pins[i].ptype = PT_DIGITAL;
+        Pins[i].dir = PD_IN;
+        Pins[i].ovalue = 0;
+        Pins[i].oavalue = 55;
+    }
+
     bool ret = lxFileExists(fname);
 
     if (ret) {

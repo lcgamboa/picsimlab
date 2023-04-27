@@ -945,10 +945,10 @@ void cboard_McLab2::Reset(void) {
     }
 
     for (int pi = 0; pi < pic.PINCOUNT; pi++) {
-        lm1[pi] = 0;
-        lm2[pi] = 0;
-        lm3[pi] = 0;
-        lm4[pi] = 0;
+        lm1[pi] = 30;
+        lm2[pi] = 30;
+        lm3[pi] = 30;
+        lm4[pi] = 30;
     }
     if (use_spare)
         SpareParts.Reset();

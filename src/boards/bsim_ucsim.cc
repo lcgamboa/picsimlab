@@ -177,7 +177,7 @@ void bsim_ucsim::MSetSerial(const char* port) {
              pins[p].ptype = PT_DIGITAL;
              pins[p].dir = PD_IN;
              pins[p].ovalue = 0;
-             pins[p].oavalue = 0;
+             pins[p].oavalue = 55;
          }
 
          if (procid == PID_C51) {
@@ -207,7 +207,7 @@ void bsim_ucsim::MSetSerial(const char* port) {
              pins[p].ptype = PT_DIGITAL;
              pins[p].dir = PD_IN;
              pins[p].ovalue = 0;
-             pins[p].oavalue = 0;
+             pins[p].oavalue = 55;
          }
 
          pins[7 - 1].value = 0;

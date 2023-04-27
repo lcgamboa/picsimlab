@@ -214,7 +214,7 @@ void bsim_simavr::pins_reset(void) {
         pins[p].ptype = PT_DIGITAL;
         pins[p].dir = PD_IN;
         pins[p].ovalue = 0;
-        pins[p].oavalue = 0;
+        pins[p].oavalue = 55;
     }
 
     // VCC pins

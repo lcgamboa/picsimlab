@@ -1066,6 +1066,7 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 
         ((CFileDialog*)Window->GetChildByName("filedialog1"))->SetDir(GetPath());
 
+        ((CDraw*)Window->GetChildByName("draw1"))->SetVisible(0);
         ((CDraw*)Window->GetChildByName("draw1"))
             ->SetImgFileName(lxGetLocalFile(GetSharePath() + lxT("boards/") + pboard->GetPictureFileName()), GetScale(),
                              GetScale());
@@ -1125,6 +1126,10 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 
     SetProcessorName(pboard->GetProcessorName());
     if (Window) {
+        pboard->EvOnShow();
+        pboard->Draw(((CDraw*)Window->GetChildByName("draw1")));
+        ((CDraw*)Window->GetChildByName("draw1"))->SetVisible(1);
+
         Window->SetTitle(((Instance > 0) ? (lxT("PICSimLab[") + itoa(Instance) + lxT("] - ")) : (lxT("PICSimLab - "))) +
                          lxString(boards_list[lab].name) + lxT(" - ") + pboard->GetProcessorName());
 
