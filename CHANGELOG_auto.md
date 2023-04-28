@@ -24,6 +24,8 @@
 
 ### Changes
 
+* Add support to use icount=auto in qemu based boards. [lcgamboa]
+
 * Add option to enable ethernet support in ESP32 DevKitC board. [lcgamboa]
 
 * Qemu-ESP32 updated to support https over Wifi. [lcgamboa]
@@ -37,6 +39,10 @@
 * Add support to remove VT100 codes in Virtual Term part. [lcgamboa]
 
 ### Fix
+
+* Fix the path of last open file for qemu based boards used by reload last menu option. [lcgamboa]
+
+* Fix pin initial value used by LEDs and 7 seg. displays. [lcgamboa]
 
 * Fix qemu based boards to not freeze when clock is changed. [lcgamboa]
 

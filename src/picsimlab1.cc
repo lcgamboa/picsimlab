@@ -666,10 +666,9 @@ void CPWindow1::filedialog1_EvOnClose(int retId) {
         usleep(100);  // wait thread
 
     if (retId && (filedialog1.GetType() == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
-        PICSimLab.LoadHexFile(filedialog1.GetFileName());
-
         PICSimLab.SetPath(filedialog1.GetDir());
         PICSimLab.SetFNAME(filedialog1.GetFileName());
+        PICSimLab.LoadHexFile(filedialog1.GetFileName());
         menu1_File_ReloadLast.SetEnable(1);
     }
 
