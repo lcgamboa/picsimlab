@@ -39,7 +39,7 @@
 #endif
 
 #include "../lib/picsimlab.h"
-#include "../serial_port.h"
+#include "../lib/serial_port.h"
 #include "exp_bsim_remote.h"
 
 #include <stdint.h>

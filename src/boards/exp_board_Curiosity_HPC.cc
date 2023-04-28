@@ -28,8 +28,8 @@
 #include "exp_board_Curiosity_HPC.h"
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
+#include "../lib/serial_port.h"
 #include "../lib/spareparts.h"
-#include "../serial_port.h"
 
 /* ids of inputs of input map*/
 enum {
@@ -563,15 +563,15 @@ void cboard_Curiosity_HPC::Draw(CDraw* draw) {
     draw->Canvas.Init(Scale, Scale);  // initialize draw context
 
     // board_8 draw
-    for (i = 0; i < outputc; i++)  // run over all outputs
+    for (i = 0; i < outputc; i++)              // run over all outputs
     {
-        if (!output[i].r)  // if output shape is a rectangle
+        if (!output[i].r)                      // if output shape is a rectangle
         {
             draw->Canvas.SetFgColor(0, 0, 0);  // black
 
-            switch (output[i].id)  // search for color of output
+            switch (output[i].id)              // search for color of output
             {
-                case O_D6:  // green using picpwr value
+                case O_D6:                     // green using picpwr value
                     draw->Canvas.SetColor(0, 200 * PICSimLab.GetMcuPwr() + 55, 0);
                     break;
                 case O_D2:  // Red using pin 6 mean  value (RA4)
@@ -684,12 +684,12 @@ void cboard_Curiosity_HPC::Run_CPU(void) {
     if (use_spare)
         SpareParts.PreProcess();
 
-    j = JUMPSTEPS;  // step counter
+    j = JUMPSTEPS;                   // step counter
     pi = 0;
     if (PICSimLab.GetMcuPwr())       // if powered
         for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
-            if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
+            if (j >= JUMPSTEPS)      // if number of step is bigger than steps to skip
             {
                 pic_set_pin(&pic, pic.mclr, p_RST);
                 pic_set_pin(&pic, 25, p_BT[0]);  // Set pin 25 (RB4) with button state

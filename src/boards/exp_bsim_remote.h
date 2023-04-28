@@ -27,7 +27,7 @@
 #define BOARD_REMOTETCP_H
 
 #include <stdint.h>
-#include "board.h"
+#include "../lib/board.h"
 
 //===================== Ripes protocol =========================================
 typedef struct {
