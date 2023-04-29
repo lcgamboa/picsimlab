@@ -33,10 +33,13 @@
 typedef struct {
     uint32_t msg_type;
     uint32_t payload_size;
+    uint64_t time;
 } cmd_header_t;
 
-enum { VB_PINFO = 1, VB_PWRITE, VB_PREAD, VB_PSTATUS, VB_DMAWR, VB_DMARD, VB_QUIT, VB_LAST };
+enum { VB_PINFO = 1, VB_PWRITE, VB_PREAD, VB_PSTATUS, VB_DMAWR, VB_DMARD, VB_QUIT, VB_SYNC, VB_LAST };
 //==============================================================================
+
+#define TTIMEOUT (BASETIMER * 1000000L)
 
 class bsim_remote : virtual public board {
 public:
@@ -67,6 +70,8 @@ public:
     void MStepResume(void) override;
     void MReset(int flags) override;
     void EndServers(void) override;
+    virtual void Run_CPU_ns(uint64_t time) = 0;
+    int GetInc_ns(void) { return inc_ns; };
 
 protected:
     const int TestConnection(void);
@@ -101,6 +106,9 @@ protected:
     unsigned short t0CON = 0x7FFF;
     unsigned short t0PR = 0xFFFF;
     unsigned short t0iclk = 0;
+    int64_t timerlast = 0;
+    unsigned int inc_ns = 0;
+    unsigned int ns_count = 0;
 };
 
 #endif /* BOARD_REMOTETCP_H */

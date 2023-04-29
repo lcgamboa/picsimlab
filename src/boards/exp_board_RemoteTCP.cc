@@ -300,20 +300,20 @@ void cboard_RemoteTCP::Draw(CDraw* draw) {
     // board_0 draw
     for (i = 0; i < outputc; i++)  // run over all outputs
     {
-        if (output[i].update)  // only if need update
+        if (output[i].update)      // only if need update
         {
             output[i].update = 0;
 
             if (!update) {
                 draw->Canvas.Init(Scale, Scale);
             }
-            update++;  // set to update buffer
+            update++;                          // set to update buffer
 
             draw->Canvas.SetFgColor(0, 0, 0);  // black
 
-            switch (output[i].id)  // search for color of output
+            switch (output[i].id)              // search for color of output
             {
-                case O_LPWR:  // Blue using mcupwr value
+                case O_LPWR:                   // Blue using mcupwr value
                     draw->Canvas.SetColor(0, 0, 200 * PICSimLab.GetMcuPwr() + 55);
                     draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                            output[i].y2 - output[i].y1);
@@ -357,6 +357,7 @@ void cboard_RemoteTCP::Draw(CDraw* draw) {
 }
 
 void cboard_RemoteTCP::Run_CPU(void) {
+    /*
     int i;
     // int j;
     unsigned char pi;
@@ -369,12 +370,12 @@ void cboard_RemoteTCP::Run_CPU(void) {
 
     // reset pins mean value
     memset(alm, 0, 48 * sizeof(unsigned int));
-
+    */
     if (!TestConnection())
         return;
 
     PICSimLab.SetMcuPwr(1);
-
+    /*
     // Spare parts window pre process
     if (use_spare)
         SpareParts.PreProcess();
@@ -391,27 +392,104 @@ void cboard_RemoteTCP::Run_CPU(void) {
     if (PICSimLab.GetMcuPwr())       // if powered
         for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
+            / *
+            if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
+             {
+             }
+             * /
+    // verify if a breakpoint is reached if not run one instruction
+    // MStep ();
+
+    --count;
+    if (!count) {
+#ifdef _WIN_
+        Sleep(1);
+#else
+        usleep(1000);
+#endif
+        count = countM;
+    }
+
+    if (t0CON & 0x8000)  // Timer on
+    {
+        t0iclk++;        // prescaler clk
+        if (t0iclk == (t0CON & 0x7FFF)) {
+            t0iclk = 0;
+            t0CNT++;
+            if (t0CNT == t0PR)  // max value
+            {
+                t0CNT = 0;
+                t0STA |= 1;  // overflow
+            }
+        }
+    }
+    InstCounterInc();
+    // Oscilloscope window process
+    if (use_oscope)
+        Oscilloscope.SetSample();
+    // Spare parts window process
+    if (use_spare)
+        SpareParts.Process();
+
+    // increment mean value counter if pin is high
+    alm[pi] += pins[pi].value;
+    pi++;
+    if (pi == pinc)
+        pi = 0;
+    / *
+        if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
+         {
+          j = -1; //reset counter
+         }
+
+        j++; //counter increment
+     * /
+}
+
+// calculate mean value
+for (pi = 0; pi < MGetPinCount(); pi++) {
+    pins[pi].oavalue = (int)((alm[pi] * RNSTEP) + 55);
+}
+
+// Spare parts window pre post process
+if (use_spare)
+    SpareParts.PostProcess();
+*/
+}
+
+void cboard_RemoteTCP::Run_CPU_ns(uint64_t time) {
+    static unsigned char pi = 0;
+    static unsigned int alm[64];
+    static const int pinc = MGetPinCount();
+
+    const float RNSTEP = 200.0 * pinc * inc_ns / TTIMEOUT;
+
+    for (uint64_t c = 0; c < time; c += inc_ns) {
+        if (ns_count < inc_ns) {
+            // reset pins mean value
+            memset(alm, 0, 64 * sizeof(unsigned int));
+
+            // Spare parts window pre process
+            if (use_spare)
+                SpareParts.PreProcess();
+
+            // j = JUMPSTEPS; //step counter
+            pi = 0;
+        }
+
+        if (PICSimLab.GetMcuPwr())  // if powered
+                                    // for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
+        {
             /*
             if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
              {
              }
              */
             // verify if a breakpoint is reached if not run one instruction
-            // MStep ();
-
-            --count;
-            if (!count) {
-#ifdef _WIN_
-                Sleep(1);
-#else
-                usleep(1000);
-#endif
-                count = countM;
-            }
-
+            // MStep();
             if (t0CON & 0x8000)  // Timer on
             {
-                t0iclk++;  // prescaler clk
+                t0iclk++;        // prescaler clk
                 if (t0iclk == (t0CON & 0x7FFF)) {
                     t0iclk = 0;
                     t0CNT++;
@@ -430,7 +508,7 @@ void cboard_RemoteTCP::Run_CPU(void) {
             if (use_spare)
                 SpareParts.Process();
 
-            // increment mean value counter if pin is high
+            //  increment mean value counter if pin is high
             alm[pi] += pins[pi].value;
             pi++;
             if (pi == pinc)
@@ -445,14 +523,18 @@ void cboard_RemoteTCP::Run_CPU(void) {
              */
         }
 
-    // calculate mean value
-    for (pi = 0; pi < MGetPinCount(); pi++) {
-        pins[pi].oavalue = (int)((alm[pi] * RNSTEP) + 55);
+        ns_count += inc_ns;
+        if (ns_count >= TTIMEOUT) {  // every 100ms
+            ns_count -= TTIMEOUT;
+            //  calculate mean value
+            for (pi = 0; pi < MGetPinCount(); pi++) {
+                pins[pi].oavalue = (int)((alm[pi] * RNSTEP) + 55);
+            }
+            // Spare parts window pre post process
+            if (use_spare)
+                SpareParts.PostProcess();
+        }
     }
-
-    // Spare parts window pre post process
-    if (use_spare)
-        SpareParts.PostProcess();
 }
 
 void cboard_RemoteTCP::MStep(void) {
@@ -472,7 +554,8 @@ void cboard_RemoteTCP::MStep(void) {
              return;
          }
 
-         dprintf("MSG type = %i size=%i ", cmd_header.msg_type, cmd_header.payload_size);
+         dprintf("MSG type = %i size=%i  timestamp= %lu  ", cmd_header.msg_type, cmd_header.payload_size,
+                 cmd_header.time);
 
          switch (cmd_header.msg_type) {
              case VB_PINFO: {
@@ -611,6 +694,7 @@ void cboard_RemoteTCP::MStep(void) {
                  send_cmd(VB_QUIT);
                  Disconnect();
                  break;
+             case VB_SYNC:
              case VB_DMARD:
              case VB_DMAWR:
              case VB_PSTATUS:

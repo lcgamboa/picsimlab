@@ -44,6 +44,14 @@
 
 #include <stdint.h>
 
+#if __BIG_ENDIAN__
+#define htonll(x) (x)
+#define ntohll(x) (x)
+#else
+#define htonll(x) (((uint64_t)htonl((x)&0xFFFFFFFF) << 32) | htonl((x) >> 32))
+#define ntohll(x) (((uint64_t)ntohl((x)&0xFFFFFFFF) << 32) | ntohl((x) >> 32))
+#endif
+
 void setblock(int sock_descriptor);
 void setnblock(int sock_descriptor);
 
@@ -251,6 +259,7 @@ void bsim_remote::MSetSerial(const char* port) {
 
  void bsim_remote::MSetFreq(float freq_) {
      freq = freq_;
+     inc_ns = 1000000000L / freq;
      TimerUpdateFrequency(freq);
  }
 
@@ -453,7 +462,7 @@ void bsim_remote::MSetSerial(const char* port) {
          pins[p].ptype = PT_DIGITAL;
          pins[p].dir = PD_IN;
          pins[p].ovalue = 0;
-         pins[p].oavalue = 0;
+         pins[p].oavalue = 55;
 
          pname = MGetPinName(p + 1);
 
@@ -631,8 +640,9 @@ void bsim_remote::MSetSerial(const char* port) {
 
      cmd_header.msg_type = htonl(cmd);
      cmd_header.payload_size = htonl(payload_size);
+     cmd_header.time = 0;
 
-     unsigned int dsize = sizeof(cmd_header);
+     unsigned int dsize = sizeof(cmd_header_t);
      const char* dp = (const char*)&cmd_header;
 
      if (payload_size) {
@@ -660,7 +670,7 @@ void bsim_remote::MSetSerial(const char* port) {
  int32_t bsim_remote::recv_cmd(cmd_header_t* cmd_header) {
      char* dp = (char*)(cmd_header);
      int ret = 0;
-     int size = sizeof(cmd_header);
+     int size = sizeof(cmd_header_t);
      do {
          if ((ret = recv(sockfd, dp, size, MSG_WAITALL)) != size) {
              printf("receive error : %s \n", strerror(errno));
@@ -673,6 +683,24 @@ void bsim_remote::MSetSerial(const char* port) {
 
      cmd_header->msg_type = ntohl(cmd_header->msg_type);
      cmd_header->payload_size = ntohl(cmd_header->payload_size);
+     cmd_header->time = ntohll(cmd_header->time);
+
+     int64_t now = cmd_header->time;
+     int64_t delta;
+
+     if (now >= timerlast) {
+         delta = now - timerlast;
+         timerlast = now;
+
+         if (delta > (TTIMEOUT * 1.1)) {
+             delta = (TTIMEOUT * 1.1);
+         }
+     } else {
+         delta = GetInc_ns();
+         timerlast += delta;
+     }
+
+     Run_CPU_ns(delta);
 
      return ret;
  }

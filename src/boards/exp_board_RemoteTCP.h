@@ -50,6 +50,7 @@ public:
     // Called ever 100ms to draw board
     void Draw(CDraw* draw) override;
     void Run_CPU(void) override;
+    void Run_CPU_ns(uint64_t time) override;
     // Return a list of board supported microcontrollers
     lxString GetSupportedDevices(void) override { return lxT("Ripes,"); };
     // Reset board status
