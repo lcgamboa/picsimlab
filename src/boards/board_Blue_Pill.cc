@@ -340,7 +340,7 @@ void cboard_Blue_Pill::Run_CPU_ns(uint64_t time) {
     static unsigned int alm[64];
     static const int pinc = MGetPinCount();
 
-    const float RNSTEP = 200.0 * pinc * inc_ns / 100000000L;
+    const float RNSTEP = 200.0 * pinc * inc_ns / TTIMEOUT;
 
     for (uint64_t c = 0; c < time; c += inc_ns) {
         if (ns_count < inc_ns) {
@@ -389,8 +389,8 @@ void cboard_Blue_Pill::Run_CPU_ns(uint64_t time) {
         }
 
         ns_count += inc_ns;
-        if (ns_count >= 100000000) {
-            ns_count -= 100000000;
+        if (ns_count >= TTIMEOUT) {
+            ns_count -= TTIMEOUT;
             //  calculate mean value
             for (pi = 0; pi < MGetPinCount(); pi++) {
                 pins[pi].oavalue = (int)((alm[pi] * RNSTEP) + 55);
