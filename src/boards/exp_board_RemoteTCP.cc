@@ -58,7 +58,33 @@ const char json_info[] =
     "    \"T0STA\": 10,"
     "    \"T0CON\": 12,"
     "    \"T0PR\":  14,"
-    "    \"PFREQ\": 16"
+    "    \"PFREQ\": 16,"
+    "    \"UART0CFG\": 18,"
+    "    \"UART0STA\": 20,"
+    "    \"UART0BRG\": 22,"
+    "    \"UART0RXR\": 24,"
+    "    \"UART0TXR\": 26,"
+    "    \"UART1CFG\": 28,"
+    "    \"UART1STA\": 30,"
+    "    \"UART1BRG\": 32,"
+    "    \"UART1RXR\": 34,"
+    "    \"UART1TXR\": 36,"
+    "    \"SPI0CFG\": 38,"
+    "    \"SPI0STA\": 40,"
+    "    \"SPI0DAT\": 42,"
+    "    \"SPI1CFG\": 44,"
+    "    \"SPI1STA\": 46,"
+    "    \"SPI1DAT\": 48,"
+    "    \"I2C0CFG\": 50,"
+    "    \"I2C0STA\": 52,"
+    "    \"I2C0ADD\": 54,"
+    "    \"I2C0DAT\": 56,"
+    "    \"I2C1CFG\": 58,"
+    "    \"I2C1STA\": 60,"
+    "    \"I2C1ADD\": 62,"
+    "    \"I2C1DAT\": 64,"
+    "    \"ADCCFG\": 66,"
+    "    \"ADCDAT\": 68"
     "  }"
     "}";
 
@@ -71,6 +97,32 @@ const char json_info[] =
 #define T0CON 12
 #define T0PR 14
 #define PFREQ 16
+#define UART0CFG 18
+#define UART0STA 20
+#define UART0BRG 22
+#define UART0RXR 24
+#define UART0TXR 26
+#define UART1CFG 28
+#define UART1STA 30
+#define UART1BRG 32
+#define UART1RXR 34
+#define UART1TXR 36
+#define SPI0CFG 38
+#define SPI0STA 40
+#define SPI0DAT 42
+#define SPI1CFG 44
+#define SPI1STA 46
+#define SPI1DAT 48
+#define I2C0CFG 50
+#define I2C0STA 52
+#define I2C0ADD 54
+#define I2C0DAT 56
+#define I2C1CFG 58
+#define I2C1STA 60
+#define I2C1ADD 62
+#define I2C1DAT 64
+#define ADCCFG 66
+#define ADCDAT 68
 
 /* ids of inputs of input map*/
 enum {
@@ -121,6 +173,32 @@ cboard_RemoteTCP::cboard_RemoteTCP(void) : font(10, lxFONTFAMILY_TELETYPE, lxFON
     lxImage image(PICSimLab.GetWindow());
     image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic48.svg")), 0, Scale, Scale, 1);
     micbmp = new lxBitmap(&image, PICSimLab.GetWindow());
+
+    // TODO define pins
+
+    master_uart[0].tx_pin = 49;
+    master_uart[0].rx_pin = 50;
+    master_uart[1].tx_pin = 51;
+    master_uart[1].rx_pin = 52;
+
+    master_spi[0].sck_pin = 53;
+    master_spi[0].copi_pin = 54;
+    master_spi[0].cipo_pin = 55;
+    master_spi[0].cs_pin[0] = 56;
+    master_spi[0].cs_pin[1] = 0;
+    master_spi[0].cs_pin[2] = 0;
+
+    master_spi[1].sck_pin = 57;
+    master_spi[1].copi_pin = 58;
+    master_spi[1].cipo_pin = 59;
+    master_spi[1].cs_pin[0] = 60;
+    master_spi[1].cs_pin[1] = 0;
+    master_spi[1].cs_pin[2] = 0;
+
+    master_i2c[0].scl_pin = 61;
+    master_i2c[0].sda_pin = 62;
+    master_i2c[1].scl_pin = 63;
+    master_i2c[1].sda_pin = 64;
 }
 
 // Destructor called once on board destruction
@@ -537,178 +615,369 @@ void cboard_RemoteTCP::Run_CPU_ns(uint64_t time) {
     }
 }
 
-void cboard_RemoteTCP::MStep(void) {
- /*
- if (DataAvaliable ())
-  {
+void cboard_RemoteTCP::EvThreadRun(CThread& thread) {
+    do {
+        cmd_header_t cmd_header;
 
-  }
-  */ }
+        if (recv_cmd(&cmd_header) < 0) {
+            ConnectionError("recv_cmd");
+            return;
+        }
 
- void cboard_RemoteTCP::EvThreadRun(CThread& thread) {
-     do {
-         cmd_header_t cmd_header;
+        dprintf("MSG type = %i size=%i  timestamp= %lu  ", cmd_header.msg_type, cmd_header.payload_size,
+                cmd_header.time);
 
-         if (recv_cmd(&cmd_header) < 0) {
-             ConnectionError("recv_cmd");
-             return;
-         }
+        switch (cmd_header.msg_type) {
+            case VB_PINFO: {
+                if (send_cmd(VB_PINFO, json_info, strlen(json_info)) < 0) {
+                    ConnectionError("send_cmd");
+                    break;
+                }
 
-         dprintf("MSG type = %i size=%i  timestamp= %lu  ", cmd_header.msg_type, cmd_header.payload_size,
-                 cmd_header.time);
+                dprintf("VB_PINFO %s\n", json_info);
+            } break;
+            case VB_PWRITE: {
+                if (cmd_header.payload_size) {
+                    uint32_t* payload = new uint32_t[cmd_header.payload_size / 4];
+                    if (recv_payload((char*)payload, cmd_header.payload_size) < 0) {
+                        ConnectionError("recv_payload");
+                        break;
+                    }
+                    for (uint32_t i = 0; i < (cmd_header.payload_size / 4); i++) {
+                        payload[i] = ntohl(payload[i]);
+                    }
 
-         switch (cmd_header.msg_type) {
-             case VB_PINFO: {
-                 if (send_cmd(VB_PINFO, json_info, strlen(json_info)) < 0) {
-                     ConnectionError("send_cmd");
-                     break;
-                 }
+                    switch (payload[0]) {
+                        case PORTA:
+                            Ports[0] = (payload[1] & (~Dirs[0])) | (Ports[0] & Dirs[0]);
+                            for (int pin = 0; pin < 16; pin++) {
+                                if (Ports[0] & (1 << pins[pin].pord)) {
+                                    pins[pin].value = 1;
+                                } else {
+                                    pins[pin].value = 0;
+                                }
+                            }
+                            break;
+                        case DIRA:
+                            Dirs[0] = payload[1];
+                            for (int pin = 0; pin < 16; pin++) {
+                                if (Dirs[0] & (1 << pins[pin].pord)) {
+                                    pins[pin].dir = PD_IN;
+                                } else {
+                                    pins[pin].dir = PD_OUT;
+                                }
+                            }
+                            break;
+                        case PORTB:
+                            Ports[1] = (payload[1] & (~Dirs[1])) | (Ports[1] & Dirs[1]);
+                            for (int pin = 16; pin < 32; pin++) {
+                                if (Ports[1] & (1 << pins[pin].pord)) {
+                                    pins[pin].value = 1;
+                                } else {
+                                    pins[pin].value = 0;
+                                }
+                            }
+                            break;
+                        case DIRB:
+                            Dirs[1] = payload[1];
+                            for (int pin = 16; pin < 32; pin++) {
+                                if (Dirs[1] & (1 << pins[pin].pord)) {
+                                    pins[pin].dir = PD_IN;
+                                } else {
+                                    pins[pin].dir = PD_OUT;
+                                }
+                            }
+                            break;
+                        case T0CNT:
+                            t0CNT = payload[1];
+                            break;
+                        case T0CON:
+                            t0CON = payload[1];
+                            break;
+                        case T0STA:
+                            t0STA = payload[1];
+                            break;
+                        case T0PR:
+                            t0PR = payload[1];
+                            break;
+                        case UART0CFG:
+                            master_uart[0].ctrl_on = (payload[1] & 0x8000) > 0;
+                            break;
+                        case UART0STA:
+                            // value= payload[1];
+                            break;
+                        case UART0BRG:
+                            // value= payload[1];
+                            break;
+                        case UART0RXR:
+                            // value= payload[1];
+                            break;
+                        case UART0TXR:
+                            bitbang_uart_send(&master_uart[0], payload[1]);
+                            break;
+                        case UART1CFG:
+                            master_uart[0].ctrl_on = (payload[1] & 0x8000) > 0;
+                            break;
+                        case UART1STA:
+                            // value= payload[1];
+                            break;
+                        case UART1BRG:
+                            // value= payload[1];
+                            break;
+                        case UART1RXR:
+                            // value= payload[1];
+                            break;
+                        case UART1TXR:
+                            bitbang_uart_send(&master_uart[1], payload[1]);
+                            break;
+                        case SPI0CFG:
+                            master_spi[0].ctrl_on = (payload[1] & 0x8000) > 0;
+                            break;
+                        case SPI0STA:
+                            // value= payload[1];
+                            break;
+                        case SPI0DAT:
+                            master_spi[0].cs_value[0] = 0;
+                            bitbang_spi_ctrl_write(&master_spi[0], payload[1]);
+                            break;
+                        case SPI1CFG:
+                            master_spi[1].ctrl_on = (payload[1] & 0x8000) > 0;
+                            break;
+                        case SPI1STA:
+                            // value= payload[1];
+                            break;
+                        case SPI1DAT:
+                            master_spi[1].cs_value[0] = 0;
+                            bitbang_spi_ctrl_write(&master_spi[1], payload[1]);
+                            break;
+                        case I2C0CFG:
+                            if ((payload[1] & 0x8000) > 0) {
+                                master_i2c[0].ctrl_on = 1;
+                                if (payload[1] & 0x0001) {
+                                    bitbang_i2c_ctrl_start(&master_i2c[0]);
+                                }
+                                if (payload[1] & 0x0002) {
+                                    bitbang_i2c_ctrl_stop(&master_i2c[0]);
+                                }
+                            } else {
+                                master_i2c[0].ctrl_on = 0;
+                            }
+                            break;
+                        case I2C0STA:
+                            // value= payload[1];
+                            break;
+                        case I2C0ADD:
+                            // value= payload[1];
+                            break;
+                        case I2C0DAT:
+                            if (master_i2c[0].byte == 0) {
+                                master_i2c[0].addr = payload[1];
+                                bitbang_i2c_ctrl_write(&master_i2c[0], payload[1]);
+                            } else {
+                                if (master_i2c[0].addr & 0x01) {
+                                    bitbang_i2c_ctrl_read(&master_i2c[0]);
+                                } else {
+                                    bitbang_i2c_ctrl_write(&master_i2c[0], payload[1]);
+                                }
+                            }
+                            break;
+                        case I2C1CFG:
+                            if ((payload[1] & 0x8000) > 0) {
+                                master_i2c[0].ctrl_on = 1;
+                                if (payload[1] & 0x0001) {
+                                    bitbang_i2c_ctrl_start(&master_i2c[1]);
+                                }
+                                if (payload[1] & 0x0002) {
+                                    bitbang_i2c_ctrl_stop(&master_i2c[1]);
+                                }
+                            } else {
+                                master_i2c[0].ctrl_on = 0;
+                            }
+                            break;
+                        case I2C1STA:
+                            // value= payload[1];
+                            break;
+                        case I2C1ADD:
+                            // value= payload[1];
+                            break;
+                        case I2C1DAT:
+                            if (master_i2c[1].byte == 0) {
+                                master_i2c[1].addr = payload[1];
+                                bitbang_i2c_ctrl_write(&master_i2c[1], payload[1]);
+                            } else {
+                                if (master_i2c[1].addr & 0x01) {
+                                    bitbang_i2c_ctrl_read(&master_i2c[1]);
+                                } else {
+                                    bitbang_i2c_ctrl_write(&master_i2c[1], payload[1]);
+                                }
+                            }
+                            break;
+                        case ADCCFG:
+                            ADCChanel = payload[1] & 0x000F;
+                            break;
+                        case ADCDAT:
+                            // value= payload[1];
+                            break;
+                    }
 
-                 dprintf("VB_PINFO %s\n", json_info);
-             } break;
-             case VB_PWRITE: {
-                 if (cmd_header.payload_size) {
-                     uint32_t* payload = new uint32_t[cmd_header.payload_size / 4];
-                     if (recv_payload((char*)payload, cmd_header.payload_size) < 0) {
-                         ConnectionError("recv_payload");
-                         break;
-                     }
-                     for (uint32_t i = 0; i < (cmd_header.payload_size / 4); i++) {
-                         payload[i] = ntohl(payload[i]);
-                     }
+                    dprintf("VB_PWRITE reg[%i] = %x\n", payload[0], payload[1]);
+                    delete[] payload;
+                }
+                if (send_cmd(cmd_header.msg_type) < 0) {
+                    ConnectionError("send_cmd");
+                    break;
+                }
+            } break;
+            case VB_PREAD: {
+                uint32_t addr = 0;
+                if (cmd_header.payload_size) {
+                    recv_payload((char*)&addr, 4);
+                    addr = ntohl(addr);
+                }
 
-                     switch (payload[0]) {
-                         case PORTA:
-                             Ports[0] = (payload[1] & (~Dirs[0])) | (Ports[0] & Dirs[0]);
-                             for (int pin = 0; pin < 16; pin++) {
-                                 if (Ports[0] & (1 << pins[pin].pord)) {
-                                     pins[pin].value = 1;
-                                 } else {
-                                     pins[pin].value = 0;
-                                 }
-                             }
-                             break;
-                         case DIRA:
-                             Dirs[0] = payload[1];
-                             for (int pin = 0; pin < 16; pin++) {
-                                 if (Dirs[0] & (1 << pins[pin].pord)) {
-                                     pins[pin].dir = PD_IN;
-                                 } else {
-                                     pins[pin].dir = PD_OUT;
-                                 }
-                             }
-                             break;
-                         case PORTB:
-                             Ports[1] = (payload[1] & (~Dirs[1])) | (Ports[1] & Dirs[1]);
-                             for (int pin = 16; pin < 32; pin++) {
-                                 if (Ports[1] & (1 << pins[pin].pord)) {
-                                     pins[pin].value = 1;
-                                 } else {
-                                     pins[pin].value = 0;
-                                 }
-                             }
-                             break;
-                         case DIRB:
-                             Dirs[1] = payload[1];
-                             for (int pin = 16; pin < 32; pin++) {
-                                 if (Dirs[1] & (1 << pins[pin].pord)) {
-                                     pins[pin].dir = PD_IN;
-                                 } else {
-                                     pins[pin].dir = PD_OUT;
-                                 }
-                             }
-                             break;
-                         case T0CNT:
-                             t0CNT = payload[1];
-                             break;
-                         case T0CON:
-                             t0CON = payload[1];
-                             break;
-                         case T0STA:
-                             t0STA = payload[1];
-                             break;
-                         case T0PR:
-                             t0PR = payload[1];
-                             break;
-                     }
+                uint32_t payload[2];
+                payload[0] = htonl(addr);
 
-                     dprintf("VB_PWRITE reg[%i] = %x\n", payload[0], payload[1]);
-                     delete[] payload;
-                 }
-                 if (send_cmd(cmd_header.msg_type) < 0) {
-                     ConnectionError("send_cmd");
-                     break;
-                 }
-             } break;
-             case VB_PREAD: {
-                 uint32_t addr = 0;
-                 if (cmd_header.payload_size) {
-                     recv_payload((char*)&addr, 4);
-                     addr = ntohl(addr);
-                 }
+                switch (addr) {
+                    case PORTA:
+                        payload[1] = htonl(Ports[0]);
+                        break;
+                    case DIRA:
+                        payload[1] = htonl(Dirs[0]);
+                        break;
+                    case PORTB:
+                        payload[1] = htonl(Ports[1]);
+                        break;
+                    case DIRB:
+                        payload[1] = htonl(Dirs[1]);
+                        break;
+                    case T0CNT:
+                        payload[1] = htonl(t0CNT);
+                        break;
+                    case T0CON:
+                        payload[1] = htonl(t0CON);
+                        break;
+                    case T0STA:
+                        payload[1] = htonl(t0STA);
+                        break;
+                    case T0PR:
+                        payload[1] = htonl(t0PR);
+                        break;
+                    case PFREQ:
+                        payload[1] = htonl(MGetFreq() / 1000000);
+                        break;
+                    case UART0CFG:
+                        payload[1] = htonl(0);
+                        break;
+                    case UART0STA:
+                        payload[1] = htonl((bitbang_uart_transmitting(&master_uart[0]) << 1) |
+                                           bitbang_uart_data_available(&master_uart[0]));
+                        break;
+                    case UART0BRG:
+                        payload[1] = htonl(0);
+                        break;
+                    case UART0RXR:
+                        payload[1] = htonl(bitbang_uart_recv(&master_uart[0]));
+                        break;
+                    case UART0TXR:
+                        payload[1] = htonl(0);
+                        break;
+                    case UART1CFG:
+                        payload[1] = htonl(0);
+                        break;
+                    case UART1STA:
+                        payload[1] = htonl((bitbang_uart_transmitting(&master_uart[1]) << 1) |
+                                           bitbang_uart_data_available(&master_uart[1]));
+                        break;
+                    case UART1BRG:
+                        payload[1] = htonl(0);
+                        break;
+                    case UART1RXR:
+                        payload[1] = htonl(bitbang_uart_recv(&master_uart[1]));
+                        break;
+                    case UART1TXR:
+                        payload[1] = htonl(0);
+                        break;
+                    case SPI0CFG:
+                        payload[1] = htonl(0);
+                        break;
+                    case SPI0STA:
+                        payload[1] = htonl(master_spi[0].bit > 7);
+                        break;
+                    case SPI0DAT:
+                        payload[1] = htonl(master_spi[0].data8);
+                        break;
+                    case SPI1CFG:
+                        payload[1] = htonl(0);
+                        break;
+                    case SPI1STA:
+                        payload[1] = htonl(master_spi[1].bit > 7);
+                        break;
+                    case SPI1DAT:
+                        payload[1] = htonl(master_spi[1].data8);
+                        break;
+                    case I2C0CFG:
+                        payload[1] = htonl(0);
+                        break;
+                    case I2C0STA:
+                        payload[1] = htonl(bitbang_i2c_get_status(&master_i2c[0]));
+                        break;
+                    case I2C0ADD:
+                        payload[1] = htonl(0);
+                        break;
+                    case I2C0DAT:
+                        payload[1] = htonl(0);
+                        break;
+                    case I2C1CFG:
+                        payload[1] = htonl(0);
+                        break;
+                    case I2C1STA:
+                        payload[1] = htonl(bitbang_i2c_get_status(&master_i2c[1]));
+                        break;
+                    case I2C1ADD:
+                        payload[1] = htonl(0);
+                        break;
+                    case I2C1DAT:
+                        payload[1] = htonl(0);
+                        break;
+                    case ADCCFG:
+                        payload[1] = htonl(ADCChanel);
+                        break;
+                    case ADCDAT:
+                        payload[1] = htonl(ADCvalues[ADCChanel]);
+                        break;
+                    default:
+                        payload[1] = htonl(0);
+                        printf("Read invalid reg addr %i !!!!!!!!!!!!!!!!!!\n", addr);
+                        break;
+                }
 
-                 uint32_t payload[2];
-                 payload[0] = htonl(addr);
+                if (send_cmd(cmd_header.msg_type, (const char*)&payload, 8) < 0) {
+                    ConnectionError("send_cmd");
+                    break;
+                }
+                dprintf("VB_PREAD  reg[%x] = %x \n", addr, ntohl(payload[1]));
+            } break;
+            case VB_QUIT:
+                send_cmd(VB_QUIT);
+                Disconnect();
+                break;
+            case VB_SYNC:
+                // already sync by method recv_cmd
+                send_cmd(VB_SYNC);
+                break;
+            case VB_PSTATUS:
+                // break;
+            default:
+                printf("Invalid cmd !!!!!!!!!!!!\n");
+                if (send_cmd(VB_LAST)) {
+                    ConnectionError("send_cmd");
+                    break;
+                }
+                break;
+        }
+    } while (!thread.TestDestroy());
+}
 
-                 switch (addr) {
-                     case PORTA:
-                         payload[1] = htonl(Ports[0]);
-                         break;
-                     case DIRA:
-                         payload[1] = htonl(Dirs[0]);
-                         break;
-                     case PORTB:
-                         payload[1] = htonl(Ports[1]);
-                         break;
-                     case DIRB:
-                         payload[1] = htonl(Dirs[1]);
-                         break;
-                     case T0CNT:
-                         payload[1] = htonl(t0CNT);
-                         break;
-                     case T0CON:
-                         payload[1] = htonl(t0CON);
-                         break;
-                     case T0STA:
-                         payload[1] = htonl(t0STA);
-                         break;
-                     case T0PR:
-                         payload[1] = htonl(t0PR);
-                         break;
-                     case PFREQ:
-                         payload[1] = htonl(MGetFreq() / 1000000);
-                         break;
-                     default:
-                         payload[1] = htonl(0);
-                         printf("Read invalid reg addr %i !!!!!!!!!!!!!!!!!!\n", addr);
-                         break;
-                 }
-
-                 if (send_cmd(cmd_header.msg_type, (const char*)&payload, 8) < 0) {
-                     ConnectionError("send_cmd");
-                     break;
-                 }
-                 dprintf("VB_PREAD  reg[%x] = %x \n", addr, ntohl(payload[1]));
-             } break;
-             case VB_QUIT:
-                 send_cmd(VB_QUIT);
-                 Disconnect();
-                 break;
-             case VB_SYNC:
-             case VB_DMARD:
-             case VB_DMAWR:
-             case VB_PSTATUS:
-                 // break;
-             default:
-                 printf("Invalid cmd !!!!!!!!!!!!\n");
-                 if (send_cmd(VB_LAST)) {
-                     ConnectionError("send_cmd");
-                     break;
-                 }
-                 break;
-         }
-     } while (!thread.TestDestroy());
- }
-
- // Register the board in PICSimLab
- board_init(BOARD_RemoteTCP_Name, cboard_RemoteTCP);
+// Register the board in PICSimLab
+board_init(BOARD_RemoteTCP_Name, cboard_RemoteTCP);

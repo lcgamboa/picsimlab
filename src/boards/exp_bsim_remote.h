@@ -27,6 +27,9 @@
 #define BOARD_REMOTETCP_H
 
 #include <stdint.h>
+#include "../devices/bitbang_i2c.h"
+#include "../devices/bitbang_spi.h"
+#include "../devices/bitbang_uart.h"
 #include "../lib/board.h"
 
 //===================== Ripes protocol =========================================
@@ -36,7 +39,7 @@ typedef struct {
     uint64_t time;
 } cmd_header_t;
 
-enum { VB_PINFO = 1, VB_PWRITE, VB_PREAD, VB_PSTATUS, VB_DMAWR, VB_DMARD, VB_QUIT, VB_SYNC, VB_LAST };
+enum { VB_PINFO = 1, VB_PWRITE, VB_PREAD, VB_PSTATUS, VB_QUIT, VB_SYNC, VB_LAST };
 //==============================================================================
 
 #define TTIMEOUT (BASETIMER * 1000000L)
@@ -67,7 +70,8 @@ public:
     void MSetAPin(int pin, float value) override;
     unsigned char MGetPin(int pin) override;
     const picpin* MGetPinsValues(void) override;
-    void MStepResume(void) override;
+    void MStep(void) override;
+    void MStepResume(void) override{};
     void MReset(int flags) override;
     void EndServers(void) override;
     virtual void Run_CPU_ns(uint64_t time) = 0;
@@ -99,6 +103,7 @@ protected:
     char fname_[300];
     char fname_bak[300];
     unsigned short ADCvalues[16];
+
     unsigned short Dirs[2] = {0xFF, 0xFF};
     unsigned short Ports[2] = {0x00, 0x00};
     unsigned short t0CNT = 0;
@@ -106,9 +111,14 @@ protected:
     unsigned short t0CON = 0x7FFF;
     unsigned short t0PR = 0xFFFF;
     unsigned short t0iclk = 0;
+
     int64_t timerlast = 0;
     unsigned int inc_ns = 0;
     unsigned int ns_count = 0;
+
+    bitbang_i2c_t master_i2c[2];
+    bitbang_spi_t master_spi[2];
+    bitbang_uart_t master_uart[2];
 };
 
 #endif /* BOARD_REMOTETCP_H */

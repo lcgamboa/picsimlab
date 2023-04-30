@@ -965,8 +965,6 @@ void bsim_qemu::MStep(void) {
     }
 }
 
-void bsim_qemu::MStepResume(void) {}
-
 static const char MipsStr[13][10] = {"No Limit", "1000", "500",  "250",  "125",  "62.5", "31.25",
                                      "15.63",    "7.81", "3.90", "1.95", "0.98", "Auto"};
 

@@ -57,6 +57,17 @@ void setnblock(int sock_descriptor);
 
 static int listenfd = -1;
 
+static const int id[3] = {0, 1, 2};
+
+static void picsimlab_uart_rx_event(bitbang_uart_t* bu, void* arg) {
+    if (bu->ctrl_on) {
+        const int id = *((const int*)arg);
+        unsigned char data = bitbang_uart_recv(bu);
+        printf("uart[%i] data recv [%c]\n", id, data);
+        // qemu_picsimlab_uart_receive(id, &data, 1);
+    }
+}
+
 bsim_remote::bsim_remote(void) {
     connected = 0;
     sockfd = -1;
@@ -64,9 +75,22 @@ bsim_remote::bsim_remote(void) {
     fname_[0] = 0;
 
     memset(&ADCvalues, 0xFF, 32);
+
+    bitbang_i2c_ctrl_init(&master_i2c[0], this);
+    bitbang_i2c_ctrl_init(&master_i2c[1], this);
+    bitbang_spi_ctrl_init(&master_spi[0], this);
+    bitbang_spi_ctrl_init(&master_spi[1], this);
+    bitbang_uart_init(&master_uart[0], this, picsimlab_uart_rx_event, (void*)&id[0]);
 }
 
-bsim_remote::~bsim_remote(void) {}
+bsim_remote::~bsim_remote(void) {
+    bitbang_i2c_ctrl_end(&master_i2c[0]);
+    bitbang_i2c_ctrl_end(&master_i2c[1]);
+    bitbang_spi_ctrl_end(&master_spi[0]);
+    bitbang_spi_ctrl_end(&master_spi[1]);
+    bitbang_uart_end(&master_uart[0]);
+    bitbang_uart_end(&master_uart[1]);
+}
 
 void bsim_remote::MSetSerial(const char* port) {
  /*
@@ -387,51 +411,105 @@ void bsim_remote::MSetSerial(const char* port) {
                  pinname = "PBf";
                  break;
              case 33:
-                 pinname = "X0";
+                 pinname = "PC0";
                  break;
              case 34:
-                 pinname = "X1";
+                 pinname = "PC1";
                  break;
              case 35:
-                 pinname = "X2";
+                 pinname = "PC2";
                  break;
              case 36:
-                 pinname = "X3";
+                 pinname = "PC3";
                  break;
              case 37:
-                 pinname = "X4";
+                 pinname = "PC4";
                  break;
              case 38:
-                 pinname = "X5";
+                 pinname = "PC5";
                  break;
              case 39:
-                 pinname = "X6";
+                 pinname = "PC6";
                  break;
              case 40:
-                 pinname = "X7";
+                 pinname = "PC7";
                  break;
              case 41:
-                 pinname = "X8";
+                 pinname = "PC8";
                  break;
              case 42:
-                 pinname = "X9";
+                 pinname = "PC9";
                  break;
              case 43:
-                 pinname = "Xa";
+                 pinname = "PCa";
                  break;
              case 44:
-                 pinname = "Xb";
+                 pinname = "PCb";
                  break;
              case 45:
-                 pinname = "Xc";
+                 pinname = "PCc";
                  break;
              case 46:
-                 pinname = "Xd";
+                 pinname = "PCd";
                  break;
              case 47:
-                 pinname = "VSS";
+                 pinname = "PCe";
                  break;
              case 48:
+                 pinname = "PCf";
+                 break;
+             case 49:
+                 pinname = "TX0";
+                 break;
+             case 50:
+                 pinname = "RX0";
+                 break;
+             case 51:
+                 pinname = "TX1";
+                 break;
+             case 52:
+                 pinname = "RX1";
+                 break;
+             case 53:
+                 pinname = "SCK0";
+                 break;
+             case 54:
+                 pinname = "COPI0";
+                 break;
+             case 55:
+                 pinname = "CIPO0";
+                 break;
+             case 56:
+                 pinname = "NCS0";
+                 break;
+             case 57:
+                 pinname = "SCK1";
+                 break;
+             case 58:
+                 pinname = "COPI0";
+                 break;
+             case 59:
+                 pinname = "CIPO0";
+                 break;
+             case 60:
+                 pinname = "NCS1";
+                 break;
+             case 61:
+                 pinname = "SCL0";
+                 break;
+             case 62:
+                 pinname = "SDA0";
+                 break;
+             case 63:
+                 pinname = "SCL1";
+                 break;
+             case 64:
+                 pinname = "SDA1";
+                 break;
+             case 65:
+                 pinname = "VSS";
+                 break;
+             case 66:
                  pinname = "VDD";
                  break;
          }
@@ -449,7 +527,7 @@ void bsim_remote::MSetSerial(const char* port) {
 
  int bsim_remote::MGetPinCount(void) {
      if (!Proc.compare("Ripes"))
-         return 48;
+         return 66;
      return 0;
  }
 
@@ -466,24 +544,35 @@ void bsim_remote::MSetSerial(const char* port) {
 
          pname = MGetPinName(p + 1);
 
-         if (pname[1] == 'A') {
-             pins[p].port = (unsigned char*)&Ports[0];
-             pins[p].pord = pname[2] - '0';
-             if (pins[p].pord > 15)
-                 pins[p].pord -= 39;
-         } else if (pname[1] == 'B') {
-             pins[p].port = (unsigned char*)&Ports[1];
-             pins[p].pord = pname[2] - '0';
-             if (pins[p].pord > 15)
-                 pins[p].pord -= 39;
+         if ((pname[0] == 'P')) {
+             if (pname[1] == 'A') {
+                 pins[p].port = (unsigned char*)&Ports[0];
+                 pins[p].pord = pname[2] - '0';
+                 if (pins[p].pord > 15)
+                     pins[p].pord -= 39;
+             } else if (pname[1] == 'B') {
+                 pins[p].port = (unsigned char*)&Ports[1];
+                 pins[p].pord = pname[2] - '0';
+                 if (pins[p].pord > 15)
+                     pins[p].pord -= 39;
+             } else if (pname[1] == 'C') {
+                 pins[p].ptype = PT_ANALOG;
+             }
+         } else if (pname.Contains("VDD")) {
+             pins[p].port = NULL;
+             pins[p].pord = -1;
+             pins[p].value = 1;
+             pins[p].dir = PD_OUT;
+             pins[p].ptype = PT_POWER;
+         } else if (pname.Contains("VSS")) {
+             pins[p].port = NULL;
+             pins[p].pord = -1;
+             pins[p].value = 0;
+             pins[p].dir = PD_OUT;
+             pins[p].ptype = PT_POWER;
          } else {
              pins[p].port = NULL;
              pins[p].pord = -1;
-         }
-
-         if (pname.Contains("VDD")) {
-             pins[p].value = 1;
-             pins[p].dir = PD_OUT;
          }
      }
  }
@@ -518,45 +607,51 @@ void bsim_remote::MSetSerial(const char* port) {
          if (!Proc.compare("Ripes")) {
              switch (pin) {
                  case 33:  // PC0
-                     channel = 10;
-                     break;
-                 case 34:  // PC1
-                     channel = 11;
-                     break;
-                 case 35:  // PC2
-                     channel = 12;
-                     break;
-                 case 36:  // PC3
-                     channel = 13;
-                     break;
-                 case 37:  // PA0
                      channel = 0;
                      break;
-                 case 38:  // PA1
+                 case 34:  // PC1
                      channel = 1;
                      break;
-                 case 39:  // PA2
+                 case 35:  // PC2
                      channel = 2;
                      break;
-                 case 40:  // PA3
+                 case 36:  // PC3
                      channel = 3;
                      break;
-                 case 41:  // PA4
+                 case 37:  // PC4
                      channel = 4;
                      break;
-                 case 42:  // PA5
+                 case 38:  // PC5
                      channel = 5;
                      break;
-                 case 43:  // PA6
+                 case 39:  // PC6
                      channel = 6;
                      break;
-                 case 44:  // PA7
+                 case 40:  // PC7
                      channel = 7;
                      break;
-                 case 45:  // PC4
+                 case 41:  // PC8
+                     channel = 8;
+                     break;
+                 case 42:  // PC9
+                     channel = 9;
+                     break;
+                 case 43:  // PCa
+                     channel = 10;
+                     break;
+                 case 44:  // PCb
+                     channel = 11;
+                     break;
+                 case 45:  // PCc
+                     channel = 12;
+                     break;
+                 case 46:  // PCd
+                     channel = 13;
+                     break;
+                 case 47:  // PCe
                      channel = 14;
                      break;
-                 case 46:  // PC5
+                 case 48:  // PCf
                      channel = 15;
                      break;
              }
@@ -603,14 +698,76 @@ void bsim_remote::MSetSerial(const char* port) {
      t0CON = 0x7FFF;
      t0PR = 0xFFFF;
      t0iclk = 0;
+
+     bitbang_i2c_rst(&master_i2c[0]);
+     bitbang_i2c_rst(&master_i2c[1]);
+     bitbang_spi_rst(&master_spi[0]);
+     bitbang_spi_rst(&master_spi[1]);
+     bitbang_uart_rst(&master_uart[0]);
+     bitbang_uart_rst(&master_uart[1]);
  }
 
  const picpin* bsim_remote::MGetPinsValues(void) {
      return pins;
  }
 
- void bsim_remote::MStepResume(void) {
-     // if (pic.s2 == 1)step ();
+ void bsim_remote::MStep() {
+     if (ioupdated) {
+         for (int id = 0; id < 2; id++) {
+             if (master_i2c[id].ctrl_on) {
+                 if (master_i2c[id].scl_pin) {
+                     pins[master_i2c[id].scl_pin - 1].dir = PD_OUT;
+                     pins[master_i2c[id].scl_pin - 1].value = master_i2c[id].scl_value;
+                 }
+                 if (master_i2c[id].sda_pin) {
+                     if (master_i2c[id].sda_dir == PD_OUT) {
+                         pins[master_i2c[id].sda_pin - 1].dir = PD_OUT;
+                         pins[master_i2c[id].sda_pin - 1].value = master_i2c[id].sda_value;
+                     } else {
+                         pins[master_i2c[id].sda_pin - 1].dir = PD_IN;
+                         master_i2c[id].sda_value = pins[master_i2c[id].sda_pin - 1].value;
+                     }
+                 }
+             }
+             if (master_spi[id].ctrl_on) {
+                 if (master_spi[id].sck_pin) {
+                     pins[master_spi[id].sck_pin - 1].dir = PD_OUT;
+                     pins[master_spi[id].sck_pin - 1].value = master_spi[id].sck_value;
+                 }
+                 if (master_spi[id].copi_pin) {
+                     pins[master_spi[id].copi_pin - 1].dir = PD_OUT;
+                     pins[master_spi[id].copi_pin - 1].value = master_spi[id].copi_value;
+                 }
+                 if (master_spi[id].cipo_pin) {
+                     pins[master_spi[id].cipo_pin - 1].dir = PD_IN;
+                     master_spi[id].cipo_value = pins[master_spi[id].cipo_pin - 1].value;
+                 }
+                 if (master_spi[id].cs_pin[0]) {
+                     pins[master_spi[id].cs_pin[0] - 1].dir = PD_OUT;
+                     pins[master_spi[id].cs_pin[0] - 1].value = master_spi[id].cs_value[0];
+                 }
+                 if (master_spi[id].cs_pin[1]) {
+                     pins[master_spi[id].cs_pin[1] - 1].dir = PD_OUT;
+                     pins[master_spi[id].cs_pin[1] - 1].value = master_spi[id].cs_value[1];
+                 }
+                 if (master_spi[id].cs_pin[2]) {
+                     pins[master_spi[id].cs_pin[2] - 1].dir = PD_OUT;
+                     pins[master_spi[id].cs_pin[2] - 1].value = master_spi[id].cs_value[2];
+                 }
+             }
+             if (master_uart[id].ctrl_on) {
+                 if (master_uart[id].tx_pin) {
+                     pins[master_uart[id].tx_pin - 1].dir = PD_OUT;
+                     pins[master_uart[id].tx_pin - 1].value = master_uart[id].tx_value;
+                 }
+                 if (master_uart[id].rx_pin) {
+                     pins[master_uart[id].rx_pin - 1].dir = PD_IN;
+                     master_uart[id].rx_value = pins[master_uart[id].rx_pin - 1].value;
+                     bitbang_uart_io(&master_uart[id], master_uart[id].rx_value);
+                 }
+             }
+         }
+     }
  }
 
  //===================== Ripes protocol =========================================

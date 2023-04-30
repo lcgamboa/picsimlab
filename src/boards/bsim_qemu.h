@@ -60,7 +60,7 @@ public:
     unsigned char MGetPin(int pin) override;
     const picpin* MGetPinsValues(void) override;
     void MStep(void) override;
-    void MStepResume(void) override;
+    void MStepResume(void) override{};
     void MReset(int flags) override;
     void EvThreadRun(CThread& thread) override;
     int GetDefaultClock(void) override { return 1; };

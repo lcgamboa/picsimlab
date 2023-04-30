@@ -38,7 +38,7 @@ private:
     lxBitmap* micbmp;
     lxFont font;
     void RegisterRemoteControl(void) override;
-
+    int ADCChanel;
 public:
     // Return the board name
     lxString GetName(void) override { return lxT(BOARD_RemoteTCP_Name); };
@@ -77,8 +77,6 @@ public:
     unsigned short GetOutputId(char* name) override;
     // initialization of processor
     int MInit(const char* processor, const char* fname, float freq) override;
-    // Run one step
-    void MStep(void) override;
 };
 
 #endif /* BOARD_RemoteTCP_H */
