@@ -488,10 +488,10 @@ lxString bsim_remote::MGetPinName(int pin) {
                 pinname = "SCK1";
                 break;
             case 58:
-                pinname = "COPI0";
+                pinname = "COPI1";
                 break;
             case 59:
-                pinname = "CIPO0";
+                pinname = "CIPO1";
                 break;
             case 60:
                 pinname = "NCS1";
