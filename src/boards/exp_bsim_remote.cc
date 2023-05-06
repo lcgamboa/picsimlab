@@ -693,7 +693,7 @@ unsigned char bsim_remote::MGetPin(int pin) {
 }
 
 void bsim_remote::MReset(int flags) {
-    Disconnect();
+    // Disconnect();
     Dirs[0] = 0xFF;
     Dirs[1] = 0xFF;
     Ports[0] = 0x00;
@@ -848,21 +848,18 @@ int32_t bsim_remote::recv_cmd(cmd_header_t* cmd_header) {
     cmd_header->time = ntohll(cmd_header->time);
 
     int64_t now = cmd_header->time;
-    int64_t delta;
 
-    if (now >= timerlast) {
-        delta = now - timerlast;
+    if (now > timerlast) {
+        int64_t delta = now - timerlast;
         timerlast = now;
 
         if (delta > (TTIMEOUT * 1.1)) {
             delta = (TTIMEOUT * 1.1);
         }
-    } else {
-        delta = GetInc_ns();
-        timerlast += delta;
+        Run_CPU_ns(delta);
+    } else if (now < timerlast) {
+        timerlast = now;
     }
-
-    Run_CPU_ns(delta);
 
     return ret;
 }

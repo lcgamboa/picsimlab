@@ -657,6 +657,7 @@ void cboard_RemoteTCP::EvThreadRun(CThread& thread) {
                                     pins[pin].value = 0;
                                 }
                             }
+                            ioupdated = 1;
                             break;
                         case DIRA:
                             Dirs[0] = payload[1];
@@ -667,6 +668,7 @@ void cboard_RemoteTCP::EvThreadRun(CThread& thread) {
                                     pins[pin].dir = PD_OUT;
                                 }
                             }
+                            ioupdated = 1;
                             break;
                         case PORTB:
                             Ports[1] = (payload[1] & (~Dirs[1])) | (Ports[1] & Dirs[1]);
@@ -677,6 +679,7 @@ void cboard_RemoteTCP::EvThreadRun(CThread& thread) {
                                     pins[pin].value = 0;
                                 }
                             }
+                            ioupdated = 1;
                             break;
                         case DIRB:
                             Dirs[1] = payload[1];
@@ -687,6 +690,7 @@ void cboard_RemoteTCP::EvThreadRun(CThread& thread) {
                                     pins[pin].dir = PD_OUT;
                                 }
                             }
+                            ioupdated = 1;
                             break;
                         case T0CNT:
                             t0CNT = payload[1];
@@ -961,13 +965,19 @@ void cboard_RemoteTCP::EvThreadRun(CThread& thread) {
             case VB_QUIT:
                 send_cmd(VB_QUIT);
                 Disconnect();
+                dprintf("VB_QUIT\n");
                 break;
             case VB_SYNC:
                 // already sync by method recv_cmd
                 send_cmd(VB_SYNC);
+                dprintf("VB_SYNC\n");
                 break;
             case VB_PSTATUS:
-                // break;
+                uint32_t payload[1];
+                payload[0] = htonl(0);
+                send_cmd(VB_PSTATUS, (const char*)&payload, 4);
+                dprintf("VB_PSTATUS\n");
+                break;
             default:
                 printf("Invalid cmd !!!!!!!!!!!!\n");
                 if (send_cmd(VB_LAST)) {
