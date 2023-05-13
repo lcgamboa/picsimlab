@@ -83,6 +83,8 @@ typedef struct {
 
 #define MAX_TIMERS 256
 
+#define MAX_IDS 128
+
 /**
  * @brief internal timer struct
  *
@@ -619,17 +621,17 @@ protected:
      */
     void InstCounterInc(void);
 
-    lxString Proc;              ///< Name of processor in use
-    lxString DProc;             ///< Name of default board processor
-    input_t input[120];         ///< input map elements
-    input_t* input_ids[120];    ///< input map elements by id order
-    output_t output[120];       ///< output map elements
-    output_t* output_ids[120];  ///< output map elements by id order
-    int inputc;                 ///< input map elements counter
-    int outputc;                ///< output map elements counter
-    int use_oscope;             ///< use oscilloscope window
-    int use_spare;              ///< use spare parts window
-    unsigned char p_RST;        ///< board /RESET pin state
+    lxString Proc;                  ///< Name of processor in use
+    lxString DProc;                 ///< Name of default board processor
+    input_t input[MAX_IDS];         ///< input map elements
+    input_t* input_ids[MAX_IDS];    ///< input map elements by id order
+    output_t output[MAX_IDS];       ///< output map elements
+    output_t* output_ids[MAX_IDS];  ///< output map elements by id order
+    int inputc;                     ///< input map elements counter
+    int outputc;                    ///< output map elements counter
+    int use_oscope;                 ///< use oscilloscope window
+    int use_spare;                  ///< use spare parts window
+    unsigned char p_RST;            ///< board /RESET pin state
     double Scale;
 
     /**

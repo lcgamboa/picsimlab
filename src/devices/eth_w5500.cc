@@ -462,9 +462,9 @@ void eth_w5500_rst(eth_w5500_t* eth) {
     memset(eth->status, 0, 8);
     memset(eth->bindp, 0, 8 * 2);
 
-    eth->Common[CR_VERSIONR] = 0x04;  // version
+    eth->Common[CR_VERSIONR] = 0x04;       // version
     if (eth->link) {
-        eth->Common[CR_PHYCFGR] |= 0x01;  // link on
+        eth->Common[CR_PHYCFGR] |= 0x01;   // link on
     } else {
         eth->Common[CR_PHYCFGR] &= ~0x01;  // link off
     }
@@ -533,12 +533,12 @@ static int scont = 0;
 
 typedef struct dhcp {
     // fixed 240 bytes
-    u_int8_t opcode;  // Operation Code
-    u_int8_t htype;   // Hardware Type
-    u_int8_t hlen;    // Hardware Address Length
-    u_int8_t hops;    // Hops
-    u_int32_t xid;    // Transaction Identifier
-    u_int16_t secs;   // Seconds
+    u_int8_t opcode;      // Operation Code
+    u_int8_t htype;       // Hardware Type
+    u_int8_t hlen;        // Hardware Address Length
+    u_int8_t hops;        // Hops
+    u_int32_t xid;        // Transaction Identifier
+    u_int16_t secs;       // Seconds
     u_int16_t flags;
     u_int8_t ciaddr[4];   // Client IP Address
     u_int8_t yiaddr[4];   // Your IP Address
@@ -1052,8 +1052,8 @@ unsigned short eth_w5500_io(eth_w5500_t* eth, unsigned char mosi, unsigned char 
         case SPI_DATA:
 
             switch (eth->bb_spi.byte << 3) {
-                case 0:  // nothing
-                case 8:  // half address
+                case 0:   // nothing
+                case 8:   // half address
                     break;
                 case 16:  // full address
                     eth->addr = eth->bb_spi.insr;
@@ -1064,8 +1064,8 @@ unsigned short eth_w5500_io(eth_w5500_t* eth, unsigned char mosi, unsigned char 
                 case 24:  // control
                     eth->control = eth->bb_spi.insr & 0x00FF;
 #ifdef DEBUG
-                    dprintf("dsr %03i w5500= 0x%04X  ctrl=0x%02X  BSB=%s\n", eth->bc, eth->insr, eth->control,
-                            debug_BSB(eth));
+                    dprintf("dsr %03i w5500= 0x%04X  ctrl=0x%02X  BSB=%s\n", eth->bb_spi.byte, eth->bb_spi.insr,
+                            eth->control, debug_BSB(eth));
 #endif
                     if (!RWB)  // read
                     {
@@ -1127,7 +1127,7 @@ unsigned short eth_w5500_io(eth_w5500_t* eth, unsigned char mosi, unsigned char 
                                 eth->bb_spi.insr, eth->bb_spi.outsr, offset);
                     }
                     break;
-                default:  // data
+                default:      // data
                     offset = ((eth->bb_spi.byte << 3) - 32) / 8;
                     if (RWB)  // write
                     {
@@ -1389,7 +1389,7 @@ unsigned short eth_w5500_io(eth_w5500_t* eth, unsigned char mosi, unsigned char 
                                                                 if (!strcmp(skt_addr,
                                                                             "255.255.255.255"))  // fake broadcast
                                                                 {
-                                                                    if (skt_port == 67)  // dhcp
+                                                                    if (skt_port == 67)          // dhcp
                                                                     {
                                                                         eth_w5500_fake_dhcp_reply(eth, n);
                                                                     }
@@ -1528,5 +1528,5 @@ unsigned short eth_w5500_io(eth_w5500_t* eth, unsigned char mosi, unsigned char 
             break;
     }
 
-    return ((eth->bb_spi.outsr & 0x080) > 0);
+    return ((eth->bb_spi.outsr & 0x080) > 0) | 0x02;  // TODO implement interrupt support
 }

@@ -44,6 +44,10 @@ board::board(void) {
         Timers[i].Callback = NULL;
         Timers[i].Enabled = 0;
     }
+    for (int i = 0; i < MAX_IDS; i++) {
+        input_ids[i] = &input[i];
+        output_ids[i] = &output[i];
+    }
 }
 
 board::~board(void) {}
@@ -178,6 +182,10 @@ void board::ReadInputMap(lxString fname) {
                     input[inputc].value_s = 0;
                     input[inputc].value_f = 0;
                     inputc++;
+                    if (inputc >= MAX_IDS) {
+                        printf("PICSimLab: Error! inputc greater than MAX_IDS \n");
+                        exit(-1);
+                    }
                 }
             }
         }
@@ -249,6 +257,10 @@ void board::ReadOutputMap(lxString fname) {
                         output[outputc].value_s = 0;
                         output[outputc].value_f = 0;
                         outputc++;
+                    }
+                    if (outputc >= MAX_IDS) {
+                        printf("PICSimLab: Error! outputc greater than MAX_IDS \n");
+                        exit(-1);
                     }
                 }
             }
