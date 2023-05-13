@@ -129,7 +129,7 @@ unsigned char bitbang_i2c_io(bitbang_i2c_t* i2c, const unsigned char scl, const 
     if (i2c->bit == 9) {
         dprintf("bitbang_i2c %02x data %02X\n", i2c->addr >> 1, i2c->datab);
 
-        if (i2c->byte == 0)  // ADDR
+        if (i2c->byte == 0)                                  // ADDR
         {
             if ((i2c->datab & i2c->addr_mask) == i2c->addr)  // valid address
             {
@@ -200,6 +200,7 @@ static void bitbang_i2c_ctrl_callback(void* arg) {
                 i2c->sda_dir = PD_OUT;
                 i2c->sda_value = 0;
                 i2c->scl_value = 1;
+                i2c->byte = 0;
             } else {
                 i2c->status = I2C_IDLE;
                 i2c->pboard->TimerSetState(i2c->TimerID, 0);
@@ -212,6 +213,7 @@ static void bitbang_i2c_ctrl_callback(void* arg) {
                 i2c->sda_dir = PD_OUT;
                 i2c->sda_value = 1;
                 i2c->scl_value = 1;
+                i2c->byte = 0xFF;
             } else {
                 i2c->status = I2C_IDLE;
                 i2c->pboard->TimerSetState(i2c->TimerID, 0);
@@ -247,6 +249,7 @@ static void bitbang_i2c_ctrl_callback(void* arg) {
                         if (i2c->bit > 8) {
                             i2c->sda_dir = PD_OUT;
                             i2c->status = I2C_IDLE;
+                            i2c->byte++;
                             i2c->pboard->TimerSetState(i2c->TimerID, 0);
                         } else {
                             i2c->sda_dir = PD_IN;
@@ -299,6 +302,7 @@ static void bitbang_i2c_ctrl_callback(void* arg) {
                             i2c->sda_dir = PD_OUT;
                             i2c->status = I2C_IDLE;
                             i2c->pboard->TimerSetState(i2c->TimerID, 0);
+                            i2c->byte++;
                         } else {
                             i2c->sda_dir = PD_OUT;
                         }

@@ -38,7 +38,7 @@ private:
     lxBitmap* micbmp;
     lxFont font;
     void RegisterRemoteControl(void) override;
-
+    int ADCChanel;
 public:
     // Return the board name
     lxString GetName(void) override { return lxT(BOARD_RemoteTCP_Name); };
@@ -50,6 +50,7 @@ public:
     // Called ever 100ms to draw board
     void Draw(CDraw* draw) override;
     void Run_CPU(void) override;
+    void Run_CPU_ns(uint64_t time) override;
     // Return a list of board supported microcontrollers
     lxString GetSupportedDevices(void) override { return lxT("Ripes,"); };
     // Reset board status
@@ -76,8 +77,6 @@ public:
     unsigned short GetOutputId(char* name) override;
     // initialization of processor
     int MInit(const char* processor, const char* fname, float freq) override;
-    // Run one step
-    void MStep(void) override;
 };
 
 #endif /* BOARD_RemoteTCP_H */
