@@ -2,6 +2,10 @@
 
 ### New
 
+* Support to UART, SPI, I2C and ADC added to RemoteTCP board. [lcgamboa]
+
+* Add support to syncronize Remote TCP simulation. [lcgamboa]
+
 * New part HX711 (Load Cell Amp) [lcgamboa]
 
 * Option to set the number of elements in parts: Potentiometers, Push Buttons, Switches and LEDs. [lcgamboa]

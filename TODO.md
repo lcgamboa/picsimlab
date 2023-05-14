@@ -10,6 +10,7 @@
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1209) | 1209 | default output value is not used yet (DOV) |
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1577) | 1577 | avr ID pointer |
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1599) | 1599 | avr ID size |
+| [src/boards/exp_board_RemoteTCP.cc](src/boards/exp_board_RemoteTCP.cc#L177) | 177 | define pins |
 | [src/devices/eth_w5500.cc](src/devices/eth_w5500.cc#L471) | 471 | add support to buffer size different of 2k |
 | [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L123) | 123 | ssd1306 Scrolling Command Table |
 | [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L134) | 134 | ssd1306 Continuous Vertical and Horizontal Scroll Setup |
