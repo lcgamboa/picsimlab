@@ -46,6 +46,11 @@ part::part(const unsigned x, const unsigned y, const char* name, const char* typ
     Bitmap = NULL;
     PinCount = 0;
     Pins = NULL;
+
+    for (int i = 0; i < MAX_IDS; i++) {
+        input_ids[i] = &input[i];
+        output_ids[i] = &output[i];
+    }
 }
 
 void part::Init(void) {

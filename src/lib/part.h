@@ -367,24 +367,24 @@ protected:
      */
     virtual void RegisterRemoteControl(void){};
 
-    int id;                     ///< part ID
-    input_t input[100];         ///< input map elements
-    input_t* input_ids[100];    ///< input map elements by id order
-    output_t output[100];       ///< output map elements
-    output_t* output_ids[100];  ///< output map elements by id order
-    int inputc;                 ///< input map elements counter
-    int outputc;                ///< output map elements counter
-    unsigned int Height;        ///< Height of part
-    unsigned int Width;         ///< Width of part
-    int X;                      ///< X position of part
-    int Y;                      ///< Y position of part
-    lxBitmap* Bitmap;           ///< Internal Bitmap
-    CCanvas canvas;             ///< Internal Canvas to draw in bitmap
-    unsigned int refresh;       ///< redraw is needed
-    int Orientation;            ///< orientation to draw part
-    double Scale;               ///< scale to draw part
-    unsigned int Update;        ///< part need draw Update
-    int always_update;          ///< part need to be update every clock cycle
+    int id;                         ///< part ID
+    input_t input[MAX_IDS];         ///< input map elements
+    input_t* input_ids[MAX_IDS];    ///< input map elements by id order
+    output_t output[MAX_IDS];       ///< output map elements
+    output_t* output_ids[MAX_IDS];  ///< output map elements by id order
+    int inputc;                     ///< input map elements counter
+    int outputc;                    ///< output map elements counter
+    unsigned int Height;            ///< Height of part
+    unsigned int Width;             ///< Width of part
+    int X;                          ///< X position of part
+    int Y;                          ///< Y position of part
+    lxBitmap* Bitmap;               ///< Internal Bitmap
+    CCanvas canvas;                 ///< Internal Canvas to draw in bitmap
+    unsigned int refresh;           ///< redraw is needed
+    int Orientation;                ///< orientation to draw part
+    double Scale;                   ///< scale to draw part
+    unsigned int Update;            ///< part need draw Update
+    int always_update;              ///< part need to be update every clock cycle
     lxString Type;
     lxFont font;
     int PinCount;

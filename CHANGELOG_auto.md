@@ -2,6 +2,10 @@
 
 ### New
 
+* New part NTC temperature sensor. [lcgamboa]
+
+* Support to PIC16F688 added to board Breadboard. [lcgamboa]
+
 * Support to UART, SPI, I2C and ADC added to RemoteTCP board. [lcgamboa]
 
 * Add support to syncronize Remote TCP simulation. [lcgamboa]
