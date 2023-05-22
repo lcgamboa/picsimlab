@@ -51,8 +51,7 @@ CPWindow1 Window1;
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
-#endif
-
+#else
 #ifdef _WIN_
 #include <imagehlp.h>
 #include <windows.h>
@@ -60,6 +59,7 @@ CPWindow1 Window1;
 #include <err.h>
 #include <execinfo.h>
 #include <signal.h>
+#endif
 #endif
 
 #ifdef _USE_PICSTARTP_
@@ -373,9 +373,10 @@ void CPWindow1::draw1_EvKeyboardRelease(CControl* control, const uint key, const
     PICSimLab.GetBoard()->EvKeyRelease(key, mask);
 }
 
+#ifndef __EMSCRIPTEN__
 // https://www.gamedev.net/forums/topic/457984-walking-the-stack-in-c-with-mingw32/
 #ifdef _WIN_
-void windows_print_stacktrace(CONTEXT* context) {
+static void windows_print_stacktrace(CONTEXT* context) {
     SymInitialize(GetCurrentProcess(), 0, true);
 
     STACKFRAME frame = {0};
@@ -408,7 +409,7 @@ void windows_print_stacktrace(CONTEXT* context) {
     SymCleanup(GetCurrentProcess());
 }
 
-LONG WINAPI windows_exception_handler(EXCEPTION_POINTERS* ExceptionInfo) {
+static LONG WINAPI windows_exception_handler(EXCEPTION_POINTERS* ExceptionInfo) {
     switch (ExceptionInfo->ExceptionRecord->ExceptionCode) {
         case EXCEPTION_ACCESS_VIOLATION:
             fputs("PICSimLab Error: EXCEPTION_ACCESS_VIOLATION\n", stderr);
@@ -490,14 +491,14 @@ LONG WINAPI windows_exception_handler(EXCEPTION_POINTERS* ExceptionInfo) {
     return EXCEPTION_EXECUTE_HANDLER;
 }
 
-void set_signal_handler() {
+static void set_signal_handler(void) {
     SetUnhandledExceptionFilter(windows_exception_handler);
 }
 #else
 
 #define MAX_STACK_FRAMES 64
 static void* stack_traces[MAX_STACK_FRAMES];
-void posix_print_stack_trace() {
+static void posix_print_stack_trace() {
     int i, trace_size = 0;
     char** messages = (char**)NULL;
 
@@ -514,7 +515,7 @@ void posix_print_stack_trace() {
     }
 }
 
-void posix_signal_handler(int sig, siginfo_t* siginfo, void* context) {
+static void posix_signal_handler(int sig, siginfo_t* siginfo, void* context) {
     (void)context;
     switch (sig) {
         case SIGSEGV:
@@ -598,7 +599,7 @@ void posix_signal_handler(int sig, siginfo_t* siginfo, void* context) {
 }
 
 static uint8_t* alternate_stack;
-void set_signal_handler() {
+static void set_signal_handler(void) {
     /* setup alternate stack */
     {
         alternate_stack = (uint8_t*)malloc(SIGSTKSZ);
@@ -649,6 +650,9 @@ void set_signal_handler() {
         }
     }
 }
+#endif
+#else
+static void set_signal_handler(void){};
 #endif
 
 void CPWindow1::_EvOnCreate(CControl* control) {
