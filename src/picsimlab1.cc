@@ -53,6 +53,15 @@ CPWindow1 Window1;
 #include <emscripten.h>
 #endif
 
+#ifdef _WIN_
+#include <imagehlp.h>
+#include <windows.h>
+#else
+#include <err.h>
+#include <execinfo.h>
+#include <signal.h>
+#endif
+
 #ifdef _USE_PICSTARTP_
 // picstart plus
 int prog_init(void);
@@ -364,6 +373,284 @@ void CPWindow1::draw1_EvKeyboardRelease(CControl* control, const uint key, const
     PICSimLab.GetBoard()->EvKeyRelease(key, mask);
 }
 
+// https://www.gamedev.net/forums/topic/457984-walking-the-stack-in-c-with-mingw32/
+#ifdef _WIN_
+void windows_print_stacktrace(CONTEXT* context) {
+    SymInitialize(GetCurrentProcess(), 0, true);
+
+    STACKFRAME frame = {0};
+
+#if defined(_M_AMD64)
+    const DWORD machine = IMAGE_FILE_MACHINE_AMD64;
+    /* setup initial stack frame */
+    frame.AddrPC.Offset = context->Rip;
+    frame.AddrPC.Mode = AddrModeFlat;
+    frame.AddrStack.Offset = context->Rsp;
+    frame.AddrStack.Mode = AddrModeFlat;
+    frame.AddrFrame.Offset = context->Rbp;
+    frame.AddrFrame.Mode = AddrModeFlat;
+#else
+    const DWORD machine = IMAGE_FILE_MACHINE_I386;
+    /* setup initial stack frame */
+    frame.AddrPC.Offset = context->Eip;
+    frame.AddrPC.Mode = AddrModeFlat;
+    frame.AddrStack.Offset = context->Esp;
+    frame.AddrStack.Mode = AddrModeFlat;
+    frame.AddrFrame.Offset = context->Ebp;
+    frame.AddrFrame.Mode = AddrModeFlat;
+#endif
+
+    while (StackWalk(machine, GetCurrentProcess(), GetCurrentThread(), &frame, context, 0, SymFunctionTableAccess,
+                     SymGetModuleBase, 0)) {
+        printf("PICSimLab stack: %p\n", (void*)frame.AddrPC.Offset);
+    }
+
+    SymCleanup(GetCurrentProcess());
+}
+
+LONG WINAPI windows_exception_handler(EXCEPTION_POINTERS* ExceptionInfo) {
+    switch (ExceptionInfo->ExceptionRecord->ExceptionCode) {
+        case EXCEPTION_ACCESS_VIOLATION:
+            fputs("PICSimLab Error: EXCEPTION_ACCESS_VIOLATION\n", stderr);
+            break;
+        case EXCEPTION_ARRAY_BOUNDS_EXCEEDED:
+            fputs("PICSimLab Error: EXCEPTION_ARRAY_BOUNDS_EXCEEDED\n", stderr);
+            break;
+        case EXCEPTION_BREAKPOINT:
+            fputs("PICSimLab Error: EXCEPTION_BREAKPOINT\n", stderr);
+            break;
+        case EXCEPTION_DATATYPE_MISALIGNMENT:
+            fputs("PICSimLab Error: EXCEPTION_DATATYPE_MISALIGNMENT\n", stderr);
+            break;
+        case EXCEPTION_FLT_DENORMAL_OPERAND:
+            fputs("PICSimLab Error: EXCEPTION_FLT_DENORMAL_OPERAND\n", stderr);
+            break;
+        case EXCEPTION_FLT_DIVIDE_BY_ZERO:
+            fputs("PICSimLab Error: EXCEPTION_FLT_DIVIDE_BY_ZERO\n", stderr);
+            break;
+        case EXCEPTION_FLT_INEXACT_RESULT:
+            fputs("PICSimLab Error: EXCEPTION_FLT_INEXACT_RESULT\n", stderr);
+            break;
+        case EXCEPTION_FLT_INVALID_OPERATION:
+            fputs("PICSimLab Error: EXCEPTION_FLT_INVALID_OPERATION\n", stderr);
+            break;
+        case EXCEPTION_FLT_OVERFLOW:
+            fputs("PICSimLab Error: EXCEPTION_FLT_OVERFLOW\n", stderr);
+            break;
+        case EXCEPTION_FLT_STACK_CHECK:
+            fputs("PICSimLab Error: EXCEPTION_FLT_STACK_CHECK\n", stderr);
+            break;
+        case EXCEPTION_FLT_UNDERFLOW:
+            fputs("PICSimLab Error: EXCEPTION_FLT_UNDERFLOW\n", stderr);
+            break;
+        case EXCEPTION_ILLEGAL_INSTRUCTION:
+            fputs("PICSimLab Error: EXCEPTION_ILLEGAL_INSTRUCTION\n", stderr);
+            break;
+        case EXCEPTION_IN_PAGE_ERROR:
+            fputs("PICSimLab Error: EXCEPTION_IN_PAGE_ERROR\n", stderr);
+            break;
+        case EXCEPTION_INT_DIVIDE_BY_ZERO:
+            fputs("PICSimLab Error: EXCEPTION_INT_DIVIDE_BY_ZERO\n", stderr);
+            break;
+        case EXCEPTION_INT_OVERFLOW:
+            fputs("PICSimLab Error: EXCEPTION_INT_OVERFLOW\n", stderr);
+            break;
+        case EXCEPTION_INVALID_DISPOSITION:
+            fputs("PICSimLab Error: EXCEPTION_INVALID_DISPOSITION\n", stderr);
+            break;
+        case EXCEPTION_NONCONTINUABLE_EXCEPTION:
+            fputs("PICSimLab Error: EXCEPTION_NONCONTINUABLE_EXCEPTION\n", stderr);
+            break;
+        case EXCEPTION_PRIV_INSTRUCTION:
+            fputs("PICSimLab Error: EXCEPTION_PRIV_INSTRUCTION\n", stderr);
+            break;
+        case EXCEPTION_SINGLE_STEP:
+            fputs("PICSimLab Error: EXCEPTION_SINGLE_STEP\n", stderr);
+            break;
+        case EXCEPTION_STACK_OVERFLOW:
+            fputs("PICSimLab Error: EXCEPTION_STACK_OVERFLOW\n", stderr);
+            break;
+        default:
+            fputs("PICSimLab Error: Unrecognized Exception\n", stderr);
+            break;
+    }
+    fflush(stderr);
+    /* If this is a stack overflow then we can't walk the stack, so just show
+      where the error happened */
+    if (EXCEPTION_STACK_OVERFLOW != ExceptionInfo->ExceptionRecord->ExceptionCode) {
+        windows_print_stacktrace(ExceptionInfo->ContextRecord);
+    } else {
+#if defined(_M_AMD64)
+        printf("PICSimLab Error: %p\n", (void*)ExceptionInfo->ContextRecord->Rip);
+#else
+        printf("PICSimLab Error: %p\n", (void*)ExceptionInfo->ContextRecord->Eip);
+#endif
+    }
+
+    return EXCEPTION_EXECUTE_HANDLER;
+}
+
+void set_signal_handler() {
+    SetUnhandledExceptionFilter(windows_exception_handler);
+}
+#else
+
+#define MAX_STACK_FRAMES 64
+static void* stack_traces[MAX_STACK_FRAMES];
+void posix_print_stack_trace() {
+    int i, trace_size = 0;
+    char** messages = (char**)NULL;
+
+    trace_size = backtrace(stack_traces, MAX_STACK_FRAMES);
+    messages = backtrace_symbols(stack_traces, trace_size);
+
+    /* skip the first couple stack frames (as they are this function and
+     our handler) and also skip the last frame as it's (always?) junk. */
+    for (i = 3; i < (trace_size - 1); ++i) {
+        printf("PICSimLab Stack[%02i]: %s\n", i - 3, messages[i]);
+    }
+    if (messages) {
+        free(messages);
+    }
+}
+
+void posix_signal_handler(int sig, siginfo_t* siginfo, void* context) {
+    (void)context;
+    switch (sig) {
+        case SIGSEGV:
+            fputs("PICSimLab Caught SIGSEGV: Segmentation Fault\n", stderr);
+            break;
+        case SIGINT:
+            fputs("PICSimLab Caught SIGINT: Interactive attention signal, (usually ctrl+c)\n", stderr);
+            break;
+        case SIGFPE:
+            switch (siginfo->si_code) {
+                case FPE_INTDIV:
+                    fputs("PICSimLab Caught SIGFPE: (integer divide by zero)\n", stderr);
+                    break;
+                case FPE_INTOVF:
+                    fputs("PICSimLab Caught SIGFPE: (integer overflow)\n", stderr);
+                    break;
+                case FPE_FLTDIV:
+                    fputs("PICSimLab Caught SIGFPE: (floating-point divide by zero)\n", stderr);
+                    break;
+                case FPE_FLTOVF:
+                    fputs("PICSimLab Caught SIGFPE: (floating-point overflow)\n", stderr);
+                    break;
+                case FPE_FLTUND:
+                    fputs("PICSimLab Caught SIGFPE: (floating-point underflow)\n", stderr);
+                    break;
+                case FPE_FLTRES:
+                    fputs("PICSimLab Caught SIGFPE: (floating-point inexact result)\n", stderr);
+                    break;
+                case FPE_FLTINV:
+                    fputs("PICSimLab Caught SIGFPE: (floating-point invalid operation)\n", stderr);
+                    break;
+                case FPE_FLTSUB:
+                    fputs("PICSimLab Caught SIGFPE: (subscript out of range)\n", stderr);
+                    break;
+                default:
+                    fputs("PICSimLab Caught SIGFPE: Arithmetic Exception\n", stderr);
+                    break;
+            }
+        case SIGILL:
+            switch (siginfo->si_code) {
+                case ILL_ILLOPC:
+                    fputs("PICSimLab Caught SIGILL: (illegal opcode)\n", stderr);
+                    break;
+                case ILL_ILLOPN:
+                    fputs("PICSimLab Caught SIGILL: (illegal operand)\n", stderr);
+                    break;
+                case ILL_ILLADR:
+                    fputs("PICSimLab Caught SIGILL: (illegal addressing mode)\n", stderr);
+                    break;
+                case ILL_ILLTRP:
+                    fputs("PICSimLab Caught SIGILL: (illegal trap)\n", stderr);
+                    break;
+                case ILL_PRVOPC:
+                    fputs("PICSimLab Caught SIGILL: (privileged opcode)\n", stderr);
+                    break;
+                case ILL_PRVREG:
+                    fputs("PICSimLab Caught SIGILL: (privileged register)\n", stderr);
+                    break;
+                case ILL_COPROC:
+                    fputs("PICSimLab Caught SIGILL: (coprocessor error)\n", stderr);
+                    break;
+                case ILL_BADSTK:
+                    fputs("PICSimLab Caught SIGILL: (internal stack error)\n", stderr);
+                    break;
+                default:
+                    fputs("PICSimLab Caught SIGILL: Illegal Instruction\n", stderr);
+                    break;
+            }
+            break;
+        case SIGTERM:
+            fputs("PICSimLab Caught SIGTERM: a termination request was sent to the program\n", stderr);
+            break;
+        case SIGABRT:
+            fputs("PICSimLab Caught SIGABRT: usually caused by an abort() or assert()\n", stderr);
+            break;
+        default:
+            break;
+    }
+    posix_print_stack_trace();
+    _Exit(1);
+}
+
+static uint8_t* alternate_stack;
+void set_signal_handler() {
+    /* setup alternate stack */
+    {
+        alternate_stack = (uint8_t*)malloc(SIGSTKSZ);
+
+        stack_t ss = {};
+        /* malloc is usually used here, I'm not 100% sure my static allocation
+           is valid but it seems to work just fine. */
+        ss.ss_sp = (void*)alternate_stack;
+        ss.ss_size = SIGSTKSZ;
+        ss.ss_flags = 0;
+
+        if (sigaltstack(&ss, NULL) != 0) {
+            err(1, "sigaltstack");
+        }
+    }
+
+    /* register our signal handlers */
+    {
+        struct sigaction sig_action = {};
+        sig_action.sa_sigaction = posix_signal_handler;
+        sigemptyset(&sig_action.sa_mask);
+
+#ifdef __APPLE__
+        /* for some reason we backtrace() doesn't work on osx
+           when we use an alternate stack */
+        sig_action.sa_flags = SA_SIGINFO;
+#else
+        sig_action.sa_flags = SA_SIGINFO | SA_ONSTACK;
+#endif
+
+        if (sigaction(SIGSEGV, &sig_action, NULL) != 0) {
+            err(1, "sigaction");
+        }
+        if (sigaction(SIGFPE, &sig_action, NULL) != 0) {
+            err(1, "sigaction");
+        }
+        if (sigaction(SIGINT, &sig_action, NULL) != 0) {
+            err(1, "sigaction");
+        }
+        if (sigaction(SIGILL, &sig_action, NULL) != 0) {
+            err(1, "sigaction");
+        }
+        if (sigaction(SIGTERM, &sig_action, NULL) != 0) {
+            err(1, "sigaction");
+        }
+        if (sigaction(SIGABRT, &sig_action, NULL) != 0) {
+            err(1, "sigaction");
+        }
+    }
+}
+#endif
+
 void CPWindow1::_EvOnCreate(CControl* control) {
     char home[1024];
     lxFileName fn;
@@ -371,6 +658,8 @@ void CPWindow1::_EvOnCreate(CControl* control) {
     char fname[1200];
     char fname_error[1200];
     int close_error = 0;
+
+    set_signal_handler();
 
     PICSimLab.menu_EvBoard = EVMENUACTIVE & CPWindow1::menu1_EvBoard;
     PICSimLab.menu_EvMicrocontroller = EVMENUACTIVE & CPWindow1::menu1_EvMicrocontroller;
