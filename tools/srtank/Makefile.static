@@ -21,7 +21,7 @@ FLAGS+= -DEXT_BROWSER
 FLAGS+= -I../$(LIBPATH)/lxrad/include/  -flto=auto
 
 LIBS=  ../$(LIBPATH)/lxrad/lib/liblxrad.a \
-       ../$(LIBPATH)/lunasvg/build/lib/liblunasvg.a \
+       ../$(LIBPATH)/lunasvg/build/liblunasvg.a \
        `wx-config --libs` `wx-config --libs stc` 
 
 OBJS = psrtank.o srtank1.o srtank2.o  serial.o
