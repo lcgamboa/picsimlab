@@ -74,6 +74,8 @@ cl ./build_libqemu-esp32.sh
 cd build
 cl strip libqemu-xtensa.so
 cl cp libqemu-xtensa.so ../../../lib/qemu/
+cl strip libqemu-riscv32.so
+cl cp libqemu-riscv32.so ../../../lib/qemu/
 cd ..
 cl install -d ../../lib/qemu/fw
 cl cp pc-bios/esp32-v3-rom*.bin ../../lib/qemu/fw/
