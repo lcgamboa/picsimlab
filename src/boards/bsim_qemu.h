@@ -32,7 +32,7 @@
 #include "../lib/board.h"
 #include "qemu.h"
 
-typedef enum { QEMU_SIM_NONE = 0, QEMU_SIM_STM32, QEMU_SIM_ESP32 } QEMUSimType;
+typedef enum { QEMU_SIM_NONE = 0, QEMU_SIM_STM32, QEMU_SIM_ESP32, QEMU_SIM_ESP32_C3 } QEMUSimType;
 
 #define TTIMEOUT (BASETIMER * 1000000L)
 

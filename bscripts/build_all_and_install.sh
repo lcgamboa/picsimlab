@@ -78,7 +78,7 @@ cl strip libqemu-riscv32.so
 cl cp libqemu-riscv32.so ../../../lib/qemu/
 cd ..
 cl install -d ../../lib/qemu/fw
-cl cp pc-bios/esp32-v3-rom*.bin ../../lib/qemu/fw/
+cl cp pc-bios/esp32-v3-rom*.bin pc-bios/esp32c3-rom.bin ../../lib/qemu/fw/
 cd ..
 echo -e "\033[1;32m ---------------------- build and install picsimlab ---------------------- \033[0m"
 #git pull --no-rebase

@@ -686,7 +686,7 @@ void board_register(const char* name, board_create_func bcreate);
 // boards object creation
 board* create_board(int* lab, int* lab_);
 
-#define BOARDS_MAX 20
+#define BOARDS_MAX 25
 
 extern int BOARDS_LAST;
 

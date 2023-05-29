@@ -199,7 +199,7 @@ static uint8_t picsimlab_spi_event(const uint8_t id, const uint16_t event) {
 }
 
 static void picsimlab_uart_tx_event(const uint8_t id, const uint8_t value) {
-    // printf("Uart[%i] %c \n", id, value);
+    dprintf("Uart[%i] %c \n", id, value);
 
     g_board->Run_CPU_ns(GotoNow());
 
@@ -559,7 +559,103 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
         strcpy(argv[argc++], "-drive");
         sprintf(argv[argc++], "file=%s,if=mtd,format=raw", fname_);
+    } else if (SimType == QEMU_SIM_ESP32_C3) {
+        if (!load_qemu_lib("libqemu-riscv32")) {
+            PICSimLab.RegisterError("Error loading libqemu-riscv32");
+            qemu_started = -1;
+            mtx_qinit->Unlock();
+            return;
+        }
 
+        // change .hex to .bin
+        strncpy(fname_, fname, 2048);
+        fname_[strlen(fname_) - 3] = 0;
+        strncat(fname_, "bin", 2047);
+
+        if (!lxFileExists(fname_)) {
+            // create a empty memory
+            FILE* fout;
+            fout = fopen(fname_, "w");
+            if (fout) {
+                unsigned char buffer[1024];
+                memset(buffer, 0, 1024);
+                for (int r = 0; r < 4096; r++) {
+                    fwrite(buffer, 1024, sizeof(char), fout);
+                }
+                fclose(fout);
+            } else {
+                printf("PICSimLab: qemu Error creating file %s \n", fname_);
+                exit(-1);
+            }
+        } else {
+            FILE* fin;
+            FILE* fout;
+            fin = fopen(fname_, "rb");
+            if (fin) {
+                fseek(fin, 0, SEEK_END);
+                long size = ftell(fin);
+                fseek(fin, 0, SEEK_SET);
+                printf("PICSimLab: qemu ESP32-C3 image size is %li \n", size);
+
+                if (size != 4194304) {
+                    char dname[2048];
+
+                    printf("PICSimLab: Loading application to address 0x%X\n", application_offset);
+
+                    if (PICSimLab.GetInstanceNumber()) {
+                        sprintf(dname, "%s/mdump_%s_%s_%i.bin", (const char*)PICSimLab.GetHomePath().c_str(),
+                                boards_list[PICSimLab.GetLab()].name_, (const char*)GetProcessorName().c_str(),
+                                PICSimLab.GetInstanceNumber());
+                    } else {
+                        sprintf(dname, "%s/mdump_%s_%s.bin", (const char*)PICSimLab.GetHomePath().c_str(),
+                                boards_list[PICSimLab.GetLab()].name_, (const char*)GetProcessorName().c_str());
+                    }
+
+                    fout = fopen(dname, "r+b");
+                    if (fout) {
+                        int count;
+                        unsigned char buffer[1024];
+
+                        fseek(fout, application_offset, SEEK_SET);
+
+                        while (!feof(fin)) {
+                            count = fread(buffer, 1, 1024, fin);
+                            fwrite(buffer, 1, count, fout);
+                        }
+                        fclose(fout);
+                    }
+                    strncpy(fname_, dname, 2048);
+                }
+                fclose(fin);
+            } else {
+                printf("PICSimLab: qemu Error creating file %s \n", fname_);
+                exit(-1);
+            }
+        }
+
+        strcpy(argv[argc++], "qemu-system-riscv32");
+
+        strcpy(argv[argc++], "-M");
+        strcpy(argv[argc++], "esp32c3-picsimlab");
+
+#ifndef _WIN_
+        lxString fullpath = PICSimLab.GetLibPath() + "qemu/fw/";
+#else
+        lxString fullpath = dirname(lxGetExecutablePath()) + "/lib/qemu/fw/";
+#endif
+
+        if (!lxFileExists(fullpath + "esp32c3-rom.bin")) {
+            PICSimLab.RegisterError("Error loading esp32c3-rom.bin");
+            qemu_started = -1;
+            mtx_qinit->Unlock();
+            return;
+        }
+
+        strcpy(argv[argc++], "-L");
+        strcpy(argv[argc++], (const char*)fullpath.c_str());
+
+        strcpy(argv[argc++], "-drive");
+        sprintf(argv[argc++], "file=%s,if=mtd,format=raw", fname_);
     } else {
         printf("PICSimLab qemu: simulator %i not supported!!!\n", SimType);
         exit(-1);
@@ -785,7 +881,7 @@ void bsim_qemu::MDumpMemory(const char* fname) {
         }
         qmp_cont(NULL);
         qemu_mutex_unlock_iothread();
-    } else if (SimType == QEMU_SIM_ESP32) {
+    } else if ((SimType == QEMU_SIM_ESP32) || (SimType == QEMU_SIM_ESP32_C3)) {
         // change .hex to .bin
         strncpy(fname_, fname, 299);
         fname_[strlen(fname) - 3] = 0;
