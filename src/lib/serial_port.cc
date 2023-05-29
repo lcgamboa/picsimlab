@@ -55,8 +55,8 @@ int serial_port_open(serialfd_t* serialfd, const char* SERIALDEVICE) {
     char wserial[100];
     snprintf(wserial, 99, "\\\\.\\%s", SERIALDEVICE);
     *serialfd = CreateFile(wserial, GENERIC_READ | GENERIC_WRITE,
-                           0,     // exclusive access
-                           NULL,  // no security
+                           0,      // exclusive access
+                           NULL,   // no security
                            OPEN_EXISTING,
                            0,      // no overlapped I/O
                            NULL);  // null template
@@ -120,7 +120,7 @@ int serial_port_cfg(serialfd_t serialfd, float serialexbaud) {
             BAUDRATE = 600;
 #endif
             break;
-        case 4 ... 7:
+        case 4 ... 6:
             serialbaud = 1200;
 #ifndef _WIN_
             BAUDRATE = B1200;
@@ -128,7 +128,7 @@ int serial_port_cfg(serialfd_t serialfd, float serialexbaud) {
             BAUDRATE = 1200;
 #endif
             break;
-        case 8 ... 15:
+        case 7 ... 12:
             serialbaud = 2400;
 #ifndef _WIN_
             BAUDRATE = B2400;
@@ -136,7 +136,7 @@ int serial_port_cfg(serialfd_t serialfd, float serialexbaud) {
             BAUDRATE = 2400;
 #endif
             break;
-        case 16 ... 31:
+        case 13 ... 24:
             serialbaud = 4800;
 #ifndef _WIN_
             BAUDRATE = B4800;
@@ -144,7 +144,7 @@ int serial_port_cfg(serialfd_t serialfd, float serialexbaud) {
             BAUDRATE = 4800;
 #endif
             break;
-        case 32 ... 63:
+        case 25 ... 48:
             serialbaud = 9600;
 #ifndef _WIN_
             BAUDRATE = B9600;
@@ -152,7 +152,7 @@ int serial_port_cfg(serialfd_t serialfd, float serialexbaud) {
             BAUDRATE = 9600;
 #endif
             break;
-        case 64 ... 127:
+        case 49 ... 96:
             serialbaud = 19200;
 #ifndef _WIN_
             BAUDRATE = B19200;
@@ -160,7 +160,7 @@ int serial_port_cfg(serialfd_t serialfd, float serialexbaud) {
             BAUDRATE = 19200;
 #endif
             break;
-        case 128 ... 191:
+        case 97 ... 160:
             serialbaud = 38400;
 #ifndef _WIN_
             BAUDRATE = B38400;
@@ -168,7 +168,7 @@ int serial_port_cfg(serialfd_t serialfd, float serialexbaud) {
             BAUDRATE = 38400;
 #endif
             break;
-        case 192 ... 383:
+        case 161 ... 320:
             serialbaud = 57600;
 #ifndef _WIN_
             BAUDRATE = B57600;
