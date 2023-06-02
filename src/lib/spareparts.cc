@@ -582,6 +582,7 @@ void CSpareParts::PostProcess(void) {
 }
 
 void CSpareParts::Reset(void) {
+    Pins = (picpin*)pboard->MGetPinsValues();
     for (int i = 0; i < GetCount(); i++) {
         parts[i]->Reset();
         parts[i]->SetUpdate(1);
