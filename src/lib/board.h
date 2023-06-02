@@ -610,6 +610,16 @@ public:
      */
     void TimerUpdateFrequency(float freq);
 
+    /**
+     * @brief Lock IO to others threads access
+     */
+    virtual void IoLockAccess(void){};
+
+    /**
+     * @brief Unlock IO to others threads access
+     */
+    virtual void IoUnlockAccess(void){};
+
 protected:
     /**
      * @brief Register remote control variables

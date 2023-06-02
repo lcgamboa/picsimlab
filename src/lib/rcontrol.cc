@@ -999,12 +999,14 @@ int rcontrol_loop(void) {
 
                             dprint("pin[%02i] = %i \r\n", pin, value);
 
+                            Board->IoLockAccess();
                             if (Board->GetUseSpareParts()) {
                                 SpareParts.SetPin(pin, value);
                             } else {
                                 Board = PICSimLab.GetBoard();
                                 Board->MSetPin(pin, value);
                             }
+                            Board->IoUnlockAccess();
                             sendtext("Ok\r\n>");
                         } else if (Board->GetUseSpareParts() && (ptr = strstr(cmd, "part[")) &&
                                    (ptr2 = strstr(cmd, "].in["))) {

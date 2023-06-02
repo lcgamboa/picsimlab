@@ -71,6 +71,8 @@ public:
     bitbang_i2c_t master_i2c[2];
     bitbang_spi_t master_spi[2];
     bitbang_uart_t master_uart[3];
+    void IoLockAccess(void) override;
+    void IoUnlockAccess(void) override;
 
 protected:
     int MipsStrToIcount(const char* mipstr);

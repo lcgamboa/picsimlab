@@ -1091,3 +1091,11 @@ const char* bsim_qemu::IcountToMipsItens(char* buffer) {
     }
     return buffer;
 }
+
+void bsim_qemu::IoLockAccess(void) {
+    qemu_mutex_lock_iothread();
+}
+
+void bsim_qemu::IoUnlockAccess(void) {
+    qemu_mutex_unlock_iothread();
+}
