@@ -589,10 +589,12 @@ void bsim_remote::MSetPin(int pin, unsigned char value) {
         pins[pin - 1].value = value;
         unsigned short* port = (unsigned short*)pins[pin - 1].port;
 
-        if (value) {
-            *port |= 1 << pins[pin - 1].pord;
-        } else {
-            *port &= ~(1 << pins[pin - 1].pord);
+        if (port) {
+            if (value) {
+                *port |= 1 << pins[pin - 1].pord;
+            } else {
+                *port &= ~(1 << pins[pin - 1].pord);
+            }
         }
     }
 }

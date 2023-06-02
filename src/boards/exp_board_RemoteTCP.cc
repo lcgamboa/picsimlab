@@ -564,7 +564,7 @@ void cboard_RemoteTCP::Run_CPU_ns(uint64_t time) {
              }
              */
             // verify if a breakpoint is reached if not run one instruction
-            // MStep();
+            MStep();
             if (t0CON & 0x8000)  // Timer on
             {
                 t0iclk++;        // prescaler clk
