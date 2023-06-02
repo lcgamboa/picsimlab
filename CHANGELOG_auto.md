@@ -2,6 +2,8 @@
 
 ### New
 
+* New board ESP32-C3-DevKitC-02 (riscv32) [lcgamboa]
+
 * New part NTC temperature sensor. [lcgamboa]
 
 * Support to PIC16F688 added to board Breadboard. [lcgamboa]
@@ -32,6 +34,8 @@
 
 ### Changes
 
+* Add stack trace to log when PICSimLab crash. [lcgamboa]
+
 * Add support to use icount=auto in qemu based boards. [lcgamboa]
 
 * Add option to enable ethernet support in ESP32 DevKitC board. [lcgamboa]
@@ -47,6 +51,12 @@
 * Add support to remove VT100 codes in Virtual Term part. [lcgamboa]
 
 ### Fix
+
+* Fix crash in rcontrol when use PinViewer pin toggle on qemu based boards. [lcgamboa]
+
+* Fix breadboard freezing when using File Load Hex menu. [lcgamboa]
+
+* Fix serial port baudrate calculation. [lcgamboa]
 
 * Fix the path of last open file for qemu based boards used by reload last menu option. [lcgamboa]
 
