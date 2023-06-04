@@ -79,7 +79,7 @@ unsigned char lcd_pcd8544_io(lcd_pcd8544_t* lcd, unsigned char din, unsigned cha
 
     switch (bitbang_spi_get_status(&lcd->bb_spi)) {
         case SPI_DATA:
-            lcd->dat = lcd->bb_spi.data8;
+            lcd->dat = lcd->bb_spi.data;
             if (dc == 0)  // command
             {
                 dprint("command:%#04X  ", lcd->dat);

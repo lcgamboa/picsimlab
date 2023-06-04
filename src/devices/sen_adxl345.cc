@@ -139,8 +139,8 @@ unsigned short adxl345_io_SPI(adxl345_t* adxl, unsigned char mosi, unsigned char
 
             switch (adxl->bb_spi.byte) {
                 case 1:
-                    adxl->data_wc = adxl->bb_spi.data8 & 0xC0;
-                    adxl->addr = adxl->bb_spi.data8 & 0x3F;
+                    adxl->data_wc = adxl->bb_spi.data & 0xC0;
+                    adxl->addr = adxl->bb_spi.data & 0x3F;
 
                     if (adxl->data_wc & 0x80) {  // Read
                         bitbang_spi_send8(&adxl->bb_spi, adxl->regs[adxl->addr]);
@@ -157,8 +157,8 @@ unsigned short adxl345_io_SPI(adxl345_t* adxl, unsigned char mosi, unsigned char
                             bitbang_spi_send8(&adxl->bb_spi, adxl->regs[adxl->addr]);
                             dprintf("adxl345 read[%04X]=%02X\n", adxl->addr, adxl->regs[adxl->addr]);
                         } else {  // Write
-                            dprintf("write adxl[%04X]=%02X\n", adxl->addr, adxl->bb_spi.data8);
-                            adxl->regs[adxl->addr] = adxl->bb_spi.data8;
+                            dprintf("write adxl[%04X]=%02X\n", adxl->addr, adxl->bb_spi.data);
+                            adxl->regs[adxl->addr] = adxl->bb_spi.data;
                             adxl345_regwrited(adxl);
                         }
                         adxl->addr++;

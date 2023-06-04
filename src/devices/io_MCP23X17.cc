@@ -196,8 +196,8 @@ unsigned char io_MCP23X17_SPI_io(io_MCP23X17_t* mcp, unsigned char si, unsigned 
 
             switch (mcp->bb_spi.byte) {
                 case 1:
-                    if ((mcp->bb_spi.data8 & 0xFE) == mcp->addr) {
-                        mcp->op = mcp->bb_spi.data8 & 0x01;
+                    if ((mcp->bb_spi.data & 0xFE) == mcp->addr) {
+                        mcp->op = mcp->bb_spi.data & 0x01;
                         dprintf("mcp addr 0x%02X OK\n", mcp->addr);
                     } else {
                         mcp->bb_spi.bit = 0x80;
@@ -206,16 +206,16 @@ unsigned char io_MCP23X17_SPI_io(io_MCP23X17_t* mcp, unsigned char si, unsigned 
                     }
                     break;
                 case 2:
-                    mcp->reg_addr = mcp->bb_spi.data8;
-                    dprintf("mcp reg addr 0x%02X\n", mcp->bb_spi.data8);
+                    mcp->reg_addr = mcp->bb_spi.data;
+                    dprintf("mcp reg addr 0x%02X\n", mcp->bb_spi.data);
                     break;
                 default:
                     if (mcp->op) {
-                        dprintf("mcp data read [0x%02X] 0x%02X\n", mcp->reg_addr, mcp->bb_spi.data8);
+                        dprintf("mcp data read [0x%02X] 0x%02X\n", mcp->reg_addr, mcp->bb_spi.data);
                         bitbang_spi_send8(&mcp->bb_spi, read_reg(mcp));
                     } else {
-                        dprintf("mcp data write [0x%02X] 0x%02X\n", mcp->reg_addr, mcp->bb_spi.data8);
-                        write_reg(mcp, mcp->bb_spi.data8);
+                        dprintf("mcp data write [0x%02X] 0x%02X\n", mcp->reg_addr, mcp->bb_spi.data);
+                        write_reg(mcp, mcp->bb_spi.data);
                     }
                     break;
             }

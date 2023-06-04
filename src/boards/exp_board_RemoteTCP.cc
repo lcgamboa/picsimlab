@@ -906,19 +906,19 @@ void cboard_RemoteTCP::EvThreadRun(CThread& thread) {
                         payload[1] = htonl(0);
                         break;
                     case SPI0STA:
-                        payload[1] = htonl(master_spi[0].bit > 7);
+                        payload[1] = htonl(!master_spi[0].transmitting);
                         break;
                     case SPI0DAT:
-                        payload[1] = htonl(master_spi[0].data8);
+                        payload[1] = htonl(master_spi[0].data);
                         break;
                     case SPI1CFG:
                         payload[1] = htonl(0);
                         break;
                     case SPI1STA:
-                        payload[1] = htonl(master_spi[1].bit > 7);
+                        payload[1] = htonl(!master_spi[1].transmitting);
                         break;
                     case SPI1DAT:
-                        payload[1] = htonl(master_spi[1].data8);
+                        payload[1] = htonl(master_spi[1].data);
                         break;
                     case I2C0CFG:
                         payload[1] = htonl(0);

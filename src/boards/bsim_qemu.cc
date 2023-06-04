@@ -174,8 +174,8 @@ static uint8_t picsimlab_spi_event(const uint8_t id, const uint16_t event) {
             bitbang_spi_ctrl_write(&g_board->master_spi[id], event >> 8);
             g_board->timer.last += cycle_ns * 36;
             g_board->Run_CPU_ns(cycle_ns * 36);
-            dprintf("SPI MASTER SEND 0x%02X  RECV 0x%02X\n", event >> 8, g_board->master_spi[id].data8);
-            return g_board->master_spi[id].data8;
+            dprintf("SPI MASTER SEND 0x%02X  RECV 0x%02X\n", event >> 8, g_board->master_spi[id].data);
+            return g_board->master_spi[id].data;
             break;
         case 1:  // CS
             ioupdated = 1;

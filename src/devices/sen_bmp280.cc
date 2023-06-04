@@ -187,8 +187,8 @@ unsigned short sen_bmp280_io_SPI(sen_bmp280_t* bmp280, unsigned char mosi, unsig
         case SPI_DATA:
             switch (bmp280->bb_spi.byte) {
                 case 1:
-                    bmp280->data_wc = bmp280->bb_spi.data8 & 0x80;
-                    bmp280->addr = bmp280->bb_spi.data8 | 0x80;
+                    bmp280->data_wc = bmp280->bb_spi.data & 0x80;
+                    bmp280->addr = bmp280->bb_spi.data | 0x80;
 
                     if (bmp280->data_wc & 0x80) {  // Read
                         bitbang_spi_send8(&bmp280->bb_spi, bmp280_read(bmp280));
@@ -201,7 +201,7 @@ unsigned short sen_bmp280_io_SPI(sen_bmp280_t* bmp280, unsigned char mosi, unsig
                             bitbang_spi_send8(&bmp280->bb_spi, bmp280_read(bmp280));
                             bmp280->addr++;
                         } else {  // Write
-                            dprintf("write bmp280[%04X]=%02X\n", bmp280->addr, bmp280->bb_spi.data8);
+                            dprintf("write bmp280[%04X]=%02X\n", bmp280->addr, bmp280->bb_spi.data);
                         }
                     }
                     break;

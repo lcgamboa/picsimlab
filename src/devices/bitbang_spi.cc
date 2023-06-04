@@ -43,6 +43,7 @@ void bitbang_spi_rst(bitbang_spi_t* spi) {
     spi->byte = 0;
     spi->status = 0;
     spi->ctrl_on = 0;
+    spi->transmitting = 0;
     dprintf("bitbang_spi rst\n");
 }
 
@@ -50,7 +51,10 @@ void bitbang_spi_init(bitbang_spi_t* spi, const unsigned char lenght) {
     dprintf("bitbang_spi init \n");
 
     spi->outbitmask = 1 << (lenght - 1);
-
+    spi->inmask = 0;
+    for (int i = 0; i < lenght; i++) {
+        spi->inmask |= 1 << i;
+    }
     spi->lenght = lenght;
     bitbang_spi_rst(spi);
 }
@@ -79,10 +83,10 @@ unsigned char bitbang_spi_io(bitbang_spi_t* spi, const unsigned char clk, const 
 
         if (spi->bit == spi->lenght) {
             spi->status = SPI_DATA;
-            spi->data8 = spi->insr & 0xFF;
+            spi->data = spi->insr & spi->inmask;
             spi->bit = 0;
             spi->byte++;
-            dprintf("bitbang_spi data recv 0x%02x \n", spi->data8);
+            dprintf("bitbang_spi data recv 0x%02x \n", spi->data);
         } else {
             spi->status = SPI_BIT;
         }
@@ -121,10 +125,10 @@ unsigned char bitbang_spi_io_(bitbang_spi_t* spi, const unsigned char** pins_val
 
         if (spi->bit == spi->lenght) {
             spi->status = SPI_DATA;
-            spi->data8 = spi->insr & 0xFF;
+            spi->data = spi->insr & spi->inmask;
             spi->bit = 0;
             spi->byte++;
-            dprintf("bitbang_spi data recv 0x%02x \n", spi->data8);
+            dprintf("bitbang_spi data recv 0x%02x \n", spi->data);
         } else {
             spi->status = SPI_BIT;
         }
@@ -163,11 +167,12 @@ static void bitbang_spi_ctrl_callback(void* arg) {
         case 0:  // CLK HIGH -> LOW
             ioupdated = 1;
             spi->sck_value = 0;
-            if (spi->bit > 7) {
+            if (spi->bit == spi->lenght) {
                 // spi->cs_value = 1;
-                spi->data8 = spi->insr & 0xFF;
-                dprintf("ctrl bitbang_spi ctrl data recv 0x%02x \n", spi->data8);
+                spi->data = spi->insr & spi->inmask;
+                dprintf("ctrl bitbang_spi ctrl data recv 0x%02x \n", spi->data);
                 spi->pboard->TimerSetState(spi->TimerID, 0);
+                spi->transmitting = 0;
             }
             break;
         case 1:  // CLK MIDLE LOW
@@ -218,6 +223,7 @@ void bitbang_spi_ctrl_write(bitbang_spi_t* spi, const unsigned char data) {
     spi->outsr = data;
     spi->clkpc = 1;
     spi->sck_value = 0;
+    spi->transmitting = 1;
     // spi->cs_value = 0;
     spi->copi_value = (spi->outsr & (0x01 << (7 - spi->bit))) > 0;
     spi->pboard->TimerChange_us(spi->TimerID, 0);  // FIXME only 100kHzfrequency

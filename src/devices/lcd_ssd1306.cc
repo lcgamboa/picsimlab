@@ -346,7 +346,7 @@ unsigned char lcd_ssd1306_SPI_io(lcd_ssd1306_t* lcd, unsigned char din, unsigned
 
     switch (bitbang_spi_get_status(&lcd->bb_spi)) {
         case SPI_DATA:
-            lcd->dat = lcd->bb_spi.data8;
+            lcd->dat = lcd->bb_spi.data;
             lcd->dc = dc;
             lcd_ssd1306_process(lcd);
             break;

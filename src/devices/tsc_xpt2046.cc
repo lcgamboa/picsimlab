@@ -89,7 +89,7 @@ unsigned char tsc_XPT2046_SPI_io(tsc_XPT2046_t* tsc_, const unsigned char** pins
 
     switch (bitbang_spi_get_status(&tsc_->bb_spi)) {
         case SPI_DATA:
-            if (tsc_->bb_spi.data8 & BIT_S) {
+            if (tsc_->bb_spi.data & BIT_S) {
                 tsc_->bb_spi.byte = 0;
             }
 
@@ -97,8 +97,8 @@ unsigned char tsc_XPT2046_SPI_io(tsc_XPT2046_t* tsc_, const unsigned char** pins
 
             switch (tsc_->bb_spi.byte) {
                 case 0:
-                    if (tsc_->bb_spi.data8 & BIT_S) {
-                        tsc_->cmd = tsc_->bb_spi.data8;
+                    if (tsc_->bb_spi.data & BIT_S) {
+                        tsc_->cmd = tsc_->bb_spi.data;
                         dprintf("tsc_ cmd 0x%02X OK\n", tsc_->cmd);
 
                         switch ((tsc_->cmd & 0x70) >> 4) {

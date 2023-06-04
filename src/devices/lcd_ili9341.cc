@@ -492,7 +492,7 @@ unsigned char lcd_ili9341_SPI_io(lcd_ili9341_t* lcd, const unsigned char** pins_
 
     switch (bitbang_spi_get_status(&lcd->bb_spi)) {
         case SPI_DATA:
-            lcd->dat = lcd->bb_spi.data8;
+            lcd->dat = lcd->bb_spi.data;
             lcd->dc = *pins_value[ioSPI_dc];
             lcd_ili9341_process(lcd);
             break;

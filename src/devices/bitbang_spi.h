@@ -39,10 +39,11 @@ typedef struct {
     unsigned char bit;
     unsigned int byte;
     unsigned short status;
-    unsigned char data8;
+    unsigned int data;
     unsigned char ret;
     unsigned char lenght;
     unsigned int outbitmask;
+    unsigned int inmask;
     // Controller
     board* pboard;
     int TimerID;
@@ -56,6 +57,7 @@ typedef struct {
     unsigned char cs_pin[3];
     unsigned char cs_value[3];
     unsigned char clkpc;  // clock phase counter
+    unsigned char transmitting;
 } bitbang_spi_t;
 
 void bitbang_spi_init(bitbang_spi_t* spi, const unsigned char lenght = 8);
