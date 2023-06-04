@@ -143,7 +143,11 @@ int bridge_gpsim_dump_memory(const char* fname) {
     config = (unsigned short*)malloc(configsize * 2);
 
     for (unsigned int i = 0; i < configsize; i++) {
-        config[i] = gpic->getConfigMemory()->getConfigWord(i)->getVal();
+        if (gpic->getConfigMemory()->getConfigWord(i)) {
+            config[i] = gpic->getConfigMemory()->getConfigWord(i)->getVal();
+        } else {
+            config[i] = 0;
+        }
     }
 
     int ret = write_hex(mem, memsize, config, configsize, gpic->config_word_address(), fname);
