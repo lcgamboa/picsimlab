@@ -197,7 +197,7 @@ public:
     void Draw(CDraw* draw) override;
     void Run_CPU(void) override;
 
-    lxString GetSupportedDevices(void) override { return lxT("PIC18F4520,"); };
+    lxString GetSupportedDevices(void) override { return lxT("PIC18F4520,PIC18F4550,PIC18F4620,"); };
 
     void Reset(void) override;
     void EvMouseMove(uint button, uint x, uint y, uint state) override;

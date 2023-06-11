@@ -49,38 +49,38 @@ enum {
     O_SS2,
     O_SS3,
     O_SS4,
-    O_A1,
     O_B1,
+    O_F1,
+    O_A1,
+    O_G1,
     O_C1,
+    O_P1,
     O_D1,
     O_E1,
-    O_F1,
-    O_G1,
-    O_P1,
-    O_A2,
     O_B2,
+    O_F2,
+    O_A2,
+    O_G2,
     O_C2,
+    O_P2,
     O_D2,
     O_E2,
-    O_F2,
-    O_G2,
-    O_P2,
-    O_A3,
     O_B3,
+    O_F3,
+    O_A3,
+    O_G3,
     O_C3,
+    O_P3,
     O_D3,
     O_E3,
-    O_F3,
-    O_G3,
-    O_P3,
-    O_A4,
     O_B4,
+    O_F4,
+    O_A4,
+    O_G4,
     O_C4,
+    O_P4,
     O_D4,
     O_E4,
-    O_F4,
-    O_G4,
-    O_P4,
     O_SOD0,
     O_SOD1,
     O_SOD2,
@@ -314,7 +314,7 @@ void cboard_PQDB::Draw(CDraw* draw) {
                     case O_F4:
                     case O_G4:
                     case O_P4:
-                        draw->Canvas.SetBgColor(lm7seg[output[i].id - O_A1], 30, 30);
+                        draw->Canvas.SetBgColor(lm7seg[output[i].id - O_B1], 30, 30);
                         draw->Canvas.SetFgColor(10, 10, 10);
                         break;
                     case O_MP:
@@ -772,8 +772,8 @@ void cboard_PQDB::Run_CPU(void) {
 
     // verifiy if LEDS need update
     for (i = 0; i < 32; i++) {
-        if (output_ids[O_A1 + i]->value != lm7seg[i]) {
-            output_ids[O_A1 + i]->value = lm7seg[i];
+        if (output_ids[O_B1 + i]->value != lm7seg[i]) {
+            output_ids[O_B1 + i]->value = lm7seg[i];
             output_ids[O_SS1 + (i >> 3)]->update = 1;
         }
     }
@@ -926,38 +926,38 @@ void cboard_PQDB::RegisterRemoteControl(void) {
     input_ids[I_POT]->update = &output_ids[O_POT]->update;
 
     output_ids[O_LCD]->status = &lcd;
-    output_ids[O_A1]->status = &lm7seg[0];
-    output_ids[O_B1]->status = &lm7seg[1];
-    output_ids[O_C1]->status = &lm7seg[2];
-    output_ids[O_D1]->status = &lm7seg[3];
-    output_ids[O_E1]->status = &lm7seg[4];
-    output_ids[O_F1]->status = &lm7seg[5];
-    output_ids[O_G1]->status = &lm7seg[6];
-    output_ids[O_P1]->status = &lm7seg[7];
-    output_ids[O_A2]->status = &lm7seg[8];
-    output_ids[O_B2]->status = &lm7seg[9];
-    output_ids[O_C2]->status = &lm7seg[10];
-    output_ids[O_D2]->status = &lm7seg[11];
-    output_ids[O_E2]->status = &lm7seg[12];
-    output_ids[O_F2]->status = &lm7seg[13];
-    output_ids[O_G2]->status = &lm7seg[14];
-    output_ids[O_P2]->status = &lm7seg[15];
-    output_ids[O_A3]->status = &lm7seg[16];
-    output_ids[O_B3]->status = &lm7seg[17];
-    output_ids[O_C3]->status = &lm7seg[18];
-    output_ids[O_D3]->status = &lm7seg[19];
-    output_ids[O_E3]->status = &lm7seg[20];
-    output_ids[O_F3]->status = &lm7seg[21];
-    output_ids[O_G3]->status = &lm7seg[22];
-    output_ids[O_P3]->status = &lm7seg[23];
-    output_ids[O_A4]->status = &lm7seg[24];
-    output_ids[O_B4]->status = &lm7seg[25];
-    output_ids[O_C4]->status = &lm7seg[26];
-    output_ids[O_D4]->status = &lm7seg[27];
-    output_ids[O_E4]->status = &lm7seg[28];
-    output_ids[O_F4]->status = &lm7seg[29];
-    output_ids[O_G4]->status = &lm7seg[30];
-    output_ids[O_P4]->status = &lm7seg[31];
+    output_ids[O_B1]->status = &lm7seg[0];
+    output_ids[O_F1]->status = &lm7seg[1];
+    output_ids[O_A1]->status = &lm7seg[2];
+    output_ids[O_G1]->status = &lm7seg[3];
+    output_ids[O_C1]->status = &lm7seg[4];
+    output_ids[O_P1]->status = &lm7seg[5];
+    output_ids[O_D1]->status = &lm7seg[6];
+    output_ids[O_E1]->status = &lm7seg[7];
+    output_ids[O_B2]->status = &lm7seg[8];
+    output_ids[O_F2]->status = &lm7seg[9];
+    output_ids[O_A2]->status = &lm7seg[10];
+    output_ids[O_G2]->status = &lm7seg[11];
+    output_ids[O_C2]->status = &lm7seg[12];
+    output_ids[O_P2]->status = &lm7seg[13];
+    output_ids[O_D2]->status = &lm7seg[14];
+    output_ids[O_E2]->status = &lm7seg[15];
+    output_ids[O_B3]->status = &lm7seg[16];
+    output_ids[O_F3]->status = &lm7seg[17];
+    output_ids[O_A3]->status = &lm7seg[18];
+    output_ids[O_G3]->status = &lm7seg[19];
+    output_ids[O_C3]->status = &lm7seg[20];
+    output_ids[O_P3]->status = &lm7seg[21];
+    output_ids[O_D3]->status = &lm7seg[22];
+    output_ids[O_E3]->status = &lm7seg[23];
+    output_ids[O_B4]->status = &lm7seg[24];
+    output_ids[O_F4]->status = &lm7seg[25];
+    output_ids[O_A4]->status = &lm7seg[26];
+    output_ids[O_G4]->status = &lm7seg[27];
+    output_ids[O_C4]->status = &lm7seg[28];
+    output_ids[O_P4]->status = &lm7seg[29];
+    output_ids[O_D4]->status = &lm7seg[30];
+    output_ids[O_E4]->status = &lm7seg[31];
 }
 
 void cboard_PQDB::EvMouseMove(uint button, uint x, uint y, uint state) {
