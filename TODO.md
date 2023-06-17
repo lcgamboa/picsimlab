@@ -7,6 +7,7 @@
 | [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L98) | 98 | jumper support |
 | [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L193) | 193 | TEMP cooler must don't work with AQUE=0 |
 | [src/boards/bsim_gpsim.cc](src/boards/bsim_gpsim.cc#L153) | 153 | add VCC and GND pins |
+| [src/boards/bsim_qemu.cc](src/boards/bsim_qemu.cc#L572) | 572 | for now use fix mac address because it is hardwired in qemu-esp32 |
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1209) | 1209 | default output value is not used yet (DOV) |
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1577) | 1577 | avr ID pointer |
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1599) | 1599 | avr ID size |

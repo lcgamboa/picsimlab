@@ -554,11 +554,77 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
             return;
         }
 
+        // change .bin to .efuse
+        char fnefuse[2048];
+        strncpy(fnefuse, fname, 2048);
+        fnefuse[strlen(fnefuse) - 3] = 0;
+        strncat(fnefuse, "efuse", 2047);
+
+        if (!lxFileExists(fnefuse)) {  // create efuse file if it don´t exists
+            FILE* fout;
+            fout = fopen(fnefuse, "w");
+            if (fout) {
+                char efuse[124];
+                unsigned char mac_addr[6], mac_addr_crc;
+
+                mac_addr_crc = 0;
+
+                // TODO for now use fix mac address because it is hardwired in qemu-esp32
+                // https://github.com/lcgamboa/qemu/blob/ab11bf77c825ef2ac008b302b582c87f36d35912/hw/misc/esp32_wifi_ap.c#L353
+                // https://github.com/lcgamboa/qemu/blob/ab11bf77c825ef2ac008b302b582c87f36d35912/hw/misc/esp32_wifi_ap.c#LL212C55-L212C64
+
+                mac_addr[0] = 0x10;  // rand()& 0xFE;
+                mac_addr[1] = 0x01;  // rand()& 0xFF;
+                mac_addr[2] = 0x00;  // rand()& 0xFF;
+                mac_addr[3] = 0xC4;  // rand()& 0xFF;
+                mac_addr[4] = 0x0A;  // rand()& 0xFF;
+                mac_addr[5] = 0x24;  // rand()& 0xFF;
+
+                for (int j = 0; j < 6; j++) {
+                    mac_addr_crc = mac_addr_crc ^ mac_addr[j];
+                    for (int i = 0; i < 8; i++) {
+                        if (mac_addr_crc & 0x01) {
+                            mac_addr_crc = ((mac_addr_crc >> 1) ^ (0x8C)) & 0xFF;
+                        } else {
+                            mac_addr_crc = (mac_addr_crc >> 1) & 0xFF;
+                        }
+                    }
+                }
+
+                memset(efuse, 0, 124);
+                // Chip revision bits
+                efuse[13] = 0x80;
+                efuse[22] = 0x10;
+
+                // MAC address
+                efuse[4] = mac_addr[5];
+                efuse[5] = mac_addr[4];
+                efuse[6] = mac_addr[3];
+                efuse[7] = mac_addr[2];
+                efuse[8] = mac_addr[1];
+                efuse[9] = mac_addr[0];
+                efuse[10] = mac_addr_crc;
+
+                fwrite(efuse, 1, 124, fout);
+                fclose(fout);
+            } else {
+                printf("PICSimLab: qemu Error creating file %s \n", fnefuse);
+                exit(-1);
+            }
+        }
+
         strcpy(argv[argc++], "-L");
         strcpy(argv[argc++], (const char*)fullpath.c_str());
 
         strcpy(argv[argc++], "-drive");
         sprintf(argv[argc++], "file=%s,if=mtd,format=raw", fname_);
+
+        strcpy(argv[argc++], "-drive");
+        sprintf(argv[argc++], "file=%s,if=none,format=raw,id=efuse", fnefuse);
+
+        strcpy(argv[argc++], "-global");
+        sprintf(argv[argc++], "driver=nvram.esp32.efuse,property=drive,value=efuse");
+
     } else if (SimType == QEMU_SIM_ESP32_C3) {
         if (!load_qemu_lib("libqemu-riscv32")) {
             PICSimLab.RegisterError("Error loading libqemu-riscv32");

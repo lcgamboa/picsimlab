@@ -2,6 +2,8 @@
 
 ### New
 
+* Add support to IO virtual term part autodetect uart pins. [lcgamboa]
+
 * New board ESP32-C3-DevKitC-02 (riscv32) [lcgamboa]
 
 * New part NTC temperature sensor. [lcgamboa]
@@ -52,6 +54,8 @@
 
 ### Fix
 
+* Fix PQDB board seven segments display point and analog channel order. [lcgamboa]
+
 * Fix crash in rcontrol when use PinViewer pin toggle on qemu based boards. [lcgamboa]
 
 * Fix breadboard freezing when using File Load Hex menu. [lcgamboa]
@@ -71,6 +75,8 @@
 * Add support to use atmega2560 four UARTs. [lcgamboa]
 
 ### Other
+
+* Update simulated PQDB board to work like the real one, added support for PIC18F4550 and PIC18F4620. [lcgamboa]
 
 * Merge pull request #76 from necrashter/update-gitignore. [lcgamboa]
 
