@@ -289,7 +289,6 @@ void cboard_PQDB::Draw(CDraw* draw) {
                     case O_E1:
                     case O_F1:
                     case O_G1:
-                    case O_P1:
                     case O_A2:
                     case O_B2:
                     case O_C2:
@@ -297,7 +296,6 @@ void cboard_PQDB::Draw(CDraw* draw) {
                     case O_E2:
                     case O_F2:
                     case O_G2:
-                    case O_P2:
                     case O_A3:
                     case O_B3:
                     case O_C3:
@@ -305,7 +303,6 @@ void cboard_PQDB::Draw(CDraw* draw) {
                     case O_E3:
                     case O_F3:
                     case O_G3:
-                    case O_P3:
                     case O_A4:
                     case O_B4:
                     case O_C4:
@@ -313,7 +310,6 @@ void cboard_PQDB::Draw(CDraw* draw) {
                     case O_E4:
                     case O_F4:
                     case O_G4:
-                    case O_P4:
                         draw->Canvas.SetBgColor(lm7seg[output[i].id - O_B1], 30, 30);
                         draw->Canvas.SetFgColor(10, 10, 10);
                         break;
@@ -380,7 +376,7 @@ void cboard_PQDB::Draw(CDraw* draw) {
                         draw->Canvas.SetColor(0, 255 * PICSimLab.GetMcuPwr(), 0);
                         break;
                     case O_LED:
-                        draw->Canvas.SetColor(0, pic.pins[37].oavalue, 0);
+                        draw->Canvas.SetColor(0, pic.pins[6].oavalue, 0);
                         break;
                     case O_SOEN:
                         selectColorByPinValue(SO_EN_PIN);
@@ -497,12 +493,10 @@ void cboard_PQDB::Draw(CDraw* draw) {
                 }
 
             } else {
-                draw->Canvas.SetFgColor(0, 0, 0);
-                draw->Canvas.SetColor(25, 15, 15);
-
                 if (output[i].id == O_RGB) {
-                    draw->Canvas.SetColor(pic.pins[LED_RED_PIN].oavalue, pic.pins[LED_GREEN_PIN].oavalue,
-                                          pic.pins[LED_BLUE_PIN].oavalue);
+                    draw->Canvas.SetFgColor(55, 55, 55);
+                    draw->Canvas.SetBgColor(pic.pins[LED_RED_PIN].oavalue, pic.pins[LED_GREEN_PIN].oavalue,
+                                            pic.pins[LED_BLUE_PIN].oavalue);
                     // draw a LED
                     color1 = draw->Canvas.GetBgColor();
                     int r = color1.Red() - 120;
@@ -519,6 +513,11 @@ void cboard_PQDB::Draw(CDraw* draw) {
                     draw->Canvas.Circle(1, output[i].x1, output[i].y1, output[i].r + 1);
                     draw->Canvas.SetBgColor(color1);
                     draw->Canvas.Circle(1, output[i].x1, output[i].y1, output[i].r - 2);
+                } else if ((output[i].id == O_P1) || (output[i].id == O_P2) || (output[i].id == O_P3) ||
+                           (output[i].id == O_P4)) {
+                    draw->Canvas.SetBgColor(lm7seg[output[i].id - O_B1], 30, 30);
+                    draw->Canvas.SetFgColor(10, 10, 10);
+                    draw->Canvas.Circle(1, output[i].x1, output[i].y1, output[i].r);
                 }
             }
         }
@@ -624,6 +623,31 @@ void cboard_PQDB::Run_CPU(void) {
                 pic_step(&pic);
             ioupdated = pic.ioupdated;
             InstCounterInc();
+
+            if (ioupdated) {
+                // keyboard
+                // D3-7 do shiftReg
+                // 0-9: UDLRS sABXY
+                if (pins[KEYPAD_1_PIN].dir) {
+                    if ((p_KEY[0] && (shiftReg.out & SRD3)) || (p_KEY[1] && (shiftReg.out & SRD4)) ||
+                        (p_KEY[2] && (shiftReg.out & SRD5)) || (p_KEY[3] && (shiftReg.out & SRD6)) ||
+                        (p_KEY[4] && (shiftReg.out & SRD7))) {
+                        pic_set_pin(&pic, KEYPAD_1_PIN + 1, 1);
+                    } else {
+                        pic_set_pin(&pic, KEYPAD_1_PIN + 1, 0);
+                    }
+                }
+                if (pins[KEYPAD_2_PIN].dir) {
+                    if ((p_KEY[5] && (shiftReg.out & SRD3)) || (p_KEY[6] && (shiftReg.out & SRD4)) ||
+                        (p_KEY[7] && (shiftReg.out & SRD5)) || (p_KEY[8] && (shiftReg.out & SRD6)) ||
+                        (p_KEY[9] && (shiftReg.out & SRD7))) {
+                        pic_set_pin(&pic, KEYPAD_2_PIN + 1, 1);
+                    } else {
+                        pic_set_pin(&pic, KEYPAD_2_PIN + 1, 0);
+                    }
+                }
+            }
+
             if (use_oscope)
                 Oscilloscope.SetSample();
             if (use_spare)
@@ -649,7 +673,7 @@ void cboard_PQDB::Run_CPU(void) {
 
                 alm[32] = 0;
 
-                // potenciometro p1 e p2
+                // potenciometro
                 pic_set_apin(&pic, POT_PIN + 1, vPOT);  // pot
                 pic_set_apin(&pic, LDR_PIN + 1, vLDR);  // ldr
                 pic_set_apin(&pic, LM_PIN + 1, vLM);    // temp
@@ -785,6 +809,10 @@ void cboard_PQDB::Run_CPU(void) {
         }
     }
 
+    if (output_ids[O_LED]->value != pic.pins[6].oavalue) {
+        output_ids[O_LED]->value = pic.pins[6].oavalue;
+        output_ids[O_LED]->update = 1;
+    }
     if (output_ids[O_SOEN]->value != pic.pins[SO_EN_PIN].oavalue) {
         output_ids[O_SOEN]->value = pic.pins[SO_EN_PIN].oavalue;
         output_ids[O_SOEN]->update = 1;
@@ -800,14 +828,17 @@ void cboard_PQDB::Run_CPU(void) {
     if (output_ids[O_DISP1]->value != pic.pins[DISP_1_PIN].oavalue) {
         output_ids[O_DISP1]->value = pic.pins[DISP_1_PIN].oavalue;
         output_ids[O_DISP1]->update = 1;
+        output_ids[O_RGB]->update = 1;
     }
     if (output_ids[O_DISP2]->value != pic.pins[DISP_2_PIN].oavalue) {
         output_ids[O_DISP2]->value = pic.pins[DISP_2_PIN].oavalue;
         output_ids[O_DISP2]->update = 1;
+        output_ids[O_RGB]->update = 1;
     }
     if (output_ids[O_DISP3]->value != pic.pins[DISP_3_PIN].oavalue) {
         output_ids[O_DISP3]->value = pic.pins[DISP_3_PIN].oavalue;
         output_ids[O_DISP3]->update = 1;
+        output_ids[O_RGB]->update = 1;
     }
     if (output_ids[O_DISP4]->value != pic.pins[DISP_4_PIN].oavalue) {
         output_ids[O_DISP4]->value = pic.pins[DISP_4_PIN].oavalue;
@@ -1049,6 +1080,7 @@ void cboard_PQDB::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
                     p_KEY[9] = 1;
                     output_ids[O_TC0]->update = 1;
                 } break;
+
                 case I_POT: {
                     active = 1;
                     pot = CalcAngle(i, x, y);

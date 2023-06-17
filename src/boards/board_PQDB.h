@@ -128,9 +128,9 @@
 #define AN1_PIN RA1
 #define AN0_PIN RA0
 
-#define LM_PIN AN0_PIN
+#define LM_PIN AN2_PIN
 #define LDR_PIN AN1_PIN
-#define POT_PIN AN2_PIN
+#define POT_PIN AN0_PIN
 
 class cboard_PQDB : public bsim_picsim {
 private:
