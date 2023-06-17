@@ -75,6 +75,8 @@ public:
     unsigned int DBGGetRAMLARD(void) override;
     void EndServers(void) override;
     int GetDefaultClock(void) override { return 8; };
+    int GetUARTRX(const int uart_num) override;
+    int GetUARTTX(const int uart_num) override;
 
 protected:
     _pic pic;

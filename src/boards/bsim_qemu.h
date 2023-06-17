@@ -73,6 +73,8 @@ public:
     bitbang_uart_t master_uart[3];
     void IoLockAccess(void) override;
     void IoUnlockAccess(void) override;
+    int GetUARTRX(const int uart_num) override;
+    int GetUARTTX(const int uart_num) override;
 
 protected:
     int MipsStrToIcount(const char* mipstr);

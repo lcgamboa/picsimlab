@@ -620,6 +620,16 @@ public:
      */
     virtual void IoUnlockAccess(void){};
 
+    /**
+     * @brief Return the UART N RX pin number
+     */
+    virtual int GetUARTRX(const int uart_num) { return 0; };
+
+    /**
+     * @brief Return the UART N TX pin number
+     */
+    virtual int GetUARTTX(const int uart_num) { return 0; };
+
 protected:
     /**
      * @brief Register remote control variables

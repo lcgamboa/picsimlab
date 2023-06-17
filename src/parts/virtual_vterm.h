@@ -54,6 +54,8 @@ public:
     unsigned short GetOutputId(char* name) override;
     void SetId(int _id) override;
 
+    static int count;
+
 private:
     void RegisterRemoteControl(void) override;
     unsigned char pins[2];

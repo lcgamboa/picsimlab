@@ -777,6 +777,20 @@ void bsim_remote::MStep() {
     }
 }
 
+int bsim_remote::GetUARTRX(const int uart_num) {
+    if (uart_num < 2) {
+        return master_uart[uart_num].rx_pin;
+    }
+    return 0;
+}
+
+int bsim_remote::GetUARTTX(const int uart_num) {
+    if (uart_num < 2) {
+        return master_uart[uart_num].tx_pin;
+    }
+    return 0;
+}
+
 //===================== Ripes protocol =========================================
 
 int32_t bsim_remote::recv_payload(char* buff, const uint32_t payload_size) {

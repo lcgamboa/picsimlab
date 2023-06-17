@@ -261,3 +261,17 @@ unsigned int bsim_picsim::DBGGetRAMLARD(void) {
 void bsim_picsim::EndServers(void) {
     mplabxd_server_end();
 }
+
+int bsim_picsim::GetUARTRX(const int uart_num) {
+    if (uart_num < pic.USARTCOUNT) {
+        return pic.usart_rx[uart_num];
+    }
+    return 0;
+}
+
+int bsim_picsim::GetUARTTX(const int uart_num) {
+    if (uart_num < pic.USARTCOUNT) {
+        return pic.usart_tx[uart_num];
+    }
+    return 0;
+}

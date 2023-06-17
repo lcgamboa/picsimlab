@@ -40,6 +40,8 @@ enum { LE_NONE, LE_NL, LE_CR, LE_NL_CR, O_TERM };
 static PCWProp pcwprop[6] = {{PCW_LABEL, "P1 - VCC,+5V"}, {PCW_COMBO, "P2 - RX"}, {PCW_COMBO, "P3 - TX"},
                              {PCW_LABEL, "P4 - GND,GND"}, {PCW_COMBO, "Speed"},   {PCW_END, ""}};
 
+int cpart_vterm::count = 0;
+
 cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
     : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     vterm_init(&vt, pboard);
@@ -108,6 +110,10 @@ cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, c
 
     PinCount = 2;
     Pins = pins;
+
+    pins[0] = pboard->GetUARTTX(count);
+    pins[1] = pboard->GetUARTRX(count);
+    count++;
 }
 
 cpart_vterm::~cpart_vterm(void) {
@@ -120,6 +126,7 @@ cpart_vterm::~cpart_vterm(void) {
         wvterm->SetCanDestroy(true);
         wvterm->WDestroy();
     }
+    count--;
 }
 
 void cpart_vterm::RegisterRemoteControl(void) {

@@ -28,8 +28,6 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
-// cpart_Jumpers::countID=0;
-
 /* outputs */
 enum {
     O_I1,

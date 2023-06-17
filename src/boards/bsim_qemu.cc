@@ -1099,3 +1099,17 @@ void bsim_qemu::IoLockAccess(void) {
 void bsim_qemu::IoUnlockAccess(void) {
     qemu_mutex_unlock_iothread();
 }
+
+int bsim_qemu::GetUARTRX(const int uart_num) {
+    if (uart_num < 3) {
+        return master_uart[uart_num].rx_pin;
+    }
+    return 0;
+}
+
+int bsim_qemu::GetUARTTX(const int uart_num) {
+    if (uart_num < 3) {
+        return master_uart[uart_num].tx_pin;
+    }
+    return 0;
+}

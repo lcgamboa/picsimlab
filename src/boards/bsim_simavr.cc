@@ -117,7 +117,7 @@ static void avr_usi_write(struct avr_t* avr, avr_io_addr_t addr, uint8_t v, void
             dprintf("USI: avr_usi_write USICR [%02x] = %02x\n", addr, v);
             avr_core_watch_write(avr, addr, v & 0xFE);
 
-            if (v & 0x01)  // TOGLE
+            if (v & 0x01)  // TOGGLE
             {
                 unsigned char edge = !USI->scl->value;
                 dprintf("USI: Set CLK = %i\n", edge);
@@ -1608,6 +1608,19 @@ void bsim_simavr::EndServers(void) {
     mplabxd_server_end();
 }
 
+int bsim_simavr::GetUARTRX(const int uart_num) {
+    if (uart_num < usart_count) {
+        return bb_uart[uart_num].rx_pin;
+    }
+    return 0;
+}
+int bsim_simavr::GetUARTTX(const int uart_num) {
+    if (uart_num < usart_count) {
+        return bb_uart[uart_num].tx_pin;
+    }
+    return 0;
+}
+
 // hexfile support ============================================================
 
 int bsim_simavr::parse_hex(const char* line, int bytes) {
@@ -1640,7 +1653,6 @@ int bsim_simavr::read_ihx_avr(const char* fname, int leeprom) {
     unsigned int nbytes, addr, type;
     unsigned int addrx;
     unsigned short addrh = 0;
-    // unsigned short addrl=0;
     char* mptr;
 
     fin = fopen(fname, "r");
@@ -1653,7 +1665,7 @@ int bsim_simavr::read_ihx_avr(const char* fname, int leeprom) {
             if (strlen(line) == 0)
                 continue;
 
-            /*for dos file*/
+            // for dos file
             if (line[strlen(line) - 2] == '\r') {
                 line[strlen(line) - 2] = '\n';
                 line[strlen(line) - 1] = 0;
@@ -1666,47 +1678,6 @@ int bsim_simavr::read_ihx_avr(const char* fname, int leeprom) {
 
                 switch (type) {
                     case 0:
-                        // addrl=addr/2;
-                        /*
-                                    if(addrh == 0x0030 )
-                                {
-                                      //config
-                                      mptr=(char*)pic->config;
-                                      for(bc=0;bc < nbytes;bc++)
-                                  {
-                                    addrx=addr+bc;
-                                        if((addrx/2) < pic->CONFIGSIZE)
-                                      mptr[addrx]=parse_hex(line+9+(bc*2),2);
-                                      }
-                                }
-                                    else
-                                {
-                                      if(addrh == 0x00F0 )
-                                      {
-                                        //EEPROM
-                                        if(leeprom == 1)
-                                        for(bc=0;bc < nbytes;bc++)
-                                    {
-                                          addrx= addr+bc;
-                                          if(addrx < avr->flashend)
-                                        avr->flash[addrx]= parse_hex(line+9+(bc*2),2);
-                                        }
-                                      }
-                                      else
-                                      {
-                                        if(addrh == 0x0020 )
-                                        {
-                                          //IDS
-                                          mptr=(char*)pic->id;
-                                          for(bc=0;bc < nbytes;bc++)
-                                      {
-                                        addrx=addr+bc;
-                                            if((addrx/2) < pic->IDSIZE)
-                                          mptr[addrx]=parse_hex(line+9+(bc*2),2);
-                                          }
-                                        }
-                                        else
-                         */
                         if (addrh == 0x0081) {
                             // EEPROM
                             if (leeprom == 1) {
@@ -1727,8 +1698,6 @@ int bsim_simavr::read_ihx_avr(const char* fname, int leeprom) {
                                 }
                             }
                         }
-                        //}
-                        //}
                         break;
                     case 1:
                         fclose(fin);
@@ -1749,7 +1718,6 @@ int bsim_simavr::read_ihx_avr(const char* fname, int leeprom) {
         } while (!feof(fin));
         fclose(fin);
     } else {
-        // printf("ERROR: Simavr->File not found!(%s)\n", fname);
         return HEX_NFOUND;
     }
     return 0;  // no error
@@ -1793,7 +1761,6 @@ int bsim_simavr::write_ihx_avr(const char* fname) {
                 sum += nb;
                 sum += (iaddr & 0x00FF);
                 sum += ((iaddr & 0xFF00) >> 8);
-                // printf("sum=%02X %02X %02X\n",sum,~sum,(~sum)+1);
                 sum = (~sum) + 1;
                 fprintf(fout, ":%02X%04X00%s%02X\n", nb, iaddr, values, sum);
                 nb = 0;
@@ -1807,94 +1774,6 @@ int bsim_simavr::write_ihx_avr(const char* fname) {
             sum = (~sum) + 1;
             fprintf(fout, ":%02X%04X00%s%02X\n", nb, iaddr, values, sum);
         }
-        /*
-        //ids
-            nb=0;
-            sum=0;
-            fprintf(fout,":020000040020DA\n");
-            for(i=0;i<pic->IDSIZE;i++)
-            {
-
-              if(nb==0)
-              {
-                iaddr=(i*2);
-                sprintf(values,"%02X%02X",pic->id[i]&0x00FF
-        ,(pic->id[i]&0xFF00)>>8);
-              }
-              else
-              {
-                sprintf(tmp,"%s%02X%02X",values,pic->id[i]&0x00FF,(pic->id[i]&0xFF00)>>8);
-                strcpy(values,tmp);
-              }
-
-              nb+=2;
-              sum+=pic->id[i]&0x00FF;
-              sum+=(pic->id[i]&0xFF00)>>8;
-              if(nb==16)
-              {
-                sum+=nb;
-                sum+=(iaddr&0x00FF);
-                sum+=((iaddr&0xFF00)>>8);
-              //printf("sum=%02X %02X %02X\n",sum,~sum,(~sum)+1);
-                sum=(~sum)+1;
-                fprintf(fout,":%02X%04X00%s%02X\n",nb,iaddr,values,sum);
-                nb=0;
-                sum=0;
-              }
-            }
-            if(nb)
-            {
-                sum+=nb;
-                sum+=(iaddr&0x00FF);
-                sum+=((iaddr&0xFF00)>>8);
-                sum=(~sum)+1;
-                fprintf(fout,":%02X%04X00%s%02X\n",nb,iaddr,values,sum);
-            }
-         */
-        /*
-        //config
-            nb=0;
-            sum=0;
-            fprintf(fout,":020000040030CA\n");
-            for(i=0;i<pic->CONFIGSIZE;i++)
-            {
-
-              if(nb==0)
-              {
-                iaddr=(i*2);
-                sprintf(values,"%02X%02X",pic->config[i]&0x00FF
-        ,(pic->config[i]&0xFF00)>>8);
-              }
-              else
-              {
-                sprintf(tmp,"%s%02X%02X",values,pic->config[i]&0x00FF,(pic->config[i]&0xFF00)>>8);
-                strcpy(values,tmp);
-              }
-
-              nb+=2;
-              sum+=pic->config[i]&0x00FF;
-              sum+=(pic->config[i]&0xFF00)>>8;
-              if(nb==16)
-              {
-                sum+=nb;
-                sum+=(iaddr&0x00FF);
-                sum+=((iaddr&0xFF00)>>8);
-              //printf("sum=%02X %02X %02X\n",sum,~sum,(~sum)+1);
-                sum=(~sum)+1;
-                fprintf(fout,":%02X%04X00%s%02X\n",nb,iaddr,values,sum);
-                nb=0;
-                sum=0;
-              }
-            }
-            if(nb)
-            {
-                sum+=nb;
-                sum+=(iaddr&0x00FF);
-                sum+=((iaddr&0xFF00)>>8);
-                sum=(~sum)+1;
-                fprintf(fout,":%02X%04X00%s%02X\n",nb,iaddr,values,sum);
-            }
-         */
         // eeprom
         nb = 0;
         sum = 0;
@@ -1914,7 +1793,6 @@ int bsim_simavr::write_ihx_avr(const char* fname) {
                 sum += nb;
                 sum += (iaddr & 0x00FF);
                 sum += ((iaddr & 0xFF00) >> 8);
-                // printf("sum=%02X %02X %02X\n",sum,~sum,(~sum)+1);
                 sum = (~sum) + 1;
                 fprintf(fout, ":%02X%04X00%s%02X\n", nb, iaddr, values, sum);
                 nb = 0;

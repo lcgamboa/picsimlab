@@ -356,20 +356,20 @@ void cboard_Breadboard::Draw(CDraw* draw) {
     // board_0 draw
     for (i = 0; i < outputc; i++)  // run over all outputs
     {
-        if (output[i].update)  // only if need update
+        if (output[i].update)      // only if need update
         {
             output[i].update = 0;
 
             if (!update) {
                 draw->Canvas.Init(Scale, Scale);
             }
-            update++;  // set to update buffer
+            update++;                          // set to update buffer
 
             draw->Canvas.SetFgColor(0, 0, 0);  // black
 
-            switch (output[i].id)  // search for color of output
+            switch (output[i].id)              // search for color of output
             {
-                case O_LPWR:  // Blue using mcupwr value
+                case O_LPWR:                   // Blue using mcupwr value
                     draw->Canvas.SetColor(0, 0, 200 * PICSimLab.GetMcuPwr() + 55);
                     draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                            output[i].y2 - output[i].y1);
@@ -455,12 +455,12 @@ void cboard_Breadboard::Run_CPU(void) {
             if (use_spare)
                 SpareParts.PreProcess();
 
-            j = JUMPSTEPS;  // step counter
+            j = JUMPSTEPS;                   // step counter
             pi = 0;
             if (PICSimLab.GetMcuPwr())       // if powered
                 for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
                 {
-                    if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
+                    if (j >= JUMPSTEPS)      // if number of step is bigger than steps to skip
                     {
                         pic_set_pin(&pic, pic.mclr, p_RST);
                     }
@@ -484,9 +484,9 @@ void cboard_Breadboard::Run_CPU(void) {
 
                     if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
                     {
-                        j = -1;  // reset counter
+                        j = -1;          // reset counter
                     }
-                    j++;  // counter increment
+                    j++;                 // counter increment
                     pic.ioupdated = 0;
                 }
             // calculate mean value
@@ -1051,6 +1051,29 @@ int cboard_Breadboard::GetDefaultClock(void) {
             break;
         case _AVR:
             return bsim_simavr::GetDefaultClock();
+            break;
+    }
+    return 0;
+}
+
+int cboard_Breadboard::GetUARTRX(const int uart_num) {
+    switch (ptype) {
+        case _PIC:
+            return bsim_picsim::GetUARTRX(uart_num);
+            break;
+        case _AVR:
+            return bsim_simavr::GetUARTRX(uart_num);
+            break;
+    }
+    return 0;
+}
+int cboard_Breadboard::GetUARTTX(const int uart_num) {
+    switch (ptype) {
+        case _PIC:
+            return bsim_picsim::GetUARTTX(uart_num);
+            break;
+        case _AVR:
+            return bsim_simavr::GetUARTTX(uart_num);
             break;
     }
     return 0;

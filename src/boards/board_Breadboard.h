@@ -86,6 +86,8 @@ public:
     unsigned int DBGGetCONFIGSize(void) override;
     unsigned int DBGGetIDSize(void) override;
     unsigned int DBGGetEEPROM_Size(void) override;
+    int GetUARTRX(const int uart_num) override;
+    int GetUARTTX(const int uart_num) override;
 
     // Constructor called once on board creation
     cboard_Breadboard(void);

@@ -96,7 +96,8 @@ public:
     unsigned int DBGGetEEPROM_Size(void) override;
     void EndServers(void) override;
     int GetDefaultClock(void) override { return 16; };
-
+    int GetUARTRX(const int uart_num) override;
+    int GetUARTTX(const int uart_num) override;
     virtual void UpdateHardware(void);
 
     static void out_hook(struct avr_irq_t* irq, uint32_t value, void* param) {

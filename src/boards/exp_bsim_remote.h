@@ -76,6 +76,8 @@ public:
     void EndServers(void) override;
     virtual void Run_CPU_ns(uint64_t time) = 0;
     int GetInc_ns(void) { return inc_ns; };
+    int GetUARTRX(const int uart_num) override;
+    int GetUARTTX(const int uart_num) override;
 
 protected:
     const int TestConnection(void);
