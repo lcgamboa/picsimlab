@@ -426,7 +426,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         if (!lxFileExists(fname_)) {
             // create a empty memory
             FILE* fout;
-            fout = fopen(fname_, "w");
+            fout = fopen(fname_, "wb");
             if (fout) {
                 unsigned char sp[4] = {0x00, 0x08, 0x00, 0x20};
                 unsigned char handler[4] = {0x51, 0x01, 0x00, 0x00};
@@ -478,7 +478,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         if (!lxFileExists(fname_)) {
             // create a empty memory
             FILE* fout;
-            fout = fopen(fname_, "w");
+            fout = fopen(fname_, "wb");
             if (fout) {
                 unsigned char buffer[1024];
                 memset(buffer, 0, 1024);
@@ -562,23 +562,19 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
         if (!lxFileExists(fnefuse)) {  // create efuse file if it don´t exists
             FILE* fout;
-            fout = fopen(fnefuse, "w");
+            fout = fopen(fnefuse, "wb");
             if (fout) {
                 char efuse[124];
                 unsigned char mac_addr[6], mac_addr_crc;
 
                 mac_addr_crc = 0;
-
-                // TODO for now use fix mac address because it is hardwired in qemu-esp32
-                // https://github.com/lcgamboa/qemu/blob/ab11bf77c825ef2ac008b302b582c87f36d35912/hw/misc/esp32_wifi_ap.c#L353
-                // https://github.com/lcgamboa/qemu/blob/ab11bf77c825ef2ac008b302b582c87f36d35912/hw/misc/esp32_wifi_ap.c#LL212C55-L212C64
-
-                mac_addr[0] = 0x10;  // rand()& 0xFE;
-                mac_addr[1] = 0x01;  // rand()& 0xFF;
-                mac_addr[2] = 0x00;  // rand()& 0xFF;
-                mac_addr[3] = 0xC4;  // rand()& 0xFF;
-                mac_addr[4] = 0x0A;  // rand()& 0xFF;
-                mac_addr[5] = 0x24;  // rand()& 0xFF;
+                srand(time(NULL));
+                mac_addr[0] = rand() & 0xFE;
+                mac_addr[1] = rand() & 0xFF;
+                mac_addr[2] = rand() & 0xFF;
+                mac_addr[3] = rand() & 0xFF;
+                mac_addr[4] = rand() & 0xFF;
+                mac_addr[5] = rand() & 0xFF;
 
                 for (int j = 0; j < 6; j++) {
                     mac_addr_crc = mac_addr_crc ^ mac_addr[j];
@@ -641,7 +637,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         if (!lxFileExists(fname_)) {
             // create a empty memory
             FILE* fout;
-            fout = fopen(fname_, "w");
+            fout = fopen(fname_, "wb");
             if (fout) {
                 unsigned char buffer[1024];
                 memset(buffer, 0, 1024);
