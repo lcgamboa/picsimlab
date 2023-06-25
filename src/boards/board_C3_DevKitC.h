@@ -60,8 +60,6 @@ public:
     void Draw(CDraw* draw) override;
     void Run_CPU(void) override;
     void Run_CPU_ns(uint64_t time) override;
-    // Return the filename of board picture
-    lxString GetPictureFileName(void) override { return lxT("ESP32-C3-DevKitC-02/board.png"); };
     // Return a list of board supported microcontrollers
     lxString GetSupportedDevices(void) override { return lxT("ESP32-C3,"); };
     // Reset board status

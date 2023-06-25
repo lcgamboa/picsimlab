@@ -1,16 +1,16 @@
-<img src="[picsimlab7] (overwritten)" width="484" height="244" border="0" usemap="#map" />
+<img src="[picsimlab7] (overwritten)" width="453" height="229" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:Luis Claudio Gamboa Lopes               -->
-<area shape="rect" coords="423,179,466,222" href="B_PB_RST" />
-<area shape="rect" coords="418,97,477,150" href="I_SW_PWR" />
-<area shape="rect" coords="6,56,147,191" href="I_PG_ICSP" />
-<area shape="rect" coords="423,23,466,66" href="B_PB_BOOT" />
-<area shape="rect" coords="232,150,248,160" href="O_LD_ON" />
-<area shape="rect" coords="232,72,248,83" href="O_LD_USER" />
-<area shape="circle" coords="182,95,14" href="O_LD_RGB" />
+<!-- #$AUTHOR:Luis Claudio Gamboa Lopes                 -->
+<area shape="rect" coords="394,167,435,208" href="B_PB_RST" />
+<area shape="rect" coords="389,89,448,142" href="I_SW_PWR" />
+<area shape="rect" coords="6,56,136,172" href="I_PG_ICSP" />
+<area shape="rect" coords="394,21,435,62" href="B_PB_BOOT" />
+<area shape="rect" coords="216,140,229,151" href="O_LD_ON" />
+<area shape="rect" coords="217,67,230,78" href="O_LD_USER" />
+<area shape="circle" coords="170,89,12" href="O_LD_RGB" />
 </map>

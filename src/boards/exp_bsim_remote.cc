@@ -31,7 +31,7 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <sys/un.h>
-#define INVALID_HANDLE_VALUE -1;
+#define INVALID_HANDLE_VALUE -1
 #else
 #include <winsock2.h>
 #include <ws2tcpip.h>
