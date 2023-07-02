@@ -282,9 +282,9 @@ void cboard_C3_DevKitC::Reset(void) {
     uint32_t* strap_mode = qemu_picsimlab_get_internals(0);
 
     if (p_BOOT) {
-        *strap_mode = 0x0C;  // SPI_FAST_FLASH_BOOT
+        *strap_mode = 0x08;  // SPI_FAST_FLASH_BOOT
     } else {
-        *strap_mode = 0x04;  // UART_BOOT(UART0)
+        *strap_mode = 0x02;  // UART_BOOT(UART0)
     }
 
     MReset(1);
@@ -602,7 +602,7 @@ void cboard_C3_DevKitC::Run_CPU(void) {
 
             if (!(status & CHR_TIOCM_CTS) && (status & CHR_TIOCM_DSR)) {
                 uint32_t* strap_mode = qemu_picsimlab_get_internals(0);
-                *strap_mode = 0x04;  // UART_BOOT(UART0)
+                *strap_mode = 0x02;  // UART_BOOT(UART0)
                 MReset(1);
             }
         }

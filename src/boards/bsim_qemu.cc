@@ -31,6 +31,7 @@
 #include "../lib/picsimlab.h"
 #include "../lib/serial_port.h"
 #include "bsim_qemu.h"
+#include <time.h>
 
 #define dprintf \
     if (1) {    \
