@@ -24,7 +24,7 @@
    ######################################################################## */
 
 // include files
-#include "exp_board_RemoteTCP.h"
+#include "board_RemoteTCP.h"
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"

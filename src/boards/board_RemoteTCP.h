@@ -28,7 +28,7 @@
 
 #include <lxrad.h>
 
-#include "exp_bsim_remote.h"
+#include "bsim_remote.h"
 
 #define BOARD_RemoteTCP_Name "Remote TCP"
 
@@ -39,6 +39,7 @@ private:
     lxFont font;
     void RegisterRemoteControl(void) override;
     int ADCChanel;
+
 public:
     // Return the board name
     lxString GetName(void) override { return lxT(BOARD_RemoteTCP_Name); };
