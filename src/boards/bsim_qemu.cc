@@ -28,10 +28,10 @@
 #include <dlfcn.h>
 #endif
 
+#include <time.h>
 #include "../lib/picsimlab.h"
 #include "../lib/serial_port.h"
 #include "bsim_qemu.h"
-#include <time.h>
 
 #define dprintf \
     if (1) {    \
@@ -714,11 +714,77 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
             return;
         }
 
+        // change .bin to .efuse
+        char fnefuse[2048];
+        strncpy(fnefuse, fname, 2048);
+        fnefuse[strlen(fnefuse) - 3] = 0;
+        strncat(fnefuse, "efuse", 2047);
+
+        if (!lxFileExists(fnefuse)) {  // create efuse file if it don´t exists
+            FILE* fout;
+            fout = fopen(fnefuse, "wb");
+            if (fout) {
+                char efuse[1024];
+                unsigned char mac_addr[6], mac_addr_crc;
+
+                mac_addr_crc = 0;
+                srand(time(NULL));
+                mac_addr[0] = rand() & 0xFE;
+                mac_addr[1] = rand() & 0xFF;
+                mac_addr[2] = rand() & 0xFF;
+                mac_addr[3] = rand() & 0xFF;
+                mac_addr[4] = rand() & 0xFF;
+                mac_addr[5] = rand() & 0xFF;
+
+                for (int j = 0; j < 6; j++) {
+                    mac_addr_crc = mac_addr_crc ^ mac_addr[j];
+                    for (int i = 0; i < 8; i++) {
+                        if (mac_addr_crc & 0x01) {
+                            mac_addr_crc = ((mac_addr_crc >> 1) ^ (0x8C)) & 0xFF;
+                        } else {
+                            mac_addr_crc = (mac_addr_crc >> 1) & 0xFF;
+                        }
+                    }
+                }
+
+                memset(efuse, 0, 1024);
+                // Version Minor
+                efuse[38] = 0x0c;
+
+                // MAC address
+                efuse[24] = mac_addr[5];
+                efuse[25] = mac_addr[4];
+                efuse[26] = mac_addr[3];
+                efuse[27] = mac_addr[2];
+                efuse[28] = mac_addr[1];
+                efuse[29] = mac_addr[0];
+                // efuse[10] = mac_addr_crc;
+
+                // 128bit uid
+                for (int i = 0; i < 16; i++) {
+                    efuse[48 + i] = rand();
+                }
+
+                fwrite(efuse, 1, 1024, fout);
+                fclose(fout);
+            } else {
+                printf("PICSimLab: qemu Error creating file %s \n", fnefuse);
+                exit(-1);
+            }
+        }
+
         strcpy(argv[argc++], "-L");
         strcpy(argv[argc++], (const char*)fullpath.c_str());
 
         strcpy(argv[argc++], "-drive");
         sprintf(argv[argc++], "file=%s,if=mtd,format=raw", fname_);
+
+        strcpy(argv[argc++], "-drive");
+        sprintf(argv[argc++], "file=%s,if=none,format=raw,id=efuse", fnefuse);
+
+        strcpy(argv[argc++], "-global");
+        sprintf(argv[argc++], "driver=nvram.esp32c3.efuse,property=drive,value=efuse");
+
     } else {
         printf("PICSimLab qemu: simulator %i not supported!!!\n", SimType);
         exit(-1);
