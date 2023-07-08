@@ -379,6 +379,7 @@ void cboard_DevKitC::WritePreferences(void) {
     // write microcontroller icount to preferences
     PICSimLab.SavePrefs(lxT("ESP32_DevKitC_icount"), itoa(icount));
 
+    PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cfgeserial"), itoa(ConfEnableSerial));
     PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cfgewifi"), itoa(ConfEnableWifi));
     PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cfgdwdt"), itoa(ConfDisableWdt));
     PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cfgeeth"), itoa(ConfEnableEthernet));
@@ -406,6 +407,9 @@ void cboard_DevKitC::ReadPreferences(char* name, char* value) {
         }
     }
 
+    if (!strcmp(name, "ESP32_DevKitC_cfgeserial")) {
+        ConfEnableSerial = atoi(value);
+    }
     if (!strcmp(name, "ESP32_DevKitC_cfgewifi")) {
         ConfEnableWifi = atoi(value);
     }
@@ -759,6 +763,7 @@ void cboard_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x, u
                     ((CCheckBox*)wconfig->GetChildByName("checkbox2"))->SetCheck(ConfDisableWdt);
                     ((CCheckBox*)wconfig->GetChildByName("checkbox4"))->SetCheck(ConfEnableEthernet);
                     ((CCheckBox*)wconfig->GetChildByName("checkbox3"))->SetCheck(use_cmdline_extra);
+                    ((CCheckBox*)wconfig->GetChildByName("checkbox5"))->SetCheck(ConfEnableSerial);
 
                     ((CButton*)wconfig->GetChildByName("button1"))->EvMouseButtonRelease = PICSimLab.board_ButtonEvent;
 
@@ -775,6 +780,7 @@ void cboard_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x, u
             }
         } break;
         case 5: {
+            ConfEnableSerial = ((CCheckBox*)wconfig->GetChildByName("checkbox5"))->GetCheck();
             ConfEnableWifi = ((CCheckBox*)wconfig->GetChildByName("checkbox1"))->GetCheck();
             ConfDisableWdt = ((CCheckBox*)wconfig->GetChildByName("checkbox2"))->GetCheck();
             ConfEnableEthernet = ((CCheckBox*)wconfig->GetChildByName("checkbox4"))->GetCheck();

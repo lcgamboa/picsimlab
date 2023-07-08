@@ -298,6 +298,7 @@ bsim_qemu::bsim_qemu(void) {
     use_cmdline_extra = 0;
     serial_open = 0;
     application_offset = 0;
+    ConfEnableSerial = 1;
 
     bitbang_i2c_ctrl_init(&master_i2c[0], this);
     bitbang_i2c_ctrl_init(&master_i2c[1], this);
@@ -791,7 +792,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
     }
 
     // verify if serial port exists
-    if (resp) {
+    if (resp && ConfEnableSerial) {
         if (strstr(resp, SERIALDEVICE)) {
             // try open
             serialfd_t serialfd;
