@@ -523,7 +523,15 @@ lxString bsim_remote::MGetPinName(int pin) {
     return pinname;
 }
 
-void bsim_remote::MDumpMemory(const char* fname) {}
+void bsim_remote::MDumpMemory(const char* fname) {
+    // only create a empty place holder file
+    FILE* fout;
+    fout = fopen(fname, "w");
+    if (fout) {
+        fprintf(fout, " ");
+        fclose(fout);
+    }
+}
 
 int bsim_remote::DebugInit(int dtyppe)  // argument not used in picm only mplabx
 {
