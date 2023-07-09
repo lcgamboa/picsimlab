@@ -28,6 +28,9 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
+/* inputs */
+enum { I_TEXTB };
+
 /* outputs */
 enum { O_TEXTB };
 
@@ -44,11 +47,8 @@ static const colorval_t colortable[C_END] = {{0xFF, 0, 0},       {0, 0xFF, 0},  
                                              {0xFF, 0xFF, 0},    {0xFF, 0xFF, 0XFF}, {0, 0, 0},
                                              {0x32, 0x32, 0x32}, {0x31, 0x3d, 0x63}, {0xff, 0xd3, 0x8c}};
 
-static PCWProp pcwprop[5] = {{PCW_TEXT, "text"},
-                             {PCW_SPIN, "Size"},
-                             {PCW_COMBO, "Color"},
-                             {PCW_COMBO, "Backgrd"},
-                             {PCW_END, ""}};
+static PCWProp pcwprop[] = {{PCW_TEXT, "text"},     {PCW_SPIN, "Size"}, {PCW_COMBO, "Color"},
+                            {PCW_COMBO, "Backgrd"}, {PCW_EDIT, "Link"}, {PCW_END, ""}};
 
 cpart_TEXT::cpart_TEXT(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
     : part(x, y, name, type, pboard_, 8) {
@@ -57,6 +57,7 @@ cpart_TEXT::cpart_TEXT(const unsigned x, const unsigned y, const char* name, con
     Textcolor = 4;
     Bgcolor = 7;
     Lines.AddLine("text");
+    Link = "";
 
     SetPCWProperties(pcwprop);
 }
@@ -115,6 +116,13 @@ void cpart_TEXT::DrawOutput(const unsigned int i) {
             canvas.SetColor(colortable[Bgcolor].r, colortable[Bgcolor].g, colortable[Bgcolor].b);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 
+            if (Link.length()) {
+                canvas.SetColor(0, 0, 0xff);
+                canvas.SetLineWidth(2);
+                canvas.Rectangle(0, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                 output[i].y2 - output[i].y1);
+            }
+
             canvas.SetColor(colortable[Textcolor].r, colortable[Textcolor].g, colortable[Textcolor].b);
             rec.x = output[i].x1;
             rec.y = output[i].y1;
@@ -132,6 +140,9 @@ void cpart_TEXT::DrawOutput(const unsigned int i) {
 }
 
 unsigned short cpart_TEXT::GetInputId(char* name) {
+    if (strcmp(name, "DI_TEXT") == 0)
+        return I_TEXTB;
+
     printf("Erro input '%s' don't have a valid id! \n", name);
     return -1;
 }
@@ -147,24 +158,37 @@ unsigned short cpart_TEXT::GetOutputId(char* name) {
 lxString cpart_TEXT::WritePreferences(void) {
     char prefs[256];
     lxString Text = "";
+    lxString link = Link;
+    // avoid save empty field
+    if (!link.length()) {
+        link = " ";
+    }
     for (unsigned int l = 0; l < Lines.GetLinesCount(); l++) {
         Text += Lines.GetLine(l) + '\a';
     }
-    sprintf(prefs, "%hhu,%hhu,%hhu,%s", Size, Textcolor, Bgcolor, (const char*)Text.c_str());
+    sprintf(prefs, "%hhu,%hhu,%hhu,%s%%%s", Size, Textcolor, Bgcolor, (const char*)link.c_str(),
+            (const char*)Text.c_str());
 
     return prefs;
 }
 
 void cpart_TEXT::ReadPreferences(lxString value) {
     char text[4096];
+    char link[2048];
     char* line;
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%[^\n]", &Size, &Textcolor, &Bgcolor, text);
+    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%[^%%]%%%[^\n]", &Size, &Textcolor, &Bgcolor, link, text);
 
     Lines.Clear();
     line = strtok(text, "\a\n");
     while (line) {
         Lines.AddLine(line);
         line = strtok(NULL, "\a\n");
+    }
+
+    if (strcmp(link, " ")) {
+        Link = link;
+    } else {
+        Link = "";
     }
 
     ChangeText(Size, Textcolor, Bgcolor);
@@ -178,6 +202,11 @@ void cpart_TEXT::ChangeText(int size, int textcolor, int bgcolor) {
     Bgcolor = bgcolor;
 
     LoadImage();
+
+    input_ids[I_TEXTB]->x1 = 0;
+    input_ids[I_TEXTB]->x2 = Width;
+    input_ids[I_TEXTB]->y1 = 0;
+    input_ids[I_TEXTB]->y2 = Height;
 
     output_ids[O_TEXTB]->x1 = 0;
     output_ids[O_TEXTB]->x2 = Width;
@@ -211,6 +240,8 @@ void cpart_TEXT::ConfigurePropertiesWindow(CPWindow* WProp) {
 
     ((CCombo*)WProp->GetChildByName("combo4"))->SetItems(Colors);
     ((CCombo*)WProp->GetChildByName("combo4"))->SetText(Colorname[Bgcolor]);
+
+    ((CEdit*)WProp->GetChildByName("edit5"))->SetText(Link);
 }
 
 void cpart_TEXT::ReadPropertiesWindow(CPWindow* WProp) {
@@ -240,7 +271,15 @@ void cpart_TEXT::ReadPropertiesWindow(CPWindow* WProp) {
         }
     }
 
+    Link = ((CEdit*)WProp->GetChildByName("edit5"))->GetText();
+
     ChangeText(Size, Textcolor, Bgcolor);
+}
+
+void cpart_TEXT::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+    if ((button == 1) && Link.length()) {
+        lxLaunchDefaultBrowser(Link);
+    }
 }
 
 part_init(PART_TEXT_Name, cpart_TEXT, "Virtual");

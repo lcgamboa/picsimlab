@@ -2,6 +2,14 @@
 
 ### New
 
+* Add support to Text Box part open external URLs on click. [lcgamboa]
+
+* Add suport to ESP32-C3 to use efuse file. [lcgamboa]
+
+* Move RemoteTCP board from experimental to stable version. [lcgamboa]
+
+* Add support to use efuse file with ESP32 qemu based boards. [lcgamboa]
+
 * Add support to IO virtual term part autodetect uart pins. [lcgamboa]
 
 * New board ESP32-C3-DevKitC-02 (riscv32) [lcgamboa]
@@ -36,6 +44,8 @@
 
 ### Changes
 
+* Add support to disable default serial port on Qemu based boards. [lcgamboa]
+
 * Add stack trace to log when PICSimLab crash. [lcgamboa]
 
 * Add support to use icount=auto in qemu based boards. [lcgamboa]
@@ -53,6 +63,8 @@
 * Add support to remove VT100 codes in Virtual Term part. [lcgamboa]
 
 ### Fix
+
+* Fix 7s Display part draw when active mode is set to low. [lcgamboa]
 
 * Fix PQDB board seven segments display point and analog channel order. [lcgamboa]
 
