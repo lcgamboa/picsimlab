@@ -557,7 +557,7 @@ void bsim_remote::pins_reset(void) {
 
         pname = MGetPinName(p + 1);
 
-        if ((pname[0] == 'P')) {
+        if (pname[0] == 'P') {
             if (pname[1] == 'A') {
                 pins[p].port = (unsigned char*)&Ports[0];
                 pins[p].pord = pname[2] - '0';

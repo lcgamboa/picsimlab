@@ -24,6 +24,7 @@ override CXXFLAGS += -DEXT_BROWSER  -D_VERSION_=\"${VERSION}\" -Wall -ggdb -O2 \
 		     -D_LIB_=\"../lib/picsimlab/\" 
 
 override CXXFLAGS+=-fsanitize=address
+override CXXFLAGS+= -D_CONSOLE_LOG_
 #override CXXFLAGS+= -D_NOTHREAD
 
 #LIBS = `lxrad_SDL2-config --libs` -lpicsim -lsimavr -lelf -lminizip $(ELIBS) -lucsim

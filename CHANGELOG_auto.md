@@ -2,6 +2,8 @@
 
 ### New
 
+* Add support to PIC16F819, PIC16F1827 and PIC16F1847 in Breadboard. [lcgamboa]
+
 * Add support to Text Box part open external URLs on click. [lcgamboa]
 
 * Add suport to ESP32-C3 to use efuse file. [lcgamboa]
@@ -63,6 +65,12 @@
 * Add support to remove VT100 codes in Virtual Term part. [lcgamboa]
 
 ### Fix
+
+* Fix button read after pin mode set to input in McLab2 board. [lcgamboa]
+
+* Add line break in Virtual Term to avoid UI freezing. [lcgamboa]
+
+* Add 2k text limit to virtual_Text part. [lcgamboa]
 
 * Fix 7s Display part draw when active mode is set to low. [lcgamboa]
 

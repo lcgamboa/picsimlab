@@ -21,6 +21,7 @@ execdir= ${prefix}/bin/
 override CXXFLAGS += -DEXT_BROWSER -D_VERSION_=\"${VERSION}\" -Wall -g -O2  -D_SHARE_=\"../share/picsimlab/\"  \
                      -I/usr/include/lxrad_X11 -Wall  -D_REENTRANT -D_LIB_=\"../lib/picsimlab/\" 
 
+override CXXFLAGS+= -D_CONSOLE_LOG_
 #override CXXFLAGS+= -D_NOTHREAD
 #override CXXFLAGS+=-fsanitize=address
 
