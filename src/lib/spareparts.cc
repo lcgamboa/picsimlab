@@ -336,7 +336,7 @@ bool CSpareParts::LoadPinAlias(lxString fname, unsigned char show_error_msg) {
 
 bool CSpareParts::LoadConfig(lxString fname, const int disable_debug) {
     char name[256];
-    char temp[256];
+    char temp[4096];
     unsigned int x, y;
     int orient;
     lxStringList prefs;
@@ -398,9 +398,9 @@ bool CSpareParts::LoadConfig(lxString fname, const int disable_debug) {
 
         for (unsigned int i = 0; i < prefs.GetLinesCount(); i++) {
             if (newformat) {
-                sscanf(prefs.GetLine(i).c_str(), "%255[^,],%i,%i,%i:%255[^\n]", name, &x, &y, &orient, temp);
+                sscanf(prefs.GetLine(i).c_str(), "%255[^,],%i,%i,%i:%4095[^\n]", name, &x, &y, &orient, temp);
             } else {
-                sscanf(prefs.GetLine(i).c_str(), "%255[^,],%i,%i:%255[^\n]", name, &x, &y, temp);
+                sscanf(prefs.GetLine(i).c_str(), "%255[^,],%i,%i:%4095[^\n]", name, &x, &y, temp);
             }
 
             // typo fix

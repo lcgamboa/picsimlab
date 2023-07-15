@@ -156,7 +156,7 @@ unsigned short cpart_TEXT::GetOutputId(char* name) {
 }
 
 lxString cpart_TEXT::WritePreferences(void) {
-    char prefs[256];
+    char prefs[4096];
     lxString Text = "";
     lxString link = Link;
     // avoid save empty field
@@ -166,16 +166,18 @@ lxString cpart_TEXT::WritePreferences(void) {
     for (unsigned int l = 0; l < Lines.GetLinesCount(); l++) {
         Text += Lines.GetLine(l) + '\a';
     }
-    sprintf(prefs, "%hhu,%hhu,%hhu,%s%%%s", Size, Textcolor, Bgcolor, (const char*)link.c_str(),
+    sprintf(prefs, "%hhu,%hhu,%hhu,%.1024s%%%.2048s", Size, Textcolor, Bgcolor, (const char*)link.c_str(),
             (const char*)Text.c_str());
-
     return prefs;
 }
 
 void cpart_TEXT::ReadPreferences(lxString value) {
-    char text[4096];
-    char link[2048];
+    char text[2048 + 1024];
+    char link[1024 + 1024];
     char* line;
+
+    printf("[%i]%s\n", value.length(), value.c_str());
+
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%[^%%]%%%[^\n]", &Size, &Textcolor, &Bgcolor, link, text);
 
     Lines.Clear();
