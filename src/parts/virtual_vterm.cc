@@ -255,6 +255,10 @@ void cpart_vterm::DrawOutput(const unsigned int i) {
             vt.inMutex->Unlock();
             vttext->Append(str);
 
+            if (vttext->GetLine(vttext->GetCountLines() - 1).length() > 1024) {
+                vttext->Append("\n");  // TODO break line with exact size
+            }
+
             while (vttext->GetCountLines() > 1000) {
                 vttext->SetCursorPos(0);
                 vttext->DelLine();
