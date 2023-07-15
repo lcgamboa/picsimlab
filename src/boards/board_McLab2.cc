@@ -752,6 +752,16 @@ void cboard_McLab2::Run_CPU(void) {
                 pic_step(&pic);
             ioupdated = pic.ioupdated;
             InstCounterInc();
+
+            if (ioupdated) {
+                if (!bounce.do_bounce) {
+                    pic_set_pin(&pic, 33, p_BT_[0]);
+                    pic_set_pin(&pic, 34, p_BT_[1]);
+                    pic_set_pin(&pic, 35, p_BT_[2]);
+                    pic_set_pin(&pic, 36, p_BT_[3]);
+                }
+            }
+
             if (use_oscope)
                 Oscilloscope.SetSample();
             if (use_spare)
