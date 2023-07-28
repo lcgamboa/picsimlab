@@ -24,7 +24,7 @@
    ######################################################################## */
 
 // include files
-#include "exp_board_Curiosity.h"
+#include "board_Xpress.h"
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
@@ -35,26 +35,26 @@ enum {
     I_ICSP,  // ICSP connector
     I_PWR,   // Power button
     I_RST,   // Reset button
-    I_S1,    // S1 push button
-    I_JMP    // JMP
+    I_S1     // S1 push button
 };
 
 /* ids of outputs of output map*/
 enum {
     O_POT1,
-    O_JMP,  // JMP
-    O_D1,   // LED D1
+    O_D1,   // LED D1 GREEN
+    O_D1R,  // LED D1 RED
     O_D2,   // LED D2
+    O_D3,   // LED D3
     O_D4,   // LED D4
     O_D5,   // LED D5
-    O_D6,   // LED D6
-    O_D7,   // LED D7
     O_RST,  // Reset button
-    O_S1    // S1 push button
+    O_S1,   // S1 push button
+    O_MP    // uController name
 };
+
 // return the input ids numbers of names used in input map
 
-unsigned short cboard_Curiosity::GetInputId(char* name) {
+unsigned short cboard_Xpress::GetInputId(char* name) {
     if (strcmp(name, "PG_ICSP") == 0)
         return I_ICSP;
     if (strcmp(name, "SW_PWR") == 0)
@@ -63,8 +63,6 @@ unsigned short cboard_Curiosity::GetInputId(char* name) {
         return I_RST;
     if (strcmp(name, "PB_S1") == 0)
         return I_S1;
-    if (strcmp(name, "JP_1") == 0)
-        return I_JMP;
     if (strcmp(name, "PO_1") == 0)
         return I_POT1;
 
@@ -74,27 +72,28 @@ unsigned short cboard_Curiosity::GetInputId(char* name) {
 
 // return the output ids numbers of names used in output map
 
-unsigned short cboard_Curiosity::GetOutputId(char* name) {
-    if (strcmp(name, "JP_1") == 0)
-        return O_JMP;
+unsigned short cboard_Xpress::GetOutputId(char* name) {
     if (strcmp(name, "LD_D1") == 0)
         return O_D1;
+    if (strcmp(name, "LD_D1R") == 0)
+        return O_D1R;
     if (strcmp(name, "LD_D2") == 0)
         return O_D2;
+    if (strcmp(name, "LD_D3") == 0)
+        return O_D3;
     if (strcmp(name, "LD_D4") == 0)
         return O_D4;
     if (strcmp(name, "LD_D5") == 0)
         return O_D5;
-    if (strcmp(name, "LD_D6") == 0)
-        return O_D6;
-    if (strcmp(name, "LD_D7") == 0)
-        return O_D7;
+
     if (strcmp(name, "PB_S1") == 0)
         return O_S1;
     if (strcmp(name, "PO_1") == 0)
         return O_POT1;
     if (strcmp(name, "PB_RST") == 0)
         return O_RST;
+    if (strcmp(name, "IC_CPU") == 0)
+        return O_MP;
 
     printf("Erro output '%s' don't have a valid id! \n", name);
     return 1;
@@ -102,23 +101,22 @@ unsigned short cboard_Curiosity::GetOutputId(char* name) {
 
 // Constructor called once on board creation
 
-cboard_Curiosity::cboard_Curiosity(void) {
-    Proc = "PIC16F1619";  // default microcontroller if none defined in preferences
-    ReadMaps();           // Read input and output board maps
-    jmp[0] = 0;
+cboard_Xpress::cboard_Xpress(void) : font(2, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    Proc = "PIC16F18855";  // default microcontroller if none defined in preferences
+    ReadMaps();            // Read input and output board maps
 
-    pic.vcc = 5.0;
     pot1 = 100;
 
     active = 0;
+
     if (PICSimLab.GetWindow()) {
         // controls properties and creation
         // gauge1
         gauge1 = new CGauge();
         gauge1->SetFOwner(PICSimLab.GetWindow());
-        gauge1->SetName(lxT("gauge1_p7"));
+        gauge1->SetName(lxT("gauge1_p6"));
         gauge1->SetX(48);
-        gauge1->SetY(230 - 120);
+        gauge1->SetY(230 - 110);
         gauge1->SetWidth(110);
         gauge1->SetHeight(20);
         gauge1->SetEnable(1);
@@ -130,9 +128,9 @@ cboard_Curiosity::cboard_Curiosity(void) {
         // gauge2
         gauge2 = new CGauge();
         gauge2->SetFOwner(PICSimLab.GetWindow());
-        gauge2->SetName(lxT("gauge2_p7"));
+        gauge2->SetName(lxT("gauge2_p6"));
         gauge2->SetX(48);
-        gauge2->SetY(255 - 120);
+        gauge2->SetY(255 - 110);
         gauge2->SetWidth(110);
         gauge2->SetHeight(20);
         gauge2->SetEnable(1);
@@ -144,9 +142,9 @@ cboard_Curiosity::cboard_Curiosity(void) {
         // gauge3
         gauge3 = new CGauge();
         gauge3->SetFOwner(PICSimLab.GetWindow());
-        gauge3->SetName(lxT("gauge3_p7"));
+        gauge3->SetName(lxT("gauge3_p6"));
         gauge3->SetX(48);
-        gauge3->SetY(280 - 120);
+        gauge3->SetY(280 - 110);
         gauge3->SetWidth(110);
         gauge3->SetHeight(20);
         gauge3->SetEnable(1);
@@ -158,9 +156,9 @@ cboard_Curiosity::cboard_Curiosity(void) {
         // gauge4
         gauge4 = new CGauge();
         gauge4->SetFOwner(PICSimLab.GetWindow());
-        gauge4->SetName(lxT("gauge4_p7"));
+        gauge4->SetName(lxT("gauge4_p6"));
         gauge4->SetX(48);
-        gauge4->SetY(305 - 120);
+        gauge4->SetY(305 - 110);
         gauge4->SetWidth(110);
         gauge4->SetHeight(20);
         gauge4->SetEnable(1);
@@ -172,22 +170,22 @@ cboard_Curiosity::cboard_Curiosity(void) {
         // label2
         label2 = new CLabel();
         label2->SetFOwner(PICSimLab.GetWindow());
-        label2->SetName(lxT("label2_p7"));
+        label2->SetName(lxT("label2_p6"));
         label2->SetX(12);
-        label2->SetY(230 - 120);
+        label2->SetY(230 - 110);
         label2->SetWidth(60);
         label2->SetHeight(20);
         label2->SetEnable(1);
         label2->SetVisible(1);
-        label2->SetText(lxT("RA5"));
+        label2->SetText(lxT("RA0"));
         label2->SetAlign(1);
         PICSimLab.GetWindow()->CreateChild(label2);
         // label3
         label3 = new CLabel();
         label3->SetFOwner(PICSimLab.GetWindow());
-        label3->SetName(lxT("label3_p7"));
+        label3->SetName(lxT("label3_p6"));
         label3->SetX(13);
-        label3->SetY(255 - 120);
+        label3->SetY(255 - 110);
         label3->SetWidth(60);
         label3->SetHeight(20);
         label3->SetEnable(1);
@@ -198,9 +196,9 @@ cboard_Curiosity::cboard_Curiosity(void) {
         // label4
         label4 = new CLabel();
         label4->SetFOwner(PICSimLab.GetWindow());
-        label4->SetName(lxT("label4_p7"));
+        label4->SetName(lxT("label4_p6"));
         label4->SetX(13);
-        label4->SetY(280 - 120);
+        label4->SetY(280 - 110);
         label4->SetWidth(60);
         label4->SetHeight(20);
         label4->SetEnable(1);
@@ -211,14 +209,14 @@ cboard_Curiosity::cboard_Curiosity(void) {
         // label5
         label5 = new CLabel();
         label5->SetFOwner(PICSimLab.GetWindow());
-        label5->SetName(lxT("label5_p7"));
+        label5->SetName(lxT("label5_p6"));
         label5->SetX(13);
-        label5->SetY(305 - 120);
+        label5->SetY(305 - 110);
         label5->SetWidth(60);
         label5->SetHeight(20);
         label5->SetEnable(1);
         label5->SetVisible(1);
-        label5->SetText(lxT("RC5"));
+        label5->SetText(lxT("RA3"));
         label5->SetAlign(1);
         PICSimLab.GetWindow()->CreateChild(label5);
     }
@@ -226,7 +224,7 @@ cboard_Curiosity::cboard_Curiosity(void) {
 
 // Destructor called once on board destruction
 
-cboard_Curiosity::~cboard_Curiosity(void) {
+cboard_Xpress::~cboard_Xpress(void) {
     if (PICSimLab.GetWindow()) {
         // controls destruction
         PICSimLab.GetWindow()->DestroyChild(gauge1);
@@ -242,7 +240,10 @@ cboard_Curiosity::~cboard_Curiosity(void) {
 
 // Reset board status
 
-void cboard_Curiosity::Reset(void) {
+void cboard_Xpress::Reset(void) {
+    pic.pkg = QFN;
+    pic.vcc = 3.3;
+
     pic_reset(&pic, 1);
 
     p_BT1 = 1;  // set push button  in default state (high)
@@ -269,35 +270,27 @@ void cboard_Curiosity::Reset(void) {
                                                lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
     }
 
-    if (jmp[0]) {
-        pic.vcc = 5.0;
-    } else {
-        pic.vcc = 3.3;
-    }
-
     if (use_spare)
         SpareParts.Reset();
-    if (use_oscope)
-        Oscilloscope.Reset();
 
     RegisterRemoteControl();
 }
 
-void cboard_Curiosity::RegisterRemoteControl(void) {
+void cboard_Xpress::RegisterRemoteControl(void) {
     input_ids[I_S1]->status = &p_BT1;
     input_ids[I_S1]->update = &output_ids[O_S1]->update;
     input_ids[I_POT1]->status = &pot1;
     input_ids[I_POT1]->update = &output_ids[O_POT1]->update;
 
-    output_ids[O_D4]->status = &pic.pins[1].oavalue;
-    output_ids[O_D5]->status = &pic.pins[17].oavalue;
-    output_ids[O_D6]->status = &pic.pins[16].oavalue;
-    output_ids[O_D7]->status = &pic.pins[4].oavalue;
+    output_ids[O_D2]->status = &pic.pins[26].oavalue;
+    output_ids[O_D3]->status = &pic.pins[27].oavalue;
+    output_ids[O_D4]->status = &pic.pins[0].oavalue;
+    output_ids[O_D5]->status = &pic.pins[1].oavalue;
 }
 
 // Called ever 1s to refresh status
 
-void cboard_Curiosity::RefreshStatus(void) {
+void cboard_Xpress::RefreshStatus(void) {
     // verify serial port state and refresh status bar
 #ifndef _WIN_
     if (pic.serial[0].serialfd > 0)
@@ -316,44 +309,31 @@ void cboard_Curiosity::RefreshStatus(void) {
 
 // Called to save board preferences in configuration file
 
-void cboard_Curiosity::WritePreferences(void) {
-    // write selected microcontroller of board_5 to preferences
-    PICSimLab.SavePrefs(lxT("Curiosity_proc"), Proc);
-    PICSimLab.SavePrefs(lxT("Curiosity_jmp"), lxString().Format("%i", jmp[0]));
-    PICSimLab.SavePrefs(lxT("Curiosity_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
-    PICSimLab.SavePrefs(lxT("Curiosity_pot1"), lxString().Format("%i", pot1));
+void cboard_Xpress::WritePreferences(void) {
+    // write selected microcontroller of board_6 to preferences
+    PICSimLab.SavePrefs(lxT("Xpress_proc"), Proc);
+    PICSimLab.SavePrefs(lxT("Xpress_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("Xpress_pot1"), lxString().Format("%i", pot1));
 }
 
 // Called whe configuration file load  preferences
 
-void cboard_Curiosity::ReadPreferences(char* name, char* value) {
+void cboard_Xpress::ReadPreferences(char* name, char* value) {
     // read microcontroller of preferences
-    if (!strcmp(name, "Curiosity_proc")) {
+    if (!strcmp(name, "Xpress_proc")) {
         Proc = value;
     }
-
-    if (!strcmp(name, "Curiosity_jmp")) {
-        int i;
-        for (i = 0; i < 1; i++) {
-            if (value[i] == '0')
-                jmp[i] = 0;
-            else
-                jmp[i] = 1;
-        }
-    }
-
-    if (!strcmp(name, "Curiosity_clock")) {
+    if (!strcmp(name, "Xpress_clock")) {
         PICSimLab.SetClock(atof(value));
     }
-
-    if (!strcmp(name, "Curiosity_pot1")) {
+    if (!strcmp(name, "Xpress_pot1")) {
         pot1 = atoi(value);
     }
 }
 
 // Event on the board
 
-void cboard_Curiosity::EvKeyPress(uint key, uint mask) {
+void cboard_Xpress::EvKeyPress(uint key, uint mask) {
     // if keyboard key 1 is pressed then activate button (state=0)
     if (key == '1') {
         p_BT1 = 0;
@@ -362,7 +342,7 @@ void cboard_Curiosity::EvKeyPress(uint key, uint mask) {
 
 // Event on the board
 
-void cboard_Curiosity::EvKeyRelease(uint key, uint mask) {
+void cboard_Xpress::EvKeyRelease(uint key, uint mask) {
     // if keyboard key 1 is pressed then deactivate button (state=1)
     if (key == '1') {
         p_BT1 = 1;
@@ -371,7 +351,7 @@ void cboard_Curiosity::EvKeyRelease(uint key, uint mask) {
 
 // Event on the board
 
-void cboard_Curiosity::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
+void cboard_Xpress::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
     int i;
 
     // search for the input area which owner the event
@@ -409,10 +389,6 @@ void cboard_Curiosity::EvMouseButtonPress(uint button, uint x, uint y, uint stat
                 case I_S1:
                     p_BT1 = 0;
                     break;
-                case I_JMP:
-                    jmp[0] ^= 0x01;
-                    Reset();
-                    break;
                 case I_POT1: {
                     active = 1;
                     pot1 = CalcAngle(i, x, y);
@@ -422,7 +398,7 @@ void cboard_Curiosity::EvMouseButtonPress(uint button, uint x, uint y, uint stat
     }
 }
 
-void cboard_Curiosity::EvMouseMove(uint button, uint x, uint y, uint state) {
+void cboard_Xpress::EvMouseMove(uint button, uint x, uint y, uint state) {
     int i;
 
     for (i = 0; i < inputc; i++) {
@@ -442,7 +418,7 @@ void cboard_Curiosity::EvMouseMove(uint button, uint x, uint y, uint state) {
 
 // Event on the board
 
-void cboard_Curiosity::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
+void cboard_Xpress::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
     int i;
 
     // search for the input area which owner the event
@@ -477,12 +453,12 @@ void cboard_Curiosity::EvMouseButtonRelease(uint button, uint x, uint y, uint st
 // Called ever 100ms to draw board
 // This is the critical code for simulator running speed
 
-void cboard_Curiosity::Draw(CDraw* draw) {
+void cboard_Xpress::Draw(CDraw* draw) {
     int i;
 
     draw->Canvas.Init(Scale, Scale);  // initialize draw context
 
-    // board_5 draw
+    // board_6 draw
     for (i = 0; i < outputc; i++)  // run over all outputs
     {
         if (!output[i].r)  // if output shape is a rectangle
@@ -494,81 +470,74 @@ void cboard_Curiosity::Draw(CDraw* draw) {
                 case O_D1:  // green using picpwr value
                     draw->Canvas.SetColor(0, 200 * PICSimLab.GetMcuPwr() + 55, 0);
                     break;
-                case O_D2:  // green using picpwr value
-                    draw->Canvas.SetColor(0, 200 * PICSimLab.GetMcuPwr() + 55, 0);
+                case O_D1R:  // green using picpwr value
+                    draw->Canvas.SetColor(200 * !PICSimLab.GetMcuPwr() + 55, 0, 0);
                     break;
-                case O_D4:  // Red using pin 2 mean  value (RA5)
+                case O_D2:  // Red using pin 27 mean  value (RA0)
+                    draw->Canvas.SetColor(pic.pins[26].oavalue, 0, 0);
+                    break;
+                case O_D3:  // Red using pin 28 mean  value (RA1)
+                    draw->Canvas.SetColor(pic.pins[27].oavalue, 0, 0);
+                    break;
+                case O_D4:  // Red using pin 1 mean value (RA2)
+                    draw->Canvas.SetColor(pic.pins[0].oavalue, 0, 0);
+                    break;
+                case O_D5:  // Red using pin 2 mean value (RA3)
                     draw->Canvas.SetColor(pic.pins[1].oavalue, 0, 0);
-                    break;
-                case O_D5:  // Red using pin 18 mean value (RA1)
-                    draw->Canvas.SetColor(pic.pins[17].oavalue, 0, 0);
-                    break;
-                case O_D6:  // Red using pin 17 mean value (RA2)
-                    draw->Canvas.SetColor(pic.pins[16].oavalue, 0, 0);
-                    break;
-                case O_D7:  // Red using pin 5 mean value (RC5)
-                    draw->Canvas.SetColor(pic.pins[4].oavalue, 0, 0);
-                    break;
-                case O_JMP:
-                    draw->Canvas.SetColor(150, 150, 150);
                     break;
                 case O_S1:
                 case O_RST:
                     draw->Canvas.SetColor(100, 100, 100);
                     break;
-                case O_POT1:
-                    draw->Canvas.SetColor(100, 100, 100);
+                case O_MP:
+                    draw->Canvas.SetColor(26, 26, 26);
                     break;
             }
 
-            // draw a rectangle
-            draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                   output[i].y2 - output[i].y1);
-
-            if (output[i].id == O_S1) {
+            if (output[i].id == O_MP) {
+                lxRect rec;
+                draw->Canvas.SetFont(font);
+                draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                       output[i].y2 - output[i].y1);
+                draw->Canvas.SetFgColor(230, 230, 230);
+                rec.x = output[i].x1;
+                rec.y = output[i].y1;
+                rec.width = output[i].x2 - output[i].x1;
+                rec.height = output[i].y2 - output[i].y1;
+                draw->Canvas.TextOnRect(Proc, rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
+            } else if (output[i].id == O_S1) {
+                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 12);
                 if (p_BT1) {
                     draw->Canvas.SetColor(15, 15, 15);
                 } else {
                     draw->Canvas.SetColor(55, 55, 55);
                 }
-                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 9);
+                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 10);
             } else if (output[i].id == O_RST) {
+                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 12);
                 if (p_RST) {
                     draw->Canvas.SetColor(15, 15, 15);
                 } else {
                     draw->Canvas.SetColor(55, 55, 55);
                 }
-                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 9);
+                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 10);
             } else if (output[i].id == O_POT1) {
-                draw->Canvas.SetColor(10, 10, 10);
+                draw->Canvas.SetBgColor(66, 109, 246);
+                draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                       output[i].y2 - output[i].y1);
+
+                draw->Canvas.SetBgColor(250, 250, 250);
                 draw->Canvas.Circle(1, output[i].cx, output[i].cy, 20);
 
-                draw->Canvas.SetColor(150, 150, 150);
-                int x = -16 * sin((5.585 * (pot1 / 200.0)) + 0.349);
-                int y = 16 * cos((5.585 * (pot1 / 200.0)) + 0.349);
+                draw->Canvas.SetBgColor(150, 150, 150);
+                int x = -15 * sin((5.585 * (pot1 / 200.0)) + 0.349);
+                int y = 15 * cos((5.585 * (pot1 / 200.0)) + 0.349);
                 draw->Canvas.Circle(1, output[i].cx + x, output[i].cy + y, 3);
-
-            } else if (output[i].id == O_JMP) {
-                if (!jmp[0]) {
-                    draw->Canvas.SetColor(70, 70, 70);
-                    draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, (int)((output[i].x2 - output[i].x1) * 0.65),
-                                           output[i].y2 - output[i].y1);
-                    draw->Canvas.SetColor(220, 220, 0);
-                    draw->Canvas.Circle(1, output[i].x1 + (int)((output[i].x2 - output[i].x1) * 0.80),
-                                        output[i].y1 + ((output[i].y2 - output[i].y1) / 2), 3);
-                } else {
-                    draw->Canvas.SetColor(70, 70, 70);
-                    draw->Canvas.Rectangle(1, output[i].x1 + ((int)((output[i].x2 - output[i].x1) * 0.35)),
-                                           output[i].y1, (int)((output[i].x2 - output[i].x1) * 0.65),
-                                           output[i].y2 - output[i].y1);
-                    draw->Canvas.SetColor(220, 220, 0);
-                    draw->Canvas.Circle(1, output[i].x1 + (int)((output[i].x2 - output[i].x1) * 0.20),
-                                        output[i].y1 + ((output[i].y2 - output[i].y1) / 2), 3);
-                }
+            } else {
+                // draw a rectangle
+                draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                       output[i].y2 - output[i].y1);
             }
-
-        } else  // if output shape is a circle
-        {
         }
     }
 
@@ -577,29 +546,28 @@ void cboard_Curiosity::Draw(CDraw* draw) {
     draw->Update();
 
     // RA5 mean value to gauge1
-    gauge1->SetValue((pic.pins[1].oavalue - 55) / 2);
+    gauge1->SetValue((pic.pins[26].oavalue - 55) / 2);
     // RA1 mean value to gauge2
-    gauge2->SetValue((pic.pins[17].oavalue - 55) / 2);
+    gauge2->SetValue((pic.pins[27].oavalue - 55) / 2);
     // RA2 mean value to gauge3
-    gauge3->SetValue((pic.pins[16].oavalue - 55) / 2);
+    gauge3->SetValue((pic.pins[0].oavalue - 55) / 2);
     // RC5 mean value to gauge4
-    gauge4->SetValue((pic.pins[4].oavalue - 55) / 2);
+    gauge4->SetValue((pic.pins[1].oavalue - 55) / 2);
 }
 
-void cboard_Curiosity::Run_CPU(void) {
+void cboard_Xpress::Run_CPU(void) {
     int i;
     int j;
     unsigned char pi;
     const picpin* pins;
-    unsigned int alm[20];
+    unsigned int alm[28];
 
     const int JUMPSTEPS = PICSimLab.GetJUMPSTEPS();  // number of steps skipped
     const long int NSTEP = PICSimLab.GetNSTEP();     // number of steps in 100ms
     const float RNSTEP = 200.0 * pic.PINCOUNT / NSTEP;
 
     // reset mean value
-
-    memset(alm, 0, 20 * sizeof(unsigned int));
+    memset(alm, 0, 28 * sizeof(unsigned int));
 
     // read pic.pins to a local variable to speed up
     pins = pic.pins;
@@ -615,7 +583,7 @@ void cboard_Curiosity::Run_CPU(void) {
             if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
             {
                 pic_set_pin(&pic, pic.mclr, p_RST);
-                pic_set_pin(&pic, 6, p_BT1);  // Set pin 6 (RC4) with button state
+                pic_set_pin(&pic, 4, p_BT1);  // Set pin 4 (RA5) with button state
             }
 
             // verify if a breakpoint is reached if not run one instruction
@@ -636,8 +604,8 @@ void cboard_Curiosity::Run_CPU(void) {
 
             if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
             {
-                // set analog pin 16 (RC0 AN4) with value from scroll
-                pic_set_apin(&pic, 16, (pic.vcc * pot1 / 199));
+                // set analog pin 3 (RA4 ANA4) with value from scroll
+                pic_set_apin(&pic, 3, (3.3 * pot1 / 199));
 
                 j = -1;  // reset counter
             }
@@ -650,8 +618,9 @@ void cboard_Curiosity::Run_CPU(void) {
     for (pi = 0; pi < pic.PINCOUNT; pi++) {
         pic.pins[pi].oavalue = (int)((alm[pi] * RNSTEP) + 55);
     }
+
     if (use_spare)
         SpareParts.PostProcess();
 }
 
-board_init(BOARD_Curiosity_Name, cboard_Curiosity);
+board_init(BOARD_Xpress_Name, cboard_Xpress);

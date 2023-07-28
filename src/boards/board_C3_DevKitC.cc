@@ -42,7 +42,8 @@ enum {
     O_LON,   // Power LED
     O_RST,   // Reset button
     O_BOOT,  // Boot button
-    O_LED    // User LED
+    O_LED,   // User LED
+    O_LRGB   // User RGB LED
 };
 // return the input ids numbers of names used in input map
 
@@ -155,6 +156,8 @@ unsigned short cboard_C3_DevKitC::GetOutputId(char* name) {
         return O_BOOT;
     if (strcmp(name, "LD_USER") == 0)
         return O_LED;
+    if (strcmp(name, "LD_RGB") == 0)
+        return O_LRGB;
 
     printf("Error output '%s' don't have a valid id! \n", name);
     return 1;

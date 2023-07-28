@@ -52,6 +52,8 @@ private:
 
     void RegisterRemoteControl(void) override;
 
+    lxFont font;
+
 public:
     // Return the board name
     lxString GetName(void) override { return lxT(BOARD_Xpress_Name); };
@@ -65,8 +67,6 @@ public:
     void Run_CPU(void) override;
     // Return a list of board supported microcontrollers
     lxString GetSupportedDevices(void) override { return lxT("PIC16F18855,"); };
-    // Return the filename of board picture
-    lxString GetPictureFileName(void) override { return lxT("Xpress/board.png"); };
     // Reset board status
     void Reset(void) override;
     // Event on the board

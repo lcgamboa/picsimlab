@@ -176,8 +176,6 @@ void cpart_TEXT::ReadPreferences(lxString value) {
     char link[1024 + 1024];
     char* line;
 
-    printf("[%i]%s\n", value.length(), value.c_str());
-
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%[^%%]%%%[^\n]", &Size, &Textcolor, &Bgcolor, link, text);
 
     Lines.Clear();

@@ -4,7 +4,6 @@
 
    ########################################################################
 
-   Copyright (c) : 2020       El-khadraouy Mohammed <mohammed.el-khadraouy@ecole.ensicaen.fr>
    Copyright (c) : 2015-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
@@ -24,57 +23,51 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_Curiosity_HPC_H
-#define BOARD_Curiosity_HPC_H
+#ifndef BOARD_Curiosity_H
+#define BOARD_Curiosity_H
 
 #include <lxrad.h>
 
 #include "bsim_picsim.h"
 
-#define BOARD_Curiosity_HPC_Name "Curiosity HPC"
+#define BOARD_Curiosity_Name "Curiosity"
 
-// New board Class derived from board class defined in board.h
-class cboard_Curiosity_HPC : public bsim_picsim {
+// new board class must be derived from board class defined in board.h
+class cboard_Curiosity : public bsim_picsim {
 private:
-    unsigned char p_BT[2];  // Button S1 and S2
+    unsigned char p_BT1;  // S1 switch
 
     unsigned char pot1;
     unsigned char active;
 
-    unsigned char jmp[1];  // jumper
+    unsigned char jmp[1];  // jmp
 
     // controls to be added in simulator window
-    CGauge* gauge1;  // gauge to show mean value of RA4
-    CGauge* gauge2;  // gauge to show mean value of RA5
-    CGauge* gauge3;  // gauge to show mean value of RA6
-    CGauge* gauge4;  // gauge to show mean value of RA7
-    CLabel* label2;  // label of gauge RA4
-    CLabel* label3;  // label of gauge RA5
-    CLabel* label4;  // label of gauge RA6
-    CLabel* label5;  // label of gauge RA7
-    CLabel* label6;  // label of second serial
-    CCombo* combo1;  // combo of second serial
+    CGauge* gauge1;  // gauge to show mean value of RA5
+    CGauge* gauge2;  // gauge to show mean value of RA1
+    CGauge* gauge3;  // gauge to show mean value of RA2
+    CGauge* gauge4;  // gauge to show mean value of RC5
+    CLabel* label2;  // label of gauge RA5
+    CLabel* label3;  // label of gauge RA1
+    CLabel* label4;  // label of gauge RA2
+    CLabel* label5;  // label of gauge RC5
+
     void RegisterRemoteControl(void) override;
+    lxFont font;
 
 public:
     // Return the board name
-    lxString GetName(void) override { return lxT(BOARD_Curiosity_HPC_Name); };
-    lxString GetAboutInfo(void) override {
-        return lxT(
-            "El-khadraouy Mohammed\n<mohammed.el-khadraouy@ecole.ensicaen.fr>\nand L.C. Gamboa \n "
-            "<lcgamboa@yahoo.com>");
-    };
+    lxString GetName(void) override { return lxT(BOARD_Curiosity_Name); };
+    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
     // Constructor called once on board creation
-    cboard_Curiosity_HPC(void);
+    cboard_Curiosity(void);
     // Destructor called once on board destruction
-    ~cboard_Curiosity_HPC(void);
+    ~cboard_Curiosity(void);
     // Called ever 100ms to draw board
     void Draw(CDraw* draw) override;
     void Run_CPU(void) override;
     // Return a list of board supported microcontrollers
-    lxString GetSupportedDevices(void) override { return lxT("PIC16F1619,PIC18F27K40,"); };
-    // Return the filename of board picture
-    lxString GetPictureFileName(void) override { return lxT("Curiosity HPC/board.png"); };
+    lxString GetSupportedDevices(void) override { return lxT("PIC16F1619,"); };
     // Reset board status
     void Reset(void) override;
     // Event on the board
@@ -97,8 +90,6 @@ public:
     unsigned short GetInputId(char* name) override;
     // return the output ids numbers of names used in output map
     unsigned short GetOutputId(char* name) override;
-    // Set Serial port name
-    void MSetSerial(const char* port) override;
 };
 
-#endif /* BOARD_Curiosity_HPC_H */
+#endif /* BOARD_Curiosity_H */
