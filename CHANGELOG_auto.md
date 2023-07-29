@@ -2,6 +2,8 @@
 
 ### New
 
+* Move Curiosity, Curiosity HPC and Xpress boards from experimental to stable version. [lcgamboa]
+
 * Add support to PIC16F819, PIC16F1827 and PIC16F1847 in Breadboard. [lcgamboa]
 
 * Add support to Text Box part open external URLs on click. [lcgamboa]
