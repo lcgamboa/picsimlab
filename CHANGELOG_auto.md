@@ -1,6 +1,8 @@
-## (unreleased)
+## v0.9.0 (2023-07-29)
 
 ### New
+
+* Move Curiosity, Curiosity HPC and Xpress boards from experimental to stable version. [lcgamboa]
 
 * Add support to PIC16F819, PIC16F1827 and PIC16F1847 in Breadboard. [lcgamboa]
 

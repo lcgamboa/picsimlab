@@ -1,3 +1,98 @@
+## v0.9.0 (2023-07-29)
+
+### New
+
+* New board ESP32-C3-DevKitC-02 (riscv32) [lcgamboa]
+
+* New part NTC temperature sensor. [lcgamboa]
+
+* New part HX711 (Load Cell Amp) [lcgamboa]
+
+* Move RemoteTCP, Curiosity, Curiosity HPC and Xpress boards from experimental to stable version. [lcgamboa]
+
+* Add support to PIC16F688, PIC16F1829, PIC16F1947, PIC16F1516, PIC1824Q10, PIC16F819, PIC16F1827 and PIC16F1847 in Breadboard. [lcgamboa]
+
+* Option to set the number of elements in parts: Potentiometers, Push Buttons, Switches and LEDs. [lcgamboa]
+
+* Add support to Text Box part open external URLs on click. [lcgamboa]
+
+* Add support to use efuse file with ESP32 qemu based boards. [lcgamboa]
+
+* Add support to ESP32-C3 to use efuse file. [lcgamboa]
+
+* Add support to IO virtual term part autodetect uart pins. [lcgamboa]
+
+* Add support to UART, SPI, I2C and ADC added to RemoteTCP board. [lcgamboa]
+
+* Add support to syncronize Remote TCP simulation. [lcgamboa]
+
+* Support to save debug status per board. [lcgamboa]
+
+* Support to save Board and Oscilloscope windows postions and options per board. [lcgamboa]
+
+* Support to save Spare Parts window postion per board. [lcgamboa]
+
+* Support to enable/disable reset by DTR/RTS serial signals. [lcgamboa]
+
+### Changes
+
+* Add the "Load Board Demo" menu option and automatic demo load on board first use. [lcgamboa]
+
+* Add support to disable default serial port on Qemu based boards. [lcgamboa]
+
+* Add stack trace to log when PICSimLab crash. [lcgamboa]
+
+* Add support to use icount=auto in qemu based boards. [lcgamboa]
+
+* Add option to enable ethernet support in ESP32 DevKitC board. [lcgamboa]
+
+* Qemu-ESP32 updated to support https over Wifi. [lcgamboa]
+
+* Icons updated. [lcgamboa]
+
+* Support to load only app.bin in qemu-esp32 based boards. [lcgamboa]
+
+* Add support to remove VT100 codes in Virtual Term part. [lcgamboa]
+
+### Fix
+
+* Fix button read after pin mode set to input in McLab2 board. [lcgamboa]
+
+* Add line break in Virtual Term to avoid UI freezing. [lcgamboa]
+
+* Add 2k text limit to virtual_Text part. [lcgamboa]
+
+* Fix 7s Display part draw when active mode is set to low. [lcgamboa]
+
+* Fix PQDB board seven segments display point and analog channel order. [lcgamboa]
+
+* Fix crash in rcontrol when use PinViewer pin toggle on qemu based boards. [lcgamboa]
+
+* Fix breadboard freezing when using File Load Hex menu. [lcgamboa]
+
+* Fix serial port baudrate calculation. [lcgamboa]
+
+* Fix the path of last open file for qemu based boards used by reload last menu option. [lcgamboa]
+
+* Fix pin initial value used by LEDs and 7 seg. displays. [lcgamboa]
+
+* Fix qemu based boards to not freeze when clock is changed. [lcgamboa]
+
+* Fix TextBox init sporadic error messages. [lcgamboa]
+
+* Fix Arduino Nano board power and uart pins. [lcgamboa]
+
+* Add support to use atmega2560 four UARTs. [lcgamboa]
+
+### Other
+
+* Update simulated PQDB board to work like the real one, added support for PIC18F4550 and PIC18F4620. [lcgamboa]
+
+* Add *.o and other files generated after compiling to gitignore. [necrashter]
+
+* Add .gitignore to prevent accidentally committing the build folder. [Aldo Adirajasa Fathoni]
+
+
 ## v0.8.12 (2023-01-20)
 
 ### New
