@@ -307,8 +307,8 @@ unsigned short cpart_switches::GetInputId(char* name) {
     if (strcmp(name, "SW_8") == 0)
         return I_S8;
 
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 unsigned short cpart_switches::GetOutputId(char* name) {
@@ -346,8 +346,8 @@ unsigned short cpart_switches::GetOutputId(char* name) {
     if (strcmp(name, "SW_8") == 0)
         return O_S8;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 lxString cpart_switches::WritePreferences(void) {

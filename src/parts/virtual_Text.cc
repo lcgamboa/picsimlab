@@ -143,16 +143,16 @@ unsigned short cpart_TEXT::GetInputId(char* name) {
     if (strcmp(name, "DI_TEXT") == 0)
         return I_TEXTB;
 
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 unsigned short cpart_TEXT::GetOutputId(char* name) {
     if (strcmp(name, "DI_TEXT") == 0)
         return O_TEXTB;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 lxString cpart_TEXT::WritePreferences(void) {

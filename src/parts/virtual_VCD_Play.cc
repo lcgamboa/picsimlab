@@ -188,8 +188,8 @@ unsigned short cpart_VCD_Play::GetInputId(char* name) {
     if (strcmp(name, "PB_LOAD") == 0)
         return I_LOAD;
 
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 unsigned short cpart_VCD_Play::GetOutputId(char* name) {
@@ -232,8 +232,8 @@ unsigned short cpart_VCD_Play::GetOutputId(char* name) {
     if (strcmp(name, "LD_REC") == 0)
         return O_PLAY;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 lxString cpart_VCD_Play::WritePreferences(void) {

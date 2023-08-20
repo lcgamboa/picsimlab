@@ -345,8 +345,8 @@ void cpart_7s_display_dec::DrawOutput(const unsigned int i) {
 }
 
 unsigned short cpart_7s_display_dec::GetInputId(char* name) {
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 unsigned short cpart_7s_display_dec::GetOutputId(char* name) {
@@ -450,8 +450,8 @@ unsigned short cpart_7s_display_dec::GetOutputId(char* name) {
     if (strcmp(name, "SS_4") == 0)
         return O_SS4;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 lxString cpart_7s_display_dec::WritePreferences(void) {

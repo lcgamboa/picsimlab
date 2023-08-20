@@ -1283,8 +1283,8 @@ unsigned short cboard_PQDB::GetInputId(char* name) {
     if (strcmp(name, "PO_1") == 0)
         return I_POT;
 
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 unsigned short cboard_PQDB::GetOutputId(char* name) {
@@ -1461,8 +1461,8 @@ unsigned short cboard_PQDB::GetOutputId(char* name) {
     if (strcmp(name, "IC_CPU") == 0)
         return O_MP;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 void cboard_PQDB::RefreshStatus(void) {

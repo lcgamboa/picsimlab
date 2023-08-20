@@ -199,7 +199,7 @@ unsigned short cboard_DevKitC::GetInputId(char* name) {
         return I_BOOT;
 
     printf("Error input '%s' don't have a valid id! \n", name);
-    return -1;
+    return INVALID_ID;
 }
 
 // return the output ids numbers of names used in output map
@@ -215,7 +215,7 @@ unsigned short cboard_DevKitC::GetOutputId(char* name) {
         return O_LED;
 
     printf("Error output '%s' don't have a valid id! \n", name);
-    return 1;
+    return INVALID_ID;
 }
 
 // Constructor called once on board creation
@@ -524,15 +524,15 @@ void cboard_DevKitC::Draw(CDraw* draw) {
     draw->Canvas.Init(Scale, Scale);  // initialize draw context
 
     // board_x draw
-    for (i = 0; i < outputc; i++)              // run over all outputs
+    for (i = 0; i < outputc; i++)  // run over all outputs
     {
-        if (!output[i].r)                      // if output shape is a rectangle
+        if (!output[i].r)  // if output shape is a rectangle
         {
             draw->Canvas.SetFgColor(0, 0, 0);  // black
 
-            switch (output[i].id)              // search for color of output
+            switch (output[i].id)  // search for color of output
             {
-                case O_LON:                    // Blue using mcupwr value
+                case O_LON:  // Blue using mcupwr value
                     draw->Canvas.SetColor(200 * PICSimLab.GetMcuPwr() + 55, 0, 0);
                     break;
                 case O_LED:  // Blue using mcupwr value

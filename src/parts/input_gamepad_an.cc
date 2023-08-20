@@ -288,8 +288,8 @@ unsigned short cpart_gamepad_an::GetInputId(char* name) {
     if (strcmp(name, "PB_5") == 0)
         return I_B5;
 
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 unsigned short cpart_gamepad_an::GetOutputId(char* name) {
@@ -307,8 +307,8 @@ unsigned short cpart_gamepad_an::GetOutputId(char* name) {
     if (strcmp(name, "PN_1") == 0)
         return O_P1;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 lxString cpart_gamepad_an::WritePreferences(void) {

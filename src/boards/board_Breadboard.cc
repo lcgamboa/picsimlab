@@ -56,8 +56,8 @@ unsigned short cboard_Breadboard::GetInputId(char* name) {
     if (strcmp(name, "JP_1") == 0)
         return I_JMP;
 
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 // return the output ids numbers of names used in output map
@@ -72,8 +72,8 @@ unsigned short cboard_Breadboard::GetOutputId(char* name) {
     if (strcmp(name, "JP_1") == 0)
         return O_JMP;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 // Constructor called once on board creation

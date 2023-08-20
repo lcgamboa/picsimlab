@@ -131,8 +131,8 @@ void cpart_servo::PostProcess(void) {
 }
 
 unsigned short cpart_servo::GetInputId(char* name) {
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 unsigned short cpart_servo::GetOutputId(char* name) {
@@ -141,8 +141,8 @@ unsigned short cpart_servo::GetOutputId(char* name) {
     if (strcmp(name, "DG_AXIS") == 0)
         return O_AXIS;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 lxString cpart_servo::WritePreferences(void) {

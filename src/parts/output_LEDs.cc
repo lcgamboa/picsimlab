@@ -168,8 +168,8 @@ void cpart_leds::PostProcess(void) {
 }
 
 unsigned short cpart_leds::GetInputId(char* name) {
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 };
 
 unsigned short cpart_leds::GetOutputId(char* name) {
@@ -207,8 +207,8 @@ unsigned short cpart_leds::GetOutputId(char* name) {
     if (strcmp(name, "LD_8") == 0)
         return O_L8;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 };
 
 lxString cpart_leds::WritePreferences(void) {

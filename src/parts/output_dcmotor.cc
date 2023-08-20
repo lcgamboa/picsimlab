@@ -278,8 +278,8 @@ void cpart_dcmotor::PostProcess(void) {
 }
 
 unsigned short cpart_dcmotor::GetInputId(char* name) {
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 unsigned short cpart_dcmotor::GetOutputId(char* name) {
@@ -299,8 +299,8 @@ unsigned short cpart_dcmotor::GetOutputId(char* name) {
     if (strcmp(name, "MT_1") == 0)
         return O_MT1;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 lxString cpart_dcmotor::WritePreferences(void) {

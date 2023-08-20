@@ -41,16 +41,16 @@ enum { ARCH_P16, ARCH_P16E, ARCH_P18, ARCH_AVR8, ARCH_STM32, ARCH_STM8, ARCH_C51
  *
  */
 typedef struct {
-    unsigned int x1;          ///< x1 position
-    unsigned int x2;          ///< x2 position
-    unsigned int y1;          ///< y1 position
-    unsigned int y2;          ///< y2 position
-    unsigned int cx;          ///< center x position
-    unsigned int cy;          ///< center y position
-    char name[10];            ///< region name
-    unsigned short id;        ///< region ID
-    void* status;             ///< rcontrol status
-    unsigned char* update;    ///< output need draw update
+    unsigned int x1;        ///< x1 position
+    unsigned int x2;        ///< x2 position
+    unsigned int y1;        ///< y1 position
+    unsigned int y2;        ///< y2 position
+    unsigned int cx;        ///< center x position
+    unsigned int cy;        ///< center y position
+    char name[10];          ///< region name
+    unsigned short id;      ///< region ID
+    void* status;           ///< rcontrol status
+    unsigned char* update;  ///< output need draw update
     union {
         unsigned char value;  ///< updated value
         short value_s;        ///< updated value short
@@ -63,17 +63,17 @@ typedef struct {
  *
  */
 typedef struct {
-    unsigned int x1;          ///< x1 position
-    unsigned int x2;          ///< x2 position
-    unsigned int y1;          ///< y1 position
-    unsigned int y2;          ///< y2 position
-    unsigned int cx;          ///< center x position
-    unsigned int cy;          ///< center y position
+    unsigned int x1;  ///< x1 position
+    unsigned int x2;  ///< x2 position
+    unsigned int y1;  ///< y1 position
+    unsigned int y2;  ///< y2 position
+    unsigned int cx;  ///< center x position
+    unsigned int cy;  ///< center y position
     unsigned int r;
-    char name[10];            ///< region name
-    unsigned short id;        ///<  region ID
-    void* status;             ///< rcontrol status
-    unsigned char update;     ///< need draw update
+    char name[10];         ///< region name
+    unsigned short id;     ///<  region ID
+    void* status;          ///< rcontrol status
+    unsigned char update;  ///< need draw update
     union {
         unsigned char value;  ///< updated value
         short value_s;        ///< updated value short
@@ -84,6 +84,8 @@ typedef struct {
 #define MAX_TIMERS 256
 
 #define MAX_IDS 128
+
+#define INVALID_ID (MAX_IDS - 1)
 
 /**
  * @brief internal timer struct

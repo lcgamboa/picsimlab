@@ -142,7 +142,7 @@ unsigned short cboard_C3_DevKitC::GetInputId(char* name) {
         return I_BOOT;
 
     printf("Error input '%s' don't have a valid id! \n", name);
-    return -1;
+    return INVALID_ID;
 }
 
 // return the output ids numbers of names used in output map
@@ -160,7 +160,7 @@ unsigned short cboard_C3_DevKitC::GetOutputId(char* name) {
         return O_LRGB;
 
     printf("Error output '%s' don't have a valid id! \n", name);
-    return 1;
+    return INVALID_ID;
 }
 
 // Constructor called once on board creation

@@ -169,8 +169,8 @@ void cpart_IO_MM74C922::DrawOutput(const unsigned int i) {
 }
 
 unsigned short cpart_IO_MM74C922::GetInputId(char* name) {
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 };
 
 unsigned short cpart_IO_MM74C922::GetOutputId(char* name) {
@@ -217,8 +217,8 @@ unsigned short cpart_IO_MM74C922::GetOutputId(char* name) {
     if (strcmp(name, "IC_20") == 0)
         return O_IC;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 };
 
 lxString cpart_IO_MM74C922::WritePreferences(void) {

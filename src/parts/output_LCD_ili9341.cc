@@ -224,8 +224,8 @@ unsigned short cpart_LCD_ili9341::GetInputId(char* name) {
     if (strcmp(name, "DS_LCD") == 0)
         return I_LCD;
 
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 };
 
 unsigned short cpart_LCD_ili9341::GetOutputId(char* name) {
@@ -276,8 +276,8 @@ unsigned short cpart_LCD_ili9341::GetOutputId(char* name) {
     if (strcmp(name, "PN_T5") == 0)
         return O_T5;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 };
 
 lxString cpart_LCD_ili9341::WritePreferences(void) {

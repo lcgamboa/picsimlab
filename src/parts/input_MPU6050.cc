@@ -180,8 +180,8 @@ unsigned short cpart_MPU6050::GetInputId(char* name) {
     if (strcmp(name, "VS_6") == 0)
         return I_VS6;
 
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 unsigned short cpart_MPU6050::GetOutputId(char* name) {
@@ -215,8 +215,8 @@ unsigned short cpart_MPU6050::GetOutputId(char* name) {
     if (strcmp(name, "VS_6") == 0)
         return O_VS6;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 lxString cpart_MPU6050::WritePreferences(void) {

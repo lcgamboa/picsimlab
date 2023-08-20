@@ -69,8 +69,8 @@ unsigned short cboard_Curiosity::GetInputId(char* name) {
     if (strcmp(name, "PO_1") == 0)
         return I_POT1;
 
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 // return the output ids numbers of names used in output map
@@ -99,8 +99,8 @@ unsigned short cboard_Curiosity::GetOutputId(char* name) {
     if (strcmp(name, "IC_CPU") == 0)
         return O_MP;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 // Constructor called once on board creation

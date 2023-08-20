@@ -265,8 +265,8 @@ unsigned short cpart_ETH_w5500::GetInputId(char* name) {
     if (strcmp(name, "ST_STAT") == 0)
         return I_STAT;
 
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 unsigned short cpart_ETH_w5500::GetOutputId(char* name) {
@@ -291,8 +291,8 @@ unsigned short cpart_ETH_w5500::GetOutputId(char* name) {
     if (strcmp(name, "ST_STAT") == 0)
         return O_STAT;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 lxString cpart_ETH_w5500::WritePreferences(void) {

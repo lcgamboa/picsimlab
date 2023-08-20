@@ -141,8 +141,8 @@ unsigned short cpart_SDCard::GetInputId(char* name) {
     if (strcmp(name, "CN_CONN") == 0)
         return I_CONN;
 
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 unsigned short cpart_SDCard::GetOutputId(char* name) {
@@ -157,8 +157,8 @@ unsigned short cpart_SDCard::GetOutputId(char* name) {
     if (strcmp(name, "DI_FILE") == 0)
         return O_FILE;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 lxString cpart_SDCard::WritePreferences(void) {

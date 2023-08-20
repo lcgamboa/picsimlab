@@ -64,8 +64,8 @@ unsigned short cboard_Franzininho_DIY::GetInputId(char* name) {
     if (strcmp(name, "PB_RST_I") == 0)
         return I_RST;
 
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 // return the output ids numbers of names used in output map
@@ -102,8 +102,8 @@ unsigned short cboard_Franzininho_DIY::GetOutputId(char* name) {
     if (strcmp(name, "BP_5") == 0)
         return O_PB4;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 // Constructor called once on board creation

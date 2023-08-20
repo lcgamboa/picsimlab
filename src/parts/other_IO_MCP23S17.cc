@@ -195,8 +195,8 @@ void cpart_IO_MCP23S17::DrawOutput(const unsigned int i) {
 }
 
 unsigned short cpart_IO_MCP23S17::GetInputId(char* name) {
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 };
 
 unsigned short cpart_IO_MCP23S17::GetOutputId(char* name) {
@@ -260,8 +260,8 @@ unsigned short cpart_IO_MCP23S17::GetOutputId(char* name) {
     if (strcmp(name, "IC_28") == 0)
         return O_IC;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 };
 
 lxString cpart_IO_MCP23S17::WritePreferences(void) {

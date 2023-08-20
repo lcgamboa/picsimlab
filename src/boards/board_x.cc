@@ -70,7 +70,7 @@ unsigned short cboard_x::GetInputId(char* name) {
         return I_POT1;
 
     printf("Error input '%s' don't have a valid id! \n", name);
-    return -1;
+    return INVALID_ID;
 }
 
 // return the output ids numbers of names used in output map
@@ -98,7 +98,7 @@ unsigned short cboard_x::GetOutputId(char* name) {
         return O_CPU;
 
     printf("Error output '%s' don't have a valid id! \n", name);
-    return 1;
+    return INVALID_ID;
 }
 
 // Constructor called once on board creation

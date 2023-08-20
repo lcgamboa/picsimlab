@@ -196,8 +196,8 @@ void cpart_Jumpers::DrawOutput(const unsigned int i) {
 }
 
 unsigned short cpart_Jumpers::GetInputId(char* name) {
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 };
 
 unsigned short cpart_Jumpers::GetOutputId(char* name) {
@@ -300,8 +300,8 @@ unsigned short cpart_Jumpers::GetOutputId(char* name) {
     if (strcmp(name, "LD_16") == 0)
         return O_L16;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 };
 
 lxString cpart_Jumpers::WritePreferences(void) {

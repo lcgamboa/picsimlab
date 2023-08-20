@@ -287,8 +287,8 @@ unsigned short cpart_encoder::GetInputId(char* name) {
     if (strcmp(name, "PB_1") == 0)
         return I_BTN;
 
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 unsigned short cpart_encoder::GetOutputId(char* name) {
@@ -304,8 +304,8 @@ unsigned short cpart_encoder::GetOutputId(char* name) {
     if (strcmp(name, "PB_1") == 0)
         return O_BTN;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 lxString cpart_encoder::WritePreferences(void) {

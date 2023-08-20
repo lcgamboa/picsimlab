@@ -211,8 +211,8 @@ unsigned short cpart_pot::GetInputId(char* name) {
     if (strcmp(name, "PO_4") == 0)
         return I_PO4;
 
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 unsigned short cpart_pot::GetOutputId(char* name) {
@@ -234,8 +234,8 @@ unsigned short cpart_pot::GetOutputId(char* name) {
     if (strcmp(name, "PO_4") == 0)
         return O_PO4;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 lxString cpart_pot::WritePreferences(void) {

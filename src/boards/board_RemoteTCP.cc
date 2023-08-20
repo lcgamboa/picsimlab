@@ -147,8 +147,8 @@ unsigned short cboard_RemoteTCP::GetInputId(char* name) {
     if (strcmp(name, "PB_RST") == 0)
         return I_RST;
 
-    printf("Erro input '%s' don't have a valid id! \n", name);
-    return -1;
+    printf("Error input '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 // return the output ids numbers of names used in output map
@@ -161,8 +161,8 @@ unsigned short cboard_RemoteTCP::GetOutputId(char* name) {
     if (strcmp(name, "PB_RST") == 0)
         return O_RST;
 
-    printf("Erro output '%s' don't have a valid id! \n", name);
-    return 1;
+    printf("Error output '%s' don't have a valid id! \n", name);
+    return INVALID_ID;
 }
 
 // Constructor called once on board creation
