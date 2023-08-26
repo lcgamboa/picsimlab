@@ -51,6 +51,8 @@ private:
     lxBitmap* vent[2];
     float temp[2];
     float ref;
+    float ambient;
+    float tvoff;
     int vtc;
     int vt;
     int rpmstp;

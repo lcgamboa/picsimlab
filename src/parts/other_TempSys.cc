@@ -34,8 +34,9 @@ enum { O_HT, O_CO, O_TE, O_TA, O_F1, O_F2, O_OTA, O_OTE, O_VT };
 /* inputs */
 enum { I_PO1, I_PO2, I_PO3, I_PO4 };
 
-static PCWProp pcwprop[7] = {{PCW_COMBO, "Heater"},   {PCW_COMBO, "Cooler"},  {PCW_COMBO, "Temp."}, {PCW_COMBO, "Tach"},
-                             {PCW_LABEL, "VCC,+12V"}, {PCW_LABEL, "GND,GND"}, {PCW_END, ""}};
+static PCWProp pcwprop[9] = {{PCW_COMBO, "Heater"},   {PCW_COMBO, "Cooler"},   {PCW_COMBO, "Temp."},
+                             {PCW_COMBO, "Tach"},     {PCW_LABEL, "VCC,+12V"}, {PCW_LABEL, "GND,GND"},
+                             {PCW_COMBO, "T. Voff."}, {PCW_SPIND, "Amb. T."},  {PCW_END, ""}};
 
 static void cpart_tempsys_callback(void* arg) {
     cpart_tempsys* tempsys = (cpart_tempsys*)arg;
@@ -65,8 +66,11 @@ cpart_tempsys::cpart_tempsys(const unsigned x, const unsigned y, const char* nam
     input_pins[2] = 0;
     input_pins[3] = 0;
 
-    temp[0] = 27.5;
-    temp[1] = 27.5;
+    ambient = 27.5;
+    tvoff = 0;
+
+    temp[0] = ambient;
+    temp[1] = ambient;
     ref = 0;
     rpmstp = 0;  //(NSTEP*2)/100;
     rpmc = 0;
@@ -127,7 +131,8 @@ void cpart_tempsys::DrawOutput(const unsigned int i) {
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);
-            canvas.RotatedText("Ambient=27.5C", output[i].x1, output[i].y1, 0);
+            str.Printf(lxT("Ambient.=%5.2fC"), ambient);
+            canvas.RotatedText(str, output[i].x1, output[i].y1, 0);
             break;
         case O_OTE:
             str.Printf(lxT("Temp.=%5.2fC"), temp[0]);
@@ -185,12 +190,27 @@ void cpart_tempsys::OnTime(void) {
         ref -= (0.25 * (ppins[input_pins[1] - 1].oavalue - 55));
 
     temp[1] = temp[0];
-    temp[0] = ((27.5 + ref) * 0.003) + temp[1] * (0.997);
+    temp[0] = ((ambient + ref) * 0.003) + temp[1] * (0.997);
 
-    if (temp[0] < 27.5)
-        temp[0] = 27.5;
+    if (temp[0] < ambient)
+        temp[0] = ambient;
 
-    SpareParts.SetAPin(input_pins[2], temp[0] / 100.0);
+    float vsensor = temp[0] / 100.0;
+
+    if (vsensor > 1.5) {
+        vsensor = 1.5;
+    }
+
+    if (tvoff == 0) {
+        if (vsensor < 0) {
+            vsensor = 0;
+        }
+    } else {
+        if (vsensor < -0.55) {
+            vsensor = -0.55;
+        }
+    }
+    SpareParts.SetAPin(input_pins[2], vsensor + tvoff);
 
     if (output_ids[O_OTE]->value_f != temp[0]) {
         output_ids[O_OTE]->value_f = temp[0];
@@ -235,13 +255,17 @@ unsigned short cpart_tempsys::GetOutputId(char* name) {
 lxString cpart_tempsys::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3]);
+    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%f,%f", input_pins[0], input_pins[1], input_pins[2], input_pins[3], ambient,
+            tvoff);
 
     return prefs;
 }
 
 void cpart_tempsys::ReadPreferences(lxString value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3]);
+    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%f,%f", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3],
+           &ambient, &tvoff);
+    temp[0] = ambient;
+    temp[1] = ambient;
 }
 
 void cpart_tempsys::ConfigurePropertiesWindow(CPWindow* WProp) {
@@ -249,6 +273,18 @@ void cpart_tempsys::ConfigurePropertiesWindow(CPWindow* WProp) {
     SetPCWComboWithPinNames(WProp, "combo2", input_pins[1]);
     SetPCWComboWithPinNames(WProp, "combo3", input_pins[2]);
     SetPCWComboWithPinNames(WProp, "combo4", input_pins[3]);
+
+    ((CCombo*)WProp->GetChildByName("combo7"))->SetItems("0V,1.2V,");
+
+    if (tvoff == 0)
+        ((CCombo*)WProp->GetChildByName("combo7"))->SetText("0V");
+    else {
+        ((CCombo*)WProp->GetChildByName("combo7"))->SetText("1.2V");
+    }
+
+    ((CSpind*)WProp->GetChildByName("spind8"))->SetMax(150);
+    ((CSpind*)WProp->GetChildByName("spind8"))->SetMin(-55);
+    ((CSpind*)WProp->GetChildByName("spind8"))->SetValue(ambient);
 }
 
 void cpart_tempsys::ReadPropertiesWindow(CPWindow* WProp) {
@@ -256,6 +292,16 @@ void cpart_tempsys::ReadPropertiesWindow(CPWindow* WProp) {
     input_pins[1] = GetPWCComboSelectedPin(WProp, "combo2");
     input_pins[2] = GetPWCComboSelectedPin(WProp, "combo3");
     input_pins[3] = GetPWCComboSelectedPin(WProp, "combo4");
+
+    if ((((CCombo*)WProp->GetChildByName("combo7"))->GetText().Cmp("0V")) == 0) {
+        tvoff = 0;
+    } else {
+        tvoff = 1.2;
+    }
+
+    ambient = ((CSpind*)WProp->GetChildByName("spind8"))->GetValue();
+    temp[0] = ambient;
+    temp[1] = ambient;
 }
 
 part_init(PART_TEMPSYS_Name, cpart_tempsys, "Other");

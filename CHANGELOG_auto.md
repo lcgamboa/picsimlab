@@ -1,3 +1,14 @@
+## (unreleased)
+
+### Changes
+
+* Add support to change ambient temperature and LM35 voltage offset in TempSys spare part. [lcgamboa]
+
+### Other
+
+* Version 0.9.0. [lcgamboa]
+
+
 ## v0.9.0 (2023-07-29)
 
 ### New
