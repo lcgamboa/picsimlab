@@ -484,7 +484,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
             if (fout) {
                 unsigned char buffer[1024];
                 memset(buffer, 0, 1024);
-                for (int r = 0; r < 4096; r++) {
+                for (unsigned int r = 0; r < (DBGGetROMSize() / 1024); r++) {
                     fwrite(buffer, 1024, sizeof(char), fout);
                 }
                 fclose(fout);
@@ -502,7 +502,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
                 fseek(fin, 0, SEEK_SET);
                 printf("PICSimLab: qemu ESP32 image size is %li \n", size);
 
-                if (size != 4194304) {
+                if (size != DBGGetROMSize()) {
                     char dname[2048];
 
                     printf("PICSimLab: Loading application to address 0x%X\n", application_offset);
@@ -643,7 +643,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
             if (fout) {
                 unsigned char buffer[1024];
                 memset(buffer, 0, 1024);
-                for (int r = 0; r < 4096; r++) {
+                for (unsigned int r = 0; r < (DBGGetROMSize() / 1024); r++) {
                     fwrite(buffer, 1024, sizeof(char), fout);
                 }
                 fclose(fout);
@@ -661,7 +661,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
                 fseek(fin, 0, SEEK_SET);
                 printf("PICSimLab: qemu ESP32-C3 image size is %li \n", size);
 
-                if (size != 4194304) {
+                if (size != DBGGetROMSize()) {
                     char dname[2048];
 
                     printf("PICSimLab: Loading application to address 0x%X\n", application_offset);
@@ -1031,11 +1031,11 @@ void bsim_qemu::MDumpMemory(const char* fname) {
                     fname_bak[i] = '/';
             }
 #endif
-            char* buff = new char[4194304];
-            qemu_picsimlab_flash_dump(0, buff, 4194304);
+            char* buff = new char[DBGGetROMSize()];
+            qemu_picsimlab_flash_dump(0, buff, DBGGetROMSize());
             FILE* fout = fopen(fname_bak, "wb");
             if (fout) {
-                fwrite(buff, 4194304, 1, fout);
+                fwrite(buff, DBGGetROMSize(), 1, fout);
                 fclose(fout);
             }
             delete[] buff;
@@ -1047,11 +1047,11 @@ void bsim_qemu::MDumpMemory(const char* fname) {
                     fname_[i] = '/';
             }
 #endif
-            char* buff = new char[4194304];
-            qemu_picsimlab_flash_dump(0, buff, 4194304);
+            char* buff = new char[DBGGetROMSize()];
+            qemu_picsimlab_flash_dump(0, buff, DBGGetROMSize());
             FILE* fout = fopen(fname_, "wb");
             if (fout) {
-                fwrite(buff, 4194304, 1, fout);
+                fwrite(buff, DBGGetROMSize(), 1, fout);
                 fclose(fout);
             }
             delete[] buff;
@@ -1063,7 +1063,7 @@ void bsim_qemu::MDumpMemory(const char* fname) {
 
 int bsim_qemu::DebugInit(int dtyppe)  // argument not used in picm only mplabx
 {
-    return 0;                         //! mplabxd_init (this, Window1.Get_debug_port ()) - 1;
+    return 0;  //! mplabxd_init (this, Window1.Get_debug_port ()) - 1;
 }
 
 void bsim_qemu::pins_reset(void) {

@@ -89,6 +89,7 @@ public:
     lxString MGetPinName(int pin) override;
     int MGetPinCount(void) override;
     void PinsExtraConfig(int cfg) override;
+    unsigned int DBGGetROMSize(void) override { return 4194304; };
 };
 
 #endif /* BOARD_DevKitC_H */
