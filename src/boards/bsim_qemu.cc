@@ -218,8 +218,8 @@ static void picsimlab_uart_rx_event(bitbang_uart_t* bu, void* arg) {
     }
 }
 
-const static callbacks_t callbacks = {picsimlab_write_pin, picsimlab_dir_pins, picsimlab_i2c_event, picsimlab_spi_event,
-                                      picsimlab_uart_tx_event};
+static callbacks_t callbacks = {picsimlab_write_pin, picsimlab_dir_pins,      picsimlab_i2c_event,
+                                picsimlab_spi_event, picsimlab_uart_tx_event, NULL};
 
 int bsim_qemu::load_qemu_lib(const char* path) {
 #ifndef _WIN_  // LINUX
@@ -502,7 +502,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
                 fseek(fin, 0, SEEK_SET);
                 printf("PICSimLab: qemu ESP32 image size is %li \n", size);
 
-                if (size != DBGGetROMSize()) {
+                if ((unsigned int)size != DBGGetROMSize()) {
                     char dname[2048];
 
                     printf("PICSimLab: Loading application to address 0x%X\n", application_offset);
@@ -661,7 +661,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
                 fseek(fin, 0, SEEK_SET);
                 printf("PICSimLab: qemu ESP32-C3 image size is %li \n", size);
 
-                if (size != DBGGetROMSize()) {
+                if ((unsigned int)size != DBGGetROMSize()) {
                     char dname[2048];
 
                     printf("PICSimLab: Loading application to address 0x%X\n", application_offset);
@@ -858,6 +858,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
     g_board = this;
     // printf("picsimlab: %s\n", (const char*)cmd);
     g_pins = pins;
+    callbacks.pinmap = GetPinMap();
     qemu_picsimlab_register_callbacks((void*)&callbacks);
     timer.last = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
     timer.timeout = TTIMEOUT;

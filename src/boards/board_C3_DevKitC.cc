@@ -131,6 +131,43 @@ static int io2pin(int io) {
     return 0;
 }
 
+static const short int pinmap[30] = {
+    -1,  // 1-GND
+    -1,  // 2-3V3
+    -1,  // 3-3V3
+    -1,  // 4-EN
+    -1,  // 5-GND
+    4,   // 6-GPIO4
+    5,   // 7-GPIO5
+    6,   // 8-GPIO6
+    7,   // 9-GPIO7
+    -1,  // 10-GND
+    8,   // 11-GPIO8
+    9,   // 12-GPIO9
+    -1,  // 13-5V
+    -1,  // 14-5V
+    -1,  // 15-GND
+    -1,  // 16-GND
+    -1,  // 17-GND
+    19,  // 18-GPIO19
+    18,  // 19-GPIO18
+    -1,  // 20-GND
+    21,  // 21-GPI21
+    20,  // 22-GPI20
+    -1,  // 23-GND
+    10,  // 24-GPIO10
+    -1,  // 25-GND
+    3,   // 26-GPIO3
+    2,   // 27-GPIO2
+    1,   // 28-GPIO1
+    0,   // 29-GPIO0
+    -1   // 30-GND
+};
+
+const short int* cboard_C3_DevKitC::GetPinMap(void) {
+    return pinmap;
+}
+
 unsigned short cboard_C3_DevKitC::GetInputId(char* name) {
     if (strcmp(name, "PG_ICSP") == 0)
         return I_ICSP;
@@ -471,15 +508,15 @@ void cboard_C3_DevKitC::Draw(CDraw* draw) {
     draw->Canvas.Init(Scale, Scale);  // initialize draw context
 
     // board_x draw
-    for (i = 0; i < outputc; i++)              // run over all outputs
+    for (i = 0; i < outputc; i++)  // run over all outputs
     {
-        if (!output[i].r)                      // if output shape is a rectangle
+        if (!output[i].r)  // if output shape is a rectangle
         {
             draw->Canvas.SetFgColor(0, 0, 0);  // black
 
-            switch (output[i].id)              // search for color of output
+            switch (output[i].id)  // search for color of output
             {
-                case O_LON:                    // Blue using mcupwr value
+                case O_LON:  // Blue using mcupwr value
                     draw->Canvas.SetColor(200 * PICSimLab.GetMcuPwr() + 55, 0, 0);
                     break;
                 case O_LED:  // Blue using mcupwr value

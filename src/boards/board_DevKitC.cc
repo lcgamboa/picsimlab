@@ -188,6 +188,51 @@ static int io2pin(int io) {
     return 0;
 }
 
+static const short int pinmap[38] = {
+    -1,  // 1-3V3
+    -1,  // 2-EN
+    36,  // 3-GPIO36
+    39,  // 4-GPIO39
+    34,  // 5-GPIO34
+    35,  // 6-GPIO35
+    32,  // 7-GPIO32
+    33,  // 8-GPIO33
+    25,  // 9-GPIO25
+    26,  // 10-GPIO26
+    27,  // 11-GPIO27
+    14,  // 12-GPIO14
+    12,  // 13-GPIO12
+    -1,  // 14-GND
+    13,  // 15-GPIO13
+    9,   // 16-GPIO9
+    10,  // 17-GPIO10
+    11,  // 18-GPIO11
+    -1,  // 19-VIN
+    6,   // 20-GPIO6
+    7,   // 21-GPIO7
+    8,   // 22-GPIO8
+    15,  // 23-GPIO15
+    2,   // 24-GPIO2
+    0,   // 25-GPIO0
+    4,   // 26-GPIO4
+    16,  // 27-GPIO16
+    17,  // 28-GPIO17
+    5,   // 29-GPIO5
+    18,  // 30-GPIO18
+    19,  // 31-GPIO19
+    -1,  // 32-GND
+    21,  // 33-GPIO21
+    3,   // 34-GPIO3
+    1,   // 35-GPIO1
+    22,  // 36-GPIO22
+    23,  // 37-GPIO23
+    -1,  // 38-GND
+};
+
+const short int* cboard_DevKitC::GetPinMap(void) {
+    return pinmap;
+}
+
 unsigned short cboard_DevKitC::GetInputId(char* name) {
     if (strcmp(name, "PG_ICSP") == 0)
         return I_ICSP;

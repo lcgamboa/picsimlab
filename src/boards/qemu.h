@@ -96,6 +96,7 @@ typedef struct {
     int (*picsimlab_i2c_event)(const uint8_t id, const uint8_t addr, const uint16_t event);
     uint8_t (*picsimlab_spi_event)(const uint8_t id, const uint16_t event);
     void (*picsimlab_uart_tx_event)(const uint8_t id, const uint8_t value);
+    const short int* pinmap;
 } callbacks_t;
 
 enum i2c_event {

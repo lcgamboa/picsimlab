@@ -44,6 +44,83 @@ enum {
     O_BUT,   // User button
     O_RST    // Reset button
 };
+
+#define A 0x1000
+#define B 0x2000
+#define C 0x3000
+#define D 0x4000
+
+static const short int pinmap[64] = {
+    -1,      // 1 VBAT
+    C | 13,  // 2 C13
+    C | 14,  // 3 C14
+    C | 15,  // 4 C15
+    D | 0,   // 5 D0
+    D | 1,   // 6 D1
+    -1,      // 7 RST
+    C | 0,   // 8 C0
+    C | 1,   // 9 C1
+    C | 2,   // 10 C2
+    C | 3,   // 11 C3
+    -1,      // 12 VSSA
+    -1,      // 13 VDDA
+    A | 0,   // 14 A0
+    A | 1,   // 15 A1
+    A | 2,   // 16 A2
+    A | 3,   // 17 A3
+    -1,      // 18 VSS
+    -1,      // 19 VDD
+    A | 4,   // 20 A4
+    A | 5,   // 21 A5
+    A | 6,   // 22 A6
+    A | 7,   // 23 A7
+    C | 4,   // 24 C4
+    C | 5,   // 25 C5
+    B | 0,   // 26 B0
+    B | 1,   // 27 B1
+    B | 2,   // 28 B2
+    B | 10,  // 29 B10
+    B | 11,  // 30 B11
+    -1,      // 31 VSS
+    -1,      // 32 VDD
+    B | 12,  // 33 B12
+    B | 13,  // 34 B13
+    B | 14,  // 35 B14
+    B | 15,  // 36 B15
+    C | 6,   // 37 C6
+    C | 7,   // 38 C7
+    C | 8,   // 39 C8
+    C | 9,   // 40 C9
+    A | 8,   // 41 A8
+    A | 9,   // 42 A9
+    A | 10,  // 43 A10
+    A | 11,  // 44 A11
+    A | 12,  // 45 A12
+    A | 13,  // 46 A13
+    -1,      // 47 VSS
+    -1,      // 48 VDD
+    A | 14,  // 49 A14
+    A | 15,  // 50 A15
+    C | 10,  // 51 C10
+    C | 11,  // 52 C11
+    C | 12,  // 53 C12
+    D | 2,   // 54 D2
+    B | 3,   // 55 B3
+    B | 4,   // 56 B4
+    B | 5,   // 57 B5
+    B | 6,   // 58 B6
+    B | 7,   // 59 B7
+    -1,      // 60 BOOT0
+    B | 8,   // 61 B8
+    B | 9,   // 62 B9
+    -1,      // 63 VSS
+    -1       // 64 VDD
+};
+
+const short int* cboard_STM32_H103::GetPinMap(void) {
+    return pinmap;
+}
+
 // return the input ids numbers of names used in input map
 
 unsigned short cboard_STM32_H103::GetInputId(char* name) {
@@ -314,15 +391,15 @@ void cboard_STM32_H103::Draw(CDraw* draw) {
     draw->Canvas.Init(Scale, Scale);  // initialize draw context
 
     // board_x draw
-    for (i = 0; i < outputc; i++)              // run over all outputs
+    for (i = 0; i < outputc; i++)  // run over all outputs
     {
-        if (!output[i].r)                      // if output shape is a rectangle
+        if (!output[i].r)  // if output shape is a rectangle
         {
             draw->Canvas.SetFgColor(0, 0, 0);  // black
 
-            switch (output[i].id)              // search for color of output
+            switch (output[i].id)  // search for color of output
             {
-                case O_LED:                    // White using pc12 mean value
+                case O_LED:  // White using pc12 mean value
                     draw->Canvas.SetColor(0, pins[52].oavalue, 0);
                     draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                            output[i].y2 - output[i].y1);
@@ -388,7 +465,7 @@ void cboard_STM32_H103::Run_CPU_ns(uint64_t time) {
 
         if (PICSimLab.GetMcuPwr())  // if powered
         {
-            if (j >= JUMPSTEPS)     // if number of step is bigger than steps to skip
+            if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
             {
                 MSetPin(14, p_BUT);
             }
@@ -411,7 +488,7 @@ void cboard_STM32_H103::Run_CPU_ns(uint64_t time) {
 
             if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
             {
-                j = -1;          // reset counter
+                j = -1;  // reset counter
             }
 
             j++;  // counter increment
@@ -727,7 +804,7 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
         // printf("Extra CFG port(%i) pin[%02i]=0x%02X \n", port, pin, cfg_);
 
         switch (port) {
-            case 0:          // GPIOA
+            case 0:  // GPIOA
                 switch (pin) {
                     case 2:  // uart2
                         uart_afio = qemu_picsimlab_get_internals(0x1000 | 15);
@@ -805,7 +882,7 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                             master_uart[2].rx_pin = 30;  // pb11
                         }
                         */
-                    case 11:                         // i2c1
+                    case 11:  // i2c1
                         master_i2c[1].ctrl_on = 1;
                         master_i2c[1].scl_pin = 29;  // pb10
                         master_i2c[1].sda_pin = 30;  // pb11
@@ -813,7 +890,7 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
 
                     case 13:
                     case 14:
-                    case 15:                          // spi2
+                    case 15:  // spi2
                         master_spi[1].ctrl_on = 1;
                         master_spi[1].sck_pin = 34;   // pb13
                         master_spi[1].copi_pin = 36;  // pb15

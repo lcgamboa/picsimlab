@@ -41,6 +41,9 @@ private:
 
     void RegisterRemoteControl(void) override;
 
+protected:
+    const short int* GetPinMap(void) override;
+
 public:
     // Return the board name
     lxString GetName(void) override { return lxT(BOARD_STM32_H103_Name); };

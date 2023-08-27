@@ -47,6 +47,7 @@ private:
 
 protected:
     void BoardOptions(int* argc, char** argv) override;
+    const short int* GetPinMap(void) override;
 
 public:
     // Return the board name

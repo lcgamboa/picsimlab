@@ -42,6 +42,67 @@ enum {
     O_LED,   // LED on PC13 output
     O_RST    // Reset button
 };
+
+#define A 0x1000
+#define B 0x2000
+#define C 0x3000
+#define D 0x4000
+
+static const short int pinmap[48] = {
+    -1,      // 1 VBAT
+    C | 13,  // 2 C13
+    C | 14,  // 3 C14
+    C | 15,  // 4 C15
+    D | 0,   // 5 D0
+    D | 1,   // 6 D1
+    -1,      // 7 NRST
+    -1,      // 8 VSSA
+    -1,      // 9 VDDA
+    A | 0,   // 10 A0
+    A | 1,   // 11 A1
+    A | 2,   // 12 A2
+    A | 3,   // 13 A3
+    A | 4,   // 14 A4
+    A | 5,   // 15 A5
+    A | 6,   // 16 A6
+    A | 7,   // 17 A7
+    B | 0,   // 18 B0
+    B | 1,   // 19 B1
+    B | 2,   // 20 B2
+    B | 10,  // 21 B10
+    B | 11,  // 22 B11
+    -1,      // 23 VSS
+    -1,      // 24 VDD
+    B | 12,  // 25 B12
+    B | 13,  // 26 B13
+    B | 14,  // 27 B14
+    B | 15,  // 28 B15
+    A | 8,   // 29 A8
+    A | 9,   // 30 A9
+    A | 10,  // 31 A10
+    A | 11,  // 32 A11
+    A | 12,  // 33 A12
+    A | 13,  // 34 A13
+    -1,      // 35 VSS
+    -1,      // 36 VDD
+    A | 14,  // 37 A14
+    A | 15,  // 38 A15
+    B | 3,   // 39 B3
+    B | 4,   // 40 B4
+    B | 5,   // 41 B5
+    B | 6,   // 42 B6
+    B | 7,   // 43 B7
+    -1,      // 44 BOOT0
+    B | 8,   // 45 B8
+    B | 9,   // 46 B9
+    -1,      // 47 VSS
+    -1       // 48 VDD
+};
+
+const short int* cboard_Blue_Pill::GetPinMap(void) {
+    return pinmap;
+}
+
 // return the input ids numbers of names used in input map
 
 unsigned short cboard_Blue_Pill::GetInputId(char* name) {
@@ -296,15 +357,15 @@ void cboard_Blue_Pill::Draw(CDraw* draw) {
     draw->Canvas.Init(Scale, Scale);  // initialize draw context
 
     // board_x draw
-    for (i = 0; i < outputc; i++)              // run over all outputs
+    for (i = 0; i < outputc; i++)  // run over all outputs
     {
-        if (!output[i].r)                      // if output shape is a rectangle
+        if (!output[i].r)  // if output shape is a rectangle
         {
             draw->Canvas.SetFgColor(0, 0, 0);  // black
 
-            switch (output[i].id)              // search for color of output
+            switch (output[i].id)  // search for color of output
             {
-                case O_LED:                    // White using pc13 mean value
+                case O_LED:  // White using pc13 mean value
                     draw->Canvas.SetColor(pins[1].oavalue, 0, 0);
                     break;
                 case O_LPWR:  // Blue using mcupwr value
@@ -633,7 +694,7 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
         // printf("Extra CFG port(%i) pin[%02i]=0x%02X \n", port, pin, cfg_);
 
         switch (port) {
-            case 0:          // GPIOA
+            case 0:  // GPIOA
                 switch (pin) {
                     case 2:  // uart2
                         uart_afio = qemu_picsimlab_get_internals(0x1000 | 15);
@@ -711,7 +772,7 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                             master_uart[2].rx_pin = 22;  // pb11
                         }
                         */
-                    case 11:                         // i2c1
+                    case 11:  // i2c1
                         master_i2c[1].ctrl_on = 1;
                         master_i2c[1].scl_pin = 21;  // pb10
                         master_i2c[1].sda_pin = 22;  // pb11
@@ -719,7 +780,7 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
 
                     case 13:
                     case 14:
-                    case 15:                          // spi2
+                    case 15:  // spi2
                         master_spi[1].ctrl_on = 1;
                         master_spi[1].sck_pin = 26;   // pb13
                         master_spi[1].copi_pin = 28;  // pb15

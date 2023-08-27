@@ -83,6 +83,7 @@ protected:
     unsigned int ns_count;
     void pins_reset(void);
     virtual void BoardOptions(int* argc, char** argv){};
+    virtual const short int* GetPinMap(void) = 0;
     int icount;
 #ifdef _WIN_
     HANDLE serialfd[4];
