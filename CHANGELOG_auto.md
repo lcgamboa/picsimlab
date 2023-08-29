@@ -2,6 +2,8 @@
 
 ### Changes
 
+* Scripts updated and max flash file size fixed for qemu. [lcgamboa]
+
 * Add support to change ambient temperature and LM35 voltage offset in TempSys spare part. [lcgamboa]
 
 ### Other

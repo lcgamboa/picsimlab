@@ -502,7 +502,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
                 fseek(fin, 0, SEEK_SET);
                 printf("PICSimLab: qemu ESP32 image size is %li \n", size);
 
-                if ((unsigned int)size != DBGGetROMSize()) {
+                if ((unsigned int)size < DBGGetROMSize()) {
                     char dname[2048];
 
                     printf("PICSimLab: Loading application to address 0x%X\n", application_offset);
@@ -661,7 +661,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
                 fseek(fin, 0, SEEK_SET);
                 printf("PICSimLab: qemu ESP32-C3 image size is %li \n", size);
 
-                if ((unsigned int)size != DBGGetROMSize()) {
+                if ((unsigned int)size < DBGGetROMSize()) {
                     char dname[2048];
 
                     printf("PICSimLab: Loading application to address 0x%X\n", application_offset);

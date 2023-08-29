@@ -23,9 +23,11 @@ make clean
 make -j$(nproc) LIBPATH="../build_all/" FILE=Makefile.static PKG=\"Appimage\" $1
 make LIBPATH="../build_all/" FILE=Makefile.static DESTDIR=`pwd`/AppDir install_app
 rm -rf AppDir/usr/share/picsimlab/docs/
-wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
-chmod a+x linuxdeploy-x86_64.AppImage
+wget -c "https://raw.githubusercontent.com/linuxdeploy/linuxdeploy-plugin-gtk/master/linuxdeploy-plugin-gtk.sh"
+wget -c "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage"
+chmod a+x linuxdeploy-x86_64.AppImage linuxdeploy-plugin-gtk.sh
 mv linuxdeploy-x86_64.AppImage /tmp/
+mv linuxdeploy-plugin-gtk.sh /tmp/
 install -d AppDir/usr/lib/picsimlab/
 cp -Rv lib/qemu AppDir/usr/lib/picsimlab/
 
@@ -39,7 +41,7 @@ echo "export XDG_DATA_DIRS=\"\$APPDIR/usr/share/:/usr/share/:\$XDG_DATA_DIRS\"" 
 echo "" >> /tmp/AppRun
 echo "\$APPDIR/usr/bin/picsimlab \$@" >> /tmp/AppRun
 chmod a+x /tmp/AppRun
-/tmp/linuxdeploy-x86_64.AppImage --custom-apprun=/tmp/AppRun --appdir AppDir --output appimage
+/tmp/linuxdeploy-x86_64.AppImage --plugin gtk --custom-apprun=/tmp/AppRun --appdir AppDir --output appimage
 install -d "release_${VERSION}"
 #remove libgmodule
 #wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
