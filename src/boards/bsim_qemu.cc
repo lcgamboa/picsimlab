@@ -480,6 +480,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         if (!lxFileExists(fname_)) {
             // create a empty memory
             FILE* fout;
+            printf("PICSimLab: Flash file dont´t exist, creating new empty: %s.\n", fname_);
             fout = fopen(fname_, "wb");
             if (fout) {
                 unsigned char buffer[1024];
@@ -502,10 +503,8 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
                 fseek(fin, 0, SEEK_SET);
                 printf("PICSimLab: qemu ESP32 image size is %li \n", size);
 
-                if ((unsigned int)size < DBGGetROMSize()) {
+                if ((unsigned int)size != DBGGetROMSize()) {
                     char dname[2048];
-
-                    printf("PICSimLab: Loading application to address 0x%X\n", application_offset);
 
                     if (PICSimLab.GetInstanceNumber()) {
                         sprintf(dname, "%s/mdump_%s_%s_%i.bin", (const char*)PICSimLab.GetHomePath().c_str(),
@@ -516,20 +515,30 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
                                 boards_list[PICSimLab.GetLab()].name_, (const char*)GetProcessorName().c_str());
                     }
 
-                    fout = fopen(dname, "r+b");
-                    if (fout) {
-                        int count;
-                        unsigned char buffer[1024];
+                    if (strcmp(dname, fname_)) {
+                        printf("PICSimLab: Loading application to address 0x%X\n", application_offset);
 
-                        fseek(fout, application_offset, SEEK_SET);
+                        fout = fopen(dname, "r+b");
+                        if (fout) {
+                            int count;
+                            unsigned char buffer[1024];
 
-                        while (!feof(fin)) {
-                            count = fread(buffer, 1, 1024, fin);
-                            fwrite(buffer, 1, count, fout);
+                            fseek(fout, application_offset, SEEK_SET);
+
+                            while (!feof(fin)) {
+                                count = fread(buffer, 1, 1024, fin);
+                                fwrite(buffer, 1, count, fout);
+                            }
+                            fclose(fout);
                         }
-                        fclose(fout);
+                        strncpy(fname_, dname, 2048);
+                    } else {
+                        printf(
+                            "PICSimLab: Flash Size is wrong! Actual size: %li Expected size: %i Removing file: %s \n",
+                            size, DBGGetROMSize(), fname_);
+                        lxRemoveFile(fname_);
+                        exit(-1);
                     }
-                    strncpy(fname_, dname, 2048);
                 }
                 fclose(fin);
             } else {
@@ -622,7 +631,6 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
         strcpy(argv[argc++], "-global");
         sprintf(argv[argc++], "driver=nvram.esp32.efuse,property=drive,value=efuse");
-
     } else if (SimType == QEMU_SIM_ESP32_C3) {
         if (!load_qemu_lib("libqemu-riscv32")) {
             PICSimLab.RegisterError("Error loading libqemu-riscv32");
@@ -639,6 +647,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         if (!lxFileExists(fname_)) {
             // create a empty memory
             FILE* fout;
+            printf("PICSimLab: Flash file dont´t exist, creating new empty: %s.\n", fname_);
             fout = fopen(fname_, "wb");
             if (fout) {
                 unsigned char buffer[1024];
@@ -661,10 +670,8 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
                 fseek(fin, 0, SEEK_SET);
                 printf("PICSimLab: qemu ESP32-C3 image size is %li \n", size);
 
-                if ((unsigned int)size < DBGGetROMSize()) {
+                if ((unsigned int)size != DBGGetROMSize()) {
                     char dname[2048];
-
-                    printf("PICSimLab: Loading application to address 0x%X\n", application_offset);
 
                     if (PICSimLab.GetInstanceNumber()) {
                         sprintf(dname, "%s/mdump_%s_%s_%i.bin", (const char*)PICSimLab.GetHomePath().c_str(),
@@ -675,20 +682,29 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
                                 boards_list[PICSimLab.GetLab()].name_, (const char*)GetProcessorName().c_str());
                     }
 
-                    fout = fopen(dname, "r+b");
-                    if (fout) {
-                        int count;
-                        unsigned char buffer[1024];
+                    if (strcmp(dname, fname_)) {
+                        printf("PICSimLab: Loading application to address 0x%X\n", application_offset);
+                        fout = fopen(dname, "r+b");
+                        if (fout) {
+                            int count;
+                            unsigned char buffer[1024];
 
-                        fseek(fout, application_offset, SEEK_SET);
+                            fseek(fout, application_offset, SEEK_SET);
 
-                        while (!feof(fin)) {
-                            count = fread(buffer, 1, 1024, fin);
-                            fwrite(buffer, 1, count, fout);
+                            while (!feof(fin)) {
+                                count = fread(buffer, 1, 1024, fin);
+                                fwrite(buffer, 1, count, fout);
+                            }
+                            fclose(fout);
                         }
-                        fclose(fout);
+                        strncpy(fname_, dname, 2048);
+                    } else {
+                        printf(
+                            "PICSimLab: Flash Size is wrong! Actual size: %li Expected size: %i Removing file: %s \n",
+                            size, DBGGetROMSize(), fname_);
+                        lxRemoveFile(fname_);
+                        exit(-1);
                     }
-                    strncpy(fname_, dname, 2048);
                 }
                 fclose(fin);
             } else {
@@ -785,7 +801,6 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
         strcpy(argv[argc++], "-global");
         sprintf(argv[argc++], "driver=nvram.esp32c3.efuse,property=drive,value=efuse");
-
     } else {
         printf("PICSimLab qemu: simulator %i not supported!!!\n", SimType);
         exit(-1);
