@@ -757,8 +757,10 @@ void CPWindow1::_EvOnCreate(CControl* control) {
         ShowWindow(FindWindowA("ConsoleWindowClass", NULL), false);
     }
 #endif
-
-    freopen(fname, "w", stdout);
+    lxCreateDir(home);
+    if (freopen(fname, "w", stdout) == NULL) {
+        printf("PICSimLab: stdout redirect error [%i] %s \n", errno, strerror(errno));
+    }
 
     if (dup2(fileno(stdout), fileno(stderr)) == -1) {
         printf("PICSimLab: stderr redirect error [%i] %s \n", errno, strerror(errno));
