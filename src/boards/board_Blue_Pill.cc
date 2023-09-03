@@ -48,7 +48,8 @@ enum {
 #define C 0x3000
 #define D 0x4000
 
-static const short int pinmap[48] = {
+static const short int pinmap[49] = {
+    48,      // number of pins
     -1,      // 1 VBAT
     C | 13,  // 2 C13
     C | 14,  // 3 C14

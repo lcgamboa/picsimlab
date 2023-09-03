@@ -188,7 +188,8 @@ static int io2pin(int io) {
     return 0;
 }
 
-static const short int pinmap[38] = {
+static const short int pinmap[39] = {
+    38,  // number of pins
     -1,  // 1-3V3
     -1,  // 2-EN
     36,  // 3-GPIO36
