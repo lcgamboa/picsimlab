@@ -55,7 +55,17 @@ void CPWindow5::_EvOnShow(CControl* control) {
 
 void CPWindow5::menu1_EvMenuActive(CControl* control) {
     PartToCreate = ((CItemMenu*)control)->GetText();
-    lxSetCursor(lxCursor(lxCURSOR_CROSS));
+
+    if (SpareParts.GetCount() < MAX_PARTS) {
+        part* Part = SpareParts.AddPart((char*)PartToCreate.char_str(), 50 - offsetx, 50 - offsety,
+                                        SpareParts.GetScale(), PICSimLab.GetBoard());
+        _EvOnShow(control);
+        PartToCreate = "";
+        PartToMove = Part->GetId();
+        lxSetCursor(lxCursor(lxCURSOR_SIZENWSE));
+        mdx = -10 - offsetx;
+        mdy = -10 - offsety;
+    }
 }
 
 void CPWindow5::_EvOnCreate(CControl* control) {
@@ -105,17 +115,6 @@ void CPWindow5::draw1_EvMouseButtonPress(CControl* control, uint button, uint x,
             }
             return;
         }
-    }
-
-    // clique fora
-    if ((button == 1) && (PartToCreate.size() > 0) && (SpareParts.GetCount() < MAX_PARTS)) {
-        // timer1.SetRunState (0);
-        lxSetCursor(lxCursor(lxCURSOR_ARROW));
-        SpareParts.AddPart((char*)PartToCreate.char_str(), x - offsetx, y - offsety, SpareParts.GetScale(),
-                           PICSimLab.GetBoard());
-        PartToCreate = "";
-        _EvOnShow(control);
-        return;
     }
 
     if (button == 1) {
@@ -794,6 +793,7 @@ void CPWindow5::pmenu2_Rotate_EvMenuActive(CControl* control) {
 }
 
 void CPWindow5::pmenu2_Delete_EvMenuActive(CControl* control) {
+    PartToMove = -1;
     SpareParts.DeletePart(PartSelected);
     update_all = 1;
 }
