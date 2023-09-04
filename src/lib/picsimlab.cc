@@ -420,8 +420,10 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
     } else {
         sprintf(fname, "%s/parts_%s.pcf", home, boards_list[lab_].name_);
     }
-    SpareParts.SaveConfig(fname);
-    SpareParts.DeleteParts();
+    if (SpareParts.GetLoadConfigFile().length() == 0) {  // Save only if spare parts window is created
+        SpareParts.SaveConfig(fname);
+        SpareParts.DeleteParts();
+    }
     if (Instance) {
         sprintf(fname, "%s/palias_%s_%i.ppa", home, boards_list[lab_].name_, Instance);
     } else {
