@@ -504,6 +504,7 @@ static const char old_board_names[6][20] = {"Breadboard", "McLab1", "K16F", "McL
 void CPICSimLab::LoadWorkspace(lxString fnpzw, const int show_readme) {
     char home[1024];
     char fzip[1280];
+    char tmpdir[1024];
 
     if (!lxFileExists(fnpzw)) {
         printf("PICSimLab: file %s not found!\n", (const char*)fnpzw.c_str());
@@ -516,13 +517,17 @@ void CPICSimLab::LoadWorkspace(lxString fnpzw, const int show_readme) {
         return;
     }
     // write options
-    strncpy(fzip, (char*)lxGetTempDir(lxT("picsimlab")).char_str(), 1023);
+
+    snprintf(tmpdir, 1023, "%s/picsimlab-XXXXXX", (const char*)lxGetTempDir("PICSimLab").c_str());
+    close(mkstemp(tmpdir));
+    unlink(tmpdir);
+    lxCreateDir(tmpdir);
+
+    memcpy(fzip, tmpdir, 1023);
     strncat(fzip, "/", 1023);
 
-    strncpy(home, (char*)lxGetTempDir(lxT("picsimlab")).char_str(), 1023);
+    memcpy(home, tmpdir, 1023);
     strncat(home, "/picsimlab_workspace/", 1023);
-
-    lxRemoveDir(home);
 
     lxUnzipDir(fnpzw, fzip);
 
@@ -725,6 +730,7 @@ void CPICSimLab::LoadWorkspace(lxString fnpzw, const int show_readme) {
 }
 
 void CPICSimLab::SaveWorkspace(lxString fnpzw) {
+    char tmpdir[1024];
     char home[1024];
     char fname[1280];
 
@@ -743,7 +749,12 @@ void CPICSimLab::SaveWorkspace(lxString fnpzw) {
     snprintf(fname, 1279, "%s/picsimlab.ini", home);
     PrefsSaveToFile(fname);
 
-    strncpy(home, (char*)lxGetTempDir(lxT("picsimlab")).char_str(), 1023);
+    snprintf(tmpdir, 1023, "%s/picsimlab-XXXXXX", (const char*)lxGetTempDir("PICSimLab").c_str());
+    close(mkstemp(tmpdir));
+    unlink(tmpdir);
+    lxCreateDir(tmpdir);
+
+    memcpy(home, tmpdir, 1023);
     strncat(home, "/picsimlab_workspace/", 1023);
 
 #ifdef CONVERTER_MODE
@@ -754,7 +765,6 @@ void CPICSimLab::SaveWorkspace(lxString fnpzw) {
     snprintf(fname, 1279, "rm -rf %s/*.hex", home);
     system(fname);
 #else
-    lxRemoveDir(home);
     lxCreateDir(home);
 #endif
 
@@ -797,7 +807,7 @@ void CPICSimLab::SaveWorkspace(lxString fnpzw) {
 
     lxZipDir(home, fnpzw);
 
-    lxRemoveDir(home);
+    lxRemoveDir(tmpdir);
 
     strncpy(home, (char*)lxGetUserDataDir(lxT("picsimlab")).char_str(), 1023);
     snprintf(fname, 1279, "%s/picsimlab.ini", home);
