@@ -318,7 +318,7 @@ void cboard_McLab2::Draw(CDraw* draw) {
             if (!update) {
                 draw->Canvas.Init(Scale, Scale);
             }
-            update++;          // set to update buffer
+            update++;  // set to update buffer
 
             if (!output[i].r)  // rectangle
             {
@@ -937,11 +937,7 @@ void cboard_McLab2::Reset(void) {
     pic_set_pin(&pic, 36, p_BT[3]);
 
     if (PICSimLab.GetStatusBar()) {
-#ifndef _WIN_
-        if (pic.serial[0].serialfd > 0)
-#else
-        if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
-#endif
+        if (pic.serial[0].serialfd != INVALID_SERIAL)
             PICSimLab.GetStatusBar()->SetField(
                 2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) +
                        lxT("(") +
@@ -1426,11 +1422,7 @@ unsigned short cboard_McLab2::GetOutputId(char* name) {
 void cboard_McLab2::RefreshStatus(void) {
     label4->SetText(lxT("Temp: ") + lxString().Format("%5.2f", temp[0]) + lxT("°C"));
 
-#ifndef _WIN_
-    if (pic.serial[0].serialfd > 0)
-#else
-    if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
-#endif
+    if (pic.serial[0].serialfd != INVALID_SERIAL)
         PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
                                                   itoa(pic.serial[0].serialbaud) + lxT("(") +
                                                   lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -

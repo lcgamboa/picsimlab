@@ -31,7 +31,6 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <sys/un.h>
-#define INVALID_HANDLE_VALUE -1
 #else
 #include <winsock2.h>
 #include <ws2tcpip.h>
@@ -48,8 +47,8 @@
 #define htonll(x) (x)
 #define ntohll(x) (x)
 #else
-#define htonll(x) (((uint64_t)htonl((x)&0xFFFFFFFF) << 32) | htonl((x) >> 32))
-#define ntohll(x) (((uint64_t)ntohl((x)&0xFFFFFFFF) << 32) | ntohl((x) >> 32))
+#define htonll(x) (((uint64_t)htonl((x) & 0xFFFFFFFF) << 32) | htonl((x) >> 32))
+#define ntohll(x) (((uint64_t)ntohl((x) & 0xFFFFFFFF) << 32) | ntohl((x) >> 32))
 #endif
 
 void setblock(int sock_descriptor);
@@ -117,10 +116,10 @@ int bsim_remote::MInit(const char* processor, const char* fname, float freq) {
 
     pins_reset();
 
-    serialfd[0] = INVALID_HANDLE_VALUE;
-    serialfd[1] = INVALID_HANDLE_VALUE;
-    serialfd[2] = INVALID_HANDLE_VALUE;
-    serialfd[3] = INVALID_HANDLE_VALUE;
+    serialfd[0] = INVALID_SERIAL;
+    serialfd[1] = INVALID_SERIAL;
+    serialfd[2] = INVALID_SERIAL;
+    serialfd[3] = INVALID_SERIAL;
 
     if (listenfd < 0) {
 #ifdef _TCP_
@@ -535,7 +534,7 @@ void bsim_remote::MDumpMemory(const char* fname) {
 
 int bsim_remote::DebugInit(int dtyppe)  // argument not used in picm only mplabx
 {
-    return 0;                           //! mplabxd_init (this, Window1.Get_debug_port ()) - 1;
+    return 0;  //! mplabxd_init (this, Window1.Get_debug_port ()) - 1;
 }
 
 int bsim_remote::MGetPinCount(void) {

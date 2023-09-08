@@ -52,13 +52,13 @@ void uart_init(uart_t* sr, board* pboard) {
     bitbang_uart_init(&sr->bb_uart, pboard, uart_rx_callback, sr);
     sr->connected = 0;
     uart_rst(sr);
-    sr->serialfd = 0;
+    sr->serialfd = INVALID_SERIAL;
     dprintf("init uart\n");
 }
 
 void uart_end(uart_t* sr) {
     if (sr->connected) {
-        serial_port_close(sr->serialfd);
+        serial_port_close(&sr->serialfd);
         sr->connected = 0;
     }
     bitbang_uart_end(&sr->bb_uart);
@@ -80,7 +80,7 @@ unsigned char uart_io(uart_t* sr, const unsigned char rx) {
 
 void uart_set_port(uart_t* sr, const char* port, const unsigned int speed) {
     if (sr->connected) {
-        serial_port_close(sr->serialfd);
+        serial_port_close(&sr->serialfd);
         sr->connected = 0;
     }
 

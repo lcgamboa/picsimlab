@@ -199,11 +199,8 @@ void cboard_x::Reset(void) {
 
     if (PICSimLab.GetStatusBar()) {
         // verify serial port state and refresh status bar
-#ifndef _WIN_
-        if (pic.serial[0].serialfd > 0)
-#else
-        if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
-#endif
+
+        if (pic.serial[0].serialfd != INVALID_SERIAL)
             PICSimLab.GetStatusBar()->SetField(
                 2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) +
                        lxT("(") +
@@ -246,11 +243,8 @@ void cboard_x::RegisterRemoteControl(void) {
 
 void cboard_x::RefreshStatus(void) {
     // verify serial port state and refresh status bar
-#ifndef _WIN_
-    if (pic.serial[0].serialfd > 0)
-#else
-    if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
-#endif
+
+    if (pic.serial[0].serialfd != INVALID_SERIAL)
         PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
                                                   itoa(pic.serial[0].serialbaud) + lxT("(") +
                                                   lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
@@ -455,16 +449,16 @@ void cboard_x::Draw(CDraw* draw) {
     // board_x draw
     for (i = 0; i < outputc; i++)  // run over all outputs
     {
-        if (output[i].update)      // only if need update
+        if (output[i].update)  // only if need update
         {
             output[i].update = 0;
 
             if (!update) {
                 draw->Canvas.Init(Scale, Scale);
             }
-            update++;                       // set to update buffer
+            update++;  // set to update buffer
 
-            if (!output[i].r)               // if output shape is a rectangle
+            if (!output[i].r)  // if output shape is a rectangle
             {
                 if (output[i].id == O_SD1)  // if output is switch
                 {
@@ -526,13 +520,13 @@ void cboard_x::Draw(CDraw* draw) {
                     y = output[i].y1 + (h / 2) + (Proc.length());
                     draw->Canvas.RotatedText(Proc, x, y, 270);
                 }
-            } else                                 // if output shape is a circle
+            } else  // if output shape is a circle
             {
                 draw->Canvas.SetFgColor(0, 0, 0);  // black
 
-                switch (output[i].id)              // search for color of output
+                switch (output[i].id)  // search for color of output
                 {
-                    case O_LD0:                    // White using pin 19 mean value (RD0)
+                    case O_LD0:  // White using pin 19 mean value (RD0)
                         draw->Canvas.SetBgColor(pic.pins[18].oavalue, pic.pins[18].oavalue, pic.pins[18].oavalue);
                         break;
                     case O_LD1:  // Yelllow using pin 20 mean value (RD1)
@@ -615,12 +609,12 @@ void cboard_x::Run_CPU(void) {
         SWBounce_bounce(&bounce, 1);
     }
 
-    j = JUMPSTEPS;                   // step counter
+    j = JUMPSTEPS;  // step counter
     pi = 0;
     if (PICSimLab.GetMcuPwr())       // if powered
         for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
-            if (j >= JUMPSTEPS)      // if number of step is bigger than steps to skip
+            if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
             {
                 pic_set_pin(&pic, pic.mclr, p_RST);
                 if (!bounce.do_bounce) {
@@ -674,7 +668,7 @@ void cboard_x::Run_CPU(void) {
 
                 j = -1;  // reset counter
             }
-            j++;         // counter increment
+            j++;  // counter increment
             pic.ioupdated = 0;
         }
 

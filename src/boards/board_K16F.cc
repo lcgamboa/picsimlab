@@ -149,7 +149,7 @@ void cboard_K16F::Draw(CDraw* draw) {
             if (!update) {
                 draw->Canvas.Init(Scale, Scale);
             }
-            update++;          // set to update buffer
+            update++;  // set to update buffer
 
             if (!output[i].r)  // rectangle
             {
@@ -469,11 +469,7 @@ void cboard_K16F::Reset(void) {
     pic_set_pin(&pic, 11, 0);
 
     if (PICSimLab.GetStatusBar()) {
-#ifndef _WIN_
-        if (pic.serial[0].serialfd > 0)
-#else
-        if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
-#endif
+        if (pic.serial[0].serialfd != INVALID_SERIAL)
             PICSimLab.GetStatusBar()->SetField(
                 2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) +
                        lxT("(") +
@@ -938,11 +934,7 @@ void cboard_K16F::ReadPreferences(char* name, char* value) {
 }
 
 void cboard_K16F::RefreshStatus(void) {
-#ifndef _WIN_
-    if (pic.serial[0].serialfd > 0)
-#else
-    if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
-#endif
+    if (pic.serial[0].serialfd != INVALID_SERIAL)
         PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
                                                   itoa(pic.serial[0].serialbaud) + lxT("(") +
                                                   lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -

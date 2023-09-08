@@ -291,11 +291,7 @@ void cboard_Arduino_Uno::Reset(void) {
 
     if (PICSimLab.GetStatusBar()) {
         // verify serial port state and refresh status bar
-#ifndef _WIN_
-        if (serialfd > 0)
-#else
-        if (serialfd != INVALID_HANDLE_VALUE)
-#endif
+        if (serialfd != INVALID_SERIAL)
             PICSimLab.GetStatusBar()->SetField(
                 2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) + lxT("(") +
                        lxString().Format("%4.1f",
@@ -326,11 +322,8 @@ void cboard_Arduino_Uno::RegisterRemoteControl(void) {
 
 void cboard_Arduino_Uno::RefreshStatus(void) {
     // verify serial port state and refresh status bar
-#ifndef _WIN_
-    if (serialfd > 0)
-#else
-    if (serialfd != INVALID_HANDLE_VALUE)
-#endif
+
+    if (serialfd != INVALID_SERIAL)
         PICSimLab.GetStatusBar()->SetField(
             2,
             lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) + lxT("(") +

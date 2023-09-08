@@ -570,7 +570,7 @@ void cboard_PQDB::Run_CPU(void) {
     int pi;
     const picpin* pins;
 
-    unsigned int alm[40];      // valor médio dos pinos de IO
+    unsigned int alm[40];  // valor médio dos pinos de IO
 
     unsigned int alm7seg[32];  // luminosidade media display 7 seg
 
@@ -901,11 +901,7 @@ void cboard_PQDB::Reset(void) {
     p_KEY[9] = 0;
 
     if (PICSimLab.GetStatusBar()) {
-#ifndef _WIN_
-        if (pic.serial[0].serialfd > 0)
-#else
-        if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
-#endif
+        if (pic.serial[0].serialfd != INVALID_SERIAL)
             PICSimLab.GetStatusBar()->SetField(
                 2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) +
                        lxT("(") +
@@ -1466,11 +1462,7 @@ unsigned short cboard_PQDB::GetOutputId(char* name) {
 }
 
 void cboard_PQDB::RefreshStatus(void) {
-#ifndef _WIN_
-    if (pic.serial[0].serialfd > 0)
-#else
-    if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
-#endif
+    if (pic.serial[0].serialfd != INVALID_SERIAL)
         PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
                                                   itoa(pic.serial[0].serialbaud) + lxT("(") +
                                                   lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -

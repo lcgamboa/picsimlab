@@ -27,6 +27,7 @@
 #define BOARD_PIC_H
 
 #include "../lib/board.h"
+#include "../lib/serial_port.h"
 
 #include "../devices/mplabxd.h"
 

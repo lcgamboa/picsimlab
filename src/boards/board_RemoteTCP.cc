@@ -31,7 +31,6 @@
 
 #ifndef _WIN_
 #include <netinet/in.h>
-#define INVALID_HANDLE_VALUE -1
 #else
 #include <winsock2.h>
 #include <ws2tcpip.h>
@@ -378,20 +377,20 @@ void cboard_RemoteTCP::Draw(CDraw* draw) {
     // board_0 draw
     for (i = 0; i < outputc; i++)  // run over all outputs
     {
-        if (output[i].update)      // only if need update
+        if (output[i].update)  // only if need update
         {
             output[i].update = 0;
 
             if (!update) {
                 draw->Canvas.Init(Scale, Scale);
             }
-            update++;                          // set to update buffer
+            update++;  // set to update buffer
 
             draw->Canvas.SetFgColor(0, 0, 0);  // black
 
-            switch (output[i].id)              // search for color of output
+            switch (output[i].id)  // search for color of output
             {
-                case O_LPWR:                   // Blue using mcupwr value
+                case O_LPWR:  // Blue using mcupwr value
                     draw->Canvas.SetColor(0, 0, 200 * PICSimLab.GetMcuPwr() + 55);
                     draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                            output[i].y2 - output[i].y1);
@@ -567,7 +566,7 @@ void cboard_RemoteTCP::Run_CPU_ns(uint64_t time) {
             MStep();
             if (t0CON & 0x8000)  // Timer on
             {
-                t0iclk++;        // prescaler clk
+                t0iclk++;  // prescaler clk
                 if (t0iclk == (t0CON & 0x7FFF)) {
                     t0iclk = 0;
                     t0CNT++;

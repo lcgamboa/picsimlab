@@ -27,6 +27,7 @@
 #define BOARD_UCSIM_H
 
 #include "../lib/board.h"
+#include "../lib/serial_port.h"
 
 class bsim_ucsim : virtual public board {
 public:

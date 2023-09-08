@@ -255,11 +255,9 @@ void cboard_Curiosity::Reset(void) {
 
     if (PICSimLab.GetStatusBar()) {
         // verify serial port state and refresh status bar
-#ifndef _WIN_
-        if (pic.serial[0].serialfd > 0)
-#else
-        if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
-#endif
+
+        if (pic.serial[0].serialfd != INVALID_SERIAL)
+
             PICSimLab.GetStatusBar()->SetField(
                 2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) +
                        lxT("(") +
@@ -302,11 +300,8 @@ void cboard_Curiosity::RegisterRemoteControl(void) {
 
 void cboard_Curiosity::RefreshStatus(void) {
     // verify serial port state and refresh status bar
-#ifndef _WIN_
-    if (pic.serial[0].serialfd > 0)
-#else
-    if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
-#endif
+
+    if (pic.serial[0].serialfd != INVALID_SERIAL)
         PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
                                                   itoa(pic.serial[0].serialbaud) + lxT("(") +
                                                   lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -

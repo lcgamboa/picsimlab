@@ -29,10 +29,6 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
-#ifndef _WIN_
-#define INVALID_HANDLE_VALUE -1;
-#endif
-
 /* ids of inputs of input map*/
 enum {
     I_ICSP,  // ICSP connector
@@ -83,7 +79,7 @@ cboard_gpboard::cboard_gpboard(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTY
     lxImage image(PICSimLab.GetWindow());
     image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic40.svg")), 0, Scale, Scale, 1);
     micbmp = new lxBitmap(&image, PICSimLab.GetWindow());
-    serialfd = INVALID_HANDLE_VALUE;
+    serialfd = INVALID_SERIAL;
 }
 
 // Destructor called once on board destruction

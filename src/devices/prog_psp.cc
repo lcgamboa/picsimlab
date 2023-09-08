@@ -70,7 +70,7 @@ int prog_sopen(const char* port) {
                        0,      // no overlapped I/O
                        NULL);  // null template
 
-    if (phCom == INVALID_HANDLE_VALUE) {
+    if (phCom == INVALID_SERIAL) {
         return 1;
     }
 

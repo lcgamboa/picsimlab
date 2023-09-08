@@ -107,11 +107,8 @@ void cboard_Breadboard::Reset(void) {
 
             if (PICSimLab.GetStatusBar()) {
                 // verify serial port state and refresh status bar
-#ifndef _WIN_
-                if (pic.serial[0].serialfd > 0)
-#else
-                if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
-#endif
+
+                if (pic.serial[0].serialfd != INVALID_SERIAL)
                     PICSimLab.GetStatusBar()->SetField(
                         2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
                                itoa(pic.serial[0].serialbaud) + lxT("(") +
@@ -128,11 +125,7 @@ void cboard_Breadboard::Reset(void) {
             MReset(0);
             if (PICSimLab.GetStatusBar()) {
                 // verify serial port state and refresh status bar
-#ifndef _WIN_
-                if (serialfd > 0)
-#else
-                if (serialfd != INVALID_HANDLE_VALUE)
-#endif
+                if (serialfd != INVALID_SERIAL)
                     PICSimLab.GetStatusBar()->SetField(
                         2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) +
                                lxT("(") +
@@ -164,11 +157,8 @@ void cboard_Breadboard::RefreshStatus(void) {
     switch (ptype) {
         case _PIC:
             // verify serial port state and refresh status bar
-#ifndef _WIN_
-            if (pic.serial[0].serialfd > 0)
-#else
-            if (pic.serial[0].serialfd != INVALID_HANDLE_VALUE)
-#endif
+
+            if (pic.serial[0].serialfd != INVALID_SERIAL)
                 PICSimLab.GetStatusBar()->SetField(
                     2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) +
                            lxT("(") +
@@ -182,11 +172,8 @@ void cboard_Breadboard::RefreshStatus(void) {
             break;
         case _AVR:
             // verify serial port state and refresh status bar
-#ifndef _WIN_
-            if (serialfd > 0)
-#else
-            if (serialfd != INVALID_HANDLE_VALUE)
-#endif
+
+            if (serialfd != INVALID_SERIAL)
                 PICSimLab.GetStatusBar()->SetField(
                     2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) + lxT("(") +
                            lxString().Format(
@@ -356,20 +343,20 @@ void cboard_Breadboard::Draw(CDraw* draw) {
     // board_0 draw
     for (i = 0; i < outputc; i++)  // run over all outputs
     {
-        if (output[i].update)      // only if need update
+        if (output[i].update)  // only if need update
         {
             output[i].update = 0;
 
             if (!update) {
                 draw->Canvas.Init(Scale, Scale);
             }
-            update++;                          // set to update buffer
+            update++;  // set to update buffer
 
             draw->Canvas.SetFgColor(0, 0, 0);  // black
 
-            switch (output[i].id)              // search for color of output
+            switch (output[i].id)  // search for color of output
             {
-                case O_LPWR:                   // Blue using mcupwr value
+                case O_LPWR:  // Blue using mcupwr value
                     draw->Canvas.SetColor(0, 0, 200 * PICSimLab.GetMcuPwr() + 55);
                     draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                            output[i].y2 - output[i].y1);
@@ -455,12 +442,12 @@ void cboard_Breadboard::Run_CPU(void) {
             if (use_spare)
                 SpareParts.PreProcess();
 
-            j = JUMPSTEPS;                   // step counter
+            j = JUMPSTEPS;  // step counter
             pi = 0;
             if (PICSimLab.GetMcuPwr())       // if powered
                 for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
                 {
-                    if (j >= JUMPSTEPS)      // if number of step is bigger than steps to skip
+                    if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
                     {
                         pic_set_pin(&pic, pic.mclr, p_RST);
                     }
@@ -484,9 +471,9 @@ void cboard_Breadboard::Run_CPU(void) {
 
                     if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
                     {
-                        j = -1;          // reset counter
+                        j = -1;  // reset counter
                     }
-                    j++;                 // counter increment
+                    j++;  // counter increment
                     pic.ioupdated = 0;
                 }
             // calculate mean value

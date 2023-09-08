@@ -55,21 +55,19 @@ int serial_port_open(serialfd_t* serialfd, const char* SERIALDEVICE) {
     char wserial[100];
     snprintf(wserial, 99, "\\\\.\\%s", SERIALDEVICE);
     *serialfd = CreateFile(wserial, GENERIC_READ | GENERIC_WRITE,
-                           0,      // exclusive access
-                           NULL,   // no security
+                           0,     // exclusive access
+                           NULL,  // no security
                            OPEN_EXISTING,
                            0,      // no overlapped I/O
                            NULL);  // null template
-    if (*serialfd == INVALID_HANDLE_VALUE) {
-        *serialfd = 0;
+    if (*serialfd == INVALID_SERIAL) {
         printf("PICSimLab: Error on Port Open %s: 0x%lX !\n", wserial, GetLastError());
         return 0;
     }
 #else
     *serialfd = open(SERIALDEVICE, O_RDWR | O_NOCTTY | O_NONBLOCK);
 
-    if (*serialfd < 0) {
-        *serialfd = 0;
+    if (*serialfd == INVALID_SERIAL) {
         printf("PICSimLab: Error on Port Open %s! \n", SERIALDEVICE);
         fflush(stdout);
         perror(SERIALDEVICE);
@@ -80,13 +78,14 @@ int serial_port_open(serialfd_t* serialfd, const char* SERIALDEVICE) {
     return 1;
 }
 
-int serial_port_close(serialfd_t serialfd) {
-    if (serialfd != 0) {
+int serial_port_close(serialfd_t* serialfd) {
+    if (*serialfd != INVALID_SERIAL) {
 #ifdef _WIN_
-        CloseHandle(serialfd);
+        CloseHandle(*serialfd);
 #else
-        close(serialfd);
+        close(*serialfd);
 #endif
+        *serialfd = INVALID_SERIAL;
     }
     return 0;
 }
@@ -95,13 +94,9 @@ int serial_port_cfg(serialfd_t serialfd, float serialexbaud) {
     unsigned int BAUDRATE;
     int serialbaud;
 
-#ifndef _WIN_
-    if (serialfd <= 0)
+    if (serialfd == INVALID_SERIAL) {
         return 0;
-#else
-    if (serialfd == INVALID_HANDLE_VALUE)
-        return 0;
-#endif
+    }
 
     switch (((int)((serialexbaud / 300.0) + 0.5))) {
         case 0 ... 1:
@@ -255,7 +250,7 @@ int serial_port_cfg(serialfd_t serialfd, float serialexbaud) {
 }
 
 unsigned long serial_port_send(serialfd_t serialfd, unsigned char c) {
-    if (serialfd) {
+    if (serialfd != INVALID_SERIAL) {
 #ifdef _WIN_
         unsigned long nbytes;
 
@@ -269,7 +264,7 @@ unsigned long serial_port_send(serialfd_t serialfd, unsigned char c) {
 }
 
 unsigned long serial_port_rec(serialfd_t serialfd, unsigned char* c) {
-    if (serialfd) {
+    if (serialfd != INVALID_SERIAL) {
 #ifdef _WIN_
         unsigned long nbytes;
 
@@ -289,7 +284,7 @@ unsigned long serial_port_rec(serialfd_t serialfd, unsigned char* c) {
 unsigned long serial_port_rec_tout(serialfd_t serialfd, unsigned char* c) {
     unsigned int tout = 0;
 
-    if (serialfd) {
+    if (serialfd != INVALID_SERIAL) {
 #ifdef _WIN_
         unsigned long nbytes;
         do {
@@ -315,21 +310,17 @@ unsigned long serial_port_recbuff(serialfd_t serialfd, unsigned char* c) {
 }
 
 int serial_port_get_dsr(serialfd_t serialfd) {
+    if (serialfd != INVALID_SERIAL) {
 #ifdef _WIN_
-    if (serialfd != INVALID_HANDLE_VALUE) {
         long unsigned int state;
         GetCommModemStatus(serialfd, &state);
-
         return (state & MS_DSR_ON);
-    }
 #else
-    if (serialfd > 0) {
         int state;
         ioctl(serialfd, TIOCMGET, &state);
-
         return (state & TIOCM_DSR);
-    }
 #endif
+    }
     return 0;
 }
 

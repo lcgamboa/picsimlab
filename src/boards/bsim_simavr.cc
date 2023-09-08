@@ -74,6 +74,7 @@ bsim_simavr::bsim_simavr(void) {
     eeprom = NULL;
     usart_count = 0;
     pkg = PDIP;
+    serialfd = INVALID_SERIAL;
 }
 
 // uart stuff
@@ -320,8 +321,8 @@ int bsim_simavr::MInit(const char* processor, const char* fname, float freq) {
         avr->reset_pc = 0x3E000;
         usart_count = 4;
         UCSR_base[0] = UCSR0A;
-        bb_uart[0].rx_pin = 2;   // PE0
-        bb_uart[0].tx_pin = 3;   // PE1
+        bb_uart[0].rx_pin = 2;  // PE0
+        bb_uart[0].tx_pin = 3;  // PE1
         UCSR_base[1] = UCSR1A;
         bb_uart[1].rx_pin = 45;  // PD2
         bb_uart[1].tx_pin = 46;  // PD3
@@ -472,7 +473,7 @@ void bsim_simavr::MEnd(void) {
         mplabxd_end();
     }
 
-    serial_port_close(serialfd);
+    serial_port_close(&serialfd);
 
     avr_terminate(avr);
 
@@ -1473,7 +1474,7 @@ void bsim_simavr::UpdateHardware(void) {
                 uart_config[i] = 0;
             }
         }
-    } else                           // USI
+    } else  // USI
     {
         if (avr->data[TDCR] & 0x01)  // Enabled
         {

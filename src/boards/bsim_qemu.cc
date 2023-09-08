@@ -24,7 +24,6 @@
    ######################################################################## */
 
 #ifndef _WIN_
-#define INVALID_HANDLE_VALUE -1
 #include <dlfcn.h>
 #endif
 
@@ -335,10 +334,10 @@ int bsim_qemu::MInit(const char* processor, const char* _fname, float freq_) {
 
     pins_reset();
 
-    serialfd[0] = INVALID_HANDLE_VALUE;
-    serialfd[1] = INVALID_HANDLE_VALUE;
-    serialfd[2] = INVALID_HANDLE_VALUE;
-    serialfd[3] = INVALID_HANDLE_VALUE;
+    serialfd[0] = INVALID_SERIAL;
+    serialfd[1] = INVALID_SERIAL;
+    serialfd[2] = INVALID_SERIAL;
+    serialfd[3] = INVALID_SERIAL;
 
 #ifndef __EMSCRIPTEN__
     if ((!qemu_started) && (PICSimLab.GetWindow())) {
@@ -812,7 +811,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
             // try open
             serialfd_t serialfd;
             if (serial_port_open(&serialfd, SERIALDEVICE)) {
-                serial_port_close(serialfd);
+                serial_port_close(&serialfd);
                 strcpy(argv[argc++], "-serial");
                 strcpy(argv[argc++], SERIALDEVICE);
                 serial_open = 1;
