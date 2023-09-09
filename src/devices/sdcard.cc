@@ -90,6 +90,7 @@ unsigned short sdcard_io(sdcard_t* sd, unsigned char mosi, unsigned char clk, un
         sd->bb_spi.insr = 0;
         sd->bb_spi.outsr = 0;
         sd->bb_spi.bit = 0;
+        sd->bb_spi.ret = 0;
         sd->replyc = 0;
         sd->data_rc = 0;
         sd->data_wc = 0;
@@ -398,8 +399,7 @@ unsigned short sdcard_io(sdcard_t* sd, unsigned char mosi, unsigned char clk, un
             }
             break;
     }
-
-    return ((sd->bb_spi.outsr & 0x080) > 0);
+    return sd->bb_spi.ret;
 }
 
 void sdcard_set_filename(sdcard_t* sd, const char* fname) {
