@@ -250,6 +250,8 @@ public:
     void SetSync(unsigned char s) { sync = s; };
     unsigned char GetSync(void) { return sync; };
 
+    char* GetPzwTmpdir(void) { return pzwtmpdir; };
+
 #ifndef _NOTHREAD
     lxCondition* cpu_cond;
     lxMutex* cpu_mutex;
@@ -312,6 +314,7 @@ private:
     double idle_ms;
     int settodestroy;
     unsigned char sync;
+    char pzwtmpdir[1024];
 };
 
 extern CPICSimLab PICSimLab;

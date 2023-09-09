@@ -76,6 +76,7 @@ CPICSimLab::CPICSimLab() {
     settodestroy = 0;
     sync = 0;
     SHARE = "";
+    pzwtmpdir[0] = 0;
 
 #ifndef _NOTHREAD
     cpu_mutex = NULL;
@@ -465,6 +466,10 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
         }
         printf("PICSimLab: Run cmd: %s\n", cmd);
 
+        if (strlen(pzwtmpdir)) {
+            lxRemoveDir(pzwtmpdir);
+        }
+
         printf("PICSimLab: End Board Simulation.\n");
 #if !defined(__EMSCRIPTEN__) && !defined(_CONSOLE_LOG_)
         fflush(stdout);
@@ -504,7 +509,6 @@ static const char old_board_names[6][20] = {"Breadboard", "McLab1", "K16F", "McL
 void CPICSimLab::LoadWorkspace(lxString fnpzw, const int show_readme) {
     char home[1024];
     char fzip[1280];
-    char tmpdir[1024];
 
     if (!lxFileExists(fnpzw)) {
         printf("PICSimLab: file %s not found!\n", (const char*)fnpzw.c_str());
@@ -518,15 +522,19 @@ void CPICSimLab::LoadWorkspace(lxString fnpzw, const int show_readme) {
     }
     // write options
 
-    snprintf(tmpdir, 1023, "%s/picsimlab-XXXXXX", (const char*)lxGetTempDir("PICSimLab").c_str());
-    close(mkstemp(tmpdir));
-    unlink(tmpdir);
-    lxCreateDir(tmpdir);
+    if (strlen(pzwtmpdir)) {
+        lxRemoveDir(pzwtmpdir);
+    }
 
-    memcpy(fzip, tmpdir, 1023);
+    snprintf(pzwtmpdir, 1023, "%s/picsimlab-XXXXXX", (const char*)lxGetTempDir("PICSimLab").c_str());
+    close(mkstemp(pzwtmpdir));
+    unlink(pzwtmpdir);
+    lxCreateDir(pzwtmpdir);
+
+    memcpy(fzip, pzwtmpdir, 1023);
     strncat(fzip, "/", 1023);
 
-    memcpy(home, tmpdir, 1023);
+    memcpy(home, pzwtmpdir, 1023);
     strncat(home, "/picsimlab_workspace/", 1023);
 
     lxUnzipDir(fnpzw, fzip);

@@ -890,6 +890,10 @@ void CPWindow1::_EvOnDestroy(CControl* control) {
     PICSimLab.SetNeedReboot(0);
     PICSimLab.EndSimulation();
 
+    if (strlen(PICSimLab.GetPzwTmpdir())) {
+        lxRemoveDir(PICSimLab.GetPzwTmpdir());
+    }
+
 #if !defined(__EMSCRIPTEN__) && !defined(_CONSOLE_LOG_)
     fflush(stdout);
     freopen(NULLFILE, "w", stdout);
