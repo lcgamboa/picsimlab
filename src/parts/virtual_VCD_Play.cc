@@ -250,14 +250,12 @@ void cpart_VCD_Play::ReadPreferences(lxString value) {
            f_vcd_name);
 
     if (f_vcd_name[0] != '*') {
-#ifdef _WIN_
-        if (!strncmp(f_vcd_name, "/tmp/", 5)) {
-            char buff[200];
-            strcpy(buff, (const char*)lxGetTempDir("PICSimLab").c_str());
+        if (!strncmp(f_vcd_name, "/tmp/picsimlab_workspace/", 25)) {
+            char buff[256];
+            strcpy(buff, PICSimLab.GetPzwTmpdir());
             strcat(buff, f_vcd_name + 4);
             strcpy(f_vcd_name, buff);
         }
-#endif
         if (lxFileExists(f_vcd_name)) {
             LoadVCD(f_vcd_name);
         } else {

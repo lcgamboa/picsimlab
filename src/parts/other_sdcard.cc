@@ -173,15 +173,15 @@ void cpart_SDCard::ReadPreferences(lxString value) {
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%s", &pins[0], &pins[1], &pins[2], &pins[3], sdcard_fname);
 
     Reset();
+
     if (sdcard_fname[0] != '*') {
-#ifdef _WIN_
-        if (!strncmp(sdcard_fname, "/tmp/", 5)) {
-            char buff[200];
-            strcpy(buff, (const char*)lxGetTempDir("PICSimLab").c_str());
+        if (!strncmp(sdcard_fname, "/tmp/picsimlab_workspace/", 25)) {
+            char buff[256];
+            strcpy(buff, PICSimLab.GetPzwTmpdir());
             strcat(buff, sdcard_fname + 4);
             strcpy(sdcard_fname, buff);
         }
-#endif
+
         sdcard_set_filename(&sd, sdcard_fname);
         sdcard_set_card_present(&sd, 1);
     } else {

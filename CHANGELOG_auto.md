@@ -2,9 +2,21 @@
 
 ### Changes
 
+* Draw the spare part before clicking in the window when a new part is added. [lcgamboa]
+
 * Scripts updated and max flash file size fixed for qemu. [lcgamboa]
 
 * Add support to change ambient temperature and LM35 voltage offset in TempSys spare part. [lcgamboa]
+
+### Fix
+
+* Fix SDCard spare parts CIPO signal. [lcgamboa]
+
+* Fix invalid serial handle in Windows. [lcgamboa]
+
+* Fixes the issue of opening multiple workspaces in multiple instances simultaneously. [lcgamboa]
+
+* Fix Arduino Uno board missing spare parts when open workspace files. [lcgamboa]
 
 ### Other
 
