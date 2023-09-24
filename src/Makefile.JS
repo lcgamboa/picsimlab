@@ -15,25 +15,29 @@ execdir= ${prefix}/bin/
 #lxrad automatic generated block start, don't edit below!
 
 override CXXFLAGS+= -D_ARCH_=\"Javascript\" -D_DATE_=\"${DATE}\"
-override CXXFLAGS+= -O2 -flto=auto
-#override CXXFLAGS+= -g4 --source-map-base -Werror
+override CXXFLAGS+= -O2 
+#override CXXFLAGS+= -fsanitize=address  
+#override CXXFLAGS+= -gsource-map
 
 override CXXFLAGS+=  -DEXT_BROWSER -DNO_DEBUG -DNO_TOOLS \
         -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_GFX=2\
-	-s SDL2_IMAGE_FORMATS='["png","bmp"]' -s USE_SDL_TTF=2 --preload-file assets \
+	-s SDL2_IMAGE_FORMATS='["png","bmp"]' -s USE_SDL_TTF=2 \
 	-D_VERSION_=\"${VERSION}\" -Wall -D_SHARE_=\"/assets/share/\" -I../../LXRAD_SDL2/include/ \
 	-D_LIB_=\"../lib/picsimlab/\" \
 	-I../../picsim/include/ -I../../ucsim-0.6/picsimlab/ \
 	-I../../simavr/simavr/ -DEXT_BROWSER_EXAMPLES \
 	-I../teste/glib_js/target/include  -I../teste/glib_js/target/include/glib-2.0 \
-	-I../teste/glib_js/target/lib/glib-2.0/include #--preload-file home 
+	-I../teste/glib_js/target/lib/glib-2.0/include
 
-override CXXFLAGS+= --pre-js load.js
-#	-s "BINARYEN_TRAP_MODE='clamp'" 
+#override CXXFLAGS+= -s "BINARYEN_TRAP_MODE='clamp'" 
 
 LINK= -s DEMANGLE_SUPPORT=0  -s SAFE_HEAP=0 -s ASSERTIONS=0 -s TOTAL_MEMORY=128MB \
       -s EXPORTED_FUNCTIONS='["_main","_file_ready","_lxrad_scale_up","_lxrad_scale_down","_dirt_load","_SimRun","_SimStat"]' \
-      -s EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' 
+      -s EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' --pre-js load.js --preload-file assets 
+
+#LINK+= --preload-file home
+#LINK+= -s ALLOW_MEMORY_GROWTH 
+
 
 #CXXFLAGS+=-s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 
 #CXXFLAGS+=--emrun

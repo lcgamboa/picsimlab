@@ -31,6 +31,7 @@
 
 // SD card commands
 #define CMD0 0X00
+#define CMD1 0X01
 // no spi #define CMD2 0X02 /** ALL_SEND_CID - Asks any card to send the CID. */
 // no spi #define CMD3 0X03 /** SEND_RELATIVE_ADDR - Ask the card to publish a new RCA. */
 // #define CMD6 0X06 /** SWITCH_FUNC - Switch Function Command */
@@ -40,8 +41,9 @@
 #define CMD10 0X0A
 #define CMD12 0X0C
 #define CMD13 0X0D
+#define CMD16 0X10
 #define CMD17 0X11
-// #define CMD18  0X12 /** READ_MULTIPLE_BLOCK - read a multiple data blocks from the card */
+#define CMD18 0X12
 #define CMD24 0X18
 #define CMD25 0X19
 #define CMD32 0X20
@@ -49,13 +51,15 @@
 #define CMD38 0X26
 #define CMD55 0X37
 #define CMD58 0X3A
-// #define CMD59 0X3B /** CRC_ON_OFF - enable or disable CRC checking */
+#define CMD59 0X3B
 //  no spi  #define ACMD6 0X06 /** SET_BUS_WIDTH - Defines the data bus width for data transfer. */
-// #define ACMD13 0X0D /** SD_STATUS - Send the SD Status. */
+#define ACMD13 0X0D
 #define ACMD23 0X17
 #define ACMD41 0X29
+#define ACMD42 0X2A
+#define ACMD51 0X33
 
-#define MAX_REPLY 20
+#define MAX_REPLY 72
 
 typedef struct {
     FILE* fd;
@@ -69,10 +73,14 @@ typedef struct {
     unsigned char ap_cmd;
     unsigned short data_rc;
     unsigned short data_wc;
-    unsigned char multi;
+    unsigned char multi_rd;
+    unsigned char multi_wr;
     unsigned long disk_size;  // in kb
     unsigned long ebstart;
     unsigned long ebend;
+    unsigned char R1;
+    unsigned char crc_on;
+    unsigned int cmd_count;  // used for boot
 } sdcard_t;
 
 void sdcard_rst(sdcard_t* sd);
