@@ -81,6 +81,8 @@ typedef struct {
     unsigned char R1;
     unsigned char crc_on;
     unsigned int cmd_count;  // used for boot
+    unsigned char cmd_buff[5];
+    unsigned short crc16;
 } sdcard_t;
 
 void sdcard_rst(sdcard_t* sd);

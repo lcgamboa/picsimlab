@@ -145,13 +145,20 @@ unsigned short sdcard_io(sdcard_t* sd, unsigned char mosi, unsigned char clk, un
                     if (((sd->bb_spi.insr & 0xFF) != 0xFE) && ((sd->bb_spi.insr & 0xFF) != 0xFC)) {
                         sd->data_wc = 516;
                     }
-                } else if (sd->data_wc < 3)  // CRC
-                {
-                    // not used
+                } else if (sd->data_wc < 3) {  // CRC
+                    if (sd->data_wc == 2) {
+                        sd->crc16 = (sd->bb_spi.insr & 0xFF) << 8;
+                    } else if (sd->data_wc == 1) {
+                        int resp = 0x05;
+                        sd->crc16 |= sd->bb_spi.insr & 0xFF;
 
-                    if (sd->data_wc == 1) {
+                        if (sd->crc_on) {
+                            if (sd->crc16 != CRC16(buff, 512)) {
+                                resp = 0x0B;  // Data rejected due to a CRC error
+                            }
+                        }
                         // write response
-                        sd->bb_spi.outsr = (sd->bb_spi.outsr & 0xFF00) | 0x05;
+                        sd->bb_spi.outsr = (sd->bb_spi.outsr & 0xFF00) | resp;
                     }
                 } else {
                     buff[512 - (sd->data_wc - 2)] = sd->bb_spi.insr & 0xFF;
@@ -176,6 +183,7 @@ unsigned short sdcard_io(sdcard_t* sd, unsigned char mosi, unsigned char clk, un
                         if ((sd->cmd & 0xC0) == 0x40) {
                             sd->cmd = sd->bb_spi.insr & 0x3F;
                             sd->arg = 0;
+                            sd->cmd_buff[0] = sd->bb_spi.insr & 0xFF;
                         } else {
                             sd->bb_spi.outsr = 0xFF;
                             sd->bb_spi.bit = 0;
@@ -185,27 +193,38 @@ unsigned short sdcard_io(sdcard_t* sd, unsigned char mosi, unsigned char clk, un
                         break;
                     case 16:  // 1/4 parameter
                         sd->arg |= (sd->bb_spi.insr & 0xFF) << 24;
+                        sd->cmd_buff[1] = sd->bb_spi.insr & 0xFF;
                         break;
                     case 24:  // 2/4 parameter
                         sd->arg |= (sd->bb_spi.insr & 0xFF) << 16;
+                        sd->cmd_buff[2] = sd->bb_spi.insr & 0xFF;
                         break;
                     case 32:  // 3/4 parameter
                         sd->arg |= (sd->bb_spi.insr & 0xFF) << 8;
+                        sd->cmd_buff[3] = sd->bb_spi.insr & 0xFF;
                         break;
                     case 40:  // 4/4parameter
                         sd->arg |= (sd->bb_spi.insr & 0xFF);
+                        sd->cmd_buff[4] = sd->bb_spi.insr & 0xFF;
                         break;
                     case 48:  // crc
                         sd->crc = (sd->bb_spi.insr & 0xFF);
+
                         dprintf("----------------------------------------\n");
                         dprintf("sdcard %s%i [0x%02X] arg=0x%08lX  CRC=0x%02X \n", (sd->ap_cmd ? "ACMD" : "CMD"),
                                 sd->cmd, sd->cmd, sd->arg, sd->crc);
 
                         if (sd->cmd_count < 10) {
                             sd->cmd_count++;
-                            sd->R1 = 1;  // R1 |0|ParameterE|AddressE|EraseE|CRCE|IllegalC|EraseR|idle|
+                            sd->R1 = 0x01;  // R1 |0|ParameterE|AddressE|EraseE|CRCE|IllegalC|EraseR|idle|
                         } else {
-                            sd->R1 = 0;  // R1 |0|ParameterE|AddressE|EraseE|CRCE|IllegalC|EraseR|idle|
+                            sd->R1 = 0x00;  // R1 |0|ParameterE|AddressE|EraseE|CRCE|IllegalC|EraseR|idle|
+                        }
+
+                        if (sd->crc_on) {
+                            if (sd->crc != ((CRC7(sd->cmd_buff, 5) << 1) | 0x01)) {
+                                sd->R1 |= 0x80;  // R1 |0|ParameterE|AddressE|EraseE|CRCE|IllegalC|EraseR|idle|
+                            }
                         }
 
                         if (sd->ap_cmd) {
