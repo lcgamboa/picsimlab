@@ -320,7 +320,7 @@ void cboard_C3_DevKitC::Reset(void) {
     if (qemu_started != 1) {
         return;
     }
-    uint32_t* strap_mode = qemu_picsimlab_get_internals(0);
+    uint32_t* strap_mode = qemu_picsimlab_get_internals(QEMU_INTERNAL_STRAP);
 
     if (p_BOOT) {
         *strap_mode = 0x08;  // SPI_FAST_FLASH_BOOT
@@ -564,6 +564,8 @@ void cboard_C3_DevKitC::Run_CPU_ns(uint64_t time) {
 
     const float RNSTEP = 200.0 * pinc * inc_ns / TTIMEOUT;
 
+    MSetPin(IO0, p_BOOT);
+
     for (uint64_t c = 0; c < time; c += inc_ns) {
         if (ns_count < inc_ns) {
             // reset pins mean value
@@ -648,7 +650,7 @@ void cboard_C3_DevKitC::Run_CPU(void) {
             }
 
             if (!(status & CHR_TIOCM_CTS) && (status & CHR_TIOCM_DSR)) {
-                uint32_t* strap_mode = qemu_picsimlab_get_internals(0);
+                uint32_t* strap_mode = qemu_picsimlab_get_internals(QEMU_INTERNAL_STRAP);
                 *strap_mode = 0x02;  // UART_BOOT(UART0)
                 MReset(1);
             }
@@ -789,8 +791,8 @@ void cboard_C3_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x
 
 void cboard_C3_DevKitC::PinsExtraConfig(int cfg) {
     switch ((cfg & 0xf000) >> 12) {
-        case 1: {  // Peripheral Signal input
-            uint32_t* gpio_in_sel = qemu_picsimlab_get_internals(1);
+        case QEMU_EXTRA_PIN_IN_CFG: {  // Peripheral Signal input
+            uint32_t* gpio_in_sel = qemu_picsimlab_get_internals(QEMU_INTERNAL_GPIO_IN_SEL);
 
             int function = cfg & 0x1ff;
             int gpio = gpio_in_sel[cfg & 0x1ff] & 0x1F;
@@ -843,9 +845,9 @@ void cboard_C3_DevKitC::PinsExtraConfig(int cfg) {
             }
 
         } break;
-        case 2: {  // Peripheral Signal output
-            uint32_t* gpio_out_sel = qemu_picsimlab_get_internals(2);
-            // uint32_t* muxgpios = qemu_picsimlab_get_internals(3);
+        case QEMU_EXTRA_PIN_OUT_CFG: {  // Peripheral Signal output
+            uint32_t* gpio_out_sel = qemu_picsimlab_get_internals(QEMU_INTERNAL_GPIO_OUT_SEL);
+            // uint32_t* muxgpios = qemu_picsimlab_get_internals(QEMU_INTERNAL_IOMUX_GPIOS);
 
             int function = gpio_out_sel[cfg & 0xff] & 0xFF;
             int gpio = cfg & 0xff;
@@ -939,8 +941,8 @@ void cboard_C3_DevKitC::PinsExtraConfig(int cfg) {
             }
 
         } break;
-        case 4: {  // IO MUX Functions
-            uint32_t* muxgpios = qemu_picsimlab_get_internals(3);
+        case QEMU_EXTRA_PIN_IOMUX_CFG: {  // IO MUX Functions
+            uint32_t* muxgpios = qemu_picsimlab_get_internals(QEMU_INTERNAL_IOMUX_GPIOS);
 
             int function = (muxgpios[cfg & 0xff] & 0x7000) >> 12;
             int gpio = cfg & 0xff;

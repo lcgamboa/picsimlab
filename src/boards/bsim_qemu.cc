@@ -113,7 +113,7 @@ static void picsimlab_dir_pins(int pin, int dir) {
         ioupdated = 1;
         g_board->Run_CPU_ns(GotoNow());
     } else {  // especial pin cfg
-        g_board->PinsExtraConfig(-dir);
+        g_board->PinsExtraConfig(dir);
     }
     // printf("pin[%i]=%s\n", pin, (!dir == PD_IN) ? "PD_IN" : "PD_OUT");
 }
