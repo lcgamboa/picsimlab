@@ -27,6 +27,7 @@
 #define BOARD_QEMU_H
 
 #include "../devices/bitbang_i2c.h"
+#include "../devices/bitbang_pwm.h"
 #include "../devices/bitbang_spi.h"
 #include "../devices/bitbang_uart.h"
 #include "../lib/board.h"
@@ -71,6 +72,7 @@ public:
     bitbang_i2c_t master_i2c[2];
     bitbang_spi_t master_spi[2];
     bitbang_uart_t master_uart[3];
+    bitbang_pwm_t ledc;
     void IoLockAccess(void) override;
     void IoUnlockAccess(void) override;
     int GetUARTRX(const int uart_num) override;

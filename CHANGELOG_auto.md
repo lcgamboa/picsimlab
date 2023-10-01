@@ -1,5 +1,11 @@
 ## (unreleased)
 
+### New
+
+* SD card support to CRC16 on write block and CRC7 on commands. [lcgamboa]
+
+* SD card initial support to CRC16 on (ESP32 compatibility). [lcgamboa]
+
 ### Changes
 
 * Draw the spare part before clicking in the window when a new part is added. [lcgamboa]

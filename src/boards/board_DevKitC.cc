@@ -309,6 +309,8 @@ cboard_DevKitC::cboard_DevKitC(void) {
     master_uart[2].tx_pin = 0;
     master_uart[2].rx_pin = 0;
 
+    bitbang_pwm_init(&ledc, this, 16);
+
     if (PICSimLab.GetWindow()) {
         // label1
         label1 = new CLabel();
@@ -375,6 +377,7 @@ cboard_DevKitC::~cboard_DevKitC(void) {
         wconfig->SetCanDestroy(true);
         wconfig->WDestroy();
     }
+    bitbang_pwm_end(&ledc);
 }
 
 // Reset board status
@@ -383,7 +386,7 @@ void cboard_DevKitC::Reset(void) {
     if (qemu_started != 1) {
         return;
     }
-    uint32_t* strap_mode = qemu_picsimlab_get_internals(0);
+    uint32_t* strap_mode = qemu_picsimlab_get_internals(QEMU_INTERNAL_STRAP);
 
     if (p_BOOT) {
         *strap_mode = 0x12;  // SPI_FAST_FLASH_BOOT
@@ -625,6 +628,8 @@ void cboard_DevKitC::Run_CPU_ns(uint64_t time) {
 
     const float RNSTEP = 200.0 * pinc * inc_ns / TTIMEOUT;
 
+    MSetPin(IO0, p_BOOT);
+
     for (uint64_t c = 0; c < time; c += inc_ns) {
         if (ns_count < inc_ns) {
             // reset pins mean value
@@ -709,7 +714,7 @@ void cboard_DevKitC::Run_CPU(void) {
             }
 
             if (!(status & CHR_TIOCM_CTS) && (status & CHR_TIOCM_DSR)) {
-                uint32_t* strap_mode = qemu_picsimlab_get_internals(0);
+                uint32_t* strap_mode = qemu_picsimlab_get_internals(QEMU_INTERNAL_STRAP);
                 *strap_mode = 0x0f;  // UART_BOOT(UART0)
                 MReset(1);
             }
@@ -848,8 +853,8 @@ void cboard_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x, u
 
 void cboard_DevKitC::PinsExtraConfig(int cfg) {
     switch ((cfg & 0xf000) >> 12) {
-        case 1: {
-            uint32_t* gpio_in_sel = qemu_picsimlab_get_internals(1);
+        case QEMU_EXTRA_PIN_IN_CFG: {
+            uint32_t* gpio_in_sel = qemu_picsimlab_get_internals(QEMU_INTERNAL_GPIO_IN_SEL);
             int function = cfg & 0x1ff;
             int gpio = gpio_in_sel[cfg & 0x1ff] & 0x3F;
             // printf("sel in    %3i = %3i\n", gpio, function);
@@ -899,9 +904,8 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
             }
 
         } break;
-        case 2: {
-            uint32_t* gpio_out_sel = qemu_picsimlab_get_internals(2);
-            // uint32_t* muxgpios = qemu_picsimlab_get_internals(3);
+        case QEMU_EXTRA_PIN_OUT_CFG: {
+            uint32_t* gpio_out_sel = qemu_picsimlab_get_internals(QEMU_INTERNAL_GPIO_OUT_SEL);
 
             int function = gpio_out_sel[cfg & 0xff] & 0x1FF;
             int gpio = cfg & 0xff;
@@ -976,7 +980,35 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
                     master_spi[1].ctrl_on = 1;
                     master_spi[1].cs_pin[2] = io2pin(gpio);
                     break;
-
+                case 71:  // ledc_hs_sig_out0
+                case 72:  // ledc_hs_sig_out1
+                case 73:  // ledc_hs_sig_out2
+                case 74:  // ledc_hs_sig_out3
+                case 75:  // ledc_hs_sig_out4
+                case 76:  // ledc_hs_sig_out5
+                case 77:  // ledc_hs_sig_out6
+                case 78:  // ledc_hs_sig_out7
+                case 79:  // ledc_ls_sig_out0
+                case 80:  // ledc_ls_sig_out1
+                case 81:  // ledc_ls_sig_out2
+                case 82:  // ledc_ls_sig_out3
+                case 83:  // ledc_ls_sig_out4
+                case 84:  // ledc_ls_sig_out5
+                case 85:  // ledc_ls_sig_out6
+                case 86:  // ledc_ls_sig_out7
+                    // printf("LEDC channel %i in GPIO %i\n", function - 71, gpio);
+                    ledc.pins[function - 71] = io2pin(gpio);
+                    break;
+                case 87:  // rmt_sig_out0
+                case 88:  // rmt_sig_out1
+                case 89:  // rmt_sig_out2
+                case 90:  // rmt_sig_out3
+                case 91:  // rmt_sig_out4
+                case 92:  // rmt_sig_out5
+                case 93:  // rmt_sig_out6
+                case 94:  // rmt_sig_out7
+                    // printf("RMT channel %i in GPIO %i\n", function - 71, gpio);
+                    break;
                 case 95:  // I2CEXT1_SCL
                     master_i2c[1].ctrl_on = 1;
                     master_i2c[1].scl_pin = io2pin(gpio);
@@ -993,8 +1025,8 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
             }
 
         } break;
-        case 4: {
-            uint32_t* muxgpios = qemu_picsimlab_get_internals(3);
+        case QEMU_EXTRA_PIN_IOMUX_CFG: {
+            uint32_t* muxgpios = qemu_picsimlab_get_internals(QEMU_INTERNAL_IOMUX_GPIOS);
 
             int function = (muxgpios[cfg & 0xff] & 0x7000) >> 12;
             int gpio = cfg & 0xff;
@@ -1078,6 +1110,9 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
             }
 
         } break;
+        case QEMU_EXTRA_PIN_LEDC_CFG:
+            bitbang_pwm_set_duty(&ledc, (cfg & 0x0F00) >> 8, cfg & 0xFF);
+            break;
     }
 }
 

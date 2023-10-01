@@ -246,6 +246,8 @@ cboard_C3_DevKitC::cboard_C3_DevKitC(void) {
     master_uart[2].tx_pin = 0;
     master_uart[2].rx_pin = 0;
 
+    bitbang_pwm_init(&ledc, this, 6);
+
     if (PICSimLab.GetWindow()) {
         // label1
         label1 = new CLabel();
@@ -312,6 +314,7 @@ cboard_C3_DevKitC::~cboard_C3_DevKitC(void) {
         wconfig->SetCanDestroy(true);
         wconfig->WDestroy();
     }
+    bitbang_pwm_end(&ledc);
 }
 
 // Reset board status
@@ -938,6 +941,19 @@ void cboard_C3_DevKitC::PinsExtraConfig(int cfg) {
                         master_uart[2].tx_pin = io2pin(gpio);
                         break;
                         */
+                case 45:  // ledc_ls_sig_out0
+                case 46:  // ledc_ls_sig_out1
+                case 47:  // ledc_ls_sig_out2
+                case 48:  // ledc_ls_sig_out3
+                case 49:  // ledc_ls_sig_out4
+                case 50:  // ledc_ls_sig_out5
+                    // printf("LEDC channel %i in GPIO %i\n", function - 45, gpio);
+                    ledc.pins[function - 45] = io2pin(gpio);
+                    break;
+                case 51:  // rmt_sig_out0
+                case 52:  // rmt_sig_out1
+                    // printf("RMT channel %i in GPIO %i\n", function - 71, gpio);
+                    break;
             }
 
         } break;
@@ -1029,6 +1045,9 @@ void cboard_C3_DevKitC::PinsExtraConfig(int cfg) {
             }
 
         } break;
+        case QEMU_EXTRA_PIN_LEDC_CFG:
+            bitbang_pwm_set_duty(&ledc, (cfg & 0x0F00) >> 8, cfg & 0xFF);
+            break;
     }
 }
 

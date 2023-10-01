@@ -1141,6 +1141,7 @@ void bsim_qemu::MReset(int flags) {
     bitbang_uart_rst(&master_uart[0]);
     bitbang_uart_rst(&master_uart[1]);
     bitbang_uart_rst(&master_uart[2]);
+    bitbang_pwm_rst(&ledc);
 }
 
 const picpin* bsim_qemu::MGetPinsValues(void) {
@@ -1201,6 +1202,12 @@ void bsim_qemu::MStep(void) {
                     master_uart[id].rx_value = pins[master_uart[id].rx_pin - 1].value;
                     bitbang_uart_io(&master_uart[id], master_uart[id].rx_value);
                 }
+            }
+        }
+        for (int i = 0; i < ledc.chanels; i++) {
+            if (ledc.pins[i]) {
+                pins[ledc.pins[i] - 1].dir = PD_OUT;
+                pins[ledc.pins[i] - 1].value = ledc.out[i];
             }
         }
     }
