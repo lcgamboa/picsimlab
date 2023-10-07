@@ -213,7 +213,8 @@ void CPWindow1::DrawBoard(void) {
             menu1_Modules_Oscilloscope_EvMenuActive(this);
         }
         if (PICSimLab.GetBoard()->GetUseSpareParts()) {
-            menu1_Modules_Spareparts_EvMenuActive(this);
+            Window5.Show();
+            Window5.timer1.SetRunState(1);
         }
         PICSimLab.SetNeedResize(0);
         statusbar1.Draw();
@@ -862,6 +863,7 @@ void CPWindow1::_EvOnCreate(CControl* control) {
         // load options
         PICSimLab.Configure(home, 0, 1);
     }
+    label1.SetText(PICSimLab.GetBoard()->GetClkLabel());
 }
 
 // Change  frequency
@@ -1113,6 +1115,7 @@ void CPWindow1::menu1_EvBoard(CControl* control) {
         PICSimLab.EndSimulation(1);
         PICSimLab.Configure(PICSimLab.GetHomePath());
         PICSimLab.SetNeedResize(1);
+        label1.SetText(PICSimLab.GetBoard()->GetClkLabel());
     }
 }
 
