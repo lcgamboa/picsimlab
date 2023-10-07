@@ -23,14 +23,14 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef PART_DHT22_H
-#define PART_DHT22_H
+#ifndef PART_DS1820B_H
+#define PART_DS1820B_H
 
 #include <lxrad.h>
 #include "../devices/sen_ds18b20.h"
 #include "../lib/part.h"
 
-#define PART_DHT22_Name "DS18B20 (Temperature)"
+#define PART_DS1820B_Name "DS18B20 (Temperature)"
 
 class cpart_ds18b20 : public part {
 public:
@@ -61,4 +61,4 @@ private:
     lxFont font_p;
 };
 
-#endif /* DHT22 */
+#endif /* DS1820B */

@@ -2,11 +2,15 @@
 
 ### New
 
+* Add suport to ESP32 LEDC (PWM output) [lcgamboa]
+
 * SD card support to CRC16 on write block and CRC7 on commands. [lcgamboa]
 
 * SD card initial support to CRC16 on (ESP32 compatibility). [lcgamboa]
 
 ### Changes
+
+* Rename speed label from Clk to IO in qemu boards. [lcgamboa]
 
 * Draw the spare part before clicking in the window when a new part is added. [lcgamboa]
 
@@ -15,6 +19,8 @@
 * Add support to change ambient temperature and LM35 voltage offset in TempSys spare part. [lcgamboa]
 
 ### Fix
+
+* Remove simulation reset when minimize/maximize on Windows. [lcgamboa]
 
 * Fix SDCard spare parts CIPO signal. [lcgamboa]
 

@@ -211,4 +211,4 @@ void cpart_ds18b20::ReadPropertiesWindow(CPWindow* WProp) {
     output_pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
 }
 
-part_init(PART_DHT22_Name, cpart_ds18b20, "Input");
+part_init(PART_DS1820B_Name, cpart_ds18b20, "Input");
