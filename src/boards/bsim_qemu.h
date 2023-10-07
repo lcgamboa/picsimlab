@@ -77,6 +77,7 @@ public:
     void IoUnlockAccess(void) override;
     int GetUARTRX(const int uart_num) override;
     int GetUARTTX(const int uart_num) override;
+    virtual lxString GetClkLabel(void) override { return "IO (Mhz)"; };
 
 protected:
     int MipsStrToIcount(const char* mipstr);

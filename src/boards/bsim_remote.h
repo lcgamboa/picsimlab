@@ -78,6 +78,7 @@ public:
     int GetInc_ns(void) { return inc_ns; };
     int GetUARTRX(const int uart_num) override;
     int GetUARTTX(const int uart_num) override;
+    virtual lxString GetClkLabel(void) override { return "IO (Mhz)"; };
 
 protected:
     const int TestConnection(void);

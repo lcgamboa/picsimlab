@@ -632,6 +632,11 @@ public:
      */
     virtual int GetUARTTX(const int uart_num) { return 0; };
 
+    /**
+     * @brief Return the description of clk label
+     */
+    virtual lxString GetClkLabel(void) { return "Clk (Mhz)"; };
+
 protected:
     /**
      * @brief Register remote control variables
