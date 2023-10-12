@@ -730,7 +730,7 @@ void cboard_DevKitC::board_Event(CControl* control) {
 void cboard_DevKitC::BoardOptions(int* argc, char** argv) {
     if (ConfEnableWifi) {
         strcpy(argv[(*argc)++], "-nic");
-        strcpy(argv[(*argc)++], "user,model=esp32_wifi,net=192.168.4.0/24");
+        strcpy(argv[(*argc)++], "user,model=esp32_wifi,id=u1,net=192.168.4.0/24");
     }
     if (ConfDisableWdt) {
         strcpy(argv[(*argc)++], "-global");
@@ -738,7 +738,7 @@ void cboard_DevKitC::BoardOptions(int* argc, char** argv) {
     }
     if (ConfEnableEthernet) {
         strcpy(argv[(*argc)++], "-nic");
-        strcpy(argv[(*argc)++], "user,model=open_eth,net=192.168.3.0/24");
+        strcpy(argv[(*argc)++], "user,model=open_eth,id=u2,net=192.168.3.0/24");
     }
 }
 
