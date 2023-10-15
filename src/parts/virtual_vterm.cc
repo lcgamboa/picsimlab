@@ -85,6 +85,8 @@ cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, c
             vttext = (CText*)wvterm->GetChildByName("text1");
             vtedit = (CEdit*)wvterm->GetChildByName("edit1");
 
+            vttext->SetFontFamily(lxFONTFAMILY_TELETYPE);
+
             vtbtn_send = ((CButton*)wvterm->GetChildByName("button1"));
             vtbtn_clear = ((CButton*)wvterm->GetChildByName("button2"));
             vtcmb_ending = ((CCombo*)wvterm->GetChildByName("combo1"));
