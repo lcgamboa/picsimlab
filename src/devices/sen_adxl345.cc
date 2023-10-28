@@ -61,7 +61,7 @@ void adxl345_rst(adxl345_t* adxl) {
 
 void adxl345_init(adxl345_t* adxl) {
     dprintf("adxl345 init\n");
-    bitbang_i2c_init(&adxl->bb_i2c, 0x53);
+    bitbang_i2c_init(&adxl->bb_i2c, 0x1D);
     bitbang_spi_init(&adxl->bb_spi);
     adxl345_rst(adxl);
 }

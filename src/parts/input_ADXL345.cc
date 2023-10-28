@@ -215,11 +215,11 @@ void cpart_ADXL345::PreProcess(void) {
     const picpin* ppins = SpareParts.GetPinsValues();
 
     if ((adxl.i2c_mode) && (adxl_pins[0]) && (ppins[adxl_pins[0] - 1].value)) {
-        unsigned char addr = 0x53;
+        unsigned char addr = 0x1D;
 
         if (adxl_pins[3]) {
-            if (ppins[adxl_pins[3] - 1].value)
-                addr |= 0x01;
+            if (ppins[adxl_pins[3] - 1].value == 0)
+                addr = 0x53;
         }
 
         adxl345_set_addr(&adxl, addr);
@@ -260,7 +260,7 @@ void cpart_ADXL345::PostProcess(void) {
     if (adxl.update) {
         if (adxl.regs[DATA_FORMAT] & 0x8) {  // FULL_RES
             switch (adxl.regs[DATA_FORMAT] & 0x03) {
-                case 0:                      // 2g
+                case 0:  // 2g
                     asens = 256 / 50.0;
                     break;
                 case 1:  // 4g

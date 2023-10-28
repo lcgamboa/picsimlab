@@ -499,6 +499,7 @@ bool CSpareParts::LoadConfig(lxString fname, const int disable_debug) {
                     parts[partsc_]->SetOrientation(orient);
                     parts[partsc_]->SetScale(scale);
                     parts[partsc_]->SetUpdate(1);
+                    parts[partsc_]->Reset();
                 }
                 partsc_++;
             } else {

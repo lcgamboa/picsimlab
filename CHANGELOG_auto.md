@@ -10,6 +10,8 @@
 
 ### Changes
 
+* Change vterm font to monospaced. [lcgamboa]
+
 * Rename speed label from Clk to IO in qemu boards. [lcgamboa]
 
 * Draw the spare part before clicking in the window when a new part is added. [lcgamboa]

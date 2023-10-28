@@ -178,11 +178,11 @@ void cpart_bmp280::PreProcess(void) {
     const picpin* ppins = SpareParts.GetPinsValues();
     sen_bmp280_setPressTemp(&bmp280, (4.0 * (200 - values[0]) + 300), (0.625 * (200 - values[1]) - 40));
     if ((bmp280.i2c_mode) && (input_pins[2]) && (ppins[input_pins[2] - 1].value)) {
-        unsigned char addr = 0x76;
+        unsigned char addr = 0x77;
 
         if (output_pins[0]) {
-            if (ppins[output_pins[0] - 1].value)
-                addr |= 0x01;
+            if (ppins[output_pins[0] - 1].value == 0)
+                addr = 0x76;
         }
 
         sen_bmp280_set_addr(&bmp280, addr);
