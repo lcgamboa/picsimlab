@@ -702,7 +702,7 @@ void cboard_DevKitC::Run_CPU(void) {
         return;
     }
 
-    if (PICSimLab.GetUseDSRReset()) {
+    if (serial_open && PICSimLab.GetUseDSRReset()) {
         static unsigned int status_ = 0;
         unsigned int status = qemu_picsimlab_get_TIOCM();
 
