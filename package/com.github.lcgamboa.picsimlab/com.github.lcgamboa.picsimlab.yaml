@@ -102,6 +102,9 @@ modules:
             branch: picsimlab-stm32 
       - name: qemu-esp32
         buildsystem: simple
+        build-options:
+          build-args:
+            - --share=network
         build-commands:
           - ./build_libqemu-esp32.sh
           - strip build/libqemu-xtensa.so

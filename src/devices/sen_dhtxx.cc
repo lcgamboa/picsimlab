@@ -86,11 +86,11 @@ unsigned char sen_dhtxx_io(sen_dhtxx_t* dhtxx, const unsigned char data) {
         int pulse = dhtxx->pboard->GetInstCounter_us(dhtxx->start);
         int pmin, pmax;
         if (dhtxx->type == DHT11) {
-            pmin = 18000;
-            pmax = 30000;
-        } else {  // DHT22
-            pmin = 1000;
-            pmax = 10000;
+            pmin = 17500;  // 18000 min - 500 tol
+            pmax = 30500;  // 30000 max + 500 tol
+        } else {           // DHT22
+            pmin = 500;    // 1000 min  - 500 tol
+            pmax = 10500;  // 10000 max + 500 tol
         }
 
         if ((pulse > pmin) && (pulse < pmax)) {  // valid start

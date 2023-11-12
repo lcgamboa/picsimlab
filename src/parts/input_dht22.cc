@@ -186,8 +186,17 @@ void cpart_dht22::OnMouseMove(uint inputId, uint button, uint x, uint y, uint st
                 output_ids[O_PO1]->update = 1;
             }
             break;
+        case I_PO2:
+            if (active[1]) {
+                values[1] = (y - input_ids[I_PO2]->y1) * 1.66;
+                if (values[1] > 200)
+                    values[1] = 200;
+                output_ids[O_PO2]->update = 1;
+            }
+            break;
         default:
             active[0] = 0;
+            active[1] = 0;
             break;
     }
 }
