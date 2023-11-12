@@ -322,22 +322,36 @@ lxString cpart_vterm::WritePreferences(void) {
     char prefs[256];
 
     if (wvterm) {
-        sprintf(prefs, "%hhu,%hhu,%hhu,%u,%hhu,%i,%i", pins[0], pins[1], lending, vterm_speed, show, wvterm->GetX(),
-                wvterm->GetY());
+        sprintf(prefs, "%hhu,%hhu,%hhu,%u,%hhu,%i,%i,%i,%i", pins[0], pins[1], lending, vterm_speed, show,
+                wvterm->GetX(), wvterm->GetY(), wvterm->GetWidth(), wvterm->GetHeight());
     } else {
-        sprintf(prefs, "%hhu,%hhu,%hhu,%u,%hhu,%i,%i", pins[0], pins[1], lending, vterm_speed, show, 100, 100);
+        sprintf(prefs, "%hhu,%hhu,%hhu,%u,%hhu,%i,%i,%i,%i", pins[0], pins[1], lending, vterm_speed, show, 100, 100,
+                530, 400);
     }
 
     return prefs;
 }
 
 void cpart_vterm::ReadPreferences(lxString value) {
-    int x, y;
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%u,%hhu,%i,%i", &pins[0], &pins[1], &lending, &vterm_speed, &show, &x, &y);
+    int x, y, w, h;
+    int ret = sscanf(value.c_str(), "%hhu,%hhu,%hhu,%u,%hhu,%i,%i,%i,%i", &pins[0], &pins[1], &lending, &vterm_speed,
+                     &show, &x, &y, &w, &h);
     show |= 0x80;
     if (wvterm) {
         wvterm->SetX(x);
         wvterm->SetY(y);
+        if (ret != 9) {  // for compatibility with older versions
+            w = 530;
+            h = 400;
+        }
+        if (w < 100) {
+            w = 100;
+        }
+        if (h < 100) {
+            h = 100;
+        }
+        wvterm->SetWidth(w);
+        wvterm->SetHeight(h);
     }
     Reset();
 }
