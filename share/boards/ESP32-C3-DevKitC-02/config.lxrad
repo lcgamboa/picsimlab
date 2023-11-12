@@ -192,7 +192,7 @@
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <EvOnDropFile type="Event">FALSE</EvOnDropFile>
-  <Text type="lxString">Enable Wifi (-nic user,model=esp32_wifi,net=192.168.4.0/24)</Text>
+  <Text type="lxString">Enable Wifi (-nic user,model=esp32c3_wifi,id=u1,net=192.168.4.0/24)</Text>
   <Check type="Int">0</Check>
   <EvOnCheckBox type="Event">FALSE</EvOnCheckBox>
 </checkbox1>
@@ -206,7 +206,7 @@
   <Height type="uint">25</Height>
   <Hint type="lxString"></Hint>
   <Enable type="bool">1</Enable>
-  <Visible type="bool">0</Visible>
+  <Visible type="bool">1</Visible>
   <Color type="lxString">#000001</Color>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">FALSE</EvMouseMove>
@@ -221,7 +221,7 @@
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <EvOnDropFile type="Event">FALSE</EvOnDropFile>
-  <Text type="lxString">Disable WatchDog (-global driver=timer.esp32.timg,property=wdt_disable,value=true)</Text>
+  <Text type="lxString">Disable WatchDog (-global driver=timer.esp32c3.timg,property=wdt_disable,value=true)</Text>
   <Check type="Int">0</Check>
   <EvOnCheckBox type="Event">FALSE</EvOnCheckBox>
 </checkbox2>
@@ -264,7 +264,7 @@
   <Height type="uint">25</Height>
   <Hint type="lxString"></Hint>
   <Enable type="bool">1</Enable>
-  <Visible type="bool">0</Visible>
+  <Visible type="bool">1</Visible>
   <Color type="lxString">#000001</Color>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">FALSE</EvMouseMove>
@@ -279,7 +279,7 @@
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <EvOnDropFile type="Event">FALSE</EvOnDropFile>
-  <Text type="lxString">Enable Ethernet (-nic user,model=open_eth,net=192.168.3.0/24)</Text>
+  <Text type="lxString">Enable Ethernet (-nic user,model=open_eth,id=u2,net=192.168.3.0/24)</Text>
   <Check type="Int">0</Check>
   <EvOnCheckBox type="Event">FALSE</EvOnCheckBox>
 </checkbox4>

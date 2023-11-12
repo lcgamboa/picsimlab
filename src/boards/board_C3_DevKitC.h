@@ -42,8 +42,8 @@ private:
     void RegisterRemoteControl(void) override;
     CPWindow* wconfig;
     // int ConfEnableWifi;
-    // int ConfDisableWdt;
-    // int ConfEnableEthernet;
+    int ConfDisableWdt;
+    int ConfEnableEthernet;
 
 protected:
     void BoardOptions(int* argc, char** argv) override;

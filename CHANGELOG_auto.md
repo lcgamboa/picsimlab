@@ -2,6 +2,8 @@
 
 ### New
 
+* Add support to enable/disable watchdog and ethernet support of ESP32-C3. [lcgamboa]
+
 * Add suport to ESP32 LEDC (PWM output) [lcgamboa]
 
 * SD card support to CRC16 on write block and CRC7 on commands. [lcgamboa]
@@ -9,6 +11,10 @@
 * SD card initial support to CRC16 on (ESP32 compatibility). [lcgamboa]
 
 ### Changes
+
+* Add support to save Vterm window size. [lcgamboa]
+
+* Add time tolerance to reset pulse of DHTxx sensors. [lcgamboa]
 
 * Change vterm font to monospaced. [lcgamboa]
 
@@ -21,6 +27,10 @@
 * Add support to change ambient temperature and LM35 voltage offset in TempSys spare part. [lcgamboa]
 
 ### Fix
+
+* Fix invalid serial read on qemu based boards. [lcgamboa]
+
+* Fix I2C address of adxl345 and bmp280. [lcgamboa]
 
 * Remove simulation reset when minimize/maximize on Windows. [lcgamboa]
 

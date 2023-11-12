@@ -213,8 +213,8 @@ cboard_C3_DevKitC::cboard_C3_DevKitC(void) {
     ReadMaps();      // Read input and output board maps
 
     // ConfEnableWifi = 1;
-    // ConfDisableWdt = 1;
-    // ConfEnableEthernet = 0;
+    ConfDisableWdt = 1;
+    ConfEnableEthernet = 0;
 
     application_offset = 0x10000;
 
@@ -367,8 +367,8 @@ void cboard_C3_DevKitC::WritePreferences(void) {
 
     PICSimLab.SavePrefs(lxT("ESP32_C3_DevKitC_cfgeserial"), itoa(ConfEnableSerial));
     // PICSimLab.SavePrefs(lxT("ESP32_C3_DevKitC_cfgewifi"), itoa(ConfEnableWifi));
-    // PICSimLab.SavePrefs(lxT("ESP32_C3_DevKitC_cfgdwdt"), itoa(ConfDisableWdt));
-    // PICSimLab.SavePrefs(lxT("ESP32_C3_DevKitC_cfgeeth"), itoa(ConfEnableEthernet));
+    PICSimLab.SavePrefs(lxT("ESP32_C3_DevKitC_cfgdwdt"), itoa(ConfDisableWdt));
+    PICSimLab.SavePrefs(lxT("ESP32_C3_DevKitC_cfgeeth"), itoa(ConfEnableEthernet));
     PICSimLab.SavePrefs(lxT("ESP32_C3_DevKitC_cfguextra"), itoa(use_cmdline_extra));
     PICSimLab.SavePrefs(lxT("ESP32_C3_DevKitC_cmdextra"), cmdline_extra);
     PICSimLab.SavePrefs(lxT("ESP32_C3_DevKitC_app_off"), itoa(application_offset));
@@ -400,13 +400,13 @@ void cboard_C3_DevKitC::ReadPreferences(char* name, char* value) {
     if (!strcmp(name, "ESP32_C3_DevKitC_cfgewifi")) {
         ConfEnableWifi = atoi(value);
     }
+    */
     if (!strcmp(name, "ESP32_C3_DevKitC_cfgdwdt")) {
         ConfDisableWdt = atoi(value);
     }
     if (!strcmp(name, "ESP32_C3_DevKitC_cfgeeth")) {
         ConfEnableEthernet = atoi(value);
     }
-    */
     if (!strcmp(name, "ESP32_C3_DevKitC_cfguextra")) {
         use_cmdline_extra = atoi(value);
     }
@@ -670,17 +670,17 @@ void cboard_C3_DevKitC::BoardOptions(int* argc, char** argv) {
     /*
     if (ConfEnableWifi) {
         strcpy(argv[(*argc)++], "-nic");
-        strcpy(argv[(*argc)++], "user,model=esp32_wifi,net=192.168.4.0/24");
+        strcpy(argv[(*argc)++], "user,model=esp32_wifi,id=u1,net=192.168.4.0/24");
     }
+    */
     if (ConfDisableWdt) {
         strcpy(argv[(*argc)++], "-global");
-        strcpy(argv[(*argc)++], "driver=timer.esp32.timg,property=wdt_disable,value=true");
+        strcpy(argv[(*argc)++], "driver=timer.esp32c3.timg,property=wdt_disable,value=true");
     }
     if (ConfEnableEthernet) {
         strcpy(argv[(*argc)++], "-nic");
-        strcpy(argv[(*argc)++], "user,model=open_eth,net=192.168.3.0/24");
+        strcpy(argv[(*argc)++], "user,model=open_eth,id=u2,net=192.168.3.0/24");
     }
-    */
 }
 
 void cboard_C3_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x, uint y, uint state) {
@@ -753,8 +753,8 @@ void cboard_C3_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x
 
                     ((CCheckBox*)wconfig->GetChildByName("checkbox5"))->SetCheck(ConfEnableSerial);
                     //((CCheckBox*)wconfig->GetChildByName("checkbox1"))->SetCheck(ConfEnableWifi);
-                    //((CCheckBox*)wconfig->GetChildByName("checkbox2"))->SetCheck(ConfDisableWdt);
-                    //((CCheckBox*)wconfig->GetChildByName("checkbox4"))->SetCheck(ConfEnableEthernet);
+                    ((CCheckBox*)wconfig->GetChildByName("checkbox2"))->SetCheck(ConfDisableWdt);
+                    ((CCheckBox*)wconfig->GetChildByName("checkbox4"))->SetCheck(ConfEnableEthernet);
                     ((CCheckBox*)wconfig->GetChildByName("checkbox3"))->SetCheck(use_cmdline_extra);
 
                     ((CButton*)wconfig->GetChildByName("button1"))->EvMouseButtonRelease = PICSimLab.board_ButtonEvent;
@@ -774,8 +774,8 @@ void cboard_C3_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x
         case 5: {
             ConfEnableSerial = ((CCheckBox*)wconfig->GetChildByName("checkbox5"))->GetCheck();
             // ConfEnableWifi = ((CCheckBox*)wconfig->GetChildByName("checkbox1"))->GetCheck();
-            // ConfDisableWdt = ((CCheckBox*)wconfig->GetChildByName("checkbox2"))->GetCheck();
-            // ConfEnableEthernet = ((CCheckBox*)wconfig->GetChildByName("checkbox4"))->GetCheck();
+            ConfDisableWdt = ((CCheckBox*)wconfig->GetChildByName("checkbox2"))->GetCheck();
+            ConfEnableEthernet = ((CCheckBox*)wconfig->GetChildByName("checkbox4"))->GetCheck();
             use_cmdline_extra = ((CCheckBox*)wconfig->GetChildByName("checkbox3"))->GetCheck();
             CText* Text2 = (CText*)wconfig->GetChildByName("text2");
             cmdline_extra = "";
