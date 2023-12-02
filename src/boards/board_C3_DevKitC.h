@@ -41,7 +41,7 @@ private:
     unsigned char p_BOOT;
     void RegisterRemoteControl(void) override;
     CPWindow* wconfig;
-    // int ConfEnableWifi;
+    int ConfEnableWifi;
     int ConfDisableWdt;
     int ConfEnableEthernet;
 

@@ -177,7 +177,7 @@
   <Height type="uint">25</Height>
   <Hint type="lxString"></Hint>
   <Enable type="bool">1</Enable>
-  <Visible type="bool">0</Visible>
+  <Visible type="bool">1</Visible>
   <Color type="lxString">#000001</Color>
   <PopupMenu type="PopupMenu">NULL</PopupMenu>
   <EvMouseMove type="Event">FALSE</EvMouseMove>

@@ -76,6 +76,9 @@ void bitbang_pwm_init(bitbang_pwm_t* pwm, board* pboard, const unsigned char cha
     pwm->TimerID = pwm->pboard->TimerRegister_us(2, bitbang_pwm_ctrl_callback, pwm);
     pwm->pboard->TimerChange_us(pwm->TimerID, 2);  // FIXME only 5kHz frequency
     pwm->pboard->TimerSetState(pwm->TimerID, 0);   // disabled
+    memset(pwm->pins, 0, LEDC_MAX);
+    memset(pwm->out, 0, LEDC_MAX);
+    memset(pwm->duty, 0, LEDC_MAX);
 }
 
 void bitbang_pwm_end(bitbang_pwm_t* pwm) {

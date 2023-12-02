@@ -212,7 +212,7 @@ cboard_C3_DevKitC::cboard_C3_DevKitC(void) {
     Proc = "ESP32";  // default microcontroller if none defined in preferences
     ReadMaps();      // Read input and output board maps
 
-    // ConfEnableWifi = 1;
+    ConfEnableWifi = 1;
     ConfDisableWdt = 1;
     ConfEnableEthernet = 0;
 
@@ -366,7 +366,7 @@ void cboard_C3_DevKitC::WritePreferences(void) {
     PICSimLab.SavePrefs(lxT("ESP32_C3_DevKitC_icount"), itoa(icount));
 
     PICSimLab.SavePrefs(lxT("ESP32_C3_DevKitC_cfgeserial"), itoa(ConfEnableSerial));
-    // PICSimLab.SavePrefs(lxT("ESP32_C3_DevKitC_cfgewifi"), itoa(ConfEnableWifi));
+    PICSimLab.SavePrefs(lxT("ESP32_C3_DevKitC_cfgewifi"), itoa(ConfEnableWifi));
     PICSimLab.SavePrefs(lxT("ESP32_C3_DevKitC_cfgdwdt"), itoa(ConfDisableWdt));
     PICSimLab.SavePrefs(lxT("ESP32_C3_DevKitC_cfgeeth"), itoa(ConfEnableEthernet));
     PICSimLab.SavePrefs(lxT("ESP32_C3_DevKitC_cfguextra"), itoa(use_cmdline_extra));
@@ -396,11 +396,11 @@ void cboard_C3_DevKitC::ReadPreferences(char* name, char* value) {
     if (!strcmp(name, "ESP32_C3_DevKitC_cfgeserial")) {
         ConfEnableSerial = atoi(value);
     }
-    /*
+
     if (!strcmp(name, "ESP32_C3_DevKitC_cfgewifi")) {
         ConfEnableWifi = atoi(value);
     }
-    */
+
     if (!strcmp(name, "ESP32_C3_DevKitC_cfgdwdt")) {
         ConfDisableWdt = atoi(value);
     }
@@ -567,7 +567,7 @@ void cboard_C3_DevKitC::Run_CPU_ns(uint64_t time) {
 
     const float RNSTEP = 200.0 * pinc * inc_ns / TTIMEOUT;
 
-    MSetPin(IO0, p_BOOT);
+    MSetPin(IO9, p_BOOT);
 
     for (uint64_t c = 0; c < time; c += inc_ns) {
         if (ns_count < inc_ns) {
@@ -667,12 +667,11 @@ void cboard_C3_DevKitC::board_Event(CControl* control) {
 }
 
 void cboard_C3_DevKitC::BoardOptions(int* argc, char** argv) {
-    /*
     if (ConfEnableWifi) {
         strcpy(argv[(*argc)++], "-nic");
-        strcpy(argv[(*argc)++], "user,model=esp32_wifi,id=u1,net=192.168.4.0/24");
+        strcpy(argv[(*argc)++], "user,model=esp32c3_wifi,id=u1,net=192.168.4.0/24");
     }
-    */
+
     if (ConfDisableWdt) {
         strcpy(argv[(*argc)++], "-global");
         strcpy(argv[(*argc)++], "driver=timer.esp32c3.timg,property=wdt_disable,value=true");
@@ -752,7 +751,7 @@ void cboard_C3_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x
                     }
 
                     ((CCheckBox*)wconfig->GetChildByName("checkbox5"))->SetCheck(ConfEnableSerial);
-                    //((CCheckBox*)wconfig->GetChildByName("checkbox1"))->SetCheck(ConfEnableWifi);
+                    ((CCheckBox*)wconfig->GetChildByName("checkbox1"))->SetCheck(ConfEnableWifi);
                     ((CCheckBox*)wconfig->GetChildByName("checkbox2"))->SetCheck(ConfDisableWdt);
                     ((CCheckBox*)wconfig->GetChildByName("checkbox4"))->SetCheck(ConfEnableEthernet);
                     ((CCheckBox*)wconfig->GetChildByName("checkbox3"))->SetCheck(use_cmdline_extra);
@@ -773,7 +772,7 @@ void cboard_C3_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x
         } break;
         case 5: {
             ConfEnableSerial = ((CCheckBox*)wconfig->GetChildByName("checkbox5"))->GetCheck();
-            // ConfEnableWifi = ((CCheckBox*)wconfig->GetChildByName("checkbox1"))->GetCheck();
+            ConfEnableWifi = ((CCheckBox*)wconfig->GetChildByName("checkbox1"))->GetCheck();
             ConfDisableWdt = ((CCheckBox*)wconfig->GetChildByName("checkbox2"))->GetCheck();
             ConfEnableEthernet = ((CCheckBox*)wconfig->GetChildByName("checkbox4"))->GetCheck();
             use_cmdline_extra = ((CCheckBox*)wconfig->GetChildByName("checkbox3"))->GetCheck();
