@@ -1,3 +1,48 @@
+## v0.9.1 (2023-12-10)
+
+### New
+
+* Add support to ESP32C3 WIFI and ESP-NOW protocol. [lcgamboa]
+
+* Add support to enable/disable watchdog and ethernet support of ESP32-C3. [lcgamboa]
+
+* Add suport to ESP32 LEDC (PWM output) [lcgamboa]
+
+* SD card support to CRC16 on write block and CRC7 on commands. [lcgamboa]
+
+### Changes
+
+* Add support to save Vterm window size. [lcgamboa]
+
+* Add time tolerance to reset pulse of DHTxx sensors. [lcgamboa]
+
+* Change vterm font to monospaced. [lcgamboa]
+
+* Rename speed label from Clk to IO in qemu boards. [lcgamboa]
+
+* Draw the spare part before clicking in the window when a new part. [lcgamboa]
+
+* Scripts updated and max flash file size fixed for qemu. [lcgamboa]
+
+* Add support to change ambient temperature and LM35 voltage offset in TempSys spare part. [lcgamboa]
+
+### Fix
+
+* Fix invalid serial read on qemu based boards. [lcgamboa]
+
+* Fix I2C address of adxl345 and bmp280. [lcgamboa]
+
+* Remove simulation reset when minimize/maximize on Windows. [lcgamboa]
+
+* Fix SDCard spare parts CIPO signal. [lcgamboa]
+
+* Fix invalid serial handle in Windows. [lcgamboa]
+
+* Fixes the issue of opening multiple workspaces in multiple instances simultaneously. [lcgamboa]
+
+* Fix Arduino Uno board missing spare parts when open workspace files. [lcgamboa]
+
+
 ## v0.9.0 (2023-07-29)
 
 ### New
