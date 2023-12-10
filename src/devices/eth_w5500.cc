@@ -67,7 +67,7 @@ typedef unsigned int u_int32_t;
 #define readWord(x, addr) ((x[addr] << 8) | x[addr + 1])
 #define writeWord(x, addr, val) \
     x[addr] = (val) >> 8;       \
-    x[addr + 1] = (val)&0x00FF
+    x[addr + 1] = (val) & 0x00FF
 
 void setblock(int sock_descriptor);
 void setnblock(int sock_descriptor);
@@ -462,9 +462,9 @@ void eth_w5500_rst(eth_w5500_t* eth) {
     memset(eth->status, 0, 8);
     memset(eth->bindp, 0, 8 * 2);
 
-    eth->Common[CR_VERSIONR] = 0x04;       // version
+    eth->Common[CR_VERSIONR] = 0x04;  // version
     if (eth->link) {
-        eth->Common[CR_PHYCFGR] |= 0x01;   // link on
+        eth->Common[CR_PHYCFGR] |= 0x01;  // link on
     } else {
         eth->Common[CR_PHYCFGR] &= ~0x01;  // link off
     }
@@ -533,12 +533,12 @@ static int scont = 0;
 
 typedef struct dhcp {
     // fixed 240 bytes
-    u_int8_t opcode;      // Operation Code
-    u_int8_t htype;       // Hardware Type
-    u_int8_t hlen;        // Hardware Address Length
-    u_int8_t hops;        // Hops
-    u_int32_t xid;        // Transaction Identifier
-    u_int16_t secs;       // Seconds
+    u_int8_t opcode;  // Operation Code
+    u_int8_t htype;   // Hardware Type
+    u_int8_t hlen;    // Hardware Address Length
+    u_int8_t hops;    // Hops
+    u_int32_t xid;    // Transaction Identifier
+    u_int16_t secs;   // Seconds
     u_int16_t flags;
     u_int8_t ciaddr[4];   // Client IP Address
     u_int8_t yiaddr[4];   // Your IP Address
@@ -723,7 +723,7 @@ static void eth_w5500_fake_dhcp_reply(eth_w5500_t* eth, int n) {
 
 #ifdef DUMP
     sprintf(sfname, "/tmp/%03i_recv_udp.bin", scont++);
-    fouts = fopen(sfname, "w");
+    fouts = fopen(sfname, "wb");
     fwrite(temp_buff, s, 1, fouts);
     fclose(fouts);
 #endif
@@ -871,7 +871,7 @@ void eth_w5500_process(eth_w5500_t* eth) {
 
 #ifdef DUMP
                         sprintf(sfname, "/tmp/%03i_recv_tcp.bin", scont++);
-                        fouts = fopen(sfname, "w");
+                        fouts = fopen(sfname, "wb");
                         fwrite(temp_buff, s, 1, fouts);
                         fclose(fouts);
 #endif
@@ -1003,7 +1003,7 @@ void eth_w5500_process(eth_w5500_t* eth) {
 
 #ifdef DUMP
                         sprintf(sfname, "/tmp/%03i_recv_udp.bin", scont++);
-                        fouts = fopen(sfname, "w");
+                        fouts = fopen(sfname, "wb");
                         fwrite(temp_buff, s, 1, fouts);
                         fclose(fouts);
 #endif
@@ -1052,8 +1052,8 @@ unsigned short eth_w5500_io(eth_w5500_t* eth, unsigned char mosi, unsigned char 
         case SPI_DATA:
 
             switch (eth->bb_spi.byte << 3) {
-                case 0:   // nothing
-                case 8:   // half address
+                case 0:  // nothing
+                case 8:  // half address
                     break;
                 case 16:  // full address
                     eth->addr = eth->bb_spi.insr;
@@ -1127,7 +1127,7 @@ unsigned short eth_w5500_io(eth_w5500_t* eth, unsigned char mosi, unsigned char 
                                 eth->bb_spi.insr, eth->bb_spi.outsr, offset);
                     }
                     break;
-                default:      // data
+                default:  // data
                     offset = ((eth->bb_spi.byte << 3) - 32) / 8;
                     if (RWB)  // write
                     {
@@ -1330,7 +1330,7 @@ unsigned short eth_w5500_io(eth_w5500_t* eth, unsigned char mosi, unsigned char 
                                                                 size = readWord(eth->Socket[n], Sn_TX_WR0);
 #ifdef DUMP
                                                                 sprintf(sfname, "/tmp/%03i_send_tcp.bin", scont++);
-                                                                fouts = fopen(sfname, "w");
+                                                                fouts = fopen(sfname, "wb");
                                                                 fwrite(&eth->TX_Mem[eth->TX_ptr[n]], size, 1, fouts);
                                                                 fclose(fouts);
 #endif
@@ -1376,7 +1376,7 @@ unsigned short eth_w5500_io(eth_w5500_t* eth, unsigned char mosi, unsigned char 
                                                                 size = readWord(eth->Socket[n], Sn_TX_WR0);
 #ifdef DUMP
                                                                 sprintf(sfname, "/tmp/%03i_send_udp.bin", scont++);
-                                                                fouts = fopen(sfname, "w");
+                                                                fouts = fopen(sfname, "wb");
                                                                 fwrite(&eth->TX_Mem[eth->TX_ptr[n]], size, 1, fouts);
                                                                 fclose(fouts);
 #endif
@@ -1389,7 +1389,7 @@ unsigned short eth_w5500_io(eth_w5500_t* eth, unsigned char mosi, unsigned char 
                                                                 if (!strcmp(skt_addr,
                                                                             "255.255.255.255"))  // fake broadcast
                                                                 {
-                                                                    if (skt_port == 67)          // dhcp
+                                                                    if (skt_port == 67)  // dhcp
                                                                     {
                                                                         eth_w5500_fake_dhcp_reply(eth, n);
                                                                     }

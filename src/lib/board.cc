@@ -43,6 +43,9 @@ board::board(void) {
         Timers[i].Arg = NULL;
         Timers[i].Callback = NULL;
         Timers[i].Enabled = 0;
+        Timers[i].Reload = 0;
+        Timers[i].Timer = 0;
+        Timers[i].Tout = 0;
     }
     for (int i = 0; i < MAX_IDS; i++) {
         input_ids[i] = &input[i];

@@ -209,8 +209,10 @@ cboard_C3_DevKitC::cboard_C3_DevKitC(void) {
     SimType = QEMU_SIM_ESP32_C3;
     p_BOOT = 1;
 
-    Proc = "ESP32";  // default microcontroller if none defined in preferences
-    ReadMaps();      // Read input and output board maps
+    icount = 3;
+
+    Proc = "ESP32-C3";  // default microcontroller if none defined in preferences
+    ReadMaps();         // Read input and output board maps
 
     ConfEnableWifi = 1;
     ConfDisableWdt = 1;

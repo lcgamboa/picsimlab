@@ -89,7 +89,6 @@ static void vterm_uart_rx_callback(bitbang_uart_t* bu, void* arg) {
     }
 
     vt->count_in++;
-
     if (vt->count_in >= SBUFFMAX) {
         vt->count_in = 0;
         dprintf("vterm buffer overflow!\n");

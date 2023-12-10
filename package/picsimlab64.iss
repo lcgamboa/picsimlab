@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "PicsimLab"
-#define MyAppVersion "0.9.0_230729"
+#define MyAppVersion "0.9.1_231210"
 #define MyAppPublisher "lcgamboa@yahoo.com"
 #define MyAppURL "https://github.com/lcgamboa/picsimlab"
 #define MyAppExeName "picsimlab.exe"

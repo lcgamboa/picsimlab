@@ -29,7 +29,7 @@
 #include <stdio.h>
 #include "bitbang_uart.h"
 
-#define SBUFFMAX 512
+#define SBUFFMAX 2048
 
 typedef struct {
     bitbang_uart_t bb_uart;

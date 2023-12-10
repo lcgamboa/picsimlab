@@ -2,6 +2,8 @@
 
 ### New
 
+* Add WIFI support to ESP32C3 and ESP-NOW protocol. [lcgamboa]
+
 * Add support to enable/disable watchdog and ethernet support of ESP32-C3. [lcgamboa]
 
 * Add suport to ESP32 LEDC (PWM output) [lcgamboa]
@@ -43,6 +45,8 @@
 * Fix Arduino Uno board missing spare parts when open workspace files. [lcgamboa]
 
 ### Other
+
+* Version 0.9.1. [lcgamboa]
 
 * Version 0.9.0. [lcgamboa]
 

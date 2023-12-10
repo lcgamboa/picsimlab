@@ -581,7 +581,7 @@ void sdcard_set_filename(sdcard_t* sd, const char* fname) {
         fclose(sd->fd);
     }
 
-    sd->fd = fopen(fname, "r+");
+    sd->fd = fopen(fname, "r+b");
     if (sd->fd) {
         struct stat sb;
 
