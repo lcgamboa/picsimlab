@@ -72,7 +72,7 @@ public:
     bitbang_i2c_t master_i2c[2];
     bitbang_spi_t master_spi[2];
     bitbang_uart_t master_uart[3];
-    bitbang_pwm_t ledc;
+    bitbang_pwm_t pwm_out;
     void IoLockAccess(void) override;
     void IoUnlockAccess(void) override;
     int GetUARTRX(const int uart_num) override;

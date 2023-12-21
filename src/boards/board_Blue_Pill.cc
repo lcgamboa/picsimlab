@@ -43,6 +43,84 @@ enum {
     O_RST    // Reset button
 };
 
+// copied from qemu, must be the same
+enum {
+    STM32_PERIPH_UNDEFINED = -1,
+    STM32_RCC_PERIPH = 0,
+    STM32_GPIOA,
+    STM32_GPIOB,
+    STM32_GPIOC,
+    STM32_GPIOD,
+    STM32_GPIOE,
+    STM32_GPIOF,
+    STM32_GPIOG,
+    STM32_GPIOH,
+    STM32_GPIOI,
+    STM32_GPIOJ,
+    STM32_GPIOK,
+    STM32_SYSCFG,
+    STM32_AFIO_PERIPH,
+    STM32_UART1,
+    STM32_UART2,
+    STM32_UART3,
+    STM32_UART4,
+    STM32_UART5,
+    STM32_UART6,
+    STM32_UART7,
+    STM32_UART8,
+    STM32_ADC1,
+    STM32_ADC2,
+    STM32_ADC3,
+    STM32_DAC,
+    STM32_TIM1,
+    STM32_TIM2,
+    STM32_TIM3,
+    STM32_TIM4,
+    STM32_TIM5,
+    STM32_TIM6,
+    STM32_TIM7,
+    STM32_TIM8,
+    STM32_TIM9,
+    STM32_TIM10,
+    STM32_TIM11,
+    STM32_TIM12,
+    STM32_TIM13,
+    STM32_TIM14,
+    STM32_BKP,
+    STM32_PWR,
+    STM32_I2C1,
+    STM32_I2C2,
+    STM32_I2C3,
+    STM32_I2S2,
+    STM32_I2S3,
+    STM32_WWDG,
+    STM32_IWDG,
+    STM32_CAN1,
+    STM32_CAN2,
+    STM32_CAN,
+    STM32_USB,
+    STM32_SPI1,
+    STM32_SPI2,
+    STM32_SPI3,
+    STM32_EXTI_PERIPH,
+    STM32_SDIO,
+    STM32_FSMC,
+    STM32_RTC,
+    STM32_COMP,
+    STM_LCD,
+    STM32_CRC,
+    STM32_DMA1,
+    STM32_DMA2,
+    STM32_DCMI_PERIPH,
+    STM32_CRYP_PERIPH,
+    STM32_HASH_PERIPH,
+    STM32_RNG_PERIPH,
+
+    STM32_FLASH,
+    STM32_FLASH_REGS,
+    STM32_PERIPH_COUNT,
+};
+
 #define A 0x1000
 #define B 0x2000
 #define C 0x3000
@@ -99,6 +177,17 @@ static const short int pinmap[49] = {
     -1,      // 47 VSS
     -1       // 48 VDD
 };
+
+static unsigned char iopin(const unsigned short port, const unsigned int num) {
+    unsigned char pin = 0;
+    unsigned short value = port | num;
+    for (int i = 0; i < 49; i++) {
+        if (pinmap[i] == value) {
+            pin = i;
+        }
+    }
+    return pin;
+}
 
 const short int* cboard_Blue_Pill::GetPinMap(void) {
     return pinmap;
@@ -168,6 +257,8 @@ cboard_Blue_Pill::cboard_Blue_Pill(void) {
     master_uart[2].tx_pin = 0;
     master_uart[2].rx_pin = 0;
 
+    bitbang_pwm_init(&pwm_out, this, 20);
+
     if (PICSimLab.GetWindow()) {
         // label1
         label1 = new CLabel();
@@ -207,6 +298,7 @@ cboard_Blue_Pill::~cboard_Blue_Pill(void) {
         PICSimLab.GetWindow()->DestroyChild(label1);
         PICSimLab.GetWindow()->DestroyChild(combo1);
     }
+    bitbang_pwm_end(&pwm_out);
 }
 
 // Reset board status
@@ -687,113 +779,396 @@ void cboard_Blue_Pill::MSetAPin(int pin, float value) {
 }
 
 void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
-    if ((cfg & 0x8008) == 0x8008) {  // Alternate function
-        int pin = (cfg & 0x7FF0) >> 4;
+    if ((cfg & 0xF00008) == 0x800008) {  // Alternate function
+        int pin = (cfg & 0x0FF0) >> 4;
         int port = cfg & 0x0003;
-        uint32_t* uart_afio;
+        uint32_t* afio;
         // int cfg_ = (cfg & 0x000C) >> 2;
-        // printf("Extra CFG port(%i) pin[%02i]=0x%02X \n", port, pin, cfg_);
+        // printf("Extra CFG Alternate function port(%c) pin[%02i]=0x%02X \n", port + 'A', pin, cfg_);
 
         switch (port) {
             case 0:  // GPIOA
                 switch (pin) {
-                    case 2:  // uart2
-                        uart_afio = qemu_picsimlab_get_internals(0x1000 | 15);
-                        if (!(*uart_afio)) {
-                            master_uart[1].ctrl_on = 1;
-                            master_uart[1].tx_pin = 12;  // pa2
-                            master_uart[1].rx_pin = 13;  // pa3
+                    case 0:
+                        // tim2 ch1
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
+                        if (*afio == 0) {
+                            pwm_out.pins[(1 << 2) + 0] = iopin(A, 0);
                         }
+                        break;
+                    case 1:
+                        // tim2 ch2
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
+                        if (*afio == 0) {
+                            pwm_out.pins[(1 << 2) + 1] = iopin(A, 1);
+                        }
+                        break;
+                    case 2:
+                        // uart2
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_UART2);
+                        if (!(*afio)) {
+                            master_uart[1].tx_pin = iopin(A, 2);
+                            master_uart[1].rx_pin = iopin(A, 3);
+                            master_uart[1].ctrl_on = 1;
+                            break;
+                        }
+                        // tim2 ch3
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
+                        if (*afio == 0) {
+                            pwm_out.pins[(1 << 2) + 2] = iopin(A, 2);
+                        }
+                        break;
+                    case 3:
+                        // uart2
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_UART2);
+                        if (!(*afio)) {
+                            master_uart[1].tx_pin = iopin(A, 2);
+                            master_uart[1].rx_pin = iopin(A, 3);
+                            master_uart[1].ctrl_on = 1;
+                            break;
+                        }
+                        // tim2 ch4
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
+                        if (*afio == 0) {
+                            pwm_out.pins[(1 << 2) + 3] = iopin(A, 3);
+                        }
+                        break;
+                    case 4:
                         break;
                     case 5:
-                    case 6:
-                    case 7:  // spi1
-                        uart_afio = qemu_picsimlab_get_internals(0x1000 | 53);
-                        if (!(*uart_afio)) {
+                        // spi1
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_SPI1);
+                        if (!(*afio)) {
+                            master_spi[0].sck_pin = iopin(A, 5);
+                            master_spi[0].copi_pin = iopin(A, 7);
+                            master_spi[0].cipo_pin = iopin(A, 6);
                             master_spi[0].ctrl_on = 1;
-                            master_spi[0].sck_pin = 15;   // pa5
-                            master_spi[0].copi_pin = 17;  // pa7
-                            master_spi[0].cipo_pin = 16;  // pa6
                         }
                         break;
-                    case 9:  // uart1
-                        uart_afio = qemu_picsimlab_get_internals(0x1000 | 14);
-                        if (!(*uart_afio)) {
-                            master_uart[0].ctrl_on = 1;
-                            master_uart[0].tx_pin = 30;  // pa9
-                            master_uart[0].rx_pin = 31;  // pa10
+                    case 6:
+                        // spi1
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_SPI1);
+                        if (!(*afio)) {
+                            master_spi[0].sck_pin = iopin(A, 5);
+                            master_spi[0].copi_pin = iopin(A, 7);
+                            master_spi[0].cipo_pin = iopin(A, 6);
+                            master_spi[0].ctrl_on = 1;
+                            break;
                         }
+                        // tim3 ch1
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
+                        if (*afio == 0) {
+                            pwm_out.pins[(2 << 2) + 0] = iopin(A, 6);
+                        }
+                        break;
+                    case 7:
+                        // spi1
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_SPI1);
+                        if (!(*afio)) {
+                            master_spi[0].sck_pin = iopin(A, 5);
+                            master_spi[0].copi_pin = iopin(A, 7);
+                            master_spi[0].cipo_pin = iopin(A, 6);
+                            master_spi[0].ctrl_on = 1;
+                            break;
+                        }
+                        // tim1_ch1n (alt)
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
+                        if (*afio == 1) {
+                            pwm_out.pins[(0 << 2) + 0] = iopin(A, 7);
+                            break;
+                        }
+                        // tim3 ch2
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
+                        if (*afio == 0) {
+                            pwm_out.pins[(2 << 2) + 1] = iopin(A, 7);
+                        }
+                        break;
+                    case 8:
+                        // tim1 ch1
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
+                        if (*afio == 0) {
+                            pwm_out.pins[(0 << 2) + 0] = iopin(A, 8);
+                        }
+                        break;
+                    case 9:
+                        // uart1
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_UART1);
+                        if (!(*afio)) {
+                            master_uart[0].tx_pin = iopin(A, 9);
+                            master_uart[0].rx_pin = iopin(A, 10);
+                            master_uart[0].ctrl_on = 1;
+                            break;
+                        }
+                        // tim1 ch2
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
+                        if (*afio == 0) {
+                            pwm_out.pins[(0 << 2) + 1] = iopin(A, 9);
+                        }
+                        break;
+                    case 10:
+                        // uart1
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_UART1);
+                        if (!(*afio)) {
+                            master_uart[0].tx_pin = iopin(A, 9);
+                            master_uart[0].rx_pin = iopin(A, 10);
+                            master_uart[0].ctrl_on = 1;
+                            break;
+                        }
+                        // tim1 ch3
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
+                        if (*afio == 0) {
+                            pwm_out.pins[(0 << 2) + 2] = iopin(A, 10);
+                        }
+                        break;
+                    case 11:
+                        // tim1 ch4
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
+                        if (*afio == 0) {
+                            pwm_out.pins[(0 << 2) + 3] = iopin(A, 11);
+                        }
+                        break;
+                    case 12:
+                        break;
+                    case 13:
+                        break;
+                    case 14:
+                        break;
+                    case 15:
                         break;
                 }
                 break;
             case 1:  // GPIOB
                 switch (pin) {
-                    case 3:
-                    case 4:
-                    case 5:  // spi1 (alt)
-                        uart_afio = qemu_picsimlab_get_internals(0x1000 | 53);
-                        if (!(*uart_afio)) {
-                            master_spi[0].ctrl_on = 1;
-                            master_spi[0].sck_pin = 39;   // pb3
-                            master_spi[0].copi_pin = 41;  // pb5
-                            master_spi[0].cipo_pin = 40;  // pb4
+                    case 0:
+                        // tim1_ch2n (alt)
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
+                        if (*afio == 1) {
+                            pwm_out.pins[(0 << 2) + 1] = iopin(B, 0);
+                            break;
+                        }
+                        // tim3_ch3
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
+                        if (*afio == 0) {
+                            pwm_out.pins[(2 << 2) + 2] = iopin(B, 0);
                         }
                         break;
-                    case 6:  // uart1 (alt) and i2c
-                        uart_afio = qemu_picsimlab_get_internals(0x1000 | 14);
-                        if ((*uart_afio)) {
-                            master_uart[0].ctrl_on = 1;
-                            master_uart[0].tx_pin = 42;  // pb6
-                            master_uart[0].rx_pin = 43;  // pb7
+                    case 1:
+                        // tim1_ch3n (alt)
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
+                        if (*afio == 1) {
+                            pwm_out.pins[(0 << 2) + 2] = iopin(B, 1);
+                            break;
                         }
-                        // break;
-                    case 7:  // i2c0
-                        uart_afio = qemu_picsimlab_get_internals(0x1000 | 42);
-                        if (!(*uart_afio)) {
+                        // tim3_ch4
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
+                        if (*afio == 0) {
+                            pwm_out.pins[(2 << 2) + 3] = iopin(B, 1);
+                        }
+
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        // tim2_ch2n (alt)
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
+                        if (*afio == 1) {
+                            pwm_out.pins[(1 << 2) + 1] = iopin(B, 3);
+                            break;
+                        }
+                    case 4:
+                        // tim3_ch1n (alt)
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
+                        if (*afio == 2) {
+                            pwm_out.pins[(2 << 2) + 0] = iopin(B, 4);
+                            break;
+                        }
+                    case 5:
+                        // spi1 (alt)
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_SPI1);
+                        if (!(*afio)) {
+                            master_spi[0].sck_pin = iopin(B, 3);
+                            master_spi[0].copi_pin = iopin(B, 5);
+                            master_spi[0].cipo_pin = iopin(B, 4);
+                            master_spi[0].ctrl_on = 1;
+                            break;
+                        }
+                        // tim3_ch2n (alt)
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
+                        if (*afio == 2) {
+                            pwm_out.pins[(2 << 2) + 1] = iopin(B, 5);
+                            break;
+                        }
+                        break;
+                    case 6:
+                        // uart1 (alt)
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_UART1);
+                        if ((*afio)) {
+                            master_uart[0].tx_pin = iopin(B, 6);
+                            master_uart[0].rx_pin = iopin(B, 7);
+                            master_uart[0].ctrl_on = 1;
+                            break;
+                        }
+                        // i2c
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_I2C1);
+                        if (!(*afio)) {
+                            master_i2c[0].scl_pin = iopin(B, 6);
+                            master_i2c[0].sda_pin = iopin(B, 7);
                             master_i2c[0].ctrl_on = 1;
-                            master_i2c[0].scl_pin = 42;  // pb6
-                            master_i2c[0].sda_pin = 43;  // pb7
+                            break;
+                        }
+                        // tim4 ch1
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM4);
+                        if (*afio == 0) {
+                            pwm_out.pins[(3 << 2) + 0] = iopin(B, 6);
+                        }
+                        break;
+                    case 7:
+                        // uart1 (alt)
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_UART1);
+                        if ((*afio)) {
+                            master_uart[0].tx_pin = iopin(B, 6);
+                            master_uart[0].rx_pin = iopin(B, 7);
+                            master_uart[0].ctrl_on = 1;
+                            break;
+                        }
+                        // i2c0
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_I2C1);
+                        if (!(*afio)) {
+                            master_i2c[0].scl_pin = iopin(B, 6);
+                            master_i2c[0].sda_pin = iopin(B, 7);
+                            master_i2c[0].ctrl_on = 1;
+                            break;
+                        }
+                        // tim4 ch2
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM4);
+                        if (*afio == 0) {
+                            pwm_out.pins[(3 << 2) + 1] = iopin(B, 7);
                         }
                         break;
                     case 8:
-                    case 9:  // i2c0 (alt)
-                        uart_afio = qemu_picsimlab_get_internals(0x1000 | 42);
-                        if ((*uart_afio)) {
+                        // i2c0 (alt)
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_I2C1);
+                        if ((*afio)) {
+                            master_i2c[0].scl_pin = iopin(B, 8);
+                            master_i2c[0].sda_pin = iopin(B, 9);
                             master_i2c[0].ctrl_on = 1;
-                            master_i2c[0].scl_pin = 45;  // pb8
-                            master_i2c[0].sda_pin = 46;  // pb9
+                            break;
+                        }
+                        // tim4 ch3
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM4);
+                        if (*afio == 0) {
+                            pwm_out.pins[(3 << 2) + 2] = iopin(B, 8);
+                        }
+                    case 9:
+                        // i2c0 (alt)
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_I2C1);
+                        if ((*afio)) {
+                            master_i2c[0].scl_pin = iopin(B, 8);
+                            master_i2c[0].sda_pin = iopin(B, 9);
+                            master_i2c[0].ctrl_on = 1;
+                            break;
+                        }
+                        // tim4 ch4
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM4);
+                        if (*afio == 0) {
+                            pwm_out.pins[(3 << 2) + 3] = iopin(B, 9);
                         }
                         break;
-                    case 10:  // uart3
-                    /*
-                        uart_afio = qemu_picsimlab_get_internals(0x1000 | 16);
+                    case 10:
+                        // tim2_ch3n (alt)
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
+                        if (*afio == 1) {
+                            pwm_out.pins[(1 << 2) + 2] = iopin(B, 10);
+                            break;
+                        }
+                        /*
+                        // uart3
+                        uart_afio = qemu_picsimlab_get_internals(0x1000 | STM32_UART3);
                         if (!(*uart_afio)) {
+                            master_uart[2].tx_pin = iopin(B, 10);
+                            master_uart[2].rx_pin = iopin(B, 11);
                             master_uart[2].ctrl_on = 1;
-                            master_uart[2].tx_pin = 21;  // pb10
-                            master_uart[2].rx_pin = 22;  // pb11
+                            break
                         }
                         */
-                    case 11:  // i2c1
-                        master_i2c[1].ctrl_on = 1;
-                        master_i2c[1].scl_pin = 21;  // pb10
-                        master_i2c[1].sda_pin = 22;  // pb11
+                        // i2c1
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_I2C1);
+                        if (*afio == 0) {
+                            master_i2c[1].scl_pin = iopin(B, 10);
+                            master_i2c[1].sda_pin = iopin(B, 11);
+                            master_i2c[1].ctrl_on = 1;
+                            break;
+                        }
                         break;
-
+                    case 11:
+                        // tim2_ch4n (alt)
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
+                        if (*afio == 1) {
+                            pwm_out.pins[(1 << 2) + 3] = iopin(B, 10);
+                            break;
+                        }
+                        /*
+                        // uart3
+                        uart_afio = qemu_picsimlab_get_internals(0x1000 | STM32_UART3);
+                        if (!(*uart_afio)) {
+                            master_uart[2].tx_pin = iopin(B, 10);
+                            master_uart[2].rx_pin = iopin(B, 11);
+                            master_uart[2].ctrl_on = 1;
+                            break;
+                        }
+                        */
+                        // i2c1
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_I2C1);
+                        if (*afio == 0) {
+                            master_i2c[1].scl_pin = iopin(B, 10);
+                            master_i2c[1].sda_pin = iopin(B, 11);
+                            master_i2c[1].ctrl_on = 1;
+                            break;
+                        }
+                        break;
+                    case 12:
+                        break;
                     case 13:
                     case 14:
-                    case 15:  // spi2
-                        master_spi[1].ctrl_on = 1;
-                        master_spi[1].sck_pin = 26;   // pb13
-                        master_spi[1].copi_pin = 28;  // pb15
-                        master_spi[1].cipo_pin = 27;  // pb14
+                    case 15:
+                        // spi2
+                        afio = qemu_picsimlab_get_internals(0x1000 | STM32_SPI2);
+                        if (*afio == 0) {
+                            master_spi[1].sck_pin = iopin(B, 13);
+                            master_spi[1].copi_pin = iopin(B, 15);
+                            master_spi[1].cipo_pin = iopin(B, 14);
+                            master_spi[1].ctrl_on = 1;
+                        }
                         break;
                 }
                 break;
+                /*
             case 2:  // GPIOC
+                switch (pin) {
+                    case 13:
+                        break;
+                    case 14:
+                        break;
+                    case 15:
+                        break;
+                }
                 break;
             case 3:  // GPIOD
+                switch (pin) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                }
                 break;
+                */
         }
+    } else if ((cfg & 0xF00000) == 0xC00000) {  // timer ccmr1 function
+        int duty = (cfg & 0xFFFF0) >> 4;
+        int chn = (cfg & 0x000C) >> 2;
+        int timer = cfg & 0x0003;
+        // printf("TIM %i chn %i dut set to %i\n", timer + 1, chn + 1, duty);
+        bitbang_pwm_set_duty(&pwm_out, (timer << 2) + chn, duty);
     }
 }
 

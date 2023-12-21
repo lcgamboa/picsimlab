@@ -309,7 +309,7 @@ cboard_DevKitC::cboard_DevKitC(void) {
     master_uart[2].tx_pin = 0;
     master_uart[2].rx_pin = 0;
 
-    bitbang_pwm_init(&ledc, this, 16);
+    bitbang_pwm_init(&pwm_out, this, 16);
 
     if (PICSimLab.GetWindow()) {
         // label1
@@ -377,7 +377,7 @@ cboard_DevKitC::~cboard_DevKitC(void) {
         wconfig->SetCanDestroy(true);
         wconfig->WDestroy();
     }
-    bitbang_pwm_end(&ledc);
+    bitbang_pwm_end(&pwm_out);
 }
 
 // Reset board status
@@ -861,45 +861,45 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
 
             switch (function) {
                 case 9:  // HSPIQ
-                    master_spi[0].ctrl_on = 1;
                     master_spi[0].cipo_pin = io2pin(gpio);
+                    master_spi[0].ctrl_on = 1;
                     break;
 
                 case 14:  // U0RXD
-                    master_uart[0].ctrl_on = 1;
                     master_uart[0].rx_pin = io2pin(gpio);
+                    master_uart[0].ctrl_on = 1;
                     break;
                 case 17:  // U1RXD
-                    master_uart[1].ctrl_on = 1;
                     master_uart[1].rx_pin = io2pin(gpio);
+                    master_uart[1].ctrl_on = 1;
                     break;
 
                 case 29:  // I2CEXT0_SCL
-                    master_i2c[0].ctrl_on = 1;
                     master_i2c[0].scl_pin = io2pin(gpio);
+                    master_i2c[0].ctrl_on = 1;
                     break;
                 case 30:  // I2CEXT0_SDA
-                    master_i2c[0].ctrl_on = 1;
                     master_i2c[0].sda_pin = io2pin(gpio);
+                    master_i2c[0].ctrl_on = 1;
                     break;
 
                 case 64:  // VSPIQ
-                    master_spi[1].ctrl_on = 1;
                     master_spi[1].cipo_pin = io2pin(gpio);
+                    master_spi[1].ctrl_on = 1;
                     break;
 
                 case 95:  // I2CEXT1_SCL
-                    master_i2c[1].ctrl_on = 1;
                     master_i2c[1].scl_pin = io2pin(gpio);
+                    master_i2c[1].ctrl_on = 1;
                     break;
                 case 96:  // I2CEXT1_SDA
-                    master_i2c[1].ctrl_on = 1;
                     master_i2c[1].sda_pin = io2pin(gpio);
+                    master_i2c[1].ctrl_on = 1;
                     break;
 
                 case 198:  // U2RXD
-                    master_uart[2].ctrl_on = 1;
                     master_uart[2].rx_pin = io2pin(gpio);
+                    master_uart[2].ctrl_on = 1;
                     break;
             }
 
@@ -913,72 +913,72 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
 
             switch (function) {
                 case 8:  // HSPICLK
-                    master_spi[0].ctrl_on = 1;
                     master_spi[0].sck_pin = io2pin(gpio);
+                    master_spi[0].ctrl_on = 1;
                     break;
                 case 9:  // HSPIQ
-                    master_spi[0].ctrl_on = 1;
                     master_spi[0].cipo_pin = io2pin(gpio);
+                    master_spi[0].ctrl_on = 1;
                     break;
                 case 10:  // HSPID
-                    master_spi[0].ctrl_on = 1;
                     master_spi[0].copi_pin = io2pin(gpio);
+                    master_spi[0].ctrl_on = 1;
                     break;
                 case 11:  // HSPICS0
-                    master_spi[0].ctrl_on = 1;
                     master_spi[0].cs_pin[0] = io2pin(gpio);
+                    master_spi[0].ctrl_on = 1;
                     break;
 
                 case 14:  // U0TXD
-                    master_uart[0].ctrl_on = 1;
                     master_uart[0].tx_pin = io2pin(gpio);
+                    master_uart[0].ctrl_on = 1;
                     break;
                 case 17:  // U1TXD
-                    master_uart[1].ctrl_on = 1;
                     master_uart[1].tx_pin = io2pin(gpio);
+                    master_uart[1].ctrl_on = 1;
                     break;
 
                 case 29:  // I2CEXT0_SCL
-                    master_i2c[0].ctrl_on = 1;
                     master_i2c[0].scl_pin = io2pin(gpio);
+                    master_i2c[0].ctrl_on = 1;
                     break;
                 case 30:  // I2CEXT0_SDA
-                    master_i2c[0].ctrl_on = 1;
                     master_i2c[0].sda_pin = io2pin(gpio);
+                    master_i2c[0].ctrl_on = 1;
                     break;
 
                 case 61:  // HSPICS1
-                    master_spi[0].ctrl_on = 1;
                     master_spi[0].cs_pin[1] = io2pin(gpio);
+                    master_spi[0].ctrl_on = 1;
                     break;
                 case 62:  // HSPICS2
-                    master_spi[0].ctrl_on = 1;
                     master_spi[0].cs_pin[2] = io2pin(gpio);
+                    master_spi[0].ctrl_on = 1;
                     break;
 
                 case 63:  // VSPICLK
-                    master_spi[1].ctrl_on = 1;
                     master_spi[1].sck_pin = io2pin(gpio);
+                    master_spi[1].ctrl_on = 1;
                     break;
                 case 64:  // VSPIQ
-                    master_spi[1].ctrl_on = 1;
                     master_spi[1].cipo_pin = io2pin(gpio);
+                    master_spi[1].ctrl_on = 1;
                     break;
                 case 65:  // VSPID
-                    master_spi[1].ctrl_on = 1;
                     master_spi[1].copi_pin = io2pin(gpio);
+                    master_spi[1].ctrl_on = 1;
                     break;
                 case 68:  // VSPICS0
-                    master_spi[1].ctrl_on = 1;
                     master_spi[1].cs_pin[0] = io2pin(gpio);
+                    master_spi[1].ctrl_on = 1;
                     break;
                 case 69:  // VSPICS1
-                    master_spi[1].ctrl_on = 1;
                     master_spi[1].cs_pin[1] = io2pin(gpio);
+                    master_spi[1].ctrl_on = 1;
                     break;
                 case 70:  // VSPICS2
-                    master_spi[1].ctrl_on = 1;
                     master_spi[1].cs_pin[2] = io2pin(gpio);
+                    master_spi[1].ctrl_on = 1;
                     break;
                 case 71:  // ledc_hs_sig_out0
                 case 72:  // ledc_hs_sig_out1
@@ -997,7 +997,7 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
                 case 85:  // ledc_ls_sig_out6
                 case 86:  // ledc_ls_sig_out7
                     // printf("LEDC channel %i in GPIO %i\n", function - 71, gpio);
-                    ledc.pins[function - 71] = io2pin(gpio);
+                    pwm_out.pins[function - 71] = io2pin(gpio);
                     break;
                 case 87:  // rmt_sig_out0
                 case 88:  // rmt_sig_out1
@@ -1010,17 +1010,17 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
                     // printf("RMT channel %i in GPIO %i\n", function - 71, gpio);
                     break;
                 case 95:  // I2CEXT1_SCL
-                    master_i2c[1].ctrl_on = 1;
                     master_i2c[1].scl_pin = io2pin(gpio);
+                    master_i2c[1].ctrl_on = 1;
                     break;
                 case 96:  // I2CEXT1_SDA
-                    master_i2c[1].ctrl_on = 1;
                     master_i2c[1].sda_pin = io2pin(gpio);
+                    master_i2c[1].ctrl_on = 1;
                     break;
 
                 case 198:  // U2RTXD
-                    master_uart[2].ctrl_on = 1;
                     master_uart[2].tx_pin = io2pin(gpio);
+                    master_uart[2].ctrl_on = 1;
                     break;
             }
 
@@ -1036,48 +1036,48 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
                 case 0:
                     switch (gpio) {
                         case 1:
-                            master_uart[0].ctrl_on = 1;
                             master_uart[0].tx_pin = IO1;
+                            master_uart[0].ctrl_on = 1;
                             break;
                         case 3:
-                            master_uart[0].ctrl_on = 1;
                             master_uart[0].rx_pin = IO3;
+                            master_uart[0].ctrl_on = 1;
                             break;
                     }
                     break;
                 case 1:
                     switch (gpio) {
                         case 12:
-                            master_spi[0].ctrl_on = 1;
                             master_spi[0].cipo_pin = IO12;
+                            master_spi[0].ctrl_on = 1;
                             break;
                         case 13:
-                            master_spi[0].ctrl_on = 1;
                             master_spi[0].copi_pin = IO13;
+                            master_spi[0].ctrl_on = 1;
                             break;
                         case 14:
-                            master_spi[0].ctrl_on = 1;
                             master_spi[0].sck_pin = IO14;
+                            master_spi[0].ctrl_on = 1;
                             break;
                         case 15:
-                            master_spi[0].ctrl_on = 1;
                             master_spi[0].cs_pin[0] = IO15;
+                            master_spi[0].ctrl_on = 1;
                             break;
                         case 18:
-                            master_spi[1].ctrl_on = 1;
                             master_spi[1].sck_pin = IO18;
+                            master_spi[1].ctrl_on = 1;
                             break;
                         case 19:
-                            master_spi[1].ctrl_on = 1;
                             master_spi[1].cipo_pin = IO19;
+                            master_spi[1].ctrl_on = 1;
                             break;
                         case 23:
-                            master_spi[1].ctrl_on = 1;
                             master_spi[1].copi_pin = IO23;
+                            master_spi[1].ctrl_on = 1;
                             break;
                         case 5:
-                            master_spi[1].ctrl_on = 1;
                             master_spi[1].cs_pin[0] = IO5;
+                            master_spi[1].ctrl_on = 1;
                             break;
                     }
                     break;
@@ -1088,20 +1088,20 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
                 case 4:
                     switch (gpio) {
                         case 9:
-                            master_uart[1].ctrl_on = 1;
                             master_uart[1].rx_pin = IO9;
+                            master_uart[1].ctrl_on = 1;
                             break;
                         case 10:
-                            master_uart[1].ctrl_on = 1;
                             master_uart[1].tx_pin = IO10;
+                            master_uart[1].ctrl_on = 1;
                             break;
                         case 16:
-                            master_uart[2].ctrl_on = 1;
                             master_uart[2].rx_pin = IO16;
+                            master_uart[2].ctrl_on = 1;
                             break;
                         case 17:
-                            master_uart[2].ctrl_on = 1;
                             master_uart[2].tx_pin = IO17;
+                            master_uart[2].ctrl_on = 1;
                             break;
                     }
                     break;
@@ -1111,7 +1111,7 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
 
         } break;
         case QEMU_EXTRA_PIN_LEDC_CFG:
-            bitbang_pwm_set_duty(&ledc, (cfg & 0x0F00) >> 8, cfg & 0xFF);
+            bitbang_pwm_set_duty(&pwm_out, (cfg & 0x0F00) >> 8, cfg & 0xFF);
             break;
     }
 }

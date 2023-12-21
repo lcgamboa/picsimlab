@@ -93,6 +93,9 @@ void CPWindow5::_EvOnCreate(CControl* control) {
                   ? (lxT("PICSimLab[") + itoa(PICSimLab.GetInstanceNumber()) + lxT("] - "))
                   : (lxT("PICSimLab - "))) +
              "Spare parts");
+
+    msleep(BASETIMER);
+    PICSimLab.GetBoard()->Reset();
 }
 
 void CPWindow5::draw1_EvMouseButtonPress(CControl* control, uint button, uint x, uint y, uint state) {

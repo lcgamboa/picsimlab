@@ -57,8 +57,6 @@ cpart_leds::cpart_leds(const unsigned x, const unsigned y, const char* name, con
     OWidth = Width;
     OHeight = Height;
 
-    ChangeSize(8);
-
     input_pins[0] = 0;
     input_pins[1] = 0;
     input_pins[2] = 0;
@@ -67,6 +65,8 @@ cpart_leds::cpart_leds(const unsigned x, const unsigned y, const char* name, con
     input_pins[5] = 0;
     input_pins[6] = 0;
     input_pins[7] = 0;
+
+    ChangeSize(8);
 
     colors[0] = 0;
     colors[1] = 0;
@@ -235,9 +235,11 @@ void cpart_leds::ReadPreferences(lxString value) {
 void cpart_leds::RegisterRemoteControl(void) {
     const picpin* ppins = SpareParts.GetPinsValues();
 
-    for (int i = 0; i > 8; i++) {
+    for (int i = 0; i < 8; i++) {
         if (input_pins[i]) {
             output_ids[O_L1 + i]->status = (void*)&ppins[input_pins[i] - 1].oavalue;
+        } else {
+            output_ids[O_L1 + i]->status = NULL;
         }
     }
 }
@@ -337,6 +339,7 @@ void cpart_leds::ChangeSize(const unsigned int sz) {
         outputc = Size * 2;
         LoadImage();
     }
+    RegisterRemoteControl();
 }
 
 void cpart_leds::LoadImage(void) {
