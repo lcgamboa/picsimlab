@@ -44,9 +44,9 @@ static int bmp280_test(const char* tname, const char* fname, const char* resp, i
         }
     }
 
-    char buff[256];
+    char buff[2000];
     // read serial console
-    while (test_serial_recv_str(buff, 256, 1000)) {
+    while (test_serial_recv_str(buff, 2000, 1000)) {
         // printf("%s\n", buff);
     }
 
@@ -105,3 +105,13 @@ static int test_I2C_PIC18F(void* arg) {
     return bmp280_test("I2C PIC18F", "i2c/pic18f_bmp280_i2c.pzw", "T=  35.00 P= 780.00", 1);
 }
 register_test("I2C PIC18F", test_I2C_PIC18F, NULL);
+/*
+static int test_SPI_ESP32C3(void* arg) {
+    return bmp280_test("SPI ESP32C3", "spi/esp32c3_bmp280_spi.pzw", "T= 35.00 P= 780.00\r", 1);
+}
+register_test("SPI ESP32C3", test_SPI_ESP32C3, NULL);
+*/
+static int test_I2C_ESP32C3(void* arg) {
+    return bmp280_test("I2C ESP32C3", "i2c/esp32c3_bmp280_i2c.pzw", "T= 35.00 P= 780.00\r", 1);
+}
+register_test("I2C ESP32C3", test_I2C_ESP32C3, NULL);

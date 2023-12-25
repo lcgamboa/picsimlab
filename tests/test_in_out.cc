@@ -168,9 +168,7 @@ static int test_IN_OUT_STM32(void* arg) {
 }
 register_test("IN/OUT STM32", test_IN_OUT_STM32, NULL);
 
-/*
 static int test_IN_OUT_PIC18F(void* arg) {
-    return in_out_test("SPI PIC18F", "in_out/in_out_p18.pzw");
+    return in_out_test("SPI PIC18F", "in_out/in_out_pic18.pzw");
 }
 register_test("IN/OUT PIC18F", test_IN_OUT_PIC18F, NULL);
-*/

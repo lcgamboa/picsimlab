@@ -26,7 +26,7 @@
 #ifndef TESTS_H
 #define TESTS_H
 
-#define MAX_TESTS 20
+#define MAX_TESTS 256
 
 // extern int NUM_TESTS;
 

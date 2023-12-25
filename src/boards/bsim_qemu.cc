@@ -1091,9 +1091,15 @@ void bsim_qemu::pins_reset(void) {
         pins[p].ovalue = 0;
         pins[p].oavalue = 55;
 
-        if (MGetPinName(p + 1).Contains("VDD")) {
+        if (MGetPinName(p + 1).Contains("VDD") || MGetPinName(p + 1).Contains("VIN")) {
             pins[p].value = 1;
             pins[p].dir = PD_OUT;
+            pins[p].ptype = PT_POWER;
+        }
+        if (MGetPinName(p + 1).Contains("VSS") || MGetPinName(p + 1).Contains("GND")) {
+            pins[p].value = 0;
+            pins[p].dir = PD_OUT;
+            pins[p].ptype = PT_POWER;
         }
     }
 }

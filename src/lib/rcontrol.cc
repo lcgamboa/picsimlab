@@ -255,7 +255,7 @@ static char decodess(unsigned char v) {
             return 'i';
     }
 }
-#define VTBUFFMAX 400
+#define VTBUFFMAX SBUFFMAX
 static int Vtcount_in = 0;
 unsigned char Vtbuff_in[VTBUFFMAX + 1];
 
@@ -295,7 +295,7 @@ static void ProcessInput(const char* msg, input_t* Input, int* ret) {
 }
 
 static void ProcessOutput(const char* msg, output_t* Output, int* ret, int full = 0) {
-    char lstemp[500];
+    char lstemp[SBUFFMAX + 256];
     static unsigned char ss = 0;  // seven segment
 
     if (type_is_equal(Output->name, "LD")) {
@@ -370,12 +370,12 @@ static void ProcessOutput(const char* msg, output_t* Output, int* ret, int full 
             vt->ReceiveCallback = VtReceiveCallback;
         }
         if (full) {
-            snprintf(lstemp, 499, "%s %s= %3i\r\n%s\r\n", msg, Output->name, Vtcount_in, Vtbuff_in);
+            snprintf(lstemp, SBUFFMAX + 255, "%s %s= %3i\r\n%s\r\n", msg, Output->name, Vtcount_in, Vtbuff_in);
             *ret += sendtext(lstemp);
             Vtbuff_in[0] = 0;
             Vtcount_in = 0;
         } else {
-            snprintf(lstemp, 499, "%s %s= %3i\r\n", msg, Output->name, Vtcount_in);
+            snprintf(lstemp, SBUFFMAX + 255, "%s %s= %3i\r\n", msg, Output->name, Vtcount_in);
             *ret += sendtext(lstemp);
         }
     } else {

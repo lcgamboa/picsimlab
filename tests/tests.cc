@@ -53,7 +53,6 @@
 
 static int sockfd = -1;
 static char buff[2048];
-// static char cmd[256];
 
 // static void setblock(int sock_descriptor);
 static void setnblock(int sock_descriptor);
@@ -208,19 +207,21 @@ static int vtcount = 0;
 static char vtbuffer[VTBSIZE];
 
 int test_serial_vt_init(int partnum) {
+    char cmd[256];
     vtnumber = partnum;
 
     if (vtnumber >= 0) {
-        sprintf(buff, "set part[%02i].in[00] 129", vtnumber);
-        return test_send_rcmd(buff);
+        sprintf(cmd, "set part[%02i].in[00] 129", vtnumber);
+        return test_send_rcmd(cmd);
     }
     return 1;
 }
 
 int test_serial_vt_end(void) {
     if (vtnumber >= 0) {
-        sprintf(buff, "set part[%02i].in[00] 128", vtnumber);
-        return test_send_rcmd(buff);
+        char cmd[256];
+        sprintf(cmd, "set part[%02i].in[00] 128", vtnumber);
+        return test_send_rcmd(cmd);
     }
     return 1;
 }

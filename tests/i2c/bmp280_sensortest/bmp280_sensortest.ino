@@ -20,8 +20,8 @@
 #include <SPI.h>
 #include <Adafruit_BMP280.h>
 
-//Adafruit_BMP280 bmp; // use I2C interface
-Adafruit_BMP280 bmp(10); // use SPI interface
+Adafruit_BMP280 bmp; // use I2C interface
+//Adafruit_BMP280 bmp(10); // use SPI interface
 
 
 Adafruit_Sensor *bmp_temp = bmp.getTemperatureSensor();
@@ -29,8 +29,8 @@ Adafruit_Sensor *bmp_pressure = bmp.getPressureSensor();
 
 void setup() {
   Serial.begin(9600);
-  while ( !Serial ) delay(100);   // wait for native usb
-
+  while ( !Serial ) delay(100);   // wait for native usb 
+  
   unsigned status;
   //status = bmp.begin(BMP280_ADDRESS_ALT, BMP280_CHIPID);
   status = bmp.begin();

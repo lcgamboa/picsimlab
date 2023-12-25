@@ -91,6 +91,9 @@ modules:
                 sha256: 034c935101e706f0fc9fbbf0d0069a795a18c3a8c9fb4f4486306801164a65af 
       - name: qemu-stm32
         buildsystem: simple
+        build-options:
+          build-args:
+            - --share=network
         build-commands:
           - ./build_libqemu-stm32.sh
           - strip build/libqemu-stm32.so

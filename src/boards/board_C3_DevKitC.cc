@@ -134,8 +134,8 @@ static int io2pin(int io) {
 static const short int pinmap[31] = {
     30,  // number of pins
     -1,  // 1-GND
-    -1,  // 2-3V3
-    -1,  // 3-3V3
+    -1,  // 2-VDD
+    -1,  // 3-VDD
     -1,  // 4-EN
     -1,  // 5-GND
     4,   // 6-GPIO4
@@ -145,8 +145,8 @@ static const short int pinmap[31] = {
     -1,  // 10-GND
     8,   // 11-GPIO8
     9,   // 12-GPIO9
-    -1,  // 13-5V
-    -1,  // 14-5V
+    -1,  // 13-VIN
+    -1,  // 14-VIN
     -1,  // 15-GND
     -1,  // 16-GND
     -1,  // 17-GND
@@ -817,28 +817,20 @@ void cboard_C3_DevKitC::PinsExtraConfig(int cfg) {
                     master_uart[1].rx_pin = io2pin(gpio);
                     master_uart[1].ctrl_on = 1;
                     break;
-                    /*
-                    case 29:  // I2CEXT0_SCL
-                        master_i2c[0].scl_pin = io2pin(gpio);
-                        master_i2c[0].ctrl_on = 1;
-                        break;
-                    case 30:  // I2CEXT0_SDA
-                        master_i2c[0].sda_pin = io2pin(gpio);
-                        master_i2c[0].ctrl_on = 1;
-                        break;
 
+                case 53:  // I2CEXT0_SCL
+                    master_i2c[0].scl_pin = io2pin(gpio);
+                    master_i2c[0].ctrl_on = 1;
+                    break;
+                case 54:  // I2CEXT0_SDA
+                    master_i2c[0].sda_pin = io2pin(gpio);
+                    master_i2c[0].ctrl_on = 1;
+                    break;
+
+                    /*
                     case 64:  // VSPIQ
                         master_spi[1].cipo_pin = io2pin(gpio);
                         master_spi[1].ctrl_on = 1;
-                        break;
-
-                    case 95:  // I2CEXT1_SCL
-                        master_i2c[1].scl_pin = io2pin(gpio);
-                        master_i2c[1].ctrl_on = 1;
-                        break;
-                    case 96:  // I2CEXT1_SDA
-                        master_i2c[1].sda_pin = io2pin(gpio);
-                        master_i2c[1].ctrl_on = 1;
                         break;
 
                     case 198:  // U2RXD
@@ -884,16 +876,8 @@ void cboard_C3_DevKitC::PinsExtraConfig(int cfg) {
                     master_uart[1].tx_pin = io2pin(gpio);
                     master_uart[1].ctrl_on = 1;
                     break;
-                    /*
-                    case 29:  // I2CEXT0_SCL
-                        master_i2c[0].scl_pin = io2pin(gpio);
-                        master_i2c[0].ctrl_on = 1;
-                        break;
-                    case 30:  // I2CEXT0_SDA
-                        master_i2c[0].sda_pin = io2pin(gpio);
-                        master_i2c[0].ctrl_on = 1;
-                        break;
 
+                    /*
                     case 61:  // HSPICS1
                         master_spi[0].cs_pin[1] = io2pin(gpio);
                         master_spi[0].ctrl_on = 1;
@@ -928,15 +912,6 @@ void cboard_C3_DevKitC::PinsExtraConfig(int cfg) {
                         master_spi[1].ctrl_on = 1;
                         break;
 
-                    case 95:  // I2CEXT1_SCL
-                        master_i2c[1].scl_pin = io2pin(gpio);
-                        master_i2c[1].ctrl_on = 1;
-                        break;
-                    case 96:  // I2CEXT1_SDA
-                        master_i2c[1].sda_pin = io2pin(gpio);
-                        master_i2c[1].ctrl_on = 1;
-                        break;
-
                     case 198:  // U2RTXD
                         master_uart[2].tx_pin = io2pin(gpio);
                         master_uart[2].ctrl_on = 1;
@@ -954,6 +929,15 @@ void cboard_C3_DevKitC::PinsExtraConfig(int cfg) {
                 case 51:  // rmt_sig_out0
                 case 52:  // rmt_sig_out1
                     // printf("RMT channel %i in GPIO %i\n", function - 71, gpio);
+                    break;
+
+                case 53:  // I2CEXT0_SCL
+                    master_i2c[0].scl_pin = io2pin(gpio);
+                    master_i2c[0].ctrl_on = 1;
+                    break;
+                case 54:  // I2CEXT0_SDA
+                    master_i2c[0].sda_pin = io2pin(gpio);
+                    master_i2c[0].ctrl_on = 1;
                     break;
             }
 
@@ -1060,10 +1044,10 @@ lxString cboard_C3_DevKitC::MGetPinName(int pin) {
             pinname = "GND";
             break;
         case 2:
-            pinname = "3V3";
+            pinname = "VDD";
             break;
         case 3:
-            pinname = "3V3";
+            pinname = "VDD";
             break;
         case 4:
             pinname = "RST";
@@ -1093,10 +1077,10 @@ lxString cboard_C3_DevKitC::MGetPinName(int pin) {
             pinname = "IO9";
             break;
         case 13:
-            pinname = "5V";
+            pinname = "VIN";
             break;
         case 14:
-            pinname = "5V";
+            pinname = "VIN";
             break;
         case 15:
             pinname = "GND";
