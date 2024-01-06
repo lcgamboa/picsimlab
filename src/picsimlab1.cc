@@ -666,6 +666,11 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 
     set_signal_handler();
 
+    strncpy(home, (char*)lxGetUserDataDir(lxT("picsimlab")).char_str(), 1023);
+    PICSimLab.SetWorkspaceFileName("");
+    PICSimLab.SetHomePath(home);
+    PICSimLab.SetPath(lxGetCwd());
+
     PICSimLab.menu_EvBoard = EVMENUACTIVE & CPWindow1::menu1_EvBoard;
     PICSimLab.menu_EvMicrocontroller = EVMENUACTIVE & CPWindow1::menu1_EvMicrocontroller;
     PICSimLab.board_Event = EVONCOMBOCHANGE & CPWindow1::board_Event;
@@ -681,14 +686,6 @@ void CPWindow1::_EvOnCreate(CControl* control) {
     SpareParts.PartButtonEvent = EVMOUSEBUTTONRELEASE & CPWindow5::PartButtonEvent;
     SpareParts.PartKeyEvent = EVKEYBOARDPRESS & CPWindow5::PartKeyEvent;
     SpareParts.Init(&Window5);
-
-    PICSimLab.SetWorkspaceFileName("");
-
-    strncpy(home, (char*)lxGetUserDataDir(lxT("picsimlab")).char_str(), 1023);
-
-    PICSimLab.SetHomePath(home);
-
-    PICSimLab.SetPath(lxGetCwd());
 
 #ifndef _SHARE_
 #error Define the _SHARE_ path is necessary
