@@ -25,6 +25,8 @@ const char* bridge_gpsim_get_pin_name(int pin);
 unsigned char bridge_gpsim_get_pin_value(int pin);
 unsigned char bridge_gpsim_get_pin_dir(int pin);
 void bridge_gpsim_set_pin_value(int pin, unsigned char value);
+void bridge_gpsim_set_apin_value(int pin, float value);
+void bridge_gpsim_set_frequency(double freq);
 void bridge_gpsim_step(void);
 void bridge_gpsim_end(void);
 int bridge_gpsim_dump_memory(const char* fname);

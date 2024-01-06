@@ -28,7 +28,7 @@
 #include "../lib/picsimlab.h"
 #include "bsim_gpsim.h"
 
-static const unsigned char GPSIM_PORTS[5] = {0, 1, 2, 3, 0xFF};
+static const unsigned char GPSIM_PORTS[7] = {0, 1, 2, 3, 4, 5, 0xFF};
 
 bsim_gpsim::bsim_gpsim(void) {
     char list[2000];
@@ -61,13 +61,14 @@ void bsim_gpsim::MSetSerial(const char* port) {
              }
          }
          ret = bridge_gpsim_init(processor, fname, freq);
+         pins_reset();
      }
 
      return ret;
  }
 
  void bsim_gpsim::MEnd(void) {
-     bridge_gpsim_end();
+     // bridge_gpsim_end(); //Not needed when SetNeedReboot is used
  }
 
  int bsim_gpsim::MGetArchitecture(void) {
@@ -80,6 +81,7 @@ void bsim_gpsim::MSetSerial(const char* port) {
 
  void bsim_gpsim::MSetFreq(float freq_) {
      freq = freq_;
+     bridge_gpsim_set_frequency(freq);
      TimerUpdateFrequency(freq);
  }
 
@@ -115,6 +117,9 @@ void bsim_gpsim::MSetSerial(const char* port) {
              pinname = "R" + pinname.substr(4, 2);
              pinname = uppercase(pinname);
          }
+         if (pinname.length() == 0) {
+             pinname = "nd";
+         }
      }
      return pinname;
  }
@@ -125,7 +130,7 @@ void bsim_gpsim::MSetSerial(const char* port) {
 
  int bsim_gpsim::DebugInit(int dtyppe)  // argument not used in picm only mplabx
  {
-     return 0;                          //! mplabxd_init (this, Window1.Get_debug_port ()) - 1;
+     return 0;  //! mplabxd_init (this, Window1.Get_debug_port ()) - 1;
  }
 
  int bsim_gpsim::MGetPinCount(void) {
@@ -135,27 +140,35 @@ void bsim_gpsim::MSetSerial(const char* port) {
  void bsim_gpsim::pins_reset(void) {
      for (int p = 0; p < MGetPinCount(); p++) {
          lxString pname = MGetPinName(p + 1);
-         if (pname[0] == 'p') {
-             pins[p].port = (unsigned char*)&GPSIM_PORTS[pname[4] - 'a'];
-             pins[p].pord = pname[5] - '0';
-         } else {
-             pins[p].port = (unsigned char*)&GPSIM_PORTS[4];
+         if (pname[0] == 'R') {
+             pins[p].port = (unsigned char*)&GPSIM_PORTS[pname[1] - 'A'];
+             pins[p].pord = pname[2] - '0';
+             pins[p].ptype = PT_DIGITAL;
+             pins[p].dir = PD_IN;
+             pins[p].value = 0;
+         } else if (pname[0] == 'M') {  // MCLR
+             pins[p].port = (unsigned char*)&GPSIM_PORTS[6];
              pins[p].pord = -1;
+             pins[p].ptype = PT_DIGITAL;
+             pins[p].dir = PD_IN;
+             pins[p].value = 1;
+         } else {
+             pins[p].port = (unsigned char*)&GPSIM_PORTS[6];
+             pins[p].pord = -1;
+             pins[p].ptype = PT_POWER;
+             pins[p].dir = PD_OUT;
+             pins[p].value = 0;
          }
          pins[p].avalue = 0;
          pins[p].lvalue = 0;
-         pins[p].value = 0;
-         pins[p].ptype = PT_DIGITAL;
-         pins[p].dir = PD_IN;
          pins[p].ovalue = 0;
          pins[p].oavalue = 55;
      }
-     /*TODO add VCC and GND pins
-         pins[7 - 1].value = 0;
-         pins[7 - 1].dir = PD_OUT;
-         pins[9 - 1].value = 1;
-         pins[9 - 1].dir = PD_OUT;
-      */
+     // TODO add VCC and GND pins
+     //  pins[7 - 1].value = 0;
+     //  pins[7 - 1].dir = PD_OUT;
+     //  pins[9 - 1].value = 1;
+     //  pins[9 - 1].dir = PD_OUT;
  }
 
  void bsim_gpsim::MSetPin(int pin, unsigned char value) {
@@ -167,7 +180,11 @@ void bsim_gpsim::MSetSerial(const char* port) {
  }
 
  void bsim_gpsim::MSetAPin(int pin, float value) {
-     // set_apin (pin, value);
+     if (pins[pin - 1].dir == PD_IN) {
+         pins[pin - 1].ptype = PT_ANALOG;
+         pins[pin - 1].avalue = value;
+         bridge_gpsim_set_apin_value(pin, value);
+     }
  }
 
  unsigned char bsim_gpsim::MGetPin(int pin) {

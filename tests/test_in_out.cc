@@ -154,7 +154,7 @@ static int test_IN_OUT_ESP32(void* arg) {
 register_test("IN/OUT ESP32", test_IN_OUT_ESP32, NULL);
 
 static int test_IN_OUT_ESP32C3(void* arg) {
-    return in_out_test("SPI ESP32C3", "in_out/in_out_esp32c3.pzw", 1, 2000000L);
+    return in_out_test("SPI ESP32C3", "in_out/in_out_esp32c3.pzw", 1, 3500000L);
 }
 register_test("IN/OUT ESP32C3", test_IN_OUT_ESP32C3, NULL);
 
@@ -169,6 +169,11 @@ static int test_IN_OUT_STM32(void* arg) {
 register_test("IN/OUT STM32", test_IN_OUT_STM32, NULL);
 
 static int test_IN_OUT_PIC18F(void* arg) {
-    return in_out_test("SPI PIC18F", "in_out/in_out_pic18.pzw");
+    return in_out_test("SPI PIC18F", "in_out/in_out_pic18.pzw", 2);
 }
 register_test("IN/OUT PIC18F", test_IN_OUT_PIC18F, NULL);
+
+static int test_IN_OUT_PIC18FGP(void* arg) {
+    return in_out_test("SPI PIC18FGP", "in_out/in_out_pic18gp.pzw", 2);
+}
+register_test("IN/OUT PIC18F GP", test_IN_OUT_PIC18FGP, NULL);

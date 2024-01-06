@@ -15,7 +15,7 @@
 
 void simulation_cleanup(void);
 
-static pic_processor* gpic;
+static pic_processor* gpic = NULL;
 
 int bridge_gpsim_init(const char* processor, const char* fileName, float freq) {
     // initialize_gpsim_core ();
@@ -24,9 +24,15 @@ int bridge_gpsim_init(const char* processor, const char* fileName, float freq) {
     CSimulationContext::GetContext()->LoadProgram(fileName, processor, &tempProc, NULL);
     gpic = dynamic_cast<pic_processor*>(tempProc);
 
-    gpic->set_frequency(freq);
+    bridge_gpsim_set_frequency(freq);
 
     return (gpic != NULL) - 1;
+}
+
+void bridge_gpsim_set_frequency(double freq) {
+    if (gpic) {
+        gpic->set_frequency(freq);
+    }
 }
 
 void bridge_gpsim_reset(void) {
@@ -89,8 +95,19 @@ void bridge_gpsim_set_pin_value(int pin, unsigned char value) {
     }
 }
 
+void bridge_gpsim_set_apin_value(int pin, float value) {
+    IOPIN* iopin = gpic->get_pin(pin);
+
+    iopin->set_is_analog(true);
+    iopin->set_Cth(5e-12);
+    iopin->set_nodeVoltage(value);
+}
+
 void bridge_gpsim_step(void) {
     gpic->step_cycle();
+    if (gpic->mCurrentPhase == ((ClockPhase*)gpic->mExecute2ndHalf)) {
+        gpic->step_cycle();
+    }
 }
 
 void bridge_gpsim_end(void) {
