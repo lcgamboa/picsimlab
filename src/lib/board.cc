@@ -277,7 +277,7 @@ void board::ReadOutputMap(lxString fname) {
 }
 
 void board::RefreshStatus(void) {
-    PICSimLab.GetStatusBar()->SetField(2, lxT(""));
+    PICSimLab.UpdateStatus(PS_SERIAL, lxT(""));
 }
 
 void board::SetUseOscilloscope(int uo) {

@@ -83,6 +83,7 @@ CPICSimLab::CPICSimLab() {
     cpu_cond = NULL;
 #endif
 
+    updatestatus = NULL;
     menu_EvBoard = NULL;
     menu_EvMicrocontroller = NULL;
     board_Event = NULL;
@@ -92,8 +93,6 @@ CPICSimLab::CPICSimLab() {
 void CPICSimLab::Init(CWindow* w) {
     Window = w;
     if (Window) {
-        statusbar = (CStatusbar*)Window->GetChildByName("statusbar1");
-
         // board menu
         for (int i = 0; i < BOARDS_LAST; i++) {
             MBoard[i].SetFOwner(Window);
@@ -141,7 +140,7 @@ void CPICSimLab::DeleteBoard(void) {
     mcurst = 0;
 }
 
-void CPICSimLab::SetCpuState(const unsigned char cs) {
+void CPICSimLab::SetCpuState(const PICSimlabCPUState cs) {
     cpustate = cs;
 }
 
@@ -234,6 +233,12 @@ void CPICSimLab::SetDebugStatus(int dbs, int updatebtn) {
             CToggleButton* togglebutton = (CToggleButton*)Window->GetChildByName("togglebutton1");
             (Window->*(togglebutton->EvOnToggleButton))(NULL);
         }
+    }
+}
+
+void CPICSimLab::UpdateStatus(const PICSimlabStatus field, const lxString msg) {
+    if ((updatestatus) && (field < PS_LAST)) {
+        (*updatestatus)(field, msg);
     }
 }
 
@@ -1162,9 +1167,7 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
         status = lxT("");
 #endif
 
-        if (statusbar) {
-            statusbar->SetField(0, lxT("Running..."));
-        }
+        UpdateStatus(PS_RUN, lxT("Running..."));
 
         ((CThread*)Window->GetChildByName("thread1"))->Run();  // parallel thread
 #ifndef __EMSCRIPTEN__
@@ -1198,22 +1201,20 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 
     printf("PICSimLab: Debug On=%i  Type=%s Port=%i\n", debug, (debug_type) ? "GDB" : "MDB", GetDebugPort());
 
-    if (statusbar) {
 #ifdef NO_DEBUG
-        statusbar->SetField(1, lxT(" "));
+    UpdateStatus(PS_DEBUG, lxT(" "));
 #else
-        if (GetDebugStatus()) {
-            int ret = pboard->DebugInit(GetDebugType());
-            if (ret < 0) {
-                statusbar->SetField(1, status + lxT("Debug: Error"));
-            } else {
-                statusbar->SetField(1, status + lxT("Debug: ") + pboard->GetDebugName() + ":" + itoa(GetDebugPort()));
-            }
+    if (GetDebugStatus()) {
+        int ret = pboard->DebugInit(GetDebugType());
+        if (ret < 0) {
+            UpdateStatus(PS_DEBUG, status + lxT("Debug: Error"));
         } else {
-            statusbar->SetField(1, status + lxT("Debug: Off"));
+            UpdateStatus(PS_DEBUG, status + lxT("Debug: ") + pboard->GetDebugName() + ":" + itoa(GetDebugPort()));
         }
-#endif
+    } else {
+        UpdateStatus(PS_DEBUG, status + lxT("Debug: Off"));
     }
+#endif
 
 #ifndef NO_TOOLS
     if (Window) {
@@ -1321,18 +1322,18 @@ int CPICSimLab::LoadHexFile(lxString fname) {
     status.st[0] &= ~ST_DI;
 
 #ifdef NO_DEBUG
-    statusbar->SetField(1, lxT(" "));
+    UpdateStatus(PS_DEBUG, lxT(" "));
 #else
     if (GetDebugStatus()) {
         int ret = GetBoard()->DebugInit(GetDebugType());
         if (ret < 0) {
-            statusbar->SetField(1, lxT("Debug: Error"));
+            UpdateStatus(PS_DEBUG, lxT("Debug: Error"));
         } else {
-            statusbar->SetField(
-                1, lxT("Debug: ") + GetBoard()->GetDebugName() + ":" + itoa(GetDebugPort() + GetInstanceNumber()));
+            UpdateStatus(PS_DEBUG, lxT("Debug: ") + GetBoard()->GetDebugName() + ":" +
+                                       itoa(GetDebugPort() + GetInstanceNumber()));
         }
     } else {
-        statusbar->SetField(1, lxT("Debug: Off"));
+        UpdateStatus(PS_DEBUG, lxT("Debug: Off"));
     }
 #endif
 

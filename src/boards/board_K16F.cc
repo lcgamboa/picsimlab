@@ -468,19 +468,15 @@ void cboard_K16F::Reset(void) {
     pic_set_pin(&pic, 12, 0);
     pic_set_pin(&pic, 11, 0);
 
-    if (PICSimLab.GetStatusBar()) {
-        if (pic.serial[0].serialfd != INVALID_SERIAL)
-            PICSimLab.GetStatusBar()->SetField(
-                2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) +
-                       lxT("(") +
-                       lxString().Format("%4.1f",
-                                         fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
-                                              pic.serial[0].serialexbaud)) +
-                       lxT("%)"));
-        else
-            PICSimLab.GetStatusBar()->SetField(2,
-                                               lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
-    }
+    if (pic.serial[0].serialfd != INVALID_SERIAL)
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+                                      itoa(pic.serial[0].serialbaud) + lxT("(") +
+                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                                                       100.0 * pic.serial[0].serialbaud) /
+                                                                      pic.serial[0].serialexbaud)) +
+                                      lxT("%)"));
+    else
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
 
     for (int pi = 0; pi < pic.PINCOUNT; pi++) {
         pic.pins[pi].oavalue = 0;
@@ -935,14 +931,14 @@ void cboard_K16F::ReadPreferences(char* name, char* value) {
 
 void cboard_K16F::RefreshStatus(void) {
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
-                                                  itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                                  lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                                   100.0 * pic.serial[0].serialbaud) /
-                                                                                  pic.serial[0].serialexbaud)) +
-                                                  lxT("%)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+                                      itoa(pic.serial[0].serialbaud) + lxT("(") +
+                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                                                       100.0 * pic.serial[0].serialbaud) /
+                                                                      pic.serial[0].serialexbaud)) +
+                                      lxT("%)"));
     else
-        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
 }
 
 board_init(BOARD_K16F_Name, cboard_K16F);

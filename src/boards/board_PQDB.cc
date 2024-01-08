@@ -900,19 +900,15 @@ void cboard_PQDB::Reset(void) {
     p_KEY[8] = 0;
     p_KEY[9] = 0;
 
-    if (PICSimLab.GetStatusBar()) {
-        if (pic.serial[0].serialfd != INVALID_SERIAL)
-            PICSimLab.GetStatusBar()->SetField(
-                2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) +
-                       lxT("(") +
-                       lxString().Format("%4.1f",
-                                         fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
-                                              pic.serial[0].serialexbaud)) +
-                       lxT("%)"));
-        else
-            PICSimLab.GetStatusBar()->SetField(2,
-                                               lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
-    }
+    if (pic.serial[0].serialfd != INVALID_SERIAL)
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+                                      itoa(pic.serial[0].serialbaud) + lxT("(") +
+                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                                                       100.0 * pic.serial[0].serialbaud) /
+                                                                      pic.serial[0].serialexbaud)) +
+                                      lxT("%)"));
+    else
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
 
     if (use_spare)
         SpareParts.Reset();
@@ -1463,14 +1459,14 @@ unsigned short cboard_PQDB::GetOutputId(char* name) {
 
 void cboard_PQDB::RefreshStatus(void) {
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
-                                                  itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                                  lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                                   100.0 * pic.serial[0].serialbaud) /
-                                                                                  pic.serial[0].serialexbaud)) +
-                                                  lxT("%)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+                                      itoa(pic.serial[0].serialbaud) + lxT("(") +
+                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                                                       100.0 * pic.serial[0].serialbaud) /
+                                                                      pic.serial[0].serialexbaud)) +
+                                      lxT("%)"));
     else
-        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
 }
 
 void cboard_PQDB::WritePreferences(void) {

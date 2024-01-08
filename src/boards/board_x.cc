@@ -197,21 +197,17 @@ void cboard_x::Reset(void) {
     // write switch state to pic pin 20 (RD1)
     pic_set_pin(&pic, 20, p_BT2);
 
-    if (PICSimLab.GetStatusBar()) {
-        // verify serial port state and refresh status bar
+    // verify serial port state and refresh status bar
 
-        if (pic.serial[0].serialfd != INVALID_SERIAL)
-            PICSimLab.GetStatusBar()->SetField(
-                2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) +
-                       lxT("(") +
-                       lxString().Format("%4.1f",
-                                         fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
-                                              pic.serial[0].serialexbaud)) +
-                       lxT("%)"));
-        else
-            PICSimLab.GetStatusBar()->SetField(2,
-                                               lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
-    }
+    if (pic.serial[0].serialfd != INVALID_SERIAL)
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+                                      itoa(pic.serial[0].serialbaud) + lxT("(") +
+                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                                                       100.0 * pic.serial[0].serialbaud) /
+                                                                      pic.serial[0].serialexbaud)) +
+                                      lxT("%)"));
+    else
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
 
     if (use_spare)
         SpareParts.Reset();
@@ -245,14 +241,14 @@ void cboard_x::RefreshStatus(void) {
     // verify serial port state and refresh status bar
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
-                                                  itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                                  lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                                   100.0 * pic.serial[0].serialbaud) /
-                                                                                  pic.serial[0].serialexbaud)) +
-                                                  lxT("%)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+                                      itoa(pic.serial[0].serialbaud) + lxT("(") +
+                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                                                       100.0 * pic.serial[0].serialbaud) /
+                                                                      pic.serial[0].serialexbaud)) +
+                                      lxT("%)"));
     else
-        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
 }
 
 // Called to save board preferences in configuration file

@@ -406,7 +406,7 @@ int prog_loop(_pic* pic) {
 #ifdef _DEBUG_
         printf("%02x", c);
 #endif
-        PICSimLab.GetStatusBar()->SetField(0, lxT("Programming...."));
+        PICSimLab.UpdateStatus(0, lxT("Programming...."));
         switch (c) {
             case 0x42:  // Blank check full
                 prog_ssend(0x42);
@@ -754,7 +754,7 @@ int prog_loop(_pic* pic) {
         fflush(stdout);
 #endif
 
-        PICSimLab.GetStatusBar()->SetField(0, lxT("Running..."));
+        PICSimLab.UpdateStatus(0, lxT("Running..."));
         pic_reset(pic, 0);
     }
 

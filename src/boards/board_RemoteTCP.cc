@@ -212,9 +212,7 @@ cboard_RemoteTCP::~cboard_RemoteTCP(void) {
 void cboard_RemoteTCP::Reset(void) {
     MReset(1);
 
-    if (PICSimLab.GetStatusBar()) {
-        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
-    }
+    PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
 
     if (use_spare)
         SpareParts.Reset();
@@ -254,7 +252,7 @@ void cboard_RemoteTCP::RegisterRemoteControl(void) {}
 
 void cboard_RemoteTCP::RefreshStatus(void) {
     output_ids[O_LPWR]->update = 1;
-    PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
 }
 
 // Called to save board preferences in configuration file

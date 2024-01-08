@@ -671,6 +671,7 @@ void CPWindow1::_EvOnCreate(CControl* control) {
     PICSimLab.SetHomePath(home);
     PICSimLab.SetPath(lxGetCwd());
 
+    PICSimLab.updatestatus = &CPWindow1::UpdateStatus;
     PICSimLab.menu_EvBoard = EVMENUACTIVE & CPWindow1::menu1_EvBoard;
     PICSimLab.menu_EvMicrocontroller = EVMENUACTIVE & CPWindow1::menu1_EvMicrocontroller;
     PICSimLab.board_Event = EVONCOMBOCHANGE & CPWindow1::board_Event;
@@ -1167,6 +1168,10 @@ void CPWindow1::menu1_File_SaveWorkspace_EvMenuActive(CControl* control) {
 #else
     filedialog2.Run();
 #endif
+}
+
+void CPWindow1::UpdateStatus(const int field, const lxString msg) {
+    Window1.statusbar1.SetField(field, msg);
 }
 
 void CPWindow1::menu1_File_LoadWorkspace_EvMenuActive(CControl* control) {

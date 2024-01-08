@@ -105,37 +105,33 @@ void cboard_Breadboard::Reset(void) {
 
             pic_reset(&pic, 1);
 
-            if (PICSimLab.GetStatusBar()) {
-                // verify serial port state and refresh status bar
+            // verify serial port state and refresh status bar
 
-                if (pic.serial[0].serialfd != INVALID_SERIAL)
-                    PICSimLab.GetStatusBar()->SetField(
-                        2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
-                               itoa(pic.serial[0].serialbaud) + lxT("(") +
-                               lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                100.0 * pic.serial[0].serialbaud) /
-                                                               pic.serial[0].serialexbaud)) +
-                               lxT("%)"));
-                else
-                    PICSimLab.GetStatusBar()->SetField(
-                        2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
-            }
+            if (pic.serial[0].serialfd != INVALID_SERIAL)
+                PICSimLab.UpdateStatus(PS_SERIAL,
+                                       lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+                                           itoa(pic.serial[0].serialbaud) + lxT("(") +
+                                           lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                                                            100.0 * pic.serial[0].serialbaud) /
+                                                                           pic.serial[0].serialexbaud)) +
+                                           lxT("%)"));
+            else
+                PICSimLab.UpdateStatus(PS_SERIAL,
+                                       lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
             break;
         case _AVR:
             MReset(0);
-            if (PICSimLab.GetStatusBar()) {
-                // verify serial port state and refresh status bar
-                if (serialfd != INVALID_SERIAL)
-                    PICSimLab.GetStatusBar()->SetField(
-                        2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) +
-                               lxT("(") +
-                               lxString().Format(
-                                   "%4.1f", fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) / serialexbaud[0])) +
-                               lxT("%)"));
-                else
-                    PICSimLab.GetStatusBar()->SetField(
-                        2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
-            }
+            // verify serial port state and refresh status bar
+            if (serialfd != INVALID_SERIAL)
+                PICSimLab.UpdateStatus(
+                    PS_SERIAL,
+                    lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) + lxT("(") +
+                        lxString().Format("%4.1f",
+                                          fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) / serialexbaud[0])) +
+                        lxT("%)"));
+            else
+                PICSimLab.UpdateStatus(PS_SERIAL,
+                                       lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
             break;
     }
 
@@ -159,29 +155,30 @@ void cboard_Breadboard::RefreshStatus(void) {
             // verify serial port state and refresh status bar
 
             if (pic.serial[0].serialfd != INVALID_SERIAL)
-                PICSimLab.GetStatusBar()->SetField(
-                    2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) +
-                           lxT("(") +
-                           lxString().Format(
-                               "%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
-                                             pic.serial[0].serialexbaud)) +
-                           lxT("%)"));
+                PICSimLab.UpdateStatus(PS_SERIAL,
+                                       lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+                                           itoa(pic.serial[0].serialbaud) + lxT("(") +
+                                           lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                                                            100.0 * pic.serial[0].serialbaud) /
+                                                                           pic.serial[0].serialexbaud)) +
+                                           lxT("%)"));
             else
-                PICSimLab.GetStatusBar()->SetField(
-                    2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+                PICSimLab.UpdateStatus(PS_SERIAL,
+                                       lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
             break;
         case _AVR:
             // verify serial port state and refresh status bar
 
             if (serialfd != INVALID_SERIAL)
-                PICSimLab.GetStatusBar()->SetField(
-                    2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) + lxT("(") +
-                           lxString().Format(
-                               "%4.1f", fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) / serialexbaud[0])) +
-                           lxT("%)"));
+                PICSimLab.UpdateStatus(
+                    PS_SERIAL,
+                    lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) + lxT("(") +
+                        lxString().Format("%4.1f",
+                                          fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) / serialexbaud[0])) +
+                        lxT("%)"));
             else
-                PICSimLab.GetStatusBar()->SetField(
-                    2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+                PICSimLab.UpdateStatus(PS_SERIAL,
+                                       lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
 
             if (PICSimLab.GetMcuPwr()) {
                 if (avr) {

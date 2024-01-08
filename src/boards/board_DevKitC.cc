@@ -396,7 +396,7 @@ void cboard_DevKitC::Reset(void) {
 
     MReset(1);
 
-    PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
 
     if (use_spare)
         SpareParts.Reset();
@@ -412,9 +412,9 @@ void cboard_DevKitC::RegisterRemoteControl(void) {
 
 void cboard_DevKitC::RefreshStatus(void) {
     if (serial_open) {
-        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
     } else {
-        PICSimLab.GetStatusBar()->SetField(2, lxT("Serial: Error"));
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: Error"));
     }
 }
 

@@ -154,6 +154,7 @@ public:
     void menu1_EvBoard(CControl* control);
     void menu1_EvMicrocontroller(CControl* control);
     void DrawBoard(void);
+    static void UpdateStatus(const int field, const lxString msg);
 
 private:
     int pa;

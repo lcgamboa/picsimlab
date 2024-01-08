@@ -122,9 +122,7 @@ cboard_Franzininho_DIY::~cboard_Franzininho_DIY(void) {}
 void cboard_Franzininho_DIY::Reset(void) {
     MReset(0);
 
-    if (PICSimLab.GetStatusBar()) {
-        PICSimLab.GetStatusBar()->SetField(2, "");
-    }
+    PICSimLab.UpdateStatus(PS_SERIAL, "");
 
     if (use_spare)
         SpareParts.Reset();

@@ -130,7 +130,7 @@ void cboard_McLab1::Draw(CDraw* draw) {
             if (!update) {
                 draw->Canvas.Init(Scale, Scale);
             }
-            update++;          // set to update buffer
+            update++;  // set to update buffer
 
             if (!output[i].r)  // rectangle
             {
@@ -563,9 +563,7 @@ void cboard_McLab1::Reset(void) {
     pic_set_pin(&pic, 2, p_BT[2]);
     pic_set_pin(&pic, 3, p_BT[3]);
 
-    if (PICSimLab.GetStatusBar()) {
-        PICSimLab.GetStatusBar()->SetField(2, lxT(""));
-    }
+    PICSimLab.UpdateStatus(PS_SERIAL, lxT(""));
 
     for (int i = 0; i < pic.PINCOUNT; i++) {
         lm1[i] = 30;

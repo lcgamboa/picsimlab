@@ -37,7 +37,9 @@ extern char SERIALDEVICE[100];
 
 #include "board.h"
 
-enum { CPU_RUNNING, CPU_STEPPING, CPU_HALTED, CPU_BREAKPOINT, CPU_ERROR, CPU_POWER_OFF };
+enum PICSimlabCPUState { CPU_RUNNING, CPU_STEPPING, CPU_HALTED, CPU_BREAKPOINT, CPU_ERROR, CPU_POWER_OFF, CPU_LAST };
+
+enum PICSimlabStatus { PS_RUN = 0, PS_DEBUG, PS_SERIAL, PS_LAST };
 
 class CPICSimLab {
 public:
@@ -93,8 +95,6 @@ public:
     void SetBoard(board* b) { pboard = b; };
     void DeleteBoard(void);
 
-    CStatusbar* GetStatusBar(void) { return statusbar; };
-
     /**
      * @brief  Return actual power status of microcontroller ON/OFF
      */
@@ -118,7 +118,7 @@ public:
             SetCpuState(CPU_POWER_OFF);
     };
 
-    void SetCpuState(const unsigned char cs);
+    void SetCpuState(const PICSimlabCPUState cs);
 
     /**
      * @brief  Set mcu rst flag (inform simulator about mcu reset state)
@@ -252,6 +252,8 @@ public:
 
     char* GetPzwTmpdir(void) { return pzwtmpdir; };
 
+    void UpdateStatus(const PICSimlabStatus field, const lxString msg);
+
 #ifndef _NOTHREAD
     lxCondition* cpu_cond;
     lxMutex* cpu_mutex;
@@ -270,6 +272,7 @@ public:
     CItemMenu MBoard[BOARDS_MAX];
     CItemMenu MMicro[MAX_MIC];
 
+    void (*updatestatus)(const int field, const lxString msg);
     void (CControl::*menu_EvBoard)(CControl* control);
     void (CControl::*menu_EvMicrocontroller)(CControl* control);
     void (CControl::*board_Event)(CControl* control);
@@ -280,7 +283,6 @@ private:
     void StartRControl(void);
     CWindow* Window;
     board* pboard;
-    CStatusbar* statusbar;
     int lab;
     int lab_;
     lxString SHARE;
@@ -292,7 +294,7 @@ private:
     int mcupwr;
     int mcurst;
     int mcudbg;
-    char cpustate;
+    PICSimlabCPUState cpustate;
     unsigned short debug_port;
     unsigned short remotec_port;
     lxString HOME;
