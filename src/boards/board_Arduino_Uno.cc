@@ -293,11 +293,11 @@ void cboard_Arduino_Uno::Reset(void) {
     if (serialfd != INVALID_SERIAL)
         PICSimLab.UpdateStatus(
             PS_SERIAL,
-            lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) + lxT("(") +
+            lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) + lxT("(") +
                 lxString().Format("%4.1f", fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) / serialexbaud[0])) +
                 lxT("%)"));
     else
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
     /*
       //reset mean value
       for(int pi=0;pi < pic.PINCOUNT;pi++)
@@ -323,11 +323,11 @@ void cboard_Arduino_Uno::RefreshStatus(void) {
     if (serialfd != INVALID_SERIAL)
         PICSimLab.UpdateStatus(
             PS_SERIAL,
-            lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) + lxT("(") +
+            lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) + lxT("(") +
                 lxString().Format("%4.1f", fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) / serialexbaud[0])) +
                 lxT("%)"));
     else
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
     if (PICSimLab.GetMcuPwr()) {
         if (avr) {
             switch (avr->state) {

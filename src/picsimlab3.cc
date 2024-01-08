@@ -43,9 +43,9 @@ extern char SERIALDEVICE[100];
 // Implementation
 
 void CPWindow3::_EvOnCreate(CControl* control) {
-    combo1.SetText(lxString::FromAscii(SERIALDEVICE));
+    combo1.SetText(lxString(SERIALDEVICE));
 #ifdef _USE_PICSTARTP_
-    combo2.SetText(lxString::FromAscii(PROGDEVICE));
+    combo2.SetText(lxString(PROGDEVICE));
     combo2.SetVisible(true);
     label2.SetVisible(true);
 #else

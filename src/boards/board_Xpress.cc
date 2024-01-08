@@ -254,14 +254,14 @@ void cboard_Xpress::Reset(void) {
     // verify serial port state and refresh status bar
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
                                       itoa(pic.serial[0].serialbaud) + lxT("(") +
                                       lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                        100.0 * pic.serial[0].serialbaud) /
                                                                       pic.serial[0].serialexbaud)) +
                                       lxT("%)"));
     else
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
 
     if (use_spare)
         SpareParts.Reset();
@@ -287,14 +287,14 @@ void cboard_Xpress::RefreshStatus(void) {
     // verify serial port state and refresh status bar
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
                                       itoa(pic.serial[0].serialbaud) + lxT("(") +
                                       lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                        100.0 * pic.serial[0].serialbaud) /
                                                                       pic.serial[0].serialexbaud)) +
                                       lxT("%)"));
     else
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
 }
 
 // Called to save board preferences in configuration file

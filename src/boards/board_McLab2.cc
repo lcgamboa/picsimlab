@@ -937,14 +937,14 @@ void cboard_McLab2::Reset(void) {
     pic_set_pin(&pic, 36, p_BT[3]);
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
                                       itoa(pic.serial[0].serialbaud) + lxT("(") +
                                       lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                        100.0 * pic.serial[0].serialbaud) /
                                                                       pic.serial[0].serialexbaud)) +
                                       lxT("%)"));
     else
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
 
     for (int pi = 0; pi < pic.PINCOUNT; pi++) {
         lm1[pi] = 30;
@@ -1419,14 +1419,14 @@ void cboard_McLab2::RefreshStatus(void) {
     label4->SetText(lxT("Temp: ") + lxString().Format("%5.2f", temp[0]) + lxT("°C"));
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
                                       itoa(pic.serial[0].serialbaud) + lxT("(") +
                                       lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                        100.0 * pic.serial[0].serialbaud) /
                                                                       pic.serial[0].serialexbaud)) +
                                       lxT("%)"));
     else
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
 }
 
 void cboard_McLab2::WritePreferences(void) {

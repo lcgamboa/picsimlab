@@ -96,7 +96,7 @@ cboard_uCboard::~cboard_uCboard(void) {
 void cboard_uCboard::Reset(void) {
     MReset(1);
 
-    PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE));
 
     if (use_spare)
         SpareParts.Reset();
@@ -105,7 +105,7 @@ void cboard_uCboard::Reset(void) {
 // Called ever 1s to refresh status
 
 void cboard_uCboard::RefreshStatus(void) {
-    PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE));
+    PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE));
 }
 
 // Called to save board preferences in configuration file

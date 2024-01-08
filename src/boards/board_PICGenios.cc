@@ -1358,14 +1358,14 @@ void cboard_PICGenios::Reset(void) {
     pic_set_pin(&pic, 23, 0);
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
                                       itoa(pic.serial[0].serialbaud) + lxT("(") +
                                       lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                        100.0 * pic.serial[0].serialbaud) /
                                                                       pic.serial[0].serialexbaud)) +
                                       lxT("%)"));
     else
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
 
     for (int i = 0; i < pic.PINCOUNT; i++) {
         lm1[i] = 30;
@@ -2394,14 +2394,14 @@ void cboard_PICGenios::RefreshStatus(void) {
     label5->SetText(lxT("Temp: ") + lxString().Format("%5.2f", temp[0]) + lxT("C"));
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(":") +
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
                                       itoa(pic.serial[0].serialbaud) + lxT("(") +
                                       lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                        100.0 * pic.serial[0].serialbaud) /
                                                                       pic.serial[0].serialexbaud)) +
                                       lxT("%)"));
     else
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString::FromAscii(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
 }
 
 void cboard_PICGenios::WritePreferences(void) {
