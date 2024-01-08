@@ -261,7 +261,7 @@ void cboard_RemoteTCP::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
     PICSimLab.SavePrefs(lxT("RemoteTCP_proc"), Proc);
     // write microcontroller clock to preferences
-    PICSimLab.SavePrefs(lxT("RemoteTCP_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("RemoteTCP_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
 }
 
 // Called whe configuration file load  preferences

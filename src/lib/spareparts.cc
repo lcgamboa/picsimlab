@@ -282,7 +282,7 @@ unsigned char CSpareParts::UnregisterIOpin(unsigned char pin) {
 }
 
 bool CSpareParts::SavePinAlias(lxString fname) {
-    lxString temp;
+    char temp[256];
     lxString pin;
     lxString alias;
     lxStringList lalias;
@@ -296,7 +296,7 @@ bool CSpareParts::SavePinAlias(lxString fname) {
         alias = PinAlias[i].substr(0, 7);
         if (!alias.size())
             alias = " ";
-        temp.Printf("%03i-%-7s -%-7s", i, pin.c_str(), alias.c_str());
+        snprintf(temp, 256, "%03i-%-7s -%-7s", i, pin.c_str(), alias.c_str());
         lalias.AddLine(temp);
     }
     return lalias.SaveToFile(fname);
@@ -504,8 +504,8 @@ bool CSpareParts::LoadConfig(lxString fname, const int disable_debug) {
                 partsc_++;
             } else {
                 printf("Spare parts: Error loading part: %s \n", name);
-                lxString temp;
-                temp.Printf("Spare parts:\nError loading part: %s \n", name);
+                char temp[512];
+                snprintf(temp, 512, "Spare parts:\nError loading part: %s \n", name);
                 PICSimLab.RegisterError(temp);
             }
         }
@@ -615,7 +615,7 @@ void CSpareParts::WritePreferences(void) {
 }
 
 bool CSpareParts::SaveConfig(lxString fname) {
-    lxString temp;
+    char temp[256];
 
     lxStringList prefs;
 
@@ -624,26 +624,27 @@ bool CSpareParts::SaveConfig(lxString fname) {
 
     prefs.Clear();
 
-    temp.Printf("version,0,0,0:%s", _VERSION_);
+    snprintf(temp, 256, "version,0,0,0:%s", _VERSION_);
     prefs.AddLine(temp);
-    temp.Printf("scale,0,0,0:%f", scale);
+    snprintf(temp, 256, "scale,0,0,0:%f", scale);
     prefs.AddLine(temp);
     if (Window) {
-        temp.Printf("position,%i,%i,%i:%i", Window->GetX(), Window->GetY(), Window->GetWidth(), Window->GetHeight());
+        snprintf(temp, 256, "position,%i,%i,%i:%i", Window->GetX(), Window->GetY(), Window->GetWidth(),
+                 Window->GetHeight());
         prefs.AddLine(temp);
     }
     if (PICSimLab.GetWindow()) {
-        temp.Printf("boardp,%i,%i,%i:%i", PICSimLab.GetWindow()->GetX(), PICSimLab.GetWindow()->GetY(),
-                    PICSimLab.GetWindow()->GetWidth(), PICSimLab.GetWindow()->GetHeight());
+        snprintf(temp, 256, "boardp,%i,%i,%i:%i", PICSimLab.GetWindow()->GetX(), PICSimLab.GetWindow()->GetY(),
+                 PICSimLab.GetWindow()->GetWidth(), PICSimLab.GetWindow()->GetHeight());
         prefs.AddLine(temp);
     }
-    temp.Printf("spare_on,0,0,0:%i", PICSimLab.GetBoard()->GetUseSpareParts());
+    snprintf(temp, 256, "spare_on,0,0,0:%i", PICSimLab.GetBoard()->GetUseSpareParts());
     prefs.AddLine(temp);
-    temp.Printf("osc_on,0,0,0:%i", PICSimLab.GetBoard()->GetUseOscilloscope());
+    snprintf(temp, 256, "osc_on,0,0,0:%i", PICSimLab.GetBoard()->GetUseOscilloscope());
     prefs.AddLine(temp);
-    temp.Printf("useAlias,0,0,0:%i", GetUseAlias());
+    snprintf(temp, 256, "useAlias,0,0,0:%i", GetUseAlias());
     prefs.AddLine(temp);
-    temp.Printf("debug,%i,%i,0:", PICSimLab.GetDebugStatus(), PICSimLab.GetDebugType());
+    snprintf(temp, 256, "debug,%i,%i,0:", PICSimLab.GetDebugStatus(), PICSimLab.GetDebugType());
     prefs.AddLine(temp);
 
     lxStringList osc_list = Oscilloscope.WritePreferencesList();
@@ -652,8 +653,8 @@ bool CSpareParts::SaveConfig(lxString fname) {
     }
 
     for (int i = 0; i < GetCount(); i++) {
-        temp.Printf("%s,%i,%i,%i:%s", GetPart(i)->GetName().c_str(), GetPart(i)->GetX(), GetPart(i)->GetY(),
-                    GetPart(i)->GetOrientation(), GetPart(i)->WritePreferences().c_str());
+        snprintf(temp, 256, "%s,%i,%i,%i:%s", GetPart(i)->GetName().c_str(), GetPart(i)->GetX(), GetPart(i)->GetY(),
+                 GetPart(i)->GetOrientation(), GetPart(i)->WritePreferences().c_str());
         prefs.AddLine(temp);
     }
 

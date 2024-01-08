@@ -471,7 +471,7 @@ void cboard_K16F::Reset(void) {
     if (pic.serial[0].serialfd != INVALID_SERIAL)
         PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
                                       itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                      FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                        100.0 * pic.serial[0].serialbaud) /
                                                                       pic.serial[0].serialexbaud)) +
                                       lxT("%)"));
@@ -916,7 +916,7 @@ unsigned short cboard_K16F::GetOutputId(char* name) {
 
 void cboard_K16F::WritePreferences(void) {
     PICSimLab.SavePrefs(lxT("K16F_proc"), Proc);
-    PICSimLab.SavePrefs(lxT("K16F_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("K16F_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
 }
 
 void cboard_K16F::ReadPreferences(char* name, char* value) {
@@ -933,7 +933,7 @@ void cboard_K16F::RefreshStatus(void) {
     if (pic.serial[0].serialfd != INVALID_SERIAL)
         PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
                                       itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                      FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                        100.0 * pic.serial[0].serialbaud) /
                                                                       pic.serial[0].serialexbaud)) +
                                       lxT("%)"));

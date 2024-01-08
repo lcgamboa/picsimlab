@@ -901,12 +901,12 @@ void cboard_PQDB::Reset(void) {
     p_KEY[9] = 0;
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
-                                      itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                       100.0 * pic.serial[0].serialbaud) /
-                                                                      pic.serial[0].serialexbaud)) +
-                                      lxT("%)"));
+        PICSimLab.UpdateStatus(
+            PS_SERIAL,
+            lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) + lxT("(") +
+                FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
+                                             pic.serial[0].serialexbaud)) +
+                lxT("%)"));
     else
         PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
 
@@ -1459,25 +1459,25 @@ unsigned short cboard_PQDB::GetOutputId(char* name) {
 
 void cboard_PQDB::RefreshStatus(void) {
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
-                                      itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                       100.0 * pic.serial[0].serialbaud) /
-                                                                      pic.serial[0].serialexbaud)) +
-                                      lxT("%)"));
+        PICSimLab.UpdateStatus(
+            PS_SERIAL,
+            lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) + lxT("(") +
+                FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
+                                             pic.serial[0].serialexbaud)) +
+                lxT("%)"));
     else
         PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
 }
 
 void cboard_PQDB::WritePreferences(void) {
     PICSimLab.SavePrefs(lxT("PQDB_proc"), Proc);
-    PICSimLab.SavePrefs(lxT("PQDB_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
-    PICSimLab.SavePrefs(lxT("PQDB_pot"), lxString().Format("%i", pot));
+    PICSimLab.SavePrefs(lxT("PQDB_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("PQDB_pot"), itoa(pot));
     if (scroll2) {
-        PICSimLab.SavePrefs(lxT("PQDB_light"), lxString().Format("%i", scroll2->GetPosition()));
+        PICSimLab.SavePrefs(lxT("PQDB_light"), itoa(scroll2->GetPosition()));
     }
     if (scroll1) {
-        PICSimLab.SavePrefs(lxT("PQDB_temp"), lxString().Format("%i", scroll1->GetPosition()));
+        PICSimLab.SavePrefs(lxT("PQDB_temp"), itoa(scroll1->GetPosition()));
     }
 }
 
@@ -1566,8 +1566,8 @@ lxString cboard_PQDB::MGetPinName(int pin) {
         }
         return pname;
     } else {
-        lxString pinname;
-        pinname.Printf("d%i", pin - bsim_picsim::MGetPinCount() - 1);
+        char pinname[100];
+        snprintf(pinname, 100, "d%i", pin - bsim_picsim::MGetPinCount() - 1);
         return pinname;
     }
 }

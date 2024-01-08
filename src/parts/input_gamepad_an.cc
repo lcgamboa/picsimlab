@@ -104,7 +104,7 @@ void cpart_gamepad_an::DrawOutput(const unsigned int i) {
                              output[i].y2 - output[i].y1 + 20);
             canvas.SetFgColor(155, 155, 155);
 
-            temp = lxString().Format("%3.1f", output_value_an) + lxT("V");
+            temp = FloatStrFormat("%3.1f", output_value_an) + lxT("V");
             canvas.RotatedText("Out " + temp, output[i].x1, output[i].y1 + 20, 0);
             canvas.SetFgColor(255, 255, 255);
             if (output_pins[0] == 0)

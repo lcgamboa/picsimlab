@@ -305,8 +305,8 @@ void cpart_leds::ReadPropertiesWindow(CPWindow* WProp) {
     active = (((CCombo*)WProp->GetChildByName("combo9"))->GetText().compare("HIGH") == 0);
 
     for (int i = 0; i < 8; i++) {
-        lxString cname;
-        cname.Printf("combo_%i", 1 + i);
+        char cname[100];
+        snprintf(cname, 100, "combo_%i", 1 + i);
         lxString val = ((CCombo*)WProp->GetChildByName(cname))->GetText();
         for (int j = 0; j < C_END; j++) {
             if (!val.compare(Colorname[j])) {

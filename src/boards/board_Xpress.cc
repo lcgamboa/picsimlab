@@ -256,7 +256,7 @@ void cboard_Xpress::Reset(void) {
     if (pic.serial[0].serialfd != INVALID_SERIAL)
         PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
                                       itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                      FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                        100.0 * pic.serial[0].serialbaud) /
                                                                       pic.serial[0].serialexbaud)) +
                                       lxT("%)"));
@@ -289,7 +289,7 @@ void cboard_Xpress::RefreshStatus(void) {
     if (pic.serial[0].serialfd != INVALID_SERIAL)
         PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
                                       itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                      FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                        100.0 * pic.serial[0].serialbaud) /
                                                                       pic.serial[0].serialexbaud)) +
                                       lxT("%)"));
@@ -302,8 +302,8 @@ void cboard_Xpress::RefreshStatus(void) {
 void cboard_Xpress::WritePreferences(void) {
     // write selected microcontroller of board_6 to preferences
     PICSimLab.SavePrefs(lxT("Xpress_proc"), Proc);
-    PICSimLab.SavePrefs(lxT("Xpress_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
-    PICSimLab.SavePrefs(lxT("Xpress_pot1"), lxString().Format("%i", pot1));
+    PICSimLab.SavePrefs(lxT("Xpress_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("Xpress_pot1"), itoa( pot1));
 }
 
 // Called whe configuration file load  preferences

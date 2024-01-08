@@ -838,7 +838,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
     // disable extra in case of invalid qemu option finish the simulator
 
     char ftest[2048];
-    strncpy(ftest, (char*)lxGetTempDir(lxT("picsimlab")).char_str(), 1023);
+    strncpy(ftest, (char*)lxGetTempDir(lxT("picsimlab")).c_str(), 1023);
     strncat(ftest, "/picsimlab_qemu_fail", 1023);
 
     if (lxFileExists(ftest)) {

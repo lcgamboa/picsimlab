@@ -144,8 +144,10 @@ int mplabxd_init(board* mboard, unsigned short tcpport) {
 
         if (bind(listenfd, (sockaddr*)&serv, sizeof(serv))) {
             printf("mplabxd: bind error : %s \n", strerror(errno));
-            PICSimLab.RegisterError(lxString().Format(
-                "Can't open mplabxd TCP port %i\n It is already in use by another application!", tcpport));
+            char stemp[100];
+            snprintf(stemp, 100, "Can't open mplabxd TCP port %i\n It is already in use by another application!",
+                     tcpport);
+            PICSimLab.RegisterError(stemp);
             return 1;
         }
 

@@ -147,43 +147,43 @@ void CPWindow4::DrawScreen(void) {
     draw1.Canvas.Polygon(1, pts, 3);
 
     // draw text info
-    lxString text;
+    char text[100];
     draw1.Canvas.SetFgColor(0, 0, 0);
     draw1.Canvas.SetBgColor(0, 0, 0);
     draw1.Canvas.Rectangle(1, 0, HMAX, WMAX, HMAX + 30);
 
     draw1.Canvas.SetFgColor(button1.GetColor());
     if (togglebutton1.GetCheck()) {
-        text.Printf("CH1 %6.2fV %6.2fV %c", spind1.GetValue(), spind2.GetValue(),
-                    ((togglebutton3.GetCheck() == 1) ? 'I' : 'N'));
+        snprintf(text, 100, "CH1 %6.2fV %6.2fV %c", spind1.GetValue(), spind2.GetValue(),
+                 ((togglebutton3.GetCheck() == 1) ? 'I' : 'N'));
     } else {
-        text.Printf("CH1 Off");
+        snprintf(text, 100, "CH1 Off");
     }
     draw1.Canvas.Text(text, 10, HMAX + 1);
 
     draw1.Canvas.SetFgColor(button2.GetColor());
     if (togglebutton2.GetCheck()) {
-        text.Printf("CH2 %6.2fV %6.2fV %c", spind3.GetValue(), spind4.GetValue(),
-                    ((togglebutton4.GetCheck() == 1) ? 'I' : 'N'));
+        snprintf(text, 100, "CH2 %6.2fV %6.2fV %c", spind3.GetValue(), spind4.GetValue(),
+                 ((togglebutton4.GetCheck() == 1) ? 'I' : 'N'));
     } else {
-        text.Printf("CH2 Off");
+        snprintf(text, 100, "CH2 Off");
     }
     draw1.Canvas.Text(text, 10, HMAX + 14);
 
     draw1.Canvas.SetFgColor(200, 200, 200);
-    text.Printf("TM %6.3fms  %6.3fms", spind5.GetValue(), spind6.GetValue());
+    snprintf(text, 100, "TM %6.3fms  %6.3fms", spind5.GetValue(), spind6.GetValue());
     draw1.Canvas.Text(text, WMAX / 2, HMAX + 1);
 
     draw1.Canvas.SetFgColor(200, 200, 0);
     if (togglebutton5.GetCheck()) {
-        text.Printf("TRG CH%s %6.2fV ", combo1.GetText().c_str(), spind7.GetValue());
+        snprintf(text, 100, "TRG CH%s %6.2fV ", combo1.GetText().c_str(), spind7.GetValue());
     } else {
-        text.Printf("TRG Off");
+        snprintf(text, 100, "TRG Off");
     }
     draw1.Canvas.Text(text, WMAX / 2, HMAX + 14);
 
-    lxString text1;
-    lxString text2;
+    char text1[100];
+    char text2[100];
     const int x = WMAX + 2;
     int y;
 
@@ -197,59 +197,59 @@ void CPWindow4::DrawScreen(void) {
 
         switch (Oscilloscope.GetMeasures(i)) {
             case 1:
-                text = "Vmax";
-                text1.Printf("%7.3f V", Oscilloscope.GetChannelStatus(0).Vmax);
-                text2.Printf("%7.3f V", Oscilloscope.GetChannelStatus(1).Vmax);
+                strcpy(text, "Vmax");
+                snprintf(text1, 100, "%7.3f V", Oscilloscope.GetChannelStatus(0).Vmax);
+                snprintf(text2, 100, "%7.3f V", Oscilloscope.GetChannelStatus(1).Vmax);
                 break;
             case 2:
-                text = "Vmin";
-                text1.Printf("%7.3f V", Oscilloscope.GetChannelStatus(0).Vmin);
-                text2.Printf("%7.3f V", Oscilloscope.GetChannelStatus(1).Vmin);
+                strcpy(text, "Vmin");
+                snprintf(text1, 100, "%7.3f V", Oscilloscope.GetChannelStatus(0).Vmin);
+                snprintf(text2, 100, "%7.3f V", Oscilloscope.GetChannelStatus(1).Vmin);
                 break;
             case 3:
-                text = "Vavg";
-                text1.Printf("%7.3f V", Oscilloscope.GetChannelStatus(0).Vavr);
-                text2.Printf("%7.3f V", Oscilloscope.GetChannelStatus(1).Vavr);
+                strcpy(text, "Vavg");
+                snprintf(text1, 100, "%7.3f V", Oscilloscope.GetChannelStatus(0).Vavr);
+                snprintf(text2, 100, "%7.3f V", Oscilloscope.GetChannelStatus(1).Vavr);
                 break;
             case 4:
-                text = "Vrms";
-                text1.Printf("%7.3f V", Oscilloscope.GetChannelStatus(0).Vrms);
-                text2.Printf("%7.3f V", Oscilloscope.GetChannelStatus(1).Vrms);
+                strcpy(text, "Vrms");
+                snprintf(text1, 100, "%7.3f V", Oscilloscope.GetChannelStatus(0).Vrms);
+                snprintf(text2, 100, "%7.3f V", Oscilloscope.GetChannelStatus(1).Vrms);
                 break;
             case 5:
-                text = "Frequency";
-                text1.Printf("%7.0f Hz", Oscilloscope.GetChannelStatus(0).Freq);
-                text2.Printf("%7.0f Hz", Oscilloscope.GetChannelStatus(1).Freq);
+                strcpy(text, "Frequency");
+                snprintf(text1, 100, "%7.0f Hz", Oscilloscope.GetChannelStatus(0).Freq);
+                snprintf(text2, 100, "%7.0f Hz", Oscilloscope.GetChannelStatus(1).Freq);
                 break;
             case 6:
-                text = "Duty cycle";
-                text1.Printf("%7.0f %%", Oscilloscope.GetChannelStatus(0).Duty);
-                text2.Printf("%7.0f %%", Oscilloscope.GetChannelStatus(1).Duty);
+                strcpy(text, "Duty cycle");
+                snprintf(text1, 100, "%7.0f %%", Oscilloscope.GetChannelStatus(0).Duty);
+                snprintf(text2, 100, "%7.0f %%", Oscilloscope.GetChannelStatus(1).Duty);
                 break;
             case 7:
-                text = "Pos. cycle";
-                text1.Printf("%7.3f ms", Oscilloscope.GetChannelStatus(0).PCycle_ms);
-                text2.Printf("%7.3f ms", Oscilloscope.GetChannelStatus(1).PCycle_ms);
+                strcpy(text, "Pos. cycle");
+                snprintf(text1, 100, "%7.3f ms", Oscilloscope.GetChannelStatus(0).PCycle_ms);
+                snprintf(text2, 100, "%7.3f ms", Oscilloscope.GetChannelStatus(1).PCycle_ms);
                 break;
             case 8:
-                text = "Neg. cycle";
-                text1.Printf("%7.3f ms",
-                             Oscilloscope.GetChannelStatus(0).FCycle_ms - Oscilloscope.GetChannelStatus(0).PCycle_ms);
-                text2.Printf("%7.3f ms",
-                             Oscilloscope.GetChannelStatus(1).FCycle_ms - Oscilloscope.GetChannelStatus(1).PCycle_ms);
+                strcpy(text, "Neg. cycle");
+                snprintf(text1, 100, "%7.3f ms",
+                         Oscilloscope.GetChannelStatus(0).FCycle_ms - Oscilloscope.GetChannelStatus(0).PCycle_ms);
+                snprintf(text2, 100, "%7.3f ms",
+                         Oscilloscope.GetChannelStatus(1).FCycle_ms - Oscilloscope.GetChannelStatus(1).PCycle_ms);
                 break;
             case 9:
-                text = "Full cycle";
-                text1.Printf("%7.3f ms", Oscilloscope.GetChannelStatus(0).FCycle_ms);
-                text2.Printf("%7.3f ms", Oscilloscope.GetChannelStatus(1).FCycle_ms);
+                strcpy(text, "Full cycle");
+                snprintf(text1, 100, "%7.3f ms", Oscilloscope.GetChannelStatus(0).FCycle_ms);
+                snprintf(text2, 100, "%7.3f ms", Oscilloscope.GetChannelStatus(1).FCycle_ms);
                 break;
             default:
-                text = "";
-                text1 = "";
-                text2 = "";
+                strcpy(text, "");
+                strcpy(text1, "");
+                strcpy(text2, "");
         }
 
-        if (text.size() > 0) {
+        if (strlen(text) > 0) {
             draw1.Canvas.SetFgColor(200, 200, 200);
             draw1.Canvas.Text(text, x + 4, y + 4);
             draw1.Canvas.SetFgColor(button1.GetColor());

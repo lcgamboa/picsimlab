@@ -202,7 +202,7 @@ void cboard_x::Reset(void) {
     if (pic.serial[0].serialfd != INVALID_SERIAL)
         PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
                                       itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                      FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                        100.0 * pic.serial[0].serialbaud) /
                                                                       pic.serial[0].serialexbaud)) +
                                       lxT("%)"));
@@ -243,7 +243,7 @@ void cboard_x::RefreshStatus(void) {
     if (pic.serial[0].serialfd != INVALID_SERIAL)
         PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
                                       itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                      FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                        100.0 * pic.serial[0].serialbaud) /
                                                                       pic.serial[0].serialexbaud)) +
                                       lxT("%)"));
@@ -257,11 +257,11 @@ void cboard_x::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
     PICSimLab.SavePrefs(lxT("X_proc"), Proc);
     // write switch state of board_x to preferences
-    PICSimLab.SavePrefs(lxT("X_bt2"), lxString().Format("%i", p_BT2));
+    PICSimLab.SavePrefs(lxT("X_bt2"), itoa( p_BT2));
     // write microcontroller clock to preferences
-    PICSimLab.SavePrefs(lxT("X_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("X_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
     // write potentiometer position to preferences
-    PICSimLab.SavePrefs(lxT("X_pot1"), lxString().Format("%i", pot1));
+    PICSimLab.SavePrefs(lxT("X_pot1"), itoa( pot1));
 }
 
 // Called whe configuration file load  preferences

@@ -95,10 +95,10 @@ void cpart_step::DrawOutput(const unsigned int i) {
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);
-            lxString text;
-            text.Printf("S=%5.1f", steps);
+            char text[100];
+            snprintf(text, 100, "S=%5.1f", steps);
             canvas.RotatedText(text, output[i].x1, output[i].y1, 0);
-            text.Printf("T=%3i", turns);
+            snprintf(text, 100, "T=%3i", turns);
             canvas.RotatedText(text, output[i].x1, output[i].y1 + 12, 0);
         } break;
         case O_ROT:

@@ -132,10 +132,12 @@ int rcontrol_init(const unsigned short tcpport, const int reporterror) {
         if (bind(listenfd, (sockaddr*)&serv, sizeof(serv))) {
             if (reporterror) {
                 printf("rcontrol: bind error : %s \n", strerror(errno));
-                PICSimLab.RegisterError(
-                    lxString().Format("Can't open rcontrol TCP port %i\n It is already "
-                                      "in use by another application!",
-                                      tcpport));
+                char stemp[100];
+                snprintf(stemp, 100,
+                         "Can't open rcontrol TCP port %i\n It is already "
+                         "in use by another application!",
+                         tcpport);
+                PICSimLab.RegisterError(stemp);
             }
             return 1;
         }
@@ -412,7 +414,6 @@ int rcontrol_loop(void) {
     int i, j;
     int n;
     int ret = 0;
-    lxString stemp;
     char lstemp[200];
     board* Board;
     part* Part;
@@ -815,14 +816,14 @@ int rcontrol_loop(void) {
                         // Command info
                         // ========================================================
                         Board = PICSimLab.GetBoard();
-                        stemp.Printf("Board:     %s\r\n", Board->GetName().c_str());
-                        ret += sendtext((const char*)stemp.c_str());
-                        stemp.Printf("Processor: %s\r\n", Board->GetProcessorName().c_str());
-                        ret += sendtext((const char*)stemp.c_str());
-                        stemp.Printf("Frequency: %10.0f Hz\r\n", Board->MGetFreq());
-                        ret += sendtext((const char*)stemp.c_str());
-                        stemp.Printf("Use Spare: %i\r\n", Board->GetUseSpareParts());
-                        ret += sendtext((const char*)stemp.c_str());
+                        snprintf(lstemp, 100, "Board:     %s\r\n", Board->GetName().c_str());
+                        ret += sendtext(lstemp);
+                        snprintf(lstemp, 100, "Processor: %s\r\n", Board->GetProcessorName().c_str());
+                        ret += sendtext(lstemp);
+                        snprintf(lstemp, 100, "Frequency: %10.0f Hz\r\n", Board->MGetFreq());
+                        ret += sendtext(lstemp);
+                        snprintf(lstemp, 100, "Use Spare: %i\r\n", Board->GetUseSpareParts());
+                        ret += sendtext(lstemp);
 
                         for (i = 0; i < Board->GetInputCount(); i++) {
                             Input = Board->GetInput(i);
@@ -843,8 +844,8 @@ int rcontrol_loop(void) {
                         if (Board->GetUseSpareParts()) {
                             for (i = 0; i < SpareParts.GetCount(); i++) {
                                 Part = SpareParts.GetPart(i);
-                                stemp.Printf("  part[%02i]: %s\r\n", i, (const char*)Part->GetName());
-                                ret += sendtext((const char*)stemp.c_str());
+                                snprintf(lstemp, 100, "  part[%02i]: %s\r\n", i, (const char*)Part->GetName());
+                                ret += sendtext(lstemp);
 
                                 for (j = 0; j < Part->GetInputCount(); j++) {
                                     Input = Part->GetInput(j);
@@ -1071,7 +1072,7 @@ int rcontrol_loop(void) {
                             ret = sendtext("Ok\r\n>");
                         } else {
                             if (PICSimLab.GetSimulationRun()) {
-                                ret = sendtext(lxString().Format(
+                                ret = sendtext(FloatStrFormat(
                                     "Simulation running %5.2fx\r\nOk\r\n>",
                                     100.0 / ((CTimer*)PICSimLab.GetWindow()->GetChildByName("timer1"))->GetTime()));
                             } else {
@@ -1094,10 +1095,11 @@ int rcontrol_loop(void) {
                     if (!strcmp(cmd, "version")) {
                         // Command version
                         // =====================================================
-                        stemp.Printf(lxT("Developed by L.C. Gamboa\r\n "
-                                         "<lcgamboa@yahoo.com>\r\n Version: %s %s %s %s\r\n"),
-                                     lxT(_VERSION_), lxT(_DATE_), lxT(_ARCH_), lxT(_PKG_));
-                        ret += sendtext((const char*)stemp.c_str());
+                        snprintf(lstemp, 100,
+                                 lxT("Developed by L.C. Gamboa\r\n "
+                                     "<lcgamboa@yahoo.com>\r\n Version: %s %s %s %s\r\n"),
+                                 lxT(_VERSION_), lxT(_DATE_), lxT(_ARCH_), lxT(_PKG_));
+                        ret += sendtext(lstemp);
                         ret += sendtext("Ok\r\n>");
                     } else {
                         ret = sendtext("ERROR\r\n>");

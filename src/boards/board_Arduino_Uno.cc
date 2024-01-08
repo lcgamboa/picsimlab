@@ -294,7 +294,7 @@ void cboard_Arduino_Uno::Reset(void) {
         PICSimLab.UpdateStatus(
             PS_SERIAL,
             lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) + lxT("(") +
-                lxString().Format("%4.1f", fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) / serialexbaud[0])) +
+                FloatStrFormat("%4.1f", fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) / serialexbaud[0])) +
                 lxT("%)"));
     else
         PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
@@ -324,7 +324,7 @@ void cboard_Arduino_Uno::RefreshStatus(void) {
         PICSimLab.UpdateStatus(
             PS_SERIAL,
             lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) + lxT("(") +
-                lxString().Format("%4.1f", fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) / serialexbaud[0])) +
+                FloatStrFormat("%4.1f", fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) / serialexbaud[0])) +
                 lxT("%)"));
     else
         PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
@@ -369,7 +369,7 @@ void cboard_Arduino_Uno::RefreshStatus(void) {
 void cboard_Arduino_Uno::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
     PICSimLab.SavePrefs(lxT("Arduino_Uno_proc"), Proc);
-    PICSimLab.SavePrefs(lxT("Arduino_Uno_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("Arduino_Uno_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
 }
 
 // Called whe configuration file load  preferences

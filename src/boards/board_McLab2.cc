@@ -939,7 +939,7 @@ void cboard_McLab2::Reset(void) {
     if (pic.serial[0].serialfd != INVALID_SERIAL)
         PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
                                       itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                      FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                        100.0 * pic.serial[0].serialbaud) /
                                                                       pic.serial[0].serialexbaud)) +
                                       lxT("%)"));
@@ -1416,12 +1416,12 @@ unsigned short cboard_McLab2::GetOutputId(char* name) {
 }
 
 void cboard_McLab2::RefreshStatus(void) {
-    label4->SetText(lxT("Temp: ") + lxString().Format("%5.2f", temp[0]) + lxT("°C"));
+    label4->SetText(lxT("Temp: ") + FloatStrFormat("%5.2f", temp[0]) + lxT("°C"));
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
         PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
                                       itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                      FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                        100.0 * pic.serial[0].serialbaud) /
                                                                       pic.serial[0].serialexbaud)) +
                                       lxT("%)"));
@@ -1438,8 +1438,8 @@ void cboard_McLab2::WritePreferences(void) {
         sprintf(line + i, "%i", jmp[i]);
 
     PICSimLab.SavePrefs(lxT("McLab2_jmp"), line);
-    PICSimLab.SavePrefs(lxT("McLab2_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
-    PICSimLab.SavePrefs(lxT("McLab2_pot1"), lxString().Format("%i", pot1));
+    PICSimLab.SavePrefs(lxT("McLab2_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("McLab2_pot1"), itoa( pot1));
 }
 
 void cboard_McLab2::ReadPreferences(char* name, char* value) {

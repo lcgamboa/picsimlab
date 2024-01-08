@@ -362,7 +362,7 @@ void cboard_STM32_H103::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
     PICSimLab.SavePrefs(lxT("STM32_H103_proc"), Proc);
     // write microcontroller clock to preferences
-    PICSimLab.SavePrefs(lxT("STM32_H103_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("STM32_H103_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
     // write microcontroller icount to preferences
     PICSimLab.SavePrefs(lxT("STM32_H103_icount"), itoa(icount));
 }

@@ -487,8 +487,8 @@ lxString part::GetHelpURL(void) {
         memmove(ptr, ptr + 1, strlen(ptr) + 1);
     }
 
-    lxString stemp;
-    stemp.Printf(lxT("%s.html"), pname);
+    char stemp[256];
+    snprintf(stemp, 100, lxT("%s.html"), pname);
 
     return stemp;
 }

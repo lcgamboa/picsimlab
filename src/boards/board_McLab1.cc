@@ -929,8 +929,8 @@ unsigned short cboard_McLab1::GetOutputId(char* name) {
 
 void cboard_McLab1::WritePreferences(void) {
     PICSimLab.SavePrefs(lxT("McLab1_proc"), Proc);
-    PICSimLab.SavePrefs(lxT("McLab1_jmp"), lxString().Format("%i", jmp[0]));
-    PICSimLab.SavePrefs(lxT("McLab1_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("McLab1_jmp"), itoa( jmp[0]));
+    PICSimLab.SavePrefs(lxT("McLab1_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
 }
 
 void cboard_McLab1::ReadPreferences(char* name, char* value) {

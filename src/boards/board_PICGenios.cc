@@ -1358,12 +1358,12 @@ void cboard_PICGenios::Reset(void) {
     pic_set_pin(&pic, 23, 0);
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
-                                      itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                       100.0 * pic.serial[0].serialbaud) /
-                                                                      pic.serial[0].serialexbaud)) +
-                                      lxT("%)"));
+        PICSimLab.UpdateStatus(
+            PS_SERIAL,
+            lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) + lxT("(") +
+                FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
+                                             pic.serial[0].serialexbaud)) +
+                lxT("%)"));
     else
         PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
 
@@ -2391,15 +2391,15 @@ unsigned short cboard_PICGenios::GetOutputId(char* name) {
 }
 
 void cboard_PICGenios::RefreshStatus(void) {
-    label5->SetText(lxT("Temp: ") + lxString().Format("%5.2f", temp[0]) + lxT("C"));
+    label5->SetText(lxT("Temp: ") + FloatStrFormat("%5.2f", temp[0]) + lxT("C"));
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
-                                      itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                       100.0 * pic.serial[0].serialbaud) /
-                                                                      pic.serial[0].serialexbaud)) +
-                                      lxT("%)"));
+        PICSimLab.UpdateStatus(
+            PS_SERIAL,
+            lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) + lxT("(") +
+                FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
+                                             pic.serial[0].serialexbaud)) +
+                lxT("%)"));
     else
         PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
 }
@@ -2408,7 +2408,7 @@ void cboard_PICGenios::WritePreferences(void) {
     char line[100];
     PICSimLab.SavePrefs(lxT("PICGenios_proc"), Proc);
 
-    PICSimLab.SavePrefs(lxT("PICGenios_jmp"), lxString().Format("%i", jmp[0]));
+    PICSimLab.SavePrefs(lxT("PICGenios_jmp"), itoa(jmp[0]));
 
     if (combo1) {
         PICSimLab.SavePrefs(lxT("PICGenios_lcd"), combo1->GetText());
@@ -2419,10 +2419,10 @@ void cboard_PICGenios::WritePreferences(void) {
         sprintf(line + i, "%i", dip[i]);
 
     PICSimLab.SavePrefs(lxT("PICGenios_dip"), line);
-    PICSimLab.SavePrefs(lxT("PICGenios_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("PICGenios_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
 
-    PICSimLab.SavePrefs(lxT("PICGenios_pot1"), lxString().Format("%i", pot[0]));
-    PICSimLab.SavePrefs(lxT("PICGenios_pot2"), lxString().Format("%i", pot[1]));
+    PICSimLab.SavePrefs(lxT("PICGenios_pot1"), itoa(pot[0]));
+    PICSimLab.SavePrefs(lxT("PICGenios_pot2"), itoa(pot[1]));
 }
 
 void cboard_PICGenios::ReadPreferences(char* name, char* value) {

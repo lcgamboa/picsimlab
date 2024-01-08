@@ -111,7 +111,7 @@ void cboard_Breadboard::Reset(void) {
                 PICSimLab.UpdateStatus(PS_SERIAL,
                                        lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
                                            itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                           lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                           FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                             100.0 * pic.serial[0].serialbaud) /
                                                                            pic.serial[0].serialexbaud)) +
                                            lxT("%)"));
@@ -126,7 +126,7 @@ void cboard_Breadboard::Reset(void) {
                 PICSimLab.UpdateStatus(
                     PS_SERIAL,
                     lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) + lxT("(") +
-                        lxString().Format("%4.1f",
+                        FloatStrFormat("%4.1f",
                                           fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) / serialexbaud[0])) +
                         lxT("%)"));
             else
@@ -158,7 +158,7 @@ void cboard_Breadboard::RefreshStatus(void) {
                 PICSimLab.UpdateStatus(PS_SERIAL,
                                        lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
                                            itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                           lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                           FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                             100.0 * pic.serial[0].serialbaud) /
                                                                            pic.serial[0].serialexbaud)) +
                                            lxT("%)"));
@@ -173,7 +173,7 @@ void cboard_Breadboard::RefreshStatus(void) {
                 PICSimLab.UpdateStatus(
                     PS_SERIAL,
                     lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) + lxT("(") +
-                        lxString().Format("%4.1f",
+                        FloatStrFormat("%4.1f",
                                           fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) / serialexbaud[0])) +
                         lxT("%)"));
             else
@@ -223,8 +223,8 @@ void cboard_Breadboard::RefreshStatus(void) {
 void cboard_Breadboard::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
     PICSimLab.SavePrefs(lxT("Breadboard_proc"), Proc);
-    PICSimLab.SavePrefs(lxT("Breadboard_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
-    PICSimLab.SavePrefs(lxT("Breadboard_jmp"), lxString().Format("%i", jmp[0]));
+    PICSimLab.SavePrefs(lxT("Breadboard_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("Breadboard_jmp"), itoa( jmp[0]));
 }
 
 // Called whe configuration file load  preferences

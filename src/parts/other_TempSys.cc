@@ -99,7 +99,7 @@ cpart_tempsys::~cpart_tempsys(void) {
 }
 
 void cpart_tempsys::DrawOutput(const unsigned int i) {
-    lxString str;
+    char str[100];
 
     switch (output[i].id) {
         case O_HT:
@@ -131,11 +131,11 @@ void cpart_tempsys::DrawOutput(const unsigned int i) {
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);
-            str.Printf(lxT("Ambient.=%5.2fC"), ambient);
+            snprintf(str, 100, lxT("Ambient.=%5.2fC"), ambient);
             canvas.RotatedText(str, output[i].x1, output[i].y1, 0);
             break;
         case O_OTE:
-            str.Printf(lxT("Temp.=%5.2fC"), temp[0]);
+            snprintf(str, 100, lxT("Temp.=%5.2fC"), temp[0]);
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);

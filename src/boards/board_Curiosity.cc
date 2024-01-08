@@ -259,7 +259,7 @@ void cboard_Curiosity::Reset(void) {
 
         PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
                                       itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                      FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                        100.0 * pic.serial[0].serialbaud) /
                                                                       pic.serial[0].serialexbaud)) +
                                       lxT("%)"));
@@ -300,7 +300,7 @@ void cboard_Curiosity::RefreshStatus(void) {
     if (pic.serial[0].serialfd != INVALID_SERIAL)
         PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
                                       itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                      FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                        100.0 * pic.serial[0].serialbaud) /
                                                                       pic.serial[0].serialexbaud)) +
                                       lxT("%)"));
@@ -313,9 +313,9 @@ void cboard_Curiosity::RefreshStatus(void) {
 void cboard_Curiosity::WritePreferences(void) {
     // write selected microcontroller of board_5 to preferences
     PICSimLab.SavePrefs(lxT("Curiosity_proc"), Proc);
-    PICSimLab.SavePrefs(lxT("Curiosity_jmp"), lxString().Format("%i", jmp[0]));
-    PICSimLab.SavePrefs(lxT("Curiosity_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
-    PICSimLab.SavePrefs(lxT("Curiosity_pot1"), lxString().Format("%i", pot1));
+    PICSimLab.SavePrefs(lxT("Curiosity_jmp"), itoa( jmp[0]));
+    PICSimLab.SavePrefs(lxT("Curiosity_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("Curiosity_pot1"), itoa( pot1));
 }
 
 // Called whe configuration file load  preferences

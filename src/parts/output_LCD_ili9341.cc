@@ -59,7 +59,8 @@ enum { I_LCD };
 /* types */
 enum { TC_SPI = 0, TC_8BITS, TC_SPI_TOUCH, TC_8BITS_TOUCH };
 
-cpart_LCD_ili9341::cpart_LCD_ili9341(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+cpart_LCD_ili9341::cpart_LCD_ili9341(const unsigned x, const unsigned y, const char* name, const char* type,
+                                     board* pboard_)
     : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     X = x;
     Y = y;
@@ -304,7 +305,7 @@ void cpart_LCD_ili9341::ReadPreferences(lxString value) {
 void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
     lxString Items = SpareParts.GetPinsNames();
     lxString spin;
-    lxString name;
+    char name[100];
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
     if (input_pins[0] == 0)
@@ -437,7 +438,7 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
             ((CLabel*)WProp->GetChildByName("label4"))->SetText("Pin 4 - /RD");
 
             for (int i = 0; i < 8; i++) {
-                name.Printf("combo%i", i + 7);
+                snprintf(name, 100, "combo%i", i + 7);
                 ((CCombo*)WProp->GetChildByName(name))->SetItems(Items);
                 if (input_pins[5 + i] == 0)
                     ((CCombo*)WProp->GetChildByName(name))->SetText("0  NC");
@@ -492,7 +493,7 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
             ((CLabel*)WProp->GetChildByName("label4"))->SetText("Pin 4 - DIN");
 
             for (int i = 0; i < 5; i++) {
-                name.Printf("combo%i", i + 15);
+                snprintf(name, 100, "combo%i", i + 15);
                 ((CCombo*)WProp->GetChildByName(name))->SetItems(Items);
                 if (touch_pins[i] == 0)
                     ((CCombo*)WProp->GetChildByName(name))->SetText("0  NC");
@@ -549,7 +550,7 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
             ((CLabel*)WProp->GetChildByName("label4"))->SetText("Pin 4 - /RD");
 
             for (int i = 0; i < 8; i++) {
-                name.Printf("combo%i", i + 7);
+                snprintf(name, 100, "combo%i", i + 7);
                 ((CCombo*)WProp->GetChildByName(name))->SetItems(Items);
                 if (input_pins[5 + i] == 0)
                     ((CCombo*)WProp->GetChildByName(name))->SetText("0  NC");
@@ -560,7 +561,7 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
             }
 
             for (int i = 0; i < 5; i++) {
-                name.Printf("combo%i", i + 15);
+                snprintf(name, 100, "combo%i", i + 15);
                 ((CCombo*)WProp->GetChildByName(name))->SetItems(Items);
                 if (touch_pins[i] == 0)
                     ((CCombo*)WProp->GetChildByName(name))->SetText("0  NC");

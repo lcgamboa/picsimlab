@@ -165,7 +165,7 @@ cpart_Jumpers::~cpart_Jumpers(void) {
 
 void cpart_Jumpers::DrawOutput(const unsigned int i) {
     const picpin* ppins = SpareParts.GetPinsValues();
-    lxString pname;
+    char pname[256];
     unsigned char c;
 
     switch (output[i].id) {
@@ -177,16 +177,16 @@ void cpart_Jumpers::DrawOutput(const unsigned int i) {
         case O_I1 ... O_I16:
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            pname.Printf("%2i-%s", output[i].id - O_I1 + 1,
-                         SpareParts.GetPinName(input_pins[output[i].id - O_I1]).c_str());
+            snprintf(pname, 256, "%2i-%s", output[i].id - O_I1 + 1,
+                     SpareParts.GetPinName(input_pins[output[i].id - O_I1]).c_str());
             canvas.SetFgColor(255, 255, 255);
             canvas.RotatedText(pname, output[i].x1, output[i].y2, 90.0);
             break;
         case O_O1 ... O_O16:
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            pname.Printf("%2i-%s", output[i].id - O_O1 + 1,
-                         SpareParts.GetPinName(output_pins[output[i].id - O_O1]).c_str());
+            snprintf(pname, 256, "%2i-%s", output[i].id - O_O1 + 1,
+                     SpareParts.GetPinName(output_pins[output[i].id - O_O1]).c_str());
             canvas.SetFgColor(255, 255, 255);
             canvas.RotatedText(pname, output[i].x1, output[i].y2, 90.0);
             break;
@@ -433,7 +433,7 @@ void cpart_Jumpers::RegisterRemoteControl(void) {
 }
 
 void cpart_Jumpers::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString childname;
+    char childname[256];
     CCombo* cc;
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems("F,M,");
@@ -455,7 +455,7 @@ void cpart_Jumpers::ConfigurePropertiesWindow(CPWindow* WProp) {
 
     for (int i = 0; i < 16; i++) {
         // input
-        childname.Printf("combo%i", i + 2);
+        snprintf(childname, 256, "combo%i", i + 2);
 
         SetPCWComboWithPinNames(WProp, childname, input_pins[i]);
 
@@ -468,7 +468,7 @@ void cpart_Jumpers::ConfigurePropertiesWindow(CPWindow* WProp) {
         }
 
         // output
-        childname.Printf("combo%i", i + 19);
+        snprintf(childname, 256, "combo%i", i + 19);
 
         SetPCWComboWithPinNames(WProp, childname, output_pins[i]);
 
@@ -483,7 +483,7 @@ void cpart_Jumpers::ConfigurePropertiesWindow(CPWindow* WProp) {
 }
 
 void cpart_Jumpers::ReadPropertiesWindow(CPWindow* WProp) {
-    lxString childname;
+    char childname[256];
     CCombo* cc;
 
     cc = ((CCombo*)WProp->GetChildByName("combo1"));
@@ -501,12 +501,12 @@ void cpart_Jumpers::ReadPropertiesWindow(CPWindow* WProp) {
     for (int i = 0; i < 16; i++) {
         // input
         if (jtype & 0x02) {
-            childname.Printf("combo%i", i + 2);
+            snprintf(childname, 256, "combo%i", i + 2);
             input_pins[i] = GetPWCComboSelectedPin(WProp, childname);
         }
         // output
         if (jtype & 0x01) {
-            childname.Printf("combo%i", i + 19);
+            snprintf(childname, 256, "combo%i", i + 19);
             output_pins[i] = GetPWCComboSelectedPin(WProp, childname);
         }
     }

@@ -323,12 +323,12 @@ void cboard_Curiosity_HPC::Reset(void) {
     // verify serial port state and refresh status bar
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
-                                      itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                       100.0 * pic.serial[0].serialbaud) /
-                                                                      pic.serial[0].serialexbaud)) +
-                                      lxT("%)"));
+        PICSimLab.UpdateStatus(
+            PS_SERIAL,
+            lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) + lxT("(") +
+                FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
+                                             pic.serial[0].serialexbaud)) +
+                lxT("%)"));
     else
         PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
 
@@ -375,12 +375,12 @@ void cboard_Curiosity_HPC::RefreshStatus(void) {
     // verify serial port state and refresh status bar
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
-                                      itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                      lxString().Format("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                       100.0 * pic.serial[0].serialbaud) /
-                                                                      pic.serial[0].serialexbaud)) +
-                                      lxT("%)"));
+        PICSimLab.UpdateStatus(
+            PS_SERIAL,
+            lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) + lxT("(") +
+                FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
+                                             pic.serial[0].serialexbaud)) +
+                lxT("%)"));
     else
         PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
 }
@@ -390,10 +390,10 @@ void cboard_Curiosity_HPC::RefreshStatus(void) {
 void cboard_Curiosity_HPC::WritePreferences(void) {
     // write selected microcontroller of board_Curiosity_HPC to preferences
     PICSimLab.SavePrefs(lxT("Curiosity_HPC_proc"), Proc);
-    PICSimLab.SavePrefs(lxT("Curiosity_HPC_jmp"), lxString().Format("%i", jmp[0]));
-    PICSimLab.SavePrefs(lxT("Curiosity_HPC_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("Curiosity_HPC_jmp"), itoa(jmp[0]));
+    PICSimLab.SavePrefs(lxT("Curiosity_HPC_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
     PICSimLab.SavePrefs(lxT("Curiosity_HPC_serial2"), combo1->GetText());
-    PICSimLab.SavePrefs(lxT("Curiosity_HPC_pot1"), lxString().Format("%i", pot1));
+    PICSimLab.SavePrefs(lxT("Curiosity_HPC_pot1"), itoa(pot1));
 }
 
 // Called whe configuration file load  preferences

@@ -70,9 +70,9 @@ void CPWindow3::button1_EvMouseButtonClick(CControl* control, uint button, uint 
         return;
     }
 #endif
-    strcpy(SERIALDEVICE, (char*)combo1.GetText().char_str());
+    strcpy(SERIALDEVICE, (char*)combo1.GetText().c_str());
 #ifdef _USE_PICSTARTP_
-    strcpy(PROGDEVICE, (char*)combo2.GetText().char_str());
+    strcpy(PROGDEVICE, (char*)combo2.GetText().c_str());
 #endif
 
     PICSimLab.SetUseDSRReset(checkbox1.GetCheck());

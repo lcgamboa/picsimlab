@@ -318,7 +318,7 @@ void CPWindow1::timer2_EvOnTime(CControl* control) {
         }
     }
 
-    label2.SetText(lxString().Format("Spd: %3.2fx", ((float)BASETIMER) / timer1.GetTime()));
+    label2.SetText(FloatStrFormat("Spd: %3.2fx", ((float)BASETIMER) / timer1.GetTime()));
 
     if (PICSimLab.GetErrorCount()) {
 #ifndef __EMSCRIPTEN__
@@ -666,7 +666,7 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 
     set_signal_handler();
 
-    strncpy(home, (char*)lxGetUserDataDir(lxT("picsimlab")).char_str(), 1023);
+    strncpy(home, (char*)lxGetUserDataDir(lxT("picsimlab")).c_str(), 1023);
     PICSimLab.SetWorkspaceFileName("");
     PICSimLab.SetHomePath(home);
     PICSimLab.SetPath(lxGetCwd());
@@ -1007,8 +1007,8 @@ void CPWindow1::menu1_File_Exit_EvMenuActive(CControl* control) {
 void CPWindow1::menu1_Help_Contents_EvMenuActive(CControl* control) {
 #ifdef EXT_BROWSER
     // lxLaunchDefaultBrowser(lxT("file://")+PICSimLab.GetSharePath() + lxT ("docs/picsimlab.html"));
-    lxString stemp;
-    stemp.Printf(lxT("https://lcgamboa.github.io/picsimlab_docs/%s/index.html"), lxT(_VERSION_));
+    char stemp[256];
+    snprintf(stemp, 255, lxT("https://lcgamboa.github.io/picsimlab_docs/%s/index.html"), lxT(_VERSION_));
     lxLaunchDefaultBrowser(stemp);
 #else
     Window2.html1.SetLoadFile(PICSimLab.GetSharePath() + lxT("docs/picsimlab.html"));
@@ -1026,8 +1026,8 @@ void CPWindow1::menu1_Help_Board_EvMenuActive(CControl* control) {
         memmove(ptr, ptr + 1, strlen(ptr) + 1);
     }
 
-    lxString stemp;
-    stemp.Printf(lxT("https://lcgamboa.github.io/picsimlab_docs/%s/%s.html"), lxT(_VERSION_), bname);
+    char stemp[256];
+    snprintf(stemp, 255, lxT("https://lcgamboa.github.io/picsimlab_docs/%s/%s.html"), lxT(_VERSION_), bname);
     lxLaunchDefaultBrowser(stemp);
 }
 
@@ -1038,9 +1038,9 @@ void CPWindow1::menu1_Help_About_Board_EvMenuActive(CControl* control) {
 }
 
 void CPWindow1::menu1_Help_About_PICSimLab_EvMenuActive(CControl* control) {
-    lxString stemp;
-    stemp.Printf(lxT("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: %s %s %s %s"), lxT(_VERSION_),
-                 lxT(_DATE_), lxT(_ARCH_), lxT(_PKG_));
+    char stemp[256];
+    snprintf(stemp, 255, lxT("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: %s %s %s %s"), lxT(_VERSION_),
+             lxT(_DATE_), lxT(_ARCH_), lxT(_PKG_));
     Message_sz(stemp, 400, 200);
 }
 

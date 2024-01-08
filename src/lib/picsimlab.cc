@@ -60,7 +60,7 @@ CPICSimLab::CPICSimLab() {
     Instance = 0;
     debug_type = 0;
     debug = 0;
-    Errors.Clear();
+    Errors.clear();
     NeedReboot = 0;
     lab = DEFAULT_BOARD;
     lab_ = DEFAULT_BOARD;
@@ -160,11 +160,11 @@ void CPICSimLab::StartRControl(void) {
 
     snprintf(fname, 1023, "%s/picsimlab.ini", (const char*)HOME.c_str());
 
-    prefs.Clear();
+    prefs.clear();
     if (lxFileExists(fname)) {
-        if (prefs.LoadFromFile(fname)) {
-            for (lc = 0; lc < (int)prefs.GetLinesCount(); lc++) {
-                strncpy(line, prefs.GetLine(lc).c_str(), 1023);
+        if (LoadFromFile(prefs, fname)) {
+            for (lc = 0; lc < (int)prefs.size(); lc++) {
+                strncpy(line, prefs.at(lc).c_str(), 1023);
 
                 name = strtok(line, "\t= ");
                 strtok(NULL, " ");
@@ -248,9 +248,9 @@ void CPICSimLab::SetClock(const float clk, const int update) {
 
         if (update) {
             if (clk < 1) {
-                combo->SetText(lxString().Format("%2.1f", clk));
+                combo->SetText(FloatStrFormat("%2.1f", clk));
             } else {
-                combo->SetText(lxString().Format("%2.0f", clk));
+                combo->SetText(FloatStrFormat("%2.0f", clk));
             }
             need_clkupdate = 0;
         } else {
@@ -271,8 +271,8 @@ void CPICSimLab::SavePrefs(lxString name, lxString value) {
     char* pname;
     char* pvalue;
 
-    for (int lc = 0; lc < (int)prefs.GetLinesCount(); lc++) {
-        strncpy(line, prefs.GetLine(lc).c_str(), 1023);
+    for (int lc = 0; lc < (int)prefs.size(); lc++) {
+        strncpy(line, prefs.at(lc).c_str(), 1023);
 
         pname = strtok(line, "\t= ");
         strtok(NULL, " ");
@@ -282,12 +282,12 @@ void CPICSimLab::SavePrefs(lxString name, lxString value) {
             continue;
 
         if (lxString(pname) == name) {
-            prefs.SetLine(name + lxT("\t= \"") + value + lxT("\""), lc);
+            prefs[lc] = name + lxT("\t= \"") + value + lxT("\"");
 
             return;
         }
     }
-    prefs.AddLine(name + lxT("\t= \"") + value + lxT("\""));
+    prefs.push_back(name + lxT("\t= \"") + value + lxT("\""));
 }
 
 void CPICSimLab::OpenLoadHexFileDialog(void) {
@@ -302,7 +302,7 @@ void CPICSimLab::SetNeedReboot(int nr) {
 }
 
 void CPICSimLab::RegisterError(const lxString error) {
-    Errors.AddLine(error);
+    Errors.push_back(error);
 }
 
 void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
@@ -353,7 +353,7 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
     }
 
     // write options
-    strcpy(home, (char*)lxGetUserDataDir(lxT("picsimlab")).char_str());
+    strcpy(home, (char*)lxGetUserDataDir(lxT("picsimlab")).c_str());
 
     lxCreateDir(home);
 
@@ -549,8 +549,8 @@ void CPICSimLab::LoadWorkspace(lxString fnpzw, const int show_readme) {
     SetWorkspaceFileName(fnpzw);
 
     snprintf(fzip, 1279, "%s/picsimlab.ini", home);
-    lxStringList prefsw;
-    prefsw.Clear();
+    std::vector<lxString> prefsw;
+    prefsw.clear();
     int lc;
     char* value;
     char* name;
@@ -561,9 +561,9 @@ void CPICSimLab::LoadWorkspace(lxString fnpzw, const int show_readme) {
 #endif
 
     char line[1024];
-    if (prefsw.LoadFromFile(fzip)) {
-        for (lc = 0; lc < (int)prefsw.GetLinesCount(); lc++) {
-            strncpy(line, prefsw.GetLine(lc).c_str(), 1023);
+    if (LoadFromFile(prefsw, fzip)) {
+        for (lc = 0; lc < (int)prefsw.size(); lc++) {
+            strncpy(line, prefsw.at(lc).c_str(), 1023);
             name = strtok(line, "\t= ");
             strtok(NULL, " ");
             value = strtok(NULL, "\"");
@@ -758,7 +758,7 @@ void CPICSimLab::SaveWorkspace(lxString fnpzw) {
 
     // write options
 
-    strncpy(home, (char*)lxGetUserDataDir(lxT("picsimlab")).char_str(), 1023);
+    strncpy(home, (char*)lxGetUserDataDir(lxT("picsimlab")).c_str(), 1023);
     snprintf(fname, 1279, "%s/picsimlab.ini", home);
     PrefsSaveToFile(fname);
 
@@ -822,7 +822,7 @@ void CPICSimLab::SaveWorkspace(lxString fnpzw) {
 
     lxRemoveDir(tmpdir);
 
-    strncpy(home, (char*)lxGetUserDataDir(lxT("picsimlab")).char_str(), 1023);
+    strncpy(home, (char*)lxGetUserDataDir(lxT("picsimlab")).c_str(), 1023);
     snprintf(fname, 1279, "%s/picsimlab.ini", home);
     PrefsClear();
     PrefsLoadFromFile(fname);
@@ -1282,14 +1282,14 @@ int CPICSimLab::LoadHexFile(lxString fname) {
     if (GetNeedReboot()) {
         char cmd[4096];
         sprintf(cmd, " %s %s \"%s\"", boards_list[GetLab()].name_, (const char*)GetBoard()->GetProcessorName().c_str(),
-                (const char*)fname.char_str());
+                (const char*)fname.c_str());
         EndSimulation(0, cmd);
     }
 
     GetBoard()->MEnd();
     GetBoard()->MSetSerial(SERIALDEVICE);
 
-    switch (GetBoard()->MInit(GetBoard()->GetProcessorName(), fname.char_str(), GetNSTEP() * NSTEPKF)) {
+    switch (GetBoard()->MInit(GetBoard()->GetProcessorName(), fname.c_str(), GetNSTEP() * NSTEPKF)) {
         case HEX_NFOUND:
             RegisterError(lxT("Hex file not found!"));
             SetMcuRun(0);
@@ -1339,4 +1339,66 @@ int CPICSimLab::LoadHexFile(lxString fname) {
 #endif
 
     return ret;
+}
+
+// Some string utils functions
+
+lxString FloatStrFormat(const char* str, const float value) {
+    char stemp[256];
+    snprintf(stemp, 256, str, value);
+    return lxString(stemp);
+}
+
+static int FGetLine(FILE* file, lxString& str) {
+    char line[5000];
+    line[0] = 0;
+
+    if (file) {
+        fgets(line, 5000, file);
+
+        if (line[0] != 0) {
+            line[strlen(line) - 1] = '\0';
+        } else
+            line[0] = '\0';
+
+        str = line;
+
+        if (!feof(file))
+            return true;
+        else
+            return false;
+    } else {
+        printf("fatal error in function fgetline!\n");
+        exit(-1);
+    }
+}
+
+int LoadFromFile(std::vector<lxString>& strlist, const char* fname) {
+    FILE* fin;
+    lxString line;
+    fin = fopen(fname, "r");
+
+    if (fin) {
+        strlist.clear();
+        while (FGetLine(fin, line)) {
+            strlist.push_back(line);
+        }
+        fclose(fin);
+        return 1;
+    }
+    return 0;
+}
+
+int SaveToFile(std::vector<lxString> strlist, const char* fname) {
+    FILE* fout;
+    fout = fopen(fname, "w");
+
+    if (fout) {
+        for (unsigned int i = 0; i < strlist.size(); i++) {
+            fprintf(fout, "%s\n", strlist[i].c_str());
+        }
+        fclose(fout);
+        return 1;
+    }
+    return 0;
 }

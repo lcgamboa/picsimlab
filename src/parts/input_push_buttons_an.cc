@@ -122,7 +122,7 @@ void cpart_pbuttons_an::DrawOutput(const unsigned int i) {
                 ftemp = (vmax * (output[i].id - O_P1)) / 8.0;
             else
                 ftemp = (vmax * (8 - output[i].id - O_P1)) / 8.0;
-            temp = lxString().Format("%3.1f", ftemp) + lxT("V");
+            temp = FloatStrFormat("%3.1f", ftemp) + lxT("V");
             canvas.RotatedText(temp, output[i].x1, output[i].y1, 0);
             if (output_pins[0] == 0)
                 canvas.RotatedText("NC", output[i].x1, output[i].y1 + 12, 0);
@@ -144,7 +144,7 @@ void cpart_pbuttons_an::DrawOutput(const unsigned int i) {
             else
                 ftemp = (vmax * (8 - output[i].id - O_P1)) / 8.0;
 
-            temp = lxString().Format("%3.1f", ftemp) + lxT("V");
+            temp = FloatStrFormat("%3.1f", ftemp) + lxT("V");
             canvas.RotatedText(temp, output[i].x1, output[i].y1, 0);
             break;
         case O_B1:

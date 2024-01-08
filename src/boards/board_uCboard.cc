@@ -114,7 +114,7 @@ void cboard_uCboard::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
     PICSimLab.SavePrefs(lxT("uCboard_proc"), Proc);
     // write microcontroller clock to preferences
-    PICSimLab.SavePrefs(lxT("uCboard_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("uCboard_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
 }
 
 // Called whe configuration file load  preferences

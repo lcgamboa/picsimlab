@@ -334,7 +334,7 @@ void cboard_Blue_Pill::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
     PICSimLab.SavePrefs(lxT("Blue_Pill_proc"), Proc);
     // write microcontroller clock to preferences
-    PICSimLab.SavePrefs(lxT("Blue_Pill_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("Blue_Pill_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
     // write microcontroller icount to preferences
     PICSimLab.SavePrefs(lxT("Blue_Pill_icount"), itoa(icount));
 }

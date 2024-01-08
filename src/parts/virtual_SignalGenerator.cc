@@ -39,7 +39,8 @@ static PCWProp pcwprop[4] = {{PCW_LABEL, "P4 - GND,GND"},
                              {PCW_COMBO, "P3 - Out"},
                              {PCW_END, ""}};
 
-cpart_SignalGenerator::cpart_SignalGenerator(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+cpart_SignalGenerator::cpart_SignalGenerator(const unsigned x, const unsigned y, const char* name, const char* type,
+                                             board* pboard_)
     : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     always_update = 1;
 
@@ -72,7 +73,7 @@ cpart_SignalGenerator::~cpart_SignalGenerator(void) {
 
 void cpart_SignalGenerator::DrawOutput(const unsigned int i) {
     int j;
-    lxString temp;
+    char temp[100];
     float v[2];
     float tsi;
     int sizex;
@@ -133,21 +134,21 @@ void cpart_SignalGenerator::DrawOutput(const unsigned int i) {
 
             break;
         case O_AMPL:
-            temp.Printf("%5.2f", ampl);
+            snprintf(temp, 100, "%5.2f", ampl);
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);
             canvas.RotatedText(temp, output[i].x1, output[i].y1, 0);
             break;
         case O_OFFS:
-            temp.Printf("%5.2f", offs);
+            snprintf(temp, 100, "%5.2f", offs);
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);
             canvas.RotatedText(temp, output[i].x1, output[i].y1, 0);
             break;
         case O_FREQ:
-            temp.Printf("%5.2f", freq);
+            snprintf(temp, 100, "%5.2f", freq);
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);
@@ -157,7 +158,7 @@ void cpart_SignalGenerator::DrawOutput(const unsigned int i) {
             canvas.SetColor(255, 255, 255);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetColor(0, 0, 0);
-            temp.Printf("F x %i", maxfreq);
+            snprintf(temp, 100, "F x %i", maxfreq);
             canvas.RotatedText(temp, output[i].x1, output[i].y1, 0);
             break;
     }

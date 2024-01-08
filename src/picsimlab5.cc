@@ -57,8 +57,8 @@ void CPWindow5::menu1_EvMenuActive(CControl* control) {
     PartToCreate = ((CItemMenu*)control)->GetText();
 
     if (SpareParts.GetCount() < MAX_PARTS) {
-        part* Part = SpareParts.AddPart((char*)PartToCreate.char_str(), 50 - offsetx, 50 - offsety,
-                                        SpareParts.GetScale(), PICSimLab.GetBoard());
+        part* Part = SpareParts.AddPart((char*)PartToCreate.c_str(), 50 - offsetx, 50 - offsety, SpareParts.GetScale(),
+                                        PICSimLab.GetBoard());
         _EvOnShow(control);
         PartToCreate = "";
         PartToMove = Part->GetId();
@@ -539,14 +539,14 @@ void CPWindow5::timer1_EvOnTime(CControl* control) {
 
     if (tc > 3) {
         tc = 0;
-        lxString field;
-        field.Printf("Use Alias: %s", (SpareParts.GetUseAlias() == 1) ? "On" : "Off");
+        char field[100];
+        snprintf(field, 100, "Use Alias: %s", (SpareParts.GetUseAlias() == 1) ? "On" : "Off");
         statusbar1.SetField(0, field);
 
-        field.Printf("Scale: %3.1f", SpareParts.GetScale());
+        snprintf(field, 100, "Scale: %3.1f", SpareParts.GetScale());
         statusbar1.SetField(1, field);
 
-        field.Printf("Offset: %3i %3i", offsetx, offsety);
+        snprintf(field, 100, "Offset: %3i %3i", offsetx, offsety);
         statusbar1.SetField(2, field);
     }
 }
@@ -802,9 +802,9 @@ void CPWindow5::pmenu2_Delete_EvMenuActive(CControl* control) {
 }
 
 void CPWindow5::pmenu2_Help_EvMenuActive(CControl* control) {
-    lxString stemp;
-    stemp.Printf(lxT("https://lcgamboa.github.io/picsimlab_docs/%s/%s"), lxT(_VERSION_),
-                 (const char*)SpareParts.GetPart(PartSelected)->GetHelpURL().c_str());
+    char stemp[256];
+    snprintf(stemp, 256, lxT("https://lcgamboa.github.io/picsimlab_docs/%s/%s"), lxT(_VERSION_),
+             (const char*)SpareParts.GetPart(PartSelected)->GetHelpURL().c_str());
     lxLaunchDefaultBrowser(stemp);
 }
 
@@ -817,8 +817,8 @@ void CPWindow5::pmenu2_About_EvMenuActive(CControl* control) {
 void CPWindow5::menu1_Help_Contents_EvMenuActive(CControl* control) {
 #ifdef EXT_BROWSER
     // lxLaunchDefaultBrowser(lxT("file://")+share + lxT ("docs/picsimlab.html"));
-    lxString stemp;
-    stemp.Printf(lxT("https://lcgamboa.github.io/picsimlab_docs/%s/SpareParts.html"), lxT(_VERSION_));
+    char stemp[256];
+    snprintf(stemp, 256, lxT("https://lcgamboa.github.io/picsimlab_docs/%s/SpareParts.html"), lxT(_VERSION_));
     lxLaunchDefaultBrowser(stemp);
 #else
     Window2.html1.SetLoadFile(PICSimLab.GetSharePath() + lxT("docs/picsimlab.html"));
@@ -827,9 +827,9 @@ void CPWindow5::menu1_Help_Contents_EvMenuActive(CControl* control) {
 }
 
 void CPWindow5::menu1_Help_About_EvMenuActive(CControl* control) {
-    lxString stemp;
-    stemp.Printf(lxT("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: %s %s %s %s"), lxT(_VERSION_),
-                 lxT(_DATE_), lxT(_ARCH_), lxT(_PKG_));
+    char stemp[256];
+    snprintf(stemp, 256, lxT("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: %s %s %s %s"), lxT(_VERSION_),
+             lxT(_DATE_), lxT(_ARCH_), lxT(_PKG_));
     Message_sz(stemp, 400, 200);
 }
 

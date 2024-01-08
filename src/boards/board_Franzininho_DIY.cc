@@ -172,7 +172,7 @@ void cboard_Franzininho_DIY::RefreshStatus(void) {
 void cboard_Franzininho_DIY::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
     PICSimLab.SavePrefs(lxT("Franzininho_DIY_proc"), Proc);
-    PICSimLab.SavePrefs(lxT("Franzininho_DIY_clock"), lxString().Format("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(lxT("Franzininho_DIY_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
 }
 
 // Called whe configuration file load  preferences

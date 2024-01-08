@@ -35,7 +35,12 @@ extern char SERIALDEVICE[100];
 
 #define MAX_MIC 140
 
+#include <vector>
 #include "board.h"
+
+lxString FloatStrFormat(const char* str, const float value);
+int LoadFromFile(std::vector<lxString>& strlist, const char* fname);
+int SaveToFile(std::vector<lxString> strlist, const char* fname);
 
 enum PICSimlabCPUState { CPU_RUNNING, CPU_STEPPING, CPU_HALTED, CPU_BREAKPOINT, CPU_ERROR, CPU_POWER_OFF, CPU_LAST };
 
@@ -187,11 +192,11 @@ public:
      */
     void SavePrefs(lxString name, lxString value);
 
-    void PrefsClear(void) { prefs.Clear(); };
-    int PrefsSaveToFile(lxString fname) { return prefs.SaveToFile(fname); };
-    int PrefsLoadFromFile(lxString fname) { return prefs.LoadFromFile(fname); };
-    unsigned int PrefsGetLinesCount(void) { return prefs.GetLinesCount(); };
-    lxString PrefsGetLine(int ln) { return prefs.GetLine(ln); };
+    void PrefsClear(void) { prefs.clear(); };
+    int PrefsSaveToFile(lxString fname) { return SaveToFile(prefs, fname); };
+    int PrefsLoadFromFile(lxString fname) { return LoadFromFile(prefs, fname); };
+    unsigned int PrefsGetLinesCount(void) { return prefs.size(); };
+    lxString PrefsGetLine(int ln) { return prefs.at(ln); };
 
     void OpenLoadHexFileDialog(void);
 
@@ -199,11 +204,11 @@ public:
     int GetNeedReboot(void) { return NeedReboot; };
 
     void RegisterError(const lxString error);
-    int GetErrorCount(void) { return Errors.GetLinesCount(); };
+    int GetErrorCount(void) { return Errors.size(); };
 
-    lxString GetError(int en) { return Errors.GetLine(en); };
+    lxString GetError(int en) { return Errors.at(en); };
 
-    void DeleteError(int en) { Errors.DelLine(en); };
+    void DeleteError(int en) { Errors.erase(Errors.begin() + en); };
 
     void EndSimulation(int saveold = 0, const char* newpath = NULL);
 
@@ -308,9 +313,9 @@ private:
     int debug;
     int need_resize;
     int need_clkupdate;
-    lxStringList prefs;
+    std::vector<lxString> prefs;
     int NeedReboot;
-    lxStringList Errors;
+    std::vector<lxString> Errors;
     lxString Workspacefn;
     double scale;
     double idle_ms;
