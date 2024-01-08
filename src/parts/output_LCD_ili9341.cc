@@ -712,13 +712,13 @@ void cpart_LCD_ili9341::PostProcess(void) {
 }
 
 void cpart_LCD_ili9341::ComboChange(CPWindow* WProp, CCombo* control, lxString value) {
-    if (!value.Cmp("SPI")) {
+    if (!value.compare("SPI")) {
         ChangeType(TC_SPI);
-    } else if (!value.Cmp("8Bits")) {
+    } else if (!value.compare("8Bits")) {
         ChangeType(TC_8BITS);
-    } else if (!value.Cmp("SPI+Touch")) {
+    } else if (!value.compare("SPI+Touch")) {
         ChangeType(TC_SPI_TOUCH);
-    } else if (!value.Cmp("8Bits+Touch")) {
+    } else if (!value.compare("8Bits+Touch")) {
         ChangeType(TC_8BITS_TOUCH);
     }
 }

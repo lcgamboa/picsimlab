@@ -65,7 +65,7 @@ void bsim_ucsim::MSetSerial(const char* port) {
 
      lxString sproc = GetSupportedDevices();
 
-     if (sproc.Contains(processor)) {
+     if (sproc.find(processor) != -1) {
          if (!strcmp("C51", processor)) {
              procid = PID_C51;
          } else if (!strcmp("STM8S103", processor)) {
@@ -149,7 +149,7 @@ void bsim_ucsim::MSetSerial(const char* port) {
 
  int bsim_ucsim::DebugInit(int dtyppe)  // argument not used in picm only mplabx
  {
-     return 0;                          //! mplabxd_init (this, Window1.Get_debug_port ()) - 1;
+     return 0;  //! mplabxd_init (this, Window1.Get_debug_port ()) - 1;
  }
 
  int bsim_ucsim::MGetPinCount(void) {

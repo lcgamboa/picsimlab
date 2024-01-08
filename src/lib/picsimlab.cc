@@ -520,7 +520,7 @@ void CPICSimLab::LoadWorkspace(lxString fnpzw, const int show_readme) {
         RegisterError("PICSimLab: file " + fnpzw + " not found!");
         return;
     }
-    if (!fnpzw.Contains(".pzw")) {
+    if (fnpzw.find(".pzw") == -1) {
         printf("PICSimLab: file %s is not a .pzw file!\n", (const char*)fnpzw.c_str());
         RegisterError("PICSimLab: file " + fnpzw + " is not a .pzw file!");
         return;
@@ -1218,7 +1218,8 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 
 #ifndef NO_TOOLS
     if (Window) {
-        if ((!pboard->GetProcessorName().Cmp("atmega328p")) || (!pboard->GetProcessorName().Cmp("atmega2560"))) {
+        if ((!pboard->GetProcessorName().compare("atmega328p")) ||
+            (!pboard->GetProcessorName().compare("atmega2560"))) {
             Window->GetChildByName("menu1")
                 ->GetChildByName("menu1_Tools")
                 ->GetChildByName("menu1_Tools_ArduinoBootloader")

@@ -487,13 +487,13 @@ void cpart_Jumpers::ReadPropertiesWindow(CPWindow* WProp) {
     CCombo* cc;
 
     cc = ((CCombo*)WProp->GetChildByName("combo1"));
-    if (cc->GetText().Cmp("M"))
+    if (cc->GetText().compare("M"))
         jtype |= 0x02;
     else
         jtype &= ~0x02;
 
     cc = ((CCombo*)WProp->GetChildByName("combo18"));
-    if (cc->GetText().Cmp("M"))
+    if (cc->GetText().compare("M"))
         jtype |= 0x01;
     else
         jtype &= ~0x01;
@@ -627,7 +627,7 @@ void cpart_Jumpers::ChangeType(unsigned char ntype) {
 void cpart_Jumpers::ComboChange(CPWindow* WProp, CCombo* control, lxString value) {
     unsigned char ntype = jtype;
 
-    if (!control->GetName().Cmp("combo1")) {
+    if (!control->GetName().compare("combo1")) {
         if (!value.compare(lxT("F"))) {
             ntype |= 0x02;
         } else {

@@ -186,7 +186,7 @@ void cpart_led_matrix::ReadPropertiesWindow(CPWindow* WProp) {
     input_pins[1] = GetPWCComboSelectedPin(WProp, "combo4");
     input_pins[2] = GetPWCComboSelectedPin(WProp, "combo5");
     angle = atoi(((CCombo*)WProp->GetChildByName("combo7"))->GetText());
-    lmode = !(((CCombo*)WProp->GetChildByName("combo8"))->GetText().Cmp("FC16") == 0);
+    lmode = !(((CCombo*)WProp->GetChildByName("combo8"))->GetText().compare("FC16") == 0);
 }
 
 void cpart_led_matrix::Process(void) {

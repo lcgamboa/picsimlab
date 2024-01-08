@@ -581,7 +581,7 @@ void cpart_7s_display::ReadPropertiesWindow(CPWindow* WProp) {
 
     active = (((CCombo*)WProp->GetChildByName("combo13"))->GetText().compare("HIGH") == 0);
 
-    unsigned char dtype_ = (((CCombo*)WProp->GetChildByName("combo14"))->GetText().Cmp("4 Mux.")) != 0;
+    unsigned char dtype_ = (((CCombo*)WProp->GetChildByName("combo14"))->GetText().compare("4 Mux.")) != 0;
 
     ChangeType(dtype_);
 }
@@ -672,7 +672,7 @@ void cpart_7s_display::PostProcess(void) {
 }
 
 void cpart_7s_display::ComboChange(CPWindow* WProp, CCombo* control, lxString value) {
-    unsigned char dtype_ = (value.Cmp("4 Mux.")) != 0;
+    unsigned char dtype_ = (value.compare("4 Mux.")) != 0;
     ChangeType(dtype_);
 }
 

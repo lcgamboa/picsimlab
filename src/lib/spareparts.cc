@@ -134,7 +134,7 @@ lxString CSpareParts::GetPinsNames(void) {
         } else {
             spin = PinNames[i];
         }
-        if (PinNames[i].Cmp(lxT("error"))) {
+        if (PinNames[i].compare(lxT("error"))) {
             Items = Items + itoa(i) + "  " + spin + ",";
         }
     }
@@ -392,7 +392,7 @@ bool CSpareParts::LoadConfig(lxString fname, const int disable_debug) {
         partsc_ = 0;
         partsc_aup_ = 0;
 
-        if (prefs.GetLine(0).Contains("version")) {
+        if (prefs.GetLine(0).find("version") != -1) {
             newformat = 1;
         }
 

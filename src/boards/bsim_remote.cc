@@ -107,7 +107,7 @@ int bsim_remote::MInit(const char* processor, const char* fname, float freq) {
 #endif
 
     lxString sproc = GetSupportedDevices();
-    if (!sproc.Contains(processor)) {
+    if (sproc.find(processor) == -1) {
         Proc = "Ripes";
         printf("PICSimLab: Unknown processor %s, loading default !\n", processor);
     }
@@ -570,13 +570,13 @@ void bsim_remote::pins_reset(void) {
             } else if (pname[1] == 'C') {
                 pins[p].ptype = PT_ANALOG;
             }
-        } else if (pname.Contains("VDD")) {
+        } else if (pname.find("VDD") != -1) {
             pins[p].port = NULL;
             pins[p].pord = -1;
             pins[p].value = 1;
             pins[p].dir = PD_OUT;
             pins[p].ptype = PT_POWER;
-        } else if (pname.Contains("VSS")) {
+        } else if (pname.find("VSS") != -1) {
             pins[p].port = NULL;
             pins[p].pord = -1;
             pins[p].value = 0;

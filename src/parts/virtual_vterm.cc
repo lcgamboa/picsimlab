@@ -175,13 +175,13 @@ void cpart_vterm::Event(CControl* control) {
         vterm_speed = atoi(vtcmb_speed->GetText());
         vterm_set_speed(&vt, vterm_speed);
     } else if (control == vtcmb_ending) {
-        if (!vtcmb_ending->GetText().Cmp("No line ending")) {
+        if (!vtcmb_ending->GetText().compare("No line ending")) {
             lending = LE_NONE;
-        } else if (!vtcmb_ending->GetText().Cmp("New line")) {
+        } else if (!vtcmb_ending->GetText().compare("New line")) {
             lending = LE_NL;
-        } else if (!vtcmb_ending->GetText().Cmp("Carriage return")) {
+        } else if (!vtcmb_ending->GetText().compare("Carriage return")) {
             lending = LE_CR;
-        } else if (!vtcmb_ending->GetText().Cmp("Both NL and CR")) {
+        } else if (!vtcmb_ending->GetText().compare("Both NL and CR")) {
             lending = LE_NL_CR;
         }
     } else if (control == wvterm) {

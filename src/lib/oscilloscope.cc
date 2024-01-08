@@ -545,7 +545,7 @@ void COscilloscope::SetBaseTimer(void) {
         } else {
             spin = pboard->MGetPinName(i);
         }
-        if (spin.Cmp(lxT("error"))) {
+        if (spin.compare(lxT("error"))) {
             ((CCombo*)Window->GetChildByName("combo2"))->AddItem(itoa(i) + "  " + spin);
             ((CCombo*)Window->GetChildByName("combo3"))->AddItem(itoa(i) + "  " + spin);
         }

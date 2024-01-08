@@ -177,7 +177,7 @@ void cpart_LCD_ssd1306::ReadPropertiesWindow(CPWindow* WProp) {
     input_pins[3] = GetPWCComboSelectedPin(WProp, "combo6");
     input_pins[4] = GetPWCComboSelectedPin(WProp, "combo7");
 
-    if (!((CCombo*)WProp->GetChildByName("combo8"))->GetText().Cmp("SPI")) {
+    if (!((CCombo*)WProp->GetChildByName("combo8"))->GetText().compare("SPI")) {
         type_com = 0;
     } else {
         type_com = 1;

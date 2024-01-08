@@ -293,7 +293,7 @@ void cpart_tempsys::ReadPropertiesWindow(CPWindow* WProp) {
     input_pins[2] = GetPWCComboSelectedPin(WProp, "combo3");
     input_pins[3] = GetPWCComboSelectedPin(WProp, "combo4");
 
-    if ((((CCombo*)WProp->GetChildByName("combo7"))->GetText().Cmp("0V")) == 0) {
+    if ((((CCombo*)WProp->GetChildByName("combo7"))->GetText().compare("0V")) == 0) {
         tvoff = 0;
     } else {
         tvoff = 1.2;

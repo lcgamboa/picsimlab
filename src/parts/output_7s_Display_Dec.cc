@@ -536,7 +536,7 @@ void cpart_7s_display_dec::ReadPropertiesWindow(CPWindow* WProp) {
     input_pins[6] = GetPWCComboSelectedPin(WProp, "combo7");
     input_pins[7] = GetPWCComboSelectedPin(WProp, "combo8");
 
-    unsigned char type_ = (((CCombo*)WProp->GetChildByName("combo9"))->GetText().Cmp("MUX")) != 0;
+    unsigned char type_ = (((CCombo*)WProp->GetChildByName("combo9"))->GetText().compare("MUX")) != 0;
 
     ChangeType(type_);
 }

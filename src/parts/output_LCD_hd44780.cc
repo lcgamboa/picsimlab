@@ -278,11 +278,11 @@ void cpart_LCD_hd44780::ReadPropertiesWindow(CPWindow* WProp) {
     input_pins[10] = GetPWCComboSelectedPin(WProp, "combo5");
 
     model = LCD16x2;
-    if (!((((CCombo*)WProp->GetChildByName("combo15"))->GetText()).Cmp(lxT("16x4"))))
+    if (!((((CCombo*)WProp->GetChildByName("combo15"))->GetText()).compare(lxT("16x4"))))
         model = LCD16x4;
-    else if (!((((CCombo*)WProp->GetChildByName("combo15"))->GetText()).Cmp(lxT("20x2"))))
+    else if (!((((CCombo*)WProp->GetChildByName("combo15"))->GetText()).compare(lxT("20x2"))))
         model = LCD20x2;
-    else if (!((((CCombo*)WProp->GetChildByName("combo15"))->GetText()).Cmp(lxT("20x4"))))
+    else if (!((((CCombo*)WProp->GetChildByName("combo15"))->GetText()).compare(lxT("20x4"))))
         model = LCD20x4;
 
     Reset();
@@ -422,7 +422,7 @@ static part* cpart_LCD_hd44780_i2c_create(unsigned int x, unsigned int y, board*
 
     // find GND
     for (int i = 0; i < 255; i++) {
-        if (!SpareParts.GetPinName(i).Cmp("GND")) {
+        if (!SpareParts.GetPinName(i).compare("GND")) {
             lcd->input_pins[2] = i;
             lcd->input_pins[3] = i;
             lcd->input_pins[4] = i;

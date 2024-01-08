@@ -692,7 +692,7 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 #error Define the _SHARE_ path is necessary
 #endif
 
-    if (lxString(_SHARE_).Contains("http")) {
+    if (lxString(_SHARE_).find("http") != -1) {
         PICSimLab.SetSharePath(lxString(_SHARE_));
     } else {
         PICSimLab.SetSharePath(dirname(lxGetExecutablePath()) + lxT("/") + lxString(_SHARE_));
@@ -800,7 +800,7 @@ void CPWindow1::_EvOnCreate(CControl* control) {
         fn_dir.Assign(PICSimLab.GetSharePath() + "boards/");
         fn_dir.MakeAbsolute();
 
-        if (fns.Contains(fn_dir.GetFullPath()) && fns.Contains("demo.pzw")) {
+        if ((fns.find(fn_dir.GetFullPath()) != -1) && (fns.find("demo.pzw") != -1)) {
             PICSimLab.LoadWorkspace(fn.GetFullPath(), 0);
             PICSimLab.SetWorkspaceFileName("");
         } else {

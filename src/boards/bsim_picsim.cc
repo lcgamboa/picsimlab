@@ -40,7 +40,7 @@ int bsim_picsim::MInit(const char* processor, const char* fname, float freq) {
     lxString sproc = GetSupportedDevices();
     int procn = 0;
 
-    if (sproc.Contains(processor)) {
+    if (sproc.find(processor) != -1) {
         procn = getprocbyname(processor);
     }
 

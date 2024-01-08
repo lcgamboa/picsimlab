@@ -327,7 +327,7 @@ int bsim_qemu::MInit(const char* processor, const char* _fname, float freq_) {
     MSetFreq(freq_);
 
     lxString sproc = GetSupportedDevices();
-    if (!sproc.Contains(processor)) {
+    if (sproc.find(processor) == -1) {
         Proc = "stm32f103c8t6";
         printf("PICSimLab: Unknown processor %s, loading default !\n", processor);
     }
@@ -1091,12 +1091,12 @@ void bsim_qemu::pins_reset(void) {
         pins[p].ovalue = 0;
         pins[p].oavalue = 55;
 
-        if (MGetPinName(p + 1).Contains("VDD") || MGetPinName(p + 1).Contains("VIN")) {
+        if ((MGetPinName(p + 1).find("VDD") != -1) || (MGetPinName(p + 1).find("VIN") != -1)) {
             pins[p].value = 1;
             pins[p].dir = PD_OUT;
             pins[p].ptype = PT_POWER;
         }
-        if (MGetPinName(p + 1).Contains("VSS") || MGetPinName(p + 1).Contains("GND")) {
+        if ((MGetPinName(p + 1).find("VSS") != -1) || (MGetPinName(p + 1).find("GND") != -1)) {
             pins[p].value = 0;
             pins[p].dir = PD_OUT;
             pins[p].ptype = PT_POWER;

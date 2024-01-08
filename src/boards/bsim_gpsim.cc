@@ -47,7 +47,7 @@ void bsim_gpsim::MSetSerial(const char* port) {
 
      lxString sproc = GetSupportedDevices();
 
-     if (sproc.Contains(processor)) {
+     if (sproc.find(processor) != -1) {
          if (!lxFileExists(fname)) {
              // create a empty memory
              FILE* fout;
@@ -113,7 +113,7 @@ void bsim_gpsim::MSetSerial(const char* port) {
      if ((pin) && (pin <= MGetPinCount())) {
          pinname = bridge_gpsim_get_pin_name(pin);
 
-         if (pinname.Contains("port")) {
+         if (pinname.find("port") != -1) {
              pinname = "R" + pinname.substr(4, 2);
              pinname = uppercase(pinname);
          }

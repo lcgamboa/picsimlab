@@ -2479,16 +2479,16 @@ void cboard_PICGenios::ReadPreferences(char* name, char* value) {
 // Change lcd
 
 void cboard_PICGenios::board_Event(CControl* control) {
-    if (combo1->GetText().Cmp(lxT("hd44780 16x2")) == 0) {
+    if (combo1->GetText().compare(lxT("hd44780 16x2")) == 0) {
         lcd_end(&lcd);
         lcd_init(&lcd, 16, 2, this);
-    } else if (combo1->GetText().Cmp(lxT("hd44780 16x4")) == 0) {
+    } else if (combo1->GetText().compare(lxT("hd44780 16x4")) == 0) {
         lcd_end(&lcd);
         lcd_init(&lcd, 16, 4, this);
-    } else if (combo1->GetText().Cmp(lxT("hd44780 20x2")) == 0) {
+    } else if (combo1->GetText().compare(lxT("hd44780 20x2")) == 0) {
         lcd_end(&lcd);
         lcd_init(&lcd, 20, 2, this);
-    } else if (combo1->GetText().Cmp(lxT("hd44780 20x4")) == 0) {
+    } else if (combo1->GetText().compare(lxT("hd44780 20x4")) == 0) {
         lcd_end(&lcd);
         lcd_init(&lcd, 20, 4, this);
     }

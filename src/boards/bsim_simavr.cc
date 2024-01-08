@@ -286,7 +286,7 @@ int bsim_simavr::MInit(const char* processor, const char* fname, float freq) {
     // avr_ioport_external_t p;
 
     avr = NULL;
-    if (sproc.Contains(processor)) {
+    if (sproc.find(processor) != -1) {
         avr = avr_make_mcu_by_name(processor);
     }
 
