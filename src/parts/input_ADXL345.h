@@ -63,7 +63,7 @@ private:
     lxFont font_p;
     unsigned char active[3];
     double asens;
-    double gsens;
+    // double gsens;
     unsigned char ret_;
 };
 

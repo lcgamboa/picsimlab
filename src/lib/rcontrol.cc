@@ -41,11 +41,11 @@
 #include <sys/un.h>
 #include <sys/unistd.h>
 #else
-#include <winsock.h>
+#include <winsock2.h>
 #ifndef MSG_WAITALL
 #define MSG_WAITALL (1 << 3)
-#define MSG_NOSIGNAL 0
 #endif
+#define MSG_NOSIGNAL 0
 #endif
 // system headers independent
 #include <errno.h>

@@ -110,7 +110,7 @@ static unsigned char buff[512];
 
 unsigned short sdcard_io(sdcard_t* sd, unsigned char mosi, unsigned char clk, unsigned char ss) {
     unsigned int offset = 0;
-    unsigned short crc16;
+    unsigned short crc16 = 0;
 
     if (!sd->card_present) {
         return 1;
@@ -592,10 +592,7 @@ void sdcard_set_filename(sdcard_t* sd, const char* fname) {
         sd->card_present = 1;
 
         sd->disk_size = sb.st_size >> 10;
-#ifdef _WIN_
-        dprintf("sdcard size=%li kb  ->  %lli blocks\n", sd->disk_size, sb.st_size / 512);
-#else
-        dprintf("sdcard size=%li kb  ->  %li blocks\n", sd->disk_size, sb.st_size / 512);
-#endif
+
+        dprintf("sdcard size=%li kb  ->  %li blocks\n", sd->disk_size, (long)(sb.st_size / 512));
     }
 }

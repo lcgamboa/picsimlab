@@ -622,7 +622,7 @@ void cboard_RemoteTCP::EvThreadRun(CThread& thread) {
         }
 
         dprintf("MSG type = %i size=%i  timestamp= %lu  ", cmd_header.msg_type, cmd_header.payload_size,
-                cmd_header.time);
+                (long unsigned int)cmd_header.time);
 
         switch (cmd_header.msg_type) {
             case VB_PINFO: {
@@ -957,7 +957,7 @@ void cboard_RemoteTCP::EvThreadRun(CThread& thread) {
                     ConnectionError("send_cmd");
                     break;
                 }
-                dprintf("VB_PREAD  reg[%x] = %x \n", addr, ntohl(payload[1]));
+                dprintf("VB_PREAD  reg[%x] = %x \n", addr, (unsigned int)ntohl(payload[1]));
             } break;
             case VB_QUIT:
                 send_cmd(VB_QUIT);

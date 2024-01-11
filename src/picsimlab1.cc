@@ -324,7 +324,7 @@ void CPWindow1::timer2_EvOnTime(CControl* control) {
 #ifndef __EMSCRIPTEN__
         Message_sz(lxString::FromUTF8(PICSimLab.GetError(0)), 600, 240);
 #else
-        printf("Error: %s\n", PICSimLab.GetError(0)._str());
+        printf("Error: %s\n", PICSimLab.GetError(0).c_str());
 #endif
         PICSimLab.DeleteError(0);
     }

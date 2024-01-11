@@ -26,9 +26,10 @@
 #ifndef UART
 #define UART
 
+#include "bitbang_uart.h"
+
 #include <stdio.h>
 #include "../lib/serial_port.h"
-#include "bitbang_uart.h"
 
 typedef struct {
     unsigned char connected;
