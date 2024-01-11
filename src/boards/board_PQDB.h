@@ -190,14 +190,14 @@ private:
 
 public:
     // Return the board name
-    lxString GetName(void) override { return lxT(BOARD_PQDB_Name); };
-    lxString GetAboutInfo(void) override { return lxT("R.M.A. Almeida	  \n <rodrigomax@unifei.edu.br>"); };
+    std::string GetName(void) override { return BOARD_PQDB_Name; };
+    std::string GetAboutInfo(void) override { return "R.M.A. Almeida	  \n <rodrigomax@unifei.edu.br>"; };
     cboard_PQDB(void);
     ~cboard_PQDB(void);
     void Draw(CDraw* draw) override;
     void Run_CPU(void) override;
 
-    lxString GetSupportedDevices(void) override { return lxT("PIC18F4520,PIC18F4550,PIC18F4620,"); };
+    std::string GetSupportedDevices(void) override { return "PIC18F4520,PIC18F4550,PIC18F4620,"; };
 
     void Reset(void) override;
     void EvMouseMove(uint button, uint x, uint y, uint state) override;
@@ -211,7 +211,7 @@ public:
     void ReadPreferences(char* name, char* value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
-    lxString MGetPinName(int pin) override;
+    std::string MGetPinName(int pin) override;
     int MGetPinCount(void) override;
 };
 

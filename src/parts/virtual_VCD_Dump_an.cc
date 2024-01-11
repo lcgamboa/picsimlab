@@ -72,7 +72,7 @@ cpart_VCD_Dump_an::cpart_VCD_Dump_an(const unsigned x, const unsigned y, const c
 
     strncat(f_vcd_name, ".vcd", 200);
 
-    f_vcd = fopen(f_vcd_name, "w");
+    f_vcd = fopen_UTF8(f_vcd_name, "w");
     fclose(f_vcd);
     f_vcd = NULL;
 
@@ -135,7 +135,7 @@ void cpart_VCD_Dump_an::DrawOutput(const unsigned int i) {
             } else {
                 to = to - 48;
             }
-            canvas.RotatedText((f_vcd_name + to) + lxString(" (An)"), output[i].x1, output[i].y1, 0);
+            canvas.RotatedText((f_vcd_name + to) + std::string(" (An)"), output[i].x1, output[i].y1, 0);
             break;
         case O_L1:
         case O_L2:
@@ -253,7 +253,7 @@ unsigned short cpart_VCD_Dump_an::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_VCD_Dump_an::WritePreferences(void) {
+std::string cpart_VCD_Dump_an::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2],
@@ -262,7 +262,7 @@ lxString cpart_VCD_Dump_an::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_VCD_Dump_an::ReadPreferences(lxString value) {
+void cpart_VCD_Dump_an::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1],
            &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7], &rec);
 }
@@ -293,7 +293,7 @@ void cpart_VCD_Dump_an::PreProcess(void) {
     if (rec && (f_vcd == NULL)) {
         float tscale = 1.0e12 / pboard->MGetInstClockFreq();  // ns step
 
-        f_vcd = fopen(f_vcd_name, "w");
+        f_vcd = fopen_UTF8(f_vcd_name, "w");
         vcd_count = 0;
 
         fprintf(f_vcd,

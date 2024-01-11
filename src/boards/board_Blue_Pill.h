@@ -45,8 +45,8 @@ protected:
 
 public:
     // Return the board name
-    lxString GetName(void) override { return lxT(BOARD_Blue_Pill_Name); };
-    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    std::string GetName(void) override { return BOARD_Blue_Pill_Name; };
+    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     // Constructor called once on board creation
     cboard_Blue_Pill(void);
     // Destructor called once on board destruction
@@ -56,7 +56,7 @@ public:
     void Run_CPU(void) override{};
     void Run_CPU_ns(uint64_t time) override;
     // Return a list of board supported microcontrollers
-    lxString GetSupportedDevices(void) override { return lxT("stm32f103c8t6,"); };
+    std::string GetSupportedDevices(void) override { return "stm32f103c8t6,"; };
     // Reset board status
     void Reset(void) override;
     // Event on the board
@@ -80,7 +80,7 @@ public:
     // board combo events
     void board_Event(CControl* control) override;
     void MSetAPin(int pin, float value) override;
-    lxString MGetPinName(int pin) override;
+    std::string MGetPinName(int pin) override;
     int MGetPinCount(void) override;
     void PinsExtraConfig(int cfg) override;
 };

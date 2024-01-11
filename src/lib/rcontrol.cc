@@ -816,9 +816,9 @@ int rcontrol_loop(void) {
                         // Command info
                         // ========================================================
                         Board = PICSimLab.GetBoard();
-                        snprintf(lstemp, 100, "Board:     %s\r\n", Board->GetName().c_str());
+                        snprintf(lstemp, 100, "Board:     %s\r\n", (const char*)Board->GetName().c_str());
                         ret += sendtext(lstemp);
-                        snprintf(lstemp, 100, "Processor: %s\r\n", Board->GetProcessorName().c_str());
+                        snprintf(lstemp, 100, "Processor: %s\r\n", (const char*)Board->GetProcessorName().c_str());
                         ret += sendtext(lstemp);
                         snprintf(lstemp, 100, "Frequency: %10.0f Hz\r\n", Board->MGetFreq());
                         ret += sendtext(lstemp);
@@ -844,7 +844,7 @@ int rcontrol_loop(void) {
                         if (Board->GetUseSpareParts()) {
                             for (i = 0; i < SpareParts.GetCount(); i++) {
                                 Part = SpareParts.GetPart(i);
-                                snprintf(lstemp, 100, "  part[%02i]: %s\r\n", i, (const char*)Part->GetName());
+                                snprintf(lstemp, 100, "  part[%02i]: %s\r\n", i, (const char*)Part->GetName().c_str());
                                 ret += sendtext(lstemp);
 
                                 for (j = 0; j < Part->GetInputCount(); j++) {
@@ -1072,9 +1072,11 @@ int rcontrol_loop(void) {
                             ret = sendtext("Ok\r\n>");
                         } else {
                             if (PICSimLab.GetSimulationRun()) {
-                                ret = sendtext(FloatStrFormat(
-                                    "Simulation running %5.2fx\r\nOk\r\n>",
-                                    100.0 / ((CTimer*)PICSimLab.GetWindow()->GetChildByName("timer1"))->GetTime()));
+                                ret = sendtext(
+                                    FloatStrFormat(
+                                        "Simulation running %5.2fx\r\nOk\r\n>",
+                                        100.0 / ((CTimer*)PICSimLab.GetWindow()->GetChildByName("timer1"))->GetTime())
+                                        .c_str());
                             } else {
                                 ret = sendtext("Simulation stopped\r\nOk\r\n>");
                             }
@@ -1096,9 +1098,9 @@ int rcontrol_loop(void) {
                         // Command version
                         // =====================================================
                         snprintf(lstemp, 100,
-                                 lxT("Developed by L.C. Gamboa\r\n "
-                                     "<lcgamboa@yahoo.com>\r\n Version: %s %s %s %s\r\n"),
-                                 lxT(_VERSION_), lxT(_DATE_), lxT(_ARCH_), lxT(_PKG_));
+                                 "Developed by L.C. Gamboa\r\n "
+                                 "<lcgamboa@yahoo.com>\r\n Version: %s %s %s %s\r\n",
+                                 _VERSION_, _DATE_, _ARCH_, _PKG_);
                         ret += sendtext(lstemp);
                         ret += sendtext("Ok\r\n>");
                     } else {

@@ -58,9 +58,9 @@ private:
 
 public:
     // Return the board name
-    lxString GetName(void) override { return lxT(BOARD_Franzininho_DIY_Name); };
-    lxString GetAboutInfo(void) override {
-        return lxT("Fábio Souza e Felipe Alvares\n <contato@franzininho.com.br>\n https://franzininho.com.br/");
+    std::string GetName(void) override { return BOARD_Franzininho_DIY_Name; };
+    std::string GetAboutInfo(void) override {
+        return "Fábio Souza e Felipe Alvares\n <contato@franzininho.com.br>\n https://franzininho.com.br/";
     };
     // Constructor called once on board creation
     cboard_Franzininho_DIY(void);
@@ -70,7 +70,7 @@ public:
     void Draw(CDraw* draw) override;
     void Run_CPU(void) override;
     // Return a list of board supported microcontrollers
-    lxString GetSupportedDevices(void) override { return lxT("attiny85,"); };
+    std::string GetSupportedDevices(void) override { return "attiny85,"; };
     // Reset board status
     void Reset(void) override;
     // Event on the board

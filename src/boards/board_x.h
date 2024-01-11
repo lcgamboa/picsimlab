@@ -64,14 +64,14 @@ public:
     // Destructor called once on board destruction
     ~cboard_x(void);
     // Return the board name
-    lxString GetName(void) override { return lxT(BOARD_x_Name); };
+    std::string GetName(void) override { return BOARD_x_Name; };
     // Return the about info of board
-    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     // Called ever 100ms to draw board
     void Draw(CDraw* draw) override;
     void Run_CPU(void) override;
     // Return a list of board supported microcontrollers
-    lxString GetSupportedDevices(void) override { return lxT("PIC16F877A,PIC18F4550,PIC18F4620,"); };
+    std::string GetSupportedDevices(void) override { return "PIC16F877A,PIC18F4550,PIC18F4620,"; };
     // Reset board status
     void Reset(void) override;
     // Event on the board

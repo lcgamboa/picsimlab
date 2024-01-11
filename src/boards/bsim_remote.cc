@@ -106,8 +106,8 @@ int bsim_remote::MInit(const char* processor, const char* fname, float freq) {
     struct sockaddr_un serv;
 #endif
 
-    lxString sproc = GetSupportedDevices();
-    if (sproc.find(processor) == -1) {
+    std::string sproc = GetSupportedDevices();
+    if (sproc.find(processor) == std::string::npos) {
         Proc = "Ripes";
         printf("PICSimLab: Unknown processor %s, loading default !\n", processor);
     }
@@ -310,8 +310,8 @@ int bsim_remote::CpuInitialized(void) {
 
 void bsim_remote::DebugLoop(void) {}
 
-lxString bsim_remote::MGetPinName(int pin) {
-    lxString pinname = "error";
+std::string bsim_remote::MGetPinName(int pin) {
+    std::string pinname = "error";
 
     if (!Proc.compare("Ripes")) {
         switch (pin) {
@@ -522,14 +522,16 @@ lxString bsim_remote::MGetPinName(int pin) {
     return pinname;
 }
 
-void bsim_remote::MDumpMemory(const char* fname) {
+int bsim_remote::MDumpMemory(const char* fname) {
     // only create a empty place holder file
     FILE* fout;
-    fout = fopen(fname, "w");
+    fout = fopen_UTF8(fname, "w");
     if (fout) {
         fprintf(fout, " ");
         fclose(fout);
+        return 0;
     }
+    return 1;
 }
 
 int bsim_remote::DebugInit(int dtyppe)  // argument not used in picm only mplabx
@@ -544,7 +546,7 @@ int bsim_remote::MGetPinCount(void) {
 }
 
 void bsim_remote::pins_reset(void) {
-    lxString pname;
+    std::string pname;
     for (int p = 0; p < MGetPinCount(); p++) {
         pins[p].avalue = 0;
         pins[p].lvalue = 0;
@@ -570,13 +572,13 @@ void bsim_remote::pins_reset(void) {
             } else if (pname[1] == 'C') {
                 pins[p].ptype = PT_ANALOG;
             }
-        } else if (pname.find("VDD") != -1) {
+        } else if (pname.find("VDD") != std::string::npos) {
             pins[p].port = NULL;
             pins[p].pord = -1;
             pins[p].value = 1;
             pins[p].dir = PD_OUT;
             pins[p].ptype = PT_POWER;
-        } else if (pname.find("VSS") != -1) {
+        } else if (pname.find("VSS") != std::string::npos) {
             pins[p].port = NULL;
             pins[p].pord = -1;
             pins[p].value = 0;

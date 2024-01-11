@@ -103,7 +103,7 @@ void cpart_SDCard::DrawOutput(const unsigned int i) {
             } else {
                 to = to - 38;
             }
-            canvas.RotatedText(lxT("Img:") + lxString(sdcard_fname + to), output[i].x1, output[i].y1, 0);
+            canvas.RotatedText("Img:" + std::string(sdcard_fname + to), output[i].x1, output[i].y1, 0);
             break;
         default:
             canvas.SetColor(49, 61, 99);
@@ -161,7 +161,7 @@ unsigned short cpart_SDCard::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_SDCard::WritePreferences(void) {
+std::string cpart_SDCard::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%s", pins[0], pins[1], pins[2], pins[3], sdcard_fname);
@@ -169,7 +169,7 @@ lxString cpart_SDCard::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_SDCard::ReadPreferences(lxString value) {
+void cpart_SDCard::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%s", &pins[0], &pins[1], &pins[2], &pins[3], sdcard_fname);
 
     Reset();
@@ -225,9 +225,9 @@ void cpart_SDCard::OnMouseButtonPress(uint inputId, uint button, uint x, uint y,
     switch (inputId) {
         case I_CONN:
             SpareParts.GetFileDialog()->SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
-            SpareParts.GetFileDialog()->SetFilter(lxT("SD Card image (*.img)|*.img"));
+            SpareParts.GetFileDialog()->SetFilter("SD Card image (*.img)|*.img");
             if (sdcard_fname[0] == '*') {
-                SpareParts.GetFileDialog()->SetFileName(lxT("untitled.img"));
+                SpareParts.GetFileDialog()->SetFileName("untitled.img");
             } else {
                 SpareParts.GetFileDialog()->SetFileName(sdcard_fname);
             }

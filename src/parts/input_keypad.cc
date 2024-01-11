@@ -77,34 +77,34 @@ static PCWProp pcwprop[13] = {{PCW_COMBO, "P1 -L1"},
                               {PCW_COMBO, "Type"},
                               {PCW_END, ""}};
 
-lxString cpart_keypad::GetPictureFileName(void) {
+std::string cpart_keypad::GetPictureFileName(void) {
     switch (type) {
         case KT4x4:
-            return lxT("Keypad/keypad_4x4.svg");
+            return "Keypad/keypad_4x4.svg";
             break;
         case KT4x3:
-            return lxT("Keypad/keypad_4x3.svg");
+            return "Keypad/keypad_4x3.svg";
             break;
         case KT2x5:
-            return lxT("Keypad/keypad_2x5.svg");
+            return "Keypad/keypad_2x5.svg";
             break;
     }
-    return lxT("Keypad/keypad_4x4.svg");
+    return "Keypad/keypad_4x4.svg";
 }
 
-lxString cpart_keypad::GetMapFile(void) {
+std::string cpart_keypad::GetMapFile(void) {
     switch (type) {
         case KT4x4:
-            return lxT("Keypad/keypad_4x4.map");
+            return "Keypad/keypad_4x4.map";
             break;
         case KT4x3:
-            return lxT("Keypad/keypad_4x3.map");
+            return "Keypad/keypad_4x3.map";
             break;
         case KT2x5:
-            return lxT("Keypad/keypad_2x5.map");
+            return "Keypad/keypad_2x5.map";
             break;
     }
-    return lxT("Keypad/keypad_4x4.map");
+    return "Keypad/keypad_4x4.map";
 }
 
 cpart_keypad::cpart_keypad(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
@@ -599,7 +599,7 @@ unsigned short cpart_keypad::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_keypad::WritePreferences(void) {
+std::string cpart_keypad::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", output_pins[0], output_pins[1], output_pins[2],
@@ -608,7 +608,7 @@ lxString cpart_keypad::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_keypad::ReadPreferences(lxString value) {
+void cpart_keypad::ReadPreferences(std::string value) {
     unsigned char tp;
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1],
            &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7], &pull,
@@ -639,38 +639,38 @@ void cpart_keypad::ConfigurePropertiesWindow(CPWindow* WProp) {
     ((CCombo*)WProp->GetChildByName("combo12"))->SetItems("4x4,4x3,2x5,");
     switch (type) {
         case KT4x4:
-            ((CLabel*)WProp->GetChildByName("label1"))->SetText(lxT("P1 - L1"));
-            ((CLabel*)WProp->GetChildByName("label2"))->SetText(lxT("P2 - L2"));
-            ((CLabel*)WProp->GetChildByName("label3"))->SetText(lxT("P3 - L3"));
-            ((CLabel*)WProp->GetChildByName("label4"))->SetText(lxT("P4 - L4"));
-            ((CLabel*)WProp->GetChildByName("label5"))->SetText(lxT("P5 - C1"));
-            ((CLabel*)WProp->GetChildByName("label6"))->SetText(lxT("P6 - C2"));
-            ((CLabel*)WProp->GetChildByName("label7"))->SetText(lxT("P7 - C3"));
-            ((CLabel*)WProp->GetChildByName("label8"))->SetText(lxT("P8 - C4"));
+            ((CLabel*)WProp->GetChildByName("label1"))->SetText("P1 - L1");
+            ((CLabel*)WProp->GetChildByName("label2"))->SetText("P2 - L2");
+            ((CLabel*)WProp->GetChildByName("label3"))->SetText("P3 - L3");
+            ((CLabel*)WProp->GetChildByName("label4"))->SetText("P4 - L4");
+            ((CLabel*)WProp->GetChildByName("label5"))->SetText("P5 - C1");
+            ((CLabel*)WProp->GetChildByName("label6"))->SetText("P6 - C2");
+            ((CLabel*)WProp->GetChildByName("label7"))->SetText("P7 - C3");
+            ((CLabel*)WProp->GetChildByName("label8"))->SetText("P8 - C4");
             ((CCombo*)WProp->GetChildByName("combo8"))->SetEnable(true);
             ((CCombo*)WProp->GetChildByName("combo12"))->SetText("4x4");
             break;
         case KT4x3:
-            ((CLabel*)WProp->GetChildByName("label1"))->SetText(lxT("P1 - L1"));
-            ((CLabel*)WProp->GetChildByName("label2"))->SetText(lxT("P2 - L2"));
-            ((CLabel*)WProp->GetChildByName("label3"))->SetText(lxT("P3 - L3"));
-            ((CLabel*)WProp->GetChildByName("label4"))->SetText(lxT("P4 - L4"));
-            ((CLabel*)WProp->GetChildByName("label5"))->SetText(lxT("P5 - C1"));
-            ((CLabel*)WProp->GetChildByName("label6"))->SetText(lxT("P6 - C2"));
-            ((CLabel*)WProp->GetChildByName("label7"))->SetText(lxT("P7 - C3"));
-            ((CLabel*)WProp->GetChildByName("label8"))->SetText(lxT("P8 - NC"));
+            ((CLabel*)WProp->GetChildByName("label1"))->SetText("P1 - L1");
+            ((CLabel*)WProp->GetChildByName("label2"))->SetText("P2 - L2");
+            ((CLabel*)WProp->GetChildByName("label3"))->SetText("P3 - L3");
+            ((CLabel*)WProp->GetChildByName("label4"))->SetText("P4 - L4");
+            ((CLabel*)WProp->GetChildByName("label5"))->SetText("P5 - C1");
+            ((CLabel*)WProp->GetChildByName("label6"))->SetText("P6 - C2");
+            ((CLabel*)WProp->GetChildByName("label7"))->SetText("P7 - C3");
+            ((CLabel*)WProp->GetChildByName("label8"))->SetText("P8 - NC");
             ((CCombo*)WProp->GetChildByName("combo8"))->SetEnable(false);
             ((CCombo*)WProp->GetChildByName("combo12"))->SetText("4x3");
             break;
         case KT2x5:
-            ((CLabel*)WProp->GetChildByName("label1"))->SetText(lxT("P1 - L1"));
-            ((CLabel*)WProp->GetChildByName("label2"))->SetText(lxT("P2 - L2"));
-            ((CLabel*)WProp->GetChildByName("label3"))->SetText(lxT("P3 - C1"));
-            ((CLabel*)WProp->GetChildByName("label4"))->SetText(lxT("P4 - C2"));
-            ((CLabel*)WProp->GetChildByName("label5"))->SetText(lxT("P5 - C3"));
-            ((CLabel*)WProp->GetChildByName("label6"))->SetText(lxT("P6 - C4"));
-            ((CLabel*)WProp->GetChildByName("label7"))->SetText(lxT("P7 - C5"));
-            ((CLabel*)WProp->GetChildByName("label8"))->SetText(lxT("P8 - NC"));
+            ((CLabel*)WProp->GetChildByName("label1"))->SetText("P1 - L1");
+            ((CLabel*)WProp->GetChildByName("label2"))->SetText("P2 - L2");
+            ((CLabel*)WProp->GetChildByName("label3"))->SetText("P3 - C1");
+            ((CLabel*)WProp->GetChildByName("label4"))->SetText("P4 - C2");
+            ((CLabel*)WProp->GetChildByName("label5"))->SetText("P5 - C3");
+            ((CLabel*)WProp->GetChildByName("label6"))->SetText("P6 - C4");
+            ((CLabel*)WProp->GetChildByName("label7"))->SetText("P7 - C5");
+            ((CLabel*)WProp->GetChildByName("label8"))->SetText("P8 - NC");
             ((CCombo*)WProp->GetChildByName("combo8"))->SetEnable(false);
             ((CCombo*)WProp->GetChildByName("combo12"))->SetText("2x5");
             break;
@@ -691,7 +691,7 @@ void cpart_keypad::ReadPropertiesWindow(CPWindow* WProp) {
 
     pull = !(((CCombo*)WProp->GetChildByName("combo11"))->GetText().compare("UP") == 0);
 
-    lxString tps = ((CCombo*)WProp->GetChildByName("combo12"))->GetText();
+    std::string tps = (const char*)((CCombo*)WProp->GetChildByName("combo12"))->GetText().c_str();
 
     ComboChange(WProp, (CCombo*)WProp->GetChildByName("combo12"), tps);
 
@@ -699,10 +699,10 @@ void cpart_keypad::ReadPropertiesWindow(CPWindow* WProp) {
     memset(keys2, 0, 10);
 }
 
-void cpart_keypad::ComboChange(CPWindow* WProp, CCombo* control, lxString value) {
-    if (!value.compare(lxT("4x3"))) {
+void cpart_keypad::ComboChange(CPWindow* WProp, CCombo* control, std::string value) {
+    if (!value.compare("4x3")) {
         ChangeType(KT4x3);
-    } else if (!value.compare(lxT("2x5"))) {
+    } else if (!value.compare("2x5")) {
         ChangeType(KT2x5);
     } else {
         ChangeType(KT4x4);

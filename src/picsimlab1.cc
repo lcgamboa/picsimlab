@@ -70,7 +70,7 @@ int prog_end(void);
 #endif
 
 #ifdef CONVERTER_MODE
-static lxString cvt_fname;
+static std::string cvt_fname;
 #endif
 
 #ifdef _WIN_
@@ -198,7 +198,7 @@ void CPWindow1::DrawBoard(void) {
 
             draw1.SetVisible(0);
             draw1.SetImgFileName(
-                lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/") + PICSimLab.GetBoard()->GetPictureFileName()),
+                lxGetLocalFile(PICSimLab.GetSharePath() + "boards/" + PICSimLab.GetBoard()->GetPictureFileName()),
                 PICSimLab.GetScale(), PICSimLab.GetScale());
         }
 
@@ -298,22 +298,22 @@ void CPWindow1::timer2_EvOnTime(CControl* control) {
 
         switch (PICSimLab.GetCpuState()) {
             case CPU_RUNNING:
-                statusbar1.SetField(0, lxT("Running..."));
+                statusbar1.SetField(0, "Running...");
                 break;
             case CPU_STEPPING:
-                statusbar1.SetField(0, lxT("Stepping..."));
+                statusbar1.SetField(0, "Stepping...");
                 break;
             case CPU_HALTED:
-                statusbar1.SetField(0, lxT("Halted!"));
+                statusbar1.SetField(0, "Halted!");
                 break;
             case CPU_BREAKPOINT:
-                statusbar1.SetField(0, lxT("BreakPoint!"));
+                statusbar1.SetField(0, "BreakPoint!");
                 break;
             case CPU_POWER_OFF:
-                statusbar1.SetField(0, lxT("Power Off!"));
+                statusbar1.SetField(0, "Power Off!");
                 break;
             case CPU_ERROR:
-                statusbar1.SetField(0, lxT("Error!"));
+                statusbar1.SetField(0, "Error!");
                 break;
         }
     }
@@ -322,9 +322,9 @@ void CPWindow1::timer2_EvOnTime(CControl* control) {
 
     if (PICSimLab.GetErrorCount()) {
 #ifndef __EMSCRIPTEN__
-        Message_sz(PICSimLab.GetError(0), 600, 240);
+        Message_sz(lxString::FromUTF8(PICSimLab.GetError(0)), 600, 240);
 #else
-        printf("Error: %s\n", PICSimLab.GetError(0).c_str());
+        printf("Error: %s\n", PICSimLab.GetError(0)._str());
 #endif
         PICSimLab.DeleteError(0);
     }
@@ -666,10 +666,10 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 
     set_signal_handler();
 
-    strncpy(home, (char*)lxGetUserDataDir(lxT("picsimlab")).c_str(), 1023);
+    strncpy(home, (const char*)lxGetUserDataDir("picsimlab").c_str(), 1023);
     PICSimLab.SetWorkspaceFileName("");
     PICSimLab.SetHomePath(home);
-    PICSimLab.SetPath(lxGetCwd());
+    PICSimLab.SetPath((const char*)lxGetCwd().c_str());
 
     PICSimLab.updatestatus = &CPWindow1::UpdateStatus;
     PICSimLab.menu_EvBoard = EVMENUACTIVE & CPWindow1::menu1_EvBoard;
@@ -692,14 +692,14 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 #error Define the _SHARE_ path is necessary
 #endif
 
-    if (lxString(_SHARE_).find("http") != -1) {
-        PICSimLab.SetSharePath(lxString(_SHARE_));
+    if (std::string(_SHARE_).find("http") != std::string::npos) {
+        PICSimLab.SetSharePath(std::string(_SHARE_));
     } else {
-        PICSimLab.SetSharePath(dirname(lxGetExecutablePath()) + lxT("/") + lxString(_SHARE_));
+        PICSimLab.SetSharePath((const char*)(dirname(lxGetExecutablePath()) + "/" + std::string(_SHARE_)).c_str());
     }
     fn.Assign(PICSimLab.GetSharePath());
     fn.MakeAbsolute();
-    PICSimLab.SetSharePath(fn.GetFullPath() + "/");
+    PICSimLab.SetSharePath((const char*)(fn.GetFullPath() + "/").c_str());
 
 #ifndef _LIB_
 #error Define the _LIB_ path is necessary
@@ -721,15 +721,15 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 #error Define the _PKG_ path is necessary
 #endif
 
-    PICSimLab.SetLibPath(dirname(lxGetExecutablePath()) + lxT("/") + lxString(_LIB_));
+    PICSimLab.SetLibPath((const char*)(dirname(lxGetExecutablePath()) + "/" + std::string(_LIB_)).c_str());
     fn.Assign(PICSimLab.GetLibPath());
     fn.MakeAbsolute();
-    PICSimLab.SetLibPath(fn.GetFullPath() + "/");
+    PICSimLab.SetLibPath((const char*)(fn.GetFullPath() + "/").c_str());
 
 #if !defined(__EMSCRIPTEN__) && !defined(_CONSOLE_LOG_)
     snprintf(fname, 1199, "%s/picsimlab_log%i.txt", home, PICSimLab.GetInstanceNumber());
     if (lxFileExists(fname)) {
-        FILE* flog = fopen(fname, "r");
+        FILE* flog = fopen_UTF8(fname, "r");
         if (flog) {
             char line[1024];
             int finishok = 0;
@@ -783,9 +783,9 @@ void CPWindow1::_EvOnCreate(CControl* control) {
             "problem persists, please consider opening an issue on github..",
             fname_error);
         PICSimLab.Configure(home, 1, 1);
-        PICSimLab.RegisterError(
-            "Error closing PICSimLab in last time!\n Using default mode.\n Error log file: " + lxString(fname_error) +
-            "\n If the problem persists, please consider opening an issue on github.\n ");
+        PICSimLab.RegisterError("Error closing PICSimLab in last time!\n Using default mode.\n Error log file: " +
+                                std::string(fname_error) +
+                                "\n If the problem persists, please consider opening an issue on github.\n ");
     } else if (Application->Aargc == 2) {  // only .pzw file
         fn.Assign(Application->Aargv[1]);
         fn.MakeAbsolute();
@@ -794,17 +794,17 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 
         // check if it is a demonstration
 
-        lxString fns = fn.GetFullPath();
+        std::string fns = (const char*)fn.GetFullPath().c_str();
 
         lxFileName fn_dir;
         fn_dir.Assign(PICSimLab.GetSharePath() + "boards/");
         fn_dir.MakeAbsolute();
 
-        if ((fns.find(fn_dir.GetFullPath()) != -1) && (fns.find("demo.pzw") != -1)) {
-            PICSimLab.LoadWorkspace(fn.GetFullPath(), 0);
+        if ((fns.find(fn_dir.GetFullPath()) != std::string::npos) && (fns.find("demo.pzw") != std::string::npos)) {
+            PICSimLab.LoadWorkspace((const char*)fn.GetFullPath().c_str(), 0);
             PICSimLab.SetWorkspaceFileName("");
         } else {
-            PICSimLab.LoadWorkspace(fn.GetFullPath());
+            PICSimLab.LoadWorkspace((const char*)fn.GetFullPath().c_str());
         }
 
     } else if ((Application->Aargc >= 3) && (Application->Aargc <= 5)) {
@@ -832,11 +832,11 @@ void CPWindow1::_EvOnCreate(CControl* control) {
             PICSimLab.PrefsClear();
             if (lxFileExists(fname)) {
                 if (PICSimLab.PrefsLoadFromFile(fname)) {
-                    PICSimLab.SavePrefs(lxT("picsimlab_lab"), boards_list[PICSimLab.GetLab()].name_);
-                    PICSimLab.SavePrefs(lxString(boards_list[PICSimLab.GetLab()].name_) + lxT("_proc"),
+                    PICSimLab.SavePrefs("picsimlab_lab", boards_list[PICSimLab.GetLab()].name_);
+                    PICSimLab.SavePrefs(std::string(boards_list[PICSimLab.GetLab()].name_) + "_proc",
                                         Application->Aargv[2]);
                     if (Application->Aargc == 5) {
-                        PICSimLab.SavePrefs(lxT("spare_on"), lxT("1"));
+                        PICSimLab.SavePrefs("spare_on", "1");
                     }
                     PICSimLab.PrefsSaveToFile(fname);
                 }
@@ -851,7 +851,7 @@ void CPWindow1::_EvOnCreate(CControl* control) {
             // load options
             PICSimLab.Configure(home, 0, 1, (const char*)fn.GetFullPath().c_str());
             if (Application->Aargc == 5) {
-                SpareParts.LoadConfig(fn_spare.GetFullPath());
+                SpareParts.LoadConfig((const char*)fn_spare.GetFullPath().c_str());
             }
         } else {
             // load options
@@ -914,10 +914,10 @@ void CPWindow1::_EvOnDestroy(CControl* control) {
 
     FILE* flog;
     FILE* ftmp;
-    flog = fopen(fname, "w");
+    flog = fopen_UTF8(fname, "w");
     if (flog) {
         // copy
-        ftmp = fopen(tmpname, "r");
+        ftmp = fopen_UTF8(tmpname, "r");
         if (ftmp) {
             char buff[4096];
             int nr;
@@ -965,14 +965,18 @@ void CPWindow1::filedialog1_EvOnClose(int retId) {
         usleep(100);  // wait thread
 
     if (retId && (filedialog1.GetType() == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
-        PICSimLab.SetPath(filedialog1.GetDir());
-        PICSimLab.SetFNAME(filedialog1.GetFileName());
-        PICSimLab.LoadHexFile(filedialog1.GetFileName());
+        PICSimLab.SetPath((const char*)filedialog1.GetDir().utf8_str());
+        PICSimLab.SetFNAME((const char*)filedialog1.GetFileName().utf8_str());
+        PICSimLab.LoadHexFile((const char*)filedialog1.GetFileName().utf8_str());
         menu1_File_ReloadLast.SetEnable(1);
     }
 
     if (retId && (filedialog1.GetType() == (lxFD_SAVE | lxFD_CHANGE_DIR))) {
-        PICSimLab.GetBoard()->MDumpMemory(filedialog1.GetFileName());
+        if (PICSimLab.GetBoard()->MDumpMemory((const char*)filedialog1.GetFileName().utf8_str())) {
+            PICSimLab.RegisterError(std::string("Error saving file: ") +
+                                    (const char*)filedialog1.GetFileName().utf8_str());
+            printf("PICSimLab: Error saving file: %s\n", (const char*)filedialog1.GetFileName().utf8_str());
+        }
 #ifdef __EMSCRIPTEN__
         EM_ASM_(
             {
@@ -1006,12 +1010,12 @@ void CPWindow1::menu1_File_Exit_EvMenuActive(CControl* control) {
 
 void CPWindow1::menu1_Help_Contents_EvMenuActive(CControl* control) {
 #ifdef EXT_BROWSER
-    // lxLaunchDefaultBrowser(lxT("file://")+PICSimLab.GetSharePath() + lxT ("docs/picsimlab.html"));
+    // lxLaunchDefaultBrowser("file://"+PICSimLab.GetSharePath() + "docs/picsimlab.html");
     char stemp[256];
-    snprintf(stemp, 255, lxT("https://lcgamboa.github.io/picsimlab_docs/%s/index.html"), lxT(_VERSION_));
+    snprintf(stemp, 255, "https://lcgamboa.github.io/picsimlab_docs/%s/index.html", _VERSION_);
     lxLaunchDefaultBrowser(stemp);
 #else
-    Window2.html1.SetLoadFile(PICSimLab.GetSharePath() + lxT("docs/picsimlab.html"));
+    Window2.html1.SetLoadFile(PICSimLab.GetSharePath() + "docs/picsimlab.html");
     Window2.Show();
 #endif
 }
@@ -1027,36 +1031,36 @@ void CPWindow1::menu1_Help_Board_EvMenuActive(CControl* control) {
     }
 
     char stemp[256];
-    snprintf(stemp, 255, lxT("https://lcgamboa.github.io/picsimlab_docs/%s/%s.html"), lxT(_VERSION_), bname);
+    snprintf(stemp, 255, "https://lcgamboa.github.io/picsimlab_docs/%s/%s.html", _VERSION_, bname);
     lxLaunchDefaultBrowser(stemp);
 }
 
 void CPWindow1::menu1_Help_About_Board_EvMenuActive(CControl* control) {
-    Message_sz(lxT("Board ") + lxString(boards_list[PICSimLab.GetLab()].name) + lxT("\nDeveloped by ") +
-                   PICSimLab.GetBoard()->GetAboutInfo(),
+    Message_sz("Board " + lxString(boards_list[PICSimLab.GetLab()].name) + "\nDeveloped by " +
+                   lxString::FromUTF8(PICSimLab.GetBoard()->GetAboutInfo()),
                400, 200);
 }
 
 void CPWindow1::menu1_Help_About_PICSimLab_EvMenuActive(CControl* control) {
     char stemp[256];
-    snprintf(stemp, 255, lxT("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: %s %s %s %s"), lxT(_VERSION_),
-             lxT(_DATE_), lxT(_ARCH_), lxT(_PKG_));
+    snprintf(stemp, 255, "Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: %s %s %s %s", _VERSION_, _DATE_,
+             _ARCH_, _PKG_);
     Message_sz(stemp, 400, 200);
 }
 
 void CPWindow1::menu1_Help_Examples_EvMenuActive(CControl* control) {
 #ifdef EXT_BROWSER_EXAMPLES
-    // lxLaunchDefaultBrowser(lxT("file://")+PICSimLab.GetSharePath() + lxT ("docs/picsimlab.html"));
-    lxLaunchDefaultBrowser(lxT("https://lcgamboa.github.io/picsimlab_examples/board_" +
-                               lxString(boards_list[PICSimLab.GetLab()].name_) + ".html#board_" +
-                               lxString(boards_list[PICSimLab.GetLab()].name_) + lxT("_") +
-                               PICSimLab.GetBoard()->GetProcessorName()));
+    // lxLaunchDefaultBrowser("file://"+PICSimLab.GetSharePath() + "docs/picsimlab.html");
+    lxLaunchDefaultBrowser("https://lcgamboa.github.io/picsimlab_examples/board_" +
+                           std::string(boards_list[PICSimLab.GetLab()].name_) + ".html#board_" +
+                           std::string(boards_list[PICSimLab.GetLab()].name_) + "_" +
+                           PICSimLab.GetBoard()->GetProcessorName());
     // SetToDestroy();
 #else
     OldPath = filedialog2.GetDir();
 
-    filedialog2.SetDir(PICSimLab.GetSharePath() + lxT("/docs/hex/board_") + lxString(boards_list[lab].name_) +
-                       lxT("/") + PICSimLab.GetBoard()->GetProcessorName() + lxT("/"));
+    filedialog2.SetDir(PICSimLab.GetSharePath() + "/docs/hex/board_" + std::string(boards_list[lab].name_) + "/" +
+                       PICSimLab.GetBoard()->GetProcessorName() + "/");
 
     menu1_File_LoadWorkspace_EvMenuActive(control);
 #endif
@@ -1071,7 +1075,7 @@ void CPWindow1::_EvOnShow(CControl* control) {
     }
 }
 
-void CPWindow1::_EvOnDropFile(CControl* control, const lxString fname) {
+void CPWindow1::_EvOnDropFile(CControl* control, const std::string fname) {
     printf("PICSimLab: File droped: %s\n", (const char*)fname.c_str());
     file_ready(basename(fname), dirname(fname));
 }
@@ -1109,9 +1113,9 @@ void CPWindow1::menu1_Modules_Spareparts_EvMenuActive(CControl* control) {
 void CPWindow1::menu1_EvBoard(CControl* control) {
     if (!PICSimLab.GetErrorCount()) {
         PICSimLab.SetLabs(atoi(((CItemMenu*)control)->GetName()), PICSimLab.GetLab());
-        PICSimLab.SetFNAME(lxT(" "));
+        PICSimLab.SetFNAME(" ");
         PICSimLab.EndSimulation(1);
-        PICSimLab.Configure(PICSimLab.GetHomePath());
+        PICSimLab.Configure(PICSimLab.GetHomePath().c_str());
         PICSimLab.SetNeedResize(1);
         label1.SetText(PICSimLab.GetBoard()->GetClkLabel());
     }
@@ -1122,17 +1126,16 @@ void CPWindow1::menu1_EvBoard(CControl* control) {
 void CPWindow1::menu1_EvMicrocontroller(CControl* control) {
     if (!PICSimLab.GetErrorCount()) {
         PICSimLab.SetProcessorName(PICSimLab.GetBoard()->GetProcessorName());
-        PICSimLab.GetBoard()->SetProcessorName(((CItemMenu*)control)->GetText());
+        PICSimLab.GetBoard()->SetProcessorName((const char*)((CItemMenu*)control)->GetText().c_str());
 
         SetTitle(((PICSimLab.GetInstanceNumber() > 0)
-                      ? (lxT("PICSimLab[") + itoa(PICSimLab.GetInstanceNumber()) + lxT("] - "))
-                      : (lxT("PICSimLab - "))) +
-                 lxString(boards_list[PICSimLab.GetLab()].name) + lxT(" - ") +
-                 PICSimLab.GetBoard()->GetProcessorName());
+                      ? ("PICSimLab[" + std::to_string(PICSimLab.GetInstanceNumber()) + "] - ")
+                      : ("PICSimLab - ")) +
+                 std::string(boards_list[PICSimLab.GetLab()].name) + " - " + PICSimLab.GetBoard()->GetProcessorName());
 
-        PICSimLab.SetFNAME(lxT(" "));
+        PICSimLab.SetFNAME(" ");
         PICSimLab.EndSimulation();
-        PICSimLab.Configure(PICSimLab.GetHomePath());
+        PICSimLab.Configure(PICSimLab.GetHomePath().c_str());
         PICSimLab.SetNeedResize(1);
         SpareParts.SetUseAlias(0);
     }
@@ -1140,7 +1143,7 @@ void CPWindow1::menu1_EvMicrocontroller(CControl* control) {
 
 void CPWindow1::togglebutton1_EvOnToggleButton(CControl* control) {
 #ifdef NO_DEBUG
-    statusbar1.SetField(1, lxT(" "));
+    statusbar1.SetField(1, " ");
 #else
     int osc_on = PICSimLab.GetBoard()->GetUseOscilloscope();
     int spare_on = PICSimLab.GetBoard()->GetUseSpareParts();
@@ -1148,7 +1151,7 @@ void CPWindow1::togglebutton1_EvOnToggleButton(CControl* control) {
     PICSimLab.SetDebugStatus(togglebutton1.GetCheck(), 0);
 
     PICSimLab.EndSimulation();
-    PICSimLab.Configure(PICSimLab.GetHomePath());
+    PICSimLab.Configure(PICSimLab.GetHomePath().c_str());
 
     if (osc_on)
         menu1_Modules_Oscilloscope_EvMenuActive(this);
@@ -1170,7 +1173,7 @@ void CPWindow1::menu1_File_SaveWorkspace_EvMenuActive(CControl* control) {
 #endif
 }
 
-void CPWindow1::UpdateStatus(const int field, const lxString msg) {
+void CPWindow1::UpdateStatus(const int field, const std::string msg) {
     Window1.statusbar1.SetField(field, msg);
 }
 
@@ -1184,14 +1187,14 @@ void CPWindow1::menu1_File_LoadWorkspace_EvMenuActive(CControl* control) {
 }
 
 void CPWindow1::menu1_File_LoadBoardDemo_EvMenuActive(CControl* control) {
-    lxString fdemo =
-        PICSimLab.GetSharePath() + "boards/" + lxString(boards_list[PICSimLab.GetLab()].name) + lxT("/demo.pzw");
+    std::string fdemo =
+        PICSimLab.GetSharePath() + "boards/" + std::string(boards_list[PICSimLab.GetLab()].name) + "/demo.pzw";
 
     if (lxFileExists(fdemo)) {
         PICSimLab.LoadWorkspace(fdemo);
         PICSimLab.SetWorkspaceFileName("");
     } else {
-        PICSimLab.RegisterError("Demo for board " + lxString(boards_list[PICSimLab.GetLab()].name) + " not found!");
+        PICSimLab.RegisterError("Demo for board " + std::string(boards_list[PICSimLab.GetLab()].name) + " not found!");
         printf("PICSimLab: Demo for board  %s not found! (%s)\n", boards_list[PICSimLab.GetLab()].name,
                (const char*)fdemo.c_str());
     }
@@ -1199,7 +1202,7 @@ void CPWindow1::menu1_File_LoadBoardDemo_EvMenuActive(CControl* control) {
 
 void CPWindow1::filedialog2_EvOnClose(int retId) {
     if (retId && (filedialog2.GetType() == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
-        PICSimLab.LoadWorkspace(filedialog2.GetFileName());
+        PICSimLab.LoadWorkspace((const char*)filedialog2.GetFileName().utf8_str());
         if (PICSimLab.GetOldPath().size() > 1) {
             filedialog2.SetDir(PICSimLab.GetOldPath());
             PICSimLab.SetOldPath("");
@@ -1207,7 +1210,7 @@ void CPWindow1::filedialog2_EvOnClose(int retId) {
     }
 
     if (retId && (filedialog2.GetType() == (lxFD_SAVE | lxFD_CHANGE_DIR))) {
-        PICSimLab.SaveWorkspace(filedialog2.GetFileName());
+        PICSimLab.SaveWorkspace((const char*)filedialog2.GetFileName().utf8_str());
     }
 }
 
@@ -1218,7 +1221,7 @@ void CPWindow1::menu1_Tools_SerialTerm_EvMenuActive(CControl* control) {
     if (!lxFileExists(stfname)) {
         // create one dumb file to associate whit serial terminal
         FILE* fout;
-        fout = fopen(stfname, "w");
+        fout = fopen_UTF8(stfname, "w");
         if (fout) {
             int buff = 0x11223344;  // fake magic number
             fwrite(&buff, 4, 1, fout);
@@ -1232,7 +1235,7 @@ void CPWindow1::menu1_Tools_SerialTerm_EvMenuActive(CControl* control) {
 
 void CPWindow1::menu1_Tools_SerialRemoteTank_EvMenuActive(CControl* control) {
 #ifdef _WIN_
-    lxExecute(PICSimLab.GetSharePath() + lxT("/../srtank.exe"));
+    lxExecute(PICSimLab.GetSharePath() + "/../srtank.exe");
 #else
 
     lxExecute(dirname(lxGetExecutablePath()) + "/srtank");
@@ -1241,7 +1244,7 @@ void CPWindow1::menu1_Tools_SerialRemoteTank_EvMenuActive(CControl* control) {
 
 void CPWindow1::menu1_Tools_Esp8266ModemSimulator_EvMenuActive(CControl* control) {
 #ifdef _WIN_
-    lxExecute(PICSimLab.GetSharePath() + lxT("/../espmsim.exe"));
+    lxExecute(PICSimLab.GetSharePath() + "/../espmsim.exe");
 #else
     lxExecute(dirname(lxGetExecutablePath()) + "/espmsim");
 #endif
@@ -1253,14 +1256,14 @@ void CPWindow1::menu1_Tools_ArduinoBootloader_EvMenuActive(CControl* control) {
 }
 
 void CPWindow1::menu1_Tools_MPLABXDebuggerPlugin_EvMenuActive(CControl* control) {
-    lxLaunchDefaultBrowser(lxT("https://github.com/lcgamboa/picsimlab_md/releases"));
+    lxLaunchDefaultBrowser("https://github.com/lcgamboa/picsimlab_md/releases");
 }
 
 void CPWindow1::menu1_Tools_PinViewer_EvMenuActive(CControl* control) {
 #ifdef _WIN_
-    lxExecute(PICSimLab.GetSharePath() + lxT("/../PinViewer.exe " + itoa(PICSimLab.GetRemotecPort())));
+    lxExecute(PICSimLab.GetSharePath() + "/../PinViewer.exe " + std::to_string(PICSimLab.GetRemotecPort()));
 #else
-    lxExecute(dirname(lxGetExecutablePath()) + "/PinViewer " + itoa(PICSimLab.GetRemotecPort()));
+    lxExecute(dirname(lxGetExecutablePath()) + "/PinViewer " + std::to_string(PICSimLab.GetRemotecPort()));
 #endif
 }
 

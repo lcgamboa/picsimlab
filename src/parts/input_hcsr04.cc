@@ -200,7 +200,7 @@ unsigned short cpart_hcsr04::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_hcsr04::WritePreferences(void) {
+std::string cpart_hcsr04::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu", pins[0], pins[1], value);
@@ -208,7 +208,7 @@ lxString cpart_hcsr04::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_hcsr04::ReadPreferences(lxString value_) {
+void cpart_hcsr04::ReadPreferences(std::string value_) {
     sscanf(value_.c_str(), "%hhu,%hhu,%hhu", &pins[0], &pins[1], &value);
 }
 

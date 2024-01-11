@@ -38,7 +38,7 @@
  */
 class cpart_servo : public part {
 public:
-    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
 
     /**
      * @brief constructor called once on part creation
@@ -57,8 +57,8 @@ public:
     void PostProcess(void) override;
     void ConfigurePropertiesWindow(CPWindow* WProp) override;
     void ReadPropertiesWindow(CPWindow* WProp) override;
-    lxString WritePreferences(void) override;
-    void ReadPreferences(lxString value) override;
+    std::string WritePreferences(void) override;
+    void ReadPreferences(std::string value) override;
     void LoadImage(void) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;

@@ -61,11 +61,10 @@ private:
 
 public:
     // Return the board name
-    lxString GetName(void) override { return lxT(BOARD_Curiosity_HPC_Name); };
-    lxString GetAboutInfo(void) override {
-        return lxT(
-            "El-khadraouy Mohammed\n<mohammed.el-khadraouy@ecole.ensicaen.fr>\nand L.C. Gamboa \n "
-            "<lcgamboa@yahoo.com>");
+    std::string GetName(void) override { return BOARD_Curiosity_HPC_Name; };
+    std::string GetAboutInfo(void) override {
+        return "El-khadraouy Mohammed\n<mohammed.el-khadraouy@ecole.ensicaen.fr>\nand L.C. Gamboa \n "
+               "<lcgamboa@yahoo.com>";
     };
     // Constructor called once on board creation
     cboard_Curiosity_HPC(void);
@@ -75,7 +74,7 @@ public:
     void Draw(CDraw* draw) override;
     void Run_CPU(void) override;
     // Return a list of board supported microcontrollers
-    lxString GetSupportedDevices(void) override { return lxT("PIC18F47K40,"); };
+    std::string GetSupportedDevices(void) override { return "PIC18F47K40,"; };
     // Reset board status
     void Reset(void) override;
     // Event on the board

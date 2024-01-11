@@ -56,8 +56,8 @@ private:
 
 public:
     // Return the board name
-    lxString GetName(void) override { return lxT(BOARD_Xpress_Name); };
-    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    std::string GetName(void) override { return BOARD_Xpress_Name; };
+    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     // Constructor called once on board creation
     cboard_Xpress(void);
     // Destructor called once on board destruction
@@ -66,7 +66,7 @@ public:
     void Draw(CDraw* draw) override;
     void Run_CPU(void) override;
     // Return a list of board supported microcontrollers
-    lxString GetSupportedDevices(void) override { return lxT("PIC16F18855,"); };
+    std::string GetSupportedDevices(void) override { return "PIC16F18855,"; };
     // Reset board status
     void Reset(void) override;
     // Event on the board

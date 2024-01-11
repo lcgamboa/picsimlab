@@ -42,14 +42,14 @@ public:
     bsim_qemu(void);
     ~bsim_qemu(void);
     int DebugInit(int dtyppe) override;
-    lxString GetDebugName(void) override { return "GDB"; };
+    std::string GetDebugName(void) override { return "GDB"; };
     void DebugLoop(void) override;
     int CpuInitialized(void) override;
     void MSetSerial(const char* port) override;
     int MInit(const char* processor, const char* fname, float freq) override;
     void MEnd(void) override;
     int MGetArchitecture(void) override;
-    void MDumpMemory(const char* fname) override;
+    int MDumpMemory(const char* fname) override;
     void MEraseFlash(void) override;
     void MSetFreq(float freq) override;
     float MGetFreq(void) override;
@@ -77,7 +77,7 @@ public:
     void IoUnlockAccess(void) override;
     int GetUARTRX(const int uart_num) override;
     int GetUARTTX(const int uart_num) override;
-    virtual lxString GetClkLabel(void) override { return "IO (Mhz)"; };
+    virtual std::string GetClkLabel(void) override { return "IO (Mhz)"; };
 
 protected:
     int MipsStrToIcount(const char* mipstr);
@@ -106,9 +106,9 @@ protected:
     lxMutex* mtx_qinit;
     int qemu_started;
     QEMUSimType SimType;
-    lxString cmdline;
+    std::string cmdline;
     int use_cmdline_extra;
-    lxString cmdline_extra;
+    std::string cmdline_extra;
     int serial_open;
     unsigned int application_offset;
     int ConfEnableSerial;

@@ -140,7 +140,7 @@ unsigned short cpart_rgb_led::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_rgb_led::WritePreferences(void) {
+std::string cpart_rgb_led::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], active);
@@ -148,7 +148,7 @@ lxString cpart_rgb_led::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_rgb_led::ReadPreferences(lxString value) {
+void cpart_rgb_led::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &active);
 }
 

@@ -72,7 +72,7 @@ cpart_VCD_Dump::cpart_VCD_Dump(const unsigned x, const unsigned y, const char* n
 
     strncat(f_vcd_name, ".vcd", 200);
 
-    f_vcd = fopen(f_vcd_name, "w");
+    f_vcd = fopen_UTF8(f_vcd_name, "w");
     fclose(f_vcd);
     f_vcd = NULL;
 
@@ -249,7 +249,7 @@ unsigned short cpart_VCD_Dump::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_VCD_Dump::WritePreferences(void) {
+std::string cpart_VCD_Dump::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2],
@@ -258,7 +258,7 @@ lxString cpart_VCD_Dump::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_VCD_Dump::ReadPreferences(lxString value) {
+void cpart_VCD_Dump::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1],
            &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7], &rec);
 }
@@ -289,7 +289,7 @@ void cpart_VCD_Dump::PreProcess(void) {
     if (rec && (f_vcd == NULL)) {
         float tscale = 1.0e12 / pboard->MGetInstClockFreq();  // ps step
 
-        f_vcd = fopen(f_vcd_name, "w");
+        f_vcd = fopen_UTF8(f_vcd_name, "w");
         vcd_count = 0;
 
         fprintf(f_vcd,

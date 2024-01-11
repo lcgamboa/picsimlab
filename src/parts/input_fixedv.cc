@@ -124,7 +124,7 @@ unsigned short cpart_fixedv::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_fixedv::WritePreferences(void) {
+std::string cpart_fixedv::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu", output_pins[0], value);
@@ -132,7 +132,7 @@ lxString cpart_fixedv::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_fixedv::ReadPreferences(lxString value_) {
+void cpart_fixedv::ReadPreferences(std::string value_) {
     sscanf(value_.c_str(), "%hhu,%hhu", &output_pins[0], &value);
 }
 

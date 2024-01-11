@@ -35,12 +35,8 @@ extern char SERIALDEVICE[100];
 
 #define MAX_MIC 140
 
-#include <vector>
 #include "board.h"
-
-lxString FloatStrFormat(const char* str, const float value);
-int LoadFromFile(std::vector<lxString>& strlist, const char* fname);
-int SaveToFile(std::vector<lxString> strlist, const char* fname);
+#include "util.h"
 
 enum PICSimlabCPUState { CPU_RUNNING, CPU_STEPPING, CPU_HALTED, CPU_BREAKPOINT, CPU_ERROR, CPU_POWER_OFF, CPU_LAST };
 
@@ -57,26 +53,26 @@ public:
     /**
      * @brief  Get the file path of resources
      */
-    lxString GetSharePath(void) { return SHARE; };
-    void SetSharePath(lxString spath) { SHARE = spath; };
+    std::string GetSharePath(void) { return SHARE; };
+    void SetSharePath(std::string spath) { SHARE = spath; };
 
-    lxString GetLibPath(void) { return libpath; };
-    void SetLibPath(lxString lpath) { libpath = lpath; };
+    std::string GetLibPath(void) { return libpath; };
+    void SetLibPath(std::string lpath) { libpath = lpath; };
 
-    lxString GetHomePath(void) { return HOME; };
-    void SetHomePath(lxString home) { HOME = home; };
+    std::string GetHomePath(void) { return HOME; };
+    void SetHomePath(std::string home) { HOME = home; };
 
-    lxString GetPath(void) { return PATH; };
-    void SetPath(lxString path) { PATH = path; };
+    std::string GetPath(void) { return PATH; };
+    void SetPath(std::string path) { PATH = path; };
 
-    lxString GetFNAME(void) { return FNAME; };
-    void SetFNAME(lxString fname) { FNAME = fname; };
+    std::string GetFNAME(void) { return FNAME; };
+    void SetFNAME(std::string fname) { FNAME = fname; };
 
-    lxString GetOldPath(void) { return OldPath; };
-    void SetOldPath(lxString op) { OldPath = op; };
+    std::string GetOldPath(void) { return OldPath; };
+    void SetOldPath(std::string op) { OldPath = op; };
 
-    lxString GetProcessorName(void) { return proc_; };
-    void SetProcessorName(lxString pn) { proc_ = pn; };
+    std::string GetProcessorName(void) { return proc_; };
+    void SetProcessorName(std::string pn) { proc_ = pn; };
 
     long int GetNSTEP(void) { return NSTEP; };
     void SetNSTEP(long int ns) { NSTEP = ns; };
@@ -190,29 +186,29 @@ public:
     /**
      * @brief  Save the preferences
      */
-    void SavePrefs(lxString name, lxString value);
+    void SavePrefs(std::string name, std::string value);
 
     void PrefsClear(void) { prefs.clear(); };
-    int PrefsSaveToFile(lxString fname) { return SaveToFile(prefs, fname); };
-    int PrefsLoadFromFile(lxString fname) { return LoadFromFile(prefs, fname); };
+    int PrefsSaveToFile(std::string fname) { return SaveToFile(prefs, fname.c_str()); };
+    int PrefsLoadFromFile(std::string fname) { return LoadFromFile(prefs, fname.c_str()); };
     unsigned int PrefsGetLinesCount(void) { return prefs.size(); };
-    lxString PrefsGetLine(int ln) { return prefs.at(ln); };
+    std::string PrefsGetLine(int ln) { return prefs.at(ln); };
 
     void OpenLoadHexFileDialog(void);
 
     void SetNeedReboot(int nr = 1);
     int GetNeedReboot(void) { return NeedReboot; };
 
-    void RegisterError(const lxString error);
+    void RegisterError(const std::string error);
     int GetErrorCount(void) { return Errors.size(); };
 
-    lxString GetError(int en) { return Errors.at(en); };
+    std::string GetError(int en) { return Errors.at(en); };
 
     void DeleteError(int en) { Errors.erase(Errors.begin() + en); };
 
     void EndSimulation(int saveold = 0, const char* newpath = NULL);
 
-    void SetWorkspaceFileName(const lxString fname) { Workspacefn = fname; };
+    void SetWorkspaceFileName(const std::string fname) { Workspacefn = fname; };
 
     void SetLabs(const int lb, const int lb_) {
         lab = lb;
@@ -222,10 +218,10 @@ public:
     int GetLab(void) { return lab; };
     int GetLab_(void) { return lab_; };
 
-    int LoadHexFile(lxString fname);
+    int LoadHexFile(std::string fname);
 
-    void LoadWorkspace(lxString fnpzw, const int show_readme = 1);
-    void SaveWorkspace(lxString fnpzw);
+    void LoadWorkspace(std::string fnpzw, const int show_readme = 1);
+    void SaveWorkspace(std::string fnpzw);
 
     void SetSimulationRun(int run);
     int GetSimulationRun(void);
@@ -257,7 +253,7 @@ public:
 
     char* GetPzwTmpdir(void) { return pzwtmpdir; };
 
-    void UpdateStatus(const PICSimlabStatus field, const lxString msg);
+    void UpdateStatus(const PICSimlabStatus field, const std::string msg);
 
 #ifndef _NOTHREAD
     lxCondition* cpu_cond;
@@ -277,7 +273,7 @@ public:
     CItemMenu MBoard[BOARDS_MAX];
     CItemMenu MMicro[MAX_MIC];
 
-    void (*updatestatus)(const int field, const lxString msg);
+    void (*updatestatus)(const int field, const std::string msg);
     void (CControl::*menu_EvBoard)(CControl* control);
     void (CControl::*menu_EvMicrocontroller)(CControl* control);
     void (CControl::*board_Event)(CControl* control);
@@ -290,8 +286,8 @@ private:
     board* pboard;
     int lab;
     int lab_;
-    lxString SHARE;
-    lxString libpath;
+    std::string SHARE;
+    std::string libpath;
     long int NSTEP;
     long int NSTEPJ;
     int JUMPSTEPS;
@@ -302,21 +298,21 @@ private:
     PICSimlabCPUState cpustate;
     unsigned short debug_port;
     unsigned short remotec_port;
-    lxString HOME;
-    lxString PATH;
-    lxString FNAME;
-    lxString OldPath;
-    lxString proc_;
-    lxString pzw_ver;
+    std::string HOME;
+    std::string PATH;
+    std::string FNAME;
+    std::string OldPath;
+    std::string proc_;
+    std::string pzw_ver;
     int Instance;
     int debug_type;
     int debug;
     int need_resize;
     int need_clkupdate;
-    std::vector<lxString> prefs;
+    std::vector<std::string> prefs;
     int NeedReboot;
-    std::vector<lxString> Errors;
-    lxString Workspacefn;
+    std::vector<std::string> Errors;
+    std::string Workspacefn;
     double scale;
     double idle_ms;
     int settodestroy;

@@ -145,9 +145,9 @@ cboard_McLab2::cboard_McLab2(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE
 
     if (PICSimLab.GetWindow()) {
         lxImage image(PICSimLab.GetWindow());
-        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/VT1.svg")));
+        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/VT1.svg"));
         vent[0] = new lxBitmap(&image, PICSimLab.GetWindow());
-        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/VT2.svg")));
+        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/VT2.svg"));
         vent[1] = new lxBitmap(&image, PICSimLab.GetWindow());
 
         image.Destroy();
@@ -155,7 +155,7 @@ cboard_McLab2::cboard_McLab2(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE
         // gauge1
         gauge1 = new CGauge();
         gauge1->SetFOwner(PICSimLab.GetWindow());
-        gauge1->SetName(lxT("gauge1_p3"));
+        gauge1->SetName("gauge1_p3");
         gauge1->SetX(13);
         gauge1->SetY(242);
         gauge1->SetWidth(140);
@@ -169,7 +169,7 @@ cboard_McLab2::cboard_McLab2(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE
         // gauge2
         gauge2 = new CGauge();
         gauge2->SetFOwner(PICSimLab.GetWindow());
-        gauge2->SetName(lxT("gauge2_p3"));
+        gauge2->SetName("gauge2_p3");
         gauge2->SetX(12);
         gauge2->SetY(190);
         gauge2->SetWidth(140);
@@ -183,40 +183,40 @@ cboard_McLab2::cboard_McLab2(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE
         // label2
         label2 = new CLabel();
         label2->SetFOwner(PICSimLab.GetWindow());
-        label2->SetName(lxT("label2_p3"));
+        label2->SetName("label2_p3");
         label2->SetX(12);
         label2->SetY(166);
         label2->SetWidth(60);
         label2->SetHeight(20);
         label2->SetEnable(1);
         label2->SetVisible(1);
-        label2->SetText(lxT("Heater"));
+        label2->SetText("Heater");
         label2->SetAlign(1);
         PICSimLab.GetWindow()->CreateChild(label2);
         // label3
         label3 = new CLabel();
         label3->SetFOwner(PICSimLab.GetWindow());
-        label3->SetName(lxT("label3_p3"));
+        label3->SetName("label3_p3");
         label3->SetX(13);
         label3->SetY(217);
         label3->SetWidth(60);
         label3->SetHeight(20);
         label3->SetEnable(1);
         label3->SetVisible(1);
-        label3->SetText(lxT("Cooler"));
+        label3->SetText("Cooler");
         label3->SetAlign(1);
         PICSimLab.GetWindow()->CreateChild(label3);
         // label4
         label4 = new CLabel();
         label4->SetFOwner(PICSimLab.GetWindow());
-        label4->SetName(lxT("label4_p3"));
+        label4->SetName("label4_p3");
         label4->SetX(13);
         label4->SetY(272);
         label4->SetWidth(120);
         label4->SetHeight(24);
         label4->SetEnable(1);
         label4->SetVisible(1);
-        label4->SetText(lxT("Temp: 00.0°C"));
+        label4->SetText("Temp: 00.0°C");
         label4->SetAlign(1);
         PICSimLab.GetWindow()->CreateChild(label4);
     }
@@ -261,7 +261,7 @@ int cboard_McLab2::MInit(const char* processor, const char* fname, float freq) {
     strncpy(fnamem, (const char*)dirname(fname).c_str(), 1023);
     strncat(fnamem, "/mdump_McLab2_EEPROM.bin", 1023);
 
-    fout = fopen(fnamem, "rb");
+    fout = fopen_UTF8(fnamem, "rb");
     if (fout) {
         fread(mi2c.data, mi2c.SIZE, 1, fout);
         fclose(fout);
@@ -278,23 +278,23 @@ void cboard_McLab2::SetScale(double scale) {
             delete vent[0];
             delete vent[1];
             lxImage image(PICSimLab.GetWindow());
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/VT1.svg")), 0, Scale, Scale);
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/VT1.svg"), 0, Scale, Scale);
             vent[0] = new lxBitmap(&image, PICSimLab.GetWindow());
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/VT2.svg")), 0, Scale, Scale);
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/VT2.svg"), 0, Scale, Scale);
             vent[1] = new lxBitmap(&image, PICSimLab.GetWindow());
             image.Destroy();
         }
     }
 }
 
-void cboard_McLab2::MDumpMemory(const char* mfname) {
+int cboard_McLab2::MDumpMemory(const char* mfname) {
     FILE* fout;
     char fname[1024];
 
     strncpy(fname, (const char*)dirname(mfname).c_str(), 1023);
     strncat(fname, "/mdump_McLab2_EEPROM.bin", 1023);
 
-    fout = fopen(fname, "wb");
+    fout = fopen_UTF8(fname, "wb");
     if (fout) {
         fwrite(mi2c.data, mi2c.SIZE, 1, fout);
         fclose(fout);
@@ -302,7 +302,7 @@ void cboard_McLab2::MDumpMemory(const char* mfname) {
         printf("Error saving to file: %s \n", fname);
     }
 
-    bsim_picsim::MDumpMemory(mfname);
+    return bsim_picsim::MDumpMemory(mfname);
 }
 
 void cboard_McLab2::Draw(CDraw* draw) {
@@ -937,14 +937,14 @@ void cboard_McLab2::Reset(void) {
     pic_set_pin(&pic, 36, p_BT[3]);
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
-                                      itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                      FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                       100.0 * pic.serial[0].serialbaud) /
-                                                                      pic.serial[0].serialexbaud)) +
-                                      lxT("%)"));
+        PICSimLab.UpdateStatus(
+            PS_SERIAL,
+            "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[0].serialbaud) + "(" +
+                FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
+                                             pic.serial[0].serialexbaud)) +
+                "%)");
     else
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
 
     for (int pi = 0; pi < pic.PINCOUNT; pi++) {
         lm1[pi] = 30;
@@ -1092,7 +1092,7 @@ void cboard_McLab2::EvMouseButtonPress(uint button, uint x, uint y, uint state) 
                 } break;
                 case I_VIEW:
                     FILE* fout;
-                    fout = fopen(mi2c_tmp_name, "w");
+                    fout = fopen_UTF8(mi2c_tmp_name, "w");
                     if (fout) {
                         for (unsigned int i = 0; i < mi2c.SIZE; i += 16) {
                             fprintf(fout, "%04X: ", i);
@@ -1416,30 +1416,30 @@ unsigned short cboard_McLab2::GetOutputId(char* name) {
 }
 
 void cboard_McLab2::RefreshStatus(void) {
-    label4->SetText(lxT("Temp: ") + FloatStrFormat("%5.2f", temp[0]) + lxT("°C"));
+    label4->SetText("Temp: " + FloatStrFormat("%5.2f", temp[0]) + "°C");
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
-                                      itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                      FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                       100.0 * pic.serial[0].serialbaud) /
-                                                                      pic.serial[0].serialexbaud)) +
-                                      lxT("%)"));
+        PICSimLab.UpdateStatus(
+            PS_SERIAL,
+            "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[0].serialbaud) + "(" +
+                FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
+                                             pic.serial[0].serialexbaud)) +
+                "%)");
     else
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
 }
 
 void cboard_McLab2::WritePreferences(void) {
     char line[100];
-    PICSimLab.SavePrefs(lxT("McLab2_proc"), Proc);
+    PICSimLab.SavePrefs("McLab2_proc", Proc);
 
     line[0] = 0;
     for (int i = 0; i < 6; i++)
         sprintf(line + i, "%i", jmp[i]);
 
-    PICSimLab.SavePrefs(lxT("McLab2_jmp"), line);
-    PICSimLab.SavePrefs(lxT("McLab2_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
-    PICSimLab.SavePrefs(lxT("McLab2_pot1"), itoa( pot1));
+    PICSimLab.SavePrefs("McLab2_jmp", line);
+    PICSimLab.SavePrefs("McLab2_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs("McLab2_pot1", std::to_string(pot1));
 }
 
 void cboard_McLab2::ReadPreferences(char* name, char* value) {

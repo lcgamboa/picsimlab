@@ -34,7 +34,7 @@
 
 class cpart_vterm : public part {
 public:
-    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     cpart_vterm(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
     ~cpart_vterm(void);
     void DrawOutput(const unsigned int index) override;
@@ -48,8 +48,8 @@ public:
     void ButtonEvent(CControl* control, uint button, uint x, uint y, uint state) override;
     void KeyEvent(CControl* control, uint keysym, uint ukeysym, uint state) override;
     void Event(CControl* control) override;
-    lxString WritePreferences(void) override;
-    void ReadPreferences(lxString value) override;
+    std::string WritePreferences(void) override;
+    void ReadPreferences(std::string value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
     void SetId(int _id) override;
@@ -71,7 +71,7 @@ private:
     char send_text;
     unsigned char lending;
     lxFont font;
-    lxString text_to_send;
+    std::string text_to_send;
     unsigned char show;
 };
 

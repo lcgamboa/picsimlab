@@ -95,7 +95,7 @@ cpart_gamepad_an::~cpart_gamepad_an(void) {
 }
 
 void cpart_gamepad_an::DrawOutput(const unsigned int i) {
-    lxString temp;
+    std::string temp;
 
     switch (output[i].id) {
         case O_P1:
@@ -104,7 +104,7 @@ void cpart_gamepad_an::DrawOutput(const unsigned int i) {
                              output[i].y2 - output[i].y1 + 20);
             canvas.SetFgColor(155, 155, 155);
 
-            temp = FloatStrFormat("%3.1f", output_value_an) + lxT("V");
+            temp = FloatStrFormat("%3.1f", output_value_an) + "V";
             canvas.RotatedText("Out " + temp, output[i].x1, output[i].y1 + 20, 0);
             canvas.SetFgColor(255, 255, 255);
             if (output_pins[0] == 0)
@@ -311,7 +311,7 @@ unsigned short cpart_gamepad_an::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_gamepad_an::WritePreferences(void) {
+std::string cpart_gamepad_an::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu", output_pins[0], active);
@@ -319,7 +319,7 @@ lxString cpart_gamepad_an::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_gamepad_an::ReadPreferences(lxString value) {
+void cpart_gamepad_an::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu,%hhu", &output_pins[0], &active);
     output_value_an = active * vmax;
 }

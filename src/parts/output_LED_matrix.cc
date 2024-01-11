@@ -53,7 +53,7 @@ cpart_led_matrix::cpart_led_matrix(const unsigned x, const unsigned y, const cha
     input_pins[1] = 0;
     input_pins[2] = 0;
 
-    output_pins[0] = SpareParts.RegisterIOpin(lxT("DOUT"));
+    output_pins[0] = SpareParts.RegisterIOpin("DOUT");
 
     SetPCWProperties(pcwprop);
 
@@ -90,7 +90,7 @@ void cpart_led_matrix::DrawOutput(const unsigned int i) {
             if (output_pins[output[i].id - O_P4] == 0)
                 canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
             else
-                canvas.RotatedText(itoa(output_pins[output[i].id - O_P4]), output[i].x1, output[i].y2, 90.0);
+                canvas.RotatedText(std::to_string(output_pins[output[i].id - O_P4]), output[i].x1, output[i].y2, 90.0);
             break;
             break;
         case O_F1:
@@ -143,7 +143,7 @@ unsigned short cpart_led_matrix::GetOutputId(char* name) {
     return INVALID_ID;
 };
 
-lxString cpart_led_matrix::WritePreferences(void) {
+std::string cpart_led_matrix::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%i,%i", input_pins[0], input_pins[1], input_pins[2], output_pins[0], angle,
@@ -152,13 +152,13 @@ lxString cpart_led_matrix::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_led_matrix::ReadPreferences(lxString value) {
+void cpart_led_matrix::ReadPreferences(std::string value) {
     unsigned char outp;
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%i,%i", &input_pins[0], &input_pins[1], &input_pins[2], &outp, &angle,
            &lmode);
 
     SpareParts.UnregisterIOpin(output_pins[0]);
-    output_pins[0] = SpareParts.RegisterIOpin(lxT("DOUT"), outp);
+    output_pins[0] = SpareParts.RegisterIOpin("DOUT", outp);
 
     Reset();
 }
@@ -172,10 +172,10 @@ void cpart_led_matrix::ConfigurePropertiesWindow(CPWindow* WProp) {
     SetPCWComboWithPinNames(WProp, "combo4", input_pins[1]);
     SetPCWComboWithPinNames(WProp, "combo5", input_pins[2]);
 
-    ((CLabel*)WProp->GetChildByName("label_6"))->SetText(itoa(output_pins[0]));
+    ((CLabel*)WProp->GetChildByName("label_6"))->SetText(std::to_string(output_pins[0]));
 
     ((CCombo*)WProp->GetChildByName("combo7"))->SetItems("0,90,180,270,");
-    ((CCombo*)WProp->GetChildByName("combo7"))->SetText(itoa(angle));
+    ((CCombo*)WProp->GetChildByName("combo7"))->SetText(std::to_string(angle));
 
     ((CCombo*)WProp->GetChildByName("combo8"))->SetItems("FC16,Parola,");
     ((CCombo*)WProp->GetChildByName("combo8"))->SetText((!lmode ? "FC16" : "Parola"));

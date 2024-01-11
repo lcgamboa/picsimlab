@@ -51,17 +51,17 @@ public:
     /**
      * @brief  Return the name of part
      */
-    lxString GetName(void);
+    std::string GetName(void);
 
     /**
      * @brief  Return the help url of part
      */
-    virtual lxString GetHelpURL(void);
+    virtual std::string GetHelpURL(void);
 
     /**
      * @brief  Return the about information of part
      */
-    virtual lxString GetAboutInfo(void) = 0;
+    virtual std::string GetAboutInfo(void) = 0;
 
     /**
      * @brief  Called ever 100ms to draw part
@@ -91,17 +91,17 @@ public:
     /**
      * @brief  Return the filename of part picture
      */
-    virtual lxString GetPictureFileName(void);
+    virtual std::string GetPictureFileName(void);
 
     /**
      * @brief  Return the filename of part picture map
      */
-    virtual lxString GetMapFile(void);
+    virtual std::string GetMapFile(void);
 
     /**
      * @brief  Return the filename of properties window XML file
      */
-    virtual lxString GetPropertiesWindowFile(void);
+    virtual std::string GetPropertiesWindowFile(void);
 
     /**
      * @brief Get part input count
@@ -176,12 +176,12 @@ public:
     /**
      * @brief  Called to save part preferences in configuration file
      */
-    virtual lxString WritePreferences(void) = 0;
+    virtual std::string WritePreferences(void) = 0;
 
     /**
      * @brief  Called whe configuration file load  preferences
      */
-    virtual void ReadPreferences(lxString value) = 0;
+    virtual void ReadPreferences(std::string value) = 0;
 
     /**
      * @brief  return the input ids numbers of names used in input map
@@ -206,7 +206,7 @@ public:
     /**
      * @brief  Used by properties window combos
      */
-    virtual void ComboChange(CPWindow* WProp, CCombo* control, lxString value){};
+    virtual void ComboChange(CPWindow* WProp, CCombo* control, std::string value){};
 
     /**
      * @brief  Used by properties window spin
@@ -385,7 +385,7 @@ protected:
     double Scale;                   ///< scale to draw part
     unsigned int Update;            ///< part need draw Update
     int always_update;              ///< part need to be update every clock cycle
-    lxString Type;
+    std::string Type;
     lxFont font;
     int PinCount;
     int PinCtrlCount;
@@ -403,8 +403,8 @@ protected:
      */
     int PointInside(int x, int y, input_t input);
 
-    void DrawSlider(const output_t* output, const unsigned char pos, const lxString val, const lxFont font);
-    void DrawPotentiometer(const output_t* output, const unsigned char pos, const lxString val, const lxFont font);
+    void DrawSlider(const output_t* output, const unsigned char pos, const std::string val, const lxFont font);
+    void DrawPotentiometer(const output_t* output, const unsigned char pos, const std::string val, const lxFont font);
     void SetPCWProperties(const PCWProp* pcwprop);
     void SetPCWComboWithPinNames(CPWindow* WProp, const char* combo_name, const unsigned char pin);
     unsigned char GetPWCComboSelectedPin(CPWindow* WProp, const char* combo_name);
@@ -412,17 +412,17 @@ protected:
 private:
     const PCWProp* PCWProperties;
     int PCWCount;
-    lxString Name;
+    std::string Name;
 
     /**
      * @brief  Read the Input Map
      */
-    void ReadInputMap(lxString fname);
+    void ReadInputMap(std::string fname);
 
     /**
      * @brief  Read the Output Map
      */
-    void ReadOutputMap(lxString fname);
+    void ReadOutputMap(std::string fname);
 };
 
 #endif /* PART_H */
@@ -449,7 +449,7 @@ typedef part* (*part_create_func)(unsigned int x, unsigned int y, board* pboard_
 
 void part_register(const char* name, part_create_func pcreate, const char* menu);
 
-part* create_part(lxString name, unsigned int x, unsigned int y, board* pboard_);
+part* create_part(std::string name, unsigned int x, unsigned int y, board* pboard_);
 
 typedef struct {
     char name[30];

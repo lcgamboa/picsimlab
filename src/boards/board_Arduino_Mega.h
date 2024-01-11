@@ -35,11 +35,11 @@
 // new board class must be derived from board class defined in board.h
 class cboard_Arduino_Mega : public cboard_Arduino_Uno {
 public:
-    lxString GetName(void) override { return lxT(BOARD_Arduino_Mega_Name); };
-    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    std::string GetName(void) override { return BOARD_Arduino_Mega_Name; };
+    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     // Constructor called once on board creation
     cboard_Arduino_Mega(void);
-    lxString GetSupportedDevices(void) override { return lxT("atmega2560,"); };
+    std::string GetSupportedDevices(void) override { return "atmega2560,"; };
     // Called to save board preferences in configuration file
     void WritePreferences(void) override;
     // Called whe configuration file load  preferences

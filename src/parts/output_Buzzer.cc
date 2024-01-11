@@ -163,14 +163,14 @@ unsigned short cpart_Buzzer::GetOutputId(char* name) {
     return INVALID_ID;
 };
 
-lxString cpart_Buzzer::WritePreferences(void) {
+std::string cpart_Buzzer::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu", input_pins[0], btype, active);
     return prefs;
 }
 
-void cpart_Buzzer::ReadPreferences(lxString value) {
+void cpart_Buzzer::ReadPreferences(std::string value) {
     unsigned char tp;
     sscanf(value.c_str(), "%hhu,%hhu,%hhu", &input_pins[0], &tp, &active);
     ChangeType(tp);
@@ -207,10 +207,10 @@ void cpart_Buzzer::ReadPropertiesWindow(CPWindow* WProp) {
 
     unsigned char tp = 0;
 
-    lxString mode = ((CCombo*)WProp->GetChildByName("combo3"))->GetText();
-    if (mode.compare(lxT("Active")) == 0) {
+    std::string mode = (const char*)((CCombo*)WProp->GetChildByName("combo3"))->GetText().c_str();
+    if (mode.compare("Active") == 0) {
         tp = ACTIVE;
-    } else if (mode.compare(lxT("Passive")) == 0) {
+    } else if (mode.compare("Passive") == 0) {
         tp = PASSIVE;
     } else {  // TONE
         tp = TONE;

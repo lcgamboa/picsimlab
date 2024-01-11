@@ -102,7 +102,7 @@ public:
     void _EvOnCreate(CControl* control);
     void _EvOnDestroy(CControl* control);
     void _EvOnShow(CControl* control);
-    void _EvOnDropFile(CControl* control, const lxString fname);
+    void _EvOnDropFile(CControl* control, const std::string fname);
     void timer1_EvOnTime(CControl* control);
     void timer2_EvOnTime(CControl* control);
     void filedialog1_EvOnClose(const int retId);
@@ -154,7 +154,7 @@ public:
     void menu1_EvBoard(CControl* control);
     void menu1_EvMicrocontroller(CControl* control);
     void DrawBoard(void);
-    static void UpdateStatus(const int field, const lxString msg);
+    static void UpdateStatus(const int field, const std::string msg);
 
 private:
     int pa;

@@ -65,8 +65,8 @@ void part::Init(void) {
 void part::ReadMaps(void) {
     inputc = 0;
     outputc = 0;
-    ReadInputMap(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetMapFile()));
-    ReadOutputMap(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetMapFile()));
+    ReadInputMap((const char*)lxGetLocalFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetMapFile()).c_str());
+    ReadOutputMap((const char*)lxGetLocalFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetMapFile()).c_str());
 
     for (int i = 0; i < inputc; i++) {
         input_ids[GetInputId(input[i].name)] = &input[i];
@@ -77,7 +77,7 @@ void part::ReadMaps(void) {
     }
 }
 
-void part::ReadInputMap(lxString fname) {
+void part::ReadInputMap(std::string fname) {
     FILE* fin;
 
     char line[256];
@@ -90,7 +90,7 @@ void part::ReadInputMap(lxString fname) {
 
     int x1, y1, x2, y2, r;
 
-    fin = fopen(fname.c_str(), "r");
+    fin = fopen_UTF8(fname.c_str(), "r");
 
     if (fin) {
         while (fgets(line, 256, fin)) {
@@ -173,7 +173,7 @@ void part::ReadInputMap(lxString fname) {
     }
 }
 
-void part::ReadOutputMap(lxString fname) {
+void part::ReadOutputMap(std::string fname) {
     FILE* fin;
 
     char line[256];
@@ -185,7 +185,7 @@ void part::ReadOutputMap(lxString fname) {
 
     int x1, y1, x2, y2, r;
 
-    fin = fopen(fname.c_str(), "r");
+    fin = fopen_UTF8(fname.c_str(), "r");
 
     if (fin) {
         while (fgets(line, 256, fin)) {
@@ -323,7 +323,8 @@ int part::PointInside(int x, int y, input_t input) {
 
 void part::LoadImage(void) {
     lxImage image(SpareParts.GetWindow());
-    lxString iname = lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetPictureFileName());
+    std::string iname =
+        (const char*)lxGetLocalFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()).c_str();
 
     if (image.LoadFile(iname, Orientation, Scale, Scale)) {
         if (SpareParts.GetWindow()) {
@@ -332,7 +333,7 @@ void part::LoadImage(void) {
             canvas.Destroy();
             canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
         }
-    } else if (image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/Common/notfound.svg")), Orientation,
+    } else if (image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "parts/Common/notfound.svg"), Orientation,
                               Scale, Scale)) {
         if (SpareParts.GetWindow()) {
             Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
@@ -449,19 +450,19 @@ void part::SetUpdate(unsigned char upd) {
     }
 }
 
-lxString part::GetPictureFileName(void) {
-    return GetName() + lxT("/part.svg");
+std::string part::GetPictureFileName(void) {
+    return GetName() + "/part.svg";
 }
 
-lxString part::GetMapFile(void) {
-    return GetName() + lxT("/part.map");
+std::string part::GetMapFile(void) {
+    return GetName() + "/part.map";
 }
 
-lxString part::GetPropertiesWindowFile(void) {
-    return Type + "/" + Name + lxT("/part.lxrad");
+std::string part::GetPropertiesWindowFile(void) {
+    return Type + "/" + Name + "/part.lxrad";
 }
 
-lxString part::GetHelpURL(void) {
+std::string part::GetHelpURL(void) {
     char pname[50];
     strncpy(pname, (const char*)GetName().c_str(), 49);
 
@@ -488,14 +489,14 @@ lxString part::GetHelpURL(void) {
     }
 
     char stemp[256];
-    snprintf(stemp, 100, lxT("%s.html"), pname);
+    snprintf(stemp, 100, "%s.html", pname);
 
     return stemp;
 }
 
 // Draw Functions
 
-void part::DrawSlider(const output_t* output, const unsigned char pos, const lxString val, const lxFont font) {
+void part::DrawSlider(const output_t* output, const unsigned char pos, const std::string val, const lxFont font) {
     float dy = pos / 1.66;
     canvas.SetFgColor(255, 255, 255);
     canvas.SetBgColor(89, 89, 89);
@@ -512,7 +513,7 @@ void part::DrawSlider(const output_t* output, const unsigned char pos, const lxS
     canvas.RotatedText(val, output->x1 + 1, output->y1 + 5 + pos / 1.66, 0);
 }
 
-void part::DrawPotentiometer(const output_t* output, const unsigned char pos, const lxString val, const lxFont font) {
+void part::DrawPotentiometer(const output_t* output, const unsigned char pos, const std::string val, const lxFont font) {
     canvas.SetColor(179, 179, 179);
     canvas.Rectangle(1, output->x1, output->y1, output->x2 - output->x1, output->y2 - output->y1);
     canvas.SetFgColor(0, 0, 0);
@@ -551,7 +552,7 @@ const PCWProp* part::GetPCWProperties(void) {
 }
 
 void part::SetPCWComboWithPinNames(CPWindow* WProp, const char* combo_name, const unsigned char pin) {
-    lxString spin;
+    std::string spin;
 
     CCombo* combo = (CCombo*)WProp->GetChildByName(combo_name);
 
@@ -561,7 +562,7 @@ void part::SetPCWComboWithPinNames(CPWindow* WProp, const char* combo_name, cons
             combo->SetText("0  NC");
         else {
             spin = SpareParts.GetPinName(pin);
-            combo->SetText(itoa(pin) + "  " + spin);
+            combo->SetText(std::to_string(pin) + "  " + spin);
         }
     } else {
         printf("PICSimLab: Combo (%s) not found in Part Configuration Window!\n", combo_name);
@@ -580,7 +581,7 @@ unsigned char part::GetPWCComboSelectedPin(CPWindow* WProp, const char* combo_na
     return selectedpin;
 }
 
-lxString part::GetName(void) {
+std::string part::GetName(void) {
     return Name;
 }
 
@@ -657,7 +658,7 @@ int NUM_PARTS = 0;
 
 // boards object creation
 
-part* create_part(lxString name, unsigned int x, unsigned int y, board* pboard_) {
+part* create_part(std::string name, unsigned int x, unsigned int y, board* pboard_) {
     part* part_ = NULL;
 
     for (int i = 0; i < NUM_PARTS; i++) {

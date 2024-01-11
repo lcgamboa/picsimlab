@@ -124,22 +124,22 @@ cpart_IO_MCP23S17::cpart_IO_MCP23S17(const unsigned x, const unsigned y, const c
     input_pins[8] = 0;
     input_pins[9] = 0;
 
-    output_pins[0] = SpareParts.RegisterIOpin(lxT("GPA0"));
-    output_pins[1] = SpareParts.RegisterIOpin(lxT("GPA1"));
-    output_pins[2] = SpareParts.RegisterIOpin(lxT("GPA2"));
-    output_pins[3] = SpareParts.RegisterIOpin(lxT("GPA3"));
-    output_pins[4] = SpareParts.RegisterIOpin(lxT("GPA4"));
-    output_pins[5] = SpareParts.RegisterIOpin(lxT("GPA5"));
-    output_pins[6] = SpareParts.RegisterIOpin(lxT("GPA6"));
-    output_pins[7] = SpareParts.RegisterIOpin(lxT("GPA7"));
-    output_pins[8] = SpareParts.RegisterIOpin(lxT("GPB0"));
-    output_pins[9] = SpareParts.RegisterIOpin(lxT("GPB1"));
-    output_pins[10] = SpareParts.RegisterIOpin(lxT("GPB2"));
-    output_pins[11] = SpareParts.RegisterIOpin(lxT("GPB3"));
-    output_pins[12] = SpareParts.RegisterIOpin(lxT("GPB4"));
-    output_pins[13] = SpareParts.RegisterIOpin(lxT("GPB5"));
-    output_pins[14] = SpareParts.RegisterIOpin(lxT("GPB6"));
-    output_pins[15] = SpareParts.RegisterIOpin(lxT("GPB7"));
+    output_pins[0] = SpareParts.RegisterIOpin("GPA0");
+    output_pins[1] = SpareParts.RegisterIOpin("GPA1");
+    output_pins[2] = SpareParts.RegisterIOpin("GPA2");
+    output_pins[3] = SpareParts.RegisterIOpin("GPA3");
+    output_pins[4] = SpareParts.RegisterIOpin("GPA4");
+    output_pins[5] = SpareParts.RegisterIOpin("GPA5");
+    output_pins[6] = SpareParts.RegisterIOpin("GPA6");
+    output_pins[7] = SpareParts.RegisterIOpin("GPA7");
+    output_pins[8] = SpareParts.RegisterIOpin("GPB0");
+    output_pins[9] = SpareParts.RegisterIOpin("GPB1");
+    output_pins[10] = SpareParts.RegisterIOpin("GPB2");
+    output_pins[11] = SpareParts.RegisterIOpin("GPB3");
+    output_pins[12] = SpareParts.RegisterIOpin("GPB4");
+    output_pins[13] = SpareParts.RegisterIOpin("GPB5");
+    output_pins[14] = SpareParts.RegisterIOpin("GPB6");
+    output_pins[15] = SpareParts.RegisterIOpin("GPB7");
 
     mcount = 0;
     memset(output_pins_alm, 0, 16 * sizeof(unsigned long));
@@ -188,7 +188,7 @@ void cpart_IO_MCP23S17::DrawOutput(const unsigned int i) {
                 if (output_pins[pinv - 10] == 0)
                     canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
                 else
-                    canvas.RotatedText(itoa(output_pins[pinv - 10]), output[i].x1, output[i].y2 - 30, 90.0);
+                    canvas.RotatedText(std::to_string(output_pins[pinv - 10]), output[i].x1, output[i].y2 - 30, 90.0);
             }
             break;
     }
@@ -264,7 +264,7 @@ unsigned short cpart_IO_MCP23S17::GetOutputId(char* name) {
     return INVALID_ID;
 };
 
-lxString cpart_IO_MCP23S17::WritePreferences(void) {
+std::string cpart_IO_MCP23S17::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1],
@@ -274,7 +274,7 @@ lxString cpart_IO_MCP23S17::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_IO_MCP23S17::ReadPreferences(lxString value) {
+void cpart_IO_MCP23S17::ReadPreferences(std::string value) {
     unsigned char outp;
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1],
            &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7],
@@ -284,46 +284,46 @@ void cpart_IO_MCP23S17::ReadPreferences(lxString value) {
         for (int i = 0; i < 9; i++)
             SpareParts.UnregisterIOpin(output_pins[i]);
 
-        output_pins[0] = SpareParts.RegisterIOpin(lxT("GPA0"), outp++);
-        output_pins[1] = SpareParts.RegisterIOpin(lxT("GPA1"), outp++);
-        output_pins[2] = SpareParts.RegisterIOpin(lxT("GPA2"), outp++);
-        output_pins[3] = SpareParts.RegisterIOpin(lxT("GPA3"), outp++);
-        output_pins[4] = SpareParts.RegisterIOpin(lxT("GPA4"), outp++);
-        output_pins[5] = SpareParts.RegisterIOpin(lxT("GPA5"), outp++);
-        output_pins[6] = SpareParts.RegisterIOpin(lxT("GPA6"), outp++);
-        output_pins[7] = SpareParts.RegisterIOpin(lxT("GPA7"), outp++);
-        output_pins[8] = SpareParts.RegisterIOpin(lxT("GPB0"), outp++);
-        output_pins[9] = SpareParts.RegisterIOpin(lxT("GPB1"), outp++);
-        output_pins[10] = SpareParts.RegisterIOpin(lxT("GPB2"), outp++);
-        output_pins[11] = SpareParts.RegisterIOpin(lxT("GPB3"), outp++);
-        output_pins[12] = SpareParts.RegisterIOpin(lxT("GPB4"), outp++);
-        output_pins[13] = SpareParts.RegisterIOpin(lxT("GPB5"), outp++);
-        output_pins[14] = SpareParts.RegisterIOpin(lxT("GPB6"), outp++);
-        output_pins[15] = SpareParts.RegisterIOpin(lxT("GPB7"), outp++);
+        output_pins[0] = SpareParts.RegisterIOpin("GPA0", outp++);
+        output_pins[1] = SpareParts.RegisterIOpin("GPA1", outp++);
+        output_pins[2] = SpareParts.RegisterIOpin("GPA2", outp++);
+        output_pins[3] = SpareParts.RegisterIOpin("GPA3", outp++);
+        output_pins[4] = SpareParts.RegisterIOpin("GPA4", outp++);
+        output_pins[5] = SpareParts.RegisterIOpin("GPA5", outp++);
+        output_pins[6] = SpareParts.RegisterIOpin("GPA6", outp++);
+        output_pins[7] = SpareParts.RegisterIOpin("GPA7", outp++);
+        output_pins[8] = SpareParts.RegisterIOpin("GPB0", outp++);
+        output_pins[9] = SpareParts.RegisterIOpin("GPB1", outp++);
+        output_pins[10] = SpareParts.RegisterIOpin("GPB2", outp++);
+        output_pins[11] = SpareParts.RegisterIOpin("GPB3", outp++);
+        output_pins[12] = SpareParts.RegisterIOpin("GPB4", outp++);
+        output_pins[13] = SpareParts.RegisterIOpin("GPB5", outp++);
+        output_pins[14] = SpareParts.RegisterIOpin("GPB6", outp++);
+        output_pins[15] = SpareParts.RegisterIOpin("GPB7", outp++);
     }
 
     Reset();
 }
 
 void cpart_IO_MCP23S17::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString spin;
+    std::string spin;
 
     for (int i = 0; i < 28; i++) {
-        lxString value = "";
+        std::string value = "";
 
         int pinv = pin_values[i][0];
         if (pinv > 25) {
-            value = lxString(pin_values[i]);
+            value = std::string(pin_values[i]);
         } else if (pinv > 9) {
             if (output_pins[pinv - 10] == 0)
                 value = "NC";
             else
-                value = itoa(output_pins[pinv - 10]);
+                value = std::to_string(output_pins[pinv - 10]);
         }
 
-        ((CLabel*)WProp->GetChildByName("label" + itoa(i + 1)))->SetText(itoa(i + 1) + lxT("-") + pin_names[i]);
+        ((CLabel*)WProp->GetChildByName("label" + std::to_string(i + 1)))->SetText(std::to_string(i + 1) + "-" + pin_names[i]);
 
-        CLabel* label = (CLabel*)WProp->GetChildByName("label_" + itoa(i + 1));
+        CLabel* label = (CLabel*)WProp->GetChildByName("label_" + std::to_string(i + 1));
         if (label) {
             label->SetText(value);
         }

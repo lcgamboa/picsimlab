@@ -362,7 +362,7 @@ unsigned short cpart_pbuttons::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_pbuttons::WritePreferences(void) {
+std::string cpart_pbuttons::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u", output_pins[0], output_pins[1],
@@ -372,7 +372,7 @@ lxString cpart_pbuttons::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_pbuttons::ReadPreferences(lxString value) {
+void cpart_pbuttons::ReadPreferences(std::string value) {
     unsigned int sz;
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u", &output_pins[0], &output_pins[1],
            &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7],
@@ -486,7 +486,7 @@ void cpart_pbuttons::LoadImage(void) {
             canvas.Destroy();
             canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
 
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetPictureFileName()),
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()),
                            Orientation, Scale, Scale);
             lxBitmap* BackBitmap = new lxBitmap(&image, SpareParts.GetWindow());
             image.Destroy();

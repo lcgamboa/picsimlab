@@ -57,16 +57,16 @@ private:
 
 public:
     // Return the board name
-    lxString GetName(void) override { return lxT(BOARD_K16F_Name); };
-    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    std::string GetName(void) override { return BOARD_K16F_Name; };
+    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     cboard_K16F(void);
     ~cboard_K16F(void);
     void Draw(CDraw* draw) override;
     void Run_CPU(void) override;
-    lxString GetSupportedDevices(void) override { return lxT("PIC16F628A,PIC16F648A,PIC16F84A,"); };
+    std::string GetSupportedDevices(void) override { return "PIC16F628A,PIC16F648A,PIC16F84A,"; };
     int MInit(const char* processor, const char* fname, float freq) override;
     void Reset(void) override;
-    void MDumpMemory(const char* mfname) override;
+    int MDumpMemory(const char* mfname) override;
     void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
     void EvMouseButtonRelease(uint button, uint x, uint y, uint state) override;
     void EvKeyPress(uint key, uint mask) override;

@@ -454,7 +454,7 @@ unsigned short cpart_7s_display_dec::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_7s_display_dec::WritePreferences(void) {
+std::string cpart_7s_display_dec::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2],
@@ -463,7 +463,7 @@ lxString cpart_7s_display_dec::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_7s_display_dec::ReadPreferences(lxString value) {
+void cpart_7s_display_dec::ReadPreferences(std::string value) {
     unsigned char dtype_;
 
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1],
@@ -705,30 +705,30 @@ void cpart_7s_display_dec::PostProcess(void) {
     }
 }
 
-lxString cpart_7s_display_dec::GetPictureFileName(void) {
+std::string cpart_7s_display_dec::GetPictureFileName(void) {
     switch (dtype) {
         case 0:
-            return lxT("7 Segments Display (Decoder)/7sdisplay_dec.svg");
+            return "7 Segments Display (Decoder)/7sdisplay_dec.svg";
             break;
         case 1:
-            return lxT("7 Segments Display (Decoder)/7sdisplay_latch.svg");
+            return "7 Segments Display (Decoder)/7sdisplay_latch.svg";
             break;
     }
 
-    return lxT("7 Segments Display (Decoder)/7sdisplay_dec.svg");
+    return "7 Segments Display (Decoder)/7sdisplay_dec.svg";
 }
 
-lxString cpart_7s_display_dec::GetMapFile(void) {
+std::string cpart_7s_display_dec::GetMapFile(void) {
     switch (dtype) {
         case 0:
-            return lxT("7 Segments Display (Decoder)/7sdisplay_dec.map");
+            return "7 Segments Display (Decoder)/7sdisplay_dec.map";
             break;
         case 1:
-            return lxT("7 Segments Display (Decoder)/7sdisplay_latch.map");
+            return "7 Segments Display (Decoder)/7sdisplay_latch.map";
             break;
     }
 
-    return lxT("7 Segments Display (Decoder)/7sdisplay_dec.map");
+    return "7 Segments Display (Decoder)/7sdisplay_dec.map";
 }
 
 void cpart_7s_display_dec::ChangeType(unsigned char tp) {

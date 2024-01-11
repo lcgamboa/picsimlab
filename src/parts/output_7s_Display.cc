@@ -470,7 +470,7 @@ unsigned short cpart_7s_display::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_7s_display::WritePreferences(void) {
+std::string cpart_7s_display::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0],
@@ -480,7 +480,7 @@ lxString cpart_7s_display::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_7s_display::ReadPreferences(lxString value) {
+void cpart_7s_display::ReadPreferences(std::string value) {
     unsigned char dtype_;
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0],
            &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6],
@@ -671,35 +671,35 @@ void cpart_7s_display::PostProcess(void) {
     }
 }
 
-void cpart_7s_display::ComboChange(CPWindow* WProp, CCombo* control, lxString value) {
+void cpart_7s_display::ComboChange(CPWindow* WProp, CCombo* control, std::string value) {
     unsigned char dtype_ = (value.compare("4 Mux.")) != 0;
     ChangeType(dtype_);
 }
 
-lxString cpart_7s_display::GetPictureFileName(void) {
+std::string cpart_7s_display::GetPictureFileName(void) {
     switch (dtype) {
         case 0:
-            return lxT("7 Segments Display/part.svg");
+            return "7 Segments Display/part.svg";
             break;
         case 1:
-            return lxT("7 Segments Display/part1.svg");
+            return "7 Segments Display/part1.svg";
             break;
     }
 
-    return lxT("7 Segments Display/part.svg");
+    return "7 Segments Display/part.svg";
 }
 
-lxString cpart_7s_display::GetMapFile(void) {
+std::string cpart_7s_display::GetMapFile(void) {
     switch (dtype) {
         case 0:
-            return lxT("7 Segments Display/part.map");
+            return "7 Segments Display/part.map";
             break;
         case 1:
-            return lxT("7 Segments Display/part1.map");
+            return "7 Segments Display/part1.map";
             break;
     }
 
-    return lxT("7 Segments Display/part.map");
+    return "7 Segments Display/part.map";
 }
 
 void cpart_7s_display::ChangeType(unsigned char tp) {

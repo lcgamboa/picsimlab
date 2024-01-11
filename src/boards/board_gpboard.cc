@@ -77,7 +77,7 @@ cboard_gpboard::cboard_gpboard(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTY
     Proc = "pic16f628a";  // default microcontroller if none defined in preferences
     ReadMaps();           // Read input and output board maps
     lxImage image(PICSimLab.GetWindow());
-    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic40.svg")), 0, Scale, Scale, 1);
+    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/ic40.svg"), 0, Scale, Scale, 1);
     micbmp = new lxBitmap(&image, PICSimLab.GetWindow());
     serialfd = INVALID_SERIAL;
 }
@@ -94,7 +94,7 @@ cboard_gpboard::~cboard_gpboard(void) {
 void cboard_gpboard::Reset(void) {
     MReset(1);
 
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE));
+        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE));
 
     if (use_spare)
         SpareParts.Reset();
@@ -103,16 +103,16 @@ void cboard_gpboard::Reset(void) {
 // Called ever 1s to refresh status
 
 void cboard_gpboard::RefreshStatus(void) {
-    PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE));
+    PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE));
 }
 
 // Called to save board preferences in configuration file
 
 void cboard_gpboard::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
-    PICSimLab.SavePrefs(lxT("gpboard_proc"), Proc);
+    PICSimLab.SavePrefs("gpboard_proc", Proc);
     // write microcontroller clock to preferences
-    PICSimLab.SavePrefs(lxT("gpboard_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs("gpboard_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
 }
 
 // Called whe configuration file load  preferences
@@ -344,12 +344,12 @@ int cboard_gpboard::MInit(const char* processor, const char* fname, float freq) 
     lxImage image(PICSimLab.GetWindow());
 
     if (!image.LoadFile(
-            lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg")), 0,
+            lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg"), 0,
             Scale, Scale, 1)) {
-        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic6.svg")), 0, Scale, Scale, 1);
+        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/ic6.svg"), 0, Scale, Scale, 1);
         printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
         printf("picsimlab: %s not found!\n",
-               (const char*)(PICSimLab.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg"))
+               (const char*)(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg")
                    .c_str());
     }
 
@@ -369,12 +369,12 @@ void cboard_gpboard::SetScale(double scale) {
     lxImage image(PICSimLab.GetWindow());
 
     if (!image.LoadFile(
-            lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg")), 0,
+            lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg"), 0,
             Scale, Scale, 1)) {
-        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic6.svg")), 0, Scale, Scale, 1);
+        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/ic6.svg"), 0, Scale, Scale, 1);
         printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
         printf("picsimlab: %s not found!\n",
-               (const char*)(PICSimLab.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg"))
+               (const char*)(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg")
                    .c_str());
     }
 

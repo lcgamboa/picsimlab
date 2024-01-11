@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2017-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,26 +23,15 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef BOARD_Arduino_Nano_H
-#define BOARD_Arduino_Nano_H
+#ifndef UTIL
+#define UTIL
 
-#include <lxrad.h>
+#include <string>
+#include <vector>
 
-#include "board_Arduino_Uno.h"
+std::string FloatStrFormat(const char* str, const float value);
+int LoadFromFile(std::vector<std::string>& strlist, const char* fname);
+int SaveToFile(std::vector<std::string> strlist, const char* fname);
+FILE* fopen_UTF8(const char* fname, const char* mode);
 
-#define BOARD_Arduino_Nano_Name "Arduino Nano"
-
-// new board class must be derived from board class defined in board.h
-class cboard_Arduino_Nano : public cboard_Arduino_Uno {
-public:
-    std::string GetName(void) override { return BOARD_Arduino_Nano_Name; };
-    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
-    // Constructor called once on board creation
-    cboard_Arduino_Nano(void);
-    // Called to save board preferences in configuration file
-    void WritePreferences(void) override;
-    // Called whe configuration file load  preferences
-    void ReadPreferences(char* name, char* value) override;
-};
-
-#endif /* BOARD_Arduino_Nano_H */
+#endif  // UTIL

@@ -108,40 +108,40 @@ cpart_LCD_ili9341::cpart_LCD_ili9341(const unsigned x, const unsigned y, const c
     Pins = input_pins;
 }
 
-lxString cpart_LCD_ili9341::GetPictureFileName(void) {
+std::string cpart_LCD_ili9341::GetPictureFileName(void) {
     switch (type_com) {
         case TC_SPI:
-            return lxT("LCD ili9341/LCD_ili9341.svg");
+            return "LCD ili9341/LCD_ili9341.svg";
             break;
         case TC_SPI_TOUCH:
-            return lxT("LCD ili9341/LCD_ili9341_t.svg");
+            return "LCD ili9341/LCD_ili9341_t.svg";
             break;
         case TC_8BITS:
-            return lxT("LCD ili9341/LCD_ili9341_8.svg");
+            return "LCD ili9341/LCD_ili9341_8.svg";
             break;
         case TC_8BITS_TOUCH:
-            return lxT("LCD ili9341/LCD_ili9341_8_t.svg");
+            return "LCD ili9341/LCD_ili9341_8_t.svg";
             break;
     }
-    return lxT("LCD ili9341/LCD_ili9341.svg");
+    return "LCD ili9341/LCD_ili9341.svg";
 }
 
-lxString cpart_LCD_ili9341::GetMapFile(void) {
+std::string cpart_LCD_ili9341::GetMapFile(void) {
     switch (type_com) {
         case TC_SPI:
-            return lxT("LCD ili9341/LCD_ili9341.map");
+            return "LCD ili9341/LCD_ili9341.map";
             break;
         case TC_SPI_TOUCH:
-            return lxT("LCD ili9341/LCD_ili9341_t.map");
+            return "LCD ili9341/LCD_ili9341_t.map";
             break;
         case TC_8BITS:
-            return lxT("LCD ili9341/LCD_ili9341_8.map");
+            return "LCD ili9341/LCD_ili9341_8.map";
             break;
         case TC_8BITS_TOUCH:
-            return lxT("LCD ili9341/LCD_ili9341_8_t.map");
+            return "LCD ili9341/LCD_ili9341_8_t.map";
             break;
     }
-    return lxT("LCD ili9341/LCD_ili9341.map");
+    return "LCD ili9341/LCD_ili9341.map";
 }
 
 cpart_LCD_ili9341::~cpart_LCD_ili9341(void) {
@@ -281,7 +281,7 @@ unsigned short cpart_LCD_ili9341::GetOutputId(char* name) {
     return INVALID_ID;
 };
 
-lxString cpart_LCD_ili9341::WritePreferences(void) {
+std::string cpart_LCD_ili9341::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
@@ -291,7 +291,7 @@ lxString cpart_LCD_ili9341::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_LCD_ili9341::ReadPreferences(lxString value) {
+void cpart_LCD_ili9341::ReadPreferences(std::string value) {
     unsigned char tp;
     sscanf(value.c_str(),
            "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
@@ -303,8 +303,8 @@ void cpart_LCD_ili9341::ReadPreferences(lxString value) {
 }
 
 void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = SpareParts.GetPinsNames();
-    lxString spin;
+    std::string Items = SpareParts.GetPinsNames();
+    std::string spin;
     char name[100];
 
     ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
@@ -312,7 +312,7 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
         ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
     else {
         spin = SpareParts.GetPinName(input_pins[0]);
-        ((CCombo*)WProp->GetChildByName("combo1"))->SetText(itoa(input_pins[0]) + "  " + spin);
+        ((CCombo*)WProp->GetChildByName("combo1"))->SetText(std::to_string(input_pins[0]) + "  " + spin);
     }
 
     ((CCombo*)WProp->GetChildByName("combo2"))->SetItems(Items);
@@ -320,7 +320,7 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
         ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
     else {
         spin = SpareParts.GetPinName(input_pins[1]);
-        ((CCombo*)WProp->GetChildByName("combo2"))->SetText(itoa(input_pins[1]) + "  " + spin);
+        ((CCombo*)WProp->GetChildByName("combo2"))->SetText(std::to_string(input_pins[1]) + "  " + spin);
     }
 
     ((CCombo*)WProp->GetChildByName("combo3"))->SetItems(Items);
@@ -328,7 +328,7 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
         ((CCombo*)WProp->GetChildByName("combo3"))->SetText("0  NC");
     else {
         spin = SpareParts.GetPinName(input_pins[2]);
-        ((CCombo*)WProp->GetChildByName("combo3"))->SetText(itoa(input_pins[2]) + "  " + spin);
+        ((CCombo*)WProp->GetChildByName("combo3"))->SetText(std::to_string(input_pins[2]) + "  " + spin);
     }
 
     ((CCombo*)WProp->GetChildByName("combo4"))->SetItems(Items);
@@ -336,7 +336,7 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
         ((CCombo*)WProp->GetChildByName("combo4"))->SetText("0  NC");
     else {
         spin = SpareParts.GetPinName(input_pins[3]);
-        ((CCombo*)WProp->GetChildByName("combo4"))->SetText(itoa(input_pins[3]) + "  " + spin);
+        ((CCombo*)WProp->GetChildByName("combo4"))->SetText(std::to_string(input_pins[3]) + "  " + spin);
     }
 
     ((CCombo*)WProp->GetChildByName("combo5"))->SetItems(Items);
@@ -344,7 +344,7 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
         ((CCombo*)WProp->GetChildByName("combo5"))->SetText("0  NC");
     else {
         spin = SpareParts.GetPinName(input_pins[4]);
-        ((CCombo*)WProp->GetChildByName("combo5"))->SetText(itoa(input_pins[4]) + "  " + spin);
+        ((CCombo*)WProp->GetChildByName("combo5"))->SetText(std::to_string(input_pins[4]) + "  " + spin);
     }
 
     switch (type_com) {
@@ -444,7 +444,7 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
                     ((CCombo*)WProp->GetChildByName(name))->SetText("0  NC");
                 else {
                     spin = SpareParts.GetPinName(input_pins[5 + i]);
-                    ((CCombo*)WProp->GetChildByName(name))->SetText(itoa(input_pins[5 + i]) + "  " + spin);
+                    ((CCombo*)WProp->GetChildByName(name))->SetText(std::to_string(input_pins[5 + i]) + "  " + spin);
                 }
             }
             break;
@@ -499,7 +499,7 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
                     ((CCombo*)WProp->GetChildByName(name))->SetText("0  NC");
                 else {
                     spin = SpareParts.GetPinName(touch_pins[i]);
-                    ((CCombo*)WProp->GetChildByName(name))->SetText(itoa(touch_pins[i]) + "  " + spin);
+                    ((CCombo*)WProp->GetChildByName(name))->SetText(std::to_string(touch_pins[i]) + "  " + spin);
                 }
             }
 
@@ -556,7 +556,7 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
                     ((CCombo*)WProp->GetChildByName(name))->SetText("0  NC");
                 else {
                     spin = SpareParts.GetPinName(input_pins[5 + i]);
-                    ((CCombo*)WProp->GetChildByName(name))->SetText(itoa(input_pins[5 + i]) + "  " + spin);
+                    ((CCombo*)WProp->GetChildByName(name))->SetText(std::to_string(input_pins[5 + i]) + "  " + spin);
                 }
             }
 
@@ -567,7 +567,7 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
                     ((CCombo*)WProp->GetChildByName(name))->SetText("0  NC");
                 else {
                     spin = SpareParts.GetPinName(touch_pins[i]);
-                    ((CCombo*)WProp->GetChildByName(name))->SetText(itoa(touch_pins[i]) + "  " + spin);
+                    ((CCombo*)WProp->GetChildByName(name))->SetText(std::to_string(touch_pins[i]) + "  " + spin);
                 }
             }
             break;
@@ -712,7 +712,7 @@ void cpart_LCD_ili9341::PostProcess(void) {
         output_ids[O_LCD]->update = 1;
 }
 
-void cpart_LCD_ili9341::ComboChange(CPWindow* WProp, CCombo* control, lxString value) {
+void cpart_LCD_ili9341::ComboChange(CPWindow* WProp, CCombo* control, std::string value) {
     if (!value.compare("SPI")) {
         ChangeType(TC_SPI);
     } else if (!value.compare("8Bits")) {

@@ -353,7 +353,7 @@ unsigned short cpart_SignalGenerator::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_SignalGenerator::WritePreferences(void) {
+std::string cpart_SignalGenerator::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%u,%hhu,%hhu", input_pins[0], values[0], values[1], type, maxfreq,
@@ -362,7 +362,7 @@ lxString cpart_SignalGenerator::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_SignalGenerator::ReadPreferences(lxString value) {
+void cpart_SignalGenerator::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%u,%hhu,%hhu", &input_pins[0], &values[0], &values[1], &type, &maxfreq,
            &input_pins[1], &values[2]);
 }

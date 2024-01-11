@@ -46,17 +46,17 @@ private:
 public:
     void SetScale(double scale) override;
     // Return the board name
-    lxString GetName(void) override { return lxT(BOARD_Breadboard_Name); };
-    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    std::string GetName(void) override { return BOARD_Breadboard_Name; };
+    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     int DebugInit(int dtyppe) override;
-    lxString GetDebugName(void) override;
+    std::string GetDebugName(void) override;
     void DebugLoop(void) override;
     int CpuInitialized(void) override;
     void MSetSerial(const char* port) override;
     int MInit(const char* processor, const char* fname, float freq) override;
     void MEnd(void) override;
     int MGetArchitecture(void) override;
-    void MDumpMemory(const char* fname) override;
+    int MDumpMemory(const char* fname) override;
     void MEraseFlash(void) override;
     void MSetFreq(float freq) override;
     float MGetFreq(void) override;
@@ -64,7 +64,7 @@ public:
     float MGetVCC(void) override;
     float MGetInstClockFreq(void) override;
     int MGetPinCount(void) override;
-    lxString MGetPinName(int pin) override;
+    std::string MGetPinName(int pin) override;
     void MSetPin(int pin, unsigned char value) override;
     void MSetPinDOV(int pin, unsigned char ovalue) override;
     void MSetAPin(int pin, float value) override;
@@ -97,12 +97,11 @@ public:
     void Draw(CDraw* draw) override;
     void Run_CPU(void) override;
     // Return a list of board supported microcontrollers
-    lxString GetSupportedDevices(void) override {
-        return lxT(
-            "atmega328p,atmega2560,attiny85,PIC16F1516,PIC16F18324,PIC16F18855,PIC16F1619,PIC16F1788,PIC16F1789,"
-            "PIC16F1827,PIC16F1829,PIC16F1847,PIC16F1939,PIC16F1947,PIC16F628A,PIC16F648A,PIC16F688,PIC16F84A,"
-            "PIC16F777,PIC16F819,PIC16F877A,PIC16F886,PIC16F887,PIC18F24Q10,PIC18F26K80,PIC18F27K40,PIC18F452,"
-            "PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4580,PIC18F4620,PIC18F46J50,PIC18F47K40,PIC18F67J94,");
+    std::string GetSupportedDevices(void) override {
+        return "atmega328p,atmega2560,attiny85,PIC16F1516,PIC16F18324,PIC16F18855,PIC16F1619,PIC16F1788,PIC16F1789,"
+               "PIC16F1827,PIC16F1829,PIC16F1847,PIC16F1939,PIC16F1947,PIC16F628A,PIC16F648A,PIC16F688,PIC16F84A,"
+               "PIC16F777,PIC16F819,PIC16F877A,PIC16F886,PIC16F887,PIC18F24Q10,PIC18F26K80,PIC18F27K40,PIC18F452,"
+               "PIC18F4520,PIC18F4550,PIC18F45K50,PIC18F4580,PIC18F4620,PIC18F46J50,PIC18F47K40,PIC18F67J94,";
     };
     // Reset board status
     void Reset(void) override;

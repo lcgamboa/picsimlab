@@ -109,7 +109,7 @@ cpart_pbuttons_an::~cpart_pbuttons_an(void) {
 }
 
 void cpart_pbuttons_an::DrawOutput(const unsigned int i) {
-    lxString temp;
+    std::string temp;
     float ftemp;
 
     switch (output[i].id) {
@@ -122,7 +122,7 @@ void cpart_pbuttons_an::DrawOutput(const unsigned int i) {
                 ftemp = (vmax * (output[i].id - O_P1)) / 8.0;
             else
                 ftemp = (vmax * (8 - output[i].id - O_P1)) / 8.0;
-            temp = FloatStrFormat("%3.1f", ftemp) + lxT("V");
+            temp = FloatStrFormat("%3.1f", ftemp) + "V";
             canvas.RotatedText(temp, output[i].x1, output[i].y1, 0);
             if (output_pins[0] == 0)
                 canvas.RotatedText("NC", output[i].x1, output[i].y1 + 12, 0);
@@ -144,7 +144,7 @@ void cpart_pbuttons_an::DrawOutput(const unsigned int i) {
             else
                 ftemp = (vmax * (8 - output[i].id - O_P1)) / 8.0;
 
-            temp = FloatStrFormat("%3.1f", ftemp) + lxT("V");
+            temp = FloatStrFormat("%3.1f", ftemp) + "V";
             canvas.RotatedText(temp, output[i].x1, output[i].y1, 0);
             break;
         case O_B1:
@@ -332,7 +332,7 @@ unsigned short cpart_pbuttons_an::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_pbuttons_an::WritePreferences(void) {
+std::string cpart_pbuttons_an::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu", output_pins[0], active);
@@ -340,7 +340,7 @@ lxString cpart_pbuttons_an::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_pbuttons_an::ReadPreferences(lxString value) {
+void cpart_pbuttons_an::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu,%hhu", &output_pins[0], &active);
     output_value = active * vmax;
     output_value_[0] = !active;

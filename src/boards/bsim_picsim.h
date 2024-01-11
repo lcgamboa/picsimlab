@@ -35,14 +35,14 @@ class bsim_picsim : virtual public board {
 public:
     bsim_picsim(void);
     int DebugInit(int dtyppe) override;
-    lxString GetDebugName(void) override { return "MDB"; };
+    std::string GetDebugName(void) override { return "MDB"; };
     void DebugLoop(void) override;
     int CpuInitialized(void) override;
     void MSetSerial(const char* port) override;
     int MInit(const char* processor, const char* fname, float freq) override;
     void MEnd(void) override;
     int MGetArchitecture(void) override;
-    void MDumpMemory(const char* fname) override;
+    int MDumpMemory(const char* fname) override;
     void MEraseFlash(void) override;
     void MSetFreq(float freq) override;
     float MGetFreq(void) override;
@@ -50,7 +50,7 @@ public:
     float MGetVCC(void) override;
     float MGetInstClockFreq(void) override;
     int MGetPinCount(void) override;
-    lxString MGetPinName(int pin) override;
+    std::string MGetPinName(int pin) override;
     void MSetPin(int pin, unsigned char value) override;
     void MSetPinDOV(int pin, unsigned char ovalue) override;
     void MSetAPin(int pin, float value) override;

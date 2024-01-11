@@ -723,7 +723,7 @@ static void eth_w5500_fake_dhcp_reply(eth_w5500_t* eth, int n) {
 
 #ifdef DUMP
     sprintf(sfname, "/tmp/%03i_recv_udp.bin", scont++);
-    fouts = fopen(sfname, "wb");
+    fouts = fopen_UTF8(sfname, "wb");
     fwrite(temp_buff, s, 1, fouts);
     fclose(fouts);
 #endif
@@ -871,7 +871,7 @@ void eth_w5500_process(eth_w5500_t* eth) {
 
 #ifdef DUMP
                         sprintf(sfname, "/tmp/%03i_recv_tcp.bin", scont++);
-                        fouts = fopen(sfname, "wb");
+                        fouts = fopen_UTF8(sfname, "wb");
                         fwrite(temp_buff, s, 1, fouts);
                         fclose(fouts);
 #endif
@@ -1003,7 +1003,7 @@ void eth_w5500_process(eth_w5500_t* eth) {
 
 #ifdef DUMP
                         sprintf(sfname, "/tmp/%03i_recv_udp.bin", scont++);
-                        fouts = fopen(sfname, "wb");
+                        fouts = fopen_UTF8(sfname, "wb");
                         fwrite(temp_buff, s, 1, fouts);
                         fclose(fouts);
 #endif
@@ -1330,7 +1330,7 @@ unsigned short eth_w5500_io(eth_w5500_t* eth, unsigned char mosi, unsigned char 
                                                                 size = readWord(eth->Socket[n], Sn_TX_WR0);
 #ifdef DUMP
                                                                 sprintf(sfname, "/tmp/%03i_send_tcp.bin", scont++);
-                                                                fouts = fopen(sfname, "wb");
+                                                                fouts = fopen_UTF8(sfname, "wb");
                                                                 fwrite(&eth->TX_Mem[eth->TX_ptr[n]], size, 1, fouts);
                                                                 fclose(fouts);
 #endif
@@ -1376,7 +1376,7 @@ unsigned short eth_w5500_io(eth_w5500_t* eth, unsigned char mosi, unsigned char 
                                                                 size = readWord(eth->Socket[n], Sn_TX_WR0);
 #ifdef DUMP
                                                                 sprintf(sfname, "/tmp/%03i_send_udp.bin", scont++);
-                                                                fouts = fopen(sfname, "wb");
+                                                                fouts = fopen_UTF8(sfname, "wb");
                                                                 fwrite(&eth->TX_Mem[eth->TX_ptr[n]], size, 1, fouts);
                                                                 fclose(fouts);
 #endif

@@ -165,7 +165,7 @@ unsigned short cpart_fm50::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_fm50::WritePreferences(void) {
+std::string cpart_fm50::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu", output_pins[0], value);
@@ -173,7 +173,7 @@ lxString cpart_fm50::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_fm50::ReadPreferences(lxString value_) {
+void cpart_fm50::ReadPreferences(std::string value_) {
     sscanf(value_.c_str(), "%hhu,%hhu", &output_pins[0], &value);
 }
 

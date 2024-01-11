@@ -33,7 +33,7 @@
 
 class cpart_pot : public part {
 public:
-    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     cpart_pot(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
     ~cpart_pot(void);
     void DrawOutput(const unsigned int index) override;
@@ -44,8 +44,8 @@ public:
     void ConfigurePropertiesWindow(CPWindow* WProp) override;
     void ReadPropertiesWindow(CPWindow* WProp) override;
     void LoadImage(void) override;
-    lxString WritePreferences(void) override;
-    void ReadPreferences(lxString value) override;
+    std::string WritePreferences(void) override;
+    void ReadPreferences(std::string value) override;
     void Reset(void) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;

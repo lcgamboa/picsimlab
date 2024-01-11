@@ -108,7 +108,7 @@ int cboard_K16F::MInit(const char* processor, const char* fname, float freq) {
     strncpy(fnamem, (const char*)dirname(fname).c_str(), 1023);
     strncat(fnamem, "/mdump_K16F_EEPROM.bin", 1023);
 
-    fout = fopen(fnamem, "rb");
+    fout = fopen_UTF8(fnamem, "rb");
     if (fout) {
         fread(mi2c.data, mi2c.SIZE, 1, fout);
         fclose(fout);
@@ -118,14 +118,14 @@ int cboard_K16F::MInit(const char* processor, const char* fname, float freq) {
     return bsim_picsim::MInit(processor, fname, freq);
 }
 
-void cboard_K16F::MDumpMemory(const char* mfname) {
+int cboard_K16F::MDumpMemory(const char* mfname) {
     FILE* fout;
     char fname[1024];
 
     strncpy(fname, (const char*)dirname(mfname).c_str(), 1023);
     strncat(fname, "/mdump_K16F_EEPROM.bin", 1023);
 
-    fout = fopen(fname, "wb");
+    fout = fopen_UTF8(fname, "wb");
     if (fout) {
         fwrite(mi2c.data, mi2c.SIZE, 1, fout);
         fclose(fout);
@@ -133,7 +133,7 @@ void cboard_K16F::MDumpMemory(const char* mfname) {
         printf("Error saving to file: %s \n", fname);
     }
 
-    bsim_picsim::MDumpMemory(mfname);
+    return bsim_picsim::MDumpMemory(mfname);
 }
 
 void cboard_K16F::Draw(CDraw* draw) {
@@ -469,14 +469,14 @@ void cboard_K16F::Reset(void) {
     pic_set_pin(&pic, 11, 0);
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
-                                      itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                      FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                       100.0 * pic.serial[0].serialbaud) /
-                                                                      pic.serial[0].serialexbaud)) +
-                                      lxT("%)"));
+        PICSimLab.UpdateStatus(
+            PS_SERIAL,
+            "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[0].serialbaud) + "(" +
+                FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
+                                             pic.serial[0].serialexbaud)) +
+                "%)");
     else
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
 
     for (int pi = 0; pi < pic.PINCOUNT; pi++) {
         pic.pins[pi].oavalue = 0;
@@ -604,7 +604,7 @@ void cboard_K16F::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
                 } break;
                 case I_VIEW:
                     FILE* fout;
-                    fout = fopen(mi2c_tmp_name, "w");
+                    fout = fopen_UTF8(mi2c_tmp_name, "w");
                     if (fout) {
                         for (unsigned int i = 0; i < mi2c.SIZE; i += 16) {
                             fprintf(fout, "%04X: ", i);
@@ -915,8 +915,8 @@ unsigned short cboard_K16F::GetOutputId(char* name) {
 }
 
 void cboard_K16F::WritePreferences(void) {
-    PICSimLab.SavePrefs(lxT("K16F_proc"), Proc);
-    PICSimLab.SavePrefs(lxT("K16F_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs("K16F_proc", Proc);
+    PICSimLab.SavePrefs("K16F_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
 }
 
 void cboard_K16F::ReadPreferences(char* name, char* value) {
@@ -931,14 +931,14 @@ void cboard_K16F::ReadPreferences(char* name, char* value) {
 
 void cboard_K16F::RefreshStatus(void) {
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
-                                      itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                      FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                       100.0 * pic.serial[0].serialbaud) /
-                                                                      pic.serial[0].serialexbaud)) +
-                                      lxT("%)"));
+        PICSimLab.UpdateStatus(
+            PS_SERIAL,
+            "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[0].serialbaud) + "(" +
+                FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
+                                             pic.serial[0].serialexbaud)) +
+                "%)");
     else
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
 }
 
 board_init(BOARD_K16F_Name, cboard_K16F);

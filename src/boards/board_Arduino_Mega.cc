@@ -48,8 +48,8 @@ cboard_Arduino_Mega::cboard_Arduino_Mega(void) {
 
 void cboard_Arduino_Mega::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
-    PICSimLab.SavePrefs(lxT("Arduino_Mega_proc"), Proc);
-    PICSimLab.SavePrefs(lxT("Arduino_Mega_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs("Arduino_Mega_proc", Proc);
+    PICSimLab.SavePrefs("Arduino_Mega_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
 }
 
 // Called whe configuration file load  preferences

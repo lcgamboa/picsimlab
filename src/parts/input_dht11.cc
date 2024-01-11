@@ -231,7 +231,7 @@ unsigned short cpart_dht11::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_dht11::WritePreferences(void) {
+std::string cpart_dht11::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu", output_pins[0], values[0], values[1]);
@@ -239,7 +239,7 @@ lxString cpart_dht11::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_dht11::ReadPreferences(lxString value_) {
+void cpart_dht11::ReadPreferences(std::string value_) {
     sscanf(value_.c_str(), "%hhu,%hhu,%hhu", &output_pins[0], &values[0], &values[1]);
 }
 

@@ -55,7 +55,7 @@ cpart_led_ws2812b::cpart_led_ws2812b(const unsigned x, const unsigned y, const c
 
     input_pins[0] = 0;
 
-    output_pins[0] = SpareParts.RegisterIOpin(lxT("DOUT"));
+    output_pins[0] = SpareParts.RegisterIOpin("DOUT");
 
     SetPCWProperties(pcwprop);
 
@@ -87,13 +87,13 @@ void cpart_led_ws2812b::LoadImage(void) {
             canvas.Destroy();
             canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
 
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetPictureFileName()),
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()),
                            Orientation, Scale, Scale);
             lxBitmap* BackBitmap = new lxBitmap(&image, SpareParts.GetWindow());
             image.Destroy();
 
             image.LoadFile(
-                lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetName() + lxT("/LED.svg")),
+                lxGetLocalFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetName() + "/LED.svg"),
                 Orientation, Scale * 1.3, Scale * 1.3);
             lxBitmap* LEDBitmap = new lxBitmap(&image, SpareParts.GetWindow());
             image.Destroy();
@@ -148,7 +148,7 @@ void cpart_led_ws2812b::DrawOutput(const unsigned int i) {
             if (output_pins[output[i].id - O_P2] == 0)
                 canvas.RotatedText("NC", output[i].x1, output[i].y2 + yoff, 90.0);
             else
-                canvas.RotatedText(itoa(output_pins[output[i].id - O_P2]), output[i].x1, output[i].y2 + yoff, 90.0);
+                canvas.RotatedText(std::to_string(output_pins[output[i].id - O_P2]), output[i].x1, output[i].y2 + yoff, 90.0);
             break;
             break;
         case O_F1:
@@ -199,7 +199,7 @@ unsigned short cpart_led_ws2812b::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_led_ws2812b::WritePreferences(void) {
+std::string cpart_led_ws2812b::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%u,%u,%hhu", input_pins[0], output_pins[0], led.nrows, led.ncols, led.diffuser);
@@ -207,14 +207,14 @@ lxString cpart_led_ws2812b::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_led_ws2812b::ReadPreferences(lxString value) {
+void cpart_led_ws2812b::ReadPreferences(std::string value) {
     unsigned char outp;
     unsigned int rows, cols;
     unsigned char diffuser;
     sscanf(value.c_str(), "%hhu,%hhu,%u,%u,%hhu", &input_pins[0], &outp, &rows, &cols, &diffuser);
 
     SpareParts.UnregisterIOpin(output_pins[0]);
-    output_pins[0] = SpareParts.RegisterIOpin(lxT("DOUT"), outp);
+    output_pins[0] = SpareParts.RegisterIOpin("DOUT", outp);
 
     ChangeType(rows, cols, diffuser);
 
@@ -247,7 +247,7 @@ void cpart_led_ws2812b::RegisterRemoteControl(void) {
 void cpart_led_ws2812b::ConfigurePropertiesWindow(CPWindow* WProp) {
     SetPCWComboWithPinNames(WProp, "combo4", input_pins[0]);
 
-    ((CLabel*)WProp->GetChildByName("label_2"))->SetText(itoa(output_pins[0]));
+    ((CLabel*)WProp->GetChildByName("label_2"))->SetText(std::to_string(output_pins[0]));
 
     ((CSpin*)WProp->GetChildByName("spin5"))->SetMax(MAXROWS);
     ((CSpin*)WProp->GetChildByName("spin5"))->SetMin(1);

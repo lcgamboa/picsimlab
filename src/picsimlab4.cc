@@ -117,7 +117,7 @@ void CPWindow4::DrawScreen(void) {
 
     // draw trigger level
     if (Oscilloscope.GetUseTrigger()) {
-        if (combo1.GetText().compare(lxT("1")) == 0)
+        if (combo1.GetText().compare("1") == 0)
             Oscilloscope.SetTriggerChannel(0);
         else
             Oscilloscope.SetTriggerChannel(1);
@@ -176,7 +176,7 @@ void CPWindow4::DrawScreen(void) {
 
     draw1.Canvas.SetFgColor(200, 200, 0);
     if (togglebutton5.GetCheck()) {
-        snprintf(text, 100, "TRG CH%s %6.2fV ", combo1.GetText().c_str(), spind7.GetValue());
+        snprintf(text, 100, "TRG CH%s %6.2fV ", (const char *)combo1.GetText().c_str(), spind7.GetValue());
     } else {
         snprintf(text, 100, "TRG Off");
     }
@@ -280,7 +280,7 @@ void CPWindow4::button2_EvMouseButtonClick(CControl* control, uint button, uint 
 
 void CPWindow4::draw1_EvMouseButtonClick(CControl* control, uint button, uint x, uint y, uint state) {
     // code here:)
-    mprint(lxT("draw1_EvMouseButtonClick\n"));
+    mprint("draw1_EvMouseButtonClick\n");
 }
 
 void CPWindow4::spind5_EvOnChangeSpinDouble(CControl* control) {
@@ -355,9 +355,8 @@ void CPWindow4::_EvOnDestroy(CControl* control) {
 
 void CPWindow4::_EvOnCreate(CControl* control) {
     font = new lxFont(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
-    SetTitle(((PICSimLab.GetInstanceNumber() > 0)
-                  ? (lxT("PICSimLab[") + itoa(PICSimLab.GetInstanceNumber()) + lxT("] - "))
-                  : (lxT("PICSimLab - "))) +
+    SetTitle(((PICSimLab.GetInstanceNumber() > 0) ? ("PICSimLab[" + std::to_string(PICSimLab.GetInstanceNumber()) + "] - ")
+                                                  : ("PICSimLab - ")) +
              "Oscilloscope");
 }
 

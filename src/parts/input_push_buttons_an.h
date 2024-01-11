@@ -33,20 +33,20 @@
 
 class cpart_pbuttons_an : public part {
 public:
-    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     cpart_pbuttons_an(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
     ~cpart_pbuttons_an(void);
     void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;
-    lxString GetPictureFileName(void) override { return lxT("Push Buttons/part.svg"); };
-    lxString GetMapFile(void) override { return lxT("Push Buttons/part.map"); };
+    std::string GetPictureFileName(void) override { return "Push Buttons/part.svg"; };
+    std::string GetMapFile(void) override { return "Push Buttons/part.map"; };
     void Reset(void) override;
     void OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) override;
     void OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) override;
     void ConfigurePropertiesWindow(CPWindow* WProp) override;
     void ReadPropertiesWindow(CPWindow* WProp) override;
-    lxString WritePreferences(void) override;
-    void ReadPreferences(lxString value) override;
+    std::string WritePreferences(void) override;
+    void ReadPreferences(std::string value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
 

@@ -70,8 +70,9 @@ cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, c
         wvterm->SetName("window1");  // must be the same as in xml
         wvterm->SetVisible(0);
         Application->ACreateWindow(wvterm);
-        lxString fname =
-            lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/Virtual/IO Virtual Term/terminal_1.lxrad"));
+        std::string fname =
+            (const char*)lxGetLocalFile(PICSimLab.GetSharePath() + "parts/Virtual/IO Virtual Term/terminal_1.lxrad")
+                .c_str();
         if (wvterm->LoadXMLContextAndCreateChilds(fname)) {
             wvterm->SetVisible(0);
             wvterm->Hide();
@@ -207,7 +208,7 @@ void cpart_vterm::Reset(void) {
 
     if (!vtcmb_speed)
         return;
-    vtcmb_speed->SetText(itoa(vterm_speed));
+    vtcmb_speed->SetText(std::to_string(vterm_speed));
 
     switch (lending) {
         case LE_NONE:
@@ -318,7 +319,7 @@ unsigned short cpart_vterm::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_vterm::WritePreferences(void) {
+std::string cpart_vterm::WritePreferences(void) {
     char prefs[256];
 
     if (wvterm) {
@@ -332,7 +333,7 @@ lxString cpart_vterm::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_vterm::ReadPreferences(lxString value) {
+void cpart_vterm::ReadPreferences(std::string value) {
     int x, y, w, h;
     int ret = sscanf(value.c_str(), "%hhu,%hhu,%hhu,%u,%hhu,%i,%i,%i,%i", &pins[0], &pins[1], &lending, &vterm_speed,
                      &show, &x, &y, &w, &h);
@@ -361,7 +362,7 @@ void cpart_vterm::ConfigurePropertiesWindow(CPWindow* WProp) {
     SetPCWComboWithPinNames(WProp, "combo3", pins[1]);
 
     ((CCombo*)WProp->GetChildByName("combo5"))->SetItems("1200,2400,4800,9600,19200,38400,57600,115200,");
-    ((CCombo*)WProp->GetChildByName("combo5"))->SetText(itoa(vterm_speed));
+    ((CCombo*)WProp->GetChildByName("combo5"))->SetText(std::to_string(vterm_speed));
 }
 
 void cpart_vterm::ReadPropertiesWindow(CPWindow* WProp) {

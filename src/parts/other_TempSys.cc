@@ -51,12 +51,12 @@ cpart_tempsys::cpart_tempsys(const unsigned x, const unsigned y, const char* nam
     vt = 0;
 
     lxImage image(SpareParts.GetWindow());
-    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/VT1.svg")), Orientation, Scale * 0.867,
+    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/VT1.svg"), Orientation, Scale * 0.867,
                    Scale * 0.867);
     vent[0] = new lxBitmap(&image, SpareParts.GetWindow());
     image.Destroy();
 
-    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/VT2.svg")), Orientation, Scale * 0.867,
+    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/VT2.svg"), Orientation, Scale * 0.867,
                    Scale * 0.867);
     vent[1] = new lxBitmap(&image, SpareParts.GetWindow());
     image.Destroy();
@@ -131,11 +131,11 @@ void cpart_tempsys::DrawOutput(const unsigned int i) {
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);
-            snprintf(str, 100, lxT("Ambient.=%5.2fC"), ambient);
+            snprintf(str, 100, "Ambient.=%5.2fC", ambient);
             canvas.RotatedText(str, output[i].x1, output[i].y1, 0);
             break;
         case O_OTE:
-            snprintf(str, 100, lxT("Temp.=%5.2fC"), temp[0]);
+            snprintf(str, 100, "Temp.=%5.2fC", temp[0]);
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);
@@ -252,7 +252,7 @@ unsigned short cpart_tempsys::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_tempsys::WritePreferences(void) {
+std::string cpart_tempsys::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%f,%f", input_pins[0], input_pins[1], input_pins[2], input_pins[3], ambient,
@@ -261,7 +261,7 @@ lxString cpart_tempsys::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_tempsys::ReadPreferences(lxString value) {
+void cpart_tempsys::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%f,%f", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3],
            &ambient, &tvoff);
     temp[0] = ambient;

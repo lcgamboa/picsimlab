@@ -236,7 +236,7 @@ unsigned short cpart_VCD_Play::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_VCD_Play::WritePreferences(void) {
+std::string cpart_VCD_Play::WritePreferences(void) {
     char prefs[256];
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%s", output_pins[0], output_pins[1], output_pins[2],
             output_pins[3], output_pins[4], output_pins[5], output_pins[6], output_pins[7], play, f_vcd_name);
@@ -244,7 +244,7 @@ lxString cpart_VCD_Play::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_VCD_Play::ReadPreferences(lxString value) {
+void cpart_VCD_Play::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%s", &output_pins[0], &output_pins[1],
            &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7], &play,
            f_vcd_name);
@@ -260,7 +260,7 @@ void cpart_VCD_Play::ReadPreferences(lxString value) {
             LoadVCD(f_vcd_name);
         } else {
             printf("PICSimLab: VCD_Play Error loading from file: %s \n", f_vcd_name);
-            PICSimLab.RegisterError(lxString("PICSimLab: VCD_Play Error loading from file: \n") + f_vcd_name);
+            PICSimLab.RegisterError(std::string("PICSimLab: VCD_Play Error loading from file: \n") + f_vcd_name);
             f_vcd_name[0] = '*';
             f_vcd_name[1] = 0;
             play = 0;
@@ -353,9 +353,9 @@ void cpart_VCD_Play::OnMouseButtonPress(uint inputId, uint button, uint x, uint 
     switch (inputId) {
         case I_LOAD:
             SpareParts.GetFileDialog()->SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
-            SpareParts.GetFileDialog()->SetFilter(lxT("Value change dump (*.vcd)|*.vcd"));
+            SpareParts.GetFileDialog()->SetFilter("Value change dump (*.vcd)|*.vcd");
             if (f_vcd_name[0] == '*') {
-                SpareParts.GetFileDialog()->SetFileName(lxT("untitled.vcd"));
+                SpareParts.GetFileDialog()->SetFileName("untitled.vcd");
             } else {
                 SpareParts.GetFileDialog()->SetFileName(f_vcd_name);
             }
@@ -409,9 +409,9 @@ void cpart_VCD_Play::filedialog_EvOnClose(int retId) {
     }
 }
 
-int cpart_VCD_Play::LoadVCD(lxString fname) {
+int cpart_VCD_Play::LoadVCD(std::string fname) {
     FILE* fvcd;
-    fvcd = fopen(fname.c_str(), "r");
+    fvcd = fopen_UTF8(fname.c_str(), "r");
     char buff[256];
     int data = 0;
     char* id;

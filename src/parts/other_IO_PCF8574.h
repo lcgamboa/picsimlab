@@ -34,19 +34,19 @@
 
 class cpart_IO_PCF8574 : public part {
 public:
-    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     cpart_IO_PCF8574(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
     ~cpart_IO_PCF8574(void);
     void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;
     void Process(void) override;
     void PostProcess(void) override;
-    lxString GetPictureFileName(void) override { return lxT("../Common/IC16.svg"); };
-    lxString GetMapFile(void) override { return lxT("../Common/IC16.map"); };
+    std::string GetPictureFileName(void) override { return "../Common/IC16.svg"; };
+    std::string GetMapFile(void) override { return "../Common/IC16.map"; };
     void ConfigurePropertiesWindow(CPWindow* WProp) override;
     void ReadPropertiesWindow(CPWindow* WProp) override;
-    lxString WritePreferences(void) override;
-    void ReadPreferences(lxString value) override;
+    std::string WritePreferences(void) override;
+    void ReadPreferences(std::string value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
     const unsigned char* GetOutputPins(void);

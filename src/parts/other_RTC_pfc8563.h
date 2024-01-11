@@ -34,18 +34,18 @@
 
 class cpart_RTC_pfc8563 : public part {
 public:
-    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     cpart_RTC_pfc8563(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
     ~cpart_RTC_pfc8563(void);
     void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;
     void Process(void) override;
-    lxString GetPictureFileName(void) override { return lxT("../Common/IC8.svg"); };
-    lxString GetMapFile(void) override { return lxT("../Common/IC8.map"); };
+    std::string GetPictureFileName(void) override { return "../Common/IC8.svg"; };
+    std::string GetMapFile(void) override { return "../Common/IC8.map"; };
     void ConfigurePropertiesWindow(CPWindow* WProp) override;
     void ReadPropertiesWindow(CPWindow* WProp) override;
-    lxString WritePreferences(void) override;
-    void ReadPreferences(lxString value) override;
+    std::string WritePreferences(void) override;
+    void ReadPreferences(std::string value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
 

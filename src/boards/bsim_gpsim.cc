@@ -45,13 +45,13 @@ void bsim_gpsim::MSetSerial(const char* port) {
  int bsim_gpsim::MInit(const char* processor, const char* fname, float freq) {
      int ret = -1;
 
-     lxString sproc = GetSupportedDevices();
+     std::string sproc = GetSupportedDevices();
 
-     if (sproc.find(processor) != -1) {
+     if (sproc.find(processor) != std::string::npos) {
          if (!lxFileExists(fname)) {
              // create a empty memory
              FILE* fout;
-             fout = fopen(fname, "w");
+             fout = fopen_UTF8(fname, "w");
              if (fout) {
                  fprintf(fout, ":020000040000FA\n:00000001FF\n");
                  fclose(fout);
@@ -107,13 +107,13 @@ void bsim_gpsim::MSetSerial(const char* port) {
 
  void bsim_gpsim::DebugLoop(void) {}
 
- lxString bsim_gpsim::MGetPinName(int pin) {
-     lxString pinname = "error";
+ std::string bsim_gpsim::MGetPinName(int pin) {
+     std::string pinname = "error";
 
      if ((pin) && (pin <= MGetPinCount())) {
          pinname = bridge_gpsim_get_pin_name(pin);
 
-         if (pinname.find("port") != -1) {
+         if (pinname.find("port") != std::string::npos) {
              pinname = "R" + pinname.substr(4, 2);
              pinname = uppercase(pinname);
          }
@@ -124,8 +124,8 @@ void bsim_gpsim::MSetSerial(const char* port) {
      return pinname;
  }
 
- void bsim_gpsim::MDumpMemory(const char* fname) {
-     bridge_gpsim_dump_memory(fname);
+ int bsim_gpsim::MDumpMemory(const char* fname) {
+     return bridge_gpsim_dump_memory(fname);
  }
 
  int bsim_gpsim::DebugInit(int dtyppe)  // argument not used in picm only mplabx
@@ -139,7 +139,7 @@ void bsim_gpsim::MSetSerial(const char* port) {
 
  void bsim_gpsim::pins_reset(void) {
      for (int p = 0; p < MGetPinCount(); p++) {
-         lxString pname = MGetPinName(p + 1);
+         std::string pname = MGetPinName(p + 1);
          if (pname[0] == 'R') {
              pins[p].port = (unsigned char*)&GPSIM_PORTS[pname[1] - 'A'];
              pins[p].pord = pname[2] - '0';

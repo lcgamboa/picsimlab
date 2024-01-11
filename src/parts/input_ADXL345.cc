@@ -177,7 +177,7 @@ unsigned short cpart_ADXL345::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_ADXL345::WritePreferences(void) {
+std::string cpart_ADXL345::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", adxl_pins[0], adxl_pins[1], adxl_pins[2], adxl_pins[3],
@@ -186,7 +186,7 @@ lxString cpart_ADXL345::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_ADXL345::ReadPreferences(lxString value) {
+void cpart_ADXL345::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &adxl_pins[0], &adxl_pins[1], &adxl_pins[2], &adxl_pins[3],
            &adxl_pins[4], &adxl_pins[5]);
 

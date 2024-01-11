@@ -75,15 +75,15 @@ cpart_IO_PCF8574::cpart_IO_PCF8574(const unsigned x, const unsigned y, const cha
     input_pins[3] = 0;
     input_pins[4] = 0;
 
-    output_pins[0] = SpareParts.RegisterIOpin(lxT("P0"));
-    output_pins[1] = SpareParts.RegisterIOpin(lxT("P1"));
-    output_pins[2] = SpareParts.RegisterIOpin(lxT("P2"));
-    output_pins[3] = SpareParts.RegisterIOpin(lxT("P3"));
-    output_pins[4] = SpareParts.RegisterIOpin(lxT("P4"));
-    output_pins[5] = SpareParts.RegisterIOpin(lxT("P5"));
-    output_pins[6] = SpareParts.RegisterIOpin(lxT("P6"));
-    output_pins[7] = SpareParts.RegisterIOpin(lxT("P7"));
-    output_pins[8] = SpareParts.RegisterIOpin(lxT("/INT"));
+    output_pins[0] = SpareParts.RegisterIOpin("P0");
+    output_pins[1] = SpareParts.RegisterIOpin("P1");
+    output_pins[2] = SpareParts.RegisterIOpin("P2");
+    output_pins[3] = SpareParts.RegisterIOpin("P3");
+    output_pins[4] = SpareParts.RegisterIOpin("P4");
+    output_pins[5] = SpareParts.RegisterIOpin("P5");
+    output_pins[6] = SpareParts.RegisterIOpin("P6");
+    output_pins[7] = SpareParts.RegisterIOpin("P7");
+    output_pins[8] = SpareParts.RegisterIOpin("/INT");
 
     mcount = 0;
     memset(output_pins_alm, 0, 9 * sizeof(unsigned long));
@@ -136,7 +136,7 @@ void cpart_IO_PCF8574::DrawOutput(const unsigned int i) {
                     canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
                 else
                     canvas.RotatedText(
-                        itoa(output_pins[pinv - 5]) /*+ lxT (" ") + SpareParts.GetPinName (output_pins[pinv - 5])*/,
+                        std::to_string(output_pins[pinv - 5]) /*+ " " + SpareParts.GetPinName (output_pins[pinv - 5])*/,
                         output[i].x1, output[i].y2 - 30, 90.0);
             }
             break;
@@ -189,7 +189,7 @@ unsigned short cpart_IO_PCF8574::GetOutputId(char* name) {
     return INVALID_ID;
 };
 
-lxString cpart_IO_PCF8574::WritePreferences(void) {
+std::string cpart_IO_PCF8574::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3],
@@ -198,7 +198,7 @@ lxString cpart_IO_PCF8574::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_IO_PCF8574::ReadPreferences(lxString value) {
+void cpart_IO_PCF8574::ReadPreferences(std::string value) {
     unsigned char outp;
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2],
            &input_pins[3], &input_pins[4], &outp);
@@ -207,39 +207,40 @@ void cpart_IO_PCF8574::ReadPreferences(lxString value) {
         for (int i = 0; i < 9; i++)
             SpareParts.UnregisterIOpin(output_pins[i]);
 
-        output_pins[0] = SpareParts.RegisterIOpin(lxT("P0"), outp++);
-        output_pins[1] = SpareParts.RegisterIOpin(lxT("P1"), outp++);
-        output_pins[2] = SpareParts.RegisterIOpin(lxT("P2"), outp++);
-        output_pins[3] = SpareParts.RegisterIOpin(lxT("P3"), outp++);
-        output_pins[4] = SpareParts.RegisterIOpin(lxT("P4"), outp++);
-        output_pins[5] = SpareParts.RegisterIOpin(lxT("P5"), outp++);
-        output_pins[6] = SpareParts.RegisterIOpin(lxT("P6"), outp++);
-        output_pins[7] = SpareParts.RegisterIOpin(lxT("P7"), outp++);
-        output_pins[8] = SpareParts.RegisterIOpin(lxT("/INT"), outp++);
+        output_pins[0] = SpareParts.RegisterIOpin("P0", outp++);
+        output_pins[1] = SpareParts.RegisterIOpin("P1", outp++);
+        output_pins[2] = SpareParts.RegisterIOpin("P2", outp++);
+        output_pins[3] = SpareParts.RegisterIOpin("P3", outp++);
+        output_pins[4] = SpareParts.RegisterIOpin("P4", outp++);
+        output_pins[5] = SpareParts.RegisterIOpin("P5", outp++);
+        output_pins[6] = SpareParts.RegisterIOpin("P6", outp++);
+        output_pins[7] = SpareParts.RegisterIOpin("P7", outp++);
+        output_pins[8] = SpareParts.RegisterIOpin("/INT", outp++);
     }
 
     Reset();
 }
 
 void cpart_IO_PCF8574::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString spin;
+    std::string spin;
 
     for (int i = 0; i < 16; i++) {
-        lxString value = "";
+        std::string value = "";
 
         int pinv = pin_values[i][0];
         if (pinv > 13) {
-            value = lxString(pin_values[i]);
+            value = std::string(pin_values[i]);
         } else if (pinv >= 5) {
             if (output_pins[pinv - 5] == 0)
                 value = "NC";
             else
-                value = itoa(output_pins[pinv - 5]);  //+ lxT (" ") + SpareParts.GetPinName (output_pins[pinv - 5]);
+                value = std::to_string(output_pins[pinv - 5]);  //+ " " + SpareParts.GetPinName (output_pins[pinv - 5]);
         }
 
-        ((CLabel*)WProp->GetChildByName("label" + itoa(i + 1)))->SetText(itoa(i + 1) + lxT("-") + pin_names[i]);
+        ((CLabel*)WProp->GetChildByName("label" + std::to_string(i + 1)))
+            ->SetText(std::to_string(i + 1) + "-" + pin_names[i]);
 
-        CLabel* label = (CLabel*)WProp->GetChildByName("label_" + itoa(i + 1));
+        CLabel* label = (CLabel*)WProp->GetChildByName("label_" + std::to_string(i + 1));
         if (label) {
             label->SetText(value);
         }

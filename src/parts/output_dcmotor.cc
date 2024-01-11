@@ -303,7 +303,7 @@ unsigned short cpart_dcmotor::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_dcmotor::WritePreferences(void) {
+std::string cpart_dcmotor::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu", pins[0], pins[1], pins[2], pins[3], pins[4]);
@@ -311,7 +311,7 @@ lxString cpart_dcmotor::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_dcmotor::ReadPreferences(lxString value) {
+void cpart_dcmotor::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu", &pins[0], &pins[1], &pins[2], &pins[3], &pins[4]);
 }
 

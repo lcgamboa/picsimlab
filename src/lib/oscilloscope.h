@@ -26,6 +26,7 @@
 #ifndef OSCILLOSCOPE
 #define OSCILLOSCOPE
 
+#include <vector>
 #include "board.h"
 
 #define WMAX 350
@@ -108,8 +109,8 @@ public:
     void WritePreferences(void);
     void ReadPreferences(char* name, char* value);
 
-    lxStringList WritePreferencesList(void);
-    void ReadPreferencesList(lxStringList pl);
+    std::vector<std::string> WritePreferencesList(void);
+    void ReadPreferencesList(std::vector<std::string>& pl);
 
 private:
     CWindow* Window;

@@ -118,7 +118,7 @@ public:
 
 private:
     CItemMenu MParts[MAX_PARTS];
-    lxString PartToCreate;
+    std::string PartToCreate;
     int PartSelected;
     int PartToMove;
     int mdx, mdy;

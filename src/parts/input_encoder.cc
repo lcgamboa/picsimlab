@@ -308,7 +308,7 @@ unsigned short cpart_encoder::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_encoder::WritePreferences(void) {
+std::string cpart_encoder::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu", output_pins[0], output_pins[1], output_pins[2], value);
@@ -316,7 +316,7 @@ lxString cpart_encoder::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_encoder::ReadPreferences(lxString value) {
+void cpart_encoder::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &output_pins[2], &this->value);
 
     value_old = this->value;

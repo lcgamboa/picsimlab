@@ -81,7 +81,7 @@ cboard_McLab1::cboard_McLab1(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE
         // gauge1
         gauge1 = new CGauge();
         gauge1->SetFOwner(PICSimLab.GetWindow());
-        gauge1->SetName(lxT("gauge1_p1"));
+        gauge1->SetName("gauge1_p1");
         gauge1->SetX(13);
         gauge1->SetY(102);
         gauge1->SetWidth(140);
@@ -95,14 +95,14 @@ cboard_McLab1::cboard_McLab1(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE
         // label1
         label1 = new CLabel();
         label1->SetFOwner(PICSimLab.GetWindow());
-        label1->SetName(lxT("label1_p1"));
+        label1->SetName("label1_p1");
         label1->SetX(12);
         label1->SetY(80);
         label1->SetWidth(60);
         label1->SetHeight(20);
         label1->SetEnable(1);
         label1->SetVisible(1);
-        label1->SetText(lxT("LAMP"));
+        label1->SetText("LAMP");
         label1->SetAlign(1);
         PICSimLab.GetWindow()->CreateChild(label1);
     }
@@ -563,7 +563,7 @@ void cboard_McLab1::Reset(void) {
     pic_set_pin(&pic, 2, p_BT[2]);
     pic_set_pin(&pic, 3, p_BT[3]);
 
-    PICSimLab.UpdateStatus(PS_SERIAL, lxT(""));
+    PICSimLab.UpdateStatus(PS_SERIAL, "");
 
     for (int i = 0; i < pic.PINCOUNT; i++) {
         lm1[i] = 30;
@@ -928,9 +928,9 @@ unsigned short cboard_McLab1::GetOutputId(char* name) {
 }
 
 void cboard_McLab1::WritePreferences(void) {
-    PICSimLab.SavePrefs(lxT("McLab1_proc"), Proc);
-    PICSimLab.SavePrefs(lxT("McLab1_jmp"), itoa( jmp[0]));
-    PICSimLab.SavePrefs(lxT("McLab1_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs("McLab1_proc", Proc);
+    PICSimLab.SavePrefs("McLab1_jmp", std::to_string( jmp[0]));
+    PICSimLab.SavePrefs("McLab1_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
 }
 
 void cboard_McLab1::ReadPreferences(char* name, char* value) {

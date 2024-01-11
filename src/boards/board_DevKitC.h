@@ -51,8 +51,8 @@ protected:
 
 public:
     // Return the board name
-    lxString GetName(void) override { return lxT(BOARD_DevKitC_Name); };
-    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    std::string GetName(void) override { return BOARD_DevKitC_Name; };
+    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     // Constructor called once on board creation
     cboard_DevKitC(void);
     // Destructor called once on board destruction
@@ -62,7 +62,7 @@ public:
     void Run_CPU(void) override;
     void Run_CPU_ns(uint64_t time) override;
     // Return a list of board supported microcontrollers
-    lxString GetSupportedDevices(void) override { return lxT("ESP32,"); };
+    std::string GetSupportedDevices(void) override { return "ESP32,"; };
     // Reset board status
     void Reset(void) override;
     // Event on the board
@@ -87,7 +87,7 @@ public:
     void board_Event(CControl* control) override;
     void board_ButtonEvent(CControl* control, uint button, uint x, uint y, uint state) override;
     void MSetAPin(int pin, float value) override;
-    lxString MGetPinName(int pin) override;
+    std::string MGetPinName(int pin) override;
     int MGetPinCount(void) override;
     void PinsExtraConfig(int cfg) override;
     unsigned int DBGGetROMSize(void) override { return 4194304; };

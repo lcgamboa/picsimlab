@@ -213,7 +213,7 @@ unsigned short cpart_LCD_hd44780::GetOutputId(char* name) {
     return INVALID_ID;
 };
 
-lxString cpart_LCD_hd44780::WritePreferences(void) {
+std::string cpart_LCD_hd44780::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1],
@@ -223,7 +223,7 @@ lxString cpart_LCD_hd44780::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_LCD_hd44780::ReadPreferences(lxString value) {
+void cpart_LCD_hd44780::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1],
            &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7],
            &input_pins[8], &input_pins[9], &input_pins[10], &model);
@@ -278,11 +278,11 @@ void cpart_LCD_hd44780::ReadPropertiesWindow(CPWindow* WProp) {
     input_pins[10] = GetPWCComboSelectedPin(WProp, "combo5");
 
     model = LCD16x2;
-    if (!((((CCombo*)WProp->GetChildByName("combo15"))->GetText()).compare(lxT("16x4"))))
+    if (!((((CCombo*)WProp->GetChildByName("combo15"))->GetText()).compare("16x4")))
         model = LCD16x4;
-    else if (!((((CCombo*)WProp->GetChildByName("combo15"))->GetText()).compare(lxT("20x2"))))
+    else if (!((((CCombo*)WProp->GetChildByName("combo15"))->GetText()).compare("20x2")))
         model = LCD20x2;
-    else if (!((((CCombo*)WProp->GetChildByName("combo15"))->GetText()).compare(lxT("20x4"))))
+    else if (!((((CCombo*)WProp->GetChildByName("combo15"))->GetText()).compare("20x4")))
         model = LCD20x4;
 
     Reset();
@@ -369,19 +369,19 @@ void cpart_LCD_hd44780::LoadImage(void) {
 
     switch (model) {
         case LCD16x2:
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/Output/") + GetPictureFileName()),
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName()),
                            Orientation, Scale, Scale);
             break;
         case LCD16x4:
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/Output/") + GetPictureFileName_()),
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName_()),
                            Orientation, Scale, Scale);
             break;
         case LCD20x2:
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/Output/") + GetPictureFileName__()),
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName__()),
                            Orientation, Scale, Scale);
             break;
         case LCD20x4:
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/Output/") + GetPictureFileName___()),
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName___()),
                            Orientation, Scale, Scale);
             break;
     }

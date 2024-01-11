@@ -62,12 +62,12 @@ public:
     /**
      * @brief  Return the name of all pins
      */
-    lxString GetPinsNames(void);
+    std::string GetPinsNames(void);
 
     /**
      * @brief  Return the name of one pin
      */
-    lxString GetPinName(unsigned char pin);
+    std::string GetPinName(unsigned char pin);
 
     const picpin* GetPinsValues(void);
     void SetPin(unsigned char pin, unsigned char value);
@@ -77,17 +77,17 @@ public:
     void WritePin(unsigned char pin, unsigned char value);
     void WritePinA(unsigned char pin, unsigned char avalue);
     void WritePinOA(unsigned char pin, unsigned short oavalue);
-    unsigned char RegisterIOpin(lxString pname, unsigned char pin = 0, unsigned char dir = PD_OUT);
+    unsigned char RegisterIOpin(std::string pname, unsigned char pin = 0, unsigned char dir = PD_OUT);
     unsigned char UnregisterIOpin(unsigned char pin);
     part* AddPart(const char* partname, const int x, const int y, const float scale, board* pboard_);
     void DeletePart(const int partn);
     void SetUseAlias(const int use) { useAlias = use; };
     unsigned char GetUseAlias(void) { return useAlias; };
-    bool SavePinAlias(lxString fname);
-    bool LoadPinAlias(lxString fname, unsigned char show_error_msg = 0);
-    bool LoadConfig(lxString fname, const int disable_debug = 0);
+    bool SavePinAlias(std::string fname);
+    bool LoadPinAlias(std::string fname, unsigned char show_error_msg = 0);
+    bool LoadConfig(std::string fname, const int disable_debug = 0);
     void ClearPinAlias(void);
-    lxString GetAliasFname(void) { return alias_fname; };
+    std::string GetAliasFname(void) { return alias_fname; };
     float GetScale(void) { return scale; };
     void SetScale(float s) { scale = s; };
     CWindow* GetWindow(void) { return Window; }
@@ -112,23 +112,23 @@ public:
     void ReadPreferences(char* name, char* value);
     void WritePreferences(void);
 
-    bool SaveConfig(lxString fname);
+    bool SaveConfig(std::string fname);
 
-    lxString GetLoadConfigFile(void) { return LoadConfigFile; };
+    std::string GetLoadConfigFile(void) { return LoadConfigFile; };
 
-    void SetfdOldFilename(const lxString ofn);
+    void SetfdOldFilename(const std::string ofn);
 
-    lxString GetOldFilename(void) { return oldfname; };
+    std::string GetOldFilename(void) { return oldfname; };
 
 private:
     float scale;
     board* pboard;
     CWindow* Window;
     CFileDialog* filedialog;
-    lxString PinNames[256];
-    lxString PinAlias[256];
-    lxString alias_fname;
-    lxString LoadConfigFile;
+    std::string PinNames[256];
+    std::string PinAlias[256];
+    std::string alias_fname;
+    std::string LoadConfigFile;
     picpin* Pins;
     unsigned char PinsCount;
     unsigned char useAlias;
@@ -140,7 +140,7 @@ private:
     int pullup_bus_count;
     unsigned char pullup_bus_ptr[IOINIT];
     int fdtype;
-    lxString oldfname;
+    std::string oldfname;
 };
 
 extern CSpareParts SpareParts;

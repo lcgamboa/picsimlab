@@ -295,7 +295,7 @@ unsigned short cpart_ETH_w5500::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_ETH_w5500::WritePreferences(void) {
+std::string cpart_ETH_w5500::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", pins[0], pins[1], pins[2], pins[3], pins[4], pins[5]);
@@ -303,7 +303,7 @@ lxString cpart_ETH_w5500::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_ETH_w5500::ReadPreferences(lxString value) {
+void cpart_ETH_w5500::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &pins[0], &pins[1], &pins[2], &pins[3], &pins[4], &pins[5]);
 
     Reset();

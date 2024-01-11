@@ -263,20 +263,20 @@ cboard_Blue_Pill::cboard_Blue_Pill(void) {
         // label1
         label1 = new CLabel();
         label1->SetFOwner(PICSimLab.GetWindow());
-        label1->SetName(lxT("label1_"));
+        label1->SetName("label1_");
         label1->SetX(13);
         label1->SetY(54 + 20);
         label1->SetWidth(120);
         label1->SetHeight(24);
         label1->SetEnable(1);
         label1->SetVisible(1);
-        label1->SetText(lxT("Qemu CPU MIPS"));
+        label1->SetText("Qemu CPU MIPS");
         label1->SetAlign(1);
         PICSimLab.GetWindow()->CreateChild(label1);
         // combo1
         combo1 = new CCombo();
         combo1->SetFOwner(PICSimLab.GetWindow());
-        combo1->SetName(lxT("combo1_"));
+        combo1->SetName("combo1_");
         combo1->SetX(13);
         combo1->SetY(78 + 20);
         combo1->SetWidth(130);
@@ -306,7 +306,7 @@ cboard_Blue_Pill::~cboard_Blue_Pill(void) {
 void cboard_Blue_Pill::Reset(void) {
     MReset(1);
 
-    PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE));
+    PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE));
 
     if (use_spare)
         SpareParts.Reset();
@@ -322,9 +322,9 @@ void cboard_Blue_Pill::RegisterRemoteControl(void) {
 
 void cboard_Blue_Pill::RefreshStatus(void) {
     if (serial_open) {
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE));
+        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE));
     } else {
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: Error"));
+        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: Error");
     }
 }
 
@@ -332,11 +332,11 @@ void cboard_Blue_Pill::RefreshStatus(void) {
 
 void cboard_Blue_Pill::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
-    PICSimLab.SavePrefs(lxT("Blue_Pill_proc"), Proc);
+    PICSimLab.SavePrefs("Blue_Pill_proc", Proc);
     // write microcontroller clock to preferences
-    PICSimLab.SavePrefs(lxT("Blue_Pill_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs("Blue_Pill_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
     // write microcontroller icount to preferences
-    PICSimLab.SavePrefs(lxT("Blue_Pill_icount"), itoa(icount));
+    PICSimLab.SavePrefs("Blue_Pill_icount", std::to_string(icount));
 }
 
 // Called whe configuration file load  preferences
@@ -559,8 +559,8 @@ void cboard_Blue_Pill::board_Event(CControl* control) {
     PICSimLab.EndSimulation();
 }
 
-lxString cboard_Blue_Pill::MGetPinName(int pin) {
-    lxString pinname = "error";
+std::string cboard_Blue_Pill::MGetPinName(int pin) {
+    std::string pinname = "error";
 
     switch (pin) {
         case 1:

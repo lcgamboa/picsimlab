@@ -228,14 +228,14 @@ cboard_PICGenios::cboard_PICGenios(void) : font(10, lxFONTFAMILY_TELETYPE, lxFON
     cooler_pwr = 0;
 
     lxImage image(PICSimLab.GetWindow());
-    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/VT1.svg")));
+    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/VT1.svg"));
     vent[0] = new lxBitmap(&image, PICSimLab.GetWindow());
-    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/VT2.svg")));
+    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/VT2.svg"));
     vent[1] = new lxBitmap(&image, PICSimLab.GetWindow());
 
-    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/lcd2.svg")));
+    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/lcd2.svg"));
     lcdbmp[0] = new lxBitmap(&image, PICSimLab.GetWindow());
-    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/lcd4.svg")));
+    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/lcd4.svg"));
     lcdbmp[1] = new lxBitmap(&image, PICSimLab.GetWindow());
 
     image.Destroy();
@@ -257,7 +257,7 @@ cboard_PICGenios::cboard_PICGenios(void) : font(10, lxFONTFAMILY_TELETYPE, lxFON
         // gauge1
         gauge1 = new CGauge();
         gauge1->SetFOwner(PICSimLab.GetWindow());
-        gauge1->SetName(lxT("gauge1_p4"));
+        gauge1->SetName("gauge1_p4");
         gauge1->SetX(13);
         gauge1->SetY(302 + 20);
         gauge1->SetWidth(140);
@@ -271,7 +271,7 @@ cboard_PICGenios::cboard_PICGenios(void) : font(10, lxFONTFAMILY_TELETYPE, lxFON
         // gauge2
         gauge2 = new CGauge();
         gauge2->SetFOwner(PICSimLab.GetWindow());
-        gauge2->SetName(lxT("gauge2_p4"));
+        gauge2->SetName("gauge2_p4");
         gauge2->SetX(12);
         gauge2->SetY(250 + 20);
         gauge2->SetWidth(140);
@@ -285,67 +285,67 @@ cboard_PICGenios::cboard_PICGenios(void) : font(10, lxFONTFAMILY_TELETYPE, lxFON
         // label3
         label3 = new CLabel();
         label3->SetFOwner(PICSimLab.GetWindow());
-        label3->SetName(lxT("label3_p4"));
+        label3->SetName("label3_p4");
         label3->SetX(12);
         label3->SetY(226 + 20);
         label3->SetWidth(60);
         label3->SetHeight(20);
         label3->SetEnable(1);
         label3->SetVisible(1);
-        label3->SetText(lxT("Heater"));
+        label3->SetText("Heater");
         label3->SetAlign(1);
         PICSimLab.GetWindow()->CreateChild(label3);
         // label4
         label4 = new CLabel();
         label4->SetFOwner(PICSimLab.GetWindow());
-        label4->SetName(lxT("label4_p4"));
+        label4->SetName("label4_p4");
         label4->SetX(13);
         label4->SetY(277 + 20);
         label4->SetWidth(60);
         label4->SetHeight(20);
         label4->SetEnable(1);
         label4->SetVisible(1);
-        label4->SetText(lxT("Cooler"));
+        label4->SetText("Cooler");
         label4->SetAlign(1);
         PICSimLab.GetWindow()->CreateChild(label4);
         // label5
         label5 = new CLabel();
         label5->SetFOwner(PICSimLab.GetWindow());
-        label5->SetName(lxT("label5_p4"));
+        label5->SetName("label5_p4");
         label5->SetX(13);
         label5->SetY(332 + 20);
         label5->SetWidth(120);
         label5->SetHeight(24);
         label5->SetEnable(1);
         label5->SetVisible(1);
-        label5->SetText(lxT("Temp: 00.0°C"));
+        label5->SetText("Temp: 00.0°C");
         label5->SetAlign(1);
         PICSimLab.GetWindow()->CreateChild(label5);
         // label6
         label6 = new CLabel();
         label6->SetFOwner(PICSimLab.GetWindow());
-        label6->SetName(lxT("label6_p4"));
+        label6->SetName("label6_p4");
         label6->SetX(13);
         label6->SetY(54 + 20);
         label6->SetWidth(120);
         label6->SetHeight(24);
         label6->SetEnable(1);
         label6->SetVisible(1);
-        label6->SetText(lxT("LCD"));
+        label6->SetText("LCD");
         label6->SetAlign(1);
         PICSimLab.GetWindow()->CreateChild(label6);
         // combo1
         combo1 = new CCombo();
         combo1->SetFOwner(PICSimLab.GetWindow());
-        combo1->SetName(lxT("combo1_p4"));
+        combo1->SetName("combo1_p4");
         combo1->SetX(13);
         combo1->SetY(78 + 20);
         combo1->SetWidth(130);
         combo1->SetHeight(24);
         combo1->SetEnable(1);
         combo1->SetVisible(1);
-        combo1->SetText(lxT("hd44780 16x2"));
-        combo1->SetItems(lxT("hd44780 16x2,hd44780 16x4,"));
+        combo1->SetText("hd44780 16x2");
+        combo1->SetItems("hd44780 16x2,hd44780 16x4,");
         combo1->SetTag(3);
         combo1->EvOnComboChange = PICSimLab.board_Event;
         PICSimLab.GetWindow()->CreateChild(combo1);
@@ -400,7 +400,7 @@ int cboard_PICGenios::MInit(const char* processor, const char* fname, float freq
     strncpy(fnamem, (const char*)dirname(fname).c_str(), 1023);
     strncat(fnamem, "/mdump_PICGenios_EEPROM.bin", 1023);
 
-    fout = fopen(fnamem, "rb");
+    fout = fopen_UTF8(fnamem, "rb");
     if (fout) {
         fread(mi2c.data, mi2c.SIZE, 1, fout);
         fclose(fout);
@@ -419,14 +419,14 @@ void cboard_PICGenios::SetScale(double scale) {
             delete lcdbmp[0];
             delete lcdbmp[1];
             lxImage image(PICSimLab.GetWindow());
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/VT1.svg")), 0, Scale, Scale);
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/VT1.svg"), 0, Scale, Scale);
             vent[0] = new lxBitmap(&image, PICSimLab.GetWindow());
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/VT2.svg")), 0, Scale, Scale);
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/VT2.svg"), 0, Scale, Scale);
             vent[1] = new lxBitmap(&image, PICSimLab.GetWindow());
 
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/lcd2.svg")), 0, Scale, Scale);
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/lcd2.svg"), 0, Scale, Scale);
             lcdbmp[0] = new lxBitmap(&image, PICSimLab.GetWindow());
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/lcd4.svg")), 0, Scale, Scale);
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/lcd4.svg"), 0, Scale, Scale);
             lcdbmp[1] = new lxBitmap(&image, PICSimLab.GetWindow());
 
             image.Destroy();
@@ -434,14 +434,14 @@ void cboard_PICGenios::SetScale(double scale) {
     }
 }
 
-void cboard_PICGenios::MDumpMemory(const char* mfname) {
+int cboard_PICGenios::MDumpMemory(const char* mfname) {
     FILE* fout;
     char fname[1024];
 
     strncpy(fname, (const char*)dirname(mfname).c_str(), 1023);
     strncat(fname, "/mdump_PICGenios_EEPROM.bin", 1023);
 
-    fout = fopen(fname, "wb");
+    fout = fopen_UTF8(fname, "wb");
     if (fout) {
         fwrite(mi2c.data, mi2c.SIZE, 1, fout);
         fclose(fout);
@@ -449,7 +449,7 @@ void cboard_PICGenios::MDumpMemory(const char* mfname) {
         printf("Error saving to file: %s \n", fname);
     }
 
-    bsim_picsim::MDumpMemory(mfname);
+    return bsim_picsim::MDumpMemory(mfname);
 }
 
 void cboard_PICGenios::Draw(CDraw* draw) {
@@ -1360,12 +1360,12 @@ void cboard_PICGenios::Reset(void) {
     if (pic.serial[0].serialfd != INVALID_SERIAL)
         PICSimLab.UpdateStatus(
             PS_SERIAL,
-            lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) + lxT("(") +
+            "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[0].serialbaud) + "(" +
                 FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
                                              pic.serial[0].serialexbaud)) +
-                lxT("%)"));
+                "%)");
     else
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
 
     for (int i = 0; i < pic.PINCOUNT; i++) {
         lm1[i] = 30;
@@ -1735,7 +1735,7 @@ void cboard_PICGenios::EvMouseButtonPress(uint button, uint x, uint y, uint stat
                 } break;
                 case I_VIEW:
                     FILE* fout;
-                    fout = fopen(mi2c_tmp_name, "w");
+                    fout = fopen_UTF8(mi2c_tmp_name, "w");
                     if (fout) {
                         for (unsigned int i = 0; i < mi2c.SIZE; i += 16) {
                             fprintf(fout, "%04X: ", i);
@@ -2391,38 +2391,38 @@ unsigned short cboard_PICGenios::GetOutputId(char* name) {
 }
 
 void cboard_PICGenios::RefreshStatus(void) {
-    label5->SetText(lxT("Temp: ") + FloatStrFormat("%5.2f", temp[0]) + lxT("C"));
+    label5->SetText("Temp: " + FloatStrFormat("%5.2f", temp[0]) + "C");
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
         PICSimLab.UpdateStatus(
             PS_SERIAL,
-            lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) + lxT("(") +
+            "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[0].serialbaud) + "(" +
                 FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
                                              pic.serial[0].serialexbaud)) +
-                lxT("%)"));
+                "%)");
     else
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
 }
 
 void cboard_PICGenios::WritePreferences(void) {
     char line[100];
-    PICSimLab.SavePrefs(lxT("PICGenios_proc"), Proc);
+    PICSimLab.SavePrefs("PICGenios_proc", Proc);
 
-    PICSimLab.SavePrefs(lxT("PICGenios_jmp"), itoa(jmp[0]));
+    PICSimLab.SavePrefs("PICGenios_jmp", std::to_string(jmp[0]));
 
     if (combo1) {
-        PICSimLab.SavePrefs(lxT("PICGenios_lcd"), combo1->GetText());
+        PICSimLab.SavePrefs("PICGenios_lcd", (const char*)combo1->GetText().c_str());
     }
 
     line[0] = 0;
     for (int i = 0; i < 20; i++)
         sprintf(line + i, "%i", dip[i]);
 
-    PICSimLab.SavePrefs(lxT("PICGenios_dip"), line);
-    PICSimLab.SavePrefs(lxT("PICGenios_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs("PICGenios_dip", line);
+    PICSimLab.SavePrefs("PICGenios_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
 
-    PICSimLab.SavePrefs(lxT("PICGenios_pot1"), itoa(pot[0]));
-    PICSimLab.SavePrefs(lxT("PICGenios_pot2"), itoa(pot[1]));
+    PICSimLab.SavePrefs("PICGenios_pot1", std::to_string(pot[0]));
+    PICSimLab.SavePrefs("PICGenios_pot2", std::to_string(pot[1]));
 }
 
 void cboard_PICGenios::ReadPreferences(char* name, char* value) {
@@ -2479,16 +2479,16 @@ void cboard_PICGenios::ReadPreferences(char* name, char* value) {
 // Change lcd
 
 void cboard_PICGenios::board_Event(CControl* control) {
-    if (combo1->GetText().compare(lxT("hd44780 16x2")) == 0) {
+    if (combo1->GetText().compare("hd44780 16x2") == 0) {
         lcd_end(&lcd);
         lcd_init(&lcd, 16, 2, this);
-    } else if (combo1->GetText().compare(lxT("hd44780 16x4")) == 0) {
+    } else if (combo1->GetText().compare("hd44780 16x4") == 0) {
         lcd_end(&lcd);
         lcd_init(&lcd, 16, 4, this);
-    } else if (combo1->GetText().compare(lxT("hd44780 20x2")) == 0) {
+    } else if (combo1->GetText().compare("hd44780 20x2") == 0) {
         lcd_end(&lcd);
         lcd_init(&lcd, 20, 2, this);
-    } else if (combo1->GetText().compare(lxT("hd44780 20x4")) == 0) {
+    } else if (combo1->GetText().compare("hd44780 20x4") == 0) {
         lcd_end(&lcd);
         lcd_init(&lcd, 20, 4, this);
     }

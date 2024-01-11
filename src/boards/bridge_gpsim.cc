@@ -13,6 +13,8 @@
 // #include <gpsim/stimuli.h>
 #include <gpsim/sim_context.h>
 
+#include "../lib/picsimlab.h"
+
 void simulation_cleanup(void);
 
 static pic_processor* gpic = NULL;
@@ -184,7 +186,7 @@ static int write_hex(unsigned char* mem, unsigned int size, unsigned short* conf
     char values[100];
     char tmp[200];
 
-    fout = fopen(fname, "w");
+    fout = fopen_UTF8(fname, "w");
 
     if (fout) {
         // program memory

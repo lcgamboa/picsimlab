@@ -114,7 +114,7 @@ cboard_Xpress::cboard_Xpress(void) : font(2, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_
         // gauge1
         gauge1 = new CGauge();
         gauge1->SetFOwner(PICSimLab.GetWindow());
-        gauge1->SetName(lxT("gauge1_p6"));
+        gauge1->SetName("gauge1_p6");
         gauge1->SetX(48);
         gauge1->SetY(230 - 110);
         gauge1->SetWidth(110);
@@ -128,7 +128,7 @@ cboard_Xpress::cboard_Xpress(void) : font(2, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_
         // gauge2
         gauge2 = new CGauge();
         gauge2->SetFOwner(PICSimLab.GetWindow());
-        gauge2->SetName(lxT("gauge2_p6"));
+        gauge2->SetName("gauge2_p6");
         gauge2->SetX(48);
         gauge2->SetY(255 - 110);
         gauge2->SetWidth(110);
@@ -142,7 +142,7 @@ cboard_Xpress::cboard_Xpress(void) : font(2, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_
         // gauge3
         gauge3 = new CGauge();
         gauge3->SetFOwner(PICSimLab.GetWindow());
-        gauge3->SetName(lxT("gauge3_p6"));
+        gauge3->SetName("gauge3_p6");
         gauge3->SetX(48);
         gauge3->SetY(280 - 110);
         gauge3->SetWidth(110);
@@ -156,7 +156,7 @@ cboard_Xpress::cboard_Xpress(void) : font(2, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_
         // gauge4
         gauge4 = new CGauge();
         gauge4->SetFOwner(PICSimLab.GetWindow());
-        gauge4->SetName(lxT("gauge4_p6"));
+        gauge4->SetName("gauge4_p6");
         gauge4->SetX(48);
         gauge4->SetY(305 - 110);
         gauge4->SetWidth(110);
@@ -170,53 +170,53 @@ cboard_Xpress::cboard_Xpress(void) : font(2, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_
         // label2
         label2 = new CLabel();
         label2->SetFOwner(PICSimLab.GetWindow());
-        label2->SetName(lxT("label2_p6"));
+        label2->SetName("label2_p6");
         label2->SetX(12);
         label2->SetY(230 - 110);
         label2->SetWidth(60);
         label2->SetHeight(20);
         label2->SetEnable(1);
         label2->SetVisible(1);
-        label2->SetText(lxT("RA0"));
+        label2->SetText("RA0");
         label2->SetAlign(1);
         PICSimLab.GetWindow()->CreateChild(label2);
         // label3
         label3 = new CLabel();
         label3->SetFOwner(PICSimLab.GetWindow());
-        label3->SetName(lxT("label3_p6"));
+        label3->SetName("label3_p6");
         label3->SetX(13);
         label3->SetY(255 - 110);
         label3->SetWidth(60);
         label3->SetHeight(20);
         label3->SetEnable(1);
         label3->SetVisible(1);
-        label3->SetText(lxT("RA1"));
+        label3->SetText("RA1");
         label3->SetAlign(1);
         PICSimLab.GetWindow()->CreateChild(label3);
         // label4
         label4 = new CLabel();
         label4->SetFOwner(PICSimLab.GetWindow());
-        label4->SetName(lxT("label4_p6"));
+        label4->SetName("label4_p6");
         label4->SetX(13);
         label4->SetY(280 - 110);
         label4->SetWidth(60);
         label4->SetHeight(20);
         label4->SetEnable(1);
         label4->SetVisible(1);
-        label4->SetText(lxT("RA2"));
+        label4->SetText("RA2");
         label4->SetAlign(1);
         PICSimLab.GetWindow()->CreateChild(label4);
         // label5
         label5 = new CLabel();
         label5->SetFOwner(PICSimLab.GetWindow());
-        label5->SetName(lxT("label5_p6"));
+        label5->SetName("label5_p6");
         label5->SetX(13);
         label5->SetY(305 - 110);
         label5->SetWidth(60);
         label5->SetHeight(20);
         label5->SetEnable(1);
         label5->SetVisible(1);
-        label5->SetText(lxT("RA3"));
+        label5->SetText("RA3");
         label5->SetAlign(1);
         PICSimLab.GetWindow()->CreateChild(label5);
     }
@@ -254,14 +254,14 @@ void cboard_Xpress::Reset(void) {
     // verify serial port state and refresh status bar
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
-                                      itoa(pic.serial[0].serialbaud) + lxT("(") +
+        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + ":" +
+                                      std::to_string(pic.serial[0].serialbaud) + "(" +
                                       FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                        100.0 * pic.serial[0].serialbaud) /
                                                                       pic.serial[0].serialexbaud)) +
-                                      lxT("%)"));
+                                      "%)");
     else
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
 
     if (use_spare)
         SpareParts.Reset();
@@ -287,23 +287,23 @@ void cboard_Xpress::RefreshStatus(void) {
     // verify serial port state and refresh status bar
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
-                                      itoa(pic.serial[0].serialbaud) + lxT("(") +
+        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + ":" +
+                                      std::to_string(pic.serial[0].serialbaud) + "(" +
                                       FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                        100.0 * pic.serial[0].serialbaud) /
                                                                       pic.serial[0].serialexbaud)) +
-                                      lxT("%)"));
+                                      "%)");
     else
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
 }
 
 // Called to save board preferences in configuration file
 
 void cboard_Xpress::WritePreferences(void) {
     // write selected microcontroller of board_6 to preferences
-    PICSimLab.SavePrefs(lxT("Xpress_proc"), Proc);
-    PICSimLab.SavePrefs(lxT("Xpress_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
-    PICSimLab.SavePrefs(lxT("Xpress_pot1"), itoa( pot1));
+    PICSimLab.SavePrefs("Xpress_proc", Proc);
+    PICSimLab.SavePrefs("Xpress_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs("Xpress_pot1", std::to_string( pot1));
 }
 
 // Called whe configuration file load  preferences

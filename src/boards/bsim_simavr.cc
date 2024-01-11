@@ -219,7 +219,7 @@ void bsim_simavr::pins_reset(void) {
     }
 
     // VCC pins
-    if (lxString(avr->mmcu).compare(lxT("atmega2560")) == 0) {
+    if (std::string(avr->mmcu).compare("atmega2560") == 0) {
         // VCC
         pins[9].value = 1;
         pins[9].ptype = PT_POWER;
@@ -237,7 +237,7 @@ void bsim_simavr::pins_reset(void) {
         pins[61].ptype = PT_POWER;
         pins[80].ptype = PT_POWER;
         pins[98].ptype = PT_POWER;
-    } else if (lxString(avr->mmcu).compare(lxT("attiny85")) == 0) {
+    } else if (std::string(avr->mmcu).compare("attiny85") == 0) {
         // VCC
         pins[7].value = 1;
         pins[7].ptype = PT_POWER;
@@ -281,12 +281,12 @@ static const unsigned char AVR_PORTS[12] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', '
 
 int bsim_simavr::MInit(const char* processor, const char* fname, float freq) {
     int ret;
-    lxString sproc = GetSupportedDevices();
+    std::string sproc = GetSupportedDevices();
     unsigned char extintreg;
     // avr_ioport_external_t p;
 
     avr = NULL;
-    if (sproc.find(processor) != -1) {
+    if (sproc.find(processor) != std::string::npos) {
         avr = avr_make_mcu_by_name(processor);
     }
 
@@ -317,7 +317,7 @@ int bsim_simavr::MInit(const char* processor, const char* fname, float freq) {
 
     avr->frequency = freq;
 
-    if (lxString(avr->mmcu).compare(lxT("atmega2560")) == 0) {
+    if (std::string(avr->mmcu).compare("atmega2560") == 0) {
         avr->reset_pc = 0x3E000;
         usart_count = 4;
         UCSR_base[0] = UCSR0A;
@@ -333,8 +333,8 @@ int bsim_simavr::MInit(const char* processor, const char* fname, float freq) {
         bb_uart[3].rx_pin = 63;  // PJ0
         bb_uart[3].tx_pin = 64;  // PJ1
         extintreg = EIMSK;
-    } else if (((lxString(avr->mmcu).compare(lxT("atmega328p")) == 0)) ||
-               ((lxString(avr->mmcu).compare(lxT("atmega328")) == 0))) {
+    } else if (((std::string(avr->mmcu).compare("atmega328p") == 0)) ||
+               ((std::string(avr->mmcu).compare("atmega328") == 0))) {
         avr->reset_pc = 0x07000;  // bootloader 0x3800
         usart_count = 1;
         UCSR_base[0] = UCSR0A;
@@ -553,8 +553,8 @@ float bsim_simavr::MGetInstClockFreq(void) {
     return avr->frequency;
 }
 
-void bsim_simavr::MDumpMemory(const char* fname) {
-    write_ihx_avr(fname);
+int bsim_simavr::MDumpMemory(const char* fname) {
+    return write_ihx_avr(fname);
 }
 
 void avr_callback_run_gdb_(avr_t* avr) {
@@ -611,7 +611,7 @@ int bsim_simavr::DebugInit(int dtyppe) {
     }
 }
 
-lxString bsim_simavr::GetDebugName(void) {
+std::string bsim_simavr::GetDebugName(void) {
     if (avr_debug_type) {
         return "GDB";
     } else {
@@ -637,32 +637,32 @@ int bsim_simavr::CpuInitialized(void) {
 int bsim_simavr::MGetPinCount(void) {
     if (avr == NULL)
         return 0;
-    if (lxString(avr->mmcu).compare(lxT("atmega328")) == 0) {
+    if (std::string(avr->mmcu).compare("atmega328") == 0) {
         if (pkg == PDIP) {
             return 28;
         } else {  // QFN
             return 32;
         }
     }
-    if (lxString(avr->mmcu).compare(lxT("atmega328p")) == 0) {
+    if (std::string(avr->mmcu).compare("atmega328p") == 0) {
         if (pkg == PDIP) {
             return 28;
         } else {  // QFN
             return 32;
         }
     }
-    if (lxString(avr->mmcu).compare(lxT("atmega2560")) == 0)
+    if (std::string(avr->mmcu).compare("atmega2560") == 0)
         return 100;
-    if (lxString(avr->mmcu).compare(lxT("attiny85")) == 0)
+    if (std::string(avr->mmcu).compare("attiny85") == 0)
         return 8;
     return 0;
 }
 
-lxString bsim_simavr::MGetPinName(int pin) {
+std::string bsim_simavr::MGetPinName(int pin) {
     if (pin <= 0 || pin > MGetPinCount())
         return "error";
 
-    if (lxString(avr->mmcu).compare(lxT("atmega2560")) == 0) {
+    if (std::string(avr->mmcu).compare("atmega2560") == 0) {
         switch (pin) {
             case 1:
                 return "PG5/~4 ";
@@ -965,7 +965,7 @@ lxString bsim_simavr::MGetPinName(int pin) {
                 return "+5V";
                 break;
         }
-    } else if (lxString(avr->mmcu).compare(lxT("attiny85")) == 0) {
+    } else if (std::string(avr->mmcu).compare("attiny85") == 0) {
         switch (pin) {
             case 1:
                 return "PB5/4";
@@ -1223,7 +1223,7 @@ void bsim_simavr::MSetAPin(int pin, float value) {
     if (avr == NULL)
         return;
 
-    if (lxString(avr->mmcu).compare(lxT("atmega2560")) == 0) {
+    if (std::string(avr->mmcu).compare("atmega2560") == 0) {
         switch (pin) {
             case 82:
                 pins[pin - 1].ptype = PT_ANALOG;
@@ -1290,7 +1290,7 @@ void bsim_simavr::MSetAPin(int pin, float value) {
                 avr_raise_irq(avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, 0), (int)(value * 1000));
                 break;
         }
-    } else if (lxString(avr->mmcu).compare(lxT("attiny85")) == 0) {
+    } else if (std::string(avr->mmcu).compare("attiny85") == 0) {
         switch (pin) {
             case 5:
                 pins[pin - 1].ptype = PT_ANALOG;
@@ -1656,7 +1656,7 @@ int bsim_simavr::read_ihx_avr(const char* fname, int leeprom) {
     unsigned short addrh = 0;
     char* mptr;
 
-    fin = fopen(fname, "r");
+    fin = fopen_UTF8(fname, "r");
 
     if (fin) {
         do {
@@ -1733,7 +1733,7 @@ int bsim_simavr::write_ihx_avr(const char* fname) {
     char values[100];
     char tmp[200];
 
-    fout = fopen(fname, "w");
+    fout = fopen_UTF8(fname, "w");
 
     if (fout) {
         // program memory

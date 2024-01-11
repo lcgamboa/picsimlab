@@ -120,17 +120,17 @@ public:
     /**
      * @brief  Return a list of supported microcontrollers
      */
-    virtual lxString GetSupportedDevices(void) = 0;
+    virtual std::string GetSupportedDevices(void) = 0;
 
     /**
      * @brief Return the filename of board picture
      */
-    virtual lxString GetPictureFileName(void);
+    virtual std::string GetPictureFileName(void);
 
     /**
      * @brief  Return the filename of board picture map
      */
-    virtual lxString GetMapFile(void);
+    virtual std::string GetMapFile(void);
 
     /**
      * @brief  Reset board status
@@ -240,17 +240,17 @@ public:
     /**
      * @brief Get board name registered in PICSimLab
      */
-    virtual lxString GetName(void) = 0;
+    virtual std::string GetName(void) = 0;
 
     /**
      * @brief Set board processor
      */
-    void SetProcessorName(lxString proc);
+    void SetProcessorName(std::string proc);
 
     /**
      * @brief Get board processor in use
      */
-    lxString GetProcessorName(void);
+    std::string GetProcessorName(void);
 
     /**
      * @brief Get board input count
@@ -280,12 +280,12 @@ public:
     /**
      * @brief Get debug interface name
      */
-    virtual lxString GetDebugName(void) = 0;
+    virtual std::string GetDebugName(void) = 0;
 
     /**
      * @brief  Return the about information of part
      */
-    virtual lxString GetAboutInfo(void) = 0;
+    virtual std::string GetAboutInfo(void) = 0;
 
     /**
      * @brief debug step (pooling)
@@ -325,7 +325,7 @@ public:
     /**
      * @brief board microcontroller save non volatile memory to hex file
      */
-    virtual void MDumpMemory(const char* fname) = 0;
+    virtual int MDumpMemory(const char* fname) = 0;
 
     /**
      * @brief board microcontroller erase flash memory (program)
@@ -365,7 +365,7 @@ public:
     /**
      * @brief board microcontroller pin name
      */
-    virtual lxString MGetPinName(int pin) = 0;
+    virtual std::string MGetPinName(int pin) = 0;
 
     /**
      * @brief board microcontroller set digital pin
@@ -549,13 +549,13 @@ public:
      * @brief  Get board default processor
      */
 
-    lxString GetDefaultProcessor(void) { return DProc; };
+    std::string GetDefaultProcessor(void) { return DProc; };
 
     /**
      * @brief  Set board default processor
      */
 
-    void SetDefaultProcessor(lxString dproc) { DProc = dproc; };
+    void SetDefaultProcessor(std::string dproc) { DProc = dproc; };
 
     /**
      * @brief Get instruction counter
@@ -635,7 +635,7 @@ public:
     /**
      * @brief Return the description of clk label
      */
-    virtual lxString GetClkLabel(void) { return "Clk (Mhz)"; };
+    virtual std::string GetClkLabel(void) { return "Clk (Mhz)"; };
 
 protected:
     /**
@@ -648,8 +648,8 @@ protected:
      */
     void InstCounterInc(void);
 
-    lxString Proc;                  ///< Name of processor in use
-    lxString DProc;                 ///< Name of default board processor
+    std::string Proc;               ///< Name of processor in use
+    std::string DProc;              ///< Name of default board processor
     input_t input[MAX_IDS];         ///< input map elements
     input_t* input_ids[MAX_IDS];    ///< input map elements by id order
     output_t output[MAX_IDS];       ///< output map elements
@@ -680,12 +680,12 @@ private:
     /**
      * @brief Read the Input Map
      */
-    void ReadInputMap(lxString fname);
+    void ReadInputMap(std::string fname);
 
     /**
      * @brief Read the Output Map
      */
-    void ReadOutputMap(lxString fname);
+    void ReadOutputMap(std::string fname);
 };
 
 extern int ioupdated;

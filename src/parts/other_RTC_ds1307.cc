@@ -121,7 +121,7 @@ unsigned short cpart_RTC_ds1307::GetOutputId(char* name) {
     return INVALID_ID;
 };
 
-lxString cpart_RTC_ds1307::WritePreferences(void) {
+std::string cpart_RTC_ds1307::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2]);
@@ -129,7 +129,7 @@ lxString cpart_RTC_ds1307::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_RTC_ds1307::ReadPreferences(lxString value) {
+void cpart_RTC_ds1307::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2]);
     Reset();
 }

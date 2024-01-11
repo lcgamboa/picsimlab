@@ -145,7 +145,7 @@ unsigned short cpart_servo::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_servo::WritePreferences(void) {
+std::string cpart_servo::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu", input_pin);
@@ -153,7 +153,7 @@ lxString cpart_servo::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_servo::ReadPreferences(lxString value) {
+void cpart_servo::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu", &input_pin);
 }
 
@@ -172,13 +172,13 @@ void cpart_servo::ReadPropertiesWindow(CPWindow* WProp) {
 void cpart_servo::LoadImage(void) {
     if (SpareParts.GetWindow()) {
         lxImage image(SpareParts.GetWindow());
-        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetPictureFileName()),
+        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()),
                        Orientation, Scale, Scale);
 
         Bitmap = new lxBitmap(&image, (SpareParts.GetWindow()));
         image.Destroy();
 
-        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetPictureFileName()),
+        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()),
                        Orientation, Scale, Scale);
 
         if (BackGround) {

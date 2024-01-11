@@ -27,13 +27,14 @@
 #define PART_TEXT_H
 
 #include <lxrad.h>
+#include <vector>
 #include "../lib/part.h"
 
 #define PART_TEXT_Name "Text Box"
 
 class cpart_TEXT : public part {
 public:
-    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     cpart_TEXT(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
     ~cpart_TEXT(void);
     void PostInit(void) override;
@@ -41,8 +42,8 @@ public:
     void OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) override;
     void ConfigurePropertiesWindow(CPWindow* WProp) override;
     void ReadPropertiesWindow(CPWindow* WProp) override;
-    lxString WritePreferences(void) override;
-    void ReadPreferences(lxString value) override;
+    std::string WritePreferences(void) override;
+    void ReadPreferences(std::string value) override;
     void LoadImage(void) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
@@ -50,8 +51,8 @@ public:
 private:
     void RegisterRemoteControl(void) override;
     void ChangeText(int size, int textcolor, int bgcolor);
-    lxStringList Lines;
-    lxString Link;
+    std::vector<std::string> Lines;
+    std::string Link;
     unsigned char Size;
     unsigned char Textcolor;
     unsigned char Bgcolor;

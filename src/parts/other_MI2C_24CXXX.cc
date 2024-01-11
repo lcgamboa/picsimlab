@@ -157,7 +157,7 @@ unsigned short cpart_MI2C_24CXXX::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_MI2C_24CXXX::WritePreferences(void) {
+std::string cpart_MI2C_24CXXX::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%u,%s", input_pins[0], input_pins[1], input_pins[2], input_pins[3],
@@ -165,7 +165,7 @@ lxString cpart_MI2C_24CXXX::WritePreferences(void) {
 
     if (f_mi2c_name[0] != '*') {
         FILE* fout;
-        fout = fopen(f_mi2c_name, "wb");
+        fout = fopen_UTF8(f_mi2c_name, "wb");
         if (fout) {
             fwrite(mi2c.data, mi2c.SIZE, 1, fout);
             fclose(fout);
@@ -177,7 +177,7 @@ lxString cpart_MI2C_24CXXX::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_MI2C_24CXXX::ReadPreferences(lxString value) {
+void cpart_MI2C_24CXXX::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%u,%s", &input_pins[0], &input_pins[1], &input_pins[2],
            &input_pins[3], &input_pins[4], &kbits, f_mi2c_name);
 
@@ -187,7 +187,7 @@ void cpart_MI2C_24CXXX::ReadPreferences(lxString value) {
 
     if (f_mi2c_name[0] != '*') {
         FILE* fout;
-        fout = fopen(f_mi2c_name, "rb");
+        fout = fopen_UTF8(f_mi2c_name, "rb");
         if (fout) {
             fread(mi2c.data, mi2c.SIZE, 1, fout);
             fclose(fout);
@@ -207,7 +207,7 @@ void cpart_MI2C_24CXXX::ConfigurePropertiesWindow(CPWindow* WProp) {
 
     CCombo* combo = (CCombo*)WProp->GetChildByName("combo9");
     combo->SetItems("4,512,");
-    combo->SetText(itoa(kbits));
+    combo->SetText(std::to_string(kbits));
 }
 
 void cpart_MI2C_24CXXX::ReadPropertiesWindow(CPWindow* WProp) {
@@ -265,21 +265,21 @@ void cpart_MI2C_24CXXX::OnMouseButtonPress(uint inputId, uint button, uint x, ui
     switch (inputId) {
         case I_LOAD:
             SpareParts.GetFileDialog()->SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
-            SpareParts.GetFileDialog()->SetFilter(lxT("PICSimLab Binary File (*.bin)|*.bin"));
-            SpareParts.GetFileDialog()->SetFileName(lxT("untitled.bin"));
+            SpareParts.GetFileDialog()->SetFilter("PICSimLab Binary File (*.bin)|*.bin");
+            SpareParts.GetFileDialog()->SetFileName("untitled.bin");
             SpareParts.Setfdtype(id);
             SpareParts.GetFileDialog()->Run();
             break;
         case I_SAVE:
             SpareParts.GetFileDialog()->SetType(lxFD_SAVE | lxFD_CHANGE_DIR);
-            SpareParts.GetFileDialog()->SetFilter(lxT("PICSimLab Binary File (*.bin)|*.bin"));
-            SpareParts.GetFileDialog()->SetFileName(lxT("untitled.bin"));
+            SpareParts.GetFileDialog()->SetFilter("PICSimLab Binary File (*.bin)|*.bin");
+            SpareParts.GetFileDialog()->SetFileName("untitled.bin");
             SpareParts.Setfdtype(id);
             SpareParts.GetFileDialog()->Run();
             break;
         case I_VIEW:
             FILE* fout;
-            fout = fopen(f_mi2c_tmp_name, "w");
+            fout = fopen_UTF8(f_mi2c_tmp_name, "w");
             if (fout) {
                 for (unsigned int i = 0; i < mi2c.SIZE; i += 16) {
                     fprintf(fout, "%04X: ", i);
@@ -324,14 +324,14 @@ void cpart_MI2C_24CXXX::filedialog_EvOnClose(int retId) {
     if (retId) {
         if ((SpareParts.GetFileDialog()->GetType() == (lxFD_SAVE | lxFD_CHANGE_DIR))) {
             if (lxFileExists(SpareParts.GetFileDialog()->GetFileName())) {
-                if (!Dialog_sz(
-                        lxString("Overwriting file: ") + basename(SpareParts.GetFileDialog()->GetFileName()) + "?", 400,
-                        200))
+                if (!Dialog_sz(std::string("Overwriting file: ") +
+                                   ((const char*)basename(SpareParts.GetFileDialog()->GetFileName()).c_str()) + "?",
+                               400, 200))
                     return;
             }
 
             FILE* fout;
-            fout = fopen(SpareParts.GetFileDialog()->GetFileName(), "wb");
+            fout = fopen_UTF8(SpareParts.GetFileDialog()->GetFileName(), "wb");
             if (fout) {
                 fwrite(mi2c.data, mi2c.SIZE, 1, fout);
                 fclose(fout);
@@ -343,7 +343,7 @@ void cpart_MI2C_24CXXX::filedialog_EvOnClose(int retId) {
 
         if ((SpareParts.GetFileDialog()->GetType() == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
             FILE* fout;
-            fout = fopen(SpareParts.GetFileDialog()->GetFileName(), "rb");
+            fout = fopen_UTF8(SpareParts.GetFileDialog()->GetFileName(), "rb");
             if (fout) {
                 fread(mi2c.data, mi2c.SIZE, 1, fout);
                 fclose(fout);

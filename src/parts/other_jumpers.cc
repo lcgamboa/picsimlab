@@ -112,39 +112,39 @@ cpart_Jumpers::cpart_Jumpers(const unsigned x, const unsigned y, const char* nam
 
     jname = buff;
 
-    input_pins[0] = SpareParts.RegisterIOpin(jname + lxT("I0"), 0, PD_IN);
-    input_pins[1] = SpareParts.RegisterIOpin(jname + lxT("I1"), 0, PD_IN);
-    input_pins[2] = SpareParts.RegisterIOpin(jname + lxT("I2"), 0, PD_IN);
-    input_pins[3] = SpareParts.RegisterIOpin(jname + lxT("I3"), 0, PD_IN);
-    input_pins[4] = SpareParts.RegisterIOpin(jname + lxT("I4"), 0, PD_IN);
-    input_pins[5] = SpareParts.RegisterIOpin(jname + lxT("I5"), 0, PD_IN);
-    input_pins[6] = SpareParts.RegisterIOpin(jname + lxT("I6"), 0, PD_IN);
-    input_pins[7] = SpareParts.RegisterIOpin(jname + lxT("I7"), 0, PD_IN);
-    input_pins[8] = SpareParts.RegisterIOpin(jname + lxT("I8"), 0, PD_IN);
-    input_pins[9] = SpareParts.RegisterIOpin(jname + lxT("I9"), 0, PD_IN);
-    input_pins[10] = SpareParts.RegisterIOpin(jname + lxT("IA"), 0, PD_IN);
-    input_pins[11] = SpareParts.RegisterIOpin(jname + lxT("IB"), 0, PD_IN);
-    input_pins[12] = SpareParts.RegisterIOpin(jname + lxT("IC"), 0, PD_IN);
-    input_pins[13] = SpareParts.RegisterIOpin(jname + lxT("ID"), 0, PD_IN);
-    input_pins[14] = SpareParts.RegisterIOpin(jname + lxT("IE"), 0, PD_IN);
-    input_pins[15] = SpareParts.RegisterIOpin(jname + lxT("IF"), 0, PD_IN);
+    input_pins[0] = SpareParts.RegisterIOpin(jname + "I0", 0, PD_IN);
+    input_pins[1] = SpareParts.RegisterIOpin(jname + "I1", 0, PD_IN);
+    input_pins[2] = SpareParts.RegisterIOpin(jname + "I2", 0, PD_IN);
+    input_pins[3] = SpareParts.RegisterIOpin(jname + "I3", 0, PD_IN);
+    input_pins[4] = SpareParts.RegisterIOpin(jname + "I4", 0, PD_IN);
+    input_pins[5] = SpareParts.RegisterIOpin(jname + "I5", 0, PD_IN);
+    input_pins[6] = SpareParts.RegisterIOpin(jname + "I6", 0, PD_IN);
+    input_pins[7] = SpareParts.RegisterIOpin(jname + "I7", 0, PD_IN);
+    input_pins[8] = SpareParts.RegisterIOpin(jname + "I8", 0, PD_IN);
+    input_pins[9] = SpareParts.RegisterIOpin(jname + "I9", 0, PD_IN);
+    input_pins[10] = SpareParts.RegisterIOpin(jname + "IA", 0, PD_IN);
+    input_pins[11] = SpareParts.RegisterIOpin(jname + "IB", 0, PD_IN);
+    input_pins[12] = SpareParts.RegisterIOpin(jname + "IC", 0, PD_IN);
+    input_pins[13] = SpareParts.RegisterIOpin(jname + "ID", 0, PD_IN);
+    input_pins[14] = SpareParts.RegisterIOpin(jname + "IE", 0, PD_IN);
+    input_pins[15] = SpareParts.RegisterIOpin(jname + "IF", 0, PD_IN);
 
-    output_pins[0] = SpareParts.RegisterIOpin(jname + lxT("O0"));
-    output_pins[1] = SpareParts.RegisterIOpin(jname + lxT("O1"));
-    output_pins[2] = SpareParts.RegisterIOpin(jname + lxT("O2"));
-    output_pins[3] = SpareParts.RegisterIOpin(jname + lxT("O3"));
-    output_pins[4] = SpareParts.RegisterIOpin(jname + lxT("O4"));
-    output_pins[5] = SpareParts.RegisterIOpin(jname + lxT("O5"));
-    output_pins[6] = SpareParts.RegisterIOpin(jname + lxT("O6"));
-    output_pins[7] = SpareParts.RegisterIOpin(jname + lxT("O7"));
-    output_pins[8] = SpareParts.RegisterIOpin(jname + lxT("O8"));
-    output_pins[9] = SpareParts.RegisterIOpin(jname + lxT("O9"));
-    output_pins[10] = SpareParts.RegisterIOpin(jname + lxT("OA"));
-    output_pins[11] = SpareParts.RegisterIOpin(jname + lxT("OB"));
-    output_pins[12] = SpareParts.RegisterIOpin(jname + lxT("OC"));
-    output_pins[13] = SpareParts.RegisterIOpin(jname + lxT("OD"));
-    output_pins[14] = SpareParts.RegisterIOpin(jname + lxT("OE"));
-    output_pins[15] = SpareParts.RegisterIOpin(jname + lxT("OF"));
+    output_pins[0] = SpareParts.RegisterIOpin(jname + "O0");
+    output_pins[1] = SpareParts.RegisterIOpin(jname + "O1");
+    output_pins[2] = SpareParts.RegisterIOpin(jname + "O2");
+    output_pins[3] = SpareParts.RegisterIOpin(jname + "O3");
+    output_pins[4] = SpareParts.RegisterIOpin(jname + "O4");
+    output_pins[5] = SpareParts.RegisterIOpin(jname + "O5");
+    output_pins[6] = SpareParts.RegisterIOpin(jname + "O6");
+    output_pins[7] = SpareParts.RegisterIOpin(jname + "O7");
+    output_pins[8] = SpareParts.RegisterIOpin(jname + "O8");
+    output_pins[9] = SpareParts.RegisterIOpin(jname + "O9");
+    output_pins[10] = SpareParts.RegisterIOpin(jname + "OA");
+    output_pins[11] = SpareParts.RegisterIOpin(jname + "OB");
+    output_pins[12] = SpareParts.RegisterIOpin(jname + "OC");
+    output_pins[13] = SpareParts.RegisterIOpin(jname + "OD");
+    output_pins[14] = SpareParts.RegisterIOpin(jname + "OE");
+    output_pins[15] = SpareParts.RegisterIOpin(jname + "OF");
 
     jtype = JWT_MM;
 
@@ -304,7 +304,7 @@ unsigned short cpart_Jumpers::GetOutputId(char* name) {
     return INVALID_ID;
 };
 
-lxString cpart_Jumpers::WritePreferences(void) {
+std::string cpart_Jumpers::WritePreferences(void) {
     char prefs[256];
 
     char c = jname[0];
@@ -321,7 +321,7 @@ lxString cpart_Jumpers::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_Jumpers::ReadPreferences(lxString value) {
+void cpart_Jumpers::ReadPreferences(std::string value) {
     unsigned char inp[16];
     unsigned char outp[16];
 
@@ -359,22 +359,22 @@ void cpart_Jumpers::ReadPreferences(lxString value) {
                 SpareParts.UnregisterIOpin(input_pins[i]);
             }
 
-            input_pins[0] = SpareParts.RegisterIOpin(jname + lxT("I0"), inp[0], PD_IN);
-            input_pins[1] = SpareParts.RegisterIOpin(jname + lxT("I1"), inp[1], PD_IN);
-            input_pins[2] = SpareParts.RegisterIOpin(jname + lxT("I2"), inp[2], PD_IN);
-            input_pins[3] = SpareParts.RegisterIOpin(jname + lxT("I3"), inp[3], PD_IN);
-            input_pins[4] = SpareParts.RegisterIOpin(jname + lxT("I4"), inp[4], PD_IN);
-            input_pins[5] = SpareParts.RegisterIOpin(jname + lxT("I5"), inp[5], PD_IN);
-            input_pins[6] = SpareParts.RegisterIOpin(jname + lxT("I6"), inp[6], PD_IN);
-            input_pins[7] = SpareParts.RegisterIOpin(jname + lxT("I7"), inp[7], PD_IN);
-            input_pins[8] = SpareParts.RegisterIOpin(jname + lxT("I8"), inp[8], PD_IN);
-            input_pins[9] = SpareParts.RegisterIOpin(jname + lxT("I9"), inp[9], PD_IN);
-            input_pins[10] = SpareParts.RegisterIOpin(jname + lxT("IA"), inp[10], PD_IN);
-            input_pins[11] = SpareParts.RegisterIOpin(jname + lxT("IB"), inp[11], PD_IN);
-            input_pins[12] = SpareParts.RegisterIOpin(jname + lxT("IC"), inp[12], PD_IN);
-            input_pins[13] = SpareParts.RegisterIOpin(jname + lxT("ID"), inp[13], PD_IN);
-            input_pins[14] = SpareParts.RegisterIOpin(jname + lxT("IE"), inp[14], PD_IN);
-            input_pins[15] = SpareParts.RegisterIOpin(jname + lxT("IF"), inp[15], PD_IN);
+            input_pins[0] = SpareParts.RegisterIOpin(jname + "I0", inp[0], PD_IN);
+            input_pins[1] = SpareParts.RegisterIOpin(jname + "I1", inp[1], PD_IN);
+            input_pins[2] = SpareParts.RegisterIOpin(jname + "I2", inp[2], PD_IN);
+            input_pins[3] = SpareParts.RegisterIOpin(jname + "I3", inp[3], PD_IN);
+            input_pins[4] = SpareParts.RegisterIOpin(jname + "I4", inp[4], PD_IN);
+            input_pins[5] = SpareParts.RegisterIOpin(jname + "I5", inp[5], PD_IN);
+            input_pins[6] = SpareParts.RegisterIOpin(jname + "I6", inp[6], PD_IN);
+            input_pins[7] = SpareParts.RegisterIOpin(jname + "I7", inp[7], PD_IN);
+            input_pins[8] = SpareParts.RegisterIOpin(jname + "I8", inp[8], PD_IN);
+            input_pins[9] = SpareParts.RegisterIOpin(jname + "I9", inp[9], PD_IN);
+            input_pins[10] = SpareParts.RegisterIOpin(jname + "IA", inp[10], PD_IN);
+            input_pins[11] = SpareParts.RegisterIOpin(jname + "IB", inp[11], PD_IN);
+            input_pins[12] = SpareParts.RegisterIOpin(jname + "IC", inp[12], PD_IN);
+            input_pins[13] = SpareParts.RegisterIOpin(jname + "ID", inp[13], PD_IN);
+            input_pins[14] = SpareParts.RegisterIOpin(jname + "IE", inp[14], PD_IN);
+            input_pins[15] = SpareParts.RegisterIOpin(jname + "IF", inp[15], PD_IN);
         }
     }
 
@@ -400,22 +400,22 @@ void cpart_Jumpers::ReadPreferences(lxString value) {
                 SpareParts.UnregisterIOpin(output_pins[i]);
             }
 
-            output_pins[0] = SpareParts.RegisterIOpin(jname + lxT("O0"), outp[0]);
-            output_pins[1] = SpareParts.RegisterIOpin(jname + lxT("O1"), outp[1]);
-            output_pins[2] = SpareParts.RegisterIOpin(jname + lxT("O2"), outp[2]);
-            output_pins[3] = SpareParts.RegisterIOpin(jname + lxT("O3"), outp[3]);
-            output_pins[4] = SpareParts.RegisterIOpin(jname + lxT("O4"), outp[4]);
-            output_pins[5] = SpareParts.RegisterIOpin(jname + lxT("O5"), outp[5]);
-            output_pins[6] = SpareParts.RegisterIOpin(jname + lxT("O6"), outp[6]);
-            output_pins[7] = SpareParts.RegisterIOpin(jname + lxT("O7"), outp[7]);
-            output_pins[8] = SpareParts.RegisterIOpin(jname + lxT("O8"), outp[8]);
-            output_pins[9] = SpareParts.RegisterIOpin(jname + lxT("O9"), outp[9]);
-            output_pins[10] = SpareParts.RegisterIOpin(jname + lxT("OA"), outp[10]);
-            output_pins[11] = SpareParts.RegisterIOpin(jname + lxT("OB"), outp[11]);
-            output_pins[12] = SpareParts.RegisterIOpin(jname + lxT("OC"), outp[12]);
-            output_pins[13] = SpareParts.RegisterIOpin(jname + lxT("OD"), outp[13]);
-            output_pins[14] = SpareParts.RegisterIOpin(jname + lxT("OE"), outp[14]);
-            output_pins[15] = SpareParts.RegisterIOpin(jname + lxT("OF"), outp[15]);
+            output_pins[0] = SpareParts.RegisterIOpin(jname + "O0", outp[0]);
+            output_pins[1] = SpareParts.RegisterIOpin(jname + "O1", outp[1]);
+            output_pins[2] = SpareParts.RegisterIOpin(jname + "O2", outp[2]);
+            output_pins[3] = SpareParts.RegisterIOpin(jname + "O3", outp[3]);
+            output_pins[4] = SpareParts.RegisterIOpin(jname + "O4", outp[4]);
+            output_pins[5] = SpareParts.RegisterIOpin(jname + "O5", outp[5]);
+            output_pins[6] = SpareParts.RegisterIOpin(jname + "O6", outp[6]);
+            output_pins[7] = SpareParts.RegisterIOpin(jname + "O7", outp[7]);
+            output_pins[8] = SpareParts.RegisterIOpin(jname + "O8", outp[8]);
+            output_pins[9] = SpareParts.RegisterIOpin(jname + "O9", outp[9]);
+            output_pins[10] = SpareParts.RegisterIOpin(jname + "OA", outp[10]);
+            output_pins[11] = SpareParts.RegisterIOpin(jname + "OB", outp[11]);
+            output_pins[12] = SpareParts.RegisterIOpin(jname + "OC", outp[12]);
+            output_pins[13] = SpareParts.RegisterIOpin(jname + "OD", outp[13]);
+            output_pins[14] = SpareParts.RegisterIOpin(jname + "OE", outp[14]);
+            output_pins[15] = SpareParts.RegisterIOpin(jname + "OF", outp[15]);
         }
     }
 
@@ -577,22 +577,22 @@ void cpart_Jumpers::ChangeType(unsigned char ntype) {
         }
     }
     if ((jtype & 0x02) && !(ntype & 0x02)) {
-        input_pins[0] = SpareParts.RegisterIOpin(jname + lxT("I0"), 0, PD_IN);
-        input_pins[1] = SpareParts.RegisterIOpin(jname + lxT("I1"), 0, PD_IN);
-        input_pins[2] = SpareParts.RegisterIOpin(jname + lxT("I2"), 0, PD_IN);
-        input_pins[3] = SpareParts.RegisterIOpin(jname + lxT("I3"), 0, PD_IN);
-        input_pins[4] = SpareParts.RegisterIOpin(jname + lxT("I4"), 0, PD_IN);
-        input_pins[5] = SpareParts.RegisterIOpin(jname + lxT("I5"), 0, PD_IN);
-        input_pins[6] = SpareParts.RegisterIOpin(jname + lxT("I6"), 0, PD_IN);
-        input_pins[7] = SpareParts.RegisterIOpin(jname + lxT("I7"), 0, PD_IN);
-        input_pins[8] = SpareParts.RegisterIOpin(jname + lxT("I8"), 0, PD_IN);
-        input_pins[9] = SpareParts.RegisterIOpin(jname + lxT("I9"), 0, PD_IN);
-        input_pins[10] = SpareParts.RegisterIOpin(jname + lxT("IA"), 0, PD_IN);
-        input_pins[11] = SpareParts.RegisterIOpin(jname + lxT("IB"), 0, PD_IN);
-        input_pins[12] = SpareParts.RegisterIOpin(jname + lxT("IC"), 0, PD_IN);
-        input_pins[13] = SpareParts.RegisterIOpin(jname + lxT("ID"), 0, PD_IN);
-        input_pins[14] = SpareParts.RegisterIOpin(jname + lxT("IE"), 0, PD_IN);
-        input_pins[15] = SpareParts.RegisterIOpin(jname + lxT("IF"), 0, PD_IN);
+        input_pins[0] = SpareParts.RegisterIOpin(jname + "I0", 0, PD_IN);
+        input_pins[1] = SpareParts.RegisterIOpin(jname + "I1", 0, PD_IN);
+        input_pins[2] = SpareParts.RegisterIOpin(jname + "I2", 0, PD_IN);
+        input_pins[3] = SpareParts.RegisterIOpin(jname + "I3", 0, PD_IN);
+        input_pins[4] = SpareParts.RegisterIOpin(jname + "I4", 0, PD_IN);
+        input_pins[5] = SpareParts.RegisterIOpin(jname + "I5", 0, PD_IN);
+        input_pins[6] = SpareParts.RegisterIOpin(jname + "I6", 0, PD_IN);
+        input_pins[7] = SpareParts.RegisterIOpin(jname + "I7", 0, PD_IN);
+        input_pins[8] = SpareParts.RegisterIOpin(jname + "I8", 0, PD_IN);
+        input_pins[9] = SpareParts.RegisterIOpin(jname + "I9", 0, PD_IN);
+        input_pins[10] = SpareParts.RegisterIOpin(jname + "IA", 0, PD_IN);
+        input_pins[11] = SpareParts.RegisterIOpin(jname + "IB", 0, PD_IN);
+        input_pins[12] = SpareParts.RegisterIOpin(jname + "IC", 0, PD_IN);
+        input_pins[13] = SpareParts.RegisterIOpin(jname + "ID", 0, PD_IN);
+        input_pins[14] = SpareParts.RegisterIOpin(jname + "IE", 0, PD_IN);
+        input_pins[15] = SpareParts.RegisterIOpin(jname + "IF", 0, PD_IN);
     }
 
     if (!(jtype & 0x01) && (ntype & 0x01)) {
@@ -603,39 +603,39 @@ void cpart_Jumpers::ChangeType(unsigned char ntype) {
     }
 
     if ((jtype & 0x01) && !(ntype & 0x01)) {
-        output_pins[0] = SpareParts.RegisterIOpin(jname + lxT("O0"));
-        output_pins[1] = SpareParts.RegisterIOpin(jname + lxT("O1"));
-        output_pins[2] = SpareParts.RegisterIOpin(jname + lxT("O2"));
-        output_pins[3] = SpareParts.RegisterIOpin(jname + lxT("O3"));
-        output_pins[4] = SpareParts.RegisterIOpin(jname + lxT("O4"));
-        output_pins[5] = SpareParts.RegisterIOpin(jname + lxT("O5"));
-        output_pins[6] = SpareParts.RegisterIOpin(jname + lxT("O6"));
-        output_pins[7] = SpareParts.RegisterIOpin(jname + lxT("O7"));
-        output_pins[8] = SpareParts.RegisterIOpin(jname + lxT("O8"));
-        output_pins[9] = SpareParts.RegisterIOpin(jname + lxT("O9"));
-        output_pins[10] = SpareParts.RegisterIOpin(jname + lxT("OA"));
-        output_pins[11] = SpareParts.RegisterIOpin(jname + lxT("OB"));
-        output_pins[12] = SpareParts.RegisterIOpin(jname + lxT("OC"));
-        output_pins[13] = SpareParts.RegisterIOpin(jname + lxT("OD"));
-        output_pins[14] = SpareParts.RegisterIOpin(jname + lxT("OE"));
-        output_pins[15] = SpareParts.RegisterIOpin(jname + lxT("OF"));
+        output_pins[0] = SpareParts.RegisterIOpin(jname + "O0");
+        output_pins[1] = SpareParts.RegisterIOpin(jname + "O1");
+        output_pins[2] = SpareParts.RegisterIOpin(jname + "O2");
+        output_pins[3] = SpareParts.RegisterIOpin(jname + "O3");
+        output_pins[4] = SpareParts.RegisterIOpin(jname + "O4");
+        output_pins[5] = SpareParts.RegisterIOpin(jname + "O5");
+        output_pins[6] = SpareParts.RegisterIOpin(jname + "O6");
+        output_pins[7] = SpareParts.RegisterIOpin(jname + "O7");
+        output_pins[8] = SpareParts.RegisterIOpin(jname + "O8");
+        output_pins[9] = SpareParts.RegisterIOpin(jname + "O9");
+        output_pins[10] = SpareParts.RegisterIOpin(jname + "OA");
+        output_pins[11] = SpareParts.RegisterIOpin(jname + "OB");
+        output_pins[12] = SpareParts.RegisterIOpin(jname + "OC");
+        output_pins[13] = SpareParts.RegisterIOpin(jname + "OD");
+        output_pins[14] = SpareParts.RegisterIOpin(jname + "OE");
+        output_pins[15] = SpareParts.RegisterIOpin(jname + "OF");
     }
 
     jtype = ntype;
 }
 
-void cpart_Jumpers::ComboChange(CPWindow* WProp, CCombo* control, lxString value) {
+void cpart_Jumpers::ComboChange(CPWindow* WProp, CCombo* control, std::string value) {
     unsigned char ntype = jtype;
 
     if (!control->GetName().compare("combo1")) {
-        if (!value.compare(lxT("F"))) {
+        if (!value.compare("F")) {
             ntype |= 0x02;
         } else {
             ntype &= ~0x02;
         }
 
     } else {
-        if (!value.compare(lxT("F"))) {
+        if (!value.compare("F")) {
             ntype |= 0x01;
         } else {
             ntype &= ~0x01;

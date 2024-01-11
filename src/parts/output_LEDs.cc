@@ -211,7 +211,7 @@ unsigned short cpart_leds::GetOutputId(char* name) {
     return INVALID_ID;
 };
 
-lxString cpart_leds::WritePreferences(void) {
+std::string cpart_leds::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u",
@@ -222,7 +222,7 @@ lxString cpart_leds::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_leds::ReadPreferences(lxString value) {
+void cpart_leds::ReadPreferences(std::string value) {
     unsigned int sz;
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u",
            &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5],
@@ -245,7 +245,7 @@ void cpart_leds::RegisterRemoteControl(void) {
 }
 
 void cpart_leds::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Colors = "";
+    std::string Colors = "";
 
     for (int i = 0; i < C_END; i++) {
         Colors += Colorname[i];
@@ -307,7 +307,7 @@ void cpart_leds::ReadPropertiesWindow(CPWindow* WProp) {
     for (int i = 0; i < 8; i++) {
         char cname[100];
         snprintf(cname, 100, "combo_%i", 1 + i);
-        lxString val = ((CCombo*)WProp->GetChildByName(cname))->GetText();
+        std::string val = (const char*)((CCombo*)WProp->GetChildByName(cname))->GetText().c_str();
         for (int j = 0; j < C_END; j++) {
             if (!val.compare(Colorname[j])) {
                 colors[i] = j;
@@ -359,7 +359,7 @@ void cpart_leds::LoadImage(void) {
             canvas.Destroy();
             canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
 
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetPictureFileName()),
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()),
                            Orientation, Scale, Scale);
             lxBitmap* BackBitmap = new lxBitmap(&image, SpareParts.GetWindow());
             image.Destroy();

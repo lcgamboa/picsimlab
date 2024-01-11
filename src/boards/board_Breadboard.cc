@@ -86,7 +86,7 @@ cboard_Breadboard::cboard_Breadboard(void) : font(10, lxFONTFAMILY_TELETYPE, lxF
     ReadMaps();           // Read input and output board maps
 
     lxImage image(PICSimLab.GetWindow());
-    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic40.svg")), 0, Scale, Scale, 1);
+    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/ic40.svg"), 0, Scale, Scale, 1);
     micbmp = new lxBitmap(&image, PICSimLab.GetWindow());
 }
 
@@ -108,30 +108,26 @@ void cboard_Breadboard::Reset(void) {
             // verify serial port state and refresh status bar
 
             if (pic.serial[0].serialfd != INVALID_SERIAL)
-                PICSimLab.UpdateStatus(PS_SERIAL,
-                                       lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
-                                           itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                           FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                            100.0 * pic.serial[0].serialbaud) /
-                                                                           pic.serial[0].serialexbaud)) +
-                                           lxT("%)"));
+                PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + ":" +
+                                                      std::to_string(pic.serial[0].serialbaud) + "(" +
+                                                      FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                                                                    100.0 * pic.serial[0].serialbaud) /
+                                                                                   pic.serial[0].serialexbaud)) +
+                                                      "%)");
             else
-                PICSimLab.UpdateStatus(PS_SERIAL,
-                                       lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
+                PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
             break;
         case _AVR:
             MReset(0);
             // verify serial port state and refresh status bar
             if (serialfd != INVALID_SERIAL)
                 PICSimLab.UpdateStatus(
-                    PS_SERIAL,
-                    lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) + lxT("(") +
-                        FloatStrFormat("%4.1f",
-                                          fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) / serialexbaud[0])) +
-                        lxT("%)"));
+                    PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(serialbaud[0]) + "(" +
+                                   FloatStrFormat("%4.1f", fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) /
+                                                                serialexbaud[0])) +
+                                   "%)");
             else
-                PICSimLab.UpdateStatus(PS_SERIAL,
-                                       lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
+                PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
             break;
     }
 
@@ -155,30 +151,26 @@ void cboard_Breadboard::RefreshStatus(void) {
             // verify serial port state and refresh status bar
 
             if (pic.serial[0].serialfd != INVALID_SERIAL)
-                PICSimLab.UpdateStatus(PS_SERIAL,
-                                       lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
-                                           itoa(pic.serial[0].serialbaud) + lxT("(") +
-                                           FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                            100.0 * pic.serial[0].serialbaud) /
-                                                                           pic.serial[0].serialexbaud)) +
-                                           lxT("%)"));
+                PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + ":" +
+                                                      std::to_string(pic.serial[0].serialbaud) + "(" +
+                                                      FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
+                                                                                    100.0 * pic.serial[0].serialbaud) /
+                                                                                   pic.serial[0].serialexbaud)) +
+                                                      "%)");
             else
-                PICSimLab.UpdateStatus(PS_SERIAL,
-                                       lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
+                PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
             break;
         case _AVR:
             // verify serial port state and refresh status bar
 
             if (serialfd != INVALID_SERIAL)
                 PICSimLab.UpdateStatus(
-                    PS_SERIAL,
-                    lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") + itoa(serialbaud[0]) + lxT("(") +
-                        FloatStrFormat("%4.1f",
-                                          fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) / serialexbaud[0])) +
-                        lxT("%)"));
+                    PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(serialbaud[0]) + "(" +
+                                   FloatStrFormat("%4.1f", fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) /
+                                                                serialexbaud[0])) +
+                                   "%)");
             else
-                PICSimLab.UpdateStatus(PS_SERIAL,
-                                       lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
+                PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
 
             if (PICSimLab.GetMcuPwr()) {
                 if (avr) {
@@ -222,9 +214,9 @@ void cboard_Breadboard::RefreshStatus(void) {
 
 void cboard_Breadboard::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
-    PICSimLab.SavePrefs(lxT("Breadboard_proc"), Proc);
-    PICSimLab.SavePrefs(lxT("Breadboard_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
-    PICSimLab.SavePrefs(lxT("Breadboard_jmp"), itoa( jmp[0]));
+    PICSimLab.SavePrefs("Breadboard_proc", Proc);
+    PICSimLab.SavePrefs("Breadboard_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs("Breadboard_jmp", std::to_string(jmp[0]));
 }
 
 // Called whe configuration file load  preferences
@@ -571,7 +563,7 @@ int cboard_Breadboard::DebugInit(int dtyppe) {
     return 0;
 }
 
-lxString cboard_Breadboard::GetDebugName(void) {
+std::string cboard_Breadboard::GetDebugName(void) {
     switch (ptype) {
         case _PIC:
             return bsim_picsim::GetDebugName();
@@ -637,12 +629,12 @@ int cboard_Breadboard::MInit(const char* processor, const char* fname, float fre
     lxImage image(PICSimLab.GetWindow());
 
     if (!image.LoadFile(
-            lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg")), 0,
+            lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg"), 0,
             Scale, Scale, 1)) {
-        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic6.svg")), 0, Scale, Scale, 1);
+        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/ic6.svg"), 0, Scale, Scale, 1);
         printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
         printf("picsimlab: %s not found!\n",
-               (const char*)(PICSimLab.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg"))
+               (const char*)(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg")
                    .c_str());
     }
 
@@ -676,7 +668,7 @@ int cboard_Breadboard::MGetArchitecture(void) {
     return ARCH_UNKNOWN;
 }
 
-void cboard_Breadboard::MDumpMemory(const char* fname) {
+int cboard_Breadboard::MDumpMemory(const char* fname) {
     switch (ptype) {
         case _PIC:
             return bsim_picsim::MDumpMemory(fname);
@@ -685,6 +677,7 @@ void cboard_Breadboard::MDumpMemory(const char* fname) {
             return bsim_simavr::MDumpMemory(fname);
             break;
     }
+    return 1;
 }
 
 void cboard_Breadboard::MEraseFlash(void) {
@@ -768,7 +761,7 @@ int cboard_Breadboard::MGetPinCount(void) {
     return 0;
 }
 
-lxString cboard_Breadboard::MGetPinName(int pin) {
+std::string cboard_Breadboard::MGetPinName(int pin) {
     switch (ptype) {
         case _PIC:
             return bsim_picsim::MGetPinName(pin);
@@ -1073,16 +1066,16 @@ void cboard_Breadboard::SetScale(double scale) {
 
     if (MGetPinCount()) {
         if (!image.LoadFile(
-                lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic") + itoa(MGetPinCount()) + lxT(".svg")),
+                lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg"),
                 0, Scale, Scale, 1)) {
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic6.svg")), 0, Scale, Scale, 1);
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/ic6.svg"), 0, Scale, Scale, 1);
             printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
-            printf("picsimlab: %s not found!\n", (const char*)(PICSimLab.GetSharePath() + lxT("boards/Common/ic") +
-                                                               itoa(MGetPinCount()) + lxT(".svg"))
+            printf("picsimlab: %s not found!\n", (const char*)(PICSimLab.GetSharePath() + "boards/Common/ic" +
+                                                               std::to_string(MGetPinCount()) + ".svg")
                                                      .c_str());
         }
     } else {
-        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/Common/ic40.svg")), 0, Scale, Scale, 1);
+        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/ic40.svg"), 0, Scale, Scale, 1);
     }
     if (micbmp)
         delete micbmp;

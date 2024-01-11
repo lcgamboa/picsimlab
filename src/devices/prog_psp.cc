@@ -63,7 +63,7 @@ int pfd;
 int prog_sopen(const char* port) {
 #ifdef _WIN_
 
-    phCom = CreateFile(lxString(port).c_str(), GENERIC_READ | GENERIC_WRITE,
+    phCom = CreateFile(std::string(port).c_str(), GENERIC_READ | GENERIC_WRITE,
                        0,     // exclusive access
                        NULL,  // no security
                        OPEN_EXISTING,
@@ -406,7 +406,7 @@ int prog_loop(_pic* pic) {
 #ifdef _DEBUG_
         printf("%02x", c);
 #endif
-        PICSimLab.UpdateStatus(0, lxT("Programming...."));
+        PICSimLab.UpdateStatus(0, "Programming....");
         switch (c) {
             case 0x42:  // Blank check full
                 prog_ssend(0x42);
@@ -754,7 +754,7 @@ int prog_loop(_pic* pic) {
         fflush(stdout);
 #endif
 
-        PICSimLab.UpdateStatus(0, lxT("Running..."));
+        PICSimLab.UpdateStatus(0, "Running...");
         pic_reset(pic, 0);
     }
 

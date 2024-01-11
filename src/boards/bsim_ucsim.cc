@@ -63,9 +63,9 @@ void bsim_ucsim::MSetSerial(const char* port) {
      char fbuff[20];
      int ret = -1;
 
-     lxString sproc = GetSupportedDevices();
+     std::string sproc = GetSupportedDevices();
 
-     if (sproc.find(processor) != -1) {
+     if (sproc.find(processor) != std::string::npos) {
          if (!strcmp("C51", processor)) {
              procid = PID_C51;
          } else if (!strcmp("STM8S103", processor)) {
@@ -134,8 +134,8 @@ void bsim_ucsim::MSetSerial(const char* port) {
 
  void bsim_ucsim::DebugLoop(void) {}
 
- lxString bsim_ucsim::MGetPinName(int pin) {
-     lxString pinname = "error";
+ std::string bsim_ucsim::MGetPinName(int pin) {
+     std::string pinname = "error";
 
      if ((pin) && (pin <= MGetPinCount()))
          pinname = pinnames[procid][pin - 1];
@@ -143,8 +143,8 @@ void bsim_ucsim::MSetSerial(const char* port) {
      return pinname;
  }
 
- void bsim_ucsim::MDumpMemory(const char* fname) {
-     ucsim_dump(fname);
+ int bsim_ucsim::MDumpMemory(const char* fname) {
+     return ucsim_dump(fname);
  }
 
  int bsim_ucsim::DebugInit(int dtyppe)  // argument not used in picm only mplabx
@@ -163,7 +163,7 @@ void bsim_ucsim::MSetSerial(const char* port) {
  void bsim_ucsim::pins_reset(void) {
      if ((procid == PID_C51) || (procid == PID_Z80)) {
          for (int p = 0; p < MGetPinCount(); p++) {
-             lxString pname = MGetPinName(p + 1);
+             std::string pname = MGetPinName(p + 1);
              if (pname[0] == 'P') {
                  pins[p].port = (unsigned char*)&UCSIM_PORTS[pname[1] - '0'];
                  pins[p].pord = pname[3] - '0';
@@ -193,7 +193,7 @@ void bsim_ucsim::MSetSerial(const char* port) {
          }
      } else if (procid == PID_STM8S103) {
          for (int p = 0; p < MGetPinCount(); p++) {
-             lxString pname = MGetPinName(p + 1);
+             std::string pname = MGetPinName(p + 1);
              if (pname[0] == 'P') {
                  pins[p].port = (unsigned char*)&UCSIM_PORTS[pname[1] - 'A'];
                  pins[p].pord = pname[2] - '0';

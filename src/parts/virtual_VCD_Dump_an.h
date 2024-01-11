@@ -33,21 +33,21 @@
 
 class cpart_VCD_Dump_an : public part {
 public:
-    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     cpart_VCD_Dump_an(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
     ~cpart_VCD_Dump_an(void);
     void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;
     void Process(void) override;
     void PostProcess(void) override;
-    lxString GetPictureFileName(void) override { return lxT("VCD Dump/part.svg"); };
-    lxString GetMapFile(void) override { return lxT("VCD Dump/part.map"); };
-    lxString GetPropertiesWindowFile(void) override { return lxT("VCD Dump/part.lxrad"); };
+    std::string GetPictureFileName(void) override { return "VCD Dump/part.svg"; };
+    std::string GetMapFile(void) override { return "VCD Dump/part.map"; };
+    std::string GetPropertiesWindowFile(void) override { return "VCD Dump/part.lxrad"; };
     void OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) override;
     void ConfigurePropertiesWindow(CPWindow* WProp) override;
     void ReadPropertiesWindow(CPWindow* WProp) override;
-    lxString WritePreferences(void) override;
-    void ReadPreferences(lxString value) override;
+    std::string WritePreferences(void) override;
+    void ReadPreferences(std::string value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
 

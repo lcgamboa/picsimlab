@@ -49,13 +49,13 @@ private:
 
 public:
     // Return the board name
-    lxString GetName(void) override { return lxT(BOARD_McLab1_Name); };
-    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    std::string GetName(void) override { return BOARD_McLab1_Name; };
+    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     cboard_McLab1(void);
     ~cboard_McLab1(void);
     void Draw(CDraw* draw) override;
     void Run_CPU(void) override;
-    lxString GetSupportedDevices(void) override { return lxT("PIC16F628A,PIC16F648A,PIC16F84A,"); };
+    std::string GetSupportedDevices(void) override { return "PIC16F628A,PIC16F648A,PIC16F84A,"; };
     void Reset(void) override;
     void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
     void EvMouseButtonRelease(uint button, uint x, uint y, uint state) override;

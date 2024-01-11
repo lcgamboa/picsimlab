@@ -123,7 +123,7 @@ unsigned short cpart_hx711::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_hx711::WritePreferences(void) {
+std::string cpart_hx711::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu", pins[0], pins[1], values[0]);
@@ -131,7 +131,7 @@ lxString cpart_hx711::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_hx711::ReadPreferences(lxString value_) {
+void cpart_hx711::ReadPreferences(std::string value_) {
     sscanf(value_.c_str(), "%hhu,%hhu,%hhu", &pins[0], &pins[1], &values[0]);
     Reset();
 }

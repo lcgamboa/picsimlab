@@ -56,7 +56,7 @@ cpart_TEXT::cpart_TEXT(const unsigned x, const unsigned y, const char* name, con
     Size = 12;
     Textcolor = 4;
     Bgcolor = 7;
-    Lines.AddLine("text");
+    Lines.push_back("text");
     Link = "";
 
     SetPCWProperties(pcwprop);
@@ -74,14 +74,14 @@ void cpart_TEXT::PostInit(void) {
 void cpart_TEXT::LoadImage(void) {
     unsigned int max = 0;
 
-    for (unsigned int l = 0; l < Lines.GetLinesCount(); l++) {
-        if (Lines.GetLine(l).length() > max) {
-            max = Lines.GetLine(l).length();
+    for (unsigned int l = 0; l < Lines.size(); l++) {
+        if (Lines.at(l).length() > max) {
+            max = Lines.at(l).length();
         }
     }
 
     Width = max * Size * 0.9;
-    Height = 2 * Size * Lines.GetLinesCount();
+    Height = 2 * Size * Lines.size();
 
     if (Width == 0) {
         Width = 10;
@@ -106,7 +106,7 @@ void cpart_TEXT::LoadImage(void) {
 void cpart_TEXT::DrawOutput(const unsigned int i) {
     unsigned int l;
     lxRect rec;
-    lxString Text;
+    std::string Text;
 
     switch (output[i].id) {
         case O_TEXTB:
@@ -129,12 +129,12 @@ void cpart_TEXT::DrawOutput(const unsigned int i) {
             rec.width = output[i].x2 - output[i].x1;
             rec.height = output[i].y2 - output[i].y1;
 
-            Text = Lines.GetLine(0);
-            for (l = 1; l < Lines.GetLinesCount(); l++) {
-                Text += "\n" + Lines.GetLine(l);
+            Text = Lines.at(0);
+            for (l = 1; l < Lines.size(); l++) {
+                Text += "\n" + Lines.at(l);
             }
 
-            canvas.TextOnRect(Text, rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
+            canvas.TextOnRect(lxString::FromUTF8(Text), rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
             break;
     }
 }
@@ -155,33 +155,33 @@ unsigned short cpart_TEXT::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_TEXT::WritePreferences(void) {
+std::string cpart_TEXT::WritePreferences(void) {
     char prefs[4096];
-    lxString Text = "";
-    lxString link = Link;
+    std::string Text = "";
+    std::string link = Link;
     // avoid save empty field
     if (!link.length()) {
         link = " ";
     }
-    for (unsigned int l = 0; l < Lines.GetLinesCount(); l++) {
-        Text += Lines.GetLine(l) + '\a';
+    for (unsigned int l = 0; l < Lines.size(); l++) {
+        Text += Lines.at(l) + '\a';
     }
     sprintf(prefs, "%hhu,%hhu,%hhu,%.1024s%%%.2048s", Size, Textcolor, Bgcolor, (const char*)link.c_str(),
             (const char*)Text.c_str());
     return prefs;
 }
 
-void cpart_TEXT::ReadPreferences(lxString value) {
+void cpart_TEXT::ReadPreferences(std::string value) {
     char text[2048 + 1024];
     char link[1024 + 1024];
     char* line;
 
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%[^%%]%%%[^\n]", &Size, &Textcolor, &Bgcolor, link, text);
 
-    Lines.Clear();
+    Lines.clear();
     line = strtok(text, "\a\n");
     while (line) {
-        Lines.AddLine(line);
+        Lines.push_back(line);
         line = strtok(NULL, "\a\n");
     }
 
@@ -219,7 +219,7 @@ void cpart_TEXT::ChangeText(int size, int textcolor, int bgcolor) {
 void cpart_TEXT::RegisterRemoteControl(void) {}
 
 void cpart_TEXT::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Colors = "";
+    std::string Colors = "";
 
     for (int i = 0; i < C_END; i++) {
         Colors += Colorname[i];
@@ -227,8 +227,8 @@ void cpart_TEXT::ConfigurePropertiesWindow(CPWindow* WProp) {
     }
 
     ((CText*)WProp->GetChildByName("text1"))->Clear();
-    for (unsigned int l = 0; l < Lines.GetLinesCount(); l++) {
-        ((CText*)WProp->GetChildByName("text1"))->AddLine(Lines.GetLine(l));
+    for (unsigned int l = 0; l < Lines.size(); l++) {
+        ((CText*)WProp->GetChildByName("text1"))->AddLine(lxString::FromUTF8(Lines.at(l)));
     }
 
     ((CSpin*)WProp->GetChildByName("spin2"))->SetValue(Size);
@@ -245,17 +245,17 @@ void cpart_TEXT::ConfigurePropertiesWindow(CPWindow* WProp) {
 }
 
 void cpart_TEXT::ReadPropertiesWindow(CPWindow* WProp) {
-    Lines.Clear();
+    Lines.clear();
     CText* Text = ((CText*)WProp->GetChildByName("text1"));
     for (unsigned int l = 0; l < Text->GetCountLines(); l++) {
-        if (Text->GetLine(l).length() > 0) {
-            Lines.AddLine(Text->GetLine(l));
+        if (strlen(Text->GetLine(l).utf8_str()) > 0) {
+            Lines.push_back((const char*)Text->GetLine(l).utf8_str());
         }
     }
 
     Size = ((CSpin*)WProp->GetChildByName("spin2"))->GetValue();
 
-    lxString val = ((CCombo*)WProp->GetChildByName("combo3"))->GetText();
+    std::string val = (const char*)((CCombo*)WProp->GetChildByName("combo3"))->GetText().utf8_str();
     for (int j = 0; j < C_END; j++) {
         if (!val.compare(Colorname[j])) {
             Textcolor = j;

@@ -160,7 +160,7 @@ unsigned short cpart_LCD_pcf8833::GetOutputId(char* name) {
     return INVALID_ID;
 };
 
-lxString cpart_LCD_pcf8833::WritePreferences(void) {
+std::string cpart_LCD_pcf8833::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3]);
@@ -168,7 +168,7 @@ lxString cpart_LCD_pcf8833::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_LCD_pcf8833::ReadPreferences(lxString value) {
+void cpart_LCD_pcf8833::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3]);
     Reset();
 }

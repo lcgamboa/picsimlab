@@ -37,18 +37,18 @@ void bsim_picsim::MSetSerial(const char* port) {
 }
 
 int bsim_picsim::MInit(const char* processor, const char* fname, float freq) {
-    lxString sproc = GetSupportedDevices();
+    std::string sproc = GetSupportedDevices();
     int procn = 0;
 
-    if (sproc.find(processor) != -1) {
+    if (sproc.find(processor) != std::string::npos) {
         procn = getprocbyname(processor);
     }
 
     if (procn == 0) {
         printf("PICSimLab: Unknown processor %s ! Loading Default\n", processor);
-        int i = sproc.find(lxT("PIC"));
+        int i = sproc.find("PIC");
         sproc = sproc.substr(i, sproc.length());
-        i = sproc.find(lxT(","));
+        i = sproc.find(",");
         Proc = sproc.substr(0, i);
         procn = getprocbyname(Proc.c_str());
     }
@@ -112,18 +112,19 @@ int bsim_picsim::CpuInitialized(void) {
     return 1;
 }
 
-void bsim_picsim::MDumpMemory(const char* fname) {
+int bsim_picsim::MDumpMemory(const char* fname) {
     switch (getfprocbyname((const char*)Proc.c_str())) {
         case P16:
-            write_ihx(&pic, fname);
+            return write_ihx(&pic, fname);
             break;
         case P16E:
-            write_ihx16e(&pic, fname);
+            return write_ihx16e(&pic, fname);
             break;
         case P18:
-            write_ihx18(&pic, fname);
+            return write_ihx18(&pic, fname);
             break;
     }
+    return 1;
 }
 
 int bsim_picsim::DebugInit(int dtyppe)  // argument not used in pic, it only use mplabx
@@ -148,9 +149,9 @@ int bsim_picsim::MGetPinCount(void) {
     return pic.PINCOUNT;
 }
 
-lxString bsim_picsim::MGetPinName(int pin) {
+std::string bsim_picsim::MGetPinName(int pin) {
     char cbuf[10];
-    lxString pinname;
+    std::string pinname;
 
     pinname = getPinName(&pic, pin, cbuf);
 

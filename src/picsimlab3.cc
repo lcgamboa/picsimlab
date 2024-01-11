@@ -43,9 +43,9 @@ extern char SERIALDEVICE[100];
 // Implementation
 
 void CPWindow3::_EvOnCreate(CControl* control) {
-    combo1.SetText(lxString(SERIALDEVICE));
+    combo1.SetText(std::string(SERIALDEVICE));
 #ifdef _USE_PICSTARTP_
-    combo2.SetText(lxString(PROGDEVICE));
+    combo2.SetText(std::string(PROGDEVICE));
     combo2.SetVisible(true);
     label2.SetVisible(true);
 #else
@@ -66,19 +66,19 @@ void CPWindow3::button1_EvMouseButtonClick(CControl* control, uint button, uint 
 
 #ifdef _USE_PICSTARTP_
     if (combo1.GetText() == combo2.GetText()) {
-        Message_sz(lxT("Use diferent ports!"), , 400, 200);
+        Message_sz("Use diferent ports!", , 400, 200);
         return;
     }
 #endif
-    strcpy(SERIALDEVICE, (char*)combo1.GetText().c_str());
+    strcpy(SERIALDEVICE, (const char*)combo1.GetText().c_str());
 #ifdef _USE_PICSTARTP_
-    strcpy(PROGDEVICE, (char*)combo2.GetText().c_str());
+    strcpy(PROGDEVICE, (const char*)combo2.GetText().c_str());
 #endif
 
     PICSimLab.SetUseDSRReset(checkbox1.GetCheck());
 
     PICSimLab.EndSimulation();
-    PICSimLab.Configure(PICSimLab.GetHomePath());
+    PICSimLab.Configure(PICSimLab.GetHomePath().c_str());
 
     if (osc_on)
         Window1.menu1_Modules_Oscilloscope_EvMenuActive(this);
@@ -96,9 +96,9 @@ void CPWindow3::button2_EvMouseButtonClick(CControl* control, uint button, uint 
 
 void CPWindow3::button3_EvMouseButtonClick(CControl* control, uint button, uint x, uint y, uint state) {
 #ifdef _WIN_
-    lxString cmd = "explorer ";
+    std::string cmd = "explorer ";
 #else
-    lxString cmd = "xdg-open ";
+    std::string cmd = "xdg-open ";
 #endif
     cmd += PICSimLab.GetHomePath();
     lxExecute(cmd);
@@ -108,7 +108,7 @@ void CPWindow3::_EvOnShow(CControl* control) {
     char* resp = serial_port_list();
 
     if (resp) {
-        lxString temp;
+        std::string temp;
         temp = combo1.GetText();
         combo1.SetItems(resp);
         combo1.SetText(temp);

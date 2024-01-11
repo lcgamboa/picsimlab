@@ -180,7 +180,7 @@ unsigned short cpart_ntc::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_ntc::WritePreferences(void) {
+std::string cpart_ntc::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%i", output_pins[0], value, Beta);
@@ -188,7 +188,7 @@ lxString cpart_ntc::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_ntc::ReadPreferences(lxString value_) {
+void cpart_ntc::ReadPreferences(std::string value_) {
     sscanf(value_.c_str(), "%hhu,%hhu,%i", &output_pins[0], &value, &Beta);
 }
 

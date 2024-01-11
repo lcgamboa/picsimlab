@@ -41,8 +41,8 @@ private:
 public:
     void SetScale(double scale) override;
     // Return the board name
-    lxString GetName(void) override { return lxT(BOARD_uCboard_Name); };
-    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    std::string GetName(void) override { return BOARD_uCboard_Name; };
+    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     // Constructor called once on board creation
     cboard_uCboard(void);
     // Destructor called once on board destruction
@@ -52,7 +52,7 @@ public:
     void Run_CPU(void) override;
     int MInit(const char* processor, const char* fname, float freq) override;
     // Return a list of board supported microcontrollers
-    lxString GetSupportedDevices(void) override { return lxT("C51,STM8S103,Z80,"); };
+    std::string GetSupportedDevices(void) override { return "C51,STM8S103,Z80,"; };
     // Reset board status
     void Reset(void) override;
     // Event on the board

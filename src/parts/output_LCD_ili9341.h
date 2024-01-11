@@ -35,27 +35,27 @@
 
 class cpart_LCD_ili9341 : public part {
 public:
-    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     cpart_LCD_ili9341(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
     ~cpart_LCD_ili9341(void);
     void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;
     void Process(void) override;
     void PostProcess(void) override;
-    lxString GetPictureFileName(void) override;
-    lxString GetMapFile(void) override;
+    std::string GetPictureFileName(void) override;
+    std::string GetMapFile(void) override;
     void OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) override;
     void OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) override;
     void OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) override;
     void Reset(void) override;
     void ConfigurePropertiesWindow(CPWindow* WProp) override;
     void ReadPropertiesWindow(CPWindow* WProp) override;
-    lxString WritePreferences(void) override;
+    std::string WritePreferences(void) override;
     void LoadImage(void) override;
-    void ReadPreferences(lxString value) override;
+    void ReadPreferences(std::string value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
-    void ComboChange(CPWindow* WProp, CCombo* control, lxString value) override;
+    void ComboChange(CPWindow* WProp, CCombo* control, std::string value) override;
 
 private:
     void ChangeType(unsigned char tp);

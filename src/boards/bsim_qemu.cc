@@ -222,7 +222,7 @@ static callbacks_t callbacks = {picsimlab_write_pin, picsimlab_dir_pins,      pi
 
 int bsim_qemu::load_qemu_lib(const char* path) {
 #ifndef _WIN_  // LINUX
-    lxString fullpath = PICSimLab.GetLibPath() + "qemu/" + path + ".so";
+    std::string fullpath = PICSimLab.GetLibPath() + "qemu/" + path + ".so";
 
     void* handle = dlopen((const char*)fullpath.c_str(), RTLD_NOW);
     if (handle == nullptr) {
@@ -237,7 +237,7 @@ int bsim_qemu::load_qemu_lib(const char* path) {
         return 0;                                 \
     }
 #else  // WINDOWS
-    lxString fullpath = dirname(lxGetExecutablePath()) + "/lib/qemu/" + path + ".dll";
+    std::string fullpath = (const char*)(dirname(lxGetExecutablePath()) + "/lib/qemu/" + path + ".dll").c_str();
 
     HMODULE handle = LoadLibraryA((const char*)fullpath.c_str());
     if (handle == NULL) {
@@ -326,8 +326,8 @@ int bsim_qemu::MInit(const char* processor, const char* _fname, float freq_) {
 
     MSetFreq(freq_);
 
-    lxString sproc = GetSupportedDevices();
-    if (sproc.find(processor) == -1) {
+    std::string sproc = GetSupportedDevices();
+    if (sproc.find(processor) == std::string::npos) {
         Proc = "stm32f103c8t6";
         printf("PICSimLab: Unknown processor %s, loading default !\n", processor);
     }
@@ -364,9 +364,9 @@ int bsim_qemu::MInit(const char* processor, const char* _fname, float freq_) {
              ->GetChildByName("menu1_File")
              ->GetChildByName("menu1_File_SaveHex"))
             ->SetEnable(0);
-        ((CFileDialog*)PICSimLab.GetWindow()->GetChildByName("filedialog1"))->SetFileName(lxT("untitled.bin"));
+        ((CFileDialog*)PICSimLab.GetWindow()->GetChildByName("filedialog1"))->SetFileName("untitled.bin");
         ((CFileDialog*)PICSimLab.GetWindow()->GetChildByName("filedialog1"))
-            ->SetFilter(lxT("Bin Files (*.bin)|*.bin;*.BIN"));
+            ->SetFilter("Bin Files (*.bin)|*.bin;*.BIN");
 
 #ifndef __EMSCRIPTEN__
     } else {
@@ -427,7 +427,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         if (!lxFileExists(fname_)) {
             // create a empty memory
             FILE* fout;
-            fout = fopen(fname_, "wb");
+            fout = fopen_UTF8(fname_, "wb");
             if (fout) {
                 unsigned char sp[4] = {0x00, 0x08, 0x00, 0x20};
                 unsigned char handler[4] = {0x51, 0x01, 0x00, 0x00};
@@ -480,7 +480,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
             // create a empty memory
             FILE* fout;
             printf("PICSimLab: Flash file dont´t exist, creating new empty: %s.\n", fname_);
-            fout = fopen(fname_, "wb");
+            fout = fopen_UTF8(fname_, "wb");
             if (fout) {
                 unsigned char buffer[1024];
                 memset(buffer, 0, 1024);
@@ -495,7 +495,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         } else {
             FILE* fin;
             FILE* fout;
-            fin = fopen(fname_, "rb");
+            fin = fopen_UTF8(fname_, "rb");
             if (fin) {
                 fseek(fin, 0, SEEK_END);
                 long size = ftell(fin);
@@ -517,7 +517,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
                     if (strcmp(dname, fname_)) {
                         printf("PICSimLab: Loading application to address 0x%X\n", application_offset);
 
-                        fout = fopen(dname, "r+b");
+                        fout = fopen_UTF8(dname, "r+b");
                         if (fout) {
                             int count;
                             unsigned char buffer[1024];
@@ -552,9 +552,9 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         strcpy(argv[argc++], "esp32-picsimlab");
 
 #ifndef _WIN_
-        lxString fullpath = PICSimLab.GetLibPath() + "qemu/fw/";
+        std::string fullpath = PICSimLab.GetLibPath() + "qemu/fw/";
 #else
-        lxString fullpath = dirname(lxGetExecutablePath()) + "/lib/qemu/fw/";
+        std::string fullpath = (const char*)(dirname(lxGetExecutablePath()) + "/lib/qemu/fw/").c_str();
 #endif
 
         if ((!lxFileExists(fullpath + "esp32-v3-rom.bin")) || (!lxFileExists(fullpath + "esp32-v3-rom-app.bin"))) {
@@ -572,7 +572,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
         if (!lxFileExists(fnefuse)) {  // create efuse file if it don´t exists
             FILE* fout;
-            fout = fopen(fnefuse, "wb");
+            fout = fopen_UTF8(fnefuse, "wb");
             if (fout) {
                 char efuse[124];
                 unsigned char mac_addr[6], mac_addr_crc;
@@ -647,7 +647,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
             // create a empty memory
             FILE* fout;
             printf("PICSimLab: Flash file dont´t exist, creating new empty: %s.\n", fname_);
-            fout = fopen(fname_, "wb");
+            fout = fopen_UTF8(fname_, "wb");
             if (fout) {
                 unsigned char buffer[1024];
                 memset(buffer, 0, 1024);
@@ -662,7 +662,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         } else {
             FILE* fin;
             FILE* fout;
-            fin = fopen(fname_, "rb");
+            fin = fopen_UTF8(fname_, "rb");
             if (fin) {
                 fseek(fin, 0, SEEK_END);
                 long size = ftell(fin);
@@ -683,7 +683,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
                     if (strcmp(dname, fname_)) {
                         printf("PICSimLab: Loading application to address 0x%X\n", application_offset);
-                        fout = fopen(dname, "r+b");
+                        fout = fopen_UTF8(dname, "r+b");
                         if (fout) {
                             int count;
                             unsigned char buffer[1024];
@@ -718,9 +718,9 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
         strcpy(argv[argc++], "esp32c3-picsimlab");
 
 #ifndef _WIN_
-        lxString fullpath = PICSimLab.GetLibPath() + "qemu/fw/";
+        std::string fullpath = PICSimLab.GetLibPath() + "qemu/fw/";
 #else
-        lxString fullpath = dirname(lxGetExecutablePath()) + "/lib/qemu/fw/";
+        std::string fullpath = (const char*)(dirname(lxGetExecutablePath()) + "/lib/qemu/fw/").c_str();
 #endif
 
         if (!lxFileExists(fullpath + "esp32c3-rom.bin")) {
@@ -738,7 +738,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
 
         if (!lxFileExists(fnefuse)) {  // create efuse file if it don´t exists
             FILE* fout;
-            fout = fopen(fnefuse, "wb");
+            fout = fopen_UTF8(fnefuse, "wb");
             if (fout) {
                 char efuse[1024];
                 unsigned char mac_addr[6], mac_addr_crc;
@@ -838,7 +838,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
     // disable extra in case of invalid qemu option finish the simulator
 
     char ftest[2048];
-    strncpy(ftest, (char*)lxGetTempDir(lxT("picsimlab")).c_str(), 1023);
+    strncpy(ftest, (const char*)lxGetTempDir("picsimlab").c_str(), 1023);
     strncat(ftest, "/picsimlab_qemu_fail", 1023);
 
     if (lxFileExists(ftest)) {
@@ -848,7 +848,7 @@ void bsim_qemu::EvThreadRun(CThread& thread) {
     }
 
     if (use_cmdline_extra) {
-        FILE* ft = fopen(ftest, "w");
+        FILE* ft = fopen_UTF8(ftest, "w");
         fprintf(ft, "fail\n");
         fclose(ft);
     }
@@ -933,9 +933,8 @@ void bsim_qemu::MEnd(void) {
          ->GetChildByName("menu1_File")
          ->GetChildByName("menu1_File_SaveHex"))
         ->SetEnable(1);
-    ((CFileDialog*)PICSimLab.GetWindow()->GetChildByName("filedialog1"))->SetFileName(lxT("untitled.hex"));
-    ((CFileDialog*)PICSimLab.GetWindow()->GetChildByName("filedialog1"))
-        ->SetFilter(lxT("Hex Files (*.hex)|*.hex;*.HEX"));
+    ((CFileDialog*)PICSimLab.GetWindow()->GetChildByName("filedialog1"))->SetFileName("untitled.hex");
+    ((CFileDialog*)PICSimLab.GetWindow()->GetChildByName("filedialog1"))->SetFilter("Hex Files (*.hex)|*.hex;*.HEX");
 
 #ifdef _WIN_
     Sleep(200);
@@ -988,9 +987,9 @@ int bsim_qemu::CpuInitialized(void) {
 
 void bsim_qemu::DebugLoop(void) {}
 
-void bsim_qemu::MDumpMemory(const char* fname) {
+int bsim_qemu::MDumpMemory(const char* fname) {
     if (qemu_started != 1) {
-        return;
+        return 1;
     }
 
     if (SimType == QEMU_SIM_STM32) {
@@ -1048,7 +1047,7 @@ void bsim_qemu::MDumpMemory(const char* fname) {
 #endif
             char* buff = new char[DBGGetROMSize()];
             qemu_picsimlab_flash_dump(0, buff, DBGGetROMSize());
-            FILE* fout = fopen(fname_bak, "wb");
+            FILE* fout = fopen_UTF8(fname_bak, "wb");
             if (fout) {
                 fwrite(buff, DBGGetROMSize(), 1, fout);
                 fclose(fout);
@@ -1064,7 +1063,7 @@ void bsim_qemu::MDumpMemory(const char* fname) {
 #endif
             char* buff = new char[DBGGetROMSize()];
             qemu_picsimlab_flash_dump(0, buff, DBGGetROMSize());
-            FILE* fout = fopen(fname_, "wb");
+            FILE* fout = fopen_UTF8(fname_, "wb");
             if (fout) {
                 fwrite(buff, DBGGetROMSize(), 1, fout);
                 fclose(fout);
@@ -1074,6 +1073,7 @@ void bsim_qemu::MDumpMemory(const char* fname) {
         qmp_cont(NULL);
         qemu_mutex_unlock_iothread();
     }
+    return 0;
 }
 
 int bsim_qemu::DebugInit(int dtyppe)  // argument not used in picm only mplabx
@@ -1091,12 +1091,14 @@ void bsim_qemu::pins_reset(void) {
         pins[p].ovalue = 0;
         pins[p].oavalue = 55;
 
-        if ((MGetPinName(p + 1).find("VDD") != -1) || (MGetPinName(p + 1).find("VIN") != -1)) {
+        if ((MGetPinName(p + 1).find("VDD") != std::string::npos) ||
+            (MGetPinName(p + 1).find("VIN") != std::string::npos)) {
             pins[p].value = 1;
             pins[p].dir = PD_OUT;
             pins[p].ptype = PT_POWER;
         }
-        if ((MGetPinName(p + 1).find("VSS") != -1) || (MGetPinName(p + 1).find("GND") != -1)) {
+        if ((MGetPinName(p + 1).find("VSS") != std::string::npos) ||
+            (MGetPinName(p + 1).find("GND") != std::string::npos)) {
             pins[p].value = 0;
             pins[p].dir = PD_OUT;
             pins[p].ptype = PT_POWER;

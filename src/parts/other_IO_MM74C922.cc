@@ -79,7 +79,8 @@ static PCWProp pcwprop[19] = {{PCW_LABEL, "1-RY1,NC"},
                               {PCW_LABEL, "18-VCC,+5V"},
                               {PCW_END, ""}};
 
-cpart_IO_MM74C922::cpart_IO_MM74C922(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+cpart_IO_MM74C922::cpart_IO_MM74C922(const unsigned x, const unsigned y, const char* name, const char* type,
+                                     board* pboard_)
     : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     X = x;
     Y = y;
@@ -92,15 +93,15 @@ cpart_IO_MM74C922::cpart_IO_MM74C922(const unsigned x, const unsigned y, const c
     io_MM74C922_init(&kc);
     io_MM74C922_rst(&kc);
 
-    input_pins[0] = SpareParts.RegisterIOpin(lxT("RY1"));
-    input_pins[1] = SpareParts.RegisterIOpin(lxT("RY2"));
-    input_pins[2] = SpareParts.RegisterIOpin(lxT("RY3"));
-    input_pins[3] = SpareParts.RegisterIOpin(lxT("RY4"));
+    input_pins[0] = SpareParts.RegisterIOpin("RY1");
+    input_pins[1] = SpareParts.RegisterIOpin("RY2");
+    input_pins[2] = SpareParts.RegisterIOpin("RY3");
+    input_pins[3] = SpareParts.RegisterIOpin("RY4");
 
-    output_pins[0] = SpareParts.RegisterIOpin(lxT("CX4"));
-    output_pins[1] = SpareParts.RegisterIOpin(lxT("CX3"));
-    output_pins[2] = SpareParts.RegisterIOpin(lxT("CX2"));
-    output_pins[3] = SpareParts.RegisterIOpin(lxT("CX1"));
+    output_pins[0] = SpareParts.RegisterIOpin("CX4");
+    output_pins[1] = SpareParts.RegisterIOpin("CX3");
+    output_pins[2] = SpareParts.RegisterIOpin("CX2");
+    output_pins[3] = SpareParts.RegisterIOpin("CX1");
     output_pins[4] = 0;
     output_pins[5] = 0;
     output_pins[6] = 0;
@@ -149,14 +150,15 @@ void cpart_IO_MM74C922::DrawOutput(const unsigned int i) {
                 if (input_pins[pinv] == 0)
                     canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
                 else
-                    canvas.RotatedText(itoa(input_pins[pinv]) /*SpareParts.GetPinName(input_pins[pinv])*/, output[i].x1,
-                                       output[i].y2 - 30, 90.0);
+                    canvas.RotatedText(std::to_string(input_pins[pinv]) /*SpareParts.GetPinName(input_pins[pinv])*/,
+                                       output[i].x1, output[i].y2 - 30, 90.0);
             } else if (pinv < 8) {
                 if (output_pins[pinv - 4] == 0)
                     canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
                 else
-                    canvas.RotatedText(itoa(output_pins[pinv - 4]) /*SpareParts.GetPinName(input_pins[pinv])*/,
-                                       output[i].x1, output[i].y2 - 30, 90.0);
+                    canvas.RotatedText(
+                        std::to_string(output_pins[pinv - 4]) /*SpareParts.GetPinName(input_pins[pinv])*/, output[i].x1,
+                        output[i].y2 - 30, 90.0);
             } else {
                 if (output_pins[pinv - 4] == 0)
                     canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
@@ -221,7 +223,7 @@ unsigned short cpart_IO_MM74C922::GetOutputId(char* name) {
     return INVALID_ID;
 };
 
-lxString cpart_IO_MM74C922::WritePreferences(void) {
+std::string cpart_IO_MM74C922::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", output_pins[4], output_pins[5], output_pins[6], output_pins[7],
@@ -230,7 +232,7 @@ lxString cpart_IO_MM74C922::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_IO_MM74C922::ReadPreferences(lxString value) {
+void cpart_IO_MM74C922::ReadPreferences(std::string value) {
     unsigned char inp;
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[4], &output_pins[5], &output_pins[6],
            &output_pins[7], &output_pins[8], &inp);
@@ -240,15 +242,15 @@ void cpart_IO_MM74C922::ReadPreferences(lxString value) {
             SpareParts.UnregisterIOpin(input_pins[i]);
             SpareParts.UnregisterIOpin(output_pins[i]);
         }
-        input_pins[0] = SpareParts.RegisterIOpin(lxT("RY1"), inp++);
-        input_pins[1] = SpareParts.RegisterIOpin(lxT("RY2"), inp++);
-        input_pins[2] = SpareParts.RegisterIOpin(lxT("RY3"), inp++);
-        input_pins[3] = SpareParts.RegisterIOpin(lxT("RY4"), inp++);
+        input_pins[0] = SpareParts.RegisterIOpin("RY1", inp++);
+        input_pins[1] = SpareParts.RegisterIOpin("RY2", inp++);
+        input_pins[2] = SpareParts.RegisterIOpin("RY3", inp++);
+        input_pins[3] = SpareParts.RegisterIOpin("RY4", inp++);
 
-        output_pins[0] = SpareParts.RegisterIOpin(lxT("CX4"), inp++);
-        output_pins[1] = SpareParts.RegisterIOpin(lxT("CX3"), inp++);
-        output_pins[2] = SpareParts.RegisterIOpin(lxT("CX2"), inp++);
-        output_pins[3] = SpareParts.RegisterIOpin(lxT("CX1"), inp++);
+        output_pins[0] = SpareParts.RegisterIOpin("CX4", inp++);
+        output_pins[1] = SpareParts.RegisterIOpin("CX3", inp++);
+        output_pins[2] = SpareParts.RegisterIOpin("CX2", inp++);
+        output_pins[3] = SpareParts.RegisterIOpin("CX1", inp++);
 
         SpareParts.SetPinDir(input_pins[0], PD_IN);
         SpareParts.SetPinDir(input_pins[1], PD_IN);
@@ -260,29 +262,31 @@ void cpart_IO_MM74C922::ReadPreferences(lxString value) {
 }
 
 void cpart_IO_MM74C922::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString spin;
+    std::string spin;
 
     for (int i = 0; i < 18; i++) {
-        lxString value = "";
+        std::string value = "";
 
         int pinv = pin_values[i][0];
         if (pinv > 16) {
-            value = lxString(pin_values[i]);
+            value = std::string(pin_values[i]);
         } else if (pinv < 4) {
             if (input_pins[pinv] == 0)
                 value = "NC";
             else
-                value = itoa(input_pins[pinv]);  // + lxT (" ") + SpareParts.GetPinName (output_pins[pinv - 4]);
+                value = std::to_string(input_pins[pinv]);  // + " " + SpareParts.GetPinName (output_pins[pinv - 4]);
         } else if (pinv < 8) {
             if (output_pins[pinv - 4] == 0)
                 value = "NC";
             else
-                value = itoa(output_pins[pinv - 4]);  // + lxT (" ") + SpareParts.GetPinName (output_pins[pinv - 4]);
+                value =
+                    std::to_string(output_pins[pinv - 4]);  // + " " + SpareParts.GetPinName (output_pins[pinv - 4]);
         }
 
-        ((CLabel*)WProp->GetChildByName("label" + itoa(i + 1)))->SetText(itoa(i + 1) + lxT("-") + pin_names[i]);
+        ((CLabel*)WProp->GetChildByName("label" + std::to_string(i + 1)))
+            ->SetText(std::to_string(i + 1) + "-" + pin_names[i]);
 
-        CLabel* label = (CLabel*)WProp->GetChildByName("label_" + itoa(i + 1));
+        CLabel* label = (CLabel*)WProp->GetChildByName("label_" + std::to_string(i + 1));
         if (label) {
             label->SetText(value);
         }

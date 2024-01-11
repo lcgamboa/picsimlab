@@ -116,7 +116,7 @@ cboard_x::cboard_x(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, l
         // gauge1
         gauge1 = new CGauge();
         gauge1->SetFOwner(PICSimLab.GetWindow());
-        gauge1->SetName(lxT("gauge1_px"));
+        gauge1->SetName("gauge1_px");
         gauge1->SetX(13);
         gauge1->SetY(382 - 160);
         gauge1->SetWidth(140);
@@ -130,7 +130,7 @@ cboard_x::cboard_x(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, l
         // gauge2
         gauge2 = new CGauge();
         gauge2->SetFOwner(PICSimLab.GetWindow());
-        gauge2->SetName(lxT("gauge2_px"));
+        gauge2->SetName("gauge2_px");
         gauge2->SetX(12);
         gauge2->SetY(330 - 160);
         gauge2->SetWidth(140);
@@ -144,27 +144,27 @@ cboard_x::cboard_x(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, l
         // label2
         label2 = new CLabel();
         label2->SetFOwner(PICSimLab.GetWindow());
-        label2->SetName(lxT("label2_px"));
+        label2->SetName("label2_px");
         label2->SetX(12);
         label2->SetY(306 - 160);
         label2->SetWidth(60);
         label2->SetHeight(20);
         label2->SetEnable(1);
         label2->SetVisible(1);
-        label2->SetText(lxT("RB0"));
+        label2->SetText("RB0");
         label2->SetAlign(1);
         PICSimLab.GetWindow()->CreateChild(label2);
         // label3
         label3 = new CLabel();
         label3->SetFOwner(PICSimLab.GetWindow());
-        label3->SetName(lxT("label3_px"));
+        label3->SetName("label3_px");
         label3->SetX(13);
         label3->SetY(357 - 160);
         label3->SetWidth(60);
         label3->SetHeight(20);
         label3->SetEnable(1);
         label3->SetVisible(1);
-        label3->SetText(lxT("RB1"));
+        label3->SetText("RB1");
         label3->SetAlign(1);
         PICSimLab.GetWindow()->CreateChild(label3);
     }
@@ -200,14 +200,14 @@ void cboard_x::Reset(void) {
     // verify serial port state and refresh status bar
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
-                                      itoa(pic.serial[0].serialbaud) + lxT("(") +
+        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + ":" +
+                                      std::to_string(pic.serial[0].serialbaud) + "(" +
                                       FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                        100.0 * pic.serial[0].serialbaud) /
                                                                       pic.serial[0].serialexbaud)) +
-                                      lxT("%)"));
+                                      "%)");
     else
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
 
     if (use_spare)
         SpareParts.Reset();
@@ -241,27 +241,27 @@ void cboard_x::RefreshStatus(void) {
     // verify serial port state and refresh status bar
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") +
-                                      itoa(pic.serial[0].serialbaud) + lxT("(") +
+        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + ":" +
+                                      std::to_string(pic.serial[0].serialbaud) + "(" +
                                       FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
                                                                        100.0 * pic.serial[0].serialbaud) /
                                                                       pic.serial[0].serialexbaud)) +
-                                      lxT("%)"));
+                                      "%)");
     else
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
 }
 
 // Called to save board preferences in configuration file
 
 void cboard_x::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
-    PICSimLab.SavePrefs(lxT("X_proc"), Proc);
+    PICSimLab.SavePrefs("X_proc", Proc);
     // write switch state of board_x to preferences
-    PICSimLab.SavePrefs(lxT("X_bt2"), itoa( p_BT2));
+    PICSimLab.SavePrefs("X_bt2", std::to_string( p_BT2));
     // write microcontroller clock to preferences
-    PICSimLab.SavePrefs(lxT("X_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs("X_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
     // write potentiometer position to preferences
-    PICSimLab.SavePrefs(lxT("X_pot1"), itoa( pot1));
+    PICSimLab.SavePrefs("X_pot1", std::to_string( pot1));
 }
 
 // Called whe configuration file load  preferences

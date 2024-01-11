@@ -36,7 +36,7 @@ class cpart_Jumpers : public part {
     static int countID;
 
 public:
-    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     cpart_Jumpers(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
     ~cpart_Jumpers(void);
     void DrawOutput(const unsigned int index) override;
@@ -45,11 +45,11 @@ public:
     void PostProcess(void) override;
     void ConfigurePropertiesWindow(CPWindow* WProp) override;
     void ReadPropertiesWindow(CPWindow* WProp) override;
-    lxString WritePreferences(void) override;
-    void ReadPreferences(lxString value) override;
+    std::string WritePreferences(void) override;
+    void ReadPreferences(std::string value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
-    void ComboChange(CPWindow* WProp, CCombo* control, lxString value) override;
+    void ComboChange(CPWindow* WProp, CCombo* control, std::string value) override;
 
 private:
     void ChangeType(unsigned char type);
@@ -59,7 +59,7 @@ private:
     unsigned long output_pins_alm[16];
     long mcount;
     int JUMPSTEPS_;
-    lxString jname;
+    std::string jname;
     unsigned char jtype;
     lxFont font;
 };

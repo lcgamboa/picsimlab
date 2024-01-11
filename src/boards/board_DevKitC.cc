@@ -315,20 +315,20 @@ cboard_DevKitC::cboard_DevKitC(void) {
         // label1
         label1 = new CLabel();
         label1->SetFOwner(PICSimLab.GetWindow());
-        label1->SetName(lxT("label1_"));
+        label1->SetName("label1_");
         label1->SetX(13);
         label1->SetY(54 + 20);
         label1->SetWidth(120);
         label1->SetHeight(24);
         label1->SetEnable(1);
         label1->SetVisible(1);
-        label1->SetText(lxT("Qemu CPU MIPS"));
+        label1->SetText("Qemu CPU MIPS");
         label1->SetAlign(1);
         PICSimLab.GetWindow()->CreateChild(label1);
         // combo1
         combo1 = new CCombo();
         combo1->SetFOwner(PICSimLab.GetWindow());
-        combo1->SetName(lxT("combo1_"));
+        combo1->SetName("combo1_");
         combo1->SetX(13);
         combo1->SetY(78 + 20);
         combo1->SetWidth(130);
@@ -343,7 +343,7 @@ cboard_DevKitC::cboard_DevKitC(void) {
         // button1
         button1 = new CButton();
         button1->SetFOwner(PICSimLab.GetWindow());
-        button1->SetName(lxT("button1_"));
+        button1->SetName("button1_");
         button1->SetX(13);
         button1->SetY(78 + 60);
         button1->SetWidth(130);
@@ -396,7 +396,7 @@ void cboard_DevKitC::Reset(void) {
 
     MReset(1);
 
-    PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE));
+    PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE));
 
     if (use_spare)
         SpareParts.Reset();
@@ -412,9 +412,9 @@ void cboard_DevKitC::RegisterRemoteControl(void) {
 
 void cboard_DevKitC::RefreshStatus(void) {
     if (serial_open) {
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE));
+        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE));
     } else {
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: Error"));
+        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: Error");
     }
 }
 
@@ -422,19 +422,19 @@ void cboard_DevKitC::RefreshStatus(void) {
 
 void cboard_DevKitC::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
-    PICSimLab.SavePrefs(lxT("ESP32_DevKitC_proc"), Proc);
+    PICSimLab.SavePrefs("ESP32_DevKitC_proc", Proc);
     // write microcontroller clock to preferences
-    PICSimLab.SavePrefs(lxT("ESP32_DevKitC_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs("ESP32_DevKitC_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
     // write microcontroller icount to preferences
-    PICSimLab.SavePrefs(lxT("ESP32_DevKitC_icount"), itoa(icount));
+    PICSimLab.SavePrefs("ESP32_DevKitC_icount", std::to_string(icount));
 
-    PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cfgeserial"), itoa(ConfEnableSerial));
-    PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cfgewifi"), itoa(ConfEnableWifi));
-    PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cfgdwdt"), itoa(ConfDisableWdt));
-    PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cfgeeth"), itoa(ConfEnableEthernet));
-    PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cfguextra"), itoa(use_cmdline_extra));
-    PICSimLab.SavePrefs(lxT("ESP32_DevKitC_cmdextra"), cmdline_extra);
-    PICSimLab.SavePrefs(lxT("ESP32_DevKitC_app_off"), itoa(application_offset));
+    PICSimLab.SavePrefs("ESP32_DevKitC_cfgeserial", std::to_string(ConfEnableSerial));
+    PICSimLab.SavePrefs("ESP32_DevKitC_cfgewifi", std::to_string(ConfEnableWifi));
+    PICSimLab.SavePrefs("ESP32_DevKitC_cfgdwdt", std::to_string(ConfDisableWdt));
+    PICSimLab.SavePrefs("ESP32_DevKitC_cfgeeth", std::to_string(ConfEnableEthernet));
+    PICSimLab.SavePrefs("ESP32_DevKitC_cfguextra", std::to_string(use_cmdline_extra));
+    PICSimLab.SavePrefs("ESP32_DevKitC_cmdextra", cmdline_extra);
+    PICSimLab.SavePrefs("ESP32_DevKitC_app_off", std::to_string(application_offset));
 }
 
 // Called whe configuration file load  preferences
@@ -745,7 +745,7 @@ void cboard_DevKitC::BoardOptions(int* argc, char** argv) {
 void cboard_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x, uint y, uint state) {
     switch (control->GetTag()) {
         case 4: {
-            lxString fname = PICSimLab.GetSharePath() + "boards/" BOARD_DevKitC_Name + "/config.lxrad";
+            std::string fname = PICSimLab.GetSharePath() + "boards/" BOARD_DevKitC_Name + "/config.lxrad";
 
             if (lxFileExists(fname)) {
                 wconfig->DestroyChilds();
@@ -1116,8 +1116,8 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
     }
 }
 
-lxString cboard_DevKitC::MGetPinName(int pin) {
-    lxString pinname = "error";
+std::string cboard_DevKitC::MGetPinName(int pin) {
+    std::string pinname = "error";
 
     switch (pin) {
         case 1:

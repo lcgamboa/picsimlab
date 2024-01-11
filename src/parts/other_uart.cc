@@ -108,7 +108,7 @@ void cpart_UART::DrawOutput(const unsigned int i) {
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);
-            canvas.RotatedText(lxT("port:") + lxString(uart_name) + lxT("   speed:") + itoa(uart_speed), output[i].x1,
+            canvas.RotatedText("port:" + std::string(uart_name) + "   speed:" + std::to_string(uart_speed), output[i].x1,
                                output[i].y1, 0);
             break;
         default:
@@ -158,7 +158,7 @@ unsigned short cpart_UART::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_UART::WritePreferences(void) {
+std::string cpart_UART::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%u,%s", pins[0], pins[1], uart_speed, uart_name);
@@ -166,7 +166,7 @@ lxString cpart_UART::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_UART::ReadPreferences(lxString value) {
+void cpart_UART::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu,%hhu,%u,%s", &pins[0], &pins[1], &uart_speed, uart_name);
 
     Reset();
@@ -191,7 +191,7 @@ void cpart_UART::ConfigurePropertiesWindow(CPWindow* WProp) {
     }
 
     ((CCombo*)WProp->GetChildByName("combo6"))->SetItems("1200,2400,4800,9600,19200,38400,57600,115200,");
-    ((CCombo*)WProp->GetChildByName("combo6"))->SetText(itoa(uart_speed));
+    ((CCombo*)WProp->GetChildByName("combo6"))->SetText(std::to_string(uart_speed));
 }
 
 void cpart_UART::ReadPropertiesWindow(CPWindow* WProp) {

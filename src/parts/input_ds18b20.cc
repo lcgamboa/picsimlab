@@ -189,7 +189,7 @@ unsigned short cpart_ds18b20::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_ds18b20::WritePreferences(void) {
+std::string cpart_ds18b20::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%" SCNu64, output_pins[0], values[0], sen_ds18b20_get_addr(&ds18b20));
@@ -197,7 +197,7 @@ lxString cpart_ds18b20::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_ds18b20::ReadPreferences(lxString value_) {
+void cpart_ds18b20::ReadPreferences(std::string value_) {
     uint64_t addr;
     sscanf(value_.c_str(), "%hhu,%hhu,%" SCNu64, &output_pins[0], &values[0], &addr);
     sen_ds18b20_set_addr(&ds18b20, addr);

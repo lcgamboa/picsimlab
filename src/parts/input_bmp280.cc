@@ -145,7 +145,7 @@ unsigned short cpart_bmp280::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_bmp280::WritePreferences(void) {
+std::string cpart_bmp280::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], output_pins[0],
@@ -154,7 +154,7 @@ lxString cpart_bmp280::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_bmp280::ReadPreferences(lxString value_) {
+void cpart_bmp280::ReadPreferences(std::string value_) {
     sscanf(value_.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2],
            &output_pins[0], &values[0], &values[1]);
     Reset();

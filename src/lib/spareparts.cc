@@ -77,7 +77,7 @@ part* CSpareParts::AddPart(const char* partname, const int x, const int y, const
     part* newpart = create_part(partname, x, y, pboard_);
     parts[partsc] = newpart;
     if (parts[partsc] == NULL) {
-        Message_sz(lxT("Erro creating part: ") + lxString(partname), 400, 200);
+        Message_sz("Erro creating part: " + std::string(partname), 400, 200);
     } else {
         parts[partsc]->SetId(partsc);
         parts[partsc]->SetScale(scale);
@@ -124,9 +124,9 @@ unsigned char CSpareParts::GetPullupBus(unsigned char pin) {
         return 0;
 }
 
-lxString CSpareParts::GetPinsNames(void) {
-    lxString Items = "0  NC,";
-    lxString spin;
+std::string CSpareParts::GetPinsNames(void) {
+    std::string Items = "0  NC,";
+    std::string spin;
 
     for (int i = 1; i <= pboard->MGetPinCount(); i++) {
         if (useAlias) {
@@ -134,8 +134,8 @@ lxString CSpareParts::GetPinsNames(void) {
         } else {
             spin = PinNames[i];
         }
-        if (PinNames[i].compare(lxT("error"))) {
-            Items = Items + itoa(i) + "  " + spin + ",";
+        if (PinNames[i].compare("error")) {
+            Items = Items + std::to_string(i) + "  " + spin + ",";
         }
     }
     for (int i = IOINIT; i < 256; i++) {
@@ -145,13 +145,13 @@ lxString CSpareParts::GetPinsNames(void) {
             spin = PinNames[i];
         }
         if (PinNames[i].length() > 0) {
-            Items = Items + itoa(i) + "  " + spin + ",";
+            Items = Items + std::to_string(i) + "  " + spin + ",";
         }
     }
     return Items;
 }
 
-lxString CSpareParts::GetPinName(unsigned char pin) {
+std::string CSpareParts::GetPinName(unsigned char pin) {
     if (!pin)
         return "NC";
     if (!pboard)
@@ -167,7 +167,7 @@ lxString CSpareParts::GetPinName(unsigned char pin) {
         if (useAlias) {
             return PinAlias[pin];
         } else {
-            return PinNames[pin] + "-" + itoa(pin);
+            return PinNames[pin] + "-" + std::to_string(pin);
         }
     }
 }
@@ -242,7 +242,7 @@ void CSpareParts::SetAPin(unsigned char pin, float value) {
     }
 }
 
-unsigned char CSpareParts::RegisterIOpin(lxString pname, unsigned char pin, unsigned char dir) {
+unsigned char CSpareParts::RegisterIOpin(std::string pname, unsigned char pin, unsigned char dir) {
     unsigned char ppin = IOINIT;
 
     if (pin >= IOINIT) {
@@ -272,7 +272,7 @@ unsigned char CSpareParts::RegisterIOpin(lxString pname, unsigned char pin, unsi
 
 unsigned char CSpareParts::UnregisterIOpin(unsigned char pin) {
     if (PinNames[pin].length() > 0) {
-        if (!strncmp(PinNames[pin], PinAlias[pin], strlen(PinNames[pin]))) {
+        if (!strncmp(PinNames[pin].c_str(), PinAlias[pin].c_str(), PinNames[pin].size())) {
             PinAlias[pin] = " ";
         }
         PinNames[pin] = "";
@@ -281,13 +281,13 @@ unsigned char CSpareParts::UnregisterIOpin(unsigned char pin) {
     return 0;
 }
 
-bool CSpareParts::SavePinAlias(lxString fname) {
+bool CSpareParts::SavePinAlias(std::string fname) {
     char temp[256];
-    lxString pin;
-    lxString alias;
-    lxStringList lalias;
-    lalias.Clear();
-    lalias.AddLine(
+    std::string pin;
+    std::string alias;
+    std::vector<std::string> lalias;
+    lalias.clear();
+    lalias.push_back(
         "//N-PinName -ALias   --The pin name alias must start in column fourteen and have size less than seven chars ");
     for (int i = 1; i < 256; i++) {
         pin = PinNames[i].substr(0, 7);
@@ -297,25 +297,25 @@ bool CSpareParts::SavePinAlias(lxString fname) {
         if (!alias.size())
             alias = " ";
         snprintf(temp, 256, "%03i-%-7s -%-7s", i, pin.c_str(), alias.c_str());
-        lalias.AddLine(temp);
+        lalias.push_back(temp);
     }
-    return lalias.SaveToFile(fname);
+    return SaveToFile(lalias, fname.c_str());
 }
 
-bool CSpareParts::LoadPinAlias(lxString fname, unsigned char show_error_msg) {
+bool CSpareParts::LoadPinAlias(std::string fname, unsigned char show_error_msg) {
     if (!show_error_msg) {
         if (!lxFileExists(fname)) {
             return 0;
         }
     }
-    lxStringList alias;
-    lxString line;
-    alias.Clear();
-    if (alias.LoadFromFile(fname)) {
+    std::vector<std::string> alias;
+    std::string line;
+    alias.clear();
+    if (LoadFromFile(alias, fname.c_str())) {
         alias_fname = fname;
 
         for (int i = 0; i < 256; i++) {
-            line = alias.GetLine(i);
+            line = alias.at(i);
             if (line.size() > 13) {
                 PinAlias[i] = line.substr(13, 7);
             } else {
@@ -329,19 +329,18 @@ bool CSpareParts::LoadPinAlias(lxString fname, unsigned char show_error_msg) {
             Oscilloscope.SetBaseTimer();
         }
         return 1;
-    } else {
-        return 0;
     }
+    return 0;
 }
 
-bool CSpareParts::LoadConfig(lxString fname, const int disable_debug) {
+bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
     char name[256];
     char temp[4096];
     unsigned int x, y;
     int orient;
-    lxStringList prefs;
+    std::vector<std::string> prefs;
     int newformat = 0;
-    lxStringList osc_list;
+    std::vector<std::string> osc_list;
 
     pboard = PICSimLab.GetBoard();
 
@@ -386,21 +385,21 @@ bool CSpareParts::LoadConfig(lxString fname, const int disable_debug) {
     if (ret) {
         int partsc_;
         int partsc_aup_;
-        prefs.LoadFromFile(fname);
+        LoadFromFile(prefs, fname.c_str());
 
         DeleteParts();
         partsc_ = 0;
         partsc_aup_ = 0;
 
-        if (prefs.GetLine(0).find("version") != -1) {
+        if (prefs.at(0).find("version") != std::string::npos) {
             newformat = 1;
         }
 
-        for (unsigned int i = 0; i < prefs.GetLinesCount(); i++) {
+        for (unsigned int i = 0; i < prefs.size(); i++) {
             if (newformat) {
-                sscanf(prefs.GetLine(i).c_str(), "%255[^,],%i,%i,%i:%4095[^\n]", name, &x, &y, &orient, temp);
+                sscanf(prefs.at(i).c_str(), "%255[^,],%i,%i,%i:%4095[^\n]", name, &x, &y, &orient, temp);
             } else {
-                sscanf(prefs.GetLine(i).c_str(), "%255[^,],%i,%i:%4095[^\n]", name, &x, &y, temp);
+                sscanf(prefs.at(i).c_str(), "%255[^,],%i,%i:%4095[^\n]", name, &x, &y, temp);
             }
 
             // typo fix
@@ -484,12 +483,12 @@ bool CSpareParts::LoadConfig(lxString fname, const int disable_debug) {
                     }
                 }
             } else if (!strcmp(name, "osc_cfg")) {
-                osc_list.Clear();
-                osc_list.AddLine(prefs.GetLine(i));
+                osc_list.clear();
+                osc_list.push_back(prefs.at(i));
             } else if (!strcmp(name, "osc_ch1")) {
-                osc_list.AddLine(prefs.GetLine(i));
+                osc_list.push_back(prefs.at(i));
             } else if (!strcmp(name, "osc_ch2")) {
-                osc_list.AddLine(prefs.GetLine(i));
+                osc_list.push_back(prefs.at(i));
                 Oscilloscope.ReadPreferencesList(osc_list);
             } else if ((parts[partsc_] = create_part(name, x, y, PICSimLab.GetBoard()))) {
                 printf("Spare parts: parts[%02i] (%s) created \n", partsc_, name);
@@ -610,55 +609,57 @@ void CSpareParts::ReadPreferences(char* name, char* value) {
 }
 
 void CSpareParts::WritePreferences(void) {
-    // PICSimLab.SavePrefs(lxT("spare_position"), itoa(Window->GetX()) + lxT(",") + itoa(Window->GetY()) + lxT(",") +
-    //                                               itoa(Window->GetWidth()) + lxT(",") + itoa(Window->GetHeight()));
+    // PICSimLab.SavePrefs("spare_position", std::to_string(Window->GetX()) + "," + std::to_string(Window->GetY()) + ","
+    // +
+    //                                               std::to_string(Window->GetWidth()) + "," +
+    //                                               std::to_string(Window->GetHeight()));
 }
 
-bool CSpareParts::SaveConfig(lxString fname) {
+bool CSpareParts::SaveConfig(std::string fname) {
     char temp[256];
 
-    lxStringList prefs;
+    std::vector<std::string> prefs;
 
     // if (Window->GetWin() == NULL)
     //     return 0;
 
-    prefs.Clear();
+    prefs.clear();
 
     snprintf(temp, 256, "version,0,0,0:%s", _VERSION_);
-    prefs.AddLine(temp);
+    prefs.push_back(temp);
     snprintf(temp, 256, "scale,0,0,0:%f", scale);
-    prefs.AddLine(temp);
+    prefs.push_back(temp);
     if (Window) {
         snprintf(temp, 256, "position,%i,%i,%i:%i", Window->GetX(), Window->GetY(), Window->GetWidth(),
                  Window->GetHeight());
-        prefs.AddLine(temp);
+        prefs.push_back(temp);
     }
     if (PICSimLab.GetWindow()) {
         snprintf(temp, 256, "boardp,%i,%i,%i:%i", PICSimLab.GetWindow()->GetX(), PICSimLab.GetWindow()->GetY(),
                  PICSimLab.GetWindow()->GetWidth(), PICSimLab.GetWindow()->GetHeight());
-        prefs.AddLine(temp);
+        prefs.push_back(temp);
     }
     snprintf(temp, 256, "spare_on,0,0,0:%i", PICSimLab.GetBoard()->GetUseSpareParts());
-    prefs.AddLine(temp);
+    prefs.push_back(temp);
     snprintf(temp, 256, "osc_on,0,0,0:%i", PICSimLab.GetBoard()->GetUseOscilloscope());
-    prefs.AddLine(temp);
+    prefs.push_back(temp);
     snprintf(temp, 256, "useAlias,0,0,0:%i", GetUseAlias());
-    prefs.AddLine(temp);
+    prefs.push_back(temp);
     snprintf(temp, 256, "debug,%i,%i,0:", PICSimLab.GetDebugStatus(), PICSimLab.GetDebugType());
-    prefs.AddLine(temp);
+    prefs.push_back(temp);
 
-    lxStringList osc_list = Oscilloscope.WritePreferencesList();
-    for (unsigned int ol = 0; ol < osc_list.GetLinesCount(); ol++) {
-        prefs.AddLine(osc_list.GetLine(ol));
+    std::vector<std::string> osc_list = Oscilloscope.WritePreferencesList();
+    for (unsigned int ol = 0; ol < osc_list.size(); ol++) {
+        prefs.push_back(osc_list.at(ol));
     }
 
     for (int i = 0; i < GetCount(); i++) {
         snprintf(temp, 256, "%s,%i,%i,%i:%s", GetPart(i)->GetName().c_str(), GetPart(i)->GetX(), GetPart(i)->GetY(),
                  GetPart(i)->GetOrientation(), GetPart(i)->WritePreferences().c_str());
-        prefs.AddLine(temp);
+        prefs.push_back(temp);
     }
 
-    return prefs.SaveToFile(fname);
+    return SaveToFile(prefs, fname.c_str());
 }
 
 void CSpareParts::Setfdtype(int value) {
@@ -666,6 +667,6 @@ void CSpareParts::Setfdtype(int value) {
     oldfname = filedialog->GetFileName();
 }
 
-void CSpareParts::SetfdOldFilename(const lxString ofn) {
+void CSpareParts::SetfdOldFilename(const std::string ofn) {
     oldfname = ofn;
 }

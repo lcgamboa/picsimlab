@@ -193,7 +193,7 @@ cboard_PQDB::cboard_PQDB(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NOR
         // scroll1
         scroll1 = new CScroll();
         scroll1->SetFOwner(PICSimLab.GetWindow());
-        scroll1->SetName(lxT("scroll1"));
+        scroll1->SetName("scroll1");
         scroll1->SetX(12);
         scroll1->SetY(100);
         scroll1->SetWidth(145);
@@ -208,7 +208,7 @@ cboard_PQDB::cboard_PQDB(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NOR
         // scroll2
         scroll2 = new CScroll();
         scroll2->SetFOwner(PICSimLab.GetWindow());
-        scroll2->SetName(lxT("scroll2"));
+        scroll2->SetName("scroll2");
         scroll2->SetX(12);
         scroll2->SetY(155);
         scroll2->SetWidth(145);
@@ -223,27 +223,27 @@ cboard_PQDB::cboard_PQDB(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NOR
         // label1
         label1 = new CLabel();
         label1->SetFOwner(PICSimLab.GetWindow());
-        label1->SetName(lxT("label1"));
+        label1->SetName("label1");
         label1->SetX(12);
         label1->SetY(75);
         label1->SetWidth(145);
         label1->SetHeight(20);
         label1->SetEnable(1);
         label1->SetVisible(1);
-        label1->SetText(lxT("Temp:"));
+        label1->SetText("Temp:");
         label1->SetAlign(1);
         PICSimLab.GetWindow()->CreateChild(label1);
         // label2
         label2 = new CLabel();
         label2->SetFOwner(PICSimLab.GetWindow());
-        label2->SetName(lxT("label2"));
+        label2->SetName("label2");
         label2->SetX(12);
         label2->SetY(130);
         label2->SetWidth(145);
         label2->SetHeight(20);
         label2->SetEnable(1);
         label2->SetVisible(1);
-        label2->SetText(lxT("Light:"));
+        label2->SetText("Light:");
         label2->SetAlign(1);
         PICSimLab.GetWindow()->CreateChild(label2);
     }
@@ -903,12 +903,12 @@ void cboard_PQDB::Reset(void) {
     if (pic.serial[0].serialfd != INVALID_SERIAL)
         PICSimLab.UpdateStatus(
             PS_SERIAL,
-            lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) + lxT("(") +
+            "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[0].serialbaud) + "(" +
                 FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
                                              pic.serial[0].serialexbaud)) +
-                lxT("%)"));
+                "%)");
     else
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
 
     if (use_spare)
         SpareParts.Reset();
@@ -1461,23 +1461,23 @@ void cboard_PQDB::RefreshStatus(void) {
     if (pic.serial[0].serialfd != INVALID_SERIAL)
         PICSimLab.UpdateStatus(
             PS_SERIAL,
-            lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(":") + itoa(pic.serial[0].serialbaud) + lxT("(") +
+            "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[0].serialbaud) + "(" +
                 FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
                                              pic.serial[0].serialexbaud)) +
-                lxT("%)"));
+                "%)");
     else
-        PICSimLab.UpdateStatus(PS_SERIAL, lxT("Serial: ") + lxString(SERIALDEVICE) + lxT(" (ERROR)"));
+        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
 }
 
 void cboard_PQDB::WritePreferences(void) {
-    PICSimLab.SavePrefs(lxT("PQDB_proc"), Proc);
-    PICSimLab.SavePrefs(lxT("PQDB_clock"), FloatStrFormat("%2.1f", PICSimLab.GetClock()));
-    PICSimLab.SavePrefs(lxT("PQDB_pot"), itoa(pot));
+    PICSimLab.SavePrefs("PQDB_proc", Proc);
+    PICSimLab.SavePrefs("PQDB_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs("PQDB_pot", std::to_string(pot));
     if (scroll2) {
-        PICSimLab.SavePrefs(lxT("PQDB_light"), itoa(scroll2->GetPosition()));
+        PICSimLab.SavePrefs("PQDB_light", std::to_string(scroll2->GetPosition()));
     }
     if (scroll1) {
-        PICSimLab.SavePrefs(lxT("PQDB_temp"), itoa(scroll1->GetPosition()));
+        PICSimLab.SavePrefs("PQDB_temp", std::to_string(scroll1->GetPosition()));
     }
 }
 
@@ -1507,9 +1507,9 @@ void cboard_PQDB::ReadPreferences(char* name, char* value) {
     }
 }
 
-lxString cboard_PQDB::MGetPinName(int pin) {
+std::string cboard_PQDB::MGetPinName(int pin) {
     if (pin <= bsim_picsim::MGetPinCount()) {
-        lxString pname = bsim_picsim::MGetPinName(pin);
+        std::string pname = bsim_picsim::MGetPinName(pin);
 
         switch (pin) {
             case 2:

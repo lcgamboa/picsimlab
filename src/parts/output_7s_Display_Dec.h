@@ -33,19 +33,19 @@
 
 class cpart_7s_display_dec : public part {
 public:
-    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     cpart_7s_display_dec(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
     ~cpart_7s_display_dec(void);
     void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;
     void Process(void) override;
     void PostProcess(void) override;
-    lxString GetPictureFileName(void) override;
-    lxString GetMapFile(void) override;
+    std::string GetPictureFileName(void) override;
+    std::string GetMapFile(void) override;
     void ConfigurePropertiesWindow(CPWindow* wprop) override;
     void ReadPropertiesWindow(CPWindow* WProp) override;
-    lxString WritePreferences(void) override;
-    void ReadPreferences(lxString value) override;
+    std::string WritePreferences(void) override;
+    void ReadPreferences(std::string value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
 

@@ -33,14 +33,14 @@ class bsim_gpsim : virtual public board {
 public:
     bsim_gpsim(void);
     int DebugInit(int dtyppe) override;
-    lxString GetDebugName(void) override { return "none"; };
+    std::string GetDebugName(void) override { return "none"; };
     void DebugLoop(void) override;
     int CpuInitialized(void) override;
     void MSetSerial(const char* port) override;
     int MInit(const char* processor, const char* fname, float freq) override;
     void MEnd(void) override;
     int MGetArchitecture(void) override;
-    void MDumpMemory(const char* fname) override;
+    int MDumpMemory(const char* fname) override;
     void MEraseFlash(void) override;
     void MSetFreq(float freq) override;
     float MGetFreq(void) override;
@@ -48,7 +48,7 @@ public:
     float MGetVCC(void) override;
     float MGetInstClockFreq(void) override;
     int MGetPinCount(void) override;
-    lxString MGetPinName(int pin) override;
+    std::string MGetPinName(int pin) override;
     void MSetPin(int pin, unsigned char value) override;
     void MSetPinDOV(int pin, unsigned char ovalue) override;
     void MSetAPin(int pin, float value) override;
@@ -70,7 +70,7 @@ protected:
 #else
     int serialfd;
 #endif
-    lxString supported_devices;
+    std::string supported_devices;
 };
 
 #endif /* BOARD_GPSIM_H */

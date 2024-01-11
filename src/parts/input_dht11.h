@@ -34,7 +34,7 @@
 
 class cpart_dht11 : public part {
 public:
-    lxString GetAboutInfo(void) override { return lxT("L.C. Gamboa \n <lcgamboa@yahoo.com>"); };
+    std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     cpart_dht11(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
     ~cpart_dht11(void);
     void DrawOutput(const unsigned int index) override;
@@ -46,8 +46,8 @@ public:
     void OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) override;
     void ConfigurePropertiesWindow(CPWindow* WProp) override;
     void ReadPropertiesWindow(CPWindow* WProp) override;
-    lxString WritePreferences(void) override;
-    void ReadPreferences(lxString value) override;
+    std::string WritePreferences(void) override;
+    void ReadPreferences(std::string value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
 

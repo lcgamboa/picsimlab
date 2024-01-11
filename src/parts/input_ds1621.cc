@@ -143,7 +143,7 @@ unsigned short cpart_ds1621::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_ds1621::WritePreferences(void) {
+std::string cpart_ds1621::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3],
@@ -152,7 +152,7 @@ lxString cpart_ds1621::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_ds1621::ReadPreferences(lxString value_) {
+void cpart_ds1621::ReadPreferences(std::string value_) {
     sscanf(value_.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2],
            &input_pins[3], &input_pins[4], &input_pins[5], &value);
     Reset();

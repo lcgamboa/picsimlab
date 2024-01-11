@@ -58,8 +58,8 @@ board::~board(void) {}
 void board::ReadMaps(void) {
     inputc = 0;
     outputc = 0;
-    ReadInputMap(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/") + GetMapFile()));
-    ReadOutputMap(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("boards/") + GetMapFile()));
+    ReadInputMap((const char*)lxGetLocalFile(PICSimLab.GetSharePath() + "boards/" + GetMapFile()).c_str());
+    ReadOutputMap((const char*)lxGetLocalFile(PICSimLab.GetSharePath() + "boards/" + GetMapFile()).c_str());
 
     for (int i = 0; i < inputc; i++) {
         input_ids[GetInputId(input[i].name)] = &input[i];
@@ -70,7 +70,7 @@ void board::ReadMaps(void) {
     }
 }
 
-void board::ReadInputMap(lxString fname) {
+void board::ReadInputMap(std::string fname) {
     FILE* fin;
 
     char line[256];
@@ -86,7 +86,7 @@ void board::ReadInputMap(lxString fname) {
 
     int x1, y1, x2, y2, r;
 
-    fin = fopen(fname.c_str(), "r");
+    fin = fopen_UTF8(fname.c_str(), "r");
 
     if (fin) {
         while (fgets(line, 256, fin)) {
@@ -199,7 +199,7 @@ void board::ReadInputMap(lxString fname) {
     }
 }
 
-void board::ReadOutputMap(lxString fname) {
+void board::ReadOutputMap(std::string fname) {
     FILE* fin;
 
     char line[256];
@@ -211,7 +211,7 @@ void board::ReadOutputMap(lxString fname) {
 
     int x1, y1, x2, y2, r;
 
-    fin = fopen(fname.c_str(), "r");
+    fin = fopen_UTF8(fname.c_str(), "r");
 
     if (fin) {
         while (fgets(line, 256, fin)) {
@@ -277,7 +277,7 @@ void board::ReadOutputMap(lxString fname) {
 }
 
 void board::RefreshStatus(void) {
-    PICSimLab.UpdateStatus(PS_SERIAL, lxT(""));
+    PICSimLab.UpdateStatus(PS_SERIAL, "");
 }
 
 void board::SetUseOscilloscope(int uo) {
@@ -296,11 +296,11 @@ int board::GetUseSpareParts(void) {
     return use_spare;
 }
 
-void board::SetProcessorName(lxString proc) {
+void board::SetProcessorName(std::string proc) {
     Proc = proc;
 }
 
-lxString board::GetProcessorName(void) {
+std::string board::GetProcessorName(void) {
     return Proc;
 }
 
@@ -363,12 +363,12 @@ void board::EvOnShow(void) {
     }
 }
 
-lxString board::GetPictureFileName(void) {
-    return GetName() + lxT("/board.svg");
+std::string board::GetPictureFileName(void) {
+    return GetName() + "/board.svg";
 }
 
-lxString board::GetMapFile(void) {
-    return GetName() + lxT("/board.map");
+std::string board::GetMapFile(void) {
+    return GetName() + "/board.map";
 }
 
 void board::StartThread(void) {
@@ -530,7 +530,7 @@ board* create_board(int* lab, int* lab_) {
     if ((*lab >= 0) && (*lab < BOARDS_LAST)) {
         pboard = boards_list[*lab].bcreate();
     } else {
-        mprint(lxT("PICSimLab: Invalid board! Using default!\n"));
+        mprint("PICSimLab: Invalid board! Using default!\n");
         *lab = 0;   // default
         *lab_ = 0;  // default
         pboard = boards_list[0].bcreate();

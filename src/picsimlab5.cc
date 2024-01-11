@@ -57,8 +57,8 @@ void CPWindow5::menu1_EvMenuActive(CControl* control) {
     PartToCreate = ((CItemMenu*)control)->GetText();
 
     if (SpareParts.GetCount() < MAX_PARTS) {
-        part* Part = SpareParts.AddPart((char*)PartToCreate.c_str(), 50 - offsetx, 50 - offsety, SpareParts.GetScale(),
-                                        PICSimLab.GetBoard());
+        part* Part = SpareParts.AddPart((const char*)PartToCreate.c_str(), 50 - offsetx, 50 - offsety,
+                                        SpareParts.GetScale(), PICSimLab.GetBoard());
         _EvOnShow(control);
         PartToCreate = "";
         PartToMove = Part->GetId();
@@ -90,8 +90,8 @@ void CPWindow5::_EvOnCreate(CControl* control) {
     }
 
     SetTitle(((PICSimLab.GetInstanceNumber() > 0)
-                  ? (lxT("PICSimLab[") + itoa(PICSimLab.GetInstanceNumber()) + lxT("] - "))
-                  : (lxT("PICSimLab - "))) +
+                  ? ("PICSimLab[" + std::to_string(PICSimLab.GetInstanceNumber()) + "] - ")
+                  : ("PICSimLab - ")) +
              "Spare parts");
 
     msleep(BASETIMER);
@@ -388,8 +388,8 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
         wprop.Draw();
         wprop.ShowExclusive();
     } else {
-        lxString fname =
-            PICSimLab.GetSharePath() + lxT("parts/") + SpareParts.GetPart(PartSelected)->GetPropertiesWindowFile();
+        std::string fname =
+            PICSimLab.GetSharePath() + "parts/" + SpareParts.GetPart(PartSelected)->GetPropertiesWindowFile();
 
         if (lxFileExists(fname)) {
             CButton* button;
@@ -420,8 +420,8 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
             }
         } else {
             PICSimLab.RegisterError(SpareParts.GetPart(PartSelected)->GetName() + ": File not found! \n" + fname);
-            printf("PICSimLab: (%s) File not found! %s\n", (const char*)SpareParts.GetPart(PartSelected)->GetName(),
-                   (const char*)fname.c_str());
+            printf("PICSimLab: (%s) File not found! %s\n",
+                   (const char*)SpareParts.GetPart(PartSelected)->GetName().c_str(), (const char*)fname.c_str());
         }
     }
 }
@@ -444,7 +444,7 @@ void CPWindow5::PropButtonRelease(CControl* control, uint button, uint x, uint y
             break;
         default:  // browse filedialog
             Window5.filedialog1.SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
-            Window5.filedialog1.SetFilter(lxT("All Files (*.*)|*.*"));
+            Window5.filedialog1.SetFilter("All Files (*.*)|*.*");
             Setfdtype(control->GetTag() - 2);
             Window5.filedialog1.Run();
             break;
@@ -455,7 +455,8 @@ void CPWindow5::PropComboChange(CCombo* control) {
     Window5.wprop.HideExclusive();
     Window5.wprop.WDestroy();
 
-    SpareParts.GetPart(Window5.PartSelected)->ComboChange(&Window5.wprop, control, control->GetText());
+    SpareParts.GetPart(Window5.PartSelected)
+        ->ComboChange(&Window5.wprop, control, (const char*)control->GetText().c_str());
 
     Window5.pmenu2_Properties_EvMenuActive(this);
 }
@@ -664,7 +665,7 @@ void CPWindow5::menu1_File_Saveconfiguration_EvMenuActive(CControl* control) {
 #else
     SpareParts.Setfdtype(-1);
     filedialog1.SetFileName(SpareParts.GetOldFilename());
-    filedialog1.SetFilter(lxT("PICSimLab Config. (*.pcf)|*.pcf"));
+    filedialog1.SetFilter("PICSimLab Config. (*.pcf)|*.pcf");
     filedialog1.Run();
 #endif
 }
@@ -676,7 +677,7 @@ void CPWindow5::menu1_File_Loadconfiguration_EvMenuActive(CControl* control) {
     filedialog1.SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
     SpareParts.Setfdtype(-1);
     filedialog1.SetFileName(SpareParts.GetOldFilename());
-    filedialog1.SetFilter(lxT("PICSimLab Config. (*.pcf)|*.pcf"));
+    filedialog1.SetFilter("PICSimLab Config. (*.pcf)|*.pcf");
     filedialog1.Run();
 #endif
 }
@@ -691,7 +692,7 @@ void CPWindow5::menu1_File_Savepinalias_EvMenuActive(CControl* control) {
 #else
     SpareParts.Setfdtype(-2);
     filedialog1.SetFileName(SpareParts.GetOldFilename());
-    filedialog1.SetFilter(lxT("PICSimLab Pin Alias. (*.ppa)|*.ppa"));
+    filedialog1.SetFilter("PICSimLab Pin Alias. (*.ppa)|*.ppa");
     filedialog1.Run();
 #endif
 }
@@ -703,7 +704,7 @@ void CPWindow5::menu1_File_Loadpinalias_EvMenuActive(CControl* control) {
     filedialog1.SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
     SpareParts.Setfdtype(-2);
     filedialog1.SetFileName(SpareParts.GetOldFilename());
-    filedialog1.SetFilter(lxT("PICSimLab Pin Alias. (*.ppa)|*.ppa"));
+    filedialog1.SetFilter("PICSimLab Pin Alias. (*.ppa)|*.ppa");
     filedialog1.Run();
 #endif
 }
@@ -720,11 +721,11 @@ void CPWindow5::menu1_Edit_Togglepinalias_EvMenuActive(CControl* control) {
 }
 
 void CPWindow5::menu1_Edit_Editpinalias_EvMenuActive(CControl* control) {
-    lxString alias_fname = SpareParts.GetAliasFname();
+    std::string alias_fname = SpareParts.GetAliasFname();
     if (lxFileExists(alias_fname)) {
         SpareParts.SavePinAlias(alias_fname);
 #ifdef _WIN_
-        lxExecute(lxT("notepad.exe ") + alias_fname);
+        lxExecute("notepad.exe " + alias_fname);
 #else
         lxExecute("gedit " + alias_fname, lxEXEC_MAKE_GROUP_LEADER);
 #endif
@@ -803,33 +804,33 @@ void CPWindow5::pmenu2_Delete_EvMenuActive(CControl* control) {
 
 void CPWindow5::pmenu2_Help_EvMenuActive(CControl* control) {
     char stemp[256];
-    snprintf(stemp, 256, lxT("https://lcgamboa.github.io/picsimlab_docs/%s/%s"), lxT(_VERSION_),
+    snprintf(stemp, 256, "https://lcgamboa.github.io/picsimlab_docs/%s/%s", _VERSION_,
              (const char*)SpareParts.GetPart(PartSelected)->GetHelpURL().c_str());
     lxLaunchDefaultBrowser(stemp);
 }
 
 void CPWindow5::pmenu2_About_EvMenuActive(CControl* control) {
-    Message_sz(lxT("Part ") + SpareParts.GetPart(PartSelected)->GetName() + lxT("\nDeveloped by ") +
+    Message_sz("Part " + SpareParts.GetPart(PartSelected)->GetName() + "\nDeveloped by " +
                    SpareParts.GetPart(PartSelected)->GetAboutInfo(),
                400, 200);
 }
 
 void CPWindow5::menu1_Help_Contents_EvMenuActive(CControl* control) {
 #ifdef EXT_BROWSER
-    // lxLaunchDefaultBrowser(lxT("file://")+share + lxT ("docs/picsimlab.html"));
+    // lxLaunchDefaultBrowser("file://"+share + "docs/picsimlab.html");
     char stemp[256];
-    snprintf(stemp, 256, lxT("https://lcgamboa.github.io/picsimlab_docs/%s/SpareParts.html"), lxT(_VERSION_));
+    snprintf(stemp, 256, "https://lcgamboa.github.io/picsimlab_docs/%s/SpareParts.html", _VERSION_);
     lxLaunchDefaultBrowser(stemp);
 #else
-    Window2.html1.SetLoadFile(PICSimLab.GetSharePath() + lxT("docs/picsimlab.html"));
+    Window2.html1.SetLoadFile(PICSimLab.GetSharePath() + "docs/picsimlab.html");
     Window2.Show();
 #endif
 }
 
 void CPWindow5::menu1_Help_About_EvMenuActive(CControl* control) {
     char stemp[256];
-    snprintf(stemp, 256, lxT("Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: %s %s %s %s"), lxT(_VERSION_),
-             lxT(_DATE_), lxT(_ARCH_), lxT(_PKG_));
+    snprintf(stemp, 256, "Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: %s %s %s %s", _VERSION_, _DATE_,
+             _ARCH_, _PKG_);
     Message_sz(stemp, 400, 200);
 }
 
@@ -837,10 +838,12 @@ void CPWindow5::filedialog1_EvOnClose(int retId) {
     if (retId && (SpareParts.Getfdtype() == -1)) {
         if ((filedialog1.GetType() == (lxFD_SAVE | lxFD_CHANGE_DIR))) {
             if (lxFileExists(filedialog1.GetFileName())) {
-                if (!Dialog_sz(lxString("Overwriting file: ") + basename(filedialog1.GetFileName()) + "?", 400, 200))
+                if (!Dialog_sz(std::string("Overwriting file: ") +
+                                   ((const char*)basename(filedialog1.GetFileName()).c_str()) + "?",
+                               400, 200))
                     return;
             }
-            SpareParts.SaveConfig(filedialog1.GetFileName());
+            SpareParts.SaveConfig((const char*)filedialog1.GetFileName().c_str());
 #ifdef __EMSCRIPTEN__
             EM_ASM_(
                 {
@@ -866,15 +869,17 @@ void CPWindow5::filedialog1_EvOnClose(int retId) {
         }
 
         if ((filedialog1.GetType() == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
-            SpareParts.LoadConfig(filedialog1.GetFileName());
+            SpareParts.LoadConfig((const char*)filedialog1.GetFileName().c_str());
         }
     } else if (retId && (SpareParts.Getfdtype() == -2)) {
         if ((filedialog1.GetType() == (lxFD_SAVE | lxFD_CHANGE_DIR))) {
             if (lxFileExists(filedialog1.GetFileName())) {
-                if (!Dialog_sz(lxString("Overwriting file: ") + basename(filedialog1.GetFileName()) + "?", 400, 200))
+                if (!Dialog_sz(std::string("Overwriting file: ") +
+                                   ((const char*)basename(filedialog1.GetFileName()).c_str()) + "?",
+                               400, 200))
                     return;
             }
-            SpareParts.SavePinAlias(filedialog1.GetFileName());
+            SpareParts.SavePinAlias((const char*)filedialog1.GetFileName().c_str());
 #ifdef __EMSCRIPTEN__
             EM_ASM_(
                 {
@@ -900,7 +905,7 @@ void CPWindow5::filedialog1_EvOnClose(int retId) {
         }
 
         if ((filedialog1.GetType() == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
-            SpareParts.LoadPinAlias(filedialog1.GetFileName(), 1);
+            SpareParts.LoadPinAlias((const char*)filedialog1.GetFileName().c_str(), 1);
         }
     } else if (SpareParts.Getfdtype() >= 0) {
         SpareParts.GetPart(SpareParts.Getfdtype())->filedialog_EvOnClose(retId);

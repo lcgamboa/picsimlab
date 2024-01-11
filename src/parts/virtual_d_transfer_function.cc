@@ -255,7 +255,7 @@ unsigned short cpart_dtfunc::GetOutputId(char* name) {
     return INVALID_ID;
 };
 
-lxString cpart_dtfunc::WritePreferences(void) {
+std::string cpart_dtfunc::WritePreferences(void) {
     char prefs[256];
 
     snprintf(prefs, 255, "%hhu,%hhu,%f,%f,%f,%f,%f,%i,%i,%f,%f,%f,%f,%f,%f,%f,%f", pins[0], pins[1], sample, in_gain,
@@ -264,15 +264,15 @@ lxString cpart_dtfunc::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_dtfunc::ReadPreferences(lxString value) {
+void cpart_dtfunc::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu,%hhu,%f,%f,%f,%f,%f,%i,%i,%f,%f,%f,%f,%f,%f,%f,%f", &pins[0], &pins[1], &sample,
            &in_gain, &in_off, &out_gain, &out_off, &ordern, &orderd, &num[0], &num[1], &num[2], &num[3], &den[0],
            &den[1], &den[2], &den[3]);
 }
 
 void cpart_dtfunc::ConfigurePropertiesWindow(CPWindow* WProp) {
-    lxString Items = SpareParts.GetPinsNames();
-    lxString spin;
+    std::string Items = SpareParts.GetPinsNames();
+    std::string spin;
     char buff[20];
     char eq[200];
 
@@ -293,11 +293,11 @@ void cpart_dtfunc::ConfigurePropertiesWindow(CPWindow* WProp) {
     }
     ((CEdit*)WProp->GetChildByName("edit4"))->SetText(eq);
 
-    ((CEdit*)WProp->GetChildByName("edit5"))->SetText(ftoa(sample));
-    ((CEdit*)WProp->GetChildByName("edit6"))->SetText(ftoa(in_gain));
-    ((CEdit*)WProp->GetChildByName("edit7"))->SetText(ftoa(in_off));
-    ((CEdit*)WProp->GetChildByName("edit8"))->SetText(ftoa(out_gain));
-    ((CEdit*)WProp->GetChildByName("edit9"))->SetText(ftoa(out_off));
+    ((CEdit*)WProp->GetChildByName("edit5"))->SetText(std::to_string(sample));
+    ((CEdit*)WProp->GetChildByName("edit6"))->SetText(std::to_string(in_gain));
+    ((CEdit*)WProp->GetChildByName("edit7"))->SetText(std::to_string(in_off));
+    ((CEdit*)WProp->GetChildByName("edit8"))->SetText(std::to_string(out_gain));
+    ((CEdit*)WProp->GetChildByName("edit9"))->SetText(std::to_string(out_off));
 }
 
 void cpart_dtfunc::ReadPropertiesWindow(CPWindow* WProp) {

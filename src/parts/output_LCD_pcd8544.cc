@@ -148,7 +148,7 @@ unsigned short cpart_LCD_pcd8544::GetOutputId(char* name) {
     return INVALID_ID;
 };
 
-lxString cpart_LCD_pcd8544::WritePreferences(void) {
+std::string cpart_LCD_pcd8544::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu", input_pins[0], input_pins[1], input_pins[2], input_pins[3],
@@ -157,7 +157,7 @@ lxString cpart_LCD_pcd8544::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_LCD_pcd8544::ReadPreferences(lxString value) {
+void cpart_LCD_pcd8544::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3],
            &input_pins[4]);
     Reset();

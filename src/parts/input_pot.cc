@@ -238,7 +238,7 @@ unsigned short cpart_pot::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-lxString cpart_pot::WritePreferences(void) {
+std::string cpart_pot::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u", output_pins[0], output_pins[1], output_pins[2],
@@ -247,7 +247,7 @@ lxString cpart_pot::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_pot::ReadPreferences(lxString value) {
+void cpart_pot::ReadPreferences(std::string value) {
     unsigned int sz;
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u", &output_pins[0], &output_pins[1],
            &output_pins[2], &output_pins[3], &values[0], &values[1], &values[2], &values[3], &sz);
@@ -315,7 +315,7 @@ void cpart_pot::LoadImage(void) {
             canvas.Destroy();
             canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
 
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + lxT("parts/") + Type + "/" + GetPictureFileName()),
+            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()),
                            Orientation, Scale, Scale);
             lxBitmap* BackBitmap = new lxBitmap(&image, SpareParts.GetWindow());
             image.Destroy();
