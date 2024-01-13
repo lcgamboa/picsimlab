@@ -83,25 +83,14 @@ CPICSimLab::CPICSimLab() {
     cpu_cond = NULL;
 #endif
 
-    updatestatus = NULL;
-    menu_EvBoard = NULL;
-    menu_EvMicrocontroller = NULL;
+    OnUpdateStatus = NULL;
+    OnConfigure = NULL;
     board_Event = NULL;
     board_ButtonEvent = NULL;
 }
 
 void CPICSimLab::Init(CWindow* w) {
     Window = w;
-    if (Window) {
-        // board menu
-        for (int i = 0; i < BOARDS_LAST; i++) {
-            MBoard[i].SetFOwner(Window);
-            MBoard[i].SetName(std::to_string(i));
-            MBoard[i].SetText(boards_list[i].name);
-            MBoard[i].EvMenuActive = menu_EvBoard;
-            Window->GetChildByName("menu1")->GetChildByName("menu1_Board")->CreateChild(&MBoard[i]);
-        }
-    }
     // check for other instances
     StartRControl();
 }
@@ -237,8 +226,8 @@ void CPICSimLab::SetDebugStatus(int dbs, int updatebtn) {
 }
 
 void CPICSimLab::UpdateStatus(const PICSimlabStatus field, const std::string msg) {
-    if ((updatestatus) && (field < PS_LAST)) {
-        (*updatestatus)(field, msg);
+    if ((OnUpdateStatus) && (field < PS_LAST)) {
+        (*OnUpdateStatus)(field, msg);
     }
 }
 
@@ -1064,38 +1053,10 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 #endif
     }
 
-    if (Window) {
-        ((CPMenu*)Window->GetChildByName("menu1")->GetChildByName("menu1_Microcontroller"))->DestroyChilds();
-        std::string sdev = pboard->GetSupportedDevices();
-        int f;
-        int dc = 0;
-        while (sdev.size() > 0) {
-            f = sdev.find(",");
-            if (f < 0)
-                break;
-            MMicro[dc].SetFOwner(Window);
-            MMicro[dc].SetName("Micro_" + std::to_string(dc + 1));
-            MMicro[dc].SetText(sdev.substr(0, f));
-            MMicro[dc].EvMenuActive = menu_EvMicrocontroller;
-            ((CPMenu*)Window->GetChildByName("menu1")->GetChildByName("menu1_Microcontroller"))
-                ->CreateChild(&MMicro[dc]);
-            MMicro[dc].SetVisible(true);
-            sdev = sdev.substr(f + 1, sdev.size() - f - 1);
-            dc++;
-
-            if (dc >= MAX_MIC) {
-                printf("PICSimLab: microcontroller menu only support %i entries!\n", MAX_MIC);
-                exit(-1);
-            }
-        }
-
-        ((CFileDialog*)Window->GetChildByName("filedialog1"))->SetDir(GetPath());
-
-        ((CDraw*)Window->GetChildByName("draw1"))->SetVisible(0);
-        ((CDraw*)Window->GetChildByName("draw1"))
-            ->SetImgFileName(lxGetLocalFile(GetSharePath() + "boards/" + pboard->GetPictureFileName()), GetScale(),
-                             GetScale());
+    if ((OnConfigure)) {
+        (*OnConfigure)();
     }
+
     pboard->MSetSerial(SERIALDEVICE);
 
     if (lfile) {
@@ -1213,23 +1174,6 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
         }
     } else {
         UpdateStatus(PS_DEBUG, status + "Debug: Off");
-    }
-#endif
-
-#ifndef NO_TOOLS
-    if (Window) {
-        if ((!pboard->GetProcessorName().compare("atmega328p")) ||
-            (!pboard->GetProcessorName().compare("atmega2560"))) {
-            Window->GetChildByName("menu1")
-                ->GetChildByName("menu1_Tools")
-                ->GetChildByName("menu1_Tools_ArduinoBootloader")
-                ->SetEnable(true);
-        } else {
-            Window->GetChildByName("menu1")
-                ->GetChildByName("menu1_Tools")
-                ->GetChildByName("menu1_Tools_ArduinoBootloader")
-                ->SetEnable(false);
-        }
     }
 #endif
 

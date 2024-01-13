@@ -33,8 +33,6 @@
 
 extern char SERIALDEVICE[100];
 
-#define MAX_MIC 140
-
 #include "board.h"
 #include "util.h"
 
@@ -270,12 +268,8 @@ public:
     int plHeight;
     int use_dsr_reset;
 
-    CItemMenu MBoard[BOARDS_MAX];
-    CItemMenu MMicro[MAX_MIC];
-
-    void (*updatestatus)(const int field, const std::string msg);
-    void (CControl::*menu_EvBoard)(CControl* control);
-    void (CControl::*menu_EvMicrocontroller)(CControl* control);
+    void (*OnUpdateStatus)(const int field, const std::string msg);
+    void (*OnConfigure)(void);
     void (CControl::*board_Event)(CControl* control);
     void (CControl::*board_ButtonEvent)(CControl* control, const uint button, const uint x, const uint y,
                                         const uint mask);

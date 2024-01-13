@@ -13,7 +13,7 @@
 // #include <gpsim/stimuli.h>
 #include <gpsim/sim_context.h>
 
-#include "../lib/picsimlab.h"
+#include "../lib/util.h"
 
 void simulation_cleanup(void);
 

@@ -318,7 +318,7 @@ cboard_PICGenios::cboard_PICGenios(void) : font(10, lxFONTFAMILY_TELETYPE, lxFON
         label5->SetHeight(24);
         label5->SetEnable(1);
         label5->SetVisible(1);
-        label5->SetText("Temp: 00.0°C");
+        label5->SetText("Temp: 27.50C");
         label5->SetAlign(1);
         PICSimLab.GetWindow()->CreateChild(label5);
         // label6

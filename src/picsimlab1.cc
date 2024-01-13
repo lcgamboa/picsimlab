@@ -671,12 +671,20 @@ void CPWindow1::_EvOnCreate(CControl* control) {
     PICSimLab.SetHomePath(home);
     PICSimLab.SetPath((const char*)lxGetCwd().c_str());
 
-    PICSimLab.updatestatus = &CPWindow1::UpdateStatus;
-    PICSimLab.menu_EvBoard = EVMENUACTIVE & CPWindow1::menu1_EvBoard;
-    PICSimLab.menu_EvMicrocontroller = EVMENUACTIVE & CPWindow1::menu1_EvMicrocontroller;
+    PICSimLab.OnUpdateStatus = &CPWindow1::UpdateStatus;
+    PICSimLab.OnConfigure = &CPWindow1::OnConfigure;
     PICSimLab.board_Event = EVONCOMBOCHANGE & CPWindow1::board_Event;
     PICSimLab.board_ButtonEvent = EVMOUSEBUTTONRELEASE & CPWindow1::board_ButtonEvent;
     PICSimLab.Init(this);
+
+    // board menu
+    for (int i = 0; i < BOARDS_LAST; i++) {
+        MBoard[i].SetFOwner(this);
+        MBoard[i].SetName(std::to_string(i));
+        MBoard[i].SetText(boards_list[i].name);
+        MBoard[i].EvMenuActive = EVMENUACTIVE & CPWindow1::menu1_EvBoard;
+        menu1_Board.CreateChild(&MBoard[i]);
+    }
 
     Oscilloscope.Init(&Window4);
 
@@ -862,6 +870,51 @@ void CPWindow1::_EvOnCreate(CControl* control) {
         PICSimLab.Configure(home, 0, 1);
     }
     label1.SetText(PICSimLab.GetBoard()->GetClkLabel());
+}
+
+void CPWindow1::OnConfigure(void) {
+    Window1.Configure();
+}
+
+void CPWindow1::Configure(void) {
+    menu1_Microcontroller.DestroyChilds();
+    std::string sdev = PICSimLab.GetBoard()->GetSupportedDevices();
+    int f;
+    int dc = 0;
+    while (sdev.size() > 0) {
+        f = sdev.find(",");
+        if (f < 0)
+            break;
+        MMicro[dc].SetFOwner(this);
+        MMicro[dc].SetName("Micro_" + std::to_string(dc + 1));
+        MMicro[dc].SetText(sdev.substr(0, f));
+        MMicro[dc].EvMenuActive = EVMENUACTIVE & CPWindow1::menu1_EvMicrocontroller;
+        menu1_Microcontroller.CreateChild(&MMicro[dc]);
+        MMicro[dc].SetVisible(true);
+        sdev = sdev.substr(f + 1, sdev.size() - f - 1);
+        dc++;
+
+        if (dc >= MAX_MIC) {
+            printf("PICSimLab: microcontroller menu only support %i entries!\n", MAX_MIC);
+            exit(-1);
+        }
+    }
+
+    filedialog1.SetDir(PICSimLab.GetPath());
+
+    draw1.SetVisible(0);
+    draw1.SetImgFileName(
+        lxGetLocalFile(PICSimLab.GetSharePath() + "boards/" + PICSimLab.GetBoard()->GetPictureFileName()),
+        PICSimLab.GetScale(), PICSimLab.GetScale());
+
+#ifndef NO_TOOLS
+    if ((!PICSimLab.GetBoard()->GetProcessorName().compare("atmega328p")) ||
+        (!PICSimLab.GetBoard()->GetProcessorName().compare("atmega2560"))) {
+        menu1_Tools_ArduinoBootloader.SetEnable(true);
+    } else {
+        menu1_Tools_ArduinoBootloader.SetEnable(false);
+    }
+#endif
 }
 
 // Change  frequency

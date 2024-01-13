@@ -50,6 +50,9 @@
 #define CPWINDOW1
 
 #include <lxrad.h>
+#include "lib/board.h"
+
+#define MAX_MIC 140
 
 /**
  * @brief CPWindow1 class
@@ -155,12 +158,14 @@ public:
     void menu1_EvMicrocontroller(CControl* control);
     void DrawBoard(void);
     static void UpdateStatus(const int field, const std::string msg);
+    static void OnConfigure(void);
+    void Configure(void);
 
 private:
+    CItemMenu MBoard[BOARDS_MAX];
+    CItemMenu MMicro[MAX_MIC];
     int pa;
-
     float over;
-
     int crt;
     int zerocount;
 };
