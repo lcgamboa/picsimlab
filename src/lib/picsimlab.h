@@ -174,12 +174,10 @@ public:
     /**
      * @brief  Set debug status flag
      */
-    void SetDebugStatus(int dbs, int updatebtn = 1);
+    void SetDebugStatus(int dbs);
 
     void SetClock(const float clk, const int update = 1);
     float GetClock(void);
-
-    int GetNeedClkUpdate(void) { return need_clkupdate; };
 
     /**
      * @brief  Save the preferences
@@ -270,6 +268,12 @@ public:
 
     void (*OnUpdateStatus)(const int field, const std::string msg);
     void (*OnConfigure)(void);
+    void (*OnClockSet)(const float clk, const int update);
+    void (*OnReadPreferences)(const char* name, const char* value, const int create);
+    void (*OnSavePrefs)(void);
+    void (*OnLoadHexFile)(const std::string fname);
+    void (*OnOpenLoadHexFileDialog)(void);
+
     void (CControl::*board_Event)(CControl* control);
     void (CControl::*board_ButtonEvent)(CControl* control, const uint button, const uint x, const uint y,
                                         const uint mask);
@@ -302,7 +306,6 @@ private:
     int debug_type;
     int debug;
     int need_resize;
-    int need_clkupdate;
     std::vector<std::string> prefs;
     int NeedReboot;
     std::vector<std::string> Errors;

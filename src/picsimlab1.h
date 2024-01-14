@@ -159,7 +159,14 @@ public:
     void DrawBoard(void);
     static void UpdateStatus(const int field, const std::string msg);
     static void OnConfigure(void);
+    static void OnClockSet(const float clk, const int update);
+    static void OnReadPreferences(const char* name, const char* value, const int create);
+    static void OnSavePrefs(void);
+    static void OnLoadHexFile(const std::string fname);
+    static void OnOpenLoadHexFileDialog(void);
     void Configure(void);
+    int GetNeedClkUpdate(void) { return need_clkupdate; };
+    void SetNeedClkUpdate(const int ncu) { need_clkupdate = ncu; };
 
 private:
     CItemMenu MBoard[BOARDS_MAX];
@@ -168,6 +175,7 @@ private:
     float over;
     int crt;
     int zerocount;
+    int need_clkupdate;
 };
 
 extern CPWindow1 Window1;

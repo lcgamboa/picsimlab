@@ -71,7 +71,6 @@ CPICSimLab::CPICSimLab() {
     tgo = 0;
     plWidth = 10;
     plHeight = 10;
-    need_clkupdate = 0;
     use_dsr_reset = 1;
     settodestroy = 0;
     sync = 0;
@@ -85,6 +84,12 @@ CPICSimLab::CPICSimLab() {
 
     OnUpdateStatus = NULL;
     OnConfigure = NULL;
+    OnClockSet = NULL;
+    OnReadPreferences = NULL;
+    OnSavePrefs = NULL;
+    OnLoadHexFile = NULL;
+    OnOpenLoadHexFileDialog = NULL;
+
     board_Event = NULL;
     board_ButtonEvent = NULL;
 }
@@ -196,11 +201,6 @@ void CPICSimLab::Set_mcudbg(int pd) {
 
 void CPICSimLab::SetDebugPort(unsigned short dp) {
     debug_port = dp;
-    if (debug) {
-        CToggleButton* togglebutton = (CToggleButton*)Window->GetChildByName("togglebutton1");
-        togglebutton->SetCheck(0);
-        (Window->*(togglebutton->EvOnToggleButton))(NULL);
-    }
 }
 
 void CPICSimLab::SetRemotecPort(unsigned short rcp) {
@@ -215,14 +215,8 @@ int CPICSimLab::GetDebugStatus(void) {
     return debug;
 }
 
-void CPICSimLab::SetDebugStatus(int dbs, int updatebtn) {
-    if (debug != dbs) {
-        debug = dbs;
-        if (updatebtn) {
-            CToggleButton* togglebutton = (CToggleButton*)Window->GetChildByName("togglebutton1");
-            (Window->*(togglebutton->EvOnToggleButton))(NULL);
-        }
-    }
+void CPICSimLab::SetDebugStatus(int dbs) {
+    debug = dbs;
 }
 
 void CPICSimLab::UpdateStatus(const PICSimlabStatus field, const std::string msg) {
@@ -232,19 +226,8 @@ void CPICSimLab::UpdateStatus(const PICSimlabStatus field, const std::string msg
 }
 
 void CPICSimLab::SetClock(const float clk, const int update) {
-    if (Window) {
-        CCombo* combo = (CCombo*)Window->GetChildByName("combo1");
-
-        if (update) {
-            if (clk < 1) {
-                combo->SetText(FloatStrFormat("%2.1f", clk));
-            } else {
-                combo->SetText(FloatStrFormat("%2.0f", clk));
-            }
-            need_clkupdate = 0;
-        } else {
-            need_clkupdate = 1;
-        }
+    if ((OnClockSet)) {
+        (*OnClockSet)(clk, update);
     }
     NSTEP = (int)(clk * NSTEPKT);
     NSTEPJ = NSTEP / JUMPSTEPS;
@@ -280,8 +263,9 @@ void CPICSimLab::SavePrefs(std::string name, std::string value) {
 }
 
 void CPICSimLab::OpenLoadHexFileDialog(void) {
-    CItemMenu* imenu = (CItemMenu*)Window->GetChildByName("menu1_File_LoadHex");
-    (Window->*(imenu->EvMenuActive))(NULL);
+    if (OnOpenLoadHexFileDialog) {
+        (*OnOpenLoadHexFileDialog)();
+    }
 }
 
 void CPICSimLab::SetNeedReboot(int nr) {
@@ -358,8 +342,8 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
     SavePrefs("picsimlab_debugt", std::to_string(GetDebugType()));
     SavePrefs("picsimlab_debugp", std::to_string(GetDebugPort()));
     SavePrefs("picsimlab_remotecp", std::to_string(GetRemotecPort()));
-    if (Window) {
-        SavePrefs("picsimlab_position", std::to_string(Window->GetX()) + "," + std::to_string(Window->GetY()));
+    if (OnSavePrefs) {
+        (*OnSavePrefs)();
     }
     SavePrefs("picsimlab_scale", std::to_string(scale));
     SavePrefs("picsimlab_dsr_reset", std::to_string(GetUseDSRReset()));
@@ -777,7 +761,9 @@ void CPICSimLab::SaveWorkspace(std::string fnpzw) {
     SavePrefs("picsimlab_debug", std::to_string(GetDebugStatus()));
     SavePrefs("picsimlab_debugt", std::to_string(GetDebugType()));
     SavePrefs("picsimlab_debugp", std::to_string(GetDebugPort()));
-    SavePrefs("picsimlab_position", std::to_string(Window->GetX()) + "," + std::to_string(Window->GetY()));
+    if (OnSavePrefs) {
+        (*OnSavePrefs)();
+    }
     SavePrefs("picsimlab_scale", std::to_string(scale));
     SavePrefs("osc_on", std::to_string(pboard->GetUseOscilloscope()));
     SavePrefs("spare_on", std::to_string(pboard->GetUseSpareParts()));
@@ -865,7 +851,7 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
     char* name;
     char* value;
 
-    int i, j;
+    int i;
     int lc;
     int load_demo = 0;
 
@@ -953,11 +939,8 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
                     if (disable_debug) {
                         debug = 0;
                     }
-                    if (Window) {
-                        ((CToggleButton*)Window->GetChildByName("togglebutton1"))->SetCheck(debug);
-                    }
 #endif
-                    SetDebugStatus(debug, 0);
+                    SetDebugStatus(debug);
                 }
 
                 if (!strcmp(name, "picsimlab_debugt")) {
@@ -974,26 +957,11 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
                     sscanf(value, "%i", &spare_on);
                 }
 
-                if (!strcmp(name, "picsimlab_position")) {
-                    sscanf(value, "%i,%i", &i, &j);
-                    if (Window) {
-                        Window->SetX(i);
-                        Window->SetY(j);
-                    }
-                    printf("PICSimLab: Window position x=%i y=%i\n", i, j);
-                }
-
                 if (!strcmp(name, "picsimlab_scale")) {
                     if (create) {
                         double s;
                         sscanf(value, "%lf", &s);
                         SetScale(s);
-                        if (Window) {
-                            ((CDraw*)Window->GetChildByName("draw1"))->SetWidth(plWidth * GetScale());
-                            Window->SetWidth(185 + plWidth * GetScale());
-                            ((CDraw*)Window->GetChildByName("draw1"))->SetHeight(plHeight * GetScale());
-                            Window->SetHeight(90 + plHeight * GetScale());
-                        }
                         pboard->SetScale(GetScale());
                         printf("PICSimLab: Window scale %5.2f \n", GetScale());
                     }
@@ -1009,22 +977,15 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 
                 if (!strcmp(name, "picsimlab_lfile")) {
                     SetFNAME(std::string(value));
-                    if (Window) {
-                        if (GetFNAME().length() > 1)
-                            Window->GetChildByName("menu1")
-                                ->GetChildByName("menu1_File")
-                                ->GetChildByName("menu1_File_ReloadLast")
-                                ->SetEnable(1);
-                        else
-                            Window->GetChildByName("menu1")
-                                ->GetChildByName("menu1_File")
-                                ->GetChildByName("menu1_File_ReloadLast")
-                                ->SetEnable(0);
-                    }
                 }
 
-                if (pboard != NULL)
+                if (pboard) {
                     pboard->ReadPreferences(name, value);
+                }
+
+                if (OnReadPreferences) {
+                    (*OnReadPreferences)(name, value, create);
+                }
 
                 Oscilloscope.ReadPreferences(name, value);
                 SpareParts.ReadPreferences(name, value);
@@ -1053,9 +1014,11 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 #endif
     }
 
+    /*
     if ((OnConfigure)) {
         (*OnConfigure)();
     }
+    */
 
     pboard->MSetSerial(SERIALDEVICE);
 
@@ -1108,28 +1071,26 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
             break;
     }
 
-    pboard->Reset();
+    if ((OnConfigure)) {
+        (*OnConfigure)();
+    } else {
+        pboard->Reset();
+    }
 
     SetProcessorName(pboard->GetProcessorName());
-    if (Window) {
-        pboard->EvOnShow();
-        pboard->Draw(((CDraw*)Window->GetChildByName("draw1")));
-        ((CDraw*)Window->GetChildByName("draw1"))->SetVisible(1);
-
-        Window->SetTitle(((Instance > 0) ? ("PICSimLab[" + std::to_string(Instance) + "] - ") : ("PICSimLab - ")) +
-                         std::string(boards_list[lab].name) + " - " + pboard->GetProcessorName());
 
 #ifdef _USE_PICSTARTP_
-        if (prog_init() >= 0)
-            status = "PStart:  Ok ";
-        else
-            status = "PStart:Error";
+    if (prog_init() >= 0)
+        status = "PStart:  Ok ";
+    else
+        status = "PStart:Error";
 #else
-        status = "";
+    status = "";
 #endif
 
-        UpdateStatus(PS_RUN, "Running...");
+    UpdateStatus(PS_RUN, "Running...");
 
+    if (Window) {
         ((CThread*)Window->GetChildByName("thread1"))->Run();  // parallel thread
 #ifndef __EMSCRIPTEN__
         // FIXME remote control disabled
@@ -1137,9 +1098,8 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 #endif
         ((CTimer*)Window->GetChildByName("timer1"))->SetRunState(1);
         ((CTimer*)Window->GetChildByName("timer2"))->SetRunState(1);
-
-        Application->ProcessEvents();
     }
+    Application->ProcessEvents();
 
     Oscilloscope.SetBoard(pboard);
     Oscilloscope.SetBaseTimer();
@@ -1250,16 +1210,9 @@ int CPICSimLab::LoadHexFile(std::string fname) {
 
     GetBoard()->Reset();
 
-    if (GetMcuRun())
-        Window->SetTitle(
-            ((GetInstanceNumber() > 0) ? ("PICSimLab[" + std::to_string(GetInstanceNumber()) + "] - ")
-                                       : ("PICSimLab - ")) +
-            std::string(boards_list[GetLab()].name) + " - " + GetBoard()->GetProcessorName() + " - " +
-            ((const char*)basename(((CFileDialog*)Window->GetChildByName("filedialog1"))->GetFileName()).c_str()));
-    else
-        Window->SetTitle(((GetInstanceNumber() > 0) ? ("PICSimLab[" + std::to_string(GetInstanceNumber()) + "] - ")
-                                                    : ("PICSimLab - ")) +
-                         std::string(boards_list[GetLab()].name) + " - " + GetBoard()->GetProcessorName());
+    if (OnLoadHexFile) {
+        (*OnLoadHexFile)(fname);
+    }
 
     ret = !GetMcuRun();
 

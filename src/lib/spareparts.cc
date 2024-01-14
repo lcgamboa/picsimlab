@@ -469,7 +469,7 @@ bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
                     ((CToggleButton*)PICSimLab.GetWindow()->GetChildByName("togglebutton1"))->SetCheck(x);
                 }
 #endif
-                PICSimLab.SetDebugStatus(x, 0);
+                PICSimLab.SetDebugStatus(x);
                 PICSimLab.SetDebugType(y);
             } else if (!strcmp(name, "osc_on")) {
                 unsigned char osc_on;

@@ -62,6 +62,11 @@ void CPWindow3::button1_EvMouseButtonClick(CControl* control, uint button, uint 
 
     PICSimLab.SetDebugPort(spin1.GetValue());
 
+    if (PICSimLab.GetDebugStatus()) {
+        Window1.togglebutton1.SetCheck(0);
+        Window1.togglebutton1_EvOnToggleButton(NULL);
+    }
+
     PICSimLab.SetRemotecPort(spin2.GetValue());
 
 #ifdef _USE_PICSTARTP_

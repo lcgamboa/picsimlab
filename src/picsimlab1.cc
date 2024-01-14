@@ -340,7 +340,7 @@ void CPWindow1::timer2_EvOnTime(CControl* control) {
         WDestroy();
     }
 
-    if (PICSimLab.GetNeedClkUpdate()) {
+    if (GetNeedClkUpdate()) {
         PICSimLab.SetClock(PICSimLab.GetClock());
     }
 }
@@ -673,6 +673,12 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 
     PICSimLab.OnUpdateStatus = &CPWindow1::UpdateStatus;
     PICSimLab.OnConfigure = &CPWindow1::OnConfigure;
+    PICSimLab.OnClockSet = &CPWindow1::OnClockSet;
+    PICSimLab.OnReadPreferences = &CPWindow1::OnReadPreferences;
+    PICSimLab.OnSavePrefs = &CPWindow1::OnSavePrefs;
+    PICSimLab.OnLoadHexFile = &CPWindow1::OnLoadHexFile;
+    PICSimLab.OnOpenLoadHexFileDialog = &CPWindow1::OnOpenLoadHexFileDialog;
+
     PICSimLab.board_Event = EVONCOMBOCHANGE & CPWindow1::board_Event;
     PICSimLab.board_ButtonEvent = EVMOUSEBUTTONRELEASE & CPWindow1::board_ButtonEvent;
     PICSimLab.Init(this);
@@ -876,6 +882,74 @@ void CPWindow1::OnConfigure(void) {
     Window1.Configure();
 }
 
+void CPWindow1::OnClockSet(const float clk, const int update) {
+    if (update) {
+        if (clk < 1) {
+            Window1.combo1.SetText(FloatStrFormat("%2.1f", clk));
+        } else {
+            Window1.combo1.SetText(FloatStrFormat("%2.0f", clk));
+        }
+        Window1.SetNeedClkUpdate(0);
+    } else {
+        Window1.SetNeedClkUpdate(1);
+    }
+}
+
+void CPWindow1::OnReadPreferences(const char* name, const char* value, const int create) {
+    if (!strcmp(name, "picsimlab_debug")) {
+#ifndef NO_DEBUG
+        Window1.togglebutton1.SetCheck(PICSimLab.GetDebugStatus());
+#endif
+    }
+
+    if (!strcmp(name, "picsimlab_position")) {
+        int i, j;
+        sscanf(value, "%i,%i", &i, &j);
+        Window1.SetX(i);
+        Window1.SetY(j);
+        printf("PICSimLab: Window position x=%i y=%i\n", i, j);
+    }
+
+    if (!strcmp(name, "picsimlab_scale")) {
+        if (create) {
+            Window1.draw1.SetWidth(PICSimLab.plWidth * PICSimLab.GetScale());
+            Window1.SetWidth(185 + PICSimLab.plWidth * PICSimLab.GetScale());
+            Window1.draw1.SetHeight(PICSimLab.plHeight * PICSimLab.GetScale());
+            Window1.SetHeight(90 + PICSimLab.plHeight * PICSimLab.GetScale());
+        }
+    }
+
+    if (!strcmp(name, "picsimlab_lfile")) {
+        if (PICSimLab.GetFNAME().length() > 1)
+            Window1.menu1_File_ReloadLast.SetEnable(1);
+        else
+            Window1.menu1_File_ReloadLast.SetEnable(1);
+    }
+}
+
+void CPWindow1::OnSavePrefs(void) {
+    PICSimLab.SavePrefs("picsimlab_position", std::to_string(Window1.GetX()) + "," + std::to_string(Window1.GetY()));
+}
+
+void CPWindow1::OnLoadHexFile(const std::string fname) {
+    if (PICSimLab.GetMcuRun())
+        Window1.SetTitle(((PICSimLab.GetInstanceNumber() > 0)
+                              ? ("PICSimLab[" + std::to_string(PICSimLab.GetInstanceNumber()) + "] - ")
+                              : ("PICSimLab - ")) +
+                         std::string(boards_list[PICSimLab.GetLab()].name) + " - " +
+                         PICSimLab.GetBoard()->GetProcessorName() + " - " + ((const char*)basename(fname).c_str()));
+    else
+        Window1.SetTitle(((PICSimLab.GetInstanceNumber() > 0)
+                              ? ("PICSimLab[" + std::to_string(PICSimLab.GetInstanceNumber()) + "] - ")
+                              : ("PICSimLab - ")) +
+                         std::string(boards_list[PICSimLab.GetLab()].name) + " - " +
+                         PICSimLab.GetBoard()->GetProcessorName());
+}
+
+void CPWindow1::OnOpenLoadHexFileDialog(void) {
+    Window1.menu1_File_LoadHex_EvMenuActive(NULL);
+}
+
 void CPWindow1::Configure(void) {
     menu1_Microcontroller.DestroyChilds();
     std::string sdev = PICSimLab.GetBoard()->GetSupportedDevices();
@@ -915,6 +989,16 @@ void CPWindow1::Configure(void) {
         menu1_Tools_ArduinoBootloader.SetEnable(false);
     }
 #endif
+
+    PICSimLab.GetBoard()->Reset();
+    PICSimLab.GetBoard()->EvOnShow();
+    PICSimLab.GetBoard()->Draw(&draw1);
+    draw1.SetVisible(1);
+
+    SetTitle(((PICSimLab.GetInstanceNumber() > 0)
+                  ? ("PICSimLab[" + std::to_string(PICSimLab.GetInstanceNumber()) + "] - ")
+                  : ("PICSimLab - ")) +
+             std::string(boards_list[PICSimLab.GetLab()].name) + " - " + PICSimLab.GetBoard()->GetProcessorName());
 }
 
 // Change  frequency
@@ -1201,7 +1285,7 @@ void CPWindow1::togglebutton1_EvOnToggleButton(CControl* control) {
     int osc_on = PICSimLab.GetBoard()->GetUseOscilloscope();
     int spare_on = PICSimLab.GetBoard()->GetUseSpareParts();
 
-    PICSimLab.SetDebugStatus(togglebutton1.GetCheck(), 0);
+    PICSimLab.SetDebugStatus(togglebutton1.GetCheck());
 
     PICSimLab.EndSimulation();
     PICSimLab.Configure(PICSimLab.GetHomePath().c_str());

@@ -103,23 +103,11 @@ void part::ReadInputMap(std::string fname) {
                     if (!strcmp("width", name)) {
                         sscanf(value, "%i", &x1);
                         Width = x1;
-                        // Window1.SetplWidth(x1);
-                        // Window1.draw1.SetWidth(x1*Window1.GetScale());
-                        // Window1.SetWidth(185+x1*Window1.GetScale());
                     }
 
                     if (!strcmp("height", name)) {
                         sscanf(value, "%i", &y1);
                         Height = y1;
-                        // Window1.SetplHeight(y1);
-                        // Window1.draw1.SetHeight(y1*Window1.GetScale());
-                        /*
-                        #ifdef _WIN_
-                                    Window1.SetHeight(75+y1*Window1.GetScale());
-                        #else
-                                    Window1.SetHeight(90+y1*Window1.GetScale());
-                        #endif
-                         */
                     }
 
                 } while (value != NULL);
@@ -513,7 +501,8 @@ void part::DrawSlider(const output_t* output, const unsigned char pos, const std
     canvas.RotatedText(val, output->x1 + 1, output->y1 + 5 + pos / 1.66, 0);
 }
 
-void part::DrawPotentiometer(const output_t* output, const unsigned char pos, const std::string val, const lxFont font) {
+void part::DrawPotentiometer(const output_t* output, const unsigned char pos, const std::string val,
+                             const lxFont font) {
     canvas.SetColor(179, 179, 179);
     canvas.Rectangle(1, output->x1, output->y1, output->x2 - output->x1, output->y2 - output->y1);
     canvas.SetFgColor(0, 0, 0);
