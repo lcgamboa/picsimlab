@@ -44,12 +44,6 @@ private:
     // flag to control if potentiometer is active
     unsigned char active;
 
-    // controls to be added in simulator window
-    CGauge* gauge1;  // gauge to show mean value of RB0
-    CGauge* gauge2;  // gauge to show mean value of RB1
-    CLabel* label2;  // label of gauge RB0
-    CLabel* label3;  // label of gauge RB1
-
     // Register controls for remote interface called once on board creation
     void RegisterRemoteControl(void) override;
 

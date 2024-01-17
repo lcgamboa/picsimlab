@@ -35,21 +35,6 @@
 // new board class must be derived from board class defined in board.h
 class cboard_Arduino_Uno : public bsim_simavr {
 private:
-    // controls to be added in simulator window
-    CGauge* gauge1;  // gauge to show mean value of 3
-    CGauge* gauge2;  // gauge to show mean value of 5
-    CGauge* gauge3;  // gauge to show mean value of 6
-    CGauge* gauge4;  // gauge to show mean value of 9
-    CGauge* gauge5;  // gauge to show mean value of 10
-    CGauge* gauge6;  // gauge to show mean value of 11
-
-    CLabel* label1;  // label of gauge 3
-    CLabel* label2;  // label of gauge 5
-    CLabel* label3;  // label of gauge 6
-    CLabel* label4;  // label of gauge 9
-    CLabel* label5;  // label of gauge 10
-    CLabel* label6;  // label of gauge 11
-
     void RegisterRemoteControl(void) override;
 
 protected:

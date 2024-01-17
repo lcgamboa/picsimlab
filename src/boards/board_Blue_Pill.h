@@ -35,9 +35,6 @@
 // new board class must be derived from board class defined in board.h
 class cboard_Blue_Pill : public bsim_qemu {
 private:
-    CLabel* label1;
-    CCombo* combo1;
-
     void RegisterRemoteControl(void) override;
 
 protected:

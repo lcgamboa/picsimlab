@@ -51,6 +51,7 @@
 
 #include <lxrad.h>
 #include "lib/board.h"
+#include "lib/picsimlab.h"
 
 #define MAX_MIC 140
 
@@ -157,13 +158,16 @@ public:
     void menu1_EvBoard(CControl* control);
     void menu1_EvMicrocontroller(CControl* control);
     void DrawBoard(void);
-    static void UpdateStatus(const int field, const std::string msg);
+    static void OnUpdateStatus(const int field, const std::string msg);
     static void OnConfigure(void);
     static void OnClockSet(const float clk, const int update);
     static void OnReadPreferences(const char* name, const char* value, const int create);
     static void OnSavePrefs(void);
     static void OnLoadHexFile(const std::string fname);
     static void OnOpenLoadHexFileDialog(void);
+    static void OnEndSimulation(void);
+    static void* OnUpdateGUI(const int id, const PICSimlabGUIType type, const PICSimlabGUIAction action,
+                             const void* arg);
     void Configure(void);
     int GetNeedClkUpdate(void) { return need_clkupdate; };
     void SetNeedClkUpdate(const int ncu) { need_clkupdate = ncu; };

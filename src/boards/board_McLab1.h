@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -39,8 +39,6 @@ private:
     unsigned int lm1[18];  // luminosidade media display
     unsigned int lm2[18];  // luminosidade media display
 
-    CGauge* gauge1;
-    CLabel* label1;
     void RegisterRemoteControl(void) override;
     lxColor color1;
     lxColor color2;

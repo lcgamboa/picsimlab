@@ -671,13 +671,15 @@ void CPWindow1::_EvOnCreate(CControl* control) {
     PICSimLab.SetHomePath(home);
     PICSimLab.SetPath((const char*)lxGetCwd().c_str());
 
-    PICSimLab.OnUpdateStatus = &CPWindow1::UpdateStatus;
+    PICSimLab.OnUpdateStatus = &CPWindow1::OnUpdateStatus;
     PICSimLab.OnConfigure = &CPWindow1::OnConfigure;
     PICSimLab.OnClockSet = &CPWindow1::OnClockSet;
     PICSimLab.OnReadPreferences = &CPWindow1::OnReadPreferences;
     PICSimLab.OnSavePrefs = &CPWindow1::OnSavePrefs;
     PICSimLab.OnLoadHexFile = &CPWindow1::OnLoadHexFile;
     PICSimLab.OnOpenLoadHexFileDialog = &CPWindow1::OnOpenLoadHexFileDialog;
+    PICSimLab.OnEndSimulation = &CPWindow1::OnEndSimulation;
+    PICSimLab.OnUpdateGUI = &CPWindow1::OnUpdateGUI;
 
     PICSimLab.board_Event = EVONCOMBOCHANGE & CPWindow1::board_Event;
     PICSimLab.board_ButtonEvent = EVMOUSEBUTTONRELEASE & CPWindow1::board_ButtonEvent;
@@ -950,6 +952,34 @@ void CPWindow1::OnOpenLoadHexFileDialog(void) {
     Window1.menu1_File_LoadHex_EvMenuActive(NULL);
 }
 
+void CPWindow1::OnEndSimulation(void) {
+    Window1.timer1.SetRunState(0);
+    Window1.timer2.SetRunState(0);
+
+    msleep(BASETIMER);
+    while (PICSimLab.status.status) {
+        msleep(1);
+        Application->ProcessEvents();
+    }
+    PICSimLab.tgo = 100000;
+#ifndef _NOTHREAD
+    PICSimLab.cpu_mutex->Lock();
+    PICSimLab.cpu_cond->Signal();
+    PICSimLab.cpu_mutex->Unlock();
+#endif
+
+    Window1.thread1.Destroy();
+    PICSimLab.tgo = 0;
+
+#ifndef __EMSCRIPTEN__
+    Window1.thread2.Destroy();
+#endif
+
+    // refresh window position to window reopen in same position
+    Window1.GetX();
+    Window1.GetY();
+}
+
 void CPWindow1::Configure(void) {
     menu1_Microcontroller.DestroyChilds();
     std::string sdev = PICSimLab.GetBoard()->GetSupportedDevices();
@@ -999,6 +1029,14 @@ void CPWindow1::Configure(void) {
                   ? ("PICSimLab[" + std::to_string(PICSimLab.GetInstanceNumber()) + "] - ")
                   : ("PICSimLab - ")) +
              std::string(boards_list[PICSimLab.GetLab()].name) + " - " + PICSimLab.GetBoard()->GetProcessorName());
+
+    thread1.Run();  // parallel thread
+#ifndef __EMSCRIPTEN__
+    // FIXME remote control disabled
+    thread2.Run();  // parallel thread
+#endif
+    timer1.SetRunState(1);
+    timer2.SetRunState(1);
 }
 
 // Change  frequency
@@ -1310,8 +1348,300 @@ void CPWindow1::menu1_File_SaveWorkspace_EvMenuActive(CControl* control) {
 #endif
 }
 
-void CPWindow1::UpdateStatus(const int field, const std::string msg) {
+void CPWindow1::OnUpdateStatus(const int field, const std::string msg) {
     Window1.statusbar1.SetField(field, msg);
+}
+
+void* CPWindow1::OnUpdateGUI(const int id, const PICSimlabGUIType type, const PICSimlabGUIAction action,
+                             const void* arg) {
+    char name[128];
+    switch (type) {
+        case GT_GAUGE:
+            switch (action) {
+                case GA_ADD: {
+                    const char* text = (const char*)arg;
+
+                    if ((text[0] == '*')) {  // Inline version
+
+                        // gauge
+                        snprintf(name, 128, "b_gauge%d", id);
+                        CGauge* pgauge = new CGauge();
+                        pgauge->SetFOwner(PICSimLab.GetWindow());
+                        pgauge->SetName(name);
+                        pgauge->SetX(35);
+                        pgauge->SetY(74 + (id * 25));
+                        pgauge->SetWidth(110);
+                        pgauge->SetHeight(20);
+                        pgauge->SetEnable(1);
+                        pgauge->SetVisible(1);
+                        pgauge->SetRange(100);
+                        pgauge->SetValue(0);
+                        pgauge->SetType(4);
+                        Window1.CreateChild(pgauge);
+                        // label1
+                        snprintf(name, 128, "b_label%d", id);
+                        CLabel* plabel = new CLabel();
+                        plabel->SetFOwner(PICSimLab.GetWindow());
+                        plabel->SetName(name);
+                        plabel->SetX(6);
+                        plabel->SetY(75 + (id * 25));
+                        plabel->SetWidth(50);
+                        plabel->SetHeight(20);
+                        plabel->SetEnable(1);
+                        plabel->SetVisible(1);
+                        plabel->SetText((text + 1));
+                        plabel->SetAlign(1);
+                        Window1.CreateChild(plabel);
+                    } else {
+                        // gauge
+                        snprintf(name, 128, "b_gauge%d", id);
+                        CGauge* bgauge = new CGauge();
+                        bgauge->SetFOwner(&Window1);
+                        bgauge->SetName(name);
+                        bgauge->SetX(13);
+                        bgauge->SetY(102 + (id * 50));
+                        bgauge->SetWidth(140);
+                        bgauge->SetHeight(20);
+                        bgauge->SetEnable(1);
+                        bgauge->SetVisible(1);
+                        bgauge->SetRange(100);
+                        bgauge->SetValue(0);
+                        bgauge->SetType(4);
+                        Window1.CreateChild(bgauge);
+                        // label
+                        snprintf(name, 128, "b_label%d", id);
+                        CLabel* blabel = new CLabel();
+                        blabel->SetFOwner(&Window1);
+                        blabel->SetName(name);
+                        blabel->SetX(12);
+                        blabel->SetY(80 + (id * 50));
+                        blabel->SetWidth(140);
+                        blabel->SetHeight(20);
+                        blabel->SetEnable(1);
+                        blabel->SetVisible(1);
+                        blabel->SetText(text);
+                        blabel->SetAlign(1);
+                        Window1.CreateChild(blabel);
+                    }
+                } break;
+                case GA_DEL: {
+                    // gauge
+                    snprintf(name, 128, "b_gauge%d", id);
+                    Window1.DestroyChild(Window1.GetChildByName(name));
+                    // label
+                    snprintf(name, 128, "b_label%d", id);
+                    Window1.DestroyChild(Window1.GetChildByName(name));
+                } break;
+                case GA_SET: {
+                    // gauge
+                    snprintf(name, 128, "b_gauge%d", id);
+                    CGauge* bgauge = (CGauge*)Window1.GetChildByName(name);
+                    bgauge->SetValue(*((int*)arg));
+                } break;
+                default:
+                    break;
+            }
+            break;
+        case GT_SCROLL:
+            switch (action) {
+                case GA_ADD: {
+                    // scroll
+                    snprintf(name, 128, "b_scroll%d", id);
+                    CScroll* bscroll = new CScroll();
+                    bscroll->SetFOwner(&Window1);
+                    bscroll->SetName(name);
+                    bscroll->SetX(13);
+                    bscroll->SetY(102 + (id * 50));
+                    bscroll->SetWidth(140);
+                    bscroll->SetHeight(20);
+                    bscroll->SetEnable(1);
+                    bscroll->SetVisible(1);
+                    bscroll->SetRange(200);
+                    bscroll->SetPosition(0);
+                    bscroll->SetType(4);
+                    Window1.CreateChild(bscroll);
+                    // label
+                    snprintf(name, 128, "b_label%d", id);
+                    CLabel* blabel = new CLabel();
+                    blabel->SetFOwner(&Window1);
+                    blabel->SetName(name);
+                    blabel->SetX(12);
+                    blabel->SetY(80 + (id * 50));
+                    blabel->SetWidth(140);
+                    blabel->SetHeight(20);
+                    blabel->SetEnable(1);
+                    blabel->SetVisible(1);
+                    blabel->SetText((const char*)arg);
+                    blabel->SetAlign(1);
+                    Window1.CreateChild(blabel);
+                } break;
+                case GA_DEL: {
+                    // scroll
+                    snprintf(name, 128, "b_scroll%d", id);
+                    Window1.DestroyChild(Window1.GetChildByName(name));
+                    // label
+                    snprintf(name, 128, "b_label%d", id);
+                    Window1.DestroyChild(Window1.GetChildByName(name));
+                } break;
+                case GA_SET: {
+                    // scroll
+                    snprintf(name, 128, "b_scroll%d", id);
+                    CScroll* bscroll = (CScroll*)Window1.GetChildByName(name);
+                    bscroll->SetPosition(*((int*)arg));
+                } break;
+                case GA_GET: {
+                    // scroll
+                    snprintf(name, 128, "b_scroll%d", id);
+                    CScroll* bscroll = (CScroll*)Window1.GetChildByName(name);
+                    int* val = (int*)arg;
+                    *val = bscroll->GetPosition();
+                    return val;
+                } break;
+                case GA_SET_LABEL: {
+                    // label
+                    snprintf(name, 128, "b_label%d", id);
+                    CLabel* blabel = (CLabel*)Window1.GetChildByName(name);
+                    blabel->SetText(((const char*)arg));
+                } break;
+                default:
+                    break;
+            }
+            break;
+        case GT_LABEL:
+            switch (action) {
+                case GA_ADD: {
+                    // label
+                    snprintf(name, 128, "b_label%d", id);
+                    CLabel* blabel = new CLabel();
+                    blabel->SetFOwner(&Window1);
+                    blabel->SetName(name);
+                    blabel->SetX(12);
+                    blabel->SetY(80 + (id * 50));
+                    blabel->SetWidth(140);
+                    blabel->SetHeight(20);
+                    blabel->SetEnable(1);
+                    blabel->SetVisible(1);
+                    blabel->SetText((const char*)arg);
+                    blabel->SetAlign(1);
+                    Window1.CreateChild(blabel);
+                } break;
+                case GA_DEL:
+                    // label
+                    snprintf(name, 128, "b_label%d", id);
+                    Window1.DestroyChild(Window1.GetChildByName(name));
+                    break;
+                case GA_SET_LABEL: {
+                    // gauge
+                    snprintf(name, 128, "b_label%d", id);
+                    CLabel* blabel = (CLabel*)Window1.GetChildByName(name);
+                    blabel->SetText((const char*)arg);
+                } break;
+                default:
+                    break;
+            }
+            break;
+        case GT_BUTTON:
+            switch (action) {
+                case GA_ADD: {
+                    // button
+                    snprintf(name, 128, "b_button%d", id);
+                    CButton* bbutton = new CButton();
+                    bbutton->SetFOwner(PICSimLab.GetWindow());
+                    bbutton->SetName(name);
+                    bbutton->SetX(13);
+                    bbutton->SetY(80 + (id * 50));
+                    bbutton->SetWidth(130);
+                    bbutton->SetHeight(24);
+                    bbutton->SetEnable(1);
+                    bbutton->SetVisible(1);
+                    bbutton->SetText((const char*)arg);
+                    bbutton->SetTag(4);
+                    bbutton->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow1::board_ButtonEvent;
+                    Window1.CreateChild(bbutton);
+                } break;
+                case GA_DEL:
+                    // label
+                    snprintf(name, 128, "b_label%d", id);
+                    Window1.DestroyChild(Window1.GetChildByName(name));
+                    break;
+                case GA_SET_LABEL: {
+                    // gauge
+                    snprintf(name, 128, "b_label%d", id);
+                    CLabel* blabel = (CLabel*)Window1.GetChildByName(name);
+                    blabel->SetText((const char*)arg);
+                } break;
+                default:
+                    break;
+            }
+            break;
+        case GT_COMBO:
+            switch (action) {
+                case GA_ADD: {
+                    // combo
+                    snprintf(name, 128, "b_combo%d", id);
+                    CCombo* bcombo = new CCombo();
+                    bcombo->SetFOwner(&Window1);
+                    bcombo->SetName(name);
+                    bcombo->SetX(13);
+                    bcombo->SetY(102 + (id * 50));
+                    bcombo->SetWidth(140);
+                    bcombo->SetHeight(24);
+                    bcombo->SetEnable(1);
+                    bcombo->SetVisible(1);
+                    bcombo->SetText("set");
+                    bcombo->SetTag(id);
+                    bcombo->EvOnComboChange = EVONCOMBOCHANGE & CPWindow1::board_Event;
+                    Window1.CreateChild(bcombo);
+                    // label
+                    snprintf(name, 128, "b_label%d", id);
+                    CLabel* blabel = new CLabel();
+                    blabel->SetFOwner(&Window1);
+                    blabel->SetName(name);
+                    blabel->SetX(12);
+                    blabel->SetY(80 + (id * 50));
+                    blabel->SetWidth(140);
+                    blabel->SetHeight(20);
+                    blabel->SetEnable(1);
+                    blabel->SetVisible(1);
+                    blabel->SetText((const char*)arg);
+                    blabel->SetAlign(1);
+                    Window1.CreateChild(blabel);
+                } break;
+                case GA_DEL: {
+                    // combo
+                    snprintf(name, 128, "b_combo%d", id);
+                    Window1.DestroyChild(Window1.GetChildByName(name));
+                    // label
+                    snprintf(name, 128, "b_label%d", id);
+                    Window1.DestroyChild(Window1.GetChildByName(name));
+                } break;
+                case GA_SET: {
+                    // gauge
+                    snprintf(name, 128, "b_combo%d", id);
+                    CCombo* bcombo = (CCombo*)Window1.GetChildByName(name);
+                    const char* value = ((const char*)arg);
+                    if (value[0] == ',') {
+                        bcombo->SetItems((value + 1));
+                    } else {
+                        bcombo->SetText(value);
+                    }
+                } break;
+                case GA_GET: {
+                    // gauge
+                    snprintf(name, 128, "b_combo%d", id);
+                    CCombo* bcombo = (CCombo*)Window1.GetChildByName(name);
+                    char* value = ((char*)arg);
+                    strncpy(value, (const char*)bcombo->GetText().c_str(), 128);
+                    return value;
+                } break;
+                default:
+                    break;
+            }
+            break;
+        default:
+            break;
+    }
+    return NULL;
 }
 
 void CPWindow1::menu1_File_LoadWorkspace_EvMenuActive(CControl* control) {

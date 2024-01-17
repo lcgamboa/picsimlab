@@ -58,6 +58,8 @@ enum {
     O_MP     // uController name
 };
 
+enum { PWM0 = 1, PWM1, PWM2, PWM3, SERIAL2 };
+
 // return the input ids numbers of names used in input map
 
 unsigned short cboard_Curiosity_HPC::GetInputId(char* name) {
@@ -129,175 +131,46 @@ cboard_Curiosity_HPC::cboard_Curiosity_HPC(void)
 
     ic28pins = 0;
 
-    if (PICSimLab.GetWindow()) {
-        // controls properties and creation
-        // gauge1
-        gauge1 = new CGauge();
-        gauge1->SetFOwner(PICSimLab.GetWindow());
-        gauge1->SetName("gauge1_p8");
-        gauge1->SetX(48);
-        gauge1->SetY(230 - 120);
-        gauge1->SetWidth(110);
-        gauge1->SetHeight(20);
-        gauge1->SetEnable(1);
-        gauge1->SetVisible(1);
-        gauge1->SetRange(100);
-        gauge1->SetValue(0);
-        gauge1->SetType(4);
-        PICSimLab.GetWindow()->CreateChild(gauge1);
-        // gauge2
-        gauge2 = new CGauge();
-        gauge2->SetFOwner(PICSimLab.GetWindow());
-        gauge2->SetName("gauge2_p8");
-        gauge2->SetX(48);
-        gauge2->SetY(255 - 120);
-        gauge2->SetWidth(110);
-        gauge2->SetHeight(20);
-        gauge2->SetEnable(1);
-        gauge2->SetVisible(1);
-        gauge2->SetRange(100);
-        gauge2->SetValue(0);
-        gauge2->SetType(4);
-        PICSimLab.GetWindow()->CreateChild(gauge2);
-        // gauge3
-        gauge3 = new CGauge();
-        gauge3->SetFOwner(PICSimLab.GetWindow());
-        gauge3->SetName("gauge3_p8");
-        gauge3->SetX(48);
-        gauge3->SetY(280 - 120);
-        gauge3->SetWidth(110);
-        gauge3->SetHeight(20);
-        gauge3->SetEnable(1);
-        gauge3->SetVisible(1);
-        gauge3->SetRange(100);
-        gauge3->SetValue(0);
-        gauge3->SetType(4);
-        PICSimLab.GetWindow()->CreateChild(gauge3);
-        // gauge4
-        gauge4 = new CGauge();
-        gauge4->SetFOwner(PICSimLab.GetWindow());
-        gauge4->SetName("gauge4_p8");
-        gauge4->SetX(48);
-        gauge4->SetY(305 - 120);
-        gauge4->SetWidth(110);
-        gauge4->SetHeight(20);
-        gauge4->SetEnable(1);
-        gauge4->SetVisible(1);
-        gauge4->SetRange(100);
-        gauge4->SetValue(0);
-        gauge4->SetType(4);
-        PICSimLab.GetWindow()->CreateChild(gauge4);
-        // label2
-        label2 = new CLabel();
-        label2->SetFOwner(PICSimLab.GetWindow());
-        label2->SetName("label2_p8");
-        label2->SetX(12);
-        label2->SetY(230 - 120);
-        label2->SetWidth(60);
-        label2->SetHeight(20);
-        label2->SetEnable(1);
-        label2->SetVisible(1);
-        label2->SetText("RA4");
-        label2->SetAlign(1);
-        PICSimLab.GetWindow()->CreateChild(label2);
-        // label3
-        label3 = new CLabel();
-        label3->SetFOwner(PICSimLab.GetWindow());
-        label3->SetName("label3_p8");
-        label3->SetX(13);
-        label3->SetY(255 - 120);
-        label3->SetWidth(60);
-        label3->SetHeight(20);
-        label3->SetEnable(1);
-        label3->SetVisible(1);
-        label3->SetText("RA5");
-        label3->SetAlign(1);
-        PICSimLab.GetWindow()->CreateChild(label3);
-        // label4
-        label4 = new CLabel();
-        label4->SetFOwner(PICSimLab.GetWindow());
-        label4->SetName("label4_p8");
-        label4->SetX(13);
-        label4->SetY(280 - 120);
-        label4->SetWidth(60);
-        label4->SetHeight(20);
-        label4->SetEnable(1);
-        label4->SetVisible(1);
-        label4->SetText("RA6");
-        label4->SetAlign(1);
-        PICSimLab.GetWindow()->CreateChild(label4);
-        // label5
-        label5 = new CLabel();
-        label5->SetFOwner(PICSimLab.GetWindow());
-        label5->SetName("label5_p8");
-        label5->SetX(13);
-        label5->SetY(305 - 120);
-        label5->SetWidth(60);
-        label5->SetHeight(20);
-        label5->SetEnable(1);
-        label5->SetVisible(1);
-        label5->SetText("RA7");
-        label5->SetAlign(1);
-        PICSimLab.GetWindow()->CreateChild(label5);
-        // label6
-        label6 = new CLabel();
-        label6->SetFOwner(PICSimLab.GetWindow());
-        label6->SetName("label6_p8");
-        label6->SetX(13);
-        label6->SetY(305 + 30 - 120);
-        label6->SetWidth(150);
-        label6->SetHeight(20);
-        label6->SetEnable(1);
-        label6->SetVisible(1);
-        label6->SetText("Second serial port:");
-        label6->SetAlign(1);
-        PICSimLab.GetWindow()->CreateChild(label6);
-        // combo1
-        combo1 = new CCombo();
-        combo1->SetFOwner(PICSimLab.GetWindow());
-        combo1->SetName("combo1_p8");
-        combo1->SetX(13);
-        combo1->SetY(305 + 55 - 120);
-        combo1->SetWidth(150);
-        combo1->SetHeight(25);
-        combo1->SetEnable(1);
-        combo1->SetVisible(1);
-#ifndef _WIN_
-        combo1->SetText("/dev/tnt4");
-#else
-        combo1->SetText("COM2");
-#endif
-        char* resp = serial_port_list();
-        if (resp) {
-            combo1->SetItems(resp);
-            free(resp);
-        }
+    PICSimLab.UpdateGUI(PWM0, GT_GAUGE, GA_ADD, (void*)"*RA4");
+    PICSimLab.UpdateGUI(PWM1, GT_GAUGE, GA_ADD, (void*)"*RA5");
+    PICSimLab.UpdateGUI(PWM2, GT_GAUGE, GA_ADD, (void*)"*RA6");
+    PICSimLab.UpdateGUI(PWM3, GT_GAUGE, GA_ADD, (void*)"*RA7");
 
-        PICSimLab.GetWindow()->CreateChild(combo1);
+    PICSimLab.UpdateGUI(SERIAL2, GT_COMBO, GA_ADD, (void*)"Second serial port:");
+
+    char* resp = serial_port_list();
+    if (resp) {
+        int size = strlen(resp) + 1;
+        char* list = (char*)malloc(size);
+        list[0] = ',';
+        strncpy((list + 1), resp, size);
+        free(resp);
+        PICSimLab.UpdateGUI(SERIAL2, GT_COMBO, GA_SET, (void*)list);
+        free(list);
     }
+
+#ifndef _WIN_
+    PICSimLab.UpdateGUI(SERIAL2, GT_COMBO, GA_SET, (void*)"/dev/tnt4");
+#else
+    PICSimLab.UpdateGUI(SERIAL2, GT_COMBO, GA_SET, (void*)"COM2");
+#endif
 }
 
 // Destructor called once on board destruction
 
 cboard_Curiosity_HPC::~cboard_Curiosity_HPC(void) {
-    if (PICSimLab.GetWindow()) {
-        // controls destruction
-        PICSimLab.GetWindow()->DestroyChild(gauge1);
-        PICSimLab.GetWindow()->DestroyChild(gauge2);
-        PICSimLab.GetWindow()->DestroyChild(gauge3);
-        PICSimLab.GetWindow()->DestroyChild(gauge4);
-        PICSimLab.GetWindow()->DestroyChild(label2);
-        PICSimLab.GetWindow()->DestroyChild(label3);
-        PICSimLab.GetWindow()->DestroyChild(label4);
-        PICSimLab.GetWindow()->DestroyChild(label5);
-        PICSimLab.GetWindow()->DestroyChild(label6);
-        PICSimLab.GetWindow()->DestroyChild(combo1);
-    }
+    PICSimLab.UpdateGUI(PWM0, GT_GAUGE, GA_DEL, NULL);
+    PICSimLab.UpdateGUI(PWM1, GT_GAUGE, GA_DEL, NULL);
+    PICSimLab.UpdateGUI(PWM2, GT_GAUGE, GA_DEL, NULL);
+    PICSimLab.UpdateGUI(PWM3, GT_GAUGE, GA_DEL, NULL);
+    PICSimLab.UpdateGUI(SERIAL2, GT_COMBO, GA_DEL, NULL);
 }
 
 void cboard_Curiosity_HPC::MSetSerial(const char* port) {
     pic_set_serial(&pic, 0, port, 0, 0, 0);
-    pic_set_serial(&pic, 1, combo1->GetText(), 0, 0, 0);
+    char text[128] = "";
+    PICSimLab.UpdateGUI(SERIAL2, GT_COMBO, GA_GET, (void*)text);
+    pic_set_serial(&pic, 1, text, 0, 0, 0);
 }
 
 // Reset board status
@@ -392,7 +265,9 @@ void cboard_Curiosity_HPC::WritePreferences(void) {
     PICSimLab.SavePrefs("Curiosity_HPC_proc", Proc);
     PICSimLab.SavePrefs("Curiosity_HPC_jmp", std::to_string(jmp[0]));
     PICSimLab.SavePrefs("Curiosity_HPC_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
-    PICSimLab.SavePrefs("Curiosity_HPC_serial2", (const char*)combo1->GetText().c_str());
+    char text[128] = "";
+    PICSimLab.UpdateGUI(SERIAL2, GT_COMBO, GA_GET, (void*)text);
+    PICSimLab.SavePrefs("Curiosity_HPC_serial2", text);
     PICSimLab.SavePrefs("Curiosity_HPC_pot1", std::to_string(pot1));
 }
 
@@ -417,7 +292,7 @@ void cboard_Curiosity_HPC::ReadPreferences(char* name, char* value) {
         PICSimLab.SetClock(atof(value));
     }
     if (!strcmp(name, "Curiosity_HPC_serial2")) {
-        combo1->SetText(value);
+        PICSimLab.UpdateGUI(SERIAL2, GT_COMBO, GA_SET, (void*)value);
         pic_set_serial(&pic, 1, value, 0, 0, 0);
     }
 
@@ -693,20 +568,21 @@ void cboard_Curiosity_HPC::Draw(CDraw* draw) {
     draw->Canvas.End();
     draw->Update();
 
-    // RA4 mean value to gauge1
-    gauge1->SetValue((pic.pins[5].oavalue - 55) / 2);
-    // RA5 mean value to gauge2
-    gauge2->SetValue((pic.pins[6].oavalue - 55) / 2);
+    int value = (pic.pins[5].oavalue - 55) / 2;  // RA4 mean value
+    PICSimLab.UpdateGUI(PWM0, GT_GAUGE, GA_SET, (void*)&value);
+    value = (pic.pins[6].oavalue - 55) / 2;  // RA5 mean value
+    PICSimLab.UpdateGUI(PWM1, GT_GAUGE, GA_SET, (void*)&value);
+
     if (ic28pins) {
-        // RA6 mean value to gauge3
-        gauge3->SetValue((pic.pins[9].oavalue - 55) / 2);
-        // RA7 mean value to gauge4
-        gauge4->SetValue((pic.pins[8].oavalue - 55) / 2);
+        value = (pic.pins[9].oavalue - 55) / 2;  // RA6 mean value
+        PICSimLab.UpdateGUI(PWM2, GT_GAUGE, GA_SET, (void*)&value);
+        value = (pic.pins[8].oavalue - 55) / 2;  // RA7 mean value
+        PICSimLab.UpdateGUI(PWM3, GT_GAUGE, GA_SET, (void*)&value);
     } else {
-        // RA6 mean value to gauge3
-        gauge3->SetValue((pic.pins[13].oavalue - 55) / 2);
-        // RA7 mean value to gauge4
-        gauge4->SetValue((pic.pins[12].oavalue - 55) / 2);
+        value = (pic.pins[13].oavalue - 55) / 2;  // RA6 mean value
+        PICSimLab.UpdateGUI(PWM2, GT_GAUGE, GA_SET, (void*)&value);
+        value = (pic.pins[12].oavalue - 55) / 2;  // RA7 mean value
+        PICSimLab.UpdateGUI(PWM3, GT_GAUGE, GA_SET, (void*)&value);
     }
 }
 

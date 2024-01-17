@@ -44,6 +44,9 @@ enum {
     O_ON,  // Power LED
     O_RST  // Reset button
 };
+
+enum { PWM0 = 0, PWM1, PWM2, PWM3, PWM4, PWM5 };
+
 // return the input ids numbers of names used in input map
 
 unsigned short cboard_Arduino_Uno::GetInputId(char* name) {
@@ -92,192 +95,25 @@ cboard_Arduino_Uno::cboard_Arduino_Uno(void) {
     PWM_pins[5] = 16;
 
     // controls properties and creation
-    if (PICSimLab.GetWindow()) {
-        // gauge1
-        gauge1 = new CGauge();
-        gauge1->SetFOwner(PICSimLab.GetWindow());
-        gauge1->SetName("gauge1_p5");
-        gauge1->SetX(35);
-        gauge1->SetY(74);
-        gauge1->SetWidth(110);
-        gauge1->SetHeight(20);
-        gauge1->SetEnable(1);
-        gauge1->SetVisible(1);
-        gauge1->SetRange(100);
-        gauge1->SetValue(0);
-        gauge1->SetType(4);
-        PICSimLab.GetWindow()->CreateChild(gauge1);
-        // gauge2
-        gauge2 = new CGauge();
-        gauge2->SetFOwner(PICSimLab.GetWindow());
-        gauge2->SetName("gauge2_p5");
-        gauge2->SetX(35);
-        gauge2->SetY(100);
-        gauge2->SetWidth(110);
-        gauge2->SetHeight(20);
-        gauge2->SetEnable(1);
-        gauge2->SetVisible(1);
-        gauge2->SetRange(100);
-        gauge2->SetValue(0);
-        gauge2->SetType(4);
-        PICSimLab.GetWindow()->CreateChild(gauge2);
-        // gauge3
-        gauge3 = new CGauge();
-        gauge3->SetFOwner(PICSimLab.GetWindow());
-        gauge3->SetName("gauge3_p5");
-        gauge3->SetX(35);
-        gauge3->SetY(125);
-        gauge3->SetWidth(110);
-        gauge3->SetHeight(20);
-        gauge3->SetEnable(1);
-        gauge3->SetVisible(1);
-        gauge3->SetRange(100);
-        gauge3->SetValue(0);
-        gauge3->SetType(4);
-        PICSimLab.GetWindow()->CreateChild(gauge3);
-        // gauge4
-        gauge4 = new CGauge();
-        gauge4->SetFOwner(PICSimLab.GetWindow());
-        gauge4->SetName("gauge4_p5");
-        gauge4->SetX(35);
-        gauge4->SetY(150);
-        gauge4->SetWidth(110);
-        gauge4->SetHeight(20);
-        gauge4->SetEnable(1);
-        gauge4->SetVisible(1);
-        gauge4->SetRange(100);
-        gauge4->SetValue(0);
-        gauge4->SetType(4);
-        PICSimLab.GetWindow()->CreateChild(gauge4);
-        // gauge5
-        gauge5 = new CGauge();
-        gauge5->SetFOwner(PICSimLab.GetWindow());
-        gauge5->SetName("gauge5_p5");
-        gauge5->SetX(35);
-        gauge5->SetY(175);
-        gauge5->SetWidth(110);
-        gauge5->SetHeight(20);
-        gauge5->SetEnable(1);
-        gauge5->SetVisible(1);
-        gauge5->SetRange(100);
-        gauge5->SetValue(0);
-        gauge5->SetType(4);
-        PICSimLab.GetWindow()->CreateChild(gauge5);
-        // gauge6
-        gauge6 = new CGauge();
-        gauge6->SetFOwner(PICSimLab.GetWindow());
-        gauge6->SetName("gauge6_p5");
-        gauge6->SetX(35);
-        gauge6->SetY(200);
-        gauge6->SetWidth(110);
-        gauge6->SetHeight(20);
-        gauge6->SetEnable(1);
-        gauge6->SetVisible(1);
-        gauge6->SetRange(100);
-        gauge6->SetValue(0);
-        gauge6->SetType(4);
-        PICSimLab.GetWindow()->CreateChild(gauge6);
 
-        // label1
-        label1 = new CLabel();
-        label1->SetFOwner(PICSimLab.GetWindow());
-        label1->SetName("label1_p5");
-        label1->SetX(12);
-        label1->SetY(75);
-        label1->SetWidth(20);
-        label1->SetHeight(20);
-        label1->SetEnable(1);
-        label1->SetVisible(1);
-        label1->SetText("3");
-        label1->SetAlign(1);
-        PICSimLab.GetWindow()->CreateChild(label1);
-        // label2
-        label2 = new CLabel();
-        label2->SetFOwner(PICSimLab.GetWindow());
-        label2->SetName("label2_p5");
-        label2->SetX(12);
-        label2->SetY(100);
-        label2->SetWidth(20);
-        label2->SetHeight(20);
-        label2->SetEnable(1);
-        label2->SetVisible(1);
-        label2->SetText("5");
-        label2->SetAlign(1);
-        PICSimLab.GetWindow()->CreateChild(label2);
-        // label3
-        label3 = new CLabel();
-        label3->SetFOwner(PICSimLab.GetWindow());
-        label3->SetName("label3_p5");
-        label3->SetX(13);
-        label3->SetY(125);
-        label3->SetWidth(20);
-        label3->SetHeight(20);
-        label3->SetEnable(1);
-        label3->SetVisible(1);
-        label3->SetText("6");
-        label3->SetAlign(1);
-        PICSimLab.GetWindow()->CreateChild(label3);
-        // label4
-        label4 = new CLabel();
-        label4->SetFOwner(PICSimLab.GetWindow());
-        label4->SetName("label4_p5");
-        label4->SetX(13);
-        label4->SetY(150);
-        label4->SetWidth(20);
-        label4->SetHeight(20);
-        label4->SetEnable(1);
-        label4->SetVisible(1);
-        label4->SetText("9");
-        label4->SetAlign(1);
-        PICSimLab.GetWindow()->CreateChild(label4);
-        // label5
-        label5 = new CLabel();
-        label5->SetFOwner(PICSimLab.GetWindow());
-        label5->SetName("label5_p5");
-        label5->SetX(13);
-        label5->SetY(175);
-        label5->SetWidth(20);
-        label5->SetHeight(20);
-        label5->SetEnable(1);
-        label5->SetVisible(1);
-        label5->SetText("10");
-        label5->SetAlign(1);
-        PICSimLab.GetWindow()->CreateChild(label5);
-        // label6
-        label6 = new CLabel();
-        label6->SetFOwner(PICSimLab.GetWindow());
-        label6->SetName("label6_p5");
-        label6->SetX(13);
-        label6->SetY(200);
-        label6->SetWidth(20);
-        label6->SetHeight(20);
-        label6->SetEnable(1);
-        label6->SetVisible(1);
-        label6->SetText("11");
-        label6->SetAlign(1);
-        PICSimLab.GetWindow()->CreateChild(label6);
-    }
+    PICSimLab.UpdateGUI(PWM0, GT_GAUGE, GA_ADD, (void*)"*3");
+    PICSimLab.UpdateGUI(PWM1, GT_GAUGE, GA_ADD, (void*)"*5");
+    PICSimLab.UpdateGUI(PWM2, GT_GAUGE, GA_ADD, (void*)"*6");
+    PICSimLab.UpdateGUI(PWM3, GT_GAUGE, GA_ADD, (void*)"*9");
+    PICSimLab.UpdateGUI(PWM4, GT_GAUGE, GA_ADD, (void*)"*10");
+    PICSimLab.UpdateGUI(PWM5, GT_GAUGE, GA_ADD, (void*)"*11");
 }
 
 // Destructor called once on board destruction
 
 cboard_Arduino_Uno::~cboard_Arduino_Uno(void) {
     // controls destruction
-    if (PICSimLab.GetWindow()) {
-        PICSimLab.GetWindow()->DestroyChild(gauge1);
-        PICSimLab.GetWindow()->DestroyChild(gauge2);
-        PICSimLab.GetWindow()->DestroyChild(gauge3);
-        PICSimLab.GetWindow()->DestroyChild(gauge4);
-        PICSimLab.GetWindow()->DestroyChild(gauge5);
-        PICSimLab.GetWindow()->DestroyChild(gauge6);
-
-        PICSimLab.GetWindow()->DestroyChild(label1);
-        PICSimLab.GetWindow()->DestroyChild(label2);
-        PICSimLab.GetWindow()->DestroyChild(label3);
-        PICSimLab.GetWindow()->DestroyChild(label4);
-        PICSimLab.GetWindow()->DestroyChild(label5);
-        PICSimLab.GetWindow()->DestroyChild(label6);
-    }
+    PICSimLab.UpdateGUI(PWM0, GT_GAUGE, GA_DEL, NULL);
+    PICSimLab.UpdateGUI(PWM1, GT_GAUGE, GA_DEL, NULL);
+    PICSimLab.UpdateGUI(PWM2, GT_GAUGE, GA_DEL, NULL);
+    PICSimLab.UpdateGUI(PWM3, GT_GAUGE, GA_DEL, NULL);
+    PICSimLab.UpdateGUI(PWM4, GT_GAUGE, GA_DEL, NULL);
+    PICSimLab.UpdateGUI(PWM5, GT_GAUGE, GA_DEL, NULL);
 }
 
 // Reset board status
@@ -524,12 +360,18 @@ void cboard_Arduino_Uno::Draw(CDraw* draw) {
         draw->Update();
     }
 
-    gauge1->SetValue((pins[PWM_pins[0]].oavalue - 55) / 2);
-    gauge2->SetValue((pins[PWM_pins[1]].oavalue - 55) / 2);
-    gauge3->SetValue((pins[PWM_pins[2]].oavalue - 55) / 2);
-    gauge4->SetValue((pins[PWM_pins[3]].oavalue - 55) / 2);
-    gauge5->SetValue((pins[PWM_pins[4]].oavalue - 55) / 2);
-    gauge6->SetValue((pins[PWM_pins[5]].oavalue - 55) / 2);
+    int value = (pins[PWM_pins[0]].oavalue - 55) / 2;
+    PICSimLab.UpdateGUI(PWM0, GT_GAUGE, GA_SET, (void*)&value);
+    value = (pins[PWM_pins[1]].oavalue - 55) / 2;
+    PICSimLab.UpdateGUI(PWM1, GT_GAUGE, GA_SET, (void*)&value);
+    value = (pins[PWM_pins[2]].oavalue - 55) / 2;
+    PICSimLab.UpdateGUI(PWM2, GT_GAUGE, GA_SET, (void*)&value);
+    value = (pins[PWM_pins[3]].oavalue - 55) / 2;
+    PICSimLab.UpdateGUI(PWM3, GT_GAUGE, GA_SET, (void*)&value);
+    value = (pins[PWM_pins[4]].oavalue - 55) / 2;
+    PICSimLab.UpdateGUI(PWM4, GT_GAUGE, GA_SET, (void*)&value);
+    value = (pins[PWM_pins[5]].oavalue - 55) / 2;
+    PICSimLab.UpdateGUI(PWM5, GT_GAUGE, GA_SET, (void*)&value);
 }
 
 void cboard_Arduino_Uno::Run_CPU(void) {

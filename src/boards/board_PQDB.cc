@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2020-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -144,6 +144,8 @@ enum {
     I_PWR,
 };
 
+enum { TEMP, LIGHT };
+
 cboard_PQDB::cboard_PQDB(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     Proc = "PIC18F4520";
 
@@ -189,75 +191,16 @@ cboard_PQDB::cboard_PQDB(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NOR
     scroll1_old = 255;  // force updated
     scroll2_old = 255;
 
-    if (PICSimLab.GetWindow()) {
-        // scroll1
-        scroll1 = new CScroll();
-        scroll1->SetFOwner(PICSimLab.GetWindow());
-        scroll1->SetName("scroll1");
-        scroll1->SetX(12);
-        scroll1->SetY(100);
-        scroll1->SetWidth(145);
-        scroll1->SetHeight(20);
-        scroll1->SetEnable(1);
-        scroll1->SetVisible(1);
-        scroll1->SetRange(200);
-        scroll1->SetPosition(0);
-        scroll1->SetType(4);
-        PICSimLab.GetWindow()->CreateChild(scroll1);
-
-        // scroll2
-        scroll2 = new CScroll();
-        scroll2->SetFOwner(PICSimLab.GetWindow());
-        scroll2->SetName("scroll2");
-        scroll2->SetX(12);
-        scroll2->SetY(155);
-        scroll2->SetWidth(145);
-        scroll2->SetHeight(20);
-        scroll2->SetEnable(1);
-        scroll2->SetVisible(1);
-        scroll2->SetRange(200);
-        scroll2->SetPosition(0);
-        scroll2->SetType(4);
-        PICSimLab.GetWindow()->CreateChild(scroll2);
-
-        // label1
-        label1 = new CLabel();
-        label1->SetFOwner(PICSimLab.GetWindow());
-        label1->SetName("label1");
-        label1->SetX(12);
-        label1->SetY(75);
-        label1->SetWidth(145);
-        label1->SetHeight(20);
-        label1->SetEnable(1);
-        label1->SetVisible(1);
-        label1->SetText("Temp:");
-        label1->SetAlign(1);
-        PICSimLab.GetWindow()->CreateChild(label1);
-        // label2
-        label2 = new CLabel();
-        label2->SetFOwner(PICSimLab.GetWindow());
-        label2->SetName("label2");
-        label2->SetX(12);
-        label2->SetY(130);
-        label2->SetWidth(145);
-        label2->SetHeight(20);
-        label2->SetEnable(1);
-        label2->SetVisible(1);
-        label2->SetText("Light:");
-        label2->SetAlign(1);
-        PICSimLab.GetWindow()->CreateChild(label2);
-    }
+    PICSimLab.UpdateGUI(TEMP, GT_SCROLL, GA_ADD, (void*)"Temp:");
+    PICSimLab.UpdateGUI(LIGHT, GT_SCROLL, GA_ADD, (void*)"Light:");
 }
 
 cboard_PQDB::~cboard_PQDB(void) {
     buzzer.BeepStop();
     buzzer.End();
-    if (PICSimLab.GetWindow()) {
-        PICSimLab.GetWindow()->DestroyChild(scroll1);
-        PICSimLab.GetWindow()->DestroyChild(scroll2);
-        PICSimLab.GetWindow()->DestroyChild(label1);
-        PICSimLab.GetWindow()->DestroyChild(label2);
-    }
+
+    PICSimLab.UpdateGUI(TEMP, GT_SCROLL, GA_DEL, NULL);
+    PICSimLab.UpdateGUI(LIGHT, GT_SCROLL, GA_DEL, NULL);
 
     rtc_ds1307_end(&rtc2);
     lcd_end(&lcd);
@@ -543,24 +486,27 @@ void cboard_PQDB::Draw(CDraw* draw) {
     // tensão p2
     vPOT = (3.3 * pot / 199);
 
-    if (scroll1->GetPosition() != scroll1_old) {
+    int position = 0;
+    PICSimLab.UpdateGUI(TEMP, GT_SCROLL, GA_GET, (void*)&position);
+    if (position != scroll1_old) {
         char buff[100];
-        scroll1_old = scroll1->GetPosition();
+        scroll1_old = position;
         vLM = (1.5 * scroll1_old / 199);
         sprintf(buff, "Temp: %4.1f C", scroll1_old * 150.0 / 199.0);
-        label1->SetText(buff);
+        PICSimLab.UpdateGUI(TEMP, GT_SCROLL, GA_SET_LABEL, (void*)buff);
     }
 
-    if (scroll2->GetPosition() != scroll2_old) {
+    PICSimLab.UpdateGUI(LIGHT, GT_SCROLL, GA_GET, (void*)&position);
+    if (position != scroll2_old) {
         char buff[100];
-        scroll2_old = scroll2->GetPosition();
+        scroll2_old = position;
         const float lux = powf(10, ((scroll2_old + 0.98) / 33.33) - 1);
         const float gamma = 0.7;
         const float r10 = 20000.0;
         const float res = r10 / (powf(10, gamma * log10(lux / 10.0)));
         vLDR = (res * 3.3) / (res + 10000.0);
         sprintf(buff, "Light: %4.0f lux", lux);
-        label2->SetText(buff);
+        PICSimLab.UpdateGUI(LIGHT, GT_SCROLL, GA_SET_LABEL, (void*)buff);
     }
 }
 
@@ -1473,12 +1419,11 @@ void cboard_PQDB::WritePreferences(void) {
     PICSimLab.SavePrefs("PQDB_proc", Proc);
     PICSimLab.SavePrefs("PQDB_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
     PICSimLab.SavePrefs("PQDB_pot", std::to_string(pot));
-    if (scroll2) {
-        PICSimLab.SavePrefs("PQDB_light", std::to_string(scroll2->GetPosition()));
-    }
-    if (scroll1) {
-        PICSimLab.SavePrefs("PQDB_temp", std::to_string(scroll1->GetPosition()));
-    }
+    int position = 0;
+    PICSimLab.UpdateGUI(LIGHT, GT_SCROLL, GA_GET, (void*)&position);
+    PICSimLab.SavePrefs("PQDB_light", std::to_string(position));
+    PICSimLab.UpdateGUI(TEMP, GT_SCROLL, GA_GET, (void*)&position);
+    PICSimLab.SavePrefs("PQDB_temp", std::to_string(position));
 }
 
 void cboard_PQDB::ReadPreferences(char* name, char* value) {
@@ -1495,15 +1440,13 @@ void cboard_PQDB::ReadPreferences(char* name, char* value) {
     }
 
     if (!strcmp(name, "PQDB_light")) {
-        if (scroll2) {
-            scroll2->SetPosition(atoi(value));
-        }
+        int ivalue = atoi(value);
+        PICSimLab.UpdateGUI(LIGHT, GT_SCROLL, GA_SET, (void*)&ivalue);
     }
 
     if (!strcmp(name, "PQDB_temp")) {
-        if (scroll1) {
-            scroll1->SetPosition(atoi(value));
-        }
+        int ivalue = atoi(value);
+        PICSimLab.UpdateGUI(TEMP, GT_SCROLL, GA_SET, (void*)&ivalue);
     }
 }
 

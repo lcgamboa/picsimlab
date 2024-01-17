@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -68,12 +68,6 @@ private:
     unsigned int lm2[40];  // luminosidade media display
     unsigned int lm3[40];  // luminosidade media display
     unsigned int lm4[40];  // luminosidade media display
-
-    CGauge* gauge1;
-    CGauge* gauge2;
-    CLabel* label2;
-    CLabel* label3;
-    CLabel* label4;
 
     lxaudio buzzer;
 

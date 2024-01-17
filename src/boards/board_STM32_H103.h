@@ -36,8 +36,6 @@
 class cboard_STM32_H103 : public bsim_qemu {
 private:
     unsigned char p_BUT;
-    CLabel* label1;
-    CCombo* combo1;
 
     void RegisterRemoteControl(void) override;
 

@@ -262,6 +262,8 @@ void bsim_remote::MEnd(void) {
         ->SetEnable(1);
 
     connected = 0;
+
+    StopThread();
 }
 
 int bsim_remote::MGetArchitecture(void) {

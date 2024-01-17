@@ -671,6 +671,11 @@ protected:
      */
     void StartThread(void);
 
+    /**
+     * @brief  Stop parallel thread
+     */
+    void StopThread(void);
+
 private:
     uint32_t InstCounter;
     int TimersCount;

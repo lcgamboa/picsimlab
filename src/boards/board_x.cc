@@ -53,6 +53,8 @@ enum {
     O_CPU    // CPU name
 };
 
+enum { PWM0 = 1, PWM1 };
+
 // return the input ids numbers of names used in input map
 
 unsigned short cboard_x::GetInputId(char* name) {
@@ -111,63 +113,8 @@ cboard_x::cboard_x(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, l
 
     active = 0;
 
-    if (PICSimLab.GetWindow()) {
-        // controls properties and creation
-        // gauge1
-        gauge1 = new CGauge();
-        gauge1->SetFOwner(PICSimLab.GetWindow());
-        gauge1->SetName("gauge1_px");
-        gauge1->SetX(13);
-        gauge1->SetY(382 - 160);
-        gauge1->SetWidth(140);
-        gauge1->SetHeight(20);
-        gauge1->SetEnable(1);
-        gauge1->SetVisible(1);
-        gauge1->SetRange(100);
-        gauge1->SetValue(0);
-        gauge1->SetType(4);
-        PICSimLab.GetWindow()->CreateChild(gauge1);
-        // gauge2
-        gauge2 = new CGauge();
-        gauge2->SetFOwner(PICSimLab.GetWindow());
-        gauge2->SetName("gauge2_px");
-        gauge2->SetX(12);
-        gauge2->SetY(330 - 160);
-        gauge2->SetWidth(140);
-        gauge2->SetHeight(20);
-        gauge2->SetEnable(1);
-        gauge2->SetVisible(1);
-        gauge2->SetRange(100);
-        gauge2->SetValue(0);
-        gauge2->SetType(4);
-        PICSimLab.GetWindow()->CreateChild(gauge2);
-        // label2
-        label2 = new CLabel();
-        label2->SetFOwner(PICSimLab.GetWindow());
-        label2->SetName("label2_px");
-        label2->SetX(12);
-        label2->SetY(306 - 160);
-        label2->SetWidth(60);
-        label2->SetHeight(20);
-        label2->SetEnable(1);
-        label2->SetVisible(1);
-        label2->SetText("RB0");
-        label2->SetAlign(1);
-        PICSimLab.GetWindow()->CreateChild(label2);
-        // label3
-        label3 = new CLabel();
-        label3->SetFOwner(PICSimLab.GetWindow());
-        label3->SetName("label3_px");
-        label3->SetX(13);
-        label3->SetY(357 - 160);
-        label3->SetWidth(60);
-        label3->SetHeight(20);
-        label3->SetEnable(1);
-        label3->SetVisible(1);
-        label3->SetText("RB1");
-        label3->SetAlign(1);
-        PICSimLab.GetWindow()->CreateChild(label3);
-    }
+    PICSimLab.UpdateGUI(PWM0, GT_GAUGE, GA_ADD, (void*)"*RB0");
+    PICSimLab.UpdateGUI(PWM1, GT_GAUGE, GA_ADD, (void*)"*RB1");
 
     SWBounce_init(&bounce, 2);
 }
@@ -175,13 +122,8 @@ cboard_x::cboard_x(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, l
 // Destructor called once on board destruction
 
 cboard_x::~cboard_x(void) {
-    if (PICSimLab.GetWindow()) {
-        // controls destruction
-        PICSimLab.GetWindow()->DestroyChild(gauge1);
-        PICSimLab.GetWindow()->DestroyChild(gauge2);
-        PICSimLab.GetWindow()->DestroyChild(label2);
-        PICSimLab.GetWindow()->DestroyChild(label3);
-    }
+    PICSimLab.UpdateGUI(PWM0, GT_GAUGE, GA_DEL, NULL);
+    PICSimLab.UpdateGUI(PWM1, GT_GAUGE, GA_DEL, NULL);
     SWBounce_end(&bounce);
 }
 
@@ -200,12 +142,12 @@ void cboard_x::Reset(void) {
     // verify serial port state and refresh status bar
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + ":" +
-                                      std::to_string(pic.serial[0].serialbaud) + "(" +
-                                      FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                       100.0 * pic.serial[0].serialbaud) /
-                                                                      pic.serial[0].serialexbaud)) +
-                                      "%)");
+        PICSimLab.UpdateStatus(
+            PS_SERIAL,
+            "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[0].serialbaud) + "(" +
+                FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
+                                             pic.serial[0].serialexbaud)) +
+                "%)");
     else
         PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
 
@@ -241,12 +183,12 @@ void cboard_x::RefreshStatus(void) {
     // verify serial port state and refresh status bar
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + ":" +
-                                      std::to_string(pic.serial[0].serialbaud) + "(" +
-                                      FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                       100.0 * pic.serial[0].serialbaud) /
-                                                                      pic.serial[0].serialexbaud)) +
-                                      "%)");
+        PICSimLab.UpdateStatus(
+            PS_SERIAL,
+            "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[0].serialbaud) + "(" +
+                FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
+                                             pic.serial[0].serialexbaud)) +
+                "%)");
     else
         PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
 }
@@ -257,11 +199,11 @@ void cboard_x::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
     PICSimLab.SavePrefs("X_proc", Proc);
     // write switch state of board_x to preferences
-    PICSimLab.SavePrefs("X_bt2", std::to_string( p_BT2));
+    PICSimLab.SavePrefs("X_bt2", std::to_string(p_BT2));
     // write microcontroller clock to preferences
     PICSimLab.SavePrefs("X_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
     // write potentiometer position to preferences
-    PICSimLab.SavePrefs("X_pot1", std::to_string( pot1));
+    PICSimLab.SavePrefs("X_pot1", std::to_string(pot1));
 }
 
 // Called whe configuration file load  preferences
@@ -565,10 +507,10 @@ void cboard_x::Draw(CDraw* draw) {
         draw->Update();
     }
 
-    // RB0 mean value to gauge1
-    gauge1->SetValue((pic.pins[33].oavalue - 55) / 2);
-    // RB1 mean value to gauge2
-    gauge2->SetValue((pic.pins[32].oavalue - 55) / 2);
+    int value = (pic.pins[33].oavalue - 55) / 2;  // RB0 mean value
+    PICSimLab.UpdateGUI(PWM0, GT_GAUGE, GA_SET, (void*)&value);
+    value = (pic.pins[32].oavalue - 55) / 2;  // RB1 mean value
+    PICSimLab.UpdateGUI(PWM1, GT_GAUGE, GA_SET, (void*)&value);
 }
 
 void cboard_x::Run_CPU(void) {

@@ -78,15 +78,6 @@ private:
     lxBitmap* vent[2];
     lxBitmap* lcdbmp[2];
 
-    CGauge* gauge1;
-    CGauge* gauge2;
-
-    CLabel* label3;
-    CLabel* label4;
-    CLabel* label5;
-    CLabel* label6;
-    CCombo* combo1;
-
     lxaudio buzzer;
 
     char mi2c_tmp_name[200];

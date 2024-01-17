@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -73,47 +73,21 @@ enum {
 /*inputs*/
 enum { I_RST, I_RA1, I_RA2, I_RA3, I_RA4, I_PWR, I_ICSP, I_JP1 };
 
+enum { LAMP };
+
 cboard_McLab1::cboard_McLab1(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     Proc = "PIC16F628A";
     ReadMaps();
     jmp[0] = 0;
-    if (PICSimLab.GetWindow()) {
-        // gauge1
-        gauge1 = new CGauge();
-        gauge1->SetFOwner(PICSimLab.GetWindow());
-        gauge1->SetName("gauge1_p1");
-        gauge1->SetX(13);
-        gauge1->SetY(102);
-        gauge1->SetWidth(140);
-        gauge1->SetHeight(20);
-        gauge1->SetEnable(1);
-        gauge1->SetVisible(1);
-        gauge1->SetRange(100);
-        gauge1->SetValue(0);
-        gauge1->SetType(4);
-        PICSimLab.GetWindow()->CreateChild(gauge1);
-        // label1
-        label1 = new CLabel();
-        label1->SetFOwner(PICSimLab.GetWindow());
-        label1->SetName("label1_p1");
-        label1->SetX(12);
-        label1->SetY(80);
-        label1->SetWidth(60);
-        label1->SetHeight(20);
-        label1->SetEnable(1);
-        label1->SetVisible(1);
-        label1->SetText("LAMP");
-        label1->SetAlign(1);
-        PICSimLab.GetWindow()->CreateChild(label1);
-    }
+
+    PICSimLab.UpdateGUI(LAMP, GT_GAUGE, GA_ADD, (void*)"LAMP");
+
     SWBounce_init(&bounce, 4);
 }
 
 cboard_McLab1::~cboard_McLab1(void) {
-    if (PICSimLab.GetWindow()) {
-        PICSimLab.GetWindow()->DestroyChild(gauge1);
-        PICSimLab.GetWindow()->DestroyChild(label1);
-    }
+    PICSimLab.UpdateGUI(LAMP, GT_GAUGE, GA_DEL, NULL);
+
     SWBounce_end(&bounce);
 }
 
@@ -363,7 +337,8 @@ void cboard_McLab1::Draw(CDraw* draw) {
     }
 
     // Lamp
-    gauge1->SetValue((pic.pins[16].oavalue - 55) / 2);
+    int value = (pic.pins[16].oavalue - 55) / 2;
+    PICSimLab.UpdateGUI(LAMP, GT_GAUGE, GA_SET, (void*)&value);
 }
 
 void cboard_McLab1::Run_CPU(void) {
@@ -929,7 +904,7 @@ unsigned short cboard_McLab1::GetOutputId(char* name) {
 
 void cboard_McLab1::WritePreferences(void) {
     PICSimLab.SavePrefs("McLab1_proc", Proc);
-    PICSimLab.SavePrefs("McLab1_jmp", std::to_string( jmp[0]));
+    PICSimLab.SavePrefs("McLab1_jmp", std::to_string(jmp[0]));
     PICSimLab.SavePrefs("McLab1_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
 }
 

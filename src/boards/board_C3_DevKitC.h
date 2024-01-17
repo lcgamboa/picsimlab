@@ -35,9 +35,6 @@
 // new board class must be derived from board class defined in board.h
 class cboard_C3_DevKitC : public bsim_qemu {
 private:
-    CLabel* label1;
-    CCombo* combo1;
-    CButton* button1;
     unsigned char p_BOOT;
     void RegisterRemoteControl(void) override;
     CPWindow* wconfig;

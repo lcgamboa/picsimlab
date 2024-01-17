@@ -45,6 +45,8 @@ enum {
     O_RST    // Reset button
 };
 
+enum { MIPS = 0 };
+
 // copied from qemu, must be the same
 enum {
     STM32_PERIPH_UNDEFINED = -1,
@@ -282,45 +284,17 @@ cboard_STM32_H103::cboard_STM32_H103(void) {
 
     bitbang_pwm_init(&pwm_out, this, 20);
 
-    if (PICSimLab.GetWindow()) {
-        // label1
-        label1 = new CLabel();
-        label1->SetFOwner(PICSimLab.GetWindow());
-        label1->SetName("label1_");
-        label1->SetX(13);
-        label1->SetY(54 + 20);
-        label1->SetWidth(120);
-        label1->SetHeight(24);
-        label1->SetEnable(1);
-        label1->SetVisible(1);
-        label1->SetText("Qemu CPU MIPS");
-        label1->SetAlign(1);
-        PICSimLab.GetWindow()->CreateChild(label1);
-        // combo1
-        combo1 = new CCombo();
-        combo1->SetFOwner(PICSimLab.GetWindow());
-        combo1->SetName("combo1_");
-        combo1->SetX(13);
-        combo1->SetY(78 + 20);
-        combo1->SetWidth(130);
-        combo1->SetHeight(24);
-        combo1->SetEnable(1);
-        combo1->SetVisible(1);
-        combo1->SetText(IcountToMipsStr(icount));
-        combo1->SetItems(IcountToMipsItens(buffer));
-        combo1->SetTag(3);
-        combo1->EvOnComboChange = PICSimLab.board_Event;
-        PICSimLab.GetWindow()->CreateChild(combo1);
-    }
+    PICSimLab.UpdateGUI(MIPS, GT_COMBO, GA_ADD, (void*)"Qemu CPU MIPS");
+    buffer[0] = ',';
+    IcountToMipsItens(buffer + 1);
+    PICSimLab.UpdateGUI(MIPS, GT_COMBO, GA_SET, (void*)buffer);
+    PICSimLab.UpdateGUI(MIPS, GT_COMBO, GA_SET, (void*)IcountToMipsStr(icount));
 }
 
 // Destructor called once on board destruction
 
 cboard_STM32_H103::~cboard_STM32_H103(void) {
-    if (PICSimLab.GetWindow()) {
-        PICSimLab.GetWindow()->DestroyChild(label1);
-        PICSimLab.GetWindow()->DestroyChild(combo1);
-    }
+    PICSimLab.UpdateGUI(MIPS, GT_COMBO, GA_DEL, NULL);
     bitbang_pwm_end(&pwm_out);
 }
 
@@ -381,9 +355,7 @@ void cboard_STM32_H103::ReadPreferences(char* name, char* value) {
     // read microcontroller icount
     if (!strcmp(name, "STM32_H103_icount")) {
         icount = atoi(value);
-        if (combo1) {
-            combo1->SetText(IcountToMipsStr(icount));
-        }
+        PICSimLab.UpdateGUI(MIPS, GT_COMBO, GA_SET, (void*)IcountToMipsStr(icount));
     }
 }
 
@@ -600,7 +572,9 @@ void cboard_STM32_H103::Run_CPU_ns(uint64_t time) {
 }
 
 void cboard_STM32_H103::board_Event(CControl* control) {
-    icount = MipsStrToIcount(combo1->GetText().c_str());
+    char line[128] = "";
+    PICSimLab.UpdateGUI(MIPS, GT_COMBO, GA_GET, (void*)line);
+    icount = MipsStrToIcount(line);
     PICSimLab.EndSimulation();
 }
 

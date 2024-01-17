@@ -89,6 +89,8 @@ CPICSimLab::CPICSimLab() {
     OnSavePrefs = NULL;
     OnLoadHexFile = NULL;
     OnOpenLoadHexFileDialog = NULL;
+    OnEndSimulation = NULL;
+    OnUpdateGUI = NULL;
 
     board_Event = NULL;
     board_ButtonEvent = NULL;
@@ -301,28 +303,9 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
 #ifndef __EMSCRIPTEN__
     rcontrol_end();
 #endif
-    if (Window) {
-        ((CTimer*)Window->GetChildByName("timer1"))->SetRunState(0);
-        ((CTimer*)Window->GetChildByName("timer2"))->SetRunState(0);
-    }
-    msleep(BASETIMER);
-    while (status.status) {
-        msleep(1);
-        Application->ProcessEvents();
-    }
-    tgo = 100000;
-#ifndef _NOTHREAD
-    cpu_mutex->Lock();
-    cpu_cond->Signal();
-    cpu_mutex->Unlock();
-#endif
-    if (Window) {
-        ((CThread*)Window->GetChildByName("thread1"))->Destroy();
-        tgo = 0;
 
-#ifndef __EMSCRIPTEN__
-        ((CThread*)Window->GetChildByName("thread2"))->Destroy();
-#endif
+    if (OnEndSimulation) {
+        (*OnEndSimulation)();
     }
 
     // write options
@@ -386,14 +369,6 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
 
     pboard->MEnd();
 
-#ifndef __EMSCRIPTEN__
-    if (Window) {
-        if (((CThread*)Window->GetChildByName("thread3"))->GetRunState()) {
-            ((CThread*)Window->GetChildByName("thread3"))->Destroy();
-        }
-    }
-#endif
-
     if (Instance) {
         sprintf(fname, "%s/parts_%s_%i.pcf", home, boards_list[lab_].name_, Instance);
     } else {
@@ -409,12 +384,6 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
         sprintf(fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
     }
     SpareParts.SavePinAlias(fname);
-
-    if (Window) {
-        // refresh window position to window reopen in same position
-        Window->GetX();
-        Window->GetY();
-    }
 
     scale = 1.0;
 
@@ -1090,15 +1059,6 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 
     UpdateStatus(PS_RUN, "Running...");
 
-    if (Window) {
-        ((CThread*)Window->GetChildByName("thread1"))->Run();  // parallel thread
-#ifndef __EMSCRIPTEN__
-        // FIXME remote control disabled
-        ((CThread*)Window->GetChildByName("thread2"))->Run();  // parallel thread
-#endif
-        ((CTimer*)Window->GetChildByName("timer1"))->SetRunState(1);
-        ((CTimer*)Window->GetChildByName("timer2"))->SetRunState(1);
-    }
     Application->ProcessEvents();
 
     Oscilloscope.SetBoard(pboard);
@@ -1173,7 +1133,6 @@ int CPICSimLab::LoadHexFile(std::string fname) {
     pa = GetMcuPwr();
     SetMcuPwr(0);
 
-    // timer1.SetRunState (0);
     status.st[0] |= ST_DI;
     msleep(BASETIMER);
     if (tgo)
@@ -1217,7 +1176,6 @@ int CPICSimLab::LoadHexFile(std::string fname) {
     ret = !GetMcuRun();
 
     SetMcuPwr(pa);
-    // timer1.SetRunState (1);
     status.st[0] &= ~ST_DI;
 
 #ifdef NO_DEBUG
@@ -1237,4 +1195,12 @@ int CPICSimLab::LoadHexFile(std::string fname) {
 #endif
 
     return ret;
+}
+
+void* CPICSimLab::UpdateGUI(const int id, const PICSimlabGUIType type, const PICSimlabGUIAction action,
+                            const void* arg) {
+    if (OnUpdateGUI) {
+        return (*OnUpdateGUI)(id, type, action, arg);
+    }
+    return NULL;
 }

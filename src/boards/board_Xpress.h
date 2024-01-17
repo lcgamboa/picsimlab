@@ -40,16 +40,6 @@ private:
     unsigned char pot1;
     unsigned char active;
 
-    // controls to be added in simulator window
-    CGauge* gauge1;  // gauge to show mean value of RA5
-    CGauge* gauge2;  // gauge to show mean value of RA1
-    CGauge* gauge3;  // gauge to show mean value of RA2
-    CGauge* gauge4;  // gauge to show mean value of RC5
-    CLabel* label2;  // label of gauge RA5
-    CLabel* label3;  // label of gauge RA1
-    CLabel* label4;  // label of gauge RA2
-    CLabel* label5;  // label of gauge RC5
-
     void RegisterRemoteControl(void) override;
 
     lxFont font;

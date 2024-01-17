@@ -380,6 +380,15 @@ void board::StartThread(void) {
 #endif
 }
 
+void board::StopThread(void) {
+#ifndef __EMSCRIPTEN__
+    CThread* thread3 = ((CThread*)PICSimLab.GetWindow()->GetChildByName("thread3"));
+    if (thread3->GetRunState()) {
+        thread3->Destroy();
+    }
+#endif
+}
+
 void board::InstCounterInc(void) {
     InstCounter++;
     for (int t = 0; t < TimersCount; t++) {

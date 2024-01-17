@@ -945,6 +945,8 @@ void bsim_qemu::MEnd(void) {
     if (fname_bak[0]) {
         lxRenameFile(fname_bak, fname_);
     }
+
+    StopThread();
 }
 
 int bsim_qemu::MGetArchitecture(void) {

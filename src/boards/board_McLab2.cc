@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -97,6 +97,8 @@ enum { I_POT1, I_RST, I_PWR, I_ICSP, I_JP1, I_JP2, I_JP3, I_JP4, I_JP5, I_JP6, I
 
 // TODO jumper support
 
+enum { HEATER = 2, COOLER, TEMP };
+
 static void cboard_McLab2_callback(void* arg) {
     cboard_McLab2* McLab2 = (cboard_McLab2*)arg;
     McLab2->OnTime();
@@ -143,6 +145,10 @@ cboard_McLab2::cboard_McLab2(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE
 
     active = 0;
 
+    PICSimLab.UpdateGUI(HEATER, GT_GAUGE, GA_ADD, (void*)"Heater");
+    PICSimLab.UpdateGUI(COOLER, GT_GAUGE, GA_ADD, (void*)"Cooler");
+    PICSimLab.UpdateGUI(TEMP, GT_LABEL, GA_ADD, (void*)"Temp: 00.0C");
+
     if (PICSimLab.GetWindow()) {
         lxImage image(PICSimLab.GetWindow());
         image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/VT1.svg"));
@@ -151,74 +157,6 @@ cboard_McLab2::cboard_McLab2(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE
         vent[1] = new lxBitmap(&image, PICSimLab.GetWindow());
 
         image.Destroy();
-
-        // gauge1
-        gauge1 = new CGauge();
-        gauge1->SetFOwner(PICSimLab.GetWindow());
-        gauge1->SetName("gauge1_p3");
-        gauge1->SetX(13);
-        gauge1->SetY(242);
-        gauge1->SetWidth(140);
-        gauge1->SetHeight(20);
-        gauge1->SetEnable(1);
-        gauge1->SetVisible(1);
-        gauge1->SetRange(100);
-        gauge1->SetValue(0);
-        gauge1->SetType(4);
-        PICSimLab.GetWindow()->CreateChild(gauge1);
-        // gauge2
-        gauge2 = new CGauge();
-        gauge2->SetFOwner(PICSimLab.GetWindow());
-        gauge2->SetName("gauge2_p3");
-        gauge2->SetX(12);
-        gauge2->SetY(190);
-        gauge2->SetWidth(140);
-        gauge2->SetHeight(20);
-        gauge2->SetEnable(1);
-        gauge2->SetVisible(1);
-        gauge2->SetRange(100);
-        gauge2->SetValue(0);
-        gauge2->SetType(4);
-        PICSimLab.GetWindow()->CreateChild(gauge2);
-        // label2
-        label2 = new CLabel();
-        label2->SetFOwner(PICSimLab.GetWindow());
-        label2->SetName("label2_p3");
-        label2->SetX(12);
-        label2->SetY(166);
-        label2->SetWidth(60);
-        label2->SetHeight(20);
-        label2->SetEnable(1);
-        label2->SetVisible(1);
-        label2->SetText("Heater");
-        label2->SetAlign(1);
-        PICSimLab.GetWindow()->CreateChild(label2);
-        // label3
-        label3 = new CLabel();
-        label3->SetFOwner(PICSimLab.GetWindow());
-        label3->SetName("label3_p3");
-        label3->SetX(13);
-        label3->SetY(217);
-        label3->SetWidth(60);
-        label3->SetHeight(20);
-        label3->SetEnable(1);
-        label3->SetVisible(1);
-        label3->SetText("Cooler");
-        label3->SetAlign(1);
-        PICSimLab.GetWindow()->CreateChild(label3);
-        // label4
-        label4 = new CLabel();
-        label4->SetFOwner(PICSimLab.GetWindow());
-        label4->SetName("label4_p3");
-        label4->SetX(13);
-        label4->SetY(272);
-        label4->SetWidth(120);
-        label4->SetHeight(24);
-        label4->SetEnable(1);
-        label4->SetVisible(1);
-        label4->SetText("Temp: 00.0°C");
-        label4->SetAlign(1);
-        PICSimLab.GetWindow()->CreateChild(label4);
     }
 
     snprintf(mi2c_tmp_name, 200, "%s/picsimlab-XXXXXX", (const char*)lxGetTempDir("PICSimLab").c_str());
@@ -240,13 +178,10 @@ cboard_McLab2::~cboard_McLab2(void) {
     delete vent[1];
     vent[0] = NULL;
     vent[1] = NULL;
-    if (PICSimLab.GetWindow()) {
-        PICSimLab.GetWindow()->DestroyChild(gauge1);
-        PICSimLab.GetWindow()->DestroyChild(gauge2);
-        PICSimLab.GetWindow()->DestroyChild(label2);
-        PICSimLab.GetWindow()->DestroyChild(label3);
-        PICSimLab.GetWindow()->DestroyChild(label4);
-    }
+
+    PICSimLab.UpdateGUI(HEATER, GT_GAUGE, GA_DEL, NULL);
+    PICSimLab.UpdateGUI(COOLER, GT_GAUGE, GA_DEL, NULL);
+    PICSimLab.UpdateGUI(TEMP, GT_LABEL, GA_DEL, NULL);
 
     unlink(mi2c_tmp_name);
 
@@ -633,11 +568,13 @@ void cboard_McLab2::Draw(CDraw* draw) {
 
     // Cooler
     cooler_pwr = pic.pins[15].oavalue - 55;
-    gauge1->SetValue(cooler_pwr / 2);
+    int value = cooler_pwr / 2;
+    PICSimLab.UpdateGUI(COOLER, GT_GAUGE, GA_SET, (void*)&value);
 
     // Heater
     heater_pwr = pic.pins[16].oavalue - 55;
-    gauge2->SetValue(heater_pwr / 2);
+    value = heater_pwr / 2;
+    PICSimLab.UpdateGUI(HEATER, GT_GAUGE, GA_SET, (void*)&value);
 
     // potentiometer
     vp2in = (5.0 * pot1 / 199);
@@ -1416,7 +1353,9 @@ unsigned short cboard_McLab2::GetOutputId(char* name) {
 }
 
 void cboard_McLab2::RefreshStatus(void) {
-    label4->SetText("Temp: " + FloatStrFormat("%5.2f", temp[0]) + "°C");
+    char svalue[128];
+    snprintf(svalue, 128, "Temp: %5.2fC", temp[0]);
+    PICSimLab.UpdateGUI(TEMP, GT_LABEL, GA_SET_LABEL, (void*)svalue);
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
         PICSimLab.UpdateStatus(

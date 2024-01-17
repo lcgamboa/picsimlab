@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -181,12 +181,6 @@ private:
     lxColor color1;
     lxColor color2;
     lxFont font;
-
-    CScroll* scroll1;
-    CScroll* scroll2;
-
-    CLabel* label1;
-    CLabel* label2;
 
 public:
     // Return the board name

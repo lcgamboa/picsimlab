@@ -43,17 +43,6 @@ private:
 
     unsigned char jmp[1];  // jumper
 
-    // controls to be added in simulator window
-    CGauge* gauge1;  // gauge to show mean value of RA4
-    CGauge* gauge2;  // gauge to show mean value of RA5
-    CGauge* gauge3;  // gauge to show mean value of RA6
-    CGauge* gauge4;  // gauge to show mean value of RA7
-    CLabel* label2;  // label of gauge RA4
-    CLabel* label3;  // label of gauge RA5
-    CLabel* label4;  // label of gauge RA6
-    CLabel* label5;  // label of gauge RA7
-    CLabel* label6;  // label of second serial
-    CCombo* combo1;  // combo of second serial
     void RegisterRemoteControl(void) override;
 
     unsigned char ic28pins;
