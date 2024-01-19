@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -69,6 +69,9 @@ void CPWindow5::menu1_EvMenuActive(CControl* control) {
 }
 
 void CPWindow5::_EvOnCreate(CControl* control) {
+    SpareParts.OnLoadImage = &CPWindow5::OnLoadImage;
+    SpareParts.OnCreateImage = &CPWindow5::OnCreateImage;
+
     if (SpareParts.GetLoadConfigFile().length() > 0)
         SpareParts.LoadConfig(SpareParts.GetLoadConfigFile());
 
@@ -911,4 +914,26 @@ void CPWindow5::filedialog1_EvOnClose(int retId) {
         SpareParts.GetPart(SpareParts.Getfdtype())->filedialog_EvOnClose(retId);
         SpareParts.Setfdtype(-1);
     }
+}
+
+lxBitmap* CPWindow5::OnLoadImage(const std::string fname, const float scale, const int usealpha,
+                                 const int orientation) {
+    lxImage image(&Window5);
+    if (image.LoadFile(lxGetLocalFile(fname), orientation, scale, scale, usealpha)) {
+        lxBitmap* bitmap = new lxBitmap(&image, &Window5);
+        image.Destroy();
+        return bitmap;
+    }
+    return NULL;
+}
+
+lxBitmap* CPWindow5::OnCreateImage(const unsigned int width, const unsigned int height, const float scale,
+                                   const int usealpha, const int orientation) {
+    lxImage image(&Window5);
+    if (image.CreateBlank(width, height, orientation, scale, scale)) {
+        lxBitmap* bitmap = new lxBitmap(&image, &Window5);
+        image.Destroy();
+        return bitmap;
+    }
+    return NULL;
 }

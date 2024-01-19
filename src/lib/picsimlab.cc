@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -91,6 +91,8 @@ CPICSimLab::CPICSimLab() {
     OnOpenLoadHexFileDialog = NULL;
     OnEndSimulation = NULL;
     OnUpdateGUI = NULL;
+    OnLoadImage = NULL;
+    OnConfigMenuGUI = NULL;
 
     board_Event = NULL;
     board_ButtonEvent = NULL;
@@ -224,6 +226,19 @@ void CPICSimLab::SetDebugStatus(int dbs) {
 void CPICSimLab::UpdateStatus(const PICSimlabStatus field, const std::string msg) {
     if ((OnUpdateStatus) && (field < PS_LAST)) {
         (*OnUpdateStatus)(field, msg);
+    }
+}
+
+lxBitmap* CPICSimLab::LoadImage(const std::string fname, const float scale, const int usealpha, const int orientation) {
+    if (OnLoadImage) {
+        return (*OnLoadImage)(fname, scale, usealpha, orientation);
+    }
+    return NULL;
+}
+
+void CPICSimLab::ConfigMenuGUI(const PICSimlabGUIMenu type) {
+    if (OnConfigMenuGUI) {
+        (*OnConfigMenuGUI)(type);
     }
 }
 

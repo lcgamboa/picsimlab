@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2022-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2022-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -94,11 +94,7 @@ void cpart_TEXT::LoadImage(void) {
         delete Bitmap;
     }
 
-    lxImage image(SpareParts.GetWindow());
-
-    image.CreateBlank(Width, Height, Orientation, Scale, Scale);
-    Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
-    image.Destroy();
+    Bitmap = SpareParts.CreateBlankImage(Width, Height, Scale, 0, Orientation);
     canvas.Destroy();
     canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
 }

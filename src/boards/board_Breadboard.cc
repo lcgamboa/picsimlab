@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2015-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -85,9 +85,7 @@ cboard_Breadboard::cboard_Breadboard(void) : font(10, lxFONTFAMILY_TELETYPE, lxF
     Proc = "PIC18F4620";  // default microcontroller if none defined in preferences
     ReadMaps();           // Read input and output board maps
 
-    lxImage image(PICSimLab.GetWindow());
-    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/ic40.svg"), 0, Scale, Scale, 1);
-    micbmp = new lxBitmap(&image, PICSimLab.GetWindow());
+    micbmp = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/ic40.svg", Scale, 1);
 }
 
 // Destructor called once on board destruction
@@ -626,12 +624,11 @@ int cboard_Breadboard::MInit(const char* processor, const char* fname, float fre
             break;
     }
 
-    lxImage image(PICSimLab.GetWindow());
+    lxBitmap* bmp = PICSimLab.LoadImage(
+        PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg", Scale, 1);
 
-    if (!image.LoadFile(
-            lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg"), 0,
-            Scale, Scale, 1)) {
-        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/ic6.svg"), 0, Scale, Scale, 1);
+    if (bmp == NULL) {
+        bmp = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/ic6.svg", Scale, 1);
         printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
         printf("picsimlab: %s not found!\n",
                (const char*)(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg")
@@ -640,7 +637,7 @@ int cboard_Breadboard::MInit(const char* processor, const char* fname, float fre
 
     if (micbmp)
         delete micbmp;
-    micbmp = new lxBitmap(&image, PICSimLab.GetWindow());
+    micbmp = bmp;
 
     return ret;
 }
@@ -1062,24 +1059,24 @@ void cboard_Breadboard::SetScale(double scale) {
 
     Scale = scale;
 
-    lxImage image(PICSimLab.GetWindow());
+    lxBitmap* bmp = NULL;
 
     if (MGetPinCount()) {
-        if (!image.LoadFile(
-                lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg"),
-                0, Scale, Scale, 1)) {
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/ic6.svg"), 0, Scale, Scale, 1);
+        bmp = PICSimLab.LoadImage(
+            PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg", Scale, 1);
+        if (bmp == NULL) {
+            bmp = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/ic6.svg", Scale, 1);
             printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
             printf("picsimlab: %s not found!\n", (const char*)(PICSimLab.GetSharePath() + "boards/Common/ic" +
                                                                std::to_string(MGetPinCount()) + ".svg")
                                                      .c_str());
         }
     } else {
-        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/ic40.svg"), 0, Scale, Scale, 1);
+        bmp = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/ic40.svg", Scale, 1);
     }
     if (micbmp)
         delete micbmp;
-    micbmp = new lxBitmap(&image, PICSimLab.GetWindow());
+    micbmp = bmp;
 }
 
 void cboard_Breadboard::EndServers(void) {

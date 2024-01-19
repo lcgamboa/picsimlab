@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -42,6 +42,8 @@ enum PICSimlabStatus { PS_RUN = 0, PS_DEBUG, PS_SERIAL, PS_LAST };
 
 enum PICSimlabGUIType { GT_GAUGE = 0, GT_SCROLL, GT_LABEL, GT_COMBO, GT_BUTTON, GT_LAST };
 enum PICSimlabGUIAction { GA_ADD = 0, GA_DEL, GA_SET, GA_GET, GA_SET_LABEL, GA_LAST };
+
+enum PICSimlabGUIMenu { GM_HEX, GM_BIN, GM_DISABLED, GM_LAST };
 
 class CPICSimLab {
 public:
@@ -256,6 +258,11 @@ public:
 
     void* UpdateGUI(const int id, const PICSimlabGUIType type, const PICSimlabGUIAction action, const void* arg);
 
+    lxBitmap* LoadImage(const std::string fname, const float scale = 1.0, const int usealpha = 0,
+                        const int orientation = 0);
+
+    void ConfigMenuGUI(const PICSimlabGUIMenu type);
+
 #ifndef _NOTHREAD
     lxCondition* cpu_cond;
     lxMutex* cpu_mutex;
@@ -280,6 +287,8 @@ public:
     void (*OnOpenLoadHexFileDialog)(void);
     void (*OnEndSimulation)(void);
     void* (*OnUpdateGUI)(const int id, const PICSimlabGUIType type, const PICSimlabGUIAction action, const void* arg);
+    lxBitmap* (*OnLoadImage)(const std::string fname, const float scale, const int usealpha, const int orientation);
+    void (*OnConfigMenuGUI)(const PICSimlabGUIMenu type);
 
     void (CControl::*board_Event)(CControl* control);
     void (CControl::*board_ButtonEvent)(CControl* control, const uint button, const uint x, const uint y,

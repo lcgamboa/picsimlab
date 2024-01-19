@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -50,16 +50,8 @@ cpart_tempsys::cpart_tempsys(const unsigned x, const unsigned y, const char* nam
     vtc = 0;
     vt = 0;
 
-    lxImage image(SpareParts.GetWindow());
-    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/VT1.svg"), Orientation, Scale * 0.867,
-                   Scale * 0.867);
-    vent[0] = new lxBitmap(&image, SpareParts.GetWindow());
-    image.Destroy();
-
-    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/VT2.svg"), Orientation, Scale * 0.867,
-                   Scale * 0.867);
-    vent[1] = new lxBitmap(&image, SpareParts.GetWindow());
-    image.Destroy();
+    vent[0] = SpareParts.LoadImage(PICSimLab.GetSharePath() + "boards/Common/VT1.svg", Scale * 0.867, 0, Orientation);
+    vent[1] = SpareParts.LoadImage(PICSimLab.GetSharePath() + "boards/Common/VT2.svg", Scale * 0.867, 0, Orientation);
 
     input_pins[0] = 0;
     input_pins[1] = 0;

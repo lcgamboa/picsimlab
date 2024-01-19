@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -291,7 +291,7 @@ void cpart_LCD_hd44780::ReadPropertiesWindow(CPWindow* WProp) {
 void cpart_LCD_hd44780::Process(void) {
     const picpin* ppins = SpareParts.GetPinsValues();
 
-    if (input_pins[1] > 0)       // EN
+    if (input_pins[1] > 0)  // EN
     {
         if (input_pins[10] > 0)  // R/W
         {
@@ -365,32 +365,31 @@ void cpart_LCD_hd44780::PostProcess(void) {
 }
 
 void cpart_LCD_hd44780::LoadImage(void) {
-    lxImage image(SpareParts.GetWindow());
+    lxBitmap* bmp = NULL;
 
     switch (model) {
         case LCD16x2:
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName()),
-                           Orientation, Scale, Scale);
+            bmp = SpareParts.LoadImage(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName(), Scale, 0,
+                                       Orientation);
             break;
         case LCD16x4:
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName_()),
-                           Orientation, Scale, Scale);
+            bmp = SpareParts.LoadImage(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName_(), Scale, 0,
+                                       Orientation);
             break;
         case LCD20x2:
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName__()),
-                           Orientation, Scale, Scale);
+            bmp = SpareParts.LoadImage(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName__(), Scale, 0,
+                                       Orientation);
             break;
         case LCD20x4:
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName___()),
-                           Orientation, Scale, Scale);
+            bmp = SpareParts.LoadImage(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName___(), Scale, 0,
+                                       Orientation);
             break;
     }
 
     if (SpareParts.GetWindow()) {
-        Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
+        Bitmap = bmp;
         canvas.Destroy();
         canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
-        image.Destroy();
     }
     for (int i = 0; i < outputc; i++) {
         output[i].update = 1;

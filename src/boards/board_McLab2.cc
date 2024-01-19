@@ -149,15 +149,8 @@ cboard_McLab2::cboard_McLab2(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE
     PICSimLab.UpdateGUI(COOLER, GT_GAUGE, GA_ADD, (void*)"Cooler");
     PICSimLab.UpdateGUI(TEMP, GT_LABEL, GA_ADD, (void*)"Temp: 00.0C");
 
-    if (PICSimLab.GetWindow()) {
-        lxImage image(PICSimLab.GetWindow());
-        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/VT1.svg"));
-        vent[0] = new lxBitmap(&image, PICSimLab.GetWindow());
-        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/VT2.svg"));
-        vent[1] = new lxBitmap(&image, PICSimLab.GetWindow());
-
-        image.Destroy();
-    }
+    vent[0] = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/VT1.svg");
+    vent[1] = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/VT2.svg");
 
     snprintf(mi2c_tmp_name, 200, "%s/picsimlab-XXXXXX", (const char*)lxGetTempDir("PICSimLab").c_str());
     close(mkstemp(mi2c_tmp_name));
@@ -212,12 +205,8 @@ void cboard_McLab2::SetScale(double scale) {
         if (vent[0]) {
             delete vent[0];
             delete vent[1];
-            lxImage image(PICSimLab.GetWindow());
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/VT1.svg"), 0, Scale, Scale);
-            vent[0] = new lxBitmap(&image, PICSimLab.GetWindow());
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/VT2.svg"), 0, Scale, Scale);
-            vent[1] = new lxBitmap(&image, PICSimLab.GetWindow());
-            image.Destroy();
+            vent[0] = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/VT1.svg", Scale);
+            vent[1] = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/VT2.svg", Scale);
         }
     }
 }

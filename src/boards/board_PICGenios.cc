@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -229,18 +229,10 @@ cboard_PICGenios::cboard_PICGenios(void) : font(10, lxFONTFAMILY_TELETYPE, lxFON
     heater_pwr = 0;
     cooler_pwr = 0;
 
-    lxImage image(PICSimLab.GetWindow());
-    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/VT1.svg"));
-    vent[0] = new lxBitmap(&image, PICSimLab.GetWindow());
-    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/VT2.svg"));
-    vent[1] = new lxBitmap(&image, PICSimLab.GetWindow());
-
-    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/lcd2.svg"));
-    lcdbmp[0] = new lxBitmap(&image, PICSimLab.GetWindow());
-    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/lcd4.svg"));
-    lcdbmp[1] = new lxBitmap(&image, PICSimLab.GetWindow());
-
-    image.Destroy();
+    vent[0] = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/VT1.svg");
+    vent[1] = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/VT2.svg");
+    lcdbmp[0] = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/lcd2.svg");
+    lcdbmp[1] = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/lcd4.svg");
 
     lcd_init(&lcd, 16, 2, this);
     mi2c_init(&mi2c, 4);
@@ -326,18 +318,11 @@ void cboard_PICGenios::SetScale(double scale) {
             delete vent[1];
             delete lcdbmp[0];
             delete lcdbmp[1];
-            lxImage image(PICSimLab.GetWindow());
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/VT1.svg"), 0, Scale, Scale);
-            vent[0] = new lxBitmap(&image, PICSimLab.GetWindow());
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/VT2.svg"), 0, Scale, Scale);
-            vent[1] = new lxBitmap(&image, PICSimLab.GetWindow());
 
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/lcd2.svg"), 0, Scale, Scale);
-            lcdbmp[0] = new lxBitmap(&image, PICSimLab.GetWindow());
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/lcd4.svg"), 0, Scale, Scale);
-            lcdbmp[1] = new lxBitmap(&image, PICSimLab.GetWindow());
-
-            image.Destroy();
+            vent[0] = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/VT1.svg", Scale);
+            vent[1] = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/VT2.svg", Scale);
+            lcdbmp[0] = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/lcd2.svg", Scale);
+            lcdbmp[1] = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/lcd4.svg", Scale);
         }
     }
 }

@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -159,17 +159,7 @@ int bsim_remote::MInit(const char* processor, const char* fname, float freq) {
         }
     }
 
-    PICSimLab.GetWindow()
-        ->GetChildByName("menu1")
-        ->GetChildByName("menu1_File")
-        ->GetChildByName("menu1_File_LoadHex")
-        ->SetEnable(0);
-
-    PICSimLab.GetWindow()
-        ->GetChildByName("menu1")
-        ->GetChildByName("menu1_File")
-        ->GetChildByName("menu1_File_SaveHex")
-        ->SetEnable(0);
+    PICSimLab.ConfigMenuGUI(GM_DISABLED);
 
     setnblock(listenfd);
 
@@ -249,17 +239,7 @@ void bsim_remote::Disconnect(void) {
 void bsim_remote::MEnd(void) {
     Disconnect();
 
-    PICSimLab.GetWindow()
-        ->GetChildByName("menu1")
-        ->GetChildByName("menu1_File")
-        ->GetChildByName("menu1_File_LoadHex")
-        ->SetEnable(1);
-
-    PICSimLab.GetWindow()
-        ->GetChildByName("menu1")
-        ->GetChildByName("menu1_File")
-        ->GetChildByName("menu1_File_SaveHex")
-        ->SetEnable(1);
+    PICSimLab.ConfigMenuGUI(GM_HEX);
 
     connected = 0;
 

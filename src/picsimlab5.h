@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -115,6 +115,10 @@ public:
     void PartKeyEvent(CControl* control, uint keysm, uint ukeysym, uint state);
     void PartEvent(CControl* control);
     void DeleteParts(void);
+
+    static lxBitmap* OnLoadImage(const std::string fname, const float scale, const int usealpha, const int orientation);
+    static lxBitmap* OnCreateImage(const unsigned int width, const unsigned int height, const float scale,
+                                   const int usealpha, const int orientation);
 
 private:
     CItemMenu MParts[MAX_PARTS];

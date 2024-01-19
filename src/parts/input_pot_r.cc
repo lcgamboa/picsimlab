@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -333,19 +333,13 @@ void cpart_pot_r::LoadImage(void) {
         Height = OHeight;
 
         if (SpareParts.GetWindow()) {
-            lxImage image(SpareParts.GetWindow());
-            image.CreateBlank(Width, Height, Orientation, Scale, Scale);
-
-            Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
-            image.Destroy();
+            Bitmap = SpareParts.CreateBlankImage(Width, Height, Scale, 0, Orientation);
 
             canvas.Destroy();
             canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
 
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()),
-                           Orientation, Scale, Scale);
-            lxBitmap* BackBitmap = new lxBitmap(&image, SpareParts.GetWindow());
-            image.Destroy();
+            lxBitmap* BackBitmap = SpareParts.LoadImage(
+                PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(), Scale, 0, Orientation);
 
             canvas.Init(Scale, Scale, Orientation);
             canvas.SetColor(0x31, 0x3d, 0x63);

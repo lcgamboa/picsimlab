@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2021-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2021-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ enum {
     O_LED    // User LED
 };
 
-enum { MIPS = 0, CONFIG };
+enum { MIPS = 0, CONFIG = 2 };
 
 // return the input ids numbers of names used in input map
 
@@ -477,7 +477,7 @@ void cboard_DevKitC::EvMouseButtonPress(uint button, uint x, uint y, uint state)
                     // if event is over I_RST area then turn off and reset
                 case I_RST:
                     /*
-                    if (PICSimLab.GetWindow()->Get_mcupwr () && reset (-1))//if powered
+                    if (PICSimLab.Get_mcupwr () && reset (-1))//if powered
                      {
                       PICSimLab.Set_mcupwr (0);
                       PICSimLab.Set_mcurst (1);

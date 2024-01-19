@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -354,19 +354,8 @@ int bsim_qemu::MInit(const char* processor, const char* _fname, float freq_) {
 #else  // qemu is not supported in emscripten version yet
     qemu_started = -1;
 #endif
-        ((CItemMenu*)PICSimLab.GetWindow()
-             ->GetChildByName("menu1")
-             ->GetChildByName("menu1_File")
-             ->GetChildByName("menu1_File_LoadHex"))
-            ->SetText("Load Bin");
-        ((CItemMenu*)PICSimLab.GetWindow()
-             ->GetChildByName("menu1")
-             ->GetChildByName("menu1_File")
-             ->GetChildByName("menu1_File_SaveHex"))
-            ->SetEnable(0);
-        ((CFileDialog*)PICSimLab.GetWindow()->GetChildByName("filedialog1"))->SetFileName("untitled.bin");
-        ((CFileDialog*)PICSimLab.GetWindow()->GetChildByName("filedialog1"))
-            ->SetFilter("Bin Files (*.bin)|*.bin;*.BIN");
+
+        PICSimLab.ConfigMenuGUI(GM_BIN);
 
 #ifndef __EMSCRIPTEN__
     } else {
@@ -923,18 +912,7 @@ void bsim_qemu::MEnd(void) {
     qmp_quit(NULL);
     qemu_mutex_unlock_iothread();
 
-    ((CItemMenu*)PICSimLab.GetWindow()
-         ->GetChildByName("menu1")
-         ->GetChildByName("menu1_File")
-         ->GetChildByName("menu1_File_LoadHex"))
-        ->SetText("Load Hex");
-    ((CItemMenu*)PICSimLab.GetWindow()
-         ->GetChildByName("menu1")
-         ->GetChildByName("menu1_File")
-         ->GetChildByName("menu1_File_SaveHex"))
-        ->SetEnable(1);
-    ((CFileDialog*)PICSimLab.GetWindow()->GetChildByName("filedialog1"))->SetFileName("untitled.hex");
-    ((CFileDialog*)PICSimLab.GetWindow()->GetChildByName("filedialog1"))->SetFilter("Hex Files (*.hex)|*.hex;*.HEX");
+    PICSimLab.ConfigMenuGUI(GM_HEX);
 
 #ifdef _WIN_
     Sleep(200);

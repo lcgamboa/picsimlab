@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -48,6 +48,9 @@ CSpareParts::CSpareParts() {
     PartEvent = NULL;
     PartKeyEvent = NULL;
     PartButtonEvent = NULL;
+
+    OnLoadImage = NULL;
+    OnCreateImage = NULL;
 }
 
 void CSpareParts::Init(CWindow* win) {
@@ -669,4 +672,20 @@ void CSpareParts::Setfdtype(int value) {
 
 void CSpareParts::SetfdOldFilename(const std::string ofn) {
     oldfname = ofn;
+}
+
+lxBitmap* CSpareParts::LoadImage(const std::string fname, const float scale, const int usealpha,
+                                 const int orientation) {
+    if (OnLoadImage) {
+        return (*OnLoadImage)(fname, scale, usealpha, orientation);
+    }
+    return NULL;
+}
+
+lxBitmap* CSpareParts::CreateBlankImage(const unsigned int width, const unsigned int height, const float scale,
+                                        const int usealpha, const int orientation) {
+    if (OnCreateImage) {
+        return (*OnCreateImage)(width, height, scale, usealpha, orientation);
+    }
+    return NULL;
 }

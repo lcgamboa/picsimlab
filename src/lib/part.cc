@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -310,23 +310,20 @@ int part::PointInside(int x, int y, input_t input) {
 }
 
 void part::LoadImage(void) {
-    lxImage image(SpareParts.GetWindow());
-    std::string iname =
-        (const char*)lxGetLocalFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()).c_str();
+    std::string iname = PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName();
 
-    if (image.LoadFile(iname, Orientation, Scale, Scale)) {
+    lxBitmap* bmp = SpareParts.LoadImage(iname, Scale, 0, Orientation);
+
+    if (bmp != NULL) {
         if (SpareParts.GetWindow()) {
-            Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
-            image.Destroy();
+            Bitmap = bmp;
             canvas.Destroy();
             canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
         }
-    } else if (image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "parts/Common/notfound.svg"), Orientation,
-                              Scale, Scale)) {
+    } else if ((bmp = SpareParts.LoadImage(PICSimLab.GetSharePath() + "parts/Common/notfound.svg", Scale, 0,
+                                           Orientation)) != NULL) {
         if (SpareParts.GetWindow()) {
-            Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
-
-            image.Destroy();
+            Bitmap = bmp;
             canvas.Destroy();
             canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
         }

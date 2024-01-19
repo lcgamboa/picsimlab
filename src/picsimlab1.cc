@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -680,6 +680,8 @@ void CPWindow1::_EvOnCreate(CControl* control) {
     PICSimLab.OnOpenLoadHexFileDialog = &CPWindow1::OnOpenLoadHexFileDialog;
     PICSimLab.OnEndSimulation = &CPWindow1::OnEndSimulation;
     PICSimLab.OnUpdateGUI = &CPWindow1::OnUpdateGUI;
+    PICSimLab.OnLoadImage = &CPWindow1::OnLoadImage;
+    PICSimLab.OnConfigMenuGUI = &CPWindow1::OnConfigMenuGUI;
 
     PICSimLab.board_Event = EVONCOMBOCHANGE & CPWindow1::board_Event;
     PICSimLab.board_ButtonEvent = EVMOUSEBUTTONRELEASE & CPWindow1::board_ButtonEvent;
@@ -1352,6 +1354,45 @@ void CPWindow1::OnUpdateStatus(const int field, const std::string msg) {
     Window1.statusbar1.SetField(field, msg);
 }
 
+lxBitmap* CPWindow1::OnLoadImage(const std::string fname, const float scale, const int usealpha,
+                                 const int orientation) {
+    lxImage image(&Window1);
+    if (image.LoadFile(lxGetLocalFile(fname), orientation, scale, scale, usealpha)) {
+        lxBitmap* bitmap = new lxBitmap(&image, &Window1);
+        image.Destroy();
+        return bitmap;
+    }
+    return NULL;
+}
+
+void CPWindow1::OnConfigMenuGUI(const PICSimlabGUIMenu type) {
+    switch (type) {
+        case GM_HEX:
+            Window1.menu1_File_LoadHex.SetText("Load Hex");
+            Window1.menu1_File_SaveHex.SetText("Save Hex");
+            Window1.menu1_File_LoadHex.SetEnable(1);
+            Window1.menu1_File_SaveHex.SetEnable(1);
+            Window1.filedialog1.SetFileName("untitled.hex");
+            Window1.filedialog1.SetFilter("Hex Files (*.hex)|*.hex;*.HEX");
+            break;
+        case GM_BIN:
+            Window1.menu1_File_LoadHex.SetText("Load Bin");
+            Window1.menu1_File_SaveHex.SetText("Save Bin");
+            Window1.menu1_File_LoadHex.SetEnable(1);
+            Window1.menu1_File_SaveHex.SetEnable(0);
+            Window1.filedialog1.SetFileName("untitled.bin");
+            Window1.filedialog1.SetFilter("Bin Files (*.bin)|*.bin;*.BIN");
+            break;
+        case GM_DISABLED:
+            Window1.menu1_File_LoadHex.SetEnable(0);
+            Window1.menu1_File_SaveHex.SetEnable(0);
+            Window1.menu1_File_ReloadLast.SetEnable(0);
+            break;
+        default:
+            break;
+    }
+}
+
 void* CPWindow1::OnUpdateGUI(const int id, const PICSimlabGUIType type, const PICSimlabGUIAction action,
                              const void* arg) {
     char name[128];
@@ -1366,7 +1407,7 @@ void* CPWindow1::OnUpdateGUI(const int id, const PICSimlabGUIType type, const PI
                         // gauge
                         snprintf(name, 128, "b_gauge%d", id);
                         CGauge* pgauge = new CGauge();
-                        pgauge->SetFOwner(PICSimLab.GetWindow());
+                        pgauge->SetFOwner(&Window1);
                         pgauge->SetName(name);
                         pgauge->SetX(35);
                         pgauge->SetY(74 + (id * 25));
@@ -1381,7 +1422,7 @@ void* CPWindow1::OnUpdateGUI(const int id, const PICSimlabGUIType type, const PI
                         // label1
                         snprintf(name, 128, "b_label%d", id);
                         CLabel* plabel = new CLabel();
-                        plabel->SetFOwner(PICSimLab.GetWindow());
+                        plabel->SetFOwner(&Window1);
                         plabel->SetName(name);
                         plabel->SetX(6);
                         plabel->SetY(75 + (id * 25));
@@ -1546,7 +1587,7 @@ void* CPWindow1::OnUpdateGUI(const int id, const PICSimlabGUIType type, const PI
                     // button
                     snprintf(name, 128, "b_button%d", id);
                     CButton* bbutton = new CButton();
-                    bbutton->SetFOwner(PICSimLab.GetWindow());
+                    bbutton->SetFOwner(&Window1);
                     bbutton->SetName(name);
                     bbutton->SetX(13);
                     bbutton->SetY(80 + (id * 50));

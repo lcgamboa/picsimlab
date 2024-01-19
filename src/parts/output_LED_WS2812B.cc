@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2022-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2022-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -35,7 +35,8 @@ static PCWProp pcwprop[8] = {
     {PCW_LABEL, "1-VDD,+5V"}, {PCW_LABEL, "2-DOUT,NC"}, {PCW_LABEL, "3-VSS,GND"}, {PCW_COMBO, "4-DIN"},
     {PCW_SPIN, "Rows"},       {PCW_SPIN, "Cols"},       {PCW_COMBO, "Diffuser"},  {PCW_END, ""}};
 
-cpart_led_ws2812b::cpart_led_ws2812b(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
+cpart_led_ws2812b::cpart_led_ws2812b(const unsigned x, const unsigned y, const char* name, const char* type,
+                                     board* pboard_)
     : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     X = x;
     Y = y;
@@ -78,25 +79,16 @@ void cpart_led_ws2812b::LoadImage(void) {
         Height = OHeight + yoff;
 
         if (SpareParts.GetWindow()) {
-            lxImage image(SpareParts.GetWindow());
-            image.CreateBlank(Width, Height, Orientation, Scale, Scale);
-
-            Bitmap = new lxBitmap(&image, SpareParts.GetWindow());
-            image.Destroy();
+            Bitmap = SpareParts.CreateBlankImage(Width, Height, Scale, 0, Orientation);
 
             canvas.Destroy();
             canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
 
-            image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()),
-                           Orientation, Scale, Scale);
-            lxBitmap* BackBitmap = new lxBitmap(&image, SpareParts.GetWindow());
-            image.Destroy();
+            lxBitmap* BackBitmap = SpareParts.LoadImage(
+                PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(), Scale, 0, Orientation);
 
-            image.LoadFile(
-                lxGetLocalFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetName() + "/LED.svg"),
-                Orientation, Scale * 1.3, Scale * 1.3);
-            lxBitmap* LEDBitmap = new lxBitmap(&image, SpareParts.GetWindow());
-            image.Destroy();
+            lxBitmap* LEDBitmap = SpareParts.LoadImage(
+                PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetName() + "/LED.svg", Scale, 0, Orientation);
 
             canvas.Init(Scale, Scale, Orientation);
             canvas.SetColor(0x31, 0x3d, 0x63);
@@ -148,7 +140,8 @@ void cpart_led_ws2812b::DrawOutput(const unsigned int i) {
             if (output_pins[output[i].id - O_P2] == 0)
                 canvas.RotatedText("NC", output[i].x1, output[i].y2 + yoff, 90.0);
             else
-                canvas.RotatedText(std::to_string(output_pins[output[i].id - O_P2]), output[i].x1, output[i].y2 + yoff, 90.0);
+                canvas.RotatedText(std::to_string(output_pins[output[i].id - O_P2]), output[i].x1, output[i].y2 + yoff,
+                                   90.0);
             break;
             break;
         case O_F1:

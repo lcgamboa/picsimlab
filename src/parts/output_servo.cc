@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -171,21 +171,16 @@ void cpart_servo::ReadPropertiesWindow(CPWindow* WProp) {
 
 void cpart_servo::LoadImage(void) {
     if (SpareParts.GetWindow()) {
-        lxImage image(SpareParts.GetWindow());
-        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()),
-                       Orientation, Scale, Scale);
+        Bitmap = SpareParts.LoadImage(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(), Scale, 0,
+                                      Orientation);
 
-        Bitmap = new lxBitmap(&image, (SpareParts.GetWindow()));
-        image.Destroy();
-
-        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()),
-                       Orientation, Scale, Scale);
+        lxBitmap* bmp = SpareParts.LoadImage(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(),
+                                             Scale, 0, Orientation);
 
         if (BackGround) {
             delete BackGround;
         }
-        BackGround = new lxBitmap(&image, (SpareParts.GetWindow()));
-        image.Destroy();
+        BackGround = bmp;
 
         canvas.Destroy();
         canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);

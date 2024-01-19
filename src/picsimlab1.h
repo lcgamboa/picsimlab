@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -168,6 +168,9 @@ public:
     static void OnEndSimulation(void);
     static void* OnUpdateGUI(const int id, const PICSimlabGUIType type, const PICSimlabGUIAction action,
                              const void* arg);
+    static lxBitmap* OnLoadImage(const std::string fname, const float scale, const int usealpha, const int orientation);
+    static void OnConfigMenuGUI(const PICSimlabGUIMenu type);
+
     void Configure(void);
     int GetNeedClkUpdate(void) { return need_clkupdate; };
     void SetNeedClkUpdate(const int ncu) { need_clkupdate = ncu; };

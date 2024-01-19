@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015-2023  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2015-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -169,9 +169,8 @@ unsigned short cboard_RemoteTCP::GetOutputId(char* name) {
 cboard_RemoteTCP::cboard_RemoteTCP(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
     Proc = "Ripes";  // default microcontroller if none defined in preferences
     ReadMaps();      // Read input and output board maps
-    lxImage image(PICSimLab.GetWindow());
-    image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/ic48.svg"), 0, Scale, Scale, 1);
-    micbmp = new lxBitmap(&image, PICSimLab.GetWindow());
+
+    micbmp = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/ic48.svg", Scale, 1);
 
     // TODO define pins
 
@@ -225,12 +224,11 @@ int cboard_RemoteTCP::MInit(const char* processor, const char* fname, float freq
 
     ret = bsim_remote::MInit(processor, fname, freq);
 
-    lxImage image(PICSimLab.GetWindow());
+    lxBitmap* bmp = PICSimLab.LoadImage(
+        PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg", Scale, 1);
 
-    if (!image.LoadFile(
-            lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg"), 0,
-            Scale, Scale, 1)) {
-        image.LoadFile(lxGetLocalFile(PICSimLab.GetSharePath() + "boards/Common/ic6.svg"), 0, Scale, Scale, 1);
+    if (bmp == NULL) {
+        bmp = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/ic6.svg", Scale, 1);
         printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
         printf("picsimlab: %s not found!\n",
                (const char*)(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg")
@@ -239,7 +237,7 @@ int cboard_RemoteTCP::MInit(const char* processor, const char* fname, float freq
 
     if (micbmp)
         delete micbmp;
-    micbmp = new lxBitmap(&image, PICSimLab.GetWindow());
+    micbmp = bmp;
 
     PICSimLab.SetMcuPwr(0);
 
