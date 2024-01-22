@@ -30,6 +30,8 @@
 
 #include "lcd_pcd8544.h"
 
+#include <lxrad.h>  //FIXME remove lxrad
+
 void lcd_pcd8544_rst(lcd_pcd8544_t* lcd) {
     int i, j;
     for (i = 0; i < 84; i++)

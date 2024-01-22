@@ -26,8 +26,6 @@
 #ifndef BOARD_STM32_H103_H
 #define BOARD_STM32_H103_H
 
-#include <lxrad.h>
-
 #include "bsim_qemu.h"
 
 #define BOARD_STM32_H103_Name "STM32 H103"

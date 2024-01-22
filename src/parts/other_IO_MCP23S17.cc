@@ -100,8 +100,9 @@ static PCWProp pcwprop[29] = {{PCW_LABEL, "1-GPB0,NC"},
                               {PCW_LABEL, "28-GPA7,NC"},
                               {PCW_END, ""}};
 
-cpart_IO_MCP23S17::cpart_IO_MCP23S17(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_IO_MCP23S17::cpart_IO_MCP23S17(const unsigned x, const unsigned y, const char* name, const char* type,
+                                     board* pboard_)
+    : part(x, y, name, type, pboard_) {
     X = x;
     Y = y;
     always_update = 1;
@@ -163,6 +164,7 @@ cpart_IO_MCP23S17::~cpart_IO_MCP23S17(void) {
 void cpart_IO_MCP23S17::DrawOutput(const unsigned int i) {
     switch (output[i].id) {
         case O_IC:
+            canvas.SetFontSize(8);
             canvas.SetColor(26, 26, 26);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);
@@ -321,7 +323,8 @@ void cpart_IO_MCP23S17::ConfigurePropertiesWindow(CPWindow* WProp) {
                 value = std::to_string(output_pins[pinv - 10]);
         }
 
-        ((CLabel*)WProp->GetChildByName("label" + std::to_string(i + 1)))->SetText(std::to_string(i + 1) + "-" + pin_names[i]);
+        ((CLabel*)WProp->GetChildByName("label" + std::to_string(i + 1)))
+            ->SetText(std::to_string(i + 1) + "-" + pin_names[i]);
 
         CLabel* label = (CLabel*)WProp->GetChildByName("label_" + std::to_string(i + 1));
         if (label) {

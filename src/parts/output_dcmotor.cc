@@ -41,7 +41,7 @@ static PCWProp pcwprop[8] = {
     {PCW_COMBO, "5-In PWM"}, {PCW_LABEL, "6-VCC,+5V"}, {PCW_LABEL, "7-GND,GND"}, {PCW_END, ""}};
 
 cpart_dcmotor::cpart_dcmotor(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     X = x;
     Y = y;
     always_update = 1;

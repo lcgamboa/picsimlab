@@ -26,7 +26,8 @@
 #ifndef LCD_PCD8544
 #define LCD_PCD8544
 
-#include <lxrad.h>
+class CCanvas;
+
 #include "bitbang_spi.h"
 
 /* pinout

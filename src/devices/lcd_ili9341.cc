@@ -34,6 +34,8 @@
 
 #include "lcd_ili9341.h"
 
+#include <lxrad.h>  //FIXME remove lxrad
+
 void lcd_ili9341_rst(lcd_ili9341_t* lcd) {
     int i, j;
     for (i = 0; i < 240; i++)

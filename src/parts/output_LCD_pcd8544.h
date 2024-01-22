@@ -51,7 +51,6 @@ public:
 private:
     unsigned char input_pins[5];
     lcd_pcd8544_t lcd;
-    lxFont font;
 };
 
 #endif /* PART_LCD_PCD8544_H */

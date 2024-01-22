@@ -53,8 +53,6 @@ private:
     unsigned char output_pins[2];
     unsigned char values[2];
     unsigned char active[2];
-    lxFont font;
-    lxFont font_p;
 };
 
 #endif /* SHT3X */

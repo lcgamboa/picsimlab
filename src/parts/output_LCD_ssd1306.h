@@ -53,7 +53,6 @@ private:
     unsigned char input_pins[5];
     lcd_ssd1306_t lcd;
     unsigned char type_com;
-    lxFont font;
 };
 
 #endif /* PART_LCD_SSD1306_H */

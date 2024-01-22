@@ -279,6 +279,7 @@ void cboard_Franzininho_DIY::Draw(CDraw* draw) {
 
             if (!update) {
                 draw->Canvas.Init(Scale, Scale);
+                draw->Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
             }
             update++;  // set to update buffer
 
@@ -346,22 +347,7 @@ void cboard_Franzininho_DIY::Draw(CDraw* draw) {
                         break;
                 }
 
-                // draw a LED
-                color1 = draw->Canvas.GetBgColor();
-                int r = color1.Red() - 120;
-                int g = color1.Green() - 120;
-                int b = color1.Blue() - 120;
-                if (r < 0)
-                    r = 0;
-                if (g < 0)
-                    g = 0;
-                if (b < 0)
-                    b = 0;
-                color2.Set(r, g, b);
-                draw->Canvas.SetBgColor(color2);
-                draw->Canvas.Circle(1, output[i].x1, output[i].y1, output[i].r + 1);
-                draw->Canvas.SetBgColor(color1);
-                draw->Canvas.Circle(1, output[i].x1, output[i].y1, output[i].r - 2);
+                DrawLED(&draw->Canvas, &output[i]);
             }
         }
     }

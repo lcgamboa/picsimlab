@@ -26,6 +26,8 @@
 #ifndef BOARD_PQDB_H
 #define BOARD_PQDB_H
 
+#include <lxrad.h>  //FIXME remove lxrad
+
 #include "bsim_picsim.h"
 
 #include "../devices/io_74xx595.h"
@@ -177,10 +179,6 @@ private:
 
     unsigned char scroll1_old;
     unsigned char scroll2_old;
-
-    lxColor color1;
-    lxColor color2;
-    lxFont font;
 
 public:
     // Return the board name

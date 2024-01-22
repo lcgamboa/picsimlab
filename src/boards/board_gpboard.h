@@ -26,7 +26,7 @@
 #ifndef BOARD_gpboard_H
 #define BOARD_gpboard_H
 
-#include <lxrad.h>
+#include <lxrad.h>  //FIXME remove lxrad
 
 #include "bsim_gpsim.h"
 
@@ -36,7 +36,6 @@
 class cboard_gpboard : public bsim_gpsim {
 private:
     lxBitmap* micbmp;
-    lxFont font;
 
 public:
     void SetScale(double scale) override;

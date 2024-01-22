@@ -37,7 +37,7 @@ static PCWProp pcwprop[8] = {
 
 cpart_led_ws2812b::cpart_led_ws2812b(const unsigned x, const unsigned y, const char* name, const char* type,
                                      board* pboard_)
-    : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     X = x;
     Y = y;
     ReadMaps();
@@ -122,6 +122,7 @@ void cpart_led_ws2812b::LoadImage(void) {
 void cpart_led_ws2812b::DrawOutput(const unsigned int i) {
     switch (output[i].id) {
         case O_P1:
+            canvas.SetFontSize(8);
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1 + yoff, output[i].x2 - output[i].x1,
                              output[i].y2 - output[i].y1);

@@ -26,7 +26,7 @@
 #ifndef LDD_MAX72XX
 #define LDD_MAX72XX
 
-#include <lxrad.h>
+class CCanvas;
 #include "bitbang_spi.h"
 
 /* pinout

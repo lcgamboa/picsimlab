@@ -117,8 +117,7 @@ unsigned short cboard_Curiosity_HPC::GetOutputId(char* name) {
 
 // Constructor called once on board creation
 
-cboard_Curiosity_HPC::cboard_Curiosity_HPC(void)
-    : font(12, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cboard_Curiosity_HPC::cboard_Curiosity_HPC(void) {
     Proc = "PIC18F47K40";  // default microcontroller if none defined in preferences
     ReadMaps();            // Read input and output board maps
     jmp[0] = 0;
@@ -446,6 +445,7 @@ void cboard_Curiosity_HPC::Draw(CDraw* draw) {
     int i;
 
     draw->Canvas.Init(Scale, Scale);  // initialize draw context
+    draw->Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
 
     // board_8 draw
     for (i = 0; i < outputc; i++)  // run over all outputs
@@ -497,7 +497,7 @@ void cboard_Curiosity_HPC::Draw(CDraw* draw) {
 
             if (output[i].id == O_MP) {
                 lxRect rec;
-                draw->Canvas.SetFont(font);
+                draw->Canvas.SetFontSize(12);
                 draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                        output[i].y2 - output[i].y1);
                 draw->Canvas.SetFgColor(230, 230, 230);

@@ -55,7 +55,6 @@ private:
     unsigned short _ret;
     char uart_name[200];
     unsigned int uart_speed;
-    lxFont font;
 };
 
 #endif /* PART_UART_H */

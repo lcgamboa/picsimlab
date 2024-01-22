@@ -146,7 +146,7 @@ enum {
 
 enum { TEMP, LIGHT };
 
-cboard_PQDB::cboard_PQDB(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cboard_PQDB::cboard_PQDB(void) {
     Proc = "PIC18F4520";
 
     vtc = 0;
@@ -218,6 +218,7 @@ void cboard_PQDB::Draw(CDraw* draw) {
 
             if (!update) {
                 draw->Canvas.Init(Scale, Scale);
+                draw->Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
             }
             update++;  // set to update buffer
 
@@ -425,7 +426,7 @@ void cboard_PQDB::Draw(CDraw* draw) {
                     lcd_draw(&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                              output[i].y2 - output[i].y1, PICSimLab.GetMcuPwr());
                 } else if (output[i].id == O_MP) {
-                    draw->Canvas.SetFont(font);
+                    draw->Canvas.SetFontSize(10);
                     draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                            output[i].y2 - output[i].y1);
                     draw->Canvas.SetColor(230, 230, 230);
@@ -440,22 +441,7 @@ void cboard_PQDB::Draw(CDraw* draw) {
                     draw->Canvas.SetFgColor(55, 55, 55);
                     draw->Canvas.SetBgColor(pic.pins[LED_RED_PIN].oavalue, pic.pins[LED_GREEN_PIN].oavalue,
                                             pic.pins[LED_BLUE_PIN].oavalue);
-                    // draw a LED
-                    color1 = draw->Canvas.GetBgColor();
-                    int r = color1.Red() - 120;
-                    int g = color1.Green() - 120;
-                    int b = color1.Blue() - 120;
-                    if (r < 0)
-                        r = 0;
-                    if (g < 0)
-                        g = 0;
-                    if (b < 0)
-                        b = 0;
-                    color2.Set(r, g, b);
-                    draw->Canvas.SetBgColor(color2);
-                    draw->Canvas.Circle(1, output[i].x1, output[i].y1, output[i].r + 1);
-                    draw->Canvas.SetBgColor(color1);
-                    draw->Canvas.Circle(1, output[i].x1, output[i].y1, output[i].r - 2);
+                    DrawLED(&draw->Canvas, &output[i]);
                 } else if ((output[i].id == O_P1) || (output[i].id == O_P2) || (output[i].id == O_P3) ||
                            (output[i].id == O_P4)) {
                     draw->Canvas.SetBgColor(lm7seg[output[i].id - O_B1], 30, 30);

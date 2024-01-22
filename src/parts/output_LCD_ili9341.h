@@ -65,7 +65,6 @@ private:
     tsc_XPT2046_t touch;
     unsigned char type_com;
     unsigned char active[1];
-    lxFont font;
     int valid_lcd_pins;
     int valid_touch_pins;
     const unsigned char* pins_value[13];

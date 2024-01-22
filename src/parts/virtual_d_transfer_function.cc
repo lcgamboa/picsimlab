@@ -36,7 +36,7 @@ static PCWProp pcwprop[10] = {
     {PCW_EDIT, "In Gain"}, {PCW_EDIT, "In Off."}, {PCW_EDIT, "Out Gain"}, {PCW_EDIT, "Out Off."}, {PCW_END, ""}};
 
 cpart_dtfunc::cpart_dtfunc(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_), font(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     always_update = 1;
     pins[0] = 0;
     pins[1] = 0;
@@ -74,6 +74,7 @@ void cpart_dtfunc::DrawOutput(const unsigned int i) {
     switch (output[i].id) {
         case O_P1:
         case O_P2:
+            canvas.SetFontSize(7);
             canvas.SetColor(249, 249, 249);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(0, 0, 0);

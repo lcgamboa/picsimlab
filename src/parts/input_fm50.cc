@@ -40,9 +40,7 @@ static PCWProp pcwprop[4] = {{PCW_LABEL, "1 - VCC,+5V"},
                              {PCW_END, ""}};
 
 cpart_fm50::cpart_fm50(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_),
-      font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
-      font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     output_pins[0] = 0;
 
     value = 0;
@@ -92,8 +90,8 @@ void cpart_fm50::DrawOutput(const unsigned int i) {
             break;
         case O_PO1:
             snprintf(val, 10, "%5.1f", (0.825 * (200 - value) - 40));
-            DrawSlider(&output[i], value, val, font_p);
-            canvas.SetFont(font);
+            DrawSlider(&canvas, &output[i], value, val, 7);
+            canvas.SetFontSize(9);
             break;
     }
 }

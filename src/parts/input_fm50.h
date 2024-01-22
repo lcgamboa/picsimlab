@@ -53,8 +53,6 @@ private:
     unsigned char output_pins[1];
     unsigned char value;
     unsigned char active;
-    lxFont font;
-    lxFont font_p;
 };
 
 #endif /* POT */

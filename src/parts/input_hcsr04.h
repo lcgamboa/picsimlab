@@ -56,8 +56,6 @@ private:
     unsigned int count;
     unsigned int delay;
     unsigned char old_value;
-    lxFont font;
-    lxFont font_p;
 };
 
 #endif /* POT */

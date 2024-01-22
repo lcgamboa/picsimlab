@@ -63,7 +63,7 @@ public:
     void MStep(void) override;
     void MStepResume(void) override{};
     void MReset(int flags) override;
-    void EvThreadRun(CThread& thread) override;
+    void EvThreadRun(CThread* thread) override;
     int GetDefaultClock(void) override { return 1; };
     int GetInc_ns(void) { return inc_ns; };
     virtual void PinsExtraConfig(int cfg){};

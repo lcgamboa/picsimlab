@@ -26,7 +26,6 @@
 #ifndef PART_RTC_DS1307_H
 #define PART_RTC_DS1307_H
 
-#include <lxrad.h>
 #include "../devices/sen_ds1621.h"
 #include "../lib/part.h"
 
@@ -55,8 +54,6 @@ private:
     sen_ds1621_t ds1621;
     unsigned char value;
     unsigned char active;
-    lxFont font;
-    lxFont font_p;
 };
 
 #endif /* PART_v_H */

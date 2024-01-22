@@ -26,18 +26,18 @@
 #ifndef LCD_H
 #define LCD_H
 
-#include <lxrad.h>
 class board;
+class CCanvas;
 
 #define DDRMAX 80
 
 #define L_FNT 0x0200  // Sets character font
 #define L_NLI 0x0100  // Sets number of display line
 
-#define L_DL 0x0080   // Sets interface data length
+#define L_DL 0x0080  // Sets interface data length
 
-#define L_LR 0x0040   // Sets shift direction
-#define L_CD 0x0020   // Sets cursor-move or display-shift
+#define L_LR 0x0040  // Sets shift direction
+#define L_CD 0x0020  // Sets cursor-move or display-shift
 
 #define L_DID 0x0010  // Sets cursor move direction
 #define L_DSH 0x0008  // specifies to shift the display

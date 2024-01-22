@@ -71,9 +71,6 @@ private:
     float angle;
     int input[2];
     int turns;
-    lxColor color1;
-    lxColor color2;
-    lxFont font;
 };
 
 #endif /* PART_STEP */

@@ -58,7 +58,6 @@ private:
     int JUMPSTEPS_;
     io_74xx573_t lt8;
     unsigned short _ret;
-    lxFont font;
 };
 
 #endif /* PART_IO_74XX573_H */

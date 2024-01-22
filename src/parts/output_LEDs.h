@@ -53,8 +53,6 @@ private:
     unsigned char active;
     unsigned char input_pins[8];
     unsigned char colors[8];
-    lxColor color1;
-    lxColor color2;
     int OWidth;
     int OHeight;
     int xoff;

@@ -26,7 +26,6 @@
 #ifndef PART_LM35_H
 #define PART_LM35_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_LM35_Name "LM35 (Temperature)"
@@ -53,8 +52,6 @@ private:
     unsigned char output_pins[1];
     unsigned char value;
     unsigned char active;
-    lxFont font;
-    lxFont font_p;
 };
 
 #endif /* POT */

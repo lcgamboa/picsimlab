@@ -61,7 +61,6 @@ private:
     int JUMPSTEPS_;
     std::string jname;
     unsigned char jtype;
-    lxFont font;
 };
 
 // input/output   0-M 1-F

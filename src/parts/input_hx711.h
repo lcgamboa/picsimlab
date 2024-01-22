@@ -26,7 +26,6 @@
 #ifndef PART_RTC_BMP280_H
 #define PART_RTC_BMP280_H
 
-#include <lxrad.h>
 #include "../devices/sen_hx711.h"
 #include "../lib/part.h"
 
@@ -56,8 +55,6 @@ private:
     sen_hx711_t hx711;
     unsigned char values[1];
     unsigned char active[1];
-    lxFont font;
-    lxFont font_p;
     unsigned char ret_;
 };
 

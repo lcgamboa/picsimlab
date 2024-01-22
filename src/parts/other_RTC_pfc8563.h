@@ -52,7 +52,6 @@ public:
 private:
     unsigned char input_pins[4];
     rtc_pfc8563_t rtc;
-    lxFont font_p;
 };
 
 #endif /* PART_RTC_PFC8563_H */

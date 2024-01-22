@@ -26,7 +26,8 @@
 #ifndef LCD_ILI9341
 #define LCD_ILI9341
 
-#include <lxrad.h>
+class CCanvas;
+
 #include "bitbang_spi.h"
 
 /* pinout

@@ -37,7 +37,7 @@ static PCWProp pcwprop[9] = {{PCW_COMBO, "1-/RST"},     {PCW_COMBO, "2-/CE"},   
 
 cpart_LCD_pcd8544::cpart_LCD_pcd8544(const unsigned x, const unsigned y, const char* name, const char* type,
                                      board* pboard_)
-    : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     X = x;
     Y = y;
     ReadMaps();
@@ -72,6 +72,7 @@ void cpart_LCD_pcd8544::DrawOutput(const unsigned int i) {
         case O_P3:
         case O_P4:
         case O_P5:
+            canvas.SetFontSize(8);
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);

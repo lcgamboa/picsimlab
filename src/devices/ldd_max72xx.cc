@@ -28,6 +28,8 @@
     } else     \
         printf
 
+#include <lxrad.h>  //FIXME remove lxrad
+
 #include "ldd_max72xx.h"
 
 void ldd_max72xx_rst(ldd_max72xx_t* ldd) {
@@ -152,7 +154,7 @@ void ldd_max72xx_draw(ldd_max72xx_t* ldd, CCanvas* canvas, int x1, int y1, int w
                     canvas->Circle(1, x1 + ((7 - x) * 20) + 10, y1 + ((7 - y) * 20) + 10, 9);  // Parola
                     break;
                 default:
-                    canvas->Circle(1, x1 + ((x)*20) + 10, y1 + ((7 - y) * 20) + 10, 9);  // FC16
+                    canvas->Circle(1, x1 + ((x) * 20) + 10, y1 + ((7 - y) * 20) + 10, 9);  // FC16
                     break;
             }
         }

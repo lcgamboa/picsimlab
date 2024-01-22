@@ -34,7 +34,7 @@ enum { O_P1, O_AXIS };
 static PCWProp pcwprop[2] = {{PCW_COMBO, "Pin 1"}, {PCW_END, ""}};
 
 cpart_servo::cpart_servo(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     always_update = 1;
     input_pin = 0;
     angle = 0;

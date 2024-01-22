@@ -45,7 +45,7 @@ static PCWProp pcwprop[14] = {{PCW_LABEL, "1 -VCC,+5V"}, {PCW_COMBO, "2 -Out 1"}
                               {PCW_SPIN, "Size"},        {PCW_END, ""}};
 
 cpart_pbuttons::cpart_pbuttons(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_){
     active = 1;
     Size = 0;
     Bitmap = NULL;

@@ -23,6 +23,8 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+#include <lxrad.h>  //FIXME remove lxrad
+
 #include "../lib/part.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
@@ -477,39 +479,6 @@ std::string part::GetHelpURL(void) {
     snprintf(stemp, 100, "%s.html", pname);
 
     return stemp;
-}
-
-// Draw Functions
-
-void part::DrawSlider(const output_t* output, const unsigned char pos, const std::string val, const lxFont font) {
-    float dy = pos / 1.66;
-    canvas.SetFgColor(255, 255, 255);
-    canvas.SetBgColor(89, 89, 89);
-    canvas.Rectangle(1, output->x1, output->y1, output->x2 - output->x1, output->y2 - output->y1);
-    canvas.SetColor(0, 0, 200);
-    canvas.Rectangle(1, output->x1 + 1, output->y1 + 1 + dy, output->x2 - output->x1 - 2,
-                     output->y2 - output->y1 - 2 - dy);
-
-    canvas.SetFgColor(0, 0, 0);
-    canvas.SetBgColor(46, 46, 46);
-    canvas.Rectangle(1, output->x1, output->y1 + pos / 1.66, 32, 19);
-    canvas.SetColor(250, 250, 250);
-    canvas.SetFont(font);
-    canvas.RotatedText(val, output->x1 + 1, output->y1 + 5 + pos / 1.66, 0);
-}
-
-void part::DrawPotentiometer(const output_t* output, const unsigned char pos, const std::string val,
-                             const lxFont font) {
-    canvas.SetColor(179, 179, 179);
-    canvas.Rectangle(1, output->x1, output->y1, output->x2 - output->x1, output->y2 - output->y1);
-    canvas.SetFgColor(0, 0, 0);
-    canvas.SetBgColor(96, 96, 96);
-    canvas.Rectangle(1, output->x1 + 9, output->y1 + 9, output->x2 - output->x1 - 18, output->y2 - output->y1 - 18);
-    canvas.SetBgColor(46, 46, 46);
-    canvas.Rectangle(1, output->x1, output->y1 + (200 - pos) / 1.66, 32, 19);
-    canvas.SetColor(250, 250, 250);
-    canvas.SetFont(font);
-    canvas.RotatedText(val, output->x1 + 4, output->y1 + 5 + (200 - pos) / 1.66, 0);
 }
 
 int part::GetAlwaysUpdate(void) {

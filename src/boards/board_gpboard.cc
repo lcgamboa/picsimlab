@@ -73,7 +73,7 @@ unsigned short cboard_gpboard::GetOutputId(char* name) {
 
 // Constructor called once on board creation
 
-cboard_gpboard::cboard_gpboard(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cboard_gpboard::cboard_gpboard(void) {
     Proc = "pic16f628a";  // default microcontroller if none defined in preferences
     ReadMaps();           // Read input and output board maps
     micbmp = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/ic40.svg", Scale, 1);
@@ -214,9 +214,10 @@ void cboard_gpboard::Draw(CDraw* draw) {
     lxRect rec;
     lxSize ps;
 
-    font.SetPointSize((MGetPinCount() >= 44) ? 5 : ((MGetPinCount() > 14) ? 12 : 4));
-
     draw->Canvas.Init(Scale, Scale);  // initialize draw context
+    draw->Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
+
+    draw->Canvas.SetFontSize((MGetPinCount() >= 44) ? 5 : ((MGetPinCount() > 14) ? 12 : 4));
 
     // board_x draw
     for (i = 0; i < outputc; i++)  // run over all outputs
@@ -234,7 +235,7 @@ void cboard_gpboard::Draw(CDraw* draw) {
                     break;
                 case O_MP:
 
-                    draw->Canvas.SetFont(font);
+                    draw->Canvas.SetFontSize(10);
 
                     ps = micbmp->GetSize();
                     draw->Canvas.ChangeScale(1.0, 1.0);

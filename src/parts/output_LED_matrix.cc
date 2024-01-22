@@ -35,8 +35,9 @@ static PCWProp pcwprop[9] = {{PCW_LABEL, "1-VCC,+5V"}, {PCW_LABEL, "2-GND,GND"},
                              {PCW_COMBO, "4-CS"},      {PCW_COMBO, "5-CLK"},     {PCW_LABEL, "6-Dout,NC"},
                              {PCW_COMBO, "Angle"},     {PCW_COMBO, "Model"},     {PCW_END, ""}};
 
-cpart_led_matrix::cpart_led_matrix(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_led_matrix::cpart_led_matrix(const unsigned x, const unsigned y, const char* name, const char* type,
+                                   board* pboard_)
+    : part(x, y, name, type, pboard_) {
     X = x;
     Y = y;
     ReadMaps();
@@ -74,6 +75,7 @@ void cpart_led_matrix::DrawOutput(const unsigned int i) {
         case O_P1:
         case O_P2:
         case O_P3:
+            canvas.SetFontSize(8);
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);

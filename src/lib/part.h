@@ -26,6 +26,8 @@
 #ifndef PART_H
 #define PART_H
 
+#include <lxrad.h>  //FIXME remove lxrad
+
 #include "board.h"
 
 /**
@@ -403,8 +405,6 @@ protected:
      */
     int PointInside(int x, int y, input_t input);
 
-    void DrawSlider(const output_t* output, const unsigned char pos, const std::string val, const lxFont font);
-    void DrawPotentiometer(const output_t* output, const unsigned char pos, const std::string val, const lxFont font);
     void SetPCWProperties(const PCWProp* pcwprop);
     void SetPCWComboWithPinNames(CPWindow* WProp, const char* combo_name, const unsigned char pin);
     unsigned char GetPWCComboSelectedPin(CPWindow* WProp, const char* combo_name);

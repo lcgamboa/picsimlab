@@ -59,7 +59,7 @@ static PCWProp pcwprop[7] = {
     {PCW_COMBO, "P5-SCK"},      {PCW_COMBO, "P6-CS"},      {PCW_END, ""}};
 
 cpart_SDCard::cpart_SDCard(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     sdcard_init(&sd);
     sdcard_rst(&sd);
 
@@ -94,6 +94,7 @@ void cpart_SDCard::DrawOutput(const unsigned int i) {
 
     switch (output[i].id) {
         case O_FILE:
+            canvas.SetFontSize(8);
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);

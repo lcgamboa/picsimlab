@@ -284,7 +284,7 @@ void CPWindow1::thread2_EvThreadRun(CControl*) {
 }
 
 void CPWindow1::thread3_EvThreadRun(CControl*) {
-    PICSimLab.GetBoard()->EvThreadRun(thread3);
+    PICSimLab.GetBoard()->EvThreadRun(&thread3);
 }
 
 void CPWindow1::timer2_EvOnTime(CControl* control) {

@@ -40,7 +40,7 @@ static PCWProp pcwprop[9] = {{PCW_LABEL, "P1 - OSI,OSC1"}, {PCW_LABEL, "P2 - OSO
 
 cpart_RTC_pfc8563::cpart_RTC_pfc8563(const unsigned x, const unsigned y, const char* name, const char* type,
                                      board* pboard_)
-    : part(x, y, name, type, pboard_, 8), font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_, 8) {
     rtc_pfc8563_init(&rtc, pboard);
     rtc_pfc8563_rst(&rtc);
 
@@ -64,7 +64,7 @@ cpart_RTC_pfc8563::~cpart_RTC_pfc8563(void) {
 void cpart_RTC_pfc8563::DrawOutput(const unsigned int i) {
     switch (output[i].id) {
         case O_IC:
-            canvas.SetFont(font_p);
+            canvas.SetFontSize(6);
             canvas.SetColor(26, 26, 26);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);

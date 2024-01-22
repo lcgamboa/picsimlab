@@ -23,10 +23,12 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include "input_MPU6050.h"
+#include <lxrad.h>  //FIXME remove lxrad
+
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
+#include "input_MPU6050.h"
 
 /* inputs */
 enum { I_VS1, I_VS2, I_VS3, I_VS4, I_VS5, I_VS6 };
@@ -42,9 +44,7 @@ static PCWProp pcwprop[9] = {{PCW_LABEL, "1 - VCC,+5V"}, {PCW_LABEL, "2 - GND ,G
                              {PCW_COMBO, "7 - AD0"},     {PCW_COMBO, "8 - INT"},      {PCW_END, ""}};
 
 cpart_MPU6050::cpart_MPU6050(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_),
-      font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
-      font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     mpu6050_init(&mpu);
     mpu6050_rst(&mpu);
 
@@ -122,8 +122,8 @@ void cpart_MPU6050::DrawOutput(const unsigned int i) {
                     snprintf(val, 10, "%4.2f", 16 * ((getValues(output[i].id - O_VS1)) - 100) / 100.0);
                     break;
             }
-            DrawSlider(&output[i], 200 - getValues(output[i].id - O_VS1), val, font_p);
-            canvas.SetFont(font);
+            DrawSlider(&canvas, &output[i], 200 - getValues(output[i].id - O_VS1), val, 7);
+            canvas.SetFontSize(9);
             break;
         case O_VS4:
         case O_VS5:
@@ -142,8 +142,8 @@ void cpart_MPU6050::DrawOutput(const unsigned int i) {
                     snprintf(val, 10, "%4.0f", 2000 * ((getValues(output[i].id - O_VS1)) - 100) / 100.0);
                     break;
             }
-            DrawSlider(&output[i], 200 - getValues(output[i].id - O_VS1), val, font_p);
-            canvas.SetFont(font);
+            DrawSlider(&canvas, &output[i], 200 - getValues(output[i].id - O_VS1), val, 7);
+            canvas.SetFontSize(9);
             break;
         default:
             canvas.SetColor(49, 61, 99);

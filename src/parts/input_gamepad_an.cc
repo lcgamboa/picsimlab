@@ -42,7 +42,7 @@ static PCWProp pcwprop[5] = {{PCW_COMBO, "Pin 1"},
 
 cpart_gamepad_an::cpart_gamepad_an(const unsigned x, const unsigned y, const char* name, const char* type,
                                    board* pboard_)
-    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     active = 1;
 
     output_value[0] = 1;

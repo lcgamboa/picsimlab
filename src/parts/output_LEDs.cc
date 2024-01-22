@@ -136,22 +136,7 @@ void cpart_leds::DrawOutput(const unsigned int i) {
                 canvas.SetBgColor(col.r * 55, col.g * 55, col.b * 55);
             }
             canvas.SetFgColor(0, 0, 0);
-            // draw a circle
-            color1 = canvas.GetBgColor();
-            int r = color1.Red() - 120;
-            int g = color1.Green() - 120;
-            int b = color1.Blue() - 120;
-            if (r < 0)
-                r = 0;
-            if (g < 0)
-                g = 0;
-            if (b < 0)
-                b = 0;
-            color2.Set(r, g, b);
-            canvas.SetBgColor(color2);
-            canvas.Circle(1, output[i].x1, output[i].y1, output[i].r);
-            canvas.SetBgColor(color1);
-            canvas.Circle(1, output[i].x1, output[i].y1, output[i].r - 3);
+            DrawLED(&canvas, &output[i]);
             break;
     }
 }

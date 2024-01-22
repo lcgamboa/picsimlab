@@ -26,7 +26,6 @@
 #ifndef PART_LDR_H
 #define PART_LDR_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_LDR_Name "LDR"
@@ -54,8 +53,6 @@ private:
     unsigned char output_pins[2];
     unsigned char value;
     unsigned char active;
-    lxFont font;
-    lxFont font_p;
     float vthreshold;
     float lux;
     float vout;

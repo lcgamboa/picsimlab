@@ -26,7 +26,7 @@
 #ifndef BOARD_RemoteTCP_H
 #define BOARD_RemoteTCP_H
 
-#include <lxrad.h>
+#include <lxrad.h>  //FIXME remove lxrad
 
 #include "bsim_remote.h"
 
@@ -36,7 +36,6 @@
 class cboard_RemoteTCP : public bsim_remote {
 private:
     lxBitmap* micbmp;
-    lxFont font;
     void RegisterRemoteControl(void) override;
     int ADCChanel;
 
@@ -65,7 +64,7 @@ public:
     // Event on the board
     void EvKeyRelease(uint key, uint mask) override;
     // Event on the board
-    void EvThreadRun(CThread& thread) override;
+    void EvThreadRun(CThread* thread) override;
     // Called ever 1s to refresh status
     void RefreshStatus(void) override;
     // Called to save board preferences in configuration file

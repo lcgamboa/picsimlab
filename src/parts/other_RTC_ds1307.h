@@ -52,8 +52,6 @@ public:
 private:
     unsigned char input_pins[3];
     rtc_ds1307_t rtc2;
-    lxFont font;
-    lxFont font_p;
 };
 
 #endif /* PART_v_H */

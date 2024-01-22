@@ -56,7 +56,6 @@ private:
     eth_w5500_t ethw;
     unsigned char link;
     unsigned short _ret;
-    lxFont font;
     unsigned int sts[8][4];
 };
 

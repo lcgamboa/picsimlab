@@ -26,7 +26,6 @@
 #ifndef PART_DHT11_H
 #define PART_DHT11_H
 
-#include <lxrad.h>
 #include "../devices/sen_dhtxx.h"
 #include "../lib/part.h"
 
@@ -57,8 +56,6 @@ private:
     unsigned char output_pins[1];
     unsigned char values[2];
     unsigned char active[2];
-    lxFont font;
-    lxFont font_p;
 };
 
 #endif /* DHT11 */

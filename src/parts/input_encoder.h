@@ -26,7 +26,6 @@
 #ifndef PART_ENCODER_H
 #define PART_ENCODER_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_ENCODER_Name "Encoder"
@@ -61,7 +60,6 @@ private:
     int count;
     int state;
     int dir;
-    lxFont font;
 };
 
 #endif /* ENCODER */

@@ -40,9 +40,7 @@ static PCWProp pcwprop[4] = {{PCW_LABEL, "1 - GND,GND"},
                              {PCW_END, ""}};
 
 cpart_ds18b20::cpart_ds18b20(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_),
-      font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
-      font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     output_pins[0] = 0;
 
     values[0] = 0;
@@ -96,8 +94,8 @@ void cpart_ds18b20::DrawOutput(const unsigned int i) {
             break;
         case O_PO1:
             snprintf(val, 10, "%5.1f", (0.6 * (200 - values[0]) - 40));
-            DrawSlider(&output[i], values[0], val, font_p);
-            canvas.SetFont(font);
+            DrawSlider(&canvas, &output[i], values[0], val, 7);
+            canvas.SetFontSize(9);
             break;
     }
 }

@@ -516,6 +516,7 @@ void CPWindow5::timer1_EvOnTime(CControl* control) {
 
     if (update) {
         draw1.Canvas.Init(1.0, 1.0);
+        draw1.Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
 
         if (update_all) {
             draw1.Canvas.SetFgColor(50, 50, 50);

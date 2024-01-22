@@ -59,7 +59,6 @@ private:
     io_MCP23X17_t mcp;
     unsigned char _PA;
     unsigned char _PB;
-    lxFont font;
 };
 
 #endif /* PART_IO_MCP23S17_H */

@@ -47,7 +47,7 @@ static PCWProp pcwprop[11] = {{PCW_COMBO, "1 - BTN A"},
                               {PCW_END, ""}};
 
 cpart_gamepad::cpart_gamepad(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     output_pins[0] = 0;
     output_pins[1] = 0;
     output_pins[2] = 0;

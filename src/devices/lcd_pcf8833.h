@@ -26,7 +26,7 @@
 #ifndef LCD_PCF8833
 #define LCD_PCF8833
 
-#include <lxrad.h>
+class CCanvas;
 #include "bitbang_spi.h"
 
 /* pinout

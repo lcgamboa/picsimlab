@@ -28,6 +28,8 @@
     } else     \
         printf
 
+#include <lxrad.h>  //FIXME remove lxrad
+
 #include "led_ws2812b.h"
 
 void led_ws2812b_rst(led_ws2812b_t* led) {

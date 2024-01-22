@@ -26,7 +26,6 @@
 #ifndef PART_NTC_H
 #define PART_NTC_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_NTC_Name "NTC (Temperature)"
@@ -54,8 +53,6 @@ private:
     unsigned char output_pins[1];
     unsigned char value;
     unsigned char active;
-    lxFont font;
-    lxFont font_p;
     float vmax;
     int Beta;
 };

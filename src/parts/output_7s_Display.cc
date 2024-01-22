@@ -88,7 +88,7 @@ static PCWProp pcwprop[16] = {{PCW_COMBO, "Seg a"},  {PCW_COMBO, "Seg b"}, {PCW_
 
 cpart_7s_display::cpart_7s_display(const unsigned x, const unsigned y, const char* name, const char* type,
                                    board* pboard_)
-    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     X = x;
     Y = y;
     always_update = 1;

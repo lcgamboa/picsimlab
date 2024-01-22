@@ -51,7 +51,6 @@ public:
 private:
     unsigned char input_pins[4];
     lcd_pcf8833_t lcd;
-    lxFont font;
 };
 
 #endif /* PART_LCD_PCF8833_H */

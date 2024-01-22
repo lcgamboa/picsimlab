@@ -26,7 +26,8 @@
 #ifndef LCD_SSD1306
 #define LCD_SSD1306
 
-#include <lxrad.h>
+class CCanvas;
+
 #include "bitbang_i2c.h"
 #include "bitbang_spi.h"
 

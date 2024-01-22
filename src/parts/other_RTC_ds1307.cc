@@ -40,9 +40,7 @@ static PCWProp pcwprop[9] = {{PCW_LABEL, "P1 - X1,OSC1"}, {PCW_LABEL, "P2 - X2,O
 
 cpart_RTC_ds1307::cpart_RTC_ds1307(const unsigned x, const unsigned y, const char* name, const char* type,
                                    board* pboard_)
-    : part(x, y, name, type, pboard_),
-      font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
-      font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     rtc_ds1307_init(&rtc2, pboard);
     rtc_ds1307_rst(&rtc2);
     input_pins[0] = 0;
@@ -64,7 +62,7 @@ cpart_RTC_ds1307::~cpart_RTC_ds1307(void) {
 void cpart_RTC_ds1307::DrawOutput(const unsigned int i) {
     switch (output[i].id) {
         case O_IC:
-            canvas.SetFont(font_p);
+            canvas.SetFontSize(6);
             canvas.SetColor(26, 26, 26);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);

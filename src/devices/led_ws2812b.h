@@ -26,7 +26,7 @@
 #ifndef LED_WS2812B
 #define LED_WS2812B
 
-#include <lxrad.h>
+class CCanvas;
 
 /* pinout
   1 VDD

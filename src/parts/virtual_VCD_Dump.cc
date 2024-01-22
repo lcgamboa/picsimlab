@@ -45,7 +45,7 @@ static PCWProp pcwprop[9] = {{PCW_COMBO, "Pin 1"}, {PCW_COMBO, "Pin 2"}, {PCW_CO
                              {PCW_COMBO, "Pin 7"}, {PCW_COMBO, "Pin 8"}, {PCW_END, ""}};
 
 cpart_VCD_Dump::cpart_VCD_Dump(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     always_update = 1;
 
     input_pins[0] = 0;
@@ -103,7 +103,6 @@ cpart_VCD_Dump::~cpart_VCD_Dump(void) {
 
 void cpart_VCD_Dump::DrawOutput(const unsigned int i) {
     int to;
-    int r, g, b;
 
     const picpin* ppins = SpareParts.GetPinsValues();
 
@@ -151,22 +150,7 @@ void cpart_VCD_Dump::DrawOutput(const unsigned int i) {
                 canvas.SetColor(30, 0, 0);
             }
             canvas.SetFgColor(0, 0, 0);
-            // draw a circle
-            color1 = canvas.GetBgColor();
-            r = color1.Red() - 120;
-            g = color1.Green() - 120;
-            b = color1.Blue() - 120;
-            if (r < 0)
-                r = 0;
-            if (g < 0)
-                g = 0;
-            if (b < 0)
-                b = 0;
-            color2.Set(r, g, b);
-            canvas.SetBgColor(color2);
-            canvas.Circle(1, output[i].x1, output[i].y1, output[i].r);
-            canvas.SetBgColor(color1);
-            canvas.Circle(1, output[i].x1, output[i].y1, output[i].r - 3);
+            DrawLED(&canvas, &output[i]);
             break;
         case O_REC:
             if (rec > 0) {
@@ -175,22 +159,7 @@ void cpart_VCD_Dump::DrawOutput(const unsigned int i) {
                 canvas.SetColor(255, 0, 0);
             }
             canvas.SetFgColor(0, 0, 0);
-            // draw a circle
-            color1 = canvas.GetBgColor();
-            r = color1.Red() - 120;
-            g = color1.Green() - 120;
-            b = color1.Blue() - 120;
-            if (r < 0)
-                r = 0;
-            if (g < 0)
-                g = 0;
-            if (b < 0)
-                b = 0;
-            color2.Set(r, g, b);
-            canvas.SetBgColor(color2);
-            canvas.Circle(1, output[i].x1, output[i].y1, output[i].r);
-            canvas.SetBgColor(color1);
-            canvas.Circle(1, output[i].x1, output[i].y1, output[i].r - 3);
+            DrawLED(&canvas, &output[i]);
             break;
     }
 }

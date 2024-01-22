@@ -56,7 +56,6 @@ private:
     unsigned char output_pins[1];
     unsigned char output_value_[8];
     float output_value;
-    lxFont font;
     float vmax;
 };
 

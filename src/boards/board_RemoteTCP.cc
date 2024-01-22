@@ -166,7 +166,7 @@ unsigned short cboard_RemoteTCP::GetOutputId(char* name) {
 
 // Constructor called once on board creation
 
-cboard_RemoteTCP::cboard_RemoteTCP(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cboard_RemoteTCP::cboard_RemoteTCP(void) {
     Proc = "Ripes";  // default microcontroller if none defined in preferences
     ReadMaps();      // Read input and output board maps
 
@@ -379,6 +379,7 @@ void cboard_RemoteTCP::Draw(CDraw* draw) {
 
             if (!update) {
                 draw->Canvas.Init(Scale, Scale);
+                draw->Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
             }
             update++;  // set to update buffer
 
@@ -392,9 +393,11 @@ void cboard_RemoteTCP::Draw(CDraw* draw) {
                                            output[i].y2 - output[i].y1);
                     break;
                 case O_MP:
-                    font.SetPointSize(
+
+                    draw->Canvas.SetFontSize(10);
+
+                    draw->SetFontSize(
                         ((MGetPinCount() >= 44) || (MGetPinCount() <= 8)) ? 6 : ((MGetPinCount() > 14) ? 12 : 10));
-                    draw->Canvas.SetFont(font);
 
                     ps = micbmp->GetSize();
                     draw->Canvas.ChangeScale(1.0, 1.0);
@@ -610,7 +613,7 @@ void cboard_RemoteTCP::Run_CPU_ns(uint64_t time) {
     }
 }
 
-void cboard_RemoteTCP::EvThreadRun(CThread& thread) {
+void cboard_RemoteTCP::EvThreadRun(CThread* thread) {
     do {
         cmd_header_t cmd_header;
 
@@ -981,7 +984,7 @@ void cboard_RemoteTCP::EvThreadRun(CThread& thread) {
                 }
                 break;
         }
-    } while (!thread.TestDestroy());
+    } while (!thread->TestDestroy());
 }
 
 // Register the board in PICSimLab

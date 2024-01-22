@@ -43,7 +43,7 @@ static PCWProp pcwprop[6] = {{PCW_LABEL, "1 - VCC,+5V"}, {PCW_LABEL, "2 - GND ,G
                              {PCW_COMBO, "4 - OB"},      {PCW_COMBO, "5 - BTN"},      {PCW_END, ""}};
 
 cpart_encoder::cpart_encoder(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     always_update = 1;
 
     p_BTN = 1;

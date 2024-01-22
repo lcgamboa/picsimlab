@@ -54,7 +54,6 @@ private:
     sdcard_t sd;
     unsigned short _ret;
     char sdcard_fname[200];
-    lxFont font;
 };
 
 #endif /* PART_SDCARD_H */

@@ -26,7 +26,7 @@
 #ifndef BOARD_Curiosity_H
 #define BOARD_Curiosity_H
 
-#include <lxrad.h>
+#include <lxrad.h>  //FIXME remove lxrad
 
 #include "bsim_picsim.h"
 
@@ -43,7 +43,6 @@ private:
     unsigned char jmp[1];  // jmp
 
     void RegisterRemoteControl(void) override;
-    lxFont font;
 
 public:
     // Return the board name

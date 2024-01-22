@@ -58,7 +58,6 @@ private:
     unsigned char value[2];
     unsigned char active;
     unsigned int jr;
-    lxFont font;
 };
 
 #endif /* PART_GAMEPAD_H */

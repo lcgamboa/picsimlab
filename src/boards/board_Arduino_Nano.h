@@ -26,8 +26,6 @@
 #ifndef BOARD_Arduino_Nano_H
 #define BOARD_Arduino_Nano_H
 
-#include <lxrad.h>
-
 #include "board_Arduino_Uno.h"
 
 #define BOARD_Arduino_Nano_Name "Arduino Nano"

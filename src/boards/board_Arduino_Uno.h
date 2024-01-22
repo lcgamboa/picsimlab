@@ -26,8 +26,6 @@
 #ifndef BOARD_Arduino_Uno_H
 #define BOARD_Arduino_Uno_H
 
-#include <lxrad.h>
-
 #include "bsim_simavr.h"
 
 #define BOARD_Arduino_Uno_Name "Arduino Uno"

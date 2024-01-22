@@ -28,6 +28,8 @@
 #include "../lib/picsimlab.h"
 #include "bsim_gpsim.h"
 
+#include <lxrad.h>  //FIXME remove lxrad
+
 static const unsigned char GPSIM_PORTS[7] = {0, 1, 2, 3, 4, 5, 0xFF};
 
 bsim_gpsim::bsim_gpsim(void) {

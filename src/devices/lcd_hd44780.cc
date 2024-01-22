@@ -27,6 +27,8 @@
 #include <stdio.h>
 #include "../lib/board.h"
 
+#include <lxrad.h>  //FIXME remove lxrad
+
 // #define _DEBUG
 
 const unsigned char LCDfont[224][5] = {

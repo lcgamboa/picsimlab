@@ -39,7 +39,7 @@ static PCWProp pcwprop[8] = {{PCW_LABEL, "1-VCC,+5V"}, {PCW_COMBO, "2-POT 1"}, {
                              {PCW_SPIN, "Size"},       {PCW_END, ""}};
 
 cpart_pot::cpart_pot(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_, 9), font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_, 9) {
     Size = 0;
     Bitmap = NULL;
 
@@ -113,8 +113,8 @@ void cpart_pot::DrawOutput(const unsigned int i) {
         case O_PO3:
         case O_PO4:
             snprintf(val, 10, "%4.2f", vmax * (values[output[i].id - O_PO1]) / 200.0);
-            DrawPotentiometer(&output[i], values[output[i].id - O_PO1], val, font_p);
-            canvas.SetFont(font);
+            DrawPotentiometer(&canvas, &output[i], values[output[i].id - O_PO1], val, 7);
+            canvas.SetFontSize(9);
             break;
     }
 }

@@ -26,7 +26,7 @@
 #ifndef BOARD_x_H
 #define BOARD_x_H
 
-#include <lxrad.h>
+#include <lxrad.h>  //FIXME remove lxrad
 
 #include "../devices/swbounce.h"
 #include "bsim_picsim.h"
@@ -47,9 +47,6 @@ private:
     // Register controls for remote interface called once on board creation
     void RegisterRemoteControl(void) override;
 
-    lxColor color1;  // LEDs color 1
-    lxColor color2;  // LEDs color 2
-    lxFont font;
     SWBounce_t bounce;
 
 public:

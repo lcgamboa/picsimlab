@@ -57,7 +57,6 @@ private:
     int vt;
     int rpmstp;
     int rpmc;
-    lxFont font;
     int TimerID;
 };
 

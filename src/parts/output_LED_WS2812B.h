@@ -55,7 +55,6 @@ private:
     unsigned char input_pins[1];
     unsigned char output_pins[1];
     led_ws2812b_t led;
-    lxFont font;
     int OWidth;
     int OHeight;
     int xoff;

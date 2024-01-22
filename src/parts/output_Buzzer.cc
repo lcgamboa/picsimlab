@@ -40,7 +40,7 @@ static PCWProp pcwprop[5] = {{PCW_COMBO, "Pin 1"},
                              {PCW_END, ""}};
 
 cpart_Buzzer::cpart_Buzzer(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     X = x;
     Y = y;
     active = 1;
@@ -117,31 +117,17 @@ void cpart_Buzzer::DrawOutput(const unsigned int i) {
             break;
         case O_L1:
             canvas.SetFgColor(0, 0, 0);
-            color1.Set(55, 0, 0);
 
             if (input_pins[0] > 0) {
                 if (active) {
-                    color1.Set(ppins[input_pins[0] - 1].oavalue, 0, 0);
+                    canvas.SetBgColor(ppins[input_pins[0] - 1].oavalue, 0, 0);
                 } else {
-                    color1.Set(310 - ppins[input_pins[0] - 1].oavalue, 0, 0);
+                    canvas.SetBgColor(310 - ppins[input_pins[0] - 1].oavalue, 0, 0);
                 }
+            } else {
+                canvas.SetBgColor(55, 0, 0);
             }
-            // draw a LED
-            canvas.SetBgColor(color1);
-            int r = color1.Red() - 120;
-            int g = color1.Green() - 120;
-            int b = color1.Blue() - 120;
-            if (r < 0)
-                r = 0;
-            if (g < 0)
-                g = 0;
-            if (b < 0)
-                b = 0;
-            color2.Set(r, g, b);
-            canvas.SetBgColor(color2);
-            canvas.Circle(1, output[i].x1, output[i].y1, output[i].r + 1);
-            canvas.SetBgColor(color1);
-            canvas.Circle(1, output[i].x1, output[i].y1, output[i].r - 2);
+            DrawLED(&canvas, &output[i]);
             break;
     }
 }

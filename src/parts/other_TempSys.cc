@@ -44,7 +44,7 @@ static void cpart_tempsys_callback(void* arg) {
 }
 
 cpart_tempsys::cpart_tempsys(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_){
     always_update = 1;
 
     vtc = 0;

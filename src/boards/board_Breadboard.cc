@@ -78,7 +78,7 @@ unsigned short cboard_Breadboard::GetOutputId(char* name) {
 
 // Constructor called once on board creation
 
-cboard_Breadboard::cboard_Breadboard(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cboard_Breadboard::cboard_Breadboard(void) {
     ptype = _PIC;
     jmp[0] = 0;
     pic.vcc = 5.0;
@@ -336,6 +336,7 @@ void cboard_Breadboard::Draw(CDraw* draw) {
 
             if (!update) {
                 draw->Canvas.Init(Scale, Scale);
+                draw->Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
             }
             update++;  // set to update buffer
 
@@ -349,9 +350,8 @@ void cboard_Breadboard::Draw(CDraw* draw) {
                                            output[i].y2 - output[i].y1);
                     break;
                 case O_MP:
-                    font.SetPointSize(
+                    draw->Canvas.SetFontSize(
                         ((MGetPinCount() >= 44) || (MGetPinCount() <= 8)) ? 6 : ((MGetPinCount() > 14) ? 12 : 10));
-                    draw->Canvas.SetFont(font);
 
                     ps = micbmp->GetSize();
                     draw->Canvas.ChangeScale(1.0, 1.0);

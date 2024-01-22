@@ -59,9 +59,6 @@ private:
     FILE* f_vcd;
     unsigned long vcd_count;
     unsigned char rec;
-    lxFont font;
-    lxColor color1;
-    lxColor color2;
 };
 
 #endif /* PART_VCD_DUMP_AN_H */

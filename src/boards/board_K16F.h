@@ -26,6 +26,8 @@
 #ifndef BOARD_K16F_H
 #define BOARD_K16F_H
 
+#include <lxrad.h>  //FIXME remove lxrad
+
 #include "bsim_picsim.h"
 
 #include "../devices/lcd_hd44780.h"
@@ -51,9 +53,6 @@ private:
     char mi2c_tmp_name[200];
 
     void RegisterRemoteControl(void) override;
-    lxColor color1;
-    lxColor color2;
-    lxFont font;
 
 public:
     // Return the board name

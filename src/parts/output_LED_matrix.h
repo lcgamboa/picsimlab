@@ -54,7 +54,6 @@ private:
     ldd_max72xx_t ldd;
     int angle;
     int lmode;
-    lxFont font;
 };
 
 #endif /* PART_LED_MATRIX_H */

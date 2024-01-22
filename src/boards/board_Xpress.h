@@ -26,7 +26,7 @@
 #ifndef BOARD_Xpress_H
 #define BOARD_Xpress_H
 
-#include <lxrad.h>
+#include <lxrad.h>  //FIXME remove lxrad
 
 #include "bsim_picsim.h"
 
@@ -41,8 +41,6 @@ private:
     unsigned char active;
 
     void RegisterRemoteControl(void) override;
-
-    lxFont font;
 
 public:
     // Return the board name

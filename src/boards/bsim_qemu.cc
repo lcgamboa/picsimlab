@@ -27,6 +27,8 @@
 #include <dlfcn.h>
 #endif
 
+#include <lxrad.h>  //FIXME remove lxrad
+
 #include <time.h>
 #include "../lib/picsimlab.h"
 #include "../lib/serial_port.h"
@@ -377,7 +379,7 @@ static void user_timeout_cb(void* opaque) {
     board->timer.last = now;
 }
 
-void bsim_qemu::EvThreadRun(CThread& thread) {
+void bsim_qemu::EvThreadRun(CThread* thread) {
     mtx_qinit->Lock();
 
     // test icount limits

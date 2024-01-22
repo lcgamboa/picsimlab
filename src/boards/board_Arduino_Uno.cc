@@ -312,6 +312,7 @@ void cboard_Arduino_Uno::Draw(CDraw* draw) {
 
             if (!update) {
                 draw->Canvas.Init(Scale, Scale);
+                draw->Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
             }
             update++;          // set to update buffer
             if (!output[i].r)  // if output shape is a rectangle

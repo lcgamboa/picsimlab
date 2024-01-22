@@ -26,9 +26,27 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include <lxrad.h>
 #include <picsim/picsim.h>
 #include <stdint.h>
+
+#include <stdlib.h>
+#include <string.h>
+#include <string>
+
+/*
+class CControl;
+class CWindow;
+class CPWindow;
+class CDraw;
+class CThread;
+class CFileDialog;
+class CToggleButton;
+class lxBitmap;
+class lxMutex;
+class lxCondition;
+class board;
+*/
+#include <lxrad.h>  //FIXME remove lxrad
 
 #define INCOMPLETE                                                      \
     printf("Incomplete: %s -> %s :%i\n", __func__, __FILE__, __LINE__); \
@@ -170,7 +188,7 @@ public:
     /**
      * @brief  Event on the board
      */
-    virtual void EvThreadRun(CThread& thread){};
+    virtual void EvThreadRun(CThread* thread){};
 
     /**
      * @brief  Called ever 1s to refresh status
@@ -732,5 +750,12 @@ extern board_desc boards_list[BOARDS_MAX];
 
 // Arduino Uno is the dafault board
 #define DEFAULT_BOARD 2
+
+// Draw Functions
+void DrawLED(CCanvas* canvas, const output_t* output);
+void DrawSlider(CCanvas* canvas, const output_t* output, const unsigned char pos, const std::string val,
+                const int FontPointSize);
+void DrawPotentiometer(CCanvas* canvas, const output_t* output, const unsigned char pos, const std::string val,
+                       const int FontPointSize);
 
 #endif /* BOARDS_DEFS_H */

@@ -23,6 +23,8 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+#include <lxrad.h>  //FIXME remove lxrad
+
 #include "board.h"
 #include "picsimlab.h"
 
@@ -580,4 +582,58 @@ void board_register(const char* name, board_create_func bcreate) {
     }
 
     BOARDS_LAST++;
+}
+
+// Draw Functions
+
+void DrawLED(CCanvas* canvas, const output_t* output) {
+    lxColor color1 = canvas->GetBgColor();
+    lxColor color2;
+
+    int r = color1.Red() - 120;
+    int g = color1.Green() - 120;
+    int b = color1.Blue() - 120;
+    if (r < 0)
+        r = 0;
+    if (g < 0)
+        g = 0;
+    if (b < 0)
+        b = 0;
+    color2.Set(r, g, b);
+    canvas->SetBgColor(color2);
+    canvas->Circle(1, output->x1, output->y1, output->r + 1);
+    canvas->SetBgColor(color1);
+    canvas->Circle(1, output->x1, output->y1, output->r - 2);
+}
+
+void DrawSlider(CCanvas* canvas, const output_t* output, const unsigned char pos, const std::string val,
+                const int FontPointSize) {
+    float dy = pos / 1.66;
+    canvas->SetFgColor(255, 255, 255);
+    canvas->SetBgColor(89, 89, 89);
+    canvas->Rectangle(1, output->x1, output->y1, output->x2 - output->x1, output->y2 - output->y1);
+    canvas->SetColor(0, 0, 200);
+    canvas->Rectangle(1, output->x1 + 1, output->y1 + 1 + dy, output->x2 - output->x1 - 2,
+                      output->y2 - output->y1 - 2 - dy);
+
+    canvas->SetFgColor(0, 0, 0);
+    canvas->SetBgColor(46, 46, 46);
+    canvas->Rectangle(1, output->x1, output->y1 + pos / 1.66, 32, 19);
+    canvas->SetColor(250, 250, 250);
+    canvas->SetFontSize(FontPointSize);
+    canvas->RotatedText(val, output->x1 + 1, output->y1 + 5 + pos / 1.66, 0);
+}
+
+void DrawPotentiometer(CCanvas* canvas, const output_t* output, const unsigned char pos, const std::string val,
+                       const int FontPointSize) {
+    canvas->SetColor(179, 179, 179);
+    canvas->Rectangle(1, output->x1, output->y1, output->x2 - output->x1, output->y2 - output->y1);
+    canvas->SetFgColor(0, 0, 0);
+    canvas->SetBgColor(96, 96, 96);
+    canvas->Rectangle(1, output->x1 + 9, output->y1 + 9, output->x2 - output->x1 - 18, output->y2 - output->y1 - 18);
+    canvas->SetBgColor(46, 46, 46);
+    canvas->Rectangle(1, output->x1, output->y1 + (200 - pos) / 1.66, 32, 19);
+    canvas->SetColor(250, 250, 250);
+    canvas->SetFontSize(FontPointSize);
+    canvas->RotatedText(val, output->x1 + 4, output->y1 + 5 + (200 - pos) / 1.66, 0);
 }

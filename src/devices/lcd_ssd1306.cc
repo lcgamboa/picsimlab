@@ -34,6 +34,8 @@
 
 #include "lcd_ssd1306.h"
 
+#include <lxrad.h>  //FIXME remove lxrad
+
 void lcd_ssd1306_rst(lcd_ssd1306_t* lcd) {
     int i, j;
     for (i = 0; i < 128; i++)
@@ -382,9 +384,6 @@ unsigned char lcd_ssd1306_I2C_io(lcd_ssd1306_t* lcd, unsigned char sda, unsigned
 void lcd_ssd1306_draw(lcd_ssd1306_t* lcd, CCanvas* canvas, int x1, int y1, int w1, int h1, int picpwr) {
     unsigned char x, y, z;
 
-    lxColor front(0xb4, 0xff, 0xfc);
-    lxColor back(0x0f, 0x0f, 0x17);
-
     lcd->update = 0;
 
     if (!lcd->on)
@@ -396,9 +395,9 @@ void lcd_ssd1306_draw(lcd_ssd1306_t* lcd, CCanvas* canvas, int x1, int y1, int w
                 lcd->ram[x][y] &= 0x00FF;  // clear draw
                 for (z = 0; z < 8; z++) {
                     if (!(lcd->ram[x][y] & (0x01 << z)) != (!lcd->inv)) {
-                        canvas->SetColor(front);
+                        canvas->SetColor(0xb4, 0xff, 0xfc);  // front
                     } else {
-                        canvas->SetColor(back);
+                        canvas->SetColor(0x0f, 0x0f, 0x17);  // back
                     }
                     // canvas->Rectangle (1, x1 + (x * 2), y1 + (y * 8 * 2)+(z * 2), 2,
                     // 2);

@@ -23,6 +23,8 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+#include <lxrad.h>  //FIXME remove lxrad
+
 #include "oscilloscope.h"
 #include "picsimlab.h"
 #include "spareparts.h"

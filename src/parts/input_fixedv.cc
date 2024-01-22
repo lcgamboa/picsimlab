@@ -38,9 +38,7 @@ static PCWProp pcwprop[5] = {{PCW_LABEL, "1 - VCC,+5V"},
                              {PCW_END, ""}};
 
 cpart_fixedv::cpart_fixedv(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_),
-      font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
-      font_b(12, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     output_pins[0] = 0;
 
     value = 0;
@@ -90,9 +88,9 @@ void cpart_fixedv::DrawOutput(const unsigned int i) {
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             snprintf(val, 10, "%5.2f V", value / 40.0);
             canvas.SetColor(250, 250, 250);
-            canvas.SetFont(font_b);
+            canvas.SetFontSize(12);
             canvas.RotatedText(val, output[i].x1, output[i].y1, 0);
-            canvas.SetFont(font);
+            canvas.SetFontSize(9);
             break;
     }
 }

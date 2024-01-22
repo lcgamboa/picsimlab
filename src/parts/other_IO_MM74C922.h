@@ -58,7 +58,6 @@ private:
     int JUMPSTEPS_;
     io_MM74C922_t kc;
     unsigned short _ret;
-    lxFont font;
 };
 
 #endif /* PART_IO_MM74C922_H */

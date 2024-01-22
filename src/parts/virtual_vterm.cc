@@ -43,7 +43,7 @@ static PCWProp pcwprop[6] = {{PCW_LABEL, "P1 - VCC,+5V"}, {PCW_COMBO, "P2 - RX"}
 int cpart_vterm::count = 0;
 
 cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     vterm_init(&vt, pboard);
     vterm_rst(&vt);
 
@@ -268,6 +268,7 @@ void cpart_vterm::DrawOutput(const unsigned int i) {
             }
             break;
         default:
+            canvas.SetFontSize(8);
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 

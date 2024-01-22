@@ -57,7 +57,6 @@ private:
     unsigned char output_pins[4];
     unsigned char values[4];
     unsigned char active[4];
-    lxFont font_p;
     float vmax;
     int OWidth;
     int OHeight;

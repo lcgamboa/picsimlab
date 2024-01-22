@@ -39,9 +39,7 @@ static PCWProp pcwprop[8] = {{PCW_LABEL, "1-VCC,+5V"}, {PCW_COMBO, "2-POT 1"}, {
                              {PCW_SPIN, "Size"},       {PCW_END, ""}};
 
 cpart_pot_r::cpart_pot_r(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_),
-      font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
-      font_p(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     Size = 0;
     Bitmap = NULL;
 
@@ -130,7 +128,7 @@ void cpart_pot_r::DrawOutput(const unsigned int i) {
             canvas.Rectangle(1, output[i].x1 + 6, output[i].y2 + 6, 30, 15);
             snprintf(val, 10, "%4.2f", vmax * (values[output[i].id - O_PO1]) / 200.0);
             canvas.SetColor(250, 250, 250);
-            canvas.SetFont(font_p);
+            canvas.SetFontSize(8);
             canvas.RotatedText(val, output[i].x1 + 6, output[i].y2 + 6, 0);
             break;
     }

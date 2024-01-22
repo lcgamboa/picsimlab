@@ -41,7 +41,7 @@ static PCWProp pcwprop[4] = {{PCW_LABEL, "P4 - GND,GND"},
 
 cpart_SignalGenerator::cpart_SignalGenerator(const unsigned x, const unsigned y, const char* name, const char* type,
                                              board* pboard_)
-    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     always_update = 1;
 
     input_pins[0] = 0;
@@ -100,7 +100,7 @@ void cpart_SignalGenerator::DrawOutput(const unsigned int i) {
         case O_PO1:
         case O_PO2:
         case O_PO3:
-            DrawPotentiometer(&output[i], 200 - values[output[i].id - O_PO1], "", font);
+            DrawPotentiometer(&canvas, &output[i], 200 - values[output[i].id - O_PO1], "", 9);
             break;
         case O_TP:
             canvas.SetColor(255, 255, 255);

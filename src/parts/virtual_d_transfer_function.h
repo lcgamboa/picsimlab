@@ -62,7 +62,6 @@ private:
     float out_gain;
     float out_off;
     long unsigned int nsamples;
-    lxFont font;
 };
 
 #endif /* PART_DTRANSFERF_H */

@@ -60,7 +60,6 @@ private:
     unsigned char output_value[8];
     SWBounce_t bounce;
     unsigned char mode;
-    lxFont font;
     int OWidth;
     int OHeight;
     int xoff;

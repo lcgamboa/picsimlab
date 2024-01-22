@@ -38,9 +38,7 @@ static PCWProp pcwprop[6] = {{PCW_LABEL, "1 - VCC,+5V"}, {PCW_COMBO, "2 - D0"}, 
                              {PCW_LABEL, "4 - VSS,GND"}, {PCW_SPIND, "Vth"},    {PCW_END, ""}};
 
 cpart_LDR::cpart_LDR(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_),
-      font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
-      font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     output_pins[0] = 0;
     output_pins[1] = 0;
     vmax = 5.0;
@@ -111,8 +109,8 @@ void cpart_LDR::DrawOutput(const unsigned int i) {
             } else {
                 snprintf(val, 10, "%4.0fk", lux / 1000);
             }
-            DrawSlider(&output[i], value, val, font_p);
-            canvas.SetFont(font);
+            DrawSlider(&canvas, &output[i], value, val, 7);
+            canvas.SetFontSize(9);
             break;
         case O_LED:
             canvas.SetColor((vout > vthreshold) ? 255 : 55, 0, 0);

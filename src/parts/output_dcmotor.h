@@ -58,7 +58,6 @@ private:
     unsigned char dir;
     unsigned char speed;
     unsigned char* status[3];
-    lxFont font;
 };
 
 #endif /* DCMOTOR */

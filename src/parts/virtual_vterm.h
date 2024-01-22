@@ -70,7 +70,6 @@ private:
     CCombo* vtcmb_ending;
     char send_text;
     unsigned char lending;
-    lxFont font;
     std::string text_to_send;
     unsigned char show;
 };

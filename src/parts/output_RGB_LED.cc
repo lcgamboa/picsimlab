@@ -35,7 +35,7 @@ static PCWProp pcwprop[6] = {{PCW_COMBO, "1-Red"},     {PCW_COMBO, "2-Green"}, {
                              {PCW_LABEL, "4-GND,GND"}, {PCW_COMBO, "Active"},  {PCW_END, ""}};
 
 cpart_rgb_led::cpart_rgb_led(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     X = x;
     Y = y;
     active = 1;

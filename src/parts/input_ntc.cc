@@ -41,9 +41,7 @@ static PCWProp pcwprop[5] = {{PCW_LABEL, "1 - VCC,+5V"},
                              {PCW_END, ""}};
 
 cpart_ntc::cpart_ntc(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_),
-      font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
-      font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     output_pins[0] = 0;
 
     value = 0;
@@ -99,8 +97,8 @@ void cpart_ntc::DrawOutput(const unsigned int i) {
             break;
         case O_PO1:
             snprintf(val, 10, "%5.1f", (0.9 * (200 - value) - 55));
-            DrawSlider(&output[i], value, val, font_p);
-            canvas.SetFont(font);
+            DrawSlider(&canvas, &output[i], value, val, 7);
+            canvas.SetFontSize(9);
             break;
     }
 }

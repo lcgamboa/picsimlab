@@ -26,8 +26,6 @@
 #ifndef BOARD_Arduino_Mega_H
 #define BOARD_Arduino_Mega_H
 
-#include <lxrad.h>
-
 #include "board_Arduino_Uno.h"
 
 #define BOARD_Arduino_Mega_Name "Arduino Mega"

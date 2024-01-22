@@ -61,7 +61,7 @@ enum { TC_SPI = 0, TC_8BITS, TC_SPI_TOUCH, TC_8BITS_TOUCH };
 
 cpart_LCD_ili9341::cpart_LCD_ili9341(const unsigned x, const unsigned y, const char* name, const char* type,
                                      board* pboard_)
-    : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     X = x;
     Y = y;
 
@@ -164,6 +164,7 @@ void cpart_LCD_ili9341::DrawOutput(const unsigned int i) {
         case O_P11:
         case O_P12:
         case O_P13:
+            canvas.SetFontSize(8);
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);

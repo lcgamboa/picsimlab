@@ -69,7 +69,7 @@ static PCWProp pcwprop[21] = {{PCW_LABEL, "1-/OE,GND"},  {PCW_COMBO, "2-D0"},   
 
 cpart_IO_74xx573::cpart_IO_74xx573(const unsigned x, const unsigned y, const char* name, const char* type,
                                    board* pboard_)
-    : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     X = x;
     Y = y;
     always_update = 1;
@@ -120,6 +120,7 @@ cpart_IO_74xx573::~cpart_IO_74xx573(void) {
 void cpart_IO_74xx573::DrawOutput(const unsigned int i) {
     switch (output[i].id) {
         case O_IC:
+            canvas.SetFontSize(8);
             canvas.SetColor(26, 26, 26);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);

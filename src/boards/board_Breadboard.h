@@ -26,7 +26,7 @@
 #ifndef BOARD_Breadboard_H
 #define BOARD_Breadboard_H
 
-#include <lxrad.h>
+#include <lxrad.h>  //FIXME remove lxrad
 
 #include "bsim_picsim.h"
 #include "bsim_simavr.h"
@@ -41,7 +41,6 @@ class cboard_Breadboard : public bsim_picsim, public bsim_simavr {
 private:
     int ptype;
     lxBitmap* micbmp;
-    lxFont font;
     unsigned char jmp[1];  // jumper
 public:
     void SetScale(double scale) override;

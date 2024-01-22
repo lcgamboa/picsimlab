@@ -50,7 +50,6 @@ private:
     unsigned char active;
     unsigned char input_pins[3];
     unsigned color[3];
-    lxFont font;
 };
 
 #endif /* PART_RGB_LED */

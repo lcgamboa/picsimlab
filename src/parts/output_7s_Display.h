@@ -66,7 +66,6 @@ private:
     unsigned int alm4[8];
     long int mcount;
     int JUMPSTEPS_;
-    lxFont font;
     unsigned char dtype;
 };
 

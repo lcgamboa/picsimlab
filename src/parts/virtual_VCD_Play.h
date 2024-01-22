@@ -67,9 +67,6 @@ private:
     vcd_reg_t* vcd_data;
     int vcd_data_count;
     int vcd_ptr;
-    lxFont font;
-    lxColor color1;
-    lxColor color2;
 };
 
 #endif /* PART_VCD_Play_H */

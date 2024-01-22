@@ -75,7 +75,7 @@ enum { I_RST, I_RA1, I_RA2, I_RA3, I_RA4, I_PWR, I_ICSP, I_JP1 };
 
 enum { LAMP };
 
-cboard_McLab1::cboard_McLab1(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cboard_McLab1::cboard_McLab1(void) {
     Proc = "PIC16F628A";
     ReadMaps();
     jmp[0] = 0;
@@ -103,6 +103,7 @@ void cboard_McLab1::Draw(CDraw* draw) {
 
             if (!update) {
                 draw->Canvas.Init(Scale, Scale);
+                draw->Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
             }
             update++;  // set to update buffer
 
@@ -181,7 +182,7 @@ void cboard_McLab1::Draw(CDraw* draw) {
                     }
                     draw->Canvas.Circle(1, output[i].cx, output[i].cy, 19);
                 } else if (output[i].id == O_MP) {
-                    draw->Canvas.SetFont(font);
+                    draw->Canvas.SetFontSize(10);
                     draw->Canvas.SetColor(26, 26, 26);
                     draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                            output[i].y2 - output[i].y1);
@@ -307,22 +308,7 @@ void cboard_McLab1::Draw(CDraw* draw) {
                 }
 
                 if (led) {
-                    // draw a LED
-                    color1 = draw->Canvas.GetBgColor();
-                    int r = color1.Red() - 120;
-                    int g = color1.Green() - 120;
-                    int b = color1.Blue() - 120;
-                    if (r < 0)
-                        r = 0;
-                    if (g < 0)
-                        g = 0;
-                    if (b < 0)
-                        b = 0;
-                    color2.Set(r, g, b);
-                    draw->Canvas.SetBgColor(color2);
-                    draw->Canvas.Circle(1, output[i].x1, output[i].y1, output[i].r + 1);
-                    draw->Canvas.SetBgColor(color1);
-                    draw->Canvas.Circle(1, output[i].x1, output[i].y1, output[i].r - 2);
+                    DrawLED(&draw->Canvas, &output[i]);
                 } else {
                     draw->Canvas.Circle(1, output[i].x1, output[i].y1, output[i].r);
                 }

@@ -26,6 +26,8 @@
 #ifndef BOARD_McLab2_H
 #define BOARD_McLab2_H
 
+#include <lxrad.h>  //FIXME remove lxrad
+
 #include "../devices/lcd_hd44780.h"
 #include "../devices/mi2c_24CXXX.h"
 #include "../devices/rtc_ds1307.h"
@@ -76,9 +78,6 @@ private:
     char mi2c_tmp_name[200];
 
     void RegisterRemoteControl(void) override;
-    lxColor color1;
-    lxColor color2;
-    lxFont font;
     SWBounce_t bounce;
     int TimerID;
     int heater_pwr;

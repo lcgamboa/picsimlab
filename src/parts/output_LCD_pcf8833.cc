@@ -36,8 +36,9 @@ static PCWProp pcwprop[11] = {
     {PCW_COMBO, "5-/CS"},        {PCW_LABEL, "6-VDD,+3.3V"},  {PCW_LABEL, "7-NC,NC"}, {PCW_LABEL, "8-GND,GND"},
     {PCW_LABEL, "9-VLED-,GND"},  {PCW_LABEL, "10-VLED+,+6V"}, {PCW_END, ""}};
 
-cpart_LCD_pcf8833::cpart_LCD_pcf8833(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_LCD_pcf8833::cpart_LCD_pcf8833(const unsigned x, const unsigned y, const char* name, const char* type,
+                                     board* pboard_)
+    : part(x, y, name, type, pboard_) {
     X = x;
     Y = y;
     ReadMaps();
@@ -70,6 +71,7 @@ void cpart_LCD_pcf8833::DrawOutput(const unsigned int i) {
         case O_P2:
         case O_P3:
         case O_P4:
+            canvas.SetFontSize(8);
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);

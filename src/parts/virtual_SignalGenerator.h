@@ -26,7 +26,6 @@
 #ifndef PART_SIGNALGENERATOR_H
 #define PART_SIGNALGENERATOR_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_SIGNALGENERATOR_Name "Signal Generator"
@@ -63,7 +62,6 @@ private:
     float offs;
     unsigned int maxfreq;
     unsigned char lastd;
-    lxFont font;
 };
 
 #endif /* SIGNALGENERATOR */

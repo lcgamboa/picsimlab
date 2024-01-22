@@ -42,9 +42,7 @@ static PCWProp pcwprop[9] = {{PCW_COMBO, "P1 - SDA"},     {PCW_COMBO, "P2 - SCL"
                              {PCW_COMBO, "P7 - A0"},      {PCW_LABEL, "P8 - VCC,+5V"}, {PCW_END, ""}};
 
 cpart_ds1621::cpart_ds1621(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_),
-      font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
-      font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     sen_ds1621_init(&ds1621);
     sen_ds1621_rst(&ds1621);
 
@@ -75,7 +73,7 @@ void cpart_ds1621::DrawOutput(const unsigned int i) {
 
     switch (output[i].id) {
         case O_IC:
-            canvas.SetFont(font_p);
+            canvas.SetFontSize(6);
             canvas.SetColor(26, 26, 26);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);
@@ -83,10 +81,11 @@ void cpart_ds1621::DrawOutput(const unsigned int i) {
             break;
         case O_PO1:
             snprintf(val, 10, "%5.1f", (0.9 * (200 - value) - 55));
-            DrawSlider(&output[i], value, val, font_p);
-            canvas.SetFont(font);
+            DrawSlider(&canvas, &output[i], value, val, 6);
+            canvas.SetFontSize(8);
             break;
         default:
+            canvas.SetFontSize(8);
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
 

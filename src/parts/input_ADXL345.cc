@@ -42,9 +42,7 @@ static PCWProp pcwprop[9] = {{PCW_LABEL, "1 - GND ,GND"}, {PCW_LABEL, "2 - VCC,+
                              {PCW_COMBO, "7 - SDA"},      {PCW_COMBO, "8 - SCL"},     {PCW_END, ""}};
 
 cpart_ADXL345::cpart_ADXL345(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_),
-      font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
-      font_p(7, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     adxl345_init(&adxl);
     adxl345_rst(&adxl);
 
@@ -112,8 +110,8 @@ void cpart_ADXL345::DrawOutput(const unsigned int i) {
                     snprintf(val, 10, "%4.2f", 16 * ((getValues(output[i].id - O_VS1)) - 100) / 100.0);
                     break;
             }
-            DrawSlider(&output[i], 200 - getValues(output[i].id - O_VS1), val, font_p);
-            canvas.SetFont(font);
+            DrawSlider(&canvas, &output[i], 200 - getValues(output[i].id - O_VS1), val, 7);
+            canvas.SetFontSize(8);
             break;
         default:
             canvas.SetColor(49, 61, 99);

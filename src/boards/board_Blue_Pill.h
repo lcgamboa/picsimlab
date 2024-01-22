@@ -26,8 +26,6 @@
 #ifndef BOARD_Blue_Pill_H
 #define BOARD_Blue_Pill_H
 
-#include <lxrad.h>
-
 #include "bsim_qemu.h"
 
 #define BOARD_Blue_Pill_Name "Blue Pill"

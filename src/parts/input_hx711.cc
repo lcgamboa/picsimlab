@@ -44,9 +44,7 @@ static PCWProp pcwprop[5] = {{PCW_LABEL, "1-GND,GND"},
                              {PCW_END, ""}};
 
 cpart_hx711::cpart_hx711(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_),
-      font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
-      font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     sen_hx711_init(&hx711, pboard);
     sen_hx711_rst(&hx711);
 
@@ -74,8 +72,8 @@ void cpart_hx711::DrawOutput(const unsigned int i) {
     switch (output[i].id) {
         case O_PO1:
             snprintf(val, 10, "%6.1f", (0.5 * (200 - values[0])));
-            DrawSlider(&output[i], values[0], val, font_p);
-            canvas.SetFont(font);
+            DrawSlider(&canvas, &output[i], values[0], val, 6);
+            canvas.SetFontSize(8);
             break;
         default:
             canvas.SetColor(49, 61, 99);

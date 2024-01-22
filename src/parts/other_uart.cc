@@ -59,7 +59,7 @@ static PCWProp pcwprop[7] = {
     {PCW_COMBO, "Port"},         {PCW_COMBO, "Speed"},   {PCW_END, ""}};
 
 cpart_UART::cpart_UART(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     uart_init(&sr, pboard);
     uart_rst(&sr);
 
@@ -105,11 +105,12 @@ void cpart_UART::DrawOutput(const unsigned int i) {
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             break;
         case O_FILE:
+            canvas.SetFontSize(8);
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);
-            canvas.RotatedText("port:" + std::string(uart_name) + "   speed:" + std::to_string(uart_speed), output[i].x1,
-                               output[i].y1, 0);
+            canvas.RotatedText("port:" + std::string(uart_name) + "   speed:" + std::to_string(uart_speed),
+                               output[i].x1, output[i].y1, 0);
             break;
         default:
             canvas.SetColor(49, 61, 99);

@@ -35,8 +35,9 @@ static PCWProp pcwprop[9] = {{PCW_LABEL, "1-GND,GND"}, {PCW_LABEL, "2-VCC,+3.3V"
                              {PCW_COMBO, "4-DIN"},     {PCW_COMBO, "5-/RST"},      {PCW_COMBO, "6-DC"},
                              {PCW_COMBO, "7-/CE"},     {PCW_COMBO, "Type Com."},   {PCW_END, ""}};
 
-cpart_LCD_ssd1306::cpart_LCD_ssd1306(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cpart_LCD_ssd1306::cpart_LCD_ssd1306(const unsigned x, const unsigned y, const char* name, const char* type,
+                                     board* pboard_)
+    : part(x, y, name, type, pboard_) {
     X = x;
     Y = y;
     ReadMaps();
@@ -73,6 +74,7 @@ void cpart_LCD_ssd1306::DrawOutput(const unsigned int i) {
         case O_P3:
         case O_P4:
         case O_P5:
+            canvas.SetFontSize(8);
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);

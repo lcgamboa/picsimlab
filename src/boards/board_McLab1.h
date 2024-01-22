@@ -26,7 +26,8 @@
 #ifndef BOARD_McLab1_H
 #define BOARD_McLab1_H
 
-#include <lxrad.h>
+#include <lxrad.h>  //FIXME remove lxrad
+
 #include "../devices/swbounce.h"
 #include "bsim_picsim.h"
 
@@ -40,9 +41,6 @@ private:
     unsigned int lm2[18];  // luminosidade media display
 
     void RegisterRemoteControl(void) override;
-    lxColor color1;
-    lxColor color2;
-    lxFont font;
     SWBounce_t bounce;
 
 public:

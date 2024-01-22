@@ -26,7 +26,6 @@
 #ifndef PART_MPU6050_H
 #define PART_MPU6050_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #include "../devices/sen_mpu6050.h"
@@ -58,8 +57,6 @@ private:
     void RegisterRemoteControl(void) override;
     unsigned char mpu_pins[6];
     mpu6050_t mpu;
-    lxFont font;
-    lxFont font_p;
     unsigned char active[6];
     double asens;
     double gsens;

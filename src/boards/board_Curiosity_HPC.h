@@ -27,7 +27,7 @@
 #ifndef BOARD_Curiosity_HPC_H
 #define BOARD_Curiosity_HPC_H
 
-#include <lxrad.h>
+#include <lxrad.h>  //FIXME remove lxrad
 
 #include "bsim_picsim.h"
 
@@ -46,7 +46,6 @@ private:
     void RegisterRemoteControl(void) override;
 
     unsigned char ic28pins;
-    lxFont font;
 
 public:
     // Return the board name

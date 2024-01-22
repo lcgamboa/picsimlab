@@ -28,6 +28,8 @@
     } else     \
         printf
 
+#include <lxrad.h>  //FIXME remove lxrad
+
 #include "lcd_pcf8833.h"
 
 // Philips PCF8833 LCD controller command codes

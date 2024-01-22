@@ -68,9 +68,6 @@ private:
     float oftone;
     float in[3];
     float out[3];
-    lxFont font;
-    lxColor color1;
-    lxColor color2;
     CTimer* timer;
 };
 

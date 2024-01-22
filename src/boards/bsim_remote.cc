@@ -42,6 +42,7 @@
 #include "bsim_remote.h"
 
 #include <stdint.h>
+#include <unistd.h>
 
 #if __BIG_ENDIAN__
 #define htonll(x) (x)

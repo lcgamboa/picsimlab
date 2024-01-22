@@ -35,7 +35,7 @@ static PCWProp pcwprop[6] = {{PCW_COMBO, "Pin 1"}, {PCW_COMBO, "Pin 2"}, {PCW_CO
                              {PCW_COMBO, "Pin 4"}, {PCW_COMBO, "Home"},  {PCW_END, ""}};
 
 cpart_step::cpart_step(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_), font(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_){
     angle = 0;
 
     steps = 0;
@@ -128,22 +128,7 @@ void cpart_step::DrawOutput(const unsigned int i) {
             } else {
                 canvas.SetBgColor(55, 0, 0);
             }
-            // draw a LED
-            color1 = canvas.GetBgColor();
-            int r = color1.Red() - 120;
-            int g = color1.Green() - 120;
-            int b = color1.Blue() - 120;
-            if (r < 0)
-                r = 0;
-            if (g < 0)
-                g = 0;
-            if (b < 0)
-                b = 0;
-            color2.Set(r, g, b);
-            canvas.SetBgColor(color2);
-            canvas.Circle(1, output[i].x1, output[i].y1, output[i].r + 1);
-            canvas.SetBgColor(color1);
-            canvas.Circle(1, output[i].x1, output[i].y1, output[i].r - 2);
+            DrawLED(&canvas, &output[i]);
             break;
     }
 }

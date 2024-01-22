@@ -45,7 +45,7 @@ static PCWProp pcwprop[14] = {{PCW_LABEL, "1 -VCC,+5V"}, {PCW_COMBO, "2 -Out 1"}
                               {PCW_SPIN, "Size"},        {PCW_END, ""}};
 
 cpart_switches::cpart_switches(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_), font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     active = 1;
     Size = 0;
     Bitmap = NULL;
@@ -156,6 +156,7 @@ void cpart_switches::DrawOutput(const unsigned int i) {
         case O_P6:
         case O_P7:
         case O_P8:
+            canvas.SetFontSize(8);
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             canvas.SetFgColor(255, 255, 255);

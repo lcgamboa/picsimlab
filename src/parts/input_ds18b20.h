@@ -26,7 +26,6 @@
 #ifndef PART_DS1820B_H
 #define PART_DS1820B_H
 
-#include <lxrad.h>
 #include "../devices/sen_ds18b20.h"
 #include "../lib/part.h"
 
@@ -57,8 +56,6 @@ private:
     unsigned char output_pins[1];
     unsigned char values[1];
     unsigned char active[1];
-    lxFont font;
-    lxFont font_p;
 };
 
 #endif /* DS1820B */

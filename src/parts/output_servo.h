@@ -71,7 +71,6 @@ private:
     float angle_;             ///< old angle of shaft
     unsigned char in_[2];     ///< input pin memory
     int time;                 ///< pulse time
-    lxFont font;
 };
 
 #endif /* PART_SERVO */

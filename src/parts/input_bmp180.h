@@ -26,7 +26,6 @@
 #ifndef PART_RTC_BMP180_H
 #define PART_RTC_BMP180_H
 
-#include <lxrad.h>
 #include "../devices/sen_bmp180.h"
 #include "../lib/part.h"
 
@@ -55,8 +54,6 @@ private:
     sen_bmp180_t bmp180;
     unsigned char values[2];
     unsigned char active[2];
-    lxFont font;
-    lxFont font_p;
 };
 
 #endif /* PART_v_H */

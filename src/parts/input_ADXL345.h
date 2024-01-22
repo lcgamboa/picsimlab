@@ -26,7 +26,6 @@
 #ifndef PART_ADXL345_H
 #define PART_ADXL345_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #include "../devices/sen_adxl345.h"
@@ -59,8 +58,6 @@ private:
     void RegisterRemoteControl(void) override;
     unsigned char adxl_pins[6];
     adxl345_t adxl;
-    lxFont font;
-    lxFont font_p;
     unsigned char active[3];
     double asens;
     // double gsens;

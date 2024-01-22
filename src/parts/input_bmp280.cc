@@ -42,9 +42,7 @@ static PCWProp pcwprop[7] = {
     {PCW_COMBO, "5-CSB"},     {PCW_COMBO, "6-SDO"},     {PCW_END, ""}};
 
 cpart_bmp280::cpart_bmp280(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_),
-      font(8, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD),
-      font_p(6, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     sen_bmp280_init(&bmp280);
     sen_bmp280_rst(&bmp280);
 
@@ -77,13 +75,13 @@ void cpart_bmp280::DrawOutput(const unsigned int i) {
     switch (output[i].id) {
         case O_PO1:
             snprintf(val, 10, "%6.0f", (4.0 * (200 - values[0]) + 300));
-            DrawSlider(&output[i], values[0], val, font_p);
-            canvas.SetFont(font);
+            DrawSlider(&canvas, &output[i], values[0], val, 6);
+            canvas.SetFontSize(8);
             break;
         case O_PO2:
             snprintf(val, 10, "%5.1f", (0.625 * (200 - values[1]) - 40));
-            DrawSlider(&output[i], values[1], val, font_p);
-            canvas.SetFont(font);
+            DrawSlider(&canvas, &output[i], values[1], val, 6);
+            canvas.SetFontSize(8);
             break;
         default:
             canvas.SetColor(49, 61, 99);

@@ -103,7 +103,7 @@ unsigned short cboard_Xpress::GetOutputId(char* name) {
 
 // Constructor called once on board creation
 
-cboard_Xpress::cboard_Xpress(void) : font(2, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cboard_Xpress::cboard_Xpress(void) {
     Proc = "PIC16F18855";  // default microcontroller if none defined in preferences
     ReadMaps();            // Read input and output board maps
 
@@ -335,6 +335,7 @@ void cboard_Xpress::Draw(CDraw* draw) {
     int i;
 
     draw->Canvas.Init(Scale, Scale);  // initialize draw context
+    draw->Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
 
     // board_6 draw
     for (i = 0; i < outputc; i++)  // run over all outputs
@@ -374,7 +375,7 @@ void cboard_Xpress::Draw(CDraw* draw) {
 
             if (output[i].id == O_MP) {
                 lxRect rec;
-                draw->Canvas.SetFont(font);
+                draw->Canvas.SetFontSize(2);
                 draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                        output[i].y2 - output[i].y1);
                 draw->Canvas.SetFgColor(230, 230, 230);

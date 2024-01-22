@@ -74,7 +74,7 @@ unsigned short cboard_uCboard::GetOutputId(char* name) {
 
 // Constructor called once on board creation
 
-cboard_uCboard::cboard_uCboard(void) : font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+cboard_uCboard::cboard_uCboard(void) {
     Proc = "C51";  // default microcontroller if none defined in preferences
     ReadMaps();    // Read input and output board maps
     micbmp = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/ic40.svg", Scale, 1);
@@ -228,6 +228,7 @@ void cboard_uCboard::Draw(CDraw* draw) {
 
             if (!update) {
                 draw->Canvas.Init(Scale, Scale);
+                draw->Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
             }
             update++;  // set to update buffer
 
@@ -243,8 +244,7 @@ void cboard_uCboard::Draw(CDraw* draw) {
                                                output[i].y2 - output[i].y1);
                         break;
                     case O_MP:
-                        font.SetPointSize((MGetPinCount() >= 100) ? 9 : ((MGetPinCount() > 14) ? 12 : 10));
-                        draw->Canvas.SetFont(font);
+                        draw->Canvas.SetFontSize((MGetPinCount() >= 100) ? 9 : ((MGetPinCount() > 14) ? 12 : 10));
 
                         ps = micbmp->GetSize();
                         draw->Canvas.ChangeScale(1.0, 1.0);

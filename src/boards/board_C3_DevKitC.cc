@@ -474,6 +474,7 @@ void cboard_C3_DevKitC::Draw(CDraw* draw) {
     int i;
 
     draw->Canvas.Init(Scale, Scale);  // initialize draw context
+    draw->Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
 
     // board_x draw
     for (i = 0; i < outputc; i++)  // run over all outputs

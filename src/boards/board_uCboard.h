@@ -26,7 +26,7 @@
 #ifndef BOARD_uCboard_H
 #define BOARD_uCboard_H
 
-#include <lxrad.h>
+#include <lxrad.h>  //FIXME remove lxrad
 
 #include "bsim_ucsim.h"
 
@@ -36,7 +36,6 @@
 class cboard_uCboard : public bsim_ucsim {
 private:
     lxBitmap* micbmp;
-    lxFont font;
 
 public:
     void SetScale(double scale) override;

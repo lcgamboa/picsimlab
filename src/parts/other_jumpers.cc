@@ -94,7 +94,7 @@ static PCWProp pcwprop[35] = {
 int cpart_Jumpers::countID = 0;
 
 cpart_Jumpers::cpart_Jumpers(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_), font(10, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+    : part(x, y, name, type, pboard_) {
     char buff[2];
 
     ID = countID++;
@@ -175,6 +175,7 @@ void cpart_Jumpers::DrawOutput(const unsigned int i) {
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             break;
         case O_I1 ... O_I16:
+            canvas.SetFontSize(10);
             canvas.SetColor(49, 61, 99);
             canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
             snprintf(pname, 256, "%2i-%s", output[i].id - O_I1 + 1,

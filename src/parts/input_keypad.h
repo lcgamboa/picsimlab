@@ -26,7 +26,6 @@
 #ifndef PART_KEYPAD_H
 #define PART_KEYPAD_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_KEYPAD_Name "Keypad"
