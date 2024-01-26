@@ -76,7 +76,7 @@ unsigned short cboard_gpboard::GetOutputId(char* name) {
 cboard_gpboard::cboard_gpboard(void) {
     Proc = "pic16f628a";  // default microcontroller if none defined in preferences
     ReadMaps();           // Read input and output board maps
-    micbmp = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/ic40.svg", Scale, 1);
+    micbmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/ic40.svg", Scale, 1);
     serialfd = INVALID_SERIAL;
 }
 
@@ -209,63 +209,62 @@ void cboard_gpboard::EvMouseButtonRelease(uint button, uint x, uint y, uint stat
 // Called ever 100ms to draw board
 // This is the critical code for simulator running speed
 
-void cboard_gpboard::Draw(CDraw* draw) {
+void cboard_gpboard::Draw(CCanvas* Canvas) {
     int i;
     lxRect rec;
     lxSize ps;
 
-    draw->Canvas.Init(Scale, Scale);  // initialize draw context
-    draw->Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
+    Canvas->Init(Scale, Scale);  // initialize draw context
+    Canvas->SetFontWeight(lxFONTWEIGHT_BOLD);
 
-    draw->Canvas.SetFontSize((MGetPinCount() >= 44) ? 5 : ((MGetPinCount() > 14) ? 12 : 4));
+    Canvas->SetFontSize((MGetPinCount() >= 44) ? 5 : ((MGetPinCount() > 14) ? 12 : 4));
 
     // board_x draw
     for (i = 0; i < outputc; i++)  // run over all outputs
     {
         if (!output[i].r)  // if output shape is a rectangle
         {
-            draw->Canvas.SetFgColor(0, 0, 0);  // black
+            Canvas->SetFgColor(0, 0, 0);  // black
 
             switch (output[i].id)  // search for color of output
             {
                 case O_LPWR:  // Blue using mcupwr value
-                    draw->Canvas.SetColor(200 * PICSimLab.GetMcuPwr() + 55, 0, 0);
-                    draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                           output[i].y2 - output[i].y1);
+                    Canvas->SetColor(200 * PICSimLab.GetMcuPwr() + 55, 0, 0);
+                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                      output[i].y2 - output[i].y1);
                     break;
                 case O_MP:
 
-                    draw->Canvas.SetFontSize(10);
+                    Canvas->SetFontSize(10);
 
                     ps = micbmp->GetSize();
-                    draw->Canvas.ChangeScale(1.0, 1.0);
-                    draw->Canvas.PutBitmap(micbmp, output[i].x1 * Scale, output[i].y1 * Scale);
-                    draw->Canvas.ChangeScale(Scale, Scale);
-                    draw->Canvas.SetFgColor(230, 230, 230);
+                    Canvas->ChangeScale(1.0, 1.0);
+                    Canvas->PutBitmap(micbmp, output[i].x1 * Scale, output[i].y1 * Scale);
+                    Canvas->ChangeScale(Scale, Scale);
+                    Canvas->SetFgColor(230, 230, 230);
 
                     rec.x = output[i].x1;
                     rec.y = output[i].y1;
                     rec.width = ps.GetWidth() / Scale;
                     rec.height = ps.GetHeight() / Scale;
-                    draw->Canvas.TextOnRect(Proc, rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
+                    Canvas->TextOnRect(Proc, rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
                     break;
                 case O_RST:
-                    draw->Canvas.SetColor(100, 100, 100);
-                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, 11);
+                    Canvas->SetColor(100, 100, 100);
+                    Canvas->Circle(1, output[i].cx, output[i].cy, 11);
                     if (p_RST) {
-                        draw->Canvas.SetColor(15, 15, 15);
+                        Canvas->SetColor(15, 15, 15);
                     } else {
-                        draw->Canvas.SetColor(55, 55, 55);
+                        Canvas->SetColor(55, 55, 55);
                     }
-                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, 9);
+                    Canvas->Circle(1, output[i].cx, output[i].cy, 9);
                     break;
             }
         }
     }
 
     // end draw
-    draw->Canvas.End();
-    draw->Update();
+    Canvas->End();
 }
 
 void cboard_gpboard::Run_CPU(void) {
@@ -340,11 +339,11 @@ int cboard_gpboard::MInit(const char* processor, const char* fname, float freq) 
         Proc = "pic16f628a";
     }
 
-    lxBitmap* bmp = PICSimLab.LoadImage(
+    lxBitmap* bmp = PICSimLab.LoadImageFile(
         PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg", Scale, 1);
 
     if (bmp == NULL) {
-        bmp = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/ic6.svg", Scale, 1);
+        bmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/ic6.svg", Scale, 1);
         printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
         printf("picsimlab: %s not found!\n",
                (const char*)(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg")
@@ -364,11 +363,11 @@ void cboard_gpboard::SetScale(double scale) {
 
     Scale = scale;
 
-    lxBitmap* bmp = PICSimLab.LoadImage(
+    lxBitmap* bmp = PICSimLab.LoadImageFile(
         PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg", Scale, 1);
 
     if (bmp == NULL) {
-        bmp = PICSimLab.LoadImage(PICSimLab.GetSharePath() + "boards/Common/ic6.svg", Scale, 1);
+        bmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/ic6.svg", Scale, 1);
         printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
         printf("picsimlab: %s not found!\n",
                (const char*)(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg")

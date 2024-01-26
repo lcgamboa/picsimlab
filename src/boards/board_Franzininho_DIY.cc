@@ -266,7 +266,7 @@ void cboard_Franzininho_DIY::EvMouseButtonRelease(uint button, uint x, uint y, u
 // Called ever 100ms to draw board
 // This is the critical code for simulator running speed
 
-void cboard_Franzininho_DIY::Draw(CDraw* draw) {
+void cboard_Franzininho_DIY::Draw(CCanvas* Canvas) {
     int i;
     int update = 0;  // verifiy if updated is needed
 
@@ -278,8 +278,8 @@ void cboard_Franzininho_DIY::Draw(CDraw* draw) {
             output[i].update = 0;
 
             if (!update) {
-                draw->Canvas.Init(Scale, Scale);
-                draw->Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
+                Canvas->Init(Scale, Scale);
+                Canvas->SetFontWeight(lxFONTWEIGHT_BOLD);
             }
             update++;  // set to update buffer
 
@@ -287,75 +287,74 @@ void cboard_Franzininho_DIY::Draw(CDraw* draw) {
             {
                 switch (output[i].id) {
                     case O_RST:
-                        draw->Canvas.SetColor(100, 100, 100);
+                        Canvas->SetColor(100, 100, 100);
                         break;
                     case O_PB0:
                     case O_PPB0:
-                        draw->Canvas.SetColor(pins[4].oavalue, 0, 0);
+                        Canvas->SetColor(pins[4].oavalue, 0, 0);
                         break;
                     case O_PB1:
                     case O_PPB1:
-                        draw->Canvas.SetColor(pins[5].oavalue, 0, 0);
+                        Canvas->SetColor(pins[5].oavalue, 0, 0);
                         break;
                     case O_PB2:
                     case O_PPB2:
-                        draw->Canvas.SetColor(pins[6].oavalue, 0, 0);
+                        Canvas->SetColor(pins[6].oavalue, 0, 0);
                         break;
                     case O_PB3:
                     case O_PPB3:
-                        draw->Canvas.SetColor(pins[1].oavalue, 0, 0);
+                        Canvas->SetColor(pins[1].oavalue, 0, 0);
                         break;
                     case O_PB4:
                     case O_PPB4:
-                        draw->Canvas.SetColor(pins[2].oavalue, 0, 0);
+                        Canvas->SetColor(pins[2].oavalue, 0, 0);
                         break;
                     case O_PB5:
                     case O_PPB5:
-                        draw->Canvas.SetColor(pins[0].oavalue, 0, 0);
+                        Canvas->SetColor(pins[0].oavalue, 0, 0);
                         break;
                     default:
-                        draw->Canvas.SetColor(0, 0, 0);
+                        Canvas->SetColor(0, 0, 0);
                         break;
                 }
 
                 if (output[i].id == O_RST) {
-                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, 11);
+                    Canvas->Circle(1, output[i].cx, output[i].cy, 11);
                     if (p_RST) {
-                        draw->Canvas.SetColor(15, 15, 15);
+                        Canvas->SetColor(15, 15, 15);
                     } else {
-                        draw->Canvas.SetColor(55, 55, 55);
+                        Canvas->SetColor(55, 55, 55);
                     }
-                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, 9);
+                    Canvas->Circle(1, output[i].cx, output[i].cy, 9);
                 } else {
-                    draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                           output[i].y2 - output[i].y1);
+                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                      output[i].y2 - output[i].y1);
                 }
             }
 
             else  // circle
             {
-                draw->Canvas.SetFgColor(0, 0, 0);
+                Canvas->SetFgColor(0, 0, 0);
                 switch (output[i].id) {
                     case O_ON:
-                        draw->Canvas.SetBgColor(0, 200 * PICSimLab.GetMcuPwr() + 55, 0);
+                        Canvas->SetBgColor(0, 200 * PICSimLab.GetMcuPwr() + 55, 0);
                         break;
                     case O_L:
-                        draw->Canvas.SetBgColor(pins[5].oavalue, pins[5].oavalue, 0);
+                        Canvas->SetBgColor(pins[5].oavalue, pins[5].oavalue, 0);
                         break;
                     default:
-                        draw->Canvas.SetBgColor(0, 0, 0);
+                        Canvas->SetBgColor(0, 0, 0);
                         break;
                 }
 
-                DrawLED(&draw->Canvas, &output[i]);
+                DrawLED(Canvas, &output[i]);
             }
         }
     }
 
     // end draw
     if (update) {
-        draw->Canvas.End();
-        draw->Update();
+        Canvas->End();
     }
 }
 

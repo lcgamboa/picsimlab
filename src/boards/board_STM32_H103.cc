@@ -448,60 +448,59 @@ void cboard_STM32_H103::EvMouseButtonRelease(uint button, uint x, uint y, uint s
 // Called ever 100ms to draw board
 // This is the critical code for simulator running speed
 
-void cboard_STM32_H103::Draw(CDraw* draw) {
+void cboard_STM32_H103::Draw(CCanvas* Canvas) {
     int i;
 
-    draw->Canvas.Init(Scale, Scale);  // initialize draw context
-    draw->Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
+    Canvas->Init(Scale, Scale);  // initialize draw context
+    Canvas->SetFontWeight(lxFONTWEIGHT_BOLD);
 
     // board_x draw
     for (i = 0; i < outputc; i++)  // run over all outputs
     {
         if (!output[i].r)  // if output shape is a rectangle
         {
-            draw->Canvas.SetFgColor(0, 0, 0);  // black
+            Canvas->SetFgColor(0, 0, 0);  // black
 
             switch (output[i].id)  // search for color of output
             {
                 case O_LED:  // White using pc12 mean value
-                    draw->Canvas.SetColor(0, pins[52].oavalue, 0);
-                    draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                           output[i].y2 - output[i].y1);
+                    Canvas->SetColor(0, pins[52].oavalue, 0);
+                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                      output[i].y2 - output[i].y1);
 
                     break;
                 case O_LPWR:  // Blue using mcupwr value
-                    draw->Canvas.SetColor(200 * PICSimLab.GetMcuPwr() + 55, 0, 0);
-                    draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                           output[i].y2 - output[i].y1);
+                    Canvas->SetColor(200 * PICSimLab.GetMcuPwr() + 55, 0, 0);
+                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                      output[i].y2 - output[i].y1);
 
                     break;
                 case O_BUT:
-                    draw->Canvas.SetColor(100, 100, 100);
-                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, 13);
+                    Canvas->SetColor(100, 100, 100);
+                    Canvas->Circle(1, output[i].cx, output[i].cy, 13);
                     if (p_BUT) {
-                        draw->Canvas.SetColor(55, 55, 55);
+                        Canvas->SetColor(55, 55, 55);
                     } else {
-                        draw->Canvas.SetColor(15, 15, 15);
+                        Canvas->SetColor(15, 15, 15);
                     }
-                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, 11);
+                    Canvas->Circle(1, output[i].cx, output[i].cy, 11);
                     break;
                 case O_RST:
-                    draw->Canvas.SetColor(100, 100, 100);
-                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, 13);
+                    Canvas->SetColor(100, 100, 100);
+                    Canvas->Circle(1, output[i].cx, output[i].cy, 13);
                     if (p_RST) {
-                        draw->Canvas.SetColor(15, 15, 15);
+                        Canvas->SetColor(15, 15, 15);
                     } else {
-                        draw->Canvas.SetColor(55, 55, 55);
+                        Canvas->SetColor(55, 55, 55);
                     }
-                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, 11);
+                    Canvas->Circle(1, output[i].cx, output[i].cy, 11);
                     break;
             }
         }
     }
 
     // end draw
-    draw->Canvas.End();
-    draw->Update();
+    Canvas->End();
 }
 
 void cboard_STM32_H103::Run_CPU_ns(uint64_t time) {

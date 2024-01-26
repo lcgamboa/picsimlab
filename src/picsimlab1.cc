@@ -205,7 +205,7 @@ void CPWindow1::DrawBoard(void) {
         if (PICSimLab.GetBoard()) {
             PICSimLab.GetBoard()->SetScale(PICSimLab.GetScale());
             PICSimLab.GetBoard()->EvOnShow();
-            PICSimLab.GetBoard()->Draw(&draw1);
+            PICSimLab.GetBoard()->Draw(&draw1.Canvas);
         }
         draw1.SetVisible(1);
 
@@ -219,7 +219,7 @@ void CPWindow1::DrawBoard(void) {
         PICSimLab.SetNeedResize(0);
         statusbar1.Draw();
     } else if (PICSimLab.GetBoard()) {
-        PICSimLab.GetBoard()->Draw(&draw1);
+        PICSimLab.GetBoard()->Draw(&draw1.Canvas);
     }
 #ifndef _WIN_
     Draw();
@@ -1024,7 +1024,7 @@ void CPWindow1::Configure(void) {
 
     PICSimLab.GetBoard()->Reset();
     PICSimLab.GetBoard()->EvOnShow();
-    PICSimLab.GetBoard()->Draw(&draw1);
+    PICSimLab.GetBoard()->Draw(&draw1.Canvas);
     draw1.SetVisible(1);
 
     SetTitle(((PICSimLab.GetInstanceNumber() > 0)
@@ -1367,7 +1367,7 @@ lxBitmap* CPWindow1::OnLoadImage(const std::string fname, const float scale, con
 
 void CPWindow1::OnConfigMenuGUI(const PICSimlabGUIMenu type) {
     switch (type) {
-        case GM_HEX:
+        case GMT_HEX:
             Window1.menu1_File_LoadHex.SetText("Load Hex");
             Window1.menu1_File_SaveHex.SetText("Save Hex");
             Window1.menu1_File_LoadHex.SetEnable(1);
@@ -1375,7 +1375,7 @@ void CPWindow1::OnConfigMenuGUI(const PICSimlabGUIMenu type) {
             Window1.filedialog1.SetFileName("untitled.hex");
             Window1.filedialog1.SetFilter("Hex Files (*.hex)|*.hex;*.HEX");
             break;
-        case GM_BIN:
+        case GMT_BIN:
             Window1.menu1_File_LoadHex.SetText("Load Bin");
             Window1.menu1_File_SaveHex.SetText("Save Bin");
             Window1.menu1_File_LoadHex.SetEnable(1);
@@ -1383,7 +1383,7 @@ void CPWindow1::OnConfigMenuGUI(const PICSimlabGUIMenu type) {
             Window1.filedialog1.SetFileName("untitled.bin");
             Window1.filedialog1.SetFilter("Bin Files (*.bin)|*.bin;*.BIN");
             break;
-        case GM_DISABLED:
+        case GMT_DISABLED:
             Window1.menu1_File_LoadHex.SetEnable(0);
             Window1.menu1_File_SaveHex.SetEnable(0);
             Window1.menu1_File_ReloadLast.SetEnable(0);

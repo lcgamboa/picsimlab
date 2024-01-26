@@ -76,7 +76,7 @@ cpart_IO_74xx573::cpart_IO_74xx573(const unsigned x, const unsigned y, const cha
     ReadMaps();
     Bitmap = NULL;
 
-    LoadImage();
+    LoadPartImage();
 
     io_74xx573_init(&lt8);
     io_74xx573_rst(&lt8);

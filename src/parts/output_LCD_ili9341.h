@@ -51,7 +51,7 @@ public:
     void ConfigurePropertiesWindow(CPWindow* WProp) override;
     void ReadPropertiesWindow(CPWindow* WProp) override;
     std::string WritePreferences(void) override;
-    void LoadImage(void) override;
+    void LoadPartImage(void) override;
     void ReadPreferences(std::string value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;

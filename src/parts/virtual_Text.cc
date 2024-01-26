@@ -71,7 +71,7 @@ void cpart_TEXT::PostInit(void) {
     ChangeText(12, 4, 7);
 }
 
-void cpart_TEXT::LoadImage(void) {
+void cpart_TEXT::LoadPartImage(void) {
     unsigned int max = 0;
 
     for (unsigned int l = 0; l < Lines.size(); l++) {
@@ -197,7 +197,7 @@ void cpart_TEXT::ChangeText(int size, int textcolor, int bgcolor) {
     Textcolor = textcolor;
     Bgcolor = bgcolor;
 
-    LoadImage();
+    LoadPartImage();
 
     input_ids[I_TEXTB]->x1 = 0;
     input_ids[I_TEXTB]->x2 = Width;

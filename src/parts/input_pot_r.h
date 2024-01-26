@@ -43,7 +43,7 @@ public:
     void OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) override;
     void ConfigurePropertiesWindow(CPWindow* WProp) override;
     void ReadPropertiesWindow(CPWindow* WProp) override;
-    void LoadImage(void) override;
+    void LoadPartImage(void) override;
     std::string WritePreferences(void) override;
     void ReadPreferences(std::string value) override;
     void Reset(void) override;

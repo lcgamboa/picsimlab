@@ -470,59 +470,58 @@ void cboard_C3_DevKitC::EvMouseButtonRelease(uint button, uint x, uint y, uint s
 // Called ever 100ms to draw board
 // This is the critical code for simulator running speed
 
-void cboard_C3_DevKitC::Draw(CDraw* draw) {
+void cboard_C3_DevKitC::Draw(CCanvas* Canvas) {
     int i;
 
-    draw->Canvas.Init(Scale, Scale);  // initialize draw context
-    draw->Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
+    Canvas->Init(Scale, Scale);  // initialize draw context
+    Canvas->SetFontWeight(lxFONTWEIGHT_BOLD);
 
     // board_x draw
     for (i = 0; i < outputc; i++)  // run over all outputs
     {
         if (!output[i].r)  // if output shape is a rectangle
         {
-            draw->Canvas.SetFgColor(0, 0, 0);  // black
+            Canvas->SetFgColor(0, 0, 0);  // black
 
             switch (output[i].id)  // search for color of output
             {
                 case O_LON:  // Blue using mcupwr value
-                    draw->Canvas.SetColor(200 * PICSimLab.GetMcuPwr() + 55, 0, 0);
+                    Canvas->SetColor(200 * PICSimLab.GetMcuPwr() + 55, 0, 0);
                     break;
                 case O_LED:  // Blue using mcupwr value
-                    draw->Canvas.SetColor(0, 0, pins[23].oavalue);
+                    Canvas->SetColor(0, 0, pins[23].oavalue);
                     break;
                 case O_RST:
                 case O_BOOT:
-                    draw->Canvas.SetColor(100, 100, 100);
+                    Canvas->SetColor(100, 100, 100);
                     break;
             }
 
             if (output[i].id == O_RST) {
-                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 13);
+                Canvas->Circle(1, output[i].cx, output[i].cy, 13);
                 if (p_RST) {
-                    draw->Canvas.SetColor(15, 15, 15);
+                    Canvas->SetColor(15, 15, 15);
                 } else {
-                    draw->Canvas.SetColor(55, 55, 55);
+                    Canvas->SetColor(55, 55, 55);
                 }
-                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 11);
+                Canvas->Circle(1, output[i].cx, output[i].cy, 11);
             } else if (output[i].id == O_BOOT) {
-                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 13);
+                Canvas->Circle(1, output[i].cx, output[i].cy, 13);
                 if (p_BOOT) {
-                    draw->Canvas.SetColor(15, 15, 15);
+                    Canvas->SetColor(15, 15, 15);
                 } else {
-                    draw->Canvas.SetColor(55, 55, 55);
+                    Canvas->SetColor(55, 55, 55);
                 }
-                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 11);
+                Canvas->Circle(1, output[i].cx, output[i].cy, 11);
             } else {
-                draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                       output[i].y2 - output[i].y1);
+                Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                  output[i].y2 - output[i].y1);
             }
         }
     }
 
     // end draw
-    draw->Canvas.End();
-    draw->Update();
+    Canvas->End();
 }
 
 void cboard_C3_DevKitC::Run_CPU_ns(uint64_t time) {

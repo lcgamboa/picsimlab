@@ -48,7 +48,7 @@ cpart_Buzzer::cpart_Buzzer(const unsigned x, const unsigned y, const char* name,
 
     ReadMaps();
 
-    LoadImage();
+    LoadPartImage();
 
     input_pins[0] = 0;
 

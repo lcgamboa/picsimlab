@@ -39,7 +39,7 @@ static PCWProp pcwprop[16] = {
     {PCW_COMBO, "13-D6"},     {PCW_COMBO, "14-D7"},     {PCW_COMBO, "Model"},     {PCW_END, ""}};
 
 void cpart_LCD_hd44780::Reset(void) {
-    LoadImage();
+    LoadPartImage();
 
     switch (model) {
         case LCD16x2:
@@ -364,25 +364,25 @@ void cpart_LCD_hd44780::PostProcess(void) {
         output_ids[O_LCD]->update = 1;
 }
 
-void cpart_LCD_hd44780::LoadImage(void) {
+void cpart_LCD_hd44780::LoadPartImage(void) {
     lxBitmap* bmp = NULL;
 
     switch (model) {
         case LCD16x2:
-            bmp = SpareParts.LoadImage(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName(), Scale, 0,
-                                       Orientation);
+            bmp = SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName(), Scale, 0,
+                                           Orientation);
             break;
         case LCD16x4:
-            bmp = SpareParts.LoadImage(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName_(), Scale, 0,
-                                       Orientation);
+            bmp = SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName_(), Scale, 0,
+                                           Orientation);
             break;
         case LCD20x2:
-            bmp = SpareParts.LoadImage(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName__(), Scale, 0,
-                                       Orientation);
+            bmp = SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName__(), Scale,
+                                           0, Orientation);
             break;
         case LCD20x4:
-            bmp = SpareParts.LoadImage(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName___(), Scale, 0,
-                                       Orientation);
+            bmp = SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName___(), Scale,
+                                           0, Orientation);
             break;
     }
 

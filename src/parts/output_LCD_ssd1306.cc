@@ -43,7 +43,7 @@ cpart_LCD_ssd1306::cpart_LCD_ssd1306(const unsigned x, const unsigned y, const c
     ReadMaps();
     Bitmap = NULL;
 
-    LoadImage();
+    LoadPartImage();
 
     lcd_ssd1306_init(&lcd);
     lcd_ssd1306_rst(&lcd);
@@ -217,8 +217,8 @@ void cpart_LCD_ssd1306::PostProcess(void) {
         output_ids[O_LCD]->update = 1;
 }
 
-void cpart_LCD_ssd1306::LoadImage(void) {
-    part::LoadImage();
+void cpart_LCD_ssd1306::LoadPartImage(void) {
+    part::LoadPartImage();
     lcd_ssd1306_update(&lcd);
 }
 

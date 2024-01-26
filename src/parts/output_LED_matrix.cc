@@ -45,7 +45,7 @@ cpart_led_matrix::cpart_led_matrix(const unsigned x, const unsigned y, const cha
     angle = 0;
     lmode = 0;
 
-    LoadImage();
+    LoadPartImage();
 
     ldd_max72xx_init(&ldd);
     ldd_max72xx_rst(&ldd);

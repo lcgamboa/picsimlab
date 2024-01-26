@@ -160,7 +160,7 @@ int bsim_remote::MInit(const char* processor, const char* fname, float freq) {
         }
     }
 
-    PICSimLab.ConfigMenuGUI(GM_DISABLED);
+    PICSimLab.ConfigMenuGUI(GMT_DISABLED);
 
     setnblock(listenfd);
 
@@ -240,7 +240,7 @@ void bsim_remote::Disconnect(void) {
 void bsim_remote::MEnd(void) {
     Disconnect();
 
-    PICSimLab.ConfigMenuGUI(GM_HEX);
+    PICSimLab.ConfigMenuGUI(GMT_HEX);
 
     connected = 0;
 

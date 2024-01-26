@@ -44,7 +44,7 @@ cpart_LCD_pcf8833::cpart_LCD_pcf8833(const unsigned x, const unsigned y, const c
     ReadMaps();
     Bitmap = NULL;
 
-    LoadImage();
+    LoadPartImage();
 
     lcd_pcf8833_init(&lcd);
     lcd_pcf8833_rst(&lcd);
@@ -203,8 +203,8 @@ void cpart_LCD_pcf8833::PostProcess(void) {
         output_ids[O_LCD]->update = 1;
 }
 
-void cpart_LCD_pcf8833::LoadImage(void) {
-    part::LoadImage();
+void cpart_LCD_pcf8833::LoadPartImage(void) {
+    part::LoadPartImage();
     lcd_pcf8833_update(&lcd);
 }
 

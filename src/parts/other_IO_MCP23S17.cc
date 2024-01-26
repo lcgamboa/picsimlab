@@ -109,7 +109,7 @@ cpart_IO_MCP23S17::cpart_IO_MCP23S17(const unsigned x, const unsigned y, const c
     ReadMaps();
     Bitmap = NULL;
 
-    LoadImage();
+    LoadPartImage();
 
     io_MCP23X17_init(&mcp);
     io_MCP23X17_rst(&mcp);

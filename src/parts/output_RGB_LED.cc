@@ -42,7 +42,7 @@ cpart_rgb_led::cpart_rgb_led(const unsigned x, const unsigned y, const char* nam
 
     ReadMaps();
 
-    LoadImage();
+    LoadPartImage();
 
     input_pins[0] = 0;
     input_pins[1] = 0;

@@ -43,7 +43,7 @@ cpart_LCD_pcd8544::cpart_LCD_pcd8544(const unsigned x, const unsigned y, const c
     ReadMaps();
     Bitmap = NULL;
 
-    LoadImage();
+    LoadPartImage();
 
     lcd_pcd8544_init(&lcd);
     lcd_pcd8544_rst(&lcd);
@@ -195,8 +195,8 @@ void cpart_LCD_pcd8544::PostProcess(void) {
         output_ids[O_LCD]->update = 1;
 }
 
-void cpart_LCD_pcd8544::LoadImage(void) {
-    part::LoadImage();
+void cpart_LCD_pcd8544::LoadPartImage(void) {
+    part::LoadPartImage();
     lcd_pcd8544_update(&lcd);
 }
 

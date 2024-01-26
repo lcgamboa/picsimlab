@@ -43,7 +43,7 @@ enum PICSimlabStatus { PS_RUN = 0, PS_DEBUG, PS_SERIAL, PS_LAST };
 enum PICSimlabGUIType { GT_GAUGE = 0, GT_SCROLL, GT_LABEL, GT_COMBO, GT_BUTTON, GT_LAST };
 enum PICSimlabGUIAction { GA_ADD = 0, GA_DEL, GA_SET, GA_GET, GA_SET_LABEL, GA_LAST };
 
-enum PICSimlabGUIMenu { GM_HEX, GM_BIN, GM_DISABLED, GM_LAST };
+enum PICSimlabGUIMenu { GMT_HEX, GMT_BIN, GMT_DISABLED, GMT_LAST };
 
 class CPICSimLab {
 public:
@@ -258,8 +258,8 @@ public:
 
     void* UpdateGUI(const int id, const PICSimlabGUIType type, const PICSimlabGUIAction action, const void* arg);
 
-    lxBitmap* LoadImage(const std::string fname, const float scale = 1.0, const int usealpha = 0,
-                        const int orientation = 0);
+    lxBitmap* LoadImageFile(const std::string fname, const float scale = 1.0, const int usealpha = 0,
+                            const int orientation = 0);
 
     void ConfigMenuGUI(const PICSimlabGUIMenu type);
 

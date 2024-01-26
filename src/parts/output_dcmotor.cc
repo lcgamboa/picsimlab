@@ -47,7 +47,7 @@ cpart_dcmotor::cpart_dcmotor(const unsigned x, const unsigned y, const char* nam
     always_update = 1;
     ReadMaps();
 
-    LoadImage();
+    LoadPartImage();
 
     pins[0] = 0;
     pins[1] = 0;

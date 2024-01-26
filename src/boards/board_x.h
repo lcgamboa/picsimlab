@@ -59,7 +59,7 @@ public:
     // Return the about info of board
     std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     // Called ever 100ms to draw board
-    void Draw(CDraw* draw) override;
+    void Draw(CCanvas* Canvas) override;
     void Run_CPU(void) override;
     // Return a list of board supported microcontrollers
     std::string GetSupportedDevices(void) override { return "PIC16F877A,PIC18F4550,PIC18F4620,"; };

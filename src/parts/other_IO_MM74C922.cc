@@ -88,7 +88,7 @@ cpart_IO_MM74C922::cpart_IO_MM74C922(const unsigned x, const unsigned y, const c
     ReadMaps();
     Bitmap = NULL;
 
-    LoadImage();
+    LoadPartImage();
 
     io_MM74C922_init(&kc);
     io_MM74C922_rst(&kc);

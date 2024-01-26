@@ -105,7 +105,7 @@ cpart_Jumpers::cpart_Jumpers(const unsigned x, const unsigned y, const char* nam
     ReadMaps();
     Bitmap = NULL;
 
-    LoadImage();
+    LoadPartImage();
 
     buff[0] = 'A' + ID;
     buff[1] = 0;

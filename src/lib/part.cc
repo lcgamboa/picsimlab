@@ -57,7 +57,7 @@ part::part(const unsigned x, const unsigned y, const char* name, const char* typ
 
 void part::Init(void) {
     ReadMaps();
-    LoadImage();
+    LoadPartImage();
 #ifndef __EMSCRIPTEN__
     RegisterRemoteControl();
 #endif
@@ -311,10 +311,10 @@ int part::PointInside(int x, int y, input_t input) {
         return 0;
 }
 
-void part::LoadImage(void) {
+void part::LoadPartImage(void) {
     std::string iname = PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName();
 
-    lxBitmap* bmp = SpareParts.LoadImage(iname, Scale, 0, Orientation);
+    lxBitmap* bmp = SpareParts.LoadImageFile(iname, Scale, 0, Orientation);
 
     if (bmp != NULL) {
         if (SpareParts.GetWindow()) {
@@ -322,8 +322,8 @@ void part::LoadImage(void) {
             canvas.Destroy();
             canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
         }
-    } else if ((bmp = SpareParts.LoadImage(PICSimLab.GetSharePath() + "parts/Common/notfound.svg", Scale, 0,
-                                           Orientation)) != NULL) {
+    } else if ((bmp = SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "parts/Common/notfound.svg", Scale, 0,
+                                               Orientation)) != NULL) {
         if (SpareParts.GetWindow()) {
             Bitmap = bmp;
             canvas.Destroy();
@@ -353,7 +353,7 @@ void part::SetOrientation(int orientation) {
     delete Bitmap;
     Bitmap = NULL;
 
-    LoadImage();
+    LoadPartImage();
 
     for (int i = 0; i < outputc; i++) {
         output[i].update = 1;
@@ -376,7 +376,7 @@ void part::SetScale(double scale) {
     delete Bitmap;
     Bitmap = NULL;
 
-    LoadImage();
+    LoadPartImage();
 
     for (int i = 0; i < outputc; i++) {
         output[i].update = 1;

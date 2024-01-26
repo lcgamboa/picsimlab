@@ -322,12 +322,12 @@ void cpart_leds::ChangeSize(const unsigned int sz) {
             Size = 8;
         }
         outputc = Size * 2;
-        LoadImage();
+        LoadPartImage();
     }
     RegisterRemoteControl();
 }
 
-void cpart_leds::LoadImage(void) {
+void cpart_leds::LoadPartImage(void) {
     if (Size < 8) {
         xoff = (8 - Size) * 62;
 
@@ -340,7 +340,7 @@ void cpart_leds::LoadImage(void) {
             canvas.Destroy();
             canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
 
-            lxBitmap* BackBitmap = SpareParts.LoadImage(
+            lxBitmap* BackBitmap = SpareParts.LoadImageFile(
                 PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(), Scale, 0, Orientation);
 
             canvas.Init(Scale, Scale, Orientation);
@@ -359,7 +359,7 @@ void cpart_leds::LoadImage(void) {
         Width = OWidth;
         Height = OHeight;
         xoff = 0;
-        part::LoadImage();
+        part::LoadPartImage();
     }
 }
 

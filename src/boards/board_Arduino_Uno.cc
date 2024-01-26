@@ -299,7 +299,7 @@ void cboard_Arduino_Uno::EvMouseButtonRelease(uint button, uint x, uint y, uint 
 // Called ever 100ms to draw board
 // This is the critical code for simulator running speed
 
-void cboard_Arduino_Uno::Draw(CDraw* draw) {
+void cboard_Arduino_Uno::Draw(CCanvas* Canvas) {
     int i;
     int update = 0;  // verifiy if updated is needed
 
@@ -311,45 +311,44 @@ void cboard_Arduino_Uno::Draw(CDraw* draw) {
             output[i].update = 0;
 
             if (!update) {
-                draw->Canvas.Init(Scale, Scale);
-                draw->Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
+                Canvas->Init(Scale, Scale);
+                Canvas->SetFontWeight(lxFONTWEIGHT_BOLD);
             }
             update++;          // set to update buffer
             if (!output[i].r)  // if output shape is a rectangle
             {
                 switch (output[i].id) {
                     case O_ON:
-                        draw->Canvas.SetColor(0, 200 * PICSimLab.GetMcuPwr() + 55, 0);
+                        Canvas->SetColor(0, 200 * PICSimLab.GetMcuPwr() + 55, 0);
                         break;
                     case O_RX:
-                        draw->Canvas.SetColor(0, (255 - pins[1].oavalue) * PICSimLab.GetMcuPwr(), 0);
+                        Canvas->SetColor(0, (255 - pins[1].oavalue) * PICSimLab.GetMcuPwr(), 0);
                         break;
                     case O_TX:
-                        draw->Canvas.SetColor(0, (255 - ((unsigned char)pins[2].oavalue * 10)) * PICSimLab.GetMcuPwr(),
-                                              0);
+                        Canvas->SetColor(0, (255 - ((unsigned char)pins[2].oavalue * 10)) * PICSimLab.GetMcuPwr(), 0);
                         break;
                     case O_L:
-                        draw->Canvas.SetColor(0, pins[LED_pin].oavalue, 0);
+                        Canvas->SetColor(0, pins[LED_pin].oavalue, 0);
                         break;
                     case O_RST:
-                        draw->Canvas.SetColor(100, 100, 100);
+                        Canvas->SetColor(100, 100, 100);
                         break;
                     default:
-                        draw->Canvas.SetColor(0, 0, 0);
+                        Canvas->SetColor(0, 0, 0);
                         break;
                 }
 
                 if (output[i].id == O_RST) {
-                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, ((output[i].x2 - output[i].x1) / 2) - 5);
+                    Canvas->Circle(1, output[i].cx, output[i].cy, ((output[i].x2 - output[i].x1) / 2) - 5);
                     if (p_RST) {
-                        draw->Canvas.SetColor(15, 15, 15);
+                        Canvas->SetColor(15, 15, 15);
                     } else {
-                        draw->Canvas.SetColor(55, 55, 55);
+                        Canvas->SetColor(55, 55, 55);
                     }
-                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, ((output[i].x2 - output[i].x1) / 2) - 7);
+                    Canvas->Circle(1, output[i].cx, output[i].cy, ((output[i].x2 - output[i].x1) / 2) - 7);
                 } else {
-                    draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                           output[i].y2 - output[i].y1);
+                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                      output[i].y2 - output[i].y1);
                 }
             }
         }
@@ -357,8 +356,7 @@ void cboard_Arduino_Uno::Draw(CDraw* draw) {
 
     // end draw
     if (update) {
-        draw->Canvas.End();
-        draw->Update();
+        Canvas->End();
     }
 
     int value = (pins[PWM_pins[0]].oavalue - 55) / 2;

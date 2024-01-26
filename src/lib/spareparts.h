@@ -120,8 +120,8 @@ public:
 
     std::string GetOldFilename(void) { return oldfname; };
 
-    lxBitmap* LoadImage(const std::string fname, const float scale = 1.0, const int usealpha = 0,
-                        const int orientation = 0);
+    lxBitmap* LoadImageFile(const std::string fname, const float scale = 1.0, const int usealpha = 0,
+                            const int orientation = 0);
 
     lxBitmap* CreateBlankImage(const unsigned int width, const unsigned int height, const float scale = 1.0,
                                const int usealpha = 0, const int orientation = 0);

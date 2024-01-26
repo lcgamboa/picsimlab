@@ -97,7 +97,7 @@ cpart_7s_display::cpart_7s_display(const unsigned x, const unsigned y, const cha
 
     ReadMaps();
 
-    LoadImage();
+    LoadPartImage();
 
     input_pins[0] = 0;
     input_pins[1] = 0;
@@ -716,7 +716,7 @@ void cpart_7s_display::ChangeType(unsigned char tp) {
 
     ReadMaps();
 
-    LoadImage();
+    LoadPartImage();
 }
 
 part_init(PART_7S_DISPLAY_Name, cpart_7s_display, "Output");

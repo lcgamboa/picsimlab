@@ -741,7 +741,7 @@ void cpart_LCD_ili9341::ChangeType(unsigned char tp) {
 
     ReadMaps();
 
-    LoadImage();
+    LoadPartImage();
 }
 
 void cpart_LCD_ili9341::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
@@ -780,8 +780,8 @@ void cpart_LCD_ili9341::Reset(void) {
     tsc_XPT2046_rst(&touch);
 }
 
-void cpart_LCD_ili9341::LoadImage(void) {
-    part::LoadImage();
+void cpart_LCD_ili9341::LoadPartImage(void) {
+    part::LoadPartImage();
     lcd_ili9341_update(&lcd);
 }
 

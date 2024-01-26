@@ -217,7 +217,7 @@ void cpart_keypad::ChangeType(unsigned char tp) {
 
     ReadMaps();
 
-    LoadImage();
+    LoadPartImage();
 }
 
 void cpart_keypad::DrawOutput(const unsigned int i) {

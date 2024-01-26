@@ -303,7 +303,7 @@ public:
     /**
      * @brief  Load Part Image
      */
-    virtual void LoadImage(void);
+    virtual void LoadPartImage(void);
 
     /**
      * @brief  Return the orientation to draw

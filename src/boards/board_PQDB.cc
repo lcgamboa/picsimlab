@@ -29,19 +29,19 @@
 
 #include "board_PQDB.h"
 
-#define selectColorByValue(Value)                   \
-    {                                               \
-        if (Value) {                                \
-            draw->Canvas.SetBgColor(205, 0, 0);     \
-        } else {                                    \
-            draw->Canvas.SetBgColor(205, 180, 180); \
-        }                                           \
-        draw->Canvas.SetFgColor(205, 180, 180);     \
+#define selectColorByValue(Value)              \
+    {                                          \
+        if (Value) {                           \
+            Canvas->SetBgColor(205, 0, 0);     \
+        } else {                               \
+            Canvas->SetBgColor(205, 180, 180); \
+        }                                      \
+        Canvas->SetFgColor(205, 180, 180);     \
     }
 
-#define selectColorByPinValue(PIN_ID)                        \
-    draw->Canvas.SetBgColor(pic.pins[PIN_ID].oavalue, 0, 0); \
-    draw->Canvas.SetFgColor(205, 180, 180)
+#define selectColorByPinValue(PIN_ID)                   \
+    Canvas->SetBgColor(pic.pins[PIN_ID].oavalue, 0, 0); \
+    Canvas->SetFgColor(205, 180, 180)
 
 /* outputs */
 enum {
@@ -206,7 +206,7 @@ cboard_PQDB::~cboard_PQDB(void) {
     lcd_end(&lcd);
 }
 
-void cboard_PQDB::Draw(CDraw* draw) {
+void cboard_PQDB::Draw(CCanvas* Canvas) {
     int i;
     int update = 0;  // verifiy if updated is needed
 
@@ -217,13 +217,13 @@ void cboard_PQDB::Draw(CDraw* draw) {
             output[i].update = 0;
 
             if (!update) {
-                draw->Canvas.Init(Scale, Scale);
-                draw->Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
+                Canvas->Init(Scale, Scale);
+                Canvas->SetFontWeight(lxFONTWEIGHT_BOLD);
             }
             update++;  // set to update buffer
 
             if (!output[i].r) {
-                draw->Canvas.SetFgColor(30, 0, 0);
+                Canvas->SetFgColor(30, 0, 0);
                 // seven segments display
                 switch (output[i].id) {
                     case O_A1:
@@ -254,11 +254,11 @@ void cboard_PQDB::Draw(CDraw* draw) {
                     case O_E4:
                     case O_F4:
                     case O_G4:
-                        draw->Canvas.SetBgColor(lm7seg[output[i].id - O_B1], 30, 30);
-                        draw->Canvas.SetFgColor(10, 10, 10);
+                        Canvas->SetBgColor(lm7seg[output[i].id - O_B1], 30, 30);
+                        Canvas->SetFgColor(10, 10, 10);
                         break;
                     case O_MP:
-                        draw->Canvas.SetColor(26, 26, 26);
+                        Canvas->SetColor(26, 26, 26);
                         break;
                     case O_SS1:
                         output_ids[O_A1]->update = 1;
@@ -269,7 +269,7 @@ void cboard_PQDB::Draw(CDraw* draw) {
                         output_ids[O_F1]->update = 1;
                         output_ids[O_G1]->update = 1;
                         output_ids[O_P1]->update = 1;
-                        draw->Canvas.SetColor(10, 10, 10);
+                        Canvas->SetColor(10, 10, 10);
                         break;
                     case O_SS2:
                         output_ids[O_A2]->update = 1;
@@ -280,7 +280,7 @@ void cboard_PQDB::Draw(CDraw* draw) {
                         output_ids[O_F2]->update = 1;
                         output_ids[O_G2]->update = 1;
                         output_ids[O_P2]->update = 1;
-                        draw->Canvas.SetColor(10, 10, 10);
+                        Canvas->SetColor(10, 10, 10);
                         break;
                     case O_SS3:
                         output_ids[O_A3]->update = 1;
@@ -291,7 +291,7 @@ void cboard_PQDB::Draw(CDraw* draw) {
                         output_ids[O_F3]->update = 1;
                         output_ids[O_G3]->update = 1;
                         output_ids[O_P3]->update = 1;
-                        draw->Canvas.SetColor(10, 10, 10);
+                        Canvas->SetColor(10, 10, 10);
                         break;
                     case O_SS4:
                         output_ids[O_A4]->update = 1;
@@ -302,25 +302,25 @@ void cboard_PQDB::Draw(CDraw* draw) {
                         output_ids[O_F4]->update = 1;
                         output_ids[O_G4]->update = 1;
                         output_ids[O_P4]->update = 1;
-                        draw->Canvas.SetColor(10, 10, 10);
+                        Canvas->SetColor(10, 10, 10);
                         break;
                     case O_LCD:
-                        draw->Canvas.SetColor(0, 90 * PICSimLab.GetMcuPwr() + 40, 0);
+                        Canvas->SetColor(0, 90 * PICSimLab.GetMcuPwr() + 40, 0);
                         break;
                     case O_RST:
-                        draw->Canvas.SetColor(100, 100, 100);
-                        draw->Canvas.Circle(1, output[i].cx, output[i].cy, 11);
+                        Canvas->SetColor(100, 100, 100);
+                        Canvas->Circle(1, output[i].cx, output[i].cy, 11);
                         if (p_RST) {
-                            draw->Canvas.SetColor(15, 15, 15);
+                            Canvas->SetColor(15, 15, 15);
                         } else {
-                            draw->Canvas.SetColor(55, 55, 55);
+                            Canvas->SetColor(55, 55, 55);
                         }
                         break;
                     case O_LPWR:
-                        draw->Canvas.SetColor(0, 255 * PICSimLab.GetMcuPwr(), 0);
+                        Canvas->SetColor(0, 255 * PICSimLab.GetMcuPwr(), 0);
                         break;
                     case O_LED:
-                        draw->Canvas.SetColor(0, pic.pins[6].oavalue, 0);
+                        Canvas->SetColor(0, pic.pins[6].oavalue, 0);
                         break;
                     case O_SOEN:
                         selectColorByPinValue(SO_EN_PIN);
@@ -391,12 +391,12 @@ void cboard_PQDB::Draw(CDraw* draw) {
                     case O_TC8:
                     case O_TC9:
                     case O_TC0:
-                        draw->Canvas.SetColor(100, 100, 100);
-                        draw->Canvas.Circle(1, output[i].cx, output[i].cy, 11);
+                        Canvas->SetColor(100, 100, 100);
+                        Canvas->Circle(1, output[i].cx, output[i].cy, 11);
                         if (p_KEY[output[i].id - O_TC1]) {
-                            draw->Canvas.SetColor(55, 55, 55);
+                            Canvas->SetColor(55, 55, 55);
                         } else {
-                            draw->Canvas.SetColor(15, 15, 15);
+                            Canvas->SetColor(15, 15, 15);
                         }
                         break;
                     default:
@@ -404,49 +404,49 @@ void cboard_PQDB::Draw(CDraw* draw) {
                 }
 
                 if ((output[i].id >= O_TC1) && (output[i].id <= O_TC0)) {
-                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, 9);
+                    Canvas->Circle(1, output[i].cx, output[i].cy, 9);
                 } else if (output[i].id == O_RST) {
-                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, 9);
+                    Canvas->Circle(1, output[i].cx, output[i].cy, 9);
                 } else if (output[i].id == O_POT) {
-                    draw->Canvas.SetBgColor(66, 109, 246);
-                    draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                           output[i].y2 - output[i].y1);
+                    Canvas->SetBgColor(66, 109, 246);
+                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                      output[i].y2 - output[i].y1);
 
-                    draw->Canvas.SetBgColor(250, 250, 250);
-                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, 20);
+                    Canvas->SetBgColor(250, 250, 250);
+                    Canvas->Circle(1, output[i].cx, output[i].cy, 20);
 
-                    draw->Canvas.SetBgColor(150, 150, 150);
+                    Canvas->SetBgColor(150, 150, 150);
                     int x = -15 * sin((5.585 * (pot / 200.0)) + 0.349);
                     int y = 15 * cos((5.585 * (pot / 200.0)) + 0.349);
-                    draw->Canvas.Circle(1, output[i].cx + x, output[i].cy + y, 3);
+                    Canvas->Circle(1, output[i].cx + x, output[i].cy + y, 3);
                 } else if (output[i].id == O_LCD) {  // draw lcd text
                     // strech lcd background
-                    draw->Canvas.Rectangle(1, output[i].x1 - 15, output[i].y1 - 5, output[i].x2 - output[i].x1 + 32,
-                                           output[i].y2 - output[i].y1 + 13);
-                    lcd_draw(&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                    Canvas->Rectangle(1, output[i].x1 - 15, output[i].y1 - 5, output[i].x2 - output[i].x1 + 32,
+                                      output[i].y2 - output[i].y1 + 13);
+                    lcd_draw(&lcd, Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                              output[i].y2 - output[i].y1, PICSimLab.GetMcuPwr());
                 } else if (output[i].id == O_MP) {
-                    draw->Canvas.SetFontSize(10);
-                    draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                           output[i].y2 - output[i].y1);
-                    draw->Canvas.SetColor(230, 230, 230);
-                    draw->Canvas.RotatedText(Proc, output[i].x1 + 85, output[i].y1 + 5, 0);
+                    Canvas->SetFontSize(10);
+                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                      output[i].y2 - output[i].y1);
+                    Canvas->SetColor(230, 230, 230);
+                    Canvas->RotatedText(Proc, output[i].x1 + 85, output[i].y1 + 5, 0);
                 } else {
-                    draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                           output[i].y2 - output[i].y1);
+                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                      output[i].y2 - output[i].y1);
                 }
 
             } else {
                 if (output[i].id == O_RGB) {
-                    draw->Canvas.SetFgColor(55, 55, 55);
-                    draw->Canvas.SetBgColor(pic.pins[LED_RED_PIN].oavalue, pic.pins[LED_GREEN_PIN].oavalue,
-                                            pic.pins[LED_BLUE_PIN].oavalue);
-                    DrawLED(&draw->Canvas, &output[i]);
+                    Canvas->SetFgColor(55, 55, 55);
+                    Canvas->SetBgColor(pic.pins[LED_RED_PIN].oavalue, pic.pins[LED_GREEN_PIN].oavalue,
+                                       pic.pins[LED_BLUE_PIN].oavalue);
+                    DrawLED(Canvas, &output[i]);
                 } else if ((output[i].id == O_P1) || (output[i].id == O_P2) || (output[i].id == O_P3) ||
                            (output[i].id == O_P4)) {
-                    draw->Canvas.SetBgColor(lm7seg[output[i].id - O_B1], 30, 30);
-                    draw->Canvas.SetFgColor(10, 10, 10);
-                    draw->Canvas.Circle(1, output[i].x1, output[i].y1, output[i].r);
+                    Canvas->SetBgColor(lm7seg[output[i].id - O_B1], 30, 30);
+                    Canvas->SetFgColor(10, 10, 10);
+                    Canvas->Circle(1, output[i].x1, output[i].y1, output[i].r);
                 }
             }
         }
@@ -455,8 +455,7 @@ void cboard_PQDB::Draw(CDraw* draw) {
     // end draw
 
     if (update) {
-        draw->Canvas.End();
-        draw->Update();
+        Canvas->End();
     }
 
     if (((0.5 * (pic.pins[PWM_PIN].oavalue - 55)) > 10) && (PICSimLab.GetMcuPwr())) {

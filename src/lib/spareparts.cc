@@ -674,8 +674,8 @@ void CSpareParts::SetfdOldFilename(const std::string ofn) {
     oldfname = ofn;
 }
 
-lxBitmap* CSpareParts::LoadImage(const std::string fname, const float scale, const int usealpha,
-                                 const int orientation) {
+lxBitmap* CSpareParts::LoadImageFile(const std::string fname, const float scale, const int usealpha,
+                                     const int orientation) {
     if (OnLoadImage) {
         return (*OnLoadImage)(fname, scale, usealpha, orientation);
     }

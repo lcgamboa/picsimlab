@@ -229,7 +229,8 @@ void CPICSimLab::UpdateStatus(const PICSimlabStatus field, const std::string msg
     }
 }
 
-lxBitmap* CPICSimLab::LoadImage(const std::string fname, const float scale, const int usealpha, const int orientation) {
+lxBitmap* CPICSimLab::LoadImageFile(const std::string fname, const float scale, const int usealpha,
+                                    const int orientation) {
     if (OnLoadImage) {
         return (*OnLoadImage)(fname, scale, usealpha, orientation);
     }

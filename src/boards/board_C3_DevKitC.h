@@ -53,7 +53,7 @@ public:
     // Destructor called once on board destruction
     ~cboard_C3_DevKitC(void);
     // Called ever 100ms to draw board
-    void Draw(CDraw* draw) override;
+    void Draw(CCanvas* Canvas) override;
     void Run_CPU(void) override;
     void Run_CPU_ns(uint64_t time) override;
     // Return a list of board supported microcontrollers

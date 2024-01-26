@@ -169,13 +169,13 @@ void cpart_servo::ReadPropertiesWindow(CPWindow* WProp) {
     input_pin = GetPWCComboSelectedPin(WProp, "combo1");
 }
 
-void cpart_servo::LoadImage(void) {
+void cpart_servo::LoadPartImage(void) {
     if (SpareParts.GetWindow()) {
-        Bitmap = SpareParts.LoadImage(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(), Scale, 0,
-                                      Orientation);
+        Bitmap = SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(),
+                                          Scale, 0, Orientation);
 
-        lxBitmap* bmp = SpareParts.LoadImage(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(),
-                                             Scale, 0, Orientation);
+        lxBitmap* bmp = SpareParts.LoadImageFile(
+            PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(), Scale, 0, Orientation);
 
         if (BackGround) {
             delete BackGround;

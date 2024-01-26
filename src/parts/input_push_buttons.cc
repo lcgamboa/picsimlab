@@ -45,7 +45,7 @@ static PCWProp pcwprop[14] = {{PCW_LABEL, "1 -VCC,+5V"}, {PCW_COMBO, "2 -Out 1"}
                               {PCW_SPIN, "Size"},        {PCW_END, ""}};
 
 cpart_pbuttons::cpart_pbuttons(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_){
+    : part(x, y, name, type, pboard_) {
     active = 1;
     Size = 0;
     Bitmap = NULL;
@@ -465,11 +465,11 @@ void cpart_pbuttons::ChangeSize(const unsigned int sz) {
         }
         outputc = Size * 2;
         inputc = Size;
-        LoadImage();
+        LoadPartImage();
     }
 }
 
-void cpart_pbuttons::LoadImage(void) {
+void cpart_pbuttons::LoadPartImage(void) {
     if (Size < 8) {
         xoff = (8 - Size) * 62;
 
@@ -482,7 +482,7 @@ void cpart_pbuttons::LoadImage(void) {
             canvas.Destroy();
             canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
 
-            lxBitmap* BackBitmap = SpareParts.LoadImage(
+            lxBitmap* BackBitmap = SpareParts.LoadImageFile(
                 PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(), Scale, 0, Orientation);
 
             canvas.Init(Scale, Scale, Orientation);
@@ -501,7 +501,7 @@ void cpart_pbuttons::LoadImage(void) {
         Width = OWidth;
         Height = OHeight;
         xoff = 0;
-        part::LoadImage();
+        part::LoadPartImage();
     }
 }
 

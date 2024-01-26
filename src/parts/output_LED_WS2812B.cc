@@ -71,7 +71,7 @@ cpart_led_ws2812b::~cpart_led_ws2812b(void) {
     led_ws2812b_end(&led);
 }
 
-void cpart_led_ws2812b::LoadImage(void) {
+void cpart_led_ws2812b::LoadPartImage(void) {
     if (led.nleds > 1) {
         xoff = (led.ncols - 1) * 40;
         yoff = (led.nrows - 1) * 40;
@@ -84,10 +84,10 @@ void cpart_led_ws2812b::LoadImage(void) {
             canvas.Destroy();
             canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
 
-            lxBitmap* BackBitmap = SpareParts.LoadImage(
+            lxBitmap* BackBitmap = SpareParts.LoadImageFile(
                 PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(), Scale, 0, Orientation);
 
-            lxBitmap* LEDBitmap = SpareParts.LoadImage(
+            lxBitmap* LEDBitmap = SpareParts.LoadImageFile(
                 PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetName() + "/LED.svg", Scale, 0, Orientation);
 
             canvas.Init(Scale, Scale, Orientation);
@@ -115,7 +115,7 @@ void cpart_led_ws2812b::LoadImage(void) {
         Height = OHeight;
         xoff = 0;
         yoff = 0;
-        part::LoadImage();
+        part::LoadPartImage();
     }
 }
 
@@ -230,7 +230,7 @@ void cpart_led_ws2812b::ChangeType(const unsigned int rows, const unsigned int c
             cols_ = MAXCOLS;
         led_ws2812b_init(&led, rows_, cols_, diffuser);
 
-        LoadImage();
+        LoadPartImage();
     }
 }
 

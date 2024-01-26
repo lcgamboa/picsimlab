@@ -357,7 +357,7 @@ int bsim_qemu::MInit(const char* processor, const char* _fname, float freq_) {
     qemu_started = -1;
 #endif
 
-        PICSimLab.ConfigMenuGUI(GM_BIN);
+        PICSimLab.ConfigMenuGUI(GMT_BIN);
 
 #ifndef __EMSCRIPTEN__
     } else {
@@ -914,7 +914,7 @@ void bsim_qemu::MEnd(void) {
     qmp_quit(NULL);
     qemu_mutex_unlock_iothread();
 
-    PICSimLab.ConfigMenuGUI(GM_HEX);
+    PICSimLab.ConfigMenuGUI(GMT_HEX);
 
 #ifdef _WIN_
     Sleep(200);

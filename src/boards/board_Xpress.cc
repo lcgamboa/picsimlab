@@ -331,98 +331,97 @@ void cboard_Xpress::EvMouseButtonRelease(uint button, uint x, uint y, uint state
 // Called ever 100ms to draw board
 // This is the critical code for simulator running speed
 
-void cboard_Xpress::Draw(CDraw* draw) {
+void cboard_Xpress::Draw(CCanvas* Canvas) {
     int i;
 
-    draw->Canvas.Init(Scale, Scale);  // initialize draw context
-    draw->Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
+    Canvas->Init(Scale, Scale);  // initialize draw context
+    Canvas->SetFontWeight(lxFONTWEIGHT_BOLD);
 
     // board_6 draw
     for (i = 0; i < outputc; i++)  // run over all outputs
     {
         if (!output[i].r)  // if output shape is a rectangle
         {
-            draw->Canvas.SetFgColor(0, 0, 0);  // black
+            Canvas->SetFgColor(0, 0, 0);  // black
 
             switch (output[i].id)  // search for color of output
             {
                 case O_D1:  // green using picpwr value
-                    draw->Canvas.SetColor(0, 200 * PICSimLab.GetMcuPwr() + 55, 0);
+                    Canvas->SetColor(0, 200 * PICSimLab.GetMcuPwr() + 55, 0);
                     break;
                 case O_D1R:  // green using picpwr value
-                    draw->Canvas.SetColor(200 * !PICSimLab.GetMcuPwr() + 55, 0, 0);
+                    Canvas->SetColor(200 * !PICSimLab.GetMcuPwr() + 55, 0, 0);
                     break;
                 case O_D2:  // Red using pin 27 mean  value (RA0)
-                    draw->Canvas.SetColor(pic.pins[26].oavalue, 0, 0);
+                    Canvas->SetColor(pic.pins[26].oavalue, 0, 0);
                     break;
                 case O_D3:  // Red using pin 28 mean  value (RA1)
-                    draw->Canvas.SetColor(pic.pins[27].oavalue, 0, 0);
+                    Canvas->SetColor(pic.pins[27].oavalue, 0, 0);
                     break;
                 case O_D4:  // Red using pin 1 mean value (RA2)
-                    draw->Canvas.SetColor(pic.pins[0].oavalue, 0, 0);
+                    Canvas->SetColor(pic.pins[0].oavalue, 0, 0);
                     break;
                 case O_D5:  // Red using pin 2 mean value (RA3)
-                    draw->Canvas.SetColor(pic.pins[1].oavalue, 0, 0);
+                    Canvas->SetColor(pic.pins[1].oavalue, 0, 0);
                     break;
                 case O_S1:
                 case O_RST:
-                    draw->Canvas.SetColor(100, 100, 100);
+                    Canvas->SetColor(100, 100, 100);
                     break;
                 case O_MP:
-                    draw->Canvas.SetColor(26, 26, 26);
+                    Canvas->SetColor(26, 26, 26);
                     break;
             }
 
             if (output[i].id == O_MP) {
                 lxRect rec;
-                draw->Canvas.SetFontSize(2);
-                draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                       output[i].y2 - output[i].y1);
-                draw->Canvas.SetFgColor(230, 230, 230);
+                Canvas->SetFontSize(2);
+                Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                  output[i].y2 - output[i].y1);
+                Canvas->SetFgColor(230, 230, 230);
                 rec.x = output[i].x1;
                 rec.y = output[i].y1;
                 rec.width = output[i].x2 - output[i].x1;
                 rec.height = output[i].y2 - output[i].y1;
-                draw->Canvas.TextOnRect(Proc, rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
+                Canvas->TextOnRect(Proc, rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
             } else if (output[i].id == O_S1) {
-                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 12);
+                Canvas->Circle(1, output[i].cx, output[i].cy, 12);
                 if (p_BT1) {
-                    draw->Canvas.SetColor(15, 15, 15);
+                    Canvas->SetColor(15, 15, 15);
                 } else {
-                    draw->Canvas.SetColor(55, 55, 55);
+                    Canvas->SetColor(55, 55, 55);
                 }
-                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 10);
+                Canvas->Circle(1, output[i].cx, output[i].cy, 10);
             } else if (output[i].id == O_RST) {
-                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 12);
+                Canvas->Circle(1, output[i].cx, output[i].cy, 12);
                 if (p_RST) {
-                    draw->Canvas.SetColor(15, 15, 15);
+                    Canvas->SetColor(15, 15, 15);
                 } else {
-                    draw->Canvas.SetColor(55, 55, 55);
+                    Canvas->SetColor(55, 55, 55);
                 }
-                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 10);
+                Canvas->Circle(1, output[i].cx, output[i].cy, 10);
             } else if (output[i].id == O_POT1) {
-                draw->Canvas.SetBgColor(66, 109, 246);
-                draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                       output[i].y2 - output[i].y1);
+                Canvas->SetBgColor(66, 109, 246);
+                Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                  output[i].y2 - output[i].y1);
 
-                draw->Canvas.SetBgColor(250, 250, 250);
-                draw->Canvas.Circle(1, output[i].cx, output[i].cy, 20);
+                Canvas->SetBgColor(250, 250, 250);
+                Canvas->Circle(1, output[i].cx, output[i].cy, 20);
 
-                draw->Canvas.SetBgColor(150, 150, 150);
+                Canvas->SetBgColor(150, 150, 150);
                 int x = -15 * sin((5.585 * (pot1 / 200.0)) + 0.349);
                 int y = 15 * cos((5.585 * (pot1 / 200.0)) + 0.349);
-                draw->Canvas.Circle(1, output[i].cx + x, output[i].cy + y, 3);
+                Canvas->Circle(1, output[i].cx + x, output[i].cy + y, 3);
             } else {
                 // draw a rectangle
-                draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                       output[i].y2 - output[i].y1);
+                Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                  output[i].y2 - output[i].y1);
             }
         }
     }
 
     // end draw
-    draw->Canvas.End();
-    draw->Update();
+    Canvas->End();
 
     int value = (pic.pins[26].oavalue - 55) / 2;  // RA0 mean value
     PICSimLab.UpdateGUI(PWM0, GT_GAUGE, GA_SET, (void*)&value);

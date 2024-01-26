@@ -186,7 +186,7 @@ public:
     std::string GetAboutInfo(void) override { return "R.M.A. Almeida	  \n <rodrigomax@unifei.edu.br>"; };
     cboard_PQDB(void);
     ~cboard_PQDB(void);
-    void Draw(CDraw* draw) override;
+    void Draw(CCanvas* Canvas) override;
     void Run_CPU(void) override;
 
     std::string GetSupportedDevices(void) override { return "PIC18F4520,PIC18F4550,PIC18F4620,"; };

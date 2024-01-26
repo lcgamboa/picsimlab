@@ -42,7 +42,7 @@ public:
     void ReadPropertiesWindow(CPWindow* WProp) override;
     std::string WritePreferences(void) override;
     void ReadPreferences(std::string value) override;
-    void LoadImage(void) override;
+    void LoadPartImage(void) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
     void SpinChange(CPWindow* WProp, CSpin* control, int value) override;

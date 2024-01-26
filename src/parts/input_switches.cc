@@ -439,11 +439,11 @@ void cpart_switches::ChangeSize(const unsigned int sz) {
         }
         outputc = Size * 2;
         inputc = Size;
-        LoadImage();
+        LoadPartImage();
     }
 }
 
-void cpart_switches::LoadImage(void) {
+void cpart_switches::LoadPartImage(void) {
     if (Size < 8) {
         xoff = (8 - Size) * 49;
 
@@ -456,7 +456,7 @@ void cpart_switches::LoadImage(void) {
             canvas.Destroy();
             canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
 
-            lxBitmap* BackBitmap = SpareParts.LoadImage(
+            lxBitmap* BackBitmap = SpareParts.LoadImageFile(
                 PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(), Scale, 0, Orientation);
 
             canvas.Init(Scale, Scale, Orientation);
@@ -475,7 +475,7 @@ void cpart_switches::LoadImage(void) {
         Width = OWidth;
         Height = OHeight;
         xoff = 0;
-        part::LoadImage();
+        part::LoadPartImage();
     }
 }
 

@@ -59,7 +59,7 @@ public:
     // Destructor called once on board destruction
     ~cboard_Curiosity_HPC(void);
     // Called ever 100ms to draw board
-    void Draw(CDraw* draw) override;
+    void Draw(CCanvas* Canvas) override;
     void Run_CPU(void) override;
     // Return a list of board supported microcontrollers
     std::string GetSupportedDevices(void) override { return "PIC18F47K40,"; };

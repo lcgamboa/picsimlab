@@ -136,7 +136,7 @@ int cboard_K16F::MDumpMemory(const char* mfname) {
     return bsim_picsim::MDumpMemory(mfname);
 }
 
-void cboard_K16F::Draw(CDraw* draw) {
+void cboard_K16F::Draw(CCanvas* Canvas) {
     int i;
     int update = 0;  // verifiy if updated is needed
 
@@ -147,24 +147,24 @@ void cboard_K16F::Draw(CDraw* draw) {
             output[i].update = 0;
 
             if (!update) {
-                draw->Canvas.Init(Scale, Scale);
-                draw->Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
+                Canvas->Init(Scale, Scale);
+                Canvas->SetFontWeight(lxFONTWEIGHT_BOLD);
             }
             update++;  // set to update buffer
 
             if (!output[i].r)  // rectangle
             {
-                draw->Canvas.SetFgColor(30, 0, 0);
+                Canvas->SetFgColor(30, 0, 0);
 
                 switch (output[i].id) {
                     case O_LCD:
-                        draw->Canvas.SetColor(0, 90 * PICSimLab.GetMcuPwr() + 40, 0);
+                        Canvas->SetColor(0, 90 * PICSimLab.GetMcuPwr() + 40, 0);
                         break;
                     case O_RST:
-                        draw->Canvas.SetColor(100, 100, 100);
+                        Canvas->SetColor(100, 100, 100);
                         break;
                     case O_MP:
-                        draw->Canvas.SetColor(26, 26, 26);
+                        Canvas->SetColor(26, 26, 26);
                         break;
                 }
 
@@ -172,72 +172,71 @@ void cboard_K16F::Draw(CDraw* draw) {
 
                 if (output[i].id == O_LCD) {
                     if (lcd.update) {
-                        draw->Canvas.Rectangle(1, output[i].x1 - 1, output[i].y1 - 1, output[i].x2 - output[i].x1 + 2,
-                                               output[i].y2 - output[i].y1 + 3);
-                        lcd_draw(&lcd, &draw->Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                        Canvas->Rectangle(1, output[i].x1 - 1, output[i].y1 - 1, output[i].x2 - output[i].x1 + 2,
+                                          output[i].y2 - output[i].y1 + 3);
+                        lcd_draw(&lcd, Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                  output[i].y2 - output[i].y1, PICSimLab.GetMcuPwr());
                     }
                 } else if (output[i].id == O_RST) {
-                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, 11);
+                    Canvas->Circle(1, output[i].cx, output[i].cy, 11);
                     if (p_RST) {
-                        draw->Canvas.SetColor(15, 15, 15);
+                        Canvas->SetColor(15, 15, 15);
                     } else {
-                        draw->Canvas.SetColor(55, 55, 55);
+                        Canvas->SetColor(55, 55, 55);
                     }
-                    draw->Canvas.Circle(1, output[i].cx, output[i].cy, 9);
+                    Canvas->Circle(1, output[i].cx, output[i].cy, 9);
                 } else if (output[i].id == O_MP) {
-                    draw->Canvas.SetFontSize(10);
-                    draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                           output[i].y2 - output[i].y1);
-                    draw->Canvas.SetColor(230, 230, 230);
-                    draw->Canvas.RotatedText(Proc, output[i].x2, output[i].y1 + 5, -90);
+                    Canvas->SetFontSize(10);
+                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                      output[i].y2 - output[i].y1);
+                    Canvas->SetColor(230, 230, 230);
+                    Canvas->RotatedText(Proc, output[i].x2, output[i].y1 + 5, -90);
                 } else if (output[i].id <= O_TCT) {
                     if (p_KEY[output[i].id - O_TC1]) {
-                        draw->Canvas.SetLineWidth(4);
-                        draw->Canvas.SetColor(255, 0, 0);
+                        Canvas->SetLineWidth(4);
+                        Canvas->SetColor(255, 0, 0);
                     } else {
-                        draw->Canvas.SetLineWidth(6);
-                        draw->Canvas.SetColor(249, 249, 249);
+                        Canvas->SetLineWidth(6);
+                        Canvas->SetColor(249, 249, 249);
                     }
 
-                    draw->Canvas.Rectangle(0, output[i].x1 + 3, output[i].y1 + 3, output[i].x2 - output[i].x1 - 6,
-                                           output[i].y2 - output[i].y1 - 6);
-                    draw->Canvas.SetLineWidth(1);
+                    Canvas->Rectangle(0, output[i].x1 + 3, output[i].y1 + 3, output[i].x2 - output[i].x1 - 6,
+                                      output[i].y2 - output[i].y1 - 6);
+                    Canvas->SetLineWidth(1);
                 } else {
-                    draw->Canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                           output[i].y2 - output[i].y1);
+                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                      output[i].y2 - output[i].y1);
                 }
             } else  // circle
             {
-                draw->Canvas.SetFgColor(0, 0, 0);
+                Canvas->SetFgColor(0, 0, 0);
 
                 switch (output[i].id) {
                     case O_RA1:
-                        draw->Canvas.SetBgColor(pic.pins[17].oavalue, 0, 0);
+                        Canvas->SetBgColor(pic.pins[17].oavalue, 0, 0);
                         break;
                     case O_RA2:
-                        draw->Canvas.SetBgColor(pic.pins[0].oavalue, 0, 0);
+                        Canvas->SetBgColor(pic.pins[0].oavalue, 0, 0);
                         break;
                     case O_RA6:
-                        draw->Canvas.SetBgColor(pic.pins[14].oavalue, 0, 0);
+                        Canvas->SetBgColor(pic.pins[14].oavalue, 0, 0);
                         break;
                     case O_RA7:
-                        draw->Canvas.SetBgColor(pic.pins[15].oavalue, 0, 0);
+                        Canvas->SetBgColor(pic.pins[15].oavalue, 0, 0);
                         break;
                     case O_LPWR:
-                        draw->Canvas.SetBgColor(0, 200 * PICSimLab.GetMcuPwr() + 55, 0);
+                        Canvas->SetBgColor(0, 200 * PICSimLab.GetMcuPwr() + 55, 0);
                         break;
                 }
 
-                DrawLED(&draw->Canvas, &output[i]);
+                DrawLED(Canvas, &output[i]);
             }
         }
     }
 
     // end draw
     if (update) {
-        draw->Canvas.End();
-        draw->Update();
+        Canvas->End();
     }
 }
 

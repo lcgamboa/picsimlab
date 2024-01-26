@@ -128,7 +128,7 @@ public:
     /**
      * @brief Called ever 100ms to draw board
      */
-    virtual void Draw(CDraw* draw) = 0;
+    virtual void Draw(CCanvas* Canvas) = 0;
 
     /**
      * @brief Paralle thread called ever 100ms to run cpu code

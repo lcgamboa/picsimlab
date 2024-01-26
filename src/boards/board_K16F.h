@@ -60,7 +60,7 @@ public:
     std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     cboard_K16F(void);
     ~cboard_K16F(void);
-    void Draw(CDraw* draw) override;
+    void Draw(CCanvas* Canvas) override;
     void Run_CPU(void) override;
     std::string GetSupportedDevices(void) override { return "PIC16F628A,PIC16F648A,PIC16F84A,"; };
     int MInit(const char* processor, const char* fname, float freq) override;

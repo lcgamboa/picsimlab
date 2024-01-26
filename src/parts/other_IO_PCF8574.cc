@@ -64,7 +64,7 @@ cpart_IO_PCF8574::cpart_IO_PCF8574(const unsigned x, const unsigned y, const cha
     ReadMaps();
     Bitmap = NULL;
 
-    LoadImage();
+    LoadPartImage();
 
     io_PCF8574_init(&ioe8);
     io_PCF8574_rst(&ioe8);

@@ -44,14 +44,16 @@ static void cpart_tempsys_callback(void* arg) {
 }
 
 cpart_tempsys::cpart_tempsys(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_){
+    : part(x, y, name, type, pboard_) {
     always_update = 1;
 
     vtc = 0;
     vt = 0;
 
-    vent[0] = SpareParts.LoadImage(PICSimLab.GetSharePath() + "boards/Common/VT1.svg", Scale * 0.867, 0, Orientation);
-    vent[1] = SpareParts.LoadImage(PICSimLab.GetSharePath() + "boards/Common/VT2.svg", Scale * 0.867, 0, Orientation);
+    vent[0] =
+        SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/VT1.svg", Scale * 0.867, 0, Orientation);
+    vent[1] =
+        SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/VT2.svg", Scale * 0.867, 0, Orientation);
 
     input_pins[0] = 0;
     input_pins[1] = 0;

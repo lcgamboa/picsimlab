@@ -745,7 +745,7 @@ void cpart_7s_display_dec::ChangeType(unsigned char tp) {
 
     ReadMaps();
 
-    LoadImage();
+    LoadPartImage();
 }
 
 part_init(PART_7S_DISPLAY_DEC_Name, cpart_7s_display_dec, "Output");
