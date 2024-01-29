@@ -52,9 +52,11 @@ cpart_tempsys::cpart_tempsys(const unsigned x, const unsigned y, const char* nam
     vt = 0;
 
     vent[0] =
-        SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/VT1.svg", Scale * 0.867, 0, Orientation);
+        SpareParts.CanvasCmd({CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/VT1.svg").c_str(),
+                                                       Scale * 0.867f, 0, Orientation}});
     vent[1] =
-        SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/VT2.svg", Scale * 0.867, 0, Orientation);
+        SpareParts.CanvasCmd({CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/VT2.svg").c_str(),
+                                                       Scale * 0.867f, 0, Orientation}});
 
     input_pins[0] = 0;
     input_pins[1] = 0;

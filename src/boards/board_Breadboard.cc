@@ -85,7 +85,8 @@ cboard_Breadboard::cboard_Breadboard(void) {
     Proc = "PIC18F4620";  // default microcontroller if none defined in preferences
     ReadMaps();           // Read input and output board maps
 
-    micbmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/ic40.svg", Scale, 1);
+    micbmp = PICSimLab.CanvasCmd(
+        {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/ic40.svg").c_str(), Scale, 1, 0}});
 }
 
 // Destructor called once on board destruction
@@ -709,60 +710,18 @@ int cboard_Breadboard::MInit(const char* processor, const char* fname, float fre
             break;
     }
 
-    int bmp = PICSimLab.LoadImageFile(
-        PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg", Scale, 1);
+    int bmp = PICSimLab.CanvasCmd(
+        {CC_LOADIMAGE,
+         .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg").c_str(),
+                    Scale, 1, 0}});
 
     if (bmp < 0) {
-        bmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() +
-                                          "boards/Common/"
-                                          "ic6.svg",
-                                      Scale, 1);
-        printf(
-            "pi"
-            "cs"
-            "im"
-            "la"
-            "b:"
-            " I"
-            "C "
-            "pa"
-            "ck"
-            "ag"
-            "e "
-            "wi"
-            "th"
-            " %"
-            "i "
-            "pi"
-            "ns"
-            " n"
-            "ot"
-            " f"
-            "ou"
-            "nd"
-            "!"
-            "\n",
-            MGetPinCount());
-        printf(
-            "pi"
-            "cs"
-            "im"
-            "la"
-            "b:"
-            " %"
-            "s "
-            "no"
-            "t "
-            "fo"
-            "un"
-            "d!"
-            "\n",
-            (const char*)(PICSimLab.GetSharePath() +
-                          "boards/"
-                          "Common/"
-                          "ic" +
-                          std::to_string(MGetPinCount()) + ".svg")
-                .c_str());
+        bmp = PICSimLab.CanvasCmd(
+            {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/ic6.svg").c_str(), Scale, 1, 0}});
+        printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
+        printf("picsimlab: %s not found!\n",
+               (const char*)(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg")
+                   .c_str());
     }
 
     if (micbmp)
@@ -1192,38 +1151,22 @@ void cboard_Breadboard::SetScale(double scale) {
     int bmp = -1;
 
     if (MGetPinCount()) {
-        bmp = PICSimLab.LoadImageFile(
-            PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg", Scale, 1);
+        bmp = PICSimLab.CanvasCmd(
+            {CC_LOADIMAGE,
+             .LoadImage{
+                 (PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg").c_str(),
+                 Scale, 1, 0}});
         if (bmp < 0) {
-            bmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() +
-                                              "boards/Common/"
-                                              "ic6.svg",
-                                          Scale, 1);
-            printf(
-                "picsimlab: IC "
-                "package with %i "
-                "pins not "
-                "found!\n",
-                MGetPinCount());
-            printf(
-                "picsimlab: %s not "
-                "found!\n",
-                (const char*)(PICSimLab.GetSharePath() +
-                              "boar"
-                              "ds/"
-                              "Comm"
-                              "on/"
-                              "ic" +
-                              std::to_string(MGetPinCount()) +
-                              ".sv"
-                              "g")
-                    .c_str());
+            bmp = PICSimLab.CanvasCmd(
+                {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/ic6.svg").c_str(), Scale, 1, 0}});
+            printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
+            printf("picsimlab: %s not found!\n", (const char*)(PICSimLab.GetSharePath() + "boards/Common/ic" +
+                                                               std::to_string(MGetPinCount()) + ".svg")
+                                                     .c_str());
         }
     } else {
-        bmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() +
-                                          "boards/Common/"
-                                          "ic40.svg",
-                                      Scale, 1);
+        bmp = PICSimLab.CanvasCmd(
+            {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/ic40.svg").c_str(), Scale, 1, 0}});
     }
     if (micbmp >= 0)
         PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{micbmp}});

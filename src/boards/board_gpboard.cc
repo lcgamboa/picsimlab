@@ -76,7 +76,8 @@ unsigned short cboard_gpboard::GetOutputId(char* name) {
 cboard_gpboard::cboard_gpboard(void) {
     Proc = "pic16f628a";  // default microcontroller if none defined in preferences
     ReadMaps();           // Read input and output board maps
-    micbmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/ic40.svg", Scale, 1);
+    micbmp = PICSimLab.CanvasCmd(
+        {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/ic40.svg").c_str(), Scale, 1, 0}});
     serialfd = INVALID_SERIAL;
 }
 
@@ -350,11 +351,14 @@ int cboard_gpboard::MInit(const char* processor, const char* fname, float freq) 
         Proc = "pic16f628a";
     }
 
-    int bmp = PICSimLab.LoadImageFile(
-        PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg", Scale, 1);
+    int bmp = PICSimLab.CanvasCmd(
+        {CC_LOADIMAGE,
+         .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg").c_str(),
+                    Scale, 1, 0}});
 
     if (bmp < 0) {
-        bmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/ic6.svg", Scale, 1);
+        bmp = PICSimLab.CanvasCmd(
+            {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/ic6.svg").c_str(), Scale, 1, 0}});
         printf(
             "picsimlab: IC package with %i pins not "
             "found!\n",
@@ -377,11 +381,14 @@ void cboard_gpboard::SetScale(double scale) {
 
     Scale = scale;
 
-    int bmp = PICSimLab.LoadImageFile(
-        PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg", Scale, 1);
+    int bmp = PICSimLab.CanvasCmd(
+        {CC_LOADIMAGE,
+         .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg").c_str(),
+                    Scale, 1, 0}});
 
     if (bmp < 0) {
-        bmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/ic6.svg", Scale, 1);
+        bmp = PICSimLab.CanvasCmd(
+            {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/ic6.svg").c_str(), Scale, 1, 0}});
         printf(
             "picsimlab: IC package with %i pins not "
             "found!\n",

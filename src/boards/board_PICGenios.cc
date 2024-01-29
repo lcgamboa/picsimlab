@@ -229,10 +229,14 @@ cboard_PICGenios::cboard_PICGenios(void) {
     heater_pwr = 0;
     cooler_pwr = 0;
 
-    vent[0] = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/VT1.svg");
-    vent[1] = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/VT2.svg");
-    lcdbmp[0] = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/lcd2.svg");
-    lcdbmp[1] = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/lcd4.svg");
+    vent[0] = PICSimLab.CanvasCmd(
+        {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/VT1.svg").c_str(), 1.0, 0, 0}});
+    vent[1] = PICSimLab.CanvasCmd(
+        {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/VT2.svg").c_str(), 1.0, 0, 0}});
+    lcdbmp[0] = PICSimLab.CanvasCmd(
+        {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/lcd2.svg").c_str(), 1.0, 0, 0}});
+    lcdbmp[1] = PICSimLab.CanvasCmd(
+        {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/lcd4.svg").c_str(), 1.0, 0, 0}});
 
     lcd_init(&lcd, 16, 2, this);
     mi2c_init(&mi2c, 4);
@@ -319,10 +323,14 @@ void cboard_PICGenios::SetScale(double scale) {
             PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{lcdbmp[0]}});
             PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{lcdbmp[1]}});
 
-            vent[0] = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/VT1.svg", Scale);
-            vent[1] = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/VT2.svg", Scale);
-            lcdbmp[0] = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/lcd2.svg", Scale);
-            lcdbmp[1] = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/lcd4.svg", Scale);
+            vent[0] = PICSimLab.CanvasCmd(
+                {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/VT1.svg").c_str(), Scale, 0, 0}});
+            vent[1] = PICSimLab.CanvasCmd(
+                {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/VT2.svg").c_str(), Scale, 0, 0}});
+            lcdbmp[0] = PICSimLab.CanvasCmd(
+                {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/lcd2.svg").c_str(), Scale, 0, 0}});
+            lcdbmp[1] = PICSimLab.CanvasCmd(
+                {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/lcd4.svg").c_str(), Scale, 0, 0}});
         }
     }
 }

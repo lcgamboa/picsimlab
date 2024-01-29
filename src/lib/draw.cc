@@ -3,7 +3,7 @@
 
 // Draw Functions
 
-void DrawSlider(void (*CanvasCmd)(CanvasCmd_t), const output_t* output, const unsigned char pos, const std::string val,
+void DrawSlider(CanvasCmd_ft CanvasCmd, const output_t* output, const unsigned char pos, const std::string val,
                 const int FontPointSize) {
     float dy = pos / 1.66;
     (*CanvasCmd)({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
@@ -22,8 +22,8 @@ void DrawSlider(void (*CanvasCmd)(CanvasCmd_t), const output_t* output, const un
     (*CanvasCmd)({CC_ROTATEDTEXT, .RotatedText{val.c_str(), output->x1 + 1, output->y1 + 5 + pos / 1.66f, 0}});
 }
 
-void DrawPotentiometer(void (*CanvasCmd)(CanvasCmd_t), const output_t* output, const unsigned char pos,
-                       const std::string val, const int FontPointSize) {
+void DrawPotentiometer(CanvasCmd_ft CanvasCmd, const output_t* output, const unsigned char pos, const std::string val,
+                       const int FontPointSize) {
     (*CanvasCmd)({CC_SETCOLOR, .SetColor{179, 179, 179}});
     (*CanvasCmd)(
         {CC_RECTANGLE, .Rectangle{1, output->x1, output->y1, output->x2 - output->x1, output->y2 - output->y1}});
@@ -38,7 +38,7 @@ void DrawPotentiometer(void (*CanvasCmd)(CanvasCmd_t), const output_t* output, c
     (*CanvasCmd)({CC_ROTATEDTEXT, .RotatedText{val.c_str(), output->x1 + 4, output->y1 + 5 + (200 - pos) / 1.66f, 0}});
 }
 
-void DrawLED(void (*CanvasCmd)(CanvasCmd_t), const output_t* output) {
+void DrawLED(CanvasCmd_ft CanvasCmd, const output_t* output) {
     unsigned int r1, g1, b1;
     (*CanvasCmd)({CC_GETBGCOLOR, .GetBgColor{&r1, &g1, &b1}});
 

@@ -91,7 +91,6 @@ CPICSimLab::CPICSimLab() {
     OnOpenLoadHexFileDialog = NULL;
     OnEndSimulation = NULL;
     OnUpdateGUI = NULL;
-    OnLoadImage = NULL;
     OnConfigMenuGUI = NULL;
     OnCanvasCmd = NULL;
 
@@ -230,23 +229,17 @@ void CPICSimLab::UpdateStatus(const PICSimlabStatus field, const std::string msg
     }
 }
 
-int CPICSimLab::LoadImageFile(const std::string fname, const float scale, const int usealpha, const int orientation) {
-    if (OnLoadImage) {
-        return (*OnLoadImage)(fname, scale, usealpha, orientation);
-    }
-    return -1;
-}
-
 void CPICSimLab::ConfigMenuGUI(const PICSimlabGUIMenu type) {
     if (OnConfigMenuGUI) {
         (*OnConfigMenuGUI)(type);
     }
 }
 
-void CPICSimLab::CanvasCmd(const CanvasCmd_t cmd) {
+int CPICSimLab::CanvasCmd(const CanvasCmd_t cmd) {
     if (PICSimLab.OnCanvasCmd) {
-        (*PICSimLab.OnCanvasCmd)(cmd);
+        return (*PICSimLab.OnCanvasCmd)(cmd);
     }
+    return -1;
 }
 
 void CPICSimLab::SetClock(const float clk, const int update) {

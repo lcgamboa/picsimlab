@@ -74,7 +74,7 @@ void led_ws2812b_prepare(led_ws2812b_t* led, const float freq);
 
 unsigned char led_ws2812b_io(led_ws2812b_t* led, const unsigned char din);
 
-void led_ws2812b_draw(led_ws2812b_t* led, void (*CanvasCmd)(CanvasCmd_t), const int x1, const int y1, const int w1,
+void led_ws2812b_draw(led_ws2812b_t* led, CanvasCmd_ft CanvasCmd, const int x1, const int y1, const int w1,
                       const int h1, const int picpwr);
 
 #endif  // LED_WS2812B

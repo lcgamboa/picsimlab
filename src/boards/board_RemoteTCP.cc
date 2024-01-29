@@ -170,7 +170,8 @@ cboard_RemoteTCP::cboard_RemoteTCP(void) {
     Proc = "Ripes";  // default microcontroller if none defined in preferences
     ReadMaps();      // Read input and output board maps
 
-    micbmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/ic48.svg", Scale, 1);
+    micbmp = PICSimLab.CanvasCmd(
+        {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/ic48.svg").c_str(), Scale, 1, 0}});
 
     // TODO define pins
 
@@ -224,11 +225,14 @@ int cboard_RemoteTCP::MInit(const char* processor, const char* fname, float freq
 
     ret = bsim_remote::MInit(processor, fname, freq);
 
-    int bmp = PICSimLab.LoadImageFile(
-        PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg", Scale, 1);
+    int bmp = PICSimLab.CanvasCmd(
+        {CC_LOADIMAGE,
+         .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg").c_str(),
+                    Scale, 1, 0}});
 
     if (bmp < 0) {
-        bmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/ic6.svg", Scale, 1);
+        bmp = PICSimLab.CanvasCmd(
+            {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/ic6.svg").c_str(), Scale, 1, 0}});
         printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
         printf("picsimlab: %s not found!\n",
                (const char*)(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg")

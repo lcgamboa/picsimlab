@@ -315,7 +315,7 @@ void part::LoadPartImage(void) {
     SpareParts.SetPartOnDraw(id);
     std::string iname = PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName();
 
-    int bmp = SpareParts.LoadImageFile(iname, Scale, 0, Orientation);
+    int bmp = SpareParts.CanvasCmd({CC_LOADIMAGE, .LoadImage{iname.c_str(), Scale, 0, Orientation}});
 
     if (bmp >= 0) {
         if (SpareParts.GetWindow()) {
@@ -323,8 +323,9 @@ void part::LoadPartImage(void) {
             SpareParts.CanvasCmd({CC_DESTROY});
             SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
         }
-    } else if ((bmp = SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "parts/Common/notfound.svg", Scale, 0,
-                                               Orientation)) >= 0) {
+    } else if ((bmp = SpareParts.CanvasCmd(
+                    {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "parts/Common/notfound.svg").c_str(), Scale,
+                                              0, Orientation}})) >= 0) {
         if (SpareParts.GetWindow()) {
             BitmapId = bmp;
             SpareParts.CanvasCmd({CC_DESTROY});

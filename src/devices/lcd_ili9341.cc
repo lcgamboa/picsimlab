@@ -592,7 +592,7 @@ unsigned short lcd_ili9341_8_io(lcd_ili9341_t* lcd, const unsigned char** pins_v
     return lcd->out;
 }
 
-void lcd_ili9341_draw(lcd_ili9341_t* lcd, void (*CanvasCmd)(CanvasCmd_t), const int x1, const int y1, const int w1,
+void lcd_ili9341_draw(lcd_ili9341_t* lcd, CanvasCmd_ft CanvasCmd, const int x1, const int y1, const int w1,
                       const int h1, const int picpwr) {
     unsigned short x, y;
     unsigned char r, g, b;

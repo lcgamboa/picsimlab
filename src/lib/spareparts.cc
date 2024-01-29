@@ -50,8 +50,6 @@ CSpareParts::CSpareParts() {
     PartKeyEvent = NULL;
     PartButtonEvent = NULL;
 
-    OnLoadImage = NULL;
-    OnCreateImage = NULL;
     OnCanvasCmd = NULL;
 }
 
@@ -675,23 +673,9 @@ void CSpareParts::SetfdOldFilename(const std::string ofn) {
     oldfname = ofn;
 }
 
-int CSpareParts::LoadImageFile(const std::string fname, const float scale, const int usealpha, const int orientation) {
-    if (OnLoadImage) {
-        return (*OnLoadImage)(fname, scale, usealpha, orientation);
-    }
-    return -1;
-}
-
-int CSpareParts::CreateBlankImage(const unsigned int width, const unsigned int height, const float scale,
-                                  const int usealpha, const int orientation) {
-    if (OnCreateImage) {
-        return (*OnCreateImage)(width, height, scale, usealpha, orientation);
-    }
-    return -1;
-}
-
-void CSpareParts::CanvasCmd(const CanvasCmd_t cmd) {
+int CSpareParts::CanvasCmd(const CanvasCmd_t cmd) {
     if (SpareParts.OnCanvasCmd) {
-        (*SpareParts.OnCanvasCmd)(cmd);
+        return (*SpareParts.OnCanvasCmd)(cmd);
     }
+    return -1;
 }

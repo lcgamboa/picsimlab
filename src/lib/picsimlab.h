@@ -259,12 +259,9 @@ public:
 
     void* UpdateGUI(const int id, const PICSimlabGUIType type, const PICSimlabGUIAction action, const void* arg);
 
-    int LoadImageFile(const std::string fname, const float scale = 1.0, const int usealpha = 0,
-                      const int orientation = 0);
-
     void ConfigMenuGUI(const PICSimlabGUIMenu type);
 
-    static void CanvasCmd(const CanvasCmd_t cmd);
+    static int CanvasCmd(const CanvasCmd_t cmd);
 
 #ifndef _NOTHREAD
     lxCondition* cpu_cond;
@@ -290,9 +287,8 @@ public:
     void (*OnOpenLoadHexFileDialog)(void);
     void (*OnEndSimulation)(void);
     void* (*OnUpdateGUI)(const int id, const PICSimlabGUIType type, const PICSimlabGUIAction action, const void* arg);
-    int (*OnLoadImage)(const std::string fname, const float scale, const int usealpha, const int orientation);
     void (*OnConfigMenuGUI)(const PICSimlabGUIMenu type);
-    void (*OnCanvasCmd)(const CanvasCmd_t cmd);
+    int (*OnCanvasCmd)(const CanvasCmd_t cmd);
 
     void (CControl::*board_Event)(CControl* control);
     void (CControl::*board_ButtonEvent)(CControl* control, const uint button, const uint x, const uint y,

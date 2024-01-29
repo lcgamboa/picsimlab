@@ -97,7 +97,7 @@ void cpart_TEXT::LoadPartImage(void) {
         SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     }
 
-    BitmapId = SpareParts.CreateBlankImage(Width, Height, Scale, 0, Orientation);
+    BitmapId = SpareParts.CanvasCmd({CC_CREATEIMAGE, .CreateImage{Width, Height, Scale, 0, Orientation}});
     SpareParts.CanvasCmd({CC_DESTROY});
     SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
 }

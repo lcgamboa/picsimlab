@@ -168,9 +168,8 @@ public:
     static void OnEndSimulation(void);
     static void* OnUpdateGUI(const int id, const PICSimlabGUIType type, const PICSimlabGUIAction action,
                              const void* arg);
-    static int OnLoadImage(const std::string fname, const float scale, const int usealpha, const int orientation);
     static void OnConfigMenuGUI(const PICSimlabGUIMenu type);
-    static void OnCanvasCmd(const CanvasCmd_t cmd);
+    static int OnCanvasCmd(const CanvasCmd_t cmd);
 
     void Configure(void);
     int GetNeedClkUpdate(void) { return need_clkupdate; };

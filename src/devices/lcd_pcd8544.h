@@ -58,6 +58,6 @@ void lcd_pcd8544_update(lcd_pcd8544_t* lcd);
 unsigned char lcd_pcd8544_io(lcd_pcd8544_t* lcd, unsigned char din, unsigned char clk, unsigned char ncs,
                              unsigned char nrst, unsigned char dc);
 
-void lcd_pcd8544_draw(lcd_pcd8544_t* lcd, void (*CanvasCmd)(CanvasCmd_t), int x1, int y1, int w1, int h1, int picpwr);
+void lcd_pcd8544_draw(lcd_pcd8544_t* lcd, CanvasCmd_ft CanvasCmd, int x1, int y1, int w1, int h1, int picpwr);
 
 #endif  // LCD_PCD8544

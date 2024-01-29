@@ -117,9 +117,7 @@ public:
     void DeleteParts(void);
 
     static int OnLoadImage(const std::string fname, const float scale, const int usealpha, const int orientation);
-    static int OnCreateImage(const unsigned int width, const unsigned int height, const float scale, const int usealpha,
-                             const int orientation);
-    static void OnCanvasCmd(const CanvasCmd_t cmd);
+    static int OnCanvasCmd(const CanvasCmd_t cmd);
 
     CCanvas Canvas[MAX_PARTS];
     lxBitmap* Bitmaps[MAX_PARTS * 2];

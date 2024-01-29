@@ -149,8 +149,10 @@ cboard_McLab2::cboard_McLab2(void) {
     PICSimLab.UpdateGUI(COOLER, GT_GAUGE, GA_ADD, (void*)"Cooler");
     PICSimLab.UpdateGUI(TEMP, GT_LABEL, GA_ADD, (void*)"Temp: 00.0C");
 
-    vent[0] = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/VT1.svg");
-    vent[1] = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/VT2.svg");
+    vent[0] = PICSimLab.CanvasCmd(
+        {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/VT1.svg").c_str(), 1.0, 0, 0}});
+    vent[1] = PICSimLab.CanvasCmd(
+        {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/VT2.svg").c_str(), 1.0, 0, 0}});
 
     snprintf(mi2c_tmp_name, 200, "%s/picsimlab-XXXXXX", (const char*)lxGetTempDir("PICSimLab").c_str());
     close(mkstemp(mi2c_tmp_name));
@@ -205,8 +207,10 @@ void cboard_McLab2::SetScale(double scale) {
         if (vent[0] >= 0) {
             PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{vent[0]}});
             PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{vent[1]}});
-            vent[0] = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/VT1.svg", Scale);
-            vent[1] = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/VT2.svg", Scale);
+            vent[0] = PICSimLab.CanvasCmd(
+                {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/VT1.svg").c_str(), Scale, 0, 0}});
+            vent[1] = PICSimLab.CanvasCmd(
+                {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/VT2.svg").c_str(), Scale, 0, 0}});
         }
     }
 }

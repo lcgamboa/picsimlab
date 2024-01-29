@@ -175,11 +175,13 @@ void cpart_servo::ReadPropertiesWindow(CPWindow* WProp) {
 void cpart_servo::LoadPartImage(void) {
     if (SpareParts.GetWindow()) {
         SpareParts.SetPartOnDraw(id);
-        BitmapId = SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(),
-                                            Scale, 0, Orientation);
+        BitmapId = SpareParts.CanvasCmd(
+            {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()).c_str(),
+                                      Scale, 0, Orientation}});
 
-        int bmp = SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(),
-                                           Scale, 0, Orientation);
+        int bmp = SpareParts.CanvasCmd(
+            {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()).c_str(),
+                                      Scale, 0, Orientation}});
 
         if (BackGround >= 0) {
             SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BackGround}});

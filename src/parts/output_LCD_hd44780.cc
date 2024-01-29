@@ -371,20 +371,25 @@ void cpart_LCD_hd44780::LoadPartImage(void) {
 
     switch (model) {
         case LCD16x2:
-            bmp = SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName(), Scale, 0,
-                                           Orientation);
+            bmp = SpareParts.CanvasCmd(
+                {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName()).c_str(),
+                                          Scale, 0, Orientation}});
             break;
         case LCD16x4:
-            bmp = SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName_(), Scale, 0,
-                                           Orientation);
+            bmp = SpareParts.CanvasCmd(
+                {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName_()).c_str(),
+                                          Scale, 0, Orientation}});
             break;
         case LCD20x2:
-            bmp = SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName__(), Scale,
-                                           0, Orientation);
+            bmp = SpareParts.CanvasCmd(
+                {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName__()).c_str(),
+                                          Scale, 0, Orientation}});
             break;
         case LCD20x4:
-            bmp = SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName___(), Scale,
-                                           0, Orientation);
+            bmp = SpareParts.CanvasCmd(
+                {CC_LOADIMAGE,
+                 .LoadImage{(PICSimLab.GetSharePath() + "parts/Output/" + GetPictureFileName___()).c_str(), Scale, 0,
+                            Orientation}});
             break;
     }
 

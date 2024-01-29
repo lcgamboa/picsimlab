@@ -156,7 +156,7 @@ unsigned char lcd_pcd8544_io(lcd_pcd8544_t* lcd, unsigned char din, unsigned cha
     return 1;
 }
 
-void lcd_pcd8544_draw(lcd_pcd8544_t* lcd, void (*CanvasCmd)(CanvasCmd_t), int x1, int y1, int w1, int h1, int picpwr) {
+void lcd_pcd8544_draw(lcd_pcd8544_t* lcd, CanvasCmd_ft CanvasCmd, int x1, int y1, int w1, int h1, int picpwr) {
     unsigned char x, y, z;
 
     if (lcd->e) {

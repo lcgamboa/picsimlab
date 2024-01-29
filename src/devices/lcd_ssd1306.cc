@@ -379,7 +379,7 @@ unsigned char lcd_ssd1306_I2C_io(lcd_ssd1306_t* lcd, unsigned char sda, unsigned
     return ret;
 }
 
-void lcd_ssd1306_draw(lcd_ssd1306_t* lcd, void (*CanvasCmd)(CanvasCmd_t), int x1, int y1, int w1, int h1, int picpwr) {
+void lcd_ssd1306_draw(lcd_ssd1306_t* lcd, CanvasCmd_ft CanvasCmd, int x1, int y1, int w1, int h1, int picpwr) {
     unsigned char x, y, z;
 
     lcd->update = 0;

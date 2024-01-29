@@ -50,6 +50,8 @@ enum PICSimLabCanvasCmd {
     CC_DESTROY,
     CC_FREEBITMAP,
     CC_GETBITMAPSIZE,
+    CC_LOADIMAGE,
+    CC_CREATEIMAGE,
     CC_LAST
 };
 
@@ -170,14 +172,29 @@ typedef struct {
             unsigned int* w;
             unsigned int* h;
         } GetBitmapSize;
+        struct {
+            const char* fname;
+            const float scale;
+            const int usealpha;
+            const int orientation;
+        } LoadImage;
+        struct {
+            const unsigned int width;
+            const unsigned int height;
+            const float scale;
+            const int usealpha;
+            const int orientation;
+        } CreateImage;
     };
 } CanvasCmd_t;
 
+typedef int (*CanvasCmd_ft)(CanvasCmd_t);
+
 // Draw Functions
-void DrawLED(void (*CanvasCmd)(CanvasCmd_t), const output_t* output);
-void DrawSlider(void (*CanvasCmd)(CanvasCmd_t), const output_t* output, const unsigned char pos, const std::string val,
+void DrawLED(CanvasCmd_ft CanvasCmd, const output_t* output);
+void DrawSlider(CanvasCmd_ft CanvasCmd, const output_t* output, const unsigned char pos, const std::string val,
                 const int FontPointSize);
-void DrawPotentiometer(void (*CanvasCmd)(CanvasCmd_t), const output_t* output, const unsigned char pos,
-                       const std::string val, const int FontPointSize);
+void DrawPotentiometer(CanvasCmd_ft CanvasCmd, const output_t* output, const unsigned char pos, const std::string val,
+                       const int FontPointSize);
 
 #endif  // PCANVACMD_H

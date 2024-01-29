@@ -124,18 +124,9 @@ public:
     void SetPartOnDraw(int pod) { PartOnDraw = pod; };
     int GetPartOnDraw(void) { return PartOnDraw; };
 
-    int LoadImageFile(const std::string fname, const float scale = 1.0, const int usealpha = 0,
-                      const int orientation = 0);
+    static int CanvasCmd(const CanvasCmd_t cmd);
 
-    int CreateBlankImage(const unsigned int width, const unsigned int height, const float scale = 1.0,
-                         const int usealpha = 0, const int orientation = 0);
-
-    static void CanvasCmd(const CanvasCmd_t cmd);
-
-    int (*OnLoadImage)(const std::string fname, const float scale, const int usealpha, const int orientation);
-    int (*OnCreateImage)(const unsigned int width, const unsigned int height, const float scale, const int usealpha,
-                         const int orientation);
-    void (*OnCanvasCmd)(const CanvasCmd_t cmd);
+    int (*OnCanvasCmd)(const CanvasCmd_t cmd);
 
 private:
     float scale;

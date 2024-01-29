@@ -578,7 +578,7 @@ void lcd_on(lcd_t* lcd, int onoff) {
     lcd_rst(lcd);
 }
 
-void lcd_draw(lcd_t* lcd, void (*CanvasCmd)(CanvasCmd_t), float x1, float y1, float w1, float h1, int picpwr) {
+void lcd_draw(lcd_t* lcd, CanvasCmd_ft CanvasCmd, float x1, float y1, float w1, float h1, int picpwr) {
     int l, c, x, y;
     int loff = 0;
     float w;

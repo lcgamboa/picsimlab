@@ -680,7 +680,6 @@ void CPWindow1::_EvOnCreate(CControl* control) {
     PICSimLab.OnOpenLoadHexFileDialog = &CPWindow1::OnOpenLoadHexFileDialog;
     PICSimLab.OnEndSimulation = &CPWindow1::OnEndSimulation;
     PICSimLab.OnUpdateGUI = &CPWindow1::OnUpdateGUI;
-    PICSimLab.OnLoadImage = &CPWindow1::OnLoadImage;
     PICSimLab.OnConfigMenuGUI = &CPWindow1::OnConfigMenuGUI;
     PICSimLab.OnCanvasCmd = &CPWindow1::OnCanvasCmd;
 
@@ -1355,27 +1354,6 @@ void CPWindow1::OnUpdateStatus(const int field, const std::string msg) {
     Window1.statusbar1.SetField(field, msg);
 }
 
-int CPWindow1::OnLoadImage(const std::string fname, const float scale, const int usealpha, const int orientation) {
-    lxImage image(&Window1);
-    if (image.LoadFile(lxGetLocalFile(fname), orientation, scale, scale, usealpha)) {
-        // find enpty bitmap
-        int bid = -1;
-        for (int i = 0; i < BOARDS_MAX; i++) {
-            if (Window1.Bitmaps[i] == NULL) {
-                bid = i;
-                break;
-            }
-        }
-
-        if ((bid >= 0) && (bid < BOARDS_MAX)) {
-            Window1.Bitmaps[bid] = new lxBitmap(&image, &Window1);
-            image.Destroy();
-            return bid;
-        }
-    }
-    return -1;
-}
-
 void CPWindow1::OnConfigMenuGUI(const PICSimlabGUIMenu type) {
     switch (type) {
         case GMT_HEX:
@@ -1404,54 +1382,70 @@ void CPWindow1::OnConfigMenuGUI(const PICSimlabGUIMenu type) {
     }
 }
 
-void CPWindow1::OnCanvasCmd(const CanvasCmd_t cmd) {
+int CPWindow1::OnCanvasCmd(const CanvasCmd_t cmd) {
     switch (cmd.cmd) {
         case CC_INIT:
             Window1.draw1.Canvas.Init(cmd.Init.sx, cmd.Init.sy, cmd.Init.angle);
+            return 0;
             break;
         case CC_CHANGESCALE:
             Window1.draw1.Canvas.ChangeScale(cmd.ChangeScale.sx, cmd.ChangeScale.sy);
+            return 0;
             break;
         case CC_END:
             Window1.draw1.Canvas.End();
+            return 0;
             break;
         case CC_SETBITMAP:
             Window1.draw1.Canvas.SetBitmap(Window1.Bitmaps[cmd.SetBitmap.BitmapId], cmd.SetBitmap.xs, cmd.SetBitmap.ys);
+            return 0;
             break;
         case CC_SETCOLOR:
             Window1.draw1.Canvas.SetColor(cmd.SetColor.r, cmd.SetColor.g, cmd.SetColor.b);
+            return 0;
             break;
         case CC_SETFGCOLOR:
             Window1.draw1.Canvas.SetFgColor(cmd.SetFgColor.r, cmd.SetFgColor.g, cmd.SetFgColor.b);
+            return 0;
             break;
         case CC_SETBGCOLOR:
             Window1.draw1.Canvas.SetBgColor(cmd.SetBgColor.r, cmd.SetBgColor.g, cmd.SetBgColor.b);
+            return 0;
             break;
         case CC_SETFONTSIZE:
             Window1.draw1.Canvas.SetFontSize(cmd.SetFontSize.pointsize);
+            return 0;
             break;
         case CC_SETFONTWEIGHT:
             Window1.draw1.Canvas.SetFontWeight(cmd.SetFontWeight.weight);
+            return 0;
             break;
         case CC_SETLINEWIDTH:
             Window1.draw1.Canvas.SetLineWidth(cmd.SetLineWidth.lwidth);
+            return 0;
             break;
         case CC_POINT:
             Window1.draw1.Canvas.Point(cmd.Point.x, cmd.Point.y);
+            return 0;
             break;
         case CC_LINE:
             Window1.draw1.Canvas.Line(cmd.Line.x1, cmd.Line.y1, cmd.Line.x2, cmd.Line.y2);
+            return 0;
             break;
         case CC_RECTANGLE:
             Window1.draw1.Canvas.Rectangle(cmd.Rectangle.filled, cmd.Rectangle.x, cmd.Rectangle.y, cmd.Rectangle.width,
                                            cmd.Rectangle.height);
+
+            return 0;
             break;
         case CC_CIRCLE:
             Window1.draw1.Canvas.Circle(cmd.Circle.filled, cmd.Circle.x, cmd.Circle.y, cmd.Circle.radius);
+            return 0;
             break;
         case CC_ROTATEDTEXT:
             Window1.draw1.Canvas.RotatedText(cmd.RotatedText.str, cmd.RotatedText.x, cmd.RotatedText.y,
                                              cmd.RotatedText.angle);
+            return 0;
             break;
         case CC_TEXTONRECT: {
             lxRect rect;
@@ -1460,40 +1454,90 @@ void CPWindow1::OnCanvasCmd(const CanvasCmd_t cmd) {
             rect.width = cmd.TextOnRect.rect.width;
             rect.height = cmd.TextOnRect.rect.height;
             Window1.draw1.Canvas.TextOnRect(cmd.TextOnRect.str, rect, cmd.TextOnRect.align);
+            return 0;
         } break;
         case CC_POLYGON:
             Window1.draw1.Canvas.Polygon(cmd.Polygon.filled, (lxPoint*)cmd.Polygon.points, cmd.Polygon.npoints);
+            return 0;
             break;
         case CC_PUTBITMAP:
             Window1.draw1.Canvas.PutBitmap(Window1.Bitmaps[cmd.PutBitmap.BitmapId], cmd.PutBitmap.x, cmd.PutBitmap.y);
+            return 0;
             break;
         case CC_GETBGCOLOR: {
             lxColor bgc = Window1.draw1.Canvas.GetBgColor();
             *cmd.GetBgColor.r = bgc.Red();
             *cmd.GetBgColor.g = bgc.Green();
             *cmd.GetBgColor.b = bgc.Blue();
+            return 0;
         } break;
         case CC_CREATE:
             Window1.draw1.Canvas.Create(Window1.GetWWidget(), Window1.Bitmaps[cmd.Create.BitmapId]);
+            return 0;
             break;
         case CC_DESTROY:
             Window1.draw1.Canvas.Destroy();
+            return 0;
             break;
         case CC_FREEBITMAP:
             if (Window1.Bitmaps[cmd.FreeBitmap.BitmapId]) {
                 delete Window1.Bitmaps[cmd.FreeBitmap.BitmapId];
                 Window1.Bitmaps[cmd.FreeBitmap.BitmapId] = NULL;
+                return 0;
             }
             break;
         case CC_GETBITMAPSIZE: {
             lxSize ps = Window1.Bitmaps[cmd.GetBitmapSize.BitmapId]->GetSize();
             *cmd.GetBitmapSize.w = ps.GetWidth();
             *cmd.GetBitmapSize.h = ps.GetHeight();
+            return 0;
+        } break;
+        case CC_LOADIMAGE: {
+            lxImage image(&Window1);
+            if (image.LoadFile(lxGetLocalFile(cmd.LoadImage.fname), cmd.LoadImage.orientation, cmd.LoadImage.scale,
+                               cmd.LoadImage.scale, cmd.LoadImage.usealpha)) {
+                // find enpty bitmap
+                int bid = -1;
+                for (int i = 0; i < BOARDS_MAX; i++) {
+                    if (Window1.Bitmaps[i] == NULL) {
+                        bid = i;
+                        break;
+                    }
+                }
+
+                if ((bid >= 0) && (bid < BOARDS_MAX)) {
+                    Window1.Bitmaps[bid] = new lxBitmap(&image, &Window1);
+                    image.Destroy();
+                    return bid;
+                }
+            }
+            return -1;
+        } break;
+        case CC_CREATEIMAGE: {
+            lxImage image(&Window1);
+            if (image.CreateBlank(cmd.CreateImage.width, cmd.CreateImage.height, cmd.CreateImage.orientation,
+                                  cmd.CreateImage.scale, cmd.CreateImage.scale)) {
+                // find enpty bitmap
+                int bid = -1;
+                for (int i = 0; i < BOARDS_MAX; i++) {
+                    if (Window1.Bitmaps[i] == NULL) {
+                        bid = i;
+                        break;
+                    }
+                }
+                if ((bid >= 0) && (bid < BOARDS_MAX)) {
+                    Window1.Bitmaps[bid] = new lxBitmap(&image, &Window1);
+                    image.Destroy();
+                    return bid;
+                }
+            }
+            return -1;
         } break;
         case CC_LAST:
         default:
             break;
     }
+    return -1;
 }
 
 void* CPWindow1::OnUpdateGUI(const int id, const PICSimlabGUIType type, const PICSimlabGUIAction action,

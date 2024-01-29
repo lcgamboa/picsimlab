@@ -463,13 +463,15 @@ void cpart_switches::LoadPartImage(void) {
 
         if (SpareParts.GetWindow()) {
             SpareParts.SetPartOnDraw(id);
-            BitmapId = SpareParts.CreateBlankImage(Width, Height, Scale, 0, Orientation);
+            BitmapId = SpareParts.CanvasCmd({CC_CREATEIMAGE, .CreateImage{Width, Height, Scale, 0, Orientation}});
 
             SpareParts.CanvasCmd({CC_DESTROY});
             SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
 
-            int BackBitmap = SpareParts.LoadImageFile(
-                PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(), Scale, 0, Orientation);
+            int BackBitmap = SpareParts.CanvasCmd(
+                {CC_LOADIMAGE,
+                 .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()).c_str(), Scale, 0,
+                            Orientation}});
 
             SpareParts.CanvasCmd({CC_INIT, .Init{Scale, Scale, Orientation}});
             SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0x31, 0x3d, 0x63}});

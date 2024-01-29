@@ -108,7 +108,7 @@ unsigned char led_ws2812b_io(led_ws2812b_t* led, const unsigned char din) {
     return din;
 }
 
-void led_ws2812b_draw(led_ws2812b_t* led, void (*CanvasCmd)(CanvasCmd_t), const int x1, const int y1, const int w1,
+void led_ws2812b_draw(led_ws2812b_t* led, CanvasCmd_ft CanvasCmd, const int x1, const int y1, const int w1,
                       const int h1, const int picpwr) {
     unsigned int x, y, index;
     int R, G, B;
