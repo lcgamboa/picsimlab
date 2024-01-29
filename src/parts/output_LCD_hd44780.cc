@@ -66,8 +66,8 @@ void cpart_LCD_hd44780::Reset(void) {
 }
 
 cpart_LCD_hd44780::cpart_LCD_hd44780(const unsigned x, const unsigned y, const char* name, const char* type,
-                                     board* pboard_)
-    : part(x, y, name, type, pboard_, 8) {
+                                     board* pboard_, const int id_)
+    : part(x, y, name, type, pboard_, id_, 8) {
     X = x;
     Y = y;
     ReadMaps();
@@ -99,7 +99,8 @@ cpart_LCD_hd44780::cpart_LCD_hd44780(const unsigned x, const unsigned y, const c
 
 cpart_LCD_hd44780::~cpart_LCD_hd44780(void) {
     delete Bitmap;
-    canvas.Destroy();
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_DESTROY});
     lcd_end(&lcd);
 }
 
@@ -121,48 +122,49 @@ void cpart_LCD_hd44780::DrawOutput(const unsigned int i) {
         case O_P9:
         case O_P10:
         case O_P11:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1 + yoff, output[i].x2 - output[i].x1,
-                             output[i].y2 - output[i].y1);
-            canvas.SetFgColor(255, 255, 255);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1 + yoff,
+                                                           output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (input_pins[output[i].id - O_P1] == 0)
-                canvas.RotatedText("NC", output[i].x1, output[i].y2 + yoff, 90.0);
+                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2 + yoff, 90.0}});
             else
-                canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1,
-                                   output[i].y2 + yoff, 90.0);
+                SpareParts.CanvasCmd(
+                    {CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(input_pins[output[i].id - O_P1]).c_str(),
+                                                  output[i].x1, output[i].y2 + yoff, 90.0}});
             break;
         case O_F1:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1 + yoff, output[i].x2 - output[i].x1,
-                             output[i].y2 - output[i].y1);
-            canvas.SetFgColor(155, 155, 155);
-            canvas.RotatedText("GND", output[i].x1, output[i].y2 + yoff, 90.0);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1 + yoff,
+                                                           output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"GND", output[i].x1, output[i].y2 + yoff, 90.0}});
             break;
         case O_F2:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1 + yoff, output[i].x2 - output[i].x1,
-                             output[i].y2 - output[i].y1);
-            canvas.SetFgColor(155, 155, 155);
-            canvas.RotatedText("+5V", output[i].x1, output[i].y2 + yoff, 90.0);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1 + yoff,
+                                                           output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"+5V", output[i].x1, output[i].y2 + yoff, 90.0}});
             break;
         case O_F3:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1 + yoff, output[i].x2 - output[i].x1,
-                             output[i].y2 - output[i].y1);
-            canvas.SetFgColor(155, 155, 155);
-            canvas.RotatedText("POT", output[i].x1, output[i].y2 + yoff, 90.0);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1 + yoff,
+                                                           output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"POT", output[i].x1, output[i].y2 + yoff, 90.0}});
             break;
         case O_LCD:
             // draw lcd text
             if (lcd.update) {
-                canvas.SetColor(0, 90 + 40, 0);
-                lcd_draw(&lcd, &canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, 90 + 40, 0}});
+                lcd_draw(&lcd, SpareParts.CanvasCmd, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                          output[i].y2 - output[i].y1, 1);
             }
             /*
             else
             {
-               canvas.Rectangle (1, output[i].x1, output[i].y1,
+               SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{11, output[i].x1, output[i].y1,
             output[i].x2-output[i].x1,output[i].y2-output[i].y1 );
             }
              */
@@ -387,9 +389,10 @@ void cpart_LCD_hd44780::LoadPartImage(void) {
     }
 
     if (SpareParts.GetWindow()) {
+        SpareParts.SetPartOnDraw(id);
         Bitmap = bmp;
-        canvas.Destroy();
-        canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
+        SpareParts.CanvasCmd({CC_DESTROY});
+        SpareParts.CanvasCmd({CC_CREATE, .Create{Bitmap}});
     }
     for (int i = 0; i < outputc; i++) {
         output[i].update = 1;
@@ -402,13 +405,13 @@ part_init(PART_LCD_HD44780_Name, cpart_LCD_hd44780, "Output");
 
 // Combined hd44780 + IO PCF8574
 
-static part* cpart_LCD_hd44780_i2c_create(unsigned int x, unsigned int y, board* pboard_) {
+static part* cpart_LCD_hd44780_i2c_create(const unsigned int x, const unsigned int y, board* pboard_, const int id_) {
     cpart_IO_PCF8574* pcf =
         (cpart_IO_PCF8574*)SpareParts.AddPart("IO PCF8574", x, y + 365, SpareParts.GetScale(), pboard_);
 
     const unsigned char* pcf_pins = pcf->GetOutputPins();
 
-    cpart_LCD_hd44780* lcd = new cpart_LCD_hd44780(x, y, PART_LCD_HD44780_Name, "Output", pboard_);
+    cpart_LCD_hd44780* lcd = new cpart_LCD_hd44780(x, y, PART_LCD_HD44780_Name, "Output", pboard_, id_ + 1);
 
     // connect lcd to pcf
     lcd->input_pins[0] = pcf_pins[0];

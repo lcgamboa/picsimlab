@@ -694,6 +694,4 @@ CPWindow4::CPWindow4(void) {
     // lxrad automatic generated block end, don't edit above!
     button1.SetColor(255, 0, 0);
     button2.SetColor(0, 255, 0);
-
-    font = NULL;
 }

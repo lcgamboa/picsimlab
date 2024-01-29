@@ -43,8 +43,9 @@ static PCWProp pcwprop[5] = {{PCW_LABEL, "1-GND,GND"},
                              {PCW_LABEL, "4-VCC,+5V"},
                              {PCW_END, ""}};
 
-cpart_hx711::cpart_hx711(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_) {
+cpart_hx711::cpart_hx711(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_,
+                         const int id_)
+    : part(x, y, name, type, pboard_, id_) {
     sen_hx711_init(&hx711, pboard);
     sen_hx711_rst(&hx711);
 
@@ -63,7 +64,8 @@ cpart_hx711::cpart_hx711(const unsigned x, const unsigned y, const char* name, c
 cpart_hx711::~cpart_hx711(void) {
     sen_hx711_end(&hx711);
     delete Bitmap;
-    canvas.Destroy();
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_DESTROY});
 }
 
 void cpart_hx711::DrawOutput(const unsigned int i) {
@@ -72,25 +74,29 @@ void cpart_hx711::DrawOutput(const unsigned int i) {
     switch (output[i].id) {
         case O_PO1:
             snprintf(val, 10, "%6.1f", (0.5 * (200 - values[0])));
-            DrawSlider(&canvas, &output[i], values[0], val, 6);
-            canvas.SetFontSize(8);
+            DrawSlider(SpareParts.CanvasCmd, &output[i], values[0], val, 6);
+            SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{8}});
             break;
         default:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
 
-            canvas.SetFgColor(255, 255, 255);
-            canvas.RotatedText(pin_names[output[i].id - O_PF1], output[i].x1, output[i].y2, 90.0);
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd(
+                {CC_ROTATEDTEXT, .RotatedText{pin_names[output[i].id - O_PF1], output[i].x1, output[i].y2, 90.0}});
 
             int pinv = pin_values[output[i].id - O_PF1][0];
             if (pinv > 10) {
-                canvas.SetFgColor(155, 155, 155);
-                canvas.RotatedText(pin_values[output[i].id - O_PF1], output[i].x1, output[i].y2 - 30, 90.0);
+                SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{pin_values[output[i].id - O_PF1], output[i].x1,
+                                                                   output[i].y2 - 30, 90.0}});
             } else {
                 if (pins[pinv] == 0)
-                    canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
+                    SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2 - 30, 90.0}});
                 else
-                    canvas.RotatedText(SpareParts.GetPinName(pins[pinv]), output[i].x1, output[i].y2 - 30, 90.0);
+                    SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(pins[pinv]).c_str(),
+                                                                       output[i].x1, output[i].y2 - 30, 90.0}});
             }
             break;
     }

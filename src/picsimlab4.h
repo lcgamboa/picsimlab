@@ -112,7 +112,6 @@ public:
 
 private:
     CButton* ctrl;
-    lxFont* font;
     double xz;
 };
 

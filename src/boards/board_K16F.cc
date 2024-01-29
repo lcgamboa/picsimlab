@@ -136,7 +136,7 @@ int cboard_K16F::MDumpMemory(const char* mfname) {
     return bsim_picsim::MDumpMemory(mfname);
 }
 
-void cboard_K16F::Draw(CCanvas* Canvas) {
+void cboard_K16F::Draw(void) {
     int i;
     int update = 0;  // verifiy if updated is needed
 
@@ -147,24 +147,25 @@ void cboard_K16F::Draw(CCanvas* Canvas) {
             output[i].update = 0;
 
             if (!update) {
-                Canvas->Init(Scale, Scale);
-                Canvas->SetFontWeight(lxFONTWEIGHT_BOLD);
+                PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});
+                PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
             }
             update++;  // set to update buffer
 
             if (!output[i].r)  // rectangle
             {
-                Canvas->SetFgColor(30, 0, 0);
+                PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{30, 0, 0}});
 
                 switch (output[i].id) {
                     case O_LCD:
-                        Canvas->SetColor(0, 90 * PICSimLab.GetMcuPwr() + 40, 0);
+                        PICSimLab.CanvasCmd(
+                            {CC_SETCOLOR, .SetColor{0, (unsigned int)(90 * PICSimLab.GetMcuPwr() + 40), 0}});
                         break;
                     case O_RST:
-                        Canvas->SetColor(100, 100, 100);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});
                         break;
                     case O_MP:
-                        Canvas->SetColor(26, 26, 26);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{26, 26, 26}});
                         break;
                 }
 
@@ -172,71 +173,77 @@ void cboard_K16F::Draw(CCanvas* Canvas) {
 
                 if (output[i].id == O_LCD) {
                     if (lcd.update) {
-                        Canvas->Rectangle(1, output[i].x1 - 1, output[i].y1 - 1, output[i].x2 - output[i].x1 + 2,
-                                          output[i].y2 - output[i].y1 + 3);
-                        lcd_draw(&lcd, Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                        PICSimLab.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1 - 1, output[i].y1 - 1,
+                                                                      output[i].x2 - output[i].x1 + 2,
+                                                                      output[i].y2 - output[i].y1 + 3}});
+                        lcd_draw(&lcd, PICSimLab.CanvasCmd, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                  output[i].y2 - output[i].y1, PICSimLab.GetMcuPwr());
                     }
                 } else if (output[i].id == O_RST) {
-                    Canvas->Circle(1, output[i].cx, output[i].cy, 11);
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 11}});
                     if (p_RST) {
-                        Canvas->SetColor(15, 15, 15);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
                     } else {
-                        Canvas->SetColor(55, 55, 55);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
                     }
-                    Canvas->Circle(1, output[i].cx, output[i].cy, 9);
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 9}});
                 } else if (output[i].id == O_MP) {
-                    Canvas->SetFontSize(10);
-                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                      output[i].y2 - output[i].y1);
-                    Canvas->SetColor(230, 230, 230);
-                    Canvas->RotatedText(Proc, output[i].x2, output[i].y1 + 5, -90);
+                    PICSimLab.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{10}});
+                    PICSimLab.CanvasCmd(
+                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                  output[i].y2 - output[i].y1}});
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{230, 230, 230}});
+                    PICSimLab.CanvasCmd(
+                        {CC_ROTATEDTEXT, .RotatedText{Proc.c_str(), output[i].x2, output[i].y1 + 5, -90}});
                 } else if (output[i].id <= O_TCT) {
                     if (p_KEY[output[i].id - O_TC1]) {
-                        Canvas->SetLineWidth(4);
-                        Canvas->SetColor(255, 0, 0);
+                        PICSimLab.CanvasCmd({CC_SETLINEWIDTH, .SetLineWidth{4}});
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{255, 0, 0}});
                     } else {
-                        Canvas->SetLineWidth(6);
-                        Canvas->SetColor(249, 249, 249);
+                        PICSimLab.CanvasCmd({CC_SETLINEWIDTH, .SetLineWidth{6}});
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{249, 249, 249}});
                     }
 
-                    Canvas->Rectangle(0, output[i].x1 + 3, output[i].y1 + 3, output[i].x2 - output[i].x1 - 6,
-                                      output[i].y2 - output[i].y1 - 6);
-                    Canvas->SetLineWidth(1);
+                    PICSimLab.CanvasCmd(
+                        {CC_RECTANGLE, .Rectangle{0, output[i].x1 + 3, output[i].y1 + 3,
+                                                  output[i].x2 - output[i].x1 - 6, output[i].y2 - output[i].y1 - 6}});
+                    PICSimLab.CanvasCmd({CC_SETLINEWIDTH, .SetLineWidth{1}});
                 } else {
-                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                      output[i].y2 - output[i].y1);
+                    PICSimLab.CanvasCmd(
+                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                  output[i].y2 - output[i].y1}});
                 }
             } else  // circle
             {
-                Canvas->SetFgColor(0, 0, 0);
+                PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
 
                 switch (output[i].id) {
                     case O_RA1:
-                        Canvas->SetBgColor(pic.pins[17].oavalue, 0, 0);
+                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[17].oavalue, 0, 0}});
                         break;
                     case O_RA2:
-                        Canvas->SetBgColor(pic.pins[0].oavalue, 0, 0);
+                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[0].oavalue, 0, 0}});
                         break;
                     case O_RA6:
-                        Canvas->SetBgColor(pic.pins[14].oavalue, 0, 0);
+                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[14].oavalue, 0, 0}});
                         break;
                     case O_RA7:
-                        Canvas->SetBgColor(pic.pins[15].oavalue, 0, 0);
+                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[15].oavalue, 0, 0}});
                         break;
                     case O_LPWR:
-                        Canvas->SetBgColor(0, 200 * PICSimLab.GetMcuPwr() + 55, 0);
+                        PICSimLab.CanvasCmd(
+                            {CC_SETBGCOLOR, .SetBgColor{0, (unsigned int)(200 * PICSimLab.GetMcuPwr() + 55), 0}});
                         break;
                 }
 
-                DrawLED(Canvas, &output[i]);
+                DrawLED(PICSimLab.CanvasCmd, &output[i]);
             }
         }
     }
 
     // end draw
     if (update) {
-        Canvas->End();
+        PICSimLab.CanvasCmd({CC_END});
     }
 }
 
@@ -345,7 +352,8 @@ void cboard_K16F::Run_CPU(void) {
             if (use_spare)
                 SpareParts.Process();
 
-            // increment mean value counter if pin is high
+            // increment mean value counter
+            // if pin is high
             alm[pi] += pins[pi].value;
             pi++;
             if (pi == pic.PINCOUNT)
@@ -624,7 +632,11 @@ void cboard_K16F::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
                         lxLaunchDefaultApplication(mi2c_tmp_name);
 #endif
                     } else {
-                        printf("Error saving to file: %s \n", mi2c_tmp_name);
+                        printf(
+                            "Error saving "
+                            "to file: "
+                            "%s \n",
+                            mi2c_tmp_name);
                     }
                     break;
             }
@@ -847,7 +859,11 @@ unsigned short cboard_K16F::GetInputId(char* name) {
     if (strcmp(name, "MD_VIEW") == 0)
         return I_VIEW;
 
-    printf("Error input '%s' don't have a valid id! \n", name);
+    printf(
+        "Error input '%s' don't have a "
+        "valid id! "
+        "\n",
+        name);
     return INVALID_ID;
 }
 
@@ -895,7 +911,11 @@ unsigned short cboard_K16F::GetOutputId(char* name) {
     if (strcmp(name, "IC_CPU") == 0)
         return O_MP;
 
-    printf("Error output '%s' don't have a valid id! \n", name);
+    printf(
+        "Error output '%s' don't have a "
+        "valid id! "
+        "\n",
+        name);
     return INVALID_ID;
 }
 

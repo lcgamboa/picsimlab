@@ -529,58 +529,60 @@ void cboard_DevKitC::EvMouseButtonRelease(uint button, uint x, uint y, uint stat
 // Called ever 100ms to draw board
 // This is the critical code for simulator running speed
 
-void cboard_DevKitC::Draw(CCanvas* Canvas) {
+void cboard_DevKitC::Draw(void) {
     int i;
 
-    Canvas->Init(Scale, Scale);  // initialize draw context
-    Canvas->SetFontWeight(lxFONTWEIGHT_BOLD);
+    PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});  // initialize draw context
+    PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
 
     // board_x draw
     for (i = 0; i < outputc; i++)  // run over all outputs
     {
         if (!output[i].r)  // if output shape is a rectangle
         {
-            Canvas->SetFgColor(0, 0, 0);  // black
+            PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});  // black
 
             switch (output[i].id)  // search for color of output
             {
                 case O_LON:  // Blue using mcupwr value
-                    Canvas->SetColor(200 * PICSimLab.GetMcuPwr() + 55, 0, 0);
+                    PICSimLab.CanvasCmd(
+                        {CC_SETCOLOR, .SetColor{(unsigned int)(200 * PICSimLab.GetMcuPwr() + 55), 0, 0}});
                     break;
                 case O_LED:  // Blue using mcupwr value
-                    Canvas->SetColor(0, 0, pins[23].oavalue);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{0, 0, (unsigned int)pins[23].oavalue}});
                     break;
                 case O_RST:
                 case O_BOOT:
-                    Canvas->SetColor(100, 100, 100);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});
                     break;
             }
 
             if (output[i].id == O_RST) {
-                Canvas->Circle(1, output[i].cx, output[i].cy, 13);
+                PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 13}});
                 if (p_RST) {
-                    Canvas->SetColor(15, 15, 15);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
                 } else {
-                    Canvas->SetColor(55, 55, 55);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
                 }
-                Canvas->Circle(1, output[i].cx, output[i].cy, 11);
+                PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 11}});
             } else if (output[i].id == O_BOOT) {
-                Canvas->Circle(1, output[i].cx, output[i].cy, 13);
+                PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 13}});
                 if (p_BOOT) {
-                    Canvas->SetColor(15, 15, 15);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
                 } else {
-                    Canvas->SetColor(55, 55, 55);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
                 }
-                Canvas->Circle(1, output[i].cx, output[i].cy, 11);
+                PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 11}});
             } else {
-                Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                  output[i].y2 - output[i].y1);
+                PICSimLab.CanvasCmd(
+                    {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                              output[i].y2 - output[i].y1}});
             }
         }
     }
 
     // end draw
-    Canvas->End();
+    PICSimLab.CanvasCmd({CC_END});
 }
 
 void cboard_DevKitC::Run_CPU_ns(uint64_t time) {
@@ -597,7 +599,8 @@ void cboard_DevKitC::Run_CPU_ns(uint64_t time) {
             // reset pins mean value
             memset(alm, 0, 64 * sizeof(unsigned int));
 
-            // Spare parts window pre process
+            // Spare parts window pre
+            // process
             if (use_spare)
                 SpareParts.PreProcess();
 
@@ -606,14 +609,25 @@ void cboard_DevKitC::Run_CPU_ns(uint64_t time) {
         }
 
         if (PICSimLab.GetMcuPwr())  // if powered
-                                    // for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
+                                    // for (i =
+                                    // 0; i <
+                                    // NSTEP;
+                                    // i++)  //
+                                    // repeat for
+                                    // number of
+                                    // steps in
+                                    // 100ms
         {
             /*
-            if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
+            if (j >= JUMPSTEPS)//if number
+            of step is bigger than steps to
+            skip
              {
              }
              */
-            // verify if a breakpoint is reached if not run one instruction
+            // verify if a breakpoint is
+            // reached if not run one
+            // instruction
             MStep();
             InstCounterInc();
             // Oscilloscope window process
@@ -623,13 +637,16 @@ void cboard_DevKitC::Run_CPU_ns(uint64_t time) {
             if (use_spare)
                 SpareParts.Process();
 
-            //  increment mean value counter if pin is high
+            //  increment mean value counter
+            //  if pin is high
             alm[pi] += pins[pi].value;
             pi++;
             if (pi == pinc)
                 pi = 0;
             /*
-                if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
+                if (j >= JUMPSTEPS)//if
+               number of step is bigger than
+               steps to skip
                  {
                   j = -1; //reset counter
                  }
@@ -645,7 +662,8 @@ void cboard_DevKitC::Run_CPU_ns(uint64_t time) {
             for (pi = 0; pi < MGetPinCount(); pi++) {
                 pins[pi].oavalue = (int)((alm[pi] * RNSTEP) + 55);
             }
-            // Spare parts window pre post process
+            // Spare parts window pre post
+            // process
             if (use_spare)
                 SpareParts.PostProcess();
         }
@@ -659,7 +677,6 @@ void cboard_DevKitC::Run_CPU(void) {
 #define CHR_TIOCM_RI 0x080
 #define CHR_TIOCM_DTR 0x002
 #define CHR_TIOCM_RTS 0x004
-
     if (qemu_started != 1) {
         return;
     }
@@ -694,22 +711,32 @@ void cboard_DevKitC::board_Event(CControl* control) {
 void cboard_DevKitC::BoardOptions(int* argc, char** argv) {
     if (ConfEnableWifi) {
         strcpy(argv[(*argc)++], "-nic");
-        strcpy(argv[(*argc)++], "user,model=esp32_wifi,id=u1,net=192.168.4.0/24");
+        strcpy(argv[(*argc)++],
+               "user,model=esp32_wifi,id="
+               "u1,net=192.168.4.0/24");
     }
     if (ConfDisableWdt) {
         strcpy(argv[(*argc)++], "-global");
-        strcpy(argv[(*argc)++], "driver=timer.esp32.timg,property=wdt_disable,value=true");
+        strcpy(argv[(*argc)++],
+               "driver=timer.esp32.timg,"
+               "property=wdt_disable,value="
+               "true");
     }
     if (ConfEnableEthernet) {
         strcpy(argv[(*argc)++], "-nic");
-        strcpy(argv[(*argc)++], "user,model=open_eth,id=u2,net=192.168.3.0/24");
+        strcpy(argv[(*argc)++],
+               "user,model=open_eth,id=u2,"
+               "net=192.168.3.0/24");
     }
 }
 
 void cboard_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x, uint y, uint state) {
     switch (control->GetTag()) {
         case 4: {
-            std::string fname = PICSimLab.GetSharePath() + "boards/" BOARD_DevKitC_Name + "/config.lxrad";
+            std::string fname = PICSimLab.GetSharePath() +
+                                "boards"
+                                "/" BOARD_DevKitC_Name +
+                                "/config.lxrad";
 
             if (lxFileExists(fname)) {
                 wconfig->DestroyChilds();
@@ -821,7 +848,8 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
             uint32_t* gpio_in_sel = qemu_picsimlab_get_internals(QEMU_INTERNAL_GPIO_IN_SEL);
             int function = cfg & 0x1ff;
             int gpio = gpio_in_sel[cfg & 0x1ff] & 0x3F;
-            // printf("sel in    %3i = %3i\n", gpio, function);
+            // printf("sel in    %3i =
+            // %3i\n", gpio, function);
 
             switch (function) {
                 case 9:  // HSPIQ
@@ -873,7 +901,8 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
 
             int function = gpio_out_sel[cfg & 0xff] & 0x1FF;
             int gpio = cfg & 0xff;
-            // printf("sel out   %3i = %3i\n", gpio, function);
+            // printf("sel out   %3i =
+            // %3i\n", gpio, function);
 
             switch (function) {
                 case 8:  // HSPICLK
@@ -960,7 +989,9 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
                 case 84:  // ledc_ls_sig_out5
                 case 85:  // ledc_ls_sig_out6
                 case 86:  // ledc_ls_sig_out7
-                    // printf("LEDC channel %i in GPIO %i\n", function - 71, gpio);
+                    // printf("LEDC channel
+                    // %i in GPIO %i\n",
+                    // function - 71, gpio);
                     pwm_out.pins[function - 71] = io2pin(gpio);
                     break;
                 case 87:  // rmt_sig_out0
@@ -971,7 +1002,9 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
                 case 92:  // rmt_sig_out5
                 case 93:  // rmt_sig_out6
                 case 94:  // rmt_sig_out7
-                    // printf("RMT channel %i in GPIO %i\n", function - 71, gpio);
+                    // printf("RMT channel
+                    // %i in GPIO %i\n",
+                    // function - 71, gpio);
                     break;
                 case 95:  // I2CEXT1_SCL
                     master_i2c[1].scl_pin = io2pin(gpio);
@@ -994,7 +1027,8 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
 
             int function = (muxgpios[cfg & 0xff] & 0x7000) >> 12;
             int gpio = cfg & 0xff;
-            // printf("iomux fun 0x%02x = 0x%08x\n", gpio, function);
+            // printf("iomux fun 0x%02x =
+            // 0x%08x\n", gpio, function);
 
             switch (function) {
                 case 0:
@@ -1220,13 +1254,12 @@ void cboard_DevKitC::MSetAPin(int pin, float value) {
                 channel = 0;
                 break;
                 /*
-                //GPIO37 and GPIO38 are not exposed in devkitc
-                            case x:  // GPIO37
-                                channel = 1;
+                //GPIO37 and GPIO38 are not
+                exposed in devkitc case x:
+                // GPIO37 channel = 1;
                                 break;
-                            case x:  // GPIO38
-                                channel = 2;
-                                break;
+                            case x:  //
+                GPIO38 channel = 2; break;
                 */
             case IO39:
                 channel = 3;
@@ -1288,7 +1321,9 @@ void cboard_DevKitC::MSetAPin(int pin, float value) {
             if (ADCvalues[channel] != svalue) {
                 qemu_picsimlab_set_apin(channel, svalue);
                 ADCvalues[channel] = svalue;
-                // printf("Analog channel %02X = %i\n", channel, svalue);
+                // printf("Analog channel
+                // %02X = %i\n", channel,
+                // svalue);
             }
         }
     }

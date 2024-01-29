@@ -238,7 +238,8 @@ public:
     /**
      * @brief  Called once on part creation
      */
-    part(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_, const int fsize = 8);
+    part(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_, const int id_,
+         const int fsize = 8);
 
     /**
      * @brief  Called once on part initialization
@@ -326,11 +327,6 @@ public:
     virtual void SetScale(double scale);
 
     /**
-     * @brief  Set the part ID, don't be called by user
-     */
-    virtual void SetId(int _id) { id = _id; };
-
-    /**
      * @brief  Get the part ID
      */
     int GetId(void) { return id; };
@@ -381,19 +377,18 @@ protected:
     int X;                          ///< X position of part
     int Y;                          ///< Y position of part
     lxBitmap* Bitmap;               ///< Internal Bitmap
-    CCanvas canvas;                 ///< Internal Canvas to draw in bitmap
     unsigned int refresh;           ///< redraw is needed
     int Orientation;                ///< orientation to draw part
-    double Scale;                   ///< scale to draw part
+    float Scale;                    ///< scale to draw part
     unsigned int Update;            ///< part need draw Update
     int always_update;              ///< part need to be update every clock cycle
     std::string Type;
-    lxFont font;
     int PinCount;
     int PinCtrlCount;
     unsigned char* Pins;
     unsigned char* PinsCtrl;
     board* pboard;
+    int Fsize;
 
     /**
      * @brief  read maps
@@ -434,22 +429,22 @@ private:
 
 extern int NUM_PARTS;
 
-#define part_init(name, function, menu)                                              \
-    static part* function##_create(unsigned int x, unsigned int y, board* pboard_) { \
-        part* p = new function(x, y, name, menu, pboard_);                           \
-        p->Init();                                                                   \
-        return p;                                                                    \
-    };                                                                               \
-    static void __attribute__((constructor)) function##_init(void);                  \
-    static void function##_init(void) {                                              \
-        part_register(name, function##_create, menu);                                \
+#define part_init(name, function, menu)                                                                         \
+    static part* function##_create(const unsigned int x, const unsigned int y, board* pboard_, const int id_) { \
+        part* p = new function(x, y, name, menu, pboard_, id_);                                                 \
+        p->Init();                                                                                              \
+        return p;                                                                                               \
+    };                                                                                                          \
+    static void __attribute__((constructor)) function##_init(void);                                             \
+    static void function##_init(void) {                                                                         \
+        part_register(name, function##_create, menu);                                                           \
     }
 
-typedef part* (*part_create_func)(unsigned int x, unsigned int y, board* pboard_);
+typedef part* (*part_create_func)(const unsigned int x, const unsigned int y, board* pboard_, const int id_);
 
 void part_register(const char* name, part_create_func pcreate, const char* menu);
 
-part* create_part(std::string name, unsigned int x, unsigned int y, board* pboard_);
+part* create_part(std::string name, const unsigned int x, const unsigned int y, board* pboard_, const int id_);
 
 typedef struct {
     char name[30];

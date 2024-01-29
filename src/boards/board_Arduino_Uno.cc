@@ -299,7 +299,7 @@ void cboard_Arduino_Uno::EvMouseButtonRelease(uint button, uint x, uint y, uint 
 // Called ever 100ms to draw board
 // This is the critical code for simulator running speed
 
-void cboard_Arduino_Uno::Draw(CCanvas* Canvas) {
+void cboard_Arduino_Uno::Draw(void) {
     int i;
     int update = 0;  // verifiy if updated is needed
 
@@ -311,44 +311,54 @@ void cboard_Arduino_Uno::Draw(CCanvas* Canvas) {
             output[i].update = 0;
 
             if (!update) {
-                Canvas->Init(Scale, Scale);
-                Canvas->SetFontWeight(lxFONTWEIGHT_BOLD);
+                PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});
+                PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
             }
             update++;          // set to update buffer
             if (!output[i].r)  // if output shape is a rectangle
             {
                 switch (output[i].id) {
                     case O_ON:
-                        Canvas->SetColor(0, 200 * PICSimLab.GetMcuPwr() + 55, 0);
+                        PICSimLab.CanvasCmd(
+                            {CC_SETCOLOR, .SetColor{0, (unsigned int)(200 * PICSimLab.GetMcuPwr() + 55), 0}});
                         break;
                     case O_RX:
-                        Canvas->SetColor(0, (255 - pins[1].oavalue) * PICSimLab.GetMcuPwr(), 0);
+                        PICSimLab.CanvasCmd(
+                            {CC_SETCOLOR,
+                             .SetColor{0, (unsigned int)(255 - pins[1].oavalue) * PICSimLab.GetMcuPwr(), 0}});
                         break;
                     case O_TX:
-                        Canvas->SetColor(0, (255 - ((unsigned char)pins[2].oavalue * 10)) * PICSimLab.GetMcuPwr(), 0);
+                        PICSimLab.CanvasCmd(
+                            {CC_SETCOLOR,
+                             .SetColor{
+                                 0, (unsigned int)(255 - ((unsigned char)pins[2].oavalue * 10)) * PICSimLab.GetMcuPwr(),
+                                 0}});
                         break;
                     case O_L:
-                        Canvas->SetColor(0, pins[LED_pin].oavalue, 0);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{0, (unsigned int)pins[LED_pin].oavalue, 0}});
                         break;
                     case O_RST:
-                        Canvas->SetColor(100, 100, 100);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});
                         break;
                     default:
-                        Canvas->SetColor(0, 0, 0);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{0, 0, 0}});
                         break;
                 }
 
                 if (output[i].id == O_RST) {
-                    Canvas->Circle(1, output[i].cx, output[i].cy, ((output[i].x2 - output[i].x1) / 2) - 5);
+                    PICSimLab.CanvasCmd(
+                        {CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, ((output[i].x2 - output[i].x1) / 2) - 5}});
                     if (p_RST) {
-                        Canvas->SetColor(15, 15, 15);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
                     } else {
-                        Canvas->SetColor(55, 55, 55);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
                     }
-                    Canvas->Circle(1, output[i].cx, output[i].cy, ((output[i].x2 - output[i].x1) / 2) - 7);
+                    PICSimLab.CanvasCmd(
+                        {CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, ((output[i].x2 - output[i].x1) / 2) - 7}});
                 } else {
-                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                      output[i].y2 - output[i].y1);
+                    PICSimLab.CanvasCmd(
+                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                  output[i].y2 - output[i].y1}});
                 }
             }
         }
@@ -356,7 +366,7 @@ void cboard_Arduino_Uno::Draw(CCanvas* Canvas) {
 
     // end draw
     if (update) {
-        Canvas->End();
+        PICSimLab.CanvasCmd({CC_END});
     }
 
     int value = (pins[PWM_pins[0]].oavalue - 55) / 2;
@@ -380,9 +390,16 @@ void cboard_Arduino_Uno::Run_CPU(void) {
     const picpin* pins;
     unsigned int alm[100];
 
-    // int JUMPSTEPS = Window1.GetJUMPSTEPS ()*4.0; //number of steps skipped
+    // int JUMPSTEPS =
+    // Window1.GetJUMPSTEPS
+    // ()*4.0; //number of steps
+    // skipped
     const int pinc = MGetPinCount();
-    const long int NSTEP = 4.0 * PICSimLab.GetNSTEP();  // number of steps in 100ms
+    const long int NSTEP = 4.0 * PICSimLab.GetNSTEP();  // number
+                                                        // of
+                                                        // steps
+                                                        // in
+                                                        // 100ms
     const float RNSTEP = 200.0 * pinc / NSTEP;
 
     long long unsigned int cycle_start;
@@ -392,19 +409,29 @@ void cboard_Arduino_Uno::Run_CPU(void) {
 
     memset(alm, 0, pinc * sizeof(unsigned int));
 
-    // read pic.pins to a local variable to speed up
+    // read pic.pins to a local
+    // variable to speed up
 
     pins = MGetPinsValues();
 
     if (use_spare)
         SpareParts.PreProcess();
 
-    // j = JUMPSTEPS; //step counter
+    // j = JUMPSTEPS; //step
+    // counter
     pi = 0;
-    if (PICSimLab.GetMcuPwr())       // if powered
-        for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
+    if (PICSimLab.GetMcuPwr())       // if
+                                     // powered
+        for (i = 0; i < NSTEP; i++)  // repeat for
+                                     // number of
+                                     // steps in
+                                     // 100ms
         {
-            // verify if a breakpoint is reached if not run one instruction
+            // verify if a
+            // breakpoint is
+            // reached if not
+            // run one
+            // instruction
             if (avr_debug_type || (!mplabxd_testbp())) {
                 if (twostep) {
                     twostep = 0;  // NOP
@@ -427,21 +454,32 @@ void cboard_Arduino_Uno::Run_CPU(void) {
                 SpareParts.Process();
             ioupdated = 0;
 
-            // increment mean value counter if pin is high
+            // increment mean
+            // value counter if
+            // pin is high
             alm[pi] += pins[pi].value;
             pi++;
             if (pi == pinc)
                 pi = 0;
             /*
-                if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
+                if (j >=
+               JUMPSTEPS)//if
+               number of step is
+               bigger than steps
+               to skip
                  {
-                  //set analog pin 2 (AN0) with value from scroll
+                  //set analog
+               pin 2 (AN0) with
+               value from scroll
                   //pic_set_apin(2,((5.0*(scroll1->GetPosition()))/
-                  //  (scroll1->GetRange()-1)));
+                  //
+               (scroll1->GetRange()-1)));
 
-                  j = -1; //reset counter
+                  j = -1;
+               //reset counter
                  }
-                j++; //counter increment
+                j++; //counter
+               increment
              */
         }
 
@@ -453,7 +491,8 @@ void cboard_Arduino_Uno::Run_CPU(void) {
     if (use_spare)
         SpareParts.PostProcess();
 
-    // verifiy if LEDS need update
+    // verifiy if LEDS need
+    // update
     if (output_ids[O_RX]->value != pins[1].oavalue) {
         output_ids[O_RX]->value = pins[1].oavalue;
         output_ids[O_RX]->update = 1;

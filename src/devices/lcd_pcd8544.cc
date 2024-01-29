@@ -30,8 +30,6 @@
 
 #include "lcd_pcd8544.h"
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 void lcd_pcd8544_rst(lcd_pcd8544_t* lcd) {
     int i, j;
     for (i = 0; i < 84; i++)
@@ -158,15 +156,15 @@ unsigned char lcd_pcd8544_io(lcd_pcd8544_t* lcd, unsigned char din, unsigned cha
     return 1;
 }
 
-void lcd_pcd8544_draw(lcd_pcd8544_t* lcd, CCanvas* canvas, int x1, int y1, int w1, int h1, int picpwr) {
+void lcd_pcd8544_draw(lcd_pcd8544_t* lcd, void (*CanvasCmd)(CanvasCmd_t), int x1, int y1, int w1, int h1, int picpwr) {
     unsigned char x, y, z;
 
     if (lcd->e) {
-        canvas->SetFgColor(0, 0, 0);
-        canvas->SetColor(0, 0, 0);
+        (*CanvasCmd)({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+        (*CanvasCmd)({CC_SETCOLOR, .SetColor{0, 0, 0}});
     } else {
-        canvas->SetFgColor(82, 129, 111);
-        canvas->SetColor(82, 129, 111);
+        (*CanvasCmd)({CC_SETFGCOLOR, .SetFgColor{82, 129, 111}});
+        (*CanvasCmd)({CC_SETCOLOR, .SetColor{82, 129, 111}});
     }
 
     // canvas->Rectangle (1, x1, y1, w1, h1);//erase all
@@ -182,13 +180,14 @@ void lcd_pcd8544_draw(lcd_pcd8544_t* lcd, CCanvas* canvas, int x1, int y1, int w
                 lcd->ram[x][y] &= 0x00FF;  // clear draw
                 for (z = 0; z < 8; z++) {
                     if (!(lcd->ram[x][y] & (0x01 << z)) != (!lcd->e)) {
-                        canvas->SetFgColor(0, 0, 0);
-                        canvas->SetColor(0, 0, 0);
+                        (*CanvasCmd)({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+                        (*CanvasCmd)({CC_SETCOLOR, .SetColor{0, 0, 0}});
                     } else {
-                        canvas->SetFgColor(82, 129, 111);
-                        canvas->SetColor(82, 129, 111);
+                        (*CanvasCmd)({CC_SETFGCOLOR, .SetFgColor{82, 129, 111}});
+                        (*CanvasCmd)({CC_SETCOLOR, .SetColor{82, 129, 111}});
                     }
-                    canvas->Rectangle(1, x1 + (x * 2), y1 + (y * 8 * 2) + (z * 2), 2, 2);
+                    (*CanvasCmd)({CC_RECTANGLE,
+                                  .Rectangle{1, (float)(x1 + (x * 2)), (float)(y1 + (y * 8 * 2) + (z * 2)), 2, 2}});
                     // canvas->Point (x1 + x, y1 + y*8 +z);
                 }
             }

@@ -205,7 +205,7 @@ void CPWindow1::DrawBoard(void) {
         if (PICSimLab.GetBoard()) {
             PICSimLab.GetBoard()->SetScale(PICSimLab.GetScale());
             PICSimLab.GetBoard()->EvOnShow();
-            PICSimLab.GetBoard()->Draw(&draw1.Canvas);
+            PICSimLab.GetBoard()->Draw();
         }
         draw1.SetVisible(1);
 
@@ -219,7 +219,7 @@ void CPWindow1::DrawBoard(void) {
         PICSimLab.SetNeedResize(0);
         statusbar1.Draw();
     } else if (PICSimLab.GetBoard()) {
-        PICSimLab.GetBoard()->Draw(&draw1.Canvas);
+        PICSimLab.GetBoard()->Draw();
     }
 #ifndef _WIN_
     Draw();
@@ -682,6 +682,7 @@ void CPWindow1::_EvOnCreate(CControl* control) {
     PICSimLab.OnUpdateGUI = &CPWindow1::OnUpdateGUI;
     PICSimLab.OnLoadImage = &CPWindow1::OnLoadImage;
     PICSimLab.OnConfigMenuGUI = &CPWindow1::OnConfigMenuGUI;
+    PICSimLab.OnCanvasCmd = &CPWindow1::OnCanvasCmd;
 
     PICSimLab.board_Event = EVONCOMBOCHANGE & CPWindow1::board_Event;
     PICSimLab.board_ButtonEvent = EVMOUSEBUTTONRELEASE & CPWindow1::board_ButtonEvent;
@@ -1024,7 +1025,7 @@ void CPWindow1::Configure(void) {
 
     PICSimLab.GetBoard()->Reset();
     PICSimLab.GetBoard()->EvOnShow();
-    PICSimLab.GetBoard()->Draw(&draw1.Canvas);
+    PICSimLab.GetBoard()->Draw();
     draw1.SetVisible(1);
 
     SetTitle(((PICSimLab.GetInstanceNumber() > 0)
@@ -1388,6 +1389,87 @@ void CPWindow1::OnConfigMenuGUI(const PICSimlabGUIMenu type) {
             Window1.menu1_File_SaveHex.SetEnable(0);
             Window1.menu1_File_ReloadLast.SetEnable(0);
             break;
+        default:
+            break;
+    }
+}
+
+void CPWindow1::OnCanvasCmd(const CanvasCmd_t cmd) {
+    switch (cmd.cmd) {
+        case CC_INIT:
+            Window1.draw1.Canvas.Init(cmd.Init.sx, cmd.Init.sy, cmd.Init.angle);
+            break;
+        case CC_CHANGESCALE:
+            Window1.draw1.Canvas.ChangeScale(cmd.ChangeScale.sx, cmd.ChangeScale.sy);
+            break;
+        case CC_END:
+            Window1.draw1.Canvas.End();
+            break;
+        case CC_SETBITMAP:
+            Window1.draw1.Canvas.SetBitmap(cmd.SetBitmap.bitmap, cmd.SetBitmap.xs, cmd.SetBitmap.ys);
+            break;
+        case CC_SETCOLOR:
+            Window1.draw1.Canvas.SetColor(cmd.SetColor.r, cmd.SetColor.g, cmd.SetColor.b);
+            break;
+        case CC_SETFGCOLOR:
+            Window1.draw1.Canvas.SetFgColor(cmd.SetFgColor.r, cmd.SetFgColor.g, cmd.SetFgColor.b);
+            break;
+        case CC_SETBGCOLOR:
+            Window1.draw1.Canvas.SetBgColor(cmd.SetBgColor.r, cmd.SetBgColor.g, cmd.SetBgColor.b);
+            break;
+        case CC_SETFONTSIZE:
+            Window1.draw1.Canvas.SetFontSize(cmd.SetFontSize.pointsize);
+            break;
+        case CC_SETFONTWEIGHT:
+            Window1.draw1.Canvas.SetFontWeight(cmd.SetFontWeight.weight);
+            break;
+        case CC_SETLINEWIDTH:
+            Window1.draw1.Canvas.SetLineWidth(cmd.SetLineWidth.lwidth);
+            break;
+        case CC_POINT:
+            Window1.draw1.Canvas.Point(cmd.Point.x, cmd.Point.y);
+            break;
+        case CC_LINE:
+            Window1.draw1.Canvas.Line(cmd.Line.x1, cmd.Line.y1, cmd.Line.x2, cmd.Line.y2);
+            break;
+        case CC_RECTANGLE:
+            Window1.draw1.Canvas.Rectangle(cmd.Rectangle.filled, cmd.Rectangle.x, cmd.Rectangle.y, cmd.Rectangle.width,
+                                           cmd.Rectangle.height);
+            break;
+        case CC_CIRCLE:
+            Window1.draw1.Canvas.Circle(cmd.Circle.filled, cmd.Circle.x, cmd.Circle.y, cmd.Circle.radius);
+            break;
+        case CC_ROTATEDTEXT:
+            Window1.draw1.Canvas.RotatedText(cmd.RotatedText.str, cmd.RotatedText.x, cmd.RotatedText.y,
+                                             cmd.RotatedText.angle);
+            break;
+        case CC_TEXTONRECT: {
+            lxRect rect;
+            rect.x = cmd.TextOnRect.rect.x;
+            rect.y = cmd.TextOnRect.rect.y;
+            rect.width = cmd.TextOnRect.rect.width;
+            rect.height = cmd.TextOnRect.rect.height;
+            Window1.draw1.Canvas.TextOnRect(cmd.TextOnRect.str, rect, cmd.TextOnRect.align);
+        } break;
+        case CC_POLYGON:
+            Window1.draw1.Canvas.Polygon(cmd.Polygon.filled, (lxPoint*)cmd.Polygon.points, cmd.Polygon.npoints);
+            break;
+        case CC_PUTBITMAP:
+            Window1.draw1.Canvas.PutBitmap(cmd.PutBitmap.bitmap, cmd.PutBitmap.x, cmd.PutBitmap.y);
+            break;
+        case CC_GETBGCOLOR: {
+            lxColor bgc = Window1.draw1.Canvas.GetBgColor();
+            *cmd.GetBgColor.r = bgc.Red();
+            *cmd.GetBgColor.g = bgc.Green();
+            *cmd.GetBgColor.b = bgc.Blue();
+        } break;
+        case CC_CREATE:
+            Window1.draw1.Canvas.Create(Window1.GetWWidget(), cmd.Create.bitmap);
+            break;
+        case CC_DESTROY:
+            Window1.draw1.Canvas.Destroy();
+            break;
+        case CC_LAST:
         default:
             break;
     }

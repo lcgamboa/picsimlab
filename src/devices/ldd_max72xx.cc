@@ -28,8 +28,6 @@
     } else     \
         printf
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 #include "ldd_max72xx.h"
 
 void ldd_max72xx_rst(ldd_max72xx_t* ldd) {
@@ -110,8 +108,8 @@ unsigned char ldd_max72xx_io(ldd_max72xx_t* ldd, unsigned char din, unsigned cha
     return ldd->bb_spi.ret;
 }
 
-void ldd_max72xx_draw(ldd_max72xx_t* ldd, CCanvas* canvas, int x1, int y1, int w1, int h1, int picpwr, int angle,
-                      int mode) {
+void ldd_max72xx_draw(ldd_max72xx_t* ldd, void (*CanvasCmd)(CanvasCmd_t), int x1, int y1, int w1, int h1, int picpwr,
+                      int angle, int mode) {
     int x, y, a, b;
 
     ldd->update = 0;
@@ -142,19 +140,21 @@ void ldd_max72xx_draw(ldd_max72xx_t* ldd, CCanvas* canvas, int x1, int y1, int w
             }
 
             if (ldd->ram[a] & (1 << (b))) {
-                canvas->SetFgColor(50, 50, 50);
-                canvas->SetBgColor(250, 0, 0);
+                (*CanvasCmd)({CC_SETFGCOLOR, .SetFgColor{50, 50, 50}});
+                (*CanvasCmd)({CC_SETBGCOLOR, .SetBgColor{250, 0, 0}});
             } else {
-                canvas->SetFgColor(50, 50, 50);
-                canvas->SetBgColor(70, 70, 70);
+                (*CanvasCmd)({CC_SETFGCOLOR, .SetFgColor{50, 50, 50}});
+                (*CanvasCmd)({CC_SETBGCOLOR, .SetBgColor{70, 70, 70}});
             }
 
             switch (mode) {
                 case 1:
-                    canvas->Circle(1, x1 + ((7 - x) * 20) + 10, y1 + ((7 - y) * 20) + 10, 9);  // Parola
+                    (*CanvasCmd)({CC_CIRCLE, .Circle{1, (float)(x1 + ((7 - x) * 20) + 10),
+                                                     (float)(y1 + ((7 - y) * 20) + 10), 9}});  // Parola
                     break;
                 default:
-                    canvas->Circle(1, x1 + ((x) * 20) + 10, y1 + ((7 - y) * 20) + 10, 9);  // FC16
+                    (*CanvasCmd)({CC_CIRCLE, .Circle{1, (float)(x1 + ((x) * 20) + 10),
+                                                     (float)(y1 + ((7 - y) * 20) + 10), 9}});  // FC16
                     break;
             }
         }

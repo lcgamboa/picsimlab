@@ -39,8 +39,9 @@ static PCWProp pcwprop[4] = {{PCW_LABEL, "1 - GND,GND"},
                              {PCW_LABEL, "3 - VCC,+5V"},
                              {PCW_END, ""}};
 
-cpart_ds18b20::cpart_ds18b20(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_) {
+cpart_ds18b20::cpart_ds18b20(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_,
+                             const int id_)
+    : part(x, y, name, type, pboard_, id_) {
     output_pins[0] = 0;
 
     values[0] = 0;
@@ -63,7 +64,8 @@ void cpart_ds18b20::RegisterRemoteControl(void) {
 cpart_ds18b20::~cpart_ds18b20(void) {
     sen_ds18b20_end(&ds18b20);
     delete Bitmap;
-    canvas.Destroy();
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_DESTROY});
 }
 
 void cpart_ds18b20::DrawOutput(const unsigned int i) {
@@ -71,31 +73,35 @@ void cpart_ds18b20::DrawOutput(const unsigned int i) {
 
     switch (output[i].id) {
         case O_P1:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(255, 255, 255);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (output_pins[output[i].id - O_P1] == 0)
-                canvas.RotatedText("NC", output[i].x1, output[i].y2, 90);
+                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2, 90}});
             else
-                canvas.RotatedText(SpareParts.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1, output[i].y2,
-                                   90);
+                SpareParts.CanvasCmd(
+                    {CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(output_pins[output[i].id - O_P1]).c_str(),
+                                                  output[i].x1, output[i].y2, 90}});
             break;
         case O_F1:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(155, 155, 155);
-            canvas.RotatedText("GND", output[i].x1, output[i].y2, 90);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"GND", output[i].x1, output[i].y2, 90}});
             break;
         case O_F2:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(155, 155, 155);
-            canvas.RotatedText("+5V", output[i].x1, output[i].y2, 90);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"+5V", output[i].x1, output[i].y2, 90}});
             break;
         case O_PO1:
             snprintf(val, 10, "%5.1f", (0.6 * (200 - values[0]) - 40));
-            DrawSlider(&canvas, &output[i], values[0], val, 7);
-            canvas.SetFontSize(9);
+            DrawSlider(SpareParts.CanvasCmd, &output[i], values[0], val, 7);
+            SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{9}});
             break;
     }
 }

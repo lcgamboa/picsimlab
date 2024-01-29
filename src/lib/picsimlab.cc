@@ -93,6 +93,7 @@ CPICSimLab::CPICSimLab() {
     OnUpdateGUI = NULL;
     OnLoadImage = NULL;
     OnConfigMenuGUI = NULL;
+    OnCanvasCmd = NULL;
 
     board_Event = NULL;
     board_ButtonEvent = NULL;
@@ -240,6 +241,12 @@ lxBitmap* CPICSimLab::LoadImageFile(const std::string fname, const float scale, 
 void CPICSimLab::ConfigMenuGUI(const PICSimlabGUIMenu type) {
     if (OnConfigMenuGUI) {
         (*OnConfigMenuGUI)(type);
+    }
+}
+
+void CPICSimLab::CanvasCmd(const CanvasCmd_t cmd) {
+    if (PICSimLab.OnCanvasCmd) {
+        (*PICSimLab.OnCanvasCmd)(cmd);
     }
 }
 

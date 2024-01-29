@@ -41,6 +41,7 @@ CSpareParts::CSpareParts() {
     scale = 1.0;
     LoadConfigFile = "";
     fdtype = -1;
+    PartOnDraw = -1;
 
     PropButtonRelease = NULL;
     PropComboChange = NULL;
@@ -51,6 +52,7 @@ CSpareParts::CSpareParts() {
 
     OnLoadImage = NULL;
     OnCreateImage = NULL;
+    OnCanvasCmd = NULL;
 }
 
 void CSpareParts::Init(CWindow* win) {
@@ -77,12 +79,11 @@ part* CSpareParts::GetPart(const int partn) {
 }
 
 part* CSpareParts::AddPart(const char* partname, const int x, const int y, const float scale, board* pboard_) {
-    part* newpart = create_part(partname, x, y, pboard_);
+    part* newpart = create_part(partname, x, y, pboard_, partsc);
     parts[partsc] = newpart;
     if (parts[partsc] == NULL) {
         Message_sz("Erro creating part: " + std::string(partname), 400, 200);
     } else {
-        parts[partsc]->SetId(partsc);
         parts[partsc]->SetScale(scale);
         parts[partsc]->Reset();
         partsc++;
@@ -493,10 +494,10 @@ bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
             } else if (!strcmp(name, "osc_ch2")) {
                 osc_list.push_back(prefs.at(i));
                 Oscilloscope.ReadPreferencesList(osc_list);
-            } else if ((parts[partsc_] = create_part(name, x, y, PICSimLab.GetBoard()))) {
+            } else if ((parts[partsc_] = create_part(name, x, y, PICSimLab.GetBoard(), partsc_))) {
                 printf("Spare parts: parts[%02i] (%s) created \n", partsc_, name);
+                partsc = partsc_ + 1;
                 parts[partsc_]->ReadPreferences(temp);
-                parts[partsc_]->SetId(partsc_);
                 if (newformat) {
                     parts[partsc_]->SetOrientation(orient);
                     parts[partsc_]->SetScale(scale);
@@ -688,4 +689,10 @@ lxBitmap* CSpareParts::CreateBlankImage(const unsigned int width, const unsigned
         return (*OnCreateImage)(width, height, scale, usealpha, orientation);
     }
     return NULL;
+}
+
+void CSpareParts::CanvasCmd(const CanvasCmd_t cmd) {
+    if (SpareParts.OnCanvasCmd) {
+        (*SpareParts.OnCanvasCmd)(cmd);
+    }
 }

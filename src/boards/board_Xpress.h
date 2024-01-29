@@ -51,7 +51,7 @@ public:
     // Destructor called once on board destruction
     ~cboard_Xpress(void);
     // Called ever 100ms to draw board
-    void Draw(CCanvas* Canvas) override;
+    void Draw(void) override;
     void Run_CPU(void) override;
     // Return a list of board supported microcontrollers
     std::string GetSupportedDevices(void) override { return "PIC16F18855,"; };

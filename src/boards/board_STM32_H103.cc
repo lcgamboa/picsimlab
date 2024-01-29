@@ -448,59 +448,62 @@ void cboard_STM32_H103::EvMouseButtonRelease(uint button, uint x, uint y, uint s
 // Called ever 100ms to draw board
 // This is the critical code for simulator running speed
 
-void cboard_STM32_H103::Draw(CCanvas* Canvas) {
+void cboard_STM32_H103::Draw(void) {
     int i;
 
-    Canvas->Init(Scale, Scale);  // initialize draw context
-    Canvas->SetFontWeight(lxFONTWEIGHT_BOLD);
+    PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});  // initialize draw context
+    PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
 
     // board_x draw
     for (i = 0; i < outputc; i++)  // run over all outputs
     {
         if (!output[i].r)  // if output shape is a rectangle
         {
-            Canvas->SetFgColor(0, 0, 0);  // black
+            PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});  // black
 
             switch (output[i].id)  // search for color of output
             {
                 case O_LED:  // White using pc12 mean value
-                    Canvas->SetColor(0, pins[52].oavalue, 0);
-                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                      output[i].y2 - output[i].y1);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{0, (unsigned int)pins[52].oavalue, 0}});
+                    PICSimLab.CanvasCmd(
+                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                  output[i].y2 - output[i].y1}});
 
                     break;
                 case O_LPWR:  // Blue using mcupwr value
-                    Canvas->SetColor(200 * PICSimLab.GetMcuPwr() + 55, 0, 0);
-                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                      output[i].y2 - output[i].y1);
+                    PICSimLab.CanvasCmd(
+                        {CC_SETCOLOR, .SetColor{(unsigned int)(200 * PICSimLab.GetMcuPwr() + 55), 0, 0}});
+                    PICSimLab.CanvasCmd(
+                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                  output[i].y2 - output[i].y1}});
 
                     break;
                 case O_BUT:
-                    Canvas->SetColor(100, 100, 100);
-                    Canvas->Circle(1, output[i].cx, output[i].cy, 13);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 13}});
                     if (p_BUT) {
-                        Canvas->SetColor(55, 55, 55);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
                     } else {
-                        Canvas->SetColor(15, 15, 15);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
                     }
-                    Canvas->Circle(1, output[i].cx, output[i].cy, 11);
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 11}});
                     break;
                 case O_RST:
-                    Canvas->SetColor(100, 100, 100);
-                    Canvas->Circle(1, output[i].cx, output[i].cy, 13);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 13}});
                     if (p_RST) {
-                        Canvas->SetColor(15, 15, 15);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
                     } else {
-                        Canvas->SetColor(55, 55, 55);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
                     }
-                    Canvas->Circle(1, output[i].cx, output[i].cy, 11);
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 11}});
                     break;
             }
         }
     }
 
     // end draw
-    Canvas->End();
+    PICSimLab.CanvasCmd({CC_END});
 }
 
 void cboard_STM32_H103::Run_CPU_ns(uint64_t time) {
@@ -509,62 +512,93 @@ void cboard_STM32_H103::Run_CPU_ns(uint64_t time) {
     static unsigned int alm[64];
     static const int pinc = MGetPinCount();
 
-    const int JUMPSTEPS = 4.0 * PICSimLab.GetJUMPSTEPS();  // number of steps skipped
+    const int JUMPSTEPS = 4.0 * PICSimLab.GetJUMPSTEPS();  // number
+                                                           // of
+                                                           // steps
+                                                           // skipped
 
     const float RNSTEP = 200.0 * pinc * inc_ns / TTIMEOUT;
 
     for (uint64_t c = 0; c < time; c += inc_ns) {
         if (ns_count < inc_ns) {
-            // reset pins mean value
+            // reset pins mean
+            // value
             memset(alm, 0, 64 * sizeof(unsigned int));
 
-            // Spare parts window pre process
+            // Spare parts
+            // window pre
+            // process
             if (use_spare)
                 SpareParts.PreProcess();
 
-            j = JUMPSTEPS;  // step counter
+            j = JUMPSTEPS;  // step
+                            // counter
             pi = 0;
         }
 
-        if (PICSimLab.GetMcuPwr())  // if powered
+        if (PICSimLab.GetMcuPwr())  // if
+                                    // powered
         {
-            if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
+            if (j >= JUMPSTEPS)  // if number
+                                 // of step
+                                 // is bigger
+                                 // than
+                                 // steps to
+                                 // skip
             {
                 MSetPin(14, p_BUT);
             }
 
-            // verify if a breakpoint is reached if not run one instruction
+            // verify if a
+            // breakpoint is
+            // reached if not
+            // run one
+            // instruction
             MStep();
             InstCounterInc();
-            // Oscilloscope window process
+            // Oscilloscope
+            // window process
             if (use_oscope)
                 Oscilloscope.SetSample();
-            // Spare parts window process
+            // Spare parts
+            // window process
             if (use_spare)
                 SpareParts.Process();
 
-            // increment mean value counter if pin is high
+            // increment mean
+            // value counter if
+            // pin is high
             alm[pi] += pins[pi].value;
             pi++;
             if (pi == pinc)
                 pi = 0;
 
-            if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
+            if (j >= JUMPSTEPS)  // if number
+                                 // of step
+                                 // is bigger
+                                 // than
+                                 // steps to
+                                 // skip
             {
-                j = -1;  // reset counter
+                j = -1;  // reset
+                         // counter
             }
 
-            j++;  // counter increment
+            j++;  // counter
+                  // increment
         }
         ns_count += inc_ns;
         if (ns_count >= TTIMEOUT) {
             ns_count -= TTIMEOUT;
-            // calculate mean value
+            // calculate mean
+            // value
             for (pi = 0; pi < MGetPinCount(); pi++) {
                 pins[pi].oavalue = (int)((alm[pi] * RNSTEP) + 55);
             }
 
-            // Spare parts window pre post process
+            // Spare parts
+            // window pre post
+            // process
             if (use_spare)
                 SpareParts.PostProcess();
         }
@@ -854,32 +888,44 @@ void cboard_STM32_H103::MSetAPin(int pin, float value) {
             if (ADCvalues[channel] != svalue) {
                 qemu_picsimlab_set_apin(channel, svalue);
                 ADCvalues[channel] = svalue;
-                // printf("Analog channel %02X = %i\n",channel,svalue);
+                // printf("Analog
+                // channel %02X
+                // =
+                // %i\n",channel,svalue);
             }
         }
     }
 }
 
 void cboard_STM32_H103::PinsExtraConfig(int cfg) {
-    if ((cfg & 0xF00008) == 0x800008) {  // Alternate function
+    if ((cfg & 0xF00008) == 0x800008) {  // Alternate
+                                         // function
         int pin = (cfg & 0x0FF0) >> 4;
         int port = cfg & 0x0003;
         uint32_t* afio;
-        // int cfg_ = (cfg & 0x000C) >> 2;
-        // printf("Extra CFG Alternate function port(%c) pin[%02i]=0x%02X \n", port + 'A', pin, cfg_);
+        // int cfg_ = (cfg &
+        // 0x000C) >> 2;
+        // printf("Extra CFG
+        // Alternate function
+        // port(%c)
+        // pin[%02i]=0x%02X \n",
+        // port + 'A', pin,
+        // cfg_);
 
         switch (port) {
             case 0:  // GPIOA
                 switch (pin) {
                     case 0:
-                        // tim2 ch1
+                        // tim2
+                        // ch1
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
                         if (*afio == 0) {
                             pwm_out.pins[(1 << 2) + 0] = iopin(A, 0);
                         }
                         break;
                     case 1:
-                        // tim2 ch2
+                        // tim2
+                        // ch2
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
                         if (*afio == 0) {
                             pwm_out.pins[(1 << 2) + 1] = iopin(A, 1);
@@ -894,7 +940,8 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                             master_uart[1].ctrl_on = 1;
                             break;
                         }
-                        // tim2 ch3
+                        // tim2
+                        // ch3
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
                         if (*afio == 0) {
                             pwm_out.pins[(1 << 2) + 2] = iopin(A, 2);
@@ -909,7 +956,8 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                             master_uart[1].ctrl_on = 1;
                             break;
                         }
-                        // tim2 ch4
+                        // tim2
+                        // ch4
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
                         if (*afio == 0) {
                             pwm_out.pins[(1 << 2) + 3] = iopin(A, 3);
@@ -937,7 +985,8 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                             master_spi[0].ctrl_on = 1;
                             break;
                         }
-                        // tim3 ch1
+                        // tim3
+                        // ch1
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
                         if (*afio == 0) {
                             pwm_out.pins[(2 << 2) + 0] = iopin(A, 6);
@@ -953,20 +1002,23 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                             master_spi[0].ctrl_on = 1;
                             break;
                         }
-                        // tim1_ch1n (alt)
+                        // tim1_ch1n
+                        // (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
                         if (*afio == 1) {
                             pwm_out.pins[(0 << 2) + 0] = iopin(A, 7);
                             break;
                         }
-                        // tim3 ch2
+                        // tim3
+                        // ch2
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
                         if (*afio == 0) {
                             pwm_out.pins[(2 << 2) + 1] = iopin(A, 7);
                         }
                         break;
                     case 8:
-                        // tim1 ch1
+                        // tim1
+                        // ch1
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
                         if (*afio == 0) {
                             pwm_out.pins[(0 << 2) + 0] = iopin(A, 8);
@@ -981,7 +1033,8 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                             master_uart[0].ctrl_on = 1;
                             break;
                         }
-                        // tim1 ch2
+                        // tim1
+                        // ch2
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
                         if (*afio == 0) {
                             pwm_out.pins[(0 << 2) + 1] = iopin(A, 9);
@@ -996,14 +1049,16 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                             master_uart[0].ctrl_on = 1;
                             break;
                         }
-                        // tim1 ch3
+                        // tim1
+                        // ch3
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
                         if (*afio == 0) {
                             pwm_out.pins[(0 << 2) + 2] = iopin(A, 10);
                         }
                         break;
                     case 11:
-                        // tim1 ch4
+                        // tim1
+                        // ch4
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
                         if (*afio == 0) {
                             pwm_out.pins[(0 << 2) + 3] = iopin(A, 11);
@@ -1022,7 +1077,8 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
             case 1:  // GPIOB
                 switch (pin) {
                     case 0:
-                        // tim1_ch2n (alt)
+                        // tim1_ch2n
+                        // (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
                         if (*afio == 1) {
                             pwm_out.pins[(0 << 2) + 1] = iopin(B, 0);
@@ -1035,7 +1091,8 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         }
                         break;
                     case 1:
-                        // tim1_ch3n (alt)
+                        // tim1_ch3n
+                        // (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
                         if (*afio == 1) {
                             pwm_out.pins[(0 << 2) + 2] = iopin(B, 1);
@@ -1051,21 +1108,24 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                     case 2:
                         break;
                     case 3:
-                        // tim2_ch2n (alt)
+                        // tim2_ch2n
+                        // (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
                         if (*afio == 1) {
                             pwm_out.pins[(1 << 2) + 1] = iopin(B, 3);
                             break;
                         }
                     case 4:
-                        // tim3_ch1n (alt)
+                        // tim3_ch1n
+                        // (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
                         if (*afio == 2) {
                             pwm_out.pins[(2 << 2) + 0] = iopin(B, 4);
                             break;
                         }
                     case 5:
-                        // spi1 (alt)
+                        // spi1
+                        // (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_SPI1);
                         if (!(*afio)) {
                             master_spi[0].sck_pin = iopin(B, 3);
@@ -1074,7 +1134,8 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                             master_spi[0].ctrl_on = 1;
                             break;
                         }
-                        // tim3_ch2n (alt)
+                        // tim3_ch2n
+                        // (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
                         if (*afio == 2) {
                             pwm_out.pins[(2 << 2) + 1] = iopin(B, 5);
@@ -1082,7 +1143,8 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         }
                         break;
                     case 6:
-                        // uart1 (alt)
+                        // uart1
+                        // (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_UART1);
                         if ((*afio)) {
                             master_uart[0].tx_pin = iopin(B, 6);
@@ -1098,14 +1160,16 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                             master_i2c[0].ctrl_on = 1;
                             break;
                         }
-                        // tim4 ch1
+                        // tim4
+                        // ch1
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM4);
                         if (*afio == 0) {
                             pwm_out.pins[(3 << 2) + 0] = iopin(B, 6);
                         }
                         break;
                     case 7:
-                        // uart1 (alt)
+                        // uart1
+                        // (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_UART1);
                         if ((*afio)) {
                             master_uart[0].tx_pin = iopin(B, 6);
@@ -1121,14 +1185,16 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                             master_i2c[0].ctrl_on = 1;
                             break;
                         }
-                        // tim4 ch2
+                        // tim4
+                        // ch2
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM4);
                         if (*afio == 0) {
                             pwm_out.pins[(3 << 2) + 1] = iopin(B, 7);
                         }
                         break;
                     case 8:
-                        // i2c0 (alt)
+                        // i2c0
+                        // (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_I2C1);
                         if ((*afio)) {
                             master_i2c[0].scl_pin = iopin(B, 8);
@@ -1136,13 +1202,15 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                             master_i2c[0].ctrl_on = 1;
                             break;
                         }
-                        // tim4 ch3
+                        // tim4
+                        // ch3
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM4);
                         if (*afio == 0) {
                             pwm_out.pins[(3 << 2) + 2] = iopin(B, 8);
                         }
                     case 9:
-                        // i2c0 (alt)
+                        // i2c0
+                        // (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_I2C1);
                         if ((*afio)) {
                             master_i2c[0].scl_pin = iopin(B, 8);
@@ -1150,14 +1218,16 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                             master_i2c[0].ctrl_on = 1;
                             break;
                         }
-                        // tim4 ch4
+                        // tim4
+                        // ch4
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM4);
                         if (*afio == 0) {
                             pwm_out.pins[(3 << 2) + 3] = iopin(B, 9);
                         }
                         break;
                     case 10:
-                        // tim2_ch3n (alt)
+                        // tim2_ch3n
+                        // (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
                         if (*afio == 1) {
                             pwm_out.pins[(1 << 2) + 2] = iopin(B, 10);
@@ -1165,11 +1235,24 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         }
                         /*
                         // uart3
-                        uart_afio = qemu_picsimlab_get_internals(0x1000 | STM32_UART3);
-                        if (!(*uart_afio)) {
-                            master_uart[2].tx_pin = iopin(B, 10);
-                            master_uart[2].rx_pin = iopin(B, 11);
-                            master_uart[2].ctrl_on = 1;
+                        uart_afio
+                        =
+                        qemu_picsimlab_get_internals(0x1000
+                        |
+                        STM32_UART3);
+                        if
+                        (!(*uart_afio))
+                        {
+                            master_uart[2].tx_pin
+                        =
+                        iopin(B,
+                        10);
+                            master_uart[2].rx_pin
+                        =
+                        iopin(B,
+                        11);
+                            master_uart[2].ctrl_on
+                        = 1;
                             break
                         }
                         */
@@ -1183,7 +1266,8 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         }
                         break;
                     case 11:
-                        // tim2_ch4n (alt)
+                        // tim2_ch4n
+                        // (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
                         if (*afio == 1) {
                             pwm_out.pins[(1 << 2) + 3] = iopin(B, 10);
@@ -1191,11 +1275,24 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         }
                         /*
                         // uart3
-                        uart_afio = qemu_picsimlab_get_internals(0x1000 | STM32_UART3);
-                        if (!(*uart_afio)) {
-                            master_uart[2].tx_pin = iopin(B, 10);
-                            master_uart[2].rx_pin = iopin(B, 11);
-                            master_uart[2].ctrl_on = 1;
+                        uart_afio
+                        =
+                        qemu_picsimlab_get_internals(0x1000
+                        |
+                        STM32_UART3);
+                        if
+                        (!(*uart_afio))
+                        {
+                            master_uart[2].tx_pin
+                        =
+                        iopin(B,
+                        10);
+                            master_uart[2].rx_pin
+                        =
+                        iopin(B,
+                        11);
+                            master_uart[2].ctrl_on
+                        = 1;
                             break;
                         }
                         */
@@ -1245,14 +1342,20 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                 break;
                 */
         }
-    } else if ((cfg & 0xF00000) == 0xC00000) {  // timer ccmr1 function
+    } else if ((cfg & 0xF00000) == 0xC00000) {  // timer
+                                                // ccmr1
+                                                // function
         int duty = (cfg & 0xFFFF0) >> 4;
         int chn = (cfg & 0x000C) >> 2;
         int timer = cfg & 0x0003;
-        // printf("TIM %i chn %i dut set to %i\n", timer + 1, chn + 1, duty);
+        // printf("TIM %i chn %i
+        // dut set to %i\n",
+        // timer + 1, chn + 1,
+        // duty);
         bitbang_pwm_set_duty(&pwm_out, (timer << 2) + chn, duty);
     }
 }
 
-// Register the board in PICSimLab
+// Register the board in
+// PICSimLab
 board_init(BOARD_STM32_H103_Name, cboard_STM32_H103);

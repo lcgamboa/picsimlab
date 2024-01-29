@@ -27,8 +27,6 @@
 #include <stdio.h>
 #include "../lib/board.h"
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 // #define _DEBUG
 
 const unsigned char LCDfont[224][5] = {
@@ -580,10 +578,10 @@ void lcd_on(lcd_t* lcd, int onoff) {
     lcd_rst(lcd);
 }
 
-void lcd_draw(lcd_t* lcd, CCanvas* canvas, int x1, int y1, int w1, int h1, int picpwr) {
+void lcd_draw(lcd_t* lcd, void (*CanvasCmd)(CanvasCmd_t), float x1, float y1, float w1, float h1, int picpwr) {
     int l, c, x, y;
     int loff = 0;
-    int w;
+    float w;
 
     if (lcd->cnum == 16)
         w = w1;
@@ -591,9 +589,9 @@ void lcd_draw(lcd_t* lcd, CCanvas* canvas, int x1, int y1, int w1, int h1, int p
         w = (int)(w1 * 1.25);
 
     if (lcd->lnum == 2)
-        canvas->Rectangle(1, x1, y1, w, h1);
+        (*CanvasCmd)({CC_RECTANGLE, .Rectangle{1, x1, y1, w, h1}});
     else
-        canvas->Rectangle(1, x1, y1, w, (h1 * 2) - 14);
+        (*CanvasCmd)({CC_RECTANGLE, .Rectangle{1, x1, y1, w, h1}});
     lcd->update = 0;
 
     for (l = 0; l < lcd->lnum; l++) {
@@ -628,14 +626,14 @@ void lcd_draw(lcd_t* lcd, CCanvas* canvas, int x1, int y1, int w1, int h1, int p
                         ram = lcd->cgram[fp & 0x07][x];
                     }
                     if ((ram & (0x01 << y)) && (lcd->flags & L_DON)) {
-                        canvas->SetFgColor(0, 35, 0);
-                        canvas->SetColor(0, 35, 0);
+                        (*CanvasCmd)({CC_SETFGCOLOR, .SetFgColor{0, 35, 0}});
+                        (*CanvasCmd)({CC_SETCOLOR, .SetColor{0, 35, 0}});
                     } else {
-                        canvas->SetFgColor(0, 90 * picpwr + 35, 0);
-                        canvas->SetColor(0, 90 * picpwr + 35, 0);
+                        (*CanvasCmd)({CC_SETFGCOLOR, .SetFgColor{0, (unsigned int)(90 * picpwr + 35), 0}});
+                        (*CanvasCmd)({CC_SETCOLOR, .SetColor{0, (unsigned int)(90 * picpwr + 35), 0}});
                     }
-                    //          canvas.Rectangle (1, output[i].x1+12+(x*4)+(c*22), output[i].y1+8+(y*4)+(l*38), 4,4 );
-                    canvas->Rectangle(1, x1 + 2 + (x * 4) + (c * 23), y1 + 10 + (y * 4) + (l * 35), 4, 4);
+                    (*CanvasCmd)(
+                        {CC_RECTANGLE, .Rectangle{1, x1 + 2 + (x * 4) + (c * 23), y1 + 10 + (y * 4) + (l * 35), 4, 4}});
                 }
             }
         }
@@ -658,13 +656,13 @@ void lcd_draw(lcd_t* lcd, CCanvas* canvas, int x1, int y1, int w1, int h1, int p
 
         if ((c >= 0) && (c < lcd->cnum))  // draw only visible columns
         {
-            canvas->SetFgColor(0, 35, 0);
-            canvas->SetColor(0, 35, 0);
+            (*CanvasCmd)({CC_SETFGCOLOR, .SetFgColor{0, 35, 0}});
+            (*CanvasCmd)({CC_SETCOLOR, .SetColor{0, 35, 0}});
 
             if (lcd->blink)
-                canvas->Rectangle(1, x1 + 2 + (c * 23), y1 + 10 + (l * 35), 20, 32);
+                (*CanvasCmd)({CC_RECTANGLE, .Rectangle{1, x1 + 2 + (c * 23), y1 + 10 + (l * 35), 20, 32}});
             else
-                canvas->Rectangle(1, x1 + 2 + (c * 23), y1 + 38 + (l * 35), 20, 4);
+                (*CanvasCmd)({CC_RECTANGLE, .Rectangle{1, x1 + 2 + (c * 23), y1 + 38 + (l * 35), 20, 4}});
         }
     }
 }

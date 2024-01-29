@@ -41,8 +41,8 @@ static PCWProp pcwprop[5] = {{PCW_LABEL, "P1 - VCC,+5V"},
                              {PCW_END, ""}};
 
 cpart_pbuttons_an::cpart_pbuttons_an(const unsigned x, const unsigned y, const char* name, const char* type,
-                                     board* pboard_)
-    : part(x, y, name, type, pboard_) {
+                                     board* pboard_, const int id_)
+    : part(x, y, name, type, pboard_, id_) {
     active = 1;
 
     output_value_[0] = !active;
@@ -105,7 +105,8 @@ void cpart_pbuttons_an::Reset(void) {
 
 cpart_pbuttons_an::~cpart_pbuttons_an(void) {
     delete Bitmap;
-    canvas.Destroy();
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_DESTROY});
 }
 
 void cpart_pbuttons_an::DrawOutput(const unsigned int i) {
@@ -114,20 +115,21 @@ void cpart_pbuttons_an::DrawOutput(const unsigned int i) {
 
     switch (output[i].id) {
         case O_P1:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                             output[i].y2 - output[i].y1 + 8);
-            canvas.SetFgColor(255, 255, 255);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1 + 8}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (active)
                 ftemp = (vmax * (output[i].id - O_P1)) / 8.0;
             else
                 ftemp = (vmax * (8 - output[i].id - O_P1)) / 8.0;
             temp = FloatStrFormat("%3.1f", ftemp) + "V";
-            canvas.RotatedText(temp, output[i].x1, output[i].y1, 0);
+            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{temp.c_str(), output[i].x1, output[i].y1, 0}});
             if (output_pins[0] == 0)
-                canvas.RotatedText("NC", output[i].x1, output[i].y1 + 12, 0);
+                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1 + 12, 0}});
             else
-                canvas.RotatedText(SpareParts.GetPinName(output_pins[0]), output[i].x1, output[i].y1 + 12, 0);
+                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(output_pins[0]).c_str(),
+                                                                   output[i].x1, output[i].y1 + 12, 0}});
             break;
         case O_P2:
         case O_P3:
@@ -136,16 +138,17 @@ void cpart_pbuttons_an::DrawOutput(const unsigned int i) {
         case O_P6:
         case O_P7:
         case O_P8:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(255, 255, 255);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (active)
                 ftemp = (vmax * (output[i].id - O_P1)) / 8.0;
             else
                 ftemp = (vmax * (8 - output[i].id - O_P1)) / 8.0;
 
             temp = FloatStrFormat("%3.1f", ftemp) + "V";
-            canvas.RotatedText(temp, output[i].x1, output[i].y1, 0);
+            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{temp.c_str(), output[i].x1, output[i].y1, 0}});
             break;
         case O_B1:
         case O_B2:
@@ -155,14 +158,14 @@ void cpart_pbuttons_an::DrawOutput(const unsigned int i) {
         case O_B6:
         case O_B7:
         case O_B8:
-            canvas.SetColor(100, 100, 100);
-            canvas.Circle(1, output[i].cx, output[i].cy, 10);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});
+            SpareParts.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 10}});
             if (output_value_[output[i].id - O_B1] == active) {
-                canvas.SetColor(55, 55, 55);
+                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
             } else {
-                canvas.SetColor(15, 15, 15);
+                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
             }
-            canvas.Circle(1, output[i].cx, output[i].cy, 8);
+            SpareParts.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 8}});
             break;
     }
 }

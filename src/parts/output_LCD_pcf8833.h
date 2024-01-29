@@ -35,7 +35,8 @@
 class cpart_LCD_pcf8833 : public part {
 public:
     std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
-    cpart_LCD_pcf8833(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
+    cpart_LCD_pcf8833(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_,
+                      const int id_);
     ~cpart_LCD_pcf8833(void);
     void DrawOutput(const unsigned int index) override;
     void Process(void) override;

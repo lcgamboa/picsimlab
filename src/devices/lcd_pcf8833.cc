@@ -28,8 +28,6 @@
     } else     \
         printf
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 #include "lcd_pcf8833.h"
 
 // Philips PCF8833 LCD controller command codes
@@ -361,7 +359,7 @@ unsigned char lcd_pcf8833_io(lcd_pcf8833_t* lcd, unsigned char pdat, unsigned ch
     return 1;
 }
 
-void lcd_pcf8833_draw(lcd_pcf8833_t* lcd, CCanvas* canvas, int x1, int y1, int w1, int h1, int picpwr) {
+void lcd_pcf8833_draw(lcd_pcf8833_t* lcd, void (*CanvasCmd)(CanvasCmd_t), int x1, int y1, int w1, int h1, int picpwr) {
     unsigned char x, y;
 
     // canvas->Rectangle (1, x1, y1, w1, h1);//erase all
@@ -378,10 +376,10 @@ void lcd_pcf8833_draw(lcd_pcf8833_t* lcd, CCanvas* canvas, int x1, int y1, int w
 
                 lcd->ram[x][y] &= 0x00FFFFFF;  // clear draw
 
-                canvas->SetFgColor(r, g, b);
-                canvas->SetColor(r, g, b);
+                (*CanvasCmd)({CC_SETFGCOLOR, .SetFgColor{r, g, b}});
+                (*CanvasCmd)({CC_SETCOLOR, .SetColor{r, g, b}});
                 // canvas->Rectangle (1, x1+(x*2), y1+(y*2), 2,2 );
-                canvas->Point(x1 + x, y1 + y);
+                (*CanvasCmd)({CC_POINT, .Point{(float)(x1 + x), (float)(y1 + y)}});
             }
         }
     }

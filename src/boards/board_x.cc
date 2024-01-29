@@ -380,7 +380,7 @@ void cboard_x::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
 // Called ever 100ms to draw board
 // This is the critical code for simulator running speed
 
-void cboard_x::Draw(CCanvas* Canvas) {
+void cboard_x::Draw(void) {
     int update = 0;  // verifiy if updated is needed
     int i;
 
@@ -392,8 +392,8 @@ void cboard_x::Draw(CCanvas* Canvas) {
             output[i].update = 0;
 
             if (!update) {
-                Canvas->Init(Scale, Scale);
-                Canvas->SetFontWeight(lxFONTWEIGHT_BOLD);
+                PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});
+                PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
             }
             update++;  // set to update buffer
 
@@ -402,93 +402,105 @@ void cboard_x::Draw(CCanvas* Canvas) {
                 if (output[i].id == O_SD1)  // if output is switch
                 {
                     // draw a background white rectangle
-                    Canvas->SetBgColor(255, 255, 255);
-                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                      output[i].y2 - output[i].y1);
+                    PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{255, 255, 255}});
+                    PICSimLab.CanvasCmd(
+                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                  output[i].y2 - output[i].y1}});
 
                     if (!p_BT2)  // draw switch off
                     {
                         // draw a grey rectangle
-                        Canvas->SetBgColor(70, 70, 70);
-                        Canvas->Rectangle(1, output[i].x1, output[i].y1 + ((int)((output[i].y2 - output[i].y1) * 0.35)),
-                                          output[i].x2 - output[i].x1, (int)((output[i].y2 - output[i].y1) * 0.65));
+                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{70, 70, 70}});
+                        PICSimLab.CanvasCmd(
+                            {CC_RECTANGLE,
+                             .Rectangle{1, output[i].x1, output[i].y1 + ((int)((output[i].y2 - output[i].y1) * 0.35)),
+                                        output[i].x2 - output[i].x1, ((output[i].y2 - output[i].y1) * 0.65f)}});
                     } else  // draw switch on
                     {
                         // draw a grey rectangle
-                        Canvas->SetBgColor(70, 70, 70);
-                        Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                          (int)((output[i].y2 - output[i].y1) * 0.65));
+                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{70, 70, 70}});
+                        PICSimLab.CanvasCmd(
+                            {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                      ((output[i].y2 - output[i].y1) * 0.65f)}});
                     }
                 } else if (output[i].id == O_BD0) {
-                    Canvas->SetColor(102, 102, 102);
-                    Canvas->Circle(1, output[i].cx, output[i].cy, 10);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{102, 102, 102}});
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 10}});
                     if (p_BT1) {
-                        Canvas->SetColor(15, 15, 15);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
                     } else {
-                        Canvas->SetColor(55, 55, 55);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
                     }
-                    Canvas->Circle(1, output[i].cx, output[i].cy, 8);
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 8}});
                 } else if (output[i].id == O_RST) {
-                    Canvas->SetColor(102, 102, 102);
-                    Canvas->Circle(1, output[i].cx, output[i].cy, 10);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{102, 102, 102}});
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 10}});
 
                     if (p_RST) {
-                        Canvas->SetColor(15, 15, 15);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
                     } else {
-                        Canvas->SetColor(55, 55, 55);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
                     }
-                    Canvas->Circle(1, output[i].cx, output[i].cy, 8);
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 8}});
                 } else if (output[i].id == O_POT1) {
-                    Canvas->SetColor(0, 50, 215);
-                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                      output[i].y2 - output[i].y1);
-                    Canvas->SetColor(250, 250, 250);
-                    Canvas->Rectangle(1, output[i].x1 + pot1 / 2.77, output[i].y1 + 2, 10, 15);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{0, 50, 215}});
+                    PICSimLab.CanvasCmd(
+                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                  output[i].y2 - output[i].y1}});
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{250, 250, 250}});
+                    PICSimLab.CanvasCmd(
+                        {CC_RECTANGLE, .Rectangle{1, output[i].x1 + pot1 / 2.77f, output[i].y1 + 2, 10, 15}});
                 } else if (output[i].id == O_CPU) {
-                    Canvas->SetFontSize(10);
-                    int x, y, w, h;
-                    Canvas->SetColor(26, 26, 26);
-                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                      output[i].y2 - output[i].y1);
+                    PICSimLab.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{10}});
+                    float x, y;
+                    int w, h;
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{26, 26, 26}});
+                    PICSimLab.CanvasCmd(
+                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                  output[i].y2 - output[i].y1}});
 
-                    Canvas->SetColor(230, 230, 230);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{230, 230, 230}});
                     w = output[i].x2 - output[i].x1;
                     h = output[i].y2 - output[i].y2;
                     x = output[i].x1 + (w / 2) + 7;
                     y = output[i].y1 + (h / 2) + (Proc.length());
-                    Canvas->RotatedText(Proc, x, y, 270);
+                    PICSimLab.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{Proc.c_str(), x, y, 270}});
                 }
             } else  // if output shape is a circle
             {
-                Canvas->SetFgColor(0, 0, 0);  // black
+                PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});  // black
 
                 switch (output[i].id)  // search for color of output
                 {
                     case O_LD0:  // White using pin 19 mean value (RD0)
-                        Canvas->SetBgColor(pic.pins[18].oavalue, pic.pins[18].oavalue, pic.pins[18].oavalue);
+                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[18].oavalue,
+                                                                        (unsigned int)pic.pins[18].oavalue,
+                                                                        (unsigned int)pic.pins[18].oavalue}});
                         break;
                     case O_LD1:  // Yelllow using pin 20 mean value (RD1)
-                        Canvas->SetBgColor(pic.pins[19].oavalue, pic.pins[19].oavalue, 0);
+                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[19].oavalue,
+                                                                        (unsigned int)pic.pins[19].oavalue, 0}});
                         break;
                     case O_LPWR:  // Blue using mcupwr value
-                        Canvas->SetBgColor(0, 0, 200 * PICSimLab.GetMcuPwr() + 55);
+                        PICSimLab.CanvasCmd(
+                            {CC_SETBGCOLOR, .SetBgColor{0, 0, (unsigned int)(200 * PICSimLab.GetMcuPwr() + 55)}});
                         break;
                     case O_RB0:  // Green using pin 33 mean value (RB0)
-                        Canvas->SetBgColor(0, pic.pins[32].oavalue, 0);
+                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{0, (unsigned int)pic.pins[32].oavalue, 0}});
                         break;
                     case O_RB1:  // Red using pin 34 mean value (RB1)
-                        Canvas->SetBgColor(pic.pins[33].oavalue, 0, 0);
+                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[33].oavalue, 0, 0}});
                         break;
                 }
 
-                DrawLED(Canvas, &output[i]);
+                DrawLED(PICSimLab.CanvasCmd, &output[i]);
             }
         }
     }
     // end draw
 
     if (update) {
-        Canvas->End();
+        PICSimLab.CanvasCmd({CC_END});
     }
 
     int value = (pic.pins[33].oavalue - 55) / 2;  // RB0 mean value
@@ -512,10 +524,12 @@ void cboard_x::Run_CPU(void) {
     // reset pins mean value
     memset(alm, 0, 40 * sizeof(unsigned int));
 
-    // read pic.pins to a local variable to speed up
+    // read pic.pins to a local
+    // variable to speed up
     pins = pic.pins;
 
-    // Spare parts window pre process
+    // Spare parts window pre
+    // process
     if (use_spare)
         SpareParts.PreProcess();
 
@@ -533,15 +547,41 @@ void cboard_x::Run_CPU(void) {
 
     j = JUMPSTEPS;  // step counter
     pi = 0;
-    if (PICSimLab.GetMcuPwr())       // if powered
-        for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
+    if (PICSimLab.GetMcuPwr())       // if
+                                     // powered
+        for (i = 0; i < NSTEP; i++)  // repeat for
+                                     // number of
+                                     // steps in 100ms
         {
-            if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
+            if (j >= JUMPSTEPS)  // if
+                                 // number
+                                 // of
+                                 // step
+                                 // is
+                                 // bigger
+                                 // than
+                                 // steps
+                                 // to
+                                 // skip
             {
                 pic_set_pin(&pic, pic.mclr, p_RST);
                 if (!bounce.do_bounce) {
-                    pic_set_pin(&pic, 19, p_BT1_);  // Set pin 19 (RD0) with button state
-                    pic_set_pin(&pic, 20, p_BT2_);  // Set pin 20 (RD1) with switch state
+                    pic_set_pin(&pic, 19,
+                                p_BT1_);  // Set
+                                          // pin
+                                          // 19
+                                          // (RD0)
+                                          // with
+                                          // button
+                                          // state
+                    pic_set_pin(&pic, 20,
+                                p_BT2_);  // Set
+                                          // pin
+                                          // 20
+                                          // (RD1)
+                                          // with
+                                          // switch
+                                          // state
                 }
             }
 
@@ -565,32 +605,52 @@ void cboard_x::Run_CPU(void) {
                 }
             }
 
-            // verify if a breakpoint is reached if not run one instruction
+            // verify if a
+            // breakpoint is reached
+            // if not run one
+            // instruction
             if (!mplabxd_testbp())
                 pic_step(&pic);
             ioupdated = pic.ioupdated;
             InstCounterInc();
-            // Oscilloscope window process
+            // Oscilloscope window
+            // process
             if (use_oscope)
                 Oscilloscope.SetSample();
-            // Spare parts window process
+            // Spare parts window
+            // process
             if (use_spare)
                 SpareParts.Process();
 
-            // increment mean value counter if pin is high
+            // increment mean value
+            // counter if pin is
+            // high
             alm[pi] += pins[pi].value;
             pi++;
             if (pi == pic.PINCOUNT)
                 pi = 0;
 
-            if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
+            if (j >= JUMPSTEPS)  // if
+                                 // number
+                                 // of
+                                 // step
+                                 // is
+                                 // bigger
+                                 // than
+                                 // steps
+                                 // to
+                                 // skip
             {
-                // set analog pin 2 (AN0) with value from scroll
+                // set analog pin 2
+                // (AN0) with value
+                // from scroll
                 pic_set_apin(&pic, 2, (5.0 * pot1 / 199));
 
-                j = -1;  // reset counter
+                j = -1;  // reset
+                         // counter
             }
-            j++;  // counter increment
+            j++;  // counter
+                  // increment
             pic.ioupdated = 0;
         }
 
@@ -599,7 +659,8 @@ void cboard_x::Run_CPU(void) {
         pic.pins[pi].oavalue = (int)((alm[pi] * RNSTEP) + 55);
     }
 
-    // Spare parts window pre post process
+    // Spare parts window pre post
+    // process
     if (use_spare)
         SpareParts.PostProcess();
 

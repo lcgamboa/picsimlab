@@ -49,7 +49,7 @@ public:
     std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
     cboard_McLab1(void);
     ~cboard_McLab1(void);
-    void Draw(CCanvas* Canvas) override;
+    void Draw(void) override;
     void Run_CPU(void) override;
     std::string GetSupportedDevices(void) override { return "PIC16F628A,PIC16F648A,PIC16F84A,"; };
     void Reset(void) override;

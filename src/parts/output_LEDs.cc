@@ -45,8 +45,9 @@ static PCWProp pcwprop[11] = {{PCW_DCOMBO, "1-D1"},  {PCW_DCOMBO, "2-D2"}, {PCW_
                               {PCW_DCOMBO, "5-D5"},  {PCW_DCOMBO, "6-D6"}, {PCW_DCOMBO, "7-D7"}, {PCW_DCOMBO, "8-D8"},
                               {PCW_COMBO, "Active"}, {PCW_SPIN, "Size"},   {PCW_END, ""}};
 
-cpart_leds::cpart_leds(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_, 9) {
+cpart_leds::cpart_leds(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_,
+                       const int id_)
+    : part(x, y, name, type, pboard_, id_, 9) {
     X = x;
     Y = y;
     active = 1;
@@ -85,7 +86,8 @@ cpart_leds::cpart_leds(const unsigned x, const unsigned y, const char* name, con
 
 cpart_leds::~cpart_leds(void) {
     delete Bitmap;
-    canvas.Destroy();
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_DESTROY});
 }
 
 void cpart_leds::DrawOutput(const unsigned int i) {
@@ -102,14 +104,16 @@ void cpart_leds::DrawOutput(const unsigned int i) {
         case O_P6:
         case O_P7:
         case O_P8:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(255, 255, 255);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (input_pins[output[i].id - O_P1] == 0)
-                canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
+                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
             else
-                canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1,
-                                   0);
+                SpareParts.CanvasCmd(
+                    {CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(input_pins[output[i].id - O_P1]).c_str(),
+                                                  output[i].x1, output[i].y1, 0}});
             break;
         case O_L1:
         case O_L2:
@@ -119,24 +123,30 @@ void cpart_leds::DrawOutput(const unsigned int i) {
         case O_L6:
         case O_L7:
         case O_L8:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1 - 20, output[i].y1 - 20, 40, 40);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1 - 20, output[i].y1 - 20, 40, 40}});
             col = colortable[colors[output[i].id - O_L1]];
             if (input_pins[output[i].id - O_L1] > 0) {
                 if (active) {
-                    canvas.SetBgColor(col.r * ppins[input_pins[output[i].id - O_L1] - 1].oavalue,
-                                      col.g * ppins[input_pins[output[i].id - O_L1] - 1].oavalue,
-                                      col.b * ppins[input_pins[output[i].id - O_L1] - 1].oavalue);
+                    SpareParts.CanvasCmd(
+                        {CC_SETBGCOLOR,
+                         .SetBgColor{(unsigned int)(col.r * ppins[input_pins[output[i].id - O_L1] - 1].oavalue),
+                                     (unsigned int)(col.g * ppins[input_pins[output[i].id - O_L1] - 1].oavalue),
+                                     (unsigned int)(col.b * ppins[input_pins[output[i].id - O_L1] - 1].oavalue)}});
                 } else {
-                    canvas.SetBgColor(col.r * (310 - ppins[input_pins[output[i].id - O_L1] - 1].oavalue),
-                                      col.g * (310 - ppins[input_pins[output[i].id - O_L1] - 1].oavalue),
-                                      col.b * (310 - ppins[input_pins[output[i].id - O_L1] - 1].oavalue));
+                    SpareParts.CanvasCmd(
+                        {CC_SETBGCOLOR,
+                         .SetBgColor{
+                             (unsigned int)(col.r * (310 - ppins[input_pins[output[i].id - O_L1] - 1].oavalue)),
+                             (unsigned int)(col.g * (310 - ppins[input_pins[output[i].id - O_L1] - 1].oavalue)),
+                             (unsigned int)(col.b * (310 - ppins[input_pins[output[i].id - O_L1] - 1].oavalue))}});
                 }
             } else {
-                canvas.SetBgColor(col.r * 55, col.g * 55, col.b * 55);
+                SpareParts.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)(col.r * 55), (unsigned int)(col.g * 55),
+                                                                 (unsigned int)(col.b * 55)}});
             }
-            canvas.SetFgColor(0, 0, 0);
-            DrawLED(&canvas, &output[i]);
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+            DrawLED(SpareParts.CanvasCmd, &output[i]);
             break;
     }
 }
@@ -335,23 +345,24 @@ void cpart_leds::LoadPartImage(void) {
         Height = OHeight;
 
         if (SpareParts.GetWindow()) {
+            SpareParts.SetPartOnDraw(id);
             Bitmap = SpareParts.CreateBlankImage(Width, Height, Scale, 0, Orientation);
 
-            canvas.Destroy();
-            canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
+            SpareParts.CanvasCmd({CC_DESTROY});
+            SpareParts.CanvasCmd({CC_CREATE, .Create{Bitmap}});
 
             lxBitmap* BackBitmap = SpareParts.LoadImageFile(
                 PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(), Scale, 0, Orientation);
 
-            canvas.Init(Scale, Scale, Orientation);
-            canvas.SetColor(0x31, 0x3d, 0x63);
-            canvas.Rectangle(1, 0, 0, Width, Height);
+            SpareParts.CanvasCmd({CC_INIT, .Init{Scale, Scale, Orientation}});
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0x31, 0x3d, 0x63}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, 0, 0, (float)Width, (float)Height}});
 
-            canvas.ChangeScale(1.0, 1.0);
-            canvas.PutBitmap(BackBitmap, -xoff * Scale, 0);
+            SpareParts.CanvasCmd({CC_CHANGESCALE, .ChangeScale{1.0, 1.0}});
+            SpareParts.CanvasCmd({CC_PUTBITMAP, .PutBitmap{BackBitmap, -xoff * Scale, 0}});
 
-            canvas.ChangeScale(Scale, Scale);
-            canvas.End();
+            SpareParts.CanvasCmd({CC_CHANGESCALE, .ChangeScale{Scale, Scale}});
+            SpareParts.CanvasCmd({CC_END});
 
             delete BackBitmap;
         }

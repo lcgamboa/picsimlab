@@ -29,20 +29,18 @@
 
 #include "board_PQDB.h"
 
-#define selectColorByValue(Value)              \
-    {                                          \
-        if (Value) {                           \
-            Canvas->SetBgColor(205, 0, 0);     \
-        } else {                               \
-            Canvas->SetBgColor(205, 180, 180); \
-        }                                      \
-        Canvas->SetFgColor(205, 180, 180);     \
+#define selectColorByValue(Value)                                             \
+    {                                                                         \
+        if (Value) {                                                          \
+            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{205, 0, 0}});     \
+        } else {                                                              \
+            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{205, 180, 180}}); \
+        }                                                                     \
+        PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{205, 180, 180}});     \
     }
-
-#define selectColorByPinValue(PIN_ID)                   \
-    Canvas->SetBgColor(pic.pins[PIN_ID].oavalue, 0, 0); \
-    Canvas->SetFgColor(205, 180, 180)
-
+#define selectColorByPinValue(PIN_ID)                                                                \
+    PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[PIN_ID].oavalue, 0, 0}}); \
+    PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{205, 180, 180}})
 /* outputs */
 enum {
     O_SS1,
@@ -206,7 +204,7 @@ cboard_PQDB::~cboard_PQDB(void) {
     lcd_end(&lcd);
 }
 
-void cboard_PQDB::Draw(CCanvas* Canvas) {
+void cboard_PQDB::Draw(void) {
     int i;
     int update = 0;  // verifiy if updated is needed
 
@@ -217,13 +215,13 @@ void cboard_PQDB::Draw(CCanvas* Canvas) {
             output[i].update = 0;
 
             if (!update) {
-                Canvas->Init(Scale, Scale);
-                Canvas->SetFontWeight(lxFONTWEIGHT_BOLD);
+                PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});
+                PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
             }
             update++;  // set to update buffer
 
             if (!output[i].r) {
-                Canvas->SetFgColor(30, 0, 0);
+                PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{30, 0, 0}});
                 // seven segments display
                 switch (output[i].id) {
                     case O_A1:
@@ -254,11 +252,12 @@ void cboard_PQDB::Draw(CCanvas* Canvas) {
                     case O_E4:
                     case O_F4:
                     case O_G4:
-                        Canvas->SetBgColor(lm7seg[output[i].id - O_B1], 30, 30);
-                        Canvas->SetFgColor(10, 10, 10);
+                        PICSimLab.CanvasCmd(
+                            {CC_SETBGCOLOR, .SetBgColor{(unsigned int)lm7seg[output[i].id - O_B1], 30, 30}});
+                        PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{10, 10, 10}});
                         break;
                     case O_MP:
-                        Canvas->SetColor(26, 26, 26);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{26, 26, 26}});
                         break;
                     case O_SS1:
                         output_ids[O_A1]->update = 1;
@@ -269,7 +268,7 @@ void cboard_PQDB::Draw(CCanvas* Canvas) {
                         output_ids[O_F1]->update = 1;
                         output_ids[O_G1]->update = 1;
                         output_ids[O_P1]->update = 1;
-                        Canvas->SetColor(10, 10, 10);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{10, 10, 10}});
                         break;
                     case O_SS2:
                         output_ids[O_A2]->update = 1;
@@ -280,7 +279,7 @@ void cboard_PQDB::Draw(CCanvas* Canvas) {
                         output_ids[O_F2]->update = 1;
                         output_ids[O_G2]->update = 1;
                         output_ids[O_P2]->update = 1;
-                        Canvas->SetColor(10, 10, 10);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{10, 10, 10}});
                         break;
                     case O_SS3:
                         output_ids[O_A3]->update = 1;
@@ -291,7 +290,7 @@ void cboard_PQDB::Draw(CCanvas* Canvas) {
                         output_ids[O_F3]->update = 1;
                         output_ids[O_G3]->update = 1;
                         output_ids[O_P3]->update = 1;
-                        Canvas->SetColor(10, 10, 10);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{10, 10, 10}});
                         break;
                     case O_SS4:
                         output_ids[O_A4]->update = 1;
@@ -302,25 +301,27 @@ void cboard_PQDB::Draw(CCanvas* Canvas) {
                         output_ids[O_F4]->update = 1;
                         output_ids[O_G4]->update = 1;
                         output_ids[O_P4]->update = 1;
-                        Canvas->SetColor(10, 10, 10);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{10, 10, 10}});
                         break;
                     case O_LCD:
-                        Canvas->SetColor(0, 90 * PICSimLab.GetMcuPwr() + 40, 0);
+                        PICSimLab.CanvasCmd(
+                            {CC_SETCOLOR, .SetColor{0, (unsigned int)(90 * PICSimLab.GetMcuPwr() + 40), 0}});
                         break;
                     case O_RST:
-                        Canvas->SetColor(100, 100, 100);
-                        Canvas->Circle(1, output[i].cx, output[i].cy, 11);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});
+                        PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 11}});
                         if (p_RST) {
-                            Canvas->SetColor(15, 15, 15);
+                            PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
                         } else {
-                            Canvas->SetColor(55, 55, 55);
+                            PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
                         }
                         break;
                     case O_LPWR:
-                        Canvas->SetColor(0, 255 * PICSimLab.GetMcuPwr(), 0);
+                        PICSimLab.CanvasCmd(
+                            {CC_SETCOLOR, .SetColor{0, (unsigned int)(255 * PICSimLab.GetMcuPwr()), 0}});
                         break;
                     case O_LED:
-                        Canvas->SetColor(0, pic.pins[6].oavalue, 0);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{0, (unsigned int)pic.pins[6].oavalue, 0}});
                         break;
                     case O_SOEN:
                         selectColorByPinValue(SO_EN_PIN);
@@ -391,12 +392,12 @@ void cboard_PQDB::Draw(CCanvas* Canvas) {
                     case O_TC8:
                     case O_TC9:
                     case O_TC0:
-                        Canvas->SetColor(100, 100, 100);
-                        Canvas->Circle(1, output[i].cx, output[i].cy, 11);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});
+                        PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 11}});
                         if (p_KEY[output[i].id - O_TC1]) {
-                            Canvas->SetColor(55, 55, 55);
+                            PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
                         } else {
-                            Canvas->SetColor(15, 15, 15);
+                            PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
                         }
                         break;
                     default:
@@ -404,49 +405,55 @@ void cboard_PQDB::Draw(CCanvas* Canvas) {
                 }
 
                 if ((output[i].id >= O_TC1) && (output[i].id <= O_TC0)) {
-                    Canvas->Circle(1, output[i].cx, output[i].cy, 9);
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 9}});
                 } else if (output[i].id == O_RST) {
-                    Canvas->Circle(1, output[i].cx, output[i].cy, 9);
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 9}});
                 } else if (output[i].id == O_POT) {
-                    Canvas->SetBgColor(66, 109, 246);
-                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                      output[i].y2 - output[i].y1);
+                    PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{66, 109, 246}});
+                    PICSimLab.CanvasCmd(
+                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                  output[i].y2 - output[i].y1}});
 
-                    Canvas->SetBgColor(250, 250, 250);
-                    Canvas->Circle(1, output[i].cx, output[i].cy, 20);
+                    PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{250, 250, 250}});
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 20}});
 
-                    Canvas->SetBgColor(150, 150, 150);
+                    PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{150, 150, 150}});
                     int x = -15 * sin((5.585 * (pot / 200.0)) + 0.349);
                     int y = 15 * cos((5.585 * (pot / 200.0)) + 0.349);
-                    Canvas->Circle(1, output[i].cx + x, output[i].cy + y, 3);
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx + x, output[i].cy + y, 3}});
                 } else if (output[i].id == O_LCD) {  // draw lcd text
-                    // strech lcd background
-                    Canvas->Rectangle(1, output[i].x1 - 15, output[i].y1 - 5, output[i].x2 - output[i].x1 + 32,
-                                      output[i].y2 - output[i].y1 + 13);
-                    lcd_draw(&lcd, Canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                     // strech lcd background
+                    PICSimLab.CanvasCmd(
+                        {CC_RECTANGLE, .Rectangle{1, output[i].x1 - 15, output[i].y1 - 5,
+                                                  output[i].x2 - output[i].x1 + 32, output[i].y2 - output[i].y1 + 13}});
+                    lcd_draw(&lcd, PICSimLab.CanvasCmd, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                              output[i].y2 - output[i].y1, PICSimLab.GetMcuPwr());
                 } else if (output[i].id == O_MP) {
-                    Canvas->SetFontSize(10);
-                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                      output[i].y2 - output[i].y1);
-                    Canvas->SetColor(230, 230, 230);
-                    Canvas->RotatedText(Proc, output[i].x1 + 85, output[i].y1 + 5, 0);
+                    PICSimLab.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{10}});
+                    PICSimLab.CanvasCmd(
+                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                  output[i].y2 - output[i].y1}});
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{230, 230, 230}});
+                    PICSimLab.CanvasCmd(
+                        {CC_ROTATEDTEXT, .RotatedText{Proc.c_str(), output[i].x1 + 85, output[i].y1 + 5, 0}});
                 } else {
-                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                      output[i].y2 - output[i].y1);
+                    PICSimLab.CanvasCmd(
+                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                  output[i].y2 - output[i].y1}});
                 }
-
             } else {
                 if (output[i].id == O_RGB) {
-                    Canvas->SetFgColor(55, 55, 55);
-                    Canvas->SetBgColor(pic.pins[LED_RED_PIN].oavalue, pic.pins[LED_GREEN_PIN].oavalue,
-                                       pic.pins[LED_BLUE_PIN].oavalue);
-                    DrawLED(Canvas, &output[i]);
+                    PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{55, 55, 55}});
+                    PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[LED_RED_PIN].oavalue,
+                                                                    (unsigned int)pic.pins[LED_GREEN_PIN].oavalue,
+                                                                    (unsigned int)pic.pins[LED_BLUE_PIN].oavalue}});
+                    DrawLED(PICSimLab.CanvasCmd, &output[i]);
                 } else if ((output[i].id == O_P1) || (output[i].id == O_P2) || (output[i].id == O_P3) ||
                            (output[i].id == O_P4)) {
-                    Canvas->SetBgColor(lm7seg[output[i].id - O_B1], 30, 30);
-                    Canvas->SetFgColor(10, 10, 10);
-                    Canvas->Circle(1, output[i].x1, output[i].y1, output[i].r);
+                    PICSimLab.CanvasCmd(
+                        {CC_SETBGCOLOR, .SetBgColor{(unsigned int)lm7seg[output[i].id - O_B1], 30, 30}});
+                    PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{10, 10, 10}});
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].x1, output[i].y1, output[i].r}});
                 }
             }
         }
@@ -455,7 +462,7 @@ void cboard_PQDB::Draw(CCanvas* Canvas) {
     // end draw
 
     if (update) {
-        Canvas->End();
+        PICSimLab.CanvasCmd({CC_END});
     }
 
     if (((0.5 * (pic.pins[PWM_PIN].oavalue - 55)) > 10) && (PICSimLab.GetMcuPwr())) {
@@ -477,7 +484,15 @@ void cboard_PQDB::Draw(CCanvas* Canvas) {
         char buff[100];
         scroll1_old = position;
         vLM = (1.5 * scroll1_old / 199);
-        sprintf(buff, "Temp: %4.1f C", scroll1_old * 150.0 / 199.0);
+        sprintf(buff,
+                "Te"
+                "mp"
+                ": "
+                "%4"
+                ".1"
+                "f "
+                "C",
+                scroll1_old * 150.0 / 199.0);
         PICSimLab.UpdateGUI(TEMP, GT_SCROLL, GA_SET_LABEL, (void*)buff);
     }
 
@@ -490,7 +505,17 @@ void cboard_PQDB::Draw(CCanvas* Canvas) {
         const float r10 = 20000.0;
         const float res = r10 / (powf(10, gamma * log10(lux / 10.0)));
         vLDR = (res * 3.3) / (res + 10000.0);
-        sprintf(buff, "Light: %4.0f lux", lux);
+        sprintf(buff,
+                "Li"
+                "gh"
+                "t:"
+                " %"
+                "4."
+                "0f"
+                " l"
+                "u"
+                "x",
+                lux);
         PICSimLab.UpdateGUI(LIGHT, GT_SCROLL, GA_SET_LABEL, (void*)buff);
     }
 }
@@ -501,9 +526,11 @@ void cboard_PQDB::Run_CPU(void) {
     int pi;
     const picpin* pins;
 
-    unsigned int alm[40];  // valor médio dos pinos de IO
+    unsigned int alm[40];  // valor médio dos
+                           // pinos de IO
 
-    unsigned int alm7seg[32];  // luminosidade media display 7 seg
+    unsigned int alm7seg[32];  // luminosidade media
+                               // display 7 seg
 
     const int JUMPSTEPS = PICSimLab.GetJUMPSTEPS();
     const long int NSTEP = PICSimLab.GetNSTEP();
@@ -584,14 +611,18 @@ void cboard_PQDB::Run_CPU(void) {
             if (use_spare)
                 SpareParts.Process();
 
-            // increment mean value counter if pin is high
+            // increment mean value
+            // counter if pin is
+            // high
             alm[pi] += pins[pi].value;
             pi++;
             if (pi == pic.PINCOUNT)
                 pi = 0;
 
             if (j >= JUMPSTEPS) {
-                // contabilizando a média do 7 segmentos
+                // contabilizando a
+                // média do 7
+                // segmentos
                 for (int iDisp = DISP_1_PIN; iDisp <= DISP_4_PIN; iDisp++) {
                     if (pins[iDisp].value && !pins[iDisp].dir) {
                         for (int iSeg = 0; iSeg < 8; iSeg++) {
@@ -605,11 +636,15 @@ void cboard_PQDB::Run_CPU(void) {
                 alm[32] = 0;
 
                 // potenciometro
-                pic_set_apin(&pic, POT_PIN + 1, vPOT);  // pot
-                pic_set_apin(&pic, LDR_PIN + 1, vLDR);  // ldr
-                pic_set_apin(&pic, LM_PIN + 1, vLM);    // temp
+                pic_set_apin(&pic, POT_PIN + 1,
+                             vPOT);  // pot
+                pic_set_apin(&pic, LDR_PIN + 1,
+                             vLDR);  // ldr
+                pic_set_apin(&pic, LM_PIN + 1,
+                             vLM);  // temp
 
-                // valor medio shift register
+                // valor medio shift
+                // register
                 if (pic.pins[pic.PINCOUNT].value)
                     shiftReg_alm[0]++;
                 if (pic.pins[pic.PINCOUNT + 1].value)
@@ -649,7 +684,8 @@ void cboard_PQDB::Run_CPU(void) {
                 }
                 // end display code
 
-                // ds1307 over i2c code
+                // ds1307 over i2c
+                // code
                 if (pins[SDA_PIN].dir) {
                     sda = 1;
                 } else {
@@ -691,8 +727,12 @@ void cboard_PQDB::Run_CPU(void) {
     }
     // fim STEP
 
-    // alm[23] = 0; //aquecedor
-    // alm[16] = 0; //ventilador
+    // alm[23] =
+    // 0;
+    // //aquecedor
+    // alm[16] =
+    // 0;
+    // //ventilador
 
     for (i = 0; i < pic.PINCOUNT; i++) {
         if (pic.pins[i].port == P_VDD) {
@@ -710,7 +750,8 @@ void cboard_PQDB::Run_CPU(void) {
             lm7seg[i] = 255;
     }
 
-    // sr mean value
+    // sr mean
+    // value
     pic.pins[PSRD0].oavalue = (pic.pins[PSRD0].oavalue + ((shiftReg_alm[0] * 200.0) / NSTEPJ) + 55) / 2;
     pic.pins[PSRD1].oavalue = (pic.pins[PSRD1].oavalue + ((shiftReg_alm[1] * 200.0) / NSTEPJ) + 55) / 2;
     pic.pins[PSRD2].oavalue = (pic.pins[PSRD2].oavalue + ((shiftReg_alm[2] * 200.0) / NSTEPJ) + 55) / 2;
@@ -725,7 +766,10 @@ void cboard_PQDB::Run_CPU(void) {
     if (lcd.update)
         output_ids[O_LCD]->update = 1;
 
-    // verifiy if LEDS need update
+    // verifiy
+    // if LEDS
+    // need
+    // update
     for (i = 0; i < 32; i++) {
         if (output_ids[O_B1 + i]->value != lm7seg[i]) {
             output_ids[O_B1 + i]->value = lm7seg[i];
@@ -1177,214 +1221,527 @@ void cboard_PQDB::EvOnShow(void) {
 }
 
 unsigned short cboard_PQDB::GetInputId(char* name) {
-    if (strcmp(name, "PB_RST") == 0)
+    if (strcmp(name,
+               "PB"
+               "_R"
+               "S"
+               "T") == 0)
         return I_RST;
-    if (strcmp(name, "SW_PWR") == 0)
+    if (strcmp(name,
+               "SW"
+               "_P"
+               "W"
+               "R") == 0)
         return I_PWR;
 
-    if (strcmp(name, "PB_TC1") == 0)
+    if (strcmp(name,
+               "PB"
+               "_T"
+               "C"
+               "1") == 0)
         return I_TC1;
-    if (strcmp(name, "PB_TC2") == 0)
+    if (strcmp(name,
+               "PB"
+               "_T"
+               "C"
+               "2") == 0)
         return I_TC2;
-    if (strcmp(name, "PB_TC3") == 0)
+    if (strcmp(name,
+               "PB"
+               "_T"
+               "C"
+               "3") == 0)
         return I_TC3;
-    if (strcmp(name, "PB_TC4") == 0)
+    if (strcmp(name,
+               "PB"
+               "_T"
+               "C"
+               "4") == 0)
         return I_TC4;
-    if (strcmp(name, "PB_TC5") == 0)
+    if (strcmp(name,
+               "PB"
+               "_T"
+               "C"
+               "5") == 0)
         return I_TC5;
-    if (strcmp(name, "PB_TC6") == 0)
+    if (strcmp(name,
+               "PB"
+               "_T"
+               "C"
+               "6") == 0)
         return I_TC6;
-    if (strcmp(name, "PB_TC7") == 0)
+    if (strcmp(name,
+               "PB"
+               "_T"
+               "C"
+               "7") == 0)
         return I_TC7;
-    if (strcmp(name, "PB_TC8") == 0)
+    if (strcmp(name,
+               "PB"
+               "_T"
+               "C"
+               "8") == 0)
         return I_TC8;
-    if (strcmp(name, "PB_TC9") == 0)
+    if (strcmp(name,
+               "PB"
+               "_T"
+               "C"
+               "9") == 0)
         return I_TC9;
-    if (strcmp(name, "PB_TC0") == 0)
+    if (strcmp(name,
+               "PB"
+               "_T"
+               "C"
+               "0") == 0)
         return I_TC0;
 
-    if (strcmp(name, "PO_1") == 0)
+    if (strcmp(name,
+               "PO"
+               "_"
+               "1") == 0)
         return I_POT;
 
-    printf("Error input '%s' don't have a valid id! \n", name);
+    printf(
+        "Error "
+        "input "
+        "'%s' "
+        "don't "
+        "have "
+        "a "
+        "valid "
+        "id! "
+        "\n",
+        name);
     return INVALID_ID;
 }
 
 unsigned short cboard_PQDB::GetOutputId(char* name) {
-    if (strcmp(name, "PB_RST") == 0)
+    if (strcmp(name,
+               "PB"
+               "_R"
+               "S"
+               "T") == 0)
         return O_RST;
 
-    if (strcmp(name, "DISP1") == 0)
+    if (strcmp(name,
+               "DI"
+               "SP"
+               "1") == 0)
         return O_DISP1;
-    if (strcmp(name, "DISP2") == 0)
+    if (strcmp(name,
+               "DI"
+               "SP"
+               "2") == 0)
         return O_DISP2;
-    if (strcmp(name, "DISP3") == 0)
+    if (strcmp(name,
+               "DI"
+               "SP"
+               "3") == 0)
         return O_DISP3;
-    if (strcmp(name, "DISP4") == 0)
+    if (strcmp(name,
+               "DI"
+               "SP"
+               "4") == 0)
         return O_DISP4;
 
-    if (strcmp(name, "KP1") == 0)
+    if (strcmp(name,
+               "KP"
+               "1") == 0)
         return O_KP1;
-    if (strcmp(name, "KP2") == 0)
+    if (strcmp(name,
+               "KP"
+               "2") == 0)
         return O_KP2;
 
-    if (strcmp(name, "PWM") == 0)
+    if (strcmp(name,
+               "PW"
+               "M") == 0)
         return O_PWM;
 
-    if (strcmp(name, "LCD_RS") == 0)
+    if (strcmp(name,
+               "LC"
+               "D_"
+               "R"
+               "S") == 0)
         return O_LCDRS;
-    if (strcmp(name, "LCD_EN") == 0)
+    if (strcmp(name,
+               "LC"
+               "D_"
+               "E"
+               "N") == 0)
         return O_LCDEN;
 
-    if (strcmp(name, "SCL") == 0)
+    if (strcmp(name,
+               "SC"
+               "L") == 0)
         return O_SCL;
-    if (strcmp(name, "SDA") == 0)
+    if (strcmp(name,
+               "SD"
+               "A") == 0)
         return O_SDA;
 
-    if (strcmp(name, "TX") == 0)
+    if (strcmp(name,
+               "T"
+               "X") == 0)
         return O_TX;
-    if (strcmp(name, "RX") == 0)
+    if (strcmp(name,
+               "R"
+               "X") == 0)
         return O_RX;
 
-    if (strcmp(name, "SO_D0") == 0)
+    if (strcmp(name,
+               "SO"
+               "_D"
+               "0") == 0)
         return O_SOD0;
-    if (strcmp(name, "SO_D1") == 0)
+    if (strcmp(name,
+               "SO"
+               "_D"
+               "1") == 0)
         return O_SOD1;
-    if (strcmp(name, "SO_D2") == 0)
+    if (strcmp(name,
+               "SO"
+               "_D"
+               "2") == 0)
         return O_SOD2;
-    if (strcmp(name, "SO_D3") == 0)
+    if (strcmp(name,
+               "SO"
+               "_D"
+               "3") == 0)
         return O_SOD3;
-    if (strcmp(name, "SO_D4") == 0)
+    if (strcmp(name,
+               "SO"
+               "_D"
+               "4") == 0)
         return O_SOD4;
-    if (strcmp(name, "SO_D5") == 0)
+    if (strcmp(name,
+               "SO"
+               "_D"
+               "5") == 0)
         return O_SOD5;
-    if (strcmp(name, "SO_D6") == 0)
+    if (strcmp(name,
+               "SO"
+               "_D"
+               "6") == 0)
         return O_SOD6;
-    if (strcmp(name, "SO_D7") == 0)
+    if (strcmp(name,
+               "SO"
+               "_D"
+               "7") == 0)
         return O_SOD7;
 
-    if (strcmp(name, "SO_DATA") == 0)
+    if (strcmp(name,
+               "SO"
+               "_D"
+               "AT"
+               "A") == 0)
         return O_SODATA;
-    if (strcmp(name, "SO_CLK") == 0)
+    if (strcmp(name,
+               "SO"
+               "_C"
+               "L"
+               "K") == 0)
         return O_SOCLK;
-    if (strcmp(name, "SO_EN") == 0)
+    if (strcmp(name,
+               "SO"
+               "_E"
+               "N") == 0)
         return O_SOEN;
 
-    if (strcmp(name, "SS_A1") == 0)
+    if (strcmp(name,
+               "SS"
+               "_A"
+               "1") == 0)
         return O_A1;
-    if (strcmp(name, "SS_B1") == 0)
+    if (strcmp(name,
+               "SS"
+               "_B"
+               "1") == 0)
         return O_B1;
-    if (strcmp(name, "SS_C1") == 0)
+    if (strcmp(name,
+               "SS"
+               "_C"
+               "1") == 0)
         return O_C1;
-    if (strcmp(name, "SS_D1") == 0)
+    if (strcmp(name,
+               "SS"
+               "_D"
+               "1") == 0)
         return O_D1;
-    if (strcmp(name, "SS_E1") == 0)
+    if (strcmp(name,
+               "SS"
+               "_E"
+               "1") == 0)
         return O_E1;
-    if (strcmp(name, "SS_F1") == 0)
+    if (strcmp(name,
+               "SS"
+               "_F"
+               "1") == 0)
         return O_F1;
-    if (strcmp(name, "SS_G1") == 0)
+    if (strcmp(name,
+               "SS"
+               "_G"
+               "1") == 0)
         return O_G1;
-    if (strcmp(name, "SS_P1") == 0)
+    if (strcmp(name,
+               "SS"
+               "_P"
+               "1") == 0)
         return O_P1;
 
-    if (strcmp(name, "SS_A2") == 0)
+    if (strcmp(name,
+               "SS"
+               "_A"
+               "2") == 0)
         return O_A2;
-    if (strcmp(name, "SS_B2") == 0)
+    if (strcmp(name,
+               "SS"
+               "_B"
+               "2") == 0)
         return O_B2;
-    if (strcmp(name, "SS_C2") == 0)
+    if (strcmp(name,
+               "SS"
+               "_C"
+               "2") == 0)
         return O_C2;
-    if (strcmp(name, "SS_D2") == 0)
+    if (strcmp(name,
+               "SS"
+               "_D"
+               "2") == 0)
         return O_D2;
-    if (strcmp(name, "SS_E2") == 0)
+    if (strcmp(name,
+               "SS"
+               "_E"
+               "2") == 0)
         return O_E2;
-    if (strcmp(name, "SS_F2") == 0)
+    if (strcmp(name,
+               "SS"
+               "_F"
+               "2") == 0)
         return O_F2;
-    if (strcmp(name, "SS_G2") == 0)
+    if (strcmp(name,
+               "SS"
+               "_G"
+               "2") == 0)
         return O_G2;
-    if (strcmp(name, "SS_P2") == 0)
+    if (strcmp(name,
+               "SS"
+               "_P"
+               "2") == 0)
         return O_P2;
 
-    if (strcmp(name, "LD_PWR") == 0)
+    if (strcmp(name,
+               "LD"
+               "_P"
+               "W"
+               "R") == 0)
         return O_LPWR;
-    if (strcmp(name, "LD_LED") == 0)
+    if (strcmp(name,
+               "LD"
+               "_L"
+               "E"
+               "D") == 0)
         return O_LED;
-    if (strcmp(name, "DS_LCD") == 0)
+    if (strcmp(name,
+               "DS"
+               "_L"
+               "C"
+               "D") == 0)
         return O_LCD;
 
-    if (strcmp(name, "SS_A3") == 0)
+    if (strcmp(name,
+               "SS"
+               "_A"
+               "3") == 0)
         return O_A3;
-    if (strcmp(name, "SS_B3") == 0)
+    if (strcmp(name,
+               "SS"
+               "_B"
+               "3") == 0)
         return O_B3;
-    if (strcmp(name, "SS_C3") == 0)
+    if (strcmp(name,
+               "SS"
+               "_C"
+               "3") == 0)
         return O_C3;
-    if (strcmp(name, "SS_D3") == 0)
+    if (strcmp(name,
+               "SS"
+               "_D"
+               "3") == 0)
         return O_D3;
-    if (strcmp(name, "SS_E3") == 0)
+    if (strcmp(name,
+               "SS"
+               "_E"
+               "3") == 0)
         return O_E3;
-    if (strcmp(name, "SS_F3") == 0)
+    if (strcmp(name,
+               "SS"
+               "_F"
+               "3") == 0)
         return O_F3;
-    if (strcmp(name, "SS_G3") == 0)
+    if (strcmp(name,
+               "SS"
+               "_G"
+               "3") == 0)
         return O_G3;
-    if (strcmp(name, "SS_P3") == 0)
+    if (strcmp(name,
+               "SS"
+               "_P"
+               "3") == 0)
         return O_P3;
 
-    if (strcmp(name, "SS_A4") == 0)
+    if (strcmp(name,
+               "SS"
+               "_A"
+               "4") == 0)
         return O_A4;
-    if (strcmp(name, "SS_B4") == 0)
+    if (strcmp(name,
+               "SS"
+               "_B"
+               "4") == 0)
         return O_B4;
-    if (strcmp(name, "SS_C4") == 0)
+    if (strcmp(name,
+               "SS"
+               "_C"
+               "4") == 0)
         return O_C4;
-    if (strcmp(name, "SS_D4") == 0)
+    if (strcmp(name,
+               "SS"
+               "_D"
+               "4") == 0)
         return O_D4;
-    if (strcmp(name, "SS_E4") == 0)
+    if (strcmp(name,
+               "SS"
+               "_E"
+               "4") == 0)
         return O_E4;
-    if (strcmp(name, "SS_F4") == 0)
+    if (strcmp(name,
+               "SS"
+               "_F"
+               "4") == 0)
         return O_F4;
-    if (strcmp(name, "SS_G4") == 0)
+    if (strcmp(name,
+               "SS"
+               "_G"
+               "4") == 0)
         return O_G4;
-    if (strcmp(name, "SS_P4") == 0)
+    if (strcmp(name,
+               "SS"
+               "_P"
+               "4") == 0)
         return O_P4;
 
-    if (strcmp(name, "PB_TC1") == 0)
+    if (strcmp(name,
+               "PB"
+               "_T"
+               "C"
+               "1") == 0)
         return O_TC1;
-    if (strcmp(name, "PB_TC2") == 0)
+    if (strcmp(name,
+               "PB"
+               "_T"
+               "C"
+               "2") == 0)
         return O_TC2;
-    if (strcmp(name, "PB_TC3") == 0)
+    if (strcmp(name,
+               "PB"
+               "_T"
+               "C"
+               "3") == 0)
         return O_TC3;
-    if (strcmp(name, "PB_TC4") == 0)
+    if (strcmp(name,
+               "PB"
+               "_T"
+               "C"
+               "4") == 0)
         return O_TC4;
-    if (strcmp(name, "PB_TC5") == 0)
+    if (strcmp(name,
+               "PB"
+               "_T"
+               "C"
+               "5") == 0)
         return O_TC5;
-    if (strcmp(name, "PB_TC6") == 0)
+    if (strcmp(name,
+               "PB"
+               "_T"
+               "C"
+               "6") == 0)
         return O_TC6;
-    if (strcmp(name, "PB_TC7") == 0)
+    if (strcmp(name,
+               "PB"
+               "_T"
+               "C"
+               "7") == 0)
         return O_TC7;
-    if (strcmp(name, "PB_TC8") == 0)
+    if (strcmp(name,
+               "PB"
+               "_T"
+               "C"
+               "8") == 0)
         return O_TC8;
-    if (strcmp(name, "PB_TC9") == 0)
+    if (strcmp(name,
+               "PB"
+               "_T"
+               "C"
+               "9") == 0)
         return O_TC9;
-    if (strcmp(name, "PB_TC0") == 0)
+    if (strcmp(name,
+               "PB"
+               "_T"
+               "C"
+               "0") == 0)
         return O_TC0;
 
-    if (strcmp(name, "PO_1") == 0)
+    if (strcmp(name,
+               "PO"
+               "_"
+               "1") == 0)
         return O_POT;
 
-    if (strcmp(name, "RGB") == 0)
+    if (strcmp(name,
+               "RG"
+               "B") == 0)
         return O_RGB;
 
-    if (strcmp(name, "SS_1") == 0)
+    if (strcmp(name,
+               "SS"
+               "_"
+               "1") == 0)
         return O_SS1;
-    if (strcmp(name, "SS_2") == 0)
+    if (strcmp(name,
+               "SS"
+               "_"
+               "2") == 0)
         return O_SS2;
-    if (strcmp(name, "SS_3") == 0)
+    if (strcmp(name,
+               "SS"
+               "_"
+               "3") == 0)
         return O_SS3;
-    if (strcmp(name, "SS_4") == 0)
+    if (strcmp(name,
+               "SS"
+               "_"
+               "4") == 0)
         return O_SS4;
 
-    if (strcmp(name, "IC_CPU") == 0)
+    if (strcmp(name,
+               "IC"
+               "_C"
+               "P"
+               "U") == 0)
         return O_MP;
 
-    printf("Error output '%s' don't have a valid id! \n", name);
+    printf(
+        "Error "
+        "output"
+        " '%s' "
+        "don't "
+        "have "
+        "a "
+        "valid "
+        "id! "
+        "\n",
+        name);
     return INVALID_ID;
 }
 
@@ -1401,35 +1758,83 @@ void cboard_PQDB::RefreshStatus(void) {
 }
 
 void cboard_PQDB::WritePreferences(void) {
-    PICSimLab.SavePrefs("PQDB_proc", Proc);
-    PICSimLab.SavePrefs("PQDB_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
-    PICSimLab.SavePrefs("PQDB_pot", std::to_string(pot));
+    PICSimLab.SavePrefs(
+        "PQ"
+        "DB"
+        "_p"
+        "ro"
+        "c",
+        Proc);
+    PICSimLab.SavePrefs(
+        "PQDB_"
+        "clock",
+        FloatStrFormat("%2"
+                       ".1"
+                       "f",
+                       PICSimLab.GetClock()));
+    PICSimLab.SavePrefs(
+        "PQDB_"
+        "pot",
+        std::to_string(pot));
     int position = 0;
     PICSimLab.UpdateGUI(LIGHT, GT_SCROLL, GA_GET, (void*)&position);
-    PICSimLab.SavePrefs("PQDB_light", std::to_string(position));
+    PICSimLab.SavePrefs(
+        "PQDB_"
+        "light",
+        std::to_string(position));
     PICSimLab.UpdateGUI(TEMP, GT_SCROLL, GA_GET, (void*)&position);
-    PICSimLab.SavePrefs("PQDB_temp", std::to_string(position));
+    PICSimLab.SavePrefs(
+        "PQDB_"
+        "temp",
+        std::to_string(position));
 }
 
 void cboard_PQDB::ReadPreferences(char* name, char* value) {
-    if (!strcmp(name, "PQDB_proc")) {
+    if (!strcmp(name,
+                "PQ"
+                "DB"
+                "_p"
+                "ro"
+                "c")) {
         Proc = value;
     }
 
-    if (!strcmp(name, "PQDB_clock")) {
+    if (!strcmp(name,
+                "PQ"
+                "DB"
+                "_c"
+                "lo"
+                "c"
+                "k")) {
         PICSimLab.SetClock(atof(value));
     }
 
-    if (!strcmp(name, "PQDB_pot")) {
+    if (!strcmp(name,
+                "PQ"
+                "DB"
+                "_p"
+                "o"
+                "t")) {
         pot = atoi(value);
     }
 
-    if (!strcmp(name, "PQDB_light")) {
+    if (!strcmp(name,
+                "PQ"
+                "DB"
+                "_l"
+                "ig"
+                "h"
+                "t")) {
         int ivalue = atoi(value);
         PICSimLab.UpdateGUI(LIGHT, GT_SCROLL, GA_SET, (void*)&ivalue);
     }
 
-    if (!strcmp(name, "PQDB_temp")) {
+    if (!strcmp(name,
+                "PQ"
+                "DB"
+                "_t"
+                "em"
+                "p")) {
         int ivalue = atoi(value);
         PICSimLab.UpdateGUI(TEMP, GT_SCROLL, GA_SET, (void*)&ivalue);
     }
@@ -1495,7 +1900,10 @@ std::string cboard_PQDB::MGetPinName(int pin) {
         return pname;
     } else {
         char pinname[100];
-        snprintf(pinname, 100, "d%i", pin - bsim_picsim::MGetPinCount() - 1);
+        snprintf(pinname, 100,
+                 "d%"
+                 "i",
+                 pin - bsim_picsim::MGetPinCount() - 1);
         return pinname;
     }
 }

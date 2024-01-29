@@ -42,8 +42,9 @@ enum { I_RT1, I_BTN };
 static PCWProp pcwprop[6] = {{PCW_LABEL, "1 - VCC,+5V"}, {PCW_LABEL, "2 - GND ,GND"}, {PCW_COMBO, "3 - OA"},
                              {PCW_COMBO, "4 - OB"},      {PCW_COMBO, "5 - BTN"},      {PCW_END, ""}};
 
-cpart_encoder::cpart_encoder(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_) {
+cpart_encoder::cpart_encoder(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_,
+                             const int id_)
+    : part(x, y, name, type, pboard_, id_) {
     always_update = 1;
 
     p_BTN = 1;
@@ -75,7 +76,8 @@ void cpart_encoder::RegisterRemoteControl(void) {
 
 cpart_encoder::~cpart_encoder(void) {
     delete Bitmap;
-    canvas.Destroy();
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_DESTROY});
 }
 
 void cpart_encoder::DrawOutput(const unsigned int i) {
@@ -85,35 +87,38 @@ void cpart_encoder::DrawOutput(const unsigned int i) {
         case O_P1:
         case O_P2:
         case O_P3:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(255, 255, 255);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (output_pins[output[i].id - O_P1] == 0)
-                canvas.RotatedText("NC", output[i].x1 - 3, output[i].y2, 90);
+                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1 - 3, output[i].y2, 90}});
             else
-                canvas.RotatedText(SpareParts.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1 - 3,
-                                   output[i].y2, 90);
+                SpareParts.CanvasCmd(
+                    {CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(output_pins[output[i].id - O_P1]).c_str(),
+                                                  output[i].x1 - 3, output[i].y2, 90}});
             break;
         case O_RT1:
-            canvas.SetColor(102, 102, 102);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{102, 102, 102}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
 
-            canvas.SetFgColor(0, 0, 0);
-            canvas.SetBgColor(44, 44, 44);
-            canvas.Circle(1, output[i].cx, output[i].cy, 25);
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+            SpareParts.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{44, 44, 44}});
+            SpareParts.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 25}});
 
-            canvas.SetBgColor(250, 250, 250);
+            SpareParts.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{250, 250, 250}});
             x = -18 * sin((2 * M_PI * (value / 200.0)));
             y = 18 * cos((2 * M_PI * (value / 200.0)));
-            canvas.Circle(1, output[i].cx + x, output[i].cy + y, 5);
+            SpareParts.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx + x, output[i].cy + y, 5}});
             break;
         case O_BTN:
             if (p_BTN) {
-                canvas.SetColor(77, 77, 77);
+                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{77, 77, 77}});
             } else {
-                canvas.SetColor(22, 22, 22);
+                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{22, 22, 22}});
             }
-            canvas.Circle(1, output[i].cx, output[i].cy, 9);
+            SpareParts.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 9}});
             break;
     }
 }

@@ -33,7 +33,8 @@
 class cpart_SignalGenerator : public part {
 public:
     std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
-    cpart_SignalGenerator(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
+    cpart_SignalGenerator(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_,
+                          const int id_);
     ~cpart_SignalGenerator(void);
     void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;

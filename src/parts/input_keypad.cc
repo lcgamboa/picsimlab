@@ -107,8 +107,9 @@ std::string cpart_keypad::GetMapFile(void) {
     return "Keypad/keypad_4x4.map";
 }
 
-cpart_keypad::cpart_keypad(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_, 9) {
+cpart_keypad::cpart_keypad(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_,
+                           const int id_)
+    : part(x, y, name, type, pboard_, id_, 9) {
     always_update = 1;
     pull = 0;
     type = 0;
@@ -196,7 +197,7 @@ void cpart_keypad::RegisterRemoteControl(void) {
 cpart_keypad::~cpart_keypad(void) {
     delete Bitmap;
     Bitmap = NULL;
-    canvas.Destroy();
+    SpareParts.CanvasCmd({CC_DESTROY});
 }
 
 void cpart_keypad::ChangeType(unsigned char tp) {
@@ -231,35 +232,38 @@ void cpart_keypad::DrawOutput(const unsigned int i) {
         case O_C3:
         case O_C4:
         case O_C5: {
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(255, 255, 255);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
 
             int id = output[i].id - O_L1;
             if ((type == KT2x5) && (id > 1)) {
                 id -= 2;
             }
             if (output_pins[id] == 0)
-                canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2, 90.0}});
             else
-                canvas.RotatedText(SpareParts.GetPinName(output_pins[id]), output[i].x1, output[i].y2, 90.0);
+                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(output_pins[id]).c_str(),
+                                                                   output[i].x1, output[i].y2, 90.0}});
         } break;
         case O_K1 ... O_KD:
             if (output[i].value) {
-                canvas.SetLineWidth(4);
-                canvas.SetColor(255, 255, 0);
+                SpareParts.CanvasCmd({CC_SETLINEWIDTH, .SetLineWidth{4}});
+                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{255, 255, 0}});
             } else {
-                canvas.SetLineWidth(6);
+                SpareParts.CanvasCmd({CC_SETLINEWIDTH, .SetLineWidth{6}});
                 if ((output[i].id == O_Ka) || (output[i].id == O_KT) || !((output[i].id + 1) % 4)) {
-                    canvas.SetColor(190, 46, 37);
+                    SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{190, 46, 37}});
                 } else {
-                    canvas.SetColor(50, 118, 179);
+                    SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{50, 118, 179}});
                 }
             }
 
-            canvas.Rectangle(0, output[i].x1 + 5, output[i].y1 + 5, output[i].x2 - output[i].x1 - 10,
-                             output[i].y2 - output[i].y1 - 10);
-            canvas.SetLineWidth(1);
+            SpareParts.CanvasCmd(
+                {CC_RECTANGLE, .Rectangle{0, output[i].x1 + 5, output[i].y1 + 5, output[i].x2 - output[i].x1 - 10,
+                                          output[i].y2 - output[i].y1 - 10}});
+            SpareParts.CanvasCmd({CC_SETLINEWIDTH, .SetLineWidth{1}});
             break;
     }
 }

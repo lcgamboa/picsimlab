@@ -34,7 +34,7 @@
 class cpart_hx711 : public part {
 public:
     std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
-    cpart_hx711(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
+    cpart_hx711(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_, const int id_);
     ~cpart_hx711(void);
     void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;

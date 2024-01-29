@@ -35,8 +35,9 @@ static PCWProp pcwprop[10] = {
     {PCW_COMBO, "Input"},  {PCW_COMBO, "Output"}, {PCW_EDIT, "Num."},     {PCW_EDIT, "Den."},     {PCW_EDIT, "Sample"},
     {PCW_EDIT, "In Gain"}, {PCW_EDIT, "In Off."}, {PCW_EDIT, "Out Gain"}, {PCW_EDIT, "Out Off."}, {PCW_END, ""}};
 
-cpart_dtfunc::cpart_dtfunc(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_) {
+cpart_dtfunc::cpart_dtfunc(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_,
+                           const int id_)
+    : part(x, y, name, type, pboard_, id_) {
     always_update = 1;
     pins[0] = 0;
     pins[1] = 0;
@@ -64,7 +65,8 @@ cpart_dtfunc::cpart_dtfunc(const unsigned x, const unsigned y, const char* name,
 
 cpart_dtfunc::~cpart_dtfunc(void) {
     delete Bitmap;
-    canvas.Destroy();
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_DESTROY});
 }
 
 void cpart_dtfunc::DrawOutput(const unsigned int i) {
@@ -74,21 +76,24 @@ void cpart_dtfunc::DrawOutput(const unsigned int i) {
     switch (output[i].id) {
         case O_P1:
         case O_P2:
-            canvas.SetFontSize(7);
-            canvas.SetColor(249, 249, 249);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(0, 0, 0);
+            SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{7}});
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{249, 249, 249}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
             if (output[i].id == O_P1) {
                 if (pins[0] == 0)
-                    canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
+                    SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
                 else
-                    canvas.RotatedText(SpareParts.GetPinName(pins[0]), output[i].x1, output[i].y1, 0);
+                    SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(pins[0]).c_str(),
+                                                                       output[i].x1, output[i].y1, 0}});
             }
             if (output[i].id == O_P2) {
                 if (pins[1] == 0)
-                    canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
+                    SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
                 else
-                    canvas.RotatedText(SpareParts.GetPinName(pins[1]), output[i].x1, output[i].y1, 0);
+                    SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(pins[1]).c_str(),
+                                                                       output[i].x1, output[i].y1, 0}});
             }
             break;
         case O_IG:
@@ -96,9 +101,10 @@ void cpart_dtfunc::DrawOutput(const unsigned int i) {
         case O_OG:
         case O_OO:
         case O_TS:
-            canvas.SetColor(220, 220, 220);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(0, 0, 0);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{220, 220, 220}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
             if (output[i].id == O_IG)
                 snprintf(buff, 19, "%5.2f", in_gain);
             if (output[i].id == O_IO)
@@ -109,11 +115,12 @@ void cpart_dtfunc::DrawOutput(const unsigned int i) {
                 snprintf(buff, 19, "%5.2f", out_off);
             if (output[i].id == O_TS)
                 snprintf(buff, 19, "%5.2f", sample);
-            canvas.RotatedText(buff, output[i].x1, output[i].y1, 0);
+            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{buff, output[i].x1, output[i].y1, 0}});
             break;
         case O_NUM:
-            canvas.SetColor(220, 220, 220);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{220, 220, 220}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
 
             strncpy(eq, "[", 99);
             for (int i = 0; i < ordern; i++) {
@@ -121,12 +128,13 @@ void cpart_dtfunc::DrawOutput(const unsigned int i) {
                 strncat(eq, buff, 99);
             }
             strncat(eq, "]", 99);
-            canvas.SetFgColor(0, 0, 0);
-            canvas.RotatedText(eq, output[i].x1, output[i].y1, 0);
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{eq, output[i].x1, output[i].y1, 0}});
             break;
         case O_DEN:
-            canvas.SetColor(220, 220, 220);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{220, 220, 220}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
 
             strncpy(eq, "[", 99);
             for (int i = 0; i < orderd; i++) {
@@ -134,8 +142,8 @@ void cpart_dtfunc::DrawOutput(const unsigned int i) {
                 strncat(eq, buff, 99);
             }
             strncat(eq, "]", 99);
-            canvas.SetFgColor(0, 0, 0);
-            canvas.RotatedText(eq, output[i].x1, output[i].y1, 0);
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{eq, output[i].x1, output[i].y1, 0}});
             break;
     }
 }

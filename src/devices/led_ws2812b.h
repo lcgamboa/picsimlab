@@ -26,7 +26,7 @@
 #ifndef LED_WS2812B
 #define LED_WS2812B
 
-class CCanvas;
+#include "../lib/draw.h"
 
 /* pinout
   1 VDD
@@ -74,7 +74,7 @@ void led_ws2812b_prepare(led_ws2812b_t* led, const float freq);
 
 unsigned char led_ws2812b_io(led_ws2812b_t* led, const unsigned char din);
 
-void led_ws2812b_draw(led_ws2812b_t* led, CCanvas* canvas, const int x1, const int y1, const int w1, const int h1,
-                      const int picpwr);
+void led_ws2812b_draw(led_ws2812b_t* led, void (*CanvasCmd)(CanvasCmd_t), const int x1, const int y1, const int w1,
+                      const int h1, const int picpwr);
 
 #endif  // LED_WS2812B

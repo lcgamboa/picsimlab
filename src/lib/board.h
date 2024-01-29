@@ -59,12 +59,12 @@ enum { ARCH_P16, ARCH_P16E, ARCH_P18, ARCH_AVR8, ARCH_STM32, ARCH_STM8, ARCH_C51
  *
  */
 typedef struct {
-    unsigned int x1;        ///< x1 position
-    unsigned int x2;        ///< x2 position
-    unsigned int y1;        ///< y1 position
-    unsigned int y2;        ///< y2 position
-    unsigned int cx;        ///< center x position
-    unsigned int cy;        ///< center y position
+    float x1;               ///< x1 position
+    float x2;               ///< x2 position
+    float y1;               ///< y1 position
+    float y2;               ///< y2 position
+    float cx;               ///< center x position
+    float cy;               ///< center y position
     char name[10];          ///< region name
     unsigned short id;      ///< region ID
     void* status;           ///< rcontrol status
@@ -81,15 +81,15 @@ typedef struct {
  *
  */
 typedef struct {
-    unsigned int x1;  ///< x1 position
-    unsigned int x2;  ///< x2 position
-    unsigned int y1;  ///< y1 position
-    unsigned int y2;  ///< y2 position
-    unsigned int cx;  ///< center x position
-    unsigned int cy;  ///< center y position
-    unsigned int r;
+    float x1;              ///< x1 position
+    float x2;              ///< x2 position
+    float y1;              ///< y1 position
+    float y2;              ///< y2 position
+    float cx;              ///< center x position
+    float cy;              ///< center y position
+    float r;               ///< radius
     char name[10];         ///< region name
-    unsigned short id;     ///<  region ID
+    unsigned short id;     ///< region ID
     void* status;          ///< rcontrol status
     unsigned char update;  ///< need draw update
     union {
@@ -128,7 +128,7 @@ public:
     /**
      * @brief Called ever 100ms to draw board
      */
-    virtual void Draw(CCanvas* Canvas) = 0;
+    virtual void Draw(void) = 0;
 
     /**
      * @brief Paralle thread called ever 100ms to run cpu code
@@ -677,7 +677,7 @@ protected:
     int use_oscope;                 ///< use oscilloscope window
     int use_spare;                  ///< use spare parts window
     unsigned char p_RST;            ///< board /RESET pin state
-    double Scale;
+    float Scale;
 
     /**
      * @brief  Read maps
@@ -750,12 +750,5 @@ extern board_desc boards_list[BOARDS_MAX];
 
 // Arduino Uno is the dafault board
 #define DEFAULT_BOARD 2
-
-// Draw Functions
-void DrawLED(CCanvas* canvas, const output_t* output);
-void DrawSlider(CCanvas* canvas, const output_t* output, const unsigned char pos, const std::string val,
-                const int FontPointSize);
-void DrawPotentiometer(CCanvas* canvas, const output_t* output, const unsigned char pos, const std::string val,
-                       const int FontPointSize);
 
 #endif /* BOARDS_DEFS_H */

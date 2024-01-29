@@ -413,49 +413,51 @@ void cboard_Blue_Pill::EvMouseButtonRelease(uint button, uint x, uint y, uint st
 // Called ever 100ms to draw board
 // This is the critical code for simulator running speed
 
-void cboard_Blue_Pill::Draw(CCanvas* Canvas) {
+void cboard_Blue_Pill::Draw(void) {
     int i;
 
-    Canvas->Init(Scale, Scale);  // initialize draw context
-    Canvas->SetFontWeight(lxFONTWEIGHT_BOLD);
+    PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});  // initialize draw context
+    PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
 
     // board_x draw
     for (i = 0; i < outputc; i++)  // run over all outputs
     {
         if (!output[i].r)  // if output shape is a rectangle
         {
-            Canvas->SetFgColor(0, 0, 0);  // black
+            PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});  // black
 
             switch (output[i].id)  // search for color of output
             {
                 case O_LED:  // White using pc13 mean value
-                    Canvas->SetColor(pins[1].oavalue, 0, 0);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{(unsigned int)pins[1].oavalue, 0, 0}});
                     break;
                 case O_LPWR:  // Blue using mcupwr value
-                    Canvas->SetColor(200 * PICSimLab.GetMcuPwr() + 55, 0, 0);
+                    PICSimLab.CanvasCmd(
+                        {CC_SETCOLOR, .SetColor{(unsigned int)(200 * PICSimLab.GetMcuPwr() + 55), 0, 0}});
                     break;
                 case O_RST:
-                    Canvas->SetColor(100, 100, 100);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});
                     break;
             }
 
             if (output[i].id == O_RST) {
-                Canvas->Circle(1, output[i].cx, output[i].cy, 15);
+                PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 15}});
                 if (p_RST) {
-                    Canvas->SetColor(15, 15, 15);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
                 } else {
-                    Canvas->SetColor(55, 55, 55);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
                 }
-                Canvas->Circle(1, output[i].cx, output[i].cy, 13);
+                PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 13}});
             } else {
-                Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                  output[i].y2 - output[i].y1);
+                PICSimLab.CanvasCmd(
+                    {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                              output[i].y2 - output[i].y1}});
             }
         }
     }
 
     // end draw
-    Canvas->End();
+    PICSimLab.CanvasCmd({CC_END});
 }
 
 void cboard_Blue_Pill::Run_CPU_ns(uint64_t time) {
@@ -479,14 +481,18 @@ void cboard_Blue_Pill::Run_CPU_ns(uint64_t time) {
         }
 
         if (PICSimLab.GetMcuPwr())  // if powered
-                                    // for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
+                                    // for (i = 0; i < NSTEP;
+                                    // i++)  // repeat for number
+                                    // of steps in 100ms
         {
             /*
-            if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
+            if (j >= JUMPSTEPS)//if number of step is bigger
+            than steps to skip
              {
              }
              */
-            // verify if a breakpoint is reached if not run one instruction
+            // verify if a breakpoint is reached if not run
+            // one instruction
             MStep();
             InstCounterInc();
             // Oscilloscope window process
@@ -502,7 +508,8 @@ void cboard_Blue_Pill::Run_CPU_ns(uint64_t time) {
             if (pi == pinc)
                 pi = 0;
             /*
-                if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
+                if (j >= JUMPSTEPS)//if number of step is
+               bigger than steps to skip
                  {
                   j = -1; //reset counter
                  }
@@ -743,7 +750,8 @@ void cboard_Blue_Pill::MSetAPin(int pin, float value) {
             if (ADCvalues[channel] != svalue) {
                 qemu_picsimlab_set_apin(channel, svalue);
                 ADCvalues[channel] = svalue;
-                // printf("Analog channel %02X = %i\n",channel,svalue);
+                // printf("Analog channel %02X =
+                // %i\n",channel,svalue);
             }
         }
     }
@@ -755,7 +763,8 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
         int port = cfg & 0x0003;
         uint32_t* afio;
         // int cfg_ = (cfg & 0x000C) >> 2;
-        // printf("Extra CFG Alternate function port(%c) pin[%02i]=0x%02X \n", port + 'A', pin, cfg_);
+        // printf("Extra CFG Alternate function port(%c)
+        // pin[%02i]=0x%02X \n", port + 'A', pin, cfg_);
 
         switch (port) {
             case 0:  // GPIOA
@@ -1054,12 +1063,13 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                         }
                         /*
                         // uart3
-                        uart_afio = qemu_picsimlab_get_internals(0x1000 | STM32_UART3);
-                        if (!(*uart_afio)) {
-                            master_uart[2].tx_pin = iopin(B, 10);
-                            master_uart[2].rx_pin = iopin(B, 11);
-                            master_uart[2].ctrl_on = 1;
-                            break
+                        uart_afio =
+                        qemu_picsimlab_get_internals(0x1000
+                        | STM32_UART3); if (!(*uart_afio)) {
+                            master_uart[2].tx_pin = iopin(B,
+                        10); master_uart[2].rx_pin =
+                        iopin(B, 11); master_uart[2].ctrl_on
+                        = 1; break
                         }
                         */
                         // i2c1
@@ -1080,12 +1090,13 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                         }
                         /*
                         // uart3
-                        uart_afio = qemu_picsimlab_get_internals(0x1000 | STM32_UART3);
-                        if (!(*uart_afio)) {
-                            master_uart[2].tx_pin = iopin(B, 10);
-                            master_uart[2].rx_pin = iopin(B, 11);
-                            master_uart[2].ctrl_on = 1;
-                            break;
+                        uart_afio =
+                        qemu_picsimlab_get_internals(0x1000
+                        | STM32_UART3); if (!(*uart_afio)) {
+                            master_uart[2].tx_pin = iopin(B,
+                        10); master_uart[2].rx_pin =
+                        iopin(B, 11); master_uart[2].ctrl_on
+                        = 1; break;
                         }
                         */
                         // i2c1
@@ -1138,7 +1149,8 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
         int duty = (cfg & 0xFFFF0) >> 4;
         int chn = (cfg & 0x000C) >> 2;
         int timer = cfg & 0x0003;
-        // printf("TIM %i chn %i dut set to %i\n", timer + 1, chn + 1, duty);
+        // printf("TIM %i chn %i dut set to %i\n", timer +
+        // 1, chn + 1, duty);
         bitbang_pwm_set_duty(&pwm_out, (timer << 2) + chn, duty);
     }
 }

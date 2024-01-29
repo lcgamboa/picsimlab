@@ -27,7 +27,8 @@
 #define LCD_H
 
 class board;
-class CCanvas;
+
+#include "../lib/draw.h"
 
 #define DDRMAX 80
 
@@ -89,6 +90,6 @@ void lcd_rst(lcd_t* lcd);
 void lcd_init(lcd_t* lcd, unsigned char cnum, unsigned char lnum, board* pboard_);
 void lcd_end(lcd_t* lcd);
 void lcd_on(lcd_t* lcd, int onoff);
-void lcd_draw(lcd_t* lcd, CCanvas* canvas, int x1, int y1, int w1, int h1, int picpwr);
+void lcd_draw(lcd_t* lcd, void (*CanvasCmd)(CanvasCmd_t), float x1, float y1, float w1, float h1, int picpwr);
 
 #endif

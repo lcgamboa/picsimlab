@@ -34,7 +34,8 @@
 class cpart_gamepad : public part {
 public:
     std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
-    cpart_gamepad(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
+    cpart_gamepad(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_,
+                  const int id_);
     ~cpart_gamepad(void);
     void PostInit(void) override;
     void DrawOutput(const unsigned int index) override;

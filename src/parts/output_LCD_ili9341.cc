@@ -60,8 +60,8 @@ enum { I_LCD };
 enum { TC_SPI = 0, TC_8BITS, TC_SPI_TOUCH, TC_8BITS_TOUCH };
 
 cpart_LCD_ili9341::cpart_LCD_ili9341(const unsigned x, const unsigned y, const char* name, const char* type,
-                                     board* pboard_)
-    : part(x, y, name, type, pboard_) {
+                                     board* pboard_, const int id_)
+    : part(x, y, name, type, pboard_, id_) {
     X = x;
     Y = y;
 
@@ -146,7 +146,8 @@ std::string cpart_LCD_ili9341::GetMapFile(void) {
 
 cpart_LCD_ili9341::~cpart_LCD_ili9341(void) {
     delete Bitmap;
-    canvas.Destroy();
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_DESTROY});
 }
 
 void cpart_LCD_ili9341::DrawOutput(const unsigned int i) {
@@ -164,60 +165,55 @@ void cpart_LCD_ili9341::DrawOutput(const unsigned int i) {
         case O_P11:
         case O_P12:
         case O_P13:
-            canvas.SetFontSize(8);
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(255, 255, 255);
+            SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{8}});
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (input_pins[output[i].id - O_P1] == 0)
-                canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2, 90.0}});
             else
-                canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2,
-                                   90.0);
+                SpareParts.CanvasCmd(
+                    {CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(input_pins[output[i].id - O_P1]).c_str(),
+                                                  output[i].x1, output[i].y2, 90.0}});
             break;
         case O_T1:
         case O_T2:
         case O_T3:
         case O_T4:
         case O_T5:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(255, 255, 255);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (touch_pins[output[i].id - O_T1] == 0)
-                canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2, 90.0}});
             else
-                canvas.RotatedText(SpareParts.GetPinName(touch_pins[output[i].id - O_T1]), output[i].x1, output[i].y2,
-                                   90.0);
+                SpareParts.CanvasCmd(
+                    {CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(touch_pins[output[i].id - O_T1]).c_str(),
+                                                  output[i].x1, output[i].y2, 90.0}});
             break;
         case O_F2:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(155, 155, 155);
-            canvas.RotatedText("3.3V", output[i].x1, output[i].y2, 90.0);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"3.3V", output[i].x1, output[i].y2, 90.0}});
             break;
         case O_F1:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(155, 155, 155);
-            canvas.RotatedText("GND", output[i].x1, output[i].y2, 90.0);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"GND", output[i].x1, output[i].y2, 90.0}});
             break;
         case O_LCD:
             // draw lcd text
             if (lcd.update) {
-                // canvas.SetColor (255, 255, 0);
-                // canvas.Rectangle (1, output[i].x1-2, output[i].y1-2, output[i].x2 - output[i].x1+4,
-                // output[i].y2 - output[i].y1+4);
-
-                canvas.SetColor(0, 90 + 40, 0);
-                lcd_ili9341_draw(&lcd, &canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, 90 + 40, 0}});
+                lcd_ili9341_draw(&lcd, SpareParts.CanvasCmd, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                  output[i].y2 - output[i].y1, 1);
             }
-            /*
-            else
-            {
-            canvas.Rectangle (1, output[i].x1, output[i].y1, output[i].x2-output[i].x1,output[i].y2-output[i].y1
-            );
-            }
-             */
             break;
     }
 }
@@ -285,7 +281,9 @@ unsigned short cpart_LCD_ili9341::GetOutputId(char* name) {
 std::string cpart_LCD_ili9341::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
+    sprintf(prefs,
+            "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%"
+            "hhu,%hhu,%hhu,%hhu,%hhu",
             input_pins[0], input_pins[1], input_pins[2], input_pins[3], input_pins[4], type_com, input_pins[5],
             input_pins[6], input_pins[7], input_pins[8], input_pins[9], input_pins[10], input_pins[11], input_pins[12],
             touch_pins[0], touch_pins[1], touch_pins[2], touch_pins[3], touch_pins[4]);
@@ -295,7 +293,8 @@ std::string cpart_LCD_ili9341::WritePreferences(void) {
 void cpart_LCD_ili9341::ReadPreferences(std::string value) {
     unsigned char tp;
     sscanf(value.c_str(),
-           "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu",
+           "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,"
+           "%hhu,%hhu,%hhu,%hhu",
            &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &tp, &input_pins[5],
            &input_pins[6], &input_pins[7], &input_pins[8], &input_pins[9], &input_pins[10], &input_pins[11],
            &input_pins[12], &touch_pins[0], &touch_pins[1], &touch_pins[2], &touch_pins[3], &touch_pins[4]);
@@ -781,6 +780,7 @@ void cpart_LCD_ili9341::Reset(void) {
 }
 
 void cpart_LCD_ili9341::LoadPartImage(void) {
+    SpareParts.SetPartOnDraw(id);
     part::LoadPartImage();
     lcd_ili9341_update(&lcd);
 }

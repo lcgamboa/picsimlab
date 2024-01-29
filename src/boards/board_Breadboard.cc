@@ -321,9 +321,9 @@ void cboard_Breadboard::EvMouseButtonRelease(uint button, uint x, uint y, uint s
 // Called ever 100ms to draw board
 // This is the critical code for simulator running speed
 
-void cboard_Breadboard::Draw(CCanvas* Canvas) {
+void cboard_Breadboard::Draw(void) {
     int i;
-    lxRect rec;
+    Rect_t rec;
     lxSize ps;
     int update = 0;  // verifiy if updated is needed
 
@@ -335,65 +335,75 @@ void cboard_Breadboard::Draw(CCanvas* Canvas) {
             output[i].update = 0;
 
             if (!update) {
-                Canvas->Init(Scale, Scale);
-                Canvas->SetFontWeight(lxFONTWEIGHT_BOLD);
+                PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});
+                PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
             }
             update++;  // set to update buffer
 
-            Canvas->SetFgColor(0, 0, 0);  // black
+            PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});  // black
 
             switch (output[i].id)  // search for color of output
             {
                 case O_LPWR:  // Blue using mcupwr value
-                    Canvas->SetColor(0, 0, 200 * PICSimLab.GetMcuPwr() + 55);
-                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                      output[i].y2 - output[i].y1);
+                    PICSimLab.CanvasCmd(
+                        {CC_SETCOLOR, .SetColor{0, 0, (unsigned int)(200 * PICSimLab.GetMcuPwr() + 55)}});
+                    PICSimLab.CanvasCmd(
+                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                  output[i].y2 - output[i].y1}});
                     break;
                 case O_MP:
-                    Canvas->SetFontSize(
-                        ((MGetPinCount() >= 44) || (MGetPinCount() <= 8)) ? 6 : ((MGetPinCount() > 14) ? 12 : 10));
+                    PICSimLab.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{((MGetPinCount() >= 44) || (MGetPinCount() <= 8))
+                                                                          ? 6
+                                                                          : ((MGetPinCount() > 14) ? 12 : 10)}});
 
                     ps = micbmp->GetSize();
-                    Canvas->ChangeScale(1.0, 1.0);
-                    Canvas->PutBitmap(micbmp, output[i].x1 * Scale, output[i].y1 * Scale);
-                    Canvas->ChangeScale(Scale, Scale);
-                    Canvas->SetFgColor(230, 230, 230);
+                    PICSimLab.CanvasCmd({CC_CHANGESCALE, .ChangeScale{1.0, 1.0}});
+                    PICSimLab.CanvasCmd({CC_PUTBITMAP, .PutBitmap{micbmp, output[i].x1 * Scale, output[i].y1 * Scale}});
+                    PICSimLab.CanvasCmd({CC_CHANGESCALE, .ChangeScale{Scale, Scale}});
+                    PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{230, 230, 230}});
 
                     rec.x = output[i].x1;
                     rec.y = output[i].y1;
                     rec.width = ps.GetWidth() / Scale;
                     rec.height = ps.GetHeight() / Scale;
-                    Canvas->TextOnRect(Proc, rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
+                    PICSimLab.CanvasCmd(
+                        {CC_TEXTONRECT, .TextOnRect{Proc.c_str(), rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL}});
                     break;
                 case O_RST:
-                    Canvas->SetColor(100, 100, 100);
-                    Canvas->Circle(1, output[i].cx, output[i].cy, 11);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 11}});
                     if (p_RST) {
-                        Canvas->SetColor(15, 15, 15);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
                     } else {
-                        Canvas->SetColor(55, 55, 55);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
                     }
-                    Canvas->Circle(1, output[i].cx, output[i].cy, 9);
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 9}});
                     break;
                 case O_JMP:
-                    Canvas->SetColor(0, 0, 0);
-                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                      output[i].y2 - output[i].y1);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{0, 0, 0}});
+                    PICSimLab.CanvasCmd(
+                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                  output[i].y2 - output[i].y1}});
 
                     if (!jmp[0]) {
-                        Canvas->SetBgColor(70, 70, 70);
-                        Canvas->Rectangle(1, output[i].x1, output[i].y1, (int)((output[i].x2 - output[i].x1) * 0.65),
-                                          output[i].y2 - output[i].y1);
-                        Canvas->SetBgColor(220, 220, 0);
-                        Canvas->Circle(1, output[i].x1 + (int)((output[i].x2 - output[i].x1) * 0.80),
-                                       output[i].y1 + ((output[i].y2 - output[i].y1) / 2), 3);
+                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{70, 70, 70}});
+                        PICSimLab.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1,
+                                                                      ((output[i].x2 - output[i].x1) * 0.65f),
+                                                                      output[i].y2 - output[i].y1}});
+                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{220, 220, 0}});
+                        PICSimLab.CanvasCmd(
+                            {CC_CIRCLE, .Circle{1, output[i].x1 + (int)((output[i].x2 - output[i].x1) * 0.80),
+                                                output[i].y1 + ((output[i].y2 - output[i].y1) / 2), 3}});
                     } else {
-                        Canvas->SetBgColor(70, 70, 70);
-                        Canvas->Rectangle(1, output[i].x1 + ((int)((output[i].x2 - output[i].x1) * 0.35)), output[i].y1,
-                                          (int)((output[i].x2 - output[i].x1) * 0.65), output[i].y2 - output[i].y1);
-                        Canvas->SetBgColor(220, 220, 0);
-                        Canvas->Circle(1, output[i].x1 + (int)((output[i].x2 - output[i].x1) * 0.20),
-                                       output[i].y1 + ((output[i].y2 - output[i].y1) / 2), 3);
+                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{70, 70, 70}});
+                        PICSimLab.CanvasCmd(
+                            {CC_RECTANGLE,
+                             .Rectangle{1, output[i].x1 + ((int)((output[i].x2 - output[i].x1) * 0.35)), output[i].y1,
+                                        ((output[i].x2 - output[i].x1) * 0.65f), output[i].y2 - output[i].y1}});
+                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{220, 220, 0}});
+                        PICSimLab.CanvasCmd(
+                            {CC_CIRCLE, .Circle{1, output[i].x1 + (int)((output[i].x2 - output[i].x1) * 0.20),
+                                                output[i].y1 + ((output[i].y2 - output[i].y1) / 2), 3}});
                     }
             }
         }
@@ -401,7 +411,7 @@ void cboard_Breadboard::Draw(CCanvas* Canvas) {
 
     // end draw
     if (update) {
-        Canvas->End();
+        PICSimLab.CanvasCmd({CC_END});
     }
 }
 
@@ -414,29 +424,59 @@ void cboard_Breadboard::Run_CPU(void) {
 
     switch (ptype) {
         case _PIC: {
-            const int JUMPSTEPS = PICSimLab.GetJUMPSTEPS();  // number of steps skipped
-            const long int NSTEP = PICSimLab.GetNSTEP();     // number of steps in 100ms
+            const int JUMPSTEPS = PICSimLab.GetJUMPSTEPS();  // number
+                                                             // of
+                                                             // steps
+                                                             // skipped
+            const long int NSTEP = PICSimLab.GetNSTEP();     // number
+                                                             // of
+                                                             // steps
+                                                             // in
+                                                             // 100ms
             const float RNSTEP = 200.0 * pic.PINCOUNT / NSTEP;
 
             // reset mean value
             memset(alm, 0, 100 * sizeof(unsigned int));
 
-            // read pic.pins to a local variable to speed up
+            // read pic.pins to a
+            // local variable to
+            // speed up
             pins = MGetPinsValues();
             if (use_spare)
                 SpareParts.PreProcess();
 
-            j = JUMPSTEPS;  // step counter
+            j = JUMPSTEPS;  // step
+                            // counter
             pi = 0;
-            if (PICSimLab.GetMcuPwr())       // if powered
-                for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
+            if (PICSimLab.GetMcuPwr())       // if
+                                             // powered
+                for (i = 0; i < NSTEP; i++)  // repeat
+                                             // for
+                                             // number
+                                             // of
+                                             // steps
+                                             // in
+                                             // 100ms
                 {
-                    if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
+                    if (j >= JUMPSTEPS)  // if
+                                         // number
+                                         // of
+                                         // step
+                                         // is
+                                         // bigger
+                                         // than
+                                         // steps
+                                         // to
+                                         // skip
                     {
                         pic_set_pin(&pic, pic.mclr, p_RST);
                     }
 
-                    // verify if a breakpoint is reached if not run one instruction
+                    // verify if a
+                    // breakpoint is
+                    // reached if
+                    // not run one
+                    // instruction
                     if (!mplabxd_testbp())
                         pic_step(&pic);
                     ioupdated = pic.ioupdated;
@@ -447,17 +487,31 @@ void cboard_Breadboard::Run_CPU(void) {
                     if (use_spare)
                         SpareParts.Process();
 
-                    // increment mean value counter if pin is high
+                    // increment
+                    // mean value
+                    // counter if
+                    // pin is high
                     alm[pi] += pins[pi].value;
                     pi++;
                     if (pi == pic.PINCOUNT)
                         pi = 0;
 
-                    if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
+                    if (j >= JUMPSTEPS)  // if
+                                         // number
+                                         // of
+                                         // step
+                                         // is
+                                         // bigger
+                                         // than
+                                         // steps
+                                         // to
+                                         // skip
                     {
-                        j = -1;  // reset counter
+                        j = -1;  // reset
+                                 // counter
                     }
-                    j++;  // counter increment
+                    j++;  // counter
+                          // increment
                     pic.ioupdated = 0;
                 }
             // calculate mean value
@@ -470,9 +524,15 @@ void cboard_Breadboard::Run_CPU(void) {
         }
         case _AVR: {
             const int pinc = bsim_simavr::MGetPinCount();
-            // const int JUMPSTEPS = Window1.GetJUMPSTEPS ()*4.0; //number of steps
-            // skipped
-            const long int NSTEP = 4.0 * PICSimLab.GetNSTEP();  // number of steps in 100ms
+            // const int JUMPSTEPS =
+            // Window1.GetJUMPSTEPS
+            // ()*4.0; //number of
+            // steps skipped
+            const long int NSTEP = 4.0 * PICSimLab.GetNSTEP();  // number
+                                                                // of
+                                                                // steps
+                                                                // in
+                                                                // 100ms
             const float RNSTEP = 200.0 * pinc / NSTEP;
 
             long long unsigned int cycle_start;
@@ -482,19 +542,33 @@ void cboard_Breadboard::Run_CPU(void) {
 
             memset(alm, 0, pinc * sizeof(unsigned int));
 
-            // read pic.pins to a local variable to speed up
+            // read pic.pins to a
+            // local variable to
+            // speed up
 
             pins = bsim_simavr::MGetPinsValues();
 
             if (use_spare)
                 SpareParts.PreProcess();
 
-            // j = JUMPSTEPS; //step counter
+            // j = JUMPSTEPS; //step
+            // counter
             pi = 0;
-            if (PICSimLab.GetMcuPwr())       // if powered
-                for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
+            if (PICSimLab.GetMcuPwr())       // if
+                                             // powered
+                for (i = 0; i < NSTEP; i++)  // repeat
+                                             // for
+                                             // number
+                                             // of
+                                             // steps
+                                             // in
+                                             // 100ms
                 {
-                    // verify if a breakpoint is reached if not run one instruction
+                    // verify if a
+                    // breakpoint is
+                    // reached if
+                    // not run one
+                    // instruction
                     if (avr_debug_type || (!mplabxd_testbp())) {
                         if (twostep) {
                             twostep = 0;  // NOP
@@ -516,21 +590,34 @@ void cboard_Breadboard::Run_CPU(void) {
                         SpareParts.Process();
                     ioupdated = 0;
 
-                    // increment mean value counter if pin is high
+                    // increment
+                    // mean value
+                    // counter if
+                    // pin is high
                     alm[pi] += pins[pi].value;
                     pi++;
                     if (pi == pinc)
                         pi = 0;
                     /*
-                    if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
+                    if (j >=
+                    JUMPSTEPS)//if
+                    number of step
+                    is bigger than
+                    steps to skip
                      {
-                      //set analog pin 2 (AN0) with value from scroll
+                      //set analog
+                    pin 2 (AN0) with
+                    value from
+                    scroll
                       //pic_set_apin(2,((5.0*(scroll1->GetPosition()))/
-                      //  (scroll1->GetRange()-1)));
+                      //
+                    (scroll1->GetRange()-1)));
 
-                      j = -1; //reset counter
+                      j = -1;
+                    //reset counter
                      }
-                    j++; //counter increment
+                    j++; //counter
+                    increment
                      */
                 }
             // calculate mean value
@@ -544,7 +631,8 @@ void cboard_Breadboard::Run_CPU(void) {
     }
 }
 
-// class dependent
+// class
+// dependent
 
 int cboard_Breadboard::DebugInit(int dtyppe) {
     switch (ptype) {
@@ -625,11 +713,56 @@ int cboard_Breadboard::MInit(const char* processor, const char* fname, float fre
         PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg", Scale, 1);
 
     if (bmp == NULL) {
-        bmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/ic6.svg", Scale, 1);
-        printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
-        printf("picsimlab: %s not found!\n",
-               (const char*)(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg")
-                   .c_str());
+        bmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() +
+                                          "boards/Common/"
+                                          "ic6.svg",
+                                      Scale, 1);
+        printf(
+            "pi"
+            "cs"
+            "im"
+            "la"
+            "b:"
+            " I"
+            "C "
+            "pa"
+            "ck"
+            "ag"
+            "e "
+            "wi"
+            "th"
+            " %"
+            "i "
+            "pi"
+            "ns"
+            " n"
+            "ot"
+            " f"
+            "ou"
+            "nd"
+            "!"
+            "\n",
+            MGetPinCount());
+        printf(
+            "pi"
+            "cs"
+            "im"
+            "la"
+            "b:"
+            " %"
+            "s "
+            "no"
+            "t "
+            "fo"
+            "un"
+            "d!"
+            "\n",
+            (const char*)(PICSimLab.GetSharePath() +
+                          "boards/"
+                          "Common/"
+                          "ic" +
+                          std::to_string(MGetPinCount()) + ".svg")
+                .c_str());
     }
 
     if (micbmp)
@@ -1062,14 +1195,35 @@ void cboard_Breadboard::SetScale(double scale) {
         bmp = PICSimLab.LoadImageFile(
             PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg", Scale, 1);
         if (bmp == NULL) {
-            bmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/ic6.svg", Scale, 1);
-            printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
-            printf("picsimlab: %s not found!\n", (const char*)(PICSimLab.GetSharePath() + "boards/Common/ic" +
-                                                               std::to_string(MGetPinCount()) + ".svg")
-                                                     .c_str());
+            bmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() +
+                                              "boards/Common/"
+                                              "ic6.svg",
+                                          Scale, 1);
+            printf(
+                "picsimlab: IC "
+                "package with %i "
+                "pins not "
+                "found!\n",
+                MGetPinCount());
+            printf(
+                "picsimlab: %s not "
+                "found!\n",
+                (const char*)(PICSimLab.GetSharePath() +
+                              "boar"
+                              "ds/"
+                              "Comm"
+                              "on/"
+                              "ic" +
+                              std::to_string(MGetPinCount()) +
+                              ".sv"
+                              "g")
+                    .c_str());
         }
     } else {
-        bmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/ic40.svg", Scale, 1);
+        bmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() +
+                                          "boards/Common/"
+                                          "ic40.svg",
+                                      Scale, 1);
     }
     if (micbmp)
         delete micbmp;

@@ -39,8 +39,9 @@ static PCWProp pcwprop[5] = {{PCW_COMBO, "Pin 1"},
                              {PCW_COMBO, "Active"},
                              {PCW_END, ""}};
 
-cpart_Buzzer::cpart_Buzzer(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_) {
+cpart_Buzzer::cpart_Buzzer(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_,
+                           const int id_)
+    : part(x, y, name, type, pboard_, id_) {
     X = x;
     Y = y;
     active = 1;
@@ -89,45 +90,50 @@ cpart_Buzzer::~cpart_Buzzer(void) {
     if (buffer) {
         delete[] buffer;
     }
-    canvas.Destroy();
+    SpareParts.CanvasCmd({CC_DESTROY});
     buzzer.End();
 }
 
 void cpart_Buzzer::DrawOutput(const unsigned int i) {
     const picpin* ppins = SpareParts.GetPinsValues();
 
-    canvas.SetFgColor(30, 0, 0);
+    SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{30, 0, 0}});
 
     switch (output[i].id) {
         case O_P1:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(255, 255, 255);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (input_pins[output[i].id - O_P1] == 0)
-                canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
+                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
             else
-                canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1, output[i].y1,
-                                   0);
+                SpareParts.CanvasCmd(
+                    {CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(input_pins[output[i].id - O_P1]).c_str(),
+                                                  output[i].x1, output[i].y1, 0}});
             break;
         case O_P2:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(255, 255, 255);
-            canvas.RotatedText("GND", output[i].x1, output[i].y1, 0);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"GND", output[i].x1, output[i].y1, 0}});
             break;
         case O_L1:
-            canvas.SetFgColor(0, 0, 0);
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
 
             if (input_pins[0] > 0) {
                 if (active) {
-                    canvas.SetBgColor(ppins[input_pins[0] - 1].oavalue, 0, 0);
+                    SpareParts.CanvasCmd(
+                        {CC_SETBGCOLOR, .SetBgColor{(unsigned int)ppins[input_pins[0] - 1].oavalue, 0, 0}});
                 } else {
-                    canvas.SetBgColor(310 - ppins[input_pins[0] - 1].oavalue, 0, 0);
+                    SpareParts.CanvasCmd(
+                        {CC_SETBGCOLOR, .SetBgColor{(unsigned int)(310 - ppins[input_pins[0] - 1].oavalue), 0, 0}});
                 }
             } else {
-                canvas.SetBgColor(55, 0, 0);
+                SpareParts.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{55, 0, 0}});
             }
-            DrawLED(&canvas, &output[i]);
+            DrawLED(SpareParts.CanvasCmd, &output[i]);
             break;
     }
 }

@@ -209,62 +209,66 @@ void cboard_gpboard::EvMouseButtonRelease(uint button, uint x, uint y, uint stat
 // Called ever 100ms to draw board
 // This is the critical code for simulator running speed
 
-void cboard_gpboard::Draw(CCanvas* Canvas) {
+void cboard_gpboard::Draw(void) {
     int i;
-    lxRect rec;
+    Rect_t rec;
     lxSize ps;
 
-    Canvas->Init(Scale, Scale);  // initialize draw context
-    Canvas->SetFontWeight(lxFONTWEIGHT_BOLD);
+    PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});  // initialize draw context
+    PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
 
-    Canvas->SetFontSize((MGetPinCount() >= 44) ? 5 : ((MGetPinCount() > 14) ? 12 : 4));
+    PICSimLab.CanvasCmd(
+        {CC_SETFONTSIZE, .SetFontSize{((MGetPinCount() >= 44) ? 5 : ((MGetPinCount() > 14) ? 12 : 4))}});
 
     // board_x draw
     for (i = 0; i < outputc; i++)  // run over all outputs
     {
         if (!output[i].r)  // if output shape is a rectangle
         {
-            Canvas->SetFgColor(0, 0, 0);  // black
+            PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});  // black
 
             switch (output[i].id)  // search for color of output
             {
                 case O_LPWR:  // Blue using mcupwr value
-                    Canvas->SetColor(200 * PICSimLab.GetMcuPwr() + 55, 0, 0);
-                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                      output[i].y2 - output[i].y1);
+                    PICSimLab.CanvasCmd(
+                        {CC_SETCOLOR, .SetColor{(unsigned int)(200 * PICSimLab.GetMcuPwr() + 55), 0, 0}});
+                    PICSimLab.CanvasCmd(
+                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                  output[i].y2 - output[i].y1}});
                     break;
                 case O_MP:
 
-                    Canvas->SetFontSize(10);
+                    PICSimLab.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{10}});
 
                     ps = micbmp->GetSize();
-                    Canvas->ChangeScale(1.0, 1.0);
-                    Canvas->PutBitmap(micbmp, output[i].x1 * Scale, output[i].y1 * Scale);
-                    Canvas->ChangeScale(Scale, Scale);
-                    Canvas->SetFgColor(230, 230, 230);
+                    PICSimLab.CanvasCmd({CC_CHANGESCALE, .ChangeScale{1.0, 1.0}});
+                    PICSimLab.CanvasCmd({CC_PUTBITMAP, .PutBitmap{micbmp, output[i].x1 * Scale, output[i].y1 * Scale}});
+                    PICSimLab.CanvasCmd({CC_CHANGESCALE, .ChangeScale{Scale, Scale}});
+                    PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{230, 230, 230}});
 
                     rec.x = output[i].x1;
                     rec.y = output[i].y1;
                     rec.width = ps.GetWidth() / Scale;
                     rec.height = ps.GetHeight() / Scale;
-                    Canvas->TextOnRect(Proc, rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
+                    PICSimLab.CanvasCmd(
+                        {CC_TEXTONRECT, .TextOnRect{Proc.c_str(), rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL}});
                     break;
                 case O_RST:
-                    Canvas->SetColor(100, 100, 100);
-                    Canvas->Circle(1, output[i].cx, output[i].cy, 11);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 11}});
                     if (p_RST) {
-                        Canvas->SetColor(15, 15, 15);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
                     } else {
-                        Canvas->SetColor(55, 55, 55);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
                     }
-                    Canvas->Circle(1, output[i].cx, output[i].cy, 9);
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 9}});
                     break;
             }
         }
     }
 
     // end draw
-    Canvas->End();
+    PICSimLab.CanvasCmd({CC_END});
 }
 
 void cboard_gpboard::Run_CPU(void) {
@@ -274,7 +278,8 @@ void cboard_gpboard::Run_CPU(void) {
     unsigned int alm[64];
     const int pinc = MGetPinCount();
 
-    // const int JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
+    // const int JUMPSTEPS = Window1.GetJUMPSTEPS ();
+    // //number of steps skipped
     const long int NSTEP = PICSimLab.GetNSTEP();  // number of steps in 100ms
     const float RNSTEP = 200.0 * pinc / NSTEP;
 
@@ -291,11 +296,13 @@ void cboard_gpboard::Run_CPU(void) {
         for (i = 0; i < PICSimLab.GetNSTEP(); i++)  // repeat for number of steps in 100ms
         {
             /*
-            if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
+            if (j >= JUMPSTEPS)//if number of step is bigger
+            than steps to skip
              {
              }
              */
-            // verify if a breakpoint is reached if not run one instruction
+            // verify if a breakpoint is reached if not run
+            // one instruction
             MStep();
             InstCounterInc();
             // Oscilloscope window process
@@ -311,7 +318,8 @@ void cboard_gpboard::Run_CPU(void) {
             if (pi == pinc)
                 pi = 0;
             /*
-             if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
+             if (j >= JUMPSTEPS)//if number of step is
+             bigger than steps to skip
               {
                j = -1; //reset counter
               }
@@ -334,7 +342,10 @@ int cboard_gpboard::MInit(const char* processor, const char* fname, float freq) 
     int ret = bsim_gpsim::MInit(processor, fname, freq);
 
     if (ret == -1) {
-        printf("PICSimLab: Unknown processor %s, loading default !\n", processor);
+        printf(
+            "PICSimLab: Unknown processor %s, loading "
+            "default !\n",
+            processor);
         bsim_gpsim::MInit("pic16f628a", fname, freq);
         Proc = "pic16f628a";
     }
@@ -344,7 +355,10 @@ int cboard_gpboard::MInit(const char* processor, const char* fname, float freq) 
 
     if (bmp == NULL) {
         bmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/ic6.svg", Scale, 1);
-        printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
+        printf(
+            "picsimlab: IC package with %i pins not "
+            "found!\n",
+            MGetPinCount());
         printf("picsimlab: %s not found!\n",
                (const char*)(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg")
                    .c_str());
@@ -368,7 +382,10 @@ void cboard_gpboard::SetScale(double scale) {
 
     if (bmp == NULL) {
         bmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/ic6.svg", Scale, 1);
-        printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
+        printf(
+            "picsimlab: IC package with %i pins not "
+            "found!\n",
+            MGetPinCount());
         printf("picsimlab: %s not found!\n",
                (const char*)(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg")
                    .c_str());

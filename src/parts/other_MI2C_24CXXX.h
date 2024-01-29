@@ -36,7 +36,8 @@
 class cpart_MI2C_24CXXX : public part {
 public:
     std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
-    cpart_MI2C_24CXXX(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
+    cpart_MI2C_24CXXX(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_,
+                      const int id_);
     ~cpart_MI2C_24CXXX(void);
     void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;

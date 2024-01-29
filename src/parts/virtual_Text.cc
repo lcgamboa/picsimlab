@@ -50,8 +50,9 @@ static const colorval_t colortable[C_END] = {{0xFF, 0, 0},       {0, 0xFF, 0},  
 static PCWProp pcwprop[] = {{PCW_TEXT, "text"},     {PCW_SPIN, "Size"}, {PCW_COMBO, "Color"},
                             {PCW_COMBO, "Backgrd"}, {PCW_EDIT, "Link"}, {PCW_END, ""}};
 
-cpart_TEXT::cpart_TEXT(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_, 8) {
+cpart_TEXT::cpart_TEXT(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_,
+                       const int id_)
+    : part(x, y, name, type, pboard_, id_, 8) {
     Bitmap = NULL;
     Size = 12;
     Textcolor = 4;
@@ -64,7 +65,8 @@ cpart_TEXT::cpart_TEXT(const unsigned x, const unsigned y, const char* name, con
 
 cpart_TEXT::~cpart_TEXT(void) {
     delete Bitmap;
-    canvas.Destroy();
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_DESTROY});
 }
 
 void cpart_TEXT::PostInit(void) {
@@ -94,32 +96,37 @@ void cpart_TEXT::LoadPartImage(void) {
         delete Bitmap;
     }
 
+    SpareParts.SetPartOnDraw(id);
     Bitmap = SpareParts.CreateBlankImage(Width, Height, Scale, 0, Orientation);
-    canvas.Destroy();
-    canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
+    SpareParts.CanvasCmd({CC_DESTROY});
+    SpareParts.CanvasCmd({CC_CREATE, .Create{Bitmap}});
 }
 
 void cpart_TEXT::DrawOutput(const unsigned int i) {
     unsigned int l;
-    lxRect rec;
+    Rect_t rec;
     std::string Text;
 
     switch (output[i].id) {
         case O_TEXTB:
 
-            font.SetPointSize(Size);
+            SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{Size}});
 
-            canvas.SetColor(colortable[Bgcolor].r, colortable[Bgcolor].g, colortable[Bgcolor].b);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            SpareParts.CanvasCmd(
+                {CC_SETCOLOR, .SetColor{colortable[Bgcolor].r, colortable[Bgcolor].g, colortable[Bgcolor].b}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
 
             if (Link.length()) {
-                canvas.SetColor(0, 0, 0xff);
-                canvas.SetLineWidth(2);
-                canvas.Rectangle(0, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                 output[i].y2 - output[i].y1);
+                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, 0, 0xff}});
+                SpareParts.CanvasCmd({CC_SETLINEWIDTH, .SetLineWidth{2}});
+                SpareParts.CanvasCmd(
+                    {CC_RECTANGLE, .Rectangle{0, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                              output[i].y2 - output[i].y1}});
             }
 
-            canvas.SetColor(colortable[Textcolor].r, colortable[Textcolor].g, colortable[Textcolor].b);
+            SpareParts.CanvasCmd(
+                {CC_SETCOLOR, .SetColor{colortable[Textcolor].r, colortable[Textcolor].g, colortable[Textcolor].b}});
             rec.x = output[i].x1;
             rec.y = output[i].y1;
             rec.width = output[i].x2 - output[i].x1;
@@ -130,7 +137,8 @@ void cpart_TEXT::DrawOutput(const unsigned int i) {
                 Text += "\n" + Lines.at(l);
             }
 
-            canvas.TextOnRect(lxString::FromUTF8(Text), rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
+            SpareParts.CanvasCmd({CC_TEXTONRECT, .TextOnRect{(lxString::FromUTF8(Text)).c_str(), rec,
+                                                             lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL}});
             break;
     }
 }

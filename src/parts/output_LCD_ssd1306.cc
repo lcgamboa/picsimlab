@@ -36,8 +36,8 @@ static PCWProp pcwprop[9] = {{PCW_LABEL, "1-GND,GND"}, {PCW_LABEL, "2-VCC,+3.3V"
                              {PCW_COMBO, "7-/CE"},     {PCW_COMBO, "Type Com."},   {PCW_END, ""}};
 
 cpart_LCD_ssd1306::cpart_LCD_ssd1306(const unsigned x, const unsigned y, const char* name, const char* type,
-                                     board* pboard_)
-    : part(x, y, name, type, pboard_) {
+                                     board* pboard_, const int id_)
+    : part(x, y, name, type, pboard_, id_) {
     X = x;
     Y = y;
     ReadMaps();
@@ -64,7 +64,8 @@ cpart_LCD_ssd1306::cpart_LCD_ssd1306(const unsigned x, const unsigned y, const c
 
 cpart_LCD_ssd1306::~cpart_LCD_ssd1306(void) {
     delete Bitmap;
-    canvas.Destroy();
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_DESTROY});
 }
 
 void cpart_LCD_ssd1306::DrawOutput(const unsigned int i) {
@@ -74,39 +75,43 @@ void cpart_LCD_ssd1306::DrawOutput(const unsigned int i) {
         case O_P3:
         case O_P4:
         case O_P5:
-            canvas.SetFontSize(8);
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(255, 255, 255);
+            SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{8}});
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (input_pins[output[i].id - O_P1] == 0)
-                canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2, 90.0}});
             else
-                canvas.RotatedText(SpareParts.GetPinName(input_pins[output[i].id - O_P1]), output[i].x1, output[i].y2,
-                                   90.0);
+                SpareParts.CanvasCmd(
+                    {CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(input_pins[output[i].id - O_P1]).c_str(),
+                                                  output[i].x1, output[i].y2, 90.0}});
             break;
         case O_F2:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(155, 155, 155);
-            canvas.RotatedText("3.3V", output[i].x1, output[i].y2, 90.0);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"3.3V", output[i].x1, output[i].y2, 90.0}});
             break;
         case O_F1:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(155, 155, 155);
-            canvas.RotatedText("GND", output[i].x1, output[i].y2, 90.0);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"GND", output[i].x1, output[i].y2, 90.0}});
             break;
         case O_LCD:
             // draw lcd text
             if (lcd.update) {
-                canvas.SetColor(0, 90 + 40, 0);
-                lcd_ssd1306_draw(&lcd, &canvas, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, 90 + 40, 0}});
+                lcd_ssd1306_draw(&lcd, SpareParts.CanvasCmd, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                  output[i].y2 - output[i].y1, 1);
             }
             /*
             else
             {
-               canvas.Rectangle (1, output[i].x1, output[i].y1,
+               SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{11, output[i].x1, output[i].y1,
             output[i].x2-output[i].x1,output[i].y2-output[i].y1 );
             }
              */
@@ -218,6 +223,7 @@ void cpart_LCD_ssd1306::PostProcess(void) {
 }
 
 void cpart_LCD_ssd1306::LoadPartImage(void) {
+    SpareParts.SetPartOnDraw(id);
     part::LoadPartImage();
     lcd_ssd1306_update(&lcd);
 }

@@ -74,8 +74,9 @@ static PCWProp pcwprop[11] = {{PCW_LABEL, "P1-V3.3       +3.3V"},
                               {PCW_LABEL, "P10-NC"},
                               {PCW_END, ""}};
 
-cpart_ETH_w5500::cpart_ETH_w5500(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_) {
+cpart_ETH_w5500::cpart_ETH_w5500(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_,
+                                 const int id_)
+    : part(x, y, name, type, pboard_, id_) {
     eth_w5500_init(&ethw);
     eth_w5500_rst(&ethw);
 
@@ -97,7 +98,8 @@ cpart_ETH_w5500::cpart_ETH_w5500(const unsigned x, const unsigned y, const char*
 
 cpart_ETH_w5500::~cpart_ETH_w5500(void) {
     delete Bitmap;
-    canvas.Destroy();
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_DESTROY});
     eth_w5500_end(&ethw);
 }
 
@@ -106,31 +108,36 @@ void cpart_ETH_w5500::Reset(void) {
 }
 
 void cpart_ETH_w5500::DrawOutput(const unsigned int i) {
-    int c;
+    unsigned int c;
     int n;
     char status[10];
     char sport[10];
 
     switch (output[i].id) {
         case O_LPWR:
-            canvas.SetColor(255, 0, 0);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{255, 0, 0}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
             break;
         case O_LACT:
             c = 255 * ((eth_w5500_get_leds(&ethw) & 0x08) > 0);
-            canvas.SetColor(c, c, 0);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{c, c, 0}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
             break;
         case O_LLINK:
-            canvas.SetColor(0, 255 * (eth_w5500_get_leds(&ethw) & 0x01), 0);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            SpareParts.CanvasCmd(
+                {CC_SETCOLOR, .SetColor{0, (unsigned int)(255 * (eth_w5500_get_leds(&ethw) & 0x01)), 0}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
             break;
         case O_STAT:
-            canvas.SetColor(9, 21, 59);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{9, 21, 59}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
 
             for (n = 0; n < 8; n++) {
-                canvas.SetFgColor(155, 155, 155);
+                SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
                 memset(status, 0, 10);
                 status[0] = '1' + n;
                 switch (ethw.Socket[n][Sn_MR] & 0x0F) {
@@ -145,7 +152,7 @@ void cpart_ETH_w5500::DrawOutput(const unsigned int i) {
                         break;
                     case S0_MR_MACRAW:
                         status[1] = 'M';
-                        canvas.SetFgColor(255, 0, 0);
+                        SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 0, 0}});
                         break;
                 }
 
@@ -155,62 +162,62 @@ void cpart_ETH_w5500::DrawOutput(const unsigned int i) {
                         break;
                     case SOCK_INIT:
                         status[2] = 'I';
-                        canvas.SetFgColor(255, 255, 255);
+                        SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
                         break;
                     case SOCK_LISTEN:
                         status[2] = 'L';
-                        canvas.SetFgColor(255, 255, 255);
+                        SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
                         break;
                     case SOCK_SYNSENT:
                         status[2] = 'S';
-                        canvas.SetFgColor(255, 255, 255);
+                        SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
                         break;
                     case SOCK_ESTABLISHED:
                         status[2] = 'E';
-                        canvas.SetFgColor(255, 255, 255);
+                        SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
                         break;
                     case SOCK_CLOSE_WAIT:
                         status[2] = 'W';
-                        canvas.SetFgColor(255, 255, 255);
+                        SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
                         break;
                     case SOCK_UDP:
                         status[2] = 'U';
-                        canvas.SetFgColor(0, 255, 0);
+                        SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 255, 0}});
                         break;
                     case SOCK_MACRAW:
                         status[2] = 'M';
-                        canvas.SetFgColor(255, 0, 0);
+                        SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 0, 0}});
                         break;
                 }
 
                 switch (ethw.status[n]) {
                     case ER_BIND:
                         status[3] = 'B';
-                        canvas.SetFgColor(255, 0, 0);
+                        SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 0, 0}});
                         break;
                     case ER_SEND:
                         status[3] = 'S';
-                        canvas.SetFgColor(255, 0, 0);
+                        SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 0, 0}});
                         break;
                     case ER_RECV:
                         status[3] = 'R';
-                        canvas.SetFgColor(255, 0, 0);
+                        SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 0, 0}});
                         break;
                     case ER_LIST:
                         status[3] = 'L';
-                        canvas.SetFgColor(255, 0, 0);
+                        SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 0, 0}});
                         break;
                     case ER_REUSE:
                         status[3] = 'U';
-                        canvas.SetFgColor(255, 0, 0);
+                        SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 0, 0}});
                         break;
                     case ER_CONN:
                         status[3] = 'C';
-                        canvas.SetFgColor(255, 0, 0);
+                        SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 0, 0}});
                         break;
                     case ER_SHUT:
                         status[3] = 'D';
-                        canvas.SetFgColor(255, 0, 0);
+                        SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 0, 0}});
                         break;
                     default:
                         status[3] = ' ';
@@ -219,20 +226,25 @@ void cpart_ETH_w5500::DrawOutput(const unsigned int i) {
 
                 sprintf(sport, "%i", ethw.bindp[n]);
                 if (n < 4) {
-                    canvas.RotatedText(status, output[i].x1 + (n * 30), output[i].y1, 0);
-                    canvas.RotatedText(sport, output[i].x1 + (n * 35), output[i].y1 + 30, 0);
+                    SpareParts.CanvasCmd(
+                        {CC_ROTATEDTEXT, .RotatedText{status, output[i].x1 + (n * 30), output[i].y1, 0}});
+                    SpareParts.CanvasCmd(
+                        {CC_ROTATEDTEXT, .RotatedText{sport, output[i].x1 + (n * 35), output[i].y1 + 30, 0}});
                 } else {
-                    canvas.RotatedText(status, output[i].x1 + ((n - 4) * 30), output[i].y1 + 15, 0);
-                    canvas.RotatedText(sport, output[i].x1 + ((n - 4) * 35), output[i].y1 + 45, 0);
+                    SpareParts.CanvasCmd(
+                        {CC_ROTATEDTEXT, .RotatedText{status, output[i].x1 + ((n - 4) * 30), output[i].y1 + 15, 0}});
+                    SpareParts.CanvasCmd(
+                        {CC_ROTATEDTEXT, .RotatedText{sport, output[i].x1 + ((n - 4) * 35), output[i].y1 + 45, 0}});
                 }
             }
             break;
         default:
-            canvas.SetFontSize(8);
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{8}});
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
 
-            canvas.SetFgColor(155, 155, 155);
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
 
             int pinv = output[i].id - O_P3;
             int pin = 0;
@@ -241,9 +253,10 @@ void cpart_ETH_w5500::DrawOutput(const unsigned int i) {
                 case 4:
                     pin = (!pinv ? 4 : 5);
                     if (pins[pin] == 0)
-                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+                        SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2, 90.0}});
                     else
-                        canvas.RotatedText(SpareParts.GetPinName(pins[pin]), output[i].x1, output[i].y2, 90.0);
+                        SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(pins[pin]).c_str(),
+                                                                           output[i].x1, output[i].y2, 90.0}});
                     break;
                 case 1:
                 case 2:
@@ -252,9 +265,10 @@ void cpart_ETH_w5500::DrawOutput(const unsigned int i) {
                 case 5:
                     pin = pinv - 2;
                     if (pins[pin] == 0)
-                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+                        SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2, 90.0}});
                     else
-                        canvas.RotatedText(SpareParts.GetPinName(pins[pin]), output[i].x1, output[i].y2, 90.0);
+                        SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(pins[pin]).c_str(),
+                                                                           output[i].x1, output[i].y2, 90.0}});
             }
             break;
     }

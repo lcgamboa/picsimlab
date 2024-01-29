@@ -35,7 +35,7 @@
 class cpart_vterm : public part {
 public:
     std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
-    cpart_vterm(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
+    cpart_vterm(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_, const int id_);
     ~cpart_vterm(void);
     void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;
@@ -52,7 +52,6 @@ public:
     void ReadPreferences(std::string value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
-    void SetId(int _id) override;
 
     static int count;
 

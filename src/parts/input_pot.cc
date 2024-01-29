@@ -38,8 +38,9 @@ static PCWProp pcwprop[8] = {{PCW_LABEL, "1-VCC,+5V"}, {PCW_COMBO, "2-POT 1"}, {
                              {PCW_COMBO, "4-POT 3"},   {PCW_COMBO, "5-POT 4"}, {PCW_LABEL, "6-GND ,GND"},
                              {PCW_SPIN, "Size"},       {PCW_END, ""}};
 
-cpart_pot::cpart_pot(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_, 9) {
+cpart_pot::cpart_pot(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_,
+                     const int id_)
+    : part(x, y, name, type, pboard_, id_, 9) {
     Size = 0;
     Bitmap = NULL;
 
@@ -84,7 +85,8 @@ void cpart_pot::RegisterRemoteControl(void) {
 
 cpart_pot::~cpart_pot(void) {
     delete Bitmap;
-    canvas.Destroy();
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_DESTROY});
 }
 
 void cpart_pot::Reset(void) {
@@ -99,22 +101,24 @@ void cpart_pot::DrawOutput(const unsigned int i) {
         case O_P2:
         case O_P3:
         case O_P4:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(255, 255, 255);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (output_pins[output[i].id - O_P1] == 0)
-                canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
+                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
             else
-                canvas.RotatedText(SpareParts.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1, output[i].y1,
-                                   0);
+                SpareParts.CanvasCmd(
+                    {CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(output_pins[output[i].id - O_P1]).c_str(),
+                                                  output[i].x1, output[i].y1, 0}});
             break;
         case O_PO1:
         case O_PO2:
         case O_PO3:
         case O_PO4:
             snprintf(val, 10, "%4.2f", vmax * (values[output[i].id - O_PO1]) / 200.0);
-            DrawPotentiometer(&canvas, &output[i], values[output[i].id - O_PO1], val, 7);
-            canvas.SetFontSize(9);
+            DrawPotentiometer(SpareParts.CanvasCmd, &output[i], values[output[i].id - O_PO1], val, 7);
+            SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{9}});
             break;
     }
 }
@@ -306,23 +310,24 @@ void cpart_pot::LoadPartImage(void) {
         Height = OHeight;
 
         if (SpareParts.GetWindow()) {
+            SpareParts.SetPartOnDraw(id);
             Bitmap = SpareParts.CreateBlankImage(Width, Height, Scale, 0, Orientation);
 
-            canvas.Destroy();
-            canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
+            SpareParts.CanvasCmd({CC_DESTROY});
+            SpareParts.CanvasCmd({CC_CREATE, .Create{Bitmap}});
 
             lxBitmap* BackBitmap = SpareParts.LoadImageFile(
                 PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(), Scale, 0, Orientation);
 
-            canvas.Init(Scale, Scale, Orientation);
-            canvas.SetColor(0x31, 0x3d, 0x63);
-            canvas.Rectangle(1, 0, 0, Width, Height);
+            SpareParts.CanvasCmd({CC_INIT, .Init{Scale, Scale, Orientation}});
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0x31, 0x3d, 0x63}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, 0, 0, (float)Width, (float)Height}});
 
-            canvas.ChangeScale(1.0, 1.0);
-            canvas.PutBitmap(BackBitmap, -xoff * Scale, 0);
+            SpareParts.CanvasCmd({CC_CHANGESCALE, .ChangeScale{1.0, 1.0}});
+            SpareParts.CanvasCmd({CC_PUTBITMAP, .PutBitmap{BackBitmap, -xoff * Scale, 0}});
 
-            canvas.ChangeScale(Scale, Scale);
-            canvas.End();
+            SpareParts.CanvasCmd({CC_CHANGESCALE, .ChangeScale{Scale, Scale}});
+            SpareParts.CanvasCmd({CC_END});
 
             delete BackBitmap;
         }

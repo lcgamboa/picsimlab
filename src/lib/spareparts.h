@@ -26,7 +26,8 @@
 #ifndef SPAREPARTS
 #define SPAREPARTS
 
-#include "../lib/part.h"
+#include "draw.h"
+#include "part.h"
 
 #define IOINIT 110
 
@@ -120,15 +121,21 @@ public:
 
     std::string GetOldFilename(void) { return oldfname; };
 
+    void SetPartOnDraw(int pod) { PartOnDraw = pod; };
+    int GetPartOnDraw(void) { return PartOnDraw; };
+
     lxBitmap* LoadImageFile(const std::string fname, const float scale = 1.0, const int usealpha = 0,
                             const int orientation = 0);
 
     lxBitmap* CreateBlankImage(const unsigned int width, const unsigned int height, const float scale = 1.0,
                                const int usealpha = 0, const int orientation = 0);
 
+    static void CanvasCmd(const CanvasCmd_t cmd);
+
     lxBitmap* (*OnLoadImage)(const std::string fname, const float scale, const int usealpha, const int orientation);
     lxBitmap* (*OnCreateImage)(const unsigned int width, const unsigned int height, const float scale,
                                const int usealpha, const int orientation);
+    void (*OnCanvasCmd)(const CanvasCmd_t cmd);
 
 private:
     float scale;
@@ -151,6 +158,7 @@ private:
     unsigned char pullup_bus_ptr[IOINIT];
     int fdtype;
     std::string oldfname;
+    int PartOnDraw;
 };
 
 extern CSpareParts SpareParts;

@@ -28,8 +28,6 @@
     } else     \
         printf
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 #include "led_ws2812b.h"
 
 void led_ws2812b_rst(led_ws2812b_t* led) {
@@ -110,12 +108,12 @@ unsigned char led_ws2812b_io(led_ws2812b_t* led, const unsigned char din) {
     return din;
 }
 
-void led_ws2812b_draw(led_ws2812b_t* led, CCanvas* canvas, const int x1, const int y1, const int w1, const int h1,
-                      const int picpwr) {
+void led_ws2812b_draw(led_ws2812b_t* led, void (*CanvasCmd)(CanvasCmd_t), const int x1, const int y1, const int w1,
+                      const int h1, const int picpwr) {
     unsigned int x, y, index;
     int R, G, B;
     led->update = 0;
-    canvas->SetFgColor(0, 0, 0);
+    (*CanvasCmd)({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
     for (x = 0; x < led->nrows; x++) {
         for (y = 0; y < led->ncols; y++) {
             index = (x * led->ncols) + y;
@@ -124,13 +122,15 @@ void led_ws2812b_draw(led_ws2812b_t* led, CCanvas* canvas, const int x1, const i
             G = ((led->color[index].G * 4) > 255) ? 255 : (led->color[index].G * 4);
             B = ((led->color[index].B * 4) > 255) ? 255 : (led->color[index].B * 4);
 
-            canvas->SetBgColor(R, G, B);
+            (*CanvasCmd)({CC_SETBGCOLOR, .SetBgColor{(unsigned int)R, (unsigned int)G, (unsigned int)B}});
 
             if (led->diffuser) {
-                canvas->Rectangle(1, x1 + (y * 40) - 8, y1 - (x * 40) - 8, w1 + 16, h1 + 16);
+                (*CanvasCmd)({CC_RECTANGLE, .Rectangle{1, (float)(x1 + (y * 40) - 8), (float)(y1 - (x * 40) - 8),
+                                                       (float)(w1 + 16), (float)(h1 + 16)}});
             } else {
-                canvas->SetFgColor(led->color[index].R, led->color[index].G, led->color[index].B);
-                canvas->Circle(1, x1 + (y * 40) + 12, y1 - (x * 40) + 12, 7);
+                (*CanvasCmd)(
+                    {CC_SETFGCOLOR, .SetFgColor{led->color[index].R, led->color[index].G, led->color[index].B}});
+                (*CanvasCmd)({CC_CIRCLE, .Circle{1, (float)(x1 + (y * 40) + 12), (float)(y1 - (x * 40) + 12), 7}});
             }
         }
     }

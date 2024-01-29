@@ -38,7 +38,8 @@ CPWindow4 Window4;
 
 void CPWindow4::DrawScreen(void) {
     draw1.Canvas.Init();
-    draw1.Canvas.SetFont(*font);
+    draw1.Canvas.SetFontSize(9);
+    draw1.Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
 
     // Clear background
     draw1.Canvas.SetFgColor(0, 0, 0);
@@ -159,7 +160,7 @@ void CPWindow4::DrawScreen(void) {
     } else {
         snprintf(text, 100, "CH1 Off");
     }
-    draw1.Canvas.Text(text, 10, HMAX + 1);
+    draw1.Canvas.RotatedText(text, 10, HMAX + 1, 0);
 
     draw1.Canvas.SetFgColor(button2.GetColor());
     if (togglebutton2.GetCheck()) {
@@ -168,19 +169,19 @@ void CPWindow4::DrawScreen(void) {
     } else {
         snprintf(text, 100, "CH2 Off");
     }
-    draw1.Canvas.Text(text, 10, HMAX + 14);
+    draw1.Canvas.RotatedText(text, 10, HMAX + 14, 0);
 
     draw1.Canvas.SetFgColor(200, 200, 200);
     snprintf(text, 100, "TM %6.3fms  %6.3fms", spind5.GetValue(), spind6.GetValue());
-    draw1.Canvas.Text(text, WMAX / 2, HMAX + 1);
+    draw1.Canvas.RotatedText(text, WMAX / 2, HMAX + 1, 0);
 
     draw1.Canvas.SetFgColor(200, 200, 0);
     if (togglebutton5.GetCheck()) {
-        snprintf(text, 100, "TRG CH%s %6.2fV ", (const char *)combo1.GetText().c_str(), spind7.GetValue());
+        snprintf(text, 100, "TRG CH%s %6.2fV ", (const char*)combo1.GetText().c_str(), spind7.GetValue());
     } else {
         snprintf(text, 100, "TRG Off");
     }
-    draw1.Canvas.Text(text, WMAX / 2, HMAX + 14);
+    draw1.Canvas.RotatedText(text, WMAX / 2, HMAX + 14, 0);
 
     char text1[100];
     char text2[100];
@@ -251,11 +252,11 @@ void CPWindow4::DrawScreen(void) {
 
         if (strlen(text) > 0) {
             draw1.Canvas.SetFgColor(200, 200, 200);
-            draw1.Canvas.Text(text, x + 4, y + 4);
+            draw1.Canvas.RotatedText(text, x + 4, y + 4, 0);
             draw1.Canvas.SetFgColor(button1.GetColor());
-            draw1.Canvas.Text(text1, x + 2, y + 20);
+            draw1.Canvas.RotatedText(text1, x + 2, y + 20, 0);
             draw1.Canvas.SetFgColor(button2.GetColor());
-            draw1.Canvas.Text(text2, x + 2, y + 34);
+            draw1.Canvas.RotatedText(text2, x + 2, y + 34, 0);
         }
     }
 
@@ -346,17 +347,12 @@ void CPWindow4::combo3_EvOnComboChange(CControl* control) {
     Oscilloscope.SetChannelPin(1, atoi(combo3.GetText()) - 1);
 }
 
-void CPWindow4::_EvOnDestroy(CControl* control) {
-    if (font) {
-        delete font;
-        font = NULL;
-    }
-}
+void CPWindow4::_EvOnDestroy(CControl* control) {}
 
 void CPWindow4::_EvOnCreate(CControl* control) {
-    font = new lxFont(9, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD);
-    SetTitle(((PICSimLab.GetInstanceNumber() > 0) ? ("PICSimLab[" + std::to_string(PICSimLab.GetInstanceNumber()) + "] - ")
-                                                  : ("PICSimLab - ")) +
+    SetTitle(((PICSimLab.GetInstanceNumber() > 0)
+                  ? ("PICSimLab[" + std::to_string(PICSimLab.GetInstanceNumber()) + "] - ")
+                  : ("PICSimLab - ")) +
              "Oscilloscope");
 }
 

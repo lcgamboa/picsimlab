@@ -29,8 +29,8 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
-part::part(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_, const int fsize)
-    : font(fsize, lxFONTFAMILY_TELETYPE, lxFONTSTYLE_NORMAL, lxFONTWEIGHT_BOLD) {
+part::part(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_, const int _id,
+           const int fsize) {
     always_update = 0;
     inputc = 0;
     outputc = 0;
@@ -40,6 +40,8 @@ part::part(const unsigned x, const unsigned y, const char* name, const char* typ
     PCWProperties = NULL;
     PCWCount = 0;
     pboard = pboard_;
+    Fsize = fsize;
+    id = _id;
 
     Name = name;
     Type = type;
@@ -312,6 +314,7 @@ int part::PointInside(int x, int y, input_t input) {
 }
 
 void part::LoadPartImage(void) {
+    SpareParts.SetPartOnDraw(id);
     std::string iname = PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName();
 
     lxBitmap* bmp = SpareParts.LoadImageFile(iname, Scale, 0, Orientation);
@@ -319,15 +322,15 @@ void part::LoadPartImage(void) {
     if (bmp != NULL) {
         if (SpareParts.GetWindow()) {
             Bitmap = bmp;
-            canvas.Destroy();
-            canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
+            SpareParts.CanvasCmd({CC_DESTROY});
+            SpareParts.CanvasCmd({CC_CREATE, .Create{Bitmap}});
         }
     } else if ((bmp = SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "parts/Common/notfound.svg", Scale, 0,
                                                Orientation)) != NULL) {
         if (SpareParts.GetWindow()) {
             Bitmap = bmp;
-            canvas.Destroy();
-            canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
+            SpareParts.CanvasCmd({CC_DESTROY});
+            SpareParts.CanvasCmd({CC_CREATE, .Create{Bitmap}});
         }
         printf("PICSimLab: (%s) Error loading image %s\n", (const char*)Name.c_str(), (const char*)iname.c_str());
         PICSimLab.RegisterError("Error loading image:\n " + iname);
@@ -549,8 +552,9 @@ void part::Draw(void) {
             output[i].update = 0;
 
             if (!Update) {
-                canvas.Init(Scale, Scale, Orientation);
-                canvas.SetFont(font);
+                SpareParts.CanvasCmd({CC_INIT, .Init{Scale, Scale, Orientation}});
+                SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{Fsize}});
+                SpareParts.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
             }
             Update++;  // set to update buffer
 
@@ -559,7 +563,7 @@ void part::Draw(void) {
     }
 
     if (Update) {
-        canvas.End();
+        SpareParts.CanvasCmd({CC_END});
     }
 }
 
@@ -613,12 +617,12 @@ int NUM_PARTS = 0;
 
 // boards object creation
 
-part* create_part(std::string name, unsigned int x, unsigned int y, board* pboard_) {
+part* create_part(std::string name, const unsigned int x, const unsigned int y, board* pboard_, const int id_) {
     part* part_ = NULL;
 
     for (int i = 0; i < NUM_PARTS; i++) {
         if (name.compare(parts_list[i].name) == 0) {
-            part_ = parts_list[i].pcreate(x, y, pboard_);
+            part_ = parts_list[i].pcreate(x, y, pboard_, id_);
             break;
         }
     }

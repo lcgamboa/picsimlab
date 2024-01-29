@@ -26,7 +26,7 @@
 #ifndef LCD_ILI9341
 #define LCD_ILI9341
 
-class CCanvas;
+#include "../lib/draw.h"
 
 #include "bitbang_spi.h"
 
@@ -77,7 +77,7 @@ void lcd_ili9341_update(lcd_ili9341_t* lcd);
 unsigned char lcd_ili9341_SPI_io(lcd_ili9341_t* lcd, const unsigned char** pins_value);
 unsigned short lcd_ili9341_8_io(lcd_ili9341_t* lcd, const unsigned char** pins_value);
 
-void lcd_ili9341_draw(lcd_ili9341_t* lcd, CCanvas* canvas, const int x1, const int y1, const int w1, const int h1,
-                      const int picpwr);
+void lcd_ili9341_draw(lcd_ili9341_t* lcd, void (*CanvasCmd)(CanvasCmd_t), const int x1, const int y1, const int w1,
+                      const int h1, const int picpwr);
 
 #endif  // LCD_ILI9341

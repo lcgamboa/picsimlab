@@ -71,6 +71,7 @@ void CPWindow5::menu1_EvMenuActive(CControl* control) {
 void CPWindow5::_EvOnCreate(CControl* control) {
     SpareParts.OnLoadImage = &CPWindow5::OnLoadImage;
     SpareParts.OnCreateImage = &CPWindow5::OnCreateImage;
+    SpareParts.OnCanvasCmd = &CPWindow5::OnCanvasCmd;
 
     if (SpareParts.GetLoadConfigFile().length() > 0)
         SpareParts.LoadConfig(SpareParts.GetLoadConfigFile());
@@ -502,6 +503,7 @@ void CPWindow5::timer1_EvOnTime(CControl* control) {
     need_resize++;
 
     for (int i = 0; i < SpareParts.GetCount(); i++) {
+        SpareParts.SetPartOnDraw(i);
         SpareParts.GetPart(i)->Draw();
         if (SpareParts.GetPart(i)->GetUpdate())
             update++;
@@ -937,4 +939,86 @@ lxBitmap* CPWindow5::OnCreateImage(const unsigned int width, const unsigned int 
         return bitmap;
     }
     return NULL;
+}
+
+void CPWindow5::OnCanvasCmd(const CanvasCmd_t cmd) {
+    int partn = SpareParts.GetPartOnDraw();
+    switch (cmd.cmd) {
+        case CC_INIT:
+            Window5.Canvas[partn].Init(cmd.Init.sx, cmd.Init.sy, cmd.Init.angle);
+            break;
+        case CC_CHANGESCALE:
+            Window5.Canvas[partn].ChangeScale(cmd.ChangeScale.sx, cmd.ChangeScale.sy);
+            break;
+        case CC_END:
+            Window5.Canvas[partn].End();
+            break;
+        case CC_SETBITMAP:
+            Window5.Canvas[partn].SetBitmap(cmd.SetBitmap.bitmap, cmd.SetBitmap.xs, cmd.SetBitmap.ys);
+            break;
+        case CC_SETCOLOR:
+            Window5.Canvas[partn].SetColor(cmd.SetColor.r, cmd.SetColor.g, cmd.SetColor.b);
+            break;
+        case CC_SETFGCOLOR:
+            Window5.Canvas[partn].SetFgColor(cmd.SetFgColor.r, cmd.SetFgColor.g, cmd.SetFgColor.b);
+            break;
+        case CC_SETBGCOLOR:
+            Window5.Canvas[partn].SetBgColor(cmd.SetBgColor.r, cmd.SetBgColor.g, cmd.SetBgColor.b);
+            break;
+        case CC_SETFONTSIZE:
+            Window5.Canvas[partn].SetFontSize(cmd.SetFontSize.pointsize);
+            break;
+        case CC_SETFONTWEIGHT:
+            Window5.Canvas[partn].SetFontWeight(cmd.SetFontWeight.weight);
+            break;
+        case CC_SETLINEWIDTH:
+            Window5.Canvas[partn].SetLineWidth(cmd.SetLineWidth.lwidth);
+            break;
+        case CC_POINT:
+            Window5.Canvas[partn].Point(cmd.Point.x, cmd.Point.y);
+            break;
+        case CC_LINE:
+            Window5.Canvas[partn].Line(cmd.Line.x1, cmd.Line.y1, cmd.Line.x2, cmd.Line.y2);
+            break;
+        case CC_RECTANGLE:
+            Window5.Canvas[partn].Rectangle(cmd.Rectangle.filled, cmd.Rectangle.x, cmd.Rectangle.y, cmd.Rectangle.width,
+                                            cmd.Rectangle.height);
+            break;
+        case CC_CIRCLE:
+            Window5.Canvas[partn].Circle(cmd.Circle.filled, cmd.Circle.x, cmd.Circle.y, cmd.Circle.radius);
+            break;
+        case CC_ROTATEDTEXT:
+            Window5.Canvas[partn].RotatedText(cmd.RotatedText.str, cmd.RotatedText.x, cmd.RotatedText.y,
+                                              cmd.RotatedText.angle);
+            break;
+        case CC_TEXTONRECT: {
+            lxRect rect;
+            rect.x = cmd.TextOnRect.rect.x;
+            rect.y = cmd.TextOnRect.rect.y;
+            rect.width = cmd.TextOnRect.rect.width;
+            rect.height = cmd.TextOnRect.rect.height;
+            Window5.Canvas[partn].TextOnRect(cmd.TextOnRect.str, rect, cmd.TextOnRect.align);
+        } break;
+        case CC_POLYGON:
+            Window5.Canvas[partn].Polygon(cmd.Polygon.filled, (lxPoint*)cmd.Polygon.points, cmd.Polygon.npoints);
+            break;
+        case CC_PUTBITMAP:
+            Window5.Canvas[partn].PutBitmap(cmd.PutBitmap.bitmap, cmd.PutBitmap.x, cmd.PutBitmap.y);
+            break;
+        case CC_GETBGCOLOR: {
+            lxColor bgc = Window5.Canvas[partn].GetBgColor();
+            *cmd.GetBgColor.r = bgc.Red();
+            *cmd.GetBgColor.g = bgc.Green();
+            *cmd.GetBgColor.b = bgc.Blue();
+        } break;
+        case CC_CREATE:
+            Window5.Canvas[partn].Create(Window5.GetWWidget(), cmd.Create.bitmap);
+            break;
+        case CC_DESTROY:
+            Window5.Canvas[partn].Destroy();
+            break;
+        case CC_LAST:
+        default:
+            break;
+    }
 }

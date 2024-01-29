@@ -470,58 +470,60 @@ void cboard_C3_DevKitC::EvMouseButtonRelease(uint button, uint x, uint y, uint s
 // Called ever 100ms to draw board
 // This is the critical code for simulator running speed
 
-void cboard_C3_DevKitC::Draw(CCanvas* Canvas) {
+void cboard_C3_DevKitC::Draw(void) {
     int i;
 
-    Canvas->Init(Scale, Scale);  // initialize draw context
-    Canvas->SetFontWeight(lxFONTWEIGHT_BOLD);
+    PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});  // initialize draw context
+    PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
 
     // board_x draw
     for (i = 0; i < outputc; i++)  // run over all outputs
     {
         if (!output[i].r)  // if output shape is a rectangle
         {
-            Canvas->SetFgColor(0, 0, 0);  // black
+            PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});  // black
 
             switch (output[i].id)  // search for color of output
             {
                 case O_LON:  // Blue using mcupwr value
-                    Canvas->SetColor(200 * PICSimLab.GetMcuPwr() + 55, 0, 0);
+                    PICSimLab.CanvasCmd(
+                        {CC_SETCOLOR, .SetColor{(unsigned int)(200 * PICSimLab.GetMcuPwr() + 55), 0, 0}});
                     break;
                 case O_LED:  // Blue using mcupwr value
-                    Canvas->SetColor(0, 0, pins[23].oavalue);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{0, 0, (unsigned int)pins[23].oavalue}});
                     break;
                 case O_RST:
                 case O_BOOT:
-                    Canvas->SetColor(100, 100, 100);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});
                     break;
             }
 
             if (output[i].id == O_RST) {
-                Canvas->Circle(1, output[i].cx, output[i].cy, 13);
+                PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 13}});
                 if (p_RST) {
-                    Canvas->SetColor(15, 15, 15);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
                 } else {
-                    Canvas->SetColor(55, 55, 55);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
                 }
-                Canvas->Circle(1, output[i].cx, output[i].cy, 11);
+                PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 11}});
             } else if (output[i].id == O_BOOT) {
-                Canvas->Circle(1, output[i].cx, output[i].cy, 13);
+                PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 13}});
                 if (p_BOOT) {
-                    Canvas->SetColor(15, 15, 15);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
                 } else {
-                    Canvas->SetColor(55, 55, 55);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
                 }
-                Canvas->Circle(1, output[i].cx, output[i].cy, 11);
+                PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 11}});
             } else {
-                Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                  output[i].y2 - output[i].y1);
+                PICSimLab.CanvasCmd(
+                    {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                              output[i].y2 - output[i].y1}});
             }
         }
     }
 
     // end draw
-    Canvas->End();
+    PICSimLab.CanvasCmd({CC_END});
 }
 
 void cboard_C3_DevKitC::Run_CPU_ns(uint64_t time) {
@@ -538,7 +540,8 @@ void cboard_C3_DevKitC::Run_CPU_ns(uint64_t time) {
             // reset pins mean value
             memset(alm, 0, 64 * sizeof(unsigned int));
 
-            // Spare parts window pre process
+            // Spare parts window pre
+            // process
             if (use_spare)
                 SpareParts.PreProcess();
 
@@ -547,14 +550,25 @@ void cboard_C3_DevKitC::Run_CPU_ns(uint64_t time) {
         }
 
         if (PICSimLab.GetMcuPwr())  // if powered
-                                    // for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
+                                    // for (i =
+                                    // 0; i <
+                                    // NSTEP;
+                                    // i++)  //
+                                    // repeat for
+                                    // number of
+                                    // steps in
+                                    // 100ms
         {
             /*
-            if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
+            if (j >= JUMPSTEPS)//if number
+            of step is bigger than steps to
+            skip
              {
              }
              */
-            // verify if a breakpoint is reached if not run one instruction
+            // verify if a breakpoint is
+            // reached if not run one
+            // instruction
             MStep();
             InstCounterInc();
             // Oscilloscope window process
@@ -564,13 +578,16 @@ void cboard_C3_DevKitC::Run_CPU_ns(uint64_t time) {
             if (use_spare)
                 SpareParts.Process();
 
-            //  increment mean value counter if pin is high
+            //  increment mean value counter
+            //  if pin is high
             alm[pi] += pins[pi].value;
             pi++;
             if (pi == pinc)
                 pi = 0;
             /*
-                if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
+                if (j >= JUMPSTEPS)//if
+               number of step is bigger than
+               steps to skip
                  {
                   j = -1; //reset counter
                  }
@@ -586,7 +603,8 @@ void cboard_C3_DevKitC::Run_CPU_ns(uint64_t time) {
             for (pi = 0; pi < MGetPinCount(); pi++) {
                 pins[pi].oavalue = (int)((alm[pi] * RNSTEP) + 55);
             }
-            // Spare parts window pre post process
+            // Spare parts window pre post
+            // process
             if (use_spare)
                 SpareParts.PostProcess();
         }
@@ -600,7 +618,6 @@ void cboard_C3_DevKitC::Run_CPU(void) {
 #define CHR_TIOCM_RI 0x080
 #define CHR_TIOCM_DTR 0x002
 #define CHR_TIOCM_RTS 0x004
-
     if (qemu_started != 1) {
         return;
     }
@@ -635,23 +652,33 @@ void cboard_C3_DevKitC::board_Event(CControl* control) {
 void cboard_C3_DevKitC::BoardOptions(int* argc, char** argv) {
     if (ConfEnableWifi) {
         strcpy(argv[(*argc)++], "-nic");
-        strcpy(argv[(*argc)++], "user,model=esp32c3_wifi,id=u1,net=192.168.4.0/24");
+        strcpy(argv[(*argc)++],
+               "user,model=esp32c3_wifi,id="
+               "u1,net=192.168.4.0/24");
     }
 
     if (ConfDisableWdt) {
         strcpy(argv[(*argc)++], "-global");
-        strcpy(argv[(*argc)++], "driver=timer.esp32c3.timg,property=wdt_disable,value=true");
+        strcpy(argv[(*argc)++],
+               "driver=timer.esp32c3.timg,"
+               "property=wdt_disable,value="
+               "true");
     }
     if (ConfEnableEthernet) {
         strcpy(argv[(*argc)++], "-nic");
-        strcpy(argv[(*argc)++], "user,model=open_eth,id=u2,net=192.168.3.0/24");
+        strcpy(argv[(*argc)++],
+               "user,model=open_eth,id=u2,"
+               "net=192.168.3.0/24");
     }
 }
 
 void cboard_C3_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x, uint y, uint state) {
     switch (control->GetTag()) {
         case 4: {
-            std::string fname = PICSimLab.GetSharePath() + "boards/" BOARD_C3_DevKitC_Name + "/config.lxrad";
+            std::string fname = PICSimLab.GetSharePath() +
+                                "boards"
+                                "/" BOARD_C3_DevKitC_Name +
+                                "/config.lxrad";
 
             if (lxFileExists(fname)) {
                 wconfig->DestroyChilds();
@@ -759,19 +786,23 @@ void cboard_C3_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x
 
 void cboard_C3_DevKitC::PinsExtraConfig(int cfg) {
     switch ((cfg & 0xf000) >> 12) {
-        case QEMU_EXTRA_PIN_IN_CFG: {  // Peripheral Signal input
+        case QEMU_EXTRA_PIN_IN_CFG: {  // Peripheral
+                                       // Signal
+                                       // input
             uint32_t* gpio_in_sel = qemu_picsimlab_get_internals(QEMU_INTERNAL_GPIO_IN_SEL);
 
             int function = cfg & 0x1ff;
             int gpio = gpio_in_sel[cfg & 0x1ff] & 0x1F;
-            // printf("sel in    gpio%02i func=%3i\n", gpio, function);
+            // printf("sel in    gpio%02i
+            // func=%3i\n", gpio, function);
 
             switch (function) {
                 /*
                 case 9:  // HSPIQ
-                    master_spi[0].cipo_pin = io2pin(gpio);
-                    master_spi[0].ctrl_on = 1;
-                    break;
+                    master_spi[0].cipo_pin =
+                io2pin(gpio);
+                    master_spi[0].ctrl_on =
+                1; break;
                  */
                 case 6:  // U0RXD
                     master_uart[0].rx_pin = io2pin(gpio);
@@ -793,44 +824,52 @@ void cboard_C3_DevKitC::PinsExtraConfig(int cfg) {
 
                     /*
                     case 64:  // VSPIQ
-                        master_spi[1].cipo_pin = io2pin(gpio);
-                        master_spi[1].ctrl_on = 1;
-                        break;
+                        master_spi[1].cipo_pin
+                    = io2pin(gpio);
+                        master_spi[1].ctrl_on
+                    = 1; break;
 
                     case 198:  // U2RXD
-                        master_uart[2].rx_pin = io2pin(gpio);
-                        master_uart[2].ctrl_on = 1;
-                        break;
+                        master_uart[2].rx_pin
+                    = io2pin(gpio);
+                        master_uart[2].ctrl_on
+                    = 1; break;
                         */
             }
 
         } break;
-        case QEMU_EXTRA_PIN_OUT_CFG: {  // Peripheral Signal output
+        case QEMU_EXTRA_PIN_OUT_CFG: {  // Peripheral
+                                        // Signal
+                                        // output
             uint32_t* gpio_out_sel = qemu_picsimlab_get_internals(QEMU_INTERNAL_GPIO_OUT_SEL);
-            // uint32_t* muxgpios = qemu_picsimlab_get_internals(QEMU_INTERNAL_IOMUX_GPIOS);
+            // uint32_t* muxgpios =
+            // qemu_picsimlab_get_internals(QEMU_INTERNAL_IOMUX_GPIOS);
 
             int function = gpio_out_sel[cfg & 0xff] & 0xFF;
             int gpio = cfg & 0xff;
-            // printf("sel out   gpio%02i  func=%3i\n", gpio, function);
+            // printf("sel out   gpio%02i
+            // func=%3i\n", gpio, function);
 
             switch (function) {
                 /*
                 case 8:  // HSPICLK
-                    master_spi[0].sck_pin = io2pin(gpio);
-                    master_spi[0].ctrl_on = 1;
-                    break;
-                case 9:  // HSPIQ
-                    master_spi[0].cipo_pin = io2pin(gpio);
-                    master_spi[0].ctrl_on = 1;
-                    break;
-                case 10:  // HSPID
-                    master_spi[0].copi_pin = io2pin(gpio);
-                    master_spi[0].ctrl_on = 1;
-                    break;
-                case 11:  // HSPICS0
-                    master_spi[0].cs_pin[0] = io2pin(gpio);
-                    master_spi[0].ctrl_on = 1;
-                    break;
+                    master_spi[0].sck_pin =
+                io2pin(gpio);
+                    master_spi[0].ctrl_on =
+                1; break; case 9:  // HSPIQ
+                    master_spi[0].cipo_pin =
+                io2pin(gpio);
+                    master_spi[0].ctrl_on =
+                1; break; case 10:  // HSPID
+                    master_spi[0].copi_pin =
+                io2pin(gpio);
+                    master_spi[0].ctrl_on =
+                1; break; case 11:  //
+                HSPICS0
+                    master_spi[0].cs_pin[0]
+                = io2pin(gpio);
+                    master_spi[0].ctrl_on =
+                1; break;
                   */
                 case 6:  // U0TXD
                     master_uart[0].tx_pin = io2pin(gpio);
@@ -843,43 +882,52 @@ void cboard_C3_DevKitC::PinsExtraConfig(int cfg) {
 
                     /*
                     case 61:  // HSPICS1
-                        master_spi[0].cs_pin[1] = io2pin(gpio);
-                        master_spi[0].ctrl_on = 1;
-                        break;
-                    case 62:  // HSPICS2
-                        master_spi[0].cs_pin[2] = io2pin(gpio);
-                        master_spi[0].ctrl_on = 1;
-                        break;
+                        master_spi[0].cs_pin[1]
+                    = io2pin(gpio);
+                        master_spi[0].ctrl_on
+                    = 1; break; case 62:  //
+                    HSPICS2
+                        master_spi[0].cs_pin[2]
+                    = io2pin(gpio);
+                        master_spi[0].ctrl_on
+                    = 1; break;
 
                     case 63:  // VSPICLK
-                        master_spi[1].sck_pin = io2pin(gpio);
-                        master_spi[1].ctrl_on = 1;
-                        break;
-                    case 64:  // VSPIQ
-                        master_spi[1].cipo_pin = io2pin(gpio);
-                        master_spi[1].ctrl_on = 1;
-                        break;
-                    case 65:  // VSPID
-                        master_spi[1].copi_pin = io2pin(gpio);
-                        master_spi[1].ctrl_on = 1;
-                        break;
-                    case 68:  // VSPICS0
-                        master_spi[1].cs_pin[0] = io2pin(gpio);
-                        master_spi[1].ctrl_on = 1;
-                        break;
-                    case 69:  // VSPICS1
-                        master_spi[1].cs_pin[1] = io2pin(gpio);
-                        master_spi[1].ctrl_on = 1;
-                        break;
-                    case 70:  // VSPICS2
-                        master_spi[1].cs_pin[2] = io2pin(gpio);
-                        master_spi[1].ctrl_on = 1;
-                        break;
+                        master_spi[1].sck_pin
+                    = io2pin(gpio);
+                        master_spi[1].ctrl_on
+                    = 1; break; case 64:  //
+                    VSPIQ
+                        master_spi[1].cipo_pin
+                    = io2pin(gpio);
+                        master_spi[1].ctrl_on
+                    = 1; break; case 65:  //
+                    VSPID
+                        master_spi[1].copi_pin
+                    = io2pin(gpio);
+                        master_spi[1].ctrl_on
+                    = 1; break; case 68:  //
+                    VSPICS0
+                        master_spi[1].cs_pin[0]
+                    = io2pin(gpio);
+                        master_spi[1].ctrl_on
+                    = 1; break; case 69:  //
+                    VSPICS1
+                        master_spi[1].cs_pin[1]
+                    = io2pin(gpio);
+                        master_spi[1].ctrl_on
+                    = 1; break; case 70:  //
+                    VSPICS2
+                        master_spi[1].cs_pin[2]
+                    = io2pin(gpio);
+                        master_spi[1].ctrl_on
+                    = 1; break;
 
                     case 198:  // U2RTXD
-                        master_uart[2].tx_pin = io2pin(gpio);
-                        master_uart[2].ctrl_on = 1;
-                        break;
+                        master_uart[2].tx_pin
+                    = io2pin(gpio);
+                        master_uart[2].ctrl_on
+                    = 1; break;
                         */
                 case 45:  // ledc_ls_sig_out0
                 case 46:  // ledc_ls_sig_out1
@@ -887,12 +935,16 @@ void cboard_C3_DevKitC::PinsExtraConfig(int cfg) {
                 case 48:  // ledc_ls_sig_out3
                 case 49:  // ledc_ls_sig_out4
                 case 50:  // ledc_ls_sig_out5
-                    // printf("LEDC channel %i in GPIO %i\n", function - 45, gpio);
+                    // printf("LEDC channel
+                    // %i in GPIO %i\n",
+                    // function - 45, gpio);
                     pwm_out.pins[function - 45] = io2pin(gpio);
                     break;
                 case 51:  // rmt_sig_out0
                 case 52:  // rmt_sig_out1
-                    // printf("RMT channel %i in GPIO %i\n", function - 71, gpio);
+                    // printf("RMT channel
+                    // %i in GPIO %i\n",
+                    // function - 71, gpio);
                     break;
 
                 case 53:  // I2CEXT0_SCL
@@ -906,12 +958,15 @@ void cboard_C3_DevKitC::PinsExtraConfig(int cfg) {
             }
 
         } break;
-        case QEMU_EXTRA_PIN_IOMUX_CFG: {  // IO MUX Functions
+        case QEMU_EXTRA_PIN_IOMUX_CFG: {  // IO MUX
+                                          // Functions
             uint32_t* muxgpios = qemu_picsimlab_get_internals(QEMU_INTERNAL_IOMUX_GPIOS);
 
             int function = (muxgpios[cfg & 0xff] & 0x7000) >> 12;
             int gpio = cfg & 0xff;
-            // printf("iomux fun gpio%02i func=0x%08x\n", gpio, function);
+            // printf("iomux fun gpio%02i
+            // func=0x%08x\n", gpio,
+            // function);
 
             switch (function) {
                 case 0:
@@ -930,37 +985,38 @@ void cboard_C3_DevKitC::PinsExtraConfig(int cfg) {
                     /*
                         switch (gpio) {
                             case 12:
-                                master_spi[0].cipo_pin = IO12;
-                                master_spi[0].ctrl_on = 1;
-                                break;
-                            case 13:
-                                master_spi[0].copi_pin = IO13;
-                                master_spi[0].ctrl_on = 1;
-                                break;
-                            case 14:
-                                master_spi[0].sck_pin = IO14;
-                                master_spi[0].ctrl_on = 1;
-                                break;
-                            case 15:
-                                master_spi[0].cs_pin[0] = IO15;
-                                master_spi[0].ctrl_on = 1;
-                                break;
-                            case 18:
-                                master_spi[1].sck_pin = IO18;
-                                master_spi[1].ctrl_on = 1;
-                                break;
-                            case 19:
-                                master_spi[1].cipo_pin = IO19;
-                                master_spi[1].ctrl_on = 1;
-                                break;
-                            case 23:
-                                master_spi[1].copi_pin = IO23;
-                                master_spi[1].ctrl_on = 1;
-                                break;
-                            case 5:
-                                master_spi[1].cs_pin[0] = IO5;
-                                master_spi[1].ctrl_on = 1;
-                                break;
+                                master_spi[0].cipo_pin
+                       = IO12;
+                                master_spi[0].ctrl_on
+                       = 1; break; case 13:
+                                master_spi[0].copi_pin
+                       = IO13;
+                                master_spi[0].ctrl_on
+                       = 1; break; case 14:
+                                master_spi[0].sck_pin
+                       = IO14;
+                                master_spi[0].ctrl_on
+                       = 1; break; case 15:
+                                master_spi[0].cs_pin[0]
+                       = IO15;
+                                master_spi[0].ctrl_on
+                       = 1; break; case 18:
+                                master_spi[1].sck_pin
+                       = IO18;
+                                master_spi[1].ctrl_on
+                       = 1; break; case 19:
+                                master_spi[1].cipo_pin
+                       = IO19;
+                                master_spi[1].ctrl_on
+                       = 1; break; case 23:
+                                master_spi[1].copi_pin
+                       = IO23;
+                                master_spi[1].ctrl_on
+                       = 1; break; case 5:
+                                master_spi[1].cs_pin[0]
+                       = IO5;
+                                master_spi[1].ctrl_on
+                       = 1; break;
                         }*/
                     break;
                 case 2:
@@ -971,21 +1027,22 @@ void cboard_C3_DevKitC::PinsExtraConfig(int cfg) {
                 /*
                     switch (gpio) {
                         case 9:
-                            master_uart[1].rx_pin = IO9;
-                            master_uart[1].ctrl_on = 1;
-                            break;
-                        case 10:
-                            master_uart[1].tx_pin = IO10;
-                            master_uart[1].ctrl_on = 1;
-                            break;
-                        case 16:
-                            master_uart[2].rx_pin = IO16;
-                            master_uart[2].ctrl_on = 1;
-                            break;
-                        case 17:
-                            master_uart[2].tx_pin = IO17;
-                            master_uart[2].ctrl_on = 1;
-                            break;
+                            master_uart[1].rx_pin
+                   = IO9;
+                            master_uart[1].ctrl_on
+                   = 1; break; case 10:
+                            master_uart[1].tx_pin
+                   = IO10;
+                            master_uart[1].ctrl_on
+                   = 1; break; case 16:
+                            master_uart[2].rx_pin
+                   = IO16;
+                            master_uart[2].ctrl_on
+                   = 1; break; case 17:
+                            master_uart[2].tx_pin
+                   = IO17;
+                            master_uart[2].ctrl_on
+                   = 1; break;
                     }
                     break;
                     */
@@ -1145,7 +1202,9 @@ void cboard_C3_DevKitC::MSetAPin(int pin, float value) {
             if (ADCvalues[channel] != svalue) {
                 qemu_picsimlab_set_apin(channel, svalue);
                 ADCvalues[channel] = svalue;
-                // printf("Analog channel %02X = %i\n", channel, svalue);
+                // printf("Analog channel
+                // %02X = %i\n", channel,
+                // svalue);
             }
         }
     }

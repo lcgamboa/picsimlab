@@ -48,7 +48,7 @@ public:
     // Destructor called once on board destruction
     ~cboard_RemoteTCP(void);
     // Called ever 100ms to draw board
-    void Draw(CCanvas* Canvas) override;
+    void Draw(void) override;
     void Run_CPU(void) override;
     void Run_CPU_ns(uint64_t time) override;
     // Return a list of board supported microcontrollers

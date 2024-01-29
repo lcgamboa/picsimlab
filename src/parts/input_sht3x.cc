@@ -37,8 +37,9 @@ enum { I_PO1, I_PO2 };
 static PCWProp pcwprop[6] = {{PCW_LABEL, "Pin 1        +5V"},  {PCW_COMBO, "Pin 2"},  {PCW_COMBO, "Pin 3"},
                              {PCW_LABEL, "Pin 4         GND"}, {PCW_COMBO, "Output"}, {PCW_END, ""}};
 
-cpart_sht3x::cpart_sht3x(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_) {
+cpart_sht3x::cpart_sht3x(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_,
+                         const int id_)
+    : part(x, y, name, type, pboard_, id_) {
     output_pins[0] = 0;
     output_pins[1] = 0;
 
@@ -63,7 +64,8 @@ void cpart_sht3x::RegisterRemoteControl(void) {
 
 cpart_sht3x::~cpart_sht3x(void) {
     delete Bitmap;
-    canvas.Destroy();
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_DESTROY});
 }
 
 void cpart_sht3x::DrawOutput(const unsigned int i) {
@@ -71,46 +73,54 @@ void cpart_sht3x::DrawOutput(const unsigned int i) {
 
     switch (output[i].id) {
         case O_P1:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(255, 255, 255);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (output_pins[output[i].id - O_P1] == 0)
-                canvas.RotatedText("2-T   NC", output[i].x1, output[i].y2, 90);
+                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"2-T   NC", output[i].x1, output[i].y2, 90}});
             else
-                canvas.RotatedText("2-T   " + SpareParts.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1,
-                                   output[i].y2, 90);
+                SpareParts.CanvasCmd(
+                    {CC_ROTATEDTEXT,
+                     .RotatedText{("2-T   " + SpareParts.GetPinName(output_pins[output[i].id - O_P1])).c_str(),
+                                  output[i].x1, output[i].y2, 90}});
             break;
         case O_P2:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(255, 255, 255);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (output_pins[output[i].id - O_P1] == 0)
-                canvas.RotatedText("3-RH  NC", output[i].x1, output[i].y2, 90);
+                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"3-RH  NC", output[i].x1, output[i].y2, 90}});
             else
-                canvas.RotatedText("3-RH  " + SpareParts.GetPinName(output_pins[output[i].id - O_P1]), output[i].x1,
-                                   output[i].y2, 90);
+                SpareParts.CanvasCmd(
+                    {CC_ROTATEDTEXT,
+                     .RotatedText{("3-RH  " + SpareParts.GetPinName(output_pins[output[i].id - O_P1])).c_str(),
+                                  output[i].x1, output[i].y2, 90}});
             break;
         case O_F1:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(155, 155, 155);
-            canvas.RotatedText("1-VCC +5V", output[i].x1, output[i].y2, 90);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"1-VCC +5V", output[i].x1, output[i].y2, 90}});
             break;
         case O_F2:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(155, 155, 155);
-            canvas.RotatedText("4-GND GND", output[i].x1, output[i].y2, 90);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"4-GND GND", output[i].x1, output[i].y2, 90}});
             break;
         case O_PO1:
             snprintf(val, 10, "%5.1f", (0.825 * (200 - values[0]) - 40));
-            DrawSlider(&canvas, &output[i], values[0], val, 7);
-            canvas.SetFontSize(9);
+            DrawSlider(SpareParts.CanvasCmd, &output[i], values[0], val, 7);
+            SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{9}});
             break;
         case O_PO2:
             snprintf(val, 10, " %3.0f%%", ((200 - values[1]) / 2.0));
-            DrawSlider(&canvas, &output[i], values[1], val, 7);
-            canvas.SetFontSize(9);
+            DrawSlider(SpareParts.CanvasCmd, &output[i], values[1], val, 7);
+            SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{9}});
             break;
     }
 }

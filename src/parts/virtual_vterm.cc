@@ -42,8 +42,9 @@ static PCWProp pcwprop[6] = {{PCW_LABEL, "P1 - VCC,+5V"}, {PCW_COMBO, "P2 - RX"}
 
 int cpart_vterm::count = 0;
 
-cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_) {
+cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_,
+                         const int id_)
+    : part(x, y, name, type, pboard_, id_) {
     vterm_init(&vt, pboard);
     vterm_rst(&vt);
 
@@ -98,6 +99,13 @@ cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, c
             vtcmb_speed->EvOnComboChange = SpareParts.PartEvent;
             vtcmb_ending->EvOnComboChange = SpareParts.PartEvent;
             vtedit->EvKeyboardPress = SpareParts.PartKeyEvent;
+
+            vtbtn_send->SetTag(id);
+            vtbtn_clear->SetTag(id);
+            vtcmb_speed->SetTag(id);
+            vtcmb_ending->SetTag(id);
+            vtedit->SetTag(id);
+            wvterm->SetTag(id);
         } else {
             printf("PICSimLab: Vterm error loading file %s\n", (const char*)fname.c_str());
             PICSimLab.RegisterError("Vterm error loading file:\n" + fname);
@@ -121,7 +129,8 @@ cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, c
 
 cpart_vterm::~cpart_vterm(void) {
     delete Bitmap;
-    canvas.Destroy();
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_DESTROY});
     vterm_end(&vt);
     if (wvterm) {
         wvterm->Hide();
@@ -137,18 +146,6 @@ void cpart_vterm::RegisterRemoteControl(void) {
     input_ids[I_VT]->status = &vt;
     input_ids[I_VT]->update = &output_ids[O_VT]->update;
     output_ids[O_VT]->status = &vt;
-}
-
-void cpart_vterm::SetId(int _id) {
-    part::SetId(_id);
-    if (vtbtn_send) {
-        vtbtn_send->SetTag(id);
-        vtbtn_clear->SetTag(id);
-        vtcmb_speed->SetTag(id);
-        vtcmb_ending->SetTag(id);
-        vtedit->SetTag(id);
-        wvterm->SetTag(id);
-    }
 }
 
 void cpart_vterm::ButtonEvent(CControl* control, uint button, uint x, uint y, uint state) {
@@ -229,13 +226,15 @@ void cpart_vterm::Reset(void) {
 void cpart_vterm::DrawOutput(const unsigned int i) {
     switch (output[i].id) {
         case O_LTX:
-            canvas.SetColor(0, (vt.bb_uart.leds & 0x02) * 125, 0);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, (vt.bb_uart.leds & 0x02) * 125, 0}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
             vt.bb_uart.leds &= ~0x02;
             break;
         case O_LRX:
-            canvas.SetColor(0, (vt.bb_uart.leds & 0x01) * 250, 0);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, (vt.bb_uart.leds & 0x01) * 250, 0}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
             vt.bb_uart.leds &= ~0x01;
             break;
         case O_TERM:
@@ -268,24 +267,27 @@ void cpart_vterm::DrawOutput(const unsigned int i) {
             }
             break;
         default:
-            canvas.SetFontSize(8);
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{8}});
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
 
-            canvas.SetFgColor(155, 155, 155);
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
 
             int pinv = output[i].id - O_RX;
             switch (pinv) {
                 case 0:
                     if (pins[pinv] == 0)
-                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+                        SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2, 90.0}});
                     else
-                        canvas.RotatedText(SpareParts.GetPinName(pins[pinv]), output[i].x1, output[i].y2, 90.0);
+                        SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(pins[pinv]).c_str(),
+                                                                           output[i].x1, output[i].y2, 90.0}});
                 case 1:
                     if (pins[pinv] == 0)
-                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+                        SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2, 90.0}});
                     else
-                        canvas.RotatedText(SpareParts.GetPinName(pins[pinv]), output[i].x1, output[i].y2, 90.0);
+                        SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(pins[pinv]).c_str(),
+                                                                           output[i].x1, output[i].y2, 90.0}});
                     break;
             }
             break;

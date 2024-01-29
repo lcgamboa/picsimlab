@@ -80,8 +80,8 @@ static PCWProp pcwprop[19] = {{PCW_LABEL, "1-RY1,NC"},
                               {PCW_END, ""}};
 
 cpart_IO_MM74C922::cpart_IO_MM74C922(const unsigned x, const unsigned y, const char* name, const char* type,
-                                     board* pboard_)
-    : part(x, y, name, type, pboard_) {
+                                     board* pboard_, const int id_)
+    : part(x, y, name, type, pboard_, id_) {
     X = x;
     Y = y;
     always_update = 1;
@@ -124,48 +124,59 @@ cpart_IO_MM74C922::~cpart_IO_MM74C922(void) {
     for (int i = 0; i < 8; i++)
         SpareParts.UnregisterIOpin(output_pins[i]);
     delete Bitmap;
-    canvas.Destroy();
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_DESTROY});
 }
 
 void cpart_IO_MM74C922::DrawOutput(const unsigned int i) {
     switch (output[i].id) {
         case O_IC:
-            canvas.SetFontSize(8);
-            canvas.SetColor(26, 26, 26);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(255, 255, 255);
-            canvas.RotatedText("MM74C922", output[i].x1 + 26, output[i].y2 - 15, 0.0);
+            SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{8}});
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{26, 26, 26}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"MM74C922", output[i].x1 + 26, output[i].y2 - 15, 0.0}});
             break;
         default:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
 
-            canvas.SetFgColor(255, 255, 255);
-            canvas.RotatedText(pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0);
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd(
+                {CC_ROTATEDTEXT, .RotatedText{pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0}});
 
             int pinv = pin_values[output[i].id - O_P1][0];
             if (pinv > 16) {
-                canvas.SetFgColor(155, 155, 155);
-                canvas.RotatedText(pin_values[output[i].id - O_P1], output[i].x1, output[i].y2 - 30, 90.0);
+                SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{pin_values[output[i].id - O_P1], output[i].x1,
+                                                                   output[i].y2 - 30, 90.0}});
             } else if (pinv < 4) {
                 if (input_pins[pinv] == 0)
-                    canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
+                    SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2 - 30, 90.0}});
                 else
-                    canvas.RotatedText(std::to_string(input_pins[pinv]) /*SpareParts.GetPinName(input_pins[pinv])*/,
-                                       output[i].x1, output[i].y2 - 30, 90.0);
+                    SpareParts.CanvasCmd(
+                        {CC_ROTATEDTEXT,
+                         .RotatedText{
+                             std::to_string(input_pins[pinv]).c_str() /*SpareParts.GetPinName(input_pins[pinv])*/,
+                             output[i].x1, output[i].y2 - 30, 90.0}});
             } else if (pinv < 8) {
                 if (output_pins[pinv - 4] == 0)
-                    canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
+                    SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2 - 30, 90.0}});
                 else
-                    canvas.RotatedText(
-                        std::to_string(output_pins[pinv - 4]) /*SpareParts.GetPinName(input_pins[pinv])*/, output[i].x1,
-                        output[i].y2 - 30, 90.0);
+                    SpareParts.CanvasCmd(
+                        {CC_ROTATEDTEXT,
+                         .RotatedText{
+                             std::to_string(output_pins[pinv - 4]).c_str() /*SpareParts.GetPinName(input_pins[pinv])*/,
+                             output[i].x1, output[i].y2 - 30, 90.0}});
             } else {
                 if (output_pins[pinv - 4] == 0)
-                    canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
+                    SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2 - 30, 90.0}});
                 else
-                    canvas.RotatedText(SpareParts.GetPinName(output_pins[pinv - 4]), output[i].x1, output[i].y2 - 30,
-                                       90.0);
+                    SpareParts.CanvasCmd(
+                        {CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(output_pins[pinv - 4]).c_str(),
+                                                      output[i].x1, output[i].y2 - 30, 90.0}});
             }
             break;
     }
@@ -275,13 +286,14 @@ void cpart_IO_MM74C922::ConfigurePropertiesWindow(CPWindow* WProp) {
             if (input_pins[pinv] == 0)
                 value = "NC";
             else
-                value = std::to_string(input_pins[pinv]);  // + " " + SpareParts.GetPinName (output_pins[pinv - 4]);
+                value = std::to_string(input_pins[pinv]);  // + " " + SpareParts.GetPinName
+                                                           // (output_pins[pinv - 4]);
         } else if (pinv < 8) {
             if (output_pins[pinv - 4] == 0)
                 value = "NC";
             else
-                value =
-                    std::to_string(output_pins[pinv - 4]);  // + " " + SpareParts.GetPinName (output_pins[pinv - 4]);
+                value = std::to_string(output_pins[pinv - 4]);  // + " " + SpareParts.GetPinName
+                                                                // (output_pins[pinv - 4]);
         }
 
         ((CLabel*)WProp->GetChildByName("label" + std::to_string(i + 1)))

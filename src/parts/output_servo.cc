@@ -33,8 +33,9 @@ enum { O_P1, O_AXIS };
 
 static PCWProp pcwprop[2] = {{PCW_COMBO, "Pin 1"}, {PCW_END, ""}};
 
-cpart_servo::cpart_servo(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_) {
+cpart_servo::cpart_servo(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_,
+                         const int id_)
+    : part(x, y, name, type, pboard_, id_) {
     always_update = 1;
     input_pin = 0;
     angle = 0;
@@ -51,34 +52,35 @@ cpart_servo::cpart_servo(const unsigned x, const unsigned y, const char* name, c
 cpart_servo::~cpart_servo(void) {
     delete Bitmap;
     delete BackGround;
-    canvas.Destroy();
+    SpareParts.CanvasCmd({CC_DESTROY});
 }
 
 void cpart_servo::DrawOutput(const unsigned int i) {
     if (Update == 1) {
-        canvas.End();
-        canvas.SetBitmap(BackGround, 1.0, 1.0);  // FIXME draw servo error on scale or rotate
-        canvas.Init(Scale, Scale, Orientation);
-        canvas.SetFont(font);
+        SpareParts.CanvasCmd({CC_END});
+        SpareParts.CanvasCmd(
+            {CC_SETBITMAP, .SetBitmap{BackGround, 1.0, 1.0}});  // /FIXME draw servo error on scale or rotate
+        SpareParts.CanvasCmd({CC_INIT, .Init{Scale, Scale, Orientation}});
     }
 
     switch (output[i].id) {
         case O_P1:
-            canvas.SetFgColor(255, 255, 255);
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (input_pin == 0)
-                canvas.RotatedText("NC", output[i].x1, output[i].y1, 0);
+                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
             else
-                canvas.RotatedText(SpareParts.GetPinName(input_pin), output[i].x1, output[i].y1, 0);
+                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(input_pin).c_str(),
+                                                                   output[i].x1, output[i].y1, 0}});
             break;
         case O_AXIS:
             float x2 = output[i].x1 + output[i].r * sin(angle);
             float y2 = output[i].y1 - output[i].r * cos(angle);
-            canvas.SetFgColor(0, 0, 0);
-            canvas.SetLineWidth(20);
-            canvas.Line(output[i].x1, output[i].y1, x2, y2);
-            canvas.SetFgColor(255, 255, 255);
-            canvas.SetLineWidth(18);
-            canvas.Line(output[i].x1, output[i].y1, x2, y2);
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+            SpareParts.CanvasCmd({CC_SETLINEWIDTH, .SetLineWidth{20}});
+            SpareParts.CanvasCmd({CC_LINE, .Line{output[i].x1, output[i].y1, x2, y2}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({CC_SETLINEWIDTH, .SetLineWidth{18}});
+            SpareParts.CanvasCmd({CC_LINE, .Line{output[i].x1, output[i].y1, x2, y2}});
             break;
     }
 }
@@ -171,6 +173,7 @@ void cpart_servo::ReadPropertiesWindow(CPWindow* WProp) {
 
 void cpart_servo::LoadPartImage(void) {
     if (SpareParts.GetWindow()) {
+        SpareParts.SetPartOnDraw(id);
         Bitmap = SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(),
                                           Scale, 0, Orientation);
 
@@ -182,8 +185,8 @@ void cpart_servo::LoadPartImage(void) {
         }
         BackGround = bmp;
 
-        canvas.Destroy();
-        canvas.Create(SpareParts.GetWindow()->GetWWidget(), Bitmap);
+        SpareParts.CanvasCmd({CC_DESTROY});
+        SpareParts.CanvasCmd({CC_CREATE, .Create{Bitmap}});
     }
 }
 

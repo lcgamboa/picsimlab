@@ -43,8 +43,9 @@ static PCWProp pcwprop[9] = {{PCW_LABEL, "1 - VCC,+5V"}, {PCW_LABEL, "2 - GND ,G
                              {PCW_COMBO, "4 - SDA"},     {PCW_COMBO, "5 - XDA"},      {PCW_COMBO, "6 - XCL"},
                              {PCW_COMBO, "7 - AD0"},     {PCW_COMBO, "8 - INT"},      {PCW_END, ""}};
 
-cpart_MPU6050::cpart_MPU6050(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_) {
+cpart_MPU6050::cpart_MPU6050(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_,
+                             const int id_)
+    : part(x, y, name, type, pboard_, id_) {
     mpu6050_init(&mpu);
     mpu6050_rst(&mpu);
 
@@ -98,7 +99,8 @@ void cpart_MPU6050::RegisterRemoteControl(void) {
 cpart_MPU6050::~cpart_MPU6050(void) {
     mpu6050_end(&mpu);
     delete Bitmap;
-    canvas.Destroy();
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_DESTROY});
 }
 
 void cpart_MPU6050::DrawOutput(const unsigned int i) {
@@ -122,8 +124,8 @@ void cpart_MPU6050::DrawOutput(const unsigned int i) {
                     snprintf(val, 10, "%4.2f", 16 * ((getValues(output[i].id - O_VS1)) - 100) / 100.0);
                     break;
             }
-            DrawSlider(&canvas, &output[i], 200 - getValues(output[i].id - O_VS1), val, 7);
-            canvas.SetFontSize(9);
+            DrawSlider(SpareParts.CanvasCmd, &output[i], 200 - getValues(output[i].id - O_VS1), val, 7);
+            SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{9}});
             break;
         case O_VS4:
         case O_VS5:
@@ -142,25 +144,29 @@ void cpart_MPU6050::DrawOutput(const unsigned int i) {
                     snprintf(val, 10, "%4.0f", 2000 * ((getValues(output[i].id - O_VS1)) - 100) / 100.0);
                     break;
             }
-            DrawSlider(&canvas, &output[i], 200 - getValues(output[i].id - O_VS1), val, 7);
-            canvas.SetFontSize(9);
+            DrawSlider(SpareParts.CanvasCmd, &output[i], 200 - getValues(output[i].id - O_VS1), val, 7);
+            SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{9}});
             break;
         default:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
 
-            canvas.SetFgColor(255, 255, 255);
-            canvas.RotatedText(pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0);
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd(
+                {CC_ROTATEDTEXT, .RotatedText{pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0}});
 
             int pinv = pin_values[output[i].id - O_P1][0];
             if (pinv > 10) {
-                canvas.SetFgColor(155, 155, 155);
-                canvas.RotatedText(pin_values[output[i].id - O_P1], output[i].x1, output[i].y2 - 30, 90.0);
+                SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{pin_values[output[i].id - O_P1], output[i].x1,
+                                                                   output[i].y2 - 30, 90.0}});
             } else {
                 if (mpu_pins[pinv] == 0)
-                    canvas.RotatedText("NC", output[i].x1, output[i].y2 - 30, 90.0);
+                    SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2 - 30, 90.0}});
                 else
-                    canvas.RotatedText(SpareParts.GetPinName(mpu_pins[pinv]), output[i].x1, output[i].y2 - 30, 90.0);
+                    SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(mpu_pins[pinv]).c_str(),
+                                                                       output[i].x1, output[i].y2 - 30, 90.0}});
             }
             break;
     }

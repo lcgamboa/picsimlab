@@ -170,6 +170,7 @@ public:
                              const void* arg);
     static lxBitmap* OnLoadImage(const std::string fname, const float scale, const int usealpha, const int orientation);
     static void OnConfigMenuGUI(const PICSimlabGUIMenu type);
+    static void OnCanvasCmd(const CanvasCmd_t cmd);
 
     void Configure(void);
     int GetNeedClkUpdate(void) { return need_clkupdate; };

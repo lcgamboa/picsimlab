@@ -364,9 +364,9 @@ void cboard_RemoteTCP::EvMouseButtonRelease(uint button, uint x, uint y, uint st
 // Called ever 100ms to draw board
 // This is the critical code for simulator running speed
 
-void cboard_RemoteTCP::Draw(CCanvas* Canvas) {
+void cboard_RemoteTCP::Draw(void) {
     int i;
-    lxRect rec;
+    Rect_t rec;
     lxSize ps;
     int update = 0;  // verifiy if updated is needed
 
@@ -378,48 +378,52 @@ void cboard_RemoteTCP::Draw(CCanvas* Canvas) {
             output[i].update = 0;
 
             if (!update) {
-                Canvas->Init(Scale, Scale);
-                Canvas->SetFontWeight(lxFONTWEIGHT_BOLD);
+                PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});
+                PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
             }
             update++;  // set to update buffer
 
-            Canvas->SetFgColor(0, 0, 0);  // black
+            PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});  // black
 
             switch (output[i].id)  // search for color of output
             {
                 case O_LPWR:  // Blue using mcupwr value
-                    Canvas->SetColor(0, 0, 200 * PICSimLab.GetMcuPwr() + 55);
-                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                      output[i].y2 - output[i].y1);
+                    PICSimLab.CanvasCmd(
+                        {CC_SETCOLOR, .SetColor{0, 0, (unsigned int)(200 * PICSimLab.GetMcuPwr() + 55)}});
+                    PICSimLab.CanvasCmd(
+                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                  output[i].y2 - output[i].y1}});
                     break;
                 case O_MP:
 
-                    Canvas->SetFontSize(10);
+                    PICSimLab.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{10}});
 
-                    Canvas->SetFontSize(
-                        ((MGetPinCount() >= 44) || (MGetPinCount() <= 8)) ? 6 : ((MGetPinCount() > 14) ? 12 : 10));
+                    PICSimLab.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{((MGetPinCount() >= 44) || (MGetPinCount() <= 8))
+                                                                          ? 6
+                                                                          : ((MGetPinCount() > 14) ? 12 : 10)}});
 
                     ps = micbmp->GetSize();
-                    Canvas->ChangeScale(1.0, 1.0);
-                    Canvas->PutBitmap(micbmp, output[i].x1 * Scale, output[i].y1 * Scale);
-                    Canvas->ChangeScale(Scale, Scale);
-                    Canvas->SetFgColor(230, 230, 230);
+                    PICSimLab.CanvasCmd({CC_CHANGESCALE, .ChangeScale{1.0, 1.0}});
+                    PICSimLab.CanvasCmd({CC_PUTBITMAP, .PutBitmap{micbmp, output[i].x1 * Scale, output[i].y1 * Scale}});
+                    PICSimLab.CanvasCmd({CC_CHANGESCALE, .ChangeScale{Scale, Scale}});
+                    PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{230, 230, 230}});
 
                     rec.x = output[i].x1;
                     rec.y = output[i].y1;
                     rec.width = ps.GetWidth() / Scale;
                     rec.height = ps.GetHeight() / Scale;
-                    Canvas->TextOnRect(Proc, rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL);
+                    PICSimLab.CanvasCmd(
+                        {CC_TEXTONRECT, .TextOnRect{Proc.c_str(), rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL}});
                     break;
                 case O_RST:
-                    Canvas->SetColor(100, 100, 100);
-                    Canvas->Circle(1, output[i].cx, output[i].cy, 11);
+                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 11}});
                     if (p_RST) {
-                        Canvas->SetColor(15, 15, 15);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
                     } else {
-                        Canvas->SetColor(55, 55, 55);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
                     }
-                    Canvas->Circle(1, output[i].cx, output[i].cy, 9);
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 9}});
                     break;
             }
         }
@@ -427,7 +431,7 @@ void cboard_RemoteTCP::Draw(CCanvas* Canvas) {
 
     // end draw
     if (update) {
-        Canvas->End();
+        PICSimLab.CanvasCmd({CC_END});
     }
 }
 
@@ -439,9 +443,10 @@ void cboard_RemoteTCP::Run_CPU(void) {
     unsigned int alm[48];
     const int pinc = MGetPinCount();
 
-    // const int JUMPSTEPS = Window1.GetJUMPSTEPS (); //number of steps skipped
-    const long int NSTEP = 4.0 * PICSimLab.GetNSTEP();  // number of steps in 100ms
-    const float RNSTEP = 200.0 * pinc / NSTEP;
+    // const int JUMPSTEPS = Window1.GetJUMPSTEPS ();
+    //number of steps skipped const long int NSTEP = 4.0 *
+    PICSimLab.GetNSTEP();  // number of steps in 100ms const
+    float RNSTEP = 200.0 * pinc / NSTEP;
 
     // reset pins mean value
     memset(alm, 0, 48 * sizeof(unsigned int));
@@ -457,22 +462,26 @@ void cboard_RemoteTCP::Run_CPU(void) {
 
     double delay = (PICSimLab.GetIdleMs() * 1000) / NSTEP;
 
-    unsigned int countM = 1100 / delay;  // added 100us of overhead
-    unsigned int count = countM;
+    unsigned int countM = 1100 / delay;  // added 100us of
+overhead unsigned int count = countM;
 
-    // printf ("idle %6.1f   %10.5f  %u\n", Window1.GetIdleMs (), delay, count);
+    // printf ("idle %6.1f   %10.5f  %u\n",
+Window1.GetIdleMs (), delay, count);
 
     // j = JUMPSTEPS; //step counter
     pi = 0;
     if (PICSimLab.GetMcuPwr())       // if powered
-        for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
+        for (i = 0; i < NSTEP; i++)  // repeat for number of
+steps in 100ms
         {
             / *
-            if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
+            if (j >= JUMPSTEPS)//if number of step is bigger
+than steps to skip
              {
              }
              * /
-    // verify if a breakpoint is reached if not run one instruction
+    // verify if a breakpoint is reached if not run one
+instruction
     // MStep ();
 
     --count;
@@ -512,7 +521,8 @@ void cboard_RemoteTCP::Run_CPU(void) {
     if (pi == pinc)
         pi = 0;
     / *
-        if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
+        if (j >= JUMPSTEPS)//if number of step is bigger
+than steps to skip
          {
           j = -1; //reset counter
          }
@@ -553,14 +563,18 @@ void cboard_RemoteTCP::Run_CPU_ns(uint64_t time) {
         }
 
         if (PICSimLab.GetMcuPwr())  // if powered
-                                    // for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
+                                    // for (i = 0; i < NSTEP;
+                                    // i++)  // repeat for number
+                                    // of steps in 100ms
         {
             /*
-            if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
+            if (j >= JUMPSTEPS)//if number of step is bigger
+            than steps to skip
              {
              }
              */
-            // verify if a breakpoint is reached if not run one instruction
+            // verify if a breakpoint is reached if not run
+            // one instruction
             MStep();
             if (t0CON & 0x8000)  // Timer on
             {
@@ -589,7 +603,8 @@ void cboard_RemoteTCP::Run_CPU_ns(uint64_t time) {
             if (pi == pinc)
                 pi = 0;
             /*
-                if (j >= JUMPSTEPS)//if number of step is bigger than steps to skip
+                if (j >= JUMPSTEPS)//if number of step is
+               bigger than steps to skip
                  {
                   j = -1; //reset counter
                  }
@@ -949,7 +964,10 @@ void cboard_RemoteTCP::EvThreadRun(CThread* thread) {
                         break;
                     default:
                         payload[1] = htonl(0);
-                        printf("Read invalid reg addr %i !!!!!!!!!!!!!!!!!!\n", addr);
+                        printf(
+                            "Read invalid reg addr %i "
+                            "!!!!!!!!!!!!!!!!!!\n",
+                            addr);
                         break;
                 }
 

@@ -34,6 +34,7 @@
 extern char SERIALDEVICE[100];
 
 #include "board.h"
+#include "draw.h"
 #include "util.h"
 
 enum PICSimlabCPUState { CPU_RUNNING, CPU_STEPPING, CPU_HALTED, CPU_BREAKPOINT, CPU_ERROR, CPU_POWER_OFF, CPU_LAST };
@@ -263,6 +264,8 @@ public:
 
     void ConfigMenuGUI(const PICSimlabGUIMenu type);
 
+    static void CanvasCmd(const CanvasCmd_t cmd);
+
 #ifndef _NOTHREAD
     lxCondition* cpu_cond;
     lxMutex* cpu_mutex;
@@ -289,6 +292,7 @@ public:
     void* (*OnUpdateGUI)(const int id, const PICSimlabGUIType type, const PICSimlabGUIAction action, const void* arg);
     lxBitmap* (*OnLoadImage)(const std::string fname, const float scale, const int usealpha, const int orientation);
     void (*OnConfigMenuGUI)(const PICSimlabGUIMenu type);
+    void (*OnCanvasCmd)(const CanvasCmd_t cmd);
 
     void (CControl::*board_Event)(CControl* control);
     void (CControl::*board_ButtonEvent)(CControl* control, const uint button, const uint x, const uint y,

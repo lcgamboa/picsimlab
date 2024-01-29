@@ -58,8 +58,9 @@ static PCWProp pcwprop[7] = {
     {PCW_LABEL, "P1 - GND,GND"}, {PCW_COMBO, "P2 - RX"}, {PCW_COMBO, "P3 - TX"}, {PCW_LABEL, "P4 - VCC,+5V"},
     {PCW_COMBO, "Port"},         {PCW_COMBO, "Speed"},   {PCW_END, ""}};
 
-cpart_UART::cpart_UART(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_)
-    : part(x, y, name, type, pboard_) {
+cpart_UART::cpart_UART(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_,
+                       const int id_)
+    : part(x, y, name, type, pboard_, id_) {
     uart_init(&sr, pboard);
     uart_rst(&sr);
 
@@ -80,7 +81,8 @@ cpart_UART::cpart_UART(const unsigned x, const unsigned y, const char* name, con
 
 cpart_UART::~cpart_UART(void) {
     delete Bitmap;
-    canvas.Destroy();
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_DESTROY});
     uart_end(&sr);
 }
 
@@ -91,32 +93,39 @@ void cpart_UART::Reset(void) {
 void cpart_UART::DrawOutput(const unsigned int i) {
     switch (output[i].id) {
         case O_LTX:
-            canvas.SetColor(0, (sr.bb_uart.leds & 0x02) * 125, 0);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, (sr.bb_uart.leds & 0x02) * 125, 0}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
             sr.bb_uart.leds &= ~0x02;
             break;
         case O_LRX:
-            canvas.SetColor(0, (sr.bb_uart.leds & 0x01) * 250, 0);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, (sr.bb_uart.leds & 0x01) * 250, 0}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
             sr.bb_uart.leds &= ~0x01;
             break;
         case O_LCON:
-            canvas.SetColor(255, 0, 0);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{255, 0, 0}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
             break;
         case O_FILE:
-            canvas.SetFontSize(8);
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
-            canvas.SetFgColor(255, 255, 255);
-            canvas.RotatedText("port:" + std::string(uart_name) + "   speed:" + std::to_string(uart_speed),
-                               output[i].x1, output[i].y1, 0);
+            SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{8}});
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd(
+                {CC_ROTATEDTEXT,
+                 .RotatedText{("port:" + std::string(uart_name) + "   speed:" + std::to_string(uart_speed)).c_str(),
+                              output[i].x1, output[i].y1, 0}});
             break;
         default:
-            canvas.SetColor(49, 61, 99);
-            canvas.Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1);
+            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                           output[i].y2 - output[i].y1}});
 
-            canvas.SetFgColor(155, 155, 155);
+            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
 
             int pinv = output[i].id - O_RX;
             int pin = 0;
@@ -125,9 +134,10 @@ void cpart_UART::DrawOutput(const unsigned int i) {
                 case 1:
                     pin = pinv;
                     if (pins[pin] == 0)
-                        canvas.RotatedText("NC", output[i].x1, output[i].y2, 90.0);
+                        SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2, 90.0}});
                     else
-                        canvas.RotatedText(SpareParts.GetPinName(pins[pin]), output[i].x1, output[i].y2, 90.0);
+                        SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(pins[pin]).c_str(),
+                                                                           output[i].x1, output[i].y2, 90.0}});
             }
             break;
     }

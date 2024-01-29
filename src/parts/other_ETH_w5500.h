@@ -35,7 +35,8 @@
 class cpart_ETH_w5500 : public part {
 public:
     std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
-    cpart_ETH_w5500(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_);
+    cpart_ETH_w5500(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_,
+                    const int id_);
     ~cpart_ETH_w5500(void);
     void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;

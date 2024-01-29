@@ -266,7 +266,7 @@ void cboard_Franzininho_DIY::EvMouseButtonRelease(uint button, uint x, uint y, u
 // Called ever 100ms to draw board
 // This is the critical code for simulator running speed
 
-void cboard_Franzininho_DIY::Draw(CCanvas* Canvas) {
+void cboard_Franzininho_DIY::Draw(void) {
     int i;
     int update = 0;  // verifiy if updated is needed
 
@@ -278,8 +278,8 @@ void cboard_Franzininho_DIY::Draw(CCanvas* Canvas) {
             output[i].update = 0;
 
             if (!update) {
-                Canvas->Init(Scale, Scale);
-                Canvas->SetFontWeight(lxFONTWEIGHT_BOLD);
+                PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});
+                PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
             }
             update++;  // set to update buffer
 
@@ -287,74 +287,77 @@ void cboard_Franzininho_DIY::Draw(CCanvas* Canvas) {
             {
                 switch (output[i].id) {
                     case O_RST:
-                        Canvas->SetColor(100, 100, 100);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});
                         break;
                     case O_PB0:
                     case O_PPB0:
-                        Canvas->SetColor(pins[4].oavalue, 0, 0);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{(unsigned int)pins[4].oavalue, 0, 0}});
                         break;
                     case O_PB1:
                     case O_PPB1:
-                        Canvas->SetColor(pins[5].oavalue, 0, 0);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{(unsigned int)pins[5].oavalue, 0, 0}});
                         break;
                     case O_PB2:
                     case O_PPB2:
-                        Canvas->SetColor(pins[6].oavalue, 0, 0);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{(unsigned int)pins[6].oavalue, 0, 0}});
                         break;
                     case O_PB3:
                     case O_PPB3:
-                        Canvas->SetColor(pins[1].oavalue, 0, 0);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{(unsigned int)pins[1].oavalue, 0, 0}});
                         break;
                     case O_PB4:
                     case O_PPB4:
-                        Canvas->SetColor(pins[2].oavalue, 0, 0);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{(unsigned int)pins[2].oavalue, 0, 0}});
                         break;
                     case O_PB5:
                     case O_PPB5:
-                        Canvas->SetColor(pins[0].oavalue, 0, 0);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{(unsigned int)pins[0].oavalue, 0, 0}});
                         break;
                     default:
-                        Canvas->SetColor(0, 0, 0);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{0, 0, 0}});
                         break;
                 }
 
                 if (output[i].id == O_RST) {
-                    Canvas->Circle(1, output[i].cx, output[i].cy, 11);
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 11}});
                     if (p_RST) {
-                        Canvas->SetColor(15, 15, 15);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
                     } else {
-                        Canvas->SetColor(55, 55, 55);
+                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
                     }
-                    Canvas->Circle(1, output[i].cx, output[i].cy, 9);
+                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 9}});
                 } else {
-                    Canvas->Rectangle(1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                      output[i].y2 - output[i].y1);
+                    PICSimLab.CanvasCmd(
+                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                  output[i].y2 - output[i].y1}});
                 }
             }
 
             else  // circle
             {
-                Canvas->SetFgColor(0, 0, 0);
+                PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
                 switch (output[i].id) {
                     case O_ON:
-                        Canvas->SetBgColor(0, 200 * PICSimLab.GetMcuPwr() + 55, 0);
+                        PICSimLab.CanvasCmd(
+                            {CC_SETBGCOLOR, .SetBgColor{0, (unsigned int)(200 * PICSimLab.GetMcuPwr() + 55), 0}});
                         break;
                     case O_L:
-                        Canvas->SetBgColor(pins[5].oavalue, pins[5].oavalue, 0);
+                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pins[5].oavalue,
+                                                                        (unsigned int)pins[5].oavalue, 0}});
                         break;
                     default:
-                        Canvas->SetBgColor(0, 0, 0);
+                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{0, 0, 0}});
                         break;
                 }
 
-                DrawLED(Canvas, &output[i]);
+                DrawLED(PICSimLab.CanvasCmd, &output[i]);
             }
         }
     }
 
     // end draw
     if (update) {
-        Canvas->End();
+        PICSimLab.CanvasCmd({CC_END});
     }
 }
 
