@@ -26,7 +26,6 @@
 #ifndef PART_BUZZER_H
 #define PART_BUZZER_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_BUZZER_Name "Buzzer"

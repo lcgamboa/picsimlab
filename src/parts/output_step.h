@@ -26,7 +26,6 @@
 #ifndef PART_STEP_H
 #define PART_STEP_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_STEP_Name "Step Motor"

@@ -26,7 +26,6 @@
 #ifndef PART_TEMPSYS_H
 #define PART_TEMPSYS_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_TEMPSYS_Name "Temperature System"
@@ -49,7 +48,7 @@ public:
 
 private:
     unsigned char input_pins[4];
-    lxBitmap* vent[2];
+    int vent[2];
     float temp[2];
     float ref;
     float ambient;

@@ -35,7 +35,7 @@
 // new board class must be derived from board class defined in board.h
 class cboard_uCboard : public bsim_ucsim {
 private:
-    lxBitmap* micbmp;
+    int micbmp;
 
 public:
     void SetScale(double scale) override;

@@ -26,7 +26,6 @@
 #ifndef PART_LED_MATRIX_H
 #define PART_LED_MATRIX_H
 
-#include <lxrad.h>
 #include "../devices/ldd_max72xx.h"
 #include "../lib/part.h"
 

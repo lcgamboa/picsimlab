@@ -35,7 +35,7 @@
 // new board class must be derived from board class defined in board.h
 class cboard_gpboard : public bsim_gpsim {
 private:
-    lxBitmap* micbmp;
+    int micbmp;
 
 public:
     void SetScale(double scale) override;

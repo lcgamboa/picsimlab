@@ -117,7 +117,7 @@ cpart_7s_display_dec::cpart_7s_display_dec(const unsigned x, const unsigned y, c
     memset(alm3, 0, 8 * sizeof(unsigned int));
     memset(alm4, 0, 8 * sizeof(unsigned int));
 
-    Bitmap = NULL;
+    BitmapId = -1;
     dtype = 1;  // to force type change
     ChangeType(0);
 
@@ -128,8 +128,8 @@ cpart_7s_display_dec::cpart_7s_display_dec(const unsigned x, const unsigned y, c
 }
 
 cpart_7s_display_dec::~cpart_7s_display_dec(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 
@@ -773,8 +773,9 @@ void cpart_7s_display_dec::ChangeType(unsigned char tp) {
     if (tp == dtype)
         return;
 
-    if (Bitmap) {
-        delete Bitmap;
+    if (BitmapId >= 0) {
+        SpareParts.SetPartOnDraw(id);
+        SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
         SpareParts.CanvasCmd({CC_DESTROY});
     }
 

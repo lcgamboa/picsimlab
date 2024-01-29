@@ -75,8 +75,8 @@ void cpart_encoder::RegisterRemoteControl(void) {
 }
 
 cpart_encoder::~cpart_encoder(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

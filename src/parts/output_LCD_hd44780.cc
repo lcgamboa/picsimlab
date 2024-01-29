@@ -71,7 +71,7 @@ cpart_LCD_hd44780::cpart_LCD_hd44780(const unsigned x, const unsigned y, const c
     X = x;
     Y = y;
     ReadMaps();
-    Bitmap = NULL;
+    BitmapId = -1;
 
     model = LCD16x2;
 
@@ -98,8 +98,8 @@ cpart_LCD_hd44780::cpart_LCD_hd44780(const unsigned x, const unsigned y, const c
 }
 
 cpart_LCD_hd44780::~cpart_LCD_hd44780(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
     lcd_end(&lcd);
 }
@@ -367,7 +367,7 @@ void cpart_LCD_hd44780::PostProcess(void) {
 }
 
 void cpart_LCD_hd44780::LoadPartImage(void) {
-    lxBitmap* bmp = NULL;
+    int bmp = -1;
 
     switch (model) {
         case LCD16x2:
@@ -390,9 +390,9 @@ void cpart_LCD_hd44780::LoadPartImage(void) {
 
     if (SpareParts.GetWindow()) {
         SpareParts.SetPartOnDraw(id);
-        Bitmap = bmp;
+        BitmapId = bmp;
         SpareParts.CanvasCmd({CC_DESTROY});
-        SpareParts.CanvasCmd({CC_CREATE, .Create{Bitmap}});
+        SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
     }
     for (int i = 0; i < outputc; i++) {
         output[i].update = 1;

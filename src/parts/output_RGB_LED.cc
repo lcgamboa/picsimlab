@@ -60,8 +60,8 @@ cpart_rgb_led::cpart_rgb_led(const unsigned x, const unsigned y, const char* nam
 }
 
 cpart_rgb_led::~cpart_rgb_led(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

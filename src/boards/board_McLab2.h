@@ -73,7 +73,7 @@ private:
 
     lxaudio buzzer;
 
-    lxBitmap* vent[2];
+    int vent[2];
 
     char mi2c_tmp_name[200];
 

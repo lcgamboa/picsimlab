@@ -90,8 +90,8 @@ void cpart_gamepad_an::Reset(void) {
 }
 
 cpart_gamepad_an::~cpart_gamepad_an(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

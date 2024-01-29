@@ -26,7 +26,6 @@
 #ifndef PART_TEXT_H
 #define PART_TEXT_H
 
-#include <lxrad.h>
 #include <vector>
 #include "../lib/part.h"
 

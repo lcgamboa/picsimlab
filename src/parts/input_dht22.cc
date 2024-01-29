@@ -68,8 +68,8 @@ void cpart_dht22::RegisterRemoteControl(void) {
 
 cpart_dht22::~cpart_dht22(void) {
     sen_dhtxx_end(&dht22);
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

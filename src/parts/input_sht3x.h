@@ -26,7 +26,6 @@
 #ifndef PART_SHT3X_H
 #define PART_SHT3X_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_SHT3X_Name "SHT3X (Temp. Hum.)"

@@ -26,7 +26,6 @@
 #ifndef PART_GAMEPAD_AN_H
 #define PART_GAMEPAD_AN_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_GAMEPAD_AN_Name "Gamepad (Analogic)"

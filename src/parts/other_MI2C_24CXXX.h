@@ -26,7 +26,6 @@
 #ifndef PART_MI2C_24CXXX_H
 #define PART_MI2C_24CXXX_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #include "../devices/mi2c_24CXXX.h"

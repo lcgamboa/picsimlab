@@ -67,8 +67,8 @@ void cpart_hcsr04::RegisterRemoteControl(void) {
 }
 
 cpart_hcsr04::~cpart_hcsr04(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

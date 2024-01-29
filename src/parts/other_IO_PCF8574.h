@@ -26,7 +26,6 @@
 #ifndef PART_IO_PCF8574_H
 #define PART_IO_PCF8574_H
 
-#include <lxrad.h>
 #include "../devices/io_PCF8574.h"
 #include "../lib/part.h"
 

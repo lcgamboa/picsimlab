@@ -26,7 +26,6 @@
 #ifndef PART_VCD_DUMP_H
 #define PART_VCD_DUMP_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_VCD_DUMP_Name "VCD Dump"

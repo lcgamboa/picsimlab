@@ -128,8 +128,8 @@ cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, c
 }
 
 cpart_vterm::~cpart_vterm(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
     vterm_end(&vt);
     if (wvterm) {

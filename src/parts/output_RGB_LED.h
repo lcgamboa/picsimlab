@@ -26,7 +26,6 @@
 #ifndef PART_RGB_LED_H
 #define PART_RGB_LED_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_RGB_LED_Name "RGB LED"

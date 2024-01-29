@@ -104,8 +104,8 @@ void cpart_pbuttons_an::Reset(void) {
 }
 
 cpart_pbuttons_an::~cpart_pbuttons_an(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

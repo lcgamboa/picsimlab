@@ -26,7 +26,6 @@
 #ifndef PART_HCSR0404_H
 #define PART_HCSR0404_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_HCSR0404_Name "Ultrasonic HC-SR04"

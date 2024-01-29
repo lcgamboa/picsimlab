@@ -67,8 +67,8 @@ cpart_SignalGenerator::cpart_SignalGenerator(const unsigned x, const unsigned y,
 }
 
 cpart_SignalGenerator::~cpart_SignalGenerator(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

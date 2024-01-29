@@ -63,8 +63,8 @@ void cpart_sht3x::RegisterRemoteControl(void) {
 }
 
 cpart_sht3x::~cpart_sht3x(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

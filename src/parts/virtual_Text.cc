@@ -53,7 +53,7 @@ static PCWProp pcwprop[] = {{PCW_TEXT, "text"},     {PCW_SPIN, "Size"}, {PCW_COM
 cpart_TEXT::cpart_TEXT(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_,
                        const int id_)
     : part(x, y, name, type, pboard_, id_, 8) {
-    Bitmap = NULL;
+    BitmapId = -1;
     Size = 12;
     Textcolor = 4;
     Bgcolor = 7;
@@ -64,8 +64,8 @@ cpart_TEXT::cpart_TEXT(const unsigned x, const unsigned y, const char* name, con
 }
 
 cpart_TEXT::~cpart_TEXT(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 
@@ -92,14 +92,14 @@ void cpart_TEXT::LoadPartImage(void) {
         Height = 10;
     }
 
-    if (Bitmap) {
-        delete Bitmap;
+    SpareParts.SetPartOnDraw(id);
+    if (BitmapId >= 0) {
+        SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     }
 
-    SpareParts.SetPartOnDraw(id);
-    Bitmap = SpareParts.CreateBlankImage(Width, Height, Scale, 0, Orientation);
+    BitmapId = SpareParts.CreateBlankImage(Width, Height, Scale, 0, Orientation);
     SpareParts.CanvasCmd({CC_DESTROY});
-    SpareParts.CanvasCmd({CC_CREATE, .Create{Bitmap}});
+    SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
 }
 
 void cpart_TEXT::DrawOutput(const unsigned int i) {

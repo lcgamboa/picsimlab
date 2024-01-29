@@ -26,7 +26,6 @@
 #ifndef PART_SERVO_H
 #define PART_SERVO_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_SERVO_Name "Servo Motor"
@@ -66,7 +65,7 @@ public:
 private:
     void RegisterRemoteControl(void) override;
     unsigned char input_pin;  ///< pulse input pin
-    lxBitmap* BackGround;     ///< Background image
+    int BackGround;           ///< Background image
     float angle;              ///< angle of shaft
     float angle_;             ///< old angle of shaft
     unsigned char in_[2];     ///< input pin memory

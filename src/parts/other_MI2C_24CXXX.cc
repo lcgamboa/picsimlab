@@ -84,8 +84,8 @@ cpart_MI2C_24CXXX::cpart_MI2C_24CXXX(const unsigned x, const unsigned y, const c
 
 cpart_MI2C_24CXXX::~cpart_MI2C_24CXXX(void) {
     mi2c_end(&mi2c);
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
     unlink(f_mi2c_tmp_name);
 }

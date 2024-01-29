@@ -168,13 +168,15 @@ public:
     static void OnEndSimulation(void);
     static void* OnUpdateGUI(const int id, const PICSimlabGUIType type, const PICSimlabGUIAction action,
                              const void* arg);
-    static lxBitmap* OnLoadImage(const std::string fname, const float scale, const int usealpha, const int orientation);
+    static int OnLoadImage(const std::string fname, const float scale, const int usealpha, const int orientation);
     static void OnConfigMenuGUI(const PICSimlabGUIMenu type);
     static void OnCanvasCmd(const CanvasCmd_t cmd);
 
     void Configure(void);
     int GetNeedClkUpdate(void) { return need_clkupdate; };
     void SetNeedClkUpdate(const int ncu) { need_clkupdate = ncu; };
+
+    lxBitmap* Bitmaps[BOARDS_MAX];
 
 private:
     CItemMenu MBoard[BOARDS_MAX];

@@ -86,7 +86,7 @@ cpart_IO_MM74C922::cpart_IO_MM74C922(const unsigned x, const unsigned y, const c
     Y = y;
     always_update = 1;
     ReadMaps();
-    Bitmap = NULL;
+    BitmapId = -1;
 
     LoadPartImage();
 
@@ -123,8 +123,9 @@ cpart_IO_MM74C922::cpart_IO_MM74C922(const unsigned x, const unsigned y, const c
 cpart_IO_MM74C922::~cpart_IO_MM74C922(void) {
     for (int i = 0; i < 8; i++)
         SpareParts.UnregisterIOpin(output_pins[i]);
-    delete Bitmap;
+
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

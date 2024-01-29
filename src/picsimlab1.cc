@@ -1355,15 +1355,25 @@ void CPWindow1::OnUpdateStatus(const int field, const std::string msg) {
     Window1.statusbar1.SetField(field, msg);
 }
 
-lxBitmap* CPWindow1::OnLoadImage(const std::string fname, const float scale, const int usealpha,
-                                 const int orientation) {
+int CPWindow1::OnLoadImage(const std::string fname, const float scale, const int usealpha, const int orientation) {
     lxImage image(&Window1);
     if (image.LoadFile(lxGetLocalFile(fname), orientation, scale, scale, usealpha)) {
-        lxBitmap* bitmap = new lxBitmap(&image, &Window1);
-        image.Destroy();
-        return bitmap;
+        // find enpty bitmap
+        int bid = -1;
+        for (int i = 0; i < BOARDS_MAX; i++) {
+            if (Window1.Bitmaps[i] == NULL) {
+                bid = i;
+                break;
+            }
+        }
+
+        if ((bid >= 0) && (bid < BOARDS_MAX)) {
+            Window1.Bitmaps[bid] = new lxBitmap(&image, &Window1);
+            image.Destroy();
+            return bid;
+        }
     }
-    return NULL;
+    return -1;
 }
 
 void CPWindow1::OnConfigMenuGUI(const PICSimlabGUIMenu type) {
@@ -1406,7 +1416,7 @@ void CPWindow1::OnCanvasCmd(const CanvasCmd_t cmd) {
             Window1.draw1.Canvas.End();
             break;
         case CC_SETBITMAP:
-            Window1.draw1.Canvas.SetBitmap(cmd.SetBitmap.bitmap, cmd.SetBitmap.xs, cmd.SetBitmap.ys);
+            Window1.draw1.Canvas.SetBitmap(Window1.Bitmaps[cmd.SetBitmap.BitmapId], cmd.SetBitmap.xs, cmd.SetBitmap.ys);
             break;
         case CC_SETCOLOR:
             Window1.draw1.Canvas.SetColor(cmd.SetColor.r, cmd.SetColor.g, cmd.SetColor.b);
@@ -1455,7 +1465,7 @@ void CPWindow1::OnCanvasCmd(const CanvasCmd_t cmd) {
             Window1.draw1.Canvas.Polygon(cmd.Polygon.filled, (lxPoint*)cmd.Polygon.points, cmd.Polygon.npoints);
             break;
         case CC_PUTBITMAP:
-            Window1.draw1.Canvas.PutBitmap(cmd.PutBitmap.bitmap, cmd.PutBitmap.x, cmd.PutBitmap.y);
+            Window1.draw1.Canvas.PutBitmap(Window1.Bitmaps[cmd.PutBitmap.BitmapId], cmd.PutBitmap.x, cmd.PutBitmap.y);
             break;
         case CC_GETBGCOLOR: {
             lxColor bgc = Window1.draw1.Canvas.GetBgColor();
@@ -1464,11 +1474,22 @@ void CPWindow1::OnCanvasCmd(const CanvasCmd_t cmd) {
             *cmd.GetBgColor.b = bgc.Blue();
         } break;
         case CC_CREATE:
-            Window1.draw1.Canvas.Create(Window1.GetWWidget(), cmd.Create.bitmap);
+            Window1.draw1.Canvas.Create(Window1.GetWWidget(), Window1.Bitmaps[cmd.Create.BitmapId]);
             break;
         case CC_DESTROY:
             Window1.draw1.Canvas.Destroy();
             break;
+        case CC_FREEBITMAP:
+            if (Window1.Bitmaps[cmd.FreeBitmap.BitmapId]) {
+                delete Window1.Bitmaps[cmd.FreeBitmap.BitmapId];
+                Window1.Bitmaps[cmd.FreeBitmap.BitmapId] = NULL;
+            }
+            break;
+        case CC_GETBITMAPSIZE: {
+            lxSize ps = Window1.Bitmaps[cmd.GetBitmapSize.BitmapId]->GetSize();
+            *cmd.GetBitmapSize.w = ps.GetWidth();
+            *cmd.GetBitmapSize.h = ps.GetHeight();
+        } break;
         case CC_LAST:
         default:
             break;

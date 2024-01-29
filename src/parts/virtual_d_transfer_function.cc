@@ -64,8 +64,8 @@ cpart_dtfunc::cpart_dtfunc(const unsigned x, const unsigned y, const char* name,
 }
 
 cpart_dtfunc::~cpart_dtfunc(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

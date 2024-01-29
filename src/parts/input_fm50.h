@@ -26,7 +26,6 @@
 #ifndef PART_FM50_H
 #define PART_FM50_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_FM50_Name "FM50 (Temperature)"

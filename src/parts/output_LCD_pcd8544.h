@@ -26,7 +26,6 @@
 #ifndef PART_LCD_PCD8544_H
 #define PART_LCD_PCD8544_H
 
-#include <lxrad.h>
 #include "../devices/lcd_pcd8544.h"
 #include "../lib/part.h"
 

@@ -26,7 +26,6 @@
 #ifndef PART_7S_DISPLAY_H
 #define PART_7S_DISPLAY_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_7S_DISPLAY_Name "7 Segments Display"

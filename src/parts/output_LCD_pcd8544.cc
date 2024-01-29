@@ -41,7 +41,7 @@ cpart_LCD_pcd8544::cpart_LCD_pcd8544(const unsigned x, const unsigned y, const c
     X = x;
     Y = y;
     ReadMaps();
-    Bitmap = NULL;
+    BitmapId = -1;
 
     LoadPartImage();
 
@@ -61,8 +61,8 @@ cpart_LCD_pcd8544::cpart_LCD_pcd8544(const unsigned x, const unsigned y, const c
 }
 
 cpart_LCD_pcd8544::~cpart_LCD_pcd8544(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

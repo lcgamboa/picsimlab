@@ -65,8 +65,8 @@ cpart_ds1621::cpart_ds1621(const unsigned x, const unsigned y, const char* name,
 
 cpart_ds1621::~cpart_ds1621(void) {
     sen_ds1621_end(&ds1621);
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

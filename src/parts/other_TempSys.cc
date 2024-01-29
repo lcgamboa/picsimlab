@@ -81,12 +81,12 @@ cpart_tempsys::cpart_tempsys(const unsigned x, const unsigned y, const char* nam
 }
 
 cpart_tempsys::~cpart_tempsys(void) {
-    delete Bitmap;
-
-    delete vent[0];
-    delete vent[1];
-    vent[0] = NULL;
-    vent[1] = NULL;
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{vent[0]}});
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{vent[1]}});
+    vent[0] = -1;
+    vent[1] = -1;
 
     SpareParts.CanvasCmd({CC_DESTROY});
 

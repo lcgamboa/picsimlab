@@ -26,7 +26,6 @@
 #ifndef PART_LCD_iLI9341_H
 #define PART_LCD_iLI9341_H
 
-#include <lxrad.h>
 #include "../devices/lcd_ili9341.h"
 #include "../devices/tsc_xpt2046.h"
 #include "../lib/part.h"

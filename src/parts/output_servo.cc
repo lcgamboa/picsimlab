@@ -43,15 +43,16 @@ cpart_servo::cpart_servo(const unsigned x, const unsigned y, const char* name, c
     in_[0] = 0;
     in_[1] = 0;
     time = 0;
-    BackGround = NULL;
+    BackGround = -1;
     SetPCWProperties(pcwprop);
     PinCount = 1;
     Pins = &input_pin;
 }
 
 cpart_servo::~cpart_servo(void) {
-    delete Bitmap;
-    delete BackGround;
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BackGround}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 
@@ -174,19 +175,19 @@ void cpart_servo::ReadPropertiesWindow(CPWindow* WProp) {
 void cpart_servo::LoadPartImage(void) {
     if (SpareParts.GetWindow()) {
         SpareParts.SetPartOnDraw(id);
-        Bitmap = SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(),
-                                          Scale, 0, Orientation);
+        BitmapId = SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(),
+                                            Scale, 0, Orientation);
 
-        lxBitmap* bmp = SpareParts.LoadImageFile(
-            PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(), Scale, 0, Orientation);
+        int bmp = SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(),
+                                           Scale, 0, Orientation);
 
-        if (BackGround) {
-            delete BackGround;
+        if (BackGround >= 0) {
+            SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BackGround}});
         }
         BackGround = bmp;
 
         SpareParts.CanvasCmd({CC_DESTROY});
-        SpareParts.CanvasCmd({CC_CREATE, .Create{Bitmap}});
+        SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
     }
 }
 

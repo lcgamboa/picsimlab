@@ -57,8 +57,8 @@ cpart_RTC_pfc8563::cpart_RTC_pfc8563(const unsigned x, const unsigned y, const c
 
 cpart_RTC_pfc8563::~cpart_RTC_pfc8563(void) {
     rtc_pfc8563_end(&rtc);
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

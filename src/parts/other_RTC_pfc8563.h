@@ -26,7 +26,6 @@
 #ifndef PART_RTC_PFC8563_H
 #define PART_RTC_PFC8563_H
 
-#include <lxrad.h>
 #include "../devices/rtc_pfc8563.h"
 #include "../lib/part.h"
 

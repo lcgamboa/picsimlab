@@ -26,7 +26,6 @@
 #ifndef PART_PUSH_BUTTONS_AN_H
 #define PART_PUSH_BUTTONS_AN_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_PUSH_BUTTONS_AN_Name "Push Buttons (Analogic)"

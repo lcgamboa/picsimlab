@@ -195,8 +195,8 @@ void cpart_keypad::RegisterRemoteControl(void) {
 }
 
 cpart_keypad::~cpart_keypad(void) {
-    delete Bitmap;
-    Bitmap = NULL;
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 
@@ -210,8 +210,9 @@ void cpart_keypad::ChangeType(unsigned char tp) {
     if (tp == type)
         return;
 
-    if (Bitmap) {
-        delete Bitmap;
+    if (BitmapId >= 0) {
+        SpareParts.SetPartOnDraw(id);
+        SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     }
 
     type = tp;

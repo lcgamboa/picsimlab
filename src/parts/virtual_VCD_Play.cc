@@ -79,8 +79,8 @@ void cpart_VCD_Play::RegisterRemoteControl(void) {
 }
 
 cpart_VCD_Play::~cpart_VCD_Play(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
     if (vcd_data) {
         free(vcd_data);

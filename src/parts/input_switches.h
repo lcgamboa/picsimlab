@@ -26,7 +26,6 @@
 #ifndef PART_SWITCHES_H
 #define PART_SWITCHES_H
 
-#include <lxrad.h>
 #include "../devices/swbounce.h"
 #include "../lib/part.h"
 

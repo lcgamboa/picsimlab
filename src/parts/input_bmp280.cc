@@ -66,8 +66,8 @@ cpart_bmp280::cpart_bmp280(const unsigned x, const unsigned y, const char* name,
 
 cpart_bmp280::~cpart_bmp280(void) {
     sen_bmp280_end(&bmp280);
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

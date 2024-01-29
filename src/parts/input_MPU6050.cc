@@ -23,12 +23,12 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include <lxrad.h>  //FIXME remove lxrad
+// FIXME remove lxrad
 
+#include "input_MPU6050.h"
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
-#include "input_MPU6050.h"
 
 /* inputs */
 enum { I_VS1, I_VS2, I_VS3, I_VS4, I_VS5, I_VS6 };
@@ -98,8 +98,8 @@ void cpart_MPU6050::RegisterRemoteControl(void) {
 
 cpart_MPU6050::~cpart_MPU6050(void) {
     mpu6050_end(&mpu);
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

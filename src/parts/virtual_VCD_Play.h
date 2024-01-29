@@ -26,7 +26,6 @@
 #ifndef PART_VCD_Play_H
 #define PART_VCD_Play_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_VCD_Play_Name "VCD Play"

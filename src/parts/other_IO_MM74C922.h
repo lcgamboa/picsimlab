@@ -26,7 +26,6 @@
 #ifndef PART_IO_MM74C922_H
 #define PART_IO_MM74C922_H
 
-#include <lxrad.h>
 #include "../devices/io_MM74C922.h"
 #include "../lib/part.h"
 

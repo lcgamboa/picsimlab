@@ -268,15 +268,15 @@ cboard_PICGenios::cboard_PICGenios(void) {
 cboard_PICGenios::~cboard_PICGenios(void) {
     buzzer.BeepStop();
     buzzer.End();
-    delete vent[0];
-    delete vent[1];
-    vent[0] = NULL;
-    vent[1] = NULL;
+    PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{vent[0]}});
+    PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{vent[1]}});
+    vent[0] = -1;
+    vent[1] = -1;
 
-    delete lcdbmp[0];
-    delete lcdbmp[1];
-    lcdbmp[0] = NULL;
-    lcdbmp[1] = NULL;
+    PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{lcdbmp[0]}});
+    PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{lcdbmp[1]}});
+    lcdbmp[0] = -1;
+    lcdbmp[1] = -1;
 
     mi2c_end(&mi2c);
     rtc_ds1307_end(&rtc2);
@@ -313,11 +313,11 @@ int cboard_PICGenios::MInit(const char* processor, const char* fname, float freq
 void cboard_PICGenios::SetScale(double scale) {
     if (Scale != scale) {
         Scale = scale;
-        if (vent[0]) {
-            delete vent[0];
-            delete vent[1];
-            delete lcdbmp[0];
-            delete lcdbmp[1];
+        if (vent[0] >= 0) {
+            PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{vent[0]}});
+            PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{vent[1]}});
+            PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{lcdbmp[0]}});
+            PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{lcdbmp[1]}});
 
             vent[0] = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/VT1.svg", Scale);
             vent[1] = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/VT2.svg", Scale);

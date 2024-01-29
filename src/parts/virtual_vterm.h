@@ -26,7 +26,6 @@
 #ifndef PART_vterm_H
 #define PART_vterm_H
 
-#include <lxrad.h>
 #include "../devices/vterm.h"
 #include "../lib/part.h"
 

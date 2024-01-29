@@ -52,7 +52,7 @@ cpart_leds::cpart_leds(const unsigned x, const unsigned y, const char* name, con
     Y = y;
     active = 1;
     Size = 0;
-    Bitmap = NULL;
+    BitmapId = -1;
 
     ReadMaps();
     OWidth = Width;
@@ -85,8 +85,8 @@ cpart_leds::cpart_leds(const unsigned x, const unsigned y, const char* name, con
 }
 
 cpart_leds::~cpart_leds(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 
@@ -324,8 +324,9 @@ void cpart_leds::SpinChange(CPWindow* WProp, CSpin* control, int value) {
 
 void cpart_leds::ChangeSize(const unsigned int sz) {
     if (Size != sz) {
-        if (Bitmap) {
-            delete Bitmap;
+        if (BitmapId >= 0) {
+            SpareParts.SetPartOnDraw(id);
+            SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
         }
         Size = sz;
         if (Size > 8) {
@@ -346,12 +347,12 @@ void cpart_leds::LoadPartImage(void) {
 
         if (SpareParts.GetWindow()) {
             SpareParts.SetPartOnDraw(id);
-            Bitmap = SpareParts.CreateBlankImage(Width, Height, Scale, 0, Orientation);
+            BitmapId = SpareParts.CreateBlankImage(Width, Height, Scale, 0, Orientation);
 
             SpareParts.CanvasCmd({CC_DESTROY});
-            SpareParts.CanvasCmd({CC_CREATE, .Create{Bitmap}});
+            SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
 
-            lxBitmap* BackBitmap = SpareParts.LoadImageFile(
+            int BackBitmap = SpareParts.LoadImageFile(
                 PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(), Scale, 0, Orientation);
 
             SpareParts.CanvasCmd({CC_INIT, .Init{Scale, Scale, Orientation}});
@@ -364,7 +365,7 @@ void cpart_leds::LoadPartImage(void) {
             SpareParts.CanvasCmd({CC_CHANGESCALE, .ChangeScale{Scale, Scale}});
             SpareParts.CanvasCmd({CC_END});
 
-            delete BackBitmap;
+            SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BackBitmap}});
         }
     } else {
         Width = OWidth;

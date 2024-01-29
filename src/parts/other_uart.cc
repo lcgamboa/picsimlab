@@ -80,8 +80,8 @@ cpart_UART::cpart_UART(const unsigned x, const unsigned y, const char* name, con
 }
 
 cpart_UART::~cpart_UART(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
     uart_end(&sr);
 }

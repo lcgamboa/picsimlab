@@ -26,7 +26,6 @@
 #ifndef PART_LCD_SSD1306_H
 #define PART_LCD_SSD1306_H
 
-#include <lxrad.h>
 #include "../devices/lcd_ssd1306.h"
 #include "../lib/part.h"
 

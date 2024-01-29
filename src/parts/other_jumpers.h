@@ -26,7 +26,6 @@
 #ifndef PART_JUMPERS_H
 #define PART_JUMPERS_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_JUMPERS_Name "Jumper Wires"

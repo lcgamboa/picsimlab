@@ -41,7 +41,7 @@ cpart_led_matrix::cpart_led_matrix(const unsigned x, const unsigned y, const cha
     X = x;
     Y = y;
     ReadMaps();
-    Bitmap = NULL;
+    BitmapId = -1;
     angle = 0;
     lmode = 0;
 
@@ -66,8 +66,8 @@ cpart_led_matrix::cpart_led_matrix(const unsigned x, const unsigned y, const cha
 
 cpart_led_matrix::~cpart_led_matrix(void) {
     SpareParts.UnregisterIOpin(output_pins[0]);
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

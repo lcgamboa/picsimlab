@@ -86,7 +86,8 @@ cpart_Buzzer::cpart_Buzzer(const unsigned x, const unsigned y, const char* name,
 }
 
 cpart_Buzzer::~cpart_Buzzer(void) {
-    delete Bitmap;
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     if (buffer) {
         delete[] buffer;
     }

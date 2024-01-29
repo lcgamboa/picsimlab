@@ -80,8 +80,8 @@ void cpart_dcmotor::RegisterRemoteControl(void) {
 }
 
 cpart_dcmotor::~cpart_dcmotor(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

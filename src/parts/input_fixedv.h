@@ -26,7 +26,6 @@
 #ifndef PART_FIXEDV_H
 #define PART_FIXEDV_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_FIXEDV_Name "Fixed Voltage"

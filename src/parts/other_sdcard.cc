@@ -81,8 +81,8 @@ cpart_SDCard::cpart_SDCard(const unsigned x, const unsigned y, const char* name,
 }
 
 cpart_SDCard::~cpart_SDCard(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
     sdcard_end(&sd);
 }

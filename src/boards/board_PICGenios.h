@@ -77,8 +77,8 @@ private:
     unsigned int lm3[40];
     unsigned int lm4[40];
 
-    lxBitmap* vent[2];
-    lxBitmap* lcdbmp[2];
+    int vent[2];
+    int lcdbmp[2];
 
     lxaudio buzzer;
 

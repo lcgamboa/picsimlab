@@ -84,8 +84,8 @@ cboard_uCboard::cboard_uCboard(void) {
 // Destructor called once on board destruction
 
 cboard_uCboard::~cboard_uCboard(void) {
-    delete micbmp;
-    micbmp = NULL;
+    PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{micbmp}});
+    micbmp = -1;
 }
 
 // Reset board status
@@ -216,7 +216,7 @@ void cboard_uCboard::EvMouseButtonRelease(uint button, uint x, uint y, uint stat
 void cboard_uCboard::Draw(void) {
     int i;
     Rect_t rec;
-    lxSize ps;
+    unsigned int w, h;
     int update = 0;  // verifiy if updated is needed
 
     // board_0 draw
@@ -250,7 +250,7 @@ void cboard_uCboard::Draw(void) {
                             {CC_SETFONTSIZE,
                              .SetFontSize{(MGetPinCount() >= 100) ? 9 : ((MGetPinCount() > 14) ? 12 : 10)}});
 
-                        ps = micbmp->GetSize();
+                        PICSimLab.CanvasCmd({CC_GETBITMAPSIZE, .GetBitmapSize{micbmp, &w, &h}});
                         PICSimLab.CanvasCmd({CC_CHANGESCALE, .ChangeScale{1.0, 1.0}});
                         PICSimLab.CanvasCmd(
                             {CC_PUTBITMAP, .PutBitmap{micbmp, output[i].x1 * Scale, output[i].y1 * Scale}});
@@ -259,8 +259,8 @@ void cboard_uCboard::Draw(void) {
 
                         rec.x = output[i].x1;
                         rec.y = output[i].y1;
-                        rec.width = ps.GetWidth() / Scale;
-                        rec.height = ps.GetHeight() / Scale;
+                        rec.width = w / Scale;
+                        rec.height = h / Scale;
                         PICSimLab.CanvasCmd(
                             {CC_TEXTONRECT, .TextOnRect{Proc.c_str(), rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL}});
                         break;
@@ -365,10 +365,10 @@ int cboard_uCboard::MInit(const char* processor, const char* fname, float freq) 
         Proc = "C51";
     }
 
-    lxBitmap* bmp = PICSimLab.LoadImageFile(
+    int bmp = PICSimLab.LoadImageFile(
         PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg", Scale, 1);
 
-    if (bmp == NULL) {
+    if (bmp < 0) {
         bmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/ic6.svg", Scale, 1);
         printf(
             "picsimlab: IC package with %i pins not "
@@ -380,7 +380,7 @@ int cboard_uCboard::MInit(const char* processor, const char* fname, float freq) 
     }
 
     if (micbmp)
-        delete micbmp;
+        PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{micbmp}});
     micbmp = bmp;
 
     return ret;
@@ -392,10 +392,10 @@ void cboard_uCboard::SetScale(double scale) {
 
     Scale = scale;
 
-    lxBitmap* bmp = PICSimLab.LoadImageFile(
+    int bmp = PICSimLab.LoadImageFile(
         PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg", Scale, 1);
 
-    if (bmp == NULL) {
+    if (bmp < 0) {
         bmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/ic6.svg", Scale, 1);
         printf(
             "picsimlab: IC package with %i pins not "
@@ -407,7 +407,7 @@ void cboard_uCboard::SetScale(double scale) {
     }
 
     if (micbmp)
-        delete micbmp;
+        PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{micbmp}});
     micbmp = bmp;
 }
 

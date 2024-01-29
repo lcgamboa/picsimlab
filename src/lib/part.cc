@@ -23,8 +23,6 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 #include "../lib/part.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
@@ -47,7 +45,7 @@ part::part(const unsigned x, const unsigned y, const char* name, const char* typ
     Type = type;
     X = x;
     Y = y;
-    Bitmap = NULL;
+    BitmapId = -1;
     PinCount = 0;
     Pins = NULL;
 
@@ -317,20 +315,20 @@ void part::LoadPartImage(void) {
     SpareParts.SetPartOnDraw(id);
     std::string iname = PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName();
 
-    lxBitmap* bmp = SpareParts.LoadImageFile(iname, Scale, 0, Orientation);
+    int bmp = SpareParts.LoadImageFile(iname, Scale, 0, Orientation);
 
-    if (bmp != NULL) {
+    if (bmp >= 0) {
         if (SpareParts.GetWindow()) {
-            Bitmap = bmp;
+            BitmapId = bmp;
             SpareParts.CanvasCmd({CC_DESTROY});
-            SpareParts.CanvasCmd({CC_CREATE, .Create{Bitmap}});
+            SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
         }
     } else if ((bmp = SpareParts.LoadImageFile(PICSimLab.GetSharePath() + "parts/Common/notfound.svg", Scale, 0,
-                                               Orientation)) != NULL) {
+                                               Orientation)) >= 0) {
         if (SpareParts.GetWindow()) {
-            Bitmap = bmp;
+            BitmapId = bmp;
             SpareParts.CanvasCmd({CC_DESTROY});
-            SpareParts.CanvasCmd({CC_CREATE, .Create{Bitmap}});
+            SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
         }
         printf("PICSimLab: (%s) Error loading image %s\n", (const char*)Name.c_str(), (const char*)iname.c_str());
         PICSimLab.RegisterError("Error loading image:\n " + iname);
@@ -350,11 +348,12 @@ void part::SetOrientation(int orientation) {
 
     Orientation = orientation;
 
-    if (!Bitmap)
+    if (!BitmapId)
         return;
 
-    delete Bitmap;
-    Bitmap = NULL;
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    BitmapId = -1;
 
     LoadPartImage();
 
@@ -371,13 +370,14 @@ void part::SetScale(double scale) {
     if (Scale == scale)
         return;
 
-    if (!Bitmap)
+    if (!BitmapId)
         return;
 
     Scale = scale;
 
-    delete Bitmap;
-    Bitmap = NULL;
+    SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    BitmapId = -1;
 
     LoadPartImage();
 

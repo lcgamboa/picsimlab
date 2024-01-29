@@ -675,20 +675,19 @@ void CSpareParts::SetfdOldFilename(const std::string ofn) {
     oldfname = ofn;
 }
 
-lxBitmap* CSpareParts::LoadImageFile(const std::string fname, const float scale, const int usealpha,
-                                     const int orientation) {
+int CSpareParts::LoadImageFile(const std::string fname, const float scale, const int usealpha, const int orientation) {
     if (OnLoadImage) {
         return (*OnLoadImage)(fname, scale, usealpha, orientation);
     }
-    return NULL;
+    return -1;
 }
 
-lxBitmap* CSpareParts::CreateBlankImage(const unsigned int width, const unsigned int height, const float scale,
-                                        const int usealpha, const int orientation) {
+int CSpareParts::CreateBlankImage(const unsigned int width, const unsigned int height, const float scale,
+                                  const int usealpha, const int orientation) {
     if (OnCreateImage) {
         return (*OnCreateImage)(width, height, scale, usealpha, orientation);
     }
-    return NULL;
+    return -1;
 }
 
 void CSpareParts::CanvasCmd(const CanvasCmd_t cmd) {

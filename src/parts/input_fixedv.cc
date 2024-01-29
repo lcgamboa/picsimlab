@@ -54,8 +54,8 @@ cpart_fixedv::cpart_fixedv(const unsigned x, const unsigned y, const char* name,
 void cpart_fixedv::RegisterRemoteControl(void) {}
 
 cpart_fixedv::~cpart_fixedv(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

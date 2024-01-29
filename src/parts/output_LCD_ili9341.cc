@@ -65,7 +65,7 @@ cpart_LCD_ili9341::cpart_LCD_ili9341(const unsigned x, const unsigned y, const c
     X = x;
     Y = y;
 
-    Bitmap = NULL;
+    BitmapId = -1;
     type_com = -1;
     ChangeType(TC_SPI);
 
@@ -145,8 +145,8 @@ std::string cpart_LCD_ili9341::GetMapFile(void) {
 }
 
 cpart_LCD_ili9341::~cpart_LCD_ili9341(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 
@@ -732,8 +732,9 @@ void cpart_LCD_ili9341::ChangeType(unsigned char tp) {
     if (tp == type_com)
         return;
 
-    if (Bitmap) {
-        delete Bitmap;
+    if (BitmapId >= 0) {
+        SpareParts.SetPartOnDraw(id);
+        SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     }
 
     type_com = tp;

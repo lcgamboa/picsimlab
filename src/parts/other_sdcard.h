@@ -26,7 +26,6 @@
 #ifndef PART_SDCARD_H
 #define PART_SDCARD_H
 
-#include <lxrad.h>
 #include "../devices/sdcard.h"
 #include "../lib/part.h"
 

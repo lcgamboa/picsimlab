@@ -259,8 +259,8 @@ public:
 
     void* UpdateGUI(const int id, const PICSimlabGUIType type, const PICSimlabGUIAction action, const void* arg);
 
-    lxBitmap* LoadImageFile(const std::string fname, const float scale = 1.0, const int usealpha = 0,
-                            const int orientation = 0);
+    int LoadImageFile(const std::string fname, const float scale = 1.0, const int usealpha = 0,
+                      const int orientation = 0);
 
     void ConfigMenuGUI(const PICSimlabGUIMenu type);
 
@@ -290,7 +290,7 @@ public:
     void (*OnOpenLoadHexFileDialog)(void);
     void (*OnEndSimulation)(void);
     void* (*OnUpdateGUI)(const int id, const PICSimlabGUIType type, const PICSimlabGUIAction action, const void* arg);
-    lxBitmap* (*OnLoadImage)(const std::string fname, const float scale, const int usealpha, const int orientation);
+    int (*OnLoadImage)(const std::string fname, const float scale, const int usealpha, const int orientation);
     void (*OnConfigMenuGUI)(const PICSimlabGUIMenu type);
     void (*OnCanvasCmd)(const CanvasCmd_t cmd);
 

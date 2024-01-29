@@ -63,8 +63,8 @@ void cpart_ds18b20::RegisterRemoteControl(void) {
 
 cpart_ds18b20::~cpart_ds18b20(void) {
     sen_ds18b20_end(&ds18b20);
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

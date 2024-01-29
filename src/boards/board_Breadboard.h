@@ -40,7 +40,7 @@
 class cboard_Breadboard : public bsim_picsim, public bsim_simavr {
 private:
     int ptype;
-    lxBitmap* micbmp;
+    int micbmp;
     unsigned char jmp[1];  // jumper
 public:
     void SetScale(double scale) override;

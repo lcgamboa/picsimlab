@@ -26,7 +26,6 @@
 #ifndef PART_DTRANSFERF_H
 #define PART_DTRANSFERF_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_DTRANSFERF_Name "D. Transfer Function"

@@ -81,8 +81,8 @@ void cpart_ADXL345::RegisterRemoteControl(void) {
 
 cpart_ADXL345::~cpart_ADXL345(void) {
     adxl345_end(&adxl);
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

@@ -26,7 +26,6 @@
 #ifndef PART_GAMEPAD_H
 #define PART_GAMEPAD_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_GAMEPAD_Name "Gamepad"

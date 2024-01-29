@@ -26,7 +26,6 @@
 #ifndef PART_IO_74XX573_H
 #define PART_IO_74XX573_H
 
-#include <lxrad.h>
 #include "../devices/io_74xx573.h"
 #include "../lib/part.h"
 

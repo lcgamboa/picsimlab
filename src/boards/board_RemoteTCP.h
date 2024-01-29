@@ -35,7 +35,7 @@
 // new board class must be derived from board class defined in board.h
 class cboard_RemoteTCP : public bsim_remote {
 private:
-    lxBitmap* micbmp;
+    int micbmp;
     void RegisterRemoteControl(void) override;
     int ADCChanel;
 

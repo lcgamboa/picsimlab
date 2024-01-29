@@ -44,7 +44,7 @@ cpart_led_ws2812b::cpart_led_ws2812b(const unsigned x, const unsigned y, const c
     OWidth = Width;
     OHeight = Height;
 
-    Bitmap = NULL;
+    BitmapId = -1;
 
     always_update = 1;
 
@@ -66,8 +66,8 @@ cpart_led_ws2812b::cpart_led_ws2812b(const unsigned x, const unsigned y, const c
 
 cpart_led_ws2812b::~cpart_led_ws2812b(void) {
     SpareParts.UnregisterIOpin(output_pins[0]);
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
     led_ws2812b_end(&led);
 }
@@ -81,15 +81,15 @@ void cpart_led_ws2812b::LoadPartImage(void) {
 
         if (SpareParts.GetWindow()) {
             SpareParts.SetPartOnDraw(id);
-            Bitmap = SpareParts.CreateBlankImage(Width, Height, Scale, 0, Orientation);
+            BitmapId = SpareParts.CreateBlankImage(Width, Height, Scale, 0, Orientation);
 
             SpareParts.CanvasCmd({CC_DESTROY});
-            SpareParts.CanvasCmd({CC_CREATE, .Create{Bitmap}});
+            SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
 
-            lxBitmap* BackBitmap = SpareParts.LoadImageFile(
+            int BackBitmap = SpareParts.LoadImageFile(
                 PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName(), Scale, 0, Orientation);
 
-            lxBitmap* LEDBitmap = SpareParts.LoadImageFile(
+            int LEDBitmap = SpareParts.LoadImageFile(
                 PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetName() + "/LED.svg", Scale, 0, Orientation);
 
             SpareParts.CanvasCmd({CC_INIT, .Init{Scale, Scale, Orientation}});
@@ -110,8 +110,8 @@ void cpart_led_ws2812b::LoadPartImage(void) {
             SpareParts.CanvasCmd({CC_CHANGESCALE, .ChangeScale{Scale, Scale}});
             SpareParts.CanvasCmd({CC_END});
 
-            delete BackBitmap;
-            delete LEDBitmap;
+            SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BackBitmap}});
+            SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{LEDBitmap}});
         }
     } else {
         Width = OWidth;
@@ -222,8 +222,9 @@ void cpart_led_ws2812b::ReadPreferences(std::string value) {
 
 void cpart_led_ws2812b::ChangeType(const unsigned int rows, const unsigned int cols, const unsigned char diffuser) {
     if ((led.nrows != rows) || (led.ncols != cols) || (led.diffuser != diffuser)) {
-        if (Bitmap) {
-            delete Bitmap;
+        if (BitmapId >= 0) {
+            SpareParts.SetPartOnDraw(id);
+            SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
         }
 
         unsigned int rows_ = rows;

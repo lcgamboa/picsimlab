@@ -97,8 +97,8 @@ cpart_ETH_w5500::cpart_ETH_w5500(const unsigned x, const unsigned y, const char*
 }
 
 cpart_ETH_w5500::~cpart_ETH_w5500(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
     eth_w5500_end(&ethw);
 }

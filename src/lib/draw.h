@@ -48,12 +48,12 @@ enum PICSimLabCanvasCmd {
     CC_GETBGCOLOR,
     CC_CREATE,
     CC_DESTROY,
+    CC_FREEBITMAP,
+    CC_GETBITMAPSIZE,
     CC_LAST
 };
 
 #include <string>
-
-#include <lxrad.h>  //FIXME remove lxrad
 
 #include "board.h"
 
@@ -80,7 +80,7 @@ typedef struct {
         struct {
         } End;
         struct {
-            lxBitmap* bitmap;
+            const int BitmapId;
             const double xs;
             const double ys;
         } SetBitmap;
@@ -148,7 +148,7 @@ typedef struct {
             const int npoints;
         } Polygon;
         struct {
-            lxBitmap* bitmap;
+            const int BitmapId;
             float x;
             float y;
         } PutBitmap;
@@ -158,10 +158,18 @@ typedef struct {
             unsigned int* b;
         } GetBgColor;
         struct {
-            lxBitmap* bitmap;
+            const int BitmapId;
         } Create;
         struct {
         } Destroy;
+        struct {
+            const int BitmapId;
+        } FreeBitmap;
+        struct {
+            const int BitmapId;
+            unsigned int* w;
+            unsigned int* h;
+        } GetBitmapSize;
     };
 } CanvasCmd_t;
 

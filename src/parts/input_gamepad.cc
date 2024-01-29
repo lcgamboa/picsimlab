@@ -91,8 +91,8 @@ void cpart_gamepad::RegisterRemoteControl(void) {
 }
 
 cpart_gamepad::~cpart_gamepad(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

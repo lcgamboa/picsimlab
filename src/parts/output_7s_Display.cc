@@ -136,8 +136,8 @@ cpart_7s_display::cpart_7s_display(const unsigned x, const unsigned y, const cha
 }
 
 cpart_7s_display::~cpart_7s_display(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 
@@ -743,8 +743,9 @@ void cpart_7s_display::ChangeType(unsigned char tp) {
     if (tp == dtype)
         return;
 
-    if (Bitmap) {
-        delete Bitmap;
+    if (BitmapId >= 0) {
+        SpareParts.SetPartOnDraw(id);
+        SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
         SpareParts.CanvasCmd({CC_DESTROY});
     }
 

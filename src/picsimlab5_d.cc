@@ -322,4 +322,6 @@ CPWindow5::CPWindow5(void) {
     mouse_scroll = 0;
     need_resize = 0;
     update_all = 1;
+
+    memset(Bitmaps, 0, sizeof(Bitmaps));
 }

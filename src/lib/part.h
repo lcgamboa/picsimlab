@@ -26,8 +26,6 @@
 #ifndef PART_H
 #define PART_H
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 #include "board.h"
 
 /**
@@ -259,7 +257,7 @@ public:
     /**
      * @brief  Return the Bitmap of part
      */
-    lxBitmap* GetBitmap(void) { return Bitmap; };
+    int GetBitmap(void) { return BitmapId; };
 
     /**
      * @brief  Return X position of part
@@ -376,7 +374,7 @@ protected:
     unsigned int Width;             ///< Width of part
     int X;                          ///< X position of part
     int Y;                          ///< Y position of part
-    lxBitmap* Bitmap;               ///< Internal Bitmap
+    int BitmapId;                   ///< Internal Bitmap
     unsigned int refresh;           ///< redraw is needed
     int Orientation;                ///< orientation to draw part
     float Scale;                    ///< scale to draw part

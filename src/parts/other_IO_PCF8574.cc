@@ -62,7 +62,7 @@ cpart_IO_PCF8574::cpart_IO_PCF8574(const unsigned x, const unsigned y, const cha
     Y = y;
     always_update = 1;
     ReadMaps();
-    Bitmap = NULL;
+    BitmapId = -1;
 
     LoadPartImage();
 
@@ -99,8 +99,9 @@ cpart_IO_PCF8574::cpart_IO_PCF8574(const unsigned x, const unsigned y, const cha
 cpart_IO_PCF8574::~cpart_IO_PCF8574(void) {
     for (int i = 0; i < 9; i++)
         SpareParts.UnregisterIOpin(output_pins[i]);
-    delete Bitmap;
+
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

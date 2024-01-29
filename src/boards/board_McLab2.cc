@@ -167,10 +167,10 @@ cboard_McLab2::~cboard_McLab2(void) {
     buzzer.End();
     mi2c_end(&mi2c);
     lcd_end(&lcd);
-    delete vent[0];
-    delete vent[1];
-    vent[0] = NULL;
-    vent[1] = NULL;
+    PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{vent[0]}});
+    PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{vent[1]}});
+    vent[0] = -1;
+    vent[1] = -1;
 
     PICSimLab.UpdateGUI(HEATER, GT_GAUGE, GA_DEL, NULL);
     PICSimLab.UpdateGUI(COOLER, GT_GAUGE, GA_DEL, NULL);
@@ -202,9 +202,9 @@ int cboard_McLab2::MInit(const char* processor, const char* fname, float freq) {
 void cboard_McLab2::SetScale(double scale) {
     if (Scale != scale) {
         Scale = scale;
-        if (vent[0]) {
-            delete vent[0];
-            delete vent[1];
+        if (vent[0] >= 0) {
+            PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{vent[0]}});
+            PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{vent[1]}});
             vent[0] = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/VT1.svg", Scale);
             vent[1] = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() + "boards/Common/VT2.svg", Scale);
         }

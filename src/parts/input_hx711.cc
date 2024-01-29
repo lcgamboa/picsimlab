@@ -63,8 +63,8 @@ cpart_hx711::cpart_hx711(const unsigned x, const unsigned y, const char* name, c
 
 cpart_hx711::~cpart_hx711(void) {
     sen_hx711_end(&hx711);
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

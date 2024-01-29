@@ -26,7 +26,6 @@
 #ifndef PART_IO_MCP23S17_H
 #define PART_IO_MCP23S17_H
 
-#include <lxrad.h>
 #include "../devices/io_MCP23X17.h"
 #include "../lib/part.h"
 

@@ -60,8 +60,8 @@ cpart_step::cpart_step(const unsigned x, const unsigned y, const char* name, con
 }
 
 cpart_step::~cpart_step(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

@@ -497,4 +497,6 @@ CPWindow1::CPWindow1(void) {
 #ifdef NO_DEBUG
     DestroyChild(&togglebutton1);
 #endif
+
+    memset(Bitmaps, 0, sizeof(Bitmaps));
 }

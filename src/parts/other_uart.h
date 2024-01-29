@@ -26,7 +26,6 @@
 #ifndef PART_UART_H
 #define PART_UART_H
 
-#include <lxrad.h>
 #include "../devices/uart.h"
 #include "../lib/part.h"
 

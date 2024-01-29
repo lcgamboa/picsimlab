@@ -26,7 +26,6 @@
 #ifndef PART_ETH_W5500_H
 #define PART_ETH_W5500_H
 
-#include <lxrad.h>
 #include "../devices/eth_w5500.h"
 #include "../lib/part.h"
 

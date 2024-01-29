@@ -26,7 +26,6 @@
 #ifndef PART_LED_WS2812B_H
 #define PART_LED_WS2812B_H
 
-#include <lxrad.h>
 #include "../devices/led_ws2812b.h"
 #include "../lib/part.h"
 

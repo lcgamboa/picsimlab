@@ -26,7 +26,6 @@
 #ifndef PART_RTC_DS1307_H
 #define PART_RTC_DS1307_H
 
-#include <lxrad.h>
 #include "../devices/rtc_ds1307.h"
 #include "../lib/part.h"
 

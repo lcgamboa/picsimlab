@@ -59,8 +59,8 @@ void cpart_fm50::RegisterRemoteControl(void) {
 }
 
 cpart_fm50::~cpart_fm50(void) {
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

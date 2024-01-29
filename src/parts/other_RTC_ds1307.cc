@@ -55,8 +55,8 @@ cpart_RTC_ds1307::cpart_RTC_ds1307(const unsigned x, const unsigned y, const cha
 
 cpart_RTC_ds1307::~cpart_RTC_ds1307(void) {
     rtc_ds1307_end(&rtc2);
-    delete Bitmap;
     SpareParts.SetPartOnDraw(id);
+    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
 }
 

@@ -46,6 +46,7 @@ class lxMutex;
 class lxCondition;
 class board;
 */
+
 #include <lxrad.h>  //FIXME remove lxrad
 
 #define INCOMPLETE                                                      \

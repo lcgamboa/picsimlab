@@ -26,7 +26,6 @@
 #ifndef PART_POT_H
 #define PART_POT_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_POT_Name "Potentiometers"

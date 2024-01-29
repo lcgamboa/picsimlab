@@ -26,7 +26,6 @@
 #ifndef PART_DCMOTOR_H
 #define PART_DCMOTOR_H
 
-#include <lxrad.h>
 #include "../lib/part.h"
 
 #define PART_DCMOTOR_Name "DC Motor"

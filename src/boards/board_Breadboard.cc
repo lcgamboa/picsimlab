@@ -91,8 +91,8 @@ cboard_Breadboard::cboard_Breadboard(void) {
 // Destructor called once on board destruction
 
 cboard_Breadboard::~cboard_Breadboard(void) {
-    delete micbmp;
-    micbmp = NULL;
+    PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{micbmp}});
+    micbmp = -1;
 }
 
 // Reset board status
@@ -324,7 +324,7 @@ void cboard_Breadboard::EvMouseButtonRelease(uint button, uint x, uint y, uint s
 void cboard_Breadboard::Draw(void) {
     int i;
     Rect_t rec;
-    lxSize ps;
+    unsigned int w, h;
     int update = 0;  // verifiy if updated is needed
 
     // board_0 draw
@@ -356,7 +356,7 @@ void cboard_Breadboard::Draw(void) {
                                                                           ? 6
                                                                           : ((MGetPinCount() > 14) ? 12 : 10)}});
 
-                    ps = micbmp->GetSize();
+                    PICSimLab.CanvasCmd({CC_GETBITMAPSIZE, .GetBitmapSize{micbmp, &w, &h}});
                     PICSimLab.CanvasCmd({CC_CHANGESCALE, .ChangeScale{1.0, 1.0}});
                     PICSimLab.CanvasCmd({CC_PUTBITMAP, .PutBitmap{micbmp, output[i].x1 * Scale, output[i].y1 * Scale}});
                     PICSimLab.CanvasCmd({CC_CHANGESCALE, .ChangeScale{Scale, Scale}});
@@ -364,8 +364,8 @@ void cboard_Breadboard::Draw(void) {
 
                     rec.x = output[i].x1;
                     rec.y = output[i].y1;
-                    rec.width = ps.GetWidth() / Scale;
-                    rec.height = ps.GetHeight() / Scale;
+                    rec.width = w / Scale;
+                    rec.height = h / Scale;
                     PICSimLab.CanvasCmd(
                         {CC_TEXTONRECT, .TextOnRect{Proc.c_str(), rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL}});
                     break;
@@ -709,10 +709,10 @@ int cboard_Breadboard::MInit(const char* processor, const char* fname, float fre
             break;
     }
 
-    lxBitmap* bmp = PICSimLab.LoadImageFile(
+    int bmp = PICSimLab.LoadImageFile(
         PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg", Scale, 1);
 
-    if (bmp == NULL) {
+    if (bmp < 0) {
         bmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() +
                                           "boards/Common/"
                                           "ic6.svg",
@@ -766,7 +766,7 @@ int cboard_Breadboard::MInit(const char* processor, const char* fname, float fre
     }
 
     if (micbmp)
-        delete micbmp;
+        PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{micbmp}});
     micbmp = bmp;
 
     return ret;
@@ -1189,12 +1189,12 @@ void cboard_Breadboard::SetScale(double scale) {
 
     Scale = scale;
 
-    lxBitmap* bmp = NULL;
+    int bmp = -1;
 
     if (MGetPinCount()) {
         bmp = PICSimLab.LoadImageFile(
             PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg", Scale, 1);
-        if (bmp == NULL) {
+        if (bmp < 0) {
             bmp = PICSimLab.LoadImageFile(PICSimLab.GetSharePath() +
                                               "boards/Common/"
                                               "ic6.svg",
@@ -1225,8 +1225,8 @@ void cboard_Breadboard::SetScale(double scale) {
                                           "ic40.svg",
                                       Scale, 1);
     }
-    if (micbmp)
-        delete micbmp;
+    if (micbmp >= 0)
+        PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{micbmp}});
     micbmp = bmp;
 }
 
