@@ -151,14 +151,14 @@ void cpart_bmp180::ReadPreferences(std::string value_) {
     Reset();
 }
 
-void cpart_bmp180::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo1", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo2", input_pins[1]);
+void cpart_bmp180::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo1", input_pins[0]);
+    SetPCWComboWithPinNames("combo2", input_pins[1]);
 }
 
-void cpart_bmp180::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo1");
-    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo2");
+void cpart_bmp180::ReadPropertiesWindow(void) {
+    input_pins[0] = GetPWCComboSelectedPin("combo1");
+    input_pins[1] = GetPWCComboSelectedPin("combo2");
 }
 
 void cpart_bmp180::PreProcess(void) {

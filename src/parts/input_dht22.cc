@@ -249,12 +249,12 @@ void cpart_dht22::ReadPreferences(std::string value_) {
     sscanf(value_.c_str(), "%hhu,%hhu,%hhu", &output_pins[0], &values[0], &values[1]);
 }
 
-void cpart_dht22::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo2", output_pins[0]);
+void cpart_dht22::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo2", output_pins[0]);
 }
 
-void cpart_dht22::ReadPropertiesWindow(CPWindow* WProp) {
-    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
+void cpart_dht22::ReadPropertiesWindow(void) {
+    output_pins[0] = GetPWCComboSelectedPin("combo2");
 }
 
 part_init(PART_DHT22_Name, cpart_dht22, "Input");

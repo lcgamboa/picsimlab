@@ -196,12 +196,12 @@ public:
     /**
      * @brief  Called to configure the properties window
      */
-    virtual void ConfigurePropertiesWindow(CPWindow* WProp) = 0;
+    virtual void ConfigurePropertiesWindow(void) = 0;
 
     /**
      * @brief  Called when properties window close
      */
-    virtual void ReadPropertiesWindow(CPWindow* WProp) = 0;
+    virtual void ReadPropertiesWindow(void) = 0;
 
     /**
      * @brief  Used by properties window combos
@@ -399,8 +399,8 @@ protected:
     int PointInside(int x, int y, input_t input);
 
     void SetPCWProperties(const PCWProp* pcwprop);
-    void SetPCWComboWithPinNames(CPWindow* WProp, const char* combo_name, const unsigned char pin);
-    unsigned char GetPWCComboSelectedPin(CPWindow* WProp, const char* combo_name);
+    void SetPCWComboWithPinNames(const char* combo_name, const unsigned char pin);
+    unsigned char GetPWCComboSelectedPin(const char* combo_name);
 
 private:
     const PCWProp* PCWProperties;

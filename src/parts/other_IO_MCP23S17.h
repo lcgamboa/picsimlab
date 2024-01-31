@@ -43,8 +43,8 @@ public:
     void PostProcess(void) override;
     std::string GetPictureFileName(void) override { return "../Common/IC28.svg"; };
     std::string GetMapFile(void) override { return "../Common/IC28.map"; };
-    void ConfigurePropertiesWindow(CPWindow* WProp) override;
-    void ReadPropertiesWindow(CPWindow* WProp) override;
+    void ConfigurePropertiesWindow(void) override;
+    void ReadPropertiesWindow(void) override;
     std::string WritePreferences(void) override;
     void ReadPreferences(std::string value) override;
     unsigned short GetInputId(char* name) override;

@@ -177,26 +177,33 @@ void cpart_led_matrix::RegisterRemoteControl(void) {
     output_ids[O_LED]->status = (void*)&ldd;
 }
 
-void cpart_led_matrix::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo3", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo4", input_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo5", input_pins[2]);
+void cpart_led_matrix::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo3", input_pins[0]);
+    SetPCWComboWithPinNames("combo4", input_pins[1]);
+    SetPCWComboWithPinNames("combo5", input_pins[2]);
 
-    ((CLabel*)WProp->GetChildByName("label_6"))->SetText(std::to_string(output_pins[0]));
+    SpareParts.WPropCmd("label_6", WPA_LABELSETTEXT, std::to_string(output_pins[0]).c_str());
 
-    ((CCombo*)WProp->GetChildByName("combo7"))->SetItems("0,90,180,270,");
-    ((CCombo*)WProp->GetChildByName("combo7"))->SetText(std::to_string(angle));
+    SpareParts.WPropCmd("combo7", WPA_COMBOSETITEMS, "0,90,180,270,");
+    SpareParts.WPropCmd("combo7", WPA_COMBOSETTEXT, std::to_string(angle).c_str());
 
-    ((CCombo*)WProp->GetChildByName("combo8"))->SetItems("FC16,Parola,");
-    ((CCombo*)WProp->GetChildByName("combo8"))->SetText((!lmode ? "FC16" : "Parola"));
+    SpareParts.WPropCmd("combo8", WPA_COMBOSETITEMS, "FC16,Parola,");
+    SpareParts.WPropCmd("combo8", WPA_COMBOSETTEXT, (!lmode ? "FC16" : "Parola"));
 }
 
-void cpart_led_matrix::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo3");
-    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo4");
-    input_pins[2] = GetPWCComboSelectedPin(WProp, "combo5");
-    angle = atoi(((CCombo*)WProp->GetChildByName("combo7"))->GetText());
-    lmode = !(((CCombo*)WProp->GetChildByName("combo8"))->GetText().compare("FC16") == 0);
+void cpart_led_matrix::ReadPropertiesWindow(void) {
+    input_pins[0] = GetPWCComboSelectedPin("combo3");
+    input_pins[1] = GetPWCComboSelectedPin("combo4");
+    input_pins[2] = GetPWCComboSelectedPin("combo5");
+
+    char buff[64];
+    SpareParts.WPropCmd("combo7", WPA_COMBOGETTEXT, NULL, buff);
+
+    angle = std::stoi(buff);
+
+    SpareParts.WPropCmd("combo8", WPA_COMBOGETTEXT, NULL, buff);
+
+    lmode = !(strcmp(buff, "FC16") == 0);
 }
 
 void cpart_led_matrix::Process(void) {

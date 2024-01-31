@@ -42,8 +42,8 @@ public:
     void PostProcess(void) override;
     void Reset(void) override;
     void OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) override;
-    void ConfigurePropertiesWindow(CPWindow* WProp) override;
-    void ReadPropertiesWindow(CPWindow* WProp) override;
+    void ConfigurePropertiesWindow(void) override;
+    void ReadPropertiesWindow(void) override;
     void ButtonEvent(CControl* control, uint button, uint x, uint y, uint state) override;
     void KeyEvent(CControl* control, uint keysym, uint ukeysym, uint state) override;
     void Event(CControl* control) override;

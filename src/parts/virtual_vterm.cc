@@ -360,18 +360,22 @@ void cpart_vterm::ReadPreferences(std::string value) {
     Reset();
 }
 
-void cpart_vterm::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo2", pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo3", pins[1]);
+void cpart_vterm::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo2", pins[0]);
+    SetPCWComboWithPinNames("combo3", pins[1]);
 
-    ((CCombo*)WProp->GetChildByName("combo5"))->SetItems("1200,2400,4800,9600,19200,38400,57600,115200,");
-    ((CCombo*)WProp->GetChildByName("combo5"))->SetText(std::to_string(vterm_speed));
+    SpareParts.WPropCmd("combo5", WPA_COMBOSETITEMS, "1200,2400,4800,9600,19200,38400,57600,115200,");
+    SpareParts.WPropCmd("combo5", WPA_COMBOSETTEXT, std::to_string(vterm_speed).c_str());
 }
 
-void cpart_vterm::ReadPropertiesWindow(CPWindow* WProp) {
-    pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
-    pins[1] = GetPWCComboSelectedPin(WProp, "combo3");
-    vterm_speed = atoi(((CCombo*)WProp->GetChildByName("combo5"))->GetText());
+void cpart_vterm::ReadPropertiesWindow(void) {
+    pins[0] = GetPWCComboSelectedPin("combo2");
+    pins[1] = GetPWCComboSelectedPin("combo3");
+
+    char buff[64];
+    SpareParts.WPropCmd("combo5", WPA_COMBOGETTEXT, NULL, buff);
+
+    vterm_speed = std::stoi(buff);
     Reset();
 }
 

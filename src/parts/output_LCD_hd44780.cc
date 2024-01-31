@@ -236,55 +236,58 @@ void cpart_LCD_hd44780::RegisterRemoteControl(void) {
     output_ids[O_LCD]->status = (void*)&lcd;
 }
 
-void cpart_LCD_hd44780::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo4", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo6", input_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo7", input_pins[2]);
-    SetPCWComboWithPinNames(WProp, "combo8", input_pins[3]);
-    SetPCWComboWithPinNames(WProp, "combo9", input_pins[4]);
-    SetPCWComboWithPinNames(WProp, "combo10", input_pins[5]);
-    SetPCWComboWithPinNames(WProp, "combo11", input_pins[6]);
-    SetPCWComboWithPinNames(WProp, "combo12", input_pins[7]);
-    SetPCWComboWithPinNames(WProp, "combo13", input_pins[8]);
-    SetPCWComboWithPinNames(WProp, "combo14", input_pins[9]);
-    SetPCWComboWithPinNames(WProp, "combo5", input_pins[10]);
+void cpart_LCD_hd44780::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo4", input_pins[0]);
+    SetPCWComboWithPinNames("combo6", input_pins[1]);
+    SetPCWComboWithPinNames("combo7", input_pins[2]);
+    SetPCWComboWithPinNames("combo8", input_pins[3]);
+    SetPCWComboWithPinNames("combo9", input_pins[4]);
+    SetPCWComboWithPinNames("combo10", input_pins[5]);
+    SetPCWComboWithPinNames("combo11", input_pins[6]);
+    SetPCWComboWithPinNames("combo12", input_pins[7]);
+    SetPCWComboWithPinNames("combo13", input_pins[8]);
+    SetPCWComboWithPinNames("combo14", input_pins[9]);
+    SetPCWComboWithPinNames("combo5", input_pins[10]);
 
-    ((CCombo*)WProp->GetChildByName("combo15"))->SetItems("16x2,16x4,20x2,20x4,");
+    SpareParts.WPropCmd("combo15", WPA_COMBOSETITEMS, "16x2,16x4,20x2,20x4,");
     switch (model) {
         case LCD16x2:
-            ((CCombo*)WProp->GetChildByName("combo15"))->SetText("16x2");
+            SpareParts.WPropCmd("combo15", WPA_COMBOSETTEXT, "16x2");
             break;
         case LCD16x4:
-            ((CCombo*)WProp->GetChildByName("combo15"))->SetText("16x4");
+            SpareParts.WPropCmd("combo15", WPA_COMBOSETTEXT, "16x4");
             break;
         case LCD20x2:
-            ((CCombo*)WProp->GetChildByName("combo15"))->SetText("20x2");
+            SpareParts.WPropCmd("combo15", WPA_COMBOSETTEXT, "20x2");
             break;
         case LCD20x4:
-            ((CCombo*)WProp->GetChildByName("combo15"))->SetText("20x4");
+            SpareParts.WPropCmd("combo15", WPA_COMBOSETTEXT, "20x4");
             break;
     }
 }
 
-void cpart_LCD_hd44780::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo4");
-    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo6");
-    input_pins[2] = GetPWCComboSelectedPin(WProp, "combo7");
-    input_pins[3] = GetPWCComboSelectedPin(WProp, "combo8");
-    input_pins[4] = GetPWCComboSelectedPin(WProp, "combo9");
-    input_pins[5] = GetPWCComboSelectedPin(WProp, "combo10");
-    input_pins[6] = GetPWCComboSelectedPin(WProp, "combo11");
-    input_pins[7] = GetPWCComboSelectedPin(WProp, "combo12");
-    input_pins[8] = GetPWCComboSelectedPin(WProp, "combo13");
-    input_pins[9] = GetPWCComboSelectedPin(WProp, "combo14");
-    input_pins[10] = GetPWCComboSelectedPin(WProp, "combo5");
+void cpart_LCD_hd44780::ReadPropertiesWindow(void) {
+    input_pins[0] = GetPWCComboSelectedPin("combo4");
+    input_pins[1] = GetPWCComboSelectedPin("combo6");
+    input_pins[2] = GetPWCComboSelectedPin("combo7");
+    input_pins[3] = GetPWCComboSelectedPin("combo8");
+    input_pins[4] = GetPWCComboSelectedPin("combo9");
+    input_pins[5] = GetPWCComboSelectedPin("combo10");
+    input_pins[6] = GetPWCComboSelectedPin("combo11");
+    input_pins[7] = GetPWCComboSelectedPin("combo12");
+    input_pins[8] = GetPWCComboSelectedPin("combo13");
+    input_pins[9] = GetPWCComboSelectedPin("combo14");
+    input_pins[10] = GetPWCComboSelectedPin("combo5");
+
+    char buff[64];
+    SpareParts.WPropCmd("combo15", WPA_COMBOGETTEXT, NULL, buff);
 
     model = LCD16x2;
-    if (!((((CCombo*)WProp->GetChildByName("combo15"))->GetText()).compare("16x4")))
+    if (!strcmp(buff, "16x4"))
         model = LCD16x4;
-    else if (!((((CCombo*)WProp->GetChildByName("combo15"))->GetText()).compare("20x2")))
+    else if (!strcmp(buff, "20x2"))
         model = LCD20x2;
-    else if (!((((CCombo*)WProp->GetChildByName("combo15"))->GetText()).compare("20x4")))
+    else if (!strcmp(buff, "20x4"))
         model = LCD20x4;
 
     Reset();

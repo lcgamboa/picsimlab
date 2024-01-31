@@ -279,44 +279,48 @@ void cpart_dtfunc::ReadPreferences(std::string value) {
            &den[1], &den[2], &den[3]);
 }
 
-void cpart_dtfunc::ConfigurePropertiesWindow(CPWindow* WProp) {
+void cpart_dtfunc::ConfigurePropertiesWindow(void) {
     std::string Items = SpareParts.GetPinsNames();
     std::string spin;
     char buff[20];
     char eq[200];
 
-    SetPCWComboWithPinNames(WProp, "combo1", pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo2", pins[1]);
+    SetPCWComboWithPinNames("combo1", pins[0]);
+    SetPCWComboWithPinNames("combo2", pins[1]);
 
     eq[0] = 0;
     for (int i = 0; i < ordern; i++) {
         snprintf(buff, 19, "%+f ", num[i]);
         strncat(eq, buff, 199);
     }
-    ((CEdit*)WProp->GetChildByName("edit3"))->SetText(eq);
+
+    SpareParts.WPropCmd("edit3", WPA_EDITSETTEXT, eq);
 
     eq[0] = 0;
     for (int i = 0; i < orderd; i++) {
         snprintf(buff, 19, "%+f ", den[i]);
         strncat(eq, buff, 199);
     }
-    ((CEdit*)WProp->GetChildByName("edit4"))->SetText(eq);
+    SpareParts.WPropCmd("edit4", WPA_EDITSETTEXT, eq);
 
-    ((CEdit*)WProp->GetChildByName("edit5"))->SetText(std::to_string(sample));
-    ((CEdit*)WProp->GetChildByName("edit6"))->SetText(std::to_string(in_gain));
-    ((CEdit*)WProp->GetChildByName("edit7"))->SetText(std::to_string(in_off));
-    ((CEdit*)WProp->GetChildByName("edit8"))->SetText(std::to_string(out_gain));
-    ((CEdit*)WProp->GetChildByName("edit9"))->SetText(std::to_string(out_off));
+    SpareParts.WPropCmd("edit5", WPA_EDITSETTEXT, std::to_string(sample).c_str());
+    SpareParts.WPropCmd("edit6", WPA_EDITSETTEXT, std::to_string(in_gain).c_str());
+    SpareParts.WPropCmd("edit7", WPA_EDITSETTEXT, std::to_string(in_off).c_str());
+    SpareParts.WPropCmd("edit8", WPA_EDITSETTEXT, std::to_string(out_gain).c_str());
+    SpareParts.WPropCmd("edit9", WPA_EDITSETTEXT, std::to_string(out_off).c_str());
 }
 
-void cpart_dtfunc::ReadPropertiesWindow(CPWindow* WProp) {
+void cpart_dtfunc::ReadPropertiesWindow(void) {
     char line[256];
     char* T[4];
 
-    pins[0] = GetPWCComboSelectedPin(WProp, "combo1");
-    pins[1] = GetPWCComboSelectedPin(WProp, "combo2");
+    pins[0] = GetPWCComboSelectedPin("combo1");
+    pins[1] = GetPWCComboSelectedPin("combo2");
 
-    strncpy(line, ((CEdit*)WProp->GetChildByName("edit3"))->GetText().c_str(), 255);
+    char buff[255];
+    SpareParts.WPropCmd("edit3", WPA_EDITGETTEXT, NULL, buff);
+
+    strncpy(line, buff, 255);
     T[0] = strtok(line, " ");
     T[1] = strtok(NULL, " ");
     T[2] = strtok(NULL, " ");
@@ -332,7 +336,9 @@ void cpart_dtfunc::ReadPropertiesWindow(CPWindow* WProp) {
         }
     }
 
-    strncpy(line, ((CEdit*)WProp->GetChildByName("edit4"))->GetText().c_str(), 255);
+    SpareParts.WPropCmd("edit4", WPA_EDITGETTEXT, NULL, buff);
+
+    strncpy(line, buff, 255);
     T[0] = strtok(line, " ");
     T[1] = strtok(NULL, " ");
     T[2] = strtok(NULL, " ");
@@ -358,11 +364,20 @@ void cpart_dtfunc::ReadPropertiesWindow(CPWindow* WProp) {
         }
     }
 
-    sample = atof(((CEdit*)WProp->GetChildByName("edit5"))->GetText());
-    in_gain = atof(((CEdit*)WProp->GetChildByName("edit6"))->GetText());
-    in_off = atof(((CEdit*)WProp->GetChildByName("edit7"))->GetText());
-    out_gain = atof(((CEdit*)WProp->GetChildByName("edit8"))->GetText());
-    out_off = atof(((CEdit*)WProp->GetChildByName("edit9"))->GetText());
+    SpareParts.WPropCmd("edit5", WPA_EDITGETTEXT, NULL, buff);
+    sample = std::stof(buff);
+
+    SpareParts.WPropCmd("edit6", WPA_EDITGETTEXT, NULL, buff);
+    in_gain = std::stof(buff);
+
+    SpareParts.WPropCmd("edit7", WPA_EDITGETTEXT, NULL, buff);
+    in_off = std::stof(buff);
+
+    SpareParts.WPropCmd("edit8", WPA_EDITGETTEXT, NULL, buff);
+    out_gain = std::stof(buff);
+
+    SpareParts.WPropCmd("edit9", WPA_EDITGETTEXT, NULL, buff);
+    out_off = std::stof(buff);
 
     Reset();
 }

@@ -258,32 +258,35 @@ void cpart_pot::ReadPreferences(std::string value) {
     ChangeSize(sz);
 }
 
-void cpart_pot::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo2", output_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo3", output_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo4", output_pins[2]);
-    SetPCWComboWithPinNames(WProp, "combo5", output_pins[3]);
-    ((CSpin*)WProp->GetChildByName("spin7"))->SetMax(4);
-    ((CSpin*)WProp->GetChildByName("spin7"))->SetMin(1);
-    ((CSpin*)WProp->GetChildByName("spin7"))->SetValue(Size);
-    ((CSpin*)WProp->GetChildByName("spin7"))->EvOnChangeSpin = SpareParts.PropSpinChange;
-    SpinChange(WProp, NULL, Size);
+void cpart_pot::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo2", output_pins[0]);
+    SetPCWComboWithPinNames("combo3", output_pins[1]);
+    SetPCWComboWithPinNames("combo4", output_pins[2]);
+    SetPCWComboWithPinNames("combo5", output_pins[3]);
+
+    SpareParts.WPropCmd("spin7", WPA_SPINSETMAX, "4");
+    SpareParts.WPropCmd("spin7", WPA_SPINSETMIN, "1");
+    SpareParts.WPropCmd("spin7", WPA_SPINSETVALUE, std::to_string(Size).c_str());
+
+    SpinChange(NULL, NULL, Size);
 }
 
-void cpart_pot::ReadPropertiesWindow(CPWindow* WProp) {
-    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
-    output_pins[1] = GetPWCComboSelectedPin(WProp, "combo3");
-    output_pins[2] = GetPWCComboSelectedPin(WProp, "combo4");
-    output_pins[3] = GetPWCComboSelectedPin(WProp, "combo5");
+void cpart_pot::ReadPropertiesWindow(void) {
+    output_pins[0] = GetPWCComboSelectedPin("combo2");
+    output_pins[1] = GetPWCComboSelectedPin("combo3");
+    output_pins[2] = GetPWCComboSelectedPin("combo4");
+    output_pins[3] = GetPWCComboSelectedPin("combo5");
 
-    ChangeSize(((CSpin*)WProp->GetChildByName("spin7"))->GetValue());
+    int size;
+    SpareParts.WPropCmd("spin7", WPA_SPINGETVALUE, NULL, &size);
+    ChangeSize(size);
 }
 
 void cpart_pot::SpinChange(CPWindow* WProp, CSpin* control, int value) {
     for (int i = 0; i < 4; i++) {
         char name[20];
         sprintf(name, "combo%i", i + 2);
-        ((CCombo*)WProp->GetChildByName(name))->SetEnable(i < value);
+        SpareParts.WPropCmd(name, WPA_SETENABLE, std::to_string(i < value).c_str());
     }
 }
 

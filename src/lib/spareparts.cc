@@ -43,14 +43,12 @@ CSpareParts::CSpareParts() {
     fdtype = -1;
     PartOnDraw = -1;
 
-    PropButtonRelease = NULL;
-    PropComboChange = NULL;
-    PropSpinChange = NULL;
     PartEvent = NULL;
     PartKeyEvent = NULL;
     PartButtonEvent = NULL;
 
     OnCanvasCmd = NULL;
+    OnWPropCmd = NULL;
 }
 
 void CSpareParts::Init(CWindow* win) {
@@ -676,6 +674,14 @@ void CSpareParts::SetfdOldFilename(const std::string ofn) {
 int CSpareParts::CanvasCmd(const CanvasCmd_t cmd) {
     if (SpareParts.OnCanvasCmd) {
         return (*SpareParts.OnCanvasCmd)(cmd);
+    }
+    return -1;
+}
+
+int CSpareParts::WPropCmd(const char* ControlName, const PICSimLabWPropAction action, const char* Value,
+                          void* ReturnBuff) {
+    if (SpareParts.OnWPropCmd) {
+        return (*SpareParts.OnWPropCmd)(ControlName, action, Value, ReturnBuff);
     }
     return -1;
 }

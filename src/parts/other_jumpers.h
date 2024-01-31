@@ -43,8 +43,8 @@ public:
     void PreProcess(void) override;
     void Process(void) override;
     void PostProcess(void) override;
-    void ConfigurePropertiesWindow(CPWindow* WProp) override;
-    void ReadPropertiesWindow(CPWindow* WProp) override;
+    void ConfigurePropertiesWindow(void) override;
+    void ReadPropertiesWindow(void) override;
     std::string WritePreferences(void) override;
     void ReadPreferences(std::string value) override;
     unsigned short GetInputId(char* name) override;

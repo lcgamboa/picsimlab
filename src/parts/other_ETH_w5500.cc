@@ -328,22 +328,22 @@ void cpart_ETH_w5500::RegisterRemoteControl(void) {
     output_ids[O_STAT]->status = (void*)&ethw;
 }
 
-void cpart_ETH_w5500::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo3", pins[4]);
-    SetPCWComboWithPinNames(WProp, "combo5", pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo6", pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo7", pins[2]);
-    SetPCWComboWithPinNames(WProp, "combo8", pins[5]);
-    SetPCWComboWithPinNames(WProp, "combo9", pins[3]);
+void cpart_ETH_w5500::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo3", pins[4]);
+    SetPCWComboWithPinNames("combo5", pins[0]);
+    SetPCWComboWithPinNames("combo6", pins[1]);
+    SetPCWComboWithPinNames("combo7", pins[2]);
+    SetPCWComboWithPinNames("combo8", pins[5]);
+    SetPCWComboWithPinNames("combo9", pins[3]);
 }
 
-void cpart_ETH_w5500::ReadPropertiesWindow(CPWindow* WProp) {
-    pins[4] = GetPWCComboSelectedPin(WProp, "combo3");
-    pins[0] = GetPWCComboSelectedPin(WProp, "combo5");
-    pins[1] = GetPWCComboSelectedPin(WProp, "combo6");
-    pins[2] = GetPWCComboSelectedPin(WProp, "combo7");
-    pins[5] = GetPWCComboSelectedPin(WProp, "combo8");
-    pins[3] = GetPWCComboSelectedPin(WProp, "combo9");
+void cpart_ETH_w5500::ReadPropertiesWindow(void) {
+    pins[4] = GetPWCComboSelectedPin("combo3");
+    pins[0] = GetPWCComboSelectedPin("combo5");
+    pins[1] = GetPWCComboSelectedPin("combo6");
+    pins[2] = GetPWCComboSelectedPin("combo7");
+    pins[5] = GetPWCComboSelectedPin("combo8");
+    pins[3] = GetPWCComboSelectedPin("combo9");
 }
 
 void cpart_ETH_w5500::PreProcess(void) {

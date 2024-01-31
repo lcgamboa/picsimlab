@@ -176,18 +176,18 @@ void cpart_LCD_pcf8833::ReadPreferences(std::string value) {
     Reset();
 }
 
-void cpart_LCD_pcf8833::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo2", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo3", input_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo4", input_pins[2]);
-    SetPCWComboWithPinNames(WProp, "combo5", input_pins[3]);
+void cpart_LCD_pcf8833::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo2", input_pins[0]);
+    SetPCWComboWithPinNames("combo3", input_pins[1]);
+    SetPCWComboWithPinNames("combo4", input_pins[2]);
+    SetPCWComboWithPinNames("combo5", input_pins[3]);
 }
 
-void cpart_LCD_pcf8833::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
-    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo3");
-    input_pins[2] = GetPWCComboSelectedPin(WProp, "combo4");
-    input_pins[3] = GetPWCComboSelectedPin(WProp, "combo5");
+void cpart_LCD_pcf8833::ReadPropertiesWindow(void) {
+    input_pins[0] = GetPWCComboSelectedPin("combo2");
+    input_pins[1] = GetPWCComboSelectedPin("combo3");
+    input_pins[2] = GetPWCComboSelectedPin("combo4");
+    input_pins[3] = GetPWCComboSelectedPin("combo5");
 }
 
 void cpart_LCD_pcf8833::Process(void) {

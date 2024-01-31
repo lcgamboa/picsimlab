@@ -323,20 +323,20 @@ void cpart_dcmotor::ReadPreferences(std::string value) {
     sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu", &pins[0], &pins[1], &pins[2], &pins[3], &pins[4]);
 }
 
-void cpart_dcmotor::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo1", pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo2", pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo3", pins[2]);
-    SetPCWComboWithPinNames(WProp, "combo4", pins[3]);
-    SetPCWComboWithPinNames(WProp, "combo5", pins[4]);
+void cpart_dcmotor::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo1", pins[0]);
+    SetPCWComboWithPinNames("combo2", pins[1]);
+    SetPCWComboWithPinNames("combo3", pins[2]);
+    SetPCWComboWithPinNames("combo4", pins[3]);
+    SetPCWComboWithPinNames("combo5", pins[4]);
 }
 
-void cpart_dcmotor::ReadPropertiesWindow(CPWindow* WProp) {
-    pins[0] = GetPWCComboSelectedPin(WProp, "combo1");
-    pins[1] = GetPWCComboSelectedPin(WProp, "combo2");
-    pins[2] = GetPWCComboSelectedPin(WProp, "combo3");
-    pins[3] = GetPWCComboSelectedPin(WProp, "combo4");
-    pins[4] = GetPWCComboSelectedPin(WProp, "combo5");
+void cpart_dcmotor::ReadPropertiesWindow(void) {
+    pins[0] = GetPWCComboSelectedPin("combo1");
+    pins[1] = GetPWCComboSelectedPin("combo2");
+    pins[2] = GetPWCComboSelectedPin("combo3");
+    pins[3] = GetPWCComboSelectedPin("combo4");
+    pins[4] = GetPWCComboSelectedPin("combo5");
 }
 
 part_init(PART_DCMOTOR_Name, cpart_dcmotor, "Output");

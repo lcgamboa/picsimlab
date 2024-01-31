@@ -327,16 +327,16 @@ void cpart_encoder::ReadPreferences(std::string value) {
     value_old = this->value;
 }
 
-void cpart_encoder::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo3", output_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo4", output_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo5", output_pins[2]);
+void cpart_encoder::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo3", output_pins[0]);
+    SetPCWComboWithPinNames("combo4", output_pins[1]);
+    SetPCWComboWithPinNames("combo5", output_pins[2]);
 }
 
-void cpart_encoder::ReadPropertiesWindow(CPWindow* WProp) {
-    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo3");
-    output_pins[1] = GetPWCComboSelectedPin(WProp, "combo4");
-    output_pins[2] = GetPWCComboSelectedPin(WProp, "combo5");
+void cpart_encoder::ReadPropertiesWindow(void) {
+    output_pins[0] = GetPWCComboSelectedPin("combo3");
+    output_pins[1] = GetPWCComboSelectedPin("combo4");
+    output_pins[2] = GetPWCComboSelectedPin("combo5");
 }
 
 part_init(PART_ENCODER_Name, cpart_encoder, "Input");

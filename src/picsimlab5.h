@@ -116,8 +116,9 @@ public:
     void PartEvent(CControl* control);
     void DeleteParts(void);
 
-    static int OnLoadImage(const std::string fname, const float scale, const int usealpha, const int orientation);
     static int OnCanvasCmd(const CanvasCmd_t cmd);
+    static int OnWPropCmd(const char* ControlName, const PICSimLabWPropAction action, const char* Value,
+                          void* ReturnBuff);
 
     CCanvas Canvas[MAX_PARTS];
     lxBitmap* Bitmaps[MAX_PARTS * 2];

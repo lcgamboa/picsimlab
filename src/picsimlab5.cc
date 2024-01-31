@@ -70,6 +70,7 @@ void CPWindow5::menu1_EvMenuActive(CControl* control) {
 
 void CPWindow5::_EvOnCreate(CControl* control) {
     SpareParts.OnCanvasCmd = &CPWindow5::OnCanvasCmd;
+    SpareParts.OnWPropCmd = &CPWindow5::OnWPropCmd;
 
     if (SpareParts.GetLoadConfigFile().length() > 0)
         SpareParts.LoadConfig(SpareParts.GetLoadConfigFile());
@@ -199,6 +200,7 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
                     combo->SetX(x + 68);
                     combo->SetY(y);
                     wprop.CreateChild(combo);
+                    combo->EvOnComboChange = EVONCOMBOCHANGE & CPWindow5::PropComboChange;
                     break;
                 case PCW_LABEL: {
                     char lb[21];
@@ -272,6 +274,7 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
                     spin->SetX(x + 68);
                     spin->SetY(y);
                     wprop.CreateChild(spin);
+                    spin->EvOnChangeSpin = EVONCHANGESPIN & CPWindow5::PropSpinChange;
                     break;
                 case PCW_EDIT:
                     sprintf(name, "label%i", i + 1);
@@ -366,7 +369,7 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
         button->SetX((wprop.GetWidth() / 2) - 75);
         button->SetY(y + 32);
         button->SetTag(1);
-        button->EvMouseButtonRelease = SpareParts.PropButtonRelease;
+        button->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
         wprop.CreateChild(button);
 
         button = new CButton;
@@ -377,12 +380,12 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
         button->SetHeight(28);
         button->SetX((wprop.GetWidth() / 2) + 10);
         button->SetY(y + 32);
-        button->EvMouseButtonRelease = SpareParts.PropButtonRelease;
+        button->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
         wprop.CreateChild(button);
 
         wprop.SetHeight(y + 130);
 
-        SpareParts.GetPart(PartSelected)->ConfigurePropertiesWindow(&wprop);
+        SpareParts.GetPart(PartSelected)->ConfigurePropertiesWindow();
 
         wprop.SetX(SpareParts.GetPart(PartSelected)->GetX() + GetX() - offsetx);
         wprop.SetY(SpareParts.GetPart(PartSelected)->GetY() + GetY() - offsety);
@@ -401,17 +404,23 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
             if (wprop.LoadXMLContextAndCreateChilds(fname)) {
                 // wprop.SetCanDestroy (false);
 
-                SpareParts.GetPart(PartSelected)->ConfigurePropertiesWindow(&wprop);
+                SpareParts.GetPart(PartSelected)->ConfigurePropertiesWindow();
 
                 button = (CButton*)wprop.GetChildByName("button1");
                 if (button) {
-                    button->EvMouseButtonRelease = SpareParts.PropButtonRelease;
+                    button->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
                     button->SetTag(1);
                 }
 
                 button = (CButton*)wprop.GetChildByName("button2");
                 if (button) {
-                    button->EvMouseButtonRelease = SpareParts.PropButtonRelease;
+                    button->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
+                }
+
+                // FIXME -- Only to work with ili9341 old interface - remove
+                CCombo* combo = ((CCombo*)wprop.GetChildByName("combo6"));
+                if (combo) {
+                    combo->EvOnComboChange = EVONCOMBOCHANGE & CPWindow5::PropComboChange;
                 }
 
                 wprop.SetX(SpareParts.GetPart(PartSelected)->GetX() + GetX() - offsetx);
@@ -420,6 +429,7 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
                 wprop.Draw();
                 wprop.ShowExclusive();
             }
+
         } else {
             PICSimLab.RegisterError(SpareParts.GetPart(PartSelected)->GetName() + ": File not found! \n" + fname);
             printf("PICSimLab: (%s) File not found! %s\n",
@@ -430,7 +440,7 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
 
 void CPWindow5::PropClose(int tag) {
     if (tag) {
-        SpareParts.GetPart(PartSelected)->ReadPropertiesWindow(&wprop);
+        SpareParts.GetPart(PartSelected)->ReadPropertiesWindow();
     }
     wprop.HideExclusive();
     // wprop.SetCanDestroy (true);
@@ -917,26 +927,6 @@ void CPWindow5::filedialog1_EvOnClose(int retId) {
     }
 }
 
-int CPWindow5::OnLoadImage(const std::string fname, const float scale, const int usealpha, const int orientation) {
-    lxImage image(&Window5);
-    if (image.LoadFile(lxGetLocalFile(fname), orientation, scale, scale, usealpha)) {
-        // find enpty bitmap
-        int bid = -1;
-        for (int i = 0; i < (MAX_PARTS * 2); i++) {
-            if (Window5.Bitmaps[i] == NULL) {
-                bid = i;
-                break;
-            }
-        }
-        if ((bid >= 0) && (bid < (MAX_PARTS * 2))) {
-            Window5.Bitmaps[bid] = new lxBitmap(&image, &Window5);
-            image.Destroy();
-            return bid;
-        }
-    }
-    return -1;
-}
-
 int CPWindow5::OnCanvasCmd(const CanvasCmd_t cmd) {
     int partn = SpareParts.GetPartOnDraw();
     switch (cmd.cmd) {
@@ -1092,4 +1082,106 @@ int CPWindow5::OnCanvasCmd(const CanvasCmd_t cmd) {
             break;
     }
     return -1;
+}
+
+int CPWindow5::OnWPropCmd(const char* ControlName, const PICSimLabWPropAction action, const char* Value,
+                          void* ReturnBuff) {
+    CControl* ctrl;
+
+    if (ControlName) {
+        ctrl = Window5.wprop.GetChildByName(ControlName);
+    } else {
+        ctrl = &Window5.wprop;
+    }
+
+    if (ctrl == NULL) {
+        return -1;
+    }
+
+    switch (action) {
+        case WPA_COMBOSETITEMS:
+            ((CCombo*)ctrl)->SetItems(Value);
+            break;
+        case WPA_COMBOSETTEXT:
+            ((CCombo*)ctrl)->SetText(Value);
+            break;
+        case WPA_COMBOGETTEXT:
+            strcpy((char*)ReturnBuff, ((CCombo*)ctrl)->GetText().c_str());
+            return strlen((char*)ReturnBuff);
+            break;
+        case WPA_SPINDSETMAX:
+            ((CSpind*)ctrl)->SetMax(std::stof(Value));
+            break;
+        case WPA_SPINDSETMIN:
+            ((CSpind*)ctrl)->SetMin(std::stof(Value));
+            break;
+        case WPA_SPINDSETVALUE:
+            ((CSpind*)ctrl)->SetValue(std::stof(Value));
+            break;
+        case WPA_SPINDGETVALUE:
+            *((float*)ReturnBuff) = ((CSpind*)ctrl)->GetValue();
+            break;
+
+        case WPA_SPINSETMAX:
+            ((CSpin*)ctrl)->SetMax(std::stoi(Value));
+            break;
+        case WPA_SPINSETMIN:
+            ((CSpin*)ctrl)->SetMin(std::stoi(Value));
+            break;
+        case WPA_SPINSETVALUE:
+            ((CSpin*)ctrl)->SetValue(std::stoi(Value));
+            break;
+        case WPA_SPINGETVALUE:
+            *((int*)ReturnBuff) = ((CSpin*)ctrl)->GetValue();
+            break;
+
+        case WPA_TEXTCLEAR:
+            ((CText*)ctrl)->Clear();
+            break;
+        case WPA_TEXTADDLINE:
+            ((CText*)ctrl)->AddLine(lxString::FromUTF8(Value));
+            break;
+        case WPA_TEXTGETLINE:
+            strcpy((char*)ReturnBuff, ((CText*)ctrl)->GetLine(std::stoi(Value)).utf8_str());
+            return strlen((char*)ReturnBuff);
+            break;
+        case WPA_TEXTGETLINECOUNT:
+            *((int*)ReturnBuff) = ((CText*)ctrl)->GetCountLines();
+            break;
+
+        case WPA_EDITSETTEXT:
+            ((CEdit*)ctrl)->SetText(Value);
+            break;
+        case WPA_EDITGETTEXT:
+            strcpy((char*)ReturnBuff, ((CEdit*)ctrl)->GetText().utf8_str());
+            return strlen((char*)ReturnBuff);
+            break;
+
+        case WPA_LABELSETTEXT:
+            ((CLabel*)ctrl)->SetText(Value);
+            break;
+        case WPA_SETENABLE:
+            ctrl->SetEnable(std::stoi(Value));
+            break;
+        case WPA_SETWIDTH:
+            ctrl->SetWidth(std::stoi(Value));
+            break;
+        case WPA_SETHEIGHT:
+            ctrl->SetHeight(std::stoi(Value));
+            break;
+        case WPA_SETVISIBLE:
+            ctrl->SetVisible(std::stoi(Value));
+            break;
+        case WPA_SETX:
+            ctrl->SetX(std::stoi(Value));
+            break;
+        case WPA_SETY:
+            ctrl->SetY(std::stoi(Value));
+            break;
+        default:
+            return -1;
+            break;
+    }
+
+    return 0;
 }

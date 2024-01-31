@@ -160,24 +160,27 @@ void cpart_rgb_led::RegisterRemoteControl(void) {
     output_ids[O_L1]->status = (void*)color;
 }
 
-void cpart_rgb_led::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo1", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo2", input_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo3", input_pins[2]);
+void cpart_rgb_led::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo1", input_pins[0]);
+    SetPCWComboWithPinNames("combo2", input_pins[1]);
+    SetPCWComboWithPinNames("combo3", input_pins[2]);
 
-    ((CCombo*)WProp->GetChildByName("combo5"))->SetItems("HIGH,LOW,");
+    SpareParts.WPropCmd("combo5", WPA_COMBOSETITEMS, "HIGH,LOW,");
     if (active)
-        ((CCombo*)WProp->GetChildByName("combo5"))->SetText("HIGH");
+        SpareParts.WPropCmd("combo5", WPA_COMBOSETTEXT, "HIGH");
     else
-        ((CCombo*)WProp->GetChildByName("combo5"))->SetText("LOW ");
+        SpareParts.WPropCmd("combo5", WPA_COMBOSETTEXT, "LOW ");
 }
 
-void cpart_rgb_led::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo1");
-    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo2");
-    input_pins[2] = GetPWCComboSelectedPin(WProp, "combo3");
+void cpart_rgb_led::ReadPropertiesWindow(void) {
+    input_pins[0] = GetPWCComboSelectedPin("combo1");
+    input_pins[1] = GetPWCComboSelectedPin("combo2");
+    input_pins[2] = GetPWCComboSelectedPin("combo3");
 
-    active = (((CCombo*)WProp->GetChildByName("combo5"))->GetText().compare("HIGH") == 0);
+    char buff[64];
+    SpareParts.WPropCmd("combo5", WPA_COMBOGETTEXT, NULL, buff);
+
+    active = (strcmp(buff, "HIGH") == 0);
 }
 
 part_init(PART_RGB_LED_Name, cpart_rgb_led, "Output");

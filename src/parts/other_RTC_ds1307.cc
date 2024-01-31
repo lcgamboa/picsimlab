@@ -138,16 +138,16 @@ void cpart_RTC_ds1307::ReadPreferences(std::string value) {
     Reset();
 }
 
-void cpart_RTC_ds1307::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo5", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo6", input_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo7", input_pins[2]);
+void cpart_RTC_ds1307::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo5", input_pins[0]);
+    SetPCWComboWithPinNames("combo6", input_pins[1]);
+    SetPCWComboWithPinNames("combo7", input_pins[2]);
 }
 
-void cpart_RTC_ds1307::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo5");
-    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo6");
-    input_pins[2] = GetPWCComboSelectedPin(WProp, "combo7");
+void cpart_RTC_ds1307::ReadPropertiesWindow(void) {
+    input_pins[0] = GetPWCComboSelectedPin("combo5");
+    input_pins[1] = GetPWCComboSelectedPin("combo6");
+    input_pins[2] = GetPWCComboSelectedPin("combo7");
 }
 
 void cpart_RTC_ds1307::PreProcess(void) {

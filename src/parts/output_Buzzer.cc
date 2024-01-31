@@ -175,32 +175,35 @@ void cpart_Buzzer::RegisterRemoteControl(void) {
     output_ids[O_L1]->status = (void*)&ppins[input_pins[0] - 1].oavalue;
 }
 
-void cpart_Buzzer::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo1", input_pins[0]);
+void cpart_Buzzer::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo1", input_pins[0]);
 
-    ((CCombo*)WProp->GetChildByName("combo3"))->SetItems("Active,Passive,Tone,");
+    SpareParts.WPropCmd("combo3", WPA_COMBOSETITEMS, "Active,Passive,Tone,");
     if (btype == ACTIVE)
-        ((CCombo*)WProp->GetChildByName("combo3"))->SetText("Active");
+        SpareParts.WPropCmd("combo3", WPA_COMBOSETTEXT, "Active");
     else if (btype == PASSIVE) {
-        ((CCombo*)WProp->GetChildByName("combo3"))->SetText("Passive");
+        SpareParts.WPropCmd("combo3", WPA_COMBOSETTEXT, "Passive");
     } else  // TONE
     {
-        ((CCombo*)WProp->GetChildByName("combo3"))->SetText("Tone");
+        SpareParts.WPropCmd("combo3", WPA_COMBOSETTEXT, "Tone");
     }
 
-    ((CCombo*)WProp->GetChildByName("combo4"))->SetItems("HIGH,LOW,");
+    SpareParts.WPropCmd("combo4", WPA_COMBOSETITEMS, "HIGH,LOW,");
     if (active)
-        ((CCombo*)WProp->GetChildByName("combo4"))->SetText("HIGH");
+        SpareParts.WPropCmd("combo4", WPA_COMBOSETTEXT, "HIGH");
     else
-        ((CCombo*)WProp->GetChildByName("combo4"))->SetText("LOW ");
+        SpareParts.WPropCmd("combo4", WPA_COMBOSETTEXT, "LOW ");
 }
 
-void cpart_Buzzer::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo1");
+void cpart_Buzzer::ReadPropertiesWindow(void) {
+    input_pins[0] = GetPWCComboSelectedPin("combo1");
 
     unsigned char tp = 0;
 
-    std::string mode = (const char*)((CCombo*)WProp->GetChildByName("combo3"))->GetText().c_str();
+    char buff[64];
+    SpareParts.WPropCmd("combo3", WPA_COMBOGETTEXT, NULL, buff);
+
+    std::string mode = buff;
     if (mode.compare("Active") == 0) {
         tp = ACTIVE;
     } else if (mode.compare("Passive") == 0) {
@@ -209,7 +212,9 @@ void cpart_Buzzer::ReadPropertiesWindow(CPWindow* WProp) {
         tp = TONE;
     }
 
-    active = (((CCombo*)WProp->GetChildByName("combo4"))->GetText().compare("HIGH") == 0);
+    SpareParts.WPropCmd("combo4", WPA_COMBOGETTEXT, NULL, buff);
+
+    active = (strcmp(buff, "HIGH") == 0);
 
     ChangeType(tp);
 }

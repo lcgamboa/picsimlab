@@ -559,65 +559,67 @@ void cpart_7s_display::RegisterRemoteControl(void) {
     output_ids[O_P4]->status = (void*)&lm4[7];
 }
 
-void cpart_7s_display::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo1", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo2", input_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo3", input_pins[2]);
-    SetPCWComboWithPinNames(WProp, "combo4", input_pins[3]);
-    SetPCWComboWithPinNames(WProp, "combo5", input_pins[4]);
-    SetPCWComboWithPinNames(WProp, "combo6", input_pins[5]);
-    SetPCWComboWithPinNames(WProp, "combo7", input_pins[6]);
-    SetPCWComboWithPinNames(WProp, "combo8", input_pins[7]);
-    SetPCWComboWithPinNames(WProp, "combo9", input_pins[8]);
-    SetPCWComboWithPinNames(WProp, "combo10", input_pins[9]);
-    SetPCWComboWithPinNames(WProp, "combo11", input_pins[10]);
-    SetPCWComboWithPinNames(WProp, "combo12", input_pins[11]);
+void cpart_7s_display::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo1", input_pins[0]);
+    SetPCWComboWithPinNames("combo2", input_pins[1]);
+    SetPCWComboWithPinNames("combo3", input_pins[2]);
+    SetPCWComboWithPinNames("combo4", input_pins[3]);
+    SetPCWComboWithPinNames("combo5", input_pins[4]);
+    SetPCWComboWithPinNames("combo6", input_pins[5]);
+    SetPCWComboWithPinNames("combo7", input_pins[6]);
+    SetPCWComboWithPinNames("combo8", input_pins[7]);
+    SetPCWComboWithPinNames("combo9", input_pins[8]);
+    SetPCWComboWithPinNames("combo10", input_pins[9]);
+    SetPCWComboWithPinNames("combo11", input_pins[10]);
+    SetPCWComboWithPinNames("combo12", input_pins[11]);
 
-    ((CCombo*)WProp->GetChildByName("combo13"))->SetItems("HIGH,LOW,");
+    SpareParts.WPropCmd("combo13", WPA_COMBOSETITEMS, "HIGH,LOW,");
     if (active)
-        ((CCombo*)WProp->GetChildByName("combo13"))->SetText("HIGH");
+        SpareParts.WPropCmd("combo13", WPA_COMBOSETTEXT, "HIGH");
     else
-        ((CCombo*)WProp->GetChildByName("combo13"))->SetText("LOW ");
+        SpareParts.WPropCmd("combo13", WPA_COMBOSETTEXT, "LOW ");
 
-    ((CCombo*)WProp->GetChildByName("combo14"))->SetItems("4 Mux.,Single,");
+    SpareParts.WPropCmd("combo14", WPA_COMBOSETITEMS, "4 Mux.,Single,");
     if (dtype == 0)
-        ((CCombo*)WProp->GetChildByName("combo14"))->SetText("4 Mux.");
+        SpareParts.WPropCmd("combo14", WPA_COMBOSETTEXT, "4 Mux.");
     else {
-        ((CCombo*)WProp->GetChildByName("combo14"))->SetText("Single");
+        SpareParts.WPropCmd("combo14", WPA_COMBOSETTEXT, "Single");
     }
 
     if (dtype == 0) {
-        ((CCombo*)WProp->GetChildByName("combo9"))->SetEnable(1);
-        ((CCombo*)WProp->GetChildByName("combo10"))->SetEnable(1);
-        ((CCombo*)WProp->GetChildByName("combo11"))->SetEnable(1);
-        ((CCombo*)WProp->GetChildByName("combo12"))->SetEnable(1);
+        SpareParts.WPropCmd("combo9", WPA_SETENABLE, "1");
+        SpareParts.WPropCmd("combo10", WPA_SETENABLE, "1");
+        SpareParts.WPropCmd("combo11", WPA_SETENABLE, " 1");
+        SpareParts.WPropCmd("combo12", WPA_SETENABLE, " 1");
     } else {
-        ((CCombo*)WProp->GetChildByName("combo9"))->SetEnable(0);
-        ((CCombo*)WProp->GetChildByName("combo10"))->SetEnable(0);
-        ((CCombo*)WProp->GetChildByName("combo11"))->SetEnable(0);
-        ((CCombo*)WProp->GetChildByName("combo12"))->SetEnable(0);
+        SpareParts.WPropCmd("combo9", WPA_SETENABLE, "0");
+        SpareParts.WPropCmd("combo10", WPA_SETENABLE, "0");
+        SpareParts.WPropCmd("combo11", WPA_SETENABLE, "0");
+        SpareParts.WPropCmd("combo12", WPA_SETENABLE, "0");
     }
-
-    ((CCombo*)WProp->GetChildByName("combo14"))->EvOnComboChange = SpareParts.PropComboChange;
 }
 
-void cpart_7s_display::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo1");
-    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo2");
-    input_pins[2] = GetPWCComboSelectedPin(WProp, "combo3");
-    input_pins[3] = GetPWCComboSelectedPin(WProp, "combo4");
-    input_pins[4] = GetPWCComboSelectedPin(WProp, "combo5");
-    input_pins[5] = GetPWCComboSelectedPin(WProp, "combo6");
-    input_pins[6] = GetPWCComboSelectedPin(WProp, "combo7");
-    input_pins[7] = GetPWCComboSelectedPin(WProp, "combo8");
-    input_pins[8] = GetPWCComboSelectedPin(WProp, "combo9");
-    input_pins[9] = GetPWCComboSelectedPin(WProp, "combo10");
-    input_pins[10] = GetPWCComboSelectedPin(WProp, "combo11");
-    input_pins[11] = GetPWCComboSelectedPin(WProp, "combo12");
+void cpart_7s_display::ReadPropertiesWindow(void) {
+    input_pins[0] = GetPWCComboSelectedPin("combo1");
+    input_pins[1] = GetPWCComboSelectedPin("combo2");
+    input_pins[2] = GetPWCComboSelectedPin("combo3");
+    input_pins[3] = GetPWCComboSelectedPin("combo4");
+    input_pins[4] = GetPWCComboSelectedPin("combo5");
+    input_pins[5] = GetPWCComboSelectedPin("combo6");
+    input_pins[6] = GetPWCComboSelectedPin("combo7");
+    input_pins[7] = GetPWCComboSelectedPin("combo8");
+    input_pins[8] = GetPWCComboSelectedPin("combo9");
+    input_pins[9] = GetPWCComboSelectedPin("combo10");
+    input_pins[10] = GetPWCComboSelectedPin("combo11");
+    input_pins[11] = GetPWCComboSelectedPin("combo12");
 
-    active = (((CCombo*)WProp->GetChildByName("combo13"))->GetText().compare("HIGH") == 0);
+    char buff[64];
+    SpareParts.WPropCmd("combo13", WPA_COMBOGETTEXT, NULL, buff);
+    active = (strcmp(buff, "HIGH") == 0);
 
-    unsigned char dtype_ = (((CCombo*)WProp->GetChildByName("combo14"))->GetText().compare("4 Mux.")) != 0;
+    SpareParts.WPropCmd("combo14", WPA_COMBOGETTEXT, NULL, buff);
+
+    unsigned char dtype_ = (strcmp(buff, "4 Mux.")) != 0;
 
     ChangeType(dtype_);
 }

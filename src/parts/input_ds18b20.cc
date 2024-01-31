@@ -207,12 +207,12 @@ void cpart_ds18b20::ReadPreferences(std::string value_) {
     sen_ds18b20_set_addr(&ds18b20, addr);
 }
 
-void cpart_ds18b20::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo2", output_pins[0]);
+void cpart_ds18b20::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo2", output_pins[0]);
 }
 
-void cpart_ds18b20::ReadPropertiesWindow(CPWindow* WProp) {
-    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
+void cpart_ds18b20::ReadPropertiesWindow(void) {
+    output_pins[0] = GetPWCComboSelectedPin("combo2");
 }
 
 part_init(PART_DS1820B_Name, cpart_ds18b20, "Input");

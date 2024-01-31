@@ -226,19 +226,20 @@ void cpart_LDR::ReadPreferences(std::string value_) {
     sscanf(value_.c_str(), "%hhu,%hhu,%hhu,%f", &output_pins[0], &output_pins[1], &value, &vthreshold);
 }
 
-void cpart_LDR::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo2", output_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo3", output_pins[1]);
+void cpart_LDR::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo2", output_pins[0]);
+    SetPCWComboWithPinNames("combo3", output_pins[1]);
 
-    ((CSpind*)WProp->GetChildByName("spind5"))->SetMax(vmax);
-    ((CSpind*)WProp->GetChildByName("spind5"))->SetValue(vthreshold);
+    SpareParts.WPropCmd("spind5", WPA_SPINDSETMAX, std::to_string(vmax).c_str());
+    SpareParts.WPropCmd("spind5", WPA_SPINDSETMIN, "0");
+    SpareParts.WPropCmd("spind5", WPA_SPINDSETVALUE, std::to_string(vthreshold).c_str());
 }
 
-void cpart_LDR::ReadPropertiesWindow(CPWindow* WProp) {
-    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
-    output_pins[1] = GetPWCComboSelectedPin(WProp, "combo3");
+void cpart_LDR::ReadPropertiesWindow(void) {
+    output_pins[0] = GetPWCComboSelectedPin("combo2");
+    output_pins[1] = GetPWCComboSelectedPin("combo3");
 
-    vthreshold = ((CSpind*)WProp->GetChildByName("spind5"))->GetValue();
+    SpareParts.WPropCmd("spind5", WPA_SPINDGETVALUE, NULL, &vthreshold);
 }
 
 part_init(PART_LDR_Name, cpart_LDR, "Input");

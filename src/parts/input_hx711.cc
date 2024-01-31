@@ -140,14 +140,14 @@ void cpart_hx711::ReadPreferences(std::string value_) {
     Reset();
 }
 
-void cpart_hx711::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo2", pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo3", pins[1]);
+void cpart_hx711::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo2", pins[0]);
+    SetPCWComboWithPinNames("combo3", pins[1]);
 }
 
-void cpart_hx711::ReadPropertiesWindow(CPWindow* WProp) {
-    pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
-    pins[1] = GetPWCComboSelectedPin(WProp, "combo3");
+void cpart_hx711::ReadPropertiesWindow(void) {
+    pins[0] = GetPWCComboSelectedPin("combo2");
+    pins[1] = GetPWCComboSelectedPin("combo3");
 }
 
 void cpart_hx711::PreProcess(void) {

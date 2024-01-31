@@ -328,22 +328,22 @@ void cpart_gamepad_an::ReadPreferences(std::string value) {
     output_value_an = active * vmax;
 }
 
-void cpart_gamepad_an::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo1", output_pins[0]);
+void cpart_gamepad_an::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo1", output_pins[0]);
 
-    CCombo* combo = (CCombo*)WProp->GetChildByName("combo4");
-
-    combo->SetItems("HIGH,LOW,");
+    SpareParts.WPropCmd("combo4", WPA_COMBOSETITEMS, "HIGH,LOW,");
     if (active)
-        combo->SetText("HIGH");
+        SpareParts.WPropCmd("combo4", WPA_COMBOSETTEXT, "HIGH");
     else
-        combo->SetText("LOW ");
+        SpareParts.WPropCmd("combo4", WPA_COMBOSETTEXT, "LOW");
 }
 
-void cpart_gamepad_an::ReadPropertiesWindow(CPWindow* WProp) {
-    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo1");
+void cpart_gamepad_an::ReadPropertiesWindow(void) {
+    output_pins[0] = GetPWCComboSelectedPin("combo1");
 
-    active = (((CCombo*)WProp->GetChildByName("combo4"))->GetText().compare("HIGH") == 0);
+    char buff[64];
+    SpareParts.WPropCmd("combo4", WPA_COMBOGETTEXT, NULL, buff);
+    active = (strcmp(buff, "HIGH") == 0);
 }
 
 part_init(PART_GAMEPAD_AN_Name, cpart_gamepad_an, "Input");

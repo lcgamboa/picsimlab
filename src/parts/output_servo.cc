@@ -164,12 +164,12 @@ void cpart_servo::RegisterRemoteControl(void) {
     output_ids[O_AXIS]->status = (void*)&angle;
 }
 
-void cpart_servo::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo1", input_pin);
+void cpart_servo::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo1", input_pin);
 }
 
-void cpart_servo::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pin = GetPWCComboSelectedPin(WProp, "combo1");
+void cpart_servo::ReadPropertiesWindow(void) {
+    input_pin = GetPWCComboSelectedPin("combo1");
 }
 
 void cpart_servo::LoadPartImage(void) {

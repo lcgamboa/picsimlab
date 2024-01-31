@@ -383,14 +383,14 @@ void cpart_SignalGenerator::RegisterRemoteControl(void) {
     output_ids[O_OFFS]->status = (void*)&offs;
 }
 
-void cpart_SignalGenerator::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo2", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo3", input_pins[1]);
+void cpart_SignalGenerator::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo2", input_pins[0]);
+    SetPCWComboWithPinNames("combo3", input_pins[1]);
 }
 
-void cpart_SignalGenerator::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
-    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo3");
+void cpart_SignalGenerator::ReadPropertiesWindow(void) {
+    input_pins[0] = GetPWCComboSelectedPin("combo2");
+    input_pins[1] = GetPWCComboSelectedPin("combo3");
 }
 
 part_init(PART_SIGNALGENERATOR_Name, cpart_SignalGenerator, "Virtual");

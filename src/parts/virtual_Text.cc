@@ -222,7 +222,7 @@ void cpart_TEXT::ChangeText(int size, int textcolor, int bgcolor) {
 
 void cpart_TEXT::RegisterRemoteControl(void) {}
 
-void cpart_TEXT::ConfigurePropertiesWindow(CPWindow* WProp) {
+void cpart_TEXT::ConfigurePropertiesWindow(void) {
     std::string Colors = "";
 
     for (int i = 0; i < C_END; i++) {
@@ -230,36 +230,45 @@ void cpart_TEXT::ConfigurePropertiesWindow(CPWindow* WProp) {
         Colors += ",";
     }
 
-    ((CText*)WProp->GetChildByName("text1"))->Clear();
+    SpareParts.WPropCmd("text1", WPA_TEXTCLEAR, NULL);
     for (unsigned int l = 0; l < Lines.size(); l++) {
-        ((CText*)WProp->GetChildByName("text1"))->AddLine(lxString::FromUTF8(Lines.at(l)));
+        SpareParts.WPropCmd("text1", WPA_TEXTADDLINE, Lines.at(l).c_str());
     }
 
-    ((CSpin*)WProp->GetChildByName("spin2"))->SetValue(Size);
-    ((CSpin*)WProp->GetChildByName("spin2"))->SetMin(6);
-    ((CSpin*)WProp->GetChildByName("spin2"))->SetMax(100);
+    SpareParts.WPropCmd("spin2", WPA_SPINSETMAX, "100");
+    SpareParts.WPropCmd("spin2", WPA_SPINSETMIN, "6");
+    SpareParts.WPropCmd("spin2", WPA_SPINSETVALUE, std::to_string(Size).c_str());
 
-    ((CCombo*)WProp->GetChildByName("combo3"))->SetItems(Colors);
-    ((CCombo*)WProp->GetChildByName("combo3"))->SetText(Colorname[Textcolor]);
+    SpareParts.WPropCmd("combo3", WPA_COMBOSETITEMS, Colors.c_str());
+    SpareParts.WPropCmd("combo3", WPA_COMBOSETTEXT, Colorname[Textcolor]);
 
-    ((CCombo*)WProp->GetChildByName("combo4"))->SetItems(Colors);
-    ((CCombo*)WProp->GetChildByName("combo4"))->SetText(Colorname[Bgcolor]);
+    SpareParts.WPropCmd("combo4", WPA_COMBOSETITEMS, Colors.c_str());
+    SpareParts.WPropCmd("combo4", WPA_COMBOSETTEXT, Colorname[Bgcolor]);
 
-    ((CEdit*)WProp->GetChildByName("edit5"))->SetText(Link);
+    SpareParts.WPropCmd("edit5", WPA_EDITSETTEXT, Link.c_str());
 }
 
-void cpart_TEXT::ReadPropertiesWindow(CPWindow* WProp) {
+void cpart_TEXT::ReadPropertiesWindow(void) {
     Lines.clear();
-    CText* Text = ((CText*)WProp->GetChildByName("text1"));
-    for (unsigned int l = 0; l < Text->GetCountLines(); l++) {
-        if (strlen(Text->GetLine(l).utf8_str()) > 0) {
-            Lines.push_back((const char*)Text->GetLine(l).utf8_str());
+    unsigned int linecount;
+    SpareParts.WPropCmd("text1", WPA_TEXTGETLINECOUNT, NULL, &linecount);
+    for (unsigned int l = 0; l < linecount; l++) {
+        char buff[64];
+        SpareParts.WPropCmd("text1", WPA_TEXTGETLINE, std::to_string(l).c_str(), buff);
+        if (strlen(buff) > 0) {
+            Lines.push_back(buff);
         }
     }
 
-    Size = ((CSpin*)WProp->GetChildByName("spin2"))->GetValue();
+    int size;
+    SpareParts.WPropCmd("spin2", WPA_SPINGETVALUE, NULL, &size);
 
-    std::string val = (const char*)((CCombo*)WProp->GetChildByName("combo3"))->GetText().utf8_str();
+    Size = size;
+
+    char buff[64];
+    SpareParts.WPropCmd("combo3", WPA_COMBOGETTEXT, NULL, buff);
+
+    std::string val = buff;
     for (int j = 0; j < C_END; j++) {
         if (!val.compare(Colorname[j])) {
             Textcolor = j;
@@ -267,7 +276,9 @@ void cpart_TEXT::ReadPropertiesWindow(CPWindow* WProp) {
         }
     }
 
-    val = ((CCombo*)WProp->GetChildByName("combo4"))->GetText();
+    SpareParts.WPropCmd("combo4", WPA_COMBOGETTEXT, NULL, buff);
+
+    val = buff;
     for (int j = 0; j < C_END; j++) {
         if (!val.compare(Colorname[j])) {
             Bgcolor = j;
@@ -275,7 +286,9 @@ void cpart_TEXT::ReadPropertiesWindow(CPWindow* WProp) {
         }
     }
 
-    Link = ((CEdit*)WProp->GetChildByName("edit5"))->GetText();
+    SpareParts.WPropCmd("edit5", WPA_EDITGETTEXT, NULL, buff);
+
+    Link = buff;
 
     ChangeText(Size, Textcolor, Bgcolor);
 }

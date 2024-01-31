@@ -510,34 +510,23 @@ const PCWProp* part::GetPCWProperties(void) {
     return PCWProperties;
 }
 
-void part::SetPCWComboWithPinNames(CPWindow* WProp, const char* combo_name, const unsigned char pin) {
+void part::SetPCWComboWithPinNames(const char* combo_name, const unsigned char pin) {
     std::string spin;
 
-    CCombo* combo = (CCombo*)WProp->GetChildByName(combo_name);
+    SpareParts.WPropCmd(combo_name, WPA_COMBOSETITEMS, SpareParts.GetPinsNames().c_str());
 
-    if (combo) {
-        combo->SetItems(SpareParts.GetPinsNames());
-        if (pin == 0)
-            combo->SetText("0  NC");
-        else {
-            spin = SpareParts.GetPinName(pin);
-            combo->SetText(std::to_string(pin) + "  " + spin);
-        }
+    if (pin == 0) {
+        SpareParts.WPropCmd(combo_name, WPA_COMBOSETTEXT, "0  NC");
     } else {
-        printf("PICSimLab: Combo (%s) not found in Part Configuration Window!\n", combo_name);
+        spin = SpareParts.GetPinName(pin);
+        SpareParts.WPropCmd(combo_name, WPA_COMBOSETTEXT, (std::to_string(pin) + "  " + spin).c_str());
     }
 }
 
-unsigned char part::GetPWCComboSelectedPin(CPWindow* WProp, const char* combo_name) {
-    int selectedpin = 0;
-    CCombo* combo = (CCombo*)WProp->GetChildByName(combo_name);
-
-    if (combo) {
-        selectedpin = atoi(combo->GetText());
-    } else {
-        printf("PICSimLab: Combo (%s) not found in Part Configuration Window!\n", combo_name);
-    }
-    return selectedpin;
+unsigned char part::GetPWCComboSelectedPin(const char* combo_name) {
+    char buff[64];
+    SpareParts.WPropCmd(combo_name, WPA_COMBOGETTEXT, NULL, buff);
+    return atoi(buff);
 }
 
 std::string part::GetName(void) {

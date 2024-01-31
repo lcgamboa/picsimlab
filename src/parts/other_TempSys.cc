@@ -271,38 +271,40 @@ void cpart_tempsys::ReadPreferences(std::string value) {
     temp[1] = ambient;
 }
 
-void cpart_tempsys::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo1", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo2", input_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo3", input_pins[2]);
-    SetPCWComboWithPinNames(WProp, "combo4", input_pins[3]);
+void cpart_tempsys::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo1", input_pins[0]);
+    SetPCWComboWithPinNames("combo2", input_pins[1]);
+    SetPCWComboWithPinNames("combo3", input_pins[2]);
+    SetPCWComboWithPinNames("combo4", input_pins[3]);
 
-    ((CCombo*)WProp->GetChildByName("combo7"))->SetItems("0V,1.2V,");
+    SpareParts.WPropCmd("combo7", WPA_COMBOSETITEMS, "0V,1.2V,");
 
-    if (tvoff == 0)
-        ((CCombo*)WProp->GetChildByName("combo7"))->SetText("0V");
-    else {
-        ((CCombo*)WProp->GetChildByName("combo7"))->SetText("1.2V");
+    if (tvoff == 0) {
+        SpareParts.WPropCmd("combo7", WPA_COMBOSETTEXT, "0V");
+    } else {
+        SpareParts.WPropCmd("combo7", WPA_COMBOSETTEXT, "1.2V");
     }
 
-    ((CSpind*)WProp->GetChildByName("spind8"))->SetMax(150);
-    ((CSpind*)WProp->GetChildByName("spind8"))->SetMin(-55);
-    ((CSpind*)WProp->GetChildByName("spind8"))->SetValue(ambient);
+    SpareParts.WPropCmd("spind8", WPA_SPINDSETMAX, "150");
+    SpareParts.WPropCmd("spind8", WPA_SPINDSETMIN, "-55");
+    SpareParts.WPropCmd("spind8", WPA_SPINDSETVALUE, std::to_string(ambient).c_str());
 }
 
-void cpart_tempsys::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo1");
-    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo2");
-    input_pins[2] = GetPWCComboSelectedPin(WProp, "combo3");
-    input_pins[3] = GetPWCComboSelectedPin(WProp, "combo4");
+void cpart_tempsys::ReadPropertiesWindow(void) {
+    input_pins[0] = GetPWCComboSelectedPin("combo1");
+    input_pins[1] = GetPWCComboSelectedPin("combo2");
+    input_pins[2] = GetPWCComboSelectedPin("combo3");
+    input_pins[3] = GetPWCComboSelectedPin("combo4");
 
-    if ((((CCombo*)WProp->GetChildByName("combo7"))->GetText().compare("0V")) == 0) {
+    char buff[64];
+    SpareParts.WPropCmd("combo7", WPA_COMBOGETTEXT, NULL, buff);
+    if (strcmp(buff, "0V") == 0) {
         tvoff = 0;
     } else {
         tvoff = 1.2;
     }
 
-    ambient = ((CSpind*)WProp->GetChildByName("spind8"))->GetValue();
+    SpareParts.WPropCmd("spind8", WPA_SPINDGETVALUE, NULL, &ambient);
     temp[0] = ambient;
     temp[1] = ambient;
 }

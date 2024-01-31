@@ -186,30 +186,35 @@ void cpart_UART::ReadPreferences(std::string value) {
     }
 }
 
-void cpart_UART::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo2", pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo3", pins[1]);
+void cpart_UART::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo2", pins[0]);
+    SetPCWComboWithPinNames("combo3", pins[1]);
 
     char* resp = serial_port_list();
     if (resp) {
-        ((CCombo*)WProp->GetChildByName("combo5"))->SetItems(resp);
+        SpareParts.WPropCmd("combo5", WPA_COMBOSETITEMS, resp);
         free(resp);
     }
     if (uart_name[0] == '*')
-        ((CCombo*)WProp->GetChildByName("combo5"))->SetText(" ");
+        SpareParts.WPropCmd("combo5", WPA_COMBOSETTEXT, " ");
     else {
-        ((CCombo*)WProp->GetChildByName("combo5"))->SetText(uart_name);
+        SpareParts.WPropCmd("combo5", WPA_COMBOSETTEXT, uart_name);
     }
 
-    ((CCombo*)WProp->GetChildByName("combo6"))->SetItems("1200,2400,4800,9600,19200,38400,57600,115200,");
-    ((CCombo*)WProp->GetChildByName("combo6"))->SetText(std::to_string(uart_speed));
+    SpareParts.WPropCmd("combo6", WPA_COMBOSETITEMS, "1200,2400,4800,9600,19200,38400,57600,115200,");
+    SpareParts.WPropCmd("combo6", WPA_COMBOSETTEXT, std::to_string(uart_speed).c_str());
 }
 
-void cpart_UART::ReadPropertiesWindow(CPWindow* WProp) {
-    pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
-    pins[1] = GetPWCComboSelectedPin(WProp, "combo3");
-    strncpy(uart_name, (((CCombo*)WProp->GetChildByName("combo5"))->GetText()).c_str(), 199);
-    uart_speed = atoi(((CCombo*)WProp->GetChildByName("combo6"))->GetText());
+void cpart_UART::ReadPropertiesWindow(void) {
+    pins[0] = GetPWCComboSelectedPin("combo2");
+    pins[1] = GetPWCComboSelectedPin("combo3");
+
+    char buff[200];
+    SpareParts.WPropCmd("combo5", WPA_COMBOGETTEXT, NULL, buff);
+    strncpy(uart_name, buff, 199);
+
+    SpareParts.WPropCmd("combo6", WPA_COMBOGETTEXT, NULL, buff);
+    uart_speed = std::stoi(buff);
 
     uart_set_port(&sr, uart_name, uart_speed);
 }

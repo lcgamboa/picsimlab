@@ -241,22 +241,22 @@ void cpart_MPU6050::ReadPreferences(std::string value) {
     Reset();
 }
 
-void cpart_MPU6050::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo3", mpu_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo4", mpu_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo5", mpu_pins[2]);
-    SetPCWComboWithPinNames(WProp, "combo6", mpu_pins[3]);
-    SetPCWComboWithPinNames(WProp, "combo7", mpu_pins[4]);
-    SetPCWComboWithPinNames(WProp, "combo8", mpu_pins[5]);
+void cpart_MPU6050::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo3", mpu_pins[0]);
+    SetPCWComboWithPinNames("combo4", mpu_pins[1]);
+    SetPCWComboWithPinNames("combo5", mpu_pins[2]);
+    SetPCWComboWithPinNames("combo6", mpu_pins[3]);
+    SetPCWComboWithPinNames("combo7", mpu_pins[4]);
+    SetPCWComboWithPinNames("combo8", mpu_pins[5]);
 }
 
-void cpart_MPU6050::ReadPropertiesWindow(CPWindow* WProp) {
-    mpu_pins[0] = GetPWCComboSelectedPin(WProp, "combo3");
-    mpu_pins[1] = GetPWCComboSelectedPin(WProp, "combo4");
-    mpu_pins[2] = GetPWCComboSelectedPin(WProp, "combo5");
-    mpu_pins[3] = GetPWCComboSelectedPin(WProp, "combo6");
-    mpu_pins[4] = GetPWCComboSelectedPin(WProp, "combo7");
-    mpu_pins[5] = GetPWCComboSelectedPin(WProp, "combo8");
+void cpart_MPU6050::ReadPropertiesWindow(void) {
+    mpu_pins[0] = GetPWCComboSelectedPin("combo3");
+    mpu_pins[1] = GetPWCComboSelectedPin("combo4");
+    mpu_pins[2] = GetPWCComboSelectedPin("combo5");
+    mpu_pins[3] = GetPWCComboSelectedPin("combo6");
+    mpu_pins[4] = GetPWCComboSelectedPin("combo7");
+    mpu_pins[5] = GetPWCComboSelectedPin("combo8");
 }
 
 void cpart_MPU6050::PreProcess(void) {

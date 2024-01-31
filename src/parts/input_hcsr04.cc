@@ -217,14 +217,14 @@ void cpart_hcsr04::ReadPreferences(std::string value_) {
     sscanf(value_.c_str(), "%hhu,%hhu,%hhu", &pins[0], &pins[1], &value);
 }
 
-void cpart_hcsr04::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo2", pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo3", pins[1]);
+void cpart_hcsr04::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo2", pins[0]);
+    SetPCWComboWithPinNames("combo3", pins[1]);
 }
 
-void cpart_hcsr04::ReadPropertiesWindow(CPWindow* WProp) {
-    pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
-    pins[1] = GetPWCComboSelectedPin(WProp, "combo3");
+void cpart_hcsr04::ReadPropertiesWindow(void) {
+    pins[0] = GetPWCComboSelectedPin("combo2");
+    pins[1] = GetPWCComboSelectedPin("combo3");
 }
 
 part_init(PART_HCSR0404_Name, cpart_hcsr04, "Input");

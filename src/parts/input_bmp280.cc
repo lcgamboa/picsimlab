@@ -165,18 +165,18 @@ void cpart_bmp280::ReadPreferences(std::string value_) {
     Reset();
 }
 
-void cpart_bmp280::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo3", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo4", input_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo5", input_pins[2]);
-    SetPCWComboWithPinNames(WProp, "combo6", output_pins[0]);
+void cpart_bmp280::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo3", input_pins[0]);
+    SetPCWComboWithPinNames("combo4", input_pins[1]);
+    SetPCWComboWithPinNames("combo5", input_pins[2]);
+    SetPCWComboWithPinNames("combo6", output_pins[0]);
 }
 
-void cpart_bmp280::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo3");
-    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo4");
-    input_pins[2] = GetPWCComboSelectedPin(WProp, "combo5");
-    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo6");
+void cpart_bmp280::ReadPropertiesWindow(void) {
+    input_pins[0] = GetPWCComboSelectedPin("combo3");
+    input_pins[1] = GetPWCComboSelectedPin("combo4");
+    input_pins[2] = GetPWCComboSelectedPin("combo5");
+    output_pins[0] = GetPWCComboSelectedPin("combo6");
 }
 
 void cpart_bmp280::PreProcess(void) {

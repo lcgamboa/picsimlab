@@ -248,37 +248,40 @@ void cpart_led_ws2812b::RegisterRemoteControl(void) {
     output_ids[O_LED]->status = (void*)&led;
 }
 
-void cpart_led_ws2812b::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo4", input_pins[0]);
+void cpart_led_ws2812b::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo4", input_pins[0]);
 
-    ((CLabel*)WProp->GetChildByName("label_2"))->SetText(std::to_string(output_pins[0]));
+    SpareParts.WPropCmd("label_2", WPA_LABELSETTEXT, std::to_string(output_pins[0]).c_str());
 
-    ((CSpin*)WProp->GetChildByName("spin5"))->SetMax(MAXROWS);
-    ((CSpin*)WProp->GetChildByName("spin5"))->SetMin(1);
-    ((CSpin*)WProp->GetChildByName("spin5"))->SetValue(led.nrows);
+    SpareParts.WPropCmd("spin5", WPA_SPINSETMAX, std::to_string(MAXROWS).c_str());
+    SpareParts.WPropCmd("spin5", WPA_SPINSETMIN, "1");
+    SpareParts.WPropCmd("spin5", WPA_SPINSETVALUE, std::to_string(led.nrows).c_str());
 
-    ((CSpin*)WProp->GetChildByName("spin6"))->SetMax(MAXCOLS);
-    ((CSpin*)WProp->GetChildByName("spin6"))->SetMin(1);
-    ((CSpin*)WProp->GetChildByName("spin6"))->SetValue(led.ncols);
+    SpareParts.WPropCmd("spin6", WPA_SPINSETMAX, std::to_string(MAXCOLS).c_str());
+    SpareParts.WPropCmd("spin6", WPA_SPINSETMIN, "1");
+    SpareParts.WPropCmd("spin6", WPA_SPINSETVALUE, std::to_string(led.ncols).c_str());
 
-    ((CCombo*)WProp->GetChildByName("combo7"))->SetItems("On,Off,");
+    SpareParts.WPropCmd("combo7", WPA_COMBOSETITEMS, "On,Off,");
     if (led.diffuser) {
-        ((CCombo*)WProp->GetChildByName("combo7"))->SetText("On");
+        SpareParts.WPropCmd("combo7", WPA_COMBOSETTEXT, "On");
     } else {
-        ((CCombo*)WProp->GetChildByName("combo7"))->SetText("Off");
+        SpareParts.WPropCmd("combo7", WPA_COMBOSETTEXT, "Off");
     }
 }
 
-void cpart_led_ws2812b::ReadPropertiesWindow(CPWindow* WProp) {
+void cpart_led_ws2812b::ReadPropertiesWindow(void) {
     unsigned int rows, cols;
     unsigned char diffuser;
 
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo4");
+    input_pins[0] = GetPWCComboSelectedPin("combo4");
 
-    rows = ((CSpin*)WProp->GetChildByName("spin5"))->GetValue();
-    cols = ((CSpin*)WProp->GetChildByName("spin6"))->GetValue();
+    SpareParts.WPropCmd("spin5", WPA_SPINGETVALUE, NULL, &rows);
+    SpareParts.WPropCmd("spin6", WPA_SPINGETVALUE, NULL, &cols);
 
-    if (!((CCombo*)WProp->GetChildByName("combo7"))->GetText().compare("On")) {
+    char buff[64];
+    SpareParts.WPropCmd("combo7", WPA_COMBOGETTEXT, NULL, buff);
+
+    if (!strcmp(buff, "On")) {
         diffuser = 1;
     } else {
         diffuser = 0;

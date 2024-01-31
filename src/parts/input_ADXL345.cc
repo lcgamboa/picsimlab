@@ -197,22 +197,22 @@ void cpart_ADXL345::ReadPreferences(std::string value) {
     Reset();
 }
 
-void cpart_ADXL345::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo3", adxl_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo4", adxl_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo5", adxl_pins[2]);
-    SetPCWComboWithPinNames(WProp, "combo6", adxl_pins[3]);
-    SetPCWComboWithPinNames(WProp, "combo7", adxl_pins[4]);
-    SetPCWComboWithPinNames(WProp, "combo8", adxl_pins[5]);
+void cpart_ADXL345::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo3", adxl_pins[0]);
+    SetPCWComboWithPinNames("combo4", adxl_pins[1]);
+    SetPCWComboWithPinNames("combo5", adxl_pins[2]);
+    SetPCWComboWithPinNames("combo6", adxl_pins[3]);
+    SetPCWComboWithPinNames("combo7", adxl_pins[4]);
+    SetPCWComboWithPinNames("combo8", adxl_pins[5]);
 }
 
-void cpart_ADXL345::ReadPropertiesWindow(CPWindow* WProp) {
-    adxl_pins[0] = GetPWCComboSelectedPin(WProp, "combo3");
-    adxl_pins[1] = GetPWCComboSelectedPin(WProp, "combo4");
-    adxl_pins[2] = GetPWCComboSelectedPin(WProp, "combo5");
-    adxl_pins[3] = GetPWCComboSelectedPin(WProp, "combo6");
-    adxl_pins[4] = GetPWCComboSelectedPin(WProp, "combo7");
-    adxl_pins[5] = GetPWCComboSelectedPin(WProp, "combo8");
+void cpart_ADXL345::ReadPropertiesWindow(void) {
+    adxl_pins[0] = GetPWCComboSelectedPin("combo3");
+    adxl_pins[1] = GetPWCComboSelectedPin("combo4");
+    adxl_pins[2] = GetPWCComboSelectedPin("combo5");
+    adxl_pins[3] = GetPWCComboSelectedPin("combo6");
+    adxl_pins[4] = GetPWCComboSelectedPin("combo7");
+    adxl_pins[5] = GetPWCComboSelectedPin("combo8");
 }
 
 void cpart_ADXL345::PreProcess(void) {

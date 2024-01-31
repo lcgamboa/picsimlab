@@ -141,19 +141,21 @@ void cpart_fixedv::ReadPreferences(std::string value_) {
     sscanf(value_.c_str(), "%hhu,%hhu", &output_pins[0], &value);
 }
 
-void cpart_fixedv::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo2", output_pins[0]);
+void cpart_fixedv::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo2", output_pins[0]);
 
-    CSpind* spind = (CSpind*)WProp->GetChildByName("spind4");
-    spind->SetValue(value / 40.0);
-    spind->SetMax(5.0);
-    spind->SetMin(0.0);
+    SpareParts.WPropCmd("spind4", WPA_SPINDSETMAX, "5.0");
+    SpareParts.WPropCmd("spind4", WPA_SPINDSETMIN, "0.0");
+    SpareParts.WPropCmd("spind4", WPA_SPINDSETVALUE, std::to_string(value / 40.0).c_str());
 }
 
-void cpart_fixedv::ReadPropertiesWindow(CPWindow* WProp) {
-    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
+void cpart_fixedv::ReadPropertiesWindow(void) {
+    output_pins[0] = GetPWCComboSelectedPin("combo2");
 
-    value = ((CSpind*)WProp->GetChildByName("spind4"))->GetValue() * 40.0;
+    float valuef;
+    SpareParts.WPropCmd("spind4", WPA_SPINDGETVALUE, NULL, &valuef);
+
+    value = valuef * 40.0;
 }
 
 part_init(PART_FIXEDV_Name, cpart_fixedv, "Input");

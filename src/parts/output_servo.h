@@ -54,8 +54,8 @@ public:
     void DrawOutput(const unsigned int index) override;
     void Process(void) override;
     void PostProcess(void) override;
-    void ConfigurePropertiesWindow(CPWindow* WProp) override;
-    void ReadPropertiesWindow(CPWindow* WProp) override;
+    void ConfigurePropertiesWindow(void) override;
+    void ReadPropertiesWindow(void) override;
     std::string WritePreferences(void) override;
     void ReadPreferences(std::string value) override;
     void LoadPartImage(void) override;

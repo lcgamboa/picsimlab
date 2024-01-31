@@ -400,20 +400,20 @@ void cpart_step::RegisterRemoteControl(void) {
     output_ids[O_ROT]->status = (void*)&angle;
 }
 
-void cpart_step::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo1", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo2", input_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo3", input_pins[2]);
-    SetPCWComboWithPinNames(WProp, "combo4", input_pins[3]);
-    SetPCWComboWithPinNames(WProp, "combo5", output_pins[0]);
+void cpart_step::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo1", input_pins[0]);
+    SetPCWComboWithPinNames("combo2", input_pins[1]);
+    SetPCWComboWithPinNames("combo3", input_pins[2]);
+    SetPCWComboWithPinNames("combo4", input_pins[3]);
+    SetPCWComboWithPinNames("combo5", output_pins[0]);
 }
 
-void cpart_step::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo1");
-    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo2");
-    input_pins[2] = GetPWCComboSelectedPin(WProp, "combo3");
-    input_pins[3] = GetPWCComboSelectedPin(WProp, "combo4");
-    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo5");
+void cpart_step::ReadPropertiesWindow(void) {
+    input_pins[0] = GetPWCComboSelectedPin("combo1");
+    input_pins[1] = GetPWCComboSelectedPin("combo2");
+    input_pins[2] = GetPWCComboSelectedPin("combo3");
+    input_pins[3] = GetPWCComboSelectedPin("combo4");
+    output_pins[0] = GetPWCComboSelectedPin("combo5");
 }
 
 part_init(PART_STEP_Name, cpart_step, "Output");

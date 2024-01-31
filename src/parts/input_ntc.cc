@@ -196,17 +196,17 @@ void cpart_ntc::ReadPreferences(std::string value_) {
     sscanf(value_.c_str(), "%hhu,%hhu,%i", &output_pins[0], &value, &Beta);
 }
 
-void cpart_ntc::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo2", output_pins[0]);
+void cpart_ntc::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo2", output_pins[0]);
 
-    ((CSpin*)WProp->GetChildByName("spin4"))->SetMin(2500);
-    ((CSpin*)WProp->GetChildByName("spin4"))->SetMax(5000);
-    ((CSpin*)WProp->GetChildByName("spin4"))->SetValue(Beta);
+    SpareParts.WPropCmd("spin4", WPA_SPINSETMAX, "5000");
+    SpareParts.WPropCmd("spin4", WPA_SPINSETMIN, "2500");
+    SpareParts.WPropCmd("spin4", WPA_SPINSETVALUE, std::to_string(Beta).c_str());
 }
 
-void cpart_ntc::ReadPropertiesWindow(CPWindow* WProp) {
-    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
-    Beta = ((CSpin*)WProp->GetChildByName("spin4"))->GetValue();
+void cpart_ntc::ReadPropertiesWindow(void) {
+    output_pins[0] = GetPWCComboSelectedPin("combo2");
+    SpareParts.WPropCmd("spin4", WPA_SPINGETVALUE, NULL, &Beta);
 }
 
 part_init(PART_NTC_Name, cpart_ntc, "Input");

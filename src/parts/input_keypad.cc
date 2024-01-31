@@ -623,82 +623,81 @@ void cpart_keypad::ReadPreferences(std::string value) {
     ChangeType(tp);
 }
 
-void cpart_keypad::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo1", output_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo2", output_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo3", output_pins[2]);
-    SetPCWComboWithPinNames(WProp, "combo4", output_pins[3]);
-    SetPCWComboWithPinNames(WProp, "combo5", output_pins[4]);
-    SetPCWComboWithPinNames(WProp, "combo6", output_pins[5]);
-    SetPCWComboWithPinNames(WProp, "combo7", output_pins[6]);
-    SetPCWComboWithPinNames(WProp, "combo8", output_pins[7]);
+void cpart_keypad::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo1", output_pins[0]);
+    SetPCWComboWithPinNames("combo2", output_pins[1]);
+    SetPCWComboWithPinNames("combo3", output_pins[2]);
+    SetPCWComboWithPinNames("combo4", output_pins[3]);
+    SetPCWComboWithPinNames("combo5", output_pins[4]);
+    SetPCWComboWithPinNames("combo6", output_pins[5]);
+    SetPCWComboWithPinNames("combo7", output_pins[6]);
+    SetPCWComboWithPinNames("combo8", output_pins[7]);
 
-    CCombo* combo = (CCombo*)WProp->GetChildByName("combo11");
-
-    combo->SetItems("UP,DOWN,");
+    SpareParts.WPropCmd("combo11", WPA_COMBOSETITEMS, "UP,DOWN,");
     if (!pull)
-        combo->SetText("UP");
+        SpareParts.WPropCmd("combo11", WPA_COMBOSETTEXT, "UP");
     else
-        combo->SetText("DOWN");
+        SpareParts.WPropCmd("combo11", WPA_COMBOSETTEXT, "DOWN");
 
-    ((CCombo*)WProp->GetChildByName("combo12"))->SetItems("4x4,4x3,2x5,");
+    SpareParts.WPropCmd("combo12", WPA_COMBOSETITEMS, "4x4,4x3,2x5,");
     switch (type) {
         case KT4x4:
-            ((CLabel*)WProp->GetChildByName("label1"))->SetText("P1 - L1");
-            ((CLabel*)WProp->GetChildByName("label2"))->SetText("P2 - L2");
-            ((CLabel*)WProp->GetChildByName("label3"))->SetText("P3 - L3");
-            ((CLabel*)WProp->GetChildByName("label4"))->SetText("P4 - L4");
-            ((CLabel*)WProp->GetChildByName("label5"))->SetText("P5 - C1");
-            ((CLabel*)WProp->GetChildByName("label6"))->SetText("P6 - C2");
-            ((CLabel*)WProp->GetChildByName("label7"))->SetText("P7 - C3");
-            ((CLabel*)WProp->GetChildByName("label8"))->SetText("P8 - C4");
-            ((CCombo*)WProp->GetChildByName("combo8"))->SetEnable(true);
-            ((CCombo*)WProp->GetChildByName("combo12"))->SetText("4x4");
+            SpareParts.WPropCmd("label1", WPA_LABELSETTEXT, "P1 - L1");
+            SpareParts.WPropCmd("label2", WPA_LABELSETTEXT, "P2 - L2");
+            SpareParts.WPropCmd("label3", WPA_LABELSETTEXT, "P3 - L3");
+            SpareParts.WPropCmd("label4", WPA_LABELSETTEXT, "P4 - L4");
+            SpareParts.WPropCmd("label5", WPA_LABELSETTEXT, "P5 - C1");
+            SpareParts.WPropCmd("label6", WPA_LABELSETTEXT, "P6 - C2");
+            SpareParts.WPropCmd("label7", WPA_LABELSETTEXT, "P7 - C3");
+            SpareParts.WPropCmd("label8", WPA_LABELSETTEXT, "P8 - C4");
+            SpareParts.WPropCmd("combo8", WPA_SETENABLE, "1");
+            SpareParts.WPropCmd("combo12", WPA_COMBOSETTEXT, "4x4");
             break;
         case KT4x3:
-            ((CLabel*)WProp->GetChildByName("label1"))->SetText("P1 - L1");
-            ((CLabel*)WProp->GetChildByName("label2"))->SetText("P2 - L2");
-            ((CLabel*)WProp->GetChildByName("label3"))->SetText("P3 - L3");
-            ((CLabel*)WProp->GetChildByName("label4"))->SetText("P4 - L4");
-            ((CLabel*)WProp->GetChildByName("label5"))->SetText("P5 - C1");
-            ((CLabel*)WProp->GetChildByName("label6"))->SetText("P6 - C2");
-            ((CLabel*)WProp->GetChildByName("label7"))->SetText("P7 - C3");
-            ((CLabel*)WProp->GetChildByName("label8"))->SetText("P8 - NC");
-            ((CCombo*)WProp->GetChildByName("combo8"))->SetEnable(false);
-            ((CCombo*)WProp->GetChildByName("combo12"))->SetText("4x3");
+            SpareParts.WPropCmd("label1", WPA_LABELSETTEXT, "P1 - L1");
+            SpareParts.WPropCmd("label2", WPA_LABELSETTEXT, "P2 - L2");
+            SpareParts.WPropCmd("label3", WPA_LABELSETTEXT, "P3 - L3");
+            SpareParts.WPropCmd("label4", WPA_LABELSETTEXT, "P4 - L4");
+            SpareParts.WPropCmd("label5", WPA_LABELSETTEXT, "P5 - C1");
+            SpareParts.WPropCmd("label6", WPA_LABELSETTEXT, "P6 - C2");
+            SpareParts.WPropCmd("label7", WPA_LABELSETTEXT, "P7 - C3");
+            SpareParts.WPropCmd("label8", WPA_LABELSETTEXT, "P8 - NC");
+            SpareParts.WPropCmd("combo8", WPA_SETENABLE, "0");
+            SpareParts.WPropCmd("combo12", WPA_COMBOSETTEXT, "4x3");
             break;
         case KT2x5:
-            ((CLabel*)WProp->GetChildByName("label1"))->SetText("P1 - L1");
-            ((CLabel*)WProp->GetChildByName("label2"))->SetText("P2 - L2");
-            ((CLabel*)WProp->GetChildByName("label3"))->SetText("P3 - C1");
-            ((CLabel*)WProp->GetChildByName("label4"))->SetText("P4 - C2");
-            ((CLabel*)WProp->GetChildByName("label5"))->SetText("P5 - C3");
-            ((CLabel*)WProp->GetChildByName("label6"))->SetText("P6 - C4");
-            ((CLabel*)WProp->GetChildByName("label7"))->SetText("P7 - C5");
-            ((CLabel*)WProp->GetChildByName("label8"))->SetText("P8 - NC");
-            ((CCombo*)WProp->GetChildByName("combo8"))->SetEnable(false);
-            ((CCombo*)WProp->GetChildByName("combo12"))->SetText("2x5");
+            SpareParts.WPropCmd("label1", WPA_LABELSETTEXT, "P1 - L1");
+            SpareParts.WPropCmd("label2", WPA_LABELSETTEXT, "P2 - L2");
+            SpareParts.WPropCmd("label3", WPA_LABELSETTEXT, "P3 - C1");
+            SpareParts.WPropCmd("label4", WPA_LABELSETTEXT, "P4 - C2");
+            SpareParts.WPropCmd("label5", WPA_LABELSETTEXT, "P5 - C3");
+            SpareParts.WPropCmd("label6", WPA_LABELSETTEXT, "P6 - C4");
+            SpareParts.WPropCmd("label7", WPA_LABELSETTEXT, "P7 - C5");
+            SpareParts.WPropCmd("label8", WPA_LABELSETTEXT, "P8 - NC");
+            SpareParts.WPropCmd("combo8", WPA_SETENABLE, "0");
+            SpareParts.WPropCmd("combo12", WPA_COMBOSETTEXT, "2x5");
             break;
     }
-
-    ((CCombo*)WProp->GetChildByName("combo12"))->EvOnComboChange = SpareParts.PropComboChange;
 }
 
-void cpart_keypad::ReadPropertiesWindow(CPWindow* WProp) {
-    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo1");
-    output_pins[1] = GetPWCComboSelectedPin(WProp, "combo2");
-    output_pins[2] = GetPWCComboSelectedPin(WProp, "combo3");
-    output_pins[3] = GetPWCComboSelectedPin(WProp, "combo4");
-    output_pins[4] = GetPWCComboSelectedPin(WProp, "combo5");
-    output_pins[5] = GetPWCComboSelectedPin(WProp, "combo6");
-    output_pins[6] = GetPWCComboSelectedPin(WProp, "combo7");
-    output_pins[7] = GetPWCComboSelectedPin(WProp, "combo8");
+void cpart_keypad::ReadPropertiesWindow(void) {
+    output_pins[0] = GetPWCComboSelectedPin("combo1");
+    output_pins[1] = GetPWCComboSelectedPin("combo2");
+    output_pins[2] = GetPWCComboSelectedPin("combo3");
+    output_pins[3] = GetPWCComboSelectedPin("combo4");
+    output_pins[4] = GetPWCComboSelectedPin("combo5");
+    output_pins[5] = GetPWCComboSelectedPin("combo6");
+    output_pins[6] = GetPWCComboSelectedPin("combo7");
+    output_pins[7] = GetPWCComboSelectedPin("combo8");
 
-    pull = !(((CCombo*)WProp->GetChildByName("combo11"))->GetText().compare("UP") == 0);
+    char buff[64];
+    SpareParts.WPropCmd("combo11", WPA_COMBOGETTEXT, NULL, buff);
 
-    std::string tps = (const char*)((CCombo*)WProp->GetChildByName("combo12"))->GetText().c_str();
+    pull = !(strcmp(buff, "UP") == 0);
 
-    ComboChange(WProp, (CCombo*)WProp->GetChildByName("combo12"), tps);
+    SpareParts.WPropCmd("combo12", WPA_COMBOGETTEXT, NULL, buff);
+
+    ComboChange(NULL, NULL, buff);
 
     memset(keys, 0, 16);
     memset(keys2, 0, 10);

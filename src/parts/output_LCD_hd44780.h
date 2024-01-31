@@ -50,8 +50,8 @@ public:
     std::string GetPictureFileName__(void) { return "LCD hd44780/LCD_hd44780__.svg"; };
     std::string GetPictureFileName___(void) { return "LCD hd44780/LCD_hd44780___.svg"; };
     void Reset(void) override;
-    void ConfigurePropertiesWindow(CPWindow* WProp) override;
-    void ReadPropertiesWindow(CPWindow* WProp) override;
+    void ConfigurePropertiesWindow(void) override;
+    void ReadPropertiesWindow(void) override;
     std::string WritePreferences(void) override;
     void LoadPartImage(void) override;
     void ReadPreferences(std::string value) override;

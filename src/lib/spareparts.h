@@ -31,6 +31,39 @@
 
 #define IOINIT 110
 
+enum PICSimLabWPropAction {
+    WPA_COMBOSETITEMS,
+    WPA_COMBOSETTEXT,
+    WPA_COMBOGETTEXT,
+    WPA_SPINDSETMAX,
+    WPA_SPINDSETMIN,
+    WPA_SPINDSETVALUE,
+    WPA_SPINDGETVALUE,
+    WPA_SPINSETMAX,
+    WPA_SPINSETMIN,
+    WPA_SPINSETVALUE,
+    WPA_SPINGETVALUE,
+
+    WPA_TEXTCLEAR,
+    WPA_TEXTADDLINE,
+    WPA_TEXTGETLINE,
+    WPA_TEXTGETLINECOUNT,
+
+    WPA_EDITSETTEXT,
+    WPA_EDITGETTEXT,
+
+    WPA_LABELSETTEXT,
+
+    WPA_SETENABLE,
+    WPA_SETWIDTH,
+    WPA_SETHEIGHT,
+    WPA_SETVISIBLE,
+    WPA_SETX,
+    WPA_SETY,
+
+    WPA_LAST,
+};
+
 class CSpareParts {
 public:
     CSpareParts();
@@ -95,11 +128,6 @@ public:
     CFileDialog* GetFileDialog(void) { return filedialog; }
     void Reset(void);
 
-    void (CControl::*PropButtonRelease)(CControl* control, const uint button, const uint x, const uint y,
-                                        const uint mask);
-    void (CControl::*PropComboChange)(CControl* control);
-    void (CControl::*PropSpinChange)(CControl* control);
-
     void (CControl::*PartButtonEvent)(CControl* control, const uint button, const uint x, const uint y,
                                       const uint mask);
     void (CControl::*PartEvent)(CControl* control);
@@ -126,7 +154,12 @@ public:
 
     static int CanvasCmd(const CanvasCmd_t cmd);
 
+    static int WPropCmd(const char* ControlName, const PICSimLabWPropAction action, const char* Value,
+                        void* ReturnBuff = NULL);
+
     int (*OnCanvasCmd)(const CanvasCmd_t cmd);
+
+    int (*OnWPropCmd)(const char* ControlName, const PICSimLabWPropAction action, const char* Value, void* ReturnBuff);
 
 private:
     float scale;

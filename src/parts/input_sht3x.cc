@@ -224,18 +224,17 @@ void cpart_sht3x::ReadPreferences(std::string value_) {
     sscanf(value_.c_str(), "%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &values[0], &values[1]);
 }
 
-void cpart_sht3x::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo2", output_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo3", output_pins[1]);
+void cpart_sht3x::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo2", output_pins[0]);
+    SetPCWComboWithPinNames("combo3", output_pins[1]);
 
-    CCombo* combo = (CCombo*)WProp->GetChildByName("combo5");
-    combo->SetItems("Analog,");
-    combo->SetText("Analog");
+    SpareParts.WPropCmd("combo5", WPA_COMBOSETITEMS, "Analog,");
+    SpareParts.WPropCmd("combo5", WPA_COMBOSETTEXT, "Analog");
 }
 
-void cpart_sht3x::ReadPropertiesWindow(CPWindow* WProp) {
-    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
-    output_pins[1] = GetPWCComboSelectedPin(WProp, "combo3");
+void cpart_sht3x::ReadPropertiesWindow(void) {
+    output_pins[0] = GetPWCComboSelectedPin("combo2");
+    output_pins[1] = GetPWCComboSelectedPin("combo3");
 }
 
 part_init(PART_SHT3X_Name, cpart_sht3x, "Input");

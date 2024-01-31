@@ -544,36 +544,39 @@ void cpart_7s_display_dec::RegisterRemoteControl(void) {
     output_ids[O_P4]->status = (void*)&lm4[7];
 }
 
-void cpart_7s_display_dec::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo1", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo2", input_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo3", input_pins[2]);
-    SetPCWComboWithPinNames(WProp, "combo4", input_pins[3]);
-    SetPCWComboWithPinNames(WProp, "combo5", input_pins[4]);
-    SetPCWComboWithPinNames(WProp, "combo6", input_pins[5]);
-    SetPCWComboWithPinNames(WProp, "combo7", input_pins[6]);
-    SetPCWComboWithPinNames(WProp, "combo8", input_pins[7]);
+void cpart_7s_display_dec::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo1", input_pins[0]);
+    SetPCWComboWithPinNames("combo2", input_pins[1]);
+    SetPCWComboWithPinNames("combo3", input_pins[2]);
+    SetPCWComboWithPinNames("combo4", input_pins[3]);
+    SetPCWComboWithPinNames("combo5", input_pins[4]);
+    SetPCWComboWithPinNames("combo6", input_pins[5]);
+    SetPCWComboWithPinNames("combo7", input_pins[6]);
+    SetPCWComboWithPinNames("combo8", input_pins[7]);
 
-    ((CCombo*)WProp->GetChildByName("combo9"))->SetItems("MUX,LATCH,");
+    SpareParts.WPropCmd("combo9", WPA_COMBOSETITEMS, "MUX,LATCH,");
 
     if (dtype == 0)
-        ((CCombo*)WProp->GetChildByName("combo9"))->SetText("MUX");
+        SpareParts.WPropCmd("combo9", WPA_COMBOSETTEXT, "MUX");
     else {
-        ((CCombo*)WProp->GetChildByName("combo9"))->SetText("LATCH");
+        SpareParts.WPropCmd("combo9", WPA_COMBOSETTEXT, "LATCH");
     }
 }
 
-void cpart_7s_display_dec::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo1");
-    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo2");
-    input_pins[2] = GetPWCComboSelectedPin(WProp, "combo3");
-    input_pins[3] = GetPWCComboSelectedPin(WProp, "combo4");
-    input_pins[4] = GetPWCComboSelectedPin(WProp, "combo5");
-    input_pins[5] = GetPWCComboSelectedPin(WProp, "combo6");
-    input_pins[6] = GetPWCComboSelectedPin(WProp, "combo7");
-    input_pins[7] = GetPWCComboSelectedPin(WProp, "combo8");
+void cpart_7s_display_dec::ReadPropertiesWindow(void) {
+    input_pins[0] = GetPWCComboSelectedPin("combo1");
+    input_pins[1] = GetPWCComboSelectedPin("combo2");
+    input_pins[2] = GetPWCComboSelectedPin("combo3");
+    input_pins[3] = GetPWCComboSelectedPin("combo4");
+    input_pins[4] = GetPWCComboSelectedPin("combo5");
+    input_pins[5] = GetPWCComboSelectedPin("combo6");
+    input_pins[6] = GetPWCComboSelectedPin("combo7");
+    input_pins[7] = GetPWCComboSelectedPin("combo8");
 
-    unsigned char type_ = (((CCombo*)WProp->GetChildByName("combo9"))->GetText().compare("MUX")) != 0;
+    char buff[64];
+    SpareParts.WPropCmd("combo9", WPA_COMBOGETTEXT, NULL, buff);
+
+    unsigned char type_ = strcmp(buff, "MUX") != 0;
 
     ChangeType(type_);
 }

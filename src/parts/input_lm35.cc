@@ -181,12 +181,12 @@ void cpart_lm35::ReadPreferences(std::string value_) {
     sscanf(value_.c_str(), "%hhu,%hhu", &output_pins[0], &value);
 }
 
-void cpart_lm35::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo2", output_pins[0]);
+void cpart_lm35::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo2", output_pins[0]);
 }
 
-void cpart_lm35::ReadPropertiesWindow(CPWindow* WProp) {
-    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
+void cpart_lm35::ReadPropertiesWindow(void) {
+    output_pins[0] = GetPWCComboSelectedPin("combo2");
 }
 
 part_init(PART_LM35_Name, cpart_lm35, "Input");

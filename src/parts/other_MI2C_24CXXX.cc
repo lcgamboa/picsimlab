@@ -204,26 +204,28 @@ void cpart_MI2C_24CXXX::ReadPreferences(std::string value) {
     Reset();
 }
 
-void cpart_MI2C_24CXXX::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo1", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo2", input_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo3", input_pins[2]);
-    SetPCWComboWithPinNames(WProp, "combo5", input_pins[3]);
-    SetPCWComboWithPinNames(WProp, "combo6", input_pins[4]);
+void cpart_MI2C_24CXXX::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo1", input_pins[0]);
+    SetPCWComboWithPinNames("combo2", input_pins[1]);
+    SetPCWComboWithPinNames("combo3", input_pins[2]);
+    SetPCWComboWithPinNames("combo5", input_pins[3]);
+    SetPCWComboWithPinNames("combo6", input_pins[4]);
 
-    CCombo* combo = (CCombo*)WProp->GetChildByName("combo9");
-    combo->SetItems("4,512,");
-    combo->SetText(std::to_string(kbits));
+    SpareParts.WPropCmd("combo9", WPA_COMBOSETITEMS, "4,512,");
+    SpareParts.WPropCmd("combo9", WPA_COMBOSETTEXT, std::to_string(kbits).c_str());
 }
 
-void cpart_MI2C_24CXXX::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo1");
-    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo2");
-    input_pins[2] = GetPWCComboSelectedPin(WProp, "combo3");
-    input_pins[3] = GetPWCComboSelectedPin(WProp, "combo5");
-    input_pins[4] = GetPWCComboSelectedPin(WProp, "combo6");
+void cpart_MI2C_24CXXX::ReadPropertiesWindow(void) {
+    input_pins[0] = GetPWCComboSelectedPin("combo1");
+    input_pins[1] = GetPWCComboSelectedPin("combo2");
+    input_pins[2] = GetPWCComboSelectedPin("combo3");
+    input_pins[3] = GetPWCComboSelectedPin("combo5");
+    input_pins[4] = GetPWCComboSelectedPin("combo6");
 
-    int nkbits = atoi(((CCombo*)WProp->GetChildByName("combo9"))->GetText());
+    char buff[64];
+    SpareParts.WPropCmd("combo9", WPA_COMBOGETTEXT, NULL, buff);
+
+    int nkbits = std::stoi(buff);
 
     if (nkbits != kbits) {
         kbits = nkbits;

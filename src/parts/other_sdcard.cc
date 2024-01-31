@@ -197,18 +197,18 @@ void cpart_SDCard::ReadPreferences(std::string value) {
     }
 }
 
-void cpart_SDCard::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo3", pins[3]);
-    SetPCWComboWithPinNames(WProp, "combo4", pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo5", pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo6", pins[2]);
+void cpart_SDCard::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo3", pins[3]);
+    SetPCWComboWithPinNames("combo4", pins[0]);
+    SetPCWComboWithPinNames("combo5", pins[1]);
+    SetPCWComboWithPinNames("combo6", pins[2]);
 }
 
-void cpart_SDCard::ReadPropertiesWindow(CPWindow* WProp) {
-    pins[3] = GetPWCComboSelectedPin(WProp, "combo3");
-    pins[0] = GetPWCComboSelectedPin(WProp, "combo4");
-    pins[1] = GetPWCComboSelectedPin(WProp, "combo5");
-    pins[2] = GetPWCComboSelectedPin(WProp, "combo6");
+void cpart_SDCard::ReadPropertiesWindow(void) {
+    pins[3] = GetPWCComboSelectedPin("combo3");
+    pins[0] = GetPWCComboSelectedPin("combo4");
+    pins[1] = GetPWCComboSelectedPin("combo5");
+    pins[2] = GetPWCComboSelectedPin("combo6");
 }
 
 void cpart_SDCard::Process(void) {

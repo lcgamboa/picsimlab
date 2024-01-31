@@ -392,53 +392,56 @@ void cpart_pbuttons::ReadPreferences(std::string value) {
     ChangeSize(sz);
 }
 
-void cpart_pbuttons::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo2", output_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo3", output_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo4", output_pins[2]);
-    SetPCWComboWithPinNames(WProp, "combo5", output_pins[3]);
-    SetPCWComboWithPinNames(WProp, "combo6", output_pins[4]);
-    SetPCWComboWithPinNames(WProp, "combo7", output_pins[5]);
-    SetPCWComboWithPinNames(WProp, "combo8", output_pins[6]);
-    SetPCWComboWithPinNames(WProp, "combo9", output_pins[7]);
+void cpart_pbuttons::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo2", output_pins[0]);
+    SetPCWComboWithPinNames("combo3", output_pins[1]);
+    SetPCWComboWithPinNames("combo4", output_pins[2]);
+    SetPCWComboWithPinNames("combo5", output_pins[3]);
+    SetPCWComboWithPinNames("combo6", output_pins[4]);
+    SetPCWComboWithPinNames("combo7", output_pins[5]);
+    SetPCWComboWithPinNames("combo8", output_pins[6]);
+    SetPCWComboWithPinNames("combo9", output_pins[7]);
 
-    CCombo* combo = (CCombo*)WProp->GetChildByName("combo11");
-
-    combo->SetItems("HIGH,LOW,");
+    SpareParts.WPropCmd("combo11", WPA_COMBOSETITEMS, "HIGH,LOW,");
     if (active)
-        combo->SetText("HIGH");
+        SpareParts.WPropCmd("combo11", WPA_COMBOSETTEXT, "HIGH");
     else
-        combo->SetText("LOW ");
+        SpareParts.WPropCmd("combo11", WPA_COMBOSETTEXT, "LOW ");
 
-    combo = (CCombo*)WProp->GetChildByName("combo12");
-    combo->SetItems("Ideal,Normal,");
+    SpareParts.WPropCmd("combo12", WPA_COMBOSETITEMS, "Ideal,Normal,");
     if (mode)
-        combo->SetText("Ideal");
+        SpareParts.WPropCmd("combo12", WPA_COMBOSETTEXT, "Ideal");
     else
-        combo->SetText("Normal");
+        SpareParts.WPropCmd("combo12", WPA_COMBOSETTEXT, "Normal");
 
-    ((CSpin*)WProp->GetChildByName("spin13"))->SetMax(8);
-    ((CSpin*)WProp->GetChildByName("spin13"))->SetMin(1);
-    ((CSpin*)WProp->GetChildByName("spin13"))->SetValue(Size);
-    ((CSpin*)WProp->GetChildByName("spin13"))->EvOnChangeSpin = SpareParts.PropSpinChange;
-    SpinChange(WProp, NULL, Size);
+    SpareParts.WPropCmd("spin13", WPA_SPINSETMAX, "8");
+    SpareParts.WPropCmd("spin13", WPA_SPINSETMIN, "1");
+    SpareParts.WPropCmd("spin13", WPA_SPINSETVALUE, std::to_string(Size).c_str());
+
+    SpinChange(NULL, NULL, Size);
 }
 
-void cpart_pbuttons::ReadPropertiesWindow(CPWindow* WProp) {
-    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
-    output_pins[1] = GetPWCComboSelectedPin(WProp, "combo3");
-    output_pins[2] = GetPWCComboSelectedPin(WProp, "combo4");
-    output_pins[3] = GetPWCComboSelectedPin(WProp, "combo5");
-    output_pins[4] = GetPWCComboSelectedPin(WProp, "combo6");
-    output_pins[5] = GetPWCComboSelectedPin(WProp, "combo7");
-    output_pins[6] = GetPWCComboSelectedPin(WProp, "combo8");
-    output_pins[7] = GetPWCComboSelectedPin(WProp, "combo9");
+void cpart_pbuttons::ReadPropertiesWindow(void) {
+    output_pins[0] = GetPWCComboSelectedPin("combo2");
+    output_pins[1] = GetPWCComboSelectedPin("combo3");
+    output_pins[2] = GetPWCComboSelectedPin("combo4");
+    output_pins[3] = GetPWCComboSelectedPin("combo5");
+    output_pins[4] = GetPWCComboSelectedPin("combo6");
+    output_pins[5] = GetPWCComboSelectedPin("combo7");
+    output_pins[6] = GetPWCComboSelectedPin("combo8");
+    output_pins[7] = GetPWCComboSelectedPin("combo9");
 
-    active = (((CCombo*)WProp->GetChildByName("combo11"))->GetText().compare("HIGH") == 0);
+    char buff[64];
+    SpareParts.WPropCmd("combo11", WPA_COMBOGETTEXT, NULL, buff);
+    active = (strcmp(buff, "HIGH") == 0);
 
-    mode = (((CCombo*)WProp->GetChildByName("combo12"))->GetText().compare("Ideal") == 0);
+    SpareParts.WPropCmd("combo12", WPA_COMBOGETTEXT, NULL, buff);
 
-    ChangeSize(((CSpin*)WProp->GetChildByName("spin13"))->GetValue());
+    mode = (strcmp(buff, "Ideal") == 0);
+
+    int size;
+    SpareParts.WPropCmd("spin13", WPA_SPINGETVALUE, NULL, &size);
+    ChangeSize(size);
 
     output_value[0] = !active;
     output_value[1] = !active;
@@ -454,7 +457,7 @@ void cpart_pbuttons::SpinChange(CPWindow* WProp, CSpin* control, int value) {
     for (int i = 0; i < 8; i++) {
         char name[20];
         sprintf(name, "combo%i", i + 2);
-        ((CCombo*)WProp->GetChildByName(name))->SetEnable(i < value);
+        SpareParts.WPropCmd(name, WPA_SETENABLE, std::to_string(i < value).c_str());
     }
 }
 

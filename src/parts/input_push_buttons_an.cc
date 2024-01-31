@@ -356,22 +356,22 @@ void cpart_pbuttons_an::ReadPreferences(std::string value) {
     output_value_[7] = !active;
 }
 
-void cpart_pbuttons_an::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo2", output_pins[0]);
+void cpart_pbuttons_an::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo2", output_pins[0]);
 
-    CCombo* combo = (CCombo*)WProp->GetChildByName("combo4");
-
-    combo->SetItems("HIGH,LOW,");
+    SpareParts.WPropCmd("combo4", WPA_COMBOSETITEMS, "HIGH,LOW,");
     if (active)
-        combo->SetText("HIGH");
+        SpareParts.WPropCmd("combo4", WPA_COMBOSETTEXT, "HIGH");
     else
-        combo->SetText("LOW ");
+        SpareParts.WPropCmd("combo4", WPA_COMBOSETTEXT, "LOW ");
 }
 
-void cpart_pbuttons_an::ReadPropertiesWindow(CPWindow* WProp) {
-    output_pins[0] = GetPWCComboSelectedPin(WProp, "combo2");
+void cpart_pbuttons_an::ReadPropertiesWindow(void) {
+    output_pins[0] = GetPWCComboSelectedPin("combo2");
 
-    active = (((CCombo*)WProp->GetChildByName("combo4"))->GetText().compare("HIGH") == 0);
+    char buff[64];
+    SpareParts.WPropCmd("combo4", WPA_COMBOGETTEXT, NULL, buff);
+    active = (strcmp(buff, "HIGH") == 0);
 
     output_value = active * vmax;
 

@@ -162,29 +162,32 @@ void cpart_LCD_ssd1306::ReadPreferences(std::string value) {
     Reset();
 }
 
-void cpart_LCD_ssd1306::ConfigurePropertiesWindow(CPWindow* WProp) {
-    SetPCWComboWithPinNames(WProp, "combo3", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo4", input_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo5", input_pins[2]);
-    SetPCWComboWithPinNames(WProp, "combo6", input_pins[3]);
-    SetPCWComboWithPinNames(WProp, "combo7", input_pins[4]);
+void cpart_LCD_ssd1306::ConfigurePropertiesWindow(void) {
+    SetPCWComboWithPinNames("combo3", input_pins[0]);
+    SetPCWComboWithPinNames("combo4", input_pins[1]);
+    SetPCWComboWithPinNames("combo5", input_pins[2]);
+    SetPCWComboWithPinNames("combo6", input_pins[3]);
+    SetPCWComboWithPinNames("combo7", input_pins[4]);
 
-    ((CCombo*)WProp->GetChildByName("combo8"))->SetItems("SPI,I2C,");
+    SpareParts.WPropCmd("combo8", WPA_COMBOSETITEMS, "SPI,I2C,");
     if (!type_com) {
-        ((CCombo*)WProp->GetChildByName("combo8"))->SetText("SPI");
+        SpareParts.WPropCmd("combo8", WPA_COMBOSETTEXT, "SPI");
     } else {
-        ((CCombo*)WProp->GetChildByName("combo8"))->SetText("I2C");
+        SpareParts.WPropCmd("combo8", WPA_COMBOSETTEXT, "I2C");
     }
 }
 
-void cpart_LCD_ssd1306::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo3");
-    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo4");
-    input_pins[2] = GetPWCComboSelectedPin(WProp, "combo5");
-    input_pins[3] = GetPWCComboSelectedPin(WProp, "combo6");
-    input_pins[4] = GetPWCComboSelectedPin(WProp, "combo7");
+void cpart_LCD_ssd1306::ReadPropertiesWindow(void) {
+    input_pins[0] = GetPWCComboSelectedPin("combo3");
+    input_pins[1] = GetPWCComboSelectedPin("combo4");
+    input_pins[2] = GetPWCComboSelectedPin("combo5");
+    input_pins[3] = GetPWCComboSelectedPin("combo6");
+    input_pins[4] = GetPWCComboSelectedPin("combo7");
 
-    if (!((CCombo*)WProp->GetChildByName("combo8"))->GetText().compare("SPI")) {
+    char buff[64];
+    SpareParts.WPropCmd("combo8", WPA_COMBOGETTEXT, NULL, buff);
+
+    if (!strcmp(buff, "SPI")) {
         type_com = 0;
     } else {
         type_com = 1;

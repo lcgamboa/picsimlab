@@ -220,7 +220,7 @@ void cpart_IO_74xx595::ReadPreferences(std::string value) {
     Reset();
 }
 
-void cpart_IO_74xx595::ConfigurePropertiesWindow(CPWindow* WProp) {
+void cpart_IO_74xx595::ConfigurePropertiesWindow(void) {
     std::string Items = SpareParts.GetPinsNames();
     std::string spin;
 
@@ -238,25 +238,22 @@ void cpart_IO_74xx595::ConfigurePropertiesWindow(CPWindow* WProp) {
                     std::to_string(output_pins[pinv - 4]);  // + " " + SpareParts.GetPinName (output_pins[pinv - 4]);
         }
 
-        ((CLabel*)WProp->GetChildByName("label" + std::to_string(i + 1)))
-            ->SetText(std::to_string(i + 1) + "-" + pin_names[i]);
-        CLabel* label = (CLabel*)WProp->GetChildByName("label_" + std::to_string(i + 1));
-        if (label) {
-            label->SetText(value);
-        }
+        SpareParts.WPropCmd(("label" + std::to_string(i + 1)).c_str(), WPA_LABELSETTEXT,
+                            (std::to_string(i + 1) + "-" + pin_names[i]).c_str());
+        SpareParts.WPropCmd(("label_" + std::to_string(i + 1)).c_str(), WPA_LABELSETTEXT, value.c_str());
     }
 
-    SetPCWComboWithPinNames(WProp, "combo10", input_pins[0]);
-    SetPCWComboWithPinNames(WProp, "combo11", input_pins[1]);
-    SetPCWComboWithPinNames(WProp, "combo12", input_pins[2]);
-    SetPCWComboWithPinNames(WProp, "combo14", input_pins[3]);
+    SetPCWComboWithPinNames("combo10", input_pins[0]);
+    SetPCWComboWithPinNames("combo11", input_pins[1]);
+    SetPCWComboWithPinNames("combo12", input_pins[2]);
+    SetPCWComboWithPinNames("combo14", input_pins[3]);
 }
 
-void cpart_IO_74xx595::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pins[0] = GetPWCComboSelectedPin(WProp, "combo10");
-    input_pins[1] = GetPWCComboSelectedPin(WProp, "combo11");
-    input_pins[2] = GetPWCComboSelectedPin(WProp, "combo12");
-    input_pins[3] = GetPWCComboSelectedPin(WProp, "combo14");
+void cpart_IO_74xx595::ReadPropertiesWindow(void) {
+    input_pins[0] = GetPWCComboSelectedPin("combo10");
+    input_pins[1] = GetPWCComboSelectedPin("combo11");
+    input_pins[2] = GetPWCComboSelectedPin("combo12");
+    input_pins[3] = GetPWCComboSelectedPin("combo14");
 }
 
 void cpart_IO_74xx595::PreProcess(void) {

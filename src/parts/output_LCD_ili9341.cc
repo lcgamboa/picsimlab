@@ -302,309 +302,327 @@ void cpart_LCD_ili9341::ReadPreferences(std::string value) {
     ChangeType(tp);
 }
 
-void cpart_LCD_ili9341::ConfigurePropertiesWindow(CPWindow* WProp) {
+void cpart_LCD_ili9341::ConfigurePropertiesWindow(void) {
     std::string Items = SpareParts.GetPinsNames();
     std::string spin;
     char name[100];
 
-    ((CCombo*)WProp->GetChildByName("combo1"))->SetItems(Items);
+    SpareParts.WPropCmd("combo1", WPA_COMBOSETITEMS, Items.c_str());
     if (input_pins[0] == 0)
-        ((CCombo*)WProp->GetChildByName("combo1"))->SetText("0  NC");
+        SpareParts.WPropCmd("combo1", WPA_COMBOSETTEXT, "0  NC");
     else {
         spin = SpareParts.GetPinName(input_pins[0]);
-        ((CCombo*)WProp->GetChildByName("combo1"))->SetText(std::to_string(input_pins[0]) + "  " + spin);
+        SpareParts.WPropCmd("combo1", WPA_COMBOSETTEXT, (std::to_string(input_pins[0]) + "  " + spin).c_str());
     }
 
-    ((CCombo*)WProp->GetChildByName("combo2"))->SetItems(Items);
+    SpareParts.WPropCmd("combo2", WPA_COMBOSETITEMS, Items.c_str());
     if (input_pins[1] == 0)
-        ((CCombo*)WProp->GetChildByName("combo2"))->SetText("0  NC");
+        SpareParts.WPropCmd("combo2", WPA_COMBOSETTEXT, "0  NC");
     else {
         spin = SpareParts.GetPinName(input_pins[1]);
-        ((CCombo*)WProp->GetChildByName("combo2"))->SetText(std::to_string(input_pins[1]) + "  " + spin);
+        SpareParts.WPropCmd("combo2", WPA_COMBOSETTEXT, (std::to_string(input_pins[1]) + "  " + spin).c_str());
     }
 
-    ((CCombo*)WProp->GetChildByName("combo3"))->SetItems(Items);
+    SpareParts.WPropCmd("combo3", WPA_COMBOSETITEMS, Items.c_str());
     if (input_pins[2] == 0)
-        ((CCombo*)WProp->GetChildByName("combo3"))->SetText("0  NC");
+        SpareParts.WPropCmd("combo3", WPA_COMBOSETTEXT, "0  NC");
     else {
         spin = SpareParts.GetPinName(input_pins[2]);
-        ((CCombo*)WProp->GetChildByName("combo3"))->SetText(std::to_string(input_pins[2]) + "  " + spin);
+        SpareParts.WPropCmd("combo3", WPA_COMBOSETTEXT, (std::to_string(input_pins[2]) + "  " + spin).c_str());
     }
 
-    ((CCombo*)WProp->GetChildByName("combo4"))->SetItems(Items);
+    SpareParts.WPropCmd("combo4", WPA_COMBOSETITEMS, Items.c_str());
     if (input_pins[3] == 0)
-        ((CCombo*)WProp->GetChildByName("combo4"))->SetText("0  NC");
+        SpareParts.WPropCmd("combo4", WPA_COMBOSETTEXT, "0  NC");
     else {
         spin = SpareParts.GetPinName(input_pins[3]);
-        ((CCombo*)WProp->GetChildByName("combo4"))->SetText(std::to_string(input_pins[3]) + "  " + spin);
+        SpareParts.WPropCmd("combo4", WPA_COMBOSETTEXT, (std::to_string(input_pins[3]) + "  " + spin).c_str());
     }
 
-    ((CCombo*)WProp->GetChildByName("combo5"))->SetItems(Items);
+    SpareParts.WPropCmd("combo5", WPA_COMBOSETITEMS, Items.c_str());
     if (input_pins[4] == 0)
-        ((CCombo*)WProp->GetChildByName("combo5"))->SetText("0  NC");
+        SpareParts.WPropCmd("combo5", WPA_COMBOSETTEXT, "0  NC");
     else {
         spin = SpareParts.GetPinName(input_pins[4]);
-        ((CCombo*)WProp->GetChildByName("combo5"))->SetText(std::to_string(input_pins[4]) + "  " + spin);
+        SpareParts.WPropCmd("combo5", WPA_COMBOSETTEXT, (std::to_string(input_pins[4]) + "  " + spin).c_str());
     }
 
     switch (type_com) {
         case TC_SPI:
-            WProp->SetWidth(389);
-            WProp->SetHeight(370);
 
-            ((CButton*)WProp->GetChildByName("button1"))->SetX(104);
-            ((CButton*)WProp->GetChildByName("button2"))->SetX(185);
-            ((CButton*)WProp->GetChildByName("button1"))->SetY(286);
-            ((CButton*)WProp->GetChildByName("button2"))->SetY(286);
+            SpareParts.WPropCmd(NULL, WPA_SETWIDTH, "389");
+            SpareParts.WPropCmd(NULL, WPA_SETHEIGHT, "370");
 
-            ((CCombo*)WProp->GetChildByName("combo6"))->SetText("SPI");
+            SpareParts.WPropCmd("button1", WPA_SETX, "104");
+            SpareParts.WPropCmd("button2", WPA_SETX, "185");
+            SpareParts.WPropCmd("button1", WPA_SETY, "286");
+            SpareParts.WPropCmd("button2", WPA_SETY, "286");
 
-            ((CCombo*)WProp->GetChildByName("combo7"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo8"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo9"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo10"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo11"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo12"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo13"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo14"))->SetVisible(false);
+            SpareParts.WPropCmd("combo6", WPA_COMBOSETTEXT, "SPI");
 
-            ((CCombo*)WProp->GetChildByName("combo15"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo16"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo17"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo18"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo19"))->SetVisible(false);
+            SpareParts.WPropCmd("combo7", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo8", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo9", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo10", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo11", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo12", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo13", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo14", WPA_SETVISIBLE, "0");
 
-            ((CLabel*)WProp->GetChildByName("label9"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label10"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label11"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label12"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label13"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label14"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label15"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label16"))->SetVisible(false);
+            SpareParts.WPropCmd("combo15", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo16", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo17", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo18", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo19", WPA_SETVISIBLE, "0");
 
-            ((CLabel*)WProp->GetChildByName("label17"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label18"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label19"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label20"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label21"))->SetVisible(false);
+            SpareParts.WPropCmd("label9", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label10", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label11", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label12", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label13", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label14", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label15", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label16", WPA_SETVISIBLE, "0");
 
-            ((CLabel*)WProp->GetChildByName("label5"))->SetText("Pin 3 - CLK");
-            ((CLabel*)WProp->GetChildByName("label4"))->SetText("Pin 4 - DIN");
+            SpareParts.WPropCmd("label17", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label18", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label19", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label20", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label21", WPA_SETVISIBLE, "0");
+
+            SpareParts.WPropCmd("label5", WPA_LABELSETTEXT, "Pin 3 - CLK");
+            SpareParts.WPropCmd("label4", WPA_LABELSETTEXT, "Pin 4 - DIN");
             break;
         case TC_8BITS:
 
-            WProp->SetWidth(740);
-            WProp->SetHeight(370);
+            SpareParts.WPropCmd(NULL, WPA_SETWIDTH, "740");
+            SpareParts.WPropCmd(NULL, WPA_SETHEIGHT, "370");
 
-            ((CButton*)WProp->GetChildByName("button1"))->SetX(154);
-            ((CButton*)WProp->GetChildByName("button2"))->SetX(235);
-            ((CButton*)WProp->GetChildByName("button1"))->SetY(286);
-            ((CButton*)WProp->GetChildByName("button2"))->SetY(286);
+            SpareParts.WPropCmd("button1", WPA_SETX, "154");
+            SpareParts.WPropCmd("button2", WPA_SETX, "235");
+            SpareParts.WPropCmd("button1", WPA_SETY, "286");
+            SpareParts.WPropCmd("button2", WPA_SETY, "286");
 
-            ((CCombo*)WProp->GetChildByName("combo6"))->SetText("8Bits");
+            SpareParts.WPropCmd("combo6", WPA_COMBOSETTEXT, "8Bits");
 
-            ((CCombo*)WProp->GetChildByName("combo7"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo8"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo9"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo10"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo11"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo12"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo13"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo14"))->SetVisible(true);
+            SpareParts.WPropCmd("combo7", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo8", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo9", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo10", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo11", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo12", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo13", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo14", WPA_SETVISIBLE, "1");
 
-            ((CCombo*)WProp->GetChildByName("combo15"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo16"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo17"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo18"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo19"))->SetVisible(false);
+            SpareParts.WPropCmd("combo15", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo16", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo17", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo18", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo19", WPA_SETVISIBLE, "0");
 
-            ((CLabel*)WProp->GetChildByName("label9"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label10"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label11"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label12"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label13"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label14"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label15"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label16"))->SetVisible(true);
+            SpareParts.WPropCmd("label9", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label10", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label11", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label12", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label13", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label14", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label15", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label16", WPA_SETVISIBLE, "1");
 
-            ((CLabel*)WProp->GetChildByName("label17"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label18"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label19"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label20"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label21"))->SetVisible(false);
+            SpareParts.WPropCmd("label17", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label18", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label19", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label20", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label21", WPA_SETVISIBLE, "0");
 
-            ((CLabel*)WProp->GetChildByName("label5"))->SetText("Pin 3 - /WR");
-            ((CLabel*)WProp->GetChildByName("label4"))->SetText("Pin 4 - /RD");
+            SpareParts.WPropCmd("label5", WPA_LABELSETTEXT, "Pin 3 - /WR");
+            SpareParts.WPropCmd("label4", WPA_LABELSETTEXT, "Pin 4 - /RD");
 
             for (int i = 0; i < 8; i++) {
                 snprintf(name, 100, "combo%i", i + 7);
-                ((CCombo*)WProp->GetChildByName(name))->SetItems(Items);
+                SpareParts.WPropCmd(name, WPA_COMBOSETITEMS, Items.c_str());
                 if (input_pins[5 + i] == 0)
-                    ((CCombo*)WProp->GetChildByName(name))->SetText("0  NC");
+                    SpareParts.WPropCmd(name, WPA_COMBOSETTEXT, "0  NC");
                 else {
                     spin = SpareParts.GetPinName(input_pins[5 + i]);
-                    ((CCombo*)WProp->GetChildByName(name))->SetText(std::to_string(input_pins[5 + i]) + "  " + spin);
+                    SpareParts.WPropCmd(name, WPA_COMBOSETTEXT,
+                                        (std::to_string(input_pins[5 + i]) + "  " + spin).c_str());
                 }
             }
             break;
         case TC_SPI_TOUCH:
-            WProp->SetWidth(389);
-            WProp->SetHeight(570);
 
-            ((CButton*)WProp->GetChildByName("button1"))->SetX(104);
-            ((CButton*)WProp->GetChildByName("button2"))->SetX(185);
-            ((CButton*)WProp->GetChildByName("button1"))->SetY(486);
-            ((CButton*)WProp->GetChildByName("button2"))->SetY(486);
+            SpareParts.WPropCmd(NULL, WPA_SETWIDTH, "389");
+            SpareParts.WPropCmd(NULL, WPA_SETHEIGHT, "570");
 
-            ((CCombo*)WProp->GetChildByName("combo6"))->SetText("SPI+Touch");
+            SpareParts.WPropCmd("button1", WPA_SETX, "104");
+            SpareParts.WPropCmd("button2", WPA_SETX, "185");
+            SpareParts.WPropCmd("button1", WPA_SETY, "486");
+            SpareParts.WPropCmd("button2", WPA_SETY, "486");
 
-            ((CCombo*)WProp->GetChildByName("combo7"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo8"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo9"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo10"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo11"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo12"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo13"))->SetVisible(false);
-            ((CCombo*)WProp->GetChildByName("combo14"))->SetVisible(false);
+            SpareParts.WPropCmd("combo6", WPA_COMBOSETTEXT, "SPI+Touch");
 
-            ((CCombo*)WProp->GetChildByName("combo15"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo16"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo17"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo18"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo19"))->SetVisible(true);
+            SpareParts.WPropCmd("combo7", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo8", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo9", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo10", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo11", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo12", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo13", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo14", WPA_SETVISIBLE, "0");
 
-            ((CLabel*)WProp->GetChildByName("label9"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label10"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label11"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label12"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label13"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label14"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label15"))->SetVisible(false);
-            ((CLabel*)WProp->GetChildByName("label16"))->SetVisible(false);
+            SpareParts.WPropCmd("combo15", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo16", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo17", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo18", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo19", WPA_SETVISIBLE, "1");
 
-            ((CLabel*)WProp->GetChildByName("label17"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label18"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label19"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label20"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label21"))->SetVisible(true);
+            SpareParts.WPropCmd("label9", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label10", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label11", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label12", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label13", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label14", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label15", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label16", WPA_SETVISIBLE, "0");
 
-            ((CLabel*)WProp->GetChildByName("label5"))->SetText("Pin 3 - CLK");
-            ((CLabel*)WProp->GetChildByName("label4"))->SetText("Pin 4 - DIN");
+            SpareParts.WPropCmd("label17", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label18", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label19", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label20", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label21", WPA_SETVISIBLE, "1");
+
+            SpareParts.WPropCmd("label5", WPA_LABELSETTEXT, "Pin 3 - CLK");
+            SpareParts.WPropCmd("label4", WPA_LABELSETTEXT, "Pin 4 - DIN");
 
             for (int i = 0; i < 5; i++) {
                 snprintf(name, 100, "combo%i", i + 15);
-                ((CCombo*)WProp->GetChildByName(name))->SetItems(Items);
+                SpareParts.WPropCmd(name, WPA_COMBOSETITEMS, Items.c_str());
                 if (touch_pins[i] == 0)
-                    ((CCombo*)WProp->GetChildByName(name))->SetText("0  NC");
+                    SpareParts.WPropCmd(name, WPA_COMBOSETTEXT, "0  NC");
                 else {
                     spin = SpareParts.GetPinName(touch_pins[i]);
-                    ((CCombo*)WProp->GetChildByName(name))->SetText(std::to_string(touch_pins[i]) + "  " + spin);
+                    SpareParts.WPropCmd(name, WPA_COMBOSETTEXT, (std::to_string(touch_pins[i]) + "  " + spin).c_str());
                 }
             }
 
             break;
         case TC_8BITS_TOUCH:
 
-            WProp->SetWidth(740);
-            WProp->SetHeight(570);
+            SpareParts.WPropCmd(NULL, WPA_SETWIDTH, "740");
+            SpareParts.WPropCmd(NULL, WPA_SETHEIGHT, "570");
 
-            ((CButton*)WProp->GetChildByName("button1"))->SetX(154);
-            ((CButton*)WProp->GetChildByName("button2"))->SetX(235);
-            ((CButton*)WProp->GetChildByName("button1"))->SetY(486);
-            ((CButton*)WProp->GetChildByName("button2"))->SetY(486);
+            SpareParts.WPropCmd("button1", WPA_SETX, "154");
+            SpareParts.WPropCmd("button2", WPA_SETX, "235");
+            SpareParts.WPropCmd("button1", WPA_SETY, "486");
+            SpareParts.WPropCmd("button2", WPA_SETY, "486");
 
-            ((CCombo*)WProp->GetChildByName("combo6"))->SetText("8Bits+Touch");
+            SpareParts.WPropCmd("combo6", WPA_COMBOSETTEXT, "8Bits+Touch");
 
-            ((CCombo*)WProp->GetChildByName("combo7"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo8"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo9"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo10"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo11"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo12"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo13"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo14"))->SetVisible(true);
+            SpareParts.WPropCmd("combo7", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo8", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo9", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo10", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo11", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo12", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo13", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo14", WPA_SETVISIBLE, "1");
 
-            ((CCombo*)WProp->GetChildByName("combo15"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo16"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo17"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo18"))->SetVisible(true);
-            ((CCombo*)WProp->GetChildByName("combo19"))->SetVisible(true);
+            SpareParts.WPropCmd("combo15", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo16", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo17", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo18", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo19", WPA_SETVISIBLE, "1");
 
-            ((CLabel*)WProp->GetChildByName("label9"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label10"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label11"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label12"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label13"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label14"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label15"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label16"))->SetVisible(true);
+            SpareParts.WPropCmd("label9", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label10", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label11", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label12", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label13", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label14", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label15", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label16", WPA_SETVISIBLE, "1");
 
-            ((CLabel*)WProp->GetChildByName("label17"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label18"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label19"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label20"))->SetVisible(true);
-            ((CLabel*)WProp->GetChildByName("label21"))->SetVisible(true);
+            SpareParts.WPropCmd("label17", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label18", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label19", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label20", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label21", WPA_SETVISIBLE, "1");
 
-            ((CLabel*)WProp->GetChildByName("label5"))->SetText("Pin 3 - /WR");
-            ((CLabel*)WProp->GetChildByName("label4"))->SetText("Pin 4 - /RD");
+            SpareParts.WPropCmd("label5", WPA_LABELSETTEXT, "Pin 3 - /WR");
+            SpareParts.WPropCmd("label4", WPA_LABELSETTEXT, "Pin 4 - /RD");
 
             for (int i = 0; i < 8; i++) {
                 snprintf(name, 100, "combo%i", i + 7);
-                ((CCombo*)WProp->GetChildByName(name))->SetItems(Items);
+                SpareParts.WPropCmd(name, WPA_COMBOSETITEMS, Items.c_str());
                 if (input_pins[5 + i] == 0)
-                    ((CCombo*)WProp->GetChildByName(name))->SetText("0  NC");
+                    SpareParts.WPropCmd(name, WPA_COMBOSETTEXT, "0  NC");
                 else {
                     spin = SpareParts.GetPinName(input_pins[5 + i]);
-                    ((CCombo*)WProp->GetChildByName(name))->SetText(std::to_string(input_pins[5 + i]) + "  " + spin);
+                    SpareParts.WPropCmd(name, WPA_COMBOSETTEXT,
+                                        (std::to_string(input_pins[5 + i]) + "  " + spin).c_str());
                 }
             }
 
             for (int i = 0; i < 5; i++) {
                 snprintf(name, 100, "combo%i", i + 15);
-                ((CCombo*)WProp->GetChildByName(name))->SetItems(Items);
+                SpareParts.WPropCmd(name, WPA_COMBOSETITEMS, Items.c_str());
                 if (touch_pins[i] == 0)
-                    ((CCombo*)WProp->GetChildByName(name))->SetText("0  NC");
+                    SpareParts.WPropCmd(name, WPA_COMBOSETTEXT, "0  NC");
                 else {
                     spin = SpareParts.GetPinName(touch_pins[i]);
-                    ((CCombo*)WProp->GetChildByName(name))->SetText(std::to_string(touch_pins[i]) + "  " + spin);
+                    SpareParts.WPropCmd(name, WPA_COMBOSETTEXT, (std::to_string(touch_pins[i]) + "  " + spin).c_str());
                 }
             }
             break;
     }
-
-    ((CCombo*)WProp->GetChildByName("combo6"))->EvOnComboChange = SpareParts.PropComboChange;
-
-    ((CButton*)WProp->GetChildByName("button1"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
-    ((CButton*)WProp->GetChildByName("button1"))->SetTag(1);
-
-    ((CButton*)WProp->GetChildByName("button2"))->EvMouseButtonRelease = SpareParts.PropButtonRelease;
 }
 
-void cpart_LCD_ili9341::ReadPropertiesWindow(CPWindow* WProp) {
-    input_pins[0] = atoi(((CCombo*)WProp->GetChildByName("combo1"))->GetText());
-    input_pins[1] = atoi(((CCombo*)WProp->GetChildByName("combo2"))->GetText());
-    input_pins[2] = atoi(((CCombo*)WProp->GetChildByName("combo3"))->GetText());
-    input_pins[3] = atoi(((CCombo*)WProp->GetChildByName("combo4"))->GetText());
-    input_pins[4] = atoi(((CCombo*)WProp->GetChildByName("combo5"))->GetText());
+void cpart_LCD_ili9341::ReadPropertiesWindow(void) {
+    char buff[64];
+    SpareParts.WPropCmd("combo1", WPA_COMBOGETTEXT, NULL, buff);
+    input_pins[0] = std::stoi(buff);
+    SpareParts.WPropCmd("combo2", WPA_COMBOGETTEXT, NULL, buff);
+    input_pins[1] = std::stoi(buff);
+    SpareParts.WPropCmd("combo3", WPA_COMBOGETTEXT, NULL, buff);
+    input_pins[2] = std::stoi(buff);
+    SpareParts.WPropCmd("combo4", WPA_COMBOGETTEXT, NULL, buff);
+    input_pins[3] = std::stoi(buff);
+    SpareParts.WPropCmd("combo5", WPA_COMBOGETTEXT, NULL, buff);
+    input_pins[4] = std::stoi(buff);
 
     if ((type_com == TC_8BITS) || (type_com == TC_8BITS_TOUCH)) {
-        input_pins[5] = atoi(((CCombo*)WProp->GetChildByName("combo7"))->GetText());
-        input_pins[6] = atoi(((CCombo*)WProp->GetChildByName("combo8"))->GetText());
-        input_pins[7] = atoi(((CCombo*)WProp->GetChildByName("combo9"))->GetText());
-        input_pins[8] = atoi(((CCombo*)WProp->GetChildByName("combo10"))->GetText());
-        input_pins[9] = atoi(((CCombo*)WProp->GetChildByName("combo11"))->GetText());
-        input_pins[10] = atoi(((CCombo*)WProp->GetChildByName("combo12"))->GetText());
-        input_pins[11] = atoi(((CCombo*)WProp->GetChildByName("combo13"))->GetText());
-        input_pins[12] = atoi(((CCombo*)WProp->GetChildByName("combo14"))->GetText());
+        SpareParts.WPropCmd("combo7", WPA_COMBOGETTEXT, NULL, buff);
+        input_pins[5] = std::stoi(buff);
+        SpareParts.WPropCmd("combo8", WPA_COMBOGETTEXT, NULL, buff);
+        input_pins[6] = std::stoi(buff);
+        SpareParts.WPropCmd("combo9", WPA_COMBOGETTEXT, NULL, buff);
+        input_pins[7] = std::stoi(buff);
+        SpareParts.WPropCmd("combo10", WPA_COMBOGETTEXT, NULL, buff);
+        input_pins[8] = std::stoi(buff);
+        SpareParts.WPropCmd("combo11", WPA_COMBOGETTEXT, NULL, buff);
+        input_pins[9] = std::stoi(buff);
+        SpareParts.WPropCmd("combo12", WPA_COMBOGETTEXT, NULL, buff);
+        input_pins[10] = std::stoi(buff);
+        SpareParts.WPropCmd("combo13", WPA_COMBOGETTEXT, NULL, buff);
+        input_pins[11] = std::stoi(buff);
+        SpareParts.WPropCmd("combo14", WPA_COMBOGETTEXT, NULL, buff);
+        input_pins[12] = std::stoi(buff);
     }
 
     if ((type_com == TC_8BITS_TOUCH) || (type_com == TC_SPI_TOUCH)) {
-        touch_pins[0] = atoi(((CCombo*)WProp->GetChildByName("combo15"))->GetText());
-        touch_pins[1] = atoi(((CCombo*)WProp->GetChildByName("combo16"))->GetText());
-        touch_pins[2] = atoi(((CCombo*)WProp->GetChildByName("combo17"))->GetText());
-        touch_pins[3] = atoi(((CCombo*)WProp->GetChildByName("combo18"))->GetText());
-        touch_pins[4] = atoi(((CCombo*)WProp->GetChildByName("combo19"))->GetText());
+        SpareParts.WPropCmd("combo11", WPA_COMBOGETTEXT, NULL, buff);
+        input_pins[9] = std::stoi(buff);
+        SpareParts.WPropCmd("combo15", WPA_COMBOGETTEXT, NULL, buff);
+        touch_pins[0] = std::stoi(buff);
+        SpareParts.WPropCmd("combo16", WPA_COMBOGETTEXT, NULL, buff);
+        touch_pins[1] = std::stoi(buff);
+        SpareParts.WPropCmd("combo17", WPA_COMBOGETTEXT, NULL, buff);
+        touch_pins[2] = std::stoi(buff);
+        SpareParts.WPropCmd("combo18", WPA_COMBOGETTEXT, NULL, buff);
+        touch_pins[3] = std::stoi(buff);
+        SpareParts.WPropCmd("combo19", WPA_COMBOGETTEXT, NULL, buff);
+        touch_pins[4] = std::stoi(buff);
     }
 }
 

@@ -438,68 +438,60 @@ void cpart_Jumpers::RegisterRemoteControl(void) {
     }
 }
 
-void cpart_Jumpers::ConfigurePropertiesWindow(CPWindow* WProp) {
+void cpart_Jumpers::ConfigurePropertiesWindow(void) {
     char childname[256];
-    CCombo* cc;
 
-    ((CCombo*)WProp->GetChildByName("combo1"))->SetItems("F,M,");
-    ((CCombo*)WProp->GetChildByName("combo1"))->EvOnComboChange = SpareParts.PropComboChange;
-    ((CCombo*)WProp->GetChildByName("combo18"))->SetItems("F,M,");
-    ((CCombo*)WProp->GetChildByName("combo18"))->EvOnComboChange = SpareParts.PropComboChange;
+    SpareParts.WPropCmd("combo1", WPA_COMBOSETITEMS, "F,M,");
+    SpareParts.WPropCmd("combo18", WPA_COMBOSETITEMS, "F,M,");
 
-    cc = ((CCombo*)WProp->GetChildByName("combo1"));
     if (jtype & 0x02)
-        cc->SetText("F");
+        SpareParts.WPropCmd("combo1", WPA_COMBOSETTEXT, "F");
     else
-        cc->SetText("M");
+        SpareParts.WPropCmd("combo1", WPA_COMBOSETTEXT, "M");
 
-    cc = ((CCombo*)WProp->GetChildByName("combo18"));
     if (jtype & 0x01)
-        cc->SetText("F");
+        SpareParts.WPropCmd("combo18", WPA_COMBOSETTEXT, "F");
     else
-        cc->SetText("M");
+        SpareParts.WPropCmd("combo18", WPA_COMBOSETTEXT, "M");
 
     for (int i = 0; i < 16; i++) {
         // input
         snprintf(childname, 256, "combo%i", i + 2);
 
-        SetPCWComboWithPinNames(WProp, childname, input_pins[i]);
-
-        cc = (CCombo*)WProp->GetChildByName(childname);
+        SetPCWComboWithPinNames(childname, input_pins[i]);
 
         if (jtype & 0x02) {
-            cc->SetEnable(1);
+            SpareParts.WPropCmd(childname, WPA_SETENABLE, "1");
         } else {
-            cc->SetEnable(0);
+            SpareParts.WPropCmd(childname, WPA_SETENABLE, "0");
         }
 
         // output
         snprintf(childname, 256, "combo%i", i + 19);
 
-        SetPCWComboWithPinNames(WProp, childname, output_pins[i]);
-
-        cc = (CCombo*)WProp->GetChildByName(childname);
+        SetPCWComboWithPinNames(childname, output_pins[i]);
 
         if (jtype & 0x01) {
-            cc->SetEnable(1);
+            SpareParts.WPropCmd(childname, WPA_SETENABLE, "1");
         } else {
-            cc->SetEnable(0);
+            SpareParts.WPropCmd(childname, WPA_SETENABLE, "0");
         }
     }
 }
 
-void cpart_Jumpers::ReadPropertiesWindow(CPWindow* WProp) {
+void cpart_Jumpers::ReadPropertiesWindow(void) {
     char childname[256];
-    CCombo* cc;
 
-    cc = ((CCombo*)WProp->GetChildByName("combo1"));
-    if (cc->GetText().compare("M"))
+    char buff[64];
+    SpareParts.WPropCmd("combo1", WPA_COMBOGETTEXT, NULL, buff);
+
+    if (strcmp(buff, "M"))
         jtype |= 0x02;
     else
         jtype &= ~0x02;
 
-    cc = ((CCombo*)WProp->GetChildByName("combo18"));
-    if (cc->GetText().compare("M"))
+    SpareParts.WPropCmd("combo18", WPA_COMBOGETTEXT, NULL, buff);
+    if (strcmp(buff, "M"))
         jtype |= 0x01;
     else
         jtype &= ~0x01;
@@ -508,12 +500,12 @@ void cpart_Jumpers::ReadPropertiesWindow(CPWindow* WProp) {
         // input
         if (jtype & 0x02) {
             snprintf(childname, 256, "combo%i", i + 2);
-            input_pins[i] = GetPWCComboSelectedPin(WProp, childname);
+            input_pins[i] = GetPWCComboSelectedPin(childname);
         }
         // output
         if (jtype & 0x01) {
             snprintf(childname, 256, "combo%i", i + 19);
-            output_pins[i] = GetPWCComboSelectedPin(WProp, childname);
+            output_pins[i] = GetPWCComboSelectedPin(childname);
         }
     }
 }
