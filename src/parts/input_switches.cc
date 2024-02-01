@@ -407,6 +407,7 @@ void cpart_switches::ConfigurePropertiesWindow(void) {
     SpareParts.WPropCmd("spin13", WPA_SPINSETMAX, "8");
     SpareParts.WPropCmd("spin13", WPA_SPINSETMIN, "1");
     SpareParts.WPropCmd("spin13", WPA_SPINSETVALUE, std::to_string(Size).c_str());
+    SpareParts.WPropCmd("spin13", WPA_SPINENABLEEV, "1");
 
     SpinChange(NULL, NULL, Size);
 }

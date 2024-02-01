@@ -200,7 +200,6 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
                     combo->SetX(x + 68);
                     combo->SetY(y);
                     wprop.CreateChild(combo);
-                    combo->EvOnComboChange = EVONCOMBOCHANGE & CPWindow5::PropComboChange;
                     break;
                 case PCW_LABEL: {
                     char lb[21];
@@ -274,7 +273,6 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
                     spin->SetX(x + 68);
                     spin->SetY(y);
                     wprop.CreateChild(spin);
-                    spin->EvOnChangeSpin = EVONCHANGESPIN & CPWindow5::PropSpinChange;
                     break;
                 case PCW_EDIT:
                     sprintf(name, "label%i", i + 1);
@@ -415,12 +413,6 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
                 button = (CButton*)wprop.GetChildByName("button2");
                 if (button) {
                     button->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
-                }
-
-                // FIXME -- Only to work with ili9341 old interface - remove
-                CCombo* combo = ((CCombo*)wprop.GetChildByName("combo6"));
-                if (combo) {
-                    combo->EvOnComboChange = EVONCOMBOCHANGE & CPWindow5::PropComboChange;
                 }
 
                 wprop.SetX(SpareParts.GetPart(PartSelected)->GetX() + GetX() - offsetx);
@@ -1109,6 +1101,14 @@ int CPWindow5::OnWPropCmd(const char* ControlName, const PICSimLabWPropAction ac
             strcpy((char*)ReturnBuff, ((CCombo*)ctrl)->GetText().c_str());
             return strlen((char*)ReturnBuff);
             break;
+        case WPA_COMBOENABLEEV:
+            if (!strcmp(Value, "1")) {
+                ((CCombo*)ctrl)->EvOnComboChange = EVONCOMBOCHANGE & CPWindow5::PropComboChange;
+            } else {
+                ((CCombo*)ctrl)->EvOnComboChange = NULL;
+            }
+            break;
+
         case WPA_SPINDSETMAX:
             ((CSpind*)ctrl)->SetMax(std::stof(Value));
             break;
@@ -1133,6 +1133,13 @@ int CPWindow5::OnWPropCmd(const char* ControlName, const PICSimLabWPropAction ac
             break;
         case WPA_SPINGETVALUE:
             *((int*)ReturnBuff) = ((CSpin*)ctrl)->GetValue();
+            break;
+        case WPA_SPINENABLEEV:
+            if (!strcmp(Value, "1")) {
+                ((CSpin*)ctrl)->EvOnChangeSpin = EVONCHANGESPIN & CPWindow5::PropSpinChange;
+            } else {
+                ((CSpin*)ctrl)->EvOnChangeSpin = NULL;
+            }
             break;
 
         case WPA_TEXTCLEAR:

@@ -576,6 +576,8 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(void) {
             }
             break;
     }
+
+    SpareParts.WPropCmd("combo6", WPA_COMBOENABLEEV, "1");
 }
 
 void cpart_LCD_ili9341::ReadPropertiesWindow(void) {

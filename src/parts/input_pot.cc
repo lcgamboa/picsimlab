@@ -267,6 +267,7 @@ void cpart_pot::ConfigurePropertiesWindow(void) {
     SpareParts.WPropCmd("spin7", WPA_SPINSETMAX, "4");
     SpareParts.WPropCmd("spin7", WPA_SPINSETMIN, "1");
     SpareParts.WPropCmd("spin7", WPA_SPINSETVALUE, std::to_string(Size).c_str());
+    SpareParts.WPropCmd("spin7", WPA_SPINENABLEEV, "1");
 
     SpinChange(NULL, NULL, Size);
 }

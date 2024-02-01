@@ -442,7 +442,9 @@ void cpart_Jumpers::ConfigurePropertiesWindow(void) {
     char childname[256];
 
     SpareParts.WPropCmd("combo1", WPA_COMBOSETITEMS, "F,M,");
+    SpareParts.WPropCmd("combo1", WPA_COMBOENABLEEV, "1");
     SpareParts.WPropCmd("combo18", WPA_COMBOSETITEMS, "F,M,");
+    SpareParts.WPropCmd("combo18", WPA_COMBOENABLEEV, "1");
 
     if (jtype & 0x02)
         SpareParts.WPropCmd("combo1", WPA_COMBOSETTEXT, "F");

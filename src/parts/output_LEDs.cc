@@ -265,6 +265,7 @@ void cpart_leds::ConfigurePropertiesWindow(void) {
     SpareParts.WPropCmd("spin10", WPA_SPINSETMAX, "8");
     SpareParts.WPropCmd("spin10", WPA_SPINSETMIN, "1");
     SpareParts.WPropCmd("spin10", WPA_SPINSETVALUE, std::to_string(Size).c_str());
+    SpareParts.WPropCmd("spin10", WPA_SPINENABLEEV, "1");
 
     SpareParts.WPropCmd("combo_1", WPA_COMBOSETITEMS, Colors.c_str());
     SpareParts.WPropCmd("combo_1", WPA_COMBOSETTEXT, Colorname[colors[0]]);

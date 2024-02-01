@@ -580,6 +580,7 @@ void cpart_7s_display::ConfigurePropertiesWindow(void) {
         SpareParts.WPropCmd("combo13", WPA_COMBOSETTEXT, "LOW ");
 
     SpareParts.WPropCmd("combo14", WPA_COMBOSETITEMS, "4 Mux.,Single,");
+    SpareParts.WPropCmd("combo14", WPA_COMBOENABLEEV, "1");
     if (dtype == 0)
         SpareParts.WPropCmd("combo14", WPA_COMBOSETTEXT, "4 Mux.");
     else {

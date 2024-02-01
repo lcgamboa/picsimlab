@@ -640,6 +640,8 @@ void cpart_keypad::ConfigurePropertiesWindow(void) {
         SpareParts.WPropCmd("combo11", WPA_COMBOSETTEXT, "DOWN");
 
     SpareParts.WPropCmd("combo12", WPA_COMBOSETITEMS, "4x4,4x3,2x5,");
+    SpareParts.WPropCmd("combo12", WPA_COMBOENABLEEV, "1");
+
     switch (type) {
         case KT4x4:
             SpareParts.WPropCmd("label1", WPA_LABELSETTEXT, "P1 - L1");
