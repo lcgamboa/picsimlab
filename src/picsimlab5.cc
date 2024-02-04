@@ -1271,8 +1271,8 @@ int CPWindow5::OnExtraWindowCmd(const int id, const char* ControlName, const PIC
         case PWA_WINDOWDESTROY:
             ((CPWindow*)ctrl)->Hide();
             ((CPWindow*)ctrl)->DestroyChilds();
+            ((CPWindow*)ctrl)->SetCanDestroy(true);
             ((CPWindow*)ctrl)->WDestroy();
-            delete ctrl;
             ctrl = NULL;
             break;
         case PWA_WINDOWLOADXML:
